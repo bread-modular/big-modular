@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 """Offline checks: real KiCad netlist connectivity and zero-route/mechanical invariants."""
 from pathlib import Path
-import sys,json,math,collections
+import sys,json,math,csv,collections
 sys.path.insert(0,str(Path(__file__).parent))
 from sexp import parse,nodes,one,walk
 import pcbnew as pcb
 root=Path(__file__).resolve().parent.parent
 expected=json.loads((root/'docs/pin-net-audit.json').read_text())
+# Safety regression: the unsafe upstream TVS must not return as a fitted part.
+with (root/'BOM.csv').open(newline='') as f: bom=list(csv.DictReader(f))
+assert 'D1' not in expected
+assert all(p['Reference']!='D1' and 'SMBJ12CA' not in (p['Value']+' '+p['MPN']) for p in bom)
+input_sch=parse((root/'hardware/01_input.kicad_sch').read_text())
+assert not any(any(p[1]=='Reference' and p[2]=='D1' for p in nodes(s,'property')) for s in nodes(input_sch,'symbol'))
 netlist=parse((root/'reports/big_modular.net').read_text()); actual={}
+assert not any(one(comp,'ref')[1]=='D1' for comp in nodes(one(netlist,'components'),'comp'))
 for n in nodes(one(netlist,'nets'),'net'):
     name=one(n,'name')[1]
     for p in nodes(n,'node'):actual[(one(p,'ref')[1],one(p,'pin')[1])]=name

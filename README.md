@@ -1,6 +1,6 @@
 # Big Modular — A0 USB-C PD Eurorack supply prototype
 
-**ENGINEERING PROTOTYPE — NOT FOR FABRICATION OR CONNECTION TO VALUABLE MODULES.**
+**ENGINEERING PROTOTYPE — DO NOT FABRICATE OR CONNECT LOADS: input TVS deliberately omitted; VBUS ESD/hot-plug surge protection is UNQUALIFIED.**
 
 Created using the installed **KiCad 10.0.6** command-line engine and PCB API. This is a pin-connected, seven-sheet circuit proposal with real reference designators, not only a block diagram. It is **not an electrically or thermally validated design**. Exact passive procurement, protection coordination, startup, EMI and mechanical hardware remain incomplete. No prior MOTU M6 architecture was available or presumed. No sibling repository was accessed.
 
@@ -21,8 +21,9 @@ Created using the installed **KiCad 10.0.6** command-line engine and PCB API. Th
 ## Electrical architecture
 
 ```
-USB-C VBUS -> F1 -> input TVS + CH224K sink (requests 9 V)
-                 -> TPS26600 eFuse (specified reverse-current blocking)
+USB-C VBUS -> F1 -> CH224K sink (requests 9 V)
+                 -> C2 local bypass -> TPS26600 eFuse (reverse-current blocking)
+                 [NO INPUT TVS: ESD/hot-plug surge NOT QUALIFIED; no fabrication]
                     [JP1 RUN permission; UV/OV, current limit, controlled slew]
                  -> TPS62160 -> 4.016 V intermediate
                  -> TPS65131 -> +13.9495 V and -13.9495 V preregulators
@@ -46,7 +47,7 @@ The TPS62125 custom symbol names pin 4 **EN_hys**, left unconnected as its datas
 | USB-C non-PD with advertised 1.5 A or 3 A | Closed only on approved source | Same conservative fallback; this design does **not decode or exploit** the advertisement. |
 | Approved PD charger with a 9 V fixed profile and ≥500 mA available | Closed by operator | CH224K requests 9 V; tentative simultaneous **40 mA per rail** after measured 9 V/valid contract. Current authorization is not inferred from PG. |
 | PD unsupported, negotiation failed, charger remains at 5 V | As above | Only fallback budget. PG never raises the hardware limit. |
-| Sustained unexpected 15/20 V or other excessive input | Either | **DO NOT FABRICATE:** upstream SMBJ12CA can conduct continuously and overheat despite eFuse OV cutoff ~10.78 V; fuse/TVS strategy must be redesigned. No higher-power mode is authorized. |
+| Sustained unexpected 15/20 V or other excessive input | Either | **D1 SMBJ12CA removed**, so it can no longer conduct continuously. TPS26600 OVP nominally disconnects its output above ~10.78 V; **VBUS remains energized with no qualified ESD/surge clamp**. DO NOT FABRICATE; no higher-power mode is authorized. |
 | Brownout / overload / startup failure | Closed | UV/current limit/thermal behavior can interrupt or retry. Outputs may collapse asymmetrically; never assume glitch-free rails. |
 
 The nominal eFuse limit is `12 / 40.2 = 0.2985 A`, **fixed in every mode**, not an advertised rail rating. TI specifies ±5% limit accuracy at 1 A, not at 0.30 A: do not use a guessed +20% as a guaranteed bound or equate the resistor setting with approved port current. CH224K upstream current, eFuse tolerance and startup peaks also need measurement. **500 mA is not universal pre-enumeration permission.** Default RUN is OPEN. This is **not an automatic safe-host-power product**. A final host-compatible implementation needs actual source-current detection/enumeration and validated total/inrush limits.
@@ -72,7 +73,7 @@ Future routing must minimize hot-loop area, use shielded inductors and physicall
 ## Important incomplete engineering items
 
 - Passive values and required ratings are specified, but many exact MPNs, packages, DC-bias curves, stock and assembly sourcing are **not selected or validated**. BOM is not a purchase-ready JLC order.
-- eFuse and LDO current/thermal protection and output reverse-differential / wrong-polarity clamps are proposed. **The existing upstream SMBJ12CA is a fabrication blocker, not valid sustained-15/20-V protection:** it breaks down before the eFuse OV cutoff can isolate it. A correctly rated and coordinated input protection strategy remains to be designed. Independent precision output overvoltage shutdown/crowbar, fault latching of all three rails and reverse-powered output tolerance are also incomplete. A failed LDO can expose preregulator voltage to a module. Do not connect valuable loads.
+- eFuse and LDO current/thermal protection and output reverse-differential / wrong-polarity clamps are proposed. **Unsafe upstream SMBJ12CA (D1) has been removed from the generator, schematic and BOM. There is now NO qualified input ESD/hot-plug surge protection.** F1 (unselected 500 mA / 32 V) cannot be assumed to clear a pulse; the eFuse OVP isolates output only. A 24 V-standoff SMBJ24CA was reviewed, **not selected**: 38.9 V clamp applies only at 15.5 A (10/1000 µs), and energy/fuse/connector/CC coordination plus JLC/LCSC sourcing are unproven. The GCT connector is 48 V DC rated in the cited B4 drawing, TPS26600 IN 60 V recommended / 62 V absolute, but neither rating qualifies an undefined surge. See `docs/design-review.md` for bounds and cited datasheets. Independent precision output overvoltage shutdown/crowbar, fault latching of all three rails and reverse-powered output tolerance are also incomplete. A failed LDO can expose preregulator voltage to a module. **Do not fabricate or connect valuable loads.**
 - BSW is intentionally unused; the positive boost path can prebias before enable. No guaranteed three-rail tracking, sequencing, startup into capacitive loads, or rapid discharge is implemented.
 - Case hardware, USB shell capture, cable selection and keyed IDC assembly need physical fit/load tests. Mechanical coordinates are nominal, not a tolerance-qualified assembly.
 - The PCB is **not electrically buildable**: only the USB footprint and mounting holes exist. No placement feasibility, loop area, thermals or completed power-board layout is claimed.
@@ -84,6 +85,7 @@ See `reports/validation-summary.md` for current counts and the honest interpreta
 ```
 /usr/bin/python3 tools/build_project.py
 kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all -o reports/erc.rpt
+kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all --format json -o reports/erc.json
 kicad-cli sch export pdf hardware/big_modular.kicad_sch -o docs/schematic.pdf
 kicad-cli sch export netlist hardware/big_modular.kicad_sch -o reports/big_modular.net
 kicad-cli pcb drc hardware/big_modular.kicad_pcb --severity-all --format json -o reports/carrier-drc.json
