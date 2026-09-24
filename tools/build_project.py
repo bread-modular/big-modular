@@ -54,8 +54,8 @@ def sheet(name,title,notes): SHEETS[name]={'title':title,'notes':notes,'parts':[
 def add(sh,ref,kind,value,nets,x,y,mpn='',lcsc='',fp='',note='',onboard=True):
     s=LIB[kind]; defaults={p[1]:p[2] for p in nodes(s,'property')}
     if not fp: fp=defaults.get('Footprint','')
-    if kind==R: fp='Resistor_SMD:R_0603_1608Metric'
-    if kind==C: fp='Capacitor_SMD:C_1206_3216Metric'
+    if kind==R and not fp: fp='Resistor_SMD:R_0603_1608Metric'
+    if kind==C and not fp: fp='Capacitor_SMD:C_1206_3216Metric'
     d=dict(ref=ref,kind=kind,value=value,nets={str(k):v for k,v in nets.items()},x=round(round(x/1.27)*1.27,5),y=round(round(y/1.27)*1.27,5),mpn=mpn,lcsc=lcsc,fp=fp,note=note,onboard=onboard)
     SHEETS[sh]['parts'].append(d); CONNS[ref]=d['nets']
     if not ref.startswith('#'): BOM.append(dict(Reference=ref,Value=value,MPN=mpn,Footprint=fp,LCSC=lcsc,Sourcing='LCSC ID verified; stock NOT verified' if lcsc else 'Candidate/specification only; procurement review required',Notes=note,Sheet=sh))
@@ -68,19 +68,18 @@ def r(sh,val,a,b,x,y,**kw):return passive(sh,R,val,a,b,x,y,**kw)
 def c(sh,val,a,b,x,y,**kw):return passive(sh,C,val,a,b,x,y,**kw)
 def diode(sh,val,k,a,x,y,**kw):return passive(sh,D,val,k,a,x,y,**kw)
 
-sheet('01_input','USB-C sink / permission / protected input','9 V request only. No USB data. CH224K internal Rd: no parallel 5.1k resistors.\nJP1 OPEN = OFF (default). Close ONLY for an approved dedicated source. PG is diagnostic, not a current-contract detector.\nAll bulk capacitance is behind the eFuse. No legacy-host enumeration or CC-current decoding is implemented.')
+sheet('01_input','USB-C sink / permission / protected input','9 V request only. No USB data. CH224K Rd must be verified on unpowered attach.\nJP1 OPEN = OFF (default). Close ONLY for an approved dedicated source. PG is diagnostic, not a current-contract detector.\nNo series diode: TPS26600 reverse-current blocking is specified; qualify dead-battery/backfeed on hardware.\nAll bulk capacitance is behind the eFuse. No legacy-host enumeration or CC-current decoding is implemented.')
 n={p:('VBUS_RAW' if p in ['A4','A9','B4','B9'] else 'GND' if p in ['A1','A12','B1','B12','SH'] else 'CC1' if p=='A5' else 'CC2' if p=='B5' else None) for p in ['A1','A4','A5','A6','A7','A8','A9','A12','B1','B4','B5','B6','B7','B8','B9','B12','SH']}
 add('01_input','J1',USB,'USB4105-GF-A',n,42,65,mpn='USB4105-GF-A',fp='BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal',note='Only electrical footprint placed. Drawing Rev B: axis 1.73 mm above PCB top.')
 add('01_input','U1',CH,'CH224K',{'1':'PD_VDD','2':None,'3':None,'4':'PD_D_SHORT','5':'PD_D_SHORT','6':'CC2','7':'CC1','8':None,'9':'PD_CFG','10':'PD_PG_N','11':'GND'},125,65,mpn='CH224K',lcsc='C970725',note='WCH v1F fig6.1/6.3; datasheet EP0 maps to library pad11. DP/DM short locally, isolated from USB data.')
-r('01_input','1k 1%','VBUS_FUSED','PD_VDD',205,50); c('01_input','1u 50V X7R','PD_VDD','GND',270,50); r('01_input','6.8k 1%','PD_CFG','GND',335,50); r('01_input','100k','PD_VDD','PD_PG_N',335,92)
+r('01_input','1k 1% >=0.5W','VBUS_FUSED','PD_VDD',205,50,fp='Resistor_SMD:R_2010_5025Metric',note='CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.'); c('01_input','1u 50V X7R','PD_VDD','GND',270,50); r('01_input','6.8k 1%','PD_CFG','GND',335,50); r('01_input','100k','PD_VDD','PD_PG_N',335,92)
 add('01_input','F1',F,'500mA 32V fuse',{'1':'VBUS_RAW','2':'VBUS_FUSED'},42,130,note='Candidate rating, NOT USB current authorization or coordinated surge qualification.')
-passive('01_input',TVS,'SMBJ12CA','VBUS_FUSED','GND',125,130,mpn='SMBJ12CA',note='12V standoff; 13.3..14.7V breakdown; 19.9V specified pulse clamp. Surge/fuse coordination NOT validated.')
-diode('01_input','Schottky 1A 40V','INPUT_SAFE','VBUS_FUSED',205,130,note='Series reverse-current barrier; select Vf <=0.45V at working current. Exact MPN pending.')
-c('01_input','100n 50V','INPUT_SAFE','GND',270,130)
-add('01_input','U2',EF,'TPS26600PWPR',{'1':'INPUT_SAFE','2':'INPUT_SAFE','3':'UV_EN','4':None,'5':'OV_SET','6':'RTN','7':None,'8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':None,'15':'VPROT','16':'VPROT','17':'RTN'},70,205,mpn='TPS26600PWPR',lcsc='C544399',note='MODE to RTN = current-limit auto-retry. SHDN internally pulled up. RTN is NOT externally shorted to GND.')
-add('01_input','JP1',JP,'RUN / default OPEN',{'1':'INPUT_SAFE','2':'RUN_IN'},165,190,note='Dedicated-source permission, not PD/current detection.')
+passive('01_input',TVS,'SMBJ12CA','VBUS_FUSED','GND',125,130,mpn='SMBJ12CA',note='12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.')
+c('01_input','100n 50V','VBUS_FUSED','GND',270,130)
+add('01_input','U2',EF,'TPS26600PWPR',{'1':'VBUS_FUSED','2':'VBUS_FUSED','3':'UV_EN','4':None,'5':'OV_SET','6':'RTN','7':None,'8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':None,'15':'VPROT','16':'VPROT','17':'RTN'},70,205,mpn='TPS26600PWPR',lcsc='C544399',note='Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.')
+add('01_input','JP1',JP,'RUN / default OPEN',{'1':'VBUS_FUSED','2':'RUN_IN'},165,190,note='Dedicated-source permission, not PD/current detection.')
 r('01_input','249k 1%','RUN_IN','UV_EN',230,180); r('01_input','100k 1%','UV_EN','RTN',295,180)
-r('01_input','806k 1%','INPUT_SAFE','OV_SET',360,180); r('01_input','100k 1%','OV_SET','RTN',360,225)
+r('01_input','806k 1%','VBUS_FUSED','OV_SET',360,180); r('01_input','100k 1%','OV_SET','RTN',360,225)
 r('01_input','40.2k 1%','ILIM','RTN',165,235); c('01_input','100n 50V','SLEW','RTN',230,235); c('01_input','10u 25V X7R','VPROT','GND',295,235)
 
 sheet('02_intermediate','4.016 V intermediate supply / startup','TPS62160: 3..17 V input, nominal 2.25 MHz DCS control, internal compensation.\n2.2uH / 22uF LC follows datasheet baseline. Require effective output C within datasheet stability range.\nPG releases converter enables only after intermediate rail rises. PWM frequency is not an audio-noise guarantee.')
@@ -90,7 +89,7 @@ c('02_intermediate','10u 25V X7R','VPROT','GND',250,65); c('02_intermediate','22
 r('02_intermediate','40.2k 0.1%','V4','MID_FB',175,125); r('02_intermediate','10k 0.1%','MID_FB','GND',250,125); r('02_intermediate','100k','V4','MID_GOOD',325,125)
 c('02_intermediate','100n 25V','VPROT','GND',80,160)
 
-sheet('03_bipolar','Bipolar preregulator: approximately +13.95 / -13.95 V','TPS65131: 2.7..5.5 V input; nominal 1.25 MHz. PSP/PSN LOW disables power-save mode.\nNegative feedback references VREF, NOT ground. D3/D4 polarity follows boost/inverter energy paths.\nBSW unused: positive preregulator can prebias through L/diode. No synchronized rail tracking promised.')
+sheet('03_bipolar','Bipolar preregulator: approximately +13.95 / -13.95 V','TPS65131: 2.7..5.5 V input; nominal 1.25 MHz. PSP/PSN LOW disables power-save mode.\nNegative feedback references VREF, NOT ground. Positive/negative rectifier polarity follows boost/inverter energy paths.\nBSW unused: positive preregulator can prebias through L/diode. No synchronized rail tracking promised.')
 add('03_bipolar','U4',BI,'TPS65131RGER',{'1':'BOOST_SW','2':'GND','3':'GND','4':'ANA_V4','5':'V4','6':'V4','7':None,'8':'MID_GOOD','9':'GND','10':'MID_GOOD','11':'GND','12':None,'13':'INV_SW','14':'INV_SW','15':'PRE_N','16':'NEG_FB','17':'BI_REF','18':'COMP_N','19':'GND','20':None,'21':'COMP_P','22':'POS_FB','23':'PRE_P','24':'BOOST_SW','25':'GND'},65,80,mpn='TPS65131RGER',lcsc='C87663')
 passive('03_bipolar',L,'4.7uH / Isat>=3A','V4','BOOST_SW',155,45); diode('03_bipolar','Schottky 1A 40V','PRE_P','BOOST_SW',230,45)
 passive('03_bipolar',L,'4.7uH / Isat>=3A','INV_SW','GND',155,100); diode('03_bipolar','Schottky 1A 40V','INV_SW','PRE_N',230,100)
@@ -128,7 +127,7 @@ n={str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=
 add('06_output','J2',IDC,'16-pin IDC POWER OUT',n,75,70,onboard=False,note='2x8 / 2.54 mm keyed cable connector; exact MPN and mounting unselected. Pinout per Doepfer/Division6.')
 for i,(net,val) in enumerate([('P12','100k'),('N12','100k'),('P5','47k')]):r('06_output',val,net,'GND',175+i*70,65)
 # ERC declarations: real power sources at passive input / filtered converter nodes, not arbitrary error masking.
-for i,net in enumerate(['GND','VBUS_RAW','VBUS_FUSED','PD_VDD','INPUT_SAFE','V4','ANA_V4','PRE_P','PRE_N','PRE_5']):
+for i,net in enumerate(['GND','VBUS_RAW','VBUS_FUSED','PD_VDD','V4','ANA_V4','PRE_P','PRE_N','PRE_5']):
     add('06_output',f'#FLG{i+1:02}',FLAG,'PWR_FLAG',{'1':net},50+(i%5)*70,155+(i//5)*45)
 
 rootid=uid('root'); project='big_modular'

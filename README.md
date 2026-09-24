@@ -8,7 +8,7 @@ Created using the installed **KiCad 10.0.6** command-line engine and PCB API. Th
 
 - `hardware/big_modular.kicad_pro`: main project.
 - `hardware/big_modular.kicad_sch`: root schematic; six circuit sheets alongside it.
-- `docs/schematic.pdf`: exported readable schematic.
+- `docs/schematic.pdf`: **stale prior A0 snapshot** (not regenerated in this focused review); use the KiCad sheets for the current circuit. Do not use the PDF for fabrication.
 - `hardware/big_modular.kicad_pcb`: perpendicular carrier / future power board. **J1 USB-C is the only electrical footprint placed.**
 - `hardware/front_panel.kicad_pcb`: separate 2HP FR4 mechanical faceplate; only non-electrical holes.
 - `BOM.csv`: prototype components; candidate versus verified LCSC identifiers explicitly distinguished.
@@ -22,7 +22,7 @@ Created using the installed **KiCad 10.0.6** command-line engine and PCB API. Th
 
 ```
 USB-C VBUS -> F1 -> input TVS + CH224K sink (requests 9 V)
-                 -> series reverse-blocking diode -> TPS26600 eFuse
+                 -> TPS26600 eFuse (specified reverse-current blocking)
                     [JP1 RUN permission; UV/OV, current limit, controlled slew]
                  -> TPS62160 -> 4.016 V intermediate
                  -> TPS65131 -> +13.9495 V and -13.9495 V preregulators
@@ -46,16 +46,16 @@ The TPS62125 custom symbol names pin 4 **EN_hys**, left unconnected as its datas
 | USB-C non-PD with advertised 1.5 A or 3 A | Closed only on approved source | Same conservative fallback; this design does **not decode or exploit** the advertisement. |
 | Approved PD charger with a 9 V fixed profile and ≥500 mA available | Closed by operator | CH224K requests 9 V; tentative simultaneous **40 mA per rail** after measured 9 V/valid contract. Current authorization is not inferred from PG. |
 | PD unsupported, negotiation failed, charger remains at 5 V | As above | Only fallback budget. PG never raises the hardware limit. |
-| Unexpected 12/15/20 V or excessive input | Either | eFuse OV cutoff is intended near 10.9 V; fault coordination must be tested. No higher-power mode is authorized. |
+| Sustained unexpected 15/20 V or other excessive input | Either | **DO NOT FABRICATE:** upstream SMBJ12CA can conduct continuously and overheat despite eFuse OV cutoff ~10.78 V; fuse/TVS strategy must be redesigned. No higher-power mode is authorized. |
 | Brownout / overload / startup failure | Closed | UV/current limit/thermal behavior can interrupt or retry. Outputs may collapse asymmetrically; never assume glitch-free rails. |
 
-The nominal eFuse limit is `12 / 40.2 = 0.2985 A`, **fixed in every mode**, not an advertised rail rating. A provisional +20% error allowance gives 0.362 A with a -1% resistor, plus sink/controller current; this is a screening calculation, **not a guaranteed bound at this uncharacterized operating point**. It is intentionally below the user's 500 mA conservative host ceiling, but **500 mA is not universal pre-enumeration permission**. Default RUN is OPEN. This is **not an automatic safe-host-power product**. A final host-compatible implementation needs actual source-current detection/enumeration and validated total/inrush limits.
+The nominal eFuse limit is `12 / 40.2 = 0.2985 A`, **fixed in every mode**, not an advertised rail rating. TI specifies ±5% limit accuracy at 1 A, not at 0.30 A: do not use a guessed +20% as a guaranteed bound or equate the resistor setting with approved port current. CH224K upstream current, eFuse tolerance and startup peaks also need measurement. **500 mA is not universal pre-enumeration permission.** Default RUN is OPEN. This is **not an automatic safe-host-power product**. A final host-compatible implementation needs actual source-current detection/enumeration and validated total/inrush limits.
 
-No external CC Rd resistors duplicate CH224K's reference circuit. DP/DM on the chip are shorted together and disconnected from receptacle data pins (PD-only mode); there is no BC1.2 or data enumeration. No E-mark simulation circuit is used. CH224K PG is diagnostic only and is not claimed to prove a current contract or safe fallback. Never inject a negotiated voltage into another USB port; this design has one sink receptacle and a series reverse-blocking barrier, not a USB passthrough or MOTU power mux.
+No external CC Rd resistors duplicate CH224K's reference circuit, but its **unpowered/dead-battery Rd behavior is not verified**: bench-check 5 V attach before assuming any non-PD fallback. The 6.8k CFG1 requests 9 V *only when a PD source offers an appropriate profile*; on a 5 V-only source it cannot negotiate 9 V. DP/DM on the chip are shorted together and disconnected from receptacle data pins (PD-only mode); there is no BC1.2 or data enumeration. No E-mark simulation circuit is used. CH224K PG is diagnostic only and is not claimed to prove a current contract or safe fallback. Never inject a negotiated voltage into another USB port; this design has one sink receptacle and TI-specified TPS26600 reverse blocking, not a USB passthrough or MOTU power mux.
 
 ## Headroom and power envelope — estimates, not test results
 
-- The 4.016 V intermediate stage accepts both 5 V fallback and 9 V PD after protection, keeping TPS65131 below its 5.5 V input ceiling. If diode/fuse/cable drop puts the eFuse input below approximately 4.2 V, fallback shuts down; specify a good dedicated source, provisionally **≥4.9 V at J1** under load. No guarantee is made at the extreme of USB cable drop.
+- The 4.016 V intermediate stage is intended for both 5 V fallback and 9 V PD, keeping TPS65131 below its 5.5 V input ceiling. The redundant input diode was removed after checking TPS26600's specified reverse-current blocking, recovering roughly 0.45 V at 5 V. At 5 V the eFuse needs at least 4.2 V at its input, and its input can still fall with fuse/cable losses; TPS62160 must then supply 4.016 V at load with very little dropout margin. **No useful 5 V fallback current is established by calculation or ERC**; start with a dedicated source at ≥4.9 V measured at J1, verify startup and all three loads, then set a safe limit. A generic host is not authorized.
 - Screening ±12 V headroom: take preregulator magnitude -5%, reserve 0.25 V downward ripple/transient, and allow the LDO output +2.5%. `13.9495*0.95 - 0.25 - 12*1.025 = 0.702 V`, versus datasheet **0.600 V maximum dropout**. Only about 0.10 V screening margin remains; resistor/bias tolerances and simultaneous transients need a proper worst-case analysis. This does **not** establish best PSRR or a guaranteed clean output.
 - +5 V screening: `6.52*0.97 - 0.20 - 5*1.025 = 0.999 V` versus 0.600 V maximum dropout. Again verify actual ripple/step response and tolerance. During startup or current limiting these headroom assumptions are false.
 - At 20 mA on every rail: output power is **0.58 W**; at 40 mA each, **1.16 W**. Assuming 75% bipolar, 85% intermediate and 80% +6.52 V buck efficiency gives about **1.13 W / 2.26 W** converter-chain input before diode and housekeeping losses. Actual low-load efficiency is unmeasured.
@@ -72,14 +72,14 @@ Future routing must minimize hot-loop area, use shielded inductors and physicall
 ## Important incomplete engineering items
 
 - Passive values and required ratings are specified, but many exact MPNs, packages, DC-bias curves, stock and assembly sourcing are **not selected or validated**. BOM is not a purchase-ready JLC order.
-- eFuse and LDO current/thermal protection, a series diode, input TVS, and output reverse-differential / wrong-polarity clamps are present. **Independent precision output overvoltage shutdown/crowbar, fault latching of all three rails, TVS/fuse energy coordination and reverse-powered output tolerance are not complete.** A failed LDO can expose preregulator voltage to a module. Do not connect valuable loads.
+- eFuse and LDO current/thermal protection and output reverse-differential / wrong-polarity clamps are proposed. **The existing upstream SMBJ12CA is a fabrication blocker, not valid sustained-15/20-V protection:** it breaks down before the eFuse OV cutoff can isolate it. A correctly rated and coordinated input protection strategy remains to be designed. Independent precision output overvoltage shutdown/crowbar, fault latching of all three rails and reverse-powered output tolerance are also incomplete. A failed LDO can expose preregulator voltage to a module. Do not connect valuable loads.
 - BSW is intentionally unused; the positive boost path can prebias before enable. No guaranteed three-rail tracking, sequencing, startup into capacitive loads, or rapid discharge is implemented.
 - Case hardware, USB shell capture, cable selection and keyed IDC assembly need physical fit/load tests. Mechanical coordinates are nominal, not a tolerance-qualified assembly.
 - The PCB is **not electrically buildable**: only the USB footprint and mounting holes exist. No placement feasibility, loop area, thermals or completed power-board layout is claimed.
 
 ## Checks and regeneration
 
-See `reports/validation-summary.md` for final counts and the honest interpretation of warnings. ERC detects connectivity/type issues; it does not prove analog correctness. Board DRC is run without schematic parity and **without zone refill**; missing/unconnected copper is intentional.
+See `reports/validation-summary.md` for current counts and the honest interpretation of warnings. ERC detects connectivity/type issues; it does not prove analog correctness. Board DRC is run without schematic parity and **without zone refill**; missing/unconnected copper is intentional. `docs/pin-net-audit.json` is generated from the same source as the schematics and its whole-net comparison is **not independent datasheet verification**; `verify_project.py` additionally has a small manually reviewed pin/net spot-check. The tracked PDF was deliberately not regenerated and is stale.
 
 ```
 /usr/bin/python3 tools/build_project.py

@@ -1,8 +1,8 @@
 (export
 	(version "E")
 	(design
-		(source "/home/azero/.okbrain/workspaces/big-modular/001/hardware/big_modular.kicad_sch")
-		(date "2026-09-24T09:27:55")
+		(source "/home/azero/.okbrain/workspaces/big-modular/002/hardware/big_modular.kicad_sch")
+		(date "2026-09-24T09:40:36")
 		(tool "Eeschema 10.0.6-10.0.6~ubuntu26.04.1")
 		(sheet
 			(number "1")
@@ -652,7 +652,7 @@
 					(name "LCSC")
 				)
 				(field
-					(name "NOTE") "12V standoff; 13.3..14.7V breakdown; 19.9V specified pulse clamp. Surge/fuse coordination NOT validated.")
+					(name "NOTE") "12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.")
 				(field
 					(name "Footprint")
 				)
@@ -678,7 +678,7 @@
 			)
 			(property
 				(name "NOTE")
-				(value "12V standoff; 13.3..14.7V breakdown; 19.9V specified pulse clamp. Surge/fuse coordination NOT validated.")
+				(value "12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.")
 			)
 			(property
 				(name "Sheetname")
@@ -701,80 +701,6 @@
 				(tstamps "/029cb2a9-d2ef-5d6a-923b-0d0afe15605f/")
 			)
 			(tstamps "97896df6-6822-5454-af6b-9d2dbd649ad3")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D2")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE") "Series reverse-current barrier; select Vf <=0.45V at working current. Exact MPN pending.")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "Series reverse-current barrier; select Vf <=0.45V at working current. Exact MPN pending.")
-			)
-			(property
-				(name "Sheetname")
-				(value "USB-C sink / permission / protected input")
-			)
-			(property
-				(name "Sheetfile")
-				(value "01_input.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/USB-C sink / permission / protected input/")
-				(tstamps "/029cb2a9-d2ef-5d6a-923b-0d0afe15605f/")
-			)
-			(tstamps "40594494-b97d-56de-9d35-d8f4cbe6a274")
 			(units
 				(unit
 					(name "A")
@@ -1057,8 +983,8 @@
 		)
 		(comp
 			(ref "R1")
-			(value "1k 1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(value "1k 1% >=0.5W")
+			(footprint "Resistor_SMD:R_2010_5025Metric")
 			(fields
 				(field
 					(name "MPN")
@@ -1067,10 +993,9 @@
 					(name "LCSC")
 				)
 				(field
-					(name "NOTE")
-				)
+					(name "NOTE") "CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.")
 				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+					(name "Footprint") "Resistor_SMD:R_2010_5025Metric")
 				(field
 					(name "Datasheet")
 				)
@@ -1093,7 +1018,7 @@
 			)
 			(property
 				(name "NOTE")
-				(value "")
+				(value "CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.")
 			)
 			(property
 				(name "Sheetname")
@@ -1764,7 +1689,7 @@
 				(field
 					(name "LCSC") "C544399")
 				(field
-					(name "NOTE") "MODE to RTN = current-limit auto-retry. SHDN internally pulled up. RTN is NOT externally shorted to GND.")
+					(name "NOTE") "Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.")
 				(field
 					(name "Footprint") "Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias")
 				(field
@@ -1789,7 +1714,7 @@
 			)
 			(property
 				(name "NOTE")
-				(value "MODE to RTN = current-limit auto-retry. SHDN internally pulled up. RTN is NOT externally shorted to GND.")
+				(value "Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.")
 			)
 			(property
 				(name "Sheetname")
@@ -3240,6 +3165,81 @@
 			)
 		)
 		(comp
+			(ref "D2")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Bipolar preregulator: approximately +13.95 / -13.95 V")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_bipolar.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Bipolar preregulator: approximately +13.95 / -13.95 V/")
+				(tstamps "/6ae7aeb3-31bb-5580-ba62-4d68a0707add/")
+			)
+			(tstamps "40594494-b97d-56de-9d35-d8f4cbe6a274")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "D3")
 			(value "Schottky 1A 40V")
 			(fields
@@ -3300,81 +3300,6 @@
 				(tstamps "/6ae7aeb3-31bb-5580-ba62-4d68a0707add/")
 			)
 			(tstamps "b867a71d-a65a-57cc-933a-f2e3441d3566")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D4")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "Bipolar preregulator: approximately +13.95 / -13.95 V")
-			)
-			(property
-				(name "Sheetfile")
-				(value "03_bipolar.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/Bipolar preregulator: approximately +13.95 / -13.95 V/")
-				(tstamps "/6ae7aeb3-31bb-5580-ba62-4d68a0707add/")
-			)
-			(tstamps "a07a016d-835f-5082-bcb6-6db60bddb902")
 			(units
 				(unit
 					(name "A")
@@ -5492,6 +5417,81 @@
 			)
 		)
 		(comp
+			(ref "D4")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Low-noise postregulators / three output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "05_clean_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Low-noise postregulators / three output rails/")
+				(tstamps "/0bbf054f-36af-5001-8cbd-94bf06535e80/")
+			)
+			(tstamps "a07a016d-835f-5082-bcb6-6db60bddb902")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "D5")
 			(value "Schottky 1A 40V")
 			(fields
@@ -5852,81 +5852,6 @@
 				(tstamps "/0bbf054f-36af-5001-8cbd-94bf06535e80/")
 			)
 			(tstamps "a1e19a16-ec44-5c1b-9138-02b97cc5fa8c")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D10")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "Low-noise postregulators / three output rails")
-			)
-			(property
-				(name "Sheetfile")
-				(value "05_clean_rails.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/Low-noise postregulators / three output rails/")
-				(tstamps "/0bbf054f-36af-5001-8cbd-94bf06535e80/")
-			)
-			(tstamps "d8ab9faf-80c2-5490-a796-93c4dd445ad4")
 			(units
 				(unit
 					(name "A")
@@ -7993,7 +7918,7 @@
 			(name "BOOST_SW")
 			(class "Default")
 			(node
-				(ref "D3")
+				(ref "D2")
 				(pin "2")
 				(pinfunction "A_2")
 				(pintype "passive")
@@ -8262,21 +8187,21 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D10")
+				(ref "D5")
 				(pin "2")
 				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
-				(ref "D6")
-				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "D8")
+				(ref "D7")
 				(pin "1")
 				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "D9")
+				(pin "2")
+				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
@@ -8498,49 +8423,10 @@
 		)
 		(net
 			(code "12")
-			(name "INPUT_SAFE")
-			(class "Default")
-			(node
-				(ref "C2")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "D2")
-				(pin "1")
-				(pinfunction "K_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "JP1")
-				(pin "1")
-				(pinfunction "A_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R6")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U2")
-				(pin "1")
-				(pinfunction "IN_1")
-				(pintype "power_in")
-			)
-			(node
-				(ref "U2")
-				(pin "2")
-				(pinfunction "IN_2")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "13")
 			(name "INV_SW")
 			(class "Default")
 			(node
-				(ref "D4")
+				(ref "D3")
 				(pin "1")
 				(pinfunction "K_1")
 				(pintype "passive")
@@ -8565,7 +8451,7 @@
 			)
 		)
 		(net
-			(code "14")
+			(code "13")
 			(name "MID_FB")
 			(class "Default")
 			(node
@@ -8586,7 +8472,7 @@
 			)
 		)
 		(net
-			(code "15")
+			(code "14")
 			(name "MID_GOOD")
 			(class "Default")
 			(node
@@ -8614,7 +8500,7 @@
 			)
 		)
 		(net
-			(code "16")
+			(code "15")
 			(name "MID_SW")
 			(class "Default")
 			(node
@@ -8631,7 +8517,7 @@
 			)
 		)
 		(net
-			(code "17")
+			(code "16")
 			(name "N12")
 			(class "Default")
 			(node
@@ -8645,13 +8531,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D7")
+				(ref "D6")
 				(pin "1")
 				(pinfunction "K_1")
 				(pintype "passive")
 			)
 			(node
-				(ref "D8")
+				(ref "D7")
 				(pin "2")
 				(pinfunction "A_2")
 				(pintype "passive")
@@ -8674,7 +8560,7 @@
 			)
 		)
 		(net
-			(code "18")
+			(code "17")
 			(name "N12_FB")
 			(class "Default")
 			(node
@@ -8700,7 +8586,7 @@
 			)
 		)
 		(net
-			(code "19")
+			(code "18")
 			(name "N12_NR")
 			(class "Default")
 			(node
@@ -8716,7 +8602,7 @@
 			)
 		)
 		(net
-			(code "20")
+			(code "19")
 			(name "NEG_FB")
 			(class "Default")
 			(node
@@ -8742,7 +8628,7 @@
 			)
 		)
 		(net
-			(code "21")
+			(code "20")
 			(name "OV_SET")
 			(class "Default")
 			(node
@@ -8763,7 +8649,7 @@
 			)
 		)
 		(net
-			(code "22")
+			(code "21")
 			(name "P5")
 			(class "Default")
 			(node
@@ -8777,15 +8663,15 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D10")
-				(pin "1")
-				(pinfunction "K_1")
+				(ref "D8")
+				(pin "2")
+				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
 				(ref "D9")
-				(pin "2")
-				(pinfunction "A_2")
+				(pin "1")
+				(pinfunction "K_1")
 				(pintype "passive")
 			)
 			(node
@@ -8806,7 +8692,7 @@
 			)
 		)
 		(net
-			(code "23")
+			(code "22")
 			(name "P5_FB")
 			(class "Default")
 			(node
@@ -8832,7 +8718,7 @@
 			)
 		)
 		(net
-			(code "24")
+			(code "23")
 			(name "P5_NR")
 			(class "Default")
 			(node
@@ -8848,7 +8734,7 @@
 			)
 		)
 		(net
-			(code "25")
+			(code "24")
 			(name "P12")
 			(class "Default")
 			(node
@@ -8862,13 +8748,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D5")
+				(ref "D4")
 				(pin "2")
 				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
-				(ref "D6")
+				(ref "D5")
 				(pin "1")
 				(pinfunction "K_1")
 				(pintype "passive")
@@ -8891,7 +8777,7 @@
 			)
 		)
 		(net
-			(code "26")
+			(code "25")
 			(name "P12_FB")
 			(class "Default")
 			(node
@@ -8917,7 +8803,7 @@
 			)
 		)
 		(net
-			(code "27")
+			(code "26")
 			(name "P12_NR")
 			(class "Default")
 			(node
@@ -8933,7 +8819,7 @@
 			)
 		)
 		(net
-			(code "28")
+			(code "27")
 			(name "PD_CFG")
 			(class "Default")
 			(node
@@ -8949,7 +8835,7 @@
 			)
 		)
 		(net
-			(code "29")
+			(code "28")
 			(name "PD_D_SHORT")
 			(class "Default")
 			(node
@@ -8966,7 +8852,7 @@
 			)
 		)
 		(net
-			(code "30")
+			(code "29")
 			(name "PD_PG_N")
 			(class "Default")
 			(node
@@ -8982,7 +8868,7 @@
 			)
 		)
 		(net
-			(code "31")
+			(code "30")
 			(name "PD_VDD")
 			(class "Default")
 			(node
@@ -9008,7 +8894,7 @@
 			)
 		)
 		(net
-			(code "32")
+			(code "31")
 			(name "POS_FB")
 			(class "Default")
 			(node
@@ -9034,7 +8920,7 @@
 			)
 		)
 		(net
-			(code "33")
+			(code "32")
 			(name "PRE_5")
 			(class "Default")
 			(node
@@ -9048,7 +8934,7 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D9")
+				(ref "D8")
 				(pin "1")
 				(pinfunction "K_1")
 				(pintype "passive")
@@ -9084,7 +8970,7 @@
 			)
 		)
 		(net
-			(code "34")
+			(code "33")
 			(name "PRE_N")
 			(class "Default")
 			(node
@@ -9103,13 +8989,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D4")
+				(ref "D3")
 				(pin "2")
 				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
-				(ref "D7")
+				(ref "D6")
 				(pin "2")
 				(pinfunction "A_2")
 				(pintype "passive")
@@ -9139,7 +9025,7 @@
 			)
 		)
 		(net
-			(code "35")
+			(code "34")
 			(name "PRE_P")
 			(class "Default")
 			(node
@@ -9168,13 +9054,13 @@
 				(pintype "passive")
 			)
 			(node
-				(ref "D3")
+				(ref "D2")
 				(pin "1")
 				(pinfunction "K_1")
 				(pintype "passive")
 			)
 			(node
-				(ref "D5")
+				(ref "D4")
 				(pin "1")
 				(pinfunction "K_1")
 				(pintype "passive")
@@ -9216,7 +9102,7 @@
 			)
 		)
 		(net
-			(code "36")
+			(code "35")
 			(name "RTN")
 			(class "Default")
 			(node
@@ -9259,7 +9145,7 @@
 			)
 		)
 		(net
-			(code "37")
+			(code "36")
 			(name "RUN_IN")
 			(class "Default")
 			(node
@@ -9275,7 +9161,7 @@
 			)
 		)
 		(net
-			(code "38")
+			(code "37")
 			(name "SLEW")
 			(class "Default")
 			(node
@@ -9291,7 +9177,7 @@
 			)
 		)
 		(net
-			(code "39")
+			(code "38")
 			(name "UV_EN")
 			(class "Default")
 			(node
@@ -9312,7 +9198,7 @@
 			)
 		)
 		(net
-			(code "40")
+			(code "39")
 			(name "V4")
 			(class "Default")
 			(node
@@ -9377,19 +9263,18 @@
 			)
 		)
 		(net
-			(code "41")
+			(code "40")
 			(name "VBUS_FUSED")
 			(class "Default")
+			(node
+				(ref "C2")
+				(pin "1")
+				(pintype "passive")
+			)
 			(node
 				(ref "D1")
 				(pin "1")
 				(pinfunction "A1_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "D2")
-				(pin "2")
-				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
@@ -9398,13 +9283,36 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "JP1")
+				(pin "1")
+				(pinfunction "A_1")
+				(pintype "passive")
+			)
+			(node
 				(ref "R1")
 				(pin "1")
 				(pintype "passive")
 			)
+			(node
+				(ref "R6")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "1")
+				(pinfunction "IN_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U2")
+				(pin "2")
+				(pinfunction "IN_2")
+				(pintype "passive")
+			)
 		)
 		(net
-			(code "42")
+			(code "41")
 			(name "VBUS_RAW")
 			(class "Default")
 			(node
@@ -9438,7 +9346,7 @@
 			)
 		)
 		(net
-			(code "43")
+			(code "42")
 			(name "VPROT")
 			(class "Default")
 			(node
@@ -9482,7 +9390,7 @@
 			)
 		)
 		(net
-			(code "44")
+			(code "43")
 			(name "unconnected-(J1-D+-PadA6)")
 			(class "Default")
 			(node
@@ -9493,7 +9401,7 @@
 			)
 		)
 		(net
-			(code "45")
+			(code "44")
 			(name "unconnected-(J1-D+-PadB6)")
 			(class "Default")
 			(node
@@ -9504,7 +9412,7 @@
 			)
 		)
 		(net
-			(code "46")
+			(code "45")
 			(name "unconnected-(J1-D--PadA7)")
 			(class "Default")
 			(node
@@ -9515,7 +9423,7 @@
 			)
 		)
 		(net
-			(code "47")
+			(code "46")
 			(name "unconnected-(J1-D--PadB7)")
 			(class "Default")
 			(node
@@ -9526,7 +9434,7 @@
 			)
 		)
 		(net
-			(code "48")
+			(code "47")
 			(name "unconnected-(J1-SBU1-PadA8)")
 			(class "Default")
 			(node
@@ -9537,7 +9445,7 @@
 			)
 		)
 		(net
-			(code "49")
+			(code "48")
 			(name "unconnected-(J1-SBU2-PadB8)")
 			(class "Default")
 			(node
@@ -9548,7 +9456,7 @@
 			)
 		)
 		(net
-			(code "54")
+			(code "53")
 			(name "unconnected-(U1-CFG2-Pad2)")
 			(class "Default")
 			(node
@@ -9559,7 +9467,7 @@
 			)
 		)
 		(net
-			(code "55")
+			(code "54")
 			(name "unconnected-(U1-CFG3-Pad3)")
 			(class "Default")
 			(node
@@ -9570,7 +9478,7 @@
 			)
 		)
 		(net
-			(code "56")
+			(code "55")
 			(name "unconnected-(U1-VBUS-Pad8)")
 			(class "Default")
 			(node
@@ -9581,7 +9489,7 @@
 			)
 		)
 		(net
-			(code "57")
+			(code "56")
 			(name "unconnected-(U2-IMON-Pad10)")
 			(class "Default")
 			(node
@@ -9592,7 +9500,7 @@
 			)
 		)
 		(net
-			(code "58")
+			(code "57")
 			(name "unconnected-(U2-NC-Pad4)")
 			(class "Default")
 			(node
@@ -9603,7 +9511,7 @@
 			)
 		)
 		(net
-			(code "59")
+			(code "58")
 			(name "unconnected-(U2-NC-Pad13)")
 			(class "Default")
 			(node
@@ -9614,7 +9522,7 @@
 			)
 		)
 		(net
-			(code "60")
+			(code "59")
 			(name "unconnected-(U2-~{FLT}-Pad14)")
 			(class "Default")
 			(node
@@ -9625,7 +9533,7 @@
 			)
 		)
 		(net
-			(code "61")
+			(code "60")
 			(name "unconnected-(U2-~{SHDN}-Pad7)")
 			(class "Default")
 			(node
@@ -9636,7 +9544,7 @@
 			)
 		)
 		(net
-			(code "62")
+			(code "61")
 			(name "unconnected-(U4-BSW-Pad7)")
 			(class "Default")
 			(node
@@ -9647,7 +9555,7 @@
 			)
 		)
 		(net
-			(code "63")
+			(code "62")
 			(name "unconnected-(U4-NC-Pad12)")
 			(class "Default")
 			(node
@@ -9658,7 +9566,7 @@
 			)
 		)
 		(net
-			(code "64")
+			(code "63")
 			(name "unconnected-(U4-NC-Pad20)")
 			(class "Default")
 			(node
@@ -9669,7 +9577,7 @@
 			)
 		)
 		(net
-			(code "65")
+			(code "64")
 			(name "unconnected-(U5-EN_hys-Pad4)")
 			(class "Default")
 			(node
@@ -9680,7 +9588,7 @@
 			)
 		)
 		(net
-			(code "66")
+			(code "65")
 			(name "unconnected-(U5-PG-Pad8)")
 			(class "Default")
 			(node
@@ -9691,7 +9599,7 @@
 			)
 		)
 		(net
-			(code "67")
+			(code "66")
 			(name "unconnected-(U6-DNC-Pad7)")
 			(class "Default")
 			(node
@@ -9702,7 +9610,7 @@
 			)
 		)
 		(net
-			(code "68")
+			(code "67")
 			(name "unconnected-(U6-NC-Pad3)")
 			(class "Default")
 			(node
@@ -9713,7 +9621,7 @@
 			)
 		)
 		(net
-			(code "69")
+			(code "68")
 			(name "unconnected-(U7-DNC-Pad7)")
 			(class "Default")
 			(node
@@ -9724,7 +9632,7 @@
 			)
 		)
 		(net
-			(code "70")
+			(code "69")
 			(name "unconnected-(U7-NC-Pad3)")
 			(class "Default")
 			(node
@@ -9735,7 +9643,7 @@
 			)
 		)
 		(net
-			(code "71")
+			(code "70")
 			(name "unconnected-(U8-DNC-Pad7)")
 			(class "Default")
 			(node
@@ -9746,7 +9654,7 @@
 			)
 		)
 		(net
-			(code "72")
+			(code "71")
 			(name "unconnected-(U8-NC-Pad3)")
 			(class "Default")
 			(node

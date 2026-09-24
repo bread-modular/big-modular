@@ -1,15 +1,14 @@
 Reference,Value,MPN,Footprint,LCSC,Sourcing,Notes,Sheet
 J1,USB4105-GF-A,USB4105-GF-A,BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,,Candidate/specification only; procurement review required,Only electrical footprint placed. Drawing Rev B: axis 1.73 mm above PCB top.,01_input
 U1,CH224K,CH224K,Package_SO:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm,C970725,LCSC ID verified; stock NOT verified,"WCH v1F fig6.1/6.3; datasheet EP0 maps to library pad11. DP/DM short locally, isolated from USB data.",01_input
-R1,1k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
+R1,1k 1% >=0.5W,,Resistor_SMD:R_2010_5025Metric,,Candidate/specification only; procurement review required,"CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.",01_input
 C1,1u 50V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
 R2,6.8k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 R3,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 F1,500mA 32V fuse,,,,Candidate/specification only; procurement review required,"Candidate rating, NOT USB current authorization or coordinated surge qualification.",01_input
-D1,SMBJ12CA,SMBJ12CA,,,Candidate/specification only; procurement review required,12V standoff; 13.3..14.7V breakdown; 19.9V specified pulse clamp. Surge/fuse coordination NOT validated.,01_input
-D2,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,Series reverse-current barrier; select Vf <=0.45V at working current. Exact MPN pending.,01_input
+D1,SMBJ12CA,SMBJ12CA,,,Candidate/specification only; procurement review required,"12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.",01_input
 C2,100n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
-U2,TPS26600PWPR,TPS26600PWPR,Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias,C544399,LCSC ID verified; stock NOT verified,MODE to RTN = current-limit auto-retry. SHDN internally pulled up. RTN is NOT externally shorted to GND.,01_input
+U2,TPS26600PWPR,TPS26600PWPR,Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias,C544399,LCSC ID verified; stock NOT verified,Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.,01_input
 JP1,RUN / default OPEN,,,,Candidate/specification only; procurement review required,"Dedicated-source permission, not PD/current detection.",01_input
 R4,249k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 R5,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
@@ -28,9 +27,9 @@ R11,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurem
 C7,100n 25V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,02_intermediate
 U4,TPS65131RGER,TPS65131RGER,Package_DFN_QFN:VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm_ThermalVias,C87663,LCSC ID verified; stock NOT verified,,03_bipolar
 L2,4.7uH / Isat>=3A,,,,Candidate/specification only; procurement review required,,03_bipolar
-D3,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,03_bipolar
+D2,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,03_bipolar
 L3,4.7uH / Isat>=3A,,,,Candidate/specification only; procurement review required,,03_bipolar
-D4,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,03_bipolar
+D3,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,03_bipolar
 C8,22u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
 C9,22u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
 R12,1.05M 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,03_bipolar
@@ -60,8 +59,8 @@ R19,91.2k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; pr
 R20,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C23,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C24,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
+D4,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
 D5,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-D6,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
 U7,TPS7A3001DGNR,TPS7A3001DGNR,,,Candidate/specification only; procurement review required,Package and pad map from TI datasheet; no footprint selected/placed.,05_clean_rails
 C25,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C26,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
@@ -69,8 +68,8 @@ R21,92k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; proc
 R22,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C27,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C28,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
+D6,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
 D7,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-D8,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
 U8,TPS7A4901DGNR,TPS7A4901DGNR,,C16430,LCSC ID verified; stock NOT verified,Package and pad map from TI datasheet; no footprint selected/placed.,05_clean_rails
 C29,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C30,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
@@ -78,8 +77,8 @@ R23,32.2k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; pr
 R24,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C31,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
 C32,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
+D8,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
 D9,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-D10,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
 J2,16-pin IDC POWER OUT,,,,Candidate/specification only; procurement review required,2x8 / 2.54 mm keyed cable connector; exact MPN and mounting unselected. Pinout per Doepfer/Division6.,06_output
 R25,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
 R26,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
