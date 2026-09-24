@@ -8,7 +8,7 @@ Created using the installed **KiCad 10.0.6** command-line engine and PCB API. Th
 
 - `hardware/big_modular.kicad_pro`: main project.
 - `hardware/big_modular.kicad_sch`: root schematic; six circuit sheets alongside it.
-- `docs/schematic.pdf`: **stale prior A0 snapshot** (not regenerated in this focused review); use the KiCad sheets for the current circuit. Do not use the PDF for fabrication.
+- `docs/schematic.pdf`: **current A0 export of the seven KiCad sheets**, regenerated with `kicad-cli sch export pdf` (7 pages, A3); it matches the current circuit and is no longer a stale snapshot. Still an engineering prototype: do not use the PDF for fabrication.
 - `hardware/big_modular.kicad_pcb`: perpendicular carrier / future power board. **J1 USB-C is the only electrical footprint placed.**
 - `hardware/front_panel.kicad_pcb`: separate 2HP FR4 mechanical faceplate; only non-electrical holes.
 - `BOM.csv`: prototype components; candidate versus verified LCSC identifiers explicitly distinguished.
@@ -79,11 +79,12 @@ Future routing must minimize hot-loop area, use shielded inductors and physicall
 
 ## Checks and regeneration
 
-See `reports/validation-summary.md` for current counts and the honest interpretation of warnings. ERC detects connectivity/type issues; it does not prove analog correctness. Board DRC is run without schematic parity and **without zone refill**; missing/unconnected copper is intentional. `docs/pin-net-audit.json` is generated from the same source as the schematics and its whole-net comparison is **not independent datasheet verification**; `verify_project.py` additionally has a small manually reviewed pin/net spot-check. The tracked PDF was deliberately not regenerated and is stale.
+See `reports/validation-summary.md` for current counts and the honest interpretation of warnings. ERC detects connectivity/type issues; it does not prove analog correctness. Board DRC is run without schematic parity and **without zone refill**; missing/unconnected copper is intentional. `docs/pin-net-audit.json` is generated from the same source as the schematics and its whole-net comparison is **not independent datasheet verification**; `verify_project.py` additionally has a small manually reviewed pin/net spot-check. The tracked `docs/schematic.pdf` **matches the current seven KiCad sheets**: it was regenerated with `kicad-cli sch export pdf` and re-checked at 7 pages (A3). It is a review export, not fabrication approval.
 
 ```
 /usr/bin/python3 tools/build_project.py
 kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all -o reports/erc.rpt
+kicad-cli sch export pdf hardware/big_modular.kicad_sch -o docs/schematic.pdf
 kicad-cli sch export netlist hardware/big_modular.kicad_sch -o reports/big_modular.net
 kicad-cli pcb drc hardware/big_modular.kicad_pcb --severity-all --format json -o reports/carrier-drc.json
 kicad-cli pcb drc hardware/front_panel.kicad_pcb --severity-all --format json -o reports/panel-drc.json

@@ -1,6 +1,6 @@
 # Validation — focused A0 review, 2026-09-24
 
-KiCad 10.0.6 CLI, regenerated from `tools/build_project.py`. **Review scaffold, not fabrication approval.** No copper routing was added. `docs/schematic.pdf` was deliberately not regenerated: it is a **stale prior A0 snapshot**, not the source of truth. The current circuit is in the seven KiCad sheets. Both `reports/erc.rpt` and `reports/erc.json` are current KiCad ERC exports.
+KiCad 10.0.6 CLI, regenerated from `tools/build_project.py`. **Review scaffold, not fabrication approval.** No copper routing was added. `docs/schematic.pdf` **was regenerated from the current seven KiCad sheets with `kicad-cli sch export pdf` and matches them** (7 pages, A3) — the export is a review document, not the source of truth and not fabrication approval. Both `reports/erc.rpt` and `reports/erc.json` are current KiCad ERC exports.
 
 ## Schematic
 
