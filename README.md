@@ -2,7 +2,7 @@
 
 **INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE OR CONNECT VALUABLE LOADS.**
 
-This revision is a connected circuit proposal, not a working power module. Explicit 9 V PDO/current validation, input ESD/surge protection, four USB footprint clearances, rail-screw fit and the complete electrical PCB layout remain blocking. Advisor was OFF; no commit or merge was made. Only the Big Modular workspace was used.
+This revision is a connected circuit proposal, not a working power module. Explicit 9 V PDO/current validation, input ESD/surge protection, four USB footprint clearances, rail-screw fit and the complete electrical PCB layout remain blocking. A1 WIP was merged into main; its merge does not imply fabrication approval. This review does not commit or merge.
 
 ## Deliverables
 
@@ -11,7 +11,7 @@ This revision is a connected circuit proposal, not a working power module. Expli
 - `hardware/big_modular.kicad_pcb`: perpendicular carrier, **J1 only** electrically; four mechanical NPTHs. J1 position, orientation and selected footprint are unchanged.
 - `hardware/front_panel.kicad_pcb`: 9.8 × 128.5 × 1.6 mm FR4 panel. Rail holes corrected to **x=7.5, y=3/125.5, Ø3.2**. The old 5 mm slots cannot fit at x=7.5; ordinary screw heads and the 0.7 mm edge web remain mechanical blockers.
 - [`docs/assembly.svg`](docs/assembly.svg) / [`assembly.pdf`](docs/assembly.pdf): original dimensioned FRONT/SIDE/TOP views, two machined right-angle interposers, screws, engagement, supports and harness envelope. See [`mechanics.md`](docs/mechanics.md).
-- `BOM.csv`, `docs/pin-net-audit.json`, `reports/big_modular.net` and actual ERC/DRC/geometry reports. Exact modified/deleted/new paths: `reports/deliverable-files.txt`.
+- `BOM.csv`, `docs/pin-net-audit.json`, `reports/big_modular.net` and actual ERC/DRC/geometry reports. Historical A1 transition inventory (not the current worktree diff): `reports/deliverable-files.txt`.
 
 **Both boards retain zero tracks, zero vias and zero zones.** Do not update either PCB from the schematic: connector-only electrical placement is intentional. These are not placement-complete, routable-by-assertion, operational or fabrication-ready boards.
 

@@ -1,6 +1,6 @@
 # A1 validation summary — INCOMPLETE / NON-OPERATIONAL
 
-KiCad 10.0.6, actual CLI exports. Advisor OFF; no commit/merge. No sibling repository accessed. All generated deliverables are local; third-party research files have been removed.
+KiCad 10.0.6, actual CLI exports. A1 WIP was subsequently merged into main; this is a validation report for an incomplete design, not a claim that A1 was never committed or merged. This independent review makes no commit or merge. No sibling repository was accessed during this review.
 
 | Executed check | Result |
 |---|---|
