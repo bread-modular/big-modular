@@ -1,33 +1,35 @@
-.gitignore
-BOM.csv
-README.md
-docs/design-review.md
-docs/mechanics.md
-docs/pin-net-audit.json
-docs/schematic.pdf
-hardware/01_input.kicad_sch
-hardware/02_intermediate.kicad_sch
-hardware/03_bipolar.kicad_sch
-hardware/04_five_prereg.kicad_sch
-hardware/05_clean_rails.kicad_sch
-hardware/06_output.kicad_sch
-hardware/BigModular.kicad_sym
-hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod
-hardware/big_modular.kicad_pcb
-hardware/big_modular.kicad_pro
-hardware/big_modular.kicad_sch
-hardware/fp-lib-table
-hardware/front_panel.kicad_pcb
-hardware/front_panel.kicad_pro
-hardware/sym-lib-table
-reports/big_modular.net
-reports/carrier-drc.json
-reports/deliverable-files.txt
-reports/erc.json
-reports/erc.rpt
-reports/geometry-and-net-audit.json
-reports/panel-drc.json
-reports/validation-summary.md
-tools/build_project.py
-tools/sexp.py
-tools/verify_project.py
+Tracked changes (no commit or merge):
+M	BOM.csv
+M	README.md
+M	docs/design-review.md
+M	docs/mechanics.md
+M	docs/pin-net-audit.json
+M	docs/schematic.pdf
+D	hardware/01_input.kicad_sch
+D	hardware/02_intermediate.kicad_sch
+D	hardware/03_bipolar.kicad_sch
+D	hardware/04_five_prereg.kicad_sch
+D	hardware/05_clean_rails.kicad_sch
+D	hardware/06_output.kicad_sch
+M	hardware/BigModular.kicad_sym
+M	hardware/big_modular.kicad_pcb
+M	hardware/big_modular.kicad_sch
+M	hardware/front_panel.kicad_pcb
+M	reports/big_modular.net
+M	reports/carrier-drc.json
+M	reports/erc.json
+M	reports/erc.rpt
+M	reports/geometry-and-net-audit.json
+M	reports/panel-drc.json
+M	reports/validation-summary.md
+M	tools/build_project.py
+M	tools/verify_project.py
+
+New deliverables:
+docs/assembly-geometry.json
+docs/assembly.pdf
+docs/assembly.svg
+docs/test-matrix.md
+reports/pd-gate-check.json
+tools/build_mechanics.py
+tools/render_schematic.py

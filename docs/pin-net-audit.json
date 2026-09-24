@@ -62,7 +62,7 @@
     "4": null,
     "5": "OV_SET",
     "6": "RTN",
-    "7": null,
+    "7": "EF_ENABLE",
     "8": "RTN",
     "9": "GND",
     "10": null,
@@ -75,11 +75,11 @@
     "17": "RTN"
   },
   "JP1": {
-    "1": "VBUS_FUSED",
-    "2": "RUN_IN"
+    "1": "PG_PERMIT",
+    "2": "EF_ENABLE"
   },
   "R4": {
-    "1": "RUN_IN",
+    "1": "VBUS_FUSED",
     "2": "UV_EN"
   },
   "R5": {
@@ -440,6 +440,27 @@
   },
   "R27": {
     "1": "P5",
+    "2": "GND"
+  },
+  "Q1": {
+    "1": "PG_BASE",
+    "2": "PD_VDD",
+    "3": "PG_PERMIT"
+  },
+  "R28": {
+    "1": "PD_PG_N",
+    "2": "PG_BASE"
+  },
+  "R29": {
+    "1": "PD_VDD",
+    "2": "PG_BASE"
+  },
+  "R30": {
+    "1": "EF_ENABLE",
+    "2": "RTN"
+  },
+  "R31": {
+    "1": "VPROT",
     "2": "GND"
   },
   "#FLG01": {

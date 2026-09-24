@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
+<defs><marker id="arr" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto-start-reverse"><path d="M0,0 L5,2.5 L0,5" fill="#444"/></marker></defs>
+<style>text{font-family:DejaVu Sans,sans-serif;fill:#172b40} .dim{stroke:#555;stroke-width:.2;fill:none;marker-start:url(#arr);marker-end:url(#arr)} .axis{stroke:#b54836;stroke-width:.25;stroke-dasharray:2 1}</style>
+<rect x="5" y="5" width="410" height="287" fill="white" stroke="#24384b" stroke-width=".4"/>
+<text x="11" y="14" font-size="5">BIG MODULAR | 2HP NOMINAL ASSEMBLY | A1 WIP</text>
+<text x="11" y="21" font-size="3" style="fill:#a52b20">INCOMPLETE / NON-OPERATIONAL. Drawing is a fit-test proposal, NOT fabrication or mechanical qualification.</text>
+<text x="11" y="27" font-size="2.6">All dimensions mm. Panel origin: upper left front; X right, Y down, Z inward. Dimensions govern; do not scale prints.</text>
+<text x="16" y="34" font-size="3.2">FRONT (looking +Z)</text>
+<rect x="30" y="43" width="12.25" height="160.625" rx="0" fill="#f4ead0" stroke="#284c69" stroke-width=".3"/>
+<rect x="37.375" y="44.75" width="4.0" height="4.0" rx="2.0" fill="white" stroke="#284c69" stroke-width=".3"/>
+<rect x="37.375" y="197.875" width="4.0" height="4.0" rx="2.0" fill="white" stroke="#284c69" stroke-width=".3"/>
+<circle cx="39.375" cy="46.75" r="3.75" fill="none" stroke="#b54836" stroke-width=".25" stroke-dasharray="1 1"/>
+<circle cx="39.375" cy="199.875" r="3.75" fill="none" stroke="#b54836" stroke-width=".25" stroke-dasharray="1 1"/>
+<circle cx="36.125" cy="99.25" r="1.375" fill="white" stroke="#284c69" stroke-width=".3"/>
+<circle cx="36.125" cy="147.375" r="1.375" fill="white" stroke="#284c69" stroke-width=".3"/>
+<rect x="33.40625" y="117.1875" width="5.25" height="12.25" rx="0.75" fill="white" stroke="#284c69" stroke-width=".3"/>
+<line x1="36.125" y1="40" x2="36.125" y2="208.0" stroke="#284c69" stroke-width=".25" class="axis"/>
+<line x1="30" y1="40" x2="42.25" y2="40" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="30" y="38" font-size="2.3">9.80</text>
+<line x1="21" y1="43" x2="21" y2="203.625" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="8" y="123" font-size="2.3">128.50</text>
+<line x1="26" y1="46.75" x2="26" y2="199.875" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="9" y="135" font-size="2.3">122.50</text>
+<line x1="42.25" y1="46.75" x2="53" y2="46.75" stroke="#284c69" stroke-width=".25" class=""/>
+<text x="54" y="47.75" font-size="2.4">Y=3.00</text>
+<line x1="42.25" y1="99.25" x2="53" y2="99.25" stroke="#284c69" stroke-width=".25" class=""/>
+<text x="54" y="100.25" font-size="2.4">Y=45.00</text>
+<line x1="42.25" y1="123.3125" x2="53" y2="123.3125" stroke="#284c69" stroke-width=".25" class=""/>
+<text x="54" y="124.3125" font-size="2.4">Y=64.25 axis</text>
+<line x1="42.25" y1="147.375" x2="53" y2="147.375" stroke="#284c69" stroke-width=".25" class=""/>
+<text x="54" y="148.375" font-size="2.4">Y=83.50</text>
+<line x1="42.25" y1="199.875" x2="53" y2="199.875" stroke="#284c69" stroke-width=".25" class=""/>
+<text x="54" y="200.875" font-size="2.4">Y=125.50</text>
+<text x="46" y="56" font-size="2.4">2 x hole diameter 3.2</text>
+<text x="46" y="60" font-size="2.4">centres X=7.50</text>
+<text x="46" y="64" font-size="2.4">0.70 web to right edge</text>
+<text x="46" y="68" font-size="2.4">M3 HEAD FIT BLOCKER</text>
+<text x="46" y="164" font-size="2.3">USB opening</text>
+<text x="46" y="168" font-size="2.3">4.20 x 9.80 R0.60</text>
+<text x="46" y="172" font-size="2.3">X=2.725..6.925</text>
+<text x="46" y="176" font-size="2.3">Y=59.35..69.15</text>
+<text x="12" y="216" font-size="2.5">Panel: FR4 1.60 (not Doepfer 2 mm Al).</text>
+<text x="12" y="220" font-size="2.5">A 6 mm M3 head overhangs right by 0.7.</text>
+<text x="12" y="224" font-size="2.5">Ø2.2 bracket holes X=4.9, Y=45 / 83.5.</text>
+<text x="108" y="37" font-size="3.2">SIDE (looking -X)</text>
+<rect x="116" y="43" width="2.0" height="160.625" rx="0" fill="#f4ead0" stroke="#284c69" stroke-width=".3"/>
+<rect x="118.5" y="60.5" width="75.0" height="125.625" rx="0" fill="#d8ece1" stroke="#284c69" stroke-width=".3"/>
+<rect x="118.0" y="94.25" width="10.5" height="10.0" rx="0" fill="#b9c7d5" stroke="#284c69" stroke-width=".3"/>
+<circle cx="123.5" cy="99.25" r="1.375" fill="white" stroke="#284c69" stroke-width=".3"/>
+<circle cx="181.0" cy="99.25" r="1.375" fill="white" stroke="#284c69" stroke-width=".3"/>
+<rect x="114.5" y="96.875" width="1.5" height="4.75" rx="0" fill="#647587" stroke="#284c69" stroke-width=".3"/>
+<line x1="116" y1="99.25" x2="121.0" y2="99.25" stroke="#284c69" stroke-width=".25" class=""/>
+<rect x="118.0" y="142.375" width="10.5" height="10.0" rx="0" fill="#b9c7d5" stroke="#284c69" stroke-width=".3"/>
+<circle cx="123.5" cy="147.375" r="1.375" fill="white" stroke="#284c69" stroke-width=".3"/>
+<circle cx="181.0" cy="147.375" r="1.375" fill="white" stroke="#284c69" stroke-width=".3"/>
+<rect x="114.5" y="145.0" width="1.5" height="4.75" rx="0" fill="#647587" stroke="#284c69" stroke-width=".3"/>
+<line x1="116" y1="147.375" x2="121.0" y2="147.375" stroke="#284c69" stroke-width=".25" class=""/>
+<rect x="117.0" y="117.725" width="9.5" height="11.174999999999999" rx="0" fill="#ead5cf" stroke="#284c69" stroke-width=".3"/>
+<line x1="102" y1="123.3125" x2="127.25" y2="123.3125" stroke="#284c69" stroke-width=".25" class="axis"/>
+<text x="99" y="120.3125" font-size="2.3">INSERT +Z</text>
+<line x1="106" y1="123.3125" x2="117.0" y2="123.3125" stroke="#284c69" stroke-width=".25" class="dim"/>
+<rect x="197.25" y="93.0" width="27.5" height="43.75" rx="0" fill="none" stroke="#284c69" stroke-width=".3" stroke-dasharray="2 1"/>
+<text x="199.25" y="103.0" font-size="2.3">HARNESS</text>
+<text x="199.25" y="107.0" font-size="2.3">unselected</text>
+<text x="199.25" y="111.0" font-size="2.3">to Z=87</text>
+<line x1="181.0" y1="99.25" x2="181.0" y2="147.375" stroke="#284c69" stroke-width=".25" class="axis"/>
+<text x="157.25" y="155.5" font-size="2.3">Tie / strain relief at Z=52</text>
+<text x="132.25" y="174.25" font-size="2.4">Carrier Y=14..114.5</text>
+<line x1="116" y1="40" x2="193.5" y2="40" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="140" y="38" font-size="2.3">Z=62 back edge</text>
+<line x1="118.5" y1="193.0" x2="193.5" y2="193.0" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="134" y="190.5" font-size="2.3">60.00 PCB depth</text>
+<text x="106" y="216" font-size="2.5">Carrier: 100.5 x 60 x 1.6; plane YZ.</text>
+<text x="106" y="220" font-size="2.5">Front support holes (Y,Z): (45,6), (83.5,6).</text>
+<text x="106" y="224" font-size="2.5">Rear holes (45,52), (83.5,52): tie only; not rail mounts.</text>
+<text x="248" y="37" font-size="3.2">TOP (looking +Y)</text>
+<rect x="253" y="48" width="2.0" height="12.25" rx="0" fill="#f4ead0" stroke="#284c69" stroke-width=".3"/>
+<rect x="255.5" y="49.9625" width="75.0" height="2.0" rx="0" fill="#d8ece1" stroke="#284c69" stroke-width=".3"/>
+<rect x="254.0" y="51.9625" width="9.5" height="4.1375" rx="0" fill="#ead5cf" stroke="#284c69" stroke-width=".3"/>
+<rect x="255.0" y="51.9625" width="10.5" height="7.25" rx="0" fill="none" stroke="#284c69" stroke-width=".3" stroke-dasharray="2 1"/>
+<rect x="334.25" y="48.5" width="27.5" height="11.25" rx="0" fill="none" stroke="#284c69" stroke-width=".3" stroke-dasharray="2 1"/>
+<line x1="244" y1="54.125" x2="271.75" y2="54.125" stroke="#284c69" stroke-width=".25" class="axis"/>
+<line x1="253" y1="65" x2="361.75" y2="65" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="275" y="69" font-size="2.3">87 provisional cable envelope</text>
+<text x="248" y="77" font-size="2.6">Panel Z=0..1.6; carrier front Z=2 (0.4 rear gap).</text>
+<text x="248" y="81" font-size="2.6">PCB bottom X=1.57; component face X=3.17.</text>
+<text x="248" y="85" font-size="2.6">USB mouth (X,Y,Z)=(4.90,64.25,0.80).</text>
+<text x="248" y="89" font-size="2.6">Plug axis +Z; plug shell fit / overmould NOT qualified.</text>
+<text x="248" y="104" font-size="3.2">2 x RIGHT-ANGLE INTERPOSER BLOCKS</text>
+<text x="248" y="109" font-size="2.5">Solid machined aluminium; no bent/soldered FR4 brackets.</text>
+<rect x="247" y="117" width="53.900000000000006" height="8.8" rx="0" fill="#f4ead0" stroke="#284c69" stroke-width=".3"/>
+<rect x="255.635" y="128.0" width="8.8" height="60.5" rx="0" fill="#d8ece1" stroke="#284c69" stroke-width=".3"/>
+<rect x="264.435" y="125.8" width="31.9" height="46.2" rx="0" fill="#b9c7d5" stroke="#284c69" stroke-width=".3"/>
+<rect x="268.45" y="125.8" width="11.0" height="15.399999999999999" rx="0" fill="white" stroke="#284c69" stroke-width=".3"/>
+<rect x="264.435" y="144.5" width="15.399999999999999" height="11.0" rx="0" fill="white" stroke="#284c69" stroke-width=".3"/>
+<rect x="268.45" y="117" width="11.0" height="22.0" rx="0" fill="#7d8793" stroke="#284c69" stroke-width=".3"/>
+<rect x="263.5" y="110.4" width="20.9" height="6.6" rx="0" fill="#7d8793" stroke="#284c69" stroke-width=".3"/>
+<rect x="255.635" y="144.5" width="22.0" height="11.0" rx="0" fill="#7d8793" stroke="#284c69" stroke-width=".3"/>
+<rect x="249.035" y="139.55" width="6.6" height="20.9" rx="0" fill="#7d8793" stroke="#284c69" stroke-width=".3"/>
+<line x1="264.435" y1="194.0" x2="296.335" y2="194.0" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="262" y="198.0" font-size="2.3">5.80 X width</text>
+<line x1="304.75" y1="125.8" x2="304.75" y2="172.0" stroke="#284c69" stroke-width=".25" class="dim"/>
+<text x="305.75" y="155.5" font-size="2.3">8.40</text>
+<text x="318" y="120.0" font-size="2.35">Each block: X 5.80 x Y 8.00 x Z 8.40.</text>
+<text x="318" y="124.2" font-size="2.35">Origin at (3.17,Yc-4,1.6), Yc=45 / 83.5.</text>
+<text x="318" y="128.4" font-size="2.35">Panel hole: Xlocal=1.73, Ylocal=4, axis Z.</text>
+<text x="318" y="132.6" font-size="2.35">Carrier hole: Ylocal=4, Zlocal=4.40, axis X.</text>
+<text x="318" y="136.8" font-size="2.35">Both M2 x 0.4 blind taps.</text>
+<text x="318" y="141.0" font-size="2.35">Full thread &gt;=2.6; TOTAL depth &lt;=2.8,</text>
+<text x="318" y="145.2" font-size="2.35">including drill point. Flat-bottom process.</text>
+<text x="318" y="149.4" font-size="2.35">4 x M2 x 4; engagement nominal 2.4.</text>
+<text x="318" y="153.6" font-size="2.35">Side head h&lt;=1.2, diameter &lt;=3.8.</text>
+<text x="318" y="157.8" font-size="2.35">Exact low-head screw is UNSELECTED.</text>
+<text x="318" y="162.0" font-size="2.35">Faces/axes target +/-0.05; block +/-0.10.</text>
+<text x="318" y="166.2" font-size="2.35">Bare FR4 contact; copper keepout required.</text>
+<text x="318" y="170.4" font-size="2.35">Two support points, Y separation 38.50.</text>
+<text x="248" y="204" font-size="2.45">Panel/PCB thickness tolerance changes engagement and alignment.</text>
+<text x="248" y="208" font-size="2.45">Screw heads remain inside X=0.37..8.97 nominal (2HP width 9.8).</text>
+<text x="248" y="212" font-size="2.45">Keep Y&lt;10 and Y&gt;118.5 free for rail access; PCB begins at Y=14.</text>
+<text x="248" y="216" font-size="2.45">No independent USB shell cradle supplied: stakes -&gt; PCB -&gt; blocks.</text>
+<text x="248" y="220" font-size="2.45">Insertion force / cable torque / FR4 flex MUST be tested.</text>
+<line x1="10" y1="232" x2="410" y2="232" stroke="#284c69" stroke-width=".25" class=""/>
+<text x="11" y="239" font-size="2.55">MOUNTING DECISION: Doepfer A100FP.gif shows x=7.5, d=3.2, y=3 from both edges; pitch 122.5.</text>
+<text x="11" y="244" font-size="2.55">CORRECTED rail holes to x=7.5, diameter 3.2: 0.7 FR4 web. A 5 x 3.2 slot runs off-panel, so NOT used.</text>
+<text x="11" y="249" font-size="2.55">Standard 6 mm M3 heads overhang by 0.7: adjacent-module conflict. Narrow head / panel strength NOT resolved.</text>
+<text x="11" y="254" font-size="2.55">M3 x 6 through 1.6 panel + 0.5 washer leaves 3.9 nominal thread reach: verify actual rail depth; do not bottom out.</text>
+<text x="11" y="259" font-size="2.55">Assembly: tap blocks -&gt; bolt to bare carrier -&gt; solder J1 stakes -&gt; loosely bolt panel -&gt; align USB aperture -&gt; tighten -&gt; fit tie/harness -&gt; rack.</text>
+<text x="11" y="264" font-size="2.55">Profile/aperture target +/-0.10; only 0.43/0.445 nominal shell clearance per side. Trial plugs / worst-case stack remain blockers.</text>
+<text x="11" y="269" font-size="2.55">Sources: doepfer.de/a100_man/A100FP.gif + a100m_e.htm; GCT USB4105 drawing geometry retained from A0. See mechanics.md.</text>
+</svg>

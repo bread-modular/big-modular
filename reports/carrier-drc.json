@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/drc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-09-24T09:56:00",
+    "date": "2026-09-24T16:07:13",
     "ignored_checks": [
         {
             "description": "Footprint has no courtyard defined",
@@ -42,7 +42,7 @@
                         "x": 95.68,
                         "y": 96.695
                     },
-                    "uuid": "1553060c-a7b6-4668-8094-1cb5661c1dd1"
+                    "uuid": "373c2583-e99c-4fcf-96ce-092cd9cec7ed"
                 },
                 {
                     "description": "PTH pad SH [GND] of J1",
@@ -50,7 +50,7 @@
                         "x": 95.68,
                         "y": 100.875
                     },
-                    "uuid": "c68ebb87-ef77-4252-8b0e-264885eb15a2"
+                    "uuid": "9cf063d3-40a5-4275-9c1b-2754524cf265"
                 }
             ],
             "severity": "error",
@@ -65,7 +65,7 @@
                         "x": 96.8,
                         "y": 96.12
                     },
-                    "uuid": "d8abb1af-39ec-4f8f-adf3-9c0eebc86418"
+                    "uuid": "95e25e7d-4548-443d-9b86-4d0ea77c5a44"
                 },
                 {
                     "description": "PTH pad SH [GND] of J1",
@@ -73,7 +73,7 @@
                         "x": 95.68,
                         "y": 96.695
                     },
-                    "uuid": "1553060c-a7b6-4668-8094-1cb5661c1dd1"
+                    "uuid": "373c2583-e99c-4fcf-96ce-092cd9cec7ed"
                 }
             ],
             "severity": "error",
@@ -88,7 +88,7 @@
                         "x": 103.2,
                         "y": 96.12
                     },
-                    "uuid": "d61c28b3-24a8-46ea-8bdc-4a1cfbbdfee4"
+                    "uuid": "45dfbcdf-f4a5-4838-b340-d7ae454e3ad6"
                 },
                 {
                     "description": "Pad A1 [GND] of J1 on F.Cu",
@@ -96,7 +96,7 @@
                         "x": 96.8,
                         "y": 96.12
                     },
-                    "uuid": "d8abb1af-39ec-4f8f-adf3-9c0eebc86418"
+                    "uuid": "95e25e7d-4548-443d-9b86-4d0ea77c5a44"
                 }
             ],
             "severity": "error",
@@ -111,7 +111,7 @@
                         "x": 104.32,
                         "y": 96.695
                     },
-                    "uuid": "1d125344-a685-41cc-bfb0-44ae4fb5e61f"
+                    "uuid": "d741fc75-a61b-4c27-925f-2614b135cb26"
                 },
                 {
                     "description": "Pad B1 [GND] of J1 on F.Cu",
@@ -119,7 +119,7 @@
                         "x": 103.2,
                         "y": 96.12
                     },
-                    "uuid": "d61c28b3-24a8-46ea-8bdc-4a1cfbbdfee4"
+                    "uuid": "45dfbcdf-f4a5-4838-b340-d7ae454e3ad6"
                 }
             ],
             "severity": "error",
@@ -134,7 +134,7 @@
                         "x": 104.32,
                         "y": 100.875
                     },
-                    "uuid": "dc8022fd-fc53-467d-8b77-6890783cd0a3"
+                    "uuid": "46deca9a-de31-4932-af14-8f16c3019c01"
                 },
                 {
                     "description": "PTH pad SH [GND] of J1",
@@ -142,7 +142,7 @@
                         "x": 104.32,
                         "y": 96.695
                     },
-                    "uuid": "1d125344-a685-41cc-bfb0-44ae4fb5e61f"
+                    "uuid": "d741fc75-a61b-4c27-925f-2614b135cb26"
                 }
             ],
             "severity": "error",
@@ -157,7 +157,7 @@
                         "x": 97.6,
                         "y": 96.12
                     },
-                    "uuid": "4da156c8-ef72-4f08-80ac-8e1b09bab690"
+                    "uuid": "77e75e22-ca7b-4c6f-9c3e-b93f80367b27"
                 },
                 {
                     "description": "Pad A9 [VBUS_RAW] of J1 on F.Cu",
@@ -165,7 +165,7 @@
                         "x": 102.4,
                         "y": 96.12
                     },
-                    "uuid": "afe2afeb-b5f7-45b2-b05a-0d11f01d5d0a"
+                    "uuid": "6a649a45-73df-4c5d-b51c-f8f24f54f507"
                 }
             ],
             "severity": "error",
@@ -182,7 +182,7 @@
                         "x": 96.8,
                         "y": 96.12
                     },
-                    "uuid": "d8abb1af-39ec-4f8f-adf3-9c0eebc86418"
+                    "uuid": "95e25e7d-4548-443d-9b86-4d0ea77c5a44"
                 },
                 {
                     "description": "NPTH pad of J1",
@@ -190,7 +190,7 @@
                         "x": 97.11,
                         "y": 97.195
                     },
-                    "uuid": "df9c0a57-43da-4c2a-9e0b-fecf1116fb4d"
+                    "uuid": "2a54f559-79aa-4787-8981-608226574f97"
                 }
             ],
             "severity": "error",
@@ -205,7 +205,7 @@
                         "x": 96.8,
                         "y": 96.12
                     },
-                    "uuid": "4de746c9-f6b3-436e-aad1-f790c6c74030"
+                    "uuid": "acc054a7-38c6-44e4-b5af-8de3e8e92ece"
                 },
                 {
                     "description": "NPTH pad of J1",
@@ -213,7 +213,7 @@
                         "x": 97.11,
                         "y": 97.195
                     },
-                    "uuid": "df9c0a57-43da-4c2a-9e0b-fecf1116fb4d"
+                    "uuid": "2a54f559-79aa-4787-8981-608226574f97"
                 }
             ],
             "severity": "error",
@@ -228,7 +228,7 @@
                         "x": 103.2,
                         "y": 96.12
                     },
-                    "uuid": "ed7cb482-6a59-478c-9ee7-8dff3e09b06e"
+                    "uuid": "a084c51a-a7f5-43e9-b764-2f915125481e"
                 },
                 {
                     "description": "NPTH pad of J1",
@@ -236,7 +236,7 @@
                         "x": 102.89,
                         "y": 97.195
                     },
-                    "uuid": "00c9a9e6-f18b-4c77-9e25-ceb4860689a9"
+                    "uuid": "30e1cbef-6a8b-404f-b72f-cdbe13cf703b"
                 }
             ],
             "severity": "error",
@@ -251,7 +251,7 @@
                         "x": 103.2,
                         "y": 96.12
                     },
-                    "uuid": "d61c28b3-24a8-46ea-8bdc-4a1cfbbdfee4"
+                    "uuid": "45dfbcdf-f4a5-4838-b340-d7ae454e3ad6"
                 },
                 {
                     "description": "NPTH pad of J1",
@@ -259,7 +259,7 @@
                         "x": 102.89,
                         "y": 97.195
                     },
-                    "uuid": "00c9a9e6-f18b-4c77-9e25-ceb4860689a9"
+                    "uuid": "30e1cbef-6a8b-404f-b72f-cdbe13cf703b"
                 }
             ],
             "severity": "error",
