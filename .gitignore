@@ -1,0 +1,10 @@
+# Local research cache: copyrighted PDFs / extracted text / screenshots are not deliverables
+/research/
+__pycache__/
+*.pyc
+*-backups/
+*.kicad_prl
+*.lck
+~*.lck
+*.bak
+.DS_Store

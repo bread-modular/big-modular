@@ -1,0 +1,52 @@
+{
+  "connected_symbol_pins_verified": 252,
+  "off_board_J2_connected_pins_checked_in_schematic": 12,
+  "other_connected_pins_verified_against_KiCad_netlist": 240,
+  "boards": {
+    "big_modular.kicad_pcb": {
+      "footprints": [
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "J1"
+      ],
+      "tracks": 0,
+      "vias": 0,
+      "zones": 0,
+      "copper_graphics": 0,
+      "edge_primitives": 4
+    },
+    "front_panel.kicad_pcb": {
+      "footprints": [
+        "H1",
+        "H2",
+        "H3",
+        "H4"
+      ],
+      "tracks": 0,
+      "vias": 0,
+      "zones": 0,
+      "copper_graphics": 0,
+      "edge_primitives": 12
+    }
+  },
+  "mechanics": {
+    "port_axis_mm": [
+      4.9,
+      64.25,
+      0.8
+    ],
+    "insertion_vector": [
+      0,
+      0,
+      1
+    ],
+    "axis_to_panel_plane_degrees": 90,
+    "axis_dot_panel_normal": 1,
+    "carrier_top_X": 3.17,
+    "carrier_back_Z": 62,
+    "front_shell_pad_edge_clearance": 0.5,
+    "status": "nominal geometry verified; tolerance stack and brackets/harness NOT qualified"
+  }
+}

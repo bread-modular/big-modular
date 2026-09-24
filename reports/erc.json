@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-09-24T09:27:54",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972",
+            "violations": []
+        },
+        {
+            "path": "/USB-C sink / permission / protected input/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/029cb2a9-d2ef-5d6a-923b-0d0afe15605f",
+            "violations": []
+        },
+        {
+            "path": "/4.016 V intermediate supply / startup/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/f1303c95-b34d-56dd-9a98-1ab24b24387d",
+            "violations": []
+        },
+        {
+            "path": "/Bipolar preregulator: approximately +13.95 / -13.95 V/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/6ae7aeb3-31bb-5580-ba62-4d68a0707add",
+            "violations": []
+        },
+        {
+            "path": "/6.52 V preregulator for clean +5 V/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/cdff21ad-0e2f-52e9-8a40-96b8df1697a7",
+            "violations": []
+        },
+        {
+            "path": "/Low-noise postregulators / three output rails/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/0bbf054f-36af-5001-8cbd-94bf06535e80",
+            "violations": []
+        },
+        {
+            "path": "/16-pin Eurorack POWER OUT / harness only/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/9268303f-14d9-58fd-b541-631abc3194dd",
+            "violations": []
+        }
+    ],
+    "source": "big_modular.kicad_sch"
+}
