@@ -42,7 +42,7 @@ def ic(name,pins,url):
     parts+=['))']; LIB[name]=parse(''.join(parts)); return name
 
 R=stock('Device','R'); C=stock('Device','C'); L=stock('Device','L'); D=stock('Device','D_Schottky'); F=stock('Device','Fuse'); JP=stock('Jumper','Jumper_2_Open'); USB=stock('Connector','USB_C_Receptacle_USB2.0_16P'); IDC=stock('Connector_Generic','Conn_02x08_Odd_Even'); FLAG=stock('power','PWR_FLAG')
-CH=stock('Interface_USB','CH224K'); EF=stock('Power_Management','TPS26600PWP'); BUCK=stock('Regulator_Switching','TPS62160DSG'); BI=stock('Regulator_Switching','TPS65131RGE')
+PNP=stock('Transistor_BJT','MMBT3906'); CH=stock('Interface_USB','CH224K'); EF=stock('Power_Management','TPS26600PWP'); BUCK=stock('Regulator_Switching','TPS62160DSG'); BI=stock('Regulator_Switching','TPS65131RGE')
 ldopins=[('8','IN','power_in','L'),('5','EN','input','L'),('6','NR/SS','passive','L'),('3','NC','no_connect','L'),('7','DNC','no_connect','L'),('1','OUT','power_out','R'),('2','FB','input','R'),('4','GND','power_in','R'),('9','EP_GND','passive','R')]
 LP=ic('TPS7A4901DGNR',ldopins,'https://www.ti.com/lit/ds/symlink/tps7a49.pdf'); LN=ic('TPS7A3001DGNR',ldopins,'https://www.ti.com/lit/ds/symlink/tps7a30.pdf')
 # Custom symbol explicitly corrects pin 4 of TPS62125 (EN_hys, NOT AGND).
@@ -58,7 +58,7 @@ def add(sh,ref,kind,value,nets,x,y,mpn='',lcsc='',fp='',note='',onboard=True):
     if kind==C and not fp: fp='Capacitor_SMD:C_1206_3216Metric'
     d=dict(ref=ref,kind=kind,value=value,nets={str(k):v for k,v in nets.items()},x=round(round(x/1.27)*1.27,5),y=round(round(y/1.27)*1.27,5),mpn=mpn,lcsc=lcsc,fp=fp,note=note,onboard=onboard)
     SHEETS[sh]['parts'].append(d); CONNS[ref]=d['nets']
-    if not ref.startswith('#'): BOM.append(dict(Reference=ref,Value=value,MPN=mpn,Footprint=fp,LCSC=lcsc,Sourcing='LCSC ID verified; stock NOT verified' if lcsc else 'Candidate/specification only; procurement review required',Notes=note,Sheet=sh))
+    if not ref.startswith('#'): BOM.append(dict(Reference=ref,Value=value,MPN=mpn,Footprint=fp,LCSC=lcsc,Sourcing='LCSC ID verified; stock NOT verified' if lcsc else 'Candidate/specification only; procurement review required',Notes=note,Block=sh))
     return d
 COUNTS={'R':0,'C':0,'L':0,'D':0}
 def passive(sh,kind,val,n1,n2,x,y,**kw):
@@ -68,7 +68,7 @@ def r(sh,val,a,b,x,y,**kw):return passive(sh,R,val,a,b,x,y,**kw)
 def c(sh,val,a,b,x,y,**kw):return passive(sh,C,val,a,b,x,y,**kw)
 def diode(sh,val,k,a,x,y,**kw):return passive(sh,D,val,k,a,x,y,**kw)
 
-sheet('01_input','USB-C sink / permission / protected input','D1 SMBJ12CA REMOVED: it can burn at sustained 15/20 V. F1 (500 mA / 32 V) is NOT a coordinated surge fuse.\nTPS26600 OVP (~10.8 V) disconnects OUTPUT, not upstream VBUS. No qualified VBUS transient protection.\n9 V request only. No USB data. CH224K Rd must be verified on unpowered attach. JP1 OPEN = OFF (default).\nClose RUN ONLY for an approved dedicated source. PG is diagnostic, not a current-contract detector.\nNo series diode: TPS26600 reverse-current blocking is specified; qualify dead-battery/backfeed on hardware.\nAll bulk capacitance is behind the eFuse. No legacy-host enumeration or CC-current decoding is implemented.')
+sheet('01_input','PD-only input / hardware interlock','5 V is negotiation housekeeping ONLY. No rail operation at 5 V. PG AND 9 V window AND RUN required.\nCH224K PG is generic power-good: explicit PDO/current proof remains a FABRICATION BLOCKER.')
 n={p:('VBUS_RAW' if p in ['A4','A9','B4','B9'] else 'GND' if p in ['A1','A12','B1','B12','SH'] else 'CC1' if p=='A5' else 'CC2' if p=='B5' else None) for p in ['A1','A4','A5','A6','A7','A8','A9','A12','B1','B4','B5','B6','B7','B8','B9','B12','SH']}
 add('01_input','J1',USB,'USB4105-GF-A',n,42,65,mpn='USB4105-GF-A',fp='BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal',note='Only electrical footprint placed. Drawing Rev B: axis 1.73 mm above PCB top.')
 add('01_input','U1',CH,'CH224K',{'1':'PD_VDD','2':None,'3':None,'4':'PD_D_SHORT','5':'PD_D_SHORT','6':'CC2','7':'CC1','8':None,'9':'PD_CFG','10':'PD_PG_N','11':'GND'},125,65,mpn='CH224K',lcsc='C970725',note='WCH v1F fig6.1/6.3; datasheet EP0 maps to library pad11. DP/DM short locally, isolated from USB data.')
@@ -78,9 +78,9 @@ add('01_input','F1',F,'500mA 32V fuse',{'1':'VBUS_RAW','2':'VBUS_FUSED'},42,130,
 # Do NOT populate a different TVS until its surge clamp, fuse, connector and eFuse limits are qualified.
 COUNTS['D']=1
 c('01_input','100n 50V','VBUS_FUSED','GND',270,130,note='TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.')
-add('01_input','U2',EF,'TPS26600PWPR',{'1':'VBUS_FUSED','2':'VBUS_FUSED','3':'UV_EN','4':None,'5':'OV_SET','6':'RTN','7':None,'8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':None,'15':'VPROT','16':'VPROT','17':'RTN'},70,205,mpn='TPS26600PWPR',lcsc='C544399',note='Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.')
-add('01_input','JP1',JP,'RUN / default OPEN',{'1':'VBUS_FUSED','2':'RUN_IN'},165,190,note='Dedicated-source permission, not PD/current detection.')
-r('01_input','249k 1%','RUN_IN','UV_EN',230,180); r('01_input','100k 1%','UV_EN','RTN',295,180)
+add('01_input','U2',EF,'TPS26600PWPR',{'1':'VBUS_FUSED','2':'VBUS_FUSED','3':'UV_EN','4':None,'5':'OV_SET','6':'RTN','7':'EF_ENABLE','8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':None,'15':'VPROT','16':'VPROT','17':'RTN'},70,205,mpn='TPS26600PWPR',lcsc='C544399',note='UV rising 7.878V nominal, OVP 10.781V nominal. SHDN low=OFF; PG-permit through JP1 only. RTN must NOT be externally shorted to GND.')
+add('01_input','JP1',JP,'RUN / default OPEN',{'1':'PG_PERMIT','2':'EF_ENABLE'},165,190,note='Series permission only; cannot override PG or voltage window. Default OPEN. Not contract proof.')
+r('01_input','562k 1%','VBUS_FUSED','UV_EN',230,180); r('01_input','100k 1%','UV_EN','RTN',295,180)
 r('01_input','806k 1%','VBUS_FUSED','OV_SET',360,180); r('01_input','100k 1%','OV_SET','RTN',360,225)
 r('01_input','40.2k 1%','ILIM','RTN',165,235); c('01_input','100n 50V','SLEW','RTN',230,235); c('01_input','10u 25V X7R','VPROT','GND',295,235)
 
@@ -128,58 +128,24 @@ sheet('06_output','16-pin Eurorack POWER OUT / harness only','+5 V is on a separ
 n={str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None) for i in range(1,17)}
 add('06_output','J2',IDC,'16-pin IDC POWER OUT',n,75,70,onboard=False,note='2x8 / 2.54 mm keyed cable connector; exact MPN and mounting unselected. Pinout per Doepfer/Division6.')
 for i,(net,val) in enumerate([('P12','100k'),('N12','100k'),('P5','47k')]):r('06_output',val,net,'GND',175+i*70,65)
+# Hardware AND gate. A generic PG flag is NOT explicit PDO/current authorization.
+# PNP 1=B, 2=E, 3=C: active-low PG sources SHDN only while powered.
+add('01_input','Q1',PNP,'MMBT3906',{'1':'PG_BASE','2':'PD_VDD','3':'PG_PERMIT'},0,0,mpn='MMBT3906',note='Pin1 B, pin2 E, pin3 C per Diodes DS30059. PG low turns ON. Gate electrical/timing margins need bench qualification.')
+r('01_input','22k 1%','PD_PG_N','PG_BASE',0,0)
+r('01_input','100k 1%','PD_VDD','PG_BASE',0,0)
+r('01_input','10k 1%','EF_ENABLE','RTN',0,0,note='SHDN default-low despite internal pullup: 10uA x 10k = 0.1V, below 0.55V minimum falling threshold.')
+r('01_input','10k 1%','VPROT','GND',0,0,note='Bleed off-state leakage; leakage maxima and residual rail voltages NOT qualified. No precontract rail operation allowed.')
 # ERC declarations: real power sources at passive input / filtered converter nodes, not arbitrary error masking.
 for i,net in enumerate(['GND','VBUS_RAW','VBUS_FUSED','PD_VDD','V4','ANA_V4','PRE_P','PRE_N','PRE_5']):
     add('06_output',f'#FLG{i+1:02}',FLAG,'PWR_FLAG',{'1':net},50+(i%5)*70,155+(i//5)*45)
 
-rootid=uid('root'); project='big_modular'
-def effects(size=1.0,justify=''):return f'(effects (font (size {size} {size}))'+(f' (justify {justify})' if justify else '')+')'
-def text(t,x,y,size=1.2):return f'(text {q(t)} (at {x} {y} 0) {effects(size,"left")} (uuid {q(uid(str((t,x,y))))}))'
-def docstart(name,title):return f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {q(uid(name))}) (paper "A3") (title_block (title {q(title)}) (date "2026-09-24") (rev "A0 ENGINEERING PROTOTYPE") (company "Big Modular") (comment 1 "NOT FOR FABRICATION - UNROUTED PLACEMENT SCAFFOLDS"))'
-for name,sh in SHEETS.items():
-    ss=[docstart(name,sh['title'])]; kinds=sorted(set(d['kind'] for d in sh['parts']))
-    caches=[]
-    for kind in kinds:
-        s=copy.deepcopy(LIB[kind]);s[1]='BigModular:'+kind;caches.append(dump(s))
-    ss+=['(lib_symbols '+''.join(caches)+')',text(sh['title'],16,15,2)]
-    if name=='01_input':
-        ss.append(text('STOP: NO INPUT TVS / ESD OR SURGE PROTECTION - DO NOT FABRICATE',16,25,1.9))
-    ss.append(text(sh['notes'],16,34 if name=='01_input' else 27,1.05))
-    for d in sh['parts']:
-        ref=d['ref']; x=d['x'];y=d['y'];s=LIB[d['kind']]; us=uid(ref); pins=list(walk(s,'pin'))
-        pcoords=[(float(one(p,'at')[1]),float(one(p,'at')[2])) for p in pins]
-        top=min([-yy for xx,yy in pcoords] or [0])-5.08
-        inst=[f'(symbol (lib_id {q("BigModular:"+d["kind"])}) (at {x} {y} 0) (unit 1) (in_bom {"no" if ref.startswith("#") else "yes"}) (on_board {"yes" if d["onboard"] else "no"}) (dnp no) (uuid {q(us)})']
-        inst += [f'(property "Reference" {q(ref)} (at {x} {y+top} 0) {effects(1.15)})',f'(property "Value" {q(d["value"])} (at {x} {y+top+2.54} 0) {effects(1.05)})',f'(property "Footprint" {q(d["fp"])} (at {x} {y} 0) (effects (font (size 1 1)) hide))']
-        for key in ['mpn','lcsc','note']:
-            inst += [f'(property {q(key.upper())} {q(d[key])} (at {x} {y} 0) (effects (font (size 1 1)) hide))']
-        used=set()
-        for p in pins:
-            num=str(one(p,'number')[1]); assert num in d['nets'],(ref,num,d['nets'])
-            net=d['nets'][num]; at=one(p,'at'); px=x+float(at[1]);py=y-float(at[2]);a=int(at[3]); pos=(px,py)
-            inst.append(f'(pin {q(num)} (uuid {q(uid(ref+"pin"+num))}))')
-            if pos in used: continue
-            used.add(pos)
-            if net is None:
-                ss.append(f'(no_connect (at {px} {py}) (uuid {q(uid(ref+"nc"+num))}))');continue
-            # Wire outwards from real pin connection point; global net labels are actual connectivity.
-            dx,dy={0:(-5.08,0),180:(5.08,0),90:(0,5.08),270:(0,-5.08)}[a]; ex=round(px+dx,5);ey=round(py+dy,5)
-            ss.append(f'(wire (pts (xy {px} {py}) (xy {ex} {ey})) (stroke (width 0) (type default)) (uuid {q(uid(ref+"wire"+num))}))')
-            la=180 if a==0 else 0 if a==180 else 90 if a==270 else 270
-            ss.append(f'(global_label {q(net)} (shape bidirectional) (at {ex} {ey} {la}) {effects(0.85)} (uuid {q(uid(ref+"label"+num))}))')
-        inst.append(f'(instances (project {q(project)} (path {q("/"+rootid+"/"+uid("sheet-"+name))} (reference {q(ref)}) (unit 1)))) )')
-        ss.append(''.join(inst))
-    ss.append('(embedded_fonts no))');(HW/(name+'.kicad_sch')).write_text('\n'.join(ss))
-root=[docstart('root','Big Modular USB-C PD to +12V / -12V / +5V'),'(lib_symbols)',text('BIG MODULAR - A0 / REVIEW ONLY',20,22,3),text('STOP: NO INPUT TVS / UNQUALIFIED ESD AND HOT-PLUG SURGE - DO NOT FABRICATE',20,39,2.2),text('D1 SMBJ12CA REMOVED: unsafe at sustained 15/20 V. eFuse OVP cuts output, NOT input.\nDefault OFF. Dedicated 5 V or PD 9 V source only. No host-current negotiation.\nTentative simultaneous loads: 5 V input: 20 mA EACH rail; PD 9 V: 40 mA EACH rail.\nNo output ratings are warranted. User target currents, transient loads and noise limits remain unspecified.\nPCB files: USB connector + mechanical holes ONLY. Absolutely NO tracks, vias or zones.\nRead ../README.md before using or updating a PCB from schematic.',20,52,1.4)]
-for i,(name,sh) in enumerate(SHEETS.items()):
-    x=25+(i%2)*190;y=105+(i//2)*48
-    root.append(f'(sheet (at {x} {y}) (size 165 28) (stroke (width 0.254) (type default)) (fill (color 0 0 0 0)) (uuid {q(uid("sheet-"+name))}) (property "Sheetname" {q(sh["title"])} (at {x} {y-2} 0) {effects(1.15,"left")}) (property "Sheetfile" {q(name+".kicad_sch")} (at {x} {y+30} 0) {effects(1.0,"left")}) (instances (project {q(project)} (path {q("/"+rootid)} (page {q(i+2)})))))')
-root.append('(embedded_fonts no))');(HW/'big_modular.kicad_sch').write_text('\n'.join(root))
+from render_schematic import render
+render(HW, SHEETS, LIB, uid)
 (HW/'BigModular.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "kicad_symbol_editor")\n'+'\n'.join(dump(s) for s in LIB.values())+'\n)')
 (HW/'sym-lib-table').write_text('(sym_lib_table (version 7) (lib (name "BigModular") (type "KiCad") (uri "${KIPRJMOD}/BigModular.kicad_sym") (options "") (descr "Pinned project symbols; see pin audit")))')
 (HW/'big_modular.kicad_pro').write_text(json.dumps({'meta':{'filename':'big_modular.kicad_pro','version':1},'text_variables':{'STATUS':'ENGINEERING PROTOTYPE - DO NOT FABRICATE'}},indent=2)+'\n')
 with (ROOT/'BOM.csv').open('w') as f:
-    w=csv.DictWriter(f,fieldnames=list(BOM[0]));w.writeheader();w.writerows(BOM)
+    w=csv.DictWriter(f,fieldnames=list(BOM[0]),lineterminator="\n");w.writeheader();w.writerows(BOM)
 (ROOT/'docs/pin-net-audit.json').write_text(json.dumps(CONNS,indent=2)+'\n')
 # Board creation uses the locally installed KiCad engine. No routing functions are called.
 import pcbnew as pcb
@@ -225,20 +191,26 @@ txt(b,'PLACEMENT ONLY / NO ROUTING / NOT BUILDABLE',100,35,1.2)
 txt(b,'Carrier: Y=14..114.5; Z=2..62 mm',100,39,.9)
 txt(b,'J1 MOUTH Z=+0.800 / insertion +Z / panel normal',100,108,.9)
 txt(b,'Carrier top X=3.170; PCB bottom X=1.570',100,113,.9)
+txt(b,'2 machined corner blocks: see ../docs/assembly.svg',100,117,.9)
+for Y in [45,83.5]:
+    pts=[(Y-4+35.75,104.275-1.6),(Y+4+35.75,104.275-1.6),(Y+4+35.75,104.275-10),(Y-4+35.75,104.275-10)]
+    for a,z in zip(pts,pts[1:]+pts[:1]):line(b,a,z,pcb.Dwgs_User)
 line(b,(100,101.0),(100,93),pcb.Dwgs_User)
 for a,z in [((100,93),(98.8,95)),((100,93),(101.2,95))]:line(b,a,z,pcb.Dwgs_User)
 # Native data has pads only: no generated tracks, vias, copper graphics or zones.
 pcb.SaveBoard(str(HW/'big_modular.kicad_pcb'),b)
 p=board();rect(p,50,30,9.8,128.5)
 roundrect(p,50+2.725,30+59.35,4.2,9.8,.6)
-hole(p,'H1',54.9,33,5.0,3.2);hole(p,'H2',54.9,155.5,5.0,3.2)
+hole(p,'H1',57.5,33,3.2);hole(p,'H2',57.5,155.5,3.2)
 hole(p,'H3',54.9,75,2.2);hole(p,'H4',54.9,113.5,2.2)
-txt(p,'BIG',54.9,45,.95,pcb.F_SilkS);txt(p,'MOD',54.9,48,.95,pcb.F_SilkS);txt(p,'PD 9V',54.9,57,.8,pcb.F_SilkS);txt(p,'5V LOW',54.9,61,.8,pcb.F_SilkS)
+txt(p,'BIG',54.9,45,.95,pcb.F_SilkS);txt(p,'MOD',54.9,48,.95,pcb.F_SilkS);txt(p,'PD 9V',54.9,57,.8,pcb.F_SilkS);txt(p,'ONLY',54.9,61,.8,pcb.F_SilkS)
 txt(p,'IN',54.9,104,.8,pcb.F_SilkS);txt(p,'PROTO',54.9,143,.8,pcb.F_SilkS)
 txt(p,'2HP: 9.8 x 128.5 x 1.6 mm',82,40,1)
 txt(p,'USB cutout: 4.2 x 9.8, R0.6',82,45,1)
 txt(p,'Port axis (X,Y,Z)=(4.900,64.250,0.800)',97,50,1)
 txt(p,'Front face Z=0; inward +Z; NO copper',92,55,1)
+txt(p,'Doepfer X=7.5 / dia3.2: 0.7mm FR4 web; M3 head overhang BLOCKER',114,65,.85)
+txt(p,'Mounting proposal: ../docs/assembly.svg / mechanics.md',112,70,.85)
 pcb.SaveBoard(str(HW/'front_panel.kicad_pcb'),p)
 (HW/'front_panel.kicad_pro').write_text(json.dumps({'meta':{'filename':'front_panel.kicad_pro','version':1}},indent=2)+'\n')
-print('Created',len(BOM),'schematic components,',len(SHEETS)+1,'sheets, two unrouted boards.')
+print('Created',len(BOM),'schematic components,',1,'sheet, two unrouted boards.')

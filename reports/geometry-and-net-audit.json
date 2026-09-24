@@ -1,9 +1,14 @@
 {
-  "connected_symbol_pins_verified": 248,
+  "schematic_sheets": 1,
+  "pdf_pages": 1,
+  "BOM_components": 88,
+  "connected_symbol_pins_verified": 260,
   "off_board_J2_connected_pins_checked_in_schematic": 12,
-  "other_connected_pins_verified_against_KiCad_netlist": 236,
-  "manually_reviewed_pin_net_spot_checks": 42,
-  "audit_limit": "full intended connections and generated schematic share one source; manually reviewed spot checks do not validate electrical operation",
+  "other_connected_pins_verified_against_KiCad_netlist": 248,
+  "independent_pin_net_spot_checks": 65,
+  "visible_wire_only_interstage_checks": 21,
+  "voltage_PG_RUN_logic_cases": 28,
+  "audit_limit": "Connectivity/threshold regression only, not PD proof, analog simulation, physical fit or operation. Generated audit is not independent; the hardcoded spot checks are.",
   "boards": {
     "big_modular.kicad_pcb": {
       "footprints": [
@@ -34,6 +39,7 @@
     }
   },
   "mechanics": {
+    "actual_NPTH_geometry_checks": 8,
     "port_axis_mm": [
       4.9,
       64.25,
@@ -45,10 +51,9 @@
       1
     ],
     "axis_to_panel_plane_degrees": 90,
-    "axis_dot_panel_normal": 1,
-    "carrier_top_X": 3.17,
-    "carrier_back_Z": 62,
-    "front_shell_pad_edge_clearance": 0.5,
-    "status": "nominal geometry verified; tolerance stack and brackets/harness NOT qualified"
+    "front_shell_pad_edge_clearance_mm": 0.5,
+    "interposer_thread_engagement_mm": 2.4,
+    "rail_mount": "Doepfer x=7.5, diameter 3.2; standard head overhang/0.7mm FR4 web are blockers",
+    "status": "nominal proposal; strength/tolerances/plug/cable/screws unqualified"
   }
 }

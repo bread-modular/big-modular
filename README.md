@@ -1,89 +1,52 @@
-# Big Modular — A0 USB-C PD Eurorack supply prototype
+# Big Modular — A1 PD-only, single-sheet WIP
 
-**ENGINEERING PROTOTYPE — DO NOT FABRICATE OR CONNECT LOADS: input TVS deliberately omitted; VBUS ESD/hot-plug surge protection is UNQUALIFIED.**
+**INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE OR CONNECT VALUABLE LOADS.**
 
-Created using the installed **KiCad 10.0.6** command-line engine and PCB API. This is a pin-connected, seven-sheet circuit proposal with real reference designators, not only a block diagram. It is **not an electrically or thermally validated design**. Exact passive procurement, protection coordination, startup, EMI and mechanical hardware remain incomplete. No prior MOTU M6 architecture was available or presumed. No sibling repository was accessed.
+This revision is a connected circuit proposal, not a working power module. Explicit 9 V PDO/current validation, input ESD/surge protection, four USB footprint clearances, rail-screw fit and the complete electrical PCB layout remain blocking. Advisor was OFF; no commit or merge was made. Only the Big Modular workspace was used.
 
-## Open these files
+## Deliverables
 
-- `hardware/big_modular.kicad_pro`: main project.
-- `hardware/big_modular.kicad_sch`: root schematic; six circuit sheets alongside it.
-- `docs/schematic.pdf`: **current A0 export of the seven KiCad sheets**, regenerated with `kicad-cli sch export pdf` (7 pages, A3); it matches the current circuit and is no longer a stale snapshot. Still an engineering prototype: do not use the PDF for fabrication.
-- `hardware/big_modular.kicad_pcb`: perpendicular carrier / future power board. **J1 USB-C is the only electrical footprint placed.**
-- `hardware/front_panel.kicad_pcb`: separate 2HP FR4 mechanical faceplate; only non-electrical holes.
-- `BOM.csv`: prototype components; candidate versus verified LCSC identifiers explicitly distinguished.
-- `docs/pin-net-audit.json`: intended connections, including intentional NCs.
-- `reports/`: actual KiCad ERC, netlist, DRC and programmatic geometry checks.
-- `docs/mechanics.md`: assembly coordinates, depth, tolerances and load path.
+- `hardware/big_modular.kicad_sch`: **one A1 sheet**, 88 real components, visible wired interstage power/control paths; no subsheets. The six obsolete circuit files are removed.
+- [`docs/schematic.pdf`](docs/schematic.pdf): **exactly one page**, regenerated from that schematic.
+- `hardware/big_modular.kicad_pcb`: perpendicular carrier, **J1 only** electrically; four mechanical NPTHs. J1 position, orientation and selected footprint are unchanged.
+- `hardware/front_panel.kicad_pcb`: 9.8 × 128.5 × 1.6 mm FR4 panel. Rail holes corrected to **x=7.5, y=3/125.5, Ø3.2**. The old 5 mm slots cannot fit at x=7.5; ordinary screw heads and the 0.7 mm edge web remain mechanical blockers.
+- [`docs/assembly.svg`](docs/assembly.svg) / [`assembly.pdf`](docs/assembly.pdf): original dimensioned FRONT/SIDE/TOP views, two machined right-angle interposers, screws, engagement, supports and harness envelope. See [`mechanics.md`](docs/mechanics.md).
+- `BOM.csv`, `docs/pin-net-audit.json`, `reports/big_modular.net` and actual ERC/DRC/geometry reports. Exact modified/deleted/new paths: `reports/deliverable-files.txt`.
 
-**Both boards have zero tracks, zero vias and zero zones.** Pads inherent to the USB footprint are present. There are no fabrication Gerbers or placement files. Do not auto-update either board from the schematic: that would violate the connector-only placement boundary. Full schematic parity is intentionally absent.
+**Both boards retain zero tracks, zero vias and zero zones.** Do not update either PCB from the schematic: connector-only electrical placement is intentional. These are not placement-complete, routable-by-assertion, operational or fabrication-ready boards.
 
-## Electrical architecture
+## Circuit and power permission
 
 ```
-USB-C VBUS -> F1 -> CH224K sink (requests 9 V)
-                 -> C2 local bypass -> TPS26600 eFuse (reverse-current blocking)
-                 [NO INPUT TVS: ESD/hot-plug surge NOT QUALIFIED; no fabrication]
-                    [JP1 RUN permission; UV/OV, current limit, controlled slew]
-                 -> TPS62160 -> 4.016 V intermediate
-                 -> TPS65131 -> +13.9495 V and -13.9495 V preregulators
-                    +13.95 -> TPS7A4901 -> nominal +11.9922 V
-                    -13.95 -> TPS7A3001 -> nominal -11.9952 V
-                    +13.95 -> TPS62125 -> +6.52 V
-                                          -> TPS7A4901 -> nominal +5.0007 V
-                 -> OFF-BOARD standard 16-pin Eurorack power-out harness
+USB-C -> fuse -> TPS26600 HARD GATE -> TPS62160 4.016 V
+                ^                       -> TPS65131 +/-13.95 V
+ CH224K PG -> Q1 -> RUN                    -> +/-12 V LDOs
+                AND UV/OV window           -> TPS62125 +6.52 V -> +5 V LDO
+                                                               -> off-board 16-pin J2
 ```
 
-The approximately ±13.5 V proposal was raised to **approximately ±13.95 V** to reserve more dropout/ripple/transient margin. +6.52 V implements the requested +6.5 V preregulation. Using a buck from the positive preregulator for +5 V costs another conversion stage, but avoids a 14-to-5 V linear heat load. The +5 V branch **shares the positive boost stage's power budget**; the outputs are not independently rated.
+CH224K requests 9 V with CFG1=6.8k; CFG2/3 float. Its DP/DM are shorted locally and isolated from USB data, selecting PD-only protocol use. **5 V VBUS is retained only for negotiation housekeeping; there is no 5 V-input rail-output mode.**
 
-The TPS62125 custom symbol names pin 4 **EN_hys**, left unconnected as its datasheet permits; do not assume it is the same function as TPS62160 AGND. The negative LDO is a real negative regulator: IN/EN at negative preregulator, ground/EP at 0 V, OUT negative. Feedback uses its **-1.176 V FB voltage**, not a positive-LDO formula applied blindly. TPS65131 negative feedback goes to VREF through the lower divider, not ground. Sources and relevant sections are in `docs/design-review.md`.
+- R4/R5 now set nominal UV rising **7.878 V**; OVP remains **10.781 V**. Hardware rejects 5 V even with RUN closed and PG asserted; sustained 15/20 V is outside the window.
+- Active-low PG drives PNP Q1, which supplies SHDN through **series** JP1 RUN. R30 pulls SHDN low by default. RUN cannot bypass the PG gate or window. R31 bleeds off-state VPROT leakage. All converter bulk is downstream of the eFuse; upstream C1/C2 are housekeeping bypass only.
+- **PG + voltage qualification is NOT proven explicit-PD-contract/current qualification.** WCH's generic PG specification does not attest a 9 V fixed PDO or sufficient negotiated current. Under a compliant-source assumption this is a useful hard interlock, but the strict contract-qualified requirement remains an explicit fabrication blocker. A 9 V DC reading alone is insufficient; no cryptographic authentication is claimed.
+- No loads until independent PD analysis verifies a fixed 9 V contract with at least 0.5 A authorization and the outstanding design blockers are cleared. Only provisional simultaneous **~40 mA on each rail** is proposed for initial tests; no continuous/peak output rating exists.
 
-## Input-source truth table and permission
+The eFuse setting is 0.2985 A **nominal**, not a guaranteed input bound at this low setting and not a rail rating. About 1.16 W output and 2.26 W converter input at the provisional loads are estimates; housekeeping/inrush and thermal margins are unverified. +5 V shares the positive boost budget. Approximately ±13.95/+6.52 V preregulation is retained, subject to dropout, ripple, stability and actual-part checks.
 
-| Input state | RUN jumper | Result / permitted use |
-|---|---|---|
-| Generic computer / legacy USB, no enumeration | **OPEN** | Converters OFF; only sink/protection housekeeping. No useful-output or USB compliance claim. Do not close RUN on an unauthenticated host. |
-| Dedicated non-PD 5 V source, explicitly approved ≥500 mA and adequate voltage at the port | Closed by operator | Lower-power three-rail bench fallback; tentative simultaneous **20 mA per rail**. Not an established rating. |
-| USB-C non-PD with advertised 1.5 A or 3 A | Closed only on approved source | Same conservative fallback; this design does **not decode or exploit** the advertisement. |
-| Approved PD charger with a 9 V fixed profile and ≥500 mA available | Closed by operator | CH224K requests 9 V; tentative simultaneous **40 mA per rail** after measured 9 V/valid contract. Current authorization is not inferred from PG. |
-| PD unsupported, negotiation failed, charger remains at 5 V | As above | Only fallback budget. PG never raises the hardware limit. |
-| Sustained unexpected 15/20 V or other excessive input | Either | **D1 SMBJ12CA removed**, so it can no longer conduct continuously. TPS26600 OVP nominally disconnects its output above ~10.78 V; **VBUS remains energized with no qualified ESD/surge clamp**. DO NOT FABRICATE; no higher-power mode is authorized. |
-| Brownout / overload / startup failure | Closed | UV/current limit/thermal behavior can interrupt or retry. Outputs may collapse asymmetrically; never assume glitch-free rails. |
+## Precedent, differences and limitations
 
-The nominal eFuse limit is `12 / 40.2 = 0.2985 A`, **fixed in every mode**, not an advertised rail rating. TI specifies ±5% limit accuracy at 1 A, not at 0.30 A: do not use a guessed +20% as a guaranteed bound or equate the resistor setting with approved port current. CH224K upstream current, eFuse tolerance and startup peaks also need measurement. **500 mA is not universal pre-enumeration permission.** Default RUN is OPEN. This is **not an automatic safe-host-power product**. A final host-compatible implementation needs actual source-current detection/enumeration and validated total/inrush limits.
+Andreas Dorfner's **Powerline USB-C** is a published **3HP / 20 V** PD Eurorack design, licensed CERN-OHL-P v2. Its schematic leaves CH224K PG unconnected and feeds regulator VINs directly from VBUS; that startup approach was **not copied**. We use its front-entry/two-support-point assembly idea as a reference only, retain our perpendicular 2HP geometry, and add a PG/window gate. No third-party CAD/artwork/datasheets are delivered. This is not a claim that the 3HP design proves our 2HP fit or performance. [source](https://github.com/Andreas-Dorfner/Powerline-USB-C) [source](https://github.com/Andreas-Dorfner/Powerline-USB-C/blob/main/LICENSE.md)
 
-No external CC Rd resistors duplicate CH224K's reference circuit, but its **unpowered/dead-battery Rd behavior is not verified**: bench-check 5 V attach before assuming any non-PD fallback. The 6.8k CFG1 requests 9 V *only when a PD source offers an appropriate profile*; on a 5 V-only source it cannot negotiate 9 V. DP/DM on the chip are shorted together and disconnected from receptacle data pins (PD-only mode); there is no BC1.2 or data enumeration. No E-mark simulation circuit is used. CH224K PG is diagnostic only and is not claimed to prove a current contract or safe fallback. Never inject a negotiated voltage into another USB port; this design has one sink receptacle and TI-specified TPS26600 reverse blocking, not a USB passthrough or MOTU power mux.
+The unsafe D1 TVS stays absent: there is **no qualified VBUS/CC ESD or hot-plug surge solution**. No output precision OVP, all-rail fault latch, tracking, guaranteed discharge, thermal/EMI qualification or plug/cable fit certification exists. TPS62125 PFM/up-to-1MHz operation still does not meet an always-MHz requirement. See `docs/design-review.md` and `docs/test-matrix.md`.
 
-## Headroom and power envelope — estimates, not test results
+## Regeneration / checks
 
-- The 4.016 V intermediate stage is intended for both 5 V fallback and 9 V PD, keeping TPS65131 below its 5.5 V input ceiling. The redundant input diode was removed after checking TPS26600's specified reverse-current blocking, recovering roughly 0.45 V at 5 V. At 5 V the eFuse needs at least 4.2 V at its input, and its input can still fall with fuse/cable losses; TPS62160 must then supply 4.016 V at load with very little dropout margin. **No useful 5 V fallback current is established by calculation or ERC**; start with a dedicated source at ≥4.9 V measured at J1, verify startup and all three loads, then set a safe limit. A generic host is not authorized.
-- Screening ±12 V headroom: take preregulator magnitude -5%, reserve 0.25 V downward ripple/transient, and allow the LDO output +2.5%. `13.9495*0.95 - 0.25 - 12*1.025 = 0.702 V`, versus datasheet **0.600 V maximum dropout**. Only about 0.10 V screening margin remains; resistor/bias tolerances and simultaneous transients need a proper worst-case analysis. This does **not** establish best PSRR or a guaranteed clean output.
-- +5 V screening: `6.52*0.97 - 0.20 - 5*1.025 = 0.999 V` versus 0.600 V maximum dropout. Again verify actual ripple/step response and tolerance. During startup or current limiting these headroom assumptions are false.
-- At 20 mA on every rail: output power is **0.58 W**; at 40 mA each, **1.16 W**. Assuming 75% bipolar, 85% intermediate and 80% +6.52 V buck efficiency gives about **1.13 W / 2.26 W** converter-chain input before diode and housekeeping losses. Actual low-load efficiency is unmeasured.
-- LDO heat at 40 mA each is approximately 0.078 W on each ±12 V LDO and 0.061 W on +5 V, total **0.217 W**. Estimated total loss can approach **1.2 W or more** in PD mode. No thermal layout, copper area, enclosure-temperature or junction-temperature qualification exists. Derate or turn off if bench tests disagree.
+Installed engine used: KiCad 10.0.6. `tools/build_project.py` owns the circuit inventory; `tools/render_schematic.py` owns the one-sheet layout; `tools/build_mechanics.py` owns the original assembly drawing. No research download is needed to regenerate.
 
-These are **provisional simultaneous test-load ceilings**, not independent maximums, and not a promise that a generic 5 V USB host can power Eurorack modules. Please specify required **continuous and peak current on +12 V, −12 V and +5 V**, available source profiles, case depth and acceptable ripple/noise before the real design is finalized.
-
-## MHz switching is not proof of audio cleanliness
-
-TPS62160 is nominally 2.25 MHz and TPS65131 nominally 1.25 MHz. TPS65131 PSP/PSN are grounded to disable power-save mode. **TPS62125 operates up to 1 MHz and uses light-load PFM; the strict always-MHz request is not met.** TPS62160 also changes operating behavior at light load. Unsynchronized converters can create beat tones, low-frequency burst envelopes and demodulated interference. LDO PSRR at MHz is finite; quoted integrated noise is not a system guarantee.
-
-Future routing must minimize hot-loop area, use shielded inductors and physically separated feedback/switch nodes, keep low-noise returns out of switching currents, and use Kelvin sensing. Validate converter LC/compensation with actual MLCC DC-bias derating, inductor saturation and DCR. Test startup, all load combinations, conducted/radiated EMI, cable noise, audio-band spectra and transient headroom. Do not add undamped LC filters without loop-stability analysis. No such routing or measurements were performed here.
-
-## Important incomplete engineering items
-
-- Passive values and required ratings are specified, but many exact MPNs, packages, DC-bias curves, stock and assembly sourcing are **not selected or validated**. BOM is not a purchase-ready JLC order.
-- eFuse and LDO current/thermal protection and output reverse-differential / wrong-polarity clamps are proposed. **Unsafe upstream SMBJ12CA (D1) has been removed from the generator, schematic and BOM. There is now NO qualified input ESD/hot-plug surge protection.** F1 (unselected 500 mA / 32 V) cannot be assumed to clear a pulse; the eFuse OVP isolates output only. A 24 V-standoff SMBJ24CA was reviewed, **not selected**: 38.9 V clamp applies only at 15.5 A (10/1000 µs), and energy/fuse/connector/CC coordination plus JLC/LCSC sourcing are unproven. The GCT connector is 48 V DC rated in the cited B4 drawing, TPS26600 IN 60 V recommended / 62 V absolute, but neither rating qualifies an undefined surge. See `docs/design-review.md` for bounds and cited datasheets. Independent precision output overvoltage shutdown/crowbar, fault latching of all three rails and reverse-powered output tolerance are also incomplete. A failed LDO can expose preregulator voltage to a module. **Do not fabricate or connect valuable loads.**
-- BSW is intentionally unused; the positive boost path can prebias before enable. No guaranteed three-rail tracking, sequencing, startup into capacitive loads, or rapid discharge is implemented.
-- Case hardware, USB shell capture, cable selection and keyed IDC assembly need physical fit/load tests. Mechanical coordinates are nominal, not a tolerance-qualified assembly.
-- The PCB is **not electrically buildable**: only the USB footprint and mounting holes exist. No placement feasibility, loop area, thermals or completed power-board layout is claimed.
-
-## Checks and regeneration
-
-See `reports/validation-summary.md` for current counts and the honest interpretation of warnings. ERC detects connectivity/type issues; it does not prove analog correctness. Board DRC is run without schematic parity and **without zone refill**; missing/unconnected copper is intentional. `docs/pin-net-audit.json` is generated from the same source as the schematics and its whole-net comparison is **not independent datasheet verification**; `verify_project.py` additionally has a small manually reviewed pin/net spot-check. The tracked `docs/schematic.pdf` **matches the current seven KiCad sheets**: it was regenerated with `kicad-cli sch export pdf` and re-checked at 7 pages (A3). It is a review export, not fabrication approval.
-
-```
+```sh
 /usr/bin/python3 tools/build_project.py
+/usr/bin/python3 tools/build_mechanics.py
 kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all -o reports/erc.rpt
 kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all --format json -o reports/erc.json
 kicad-cli sch export pdf hardware/big_modular.kicad_sch -o docs/schematic.pdf
@@ -91,6 +54,8 @@ kicad-cli sch export netlist hardware/big_modular.kicad_sch -o reports/big_modul
 kicad-cli pcb drc hardware/big_modular.kicad_pcb --severity-all --format json -o reports/carrier-drc.json
 kicad-cli pcb drc hardware/front_panel.kicad_pcb --severity-all --format json -o reports/panel-drc.json
 /usr/bin/python3 tools/verify_project.py
+pdfinfo docs/schematic.pdf
+git diff --check
 ```
 
-The generated files themselves are the deliverables and do not require research downloads to open. Local copyrighted PDFs/text/images are excluded by `.gitignore`, never staged, and must not be merged. The A0 review work described here has since been merged into `main`; the current project on `main` remains an explicitly non-fabrication-ready work-in-progress.
+ERC cleanliness is not proof of function. DRC runs intentionally omit schematic parity/refill. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 21 wire-only interstage connections, and checks actual PCB geometry. User rail continuous/peak targets are still required before any output rating can be designed.

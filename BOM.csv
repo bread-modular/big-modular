@@ -1,4 +1,4 @@
-Reference,Value,MPN,Footprint,LCSC,Sourcing,Notes,Sheet
+Reference,Value,MPN,Footprint,LCSC,Sourcing,Notes,Block
 J1,USB4105-GF-A,USB4105-GF-A,BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,,Candidate/specification only; procurement review required,Only electrical footprint placed. Drawing Rev B: axis 1.73 mm above PCB top.,01_input
 U1,CH224K,CH224K,Package_SO:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm,C970725,LCSC ID verified; stock NOT verified,"WCH v1F fig6.1/6.3; datasheet EP0 maps to library pad11. DP/DM short locally, isolated from USB data.",01_input
 R1,1k 1% >=0.5W,,Resistor_SMD:R_2010_5025Metric,,Candidate/specification only; procurement review required,"CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.",01_input
@@ -7,9 +7,9 @@ R2,6.8k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procur
 R3,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 F1,500mA 32V fuse,,,,Candidate/specification only; procurement review required,"Unselected candidate: 32V rating covers steady 20/21V only; interrupt/surge ratings, time-current and source coordination UNQUALIFIED. Not USB current authorization.",01_input
 C2,100n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.,01_input
-U2,TPS26600PWPR,TPS26600PWPR,Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias,C544399,LCSC ID verified; stock NOT verified,Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.,01_input
-JP1,RUN / default OPEN,,,,Candidate/specification only; procurement review required,"Dedicated-source permission, not PD/current detection.",01_input
-R4,249k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
+U2,TPS26600PWPR,TPS26600PWPR,Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias,C544399,LCSC ID verified; stock NOT verified,"UV rising 7.878V nominal, OVP 10.781V nominal. SHDN low=OFF; PG-permit through JP1 only. RTN must NOT be externally shorted to GND.",01_input
+JP1,RUN / default OPEN,,,,Candidate/specification only; procurement review required,Series permission only; cannot override PG or voltage window. Default OPEN. Not contract proof.,01_input
+R4,562k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 R5,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 R6,806k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 R7,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
@@ -82,3 +82,8 @@ J2,16-pin IDC POWER OUT,,,,Candidate/specification only; procurement review requ
 R25,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
 R26,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
 R27,47k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
+Q1,MMBT3906,MMBT3906,Package_TO_SOT_SMD:SOT-23,,Candidate/specification only; procurement review required,"Pin1 B, pin2 E, pin3 C per Diodes DS30059. PG low turns ON. Gate electrical/timing margins need bench qualification.",01_input
+R28,22k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
+R29,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
+R30,10k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,"SHDN default-low despite internal pullup: 10uA x 10k = 0.1V, below 0.55V minimum falling threshold.",01_input
+R31,10k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,Bleed off-state leakage; leakage maxima and residual rail voltages NOT qualified. No precontract rail operation allowed.,01_input

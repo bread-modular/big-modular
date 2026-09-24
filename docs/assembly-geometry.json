@@ -1,0 +1,113 @@
+{
+  "panel_mm": [
+    9.8,
+    128.5,
+    1.6
+  ],
+  "rail_slots_mm": [
+    [
+      7.5,
+      3,
+      3.2,
+      3.2
+    ],
+    [
+      7.5,
+      125.5,
+      3.2,
+      3.2
+    ]
+  ],
+  "rail_compatibility": "Doepfer x=7.5 circular 3.2 holes; 0.7mm FR4 web and ordinary screw-head overhang are unresolved blockers",
+  "panel_bracket_holes_mm": [
+    [
+      4.9,
+      45,
+      2.2
+    ],
+    [
+      4.9,
+      83.5,
+      2.2
+    ]
+  ],
+  "carrier_holes_YZ_mm": [
+    [
+      45,
+      6
+    ],
+    [
+      83.5,
+      6
+    ],
+    [
+      45,
+      52
+    ],
+    [
+      83.5,
+      52
+    ]
+  ],
+  "carrier_X_mm": [
+    1.57,
+    3.17
+  ],
+  "carrier_Y_mm": [
+    14,
+    114.5
+  ],
+  "carrier_Z_mm": [
+    2,
+    62
+  ],
+  "aperture_XYWHR_mm": [
+    2.725,
+    59.35,
+    4.2,
+    9.8,
+    0.6
+  ],
+  "mouth_axis_XYZ_mm": [
+    4.9,
+    64.25,
+    0.8
+  ],
+  "interposers": {
+    "quantity": 2,
+    "material": "machined aluminium, bare-FR4 contact / no copper under blocks",
+    "X_mm": [
+      3.17,
+      8.97
+    ],
+    "Y_centres_mm": [
+      45,
+      83.5
+    ],
+    "height_Y_mm": 8,
+    "Z_mm": [
+      1.6,
+      10
+    ],
+    "panel_thread_axis_X_mm": 4.9,
+    "carrier_thread_axis_Z_mm": 6,
+    "threads": "M2 x 0.4 blind; full thread 2.6 min, total depth 2.8 max including tip",
+    "screw": "4 x M2 x 4 low-head; head height <=1.2, diameter <=3.8; exact product unselected",
+    "nominal_engagement_mm": 2.4
+  },
+  "harness_envelope_XYZ_mm": [
+    [
+      0.4,
+      9.4
+    ],
+    [
+      40,
+      75
+    ],
+    [
+      65,
+      87
+    ]
+  ],
+  "status": "DIMENSIONED PROPOSAL ONLY; screw selection, tolerance/strength and cable/plug fit unqualified"
+}
