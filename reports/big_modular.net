@@ -1,8 +1,8 @@
 (export
 	(version "E")
 	(design
-		(source "/home/azero/.okbrain/workspaces/big-modular/002/hardware/big_modular.kicad_sch")
-		(date "2026-09-24T09:40:36")
+		(source "/home/azero/.okbrain/workspaces/big-modular/004/hardware/big_modular.kicad_sch")
+		(date "2026-09-24T09:55:59")
 		(tool "Eeschema 10.0.6-10.0.6~ubuntu26.04.1")
 		(sheet
 			(number "1")
@@ -429,8 +429,7 @@
 					(name "LCSC")
 				)
 				(field
-					(name "NOTE")
-				)
+					(name "NOTE") "TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.")
 				(field
 					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
 				(field
@@ -455,7 +454,7 @@
 			)
 			(property
 				(name "NOTE")
-				(value "")
+				(value "TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.")
 			)
 			(property
 				(name "Sheetname")
@@ -643,79 +642,6 @@
 			)
 		)
 		(comp
-			(ref "D1")
-			(value "SMBJ12CA")
-			(fields
-				(field
-					(name "MPN") "SMBJ12CA")
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE") "12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_TVS")
-				(description "Bidirectional transient-voltage-suppression diode")
-			)
-			(property
-				(name "MPN")
-				(value "SMBJ12CA")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.")
-			)
-			(property
-				(name "Sheetname")
-				(value "USB-C sink / permission / protected input")
-			)
-			(property
-				(name "Sheetfile")
-				(value "01_input.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode TVS thyrector")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/USB-C sink / permission / protected input/")
-				(tstamps "/029cb2a9-d2ef-5d6a-923b-0d0afe15605f/")
-			)
-			(tstamps "97896df6-6822-5454-af6b-9d2dbd649ad3")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
 			(ref "F1")
 			(value "500mA 32V fuse")
 			(fields
@@ -726,7 +652,7 @@
 					(name "LCSC")
 				)
 				(field
-					(name "NOTE") "Candidate rating, NOT USB current authorization or coordinated surge qualification.")
+					(name "NOTE") "Unselected candidate: 32V rating covers steady 20/21V only; interrupt/surge ratings, time-current and source coordination UNQUALIFIED. Not USB current authorization.")
 				(field
 					(name "Footprint")
 				)
@@ -752,7 +678,7 @@
 			)
 			(property
 				(name "NOTE")
-				(value "Candidate rating, NOT USB current authorization or coordinated surge qualification.")
+				(value "Unselected candidate: 32V rating covers steady 20/21V only; interrupt/surge ratings, time-current and source coordination UNQUALIFIED. Not USB current authorization.")
 			)
 			(property
 				(name "Sheetname")
@@ -7087,43 +7013,6 @@
 		)
 		(libpart
 			(lib "BigModular")
-			(part "Device_D_TVS")
-			(description "Bidirectional transient-voltage-suppression diode")
-			(footprints
-				(fp "TO-???*")
-				(fp "*_Diode_*")
-				(fp "*SingleDiode*")
-				(fp "D_*")
-			)
-			(fields
-				(field
-					(name "Reference") "D")
-				(field
-					(name "Value") "D_TVS")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description") "Bidirectional transient-voltage-suppression diode")
-			)
-			(pins
-				(pin
-					(num "1")
-					(name "A1")
-					(type "passive")
-				)
-				(pin
-					(num "2")
-					(name "A2")
-					(type "passive")
-				)
-			)
-		)
-		(libpart
-			(lib "BigModular")
 			(part "Device_Fuse")
 			(description "Fuse")
 			(footprints
@@ -8178,12 +8067,6 @@
 			(node
 				(ref "C9")
 				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "D1")
-				(pin "2")
-				(pinfunction "A2_2")
 				(pintype "passive")
 			)
 			(node
@@ -9269,12 +9152,6 @@
 			(node
 				(ref "C2")
 				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "D1")
-				(pin "1")
-				(pinfunction "A1_1")
 				(pintype "passive")
 			)
 			(node

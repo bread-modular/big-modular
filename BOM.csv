@@ -5,9 +5,8 @@ R1,1k 1% >=0.5W,,Resistor_SMD:R_2010_5025Metric,,Candidate/specification only; p
 C1,1u 50V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
 R2,6.8k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
 R3,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-F1,500mA 32V fuse,,,,Candidate/specification only; procurement review required,"Candidate rating, NOT USB current authorization or coordinated surge qualification.",01_input
-D1,SMBJ12CA,SMBJ12CA,,,Candidate/specification only; procurement review required,"12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.",01_input
-C2,100n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
+F1,500mA 32V fuse,,,,Candidate/specification only; procurement review required,"Unselected candidate: 32V rating covers steady 20/21V only; interrupt/surge ratings, time-current and source coordination UNQUALIFIED. Not USB current authorization.",01_input
+C2,100n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.,01_input
 U2,TPS26600PWPR,TPS26600PWPR,Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias,C544399,LCSC ID verified; stock NOT verified,Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.,01_input
 JP1,RUN / default OPEN,,,,Candidate/specification only; procurement review required,"Dedicated-source permission, not PD/current detection.",01_input
 R4,249k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input

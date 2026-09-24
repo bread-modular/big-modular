@@ -41,7 +41,7 @@ def ic(name,pins,url):
             parts.append(f'(pin {typ} line (at {x} {y} {a}) (length 5.08) (name {q(label)} (effects (font (size 1 1)))) (number {q(num)} (effects (font (size 1 1)))))')
     parts+=['))']; LIB[name]=parse(''.join(parts)); return name
 
-R=stock('Device','R'); C=stock('Device','C'); L=stock('Device','L'); D=stock('Device','D_Schottky'); TVS=stock('Device','D_TVS'); F=stock('Device','Fuse'); JP=stock('Jumper','Jumper_2_Open'); USB=stock('Connector','USB_C_Receptacle_USB2.0_16P'); IDC=stock('Connector_Generic','Conn_02x08_Odd_Even'); FLAG=stock('power','PWR_FLAG')
+R=stock('Device','R'); C=stock('Device','C'); L=stock('Device','L'); D=stock('Device','D_Schottky'); F=stock('Device','Fuse'); JP=stock('Jumper','Jumper_2_Open'); USB=stock('Connector','USB_C_Receptacle_USB2.0_16P'); IDC=stock('Connector_Generic','Conn_02x08_Odd_Even'); FLAG=stock('power','PWR_FLAG')
 CH=stock('Interface_USB','CH224K'); EF=stock('Power_Management','TPS26600PWP'); BUCK=stock('Regulator_Switching','TPS62160DSG'); BI=stock('Regulator_Switching','TPS65131RGE')
 ldopins=[('8','IN','power_in','L'),('5','EN','input','L'),('6','NR/SS','passive','L'),('3','NC','no_connect','L'),('7','DNC','no_connect','L'),('1','OUT','power_out','R'),('2','FB','input','R'),('4','GND','power_in','R'),('9','EP_GND','passive','R')]
 LP=ic('TPS7A4901DGNR',ldopins,'https://www.ti.com/lit/ds/symlink/tps7a49.pdf'); LN=ic('TPS7A3001DGNR',ldopins,'https://www.ti.com/lit/ds/symlink/tps7a30.pdf')
@@ -62,20 +62,22 @@ def add(sh,ref,kind,value,nets,x,y,mpn='',lcsc='',fp='',note='',onboard=True):
     return d
 COUNTS={'R':0,'C':0,'L':0,'D':0}
 def passive(sh,kind,val,n1,n2,x,y,**kw):
-    letter={R:'R',C:'C',L:'L',D:'D',TVS:'D'}[kind]; COUNTS[letter]+=1
+    letter={R:'R',C:'C',L:'L',D:'D'}[kind]; COUNTS[letter]+=1
     return add(sh,letter+str(COUNTS[letter]),kind,val,{'1':n1,'2':n2},x,y,**kw)
 def r(sh,val,a,b,x,y,**kw):return passive(sh,R,val,a,b,x,y,**kw)
 def c(sh,val,a,b,x,y,**kw):return passive(sh,C,val,a,b,x,y,**kw)
 def diode(sh,val,k,a,x,y,**kw):return passive(sh,D,val,k,a,x,y,**kw)
 
-sheet('01_input','USB-C sink / permission / protected input','9 V request only. No USB data. CH224K Rd must be verified on unpowered attach.\nJP1 OPEN = OFF (default). Close ONLY for an approved dedicated source. PG is diagnostic, not a current-contract detector.\nNo series diode: TPS26600 reverse-current blocking is specified; qualify dead-battery/backfeed on hardware.\nAll bulk capacitance is behind the eFuse. No legacy-host enumeration or CC-current decoding is implemented.')
+sheet('01_input','USB-C sink / permission / protected input','D1 SMBJ12CA REMOVED: it can burn at sustained 15/20 V. F1 (500 mA / 32 V) is NOT a coordinated surge fuse.\nTPS26600 OVP (~10.8 V) disconnects OUTPUT, not upstream VBUS. No qualified VBUS transient protection.\n9 V request only. No USB data. CH224K Rd must be verified on unpowered attach. JP1 OPEN = OFF (default).\nClose RUN ONLY for an approved dedicated source. PG is diagnostic, not a current-contract detector.\nNo series diode: TPS26600 reverse-current blocking is specified; qualify dead-battery/backfeed on hardware.\nAll bulk capacitance is behind the eFuse. No legacy-host enumeration or CC-current decoding is implemented.')
 n={p:('VBUS_RAW' if p in ['A4','A9','B4','B9'] else 'GND' if p in ['A1','A12','B1','B12','SH'] else 'CC1' if p=='A5' else 'CC2' if p=='B5' else None) for p in ['A1','A4','A5','A6','A7','A8','A9','A12','B1','B4','B5','B6','B7','B8','B9','B12','SH']}
 add('01_input','J1',USB,'USB4105-GF-A',n,42,65,mpn='USB4105-GF-A',fp='BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal',note='Only electrical footprint placed. Drawing Rev B: axis 1.73 mm above PCB top.')
 add('01_input','U1',CH,'CH224K',{'1':'PD_VDD','2':None,'3':None,'4':'PD_D_SHORT','5':'PD_D_SHORT','6':'CC2','7':'CC1','8':None,'9':'PD_CFG','10':'PD_PG_N','11':'GND'},125,65,mpn='CH224K',lcsc='C970725',note='WCH v1F fig6.1/6.3; datasheet EP0 maps to library pad11. DP/DM short locally, isolated from USB data.')
 r('01_input','1k 1% >=0.5W','VBUS_FUSED','PD_VDD',205,50,fp='Resistor_SMD:R_2010_5025Metric',note='CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.'); c('01_input','1u 50V X7R','PD_VDD','GND',270,50); r('01_input','6.8k 1%','PD_CFG','GND',335,50); r('01_input','100k','PD_VDD','PD_PG_N',335,92)
-add('01_input','F1',F,'500mA 32V fuse',{'1':'VBUS_RAW','2':'VBUS_FUSED'},42,130,note='Candidate rating, NOT USB current authorization or coordinated surge qualification.')
-passive('01_input',TVS,'SMBJ12CA','VBUS_FUSED','GND',125,130,mpn='SMBJ12CA',note='12V standoff: sustained 15/20V is a TVS/fuse fault, NOT qualified OV protection.')
-c('01_input','100n 50V','VBUS_FUSED','GND',270,130)
+add('01_input','F1',F,'500mA 32V fuse',{'1':'VBUS_RAW','2':'VBUS_FUSED'},42,130,note='Unselected candidate: 32V rating covers steady 20/21V only; interrupt/surge ratings, time-current and source coordination UNQUALIFIED. Not USB current authorization.')
+# D1 was the unsafe upstream SMBJ12CA. Reserve its reference so downstream D2.. remain stable.
+# Do NOT populate a different TVS until its surge clamp, fuse, connector and eFuse limits are qualified.
+COUNTS['D']=1
+c('01_input','100n 50V','VBUS_FUSED','GND',270,130,note='TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.')
 add('01_input','U2',EF,'TPS26600PWPR',{'1':'VBUS_FUSED','2':'VBUS_FUSED','3':'UV_EN','4':None,'5':'OV_SET','6':'RTN','7':None,'8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':None,'15':'VPROT','16':'VPROT','17':'RTN'},70,205,mpn='TPS26600PWPR',lcsc='C544399',note='Specified reverse-current blocking replaces series diode. MODE to RTN = current-limit auto-retry. RTN must NOT be externally shorted to GND.')
 add('01_input','JP1',JP,'RUN / default OPEN',{'1':'VBUS_FUSED','2':'RUN_IN'},165,190,note='Dedicated-source permission, not PD/current detection.')
 r('01_input','249k 1%','RUN_IN','UV_EN',230,180); r('01_input','100k 1%','UV_EN','RTN',295,180)
@@ -139,7 +141,10 @@ for name,sh in SHEETS.items():
     caches=[]
     for kind in kinds:
         s=copy.deepcopy(LIB[kind]);s[1]='BigModular:'+kind;caches.append(dump(s))
-    ss+=['(lib_symbols '+''.join(caches)+')',text(sh['title'],16,15,2),text(sh['notes'],16,27,1.05)]
+    ss+=['(lib_symbols '+''.join(caches)+')',text(sh['title'],16,15,2)]
+    if name=='01_input':
+        ss.append(text('STOP: NO INPUT TVS / ESD OR SURGE PROTECTION - DO NOT FABRICATE',16,25,1.9))
+    ss.append(text(sh['notes'],16,34 if name=='01_input' else 27,1.05))
     for d in sh['parts']:
         ref=d['ref']; x=d['x'];y=d['y'];s=LIB[d['kind']]; us=uid(ref); pins=list(walk(s,'pin'))
         pcoords=[(float(one(p,'at')[1]),float(one(p,'at')[2])) for p in pins]
@@ -165,7 +170,7 @@ for name,sh in SHEETS.items():
         inst.append(f'(instances (project {q(project)} (path {q("/"+rootid+"/"+uid("sheet-"+name))} (reference {q(ref)}) (unit 1)))) )')
         ss.append(''.join(inst))
     ss.append('(embedded_fonts no))');(HW/(name+'.kicad_sch')).write_text('\n'.join(ss))
-root=[docstart('root','Big Modular USB-C PD to +12V / -12V / +5V'),'(lib_symbols)',text('BIG MODULAR - A0 / REVIEW ONLY',20,22,3),text('Complete pin-connected prototype circuit; NOT a validated power supply.\nDefault OFF. Dedicated 5 V or PD 9 V source only. No host-current negotiation.\nTentative simultaneous loads: 5 V input: 20 mA EACH rail; PD 9 V: 40 mA EACH rail.\nNo output ratings are warranted. User target currents, transient loads and noise limits remain unspecified.\nPCB files: USB connector + mechanical holes ONLY. Absolutely NO tracks, vias or zones.\nRead ../README.md before using or updating a PCB from schematic.',20,44,1.4)]
+root=[docstart('root','Big Modular USB-C PD to +12V / -12V / +5V'),'(lib_symbols)',text('BIG MODULAR - A0 / REVIEW ONLY',20,22,3),text('STOP: NO INPUT TVS / UNQUALIFIED ESD AND HOT-PLUG SURGE - DO NOT FABRICATE',20,39,2.2),text('D1 SMBJ12CA REMOVED: unsafe at sustained 15/20 V. eFuse OVP cuts output, NOT input.\nDefault OFF. Dedicated 5 V or PD 9 V source only. No host-current negotiation.\nTentative simultaneous loads: 5 V input: 20 mA EACH rail; PD 9 V: 40 mA EACH rail.\nNo output ratings are warranted. User target currents, transient loads and noise limits remain unspecified.\nPCB files: USB connector + mechanical holes ONLY. Absolutely NO tracks, vias or zones.\nRead ../README.md before using or updating a PCB from schematic.',20,52,1.4)]
 for i,(name,sh) in enumerate(SHEETS.items()):
     x=25+(i%2)*190;y=105+(i//2)*48
     root.append(f'(sheet (at {x} {y}) (size 165 28) (stroke (width 0.254) (type default)) (fill (color 0 0 0 0)) (uuid {q(uid("sheet-"+name))}) (property "Sheetname" {q(sh["title"])} (at {x} {y-2} 0) {effects(1.15,"left")}) (property "Sheetfile" {q(name+".kicad_sch")} (at {x} {y+30} 0) {effects(1.0,"left")}) (instances (project {q(project)} (path {q("/"+rootid)} (page {q(i+2)})))))')
