@@ -93,4 +93,4 @@ kicad-cli pcb drc hardware/front_panel.kicad_pcb --severity-all --format json -o
 /usr/bin/python3 tools/verify_project.py
 ```
 
-The generated files themselves are the deliverables and do not require research downloads to open. Local copyrighted PDFs/text/images are excluded by `.gitignore`, never staged, and must not be merged. No commit or merge was performed.
+The generated files themselves are the deliverables and do not require research downloads to open. Local copyrighted PDFs/text/images are excluded by `.gitignore`, never staged, and must not be merged. The A0 review work described here has since been merged into `main`; the current project on `main` remains an explicitly non-fabrication-ready work-in-progress.
