@@ -34,7 +34,7 @@ A standard right-angle receptacle on a panel-parallel board would point sideways
 - Therefore mouth depth is `104.275-(99.800+3.675)=+0.800 mm`.
 - Manufacturer side view gives **1.730 mm** mating-axis height above PCB top: axis X = `3.170+1.730=4.900`.
 - Axis Y = `100-35.750=64.250`; incoming cable travels from negative Z to positive Z. Footprint local mating direction is -y_KiCad, i.e. +Z assembly.
-- This is a shallow **0.8 mm recessed mouth**, not a flush or rear-facing connector. Drawing mating view specifies ≥1.85 mm between receptacle mouth and plug-body front when mated; nominal plug-body front is ≤-1.05 mm, clear of the panel. This does not guarantee arbitrary oversized overmoulds or angled plugs.
+- This is a shallow **0.8 mm recessed mouth**, not a flush or rear-facing connector. Drawing mating view specifies ≥1.85 mm between receptacle mouth and plug-body front when mated; nominal plug-body front is ≤-1.05 mm, clear of the panel. The aperture leaves only 0.445 mm X and 0.430 mm Y nominal clearance per side around the 3.31 × 8.94 mm receptacle envelope; it must admit the *plug's metal mating shell* from the front without snagging the R0.6 corners. The plug overmould should remain ahead of the faceplate, but no ordinary plug-shell/overmould tolerance sample or insertion-force test is documented. **Front insertion of ordinary plugs remains an acceptance test**, not an inferred clearance certification; oversized/angled overmoulds are excluded.
 
 ## Dimensions and tolerance decisions
 

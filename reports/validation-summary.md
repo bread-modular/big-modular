@@ -1,35 +1,30 @@
-# Validation — A0, 2026-09-24
+# Validation — focused A0 review, 2026-09-24
 
-Run with the locally installed **KiCad 10.0.6**. These are prototype checks, not fabrication approval.
+KiCad 10.0.6 CLI, regenerated from `tools/build_project.py`. **Review scaffold, not fabrication approval.** No copper routing was added. `docs/schematic.pdf` was deliberately not regenerated: it is a **stale prior A0 snapshot**, not the source of truth. The current circuit is in the seven KiCad sheets. Both `reports/erc.rpt` and `reports/erc.json` are current KiCad ERC exports.
 
 ## Schematic
 
-- Seven sheets, 85 BOM components (plus ten explicit power-source ERC flags).
-- `kicad-cli sch erc --severity-all`: **0 errors, 0 warnings** after placing connection points on the 1.27 mm grid and leaving unused TPS62125 EN_hys open as the datasheet permits.
-- No electrical-rule severity was disabled; no ERC exclusion was used.
-- `kicad-cli sch export netlist`: native netlist generated. `tools/verify_project.py` independently compares all exported non-NC component pins with the intended connection audit and fails on differences. KiCad omits off-board J2 from a PCB netlist; its 12 connected pins and four NC pins are instead checked against the actual schematic pin → wire → global-label / NC geometry.
-- `kicad-cli sch export pdf`: all seven pages exported to `docs/schematic.pdf`.
-- ERC does not validate converter stability, ratings, pin names against a datasheet, host authorization, PSRR or thermal performance. See documented review blockers.
+- Seven sheets, **84 BOM components** (one redundant input Schottky removed), plus nine ERC power-source flags.
+- `kicad-cli sch erc --severity-all`: **0 errors, 0 warnings**. KiCad's report lists four ignored check *types* (single global label, four-way junction, SPICE, footprint-filter mismatch); no project-level ERC exclusion or severity weakening was applied in this review.
+- `kicad-cli sch export netlist`: updated native netlist. `tools/verify_project.py` checked **250 connected symbol pins**, including 12 off-board J2 pins checked from actual schematic label/wire geometry, and **42 manually reviewed critical pin/net spot-checks**. Most intended nets and the generated schematic use the same generator; the full-net audit is **not independent datasheet verification**. Even the separate spot-checks do not establish analog correctness.
+- Manufacturer TPS2660 datasheet specifies reverse-current blocking with back-to-back FETs, including output-leakage characterization with IN unpowered. Removing the redundant series diode improves 5 V headroom but **does not qualify** 5 V fallback, USB host authorization, backfeed under every fault, or the chosen 0.30 A limit at operating conditions. CH224K requests 9 V only if the source offers it; unpowered CC/dead-battery Rd and 5 V-only attachment require a bench test.
 
 ## Panel board
 
-- **0 DRC violations; 0 unconnected items.** Valid closed external outline and rounded USB opening.
-- Only four NPTH mounting footprints; no electrical component, route, via, copper graphic or zone.
+- `kicad-cli pcb drc --severity-all --format json`: **0 violations, 0 unconnected items**. Closed outer outline and rounded USB aperture. Four mechanical NPTH footprints only; no electrical component or copper artwork.
 
 ## Carrier board
 
-- **4 DRC clearance errors** remain, all at the *unmodified installed USB4105 footprint*: ground SMT pads versus its two locating NPTH holes. Actual clearance is **0.1944 mm**, below KiCad's default **0.2500 mm** rule. Duplicate A/B ground pads yield four reported instances.
-- **6 unconnected-item errors** are expected because connector power/ground/shield pads are intentionally unrouted. These were not fixed with prohibited copper or hidden by severity changes.
-- No invalid outline errors. Front shell pad-to-edge clearance is now **0.5000 mm** under the default 0.5000 mm rule. Mouth is consequently at nominal **Z=+0.800 mm**.
-- **Do not fabricate yet:** ask the chosen fabricator to accept the datasheet/library locating-hole geometry or revise the footprint with a qualified land-pattern/tolerance analysis. The default hole rule has not been weakened just to obtain a green report.
-- Schematic parity is intentionally not requested: 84 other circuit components are not placed. There is only one electrical footprint, J1, plus four mechanical NPTH holes.
+- `kicad-cli pcb drc --severity-all --format json`: **4 hole-clearance violations**, all J1 A1/B12 and A12/B1 ground SMT pads versus the two locating NPTH holes of the **unmodified** installed USB4105 footprint. Measured **0.1944 mm < 0.2500 mm** default board rule. **6 unconnected items**, expected because J1 is intentionally unrouted. No outline violation.
+- No arbitrary rule suppression or unsubstantiated land-pattern adjustment was made. Fabricator-approved, connector-drawing-confirmed footprint/hole/pad tolerance work is still required. Schematic parity was not requested: only J1 and four mechanical holes are placed. This board is not an electrically complete PCB.
 
-## Programmatic invariants
+## Safety-critical residual blockers
 
-`geometry-and-net-audit.json` records the pin check and board inventory. Both board files have **0 tracks, 0 vias, 0 zones, 0 copper graphics**. The nominal coordinate transform gives port `(X,Y,Z)=(4.900,64.250,0.800)` mm with insertion vector `(0,0,+1)` and a 90-degree angle to the front-panel plane. USB pad net assignments are compared with the schematic intent.
+- **Do not fabricate:** SMBJ12CA is **before** the eFuse. Its 12 V standoff / 13.3–14.7 V breakdown means a sustained 15/20 V PD or hot-plug fault can heat the TVS while eFuse OVP rejects its *output*. The 500 mA fuse time-current behavior, TVS steady-state dissipation and surge coordination are not established. Choose/validate a 20 V-tolerant upstream protection strategy before building. The enlarged R1 (1 kΩ, ≥0.5 W 2010 footprint) addresses its own potential 21 V fault dissipation, **not** this TVS risk.
+- The four physical J1 copper-to-NPTH DRC errors remain. No datasheet-confirmed footprint revision or fabrication clearance concession exists.
+- No authorized generic USB-host fallback. Default RUN open, no USB enumeration/CC current decoding; a dedicated approved 5 V source, measured voltage under load, and startup/current/thermal/audio testing are needed before even the tentative 20 mA/rail test budget. On 9 V PD, the tentative 40 mA/rail budget is likewise not established. TPS62160 4.016 V at minimum 4.2 V eFuse input has narrow dropout room.
+- TPS62125 operates *up to* 1 MHz and enters light-load PFM: strict always-MHz/audio-clean switching is **not met**. Do not claim stable/noiseless rails from ERC/DRC. Analog compensation, effective capacitance, current limit, LDO/headroom, output faults, mechanical brackets and ordinary plug fit remain unqualified.
 
-These geometry checks do not certify the still-unspecified bracket/cradle, output harness connector or worst-case mechanical tolerance stack. There was no completed electrical placement, copper routing, 3D assembly qualification or bench measurement.
+## Geometry / provenance
 
-## Repository hygiene
-
-No commit or merge. No sibling repository access. Raw downloaded datasheets, extracted text and research screenshots are ignored under `/research/` and are not deliverables; only concise facts and source URLs are included. The schematic PDF is a generated design deliverable, not a raw source PDF.
+`geometry-and-net-audit.json`: carrier `J1,H1–H4`, panel `H1–H4`; **both boards 0 tracks, 0 vias, 0 zones, 0 copper graphics**. Nominal port `(X,Y,Z)=(4.900,64.250,0.800) mm`, insertion normal to the panel, with faceplate aperture 4.2 × 9.8 mm. Nominal geometry is not a tolerance stack or a front-mating plug test. No board can be fabricated into a functioning power supply. No commit or merge; no sibling-repository access.

@@ -29,13 +29,26 @@ for p in walk(lib,'pin'):
         got=[labels[e] for e in ends if e in labels]
         assert got==[want],('J2 schematic wiring',pin,want,got)
         actual[('J2',pin)]=want
+# Manually reviewed spot-checks, independent of the generated pin-net-audit JSON.
+# These catch generator/audit co-drift, but do NOT prove datasheet or analog correctness.
+reviewed={
+ 'J1':{'A4':'VBUS_RAW','A5':'CC1','B5':'CC2','SH':'GND'},
+ 'U1':{'1':'PD_VDD','6':'CC2','7':'CC1','9':'PD_CFG','11':'GND'},
+ 'U2':{'1':'VBUS_FUSED','2':'VBUS_FUSED','3':'UV_EN','5':'OV_SET','8':'RTN','9':'GND','11':'ILIM','15':'VPROT','16':'VPROT','17':'RTN'},
+ 'U3':{'2':'VPROT','5':'MID_FB','6':'V4','7':'MID_SW'},
+ 'U4':{'1':'BOOST_SW','5':'V4','13':'INV_SW','15':'PRE_N','16':'NEG_FB','17':'BI_REF','22':'POS_FB','23':'PRE_P'},
+ 'U7':{'1':'N12','2':'N12_FB','4':'GND','5':'PRE_N','8':'PRE_N'},
+ 'J2':{'1':'N12','2':'N12','9':'P12','10':'P12','11':'P5','12':'P5'},
+}
+for ref,pins in reviewed.items():
+ for pin,want in pins.items(): assert actual.get((ref,pin))==want,('manual spot-check',ref,pin,want,actual.get((ref,pin)))
 checked=0
 for ref,pins in expected.items():
     if ref.startswith('#'):continue
     for pin,net in pins.items():
         if net is None:continue
         got=actual.get((ref,pin)); assert got==net,(ref,pin,net,got);checked+=1
-result={'connected_symbol_pins_verified':checked,'off_board_J2_connected_pins_checked_in_schematic':12,'other_connected_pins_verified_against_KiCad_netlist':checked-12,'boards':{}}
+result={'connected_symbol_pins_verified':checked,'off_board_J2_connected_pins_checked_in_schematic':12,'other_connected_pins_verified_against_KiCad_netlist':checked-12,'manually_reviewed_pin_net_spot_checks':sum(map(len,reviewed.values())),'audit_limit':'full intended connections and generated schematic share one source; manually reviewed spot checks do not validate electrical operation','boards':{}}
 for fn,allowed in [('big_modular.kicad_pcb',{'J1','H1','H2','H3','H4'}),('front_panel.kicad_pcb',{'H1','H2','H3','H4'})]:
     b=pcb.LoadBoard(str(root/'hardware'/fn)); refs={f.GetReference() for f in b.GetFootprints()}
     assert refs==allowed,(fn,refs);assert len(list(b.GetTracks()))==0;assert len(list(b.Zones()))==0
