@@ -40,6 +40,29 @@ Andreas Dorfner's **Powerline USB-C** is a published **3HP / 20 V** PD Eurorack 
 
 The unsafe D1 TVS stays absent: there is **no qualified VBUS/CC ESD or hot-plug surge solution**. No output precision OVP, all-rail fault latch, tracking, guaranteed discharge, thermal/EMI qualification or plug/cable fit certification exists. TPS62125 PFM/up-to-1MHz operation still does not meet an always-MHz requirement. See `docs/design-review.md` and `docs/test-matrix.md`.
 
+## Shared KiCad tools and part sourcing
+
+Use the local [portable KiCad toolkit](opt/kicad-tools/README.md) first for native
+checks, candidate edits, exports, catalog lookup, BOM audits and passive sourcing.
+It was copied independently from Bread Modular; no source checkout is needed at
+runtime. [Project workflow and safety rules](Code.md) are also linked from
+[AGENTS.md](AGENTS.md), and both workflow/sourcing skills are discoverable under
+`.agents/skills/`.
+
+```sh
+python3 -B opt/kicad-tools/kicad_tools.py --help
+python3 -B opt/kicad-tools/kicad_tools.py doctor --config tools/kicad-project.json
+python3 -B opt/kicad-tools/kicad_tools.py assembly --help
+python3 -B -m unittest discover -s tests -v
+```
+
+See [setup, provenance and exact sourcing/check commands](docs/kicad-tooling.md).
+The explicit profile selects the carrier, not the mechanical panel. Full PCB
+parity is intentionally incomplete; do not synchronize or route either board to
+make a generic check pass. Root `BOM.csv` is a design inventory, not the grouped
+assembly BOM expected by the auditor. Optional routing controllers are included
+**without runtimes**. Setup does not change hardware or establish release approval.
+
 ## Regeneration / checks
 
 Installed engine used: KiCad 10.0.6. `tools/build_project.py` owns the circuit inventory; `tools/render_schematic.py` owns the one-sheet layout; `tools/build_mechanics.py` owns the original assembly drawing. No research download is needed to regenerate.
