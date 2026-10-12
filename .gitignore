@@ -8,3 +8,8 @@ __pycache__/
 ~*.lck
 *.bak
 .DS_Store
+
+# Portable KiCad toolkit scratch evidence and explicitly optional router runtimes
+/opt/kicad-tools/integration.tmp/
+/opt/kicad-routing/work.tmp/
+/opt/kicad-routing/runtime.tmp/
