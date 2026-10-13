@@ -90,7 +90,7 @@ class KiCadToolkitSetupTests(unittest.TestCase):
             self.assertFalse(report["order_ready"])
             self.assertEqual(Path(report["selection"]["board"]), ROOT / "hardware/big_modular.kicad_pcb")
             self.assertEqual(Path(report["selection"]["root_schematic"]), ROOT / "hardware/big_modular.kicad_sch")
-            self.assertEqual(len(report["selection"]["sheet_files"]), 1)
+            self.assertEqual(len(report["selection"]["sheet_files"]), 4)
             self.assertFalse(output.exists())
         self.assertEqual({p: digest(p) for p in inputs}, before)
 
