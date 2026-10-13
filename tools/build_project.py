@@ -1,15 +1,31 @@
 #!/usr/bin/env python3
 """Generate a review-only KiCad engineering prototype. Never creates copper routes/zones."""
 from pathlib import Path
-import sys, json, uuid, copy, csv, math, shutil
+import sys, json, uuid, copy, csv, math, shutil, argparse
 sys.path.insert(0,str(Path(__file__).parent))
 from sexp import parse,dump,nodes,one,walk,atom
 ROOT=Path(__file__).resolve().parent.parent
-HW=ROOT/'hardware'; HW.mkdir(exist_ok=True)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--schematic-only', action='store_true', help='Render a NEW schematic candidate only; never regenerate boards, BOM, libraries or audit.')
+parser.add_argument('--output', type=Path, help='Required NEW directory for --schematic-only; copies existing project/library context.')
+args = parser.parse_args()
+if args.schematic_only != bool(args.output):
+    parser.error('--schematic-only and --output must be used together')
+HW = args.output.resolve() if args.schematic_only else ROOT/'hardware'
+if args.schematic_only:
+    HW.mkdir(parents=True, exist_ok=False)
+else:
+    HW.mkdir(exist_ok=True)
 def uid(s): return str(uuid.uuid5(uuid.NAMESPACE_URL,'big-modular/revA/'+s))
 def q(s): return json.dumps(str(s))
 LIB={}; CACHE={}
+PINNED = ({s[1]: s for s in nodes(parse((ROOT/'hardware/BigModular.kicad_sym').read_text()), 'symbol')}
+          if args.schematic_only else {})
 def stock(lib,name):
+    if args.schematic_only:
+        kind = lib+'_'+name
+        LIB[kind] = copy.deepcopy(PINNED[kind])
+        return kind
     if lib not in CACHE:
         CACHE[lib]={s[1]:s for s in nodes(parse(Path('/usr/share/kicad/symbols',lib+'.kicad_sym').read_text()),'symbol')}
     def resolve(n):
@@ -140,7 +156,17 @@ for i,net in enumerate(['GND','VBUS_RAW','VBUS_FUSED','PD_VDD','V4','ANA_V4','PR
     add('06_output',f'#FLG{i+1:02}',FLAG,'PWR_FLAG',{'1':net},50+(i%5)*70,155+(i//5)*45)
 
 from render_schematic import render
+if args.schematic_only:
+    # Use the pinned project symbols rather than silently upgrading installed libraries.
+    assert set(LIB) <= set(PINNED), 'Missing pinned symbol'
+    LIB = {name: PINNED[name] for name in LIB}
 render(HW, SHEETS, LIB, uid)
+if args.schematic_only:
+    for name in ['BigModular.kicad_sym', 'sym-lib-table', 'fp-lib-table', 'big_modular.kicad_pro']:
+        shutil.copyfile(ROOT/'hardware'/name, HW/name)
+    shutil.copytree(ROOT/'hardware/BigModular.pretty', HW/'BigModular.pretty')
+    print('Created', len(BOM), 'components in three functional subsheets plus an overview; boards/BOM unchanged:', HW)
+    sys.exit(0)
 (HW/'BigModular.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "kicad_symbol_editor")\n'+'\n'.join(dump(s) for s in LIB.values())+'\n)')
 (HW/'sym-lib-table').write_text('(sym_lib_table (version 7) (lib (name "BigModular") (type "KiCad") (uri "${KIPRJMOD}/BigModular.kicad_sym") (options "") (descr "Pinned project symbols; see pin audit")))')
 (HW/'big_modular.kicad_pro').write_text(json.dumps({'meta':{'filename':'big_modular.kicad_pro','version':1},'text_variables':{'STATUS':'ENGINEERING PROTOTYPE - DO NOT FABRICATE'}},indent=2)+'\n')
@@ -213,4 +239,4 @@ txt(p,'Doepfer X=7.5 / dia3.2: 0.7mm FR4 web; M3 head overhang BLOCKER',114,65,.
 txt(p,'Mounting proposal: ../docs/assembly.svg / mechanics.md',112,70,.85)
 pcb.SaveBoard(str(HW/'front_panel.kicad_pcb'),p)
 (HW/'front_panel.kicad_pro').write_text(json.dumps({'meta':{'filename':'front_panel.kicad_pro','version':1}},indent=2)+'\n')
-print('Created',len(BOM),'schematic components,',1,'sheet, two unrouted boards.')
+print('Created',len(BOM),'schematic components, three subsheets + overview, two unrouted boards.')

@@ -1,4 +1,4 @@
-# Big Modular — A1 PD-only, single-sheet WIP
+# Big Modular — PD-only power module / three-sheet circuit WIP
 
 **INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE OR CONNECT VALUABLE LOADS.**
 
@@ -6,8 +6,9 @@ This revision is a connected circuit proposal, not a working power module. Expli
 
 ## Deliverables
 
-- `hardware/big_modular.kicad_sch`: **one A1 sheet**, 88 real components, visible wired interstage power/control paths; no subsheets. The six obsolete circuit files are removed.
-- [`docs/schematic.pdf`](docs/schematic.pdf): **exactly one page**, regenerated from that schematic.
+- `hardware/big_modular.kicad_sch`: **A4 navigation overview plus three A3 functional subsheets**: input/protection, power conversion, output rails. All 88 real components and their electrical connectivity are retained; local feedback/filter/protection branches now use visible wires.
+- [`docs/schematic.pdf`](docs/schematic.pdf): **four navigable pages** (overview + three circuit pages), exported from the root hierarchy.
+- [Sheet guide](docs/schematic-guide.md): page map, signal flow and manual-reading notes. [Component guide](docs/component-guide.md): what each main component/support network does, how and why. [Readability validation](reports/schematic-readability.md): unchanged connectivity and remaining check limitations.
 - `hardware/big_modular.kicad_pcb`: perpendicular carrier, **J1 only** electrically; four mechanical NPTHs. J1 position, orientation and selected footprint are unchanged.
 - `hardware/front_panel.kicad_pcb`: 9.8 × 128.5 × 1.6 mm FR4 panel. Rail holes corrected to **x=7.5, y=3/125.5, Ø3.2**. The old 5 mm slots cannot fit at x=7.5; ordinary screw heads and the 0.7 mm edge web remain mechanical blockers.
 - [`docs/assembly.svg`](docs/assembly.svg) / [`assembly.pdf`](docs/assembly.pdf): original dimensioned FRONT/SIDE/TOP views, two machined right-angle interposers, screws, engagement, supports and harness envelope. See [`mechanics.md`](docs/mechanics.md).
@@ -21,7 +22,7 @@ This revision is a connected circuit proposal, not a working power module. Expli
 USB-C -> fuse -> TPS26600 HARD GATE -> TPS62160 4.016 V
                 ^                       -> TPS65131 +/-13.95 V
  CH224K PG -> Q1 -> RUN                    -> +/-12 V LDOs
-                AND UV/OV window           -> TPS62125 +6.52 V -> +5 V LDO
+                AND UV/OV window           -> TPS62125 ~+6.5 V -> +5 V LDO
                                                                -> off-board 16-pin J2
 ```
 
@@ -32,7 +33,7 @@ CH224K requests 9 V with CFG1=6.8k; CFG2/3 float. Its DP/DM are shorted locally 
 - **PG + voltage qualification is NOT proven explicit-PD-contract/current qualification.** WCH's generic PG specification does not attest a 9 V fixed PDO or sufficient negotiated current. Under a compliant-source assumption this is a useful hard interlock, but the strict contract-qualified requirement remains an explicit fabrication blocker. A 9 V DC reading alone is insufficient; no cryptographic authentication is claimed.
 - No loads until independent PD analysis verifies a fixed 9 V contract with at least 0.5 A authorization and the outstanding design blockers are cleared. Only provisional simultaneous **~40 mA on each rail** is proposed for initial tests; no continuous/peak output rating exists.
 
-The eFuse setting is 0.2985 A **nominal**, not a guaranteed input bound at this low setting and not a rail rating. About 1.16 W output and 2.26 W converter input at the provisional loads are estimates; housekeeping/inrush and thermal margins are unverified. +5 V shares the positive boost budget. Approximately ±13.95/+6.52 V preregulation is retained, subject to dropout, ripple, stability and actual-part checks.
+The eFuse setting is 0.2985 A **nominal**, not a guaranteed input bound at this low setting and not a rail rating. About 1.16 W output and 2.26 W converter input at the provisional loads are estimates; housekeeping/inrush and thermal margins are unverified. +5 V shares the positive boost budget. Approximately ±13.95/+6.5 V preregulation is retained, subject to dropout, ripple, stability and actual-part checks. U5's 6.52 V divider-selection target uses 0.800 V; its 0.808 V typical reference predicts about 6.585 V. U3 PG sequences normal startup but is high-impedance in shutdown/UVLO, not a guaranteed fault latch; see the component guide.
 
 ## Precedent, differences and limitations
 
@@ -65,14 +66,15 @@ assembly BOM expected by the auditor. Optional routing controllers are included
 
 ## Regeneration / checks
 
-Installed engine used: KiCad 10.0.6. `tools/build_project.py` owns the circuit inventory; `tools/render_schematic.py` owns the one-sheet layout; `tools/build_mechanics.py` owns the original assembly drawing. No research download is needed to regenerate.
+Installed engine used: KiCad 10.0.6. `tools/build_project.py` owns the circuit inventory; `tools/render_schematic.py` owns the three-subsheet hierarchy/layout; `tools/build_mechanics.py` owns the original assembly drawing. For schematic-only changes, generate a **new candidate** with pinned symbols; the unflagged legacy builder also regenerates both boards and is not appropriate for this workflow. No research download is needed to regenerate.
 
 ```sh
-/usr/bin/python3 tools/build_project.py
-/usr/bin/python3 tools/build_mechanics.py
+python3 -B tools/build_project.py --schematic-only --output research/new-schematic-candidate
+# Review/validate the candidate, then copy only its four schematic files into hardware/.
+# The remaining commands validate/export the delivered hardware/ hierarchy.
 kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all -o reports/erc.rpt
 kicad-cli sch erc hardware/big_modular.kicad_sch --severity-all --format json -o reports/erc.json
-kicad-cli sch export pdf hardware/big_modular.kicad_sch -o docs/schematic.pdf
+kicad-cli sch export pdf hardware/big_modular.kicad_sch --draw-hop-over -o docs/schematic.pdf
 kicad-cli sch export netlist hardware/big_modular.kicad_sch -o reports/big_modular.net
 kicad-cli pcb drc hardware/big_modular.kicad_pcb --severity-all --format json -o reports/carrier-drc.json
 kicad-cli pcb drc hardware/front_panel.kicad_pcb --severity-all --format json -o reports/panel-drc.json
@@ -81,4 +83,4 @@ pdfinfo docs/schematic.pdf
 git diff --check
 ```
 
-ERC cleanliness is not proof of function. DRC runs intentionally omit schematic parity/refill. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 21 wire-only interstage connections, and checks actual PCB geometry. User rail continuous/peak targets are still required before any output rating can be designed.
+ERC cleanliness is not proof of function. DRC runs intentionally omit schematic parity/refill. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 20 wire/hierarchy interstage paths and 57 local wire paths, retains one documented named PRE_P continuation, and checks actual PCB geometry. A native before/after audit retains all 288 exported pin memberships, including no-connect/singleton nets. Private isolated ERC retains 68 pre-existing footprint-library configuration warnings; installed-environment ERC reports zero. No rules were suppressed. User rail continuous/peak targets are still required before any output rating can be designed.

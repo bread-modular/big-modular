@@ -11,49 +11,21 @@ expected=json.loads((root/'docs/pin-net-audit.json').read_text())
 with (root/'BOM.csv').open(newline='') as f:bom=list(csv.DictReader(f))
 assert 'D1' not in expected
 assert all(p['Reference']!='D1' and 'SMBJ12CA' not in (p['Value']+' '+p['MPN']) for p in bom)
-assert len(list((root/'hardware').glob('*.kicad_sch')))==1
-sh=parse((root/'hardware/big_modular.kicad_sch').read_text())
-assert not nodes(sh,'sheet')
-assert not nodes(sh,'global_label')
+from schematic_connectivity import Connectivity, pos
+graph = Connectivity(root/'hardware')
+pin_names = graph.named_pins()
+for ref, ps in expected.items():
+    for pin, want in ps.items():
+        assert pin_names.get((ref, pin), 'MISSING') == want, ('schematic wire/hierarchy connectivity', ref, pin, want, pin_names.get((ref, pin)))
+assert set(pin_names) == {(ref, pin) for ref, ps in expected.items() for pin in ps}, 'Inventory changed'
 netlist=parse((root/'reports/big_modular.net').read_text());actual={}
 for n in nodes(one(netlist,'nets'),'net'):
-    name=one(n,'name')[1].lstrip('/')
+    # Native hierarchy adds a sheet path. All original leaf net names stay unique.
+    name=one(n,'name')[1].rsplit('/',1)[-1]
     for p in nodes(n,'node'):actual[(one(p,'ref')[1],one(p,'pin')[1])]=name
-# Independently traverse real schematic segments (without relying on generated intended nets).
-# A crossing without a shared endpoint/junction is not connected.
-pos=lambda p:tuple(round(float(x),5) for x in p)
-libs={s[1]:s for s in nodes(one(sh,'lib_symbols'),'symbol')}
-wires=[tuple(pos(p[1:3]) for p in nodes(one(w,'pts'),'xy')) for w in nodes(sh,'wire')]
-labels={pos(one(l,'at')[1:3]):l[1] for l in nodes(sh,'label')}
-junctions={pos(one(j,'at')[1:3]) for j in nodes(sh,'junction')}
-ncs={pos(one(n,'at')[1:3]) for n in nodes(sh,'no_connect')}
-pins={}
-for s in nodes(sh,'symbol'):
-    ref=next(p[2] for p in nodes(s,'property') if p[1]=='Reference')
-    at=one(s,'at');x,y=map(float,at[1:3]);angle=math.radians(float(at[3]));co=round(math.cos(angle));si=round(math.sin(angle))
-    for p in walk(libs[one(s,'lib_id')[1]],'pin'):
-        n=one(p,'number')[1];a=one(p,'at');px,py=map(float,a[1:3])
-        pins[(ref,n)]=pos([x+px*co-py*si,y-px*si-py*co])
-points={p for w in wires for p in w}|set(labels)|junctions|set(pins.values())
-graph={p:p for p in points}
-def find(p):
-    while graph[p]!=p:graph[p]=graph[graph[p]];p=graph[p]
-    return p
-def join(a,b):graph[find(a)]=find(b)
-for a,b in wires:
-    axis=0 if a[1]==b[1] else 1
-    for p in points:
-        if p[1-axis]==a[1-axis] and min(a[axis],b[axis])<=p[axis]<=max(a[axis],b[axis]):join(a,p)
-connected_labels=defaultdict(set)
-for p,n in labels.items():connected_labels[find(p)].add(n)
-assert all(len(n)==1 for n in connected_labels.values()),('shorted names',[n for n in connected_labels.values() if len(n)>1])
-for key,p in pins.items():
-    ref,n=key;want=expected[ref][n]
-    if want is None:assert p in ncs,('missing NC',key)
-    else:
-        names=connected_labels[find(p)]
-        assert names=={want},('schematic pin->wire->label',key,want,names)
-        if ref=='J2':actual[key]=want
+# Off-board harness connectivity is checked geometrically even if an export omits it.
+for pin in expected['J2']:
+    if ('J2', pin) not in actual:actual[('J2', pin)] = pin_names[('J2', pin)]
 # Explicitly verify interstage wires without using labels at all.
 backbone=[(('J1','A4'),('F1','1')),(('F1','2'),('U2','1')),
           (('U2','15'),('U3','2')),(('U3','7'),('L1','1')),
@@ -65,7 +37,42 @@ backbone=[(('J1','A4'),('F1','1')),(('F1','2'),('U2','1')),
           (('U1','10'),('R28','1')),(('R28','2'),('Q1','1')),
           (('Q1','3'),('JP1','1')),(('JP1','2'),('U2','7')),
           (('U3','8'),('U4','8')),(('U3','8'),('U4','10'))]
-for a,b in backbone:assert find(pins[a])==find(pins[b]),('missing VISIBLE interstage wire',a,b)
+# One intentionally remote continuation avoids running PRE_P across U4's feedback
+# and ground network to U5. Retain its electrical assertion; do not call it wire-only.
+remote_pair = (('D2','1'),('U5','2'))
+for a,b in backbone:
+    assert actual.get(a) == actual.get(b), ('interstage net changed', a, b)
+    if (a,b) != remote_pair:
+        assert graph.wire_connected(a,b), ('missing VISIBLE interstage wire or hierarchy path',a,b)
+# Newly visible local circuits: these must NEVER regress to label-only wiring.
+local_wires = [
+ (('U1','9'),('R2','1')), (('U1','10'),('R3','2')),
+ (('U2','3'),('R4','2')), (('U2','3'),('R5','1')),
+ (('U2','5'),('R6','2')), (('U2','5'),('R7','1')),
+ (('U2','11'),('R8','1')), (('U2','12'),('C3','1')),
+ (('U3','2'),('C5','1')), (('U3','2'),('C7','1')),
+ (('U3','8'),('R11','2')), (('U3','6'),('L1','2')),
+ (('U4','22'),('R12','2')), (('U4','22'),('R13','1')), (('U4','22'),('C10','2')),
+ (('U4','16'),('R14','2')), (('U4','16'),('R15','1')), (('U4','16'),('C11','2')),
+ (('U4','17'),('R15','2')), (('U4','17'),('C12','1')),
+ (('U4','18'),('C14','1')), (('U4','21'),('C13','1')),
+ (('U4','4'),('R16','2')), (('U4','4'),('C15','1')),
+ (('U5','6'),('L4','2')), (('U5','5'),('R17','2')), (('U5','5'),('R18','1')),
+]
+for u,cin,cout,nr,ff,rt,rb,rev,clamp,bleed in [
+ ('U6','C21','C22','C23','C24','R19','R20','D4','D5','R25'),
+ ('U7','C25','C26','C27','C28','R21','R22','D6','D7','R26'),
+ ('U8','C29','C30','C31','C32','R23','R24','D8','D9','R27')]:
+    local_wires.extend([((u,'8'),(cin,'1')), ((u,'1'),(cout,'1')),
+        ((u,'6'),(nr,'1')), ((u,'2'),(ff,'2')), ((u,'2'),(rt,'2')),
+        ((u,'2'),(rb,'1')), ((u,'1'),(bleed,'1')),
+        ((u,'1'),(clamp,'2' if u=='U7' else '1')),
+        ((u,'8'),(rev,'2' if u=='U7' else '1')),
+        ((u,'1'),(rev,'1' if u=='U7' else '2'))])
+for a,b in local_wires:assert graph.wire_connected(a,b), ('local branch reverted to labels', a,b)
+assert pin_names[('U2','8')] != pin_names[('U2','9')], 'RTN must stay separate from GND'
+assert pin_names[('U4','17')] != pin_names[('U4','19')], 'BI_REF must stay separate from GND'
+
 # Deliberately hand-authored spot checks separate from the generator and its audit file.
 reviewed={
  'J1':{'A4':'VBUS_RAW','A5':'CC1','B5':'CC2','SH':'GND'},
@@ -107,10 +114,10 @@ for v,pg,run in itertools.product([0,5,5.5,9,15,20,21],[False,True],[False,True]
     cases.append({'VBUS':v,'PG_low':pg,'RUN_closed':run,'nominal_gate_enable':enabled})
 (root/'reports/pd-gate-check.json').write_text(json.dumps({'UV_rising_V':uv_r,'UV_falling_V':uv_f,'OV_rising_V':ov_r,'OV_falling_V':ov_f,'logic_cases':cases,'limitation':'Voltage/PG/RUN structural checks only. CH224K explicit 9V PDO/current status, dynamic timing and leakage remain UNPROVEN; no fabrication.'},indent=2)+'\n')
 info=subprocess.check_output(['pdfinfo',str(root/'docs/schematic.pdf')],text=True)
-assert any(l.split()[-1]=='1' for l in info.splitlines() if l.startswith('Pages:'))
-result={'schematic_sheets':1,'pdf_pages':1,'BOM_components':len(bom),'connected_symbol_pins_verified':checked,
+assert any(l.split()[-1]=='4' for l in info.splitlines() if l.startswith('Pages:'))
+result={'schematic_sheets':4,'functional_subsheets':3,'pdf_pages':4,'BOM_components':len(bom),'connected_symbol_pins_verified':checked,
  'off_board_J2_connected_pins_checked_in_schematic':12,'other_connected_pins_verified_against_KiCad_netlist':checked-12,
- 'independent_pin_net_spot_checks':sum(map(len,reviewed.values())), 'visible_wire_only_interstage_checks':len(backbone),
+ 'independent_pin_net_spot_checks':sum(map(len,reviewed.values())), 'visible_wire_or_hierarchy_interstage_checks':len(backbone)-1, 'named_remote_interstage_checks':1, 'visible_local_branch_checks':len(local_wires), 'hierarchy_port_links':len(graph.hierarchy_links),
  'voltage_PG_RUN_logic_cases':len(cases),'audit_limit':'Connectivity/threshold regression only, not PD proof, analog simulation, physical fit or operation. Generated audit is not independent; the hardcoded spot checks are.', 'boards':{}}
 boards={}
 for fn,allowed in [('big_modular.kicad_pcb',{'J1','H1','H2','H3','H4'}),('front_panel.kicad_pcb',{'H1','H2','H3','H4'})]:
@@ -158,4 +165,4 @@ for fn,w,h in [('big_modular.kicad_pcb',100.5,60),('front_panel.kicad_pcb',9.8,1
     assert math.isclose(max(p[1] for p in points)-min(p[1] for p in points),h,abs_tol=1e-5)
 result['mechanics']={'actual_NPTH_geometry_checks':8,'port_axis_mm':[4.9,64.25,.8],'insertion_vector':[0,0,1],'axis_to_panel_plane_degrees':90,'front_shell_pad_edge_clearance_mm':.5,'interposer_thread_engagement_mm':2.4,'rail_mount':'Doepfer x=7.5, diameter 3.2; standard head overhang/0.7mm FR4 web are blockers','status':'nominal proposal; strength/tolerances/plug/cable/screws unqualified'}
 (root/'reports/geometry-and-net-audit.json').write_text(json.dumps(result,indent=2)+'\n')
-print(f'PASS: {checked} connected pins; 65 independent spot checks; 21 visible interstage wires; 28 gate logic cases; 8 NPTH geometry checks; 1 sheet/page; zero routing.')
+print(f'PASS: {checked} connected pins; 65 independent spot checks; {len(backbone)-1} wired/hierarchical interstage paths + 1 named continuation; {len(local_wires)} local wire paths; 28 gate cases; 8 NPTH checks; 3 subsheets + overview; zero routing.')

@@ -1,19 +1,163 @@
 (export
 	(version "E")
 	(design
-		(source "/home/azero/.okbrain/workspaces/big-modular/006/hardware/big_modular.kicad_sch")
-		(date "2026-09-24T16:07:12")
+		(source "/home/azero/.okbrain/workspaces/big-modular/009/hardware/big_modular.kicad_sch")
+		(date "2026-10-12T10:31:24")
 		(tool "Eeschema 10.0.6-10.0.6~ubuntu26.04.1")
 		(sheet
 			(number "1")
 			(name "/")
 			(tstamps "/")
 			(title_block
-				(title "Big Modular - PD ONLY / one-sheet circuit proposal")
+				(title "Big Modular - Overview and sheet navigation")
 				(company "Big Modular")
-				(rev "A1 WIP")
-				(date "2026-09-24")
+				(rev "Hierarchy WIP")
+				(date)
 				(source "big_modular.kicad_sch")
+				(comment
+					(number "1")
+					(value "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+		(sheet
+			(number "2")
+			(name "/Input and protection/")
+			(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
+			(title_block
+				(title "Big Modular - Input and protection")
+				(company "Big Modular")
+				(rev "Hierarchy WIP")
+				(date)
+				(source "01_input_protection.kicad_sch")
+				(comment
+					(number "1")
+					(value "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+		(sheet
+			(number "3")
+			(name "/Power conversion/")
+			(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			(title_block
+				(title "Big Modular - Power conversion")
+				(company "Big Modular")
+				(rev "Hierarchy WIP")
+				(date)
+				(source "02_power_conversion.kicad_sch")
+				(comment
+					(number "1")
+					(value "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+		(sheet
+			(number "4")
+			(name "/Output rails/")
+			(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			(title_block
+				(title "Big Modular - Output rails")
+				(company "Big Modular")
+				(rev "Hierarchy WIP")
+				(date)
+				(source "03_output_rails.kicad_sch")
 				(comment
 					(number "1")
 					(value "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE")
@@ -96,11 +240,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -111,8 +255,8 @@
 				(value "C_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "a9cb1e44-8d64-5407-bbb6-b7418691ce98")
 			(units
@@ -170,11 +314,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -185,8 +329,8 @@
 				(value "C_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "842a80df-3f76-5853-bbb9-df69cc651424")
 			(units
@@ -245,11 +389,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -260,8 +404,8 @@
 				(value "C_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "deb87798-a293-523d-b5a6-bb45fd566a7a")
 			(units
@@ -320,11 +464,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -335,2710 +479,10 @@
 				(value "C_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "2adda49d-ba92-52cc-8acd-6f3b131cf637")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C5")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "4f1c618f-632f-5460-8b08-91352d99ed84")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C6")
-			(value "22u 10V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "e0c4b0a8-a994-58b3-a8c9-c7091c8e713b")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C7")
-			(value "100n 25V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "482c17a7-33ae-5112-9663-b253dc33aab4")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C8")
-			(value "22u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "c1a5ebb4-57e0-53e5-8079-53e29617da88")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C9")
-			(value "22u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "c2e55964-61db-5e71-8893-9879cd108ce7")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C10")
-			(value "6.8p C0G 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "c6c02e41-d39d-5388-b956-788078a116e5")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C11")
-			(value "6.8p C0G 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "8778e68d-14ac-5374-af61-87578fdb3911")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C12")
-			(value "220n 10V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "c82a0f34-b1ce-53e3-8b21-e2fecc4f94c5")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C13")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "07b32d91-33f9-5ae5-be42-e535c8f39585")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C14")
-			(value "4.7n C0G 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "cb423890-4ffe-5d1f-920c-76102a51ec24")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C15")
-			(value "100n 10V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "56165557-6866-5184-839f-dea1feabc433")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C16")
-			(value "4.7u 10V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "56fce9b7-b04a-5f19-aa8e-02808825c42f")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C17")
-			(value "4.7u 10V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "26e8d788-fa9c-5535-9646-62049227f04c")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C18")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "b313e711-b7d2-560d-9839-52559a595b24")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C19")
-			(value "22u 16V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "f369080c-81e1-5837-a650-cdf45cf52e64")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C20")
-			(value "100n 25V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "7df18556-4212-5b01-8355-b5ce8c0d1fd9")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C21")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "a2e8ca03-fb24-5b8b-b2e6-7f263f16a0d8")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C22")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "3cfefbda-b8d1-5cca-8f0e-eb6815d37180")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C23")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "1d692157-8ab1-500c-8a72-e0091688afa6")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C24")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "fe97db3e-54b7-5133-8dd4-5a463a9b7cd5")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C25")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "f9407aed-d83c-545a-bbea-0080d5d38d63")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C26")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "69ab16f3-a47b-58fd-b62a-81aa39c9f6fe")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C27")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "66cc63d6-8278-5390-a34c-eb71465e72f4")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C28")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "caeb6307-2c4a-506d-b6d4-d48317538a3b")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C29")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "57f61b9d-48c3-5af6-b46c-a8ec30f85789")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C30")
-			(value "10u 25V X7R")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "a1e56d49-0c10-5254-bf40-0662ee284412")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C31")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "8f0af7d0-8023-5257-a108-384e56f57587")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "C32")
-			(value "10n 50V")
-			(footprint "Capacitor_SMD:C_1206_3216Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_C")
-				(description "Unpolarized capacitor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "cap capacitor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "C_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "cb4002f1-405e-5692-bd83-285dc2a3d384")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D2")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "40594494-b97d-56de-9d35-d8f4cbe6a274")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D3")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "b867a71d-a65a-57cc-933a-f2e3441d3566")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D4")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "a07a016d-835f-5082-bcb6-6db60bddb902")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D5")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "6aa169e3-5310-57a0-816f-fe9655d98b10")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D6")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "c72cf0a2-a143-5531-a5cf-f9ad01dd63df")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D7")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "fb5a9d64-e2cf-5843-8ef8-cc76c54a2474")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D8")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "278b9c40-259e-57e4-9edc-0c05f7f16b56")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "D9")
-			(value "Schottky 1A 40V")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_D_Schottky")
-				(description "Schottky diode")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "diode Schottky")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "TO-???* *_Diode_* *SingleDiode* D_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "a1e19a16-ec44-5c1b-9138-02b97cc5fa8c")
 			(units
 				(unit
 					(name "A")
@@ -3094,11 +538,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3109,8 +553,8 @@
 				(value "*Fuse*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "910ae638-b435-504a-a31c-1976d0745e06")
 			(units
@@ -3167,11 +611,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3182,8 +626,8 @@
 				(value "USB*C*Receptacle*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "d69ffb57-359e-5bc5-8e94-9c4a140cf30e")
 			(units
@@ -3286,11 +730,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3301,308 +745,10 @@
 				(value "Jumper* TestPoint*2Pads* TestPoint*Bridge*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "bb5f02df-db60-538d-83d0-6ffffb36c05b")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "L1")
-			(value "2.2uH / Isat>=2A")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE") "Shielded inductor candidate, DCR/thermal/ripple to qualify.")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_L")
-				(description "Inductor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "Shielded inductor candidate, DCR/thermal/ripple to qualify.")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "inductor choke coil reactor magnetic")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Choke_* *Coil* Inductor_* L_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "8e384c76-9059-55bf-bdfc-58aa6a0debc6")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "L2")
-			(value "4.7uH / Isat>=3A")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_L")
-				(description "Inductor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "inductor choke coil reactor magnetic")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Choke_* *Coil* Inductor_* L_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "d8ec8e59-4fe4-5a89-a468-6dd47e7093af")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "L3")
-			(value "4.7uH / Isat>=3A")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_L")
-				(description "Inductor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "inductor choke coil reactor magnetic")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Choke_* *Coil* Inductor_* L_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "35f0c466-cc4d-5285-bdb6-98a6f333410d")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "L4")
-			(value "10uH / Isat>=1A")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE") "Select shielded inductor with verified saturation and thermal curves.")
-				(field
-					(name "Footprint")
-				)
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_L")
-				(description "Inductor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "Select shielded inductor with verified saturation and thermal curves.")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "inductor choke coil reactor magnetic")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "Choke_* *Coil* Inductor_* L_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "f1d52109-70ff-5a37-95cc-33171a68c8db")
 			(units
 				(unit
 					(name "A")
@@ -3657,11 +803,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3672,8 +818,8 @@
 				(value "SOT?23*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "c7f11664-288c-5daf-af1f-cc1ac2ec793b")
 			(units
@@ -3734,11 +880,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3749,8 +895,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "3e1b2815-cee8-5c5b-95c0-97ab56177085")
 			(units
@@ -3809,11 +955,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3824,8 +970,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "5eee0e84-4d68-55e1-bc22-875c8901bca8")
 			(units
@@ -3884,11 +1030,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3899,8 +1045,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "2f3f3c3f-ddcc-5d64-8c47-e4e24dce7b94")
 			(units
@@ -3959,11 +1105,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -3974,8 +1120,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "eaa79a05-4cb3-54ba-81db-166d158b1a91")
 			(units
@@ -4034,11 +1180,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -4049,8 +1195,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "2aac66b7-882e-53b3-a127-7de8dd8a04d8")
 			(units
@@ -4109,11 +1255,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -4124,8 +1270,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "5e0808ae-288c-57ee-a951-fa96222bf93b")
 			(units
@@ -4184,11 +1330,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -4199,8 +1345,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "1e843056-6fbe-5394-ab11-9488115ab994")
 			(units
@@ -4259,11 +1405,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -4274,1435 +1420,10 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "d617607b-7c97-5a41-b8f6-4c8449374296")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R9")
-			(value "40.2k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "60a5188e-16a3-5eb8-b5a1-ba8caf9ccbc1")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R10")
-			(value "10k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "53db2573-7a4f-5cf1-b673-360598b00c13")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R11")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "e236d65d-6958-5293-ab29-7b70e6ae3a41")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R12")
-			(value "1.05M 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "1e964098-ac60-53aa-86ea-3624616d0233")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R13")
-			(value "100k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "3d5ccf99-e210-5a19-a7eb-f10d18dc05bc")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R14")
-			(value "1.15M 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "9b69de68-4e0c-5a89-ac48-1443a4e17895")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R15")
-			(value "100k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "9ca30341-4a53-5869-97ba-dd951f5b970d")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R16")
-			(value "100R")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "3a4f125f-108c-5cce-b911-a764bf92ad6e")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R17")
-			(value "71.5k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "220c8796-4da9-5502-a136-4f6b9a8837e8")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R18")
-			(value "10k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "5c91a44d-bc12-5415-9950-e94eb8ea7747")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R19")
-			(value "91.2k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "45576e34-1911-5dc0-8f7f-dc675a328027")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R20")
-			(value "10k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "94a4467b-a1c6-5396-a3fc-4e909c398b87")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R21")
-			(value "92k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "7ecde6b6-ed43-5625-bbba-cc8b00aefaec")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R22")
-			(value "10k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "bccbab30-0a93-5e38-90d5-928053e5f840")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R23")
-			(value "32.2k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "2d772736-f7ac-5a1e-80a3-f51242acb136")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R24")
-			(value "10k 0.1%")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "bcbf3fe8-bba2-530b-b091-488679973d5d")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R25")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "9d47d985-f3fb-5f31-a4ad-bf8f5b5a598d")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R26")
-			(value "100k")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "c727c935-220a-55b9-a61b-c8a5747015ba")
-			(units
-				(unit
-					(name "A")
-					(pins
-						(pin
-							(num "1")
-						)
-						(pin
-							(num "2")
-						)
-					)
-				)
-			)
-		)
-		(comp
-			(ref "R27")
-			(value "47k")
-			(footprint "Resistor_SMD:R_0603_1608Metric")
-			(fields
-				(field
-					(name "MPN")
-				)
-				(field
-					(name "LCSC")
-				)
-				(field
-					(name "NOTE")
-				)
-				(field
-					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
-				(field
-					(name "Datasheet")
-				)
-				(field
-					(name "Description")
-				)
-			)
-			(libsource
-				(lib "BigModular")
-				(part "Device_R")
-				(description "Resistor")
-			)
-			(property
-				(name "MPN")
-				(value "")
-			)
-			(property
-				(name "LCSC")
-				(value "")
-			)
-			(property
-				(name "NOTE")
-				(value "")
-			)
-			(property
-				(name "Sheetname")
-				(value "big_modular")
-			)
-			(property
-				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
-			)
-			(property
-				(name "ki_keywords")
-				(value "R res resistor")
-			)
-			(property
-				(name "ki_fp_filters")
-				(value "R_*")
-			)
-			(sheetpath
-				(names "/")
-				(tstamps "/")
-			)
-			(tstamps "b05844d5-073f-5177-8f44-4391b5bb2bc5")
 			(units
 				(unit
 					(name "A")
@@ -5759,11 +1480,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -5774,8 +1495,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "e91cd9f0-aebe-5bfa-b867-946c0cced084")
 			(units
@@ -5834,11 +1555,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -5849,8 +1570,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "f154edfd-cc33-51ce-9019-13fc0c20c70e")
 			(units
@@ -5908,11 +1629,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -5923,8 +1644,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "fe46386d-cbfa-5fa9-be94-927ce7357385")
 			(units
@@ -5982,11 +1703,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -5997,8 +1718,8 @@
 				(value "R_*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "91592e6d-939d-5361-9627-052809fb1726")
 			(units
@@ -6054,11 +1775,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -6069,8 +1790,8 @@
 				(value "SSOP*3.9x4.9mm*P1mm*EP2.1x3.3mm*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "f8fed114-b843-57f8-a139-be9dd32d2686")
 			(units
@@ -6153,11 +1874,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Input and protection")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "01_input_protection.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -6168,8 +1889,8 @@
 				(value "HTSSOP*1EP*4.4x5mm*P0.65mm*Mask2.66x2.46mm*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Input and protection/")
+				(tstamps "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/")
 			)
 			(tstamps "ca450514-7905-57e0-b329-eaacde45cc2b")
 			(units
@@ -6232,6 +1953,2404 @@
 			)
 		)
 		(comp
+			(ref "C5")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "4f1c618f-632f-5460-8b08-91352d99ed84")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C6")
+			(value "22u 10V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "e0c4b0a8-a994-58b3-a8c9-c7091c8e713b")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C7")
+			(value "100n 25V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "482c17a7-33ae-5112-9663-b253dc33aab4")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C8")
+			(value "22u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "c1a5ebb4-57e0-53e5-8079-53e29617da88")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C9")
+			(value "22u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "c2e55964-61db-5e71-8893-9879cd108ce7")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C10")
+			(value "6.8p C0G 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "c6c02e41-d39d-5388-b956-788078a116e5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C11")
+			(value "6.8p C0G 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "8778e68d-14ac-5374-af61-87578fdb3911")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C12")
+			(value "220n 10V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "c82a0f34-b1ce-53e3-8b21-e2fecc4f94c5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C13")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "07b32d91-33f9-5ae5-be42-e535c8f39585")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C14")
+			(value "4.7n C0G 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "cb423890-4ffe-5d1f-920c-76102a51ec24")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C15")
+			(value "100n 10V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "56165557-6866-5184-839f-dea1feabc433")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C16")
+			(value "4.7u 10V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "56fce9b7-b04a-5f19-aa8e-02808825c42f")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C17")
+			(value "4.7u 10V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "26e8d788-fa9c-5535-9646-62049227f04c")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C18")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "b313e711-b7d2-560d-9839-52559a595b24")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C19")
+			(value "22u 16V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "f369080c-81e1-5837-a650-cdf45cf52e64")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C20")
+			(value "100n 25V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "7df18556-4212-5b01-8355-b5ce8c0d1fd9")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D2")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "40594494-b97d-56de-9d35-d8f4cbe6a274")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D3")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "b867a71d-a65a-57cc-933a-f2e3441d3566")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "L1")
+			(value "2.2uH / Isat>=2A")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE") "Shielded inductor candidate, DCR/thermal/ripple to qualify.")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_L")
+				(description "Inductor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "Shielded inductor candidate, DCR/thermal/ripple to qualify.")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "inductor choke coil reactor magnetic")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Choke_* *Coil* Inductor_* L_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "8e384c76-9059-55bf-bdfc-58aa6a0debc6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "L2")
+			(value "4.7uH / Isat>=3A")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_L")
+				(description "Inductor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "inductor choke coil reactor magnetic")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Choke_* *Coil* Inductor_* L_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "d8ec8e59-4fe4-5a89-a468-6dd47e7093af")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "L3")
+			(value "4.7uH / Isat>=3A")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_L")
+				(description "Inductor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "inductor choke coil reactor magnetic")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Choke_* *Coil* Inductor_* L_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "35f0c466-cc4d-5285-bdb6-98a6f333410d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "L4")
+			(value "10uH / Isat>=1A")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE") "Select shielded inductor with verified saturation and thermal curves.")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_L")
+				(description "Inductor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "Select shielded inductor with verified saturation and thermal curves.")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "inductor choke coil reactor magnetic")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Choke_* *Coil* Inductor_* L_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "f1d52109-70ff-5a37-95cc-33171a68c8db")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R9")
+			(value "40.2k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "60a5188e-16a3-5eb8-b5a1-ba8caf9ccbc1")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R10")
+			(value "10k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "53db2573-7a4f-5cf1-b673-360598b00c13")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R11")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "e236d65d-6958-5293-ab29-7b70e6ae3a41")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R12")
+			(value "1.05M 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "1e964098-ac60-53aa-86ea-3624616d0233")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R13")
+			(value "100k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "3d5ccf99-e210-5a19-a7eb-f10d18dc05bc")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R14")
+			(value "1.15M 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "9b69de68-4e0c-5a89-ac48-1443a4e17895")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R15")
+			(value "100k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "9ca30341-4a53-5869-97ba-dd951f5b970d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R16")
+			(value "100R")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "3a4f125f-108c-5cce-b911-a764bf92ad6e")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R17")
+			(value "71.5k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "220c8796-4da9-5502-a136-4f6b9a8837e8")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R18")
+			(value "10k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Power conversion")
+			)
+			(property
+				(name "Sheetfile")
+				(value "02_power_conversion.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
+			)
+			(tstamps "5c91a44d-bc12-5415-9950-e94eb8ea7747")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "U3")
 			(value "TPS62160DSGR")
 			(footprint "Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias")
@@ -6271,11 +4390,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Power conversion")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "02_power_conversion.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -6286,8 +4405,8 @@
 				(value "*WSON*EP*2x2mm*P0.5mm*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
 			)
 			(tstamps "a75d9fc3-5aaf-554d-9bff-97b62b17daec")
 			(units
@@ -6365,11 +4484,11 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Power conversion")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "02_power_conversion.kicad_sch")
 			)
 			(property
 				(name "ki_keywords")
@@ -6380,8 +4499,8 @@
 				(value "VQFN*1EP*4x4mm*P0.5mm*")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
 			)
 			(tstamps "cf5edb08-bf92-5649-b0f4-665181a08e53")
 			(units
@@ -6507,15 +4626,15 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Power conversion")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "02_power_conversion.kicad_sch")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Power conversion/")
+				(tstamps "/a2f8d729-0d7a-5f22-96e9-f1d1557a65de/")
 			)
 			(tstamps "934b84cd-6b92-5762-9b56-c52ba0ce570a")
 			(units
@@ -6548,6 +4667,2031 @@
 						)
 						(pin
 							(num "8")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C21")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "a2e8ca03-fb24-5b8b-b2e6-7f263f16a0d8")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C22")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "3cfefbda-b8d1-5cca-8f0e-eb6815d37180")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C23")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "1d692157-8ab1-500c-8a72-e0091688afa6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C24")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "fe97db3e-54b7-5133-8dd4-5a463a9b7cd5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C25")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "f9407aed-d83c-545a-bbea-0080d5d38d63")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C26")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "69ab16f3-a47b-58fd-b62a-81aa39c9f6fe")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C27")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "66cc63d6-8278-5390-a34c-eb71465e72f4")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C28")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "caeb6307-2c4a-506d-b6d4-d48317538a3b")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C29")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "57f61b9d-48c3-5af6-b46c-a8ec30f85789")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C30")
+			(value "10u 25V X7R")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "a1e56d49-0c10-5254-bf40-0662ee284412")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C31")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "8f0af7d0-8023-5257-a108-384e56f57587")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C32")
+			(value "10n 50V")
+			(footprint "Capacitor_SMD:C_1206_3216Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Capacitor_SMD:C_1206_3216Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_C")
+				(description "Unpolarized capacitor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "cap capacitor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "C_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "cb4002f1-405e-5692-bd83-285dc2a3d384")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D4")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "a07a016d-835f-5082-bcb6-6db60bddb902")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D5")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "6aa169e3-5310-57a0-816f-fe9655d98b10")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D6")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "c72cf0a2-a143-5531-a5cf-f9ad01dd63df")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D7")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "fb5a9d64-e2cf-5843-8ef8-cc76c54a2474")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D8")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "278b9c40-259e-57e4-9edc-0c05f7f16b56")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D9")
+			(value "Schottky 1A 40V")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_D_Schottky")
+				(description "Schottky diode")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "diode Schottky")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "TO-???* *_Diode_* *SingleDiode* D_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "a1e19a16-ec44-5c1b-9138-02b97cc5fa8c")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R19")
+			(value "91.2k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "45576e34-1911-5dc0-8f7f-dc675a328027")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R20")
+			(value "10k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "94a4467b-a1c6-5396-a3fc-4e909c398b87")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R21")
+			(value "92k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "7ecde6b6-ed43-5625-bbba-cc8b00aefaec")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R22")
+			(value "10k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "bccbab30-0a93-5e38-90d5-928053e5f840")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R23")
+			(value "32.2k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "2d772736-f7ac-5a1e-80a3-f51242acb136")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R24")
+			(value "10k 0.1%")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "bcbf3fe8-bba2-530b-b091-488679973d5d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R25")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "9d47d985-f3fb-5f31-a4ad-bf8f5b5a598d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R26")
+			(value "100k")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "c727c935-220a-55b9-a61b-c8a5747015ba")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R27")
+			(value "47k")
+			(footprint "Resistor_SMD:R_0603_1608Metric")
+			(fields
+				(field
+					(name "MPN")
+				)
+				(field
+					(name "LCSC")
+				)
+				(field
+					(name "NOTE")
+				)
+				(field
+					(name "Footprint") "Resistor_SMD:R_0603_1608Metric")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "BigModular")
+				(part "Device_R")
+				(description "Resistor")
+			)
+			(property
+				(name "MPN")
+				(value "")
+			)
+			(property
+				(name "LCSC")
+				(value "")
+			)
+			(property
+				(name "NOTE")
+				(value "")
+			)
+			(property
+				(name "Sheetname")
+				(value "Output rails")
+			)
+			(property
+				(name "Sheetfile")
+				(value "03_output_rails.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "R res resistor")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "R_*")
+			)
+			(sheetpath
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
+			)
+			(tstamps "b05844d5-073f-5177-8f44-4391b5bb2bc5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
 						)
 					)
 				)
@@ -6592,15 +6736,15 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Output rails")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "03_output_rails.kicad_sch")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
 			)
 			(tstamps "1332dced-0b9e-598c-9485-542ac19d4771")
 			(units
@@ -6678,15 +6822,15 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Output rails")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "03_output_rails.kicad_sch")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
 			)
 			(tstamps "93ddf3e2-49aa-5ed5-9be7-8b535305e387")
 			(units
@@ -6763,15 +6907,15 @@
 			)
 			(property
 				(name "Sheetname")
-				(value "big_modular")
+				(value "Output rails")
 			)
 			(property
 				(name "Sheetfile")
-				(value "big_modular.kicad_sch")
+				(value "03_output_rails.kicad_sch")
 			)
 			(sheetpath
-				(names "/")
-				(tstamps "/")
+				(names "/Output rails/")
+				(tstamps "/e78b9fdf-5b6a-56aa-b169-8808d1cccdd8/")
 			)
 			(tstamps "65ab1388-2376-5c93-88db-67433bdb54a8")
 			(units
@@ -7890,203 +8034,6 @@
 	(nets
 		(net
 			(code "1")
-			(name "/ANA_V4")
-			(class "Default")
-			(node
-				(ref "C15")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R16")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "4")
-				(pinfunction "VIN_4")
-				(pintype "power_in")
-			)
-		)
-		(net
-			(code "2")
-			(name "/BI_REF")
-			(class "Default")
-			(node
-				(ref "C12")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R15")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "17")
-				(pinfunction "VREF_17")
-				(pintype "output")
-			)
-		)
-		(net
-			(code "3")
-			(name "/BOOST_SW")
-			(class "Default")
-			(node
-				(ref "D2")
-				(pin "2")
-				(pinfunction "A_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "L2")
-				(pin "2")
-				(pinfunction "2_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "1")
-				(pinfunction "INP_1")
-				(pintype "input")
-			)
-			(node
-				(ref "U4")
-				(pin "24")
-				(pinfunction "INP_24")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "4")
-			(name "/CC1")
-			(class "Default")
-			(node
-				(ref "J1")
-				(pin "A5")
-				(pinfunction "CC1_A5")
-				(pintype "bidirectional")
-			)
-			(node
-				(ref "U1")
-				(pin "7")
-				(pinfunction "CC1_7")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "5")
-			(name "/CC2")
-			(class "Default")
-			(node
-				(ref "J1")
-				(pin "B5")
-				(pinfunction "CC2_B5")
-				(pintype "bidirectional")
-			)
-			(node
-				(ref "U1")
-				(pin "6")
-				(pinfunction "CC2_6")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "6")
-			(name "/COMP_N")
-			(class "Default")
-			(node
-				(ref "C14")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "18")
-				(pinfunction "CN_18")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "7")
-			(name "/COMP_P")
-			(class "Default")
-			(node
-				(ref "C13")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "21")
-				(pinfunction "CP_21")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "8")
-			(name "/EF_ENABLE")
-			(class "Default")
-			(node
-				(ref "JP1")
-				(pin "2")
-				(pinfunction "B_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R30")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U2")
-				(pin "7")
-				(pinfunction "~{SHDN}_7")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "9")
-			(name "/FIVE_PRE_FB")
-			(class "Default")
-			(node
-				(ref "R17")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R18")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U5")
-				(pin "5")
-				(pinfunction "FB_5")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "10")
-			(name "/FIVE_SW")
-			(class "Default")
-			(node
-				(ref "L4")
-				(pin "1")
-				(pinfunction "1_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U5")
-				(pin "7")
-				(pinfunction "SW_7")
-				(pintype "output")
-			)
-		)
-		(net
-			(code "11")
 			(name "/GND")
 			(class "Default")
 			(node
@@ -8444,8 +8391,64 @@
 			)
 		)
 		(net
-			(code "12")
-			(name "/ILIM")
+			(code "2")
+			(name "/Input and protection/CC1")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "A5")
+				(pinfunction "CC1_A5")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "U1")
+				(pin "7")
+				(pinfunction "CC1_7")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "3")
+			(name "/Input and protection/CC2")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "B5")
+				(pinfunction "CC2_B5")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "U1")
+				(pin "6")
+				(pinfunction "CC2_6")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "4")
+			(name "/Input and protection/EF_ENABLE")
+			(class "Default")
+			(node
+				(ref "JP1")
+				(pin "2")
+				(pinfunction "B_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R30")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "7")
+				(pinfunction "~{SHDN}_7")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "5")
+			(name "/Input and protection/ILIM")
 			(class "Default")
 			(node
 				(ref "R8")
@@ -8460,103 +8463,319 @@
 			)
 		)
 		(net
-			(code "13")
-			(name "/INV_SW")
+			(code "6")
+			(name "/Input and protection/OV_SET")
 			(class "Default")
 			(node
-				(ref "D3")
-				(pin "1")
-				(pinfunction "K_1")
+				(ref "R6")
+				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "L3")
+				(ref "R7")
 				(pin "1")
-				(pinfunction "1_1")
 				(pintype "passive")
 			)
 			(node
-				(ref "U4")
-				(pin "13")
-				(pinfunction "OUTN_13")
-				(pintype "output")
+				(ref "U2")
+				(pin "5")
+				(pinfunction "OVP_5")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "7")
+			(name "/Input and protection/PD_CFG")
+			(class "Default")
+			(node
+				(ref "R2")
+				(pin "1")
+				(pintype "passive")
 			)
 			(node
-				(ref "U4")
-				(pin "14")
-				(pinfunction "OUTN_14")
+				(ref "U1")
+				(pin "9")
+				(pinfunction "CFG1_9")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "8")
+			(name "/Input and protection/PD_D_SHORT")
+			(class "Default")
+			(node
+				(ref "U1")
+				(pin "4")
+				(pinfunction "DP_4")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "U1")
+				(pin "5")
+				(pinfunction "DM_5")
+				(pintype "bidirectional")
+			)
+		)
+		(net
+			(code "9")
+			(name "/Input and protection/PD_PG_N")
+			(class "Default")
+			(node
+				(ref "R28")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R3")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "10")
+				(pinfunction "PG_10")
+				(pintype "open_collector")
+			)
+		)
+		(net
+			(code "10")
+			(name "/Input and protection/PD_VDD")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q1")
+				(pin "2")
+				(pinfunction "E_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R29")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R3")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "1")
+				(pinfunction "VDD_1")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "11")
+			(name "/Input and protection/PG_BASE")
+			(class "Default")
+			(node
+				(ref "Q1")
+				(pin "1")
+				(pinfunction "B_1")
+				(pintype "input")
+			)
+			(node
+				(ref "R28")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R29")
+				(pin "2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "12")
+			(name "/Input and protection/PG_PERMIT")
+			(class "Default")
+			(node
+				(ref "JP1")
+				(pin "1")
+				(pinfunction "A_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q1")
+				(pin "3")
+				(pinfunction "C_3")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "13")
+			(name "/Input and protection/RTN")
+			(class "Default")
+			(node
+				(ref "C3")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R30")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R5")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R7")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R8")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "17")
+				(pinfunction "RTN_17")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "6")
+				(pinfunction "MODE_6")
+				(pintype "input")
+			)
+			(node
+				(ref "U2")
+				(pin "8")
+				(pinfunction "RTN_8")
 				(pintype "passive")
 			)
 		)
 		(net
 			(code "14")
-			(name "/MID_FB")
+			(name "/Input and protection/SLEW")
 			(class "Default")
 			(node
-				(ref "R10")
+				(ref "C3")
 				(pin "1")
 				(pintype "passive")
 			)
 			(node
-				(ref "R9")
-				(pin "2")
+				(ref "U2")
+				(pin "12")
+				(pinfunction "dVdT_12")
 				(pintype "passive")
-			)
-			(node
-				(ref "U3")
-				(pin "5")
-				(pinfunction "FB_5")
-				(pintype "input")
 			)
 		)
 		(net
 			(code "15")
-			(name "/MID_GOOD")
+			(name "/Input and protection/UV_EN")
 			(class "Default")
 			(node
-				(ref "R11")
+				(ref "R4")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "U3")
-				(pin "8")
-				(pinfunction "PG_8")
-				(pintype "open_collector")
+				(ref "R5")
+				(pin "1")
+				(pintype "passive")
 			)
 			(node
-				(ref "U4")
-				(pin "10")
-				(pinfunction "ENN_10")
-				(pintype "input")
-			)
-			(node
-				(ref "U4")
-				(pin "8")
-				(pinfunction "ENP_8")
+				(ref "U2")
+				(pin "3")
+				(pinfunction "UVLO_3")
 				(pintype "input")
 			)
 		)
 		(net
 			(code "16")
-			(name "/MID_SW")
+			(name "/Input and protection/VBUS_FUSED")
 			(class "Default")
 			(node
-				(ref "L1")
+				(ref "C2")
 				(pin "1")
-				(pinfunction "1_1")
 				(pintype "passive")
 			)
 			(node
-				(ref "U3")
-				(pin "7")
-				(pinfunction "SW_7")
-				(pintype "output")
+				(ref "F1")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R4")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R6")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "1")
+				(pinfunction "IN_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "U2")
+				(pin "2")
+				(pinfunction "IN_2")
+				(pintype "passive")
 			)
 		)
 		(net
 			(code "17")
-			(name "/N12")
+			(name "/Input and protection/VBUS_RAW")
+			(class "Default")
+			(node
+				(ref "F1")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "A4")
+				(pinfunction "VBUS_A4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "A9")
+				(pinfunction "VBUS_A9")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "B4")
+				(pinfunction "VBUS_B4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "B9")
+				(pinfunction "VBUS_B9")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "18")
+			(name "/Output rails/N12")
 			(class "Default")
 			(node
 				(ref "C26")
@@ -8598,8 +8817,8 @@
 			)
 		)
 		(net
-			(code "18")
-			(name "/N12_FB")
+			(code "19")
+			(name "/Output rails/N12_FB")
 			(class "Default")
 			(node
 				(ref "C28")
@@ -8624,8 +8843,8 @@
 			)
 		)
 		(net
-			(code "19")
-			(name "/N12_NR")
+			(code "20")
+			(name "/Output rails/N12_NR")
 			(class "Default")
 			(node
 				(ref "C27")
@@ -8640,55 +8859,8 @@
 			)
 		)
 		(net
-			(code "20")
-			(name "/NEG_FB")
-			(class "Default")
-			(node
-				(ref "C11")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R14")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R15")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "16")
-				(pinfunction "FBN_16")
-				(pintype "input")
-			)
-		)
-		(net
 			(code "21")
-			(name "/OV_SET")
-			(class "Default")
-			(node
-				(ref "R6")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R7")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U2")
-				(pin "5")
-				(pinfunction "OVP_5")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "22")
-			(name "/P5")
+			(name "/Output rails/P5")
 			(class "Default")
 			(node
 				(ref "C30")
@@ -8730,8 +8902,8 @@
 			)
 		)
 		(net
-			(code "23")
-			(name "/P5_FB")
+			(code "22")
+			(name "/Output rails/P5_FB")
 			(class "Default")
 			(node
 				(ref "C32")
@@ -8756,8 +8928,8 @@
 			)
 		)
 		(net
-			(code "24")
-			(name "/P5_NR")
+			(code "23")
+			(name "/Output rails/P5_NR")
 			(class "Default")
 			(node
 				(ref "C31")
@@ -8772,8 +8944,8 @@
 			)
 		)
 		(net
-			(code "25")
-			(name "/P12")
+			(code "24")
+			(name "/Output rails/P12")
 			(class "Default")
 			(node
 				(ref "C22")
@@ -8815,8 +8987,8 @@
 			)
 		)
 		(net
-			(code "26")
-			(name "/P12_FB")
+			(code "25")
+			(name "/Output rails/P12_FB")
 			(class "Default")
 			(node
 				(ref "C24")
@@ -8841,8 +9013,8 @@
 			)
 		)
 		(net
-			(code "27")
-			(name "/P12_NR")
+			(code "26")
+			(name "/Output rails/P12_NR")
 			(class "Default")
 			(node
 				(ref "C23")
@@ -8857,162 +9029,7 @@
 			)
 		)
 		(net
-			(code "28")
-			(name "/PD_CFG")
-			(class "Default")
-			(node
-				(ref "R2")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U1")
-				(pin "9")
-				(pinfunction "CFG1_9")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "29")
-			(name "/PD_D_SHORT")
-			(class "Default")
-			(node
-				(ref "U1")
-				(pin "4")
-				(pinfunction "DP_4")
-				(pintype "bidirectional")
-			)
-			(node
-				(ref "U1")
-				(pin "5")
-				(pinfunction "DM_5")
-				(pintype "bidirectional")
-			)
-		)
-		(net
-			(code "30")
-			(name "/PD_PG_N")
-			(class "Default")
-			(node
-				(ref "R28")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R3")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U1")
-				(pin "10")
-				(pinfunction "PG_10")
-				(pintype "open_collector")
-			)
-		)
-		(net
-			(code "31")
-			(name "/PD_VDD")
-			(class "Default")
-			(node
-				(ref "C1")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "Q1")
-				(pin "2")
-				(pinfunction "E_2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R1")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R29")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R3")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U1")
-				(pin "1")
-				(pinfunction "VDD_1")
-				(pintype "power_in")
-			)
-		)
-		(net
-			(code "32")
-			(name "/PG_BASE")
-			(class "Default")
-			(node
-				(ref "Q1")
-				(pin "1")
-				(pinfunction "B_1")
-				(pintype "input")
-			)
-			(node
-				(ref "R28")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R29")
-				(pin "2")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "33")
-			(name "/PG_PERMIT")
-			(class "Default")
-			(node
-				(ref "JP1")
-				(pin "1")
-				(pinfunction "A_1")
-				(pintype "passive")
-			)
-			(node
-				(ref "Q1")
-				(pin "3")
-				(pinfunction "C_3")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "34")
-			(name "/POS_FB")
-			(class "Default")
-			(node
-				(ref "C10")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R12")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R13")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U4")
-				(pin "22")
-				(pinfunction "FBP_22")
-				(pintype "input")
-			)
-		)
-		(net
-			(code "35")
+			(code "27")
 			(name "/PRE_5")
 			(class "Default")
 			(node
@@ -9062,7 +9079,7 @@
 			)
 		)
 		(net
-			(code "36")
+			(code "28")
 			(name "/PRE_N")
 			(class "Default")
 			(node
@@ -9117,7 +9134,7 @@
 			)
 		)
 		(net
-			(code "37")
+			(code "29")
 			(name "/PRE_P")
 			(class "Default")
 			(node
@@ -9194,93 +9211,296 @@
 			)
 		)
 		(net
-			(code "38")
-			(name "/RTN")
+			(code "30")
+			(name "/Power conversion/ANA_V4")
 			(class "Default")
 			(node
-				(ref "C3")
+				(ref "C15")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R16")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R30")
+				(ref "U4")
+				(pin "4")
+				(pinfunction "VIN_4")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "31")
+			(name "/Power conversion/BI_REF")
+			(class "Default")
+			(node
+				(ref "C12")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R15")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R5")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R7")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R8")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "U2")
+				(ref "U4")
 				(pin "17")
-				(pinfunction "RTN_17")
+				(pinfunction "VREF_17")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "32")
+			(name "/Power conversion/BOOST_SW")
+			(class "Default")
+			(node
+				(ref "D2")
+				(pin "2")
+				(pinfunction "A_2")
 				(pintype "passive")
 			)
 			(node
-				(ref "U2")
-				(pin "6")
-				(pinfunction "MODE_6")
+				(ref "L2")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "1")
+				(pinfunction "INP_1")
 				(pintype "input")
 			)
 			(node
-				(ref "U2")
-				(pin "8")
-				(pinfunction "RTN_8")
+				(ref "U4")
+				(pin "24")
+				(pinfunction "INP_24")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "33")
+			(name "/Power conversion/COMP_N")
+			(class "Default")
+			(node
+				(ref "C14")
+				(pin "1")
 				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "18")
+				(pinfunction "CN_18")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "34")
+			(name "/Power conversion/COMP_P")
+			(class "Default")
+			(node
+				(ref "C13")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "21")
+				(pinfunction "CP_21")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "35")
+			(name "/Power conversion/FIVE_PRE_FB")
+			(class "Default")
+			(node
+				(ref "R17")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R18")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "5")
+				(pinfunction "FB_5")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "36")
+			(name "/Power conversion/FIVE_SW")
+			(class "Default")
+			(node
+				(ref "L4")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U5")
+				(pin "7")
+				(pinfunction "SW_7")
+				(pintype "output")
+			)
+		)
+		(net
+			(code "37")
+			(name "/Power conversion/INV_SW")
+			(class "Default")
+			(node
+				(ref "D3")
+				(pin "1")
+				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "L3")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "13")
+				(pinfunction "OUTN_13")
+				(pintype "output")
+			)
+			(node
+				(ref "U4")
+				(pin "14")
+				(pinfunction "OUTN_14")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "38")
+			(name "/Power conversion/MID_FB")
+			(class "Default")
+			(node
+				(ref "R10")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R9")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "5")
+				(pinfunction "FB_5")
+				(pintype "input")
 			)
 		)
 		(net
 			(code "39")
-			(name "/SLEW")
+			(name "/Power conversion/MID_GOOD")
 			(class "Default")
 			(node
-				(ref "C3")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U2")
-				(pin "12")
-				(pinfunction "dVdT_12")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "40")
-			(name "/UV_EN")
-			(class "Default")
-			(node
-				(ref "R4")
+				(ref "R11")
 				(pin "2")
 				(pintype "passive")
 			)
 			(node
-				(ref "R5")
-				(pin "1")
-				(pintype "passive")
+				(ref "U3")
+				(pin "8")
+				(pinfunction "PG_8")
+				(pintype "open_collector")
 			)
 			(node
-				(ref "U2")
-				(pin "3")
-				(pinfunction "UVLO_3")
+				(ref "U4")
+				(pin "10")
+				(pinfunction "ENN_10")
+				(pintype "input")
+			)
+			(node
+				(ref "U4")
+				(pin "8")
+				(pinfunction "ENP_8")
 				(pintype "input")
 			)
 		)
 		(net
+			(code "40")
+			(name "/Power conversion/MID_SW")
+			(class "Default")
+			(node
+				(ref "L1")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U3")
+				(pin "7")
+				(pinfunction "SW_7")
+				(pintype "output")
+			)
+		)
+		(net
 			(code "41")
-			(name "/V4")
+			(name "/Power conversion/NEG_FB")
+			(class "Default")
+			(node
+				(ref "C11")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R14")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R15")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "16")
+				(pinfunction "FBN_16")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "42")
+			(name "/Power conversion/POS_FB")
+			(class "Default")
+			(node
+				(ref "C10")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R12")
+				(pin "2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R13")
+				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U4")
+				(pin "22")
+				(pinfunction "FBP_22")
+				(pintype "input")
+			)
+		)
+		(net
+			(code "43")
+			(name "/Power conversion/V4")
 			(class "Default")
 			(node
 				(ref "C16")
@@ -9341,82 +9561,6 @@
 				(pin "6")
 				(pinfunction "INN_6")
 				(pintype "input")
-			)
-		)
-		(net
-			(code "42")
-			(name "/VBUS_FUSED")
-			(class "Default")
-			(node
-				(ref "C2")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "F1")
-				(pin "2")
-				(pintype "passive")
-			)
-			(node
-				(ref "R1")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R4")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "R6")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "U2")
-				(pin "1")
-				(pinfunction "IN_1")
-				(pintype "power_in")
-			)
-			(node
-				(ref "U2")
-				(pin "2")
-				(pinfunction "IN_2")
-				(pintype "passive")
-			)
-		)
-		(net
-			(code "43")
-			(name "/VBUS_RAW")
-			(class "Default")
-			(node
-				(ref "F1")
-				(pin "1")
-				(pintype "passive")
-			)
-			(node
-				(ref "J1")
-				(pin "A4")
-				(pinfunction "VBUS_A4")
-				(pintype "passive")
-			)
-			(node
-				(ref "J1")
-				(pin "A9")
-				(pinfunction "VBUS_A9")
-				(pintype "passive")
-			)
-			(node
-				(ref "J1")
-				(pin "B4")
-				(pinfunction "VBUS_B4")
-				(pintype "passive")
-			)
-			(node
-				(ref "J1")
-				(pin "B9")
-				(pinfunction "VBUS_B9")
-				(pintype "passive")
 			)
 		)
 		(net

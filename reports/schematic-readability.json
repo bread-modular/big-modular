@@ -1,0 +1,161 @@
+{
+  "scope": "Presentation-only hierarchy/wiring reorganization; not electrical validation or fabrication approval",
+  "baseline_git_tree": "04ccdca787f49fc186165d544a9d28de96681c6a",
+  "schematic_sheets": 4,
+  "functional_subsheets": 3,
+  "real_components": 88,
+  "components_per_sheet": {
+    "01_input_protection.kicad_sch": 22,
+    "02_power_conversion.kicad_sch": 35,
+    "03_output_rails.kicad_sch": 31
+  },
+  "native_exported_pins_before": 288,
+  "native_exported_pins_after": 288,
+  "native_nets": 72,
+  "exact_net_member_sets_unchanged": true,
+  "component_fields_unchanged": true,
+  "all_97_symbol_and_pin_uuids_unchanged": true,
+  "native_save_reload_equal": true,
+  "namespace_changes": {
+    "/ANA_V4": "/Power conversion/ANA_V4",
+    "/BI_REF": "/Power conversion/BI_REF",
+    "/BOOST_SW": "/Power conversion/BOOST_SW",
+    "/CC1": "/Input and protection/CC1",
+    "/CC2": "/Input and protection/CC2",
+    "/COMP_N": "/Power conversion/COMP_N",
+    "/COMP_P": "/Power conversion/COMP_P",
+    "/EF_ENABLE": "/Input and protection/EF_ENABLE",
+    "/FIVE_PRE_FB": "/Power conversion/FIVE_PRE_FB",
+    "/FIVE_SW": "/Power conversion/FIVE_SW",
+    "/ILIM": "/Input and protection/ILIM",
+    "/INV_SW": "/Power conversion/INV_SW",
+    "/MID_FB": "/Power conversion/MID_FB",
+    "/MID_GOOD": "/Power conversion/MID_GOOD",
+    "/MID_SW": "/Power conversion/MID_SW",
+    "/N12": "/Output rails/N12",
+    "/N12_FB": "/Output rails/N12_FB",
+    "/N12_NR": "/Output rails/N12_NR",
+    "/NEG_FB": "/Power conversion/NEG_FB",
+    "/OV_SET": "/Input and protection/OV_SET",
+    "/P5": "/Output rails/P5",
+    "/P5_FB": "/Output rails/P5_FB",
+    "/P5_NR": "/Output rails/P5_NR",
+    "/P12": "/Output rails/P12",
+    "/P12_FB": "/Output rails/P12_FB",
+    "/P12_NR": "/Output rails/P12_NR",
+    "/PD_CFG": "/Input and protection/PD_CFG",
+    "/PD_D_SHORT": "/Input and protection/PD_D_SHORT",
+    "/PD_PG_N": "/Input and protection/PD_PG_N",
+    "/PD_VDD": "/Input and protection/PD_VDD",
+    "/PG_BASE": "/Input and protection/PG_BASE",
+    "/PG_PERMIT": "/Input and protection/PG_PERMIT",
+    "/POS_FB": "/Power conversion/POS_FB",
+    "/RTN": "/Input and protection/RTN",
+    "/SLEW": "/Input and protection/SLEW",
+    "/UV_EN": "/Input and protection/UV_EN",
+    "/V4": "/Power conversion/V4",
+    "/VBUS_FUSED": "/Input and protection/VBUS_FUSED",
+    "/VBUS_RAW": "/Input and protection/VBUS_RAW"
+  },
+  "local_labels_before": 192,
+  "local_labels_after": 81,
+  "hierarchical_labels_after": 11,
+  "hierarchy_port_links": 11,
+  "geometry_named_pins_including_flags_and_NC": 297,
+  "real_connected_pin_checks": 260,
+  "independent_pin_net_checks": 65,
+  "wire_or_hierarchy_interstage_checks": 20,
+  "named_remote_interstage_checks": 1,
+  "visible_local_wire_checks": 57,
+  "installed_environment_erc": [],
+  "isolated_environment_erc": [
+    {
+      "severity": "warning",
+      "type": "footprint_link_issues",
+      "description": "The current configuration does not include the footprint library 'Capacitor_SMD'",
+      "count": 32
+    },
+    {
+      "severity": "warning",
+      "type": "footprint_link_issues",
+      "description": "The current configuration does not include the footprint library 'Package_DFN_QFN'",
+      "count": 1
+    },
+    {
+      "severity": "warning",
+      "type": "footprint_link_issues",
+      "description": "The current configuration does not include the footprint library 'Package_SO'",
+      "count": 2
+    },
+    {
+      "severity": "warning",
+      "type": "footprint_link_issues",
+      "description": "The current configuration does not include the footprint library 'Package_SON'",
+      "count": 1
+    },
+    {
+      "severity": "warning",
+      "type": "footprint_link_issues",
+      "description": "The current configuration does not include the footprint library 'Package_TO_SOT_SMD'",
+      "count": 1
+    },
+    {
+      "severity": "warning",
+      "type": "footprint_link_issues",
+      "description": "The current configuration does not include the footprint library 'Resistor_SMD'",
+      "count": 31
+    }
+  ],
+  "pcb_parity": "Intentionally incomplete; preserve full before/after findings in readability-native/*-summary.json",
+  "DRC": "Not rerun: both boards byte-identical; existing physical/unrouted findings retained, fresh geometry checks passed",
+  "pdf_pages": 4,
+  "pdf_page_sizes": [
+    "A4",
+    "A3",
+    "A3",
+    "A3"
+  ],
+  "pdf_navigation": "Poppler pdftohtml exposes the first three internal links to pages 2, 3 and 4",
+  "visual_review": "All circuit pages and overview rasterized and inspected; final U1 field moved clear of its VDD wire",
+  "unit_tests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "preserved_input_sha256": {
+    "hardware/BigModular.kicad_sym": "ea50310eb130ecc929020c0cd021b9ad2d45f2e937628aff37bb05d056b27e3a",
+    "hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod": "3b8d7da3cae5114ec83022a759a78925113bc2eeec100ea447594f6d8687e4b8",
+    "hardware/big_modular.kicad_pcb": "ba2046f4a46876963f7b2df2dfdcded45633c8eaf9a71608fe380ddb241fa95d",
+    "hardware/big_modular.kicad_pro": "65e1149c4eacd3ad65fd09560e0411ac74f43de595ec1b2d8bbd1371e22a8300",
+    "hardware/fp-lib-table": "298321dafc97a31c605fbee83e9a41a2789ef80d3b2e5afa9f56010b2684145d",
+    "hardware/front_panel.kicad_pcb": "09efd2e1974f1c1ab3d44c49f0b88523156988f58e2563112ffba21debeeba99",
+    "hardware/front_panel.kicad_pro": "4be8454c877fbf2e3a235d8d11d3df8fc595e5b151821f6fd3ea2ee4db116813",
+    "hardware/sym-lib-table": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+    "BOM.csv": "4382048cd0f6cf0ae2a0e55bbbc5380e3fabc36e1d977ead82e05009ac83b004",
+    "docs/pin-net-audit.json": "e8051f8a9bcf21d4f4b3c711448a087ec1da5a7c1f019add9c664b9bfac33193",
+    "docs/assembly.pdf": "6ffa4237305dba16a64b3bcb8ec7d48504df6b5de4fcb5f01fe0942d75a56b91",
+    "docs/assembly.svg": "963c5c8a61e598e854c4a8b99be7cd9c2cd35e96d09487fad41c861ae0f4d958",
+    "docs/assembly-geometry.json": "a7da7cd2d3a0c557a84c0a2d4b76c8f3e93c30ce56befe3c97e15aea9e88b4fc",
+    "docs/mechanics.md": "a114bec528a66255424df62453444fbaedb3964874728d564c10a26efa841791"
+  },
+  "delivered_schematic_sha256": {
+    "hardware/01_input_protection.kicad_sch": "82531f3d15bae14fc0115ac2d50e271faacb9b10528ee0266d2efc3e494c281e",
+    "hardware/02_power_conversion.kicad_sch": "82fcdb81f9c8523a242522a6a744c415c59d2caf1c47e8ca75196c1ae9b4ffda",
+    "hardware/03_output_rails.kicad_sch": "39281e441b4b33036474d363a3a514d4069681bc5c7210e53ee24852e8ed3aad",
+    "hardware/big_modular.kicad_sch": "6322aa0d555fdf6e281aca3696b15c07b2931a09231a3e46bc4ea67447eccdc4"
+  },
+  "schematic_pdf_sha256": "a27cc6af1bdefe39bb278a4ea1c430926e940b74b668254b7a7ba612ff8f3bbd",
+  "native_evidence_sha256": {
+    "reports/readability-native/after-erc.json": "dd3f8e7d32bc74d36a40720f1b15aad95e082c9f6d6fc10f10dd4641ccdcea03",
+    "reports/readability-native/after-netlist.xml": "106594d41951151f148f6c46c756e7353fc2a2e2210ebe72eff2a8a820bb7fd6",
+    "reports/readability-native/after-summary.json": "756b6d51caf9e12e2b1ad406d05f8cfc3b6f36faffb7e00bc52cda2bca185cd7",
+    "reports/readability-native/before-erc.json": "63da1a7d63bdaaeaafbfae0d15f6e47fb0354689b9edfa9d08e39c560d141a29",
+    "reports/readability-native/before-netlist.xml": "df28713fd7ab62686cfab819155ddf59261333f0c6f5e0e39fc605cbd0da3d95",
+    "reports/readability-native/before-summary.json": "18aa56505c748fe268f1e206651c882009ca79fdbcd58683e0f81588edee89ae",
+    "reports/readability-native/native-hierarchy-delta.json": "0b0409097936a07f79a3f17ad6da55313c176c5e93ffe2c29ea6b3d1eaeda813",
+    "reports/readability-native/reload-delta.json": "2bf9ede50ecab7780ed3c63fc9f0c83dc710f309b7d669ecb78272d8589d156c",
+    "reports/readability-native/reloaded-erc.json": "253405c9ca896e2227324c570dd13f3afb458a341828f07c1f3ac05bddc07138",
+    "reports/readability-native/reloaded-netlist.xml": "0d7706c50fdf8a4fde23de597bdb07dd52c02b809ec613d5023b676b359b0415"
+  },
+  "source_snapshot_note": "Native raw reports retain source hashes, exact findings, command records and paths; no rules, ignores or exclusions were changed.",
+  "order_ready": false
+}
