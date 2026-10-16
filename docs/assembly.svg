@@ -44,19 +44,27 @@
 <rect x="121.7675" y="105.64" width="6.5475" height="8.370000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <text x="165" y="58.0" font-size="2.6">Main PCB: 100.5 x 30 x 1.6</text>
 <text x="165" y="62.5" font-size="2.6">Front edge Z2; rear Z32</text>
-<text x="165" y="67.0" font-size="2.6">Two local bracket cutbacks to Z10</text>
-<text x="165" y="71.5" font-size="2.6">PCB depth behind panel rear: 30.4</text>
-<text x="165" y="76.0" font-size="2.6">NOT finished cabled depth.</text>
+<text x="165" y="67.0" font-size="2.6">Current local cutbacks end at Z10</text>
+<text x="165" y="71.5" font-size="2.6">For this foot + loose M3 hardware</text>
+<text x="165" y="76.0" font-size="2.6">PCB depth behind panel rear: 30.4</text>
+<text x="165" y="80.5" font-size="2.6">NOT finished cabled depth.</text>
 <path d="M162.2,88.225 L184,88.225" fill="none" stroke="#375775" stroke-width=".25" stroke-dasharray="1.5 1"/>
 <text x="166" y="146.0" font-size="2.6">J7: 16 numbered solder-through lands</text>
 <text x="166" y="150.5" font-size="2.6">Keyed 2x8 MALE IDC on flying lead</text>
 <text x="166" y="155.0" font-size="2.6">75-100mm lead, strain-relieved</text>
 <text x="166" y="159.5" font-size="2.6">Connector not squeezed into 2HP.</text>
 <text x="166" y="164.0" font-size="2.6">No third PCB.</text>
-<text x="117" y="227.0" font-size="2.6">USB pad/model pattern retained; port translated to Y33.5.</text>
-<text x="117" y="231.5" font-size="2.6">Back face X3.1 / component face X4.7.</text>
-<text x="117" y="236.0" font-size="2.6">Plain L is on BACK face; countersink in plastic only.</text>
-<text x="117" y="240.5" font-size="2.6">USB and LED/reset panel openings follow the new axes.</text>
+<text x="117" y="224.0" font-size="2.6">USB pad/model pattern retained; port at Y33.5.</text>
+<text x="117" y="228.5" font-size="2.6">PCB BACK X3.1 / component face X4.7.</text>
+<text x="117" y="233.0" font-size="2.6">Web on PCB BACK; foot on front panel REAR (Z1.6).</text>
+<text x="117" y="237.5" font-size="2.6">Screws normal to each face; PCB not fed through L.</text>
+<text x="117" y="242.0" font-size="2.6">Uncut FR4/foot overlap: X3.1..4.7, Z2..4.6.</text>
+<text x="117" y="246.5" font-size="2.6">Y17..27 / 101.5..111.5; current configuration only.</text>
+<text x="117" y="251.0" font-size="2.6">Cutbacks clear THIS L + M3 nut/tool access.</text>
+<text x="117" y="255.5" font-size="2.6">Z10 retained, not a proven minimum.</text>
+<text x="117" y="260.0" font-size="2.6">90-degree face mounts do not inherently need notches.</text>
+<text x="117" y="264.5" font-size="2.6">Notch-free 2HP here needs changed hardware; not selected.</text>
+<text x="117" y="269.0" font-size="2.6">USB and LED/reset openings follow the shown axes.</text>
 <text x="268" y="35" font-size="3.3">MAIN PCB / COMPONENT SIDE</text>
 <polygon points="273.7,43.0 273.7,46.375 284.5,46.375 284.5,61.225 273.7,61.225 273.7,160.45 284.5,160.45 284.5,175.3 273.7,175.3 273.7,178.675 314.2,178.675 314.2,43.0" fill="#d6e3f1" stroke="#375775" stroke-width=".25"/>
 <circle cx="291.25" cy="53.8" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>

@@ -20,5 +20,6 @@ SW1: press eFuse shutdown, release retry (UV/OV/current/thermal protections rema
   native sheets/libraries, `BOM.csv` and `docs/pin-net-audit.json`; BOM is not an order CSV.
 - [Current assembly PDF](docs/assembly.pdf): unchanged outlines/M3 brackets; top USB
   axis Y33.5mm, red3mm LED Y43mm, retry Y49.5mm (panel-top coordinates).
+  Cutbacks suit this bracket/M3 hardware, not all 90-degree face mounts; see [mounting](docs/mechanics.md#m3-bracket-face-mounting-and-current-cutbacks).
 - V1 routing preparation only: place the60 staged components before routing.
   No routing, manufacturing exports, uploads or commits in this checkpoint.
