@@ -75,8 +75,11 @@ class M3AccessTests(unittest.TestCase):
             r=subprocess.run([sys.executable,'-B',str(ROOT/'tools/build_mechanics.py'),'--output',str(out)],capture_output=True,text=True)
             self.assertEqual(r.returncode,0,r.stderr)
             self.assertEqual(json.loads((out/'assembly-geometry.json').read_text()),geometry())
-            for name in ['assembly.svg','m3-brackets.svg']:
-                self.assertEqual((out/name).read_bytes(),(ROOT/'docs'/name).read_bytes())
+            # Same exact pre-cleanup golden bytes, stored as hashes instead of stale previews.
+            import hashlib
+            golden={'assembly.svg': '48c99e4f17ffcf014bff57d36a920e29e73804137b2977d6e32b50a2cc16842f', 'm3-brackets.svg': '3095b4ffd2fd3689f0cce60468ffb28b7ecdd84ca96bf2c93d00a43ef39ccbdf'}
+            for name,digest in golden.items():
+                self.assertEqual(hashlib.sha256((out/name).read_bytes()).hexdigest(),digest)
 
     def test_selected_reset_is_restored_SMT_with_exposed_lands(self):
         s=geometry()['switch']

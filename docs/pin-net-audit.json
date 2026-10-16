@@ -1,91 +1,69 @@
 {
   "J1": {
     "A1": "GND",
-    "A4": "VBUS_RAW",
+    "A4": "USB_VBUS",
     "A5": "CC1",
     "A6": null,
     "A7": null,
     "A8": null,
-    "A9": "VBUS_RAW",
+    "A9": "USB_VBUS",
     "A12": "GND",
     "B1": "GND",
-    "B4": "VBUS_RAW",
+    "B4": "USB_VBUS",
     "B5": "CC2",
     "B6": null,
     "B7": null,
     "B8": null,
-    "B9": "VBUS_RAW",
+    "B9": "USB_VBUS",
     "B12": "GND",
     "SH": "GND"
   },
   "F1": {
-    "1": "VBUS_RAW",
-    "2": "VBUS_FUSED"
+    "1": "USB_VBUS",
+    "2": "VIN9"
   },
   "U1": {
-    "1": "VBUS_FUSED",
-    "8": "VBUS_FUSED",
-    "2": "PD_SCL",
-    "3": "PD_SDA",
+    "1": "VIN9",
+    "8": "VIN9",
+    "2": null,
+    "3": null,
     "4": "PD_D_SHORT",
     "5": "PD_D_SHORT",
     "6": "CC2",
     "7": "CC1",
     "9": "PD_CFG",
-    "10": "PD_PG_N",
+    "10": null,
     "11": "GND"
   },
   "C1": {
-    "1": "VBUS_FUSED",
+    "1": "VIN9",
     "2": "GND"
   },
   "R2": {
     "1": "PD_CFG",
     "2": "GND"
   },
-  "R3": {
-    "1": "AUX3V3",
-    "2": "PD_PG_N"
-  },
-  "U9": {
-    "1": "VBUS_FUSED",
-    "2": "GND",
-    "4": "GND",
-    "3": "AUX3V3"
-  },
-  "C33": {
-    "1": "VBUS_FUSED",
-    "2": "GND"
-  },
-  "C34": {
-    "1": "AUX3V3",
-    "2": "GND"
-  },
-  "R35": {
-    "1": "AUX3V3",
-    "2": "GND"
-  },
   "U2": {
-    "1": "VBUS_FUSED",
-    "2": "VBUS_FUSED",
+    "1": "VIN9",
+    "2": "VIN9",
     "3": "UV_EN",
     "4": null,
     "5": "OV_SET",
     "6": "EF_MODE",
-    "7": "EF_ENABLE",
+    "7": "EF_SHDN",
     "8": "RTN",
     "9": "GND",
     "10": null,
     "11": "ILIM",
     "12": "SLEW",
     "13": null,
-    "14": "EF_FLT_N",
+    "14": null,
     "15": "VPROT",
     "16": "VPROT",
     "17": "RTN"
   },
   "R4": {
-    "1": "VBUS_FUSED",
+    "1": "VIN9",
     "2": "UV_EN"
   },
   "R5": {
@@ -93,7 +71,7 @@
     "2": "RTN"
   },
   "R6": {
-    "1": "VBUS_FUSED",
+    "1": "VIN9",
     "2": "OV_SET"
   },
   "R7": {
@@ -108,28 +86,12 @@
     "1": "EF_MODE",
     "2": "RTN"
   },
-  "R37": {
-    "1": "AUX3V3",
-    "2": "EF_FLT_N"
-  },
-  "R28": {
-    "1": "PD_PG_N",
-    "2": "PG_BASE"
-  },
-  "R29": {
-    "1": "AUX3V3",
-    "2": "PG_BASE"
-  },
-  "R30": {
-    "1": "EF_ENABLE",
-    "2": "RTN"
-  },
   "R31": {
     "1": "VPROT",
     "2": "GND"
   },
   "C2": {
-    "1": "VBUS_FUSED",
+    "1": "VIN9",
     "2": "GND"
   },
   "C3": {
@@ -140,21 +102,18 @@
     "1": "VPROT",
     "2": "GND"
   },
-  "Q1": {
-    "1": "PG_BASE",
-    "2": "AUX3V3",
-    "3": "PG_PERMIT"
-  },
-  "JP1": {
-    "1": "PG_PERMIT",
-    "2": "EF_ENABLE"
+  "SW1": {
+    "1": "EF_SHDN",
+    "3": "EF_SHDN",
+    "2": "RTN",
+    "MP": null
   },
   "U3": {
     "1": "GND",
     "2": "MID_SW",
     "3": "VPROT",
     "4": "MID_FB",
-    "5": "EF_ENABLE",
+    "5": null,
     "6": "MID_BOOT"
   },
   "L1": {
@@ -194,7 +153,7 @@
     "2": "FIVE_SW",
     "3": "VPROT",
     "4": "FIVE_FB",
-    "5": "EF_ENABLE",
+    "5": null,
     "6": "FIVE_BOOT"
   },
   "L4": {
@@ -344,74 +303,6 @@
     "1": "MID",
     "2": "GND"
   },
-  "C40": {
-    "1": "BUTTON_N",
-    "2": "GND"
-  },
-  "R41": {
-    "1": "AUX3V3",
-    "2": "BUTTON_N"
-  },
-  "SW1": {
-    "1": "BUTTON_N",
-    "3": "BUTTON_N",
-    "2": "GND",
-    "MP": null
-  },
-  "J8": {
-    "1": "GND",
-    "2": "DBG_AUX_MON",
-    "3": "ADC_P12",
-    "4": "GND",
-    "5": "ADC_N12",
-    "6": "ADC_P5",
-    "7": "ADC_MID",
-    "8": "ADC_VBUS",
-    "9": "ADC_VPROT",
-    "10": "GND",
-    "11": "DBG_PG_N",
-    "12": "DBG_FLT_N",
-    "13": "DBG_SDA",
-    "14": "DBG_SCL",
-    "15": "DBG_BUTTON_N",
-    "16": "GND",
-    "17": null,
-    "18": null,
-    "19": null,
-    "20": null
-  },
-  "R61": {
-    "1": "AUX3V3",
-    "2": "DBG_AUX_MON"
-  },
-  "R62": {
-    "1": "PD_PG_N",
-    "2": "DBG_PG_N"
-  },
-  "R63": {
-    "1": "EF_FLT_N",
-    "2": "DBG_FLT_N"
-  },
-  "R64": {
-    "1": "PD_SDA",
-    "2": "DBG_SDA"
-  },
-  "R65": {
-    "1": "PD_SCL",
-    "2": "DBG_SCL"
-  },
-  "R66": {
-    "1": "BUTTON_N",
-    "2": "DBG_BUTTON_N"
-  },
-  "R70": {
-    "1": "AUX3V3",
-    "2": "PD_SDA"
-  },
-  "R71": {
-    "1": "AUX3V3",
-    "2": "PD_SCL"
-  },
   "R32": {
     "1": "P5",
     "2": "LED_P_A"
@@ -419,190 +310,6 @@
   "D10": {
     "1": "GND",
     "2": "LED_P_A"
-  },
-  "U11": {
-    "1": "NEG_SENSE",
-    "2": "NEG_SUM",
-    "3": "GND",
-    "4": "GND",
-    "5": "GND",
-    "6": "OP_UNUSED",
-    "7": "OP_UNUSED",
-    "8": "AUX3V3"
-  },
-  "R42": {
-    "1": "N12",
-    "2": "NEG_SUM"
-  },
-  "R43": {
-    "1": "NEG_SUM",
-    "2": "NEG_SENSE"
-  },
-  "C41": {
-    "1": "AUX3V3",
-    "2": "GND"
-  },
-  "R44": {
-    "1": "P12",
-    "2": "SENSE_P12"
-  },
-  "R45": {
-    "1": "SENSE_P12",
-    "2": "GND"
-  },
-  "R46": {
-    "1": "P5",
-    "2": "SENSE_P5"
-  },
-  "R47": {
-    "1": "SENSE_P5",
-    "2": "GND"
-  },
-  "R48": {
-    "1": "MID",
-    "2": "SENSE_MID"
-  },
-  "R49": {
-    "1": "SENSE_MID",
-    "2": "GND"
-  },
-  "R50": {
-    "1": "VBUS_FUSED",
-    "2": "SENSE_VBUS"
-  },
-  "R51": {
-    "1": "SENSE_VBUS",
-    "2": "GND"
-  },
-  "R52": {
-    "1": "VPROT",
-    "2": "SENSE_VPROT"
-  },
-  "R53": {
-    "1": "SENSE_VPROT",
-    "2": "GND"
-  },
-  "R54": {
-    "1": "SENSE_P12",
-    "2": "ADC_P12"
-  },
-  "C42": {
-    "1": "ADC_P12",
-    "2": "GND"
-  },
-  "D13": {
-    "1": "ADC_P12",
-    "2": "GND"
-  },
-  "D14": {
-    "1": "AUX3V3",
-    "2": "ADC_P12"
-  },
-  "R55": {
-    "1": "NEG_SENSE",
-    "2": "ADC_N12"
-  },
-  "C43": {
-    "1": "ADC_N12",
-    "2": "GND"
-  },
-  "D15": {
-    "1": "ADC_N12",
-    "2": "GND"
-  },
-  "D16": {
-    "1": "AUX3V3",
-    "2": "ADC_N12"
-  },
-  "R56": {
-    "1": "SENSE_P5",
-    "2": "ADC_P5"
-  },
-  "C44": {
-    "1": "ADC_P5",
-    "2": "GND"
-  },
-  "D17": {
-    "1": "ADC_P5",
-    "2": "GND"
-  },
-  "D18": {
-    "1": "AUX3V3",
-    "2": "ADC_P5"
-  },
-  "R57": {
-    "1": "SENSE_MID",
-    "2": "ADC_MID"
-  },
-  "C45": {
-    "1": "ADC_MID",
-    "2": "GND"
-  },
-  "D19": {
-    "1": "ADC_MID",
-    "2": "GND"
-  },
-  "D20": {
-    "1": "AUX3V3",
-    "2": "ADC_MID"
-  },
-  "R58": {
-    "1": "SENSE_VBUS",
-    "2": "ADC_VBUS"
-  },
-  "C46": {
-    "1": "ADC_VBUS",
-    "2": "GND"
-  },
-  "D21": {
-    "1": "ADC_VBUS",
-    "2": "GND"
-  },
-  "D22": {
-    "1": "AUX3V3",
-    "2": "ADC_VBUS"
-  },
-  "R59": {
-    "1": "SENSE_VPROT",
-    "2": "ADC_VPROT"
-  },
-  "C47": {
-    "1": "ADC_VPROT",
-    "2": "GND"
-  },
-  "D23": {
-    "1": "ADC_VPROT",
-    "2": "GND"
-  },
-  "D24": {
-    "1": "AUX3V3",
-    "2": "ADC_VPROT"
-  },
-  "D25": {
-    "1": "NEG_SUM",
-    "2": "GND"
-  },
-  "D26": {
-    "1": "AUX3V3",
-    "2": "NEG_SUM"
-  },
-  "J2": {
-    "1": "N12",
-    "2": "N12",
-    "3": "GND",
-    "4": "GND",
-    "5": "GND",
-    "6": "GND",
-    "7": "GND",
-    "8": "GND",
-    "9": "P12",
-    "10": "P12",
-    "11": "P5",
-    "12": "P5",
-    "13": null,
-    "14": null,
-    "15": null,
-    "16": null
   },
   "J7": {
     "1": "N12",
@@ -638,10 +345,10 @@
     "1": "GND"
   },
   "#FLG02": {
-    "1": "VBUS_RAW"
+    "1": "USB_VBUS"
   },
   "#FLG03": {
-    "1": "VBUS_FUSED"
+    "1": "VIN9"
   },
   "#FLG04": {
     "1": "MID"
