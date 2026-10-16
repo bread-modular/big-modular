@@ -1,4 +1,4 @@
-"""Electrical source of truth for the autonomous 9 V V1 (routing preparation).
+"""Electrical source of truth for the autonomous 9 V V1 (routed HRO carrier).
 
 All symbol mappings below are manufacturer pin numbers. Datasheet source evidence
 and engineering limits live in docs/engineering.md.
@@ -13,7 +13,8 @@ def populate(stock, ic, lib, root):
     sheets={};bom=[];conns={}
     R=stock('Device','R');C=stock('Device','C');L=stock('Device','L');D=stock('Device','D_Schottky')
     LED=stock('Device','LED');F=stock('Device','Fuse')
-    USB=stock('Connector','USB_C_Receptacle_USB2.0_16P');IDC=stock('Connector_Generic','Conn_02x08_Odd_Even')
+    USB=stock('HRO','TYPE_C_31_M_12');IDC=stock('Connector_Generic','Conn_02x08_Odd_Even')
+    from hro_connector import symbol_from_usb, SYMBOL, FOOTPRINT, MPN, LCSC, DATASHEET, NOTE, PINS
     FLAG=stock('power','PWR_FLAG')
     def chip(name, defs, url):return ic(name,[(str(n),label,t,side) for n,label,t,side in defs],url)
     CH=chip('CH224A',[(1,'VHV','power_in','L'),(8,'VBUS_SENSE','input','L'),(7,'CC1','bidirectional','L'),(6,'CC2','bidirectional','L'),(4,'DP','bidirectional','L'),(5,'DM','bidirectional','L'),(11,'EP0_GND','power_in','L'),(2,'CFG2_SCL','input','R'),(3,'CFG3_SDA','bidirectional','R'),(9,'CFG1','input','R'),(10,'PG_N','open_collector','R')],'https://done.land/assets/files/ch224a_datasheet.pdf')
@@ -38,7 +39,7 @@ def populate(stock, ic, lib, root):
         sheets[name]={'title':title,'notes':notes,'parts':[]}
     # Catalog records are bounded strict-live snapshots, not procurement approval.
     catalog=json.loads((root/'docs/electrical-catalog.json').read_text())
-    def add(sh,ref,kind,value,nets,fp='',code='',mpn='',note='',manual=False,onboard=True):
+    def add(sh,ref,kind,value,nets,fp='',code='',mpn='',note='',manual=False,onboard=True,manufacturer=''):
         validate_reference(ref,'rail_indicator' if kind==LED and ref in ('D10','D11','D12') else '')
         if ref in conns:raise ValueError('Duplicate '+ref)
         part=catalog.get(code,{})
@@ -46,10 +47,10 @@ def populate(stock, ic, lib, root):
         mpn=mpn or part.get('mpn','')
         note=note or 'Prototype candidate; qualify ratings, land pattern and operating corners.'
         footprint=('BigModular:'+fp.split(':')[-1]) if fp else ''
-        d=dict(ref=ref,kind=kind,value=value,nets={str(k):v for k,v in nets.items()},mpn=mpn,lcsc=code,fp=footprint,note=note,onboard=onboard,manual=manual,datasheet=next((x[2] for x in lib[kind] if isinstance(x,list) and x[:2]==['property','Datasheet']),''))
+        d=dict(ref=ref,kind=kind,value=value,nets={str(k):v for k,v in nets.items()},mpn=mpn,lcsc=code,fp=footprint,note=note,onboard=onboard,manual=manual,manufacturer=manufacturer,datasheet=next((x[2] for x in lib[kind] if isinstance(x,list) and x[:2]==['property','Datasheet']),''))
         sheets[sh]['parts'].append(d);conns[ref]=d['nets']
         if not ref.startswith('#'):
-            bom.append(dict(Reference=ref,Value=value,MPN=mpn,Footprint=fp,LCSC=code,Manufacturer=part.get('manufacturer',''),Classification=part.get('classification','Manual' if manual else 'UNKNOWN'),Sourcing='Manual / excluded from JLC' if manual else 'Catalog candidate; no allocation/qualification guarantee' if part else 'UNRESOLVED sourcing',Notes=note,Block=sh))
+            bom.append(dict(Reference=ref,Value=value,MPN=mpn,Footprint=fp,LCSC=code,Manufacturer=manufacturer or part.get('manufacturer',''),Classification=part.get('classification','Manual' if manual else 'UNKNOWN'),Sourcing='Manual / excluded from JLC' if manual else 'Catalog candidate; no allocation/qualification guarantee' if part else 'UNRESOLVED sourcing',Notes=note,Block=sh))
         return d
     def rr(sh,ref,v,a,b,code='',note=''):
         defaults={'100k':'C25803','10k':'C25804','1k':'C21190','6.8k':'C23212','20k':'C4184','22k':'C31850','150k':'C22807','562k':'C23205','806k':'C23250','402k':'C23048','6.04k':'C25977','16.5k':'C22812','13.5k':'C861118','1.33M':'C482628'}
@@ -58,8 +59,7 @@ def populate(stock, ic, lib, root):
         return add(sh,ref,C,v,{'1':a,'2':b},'Capacitor_SMD:C_'+size+'Metric',code or ('C14663' if v=='100n 50V X7R' else ''),note='Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.')
     def dd(sh,ref,k,a):return add(sh,ref,D,'SS34 40V',{'1':k,'2':a},'Diode_SMD:D_SMA','C8678',note='Rectifier polarity, reverse transients and thermal behavior require V1 validation.')
     a='01_input_protection'
-    n={p:('USB_VBUS' if p in ['A4','A9','B4','B9'] else 'GND' if p in ['A1','A12','B1','B12','SH'] else 'CC1' if p=='A5' else 'CC2' if p=='B5' else None) for p in ['A1','A4','A5','A6','A7','A8','A9','A12','B1','B4','B5','B6','B7','B8','B9','B12','SH']}
-    add(a,'J1',USB,'USB4105-GF-A',n,'BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal',mpn='USB4105-GF-A',manual=True)
+    add(a,'J1',USB,MPN,PINS.copy(),'BigModular:'+FOOTPRINT,LCSC,mpn=MPN,note=NOTE,manual=True,manufacturer='HRO (Korean Hroparts Elec)')
     add(a,'F1',F,'3A 32V candidate',{'1':'USB_VBUS','2':'VIN9'},'Fuse:Fuse_1206_3216Metric','C14165',note='0466003.NRHF catalog candidate only; source/fuse/eFuse thermal and I2t coordination NOT qualified.')
     add(a,'U1',CH,'CH224A',{'1':'VIN9','8':'VIN9','2':None,'3':None,'4':'PD_D_SHORT','5':'PD_D_SHORT','6':'CC2','7':'CC1','9':'PD_CFG','10':None,'11':'GND'},'Package_SO:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm','C42459160',note='WCH V2 table4-1; VHV1 is high-voltage input. EP0 mapped to pad11. Section7.1 typo resolved against pin table4-1, app6.1 and rating8.1.1; see engineering note.')
     cc(a,'C1','1u 50V X7R','VIN9','GND',size='0805_2012');rr(a,'R2','6.8k','PD_CFG','GND')

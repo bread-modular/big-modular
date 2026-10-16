@@ -1,0 +1,198 @@
+{
+  "source": "/home/azero/.okbrain/workspaces/big-modular/024",
+  "base": "7bf93dcfb436591d9849a70be3ff0914bbd70690",
+  "files": {
+    "AGENTS.md": {
+      "sha256": "ae1d8fbb646902076aca68ccb27455a4f361fbd18e3c853cfd485a5d9a177eea",
+      "bytes": 823
+    },
+    "BOM.csv": {
+      "sha256": "c75ac7a0e74970ebdd53bd22a27d171fa09ac94e8df253235c1d4f1ee8998a10",
+      "bytes": 16204
+    },
+    "Code.md": {
+      "sha256": "9754f2286dd7ee76f794865f97ef5b8402fad486d47721cd64ba5a830eb0ad7e",
+      "bytes": 2495
+    },
+    "README.md": {
+      "sha256": "377f1d166f64b22bd2ce53a95a798375c90db286c1f11deba17aedb208aeb0be",
+      "bytes": 2054
+    },
+    "docs/HRO-SOURCE-HANDOFF.md": {
+      "sha256": "82abe3909a4deca7e7cc0821da7ee90644fc3cfd86d9f7b6303bc24489c82986",
+      "bytes": 6727
+    },
+    "docs/assembly-geometry.json": {
+      "sha256": "5a1af3663c569ba4a139ea0a8fb77abf82966eb985e9323eab04be8f6ab1bc75",
+      "bytes": 7922
+    },
+    "docs/assembly.pdf": {
+      "sha256": "69df70bc17bffa278ea1d32158e7f0948ab9a6fed2d5d720b10ae1208948eb92",
+      "bytes": 35192
+    },
+    "docs/assembly.svg": {
+      "sha256": "3f042804287513c4f4a953a29986e5aeef674fd0f3ef3c7abced1e1805d0fd8e",
+      "bytes": 11064
+    },
+    "docs/build.md": {
+      "sha256": "a95db4c782283758607e50d6bebcc1e976e1877cfab68c123ba21b6bb1e65aad",
+      "bytes": 3407
+    },
+    "docs/engineering.md": {
+      "sha256": "b36f561604904ee898f6432be3d18d7b8b5ba1b68678d7acd80600a4d1bf51de",
+      "bytes": 7132
+    },
+    "docs/mechanical-baseline.json": {
+      "sha256": "4c151d076d1e93424fe395939eefd3fc4552e4fe57efad94ad1cefe2c3dc9528",
+      "bytes": 623
+    },
+    "docs/mechanical-preservation.json": {
+      "sha256": "33e8b714cd34a4dab4c797c90767677acf5c96a424dc2a9f9de77cc99a9531d6",
+      "bytes": 322
+    },
+    "docs/mechanics.md": {
+      "sha256": "57a3b09ae971d0d57f64aa0a2e95eb315857453d97ac1d39bc609aaaf6c26800",
+      "bytes": 5031
+    },
+    "docs/pin-net-audit.json": {
+      "sha256": "657db94a85e2397b52907882ad2ff0d9edb56c63e33f36a7f773410095071173",
+      "bytes": 4871
+    },
+    "docs/routed-baseline.json": {
+      "sha256": "05c0ec78799f28cef30f90f9aeac5102ce85099b90ac859d73e6ffe9f5ec4109",
+      "bytes": 739
+    },
+    "docs/schematic.pdf": {
+      "sha256": "7bec6668827ff61d8c2ed6b3138c7d20655f904b0e391e8bc750c0c39a2650ba",
+      "bytes": 330756
+    },
+    "docs/usb-fit.pdf": {
+      "sha256": "3d76fb672383fcda4b005c809c759c35704cc37fd2c5593dff1872cf9a26193c",
+      "bytes": 16043
+    },
+    "docs/usb-fit.svg": {
+      "sha256": "f93cf1fd1c95201aab00821424201583111ec490d71919dea4b3121fe3bfdbf1",
+      "bytes": 3593
+    },
+    "docs/usb-hro-review.md": {
+      "sha256": "edeb0e30bb85ea70e119aca25b85c36d606fbfbf654a181210ef31dfb3c5fc7c",
+      "bytes": 5969
+    },
+    "hardware/01_input_protection.kicad_sch": {
+      "sha256": "79f81f8185af14b9ab59cb41bac85a893a5de26c78fd19b7c93d90885bea421b",
+      "bytes": 34380
+    },
+    "hardware/02_hardgate.kicad_sch": {
+      "sha256": "9b2f92f68e443bb77b755880fb9d3ee88db67652849fc7638555a1c2bdbc251f",
+      "bytes": 38509
+    },
+    "hardware/03_bucks.kicad_sch": {
+      "sha256": "f7992ba1cc34f8fbe01667d6bc5de75ba9d190a3a0bd79386a1251e55748e418",
+      "bytes": 50764
+    },
+    "hardware/04_bipolar.kicad_sch": {
+      "sha256": "aa1ebc33db8bbbb4f392013c63ef9118710ec0a316563df5de8b28a737fe52be",
+      "bytes": 72647
+    },
+    "hardware/07_output_rails.kicad_sch": {
+      "sha256": "f46868189eb2cc9f9b589dcf391bfbbc1e90fb14bb4a6b6a3c8cc2ea9106c5fd",
+      "bytes": 30481
+    },
+    "hardware/BigModular.kicad_sym": {
+      "sha256": "88b3a8949d510f418e26fe7180c156c2cf493309d097702aba9a979b1c1f6c6c",
+      "bytes": 36765
+    },
+    "hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
+      "sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+      "bytes": 4259
+    },
+    "hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod": {
+      "status": "deleted"
+    },
+    "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": {
+      "sha256": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+      "bytes": 1978
+    },
+    "hardware/big_modular.kicad_pcb": {
+      "sha256": "a8cd9e8dbb8451fd426e5dc5feed8090044b879353ade9b36bcf02a0aaa8e4e6",
+      "bytes": 609591
+    },
+    "hardware/big_modular.kicad_pro": {
+      "sha256": "6018bcbbd4249ab5ad0d639e6155f1d0d36555118baffec4800458e9a772abd0",
+      "bytes": 16961
+    },
+    "hardware/big_modular.kicad_sch": {
+      "sha256": "74e918807497457eeaf9daf8e8329ec3d2611d0d9d18ecba855fbc331ff44669",
+      "bytes": 10635
+    },
+    "hardware/front_panel.kicad_pcb": {
+      "sha256": "d6c75c7b9994f7e6fe9d1e6688407e5e3b4f87e4d8c4d073cfd85ff2aa28974b",
+      "bytes": 16245
+    },
+    "hardware/front_panel.kicad_pro": {
+      "sha256": "5f07e574f3e346076c53dd50d4c4cd10bbe0f84b390b082d176ee7db838bb2c6",
+      "bytes": 9762
+    },
+    "hardware/mechanics/assembly-envelope.scad": {
+      "sha256": "e4c596209d76809caff73eac8f90d13701cc57f8dbf8b6159d6c3dc3857e4a01",
+      "bytes": 1105
+    },
+    "tests/test_hro_source.py": {
+      "sha256": "cd7e3c9357e1f94c3ac5f31be92821465fd67937939786f60f937ff8cdb7b918",
+      "bytes": 5472
+    },
+    "tests/test_m3_access.py": {
+      "sha256": "52ea1d0be67f12237eee5a8c1fa9064e029d15fd53f6b51d84804e7fe4c4eedf",
+      "bytes": 5470
+    },
+    "tests/test_stack_geometry.py": {
+      "sha256": "737f67bc51bcbc230926786fea4e35ce05131c024e3d1f52a3214803695d5dc5",
+      "bytes": 8780
+    },
+    "tools/build_mechanics.py": {
+      "sha256": "1f4de8c15119e3c1ddac70ff68815f8ccf63939b69fec457f740ba28840a3be6",
+      "bytes": 14980
+    },
+    "tools/build_stack.py": {
+      "sha256": "592532c6c3278e1af381a02658d9ee291b6de1418560263e712306dc348386dd",
+      "bytes": 18545
+    },
+    "tools/electrical_design.py": {
+      "sha256": "f7b1535393449dbcd791c7100541f52893bbed31b9e65f8b31cb10fd2eb89086",
+      "bytes": 13702
+    },
+    "tools/hro_connector.py": {
+      "sha256": "ab4d73f462e61e7834bae5c2e0fcdbe6f121d3fd311e767113f091c944ab03a8",
+      "bytes": 2482
+    },
+    "tools/hro_fit.py": {
+      "sha256": "d2a109d34943fe6706ad59952cc3d6645f6a479bf802cc3ccef1bd208a1b65d9",
+      "bytes": 2879
+    },
+    "tools/hro_merge_overlay.py": {
+      "sha256": "4f7380cbfff4a0d333867c3cc72afc27e0c6e787ce63ea6facebb990e839ba65",
+      "bytes": 8023
+    },
+    "tools/render_schematic.py": {
+      "sha256": "0fe496d7ca6de3010ead890cc5db1111bf76d4a6e0a492f840afc7adc8e88ad3",
+      "bytes": 2932
+    },
+    "tools/routed_checks.py": {
+      "sha256": "e1f0fb69631125e099f277999498b3a293153fa50a6ca83004ef4ff6eba741dd",
+      "bytes": 7338
+    },
+    "tools/stack_geometry.py": {
+      "sha256": "17838ae8920fcc5b4e82b22dd8f93c7dac7ccd4f996657abe050a44dddd5c06a",
+      "bytes": 9672
+    },
+    "tools/verify_project.py": {
+      "sha256": "a40c4cabdba990210dac585c2efa49c70a6ed83270f72b60a199834cfa3b5de6",
+      "bytes": 2578
+    },
+    "tools/verify_stack.py": {
+      "sha256": "c55bdb91a0aa42568aa4985f7ec638c2061b12e5e61be9919c8a7328eefa1d77",
+      "bytes": 12610
+    }
+  },
+  "verified_exact_delta_count": 48
+}

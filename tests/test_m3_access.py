@@ -75,9 +75,10 @@ class M3AccessTests(unittest.TestCase):
             r=subprocess.run([sys.executable,'-B',str(ROOT/'tools/build_mechanics.py'),'--output',str(out)],capture_output=True,text=True)
             self.assertEqual(r.returncode,0,r.stderr)
             self.assertEqual(json.loads((out/'assembly-geometry.json').read_text()),geometry())
-            # Updated assembly axes; unchanged bracket drawing golden bytes.
+            # HRO assembly; bracket bytes independently matched HEAD generator.
+            # Previous bracket golden predated the retained mounting-note update.
             import hashlib
-            golden={'assembly.svg': '455d1f549df77600a843769f826154ec2f33c326f495b63d9c41e76910088cf3', 'm3-brackets.svg': '3095b4ffd2fd3689f0cce60468ffb28b7ecdd84ca96bf2c93d00a43ef39ccbdf'}
+            golden={'assembly.svg': 'db7a6acda583bf369a63bd9f520fe4f446aeb051d0a15fe2b948443a6de8c5ca', 'm3-brackets.svg': 'e39fe07da9e097195ca8fcf75102805a3de159e231f2b63a0378ecf6e8ac7dfd'}
             for name,digest in golden.items():
                 self.assertEqual(hashlib.sha256((out/name).read_bytes()).hexdigest(),digest)
 

@@ -1,7 +1,9 @@
 # Big Modular — autonomous 9 V V1
 
-**V1 — unrouted / placement next**. Both native PCBs are updated and unrouted. USB/3mm power LED/retry form the top
-cluster. All64 active footprints/nets are imported:4 fixed,60 staged off-board.
+**V1 — HRO bare-PCB artwork ready with required fabrication process.**
+64 electrical footprints, 421 segments, 133 vias and four copper zones on the carrier;
+passive front panel. USB is HRO TYPE-C-31-M-12 / C165948. See
+[HRO identity/fit review](docs/usb-hro-review.md) and [build/check instructions](docs/build.md).
 
 ```
 USB_VBUS -> F1 -> VIN9 -> TPS26600 UV/OV eFuse -> VPROT
@@ -18,8 +20,21 @@ SW1: press eFuse shutdown, release retry (UV/OV/current/thermal protections rema
   [mechanical interface/pin map](docs/mechanics.md), [build/check instructions](docs/build.md).
 - `tools/electrical_design.py` + `build_project.py` + `render_schematic.py` generate
   native sheets/libraries, `BOM.csv` and `docs/pin-net-audit.json`; BOM is not an order CSV.
+  Accepted native PCB routing is canonical; the default stack build copies, never reconstructs it.
 - [Current assembly PDF](docs/assembly.pdf): unchanged outlines/M3 brackets; top USB
   axis Y33.5mm, red3mm LED Y43mm, retry Y49.5mm (panel-top coordinates).
   Cutbacks suit this bracket/M3 hardware, not all 90-degree face mounts; see [mounting](docs/mechanics.md#m3-bracket-face-mounting-and-current-cutbacks).
-- V1 routing preparation only: place the60 staged components before routing.
-  No routing, manufacturing exports, uploads or commits in this checkpoint.
+- Independent fabrication ZIPs include process requirements and actual CAM evidence.
+  No assembly CSV or physical/bench qualification is claimed. No commit/merge/push/order was performed.
+
+## Bare-PCB release / user-controlled merge
+
+- [Fabrication requirements](docs/fabrication.md): 4-layer carrier,133 TypeVII filled/capped vias;
+  separate passive panel. Not an assembled/product qualification.
+- [Tracked release](production/hro-r1/manifest.json): two independent PCB ZIPs,
+  separate stencil-support ZIP, actual CAM previews and source/file SHA256.
+- [Toleranced HRO fit](docs/usb-fit.pdf): 5.00 x10.80 R0.60 opening, positive0.233mm
+  worst-case margin including machining/registration/finished thickness.
+- [Safe merge readiness](docs/hro-integration.md): canonical workspace hardware already
+  preserves the user's saved main presentation/settings. User reviews and merges;
+  no assistant commit/merge, no manual file integration, no .history/GUI/lock changes.

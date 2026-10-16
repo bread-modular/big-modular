@@ -1,4 +1,4 @@
-# V1 mechanical routing preparation
+# V1 HRO toleranced bare-PCB mechanics
 
 Panel9.8 x128.5 x1.6mm; carrier100.5 x30 x1.6mm, perpendicular, B.Cu X3.1 /
 F.Cu X4.7. Existing outline/reliefs, M3 brackets and J7 landing stay unchanged.
@@ -6,21 +6,22 @@ Panel origin is upper left, X across / Y down; Z into case. [Assembly PDF](assem
 
 | Interface | Panel axis X,Y mm | Native carrier X,Y mm |
 |---|---|---|
-| J1 USB-C | 6.43,33.5 | 69.25,99.8 |
+| J1 HRO USB-C | 6.33,33.5 | 69.25,103.475 |
 | D10 red3mm | 6.7,43 | pad1:77.48,97.905 |
 | SW1 retry | 6.4,49.5 | 85.25,100.175 |
 
-USB aperture X4.255,Y28.6,W4.2,H9.8,R0.6; SW1 hole3.2mm; LED hole3.6mm.
-USB native pad numbering/mount pattern/model/orientation retained. Top bracket and
+USB aperture X3.90,Y28.10,W5.00,H10.80,R0.60; SW1 hole3.2mm; LED hole3.6mm.
+HRO local land imported with honest paired-contact symbol mapping; no verified3D model.
+See [HRO review](usb-hro-review.md) for exact drawing/local deviations and datum derivation. Top bracket and
 cutback end at Y27/Y27.5; the2.5mm carrier lip above them cannot support USB.
 This is the highest practical cluster without changing the outline/brackets.
-Clearances: USB pad-to-relief1.18mm; aperture-to-bracket1.6mm;
+Clearances: USB pad-to-relief1.18mm; aperture-to-bracket1.1mm;
 USB-to-LED solder envelopes2.51mm; LED-to-switch solder envelopes1.23mm;
 switch body-to-LED flange2.35mm. LED flange max3.8mm leaves1.2mm lateral margin.
 Order is USB -> D10 -> SW1; each keeps its own X, depth, orientation and land pattern.
 LED pad1 remains1.27mm above its axis; SW1 peg row follows its own axis.
 USB-to-switch solder envelopes8.08mm. All pairwise access gaps retain the0.8mm minimum.
-Rail head ends at Y6; USB aperture begins28.6. Rail head still overhangs left0.58mm.
+Rail head ends at Y6; USB aperture begins28.1. Rail head still overhangs left0.58mm.
 SW1 body3.3mm; button recessed0.45mm behind panel rear, no plunger. Solder from +X
 with fine tip before fitting panel; all M3 nut/tool paths are checked out-of-rack.
 Front nut/upright clearance is only0.125mm nominal: printed ABS/sample trial required.
@@ -59,9 +60,9 @@ L1/L4 now MDA1040-6R8M max4.0mm; L2/L3 CKCS6045 max4.7mm. The5.1mm normal
 allowance reserves0.15mm solder +0.10mm assembly offset: margins0.85/0.15mm.
 These are front-side envelope budgets, not fitted populated-board approval. Do not
 flip inductors to the1.3mm backside allowance. Manufacturer height limits must hold.
-64 active footprints, correct native fields/UUID paths/nets: J1/SW1/D10/J7 fixed;
-60 power/passive parts unlocked in a labelled off-board grid, including0603 R32.
-No missing footprints, no placement claim for staged parts; zero tracks/vias/zones.
+64 active footprints and native fields/UUID paths/nets; J1 HRO placement rederived,
+SW1/D10/J7 fixed. All60 power/passive parts placed; carrier421 segments/133 vias/4 zones.
+Front panel remains passive. Only the USB aperture size/position changed; all other physical interfaces retained.
 Exact LED MPN, lead forming, USB cable overmould and finished cabled depth need trial.
 
 ## J7 physical board output landing
@@ -80,3 +81,15 @@ modeled as a second schematic connector. Verify orientation/continuity and strai
 parallel an active rack PSU. D10 cathode1=GND, anode2=R32 output; R32=1k from P5.
 SW1 contacts1+3=EF_SHDN, contact2=RTN, MP case lands unconnected. Keep RTN separate
 from system GND. Press disconnects input; stored output charge does not vanish instantly.
+
+## Fabrication tolerance acceptance
+
+Both finished boards1.60 +/-0.16mm; each aperture wall +/-0.10mm, centre
+registration +/-0.10 X/Y and R0.50..0.70 through thickness. Measured assembly
+registration +/-0.10 X/Y, seating+.05 X, squareness<=.5deg, shell width+.15 / height+.10; in-plane angular registration<=.5deg with
+additional .040mm X / .016mm Y corner sweep.
+Independent complete worst-case corner margin0.233458mm; previous aperture would
+interfere by0.428610mm under this same budget. Minimum outer-edge ligament0.60mm.
+See [full acceptance budget](fabrication.md) and [generated fit report](usb-fit.json).
+Loose M3 hole clearance does not guarantee registration; physical assembled/cable/ABS
+trial is pending, while the declared bare-board artwork is ready for the required process.

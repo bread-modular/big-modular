@@ -1,5 +1,5 @@
 {
-  "revision": "V1 top UI / synchronized 64 parts / routing preparation",
+  "revision": "V1 routed HRO carrier / passive two-board assembly",
   "board_count": 2,
   "magnetics": {
     "L1/L4": {
@@ -86,17 +86,65 @@
     ]
   ],
   "aperture_XYWHR_mm": [
-    4.255,
-    28.6,
-    4.2,
-    9.8,
+    3.9,
+    28.1,
+    5.0,
+    10.8,
     0.6
   ],
+  "USB_fit_acceptance": {
+    "finished_board_thickness_mm": [
+      1.44,
+      1.76
+    ],
+    "aperture_each_wall_error_mm": 0.1,
+    "aperture_centre_registration_each_axis_mm": 0.1,
+    "aperture_radius_mm": [
+      0.5,
+      0.7
+    ],
+    "assembled_registration_each_axis_mm": 0.1,
+    "shell_width_plus_mm": 0.15,
+    "shell_height_plus_mm": 0.1,
+    "seating_plus_X_mm": 0.05,
+    "squareness_max_deg": 0.5,
+    "tilt_projection_each_axis_mm": 0.02,
+    "in_plane_angular_registration_max_deg": 0.5,
+    "in_plane_rotation_sweep_XY_mm": [
+      0.04,
+      0.016
+    ],
+    "outer_profile_each_edge_error_mm": 0.1
+  },
   "mouth_axis_XYZ_mm": [
-    6.43,
+    6.33,
     33.5,
     0.8
   ],
+  "USB": {
+    "mpn": "TYPE-C-31-M-12",
+    "manufacturer": "HRO",
+    "LCSC": "C165948",
+    "body_width_depth_height_mm": [
+      8.94,
+      7.35,
+      3.26
+    ],
+    "native_origin_xy_mm": [
+      69.25,
+      103.475
+    ],
+    "orientation_deg": 0,
+    "land_row_from_mouth_mm": 7.695,
+    "rear_land_edge_from_mouth_mm": 8.42,
+    "shell_tab_rows_from_mouth_mm": [
+      2.6,
+      6.78
+    ],
+    "locator_from_mouth_mm": 6.25,
+    "model_status": "No verified model. F.Fab + dimensioned envelope, not a connector solid.",
+    "review": "docs/usb-hro-review.md"
+  },
   "LEDs": [
     {
       "reference": "D10",
@@ -173,7 +221,7 @@
     "datasheet": "https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf"
   },
   "led_resistors": {
-    "status": "R32 is1k SMD in schematic from final P5 to D10; not yet placed/routed",
+    "status": "R32 is1k SMD from final P5 to D10; placed and routed",
     "plan": "Manual D10 cathode GND, anode LED_P_A; no LED controller or blink"
   },
   "brackets": {
@@ -300,6 +348,6 @@
     ]
   ],
   "harness_status": "Provisional cable budget only; complete populated/cabled depth unverified",
-  "electrical_status": "Single D10 P5 power LED integrated in schematic; 64 current schematic footprints imported; four fixed interfaces placed, 60 staged off-board. No LED controller.",
-  "status": "V1 routing-preparation stage; no copper. Bench validation and printed-fit trials required."
+  "electrical_status": "Single D10 P5 power LED integrated in schematic; 64 current schematic footprints imported; four fixed interfaces; all60 power/passive parts placed and routed. No LED controller.",
+  "status": "V1 routed carrier and passive panel; bare-PCB artwork release is separate from physical and bench qualification."
 }

@@ -9,6 +9,8 @@ import pcbnew as pcb
 from m3_fit import verify_access
 from sexp import parse,nodes
 from stack_geometry import physical_fingerprint, verify_ui_clearances
+from routed_checks import verify_native
+from hro_fit import verify as verify_hro_fit
 
 ROOT=Path(__file__).resolve().parents[1]
 def mm(v):return round(pcb.ToMM(v),5)
@@ -69,12 +71,18 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     allowed={'big_modular':{r for r in audit if not r.startswith('#')}|{'H1','H2','H3','H4'},
              'front_panel':{f'H{i}' for i in range(1,7)}}
     out={'fabrication_ready':False,'boards':{}}
+    out['fabrication_ready_scope']='Legacy conservative source-only non-approval flag; this checker does not evaluate bare-PCB artwork release and this false value is not an unresolved fabrication-blocker result.'
+    out['bare_pcb_artwork_release_record']='production/hro-r1/release-validation.json'
+    out['assembled_product_qualified']=False
+    out['physical_validation_pending']=['cable/full insertion','ABS brackets/assembled fit','bench/source-current/thermal validation']
     for n,b in boards.items():
         assert set(fps[n])==allowed[n],(n,'wrong inventory')
-        assert not list(b.GetTracks()) and not list(b.Zones()),'routing forbidden'
+        if n=='front_panel':assert not list(b.GetTracks()) and not list(b.Zones()),'passive panel must stay unrouted'
         assert math.isclose(pcb.ToMM(b.GetDesignSettings().GetBoardThickness()),1.6)
         assert all(d.GetLayer() not in [pcb.F_Cu,pcb.B_Cu] for d in b.GetDrawings())
-        out['boards'][n+'.kicad_pcb']={'footprints':len(fps[n]),'tracks':0,'vias':0,'zones':0}
+        ts=list(b.GetTracks());nv=sum(t.GetClass()=='PCB_VIA' for t in ts)
+        out['boards'][n+'.kicad_pcb']={'footprints':len(fps[n]),'tracks':len(ts)-nv,'vias':nv,'zones':len(list(b.Zones()))}
+    out['routing']=verify_native(boards['big_modular'],hardware)
     expected=[(14,2),(16.5,2),(16.5,10),(27.5,10),(27.5,2),(101,2),
               (101,10),(112,10),(112,2),(114.5,2),(114.5,32),(14,32)]
     edges=[d for d in boards['big_modular'].GetDrawings() if d.GetLayer()==pcb.Edge_Cuts]
@@ -88,7 +96,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert min(y for x,y in pts)==30 and max(y for x,y in pts)==158.5
     # USB hole includes four segments and four quarter-arcs, preserved corner radius.
     ap=[p for p in pts if p[0] not in [50,59.8]]
-    assert (min(x for x,y in ap),max(x for x,y in ap),min(y for x,y in ap),max(y for x,y in ap))==(54.255,58.455,58.6,68.4)
+    assert (min(x for x,y in ap),max(x for x,y in ap),min(y for x,y in ap),max(y for x,y in ap))==(53.9,58.9,58.1,68.9)
     def npth(n,ref,pos,d):
         pads=list(fps[n][ref].Pads());assert len(pads)==1
         p=pads[0];assert p.GetAttribute()==pcb.PAD_ATTRIB_NPTH
@@ -102,7 +110,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         npth('front_panel',ref,(56.7,y+30),3.6)
     npth('front_panel','H6',(56.4,79.5),3.2)
     for i,y in enumerate([43.5,70.5],3):npth('big_modular',f'H{i}',native(y,27),2.5)
-    usb=fps['big_modular']['J1'];assert xy(usb)==(69.25,99.8) and usb.GetOrientationDegrees()==0
+    usb=fps['big_modular']['J1'];assert xy(usb)==(69.25,103.475) and usb.GetOrientationDegrees()==0
     audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
     for p in usb.Pads():
         expected_net=audit['J1'].get(p.GetNumber())
@@ -113,8 +121,8 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     for ref in ['J1','J7']:
         node=next(f for f in nodes(tree,'footprint') if any(p[1:3]==['Reference',ref] for p in nodes(f,'property')))
         assert physical_fingerprint(node)==record['physical'][ref], (ref,'physical pad/model pattern changed')
-    assert g['mouth_axis_XYZ_mm']==[6.43,33.5,.8]
-    assert math.isclose(4.7+1.73,6.43) # Intentional assembly plane translation.
+    assert g['mouth_axis_XYZ_mm']==[6.33,33.5,.8]
+    assert math.isclose(4.7+1.63,6.33) # Intentional assembly plane translation.
     f=fps['big_modular']
     for r,pos in [('D10',native(41.73,6.37)),('SW1',native(49.5,4.1)),('J7',native(48,27))]:
         assert xy(f[r])==pos and f[r].GetLayer()==pcb.F_Cu and f[r].IsLocked()
@@ -138,13 +146,15 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
             assert p.IsOnLayer(pcb.F_Cu) and p.IsOnLayer(pcb.B_Cu) and not p.IsOnLayer(pcb.F_Paste)
             assert any(d.GetText()==role and xy(d)==native(py,8.8) for d in silk), 'missing polarity mark'
         assert led['1'].GetShape()==pcb.PAD_SHAPE_RECT, 'square cathode pad required'
-        assert any(d.GetText()==ref+' '+rail and xy(d)==native(y,11) for d in silk)
+        assert any(d.GetText()==ref+' '+rail and xy(d)==(78,92.8) for d in silk)
         assert any(d.GetText()==rail and xy(d)==(54.9,round(y+33.3,5)) for d in panel_silk), 'LED panel callout alignment'
         assert math.isclose(g['carrier_X_mm'][1]+g['LED']['axis_above_PCB_mm'],6.7)
     assert all(p.GetAttribute()==pcb.PAD_ATTRIB_PTH and mm(p.GetDrillSize().x)>=.8 for p in f['J7'].Pads())
     switch_check=verify_reset_smt(f['SW1'],g)
-    assert any(d.GetText()=='RETRY' and xy(d)==native(49.5,12) for d in silk)
+    assert any(d.GetText()=='RETRY' and xy(d)==(85.25,94.3) for d in silk)
     assert any(d.GetText()=='RETRY' and xy(d)==(54.9,82.5) for d in panel_silk)
+    for label,pos in [('1 / -12V / RED',(78,79.5)),('J7 OUTPUT ONLY',(94.75,79.5))]:
+        assert any(d.GetText()==label and xy(d)==pos for d in silk), 'routed J7 legend missing'
     pinout={'1':'N12','2':'N12',**{str(i):'GND' for i in range(3,9)},'9':'P12','10':'P12','11':'P5','12':'P5',**{str(i):'' for i in range(13,17)}}
     pads={p.GetNumber():p for p in f['J7'].Pads()};assert set(pads)==set(pinout)
     for n,net in pinout.items():
@@ -156,10 +166,11 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert g['reset_XY_diameter_mm']==[6.4,49.5,3.2]
     assert 3.1-g['solder_tail_max_below_B_Cu_mm']>0
     out['clearances_mm']=verify_ui_clearances(g)
+    out['HRO_fit']=verify_hro_fit(g)
     out['mechanics']={'actual_NPTH_geometry_checks':10,'LED_PTH_pad_checks':2,'LED_polarity_mark_checks':2,'manual_LED_exclusions':1,'switch_SMT_pad_checks':5,'switch_locator_NPTH_checks':2,'switch_fit':switch_check,'power_pin_checks':16,
        'M3_access':verify_access(g,expected),'carrier_depth_mm':30,'PCB_depth_behind_panel_mm':30.4,
-       'main_PCB_plane_X_mm':[3.1,4.7],'port_axis_mm':[6.43,33.5,.8],
-       'electrical_status':'V1:64 active footprints synchronized; fixed UI/J7 placed;60 power/passives staged; no routing',
+       'main_PCB_plane_X_mm':[3.1,4.7],'port_axis_mm':[6.33,33.5,.8],
+       'electrical_status':'V1:64 active footprints; routed HRO carrier, passive panel',
        'finished_module_depth':'unverified; cable connector not confined to 2HP board envelope'}
     return out
 

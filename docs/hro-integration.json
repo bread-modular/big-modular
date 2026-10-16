@@ -1,0 +1,333 @@
+{
+  "main_root": "/home/azero/data/projects/big-modular",
+  "workspace": "/home/azero/.okbrain/workspaces/big-modular/025",
+  "main_head": "7bf93dcfb436591d9849a70be3ff0914bbd70690",
+  "base_branch": "okbrain/big-modular/025-9c468b12",
+  "main_saved_files_sha256": {
+    "hardware/01_input_protection.kicad_sch": "f9802765610f4301bf7603a0d4f654edef351cf1f4c16c3abb8f088cab7cebcd",
+    "hardware/02_hardgate.kicad_sch": "47231970cbb45845a8ea0e8925b49346a5060a711cec3bf2d977c75477becbff",
+    "hardware/03_bucks.kicad_sch": "90cb1b1fa9ce608d06d37f57b6f0ef28e270b7c1874799a0f335e30119038e24",
+    "hardware/04_bipolar.kicad_sch": "83997a81dd595e3b206627071e12a838f9e16fefd4734d6a9a4b1ff6ffaa3de3",
+    "hardware/07_output_rails.kicad_sch": "9c1ad2941cc434099e62bd796859c4c41fe7a6440c95cd52ec4ac225693d61d1",
+    "hardware/BigModular.kicad_sym": "7772ec2c634d0914f05983d1f559df6ed78684e590e30e74cf29e706b53f8d14",
+    "hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+    "hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+    "hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+    "hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod": "e1dae516e079b70c4736d001fb81bfb4ef5f9c2a37c8175223a44f83a04ff75f",
+    "hardware/BigModular.pretty/D_SMA.kicad_mod": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+    "hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+    "hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": "f1154f7a5df90086a416a14a23effbbe3658ba33f3d7e5d2cc5e78493d66a6fc",
+    "hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+    "hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+    "hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+    "hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+    "hardware/BigModular.pretty/SOT-23-6.kicad_mod": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+    "hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+    "hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+    "hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+    "hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+    "hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
+    "hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod": "3b8d7da3cae5114ec83022a759a78925113bc2eeec100ea447594f6d8687e4b8",
+    "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "41caf178aacbfbd39c95cf4e40d03daaec3bd750caccb097e77489ebc2e3fda8",
+    "hardware/big_modular.kicad_pcb": "559738f9c8267eea80d38ec8ed86dee02a61663f8bd972c9e6ef6ac46e364974",
+    "hardware/big_modular.kicad_pro": "10fa49f772b6dfb2c05ca3d551622805e8d14005313cbb6e83352e6f6d99b2b6",
+    "hardware/big_modular.kicad_sch": "125670180448bb3ea1bf0ff251821cc1f17629bf5807c2f0d66a260a6ea2e2c4",
+    "hardware/fp-lib-table": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+    "hardware/front_panel.kicad_pcb": "31af6932b39c5e8a4826f4f6850c890fffe0118aab5ad06286f12090e788e994",
+    "hardware/front_panel.kicad_pro": "4be8454c877fbf2e3a235d8d11d3df8fc595e5b151821f6fd3ea2ee4db116813",
+    "hardware/mechanics/corner_braces.scad": "ce564638ca3a664eab28c0053a2430141b3da0bbc1677cf40a0320643fc4176f",
+    "hardware/sym-lib-table": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1"
+  },
+  "overlap": {
+    "hardware/01_input_protection.kicad_sch": {
+      "main_saved_sha256": "f9802765610f4301bf7603a0d4f654edef351cf1f4c16c3abb8f088cab7cebcd",
+      "desired_sha256": "06df3a6acd8a6ef5a87954cedf7a500e36ba3eb935227e5ce02a7f98b76fe247"
+    },
+    "hardware/02_hardgate.kicad_sch": {
+      "main_saved_sha256": "47231970cbb45845a8ea0e8925b49346a5060a711cec3bf2d977c75477becbff",
+      "desired_sha256": "5f4ff8bdfead356427944afa90e42616a052a50a795b6c553f0a6df8bcc579ef"
+    },
+    "hardware/03_bucks.kicad_sch": {
+      "main_saved_sha256": "90cb1b1fa9ce608d06d37f57b6f0ef28e270b7c1874799a0f335e30119038e24",
+      "desired_sha256": "e1250f8ad1534d13a6962b31031f811c5d0215b86482d35c92ff07ad2159ce53"
+    },
+    "hardware/04_bipolar.kicad_sch": {
+      "main_saved_sha256": "83997a81dd595e3b206627071e12a838f9e16fefd4734d6a9a4b1ff6ffaa3de3",
+      "desired_sha256": "7cd3267cebca85e38dd10ba5dfda4cdba1020bbda3ec1140568b36ee27d4d1c3"
+    },
+    "hardware/07_output_rails.kicad_sch": {
+      "main_saved_sha256": "9c1ad2941cc434099e62bd796859c4c41fe7a6440c95cd52ec4ac225693d61d1",
+      "desired_sha256": "956418b105131895e04aa4e8ecf1023f32465b88ac62dc77ba500e52d480ad1f"
+    },
+    "hardware/big_modular.kicad_pro": {
+      "main_saved_sha256": "10fa49f772b6dfb2c05ca3d551622805e8d14005313cbb6e83352e6f6d99b2b6",
+      "desired_sha256": "3334530248291a9c49013b88312067a4da10d0c21efa658fd5a77419cc2b1433"
+    },
+    "hardware/big_modular.kicad_sch": {
+      "main_saved_sha256": "125670180448bb3ea1bf0ff251821cc1f17629bf5807c2f0d66a260a6ea2e2c4",
+      "desired_sha256": "4ac3f8b4850ecda7c097c4194c39cae2ed59571c05fb728b6b1890a8a75a35f2"
+    }
+  },
+  "backup": {
+    "path": "production/hro-integration/main-saved-overlap-backup.zip",
+    "sha256": "0adc3bf83473b051947ad2b2718b72f00ab88639e61c325ed8e8a36da76c81a1",
+    "CRC_and_all_members_verified": true
+  },
+  "preservation": {
+    "carrier_from024_change": "exact stack metadata substitution only; all other bytes unchanged",
+    "tracks": 421,
+    "vias": 133,
+    "zones": 4,
+    "non_USB_pins": 197,
+    "pre024_unaffected_copper_items": 545,
+    "all_024_copper_items_retained": 554,
+    "panel_change": "only USB cutout edge primitives and explicit passive stack",
+    "nonJ1_symbol_instances_byte_preserved": 71,
+    "main_schematic_scoped_forms": {
+      "01_input_protection.kicad_sch": {
+        "changed_uuid_forms": {
+          "symbol": 1
+        },
+        "added_uuid_forms": {}
+      },
+      "02_hardgate.kicad_sch": {
+        "changed_uuid_forms": {
+          "wire": 2
+        },
+        "added_uuid_forms": {
+          "wire": 3,
+          "junction": 1
+        }
+      },
+      "03_bucks.kicad_sch": {
+        "changed_uuid_forms": {},
+        "added_uuid_forms": {}
+      },
+      "04_bipolar.kicad_sch": {
+        "changed_uuid_forms": {
+          "wire": 4
+        },
+        "added_uuid_forms": {
+          "wire": 6,
+          "junction": 2
+        }
+      },
+      "07_output_rails.kicad_sch": {
+        "changed_uuid_forms": {
+          "wire": 4
+        },
+        "added_uuid_forms": {
+          "junction": 2,
+          "wire": 6
+        }
+      },
+      "big_modular.kicad_sch": {
+        "changed_uuid_forms": {
+          "text": 2
+        },
+        "added_uuid_forms": {}
+      }
+    },
+    "project_byte_preserving_patch": "9 ignore strings -> warning; all other bytes equal",
+    "predecessor48_paths_still_hash_equal": true,
+    "main33_saved_hardware_files_still_hash_equal": true
+  },
+  "project_delta": [
+    [
+      "/board/design_settings/rule_severities/footprint_filters_mismatch",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/board/design_settings/rule_severities/footprint_type_mismatch",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/board/design_settings/rule_severities/missing_courtyard",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/board/design_settings/rule_severities/track_not_centered_on_via",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/board/design_settings/rule_severities/tuning_profile_track_geometries",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/erc/rule_severities/footprint_filter",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/erc/rule_severities/four_way_junction",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/erc/rule_severities/simulation_model_issue",
+      "ignore",
+      "warning"
+    ],
+    [
+      "/erc/rule_severities/single_global_label",
+      "ignore",
+      "warning"
+    ]
+  ],
+  "desired_files_sha256": {
+    "AGENTS.md": "ee8ae03c1adcbe15bdc4b4906f60d86b6f95b8ef45745bfbf85ae3705f6cbc17",
+    "BOM.csv": "c75ac7a0e74970ebdd53bd22a27d171fa09ac94e8df253235c1d4f1ee8998a10",
+    "Code.md": "368afdaee2613a794f4fe862593b27a3df948875fdb88578b6f8f545c36977c7",
+    "README.md": "723884441419104b9bb312ad7f82b23cdbf3a891a135e999c61e3db68a7eae9d",
+    "docs/HRO-RELEASE-STATUS.json": "988e2a205dfd8fcf9d72ea026cb4f7b14f388f47983155d4b3be48c49bcc7510",
+    "docs/HRO-SOURCE-HANDOFF.md": "15319edaa2ef0ffa86ab60ed91b20174ce1df9d3f8ee5936e20ae27a1889699a",
+    "docs/assembly-geometry.json": "73340066566aa970415b96cf3e3634c6b2184de1e8b4e412a27d6c74751a157b",
+    "docs/assembly.pdf": "513cfd7d758bf28f423358a3ff913fb61d2a3eb646c2f09f9c9feaf74dfe8233",
+    "docs/assembly.svg": "db7a6acda583bf369a63bd9f520fe4f446aeb051d0a15fe2b948443a6de8c5ca",
+    "docs/build.md": "28e8784a9e526f9ef8b9485d81f79072bece4a85cb3c45086579fb3687a0f221",
+    "docs/engineering.md": "47f131cc41a384e67e89d5f9ab84b1d4579f28a0ea43c82a382a884abb825c34",
+    "docs/fabrication.md": "4b33e92d4bee21ef2f2520c7f84ca39f48eb5aace2ca1f7b95ee814158a3c804",
+    "docs/hro-integration.md": "00517b7a42d4ed02f803b93c2ea9af1a7aaeaf3372bba4bf4bea447f4913b036",
+    "docs/mechanical-baseline.json": "4c151d076d1e93424fe395939eefd3fc4552e4fe57efad94ad1cefe2c3dc9528",
+    "docs/mechanical-preservation.json": "5b57c20be4c08e6b0ee71572ce93518ddec9813fba6a5b278e851e538916b949",
+    "docs/mechanics.md": "ad2c5626e2fa7b596d234336eec3f4f9b9d13ff6af6f16097126779bb5cfa5ec",
+    "docs/pin-net-audit.json": "657db94a85e2397b52907882ad2ff0d9edb56c63e33f36a7f773410095071173",
+    "docs/routed-baseline.json": "a251f6d6f6d5f95045d609e074e80386ccf6a8761da38bf5a5669cefffb301af",
+    "docs/schematic.pdf": "adb9498724a78cb4885b0024491dc12d45033d6e806b77e4527838be50820047",
+    "docs/usb-fit.json": "c6a151184db6a2567b87a3af044c6a21a4537d577e91128ea44173a2b18806ec",
+    "docs/usb-fit.pdf": "9780c8282b418a1f519126b1b03291a1a562e022700075eb733e2729747c2931",
+    "docs/usb-fit.svg": "9380f9566e0e18df9532caa8a1d2f35bd14df3e52dab681b82169d8191aaa764",
+    "docs/usb-hro-review.md": "88c4d03f45f28a814377c19b410b19aa9714be724dc97e1203ae294ab8503264",
+    "hardware/01_input_protection.kicad_sch": "06df3a6acd8a6ef5a87954cedf7a500e36ba3eb935227e5ce02a7f98b76fe247",
+    "hardware/02_hardgate.kicad_sch": "5f4ff8bdfead356427944afa90e42616a052a50a795b6c553f0a6df8bcc579ef",
+    "hardware/03_bucks.kicad_sch": "e1250f8ad1534d13a6962b31031f811c5d0215b86482d35c92ff07ad2159ce53",
+    "hardware/04_bipolar.kicad_sch": "7cd3267cebca85e38dd10ba5dfda4cdba1020bbda3ec1140568b36ee27d4d1c3",
+    "hardware/07_output_rails.kicad_sch": "956418b105131895e04aa4e8ecf1023f32465b88ac62dc77ba500e52d480ad1f",
+    "hardware/BigModular.kicad_sym": "88b3a8949d510f418e26fe7180c156c2cf493309d097702aba9a979b1c1f6c6c",
+    "hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+    "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+    "hardware/big_modular.kicad_pcb": "e9adb5ef40227f3d447a9d3d143418d0deb466aafc712ee976359611d3f58464",
+    "hardware/big_modular.kicad_pro": "3334530248291a9c49013b88312067a4da10d0c21efa658fd5a77419cc2b1433",
+    "hardware/big_modular.kicad_sch": "4ac3f8b4850ecda7c097c4194c39cae2ed59571c05fb728b6b1890a8a75a35f2",
+    "hardware/front_panel.kicad_pcb": "4b683de0128a8dea323bc2533b75e294d77f4e7dd20bdf7a239358bc5b6f3d77",
+    "hardware/front_panel.kicad_pro": "5f07e574f3e346076c53dd50d4c4cd10bbe0f84b390b082d176ee7db838bb2c6",
+    "hardware/mechanics/assembly-envelope.scad": "f088e2e7029272003fef235149ae715abdcaeedb06dee1ce917c1fec77ec9ab6",
+    "production/hro-integration/import-024.json": "72513cbfad5f465fc9d926979780133887e34f761650f98a8da6bb49297320a2",
+    "production/hro-integration/main-presentation.patch": "0c2bca68846fa99c24db2254b0cea246fd99d382ebd183001c687d69416d2a20",
+    "production/hro-integration/main-saved-overlap-backup.zip": "0adc3bf83473b051947ad2b2718b72f00ab88639e61c325ed8e8a36da76c81a1",
+    "production/hro-integration/preservation.json": "08edd36cedc45b5a7f0f0627b90e0dd97e00a5969682b2da53e5947c31e7f5fb",
+    "production/hro-r1/Big-Modular-HRO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip": "7303f16fd84ebb2e998bc5d1bc3aa801b5ad7916357aedaa45e7fb3a6f16c51c",
+    "production/hro-r1/Big-Modular-HRO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip": "225300b8516a0408e8088f8c28a35a51501210ac0091ff41381274731bfe5948",
+    "production/hro-r1/Big-Modular-HRO-R1-PASSIVE-PANEL-BARE-PCB.zip": "08b6fd20b605f29dbb848c27f67d2aad07645d630d5d01c6b55d892b4718ba3c",
+    "production/hro-r1/assembly-stencil-support-only/READ-ME-FIRST.txt": "f44b04cc13c879a5515ca1f52c62c8cb9311fa2c3b7940825446872e5de60321",
+    "production/hro-r1/assembly-stencil-support-only/SHA256SUMS.txt": "001c80742d965c328ebc1ba04a6123178e96b006411bc68ed62b45c50cfd3f6e",
+    "production/hro-r1/assembly-stencil-support-only/big_modular-B_Paste.gbr": "45ebc0d92eeb9c89d0824435aa116a6d5fed0ff3cfa60fd95d3cf7ca9f72ad59",
+    "production/hro-r1/assembly-stencil-support-only/big_modular-F_Paste.gbr": "bc98a16686dcb96e5af552c7636b8e6d78f327ffe85e415f6d3ebf517d13b4f2",
+    "production/hro-r1/assembly-stencil-support-only/source-sha256.json": "e9a1182df2670ff2a73c0661563023cd09998f02c9680d2b48680a7d99e4cbb5",
+    "production/hro-r1/cam-inspection.json": "6dfac34494555b664d007efbd7d6bdcf07337314a04bee0266fe95cbbc8a5639",
+    "production/hro-r1/carrier/FABRICATION-REQUIREMENTS.md": "4b33e92d4bee21ef2f2520c7f84ca39f48eb5aace2ca1f7b95ee814158a3c804",
+    "production/hro-r1/carrier/READ-ME-FIRST.txt": "b2a3ce1f3c2d9f58d554e16eaedc672dad9c459521a8a30126675bcca8d3135d",
+    "production/hro-r1/carrier/SHA256SUMS.txt": "49704aac6e7630ec1305090e904ee3ad9a1c10ca9e934a4e7423234a8ea36891",
+    "production/hro-r1/carrier/big_modular-B_Cu.gbr": "536f236e8f2f789668c958e5d7ae285d97f57e430009ba91858a5470d8f5a7ff",
+    "production/hro-r1/carrier/big_modular-B_Mask.gbr": "fb7a72a9ad73ea6af3c4f4879c5b2c84a836b50bac2db535c58693062d7e0f0f",
+    "production/hro-r1/carrier/big_modular-B_Silkscreen.gbr": "f37898e15c1f9ff18da8f72df323e01b34ae34ba28102b08488ca1351137c3d3",
+    "production/hro-r1/carrier/big_modular-Edge_Cuts.gbr": "008271cbfbe298600e9f3dde8302023d3647207b6ab8bf2396c49cda2f8584ae",
+    "production/hro-r1/carrier/big_modular-F_Cu.gbr": "6b2fa2bf93acedd971782d8bedb40f096fee0bf0f68992514e63cc986e01464e",
+    "production/hro-r1/carrier/big_modular-F_Mask.gbr": "8316ce687495782986e951754d9a3f0e044427022948113eefc81a813750f2cd",
+    "production/hro-r1/carrier/big_modular-F_Silkscreen.gbr": "26b29a41779070e48993735a0bbcc58c6f093571ec0a89a99aadadafa294f289",
+    "production/hro-r1/carrier/big_modular-In1_Cu.gbr": "a2f77ea38af32a011aa94b73644fa6214908d5ec44c6475ee8b7e3fdb99ec521",
+    "production/hro-r1/carrier/big_modular-In2_Cu.gbr": "cad65f67fab7b0d4a1aebddf00f025d78741d0013bf64b7564535882e696e5e5",
+    "production/hro-r1/carrier/big_modular-NPTH.drl": "a18c0d599b07c0e87fb1534cfa87ae1ffe5ea959a8c6bf058361da6cdd1973bb",
+    "production/hro-r1/carrier/big_modular-PTH.drl": "ae2f9ad045f1f4ab6e54b514aad14bd41a948c9bd7a4bb783fadc7a94bb79b72",
+    "production/hro-r1/carrier/big_modular-job.gbrjob": "b41e0b53adba891460bbff657916403f1a9b6fc1a66dcaa5ad346a4250c3ce0e",
+    "production/hro-r1/carrier/big_modular.d356": "7cd7507273e490f38fe68d7abada2d25022daffddc43afff0908a63bf0268df1",
+    "production/hro-r1/carrier/drill-report.txt": "2102c14310aca3096875625eb2bfe4d7631bbb4c187422a3a2ee17a2a901a88f",
+    "production/hro-r1/carrier/fabrication-spec.json": "26b4e2a2e34507fe6c812f621433353436da367f8d24179fcd6ffa53ea8eba12",
+    "production/hro-r1/carrier/ipc-net-name-map.json": "9ceac6f0e10a8600eaa20b5bfe85a4f135f11de481d54a4be0be29dd9d16dbdd",
+    "production/hro-r1/carrier/source-sha256.json": "e9a1182df2670ff2a73c0661563023cd09998f02c9680d2b48680a7d99e4cbb5",
+    "production/hro-r1/carrier/via-audit.json": "a9c5bfb4c861f0cc14deddef7241c8305f9aeb15141007992802509170f5ca11",
+    "production/hro-r1/carrier/via-process.tsv": "d024fbfb1db542f0a742ebe6e969430dbe760098d65640486a85ec82b48439b4",
+    "production/hro-r1/manifest.json": "05a5b1b7dbb54847fb15befba41ee69642b1185c4dd548c64733462cdf4f04cb",
+    "production/hro-r1/passive-panel/FABRICATION-REQUIREMENTS.md": "4b33e92d4bee21ef2f2520c7f84ca39f48eb5aace2ca1f7b95ee814158a3c804",
+    "production/hro-r1/passive-panel/READ-ME-FIRST.txt": "4648e7f2335fd69b3ca0834341bfec6fbe6242e658a52606268365148657c085",
+    "production/hro-r1/passive-panel/SHA256SUMS.txt": "a48a806e0373991bec9dc1b3184fc6f7757041dd5feee15a6deeaa01ebbc2f86",
+    "production/hro-r1/passive-panel/drill-report.txt": "4f1e34485d0be4ed50cc54f88607d466563be7ec5e0cfe20324a92da37ecf76d",
+    "production/hro-r1/passive-panel/fabrication-spec.json": "3152fe8dfa714f9492345e5fc677c012627c4fcc4d1622b34648731b0691645f",
+    "production/hro-r1/passive-panel/front_panel-B_Cu.gbr": "6dfb24513360036f1ec858d7c93baed88714119bbe114819014f24eef165389b",
+    "production/hro-r1/passive-panel/front_panel-B_Mask.gbr": "9b3b7628e7d6d43ef0daea73bf6f68b582d361c1afcb0ecf8dee6bdc9e4b3074",
+    "production/hro-r1/passive-panel/front_panel-B_Silkscreen.gbr": "a52e9fbbd67bcbf94a5e1fc1277cd2d5dbf9e2163dbc6b5b7e32c97bba28fb3f",
+    "production/hro-r1/passive-panel/front_panel-Edge_Cuts.gbr": "cf6a56cb6c17e7be2d432b4c5b5e0f038106f3c7cd11a585ebf735503dc70e11",
+    "production/hro-r1/passive-panel/front_panel-F_Cu.gbr": "51052a396c552f67fec88013778c05db49125641594f376ba8b13c0695cf7419",
+    "production/hro-r1/passive-panel/front_panel-F_Mask.gbr": "52c0c3bb7658e40c13476588bf88293f622007808a4844fd80375066d4c52b48",
+    "production/hro-r1/passive-panel/front_panel-F_Silkscreen.gbr": "35edf7d9f0b2344508b00e4ee2157d00de98dde9e35ec73e753831ddc1eb8b72",
+    "production/hro-r1/passive-panel/front_panel-NPTH.drl": "8f0f83d02a4f6a2afda0fe60ff7cced34ab03eb8373373d017d866185fcc9d40",
+    "production/hro-r1/passive-panel/front_panel-PTH.drl": "e88ae277558e1059701f166e1bffb364146264898fe76e998f91a4f7fc76f0f1",
+    "production/hro-r1/passive-panel/front_panel-job.gbrjob": "667f115d2061ef7e6fea2c5534ab548b316de25ad4b6b95a575c2c1c3a4a2234",
+    "production/hro-r1/passive-panel/source-sha256.json": "e9a1182df2670ff2a73c0661563023cd09998f02c9680d2b48680a7d99e4cbb5",
+    "production/hro-r1/previews/carrier-copper-cam.png": "99ef933b6a13b0061c4575e058ada3aff0385139e1b0783a07894a156023755e",
+    "production/hro-r1/previews/carrier-copper-cam.svg": "999d153bafb8bf53fe8fddef0f881a941c843e01bd87006c936929b9a3d25211",
+    "production/hro-r1/previews/carrier-mask-silk-cam.png": "a005484335d773b76f4d610691ffb5d3128fab188918825ba14b496e897c4606",
+    "production/hro-r1/previews/carrier-mask-silk-cam.svg": "6970225975b71f8eb5559dc91fb8d64a501afcde5cb933e770fd323e7214c2df",
+    "production/hro-r1/previews/efuse-cam.png": "323ca2cca6c794711d43e7cdf177cd80bfdba5844888fc043268112d7dc8f8ce",
+    "production/hro-r1/previews/efuse-cam.svg": "f6e81af95e1fd0ac934301e79c280edb10587933e64a9ec7b9835245d4632d6b",
+    "production/hro-r1/previews/hro-cam.png": "ff3be60e42bddeffe25bbb12f4477c0c3747615a50c2dc3617828507f3adf9c9",
+    "production/hro-r1/previews/hro-cam.svg": "f3127432b16184515793ae8409984c94c8a6366b029f2ac75a90c4d001064b99",
+    "production/hro-r1/previews/passive-panel-cam.png": "dc085f3cd0419313e63e553ebb99362bd4b43b05b3f8f2609e3a961cecfe54cb",
+    "production/hro-r1/previews/passive-panel-cam.svg": "ead59a909de1d85740e78c33b24a32147869e7dc2ea39e8107c26d8cba2f5cc2",
+    "production/hro-r1/previews/passive-panel-detail.png": "590a6f023032dd25aa8f79b63a18171a4a7385acbaefb19827041f2f2501cd55",
+    "production/hro-r1/previews/passive-panel-detail.svg": "003c573886fe3ca76988df6e0c0799368f0d907447c09a81be1d4e7a61644b8f",
+    "production/hro-r1/release-validation.json": "bd0c1a65ee42fce49a9edb0d9f0050561ef94eb5ca281d4872a7f360fd3dedad",
+    "production/hro-r1/via-audit.json": "a9c5bfb4c861f0cc14deddef7241c8305f9aeb15141007992802509170f5ca11",
+    "production/hro-verification/README.md": "a8057c8aa66577f9860309fc7dbc05f13b0c5ef30abd438a6d34b5ed3785cb2a",
+    "production/hro-verification/carrier-drc.json": "7b33140e2de5cc20722128bf6dd76bbdd94914e5a3cfcfc1cc6815256ab8db6c",
+    "production/hro-verification/carrier-erc.json": "91fe03f39dd0ebee2601b9cd203d6f0c0c4e830606c7bc5fde939d9f7c5b2008",
+    "production/hro-verification/common-native-summary.json": "aafbb6162cecbd433a71a287b75dbf5c4748fd894ec47538d75390ab83aa7671",
+    "production/hro-verification/panel-drc.json": "23c7b83660027ba5086b684794e6c3d4af67a88038b41580b927e48d88e94e61",
+    "production/hro-verification/project-verification.json": "8c121725e06fcabf579282d4cebb98642ce4319bfa24371604eed486ec468952",
+    "production/hro-verification/reproducibility.json": "db62d3e4f205a7533e101d6e21a059ca4975991260b11935467fb2ccb5118827",
+    "production/hro-verification/stack-verification.json": "ae9eb372e968059e1e508d9c4f61e4de41955f2bda42b54549a639112e4b3899",
+    "production/hro-verification/tests.log": "15d97a3ad630672aa4bbd0b00af08a390508114b8afa712bdbdf1e62a4ba46ba",
+    "tests/test_hro_fabrication.py": "634c3914feffa32254640e5b38aedf65f453bf6305f5fbe29dfc2dd9b4fe2dec",
+    "tests/test_hro_source.py": "c8e3e080901504d71d14860113f5c09e94e19c7b51e9f99aeb0cbf2003f12939",
+    "tests/test_m3_access.py": "bae550599013be7abebdbd2d312edb0bbe0ed9ac53e522da24fece1f14b1accc",
+    "tests/test_schematic_hierarchy.py": "f32902ad77fa0f8a74138ba5aa0ae5904ba0544b9ef76522ce66d37aab3de899",
+    "tests/test_stack_geometry.py": "3cc78b8a7c01748ce93fe096761ec3966c62a6972da8f073e17eff8bd76c8215",
+    "tools/build_mechanics.py": "011c0ab67ea01078d5a515a0a1e9c4829620a50bddf905fa140455af32ad0b9b",
+    "tools/build_stack.py": "e057d778dfc8c56d7b7d943cab46c923a326335abcc1b601d1bcd632a7d62fd9",
+    "tools/cam-requirements.txt": "28f2df1b2acffccc7e8190f57bf37028ba9b323159d50db4f3e1ffd0ee1fcbe6",
+    "tools/check_hro_cam.py": "dded85cccc1826a768006dfa33607f65362fa94fe2194647793ec27546a9def2",
+    "tools/electrical_design.py": "f7b1535393449dbcd791c7100541f52893bbed31b9e65f8b31cb10fd2eb89086",
+    "tools/fabrication_contract.py": "170f77cb98e6c496f4432e0185dcbb1680cdebd853fbfafd04d892121b12cd63",
+    "tools/hro_connector.py": "ab4d73f462e61e7834bae5c2e0fcdbe6f121d3fd311e767113f091c944ab03a8",
+    "tools/hro_fit.py": "904a68ac33e4083c69a41426873089a8b2c766770095a15bb7eba8a2a7ad708c",
+    "tools/hro_integration_guard.py": "9dd3a46e184205c8585e68d6f679d23af4b8c08a59bb76103a9d0f594d66b523",
+    "tools/hro_merge_overlay.py": "4f7380cbfff4a0d333867c3cc72afc27e0c6e787ce63ea6facebb990e839ba65",
+    "tools/release_hro.py": "5869ccb5e4da9f3b652a69d6884d870b63f9bd3a1abb460494e2d084c7d0f0c1",
+    "tools/render_schematic.py": "0fe496d7ca6de3010ead890cc5db1111bf76d4a6e0a492f840afc7adc8e88ad3",
+    "tools/routed_checks.py": "e1f0fb69631125e099f277999498b3a293153fa50a6ca83004ef4ff6eba741dd",
+    "tools/stack_geometry.py": "db3a26a968eeb6a280cfddcd47be48597c91761393c38765e552a5d6c7e42f37",
+    "tools/verify_project.py": "0afc4b050c1b16d7b4434ddad9de326b9f4b41cf1353b503509b2a324ba0cf65",
+    "tools/verify_stack.py": "ad53691429b327f8f07743e191af0a6d631d87fcba527e3c300bedd18d398d05"
+  },
+  "deleted_paths": [
+    "hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod"
+  ],
+  "not_done": [
+    "user review and merge",
+    "actual merged-main checks",
+    "safe post-merge workspace/backup cleanup"
+  ],
+  "main_writes": false,
+  "desired_delta_path_count_including_manifest": 135,
+  "presentation_patch": {
+    "path": "production/hro-integration/main-presentation.patch",
+    "sha256": "0c2bca68846fa99c24db2254b0cea246fd99d382ebd183001c687d69416d2a20",
+    "zero_context": true,
+    "applies_to_saved_copy_and_matches_all7_desired_hashes": true
+  }
+}

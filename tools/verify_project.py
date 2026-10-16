@@ -12,6 +12,10 @@ parser.add_argument('--output',required=True,type=Path,help='NEW evidence JSON, 
 args=parser.parse_args()
 if args.output.exists():parser.error('output must be NEW')
 result=check(root/'hardware',root/'docs/pin-net-audit.json',root/'BOM.csv')
+result['fabrication_ready_scope']='Legacy conservative source-only non-approval flag; this checker does not evaluate bare-PCB artwork release and this false value is not an unresolved fabrication-blocker result.'
+result['bare_pcb_artwork_release_record']='production/hro-r1/release-validation.json'
+result['assembled_product_qualified']=False
+result['physical_validation_pending']=['cable/full insertion','ABS brackets/assembled fit','bench/source-current/thermal validation']
 # Native connectivity is checked independently of the generator and graph.
 xml=args.netlist
 if not xml.exists():raise FileNotFoundError('Run the final common native check first: '+str(xml))
@@ -35,6 +39,6 @@ assert .611*(1+100e3*1.001/(12.9e3*.999))<5.5
 info=subprocess.check_output(['pdfinfo',str(root/'docs/schematic.pdf')],text=True)
 assert next(l.split()[-1] for l in info.splitlines() if l.startswith('Pages:'))=='6'
 stack=verify(root/'hardware',root/'docs/assembly-geometry.json')
-result.update(native_connected_pins=count,boards=stack['boards'],mechanics=stack['mechanics'],UV_rising=uvr,UV_falling=uvf,OV_rising=ovr,OV_falling=ovf,onboard_mcu=False,external_controller_qualified=False,source_scope='V1 native schematic/PCB synchronization; top UI placed;60 off-board staged')
+result.update(native_connected_pins=count,boards=stack['boards'],mechanics=stack['mechanics'],UV_rising=uvr,UV_falling=uvf,OV_rising=ovr,OV_falling=ovf,onboard_mcu=False,external_controller_qualified=False,source_scope='V1 canonical routed HRO carrier; unchanged non-USB electrical identity')
 args.output.write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))

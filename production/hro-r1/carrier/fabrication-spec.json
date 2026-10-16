@@ -1,0 +1,318 @@
+{
+  "CAM_checked": {
+    "Gerber_objects": {
+      "B_Cu": 226,
+      "B_Mask": 26,
+      "B_Silkscreen": 1692,
+      "Edge_Cuts": 12,
+      "F_Cu": 644,
+      "F_Mask": 218,
+      "F_Silkscreen": 512,
+      "In1_Cu": 156,
+      "In2_Cu": 212,
+      "NPTH": 8,
+      "PTH": 155
+    },
+    "HRO_SMT_lands_copper_mask_paste": 12,
+    "HRO_shells_copper_masks_no_paste": 4,
+    "IPC_net_aliases_unique": 59,
+    "IPC_records_checked": 347,
+    "In1_GND_connected_polygon": true,
+    "RTN_GND_CAM_isolation": {
+      "B_Cu": {
+        "GND_RTN_gap_mm": 0.2505,
+        "GND_area_mm2": 38.903347,
+        "RTN_area_mm2": 87.456742
+      },
+      "F_Cu": {
+        "GND_RTN_gap_mm": 0.2505,
+        "GND_area_mm2": 114.451593,
+        "RTN_area_mm2": 32.195725
+      },
+      "In1_Cu": {
+        "GND_RTN_gap_mm": 0.250499,
+        "GND_area_mm2": 2360.550276,
+        "RTN_area_mm2": 3.392835
+      },
+      "In2_Cu": {
+        "GND_RTN_gap_mm": 0.703843,
+        "GND_area_mm2": 38.903347,
+        "RTN_area_mm2": 30.508205
+      }
+    },
+    "U2_8_17_RTN_9_GND_verified": true,
+    "boundary_only_barrels_native": 7,
+    "closed_outline_loops": 1,
+    "drill_tools_mm_hits": {
+      "NPTH": {
+        "0.650": 2,
+        "0.900": 2,
+        "2.500": 2,
+        "3.200": 2
+      },
+      "PTH": {
+        "0.300": 133,
+        "0.600": 4,
+        "0.900": 2,
+        "1.000": 16
+      }
+    },
+    "max_drill_coordinate_quantization_error_mm": {
+      "NPTH": 0,
+      "PTH": 0.0005
+    },
+    "native_CAM_VIP_UUID_sets_equal": true,
+    "native_drills_all_uniquely_matched": true,
+    "outline_centerline_dimensions_mm": [
+      100.5,
+      30.0
+    ],
+    "slot_centreline_endpoints_CAM_mm": [
+      [
+        "slot",
+        64.93,
+        -97.245,
+        64.93,
+        -96.145,
+        0.6
+      ],
+      [
+        "slot",
+        64.93,
+        -101.175,
+        64.93,
+        -100.575,
+        0.6
+      ],
+      [
+        "slot",
+        73.57,
+        -97.245,
+        73.57,
+        -96.145,
+        0.6
+      ],
+      [
+        "slot",
+        73.57,
+        -101.175,
+        73.57,
+        -100.575,
+        0.6
+      ]
+    ],
+    "via_barrels_exposed_SMD_Cu": 35,
+    "via_barrels_paste": 35
+  },
+  "board": "carrier",
+  "finished_thickness_acceptance_mm": [
+    1.44,
+    1.76
+  ],
+  "native_stack": [
+    "stackup",
+    [
+      "layer",
+      "F.SilkS",
+      [
+        "type",
+        "Top Silk Screen"
+      ],
+      [
+        "color",
+        "White"
+      ]
+    ],
+    [
+      "layer",
+      "F.Paste",
+      [
+        "type",
+        "Top Solder Paste"
+      ]
+    ],
+    [
+      "layer",
+      "F.Mask",
+      [
+        "type",
+        "Top Solder Mask"
+      ],
+      [
+        "color",
+        "Green"
+      ],
+      [
+        "thickness",
+        "0.01"
+      ]
+    ],
+    [
+      "layer",
+      "F.Cu",
+      [
+        "type",
+        "copper"
+      ],
+      [
+        "thickness",
+        "0.035"
+      ]
+    ],
+    [
+      "layer",
+      "dielectric 1",
+      [
+        "type",
+        "prepreg"
+      ],
+      [
+        "thickness",
+        "0.2"
+      ],
+      [
+        "material",
+        "FR4 Tg170"
+      ],
+      [
+        "epsilon_r",
+        "4.5"
+      ],
+      [
+        "loss_tangent",
+        "0.02"
+      ]
+    ],
+    [
+      "layer",
+      "In1.Cu",
+      [
+        "type",
+        "copper"
+      ],
+      [
+        "thickness",
+        "0.035"
+      ]
+    ],
+    [
+      "layer",
+      "dielectric 2",
+      [
+        "type",
+        "core"
+      ],
+      [
+        "thickness",
+        "1.04"
+      ],
+      [
+        "material",
+        "FR4 Tg170"
+      ],
+      [
+        "epsilon_r",
+        "4.5"
+      ],
+      [
+        "loss_tangent",
+        "0.02"
+      ]
+    ],
+    [
+      "layer",
+      "In2.Cu",
+      [
+        "type",
+        "copper"
+      ],
+      [
+        "thickness",
+        "0.035"
+      ]
+    ],
+    [
+      "layer",
+      "dielectric 3",
+      [
+        "type",
+        "prepreg"
+      ],
+      [
+        "thickness",
+        "0.2"
+      ],
+      [
+        "material",
+        "FR4 Tg170"
+      ],
+      [
+        "epsilon_r",
+        "4.5"
+      ],
+      [
+        "loss_tangent",
+        "0.02"
+      ]
+    ],
+    [
+      "layer",
+      "B.Cu",
+      [
+        "type",
+        "copper"
+      ],
+      [
+        "thickness",
+        "0.035"
+      ]
+    ],
+    [
+      "layer",
+      "B.Mask",
+      [
+        "type",
+        "Bottom Solder Mask"
+      ],
+      [
+        "color",
+        "Green"
+      ],
+      [
+        "thickness",
+        "0.01"
+      ]
+    ],
+    [
+      "layer",
+      "B.Paste",
+      [
+        "type",
+        "Bottom Solder Paste"
+      ]
+    ],
+    [
+      "layer",
+      "B.SilkS",
+      [
+        "type",
+        "Bottom Silk Screen"
+      ],
+      [
+        "color",
+        "White"
+      ]
+    ],
+    [
+      "copper_finish",
+      "ENIG"
+    ],
+    [
+      "dielectric_constraints",
+      "no"
+    ]
+  ],
+  "release": "HRO-R1",
+  "source_of_requirements": "FABRICATION-REQUIREMENTS.md",
+  "source_sha256": "e9adb5ef40227f3d447a9d3d143418d0deb466aafc712ee976359611d3f58464"
+}

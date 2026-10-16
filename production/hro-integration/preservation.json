@@ -1,0 +1,59 @@
+{
+  "carrier_from024_change": "exact stack metadata substitution only; all other bytes unchanged",
+  "tracks": 421,
+  "vias": 133,
+  "zones": 4,
+  "non_USB_pins": 197,
+  "pre024_unaffected_copper_items": 545,
+  "all_024_copper_items_retained": 554,
+  "panel_change": "only USB cutout edge primitives and explicit passive stack",
+  "nonJ1_symbol_instances_byte_preserved": 71,
+  "main_schematic_scoped_forms": {
+    "01_input_protection.kicad_sch": {
+      "changed_uuid_forms": {
+        "symbol": 1
+      },
+      "added_uuid_forms": {}
+    },
+    "02_hardgate.kicad_sch": {
+      "changed_uuid_forms": {
+        "wire": 2
+      },
+      "added_uuid_forms": {
+        "wire": 3,
+        "junction": 1
+      }
+    },
+    "03_bucks.kicad_sch": {
+      "changed_uuid_forms": {},
+      "added_uuid_forms": {}
+    },
+    "04_bipolar.kicad_sch": {
+      "changed_uuid_forms": {
+        "wire": 4
+      },
+      "added_uuid_forms": {
+        "wire": 6,
+        "junction": 2
+      }
+    },
+    "07_output_rails.kicad_sch": {
+      "changed_uuid_forms": {
+        "wire": 4
+      },
+      "added_uuid_forms": {
+        "junction": 2,
+        "wire": 6
+      }
+    },
+    "big_modular.kicad_sch": {
+      "changed_uuid_forms": {
+        "text": 2
+      },
+      "added_uuid_forms": {}
+    }
+  },
+  "project_byte_preserving_patch": "9 ignore strings -> warning; all other bytes equal",
+  "predecessor48_paths_still_hash_equal": true,
+  "main33_saved_hardware_files_still_hash_equal": true
+}

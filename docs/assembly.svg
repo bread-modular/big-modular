@@ -2,7 +2,7 @@
 <style>text{font-family:DejaVu Sans,sans-serif;fill:#19334b}</style>
 <rect x="5" y="5" width="410" height="287" fill="white" stroke="#375775" stroke-width=".4"/>
 <text x="12" y="15" font-size="5">V1 TOP USB / SINGLE POWER LED | TWO BOARDS + TWO PLAIN M3 L BRACKETS</text>
-<text x="12" y="23" font-size="2.8">Front panel + perpendicular main PCB. No middle board, spacers or UI headers. mm. V1 ROUTING PREPARATION; 60 POWER PARTS STAGED OFF-BOARD.</text>
+<text x="12" y="23" font-size="2.8">Front panel + perpendicular main PCB. No middle board, spacers or UI headers. mm. ROUTED HRO CARRIER; BARE-PCB ARTWORK, NOT BENCH QUALIFICATION.</text>
 <text x="15" y="35" font-size="3.3">FRONT PANEL</text>
 <rect x="18" y="43" width="13.230000000000002" height="173.47500000000002" fill="#f1dfb6" stroke="#375775" stroke-width=".25"/>
 <circle cx="21.267" cy="47.05" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
@@ -11,7 +11,7 @@
 <circle cx="26.64" cy="186.775" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="27.045" cy="101.05000000000001" r="2.43" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="26.64" cy="109.825" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
-<rect x="23.74425" y="81.61000000000001" width="5.670000000000001" height="13.230000000000002" fill="white" stroke="#375775" stroke-width=".25"/>
+<rect x="23.265" y="80.935" width="6.75" height="14.580000000000002" fill="white" stroke="#375775" stroke-width=".25" rx="0.81"/>
 <path d="M31.230000000000004,47.05 L36,47.05" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="48.05" font-size="2.5">Rail X2.42 / dia3.2</text>
 <path d="M31.230000000000004,72.7 L36,72.7" fill="none" stroke="#375775" stroke-width=".25"/>
@@ -19,7 +19,7 @@
 <path d="M31.230000000000004,101.05000000000001 L36,101.05000000000001" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="102.05000000000001" font-size="2.5">D10 +5V / X6.7 / Y43 / dia3.6</text>
 <path d="M31.230000000000004,88.225 L36,88.225" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="37" y="89.225" font-size="2.5">USB axis X6.43</text>
+<text x="37" y="89.225" font-size="2.5">HRO USB axis X6.33</text>
 <path d="M31.230000000000004,109.825 L36,109.825" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="110.825" font-size="2.5">Retry X6.4 / Y49.5 / dia3.2</text>
 <path d="M31.230000000000004,186.775 L36,186.775" fill="none" stroke="#375775" stroke-width=".25"/>
@@ -40,7 +40,7 @@
 <rect x="125.21" y="180.025" width="20.790000000000003" height="13.5" fill="#e8b396" stroke="#375775" stroke-width=".25" stroke-dasharray="1.5 1"/>
 <circle cx="139.25" cy="186.775" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <rect x="118.73" y="98.48500000000001" width="8.8695" height="5.13" fill="#da7777" stroke="#375775" stroke-width=".25"/>
-<rect x="120.08" y="81.718" width="10.7055" height="13.014000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
+<rect x="120.08" y="81.718" width="11.367" height="13.014000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <rect x="121.7675" y="105.64" width="6.5475" height="8.370000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <text x="165" y="58.0" font-size="2.6">Main PCB: 100.5 x 30 x 1.6</text>
 <text x="165" y="62.5" font-size="2.6">Front edge Z2; rear Z32</text>
@@ -54,7 +54,7 @@
 <text x="166" y="155.0" font-size="2.6">75-100mm lead, strain-relieved</text>
 <text x="166" y="159.5" font-size="2.6">Connector not squeezed into 2HP.</text>
 <text x="166" y="164.0" font-size="2.6">No third PCB.</text>
-<text x="117" y="224.0" font-size="2.6">USB pad/model pattern retained; port at Y33.5.</text>
+<text x="117" y="224.0" font-size="2.6">HRO land imported; mouth Y33.5 / Z0.8; NO 3D model.</text>
 <text x="117" y="228.5" font-size="2.6">PCB BACK X3.1 / component face X4.7.</text>
 <text x="117" y="233.0" font-size="2.6">Web on PCB BACK; foot on front panel REAR (Z1.6).</text>
 <text x="117" y="237.5" font-size="2.6">Screws normal to each face; PCB not fed through L.</text>
@@ -74,8 +74,8 @@
 <rect x="275.5495" y="79.2205" width="8.100000000000001" height="5.859" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <path d="M283.6495,82.15 L322,82.15" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="324" y="83.15" font-size="2.5">D10 / RED +5V POWER</text>
-<rect x="271.6885" y="62.818" width="10.7055" height="13.014000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
-<path d="M282.394,69.325 L322,69.325" fill="none" stroke="#375775" stroke-width=".25"/>
+<rect x="272.08" y="62.818" width="11.367" height="13.014000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
+<path d="M283.447,69.325 L322,69.325" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="324" y="70.325" font-size="2.5">J1 / USB-C</text>
 <rect x="273.26125" y="86.74000000000001" width="6.5475" height="8.370000000000001" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <path d="M279.80875,90.92500000000001 L322,90.92500000000001" fill="none" stroke="#375775" stroke-width=".25"/>
@@ -107,5 +107,5 @@
 <text x="269" y="238.0" font-size="2.6">11-12: +5V | 13-16: NOT CONNECTED</text>
 <text x="269" y="242.5" font-size="2.6">POWER OUTPUT, not a rack power input!</text>
 <text x="269" y="247.0" font-size="2.6">Do not connect to another active PSU.</text>
-<text x="12" y="282" font-size="2.7">No routing. D10: P5 -&gt; R32 1k -&gt; LED -&gt; GND. No blink/controller. L1/L4 max4.0mm +0.25 assembly budget; L2/L3 max4.7 +0.25. Physical trial/bench validation pending.</text>
+<text x="12" y="282" font-size="2.7">Routed HRO. D10: P5 -&gt; R32 1k -&gt; LED -&gt; GND. No blink/controller. L1/L4 max4.0mm +0.25 assembly budget; L2/L3 max4.7 +0.25. Physical trial/bench validation pending.</text>
 </svg>
