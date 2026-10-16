@@ -1,3 +1,9 @@
+## Electrical prototype checkpoint (current)
+
+The authorized electrical update supersedes the earlier unchanged-circuit checkpoint below.
+See `docs/electrical-prototype.md`: new 7-child hierarchy, direct rails, always-on MCU diagnostics.
+PCB mechanics/routing remain unchanged; no full schematic-PCB sync. Main power-up is blocked.
+
 # Big Modular — PD-only power module / A4.2 two-board placement WIP
 
 **INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE OR CONNECT VALUABLE LOADS.**
@@ -8,7 +14,7 @@ This revision is a connected circuit proposal, not a working power module. Expli
 
 **E-Switch TL3340AF160QG** is restored to the active board with the earlier
 hand-solder footprint and matching panel hole. The **2HP panel, 30 mm main-board
-depth and plain M3 L brackets are retained**. D10/R32 remain through-hole.
+depth and plain M3 L brackets are retained**. D10/D11/D12 are manual red 3mm through-hole LEDs; R32 axial is retired.
 The [TS-1166VW footprint](docs/ts1166-switch.md) is a retired, uninstalled
 alternative; its fit blocker no longer holds up the selected SMT arrangement.
 Physical fit/soldering and electrical reset integration still need validation.
@@ -18,19 +24,29 @@ Physical fit/soldering and electrical reset integration still need validation.
 - `hardware/big_modular.kicad_sch`: **A4 navigation overview plus three A3 functional subsheets**: input/protection, power conversion, output rails. All 88 real components and their electrical connectivity are retained; local feedback/filter/protection branches now use visible wires.
 - [`docs/schematic.pdf`](docs/schematic.pdf): **four navigable pages** (overview + three circuit pages), exported from the root hierarchy.
 - [Sheet guide](docs/schematic-guide.md): page map, signal flow and manual-reading notes. [Component guide](docs/component-guide.md): what each main component/support network does, how and why. [Readability validation](reports/schematic-readability.md): unchanged connectivity and remaining check limitations.
-- `hardware/big_modular.kicad_pcb`: **one perpendicular main PCB, 100.5 × 30 mm**. USB, 3mm through-hole LED, axial resistor and right-angle reset switch are all here. The native USB footprint is unchanged; its assembly plane moves right for M3 screw-head clearance.
+- `hardware/big_modular.kicad_pcb`: **one perpendicular main PCB, 100.5 × 30 mm**. USB, three red 3mm formed-lead LEDs and the right-angle reset switch are here. LED resistors await the electrical brief (Basic SMD preferred). The native USB footprint is unchanged; its assembly plane moves right for M3 screw-head clearance.
 - `hardware/front_panel.kicad_pcb`: **2HP, 9.8 × 128.5 × 1.6 mm**, corner rail holes, two M3 bracket holes, USB/LED/reset openings. No middle PCB or board-to-board UI headers remain.
 - [Assembly drawing](docs/assembly.pdf) and [M3 bracket dimensions](docs/m3-brackets.pdf): **two identical plain L brackets, 9.2 × 10 × 18.4 mm, 3 mm walls**, M3×8 front screws, M3×8 90° countersunk side screws, four plain M3 nuts. No captive pockets or inserts. Loose nuts are held from the side; countersink only the printed bracket. Service out of rack; ABS fit trial required.
 - `hardware/mechanics/corner_braces.scad`: print-prototype source for two identical parts; no tested STL/structural qualification. The previous 10mm spacers and M2 side bolts are no longer used.
-- **SW1 TL3340AF160QG is SMT**, with three exposed signal lands, two solder anchors and two NPTH locator holes. Fine-tip component-side hand soldering is intended; trial a sample. D10/R32 remain THT. Reset is recessed behind a Ø3.2 hole at X6.4/Y91; no printed plunger or light pipe selected.
+- **SW1 TL3340AF160QG is SMT**, with three exposed signal lands, two solder anchors and two NPTH locator holes. Fine-tip component-side hand soldering is intended; trial a sample. D10/D11/D12 remain manual THT; R32 axial is retired. Reset is recessed behind a Ø3.2 hole at X6.4/Y91; no printed plunger or light pipe selected.
 - **Eurorack output:** J7 numbered solder lands and strain-relief holes feed the existing off-board **J2 keyed male 16-pin IDC on a short flying lead**. No bulky PCB box header is falsely fitted inside 2HP. Use a full 16-to-16 female IDC cable for ±12V/GND/+5V. **OUTPUT ONLY: never parallel another powered rack PSU.**
 - [Mechanical guide](docs/mechanics.md), [switch/connector/cable buying links](docs/parts-buying-guide.md), [manual placement inventory](docs/interface-placement.csv).
 - [A4.2 validation](reports/stack-validation.md), original source-preservation hashes, current native reports in `reports/stack-a4-2-native/`. Prior A3 boards/drawings are retained in `docs/archive/a3-stack-superseded.zip`; earlier native reports remain historical.
 
-**Both active boards retain zero tracks, vias and zones.** The existing circuit files and root BOM are not modified by this switch change. D10/R32/SW1/J7 are PCB-only reservations needing deliberate
+**Both active boards retain zero tracks, vias and zones.** The existing circuit files and root BOM are not modified by this mechanical LED checkpoint. D10/D11/D12/SW1/J7 are PCB-only reservations needing deliberate
 schematic integration. LED/reset nets are isolated; all converter circuitry is
 still unplaced. Rear PCB edge is **30.4 mm behind the panel rear**, not a finished
 module/cable depth. No fabrication or power-up approval.
+
+## LED3 staged checkpoint
+
+Three manual red 3mm LEDs now have matching Ø3.6 panel holes at X6.7,
+Y38/46/54 (+12/−12/+5). Pads are 2.54 pitch, Ø0.9 PTH with K/A marks.
+No holder or 5mm substitution; actual LED MPN/formed-lead fit remains unqualified.
+R32 axial is removed; no guessed resistor/driver circuit is installed.
+[Checkpoint evidence and pending electrical requirements](reports/led-mechanics-checkpoint.md).
+The circuit below is the **unchanged baseline**, not the requested future topology;
+CH224A/controller/converter changes await Sol’s electrical brief.
 
 ## Circuit and power permission
 
@@ -105,4 +121,4 @@ pdfinfo docs/schematic.pdf
 git diff --check
 ```
 
-ERC cleanliness is not proof of function. The separate per-board DRC reports omit schematic parity/refill; the A4.2 common-tool private check additionally retains full carrier schematic parity and refill-in-memory findings. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 20 wire/hierarchy interstage paths and 57 local wire paths, retains one documented named PRE_P continuation, and checks actual PCB geometry including ten mechanical NPTHs, five switch SMT lands plus two NPTH locator holes, sixteen output landing pins and two M3 bracket/tool envelopes with obstruction-negative tests. A native before/after audit retains all 288 exported pin memberships, including no-connect/singleton nets. Private isolated ERC retains 68 pre-existing footprint-library configuration warnings; installed-environment ERC reports zero. No rules were suppressed. User rail continuous/peak targets are still required before any output rating can be designed.
+ERC cleanliness is not proof of function. The separate per-board DRC reports omit schematic parity/refill; the A4.2 common-tool private check additionally retains full carrier schematic parity and refill-in-memory findings. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 20 wire/hierarchy interstage paths and 57 local wire paths, retains one documented named PRE_P continuation, and checks actual PCB geometry including twelve mechanical NPTHs, five switch SMT lands plus two NPTH locator holes, sixteen output landing pins and two M3 bracket/tool envelopes with obstruction-negative tests. A native before/after audit retains all 288 exported pin memberships, including no-connect/singleton nets. Private isolated ERC retains 68 pre-existing footprint-library configuration warnings; installed-environment ERC reports zero. No rules were suppressed. User rail continuous/peak targets are still required before any output rating can be designed.

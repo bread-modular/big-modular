@@ -3,9 +3,10 @@ No middle PCB, spacers or board-to-board UI headers. Exact native USB unchanged;
 retained A4 assembly plane (X3.1..4.7); A4.2 uses plain L + restored SMT reset.
 """
 from copy import deepcopy
+from interface_contract import LED_RAILS
 
 GEOMETRY = {
-    'revision': 'A4.2 two-board / plain M3 L brackets / placement-only',
+    'revision': 'A4.2 LED3 mechanical checkpoint / plain M3 L brackets / placement-only',
     'board_count': 2,
     'panel_mm': [9.8, 128.5, 1.6],
     'rail_holes_mm': [[2.42,3,3.2], [2.42,125.5,3.2]],
@@ -17,12 +18,18 @@ GEOMETRY = {
     'carrier_bracket_reliefs_YZ_mm': [[16.5,27.5,10], [101,112,10]],
     'aperture_XYWHR_mm': [4.255,59.35,4.2,9.8,.6],
     'mouth_axis_XYZ_mm': [6.43,64.25,.8],
-    'led_XY_diameter_mm': [6.7,38,3.6],
+    'LEDs': [
+        {'reference': ref, 'rail': LED_RAILS[ref], 'panel_hole_ref': hole,
+         'panel_XY_diameter_mm': [6.7,y,3.6], 'pad1_YZ_mm': [y-1.27,6.37]}
+        for ref,hole,y in [('D10','H5',38),('D11','H7',46),('D12','H8',54)]
+    ],
     'reset_XY_diameter_mm': [6.4,91,3.2],
     'LED': {
-        'reference': 'D10', 'type': '3mm round THT LED, leads formed 90 degrees',
+        'type': 'standard RED 3mm round THT LED, leads formed 90 degrees; no proprietary holder',
+        'assembly': 'manual; exclude D10/D11/D12 from both JLC assembly BOM and CPL',
+        'pin_roles': {'1': 'K (cathode)', '2': 'A (anode)'},
         'footprint': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',
-        'pad1_YZ_mm': [36.73,6.37], 'pitch_mm':2.54, 'drill_mm':.9,
+        'pitch_mm':2.54, 'drill_mm':.9, 'pad_diameter_mm':1.8,
         'axis_above_PCB_mm':2.0, 'nominal_body_base_Z_mm':5.1,
         'nominal_tip_Z_mm':-.2, 'max_body_diameter_mm':3.25,
         'max_flange_diameter_mm':3.8,
@@ -50,11 +57,8 @@ GEOMETRY = {
      'peg_pitch_mm': 4.25,
      'peg_drill_mm': 0.9,
      'datasheet': 'https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf'},
-    'resistor': {
-        'reference':'R32', 'value':'2.2k PROVISIONAL',
-        'footprint':'R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal',
-        'pad1_YZ_mm':[43,14], 'pitch_mm':7.62
-    },
+    'led_resistors': {'status': 'R32 axial PCB reservation retired; no resistor populated in this checkpoint',
+        'plan': 'Basic SMD preferred; values, references, ratings and controller await electrical brief'},
     'brackets': {
         'quantity':2, 'identical':True, 'shape':'Plain L, no nut traps or inserts',
         'Y_centres_mm':[22,106.5], 'outer_X_mm':[.1,9.3], 'width_Y_mm':10.0,
@@ -92,7 +96,7 @@ GEOMETRY = {
     'solder_tail_max_below_B_Cu_mm':1.8,
     'harness_envelope_XYZ_mm':[[.4,9.4],[40,75],[34,50]],
     'harness_status':'Provisional cable budget only; complete populated/cabled depth unverified',
-    'electrical_status':'J1 and 88-part circuit unchanged; D10/R32/SW1 are PCB-only isolated reservations on MAIN PCB, not electrically integrated',
+    'electrical_status':'J1 and 88-part circuit unchanged; D10/D11/D12/SW1 are PCB-only isolated reservations on MAIN PCB, not electrically integrated; R32 axial retired',
     'status':'NO routing, fabrication approval, strength test or working reset/LED circuit'
 }
 

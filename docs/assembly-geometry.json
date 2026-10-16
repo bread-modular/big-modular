@@ -1,5 +1,5 @@
 {
-  "revision": "A4.2 two-board / plain M3 L brackets / placement-only",
+  "revision": "A4.2 LED3 mechanical checkpoint / plain M3 L brackets / placement-only",
   "board_count": 2,
   "panel_mm": [
     9.8,
@@ -78,10 +78,49 @@
     64.25,
     0.8
   ],
-  "led_XY_diameter_mm": [
-    6.7,
-    38,
-    3.6
+  "LEDs": [
+    {
+      "reference": "D10",
+      "rail": "+12V",
+      "panel_hole_ref": "H5",
+      "panel_XY_diameter_mm": [
+        6.7,
+        38,
+        3.6
+      ],
+      "pad1_YZ_mm": [
+        36.73,
+        6.37
+      ]
+    },
+    {
+      "reference": "D11",
+      "rail": "-12V",
+      "panel_hole_ref": "H7",
+      "panel_XY_diameter_mm": [
+        6.7,
+        46,
+        3.6
+      ],
+      "pad1_YZ_mm": [
+        44.73,
+        6.37
+      ]
+    },
+    {
+      "reference": "D12",
+      "rail": "+5V",
+      "panel_hole_ref": "H8",
+      "panel_XY_diameter_mm": [
+        6.7,
+        54,
+        3.6
+      ],
+      "pad1_YZ_mm": [
+        52.73,
+        6.37
+      ]
+    }
   ],
   "reset_XY_diameter_mm": [
     6.4,
@@ -89,15 +128,16 @@
     3.2
   ],
   "LED": {
-    "reference": "D10",
-    "type": "3mm round THT LED, leads formed 90 degrees",
+    "type": "standard RED 3mm round THT LED, leads formed 90 degrees; no proprietary holder",
+    "assembly": "manual; exclude D10/D11/D12 from both JLC assembly BOM and CPL",
+    "pin_roles": {
+      "1": "K (cathode)",
+      "2": "A (anode)"
+    },
     "footprint": "LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge",
-    "pad1_YZ_mm": [
-      36.73,
-      6.37
-    ],
     "pitch_mm": 2.54,
     "drill_mm": 0.9,
+    "pad_diameter_mm": 1.8,
     "axis_above_PCB_mm": 2.0,
     "nominal_body_base_Z_mm": 5.1,
     "nominal_tip_Z_mm": -0.2,
@@ -141,15 +181,9 @@
     "peg_drill_mm": 0.9,
     "datasheet": "https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf"
   },
-  "resistor": {
-    "reference": "R32",
-    "value": "2.2k PROVISIONAL",
-    "footprint": "R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
-    "pad1_YZ_mm": [
-      43,
-      14
-    ],
-    "pitch_mm": 7.62
+  "led_resistors": {
+    "status": "R32 axial PCB reservation retired; no resistor populated in this checkpoint",
+    "plan": "Basic SMD preferred; values, references, ratings and controller await electrical brief"
   },
   "brackets": {
     "quantity": 2,
@@ -275,6 +309,6 @@
     ]
   ],
   "harness_status": "Provisional cable budget only; complete populated/cabled depth unverified",
-  "electrical_status": "J1 and 88-part circuit unchanged; D10/R32/SW1 are PCB-only isolated reservations on MAIN PCB, not electrically integrated",
+  "electrical_status": "J1 and 88-part circuit unchanged; D10/D11/D12/SW1 are PCB-only isolated reservations on MAIN PCB, not electrically integrated; R32 axial retired",
   "status": "NO routing, fabrication approval, strength test or working reset/LED circuit"
 }

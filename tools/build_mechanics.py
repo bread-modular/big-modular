@@ -31,14 +31,14 @@ class Drawing:
 
 
 def assembly(out,g):
-    d=Drawing('A4.2 | TWO BOARDS + TWO PLAIN M3 L BRACKETS','Front panel + perpendicular main PCB. No middle board, spacers or UI headers. mm. PLACEMENT ONLY.')
+    d=Drawing('A4.2 LED3 | TWO BOARDS + TWO PLAIN M3 L BRACKETS','Front panel + perpendicular main PCB. No middle board, spacers or UI headers. mm. PLACEMENT ONLY.')
     s=1.35; fx=18; fy=43
     d.text(15,35,'FRONT PANEL',3.3)
     d.rect(fx,fy,9.8*s,128.5*s,'#f1dfb6')
-    for x,y,di in g['rail_holes_mm']+g['panel_bracket_holes_mm']+[g['led_XY_diameter_mm'],g['reset_XY_diameter_mm']]:
+    for x,y,di in g['rail_holes_mm']+g['panel_bracket_holes_mm']+[led['panel_XY_diameter_mm'] for led in g['LEDs']]+[g['reset_XY_diameter_mm']]:
         d.circle(fx+x*s,fy+y*s,di*s/2)
     x,y,w,h,r=g['aperture_XYWHR_mm'];d.rect(fx+x*s,fy+y*s,w*s,h*s,'white')
-    for yy,t in [(3,'Rail X2.42 / dia3.2'),(22,'M3 bracket X6.4 / Y22'),(38,'LED X6.7 / dia3.6'),(64.25,'USB axis X6.43'),(91,'Reset X6.4 / dia3.2'),(106.5,'M3 bracket X6.4 / Y106.5'),(125.5,'Rail Y125.5 / dia3.2')]:
+    for yy,t in [(3,'Rail X2.42 / dia3.2'),(22,'M3 bracket X6.4 / Y22'),(38,'D10 +12V / X6.7 / dia3.6'),(46,'D11 -12V / X6.7 / dia3.6'),(54,'D12 +5V / X6.7 / dia3.6'),(64.25,'USB axis X6.43'),(91,'Reset X6.4 / dia3.2'),(106.5,'M3 bracket X6.4 / Y106.5'),(125.5,'Rail Y125.5 / dia3.2')]:
         d.line(fx+9.8*s,fy+yy*s,36,fy+yy*s);d.text(37,fy+yy*s+1,t,2.5)
     d.lines(15,227,['9.8 x 128.5 x 1.6 FR4','Round corner rail holes retained.','6mm rail screw heads overhang .58mm.','Check adjacent panels; no countersink.'])
     # Side elevation, Y down and Z right; see real relief shape rather than box.
@@ -50,7 +50,7 @@ def assembly(out,g):
         d.rect(zx+1.6*s,zy+(yc-5)*s,3*s,10*s,'#e8b396')
         d.rect(zx+4.6*s,zy+(yc-5)*s,15.4*s,10*s,'#e8b396',True)
         d.circle(zx+15*s,zy+yc*s,1.6*s)
-    for yy,zz,w,h,c in [(38,-.2,6.57,3,'#a5cd7c'),(64.25,.8,7.4,9,'#c7ccd2'),(91,2.05,3.4,4.5,'#c7ccd2')]:
+    for yy,zz,w,h,c in [(38,-.2,6.57,3,'#da7777'),(46,-.2,6.57,3,'#da7777'),(54,-.2,6.57,3,'#da7777'),(64.25,.8,7.4,9,'#c7ccd2'),(91,2.05,3.4,4.5,'#c7ccd2')]:
         d.rect(zx+zz*s,zy+(yy-h/2)*s,w*s,h*s,c)
     d.lines(165,58,['Main PCB: 100.5 x 30 x 1.6','Front edge Z2; rear Z32','Two local bracket cutbacks to Z10','PCB depth behind panel rear: 30.4','NOT finished cabled depth.'],2.6)
     d.line(zx+32*s,zy+64.25*s,184,zy+64.25*s,True)
@@ -61,15 +61,15 @@ def assembly(out,g):
     d.poly([(px+z*s,py+(y-14)*s) for y,z in carrier_outline()],'#d6e3f1')
     for y,z in g['carrier_holes_YZ_mm']:d.circle(px+z*s,py+(y-14)*s,1.6*s)
     for y,z in g['power_output']['strain_relief_holes_YZ_mm']:d.circle(px+z*s,py+(y-14)*s,1.25*s)
-    for yy,zz,w,h,label in [(38,6.37,6,5,'D10 / THT LED'),(47,14,4,10,'R32 / axial'),(64.25,4.475,7.4,9,'J1 / USB-C'),(91,4.1,3.4,4.5,'SW1 / 90 deg SMT')]:
+    for yy,zz,w,h,label in [(38,6.37,6,5,'D10 / RED +12V'),(46,6.37,6,5,'D11 / RED -12V'),(54,6.37,6,5,'D12 / RED +5V'),(64.25,4.475,7.4,9,'J1 / USB-C'),(91,4.1,3.4,4.5,'SW1 / 90 deg SMT')]:
         d.rect(px+(zz-w/2)*s,py+(yy-14-h/2)*s,w*s,h*s,'#c7ccd2')
         d.line(px+(zz+w/2)*s,py+(yy-14)*s,322,py+(yy-14)*s)
         d.text(324,py+(yy-14)*s+1,label,2.5)
     for row in range(8):
         for col in range(2):d.circle(px+(27+col*2.54)*s,py+(48+row*2.54-14)*s,.65*s)
-    d.lines(269,191,['D10: ordinary 3mm through-hole LED, bent 90 deg.','SW1: E-Switch TL3340AF160QG, SMT.','Three signal pads + two solder anchors.','Front-side fine-tip soldering; 2 locating holes.','3.3mm body height; axis X6.4, recessed Z2.05.','Pins1+3 common; pin2 other contact. No plunger.'],2.6)
+    d.lines(269,191,['D10/D11/D12: RED 3mm THT, formed 90 deg.','SW1: E-Switch TL3340AF160QG, SMT.','Three signal pads + two solder anchors.','Front-side fine-tip soldering; 2 locating holes.','3.3mm body height; axis X6.4, recessed Z2.05.','Pins1+3 common; pin2 other contact. No plunger.'],2.6)
     d.lines(269,229,['12 V power output pin pairs:','1-2: -12V | 3-8: GND | 9-10: +12V','11-12: +5V | 13-16: NOT CONNECTED','POWER OUTPUT, not a rack power input!','Do not connect to another active PSU.'],2.6)
-    d.text(12,282,'No routing. LED/reset remain isolated. Converter placement, thermal/power safety, actual bracket/connector fit remain unqualified.',2.7)
+    d.text(12,282,'No routing. LEDs/reset isolated; R32 axial retired. Basic SMD resistors await electrical brief. Physical fit and power safety unqualified.',2.7)
     d.save(out,'assembly')
 
 

@@ -22,12 +22,11 @@ def usb_node(path):
 
 
 class StackGeometryTests(unittest.TestCase):
-    def test_original_circuit_and_usb_are_unchanged(self):
-        record=json.loads((ROOT/'reports/stack-source-preservation.json').read_text())
-        for name,digest in record['unchanged_sha256'].items():
-            self.assertEqual(sha(ROOT/name),digest,name)
-        self.assertEqual(hashlib.sha256(json.dumps(usb_node(ROOT/'hardware/big_modular.kicad_pcb')).encode()).hexdigest(),
-                         record['J1_native_AST_sha256'])
+    def test_authorized_electrical_update_preserves_mechanical_boards(self):
+        record=json.loads((ROOT/'reports/electrical-checkpoint/mechanical-preservation.json').read_text())
+        for name,digest in record.items():self.assertEqual(sha(ROOT/name),digest,name)
+        original=json.loads((ROOT/'reports/stack-source-preservation.json').read_text())
+        self.assertEqual(hashlib.sha256(json.dumps(usb_node(ROOT/'hardware/big_modular.kicad_pcb')).encode()).hexdigest(),original['J1_native_AST_sha256'])
 
     def test_drawing_and_builder_share_current_geometry(self):
         self.assertEqual(json.loads((ROOT/'docs/assembly-geometry.json').read_text()),geometry())
@@ -48,7 +47,7 @@ class StackGeometryTests(unittest.TestCase):
         self.assertEqual(result.returncode,0,result.stdout+result.stderr)
         report=json.loads(result.stdout)
         self.assertEqual(report['mechanics']['power_pin_checks'],16)
-        self.assertEqual(report['mechanics']['actual_NPTH_geometry_checks'],10)
+        self.assertEqual(report['mechanics']['actual_NPTH_geometry_checks'],12)
         self.assertFalse(report['fabrication_ready'])
         self.assertEqual(len(report['boards']),2)
 
@@ -80,10 +79,10 @@ class StackGeometryTests(unittest.TestCase):
         self.assertIn('legacy full regeneration is disabled',result.stderr)
         self.assertEqual({p:sha(p) for p in before},before)
 
-    def test_new_ui_refs_are_explicitly_not_in_circuit_inventory(self):
+    def test_ui_refs_are_integrated_only_in_schematic_not_board_synced(self):
         audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
-        for ref in ['D10','R32','SW1','J7']:
-            self.assertNotIn(ref,audit)
+        for ref in ['D10','D11','D12','R32','SW1','J7']:
+            self.assertIn(ref,audit)
         board=(ROOT/'hardware/big_modular.kicad_pcb').read_text()
         self.assertIn('RESET_A_PENDING',board)
         self.assertIn('RESET_B_PENDING',board)

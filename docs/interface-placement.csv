@@ -1,7 +1,8 @@
 Reference,Board,Role,Footprint,Candidate_or_constraint,Status
 J1,main,USB-C input,BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,Original native J1 retained; assembly axis X6.43,4 existing USB hole-clearance errors unresolved
-D10,main,Power indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,3mm THT lamp; 90-degree formed leads; exact LED TBD,Manual solder; isolated PCB-only reservation
-R32,main,LED current limit,BigModular:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,2.2k provisional; axial THT,Manual solder; isolated PCB-only reservation
+D10,main,+12V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y38; exact MPN TBD,Manual solder; native position exclusion removes JLC BOM/CPL; isolated PCB-only pads 1=K 2=A
+D11,main,-12V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y46; exact MPN TBD,Manual solder; native position exclusion removes JLC BOM/CPL; isolated PCB-only pads 1=K 2=A
+D12,main,+5V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y54; exact MPN TBD,Manual solder; native position exclusion removes JLC BOM/CPL; isolated PCB-only pads 1=K 2=A
 SW1,main,Recessed reset access,BigModular:SW_TL3340AF160QG_HandSolder,E-Switch TL3340AF160QG; C2886925; 90-degree SMT; 3 signal lands + 2 anchors + 2 NPTH pegs,Selected and placed; fine-tip manual solder/fit trial pending; reset nets isolated; not in circuit BOM
 J7,main,Wire landing for J2 output,BigModular:WireLanding_2x08_P2.54mm,16 solder-through lands; DO NOT POPULATE BOX HEADER,PCB-only launch mapping matches J2; not yet schematic integrated
 J2,flying lead,Keyed Eurorack power OUTPUT,,Wurth 61201625821 cable-mount male IDC candidate; 16 pins 2.54mm,Existing schematic symbol; exact harness/mating fit unqualified; not power-up approval
