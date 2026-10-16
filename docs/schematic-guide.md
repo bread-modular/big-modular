@@ -15,6 +15,8 @@ Read [electrical blockers](electrical-prototype.md) and [debug interface](debug-
 | 8 | `07_output_rails.kicad_sch` | J7 carrier / cable boundary / off-board J2 power endpoint |
 
 No MCU, UPDI or automatic indicator logic remains. Page6 defines actual components,
-not a physical external-controller board. J8 is not Eurorack power. Local sensitive
-feedback paths remain wired; full directional hierarchy/local-wire presentation is
-deferred to a later pass. Schematics/BOM are current; mechanical PCBs are NOT synced.
+not a physical external-controller board. J8 is not Eurorack power. Directional ports now attach to component wires; the root wires the power stages and
+six sensing outputs to debug. Local regulator, filter, pullup, series-resistor and
+LED paths are wired. J7/J2 shows twelve explicit pin-for-pin cable conductors; J2 is
+mirrored graphically, not renumbered. Shared supplies/returns and long control
+continuations remain labelled. See [layout verification](schematic-layout-verification.md). Schematics/BOM are current; mechanical PCBs are NOT synced.
