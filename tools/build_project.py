@@ -62,6 +62,8 @@ def ic(name,pins,url):
 
 from electrical_design import populate
 SHEETS, BOM, CONNS = populate(stock, ic, LIB, ROOT)
+used={d['kind'] for sh in SHEETS.values() for d in sh['parts']}
+LIB={k:v for k,v in LIB.items() if k in used}
 from render_schematic import render
 render(HW, SHEETS, LIB, uid)
 # Libraries and inventory are emitted ONLY into the new review candidate.
@@ -69,32 +71,6 @@ render(HW, SHEETS, LIB, uid)
 for name in ['sym-lib-table','fp-lib-table','big_modular.kicad_pro']:
     shutil.copyfile(ROOT/'hardware'/name, HW/name)
 shutil.copytree(ROOT/'hardware/BigModular.pretty', HW/'BigModular.pretty')
-# Retire programming-only footprints, not PCB reservations or generic passives.
-for retired in ['SOIC-20W_7.5x12.8mm_P1.27mm', 'PinHeader_1x03_P2.54mm_Vertical']:
-    path=HW/'BigModular.pretty'/(retired+'.kicad_mod')
-    if path.exists():path.unlink()
-# Deliberate MCP1799 SOT223 symbol4/tab4 mapping in an explicitly named derivative.
-custom_name='MCP1799_SOT223_Tab4'
-custom=HW/'BigModular.pretty'/(custom_name+'.kicad_mod')
-if not custom.exists():
-    source=Path('/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-223-3_TabPin2.kicad_mod')
-    tree=parse(source.read_text());tree[1]=custom_name
-    pads=[p for p in nodes(tree,'pad') if str(p[1])=='2']
-    assert len(pads)==2
-    area=lambda p:float(one(p,'size')[1])*float(one(p,'size')[2])
-    assert max(map(area,pads))>2*min(map(area,pads))
-    max(pads,key=area)[1]='4'
-    custom.write_text(dump(tree)+'\n')
-# Microchip DS20006248A p21, C04-2032A: E=2.30, C=6.10,
-# X1<=0.95, X2<=3.25, Y<=1.90 mm. Footprint is rotated 90 degrees.
-# Do not retain the generic SOT223 pattern (2x3.8 tab and 6.3 spacing).
-tree=parse(custom.read_text())
-for pad in nodes(tree,'pad'):
-    num=str(pad[1]);assert num in ('1','2','3','4')
-    one(pad,'at')[1:3]=list(map(atom,['3.05' if num=='4' else '-3.05', {'1':'-2.3','2':'0','3':'2.3','4':'0'}[num]]))
-    one(pad,'size')[1:3]=list(map(atom,['1.9','3.25' if num=='4' else '0.95']))
-one(tree,'descr')[1]='MCP1799 DB; Microchip DS20006248A p21 C04-2032A land pattern, rotated 90deg; TAB4=GND'
-custom.write_text(dump(tree)+'\n')
 # Pin every selected footprint into the project library. No board placement/sync.
 for row in BOM:
     fp=row['Footprint']
@@ -112,9 +88,5 @@ with (HW/'BOM.csv').open('w',newline='') as f:
 (HW/'pin-net-audit.json').write_text(json.dumps(CONNS,indent=2)+'\n')
 print('Created',len(BOM),'components in',len(SHEETS),'functional sheets; source boards untouched:',HW)
 
-# Review documentation follows actual source inventory, never a separately edited BOM.
-index=['# Current electrical component index','','Generated from the authoritative electrical design. NOT an assembly/order BOM.',
-       'See electrical-prototype.md and debug-interface.md for interfaces and unqualified limits.','',
-       '| Ref | Value | Exact candidate MPN / C-code |','|---|---|---|']
-for row in BOM:index.append('| '+row['Reference']+' | '+row['Value']+' | '+(row['MPN'] or 'UNSELECTED')+' / '+(row['LCSC'] or 'unresolved/manual')+' |')
-(HW/'component-guide.md').write_text('\n'.join(index)+'\n')
+# Drop unused native symbol definitions; footprint alternatives used by mechanical
+# tooling remain, but retired electrical-only support libraries are not emitted.

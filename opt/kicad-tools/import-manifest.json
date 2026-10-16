@@ -1,6 +1,5 @@
 {
   "installed_files_sha256": {
-    "docs/kicad-routing-research.md": "d59a48958588d7fed04945923239cef82d7d1b9d3c45761bcf61eb59d9aef26e",
     "opt/kicad-routing/API.md": "eb10dfec066c7bc0dff8832684b9cec233b8737e2fba1f7093b282b8db3e4dd8",
     "opt/kicad-routing/README.md": "447368dd9a5ec2e56d784eec8df274773e0fff1c7caa9835d3d22c055836057f",
     "opt/kicad-routing/SAFETY.md": "d645917ea5a2127cbf65a06916cbf9547ba59e4721d616da9d7c8fd8c1639177",
@@ -97,7 +96,8 @@
     "opt/kicad-tools/tracemaker/test_native.py": "0ee9e1214441366782940e76bd0e4d85c62e903b9aa0c7c6a79fb7d3c766601a",
     "opt/kicad-tools/tracemaker/test_trial.py": "195183559aab6fa4c709bf06fd117b8cddc52972a9a9ac76f9eb826ffbac59bd",
     "opt/kicad-tools/tracemaker/trial.py": "9863d7b9454d06f2d062e672de4a1d968e2e8ea4ed0e88b9cc4a71632f9cdb62",
-    "opt/kicad-tools/tracemaker/validate.py": "ad500ef9f004afc7953eafb05e32243f33dee6f774214e1c547b10f35b8fd6d9"
+    "opt/kicad-tools/tracemaker/validate.py": "ad500ef9f004afc7953eafb05e32243f33dee6f774214e1c547b10f35b8fd6d9",
+    "opt/kicad-tools/ROUTING-RESEARCH.md": "d59a48958588d7fed04945923239cef82d7d1b9d3c45761bcf61eb59d9aef26e"
   },
   "kind": "big-modular-kicad-toolkit-import",
   "license_path": "opt/kicad-tools/LICENSE",
@@ -239,5 +239,8 @@
     "included": true,
     "requested": true,
     "runtime_included": false
+  },
+  "relocated_repository_documents": {
+    "docs/kicad-routing-research.md": "opt/kicad-tools/ROUTING-RESEARCH.md"
   }
 }

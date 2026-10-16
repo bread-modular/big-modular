@@ -32,7 +32,7 @@ class StackGeometryTests(unittest.TestCase):
             for removed in contract['removed_refs']:self.assertNotIn(removed,refs)
             for ref,digest in contract['unchanged_footprints_except_uuid_sha256'].items():
                 self.assertEqual(hashlib.sha256(json.dumps(clean(refs[ref])).encode()).hexdigest(),digest,(board,ref))
-        original=json.loads((ROOT/'reports/stack-source-preservation.json').read_text())
+        original=json.loads((ROOT/'docs/mechanical-baseline.json').read_text())
         self.assertEqual(hashlib.sha256(json.dumps(usb_node(ROOT/'hardware/big_modular.kicad_pcb')).encode()).hexdigest(),original['J1_native_AST_sha256'])
 
     def test_drawing_and_builder_share_current_geometry(self):
