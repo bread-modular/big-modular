@@ -53,10 +53,20 @@ def assembly(out,g):
         d.circle(zx+15*s,zy+yc*s,1.6*s)
     for yy,zz,w,h,c in [(led,-.2,6.57,3.8,'#da7777'),(j,.8,7.93,9.64,'#c7ccd2'),(sw,2.05,4.85,6.2,'#c7ccd2')]:
         d.rect(zx+zz*s,zy+(yy-h/2)*s,w*s,h*s,c)
-    d.lines(165,58,['Main PCB: 100.5 x 30 x 1.6','Front edge Z2; rear Z32','Two local bracket cutbacks to Z10','PCB depth behind panel rear: 30.4','NOT finished cabled depth.'],2.6)
+    d.lines(165,58,['Main PCB: 100.5 x 30 x 1.6','Front edge Z2; rear Z32','Current local cutbacks end at Z10','For this foot + loose M3 hardware','PCB depth behind panel rear: 30.4','NOT finished cabled depth.'],2.6)
     d.line(zx+32*s,zy+j*s,184,zy+j*s,True)
     d.lines(166,146,['J7: 16 numbered solder-through lands','Keyed 2x8 MALE IDC on flying lead','75-100mm lead, strain-relieved','Connector not squeezed into 2HP.','No third PCB.'],2.6)
-    d.lines(117,227,['USB pad/model pattern retained; port translated to Y33.5.','Back face X3.1 / component face X4.7.','Plain L is on BACK face; countersink in plastic only.','USB and LED/reset panel openings follow the new axes.'],2.6)
+    d.lines(117,224,['USB pad/model pattern retained; port at Y33.5.',
+                     'PCB BACK X3.1 / component face X4.7.',
+                     'Web on PCB BACK; foot on front panel REAR (Z1.6).',
+                     'Screws normal to each face; PCB not fed through L.',
+                     'Uncut FR4/foot overlap: X3.1..4.7, Z2..4.6.',
+                     'Y17..27 / 101.5..111.5; current configuration only.',
+                     'Cutbacks clear THIS L + M3 nut/tool access.',
+                     'Z10 retained, not a proven minimum.',
+                     '90-degree face mounts do not inherently need notches.',
+                     'Notch-free 2HP here needs changed hardware; not selected.',
+                     'USB and LED/reset openings follow the shown axes.'],2.6)
     d.text(268,35,'MAIN PCB / COMPONENT SIDE',3.3)
     px=271; py=43
     d.poly([(px+z*s,py+(y-14)*s) for y,z in carrier_outline()],'#d6e3f1')
@@ -91,13 +101,21 @@ def brackets(out,g):
     rect(4.6,13.4-3.175,2.4,6.35,'#b8b8b8')
     rect(4.8,-1.6,3,8,'none',True)
     rect(0,11.9,8,3,'none',True)
-    d.lines(101,46,['Local origin = assembly X0.1 / Z1.6','Overall 9.2 X x 10 Y x 18.4 Z','BOTH legs are 3.0mm thick.','Upright on PCB BACK face (B.Cu X3.1).','Plain nuts sit OUTSIDE the printed L.','No slots, captive pockets, roofs or inserts.'],2.7)
+    d.lines(101,46,['Local origin = assembly X0.1 / Z1.6','Overall 9.2 X x 10 Y x 18.4 Z','BOTH legs are 3.0mm thick.','Upright on PCB BACK face (B.Cu X3.1).','Foot on front panel REAR face (Z1.6).','Screws normal to faces; PCB not fed through L.','Plain nuts sit OUTSIDE the printed L.','No slots, captive pockets, roofs or inserts.'],2.7)
     d.lines(101,83,['HOLES / LOCAL DIMENSIONS','Front: X6.3 / Y5.0, diameter3.2','Side: Y5.0 / Z13.4, diameter3.2','Side countersink: diameter6.0 x 90 deg','Depth1.4; leaves1.6 of straight bore.','Countersink PLASTIC ONLY, never FR4.'],2.7)
     d.lines(101,121,['FASTENERS','Front M3x8 pan/button, head <=6 dia','Side M3x8 flat countersunk (90 deg)','Side length includes head; seat it flush.','4 loose plain M3 nuts: AF<=5.5, h<=2.4','No washers or tall nyloc nuts.','Minimum nominal thread exit: 1.0 each.'],2.7)
     d.lines(101,164,['FIT LIMITS','Front nut-to-upright: only 0.125 nominal','Nut swept right edge X9.575 (panel9.8)','Side head flush to0.3mm below face','Side screw tip X8.1..8.4','Measure ABS shrinkage and actual nuts.'],2.7)
+    d.lines(101,203,['CURRENT CARRIER CUTBACKS AT FRONT FOOT',
+                     'Y16.5..27.5 / 101..112 to Z10.',
+                     'Uncut PCB meets foot at Z2..4.6.',
+                     'Specific to this L + loose M3 nuts/tools.',
+                     'Z10 retained; not a proven minimum.',
+                     '90-degree face mounts need not have notches.',
+                     'Notch-free 2HP here needs changed hardware.',
+                     'No alternative hardware selected or drawn.'],2.6)
     d.text(263,35,'HOLE COORDINATES / MOUNTING',3.2)
-    d.lines(263,47,['Panel: X6.4, Y22 / Y106.5, diameter3.2','Main PCB: same Y, Z15, diameter3.2','Bracket pitch:84.5; panel holes moved +1.5 X.','PCB plane and main mounting holes unchanged.'],2.8)
-    d.text(263,77,'FRONT FACE / LOCAL XY',3.1)
+    d.lines(263,47,['Panel: X6.4, Y22 / Y106.5, diameter3.2','Main PCB: same Y, Z15, diameter3.2','Bracket pitch:84.5; panel holes moved +1.5 X.','PCB plane and main mounting holes unchanged.','Foot normal to panel REAR (+Z screw).','Web normal to PCB BACK (+X screw).'],2.8)
+    d.text(263,77,'PANEL-REAR MATING FACE / LOCAL XY',3.1)
     ax=273; ay=84; q=6
     d.rect(ax,ay,9.2*q,10*q,'#e8b396');d.circle(ax+6.3*q,ay+5*q,1.6*q)
     d.line(ax+3*q,ay,ax+3*q,ay+10*q,True)

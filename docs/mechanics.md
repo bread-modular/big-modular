@@ -25,6 +25,36 @@ SW1 body3.3mm; button recessed0.45mm behind panel rear, no plunger. Solder from 
 with fine tip before fitting panel; all M3 nut/tool paths are checked out-of-rack.
 Front nut/upright clearance is only0.125mm nominal: printed ABS/sample trial required.
 
+## M3 bracket face mounting and current cutbacks
+
+The upright seats on the carrier **BACK face** (B.Cu at X3.1); the foot seats on
+the front panel **REAR face** (Z1.6). Each leg is fastened normal to its mating
+face: the side screw runs along +X through the web and PCB, with its nut on F.Cu;
+the panel screw runs along +Z through the panel and foot. The PCB is **not threaded
+through the bracket**. Ordinary 90-degree face mounting is valid and does not
+inherently require PCB notches.
+
+The retained custom L has a web at X0.1..3.1, Z4.6..20 and a foot at
+X0.1..9.3, Z1.6..4.6, each 10mm wide in Y about Y22 / Y106.5. Filling the current
+notches back to the carrier's Z2 front edge would overlap that foot and FR4 at
+X3.1..4.7, Z2..4.6, Y17..27 / Y101.5..111.5. The existing carrier cutbacks at
+Y16.5..27.5 / Y101..112 to Z10 clear **this L plus its loose M3 nuts/tool paths**.
+Z10 is the retained dimension, **not a proven minimum** or a universal L-bracket rule.
+
+Simply reversing this same 3mm web onto X4.7..7.7 puts its outward foot beyond the
+9.8mm panel. The available 5.1mm right-side strip cannot contain the current 5.5mm
+AF loose M3 nut. This is a conflict in the current configuration, not a claim that
+M3 brackets or notch-free 90-degree mounting are impossible. A notch-free 2HP
+alternative at these board/panel positions needs changed hardware: smaller
+fasteners, a threaded leg or slimmer hardware are possibilities only, not yet
+dimensioned, selected or approved. Current outlines, holes, part positions and
+M3 fasteners remain unchanged; no alternative manufacturing proposal is implied.
+
+The [geometry contract](../tools/stack_geometry.py),
+[bracket source](../hardware/mechanics/corner_braces.scad) and
+[existing nominal M3 access check](../tools/m3_fit.py) describe the retained
+cutout configuration. Its nominal check remains valid, not a physical-fit or strength approval.
+
 L1/L4 now MDA1040-6R8M max4.0mm; L2/L3 CKCS6045 max4.7mm. The5.1mm normal
 allowance reserves0.15mm solder +0.10mm assembly offset: margins0.85/0.15mm.
 These are front-side envelope budgets, not fitted populated-board approval. Do not
