@@ -65,8 +65,9 @@ orders, routing or external reference-checkout access are part of this task.
 
 Authoritative sources: `tools/electrical_design.py`, `tools/build_project.py`,
 `tools/render_schematic.py`, `tools/electrical_checks.py`.
-Full hierarchy-port/local-wire presentation is deferred; this is a functional
-part/interface revision with minimum renderer changes, not a full readability pass.
+The hierarchy now has directional ports attached to component wires, a wired power-flow
+overview, local support/debug wiring and a pin-for-pin output harness. See
+[layout verification](docs/schematic-layout-verification.md); electrical blockers remain unchanged.
 
 ```sh
 python3 -B opt/kicad-tools/kicad_tools.py doctor --config tools/kicad-project.json

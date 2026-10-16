@@ -20,6 +20,7 @@ class Connectivity:
         self.sheets = {p.name: parse(p.read_text()) for p in self.hardware.glob('*.kicad_sch')}
         self.pins, self.refs, self.labels, self.ports, self.ncs = {}, {}, {}, {}, set()
         self.wires, points = [], set()
+        self.port_types, self.sheet_pins = {}, {}
         root_name = 'big_modular.kicad_sch'
         root = self.sheets[root_name]
         children = nodes(root, 'sheet')
@@ -44,6 +45,7 @@ class Connectivity:
                     key = (filename, label[1])
                     assert key not in self.ports, 'Duplicate port'
                     self.ports[key] = point
+                    self.port_types[key] = one(label,'shape')[1]
             points.update(local(one(j, 'at')[1:3]) for j in nodes(sheet, 'junction'))
             self.ncs.update(local(one(n, 'at')[1:3]) for n in nodes(sheet, 'no_connect'))
             for s in nodes(sheet, 'symbol'):
@@ -54,7 +56,11 @@ class Connectivity:
                 co, si = round(math.cos(angle)), round(math.sin(angle))
                 for pin in walk(libs[one(s, 'lib_id')[1]], 'pin'):
                     n = one(pin, 'number')[1];px, py = map(float, one(pin, 'at')[1:3])
-                    point = local([x+px*co-py*si, y-px*si-py*co])
+                    dx,dy=px*co-py*si,-px*si-py*co
+                    mirror=one(s,'mirror',['mirror',''])[1]
+                    if mirror=='y':dx=-dx
+                    if mirror=='x':dy=-dy
+                    point = local([x+dx, y+dy])
                     self.pins[(ref, n)] = point;points.add(point)
         links = []
         for child in children:
@@ -63,7 +69,10 @@ class Connectivity:
             assert names == {n for f, n in self.ports if f == filename}, ('Sheet port mismatch', filename)
             for pin in nodes(child, 'pin'):
                 point = (root_name, *pos(one(pin, 'at')[1:3]));points.add(point)
-                links.append((point, self.ports[(filename, pin[1])]))
+                key=(filename,pin[1])
+                assert pin[2]==self.port_types[key], ('Sheet port direction mismatch',key)
+                self.sheet_pins[key]=point
+                links.append((point, self.ports[key]))
         self.graph = {p: p for p in points}
         for a, b in self.wires:
             axis = 1 if a[2] == b[2] else 2

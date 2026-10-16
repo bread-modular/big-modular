@@ -54,6 +54,56 @@ class SchematicHierarchyTests(unittest.TestCase):
         self.assertFalse(self.graph.wire_connected(('U2','8'),('U2','9')))
         self.assertFalse(self.graph.wire_connected(('U4','17'),('U4','19')))
 
+    def test_directional_ports_match_and_touch_component_wires(self):
+        g=self.graph
+        for (filename,name),point in g.ports.items():
+            expected=('passive' if name=='GND' or (filename.startswith('07_') and name in ('ANA_MID','MID','VBUS_RAW','VBUS_FUSED'))
+                      else 'bidirectional' if name in ('PD_SDA','PD_SCL')
+                      else 'output' if (filename.startswith('01_') or
+                           (filename.startswith('02_') and name in ('VPROT','EF_ENABLE','EF_FLT_N')) or
+                           (filename.startswith('03_') and name in ('MID','P5')) or
+                           (filename.startswith('04_') and name in ('P12','N12','ANA_MID')) or
+                           (filename.startswith('06_') and name.startswith('ADC_')))
+                      else 'input')
+            self.assertEqual(g.port_types[(filename,name)],expected,(filename,name))
+            self.assertTrue(any(p[0]==filename and g.find(p)==g.find(point) for p in g.pins.values()),(filename,name,'floating port bank'))
+
+    def test_root_power_and_six_sense_paths_are_real_wires(self):
+        g=self.graph
+        pairs=[(0,1,n) for n in ('VBUS_FUSED','PD_PG_N','AUX3V3')]
+        pairs += [(1,2,n) for n in ('VPROT','EF_ENABLE')]
+        pairs += [(2,3,'MID'),(2,6,'P5'),(3,6,'P12'),(3,6,'N12')]
+        pairs += [(5,4,n) for n in ('ADC_P12','ADC_N12','ADC_P5','ADC_MID','ADC_VBUS','ADC_VPROT')]
+        from render_schematic import SHEET_NAMES
+        for a,b,n in pairs:
+            self.assertEqual(g.find(g.sheet_pins[(SHEET_NAMES[a]+'.kicad_sch',n)]),
+                             g.find(g.sheet_pins[(SHEET_NAMES[b]+'.kicad_sch',n)]),(a,b,n))
+
+    def test_easy_local_connections_and_harness_are_wired(self):
+        g=self.graph
+        pairs=[(('J8',str(pin)),(ref,'2')) for pin,ref in [(2,'R61'),(11,'R62'),(12,'R63'),(13,'R64'),(14,'R65'),(15,'R66')]]
+        pairs += [(('R70','2'),('R64','1')),(('R71','2'),('R65','1')),
+                  (('R66','1'),('SW1','1')),(('R66','1'),('C40','1')),(('R66','1'),('R41','2')),
+                  (('R32','2'),('D10','2')),(('U11','8'),('C41','1')),
+                  (('U2','1'),('R4','1')),(('U2','1'),('R6','1')),(('U2','1'),('C2','1')),
+                  (('U3','3'),('U5','3')),(('U3','5'),('U5','5')),(('R38','1'),('U4','5'))]
+        pairs += [(('J7',str(pin)),('J2',str(pin))) for pin in range(1,13)]
+        pairs += [(('J7',str(pin)),(ref,'1')) for pin,ref in [(9,'R25'),(1,'R26'),(11,'R27')]]
+        for a,b in pairs:
+            self.assertTrue(g.wire_connected(a,b),(a,b))
+        self.assertEqual(one(g.refs['J2'][1],'on_board')[1],'no')
+        self.assertEqual(one(g.refs['J7'][1],'on_board')[1],'yes')
+        self.assertFalse(g.wire_connected(('SW1','MP'),('SW1','2')))
+
+    def test_opposite_child_port_shape_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            target=Path(temp)
+            for name in self.graph.sheets:shutil.copyfile(ROOT/'hardware'/name,target/name)
+            child=target/'07_output_rails.kicad_sch'
+            child.write_text(child.read_text().replace('(hierarchical_label "P5" (shape input)',
+                                                       '(hierarchical_label "P5" (shape output)',1))
+            with self.assertRaisesRegex(AssertionError,'direction mismatch'):Connectivity(target)
+
     def test_component_document_covers_the_entire_real_bom(self):
         text = (ROOT/'docs/component-guide.md').read_text()
         with (ROOT/'BOM.csv').open() as f:
