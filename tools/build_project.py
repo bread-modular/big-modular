@@ -69,6 +69,10 @@ render(HW, SHEETS, LIB, uid)
 for name in ['sym-lib-table','fp-lib-table','big_modular.kicad_pro']:
     shutil.copyfile(ROOT/'hardware'/name, HW/name)
 shutil.copytree(ROOT/'hardware/BigModular.pretty', HW/'BigModular.pretty')
+# Retire programming-only footprints, not PCB reservations or generic passives.
+for retired in ['SOIC-20W_7.5x12.8mm_P1.27mm', 'PinHeader_1x03_P2.54mm_Vertical']:
+    path=HW/'BigModular.pretty'/(retired+'.kicad_mod')
+    if path.exists():path.unlink()
 # Deliberate MCP1799 SOT223 symbol4/tab4 mapping in an explicitly named derivative.
 custom_name='MCP1799_SOT223_Tab4'
 custom=HW/'BigModular.pretty'/(custom_name+'.kicad_mod')
@@ -107,3 +111,10 @@ with (HW/'BOM.csv').open('w',newline='') as f:
     writer=csv.DictWriter(f,fieldnames=list(BOM[0]),lineterminator='\n');writer.writeheader();writer.writerows(BOM)
 (HW/'pin-net-audit.json').write_text(json.dumps(CONNS,indent=2)+'\n')
 print('Created',len(BOM),'components in',len(SHEETS),'functional sheets; source boards untouched:',HW)
+
+# Review documentation follows actual source inventory, never a separately edited BOM.
+index=['# Current electrical component index','','Generated from the authoritative electrical design. NOT an assembly/order BOM.',
+       'See electrical-prototype.md and debug-interface.md for interfaces and unqualified limits.','',
+       '| Ref | Value | Exact candidate MPN / C-code |','|---|---|---|']
+for row in BOM:index.append('| '+row['Reference']+' | '+row['Value']+' | '+(row['MPN'] or 'UNSELECTED')+' / '+(row['LCSC'] or 'unresolved/manual')+' |')
+(HW/'component-guide.md').write_text('\n'.join(index)+'\n')

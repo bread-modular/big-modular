@@ -18,9 +18,9 @@ The complete root BOM is a design inventory, NOT an assembly/order CSV.
   current limit with thermal latch-off for the exact TPS26600PWPR variant.
   Existing nominal 7.8778/10.7814 V hardware window remains independent of firmware.
   RTN and GND remain separate. FLT is an aggregate fault, not a per-rail current sensor.
-- Q1 PG permission and Q2 MCU permission are cascaded PNPs; Q2 emitter comes from
-  Q1 collector, base through22k to MCU and100k to emitter. Hi-Z denies. JP1 RUN
-  defaults OPEN and cannot override either permission or the hardware window.
+- Q1 PG permission feeds JP1 RUN directly; Q2 and external-permit circuitry are
+  removed. JP1 defaults OPEN for qualification, not because a debugger is needed.
+  Normal intended operation is hardware PG/window with RUN closed, no MCU.
 - Two TPS54302DDCR devices, manufacturer map GND1/SW2/VIN3/FB4/EN5/BOOT6.
   Each has a real 100nF BOOT-to-SW capacitor. U3 MID feeds U4 TPS65131; U5
   independently generates P5 from VPROT. U6/U7/U8 and TPS621xx circuits are removed.
@@ -32,38 +32,34 @@ The complete root BOM is a design inventory, NOT an assembly/order CSV.
 - P5 nominal = 0.596*(1+100k/13.5k) = 5.01081 V.
 - Bipolar feedback: FBP22 uses1.33M/150k to GND; FBN16 uses **R14 1.33M +
   R60 150k =1.48M**, then R15 150k to VREF17. Both nominal magnitudes11.96827 V.
-  PSP9/PSN11 GND. PB3/pin8 independently drives ENP8/ENN10 after MID qualifies;
+  PSP9/PSN11 GND. Local MID-derived R38/R40 100k/100k drives ENP8/ENN10 (MID/2);
   TI specifies VIH minimum1.4 V, so 3.3 V logic is appropriate while powered.
   Off-state enable injection remains part of the power sequencing review.
-- U10 ATTINY1616-SNR SOIC20 supplies synchronized indications. D10/D11/D12
-  are manual red3mm formed-lead LEDs; R32/R33/R34 are Basic1k0603 from AUX3V3.
-  LED anodes are NOT powered by the measured rail. SW1 is a real MCU input;
-  the selected reset hardware and manual J7->J2 output harness remain unchanged.
+- **No MCU, firmware, blink or external-enable dependency.** U10/C39/programming
+  interface are retired. J8 is an OPTIONAL keyed2x10 debug IDC: all six conditioned
+  sense signals, PG/FLT/I2C and button, with current limiting and local-only pullups.
+  Pins17..20 NC; no external power-enable or LED-drive contacts.
+- Q2/R39 and its permit wiring are removed. R38 is repurposed100k from MID to
+  BI_EN; existing R40 100k pulldown gives nominal MID/2, without AUX injection into
+  an unpowered U4. Dynamic enable/leakage/threshold behavior remains unqualified.
+- ONE ordinary hand-soldered red3mm D10 is supplied from **final regulated P5**
+  through R32 1k, cathode to GND. No control input or blinking. It means+5V present,
+  NOT all rails healthy. D11/D12/R33/R34 and two matching panel holes/PCB lamps
+  are removed; original D10 hole/land geometry stays. Other mechanics are preserved.
 
-## Firmware and measurement meaning
+## Optional debug and qualification inhibit
 
-`firmware/logic.c` is host-compiled and fault-tested. `main.c` includes actual
-SOIC GPIO/ADC mapping, single-byte CH224A I2C, a hardware millisecond tick,
-BOD/watchdog and UPDI support wiring. **AVR compiler unavailable: no target image
-was built or programmed. Target register constants/timing still require compilation
-and hardware checks.** Factory clock/fuses and ADC reference calibration must be verified.
-Checked-in `POWER_STAGE_QUALIFIED=0` denies operation; JP1 remains OPEN.
+See [J8 pin map, voltage ranges, no-backpower contract](debug-interface.md).
+J8 is20-pin DEBUG, not the16-pin J7/J2 power harness. AUX_MON is OUTPUT via10k,
+never a debugger supply input. External inputs Hi-Z, I2C open-drain/no powered pulls,
+including boot/off states; noncompliant instruments require reviewed isolation.
 
-PD qualification uses valid I2C0x09 bit3 plus measured9V/window, PG and current
-register0x50 in50mA units. At least3A advertised capacity is required conservatively;
-this is NOT a claim that the gate or output can deliver3A. Both0x22/0x23 addresses
-are probed. WCH status does not explicitly encode a selected9V PDO; voltage
-corroboration, stale-status behavior and real-source fault injection need testing.
-
-100ms qualification -> bucks -> MID qualification -> bipolar enable ->250ms
-startup blanking -> rail checks. Healthy rails steady; affected rail4Hz.
-First rail-fault mask is retained before global shutdown; other now-disabled rails
-are not falsely identified as the original fault. Actual missingPD9 overrides with
-all LEDs synchronously0.5Hz, main OFF. Unknown I2C, insufficient source current,
-RUN open and general FLT use general fault indication, not missingPD.
-Thresholds trip outside±5%, restore inside±4% for100ms; global power faults latch
-until button clear/requalification. Normal no-input operation has no LED power;
-backfeed/phantom-power behavior is **not** qualified.
+**No external controller is needed for intended normal power/LED operation.**
+JP1 stays OPEN because this prototype is not qualified. Hardware PG + UV/OV does
+not by itself prove a fixed9V contract/current authorization/status freshness;
+independent source/contract/current checks and the blockers below must be resolved
+before RUN is closed. No automatic all-rail fault supervision/latch is claimed.
+`firmware/README.md` is a retirement note; no flashing/build instructions remain.
 
 ## Explicit power-up / procurement blockers
 
@@ -86,8 +82,8 @@ backfeed/phantom-power behavior is **not** qualified.
    275uA each at5.5V on P5/MID,320uA each at32V on VBUS/VPROT), total1.34mA
    before divider shunts; AUX1k bleed alone would allow1.34V under that loose bound.
    Include CH internal I2C pullups, op-amp unpowered paths, diode leakage/Vf over
-   temperature, MCU per-pin/total injection limits, residual-C decay and programmer
-   backfeed. The downloaded preliminary MCU table leaves injection current TBD.
+   temperature, external-controller per-pin/total injection limits, residual-C decay and
+   debug-cable backfeed. No controller or off-state tolerance is qualified.
    **These provisions are not isolation; off-state qualification blocks power-up.**
 4. **Magnetics/capacitors:** L1/L4 SRP5030TA-6R8M/C2042113 snapshot had zero stock;
    exact Isat/DCR/thermal and land-pattern evidence remain open. L2/L3 exact4.7uH
@@ -101,8 +97,11 @@ backfeed/phantom-power behavior is **not** qualified.
    shielded magnetics, tiny switch/rectifier loops, separate power returns and
    Kelvin analog/FB returns; validate damping, loop stability, thermal behavior,
    startup and load transients on actual layout. No “noise-free” claim from ERC.
-6. Both PCBs remain the mechanical checkpoint bytes, zero tracks/vias/zones.
-   LED/reset PCB nets are still reservations, not synchronized to the new circuit.
+6. Both PCBs have zero tracks/vias/zones. The sole authorized mechanical delta is
+   removal of D11/D12 and their holes, plus D10 power label/net intent; other
+   footprint geometry, outlines, USB aperture, switch, brackets and holes are preserved.
+   D10 pad net names now match its schematic; R32 and other circuitry remain unplaced.
+   Remaining PCB nets are reservations, not fully synchronized to the circuit.
    Full native schematic/PCB parity is intentionally incomplete. No manufacturing
    export, order, upload, commit, merge or route was performed.
 
@@ -114,7 +113,6 @@ backfeed/phantom-power behavior is **not** qualified.
 - [TI TPS54302](https://www.ti.com/lit/ds/symlink/tps54302.pdf), pin table and7.2.3.5.
 - [TI TPS65131](https://www.ti.com/lit/ds/symlink/tps65131.pdf), pin/electrical tables.
 - [TI TPS2660](https://www.ti.com/lit/ds/symlink/tps2660.pdf), exact00 variant/MODE.
-- [Microchip1616](https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ProductDocuments/DataSheets/40001893B.pdf),4.2/5.1/BOD.
 - [MCP1799](https://ww1.microchip.com/downloads/en/DeviceDoc/MCP1799-Data-Sheet-20006248A.pdf), table3-1; custom pinned SOT223 tab4 is GND, not VIN.
 - [TLV9002](https://www.ti.com/lit/ds/symlink/tlv9002.pdf), SOIC pin table.
 - `docs/electrical-catalog.json` and `research/electrical-v1/sourcing/` retain real
@@ -134,10 +132,10 @@ Its reports and the associated2/5 active-source test result remain as failed
 attempt evidence. Corrected numeric serialization was checked without suppressions.
 
 E-Switch drawing P021301 Rev B was read directly: terminals **1 and 3 are
-common**, and momentary closure joins them to **2**. SW1 now uses RESET_N on
+common**, and momentary closure joins them to **2**. SW1 now uses BUTTON_N on
 1/3, GND on2 and one deliberately unconnected `MP` symbol pin matching BOTH
 existing case pads. Phantom contacts4/5 are removed. The existing switch
-footprint and both PCBs are unchanged.
+footprint geometry remains unchanged; the latest single-LED PCB delta is described above.
 [source](https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf)
 
 Microchip DS20006248A p21, drawing C04-2032A, does NOT endorse the previous
@@ -150,8 +148,45 @@ it no longer uses the unjustified >8mm² assertion. No U9 footprint was
 placed on a PCB.
 [source](https://ww1.microchip.com/downloads/en/DeviceDoc/MCP1799-Data-Sheet-20006248A.pdf)
 
-All prior power-up/firmware/assembly blockers remain. The bounded sourcing
+All prior power-up/assembly blockers remain; external control is unqualified. The bounded sourcing
 handoff is NOT strict-live evidence: L1/L4 SRP5030TA-6R8M reportedly have
 4.3A Isat, 4A RMS, 68mΩ DCR (not a qualified >=6A part), with zero reported
 JLC stock. They remain blocking; no replacement or passive substitution
-was made in this correction. POWER_STAGE_QUALIFIED stays0 and JP1 staysOPEN.
+was made in this correction. The old firmware flag is retired; JP1 staysOPEN.
+
+
+## Bounded Basic-alternative decision — retained existing parts
+
+The user supplied literal source-worker `getComponentDetail` results at09:06:26UTC
+on2026-10-16, not an order allocation or Economy qualification. No new broad search
+was run in this revision. Reported Basic candidates: C191023 Guangdong Hottech
+1N5819WS SOD-323 (`componentLibraryType=base`, stock4273877,
+`canPresaleNumber=4022289`, `assemblyComponentFlag=False`, `assemblyProcess=SMT`,
+`assemblyMode=smtWeld`); C8598 JSCJ B5819WSL SOD-123 (stock369109,
+canPresale254967); C7950 onsemi LM358DR2G SOIC-8 (stock707043,
+canPresale683759). These catalog fields do NOT establish Economy eligibility.
+[source](https://cart.jlcpcb.com/shoppingCart/smtGood/getComponentDetail?componentCode=C191023)
+
+- **Keep BAT54WS-7-F/C124205**, not a rectifier selected only for Basic status.
+  R43=16.5k makes1uA summing-node leakage worth16.5mV (0.83% of1.98V);
+  ADC_P12 source impedance26.67k makes1uA worth26.67mV. The reported Hottech
+ 500uA@40V bound is NOT a prediction at3.3V, but supplies no acceptable low-voltage/
+  temperature leakage or clamp-Vf proof. Its different capacitance/Vf and the
+  negative-input <=0.5V off-rail limit need checking at actual residual-rail currents.
+  B5819WSL also changes the land pattern. No diode swap was made; retained BAT54
+  protection is still UNQUALIFIED, not a proven safe powered-off clamp.
+  The exact supplied Hottech PDF could not be text-extracted by the reader here.
+  [source](https://www.lcsc.com/datasheet/lcsc_datasheet_2409300937_Guangdong-Hottech-1N5819WS_C191023.pdf)
+- **Keep TLV9002IDR/C398360**. U11 needs ground common mode at3.3V, about1.98V
+  output and120uA feedback load before ADC/filter transient load. Its RRIO1.8..5.5V
+  family is appropriate to retain; the exact onsemi LM358DR2G PDF/output-headroom
+  guarantee was not verified. Do not infer headroom from its cheap SOIC8 package.
+  TLV9002 noise gain is1.165: the datasheet2mV offset limit quoted at5V would
+  contribute2.33mV, while5pA *16.5k =82.5nV is only a typical bias illustration,
+  NOT a full3.3V/temperature error guarantee. The1% ratio alone spans about±2%;
+  clamp leakage, offset corners and calibration remain open.
+  [source](https://www.ti.com/lit/ds/symlink/tlv9002.pdf)
+
+Original BAT54 variants and TLV9002 were reported Extended in the bounded source
+work. No claim that safe Basic alternatives do not exist, no present stock guarantee,
+and no blanket Basic/Economy approval is made. No unsafe cost substitution.

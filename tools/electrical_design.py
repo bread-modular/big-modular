@@ -21,7 +21,6 @@ def populate(stock, ic, lib, root):
     BUCK=chip('TPS54302DDCR',[(3,'VIN','power_in','L'),(5,'EN','input','L'),(1,'GND','power_in','L'),(6,'BOOT','passive','R'),(2,'SW','output','R'),(4,'FB','input','R')],'https://www.ti.com/lit/ds/symlink/tps54302.pdf')
     BI=stock('Regulator_Switching','TPS65131RGE')
     AUX=chip('MCP1799T_3302H_DB',[(1,'VIN','power_in','L'),(2,'GND','power_in','L'),(4,'TAB_GND','passive','L'),(3,'VOUT','power_out','R')],'https://ww1.microchip.com/downloads/en/DeviceDoc/MCP1799-Data-Sheet-20006248A.pdf')
-    MCU=chip('ATTINY1616_SNR',[(1,'VDD','power_in','L'),(20,'GND','power_in','L'),(2,'PA4','bidirectional','L'),(3,'PA5_VREF','bidirectional','L'),(4,'PA6','bidirectional','L'),(5,'PA7','bidirectional','L'),(6,'PB5','bidirectional','L'),(7,'PB4','bidirectional','L'),(10,'PB1','bidirectional','L'),(16,'PA0_UPDI','bidirectional','L'),(12,'PC0','bidirectional','R'),(13,'PC1','bidirectional','R'),(14,'PC2','bidirectional','R'),(17,'PA1','bidirectional','R'),(18,'PA2','bidirectional','R'),(19,'PA3','bidirectional','R'),(11,'PB0','bidirectional','R'),(15,'PC3','bidirectional','R'),(9,'PB2','bidirectional','R'),(8,'PB3','bidirectional','R')],'https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ProductDocuments/DataSheets/40001893B.pdf')
     OP=chip('TLV9002IDR',[(3,'IN1+','input','L'),(2,'IN1-','input','L'),(5,'IN2+','input','L'),(6,'IN2-','input','L'),(4,'V-','power_in','L'),(1,'OUT1','output','R'),(7,'OUT2','output','R'),(8,'V+','power_in','R')],'https://www.ti.com/lit/ds/symlink/tlv9002.pdf')
     # E-Switch P021301 Rev B: 1 and 3 common, momentary closure to 2.
     # The existing footprint calls BOTH case solder lands MP (not contacts4/5).
@@ -30,13 +29,13 @@ def populate(stock, ic, lib, root):
     for unit in nodes(lib[SW],'symbol'):
         for pin in nodes(unit,'pin'):
             one(pin,'at')[2]=atom({'1':'5.08','3':'0','2':'5.08','MP':'-5.08'}[one(pin,'number')[1]])
-    TP=stock('Connector_Generic','Conn_01x03')
+    DEBUG=stock('Connector_Generic','Conn_02x10_Odd_Even')
     for name,title,notes in [
       ('01_input_protection','USB PD and always-on housekeeping','CH224A: VHV1 + VBUS8 directly fused VBUS; EP0 -> pad11.\nWCH section 7.1 contradicts sections 4/6/8 on VBUS rating: vendor confirmation is a POWER-UP BLOCKER.\nAUX3V3 operates at negotiation 5 V; NO output-rail operation from fallback. No mains/input = no LEDs.'),
-      ('02_hardgate','Independent hardware gate','7.878 / 10.781 V nominal hardware window. RTN is NOT GND.\nR8 6.04k: 1.987 A nominal, not 3 A. MODE 402k: current limit with thermal latch-off.\nJP1 RUN default OPEN; MCU Hi-Z denies via Q2. FLT is aggregate, not per-rail overload proof.'),
+      ('02_hardgate','Independent hardware gate','7.878 / 10.781 V nominal hardware window. RTN is NOT GND.\nR8 6.04k: 1.987 A nominal, not 3 A. MODE 402k: current limit with thermal latch-off.\nJP1 RUN default OPEN; PG hardware permission; no debug controller required. FLT is aggregate, not per-rail overload proof.'),
       ('03_bucks','Independent buck converters','U3 MID 5.216 V; upper DC corner 5.357 V BEFORE transients. U4 ceiling 5.5 V.\nU5 direct 5.011 V from VPROT, never from positive boost. 100n BOOT-to-SW each.\nEffective ceramic C, magnetic Isat/DCR/thermal and loop/transient response remain qualification gates.'),
       ('04_bipolar','Direct bipolar rails','Nominal +/-11.968 V. FBN returns to VREF, NOT GND; PSP/PSN grounded.\nLocal output feedback: no remote sense or arbitrary LC added. No rail LDOs.\n~800 mA positive is chart interpolation at 25 C, NOT guaranteed continuous or simultaneous +/-800 mA.'),
-      ('05_diagnostics','Always-on MCU and indicators','Programming REQUIRED. Default firmware denies the main stage until qualification.\nSteady = healthy; 4 Hz affected-rail fault; actual missing PD9 = synchronous 0.5 Hz all LEDs.\nRUN open / general FLT / insufficient current are NOT labelled missing PD.'),
+      ('05_diagnostics','Rail debug and single power LED','J8 KEYED 2x10 DEBUG ONLY - NOT EURORACK POWER. No onboard MCU / no blink. D10 is ordinary +5V power indication.\n3.3 V external controller: inputs Hi-Z, outputs OPEN-DRAIN ONLY; no external pullups/power into AUX.\nNormal operation is hardware PG/window only; qualification JP1 stays OPEN. See docs/debug-interface.md for all pins and sequencing.'),
       ('06_sensing','Rail sensing and input protection','Negative rail uses ground-referenced inverter, NOT AUX-biased divider.\nExternal Schottky clamps + series resistors are provisions, NOT proven powered-off isolation.\nOFF-state injection / clamp Vf / residual rail bleed / reference calibration are POWER-UP BLOCKERS.'),
       ('07_output_rails','Manual output harness','J7 board wire landing -> J2 off-board IDC cable, pin-for-pin.\n1/2=-12, 3..8=GND, 9/10=+12, 11/12=+5; 13..16 NC.\nNever connect another active PSU. Continuity-test red stripe / orientation before use.')]:
         sheets[name]={'title':title,'notes':notes,'parts':[]}
@@ -79,11 +78,10 @@ def populate(stock, ic, lib, root):
     cc(a,'C33','1u 50V X7R','VBUS_FUSED','GND',size='0805_2012');cc(a,'C34','2.2u 16V X7R','AUX3V3','GND',size='0805_2012');rr(a,'R35','1k','AUX3V3','GND',note='3.3mA bleed; not proven off-state clamp-rail isolation.')
     a='02_hardgate'
     add(a,'U2',EF,'TPS26600PWPR',{'1':'VBUS_FUSED','2':'VBUS_FUSED','3':'UV_EN','4':None,'5':'OV_SET','6':'EF_MODE','7':'EF_ENABLE','8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':'EF_FLT_N','15':'VPROT','16':'VPROT','17':'RTN'},'Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm','C544399')
-    for ref,v,x,y in [('R4','562k','VBUS_FUSED','UV_EN'),('R5','100k','UV_EN','RTN'),('R6','806k','VBUS_FUSED','OV_SET'),('R7','100k','OV_SET','RTN'),('R8','6.04k','ILIM','RTN'),('R36','402k','EF_MODE','RTN'),('R37','10k','AUX3V3','EF_FLT_N'),('R28','22k','PD_PG_N','PG_BASE'),('R29','100k','AUX3V3','PG_BASE'),('R30','10k','EF_ENABLE','RTN'),('R31','10k','VPROT','GND'),('R38','22k','MCU_PERMIT_N','MCU_BASE'),('R39','100k','PG_PERMIT','MCU_BASE')]:rr(a,ref,v,x,y)
+    for ref,v,x,y in [('R4','562k','VBUS_FUSED','UV_EN'),('R5','100k','UV_EN','RTN'),('R6','806k','VBUS_FUSED','OV_SET'),('R7','100k','OV_SET','RTN'),('R8','6.04k','ILIM','RTN'),('R36','402k','EF_MODE','RTN'),('R37','10k','AUX3V3','EF_FLT_N'),('R28','22k','PD_PG_N','PG_BASE'),('R29','100k','AUX3V3','PG_BASE'),('R30','10k','EF_ENABLE','RTN'),('R31','10k','VPROT','GND')]:rr(a,ref,v,x,y)
     cc(a,'C2','100n 50V X7R','VBUS_FUSED','GND');cc(a,'C3','100n 50V X7R','SLEW','RTN');cc(a,'C4','10u 25V X7R','VPROT','GND',size='1206_3216')
     add(a,'Q1',PNP,'MMBT3906',{'1':'PG_BASE','2':'AUX3V3','3':'PG_PERMIT'},'Package_TO_SOT_SMD:SOT-23',mpn='MMBT3906',note='Diodes DS30059: 1=B 2=E 3=C. PG low permits only first stage.')
-    add(a,'Q2',PNP,'MMBT3906',{'1':'MCU_BASE','2':'PG_PERMIT','3':'MCU_PERMIT'},'Package_TO_SOT_SMD:SOT-23',mpn='MMBT3906',note='Hi-Z default deny; MCU pulls base low via22k only after PD9/current/window qualify.')
-    add(a,'JP1',JP,'RUN default OPEN',{'1':'MCU_PERMIT','2':'EF_ENABLE'},'Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm',manual=True)
+    add(a,'JP1',JP,'RUN default OPEN',{'1':'PG_PERMIT','2':'EF_ENABLE'},'Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm',manual=True)
     a='03_bucks'
     for u,prefix,out,Lref,Cs,Rt,Rb,rv,base in [('U3','MID','MID','L1',['C5','C6','C7','C35'],'R9','R10','12.9k',0),('U5','FIVE','P5','L4',['C18','C19','C20','C36'],'R17','R18','13.5k',1)]:
         add(a,u,BUCK,'TPS54302DDCR',{'1':'GND','2':prefix+'_SW','3':'VPROT','4':prefix+'_FB','5':'EF_ENABLE','6':prefix+'_BOOT'},'Package_TO_SOT_SMD:SOT-23-6','C311983')
@@ -97,16 +95,19 @@ def populate(stock, ic, lib, root):
     for ref,n1,n2 in [('L2','MID','BOOST_SW'),('L3','INV_SW','GND')]:add(a,ref,L,'4.7uH shielded / Isat>=3A TBD',{'1':n1,'2':n2},note='Select exact shielded 4.7uH magnetic per TI table and verify Isat/DCR/thermal. PROCUREMENT + POWER-UP BLOCKER.')
     dd(a,'D2','P12','BOOST_SW');dd(a,'D3','INV_SW','N12')
     for ref,net in [('C8','P12'),('C9','N12')]:cc(a,ref,'22u 25V X7R',net,'GND','C53084530','1210_3225')
-    for args in [('R12','1.33M','P12','POS_FB'),('R13','150k','POS_FB','GND'),('R14','1.33M','N12','NEG_DIV'),('R60','150k','NEG_DIV','NEG_FB'),('R15','150k','NEG_FB','BI_REF'),('R16','100','MID','ANA_MID'),('R40','100k','BI_EN','GND')]:rr(a,*args)
+    for args in [('R12','1.33M','P12','POS_FB'),('R13','150k','POS_FB','GND'),('R14','1.33M','N12','NEG_DIV'),('R60','150k','NEG_DIV','NEG_FB'),('R15','150k','NEG_FB','BI_REF'),('R16','100','MID','ANA_MID'),('R40','100k','BI_EN','GND'),('R38','100k','MID','BI_EN')]:rr(a,*args)
     cc(a,'C10','6.8p 50V C0G','P12','POS_FB');cc(a,'C11','6.8p 50V C0G','N12','NEG_FB');cc(a,'C12','220n 50V X7R','BI_REF','GND');cc(a,'C13','10n 50V X7R','COMP_P','GND');cc(a,'C14','4.7n 50V C0G','COMP_N','GND');cc(a,'C15','100n 50V X7R','ANA_MID','GND')
     cc(a,'C16','10u 25V X7R','MID','GND',size='1206_3216');cc(a,'C17','10u 25V X7R','MID','GND',size='1206_3216')
     a='05_diagnostics'
-    add(a,'U10',MCU,'ATTINY1616-SNR',{'1':'AUX3V3','20':'GND','2':'ADC_P12','3':None,'4':'ADC_N12','5':'ADC_P5','6':'ADC_MID','7':'ADC_VBUS','10':'ADC_VPROT','16':'UPDI','12':'LED_P_K','13':'LED_N_K','14':'LED_5_K','17':'PD_SDA','18':'PD_SCL','19':'PD_PG_N','11':'EF_FLT_N','15':'RESET_N','9':'MCU_PERMIT_N','8':'BI_EN'},'Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm','C609652',note='Microchip DS40001893B section4.2 / section5.1. PA5 pin3 spare VREFA capability, not wired as reference. PB3 pin8 controls BI_EN.')
-    cc(a,'C39','100n 50V X7R','AUX3V3','GND');cc(a,'C40','100n 50V X7R','RESET_N','GND');rr(a,'R41','10k','AUX3V3','RESET_N')
-    add(a,'SW1',SW,'TL3340AF160QG',{'1':'RESET_N','3':'RESET_N','2':'GND','MP':None},'BigModular:SW_TL3340AF160QG_HandSolder',mpn='TL3340AF160QG',manual=True,note='P021301 Rev B: contacts1+3 common RESET_N, contact2 GND; duplicate MP case pads intentionally floating. Button is MCU input, NOT direct main power bypass.')
-    add(a,'J8',TP,'UPDI / AUX / GND',{'1':'UPDI','2':'AUX3V3','3':'GND'},'Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical',manual=True,note='Programming pads/header provision. Do not backpower VBUS; programmer power policy unqualified.')
-    for ref,r,an,k in [('D10','R32','LED_P_A','LED_P_K'),('D11','R33','LED_N_A','LED_N_K'),('D12','R34','LED_5_A','LED_5_K')]:
-        rr(a,r,'1k','AUX3V3',an);add(a,ref,LED,'RED 3mm formed leads',{'1':k,'2':an},'BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',manual=True,note='Hand solder standard3mm LED, no proprietary holder; cathode1/anode2. Exact MPN pending brightness/Vf check; 5mm LED not compatible.')
+    # No MCU/UPDI or programming-only bypass capacitor. Button RC remains useful.
+    cc(a,'C40','100n 50V X7R','BUTTON_N','GND');rr(a,'R41','10k','AUX3V3','BUTTON_N')
+    add(a,'SW1',SW,'TL3340AF160QG',{'1':'BUTTON_N','3':'BUTTON_N','2':'GND','MP':None},'BigModular:SW_TL3340AF160QG_HandSolder',mpn='TL3340AF160QG',manual=True,note='P021301 Rev B: contacts1+3 common BUTTON_N, contact2 GND; duplicate MP case pads floating. Exported user button, NOT direct power bypass.')
+    debug={1:'GND',2:'DBG_AUX_MON',3:'ADC_P12',4:'GND',5:'ADC_N12',6:'ADC_P5',7:'ADC_MID',8:'ADC_VBUS',9:'ADC_VPROT',10:'GND',11:'DBG_PG_N',12:'DBG_FLT_N',13:'DBG_SDA',14:'DBG_SCL',15:'DBG_BUTTON_N',16:'GND',17:None,18:None,19:None,20:None}
+    add(a,'J8',DEBUG,'KEYED 2x10 DEBUG - NOT POWER',debug,'Connector_IDC:IDC-Header_2x10_P2.54mm_Vertical',manual=True,note='Replaces old 3-pin UPDI. Keyed 20-pin debug IDC; pin1 rectangular pad GND/red stripe. AUX_MON pin2 OUTPUT ONLY via10k, not controller supply. External3.3V Hi-Z/open-drain only; no 5V/USB/PSU cable. Unplaced; mechanical fit and exact keyed MPN pending. See docs/debug-interface.md.')
+    for ref,v,x,y in [('R61','10k','AUX3V3','DBG_AUX_MON'),('R62','10k','PD_PG_N','DBG_PG_N'),('R63','10k','EF_FLT_N','DBG_FLT_N'),('R64','1k','PD_SDA','DBG_SDA'),('R65','1k','PD_SCL','DBG_SCL'),('R66','10k','BUTTON_N','DBG_BUTTON_N'),('R70','10k','AUX3V3','PD_SDA'),('R71','10k','AUX3V3','PD_SCL')]:
+        rr(a,ref,v,x,y,note='3.3V debug interface: local-supply pullup/current limit; not galvanic or powered-off isolation. Controller must be Hi-Z or open-drain, no external pullups. See docs/debug-interface.md.')
+    rr(a,'R32','1k','P5','LED_P_A',note='Ordinary final +5V power indicator only: 1k series limits current, no controller or blink. Manual3mm D10 cathode to GND. At5.5V and Vf=0, resistor power<31mW with1% tolerance; exact LED brightness/MPN still pending.')
+    add(a,'D10',LED,'RED 3mm / +5V POWER / MANUAL',{'1':'GND','2':'LED_P_A'},'BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',manual=True,note='Single hand-soldered red3mm power LED: P5 -> R32 1k -> anode2; cathode1 GND. No automatic blink, no external control, not proof all rails are healthy. Retains original D10 hole/formed-lead fit; exact MPN pending.')
     a='06_sensing'
     add(a,'U11',OP,'TLV9002IDR',{'1':'NEG_SENSE','2':'NEG_SUM','3':'GND','4':'GND','5':'GND','6':'OP_UNUSED','7':'OP_UNUSED','8':'AUX3V3'},'Package_SO:SOIC-8_3.9x4.9mm_P1.27mm','C398360')
     rr(a,'R42','100k','N12','NEG_SUM');rr(a,'R43','16.5k','NEG_SUM','NEG_SENSE');cc(a,'C41','100n 50V X7R','AUX3V3','GND')
@@ -121,8 +122,8 @@ def populate(stock, ic, lib, root):
     dd(a,'D25','NEG_SUM','GND',True);dd(a,'D26','AUX3V3','NEG_SUM',True)
     a='07_output_rails'
     n={str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None) for i in range(1,17)}
-    add(a,'J2',IDC,'16-pin IDC POWER OUT',n,onboard=False,manual=True,note='Off-board cable connector exact MPN open. Manual J7->J2 pin-for-pin, red stripe pins1/2.')
-    add(a,'J7',IDC,'Manual IDC wire landing',n,'BigModular:WireLanding_2x08_P2.54mm',manual=True,note='Actual reserved carrier wire landing, not a box header on PCB.')
+    add(a,'J2',IDC,'16-pin IDC POWER OUT',n,onboard=False,manual=True,note='OFF-BOARD endpoint of ONE J7->J2 flying-lead power harness, not a second active output. Exact keyed male MPN open; manual harness assembly includes J2 once, no PCB/JLC placement. Red stripe pins1/2=-12V. NOT debug J8.')
+    add(a,'J7',IDC,'Manual IDC wire landing',n,'BigModular:WireLanding_2x08_P2.54mm',manual=True,note='ON-CARRIER numbered solder lands, not an extra purchasable box header. Physical cable boundary to off-board J2; one power output harness, not two sources. NOT debug J8.')
     for ref,net in [('R25','P12'),('R26','N12'),('R27','P5')]:rr(a,ref,'10k',net,'GND',note='Bleed provision only; does not prove rail discharge time or prevent backfeed.')
     # True passive-source declarations for ERC; no arbitrary error exclusions.
     for i,net in enumerate(['GND','VBUS_RAW','VBUS_FUSED','MID','ANA_MID','P12','N12','P5']):add(a,f'#FLG{i+1:02}',FLAG,'PWR_FLAG',{'1':net})

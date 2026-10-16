@@ -14,7 +14,7 @@ from sexp import dump, one, walk
 
 
 SHEET_NAMES = ('01_input_protection', '02_hardgate', '03_bucks', '04_bipolar', '05_diagnostics', '06_sensing', '07_output_rails')
-SHEET_TITLES = ('USB PD and housekeeping', 'Hardware gate', 'Independent bucks', 'Direct bipolar rails', 'MCU and indicators', 'Protected sensing', 'Output harness')
+SHEET_TITLES = ('USB PD and housekeeping', 'Hardware gate', 'Independent bucks', 'Direct bipolar rails', 'Rail debug and power LED', 'Protected sensing', 'Output harness')
 
 
 def render(hw, sheets, lib, uid):
@@ -201,19 +201,17 @@ def render(hw, sheets, lib, uid):
     s.text('Direct VBUS feed replaces the old CH224K 1k supply dropper.\nI2C 0x22/0x23; status 0x09 bit3 = PD active; current 0x50 x50mA.\nPG alone is not proof. Verify WCH silicon/document discrepancy before power.',8,64,1.1)
 
     s=drawings[1]
-    place(s,('U2',84,42),('R4',27,36),('R5',27,44),('R6',48,40),('R7',48,48),('R8',112,50),('R36',139,60),('R37',116,31),('C2',15,54),('C3',125,55),('C4',144,31),('R31',153,31),('Q1',34,79),('R28',23,79,90),('R29',45,88),('Q2',73,79),('R38',62,79,90),('R39',84,88),('JP1',113,77),('R30',129,86))
+    place(s,('U2',84,42),('R4',27,36),('R5',27,44),('R6',48,40),('R7',48,48),('R8',112,50),('R36',139,60),('R37',116,31),('C2',15,54),('C3',125,55),('C4',144,31),('R31',153,31),('Q1',34,79),('R28',23,79,90),('R29',45,88),('JP1',113,77),('R30',129,86))
     divider(s,'R4','R5','U2',3,((65,37),(65,30),(34,30),(34,40.5),(27,40.5)))
     divider(s,'R6','R7','U2',5,((68,39),(68,44.5),(48,44.5)))
     join(s,('U2',11),('R8',1),(112,39));join(s,('U2',12),('C3',1),(125,41));join(s,('U2',6),('R36',1),(139,43))
     join(s,('U2',14),('R37',2),(104,37),(104,36),(116,36))
     join(s,('U2',15),('C4',1),(136,33),(136,25),(144,25));join(s,('C4',1),('R31',1))
-    join(s,('R28',2),('Q1',1));join(s,('R38',2),('Q2',1))
+    join(s,('R28',2),('Q1',1))
     join(s,('Q1',2),('R29',1),(45,81));join(s,('Q1',1),('R29',2),(30,79),(30,94),(45,94))
-    join(s,('Q2',2),('R39',1),(84,81));join(s,('Q2',1),('R39',2),(69,79),(69,96),(84,96))
-    join(s,('Q1',3),('Q2',2),(53,77),(53,99),(77,99),(77,81))
-    join(s,('Q2',3),('JP1',1));join(s,('JP1',2),('R30',1),(129,77))
+    join(s,('Q1',3),('JP1',1));join(s,('JP1',2),('R30',1),(129,77))
     join(s,('JP1',2),('U2',7),(120,77),(120,69),(71,69),(71,41))
-    s.text('Two PNP permissions in series: PD_PG_N low AND MCU_PERMIT_N low.\nRUN must be deliberately closed only after power-up blockers are cleared.',8,104,1.05)
+    s.text('Hardware PG -> Q1 -> JP1 -> SHDN, always subject to UV/OV window.\nRUN must be deliberately closed only after power-up blockers are cleared.',8,104,1.05)
 
     s=drawings[2]
     for cy,u,l,ci,co,dec,boot,co2,rt,rb,prefix,out in [(37,'U3','L1','C5','C6','C7','C35','C37','R9','R10','MID','MID'),(81,'U5','L4','C18','C19','C20','C36','C38','R17','R18','FIVE','P5')]:
@@ -228,7 +226,7 @@ def render(hw, sheets, lib, uid):
 
     # Retain the proven readable U4 layout with direct-output net names.
     s=drawings[3];p=s.p;w=s.wire;c=s.connect
-    place(s,('U4',69,51),('L2',55,28,90),('D2',82,28,180),('L3',85,69),('D3',97,63),('C8',137,37),('C9',140,72),('R12',106,38),('R13',106,49),('C10',122,38),('R14',108,70),('R60',108,77),('R15',108,88),('C11',125,74),('C12',90,97),('C13',90,79),('C14',78,79),('R16',41,50,90),('C15',51,62),('C16',16,35),('C17',31,35),('R40',27,67))
+    place(s,('U4',69,51),('L2',55,28,90),('D2',82,28,180),('L3',85,69),('D3',97,63),('C8',137,37),('C9',140,72),('R12',106,38),('R13',106,49),('C10',122,38),('R14',108,70),('R60',108,77),('R15',108,88),('C11',125,74),('C12',90,97),('C13',90,79),('C14',78,79),('R16',41,50,90),('C15',51,62),('C16',16,35),('C17',31,35),('R40',27,67),('R38',16,57))
     c(('L2',2),('D2',2));w('BOOST_SW',(63,28),(63,45),p('U4',1))
     w('P12',p('D2',1),(146,28));s.label('P12',(146,28));w('P12',(98,28),(98,43),(77,43),(77,45),p('U4',23))
     for ref in ['C8','R12','C10']:w('P12',(parts[ref]['x'],28),p(ref,1))
@@ -238,6 +236,7 @@ def render(hw, sheets, lib, uid):
     # Local capacitors on the actual MID input, and the boost inductor input.
     w('MID',p('L2',1),(46,28),(46,23),(16,23),p('C16',1));w('MID',(31,23),p('C17',1));w('MID',(46,28),(46,45),(52,45))
     c(('U4',8),('U4',10),(61,52),(61,54));w('BI_EN',p('U4',8),(57,52),(57,62),(27,62),p('R40',1))
+    c(('R38',2),('R40',1),(16,62),(27,62))
     w('INV_SW',p('U4',13),(85,53),p('L3',1));w('INV_SW',(85,63),p('D3',1))
     w('N12',p('D3',2),(146,63));s.label('N12',(146,63));w('N12',p('U4',15),(79,51),(79,58),(142,58),(142,63))
     for ref in ['C9','C11']:w('N12',(parts[ref]['x'],63),p(ref,1))
@@ -248,17 +247,22 @@ def render(hw, sheets, lib, uid):
     s.text('Separate INP/INN local ceramic loops; shielded L2/L3.\nNo arbitrary output LC. Compensation and Cff require loop validation.',8,102,1.0)
 
     s=drawings[4]
-    place(s,('U10',49,46),('C39',22,72),('SW1',98,85),('R41',79,81),('C40',69,91),('J8',24,88))
-    for i,(r,d) in enumerate([('R32','D10'),('R33','D11'),('R34','D12')]):
-        y=30+14*i;place(s,(r,92,y,90),(d,116,y,180))
-        join(s,(r,2),(d,2));join(s,('U10',12+i),(d,1),(137+i*3,37+2*i),(137+i*3,y))
-    join(s,('R41',2),('SW1',1),(79,84),(92,84));join(s,('SW1',1),('SW1',3),(90,83),(90,85))
-    join(s,('SW1',1),('C40',1),(87,83),(87,88),(69,88))
-    s.text('LED supply is ALWAYS AUX3V3, never the monitored rail.\n1k resistors R32..R34: Basic 0603; schematic provision only.\nD10/D11/D12: standard RED 3mm formed leads, manual JLC exclusion.',81,66,1.05)
-    s.text('PB3 pin8 = independent bipolar enable (default pulldown R40).\nPA5 pin3 spare; use internal 2.5 V ADC reference, calibrate before power.',8,104,1.05)
+    # Functional changes only; later presentation pass owns full directional ports.
+    place(s,('J8',24,41),('SW1',130,89),('R41',111,85),('C40',101,96),
+          ('R32',103,30,90),('D10',127,30,180))
+    join(s,('R32',2),('D10',2))
+    for ref,x,y,a in [('R61',47,27,90),('R62',47,39,90),('R63',47,51,90),
+                      ('R64',72,27,90),('R65',72,39,90),('R66',72,51,90),
+                      ('R70',47,64,0),('R71',72,64,0)]:s.place(ref,x,y,a)
+    join(s,('R41',2),('SW1',1),(111,88),(124,88))
+    join(s,('SW1',1),('SW1',3),(122,87),(122,89))
+    join(s,('SW1',1),('C40',1),(119,87),(119,93),(101,93))
+    s.text('J8 pin1 GND / rectangular pad / red stripe. KEYED20-pin DEBUG ONLY.\nAUX_MON OUTPUT via10k, not controller power. No external pullups.\nADC3/5/6/7/8/9 = +12/-12/+5/MID/VBUS/VPROT;17..20 NC.',8,75,1.0)
+    s.text('ONE ordinary RED3mm power LED.\nFinal P5 -> R32 1k -> D10 -> GND.\nNo blink or external LED controller.\nDoes NOT indicate all rails healthy.',96,47,1.1)
+    s.text('Debug cable is OPTIONAL; not in the power-enable path.\nNormal operation: hardware PG + UV/OV and RUN closed.\nJP1 stays OPEN only as explicit prototype qualification inhibit.',8,107,1.0)
 
     s=drawings[5]
-    # Divider/filter/clamp rows use actual wires, with labels only at rail and MCU boundaries.
+    # Divider/filter/clamp rows use actual wires, with labels only at rail and debug boundaries.
     for i,(sense,top,bottom,series) in enumerate([('P12','R44','R45','R54'),('P5','R46','R47','R56'),('MID','R48','R49','R57'),('VBUS','R50','R51','R58'),('VPROT','R52','R53','R59')]):
         x=16+(i%3)*49;y=29+(i//3)*35;ci={'P12':0,'P5':2,'MID':3,'VBUS':4,'VPROT':5}[sense]
         place(s,(top,x,y),(bottom,x,y+9),(series,x+12,y+4.5,90),('C'+str(42+ci),x+27,y+10),('D'+str(13+2*ci),x+36,y+10,270),('D'+str(14+2*ci),x+36,y-1,270))
@@ -272,6 +276,10 @@ def render(hw, sheets, lib, uid):
     s.text('U11A: -VNEG x 16.5k/100k = 1.98 V at -12 V.\nU11B unused follower: +input GND; -input tied OUT.',110,75,1.0)
 
     s=drawings[6];place(s,('J7',38,41),('J2',103,41),('R25',25,76),('R26',52,76),('R27',79,76))
+    # Physical carrier/cable boundary, NOT a second active supply/assembly header.
+    s.text('ON-CARRIER J7       |       FLYING-LEAD CABLE       |       OFF-BOARD J2',8,24,1.1)
+    x,y1=mm((70,27));_,y2=mm((70,54))
+    s.out.append(f'(polyline (pts (xy {x} {y1}) (xy {x} {y2})) (stroke (width 0.254) (type dash)) (fill (type none)) (uuid {q(uid("power-cable-boundary"))}))')
     # Pin-for-pin harness connects all defined paired outputs; no extra active supply.
     for pin in range(1,13):
         a=('J7',pin);b=('J2',pin)
@@ -308,5 +316,5 @@ def render(hw, sheets, lib, uid):
         root.out.append(f'(instances (project "big_modular" (path {q("/"+uid("root"))} (page {q(i+2)})))) )')
         for j,n in enumerate(ns):
             root.wire(n,(x,y+3+j*2),(x-2,y+3+j*2),(x-2,y+2+j*2));root.label(n,(x-2,y+2+j*2))
-    root.text('READ docs/electrical-prototype.md + firmware/README.md. RUN OPEN; firmware default DENY.\nMain stages: TPS54302 MID -> TPS65131 direct +/-12 V; separate TPS54302 +5 V.\nMechanics retained; PCB NOT synchronized or routed. Native parity intentionally incomplete.',127,99,1.0)
+    root.text('READ docs/electrical-prototype.md + docs/debug-interface.md. RUN OPEN for qualification; hardware-only operation, no debug MCU.\nMain stages: TPS54302 MID -> TPS65131 direct +/-12 V; separate TPS54302 +5 V.\nMechanics retained; PCB NOT synchronized or routed. Native parity intentionally incomplete.',127,99,1.0)
     root.finish()

@@ -8,14 +8,16 @@ from stack_geometry import geometry
 
 class LedReservationTests(unittest.TestCase):
     def test_reserved_refs_cannot_be_general_diodes(self):
-        self.assertEqual(LED_RAILS,{'D10':'+12V','D11':'-12V','D12':'+5V'})
+        self.assertEqual(LED_RAILS,{'D10':'+5V POWER'})
         for ref in LED_RAILS:
             with self.assertRaises(ValueError): validate_reference(ref)
             validate_reference(ref,'rail_indicator')
         validate_reference('D13')
 
-    def test_three_nominal_lamps_clear_usb_and_bracket_envelopes(self):
+    def test_single_power_lamp_clear_usb_and_bracket_envelopes(self):
         g=geometry()
+        self.assertEqual(len(g['LEDs']),1)
+        self.assertEqual(g['LEDs'][0]['panel_hole_ref'],'H5')
         for led in g['LEDs']:
             x,y,d=led['panel_XY_diameter_mm']
             self.assertGreater(x-d/2,0)

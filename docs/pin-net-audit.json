@@ -128,14 +128,6 @@
     "1": "VPROT",
     "2": "GND"
   },
-  "R38": {
-    "1": "MCU_PERMIT_N",
-    "2": "MCU_BASE"
-  },
-  "R39": {
-    "1": "PG_PERMIT",
-    "2": "MCU_BASE"
-  },
   "C2": {
     "1": "VBUS_FUSED",
     "2": "GND"
@@ -153,13 +145,8 @@
     "2": "AUX3V3",
     "3": "PG_PERMIT"
   },
-  "Q2": {
-    "1": "MCU_BASE",
-    "2": "PG_PERMIT",
-    "3": "MCU_PERMIT"
-  },
   "JP1": {
-    "1": "MCU_PERMIT",
+    "1": "PG_PERMIT",
     "2": "EF_ENABLE"
   },
   "U3": {
@@ -321,6 +308,10 @@
     "1": "BI_EN",
     "2": "GND"
   },
+  "R38": {
+    "1": "MID",
+    "2": "BI_EN"
+  },
   "C10": {
     "1": "P12",
     "2": "POS_FB"
@@ -353,74 +344,81 @@
     "1": "MID",
     "2": "GND"
   },
-  "U10": {
-    "1": "AUX3V3",
-    "20": "GND",
-    "2": "ADC_P12",
-    "3": null,
-    "4": "ADC_N12",
-    "5": "ADC_P5",
-    "6": "ADC_MID",
-    "7": "ADC_VBUS",
-    "10": "ADC_VPROT",
-    "16": "UPDI",
-    "12": "LED_P_K",
-    "13": "LED_N_K",
-    "14": "LED_5_K",
-    "17": "PD_SDA",
-    "18": "PD_SCL",
-    "19": "PD_PG_N",
-    "11": "EF_FLT_N",
-    "15": "RESET_N",
-    "9": "MCU_PERMIT_N",
-    "8": "BI_EN"
-  },
-  "C39": {
-    "1": "AUX3V3",
-    "2": "GND"
-  },
   "C40": {
-    "1": "RESET_N",
+    "1": "BUTTON_N",
     "2": "GND"
   },
   "R41": {
     "1": "AUX3V3",
-    "2": "RESET_N"
+    "2": "BUTTON_N"
   },
   "SW1": {
-    "1": "RESET_N",
-    "3": "RESET_N",
+    "1": "BUTTON_N",
+    "3": "BUTTON_N",
     "2": "GND",
     "MP": null
   },
   "J8": {
-    "1": "UPDI",
-    "2": "AUX3V3",
-    "3": "GND"
+    "1": "GND",
+    "2": "DBG_AUX_MON",
+    "3": "ADC_P12",
+    "4": "GND",
+    "5": "ADC_N12",
+    "6": "ADC_P5",
+    "7": "ADC_MID",
+    "8": "ADC_VBUS",
+    "9": "ADC_VPROT",
+    "10": "GND",
+    "11": "DBG_PG_N",
+    "12": "DBG_FLT_N",
+    "13": "DBG_SDA",
+    "14": "DBG_SCL",
+    "15": "DBG_BUTTON_N",
+    "16": "GND",
+    "17": null,
+    "18": null,
+    "19": null,
+    "20": null
+  },
+  "R61": {
+    "1": "AUX3V3",
+    "2": "DBG_AUX_MON"
+  },
+  "R62": {
+    "1": "PD_PG_N",
+    "2": "DBG_PG_N"
+  },
+  "R63": {
+    "1": "EF_FLT_N",
+    "2": "DBG_FLT_N"
+  },
+  "R64": {
+    "1": "PD_SDA",
+    "2": "DBG_SDA"
+  },
+  "R65": {
+    "1": "PD_SCL",
+    "2": "DBG_SCL"
+  },
+  "R66": {
+    "1": "BUTTON_N",
+    "2": "DBG_BUTTON_N"
+  },
+  "R70": {
+    "1": "AUX3V3",
+    "2": "PD_SDA"
+  },
+  "R71": {
+    "1": "AUX3V3",
+    "2": "PD_SCL"
   },
   "R32": {
-    "1": "AUX3V3",
+    "1": "P5",
     "2": "LED_P_A"
   },
   "D10": {
-    "1": "LED_P_K",
+    "1": "GND",
     "2": "LED_P_A"
-  },
-  "R33": {
-    "1": "AUX3V3",
-    "2": "LED_N_A"
-  },
-  "D11": {
-    "1": "LED_N_K",
-    "2": "LED_N_A"
-  },
-  "R34": {
-    "1": "AUX3V3",
-    "2": "LED_5_A"
-  },
-  "D12": {
-    "1": "LED_5_K",
-    "2": "LED_5_A"
   },
   "U11": {
     "1": "NEG_SENSE",

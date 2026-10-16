@@ -174,7 +174,7 @@ def build(output):
     for led in G['LEDs']:
         ref=led['reference']
         fp=placed(b,hw,'LED_THT',G['LED']['footprint'],ref,'RED 3mm / '+led['rail']+' / MANUAL',
-                  carrier_xy(*led['pad1_YZ_mm']),{'1':ref+'_K_PENDING','2':ref+'_A_PENDING'})
+                  carrier_xy(*led['pad1_YZ_mm']),{'1':'GND','2':'LED_P_A'})
         # Manual installation is NOT DNP. Position exclusion also excludes both
         # assembly CSVs in the shared exporter; keep engineering BOM inclusion.
         fp.SetAttributes(fp.GetAttributes() | pcb.FP_EXCLUDE_FROM_POS_FILES)
@@ -190,8 +190,8 @@ def build(output):
     text(b,'1 / -12V / RED',*carrier_xy(44,22),.8,pcb.F_SilkS)
     text(b,'J7 -> J2 OUTPUT ONLY',*carrier_xy(59,23),.8,pcb.F_SilkS)
     text(b, 'A4.2 / MAIN PCB / TWO-BOARD PLACEMENT / NO ROUTING',100,65,1)
-    text(b, 'USB + 3 RED 3mm THT LEDs + hand-solder SMT reset; no middle board',100,68)
-    text(b, 'UI nets isolated; not a working reset/power indicator circuit',100,110)
+    text(b, 'USB + 1 RED 3mm THT +5V power LED + hand-solder SMT reset; no middle board',100,68)
+    text(b, 'D10: final +5V via1k to anode; cathode GND; no routing',100,110)
     text(b, 'M3 ONLY: two bracket holes; no standoffs / no board-to-board headers',100,114)
     for yc in G['brackets']['Y_centres_mm']:
         polygon(b,[carrier_xy(y,z) for y,z in [(yc-5,10),(yc+5,10),(yc+5,20),(yc-5,20)]],pcb.Dwgs_User)
@@ -217,7 +217,7 @@ def build(output):
         text(p,label,*panel_xy(4.9,y),size,pcb.F_SilkS)
     text(p,'2HP / round corner holes X2.42 = X7.50 minus one 5.08mm rail pitch',102,40,.9)
     text(p,'A4.2 plain L brackets: M3x8 panel / M3x8 countersunk side',101,44,.9)
-    text(p,'TL3340AF160QG SMT reset; D10/D11/D12 RED 3mm LEDs formed 90 degrees',100,48,.9)
+    text(p,'TL3340AF160QG SMT reset; D10 RED 3mm +5V power LED formed 90 degrees',100,48,.9)
     stable_ids(p,'panel'); pcb.SaveBoard(str(hw/'front_panel.kicad_pcb'),p)
 
     (output/'assembly-geometry.json').write_text(json.dumps(G,indent=2)+'\n')
@@ -228,7 +228,7 @@ def build(output):
         'status':'placement candidate / not electrically synchronized / not fabrication ready',
         'common_tool_limit':'pcb inspect: 3D models, embedded files and images are unsupported dependencies; fail closed',
         'source_sha256':{str(q.relative_to(ROOT)):hashlib.sha256(q.read_bytes()).hexdigest() for q in sources},
-        'new_refs':['D11','D12'], 'reserved_LED_refs':['D10','D11','D12'], 'manual_assembly_refs':['D10','D11','D12'], 'removed_refs':['R32'], 'retired_board':'middle_plate', 'routing_performed':False},indent=2)+'\n')
+        'new_refs':[], 'reserved_LED_refs':['D10'], 'manual_assembly_refs':['D10'], 'removed_refs':['D11','D12','H7(panel)','H8(panel)'], 'retired_board':'middle_plate', 'routing_performed':False},indent=2)+'\n')
     print('Created NEW two-board placement candidate:',output)
 
 

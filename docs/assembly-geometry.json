@@ -1,5 +1,5 @@
 {
-  "revision": "A4.2 LED3 mechanical checkpoint / plain M3 L brackets / placement-only",
+  "revision": "A4.2 single +5V power LED checkpoint / plain M3 L brackets / placement-only",
   "board_count": 2,
   "panel_mm": [
     9.8,
@@ -81,7 +81,7 @@
   "LEDs": [
     {
       "reference": "D10",
-      "rail": "+12V",
+      "rail": "+5V POWER",
       "panel_hole_ref": "H5",
       "panel_XY_diameter_mm": [
         6.7,
@@ -90,34 +90,6 @@
       ],
       "pad1_YZ_mm": [
         36.73,
-        6.37
-      ]
-    },
-    {
-      "reference": "D11",
-      "rail": "-12V",
-      "panel_hole_ref": "H7",
-      "panel_XY_diameter_mm": [
-        6.7,
-        46,
-        3.6
-      ],
-      "pad1_YZ_mm": [
-        44.73,
-        6.37
-      ]
-    },
-    {
-      "reference": "D12",
-      "rail": "+5V",
-      "panel_hole_ref": "H8",
-      "panel_XY_diameter_mm": [
-        6.7,
-        54,
-        3.6
-      ],
-      "pad1_YZ_mm": [
-        52.73,
         6.37
       ]
     }
@@ -129,7 +101,7 @@
   ],
   "LED": {
     "type": "standard RED 3mm round THT LED, leads formed 90 degrees; no proprietary holder",
-    "assembly": "manual; exclude D10/D11/D12 from both JLC assembly BOM and CPL",
+    "assembly": "manual; exclude D10 from both JLC assembly BOM and CPL",
     "pin_roles": {
       "1": "K (cathode)",
       "2": "A (anode)"
@@ -182,8 +154,8 @@
     "datasheet": "https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf"
   },
   "led_resistors": {
-    "status": "R32 axial PCB reservation retired; no resistor populated in this checkpoint",
-    "plan": "Basic SMD preferred; values, references, ratings and controller await electrical brief"
+    "status": "R32 is1k SMD in schematic from final P5 to D10; not yet placed/routed",
+    "plan": "Manual D10 cathode GND, anode LED_P_A; no LED controller or blink"
   },
   "brackets": {
     "quantity": 2,
@@ -309,6 +281,6 @@
     ]
   ],
   "harness_status": "Provisional cable budget only; complete populated/cabled depth unverified",
-  "electrical_status": "J1 and 88-part circuit unchanged; D10/D11/D12/SW1 are PCB-only isolated reservations on MAIN PCB, not electrically integrated; R32 axial retired",
+  "electrical_status": "Single D10 P5 power LED integrated in schematic; PCB-only placement reservations otherwise remain unsynchronized. No LED controller.",
   "status": "NO routing, fabrication approval, strength test or working reset/LED circuit"
 }

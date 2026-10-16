@@ -64,8 +64,8 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert sorted(p.stem for p in hardware.glob('*.kicad_pcb'))==sorted(names), 'obsolete middle board still active'
     boards={n:pcb.LoadBoard(str(hardware/(n+'.kicad_pcb'))) for n in names}
     fps={n:{f.GetReference():f for f in b.GetFootprints()} for n,b in boards.items()}
-    allowed={'big_modular':{'J1','D10','D11','D12','SW1','J7','H1','H2','H3','H4'},
-             'front_panel':{f'H{i}' for i in range(1,9)}}
+    allowed={'big_modular':{'J1','D10','SW1','J7','H1','H2','H3','H4'},
+             'front_panel':{f'H{i}' for i in range(1,7)}}
     out={'fabrication_ready':False,'boards':{}}
     for n,b in boards.items():
         assert set(fps[n])==allowed[n],(n,'wrong inventory')
@@ -96,7 +96,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     for i,y in enumerate([22,106.5],1):
         npth('front_panel',f'H{i+2}',(56.4,y+30),3.2)
         npth('big_modular',f'H{i}',native(y,15),3.2)
-    for ref,y in [('H5',38),('H7',46),('H8',54)]:
+    for ref,y in [('H5',38)]:
         npth('front_panel',ref,(56.7,y+30),3.6)
     npth('front_panel','H6',(56.4,121),3.2)
     for i,y in enumerate([43.5,70.5],3):npth('big_modular',f'H{i}',native(y,27),2.5)
@@ -110,12 +110,12 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert g['mouth_axis_XYZ_mm']==[6.43,64.25,.8]
     assert math.isclose(4.7+1.73,6.43) # Intentional assembly plane translation.
     f=fps['big_modular']
-    for r,pos in [('D10',native(36.73,6.37)),('D11',native(44.73,6.37)),('D12',native(52.73,6.37)),('SW1',native(91,4.1)),('J7',native(48,27))]:
+    for r,pos in [('D10',native(36.73,6.37)),('SW1',native(91,4.1)),('J7',native(48,27))]:
         assert xy(f[r])==pos and f[r].GetLayer()==pcb.F_Cu and f[r].IsLocked()
     silk=[d for d in boards['big_modular'].GetDrawings() if d.GetLayer()==pcb.F_SilkS and isinstance(d,pcb.PCB_TEXT)]
     panel_silk=[d.GetText() for d in boards['front_panel'].GetDrawings() if d.GetLayer()==pcb.F_SilkS and isinstance(d,pcb.PCB_TEXT)]
-    expected_leds=[('D10','+12V',38,'H5'),('D11','-12V',46,'H7'),('D12','+5V',54,'H8')]
-    assert len(g['LEDs'])==3 and g['LED']['pin_roles']=={'1':'K (cathode)','2':'A (anode)'}
+    expected_leds=[('D10','+5V POWER',38,'H5')]
+    assert len(g['LEDs'])==1 and g['LED']['pin_roles']=={'1':'K (cathode)','2':'A (anode)'}
     for (ref,rail,y,hole),record in zip(expected_leds,g['LEDs']):
         fp=f[ref]
         assert record=={'reference':ref,'rail':rail,'panel_hole_ref':hole,'panel_XY_diameter_mm':[6.7,y,3.6],'pad1_YZ_mm':[y-1.27,6.37]}
@@ -126,7 +126,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         led={p.GetNumber():p for p in fp.Pads()};assert set(led)=={'1','2'}
         for pin,py,role in [('1',y-1.27,'K'),('2',y+1.27,'A')]:
             p=led[pin]
-            assert xy(p)==native(py,6.37) and p.GetNetname()==ref+'_'+role+'_PENDING'
+            assert xy(p)==native(py,6.37) and p.GetNetname()==('GND' if pin=='1' else 'LED_P_A')
             assert p.GetAttribute()==pcb.PAD_ATTRIB_PTH and (mm(p.GetDrillSize().x),mm(p.GetDrillSize().y))==(.9,.9)
             assert (mm(p.GetSize().x),mm(p.GetSize().y))==(1.8,1.8)
             assert p.IsOnLayer(pcb.F_Cu) and p.IsOnLayer(pcb.B_Cu) and not p.IsOnLayer(pcb.F_Paste)
@@ -146,10 +146,10 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert g['board_count']==2 and 'headers' not in g and 'spacers' not in g
     assert g['reset_XY_diameter_mm']==[6.4,91,3.2]
     assert 3.1-g['solder_tail_max_below_B_Cu_mm']>0
-    out['mechanics']={'actual_NPTH_geometry_checks':12,'LED_PTH_pad_checks':6,'LED_polarity_mark_checks':6,'manual_LED_exclusions':3,'switch_SMT_pad_checks':5,'switch_locator_NPTH_checks':2,'switch_fit':switch_check,'power_pin_checks':16,
+    out['mechanics']={'actual_NPTH_geometry_checks':10,'LED_PTH_pad_checks':2,'LED_polarity_mark_checks':2,'manual_LED_exclusions':1,'switch_SMT_pad_checks':5,'switch_locator_NPTH_checks':2,'switch_fit':switch_check,'power_pin_checks':16,
        'M3_access':verify_access(g,expected),'carrier_depth_mm':30,'PCB_depth_behind_panel_mm':30.4,
        'main_PCB_plane_X_mm':[3.1,4.7],'port_axis_mm':[6.43,64.25,.8],
-       'electrical_status':'No routing; J7 landing not integrated into schematic; J2 remains on flying lead; D10/D11/D12/SW1 isolated; R32 axial reservation retired',
+       'electrical_status':'No routing; D10 P5 power LED pin labels integrated; remaining circuit not board-synchronized; debug is optional',
        'finished_module_depth':'unverified; cable connector not confined to 2HP board envelope'}
     return out
 
