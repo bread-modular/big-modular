@@ -34,7 +34,7 @@ def populate(stock, ic, lib, root):
       ('02_hardgate','Autonomous hardware window and retry','UV rising 7.878 V / OV rising 10.781 V nominal; hysteresis applies. RTN is NOT GND.\nSHDN self-biases internally; SW1 shorts SHDN to RTN while pressed, release resets/retries.\nR8 6.04k: 1.987 A nominal. MODE 402k: current limit with thermal latch-off. No PG/MCU permission.'),
       ('03_bucks','Independent buck converters','U3 MID 5.216 V; upper DC corner 5.357 V BEFORE transients. U4 ceiling 5.5 V.\nU5 direct 5.011 V from VPROT, never from positive boost. 100n BOOT-to-SW each.\nEN pins intentionally floating: TI internal pullups enable from protected VPROT; no SHDN loading.'),
       ('04_bipolar','Direct bipolar rails','Nominal +/-11.968 V. FBN returns to VREF, NOT GND; PSP/PSN grounded.\nLocal output feedback; no rail LDOs or extra output LC. L2/L3 4.7uH per TI typical application.\nOutput current/ripple/thermal/transient limits need V1 validation; no simultaneous +/-800 mA rating.'),
-      ('07_output_rails','Board output and power LED','J7 physical board wire landing: 1/2=-12, 3..8=GND, 9/10=+12, 11/12=+5; 13..16 NC.\nOne manual output harness, no J2 symbol or second source. Never parallel another active PSU.\nSingle red D10: final P5 -> 1k -> anode2; cathode1 -> GND. +5 V presence only.')]:
+      ('07_output_rails','Board output and power LED','J7 physical board wire landing: 1/2=-12, 3..8=GND, 9/10=+12, 11/12=+5; 13..16 NC.\nOne manual output harness, no second source. Never parallel another active PSU.\nSingle red D10: final P5 -> 1k -> anode2; cathode1 -> GND. +5 V presence only.')]:
         sheets[name]={'title':title,'notes':notes,'parts':[]}
     # Catalog records are bounded strict-live snapshots, not procurement approval.
     catalog=json.loads((root/'docs/electrical-catalog.json').read_text())
@@ -71,7 +71,7 @@ def populate(stock, ic, lib, root):
     a='03_bucks'
     for u,prefix,out,Lref,Cs,Rt,Rb,rv,base in [('U3','MID','MID','L1',['C5','C6','C7','C35'],'R9','R10','12.9k',0),('U5','FIVE','P5','L4',['C18','C19','C20','C36'],'R17','R18','13.5k',1)]:
         add(a,u,BUCK,'TPS54302DDCR',{'1':'GND','2':prefix+'_SW','3':'VPROT','4':prefix+'_FB','5':None,'6':prefix+'_BOOT'},'Package_TO_SOT_SMD:SOT-23-6','C311983')
-        add(a,Lref,L,'6.8uH 20% shielded',{'1':prefix+'_SW','2':out},'BigModular:L_Sunlord_SWPA8065S','C334250',note='SWPA8065S6R8MT; manufacturer Rev06: Isat min7.5A, Irms min4.5A, DCR max26mohm (catalog22mohm is typical). Land pattern checked Fig4-1. Extended candidate; not allocation or thermal approval.')
+        add(a,Lref,L,'6.8uH 20% shielded',{'1':prefix+'_SW','2':out},'BigModular:L_KOHER_MDA1040','C2847552',note='MDA1040-6R8M; manufacturer A1 p1: height3.8+/-0.2mm; Isat typ12.2 / table Max11A; temperature-rise current typ7.8 / table Max6.8A (not relabeled guaranteed minima). DCR max24.5mohm. Land pattern12.5 overall,5.4 gap,3.5 length; visually verified. See engineering.md. Extended candidate; not allocation or thermal approval.')
         cc(a,Cs[0],'10u 25V X7R','VPROT','GND',size='1206_3216');cc(a,Cs[1],'22u 25V X7R',out,'GND','C53084530','1210_3225');cc(a,Cs[2],'100n 50V X7R','VPROT','GND');cc(a,Cs[3],'100n 50V X7R',prefix+'_BOOT',prefix+'_SW')
         cc(a,'C37' if u=='U3' else 'C38','22u 25V X7R',out,'GND','C53084530','1210_3225')
         rr(a,Rt,'100k',out,prefix+'_FB',code='C2912578' if u=='U3' else 'C25803',note='MID ratio 0.1% exception required for DC headroom; 108% OVP is NOT a 5.5V transient guarantee.' if u=='U3' else 'Independent +5 V divider.')
@@ -86,7 +86,7 @@ def populate(stock, ic, lib, root):
     cc(a,'C16','10u 25V X7R','MID','GND',size='1206_3216');cc(a,'C17','10u 25V X7R','MID','GND',size='1206_3216')
     a='07_output_rails'
     rr(a,'R32','1k','P5','LED_P_A',note='Ordinary final +5V power indicator only: 1k series limits current, no controller or blink. Manual3mm D10 cathode to GND. At5.5V and Vf=0, resistor power<31mW with1% tolerance; exact LED brightness/MPN still pending.')
-    add(a,'D10',LED,'RED 3mm / +5V POWER / MANUAL',{'1':'GND','2':'LED_P_A'},'BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',manual=True,note='Single hand-soldered red3mm power LED: P5 -> R32 1k -> anode2; cathode1 GND. No automatic blink, no external control, not proof all rails are healthy. Retains original D10 hole/formed-lead fit; exact MPN pending.')
+    add(a,'D10',LED,'RED 3mm / +5V POWER / MANUAL',{'1':'GND','2':'LED_P_A'},'BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',manual=True,note='Single hand-soldered red3mm power LED: P5 -> R32 1k -> anode2; cathode1 GND. No automatic blink, no external control, not proof all rails are healthy. Top-cluster D10 hole/formed-lead envelope; exact MPN pending.')
     a='07_output_rails'
     n={str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None) for i in range(1,17)}
     add(a,'J7',IDC,'Manual IDC wire landing',n,'BigModular:WireLanding_2x08_P2.54mm',manual=True,note='ON-CARRIER numbered solder lands, not an extra purchasable box header. Physical output cable boundary; single output, never another active source.')

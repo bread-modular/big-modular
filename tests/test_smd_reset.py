@@ -37,7 +37,7 @@ else:
         self.native()
 
     def test_pin3_cannot_be_assigned_to_the_opposite_contact(self):
-        self.native("next(p for p in f.Pads() if p.GetNumber()=='3').SetNet(b.FindNet('RESET_B_PENDING'))",True)
+        self.native("next(p for p in f.Pads() if p.GetNumber()=='3').SetNet(b.FindNet('/Autonomous hardware window and retry/RTN'))",True)
 
     def test_alignment_holes_must_stay_non_plated(self):
         self.native("next(p for p in f.Pads() if p.GetNumber()=='').SetAttribute(pcb.PAD_ATTRIB_PTH)",True)
@@ -49,7 +49,7 @@ else:
         self.native("next(p for p in f.Pads() if p.GetNumber()=='2').SetSize(pcb.VECTOR2I(pcb.FromMM(.6),pcb.FromMM(1.8)))",True)
 
     def test_floating_case_tabs_cannot_be_tied_to_reset(self):
-        self.native("next(p for p in f.Pads() if p.GetNumber()=='MP').SetNet(b.FindNet('RESET_A_PENDING'))",True)
+        self.native("next(p for p in f.Pads() if p.GetNumber()=='MP').SetNet(b.FindNet('/Autonomous hardware window and retry/EF_SHDN'))",True)
 
 
 if __name__=='__main__':

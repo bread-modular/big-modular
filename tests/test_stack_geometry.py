@@ -25,15 +25,12 @@ class StackGeometryTests(unittest.TestCase):
     def test_single_led_revision_preserves_all_other_mechanics(self):
         record=json.loads((ROOT/'docs/mechanical-preservation.json').read_text())
         for name,digest in record.items():self.assertEqual(sha(ROOT/name),digest,name)
-        def clean(x):return [clean(t) for t in x if not(isinstance(t,list) and t and t[0]=='uuid')] if isinstance(x,list) else x
-        for board,contract in json.loads((ROOT/'docs/led-change-contract.json').read_text()).items():
-            tree=parse((ROOT/'hardware'/(board+'.kicad_pcb')).read_text())
-            refs={next(p[2] for p in nodes(f,'property') if p[1]=='Reference'):f for f in nodes(tree,'footprint')}
-            for removed in contract['removed_refs']:self.assertNotIn(removed,refs)
-            for ref,digest in contract['unchanged_footprints_except_uuid_sha256'].items():
-                self.assertEqual(hashlib.sha256(json.dumps(clean(refs[ref])).encode()).hexdigest(),digest,(board,ref))
+        from stack_geometry import physical_fingerprint
         original=json.loads((ROOT/'docs/mechanical-baseline.json').read_text())
-        self.assertEqual(hashlib.sha256(json.dumps(usb_node(ROOT/'hardware/big_modular.kicad_pcb')).encode()).hexdigest(),original['J1_native_AST_sha256'])
+        tree=parse((ROOT/'hardware/big_modular.kicad_pcb').read_text())
+        for ref in ['J1','J7']:
+            fp=next(f for f in nodes(tree,'footprint') if any(p[1:3]==['Reference',ref] for p in nodes(f,'property')))
+            self.assertEqual(physical_fingerprint(fp),original['physical'][ref])
 
     def test_drawing_and_builder_share_current_geometry(self):
         self.assertEqual(json.loads((ROOT/'docs/assembly-geometry.json').read_text()),geometry())
@@ -45,7 +42,7 @@ class StackGeometryTests(unittest.TestCase):
         self.assertNotIn('middle_Z_mm',g)
         self.assertNotIn('headers',g)
         self.assertNotIn('spacers',g)
-        self.assertIn('PCB-only',g['electrical_status'])
+        self.assertIn('64 current',g['electrical_status'])
 
     def test_native_geometry_ui_power_pin_order_and_no_routing(self):
         # Separate process contains native KiCad's SWIG lifetimes and diagnostics.
@@ -86,15 +83,46 @@ class StackGeometryTests(unittest.TestCase):
         self.assertIn('legacy full regeneration is disabled',result.stderr)
         self.assertEqual({p:sha(p) for p in before},before)
 
-    def test_ui_refs_are_integrated_only_in_schematic_not_board_synced(self):
+    def test_ui_refs_are_integrated_and_board_synced(self):
         audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
         for ref in ['D10','R32','SW1','J7']:
             self.assertIn(ref,audit)
         self.assertNotIn('D11',audit);self.assertNotIn('D12',audit)
         board=(ROOT/'hardware/big_modular.kicad_pcb').read_text()
-        self.assertIn('RESET_A_PENDING',board)
-        self.assertIn('RESET_B_PENDING',board)
+        self.assertNotIn('RESET_A_PENDING',board);self.assertIn('EF_SHDN',board)
+        self.assertNotIn('RESET_B_PENDING',board);self.assertIn('RTN',board)
         self.assertFalse((ROOT/'hardware/middle_plate.kicad_pcb').exists())
+
+    def test_top_cluster_and_magnetic_envelopes(self):
+        from stack_geometry import verify_ui_clearances
+        g=geometry(); gaps=verify_ui_clearances(g)
+        self.assertEqual(g['mouth_axis_XYZ_mm'],[6.43,33.5,.8])
+        self.assertEqual(g['reset_XY_diameter_mm'],[6.4,43,3.2])
+        self.assertEqual(g['LEDs'][0]['panel_XY_diameter_mm'],[6.7,49.5,3.6])
+        self.assertEqual(gaps['L1/L4_normal_budget_margin'],.85)
+        self.assertEqual(gaps['L2/L3_normal_budget_margin'],.15)
+        g['magnetics']['L1/L4']['height_max_mm']=6.5
+        with self.assertRaises(AssertionError):verify_ui_clearances(g)
+
+    def test_all_64_pcb_fields_paths_and_staging(self):
+        import csv
+        from sexp import one
+        from schematic_connectivity import Connectivity
+        tree=parse((ROOT/'hardware/big_modular.kicad_pcb').read_text())
+        fps={next(p[2] for p in nodes(f,'property') if p[1]=='Reference'):f for f in nodes(tree,'footprint')}
+        rows={r['Reference']:r for r in csv.DictReader((ROOT/'BOM.csv').read_text().splitlines())}
+        self.assertEqual(set(fps)-{''},set(rows))
+        self.assertEqual(len(rows),64)
+        graph=Connectivity(ROOT/'hardware')
+        for ref,row in rows.items():
+            f=fps[ref];props={p[1]:p[2] for p in nodes(f,'property')}
+            self.assertEqual(f[1],row['Footprint']);self.assertEqual(props['Value'],row['Value'])
+            self.assertEqual(props.get('MPN',''),row['MPN']);self.assertEqual(props.get('LCSC',''),row['LCSC'])
+            self.assertTrue(one(f,'path')[1].endswith('/'+one(graph.refs[ref][1],'uuid')[1]))
+            if ref not in ['J1','J7','D10','SW1']:
+                self.assertEqual(props['Placement'],'STAGED_OFF_BOARD_UNPLACED')
+                self.assertGreater(float(one(f,'at')[1]),160)
+        self.assertEqual(fps['R32'][1],'BigModular:R_0603_1608Metric')
 
 
 

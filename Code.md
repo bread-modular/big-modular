@@ -12,8 +12,9 @@ TPS65131 +/-12V, J7 physical output and one red D10 final-P5 LED remain.
 SW1 is eFuse shutdown/retry, not a debug input. No AUX/MCU/sensing/J8/J2/JP1.
 No artificial qualification inhibit. Engineering limits are in docs/engineering.md.
 
-Do not change PCB placement, sync or copper in this stage. USB/button/LED relocation
-to the top is deferred to the next mechanical owner. Both board files are preserved.
+V1 routing-preparation authorizes top USB/button/LED placement and current-schematic
+PCB synchronization. Power footprints may be staged off-board, explicitly unplaced.
+No routing/autorouter, tracks, vias, zones or manufacturing exports in this stage.
 Do not reuse retired D11/D12 refs (tools/interface_contract.py).
 
 ## Required tooling
@@ -27,7 +28,7 @@ No advisors or other models unless requested. No routing without authorization.
 
 Source-of-truth: tools/electrical_design.py, build_project.py, render_schematic.py.
 Keep useful mechanical builders/verifiers and their regression inputs: they describe
-preserved, unsynchronized PCB reservations, not current electrical parity.
+fixed UI geometry, staged power footprints and full current electrical parity.
 Build/check instructions: docs/build.md. Native ERC/parity findings must be retained;
 no rule exclusions, fake power flags or weakened tests to obtain a pass. Passing ERC
 is not layout, thermal, safety or manufacturing qualification.

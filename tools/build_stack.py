@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build a NEW unrouted A4.2 mechanical/placement candidate, never overwrite hardware.
+"""Build a NEW unrouted V1 mechanical/electrical-sync candidate, never overwrite hardware.
 
 Common-tool pcb inspect rejects the retained USB model dependency; its edit subset
 also cannot change these NPTHs/arcs or introduce schematic-less UI reservations.
 This deliberately narrow native generator complements (does not replace) the
-common check tool. The original J1 object and entire circuit hierarchy are kept.
+common check tool. J1 pad/model identity and the current six-page circuit hierarchy are kept.
 """
 from pathlib import Path
 import argparse
@@ -13,6 +13,8 @@ import json
 import math
 import shutil
 import uuid
+import subprocess
+import xml.etree.ElementTree as ET
 import pcbnew as pcb
 from sexp import parse,dump
 from stack_geometry import geometry, carrier_xy, panel_xy, carrier_outline
@@ -61,8 +63,9 @@ def text(board, value, x, y, size=.8, layer=pcb.Dwgs_User):
 
 def hole(board, ref, at, diameter, dy=None, contact_radius=2.1):
     dy = diameter if dy is None else dy
-    fp = pcb.FOOTPRINT(board); fp.SetReference(ref); fp.SetValue('MECHANICAL_NPTH')
+    fp = pcb.FOOTPRINT(board); fp.SetReference(''); fp.SetField('MechanicalID',ref); fp.SetValue('MECHANICAL_NPTH')
     fp.SetPosition(vec(*at)); fp.Reference().SetVisible(False); fp.Value().SetVisible(False)
+    fp.SetAttributes(pcb.FP_EXCLUDE_FROM_BOM | pcb.FP_EXCLUDE_FROM_POS_FILES | pcb.FP_BOARD_ONLY)
     pad = pcb.PAD(fp); pad.SetAttribute(pcb.PAD_ATTRIB_NPTH)
     pad.SetShape(pcb.PAD_SHAPE_CIRCLE if diameter == dy else pcb.PAD_SHAPE_OVAL)
     pad.SetSize(vec(diameter, dy)); pad.SetDrillSize(vec(diameter, dy))
@@ -110,9 +113,16 @@ def stable_ids(b, name):
     def setid(obj, key): obj.SetUuid(pcb.KIID(str(uuid.uuid5(ns, key))))
     for i, d in enumerate(b.GetDrawings()): setid(d, f'drawing:{i}')
     for fp in b.GetFootprints():
-        ref = fp.GetReference()
-        if ref == 'J1': continue
+        ref = fp.GetReference() or fp.GetFieldText('MechanicalID')
+        if ref == 'J1':
+            for field in fp.GetFields():
+                field.SetTextThickness(MM(.15))
+                if field.GetName() not in ('Reference','Value'): field.SetVisible(False)
+            continue
         setid(fp, ref)
+        for field in fp.GetFields():
+            field.SetTextThickness(MM(.15))
+            if field.GetName() not in ('Reference','Value'): field.SetVisible(False)
         for i, obj in enumerate(list(fp.Pads())+list(fp.GraphicalItems())+list(fp.GetFields())):
             setid(obj, f'{ref}:child:{i}')
 
@@ -138,7 +148,7 @@ def led_footprint(pretty):
 
 def wire_landing(pretty):
     a = ['(footprint "WireLanding_2x08_P2.54mm" (version 20260206)(generator "pcbnew")(layer "F.Cu")(attr through_hole)',
-         '(descr "Numbered solder-through lands for insulated J2 flying output lead; NOT a populated header")',
+         '(descr "Numbered solder-through lands for insulated output flying lead; NOT a populated header")',
          '(property "Reference" "REF**" (at 0 -3)(layer "F.SilkS")(effects(font(size 1 1)(thickness .15))))',
          '(property "Value" "IDC OUTPUT PIGTAIL" (at 0 -5)(layer "F.Fab")(effects(font(size 1 1)(thickness .15))))']
     for row in range(8):
@@ -148,25 +158,83 @@ def wire_landing(pretty):
     a.append(')');(pretty/'WireLanding_2x08_P2.54mm.kicad_mod').write_text('\n'.join(a)+'\n')
 
 
+
+def synchronize(b, hw, netlist):
+    xml=ET.parse(netlist).getroot()
+    components={c.get('ref'):c for c in xml.findall('./components/comp')}
+    assert len(components)==64
+    netmap={}; info={}
+    for net in xml.findall('./nets/net'):
+        name=net.get('name');n=b.FindNet(name)
+        if not n: n=pcb.NETINFO_ITEM(b,name);b.Add(n)
+        for node in net.findall('node'):
+            key=(node.get('ref'),node.get('pin'));netmap[key]=n;info[key]=node
+    footprints={f.GetReference():f for f in b.GetFootprints()}
+    fixed={'J1','J7','SW1','D10'};stage=0
+    for ref,c in sorted(components.items()):
+        fid=c.findtext('footprint');lib,name=fid.split(':',1)
+        fp=footprints.get(ref)
+        if fp is None:
+            fp=pcb.FootprintLoad(str(hw/'BigModular.pretty'),name)
+            assert fp, (ref,fid)
+            b.Add(fp);fp.SetReference(ref)
+            fp.SetPosition(vec(170+(stage%10)*18,75+(stage//10)*18));stage+=1
+            fp.Reference().SetVisible(True);fp.Value().SetVisible(False)
+            fp.SetLocked(False);fp.SetIsPlaced(False)
+        else:
+            assert fp.GetFPID().GetLibItemName()==name,(ref,'fixed footprint changed')
+        fp.SetFPID(pcb.LIB_ID(lib,name));fp.SetValue(c.findtext('value',''))
+        path=c.find('sheetpath').get('tstamps')+c.findtext('tstamps').split()[0]
+        pathid=pcb.KIID_PATH()
+        for value in path.split('/'):
+            if value:pathid.push_back(pcb.KIID(value))
+        fp.SetPath(pathid);fp.SetSheetname(c.find('sheetpath').get('names'))
+        fields={f.get('name'):f.text or '' for f in c.findall('./fields/field')}
+        fp.SetSheetfile(fields.get('Sheetfile',''))
+        for key,value in fields.items():
+            if key not in ('Reference','Value','Footprint','Datasheet','Description'):
+                fp.SetField(key,value)
+        fp.SetField('Datasheet',c.findtext('datasheet',''))
+        fp.SetField('Placement','FIXED_INTERFACE' if ref in fixed else 'STAGED_OFF_BOARD_UNPLACED')
+        if ref in fixed:fp.SetAttributes(fp.GetAttributes()|pcb.FP_EXCLUDE_FROM_POS_FILES)
+        assert {p.GetNumber() for p in fp.Pads() if p.GetNumber()}==set(json.loads((ROOT/'docs/pin-net-audit.json').read_text())[ref])
+        for pad in fp.Pads():
+            key=(ref,pad.GetNumber());net=netmap.get(key)
+            if net:pad.SetNet(net)
+            else:pad.SetNetCode(0)
+            node=info.get(key)
+            if node is not None:
+                pad.SetPinFunction(node.get('pinfunction',''));pad.SetPinType(node.get('pintype',''))
+    assert stage==60
+    b.BuildConnectivity()
+
+
 def build(output):
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     hw = output/'hardware'; hw.mkdir()
     pretty = hw/'BigModular.pretty'
     shutil.copytree(ROOT/'hardware/BigModular.pretty', pretty)
-    for name in ['fp-lib-table', 'big_modular.kicad_pro', 'front_panel.kicad_pro']:
+    for name in ['fp-lib-table', 'sym-lib-table', 'BigModular.kicad_sym', 'big_modular.kicad_pro', 'front_panel.kicad_pro']:
         shutil.copyfile(ROOT/'hardware'/name, hw/name)
-    # Preserve board setup/net definitions and J1's native object exactly.
+    for source in (ROOT/'hardware').glob('*.kicad_sch'): shutil.copyfile(source,hw/source.name)
+    subprocess.run(['kicad-cli','sch','export','netlist','--format','kicadxml','-o',str(output/'netlist.xml'),str(hw/'big_modular.kicad_sch')],check=True)
+    # Keep setup and J1 native physical identity. All electrical fields/nets follow native XML.
     b = pcb.LoadBoard(str(ROOT/'hardware/big_modular.kicad_pcb'))
     assert not list(b.GetTracks()) and not list(b.Zones()), 'Refuse to erase routed design'
-    refs = {f.GetReference() for f in b.GetFootprints()}
-    assert refs <= {'J1','J3','J4','J7','D10','D11','D12','R32','SW1','H1','H2','H3','H4'} and 'J1' in refs, 'Unexpected placed circuitry'
+    refs = {f.GetReference() or f.GetFieldText('MechanicalID') for f in b.GetFootprints()}
+    assert 'J1' in refs, 'missing preserved USB'
+    current={r for r in json.loads((ROOT/'docs/pin-net-audit.json').read_text()) if not r.startswith('#')}
+    assert refs <= current | {'H1','H2','H3','H4'}, 'Unexpected placed circuitry'
     # KiCad's Python Remove wrapper corrupts ownership on this engine; use the
     # same native-detach/retained-lifetime pattern as the shared edit worker.
     retired = list(b.GetDrawings()) + [f for f in b.GetFootprints() if f.GetReference() != 'J1']
     for item in retired:
         b.RemoveNative(item)
         item.thisown = False
+    usb=next(f for f in b.GetFootprints() if f.GetReference()=='J1')
+    usb.SetPosition(vec(*carrier_xy(G['mouth_axis_XYZ_mm'][1],4.475)))
+    usb.SetLocked(True)
     polygon(b, [carrier_xy(*p) for p in carrier_outline()])
     for i, point in enumerate(G['carrier_holes_YZ_mm'], 1):
         hole(b, f'H{i}', carrier_xy(*point), 3.2, contact_radius=3.5)
@@ -188,8 +256,8 @@ def build(output):
     for i,yz in enumerate(power['strain_relief_holes_YZ_mm'],3):
         hole(b,f'H{i}',carrier_xy(*yz),2.5,contact_radius=1.75)
     text(b,'1 / -12V / RED',*carrier_xy(44,22),.8,pcb.F_SilkS)
-    text(b,'J7 -> J2 OUTPUT ONLY',*carrier_xy(59,23),.8,pcb.F_SilkS)
-    text(b, 'A4.2 / MAIN PCB / TWO-BOARD PLACEMENT / NO ROUTING',100,65,1)
+    text(b,'J7 OUTPUT ONLY',*carrier_xy(59,23),.8,pcb.F_SilkS)
+    text(b, 'V1 / 64 PARTS SYNCHRONIZED / NO ROUTING',100,65,1)
     text(b, 'USB + 1 RED 3mm THT +5V power LED + hand-solder SMT reset; no middle board',100,68)
     text(b, 'D10: final +5V via1k to anode; cathode GND; no routing',100,110)
     text(b, 'M3 ONLY: two bracket holes; no standoffs / no board-to-board headers',100,114)
@@ -201,8 +269,10 @@ def build(output):
         text(b,led['reference']+' '+led['rail'],*carrier_xy(y,11),.8,pcb.F_SilkS)
         text(b,'K',*carrier_xy(y-1.27,8.8),.8,pcb.F_SilkS)
         text(b,'A',*carrier_xy(y+1.27,8.8),.8,pcb.F_SilkS)
-    for label,y,z in [('RESET',91,12)]:
+    for label,y,z in [('RETRY',G['reset_XY_diameter_mm'][1],12)]:
         text(b,label,*carrier_xy(y,z),.8,pcb.F_SilkS)
+    synchronize(b,hw,output/'netlist.xml')
+    text(b,'STAGED OFF-BOARD: 60 parts; place power circuits deliberately before routing',250,60,1.2)
     stable_ids(b, 'carrier'); pcb.SaveBoard(str(hw/'big_modular.kicad_pcb'), b)
 
     p = board(); polygon(p, [panel_xy(*q) for q in [(0,0),(9.8,0),(9.8,128.5),(0,128.5)]])
@@ -211,9 +281,9 @@ def build(output):
     for i,(x,y,d) in enumerate(G['panel_bracket_holes_mm'],3): hole(p, f'H{i}',panel_xy(x,y),d,contact_radius=3.5)
     for led in G['LEDs']:
         x,y,d=led['panel_XY_diameter_mm']; hole(p,led['panel_hole_ref'],panel_xy(x,y),d,contact_radius=0)
-        text(p,led['rail'],*panel_xy(4.9,y-4),.8,pcb.F_SilkS)
+        text(p,led['rail'],*panel_xy(4.9,y+3.3),.8,pcb.F_SilkS)
     x,y,d=G['reset_XY_diameter_mm']; hole(p,'H6',panel_xy(x,y),d,contact_radius=0)
-    for label,y,size in [('BIG',10.5,.9),('MOD',13,.9),('PD 9V',76.5,.8),('USB',74.5,.8),('RESET',86,.8),('A4.2',118,.8)]:
+    for label,y,size in [('BIG',10.5,.9),('MOD',13,.9),('USB 9V',G['mouth_axis_XYZ_mm'][1]-6.3,.65),('RETRY',G['reset_XY_diameter_mm'][1]+3,.65),('V1',118,.8)]:
         text(p,label,*panel_xy(4.9,y),size,pcb.F_SilkS)
     text(p,'2HP / round corner holes X2.42 = X7.50 minus one 5.08mm rail pitch',102,40,.9)
     text(p,'A4.2 plain L brackets: M3x8 panel / M3x8 countersunk side',101,44,.9)
@@ -225,7 +295,7 @@ def build(output):
     sources = [q for q in (ROOT/'hardware').rglob('*') if q.is_file() and q.suffix not in ('.lck','.kicad_prl')]
     sources += [ROOT/'BOM.csv',ROOT/'docs/pin-net-audit.json']
     (output/'source-manifest.json').write_text(json.dumps({
-        'status':'placement candidate / not electrically synchronized / not fabrication ready',
+        'status':'V1 routing preparation / 64 synchronized / 4 fixed + 60 staged / no copper',
         'common_tool_limit':'pcb inspect: 3D models, embedded files and images are unsupported dependencies; fail closed',
         'source_sha256':{str(q.relative_to(ROOT)):hashlib.sha256(q.read_bytes()).hexdigest() for q in sources},
         'new_refs':[], 'reserved_LED_refs':['D10'], 'manual_assembly_refs':['D10'], 'removed_refs':['D11','D12','H7(panel)','H8(panel)'], 'retired_board':'middle_plate', 'routing_performed':False},indent=2)+'\n')
