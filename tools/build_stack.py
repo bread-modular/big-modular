@@ -131,18 +131,9 @@ def switch_footprint(pretty):
 
 
 def led_footprint(pretty):
-    name='LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm'
-    original=Path('/usr/share/kicad/footprints/LED_THT.pretty')/(name+'.kicad_mod')
-    # The lamp intentionally projects past the front edge; put full outline on
-    # Fab rather than print silk beyond FR4. Pads and original model unchanged.
-    content=original.read_text().replace(f'(footprint "{name}"',f'(footprint "{name}_Edge"',1)
-    content=content.replace('(layer "F.SilkS")','(layer "F.Fab")')
-    # KiCad 10's Fab reference points lack wrapped IDs and get random IDs on
-    # load. Omit only these two nonphysical snap anchors in this derivative;
-    # keep all physical Fab contours, pads and the model (J1 is untouched).
-    tree=parse(content)
-    tree=[v for v in tree if not (isinstance(v,list) and v and v[0]=='point')]
-    (pretty/(name+'_Edge.kicad_mod')).write_text(dump(tree)+'\n')
+    """Use the existing pinned 3mm formed-lead footprint without library refresh."""
+    target=pretty/(G['LED']['footprint']+'.kicad_mod')
+    assert target.is_file(), 'missing pinned 3mm LED footprint'
 
 
 def wire_landing(pretty):
@@ -169,7 +160,7 @@ def build(output):
     b = pcb.LoadBoard(str(ROOT/'hardware/big_modular.kicad_pcb'))
     assert not list(b.GetTracks()) and not list(b.Zones()), 'Refuse to erase routed design'
     refs = {f.GetReference() for f in b.GetFootprints()}
-    assert refs <= {'J1','J3','J4','J7','D10','R32','SW1','H1','H2','H3','H4'} and 'J1' in refs, 'Unexpected placed circuitry'
+    assert refs <= {'J1','J3','J4','J7','D10','D11','D12','R32','SW1','H1','H2','H3','H4'} and 'J1' in refs, 'Unexpected placed circuitry'
     # KiCad's Python Remove wrapper corrupts ownership on this engine; use the
     # same native-detach/retained-lifetime pattern as the shared edit worker.
     retired = list(b.GetDrawings()) + [f for f in b.GetFootprints() if f.GetReference() != 'J1']
@@ -180,10 +171,13 @@ def build(output):
     for i, point in enumerate(G['carrier_holes_YZ_mm'], 1):
         hole(b, f'H{i}', carrier_xy(*point), 3.2, contact_radius=3.5)
     led_footprint(pretty)
-    placed(b,hw,'LED_THT',G['LED']['footprint'],'D10','3mm THT LED / FORM 90 DEG',
-           carrier_xy(*G['LED']['pad1_YZ_mm']),{'1':'UI_GND_PENDING','2':'LED_A_PENDING'})
-    placed(b,hw,'Resistor_THT',G['resistor']['footprint'],'R32','2.2k PROVISIONAL',
-           carrier_xy(*G['resistor']['pad1_YZ_mm']),{'1':'UI_P5_PENDING','2':'LED_A_PENDING'})
+    for led in G['LEDs']:
+        ref=led['reference']
+        fp=placed(b,hw,'LED_THT',G['LED']['footprint'],ref,'RED 3mm / '+led['rail']+' / MANUAL',
+                  carrier_xy(*led['pad1_YZ_mm']),{'1':ref+'_K_PENDING','2':ref+'_A_PENDING'})
+        # Manual installation is NOT DNP. Position exclusion also excludes both
+        # assembly CSVs in the shared exporter; keep engineering BOM inclusion.
+        fp.SetAttributes(fp.GetAttributes() | pcb.FP_EXCLUDE_FROM_POS_FILES)
     switch_footprint(pretty)
     placed(b,hw,'',G['switch']['footprint'],'SW1',G['switch']['mpn'],
            carrier_xy(*G['switch']['peg_row_YZ_mm']),G['switch']['pins'])
@@ -196,13 +190,18 @@ def build(output):
     text(b,'1 / -12V / RED',*carrier_xy(44,22),.8,pcb.F_SilkS)
     text(b,'J7 -> J2 OUTPUT ONLY',*carrier_xy(59,23),.8,pcb.F_SilkS)
     text(b, 'A4.2 / MAIN PCB / TWO-BOARD PLACEMENT / NO ROUTING',100,65,1)
-    text(b, 'USB + 3mm THT LED + hand-solder 90-degree SMT reset; no middle board',100,68)
+    text(b, 'USB + 3 RED 3mm THT LEDs + hand-solder SMT reset; no middle board',100,68)
     text(b, 'UI nets isolated; not a working reset/power indicator circuit',100,110)
     text(b, 'M3 ONLY: two bracket holes; no standoffs / no board-to-board headers',100,114)
     for yc in G['brackets']['Y_centres_mm']:
         polygon(b,[carrier_xy(y,z) for y,z in [(yc-5,10),(yc+5,10),(yc+5,20),(yc-5,20)]],pcb.Dwgs_User)
     # Drawing reservations only; no copper, tracks, vias or zones.
-    for label,y,z in [('PWR K',34,11),('R32',47,18),('RESET',91,12)]:
+    for led in G['LEDs']:
+        y=led['panel_XY_diameter_mm'][1]
+        text(b,led['reference']+' '+led['rail'],*carrier_xy(y,11),.8,pcb.F_SilkS)
+        text(b,'K',*carrier_xy(y-1.27,8.8),.8,pcb.F_SilkS)
+        text(b,'A',*carrier_xy(y+1.27,8.8),.8,pcb.F_SilkS)
+    for label,y,z in [('RESET',91,12)]:
         text(b,label,*carrier_xy(y,z),.8,pcb.F_SilkS)
     stable_ids(b, 'carrier'); pcb.SaveBoard(str(hw/'big_modular.kicad_pcb'), b)
 
@@ -210,13 +209,15 @@ def build(output):
     x,y,w,h,r = G['aperture_XYWHR_mm']; rounded_aperture(p, x+50,y+30,w,h,r)
     for i,(x,y,d) in enumerate(G['rail_holes_mm'],1): hole(p, f'H{i}', panel_xy(x,y),d,contact_radius=3)
     for i,(x,y,d) in enumerate(G['panel_bracket_holes_mm'],3): hole(p, f'H{i}',panel_xy(x,y),d,contact_radius=3.5)
-    for ref, key in [('H5','led_XY_diameter_mm'),('H6','reset_XY_diameter_mm')]:
-        x,y,d = G[key]; hole(p,ref,panel_xy(x,y),d,contact_radius=0)
-    for label,y,size in [('BIG',10.5,.9),('MOD',13,.9),('PWR',33,.8),('PD 9V',54,.8),('USB',74.5,.8),('RESET',86,.8),('A4.2',118,.8)]:
+    for led in G['LEDs']:
+        x,y,d=led['panel_XY_diameter_mm']; hole(p,led['panel_hole_ref'],panel_xy(x,y),d,contact_radius=0)
+        text(p,led['rail'],*panel_xy(4.9,y-4),.8,pcb.F_SilkS)
+    x,y,d=G['reset_XY_diameter_mm']; hole(p,'H6',panel_xy(x,y),d,contact_radius=0)
+    for label,y,size in [('BIG',10.5,.9),('MOD',13,.9),('PD 9V',76.5,.8),('USB',74.5,.8),('RESET',86,.8),('A4.2',118,.8)]:
         text(p,label,*panel_xy(4.9,y),size,pcb.F_SilkS)
     text(p,'2HP / round corner holes X2.42 = X7.50 minus one 5.08mm rail pitch',102,40,.9)
     text(p,'A4.2 plain L brackets: M3x8 panel / M3x8 countersunk side',101,44,.9)
-    text(p,'TL3340AF160QG SMT recessed reset; 3mm THT LED formed 90 degrees',100,48,.9)
+    text(p,'TL3340AF160QG SMT reset; D10/D11/D12 RED 3mm LEDs formed 90 degrees',100,48,.9)
     stable_ids(p,'panel'); pcb.SaveBoard(str(hw/'front_panel.kicad_pcb'),p)
 
     (output/'assembly-geometry.json').write_text(json.dumps(G,indent=2)+'\n')
@@ -227,7 +228,7 @@ def build(output):
         'status':'placement candidate / not electrically synchronized / not fabrication ready',
         'common_tool_limit':'pcb inspect: 3D models, embedded files and images are unsupported dependencies; fail closed',
         'source_sha256':{str(q.relative_to(ROOT)):hashlib.sha256(q.read_bytes()).hexdigest() for q in sources},
-        'new_refs':['D10','R32','SW1','J7'], 'removed_refs':['J3','J4','J5','J6'], 'retired_board':'middle_plate', 'routing_performed':False},indent=2)+'\n')
+        'new_refs':['D11','D12'], 'reserved_LED_refs':['D10','D11','D12'], 'manual_assembly_refs':['D10','D11','D12'], 'removed_refs':['R32'], 'retired_board':'middle_plate', 'routing_performed':False},indent=2)+'\n')
     print('Created NEW two-board placement candidate:',output)
 
 

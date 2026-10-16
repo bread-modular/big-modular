@@ -5,7 +5,7 @@
 The supplied photo is used as an arrangement reference: a front panel and one
 perpendicular main PCB. Its unseen construction and dimensions are not inferred.
 The extra middle PCB, four 10 mm spacers and J3–J6 UI headers are removed.
-Everything electronic that is placed (USB, LED, resistor and switch) is on the
+Everything electronic that is placed (USB, three LEDs and switch) is on the
 main PCB. The existing off-board J2 power connector is retained as a flying-lead
 connector, fed by new J7 solder lands: **no third PCB**.
 
@@ -31,13 +31,13 @@ All dimensions in mm. Panel front Z0, rear Z1.6; X right, Y down, Z into case.
 | Main PCB front cutbacks | Z10 at Y16.5..27.5 and Y101..112, clearing bracket feet |
 | USB mouth axis | X6.43, Y64.25, Z0.8 |
 | USB panel aperture | X4.255..8.455, Y59.35..69.15, R0.6 corners |
-| LED aperture | Ø3.6, X6.7, Y38 |
+| LED apertures | 3 × Ø3.6, X6.7: D10 +12V Y38; D11 −12V Y46; D12 +5V Y54 |
 | Reset aperture | Ø3.2, X6.4, Y91 |
 | Cable strain-relief holes | Ø2.5, main Y43.5 and Y70.5, Z27 |
 
-The previous board plane, USB/LED openings, plain L brackets and all mounting
-holes are retained. Only the reset switch changes back to **TL3340AF160QG SMT**;
-its Ø3.2 access hole moves from X7.2 back to **X6.4**, still Y91. The panel remains
+The previous board plane, USB opening, D10 opening, plain L brackets and all mounting
+holes are retained. Two additional LED openings are below D10. The selected
+**TL3340AF160QG SMT** reset and its Ø3.2 access hole at **X6.4**, Y91 are unchanged. The panel remains
 2HP and the main board remains 30 mm deep. The TS-1166VW candidate is retired,
 not an unresolved request to widen this panel.
 
@@ -116,9 +116,9 @@ The M3 countersunk style reference is dimensional guidance, not a purchased scre
 
 ## LED and reset: hand-solder access on main PCB
 
-### D10 and R32
+### D10 / D11 / D12 — three red rail indicators
 
-D10 is a **standard 3 mm through-hole LED**, two leads at 2.54 pitch, Ø0.9 drills
+Each of D10/D11/D12 is a **standard RED 3 mm through-hole LED**, two leads at 2.54 pitch, Ø0.9 drills
 and 1.8 mm pads. Form leads 90° to face the panel using a jig; do not bend directly
 against the epoxy. Nominal optical axis is 2.0 above F.Cu (assembly X6.7).
 The footprint envelope uses a 5.3-long lamp, base Z5.1 and nose Z−0.2. Select the
@@ -126,9 +126,21 @@ actual lamp and adjust the lead forming against the panel; max body diameter
 3.25 / flange3.8. Do not buy solely from this generic body envelope.
 
 The larger Ø3.6 hole is a direct LED opening, **not a light-pipe design**. Full
-lamp outline is on Fab, not silkscreen crossing the board edge. R32 is a normal
-horizontal through-hole axial resistor, 7.62 pitch. The 2.2k value is provisional.
-Neither component is connected to a working power-indicator circuit yet.
+lamp outline is on Fab, not silkscreen crossing the board edge. No proprietary
+holder and no 5mm lamp substitution is permitted by these provisions.
+
+Top to bottom: D10 +12V at Y38, D11 −12V at Y46, D12 +5V at Y54.
+All are at X6.7 with Ø3.6 panel openings. Pad 1 is square cathode **K**;
+pad 2 is anode **A**, both explicitly marked on the main PCB. Pads share
+Z6.37 and their Y positions are lamp centre ±1.27. All six pads have distinct
+`D10/D11/D12_K/A_PENDING` singleton nets: no controller or common return is assumed.
+The LEDs are populated manually, not DNP; native position-file exclusion keeps
+each out of both JLC assembly CSVs through the common exporter.
+
+The old **R32 axial 2.2k reservation is deliberately removed** from the main PCB.
+Basic SMD current-limiting resistors are preferred; values, ratings, references
+and controller wiring await Sol’s electrical brief. No working indicator circuit
+has been installed. Exact LED MPN and sample forming/fit remain unqualified.
 
 ### SW1 — restored right-angle SMT tactile
 
@@ -165,7 +177,7 @@ it must be respected when routing is later authorized.
 The button is recessed for tool access; no external plunger is selected. The
 0.45 recess and 1.8 lateral margin are nominal, not a complete tolerance stack.
 RESET_A_PENDING / RESET_B_PENDING remain isolated, with **no working reset circuit**.
-The LED/resistor are still THT. The TS-1166VW and MJTP1117 footprints remain as
+The three LEDs are THT; no LED resistor is placed yet. The TS-1166VW and MJTP1117 footprints remain as
 retired alternatives, not active board parts. See the [buying guide](parts-buying-guide.md).
 
 ## Eurorack output socket and cable

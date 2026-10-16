@@ -1,34 +1,30 @@
 {
-  "schematic_sheets": 4,
-  "functional_subsheets": 3,
-  "pdf_pages": 4,
-  "BOM_components": 88,
-  "connected_symbol_pins_verified": 260,
-  "off_board_J2_connected_pins_checked_in_schematic": 12,
-  "other_connected_pins_verified_against_KiCad_netlist": 248,
-  "independent_pin_net_spot_checks": 65,
-  "visible_wire_or_hierarchy_interstage_checks": 20,
-  "named_remote_interstage_checks": 1,
-  "visible_local_branch_checks": 57,
-  "hierarchy_port_links": 11,
-  "voltage_PG_RUN_logic_cases": 28,
-  "audit_limit": "Connectivity/threshold regression only, not PD proof, analog simulation, physical fit or operation. Generated audit is not independent; the hardcoded spot checks are.",
+  "parts": 127,
+  "pins_including_NC": 392,
+  "independent_pin_checks": 124,
+  "local_visible_wire_checks": 42,
+  "hierarchical_ports": 62,
+  "fabrication_ready": false,
+  "native_connected_pins": 362,
   "boards": {
     "big_modular.kicad_pcb": {
-      "footprints": 9,
+      "footprints": 10,
       "tracks": 0,
       "vias": 0,
       "zones": 0
     },
     "front_panel.kicad_pcb": {
-      "footprints": 6,
+      "footprints": 8,
       "tracks": 0,
       "vias": 0,
       "zones": 0
     }
   },
   "mechanics": {
-    "actual_NPTH_geometry_checks": 10,
+    "actual_NPTH_geometry_checks": 12,
+    "LED_PTH_pad_checks": 6,
+    "LED_polarity_mark_checks": 6,
+    "manual_LED_exclusions": 3,
     "switch_SMT_pad_checks": 5,
     "switch_locator_NPTH_checks": 2,
     "switch_fit": {
@@ -87,8 +83,25 @@
       64.25,
       0.8
     ],
-    "electrical_status": "No routing; J7 landing not integrated into schematic; J2 remains on flying lead; D10/R32/SW1 isolated",
+    "electrical_status": "No routing; J7 landing not integrated into schematic; J2 remains on flying lead; D10/D11/D12/SW1 isolated; R32 axial reservation retired",
     "finished_module_depth": "unverified; cable connector not confined to 2HP board envelope"
   },
-  "fabrication_ready": false
+  "UV_rising": [
+    7.592099623762376,
+    8.305342808080809
+  ],
+  "UV_falling": [
+    6.9737719009901,
+    7.631989272727273
+  ],
+  "OV_rising": [
+    10.333669366336634,
+    11.379370646464647
+  ],
+  "OV_falling": [
+    9.577135702970299,
+    10.457087818181819
+  ],
+  "firmware_target_build": "BLOCKED: avr-gcc unavailable",
+  "source_scope": "schematic only; mechanical PCBs preserved"
 }

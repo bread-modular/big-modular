@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="420mm" height="297mm" viewBox="0 0 420 297">
 <style>text{font-family:DejaVu Sans,sans-serif;fill:#19334b}</style>
 <rect x="5" y="5" width="410" height="287" fill="white" stroke="#375775" stroke-width=".4"/>
-<text x="12" y="15" font-size="5">A4.2 | TWO BOARDS + TWO PLAIN M3 L BRACKETS</text>
+<text x="12" y="15" font-size="5">A4.2 LED3 | TWO BOARDS + TWO PLAIN M3 L BRACKETS</text>
 <text x="12" y="23" font-size="2.8">Front panel + perpendicular main PCB. No middle board, spacers or UI headers. mm. PLACEMENT ONLY.</text>
 <text x="15" y="35" font-size="3.3">FRONT PANEL</text>
 <rect x="18" y="43" width="13.230000000000002" height="173.47500000000002" fill="#f1dfb6" stroke="#375775" stroke-width=".25"/>
@@ -10,6 +10,8 @@
 <circle cx="26.64" cy="72.7" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="26.64" cy="186.775" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="27.045" cy="94.30000000000001" r="2.43" fill="white" stroke="#375775" stroke-width=".25"/>
+<circle cx="27.045" cy="105.1" r="2.43" fill="white" stroke="#375775" stroke-width=".25"/>
+<circle cx="27.045" cy="115.9" r="2.43" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="26.64" cy="165.85000000000002" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <rect x="23.74425" y="123.1225" width="5.670000000000001" height="13.230000000000002" fill="white" stroke="#375775" stroke-width=".25"/>
 <path d="M31.230000000000004,47.05 L36,47.05" fill="none" stroke="#375775" stroke-width=".25"/>
@@ -17,7 +19,11 @@
 <path d="M31.230000000000004,72.7 L36,72.7" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="73.7" font-size="2.5">M3 bracket X6.4 / Y22</text>
 <path d="M31.230000000000004,94.30000000000001 L36,94.30000000000001" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="37" y="95.30000000000001" font-size="2.5">LED X6.7 / dia3.6</text>
+<text x="37" y="95.30000000000001" font-size="2.5">D10 +12V / X6.7 / dia3.6</text>
+<path d="M31.230000000000004,105.1 L36,105.1" fill="none" stroke="#375775" stroke-width=".25"/>
+<text x="37" y="106.1" font-size="2.5">D11 -12V / X6.7 / dia3.6</text>
+<path d="M31.230000000000004,115.9 L36,115.9" fill="none" stroke="#375775" stroke-width=".25"/>
+<text x="37" y="116.9" font-size="2.5">D12 +5V / X6.7 / dia3.6</text>
 <path d="M31.230000000000004,129.7375 L36,129.7375" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="130.7375" font-size="2.5">USB axis X6.43</text>
 <path d="M31.230000000000004,165.85000000000002 L36,165.85000000000002" fill="none" stroke="#375775" stroke-width=".25"/>
@@ -39,7 +45,9 @@
 <rect x="121.16" y="180.025" width="4.050000000000001" height="13.5" fill="#e8b396" stroke="#375775" stroke-width=".25"/>
 <rect x="125.21" y="180.025" width="20.790000000000003" height="13.5" fill="#e8b396" stroke="#375775" stroke-width=".25" stroke-dasharray="1.5 1"/>
 <circle cx="139.25" cy="186.775" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
-<rect x="118.73" y="92.275" width="8.8695" height="4.050000000000001" fill="#a5cd7c" stroke="#375775" stroke-width=".25"/>
+<rect x="118.73" y="92.275" width="8.8695" height="4.050000000000001" fill="#da7777" stroke="#375775" stroke-width=".25"/>
+<rect x="118.73" y="103.075" width="8.8695" height="4.050000000000001" fill="#da7777" stroke="#375775" stroke-width=".25"/>
+<rect x="118.73" y="113.875" width="8.8695" height="4.050000000000001" fill="#da7777" stroke="#375775" stroke-width=".25"/>
 <rect x="120.08" y="123.66250000000001" width="9.990000000000002" height="12.15" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <rect x="121.7675" y="162.8125" width="4.59" height="6.075" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <text x="165" y="58.0" font-size="2.6">Main PCB: 100.5 x 30 x 1.6</text>
@@ -65,10 +73,13 @@
 <circle cx="307.45" cy="119.275" r="1.6875" fill="white" stroke="#375775" stroke-width=".25"/>
 <rect x="275.5495" y="72.025" width="8.100000000000001" height="6.75" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <path d="M283.6495,75.4 L322,75.4" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="324" y="76.4" font-size="2.5">D10 / THT LED</text>
-<rect x="287.2" y="80.80000000000001" width="5.4" height="13.5" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
-<path d="M292.6,87.55000000000001 L322,87.55000000000001" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="324" y="88.55000000000001" font-size="2.5">R32 / axial</text>
+<text x="324" y="76.4" font-size="2.5">D10 / RED +12V</text>
+<rect x="275.5495" y="82.825" width="8.100000000000001" height="6.75" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
+<path d="M283.6495,86.2 L322,86.2" fill="none" stroke="#375775" stroke-width=".25"/>
+<text x="324" y="87.2" font-size="2.5">D11 / RED -12V</text>
+<rect x="275.5495" y="93.625" width="8.100000000000001" height="6.75" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
+<path d="M283.6495,97.0 L322,97.0" fill="none" stroke="#375775" stroke-width=".25"/>
+<text x="324" y="98.0" font-size="2.5">D12 / RED +5V</text>
 <rect x="272.04625" y="104.7625" width="9.990000000000002" height="12.15" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
 <path d="M282.03625,110.8375 L322,110.8375" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="324" y="111.8375" font-size="2.5">J1 / USB-C</text>
@@ -91,7 +102,7 @@
 <circle cx="310.879" cy="109.474" r="0.8775000000000001" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="307.45" cy="112.903" r="0.8775000000000001" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="310.879" cy="112.903" r="0.8775000000000001" fill="white" stroke="#375775" stroke-width=".25"/>
-<text x="269" y="191.0" font-size="2.6">D10: ordinary 3mm through-hole LED, bent 90 deg.</text>
+<text x="269" y="191.0" font-size="2.6">D10/D11/D12: RED 3mm THT, formed 90 deg.</text>
 <text x="269" y="195.5" font-size="2.6">SW1: E-Switch TL3340AF160QG, SMT.</text>
 <text x="269" y="200.0" font-size="2.6">Three signal pads + two solder anchors.</text>
 <text x="269" y="204.5" font-size="2.6">Front-side fine-tip soldering; 2 locating holes.</text>
@@ -102,5 +113,5 @@
 <text x="269" y="238.0" font-size="2.6">11-12: +5V | 13-16: NOT CONNECTED</text>
 <text x="269" y="242.5" font-size="2.6">POWER OUTPUT, not a rack power input!</text>
 <text x="269" y="247.0" font-size="2.6">Do not connect to another active PSU.</text>
-<text x="12" y="282" font-size="2.7">No routing. LED/reset remain isolated. Converter placement, thermal/power safety, actual bracket/connector fit remain unqualified.</text>
+<text x="12" y="282" font-size="2.7">No routing. LEDs/reset isolated; R32 axial retired. Basic SMD resistors await electrical brief. Physical fit and power safety unqualified.</text>
 </svg>

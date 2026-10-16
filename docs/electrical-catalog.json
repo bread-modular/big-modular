@@ -1,0 +1,5287 @@
+{
+  "C22807": {
+    "code": "C22807",
+    "mpn": "0603WAF1503T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1086065,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "150k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 150000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0016
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0009
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0008
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0008
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1503T5E_C22807.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "150k 0603"
+      },
+      "sha256": "0ec4afea167268883fb6e117c90a998f21ae153f31793084927333c6988a9801",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C23048": {
+    "code": "C23048",
+    "mpn": "0603WAF4023T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 25303,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "402k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 402000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.002
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0015
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0011
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF4023T5E_C23048.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "402k 0603"
+      },
+      "sha256": "cd2a1c523e3ee16ca7b8a0a6c738a777d421d1187a35738f9b5165c827cb7749",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C101027": {
+    "code": "C101027",
+    "mpn": "CR0603FA4023G",
+    "manufacturer": "LIZ Elec",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 4481,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "402k\u03a9",
+      "Operating Temperature": "-55\u2103~+125\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "50V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 402000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 50.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 499,
+        "unit_price": 0.0043
+      },
+      {
+        "start": 500,
+        "end": 1499,
+        "unit_price": 0.0042
+      },
+      {
+        "start": 1500,
+        "end": 4999,
+        "unit_price": 0.0042
+      },
+      {
+        "start": 5000,
+        "end": 5099,
+        "unit_price": 0.0041
+      },
+      {
+        "start": 5100,
+        "end": 5199,
+        "unit_price": 0.0041
+      },
+      {
+        "start": 5200,
+        "end": -1,
+        "unit_price": 0.0041
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_LIZ-Elec-CR0603FA4023G_C101027.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "402k 0603"
+      },
+      "sha256": "cd2a1c523e3ee16ca7b8a0a6c738a777d421d1187a35738f9b5165c827cb7749",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C218017": {
+    "code": "C218017",
+    "mpn": "ARG03FTC4023",
+    "manufacturer": "Viking Tech",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1598,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "402k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 402000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.008
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0063
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0054
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0049
+      },
+      {
+        "start": 50000,
+        "end": 99999,
+        "unit_price": 0.0044
+      },
+      {
+        "start": 100000,
+        "end": -1,
+        "unit_price": 0.0041
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Viking-Tech-ARG03FTC4023_C218017.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "402k 0603"
+      },
+      "sha256": "cd2a1c523e3ee16ca7b8a0a6c738a777d421d1187a35738f9b5165c827cb7749",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C14663": {
+    "code": "C14663",
+    "mpn": "CC0603KRX7R9BB104",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 49592034,
+    "kind": "C",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage Rating": "50V",
+      "Tolerance": "\u00b110%",
+      "Capacitance": "100nF",
+      "Temperature Coefficient": "X7R"
+    },
+    "specs": {
+      "value_si": 1.0000000000000001e-07,
+      "tolerance_fraction": 0.1,
+      "voltage_v": 50.0,
+      "dielectric": "X7R"
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 499,
+        "unit_price": 0.0135
+      },
+      {
+        "start": 500,
+        "end": 1499,
+        "unit_price": 0.0101
+      },
+      {
+        "start": 1500,
+        "end": 3999,
+        "unit_price": 0.0085
+      },
+      {
+        "start": 4000,
+        "end": 23999,
+        "unit_price": 0.0074
+      },
+      {
+        "start": 24000,
+        "end": 47999,
+        "unit_price": 0.0069
+      },
+      {
+        "start": 48000,
+        "end": -1,
+        "unit_price": 0.0066
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:51Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C14663"
+      },
+      "sha256": "9cc62406688c38d9da7cb51baeb3d8cb73db559ef9c2262f7033d039c33a0db0",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C476335": {
+    "code": "C476335",
+    "mpn": "CBM8542AS8",
+    "manufacturer": "Corebai Microelectronics",
+    "package": "SOP-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 2500,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "3mV",
+      "Input Offset Current(Ios)": "1pA",
+      "Output Current": "55mA",
+      "Input Offset Voltage Drift(Vos TC)": "2uV/\u2103",
+      "Slew Rate": "500V/ms",
+      "Gain Bandwidth Product": "1.1MHz",
+      "Single supply": "2.5V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "80dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "22nV/\u221aHz@1kHz",
+      "Quiescent Current": "58uA",
+      "Features": "Enable/shutdown function",
+      "Ib - Input Bias Current": "10pA",
+      "Dual Supply": "-"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.6151
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.496
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.4356
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.3769
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.341
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.3231
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Corebai-Microelectronics-CBM8542AS8_C476335.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C476400": {
+    "code": "C476400",
+    "mpn": "CBM6002AS8",
+    "manufacturer": "Corebai Microelectronics",
+    "package": "SOP-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 463,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "3.5mV",
+      "Input Offset Current(Ios)": "1pA",
+      "Output Current": "84mA",
+      "Input Offset Voltage Drift(Vos TC)": "2.7uV/\u2103",
+      "Slew Rate": "800V/ms",
+      "Gain Bandwidth Product": "1MHz",
+      "Single supply": "1.8V~6V",
+      "Common Mode Rejection Ratio(CMRR)": "70dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "27nV/\u221aHz@1kHz",
+      "Quiescent Current": "75uA",
+      "Features": "EMI filtering/RF suppression",
+      "Ib - Input Bias Current": "1pA",
+      "Dual Supply": "-3V~-900mV\u3001900mV~3V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.5629
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.4422
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.39
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.3263
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.297
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.2807
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Corebai-Microelectronics-CBM6002AS8_C476400.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C693066": {
+    "code": "C693066",
+    "mpn": "COS2314SR",
+    "manufacturer": "COSINE",
+    "package": "SOIC-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 263,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "5mV",
+      "Input Offset Current(Ios)": "2.5pA",
+      "Output Current": "21mA",
+      "Input Offset Voltage Drift(Vos TC)": "2uV/\u2103",
+      "Slew Rate": "1.8V/us",
+      "Gain Bandwidth Product": "3MHz",
+      "Single supply": "1.8V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "125dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "30nV/\u221aHz@1kHz",
+      "Quiescent Current": "150uA",
+      "Features": "Built-in compensation",
+      "Ib - Input Bias Current": "2.5pA",
+      "Dual Supply": "-900mV~2.75V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1909
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1511
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1342
+      },
+      {
+        "start": 500,
+        "end": 2999,
+        "unit_price": 0.1129
+      },
+      {
+        "start": 3000,
+        "end": 5999,
+        "unit_price": 0.0991
+      },
+      {
+        "start": 6000,
+        "end": -1,
+        "unit_price": 0.0934
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2006301840_COSINE-COS2314SR_C693066.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C3035423": {
+    "code": "C3035423",
+    "mpn": "LTC8842XS8/R8",
+    "manufacturer": "Linearin",
+    "package": "SOIC-8L",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 3973,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "350uV",
+      "Input Offset Current(Ios)": "1pA",
+      "Output Current": "45mA",
+      "Input Offset Voltage Drift(Vos TC)": "800nV/\u2103",
+      "Single Supply": "2V~5.5V",
+      "Slew Rate": "1.2V/us",
+      "Gain Bandwidth Product": "1.5MHz",
+      "Quiescent Current(Iq)": "85uA",
+      "Common Mode Rejection Ratio(CMRR)": "96dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "25nV/\u221aHz@1kHz",
+      "Features": "EMI filtering/RF suppression\u3001ESD protection\u3001Reverse-phase input protection",
+      "Ib - Input Bias Current": "1pA",
+      "Dual Supply": "-2.75V~-1V\u30011V~2.75V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.2513
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.2513
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.2513
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.2513
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.2382
+      },
+      {
+        "start": 1000,
+        "end": 1999,
+        "unit_price": 0.2382
+      },
+      {
+        "start": 2000,
+        "end": 3999,
+        "unit_price": 0.2382
+      },
+      {
+        "start": 4000,
+        "end": -1,
+        "unit_price": 0.2382
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://datasheet.lcsc.com/lcsc/2210311800_Linearin-LTC8842XS8-R8_C3035423.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C22812": {
+    "code": "C22812",
+    "mpn": "0603WAF1652T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 84441,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "16.5k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 16500.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0016
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0009
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0008
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0008
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1652T5E_C22812.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "16.5k 0603"
+      },
+      "sha256": "4fc1904fb384197780c5162a8b63eb9036e0013fe00f03a7b0569961445697da",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C100802": {
+    "code": "C100802",
+    "mpn": "CR0603FA1652G",
+    "manufacturer": "LIZ Elec",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 4970,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "16.5k\u03a9",
+      "Operating Temperature": "-55\u2103~+125\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "50V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 16500.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 50.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 499,
+        "unit_price": 0.0085
+      },
+      {
+        "start": 500,
+        "end": 1499,
+        "unit_price": 0.0066
+      },
+      {
+        "start": 1500,
+        "end": 4999,
+        "unit_price": 0.0055
+      },
+      {
+        "start": 5000,
+        "end": 24999,
+        "unit_price": 0.0049
+      },
+      {
+        "start": 25000,
+        "end": 49999,
+        "unit_price": 0.0043
+      },
+      {
+        "start": 50000,
+        "end": -1,
+        "unit_price": 0.004
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_LIZ-Elec-CR0603FA1652G_C100802.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "16.5k 0603"
+      },
+      "sha256": "4fc1904fb384197780c5162a8b63eb9036e0013fe00f03a7b0569961445697da",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C103335": {
+    "code": "C103335",
+    "mpn": "RTT031652FTP",
+    "manufacturer": "RALEC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 56,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "16.5k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 16500.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0009
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0007
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0007
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0006
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0006
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_RALEC-RTT031652FTP_C103335.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "16.5k 0603"
+      },
+      "sha256": "4fc1904fb384197780c5162a8b63eb9036e0013fe00f03a7b0569961445697da",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C21190": {
+    "code": "C21190",
+    "mpn": "0603WAF1001T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 23828372,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "1k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 1000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0019
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0016
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0014
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.001
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.001
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1001T5E_C21190.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C21190"
+      },
+      "sha256": "97a9ecae4239d1c6d4d5faf989e0ab7da99cb0e728d84e59a4b949c81498b058",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C2912578": {
+    "code": "C2912578",
+    "mpn": "HoAR0603-1/10W-100KR-0.1%-TCR25",
+    "manufacturer": "Milliohm",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 6127,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "100k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Ceramic resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 100000.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 99,
+        "unit_price": 0.0741
+      },
+      {
+        "start": 100,
+        "end": 299,
+        "unit_price": 0.0624
+      },
+      {
+        "start": 300,
+        "end": 999,
+        "unit_price": 0.0565
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0521
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0332
+      },
+      {
+        "start": 10000,
+        "end": -1,
+        "unit_price": 0.0314
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 4,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2111091630_Milliohm-HoAR0603-1-10W-100KR-0-1--TCR25_C2912578.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "100k 0.1% 0603"
+      },
+      "sha256": "7e076fb07321991aa9aadcf3eaee4ada7d00cb97feda6d31d396cdf5573a54d2",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C122538": {
+    "code": "C122538",
+    "mpn": "RT0603BRD07100KL",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1372343,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "100k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 100000.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 199,
+        "unit_price": 0.0322
+      },
+      {
+        "start": 200,
+        "end": 599,
+        "unit_price": 0.0275
+      },
+      {
+        "start": 600,
+        "end": 4999,
+        "unit_price": 0.0252
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0227
+      },
+      {
+        "start": 10000,
+        "end": 19999,
+        "unit_price": 0.0221
+      },
+      {
+        "start": 20000,
+        "end": -1,
+        "unit_price": 0.0216
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 8,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810241722_YAGEO-RT0603BRD07100KL_C122538.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "100k 0.1% 0603"
+      },
+      "sha256": "7e076fb07321991aa9aadcf3eaee4ada7d00cb97feda6d31d396cdf5573a54d2",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C161785": {
+    "code": "C161785",
+    "mpn": "ERJPB3B1003V",
+    "manufacturer": "PANASONIC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 10183,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "100k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "200mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "-",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b150ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 100000.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.2
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.0909
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.0718
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.0622
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.055
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.0492
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.0464
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 4,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_PANASONIC-ERJPB3B1003V_C161785.pdf",
+    "issues": [
+      "unparsed_attribute:Voltage-Supply(Max)"
+    ],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "100k 0.1% 0603"
+      },
+      "sha256": "7e076fb07321991aa9aadcf3eaee4ada7d00cb97feda6d31d396cdf5573a54d2",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C190609": {
+    "code": "C190609",
+    "mpn": "ERA3AEB104V",
+    "manufacturer": "PANASONIC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 7563,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "100k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 100000.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1317
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1074
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.0952
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.086
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.0788
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.0751
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 4,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_PANASONIC-ERA3AEB104V_C190609.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "100k 0.1% 0603"
+      },
+      "sha256": "7e076fb07321991aa9aadcf3eaee4ada7d00cb97feda6d31d396cdf5573a54d2",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C3752493": {
+    "code": "C3752493",
+    "mpn": "MCP1799T-3302H/DB",
+    "manufacturer": "Microchip Tech",
+    "package": "SOT-223-3",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 232,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Power Supply Rejection Ratio (PSRR)": "70dB@(1kHz)",
+      "standby current": "25uA",
+      "Operating Temperature": "-40\u2103~+150\u2103@(Ta)",
+      "Noise": "500uVrms",
+      "Voltage - Supply": "45V",
+      "Output Type": "Fixed",
+      "Output Current": "80mA",
+      "Features": "Short Circuit Protection\u3001Thermal shutdown\u3001Input under-voltage protection",
+      "Output Configuration": "Positive",
+      "Output Voltage": "3.3V",
+      "Voltage Dropout": "300mV@(80mA)",
+      "Number of Outputs": "1"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 2.2139
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 1.8876
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 1.6853
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 1.4765
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 1.3182
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 1.2775
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210142000_Microchip-Tech-MCP1799T-3302H-DB_C3752493.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "MCP1799T-3302H/DB"
+      },
+      "sha256": "0fb4889f79666f1acb1f268fd04bfeea2ba79eb0769a4b96f8bcd42b84e9c0a9",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C609652": {
+    "code": "C609652",
+    "mpn": "ATTINY1616-SNR",
+    "manufacturer": "Microchip Tech",
+    "package": "SOIC-20-300mil",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 407,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "EEPROM": "256Byte",
+      "Operating Temperature": "-40\u2103~+105\u2103",
+      "CPU Maximum Speed": "20MHz",
+      "Program Memory Type": "FLASH",
+      "Program Storage Size": "16KB",
+      "Voltage - Supply": "1.8V~5.5V",
+      "RAM Size": "2KB",
+      "Core Size": "8 Bit",
+      "CPU Core": "AVR",
+      "Number of I/O": "18",
+      "Features": "Power-on reset (POR)\u3001Undervoltage detection (BOR/LVD/LVR/LVI)\u3001Built-in general-purpose timer\u3001Hardware CRC\u3001Calendar function\u3001Built-in temperature sensor\u3001Touch function\u3001Window watchdog (WWDG)",
+      "Oscillator Type": "Built-in"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 2.333
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 1.9594
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 1.7245
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 1.4846
+      },
+      {
+        "start": 500,
+        "end": 1499,
+        "unit_price": 1.377
+      },
+      {
+        "start": 1500,
+        "end": -1,
+        "unit_price": 1.3297
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2210180800_Microchip-Tech-ATTINY1616-SNR_C609652.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C609652"
+      },
+      "sha256": "232ab0af56ba72ca5348d21573d57d6ccc4c6bd6ff9b51cb5de93e2e5635b720",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C63813": {
+    "code": "C63813",
+    "mpn": "LMV358IDR",
+    "manufacturer": "Texas Instruments",
+    "package": "SOIC-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 183698,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "7mV",
+      "Input Offset Current(Ios)": "5nA",
+      "Output Current": "40mA",
+      "Input Offset Voltage Drift(Vos TC)": "9uV/\u2103",
+      "Slew Rate": "1V/us",
+      "Gain Bandwidth Product": "1MHz",
+      "Single supply": "2.7V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "65dB",
+      "Rail to Rail": "Rail-to-rail output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "46nV/\u221aHz@1kHz",
+      "Quiescent Current": "210uA",
+      "Features": "-",
+      "Ib - Input Bias Current": "250nA",
+      "Dual Supply": "-"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.2218
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1702
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1449
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.1226
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.1164
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.1126
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811091923_Texas-Instruments-LMV358IDR_C63813.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "BAT54WS"
+      },
+      "sha256": "6e142048f57502b040718d8e3089488ae8368aec6cdc176555cfc997587bb712",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C124205": {
+    "code": "C124205",
+    "mpn": "BAT54WS-7-F",
+    "manufacturer": "Diodes Incorporated",
+    "package": "SOD-323",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 11,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage - Forward(Vf@If)": "1V@100mA",
+      "Non-Repetitive Peak Forward Surge Current": "600mA",
+      "Voltage - DC Reverse(Vr)": "30V",
+      "Diode Configuration": "1 Independent",
+      "Current - Rectified": "100mA",
+      "Reverse Leakage Current (Ir)": "2uA@25V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 99,
+        "unit_price": 0.0629
+      },
+      {
+        "start": 100,
+        "end": 299,
+        "unit_price": 0.0523
+      },
+      {
+        "start": 300,
+        "end": 2999,
+        "unit_price": 0.0469
+      },
+      {
+        "start": 3000,
+        "end": 5999,
+        "unit_price": 0.0394
+      },
+      {
+        "start": 6000,
+        "end": 8999,
+        "unit_price": 0.0361
+      },
+      {
+        "start": 9000,
+        "end": -1,
+        "unit_price": 0.0345
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 6,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1806121749_Diodes-Incorporated-BAT54WS-7-F_C124205.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "BAT54WS"
+      },
+      "sha256": "6e142048f57502b040718d8e3089488ae8368aec6cdc176555cfc997587bb712",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C168799": {
+    "code": "C168799",
+    "mpn": "BAT54WS",
+    "manufacturer": "Changzhou Starsea Elec",
+    "package": "SOD-323",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 2918,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage - Forward(Vf@If)": "1V@100mA",
+      "Non-Repetitive Peak Forward Surge Current": "600mA",
+      "Voltage - DC Reverse(Vr)": "21V",
+      "Diode Configuration": "1 Independent",
+      "Current - Rectified": "100mA",
+      "Reverse Leakage Current (Ir)": "2uA@25V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.0188
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.0148
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.0125
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.0112
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.01
+      },
+      {
+        "start": 1000,
+        "end": 2999,
+        "unit_price": 0.0094
+      },
+      {
+        "start": 3000,
+        "end": 5999,
+        "unit_price": 0.0081
+      },
+      {
+        "start": 6000,
+        "end": -1,
+        "unit_price": 0.008
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 6,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1808301843_Changzhou-Starsea-Elec-BAT54WS_C168799.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "BAT54WS"
+      },
+      "sha256": "6e142048f57502b040718d8e3089488ae8368aec6cdc176555cfc997587bb712",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C166901": {
+    "code": "C166901",
+    "mpn": "RTT031334FTP",
+    "manufacturer": "RALEC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 34,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "1.33M\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 1330000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 499,
+        "unit_price": 0.0048
+      },
+      {
+        "start": 500,
+        "end": 1499,
+        "unit_price": 0.0038
+      },
+      {
+        "start": 1500,
+        "end": 4999,
+        "unit_price": 0.0033
+      },
+      {
+        "start": 5000,
+        "end": 24999,
+        "unit_price": 0.0025
+      },
+      {
+        "start": 25000,
+        "end": 49999,
+        "unit_price": 0.0023
+      },
+      {
+        "start": 50000,
+        "end": -1,
+        "unit_price": 0.0021
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_RALEC-RTT031334FTP_C166901.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "1.33M 0603"
+      },
+      "sha256": "5c612d926d18d2f54b62d05bdc72329ff8ff566fa2c5d8abe5d6ff5c17fddc2c",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C364183": {
+    "code": "C364183",
+    "mpn": "WR06W1334FTL",
+    "manufacturer": "Walsin Tech Corp",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 26,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "1.33M\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 1330000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0024
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0018
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0014
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0011
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Walsin-Tech-Corp-WR06W1334FTL_C364183.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "1.33M 0603"
+      },
+      "sha256": "5c612d926d18d2f54b62d05bdc72329ff8ff566fa2c5d8abe5d6ff5c17fddc2c",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C482628": {
+    "code": "C482628",
+    "mpn": "RC0603FR-071M33L",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 6258,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "1.33M\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 1330000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0029
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0025
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0024
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0023
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0021
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0021
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2007151212_YAGEO-RC0603FR-071M33L_C482628.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "1.33M 0603"
+      },
+      "sha256": "5c612d926d18d2f54b62d05bdc72329ff8ff566fa2c5d8abe5d6ff5c17fddc2c",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C544399": {
+    "code": "C544399",
+    "mpn": "TPS26600PWPR",
+    "manufacturer": "Texas Instruments",
+    "package": "HTSSOP-16-EP",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 6278,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Threshold Voltage": "1V",
+      "Peak Output Current(Sink)": "-",
+      "Voltage Rating": "4.2V~60V",
+      "FET Type": "Integrated FET",
+      "Trigger Current": "100mA~2.23A",
+      "Mounting Type": "Surface Mount",
+      "RDS(on)": "150m\u03a9",
+      "Peak Output Current(Source)": "-",
+      "Length": "5mm",
+      "Number of Lines": "1",
+      "Features": "Overcurrent Protection\u3001Short-Circuit  Protection\u3001Under-voltage lockout\u3001Thermal Protection\u3001Overvoltage clamping protection",
+      "Height": "1.2mm",
+      "Reset Voltage": "-",
+      "Width": "4.4mm",
+      "Operating temperature": "-40\u2103~+125\u2103"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 1.5417
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 1.2938
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 1.1388
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.9805
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.9104
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.8794
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2007161516_Texas-Instruments-TPS26600PWPR_C544399.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C544399"
+      },
+      "sha256": "0b7d926ba2e4f90bd051a07da14fd0b8a36591ae58968dce3997a6a5c56c8ebd",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C25804": {
+    "code": "C25804",
+    "mpn": "0603WAF1002T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 31789503,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "10k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 10000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0052
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0043
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0039
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0036
+      },
+      {
+        "start": 50000,
+        "end": 99999,
+        "unit_price": 0.0035
+      },
+      {
+        "start": 100000,
+        "end": -1,
+        "unit_price": 0.0034
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C25804"
+      },
+      "sha256": "8c645505bb5f0915c960626f76257bb1e107fd8c2382054b14a50090aebfa1b9",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C23250": {
+    "code": "C23250",
+    "mpn": "0603WAF8063T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 131195,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "806k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 806000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0019
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0015
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.001
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.001
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0603WAF8063T5E_C23250.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "806k 0603"
+      },
+      "sha256": "ad07ef6f6125abd2c97396f4ed6b9e894d3883e60021b78240ca5775bdcdd672",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C103828": {
+    "code": "C103828",
+    "mpn": "RTT038063FTP",
+    "manufacturer": "RALEC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 2155,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "806k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 806000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0015
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0009
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0008
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0007
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0007
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_RALEC-RTT038063FTP_C103828.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "806k 0603"
+      },
+      "sha256": "ad07ef6f6125abd2c97396f4ed6b9e894d3883e60021b78240ca5775bdcdd672",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C185311": {
+    "code": "C185311",
+    "mpn": "RC0603FR-07806KL",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 4642,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "806k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 806000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0034
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0031
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0029
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0028
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0027
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0027
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07806KL_C185311.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "806k 0603"
+      },
+      "sha256": "ad07ef6f6125abd2c97396f4ed6b9e894d3883e60021b78240ca5775bdcdd672",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C23205": {
+    "code": "C23205",
+    "mpn": "0603WAF5623T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 6658,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "562k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 562000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 10000,
+        "end": 10199,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 10200,
+        "end": 10399,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 10400,
+        "end": -1,
+        "unit_price": 0.0011
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF5623T5E_C23205.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "562k 0603"
+      },
+      "sha256": "5ea469658fe86be120322b253e4d4e6bf2a6f3b88083331c62bff29f88c10f9d",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C103720": {
+    "code": "C103720",
+    "mpn": "RTT035623FTP",
+    "manufacturer": "RALEC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 12,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "562k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 562000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0027
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0021
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0016
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0014
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0012
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_RALEC-RTT035623FTP_C103720.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "562k 0603"
+      },
+      "sha256": "5ea469658fe86be120322b253e4d4e6bf2a6f3b88083331c62bff29f88c10f9d",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C170632": {
+    "code": "C170632",
+    "mpn": "WR06X5623FTL",
+    "manufacturer": "Walsin Tech Corp",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "562k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 562000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.0059
+      },
+      {
+        "start": 10,
+        "end": 49,
+        "unit_price": 0.0047
+      },
+      {
+        "start": 50,
+        "end": 99,
+        "unit_price": 0.0034
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.003
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.0027
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.0025
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-WR06X5623FTL_C170632.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "562k 0603"
+      },
+      "sha256": "5ea469658fe86be120322b253e4d4e6bf2a6f3b88083331c62bff29f88c10f9d",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C311983": {
+    "code": "C311983",
+    "mpn": "TPS54302DDCR",
+    "manufacturer": "Texas Instruments",
+    "package": "TSOT-23-6",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 63247,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103@(TJ)",
+      "Function": "Step-down type",
+      "Synchronous Rectifier": "Yes",
+      "Frequency - Switching": "400kHz",
+      "Output Type": "Adjustable",
+      "Voltage - Supply": "4.5V~28V",
+      "Output Current": "3A",
+      "Quiescent Current": "45uA",
+      "Features": "Overcurrent Protection\u3001Light load efficient mode\u3001Cycle-by-cycle current limiting\u3001Hiccup current limiting\u3001EMI optimization (spread spectrum)",
+      "Switch tube (built-in/external)": "Built-in",
+      "Topology": "Buck",
+      "Output Voltage": "-",
+      "Number of Outputs": "1"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.3012
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.2314
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1973
+      },
+      {
+        "start": 500,
+        "end": 2999,
+        "unit_price": 0.1668
+      },
+      {
+        "start": 3000,
+        "end": 5999,
+        "unit_price": 0.1585
+      },
+      {
+        "start": 6000,
+        "end": -1,
+        "unit_price": 0.1534
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_Texas-Instruments-TPS54302DDCR_C311983.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C311983"
+      },
+      "sha256": "f38a611e95743fd59b47832682068f409631cd7caa66210c17e1ae982376b8ce",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C861118": {
+    "code": "C861118",
+    "mpn": "RT0603BRD0713K5L",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 4634,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "13.5k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 13500.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 199,
+        "unit_price": 0.0392
+      },
+      {
+        "start": 200,
+        "end": 599,
+        "unit_price": 0.0335
+      },
+      {
+        "start": 600,
+        "end": 4999,
+        "unit_price": 0.0304
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0284
+      },
+      {
+        "start": 10000,
+        "end": 19999,
+        "unit_price": 0.0268
+      },
+      {
+        "start": 20000,
+        "end": -1,
+        "unit_price": 0.0258
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 6,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2404241512_YAGEO-RT0603BRD0713K5L_C861118.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "13.5k 0603"
+      },
+      "sha256": "c8dd5bd38ca27fec07277ea2d57e9fdaa2b54430b426f5d91ec1e7cb560855d8",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C1719574": {
+    "code": "C1719574",
+    "mpn": "TNPW060313K5BYEN",
+    "manufacturer": "Vishay Intertech",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 0,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "13.5k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "125mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b110ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 13500.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.125,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.248
+      },
+      {
+        "start": 10,
+        "end": 11,
+        "unit_price": 0.248
+      },
+      {
+        "start": 12,
+        "end": 199,
+        "unit_price": 0.248
+      },
+      {
+        "start": 200,
+        "end": 499,
+        "unit_price": 0.096
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.0927
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.0909
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW060313K5BYEN_C1719574.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "13.5k 0603"
+      },
+      "sha256": "c8dd5bd38ca27fec07277ea2d57e9fdaa2b54430b426f5d91ec1e7cb560855d8",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C1722731": {
+    "code": "C1722731",
+    "mpn": "TNPW060313K5BETA",
+    "manufacturer": "Vishay Intertech",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 0,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "13.5k\u03a9",
+      "Operating Temperature": "-55\u2103~+125\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 13500.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.2678
+      },
+      {
+        "start": 10,
+        "end": 11,
+        "unit_price": 0.2678
+      },
+      {
+        "start": 12,
+        "end": 199,
+        "unit_price": 0.2678
+      },
+      {
+        "start": 200,
+        "end": 499,
+        "unit_price": 0.1036
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.1001
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.0983
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW060313K5BETA_C1722731.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "13.5k 0603"
+      },
+      "sha256": "c8dd5bd38ca27fec07277ea2d57e9fdaa2b54430b426f5d91ec1e7cb560855d8",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C42459160": {
+    "code": "C42459160",
+    "mpn": "CH224A",
+    "manufacturer": "WCH(Jiangsu Qin Heng)",
+    "package": "ESSOP-10",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 15418,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+105\u2103",
+      "Type": "Power Receiver Controller",
+      "Number of Channels": "1C",
+      "Output Power": "140W",
+      "Voltage - Supply": "4V~30V",
+      "Features": "Overvoltage protection\u3001Automatic protocol detection",
+      "Protocol": "PD 3.2\u3001BC 1.2\u3001AVS\u3001PPS\u3001SPR",
+      "Output Voltage": "5V\u30019V\u300112V\u300115V\u300120V\u300128V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.4307
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.3378
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.2986
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.248
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.2268
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.2138
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": null,
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C42459160"
+      },
+      "sha256": "48211fa5c16060beaac67363b9665ff0157cbdeaca6c486b50f169c98952ce8f",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C14165": {
+    "code": "C14165",
+    "mpn": "0466003.NRHF",
+    "manufacturer": "Littelfuse",
+    "package": "1206",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 20855,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-55\u2103~+90\u2103",
+      "Type": "Surface Mount Fuse",
+      "Melting I2t": "0.576",
+      "Length": "3.2mm",
+      "Interrupt Rating": "50A",
+      "Diameter (\u03c6D)": "-",
+      "Pitch": "-",
+      "Current Rating": "3A",
+      "Height": "-",
+      "Voltage Rating (DC)": "32V",
+      "Width": "1.6mm"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 99,
+        "unit_price": 0.0886
+      },
+      {
+        "start": 100,
+        "end": 299,
+        "unit_price": 0.073
+      },
+      {
+        "start": 300,
+        "end": 999,
+        "unit_price": 0.0651
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0593
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.048
+      },
+      {
+        "start": 10000,
+        "end": -1,
+        "unit_price": 0.0457
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 2,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810111920_Littelfuse-0466003-NRHF_C14165.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "1206 3A 32V"
+      },
+      "sha256": "59a4808c4eb34c74cd1f7cdbc25b8f883daa348135380f578652fb4429a80c77",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C41342": {
+    "code": "C41342",
+    "mpn": "0468003.NRHF",
+    "manufacturer": "Littelfuse",
+    "package": "1206",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 11901,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-55\u2103~+90\u2103",
+      "Type": "Surface Mount Fuse",
+      "Melting I2t": "1.27",
+      "Length": "3.2mm",
+      "Interrupt Rating": "50A",
+      "Diameter (\u03c6D)": "-",
+      "Pitch": "-",
+      "Current Rating": "3A",
+      "Height": "-",
+      "Voltage Rating (DC)": "32V",
+      "Width": "1.6mm"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.0901
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.0726
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.0638
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.0573
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.0457
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.0431
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 2,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Littelfuse-0468003-NRHF_C41342.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "1206 3A 32V"
+      },
+      "sha256": "59a4808c4eb34c74cd1f7cdbc25b8f883daa348135380f578652fb4429a80c77",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C85063": {
+    "code": "C85063",
+    "mpn": "F1206HI3000V032TM",
+    "manufacturer": "AEM",
+    "package": "1206",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 5037,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-55\u2103~+150\u2103",
+      "Type": "Surface Mount Fuse",
+      "Melting I2t": "1.35",
+      "Length": "3.2mm",
+      "Interrupt Rating": "50A",
+      "Diameter (\u03c6D)": "-",
+      "Pitch": "-",
+      "Current Rating": "3A",
+      "Height": "0.97mm",
+      "Voltage Rating (DC)": "32V",
+      "Width": "1.6mm"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1996
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.156
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1374
+      },
+      {
+        "start": 500,
+        "end": 2999,
+        "unit_price": 0.1141
+      },
+      {
+        "start": 3000,
+        "end": 5999,
+        "unit_price": 0.1038
+      },
+      {
+        "start": 6000,
+        "end": -1,
+        "unit_price": 0.0976
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811082141_AEM-F1206HI3000V032TM_C85063.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "1206 3A 32V"
+      },
+      "sha256": "59a4808c4eb34c74cd1f7cdbc25b8f883daa348135380f578652fb4429a80c77",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C99539": {
+    "code": "C99539",
+    "mpn": "0437003.WR",
+    "manufacturer": "Littelfuse",
+    "package": "1206",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 3527,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-55\u2103~+150\u2103",
+      "Type": "Surface Mount Fuse",
+      "Melting I2t": "0.506",
+      "Length": "3.2mm",
+      "Interrupt Rating": "50A",
+      "Diameter (\u03c6D)": "-",
+      "Pitch": "-",
+      "Current Rating": "3A",
+      "Height": "-",
+      "Voltage Rating (DC)": "32V",
+      "Width": "1.6mm"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1408
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1141
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1009
+      },
+      {
+        "start": 500,
+        "end": 2999,
+        "unit_price": 0.0909
+      },
+      {
+        "start": 3000,
+        "end": 5999,
+        "unit_price": 0.0829
+      },
+      {
+        "start": 6000,
+        "end": -1,
+        "unit_price": 0.0788
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 2,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Littelfuse-0437003-WR_C99539.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "1206 3A 32V"
+      },
+      "sha256": "59a4808c4eb34c74cd1f7cdbc25b8f883daa348135380f578652fb4429a80c77",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C87663": {
+    "code": "C87663",
+    "mpn": "TPS65131RGER",
+    "manufacturer": "Texas Instruments",
+    "package": "QFN-24-EP(4x4)",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 469,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+85\u2103@(TA)\u3001-40\u2103~+125\u2103@(TJ)",
+      "Function": "Buck-Boost",
+      "Synchronous Rectifier": "No",
+      "Frequency - Switching": "1.25MHz~1.5MHz",
+      "Output Type": "Adjustable",
+      "Voltage - Supply": "2.7V~5.5V",
+      "Output Current": "1.95A",
+      "Quiescent Current": "500uA",
+      "Features": "Overcurrent Protection\u3001Light load efficient mode\u3001Load disconnect",
+      "Switch tube (built-in/external)": "Built-in",
+      "Topology": "Boost\u3001Inverting",
+      "Output Voltage": "-15V~-2V\u3001500mV~15V",
+      "Number of Outputs": "2"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 2.8697
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 2.5973
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 2.4488
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 2.2791
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 2.2041
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 2.1698
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010302_Texas-Instruments-TPS65131RGER_C87663.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C87663"
+      },
+      "sha256": "0307c9daa6461d9559c7d546498536d2c738c734002094cfa2ad64cd0b60924e",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C23212": {
+    "code": "C23212",
+    "mpn": "0603WAF6801T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1521775,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "6.8k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 6800.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0023
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0018
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0015
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0011
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF6801T5E_C23212.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "6.8k 0603"
+      },
+      "sha256": "7e005f7c5dbb4511d9cf3b71ed739e82333f1fda93f008395c675ee8da40be37",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C2847478": {
+    "code": "C2847478",
+    "mpn": "MDA5030-6R8M",
+    "manufacturer": "KOHERelec",
+    "package": "SMD,5.7x5.2mm",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 2331,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Inductance": "6.8uH",
+      "Current - Saturation(Isat)": "3.5A",
+      "Type": "Alloy molded inductor",
+      "Current Rating": "4.3A",
+      "Tolerance": "\u00b120%",
+      "DC Resistance(DCR)": "57m\u03a9"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.6151
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.4911
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.4275
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.3655
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.3508
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.3312
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2109101630_KOHERelec-MDA5030-6R8M_C2847478.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "SRP5030TA-6R8M"
+      },
+      "sha256": "f20e9b15bd7a54f44a694749820e74a7156ccbfa6b2ba502d67c2876a8562194",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C5298167": {
+    "code": "C5298167",
+    "mpn": "FAUL0530-6R8MT",
+    "manufacturer": "cjiang (Changjiang Microelectronics Tech)",
+    "package": "SMD,5.4x5.2mm",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 718,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Inductance": "6.8uH",
+      "Current - Saturation(Isat)": "3.6A",
+      "Current Rating": "3.5A",
+      "Tolerance": "\u00b120%",
+      "DC Resistance(DCR)": "90m\u03a9"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.2733
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.2125
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1864
+      },
+      {
+        "start": 500,
+        "end": 1999,
+        "unit_price": 0.1539
+      },
+      {
+        "start": 2000,
+        "end": 3999,
+        "unit_price": 0.1394
+      },
+      {
+        "start": 4000,
+        "end": -1,
+        "unit_price": 0.1306
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2305161120_cjiang--Changjiang-Microelectronics-Tech-FAUL0530-6R8MT_C5298167.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "SRP5030TA-6R8M"
+      },
+      "sha256": "f20e9b15bd7a54f44a694749820e74a7156ccbfa6b2ba502d67c2876a8562194",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C2042113": {
+    "code": "C2042113",
+    "mpn": "SRP5030TA-6R8M",
+    "manufacturer": "BOURNS",
+    "package": "SMD,5.2x5.7mm",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 0,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Current - Saturation(Isat)": "4.3A",
+      "Inductance": "6.8uH",
+      "Type": "-",
+      "Tolerance": "\u00b120%",
+      "Current Rating": "4A",
+      "DC Resistance(DCR)": "68m\u03a9"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 1.0915
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 1.0703
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 1.0539
+      },
+      {
+        "start": 100,
+        "end": 101,
+        "unit_price": 1.0393
+      },
+      {
+        "start": 102,
+        "end": 103,
+        "unit_price": 1.0393
+      },
+      {
+        "start": 104,
+        "end": -1,
+        "unit_price": 1.0393
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_BOURNS-SRP5030TA-6R8M_C2042113.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "SRP5030TA-6R8M"
+      },
+      "sha256": "f20e9b15bd7a54f44a694749820e74a7156ccbfa6b2ba502d67c2876a8562194",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C8678": {
+    "code": "C8678",
+    "mpn": "SS34",
+    "manufacturer": "MDD(Microdiode Semiconductor)",
+    "package": "SMA(DO-214AC)",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 3973911,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage - Forward(Vf@If)": "550mV@3A",
+      "Power Dissipation": "-",
+      "Non-Repetitive Peak Forward Surge Current": "80A",
+      "Voltage - DC Reverse(Vr)": "40V",
+      "Operating Junction Temperature Range": "-55\u2103~+125\u2103",
+      "Diode Configuration": "Standalone",
+      "Current - Rectified": "3A",
+      "Reverse Leakage Current (Ir)": "500uA@40V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 199,
+        "unit_price": 0.035
+      },
+      {
+        "start": 200,
+        "end": 599,
+        "unit_price": 0.0281
+      },
+      {
+        "start": 600,
+        "end": 4999,
+        "unit_price": 0.025
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.017
+      },
+      {
+        "start": 10000,
+        "end": 19999,
+        "unit_price": 0.0161
+      },
+      {
+        "start": 20000,
+        "end": -1,
+        "unit_price": 0.0155
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 8,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:48Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "SS34"
+      },
+      "sha256": "38d38af2ccedf31e7636d01f2060f628596a2fc0be68eeec457affd70f508c6b",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C4184": {
+    "code": "C4184",
+    "mpn": "0603WAF2002T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 7817950,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "20k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 20000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0022
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0017
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0015
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0012
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2002T5E_C4184.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "20k 0603"
+      },
+      "sha256": "b1fedc27f9e1f9883d37b8ab6e43e042d810b6240ae0e72c72b9f25bc12c8cf0",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C25803": {
+    "code": "C25803",
+    "mpn": "0603WAF1003T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 19604333,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "100k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 100000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0031
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0024
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0021
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0017
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0016
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0016
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C25803"
+      },
+      "sha256": "9486e80e9b181653536340a22abb33a2b0b7904f80b0ab7afa71de4ef9015731",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C31850": {
+    "code": "C31850",
+    "mpn": "0603WAF2202T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 3429873,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "22k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 22000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0041
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0031
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0026
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0023
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.002
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.002
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010030_UNI-ROYAL-Uniroyal-Elec-0603WAF2202T5E_C31850.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:45Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "22k 0603"
+      },
+      "sha256": "aa135ca1270ca416ae18c02a639b830e921163b5e0c10d817f193c35b461005d",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C149921": {
+    "code": "C149921",
+    "mpn": "TR0603B12K9P0525Z",
+    "manufacturer": "Ever Ohms Tech",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 10,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "12.9k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 12900.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 199,
+        "unit_price": 0.0279
+      },
+      {
+        "start": 200,
+        "end": 599,
+        "unit_price": 0.0217
+      },
+      {
+        "start": 600,
+        "end": 4999,
+        "unit_price": 0.0183
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0162
+      },
+      {
+        "start": 10000,
+        "end": 19999,
+        "unit_price": 0.0144
+      },
+      {
+        "start": 20000,
+        "end": -1,
+        "unit_price": 0.0135
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 8,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Ever-Ohms-Tech-TR0603B12K9P0525Z_C149921.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "12.9k 0.1% 0603"
+      },
+      "sha256": "f110f38acf777459d3320e74db2b6c9803933cd38ca6e4953cee8af6a3dbf783",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C20165687": {
+    "code": "C20165687",
+    "mpn": "RT0603BRD0712K9L",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 170,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "12.9k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 12900.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1271
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1245
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1227
+      },
+      {
+        "start": 500,
+        "end": 509,
+        "unit_price": 0.1211
+      },
+      {
+        "start": 510,
+        "end": 519,
+        "unit_price": 0.1211
+      },
+      {
+        "start": 520,
+        "end": -1,
+        "unit_price": 0.1211
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 2,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2401171203_YAGEO-RT0603BRD0712K9L_C20165687.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "12.9k 0.1% 0603"
+      },
+      "sha256": "f110f38acf777459d3320e74db2b6c9803933cd38ca6e4953cee8af6a3dbf783",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C1694008": {
+    "code": "C1694008",
+    "mpn": "TNPW060312K9BEEA",
+    "manufacturer": "Vishay Intertech",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 0,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "12.9k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 12900.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.0992
+      },
+      {
+        "start": 10,
+        "end": 11,
+        "unit_price": 0.0992
+      },
+      {
+        "start": 12,
+        "end": 199,
+        "unit_price": 0.0992
+      },
+      {
+        "start": 200,
+        "end": 499,
+        "unit_price": 0.0384
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.0371
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.0364
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 2,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW060312K9BEEA_C1694008.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "12.9k 0.1% 0603"
+      },
+      "sha256": "f110f38acf777459d3320e74db2b6c9803933cd38ca6e4953cee8af6a3dbf783",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C1722399": {
+    "code": "C1722399",
+    "mpn": "TNPW060312K9BETA",
+    "manufacturer": "Vishay Intertech",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 0,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "12.9k\u03a9",
+      "Operating Temperature": "-55\u2103~+125\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thin Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b10.1%",
+      "Temperature Coefficient": "\u00b125ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 12900.0,
+      "tolerance_fraction": 0.001,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.2678
+      },
+      {
+        "start": 10,
+        "end": 11,
+        "unit_price": 0.2678
+      },
+      {
+        "start": 12,
+        "end": 199,
+        "unit_price": 0.2678
+      },
+      {
+        "start": 200,
+        "end": 499,
+        "unit_price": 0.1036
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.1001
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.0983
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Vishay-Intertech-TNPW060312K9BETA_C1722399.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "12.9k 0.1% 0603"
+      },
+      "sha256": "f110f38acf777459d3320e74db2b6c9803933cd38ca6e4953cee8af6a3dbf783",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C53084530": {
+    "code": "C53084530",
+    "mpn": "CC1210X7R25V226MN",
+    "manufacturer": "TORCH",
+    "package": "1210",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 605,
+    "kind": "C",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage Rating": "25V",
+      "Tolerance": "\u00b120%",
+      "Capacitance": "22uF",
+      "Temperature Coefficient": "X7R"
+    },
+    "specs": {
+      "value_si": 2.2e-05,
+      "tolerance_fraction": 0.2,
+      "voltage_v": 25.0,
+      "dielectric": "X7R"
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.2945
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.2448
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.2234
+      },
+      {
+        "start": 500,
+        "end": 1999,
+        "unit_price": 0.1968
+      },
+      {
+        "start": 2000,
+        "end": 3999,
+        "unit_price": 0.1851
+      },
+      {
+        "start": 4000,
+        "end": -1,
+        "unit_price": 0.1779
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": null,
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "22uF 25V 1210"
+      },
+      "sha256": "398b1e29e0bf2a42a1e6c29b95dd9f60074259bd3af2928aef25a274dd9984d3",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C54157512": {
+    "code": "C54157512",
+    "mpn": "CC1210X7R25V226KN",
+    "manufacturer": "TORCH",
+    "package": "1210",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1,
+    "kind": "C",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage Rating": "25V",
+      "Tolerance": "\u00b110%",
+      "Capacitance": "22uF",
+      "Temperature Coefficient": "X7R"
+    },
+    "specs": {
+      "value_si": 2.2e-05,
+      "tolerance_fraction": 0.1,
+      "voltage_v": 25.0,
+      "dielectric": "X7R"
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1965
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1567
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1395
+      },
+      {
+        "start": 500,
+        "end": 1999,
+        "unit_price": 0.1182
+      },
+      {
+        "start": 2000,
+        "end": 3999,
+        "unit_price": 0.1087
+      },
+      {
+        "start": 4000,
+        "end": -1,
+        "unit_price": 0.103
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": null,
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "22uF 25V 1210"
+      },
+      "sha256": "398b1e29e0bf2a42a1e6c29b95dd9f60074259bd3af2928aef25a274dd9984d3",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C54916866": {
+    "code": "C54916866",
+    "mpn": "CC1210X5R25V226KN",
+    "manufacturer": "TORCH",
+    "package": "1210",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 4,
+    "kind": "C",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage Rating": "25V",
+      "Tolerance": "\u00b110%",
+      "Capacitance": "22uF",
+      "Temperature Coefficient": "X5R"
+    },
+    "specs": {
+      "value_si": 2.2e-05,
+      "tolerance_fraction": 0.1,
+      "voltage_v": 25.0,
+      "dielectric": "X5R"
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.2219
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1821
+      },
+      {
+        "start": 150,
+        "end": 999,
+        "unit_price": 0.165
+      },
+      {
+        "start": 1000,
+        "end": 1999,
+        "unit_price": 0.1102
+      },
+      {
+        "start": 2000,
+        "end": 4999,
+        "unit_price": 0.1007
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.095
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": null,
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 3,
+        "keyword": "22uF 25V 1210"
+      },
+      "sha256": "398b1e29e0bf2a42a1e6c29b95dd9f60074259bd3af2928aef25a274dd9984d3",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C25977": {
+    "code": "C25977",
+    "mpn": "0603WAF6041T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 135690,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "6.04k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 6040.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0017
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0013
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0011
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.001
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0009
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0009
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF6041T5E_C25977.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "6.04k 0603"
+      },
+      "sha256": "ce042ea4b9cdd87e2dc4329d7a3e55d9d62e5ba5e0e777c182eea7aeffc4e060",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C103741": {
+    "code": "C103741",
+    "mpn": "RTT036041FTP",
+    "manufacturer": "RALEC",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 13,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "6.04k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 6040.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0026
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.002
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0016
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0015
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0012
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0012
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_RALEC-RTT036041FTP_C103741.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "6.04k 0603"
+      },
+      "sha256": "ce042ea4b9cdd87e2dc4329d7a3e55d9d62e5ba5e0e777c182eea7aeffc4e060",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C141680": {
+    "code": "C141680",
+    "mpn": "RC0603FR-076K04L",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 16945,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "6.04k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 6040.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0049
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0044
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0041
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0039
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0037
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0037
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-076K04L_C141680.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "6.04k 0603"
+      },
+      "sha256": "ce042ea4b9cdd87e2dc4329d7a3e55d9d62e5ba5e0e777c182eea7aeffc4e060",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C170644": {
+    "code": "C170644",
+    "mpn": "WR06X6041FTL",
+    "manufacturer": "Walsin Tech Corp",
+    "package": "0603",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 5,
+    "kind": "R",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Resistance": "6.04k\u03a9",
+      "Operating Temperature": "-55\u2103~+155\u2103",
+      "Power(Watts)": "100mW",
+      "Type": "Thick Film Resistor",
+      "Voltage-Supply(Max)": "75V",
+      "Tolerance": "\u00b11%",
+      "Temperature Coefficient": "\u00b1100ppm/\u2103"
+    },
+    "specs": {
+      "value_si": 6040.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.1,
+      "voltage_v": 75.0
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 999,
+        "unit_price": 0.0044
+      },
+      {
+        "start": 1000,
+        "end": 4999,
+        "unit_price": 0.0033
+      },
+      {
+        "start": 5000,
+        "end": 9999,
+        "unit_price": 0.0028
+      },
+      {
+        "start": 10000,
+        "end": 49999,
+        "unit_price": 0.0025
+      },
+      {
+        "start": 50000,
+        "end": 50199,
+        "unit_price": 0.0022
+      },
+      {
+        "start": 50200,
+        "end": -1,
+        "unit_price": 0.0022
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 20,
+    "attrition_quantity_observed": 10,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Walsin-Tech-Corp-WR06X6041FTL_C170644.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:46:52Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 4,
+        "keyword": "6.04k 0603"
+      },
+      "sha256": "ce042ea4b9cdd87e2dc4329d7a3e55d9d62e5ba5e0e777c182eea7aeffc4e060",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C5158902": {
+    "code": "C5158902",
+    "mpn": "HT9002ARZ",
+    "manufacturer": "HTCSEMI",
+    "package": "SOP-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 1945,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "1.6mV",
+      "Input Offset Current(Ios)": "2pA",
+      "Output Current": "40mA",
+      "Input Offset Voltage Drift(Vos TC)": "600nV/\u2103",
+      "Slew Rate": "2V/us",
+      "Gain Bandwidth Product": "1MHz",
+      "Single supply": "1.8V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "105dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "27nV/\u221aHz@1kHz",
+      "Quiescent Current": "60uA",
+      "Features": "Enable/shutdown function\u3001Built-in compensation\u3001ESD protection\u3001EMI filtering/RF suppression",
+      "Ib - Input Bias Current": "5pA",
+      "Dual Supply": "-2.75V~-900mV\u3001900mV~2.75V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1675
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1469
+      },
+      {
+        "start": 150,
+        "end": 999,
+        "unit_price": 0.1381
+      },
+      {
+        "start": 1000,
+        "end": 1999,
+        "unit_price": 0.1271
+      },
+      {
+        "start": 2000,
+        "end": 4999,
+        "unit_price": 0.1222
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.1193
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2209061800_HTCSEMI-HT9002ARZ_C5158902.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C22392181": {
+    "code": "C22392181",
+    "mpn": "HX9002-S",
+    "manufacturer": "ZHHXDZ",
+    "package": "SOP-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 2454,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "2.5mV",
+      "Input Offset Current(Ios)": "1pA",
+      "Output Current": "-",
+      "Input Offset Voltage Drift(Vos TC)": "1uV/\u2103",
+      "Slew Rate": "1.2V/us",
+      "Gain Bandwidth Product": "1MHz",
+      "Single supply": "1.8V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "77dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "27nV/\u221aHz@1kHz",
+      "Quiescent Current": "75uA",
+      "Features": "EMI filtering/RF suppression",
+      "Ib - Input Bias Current": "1pA",
+      "Dual Supply": "-2.75V~-900mV\u3001900mV~2.75V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1685
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1324
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1169
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.0974
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.0888
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.0837
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407151448_ZHHXDZ-HX9002-S_C22392181.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C398360": {
+    "code": "C398360",
+    "mpn": "TLV9002IDR",
+    "manufacturer": "Texas Instruments",
+    "package": "SOIC-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 16179,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+125\u2103",
+      "Vos - Input Offset Voltage": "1.6mV",
+      "Input Offset Current(Ios)": "2pA",
+      "Output Current": "40mA",
+      "Input Offset Voltage Drift(Vos TC)": "600nV/\u2103",
+      "Slew Rate": "2V/us",
+      "Gain Bandwidth Product": "1MHz",
+      "Single supply": "1.8V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "86dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "30nV/\u221aHz@1kHz",
+      "Quiescent Current": "60uA",
+      "Features": "EMI filtering/RF suppression",
+      "Ib - Input Bias Current": "5pA",
+      "Dual Supply": "-2.75V~-900mV\u3001900mV~2.75V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1652
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1327
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.1164
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.1041
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.0803
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.0754
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Texas-Instruments-TLV9002IDR_C398360.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C54781092": {
+    "code": "C54781092",
+    "mpn": "TLV9002IDR-MS",
+    "manufacturer": "MSKSEMI",
+    "package": "SOIC-8",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 2358,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-40\u2103~+85\u2103",
+      "Vos - Input Offset Voltage": "1mV",
+      "Input Offset Current(Ios)": "1pA",
+      "Output Current": "45mA",
+      "Input Offset Voltage Drift(Vos TC)": "1.8uV/\u2103",
+      "Slew Rate": "1V/us",
+      "Gain Bandwidth Product": "1MHz",
+      "Single supply": "1.8V~5.5V",
+      "Common Mode Rejection Ratio(CMRR)": "80dB",
+      "Rail to Rail": "Rail-to-Rail Input, Rail-to-Rail Output",
+      "Number of Channels": "2",
+      "Input Voltage Noise Density": "65nV/\u221aHz@1kHz",
+      "Quiescent Current": "28uA",
+      "Features": "-",
+      "Ib - Input Bias Current": "5pA",
+      "Dual Supply": "-2.75V~-900mV\u3001900mV~2.75V"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.0953
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.0757
+      },
+      {
+        "start": 150,
+        "end": 499,
+        "unit_price": 0.066
+      },
+      {
+        "start": 500,
+        "end": 2499,
+        "unit_price": 0.0586
+      },
+      {
+        "start": 2500,
+        "end": 4999,
+        "unit_price": 0.0527
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.0498
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 0,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": null,
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T06:48:47Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 8,
+        "keyword": "TLV9002IDR"
+      },
+      "sha256": "81b05f356b65b1a8a7f84dd8151064609f1f6f16a2c2f60daa34b88bdd646446",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  }
+}

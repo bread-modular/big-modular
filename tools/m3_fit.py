@@ -44,9 +44,9 @@ def verify_access(g,outline):
     assert b['side_nut_driver_depth_min_mm']>=side_tip[1]-bx[1], 'side nut driver too shallow'
     carrier=list(prisms(outline,bx)); reports=[]
     # Conservative reservations for already placed components; no converter fit claim.
-    parts=[[[4.7,8.7],[34,42],[-.2,8]], [[4.7,7.2],[42,52],[12,16]],
-           [[4.7,8.4],[59,70],[.8,9]], [[4.7,9.2],[86,96],[2.05,10]],
-           [[1.3,9.4],[42,72],[25,32]]]
+    parts=[[[4.7,8.7],[y-3.8,y+3.8],[-.2,8]] for y in [38,46,54]]
+    parts += [[[4.7,8.4],[59,70],[.8,9]], [[4.7,9.2],[86,96],[2.05,10]],
+              [[1.3,9.4],[42,72],[25,32]]]
     for i,y in enumerate(b['Y_centres_mm']):
         assert g['panel_bracket_holes_mm'][i]==[front_x,y,3.2]
         assert g['carrier_holes_YZ_mm'][i]==[y,15]

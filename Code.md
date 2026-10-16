@@ -1,3 +1,9 @@
+## Electrical prototype checkpoint (current)
+
+The authorized electrical update supersedes the earlier unchanged-circuit checkpoint below.
+See `docs/electrical-prototype.md`: new 7-child hierarchy, direct rails, always-on MCU diagnostics.
+PCB mechanics/routing remain unchanged; no full schematic-PCB sync. Main power-up is blocked.
+
 # Big Modular project instructions
 
 This is Bread Modular's take on a set of Eurorack modules. Read `README.md` for
@@ -48,10 +54,13 @@ parsers or routers when the existing toolkit supports the requested operation.
 ## Preserve Big Modular's current hardware state
 
 Both active boards are intentionally unrouted. A4.2 uses a front panel and one
-perpendicular main PCB carrying J1, D10/R32/SW1 and J7 wire landing reservations.
+perpendicular main PCB carrying J1, D10/D11/D12/SW1 and J7 wire landing reservations.
 The middle PCB and J3-J6 were retired; previous files are in docs/archive.
-J2 remains the off-board 16-pin keyed power OUTPUT on a flying lead. D10/R32/SW1/J7
-are NOT added to the unchanged circuit schematic/root BOM. Never parallel another
+J2 remains the off-board 16-pin keyed power OUTPUT on a flying lead. D10/D11/D12/SW1/J7
+are NOT added to the unchanged circuit schematic/root BOM at the LED3 checkpoint.
+R32 axial reservation is retired; Basic SMD LED resistors await the electrical brief.
+D10/D11/D12 are reserved exclusively for +12/-12/+5 red manual LEDs by
+`tools/interface_contract.py`; never allocate them to general diodes. Never parallel another
 active PSU. Do not synchronize from the full schematic or generate manufacturing
 outputs as part of tooling setup. Preserve native J1 geometry and circuit intent.
 

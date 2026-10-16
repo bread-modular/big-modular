@@ -6,6 +6,16 @@ availability is guaranteed. Public listings and manufacturer drawings were check
 JLC/LCSC catalogue snapshots are retained separately and are NOT cable stock proof.
 The root 88-part BOM/circuit is unchanged. See [mechanics](mechanics.md).
 
+## Manual LED provisions (electrical selection pending)
+
+D10/D11/D12 reserve standard **RED 3mm THT** lamps with leads formed 90 degrees,
+not proprietary holders or 5mm LEDs. Three Ø3.6 panel holes and 2.54-pitch/Ø0.9
+solder-through pads are provided. Choose the exact lamp against the existing
+body/flange/length envelope in [mechanics](mechanics.md), then trial the forming jig.
+These references are excluded from JLC assembly BOM/CPL via native position flags.
+No exact LED MPN, stock, price or physical fit is claimed. R32 axial was retired;
+Basic SMD LED resistors await electrical design and separate live sourcing gates.
+
 ## Selected reset switch — E-Switch TL3340AF160QG (SMT)
 
 The user chose to return to this earlier **90° side-actuated surface-mount,

@@ -1,89 +1,128 @@
-Reference,Value,MPN,Footprint,LCSC,Sourcing,Notes,Block
-J1,USB4105-GF-A,USB4105-GF-A,BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,,Candidate/specification only; procurement review required,Only electrical footprint placed. Drawing Rev B: axis 1.73 mm above PCB top.,01_input
-U1,CH224K,CH224K,Package_SO:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm,C970725,LCSC ID verified; stock NOT verified,"WCH v1F fig6.1/6.3; datasheet EP0 maps to library pad11. DP/DM short locally, isolated from USB data.",01_input
-R1,1k 1% >=0.5W,,Resistor_SMD:R_2010_5025Metric,,Candidate/specification only; procurement review required,"CH224K supply resistor: at 21V fault, VDD>=2.4V, 1% low R, dissipates <=0.350W. Select a real >=0.5W 2010 part, derate at enclosure temperature.",01_input
-C1,1u 50V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
-R2,6.8k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R3,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-F1,500mA 32V fuse,,,,Candidate/specification only; procurement review required,"Unselected candidate: 32V rating covers steady 20/21V only; interrupt/surge ratings, time-current and source coordination UNQUALIFIED. Not USB current authorization.",01_input
-C2,100n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,TPS26600 local bypass only. Not an ESD/surge clamp; effective capacitance and hot-plug transients unverified.,01_input
-U2,TPS26600PWPR,TPS26600PWPR,Package_SO:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm_ThermalVias,C544399,LCSC ID verified; stock NOT verified,"UV rising 7.878V nominal, OVP 10.781V nominal. SHDN low=OFF; PG-permit through JP1 only. RTN must NOT be externally shorted to GND.",01_input
-JP1,RUN / default OPEN,,,,Candidate/specification only; procurement review required,Series permission only; cannot override PG or voltage window. Default OPEN. Not contract proof.,01_input
-R4,562k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R5,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R6,806k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R7,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R8,40.2k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-C3,100n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
-C4,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,01_input
-U3,TPS62160DSGR,TPS62160DSGR,Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias,C324077,LCSC ID verified; stock NOT verified,,02_intermediate
-L1,2.2uH / Isat>=2A,,,,Candidate/specification only; procurement review required,"Shielded inductor candidate, DCR/thermal/ripple to qualify.",02_intermediate
-C5,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,02_intermediate
-C6,22u 10V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,02_intermediate
-R9,40.2k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,02_intermediate
-R10,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,02_intermediate
-R11,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,02_intermediate
-C7,100n 25V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,02_intermediate
-U4,TPS65131RGER,TPS65131RGER,Package_DFN_QFN:VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm_ThermalVias,C87663,LCSC ID verified; stock NOT verified,,03_bipolar
-L2,4.7uH / Isat>=3A,,,,Candidate/specification only; procurement review required,,03_bipolar
-D2,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,03_bipolar
-L3,4.7uH / Isat>=3A,,,,Candidate/specification only; procurement review required,,03_bipolar
-D3,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,03_bipolar
-C8,22u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C9,22u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-R12,1.05M 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,03_bipolar
-R13,100k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,03_bipolar
-R14,1.15M 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,03_bipolar
-R15,100k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C10,6.8p C0G 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C11,6.8p C0G 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C12,220n 10V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C13,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C14,4.7n C0G 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-R16,100R,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C15,100n 10V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C16,4.7u 10V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-C17,4.7u 10V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,03_bipolar
-U5,TPS62125DSGR,TPS62125DSGR,,,Candidate/specification only; procurement review required,Pin4 EN_hys intentionally NC per datasheet; custom symbol avoids incorrect AGND name inherited in installed library.,04_five_prereg
-L4,10uH / Isat>=1A,,,,Candidate/specification only; procurement review required,Select shielded inductor with verified saturation and thermal curves.,04_five_prereg
-C18,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,04_five_prereg
-C19,22u 16V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,04_five_prereg
-R17,71.5k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,04_five_prereg
-R18,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,04_five_prereg
-C20,100n 25V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,04_five_prereg
-U6,TPS7A4901DGNR,TPS7A4901DGNR,,C16430,LCSC ID verified; stock NOT verified,Package and pad map from TI datasheet; no footprint selected/placed.,05_clean_rails
-C21,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C22,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-R19,91.2k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-R20,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C23,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C24,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-D4,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-D5,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-U7,TPS7A3001DGNR,TPS7A3001DGNR,,,Candidate/specification only; procurement review required,Package and pad map from TI datasheet; no footprint selected/placed.,05_clean_rails
-C25,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C26,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-R21,92k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-R22,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C27,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C28,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-D6,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-D7,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-U8,TPS7A4901DGNR,TPS7A4901DGNR,,C16430,LCSC ID verified; stock NOT verified,Package and pad map from TI datasheet; no footprint selected/placed.,05_clean_rails
-C29,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C30,10u 25V X7R,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-R23,32.2k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-R24,10k 0.1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C31,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-C32,10n 50V,,Capacitor_SMD:C_1206_3216Metric,,Candidate/specification only; procurement review required,,05_clean_rails
-D8,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-D9,Schottky 1A 40V,,,,Candidate/specification only; procurement review required,,05_clean_rails
-J2,16-pin IDC POWER OUT,,,,Candidate/specification only; procurement review required,2x8 / 2.54 mm keyed cable connector; exact MPN and mounting unselected. Pinout per Doepfer/Division6.,06_output
-R25,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
-R26,100k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
-R27,47k,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,06_output
-Q1,MMBT3906,MMBT3906,Package_TO_SOT_SMD:SOT-23,,Candidate/specification only; procurement review required,"Pin1 B, pin2 E, pin3 C per Diodes DS30059. PG low turns ON. Gate electrical/timing margins need bench qualification.",01_input
-R28,22k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R29,100k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,,01_input
-R30,10k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,"SHDN default-low despite internal pullup: 10uA x 10k = 0.1V, below 0.55V minimum falling threshold.",01_input
-R31,10k 1%,,Resistor_SMD:R_0603_1608Metric,,Candidate/specification only; procurement review required,Bleed off-state leakage; leakage maxima and residual rail voltages NOT qualified. No precontract rail operation allowed.,01_input
+Reference,Value,MPN,Footprint,LCSC,Manufacturer,Classification,Sourcing,Notes,Block
+J1,USB4105-GF-A,USB4105-GF-A,BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,,,Manual,Manual / excluded from JLC,"Prototype candidate; qualify ratings, land pattern and operating corners.",01_input_protection
+F1,3A 32V candidate,0466003.NRHF,BigModular:Fuse_1206_3216Metric,C14165,Littelfuse,Extended,Catalog candidate; no allocation/qualification guarantee,0466003.NRHF catalog candidate only; source/fuse/eFuse thermal and I2t coordination NOT qualified.,01_input_protection
+U1,CH224A,CH224A,BigModular:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm,C42459160,WCH(Jiangsu Qin Heng),Extended,Catalog candidate; no allocation/qualification guarantee,WCH V2 table4-1; VHV1 is high-voltage input. EP0 mapped to pad11. Section7.1 VBUS contradiction unresolved.,01_input_protection
+C1,1u 50V X7R,,BigModular:C_0805_2012Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,01_input_protection
+R2,6.8k 1%,0603WAF6801T5E,BigModular:R_0603_1608Metric,C23212,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",01_input_protection
+R3,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",01_input_protection
+U9,MCP1799T-3302H/DB,MCP1799T-3302H/DB,BigModular:MCP1799_SOT223_Tab4,C3752493,Microchip Tech,Extended,Catalog candidate; no allocation/qualification guarantee,"Datasheet tab4 internally GND; named custom footprint has separate tab4, both pins2/4 GND. >=1uF effective output required.",01_input_protection
+C33,1u 50V X7R,,BigModular:C_0805_2012Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,01_input_protection
+C34,2.2u 16V X7R,,BigModular:C_0805_2012Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,01_input_protection
+R35,1k 1%,0603WAF1001T5E,BigModular:R_0603_1608Metric,C21190,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,3.3mA bleed; not proven off-state clamp-rail isolation.,01_input_protection
+U2,TPS26600PWPR,TPS26600PWPR,BigModular:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm,C544399,Texas Instruments,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R4,562k 1%,0603WAF5623T5E,BigModular:R_0603_1608Metric,C23205,UNI-ROYAL(Uniroyal Elec),Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R5,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R6,806k 1%,0603WAF8063T5E,BigModular:R_0603_1608Metric,C23250,UNI-ROYAL(Uniroyal Elec),Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R7,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R8,6.04k 1%,0603WAF6041T5E,BigModular:R_0603_1608Metric,C25977,UNI-ROYAL(Uniroyal Elec),Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R36,402k 1%,0603WAF4023T5E,BigModular:R_0603_1608Metric,C23048,UNI-ROYAL(Uniroyal Elec),Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R37,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R28,22k 1%,0603WAF2202T5E,BigModular:R_0603_1608Metric,C31850,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R29,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R30,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R31,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R38,22k 1%,0603WAF2202T5E,BigModular:R_0603_1608Metric,C31850,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+R39,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+C2,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,02_hardgate
+C3,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,02_hardgate
+C4,10u 25V X7R,,BigModular:C_1206_3216Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,02_hardgate
+Q1,MMBT3906,MMBT3906,BigModular:SOT-23,,,UNKNOWN,UNRESOLVED sourcing,Diodes DS30059: 1=B 2=E 3=C. PG low permits only first stage.,02_hardgate
+Q2,MMBT3906,MMBT3906,BigModular:SOT-23,,,UNKNOWN,UNRESOLVED sourcing,Hi-Z default deny; MCU pulls base low via22k only after PD9/current/window qualify.,02_hardgate
+JP1,RUN default OPEN,,BigModular:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm,,,Manual,Manual / excluded from JLC,"Prototype candidate; qualify ratings, land pattern and operating corners.",02_hardgate
+U3,TPS54302DDCR,TPS54302DDCR,BigModular:SOT-23-6,C311983,Texas Instruments,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",03_bucks
+L1,6.8uH shielded CANDIDATE,SRP5030TA-6R8M,BigModular:L_Bourns_SRP5030T,C2042113,BOURNS,Extended,Catalog candidate; no allocation/qualification guarantee,"Exact candidate ZERO STOCK in snapshot; verify 6A switch-limit saturation, DCR, RMS and 290kHz corner before power-up.",03_bucks
+C5,10u 25V X7R,,BigModular:C_1206_3216Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C6,22u 25V X7R,CC1210X7R25V226MN,BigModular:C_1210_3225Metric,C53084530,TORCH,Extended,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C7,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C35,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C37,22u 25V X7R,CC1210X7R25V226MN,BigModular:C_1210_3225Metric,C53084530,TORCH,Extended,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+R9,100k 0.1%,HoAR0603-1/10W-100KR-0.1%-TCR25,BigModular:R_0603_1608Metric,C2912578,Milliohm,Extended,Catalog candidate; no allocation/qualification guarantee,MID ratio 0.1% exception required for DC headroom; 108% OVP is NOT a 5.5V transient guarantee.,03_bucks
+R10,12.9k 0.1%,TR0603B12K9P0525Z,BigModular:R_0603_1608Metric,C149921,Ever Ohms Tech,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",03_bucks
+U5,TPS54302DDCR,TPS54302DDCR,BigModular:SOT-23-6,C311983,Texas Instruments,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",03_bucks
+L4,6.8uH shielded CANDIDATE,SRP5030TA-6R8M,BigModular:L_Bourns_SRP5030T,C2042113,BOURNS,Extended,Catalog candidate; no allocation/qualification guarantee,"Exact candidate ZERO STOCK in snapshot; verify 6A switch-limit saturation, DCR, RMS and 290kHz corner before power-up.",03_bucks
+C18,10u 25V X7R,,BigModular:C_1206_3216Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C19,22u 25V X7R,CC1210X7R25V226MN,BigModular:C_1210_3225Metric,C53084530,TORCH,Extended,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C20,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C36,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+C38,22u 25V X7R,CC1210X7R25V226MN,BigModular:C_1210_3225Metric,C53084530,TORCH,Extended,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,03_bucks
+R17,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,Independent +5 V divider.,03_bucks
+R18,13.5k 0.1%,RT0603BRD0713K5L,BigModular:R_0603_1608Metric,C861118,YAGEO,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",03_bucks
+U4,TPS65131RGER,TPS65131RGER,BigModular:Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm,C87663,Texas Instruments,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+L2,4.7uH shielded / Isat>=3A TBD,,,,,UNKNOWN,UNRESOLVED sourcing,Select exact shielded 4.7uH magnetic per TI table and verify Isat/DCR/thermal. PROCUREMENT + POWER-UP BLOCKER.,04_bipolar
+L3,4.7uH shielded / Isat>=3A TBD,,,,,UNKNOWN,UNRESOLVED sourcing,Select exact shielded 4.7uH magnetic per TI table and verify Isat/DCR/thermal. PROCUREMENT + POWER-UP BLOCKER.,04_bipolar
+D2,SS34 40V,SS34,BigModular:D_SMA,C8678,MDD(Microdiode Semiconductor),Basic,Catalog candidate; no allocation/qualification guarantee,Rectifier Vf/thermal/reverse transients and assembly polarity to qualify.,04_bipolar
+D3,SS34 40V,SS34,BigModular:D_SMA,C8678,MDD(Microdiode Semiconductor),Basic,Catalog candidate; no allocation/qualification guarantee,Rectifier Vf/thermal/reverse transients and assembly polarity to qualify.,04_bipolar
+C8,22u 25V X7R,CC1210X7R25V226MN,BigModular:C_1210_3225Metric,C53084530,TORCH,Extended,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C9,22u 25V X7R,CC1210X7R25V226MN,BigModular:C_1210_3225Metric,C53084530,TORCH,Extended,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+R12,1.33M 1%,RC0603FR-071M33L,BigModular:R_0603_1608Metric,C482628,YAGEO,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+R13,150k 1%,0603WAF1503T5E,BigModular:R_0603_1608Metric,C22807,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+R14,1.33M 1%,RC0603FR-071M33L,BigModular:R_0603_1608Metric,C482628,YAGEO,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+R60,150k 1%,0603WAF1503T5E,BigModular:R_0603_1608Metric,C22807,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+R15,150k 1%,0603WAF1503T5E,BigModular:R_0603_1608Metric,C22807,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+R16,100 1%,,BigModular:R_0603_1608Metric,,,UNKNOWN,UNRESOLVED sourcing,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+R40,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",04_bipolar
+C10,6.8p 50V C0G,,BigModular:C_0603_1608Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C11,6.8p 50V C0G,,BigModular:C_0603_1608Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C12,220n 50V X7R,,BigModular:C_0603_1608Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C13,10n 50V X7R,,BigModular:C_0603_1608Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C14,4.7n 50V C0G,,BigModular:C_0603_1608Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C15,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C16,10u 25V X7R,,BigModular:C_1206_3216Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+C17,10u 25V X7R,,BigModular:C_1206_3216Metric,,,UNKNOWN,UNRESOLVED sourcing,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,04_bipolar
+U10,ATTINY1616-SNR,ATTINY1616-SNR,BigModular:SOIC-20W_7.5x12.8mm_P1.27mm,C609652,Microchip Tech,Extended,Catalog candidate; no allocation/qualification guarantee,"Microchip DS40001893B section4.2 / section5.1. PA5 pin3 spare VREFA capability, not wired as reference. PB3 pin8 controls BI_EN.",05_diagnostics
+C39,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,05_diagnostics
+C40,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,05_diagnostics
+R41,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",05_diagnostics
+SW1,TL3340AF160QG,TL3340AF160QG,BigModular:SW_TL3340AF160QG_HandSolder,,,Manual,Manual / excluded from JLC,"P021301 Rev B: contacts1+3 common RESET_N, contact2 GND; duplicate MP case pads intentionally floating. Button is MCU input, NOT direct main power bypass.",05_diagnostics
+J8,UPDI / AUX / GND,,BigModular:PinHeader_1x03_P2.54mm_Vertical,,,Manual,Manual / excluded from JLC,Programming pads/header provision. Do not backpower VBUS; programmer power policy unqualified.,05_diagnostics
+R32,1k 1%,0603WAF1001T5E,BigModular:R_0603_1608Metric,C21190,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",05_diagnostics
+D10,RED 3mm formed leads,,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,,,Manual,Manual / excluded from JLC,"Hand solder standard3mm LED, no proprietary holder; cathode1/anode2. Exact MPN pending brightness/Vf check; 5mm LED not compatible.",05_diagnostics
+R33,1k 1%,0603WAF1001T5E,BigModular:R_0603_1608Metric,C21190,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",05_diagnostics
+D11,RED 3mm formed leads,,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,,,Manual,Manual / excluded from JLC,"Hand solder standard3mm LED, no proprietary holder; cathode1/anode2. Exact MPN pending brightness/Vf check; 5mm LED not compatible.",05_diagnostics
+R34,1k 1%,0603WAF1001T5E,BigModular:R_0603_1608Metric,C21190,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",05_diagnostics
+D12,RED 3mm formed leads,,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,,,Manual,Manual / excluded from JLC,"Hand solder standard3mm LED, no proprietary holder; cathode1/anode2. Exact MPN pending brightness/Vf check; 5mm LED not compatible.",05_diagnostics
+U11,TLV9002IDR,TLV9002IDR,BigModular:SOIC-8_3.9x4.9mm_P1.27mm,C398360,Texas Instruments,Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R42,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R43,16.5k 1%,0603WAF1652T5E,BigModular:R_0603_1608Metric,C22812,UNI-ROYAL(Uniroyal Elec),Extended,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C41,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+R44,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R45,20k 1%,0603WAF2002T5E,BigModular:R_0603_1608Metric,C4184,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R46,20k 1%,0603WAF2002T5E,BigModular:R_0603_1608Metric,C4184,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R47,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R48,20k 1%,0603WAF2002T5E,BigModular:R_0603_1608Metric,C4184,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R49,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R50,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R51,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R52,100k 1%,0603WAF1003T5E,BigModular:R_0603_1608Metric,C25803,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R53,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+R54,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C42,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+D13,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D14,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+R55,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C43,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+D15,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D16,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+R56,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C44,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+D17,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D18,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+R57,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C45,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+D19,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D20,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+R58,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C46,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+D21,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D22,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+R59,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,"Prototype candidate; qualify ratings, land pattern and operating corners.",06_sensing
+C47,100n 50V X7R,CC0603KRX7R9BB104,BigModular:C_0603_1608Metric,C14663,YAGEO,Basic,Catalog candidate; no allocation/qualification guarantee,Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.,06_sensing
+D23,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D24,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D25,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+D26,BAT54WS-7-F,BAT54WS-7-F,BigModular:D_SOD-323,C124205,Diodes Incorporated,Extended,Catalog candidate; no allocation/qualification guarantee,Clamp injection/Vf/leakage unqualified.,06_sensing
+J2,16-pin IDC POWER OUT,,,,,Manual,Manual / excluded from JLC,"Off-board cable connector exact MPN open. Manual J7->J2 pin-for-pin, red stripe pins1/2.",07_output_rails
+J7,Manual IDC wire landing,,BigModular:WireLanding_2x08_P2.54mm,,,Manual,Manual / excluded from JLC,"Actual reserved carrier wire landing, not a box header on PCB.",07_output_rails
+R25,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,Bleed provision only; does not prove rail discharge time or prevent backfeed.,07_output_rails
+R26,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,Bleed provision only; does not prove rail discharge time or prevent backfeed.,07_output_rails
+R27,10k 1%,0603WAF1002T5E,BigModular:R_0603_1608Metric,C25804,UNI-ROYAL(Uniroyal Elec),Basic,Catalog candidate; no allocation/qualification guarantee,Bleed provision only; does not prove rail discharge time or prevent backfeed.,07_output_rails
