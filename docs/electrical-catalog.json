@@ -1669,80 +1669,6 @@
       "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
     }
   },
-  "C334250": {
-    "code": "C334250",
-    "mpn": "SWPA8065S6R8MT",
-    "manufacturer": "Sunlord",
-    "package": "SMD,8x8mm",
-    "classification": "Extended",
-    "library_type": "expand",
-    "preferred_extended": false,
-    "economy_eligible": true,
-    "component_product_type": 0,
-    "stock": 654,
-    "kind": null,
-    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
-    "attributes": {
-      "Current - Saturation(Isat)": "7.5A",
-      "Inductance": "6.8uH",
-      "Type": "Magnetic Shielded Inductor",
-      "Tolerance": "\u00b120%",
-      "Current Rating": "4.5A",
-      "DC Resistance(DCR)": "22m\u03a9"
-    },
-    "specs": {},
-    "prices": [
-      {
-        "start": 1,
-        "end": 49,
-        "unit_price": 0.195
-      },
-      {
-        "start": 50,
-        "end": 149,
-        "unit_price": 0.1531
-      },
-      {
-        "start": 150,
-        "end": 699,
-        "unit_price": 0.1351
-      },
-      {
-        "start": 700,
-        "end": 2799,
-        "unit_price": 0.1128
-      },
-      {
-        "start": 2800,
-        "end": 4899,
-        "unit_price": 0.1028
-      },
-      {
-        "start": 4900,
-        "end": -1,
-        "unit_price": 0.0968
-      }
-    ],
-    "assembly_mode": null,
-    "minimum_assembly_quantity_observed": 2,
-    "attrition_quantity_observed": 0,
-    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2310251551_Sunlord-SWPA8065S6R8MT_C334250.pdf",
-    "issues": [],
-    "evidence": {
-      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-      "retrieved_at_utc": "2026-10-16T10:30:04Z",
-      "http_status": 200,
-      "request": {
-        "currentPage": 1,
-        "pageSize": 20,
-        "keyword": "C334250"
-      },
-      "sha256": "d0434b0e1af87612c8cec7086e7c8f01369079c619c04b161572f072b326e358",
-      "mode": "live",
-      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
-      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
-    }
-  },
   "C5291878": {
     "code": "C5291878",
     "mpn": "CKCS6045-4.7uH/M",
@@ -1812,6 +1738,80 @@
         "keyword": "C5291878"
       },
       "sha256": "0e909daeb5010bd9cf7e28a276d48af22bb47c3ddace59ed5395451e67fbb956",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "C2847552": {
+    "code": "C2847552",
+    "mpn": "MDA1040-6R8M",
+    "manufacturer": "KOHERelec",
+    "package": "SMD,11x10mm",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 171,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Current - Saturation(Isat)": "12.2A",
+      "Inductance": "6.8uH",
+      "Type": "Alloy molded inductor",
+      "Current Rating": "7.8A",
+      "Tolerance": "\u00b120%",
+      "DC Resistance(DCR)": "22m\u03a9"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.6118
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.5971
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.589
+      },
+      {
+        "start": 100,
+        "end": 101,
+        "unit_price": 0.5792
+      },
+      {
+        "start": 102,
+        "end": 103,
+        "unit_price": 0.5792
+      },
+      {
+        "start": 104,
+        "end": -1,
+        "unit_price": 0.5792
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 2,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401281810_KOHERelec-MDA1040-6R8M_C2847552.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T10:44:59Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C2847552"
+      },
+      "sha256": "c68026d176e65ea6f595ea88b79553419b53b0767fbfa3e5764e8f04a0911779",
       "mode": "live",
       "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
       "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"

@@ -33,8 +33,8 @@ assert uvf[0]>5.5 and uvr[1]<8.55 and ovr[1]<15 and ovf[0]>9.45
 assert 10e-6*10e3*1.01<.55
 assert .611*(1+100e3*1.001/(12.9e3*.999))<5.5
 info=subprocess.check_output(['pdfinfo',str(root/'docs/schematic.pdf')],text=True)
-assert next(l.split()[-1] for l in info.splitlines() if l.startswith('Pages:'))=='8'
+assert next(l.split()[-1] for l in info.splitlines() if l.startswith('Pages:'))=='6'
 stack=verify(root/'hardware',root/'docs/assembly-geometry.json')
-result.update(native_connected_pins=count,boards=stack['boards'],mechanics=stack['mechanics'],UV_rising=uvr,UV_falling=uvf,OV_rising=ovr,OV_falling=ovf,onboard_mcu=False,external_controller_qualified=False,source_scope='schematic only; mechanical PCBs preserved')
+result.update(native_connected_pins=count,boards=stack['boards'],mechanics=stack['mechanics'],UV_rising=uvr,UV_falling=uvf,OV_rising=ovr,OV_falling=ovf,onboard_mcu=False,external_controller_qualified=False,source_scope='V1 native schematic/PCB synchronization; top UI placed;60 off-board staged')
 args.output.write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result,indent=2))

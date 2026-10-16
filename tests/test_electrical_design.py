@@ -46,7 +46,7 @@ class ElectricalPrototypeTests(unittest.TestCase):
             self.assertFalse(any(r==ref for r,p in pins))
         self.assertFalse(any(n and ('EXT_' in n or n.endswith('_K')) for n in pins.values()))
     def test_exact_magnetic_land_patterns(self):
-        for name,c,w,h in [('L_Sunlord_SWPA8065S',3.0,2.2,7.5),('L_CENKER_CKCS6045',2.1,2.4,5.7)]:
+        for name,c,w,h in [('L_KOHER_MDA1040',4.475,3.55,3.5),('L_CENKER_CKCS6045',2.1,2.4,5.7)]:
             fp=parse((ROOT/'hardware/BigModular.pretty'/(name+'.kicad_mod')).read_text())
             pads={p[1]:p for p in nodes(fp,'pad')}
             self.assertEqual(set(pads),{'1','2'})

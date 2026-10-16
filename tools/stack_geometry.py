@@ -1,13 +1,16 @@
 """A4.2 simple-L two-board placement contract. mm; panel front Z=0, +Z into case.
-No middle PCB, spacers or board-to-board UI headers. Exact native USB unchanged;
+No middle PCB, spacers or board-to-board UI headers. Native USB pad/model pattern unchanged;
 retained A4 assembly plane (X3.1..4.7); A4.2 uses plain L + restored SMT reset.
 """
 from copy import deepcopy
 from interface_contract import LED_RAILS
 
 GEOMETRY = {
-    'revision': 'A4.2 single +5V power LED checkpoint / plain M3 L brackets / placement-only',
+    'revision': 'V1 top UI / synchronized 64 parts / routing preparation',
     'board_count': 2,
+    'magnetics': {'L1/L4': {'mpn':'MDA1040-6R8M','height_max_mm':4.0,'body_max_mm':[11.3,10.3]},
+                  'L2/L3': {'mpn':'CKCS6045-4.7uH/M','height_max_mm':4.7,'body_max_mm':[6.3,6.3]}},
+    'normal_budget_note':'5.1mm from F.Cu to panel edge; reserve0.15mm solder and0.10mm assembly offset. No backside inductors.',
     'panel_mm': [9.8, 128.5, 1.6],
     'rail_holes_mm': [[2.42,3,3.2], [2.42,125.5,3.2]],
     'rail_compatibility': 'Common fixed-strip phase: 7.50 - 5.08 = 2.42; also sliding nuts',
@@ -16,14 +19,14 @@ GEOMETRY = {
     'carrier_X_mm': [3.1,4.7], 'carrier_Y_mm': [14,114.5], 'carrier_Z_mm': [2,32],
     'carrier_holes_YZ_mm': [[22,15], [106.5,15]],
     'carrier_bracket_reliefs_YZ_mm': [[16.5,27.5,10], [101,112,10]],
-    'aperture_XYWHR_mm': [4.255,59.35,4.2,9.8,.6],
-    'mouth_axis_XYZ_mm': [6.43,64.25,.8],
+    'aperture_XYWHR_mm': [4.255,28.6,4.2,9.8,.6],
+    'mouth_axis_XYZ_mm': [6.43,33.5,.8],
     'LEDs': [
         {'reference': ref, 'rail': LED_RAILS[ref], 'panel_hole_ref': hole,
          'panel_XY_diameter_mm': [6.7,y,3.6], 'pad1_YZ_mm': [y-1.27,6.37]}
-        for ref,hole,y in [('D10','H5',38)]
+        for ref,hole,y in [('D10','H5',49.5)]
     ],
-    'reset_XY_diameter_mm': [6.4,91,3.2],
+    'reset_XY_diameter_mm': [6.4,43,3.2],
     'LED': {
         'type': 'standard RED 3mm round THT LED, leads formed 90 degrees; no proprietary holder',
         'assembly': 'manual; exclude D10 from both JLC assembly BOM and CPL',
@@ -41,13 +44,13 @@ GEOMETRY = {
      'LCSC': 'C2886925',
      'type': 'SPST-NO momentary, side-actuated 90 degrees, exposed SMT leads',
      'footprint': 'SW_TL3340AF160QG_HandSolder',
-     'peg_row_YZ_mm': [91, 4.1],
+     'peg_row_YZ_mm': [43, 4.1],
      'actuator_axis_height_mm': 1.7,
      'body_height_mm': 3.3,
      'actuator_tip_Z_mm': 2.05,
      'actuator_diameter_mm': 2.0,
      'travel_mm': [0.1, 0.3],
-     'pins': {'1': 'RESET_A_PENDING', '2': 'RESET_B_PENDING', '3': 'RESET_A_PENDING', 'MP': ''},
+     'pins': {'1': 'EF_SHDN', '2': 'RTN', '3': 'EF_SHDN', 'MP': ''},
      'note': 'SMT, NOT through-hole. Exposed pads extended rearward for iron access; fine '
              'tip/flux/tweezers required. No buried signal pads. Recessed button, no printed '
              'plunger selected.',
@@ -82,7 +85,7 @@ GEOMETRY = {
         'note':'3mm walls; countersink only in PRINTED bracket, never PCB. Front nut has only 0.125mm nominal clearance to upright at worst rotation. No print/strength qualification.'
     },
     'power_output': {
-        'main_reference':'J7', 'connector_reference':'J2 (existing off-board circuit symbol)',
+        'main_reference':'J7', 'connector_reference':'manual output harness (no schematic reference)',
         'type':'Keyed/shrouded male IDC 2x8, 2.54mm mating pitch, CABLE MOUNT on insulated flying lead',
         'candidate_mpn':'Wurth 61201625821',
         'launch_pad1_YZ_mm':[48,27], 'launch_pitch_mm':2.54,
@@ -96,8 +99,8 @@ GEOMETRY = {
     'solder_tail_max_below_B_Cu_mm':1.8,
     'harness_envelope_XYZ_mm':[[.4,9.4],[40,75],[34,50]],
     'harness_status':'Provisional cable budget only; complete populated/cabled depth unverified',
-    'electrical_status':'Single D10 P5 power LED integrated in schematic; PCB-only placement reservations otherwise remain unsynchronized. No LED controller.',
-    'status':'NO routing, fabrication approval, strength test or working reset/LED circuit'
+    'electrical_status':'Single D10 P5 power LED integrated in schematic; 64 current schematic footprints imported; four fixed interfaces placed, 60 staged off-board. No LED controller.',
+    'status':'V1 routing-preparation stage; no copper. Bench validation and printed-fit trials required.'
 }
 
 
@@ -109,3 +112,40 @@ def panel_xy(x,y): return (round(x+50,5),round(y+30,5))
 def carrier_outline():
     return [(14,2),(16.5,2),(16.5,10),(27.5,10),(27.5,2),
             (101,2),(101,10),(112,10),(112,2),(114.5,2),(114.5,32),(14,32)]
+
+
+def physical_fingerprint(fp):
+    """Local pad/graphic/model geometry only; separately verify pose, fields and nets."""
+    import hashlib, json
+    def clean(v):
+        if not isinstance(v,list): return v
+        return [clean(t) for t in v if not (isinstance(t,list) and t and t[0] in ('uuid','net','pinfunction','pintype'))]
+    features=[clean(t) for t in fp[2:] if isinstance(t,list) and t[0] in
+              ('pad','model','fp_line','fp_rect','fp_arc','fp_circle','fp_poly')]
+    return hashlib.sha256(json.dumps(features).encode()).hexdigest()
+
+
+def ui_envelopes(g):
+    """Conservative XYZ solid/access bounds from actual library/manufacturer dimensions."""
+    j=g['mouth_axis_XYZ_mm'][1];s=g['reset_XY_diameter_mm'][1];l=g['LEDs'][0]['panel_XY_diameter_mm'][1]
+    return {'J1':[[4.7,8.5],[j-4.82,j+4.82],[.8,8.73]],
+            'SW1':[[4.7,8.0],[s-3.1,s+3.1],[2.05,6.9]],
+            'D10':[[4.7,8.6],[l-2.17,l+2.17],[-.2,7.27]],
+            'J7':[[1.3,9.4],[42,72],[25,32]]}
+
+
+def verify_ui_clearances(g):
+    j=g['mouth_axis_XYZ_mm'][1];s=g['reset_XY_diameter_mm'][1];l=g['LEDs'][0]['panel_XY_diameter_mm'][1]
+    gaps={'USB_pad_to_relief':j-4.82-27.5,
+          'USB_aperture_to_bracket':j-4.9-27,
+          'USB_to_switch_solder_access':s-3.1-(j+4.82),
+          'switch_to_LED_solder_access':l-2.17-(s+3.1),
+          'LED_flange_to_switch_body':l-1.9-(s+2.25),
+          'USB_aperture_to_rail_head':j-4.9-6,
+          'LED_flange_to_panel_edge':9.8-(6.7+1.9)}
+    assert min(gaps.values())>=.8, gaps
+    for ref,data in g['magnetics'].items():
+        margin=9.8-4.7-data['height_max_mm']-.15-.1
+        assert margin>=.149999, (ref,'normal envelope collision',margin)
+        gaps[ref+'_normal_budget_margin']=margin
+    return {k:round(v,3) for k,v in gaps.items()}

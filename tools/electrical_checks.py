@@ -42,7 +42,7 @@ def check(hw,audit,bom):
     assert not any('TPS621' in r['MPN'] or 'ATTINY' in r['MPN'].upper() or 'MCP1799' in r['MPN'] for r in rows.values())
     assert not any(n and any(t in n for t in ('AUX','ADC_','SENSE_','DBG_','UPDI','MCU','VBUS_RAW','VBUS_FUSED','PERMIT','EF_ENABLE','BUTTON')) for n in actual.values())
     assert rows['R38']['Value']==rows['R40']['Value']=='100k 1%'
-    for r,mpn,code,fp in [('L1','SWPA8065S6R8MT','C334250','L_Sunlord_SWPA8065S'),('L4','SWPA8065S6R8MT','C334250','L_Sunlord_SWPA8065S'),('L2','CKCS6045-4.7uH/M','C5291878','L_CENKER_CKCS6045'),('L3','CKCS6045-4.7uH/M','C5291878','L_CENKER_CKCS6045')]:
+    for r,mpn,code,fp in [('L1','MDA1040-6R8M','C2847552','L_KOHER_MDA1040'),('L4','MDA1040-6R8M','C2847552','L_KOHER_MDA1040'),('L2','CKCS6045-4.7uH/M','C5291878','L_CENKER_CKCS6045'),('L3','CKCS6045-4.7uH/M','C5291878','L_CENKER_CKCS6045')]:
         assert (rows[r]['MPN'],rows[r]['LCSC'],rows[r]['Footprint'])==(mpn,code,'BigModular:'+fp)
     footprint_maps=0
     for ref,row in rows.items():

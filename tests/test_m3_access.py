@@ -77,7 +77,7 @@ class M3AccessTests(unittest.TestCase):
             self.assertEqual(json.loads((out/'assembly-geometry.json').read_text()),geometry())
             # Same exact pre-cleanup golden bytes, stored as hashes instead of stale previews.
             import hashlib
-            golden={'assembly.svg': '48c99e4f17ffcf014bff57d36a920e29e73804137b2977d6e32b50a2cc16842f', 'm3-brackets.svg': '3095b4ffd2fd3689f0cce60468ffb28b7ecdd84ca96bf2c93d00a43ef39ccbdf'}
+            golden={'assembly.svg': 'b1961bd1d04e5f0cb68f630a109ba10ba645fca32bd0ba8867bd6514dc563761', 'm3-brackets.svg': '3095b4ffd2fd3689f0cce60468ffb28b7ecdd84ca96bf2c93d00a43ef39ccbdf'}
             for name,digest in golden.items():
                 self.assertEqual(hashlib.sha256((out/name).read_bytes()).hexdigest(),digest)
 
@@ -86,9 +86,9 @@ class M3AccessTests(unittest.TestCase):
         self.assertEqual(s['mpn'],'TL3340AF160QG');self.assertEqual(s['LCSC'],'C2886925')
         self.assertIn('SMT',s['type'])
         self.assertEqual(s['body_height_mm'],3.3)
-        self.assertEqual(s['peg_row_YZ_mm'],[91,4.1])
+        self.assertEqual(s['peg_row_YZ_mm'],[43,4.1])
         self.assertEqual([s['peg_pitch_mm'],s['peg_drill_mm']],[4.25,.9])
-        self.assertEqual(geometry()['reset_XY_diameter_mm'],[6.4,91,3.2])
+        self.assertEqual(geometry()['reset_XY_diameter_mm'],[6.4,43,3.2])
         self.assertEqual(s['pins']['1'],s['pins']['3'])
         self.assertNotEqual(s['pins']['1'],s['pins']['2'])
         self.assertNotIn('signal_row_YZ_mm',s)
