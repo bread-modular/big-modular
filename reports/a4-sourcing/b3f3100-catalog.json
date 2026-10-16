@@ -1,0 +1,83 @@
+{
+  "part": {
+    "code": "C306876",
+    "mpn": "B3F-3100",
+    "manufacturer": "Omron Electronics",
+    "package": "DIP",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 23,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Operating Temperature": "-25\u2103~+70\u2103",
+      "Contact Current": "50mA",
+      "Operating Force": "1N",
+      "Length": "6mm",
+      "Termination Style": "PC Pin",
+      "Voltage Rating": "24V",
+      "Life": "1 million cycles",
+      "Actuator Style": "Round Button",
+      "Circuit": "SPST-NO",
+      "Mounting Type": "Right Angle",
+      "Width": "6mm"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.7077
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.5658
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.4957
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.4256
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.3832
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.362
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 2,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": null,
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-16T00:00:05Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C306876"
+      },
+      "sha256": "7c923a608c10067ab4bd0a92144ec4e434cafeafdcc01ae344f4a0555f0b75a5",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "failures": [],
+  "order_ready": false
+}

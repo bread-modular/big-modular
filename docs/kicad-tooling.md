@@ -70,7 +70,7 @@ python3 -B opt/kicad-tools/kicad_tools.py netlist inspect \
 The real check stages private copies, exports a native XML netlist and retains
 raw commands, native findings and source hashes. An ERC-only run is an explicit
 partial scope; it does not run board DRC. The checker still compares ref/pin/net
-identities: **the carrier's J1-only PCB intentionally does not match the full
+identities: **the carrier's incomplete J1 + UI socket-reservation PCB intentionally does not match the full
 88-component schematic, so findings/exit 1 are expected**, even if ERC has no
 violations. Never suppress that mismatch or call this a fabrication-ready pass.
 A full `check` additionally runs native DRC/refill-in-memory/parity without saving
@@ -179,3 +179,14 @@ concurrently while a KiCad GUI process had this workspace open; those unrelated
 metadata changes were preserved rather than reverted or folded into the toolkit
 import. Bread Modular's source hashes, Git HEAD and pre-existing status were
 verified unchanged.
+
+## A4.2 mechanical-placement boundary
+
+Two active PCBs: `big_modular` and mechanical `front_panel`. The middle board is
+retired in `docs/archive/a3-stack-superseded.zip`. No UI mating headers remain.
+Use `build_stack.py --output NEW` and `build_mechanics.py --output NEW` for candidates.
+The native helper is narrowly required because common `pcb inspect` rejects the
+retained USB 3D dependency and cannot author these part/NPTH reservations. Shared
+`check` still runs private ERC/DRC/parity; current evidence: `reports/stack-a4-2-native`.
+Do not equate geometry tests with a routed or power-qualified circuit. The output
+J2 is cable-mounted; J7 is a new PCB-only landing, not a header population choice.

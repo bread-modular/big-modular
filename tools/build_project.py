@@ -9,6 +9,8 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--schematic-only', action='store_true', help='Render a NEW schematic candidate only; never regenerate boards, BOM, libraries or audit.')
 parser.add_argument('--output', type=Path, help='Required NEW directory for --schematic-only; copies existing project/library context.')
 args = parser.parse_args()
+if not args.schematic_only:
+    parser.error('A4: legacy full regeneration is disabled; use --schematic-only --output NEW, or tools/build_stack.py --output NEW for mechanical candidates')
 if args.schematic_only != bool(args.output):
     parser.error('--schematic-only and --output must be used together')
 HW = args.output.resolve() if args.schematic_only else ROOT/'hardware'
@@ -167,76 +169,3 @@ if args.schematic_only:
     shutil.copytree(ROOT/'hardware/BigModular.pretty', HW/'BigModular.pretty')
     print('Created', len(BOM), 'components in three functional subsheets plus an overview; boards/BOM unchanged:', HW)
     sys.exit(0)
-(HW/'BigModular.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "kicad_symbol_editor")\n'+'\n'.join(dump(s) for s in LIB.values())+'\n)')
-(HW/'sym-lib-table').write_text('(sym_lib_table (version 7) (lib (name "BigModular") (type "KiCad") (uri "${KIPRJMOD}/BigModular.kicad_sym") (options "") (descr "Pinned project symbols; see pin audit")))')
-(HW/'big_modular.kicad_pro').write_text(json.dumps({'meta':{'filename':'big_modular.kicad_pro','version':1},'text_variables':{'STATUS':'ENGINEERING PROTOTYPE - DO NOT FABRICATE'}},indent=2)+'\n')
-with (ROOT/'BOM.csv').open('w') as f:
-    w=csv.DictWriter(f,fieldnames=list(BOM[0]),lineterminator="\n");w.writeheader();w.writerows(BOM)
-(ROOT/'docs/pin-net-audit.json').write_text(json.dumps(CONNS,indent=2)+'\n')
-# Board creation uses the locally installed KiCad engine. No routing functions are called.
-import pcbnew as pcb
-MM=pcb.FromMM
-def v(x,y):return pcb.VECTOR2I(MM(x),MM(y))
-def line(b,a,z,layer=pcb.Edge_Cuts):
-    s=pcb.PCB_SHAPE();s.SetShape(pcb.SHAPE_T_SEGMENT);s.SetStart(v(*a));s.SetEnd(v(*z));s.SetLayer(layer);s.SetWidth(MM(.05 if layer==pcb.Edge_Cuts else .15));b.Add(s)
-def arc(b,a,m,z):
-    s=pcb.PCB_SHAPE();s.SetShape(pcb.SHAPE_T_ARC);s.SetArcGeometry(v(*a),v(*m),v(*z));s.SetLayer(pcb.Edge_Cuts);s.SetWidth(MM(.05));b.Add(s)
-def rect(b,x,y,w,h):
-    pts=[(x,y),(x+w,y),(x+w,y+h),(x,y+h),(x,y)]
-    for a,z in zip(pts,pts[1:]):line(b,a,z)
-def roundrect(b,x,y,w,h,r):
-    k=r/math.sqrt(2)
-    line(b,(x+r,y),(x+w-r,y));arc(b,(x+w-r,y),(x+w-r+k,y+r-k),(x+w,y+r))
-    line(b,(x+w,y+r),(x+w,y+h-r));arc(b,(x+w,y+h-r),(x+w-r+k,y+h-r+k),(x+w-r,y+h))
-    line(b,(x+w-r,y+h),(x+r,y+h));arc(b,(x+r,y+h),(x+r-k,y+h-r+k),(x,y+h-r))
-    line(b,(x,y+h-r),(x,y+r));arc(b,(x,y+r),(x+r-k,y+r-k),(x+r,y))
-def txt(b,s,x,y,size=.8,layer=pcb.Dwgs_User):
-    t=pcb.PCB_TEXT(b);t.SetText(s);t.SetPosition(v(x,y));t.SetTextSize(v(size,size));t.SetTextThickness(MM(.12));t.SetLayer(layer);b.Add(t)
-def hole(b,ref,x,y,dx,dy=None):
-    dy=dx if dy is None else dy
-    fp=pcb.FOOTPRINT(b);fp.SetReference(ref);fp.SetValue('MECHANICAL_NPTH');fp.SetPosition(v(x,y));fp.Reference().SetVisible(False);fp.Value().SetVisible(False)
-    p=pcb.PAD(fp);p.SetAttribute(pcb.PAD_ATTRIB_NPTH);p.SetShape(pcb.PAD_SHAPE_CIRCLE if dx==dy else pcb.PAD_SHAPE_OVAL);p.SetSize(v(dx,dy));p.SetDrillSize(v(dx,dy))
-    if dx!=dy:p.SetDrillShape(pcb.PAD_DRILL_SHAPE_OBLONG)
-    p.SetLayerSet(pcb.LSET.AllCuMask());p.SetPosition(v(x,y));fp.Add(p);b.Add(fp)
-def board():
-    b=pcb.BOARD();b.SetCopperLayerCount(2);b.GetDesignSettings().SetBoardThickness(MM(1.6));return b
-fname='USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal'
-pretty=HW/'BigModular.pretty';pretty.mkdir(exist_ok=True)
-shutil.copyfile('/usr/share/kicad/footprints/Connector_USB.pretty/'+fname+'.kicad_mod',pretty/(fname+'.kicad_mod'))
-(HW/'fp-lib-table').write_text('(fp_lib_table (version 7) (lib (name "BigModular") (type "KiCad") (uri "${KIPRJMOD}/BigModular.pretty") (options "") (descr "Unmodified installed GCT USB4105 footprint")))')
-b=board();rect(b,49.75,42.275,100.5,60)
-fp=pcb.FootprintLoad(str(pretty),fname);fp.SetReference('J1');fp.SetValue('USB4105-GF-A');fp.SetPosition(v(100,99.8));fp.SetFPID(pcb.LIB_ID('BigModular',fname));fp.SetLocked(True);b.Add(fp)
-nets={}
-for name in ['VBUS_RAW','GND','CC1','CC2']:
-    n=pcb.NETINFO_ITEM(b,name);b.Add(n);nets[name]=n
-for p in fp.Pads():
-    net=CONNS['J1'].get(p.GetNumber())
-    if net:p.SetNet(nets[net])
-for i,(Y,Z) in enumerate([(45,6),(83.5,6),(45,52),(83.5,52)]):hole(b,'H'+str(i+1),Y+35.75,104.275-Z,2.2)
-txt(b,'PLACEMENT ONLY / NO ROUTING / NOT BUILDABLE',100,35,1.2)
-txt(b,'Carrier: Y=14..114.5; Z=2..62 mm',100,39,.9)
-txt(b,'J1 MOUTH Z=+0.800 / insertion +Z / panel normal',100,108,.9)
-txt(b,'Carrier top X=3.170; PCB bottom X=1.570',100,113,.9)
-txt(b,'2 machined corner blocks: see ../docs/assembly.svg',100,117,.9)
-for Y in [45,83.5]:
-    pts=[(Y-4+35.75,104.275-1.6),(Y+4+35.75,104.275-1.6),(Y+4+35.75,104.275-10),(Y-4+35.75,104.275-10)]
-    for a,z in zip(pts,pts[1:]+pts[:1]):line(b,a,z,pcb.Dwgs_User)
-line(b,(100,101.0),(100,93),pcb.Dwgs_User)
-for a,z in [((100,93),(98.8,95)),((100,93),(101.2,95))]:line(b,a,z,pcb.Dwgs_User)
-# Native data has pads only: no generated tracks, vias, copper graphics or zones.
-pcb.SaveBoard(str(HW/'big_modular.kicad_pcb'),b)
-p=board();rect(p,50,30,9.8,128.5)
-roundrect(p,50+2.725,30+59.35,4.2,9.8,.6)
-hole(p,'H1',57.5,33,3.2);hole(p,'H2',57.5,155.5,3.2)
-hole(p,'H3',54.9,75,2.2);hole(p,'H4',54.9,113.5,2.2)
-txt(p,'BIG',54.9,45,.95,pcb.F_SilkS);txt(p,'MOD',54.9,48,.95,pcb.F_SilkS);txt(p,'PD 9V',54.9,57,.8,pcb.F_SilkS);txt(p,'ONLY',54.9,61,.8,pcb.F_SilkS)
-txt(p,'IN',54.9,104,.8,pcb.F_SilkS);txt(p,'PROTO',54.9,143,.8,pcb.F_SilkS)
-txt(p,'2HP: 9.8 x 128.5 x 1.6 mm',82,40,1)
-txt(p,'USB cutout: 4.2 x 9.8, R0.6',82,45,1)
-txt(p,'Port axis (X,Y,Z)=(4.900,64.250,0.800)',97,50,1)
-txt(p,'Front face Z=0; inward +Z; NO copper',92,55,1)
-txt(p,'Doepfer X=7.5 / dia3.2: 0.7mm FR4 web; M3 head overhang BLOCKER',114,65,.85)
-txt(p,'Mounting proposal: ../docs/assembly.svg / mechanics.md',112,70,.85)
-pcb.SaveBoard(str(HW/'front_panel.kicad_pcb'),p)
-(HW/'front_panel.kicad_pro').write_text(json.dumps({'meta':{'filename':'front_panel.kicad_pro','version':1}},indent=2)+'\n')
-print('Created',len(BOM),'schematic components, three subsheets + overview, two unrouted boards.')

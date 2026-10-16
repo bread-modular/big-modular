@@ -1,6 +1,6 @@
 # Historical A1 validation summary — INCOMPLETE / NON-OPERATIONAL
 
-**Historical snapshot, not the current schematic layout.** The one-sheet/page and 21-wire counts below describe the preceding revision. See [the current three-subsheet readability report](schematic-readability.md) for current exports and checks; its linked native evidence supersedes these schematic layout counts. The retained PCB/design blockers below remain applicable.
+**Historical snapshot, not the current schematic layout.** The one-sheet/page and 21-wire counts below describe the preceding revision. See [the current three-subsheet readability report](schematic-readability.md) for current exports and checks; its linked native evidence supersedes these schematic layout counts. This snapshot also predates the A4 two-board assembly; its old carrier, mounting blocks, hole counts and rail geometry are superseded. See [current A4.2 stack validation](stack-validation.md). Electrical/USB qualification blockers remain applicable.
 
 KiCad 10.0.6, actual CLI exports. A1 WIP was subsequently merged into main; this is a validation report for an incomplete design, not a claim that A1 was never committed or merged. This independent review makes no commit or merge. No sibling repository was accessed during this review.
 

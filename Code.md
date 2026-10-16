@@ -28,7 +28,7 @@ parsers or routers when the existing toolkit supports the requested operation.
   Their single authoritative copies live under `opt/kicad-tools/skills/`.
 - Start with `python3 -B opt/kicad-tools/kicad_tools.py doctor --config
   tools/kicad-project.json`. This profile explicitly selects the carrier and
-  root schematic; there are two PCBs, so do not rely on automatic selection.
+  root schematic; there are two active PCBs, so do not rely on automatic selection.
 - Use `opt/kicad-tools/kicad_tools.py` for private checks, native netlist work,
   candidate PCB/schematic edits, export and assembly sourcing. Legacy
   `opt/kicad-jlcpcb` resolves to the same canonical JLCPCB utilities.
@@ -47,22 +47,34 @@ parsers or routers when the existing toolkit supports the requested operation.
 
 ## Preserve Big Modular's current hardware state
 
-Both boards are intentionally unrouted. The carrier contains only electrical
-connector J1; the front panel is mechanical. **Do not synchronize either board
-from the full schematic, place components, route, regenerate manufacturing
-outputs or install a routing runtime as part of tooling setup.** Existing J1
-geometry, project libraries, `BOM.csv` and hardware deliverables are not migrated
-from Bread Modular.
+Both active boards are intentionally unrouted. A4.2 uses a front panel and one
+perpendicular main PCB carrying J1, D10/R32/SW1 and J7 wire landing reservations.
+The middle PCB and J3-J6 were retired; previous files are in docs/archive.
+J2 remains the off-board 16-pin keyed power OUTPUT on a flying lead. D10/R32/SW1/J7
+are NOT added to the unchanged circuit schematic/root BOM. Never parallel another
+active PSU. Do not synchronize from the full schematic or generate manufacturing
+outputs as part of tooling setup. Preserve native J1 geometry and circuit intent.
 
 `check` always retains native schematic-to-PCB parity findings, including in an
 ERC-only run. The incomplete carrier is expected to fail full parity. Report
 that as the known design state, not a toolkit installation failure or a clean
-hardware check. The panel has no matching circuit schematic; do not pair it with
+hardware check. The mechanical panel has no matching circuit schematic; do not pair it with
 the carrier schematic to manufacture a pass.
 
 Keep the existing `tools/build_project.py`, `tools/render_schematic.py`,
 `tools/build_mechanics.py` and `tools/verify_project.py`: they encode Big Modular's
 specific inventory/geometry regressions and are not replaced by generic tools.
+A4.2 uses `tools/build_stack.py --output NEW` and `tools/build_mechanics.py --output
+NEW`; `tools/verify_stack.py` checks both boards, interface pins and brackets.
+The legacy full builder is disabled. Read docs/mechanics.md and the buying guide:
+two plain 3mm-wall M3 L brackets, restored TL3340AF160QG SMT switch with
+hand-solder lands, and power output on cable-mounted IDC.
+The retired TS-1166VW-type alternative has a separate custom footprint and
+`docs/ts1166-switch.md` / `tools/verify_ts1166.py`. It is NOT installed: 7.1mm
+normal projection exceeds the current 5.1mm allowance; uploaded row2.50 conflicts
+with a public row2.15 variant. The user chose the earlier SMT part instead;
+do not reinstall either THT alternative or widen the panel automatically.
+Actual print/hardware fit, hand soldering and output harness remain unqualified.
 Regeneration is a separate, explicitly scoped design task.
 
 Optional Freerouting and TraceMaker controllers are copied for future authorized

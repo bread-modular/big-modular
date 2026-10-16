@@ -1,0 +1,40 @@
+{
+  "unchanged_prior_checked_inputs": [
+    "hardware/BigModular.kicad_sym",
+    "hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
+    "hardware/BigModular.pretty/R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal.kicad_mod",
+    "hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod",
+    "hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod",
+    "hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod",
+    "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod",
+    "hardware/big_modular.kicad_pcb",
+    "hardware/fp-lib-table",
+    "hardware/sym-lib-table",
+    "tools/kicad-project.json"
+  ],
+  "observed_unrelated_drift": {
+    "hardware/01_input_protection.kicad_sch": {
+      "previous": "82531f3d15bae14fc0115ac2d50e271faacb9b10528ee0266d2efc3e494c281e",
+      "current": "736614980886bb693b80f27afcbe61e90205d383b654b13d52556e191a5a98ed"
+    },
+    "hardware/02_power_conversion.kicad_sch": {
+      "previous": "82fcdb81f9c8523a242522a6a744c415c59d2caf1c47e8ca75196c1ae9b4ffda",
+      "current": "28ba6e08bb457d77424be596ef22bdf9659e8d59091cce1aa666d97f337e42d7"
+    },
+    "hardware/03_output_rails.kicad_sch": {
+      "previous": "39281e441b4b33036474d363a3a514d4069681bc5c7210e53ee24852e8ed3aad",
+      "current": "285424ff8fdd51a633ae3adac26856252ded8023ae726440f8074c6107f966df"
+    },
+    "hardware/big_modular.kicad_pro": {
+      "previous": "65e1149c4eacd3ad65fd09560e0411ac74f43de595ec1b2d8bbd1371e22a8300",
+      "current": "0789c44de213b53f75ea8d0479ec4db9ce1784c87448b323b4382bb066172b0d"
+    },
+    "hardware/big_modular.kicad_sch": {
+      "previous": "6322aa0d555fdf6e281aca3696b15c07b2931a09231a3e46bc4ea67447eccdc4",
+      "current": "bc9f794db804e97af232c828a6c657091c462aaef207b2a8d3153a4c05a2a8e4"
+    }
+  },
+  "drift_action": "Preserved; not reverted and no baseline hashes changed. No schematic/project writes in this task.",
+  "active_panel_sha256": "de26d9bb6545c0921185b920f0e021042b63b2c24ba76bf5f4b9b5e1e8543cc4",
+  "new_library_only": true
+}

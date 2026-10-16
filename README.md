@@ -1,20 +1,36 @@
-# Big Modular — PD-only power module / three-sheet circuit WIP
+# Big Modular — PD-only power module / A4.2 two-board placement WIP
 
 **INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE OR CONNECT VALUABLE LOADS.**
 
-This revision is a connected circuit proposal, not a working power module. Explicit 9 V PDO/current validation, input ESD/surge protection, four USB footprint clearances, rail-screw fit and the complete electrical PCB layout remain blocking. A1 WIP was merged into main; its merge does not imply fabrication approval. This review does not commit or merge.
+This revision is a connected circuit proposal, not a working power module. Explicit 9 V PDO/current validation, input ESD/surge protection, four USB footprint clearances, exact mechanical hardware/actuator selection and the complete electrical PCB layout remain blocking. The A4.2 panel uses simple off-centre round rail holes on the common fixed-strip grid phase; sliding nuts are no longer required. A1 WIP was merged into main; its merge does not imply fabrication approval. This review does not commit or merge.
+
+## Selected reset — restored SMT version
+
+**E-Switch TL3340AF160QG** is restored to the active board with the earlier
+hand-solder footprint and matching panel hole. The **2HP panel, 30 mm main-board
+depth and plain M3 L brackets are retained**. D10/R32 remain through-hole.
+The [TS-1166VW footprint](docs/ts1166-switch.md) is a retired, uninstalled
+alternative; its fit blocker no longer holds up the selected SMT arrangement.
+Physical fit/soldering and electrical reset integration still need validation.
 
 ## Deliverables
 
 - `hardware/big_modular.kicad_sch`: **A4 navigation overview plus three A3 functional subsheets**: input/protection, power conversion, output rails. All 88 real components and their electrical connectivity are retained; local feedback/filter/protection branches now use visible wires.
 - [`docs/schematic.pdf`](docs/schematic.pdf): **four navigable pages** (overview + three circuit pages), exported from the root hierarchy.
 - [Sheet guide](docs/schematic-guide.md): page map, signal flow and manual-reading notes. [Component guide](docs/component-guide.md): what each main component/support network does, how and why. [Readability validation](reports/schematic-readability.md): unchanged connectivity and remaining check limitations.
-- `hardware/big_modular.kicad_pcb`: perpendicular carrier, **J1 only** electrically; four mechanical NPTHs. J1 position, orientation and selected footprint are unchanged.
-- `hardware/front_panel.kicad_pcb`: 9.8 × 128.5 × 1.6 mm FR4 panel. Rail holes corrected to **x=7.5, y=3/125.5, Ø3.2**. The old 5 mm slots cannot fit at x=7.5; ordinary screw heads and the 0.7 mm edge web remain mechanical blockers.
-- [`docs/assembly.svg`](docs/assembly.svg) / [`assembly.pdf`](docs/assembly.pdf): original dimensioned FRONT/SIDE/TOP views, two machined right-angle interposers, screws, engagement, supports and harness envelope. See [`mechanics.md`](docs/mechanics.md).
-- `BOM.csv`, `docs/pin-net-audit.json`, `reports/big_modular.net` and actual ERC/DRC/geometry reports. Historical A1 transition inventory (not the current worktree diff): `reports/deliverable-files.txt`.
+- `hardware/big_modular.kicad_pcb`: **one perpendicular main PCB, 100.5 × 30 mm**. USB, 3mm through-hole LED, axial resistor and right-angle reset switch are all here. The native USB footprint is unchanged; its assembly plane moves right for M3 screw-head clearance.
+- `hardware/front_panel.kicad_pcb`: **2HP, 9.8 × 128.5 × 1.6 mm**, corner rail holes, two M3 bracket holes, USB/LED/reset openings. No middle PCB or board-to-board UI headers remain.
+- [Assembly drawing](docs/assembly.pdf) and [M3 bracket dimensions](docs/m3-brackets.pdf): **two identical plain L brackets, 9.2 × 10 × 18.4 mm, 3 mm walls**, M3×8 front screws, M3×8 90° countersunk side screws, four plain M3 nuts. No captive pockets or inserts. Loose nuts are held from the side; countersink only the printed bracket. Service out of rack; ABS fit trial required.
+- `hardware/mechanics/corner_braces.scad`: print-prototype source for two identical parts; no tested STL/structural qualification. The previous 10mm spacers and M2 side bolts are no longer used.
+- **SW1 TL3340AF160QG is SMT**, with three exposed signal lands, two solder anchors and two NPTH locator holes. Fine-tip component-side hand soldering is intended; trial a sample. D10/R32 remain THT. Reset is recessed behind a Ø3.2 hole at X6.4/Y91; no printed plunger or light pipe selected.
+- **Eurorack output:** J7 numbered solder lands and strain-relief holes feed the existing off-board **J2 keyed male 16-pin IDC on a short flying lead**. No bulky PCB box header is falsely fitted inside 2HP. Use a full 16-to-16 female IDC cable for ±12V/GND/+5V. **OUTPUT ONLY: never parallel another powered rack PSU.**
+- [Mechanical guide](docs/mechanics.md), [switch/connector/cable buying links](docs/parts-buying-guide.md), [manual placement inventory](docs/interface-placement.csv).
+- [A4.2 validation](reports/stack-validation.md), original source-preservation hashes, current native reports in `reports/stack-a4-2-native/`. Prior A3 boards/drawings are retained in `docs/archive/a3-stack-superseded.zip`; earlier native reports remain historical.
 
-**Both boards retain zero tracks, zero vias and zero zones.** Do not update either PCB from the schematic: connector-only electrical placement is intentional. These are not placement-complete, routable-by-assertion, operational or fabrication-ready boards.
+**Both active boards retain zero tracks, vias and zones.** The existing circuit files and root BOM are not modified by this switch change. D10/R32/SW1/J7 are PCB-only reservations needing deliberate
+schematic integration. LED/reset nets are isolated; all converter circuitry is
+still unplaced. Rear PCB edge is **30.4 mm behind the panel rear**, not a finished
+module/cable depth. No fabrication or power-up approval.
 
 ## Circuit and power permission
 
@@ -59,16 +75,22 @@ python3 -B -m unittest discover -s tests -v
 
 See [setup, provenance and exact sourcing/check commands](docs/kicad-tooling.md).
 The explicit profile selects the carrier, not the mechanical panel. Full PCB
-parity is intentionally incomplete; do not synchronize or route either board to
-make a generic check pass. Root `BOM.csv` is a design inventory, not the grouped
+parity is intentionally incomplete; do not synchronize or route any board to
+make a generic check pass. Use the A4.2 mechanical candidate builder only for an explicitly scoped placement change. Root `BOM.csv` is a design inventory, not the grouped
 assembly BOM expected by the auditor. Optional routing controllers are included
 **without runtimes**. Setup does not change hardware or establish release approval.
 
 ## Regeneration / checks
 
-Installed engine used: KiCad 10.0.6. `tools/build_project.py` owns the circuit inventory; `tools/render_schematic.py` owns the three-subsheet hierarchy/layout; `tools/build_mechanics.py` owns the original assembly drawing. For schematic-only changes, generate a **new candidate** with pinned symbols; the unflagged legacy builder also regenerates both boards and is not appropriate for this workflow. No research download is needed to regenerate.
+Installed engine used: KiCad 10.0.6. `tools/build_project.py` owns the circuit inventory; `tools/render_schematic.py` owns the three-subsheet hierarchy/layout; `tools/stack_geometry.py` and `tools/build_stack.py` own the A4.2 placement contract/candidate; `tools/build_mechanics.py` owns the original assembly drawing. Generate **new candidates** and validate before copying reviewed deliverables. The unflagged legacy full builder is disabled so it cannot restore the old deep boards. No research download is needed to regenerate.
 
 ```sh
+# Mechanical/placement work (does not touch schematics or root BOM):
+/usr/bin/python3 -B tools/build_stack.py --output research/new-stack-candidate
+python3 -B tools/build_mechanics.py --output research/new-assembly-candidate
+/usr/bin/python3 -B tools/verify_stack.py --hardware research/new-stack-candidate/hardware --geometry research/new-stack-candidate/assembly-geometry.json
+# Review candidate drawings/native DRC, then copy only approved outputs.
+# Separately, for schematic-only work:
 python3 -B tools/build_project.py --schematic-only --output research/new-schematic-candidate
 # Review/validate the candidate, then copy only its four schematic files into hardware/.
 # The remaining commands validate/export the delivered hardware/ hierarchy.
@@ -83,4 +105,4 @@ pdfinfo docs/schematic.pdf
 git diff --check
 ```
 
-ERC cleanliness is not proof of function. DRC runs intentionally omit schematic parity/refill. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 20 wire/hierarchy interstage paths and 57 local wire paths, retains one documented named PRE_P continuation, and checks actual PCB geometry. A native before/after audit retains all 288 exported pin memberships, including no-connect/singleton nets. Private isolated ERC retains 68 pre-existing footprint-library configuration warnings; installed-environment ERC reports zero. No rules were suppressed. User rail continuous/peak targets are still required before any output rating can be designed.
+ERC cleanliness is not proof of function. The separate per-board DRC reports omit schematic parity/refill; the A4.2 common-tool private check additionally retains full carrier schematic parity and refill-in-memory findings. The generated whole-net audit is not independent; the verifier additionally hardcodes 65 pin/net spot checks, traverses 20 wire/hierarchy interstage paths and 57 local wire paths, retains one documented named PRE_P continuation, and checks actual PCB geometry including ten mechanical NPTHs, five switch SMT lands plus two NPTH locator holes, sixteen output landing pins and two M3 bracket/tool envelopes with obstruction-negative tests. A native before/after audit retains all 288 exported pin memberships, including no-connect/singleton nets. Private isolated ERC retains 68 pre-existing footprint-library configuration warnings; installed-environment ERC reports zero. No rules were suppressed. User rail continuous/peak targets are still required before any output rating can be designed.
