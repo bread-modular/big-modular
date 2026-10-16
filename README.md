@@ -1,6 +1,6 @@
 # Big Modular — autonomous 9 V V1
 
-**V1 — unrouted / placement next**. Both native PCBs are updated and unrouted. USB/retry/3mm power LED form the top
+**V1 — unrouted / placement next**. Both native PCBs are updated and unrouted. USB/3mm power LED/retry form the top
 cluster. All64 active footprints/nets are imported:4 fixed,60 staged off-board.
 
 ```
@@ -19,6 +19,6 @@ SW1: press eFuse shutdown, release retry (UV/OV/current/thermal protections rema
 - `tools/electrical_design.py` + `build_project.py` + `render_schematic.py` generate
   native sheets/libraries, `BOM.csv` and `docs/pin-net-audit.json`; BOM is not an order CSV.
 - [Current assembly PDF](docs/assembly.pdf): unchanged outlines/M3 brackets; top USB
-  axis Y33.5mm, retry Y43mm, red3mm LED Y49.5mm (panel-top coordinates).
+  axis Y33.5mm, red3mm LED Y43mm, retry Y49.5mm (panel-top coordinates).
 - V1 routing preparation only: place the60 staged components before routing.
   No routing, manufacturing exports, uploads or commits in this checkpoint.

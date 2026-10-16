@@ -97,12 +97,38 @@ class StackGeometryTests(unittest.TestCase):
         from stack_geometry import verify_ui_clearances
         g=geometry(); gaps=verify_ui_clearances(g)
         self.assertEqual(g['mouth_axis_XYZ_mm'],[6.43,33.5,.8])
-        self.assertEqual(g['reset_XY_diameter_mm'],[6.4,43,3.2])
-        self.assertEqual(g['LEDs'][0]['panel_XY_diameter_mm'],[6.7,49.5,3.6])
+        self.assertEqual(g['reset_XY_diameter_mm'],[6.4,49.5,3.2])
+        self.assertEqual(g['LEDs'][0]['panel_XY_diameter_mm'],[6.7,43,3.6])
+        self.assertEqual(g['switch']['peg_row_YZ_mm'],[49.5,4.1])
+        self.assertEqual(g['LEDs'][0]['pad1_YZ_mm'],[41.73,6.37])
+        self.assertEqual(gaps['USB_to_LED_solder_access'],2.51)
+        self.assertEqual(gaps['USB_to_switch_solder_access'],8.08)
+        self.assertEqual(gaps['LED_to_switch_solder_access'],1.23)
+        self.assertEqual(gaps['LED_flange_to_switch_body'],2.35)
         self.assertEqual(gaps['L1/L4_normal_budget_margin'],.85)
         self.assertEqual(gaps['L2/L3_normal_budget_margin'],.15)
         g['magnetics']['L1/L4']['height_max_mm']=6.5
         with self.assertRaises(AssertionError):verify_ui_clearances(g)
+
+    def test_ui_clearances_reject_overlap_and_insufficient_solder_access(self):
+        from stack_geometry import verify_ui_clearances
+        # Both physical overlaps and positive gaps below the unchanged 0.8mm limit.
+        for ref,y in [('D10',39),('D10',41.27),('SW1',47),('SW1',49.06)]:
+            with self.subTest(ref=ref,y=y):
+                g=geometry()
+                if ref=='D10':g['LEDs'][0]['panel_XY_diameter_mm'][1]=y
+                else:g['reset_XY_diameter_mm'][1]=y
+                with self.assertRaises(AssertionError):verify_ui_clearances(g)
+
+    def test_ui_clearances_are_independent_of_led_switch_order(self):
+        from stack_geometry import verify_ui_clearances
+        g=geometry()
+        g['reset_XY_diameter_mm'][1]=43
+        g['LEDs'][0]['panel_XY_diameter_mm'][1]=49.5
+        gaps=verify_ui_clearances(g)
+        self.assertEqual(gaps['USB_to_switch_solder_access'],1.58)
+        self.assertEqual(gaps['LED_to_switch_solder_access'],1.23)
+        self.assertEqual(gaps['LED_flange_to_switch_body'],2.35)
 
     def test_all_64_pcb_fields_paths_and_staging(self):
         import csv

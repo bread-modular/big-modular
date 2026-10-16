@@ -7,16 +7,19 @@ Panel origin is upper left, X across / Y down; Z into case. [Assembly PDF](assem
 | Interface | Panel axis X,Y mm | Native carrier X,Y mm |
 |---|---|---|
 | J1 USB-C | 6.43,33.5 | 69.25,99.8 |
-| SW1 retry | 6.4,43 | 78.75,100.175 |
-| D10 red3mm | 6.7,49.5 | pad1:83.98,97.905 |
+| D10 red3mm | 6.7,43 | pad1:77.48,97.905 |
+| SW1 retry | 6.4,49.5 | 85.25,100.175 |
 
 USB aperture X4.255,Y28.6,W4.2,H9.8,R0.6; SW1 hole3.2mm; LED hole3.6mm.
 USB native pad numbering/mount pattern/model/orientation retained. Top bracket and
 cutback end at Y27/Y27.5; the2.5mm carrier lip above them cannot support USB.
 This is the highest practical cluster without changing the outline/brackets.
 Clearances: USB pad-to-relief1.18mm; aperture-to-bracket1.6mm;
-USB-to-switch solder envelopes1.58mm; switch-to-LED solder envelopes1.23mm;
+USB-to-LED solder envelopes2.51mm; LED-to-switch solder envelopes1.23mm;
 switch body-to-LED flange2.35mm. LED flange max3.8mm leaves1.2mm lateral margin.
+Order is USB -> D10 -> SW1; each keeps its own X, depth, orientation and land pattern.
+LED pad1 remains1.27mm above its axis; SW1 peg row follows its own axis.
+USB-to-switch solder envelopes8.08mm. All pairwise access gaps retain the0.8mm minimum.
 Rail head ends at Y6; USB aperture begins28.6. Rail head still overhangs left0.58mm.
 SW1 body3.3mm; button recessed0.45mm behind panel rear, no plunger. Solder from +X
 with fine tip before fitting panel; all M3 nut/tool paths are checked out-of-rack.

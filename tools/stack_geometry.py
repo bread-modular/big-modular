@@ -24,9 +24,9 @@ GEOMETRY = {
     'LEDs': [
         {'reference': ref, 'rail': LED_RAILS[ref], 'panel_hole_ref': hole,
          'panel_XY_diameter_mm': [6.7,y,3.6], 'pad1_YZ_mm': [y-1.27,6.37]}
-        for ref,hole,y in [('D10','H5',49.5)]
+        for ref,hole,y in [('D10','H5',43)]
     ],
-    'reset_XY_diameter_mm': [6.4,43,3.2],
+    'reset_XY_diameter_mm': [6.4,49.5,3.2],
     'LED': {
         'type': 'standard RED 3mm round THT LED, leads formed 90 degrees; no proprietary holder',
         'assembly': 'manual; exclude D10 from both JLC assembly BOM and CPL',
@@ -44,7 +44,7 @@ GEOMETRY = {
      'LCSC': 'C2886925',
      'type': 'SPST-NO momentary, side-actuated 90 degrees, exposed SMT leads',
      'footprint': 'SW_TL3340AF160QG_HandSolder',
-     'peg_row_YZ_mm': [43, 4.1],
+     'peg_row_YZ_mm': [49.5, 4.1],
      'actuator_axis_height_mm': 1.7,
      'body_height_mm': 3.3,
      'actuator_tip_Z_mm': 2.05,
@@ -136,11 +136,17 @@ def ui_envelopes(g):
 
 def verify_ui_clearances(g):
     j=g['mouth_axis_XYZ_mm'][1];s=g['reset_XY_diameter_mm'][1];l=g['LEDs'][0]['panel_XY_diameter_mm'][1]
+    envelopes=ui_envelopes(g)
+    def solder_gap(a,b):
+        # Signed separation of physical pad/access envelopes, independent of Y order.
+        a=envelopes[a][1];b=envelopes[b][1]
+        return max(a[0]-b[1],b[0]-a[1])
     gaps={'USB_pad_to_relief':j-4.82-27.5,
           'USB_aperture_to_bracket':j-4.9-27,
-          'USB_to_switch_solder_access':s-3.1-(j+4.82),
-          'switch_to_LED_solder_access':l-2.17-(s+3.1),
-          'LED_flange_to_switch_body':l-1.9-(s+2.25),
+          'USB_to_LED_solder_access':solder_gap('J1','D10'),
+          'USB_to_switch_solder_access':solder_gap('J1','SW1'),
+          'LED_to_switch_solder_access':solder_gap('D10','SW1'),
+          'LED_flange_to_switch_body':abs(l-s)-1.9-2.25,
           'USB_aperture_to_rail_head':j-4.9-6,
           'LED_flange_to_panel_edge':9.8-(6.7+1.9)}
     assert min(gaps.values())>=.8, gaps
