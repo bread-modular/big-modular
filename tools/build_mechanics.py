@@ -39,7 +39,7 @@ def assembly(out,g):
     for x,y,di in g['rail_holes_mm']+g['panel_bracket_holes_mm']+[led['panel_XY_diameter_mm'] for led in g['LEDs']]+[g['reset_XY_diameter_mm']]:
         d.circle(fx+x*s,fy+y*s,di*s/2)
     x,y,w,h,r=g['aperture_XYWHR_mm'];d.rect(fx+x*s,fy+y*s,w*s,h*s,'white')
-    for yy,t in [(3,'Rail X2.42 / dia3.2'),(22,'M3 bracket X6.4 / Y22'),(led,'D10 +5V POWER / X6.7 / dia3.6'),(j,'USB axis X6.43'),(sw,'Retry X6.4 / dia3.2'),(106.5,'M3 bracket X6.4 / Y106.5'),(125.5,'Rail Y125.5 / dia3.2')]:
+    for yy,t in [(3,'Rail X2.42 / dia3.2'),(22,'M3 bracket X6.4 / Y22'),(led,f'D10 +5V / X6.7 / Y{led:g} / dia3.6'),(j,'USB axis X6.43'),(sw,f'Retry X6.4 / Y{sw:g} / dia3.2'),(106.5,'M3 bracket X6.4 / Y106.5'),(125.5,'Rail Y125.5 / dia3.2')]:
         d.line(fx+9.8*s,fy+yy*s,36,fy+yy*s);d.text(37,fy+yy*s+1,t,2.5)
     d.lines(15,227,['9.8 x 128.5 x 1.6 FR4','Round corner rail holes retained.','6mm rail screw heads overhang .58mm.','Check adjacent panels; no countersink.'])
     # Side elevation, Y down and Z right; see real relief shape rather than box.

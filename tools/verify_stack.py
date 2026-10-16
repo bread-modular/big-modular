@@ -20,34 +20,34 @@ def verify_reset_smt(fp,g):
     """Independent actual pad/side/net checks for the restored E-Switch part."""
     assert fp.GetFPID().GetLibItemName()=='SW_TL3340AF160QG_HandSolder', 'wrong reset footprint'
     assert fp.GetValue()=='TL3340AF160QG' and fp.GetLayer()==pcb.F_Cu
-    assert xy(fp)==native(43,4.1) and fp.GetOrientationDegrees()==0
+    assert xy(fp)==native(49.5,4.1) and fp.GetOrientationDegrees()==0
     pads=list(fp.Pads());assert len(pads)==7, 'reset needs five SMT pads and two pegs'
     contacts={p.GetNumber():p for p in pads if p.GetNumber() in ['1','2','3']}
     assert set(contacts)=={'1','2','3'}
-    for n,y,width,net in [('1',41.775,.75,'EF_SHDN'),
-                          ('2',43,.6,'RTN'),
-                          ('3',44.225,.75,'EF_SHDN')]:
+    for n,y,width,net in [('1',48.275,.75,'EF_SHDN'),
+                          ('2',49.5,.6,'RTN'),
+                          ('3',50.725,.75,'EF_SHDN')]:
         p=contacts[n]
         assert xy(p)==native(y,5.75), 'SMT signal pad position'
         assert (mm(p.GetSize().x),mm(p.GetSize().y))==(width,2.3), 'hand-solder pad size'
         assert p.GetNetname().rsplit('/',1)[-1]==net, 'reset contact mapping (1+3 common, 2 switched)'
     anchors=[p for p in pads if p.GetNumber()=='MP']
-    assert len(anchors)==2 and sorted(xy(p) for p in anchors)==[native(40.85,2.95),native(45.15,2.95)]
+    assert len(anchors)==2 and sorted(xy(p) for p in anchors)==[native(47.35,2.95),native(51.65,2.95)]
     assert all((mm(p.GetSize().x),mm(p.GetSize().y))==(1.9,.7) and (not p.GetNetname() or p.GetNetname().startswith('unconnected-')) for p in anchors)
     for p in list(contacts.values())+anchors:
         assert p.GetAttribute()==pcb.PAD_ATTRIB_SMD and mm(p.GetDrillSize().x)==0
         assert p.IsOnLayer(pcb.F_Cu) and p.IsOnLayer(pcb.F_Paste) and p.IsOnLayer(pcb.F_Mask)
         assert not p.IsOnLayer(pcb.B_Cu), 'SMT pads must face the component/iron side'
     pegs=[p for p in pads if p.GetNumber()=='']
-    assert len(pegs)==2 and sorted(xy(p) for p in pegs)==[native(40.875,4.1),native(45.125,4.1)], 'locator positions'
+    assert len(pegs)==2 and sorted(xy(p) for p in pegs)==[native(47.375,4.1),native(51.625,4.1)], 'locator positions'
     assert all(p.GetAttribute()==pcb.PAD_ATTRIB_NPTH and not p.GetNetname() and
                (mm(p.GetDrillSize().x),mm(p.GetDrillSize().y))==(.9,.9) and
                not p.IsOnLayer(pcb.F_Paste) for p in pegs), 'locator holes must not be solder pads'
     sw=g['switch']
     assert sw['mpn']=='TL3340AF160QG' and sw['LCSC']=='C2886925'
-    assert sw['peg_row_YZ_mm']==[43,4.1] and sw['body_height_mm']==3.3
+    assert sw['peg_row_YZ_mm']==[49.5,4.1] and sw['body_height_mm']==3.3
     assert sw['actuator_axis_height_mm']==1.7 and sw['actuator_tip_Z_mm']==2.05
-    assert g['reset_XY_diameter_mm']==[6.4,43,3.2]
+    assert g['reset_XY_diameter_mm']==[6.4,49.5,3.2]
     assert math.isclose(g['carrier_X_mm'][1]+sw['actuator_axis_height_mm'],6.4)
     assert g['carrier_X_mm'][1]+sw['body_height_mm']+.4<g['panel_mm'][0], 'switch body exceeds 2HP'
     assert math.isclose(sw['peg_row_YZ_mm'][1]-2.05,sw['actuator_tip_Z_mm'])
@@ -98,9 +98,9 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     for i,y in enumerate([22,106.5],1):
         npth('front_panel',f'H{i+2}',(56.4,y+30),3.2)
         npth('big_modular',f'H{i}',native(y,15),3.2)
-    for ref,y in [('H5',49.5)]:
+    for ref,y in [('H5',43)]:
         npth('front_panel',ref,(56.7,y+30),3.6)
-    npth('front_panel','H6',(56.4,73),3.2)
+    npth('front_panel','H6',(56.4,79.5),3.2)
     for i,y in enumerate([43.5,70.5],3):npth('big_modular',f'H{i}',native(y,27),2.5)
     usb=fps['big_modular']['J1'];assert xy(usb)==(69.25,99.8) and usb.GetOrientationDegrees()==0
     audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
@@ -116,11 +116,11 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert g['mouth_axis_XYZ_mm']==[6.43,33.5,.8]
     assert math.isclose(4.7+1.73,6.43) # Intentional assembly plane translation.
     f=fps['big_modular']
-    for r,pos in [('D10',native(48.23,6.37)),('SW1',native(43,4.1)),('J7',native(48,27))]:
+    for r,pos in [('D10',native(41.73,6.37)),('SW1',native(49.5,4.1)),('J7',native(48,27))]:
         assert xy(f[r])==pos and f[r].GetLayer()==pcb.F_Cu and f[r].IsLocked()
     silk=[d for d in boards['big_modular'].GetDrawings() if d.GetLayer()==pcb.F_SilkS and isinstance(d,pcb.PCB_TEXT)]
-    panel_silk=[d.GetText() for d in boards['front_panel'].GetDrawings() if d.GetLayer()==pcb.F_SilkS and isinstance(d,pcb.PCB_TEXT)]
-    expected_leds=[('D10','+5V POWER',49.5,'H5')]
+    panel_silk=[d for d in boards['front_panel'].GetDrawings() if d.GetLayer()==pcb.F_SilkS and isinstance(d,pcb.PCB_TEXT)]
+    expected_leds=[('D10','+5V POWER',43,'H5')]
     assert len(g['LEDs'])==1 and g['LED']['pin_roles']=={'1':'K (cathode)','2':'A (anode)'}
     for (ref,rail,y,hole),record in zip(expected_leds,g['LEDs']):
         fp=f[ref]
@@ -139,10 +139,12 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
             assert any(d.GetText()==role and xy(d)==native(py,8.8) for d in silk), 'missing polarity mark'
         assert led['1'].GetShape()==pcb.PAD_SHAPE_RECT, 'square cathode pad required'
         assert any(d.GetText()==ref+' '+rail and xy(d)==native(y,11) for d in silk)
-        assert rail in panel_silk
+        assert any(d.GetText()==rail and xy(d)==(54.9,round(y+33.3,5)) for d in panel_silk), 'LED panel callout alignment'
         assert math.isclose(g['carrier_X_mm'][1]+g['LED']['axis_above_PCB_mm'],6.7)
     assert all(p.GetAttribute()==pcb.PAD_ATTRIB_PTH and mm(p.GetDrillSize().x)>=.8 for p in f['J7'].Pads())
     switch_check=verify_reset_smt(f['SW1'],g)
+    assert any(d.GetText()=='RETRY' and xy(d)==native(49.5,12) for d in silk)
+    assert any(d.GetText()=='RETRY' and xy(d)==(54.9,82.5) for d in panel_silk)
     pinout={'1':'N12','2':'N12',**{str(i):'GND' for i in range(3,9)},'9':'P12','10':'P12','11':'P5','12':'P5',**{str(i):'' for i in range(13,17)}}
     pads={p.GetNumber():p for p in f['J7'].Pads()};assert set(pads)==set(pinout)
     for n,net in pinout.items():
@@ -151,7 +153,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         k=int(n)-1;assert xy(pads[n])==native(48+(k//2)*2.54,27+(k%2)*2.54)
     assert g['power_output']['pinout']==pinout and 'OUTPUT ONLY' in g['power_output']['warning']
     assert g['board_count']==2 and 'headers' not in g and 'spacers' not in g
-    assert g['reset_XY_diameter_mm']==[6.4,43,3.2]
+    assert g['reset_XY_diameter_mm']==[6.4,49.5,3.2]
     assert 3.1-g['solder_tail_max_below_B_Cu_mm']>0
     out['clearances_mm']=verify_ui_clearances(g)
     out['mechanics']={'actual_NPTH_geometry_checks':10,'LED_PTH_pad_checks':2,'LED_polarity_mark_checks':2,'manual_LED_exclusions':1,'switch_SMT_pad_checks':5,'switch_locator_NPTH_checks':2,'switch_fit':switch_check,'power_pin_checks':16,
