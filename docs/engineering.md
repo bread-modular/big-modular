@@ -71,8 +71,10 @@ Retired2.7mm-EP RGE0024H pattern is removed; current board footprint is synchron
 
 ## Routing / V1 validation
 
-USB-top UI fixed; all64 footprints synchronized,60 deliberately staged. Keep hot loops short,
-Kelvin feedback/returns and RTN island correct. MID upper DC5.357V is below TPS65131
+HRO USB-top UI and all64 footprints are placed/routed. Preserve short hot loops,
+Kelvin feedback/returns and the independent RTN island. This task retained all
+non-USB copper geometry and all197 non-USB native pin identities.
+MID upper DC5.357V is below TPS65131
 5.5V limit but does NOT prove transient headroom. Check startup/stop/short/fallback,
 output load/ripple, capacitor effectiveC/DC bias, inductors/IC thermal, loop stability,
 input/fuse coordination and residual rail discharge on the actual V1. No guaranteed
@@ -86,22 +88,27 @@ continuous simultaneous +/-800mA rating or manufacturing readiness is claimed.
 - sunlord-manufacturer.pdf: `f6add0cc224973d6a723875e6f68198874aa5c617d9c80b4641c7ee507afd41b`
 - cenker-manufacturer.pdf: `10bd98836aa0fff546c424cba958d33f06c76d703ba7a35c897349fbf5b8992c`
 
-## Verification checkpoint
+## Current HRO source checkpoint
 
-Native ERC0 and native schematic-parity0. Full ref/pin/net comparison, 64 footprints,
-214 native pins including23 explicit NC nets;191 connected pins /222 audited pins
-including power flags. No rule exclusions. Remaining DRC: unrouted opens, four
-retained J1 hole-clearance errors; silkscreen warnings are now zero. Power placement, routing,
-exact sourcing gaps and physical/bench validation remain V1 work, not extra scope.
-The prior source renderer/checker still expected retired sheets; now native six-sheet
-presentation is validated before field-only regeneration. Determinism covers boards,
-geometry, schematic/library/BOM/audit; temporary evidence stays in ignored research/.
+Carrier421 segments,133 vias,4 zones. Exact HRO C165948 connector, native13-pin
+paired-land symbol, BOM, local library and mechanical aperture are synchronized.
+All other circuitry and physical poses remain unchanged; the strict preservation
+report compares against the supplied e7e25d1a routed source. See
+[HRO review](usb-hro-review.md) and [build/check commands](build.md).
 
-KOHER PDF SHA256: `ec20bc71bdeeeee32e1d03d42c41119abcff1a8b36a71b5552c7e41d2ba10baf`.
+All inherited optional DRC/ ERC ignores are now enabled. Five four-way junctions
+become paired Ts with identical connectivity, not rule exceptions. J7/hole assembly courtyards and
+exact selected-footprint filters close the resulting metadata warnings without
+relaxing numerical constraints. Passive panel labels meet the existing0.8mm limit.
+Full native/all-severity and regression evidence is retained in the workspace
+handoff. Source verification is not an assembled/product safety qualification.
 
-At this checkpoint:60/60 project tests pass, including source-preserving byte
-determinism for both native boards. Full native ref/pin/net parity is equal;
-mechanical NPTH items have MechanicalID fields, no electrical reference/pads.
-DRC retains155 opens,4 J1 hole-clearance errors,0 silkscreen warnings.
-Public magnetic snapshot cost:2 x $0.6118 = $1.2236 (about+$0.8336 vs previous
-Sunlord pair); not a whole-module quote, allocation or assembly/shipping price.
+Bare-PCB release uses all133 through vias IPC-4761 TypeVII NONCONDUCTIVE epoxy
+fill/planarize/copper-cap both sides, not tenting. Native shape and exported-CAM audits
+agree:35 actual positive-area barrel intersections with exposed SMD copper and paste,
+plus7 boundary/tangency cases. Not all133 individually need VIP; uniform process is
+intentional. Four-layer FR4 Tg170/35um copper/ENIG and separate no-copper passive
+panel stacks, finished thickness and hole limits are explicit in [fabrication.md](fabrication.md).
+Canonical native stacks and final jobs agree. Archives/CAM evidence are in
+`production/hro-r1/`; no supplier acceptance, assembly/current/thermal/bench or
+physical trial qualification is inferred. No main write/commit/merge/order occurred.

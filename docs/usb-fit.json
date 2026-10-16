@@ -1,0 +1,58 @@
+{
+  "nominal_shell_axis_XYZ_mm": [
+    6.33,
+    33.5,
+    0.8
+  ],
+  "native_anchor_xy_mm": [
+    69.25,
+    103.475
+  ],
+  "land_row_shift_toward_board_rear_mm": 0.34,
+  "front_shell_copper_to_carrier_edge_mm": 0.6,
+  "front_slot_drill_to_carrier_edge_mm": 0.8,
+  "mouth_recess_from_panel_front_nominal_mm": 0.8,
+  "mouth_recess_from_panel_front_acceptance_mm": [
+    0.42,
+    1.18
+  ],
+  "mouth_in_front_of_panel_rear_acceptance_mm": [
+    0.58,
+    1.02
+  ],
+  "conservative_shell_Xmin_Xmax_Ymin_Ymax_mm": [
+    4.28,
+    8.53,
+    28.719,
+    38.281
+  ],
+  "minimum_rounded_aperture_corner_margin_mm": 0.233458469,
+  "predecessor_aperture_at_same_extremes_margin_mm": -0.428610207,
+  "minimum_outer_edge_ligament_mm": 0.6,
+  "acceptance_budget": {
+    "finished_board_thickness_mm": [
+      1.44,
+      1.76
+    ],
+    "aperture_each_wall_error_mm": 0.1,
+    "aperture_centre_registration_each_axis_mm": 0.1,
+    "aperture_radius_mm": [
+      0.5,
+      0.7
+    ],
+    "assembled_registration_each_axis_mm": 0.1,
+    "shell_width_plus_mm": 0.15,
+    "shell_height_plus_mm": 0.1,
+    "seating_plus_X_mm": 0.05,
+    "squareness_max_deg": 0.5,
+    "tilt_projection_each_axis_mm": 0.02,
+    "in_plane_angular_registration_max_deg": 0.5,
+    "in_plane_rotation_sweep_XY_mm": [
+      0.04,
+      0.016
+    ],
+    "outer_profile_each_edge_error_mm": 0.1
+  },
+  "locator_nominal_diametral_clearance_mm": 0.15,
+  "qualification": "Positive bare-board aperture clearance at declared acceptance extremes; not supplier approval. Assembly registration/squareness must be measured, not inferred from loose M3 holes. Cable insertion/overmould, ABS strength/shrinkage, connector sample and LED forming remain physical trials."
+}

@@ -84,8 +84,10 @@ class SchematicHierarchyTests(unittest.TestCase):
             target=Path(temp)
             for name in self.graph.sheets:shutil.copyfile(ROOT/'hardware'/name,target/name)
             child=target/'07_output_rails.kicad_sch'
-            child.write_text(child.read_text().replace('(hierarchical_label "P5" (shape input)',
-                                                       '(hierarchical_label "P5" (shape output)',1))
+            changed,count=re.subn(r'(\(hierarchical_label\s+"P5"\s+\(shape\s+)input',
+                                  r'\1output',child.read_text(),count=1)
+            self.assertEqual(count,1,'negative-control mutation must actually change the saved presentation')
+            child.write_text(changed)
             with self.assertRaisesRegex(AssertionError,'direction mismatch'):Connectivity(target)
 
     def test_build_instructions_cover_current_sources(self):

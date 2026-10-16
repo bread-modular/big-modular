@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Build a NEW unrouted V1 mechanical/electrical-sync candidate, never overwrite hardware.
+"""Copy the canonical routed two-board source into a NEW build directory.
 
-Common-tool pcb inspect rejects the retained USB model dependency; its edit subset
+The old mechanical placement constructor is retained for reference, never the default.
+
+Common-tool pcb inspect rejects retained component model dependencies; its edit subset
 also cannot change these NPTHs/arcs or introduce schematic-less UI reservations.
 This deliberately narrow native generator complements (does not replace) the
-common check tool. J1 pad/model identity and the current six-page circuit hierarchy are kept.
+common check tool. HRO pad identity and the current six-page circuit hierarchy are kept.
 """
 from pathlib import Path
 import argparse
@@ -72,6 +74,10 @@ def hole(board, ref, at, diameter, dy=None, contact_radius=2.1):
     if diameter != dy: pad.SetDrillShape(pcb.PAD_DRILL_SHAPE_OBLONG)
     pad.SetLayerSet(pcb.LSET.AllCuMask()); pad.SetPosition(vec(*at))
     fp.Add(pad); board.Add(fp)
+    # Nonfabrication assembly courtyard around real hole/hardware envelope.
+    r=max(diameter,dy)/2+.25 if not contact_radius else contact_radius+.25
+    cy=pcb.PCB_SHAPE(fp); cy.SetShape(pcb.SHAPE_T_CIRCLE)
+    cy.SetCenter(vec(*at)); cy.SetEnd(vec(at[0]+r,at[1]));cy.SetLayer(pcb.F_CrtYd);cy.SetWidth(MM(.05));fp.Add(cy)
     # Drawing-only screw/washer contact reservation: deliberately NOT copper zones.
     if contact_radius:
         obj = pcb.PCB_SHAPE(); obj.SetShape(pcb.SHAPE_T_CIRCLE)
@@ -155,6 +161,7 @@ def wire_landing(pretty):
         for col in range(2):
             n=2*row+col+1
             a.append(f'(pad "{n}" thru_hole {"rect" if n==1 else "oval"} (at {col*2.54} {row*2.54})(size 1.8 1.8)(drill 1)(layers "*.Cu" "*.Mask"))')
+    a.append('(fp_rect(start -1.15 -1.15)(end 3.69 18.93)(stroke(width .05)(type solid))(fill none)(layer "F.CrtYd"))')
     a.append(')');(pretty/'WireLanding_2x08_P2.54mm.kicad_mod').write_text('\n'.join(a)+'\n')
 
 
@@ -209,7 +216,29 @@ def synchronize(b, hw, netlist):
     b.BuildConnectivity()
 
 
-def build(output):
+def build_panel(output):
+    """NEW passive panel only; never loads/reconstructs the routed carrier."""
+    if output.exists():raise FileExistsError(output)
+    p = board(); polygon(p, [panel_xy(*q) for q in [(0,0),(9.8,0),(9.8,128.5),(0,128.5)]])
+    x,y,w,h,r = G['aperture_XYWHR_mm']; rounded_aperture(p, x+50,y+30,w,h,r)
+    for i,(x,y,d) in enumerate(G['rail_holes_mm'],1): hole(p, f'H{i}', panel_xy(x,y),d,contact_radius=3)
+    for i,(x,y,d) in enumerate(G['panel_bracket_holes_mm'],3): hole(p, f'H{i}',panel_xy(x,y),d,contact_radius=3.5)
+    for led in G['LEDs']:
+        x,y,d=led['panel_XY_diameter_mm']; hole(p,led['panel_hole_ref'],panel_xy(x,y),d,contact_radius=0)
+        text(p,led['rail'],*panel_xy(4.9,y+3.3),.8,pcb.F_SilkS)
+    x,y,d=G['reset_XY_diameter_mm']; hole(p,'H6',panel_xy(x,y),d,contact_radius=0)
+    for label,y,size in [('BIG',10.5,.9),('MOD',13,.9),('USB 9V',G['mouth_axis_XYZ_mm'][1]-6.3,.8),('RETRY',G['reset_XY_diameter_mm'][1]+3,.8),('V1',118,.8)]:
+        text(p,label,*panel_xy(4.9,y),size,pcb.F_SilkS)
+    text(p,'2HP / round corner holes X2.42 = X7.50 minus one 5.08mm rail pitch',102,40,.9)
+    text(p,'A4.2 plain L brackets: M3x8 panel / M3x8 countersunk side',101,44,.9)
+    text(p,'TL3340AF160QG SMT reset; D10 RED 3mm +5V power LED formed 90 degrees',100,48,.9)
+    stable_ids(p,'panel'); pcb.SaveBoard(str(output),p,True)
+    from fabrication_contract import with_stack,PANEL_STACK
+    output.write_text(with_stack(output.read_text(),PANEL_STACK))
+
+
+
+def build_placement_reference(output):
     output = output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     hw = output/'hardware'; hw.mkdir()
@@ -233,7 +262,7 @@ def build(output):
         b.RemoveNative(item)
         item.thisown = False
     usb=next(f for f in b.GetFootprints() if f.GetReference()=='J1')
-    usb.SetPosition(vec(*carrier_xy(G['mouth_axis_XYZ_mm'][1],4.475)))
+    usb.SetPosition(vec(*G['USB']['native_origin_xy_mm']))
     usb.SetLocked(True)
     polygon(b, [carrier_xy(*p) for p in carrier_outline()])
     for i, point in enumerate(G['carrier_holes_YZ_mm'], 1):
@@ -275,20 +304,7 @@ def build(output):
     text(b,'STAGED OFF-BOARD: 60 parts; place power circuits deliberately before routing',250,60,1.2)
     stable_ids(b, 'carrier'); pcb.SaveBoard(str(hw/'big_modular.kicad_pcb'), b)
 
-    p = board(); polygon(p, [panel_xy(*q) for q in [(0,0),(9.8,0),(9.8,128.5),(0,128.5)]])
-    x,y,w,h,r = G['aperture_XYWHR_mm']; rounded_aperture(p, x+50,y+30,w,h,r)
-    for i,(x,y,d) in enumerate(G['rail_holes_mm'],1): hole(p, f'H{i}', panel_xy(x,y),d,contact_radius=3)
-    for i,(x,y,d) in enumerate(G['panel_bracket_holes_mm'],3): hole(p, f'H{i}',panel_xy(x,y),d,contact_radius=3.5)
-    for led in G['LEDs']:
-        x,y,d=led['panel_XY_diameter_mm']; hole(p,led['panel_hole_ref'],panel_xy(x,y),d,contact_radius=0)
-        text(p,led['rail'],*panel_xy(4.9,y+3.3),.8,pcb.F_SilkS)
-    x,y,d=G['reset_XY_diameter_mm']; hole(p,'H6',panel_xy(x,y),d,contact_radius=0)
-    for label,y,size in [('BIG',10.5,.9),('MOD',13,.9),('USB 9V',G['mouth_axis_XYZ_mm'][1]-6.3,.65),('RETRY',G['reset_XY_diameter_mm'][1]+3,.65),('V1',118,.8)]:
-        text(p,label,*panel_xy(4.9,y),size,pcb.F_SilkS)
-    text(p,'2HP / round corner holes X2.42 = X7.50 minus one 5.08mm rail pitch',102,40,.9)
-    text(p,'A4.2 plain L brackets: M3x8 panel / M3x8 countersunk side',101,44,.9)
-    text(p,'TL3340AF160QG SMT reset; D10 RED 3mm +5V power LED formed 90 degrees',100,48,.9)
-    stable_ids(p,'panel'); pcb.SaveBoard(str(hw/'front_panel.kicad_pcb'),p)
+    build_panel(hw/'front_panel.kicad_pcb')
 
     (output/'assembly-geometry.json').write_text(json.dumps(G,indent=2)+'\n')
     # Source manifest includes unchanged electrical documents, not only boards.
@@ -300,6 +316,33 @@ def build(output):
         'source_sha256':{str(q.relative_to(ROOT)):hashlib.sha256(q.read_bytes()).hexdigest() for q in sources},
         'new_refs':[], 'reserved_LED_refs':['D10'], 'manual_assembly_refs':['D10'], 'removed_refs':['D11','D12','H7(panel)','H8(panel)'], 'retired_board':'middle_plate', 'routing_performed':False},indent=2)+'\n')
     print('Created NEW two-board placement candidate:',output)
+
+
+def build(output):
+    """Preserve native routing; never reconstruct an accepted board from placements."""
+    from verify_stack import verify
+    verify(ROOT/'hardware', ROOT/'docs/assembly-geometry.json')
+    output = output.resolve()
+    if output.exists():
+        raise FileExistsError('output must be NEW: '+str(output))
+    sources = [p for p in (ROOT/'hardware').rglob('*') if p.is_file()
+               and p.suffix not in ('.lck','.kicad_prl','.bak') and not p.name.startswith('.')]
+    sources += [ROOT/'BOM.csv',ROOT/'docs/pin-net-audit.json',ROOT/'docs/assembly-geometry.json']
+    before = {p:hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
+    output.mkdir(parents=True)
+    for src in sources:
+        dst = output/src.relative_to(ROOT)
+        dst.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(src,dst)
+        assert hashlib.sha256(dst.read_bytes()).hexdigest()==before[src]
+    shutil.copyfile(ROOT/'docs/assembly-geometry.json',output/'assembly-geometry.json')
+    subprocess.run(['kicad-cli','sch','export','netlist','--format','kicadxml','-o',
+                    str(output/'netlist.xml'),str(output/'hardware/big_modular.kicad_sch')],check=True)
+    assert {p:hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}==before
+    (output/'source-manifest.json').write_text(json.dumps({
+        'status':'canonical routed carrier + passive HRO front panel; copy, not regeneration',
+        'source_sha256':{str(p.relative_to(ROOT)):h for p,h in before.items()}},indent=2)+'\n')
+    print('Copied canonical two-board source:', output)
 
 
 if __name__ == '__main__':

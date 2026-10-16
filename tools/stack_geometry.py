@@ -1,12 +1,12 @@
 """A4.2 simple-L two-board placement contract. mm; panel front Z=0, +Z into case.
-No middle PCB, spacers or board-to-board UI headers. Native USB pad/model pattern unchanged;
+No middle PCB, spacers or board-to-board UI headers. HRO USB-C local land and drawing-based body; no verified model;
 retained A4 assembly plane (X3.1..4.7); A4.2 uses plain L + restored SMT reset.
 """
 from copy import deepcopy
 from interface_contract import LED_RAILS
 
 GEOMETRY = {
-    'revision': 'V1 top UI / synchronized 64 parts / routing preparation',
+    'revision': 'V1 routed HRO carrier / passive two-board assembly',
     'board_count': 2,
     'magnetics': {'L1/L4': {'mpn':'MDA1040-6R8M','height_max_mm':4.0,'body_max_mm':[11.3,10.3]},
                   'L2/L3': {'mpn':'CKCS6045-4.7uH/M','height_max_mm':4.7,'body_max_mm':[6.3,6.3]}},
@@ -19,8 +19,27 @@ GEOMETRY = {
     'carrier_X_mm': [3.1,4.7], 'carrier_Y_mm': [14,114.5], 'carrier_Z_mm': [2,32],
     'carrier_holes_YZ_mm': [[22,15], [106.5,15]],
     'carrier_bracket_reliefs_YZ_mm': [[16.5,27.5,10], [101,112,10]],
-    'aperture_XYWHR_mm': [4.255,28.6,4.2,9.8,.6],
-    'mouth_axis_XYZ_mm': [6.43,33.5,.8],
+    'aperture_XYWHR_mm': [3.9,28.1,5.0,10.8,.6],
+    'USB_fit_acceptance': {
+        'finished_board_thickness_mm':[1.44,1.76],
+        'aperture_each_wall_error_mm':.10,
+        'aperture_centre_registration_each_axis_mm':.10,
+        'aperture_radius_mm':[.50,.70],
+        'assembled_registration_each_axis_mm':.10,
+        'shell_width_plus_mm':.15, 'shell_height_plus_mm':.10,
+        'seating_plus_X_mm':.05, 'squareness_max_deg':.5,
+        'tilt_projection_each_axis_mm':.02,
+        'in_plane_angular_registration_max_deg':.5,
+        'in_plane_rotation_sweep_XY_mm':[.04,.016],
+        'outer_profile_each_edge_error_mm':.10},
+    'mouth_axis_XYZ_mm': [6.33,33.5,.8],
+    'USB': {'mpn':'TYPE-C-31-M-12','manufacturer':'HRO','LCSC':'C165948',
+            'body_width_depth_height_mm':[8.94,7.35,3.26],
+            'native_origin_xy_mm':[69.25,103.475], 'orientation_deg':0,
+            'land_row_from_mouth_mm':7.695, 'rear_land_edge_from_mouth_mm':8.42,
+            'shell_tab_rows_from_mouth_mm':[2.6,6.78], 'locator_from_mouth_mm':6.25,
+            'model_status':'No verified model. F.Fab + dimensioned envelope, not a connector solid.',
+            'review':'docs/usb-hro-review.md'},
     'LEDs': [
         {'reference': ref, 'rail': LED_RAILS[ref], 'panel_hole_ref': hole,
          'panel_XY_diameter_mm': [6.7,y,3.6], 'pad1_YZ_mm': [y-1.27,6.37]}
@@ -60,7 +79,7 @@ GEOMETRY = {
      'peg_pitch_mm': 4.25,
      'peg_drill_mm': 0.9,
      'datasheet': 'https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf'},
-    'led_resistors': {'status': 'R32 is1k SMD in schematic from final P5 to D10; not yet placed/routed',
+    'led_resistors': {'status': 'R32 is1k SMD from final P5 to D10; placed and routed',
         'plan': 'Manual D10 cathode GND, anode LED_P_A; no LED controller or blink'},
     'brackets': {
         'quantity':2, 'identical':True, 'shape':'Plain L, no nut traps or inserts',
@@ -99,8 +118,8 @@ GEOMETRY = {
     'solder_tail_max_below_B_Cu_mm':1.8,
     'harness_envelope_XYZ_mm':[[.4,9.4],[40,75],[34,50]],
     'harness_status':'Provisional cable budget only; complete populated/cabled depth unverified',
-    'electrical_status':'Single D10 P5 power LED integrated in schematic; 64 current schematic footprints imported; four fixed interfaces placed, 60 staged off-board. No LED controller.',
-    'status':'V1 routing-preparation stage; no copper. Bench validation and printed-fit trials required.'
+    'electrical_status':'Single D10 P5 power LED integrated in schematic; 64 current schematic footprints imported; four fixed interfaces; all60 power/passive parts placed and routed. No LED controller.',
+    'status':'V1 routed carrier and passive panel; bare-PCB artwork release is separate from physical and bench qualification.'
 }
 
 
@@ -128,7 +147,7 @@ def physical_fingerprint(fp):
 def ui_envelopes(g):
     """Conservative XYZ solid/access bounds from actual library/manufacturer dimensions."""
     j=g['mouth_axis_XYZ_mm'][1];s=g['reset_XY_diameter_mm'][1];l=g['LEDs'][0]['panel_XY_diameter_mm'][1]
-    return {'J1':[[4.7,8.5],[j-4.82,j+4.82],[.8,8.73]],
+    return {'J1':[[4.7,8.06],[j-4.82,j+4.82],[.8,9.22]],
             'SW1':[[4.7,8.0],[s-3.1,s+3.1],[2.05,6.9]],
             'D10':[[4.7,8.6],[l-2.17,l+2.17],[-.2,7.27]],
             'J7':[[1.3,9.4],[42,72],[25,32]]}
@@ -142,12 +161,12 @@ def verify_ui_clearances(g):
         a=envelopes[a][1];b=envelopes[b][1]
         return max(a[0]-b[1],b[0]-a[1])
     gaps={'USB_pad_to_relief':j-4.82-27.5,
-          'USB_aperture_to_bracket':j-4.9-27,
+          'USB_aperture_to_bracket':g['aperture_XYWHR_mm'][1]-27,
           'USB_to_LED_solder_access':solder_gap('J1','D10'),
           'USB_to_switch_solder_access':solder_gap('J1','SW1'),
           'LED_to_switch_solder_access':solder_gap('D10','SW1'),
           'LED_flange_to_switch_body':abs(l-s)-1.9-2.25,
-          'USB_aperture_to_rail_head':j-4.9-6,
+          'USB_aperture_to_rail_head':g['aperture_XYWHR_mm'][1]-6,
           'LED_flange_to_panel_edge':9.8-(6.7+1.9)}
     assert min(gaps.values())>=.8, gaps
     for ref,data in g['magnetics'].items():

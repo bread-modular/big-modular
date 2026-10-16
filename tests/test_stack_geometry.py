@@ -44,7 +44,7 @@ class StackGeometryTests(unittest.TestCase):
         self.assertNotIn('spacers',g)
         self.assertIn('64 current',g['electrical_status'])
 
-    def test_native_geometry_ui_power_pin_order_and_no_routing(self):
+    def test_native_geometry_ui_power_pin_order_and_routing(self):
         # Separate process contains native KiCad's SWIG lifetimes and diagnostics.
         result=subprocess.run(['/usr/bin/python3','-B',str(ROOT/'tools/verify_stack.py')],
                               capture_output=True,text=True,timeout=60)
@@ -53,7 +53,13 @@ class StackGeometryTests(unittest.TestCase):
         self.assertEqual(report['mechanics']['power_pin_checks'],16)
         self.assertEqual(report['mechanics']['actual_NPTH_geometry_checks'],10)
         self.assertFalse(report['fabrication_ready'])
+        self.assertIn('source-only non-approval',report['fabrication_ready_scope'])
+        self.assertFalse(report['assembled_product_qualified'])
+        self.assertEqual(report['bare_pcb_artwork_release_record'],'production/hro-r1/release-validation.json')
         self.assertEqual(len(report['boards']),2)
+        self.assertEqual(report['routing']['native_opens'],0)
+        self.assertEqual(report['boards']['big_modular.kicad_pcb']['tracks'],421)
+        self.assertEqual(report['boards']['big_modular.kicad_pcb']['vias'],133)
 
     def test_new_candidate_regeneration_preserves_sources_and_matches_outputs(self):
         inputs=[p for p in (ROOT/'hardware').rglob('*') if p.is_file()]
@@ -96,7 +102,7 @@ class StackGeometryTests(unittest.TestCase):
     def test_top_cluster_and_magnetic_envelopes(self):
         from stack_geometry import verify_ui_clearances
         g=geometry(); gaps=verify_ui_clearances(g)
-        self.assertEqual(g['mouth_axis_XYZ_mm'],[6.43,33.5,.8])
+        self.assertEqual(g['mouth_axis_XYZ_mm'],[6.33,33.5,.8])
         self.assertEqual(g['reset_XY_diameter_mm'],[6.4,49.5,3.2])
         self.assertEqual(g['LEDs'][0]['panel_XY_diameter_mm'],[6.7,43,3.6])
         self.assertEqual(g['switch']['peg_row_YZ_mm'],[49.5,4.1])
@@ -130,7 +136,7 @@ class StackGeometryTests(unittest.TestCase):
         self.assertEqual(gaps['LED_to_switch_solder_access'],1.23)
         self.assertEqual(gaps['LED_flange_to_switch_body'],2.35)
 
-    def test_all_64_pcb_fields_paths_and_staging(self):
+    def test_all_64_pcb_fields_paths_and_routed_placement(self):
         import csv
         from sexp import one
         from schematic_connectivity import Connectivity
@@ -146,8 +152,9 @@ class StackGeometryTests(unittest.TestCase):
             self.assertEqual(props.get('MPN',''),row['MPN']);self.assertEqual(props.get('LCSC',''),row['LCSC'])
             self.assertTrue(one(f,'path')[1].endswith('/'+one(graph.refs[ref][1],'uuid')[1]))
             if ref not in ['J1','J7','D10','SW1']:
-                self.assertEqual(props['Placement'],'STAGED_OFF_BOARD_UNPLACED')
-                self.assertGreater(float(one(f,'at')[1]),160)
+                self.assertEqual(props['Placement'],'PLACED_ROUTED')
+                self.assertTrue(49.75<float(one(f,'at')[1])<150.25)
+                self.assertTrue(72.275<float(one(f,'at')[2])<102.275)
         self.assertEqual(fps['R32'][1],'BigModular:R_0603_1608Metric')
 
 
