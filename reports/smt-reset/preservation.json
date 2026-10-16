@@ -1,0 +1,48 @@
+{
+  "protected_inputs_sha256": {
+    "hardware/01_input_protection.kicad_sch": "736614980886bb693b80f27afcbe61e90205d383b654b13d52556e191a5a98ed",
+    "hardware/big_modular.kicad_sch": "bc9f794db804e97af232c828a6c657091c462aaef207b2a8d3153a4c05a2a8e4",
+    "hardware/02_power_conversion.kicad_sch": "28ba6e08bb457d77424be596ef22bdf9659e8d59091cce1aa666d97f337e42d7",
+    "hardware/03_output_rails.kicad_sch": "285424ff8fdd51a633ae3adac26856252ded8023ae726440f8074c6107f966df",
+    "hardware/big_modular.kicad_pro": "0789c44de213b53f75ea8d0479ec4db9ce1784c87448b323b4382bb066172b0d",
+    "hardware/front_panel.kicad_pro": "4be8454c877fbf2e3a235d8d11d3df8fc595e5b151821f6fd3ea2ee4db116813",
+    "hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+    "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "5d3a879511ea84db44774abfca8b0570ee64faf8d88836106809f7af3a3b82fa",
+    "hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+    "hardware/BigModular.pretty/R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal.kicad_mod": "58b4bad35c78cb7f33c76c99b8d8f08bb836b0ba742bcbbaffb6f7f73e5ffbe6",
+    "hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+    "hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod": "3b8d7da3cae5114ec83022a759a78925113bc2eeec100ea447594f6d8687e4b8",
+    "hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+    "BOM.csv": "4382048cd0f6cf0ae2a0e55bbbc5380e3fabc36e1d977ead82e05009ac83b004",
+    "docs/pin-net-audit.json": "e8051f8a9bcf21d4f4b3c711448a087ec1da5a7c1f019add9c664b9bfac33193",
+    "hardware/BigModular.kicad_sym": "ea50310eb130ecc929020c0cd021b9ad2d45f2e937628aff37bb05d056b27e3a",
+    "hardware/sym-lib-table": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+    "hardware/fp-lib-table": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+    "hardware/mechanics/corner_braces.scad": "ce564638ca3a664eab28c0053a2430141b3da0bbc1677cf40a0320643fc4176f",
+    "tools/m3_fit.py": "80d63efb8890267234313fe5c21ca35733cf9f85c423522954292e2e1d6c24f1",
+    "reports/stack-source-preservation.json": "47a6004bd1f99c85d96a3b7b1346cc6dd309c5617e12b3d60795dab7c6a17b7d"
+  },
+  "unchanged_native_footprints_sha256": {
+    "big_modular/H2": "a58f89f9eaf6b223f7c999c102096e5bd43f13c62ab886120bce8d2f9796da22",
+    "big_modular/J1": "5248d1191a1ae719cb22aa5021bc43249f207bcb9e8d91d4d5240503f63bd65f",
+    "big_modular/R32": "5a48547f61a0430f7ead66b4de38e50f7c0878251e1a1178e6acbcfffc8fbf12",
+    "big_modular/H3": "97a61f357edb479a5bb8ab1acce0fab4adb8bd9d393238aeb1be383416bbff88",
+    "big_modular/J7": "ccab688cfa3afda8c8fb9c9ef48d2fe4fc3fa19a99c0126fbcb48b28b3477572",
+    "big_modular/H1": "211579148a927197e8b77c3739c69eae66bd043bb7b4f6c73e09c18b4c3af3c8",
+    "big_modular/H4": "0fc63a0d56fa9399b01fed998b134b77e26d319a31bf7a958d285c9af087e645",
+    "big_modular/D10": "fe318744122f75f8fe8e1146495ae2536b9e011786e49f7e60da39a0377b8b92",
+    "front_panel/H3": "ea711e2506118327317b4a8aefd6e664951e8926e7c60ab71d55c7c99cb9521c",
+    "front_panel/H4": "71b70eab9940b3f42c0c48c4e82fd8a626cf8511099dda0a86b131414cbd80b0",
+    "front_panel/H1": "b6b53d29bad16474ee8c80a11bc88d60658cb31e45d907647a737ec372eb41a6",
+    "front_panel/H2": "4696c6bcf5102f55b20dae00d3efb796bb302a9afbf7a8d3704ba70133bd48ee",
+    "front_panel/H5": "caa9da5161aba67db404705adc31061aa4caf6c8586d78c36049bf0a7da8c088"
+  },
+  "changed_main_footprints": [
+    "SW1"
+  ],
+  "changed_panel_footprints": [
+    "H6"
+  ],
+  "schematic_writes": false,
+  "routing_performed": false
+}

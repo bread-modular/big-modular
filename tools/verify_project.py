@@ -119,50 +119,10 @@ result={'schematic_sheets':4,'functional_subsheets':3,'pdf_pages':4,'BOM_compone
  'off_board_J2_connected_pins_checked_in_schematic':12,'other_connected_pins_verified_against_KiCad_netlist':checked-12,
  'independent_pin_net_spot_checks':sum(map(len,reviewed.values())), 'visible_wire_or_hierarchy_interstage_checks':len(backbone)-1, 'named_remote_interstage_checks':1, 'visible_local_branch_checks':len(local_wires), 'hierarchy_port_links':len(graph.hierarchy_links),
  'voltage_PG_RUN_logic_cases':len(cases),'audit_limit':'Connectivity/threshold regression only, not PD proof, analog simulation, physical fit or operation. Generated audit is not independent; the hardcoded spot checks are.', 'boards':{}}
-boards={}
-for fn,allowed in [('big_modular.kicad_pcb',{'J1','H1','H2','H3','H4'}),('front_panel.kicad_pcb',{'H1','H2','H3','H4'})]:
-    b=pcb.LoadBoard(str(root/'hardware'/fn));boards[fn]=b
-    refs={f.GetReference() for f in b.GetFootprints()};assert refs==allowed
-    assert len(list(b.GetTracks()))==0 and len(list(b.Zones()))==0
-    assert all(d.GetLayer() not in [pcb.F_Cu,pcb.B_Cu] for d in b.GetDrawings())
-    for f in b.GetFootprints():
-        if f.GetReference().startswith('H'):assert all(p.GetAttribute()==pcb.PAD_ATTRIB_NPTH for p in f.Pads())
-        if f.GetReference()=='J1':
-            assert pos([pcb.ToMM(f.GetPosition().x),pcb.ToMM(f.GetPosition().y)])==(100,99.8)
-            assert f.GetOrientationDegrees()==0
-            for p in f.Pads():
-                want=expected['J1'].get(p.GetNumber())
-                if want:assert p.GetNetname()==want
-    edges=[d for d in b.GetDrawings() if d.GetLayer()==pcb.Edge_Cuts]
-    assert len(edges)==(4 if fn.startswith('big') else 12)
-    result['boards'][fn]={'footprints':sorted(refs),'tracks':0,'vias':0,'zones':0,'copper_graphics':0,'edge_primitives':len(edges)}
-# Check ACTUAL board holes, not just dimensions asserted in a document.
-geom=json.loads((root/'docs/assembly-geometry.json').read_text())
-def hole(b,ref):
-    f=next(f for f in b.GetFootprints() if f.GetReference()==ref);p=next(iter(f.Pads()))
-    return tuple(round(pcb.ToMM(v),5) for v in (f.GetPosition().x,f.GetPosition().y,p.GetDrillSize().x,p.GetDrillSize().y))
-for i,(Y,Z) in enumerate(geom['carrier_holes_YZ_mm'],1):
-    assert hole(boards['big_modular.kicad_pcb'],'H'+str(i))==(Y+35.75,round(104.275-Z,5),2.2,2.2)
-for i,(X,Y,dx,dy) in enumerate(geom['rail_slots_mm'],1):
-    assert hole(boards['front_panel.kicad_pcb'],'H'+str(i))==(X+50,Y+30,dx,dy)
-for i,(X,Y,d) in enumerate(geom['panel_bracket_holes_mm'],3):
-    assert hole(boards['front_panel.kicad_pcb'],'H'+str(i))==(X+50,Y+30,d,d)
-assert math.isclose(104.275-(99.8+3.675),.8,abs_tol=1e-8)
-assert math.isclose(3.17+1.73,4.9,abs_tol=1e-8)
-assert math.isclose(102.275-(99.8+1.075+.9),.5,abs_tol=1e-8)
-assert 1.57-1.2>0 and 8.97<9.8
-assert math.isclose(4-1.6,geom['interposers']['nominal_engagement_mm'])
-assert 1.6+2.8 < 6-1  # Blind bore ends do not intersect perpendicular M2 major-diameter bore.
-assert 9.8-7.5-1.6 > 0  # 0.7 mm FR4 web: geometry fits, strength NOT qualified.
-assert 7.5+3>9.8  # Standard 6 mm screw head overhangs; explicit mechanical blocker.
-# Outer edge extents from the actual Edge.Cuts, ignoring panel aperture for minima/maxima.
-for fn,w,h in [('big_modular.kicad_pcb',100.5,60),('front_panel.kicad_pcb',9.8,128.5)]:
-    points=[]
-    for d in boards[fn].GetDrawings():
-        if d.GetLayer()==pcb.Edge_Cuts:
-            points.extend([(pcb.ToMM(v.x),pcb.ToMM(v.y)) for v in [d.GetStart(),d.GetEnd()]])
-    assert math.isclose(max(p[0] for p in points)-min(p[0] for p in points),w,abs_tol=1e-5)
-    assert math.isclose(max(p[1] for p in points)-min(p[1] for p in points),h,abs_tol=1e-5)
-result['mechanics']={'actual_NPTH_geometry_checks':8,'port_axis_mm':[4.9,64.25,.8],'insertion_vector':[0,0,1],'axis_to_panel_plane_degrees':90,'front_shell_pad_edge_clearance_mm':.5,'interposer_thread_engagement_mm':2.4,'rail_mount':'Doepfer x=7.5, diameter 3.2; standard head overhang/0.7mm FR4 web are blockers','status':'nominal proposal; strength/tolerances/plug/cable/screws unqualified'}
+from verify_stack import verify as verify_stack
+stack = verify_stack(root/'hardware', root/'docs/assembly-geometry.json')
+result['boards'] = stack['boards']
+result['mechanics'] = stack['mechanics']
+result['fabrication_ready'] = False
 (root/'reports/geometry-and-net-audit.json').write_text(json.dumps(result,indent=2)+'\n')
-print(f'PASS: {checked} connected pins; 65 independent spot checks; {len(backbone)-1} wired/hierarchical interstage paths + 1 named continuation; {len(local_wires)} local wire paths; 28 gate cases; 8 NPTH checks; 3 subsheets + overview; zero routing.')
+print(f'PASS: {checked} connected pins; 65 independent spot checks; {len(backbone)-1} wired/hierarchical interstage paths + 1 named continuation; {len(local_wires)} local wire paths; 28 gate cases; 10 mechanical NPTH + 5 switch SMT pad + 2 locator NPTH + 16 power pin + 2 M3 bracket checks; 2 unrouted boards. NOT fabrication approval.')

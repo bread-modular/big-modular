@@ -1,0 +1,80 @@
+{
+  "fabrication_ready": false,
+  "boards": {
+    "big_modular.kicad_pcb": {
+      "footprints": 9,
+      "tracks": 0,
+      "vias": 0,
+      "zones": 0
+    },
+    "front_panel.kicad_pcb": {
+      "footprints": 6,
+      "tracks": 0,
+      "vias": 0,
+      "zones": 0
+    }
+  },
+  "mechanics": {
+    "actual_NPTH_geometry_checks": 10,
+    "switch_SMT_pad_checks": 5,
+    "switch_locator_NPTH_checks": 2,
+    "switch_fit": {
+      "smd_pads": 5,
+      "locator_NPTHs": 2,
+      "axis_X_mm": 6.4,
+      "body_top_X_mm": 8.0,
+      "nominal_lateral_clearance_mm": 1.8,
+      "recess_behind_panel_rear_mm": 0.45,
+      "qualification": "nominal placement only; sample solder/fit trial pending"
+    },
+    "power_pin_checks": 16,
+    "M3_access": {
+      "brackets": [
+        {
+          "Y_mm": 22,
+          "loose_nut_access_clear_nominal": true,
+          "front_bolt_exposure_mm": 1.0,
+          "side_bolt_exposure_min_mm": 1.0,
+          "front_nut_upright_clearance_mm": 0.125,
+          "front_nut_right_X_mm": 9.575,
+          "side_tip_X_range_mm": [
+            8.1,
+            8.4
+          ]
+        },
+        {
+          "Y_mm": 106.5,
+          "loose_nut_access_clear_nominal": true,
+          "front_bolt_exposure_mm": 1.0,
+          "side_bolt_exposure_min_mm": 1.0,
+          "front_nut_upright_clearance_mm": 0.125,
+          "front_nut_right_X_mm": 9.575,
+          "side_tip_X_range_mm": [
+            8.1,
+            8.4
+          ]
+        }
+      ],
+      "identical_parts": true,
+      "all_fasteners": "M3",
+      "plain_L": true,
+      "wall_mm": 3,
+      "countersink_in": "printed bracket only; NO FR4 countersink",
+      "service_condition": "OUT OF RACK, soldered main PCB retained; front nut held from +X with small pliers, side nut driver +X, screwdrivers -X and -Z",
+      "limitation": "Nominal envelopes only. Front-nut clearance is tight (0.125mm). Actual tools, ABS shrinkage, screw seating and printed strength require physical trial."
+    },
+    "carrier_depth_mm": 30,
+    "PCB_depth_behind_panel_mm": 30.4,
+    "main_PCB_plane_X_mm": [
+      3.1,
+      4.7
+    ],
+    "port_axis_mm": [
+      6.43,
+      64.25,
+      0.8
+    ],
+    "electrical_status": "No routing; J7 landing not integrated into schematic; J2 remains on flying lead; D10/R32/SW1 isolated",
+    "finished_module_depth": "unverified; cable connector not confined to 2HP board envelope"
+  }
+}

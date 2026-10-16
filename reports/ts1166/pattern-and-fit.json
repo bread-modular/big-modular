@@ -1,0 +1,74 @@
+{
+  "status": "HOLE PATTERN CHECKED / ASSEMBLY BLOCKED / NOT FABRICATION READY",
+  "footprint": "SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod",
+  "footprint_sha256": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+  "pads": {
+    "1": {
+      "XY_mm": [
+        -2.25,
+        0.0
+      ],
+      "drill_mm": 1.0,
+      "copper_diameter_mm": 2.0,
+      "annular_ring_mm": 0.5
+    },
+    "2": {
+      "XY_mm": [
+        2.25,
+        0.0
+      ],
+      "drill_mm": 1.0,
+      "copper_diameter_mm": 2.0,
+      "annular_ring_mm": 0.5
+    },
+    "MP1": {
+      "XY_mm": [
+        -3.5,
+        -2.5
+      ],
+      "drill_mm": 1.5,
+      "copper_diameter_mm": 2.6,
+      "annular_ring_mm": 0.55
+    },
+    "MP2": {
+      "XY_mm": [
+        3.5,
+        -2.5
+      ],
+      "drill_mm": 1.5,
+      "copper_diameter_mm": 2.6,
+      "annular_ring_mm": 0.55
+    }
+  },
+  "minimum_land_clearance_mm": 0.49508,
+  "signal_numbering": "1/2 are our left/right convention; seller schematic does not assign useful pin numbers",
+  "support_numbering": "MP1/MP2 isolated solder pads; neither is a reset contact or assumed ground",
+  "source_row_spacing_mm": 2.5,
+  "external_same_name_PDF_row_spacing_mm": 2.15,
+  "courtyard_status": "Provisional reservation only; no qualified body outline or 3D model",
+  "fit": {
+    "H_choice_mm": 4.3,
+    "H_choice_status": "PROVISIONAL short stem for recessed tool-operated reset; not purchase/fit release",
+    "H_direction": "parallel to main PCB / along actuator, NOT normal to PCB",
+    "normal_projection_mm": 7.1,
+    "normal_projection_tolerance_mm": 0.1,
+    "current_component_face_X_mm": 4.7,
+    "available_normal_space_mm": 5.1,
+    "body_extreme_X_mm": 11.8,
+    "nominal_overhang_mm": 2.0,
+    "fits_current_stack": false,
+    "target_actuator_tip_Z_mm": 2.05,
+    "target_H_reference_Z_mm": 6.35,
+    "H_reference_warning": "Target only: H-reference to hole-row datum is not sufficiently specified in the supplied drawing. No footprint placement derived from this target.",
+    "release_blockers": [
+      "7.1mm seating projection exceeds the present 5.1mm lateral allowance",
+      "User PCB pattern says row2.50; external TS-1166VW PDF says row2.15",
+      "Actual sample must establish H-reference/actuator axis relative to holes and case-tab continuity",
+      "Panel opening/board/bracket arrangement must be reworked before substitution; no automatic width change"
+    ]
+  },
+  "installed_on_active_board": false,
+  "active_SW1_retained": "SW_APEM_MJTP1117_RightAngle_THT",
+  "routing_performed": false,
+  "fabrication_ready": false
+}

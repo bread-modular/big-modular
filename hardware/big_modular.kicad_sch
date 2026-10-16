@@ -1,56 +1,499 @@
-(kicad_sch (version 20250114) (generator "eeschema") (uuid "d567704c-57ad-5df1-b183-cadb01fd8972") (paper "A4")
-(title_block (title "Big Modular - Overview and sheet navigation") (rev "Hierarchy WIP") (company "Big Modular") (comment 1 "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE"))
-(lib_symbols )
-(text "BIG MODULAR / SCHEMATIC MAP" (at 20.32 20.32 0) (effects (font (size 2.5 2.5)) (justify left)) (uuid "58bf2791-c47a-5559-8096-07bab45c877b"))
-(text "Three functional subsheets | 88 real components | Circuit connectivity retained" (at 20.32 33.02 0) (effects (font (size 1.2 1.2)) (justify left)) (uuid "58ca52ba-37f3-5978-8dca-ba2c99579f36"))
-(text "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE" (at 20.32 48.26 0) (effects (font (size 1.5 1.5)) (justify left)) (uuid "8fa90c3f-4d11-55f0-a268-b42a54e1912e"))
-(sheet (at 20.32 68.58) (size 68.58 63.5) (stroke (width 0.254) (type default)) (fill (color 0 0 0 0)) (uuid "3f5b5140-2fea-5c66-ba3b-ec707e3f47f1")
-(property "Sheetname" "Input and protection" (at 20.32 64.77 0) (effects (font (size 0.95 0.95)) (justify left)) )
-(property "Sheetfile" "01_input_protection.kicad_sch" (at 20.32 137.16 0) (effects (font (size 0.95 0.95)) (justify left)) )
-(pin "VPROT" output (at 88.9 86.36 0) (effects (font (size 1.1 1.1)) (justify right)) (uuid "a8a6aadd-1492-5691-b482-6c4af466786d"))
-(pin "GND" passive (at 55.88 132.08 270) (effects (font (size 1.1 1.1)) (justify left)) (uuid "95bc86b3-c6e3-5141-9182-97f65184b7f2"))
-(instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "2")))) )
-(sheet (at 114.3 68.58) (size 71.12 63.5) (stroke (width 0.254) (type default)) (fill (color 0 0 0 0)) (uuid "a2f8d729-0d7a-5f22-96e9-f1d1557a65de")
-(property "Sheetname" "Power conversion" (at 114.3 64.77 0) (effects (font (size 0.95 0.95)) (justify left)) )
-(property "Sheetfile" "02_power_conversion.kicad_sch" (at 114.3 137.16 0) (effects (font (size 0.95 0.95)) (justify left)) )
-(pin "VPROT" input (at 114.3 86.36 180) (effects (font (size 1.1 1.1)) (justify left)) (uuid "c5cc3170-f71b-5874-9e20-410131669080"))
-(pin "PRE_P" output (at 185.42 83.82 0) (effects (font (size 1.1 1.1)) (justify right)) (uuid "951fa560-aa41-537b-aed5-cc84d00f69b2"))
-(pin "PRE_N" output (at 185.42 99.06 0) (effects (font (size 1.1 1.1)) (justify right)) (uuid "aab77ad3-de06-506b-a95f-be8f7b870cbb"))
-(pin "PRE_5" output (at 185.42 114.3 0) (effects (font (size 1.1 1.1)) (justify right)) (uuid "701d0bbd-f1a6-5a31-9a73-634f42d1ae1d"))
-(pin "GND" passive (at 149.86 132.08 270) (effects (font (size 1.1 1.1)) (justify left)) (uuid "2e6666a1-1bdf-5b93-a7d1-1b805383b85f"))
-(instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "3")))) )
-(sheet (at 213.36 68.58) (size 66.04 63.5) (stroke (width 0.254) (type default)) (fill (color 0 0 0 0)) (uuid "e78b9fdf-5b6a-56aa-b169-8808d1cccdd8")
-(property "Sheetname" "Output rails" (at 213.36 64.77 0) (effects (font (size 0.95 0.95)) (justify left)) )
-(property "Sheetfile" "03_output_rails.kicad_sch" (at 213.36 137.16 0) (effects (font (size 0.95 0.95)) (justify left)) )
-(pin "PRE_P" input (at 213.36 83.82 180) (effects (font (size 1.1 1.1)) (justify left)) (uuid "29f40640-7bba-5a5a-8339-7ac06444d379"))
-(pin "PRE_N" input (at 213.36 99.06 180) (effects (font (size 1.1 1.1)) (justify left)) (uuid "9d72e222-b47d-5d40-8499-3f9402ed4101"))
-(pin "PRE_5" input (at 213.36 114.3 180) (effects (font (size 1.1 1.1)) (justify left)) (uuid "2b331579-06c0-5df9-b799-176633d519c3"))
-(pin "GND" passive (at 246.38 132.08 270) (effects (font (size 1.1 1.1)) (justify left)) (uuid "0eb69c7f-ac68-5bb6-bd63-068f395cca56"))
-(instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "4")))) )
-(label "VPROT" (at 99.06 86.36 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "9c2f2d01-1c13-5710-b9b8-024aae8f85fd"))
-(label "PRE_P" (at 195.58 83.82 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "3ca30cdb-76b6-50ae-b42a-a69ec3d4eaf4"))
-(label "PRE_N" (at 195.58 99.06 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "b8a4b7f7-4b07-5aef-9f81-751057a8ee6f"))
-(label "PRE_5" (at 195.58 114.3 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "e8ae55eb-cc6f-538a-b1b2-f23aa03bf540"))
-(label "GND" (at 101.6 152.4 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "0c8daf60-c838-5f3a-93fb-0fad6104859b"))
-(text "USB-C / CH224K\nFuse + eFuse\nPG / RUN / voltage gate\nSee page 2" (at 25.4 106.68 0) (effects (font (size 1.45 1.45)) (justify left)) (uuid "7f9a217f-3e90-5d0e-b5dd-5a852ad27c00"))
-(text "V4 intermediate\nBipolar boost / inverter\n+5 V preregulation\nSee page 3" (at 119.38 106.68 0) (effects (font (size 1.45 1.45)) (justify left)) (uuid "43276e12-b975-5087-b7fb-52c1cd693932"))
-(text "Three LDOs / J2\nSee page 4" (at 218.44 121.92 0) (effects (font (size 1.45 1.45)) (justify left)) (uuid "ccb56fba-795f-59d3-9fea-e39beb761639"))
-(text "HOW TO READ\nOpen each sheet in KiCad or click its box in the PDF.\nLocal feedback, filtering and protection networks use real wires.\nNamed ports carry power between sheets; GND is shared, RTN is not." (at 20.32 172.72 0) (effects (font (size 1.3 1.3)) (justify left)) (uuid "4fc11736-01eb-5a36-8c0f-1527cd1ca431"))
-(text "LIMITS: No PDO/current proof, qualified input surge protection or completed PCB layout.\nRead docs/schematic-guide.md and docs/component-guide.md." (at 20.32 58.42 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "de252540-588a-57c5-9f64-40d4f5192ad7"))
-(wire (pts (xy 55.88 132.08) (xy 55.88 152.4)) (stroke (width 0) (type default)) (uuid "92cb53e8-5290-55c4-8751-f563be0e09f6"))
-(wire (pts (xy 55.88 152.4) (xy 101.6 152.4)) (stroke (width 0) (type default)) (uuid "c901afa6-32cd-5a1d-ace3-b3080b6a9fe3"))
-(wire (pts (xy 101.6 152.4) (xy 149.86 152.4)) (stroke (width 0) (type default)) (uuid "6b24429f-153c-5830-8f7b-01d8ff0d5147"))
-(wire (pts (xy 149.86 132.08) (xy 149.86 152.4)) (stroke (width 0) (type default)) (uuid "18ad5a32-6d4e-5443-801f-08186ac02808"))
-(wire (pts (xy 149.86 152.4) (xy 246.38 152.4)) (stroke (width 0) (type default)) (uuid "116fe1f2-ddd7-51ca-925f-5a80212a80c2"))
-(wire (pts (xy 246.38 132.08) (xy 246.38 152.4)) (stroke (width 0) (type default)) (uuid "9c5eceda-0e39-5067-bdb7-eea21b035007"))
-(wire (pts (xy 185.42 114.3) (xy 195.58 114.3)) (stroke (width 0) (type default)) (uuid "389430e9-eef6-5078-8bb0-118795cda381"))
-(wire (pts (xy 195.58 114.3) (xy 213.36 114.3)) (stroke (width 0) (type default)) (uuid "f08be62a-f11f-57a2-97c1-7b75b458c6b1"))
-(wire (pts (xy 185.42 99.06) (xy 195.58 99.06)) (stroke (width 0) (type default)) (uuid "d688dacc-0540-5b4d-96f0-388b116a474d"))
-(wire (pts (xy 195.58 99.06) (xy 213.36 99.06)) (stroke (width 0) (type default)) (uuid "73e0a9d7-0ba3-577e-bf8d-50e188e05b13"))
-(wire (pts (xy 185.42 83.82) (xy 195.58 83.82)) (stroke (width 0) (type default)) (uuid "14b70a39-1689-5e1d-ace4-b4c12f4229d1"))
-(wire (pts (xy 195.58 83.82) (xy 213.36 83.82)) (stroke (width 0) (type default)) (uuid "3eb73c78-c6ef-5058-a537-84ba8d5555bf"))
-(wire (pts (xy 88.9 86.36) (xy 99.06 86.36)) (stroke (width 0) (type default)) (uuid "00c3369c-3194-5467-a235-58804f059dc4"))
-(wire (pts (xy 99.06 86.36) (xy 114.3 86.36)) (stroke (width 0) (type default)) (uuid "07290835-340a-5801-a431-c09625924259"))
-(junction (at 149.86 152.4) (diameter 0) (color 0 0 0 0) (uuid "218da22c-a879-5776-9dca-bfd2f964ce27"))
-(sheet_instances (path "/" (page "1")))
-(embedded_fonts no))
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "d567704c-57ad-5df1-b183-cadb01fd8972")
+	(paper "A4")
+	(title_block
+		(title "Big Modular - Overview and sheet navigation")
+		(rev "Hierarchy WIP")
+		(company "Big Modular")
+		(comment 1 "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE")
+	)
+	(lib_symbols)
+	(text "V4 intermediate\nBipolar boost / inverter\n+5 V preregulation\nSee page 3"
+		(exclude_from_sim no)
+		(at 119.38 106.68 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "43276e12-b975-5087-b7fb-52c1cd693932")
+	)
+	(text "HOW TO READ\nOpen each sheet in KiCad or click its box in the PDF.\nLocal feedback, filtering and protection networks use real wires.\nNamed ports carry power between sheets; GND is shared, RTN is not."
+		(exclude_from_sim no)
+		(at 20.32 172.72 0)
+		(effects
+			(font
+				(size 1.3 1.3)
+			)
+			(justify left)
+		)
+		(uuid "4fc11736-01eb-5a36-8c0f-1527cd1ca431")
+	)
+	(text "BIG MODULAR / SCHEMATIC MAP"
+		(exclude_from_sim no)
+		(at 20.32 20.32 0)
+		(effects
+			(font
+				(size 2.5 2.5)
+			)
+			(justify left)
+		)
+		(uuid "58bf2791-c47a-5559-8096-07bab45c877b")
+	)
+	(text "Three functional subsheets | 88 real components | Circuit connectivity retained"
+		(exclude_from_sim no)
+		(at 20.32 33.02 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "58ca52ba-37f3-5978-8dca-ba2c99579f36")
+	)
+	(text "USB-C / CH224K\nFuse + eFuse\nPG / RUN / voltage gate\nSee page 2"
+		(exclude_from_sim no)
+		(at 25.4 106.68 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "7f9a217f-3e90-5d0e-b5dd-5a852ad27c00")
+	)
+	(text "INCOMPLETE / NON-OPERATIONAL / DO NOT FABRICATE"
+		(exclude_from_sim no)
+		(at 20.32 48.26 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "8fa90c3f-4d11-55f0-a268-b42a54e1912e")
+	)
+	(text "Three LDOs / J2\nSee page 4"
+		(exclude_from_sim no)
+		(at 218.44 121.92 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "ccb56fba-795f-59d3-9fea-e39beb761639")
+	)
+	(text "LIMITS: No PDO/current proof, qualified input surge protection or completed PCB layout.\nRead docs/schematic-guide.md and docs/component-guide.md."
+		(exclude_from_sim no)
+		(at 20.32 58.42 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "de252540-588a-57c5-9f64-40d4f5192ad7")
+	)
+	(junction
+		(at 149.86 152.4)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "218da22c-a879-5776-9dca-bfd2f964ce27")
+	)
+	(wire
+		(pts
+			(xy 88.9 86.36) (xy 114.3 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00c3369c-3194-5467-a235-58804f059dc4")
+	)
+	(wire
+		(pts
+			(xy 149.86 152.4) (xy 246.38 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "116fe1f2-ddd7-51ca-925f-5a80212a80c2")
+	)
+	(wire
+		(pts
+			(xy 185.42 83.82) (xy 213.36 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "14b70a39-1689-5e1d-ace4-b4c12f4229d1")
+	)
+	(wire
+		(pts
+			(xy 149.86 132.08) (xy 149.86 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "18ad5a32-6d4e-5443-801f-08186ac02808")
+	)
+	(wire
+		(pts
+			(xy 185.42 114.3) (xy 213.36 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "389430e9-eef6-5078-8bb0-118795cda381")
+	)
+	(wire
+		(pts
+			(xy 55.88 132.08) (xy 55.88 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92cb53e8-5290-55c4-8751-f563be0e09f6")
+	)
+	(wire
+		(pts
+			(xy 246.38 132.08) (xy 246.38 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c5eceda-0e39-5067-bdb7-eea21b035007")
+	)
+	(wire
+		(pts
+			(xy 55.88 152.4) (xy 149.86 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c901afa6-32cd-5a1d-ace3-b3080b6a9fe3")
+	)
+	(wire
+		(pts
+			(xy 185.42 99.06) (xy 213.36 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d688dacc-0540-5b4d-96f0-388b116a474d")
+	)
+	(label "GND"
+		(at 101.6 152.4 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "0c8daf60-c838-5f3a-93fb-0fad6104859b")
+	)
+	(label "PRE_P"
+		(at 195.58 83.82 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "3ca30cdb-76b6-50ae-b42a-a69ec3d4eaf4")
+	)
+	(label "VPROT"
+		(at 99.06 86.36 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "9c2f2d01-1c13-5710-b9b8-024aae8f85fd")
+	)
+	(label "PRE_N"
+		(at 195.58 99.06 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "b8a4b7f7-4b07-5aef-9f81-751057a8ee6f")
+	)
+	(label "PRE_5"
+		(at 195.58 114.3 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "e8ae55eb-cc6f-538a-b1b2-f23aa03bf540")
+	)
+	(sheet
+		(at 20.32 68.58)
+		(size 68.58 63.5)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "3f5b5140-2fea-5c66-ba3b-ec707e3f47f1")
+		(property "Sheetname" "Input and protection"
+			(at 20.32 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.95 0.95)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "01_input_protection.kicad_sch"
+			(at 20.32 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.95 0.95)
+				)
+				(justify left)
+			)
+		)
+		(pin "VPROT" output
+			(at 88.9 86.36 0)
+			(uuid "a8a6aadd-1492-5691-b482-6c4af466786d")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND" passive
+			(at 55.88 132.08 270)
+			(uuid "95bc86b3-c6e3-5141-9182-97f65184b7f2")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "big_modular"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 114.3 68.58)
+		(size 71.12 63.5)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "a2f8d729-0d7a-5f22-96e9-f1d1557a65de")
+		(property "Sheetname" "Power conversion"
+			(at 114.3 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.95 0.95)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "02_power_conversion.kicad_sch"
+			(at 114.3 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.95 0.95)
+				)
+				(justify left)
+			)
+		)
+		(pin "VPROT" input
+			(at 114.3 86.36 180)
+			(uuid "c5cc3170-f71b-5874-9e20-410131669080")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "PRE_P" output
+			(at 185.42 83.82 0)
+			(uuid "951fa560-aa41-537b-aed5-cc84d00f69b2")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "PRE_N" output
+			(at 185.42 99.06 0)
+			(uuid "aab77ad3-de06-506b-a95f-be8f7b870cbb")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "PRE_5" output
+			(at 185.42 114.3 0)
+			(uuid "701d0bbd-f1a6-5a31-9a73-634f42d1ae1d")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND" passive
+			(at 149.86 132.08 270)
+			(uuid "2e6666a1-1bdf-5b93-a7d1-1b805383b85f")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "big_modular"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 213.36 68.58)
+		(size 66.04 63.5)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "e78b9fdf-5b6a-56aa-b169-8808d1cccdd8")
+		(property "Sheetname" "Output rails"
+			(at 213.36 64.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.95 0.95)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "03_output_rails.kicad_sch"
+			(at 213.36 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.95 0.95)
+				)
+				(justify left)
+			)
+		)
+		(pin "PRE_P" input
+			(at 213.36 83.82 180)
+			(uuid "29f40640-7bba-5a5a-8339-7ac06444d379")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "PRE_N" input
+			(at 213.36 99.06 180)
+			(uuid "9d72e222-b47d-5d40-8499-3f9402ed4101")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "PRE_5" input
+			(at 213.36 114.3 180)
+			(uuid "2b331579-06c0-5df9-b799-176633d519c3")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 246.38 132.08 270)
+			(uuid "0eb69c7f-ac68-5bb6-bd63-068f395cca56")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "big_modular"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

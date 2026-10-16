@@ -1,0 +1,32 @@
+Command: python3 -B opt/kicad-tools/kicad_tools.py check --config tools/kicad-project.json --reports reports/ts1166/native-current
+Exit: 1
+{
+  "status": "findings",
+  "summary": "/home/azero/.okbrain/workspaces/big-modular/010/reports/ts1166/native-current/summary.json",
+  "findings": {
+    "erc": {
+      "categories": {
+        "violations": 68
+      },
+      "severity": {
+        "warning": 68
+      },
+      "total_including_exclusions": 68
+    },
+    "drc": {
+      "categories": {
+        "violations": 4,
+        "unconnected_items": 16,
+        "schematic_parity": 115
+      },
+      "severity": {
+        "error": 20,
+        "warning": 115
+      },
+      "total_including_exclusions": 135
+    }
+  },
+  "source_unchanged": true,
+  "errors": [],
+  "order_ready": false
+}
