@@ -1,7 +1,7 @@
 # Current electrical component index
 
-Generated from the current design inventory. NOT an assembly BOM or qualification.
-See electrical-prototype.md for architecture, ratings and unresolved selections.
+Generated from the authoritative electrical design. NOT an assembly/order BOM.
+See electrical-prototype.md and debug-interface.md for interfaces and unqualified limits.
 
 | Ref | Value | Exact candidate MPN / C-code |
 |---|---|---|
@@ -27,13 +27,10 @@ See electrical-prototype.md for architecture, ratings and unresolved selections.
 | R29 | 100k 1% | 0603WAF1003T5E / C25803 |
 | R30 | 10k 1% | 0603WAF1002T5E / C25804 |
 | R31 | 10k 1% | 0603WAF1002T5E / C25804 |
-| R38 | 22k 1% | 0603WAF2202T5E / C31850 |
-| R39 | 100k 1% | 0603WAF1003T5E / C25803 |
 | C2 | 100n 50V X7R | CC0603KRX7R9BB104 / C14663 |
 | C3 | 100n 50V X7R | CC0603KRX7R9BB104 / C14663 |
 | C4 | 10u 25V X7R | UNSELECTED / unresolved/manual |
 | Q1 | MMBT3906 | MMBT3906 / unresolved/manual |
-| Q2 | MMBT3906 | MMBT3906 / unresolved/manual |
 | JP1 | RUN default OPEN | UNSELECTED / unresolved/manual |
 | U3 | TPS54302DDCR | TPS54302DDCR / C311983 |
 | L1 | 6.8uH shielded CANDIDATE | SRP5030TA-6R8M / C2042113 |
@@ -67,6 +64,7 @@ See electrical-prototype.md for architecture, ratings and unresolved selections.
 | R15 | 150k 1% | 0603WAF1503T5E / C22807 |
 | R16 | 100 1% | UNSELECTED / unresolved/manual |
 | R40 | 100k 1% | 0603WAF1003T5E / C25803 |
+| R38 | 100k 1% | 0603WAF1003T5E / C25803 |
 | C10 | 6.8p 50V C0G | UNSELECTED / unresolved/manual |
 | C11 | 6.8p 50V C0G | UNSELECTED / unresolved/manual |
 | C12 | 220n 50V X7R | UNSELECTED / unresolved/manual |
@@ -75,18 +73,20 @@ See electrical-prototype.md for architecture, ratings and unresolved selections.
 | C15 | 100n 50V X7R | CC0603KRX7R9BB104 / C14663 |
 | C16 | 10u 25V X7R | UNSELECTED / unresolved/manual |
 | C17 | 10u 25V X7R | UNSELECTED / unresolved/manual |
-| U10 | ATTINY1616-SNR | ATTINY1616-SNR / C609652 |
-| C39 | 100n 50V X7R | CC0603KRX7R9BB104 / C14663 |
 | C40 | 100n 50V X7R | CC0603KRX7R9BB104 / C14663 |
 | R41 | 10k 1% | 0603WAF1002T5E / C25804 |
 | SW1 | TL3340AF160QG | TL3340AF160QG / unresolved/manual |
-| J8 | UPDI / AUX / GND | UNSELECTED / unresolved/manual |
+| J8 | KEYED 2x10 DEBUG - NOT POWER | UNSELECTED / unresolved/manual |
+| R61 | 10k 1% | 0603WAF1002T5E / C25804 |
+| R62 | 10k 1% | 0603WAF1002T5E / C25804 |
+| R63 | 10k 1% | 0603WAF1002T5E / C25804 |
+| R64 | 1k 1% | 0603WAF1001T5E / C21190 |
+| R65 | 1k 1% | 0603WAF1001T5E / C21190 |
+| R66 | 10k 1% | 0603WAF1002T5E / C25804 |
+| R70 | 10k 1% | 0603WAF1002T5E / C25804 |
+| R71 | 10k 1% | 0603WAF1002T5E / C25804 |
 | R32 | 1k 1% | 0603WAF1001T5E / C21190 |
-| D10 | RED 3mm formed leads | UNSELECTED / unresolved/manual |
-| R33 | 1k 1% | 0603WAF1001T5E / C21190 |
-| D11 | RED 3mm formed leads | UNSELECTED / unresolved/manual |
-| R34 | 1k 1% | 0603WAF1001T5E / C21190 |
-| D12 | RED 3mm formed leads | UNSELECTED / unresolved/manual |
+| D10 | RED 3mm / +5V POWER / MANUAL | UNSELECTED / unresolved/manual |
 | U11 | TLV9002IDR | TLV9002IDR / C398360 |
 | R42 | 100k 1% | 0603WAF1003T5E / C25803 |
 | R43 | 16.5k 1% | 0603WAF1652T5E / C22812 |

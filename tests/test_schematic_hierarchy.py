@@ -30,7 +30,7 @@ class SchematicHierarchyTests(unittest.TestCase):
         expected = {(ref, pin): net for ref, pins in audit.items() for pin, net in pins.items()}
         self.assertEqual(self.graph.named_pins(), expected)
         self.assertEqual(sum(not r.startswith('#') for r in self.graph.refs), 127)
-        self.assertEqual(len(self.graph.hierarchy_links), 62)
+        self.assertEqual(len(self.graph.hierarchy_links), 59)
         self.assertNotIn('D1', self.graph.refs)
 
     def test_page_structure_and_component_distribution(self):
@@ -39,7 +39,7 @@ class SchematicHierarchyTests(unittest.TestCase):
             if not ref.startswith('#'):counts[filename] = counts.get(filename, 0)+1
             path = one(one(one(symbol, 'instances'), 'project'), 'path')[1]
             self.assertEqual(path.count('/'), 2)
-        self.assertEqual(counts, {'01_input_protection.kicad_sch':10,'02_hardgate.kicad_sch':20,'03_bucks.kicad_sch':18,'04_bipolar.kicad_sch':22,'05_diagnostics.kicad_sch':12,'06_sensing.kicad_sch':40,'07_output_rails.kicad_sch':5})
+        self.assertEqual(counts, {'01_input_protection.kicad_sch':10,'02_hardgate.kicad_sch':17,'03_bucks.kicad_sch':18,'04_bipolar.kicad_sch':23,'05_diagnostics.kicad_sch':14,'06_sensing.kicad_sch':40,'07_output_rails.kicad_sch':5})
         root = self.graph.sheets['big_modular.kicad_sch']
         self.assertEqual(one(root, 'paper')[1], 'User')
         self.assertEqual([one(s, 'paper')[1] for n, s in self.graph.sheets.items() if n!='big_modular.kicad_sch'], ['User']*7)

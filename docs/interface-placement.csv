@@ -1,12 +1,11 @@
 Reference,Board,Role,Footprint,Candidate_or_constraint,Status
 J1,main,USB-C input,BigModular:USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal,Original native J1 retained; assembly axis X6.43,4 existing USB hole-clearance errors unresolved
-D10,main,+12V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y38; exact MPN TBD,Manual solder; native position exclusion removes JLC BOM/CPL; isolated PCB-only pads 1=K 2=A
-D11,main,-12V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y46; exact MPN TBD,Manual solder; native position exclusion removes JLC BOM/CPL; isolated PCB-only pads 1=K 2=A
-D12,main,+5V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y54; exact MPN TBD,Manual solder; native position exclusion removes JLC BOM/CPL; isolated PCB-only pads 1=K 2=A
-SW1,main,Recessed reset access,BigModular:SW_TL3340AF160QG_HandSolder,E-Switch TL3340AF160QG; C2886925; 90-degree SMT; 3 signal lands + 2 anchors + 2 NPTH pegs,Selected and placed; fine-tip manual solder/fit trial pending; reset nets isolated; not in circuit BOM
-J7,main,Wire landing for J2 output,BigModular:WireLanding_2x08_P2.54mm,16 solder-through lands; DO NOT POPULATE BOX HEADER,PCB-only launch mapping matches J2; not yet schematic integrated
+D10,main,+5V RED indicator,BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge,Standard RED 3mm formed leads; X6.7 Y38; exact MPN TBD,Manual +5V power LED; pad1 GND/pad2 LED_P_A; R32 1k not placed/routed; exact fit/MPN pending
+SW1,main,Recessed reset access,BigModular:SW_TL3340AF160QG_HandSolder,E-Switch TL3340AF160QG; C2886925; 90-degree SMT; 3 signal lands + 2 anchors + 2 NPTH pegs,Selected and placed; fine-tip manual solder/fit trial pending; schematic optional debug button; PCB net sync pending
+J7,main,Wire landing for J2 output,BigModular:WireLanding_2x08_P2.54mm,16 solder-through lands; DO NOT POPULATE BOX HEADER,"Carrier solder landing matches schematic J7/J2; one manual flying-lead output, not a second header"
 J2,flying lead,Keyed Eurorack power OUTPUT,,Wurth 61201625821 cable-mount male IDC candidate; 16 pins 2.54mm,Existing schematic symbol; exact harness/mating fit unqualified; not power-up approval
 CB1,cable,Detachable Eurorack output cable,,16-to-16 female IDC straight-through; 1.27mm ribbon pitch; 28AWG copper,Assmann H3CCH-1606G candidate; verify key/polarity/continuity and length
+J8,unplaced,OPTIONAL 20-pin keyed rail debug; NOT POWER,BigModular:IDC-Header_2x10_P2.54mm_Vertical,Six conditioned senses/status/I2C/button;17..20NC; no LED/enable controls,Manual candidate; no PCB placement/routing; keyed MPN/cable fit unresolved
 BR1-BR2,mechanical,Main-to-panel right-angle support,,Plain L 9.2 x 10 x 18.4; both legs 3mm; two bores; printed side countersink only,ABS fit prototype; no captive nuts or inserts; physical tool/shrinkage/strength trial pending
 SC1-SC2,mechanical,Panel bolts,,M3x8; no washer in stack,Nominal 1mm thread past 2.4mm nut; verify actual parts
 SC3-SC4,mechanical,Main PCB bolts,,M3x8 90-degree flat countersunk; head <=6 diameter; flush or recessed <=0.3 in print; no washer,Length includes head; minimum nominal 1mm thread past nut; never countersink FR4

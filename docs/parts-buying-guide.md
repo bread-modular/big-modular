@@ -1,20 +1,26 @@
+# Current lamp correction
+
+Buy ONE ordinary hand-soldered red3mm formed-lead LED for D10, not three lamps.
+Final P5 ->R32 1k ->anode2, cathode1 GND; exact MPN/brightness/fit still unqualified.
+D11/D12 are retired. Other mechanical buying notes below remain provisional.
+
 # A4.2 switch, Eurorack output connector and cable buying guide
 
 These are **procurement candidates**, not an order, reservation or release BOM.
 No shipping-to-Sri-Lanka, delivered price, seller authenticity or current checkout
 availability is guaranteed. Public listings and manufacturer drawings were checked;
 JLC/LCSC catalogue snapshots are retained separately and are NOT cable stock proof.
-The root 88-part BOM/circuit is unchanged. See [mechanics](mechanics.md).
+The current127-part electrical design/BOM supersedes the old circuit. See [mechanics](mechanics.md).
 
-## Manual LED provisions (electrical selection pending)
+## Single manual power LED
 
-D10/D11/D12 reserve standard **RED 3mm THT** lamps with leads formed 90 degrees,
-not proprietary holders or 5mm LEDs. Three Ø3.6 panel holes and 2.54-pitch/Ø0.9
-solder-through pads are provided. Choose the exact lamp against the existing
-body/flange/length envelope in [mechanics](mechanics.md), then trial the forming jig.
-These references are excluded from JLC assembly BOM/CPL via native position flags.
-No exact LED MPN, stock, price or physical fit is claimed. R32 axial was retired;
-Basic SMD LED resistors await electrical design and separate live sourcing gates.
+D10 alone is an ordinary RED3mm THT lamp, leads formed90 degrees, no proprietary
+holder/5mm substitution. One retained Ø3.6 hole atX6.7/Y38 and two2.54-pitch/Ø0.9
+solder-through pads are provided. Trial the actual lamp against the envelope in
+[mechanics](mechanics.md). D11/D12 are removed; do not purchase three lamps.
+D10 is manual/excluded from JLC placement. Final regulated P5 feeds its anode
+through R32 1k SMD0603; cathode GND. No blink/controller. Exact LED MPN, stock,
+price, brightness or physical fit is not guaranteed; sourcing remains provisional.
 
 ## Selected reset switch — E-Switch TL3340AF160QG (SMT)
 
