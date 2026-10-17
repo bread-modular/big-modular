@@ -1,5 +1,10 @@
 # USB-power migration recovery
 
+> **Status note (084 promotion).** The canonical PCB is now the accepted 084 routing
+> source `69a1e329…4ff52adc`, not released for fabrication; see
+> `routing-source-acceptance.md`. Everything below is the unchanged 043 recovery
+> record and its historical hashes/exports.
+
 ## Provenance and scope
 
 Recovered only from this repository's Git objects in isolated workspace 045, based
