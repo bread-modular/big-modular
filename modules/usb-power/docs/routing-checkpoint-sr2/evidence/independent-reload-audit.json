@@ -1,0 +1,1842 @@
+{
+  "item_changes_after_expected_ops": [],
+  "removed_net_names": [
+    "/Direct bipolar rails/BI_REF",
+    "/Direct bipolar rails/COMP_N",
+    "/Direct bipolar rails/INV_SW"
+  ],
+  "added_net_names": [],
+  "code_renumbering": [
+    {
+      "net": "/Autonomous hardware window and retry/EF_MODE",
+      "old_code": 49,
+      "new_code": 57
+    },
+    {
+      "net": "/Autonomous hardware window and retry/EF_SHDN",
+      "old_code": 33,
+      "new_code": 36
+    },
+    {
+      "net": "/Autonomous hardware window and retry/ILIM",
+      "old_code": 51,
+      "new_code": 59
+    },
+    {
+      "net": "/Autonomous hardware window and retry/ILIM_SER_1",
+      "old_code": 52,
+      "new_code": 60
+    },
+    {
+      "net": "/Autonomous hardware window and retry/ILIM_SER_2",
+      "old_code": 53,
+      "new_code": 61
+    },
+    {
+      "net": "/Autonomous hardware window and retry/MODE_SER_1",
+      "old_code": 50,
+      "new_code": 58
+    },
+    {
+      "net": "/Autonomous hardware window and retry/MODE_SER_2",
+      "old_code": 61,
+      "new_code": 70
+    },
+    {
+      "net": "/Autonomous hardware window and retry/OV_SET",
+      "old_code": 69,
+      "new_code": 78
+    },
+    {
+      "net": "/Autonomous hardware window and retry/RTN",
+      "old_code": 21,
+      "new_code": 24
+    },
+    {
+      "net": "/Autonomous hardware window and retry/SLEW",
+      "old_code": 26,
+      "new_code": 29
+    },
+    {
+      "net": "/Autonomous hardware window and retry/UV_EN",
+      "old_code": 20,
+      "new_code": 23
+    },
+    {
+      "net": "/Autonomous hardware window and retry/UV_SER_1",
+      "old_code": 5,
+      "new_code": 6
+    },
+    {
+      "net": "/Autonomous hardware window and retry/UV_SER_2",
+      "old_code": 19,
+      "new_code": 22
+    },
+    {
+      "net": "/Board output and power LED/LED_P_A",
+      "old_code": 60,
+      "new_code": 69
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_BOOT",
+      "old_code": 6,
+      "new_code": 9
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_DIV1",
+      "old_code": 8,
+      "new_code": 11
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_DIV2",
+      "old_code": 9,
+      "new_code": 12
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_EN",
+      "old_code": 13,
+      "new_code": 15
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_EN_LO",
+      "old_code": 101,
+      "new_code": 8
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_FB",
+      "old_code": 12,
+      "new_code": 14
+    },
+    {
+      "net": "/Direct 9V negative IBB/NINV_SW",
+      "old_code": 7,
+      "new_code": 10
+    },
+    {
+      "net": "/Direct 9V negative IBB/NRAW",
+      "old_code": 10,
+      "new_code": 1
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_COMP",
+      "old_code": 96,
+      "new_code": 51
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_COMP_RC",
+      "old_code": 95,
+      "new_code": 56
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_FB",
+      "old_code": 98,
+      "new_code": 7
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_FREQ",
+      "old_code": 99,
+      "new_code": 52
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_FREQ_SER",
+      "old_code": 100,
+      "new_code": 53
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_SS",
+      "old_code": 94,
+      "new_code": 50
+    },
+    {
+      "net": "/Direct 9V positive boost/PBOOST_SW",
+      "old_code": 97,
+      "new_code": 21
+    },
+    {
+      "net": "/Direct 9V positive boost/PRAW",
+      "old_code": 17,
+      "new_code": 19
+    },
+    {
+      "net": "/Direct bipolar rails/ANA_MID",
+      "old_code": 82,
+      "new_code": 90
+    },
+    {
+      "net": "/Direct bipolar rails/BI_EN",
+      "old_code": 84,
+      "new_code": 92
+    },
+    {
+      "net": "/Direct bipolar rails/NEG_DIV",
+      "old_code": 91,
+      "new_code": 96
+    },
+    {
+      "net": "/Direct bipolar rails/NRAW",
+      "old_code": 86,
+      "new_code": 93
+    },
+    {
+      "net": "/Direct bipolar rails/POS_FB",
+      "old_code": 89,
+      "new_code": 94
+    },
+    {
+      "net": "/Direct bipolar rails/PRAW",
+      "old_code": 90,
+      "new_code": 95
+    },
+    {
+      "net": "/Independent +5V buck/FIVE_BOOT",
+      "old_code": 24,
+      "new_code": 27
+    },
+    {
+      "net": "/Independent +5V buck/FIVE_DIV_LO",
+      "old_code": 73,
+      "new_code": 62
+    },
+    {
+      "net": "/Independent +5V buck/FIVE_FB",
+      "old_code": 62,
+      "new_code": 71
+    },
+    {
+      "net": "/Independent +5V buck/FIVE_SW",
+      "old_code": 15,
+      "new_code": 17
+    },
+    {
+      "net": "/Independent buck converters/MID_DIV_LO",
+      "old_code": 92,
+      "new_code": 97
+    },
+    {
+      "net": "/Independent buck converters/MID_FB",
+      "old_code": 93,
+      "new_code": 98
+    },
+    {
+      "net": "/MID",
+      "old_code": 83,
+      "new_code": 91
+    },
+    {
+      "net": "/N12",
+      "old_code": 18,
+      "new_code": 20
+    },
+    {
+      "net": "/P12",
+      "old_code": 1,
+      "new_code": 3
+    },
+    {
+      "net": "/P5",
+      "old_code": 16,
+      "new_code": 18
+    },
+    {
+      "net": "/Quiet bipolar post-regulators/N_LDO_DIV",
+      "old_code": 22,
+      "new_code": 25
+    },
+    {
+      "net": "/Quiet bipolar post-regulators/N_LDO_FB",
+      "old_code": 23,
+      "new_code": 26
+    },
+    {
+      "net": "/Quiet bipolar post-regulators/N_LDO_SER",
+      "old_code": 48,
+      "new_code": 55
+    },
+    {
+      "net": "/Quiet bipolar post-regulators/N_NR",
+      "old_code": 14,
+      "new_code": 16
+    },
+    {
+      "net": "/Quiet bipolar post-regulators/P_NR",
+      "old_code": 3,
+      "new_code": 4
+    },
+    {
+      "net": "/USB PD input/CC1",
+      "old_code": 31,
+      "new_code": 34
+    },
+    {
+      "net": "/USB PD input/CC2",
+      "old_code": 30,
+      "new_code": 33
+    },
+    {
+      "net": "/USB PD input/PD_CFG",
+      "old_code": 25,
+      "new_code": 28
+    },
+    {
+      "net": "/USB PD input/PD_D_SHORT",
+      "old_code": 29,
+      "new_code": 32
+    },
+    {
+      "net": "/USB PD input/USB_VBUS",
+      "old_code": 47,
+      "new_code": 54
+    },
+    {
+      "net": "/VIN9",
+      "old_code": 4,
+      "new_code": 5
+    },
+    {
+      "net": "/VPROT",
+      "old_code": 11,
+      "new_code": 13
+    },
+    {
+      "net": "unconnected-(J1-D+-PadA6)",
+      "old_code": 54,
+      "new_code": 63
+    },
+    {
+      "net": "unconnected-(J1-D+-PadB6)",
+      "old_code": 57,
+      "new_code": 66
+    },
+    {
+      "net": "unconnected-(J1-D--PadA7)",
+      "old_code": 55,
+      "new_code": 64
+    },
+    {
+      "net": "unconnected-(J1-D--PadB7)",
+      "old_code": 58,
+      "new_code": 67
+    },
+    {
+      "net": "unconnected-(J1-SBU1-PadA8)",
+      "old_code": 56,
+      "new_code": 65
+    },
+    {
+      "net": "unconnected-(J1-SBU2-PadB8)",
+      "old_code": 59,
+      "new_code": 68
+    },
+    {
+      "net": "unconnected-(J7-Pin_13-Pad13)",
+      "old_code": 64,
+      "new_code": 73
+    },
+    {
+      "net": "unconnected-(J7-Pin_14-Pad14)",
+      "old_code": 65,
+      "new_code": 74
+    },
+    {
+      "net": "unconnected-(J7-Pin_15-Pad15)",
+      "old_code": 66,
+      "new_code": 75
+    },
+    {
+      "net": "unconnected-(J7-Pin_16-Pad16)",
+      "old_code": 67,
+      "new_code": 76
+    },
+    {
+      "net": "unconnected-(SW1-CASE-PadMP)",
+      "old_code": 34,
+      "new_code": 37
+    },
+    {
+      "net": "unconnected-(U1-CFG2_SCL-Pad2)",
+      "old_code": 27,
+      "new_code": 30
+    },
+    {
+      "net": "unconnected-(U1-CFG3_SDA-Pad3)",
+      "old_code": 28,
+      "new_code": 31
+    },
+    {
+      "net": "unconnected-(U1-PG_N-Pad10)",
+      "old_code": 32,
+      "new_code": 35
+    },
+    {
+      "net": "unconnected-(U12-0P1V-Pad12)",
+      "old_code": 78,
+      "new_code": 86
+    },
+    {
+      "net": "unconnected-(U12-0P4V-Pad10)",
+      "old_code": 77,
+      "new_code": 85
+    },
+    {
+      "net": "unconnected-(U12-1P6V-Pad8)",
+      "old_code": 76,
+      "new_code": 84
+    },
+    {
+      "net": "unconnected-(U12-6P4V2-Pad4)",
+      "old_code": 75,
+      "new_code": 83
+    },
+    {
+      "net": "unconnected-(U12-NC-Pad17)",
+      "old_code": 79,
+      "new_code": 87
+    },
+    {
+      "net": "unconnected-(U12-NC-Pad18)",
+      "old_code": 80,
+      "new_code": 88
+    },
+    {
+      "net": "unconnected-(U12-NC-Pad19)",
+      "old_code": 81,
+      "new_code": 89
+    },
+    {
+      "net": "unconnected-(U12-NC-Pad2)",
+      "old_code": 74,
+      "new_code": 82
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad10)",
+      "old_code": 41,
+      "new_code": 44
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad11)",
+      "old_code": 42,
+      "new_code": 45
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad12)",
+      "old_code": 43,
+      "new_code": 46
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad17)",
+      "old_code": 44,
+      "new_code": 47
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad18)",
+      "old_code": 45,
+      "new_code": 48
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad19)",
+      "old_code": 46,
+      "new_code": 49
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad2)",
+      "old_code": 35,
+      "new_code": 38
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad4)",
+      "old_code": 36,
+      "new_code": 39
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad5)",
+      "old_code": 37,
+      "new_code": 40
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad6)",
+      "old_code": 38,
+      "new_code": 41
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad8)",
+      "old_code": 39,
+      "new_code": 42
+    },
+    {
+      "net": "unconnected-(U13-NC-Pad9)",
+      "old_code": 40,
+      "new_code": 43
+    },
+    {
+      "net": "unconnected-(U2-FLT_N-Pad14)",
+      "old_code": 72,
+      "new_code": 81
+    },
+    {
+      "net": "unconnected-(U2-IMON-Pad10)",
+      "old_code": 70,
+      "new_code": 79
+    },
+    {
+      "net": "unconnected-(U2-NC-Pad13)",
+      "old_code": 71,
+      "new_code": 80
+    },
+    {
+      "net": "unconnected-(U2-NC-Pad4)",
+      "old_code": 68,
+      "new_code": 77
+    },
+    {
+      "net": "unconnected-(U5-EN-Pad5)",
+      "old_code": 63,
+      "new_code": 72
+    }
+  ],
+  "recorded_resource_rebindings": [
+    {
+      "uuid": "03379252-0b01-45c0-bb72-0d8c9803f4d8",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "0980ac21-9966-461d-8785-86222231f519",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step"
+    },
+    {
+      "uuid": "0a320e6c-8360-5a57-8637-5d5bc4837a3a",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "10829fcb-ecde-58dd-bfa0-7fba04ed61ca",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "1410d64b-eab9-5bd8-b69d-0014c7d9923f",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "14d3d38a-8b4a-5646-87eb-c13e34de0113",
+      "old": "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+      "new": "${KIPRJMOD}/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step"
+    },
+    {
+      "uuid": "15b142ae-3e11-595d-bc6d-8d9dae328fc1",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "18be51db-4361-5d46-b24d-22255132b4a7",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "18d81e22-85d2-40d4-b341-b328a5cca46e",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "2ee401e8-bd1b-472b-a6f7-99642a3e7c11",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "31cd7de7-3322-4c2a-b5b4-365685e2fdcc",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "32a06f10-23cf-5935-b3fd-9296949777b4",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "36a94d25-5b88-5c82-95ff-28600504faa6",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "37845a61-f950-4467-a07d-dd40320fce89",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "391646c0-a86e-51c1-bcc3-f7e8c1e96168",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "3cf5357d-4129-5905-ab8f-5cde04f1b7bf",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "3d7cd0e3-a192-5b58-89d4-5c98055d2b46",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "418dfb71-0a52-4c52-86c2-fc344a073003",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "4235ebd6-ce26-5a82-8873-f994d33ffdbe",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "4292e7b1-f986-54e5-bb4c-7156a70542fe",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "475c9ec9-226f-5d8a-aa78-5d45e6d66306",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "4838345d-798b-5f89-a89d-8cea7308cb93",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "48eb5b55-8660-55f1-a4fd-0f967510b36d",
+      "old": "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step",
+      "new": "${KIPRJMOD}/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step"
+    },
+    {
+      "uuid": "49f5b986-4b83-5ec3-a7bd-08f63c31e9b8",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "500937a7-133b-49c6-ba1a-5b0e9a597aa8",
+      "old": "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step",
+      "new": "${KIPRJMOD}/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
+    },
+    {
+      "uuid": "6044d99f-5578-5b2b-ab65-ddad01bb0947",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "606606e5-8c8f-54b8-8b85-2f259160b7c8",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "617467fc-4865-5412-8682-967f08f02b07",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "6298609f-e4ff-5f64-ae02-ac62b5fde71c",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "63df7dd0-1ec7-58ad-9eff-810c5879aed3",
+      "old": "${KICAD10_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step"
+    },
+    {
+      "uuid": "6716a138-868d-426d-9220-e1adc18ec76a",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "7ad3dbdc-80d0-438f-87c3-dcdda33f4101",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "8291e940-ba44-4e1b-9db5-82a90734aacc",
+      "old": "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step",
+      "new": "${KIPRJMOD}/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
+    },
+    {
+      "uuid": "859ed664-fcd3-5f6d-b127-61da7e6c635f",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "882541a7-a2bb-538e-8dae-79bd78a2b52e",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "892eda5b-0698-5e40-b679-0f1cc1030e14",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "8bf11d49-67b8-4dfc-ae34-ba7bd70264db",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "8ca141ce-a539-4a3f-8be9-57ae8636a135",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "8e3bc2ae-85bc-43b5-a533-411dbd68e2b2",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "929550e6-c2d5-5b66-bdb5-7449ce0b97c2",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "9323c198-b90c-5cf6-8039-5ee301c4a033",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "9352bb9a-0c46-5349-aeb8-375e707276fc",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "98fdc0fd-a19d-5cac-920f-a762e76151b6",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "a4756353-4240-4fe1-86a9-742e6f160a1d",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "a5132498-b4c4-5ff2-874a-394c11b7135b",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "a7d7709f-4de1-5b9b-9399-12363a514eb0",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "aa5da1c0-6786-564e-8a9b-9aed0ba89359",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "ab85ecc0-052f-5ecd-83c8-beea01133e55",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "bb7ae8e3-a50b-45b7-b4ae-1888c90f91d4",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "c0c82589-4cf7-5aec-8bf4-8b5769a30ba3",
+      "old": "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+      "new": "${KIPRJMOD}/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step"
+    },
+    {
+      "uuid": "c2740804-7d3b-4a6b-b713-4c7dcf7602d5",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "c43a705f-403a-4422-b80f-ed8b5da0aa4c",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "c5ff3d83-171d-5159-9c8f-15d23c57a8cc",
+      "old": "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step",
+      "new": "${KIPRJMOD}/_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step"
+    },
+    {
+      "uuid": "c627497b-3c74-53d3-9af2-b2b41c9d0934",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "c7c2c5c3-236b-528b-bd22-62c48adf4cae",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "c7de2388-77a0-5590-becf-7a3775838ea6",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "cab9d3f0-334c-4752-9df7-cb661a9e79da",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "cd4c795f-10d8-5d6c-96fb-ecaa1bee1ae9",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "d8701700-e073-5383-ba17-3d55afe81c59",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "d92c6b15-ebdb-50db-8e73-3cbc1018e8fb",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "d9481670-d33d-5aa3-b403-074e88ea8c95",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "dd420cdd-3fd3-564f-8443-ee40ca065b50",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "e0b5e923-4e1b-511f-aa06-991927b006c1",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step"
+    },
+    {
+      "uuid": "ee057065-786c-529d-abdc-a77635ada801",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "f1385fad-2400-53aa-ac95-69392498fee7",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "f4fa504f-c12b-5973-bbb8-5a742874122d",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "f6d6e3a5-d674-4dfe-8795-1ecd5cbaa481",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "fc034203-9681-5d99-9367-d0ec2d8bf55e",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "fdf132f7-2d48-5dbc-8cd2-7ebd4b8abe76",
+      "old": "${KICAD10_3DMODEL_DIR}/LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step",
+      "new": "${KIPRJMOD}/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step"
+    },
+    {
+      "uuid": "88cd91bd-898a-52d1-9229-66584b659c73",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "a898bd5b-a9e7-5042-a460-089070c0634a",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "c5fec03b-383d-5a3d-8c31-0a882ca5e8ac",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "19cbf3e4-d27d-5cf8-8292-36ad797f6eb7",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "496cce96-21d1-5520-9a83-cd9a95eff194",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "55baeca9-b067-500b-816c-55bdacad35e1",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "5f95ff9b-38ea-5ff9-95c5-f0b6eeb74bbf",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "9c6da32d-8e19-5bda-9cf6-8dbd84cf4bc9",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "83b9a6e1-fc95-5ee4-8e99-dd7fdaf6c6cc",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "020a280d-88e6-53db-ba03-8c5a7efd6f1e",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "48a7579f-3f7d-565d-9061-fb8c1db3e6ce",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "33600b9a-306d-5d97-8bc4-7b358515a43d",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "36f7a3a8-377d-5433-b994-7bcf55d754ed",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "72949bb1-e28a-5526-98f6-01d5c9d6c147",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "d111b6f9-24f1-5aa0-9b73-2864617140b4",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "49fbd5b4-cdb8-5f49-9c51-313fc42fbcfb",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "a622cbe1-f7a7-5ad3-8661-b33940f07625",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "de739d52-0748-5de0-aa66-096d67c9d5c9",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "6338580d-ff4c-51bd-838a-0c2cf661986d",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "acd43cff-20ee-5787-8b65-2e66b687aaca",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "b093f305-5242-56b0-bdab-72506d1f547e",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step"
+    },
+    {
+      "uuid": "ceffcc1e-71b8-534f-b320-8b65c5b22e1c",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "614164b2-08ab-57a9-9aa9-cfed9490ce3d",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "8ac62347-9a3c-591d-b28e-d45f706865f8",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "5a88f73d-9f5f-5028-bf0c-713152ba638a",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "cc6b1494-bc9d-55e1-888e-f51ebb09e432",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "53c37f9d-4515-5724-9474-8db9c55592b0",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+    },
+    {
+      "uuid": "50653cef-edbd-5f27-8a60-8ddadcc0a530",
+      "old": "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+    },
+    {
+      "uuid": "323079d7-fa01-59a8-bd25-56b96490f601",
+      "old": "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step",
+      "new": "${KIPRJMOD}/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
+    },
+    {
+      "uuid": "4fa592a4-933f-5d9d-bedb-0f334401d8b0",
+      "old": "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step",
+      "new": "${KIPRJMOD}/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
+    },
+    {
+      "uuid": "20f19049-f661-51d9-9e2c-0015136ce5ee",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "0a3268cb-280a-512b-9016-726212e6062e",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "62b9ffcc-f49d-50e2-a896-ad7a8c4de2c2",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "7589b3ee-83d4-5538-869b-c43effc38378",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "d6a889a3-938e-5854-9bf0-a60b18b10c6f",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "4986299e-b451-5e66-a07d-c8a16d4014d1",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "3d3b7c47-aaa9-50f5-8937-0a1c502c052b",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    },
+    {
+      "uuid": "1079d923-a2c5-5ff0-a159-38786e22eaaa",
+      "old": "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "new": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+    }
+  ],
+  "old_net_table": [
+    [
+      "",
+      0
+    ],
+    [
+      "/Autonomous hardware window and retry/EF_MODE",
+      49
+    ],
+    [
+      "/Autonomous hardware window and retry/EF_SHDN",
+      33
+    ],
+    [
+      "/Autonomous hardware window and retry/ILIM",
+      51
+    ],
+    [
+      "/Autonomous hardware window and retry/ILIM_SER_1",
+      52
+    ],
+    [
+      "/Autonomous hardware window and retry/ILIM_SER_2",
+      53
+    ],
+    [
+      "/Autonomous hardware window and retry/MODE_SER_1",
+      50
+    ],
+    [
+      "/Autonomous hardware window and retry/MODE_SER_2",
+      61
+    ],
+    [
+      "/Autonomous hardware window and retry/OV_SET",
+      69
+    ],
+    [
+      "/Autonomous hardware window and retry/RTN",
+      21
+    ],
+    [
+      "/Autonomous hardware window and retry/SLEW",
+      26
+    ],
+    [
+      "/Autonomous hardware window and retry/UV_EN",
+      20
+    ],
+    [
+      "/Autonomous hardware window and retry/UV_SER_1",
+      5
+    ],
+    [
+      "/Autonomous hardware window and retry/UV_SER_2",
+      19
+    ],
+    [
+      "/Board output and power LED/LED_P_A",
+      60
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_BOOT",
+      6
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_DIV1",
+      8
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_DIV2",
+      9
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_EN",
+      13
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_EN_LO",
+      101
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_FB",
+      12
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_SW",
+      7
+    ],
+    [
+      "/Direct 9V negative IBB/NRAW",
+      10
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_COMP",
+      96
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_COMP_RC",
+      95
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_FB",
+      98
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_FREQ",
+      99
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_FREQ_SER",
+      100
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_SS",
+      94
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_SW",
+      97
+    ],
+    [
+      "/Direct 9V positive boost/PRAW",
+      17
+    ],
+    [
+      "/Direct bipolar rails/ANA_MID",
+      82
+    ],
+    [
+      "/Direct bipolar rails/BI_EN",
+      84
+    ],
+    [
+      "/Direct bipolar rails/BI_REF",
+      87
+    ],
+    [
+      "/Direct bipolar rails/COMP_N",
+      88
+    ],
+    [
+      "/Direct bipolar rails/INV_SW",
+      85
+    ],
+    [
+      "/Direct bipolar rails/NEG_DIV",
+      91
+    ],
+    [
+      "/Direct bipolar rails/NRAW",
+      86
+    ],
+    [
+      "/Direct bipolar rails/POS_FB",
+      89
+    ],
+    [
+      "/Direct bipolar rails/PRAW",
+      90
+    ],
+    [
+      "/GND",
+      2
+    ],
+    [
+      "/Independent +5V buck/FIVE_BOOT",
+      24
+    ],
+    [
+      "/Independent +5V buck/FIVE_DIV_LO",
+      73
+    ],
+    [
+      "/Independent +5V buck/FIVE_FB",
+      62
+    ],
+    [
+      "/Independent +5V buck/FIVE_SW",
+      15
+    ],
+    [
+      "/Independent buck converters/MID_DIV_LO",
+      92
+    ],
+    [
+      "/Independent buck converters/MID_FB",
+      93
+    ],
+    [
+      "/MID",
+      83
+    ],
+    [
+      "/N12",
+      18
+    ],
+    [
+      "/P12",
+      1
+    ],
+    [
+      "/P5",
+      16
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_LDO_DIV",
+      22
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_LDO_FB",
+      23
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_LDO_SER",
+      48
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_NR",
+      14
+    ],
+    [
+      "/Quiet bipolar post-regulators/P_NR",
+      3
+    ],
+    [
+      "/USB PD input/CC1",
+      31
+    ],
+    [
+      "/USB PD input/CC2",
+      30
+    ],
+    [
+      "/USB PD input/PD_CFG",
+      25
+    ],
+    [
+      "/USB PD input/PD_D_SHORT",
+      29
+    ],
+    [
+      "/USB PD input/USB_VBUS",
+      47
+    ],
+    [
+      "/VIN9",
+      4
+    ],
+    [
+      "/VPROT",
+      11
+    ],
+    [
+      "unconnected-(J1-D+-PadA6)",
+      54
+    ],
+    [
+      "unconnected-(J1-D+-PadB6)",
+      57
+    ],
+    [
+      "unconnected-(J1-D--PadA7)",
+      55
+    ],
+    [
+      "unconnected-(J1-D--PadB7)",
+      58
+    ],
+    [
+      "unconnected-(J1-SBU1-PadA8)",
+      56
+    ],
+    [
+      "unconnected-(J1-SBU2-PadB8)",
+      59
+    ],
+    [
+      "unconnected-(J7-Pin_13-Pad13)",
+      64
+    ],
+    [
+      "unconnected-(J7-Pin_14-Pad14)",
+      65
+    ],
+    [
+      "unconnected-(J7-Pin_15-Pad15)",
+      66
+    ],
+    [
+      "unconnected-(J7-Pin_16-Pad16)",
+      67
+    ],
+    [
+      "unconnected-(SW1-CASE-PadMP)",
+      34
+    ],
+    [
+      "unconnected-(U1-CFG2_SCL-Pad2)",
+      27
+    ],
+    [
+      "unconnected-(U1-CFG3_SDA-Pad3)",
+      28
+    ],
+    [
+      "unconnected-(U1-PG_N-Pad10)",
+      32
+    ],
+    [
+      "unconnected-(U12-0P1V-Pad12)",
+      78
+    ],
+    [
+      "unconnected-(U12-0P4V-Pad10)",
+      77
+    ],
+    [
+      "unconnected-(U12-1P6V-Pad8)",
+      76
+    ],
+    [
+      "unconnected-(U12-6P4V2-Pad4)",
+      75
+    ],
+    [
+      "unconnected-(U12-NC-Pad17)",
+      79
+    ],
+    [
+      "unconnected-(U12-NC-Pad18)",
+      80
+    ],
+    [
+      "unconnected-(U12-NC-Pad19)",
+      81
+    ],
+    [
+      "unconnected-(U12-NC-Pad2)",
+      74
+    ],
+    [
+      "unconnected-(U13-NC-Pad10)",
+      41
+    ],
+    [
+      "unconnected-(U13-NC-Pad11)",
+      42
+    ],
+    [
+      "unconnected-(U13-NC-Pad12)",
+      43
+    ],
+    [
+      "unconnected-(U13-NC-Pad17)",
+      44
+    ],
+    [
+      "unconnected-(U13-NC-Pad18)",
+      45
+    ],
+    [
+      "unconnected-(U13-NC-Pad19)",
+      46
+    ],
+    [
+      "unconnected-(U13-NC-Pad2)",
+      35
+    ],
+    [
+      "unconnected-(U13-NC-Pad4)",
+      36
+    ],
+    [
+      "unconnected-(U13-NC-Pad5)",
+      37
+    ],
+    [
+      "unconnected-(U13-NC-Pad6)",
+      38
+    ],
+    [
+      "unconnected-(U13-NC-Pad8)",
+      39
+    ],
+    [
+      "unconnected-(U13-NC-Pad9)",
+      40
+    ],
+    [
+      "unconnected-(U2-FLT_N-Pad14)",
+      72
+    ],
+    [
+      "unconnected-(U2-IMON-Pad10)",
+      70
+    ],
+    [
+      "unconnected-(U2-NC-Pad13)",
+      71
+    ],
+    [
+      "unconnected-(U2-NC-Pad4)",
+      68
+    ],
+    [
+      "unconnected-(U5-EN-Pad5)",
+      63
+    ]
+  ],
+  "new_net_table": [
+    [
+      "",
+      0
+    ],
+    [
+      "/Autonomous hardware window and retry/EF_MODE",
+      57
+    ],
+    [
+      "/Autonomous hardware window and retry/EF_SHDN",
+      36
+    ],
+    [
+      "/Autonomous hardware window and retry/ILIM",
+      59
+    ],
+    [
+      "/Autonomous hardware window and retry/ILIM_SER_1",
+      60
+    ],
+    [
+      "/Autonomous hardware window and retry/ILIM_SER_2",
+      61
+    ],
+    [
+      "/Autonomous hardware window and retry/MODE_SER_1",
+      58
+    ],
+    [
+      "/Autonomous hardware window and retry/MODE_SER_2",
+      70
+    ],
+    [
+      "/Autonomous hardware window and retry/OV_SET",
+      78
+    ],
+    [
+      "/Autonomous hardware window and retry/RTN",
+      24
+    ],
+    [
+      "/Autonomous hardware window and retry/SLEW",
+      29
+    ],
+    [
+      "/Autonomous hardware window and retry/UV_EN",
+      23
+    ],
+    [
+      "/Autonomous hardware window and retry/UV_SER_1",
+      6
+    ],
+    [
+      "/Autonomous hardware window and retry/UV_SER_2",
+      22
+    ],
+    [
+      "/Board output and power LED/LED_P_A",
+      69
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_BOOT",
+      9
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_DIV1",
+      11
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_DIV2",
+      12
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_EN",
+      15
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_EN_LO",
+      8
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_FB",
+      14
+    ],
+    [
+      "/Direct 9V negative IBB/NINV_SW",
+      10
+    ],
+    [
+      "/Direct 9V negative IBB/NRAW",
+      1
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_COMP",
+      51
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_COMP_RC",
+      56
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_FB",
+      7
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_FREQ",
+      52
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_FREQ_SER",
+      53
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_SS",
+      50
+    ],
+    [
+      "/Direct 9V positive boost/PBOOST_SW",
+      21
+    ],
+    [
+      "/Direct 9V positive boost/PRAW",
+      19
+    ],
+    [
+      "/Direct bipolar rails/ANA_MID",
+      90
+    ],
+    [
+      "/Direct bipolar rails/BI_EN",
+      92
+    ],
+    [
+      "/Direct bipolar rails/NEG_DIV",
+      96
+    ],
+    [
+      "/Direct bipolar rails/NRAW",
+      93
+    ],
+    [
+      "/Direct bipolar rails/POS_FB",
+      94
+    ],
+    [
+      "/Direct bipolar rails/PRAW",
+      95
+    ],
+    [
+      "/GND",
+      2
+    ],
+    [
+      "/Independent +5V buck/FIVE_BOOT",
+      27
+    ],
+    [
+      "/Independent +5V buck/FIVE_DIV_LO",
+      62
+    ],
+    [
+      "/Independent +5V buck/FIVE_FB",
+      71
+    ],
+    [
+      "/Independent +5V buck/FIVE_SW",
+      17
+    ],
+    [
+      "/Independent buck converters/MID_DIV_LO",
+      97
+    ],
+    [
+      "/Independent buck converters/MID_FB",
+      98
+    ],
+    [
+      "/MID",
+      91
+    ],
+    [
+      "/N12",
+      20
+    ],
+    [
+      "/P12",
+      3
+    ],
+    [
+      "/P5",
+      18
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_LDO_DIV",
+      25
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_LDO_FB",
+      26
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_LDO_SER",
+      55
+    ],
+    [
+      "/Quiet bipolar post-regulators/N_NR",
+      16
+    ],
+    [
+      "/Quiet bipolar post-regulators/P_NR",
+      4
+    ],
+    [
+      "/USB PD input/CC1",
+      34
+    ],
+    [
+      "/USB PD input/CC2",
+      33
+    ],
+    [
+      "/USB PD input/PD_CFG",
+      28
+    ],
+    [
+      "/USB PD input/PD_D_SHORT",
+      32
+    ],
+    [
+      "/USB PD input/USB_VBUS",
+      54
+    ],
+    [
+      "/VIN9",
+      5
+    ],
+    [
+      "/VPROT",
+      13
+    ],
+    [
+      "unconnected-(J1-D+-PadA6)",
+      63
+    ],
+    [
+      "unconnected-(J1-D+-PadB6)",
+      66
+    ],
+    [
+      "unconnected-(J1-D--PadA7)",
+      64
+    ],
+    [
+      "unconnected-(J1-D--PadB7)",
+      67
+    ],
+    [
+      "unconnected-(J1-SBU1-PadA8)",
+      65
+    ],
+    [
+      "unconnected-(J1-SBU2-PadB8)",
+      68
+    ],
+    [
+      "unconnected-(J7-Pin_13-Pad13)",
+      73
+    ],
+    [
+      "unconnected-(J7-Pin_14-Pad14)",
+      74
+    ],
+    [
+      "unconnected-(J7-Pin_15-Pad15)",
+      75
+    ],
+    [
+      "unconnected-(J7-Pin_16-Pad16)",
+      76
+    ],
+    [
+      "unconnected-(SW1-CASE-PadMP)",
+      37
+    ],
+    [
+      "unconnected-(U1-CFG2_SCL-Pad2)",
+      30
+    ],
+    [
+      "unconnected-(U1-CFG3_SDA-Pad3)",
+      31
+    ],
+    [
+      "unconnected-(U1-PG_N-Pad10)",
+      35
+    ],
+    [
+      "unconnected-(U12-0P1V-Pad12)",
+      86
+    ],
+    [
+      "unconnected-(U12-0P4V-Pad10)",
+      85
+    ],
+    [
+      "unconnected-(U12-1P6V-Pad8)",
+      84
+    ],
+    [
+      "unconnected-(U12-6P4V2-Pad4)",
+      83
+    ],
+    [
+      "unconnected-(U12-NC-Pad17)",
+      87
+    ],
+    [
+      "unconnected-(U12-NC-Pad18)",
+      88
+    ],
+    [
+      "unconnected-(U12-NC-Pad19)",
+      89
+    ],
+    [
+      "unconnected-(U12-NC-Pad2)",
+      82
+    ],
+    [
+      "unconnected-(U13-NC-Pad10)",
+      44
+    ],
+    [
+      "unconnected-(U13-NC-Pad11)",
+      45
+    ],
+    [
+      "unconnected-(U13-NC-Pad12)",
+      46
+    ],
+    [
+      "unconnected-(U13-NC-Pad17)",
+      47
+    ],
+    [
+      "unconnected-(U13-NC-Pad18)",
+      48
+    ],
+    [
+      "unconnected-(U13-NC-Pad19)",
+      49
+    ],
+    [
+      "unconnected-(U13-NC-Pad2)",
+      38
+    ],
+    [
+      "unconnected-(U13-NC-Pad4)",
+      39
+    ],
+    [
+      "unconnected-(U13-NC-Pad5)",
+      40
+    ],
+    [
+      "unconnected-(U13-NC-Pad6)",
+      41
+    ],
+    [
+      "unconnected-(U13-NC-Pad8)",
+      42
+    ],
+    [
+      "unconnected-(U13-NC-Pad9)",
+      43
+    ],
+    [
+      "unconnected-(U2-FLT_N-Pad14)",
+      81
+    ],
+    [
+      "unconnected-(U2-IMON-Pad10)",
+      79
+    ],
+    [
+      "unconnected-(U2-NC-Pad13)",
+      80
+    ],
+    [
+      "unconnected-(U2-NC-Pad4)",
+      77
+    ],
+    [
+      "unconnected-(U5-EN-Pad5)",
+      72
+    ]
+  ],
+  "candidate": "modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/inputs/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/stale-copper-004/project/usb-power.kicad_pcb"
+}

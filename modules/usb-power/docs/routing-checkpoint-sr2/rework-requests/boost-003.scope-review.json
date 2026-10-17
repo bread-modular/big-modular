@@ -1,0 +1,1158 @@
+{
+  "status": "REVIEWED_REQUEST_NOT_YET_APPLIED",
+  "method": "manual routing; no pathfinding or autorouter",
+  "preserved": "L5 and all other placement except C70/C84; all other copper/UUIDs/zone definitions",
+  "moves": {
+    "C70": "1.5mm north, resolves forced enlarged-L1 conflict",
+    "C84": "0.2mm south, resolves measured 0.475mm edge clearance against 0.5mm rule"
+  },
+  "deletions": [
+    {
+      "item": {
+        "uuid": "0b4a880a-b295-4af1-ab9b-4efbdbd9f0cc",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          136.5,
+          77.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/NRAW",
+        "start": [
+          136.5,
+          77.5
+        ],
+        "end": [
+          136.5,
+          81.0
+        ],
+        "width_mm": 1.0
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "6320ea47-d382-508f-b080-a9f33e53b6e3",
+          "new_net": "/GND",
+          "other_uuid": "0b4a880a-b295-4af1-ab9b-4efbdbd9f0cc",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            136.5,
+            77.5
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "17333209-9275-4b09-bfc0-b3cc9b464238",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          128.4,
+          81.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/BI_REF",
+        "start": [
+          128.4,
+          81.0
+        ],
+        "end": [
+          131.8,
+          81.0
+        ],
+        "width_mm": 0.2
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "40fb7a0e-bd19-586d-9482-d422735572b2",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "17333209-9275-4b09-bfc0-b3cc9b464238",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/BI_REF",
+          "other_is_new": false,
+          "other_at": [
+            128.4,
+            81.0
+          ]
+        },
+        {
+          "new_uuid": "6f66ccbf-ae44-5531-8dea-e4d9ccaebc59",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "17333209-9275-4b09-bfc0-b3cc9b464238",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/BI_REF",
+          "other_is_new": false,
+          "other_at": [
+            128.4,
+            81.0
+          ]
+        },
+        {
+          "new_uuid": "98e9f226-49cb-5b94-8b99-4359be2510eb",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "17333209-9275-4b09-bfc0-b3cc9b464238",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/BI_REF",
+          "other_is_new": false,
+          "other_at": [
+            128.4,
+            81.0
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "38b55613-b4f1-4343-811f-c1b9b9505317",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          132.6,
+          81.4
+        ],
+        "group_uuid": null,
+        "net": "/MID",
+        "start": [
+          132.6,
+          81.4
+        ],
+        "end": [
+          137.925,
+          81.4
+        ],
+        "width_mm": 0.6
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "a6df741d-a44f-515e-ab5d-e9ab4ae19dab",
+          "new_net": "/Direct 9V positive boost/PBOOST_FREQ_SER",
+          "other_uuid": "38b55613-b4f1-4343-811f-c1b9b9505317",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            81.4
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "3abf9dac-bcd8-4cb9-a4ca-9d25a1e24428",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          123.25,
+          78.4
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/PRAW",
+        "start": [
+          123.25,
+          78.4
+        ],
+        "end": [
+          122.3,
+          78.4
+        ],
+        "width_mm": 0.2
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "8140ad10-ff8c-5383-9cee-7ae353965a1f",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "3abf9dac-bcd8-4cb9-a4ca-9d25a1e24428",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/PRAW",
+          "other_is_new": false,
+          "other_at": [
+            123.25,
+            78.4
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "3e0c6776-0205-4d6d-b6d2-c2be63b68301",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          126.5,
+          80.25
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/BI_REF",
+        "start": [
+          126.5,
+          80.25
+        ],
+        "end": [
+          126.9,
+          80.05
+        ],
+        "width_mm": 0.2
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "40fb7a0e-bd19-586d-9482-d422735572b2",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "3e0c6776-0205-4d6d-b6d2-c2be63b68301",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/BI_REF",
+          "other_is_new": false,
+          "other_at": [
+            126.5,
+            80.25
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "64c1f0a6-f833-436f-a82d-4d1cb3c955dc",
+        "kind": "via",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          132.6,
+          87.2
+        ],
+        "group_uuid": null,
+        "net": "/MID",
+        "start": [
+          132.6,
+          87.2
+        ],
+        "end": [
+          132.6,
+          87.2
+        ],
+        "width_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "ba7792a9-949d-511d-ad23-ed396cad06dd",
+          "new_net": "/Direct 9V positive boost/PBOOST_FB",
+          "other_uuid": "64c1f0a6-f833-436f-a82d-4d1cb3c955dc",
+          "other_kind": "via",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "741d0329-e328-485d-a316-b3371aeebc14",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          125.25,
+          79.1
+        ],
+        "group_uuid": null,
+        "net": "/GND",
+        "start": [
+          125.25,
+          79.1
+        ],
+        "end": [
+          125.25,
+          80.2
+        ],
+        "width_mm": 0.25
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "8140ad10-ff8c-5383-9cee-7ae353965a1f",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "741d0329-e328-485d-a316-b3371aeebc14",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/GND",
+          "other_is_new": false,
+          "other_at": [
+            125.25,
+            79.1
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "81896fad-3b49-4f46-a815-1d321f2939de",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          126.8,
+          81.4
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/NRAW",
+        "start": [
+          126.8,
+          81.4
+        ],
+        "end": [
+          127.7,
+          81.7
+        ],
+        "width_mm": 0.2
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "6f66ccbf-ae44-5531-8dea-e4d9ccaebc59",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "81896fad-3b49-4f46-a815-1d321f2939de",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            126.8,
+            81.4
+          ]
+        },
+        {
+          "new_uuid": "98e9f226-49cb-5b94-8b99-4359be2510eb",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "81896fad-3b49-4f46-a815-1d321f2939de",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            126.8,
+            81.4
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "a07b6ce0-60e0-45ca-bf87-ee6c8116bfae",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          109.8,
+          77.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/NRAW",
+        "start": [
+          109.8,
+          77.5
+        ],
+        "end": [
+          136.5,
+          77.5
+        ],
+        "width_mm": 1.0
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "6320ea47-d382-508f-b080-a9f33e53b6e3",
+          "new_net": "/GND",
+          "other_uuid": "a07b6ce0-60e0-45ca-bf87-ee6c8116bfae",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            109.8,
+            77.5
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "a196b482-d2d4-4864-b655-815d48d77cdc",
+        "kind": "track",
+        "locked": false,
+        "layer": "B.Cu",
+        "at": [
+          135.2,
+          81.7
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/NRAW",
+        "start": [
+          135.2,
+          81.7
+        ],
+        "end": [
+          127.7,
+          81.7
+        ],
+        "width_mm": 0.3
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "80dd5e8d-241d-5946-aa35-18f7831362a4",
+          "new_net": "/GND",
+          "other_uuid": "a196b482-d2d4-4864-b655-815d48d77cdc",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            135.2,
+            81.7
+          ]
+        },
+        {
+          "new_uuid": "8e4785b7-9f30-5b83-8fb8-c7b164066610",
+          "new_net": "/GND",
+          "other_uuid": "a196b482-d2d4-4864-b655-815d48d77cdc",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            135.2,
+            81.7
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "a8ce29c1-611a-49df-ada3-fcd3c08780b7",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          126.45,
+          79.75
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/COMP_N",
+        "start": [
+          126.45,
+          79.75
+        ],
+        "end": [
+          126.7,
+          79.5
+        ],
+        "width_mm": 0.2
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "40fb7a0e-bd19-586d-9482-d422735572b2",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "a8ce29c1-611a-49df-ada3-fcd3c08780b7",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/COMP_N",
+          "other_is_new": false,
+          "other_at": [
+            126.45,
+            79.75
+          ]
+        },
+        {
+          "new_uuid": "8140ad10-ff8c-5383-9cee-7ae353965a1f",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "a8ce29c1-611a-49df-ada3-fcd3c08780b7",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/COMP_N",
+          "other_is_new": false,
+          "other_at": [
+            126.45,
+            79.75
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "b2da7835-849f-49ab-aef8-e52de77d46d0",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          123.25,
+          79.1
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/PRAW",
+        "start": [
+          123.25,
+          79.1
+        ],
+        "end": [
+          123.25,
+          78.4
+        ],
+        "width_mm": 0.2
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "8140ad10-ff8c-5383-9cee-7ae353965a1f",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "b2da7835-849f-49ab-aef8-e52de77d46d0",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/PRAW",
+          "other_is_new": false,
+          "other_at": [
+            123.25,
+            79.1
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          126.7,
+          82.25
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/INV_SW",
+        "start": [
+          126.7,
+          82.25
+        ],
+        "end": [
+          128.0,
+          83.55
+        ],
+        "width_mm": 0.8
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "1840123f-8de5-5ca5-b3b2-5f1bc5c80dbb",
+          "new_net": "/VPROT",
+          "other_uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/INV_SW",
+          "other_is_new": false,
+          "other_at": [
+            126.7,
+            82.25
+          ]
+        },
+        {
+          "new_uuid": "2e5a46e2-4492-5b82-af7d-1fefc9fb0df1",
+          "new_net": "/VPROT",
+          "other_uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/INV_SW",
+          "other_is_new": false,
+          "other_at": [
+            126.7,
+            82.25
+          ]
+        },
+        {
+          "new_uuid": "6f66ccbf-ae44-5531-8dea-e4d9ccaebc59",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/INV_SW",
+          "other_is_new": false,
+          "other_at": [
+            126.7,
+            82.25
+          ]
+        },
+        {
+          "new_uuid": "a669f460-ef26-5418-b4e2-cfdc59bfbdb1",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/INV_SW",
+          "other_is_new": false,
+          "other_at": [
+            126.7,
+            82.25
+          ]
+        },
+        {
+          "new_uuid": "b2faaaa2-4474-5852-8f89-6f9e4ba68fca",
+          "new_net": "/VPROT",
+          "other_uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/INV_SW",
+          "other_is_new": false,
+          "other_at": [
+            126.7,
+            82.25
+          ]
+        },
+        {
+          "new_uuid": "f2428412-cea1-5c5c-a393-c307df323f7b",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "ba45ec5d-0e53-48be-995b-e80646f0e5fb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/INV_SW",
+          "other_is_new": false,
+          "other_at": [
+            126.7,
+            82.25
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "c658c0d0-17c5-48a5-9fc1-7e571826aa2d",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          112.0,
+          79.225
+        ],
+        "group_uuid": null,
+        "net": "/GND",
+        "start": [
+          112.0,
+          79.225
+        ],
+        "end": [
+          111.4,
+          78.6
+        ],
+        "width_mm": 0.4
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "b0ee960e-0031-5cd9-9367-57c3044e9763",
+          "new_net": "/VPROT",
+          "other_uuid": "c658c0d0-17c5-48a5-9fc1-7e571826aa2d",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/GND",
+          "other_is_new": false,
+          "other_at": [
+            112.0,
+            79.225
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "da8f15b4-8eab-431a-b942-a3fe36a83700",
+        "kind": "via",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          127.7,
+          81.7
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/NRAW",
+        "start": [
+          127.7,
+          81.7
+        ],
+        "end": [
+          127.7,
+          81.7
+        ],
+        "width_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "6f66ccbf-ae44-5531-8dea-e4d9ccaebc59",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "da8f15b4-8eab-431a-b942-a3fe36a83700",
+          "other_kind": "via",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            127.7,
+            81.7
+          ]
+        },
+        {
+          "new_uuid": "98e9f226-49cb-5b94-8b99-4359be2510eb",
+          "new_net": "/Direct 9V positive boost/PBOOST_SW",
+          "other_uuid": "da8f15b4-8eab-431a-b942-a3fe36a83700",
+          "other_kind": "via",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            127.7,
+            81.7
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "e4477ba2-b0a0-47ee-9bdf-691afcc3761a",
+        "kind": "via",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          111.4,
+          78.6
+        ],
+        "group_uuid": null,
+        "net": "/GND",
+        "start": [
+          111.4,
+          78.6
+        ],
+        "end": [
+          111.4,
+          78.6
+        ],
+        "width_mm": 0.6,
+        "drill_mm": 0.3
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "b0ee960e-0031-5cd9-9367-57c3044e9763",
+          "new_net": "/VPROT",
+          "other_uuid": "e4477ba2-b0a0-47ee-9bdf-691afcc3761a",
+          "other_kind": "via",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/GND",
+          "other_is_new": false,
+          "other_at": [
+            111.4,
+            78.6
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "f5c1e371-6154-4f83-8b76-1b3d9bba2ffe",
+        "kind": "track",
+        "locked": false,
+        "layer": "B.Cu",
+        "at": [
+          137.0,
+          80.7
+        ],
+        "group_uuid": null,
+        "net": "/Direct bipolar rails/NRAW",
+        "start": [
+          137.0,
+          80.7
+        ],
+        "end": [
+          137.0,
+          76.8
+        ],
+        "width_mm": 0.25
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "6320ea47-d382-508f-b080-a9f33e53b6e3",
+          "new_net": "/GND",
+          "other_uuid": "f5c1e371-6154-4f83-8b76-1b3d9bba2ffe",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/Direct bipolar rails/NRAW",
+          "other_is_new": false,
+          "other_at": [
+            137.0,
+            80.7
+          ]
+        }
+      ]
+    },
+    {
+      "item": {
+        "uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+        "kind": "track",
+        "locked": false,
+        "layer": "F.Cu",
+        "at": [
+          132.6,
+          87.2
+        ],
+        "group_uuid": null,
+        "net": "/MID",
+        "start": [
+          132.6,
+          87.2
+        ],
+        "end": [
+          132.6,
+          81.4
+        ],
+        "width_mm": 0.6
+      },
+      "rationale": "Specific old copper conflicts with manually specified changed-stage route; this is a reviewed Phase 2 replacement, not an expansion of the 42/11 drift deletion step. All other copper retained.",
+      "collisions": [
+        {
+          "new_uuid": "4e431945-3add-5af3-87e6-b32e9f0e7859",
+          "new_net": "/Direct 9V positive boost/PBOOST_FB",
+          "other_uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        },
+        {
+          "new_uuid": "69483ce1-32fe-549e-8c50-86a60e417a4f",
+          "new_net": "/Direct 9V positive boost/PBOOST_FREQ",
+          "other_uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        },
+        {
+          "new_uuid": "6e2eb5a9-7384-5ad7-acbb-9be4b8202ff8",
+          "new_net": "/Direct 9V positive boost/PBOOST_FREQ",
+          "other_uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        },
+        {
+          "new_uuid": "b64b8daa-5007-5ed2-9f53-d93c781f984a",
+          "new_net": "/Direct 9V positive boost/PBOOST_FB",
+          "other_uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        },
+        {
+          "new_uuid": "ba5a93c3-48df-54c2-a7cc-7ed3f8976957",
+          "new_net": "/Direct 9V positive boost/PBOOST_FREQ",
+          "other_uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        },
+        {
+          "new_uuid": "ba7792a9-949d-511d-ad23-ed396cad06dd",
+          "new_net": "/Direct 9V positive boost/PBOOST_FB",
+          "other_uuid": "fc3219f7-8b0d-423d-8a74-fde6404bb7bb",
+          "other_kind": "track",
+          "other_ref": null,
+          "other_pin": null,
+          "other_net": "/MID",
+          "other_is_new": false,
+          "other_at": [
+            132.6,
+            87.2
+          ]
+        }
+      ]
+    }
+  ],
+  "replacement_connections": {
+    "method": "manual explicit routes, no autorouter",
+    "accepted_placement_preserved": "L5 (119.8,78.8),0,F.Cu",
+    "routes": [
+      {
+        "label": "input-bank",
+        "uuid": "0f14d82b-917f-5f65-86a3-cf6c2e85cd24",
+        "net": "/VPROT",
+        "reason": "Input-bank positive spine on front copper; avoid return-pad row"
+      },
+      {
+        "label": "inductor-input",
+        "uuid": "c312738a-2321-5198-97e7-8dca8985dd74",
+        "net": "/VPROT",
+        "reason": "Short input-capacitor to inductor path around bank return pads"
+      },
+      {
+        "label": "switch-main",
+        "uuid": "8140ad10-ff8c-5383-9cee-7ae353965a1f",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "reason": "Wide 45-degree inductor-to-rectifier switching path; no vias"
+      },
+      {
+        "label": "switch-fanout",
+        "uuid": "67c5760e-8101-5c3c-a513-d6860f7703e7",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "reason": "QFN limited-width fanout; trunk overlaid wider up to 82.25 mm"
+      },
+      {
+        "label": "switch-trunk-overlay",
+        "uuid": "6f66ccbf-ae44-5531-8dea-e4d9ccaebc59",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "reason": "Widen long trunk without widening adjacent QFN pad escapes"
+      },
+      {
+        "label": "switch-pin15",
+        "uuid": "13a71f07-25a7-53c2-a63b-48e193604d55",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "reason": "Adjacent parallel switch pads"
+      },
+      {
+        "label": "switch-pin1",
+        "uuid": "f2428412-cea1-5c5c-a393-c307df323f7b",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "reason": "Short left/top switch-pad tie clear of exposed grounded pad"
+      },
+      {
+        "label": "vin-decouple",
+        "uuid": "b1b8f791-4bbb-562a-bbf5-8f5a122c9637",
+        "net": "/VPROT",
+        "reason": "Local VIN decoupler, not main inductor load-current feed"
+      },
+      {
+        "label": "enable-vin",
+        "uuid": "1840123f-8de5-5ca5-b3b2-5f1bc5c80dbb",
+        "net": "/VPROT",
+        "reason": "EN tied to VIN as frozen schematic specifies"
+      },
+      {
+        "label": "soft-start",
+        "uuid": "642bb595-ac5d-53d9-8eab-e3a30c1eebcc",
+        "net": "/Direct 9V positive boost/PBOOST_SS",
+        "reason": "Direct quiet SS connection south/west, away from switching node"
+      },
+      {
+        "label": "comp-to-r",
+        "uuid": "18cf445b-776f-5ebb-a8bc-6fce6307c95e",
+        "net": "/Direct 9V positive boost/PBOOST_COMP",
+        "reason": "Short analog COMP fanout south of IC"
+      },
+      {
+        "label": "comp-c",
+        "uuid": "0b7f74b5-209d-5be1-aeac-1d0a7d5fc248",
+        "net": "/Direct 9V positive boost/PBOOST_COMP",
+        "reason": "Local compensation C parallel at same COMP point"
+      },
+      {
+        "label": "comp-series",
+        "uuid": "1a462a3d-cbb6-5599-8120-bc6a0fefd014",
+        "net": "/Direct 9V positive boost/PBOOST_COMP_RC",
+        "reason": "Compensation series branch, no shared high-current copper"
+      },
+      {
+        "label": "fb-divider",
+        "uuid": "ba7792a9-949d-511d-ad23-ed396cad06dd",
+        "net": "/Direct 9V positive boost/PBOOST_FB",
+        "reason": "Compact feedback-divider junction"
+      },
+      {
+        "label": "fb-sense",
+        "uuid": "d7501e55-fb6c-5cf1-b249-9173b67eb21b",
+        "net": "/Direct 9V positive boost/PBOOST_FB",
+        "reason": "Dedicated feedback sense outside switch loop; output Kelvin source still to be routed"
+      },
+      {
+        "label": "freq",
+        "uuid": "6e2eb5a9-7384-5ad7-acbb-9be4b8202ff8",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "reason": "Frequency resistor path east of grounded IC pins, not switch pins"
+      },
+      {
+        "label": "freq-series",
+        "uuid": "a6df741d-a44f-515e-ab5d-e9ab4ae19dab",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ_SER",
+        "reason": "Frozen two-resistor timing network"
+      },
+      {
+        "label": "ep-to-pgnd",
+        "uuid": "c09b3641-ecc2-524e-bdd2-134d696eb966",
+        "net": "/GND",
+        "reason": "Local exposed-pad to power-ground tie"
+      },
+      {
+        "label": "pgnd-top",
+        "uuid": "3d6bae59-0b20-5367-bf89-7ca34a1aef2e",
+        "net": "/GND",
+        "reason": "Top power-ground pins paired"
+      },
+      {
+        "label": "pgnd-east",
+        "uuid": "6a190bf0-b7ef-5451-aa0d-65b2f046cc9b",
+        "net": "/GND",
+        "reason": "Ground-only perimeter tie"
+      },
+      {
+        "label": "pgnd-east11",
+        "uuid": "c872a64e-5568-5ef4-9a4a-baaf75000698",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "pgnd-east10",
+        "uuid": "7c887108-8b1f-5271-b5fb-5c085af42fb0",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "agnd-to-ep",
+        "uuid": "be397d70-c6e6-5825-aeaa-67824e529c1c",
+        "net": "/GND",
+        "reason": "Quiet analog return directly to exposed ground pad"
+      },
+      {
+        "label": "agnd-bottom",
+        "uuid": "4065af6e-7e02-5d4d-bc2a-b52c2651d5a5",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "pgnd-via-feed",
+        "uuid": "a97dca5d-fb1f-5d10-97e7-9a30f2370a6c",
+        "net": "/GND",
+        "reason": "Two parallel ground vias near boost switch return, outside QFN lands"
+      },
+      {
+        "label": "pgnd-vias",
+        "uuid": "d3be54d1-54f6-5111-bc26-8f440f05211e",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "ss-ground",
+        "uuid": "dd4b13dc-0937-5fe3-ac2c-4f21673fce58",
+        "net": "/GND",
+        "reason": "Local analog return, not daisy-chained with switch path"
+      },
+      {
+        "label": "ss-plane",
+        "uuid": "018455ae-c86a-51d7-92b0-9e2c6e37b3fc",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "comp-ground",
+        "uuid": "63cfc2c0-f902-5bba-b8ca-ef6f53f933bc",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "fb-ground",
+        "uuid": "dce70cf8-2d3c-5221-ba8a-25c892b63c4e",
+        "net": "/GND",
+        "reason": "Quiet divider return through local ground, no power-loop current"
+      },
+      {
+        "label": "comp-plane",
+        "uuid": "5aea1e1f-0c12-5554-ab67-eb0b26d4f554",
+        "net": "/GND",
+        "reason": ""
+      },
+      {
+        "label": "freq-ground",
+        "uuid": "e2f4ce9d-3c13-58f4-888d-a90e304c1a31",
+        "net": "/GND",
+        "reason": ""
+      }
+    ],
+    "not_complete": "PRAW output/Kelvin feed, remaining input/return and negative converter routing pending; these connections alone are not a complete supply"
+  },
+  "status_limit": "Other pre-existing shorts, old copper-net names, placement/height issues and text warnings are still mandatory failure findings. Never promote or claim this batch is complete."
+}
