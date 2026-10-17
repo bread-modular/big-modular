@@ -4,9 +4,24 @@
 	(generator_version "10.0")
 	(uuid "d567704c-57ad-5df1-b183-cadb01fd8972")
 	(paper "User" 430 345)
-	(title_block (title "Big Modular - V1 electrical hierarchy") (rev "SR2") (company "Big Modular") (comment 1 "SR2 SCHEMATIC ONLY / PCB UNSYNCHRONIZED"))
+	(title_block
+		(title "Big Modular - V1 electrical hierarchy")
+		(rev "SR2")
+		(company "Big Modular")
+		(comment 1 "SR2 SCHEMATIC ONLY / PCB UNSYNCHRONIZED")
+	)
 	(lib_symbols)
-	(text "U3 / NRAW -14.07752V" (exclude_from_sim no) (at 314.96 119.38 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "1466039e-12d4-5ed2-8f81-906e1a4ca07e"))
+	(text "U3 / NRAW -14.07752V"
+		(exclude_from_sim no)
+		(at 218.694 48.514 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "1466039e-12d4-5ed2-8f81-906e1a4ca07e")
+	)
 	(text "BIG MODULAR / WIRED POWER FLOW"
 		(exclude_from_sim no)
 		(at 20.32 17.78 0)
@@ -18,8 +33,39 @@
 		)
 		(uuid "1aef5941-3b2a-5b5c-aa1e-ab8d31bd27c1")
 	)
-	(text "J7: one manual harness; same +/-12V and independent P5.\nSR2 SCHEMATIC ONLY - PCB UNSYNCHRONIZED.\nOpus + DeepSeek reviews, corrections, user ACK; then PCB worker; no fabrication export." (exclude_from_sim no) (at 20.32 264.16 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "533aeb76-a1fd-5f56-a444-d49f27e9bf3b"))
-	(text "9 V voltage acceptance is NOT proof of a PD protocol contract.\nNo MCU, AUX regulator, sensing/debug or artificial RUN inhibit.\nSW1 retries eFuse; UV/OV window remains independent." (exclude_from_sim no) (at 20.32 287.02 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "952c0b94-3759-524c-99d7-92a5f86fbc8d"))
+	(text "J7: one manual harness; same +/-12V and independent P5.\nSR2 SCHEMATIC ONLY - PCB UNSYNCHRONIZED.\nOpus + DeepSeek reviews, corrections, user ACK; then PCB worker; no fabrication export."
+		(exclude_from_sim no)
+		(at 20.32 264.16 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "533aeb76-a1fd-5f56-a444-d49f27e9bf3b")
+	)
+	(text "U14 / PRAW +13.519V"
+		(exclude_from_sim no)
+		(at 220.98 109.22 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left top)
+		)
+		(uuid "64ffd069-6d99-50e7-8cb8-f88eef5bbe0b")
+	)
+	(text "9 V voltage acceptance is NOT proof of a PD protocol contract.\nNo MCU, AUX regulator, sensing/debug or artificial RUN inhibit.\nSW1 retries eFuse; UV/OV window remains independent."
+		(exclude_from_sim no)
+		(at 20.32 287.02 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "952c0b94-3759-524c-99d7-92a5f86fbc8d")
+	)
 	(text "U2 WINDOW / SW1 RETRY"
 		(exclude_from_sim no)
 		(at 121.92 127 0)
@@ -42,7 +88,17 @@
 		)
 		(uuid "a1823d34-ec08-54cb-8322-6048147bef63")
 	)
-	(text "SR2 SCHEMATIC REVIEW / PCB UNSYNCHRONIZED / NOT FOR FABRICATION" (exclude_from_sim no) (at 20.32 33.02 0) (effects (font (size 1.4 1.4)) (justify left)) (uuid "a9c1ce74-dccc-52ea-a16c-507379674e38"))
+	(text "SR2 SCHEMATIC REVIEW / PCB UNSYNCHRONIZED / NOT FOR FABRICATION"
+		(exclude_from_sim no)
+		(at 20.32 33.02 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left)
+		)
+		(uuid "a9c1ce74-dccc-52ea-a16c-507379674e38")
+	)
 	(text "USB-C / FIXED9V"
 		(exclude_from_sim no)
 		(at 25.4 127 0)
@@ -54,7 +110,33 @@
 		)
 		(uuid "ab425c6e-afcb-5900-83c0-002745986c22")
 	)
-	(text "U5 / INDEPENDENT +5V" (exclude_from_sim no) (at 218.44 127 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "c53d72dc-0a18-544c-81f6-066864415dff"))
+	(text "U5 / INDEPENDENT +5V"
+		(exclude_from_sim no)
+		(at 220.726 184.404 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "c53d72dc-0a18-544c-81f6-066864415dff")
+	)
+	(junction
+		(at 205.74 81.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "162f4caf-b03d-548d-9010-b6ed504a7926")
+	)
+	(wire
+		(pts
+			(xy 328.93 175.26) (xy 330.2 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21fdef28-6969-4a3d-8334-fac7dbe08e5e")
+	)
 	(wire
 		(pts
 			(xy 147.32 139.7) (xy 147.32 152.4)
@@ -75,7 +157,36 @@
 		)
 		(uuid "30a5bba0-a5bb-583f-903e-7d0a47235427")
 	)
-
+	(wire
+		(pts
+			(xy 300.99 93.98) (xy 300.99 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "367728e8-7a18-47f2-b4ff-4f3dc63a840e")
+	)
+	(wire
+		(pts
+			(xy 360.68 173.99) (xy 360.68 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36ed4ba3-edc1-497a-a3f5-1671515e715f")
+	)
+	(wire
+		(pts
+			(xy 328.93 147.32) (xy 328.93 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "42415273-aeff-5c8f-922f-bc3de796903c")
+	)
 	(wire
 		(pts
 			(xy 335.28 269.24) (xy 335.28 281.94)
@@ -88,7 +199,7 @@
 	)
 	(wire
 		(pts
-			(xy 243.84 139.7) (xy 243.84 152.4)
+			(xy 243.84 189.23) (xy 243.84 198.12)
 		)
 		(stroke
 			(width 0)
@@ -96,10 +207,19 @@
 		)
 		(uuid "538250fb-8152-5f48-b4de-5b94ce365ae0")
 	)
-
 	(wire
 		(pts
-			(xy 294.64 111.76) (xy 294.64 208.28)
+			(xy 275.59 41.91) (xy 359.41 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6921e27a-6805-4156-af19-bb3ff050bdc5")
+	)
+	(wire
+		(pts
+			(xy 294.64 182.88) (xy 294.64 208.28)
 		)
 		(stroke
 			(width 0)
@@ -109,13 +229,33 @@
 	)
 	(wire
 		(pts
-			(xy 302.26 127) (xy 309.88 127)
+			(xy 359.41 173.99) (xy 360.68 173.99)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "95072371-5512-5856-bb71-f5f806f1ca3b")
+		(uuid "75381ba9-be4a-454f-b699-f2a6fd88ea7a")
+	)
+	(wire
+		(pts
+			(xy 205.74 152.4) (xy 213.36 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d8555b6-63ac-5c0d-acbf-a8e1a56c8690")
+	)
+	(wire
+		(pts
+			(xy 275.59 93.98) (xy 300.99 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b162eb36-68d8-4c1f-9ca5-2a1090ad75f6")
 	)
 	(wire
 		(pts
@@ -129,6 +269,46 @@
 	)
 	(wire
 		(pts
+			(xy 359.41 41.91) (xy 359.41 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c097b8f0-0dcb-4107-84aa-0c51ffd36c17")
+	)
+	(wire
+		(pts
+			(xy 359.41 181.61) (xy 359.41 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c5454e59-eb66-5b82-95fc-78e01949bfed")
+	)
+	(wire
+		(pts
+			(xy 205.74 81.28) (xy 213.36 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c7e6bdb4-d553-445c-af9b-8dfe4cd973f7")
+	)
+	(wire
+		(pts
+			(xy 300.99 147.32) (xy 328.93 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c8e6a707-c0df-4185-8721-d89dbbb714c8")
+	)
+	(wire
+		(pts
 			(xy 83.82 81.28) (xy 116.84 81.28)
 		)
 		(stroke
@@ -139,13 +319,93 @@
 	)
 	(wire
 		(pts
-			(xy 276.86 111.76) (xy 294.64 111.76)
+			(xy 180.34 81.28) (xy 205.74 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cda0f2c0-5a06-51e4-8d99-801f9bfdb1f1")
+	)
+	(wire
+		(pts
+			(xy 214.63 29.21) (xy 205.74 29.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cdb47ebf-429f-4fb7-8035-9562798df406")
+	)
+	(wire
+		(pts
+			(xy 205.74 29.21) (xy 205.74 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dedfec6c-546c-4d20-86dc-2aa495103bfc")
+	)
+	(wire
+		(pts
+			(xy 251.46 116.84) (xy 251.46 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e3e6bd1f-3ab3-432f-8b8c-fd7f67ac679f")
+	)
+	(wire
+		(pts
+			(xy 328.93 181.61) (xy 328.93 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f1977164-f06d-5200-96d5-6657a6ee5cfd")
+	)
+	(wire
+		(pts
+			(xy 330.2 175.26) (xy 330.2 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f33dc652-a9b6-46d5-b213-81f4bee1f535")
+	)
+	(wire
+		(pts
+			(xy 226.06 69.85) (xy 226.06 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f54ffaaa-861a-46ff-901f-2f55569795fb")
+	)
+	(wire
+		(pts
+			(xy 276.86 182.88) (xy 294.64 182.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "fb2da061-7805-50b3-a1ea-53cd13fc2de2")
+	)
+	(wire
+		(pts
+			(xy 299.72 171.45) (xy 308.61 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fccb724b-6e92-47b5-9410-8d1c0df0cf66")
 	)
 	(label "GND"
 		(at 50.8 152.4 0)
@@ -168,7 +428,7 @@
 		(uuid "2e82e50c-7603-59cd-b5b3-fd5b1e1e9648")
 	)
 	(label "GND"
-		(at 243.84 152.4 0)
+		(at 243.84 198.12 0)
 		(effects
 			(font
 				(size 0.95 0.95)
@@ -187,6 +447,16 @@
 		)
 		(uuid "3dff7a10-f970-56a4-aead-6088b6d3a932")
 	)
+	(label "GND"
+		(at 299.72 171.45 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "3f099d2c-5e1f-53a5-9b73-b4e62908328d")
+	)
 	(label "VIN9"
 		(at 88.9 81.28 0)
 		(effects
@@ -198,7 +468,7 @@
 		(uuid "6734b9a1-c642-5de6-aa38-38a44def2034")
 	)
 	(label "GND"
-		(at 302.26 127 0)
+		(at 226.06 69.85 0)
 		(effects
 			(font
 				(size 0.95 0.95)
@@ -207,7 +477,16 @@
 		)
 		(uuid "68f5eabe-b160-507d-be00-c24849374c56")
 	)
-	(label "P12" (at 330.2 187.96 90) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "863a4e56-2c99-51e7-a32c-e1afea73ad5f"))
+	(label "P12"
+		(at 330.2 187.96 90)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "863a4e56-2c99-51e7-a32c-e1afea73ad5f")
+	)
 	(label "GND"
 		(at 335.28 281.94 0)
 		(effects
@@ -218,9 +497,28 @@
 		)
 		(uuid "9f45634d-ea4a-54c7-ab3b-481fe20b5579")
 	)
-	(label "N12" (at 360.68 187.96 90) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "b4a144b2-4940-51c8-97cf-856550148a3e"))
+	(label "GND"
+		(at 251.46 132.08 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "a6f458b0-8170-531a-a4bf-b40f5693ccba")
+	)
+	(label "N12"
+		(at 360.68 187.96 90)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "b4a144b2-4940-51c8-97cf-856550148a3e")
+	)
 	(label "P5"
-		(at 281.94 111.76 0)
+		(at 281.94 182.88 0)
 		(effects
 			(font
 				(size 0.95 0.95)
@@ -294,7 +592,156 @@
 			)
 		)
 	)
-	(sheet (at 213.36 68.58) (size 63.5 71.12) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (stroke (width 0.254) (type solid)) (fill (color 0 0 0 0)) (uuid "8e531d32-7c80-5585-be67-8ff5a9d7cb0b") (property "Sheetname" "Independent +5V buck" (at 213.36 63.5 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.1 1.1)) (justify left))) (property "Sheetfile" "03_bucks.kicad_sch" (at 213.36 144.78 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 0.85 0.85)))) (pin "VPROT" input (at 213.36 81.28 180) (uuid "3c096496-9a3a-552d-910c-9902dac4e79e") (effects (font (size 1.15 1.15)) (justify left))) (pin "P5" output (at 276.86 111.76 0) (uuid "656752af-84d7-542f-8761-d7b3db5d5f6a") (effects (font (size 1.15 1.15)) (justify right))) (pin "GND" passive (at 243.84 139.7 270) (uuid "4bdc4540-7bdb-5607-b80a-745ec38a2dcd") (effects (font (size 1.15 1.15)) (justify left))) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "4")))))
+	(sheet
+		(at 213.36 68.58)
+		(size 62.23 48.26)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "8d1a853d-a749-5780-a716-29b1b49ed8d3")
+		(property "Sheetname" "Direct 9V positive boost"
+			(at 213.36 67.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "06_positive_boost.kicad_sch"
+			(at 213.36 118.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "VPROT" input
+			(at 213.36 81.28 180)
+			(uuid "4b412133-1f92-57c6-9ddc-cc5681f77145")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "PRAW" output
+			(at 275.59 93.98 0)
+			(uuid "07d56e2d-616c-5f1f-9e3b-60810112d17a")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND" passive
+			(at 251.46 116.84 270)
+			(uuid "d17f1e4b-ebdd-515f-bc42-98aaba25b802")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 213.36 142.24)
+		(size 63.5 46.99)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "8e531d32-7c80-5585-be67-8ff5a9d7cb0b")
+		(property "Sheetname" "Independent +5V buck"
+			(at 213.36 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "03_bucks.kicad_sch"
+			(at 213.36 218.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.85 0.85)
+				)
+			)
+		)
+		(pin "VPROT" input
+			(at 213.36 152.4 180)
+			(uuid "3c096496-9a3a-552d-910c-9902dac4e79e")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "P5" output
+			(at 276.86 182.88 0)
+			(uuid "656752af-84d7-542f-8761-d7b3db5d5f6a")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND" passive
+			(at 243.84 189.23 270)
+			(uuid "4bdc4540-7bdb-5607-b80a-745ec38a2dcd")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "4")
+				)
+			)
+		)
+	)
 	(sheet
 		(at 116.84 68.58)
 		(size 63.5 71.12)
@@ -370,44 +817,265 @@
 			)
 		)
 	)
-	(sheet (at 309.88 198.12) (size 76.2 71.12) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (stroke (width 0.254) (type solid)) (fill (color 0 0 0 0)) (uuid "a8d4c238-ef1c-5c41-9eba-d79c1c1014c4") (property "Sheetname" "Board output and power LED" (at 309.88 180.34 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.1 1.1)) (justify left))) (property "Sheetfile" "07_output_rails.kicad_sch" (at 309.88 274.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 0.85 0.85)))) (pin "P12" input (at 330.2 198.12 90) (uuid "4d9ee616-ff6f-5d39-88e4-4e207c2d931b") (effects (font (size 1.15 1.15)) (justify right))) (pin "N12" input (at 360.68 198.12 90) (uuid "4e110d3b-09d3-55e6-a795-38aaca2f4735") (effects (font (size 1.15 1.15)) (justify right))) (pin "P5" input (at 309.88 208.28 180) (uuid "1cc550da-d615-5256-b153-4712d2a7dc84") (effects (font (size 1.15 1.15)) (justify left))) (pin "GND" passive (at 335.28 269.24 270) (uuid "7e76e823-bbbd-5fcb-a462-ca1d548be3ad") (effects (font (size 1.15 1.15)) (justify left))) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "7")))))
-	(sheet (at 309.88 68.58) (size 76.2 71.12) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (stroke (width 0.254) (type solid)) (fill (color 0 0 0 0)) (uuid "cc4406b2-eaf9-5e1a-b3b1-3478956813b3") (property "Sheetname" "Direct 9V negative IBB" (at 309.88 63.5 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.1 1.1)) (justify left))) (property "Sheetfile" "04_bipolar.kicad_sch" (at 309.88 144.78 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 0.85 0.85)))) (pin "VPROT" input (at 309.88 81.28 180) (uuid "e309a894-6ad3-5ef7-8e21-86771b90b9f7") (effects (font (size 1.15 1.15)) (justify left))) (pin "NRAW" output (at 360.68 139.7 270) (uuid "3b15e9e3-c119-5e6c-8ad5-dff11ac40faa") (effects (font (size 1.15 1.15)) (justify left))) (pin "GND" passive (at 309.88 127 180) (uuid "c4bd6374-285f-5bcc-8297-255a8093e136") (effects (font (size 1.15 1.15)) (justify left))) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "5")))))
+	(sheet
+		(at 309.88 198.12)
+		(size 76.2 71.12)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "a8d4c238-ef1c-5c41-9eba-d79c1c1014c4")
+		(property "Sheetname" "Board output and power LED"
+			(at 309.88 180.34 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "07_output_rails.kicad_sch"
+			(at 309.88 274.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.85 0.85)
+				)
+			)
+		)
+		(pin "P12" input
+			(at 330.2 198.12 90)
+			(uuid "4d9ee616-ff6f-5d39-88e4-4e207c2d931b")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "N12" input
+			(at 360.68 198.12 90)
+			(uuid "4e110d3b-09d3-55e6-a795-38aaca2f4735")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "P5" input
+			(at 309.88 208.28 180)
+			(uuid "1cc550da-d615-5256-b153-4712d2a7dc84")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 335.28 269.24 270)
+			(uuid "7e76e823-bbbd-5fcb-a462-ca1d548be3ad")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 308.61 158.75)
+		(size 76.2 22.86)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "b4661736-5d66-5f3b-97a1-9dc3e47c41c6")
+		(property "Sheetname" "Quiet bipolar post-regulators"
+			(at 308.61 156.21 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "05_quiet_rails.kicad_sch"
+			(at 308.61 184.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.85 0.85)
+				)
+			)
+		)
+		(pin "PRAW" input
+			(at 328.93 158.75 90)
+			(uuid "9c685c25-60f8-5695-b362-b5c4a756fcc1")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "NRAW" input
+			(at 359.41 158.75 90)
+			(uuid "995be845-d9f5-5cf4-aedb-01398fa439e1")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "P12" output
+			(at 328.93 181.61 270)
+			(uuid "6018f43c-6732-5596-9929-1364bd53823a")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "N12" output
+			(at 359.41 181.61 270)
+			(uuid "c22eeea4-3d23-59a0-a0cc-6d5df9008c3a")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 308.61 171.45 180)
+			(uuid "ff374b0d-2cea-5d65-9a75-d3b335bd8c57")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 214.63 24.13)
+		(size 60.96 34.29)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "cc4406b2-eaf9-5e1a-b3b1-3478956813b3")
+		(property "Sheetname" "Direct 9V negative IBB"
+			(at 214.63 19.05 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(property "Sheetfile" "04_bipolar.kicad_sch"
+			(at 214.63 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 0.85 0.85)
+				)
+			)
+		)
+		(pin "VPROT" input
+			(at 214.63 29.21 180)
+			(uuid "e309a894-6ad3-5ef7-8e21-86771b90b9f7")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "NRAW" output
+			(at 275.59 41.91 0)
+			(uuid "3b15e9e3-c119-5e6c-8ad5-dff11ac40faa")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify right)
+			)
+		)
+		(pin "GND" passive
+			(at 226.06 58.42 270)
+			(uuid "c4bd6374-285f-5bcc-8297-255a8093e136")
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972"
+					(page "5")
+				)
+			)
+		)
+	)
 	(sheet_instances
 		(path "/"
 			(page "1")
 		)
 	)
 	(embedded_fonts no)
-
-	(wire (pts (xy 330.2 175.26) (xy 330.2 198.12)) (stroke (width 0) (type default)) (uuid "f1977164-f06d-5200-96d5-6657a6ee5cfd"))
-	(wire (pts (xy 360.68 139.7) (xy 360.68 152.4)) (stroke (width 0) (type default)) (uuid "512f4401-2c9c-5460-be5b-97bf75a5ea02"))
-	(wire (pts (xy 360.68 175.26) (xy 360.68 198.12)) (stroke (width 0) (type default)) (uuid "c5454e59-eb66-5b82-95fc-78e01949bfed"))
-	(sheet (at 309.88 152.4) (size 76.2 22.86) (exclude_from_sim no) (in_bom yes) (on_board yes) (dnp no) (stroke (width 0.254) (type solid)) (fill (color 0 0 0 0)) (uuid "b4661736-5d66-5f3b-97a1-9dc3e47c41c6") (property "Sheetname" "Quiet bipolar post-regulators" (at 309.88 149.86 0) (effects (font (size 1.1 1.1)) (justify left))) (property "Sheetfile" "05_quiet_rails.kicad_sch" (at 309.88 177.8 0) (effects (font (size 0.85 0.85)) hide)) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "6")))) (pin "PRAW" input (at 330.2 152.4 90) (effects (font (size 1.15 1.15)) (justify right)) (uuid "9c685c25-60f8-5695-b362-b5c4a756fcc1")) (pin "NRAW" input (at 360.68 152.4 90) (effects (font (size 1.15 1.15)) (justify right)) (uuid "995be845-d9f5-5cf4-aedb-01398fa439e1")) (pin "P12" output (at 330.2 175.26 270) (effects (font (size 1.15 1.15)) (justify left)) (uuid "6018f43c-6732-5596-9929-1364bd53823a")) (pin "N12" output (at 360.68 175.26 270) (effects (font (size 1.15 1.15)) (justify left)) (uuid "c22eeea4-3d23-59a0-a0cc-6d5df9008c3a")) (pin "GND" passive (at 309.88 165.1 180) (effects (font (size 1.15 1.15)) (justify left)) (uuid "ff374b0d-2cea-5d65-9a75-d3b335bd8c57")))
-	(wire (pts (xy 302.26 165.1) (xy 309.88 165.1)) (stroke (width 0) (type default)) (uuid "6f556b69-3b88-55fe-b6b9-5aecbd8651b5"))
-	(label "GND" (at 302.26 165.1 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "3f099d2c-5e1f-53a5-9b73-b4e62908328d"))
-
-	(sheet (at 116.84 193.04) (size 76.2 48.26) (stroke (width 0.1524) (type default)) (fill (color 0 0 0 0)) (uuid "8d1a853d-a749-5780-a716-29b1b49ed8d3") (property "Sheetname" "Direct 9V positive boost" (at 116.84 191.77 0) (effects (font (size 1.27 1.27)) (justify left bottom))) (property "Sheetfile" "06_positive_boost.kicad_sch" (at 116.84 242.57 0) (effects (font (size 1.27 1.27)) (justify left top))) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972" (page "8")))) (pin "VPROT" input (at 116.84 205.74 180) (effects (font (size 1.15 1.15)) (justify left)) (uuid "4b412133-1f92-57c6-9ddc-cc5681f77145")) (pin "PRAW" output (at 193.04 218.44 0) (effects (font (size 1.15 1.15)) (justify right)) (uuid "07d56e2d-616c-5f1f-9e3b-60810112d17a")) (pin "GND" passive (at 154.94 241.3 270) (effects (font (size 1.15 1.15)) (justify right)) (uuid "d17f1e4b-ebdd-515f-bc42-98aaba25b802")))
-	(wire (pts (xy 193.04 81.28) (xy 193.04 180.34)) (stroke (width 0) (type default)) (uuid "34605c12-627a-56f0-95ba-e931792b1397"))
-	(wire (pts (xy 193.04 180.34) (xy 106.68 180.34)) (stroke (width 0) (type default)) (uuid "b3b35c92-d162-52ad-97c2-bfecaf5a7de5"))
-	(wire (pts (xy 106.68 180.34) (xy 106.68 205.74)) (stroke (width 0) (type default)) (uuid "1dd4e3b0-b133-54e3-87b6-b5c97b2b7677"))
-	(wire (pts (xy 106.68 205.74) (xy 116.84 205.74)) (stroke (width 0) (type default)) (uuid "c7fe2db3-618e-51ca-8ade-65ff20804c61"))
-	(wire (pts (xy 193.04 218.44) (xy 289.56 218.44)) (stroke (width 0) (type default)) (uuid "5ee8b14b-ab3d-5506-9ffa-710784b93f31"))
-	(wire (pts (xy 289.56 218.44) (xy 289.56 147.32)) (stroke (width 0) (type default)) (uuid "fa0c03cc-4794-5009-804e-d72f3aaa75f9"))
-	(wire (pts (xy 289.56 147.32) (xy 330.2 147.32)) (stroke (width 0) (type default)) (uuid "2cfa974b-1791-51f7-a450-b14465cfa5ad"))
-	(wire (pts (xy 330.2 147.32) (xy 330.2 152.4)) (stroke (width 0) (type default)) (uuid "42415273-aeff-5c8f-922f-bc3de796903c"))
-	(label "PRAW" (at 203.2 218.44 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "38a6d969-5786-56b9-9e0e-4a245c0240af"))
-	(wire (pts (xy 154.94 241.3) (xy 154.94 254)) (stroke (width 0) (type default)) (uuid "de9f3f4a-b9ae-5a2f-9a9d-9eb2bf78471f"))
-	(label "GND" (at 154.94 254 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "a6f458b0-8170-531a-a4bf-b40f5693ccba"))
-	(text "U14 / PRAW +13.519V" (at 121.92 231.14 0) (effects (font (size 1.15 1.15)) (justify left top)) (uuid "64ffd069-6d99-50e7-8cb8-f88eef5bbe0b"))
-	(wire (pts (xy 180.34 81.28) (xy 193.04 81.28)) (stroke (width 0) (type default)) (uuid "cda0f2c0-5a06-51e4-8d99-801f9bfdb1f1"))
-	(junction (at 193.04 81.28) (diameter 0) (color 0 0 0 0) (uuid "375389e4-b185-568e-a596-d146bc58a784"))
-
-	(wire (pts (xy 205.74 81.28) (xy 205.74 55.88)) (stroke (width 0) (type default)) (uuid "c8dfc2c4-1673-5388-b0a7-94d7b17131b5"))
-	(wire (pts (xy 205.74 55.88) (xy 294.64 55.88)) (stroke (width 0) (type default)) (uuid "bdedbce8-4793-514b-b9b1-aa5934f44d71"))
-	(wire (pts (xy 294.64 55.88) (xy 294.64 81.28)) (stroke (width 0) (type default)) (uuid "82b46886-774c-546e-908d-1110047480cb"))
-	(wire (pts (xy 294.64 81.28) (xy 309.88 81.28)) (stroke (width 0) (type default)) (uuid "6b50e88f-2ca3-5601-9e32-b264748465f9"))
-	(label "VPROT" (at 246.38 55.88 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "5f6e4997-4b9d-570a-b386-fe97a534f738"))
-	(wire (pts (xy 193.04 81.28) (xy 205.74 81.28)) (stroke (width 0) (type default)) (uuid "0e75f9fc-ee61-5834-9183-fd986ba6b45c"))
-	(wire (pts (xy 205.74 81.28) (xy 213.36 81.28)) (stroke (width 0) (type default)) (uuid "9d8555b6-63ac-5c0d-acbf-a8e1a56c8690"))
-	(junction (at 205.74 81.28) (diameter 0) (color 0 0 0 0) (uuid "162f4caf-b03d-548d-9010-b6ed504a7926"))
 )

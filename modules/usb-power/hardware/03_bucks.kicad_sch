@@ -4,7 +4,12 @@
 	(generator_version "10.0")
 	(uuid "c8ec384e-46f1-5f2c-931f-df01092030e5")
 	(paper "User" 430 345)
-	(title_block (title "Big Modular - Independent buck converters") (rev "SR2") (company "Big Modular") (comment 1 "V1 - ROUTED HRO CARRIER / PASSIVE FRONT PANEL"))
+	(title_block
+		(title "Big Modular - Independent buck converters")
+		(rev "SR2")
+		(company "Big Modular")
+		(comment 1 "V1 - ROUTED HRO CARRIER / PASSIVE FRONT PANEL")
+	)
 	(lib_symbols
 		(symbol "BigModular:Device_C"
 			(pin_numbers
@@ -782,10 +787,50 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "U5: P5 / 5.007547 V" (exclude_from_sim no) (at 22.86 162.56 0) (effects (font (size 1.35 1.35)) (justify left)) (uuid "44d3a300-d55b-5aca-9a75-319923f66e6e"))
-	(text "BOOT C36 returns to SW, not GND. L4 is exact MDA1040-6R8M.\nRetained divider100k/(13k+510R), local C19/C38/C72.\nElectrical intent and U5 native component geometry retained; PCB remains unsynchronized." (exclude_from_sim no) (at 266.7 172.72 0) (effects (font (size 1 1)) (justify left)) (uuid "76b7528c-9461-58a9-bba9-542792b418fc"))
-	(text "U5 remains direct VPROT -> P5, nominal5.007547V; 250mA shared-budget reserve.\nEN5 NC with internal pullup. U3 moved to sheet04, no MID converter or net remains." (exclude_from_sim no) (at 20.32 30.48 0) (effects (font (size 1.02 1.02)) (justify left)) (uuid "7e65869c-e391-54f5-8173-182b7232a847"))
-	(text "03 / INDEPENDENT +5V BUCK - U5 UNCHANGED" (exclude_from_sim no) (at 20.32 17.78 0) (effects (font (size 2.2 2.2)) (justify left)) (uuid "ff0d2b95-36a9-598d-ab50-66755c531bb2"))
+	(text "U5: P5 / 5.007547 V"
+		(exclude_from_sim no)
+		(at 22.86 162.56 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "44d3a300-d55b-5aca-9a75-319923f66e6e")
+	)
+	(text "BOOT C36 returns to SW, not GND. L4 is exact MDA1040-6R8M.\nRetained divider100k/(13k+510R), local C19/C38/C72.\nElectrical intent and U5 native component geometry retained; PCB remains unsynchronized."
+		(exclude_from_sim no)
+		(at 266.7 172.72 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left)
+		)
+		(uuid "76b7528c-9461-58a9-bba9-542792b418fc")
+	)
+	(text "U5 remains direct VPROT -> P5, nominal5.007547V; 250mA shared-budget reserve.\nEN5 NC with internal pullup. U3 moved to sheet04, no MID converter or net remains."
+		(exclude_from_sim no)
+		(at 20.32 30.48 0)
+		(effects
+			(font
+				(size 1.02 1.02)
+			)
+			(justify left)
+		)
+		(uuid "7e65869c-e391-54f5-8173-182b7232a847")
+	)
+	(text "03 / INDEPENDENT +5V BUCK - U5 UNCHANGED"
+		(exclude_from_sim no)
+		(at 20.32 17.78 0)
+		(effects
+			(font
+				(size 2.2 2.2)
+			)
+			(justify left)
+		)
+		(uuid "ff0d2b95-36a9-598d-ab50-66755c531bb2")
+	)
 	(junction
 		(at 208.28 205.74)
 		(diameter 0)
@@ -803,6 +848,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4bda6645-9e7e-5728-95e9-448a7c884d69")
+	)
+	(junction
+		(at 294.64 259.08)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6ba92f5b-1d22-5cb6-85b3-aaf51f57b31c")
 	)
 	(junction
 		(at 208.28 259.08)
@@ -827,6 +878,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d5ec3a51-cd15-5be0-93f9-177cc8600f46")
+	)
+	(junction
+		(at 294.64 232.41)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e76dacf5-ff2a-59da-8a2b-68f224afc632")
 	)
 	(junction
 		(at 251.46 205.74)
@@ -1026,6 +1083,16 @@
 	)
 	(wire
 		(pts
+			(xy 60.96 208.28) (xy 60.96 212.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c6f0e70-7777-5cf0-a18a-61c5d35d5f54")
+	)
+	(wire
+		(pts
 			(xy 208.28 259.08) (xy 251.46 259.08)
 		)
 		(stroke
@@ -1056,6 +1123,26 @@
 	)
 	(wire
 		(pts
+			(xy 208.28 247.65) (xy 208.28 248.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "784d4ce1-9db3-55aa-8eb3-914f90ec1a70")
+	)
+	(wire
+		(pts
+			(xy 335.28 240.03) (xy 335.28 259.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7bed89df-36d9-5c54-ac72-bc1e5508af7b")
+	)
+	(wire
+		(pts
 			(xy 73.66 187.96) (xy 73.66 200.66)
 		)
 		(stroke
@@ -1076,6 +1163,16 @@
 	)
 	(wire
 		(pts
+			(xy 208.28 256.54) (xy 208.28 259.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "84bc6bfc-95f7-53c3-9d56-e3bf47ef6ebd")
+	)
+	(wire
+		(pts
 			(xy 132.08 210.82) (xy 132.08 233.68)
 		)
 		(stroke
@@ -1083,6 +1180,16 @@
 			(type default)
 		)
 		(uuid "8c8312f2-9675-5bfd-9421-35892267f54e")
+	)
+	(wire
+		(pts
+			(xy 60.96 219.71) (xy 60.96 223.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f80b9b1-2848-5b78-94ac-eb0c025a2188")
 	)
 	(wire
 		(pts
@@ -1146,6 +1253,16 @@
 	)
 	(wire
 		(pts
+			(xy 294.64 259.08) (xy 335.28 259.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b5425cd8-a378-504b-a0bf-09e839532dec")
+	)
+	(wire
+		(pts
 			(xy 22.86 187.96) (xy 38.1 187.96)
 		)
 		(stroke
@@ -1206,6 +1323,16 @@
 	)
 	(wire
 		(pts
+			(xy 294.64 232.41) (xy 335.28 232.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eaacc096-d716-53de-b8e7-ea25a9253b48")
+	)
+	(wire
+		(pts
 			(xy 251.46 205.74) (xy 337.82 205.74)
 		)
 		(stroke
@@ -1244,6 +1371,26 @@
 		)
 		(uuid "5d62e17d-1328-54fc-bf77-815e989abf14")
 	)
+	(label "VPROT"
+		(at 60.96 208.28 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "6c1e0f3e-5fcb-5bf4-a10f-fcb2b4bcc243")
+	)
+	(label "GND"
+		(at 60.96 223.52 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "7f39f029-4c1c-5103-9267-04b679bdc64d")
+	)
 	(label "FIVE_FB"
 		(at 170.18 233.68 0)
 		(effects
@@ -1253,6 +1400,16 @@
 			(justify left bottom)
 		)
 		(uuid "9b682429-d221-5371-922d-4a8381749af8")
+	)
+	(label "FIVE_DIV_LO"
+		(at 208.28 247.65 0)
+		(effects
+			(font
+				(size 0.95 0.95)
+			)
+			(justify left bottom)
+		)
+		(uuid "a39feefb-f47e-5234-bf24-49b341845012")
 	)
 	(label "FIVE_SW"
 		(at 137.16 205.74 0)
@@ -1264,6 +1421,27 @@
 		)
 		(uuid "afe02d98-54c4-53f9-80b7-f5154587b032")
 	)
+	(label "VPROT"
+		(at 22.86 187.96 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "d5a4485c-6687-59f7-9e0e-a08951e8a69e")
+	)
+	(hierarchical_label "GND"
+		(shape passive)
+		(at 38.1 259.08 180)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify right)
+		)
+		(uuid "5d5a2dea-3e6e-5ada-8d44-b600b0633137")
+	)
 	(hierarchical_label "P5"
 		(shape output)
 		(at 337.82 205.74 0)
@@ -1274,6 +1452,17 @@
 			(justify left)
 		)
 		(uuid "9acc705e-cc9a-5e08-90db-b9a488c3d6a2")
+	)
+	(hierarchical_label "VPROT"
+		(shape input)
+		(at 22.86 187.96 180)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify right)
+		)
+		(uuid "cf71e570-759c-5188-ac21-1f8697f0d198")
 	)
 	(symbol
 		(lib_id "BigModular:Device_R")
@@ -1540,8 +1729,447 @@
 			)
 		)
 	)
-	(symbol (lib_id "BigModular:Device_C") (at 294.64 236.22 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "4dd9f5c2-f1d1-5e44-a736-7eb18951ce5d") (property "Reference" "C38" (at 297.64 235.02 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "22u 25V X5R" (at 297.64 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 294.64 236.22 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "CL31A226KAHNNNE" (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C12891" (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval." (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 294.64 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "4ba4bfba-01aa-56cd-ba7b-10e57fe18e02")) (pin "2" (uuid "23ec43ac-2e58-5712-ae51-768183c9c585")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "C38") (unit 1)))) (property "Manufacturer" "Samsung Electro-Mechanics" (at 297.64 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
-	(symbol (lib_id "BigModular:Device_R") (at 208.28 243.84 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "5c91a44d-bc12-5415-9950-e94eb8ea7747") (property "Reference" "R18" (at 211.28 242.64 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "13k 1%" (at 211.28 245.18 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1302T5E_C22797.pdf" (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 208.28 243.84 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF1302T5E" (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C22797" (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic13k plus510R series bottom leg; retain nominal5V rather than13k alone. 1%,100ppm/K; see basic-swaps-checkpoint.md." (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 208.28 243.84 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "97a20d46-ad27-5e11-a956-b193d55165c5")) (pin "2" (uuid "10524939-76f4-57d8-8761-a49b9f01ec7a")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "R18") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 211.28 245.18 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 294.64 236.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4dd9f5c2-f1d1-5e44-a736-7eb18951ce5d")
+		(property "Reference" "C38"
+			(at 297.64 235.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 297.64 237.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 294.64 236.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval."
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 294.64 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 297.64 237.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "4ba4bfba-01aa-56cd-ba7b-10e57fe18e02")
+		)
+		(pin "2"
+			(uuid "23ec43ac-2e58-5712-ae51-768183c9c585")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "C38")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 208.28 243.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "5c91a44d-bc12-5415-9950-e94eb8ea7747")
+		(property "Reference" "R18"
+			(at 211.28 242.64 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "13k 1%"
+			(at 211.28 245.18 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1302T5E_C22797.pdf"
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 208.28 243.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1302T5E"
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C22797"
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Basic13k plus510R series bottom leg; retain nominal5V rather than13k alone. 1%,100ppm/K; see basic-swaps-checkpoint.md."
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 208.28 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 211.28 245.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "97a20d46-ad27-5e11-a956-b193d55165c5")
+		)
+		(pin "2"
+			(uuid "10524939-76f4-57d8-8761-a49b9f01ec7a")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 335.28 236.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "736b0c8a-7ea5-5aba-a32c-d8068362c382")
+		(property "Reference" "C72"
+			(at 338.28 235.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 338.28 237.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 335.28 236.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Local buck output bank: C6+C70+C71 MID; C19+C38+C72 P5. Three C12891 screen27.6315uF at5.5V; remote C37 excluded. Typical-data screen only; loop/load-step bench qualification pending."
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 335.28 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 338.28 237.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "3924e330-81a7-5c52-8c40-ad22dfe2098d")
+		)
+		(pin "2"
+			(uuid "8b6322c4-6ac5-56be-9d6b-0f012c4f1288")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "C72")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(symbol
 		(lib_id "BigModular:Device_C")
 		(at 60.96 236.22 0)
@@ -1957,7 +2585,300 @@
 			)
 		)
 	)
-	(symbol (lib_id "BigModular:Device_C") (at 38.1 236.22 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "b313e711-b7d2-560d-9839-52559a595b24") (property "Reference" "C18" (at 41.1 235.02 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "22u 25V X5R" (at 41.1 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 38.1 236.22 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "CL31A226KAHNNNE" (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C12891" (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval." (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 38.1 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "6839ea0a-0c9c-56d9-9efe-b0f4900eff5b")) (pin "2" (uuid "e552cf72-5bbc-5f46-b0d8-6bb2730a8838")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "C18") (unit 1)))) (property "Manufacturer" "Samsung Electro-Mechanics" (at 41.1 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 208.28 252.73 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "ad070a62-38fd-57d4-a261-54e79bb7b5b3")
+		(property "Reference" "R85"
+			(at 211.28 251.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "510 1%"
+			(at 211.28 254.07 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 208.28 252.73 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF5100T5E"
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C23193"
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Basic510R series with R10/R18; total13.51k bottom leg. 1%,100ppm/K,100mW/75V; dated039 observation lacks raw provenance, release recheck required."
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 208.28 252.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 211.28 254.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "ba945083-323a-5cc4-a12c-425b130f0cb8")
+		)
+		(pin "2"
+			(uuid "fea03217-f59b-550b-816e-afcb4cf733dd")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "R85")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 38.1 236.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b313e711-b7d2-560d-9839-52559a595b24")
+		(property "Reference" "C18"
+			(at 41.1 235.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 41.1 237.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 38.1 236.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval."
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 38.1 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 41.1 237.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "6839ea0a-0c9c-56d9-9efe-b0f4900eff5b")
+		)
+		(pin "2"
+			(uuid "e552cf72-5bbc-5f46-b0d8-6bb2730a8838")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "C18")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(symbol
 		(lib_id "BigModular:Device_L")
 		(at 185.42 205.74 90)
@@ -2091,26 +3012,298 @@
 			)
 		)
 	)
-	(symbol (lib_id "BigModular:Device_C") (at 251.46 236.22 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "f369080c-81e1-5837-a650-cdf45cf52e64") (property "Reference" "C19" (at 254.46 235.02 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "22u 25V X5R" (at 254.46 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 251.46 236.22 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "CL31A226KAHNNNE" (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C12891" (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval." (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 251.46 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "6daa3bad-3af3-51a5-84af-450b9bda7d83")) (pin "2" (uuid "62436cd8-12c3-528e-a27a-473374f1c728")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "C19") (unit 1)))) (property "Manufacturer" "Samsung Electro-Mechanics" (at 254.46 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
-
-	(symbol (lib_id "BigModular:Device_R") (at 208.28 252.73 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "ad070a62-38fd-57d4-a261-54e79bb7b5b3") (property "Reference" "R85" (at 211.28 251.53 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "510 1%" (at 211.28 254.07 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "" (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 208.28 252.73 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF5100T5E" (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C23193" (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic510R series with R10/R18; total13.51k bottom leg. 1%,100ppm/K,100mW/75V; dated039 observation lacks raw provenance, release recheck required." (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 208.28 252.73 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "ba945083-323a-5cc4-a12c-425b130f0cb8")) (pin "2" (uuid "fea03217-f59b-550b-816e-afcb4cf733dd")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "R85") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 211.28 254.07 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
-	(wire (pts (xy 208.28 247.65) (xy 208.28 248.92)) (stroke (width 0) (type default)) (uuid "784d4ce1-9db3-55aa-8eb3-914f90ec1a70"))
-	(wire (pts (xy 208.28 256.54) (xy 208.28 259.08)) (stroke (width 0) (type default)) (uuid "84bc6bfc-95f7-53c3-9d56-e3bf47ef6ebd"))
-	(label "FIVE_DIV_LO" (at 208.28 247.65 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "a39feefb-f47e-5234-bf24-49b341845012"))
-
-	(symbol (lib_id "BigModular:Device_C") (at 60.96 215.9 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "fc9e62c1-0589-512f-b3c4-84e3705381fa") (property "Reference" "C69" (at 63.96 214.7 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "22u 25V X5R" (at 63.96 217.24 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 60.96 215.9 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "CL31A226KAHNNNE" (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C12891" (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Local buck VIN bank: two C12891 per IC; typical-data screen 10.664uF at9.45V, not guaranteed. Remote C4 excluded; input ringing/ripple/startup bench gates remain." (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 60.96 215.9 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "5b5892e6-79f2-51eb-ac53-5be61bfe5612")) (pin "2" (uuid "3fb26b7d-d46c-5e75-906d-0d9f0f060062")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "C69") (unit 1)))) (property "Manufacturer" "Samsung Electro-Mechanics" (at 63.96 217.24 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
-	(wire (pts (xy 60.96 208.28) (xy 60.96 212.09)) (stroke (width 0) (type default)) (uuid "6c6f0e70-7777-5cf0-a18a-61c5d35d5f54"))
-	(label "VPROT" (at 60.96 208.28 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "6c1e0f3e-5fcb-5bf4-a10f-fcb2b4bcc243"))
-	(wire (pts (xy 60.96 219.71) (xy 60.96 223.52)) (stroke (width 0) (type default)) (uuid "8f80b9b1-2848-5b78-94ac-eb0c025a2188"))
-	(label "GND" (at 60.96 223.52 0) (effects (font (size 0.95 0.95)) (justify left bottom)) (uuid "7f39f029-4c1c-5103-9267-04b679bdc64d"))
-	(symbol (lib_id "BigModular:Device_C") (at 335.28 236.22 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "736b0c8a-7ea5-5aba-a32c-d8068362c382") (property "Reference" "C72" (at 338.28 235.02 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "22u 25V X5R" (at 338.28 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 335.28 236.22 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "CL31A226KAHNNNE" (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C12891" (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Local buck output bank: C6+C70+C71 MID; C19+C38+C72 P5. Three C12891 screen27.6315uF at5.5V; remote C37 excluded. Typical-data screen only; loop/load-step bench qualification pending." (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 335.28 236.22 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "3924e330-81a7-5c52-8c40-ad22dfe2098d")) (pin "2" (uuid "8b6322c4-6ac5-56be-9d6b-0f012c4f1288")) (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b" (reference "C72") (unit 1)))) (property "Manufacturer" "Samsung Electro-Mechanics" (at 338.28 237.56 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
-	(wire (pts (xy 294.64 232.41) (xy 335.28 232.41)) (stroke (width 0) (type default)) (uuid "eaacc096-d716-53de-b8e7-ea25a9253b48"))
-	(wire (pts (xy 335.28 240.03) (xy 335.28 259.08)) (stroke (width 0) (type default)) (uuid "7bed89df-36d9-5c54-ac72-bc1e5508af7b"))
-	(wire (pts (xy 294.64 259.08) (xy 335.28 259.08)) (stroke (width 0) (type default)) (uuid "b5425cd8-a378-504b-a0bf-09e839532dec"))
-	(junction (at 294.64 232.41) (diameter 0) (color 0 0 0 0) (uuid "e76dacf5-ff2a-59da-8a2b-68f224afc632"))
-	(junction (at 294.64 259.08) (diameter 0) (color 0 0 0 0) (uuid "6ba92f5b-1d22-5cb6-85b3-aaf51f57b31c"))
-
-	(hierarchical_label "VPROT" (shape input) (at 22.86 187.96 180) (effects (font (size 1.2 1.2)) (justify right)) (uuid "cf71e570-759c-5188-ac21-1f8697f0d198"))
-	(label "VPROT" (at 22.86 187.96 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "d5a4485c-6687-59f7-9e0e-a08951e8a69e"))
-	(hierarchical_label "GND" (shape passive) (at 38.1 259.08 180) (effects (font (size 1.2 1.2)) (justify right)) (uuid "5d5a2dea-3e6e-5ada-8d44-b600b0633137"))
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 251.46 236.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f369080c-81e1-5837-a650-cdf45cf52e64")
+		(property "Reference" "C19"
+			(at 254.46 235.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 254.46 237.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 251.46 236.22 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval."
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 251.46 236.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 254.46 237.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "6daa3bad-3af3-51a5-84af-450b9bda7d83")
+		)
+		(pin "2"
+			(uuid "62436cd8-12c3-528e-a27a-473374f1c728")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "C19")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 60.96 215.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "fc9e62c1-0589-512f-b3c4-84e3705381fa")
+		(property "Reference" "C69"
+			(at 63.96 214.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 63.96 217.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 60.96 215.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "NOTE" "Local buck VIN bank: two C12891 per IC; typical-data screen 10.664uF at9.45V, not guaranteed. Remote C4 excluded; input ringing/ripple/startup bench gates remain."
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Exclude" "no"
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{}"
+			(at 60.96 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 63.96 217.24 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.15 1.15)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "5b5892e6-79f2-51eb-ac53-5be61bfe5612")
+		)
+		(pin "2"
+			(uuid "3fb26b7d-d46c-5e75-906d-0d9f0f060062")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b"
+					(reference "C69")
+					(unit 1)
+				)
+			)
+		)
+	)
 )

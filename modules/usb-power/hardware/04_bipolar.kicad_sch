@@ -1,1 +1,5790 @@
-(kicad_sch (version 20250114) (generator "eeschema") (uuid "8703e428-3c63-5a4a-9ed7-92d7bdcf916a") (paper "User" 430 345) (title_block (title "Direct protected-9V negative IBB") (rev "SR2")) (lib_symbols (symbol "BigModular:Device_C" (pin_numbers (hide yes)) (pin_names (offset 0.254)) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (duplicate_pin_numbers_are_jumpers no) (property "Reference" "C" (at 0.635 2.54 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "C" (at 0.635 -2.54 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Footprint" "" (at 0.9652 -3.81 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "Unpolarized capacitor" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_keywords" "cap capacitor" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_fp_filters" "C_*" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "Device_C_0_1" (polyline (pts (xy -2.032 0.762) (xy 2.032 0.762)) (stroke (width 0.508) (type default)) (fill (type none))) (polyline (pts (xy -2.032 -0.762) (xy 2.032 -0.762)) (stroke (width 0.508) (type default)) (fill (type none)))) (symbol "Device_C_1_1" (pin passive line (at 0 3.81 270) (length 2.794) (name "" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at 0 -3.81 90) (length 2.794) (name "" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))) (embedded_fonts no)) (symbol "BigModular:Device_D_Schottky" (pin_numbers (hide yes)) (pin_names (offset 1.016) (hide yes)) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (duplicate_pin_numbers_are_jumpers no) (property "Reference" "D" (at 0 2.54 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Value" "D_Schottky" (at 0 -2.54 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "Schottky diode" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_keywords" "diode Schottky" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "Device_D_Schottky_0_1" (polyline (pts (xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)) (stroke (width 0.254) (type default)) (fill (type none))) (polyline (pts (xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)) (stroke (width 0.254) (type default)) (fill (type none))) (polyline (pts (xy 1.27 0) (xy -1.27 0)) (stroke (width 0) (type default)) (fill (type none)))) (symbol "Device_D_Schottky_1_1" (pin passive line (at -3.81 0 0) (length 2.54) (name "K" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at 3.81 0 180) (length 2.54) (name "A" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))) (embedded_fonts no)) (symbol "BigModular:Device_L" (pin_numbers (hide yes)) (pin_names (offset 1.016) (hide yes)) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (duplicate_pin_numbers_are_jumpers no) (property "Reference" "L" (at -1.27 0 90) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Value" "L" (at 1.905 0 90) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "Inductor" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_keywords" "inductor choke coil reactor magnetic" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "Device_L_0_1" (arc (start 0 2.54) (mid 0.6323 1.905) (end 0 1.27) (stroke (width 0) (type default)) (fill (type none))) (arc (start 0 1.27) (mid 0.6323 0.635) (end 0 0) (stroke (width 0) (type default)) (fill (type none))) (arc (start 0 0) (mid 0.6323 -0.635) (end 0 -1.27) (stroke (width 0) (type default)) (fill (type none))) (arc (start 0 -1.27) (mid 0.6323 -1.905) (end 0 -2.54) (stroke (width 0) (type default)) (fill (type none)))) (symbol "Device_L_1_1" (pin passive line (at 0 3.81 270) (length 1.27) (name "1" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at 0 -3.81 90) (length 1.27) (name "2" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))) (embedded_fonts no)) (symbol "BigModular:Device_R" (pin_numbers (hide yes)) (pin_names (offset 0)) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (duplicate_pin_numbers_are_jumpers no) (property "Reference" "R" (at 2.032 0 90) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Value" "R" (at 0 0 90) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at -1.778 0 90) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "Resistor" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_keywords" "R res resistor" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_fp_filters" "R_*" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "Device_R_0_1" (rectangle (start -1.016 -2.54) (end 1.016 2.54) (stroke (width 0.254) (type default)) (fill (type none)))) (symbol "Device_R_1_1" (pin passive line (at 0 3.81 270) (length 1.27) (name "" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at 0 -3.81 90) (length 1.27) (name "" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))) (embedded_fonts no)) (symbol "BigModular:TPS54302DDCR" (pin_names (offset 0.7)) (in_bom yes) (on_board yes) (property "Reference" "U" (at 0 3 0) (effects (font (size 1.27 1.27)))) (property "Value" "TPS54302DDCR" (at 0 0 0) (effects (font (size 1.27 1.27)))) (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf" (at 0 0 0) (effects (font (size 1.27 1.27)) hide)) (symbol "TPS54302DDCR_0_1" (rectangle (start -10.16 10.16) (end 10.16 -10.16) (stroke (width 0.254) (type default)) (fill (type background)))) (symbol "TPS54302DDCR_1_1" (pin power_in line (at -15.24 5.08 0) (length 5.08) (name "VIN" (effects (font (size 1 1)))) (number "3" (effects (font (size 1 1))))) (pin input line (at -15.24 0.0 0) (length 5.08) (name "EN" (effects (font (size 1 1)))) (number "5" (effects (font (size 1 1))))) (pin power_in line (at -15.24 -5.08 0) (length 5.08) (name "GND" (effects (font (size 1 1)))) (number "1" (effects (font (size 1 1))))) (pin passive line (at 15.24 5.08 180) (length 5.08) (name "BOOT" (effects (font (size 1 1)))) (number "6" (effects (font (size 1 1))))) (pin output line (at 15.24 0.0 180) (length 5.08) (name "SW" (effects (font (size 1 1)))) (number "2" (effects (font (size 1 1))))) (pin input line (at 15.24 -5.08 180) (length 5.08) (name "FB" (effects (font (size 1 1)))) (number "4" (effects (font (size 1 1))))))) (symbol "BigModular:power_PWR_FLAG" (power global) (pin_numbers (hide yes)) (pin_names (offset 0) (hide yes)) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (duplicate_pin_numbers_are_jumpers no) (property "Reference" "#FLG" (at 0 1.905 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Value" "PWR_FLAG" (at 0 3.81 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "Special symbol for telling ERC where power comes from" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (property "ki_keywords" "flag power" (at 0 0 0) (show_name no) (do_not_autoplace no) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "power_PWR_FLAG_0_0" (pin power_out line (at 0 0 90) (length 0) (name "" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27)))))) (symbol "power_PWR_FLAG_0_1" (polyline (pts (xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)) (stroke (width 0) (type default)) (fill (type none)))) (embedded_fonts no))) (embedded_fonts no) (symbol (lib_id "BigModular:TPS54302DDCR") (at 185.42 137.16 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "04fafdb3-0372-5bd2-b3fc-40138c0df798") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "U3") (unit 1)))) (property "Reference" "U3" (at 185.42 119.38 0) (effects (font (size 1.05 1.05)))) (property "Value" "TPS54302DDCR" (at 185.42 121.92 0) (effects (font (size 1.05 1.05)))) (property "Footprint" "BigModular:SOT-23-6" (at 185.42 119.38 0) (effects (font (size 1.05 1.05)) hide)) (property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf" (at 185.42 119.38 0) (effects (font (size 1.05 1.05)) hide)) (property "MPN" "TPS54302DDCR" (at 185.42 119.38 0) (effects (font (size 1.05 1.05)) hide)) (property "LCSC" "C311983" (at 185.42 119.38 0) (effects (font (size 1.05 1.05)) hide)) (property "NOTE" "SR2 direct VPROT IBB: GND1=NRAW, VIN3=VPROT, SW2 via L1 to SYSTEM GND. TI SLVA933 section5 explicitly includes TPS54302. EN/FB referenced to NRAW, never system ground. 28V recommended/30V absolute span, not an OVP clamp. Prototype screens only." (at 185.42 119.38 0) (effects (font (size 1.05 1.05)) hide)) (property "Manufacturer" "Texas Instruments" (at 185.42 119.38 0) (effects (font (size 1.05 1.05)) hide)) (pin "3" (uuid "824cfe2d-8dbe-569f-8211-47ca469d985b")) (pin "5" (uuid "416003d2-db34-5855-a1f7-55bff103af87")) (pin "1" (uuid "824971d0-8bc4-5ba5-8f17-7477b3fa105d")) (pin "6" (uuid "c882dd4d-b660-5a0b-97de-d9a29ac92acc")) (pin "2" (uuid "eac5e2d3-f456-5ecb-aee2-0953abb8748d")) (pin "4" (uuid "169793ae-8391-55ef-8510-4b26d324e4cd"))) (symbol (lib_id "BigModular:Device_L") (at 248.92 137.16 90) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "c67a49e3-9e74-50f6-9cd5-e152ad1967c0") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "L1") (unit 1)))) (property "Reference" "L1" (at 248.92 129.54 90) (effects (font (size 1.05 1.05)))) (property "Value" "22uH 20% shielded" (at 248.92 132.07999999999998 90) (effects (font (size 1.05 1.05)))) (property "Footprint" "BigModular:L_Bourns_SRP1245A" (at 248.92 129.54 90) (effects (font (size 1.05 1.05)) hide)) (property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_BOURNS-SRP1245A-220M_C1848803.pdf" (at 248.92 129.54 90) (effects (font (size 1.05 1.05)) hide)) (property "MPN" "SRP1245A-220M" (at 248.92 129.54 90) (effects (font (size 1.05 1.05)) hide)) (property "LCSC" "C1848803" (at 248.92 129.54 90) (effects (font (size 1.05 1.05)) hide)) (property "NOTE" "SRP1245A-220M, Isat10A at20% L drop/25C, Irms6.5A at40C rise, DCR58mohm max. 10A NOT hot guaranteed minimum. Height max5.0mm versus5.1mm allowance leaves0.1mm BEFORE solder. Manufacturer lands14.2 overall/8 gap/5 width; separate PCB fit/hot-fault gate, not fit approval. Stock16 dated handoff, not reserved." (at 248.92 129.54 90) (effects (font (size 1.05 1.05)) hide)) (property "Manufacturer" "BOURNS" (at 248.92 129.54 90) (effects (font (size 1.05 1.05)) hide)) (pin "1" (uuid "e19e57b6-d237-5e0f-8e5f-0bee9db56aac")) (pin "2" (uuid "837d00a7-3824-5ba2-89e5-67f4fb5057c1"))) (symbol (lib_id "BigModular:Device_C") (at 223.52 106.68 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "d2c27a4a-608e-5507-9a5e-eceb4f68c7db") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C35") (unit 1)))) (property "Reference" "C35" (at 227.33 105.41000000000001 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "100n 50V X7R" (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_0603_1608Metric" (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf" (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CC0603KRX7R9BB104" (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C14663" (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Bootstrap capacitor to SW2, NOT system GND or NRAW." (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "YAGEO" (at 227.33 107.95 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "66ef30a2-af76-5066-ae22-c96e8b8d1638")) (pin "2" (uuid "6e574549-9d65-590e-a8a1-5dd11d3a5603"))) (wire (pts (xy 200.66 137.16) (xy 223.52 137.16)) (stroke (width 0) (type default)) (uuid "0ef6e498-3297-5fd6-aa8c-4685904bda3c")) (wire (pts (xy 223.52 137.16) (xy 245.11 137.16)) (stroke (width 0) (type default)) (uuid "1b76635d-6c46-51a2-8e4b-bcd4262505eb")) (wire (pts (xy 252.73 137.16) (xy 281.94 137.16)) (stroke (width 0) (type default)) (uuid "2ec3a062-cffa-5eb3-9d43-05caa778b6bd")) (label "GND" (at 281.94 137.16 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "5cb8a196-1790-5133-b6c8-fe130a12f061")) (wire (pts (xy 200.66 132.08) (xy 210.82 132.08)) (stroke (width 0) (type default)) (uuid "b1cffead-f249-559d-bf0c-74573521a1d4")) (wire (pts (xy 210.82 132.08) (xy 210.82 91.44)) (stroke (width 0) (type default)) (uuid "1f40dcf7-1bc5-5c89-8b5b-a5ee2faf295c")) (wire (pts (xy 210.82 91.44) (xy 223.52 91.44)) (stroke (width 0) (type default)) (uuid "5db46190-6fbc-516c-96fd-4ef840e4e5a6")) (wire (pts (xy 223.52 91.44) (xy 223.52 102.87)) (stroke (width 0) (type default)) (uuid "bbdbd9eb-6cc1-5c23-b29e-2e5fbfba0363")) (wire (pts (xy 223.52 110.49) (xy 223.52 137.16)) (stroke (width 0) (type default)) (uuid "ca1f73e0-91b9-58e8-a296-ee0e1387a6b2")) (label "NINV_SW" (at 226.06 137.16 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "03e8da72-6aa1-5e3a-8858-efa777fbf0bc")) (label "NINV_BOOT" (at 210.82 91.44 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "fb875894-a1fb-5516-a5f3-bd5541c779f6")) (hierarchical_label "VPROT" (shape input) (at 25.4 66.04 180) (effects (font (size 1.2 1.2)) (justify right)) (uuid "f59b0897-a0d9-545b-ba4e-06233c9d3d3b")) (wire (pts (xy 160.02 66.04) (xy 160.02 132.08)) (stroke (width 0) (type default)) (uuid "4c641f70-cd54-5946-8672-7d6898bff95a")) (wire (pts (xy 160.02 132.08) (xy 170.18 132.08)) (stroke (width 0) (type default)) (uuid "fb76739f-4382-5048-b019-a6a6f9d5a42b")) (label "VPROT" (at 30.48 66.04 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "09bd65a4-3ed1-51bc-887c-edc0cd190c24")) (symbol (lib_id "BigModular:Device_C") (at 45.72 91.44 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "877ba4d4-e7fe-5133-a465-254248d3862c") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C5") (unit 1)))) (property "Reference" "C5" (at 49.53 90.17 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass." (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 49.53 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "f8eca731-2808-5c0a-8a58-eb46f69e538d")) (pin "2" (uuid "f9b7c2ed-2d9a-54a2-b90a-93866ff35f45"))) (wire (pts (xy 45.72 66.04) (xy 45.72 87.63)) (stroke (width 0) (type default)) (uuid "194e6022-fa91-5a4f-a451-02cbfb496c7b")) (wire (pts (xy 45.72 95.25) (xy 45.72 111.76)) (stroke (width 0) (type default)) (uuid "fcd2eb90-e712-5859-b5d6-154ef7ac1f9a")) (label "GND" (at 45.72 111.76 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "00b2d324-3343-5772-9caf-5ac8266db65e")) (symbol (lib_id "BigModular:Device_C") (at 83.82 91.44 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "483b4e75-11ba-5afb-a656-6b71216363d2") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C68") (unit 1)))) (property "Reference" "C68" (at 87.63 90.17 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass." (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 87.63 92.71 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "9e35244e-0305-5de8-9890-a0b851b6c40b")) (pin "2" (uuid "5792da2a-d42b-5b59-81e9-9c160ae97248"))) (wire (pts (xy 83.82 66.04) (xy 83.82 87.63)) (stroke (width 0) (type default)) (uuid "a8bbc3d7-78a5-59af-817c-b2a306666884")) (wire (pts (xy 83.82 95.25) (xy 83.82 111.76)) (stroke (width 0) (type default)) (uuid "8e93841a-ff6e-5423-bd75-4040f4a94acb")) (label "GND" (at 83.82 111.76 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "acf8ce88-6d67-5df3-8502-12194af66587")) (symbol (lib_id "BigModular:Device_C") (at 30.48 231.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "2b692b68-43cc-5091-872e-4c502f8547a8") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C89") (unit 1)))) (property "Reference" "C89" (at 34.29 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "2.2u 50V X7R" (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf" (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31B225KBHNNNE" (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C50254" (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span." (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 34.29 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "9e0701ee-4c93-5dc7-85c8-22abb97919fc")) (pin "2" (uuid "cf1315b0-86c7-5cf9-aa12-1efb1ef7b254"))) (wire (pts (xy 30.48 213.36) (xy 30.48 227.33)) (stroke (width 0) (type default)) (uuid "dbfbed4f-17e8-5daf-a2fe-657faadd96c5")) (wire (pts (xy 30.48 234.95) (xy 30.48 254)) (stroke (width 0) (type default)) (uuid "873b2d55-85d7-5479-ac35-ea80a9e8ba1c")) (symbol (lib_id "BigModular:Device_C") (at 66.04 231.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "6bd49b71-41bd-501b-9220-3b1d81ac2560") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C90") (unit 1)))) (property "Reference" "C90" (at 69.85000000000001 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "2.2u 50V X7R" (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf" (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31B225KBHNNNE" (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C50254" (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span." (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 69.85000000000001 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "9f915af4-a002-5a82-a5b4-b4fcd382858f")) (pin "2" (uuid "732228a5-cfb0-51eb-b5eb-ec8522cc299e"))) (wire (pts (xy 66.04 213.36) (xy 66.04 227.33)) (stroke (width 0) (type default)) (uuid "c83d85da-c710-554a-b846-1b2c4c8c6259")) (wire (pts (xy 66.04 234.95) (xy 66.04 254)) (stroke (width 0) (type default)) (uuid "45bba5ee-c4f3-5d4c-9a85-9c961cb621b6")) (symbol (lib_id "BigModular:Device_C") (at 101.6 231.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "d80073a9-1490-5f78-bac3-e7b634705156") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C91") (unit 1)))) (property "Reference" "C91" (at 105.41 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "2.2u 50V X7R" (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf" (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31B225KBHNNNE" (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C50254" (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span." (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 105.41 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "57ce5493-d1f8-51c3-87ca-a2edb42c47ba")) (pin "2" (uuid "aa1435b1-7ab8-5a88-9c81-e712e0271881"))) (wire (pts (xy 101.6 213.36) (xy 101.6 227.33)) (stroke (width 0) (type default)) (uuid "c1f15168-4f90-5f56-892b-450d8a16846b")) (wire (pts (xy 101.6 234.95) (xy 101.6 254)) (stroke (width 0) (type default)) (uuid "bfa3df44-3f9c-5aa7-a912-6e4a61254e64")) (symbol (lib_id "BigModular:Device_C") (at 137.16 231.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "344dfbdc-5984-5f1d-8593-4ac9f52ae012") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C92") (unit 1)))) (property "Reference" "C92" (at 140.97 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "2.2u 50V X7R" (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf" (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31B225KBHNNNE" (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C50254" (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span." (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 140.97 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "457d6151-36ab-560a-9737-0b6771419893")) (pin "2" (uuid "7ce687cb-ea90-5352-9bc2-f0cd4bcb7825"))) (wire (pts (xy 137.16 213.36) (xy 137.16 227.33)) (stroke (width 0) (type default)) (uuid "24c01f08-dd04-5d10-9fbb-abb2d86835b8")) (wire (pts (xy 137.16 234.95) (xy 137.16 254)) (stroke (width 0) (type default)) (uuid "af43484e-02a4-5953-8834-7fb95b393043")) (symbol (lib_id "BigModular:Device_C") (at 172.72 231.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "a3874b01-5b25-5ea8-87db-dc928cad65a4") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C7") (unit 1)))) (property "Reference" "C7" (at 176.53 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "100n 50V X7R" (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_0603_1608Metric" (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf" (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CC0603KRX7R9BB104" (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C14663" (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "U3 local HF bypass, VIN-to-NRAW, NOT system GND. Not counted toward minimum effective bulk." (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "YAGEO" (at 176.53 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "097ff88f-2d95-5ddc-ac8d-a2ae3c9164c6")) (pin "2" (uuid "d6f442f1-06a4-5072-9b31-76ca772f6b52"))) (wire (pts (xy 172.72 213.36) (xy 172.72 227.33)) (stroke (width 0) (type default)) (uuid "18bdb8e0-69d9-5094-8d99-3c01b5fca04d")) (wire (pts (xy 172.72 234.95) (xy 172.72 254)) (stroke (width 0) (type default)) (uuid "7783ee02-2047-51a3-9656-b997c7390c2a")) (label "VPROT" (at 30.48 213.36 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "7d613d6c-2079-546f-8ede-2ae73a691bd3")) (label "NRAW" (at 30.48 254 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "5940a1dd-3f15-5689-a7b1-be7c121c4239")) (hierarchical_label "NRAW" (shape output) (at 401.32 254 0) (effects (font (size 1.2 1.2)) (justify left)) (uuid "318d752d-c69d-5506-aecb-8aedc29cefcc")) (wire (pts (xy 170.18 142.24) (xy 160.02 142.24)) (stroke (width 0) (type default)) (uuid "bf60763d-4090-5364-a50f-8842750e18e1")) (wire (pts (xy 160.02 142.24) (xy 160.02 190.5)) (stroke (width 0) (type default)) (uuid "c9368082-3362-532a-b5a4-3b5bd681b79b")) (label "NRAW" (at 160.02 190.5 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "175cae37-1962-5c32-ba6f-dbb9360e4803")) (symbol (lib_id "BigModular:Device_R") (at 119.38 116.84 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "2198d905-1cdd-5457-80b0-c6db85bcc333") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R91") (unit 1)))) (property "Reference" "R91" (at 123.19 115.57000000000001 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "100k 1%" (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf" (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "0603WAF1003T5E" (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C25803" (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "EN upper Basic100k; R92+R93=20k+2k to NRAW. No connection to EF_SHDN/RTN/retired BI_EN. 5uA EN bias is a sensitivity, not guaranteed max. EN can remain high with residual negative rail; not output disconnect." (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 123.19 118.11 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "96b2714a-f388-5bfe-8df6-b0981e86a073")) (pin "2" (uuid "f40edfb2-30a8-5c68-af73-121f8431af7d"))) (symbol (lib_id "BigModular:Device_R") (at 119.38 172.72 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "dfe60462-82a1-53a8-8fa2-2187bf6959da") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R92") (unit 1)))) (property "Reference" "R92" (at 123.19 171.45 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "20k 1%" (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2002T5E_C4184.pdf" (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "0603WAF2002T5E" (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C4184" (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "EN lower leg20k+2k Basic series to NRAW only; reuses existing C4184/C22975 types instead of C31850 with missing Economy evidence. Startup<=7.34V ignoring helping pullup; 28V span+5uA bias screen below5.5V. Off/residual/reverse-path bench qualification required." (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 123.19 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "fa9c29f1-8c6a-571d-aab0-72990c30d77a")) (pin "2" (uuid "2535a890-c663-5734-81d0-5dec06890ebf"))) (symbol (lib_id "BigModular:Device_R") (at 119.38 193.04 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "2d63ef7f-890b-5dd7-8e01-2f2ebe819d24") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R93") (unit 1)))) (property "Reference" "R93" (at 123.19 191.76999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "2k 1%" (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF2001T5E_C22975.pdf" (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "0603WAF2001T5E" (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C22975" (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Series bottom EN member with R92=20k:22k total, each Basic1%100ppm. Existing Economy-evidenced C22975 reused; no new22k type or guessed eligibility." (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 123.19 194.31 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "ce90c6b6-abe5-5250-b810-909d0d9d66c7")) (pin "2" (uuid "ef732716-35a3-5e7e-afb1-df7cda9b36ca"))) (wire (pts (xy 119.38 66.04) (xy 119.38 113.03)) (stroke (width 0) (type default)) (uuid "6aaec177-cb91-5a56-aefb-bf8ea6575e67")) (wire (pts (xy 119.38 120.65) (xy 119.38 137.16)) (stroke (width 0) (type default)) (uuid "9b41c408-65db-50a9-9948-b44503114935")) (wire (pts (xy 119.38 137.16) (xy 119.38 168.91)) (stroke (width 0) (type default)) (uuid "43f6124f-78e4-53a2-b10f-1dee9138113c")) (wire (pts (xy 119.38 137.16) (xy 170.18 137.16)) (stroke (width 0) (type default)) (uuid "cf4d1300-7218-5958-98c7-00e5767b14d7")) (wire (pts (xy 119.38 176.53) (xy 119.38 189.23)) (stroke (width 0) (type default)) (uuid "bebe89ee-be6a-56f8-b3c8-4dbc6267d90c")) (label "NINV_EN_LO" (at 119.38 182.88 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "fa433280-2711-5a2d-89d1-9d5f46179ec1")) (wire (pts (xy 119.38 196.85) (xy 119.38 205.74)) (stroke (width 0) (type default)) (uuid "86168386-6c9d-541f-9a73-a31c91c39f98")) (label "NRAW" (at 119.38 205.74 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "b43d4e46-77e1-5101-90d9-2c093eedf966")) (label "NINV_EN" (at 129.54 137.16 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "5deb2451-7a2d-5eac-94bb-25cee0bf7947")) (symbol (lib_id "BigModular:Device_R") (at 322.58 83.82 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "42e4e68c-c3d2-58a0-8f7b-2279ba53d976") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R9") (unit 1)))) (property "Reference" "R9" (at 326.39 82.55 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "100k 0.1%" (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1810241722_YAGEO-RT0603BRD07100KL_C122538.pdf" (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "RT0603BRD07100KL" (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C122538" (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json." (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "YAGEO" (at 326.39 85.08999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "ece90682-416e-56f1-968b-55f80c600826")) (pin "2" (uuid "003fa2db-ccfb-534f-8017-4475a4308922"))) (symbol (lib_id "BigModular:Device_R") (at 322.58 104.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "79c75176-1073-5748-8602-4a6af4be9215") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R15") (unit 1)))) (property "Reference" "R15" (at 326.39 102.87 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "120k 0.1%" (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2008171235_YAGEO-RT0603BRD07120KL_C705720.pdf" (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "RT0603BRD07120KL" (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C705720" (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json." (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "YAGEO" (at 326.39 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "15731699-c7fb-5aaa-a41b-936f22de6730")) (pin "2" (uuid "988b3184-c890-5742-9c5d-0770da02bbd9"))) (symbol (lib_id "BigModular:Device_R") (at 322.58 124.46 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "327f842a-b4cd-589c-8922-694110fc6323") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R84") (unit 1)))) (property "Reference" "R84" (at 326.39 123.19 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "6.2k 1%" (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF6201T5E_C4260.pdf" (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "0603WAF6201T5E" (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C4260" (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json." (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 326.39 125.72999999999999 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "e1a94585-0272-5f2b-b7c2-f21186e54f2a")) (pin "2" (uuid "727b3278-f56a-5948-a835-144bfe8403f7"))) (symbol (lib_id "BigModular:Device_R") (at 322.58 172.72 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "997b1123-c92b-5ea2-858d-751be05a4a68") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "R10") (unit 1)))) (property "Reference" "R10" (at 326.39 171.45 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "10k 0.1%" (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1811082117_YAGEO-RT0603BRD0710KL_C95204.pdf" (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "RT0603BRD0710KL" (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C95204" (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json." (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "YAGEO" (at 326.39 173.99 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "e5726207-c1d9-5ff7-a6a7-afbeb985601e")) (pin "2" (uuid "4d87d160-0d0e-5a70-840d-2b5820ed7016"))) (wire (pts (xy 322.58 66.04) (xy 322.58 80.01)) (stroke (width 0) (type default)) (uuid "015fc1d6-391d-5fd7-8d8e-c8e191a36748")) (label "GND" (at 322.58 66.04 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "a24273c9-790d-52c5-8e45-71e198580879")) (wire (pts (xy 322.58 87.63) (xy 322.58 100.33)) (stroke (width 0) (type default)) (uuid "fa819c92-0014-5f89-b4ff-b013f451ae29")) (label "NINV_DIV1" (at 322.58 87.63 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "b44c1925-f9b7-57ac-8878-53a0cfce85ff")) (wire (pts (xy 322.58 107.95) (xy 322.58 120.65)) (stroke (width 0) (type default)) (uuid "aa595205-197f-589e-99c2-316f348162c2")) (label "NINV_DIV2" (at 322.58 107.95 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "b6af33d3-79cc-5737-90a5-2f04a0d096d1")) (label "NINV_FB" (at 322.58 128.27 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "7ef46d25-1a85-5216-836d-9594f10b248f")) (wire (pts (xy 200.66 142.24) (xy 322.58 142.24)) (stroke (width 0) (type default)) (uuid "a4fe4b47-1c2f-5c53-8c24-da8b86c7252f")) (wire (pts (xy 322.58 176.53) (xy 322.58 190.5)) (stroke (width 0) (type default)) (uuid "db0ba600-71a8-5715-94d6-dc5c315beee5")) (label "NRAW" (at 322.58 190.5 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "613a498d-478e-5dca-b1b4-d2f14acec2df")) (symbol (lib_id "BigModular:Device_C") (at 383.54 104.14 0) (unit 1) (in_bom yes) (on_board yes) (dnp yes) (uuid "aea294d5-64b9-5183-a101-330b9b79e54b") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C93") (unit 1)))) (property "Reference" "C93" (at 387.35 102.87 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "DNP CFF / TBD" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_0603_1608Metric" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.pdf" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "0603B103K500NT" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C57112" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "DNP/not purchased/not fitted. 0603 tuning footprint across ENTIRE upper R9+R15+R84 divider, system GND to NINV_FB. Existing Basic C57112/0603B103K500NT 10n50V identity is a metadata placeholder ONLY, not a selected tuning value. No fitted CFF or loop-stability claim; future value requires measured loop review." (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "0e5e8689-33a3-5d99-8864-bda10f1538f3")) (pin "2" (uuid "8b61b055-58fe-5f4a-99c7-c835ef9b961c")) (property "JLCPCB Exclude" "yes" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "JLCPCB Audit Requirements" "{\"reason\": \"DNP/not purchased/not fitted. 0603 tuning footprint across ENTIRE upper R9+R15+R84 divider, system GND to NINV_FB. Existing Basic C57112/0603B103K500NT 10n50V identity is a metadata placeholder ONLY, not a selected tuning value. No fitted CFF or loop-stability claim; future value requires measured loop review.\"}" (at 387.35 105.41 0) (effects (font (size 1.05 1.05)) (justify left) hide))) (wire (pts (xy 322.58 66.04) (xy 383.54 66.04)) (stroke (width 0) (type default)) (uuid "6ec97ed9-a5e0-5d7f-8c70-26ae8d2f2e84")) (wire (pts (xy 383.54 66.04) (xy 383.54 100.33)) (stroke (width 0) (type default)) (uuid "5c3eabb3-9bf0-5158-8ea4-8541d6c88123")) (wire (pts (xy 383.54 107.95) (xy 383.54 149.86)) (stroke (width 0) (type default)) (uuid "2f43e2a4-9465-5369-a09c-345b0bd7cb97")) (wire (pts (xy 383.54 149.86) (xy 322.58 149.86)) (stroke (width 0) (type default)) (uuid "eeefddc7-9e2c-5d77-a020-069fc6c086aa")) (text "DNP / NOT PURCHASED\nAcross R9+R15+R84\nNo tuning value selected" (at 365.76 157.48 0) (effects (font (size 1.0 1.0)) (justify left top)) (uuid "65ea38a1-9f0a-508f-9ad0-0e2bea2bc2ae")) (symbol (lib_id "BigModular:Device_C") (at 213.36 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "26988d43-c65c-5de2-b001-dc6b6f4690c7") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C6") (unit 1)))) (property "Reference" "C6" (at 231.36 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 231.36 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "68c0e7e1-ebab-53ef-9831-19b35bc5fb33")) (pin "2" (uuid "d107f329-73d8-5025-b5a0-3334b8fbd9a1"))) (wire (pts (xy 213.36 234.95) (xy 213.36 254)) (stroke (width 0) (type default)) (uuid "8534617d-fdda-51eb-9c4a-48588b0ebc61")) (wire (pts (xy 213.36 205.74) (xy 213.36 227.33)) (stroke (width 0) (type default)) (uuid "61b21a90-efc0-550b-b6ec-2c9f7236a7ca")) (symbol (lib_id "BigModular:Device_C") (at 243.84 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "8d99c8a1-bfc1-51a2-a7af-a21c2f7cdc3c") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C37") (unit 1)))) (property "Reference" "C37" (at 261.84000000000003 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 261.84000000000003 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "1faa7055-99f1-546a-98ab-fe6f014fc354")) (pin "2" (uuid "9507659c-484b-550d-9fb4-c24b4188065a"))) (wire (pts (xy 243.84 234.95) (xy 243.84 254)) (stroke (width 0) (type default)) (uuid "e09b1c1e-b124-5907-bb6a-c41bd1583b83")) (wire (pts (xy 243.84 205.74) (xy 243.84 227.33)) (stroke (width 0) (type default)) (uuid "6e8cdc87-4c73-579b-8528-4610453ddfaa")) (symbol (lib_id "BigModular:Device_C") (at 274.32 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "b37dc7bc-7fb6-52f6-bf1d-2530557be118") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C70") (unit 1)))) (property "Reference" "C70" (at 292.32 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 292.32 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "d5fad7f0-9a31-5509-94a3-88ec2122cb05")) (pin "2" (uuid "6580f513-5556-5eff-8509-cd54790d64be"))) (wire (pts (xy 274.32 234.95) (xy 274.32 254)) (stroke (width 0) (type default)) (uuid "8cb91460-fcf0-553a-adf7-02fd28938424")) (wire (pts (xy 274.32 205.74) (xy 274.32 227.33)) (stroke (width 0) (type default)) (uuid "b4960603-13f4-5cd3-8269-7c20c2b35b04")) (symbol (lib_id "BigModular:Device_C") (at 304.8 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "8efdecc5-a2a0-518d-b36a-fe638179e57a") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C71") (unit 1)))) (property "Reference" "C71" (at 322.8 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 322.8 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "414bdb8b-8b65-5b88-85e1-4daf493e9b6a")) (pin "2" (uuid "e4053db9-db50-527b-b936-7e9c9e63b524"))) (wire (pts (xy 304.8 234.95) (xy 304.8 254)) (stroke (width 0) (type default)) (uuid "3031ed3a-2efd-5062-b31a-295749cee349")) (wire (pts (xy 304.8 205.74) (xy 304.8 227.33)) (stroke (width 0) (type default)) (uuid "f6d5bcec-121f-522a-bc2c-a7fb2e925af4")) (symbol (lib_id "BigModular:Device_C") (at 335.28 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "505a66fe-baea-573c-a13a-9329c3981f7c") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C9") (unit 1)))) (property "Reference" "C9" (at 353.28 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 353.28 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "08e880ff-460a-5701-aa5f-a218b298dd5a")) (pin "2" (uuid "0ad3c98c-9001-51da-9c09-b6fca8c0624d"))) (wire (pts (xy 335.28 234.95) (xy 335.28 254)) (stroke (width 0) (type default)) (uuid "afc98701-ea15-505b-9cf1-073192561451")) (wire (pts (xy 335.28 205.74) (xy 335.28 227.33)) (stroke (width 0) (type default)) (uuid "5add0223-33c7-53ec-8fce-434499898124")) (symbol (lib_id "BigModular:Device_C") (at 365.76 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "f2da6cb5-fa8c-5d5d-9814-bb1032a7677b") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C75") (unit 1)))) (property "Reference" "C75" (at 383.76 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 383.76 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "a1bca8dd-8955-5db9-8cad-4950ace05f0a")) (pin "2" (uuid "5eb75244-0ee3-50d6-9388-cf3f535f3a75"))) (wire (pts (xy 365.76 234.95) (xy 365.76 254)) (stroke (width 0) (type default)) (uuid "c05ed571-ba74-5423-b150-6fdab33edd17")) (wire (pts (xy 365.76 205.74) (xy 365.76 227.33)) (stroke (width 0) (type default)) (uuid "f44de51c-43d2-5961-a50a-bad1221a5b65")) (symbol (lib_id "BigModular:Device_C") (at 396.24 231.14 180) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "50ab57f5-4857-5056-84df-19ee93da9fd7") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "C76") (unit 1)))) (property "Reference" "C76" (at 414.24 229.86999999999998 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "22u 25V X5R" (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf" (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "CL31A226KAHNNNE" (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C12891" (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains." (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "Samsung Electro-Mechanics" (at 414.24 232.41 0) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "fb471499-9496-59fa-8300-49acdf4f00b5")) (pin "2" (uuid "4a3883e0-e325-5eae-8344-5ee4016907d0"))) (wire (pts (xy 396.24 234.95) (xy 396.24 254)) (stroke (width 0) (type default)) (uuid "fc46d16f-bcd2-50e0-bbad-6d4f19d83fee")) (wire (pts (xy 396.24 205.74) (xy 396.24 227.33)) (stroke (width 0) (type default)) (uuid "3830df16-a025-5ab3-a72b-976132b737e1")) (symbol (lib_id "BigModular:Device_D_Schottky") (at 195.58 231.14 270) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "8caceb49-af8f-520e-b25f-8c56269c0afd") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "D30") (unit 1)))) (property "Reference" "D30" (at 199.39000000000001 229.86999999999998 90) (effects (font (size 1.05 1.05)) (justify left))) (property "Value" "SS34 40V" (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left))) (property "Footprint" "BigModular:D_SMA" (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf" (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "MPN" "SS34" (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "LCSC" "C8678" (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "NOTE" "Startup positive-NRAW mitigation: anode2=NRAW, cathode1=SYSTEM GND. Same MDD SS34 C8678/SMA as D27/D28/D29. TI SNVA897 review rationale; NOT a guaranteed +0.3V clamp at arbitrary surge. Measure U13 IN/NR/FB/OUT startup waveforms. Reverse leakage loads NRAW; temperature sensitivity explicitly assumed in sr2-schematic-budget.json." (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left) hide)) (property "Manufacturer" "MDD(Microdiode Semiconductor)" (at 199.39000000000001 232.41 90) (effects (font (size 1.05 1.05)) (justify left) hide)) (pin "1" (uuid "e0393380-0c97-53c3-953c-d2fd3d3ec6d9")) (pin "2" (uuid "dbe9bded-2d61-5816-93cf-8685e202c76d"))) (wire (pts (xy 195.58 227.33) (xy 195.58 205.74)) (stroke (width 0) (type default)) (uuid "e5ec21cc-e651-50fc-8904-3fbbe505437d")) (wire (pts (xy 195.58 234.95) (xy 195.58 254)) (stroke (width 0) (type default)) (uuid "a229ce6f-bb31-566f-bcdb-a5ad201e726b")) (label "GND" (at 213.36 205.74 0) (effects (font (size 1 1)) (justify left bottom)) (uuid "85e6ec86-130d-5668-ac76-8d48dbed13fe")) (hierarchical_label "GND" (shape passive) (at 213.36 205.74 180) (effects (font (size 1.2 1.2)) (justify right)) (uuid "27ba0935-885b-5aa0-aa74-ec546d36a368")) (symbol (lib_id "BigModular:power_PWR_FLAG") (at 401.32 271.78 0) (unit 1) (in_bom yes) (on_board yes) (dnp no) (uuid "53e3972e-e953-595b-95ad-fe7215cb86a1") (instances (project "usb-power" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3" (reference "#FLG07") (unit 1)))) (property "Reference" "#FLG07" (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (property "Value" "PWR_FLAG" (at 401.32 266.7 0) (effects (font (size 1.05 1.05)) hide)) (property "Footprint" "" (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (property "Datasheet" "" (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (property "MPN" "" (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (property "LCSC" "" (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (property "NOTE" "Prototype candidate; qualify ratings, land pattern and operating corners." (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (property "Manufacturer" "" (at 401.32 264.15999999999997 0) (effects (font (size 1.05 1.05)) hide)) (pin "1" (uuid "0184f4d4-24f6-5f74-88fc-cd2adc0bcd62"))) (wire (pts (xy 401.32 271.78) (xy 401.32 254)) (stroke (width 0) (type default)) (uuid "388b4f06-faed-57da-a608-f50fc75e3060")) (text "04 / U3 TPS54302 DIRECT 9V INVERTING BUCK-BOOST" (at 20.32 17.78 0) (effects (font (size 2 2)) (justify left top)) (uuid "bee0afd4-2c97-5693-a61d-649f48ca264c")) (text "NRAW nominal -14.07752V -> retained TPS7A3301 -> N12 -11.99675V. Conditional -300mA objective, NOT a rating.\nIC GND1 = NRAW. L1 returns to SYSTEM GND. EN/FB are referenced to NRAW, never EF_SHDN/BI_EN.\nU4, MID and dormant-positive/VREF/compensation network removed. U5 +5V and U14 positive boost remain independent." (at 20.32 30.48 0) (effects (font (size 1.15 1.15)) (justify left top)) (uuid "74275c68-b764-5e85-a237-ce164e17e1af")) (text "L1: Bourns SRP1245A-220M / C1848803,22uH. 5.0mm max body vs5.1mm allowance, only0.1mm BEFORE solder; NO fit approval.\nC89..92: four Basic2.2u50V C50254 span bypasses; conservative3.01uF screen, not8.8uF effective.\nSeven local22u25V C12891 output caps; separate five-cap U13 input bank. Kelvin NRAW to FB/EN and local IC bypass.\nR9+R15+R84=100k+120k precision +6.2k Basic; R10=10k precision. Upper not entirely0.1%.\n28V recommended VIN/SW span; eFuse OV threshold is NOT clamp. Start/stop, ringing, hot L, loop and reverse paths need bench tests.\nD30 A=NRAW/K=system GND: startup mitigation ONLY, no +0.3V guarantee. Measure U13 IN/NR/FB/OUT. C93 DNP, no selected CFF.\nSR2 SCHEMATIC REVIEW ONLY. Opus + DeepSeek -> corrections/recheck -> user view + explicit ACK -> separate PCB worker." (at 20.32 284.48 0) (effects (font (size 1.15 1.15)) (justify left top)) (uuid "e429b9a5-cbbc-5041-ad5a-942fd9b57d4d")) (wire (pts (xy 25.4 66.04) (xy 45.72 66.04)) (stroke (width 0) (type default)) (uuid "515d1762-33b0-5df3-9781-f16dee961586")) (wire (pts (xy 45.72 66.04) (xy 83.82 66.04)) (stroke (width 0) (type default)) (uuid "ee253bc7-a863-5749-887c-ce7563e07b65")) (wire (pts (xy 83.82 66.04) (xy 119.38 66.04)) (stroke (width 0) (type default)) (uuid "fa3fe91e-518a-5ba4-b24b-c54cb9d05a1e")) (wire (pts (xy 119.38 66.04) (xy 160.02 66.04)) (stroke (width 0) (type default)) (uuid "6d87f522-0e58-5c00-8143-6da995eb679e")) (wire (pts (xy 30.48 213.36) (xy 66.04 213.36)) (stroke (width 0) (type default)) (uuid "cf710ec4-c40e-5f04-981c-e7fbb447905f")) (wire (pts (xy 66.04 213.36) (xy 101.6 213.36)) (stroke (width 0) (type default)) (uuid "30e59be7-4828-5d61-adb5-0a08f3cf182b")) (wire (pts (xy 101.6 213.36) (xy 137.16 213.36)) (stroke (width 0) (type default)) (uuid "fd02a3a9-5ecb-5942-822c-77867189c3f3")) (wire (pts (xy 137.16 213.36) (xy 172.72 213.36)) (stroke (width 0) (type default)) (uuid "35f34de0-cd7a-5182-a989-b049170aeb53")) (wire (pts (xy 30.48 254.0) (xy 66.04 254.0)) (stroke (width 0) (type default)) (uuid "167dec14-05d5-51d8-ad4c-7f41be53dcea")) (wire (pts (xy 66.04 254.0) (xy 101.6 254.0)) (stroke (width 0) (type default)) (uuid "49d02bbd-9fbe-5aea-b2d5-5fd773fd1379")) (wire (pts (xy 101.6 254.0) (xy 137.16 254.0)) (stroke (width 0) (type default)) (uuid "d576a3ad-2d03-5042-a64a-ad0e836c150c")) (wire (pts (xy 137.16 254.0) (xy 172.72 254.0)) (stroke (width 0) (type default)) (uuid "81380060-6f25-5f18-9f9a-d05bc2a40066")) (wire (pts (xy 172.72 254.0) (xy 195.58 254.0)) (stroke (width 0) (type default)) (uuid "32ef84ae-2a7c-5818-8258-81840bb6d3ae")) (wire (pts (xy 195.58 254.0) (xy 213.36 254.0)) (stroke (width 0) (type default)) (uuid "c23d662d-d533-5466-bae8-e8165476d278")) (wire (pts (xy 213.36 254.0) (xy 243.84 254.0)) (stroke (width 0) (type default)) (uuid "f141eb8c-cefb-525e-aec6-4c51e25b32fd")) (wire (pts (xy 243.84 254.0) (xy 274.32 254.0)) (stroke (width 0) (type default)) (uuid "8ff9cc70-3031-5a6e-ac2d-78868c18f8fc")) (wire (pts (xy 274.32 254.0) (xy 304.8 254.0)) (stroke (width 0) (type default)) (uuid "6bec9f5d-efc3-5ccd-bd01-a489217dbf0b")) (wire (pts (xy 304.8 254.0) (xy 335.28 254.0)) (stroke (width 0) (type default)) (uuid "e033f2cb-c73a-542f-8be3-57518cbb4438")) (wire (pts (xy 335.28 254.0) (xy 365.76 254.0)) (stroke (width 0) (type default)) (uuid "1e15574b-ad4c-5575-990e-37c981e434de")) (wire (pts (xy 365.76 254.0) (xy 396.24 254.0)) (stroke (width 0) (type default)) (uuid "6739f36a-9121-5640-969e-de3ab9696900")) (wire (pts (xy 396.24 254.0) (xy 401.32 254.0)) (stroke (width 0) (type default)) (uuid "7bbbe5ee-93c4-51b3-976f-2afa29e2d9a9")) (wire (pts (xy 322.58 128.27) (xy 322.58 142.24)) (stroke (width 0) (type default)) (uuid "c33a30a2-3bff-50a5-833f-adb7883c785e")) (wire (pts (xy 322.58 142.24) (xy 322.58 149.86)) (stroke (width 0) (type default)) (uuid "b405613a-e157-5983-ba1e-de6ed0a16258")) (wire (pts (xy 322.58 149.86) (xy 322.58 168.91)) (stroke (width 0) (type default)) (uuid "259bce79-f8be-5a8d-b68a-4fe3d570d832")) (wire (pts (xy 195.58 205.74) (xy 213.36 205.74)) (stroke (width 0) (type default)) (uuid "20de624f-7cdd-533e-80e9-5cf260d84605")) (wire (pts (xy 213.36 205.74) (xy 243.84 205.74)) (stroke (width 0) (type default)) (uuid "5b3c369f-77c5-523d-9ff5-17d3294b09b0")) (wire (pts (xy 243.84 205.74) (xy 274.32 205.74)) (stroke (width 0) (type default)) (uuid "f2ca78e9-a1a6-5184-87f9-fabc1c4e748f")) (wire (pts (xy 274.32 205.74) (xy 304.8 205.74)) (stroke (width 0) (type default)) (uuid "89a5ade7-c63c-5725-93de-63c98bc653fc")) (wire (pts (xy 304.8 205.74) (xy 335.28 205.74)) (stroke (width 0) (type default)) (uuid "a66a9054-abd9-5366-8317-4eab6b52a5c4")) (wire (pts (xy 335.28 205.74) (xy 365.76 205.74)) (stroke (width 0) (type default)) (uuid "e84d53ea-12dd-5312-bde0-f6d2f41aef62")) (wire (pts (xy 365.76 205.74) (xy 396.24 205.74)) (stroke (width 0) (type default)) (uuid "ad5cf3cb-f5be-5e01-b6f7-f4b6ff45ac6b")) (junction (at 223.52 137.16) (diameter 0) (color 0 0 0 0) (uuid "4e0baf13-132c-50d6-a5a7-71abc0707862")) (junction (at 45.72 66.04) (diameter 0) (color 0 0 0 0) (uuid "9b1d5307-742b-51ce-8b58-7e40bc6445c0")) (junction (at 83.82 66.04) (diameter 0) (color 0 0 0 0) (uuid "9115aaa5-df6b-5dad-a834-d01618c1392d")) (junction (at 66.04 213.36) (diameter 0) (color 0 0 0 0) (uuid "f652e137-02d0-5e88-ac92-8039da75a47a")) (junction (at 66.04 254.0) (diameter 0) (color 0 0 0 0) (uuid "e5883c42-44bb-52e4-9026-5879e9d3bed6")) (junction (at 101.6 213.36) (diameter 0) (color 0 0 0 0) (uuid "82dc91e0-ccfc-5bf6-bc28-8102188bca65")) (junction (at 101.6 254.0) (diameter 0) (color 0 0 0 0) (uuid "eb29ac6a-aa44-5399-8d54-7e2bd070ef01")) (junction (at 137.16 213.36) (diameter 0) (color 0 0 0 0) (uuid "8009e053-7961-56fc-ab5a-710fc56948be")) (junction (at 137.16 254.0) (diameter 0) (color 0 0 0 0) (uuid "68b3961a-c87d-5794-829e-294c1e48f9e1")) (junction (at 172.72 254.0) (diameter 0) (color 0 0 0 0) (uuid "4c51a125-3906-5422-b286-cd22e107f917")) (junction (at 119.38 66.04) (diameter 0) (color 0 0 0 0) (uuid "8913fe47-7ff8-5d02-a4a3-715a04157d9b")) (junction (at 119.38 137.16) (diameter 0) (color 0 0 0 0) (uuid "82d113ba-b98f-5810-862e-629998a2af93")) (junction (at 322.58 142.24) (diameter 0) (color 0 0 0 0) (uuid "e1dc55f2-9cc9-5e66-aa62-5d59c2e25f97")) (junction (at 322.58 149.86) (diameter 0) (color 0 0 0 0) (uuid "14b6aa30-f23d-5b37-b499-a4c3c51558b0")) (junction (at 213.36 254.0) (diameter 0) (color 0 0 0 0) (uuid "545c38a7-3ca3-56af-9c43-eb93f80f3c03")) (junction (at 213.36 205.74) (diameter 0) (color 0 0 0 0) (uuid "6e8c68df-1533-595d-8e8d-fb2caafa2361")) (junction (at 243.84 254.0) (diameter 0) (color 0 0 0 0) (uuid "c74a8a2b-d50f-5218-bd63-1b8872607ac9")) (junction (at 243.84 205.74) (diameter 0) (color 0 0 0 0) (uuid "82b06fc2-7089-59c2-98b5-9568a03bd198")) (junction (at 274.32 254.0) (diameter 0) (color 0 0 0 0) (uuid "ce24852b-a4b1-592d-8e6c-e5a1774b85dd")) (junction (at 274.32 205.74) (diameter 0) (color 0 0 0 0) (uuid "4197ecc8-4ab5-596c-ad75-f801788b0bd9")) (junction (at 304.8 254.0) (diameter 0) (color 0 0 0 0) (uuid "1bb2bb80-eb37-52f5-a9a4-c82b606278ac")) (junction (at 304.8 205.74) (diameter 0) (color 0 0 0 0) (uuid "87f990e2-8fe4-5edb-a1d5-2640c85c89e0")) (junction (at 335.28 254.0) (diameter 0) (color 0 0 0 0) (uuid "2137417a-9b79-5ce4-9e01-dddc4b1f8baf")) (junction (at 335.28 205.74) (diameter 0) (color 0 0 0 0) (uuid "4162cbbc-2394-5b01-a7c5-e36d8c04816e")) (junction (at 365.76 254.0) (diameter 0) (color 0 0 0 0) (uuid "e17c54f1-e6eb-5f7b-aa34-fcfa04b91ad9")) (junction (at 365.76 205.74) (diameter 0) (color 0 0 0 0) (uuid "dc9e7f2e-0d56-5c44-b2f8-d6afa3fd9c47")) (junction (at 396.24 254.0) (diameter 0) (color 0 0 0 0) (uuid "38e76265-3014-5325-8396-2d16954d40a7")) (junction (at 195.58 254.0) (diameter 0) (color 0 0 0 0) (uuid "5cc93b3a-30ce-5756-824f-203bda7805af")))
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "8703e428-3c63-5a4a-9ed7-92d7bdcf916a")
+	(paper "User" 430 345)
+	(title_block
+		(title "Direct protected-9V negative IBB")
+		(rev "SR2")
+	)
+	(lib_symbols
+		(symbol "BigModular:Device_C"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Unpolarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Device_C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 0.762) (xy 2.032 0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -0.762) (xy 2.032 -0.762)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Device_C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "BigModular:Device_D_Schottky"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_Schottky"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Schottky diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode Schottky"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Device_D_Schottky_0_1"
+				(polyline
+					(pts
+						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Device_D_Schottky_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "BigModular:Device_L"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "L"
+				(at -1.27 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "L"
+				(at 1.905 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Inductor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "inductor choke coil reactor magnetic"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Device_L_0_1"
+				(arc
+					(start 0 2.54)
+					(mid 0.6323 1.905)
+					(end 0 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 1.27)
+					(mid 0.6323 0.635)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 0)
+					(mid 0.6323 -0.635)
+					(end 0 -1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -1.27)
+					(mid 0.6323 -1.905)
+					(end 0 -2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Device_L_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "BigModular:Device_R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Device_R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Device_R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "BigModular:TPS54302DDCR"
+			(pin_names
+				(offset 0.7)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 0 3 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TPS54302DDCR"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TPS54302DDCR_0_1"
+				(rectangle
+					(start -10.16 10.16)
+					(end 10.16 -10.16)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "TPS54302DDCR_1_1"
+				(pin power_in line
+					(at -15.24 -5.08 0)
+					(length 5.08)
+					(name "GND"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 15.24 0 180)
+					(length 5.08)
+					(name "SW"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -15.24 5.08 0)
+					(length 5.08)
+					(name "VIN"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 15.24 -5.08 180)
+					(length 5.08)
+					(name "FB"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -15.24 0 0)
+					(length 5.08)
+					(name "EN"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 15.24 5.08 180)
+					(length 5.08)
+					(name "BOOT"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1 1)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "BigModular:power_PWR_FLAG"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#FLG"
+				(at 0 1.905 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "PWR_FLAG"
+				(at 0 3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Special symbol for telling ERC where power comes from"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "power_PWR_FLAG_0_0"
+				(pin power_out line
+					(at 0 0 90)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "power_PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(text "DNP / NOT PURCHASED\nAcross R9+R15+R84\nNo tuning value selected"
+		(exclude_from_sim no)
+		(at 365.76 157.48 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left top)
+		)
+		(uuid "65ea38a1-9f0a-508f-9ad0-0e2bea2bc2ae")
+	)
+	(text "NRAW nominal -14.07752V -> retained TPS7A3301 -> N12 -11.99675V. Conditional -300mA objective, NOT a rating.\nIC GND1 = NRAW. L1 returns to SYSTEM GND. EN/FB are referenced to NRAW, never EF_SHDN/BI_EN.\nU4, MID and dormant-positive/VREF/compensation network removed. U5 +5V and U14 positive boost remain independent."
+		(exclude_from_sim no)
+		(at 20.32 30.48 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left top)
+		)
+		(uuid "74275c68-b764-5e85-a237-ce164e17e1af")
+	)
+	(text "04 / U3 TPS54302 DIRECT 9V INVERTING BUCK-BOOST"
+		(exclude_from_sim no)
+		(at 20.32 17.78 0)
+		(effects
+			(font
+				(size 2 2)
+			)
+			(justify left top)
+		)
+		(uuid "bee0afd4-2c97-5693-a61d-649f48ca264c")
+	)
+	(text "L1: Bourns SRP1245A-220M / C1848803,22uH. 5.0mm max body vs5.1mm allowance, only0.1mm BEFORE solder; NO fit approval.\nC89..92: four Basic2.2u50V C50254 span bypasses; conservative3.01uF screen, not8.8uF effective.\nSeven local22u25V C12891 output caps; separate five-cap U13 input bank. Kelvin NRAW to FB/EN and local IC bypass.\nR9+R15+R84=100k+120k precision +6.2k Basic; R10=10k precision. Upper not entirely0.1%.\n28V recommended VIN/SW span; eFuse OV threshold is NOT clamp. Start/stop, ringing, hot L, loop and reverse paths need bench tests.\nD30 A=NRAW/K=system GND: startup mitigation ONLY, no +0.3V guarantee. Measure U13 IN/NR/FB/OUT. C93 DNP, no selected CFF.\nSR2 SCHEMATIC REVIEW ONLY. Opus + DeepSeek -> corrections/recheck -> user view + explicit ACK -> separate PCB worker."
+		(exclude_from_sim no)
+		(at 20.32 284.48 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left top)
+		)
+		(uuid "e429b9a5-cbbc-5041-ad5a-942fd9b57d4d")
+	)
+	(junction
+		(at 322.58 149.86)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "14b6aa30-f23d-5b37-b499-a4c3c51558b0")
+	)
+	(junction
+		(at 304.8 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1bb2bb80-eb37-52f5-a9a4-c82b606278ac")
+	)
+	(junction
+		(at 335.28 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "2137417a-9b79-5ce4-9e01-dddc4b1f8baf")
+	)
+	(junction
+		(at 396.24 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "38e76265-3014-5325-8396-2d16954d40a7")
+	)
+	(junction
+		(at 335.28 205.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4162cbbc-2394-5b01-a7c5-e36d8c04816e")
+	)
+	(junction
+		(at 274.32 205.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4197ecc8-4ab5-596c-ad75-f801788b0bd9")
+	)
+	(junction
+		(at 172.72 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4c51a125-3906-5422-b286-cd22e107f917")
+	)
+	(junction
+		(at 223.52 137.16)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4e0baf13-132c-50d6-a5a7-71abc0707862")
+	)
+	(junction
+		(at 213.36 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "545c38a7-3ca3-56af-9c43-eb93f80f3c03")
+	)
+	(junction
+		(at 195.58 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5cc93b3a-30ce-5756-824f-203bda7805af")
+	)
+	(junction
+		(at 137.16 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "68b3961a-c87d-5794-829e-294c1e48f9e1")
+	)
+	(junction
+		(at 213.36 205.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6e8c68df-1533-595d-8e8d-fb2caafa2361")
+	)
+	(junction
+		(at 137.16 213.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8009e053-7961-56fc-ab5a-710fc56948be")
+	)
+	(junction
+		(at 243.84 205.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "82b06fc2-7089-59c2-98b5-9568a03bd198")
+	)
+	(junction
+		(at 119.38 137.16)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "82d113ba-b98f-5810-862e-629998a2af93")
+	)
+	(junction
+		(at 101.6 213.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "82dc91e0-ccfc-5bf6-bc28-8102188bca65")
+	)
+	(junction
+		(at 304.8 205.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "87f990e2-8fe4-5edb-a1d5-2640c85c89e0")
+	)
+	(junction
+		(at 119.38 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8913fe47-7ff8-5d02-a4a3-715a04157d9b")
+	)
+	(junction
+		(at 83.82 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9115aaa5-df6b-5dad-a834-d01618c1392d")
+	)
+	(junction
+		(at 45.72 66.04)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9b1d5307-742b-51ce-8b58-7e40bc6445c0")
+	)
+	(junction
+		(at 243.84 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c74a8a2b-d50f-5218-bd63-1b8872607ac9")
+	)
+	(junction
+		(at 274.32 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ce24852b-a4b1-592d-8e6c-e5a1774b85dd")
+	)
+	(junction
+		(at 365.76 205.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dc9e7f2e-0d56-5c44-b2f8-d6afa3fd9c47")
+	)
+	(junction
+		(at 365.76 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e17c54f1-e6eb-5f7b-aa34-fcfa04b91ad9")
+	)
+	(junction
+		(at 322.58 142.24)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e1dc55f2-9cc9-5e66-aa62-5d59c2e25f97")
+	)
+	(junction
+		(at 66.04 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e5883c42-44bb-52e4-9026-5879e9d3bed6")
+	)
+	(junction
+		(at 101.6 254)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eb29ac6a-aa44-5399-8d54-7e2bd070ef01")
+	)
+	(junction
+		(at 66.04 213.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f652e137-02d0-5e88-ac92-8039da75a47a")
+	)
+	(wire
+		(pts
+			(xy 322.58 66.04) (xy 322.58 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "015fc1d6-391d-5fd7-8d8e-c8e191a36748")
+	)
+	(wire
+		(pts
+			(xy 200.66 137.16) (xy 223.52 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0ef6e498-3297-5fd6-aa8c-4685904bda3c")
+	)
+	(wire
+		(pts
+			(xy 30.48 254) (xy 66.04 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "167dec14-05d5-51d8-ad4c-7f41be53dcea")
+	)
+	(wire
+		(pts
+			(xy 172.72 213.36) (xy 172.72 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "18bdb8e0-69d9-5094-8d99-3c01b5fca04d")
+	)
+	(wire
+		(pts
+			(xy 45.72 66.04) (xy 45.72 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "194e6022-fa91-5a4f-a451-02cbfb496c7b")
+	)
+	(wire
+		(pts
+			(xy 223.52 137.16) (xy 245.11 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1b76635d-6c46-51a2-8e4b-bcd4262505eb")
+	)
+	(wire
+		(pts
+			(xy 335.28 254) (xy 365.76 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1e15574b-ad4c-5575-990e-37c981e434de")
+	)
+	(wire
+		(pts
+			(xy 210.82 132.08) (xy 210.82 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f40dcf7-1bc5-5c89-8b5b-a5ee2faf295c")
+	)
+	(wire
+		(pts
+			(xy 195.58 205.74) (xy 213.36 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20de624f-7cdd-533e-80e9-5cf260d84605")
+	)
+	(wire
+		(pts
+			(xy 137.16 213.36) (xy 137.16 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "24c01f08-dd04-5d10-9fbb-abb2d86835b8")
+	)
+	(wire
+		(pts
+			(xy 322.58 149.86) (xy 322.58 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "259bce79-f8be-5a8d-b68a-4fe3d570d832")
+	)
+	(wire
+		(pts
+			(xy 252.73 137.16) (xy 281.94 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ec3a062-cffa-5eb3-9d43-05caa778b6bd")
+	)
+	(wire
+		(pts
+			(xy 383.54 107.95) (xy 383.54 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2f43e2a4-9465-5369-a09c-345b0bd7cb97")
+	)
+	(wire
+		(pts
+			(xy 304.8 234.95) (xy 304.8 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3031ed3a-2efd-5062-b31a-295749cee349")
+	)
+	(wire
+		(pts
+			(xy 66.04 213.36) (xy 101.6 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30e59be7-4828-5d61-adb5-0a08f3cf182b")
+	)
+	(wire
+		(pts
+			(xy 172.72 254) (xy 195.58 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "32ef84ae-2a7c-5818-8258-81840bb6d3ae")
+	)
+	(wire
+		(pts
+			(xy 137.16 213.36) (xy 172.72 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "35f34de0-cd7a-5182-a989-b049170aeb53")
+	)
+	(wire
+		(pts
+			(xy 396.24 205.74) (xy 396.24 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3830df16-a025-5ab3-a72b-976132b737e1")
+	)
+	(wire
+		(pts
+			(xy 401.32 271.78) (xy 401.32 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "388b4f06-faed-57da-a608-f50fc75e3060")
+	)
+	(wire
+		(pts
+			(xy 119.38 137.16) (xy 119.38 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43f6124f-78e4-53a2-b10f-1dee9138113c")
+	)
+	(wire
+		(pts
+			(xy 66.04 234.95) (xy 66.04 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "45bba5ee-c4f3-5d4c-9a85-9c961cb621b6")
+	)
+	(wire
+		(pts
+			(xy 66.04 254) (xy 101.6 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "49d02bbd-9fbe-5aea-b2d5-5fd773fd1379")
+	)
+	(wire
+		(pts
+			(xy 160.02 66.04) (xy 160.02 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4c641f70-cd54-5946-8672-7d6898bff95a")
+	)
+	(wire
+		(pts
+			(xy 25.4 66.04) (xy 45.72 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "515d1762-33b0-5df3-9781-f16dee961586")
+	)
+	(wire
+		(pts
+			(xy 335.28 205.74) (xy 335.28 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5add0223-33c7-53ec-8fce-434499898124")
+	)
+	(wire
+		(pts
+			(xy 213.36 205.74) (xy 243.84 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b3c369f-77c5-523d-9ff5-17d3294b09b0")
+	)
+	(wire
+		(pts
+			(xy 383.54 66.04) (xy 383.54 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c3eabb3-9bf0-5158-8ea4-8541d6c88123")
+	)
+	(wire
+		(pts
+			(xy 210.82 91.44) (xy 223.52 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5db46190-6fbc-516c-96fd-4ef840e4e5a6")
+	)
+	(wire
+		(pts
+			(xy 213.36 205.74) (xy 213.36 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61b21a90-efc0-550b-b6ec-2c9f7236a7ca")
+	)
+	(wire
+		(pts
+			(xy 365.76 254) (xy 396.24 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6739f36a-9121-5640-969e-de3ab9696900")
+	)
+	(wire
+		(pts
+			(xy 119.38 66.04) (xy 119.38 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6aaec177-cb91-5a56-aefb-bf8ea6575e67")
+	)
+	(wire
+		(pts
+			(xy 274.32 254) (xy 304.8 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6bec9f5d-efc3-5ccd-bd01-a489217dbf0b")
+	)
+	(wire
+		(pts
+			(xy 119.38 66.04) (xy 160.02 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6d87f522-0e58-5c00-8143-6da995eb679e")
+	)
+	(wire
+		(pts
+			(xy 243.84 205.74) (xy 243.84 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e8cdc87-4c73-579b-8528-4610453ddfaa")
+	)
+	(wire
+		(pts
+			(xy 322.58 66.04) (xy 383.54 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ec97ed9-a5e0-5d7f-8c70-26ae8d2f2e84")
+	)
+	(wire
+		(pts
+			(xy 172.72 234.95) (xy 172.72 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7783ee02-2047-51a3-9656-b997c7390c2a")
+	)
+	(wire
+		(pts
+			(xy 396.24 254) (xy 401.32 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7bbbe5ee-93c4-51b3-976f-2afa29e2d9a9")
+	)
+	(wire
+		(pts
+			(xy 137.16 254) (xy 172.72 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "81380060-6f25-5f18-9f9a-d05bc2a40066")
+	)
+	(wire
+		(pts
+			(xy 213.36 234.95) (xy 213.36 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8534617d-fdda-51eb-9c4a-48588b0ebc61")
+	)
+	(wire
+		(pts
+			(xy 119.38 196.85) (xy 119.38 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "86168386-6c9d-541f-9a73-a31c91c39f98")
+	)
+	(wire
+		(pts
+			(xy 30.48 234.95) (xy 30.48 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "873b2d55-85d7-5479-ac35-ea80a9e8ba1c")
+	)
+	(wire
+		(pts
+			(xy 274.32 205.74) (xy 304.8 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "89a5ade7-c63c-5725-93de-63c98bc653fc")
+	)
+	(wire
+		(pts
+			(xy 274.32 234.95) (xy 274.32 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cb91460-fcf0-553a-adf7-02fd28938424")
+	)
+	(wire
+		(pts
+			(xy 83.82 95.25) (xy 83.82 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e93841a-ff6e-5423-bd75-4040f4a94acb")
+	)
+	(wire
+		(pts
+			(xy 243.84 254) (xy 274.32 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ff9cc70-3031-5a6e-ac2d-78868c18f8fc")
+	)
+	(wire
+		(pts
+			(xy 119.38 120.65) (xy 119.38 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b41c408-65db-50a9-9948-b44503114935")
+	)
+	(wire
+		(pts
+			(xy 195.58 234.95) (xy 195.58 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a229ce6f-bb31-566f-bcdb-a5ad201e726b")
+	)
+	(wire
+		(pts
+			(xy 200.66 142.24) (xy 322.58 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4fe4b47-1c2f-5c53-8c24-da8b86c7252f")
+	)
+	(wire
+		(pts
+			(xy 304.8 205.74) (xy 335.28 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a66a9054-abd9-5366-8317-4eab6b52a5c4")
+	)
+	(wire
+		(pts
+			(xy 83.82 66.04) (xy 83.82 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8bbc3d7-78a5-59af-817c-b2a306666884")
+	)
+	(wire
+		(pts
+			(xy 322.58 107.95) (xy 322.58 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa595205-197f-589e-99c2-316f348162c2")
+	)
+	(wire
+		(pts
+			(xy 365.76 205.74) (xy 396.24 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad5cf3cb-f5be-5e01-b6f7-f4b6ff45ac6b")
+	)
+	(wire
+		(pts
+			(xy 137.16 234.95) (xy 137.16 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "af43484e-02a4-5953-8834-7fb95b393043")
+	)
+	(wire
+		(pts
+			(xy 335.28 234.95) (xy 335.28 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "afc98701-ea15-505b-9cf1-073192561451")
+	)
+	(wire
+		(pts
+			(xy 200.66 132.08) (xy 210.82 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b1cffead-f249-559d-bf0c-74573521a1d4")
+	)
+	(wire
+		(pts
+			(xy 322.58 142.24) (xy 322.58 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b405613a-e157-5983-ba1e-de6ed0a16258")
+	)
+	(wire
+		(pts
+			(xy 274.32 205.74) (xy 274.32 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4960603-13f4-5cd3-8269-7c20c2b35b04")
+	)
+	(wire
+		(pts
+			(xy 223.52 91.44) (xy 223.52 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bbdbd9eb-6cc1-5c23-b29e-2e5fbfba0363")
+	)
+	(wire
+		(pts
+			(xy 119.38 176.53) (xy 119.38 189.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bebe89ee-be6a-56f8-b3c8-4dbc6267d90c")
+	)
+	(wire
+		(pts
+			(xy 170.18 142.24) (xy 160.02 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bf60763d-4090-5364-a50f-8842750e18e1")
+	)
+	(wire
+		(pts
+			(xy 101.6 234.95) (xy 101.6 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bfa3df44-3f9c-5aa7-a912-6e4a61254e64")
+	)
+	(wire
+		(pts
+			(xy 365.76 234.95) (xy 365.76 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c05ed571-ba74-5423-b150-6fdab33edd17")
+	)
+	(wire
+		(pts
+			(xy 101.6 213.36) (xy 101.6 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1f15168-4f90-5f56-892b-450d8a16846b")
+	)
+	(wire
+		(pts
+			(xy 195.58 254) (xy 213.36 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c23d662d-d533-5466-bae8-e8165476d278")
+	)
+	(wire
+		(pts
+			(xy 322.58 128.27) (xy 322.58 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c33a30a2-3bff-50a5-833f-adb7883c785e")
+	)
+	(wire
+		(pts
+			(xy 66.04 213.36) (xy 66.04 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c83d85da-c710-554a-b846-1b2c4c8c6259")
+	)
+	(wire
+		(pts
+			(xy 160.02 142.24) (xy 160.02 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c9368082-3362-532a-b5a4-3b5bd681b79b")
+	)
+	(wire
+		(pts
+			(xy 223.52 110.49) (xy 223.52 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca1f73e0-91b9-58e8-a296-ee0e1387a6b2")
+	)
+	(wire
+		(pts
+			(xy 119.38 137.16) (xy 170.18 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cf4d1300-7218-5958-98c7-00e5767b14d7")
+	)
+	(wire
+		(pts
+			(xy 30.48 213.36) (xy 66.04 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cf710ec4-c40e-5f04-981c-e7fbb447905f")
+	)
+	(wire
+		(pts
+			(xy 101.6 254) (xy 137.16 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d576a3ad-2d03-5042-a64a-ad0e836c150c")
+	)
+	(wire
+		(pts
+			(xy 322.58 176.53) (xy 322.58 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "db0ba600-71a8-5715-94d6-dc5c315beee5")
+	)
+	(wire
+		(pts
+			(xy 30.48 213.36) (xy 30.48 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dbfbed4f-17e8-5daf-a2fe-657faadd96c5")
+	)
+	(wire
+		(pts
+			(xy 304.8 254) (xy 335.28 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e033f2cb-c73a-542f-8be3-57518cbb4438")
+	)
+	(wire
+		(pts
+			(xy 243.84 234.95) (xy 243.84 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e09b1c1e-b124-5907-bb6a-c41bd1583b83")
+	)
+	(wire
+		(pts
+			(xy 195.58 227.33) (xy 195.58 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e5ec21cc-e651-50fc-8904-3fbbe505437d")
+	)
+	(wire
+		(pts
+			(xy 335.28 205.74) (xy 365.76 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e84d53ea-12dd-5312-bde0-f6d2f41aef62")
+	)
+	(wire
+		(pts
+			(xy 45.72 66.04) (xy 83.82 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ee253bc7-a863-5749-887c-ce7563e07b65")
+	)
+	(wire
+		(pts
+			(xy 383.54 149.86) (xy 322.58 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eeefddc7-9e2c-5d77-a020-069fc6c086aa")
+	)
+	(wire
+		(pts
+			(xy 213.36 254) (xy 243.84 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f141eb8c-cefb-525e-aec6-4c51e25b32fd")
+	)
+	(wire
+		(pts
+			(xy 243.84 205.74) (xy 274.32 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2ca78e9-a1a6-5184-87f9-fabc1c4e748f")
+	)
+	(wire
+		(pts
+			(xy 365.76 205.74) (xy 365.76 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f44de51c-43d2-5961-a50a-bad1221a5b65")
+	)
+	(wire
+		(pts
+			(xy 304.8 205.74) (xy 304.8 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6d5bcec-121f-522a-bc2c-a7fb2e925af4")
+	)
+	(wire
+		(pts
+			(xy 83.82 66.04) (xy 119.38 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa3fe91e-518a-5ba4-b24b-c54cb9d05a1e")
+	)
+	(wire
+		(pts
+			(xy 322.58 87.63) (xy 322.58 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa819c92-0014-5f89-b4ff-b013f451ae29")
+	)
+	(wire
+		(pts
+			(xy 160.02 132.08) (xy 170.18 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb76739f-4382-5048-b019-a6a6f9d5a42b")
+	)
+	(wire
+		(pts
+			(xy 396.24 234.95) (xy 396.24 254)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fc46d16f-bcd2-50e0-bbad-6d4f19d83fee")
+	)
+	(wire
+		(pts
+			(xy 45.72 95.25) (xy 45.72 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fcd2eb90-e712-5859-b5d6-154ef7ac1f9a")
+	)
+	(wire
+		(pts
+			(xy 101.6 213.36) (xy 137.16 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fd02a3a9-5ecb-5942-822c-77867189c3f3")
+	)
+	(label "GND"
+		(at 45.72 111.76 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "00b2d324-3343-5772-9caf-5ac8266db65e")
+	)
+	(label "NINV_SW"
+		(at 226.06 137.16 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "03e8da72-6aa1-5e3a-8858-efa777fbf0bc")
+	)
+	(label "VPROT"
+		(at 30.48 66.04 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "09bd65a4-3ed1-51bc-887c-edc0cd190c24")
+	)
+	(label "NRAW"
+		(at 160.02 190.5 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "175cae37-1962-5c32-ba6f-dbb9360e4803")
+	)
+	(label "NRAW"
+		(at 30.48 254 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "5940a1dd-3f15-5689-a7b1-be7c121c4239")
+	)
+	(label "GND"
+		(at 281.94 137.16 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "5cb8a196-1790-5133-b6c8-fe130a12f061")
+	)
+	(label "NINV_EN"
+		(at 129.54 137.16 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "5deb2451-7a2d-5eac-94bb-25cee0bf7947")
+	)
+	(label "NRAW"
+		(at 322.58 190.5 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "613a498d-478e-5dca-b1b4-d2f14acec2df")
+	)
+	(label "VPROT"
+		(at 30.48 213.36 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "7d613d6c-2079-546f-8ede-2ae73a691bd3")
+	)
+	(label "NINV_FB"
+		(at 322.58 128.27 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "7ef46d25-1a85-5216-836d-9594f10b248f")
+	)
+	(label "GND"
+		(at 213.36 205.74 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "85e6ec86-130d-5668-ac76-8d48dbed13fe")
+	)
+	(label "GND"
+		(at 322.58 66.04 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "a24273c9-790d-52c5-8e45-71e198580879")
+	)
+	(label "GND"
+		(at 83.82 111.76 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "acf8ce88-6d67-5df3-8502-12194af66587")
+	)
+	(label "NRAW"
+		(at 119.38 205.74 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "b43d4e46-77e1-5101-90d9-2c093eedf966")
+	)
+	(label "NINV_DIV1"
+		(at 322.58 87.63 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "b44c1925-f9b7-57ac-8878-53a0cfce85ff")
+	)
+	(label "NINV_DIV2"
+		(at 322.58 107.95 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "b6af33d3-79cc-5737-90a5-2f04a0d096d1")
+	)
+	(label "NINV_EN_LO"
+		(at 119.38 182.88 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "fa433280-2711-5a2d-89d1-9d5f46179ec1")
+	)
+	(label "NINV_BOOT"
+		(at 210.82 91.44 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "fb875894-a1fb-5516-a5f3-bd5541c779f6")
+	)
+	(hierarchical_label "GND"
+		(shape passive)
+		(at 213.36 205.74 180)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify right)
+		)
+		(uuid "27ba0935-885b-5aa0-aa74-ec546d36a368")
+	)
+	(hierarchical_label "NRAW"
+		(shape output)
+		(at 401.32 254 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "318d752d-c69d-5506-aecb-8aedc29cefcc")
+	)
+	(hierarchical_label "VPROT"
+		(shape input)
+		(at 25.4 66.04 180)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify right)
+		)
+		(uuid "f59b0897-a0d9-545b-ba4e-06233c9d3d3b")
+	)
+	(symbol
+		(lib_id "BigModular:TPS54302DDCR")
+		(at 185.42 137.16 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "04fafdb3-0372-5bd2-b3fc-40138c0df798")
+		(property "Reference" "U3"
+			(at 185.42 119.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Value" "TPS54302DDCR"
+			(at 185.42 121.92 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Footprint" "BigModular:SOT-23-6"
+			(at 185.42 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps54302.pdf"
+			(at 185.42 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 185.42 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "TPS54302DDCR"
+			(at 185.42 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "LCSC" "C311983"
+			(at 185.42 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "NOTE" "SR2 direct VPROT IBB: GND1=NRAW, VIN3=VPROT, SW2 via L1 to SYSTEM GND. TI SLVA933 section5 explicitly includes TPS54302. EN/FB referenced to NRAW, never system ground. 28V recommended/30V absolute span, not an OVP clamp. Prototype screens only."
+			(at 185.42 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 185.42 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(pin "3"
+			(uuid "824cfe2d-8dbe-569f-8211-47ca469d985b")
+		)
+		(pin "5"
+			(uuid "416003d2-db34-5855-a1f7-55bff103af87")
+		)
+		(pin "1"
+			(uuid "824971d0-8bc4-5ba5-8f17-7477b3fa105d")
+		)
+		(pin "6"
+			(uuid "c882dd4d-b660-5a0b-97de-d9a29ac92acc")
+		)
+		(pin "2"
+			(uuid "eac5e2d3-f456-5ecb-aee2-0953abb8748d")
+		)
+		(pin "4"
+			(uuid "169793ae-8391-55ef-8510-4b26d324e4cd")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 119.38 116.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "2198d905-1cdd-5457-80b0-c6db85bcc333")
+		(property "Reference" "R91"
+			(at 123.19 115.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k 1%"
+			(at 123.19 118.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 123.19 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf"
+			(at 123.19 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 119.38 116.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1003T5E"
+			(at 123.19 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 123.19 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "EN upper Basic100k; R92+R93=20k+2k to NRAW. No connection to EF_SHDN/RTN/retired BI_EN. 5uA EN bias is a sensitivity, not guaranteed max. EN can remain high with residual negative rail; not output disconnect."
+			(at 123.19 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 123.19 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "96b2714a-f388-5bfe-8df6-b0981e86a073")
+		)
+		(pin "2"
+			(uuid "f40edfb2-30a8-5c68-af73-121f8431af7d")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R91")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 213.36 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "26988d43-c65c-5de2-b001-dc6b6f4690c7")
+		(property "Reference" "C6"
+			(at 231.36 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 231.36 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 231.36 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 231.36 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 213.36 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 231.36 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 231.36 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 231.36 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 231.36 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "68c0e7e1-ebab-53ef-9831-19b35bc5fb33")
+		)
+		(pin "2"
+			(uuid "d107f329-73d8-5025-b5a0-3334b8fbd9a1")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 30.48 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "2b692b68-43cc-5091-872e-4c502f8547a8")
+		(property "Reference" "C89"
+			(at 34.29 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2.2u 50V X7R"
+			(at 34.29 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 34.29 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf"
+			(at 34.29 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 30.48 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31B225KBHNNNE"
+			(at 34.29 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C50254"
+			(at 34.29 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span."
+			(at 34.29 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 34.29 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "9e0701ee-4c93-5dc7-85c8-22abb97919fc")
+		)
+		(pin "2"
+			(uuid "cf1315b0-86c7-5cf9-aa12-1efb1ef7b254")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C89")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 119.38 193.04 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "2d63ef7f-890b-5dd7-8e01-2f2ebe819d24")
+		(property "Reference" "R93"
+			(at 123.19 191.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2k 1%"
+			(at 123.19 194.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 123.19 194.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF2001T5E_C22975.pdf"
+			(at 123.19 194.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 119.38 193.04 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2001T5E"
+			(at 123.19 194.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C22975"
+			(at 123.19 194.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Series bottom EN member with R92=20k:22k total, each Basic1%100ppm. Existing Economy-evidenced C22975 reused; no new22k type or guessed eligibility."
+			(at 123.19 194.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 123.19 194.31 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "ce90c6b6-abe5-5250-b810-909d0d9d66c7")
+		)
+		(pin "2"
+			(uuid "ef732716-35a3-5e7e-afb1-df7cda9b36ca")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R93")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 322.58 124.46 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "327f842a-b4cd-589c-8922-694110fc6323")
+		(property "Reference" "R84"
+			(at 326.39 123.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "6.2k 1%"
+			(at 326.39 125.73 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 326.39 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF6201T5E_C4260.pdf"
+			(at 326.39 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 322.58 124.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF6201T5E"
+			(at 326.39 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C4260"
+			(at 326.39 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json."
+			(at 326.39 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 326.39 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "e1a94585-0272-5f2b-b7c2-f21186e54f2a")
+		)
+		(pin "2"
+			(uuid "727b3278-f56a-5948-a835-144bfe8403f7")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R84")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 137.16 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "344dfbdc-5984-5f1d-8593-4ac9f52ae012")
+		(property "Reference" "C92"
+			(at 140.97 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2.2u 50V X7R"
+			(at 140.97 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 140.97 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf"
+			(at 140.97 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 137.16 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31B225KBHNNNE"
+			(at 140.97 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C50254"
+			(at 140.97 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span."
+			(at 140.97 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 140.97 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "457d6151-36ab-560a-9737-0b6771419893")
+		)
+		(pin "2"
+			(uuid "7ce687cb-ea90-5352-9bc2-f0cd4bcb7825")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C92")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 322.58 83.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "42e4e68c-c3d2-58a0-8f7b-2279ba53d976")
+		(property "Reference" "R9"
+			(at 326.39 82.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100k 0.1%"
+			(at 326.39 85.09 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 326.39 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1810241722_YAGEO-RT0603BRD07100KL_C122538.pdf"
+			(at 326.39 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 322.58 83.82 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RT0603BRD07100KL"
+			(at 326.39 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C122538"
+			(at 326.39 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json."
+			(at 326.39 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 326.39 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "ece90682-416e-56f1-968b-55f80c600826")
+		)
+		(pin "2"
+			(uuid "003fa2db-ccfb-534f-8017-4475a4308922")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 83.82 91.44 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "483b4e75-11ba-5afb-a656-6b71216363d2")
+		(property "Reference" "C68"
+			(at 87.63 90.17 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 87.63 92.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 87.63 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 87.63 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 83.82 91.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 87.63 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 87.63 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass."
+			(at 87.63 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 87.63 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "9e35244e-0305-5de8-9890-a0b851b6c40b")
+		)
+		(pin "2"
+			(uuid "5792da2a-d42b-5b59-81e9-9c160ae97248")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C68")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 335.28 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "505a66fe-baea-573c-a13a-9329c3981f7c")
+		(property "Reference" "C9"
+			(at 353.28 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 353.28 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 353.28 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 353.28 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 335.28 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 353.28 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 353.28 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 353.28 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 353.28 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "08e880ff-460a-5701-aa5f-a218b298dd5a")
+		)
+		(pin "2"
+			(uuid "0ad3c98c-9001-51da-9c09-b6fca8c0624d")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 396.24 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "50ab57f5-4857-5056-84df-19ee93da9fd7")
+		(property "Reference" "C76"
+			(at 414.24 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 414.24 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 414.24 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 414.24 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 396.24 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 414.24 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 414.24 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 414.24 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 414.24 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "fb471499-9496-59fa-8300-49acdf4f00b5")
+		)
+		(pin "2"
+			(uuid "4a3883e0-e325-5eae-8344-5ee4016907d0")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C76")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:power_PWR_FLAG")
+		(at 401.32 271.78 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "53e3972e-e953-595b-95ad-fe7215cb86a1")
+		(property "Reference" "#FLG07"
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 401.32 266.7 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 401.32 271.78 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "LCSC" ""
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "NOTE" "Prototype candidate; qualify ratings, land pattern and operating corners."
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 401.32 264.16 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0184f4d4-24f6-5f74-88fc-cd2adc0bcd62")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "#FLG07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 66.04 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6bd49b71-41bd-501b-9220-3b1d81ac2560")
+		(property "Reference" "C90"
+			(at 69.85 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2.2u 50V X7R"
+			(at 69.85 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 69.85 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf"
+			(at 69.85 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 66.04 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31B225KBHNNNE"
+			(at 69.85 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C50254"
+			(at 69.85 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span."
+			(at 69.85 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 69.85 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "9f915af4-a002-5a82-a5b4-b4fcd382858f")
+		)
+		(pin "2"
+			(uuid "732228a5-cfb0-51eb-b5eb-ec8522cc299e")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C90")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 322.58 104.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "79c75176-1073-5748-8602-4a6af4be9215")
+		(property "Reference" "R15"
+			(at 326.39 102.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "120k 0.1%"
+			(at 326.39 105.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 326.39 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2008171235_YAGEO-RT0603BRD07120KL_C705720.pdf"
+			(at 326.39 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 322.58 104.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RT0603BRD07120KL"
+			(at 326.39 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C705720"
+			(at 326.39 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json."
+			(at 326.39 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 326.39 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "15731699-c7fb-5aaa-a41b-936f22de6730")
+		)
+		(pin "2"
+			(uuid "988b3184-c890-5742-9c5d-0770da02bbd9")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 45.72 91.44 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "877ba4d4-e7fe-5133-a465-254248d3862c")
+		(property "Reference" "C5"
+			(at 49.53 90.17 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 49.53 92.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 49.53 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 49.53 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 45.72 91.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 49.53 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 49.53 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass."
+			(at 49.53 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 49.53 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "f8eca731-2808-5c0a-8a58-eb46f69e538d")
+		)
+		(pin "2"
+			(uuid "f9b7c2ed-2d9a-54a2-b90a-93866ff35f45")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_D_Schottky")
+		(at 195.58 231.14 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8caceb49-af8f-520e-b25f-8c56269c0afd")
+		(property "Reference" "D30"
+			(at 199.39 229.87 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SS34 40V"
+			(at 199.39 232.41 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:D_SMA"
+			(at 199.39 232.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf"
+			(at 199.39 232.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 195.58 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SS34"
+			(at 199.39 232.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C8678"
+			(at 199.39 232.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Startup positive-NRAW mitigation: anode2=NRAW, cathode1=SYSTEM GND. Same MDD SS34 C8678/SMA as D27/D28/D29. TI SNVA897 review rationale; NOT a guaranteed +0.3V clamp at arbitrary surge. Measure U13 IN/NR/FB/OUT startup waveforms. Reverse leakage loads NRAW; temperature sensitivity explicitly assumed in sr2-schematic-budget.json."
+			(at 199.39 232.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "MDD(Microdiode Semiconductor)"
+			(at 199.39 232.41 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "e0393380-0c97-53c3-953c-d2fd3d3ec6d9")
+		)
+		(pin "2"
+			(uuid "dbe9bded-2d61-5816-93cf-8685e202c76d")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "D30")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 243.84 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8d99c8a1-bfc1-51a2-a7af-a21c2f7cdc3c")
+		(property "Reference" "C37"
+			(at 261.84 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 261.84 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 261.84 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 261.84 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 243.84 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 261.84 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 261.84 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 261.84 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 261.84 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "1faa7055-99f1-546a-98ab-fe6f014fc354")
+		)
+		(pin "2"
+			(uuid "9507659c-484b-550d-9fb4-c24b4188065a")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C37")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 304.8 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8efdecc5-a2a0-518d-b36a-fe638179e57a")
+		(property "Reference" "C71"
+			(at 322.8 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 322.8 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 322.8 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 322.8 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 304.8 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 322.8 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 322.8 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 322.8 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 322.8 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "414bdb8b-8b65-5b88-85e1-4daf493e9b6a")
+		)
+		(pin "2"
+			(uuid "e4053db9-db50-527b-b936-7e9c9e63b524")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C71")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 322.58 172.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "997b1123-c92b-5ea2-858d-751be05a4a68")
+		(property "Reference" "R10"
+			(at 326.39 171.45 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k 0.1%"
+			(at 326.39 173.99 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 326.39 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1811082117_YAGEO-RT0603BRD0710KL_C95204.pdf"
+			(at 326.39 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 322.58 172.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "RT0603BRD0710KL"
+			(at 326.39 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C95204"
+			(at 326.39 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json."
+			(at 326.39 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 326.39 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "e5726207-c1d9-5ff7-a6a7-afbeb985601e")
+		)
+		(pin "2"
+			(uuid "4d87d160-0d0e-5a70-840d-2b5820ed7016")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 172.72 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a3874b01-5b25-5ea8-87db-dc928cad65a4")
+		(property "Reference" "C7"
+			(at 176.53 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n 50V X7R"
+			(at 176.53 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_0603_1608Metric"
+			(at 176.53 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf"
+			(at 176.53 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 172.72 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 176.53 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 176.53 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "U3 local HF bypass, VIN-to-NRAW, NOT system GND. Not counted toward minimum effective bulk."
+			(at 176.53 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 176.53 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "097ff88f-2d95-5ddc-ac8d-a2ae3c9164c6")
+		)
+		(pin "2"
+			(uuid "d6f442f1-06a4-5072-9b31-76ca772f6b52")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 383.54 104.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp yes)
+		(uuid "aea294d5-64b9-5183-a101-330b9b79e54b")
+		(property "Reference" "C93"
+			(at 387.35 102.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DNP CFF / TBD"
+			(at 387.35 105.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_0603_1608Metric"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.pdf"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 383.54 104.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603B103K500NT"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C57112"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "DNP/not purchased/not fitted. 0603 tuning footprint across ENTIRE upper R9+R15+R84 divider, system GND to NINV_FB. Existing Basic C57112/0603B103K500NT 10n50V identity is a metadata placeholder ONLY, not a selected tuning value. No fitted CFF or loop-stability claim; future value requires measured loop review."
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "FH (Guangdong Fenghua Advanced Tech)"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "JLCPCB Exclude" "yes"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "JLCPCB Audit Requirements" "{\"reason\": \"DNP/not purchased/not fitted. 0603 tuning footprint across ENTIRE upper R9+R15+R84 divider, system GND to NINV_FB. Existing Basic C57112/0603B103K500NT 10n50V identity is a metadata placeholder ONLY, not a selected tuning value. No fitted CFF or loop-stability claim; future value requires measured loop review.\"}"
+			(at 387.35 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "0e5e8689-33a3-5d99-8864-bda10f1538f3")
+		)
+		(pin "2"
+			(uuid "8b61b055-58fe-5f4a-99c7-c835ef9b961c")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C93")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 274.32 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b37dc7bc-7fb6-52f6-bf1d-2530557be118")
+		(property "Reference" "C70"
+			(at 292.32 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 292.32 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 292.32 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 292.32 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 274.32 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 292.32 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 292.32 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 292.32 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 292.32 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "d5fad7f0-9a31-5509-94a3-88ec2122cb05")
+		)
+		(pin "2"
+			(uuid "6580f513-5556-5eff-8509-cd54790d64be")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C70")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_L")
+		(at 248.92 137.16 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c67a49e3-9e74-50f6-9cd5-e152ad1967c0")
+		(property "Reference" "L1"
+			(at 248.92 129.54 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Value" "22uH 20% shielded"
+			(at 248.92 132.08 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Footprint" "BigModular:L_Bourns_SRP1245A"
+			(at 248.92 129.54 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_BOURNS-SRP1245A-220M_C1848803.pdf"
+			(at 248.92 129.54 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 248.92 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SRP1245A-220M"
+			(at 248.92 129.54 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "LCSC" "C1848803"
+			(at 248.92 129.54 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "NOTE" "SRP1245A-220M, Isat10A at20% L drop/25C, Irms6.5A at40C rise, DCR58mohm max. 10A NOT hot guaranteed minimum. Height max5.0mm versus5.1mm allowance leaves0.1mm BEFORE solder. Manufacturer lands14.2 overall/8 gap/5 width; separate PCB fit/hot-fault gate, not fit approval. Stock16 dated handoff, not reserved."
+			(at 248.92 129.54 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(property "Manufacturer" "BOURNS"
+			(at 248.92 129.54 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e19e57b6-d237-5e0f-8e5f-0bee9db56aac")
+		)
+		(pin "2"
+			(uuid "837d00a7-3824-5ba2-89e5-67f4fb5057c1")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "L1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 223.52 106.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d2c27a4a-608e-5507-9a5e-eceb4f68c7db")
+		(property "Reference" "C35"
+			(at 227.33 105.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n 50V X7R"
+			(at 227.33 107.95 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_0603_1608Metric"
+			(at 227.33 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf"
+			(at 227.33 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 223.52 106.68 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 227.33 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 227.33 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Bootstrap capacitor to SW2, NOT system GND or NRAW."
+			(at 227.33 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 227.33 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "66ef30a2-af76-5066-ae22-c96e8b8d1638")
+		)
+		(pin "2"
+			(uuid "6e574549-9d65-590e-a8a1-5dd11d3a5603")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C35")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 101.6 231.14 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d80073a9-1490-5f78-bac3-e7b634705156")
+		(property "Reference" "C91"
+			(at 105.41 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2.2u 50V X7R"
+			(at 105.41 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 105.41 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf"
+			(at 105.41 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 101.6 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31B225KBHNNNE"
+			(at 105.41 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C50254"
+			(at 105.41 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span."
+			(at 105.41 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 105.41 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "57ce5493-d1f8-51c3-87ca-a2edb42c47ba")
+		)
+		(pin "2"
+			(uuid "aa1435b1-7ab8-5a88-9c81-e712e0271881")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C91")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_R")
+		(at 119.38 172.72 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "dfe60462-82a1-53a8-8fa2-2187bf6959da")
+		(property "Reference" "R92"
+			(at 123.19 171.45 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "20k 1%"
+			(at 123.19 173.99 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:R_0603_1608Metric"
+			(at 123.19 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2002T5E_C4184.pdf"
+			(at 123.19 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 119.38 172.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2002T5E"
+			(at 123.19 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C4184"
+			(at 123.19 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "EN lower leg20k+2k Basic series to NRAW only; reuses existing C4184/C22975 types instead of C31850 with missing Economy evidence. Startup<=7.34V ignoring helping pullup; 28V span+5uA bias screen below5.5V. Off/residual/reverse-path bench qualification required."
+			(at 123.19 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)"
+			(at 123.19 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "fa9c29f1-8c6a-571d-aab0-72990c30d77a")
+		)
+		(pin "2"
+			(uuid "2535a890-c663-5734-81d0-5dec06890ebf")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "R92")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BigModular:Device_C")
+		(at 365.76 231.14 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f2da6cb5-fa8c-5d5d-9814-bb1032a7677b")
+		(property "Reference" "C75"
+			(at 383.76 229.87 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22u 25V X5R"
+			(at 383.76 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "BigModular:C_1206_3216Metric"
+			(at 383.76 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf"
+			(at 383.76 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" ""
+			(at 365.76 231.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CL31A226KAHNNNE"
+			(at 383.76 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "LCSC" "C12891"
+			(at 383.76 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "NOTE" "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains."
+			(at 383.76 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(property "Manufacturer" "Samsung Electro-Mechanics"
+			(at 383.76 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.05 1.05)
+				)
+				(justify left)
+			)
+		)
+		(pin "1"
+			(uuid "a1bca8dd-8955-5db9-8cad-4950ace05f0a")
+		)
+		(pin "2"
+			(uuid "5eb75244-0ee3-50d6-9388-cf3f535f3a75")
+		)
+		(instances
+			(project "usb-power"
+				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3"
+					(reference "C75")
+					(unit 1)
+				)
+			)
+		)
+	)
+)
