@@ -1,0 +1,43 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/038/hardware/big_modular.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/038/hardware/big_modular.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/038/hardware/big_modular.kicad_pcb": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3",
+    "/home/azero/.okbrain/workspaces/big-modular/038/hardware/big_modular.kicad_sch": "52046f74d709cb1a075ba766d01b14d6f720abff58218778ae9bcbdf4818ed85"
+  },
+  "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 4,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "top",
+  "include_through_hole": true,
+  "component_count": 97,
+  "bom_row_count": 49,
+  "excluded": {
+    "D10": "Do not populate",
+    "J7": "Excluded from position files"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "big_modular-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}

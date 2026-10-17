@@ -66,12 +66,15 @@ G pad width2.4mm,H length5.7mm, centres±2.1mm;6.0±0.3mm body,4.7mm height max.
 [Manufacturer datasheet](https://www.cenkersz.com/file/upload/product_series/SMD_Power_Inductor_CKCS6045_Series.pdf).
 [TI TPS65131 application](https://www.ti.com/lit/ds/symlink/tps65131.pdf).
 
-Exact snapshots: C2847552 public171 at10:44:59UTC; C5291878 public2687 at10:30UTC,
-both Extended / observed Economy eligible; **not allocation, order or qualification**.
-Pinned catalog retains URL/time/request/hash. No broad sourcing/assembly pass claimed.
-Remaining sourcing gaps: unresolved small capacitors/C1/C4/C5/C18 etc., R16 100ohm,
-exact manual D10 and harness MPN, Basic/Economy exceptions on precise MID divider.
-Do not infer all-part stock from these two checks or old snapshots.
+Exact sourcing evidence for all 97 fitted purchased parts is recorded under
+`research/assembly-evidence/` (dated public snapshots with URL/request/hash; the
+previously sourced 035 lookups plus fresh strict-live lookups for the final changed
+codes). C2847552/C5291878 remain Extended and Economy-observed; **none of this is
+allocation, order or qualification**. D10 is DNP and is not purchased; J7 is a
+manual wire landing, not a purchased header. Basic R/C use exact parts or the small
+series networks R4/R77/R78, R8/R79/R80 and R36/R81/R82; precision resistors and the
+special feedforward capacitors remain explicit Extended exceptions. Do not infer
+all-part stock from catalog snapshots.
 
 U4 footprint follows TI RGE0024B drawing4219013/A:24 lands0.60x0.25mm on0.5mm
 pitch, opposing centres3.8mm; EP2.45mm square, four1.08mm paste apertures at±0.64mm.
@@ -111,12 +114,14 @@ relaxing numerical constraints. Passive panel labels meet the existing0.8mm limi
 Full native/all-severity and regression evidence is retained in the workspace
 handoff. Source verification is not an assembled/product safety qualification.
 
-Bare-PCB release uses all133 through vias IPC-4761 TypeVII NONCONDUCTIVE epoxy
-fill/planarize/copper-cap both sides, not tenting. Native shape and exported-CAM audits
-agree:35 actual positive-area barrel intersections with exposed SMD copper and paste,
-plus7 boundary/tangency cases. Not all133 individually need VIP; uniform process is
-intentional. Four-layer FR4 Tg170/35um copper/ENIG and separate no-copper passive
-panel stacks, finished thickness and hole limits are explicit in [fabrication.md](fabrication.md).
-Canonical native stacks and final jobs agree. Archives/CAM evidence are in
-`production/hro-r1/`; no supplier acceptance, assembly/current/thermal/bench or
-physical trial qualification is inferred. No main write/commit/merge/order occurred.
+Bare-PCB release uses all201 through vias as ordinary 0.300 mm plated through vias
+with solder-mask tenting where the artwork permits; no IPC-4761 fill, planarization
+or copper cap is specified. Native shape and exported-CAM audits report93 actual
+positive-area barrel intersections with exposed SMD copper and92 with paste, plus6
+boundary/tangency cases. Those are prototype assembly inspection points, not a
+reason to add a via process. Four-layer FR4 Tg170/35um copper/ENIG and separate
+no-copper passive panel stacks, finished thickness and hole limits are explicit in
+[fabrication.md](fabrication.md). Canonical native stacks and final jobs agree.
+Archives/CAM evidence are in `production/ldo-r1/`; no supplier acceptance,
+assembly/current/thermal/bench or physical trial qualification is inferred. No main
+write/commit/merge/order occurred.

@@ -11,6 +11,7 @@ parser.add_argument('--schematic-only', action='store_true', help='Render a NEW 
 parser.add_argument('--output', type=Path, help='Required NEW directory for --schematic-only; copies existing project/library context.')
 parser.add_argument('--ldo-revision', action='store_true', help='Explicit one-shot ES1 migration of native schematics into NEW output; never modifies a PCB.')
 parser.add_argument('--capacitor-revision', action='store_true', help='One-shot explicit 4/6/4/3 LDO bank upgrade in NEW schematic candidate.')
+parser.add_argument('--presentation-source', type=Path, help='Explicit already-edited native schematic candidate; exact source pin/ref/net parity is still required. No automatic circuit migration.')
 args = parser.parse_args()
 if args.ldo_revision and args.capacitor_revision:parser.error('Choose only one migration')
 if not args.schematic_only:
@@ -81,7 +82,9 @@ if args.ldo_revision:
 if args.capacitor_revision:
     from ldo_schematic import strengthen_cap_banks
     strengthen_cap_banks(ROOT/'hardware',HW,uid)
-render(HW, SHEETS, LIB, uid, source=HW if (args.ldo_revision or args.capacitor_revision) else None)
+if args.presentation_source and (args.ldo_revision or args.capacitor_revision):
+    parser.error('--presentation-source cannot be combined with a migration')
+render(HW, SHEETS, LIB, uid, source=args.presentation_source or (HW if (args.ldo_revision or args.capacitor_revision) else None))
 # Libraries and inventory are emitted ONLY into the new review candidate.
 (HW/'BigModular.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "kicad_symbol_editor")\n'+ '\n'.join(dump(v) for _,v in sorted(LIB.items()))+'\n)\n')
 for name in ['sym-lib-table','fp-lib-table','big_modular.kicad_pro']:

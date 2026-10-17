@@ -1,44 +1,32 @@
 {
-  "base_HEAD": "c82ca1cabf01f529ae536f5afaa8773d7bbc6d29",
-  "imported_candidate_sha256": "3d72747b9ea66cf3dfcb908ccd31930d56d04e6a174136a784d20fac8e508138",
-  "final_candidate_sha256": "5c0c6ed366d2f86486748e5a9849dfa34b0669807b9712262310d56e28c6eafc",
-  "original_byte_identical_objects": {
-    "segment": 520,
-    "via": 195,
-    "gr_line": 20,
-    "gr_circle": 4,
-    "gr_text": 11
+  "status": "Accepted current canonical source: 037 basic-passive correction over base d0cc002; not a bench or assembly qualification",
+  "base_HEAD": "d0cc00212db695dacd7c6bc8952177468b4842c5",
+  "accepted_native_sha256": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3",
+  "accepted_routed_baseline_sha256": "6a4160ae9f402add07c683b7f3d4b16e245f5c3dd7df4e7fcaa8c846af460484",
+  "footprints": {
+    "electrical": 99,
+    "mechanical": 4,
+    "total": 103
   },
-  "removed_original_objects": {
-    "segment": [
-      "50e2ca26-62dc-42a0-8f43-0168306cda72"
-    ],
-    "via": [],
-    "gr_line": [],
-    "gr_circle": [],
-    "gr_text": []
-  },
-  "new_objects": {
-    "segment": 16,
-    "via": 1,
-    "gr_line": 0,
-    "gr_circle": 0,
-    "gr_text": 0
-  },
-  "all_88_original_electrical_footprint_poses_sides_pads_nets_unchanged": true,
-  "only_existing_legend_move": "R25 rear reference to y90.3, clear of C66 mask",
-  "unchanged_stack_outline_layers": true,
-  "original_195_vias_preserved": true,
-  "final_inventory": {
-    "electrical_footprints": 93,
-    "mechanical_footprints": 4,
-    "tracks": 536,
-    "vias": 196,
+  "inventory": {
+    "tracks": 552,
+    "vias": 201,
     "zones": 8
   },
-  "back_side_fit": "backside-fit.json",
+  "base_inventory": {
+    "tracks": 536,
+    "vias": 196
+  },
+  "intentional_changes": [
+    "R4/R8/R36 use exact Basic series networks with R77-R82 (nominal and full 1% corner intervals preserved)",
+    "C10 changed from 0603 to authorized 0402 C501829 4.5p at the same anchor/endpoint nets",
+    "D10 is DNP: physical footprint and pads retained; not fitted or purchased",
+    "C10/C11/C14 exact approved capacitor MPNs; all17 C12891 LDO capacitors unchanged in value/count/pose"
+  ],
+  "all_front_assembly": "single-side front; zero B.Cu electrical footprints and zero B.Paste component apertures; B.Cu routing/mask/drill retained",
+  "via_process": "ordinary 0.300 mm plated through vias; solder-mask tented where artwork permits; no fill/planarization/copper cap",
   "cap_screen": "capacitor-disposition.json",
-  "native_check": "ERC0 / DRC0 including opens and schematic parity; independent parity true",
+  "native_check": "ERC0 / DRC0 including warnings/exclusions/opens and schematic parity; independent ref/pin/net/field parity true",
   "prototype_qualification": false,
   "historical_hro_board_sha256": "e9adb5ef40227f3d447a9d3d143418d0deb466aafc712ee976359611d3f58464"
 }

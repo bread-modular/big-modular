@@ -1,9 +1,11 @@
 # LDO-R1 prototype bare-PCB fabrication contract
 
-This release is **bare-PCB artwork ready with the required fabrication process**,
-not an assembled-product qualification, supplier acceptance or purchasing approval.
+This release is **bare-PCB artwork ready with the specified ordinary-via fabrication
+process**, not an assembled-product qualification, supplier acceptance or purchasing approval.
 Canonical files are `hardware/big_modular.kicad_pcb` and `hardware/front_panel.kicad_pcb`.
-Do not manufacture the carrier as an ordinary unfilled/tented-via board.
+The carrier uses ordinary 0.300 mm plated through vias with solder-mask tenting where
+the supplied artwork permits; no filled, capped, planarized or other special via
+process is specified.
 
 ## Carrier — independent four-layer order
 
@@ -26,24 +28,25 @@ Do not manufacture the carrier as an ordinary unfilled/tented-via board.
   green solder mask both sides, white legend. Mask apertures as supplied; do not
   expand them or delete narrow dams without review. Finished mask registration to
   copper <=0.05 mm each axis. Minimum retained dam target 0.10 mm.
-- All **196 through vias**, the **0.300 mm ViaDrill tool** in the PTH file, require
-  **IPC-4761 Type VII: nonconductive epoxy filling, planarization, copper capping
-  on BOTH sides**, followed by the specified surface finish/mask. Copper cap minimum
-  15 um; local dimple or protrusion <=25 um. These numerical limits are project
-  acceptance requirements, not a quotation of every IPC clause. Plated barrel
-  copper minimum 20 um. Provide fabricator process confirmation and sample/coupon
-  evidence for fill/cap quality. No solder-mask plugging, ordinary tenting, or open
-  via substitution. Do NOT fill the component holes or the four USB shell slots.
-- Native and independent CAM audit identify **92** via barrels with positive-area intersection of exposed
-  SMD copper and **91** intersecting paste. Another **5** touch/lie within1um of a
-  pad/paste boundary (separately recorded; not called positive overlap). All remaining
-  vias get the same uniform
-  process for unambiguous fabrication; they are not each claimed to require VIP.
-  `via-audit.json` identifies every barrel/affected pad. `via-process.tsv` identifies
-  the entire required fill/cap population in KiCad X/Y-down and CAM X/Y-up coordinates.
-  Excellon alone does not encode epoxy/cap requirements; THESE NOTES ARE MANDATORY.
-- Via 0.300 mm is the nominal plated bore before filling (accepted bore 0.25..0.35 mm);
-  it is NOT a finished open hole. Component PTH diameters: .900 and 1.000 +/-0.075 mm.
+- All **201 through vias**, the **0.300 mm ViaDrill tool** in the PTH file, are
+  **ordinary plated through vias**: no IPC-4761 epoxy fill, no planarization, no
+  copper cap, no VIPPO/Type VII add-on. Plated barrel copper minimum 20 um. Use the
+  supplied mask artwork unchanged: vias are solder-mask tented where the artwork
+  permits it; do not add via-specific mask openings, plugging or fill. Do NOT fill
+  or plug the component holes or the four USB shell slots.
+- Native and independent CAM audit identify **93** via barrels with positive-area intersection of exposed
+  SMD copper and **92** intersecting paste. Another **6** touch/lie within1um of a
+  pad/paste boundary (separately recorded; not called positive overlap). These are
+  reported as prototype assembly risk: an ordinary via barrel inside an exposed or
+  thermal pad can wick solder or leave an unfilled void, and mask tenting does not
+  seal that hole. Inspect and validate such joints in prototype assembly; this is
+  not a fabrication reject and no fill/cap process is required.
+  `via-audit.json` identifies every barrel/affected pad and its filled/capped flags.
+  `via-process.tsv` lists all 201 vias in KiCad X/Y-down and CAM X/Y-up coordinates.
+  Excellon alone does not encode any fill/cap requirement; none is specified here.
+- Via 0.300 mm is the nominal plated through bore (accepted bore 0.25..0.35 mm); it
+  is an open plated hole, tented by mask where artwork permits. Component PTH
+  diameters: .900 and 1.000 +/-0.075 mm.
   HRO shell slots: finished **.600 +/- .050 mm width**, lengths **1.700 +/- .100 mm**
   (rear, two) and **1.200 +/- .100 mm** (front, two). G85 endpoints are cutter-centre
   travel, so subtract tool diameter from total slot length to obtain travel.
@@ -139,15 +142,16 @@ ZIP metadata epoch is used solely for reproducible bytes, not as a fabrication d
 Paste is a separate **ASSEMBLY-STENCIL-SUPPORT-ONLY** archive, not a stencil-order
 approval (thickness/reduction/reflow process still needs assembly review).
 
-The Type VII filled/capped distinction is supported by fabricator guidance; the
-specific limits above are this project's requirements, not supplier acceptance.
-[source](https://www.viasion.com/pcb-via-plugging/)
+Ordinary solder-mask tenting is the specified via treatment; no IPC-4761 fill,
+planarization or copper-cap process is ordered. Tenting is artwork-defined and does
+not seal a barrel that lies inside an exposed pad. The specific limits above are this
+project's requirements, not supplier acceptance.
 Standard 1.6 mm +/-10% thickness is used as an explicit acceptance bound, not an
 unqualified exact 1.6 mm assumption. [source](https://www.viasion.com/pcb-manufacturing-tolerances/)
 Gerbonara provides actual Gerber/Excellon/IPC-356 parsing and SVG primitives.
 [source](https://gerbolyze.gitlab.io/gerbonara/)
 
-## LDO-R1 capacitor and two-sided assembly requirements
+## LDO-R1 capacitor and single-side assembly requirements
 
 Exact CL31A226KAHNNNE / C12891 banks: IN+4, OUT+6, IN-4, OUT-3.
 Manufacturer typical bias data with 0.9 tolerance x0.85 temperature x0.95 aging
@@ -156,21 +160,19 @@ These are **screening estimates, not guaranteed or measured minima**. No unrevie
 substitutions. X5R body temperature <=85C; lot/bias/temperature, input ringing,
 load-step stability, startup/reverse/shutdown, noise/PSRR and thermal tests remain.
 
-C63-C66 are BACK; C67 is FRONT. U13 capacitors remain front-side as TI recommends.
-U12 original front-local caps remain; back caps supplement effective capacitance.
-Two-sided prototype assembly is NOT qualified for Economy PCBA. No assembly BOM/CPL
-is supplied; root BOM.csv is design identity only, not an order/allocation file.
-Separate stencil-support ZIP contains both actual paste layers, eight back lands;
-no stencil thickness/reflow/adhesive process approval is implied.
+All C63-C66 and C67 are FRONT. All components are on F.Cu: zero B.Cu footprints and
+zero B.Paste component apertures. B.Cu routing/mask/copper and drill layers remain
+part of the bare PCB. Single-side prototype assembly; no Economy PCBA qualification.
+No assembly BOM/CPL is supplied; root BOM.csv is design identity only, not an
+order/allocation file. The separate stencil-support ZIP carries the actual F.Paste
+component apertures; B.Paste is intentionally empty. No stencil thickness, reduction
+or reflow approval is implied.
 
-Back mounting datum remains X3.1mm. Exact caps maximum1.8mm +0.15mm solder
-+0.10mm registration leave **1.05mm** inside the module's X0 neighbor boundary.
-Actual native B.CrtYd extents +0.10mm in-plane registration were checked against
-both brackets, screw/driver volumes, all plated-tail projections, panel and harness.
-Keep the back strap/support corridor X0..3.1,Y41.5..72.5,Z25..29mm; no strap loop
-may sweep across caps outside that reserved corridor. See mechanics.json and
-backside-fit.json. This is a dimensioned fit check, not an assembled sample test.
-The panel geometry/holes/legend and all fixed interfaces are unchanged.
+The fixed carrier datum X3.1..4.7mm, brackets, panel, harness envelope and all THT
+tail projections remain unchanged. Native placement and assembly-height checks are
+in `mechanics.json` and `assembly-geometry.json`; this is a dimensioned fit check,
+not an assembled sample test. The panel geometry/holes/legend and all fixed
+interfaces are unchanged.
 
 HRO-R1 under production/hro-r1 is historical, STALE for this LDO circuit, and is
 not relabeled or overwritten. Its source hashes refer to Git base c82ca1c.

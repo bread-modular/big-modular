@@ -1,53 +1,66 @@
 {
-  "status": "LDO-R1 prototype bare-PCB artwork verified; supervisor review/merge pending",
-  "base_HEAD": "c82ca1cabf01f529ae536f5afaa8773d7bbc6d29",
-  "workspace": "029",
-  "canonical_PCB_sha256": "5c0c6ed366d2f86486748e5a9849dfa34b0669807b9712262310d56e28c6eafc",
-  "canonical_schematic_PDF_sha256": "ad171eb64a516383a9fc3aea84ac230a00df37624df255c2fa907079c315161e",
+  "status": "LDO-R1 current prototype: 037 basic-passive source accepted; bare-PCB artwork + separate JLC assembly BOM/CPL exported from the frozen source",
+  "base_HEAD": "d0cc00212db695dacd7c6bc8952177468b4842c5",
+  "workspace": "038 release worker (037 source accepted)",
+  "canonical_PCB_sha256": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3",
+  "canonical_schematic_PDF_sha256": "470f29e23dca2f0f1278b58c8df574181f74d012eb438adcdc4858eb57eeafaa",
   "ERC": 0,
   "DRC_all_severities": 0,
   "opens": 0,
   "native_schematic_parity": 0,
   "rule_exclusions": 0,
-  "independent_native_pins_including_NC": 306,
-  "independent_field_checks": 558,
+  "independent_native_pins_including_NC": 318,
+  "independent_explicit_NCs": 43,
+  "independent_field_checks": 594,
+  "independent_pin_checks": 233,
+  "local_visible_wire_checks": 59,
   "tests_run": 96,
   "tests_passed": 96,
   "tests_failed": 0,
   "inventory": {
-    "electrical_footprints": 93,
+    "electrical_footprints": 99,
     "mechanical_footprints": 4,
-    "tracks": 536,
-    "vias": 196,
+    "total_footprints": 103,
+    "tracks": 552,
+    "vias": 201,
     "zones": 8
   },
-  "capacitance_screen_uF_INplus_OUTplus_INminus_OUTminus": [
-    12.591827249268636,
-    23.989964087683383,
-    12.591827249268636,
-    11.994982043841691
-  ],
-  "capacitance_screen_not_guaranteed_minima": true,
-  "back_refs": [
-    "C63",
-    "C64",
-    "C65",
-    "C66"
-  ],
-  "back_X0_clearance_mm_after_body_solder_registration": 1.05,
-  "release_manifest": "production/ldo-r1/manifest.json",
-  "release_manifest_sha256": "888e01c0b586948a4b35d005e967d9a8a2cd2a27fe880de27451dd9dce874233",
-  "archives_sha256": {
-    "Big-Modular-LDO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip": "1709a9eb36862c169faf6860223485c533f6f3bdb63fcce4490814794e9ab5c3",
-    "Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip": "db11f14ca4a97af862f7caeedbbef6f22fbcec2d1cd95781b46884679b478fcb",
-    "Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip": "8c5ee8ea423cb572a3215325e05dbea282e60d9070225964ac9ab631f331450d"
+  "via_process": "ordinary 0.300 mm plated through vias; solder-mask tented where artwork permits; no fill/planarization/copper cap/Type VII add-on",
+  "assembly_side": "single-side front; zero B.Cu components and zero B.Paste component apertures",
+  "assembly": {
+    "bom": "production/ldo-r1/assembly/bom.csv",
+    "cpl": "production/ldo-r1/assembly/positions.csv",
+    "report": "production/ldo-r1/assembly/assembly-report.json",
+    "exceptions": "production/ldo-r1/assembly/exceptions.json",
+    "fitted_purchased_parts": 97,
+    "bom_rows": 49,
+    "cpl_rows": 97,
+    "excluded": {
+      "D10": "DNP",
+      "J7": "manual wire landing, not purchased"
+    },
+    "included_hybrid": [
+      "J1",
+      "SW1"
+    ],
+    "basic_extended_rc_instances": [
+      50,
+      29
+    ]
   },
+  "sourcing_evidence": "research/assembly-evidence/sourcing-evidence.json (dated observations, not allocation)",
+  "release_manifest": "production/ldo-r1/manifest.json",
+  "release_manifest_sha256": "ac0b538c4341f2df02f0c04dfbb7194f1ae7f8dfb22e985852c4663210fa9987",
+  "archives_sha256": {
+    "Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip": "5aa1a610f614565064247d8fd4ac9b0b3f8f035b3125818129b189c0d2be0342",
+    "Big-Modular-LDO-R1-CARRIER-4L-STANDARD-VIAS-BARE-PCB.zip": "4474fb47819bb101d8cca0b1c008022a78f76c3a29d66b36a894e5ac78f5c297",
+    "Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip": "59091b514f738ca760f786fd0d749d2aba5885a06d377cd858faa660d7c053d3"
+  },
+  "release_provisional": false,
+  "release_scope": "Prototype fabrication/assembly data; not an order, allocation, supplier acceptance or assembled-product qualification",
   "reproducibility": {
-    "all_release_files_byte_identical": true,
-    "asset_count": 66,
-    "manifest_also_identical": true,
-    "independent_native_exports": 2,
-    "all_zip_members_CRC_SHA_verified": true
+    "verified": true,
+    "method": "two independent release_hro.py exports from identical frozen source compared byte-for-byte: 67/67 files equal, 0 differing bytes"
   },
   "panel_CAM_byte_identical_to_HRO_R1": true,
   "PCB_promotion_complete": true,
@@ -61,6 +74,13 @@
     "startup/reverse/shutdown",
     "noise/PSRR",
     "thermal/current and simultaneous loads",
+    "R12 exact-MPN primary resistance-range confirmation remains limited",
+    "C14860 exact DC-bias effective-C curve not guaranteed",
     "assembled fit, harness/support and neighbor clearance"
+  ],
+  "engineering_limitations": [
+    "R12 older primary-range table does not cover the exact 1.5M/25ppm corner",
+    "C14860 exact bias curve not guaranteed",
+    "loop/thermal behaviour is prototype-only"
   ]
 }

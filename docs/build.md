@@ -24,9 +24,10 @@ research/ldo-029/cam-venv/bin/python -B tools/release_hro.py --output research/r
 ```
 
 Native checks retain ALL severity categories, opens and schematic parity. Independent
-checks cover306 electrical pins including43 NCs,558 identity/field comparisons,
-mechanics, filled/capped vias, connected ground and isolated eFuseRTN. Tests include
-back-side identity/pose/height mutation rejection; only C63-C66 may be on B.Cu.
+checks cover318 native pins including43 NCs,594 native/PCB/BOM field comparisons,
+233 reviewed pins and59 visible-wire checks, mechanics, ordinary unfilled/tented vias,
+connected ground and isolated eFuseRTN. Tests include
+all-front identity mutation rejection: zero B.Cu electrical footprints and zero B.Paste apertures.
 
 `--capacitor-revision` is a guarded one-shot migration from the former3x22u banks;
 it refuses already-migrated native sources. Default generation preserves native

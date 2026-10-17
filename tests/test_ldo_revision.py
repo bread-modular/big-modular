@@ -48,18 +48,32 @@ class LDORevisionTests(unittest.TestCase):
 
     def test_raw_internal_only_and_five_volt_stage_exactly_preserved(self):
         old=json.loads((ROOT/'docs/ldo-evidence/baseline-pin-net.json').read_text())
-        permitted={('U4','15'),('U4','23'),('C8','1'),('C9','1'),('C10','1'),('C11','1'),('D2','1'),('D3','2'),('R12','1'),('R14','1'),('#FLG06','1'),('#FLG07','1'),('R12','2'),('R15','2')}
+        permitted={('U4','15'),('U4','23'),('C8','1'),('C9','1'),('C10','1'),('C11','1'),('D2','1'),('D3','2'),('R12','1'),('R14','1'),('#FLG06','1'),('#FLG07','1'),('R12','2'),('R15','2'),
+                   ('R4','2'),('R8','2'),('R36','2')}
         changes={k for r,ps in old.items() for p,n in ps.items() if self.pins[k:=(r,p)]!=n}
         self.assertEqual(changes,permitted)
         for p in range(1,17):self.assertNotIn(self.pins[('J7',str(p))],('PRAW','NRAW'))
         with (ROOT/'docs/ldo-evidence/baseline-BOM.csv').open() as f:oldbom={r['Reference']:r for r in csv.DictReader(f)}
         for r in ['U5','L4','C18','C19','C20','C36','C38','R17','R18','R27','R32','D10']:
-            self.assertEqual(self.bom[r],oldbom[r],r)
+            if r=='D10':
+                # User-authorized DNP is the only accepted delta from the baseline row.
+                self.assertEqual({k:self.bom[r][k] for k in ('MPN','Footprint','LCSC','Manufacturer','Block')},
+                                 {k:oldbom[r][k] for k in ('MPN','Footprint','LCSC','Manufacturer','Block')})
+                self.assertEqual(self.bom[r]['Value'],oldbom[r]['Value'].replace(' / MANUAL',' / DNP'))
+                self.assertEqual((self.bom[r]['Classification'],self.bom[r]['DNP']),('DNP','yes'))
+            elif r=='C18':
+                # Approved exact sourcing fill (Samsung CL31B106KAHNNNE/C14860); electrical identity unchanged.
+                self.assertEqual({k:self.bom[r][k] for k in ('Value','Footprint','Block')},{k:oldbom[r][k] for k in ('Value','Footprint','Block')})
+                self.assertEqual((self.bom[r]['MPN'],self.bom[r]['LCSC'],self.bom[r]['Classification'],self.bom[r]['DNP']),('CL31B106KAHNNNE','C14860','Extended','no'))
+            else:
+                # The accepted BOM adds an explicit DNP column; these refs stay fitted.
+                self.assertEqual({k:v for k,v in self.bom[r].items() if k!='DNP'},oldbom[r],r)
+                self.assertEqual(self.bom[r]['DNP'],'no',r)
 
     def test_precision_raw_setpoint_and_capacitor_requirements_are_explicit(self):
         for r in ['R12','R14']:
             self.assertEqual(self.bom[r]['Value'],('1.5M' if r=='R12' else '1.6M')+' 0.1%')
-            self.assertEqual(self.bom[r]['LCSC'],'' if r=='R12' else 'C2088870')
+            self.assertEqual(self.bom[r]['LCSC'],'C4223894' if r=='R12' else 'C2088870')
             self.assertTrue(self.bom[r]['Footprint'].endswith('R_0805_2012Metric'))
         for r in ['R13','R15','R60']:self.assertEqual(self.bom[r]['Value'],'150k 0.1%')
         for i in range(48,60):
@@ -142,27 +156,19 @@ class LDOFinalPrototypeTests(unittest.TestCase):
         self.assertEqual([data[k] for k in ['tolerance_factor','temperature_screen_factor','aging_allowance_factor']],[.9,.85,.95])
         self.assertGreater(data['typical_12p5V_temperature_relative_min_factor'],.85)
 
-    def test_backside_narrow_contract_and_height_mutation_rejected(self):
+    def test_all_components_front_and_no_bottom_paste(self):
         import pcbnew as p
-        from routed_checks import verify_backside_caps
+        from routed_checks import verify_front_only
         b=p.LoadBoard(str(ROOT/'hardware/big_modular.kicad_pcb'));g=json.loads((ROOT/'docs/assembly-geometry.json').read_text())
-        r=verify_backside_caps(b,g)
-        self.assertEqual(set(r['caps']),{'C63','C64','C65','C66'})
-        self.assertEqual({c['left_module_boundary_margin_mm'] for c in r['caps'].values()},{1.05})
-        self.assertTrue(r['brackets_mount_tools_THT_tails_clear'])
-        with self.assertRaises(AssertionError):verify_backside_caps(b,g,height_mm=3.2)
-        f=next(f for f in b.GetFootprints() if f.GetReference()=='C64')
-        f.SetPosition(p.VECTOR2I(p.FromMM(57.75),p.FromMM(89.275)))
-        with self.assertRaises(AssertionError):verify_backside_caps(b,g)
-
-    def test_no_unreviewed_backside_part_or_negative_capacitor(self):
-        import pcbnew as p
-        from routed_checks import verify_backside_caps
-        b=p.LoadBoard(str(ROOT/'hardware/big_modular.kicad_pcb'));g=json.loads((ROOT/'docs/assembly-geometry.json').read_text())
-        f=next(f for f in b.GetFootprints() if f.GetReference()=='C67')
-        self.assertEqual(f.GetLayer(),p.F_Cu)
+        r=verify_front_only(b,g)
+        self.assertEqual(set(r['caps']),{'C63','C64','C65','C66','C67'})
+        self.assertEqual(r['B_Cu_footprints'],0)
+        self.assertEqual(r['B_Paste_component_apertures'],0)
+        self.assertTrue(r['all_components_front'])
+        # Flipping a cap to the back must fail the single-side gate.
+        f=next(f for f in b.GetFootprints() if f.GetReference()=='C63')
         f.Flip(f.GetPosition(),False)
-        with self.assertRaises(AssertionError):verify_backside_caps(b,g)
+        with self.assertRaises(AssertionError):verify_front_only(b,g)
 
     def test_ldo_exposed_pads_have_nine_ground_thermal_vias_each(self):
         import pcbnew as p
@@ -172,4 +178,4 @@ class LDOFinalPrototypeTests(unittest.TestCase):
             ep=next(q for q in f.Pads() if q.GetNumber()=='21');self.assertEqual(ep.GetNetname(),'/GND')
             x,y=p.ToMM(ep.GetPosition());vs=[v for v in b.GetTracks() if v.GetClass()=='PCB_VIA' and abs(p.ToMM(v.GetPosition().x)-x)<1.575 and abs(p.ToMM(v.GetPosition().y)-y)<1.575]
             self.assertEqual(len(vs),9)
-            self.assertTrue(all(v.GetNetname()=='/GND' and v.GetPrimaryDrillFilledFlag() and v.GetPrimaryDrillCappedFlag() for v in vs))
+            self.assertTrue(all(v.GetNetname()=='/GND' and not v.GetPrimaryDrillFilledFlag() and not v.GetPrimaryDrillCappedFlag() for v in vs))

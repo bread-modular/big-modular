@@ -81,7 +81,9 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         assert math.isclose(pcb.ToMM(b.GetDesignSettings().GetBoardThickness()),1.6)
         assert all(d.GetLayer() not in [pcb.F_Cu,pcb.B_Cu] for d in b.GetDrawings())
         ts=list(b.GetTracks());nv=sum(t.GetClass()=='PCB_VIA' for t in ts)
-        out['boards'][n+'.kicad_pcb']={'footprints':len(fps[n]),'tracks':len(ts)-nv,'vias':nv,'zones':len(list(b.Zones()))}
+        back=sum(f.GetLayer()==pcb.B_Cu for f in b.GetFootprints())
+        if n=='big_modular':assert back==0,'component on B.Cu'
+        out['boards'][n+'.kicad_pcb']={'footprints':len(fps[n]),'tracks':len(ts)-nv,'vias':nv,'zones':len(list(b.Zones())),'backside_components':back}
     out['routing']=verify_native(boards['big_modular'],hardware,routing_baseline)
     expected=[(14,2),(16.5,2),(16.5,10),(27.5,10),(27.5,2),(101,2),
               (101,10),(112,10),(112,2),(114.5,2),(114.5,32),(14,32)]
@@ -134,9 +136,9 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         fp=f[ref]
         assert record=={'reference':ref,'rail':rail,'panel_hole_ref':hole,'panel_XY_diameter_mm':[6.7,y,3.6],'pad1_YZ_mm':[y-1.27,6.37]}
         assert fp.GetFPID().GetLibItemName()=='LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge'
-        assert fp.GetValue()=='RED 3mm / '+rail+' / MANUAL' and fp.GetOrientationDegrees()==0
-        assert fp.GetAttributes() & pcb.FP_EXCLUDE_FROM_POS_FILES, 'manual LED must be excluded from JLC BOM/CPL'
-        assert not fp.GetAttributes() & pcb.FP_DNP, 'manual populated LEDs are not DNP'
+        assert fp.GetValue()=='RED 3mm / '+rail+' / DNP' and fp.GetOrientationDegrees()==0
+        assert fp.GetAttributes() & pcb.FP_EXCLUDE_FROM_POS_FILES, 'DNP LED must be excluded from JLC BOM/CPL'
+        assert fp.GetAttributes() & pcb.FP_DNP, 'D10 is DNP per user: footprint retained, not fitted or purchased'
         led={p.GetNumber():p for p in fp.Pads()};assert set(led)=={'1','2'}
         for pin,py,role in [('1',y-1.27,'K'),('2',y+1.27,'A')]:
             p=led[pin]
@@ -146,12 +148,12 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
             assert p.IsOnLayer(pcb.F_Cu) and p.IsOnLayer(pcb.B_Cu) and not p.IsOnLayer(pcb.F_Paste)
             assert any(d.GetText()==role and xy(d)==native(py,8.8) for d in silk), 'missing polarity mark'
         assert led['1'].GetShape()==pcb.PAD_SHAPE_RECT, 'square cathode pad required'
-        assert any(d.GetText()==ref+' '+rail and xy(d)==(78,92.8) for d in silk)
+        assert any(d.GetText()=='D10 DNP' and xy(d)==(76.5,94.4) for d in silk), 'DNP indicator callout missing'
         assert any(d.GetText()==rail and xy(d)==(54.9,round(y+33.3,5)) for d in panel_silk), 'LED panel callout alignment'
         assert math.isclose(g['carrier_X_mm'][1]+g['LED']['axis_above_PCB_mm'],6.7)
     assert all(p.GetAttribute()==pcb.PAD_ATTRIB_PTH and mm(p.GetDrillSize().x)>=.8 for p in f['J7'].Pads())
     switch_check=verify_reset_smt(f['SW1'],g)
-    assert any(d.GetText()=='RETRY' and xy(d)==(85.25,94.3) for d in silk)
+    assert any(d.GetText()=='RETRY' and xy(d)==(82.8,96.2) for d in silk)
     assert any(d.GetText()=='RETRY' and xy(d)==(54.9,82.5) for d in panel_silk)
     for label,pos in [('1 / -12V / RED',(78,79.5)),('J7 OUTPUT ONLY',(94.75,79.5))]:
         assert any(d.GetText()==label and xy(d)==pos for d in silk), 'routed J7 legend missing'

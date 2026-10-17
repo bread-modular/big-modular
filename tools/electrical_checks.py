@@ -13,8 +13,9 @@ REVIEWED={
  'SW1':{'1':'EF_SHDN','3':'EF_SHDN','2':'RTN','MP':None},
  'D10':{'1':'GND','2':'LED_P_A'},'R32':{'1':'P5','2':'LED_P_A'},
  'C35':{'1':'MID_BOOT','2':'MID_SW'},'C36':{'1':'FIVE_BOOT','2':'FIVE_SW'},
- 'R8':{'1':'ILIM','2':'RTN'},'R36':{'1':'EF_MODE','2':'RTN'},
- 'R4':{'1':'VIN9','2':'UV_EN'},'R5':{'1':'UV_EN','2':'RTN'},'R6':{'1':'VIN9','2':'OV_SET'},'R7':{'1':'OV_SET','2':'RTN'},
+ 'R8':{'1':'ILIM','2':'ILIM_SER_1'},'R79':{'1':'ILIM_SER_1','2':'ILIM_SER_2'},'R80':{'1':'ILIM_SER_2','2':'RTN'},
+ 'R36':{'1':'EF_MODE','2':'MODE_SER_1'},'R81':{'1':'MODE_SER_1','2':'MODE_SER_2'},'R82':{'1':'MODE_SER_2','2':'RTN'},
+ 'R4':{'1':'VIN9','2':'UV_SER_1'},'R77':{'1':'UV_SER_1','2':'UV_SER_2'},'R78':{'1':'UV_SER_2','2':'UV_EN'},'R5':{'1':'UV_EN','2':'RTN'},'R6':{'1':'VIN9','2':'OV_SET'},'R7':{'1':'OV_SET','2':'RTN'},
  'R14':{'1':'NRAW','2':'NEG_DIV'},'R60':{'1':'NEG_DIV','2':'NEG_FB'},'R15':{'1':'NEG_FB','2':'NEG_REF_DIV'},'R76':{'1':'NEG_REF_DIV','2':'BI_REF'},'R12':{'1':'PRAW','2':'POS_DIV'},'R75':{'1':'POS_DIV','2':'POS_FB'},
  'R38':{'1':'MID','2':'BI_EN'},'R40':{'1':'BI_EN','2':'GND'},
  'J7':{str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None) for i in range(1,17)},
@@ -27,7 +28,7 @@ for refs,net in [([48,49,50,63],'PRAW'),([51,52,53,64,65,66],'P12'),([54,55,56,6
     for i in refs:REVIEWED['C'+str(i)]={'1':net,'2':'GND'}
 REVIEWED.update({'C62':{'1':'N12','2':'N_LDO_FB'},'R72':{'1':'N12','2':'N_LDO_DIV'},'R73':{'1':'N_LDO_DIV','2':'N_LDO_FB'},'R74':{'1':'N_LDO_FB','2':'GND'},'D27':{'1':'PRAW','2':'P12'},'D28':{'1':'N12','2':'NRAW'}})
 LOCAL=[(('U1','9'),('R2','1')),(('U1','1'),('F1','2')),(('U1','4'),('U1','5')),
- (('U2','3'),('R4','2')),(('U2','5'),('R7','1')),(('U2','11'),('R8','1')),(('U2','12'),('C3','1')),(('U2','6'),('R36','1')),
+ (('U2','3'),('R78','2')),(('U2','5'),('R7','1')),(('U2','11'),('R8','1')),(('U2','12'),('C3','1')),(('U2','6'),('R36','1')),
  (('SW1','1'),('SW1','3')),(('U2','7'),('SW1','1')),(('U2','8'),('SW1','2')),
  (('U3','2'),('L1','1')),(('U3','4'),('R9','2')),(('U3','4'),('R10','1')),(('U3','6'),('C35','1')),(('U3','2'),('C35','2')),
  (('U5','2'),('L4','1')),(('U5','4'),('R17','2')),(('U5','4'),('R18','1')),(('U5','6'),('C36','1')),(('U5','2'),('C36','2')),
@@ -42,6 +43,8 @@ LOCAL += [(('U12','15'),('U12','16')),(('U12','13'),('U12','15')),(('U12','1'),(
           (('U13','3'),('C62','2')),(('U13','1'),('C62','1')),
           (('D27','1'),('U12','15')),(('D27','2'),('U12','1')),
           (('D28','1'),('U13','1')),(('D28','2'),('U13','15'))]
+
+LOCAL += [(('R4','2'),('R77','1')),(('R77','2'),('R78','1')),(('R8','2'),('R79','1')),(('R79','2'),('R80','1')),(('R36','2'),('R81','1')),(('R81','2'),('R82','1'))]
 
 def check(hw,audit,bom):
     graph=Connectivity(hw);actual=graph.named_pins();expected=json.loads(Path(audit).read_text())
@@ -69,9 +72,14 @@ def check(hw,audit,bom):
             for key in ('at','size'):
                 for v in one(pad,key)[1:]:assert isinstance(v,Atom) and math.isfinite(float(v)),('quoted/non-numeric pad geometry',ref,key,v)
         footprint_maps+=1
-    for ref,val in [('R8','6.04k 1%'),('R36','402k 1%'),('R9','100k 0.1%'),('R10','12.9k 0.1%')]:assert rows[ref]['Value']==val,(ref,val)
+    for ref,val in [('R4','470k 1%'),('R77','82k 1%'),('R78','10k 1%'),('R8','5.6k 1%'),('R79','220 1%'),('R80','220 1%'),('R36','300k 1%'),('R81','100k 1%'),('R82','2k 1%'),('R9','100k 0.1%'),('R10','12.9k 0.1%')]:assert rows[ref]['Value']==val,(ref,val)
     for r in ['R32']:assert rows[r]['LCSC']=='C21190' and rows[r]['Value']=='1k 1%'
-    for r in ['D10']:assert rows[r]['Classification']=='Manual'
+    assert rows['D10']['Classification']=='DNP' and rows['D10']['DNP']=='yes'
+    assert {r for r,v in rows.items() if v.get('DNP')=='yes'}=={'D10'}
+    for ref,(_,symbol) in graph.refs.items():
+        if not ref.startswith('#'):assert (one(symbol,'dnp')[1]=='yes')==(ref=='D10'),(ref,'native DNP mismatch')
+    for net in ['UV_SER_1','UV_SER_2','ILIM_SER_1','ILIM_SER_2','MODE_SER_1','MODE_SER_2']:
+        assert sum(v==net for v in actual.values())==2,(net,'series branch/bypass')
     assert actual[('U2','8')]!=actual[('U2','9')]
     assert actual[('U4','17')]!=actual[('U4','19')]
     for ref in ['J7']:
