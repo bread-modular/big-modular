@@ -1,8 +1,10 @@
 """Bounded dependency discovery and private staging for native checks only.
 
-No recursive project scan, shared-library symlinks in the stage, or board edits.
+No recursive project/model-tree scan or shared-library symlinks in the stage.
+Only private staged path tokens are rebound; source and geometry are untouched.
 """
 from dataclasses import dataclass, field
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -12,6 +14,7 @@ import shutil
 from native import Error, kicad, replace_paths, sha256
 
 
+MODEL_SUFFIXES = {".step", ".stp", ".wrl"}
 NATIVE_SUFFIXES = {".kicad_pcb", ".kicad_sch", ".kicad_pro", ".kicad_dru", ".kicad_sym", ".kicad_mod", ".kicad_wks"}
 TABLES = {"fp-lib-table", "sym-lib-table"}
 FORBIDDEN = {".history", ".git", "code", "vendor", "node_modules", "__pycache__", "production", "jlcpcb", "verification"}
@@ -99,19 +102,102 @@ class Plan:
             self.dependency(path)
         self.anchor = Path(os.path.commonpath([str(p.parent) for p in self.files]))
 
-    def add(self, path):
+    def add(self, path, *, model=False):
         path = absolute(path)
         guarded(path)
         if path in self.files:
             return
         if not path.is_file():
             raise Error(f"Unresolved required dependency (including broken symlink): {path}")
-        if path.suffix not in NATIVE_SUFFIXES and path.name not in TABLES:
+        if not (model and path.suffix.lower() in MODEL_SUFFIXES) and path.suffix not in NATIVE_SUFFIXES and path.name not in TABLES:
             raise Error(f"Not an allowlisted native dependency: {path}")
         self.bytes += path.stat().st_size
         if len(self.files) >= MAX_FILES or self.bytes > MAX_BYTES:
             raise Error(f"Dependency bound exceeded ({MAX_FILES} files / {MAX_BYTES} bytes)")
+        if model:
+            self.model_file(path)
         self.files[path] = {"sha256": sha256(path), "symlink": os.readlink(path) if path.is_symlink() else None}
+        if path.suffix in (".kicad_pcb", ".kicad_mod", ".kicad_sch", ".kicad_sym"):
+            self.resources(path)
+
+    @staticmethod
+    def model_file(path):
+        # Unlike existing native/table dependencies, model aliases are deliberately
+        # unsupported, including directory aliases. No traversal outside a binding.
+        if any(p.is_symlink() for p in (path, *path.parents)):
+            raise Error(f"Model symlink/ancestor is unsupported: {path}")
+        text = path.read_bytes().decode("latin1")
+        if path.suffix.lower() == ".wrl":
+            if not text.startswith("#VRML V2.0 utf8"):
+                raise Error(f"Only self-contained VRML2 models supported: {path}")
+            code = re.sub(r'"(?:\\.|[^"\\])*"|#[^\r\n]*', '', text)
+            if re.search(r"\b(url|Inline|EXTERNPROTO|Script)\b", code, re.I):
+                raise Error(f"External/scripted WRL resources unsupported: {path}")
+        else:
+            if not text.lstrip().startswith("ISO-10303-21;") or not text.rstrip().endswith("END-ISO-10303-21;"):
+                raise Error(f"Only self-contained STEP Part 21 models supported: {path}")
+            code = re.sub(r"'(?:''|[^'])*'|/\*.*?\*/", '', text, flags=re.S)
+            if re.search(r"\b(?:REFERENCE|ANCHOR)\s*;|\b(?:\w*EXTERNAL\w*|DOCUMENT_FILE)\s*\(", code, re.I):
+                raise Error(f"External STEP resources unsupported: {path}")
+
+    def model_path(self, value, source):
+        # Model roots are explicit capabilities, NOT environment/native text vars.
+        # Resolve only the named file; never glob/rglob a system model directory.
+        if not isinstance(value, str) or not value or any(ord(c) < 32 for c in value) or any(c in value for c in ('\\', ':', '~')):
+            raise Error(f"Unsupported model path/URI: {value!r}")
+        match = re.fullmatch(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}/(.+)", value)
+        if match:
+            name, relative = match.groups()
+            if name == "KIPRJMOD":
+                root = self.project.board.parent
+            else:
+                binding = self.project.variables.get(name)
+                if not binding or any(c in binding for c in ("$", "~", ":", "\\")):
+                    raise Error(f"Unresolved model variable ${{{name}}}; declare a local directory in config variables")
+                root = absolute(binding, self.project.config.parent if self.project.config else self.project.directory)
+        else:
+            root, relative = source.parent, value
+        if "$" in relative or Path(relative).is_absolute():
+            raise Error(f"Unsupported unresolved/absolute model path: {value!r}")
+        target = absolute(relative, root)
+        if not root.is_dir() or root not in target.parents or root.resolve() not in target.resolve().parents:
+            raise Error(f"Model path escapes/misses its explicit local root: {value!r}")
+        if target.suffix.lower() not in MODEL_SUFFIXES:
+            raise Error(f"Unsupported model resource (STEP/STP/WRL only): {value!r}")
+        guarded(target)
+        return target
+
+    def resources(self, source):
+        root = kicad.parse_sexpr(source.read_text(encoding="utf-8-sig"))
+        def walk(node, parent=None):
+            if not isinstance(node, list) or not node:
+                return
+            if node[0] == "model":
+                if source.suffix not in (".kicad_pcb", ".kicad_mod") or parent not in ("footprint", "module") or len(node) < 2 or not isinstance(node[1], str):
+                    raise Error(f"Malformed/unsupported model declaration: {source}")
+                target = self.model_path(node[1], source)
+                self.add(target, model=True)
+                # Separate from table/sheet mappings for compatibility with their
+                # existing consumers; accumulate ALL models, never last-one-wins.
+                if not hasattr(self, "model_rewrites"):
+                    self.model_rewrites = {}
+                self.model_rewrites.setdefault(source, {})[node[1]] = target
+            if node[0] in ("image", "embedded_files"):
+                # No empty image syntax is supported. Only exact empty files list
+                # is a no-op; nested empty/file/name/data declarations still block.
+                if node != ["embedded_files"]:
+                    raise Error(f"Unsupported nonempty embedded/image resource: {source}")
+            if node[0] == "embedded_fonts" and node != ["embedded_fonts", "no"]:
+                raise Error(f"Embedded fonts unsupported: {source}")
+            for child in node[1:]:
+                walk(child, node[0])
+        walk(root)
+
+    def path_rewrites(self):
+        """All token rebindings, composed on the current staged bytes per file."""
+        yield from self.rewrites.items()
+        for source, paths in getattr(self, "model_rewrites", {}).items():
+            yield source, ("model", paths)
 
     def expand(self, value, base, project_dir):
         variables = dict(os.environ)
@@ -236,6 +322,8 @@ class Plan:
         for name, record in before.items():
             path = Path(name)
             link = os.readlink(path) if path.is_symlink() else None
+            if path.suffix.lower() in MODEL_SUFFIXES and any(p.is_symlink() for p in (path, *path.parents)):
+                raise Error(f"SOURCE CHANGED model alias during run: {path}")
             if not path.is_file() or sha256(path) != record["sha256"] or link != record["symlink"]:
                 raise Error(f"SOURCE CHANGED during run: {path}")
 
@@ -246,24 +334,35 @@ class Plan:
                 "source_hashes": self.snapshot(),
                 "native_schematic_parity": self.project.board.with_suffix(".kicad_sch") == self.project.schematic}
 
+    def staged_relative(self, path):
+        if path.suffix.lower() in MODEL_SUFFIXES:
+            # Keep resources inside KIPRJMOD even for explicit external libraries.
+            # The original basename, bytes/hash and binding identity are retained.
+            key = hashlib.sha256(str(path).encode()).hexdigest()
+            return self.project.board.parent.relative_to(self.anchor) / "_kicad_models" / key / path.name
+        return path.relative_to(self.anchor)
+
     def stage(self, directory):
         """Copy only the dependency closure. Never native-write through source links.
 
-        Relative layout is retained. Absolute/variable paths in tables and sheet
-        properties are rebound only in these staged copies, with changes reported.
+        Native relative layout is retained; models are copied under PCB-local
+        _kicad_models. Table/sheet/model path tokens are rebound only in these
+        staged copies, with changes reported.
         Project rules/settings and exclusion flags are never rewritten.
         """
         inputs = directory / "inputs"
         inputs.mkdir()
-        staged = {path: inputs / path.relative_to(self.anchor) for path in self.files}
+        staged = {path: inputs / self.staged_relative(path) for path in self.files}
+        if len(set(staged.values())) != len(staged):
+            raise Error("Dependency staging target collision")
         before = self.snapshot()
         self.verify_sources(before)
         for source, target in staged.items():
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, target)
         rewrites = []
-        for source, (head, paths) in self.rewrites.items():
-            values = {value: str(inputs / path.relative_to(self.anchor)) for value, path in paths.items()}
+        for source, (head, paths) in self.path_rewrites():
+            values = {value: str(inputs / self.staged_relative(path)) for value, path in paths.items()}
             target = staged[source]
             text = target.read_text(encoding="utf-8-sig")
             with target.open("w", encoding="utf-8", newline="") as stream:

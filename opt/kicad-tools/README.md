@@ -35,6 +35,12 @@ live GUI push/shove. No automatic placement; a move does **not** drag traces.
 Schematic edits need explicit downstream PCB synchronization. See [workflow and
 status gates](API.md); a draft is not acceptance or manufacturing approval.
 
+Existing PCB/local-footprint models now have [bounded STEP/STP/WRL closure and
+relocatable staging](automation/docs/api.md#bounded-existing-3d-resources), with
+explicit model-root variables and full resource hashes. This does not broaden
+router/exporter admission or waive any native preservation/rule/lock/check gate.
+See [focused resource verification](MODEL_VERIFICATION.md).
+
 ## Useful links
 
 [Detailed guide](GUIDE.md) · [Workflow/API](API.md) · [Verification](VERIFICATION.md) ·

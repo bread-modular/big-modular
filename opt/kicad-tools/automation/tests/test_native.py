@@ -50,6 +50,107 @@ class NativeTests(unittest.TestCase):
         logs=[]; checked,_=api._checks(api.executable('kicad-cli'),relocated/result['board'],relocated/result['schematic'],self.root/'relocated checks',api.isolated_env(self.root/'verify runtime'),logs,False)
         self.assertEqual(checked['findings'],{'erc':[],'drc':[]}); self.assertTrue(checked['parity']['equal'])
 
+    def test_models_cli_stale_hash_and_native_relocation(self):
+        self.build(external=True,hierarchical=True)
+        model_dir=self.root/'External models with spaces'; model_dir.mkdir()
+        cli=api.executable('kicad-cli')
+        # Generate a real solid STEP from this disposable synthetic board only.
+        first=model_dir/'solid model.step'
+        cmd=api.command([cli,'pcb','export','step','--board-only','--output',first,self.source/'synthetic.kicad_pcb'],env=api.isolated_env(self.root/'export runtime'))
+        self.assertEqual(cmd['returncode'],0,cmd)
+        second=model_dir/'second.stp'; shutil.copyfile(first,second)
+        third=model_dir/'third.wrl'; third.write_text('#VRML V2.0 utf8\nShape { geometry Box { size 1 2 3 } }\n')
+        local=self.source/'local models'; local.mkdir(); (local/'local.wrl').write_bytes(third.read_bytes())
+        transforms='(offset (xyz 1.25 -2.5 3.75)) (scale (xyz 0.5 1.25 2)) (rotate (xyz 12 34 56))'
+        names=['${MODELS}/solid model.step','${MODELS}/second.stp','${MODELS}/third.wrl','${KIPRJMOD}/local models/local.wrl']
+        declarations=''.join('(model '+json.dumps(name)+' '+transforms+')' for name in names)
+        board=self.source/'synthetic.kicad_pcb'; text=board.read_text()
+        for head,start,end in reversed(list(api.native.source_blocks(text))):
+            if head=='footprint': text=text[:end-1]+declarations+text[end-1:]
+        board.write_text(text)
+        mod=self.pretty/'R.kicad_mod'; text=mod.read_text().rstrip(); mod.write_text(text[:-1]+declarations+')')
+        # Canonicalize only these disposable fixtures, never real project inputs.
+        import pcbnew as p
+        p.SaveBoard(str(board),p.LoadBoard(str(board)),True)
+        template=p.FootprintLoad(str(self.pretty),'R'); p.PCB_IO_KICAD_SEXPR().FootprintSave(str(self.pretty),template)
+        configs=self.root/'configs'; configs.mkdir(); config=configs/'profile.json'
+        config.write_text(json.dumps({'schema_version':1,'project_dir':str(self.source),'board':str(board),'root_schematic':str(self.source/'synthetic.kicad_sch'),'variables':{'MODELS':str(model_dir)}}))
+        def models(path):
+            result=[]
+            def walk(node):
+                if not isinstance(node,list): return
+                if node and node[0]=='model': result.append([Path(node[1]).name,*node[2:]])
+                for child in node: walk(child)
+            walk(api.native.kicad.parse_sexpr(path.read_text())); return result
+        expected_models=models(board); expected_items=api.inspect(config=config)['items']
+        before=hashes(self.root)
+        facade=api.HERE.parent/'kicad_tools.py'
+        def run(*args):
+            record=api.command([sys.executable,'-B',facade,'pcb',*args])
+            self.assertEqual(record['returncode'],0,record)
+            return json.loads(record['stdout'])
+        inspected=run('inspect','--config',config)
+        self.assertEqual(len([name for name in inspected['selection']['source_hashes'] if Path(name).suffix in ('.step','.stp','.wrl')]),4)
+        opsdir=self.root/'requests'; opsdir.mkdir(); ops=opsdir/'text.json'; ops.write_text(json.dumps(operations(text_op())))
+        planned=run('plan','--config',config,'--ops',ops)
+        second.write_bytes(second.read_bytes()+b'\n')
+        with self.assertRaisesRegex(api.Error,'changed|Changed|Stale'): api.apply(planned,self.root/'Stale model')
+        self.assertFalse((self.root/'Stale model').exists()); second.write_bytes(first.read_bytes())
+        plans=self.root/'plans'; plans.mkdir(); planfile=plans/'plan.json'; planfile.write_text(json.dumps(planned))
+        candidate=self.root/'Candidate with models'
+        result=run('apply','--plan',planfile,'--output',candidate)
+        self.assert_status(result,'accepted'); self.assertTrue(result['source_unchanged'])
+        self.assertTrue((candidate/'completion.json').is_file())
+        self.assertEqual(expected_models,models(candidate/result['board']))
+        for item in expected_items: self.assertIn(item,result['inspection']['items'])
+        for name,value in before.items(): self.assertEqual(hashes(self.root)[name],value)
+        stage=candidate/'inputs'; api._relocatable(stage,(candidate/result['board']).parent)
+        for path in stage.rglob('*'):
+            if path.suffix in ('.step','.stp','.wrl'):
+                original=next(p for p in [first,second,third,local/'local.wrl'] if p.name==path.name)
+                self.assertEqual(api.native.sha256(path),api.native.sha256(original))
+        # Model-bearing added templates must resolve against the candidate board,
+        # not the template library's directory (KIPRJMOD is shared by both).
+        templates=self.root/'templates'; templates.mkdir(); mech=templates/'Mechanical.kicad_mod'
+        mech.write_text('(footprint "Mechanical" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr board_only) '+declarations+')')
+        op={'op':'add_footprint','uuid':uid('model mechanic'),'file':str(mech),'mechanical_only':True,'at':[15,15],'rotation_deg':20,'side':'front'}
+        added=api.apply(api.plan(operations(op),config=config),self.root/'Added model template')
+        self.assert_status(added,'accepted')
+        self.assertEqual(len(models(self.root/'Added model template'/added['board'])),12)
+        moved=api.apply(api.plan(operations({'op':'move_footprint','target':{'ref':'R1'},'at':[20,23]},
+                       {'op':'rotate_footprint','target':{'ref':'R1'},'rotation_deg':90}),config=config,allow_draft_opens=True),self.root/'Moved model footprint')
+        self.assert_status(moved,'draft')
+        self.assertEqual(expected_models,models(self.root/'Moved model footprint'/moved['board']))
+        relocated=self.root/'Relocated model candidate'; shutil.move(candidate,relocated)
+        shutil.rmtree(self.source); shutil.rmtree(self.pretty); shutil.rmtree(model_dir)
+        shutil.rmtree(self.root/'External symbol library'); shutil.rmtree(self.root/'External sheets'); config.unlink()
+        moved_board=relocated/result['board']; moved_sch=relocated/result['schematic']
+        view=run('inspect','--project-dir',moved_board.parent)
+        self.assertEqual(len([v for v in view['items'] if v['kind']=='footprint']),2)
+        logs=[]; checked,_=api._checks(cli,moved_board,moved_sch,self.root/'relocated checks',api.isolated_env(self.root/'verify runtime'),logs,False)
+        self.assertEqual(checked['findings'],{'erc':[],'drc':[]}); self.assertTrue(checked['parity']['equal'])
+        # --no-board-body means the exported solid must come from staged models.
+        exported=self.root/'relocated models.glb'
+        cmd=api.command([cli,'pcb','export','glb','--no-board-body','--output',exported,moved_board],env=api.isolated_env(self.root/'verify runtime'))
+        self.assertEqual(cmd['returncode'],0,cmd); self.assertTrue(exported.is_file(),cmd)
+        self.assertEqual(cmd['stderr'].strip(),'')
+        import struct
+        raw=exported.read_bytes(); self.assertEqual(raw[:4],b'glTF')
+        length,kind=struct.unpack_from('<II',raw,12); self.assertEqual(kind,0x4e4f534a)
+        self.assertTrue(json.loads(raw[20:20+length])['meshes'])
+        self.assertEqual(expected_models,models(moved_board))
+
+    def test_empty_embedded_declaration_is_noop_but_native_normalization_still_blocks(self):
+        self.build(); board=self.source/'synthetic.kicad_pcb'
+        text=board.read_text().rstrip(); board.write_text(text[:-1]+'(embedded_files))')
+        info=api.inspect(project_dir=self.source); self.assertTrue(info['selection']['source_hashes'])
+        planned=api.plan(operations(text_op()),project_dir=self.source)
+        result=api.apply(planned,self.root/'Empty embedded')
+        # Empty means no dependency to fetch, NOT permission to weaken save guards.
+        self.assert_status(result,'failed'); self.assertTrue(result['source_unchanged'])
+        self.assertIn('board settings',result['errors'][0])
+        self.assertFalse((self.root/'Empty embedded'/'completion.json').exists())
+
     def test_transform_both_sides_pad_identity_and_copper_unchanged(self):
         self.build()
         initial=api.inspect(project_dir=self.source)['items']

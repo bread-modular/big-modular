@@ -49,7 +49,7 @@ def source_blocks(text):
 
 
 def replace_paths(text, head, values):
-    """Change only uri atoms or Sheetfile properties in a PRIVATE staged copy.
+    """Change only uri/model path atoms or Sheetfile properties in a PRIVATE staged copy.
 
     Everything outside replaced string tokens is retained byte-for-byte when
     encoded with the original UTF-8 encoding. This function does not save files.

@@ -88,6 +88,27 @@ class IdentityTests(unittest.TestCase):
             with self.assertRaises(api.Error): api.apply(doc,output)
             self.assertFalse(output.exists())
 
+    def test_relocatable_model_paths_cannot_escape_or_remain_unbound(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); board=root/'demo.kicad_pcb'; model=root/'m.step'; model.write_text('resource')
+            for value in ('${UNDECLARED}/m.step',str(model),'../outside.step','${KIPRJMOD}/../outside.step'):
+                board.write_text('(kicad_pcb (footprint "F" (model '+json.dumps(value)+')))')
+                with self.subTest(value=value), self.assertRaises(api.Error): api._relocatable(root,root)
+            board.write_text('(kicad_pcb (footprint "F" (model "${KIPRJMOD}/m.step")))')
+            api._relocatable(root,root)
+            model.unlink()
+            with self.assertRaises(api.Error): api._relocatable(root,root)
+
+    def test_duplicate_identity_and_ignored_rule_admission_are_not_waived(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); board=root/'demo.kicad_pcb'; sch=root/'demo.kicad_sch'
+            ident=uid('duplicate'); sch.write_text('(kicad_sch)')
+            board.write_text('(kicad_pcb (property "A" "a" (uuid "'+ident+'")) (property "B" "b" (uuid "'+ident+'")))')
+            with self.assertRaisesRegex(api.Error,'Duplicate serialized board UUIDs'): api._closure(api.select(project_dir=root))
+            board.write_text('(kicad_pcb)')
+            (root/'demo.kicad_pro').write_text('{"board":{"design_settings":{"rule_severities":{"clearance":"ignore"}}}}')
+            with self.assertRaisesRegex(api.Error,'Ignored project rule'): api._closure(api.select(project_dir=root))
+
     def test_new_output_rejects_collision_and_symlink(self):
         with tempfile.TemporaryDirectory() as temp:
             path=Path(temp); (path/'used').mkdir(); (path/'alias').symlink_to(path/'used',target_is_directory=True)

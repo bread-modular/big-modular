@@ -12,8 +12,8 @@ from project import new_output
 ROOT = Path(__file__).resolve().parents[2]
 TOOLKIT_FILES = (
     "kicad_tools.py", "native.py", "project.py", "bundle.py", "README.md", "GUIDE.md", "BUNDLING.md", "MIGRATION.md",
-    "VERIFICATION.md", "BUNDLE_README.md", "API.md", "HYBRID_ROUTING.md", "examples/project.json",
-    "tests/fixtures.py", "tests/test_native.py", "tests/test_project.py", "tests/test_cli.py", "tests/test_integration.py",
+    "VERIFICATION.md", "MODEL_VERIFICATION.md", "BUNDLE_README.md", "API.md", "HYBRID_ROUTING.md", "examples/project.json",
+    "tests/fixtures.py", "tests/test_native.py", "tests/test_project.py", "tests/test_models.py", "tests/test_cli.py", "tests/test_integration.py",
     "tests/test_consolidation.py", "tests/test_facade.py", "tests/native_handoff.py",
     "automation/__init__.py", "automation/run.py", "automation/api.py",
     "automation/_bridge.py", "automation/_worker.py", "automation/schema.py",
