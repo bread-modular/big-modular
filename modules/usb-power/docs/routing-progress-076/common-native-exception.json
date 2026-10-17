@@ -1,0 +1,23 @@
+{
+  "common_inspect_performed": true,
+  "plan_sha256": "b255a1ba5208a1dba5d1dd5bcddedf296e54e5edaacda324150374763a5658ea",
+  "apply_status": "rejected",
+  "source_unchanged": true,
+  "baseline": {
+    "errors": 88,
+    "warnings": 18
+  },
+  "after_one_track_probe": {
+    "errors": 87,
+    "warnings": 18
+  },
+  "exception": "Explicit supervisor-authorized native candidate exception; no shared tool/gate edits",
+  "baseline_DRC_reference": "../routing-progress-075/evidence/after-drc.json",
+  "thermal_trial": {
+    "width_mm": 0.5,
+    "seven_rejected_spokes_min_clearance_mm": 0.1207,
+    "required_clearance_mm": 0.2,
+    "retained_widened_spoke_source_uuid": "b85654d1-bba1-5535-b811-5059d52725b6"
+  },
+  "new_route_trial_save_reload_drift": []
+}
