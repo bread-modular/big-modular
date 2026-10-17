@@ -1,0 +1,3389 @@
+{
+  "files": {
+    ".agents/skills/jlcpcb-assembly": {
+      "after_sha256": "cfadf10c7873f6b2277adf257c60315bd2a68edb1879148a8c3cd9f01c3bc0d6",
+      "before_sha256": "cfadf10c7873f6b2277adf257c60315bd2a68edb1879148a8c3cd9f01c3bc0d6",
+      "destination": ".agents/skills/jlcpcb-assembly",
+      "disposition": "byte-identical",
+      "source_blob": "998887450aac82579d3f16cbe3fb854903ce1abf",
+      "source_mode": "120000"
+    },
+    ".agents/skills/kicad-workflow": {
+      "after_sha256": "99b63a02d5f40b57aefadf96571545276610e7cf5084c0f2b42fec4d4b8128aa",
+      "before_sha256": "99b63a02d5f40b57aefadf96571545276610e7cf5084c0f2b42fec4d4b8128aa",
+      "destination": ".agents/skills/kicad-workflow",
+      "disposition": "byte-identical",
+      "source_blob": "9730dc1ffc84a4553d87982d31f41c1ac67f3427",
+      "source_mode": "120000"
+    },
+    ".gitignore": {
+      "after_sha256": "811e04ff813516b0f4444ac3afa7fa65fd38bc529476c92faaf0f00f8feff623",
+      "before_sha256": "882f830890bb69c4e8a6a734cf44f3a74e06c600579fead3379ed190c2ecf3cb",
+      "destination": ".gitignore",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "b5a720ab5139378152d9513da4f965a05ff1d17e",
+      "source_mode": "100644"
+    },
+    "AGENTS.md": {
+      "after_sha256": "cb52bdaef5d3d44b2437f7ac011e5fcd0f8df2d8e06647a565b2e59493ae0d4d",
+      "before_sha256": "feb85a5152f89ccc2fa05f4135ecc635adb9ef23cace365ad14e17ee7e53f518",
+      "destination": "modules/usb-power/AGENTS.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "3b354c7b5425c97fb8a1df0cae9ecefc53131a0c",
+      "source_mode": "100644"
+    },
+    "BOM.csv": {
+      "after_sha256": "2d0e42ce30812bbb3e7bff74edde40b0cd5fadc3992d48a7b5db55a8bc253854",
+      "before_sha256": "2d0e42ce30812bbb3e7bff74edde40b0cd5fadc3992d48a7b5db55a8bc253854",
+      "destination": "modules/usb-power/BOM.csv",
+      "disposition": "byte-identical",
+      "source_blob": "f2ebe0eb602fcfbfcfd40b2dad80cf886e25239a",
+      "source_mode": "100644"
+    },
+    "Code.md": {
+      "after_sha256": "f202306177bbf1fb03457aa59f07d33463ef6ade55c989182f0b0ff9d562761e",
+      "before_sha256": "cfdce28baa348016319bc38f48417751546f57daf1f28342dd6d4c7286784437",
+      "destination": "modules/usb-power/Code.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "c4a50f579877e60e8702e2e07336a54e1c6379c9",
+      "source_mode": "100644"
+    },
+    "LICENSE": {
+      "after_sha256": "7d5b80436dcdfd73e62e3d28d1927058c5d25b55f27e3e9acceb83cfdc0399f7",
+      "before_sha256": "7d5b80436dcdfd73e62e3d28d1927058c5d25b55f27e3e9acceb83cfdc0399f7",
+      "destination": "LICENSE",
+      "disposition": "byte-identical",
+      "source_blob": "f24826cc9a9c570a9acc51b3808a0c43e9381d7e",
+      "source_mode": "100644"
+    },
+    "README.md": {
+      "after_sha256": "284ae25dcf32c211ea37971bb5065d768c261971b084c4b074dd6e377fccf7ea",
+      "before_sha256": "17fc8136ff89f0943492dd34f0ddc234497fc78a49d81634a1451d3588e65ce3",
+      "destination": "modules/usb-power/README.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "7631f5167343430d41d5e87e9adfe342a1824f17",
+      "source_mode": "100644"
+    },
+    "docs/HRO-RELEASE-STATUS.json": {
+      "after_sha256": "988e2a205dfd8fcf9d72ea026cb4f7b14f388f47983155d4b3be48c49bcc7510",
+      "before_sha256": "988e2a205dfd8fcf9d72ea026cb4f7b14f388f47983155d4b3be48c49bcc7510",
+      "destination": "modules/usb-power/docs/HRO-RELEASE-STATUS.json",
+      "disposition": "byte-identical",
+      "source_blob": "7173bdfa3ac583fa676838385961ffcd3cd85e9b",
+      "source_mode": "100644"
+    },
+    "docs/HRO-SOURCE-HANDOFF.md": {
+      "after_sha256": "03c380d1e8e6d6f8dcbd7cdbf8c996fa25f681184c59e93a80831d527cc95641",
+      "before_sha256": "15319edaa2ef0ffa86ab60ed91b20174ce1df9d3f8ee5936e20ae27a1889699a",
+      "destination": "modules/usb-power/docs/HRO-SOURCE-HANDOFF.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "28e40a5b364c155968279dbb585f8aac6c3ac955",
+      "source_mode": "100644"
+    },
+    "docs/assembly-geometry.json": {
+      "after_sha256": "a5bcc9a6b2745351f29a6668cb51c92363e0395c8a8dd5507279fd9280db8ee1",
+      "before_sha256": "a5bcc9a6b2745351f29a6668cb51c92363e0395c8a8dd5507279fd9280db8ee1",
+      "destination": "modules/usb-power/docs/assembly-geometry.json",
+      "disposition": "byte-identical",
+      "source_blob": "895d9a8af5fa924ce4a7646616a90f2cca78988d",
+      "source_mode": "100644"
+    },
+    "docs/assembly.pdf": {
+      "after_sha256": "513cfd7d758bf28f423358a3ff913fb61d2a3eb646c2f09f9c9feaf74dfe8233",
+      "before_sha256": "513cfd7d758bf28f423358a3ff913fb61d2a3eb646c2f09f9c9feaf74dfe8233",
+      "destination": "modules/usb-power/docs/assembly.pdf",
+      "disposition": "byte-identical",
+      "source_blob": "7549c968d5ef27d9c96a7a8394db0975f59a4488",
+      "source_mode": "100644"
+    },
+    "docs/assembly.svg": {
+      "after_sha256": "db7a6acda583bf369a63bd9f520fe4f446aeb051d0a15fe2b948443a6de8c5ca",
+      "before_sha256": "db7a6acda583bf369a63bd9f520fe4f446aeb051d0a15fe2b948443a6de8c5ca",
+      "destination": "modules/usb-power/docs/assembly.svg",
+      "disposition": "byte-identical",
+      "source_blob": "7d86e139b1e64bb05b517bf62f91032d54380576",
+      "source_mode": "100644"
+    },
+    "docs/basic-passives-checkpoint.md": {
+      "after_sha256": "dbfc9698e16435d4b633bc6e7de8b0212266d200aa392d2de1845477d6785700",
+      "before_sha256": "a7a67c7ed6641cd282e6e65e35eeefb0a96c3c363b0a3103213d5260232f8b00",
+      "destination": "modules/usb-power/docs/basic-passives-checkpoint.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "6369019fb8cf45d68e85dd48ac5e522fabc68549",
+      "source_mode": "100644"
+    },
+    "docs/basic-swaps-checkpoint.md": {
+      "after_sha256": "f1a59a28a9d171199a77d596d87ceb057b972547da7f18a746190659d49628f5",
+      "before_sha256": "774cb273c55411d79214f70fbbfc52d376929770c430f4acc9ac90c99ede66f2",
+      "destination": "modules/usb-power/docs/basic-swaps-checkpoint.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "398aefa51b87e01b85f52ffd2af194245f779a2a",
+      "source_mode": "100644"
+    },
+    "docs/build.md": {
+      "after_sha256": "db41a677c6ff5a0a5f4d3388c336cb8425d6045a5f8d67b52c4150c38cb432a0",
+      "before_sha256": "7be8b559f45844ca3facb1358c75cc3376eef8e76ac18b965353959a4476be51",
+      "destination": "modules/usb-power/docs/build.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "16f790e5f1c34020028546dd577f2122fccdb8ad",
+      "source_mode": "100644"
+    },
+    "docs/electrical-catalog.json": {
+      "after_sha256": "e8eea0af8d3ccfbd02fb5b03a4d0c2a93f68fdbc311eac95a392af481c9cbe34",
+      "before_sha256": "e8eea0af8d3ccfbd02fb5b03a4d0c2a93f68fdbc311eac95a392af481c9cbe34",
+      "destination": "modules/usb-power/docs/electrical-catalog.json",
+      "disposition": "byte-identical",
+      "source_blob": "f0452b4137269ac7558f253818d00d4b7b5e2717",
+      "source_mode": "100644"
+    },
+    "docs/engineering.md": {
+      "after_sha256": "5485109a2d732f97b8c4d53c6d31a0ad90fa4e890d1388cf5ee54dc458bb0aa1",
+      "before_sha256": "a41640bd5b0bf125e11515518c89828c1ba7eb033bd43288a4300a62659ac6c6",
+      "destination": "modules/usb-power/docs/engineering.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "a3f2dfed44b797e8e7ca0ad06c6c7e31851c4926",
+      "source_mode": "100644"
+    },
+    "docs/fabrication.md": {
+      "after_sha256": "2118bfb5a7afe6fbd85c0668288abf765938bedfb7c970b0407b0b5f0741f812",
+      "before_sha256": "6c89b60d02ef870b2fc5b9568b1ac1fc821f97165fb5029aebb106ad1ef3c75e",
+      "destination": "modules/usb-power/docs/fabrication.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "2c3f9b11654641b24897cf0b16c12a2d9780fd20",
+      "source_mode": "100644"
+    },
+    "docs/hro-integration.json": {
+      "after_sha256": "9e5f093b28fd32e33a61a689f17054f0edff563ee407fb927418737f78952c61",
+      "before_sha256": "9e5f093b28fd32e33a61a689f17054f0edff563ee407fb927418737f78952c61",
+      "destination": "modules/usb-power/docs/hro-integration.json",
+      "disposition": "byte-identical",
+      "source_blob": "a7208ca44b3d4f97ef5cbb862b85113be7e5fe4a",
+      "source_mode": "100644"
+    },
+    "docs/hro-integration.md": {
+      "after_sha256": "44018e9c5263282ee52d8b45cf895f361093612380355c2bd5683d492866838d",
+      "before_sha256": "17f68ab3b961127c97714fa4bd30bc3ac2e6e1f2a70120bd7ae0955ec6ae69b5",
+      "destination": "modules/usb-power/docs/hro-integration.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "85a876b314bd5fbe169a77c42d416ac601dae078",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/C13585-bias.json": {
+      "after_sha256": "1c52b81df166aa324640680404eccdbfc0990e29c08fb10fdba1eb541a73db4c",
+      "before_sha256": "1c52b81df166aa324640680404eccdbfc0990e29c08fb10fdba1eb541a73db4c",
+      "destination": "modules/usb-power/docs/ldo-evidence/C13585-bias.json",
+      "disposition": "byte-identical",
+      "source_blob": "10a14b68e7b8c1532e9858e411f0b9cee5caa6fa",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/baseline-BOM.csv": {
+      "after_sha256": "c75ac7a0e74970ebdd53bd22a27d171fa09ac94e8df253235c1d4f1ee8998a10",
+      "before_sha256": "c75ac7a0e74970ebdd53bd22a27d171fa09ac94e8df253235c1d4f1ee8998a10",
+      "destination": "modules/usb-power/docs/ldo-evidence/baseline-BOM.csv",
+      "disposition": "byte-identical",
+      "source_blob": "a994ca256f1aeedb20c72d5d8173beca3508951d",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/baseline-pin-net.json": {
+      "after_sha256": "657db94a85e2397b52907882ad2ff0d9edb56c63e33f36a7f773410095071173",
+      "before_sha256": "657db94a85e2397b52907882ad2ff0d9edb56c63e33f36a7f773410095071173",
+      "destination": "modules/usb-power/docs/ldo-evidence/baseline-pin-net.json",
+      "disposition": "byte-identical",
+      "source_blob": "a8a3c0808c84020b2aeb3e461f20dc80508b4a49",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/capacitor-disposition.json": {
+      "after_sha256": "f45de4399fae3e017305027880bcf7d2cf23015fb053f1a93ebc2b4c7d434623",
+      "before_sha256": "f45de4399fae3e017305027880bcf7d2cf23015fb053f1a93ebc2b4c7d434623",
+      "destination": "modules/usb-power/docs/ldo-evidence/capacitor-disposition.json",
+      "disposition": "byte-identical",
+      "source_blob": "da0234f939d9e3f30c597153806c7b69b883c2d7",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/catalog.json": {
+      "after_sha256": "a36bb6affb7dfb6155f8436046b213dac1df40e4566737033d6a5616ca3e7a99",
+      "before_sha256": "a36bb6affb7dfb6155f8436046b213dac1df40e4566737033d6a5616ca3e7a99",
+      "destination": "modules/usb-power/docs/ldo-evidence/catalog.json",
+      "disposition": "byte-identical",
+      "source_blob": "a02abe485a7b6755472f89013cadee971a56a3f1",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/common-pcb-inspect-blocker.json": {
+      "after_sha256": "7aadb56521e45d12dec3f7f8515354c811a9385480f9d227eeadd17374616041",
+      "before_sha256": "7aadb56521e45d12dec3f7f8515354c811a9385480f9d227eeadd17374616041",
+      "destination": "modules/usb-power/docs/ldo-evidence/common-pcb-inspect-blocker.json",
+      "disposition": "byte-identical",
+      "source_blob": "4a076d1a87de3f94276c12a63f6c749400f072db",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/datasheets.json": {
+      "after_sha256": "c3267cde6bd7cbed2bb90f2b69b7b7cdae7022c70d0b695e2b295af12703de86",
+      "before_sha256": "c3267cde6bd7cbed2bb90f2b69b7b7cdae7022c70d0b695e2b295af12703de86",
+      "destination": "modules/usb-power/docs/ldo-evidence/datasheets.json",
+      "disposition": "byte-identical",
+      "source_blob": "53c2a0d1dde9dced7915512bef4d52ea30acc789",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/dc-budget.json": {
+      "after_sha256": "a63ce71b6c103d5c7b614e233b0b21e2123aae03ebf3f78e9f3abfac2fa2a077",
+      "before_sha256": "a63ce71b6c103d5c7b614e233b0b21e2123aae03ebf3f78e9f3abfac2fa2a077",
+      "destination": "modules/usb-power/docs/ldo-evidence/dc-budget.json",
+      "disposition": "byte-identical",
+      "source_blob": "9b96a8a6d93b01a897bed713035f0e2652b10843",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/full-regressions.log": {
+      "after_sha256": "ce850fce45c8214b3e3fcc28b055f7273070f72359ea8731399afe48ca140fa3",
+      "before_sha256": "ce850fce45c8214b3e3fcc28b055f7273070f72359ea8731399afe48ca140fa3",
+      "destination": "modules/usb-power/docs/ldo-evidence/full-regressions.log",
+      "disposition": "byte-identical",
+      "source_blob": "fa7d752a5b669d0d006b90bfff353a64e20442c1",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/manufacturer-mlcc-data.json": {
+      "after_sha256": "7369637756b1387aa502ffbd84477b5eee2548ad3806621a759c2adbcbd0f776",
+      "before_sha256": "7369637756b1387aa502ffbd84477b5eee2548ad3806621a759c2adbcbd0f776",
+      "destination": "modules/usb-power/docs/ldo-evidence/manufacturer-mlcc-data.json",
+      "disposition": "byte-identical",
+      "source_blob": "329450d049397e9f998d516b2e896f00d932de01",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/native/drc.json": {
+      "after_sha256": "de08a451e9308adb19f4511959f0d17048841ea704bb1691d630c95cfd12b738",
+      "before_sha256": "de08a451e9308adb19f4511959f0d17048841ea704bb1691d630c95cfd12b738",
+      "destination": "modules/usb-power/docs/ldo-evidence/native/drc.json",
+      "disposition": "byte-identical",
+      "source_blob": "59868c38df23d13d0aa30d7a3494f2c53a4d688c",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/native/erc.json": {
+      "after_sha256": "7c6864bc435600d95592aba95d8f99d6bb3a36d00faa0493e4ef75fadb36ca9e",
+      "before_sha256": "7c6864bc435600d95592aba95d8f99d6bb3a36d00faa0493e4ef75fadb36ca9e",
+      "destination": "modules/usb-power/docs/ldo-evidence/native/erc.json",
+      "disposition": "byte-identical",
+      "source_blob": "836bc8bc9b275b894a56486439ed2741410b7e4a",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/native/netlist.xml": {
+      "after_sha256": "df5b8f7847f8b5fe4481973c39f1f959ce482e609ee903cfb0b8c55ab72d7c38",
+      "before_sha256": "df5b8f7847f8b5fe4481973c39f1f959ce482e609ee903cfb0b8c55ab72d7c38",
+      "destination": "modules/usb-power/docs/ldo-evidence/native/netlist.xml",
+      "disposition": "byte-identical",
+      "source_blob": "fa631fd057121d334339e2c7df3ef484832ce295",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/native/summary.json": {
+      "after_sha256": "db71219b2fb6b5aff7c85d26c53ad46bfd291c89d546af9a3cc72d55ca65ead0",
+      "before_sha256": "db71219b2fb6b5aff7c85d26c53ad46bfd291c89d546af9a3cc72d55ca65ead0",
+      "destination": "modules/usb-power/docs/ldo-evidence/native/summary.json",
+      "disposition": "byte-identical",
+      "source_blob": "880396616a57592afca2ea41eca8e93bae858ec8",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/pcb-audit.json": {
+      "after_sha256": "521a1ff1602c99697087e896a1b45fec6758bc9a9ebcaed0feaff7035cba77c7",
+      "before_sha256": "521a1ff1602c99697087e896a1b45fec6758bc9a9ebcaed0feaff7035cba77c7",
+      "destination": "modules/usb-power/docs/ldo-evidence/pcb-audit.json",
+      "disposition": "byte-identical",
+      "source_blob": "2205c94c07a80ee362c067232709fd8e00cd0d01",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/preserved-hashes.json": {
+      "after_sha256": "37d5653e8d58a9118e73304d66990b75684e25805290a9787688644ea1406d74",
+      "before_sha256": "517d2da55e751a13d0ba1a885c62527d7f3de6b461030db06bc3b53a32bb8961",
+      "destination": "modules/usb-power/docs/ldo-evidence/preserved-hashes.json",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "138115b2301ae52f8fa5c039a8723406dac1fbac",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/render-review.json": {
+      "after_sha256": "cbb2f80ae9a74b7086607fef8c1bb93591b1f0486c0b28229c13e9f5a4efceeb",
+      "before_sha256": "cbb2f80ae9a74b7086607fef8c1bb93591b1f0486c0b28229c13e9f5a4efceeb",
+      "destination": "modules/usb-power/docs/ldo-evidence/render-review.json",
+      "disposition": "byte-identical",
+      "source_blob": "064c05716be3c4f00228c7f2e93e519b207dfd3c",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/research-limits.json": {
+      "after_sha256": "d2476774f122e88093f3afacabd4a74a7b1e8b3c749a83c19fdede73ae89d934",
+      "before_sha256": "d2476774f122e88093f3afacabd4a74a7b1e8b3c749a83c19fdede73ae89d934",
+      "destination": "modules/usb-power/docs/ldo-evidence/research-limits.json",
+      "disposition": "byte-identical",
+      "source_blob": "ce12a57c6512b56148a19c3908649cced1575373",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/source-audit.json": {
+      "after_sha256": "a3301d30ce2ee34caa4706ff6ac4e16accb3481d9462bbd060da99a07e92c31c",
+      "before_sha256": "a3301d30ce2ee34caa4706ff6ac4e16accb3481d9462bbd060da99a07e92c31c",
+      "destination": "modules/usb-power/docs/ldo-evidence/source-audit.json",
+      "disposition": "byte-identical",
+      "source_blob": "9c9120d8382763ff18112cbbac3a62535e8bdfc3",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/source-promotion.json": {
+      "after_sha256": "12c1f1a32e1151efa30e1ed55757209e13bb6e905a61865076c012a3140d4924",
+      "before_sha256": "12c1f1a32e1151efa30e1ed55757209e13bb6e905a61865076c012a3140d4924",
+      "destination": "modules/usb-power/docs/ldo-evidence/source-promotion.json",
+      "disposition": "byte-identical",
+      "source_blob": "434863388657d65bae71ce353faad29ebb9830c2",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/source-tests.log": {
+      "after_sha256": "ce8d838d21ded91751552f547ea434cebedd818045aa7ec700303273ba2933b8",
+      "before_sha256": "ce8d838d21ded91751552f547ea434cebedd818045aa7ec700303273ba2933b8",
+      "destination": "modules/usb-power/docs/ldo-evidence/source-tests.log",
+      "disposition": "byte-identical",
+      "source_blob": "6de7402b53c22b77ba2bc06a302024c2a0de0098",
+      "source_mode": "100644"
+    },
+    "docs/ldo-evidence/validation-summary.json": {
+      "after_sha256": "eb21f64612fdcfab995b0d59465df0cd89c477e8ee042cc4327139b62aa35b42",
+      "before_sha256": "eb21f64612fdcfab995b0d59465df0cd89c477e8ee042cc4327139b62aa35b42",
+      "destination": "modules/usb-power/docs/ldo-evidence/validation-summary.json",
+      "disposition": "byte-identical",
+      "source_blob": "a499e2ec0a858218e138251cf6cf4d46d00dde34",
+      "source_mode": "100644"
+    },
+    "docs/ldo-handoff.md": {
+      "after_sha256": "84dd2f223cdde9ca08d63f459a102bc2617f27b96e58ebb4ec75298e027de203",
+      "before_sha256": "9505f587598758cc26c6e98633c1a8ea0abbaaff8eaeca0573b1e00b996566e8",
+      "destination": "modules/usb-power/docs/ldo-handoff.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "2acdf2c744dd096689203b4b2f5890d8abe172fe",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/carrier-back.png": {
+      "after_sha256": "aed53dde15652bea8526e18d13c2a491781e21abbd6d60af2e968973c676473c",
+      "before_sha256": "aed53dde15652bea8526e18d13c2a491781e21abbd6d60af2e968973c676473c",
+      "destination": "modules/usb-power/docs/ldo-review/carrier-back.png",
+      "disposition": "byte-identical",
+      "source_blob": "6005842f459dda97f070bf058319becef2740890",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/carrier-bottom.png": {
+      "after_sha256": "68121192fb10bc63e15dc1660b4b17dc233383e24e7b25fba95798dc0a3c954d",
+      "before_sha256": "68121192fb10bc63e15dc1660b4b17dc233383e24e7b25fba95798dc0a3c954d",
+      "destination": "modules/usb-power/docs/ldo-review/carrier-bottom.png",
+      "disposition": "byte-identical",
+      "source_blob": "6d7c178c22920179513a15af15ec4e3dc3067f91",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/carrier-top.png": {
+      "after_sha256": "d34026fb7a8822eb7d8ef176bdd696e1e68da7e21061e91fe45a69ed174fb3a4",
+      "before_sha256": "d34026fb7a8822eb7d8ef176bdd696e1e68da7e21061e91fe45a69ed174fb3a4",
+      "destination": "modules/usb-power/docs/ldo-review/carrier-top.png",
+      "disposition": "byte-identical",
+      "source_blob": "f20a03f225e1d7eb54602e70c1af9327846ca489",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/power-flow.png": {
+      "after_sha256": "0a1f855e875e88c33c173f357c4b016ad6d32674651c6e9888d6c236829c363d",
+      "before_sha256": "0a1f855e875e88c33c173f357c4b016ad6d32674651c6e9888d6c236829c363d",
+      "destination": "modules/usb-power/docs/ldo-review/power-flow.png",
+      "disposition": "byte-identical",
+      "source_blob": "77aa4759ae1f25039a0303f213d2016eb8f67c9f",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/power-flow.svg": {
+      "after_sha256": "db136059e217bddb213c93eea08f86603b463a9c3ec6e1a87898e3b064ecb1c0",
+      "before_sha256": "db136059e217bddb213c93eea08f86603b463a9c3ec6e1a87898e3b064ecb1c0",
+      "destination": "modules/usb-power/docs/ldo-review/power-flow.svg",
+      "disposition": "byte-identical",
+      "source_blob": "352fb2a91409ca268c8fa4e42b712938ec2bb110",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/quiet-rails.png": {
+      "after_sha256": "97175c244186130825e865b758e644c8d2dae46940e33c6f4f8b8681f8a22704",
+      "before_sha256": "97175c244186130825e865b758e644c8d2dae46940e33c6f4f8b8681f8a22704",
+      "destination": "modules/usb-power/docs/ldo-review/quiet-rails.png",
+      "disposition": "byte-identical",
+      "source_blob": "d75e76854de01032fce003e07c2e97047cf8bfc9",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/quiet-rails.svg": {
+      "after_sha256": "2bd4741c34bf7496d5c804c6fa89234447d4c3e4d612a4cb522785ac53f0ff8c",
+      "before_sha256": "2bd4741c34bf7496d5c804c6fa89234447d4c3e4d612a4cb522785ac53f0ff8c",
+      "destination": "modules/usb-power/docs/ldo-review/quiet-rails.svg",
+      "disposition": "byte-identical",
+      "source_blob": "dc37974e313ae06ff51e94f664017599eb66e810",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/raw-rails.png": {
+      "after_sha256": "3d5faf919e556fff2925afdfda097d708aae041201eedf8db5148c2b518b0ed7",
+      "before_sha256": "3d5faf919e556fff2925afdfda097d708aae041201eedf8db5148c2b518b0ed7",
+      "destination": "modules/usb-power/docs/ldo-review/raw-rails.png",
+      "disposition": "byte-identical",
+      "source_blob": "30ebd7696fb0934301c22cc36815222d50b82a4f",
+      "source_mode": "100644"
+    },
+    "docs/ldo-review/raw-rails.svg": {
+      "after_sha256": "e04f4f128fe157e10d1855ac4b60425c1c9bb0463063e4493bd5a73c76d439a3",
+      "before_sha256": "e04f4f128fe157e10d1855ac4b60425c1c9bb0463063e4493bd5a73c76d439a3",
+      "destination": "modules/usb-power/docs/ldo-review/raw-rails.svg",
+      "disposition": "byte-identical",
+      "source_blob": "5130024cdba5db9e373884fa62a9922fbc5c3239",
+      "source_mode": "100644"
+    },
+    "docs/ldo-revision.md": {
+      "after_sha256": "e8324abc86f6e0d059a764c02560bfe5916bc7d359e9dbac44f8ec6cde0d598d",
+      "before_sha256": "91a48e6e2a533094d71c4cda1eefe3ac45d3ba38771f48911de3ebca431bbf3c",
+      "destination": "modules/usb-power/docs/ldo-revision.md",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "de2a6652495567c4d3076b05ae7800d9927aa009",
+      "source_mode": "100644"
+    },
+    "docs/mechanical-baseline.json": {
+      "after_sha256": "4c151d076d1e93424fe395939eefd3fc4552e4fe57efad94ad1cefe2c3dc9528",
+      "before_sha256": "4c151d076d1e93424fe395939eefd3fc4552e4fe57efad94ad1cefe2c3dc9528",
+      "destination": "modules/usb-power/docs/mechanical-baseline.json",
+      "disposition": "byte-identical",
+      "source_blob": "9cf12690a12d8e620ce667ef4094de845a716052",
+      "source_mode": "100644"
+    },
+    "docs/mechanical-preservation.json": {
+      "after_sha256": "47d4ddbfbc3d5fd40fc2b06cbea3938560fb114aab34eadc11aba2e93af7e979",
+      "before_sha256": "5b57c20be4c08e6b0ee71572ce93518ddec9813fba6a5b278e851e538916b949",
+      "destination": "modules/usb-power/docs/mechanical-preservation.json",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "865953211cdc47f700eba338d8dce2b3045c6b50",
+      "source_mode": "100644"
+    },
+    "docs/mechanics.md": {
+      "after_sha256": "f58fa75feb4c5cad605d71ce3be4ad123d9206ec3e51f84c643e897e54380abb",
+      "before_sha256": "f58fa75feb4c5cad605d71ce3be4ad123d9206ec3e51f84c643e897e54380abb",
+      "destination": "modules/usb-power/docs/mechanics.md",
+      "disposition": "byte-identical",
+      "source_blob": "88fd4fa63257ca78f5562bd188bcff6ba2323c19",
+      "source_mode": "100644"
+    },
+    "docs/pin-net-audit.json": {
+      "after_sha256": "5ed8e37a523dbce1219344a8df2ec07e5e2bee109dd52409a4c5d2c89ed44e7d",
+      "before_sha256": "5ed8e37a523dbce1219344a8df2ec07e5e2bee109dd52409a4c5d2c89ed44e7d",
+      "destination": "modules/usb-power/docs/pin-net-audit.json",
+      "disposition": "byte-identical",
+      "source_blob": "c7fe3ad197b49b1208191b4dc7c86c1cc5365ff4",
+      "source_mode": "100644"
+    },
+    "docs/routed-baseline.json": {
+      "after_sha256": "e3047d3a31940c2ae5b011571c1e489f7d2d227b3b21be6d89da59cd5a6eec4a",
+      "before_sha256": "e3047d3a31940c2ae5b011571c1e489f7d2d227b3b21be6d89da59cd5a6eec4a",
+      "destination": "modules/usb-power/docs/routed-baseline.json",
+      "disposition": "byte-identical",
+      "source_blob": "4a302ebb2cbf03ae3493a4256b1d194b675056eb",
+      "source_mode": "100644"
+    },
+    "docs/schematic.pdf": {
+      "after_sha256": "c5534027012f57105f46ad8dff6d3ed27059d145682c94ae14755b782734c220",
+      "before_sha256": "c5534027012f57105f46ad8dff6d3ed27059d145682c94ae14755b782734c220",
+      "destination": "modules/usb-power/docs/schematic.pdf",
+      "disposition": "byte-identical",
+      "source_blob": "f48acd44b8659f2f35dba0fd4f29f4007ed9ad96",
+      "source_mode": "100644"
+    },
+    "docs/usb-fit.json": {
+      "after_sha256": "c6a151184db6a2567b87a3af044c6a21a4537d577e91128ea44173a2b18806ec",
+      "before_sha256": "c6a151184db6a2567b87a3af044c6a21a4537d577e91128ea44173a2b18806ec",
+      "destination": "modules/usb-power/docs/usb-fit.json",
+      "disposition": "byte-identical",
+      "source_blob": "cf40b103f2dd508233a6f16a134b0476423c998f",
+      "source_mode": "100644"
+    },
+    "docs/usb-fit.pdf": {
+      "after_sha256": "9780c8282b418a1f519126b1b03291a1a562e022700075eb733e2729747c2931",
+      "before_sha256": "9780c8282b418a1f519126b1b03291a1a562e022700075eb733e2729747c2931",
+      "destination": "modules/usb-power/docs/usb-fit.pdf",
+      "disposition": "byte-identical",
+      "source_blob": "101543a70a3c45a7552c679910d82dffb067d6b6",
+      "source_mode": "100644"
+    },
+    "docs/usb-fit.svg": {
+      "after_sha256": "9380f9566e0e18df9532caa8a1d2f35bd14df3e52dab681b82169d8191aaa764",
+      "before_sha256": "9380f9566e0e18df9532caa8a1d2f35bd14df3e52dab681b82169d8191aaa764",
+      "destination": "modules/usb-power/docs/usb-fit.svg",
+      "disposition": "byte-identical",
+      "source_blob": "db5ac41b831f91487bfd4c4a1ea0c54bf3112009",
+      "source_mode": "100644"
+    },
+    "docs/usb-hro-review.md": {
+      "after_sha256": "88c4d03f45f28a814377c19b410b19aa9714be724dc97e1203ae294ab8503264",
+      "before_sha256": "88c4d03f45f28a814377c19b410b19aa9714be724dc97e1203ae294ab8503264",
+      "destination": "modules/usb-power/docs/usb-hro-review.md",
+      "disposition": "byte-identical",
+      "source_blob": "a32914063fd017dea16a14f693cf3a9c430ec8ae",
+      "source_mode": "100644"
+    },
+    "hardware/01_input_protection.kicad_sch": {
+      "after_sha256": "ea20151de3c821b978a1121ba121a453f32c124a4cd81c537d30327d12e17b83",
+      "before_sha256": "1321892634659ce18274ce0a768b9919fb067827a6b97325bb01090d971b8ebf",
+      "destination": "modules/usb-power/hardware/01_input_protection.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "ff646babe447296c3ad63f696272c120aedd5240",
+      "source_mode": "100644"
+    },
+    "hardware/02_hardgate.kicad_sch": {
+      "after_sha256": "6d298942fe57d9cc761b549cc474bbbf2537c79db36058b11e128cef8027910b",
+      "before_sha256": "3a59a0fff06c19dc120a17e555a05a4eed56d6f450bedfae79f9b611480319d9",
+      "destination": "modules/usb-power/hardware/02_hardgate.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "029ff7edc101b1509134dd09b34402a2efe4894a",
+      "source_mode": "100644"
+    },
+    "hardware/03_bucks.kicad_sch": {
+      "after_sha256": "935e9cd81fec3a35b4748936a3f045992fd832c514c1a55e4d3d8e5a3e58acd4",
+      "before_sha256": "ea070050a6022dc00eebe8ed5e6696c0fc37654d214aa307970f95fa7ac9cebb",
+      "destination": "modules/usb-power/hardware/03_bucks.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "caac2f9b9c2a6ea1603773eae6b10f47428c8a72",
+      "source_mode": "100644"
+    },
+    "hardware/04_bipolar.kicad_sch": {
+      "after_sha256": "2b50322c3e9e8e3df1ed638ca41964b7401dcf56fc2599adc2403557a3b24529",
+      "before_sha256": "cf7970b62096270436e4424f2e09638d9bd57481855002897b42a1827e4fcda4",
+      "destination": "modules/usb-power/hardware/04_bipolar.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "ab19a9526083f45204cd228ad033721183310162",
+      "source_mode": "100644"
+    },
+    "hardware/05_quiet_rails.kicad_sch": {
+      "after_sha256": "da595d6babb884a2f4afc9423b5fbf263c853e859bf2afd10b78fc32697a55ee",
+      "before_sha256": "751de70cb9c335b9cf507b09aaec39f0aa93f0e73d364df21cca4021c68f67b0",
+      "destination": "modules/usb-power/hardware/05_quiet_rails.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "bc8525d16522fed7530697a88e1e4b5bee8aecbd",
+      "source_mode": "100644"
+    },
+    "hardware/07_output_rails.kicad_sch": {
+      "after_sha256": "7087eecf3ab41a357df804749f59c9e2b71616816fa8a495a2b03c438f2a468c",
+      "before_sha256": "4521eb630eae7d1fe74df71f7235f5cbee90b9a5b3492d4eddced47470254e3f",
+      "destination": "modules/usb-power/hardware/07_output_rails.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "6150abc28aa47b222ba95a9913898feaad60a5d2",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.kicad_sym": {
+      "after_sha256": "82c5b6f51703d7e8e9bca4f6ff075a6c1c2d40f88db91844ad36b4c2f7d0d92e",
+      "before_sha256": "82c5b6f51703d7e8e9bca4f6ff075a6c1c2d40f88db91844ad36b4c2f7d0d92e",
+      "destination": "modules/usb-power/hardware/BigModular.kicad_sym",
+      "disposition": "byte-identical",
+      "source_blob": "390b3913165b3e12d6fac97d92b354570972705e",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod": {
+      "after_sha256": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
+      "before_sha256": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "7aae1bf9be934851eb2060542e71e2058beff518",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod": {
+      "after_sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+      "before_sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "4cf83e77f3c46b3cfd8ac8952395a5807a937fb7",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod": {
+      "after_sha256": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+      "before_sha256": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "85188009b643fd34e6df53d07bde315851236128",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod": {
+      "after_sha256": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+      "before_sha256": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "5d9f633c4daeb50abac60f7e438b24d2f99b5f62",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod": {
+      "after_sha256": "e1dae516e079b70c4736d001fb81bfb4ef5f9c2a37c8175223a44f83a04ff75f",
+      "before_sha256": "e1dae516e079b70c4736d001fb81bfb4ef5f9c2a37c8175223a44f83a04ff75f",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "e28159e7e871592560e811d3958925796a774b30",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/D_SMA.kicad_mod": {
+      "after_sha256": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+      "before_sha256": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/D_SMA.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "0e750f6aabe2d785d6017b0fd7ed32f1451a37e6",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": {
+      "after_sha256": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+      "before_sha256": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "904acfe77924c8e4611a6634c63ee38e198ca067",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
+      "after_sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+      "before_sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "3f88534c743812c9178fcd119104b6fbff649eef",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": {
+      "after_sha256": "f1154f7a5df90086a416a14a23effbbe3658ba33f3d7e5d2cc5e78493d66a6fc",
+      "before_sha256": "f1154f7a5df90086a416a14a23effbbe3658ba33f3d7e5d2cc5e78493d66a6fc",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "cb1642caf3fe60a7002615b07b6c2724d350ad25",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": {
+      "after_sha256": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+      "before_sha256": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "70dc2b880849d6709eed37166e7e84da5cb1186f",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": {
+      "after_sha256": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+      "before_sha256": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "3ac6547b3555aead70cdb3b2e07305ef50c5e31d",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod": {
+      "after_sha256": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+      "before_sha256": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "9344558c6efcac9f3edbeb2f3f837484b6714ab0",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod": {
+      "after_sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+      "before_sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "3cc5ed8296b3cb27f34e58d2a222f3f4e8b4fabd",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod": {
+      "after_sha256": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794",
+      "before_sha256": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "44825545f5c9edeac2651d2b9218fa804580df99",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/SOT-23-6.kicad_mod": {
+      "after_sha256": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+      "before_sha256": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/SOT-23-6.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "0d7fb87fa1559b84bc17ade3c34782fbed8611f7",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": {
+      "after_sha256": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+      "before_sha256": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "ff8511012e6a9b7c1aa0c7f8c1ccfe573fd3c431",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": {
+      "after_sha256": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+      "before_sha256": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "d14e1b6d2333988f46b27588766b9f06cbb512f5",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": {
+      "after_sha256": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+      "before_sha256": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "7aaf37209582a93401e5ead13a33bcdda997baff",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": {
+      "after_sha256": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+      "before_sha256": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "d53a1865ea9232e167b216a64e59575932cdd23f",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": {
+      "after_sha256": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
+      "before_sha256": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "dbd0321ca58ff8d5e76f628ccbbfc7bbcf85e7cb",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": {
+      "after_sha256": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+      "before_sha256": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "360c1e635898b0b63b95babacea8aa59c6ebc4fe",
+      "source_mode": "100644"
+    },
+    "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": {
+      "after_sha256": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+      "before_sha256": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+      "destination": "modules/usb-power/hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod",
+      "disposition": "byte-identical",
+      "source_blob": "ab36a0d0bc4ea843640ecc178953aae74364b0b6",
+      "source_mode": "100644"
+    },
+    "hardware/big_modular.kicad_pcb": {
+      "after_sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
+      "before_sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
+      "destination": "modules/usb-power/hardware/usb-power.kicad_pcb",
+      "disposition": "byte-identical",
+      "source_blob": "1810f050f893126bb2ed6f0c4a3d56f240b6b7e4",
+      "source_mode": "100644"
+    },
+    "hardware/big_modular.kicad_pro": {
+      "after_sha256": "a06dc170d02a97f4b254dd63131fd2cdc055071bdeee5929002c3022d1c10c6e",
+      "before_sha256": "3334530248291a9c49013b88312067a4da10d0c21efa658fd5a77419cc2b1433",
+      "destination": "modules/usb-power/hardware/usb-power.kicad_pro",
+      "disposition": "native-project-identity-only",
+      "source_blob": "ff5a80095118854535644f25b018bd2c815b7c77",
+      "source_mode": "100644"
+    },
+    "hardware/big_modular.kicad_sch": {
+      "after_sha256": "80bedaba5d4d355fc9acee67a6dc6a6145f45b6a83205f2a279a097fc1077dd1",
+      "before_sha256": "52046f74d709cb1a075ba766d01b14d6f720abff58218778ae9bcbdf4818ed85",
+      "destination": "modules/usb-power/hardware/usb-power.kicad_sch",
+      "disposition": "native-project-identity-only",
+      "source_blob": "8a6b40b6569f8f90851ac39e5aecff4e61d48dab",
+      "source_mode": "100644"
+    },
+    "hardware/fp-lib-table": {
+      "after_sha256": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+      "before_sha256": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+      "destination": "modules/usb-power/hardware/fp-lib-table",
+      "disposition": "byte-identical",
+      "source_blob": "471146f7d3277ecfd88d6a6546b0e555ffaff937",
+      "source_mode": "100644"
+    },
+    "hardware/front_panel.kicad_pcb": {
+      "after_sha256": "4b683de0128a8dea323bc2533b75e294d77f4e7dd20bdf7a239358bc5b6f3d77",
+      "before_sha256": "4b683de0128a8dea323bc2533b75e294d77f4e7dd20bdf7a239358bc5b6f3d77",
+      "destination": "modules/usb-power/hardware/usb-power-panel.kicad_pcb",
+      "disposition": "byte-identical",
+      "source_blob": "e6a0cff7f20b212fb7ab98f0e1fec1bf8534b9d0",
+      "source_mode": "100644"
+    },
+    "hardware/front_panel.kicad_pro": {
+      "after_sha256": "d8211fb9ceb1112ac893d16ada5df17ab439c3295ff61ca9fb112b4154045e52",
+      "before_sha256": "5f07e574f3e346076c53dd50d4c4cd10bbe0f84b390b082d176ee7db838bb2c6",
+      "destination": "modules/usb-power/hardware/usb-power-panel.kicad_pro",
+      "disposition": "native-project-identity-only",
+      "source_blob": "7b7c84609479de4d9edd7155ee15dbb3184a8348",
+      "source_mode": "100644"
+    },
+    "hardware/mechanics/assembly-envelope.scad": {
+      "after_sha256": "f088e2e7029272003fef235149ae715abdcaeedb06dee1ce917c1fec77ec9ab6",
+      "before_sha256": "f088e2e7029272003fef235149ae715abdcaeedb06dee1ce917c1fec77ec9ab6",
+      "destination": "modules/usb-power/hardware/mechanics/assembly-envelope.scad",
+      "disposition": "byte-identical",
+      "source_blob": "787c54c34098bbb5dba089155d983b7421b97e2b",
+      "source_mode": "100644"
+    },
+    "hardware/mechanics/corner_braces.scad": {
+      "after_sha256": "ce564638ca3a664eab28c0053a2430141b3da0bbc1677cf40a0320643fc4176f",
+      "before_sha256": "ce564638ca3a664eab28c0053a2430141b3da0bbc1677cf40a0320643fc4176f",
+      "destination": "modules/usb-power/hardware/mechanics/corner_braces.scad",
+      "disposition": "byte-identical",
+      "source_blob": "ea41ce560f66c2f894954c9bd95eb9a87256de55",
+      "source_mode": "100644"
+    },
+    "hardware/sym-lib-table": {
+      "after_sha256": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+      "before_sha256": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+      "destination": "modules/usb-power/hardware/sym-lib-table",
+      "disposition": "byte-identical",
+      "source_blob": "b089cf43f83c0e59366589c97473e876db7a56fa",
+      "source_mode": "100644"
+    },
+    "opt/kicad-jlcpcb": {
+      "after_sha256": "c3318a8626f73a237f8a4e72f0e8466d1ed3d6b69790a4b6b123a10aac69ef3b",
+      "before_sha256": "c3318a8626f73a237f8a4e72f0e8466d1ed3d6b69790a4b6b123a10aac69ef3b",
+      "destination": "opt/kicad-jlcpcb",
+      "disposition": "byte-identical",
+      "source_blob": "76cdb21aa09e54b4250d270c52e90008a7cc96ba",
+      "source_mode": "120000"
+    },
+    "opt/kicad-routing/API.md": {
+      "after_sha256": "eb10dfec066c7bc0dff8832684b9cec233b8737e2fba1f7093b282b8db3e4dd8",
+      "before_sha256": "eb10dfec066c7bc0dff8832684b9cec233b8737e2fba1f7093b282b8db3e4dd8",
+      "destination": "opt/kicad-routing/API.md",
+      "disposition": "byte-identical",
+      "source_blob": "36450819803458d32c9257e80c806beb5148d4c6",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/README.md": {
+      "after_sha256": "447368dd9a5ec2e56d784eec8df274773e0fff1c7caa9835d3d22c055836057f",
+      "before_sha256": "447368dd9a5ec2e56d784eec8df274773e0fff1c7caa9835d3d22c055836057f",
+      "destination": "opt/kicad-routing/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "d6a9cbd9e3ac0e90c29988a23a1fb11984cc695e",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/SAFETY.md": {
+      "after_sha256": "d645917ea5a2127cbf65a06916cbf9547ba59e4721d616da9d7c8fd8c1639177",
+      "before_sha256": "d645917ea5a2127cbf65a06916cbf9547ba59e4721d616da9d7c8fd8c1639177",
+      "destination": "opt/kicad-routing/SAFETY.md",
+      "disposition": "byte-identical",
+      "source_blob": "15ab2d219429ccf6dc8852d460702557da7ac650",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/SMOKE.md": {
+      "after_sha256": "2b5c8c502387291e5cff16371997defe73c937f19283f7b10ed9ad91d08118d9",
+      "before_sha256": "2b5c8c502387291e5cff16371997defe73c937f19283f7b10ed9ad91d08118d9",
+      "destination": "opt/kicad-routing/SMOKE.md",
+      "disposition": "byte-identical",
+      "source_blob": "bdb4f70ce67d6c76fa8d0480cf43395d5453363a",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/SUPPORTED_SUBSET.md": {
+      "after_sha256": "94ccb2fc3758194b30761fde7bfe36d6b58d65b71ac6219ab32a16dfbe2cbb8d",
+      "before_sha256": "94ccb2fc3758194b30761fde7bfe36d6b58d65b71ac6219ab32a16dfbe2cbb8d",
+      "destination": "opt/kicad-routing/SUPPORTED_SUBSET.md",
+      "disposition": "byte-identical",
+      "source_blob": "bcc7acf38c29e15e7507e0d4facf6386f9ffffeb",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/TESTING.md": {
+      "after_sha256": "138e724dfbf4b564480db0a76d52b30c4a82e54304e20ec2459e69e4572762a6",
+      "before_sha256": "138e724dfbf4b564480db0a76d52b30c4a82e54304e20ec2459e69e4572762a6",
+      "destination": "opt/kicad-routing/TESTING.md",
+      "disposition": "byte-identical",
+      "source_blob": "140b2104e968db3ecd4003109f1c59be212757a0",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/docs/premerge-review-evidence.json": {
+      "after_sha256": "380d82fc8dd5b450ab782ca58e3fec978432987ea8ad8e103f001fa5053bceed",
+      "before_sha256": "380d82fc8dd5b450ab782ca58e3fec978432987ea8ad8e103f001fa5053bceed",
+      "destination": "opt/kicad-routing/docs/premerge-review-evidence.json",
+      "disposition": "byte-identical",
+      "source_blob": "07089e7fef87824820fb55b8544f8a6832fc5111",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/docs/project-evidence.json": {
+      "after_sha256": "57293525278babf1b8b564c1a957db2b450c650e207f67c17d3e908701e83bcd",
+      "before_sha256": "57293525278babf1b8b564c1a957db2b450c650e207f67c17d3e908701e83bcd",
+      "destination": "opt/kicad-routing/docs/project-evidence.json",
+      "disposition": "byte-identical",
+      "source_blob": "0c15f49463a8a74fed1e7980593ce2047a57d6b8",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/fixture.py": {
+      "after_sha256": "1f81602128b2b86d01141935f31fcbbe8fb6e856b8108c363244fcef105d87b2",
+      "before_sha256": "1f81602128b2b86d01141935f31fcbbe8fb6e856b8108c363244fcef105d87b2",
+      "destination": "opt/kicad-routing/fixture.py",
+      "disposition": "byte-identical",
+      "source_blob": "8ee28f6b80f074ba8b0f357f6276d4cccd445b8d",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/general_flow.py": {
+      "after_sha256": "2e68229cc30fa3d502d7f14a953e17d7b2b0b04ec33e913be5140e5c0e8318e7",
+      "before_sha256": "2e68229cc30fa3d502d7f14a953e17d7b2b0b04ec33e913be5140e5c0e8318e7",
+      "destination": "opt/kicad-routing/general_flow.py",
+      "disposition": "byte-identical",
+      "source_blob": "f5c8ec9b9595e9b03a81431eb4c93bf05ee8e569",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/general_native.py": {
+      "after_sha256": "9c7bedd29528b47bb7db0754d2d2d6c49caa61a0c9100c3ccec20f6eb7c0a704",
+      "before_sha256": "9c7bedd29528b47bb7db0754d2d2d6c49caa61a0c9100c3ccec20f6eb7c0a704",
+      "destination": "opt/kicad-routing/general_native.py",
+      "disposition": "byte-identical",
+      "source_blob": "d0ccbafea51244559f9242cec23030f63b20403b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/pcbnew_adapter.py": {
+      "after_sha256": "6052e314cc0b6666375e16f0035d0123c148ffbb8260ae7aa3f30eec9e8fa31a",
+      "before_sha256": "6052e314cc0b6666375e16f0035d0123c148ffbb8260ae7aa3f30eec9e8fa31a",
+      "destination": "opt/kicad-routing/pcbnew_adapter.py",
+      "disposition": "byte-identical",
+      "source_blob": "55453c6373e6204514a94e56b9db14b6c76a8afd",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/project_contract.py": {
+      "after_sha256": "6bce074040345d231ec1369dbfa27a23d42bbf3c56368eb6911f7fda43f4cc12",
+      "before_sha256": "6bce074040345d231ec1369dbfa27a23d42bbf3c56368eb6911f7fda43f4cc12",
+      "destination": "opt/kicad-routing/project_contract.py",
+      "disposition": "byte-identical",
+      "source_blob": "5405ea2bd9dc0dcd94ffcfd5ebc4cec64bfee515",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/run.py": {
+      "after_sha256": "e6736fd428778a92cda14136b99695f3ac2cad2eb15906eac3ba843d40dcfde2",
+      "before_sha256": "e6736fd428778a92cda14136b99695f3ac2cad2eb15906eac3ba843d40dcfde2",
+      "destination": "opt/kicad-routing/run.py",
+      "disposition": "byte-identical",
+      "source_blob": "e97dc0b4a271efc15d8376b34fcd0a15a0785f66",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/runtime.py": {
+      "after_sha256": "a8678bc5048431337a01b605fff2afc335ade97a362dd959a59265aeaf7d17d9",
+      "before_sha256": "a8678bc5048431337a01b605fff2afc335ade97a362dd959a59265aeaf7d17d9",
+      "destination": "opt/kicad-routing/runtime.py",
+      "disposition": "byte-identical",
+      "source_blob": "3806d4843070170ff2c78757ced957cdb4c9cbc1",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/safety.py": {
+      "after_sha256": "62799cf0b189ee16064c66e1af5c2df7f9ae84130bf65a404b1caeddf9e1d552",
+      "before_sha256": "62799cf0b189ee16064c66e1af5c2df7f9ae84130bf65a404b1caeddf9e1d552",
+      "destination": "opt/kicad-routing/safety.py",
+      "disposition": "byte-identical",
+      "source_blob": "3c1f27623aec52d4bd687578c55ae10a900ed1ae",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/sandbox.py": {
+      "after_sha256": "6af31d220b00b059355cd983c79eb81389c97be2497666b9dbfca0567cea13cc",
+      "before_sha256": "6af31d220b00b059355cd983c79eb81389c97be2497666b9dbfca0567cea13cc",
+      "destination": "opt/kicad-routing/sandbox.py",
+      "disposition": "byte-identical",
+      "source_blob": "ab5388fb32f2eca8eeb3d408b28a043aa9bbc94f",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/smoke-summary.json": {
+      "after_sha256": "1f6af31fdf66d3610e148632100bd11dc66ce4598600c79ed4e3e9c7be698929",
+      "before_sha256": "1f6af31fdf66d3610e148632100bd11dc66ce4598600c79ed4e3e9c7be698929",
+      "destination": "opt/kicad-routing/smoke-summary.json",
+      "disposition": "byte-identical",
+      "source_blob": "f6b29b9bd5a5ac0088ed29a64457b0043f52cdcd",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/tests/native_project_checks.py": {
+      "after_sha256": "87b8407bc27ea479b4852f16e364057d6de45a6ae1e46911659cc8385e88bfbe",
+      "before_sha256": "87b8407bc27ea479b4852f16e364057d6de45a6ae1e46911659cc8385e88bfbe",
+      "destination": "opt/kicad-routing/tests/native_project_checks.py",
+      "disposition": "byte-identical",
+      "source_blob": "c787994bf289442b252d836f5fe9046d41f56779",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/tests/project_fixture.py": {
+      "after_sha256": "b5e8a166b17bfb532bbfe58b675d89ed2fef8b06d40f81163323f0472ad0c0e5",
+      "before_sha256": "b5e8a166b17bfb532bbfe58b675d89ed2fef8b06d40f81163323f0472ad0c0e5",
+      "destination": "opt/kicad-routing/tests/project_fixture.py",
+      "disposition": "byte-identical",
+      "source_blob": "e2f41e790947016c3d3b5bf42bb9d5ffb3089fba",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/tests/test_project.py": {
+      "after_sha256": "428e99b8b4fc7e930dfd8551f71fe3461cb7f9b0a85ff3225bb1157c7b51b68b",
+      "before_sha256": "428e99b8b4fc7e930dfd8551f71fe3461cb7f9b0a85ff3225bb1157c7b51b68b",
+      "destination": "opt/kicad-routing/tests/test_project.py",
+      "disposition": "byte-identical",
+      "source_blob": "ff9f4fa6fafa96f48f348463ba896baaafe985bc",
+      "source_mode": "100644"
+    },
+    "opt/kicad-routing/tests/test_routing.py": {
+      "after_sha256": "9164323e961a508566ca6cd8d9dc4c1976a63f76b33977382bcd9f162ed11c89",
+      "before_sha256": "9164323e961a508566ca6cd8d9dc4c1976a63f76b33977382bcd9f162ed11c89",
+      "destination": "opt/kicad-routing/tests/test_routing.py",
+      "disposition": "byte-identical",
+      "source_blob": "a37f98a9566527f6ae55fa06ee0eada7120b40e5",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/API.md": {
+      "after_sha256": "3fe9ed1480ac08941bec8db804dc5ffbde9e1e079476933d8923ce35339fc34e",
+      "before_sha256": "3fe9ed1480ac08941bec8db804dc5ffbde9e1e079476933d8923ce35339fc34e",
+      "destination": "opt/kicad-tools/API.md",
+      "disposition": "byte-identical",
+      "source_blob": "b26bd77c4f1ace616a2dc9b9fecb69fc91999d15",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/BUNDLE_README.md": {
+      "after_sha256": "0f9c08e6df96d71bb6acfb513820d562a5fa8b0f494b04e4ee5785c0df49ec12",
+      "before_sha256": "0f9c08e6df96d71bb6acfb513820d562a5fa8b0f494b04e4ee5785c0df49ec12",
+      "destination": "opt/kicad-tools/BUNDLE_README.md",
+      "disposition": "byte-identical",
+      "source_blob": "7c3465a7345d09eed36eaae419eff2f705a6ea1b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/BUNDLING.md": {
+      "after_sha256": "e6e5e0c1077ec60f5c6e19cba97391886c9d004256df3fe244cfb12ffb5156e4",
+      "before_sha256": "e6e5e0c1077ec60f5c6e19cba97391886c9d004256df3fe244cfb12ffb5156e4",
+      "destination": "opt/kicad-tools/BUNDLING.md",
+      "disposition": "byte-identical",
+      "source_blob": "5012a3deae52aafe1be5fa30dcda35b619abcff7",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/GUIDE.md": {
+      "after_sha256": "0576758adb26c86edf18ce2bc2a9ab11ab61e8b1956bae8454e07a885dd8d3f8",
+      "before_sha256": "0576758adb26c86edf18ce2bc2a9ab11ab61e8b1956bae8454e07a885dd8d3f8",
+      "destination": "opt/kicad-tools/GUIDE.md",
+      "disposition": "byte-identical",
+      "source_blob": "a2c17377f54366416bb3ffabd5c5929212e9045e",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/HYBRID_ROUTING.md": {
+      "after_sha256": "f460a1b9839315a3dc29c787c9add0aec11971969f814824ad42b21d23f6804d",
+      "before_sha256": "f460a1b9839315a3dc29c787c9add0aec11971969f814824ad42b21d23f6804d",
+      "destination": "opt/kicad-tools/HYBRID_ROUTING.md",
+      "disposition": "byte-identical",
+      "source_blob": "7444955b9e58ed58097ba6137012ebb55719a96b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/LICENSE": {
+      "after_sha256": "e1aaf7c7f14ea7c5cf91bc900811289e557e109a46512b428ede67a8408e9b6d",
+      "before_sha256": "e1aaf7c7f14ea7c5cf91bc900811289e557e109a46512b428ede67a8408e9b6d",
+      "destination": "opt/kicad-tools/LICENSE",
+      "disposition": "byte-identical",
+      "source_blob": "8fba9833df2aa615219337444afeaf5ee43ad4cf",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/MIGRATION.md": {
+      "after_sha256": "c29f281e3d1fef42937fc66092cc05510a21259ed853cade5a4a94fd1d0bfab6",
+      "before_sha256": "c29f281e3d1fef42937fc66092cc05510a21259ed853cade5a4a94fd1d0bfab6",
+      "destination": "opt/kicad-tools/MIGRATION.md",
+      "disposition": "byte-identical",
+      "source_blob": "23ac71e4cacf98029bb84db8304ab92bcd667e77",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/README.md": {
+      "after_sha256": "5a1a1779d37d0bf3455f07f8526519ebb0f2fbc4b8689dd0795b3d9be3659471",
+      "before_sha256": "5a1a1779d37d0bf3455f07f8526519ebb0f2fbc4b8689dd0795b3d9be3659471",
+      "destination": "opt/kicad-tools/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "1b7842d8d28c3abda515248e3c7b2e9aa5e73862",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/ROUTING-RESEARCH.md": {
+      "after_sha256": "d59a48958588d7fed04945923239cef82d7d1b9d3c45761bcf61eb59d9aef26e",
+      "before_sha256": "d59a48958588d7fed04945923239cef82d7d1b9d3c45761bcf61eb59d9aef26e",
+      "destination": "opt/kicad-tools/ROUTING-RESEARCH.md",
+      "disposition": "byte-identical",
+      "source_blob": "fe90e5a8f19c66be53c7b38a38303782f25b6a65",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/VERIFICATION.md": {
+      "after_sha256": "356640f48b5ab2baf458658edb909848fd031d1a00942aeb6b55fa59ec9733c0",
+      "before_sha256": "356640f48b5ab2baf458658edb909848fd031d1a00942aeb6b55fa59ec9733c0",
+      "destination": "opt/kicad-tools/VERIFICATION.md",
+      "disposition": "byte-identical",
+      "source_blob": "fca8745d2afb3dc84dcd16c1f78241714e2139ed",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/README.md": {
+      "after_sha256": "27d89fd5c7483ca6e26c97be21d45dff16e9444f84d89deb596985739cc74ead",
+      "before_sha256": "27d89fd5c7483ca6e26c97be21d45dff16e9444f84d89deb596985739cc74ead",
+      "destination": "opt/kicad-tools/automation/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "dc219ebc7351fe8c768d86df6977d9abb5dd2fe9",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/VERIFICATION.md": {
+      "after_sha256": "f4da6d35085d3d555101f74ec5c4ff3264064083d6748d636d0188ffabba2201",
+      "before_sha256": "f4da6d35085d3d555101f74ec5c4ff3264064083d6748d636d0188ffabba2201",
+      "destination": "opt/kicad-tools/automation/VERIFICATION.md",
+      "disposition": "byte-identical",
+      "source_blob": "59366483a63b4a66432fdbfa38011a5bfb787a24",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/__init__.py": {
+      "after_sha256": "725123f81a2fd8ee81e9a9b248df9b4cdcb1d0db47610cbcde2e21f2f2744310",
+      "before_sha256": "725123f81a2fd8ee81e9a9b248df9b4cdcb1d0db47610cbcde2e21f2f2744310",
+      "destination": "opt/kicad-tools/automation/__init__.py",
+      "disposition": "byte-identical",
+      "source_blob": "4a0f35705477a6e584eee71a552ee847bb1b77a5",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/_bridge.py": {
+      "after_sha256": "6732c14ec5f2e18aa2d1ed3ba6b0498308918f62e7cbbedc1c4d0d3357b5123c",
+      "before_sha256": "6732c14ec5f2e18aa2d1ed3ba6b0498308918f62e7cbbedc1c4d0d3357b5123c",
+      "destination": "opt/kicad-tools/automation/_bridge.py",
+      "disposition": "byte-identical",
+      "source_blob": "e7da99346d83a33189defe265d5967d5769fdfe7",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/_worker.py": {
+      "after_sha256": "07b38e94cbaba23ed93da3bfe62eca4d6a4fe9a84656092a57f62f2115c7fee4",
+      "before_sha256": "07b38e94cbaba23ed93da3bfe62eca4d6a4fe9a84656092a57f62f2115c7fee4",
+      "destination": "opt/kicad-tools/automation/_worker.py",
+      "disposition": "byte-identical",
+      "source_blob": "20a5a9c637f20d3546da67b63d0638ac6366e7a8",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/api.py": {
+      "after_sha256": "d5613a861c5a1599d2b10efa89f8da03b8561134447d79e3eb28c18abd07390d",
+      "before_sha256": "d5613a861c5a1599d2b10efa89f8da03b8561134447d79e3eb28c18abd07390d",
+      "destination": "opt/kicad-tools/automation/api.py",
+      "disposition": "byte-identical",
+      "source_blob": "1c4eef17e250fe2183182d73985263cebf070d13",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/docs/api.md": {
+      "after_sha256": "9571b18a91f54dd37ce6856141769be23f77c832c17e775a48eee854fa91243c",
+      "before_sha256": "9571b18a91f54dd37ce6856141769be23f77c832c17e775a48eee854fa91243c",
+      "destination": "opt/kicad-tools/automation/docs/api.md",
+      "disposition": "byte-identical",
+      "source_blob": "dea6d3d60f9f47e7c028ac398a2c90ddeadb2656",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/docs/safety.md": {
+      "after_sha256": "67db9d0aa85f79982417b9fd5bca4651649c2c1061168fb1c366da4a2dba9a9f",
+      "before_sha256": "67db9d0aa85f79982417b9fd5bca4651649c2c1061168fb1c366da4a2dba9a9f",
+      "destination": "opt/kicad-tools/automation/docs/safety.md",
+      "disposition": "byte-identical",
+      "source_blob": "68912f5dda469ce783b64e1604e6881680368b96",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/run.py": {
+      "after_sha256": "1a19608ebd235d73799e835716c20c1e4f6ba736ab94128e2086e507e2be2aaa",
+      "before_sha256": "1a19608ebd235d73799e835716c20c1e4f6ba736ab94128e2086e507e2be2aaa",
+      "destination": "opt/kicad-tools/automation/run.py",
+      "disposition": "byte-identical",
+      "source_blob": "53361c51a6b732c9016071a2b4cedaf3e19e7033",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/schema.py": {
+      "after_sha256": "9fe187970ae5e9844ddf6789cfa6a811384a213bfde6e61400f9a16586888e24",
+      "before_sha256": "9fe187970ae5e9844ddf6789cfa6a811384a213bfde6e61400f9a16586888e24",
+      "destination": "opt/kicad-tools/automation/schema.py",
+      "disposition": "byte-identical",
+      "source_blob": "7cc5d9f54c23281b46e829fab37d37e1eb7db11c",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/tests/fixtures.py": {
+      "after_sha256": "3dfe8bc083ff2bf9e5f0cdd509b41f879fcda479e07c4ba9d8f23d3116965319",
+      "before_sha256": "3dfe8bc083ff2bf9e5f0cdd509b41f879fcda479e07c4ba9d8f23d3116965319",
+      "destination": "opt/kicad-tools/automation/tests/fixtures.py",
+      "disposition": "byte-identical",
+      "source_blob": "8d185e650dc230d94ad8bd214ad01b2411b537c2",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/tests/test_native.py": {
+      "after_sha256": "573b35872303ad0d8ab138106c10518491eb6075043bbfe2b20409d28b20b804",
+      "before_sha256": "573b35872303ad0d8ab138106c10518491eb6075043bbfe2b20409d28b20b804",
+      "destination": "opt/kicad-tools/automation/tests/test_native.py",
+      "disposition": "byte-identical",
+      "source_blob": "9f0a01c2dae841bff9e57dd5644aefcbc05ff645",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/automation/tests/test_unit.py": {
+      "after_sha256": "b305433298d34fbe97ac73bf2d41782436644f5181abc2617c2b58aaa8b9d8ea",
+      "before_sha256": "b305433298d34fbe97ac73bf2d41782436644f5181abc2617c2b58aaa8b9d8ea",
+      "destination": "opt/kicad-tools/automation/tests/test_unit.py",
+      "disposition": "byte-identical",
+      "source_blob": "b89b4d225222fc99bfc68d16fb388d27b4899472",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/bundle.py": {
+      "after_sha256": "5cfb9c5ab7c1fcb641382df42cb782607857cd171a2edb14c3041bccfed66cb6",
+      "before_sha256": "5cfb9c5ab7c1fcb641382df42cb782607857cd171a2edb14c3041bccfed66cb6",
+      "destination": "opt/kicad-tools/bundle.py",
+      "disposition": "byte-identical",
+      "source_blob": "f3a8ab323ebef389baa401d5ed9210adf12a1d12",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/examples/project.json": {
+      "after_sha256": "832ac529d365b42f3a642ac5d217ba2615f5d7ccf231738084ec9bd14c6b4aef",
+      "before_sha256": "832ac529d365b42f3a642ac5d217ba2615f5d7ccf231738084ec9bd14c6b4aef",
+      "destination": "opt/kicad-tools/examples/project.json",
+      "disposition": "byte-identical",
+      "source_blob": "604b754ae2073cc30c8d49609effc507e55fe5d4",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/import-manifest.json": {
+      "after_sha256": "9926328ea272369ad2b9f5ae7246de291577779a834f486e29d5e02cd59c935e",
+      "before_sha256": "9926328ea272369ad2b9f5ae7246de291577779a834f486e29d5e02cd59c935e",
+      "destination": "opt/kicad-tools/import-manifest.json",
+      "disposition": "byte-identical",
+      "source_blob": "be9cf9eec909a273b9ddabba7db1c011a04f115b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/ASSEMBLY.md": {
+      "after_sha256": "4e6c3ae227db593b29b3ee3a78276b4073c78a38612a4c23b03eb295b6aa5738",
+      "before_sha256": "4e6c3ae227db593b29b3ee3a78276b4073c78a38612a4c23b03eb295b6aa5738",
+      "destination": "opt/kicad-tools/jlcpcb/ASSEMBLY.md",
+      "disposition": "byte-identical",
+      "source_blob": "4e8a8e75125bdefb7a9df84c16dc0d8d04d8bb7f",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/README.md": {
+      "after_sha256": "63934f16727e215af5e490dc8deb85a0924f42efb41cfb78f575af63b8d8bc97",
+      "before_sha256": "63934f16727e215af5e490dc8deb85a0924f42efb41cfb78f575af63b8d8bc97",
+      "destination": "opt/kicad-tools/jlcpcb/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "b5ac969ce905d23f31870aa9fa74b2a23ad16b48",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/add_production_files.py": {
+      "after_sha256": "da3484e603b8fafa8a82ddc860db3c3c96374f6fe530711fb308de95c8e85329",
+      "before_sha256": "da3484e603b8fafa8a82ddc860db3c3c96374f6fe530711fb308de95c8e85329",
+      "destination": "opt/kicad-tools/jlcpcb/add_production_files.py",
+      "disposition": "byte-identical",
+      "source_blob": "8212f82b44620eb7e14f705a8f51ec71c386d45b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/assembly.py": {
+      "after_sha256": "709a0bd2a07fe7953bf5d2241f9eec9758c8c3e6884a15e52dc6ab8ddadcda14",
+      "before_sha256": "709a0bd2a07fe7953bf5d2241f9eec9758c8c3e6884a15e52dc6ab8ddadcda14",
+      "destination": "opt/kicad-tools/jlcpcb/assembly.py",
+      "disposition": "byte-identical",
+      "source_blob": "3db4eab18f8ae10172f1a078182f6e5fbe7c3ca8",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/bom_audit.py": {
+      "after_sha256": "6fa1a1f9166fb3d6478450f1e7774f34568b880d68f1476078a78ee4a280300e",
+      "before_sha256": "6fa1a1f9166fb3d6478450f1e7774f34568b880d68f1476078a78ee4a280300e",
+      "destination": "opt/kicad-tools/jlcpcb/bom_audit.py",
+      "disposition": "byte-identical",
+      "source_blob": "8e8fb33881659cfb20476f44a31e93c49f1e65c8",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/catalog.py": {
+      "after_sha256": "38e775f261bdb5b7fd432974dc81fa8cac1595a9e15c0e721346a0d9095de12a",
+      "before_sha256": "38e775f261bdb5b7fd432974dc81fa8cac1595a9e15c0e721346a0d9095de12a",
+      "destination": "opt/kicad-tools/jlcpcb/catalog.py",
+      "disposition": "byte-identical",
+      "source_blob": "bfc0908ddf7aa89c009107689b1d5e4de09c72aa",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/examples/audit-requirements.json": {
+      "after_sha256": "6d3a27135ff501505e98e72908ec0111a2c87e598a75e7b08f73be69a43d31d9",
+      "before_sha256": "6d3a27135ff501505e98e72908ec0111a2c87e598a75e7b08f73be69a43d31d9",
+      "destination": "opt/kicad-tools/jlcpcb/examples/audit-requirements.json",
+      "disposition": "byte-identical",
+      "source_blob": "0d4957d0e983d70ae450bf4ccf78017f168e34b9",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/examples/capacitor-target.json": {
+      "after_sha256": "538b8fa400f5e0ebb5e7539169a98a19bb997b16b6d9e87ded0a8d8bc53e78ea",
+      "before_sha256": "538b8fa400f5e0ebb5e7539169a98a19bb997b16b6d9e87ded0a8d8bc53e78ea",
+      "destination": "opt/kicad-tools/jlcpcb/examples/capacitor-target.json",
+      "disposition": "byte-identical",
+      "source_blob": "682945dc78c050deb112d9f20d11176cf47aa2f1",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/examples/resistor-target.json": {
+      "after_sha256": "337baf6ae75d5f42ce002b282dc098b7969d38a5a1b8805d0308685f16cbf835",
+      "before_sha256": "337baf6ae75d5f42ce002b282dc098b7969d38a5a1b8805d0308685f16cbf835",
+      "destination": "opt/kicad-tools/jlcpcb/examples/resistor-target.json",
+      "disposition": "byte-identical",
+      "source_blob": "19ffacc9d2741d8e619fd8916ce734d7f78d3e3f",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/export.py": {
+      "after_sha256": "06f08a6d0e1f7883efdeb00528d656044a24f0913b19f7618f788f63a9ed394b",
+      "before_sha256": "06f08a6d0e1f7883efdeb00528d656044a24f0913b19f7618f788f63a9ed394b",
+      "destination": "opt/kicad-tools/jlcpcb/export.py",
+      "disposition": "byte-identical",
+      "source_blob": "d3242bff27119ad8b7c6250c2bf969084a68eadc",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/passive_planner.py": {
+      "after_sha256": "3e15f92f39aad5c599fd914946ea87a126e7909c0fdf5d73c25dd70509a3e568",
+      "before_sha256": "3e15f92f39aad5c599fd914946ea87a126e7909c0fdf5d73c25dd70509a3e568",
+      "destination": "opt/kicad-tools/jlcpcb/passive_planner.py",
+      "disposition": "byte-identical",
+      "source_blob": "e788ff3fea768c66196abe21c8fb4482a56819a4",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/fixtures/capacitor-voltage-aliases.json": {
+      "after_sha256": "ec6395957dc3c81bb6387b6cdd77e0b29f9914554a7817a13b9caae55c073a58",
+      "before_sha256": "ec6395957dc3c81bb6387b6cdd77e0b29f9914554a7817a13b9caae55c073a58",
+      "destination": "opt/kicad-tools/jlcpcb/tests/fixtures/capacitor-voltage-aliases.json",
+      "disposition": "byte-identical",
+      "source_blob": "ea6b1f29af535be481f4e275c8a96ecd94269e64",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/fixtures/catalog-C25744.json": {
+      "after_sha256": "5c22e454169a09389d68c3a2710cd565c695bd4528f0046165de2ece34a36c1f",
+      "before_sha256": "5c22e454169a09389d68c3a2710cd565c695bd4528f0046165de2ece34a36c1f",
+      "destination": "opt/kicad-tools/jlcpcb/tests/fixtures/catalog-C25744.json",
+      "disposition": "byte-identical",
+      "source_blob": "f8e7cde4203079ea93d7b0a052969398fb7a764c",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/fixtures/catalog-C25804.json": {
+      "after_sha256": "5cca5b9246a333c8fc6fef9509fee89174f1b2d4506405ada9bd86fd4528a99d",
+      "before_sha256": "5cca5b9246a333c8fc6fef9509fee89174f1b2d4506405ada9bd86fd4528a99d",
+      "destination": "opt/kicad-tools/jlcpcb/tests/fixtures/catalog-C25804.json",
+      "disposition": "byte-identical",
+      "source_blob": "74cf02ab2c1c71a07e0418951bb86fc8cd3569ff",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/test_add_production_files.py": {
+      "after_sha256": "85981e868dc12e85a62659dd171309ce770b5f45be1e24b4cd9db68e0d67c99c",
+      "before_sha256": "85981e868dc12e85a62659dd171309ce770b5f45be1e24b4cd9db68e0d67c99c",
+      "destination": "opt/kicad-tools/jlcpcb/tests/test_add_production_files.py",
+      "disposition": "byte-identical",
+      "source_blob": "0f75a59aa48458739f7075f789ceb1ae79980419",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/test_assembly.py": {
+      "after_sha256": "ebcefbe71e03fd8729f2b96e4651e963fe5969c81b19680b07b9902403a0ee36",
+      "before_sha256": "ebcefbe71e03fd8729f2b96e4651e963fe5969c81b19680b07b9902403a0ee36",
+      "destination": "opt/kicad-tools/jlcpcb/tests/test_assembly.py",
+      "disposition": "byte-identical",
+      "source_blob": "920ac00e482aed48ea6ebe81b166d03930dc0f5b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/test_catalog_voltage.py": {
+      "after_sha256": "edc37919a034b9cac0a5385dba0b92fa97d402abe6eb08b1eaf06ab74c4f4fec",
+      "before_sha256": "edc37919a034b9cac0a5385dba0b92fa97d402abe6eb08b1eaf06ab74c4f4fec",
+      "destination": "opt/kicad-tools/jlcpcb/tests/test_catalog_voltage.py",
+      "disposition": "byte-identical",
+      "source_blob": "6b7d0533f7434636d6d44b701c4debb415caf9cc",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/test_export.py": {
+      "after_sha256": "351afc68e76e1c3ef2dc6d4d2eed17df70dd3f3b6a3d054bd3da973661a0cc9f",
+      "before_sha256": "351afc68e76e1c3ef2dc6d4d2eed17df70dd3f3b6a3d054bd3da973661a0cc9f",
+      "destination": "opt/kicad-tools/jlcpcb/tests/test_export.py",
+      "disposition": "byte-identical",
+      "source_blob": "25bd7434238c435451ccbbc3a5740a77675f2aa8",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/jlcpcb/tests/test_shared_handoff.py": {
+      "after_sha256": "481496b9a444d1bad60cd4a7b71a40b6c3d9d7e2870a77d3863062d59538f703",
+      "before_sha256": "481496b9a444d1bad60cd4a7b71a40b6c3d9d7e2870a77d3863062d59538f703",
+      "destination": "opt/kicad-tools/jlcpcb/tests/test_shared_handoff.py",
+      "disposition": "byte-identical",
+      "source_blob": "7bf5c33a38972b20611695f4053793ee2d6f8dff",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/kicad_tools.py": {
+      "after_sha256": "f5575432bda50aac744ce8896b843d139bb05eccb3e90ae6fe307803c34b1840",
+      "before_sha256": "f5575432bda50aac744ce8896b843d139bb05eccb3e90ae6fe307803c34b1840",
+      "destination": "opt/kicad-tools/kicad_tools.py",
+      "disposition": "byte-identical",
+      "source_blob": "3c45a4a37c263581c6258d01666e6dd5f3a63705",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/native.py": {
+      "after_sha256": "c888cc0c1bdf06c7ec95266791dffd85cc35e17901304763abc8e2789f3c073a",
+      "before_sha256": "c888cc0c1bdf06c7ec95266791dffd85cc35e17901304763abc8e2789f3c073a",
+      "destination": "opt/kicad-tools/native.py",
+      "disposition": "byte-identical",
+      "source_blob": "d2035c0b50a084dd6498002cf6375d30fa93ac19",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/project.py": {
+      "after_sha256": "f7f63e7d7faa338703e9fd854a5e3b9f0b79881a570b6d99bb5dfff5552ea6c9",
+      "before_sha256": "f7f63e7d7faa338703e9fd854a5e3b9f0b79881a570b6d99bb5dfff5552ea6c9",
+      "destination": "opt/kicad-tools/project.py",
+      "disposition": "byte-identical",
+      "source_blob": "891b4fe008238ee60aafe6e1121ab5bd349e01ba",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/README.md": {
+      "after_sha256": "f9a8bf51a8e61563a1df36d9a578f24f01321b031c7020bbc0920b4de4a0e71c",
+      "before_sha256": "f9a8bf51a8e61563a1df36d9a578f24f01321b031c7020bbc0920b4de4a0e71c",
+      "destination": "opt/kicad-tools/schematic/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "2f26cc8bacf8f1619dc3f9e4bd78ffed0ade5a22",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/__init__.py": {
+      "after_sha256": "2e6113458d12252cbd19555420b48608863a7b1ca508e9df49666181bdf3872c",
+      "before_sha256": "2e6113458d12252cbd19555420b48608863a7b1ca508e9df49666181bdf3872c",
+      "destination": "opt/kicad-tools/schematic/__init__.py",
+      "disposition": "byte-identical",
+      "source_blob": "c00c0fb65341594a26fcb8c95796f0f8aab6d767",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/api.py": {
+      "after_sha256": "dec87fadd29398d604918050bfafdc32f86317f779bc1b8e120274e0a7497188",
+      "before_sha256": "dec87fadd29398d604918050bfafdc32f86317f779bc1b8e120274e0a7497188",
+      "destination": "opt/kicad-tools/schematic/api.py",
+      "disposition": "byte-identical",
+      "source_blob": "cf6cc2abcdefc1bd79a6580ea06b77232a459dcb",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/cli.py": {
+      "after_sha256": "1698f428462ec0c8e80a6a4db4e8eeb2643f77ee676b5e7a42424ef37a915c86",
+      "before_sha256": "1698f428462ec0c8e80a6a4db4e8eeb2643f77ee676b5e7a42424ef37a915c86",
+      "destination": "opt/kicad-tools/schematic/cli.py",
+      "disposition": "byte-identical",
+      "source_blob": "b811764342243ea3c590f1ecf19ea96dcdb401dc",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/docs/api.md": {
+      "after_sha256": "022a128daa91804286f9e20ad7cf5291696c43f4362b00bcd216ca111102d344",
+      "before_sha256": "022a128daa91804286f9e20ad7cf5291696c43f4362b00bcd216ca111102d344",
+      "destination": "opt/kicad-tools/schematic/docs/api.md",
+      "disposition": "byte-identical",
+      "source_blob": "8be4e26f3517de4da79ca253d3ad9604d255790b",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/geometry.py": {
+      "after_sha256": "7140c317bf94c9b6d213cc0fd9c6688ace1925e0abb8a354a650548b5c58957c",
+      "before_sha256": "7140c317bf94c9b6d213cc0fd9c6688ace1925e0abb8a354a650548b5c58957c",
+      "destination": "opt/kicad-tools/schematic/geometry.py",
+      "disposition": "byte-identical",
+      "source_blob": "1b088fb3d328782a5aad92ef8b45de4b1a1a9f71",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/tests/synthetic.py": {
+      "after_sha256": "b07e2008ef9b780c11b6a56393640dc2ec66a4885a754b4198d30c5f73033726",
+      "before_sha256": "b07e2008ef9b780c11b6a56393640dc2ec66a4885a754b4198d30c5f73033726",
+      "destination": "opt/kicad-tools/schematic/tests/synthetic.py",
+      "disposition": "byte-identical",
+      "source_blob": "51649c8f859a194da82a20a4a4416d3d57bf55d4",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/schematic/tests/test_primitives.py": {
+      "after_sha256": "4f0e1e477b2292b2b3512c1b564f3ea764f7d55153363cfe35d856b2c21df51d",
+      "before_sha256": "4f0e1e477b2292b2b3512c1b564f3ea764f7d55153363cfe35d856b2c21df51d",
+      "destination": "opt/kicad-tools/schematic/tests/test_primitives.py",
+      "disposition": "byte-identical",
+      "source_blob": "412fe38e2d62fb558aa80f0f7872ceecefd14245",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md": {
+      "after_sha256": "16b903cdbb6ea5ef78c484a59b1589c7ef9615955d0a05a1bdf3a389d89c36e1",
+      "before_sha256": "16b903cdbb6ea5ef78c484a59b1589c7ef9615955d0a05a1bdf3a389d89c36e1",
+      "destination": "opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md",
+      "disposition": "byte-identical",
+      "source_blob": "020a4319deaf1f48a8c68ea70701ae8e719c6727",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/skills/kicad-workflow/SKILL.md": {
+      "after_sha256": "ef6f49ffe4da77b73bd7830733212406f4d97838d7606d5b0c1876c57f88825a",
+      "before_sha256": "ef6f49ffe4da77b73bd7830733212406f4d97838d7606d5b0c1876c57f88825a",
+      "destination": "opt/kicad-tools/skills/kicad-workflow/SKILL.md",
+      "disposition": "byte-identical",
+      "source_blob": "141da648e99f9df4560ccf956e0b450850e41dda",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/fixtures.py": {
+      "after_sha256": "979f621d07f07c98b5ab8907c73d0a667555cdc1cd51aae0c61d7b2f555584e1",
+      "before_sha256": "979f621d07f07c98b5ab8907c73d0a667555cdc1cd51aae0c61d7b2f555584e1",
+      "destination": "opt/kicad-tools/tests/fixtures.py",
+      "disposition": "byte-identical",
+      "source_blob": "b2dbca7c641dbd631717d28cacfcc2c0ca9abffe",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/native_handoff.py": {
+      "after_sha256": "91803ecf54aac8ae44307bb7e1861011f5b5b7f9ce2466a58e62bcd8d0636313",
+      "before_sha256": "91803ecf54aac8ae44307bb7e1861011f5b5b7f9ce2466a58e62bcd8d0636313",
+      "destination": "opt/kicad-tools/tests/native_handoff.py",
+      "disposition": "byte-identical",
+      "source_blob": "07b08efff4a90d00d0526aac5dcaa7274162024f",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/test_cli.py": {
+      "after_sha256": "640a85ddcfd2c89b79cae17447c890b19738e6696957c0df62a8d671f544d17f",
+      "before_sha256": "640a85ddcfd2c89b79cae17447c890b19738e6696957c0df62a8d671f544d17f",
+      "destination": "opt/kicad-tools/tests/test_cli.py",
+      "disposition": "byte-identical",
+      "source_blob": "a49b95222b915e6ad52d176461be8c3dfa3433d2",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/test_consolidation.py": {
+      "after_sha256": "fbb2551a736c7df332438fab40d0e6c078e5428d5fb18bb67cb566225b1ec873",
+      "before_sha256": "fbb2551a736c7df332438fab40d0e6c078e5428d5fb18bb67cb566225b1ec873",
+      "destination": "opt/kicad-tools/tests/test_consolidation.py",
+      "disposition": "byte-identical",
+      "source_blob": "9146e011248dc60c4bcf87de5ee71528ab77baef",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/test_facade.py": {
+      "after_sha256": "ca2a8ff5728e40184d1507a7eec7f03997d1ab120175bf2762d0b0b31c2930b2",
+      "before_sha256": "ca2a8ff5728e40184d1507a7eec7f03997d1ab120175bf2762d0b0b31c2930b2",
+      "destination": "opt/kicad-tools/tests/test_facade.py",
+      "disposition": "byte-identical",
+      "source_blob": "630d9cf5c7da8733cfc50c72e0c1c96bc6b3cd2e",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/test_integration.py": {
+      "after_sha256": "070f9483f8f6e9179a33a4d9b7fb12cdce5b6929c86e6dd903534407ab14d8f1",
+      "before_sha256": "070f9483f8f6e9179a33a4d9b7fb12cdce5b6929c86e6dd903534407ab14d8f1",
+      "destination": "opt/kicad-tools/tests/test_integration.py",
+      "disposition": "byte-identical",
+      "source_blob": "4c1f826413413b656a964ac6ad309b16adcc8902",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/test_native.py": {
+      "after_sha256": "61bdd62b93ef2413a746396387142b3e9be78b6a7f1f762c0c59f2d0756938c4",
+      "before_sha256": "61bdd62b93ef2413a746396387142b3e9be78b6a7f1f762c0c59f2d0756938c4",
+      "destination": "opt/kicad-tools/tests/test_native.py",
+      "disposition": "byte-identical",
+      "source_blob": "fd2e1a9cfaafc52429cdcaefdcb302f326fb8972",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tests/test_project.py": {
+      "after_sha256": "c46c4df740d9cf39f6df4190519c891d45ff5f22a6d92e3373323084fdfe3852",
+      "before_sha256": "c46c4df740d9cf39f6df4190519c891d45ff5f22a6d92e3373323084fdfe3852",
+      "destination": "opt/kicad-tools/tests/test_project.py",
+      "disposition": "byte-identical",
+      "source_blob": "2ee640097f5fb026922c7ee9c727b30eb10f7378",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/BUILD.md": {
+      "after_sha256": "32ad029a540309f8994ee2917d3bc2bd24116d925612451e5ab8c0fc09e5cda9",
+      "before_sha256": "32ad029a540309f8994ee2917d3bc2bd24116d925612451e5ab8c0fc09e5cda9",
+      "destination": "opt/kicad-tools/tracemaker/BUILD.md",
+      "disposition": "byte-identical",
+      "source_blob": "0d5c7fe22710ef38b22a7505bac145fb6ac86d2e",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/README.md": {
+      "after_sha256": "4dfe2ff0743c95aa2a5fdcb64c729806ac300cc9c1cb21e9b030410fbf28de6e",
+      "before_sha256": "4dfe2ff0743c95aa2a5fdcb64c729806ac300cc9c1cb21e9b030410fbf28de6e",
+      "destination": "opt/kicad-tools/tracemaker/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "47acf29f3de9e67a0218469e238988459dd54f30",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/context.py": {
+      "after_sha256": "61b8f97cf788541499b0c71acd8caf3accd3ef11c76ba7d5f209328b555c06d3",
+      "before_sha256": "61b8f97cf788541499b0c71acd8caf3accd3ef11c76ba7d5f209328b555c06d3",
+      "destination": "opt/kicad-tools/tracemaker/context.py",
+      "disposition": "byte-identical",
+      "source_blob": "4ad81b2ef63bc1ae4bd0cdf599d1c9f0a1a2de36",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/native_snapshot.py": {
+      "after_sha256": "caa07a000cc248565bdc3dc1f6dd2c218dd7e473cbef725720a8af6b7ef7acc1",
+      "before_sha256": "caa07a000cc248565bdc3dc1f6dd2c218dd7e473cbef725720a8af6b7ef7acc1",
+      "destination": "opt/kicad-tools/tracemaker/native_snapshot.py",
+      "disposition": "byte-identical",
+      "source_blob": "74cf55b022ac27c62c776ed5a7b3f65e15b46bf4",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/provision.json": {
+      "after_sha256": "0c58f953bee7dad8de526fec9475e29e8d09d42c7f7de0993565b02b63b494eb",
+      "before_sha256": "0c58f953bee7dad8de526fec9475e29e8d09d42c7f7de0993565b02b63b494eb",
+      "destination": "opt/kicad-tools/tracemaker/provision.json",
+      "disposition": "byte-identical",
+      "source_blob": "d18a17885240db463499b9681c140e518641b018",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/run.py": {
+      "after_sha256": "9c4f5f767438cdd811d7bbf47ca3c3b0126e2304f79e5592d993c40e82306ac1",
+      "before_sha256": "9c4f5f767438cdd811d7bbf47ca3c3b0126e2304f79e5592d993c40e82306ac1",
+      "destination": "opt/kicad-tools/tracemaker/run.py",
+      "disposition": "byte-identical",
+      "source_blob": "423859c18ac01d3c703e056dc0e2a86ea9cc835f",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/test_integration.py": {
+      "after_sha256": "c5622f86b1478220674531bdbc9d51985502160adbc264130ebd3f207326389a",
+      "before_sha256": "c5622f86b1478220674531bdbc9d51985502160adbc264130ebd3f207326389a",
+      "destination": "opt/kicad-tools/tracemaker/test_integration.py",
+      "disposition": "byte-identical",
+      "source_blob": "0a0901808a6a91ea7feb20e0de3561e0e5f4b4c1",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/test_native.py": {
+      "after_sha256": "0ee9e1214441366782940e76bd0e4d85c62e903b9aa0c7c6a79fb7d3c766601a",
+      "before_sha256": "0ee9e1214441366782940e76bd0e4d85c62e903b9aa0c7c6a79fb7d3c766601a",
+      "destination": "opt/kicad-tools/tracemaker/test_native.py",
+      "disposition": "byte-identical",
+      "source_blob": "179286659398bd0d649588d058cde8ff69e6e6f9",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/test_trial.py": {
+      "after_sha256": "195183559aab6fa4c709bf06fd117b8cddc52972a9a9ac76f9eb826ffbac59bd",
+      "before_sha256": "195183559aab6fa4c709bf06fd117b8cddc52972a9a9ac76f9eb826ffbac59bd",
+      "destination": "opt/kicad-tools/tracemaker/test_trial.py",
+      "disposition": "byte-identical",
+      "source_blob": "a9dc8d9c8ad69d817aa67d421a55775518123ac3",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/trial.py": {
+      "after_sha256": "9863d7b9454d06f2d062e672de4a1d968e2e8ea4ed0e88b9cc4a71632f9cdb62",
+      "before_sha256": "9863d7b9454d06f2d062e672de4a1d968e2e8ea4ed0e88b9cc4a71632f9cdb62",
+      "destination": "opt/kicad-tools/tracemaker/trial.py",
+      "disposition": "byte-identical",
+      "source_blob": "f3db2b795a006c81a755a01f348eb711c16a212d",
+      "source_mode": "100644"
+    },
+    "opt/kicad-tools/tracemaker/validate.py": {
+      "after_sha256": "ad500ef9f004afc7953eafb05e32243f33dee6f774214e1c547b10f35b8fd6d9",
+      "before_sha256": "ad500ef9f004afc7953eafb05e32243f33dee6f774214e1c547b10f35b8fd6d9",
+      "destination": "opt/kicad-tools/tracemaker/validate.py",
+      "disposition": "byte-identical",
+      "source_blob": "286fda44b518c46d3008e60dfb86a172976cf732",
+      "source_mode": "100644"
+    },
+    "production/README.md": {
+      "before_sha256": "ea97f629f8b624e933f81cc4b47bb686fb28c0102d35ae2297dfdfe5b71532ca",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "1585d63ebeae905a577b48c435932366a5f5bc7c",
+      "source_mode": "100644"
+    },
+    "production/hro-integration/import-024.json": {
+      "before_sha256": "72513cbfad5f465fc9d926979780133887e34f761650f98a8da6bb49297320a2",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "b4b76ec6c1791b3fa74e4d824dcddad2ae3fb0f5",
+      "source_mode": "100644"
+    },
+    "production/hro-integration/main-presentation.patch": {
+      "before_sha256": "0c2bca68846fa99c24db2254b0cea246fd99d382ebd183001c687d69416d2a20",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "b083552874721d9d50f42f506213a9ad1681443c",
+      "source_mode": "100644"
+    },
+    "production/hro-integration/main-saved-overlap-backup.zip": {
+      "before_sha256": "0adc3bf83473b051947ad2b2718b72f00ab88639e61c325ed8e8a36da76c81a1",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "3c075c56d44561301a0d0b5808a6ab11abaf5879",
+      "source_mode": "100644"
+    },
+    "production/hro-integration/preservation.json": {
+      "before_sha256": "08edd36cedc45b5a7f0f0627b90e0dd97e00a5969682b2da53e5947c31e7f5fb",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "5152bf39a9db97c3d50bda3c9c069bf10043d5b1",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/Big-Modular-HRO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip": {
+      "before_sha256": "7303f16fd84ebb2e998bc5d1bc3aa801b5ad7916357aedaa45e7fb3a6f16c51c",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "dd2202dd88bd40e249bce093fbe7dec0e029bbde",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/Big-Modular-HRO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip": {
+      "before_sha256": "225300b8516a0408e8088f8c28a35a51501210ac0091ff41381274731bfe5948",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "5fe6f9e9d3626db185a967aa1b8bc82057c6fe45",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/Big-Modular-HRO-R1-PASSIVE-PANEL-BARE-PCB.zip": {
+      "before_sha256": "08b6fd20b605f29dbb848c27f67d2aad07645d630d5d01c6b55d892b4718ba3c",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "888acc6bd45b6072144d67552c7459f1c4921593",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/assembly-stencil-support-only/READ-ME-FIRST.txt": {
+      "before_sha256": "f44b04cc13c879a5515ca1f52c62c8cb9311fa2c3b7940825446872e5de60321",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c2386de7984d87fed80fd8917d362b277fc89646",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/assembly-stencil-support-only/SHA256SUMS.txt": {
+      "before_sha256": "001c80742d965c328ebc1ba04a6123178e96b006411bc68ed62b45c50cfd3f6e",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "798dd7d1d4278527c206a4a9d57041fb0c1dac8d",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/assembly-stencil-support-only/big_modular-B_Paste.gbr": {
+      "before_sha256": "45ebc0d92eeb9c89d0824435aa116a6d5fed0ff3cfa60fd95d3cf7ca9f72ad59",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "195fd933a657892f10921595587068c413d814fb",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/assembly-stencil-support-only/big_modular-F_Paste.gbr": {
+      "before_sha256": "bc98a16686dcb96e5af552c7636b8e6d78f327ffe85e415f6d3ebf517d13b4f2",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "832a0c92ff98c9aa8db3b076b62eb102bcdc859a",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/assembly-stencil-support-only/source-sha256.json": {
+      "before_sha256": "e9a1182df2670ff2a73c0661563023cd09998f02c9680d2b48680a7d99e4cbb5",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "6ea356e0e60a53cd09129654f088404c790b7f08",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/cam-inspection.json": {
+      "before_sha256": "6dfac34494555b664d007efbd7d6bdcf07337314a04bee0266fe95cbbc8a5639",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c2b29e3d914953265a088dc7c31773aa59f636ca",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/FABRICATION-REQUIREMENTS.md": {
+      "before_sha256": "4b33e92d4bee21ef2f2520c7f84ca39f48eb5aace2ca1f7b95ee814158a3c804",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "5d7b834b0ba7eefdb3f0f9307ade6ba0d3fa0737",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/READ-ME-FIRST.txt": {
+      "before_sha256": "b2a3ce1f3c2d9f58d554e16eaedc672dad9c459521a8a30126675bcca8d3135d",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "9eae181bb79a7bf92aec3c72e9aae0c5d80f5139",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/SHA256SUMS.txt": {
+      "before_sha256": "49704aac6e7630ec1305090e904ee3ad9a1c10ca9e934a4e7423234a8ea36891",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "817160a25bb0fa62e8479ee3db22c067eb28ccf4",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-B_Cu.gbr": {
+      "before_sha256": "536f236e8f2f789668c958e5d7ae285d97f57e430009ba91858a5470d8f5a7ff",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "05198d14e63b975ba3c95c81a9068ae42063649d",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-B_Mask.gbr": {
+      "before_sha256": "fb7a72a9ad73ea6af3c4f4879c5b2c84a836b50bac2db535c58693062d7e0f0f",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c3fa258dcacfbb4e3834b72df3b6dfa3e01b6852",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-B_Silkscreen.gbr": {
+      "before_sha256": "f37898e15c1f9ff18da8f72df323e01b34ae34ba28102b08488ca1351137c3d3",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "898869d4e8996208d5b1b3c100bdc5187a284d18",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-Edge_Cuts.gbr": {
+      "before_sha256": "008271cbfbe298600e9f3dde8302023d3647207b6ab8bf2396c49cda2f8584ae",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "f3b6168049811fd7c4c253780c6c89591a085f23",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-F_Cu.gbr": {
+      "before_sha256": "6b2fa2bf93acedd971782d8bedb40f096fee0bf0f68992514e63cc986e01464e",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "57d06c5647d14a57076e3aa49ceebc84dddcd01f",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-F_Mask.gbr": {
+      "before_sha256": "8316ce687495782986e951754d9a3f0e044427022948113eefc81a813750f2cd",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "68fb488531086a35bcece3585d2767dbc480ce52",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-F_Silkscreen.gbr": {
+      "before_sha256": "26b29a41779070e48993735a0bbcc58c6f093571ec0a89a99aadadafa294f289",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "eaf2c047a5ab4ddf34e11afc362d496ebea5a411",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-In1_Cu.gbr": {
+      "before_sha256": "a2f77ea38af32a011aa94b73644fa6214908d5ec44c6475ee8b7e3fdb99ec521",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "e990a3c86b6bbb8d9f727a7d16ce91ed3962acb9",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-In2_Cu.gbr": {
+      "before_sha256": "cad65f67fab7b0d4a1aebddf00f025d78741d0013bf64b7564535882e696e5e5",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "b99c386571ef103040339d94c21e5c4e3f7be14b",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-NPTH.drl": {
+      "before_sha256": "a18c0d599b07c0e87fb1534cfa87ae1ffe5ea959a8c6bf058361da6cdd1973bb",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "b5c83f648be31d708adf6e6153e0bcc7a1409e5a",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-PTH.drl": {
+      "before_sha256": "ae2f9ad045f1f4ab6e54b514aad14bd41a948c9bd7a4bb783fadc7a94bb79b72",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "d0253a95248cae27b4fe978ead8f8fb8b891e297",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular-job.gbrjob": {
+      "before_sha256": "b41e0b53adba891460bbff657916403f1a9b6fc1a66dcaa5ad346a4250c3ce0e",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c2755f607ec87c3e971b86654ba71a7f07b78164",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/big_modular.d356": {
+      "before_sha256": "7cd7507273e490f38fe68d7abada2d25022daffddc43afff0908a63bf0268df1",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "af911bf5bff74f1c090d70b64613a9d2d74f9a3e",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/drill-report.txt": {
+      "before_sha256": "2102c14310aca3096875625eb2bfe4d7631bbb4c187422a3a2ee17a2a901a88f",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c66b85335b98b6b22ab486130026b5f2caa3c837",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/fabrication-spec.json": {
+      "before_sha256": "26b4e2a2e34507fe6c812f621433353436da367f8d24179fcd6ffa53ea8eba12",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "1b7a6cab46c5152ef83087d7aaff47877dbdb8f7",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/ipc-net-name-map.json": {
+      "before_sha256": "9ceac6f0e10a8600eaa20b5bfe85a4f135f11de481d54a4be0be29dd9d16dbdd",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "10bf5939cf94d4df52ef7e8b6400e6a7502674a7",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/source-sha256.json": {
+      "before_sha256": "e9a1182df2670ff2a73c0661563023cd09998f02c9680d2b48680a7d99e4cbb5",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "6ea356e0e60a53cd09129654f088404c790b7f08",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/via-audit.json": {
+      "before_sha256": "a9c5bfb4c861f0cc14deddef7241c8305f9aeb15141007992802509170f5ca11",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "2be3d7a49881954afe4a1618de8c0d3f2b01c14a",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/carrier/via-process.tsv": {
+      "before_sha256": "d024fbfb1db542f0a742ebe6e969430dbe760098d65640486a85ec82b48439b4",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "d2f802d8d5f3ff5ee404f90c53596ec55553bad7",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/manifest.json": {
+      "before_sha256": "05a5b1b7dbb54847fb15befba41ee69642b1185c4dd548c64733462cdf4f04cb",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "2bbe6b23f9bd2c853779c382bfbafe0681d86b77",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/FABRICATION-REQUIREMENTS.md": {
+      "before_sha256": "4b33e92d4bee21ef2f2520c7f84ca39f48eb5aace2ca1f7b95ee814158a3c804",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "5d7b834b0ba7eefdb3f0f9307ade6ba0d3fa0737",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/READ-ME-FIRST.txt": {
+      "before_sha256": "4648e7f2335fd69b3ca0834341bfec6fbe6242e658a52606268365148657c085",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "090274dfee891093e98b23aef2d692519d368d44",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/SHA256SUMS.txt": {
+      "before_sha256": "a48a806e0373991bec9dc1b3184fc6f7757041dd5feee15a6deeaa01ebbc2f86",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "04dec2a766f0b920f2578f2d50315d1c8e8a77a2",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/drill-report.txt": {
+      "before_sha256": "4f1e34485d0be4ed50cc54f88607d466563be7ec5e0cfe20324a92da37ecf76d",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "e22ac5a8c6ebe9b721bf1945218bc2fec26860ad",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/fabrication-spec.json": {
+      "before_sha256": "3152fe8dfa714f9492345e5fc677c012627c4fcc4d1622b34648731b0691645f",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "ab588574616d7a26f6541b1f4fd9fda3ef866e89",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-B_Cu.gbr": {
+      "before_sha256": "6dfb24513360036f1ec858d7c93baed88714119bbe114819014f24eef165389b",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "f4e6e4e4ee81db5ee89b2bd640df7fcf0307e52a",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-B_Mask.gbr": {
+      "before_sha256": "9b3b7628e7d6d43ef0daea73bf6f68b582d361c1afcb0ecf8dee6bdc9e4b3074",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "d6447f26ac5fd822a126b306c0dd33da24257b47",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-B_Silkscreen.gbr": {
+      "before_sha256": "a52e9fbbd67bcbf94a5e1fc1277cd2d5dbf9e2163dbc6b5b7e32c97bba28fb3f",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "7f752f0646c92f659a23682a1537ea5e3e1ab41c",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-Edge_Cuts.gbr": {
+      "before_sha256": "cf6a56cb6c17e7be2d432b4c5b5e0f038106f3c7cd11a585ebf735503dc70e11",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "cb553189bf966652ef6a95376e706bf17d01efef",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-F_Cu.gbr": {
+      "before_sha256": "51052a396c552f67fec88013778c05db49125641594f376ba8b13c0695cf7419",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "67a382efd29f75dee5a7ee501b7b693e141c0005",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-F_Mask.gbr": {
+      "before_sha256": "52c0c3bb7658e40c13476588bf88293f622007808a4844fd80375066d4c52b48",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "428390a232c144b70d882dcb500fb6953f60f9ec",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-F_Silkscreen.gbr": {
+      "before_sha256": "35edf7d9f0b2344508b00e4ee2157d00de98dde9e35ec73e753831ddc1eb8b72",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "9078e256a549b8709e336f52531aac39c08dc355",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-NPTH.drl": {
+      "before_sha256": "8f0f83d02a4f6a2afda0fe60ff7cced34ab03eb8373373d017d866185fcc9d40",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "94ccedef189d1563718e610911c83497920c1071",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-PTH.drl": {
+      "before_sha256": "e88ae277558e1059701f166e1bffb364146264898fe76e998f91a4f7fc76f0f1",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "ec7a1be886d0aa21c418487a269fa423997491a1",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/front_panel-job.gbrjob": {
+      "before_sha256": "667f115d2061ef7e6fea2c5534ab548b316de25ad4b6b95a575c2c1c3a4a2234",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "1569aacc12621a7ed4ca2b12d867bc2d52a8dca6",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/passive-panel/source-sha256.json": {
+      "before_sha256": "e9a1182df2670ff2a73c0661563023cd09998f02c9680d2b48680a7d99e4cbb5",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "6ea356e0e60a53cd09129654f088404c790b7f08",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/carrier-copper-cam.png": {
+      "before_sha256": "99ef933b6a13b0061c4575e058ada3aff0385139e1b0783a07894a156023755e",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "58b7b7fc261746cfba5e29ba2a62555e5d0db2a3",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/carrier-copper-cam.svg": {
+      "before_sha256": "999d153bafb8bf53fe8fddef0f881a941c843e01bd87006c936929b9a3d25211",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "2c1ca7d0f656c544f0d34f944c0ee567e1ce2dcb",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/carrier-mask-silk-cam.png": {
+      "before_sha256": "a005484335d773b76f4d610691ffb5d3128fab188918825ba14b496e897c4606",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "9589d2277d1e8e6e16bba99be6eefe713be72ce8",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/carrier-mask-silk-cam.svg": {
+      "before_sha256": "6970225975b71f8eb5559dc91fb8d64a501afcde5cb933e770fd323e7214c2df",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "08a660786c45ab11d567245b28b78b647fa4dd26",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/efuse-cam.png": {
+      "before_sha256": "323ca2cca6c794711d43e7cdf177cd80bfdba5844888fc043268112d7dc8f8ce",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "a5f4830f60a7806702a80e9a2bcc67aedcd89e83",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/efuse-cam.svg": {
+      "before_sha256": "f6e81af95e1fd0ac934301e79c280edb10587933e64a9ec7b9835245d4632d6b",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "fdb27c050aadd81b696cd4f0fc83b6dec2aa6809",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/hro-cam.png": {
+      "before_sha256": "ff3be60e42bddeffe25bbb12f4477c0c3747615a50c2dc3617828507f3adf9c9",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c2659e5ff005a4697117c47876c713004e0e3e3d",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/hro-cam.svg": {
+      "before_sha256": "f3127432b16184515793ae8409984c94c8a6366b029f2ac75a90c4d001064b99",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "005b8b4d7341cae536b20b2ff32cf044f0cf5307",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/passive-panel-cam.png": {
+      "before_sha256": "dc085f3cd0419313e63e553ebb99362bd4b43b05b3f8f2609e3a961cecfe54cb",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "6b5bd779b8b5e83f2135e9a41d3374caadff450b",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/passive-panel-cam.svg": {
+      "before_sha256": "ead59a909de1d85740e78c33b24a32147869e7dc2ea39e8107c26d8cba2f5cc2",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "776ce52489b6acbb10aa8597d8402361f1c87055",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/passive-panel-detail.png": {
+      "before_sha256": "590a6f023032dd25aa8f79b63a18171a4a7385acbaefb19827041f2f2501cd55",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "b9f52b4f8a5543606c2a17c1027bfce30294e1b7",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/previews/passive-panel-detail.svg": {
+      "before_sha256": "003c573886fe3ca76988df6e0c0799368f0d907447c09a81be1d4e7a61644b8f",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "75757eaaf12d4ea20e5019cfcec1a7cf49c88bd8",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/release-validation.json": {
+      "before_sha256": "bd0c1a65ee42fce49a9edb0d9f0050561ef94eb5ca281d4872a7f360fd3dedad",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "bac41b7acf3ca0762db713f48c68ee2eecbf87e4",
+      "source_mode": "100644"
+    },
+    "production/hro-r1/via-audit.json": {
+      "before_sha256": "a9c5bfb4c861f0cc14deddef7241c8305f9aeb15141007992802509170f5ca11",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "2be3d7a49881954afe4a1618de8c0d3f2b01c14a",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/README.md": {
+      "before_sha256": "a8057c8aa66577f9860309fc7dbc05f13b0c5ef30abd438a6d34b5ed3785cb2a",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "5f86bddff053c20c631b21388cf4eec8c53e7a19",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/carrier-drc.json": {
+      "before_sha256": "7b33140e2de5cc20722128bf6dd76bbdd94914e5a3cfcfc1cc6815256ab8db6c",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "270b26c263ea64ec5ba2c607dfec815875237770",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/carrier-erc.json": {
+      "before_sha256": "91fe03f39dd0ebee2601b9cd203d6f0c0c4e830606c7bc5fde939d9f7c5b2008",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "9b8fed8b079bb83468dcc200458969bbac392322",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/common-native-summary.json": {
+      "before_sha256": "aafbb6162cecbd433a71a287b75dbf5c4748fd894ec47538d75390ab83aa7671",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "2bdef2a84b7e2cae96b21df1ec90921633d69f9c",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/panel-drc.json": {
+      "before_sha256": "23c7b83660027ba5086b684794e6c3d4af67a88038b41580b927e48d88e94e61",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c3a122852c8eb9490ac37943c89a2be871c75e8e",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/project-verification.json": {
+      "before_sha256": "8c121725e06fcabf579282d4cebb98642ce4319bfa24371604eed486ec468952",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "c44424950e961c1c1e3a653ddb6765299125d501",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/reproducibility.json": {
+      "before_sha256": "db62d3e4f205a7533e101d6e21a059ca4975991260b11935467fb2ccb5118827",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "ae7a334a3f50e1069170888fc975dc2873323356",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/stack-verification.json": {
+      "before_sha256": "ae9eb372e968059e1e508d9c4f61e4de41955f2bda42b54549a639112e4b3899",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "8a15896a84dd761d23a3f73954dfa3f0cb0b7e50",
+      "source_mode": "100644"
+    },
+    "production/hro-verification/tests.log": {
+      "before_sha256": "15d97a3ad630672aa4bbd0b00af08a390508114b8afa712bdbdf1e62a4ba46ba",
+      "destination": null,
+      "disposition": "retired-git-only",
+      "reason": "User removed production archive; original object retained in this repository",
+      "source_blob": "5d357765a2b867f437fba946c15f32544d8b2793",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip": {
+      "after_sha256": "f8fd27ab8cc11f9cea0a4601c4644f27bbda52bf6c3766baaa2f2d05ae9ec772",
+      "before_sha256": "f8fd27ab8cc11f9cea0a4601c4644f27bbda52bf6c3766baaa2f2d05ae9ec772",
+      "destination": "modules/usb-power/jlcpcb/Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip",
+      "disposition": "byte-identical",
+      "source_blob": "2806798cac8d3558ea4d42194e3c5ab55fe1652e",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/Big-Modular-LDO-R1-CARRIER-4L-STANDARD-VIAS-BARE-PCB.zip": {
+      "after_sha256": "3afcabc7695dd6ec80bc085c15e56545edd724767973aa244bd70aa3633f0f07",
+      "before_sha256": "3afcabc7695dd6ec80bc085c15e56545edd724767973aa244bd70aa3633f0f07",
+      "destination": "modules/usb-power/jlcpcb/Big-Modular-LDO-R1-CARRIER-4L-STANDARD-VIAS-BARE-PCB.zip",
+      "disposition": "byte-identical",
+      "source_blob": "f6f7ccd1f69b9f4b58f504511ed7165c755d46e4",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip": {
+      "after_sha256": "4b5a9dc51406c37656ba143a02a1ef51f456ab5e54cc72a54bee81fa6a40355e",
+      "before_sha256": "4b5a9dc51406c37656ba143a02a1ef51f456ab5e54cc72a54bee81fa6a40355e",
+      "destination": "modules/usb-power/jlcpcb/Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip",
+      "disposition": "byte-identical",
+      "source_blob": "048392fb7422b821c1d0266e34165dbf16434de8",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly-stencil-support-only/READ-ME-FIRST.txt": {
+      "after_sha256": "428879f98513c624081ed6fefe18380e1f415bb5662869817d9343875ca9df66",
+      "before_sha256": "428879f98513c624081ed6fefe18380e1f415bb5662869817d9343875ca9df66",
+      "destination": "modules/usb-power/jlcpcb/assembly-stencil-support-only/READ-ME-FIRST.txt",
+      "disposition": "byte-identical",
+      "source_blob": "41a786eea2792b2cd8b89215234fcc367c92bbf2",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly-stencil-support-only/SHA256SUMS.txt": {
+      "after_sha256": "52c546639a6d6652e58d0051647c679e65f7188ed6b94989a5e057ce1a09b728",
+      "before_sha256": "52c546639a6d6652e58d0051647c679e65f7188ed6b94989a5e057ce1a09b728",
+      "destination": "modules/usb-power/jlcpcb/assembly-stencil-support-only/SHA256SUMS.txt",
+      "disposition": "byte-identical",
+      "source_blob": "cf88c6af9a2022fb9ffa9051eccd0988cebefc43",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly-stencil-support-only/big_modular-B_Paste.gbr": {
+      "after_sha256": "d0c8f5e4c19e30a4713e96d4c9e51aa3c4f7e986dc359b81f0617b4f5fceecf4",
+      "before_sha256": "d0c8f5e4c19e30a4713e96d4c9e51aa3c4f7e986dc359b81f0617b4f5fceecf4",
+      "destination": "modules/usb-power/jlcpcb/assembly-stencil-support-only/big_modular-B_Paste.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "03dfed81b05aa244324cd9229177cabd03cfb2d6",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly-stencil-support-only/big_modular-F_Paste.gbr": {
+      "after_sha256": "b2475dd8ed598a999c9d1c51a521169fe771f93aa07a671c4927d02bba0988f3",
+      "before_sha256": "b2475dd8ed598a999c9d1c51a521169fe771f93aa07a671c4927d02bba0988f3",
+      "destination": "modules/usb-power/jlcpcb/assembly-stencil-support-only/big_modular-F_Paste.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "97ef41b15dafee11fe6cf952c670fe7354b52af2",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly-stencil-support-only/source-sha256.json": {
+      "after_sha256": "17611293cbc63b46735ebf8866fcd756c2bd11c06043bb3f4cf35e705cfda5d7",
+      "before_sha256": "17611293cbc63b46735ebf8866fcd756c2bd11c06043bb3f4cf35e705cfda5d7",
+      "destination": "modules/usb-power/jlcpcb/assembly-stencil-support-only/source-sha256.json",
+      "disposition": "byte-identical",
+      "source_blob": "11fdc9d2c532bd78b6d159dfd2e356457b0f73b3",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/README.md": {
+      "after_sha256": "9a8f78db666c54bec856ab766194d32cca5f725979a21ed53ea1543e99116db8",
+      "before_sha256": "9a8f78db666c54bec856ab766194d32cca5f725979a21ed53ea1543e99116db8",
+      "destination": "modules/usb-power/jlcpcb/assembly/README.md",
+      "disposition": "byte-identical",
+      "source_blob": "9ec4837677468a15f7456ffebbdf39b729f4a6fa",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/SHA256SUMS.txt": {
+      "after_sha256": "52347ebc9240a06be6337af692afbbbf937dde0119c6b9cb771e15309119e6a6",
+      "before_sha256": "52347ebc9240a06be6337af692afbbbf937dde0119c6b9cb771e15309119e6a6",
+      "destination": "modules/usb-power/jlcpcb/assembly/SHA256SUMS.txt",
+      "disposition": "byte-identical",
+      "source_blob": "e5ac7fb3630d1f45cfe83d0ac0c0b3b88ab5bc0a",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/assembly-report.json": {
+      "after_sha256": "8db355fd4976591882c9e12d1a96a34332b511e67d295a8acb36b61bc4e25870",
+      "before_sha256": "8db355fd4976591882c9e12d1a96a34332b511e67d295a8acb36b61bc4e25870",
+      "destination": "modules/usb-power/jlcpcb/assembly/assembly-report.json",
+      "disposition": "byte-identical",
+      "source_blob": "8096c04db0e854cd9d025889bc43a47d4a04a0f2",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/bom.csv": {
+      "after_sha256": "4b37256a939de0a02ad9c113ee01a9cbf9fd529bbbb463177c3440b799c6fd40",
+      "before_sha256": "4b37256a939de0a02ad9c113ee01a9cbf9fd529bbbb463177c3440b799c6fd40",
+      "destination": "modules/usb-power/jlcpcb/assembly/bom.csv",
+      "disposition": "byte-identical",
+      "source_blob": "bf9a36c9a4a751c47f03ad6f5785843d31e93c7f",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/exceptions.json": {
+      "after_sha256": "d6c9f1bdd3b5cd8b57646246520309b8d92fe6dfbb7e4ce811856dcf8f7881d3",
+      "before_sha256": "d6c9f1bdd3b5cd8b57646246520309b8d92fe6dfbb7e4ce811856dcf8f7881d3",
+      "destination": "modules/usb-power/jlcpcb/assembly/exceptions.json",
+      "disposition": "byte-identical",
+      "source_blob": "4f8612b7584997f2dbc663b445709240d4605644",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/export-report.json": {
+      "after_sha256": "23245f65e167e9a5b901ad44be3a1bc8c4198f7d14967f698b47b57b7e7ae7bc",
+      "before_sha256": "23245f65e167e9a5b901ad44be3a1bc8c4198f7d14967f698b47b57b7e7ae7bc",
+      "destination": "modules/usb-power/jlcpcb/assembly/export-report.json",
+      "disposition": "byte-identical",
+      "source_blob": "50cf8879ec2e43877490257d605973d45e13afb8",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/positions.csv": {
+      "after_sha256": "468afe58116c11fc1ad9ab9bcd82ad8e716175141cd1d01adb23f5c303fff141",
+      "before_sha256": "468afe58116c11fc1ad9ab9bcd82ad8e716175141cd1d01adb23f5c303fff141",
+      "destination": "modules/usb-power/jlcpcb/assembly/positions.csv",
+      "disposition": "byte-identical",
+      "source_blob": "1b1226e4d17f8c18c2677c2d130769f7832bb7b0",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/assembly/sourcing-evidence.json": {
+      "after_sha256": "c4b9b12e6eacca4927bc4d6e740265506d2235b2e8cf3ca03d8b9f04908846b3",
+      "before_sha256": "c4b9b12e6eacca4927bc4d6e740265506d2235b2e8cf3ca03d8b9f04908846b3",
+      "destination": "modules/usb-power/jlcpcb/assembly/sourcing-evidence.json",
+      "disposition": "byte-identical",
+      "source_blob": "cf331849919b421bcd1f915c88c07abb12bd7fbf",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/cam-inspection.json": {
+      "after_sha256": "2f534bafbecc717a10828d38ad2c25e38e3f78bd70dd39ba3dfad2213bfeec08",
+      "before_sha256": "2f534bafbecc717a10828d38ad2c25e38e3f78bd70dd39ba3dfad2213bfeec08",
+      "destination": "modules/usb-power/jlcpcb/cam-inspection.json",
+      "disposition": "byte-identical",
+      "source_blob": "69ea26866864889510dc636dd8f851c371175081",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/FABRICATION-REQUIREMENTS.md": {
+      "after_sha256": "6c89b60d02ef870b2fc5b9568b1ac1fc821f97165fb5029aebb106ad1ef3c75e",
+      "before_sha256": "6c89b60d02ef870b2fc5b9568b1ac1fc821f97165fb5029aebb106ad1ef3c75e",
+      "destination": "modules/usb-power/jlcpcb/carrier/FABRICATION-REQUIREMENTS.md",
+      "disposition": "byte-identical",
+      "source_blob": "2c3f9b11654641b24897cf0b16c12a2d9780fd20",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/READ-ME-FIRST.txt": {
+      "after_sha256": "df70afcde81229cc0612c785569ecca1a990f0dadff35e324641f18d1c15df0e",
+      "before_sha256": "df70afcde81229cc0612c785569ecca1a990f0dadff35e324641f18d1c15df0e",
+      "destination": "modules/usb-power/jlcpcb/carrier/READ-ME-FIRST.txt",
+      "disposition": "byte-identical",
+      "source_blob": "e6c1aaf7fd6344962370aa30fd41d6f2d1637235",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/SHA256SUMS.txt": {
+      "after_sha256": "fbb41a75f8df4aab96ace140054ce341c640d8bf0bceefb97e32a849bace6f79",
+      "before_sha256": "fbb41a75f8df4aab96ace140054ce341c640d8bf0bceefb97e32a849bace6f79",
+      "destination": "modules/usb-power/jlcpcb/carrier/SHA256SUMS.txt",
+      "disposition": "byte-identical",
+      "source_blob": "e6a69ff1f96a139485a4728d52a22be180b8e78f",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-B_Cu.gbr": {
+      "after_sha256": "82c6b2970db10be58e30ba8c7bf96e8edb8c9625f0ee569d35095d418b3b7779",
+      "before_sha256": "82c6b2970db10be58e30ba8c7bf96e8edb8c9625f0ee569d35095d418b3b7779",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-B_Cu.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "69e453f3a21c2caa12ea23fa24fe2a94fc097cfb",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-B_Mask.gbr": {
+      "after_sha256": "6f1b5d2e86b02b933bfc4d017541ea882dd76eed3d068e9ce5c6c30808751c99",
+      "before_sha256": "6f1b5d2e86b02b933bfc4d017541ea882dd76eed3d068e9ce5c6c30808751c99",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-B_Mask.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "08d239bce4434ab00a6b3615a4108846bc6088e4",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-B_Silkscreen.gbr": {
+      "after_sha256": "e2a2fccbb2a3f0fe09990f37b94f073c6314f505a6dafbfc45895f1cddbdad78",
+      "before_sha256": "e2a2fccbb2a3f0fe09990f37b94f073c6314f505a6dafbfc45895f1cddbdad78",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-B_Silkscreen.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "30f3e55e3839d8be120327a01ec0d9f8d10cc050",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-Edge_Cuts.gbr": {
+      "after_sha256": "4c57f7f2f4ed48d53b78293598df392e67a596c1f15831271d298bc8595aa041",
+      "before_sha256": "4c57f7f2f4ed48d53b78293598df392e67a596c1f15831271d298bc8595aa041",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-Edge_Cuts.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "cf1bdb4d3d4eb760a88cd0fba64d3c42d5b5dfc9",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-F_Cu.gbr": {
+      "after_sha256": "c8e45e3c944526d81edc9990d632ad028d092865307df78cbf1da7e7ca220b73",
+      "before_sha256": "c8e45e3c944526d81edc9990d632ad028d092865307df78cbf1da7e7ca220b73",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-F_Cu.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "8b48162094c1010db3f35825d894df127b9e509f",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-F_Mask.gbr": {
+      "after_sha256": "0ed80b3d908cf61981569dce9eb8079afe619b260584a3dfb445205163eed759",
+      "before_sha256": "0ed80b3d908cf61981569dce9eb8079afe619b260584a3dfb445205163eed759",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-F_Mask.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "d5861605d3f811403d747e61c4e2cc5670cfec4c",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-F_Silkscreen.gbr": {
+      "after_sha256": "1a595d0717d1fca7fc39600aa9c4be1b8607d1f711b62ac142f4e04cfc29ea6c",
+      "before_sha256": "1a595d0717d1fca7fc39600aa9c4be1b8607d1f711b62ac142f4e04cfc29ea6c",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-F_Silkscreen.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "8efe7eed689e9cb678c4ce7d15652337a61b5806",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-In1_Cu.gbr": {
+      "after_sha256": "842dd6e9406cb7adfb7434bc848c7248f02fbff07c0e4f671cf903aea1809b76",
+      "before_sha256": "842dd6e9406cb7adfb7434bc848c7248f02fbff07c0e4f671cf903aea1809b76",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-In1_Cu.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "962e773eeaf1459b1a2746345433d4c68a0461a6",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-In2_Cu.gbr": {
+      "after_sha256": "d442172c52d7400b7aad1eb4d426abf6e446a9fc941a5235a4af71106ac8f934",
+      "before_sha256": "d442172c52d7400b7aad1eb4d426abf6e446a9fc941a5235a4af71106ac8f934",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-In2_Cu.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "9772143b96efe52a2fbf287fbb1dff339ae28237",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-NPTH.drl": {
+      "after_sha256": "a18c0d599b07c0e87fb1534cfa87ae1ffe5ea959a8c6bf058361da6cdd1973bb",
+      "before_sha256": "a18c0d599b07c0e87fb1534cfa87ae1ffe5ea959a8c6bf058361da6cdd1973bb",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-NPTH.drl",
+      "disposition": "byte-identical",
+      "source_blob": "b5c83f648be31d708adf6e6153e0bcc7a1409e5a",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-PTH.drl": {
+      "after_sha256": "03efc05dc0d6dc00491768b42e548aa5d58ffa308a2ac8cf012386e1d2dd0b25",
+      "before_sha256": "03efc05dc0d6dc00491768b42e548aa5d58ffa308a2ac8cf012386e1d2dd0b25",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-PTH.drl",
+      "disposition": "byte-identical",
+      "source_blob": "3fd116fba8090cd8800a6ca901aa902bd6582847",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular-job.gbrjob": {
+      "after_sha256": "a3b22df8db3ff7f90b0d02ba0db497a94fcf3670979bf87634aa6ab2eae3267d",
+      "before_sha256": "a3b22df8db3ff7f90b0d02ba0db497a94fcf3670979bf87634aa6ab2eae3267d",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular-job.gbrjob",
+      "disposition": "byte-identical",
+      "source_blob": "5006715540fd845254308bb58090ee8b98729a34",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/big_modular.d356": {
+      "after_sha256": "9fb35eb795ca7014a5bb943e5c2dac2773ca9a0f634bfb4cb3414b1ba086a4bf",
+      "before_sha256": "9fb35eb795ca7014a5bb943e5c2dac2773ca9a0f634bfb4cb3414b1ba086a4bf",
+      "destination": "modules/usb-power/jlcpcb/carrier/big_modular.d356",
+      "disposition": "byte-identical",
+      "source_blob": "45ae177d02c5831446e3cfbbc971e1ac7bc96ddd",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/drill-report.txt": {
+      "after_sha256": "086bddd196c44e869cabb500d444589f0f3c70d85b26a7c180fd110d01f03667",
+      "before_sha256": "086bddd196c44e869cabb500d444589f0f3c70d85b26a7c180fd110d01f03667",
+      "destination": "modules/usb-power/jlcpcb/carrier/drill-report.txt",
+      "disposition": "byte-identical",
+      "source_blob": "6915995ae8dff02fdd5b301f7815ada11bea03f9",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/fabrication-spec.json": {
+      "after_sha256": "aa6ab3a59f063658eb3b9632a6705f83b91b46b1826d8b7dfa0216aaa5d45f44",
+      "before_sha256": "aa6ab3a59f063658eb3b9632a6705f83b91b46b1826d8b7dfa0216aaa5d45f44",
+      "destination": "modules/usb-power/jlcpcb/carrier/fabrication-spec.json",
+      "disposition": "byte-identical",
+      "source_blob": "15db733eb4bb107b05e629fd550c5a7b233a673c",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/ipc-net-name-map.json": {
+      "after_sha256": "74291a70a491d2d93581d16c6c2911174c2fdcf69dddb8d2fe2cb97f7eee11f6",
+      "before_sha256": "74291a70a491d2d93581d16c6c2911174c2fdcf69dddb8d2fe2cb97f7eee11f6",
+      "destination": "modules/usb-power/jlcpcb/carrier/ipc-net-name-map.json",
+      "disposition": "byte-identical",
+      "source_blob": "d0db1c4b235d566a08a2d2c74b442946102efe4e",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/source-sha256.json": {
+      "after_sha256": "17611293cbc63b46735ebf8866fcd756c2bd11c06043bb3f4cf35e705cfda5d7",
+      "before_sha256": "17611293cbc63b46735ebf8866fcd756c2bd11c06043bb3f4cf35e705cfda5d7",
+      "destination": "modules/usb-power/jlcpcb/carrier/source-sha256.json",
+      "disposition": "byte-identical",
+      "source_blob": "11fdc9d2c532bd78b6d159dfd2e356457b0f73b3",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/via-audit.json": {
+      "after_sha256": "54400bb0e14b252ef54dc0f78367c0bb7d27333efbb3e819bb11392b8a946110",
+      "before_sha256": "54400bb0e14b252ef54dc0f78367c0bb7d27333efbb3e819bb11392b8a946110",
+      "destination": "modules/usb-power/jlcpcb/carrier/via-audit.json",
+      "disposition": "byte-identical",
+      "source_blob": "9f05b3d58a539674942008bbb1dd11308462ae18",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/carrier/via-process.tsv": {
+      "after_sha256": "80af536af9725239e6d653ad18d480eacf6fe0ee2065847990cbbe2622641711",
+      "before_sha256": "80af536af9725239e6d653ad18d480eacf6fe0ee2065847990cbbe2622641711",
+      "destination": "modules/usb-power/jlcpcb/carrier/via-process.tsv",
+      "disposition": "byte-identical",
+      "source_blob": "9d1d7a97a206e2fc749afcdc3042d7ea77ebf8d8",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/manifest.json": {
+      "after_sha256": "b80d71609b547b54deab03af211c030b1b30a51b38485b8f548c612f8aba558c",
+      "before_sha256": "b80d71609b547b54deab03af211c030b1b30a51b38485b8f548c612f8aba558c",
+      "destination": "modules/usb-power/jlcpcb/manifest.json",
+      "disposition": "byte-identical",
+      "source_blob": "0f74d6277af9354b1cffd54d9f5f98cfdb525d90",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/mechanics.json": {
+      "after_sha256": "32073653cb7c20af00b4a5ffe43cc0e277f89a74c631205f7131914a146a03d9",
+      "before_sha256": "32073653cb7c20af00b4a5ffe43cc0e277f89a74c631205f7131914a146a03d9",
+      "destination": "modules/usb-power/jlcpcb/mechanics.json",
+      "disposition": "byte-identical",
+      "source_blob": "c18b3ed1d7b35869dda728657744d2d65aa88eb8",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/FABRICATION-REQUIREMENTS.md": {
+      "after_sha256": "6c89b60d02ef870b2fc5b9568b1ac1fc821f97165fb5029aebb106ad1ef3c75e",
+      "before_sha256": "6c89b60d02ef870b2fc5b9568b1ac1fc821f97165fb5029aebb106ad1ef3c75e",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/FABRICATION-REQUIREMENTS.md",
+      "disposition": "byte-identical",
+      "source_blob": "2c3f9b11654641b24897cf0b16c12a2d9780fd20",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/READ-ME-FIRST.txt": {
+      "after_sha256": "4648e7f2335fd69b3ca0834341bfec6fbe6242e658a52606268365148657c085",
+      "before_sha256": "4648e7f2335fd69b3ca0834341bfec6fbe6242e658a52606268365148657c085",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/READ-ME-FIRST.txt",
+      "disposition": "byte-identical",
+      "source_blob": "090274dfee891093e98b23aef2d692519d368d44",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/SHA256SUMS.txt": {
+      "after_sha256": "6e1eab8db0e11e445dbd420f0851e8f8461a5806f5c5dcf666e07495353dd6e4",
+      "before_sha256": "6e1eab8db0e11e445dbd420f0851e8f8461a5806f5c5dcf666e07495353dd6e4",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/SHA256SUMS.txt",
+      "disposition": "byte-identical",
+      "source_blob": "98c44496767b906f1657b4cced25a030e558755a",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/drill-report.txt": {
+      "after_sha256": "4f1e34485d0be4ed50cc54f88607d466563be7ec5e0cfe20324a92da37ecf76d",
+      "before_sha256": "4f1e34485d0be4ed50cc54f88607d466563be7ec5e0cfe20324a92da37ecf76d",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/drill-report.txt",
+      "disposition": "byte-identical",
+      "source_blob": "e22ac5a8c6ebe9b721bf1945218bc2fec26860ad",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/fabrication-spec.json": {
+      "after_sha256": "5eb2c6f315f3a23e1ff87893fdb98168dca29d8c264c5a62bf1a51d9900d2a03",
+      "before_sha256": "5eb2c6f315f3a23e1ff87893fdb98168dca29d8c264c5a62bf1a51d9900d2a03",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/fabrication-spec.json",
+      "disposition": "byte-identical",
+      "source_blob": "d134b8245109fbeb386eb76f52bd8c9efe2036d9",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-B_Cu.gbr": {
+      "after_sha256": "6dfb24513360036f1ec858d7c93baed88714119bbe114819014f24eef165389b",
+      "before_sha256": "6dfb24513360036f1ec858d7c93baed88714119bbe114819014f24eef165389b",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-B_Cu.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "f4e6e4e4ee81db5ee89b2bd640df7fcf0307e52a",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-B_Mask.gbr": {
+      "after_sha256": "9b3b7628e7d6d43ef0daea73bf6f68b582d361c1afcb0ecf8dee6bdc9e4b3074",
+      "before_sha256": "9b3b7628e7d6d43ef0daea73bf6f68b582d361c1afcb0ecf8dee6bdc9e4b3074",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-B_Mask.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "d6447f26ac5fd822a126b306c0dd33da24257b47",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-B_Silkscreen.gbr": {
+      "after_sha256": "a52e9fbbd67bcbf94a5e1fc1277cd2d5dbf9e2163dbc6b5b7e32c97bba28fb3f",
+      "before_sha256": "a52e9fbbd67bcbf94a5e1fc1277cd2d5dbf9e2163dbc6b5b7e32c97bba28fb3f",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-B_Silkscreen.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "7f752f0646c92f659a23682a1537ea5e3e1ab41c",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-Edge_Cuts.gbr": {
+      "after_sha256": "cf6a56cb6c17e7be2d432b4c5b5e0f038106f3c7cd11a585ebf735503dc70e11",
+      "before_sha256": "cf6a56cb6c17e7be2d432b4c5b5e0f038106f3c7cd11a585ebf735503dc70e11",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-Edge_Cuts.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "cb553189bf966652ef6a95376e706bf17d01efef",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-F_Cu.gbr": {
+      "after_sha256": "51052a396c552f67fec88013778c05db49125641594f376ba8b13c0695cf7419",
+      "before_sha256": "51052a396c552f67fec88013778c05db49125641594f376ba8b13c0695cf7419",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-F_Cu.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "67a382efd29f75dee5a7ee501b7b693e141c0005",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-F_Mask.gbr": {
+      "after_sha256": "52c0c3bb7658e40c13476588bf88293f622007808a4844fd80375066d4c52b48",
+      "before_sha256": "52c0c3bb7658e40c13476588bf88293f622007808a4844fd80375066d4c52b48",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-F_Mask.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "428390a232c144b70d882dcb500fb6953f60f9ec",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-F_Silkscreen.gbr": {
+      "after_sha256": "35edf7d9f0b2344508b00e4ee2157d00de98dde9e35ec73e753831ddc1eb8b72",
+      "before_sha256": "35edf7d9f0b2344508b00e4ee2157d00de98dde9e35ec73e753831ddc1eb8b72",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-F_Silkscreen.gbr",
+      "disposition": "byte-identical",
+      "source_blob": "9078e256a549b8709e336f52531aac39c08dc355",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-NPTH.drl": {
+      "after_sha256": "8f0f83d02a4f6a2afda0fe60ff7cced34ab03eb8373373d017d866185fcc9d40",
+      "before_sha256": "8f0f83d02a4f6a2afda0fe60ff7cced34ab03eb8373373d017d866185fcc9d40",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-NPTH.drl",
+      "disposition": "byte-identical",
+      "source_blob": "94ccedef189d1563718e610911c83497920c1071",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-PTH.drl": {
+      "after_sha256": "e88ae277558e1059701f166e1bffb364146264898fe76e998f91a4f7fc76f0f1",
+      "before_sha256": "e88ae277558e1059701f166e1bffb364146264898fe76e998f91a4f7fc76f0f1",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-PTH.drl",
+      "disposition": "byte-identical",
+      "source_blob": "ec7a1be886d0aa21c418487a269fa423997491a1",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/front_panel-job.gbrjob": {
+      "after_sha256": "667f115d2061ef7e6fea2c5534ab548b316de25ad4b6b95a575c2c1c3a4a2234",
+      "before_sha256": "667f115d2061ef7e6fea2c5534ab548b316de25ad4b6b95a575c2c1c3a4a2234",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/front_panel-job.gbrjob",
+      "disposition": "byte-identical",
+      "source_blob": "1569aacc12621a7ed4ca2b12d867bc2d52a8dca6",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/passive-panel/source-sha256.json": {
+      "after_sha256": "17611293cbc63b46735ebf8866fcd756c2bd11c06043bb3f4cf35e705cfda5d7",
+      "before_sha256": "17611293cbc63b46735ebf8866fcd756c2bd11c06043bb3f4cf35e705cfda5d7",
+      "destination": "modules/usb-power/jlcpcb/passive-panel/source-sha256.json",
+      "disposition": "byte-identical",
+      "source_blob": "11fdc9d2c532bd78b6d159dfd2e356457b0f73b3",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/carrier-copper-cam.png": {
+      "after_sha256": "7a82361c8e6638e7e2112a2dd8215e9e793f47d568fbab444fa59b1ce9ad5c71",
+      "before_sha256": "7a82361c8e6638e7e2112a2dd8215e9e793f47d568fbab444fa59b1ce9ad5c71",
+      "destination": "modules/usb-power/jlcpcb/previews/carrier-copper-cam.png",
+      "disposition": "byte-identical",
+      "source_blob": "efe7f12631d161b5b5655459f69521564171d398",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/carrier-copper-cam.svg": {
+      "after_sha256": "a0c9f84a733e8c8f4e1b5447f91e30445f9a7453728d96ecf5a3a2f911ebe932",
+      "before_sha256": "a0c9f84a733e8c8f4e1b5447f91e30445f9a7453728d96ecf5a3a2f911ebe932",
+      "destination": "modules/usb-power/jlcpcb/previews/carrier-copper-cam.svg",
+      "disposition": "byte-identical",
+      "source_blob": "c04691c940f86e27427588332155e5d77f72e338",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/carrier-mask-silk-cam.png": {
+      "after_sha256": "e6d1f8abf3ec0f8860c19be1fa175097bce98afb82ddc6c5bc9643d17d35d434",
+      "before_sha256": "e6d1f8abf3ec0f8860c19be1fa175097bce98afb82ddc6c5bc9643d17d35d434",
+      "destination": "modules/usb-power/jlcpcb/previews/carrier-mask-silk-cam.png",
+      "disposition": "byte-identical",
+      "source_blob": "811bb64e392cc1cd61f673f19d68460788ec965d",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/carrier-mask-silk-cam.svg": {
+      "after_sha256": "6ad8a3c6119aeb845a1d70baf633d0322f9fa725ff6a3507340c39a7c8a3a494",
+      "before_sha256": "6ad8a3c6119aeb845a1d70baf633d0322f9fa725ff6a3507340c39a7c8a3a494",
+      "destination": "modules/usb-power/jlcpcb/previews/carrier-mask-silk-cam.svg",
+      "disposition": "byte-identical",
+      "source_blob": "8924d46b0b79646315f6d1fed1f3eaf7f0ed59a6",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/efuse-cam.png": {
+      "after_sha256": "ceb9cacf502400da2131977ac7659f6df3c2d93abdd44efd9d1ec67d960f00d5",
+      "before_sha256": "ceb9cacf502400da2131977ac7659f6df3c2d93abdd44efd9d1ec67d960f00d5",
+      "destination": "modules/usb-power/jlcpcb/previews/efuse-cam.png",
+      "disposition": "byte-identical",
+      "source_blob": "d287f5bfaf4ab5d8dc05aa38a24a198ebc02af8b",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/efuse-cam.svg": {
+      "after_sha256": "23f6aacc8e71fd1f2a816617582dd1a23fc5def4320fcd20660fd90c3775e528",
+      "before_sha256": "23f6aacc8e71fd1f2a816617582dd1a23fc5def4320fcd20660fd90c3775e528",
+      "destination": "modules/usb-power/jlcpcb/previews/efuse-cam.svg",
+      "disposition": "byte-identical",
+      "source_blob": "43396aa5f7f4831089d8b63f81a3f3510b9f6746",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/hro-cam.png": {
+      "after_sha256": "ff3be60e42bddeffe25bbb12f4477c0c3747615a50c2dc3617828507f3adf9c9",
+      "before_sha256": "ff3be60e42bddeffe25bbb12f4477c0c3747615a50c2dc3617828507f3adf9c9",
+      "destination": "modules/usb-power/jlcpcb/previews/hro-cam.png",
+      "disposition": "byte-identical",
+      "source_blob": "c2659e5ff005a4697117c47876c713004e0e3e3d",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/hro-cam.svg": {
+      "after_sha256": "3644b5f8c820163b44d08b7b2a56e4ffb3ed3a20ab505a430b6adef402159fe0",
+      "before_sha256": "3644b5f8c820163b44d08b7b2a56e4ffb3ed3a20ab505a430b6adef402159fe0",
+      "destination": "modules/usb-power/jlcpcb/previews/hro-cam.svg",
+      "disposition": "byte-identical",
+      "source_blob": "3bda516a757656e4f66ba86e0efd4d43bcad490c",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/ldo-cam.png": {
+      "after_sha256": "bd09617e1ad3b765a9d7fbe406d8fd14b9d7c79fd3820fcb1a2edeae1e50e3fa",
+      "before_sha256": "bd09617e1ad3b765a9d7fbe406d8fd14b9d7c79fd3820fcb1a2edeae1e50e3fa",
+      "destination": "modules/usb-power/jlcpcb/previews/ldo-cam.png",
+      "disposition": "byte-identical",
+      "source_blob": "ad0c992bd76075ccc4ac7d275390e206ce7330b9",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/ldo-cam.svg": {
+      "after_sha256": "823f12071e6b0a7b1ecb8df568b4dcd6c1f7dcdecb19e2d806d44a02cf7314b4",
+      "before_sha256": "823f12071e6b0a7b1ecb8df568b4dcd6c1f7dcdecb19e2d806d44a02cf7314b4",
+      "destination": "modules/usb-power/jlcpcb/previews/ldo-cam.svg",
+      "disposition": "byte-identical",
+      "source_blob": "a90ed31202208472248a7e1dff40a22b979a3d02",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/passive-panel-cam.png": {
+      "after_sha256": "dc085f3cd0419313e63e553ebb99362bd4b43b05b3f8f2609e3a961cecfe54cb",
+      "before_sha256": "dc085f3cd0419313e63e553ebb99362bd4b43b05b3f8f2609e3a961cecfe54cb",
+      "destination": "modules/usb-power/jlcpcb/previews/passive-panel-cam.png",
+      "disposition": "byte-identical",
+      "source_blob": "6b5bd779b8b5e83f2135e9a41d3374caadff450b",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/passive-panel-cam.svg": {
+      "after_sha256": "ead59a909de1d85740e78c33b24a32147869e7dc2ea39e8107c26d8cba2f5cc2",
+      "before_sha256": "ead59a909de1d85740e78c33b24a32147869e7dc2ea39e8107c26d8cba2f5cc2",
+      "destination": "modules/usb-power/jlcpcb/previews/passive-panel-cam.svg",
+      "disposition": "byte-identical",
+      "source_blob": "776ce52489b6acbb10aa8597d8402361f1c87055",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/passive-panel-detail.png": {
+      "after_sha256": "590a6f023032dd25aa8f79b63a18171a4a7385acbaefb19827041f2f2501cd55",
+      "before_sha256": "590a6f023032dd25aa8f79b63a18171a4a7385acbaefb19827041f2f2501cd55",
+      "destination": "modules/usb-power/jlcpcb/previews/passive-panel-detail.png",
+      "disposition": "byte-identical",
+      "source_blob": "b9f52b4f8a5543606c2a17c1027bfce30294e1b7",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/previews/passive-panel-detail.svg": {
+      "after_sha256": "003c573886fe3ca76988df6e0c0799368f0d907447c09a81be1d4e7a61644b8f",
+      "before_sha256": "003c573886fe3ca76988df6e0c0799368f0d907447c09a81be1d4e7a61644b8f",
+      "destination": "modules/usb-power/jlcpcb/previews/passive-panel-detail.svg",
+      "disposition": "byte-identical",
+      "source_blob": "75757eaaf12d4ea20e5019cfcec1a7cf49c88bd8",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/release-validation.json": {
+      "after_sha256": "1b2ccc0ba5eeae992fb443e689611268b374b672ae0341fcec1bf86d39a2a5c6",
+      "before_sha256": "1b2ccc0ba5eeae992fb443e689611268b374b672ae0341fcec1bf86d39a2a5c6",
+      "destination": "modules/usb-power/jlcpcb/release-validation.json",
+      "disposition": "byte-identical",
+      "source_blob": "73b72d4d778e965dadf22e1fe5d187caf9cde1dc",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/source-parity.json": {
+      "after_sha256": "e15bfeed8eb639bfb1bc22309561ebbd3292509e5be371b44c69816c705feb1e",
+      "before_sha256": "e15bfeed8eb639bfb1bc22309561ebbd3292509e5be371b44c69816c705feb1e",
+      "destination": "modules/usb-power/jlcpcb/source-parity.json",
+      "disposition": "byte-identical",
+      "source_blob": "4792be460572cfb7c7c846c6ff6ef9ed53c84304",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/source-state.json": {
+      "after_sha256": "709dff3ccf3d9df49f6a2537b839eb02aadde360bb7ccb42a17b76445730759c",
+      "before_sha256": "709dff3ccf3d9df49f6a2537b839eb02aadde360bb7ccb42a17b76445730759c",
+      "destination": "modules/usb-power/jlcpcb/source-state.json",
+      "disposition": "byte-identical",
+      "source_blob": "738fc78074905a6d6acbe7d83aacd89d07d71aef",
+      "source_mode": "100644"
+    },
+    "production/ldo-r1/via-audit.json": {
+      "after_sha256": "54400bb0e14b252ef54dc0f78367c0bb7d27333efbb3e819bb11392b8a946110",
+      "before_sha256": "54400bb0e14b252ef54dc0f78367c0bb7d27333efbb3e819bb11392b8a946110",
+      "destination": "modules/usb-power/jlcpcb/via-audit.json",
+      "disposition": "byte-identical",
+      "source_blob": "9f05b3d58a539674942008bbb1dd11308462ae18",
+      "source_mode": "100644"
+    },
+    "tests/test_electrical_design.py": {
+      "after_sha256": "9d178f255571db68a20a4b85583bd9e45afc55de328006b7187c8c0b8eca7cf6",
+      "before_sha256": "9d178f255571db68a20a4b85583bd9e45afc55de328006b7187c8c0b8eca7cf6",
+      "destination": "modules/usb-power/tests/test_electrical_design.py",
+      "disposition": "byte-identical",
+      "source_blob": "67fb4c237202efc90a987c0b4d436b21382dc2db",
+      "source_mode": "100644"
+    },
+    "tests/test_hro_fabrication.py": {
+      "after_sha256": "5c4dafef1cd2aa134bb0227904517cdb0e649952d6ac8b2dc60204c34e783704",
+      "before_sha256": "a142183504dcbd55cd0f6ed698e373b8548212fa1d4d0ae8dba86db369714b10",
+      "destination": "modules/usb-power/tests/test_hro_fabrication.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "7a4f60defb134d0ace5465fef50dda402e1090a8",
+      "source_mode": "100644"
+    },
+    "tests/test_hro_source.py": {
+      "after_sha256": "bc8f4225d8da1e90538832cec6e38a1fd78f1ccbcf643358bee802b356f14db0",
+      "before_sha256": "e173dedf253e49c5d1efb5980df9bcca17528b3c336232360240b64c58733b47",
+      "destination": "modules/usb-power/tests/test_hro_source.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "87440ab450625db591b9885a593c725143a33ec6",
+      "source_mode": "100644"
+    },
+    "tests/test_kicad_toolkit_setup.py": {
+      "after_sha256": "a489174963984fcfb3fa24340bf1faccee6775a18e0d6d56aabe6db4e2db7136",
+      "before_sha256": "1f0c4e0f62b7c54ef23159d199948d5337ad8b0095a865075082f207ae6639f1",
+      "destination": "modules/usb-power/tests/test_kicad_toolkit_setup.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "5ff4bbe1d439db1d8b040aae7c92e795c678f041",
+      "source_mode": "100644"
+    },
+    "tests/test_ldo_revision.py": {
+      "after_sha256": "63758046ce32e24e0264183005b276ab6ed7553229b3e8af959ede947ef53700",
+      "before_sha256": "66e5a9713dd6c6bc17b8b68e74999ee4c001d4a239c89805f7b74c15d6352ba1",
+      "destination": "modules/usb-power/tests/test_ldo_revision.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "f9cb6e79715e28f320bdf68a721cae76cdc4660e",
+      "source_mode": "100644"
+    },
+    "tests/test_led_reservations.py": {
+      "after_sha256": "9a07748215532efb77f7eb9fa5038d89d64715971cad2b681616d3170d131711",
+      "before_sha256": "9a07748215532efb77f7eb9fa5038d89d64715971cad2b681616d3170d131711",
+      "destination": "modules/usb-power/tests/test_led_reservations.py",
+      "disposition": "byte-identical",
+      "source_blob": "9aff7da5663b775da2f81d0cf0bf40b4904a9044",
+      "source_mode": "100644"
+    },
+    "tests/test_m3_access.py": {
+      "after_sha256": "bae550599013be7abebdbd2d312edb0bbe0ed9ac53e522da24fece1f14b1accc",
+      "before_sha256": "bae550599013be7abebdbd2d312edb0bbe0ed9ac53e522da24fece1f14b1accc",
+      "destination": "modules/usb-power/tests/test_m3_access.py",
+      "disposition": "byte-identical",
+      "source_blob": "06af1e8cfb9fa1b4ebd05a69790d50fb7017ebc1",
+      "source_mode": "100644"
+    },
+    "tests/test_schematic_hierarchy.py": {
+      "after_sha256": "6b76953f95c9bf81c51670e677fd13fff2f8643abf2cd0963ba3c78591f45651",
+      "before_sha256": "be36168627daada166886736568b15420a93f3bbd93a65b8fb6616637721caa0",
+      "destination": "modules/usb-power/tests/test_schematic_hierarchy.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "5a5f3560a32e9f03d6dd060c7deaad64ae858733",
+      "source_mode": "100644"
+    },
+    "tests/test_smd_reset.py": {
+      "after_sha256": "9f31ff9d22f4baf7847bddb690fcfd3eacc0c30420c171a813d497fbc2ff1826",
+      "before_sha256": "8e0419c715475db900df48025cc29522619b7d746ac36628af1f6b305d3330ea",
+      "destination": "modules/usb-power/tests/test_smd_reset.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "43c7c655d25e0e0c206d6b8399954d997f942239",
+      "source_mode": "100644"
+    },
+    "tests/test_stack_geometry.py": {
+      "after_sha256": "1a458e07209ef263196a9ce4ab8abe12c32b8e538a0b63113a79ff69881593b1",
+      "before_sha256": "a059b6d123b70cfa4e9abc2830064f06a80aca9b9de90b0cd785aef096781b2a",
+      "destination": "modules/usb-power/tests/test_stack_geometry.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "312a6267952a81462fcf5bdca3eb6ae48f466ce2",
+      "source_mode": "100644"
+    },
+    "tests/test_ts1166_footprint.py": {
+      "after_sha256": "3bb4895c3dfce4a15914861433d525941cb5d82b89f8376094fd22a16c0c4f64",
+      "before_sha256": "3bb4895c3dfce4a15914861433d525941cb5d82b89f8376094fd22a16c0c4f64",
+      "destination": "modules/usb-power/tests/test_ts1166_footprint.py",
+      "disposition": "byte-identical",
+      "source_blob": "3e8b74a2b4ea4eddfd0ea35214c45d5e0e68715f",
+      "source_mode": "100644"
+    },
+    "tools/build_mechanics.py": {
+      "after_sha256": "011c0ab67ea01078d5a515a0a1e9c4829620a50bddf905fa140455af32ad0b9b",
+      "before_sha256": "011c0ab67ea01078d5a515a0a1e9c4829620a50bddf905fa140455af32ad0b9b",
+      "destination": "modules/usb-power/tools/build_mechanics.py",
+      "disposition": "byte-identical",
+      "source_blob": "da7df5ae14dbdcdf3888de0967f6c2219f297c9f",
+      "source_mode": "100644"
+    },
+    "tools/build_project.py": {
+      "after_sha256": "bd8740ab66b3fc6d60a0b22a7011493c17cf299e6059870a19f85d178e1d7631",
+      "before_sha256": "8b704fb2a04197488d2168b152dd6641789b057dc2aaf42644ca63bced7d3cc1",
+      "destination": "modules/usb-power/tools/build_project.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "295109e96ce017d63e951d2f0eea11359108e071",
+      "source_mode": "100644"
+    },
+    "tools/build_stack.py": {
+      "after_sha256": "8913b794d1c634acc8afac554f6cffe8a9d287647d9285e8c40d889dcecb4722",
+      "before_sha256": "e057d778dfc8c56d7b7d943cab46c923a326335abcc1b601d1bcd632a7d62fd9",
+      "destination": "modules/usb-power/tools/build_stack.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "db4e39ec6598672b7bd8c64a43afad96f0ea40bd",
+      "source_mode": "100644"
+    },
+    "tools/cam-requirements.txt": {
+      "after_sha256": "28f2df1b2acffccc7e8190f57bf37028ba9b323159d50db4f3e1ffd0ee1fcbe6",
+      "before_sha256": "28f2df1b2acffccc7e8190f57bf37028ba9b323159d50db4f3e1ffd0ee1fcbe6",
+      "destination": "modules/usb-power/tools/cam-requirements.txt",
+      "disposition": "byte-identical",
+      "source_blob": "94deb31a43d13a313404f40ef558298298af642c",
+      "source_mode": "100644"
+    },
+    "tools/check_hro_cam.py": {
+      "after_sha256": "05d4aaf00757b5cb9127192092fcddb482245258af490c5c3b3f1215f0efd3e4",
+      "before_sha256": "d66440f34b108d2c3cda5bd5b5bd12719a748894d74e7ffb53f21fb882d245e0",
+      "destination": "modules/usb-power/tools/check_hro_cam.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "78541bf01b9096a03b8854a124b65d57ba946001",
+      "source_mode": "100644"
+    },
+    "tools/electrical_checks.py": {
+      "after_sha256": "7e1cecdb98579038a2d6885145c3ae526838f4c6ab455c11caf3920a5bba4567",
+      "before_sha256": "7e1cecdb98579038a2d6885145c3ae526838f4c6ab455c11caf3920a5bba4567",
+      "destination": "modules/usb-power/tools/electrical_checks.py",
+      "disposition": "byte-identical",
+      "source_blob": "5737c723b17cdb25760629402d9215873f487d95",
+      "source_mode": "100644"
+    },
+    "tools/electrical_design.py": {
+      "after_sha256": "ef5d0ad8f7c1b2a91d270bc81553276c7c8098a99bda1ce86360e9a1092b568b",
+      "before_sha256": "ef5d0ad8f7c1b2a91d270bc81553276c7c8098a99bda1ce86360e9a1092b568b",
+      "destination": "modules/usb-power/tools/electrical_design.py",
+      "disposition": "byte-identical",
+      "source_blob": "400ca14edc6ebf7703a076213245f29b6a051f78",
+      "source_mode": "100644"
+    },
+    "tools/fabrication_contract.py": {
+      "after_sha256": "4044c9f3fd57b63337a90eb6c0b211831ee1f29d693a9dd36069b785af0ad19d",
+      "before_sha256": "4044c9f3fd57b63337a90eb6c0b211831ee1f29d693a9dd36069b785af0ad19d",
+      "destination": "modules/usb-power/tools/fabrication_contract.py",
+      "disposition": "byte-identical",
+      "source_blob": "4575f57ab2bde547fcde3de6dfd08d723f05b9bc",
+      "source_mode": "100644"
+    },
+    "tools/hro_connector.py": {
+      "after_sha256": "ab4d73f462e61e7834bae5c2e0fcdbe6f121d3fd311e767113f091c944ab03a8",
+      "before_sha256": "ab4d73f462e61e7834bae5c2e0fcdbe6f121d3fd311e767113f091c944ab03a8",
+      "destination": "modules/usb-power/tools/hro_connector.py",
+      "disposition": "byte-identical",
+      "source_blob": "86b4f506b3d89023544da1779b4efb037ce99ea5",
+      "source_mode": "100644"
+    },
+    "tools/hro_fit.py": {
+      "after_sha256": "904a68ac33e4083c69a41426873089a8b2c766770095a15bb7eba8a2a7ad708c",
+      "before_sha256": "904a68ac33e4083c69a41426873089a8b2c766770095a15bb7eba8a2a7ad708c",
+      "destination": "modules/usb-power/tools/hro_fit.py",
+      "disposition": "byte-identical",
+      "source_blob": "26dc045a2e6940a3a78e0ec47c0f4a6b62412c5c",
+      "source_mode": "100644"
+    },
+    "tools/hro_integration_guard.py": {
+      "after_sha256": "7af3104c2b6a50d07f71a20911305b6c8641e7f90675f3d43a0bb8ef74808c37",
+      "before_sha256": "9dd3a46e184205c8585e68d6f679d23af4b8c08a59bb76103a9d0f594d66b523",
+      "destination": "modules/usb-power/tools/hro_integration_guard.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "1c12050c4944979a49d2b8698eed4901751016f6",
+      "source_mode": "100644"
+    },
+    "tools/hro_merge_overlay.py": {
+      "after_sha256": "0f09f65835deb1c0de204364c998bff07a4513bfa2763d6421ba9bb48f2886bd",
+      "before_sha256": "4f7380cbfff4a0d333867c3cc72afc27e0c6e787ce63ea6facebb990e839ba65",
+      "destination": "modules/usb-power/tools/hro_merge_overlay.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "6a2d236aef2fddbd8dc1fb174f9d27a680b267d8",
+      "source_mode": "100644"
+    },
+    "tools/interface_contract.py": {
+      "after_sha256": "6814240a34efa5a706c9742ca9a1d322152d7fb117f1fb7fc5ec9b70d14b1664",
+      "before_sha256": "6814240a34efa5a706c9742ca9a1d322152d7fb117f1fb7fc5ec9b70d14b1664",
+      "destination": "modules/usb-power/tools/interface_contract.py",
+      "disposition": "byte-identical",
+      "source_blob": "bd7b74dfb037cab3e8d4581c2ae4968cac869653",
+      "source_mode": "100644"
+    },
+    "tools/kicad-project.json": {
+      "after_sha256": "072b753a5e117c980317e9dfeb914e8ac27aafcab20d7a28520eb66ae1a476c0",
+      "before_sha256": "b78754fa1c3466856ad974bb7ad68ce8e0f78928002393d9f46b6291b60a1b1d",
+      "destination": "modules/usb-power/tools/kicad-project.json",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "802be8bbe3d3a69bfc1a842b7ef044a3fca1d072",
+      "source_mode": "100644"
+    },
+    "tools/ldo_budget.py": {
+      "after_sha256": "5a6c0be7aa849273643644b362d9cb8562f820f1acbb6eae3dec29cecc87ba72",
+      "before_sha256": "5a6c0be7aa849273643644b362d9cb8562f820f1acbb6eae3dec29cecc87ba72",
+      "destination": "modules/usb-power/tools/ldo_budget.py",
+      "disposition": "byte-identical",
+      "source_blob": "43fcf61637d6838b8db9f27a108af775eacc50f9",
+      "source_mode": "100644"
+    },
+    "tools/ldo_design.py": {
+      "after_sha256": "257789308f419b891442cd881b450fdebcee6aa78e6dd4ef994b412ea48b47ff",
+      "before_sha256": "257789308f419b891442cd881b450fdebcee6aa78e6dd4ef994b412ea48b47ff",
+      "destination": "modules/usb-power/tools/ldo_design.py",
+      "disposition": "byte-identical",
+      "source_blob": "441e8c7f4631854b08be74e924786f5ff27ca28a",
+      "source_mode": "100644"
+    },
+    "tools/ldo_schematic.py": {
+      "after_sha256": "f0eb291b5d179665a1a2e501aa5be0420f9b2e3c0bdc562efe00ac6481efda19",
+      "before_sha256": "e451743152e7f037731dbe3a0a364eb534813511f34328dc031d561590a61a2f",
+      "destination": "modules/usb-power/tools/ldo_schematic.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "ee87a3456d2da3d9a8132966bfe9dab37287ea8c",
+      "source_mode": "100644"
+    },
+    "tools/m3_fit.py": {
+      "after_sha256": "9916d8444e128369eeb1e5693de0b83cd1e4529f5d2220058fc8e7551a2307f1",
+      "before_sha256": "9916d8444e128369eeb1e5693de0b83cd1e4529f5d2220058fc8e7551a2307f1",
+      "destination": "modules/usb-power/tools/m3_fit.py",
+      "disposition": "byte-identical",
+      "source_blob": "021a797cc0be52e490b2e0174baf3176cab3d78c",
+      "source_mode": "100644"
+    },
+    "tools/native_sheet_patch.py": {
+      "after_sha256": "bdf27f3f90dedf9e06b8350b0d1005fc4599e8430dbc61748a4eb66c1a6d2268",
+      "before_sha256": "bdf27f3f90dedf9e06b8350b0d1005fc4599e8430dbc61748a4eb66c1a6d2268",
+      "destination": "modules/usb-power/tools/native_sheet_patch.py",
+      "disposition": "byte-identical",
+      "source_blob": "810d93d6ad8e5ede943821f785974192c9046c94",
+      "source_mode": "100644"
+    },
+    "tools/release_hro.py": {
+      "after_sha256": "540ba8cff968928c8d0fea77e06cebe487060b0fd9230888ae017ed0f12e5834",
+      "before_sha256": "8207c33f7949fb2e7815b4aeb71c01e4fecc9bb009d43cd89c9b63d7275beaf9",
+      "destination": "modules/usb-power/tools/release_hro.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "c3964d2de27b0e51789805ec9183e8171c82a761",
+      "source_mode": "100644"
+    },
+    "tools/render_schematic.py": {
+      "after_sha256": "4ac0562eee6af6cd3ef19f3590dad05b8014ad1198f7aca924a74b088cc9d57e",
+      "before_sha256": "b065a2c679ca705613e9297269002910902824f86289fb46fc37e25d46d27bc3",
+      "destination": "modules/usb-power/tools/render_schematic.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "cbf0a4b04da827331546b016f372e047e5dc26ad",
+      "source_mode": "100644"
+    },
+    "tools/routed_checks.py": {
+      "after_sha256": "4379a82cd0ba8fc0f471ad58d52eafa2a5ac3d21e5cb3795bea56b648e8126ad",
+      "before_sha256": "9a0ef395549d89e28312472ffffa300635a0b55cc53ee50081f049c40ff1303a",
+      "destination": "modules/usb-power/tools/routed_checks.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "bf463944f2897bba4750670c5b171b9ae7175174",
+      "source_mode": "100644"
+    },
+    "tools/schematic_connectivity.py": {
+      "after_sha256": "8f92cd0da7fd64ad305507daff7b67f3fda8c44c512a3309dfdead48956fa391",
+      "before_sha256": "258388abbd40ee6d8060c72a7e3f6885a90007cc1259bfad84207aa5d7fa77a9",
+      "destination": "modules/usb-power/tools/schematic_connectivity.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "5193bd6435e8d5d8d59870b659773f40eea2847c",
+      "source_mode": "100644"
+    },
+    "tools/sexp.py": {
+      "after_sha256": "fc9462862ea7d5acfbd63afa720d206fda0cd854e796c71c9eee4a46a366c0b4",
+      "before_sha256": "fc9462862ea7d5acfbd63afa720d206fda0cd854e796c71c9eee4a46a366c0b4",
+      "destination": "modules/usb-power/tools/sexp.py",
+      "disposition": "byte-identical",
+      "source_blob": "6f310668a4609834cd766fdc3c4da0b032ff0ac9",
+      "source_mode": "100644"
+    },
+    "tools/stack_geometry.py": {
+      "after_sha256": "da7363c987a9b4f1619934acfb1194068483a5a39d04d6287e4f3efb8de69b32",
+      "before_sha256": "da7363c987a9b4f1619934acfb1194068483a5a39d04d6287e4f3efb8de69b32",
+      "destination": "modules/usb-power/tools/stack_geometry.py",
+      "disposition": "byte-identical",
+      "source_blob": "688f848224de24c0e70ac32dfcb29b5d87e7fe50",
+      "source_mode": "100644"
+    },
+    "tools/verify_ldo_source.py": {
+      "after_sha256": "a1e16f96b39ccf8fb48403bcb8bfe1ce39d2dce82c14d4e3f01eb8ebafc60677",
+      "before_sha256": "4cdfa2f45e8fe6ed8b96c93cbb1725fb46442b29e53178708e98ab8673dbc760",
+      "destination": "modules/usb-power/tools/verify_ldo_source.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "ab29d776149e7b1ed64ef5226922684b621abebf",
+      "source_mode": "100644"
+    },
+    "tools/verify_project.py": {
+      "after_sha256": "5beb87d36988692acaad4e284ae107db2d024f38708b5b5cbefb86c752f288b2",
+      "before_sha256": "8cdc6a9ee5e38a461c8298034d97339e72dc1e6d7553bc5f8c571c631279c476",
+      "destination": "modules/usb-power/tools/verify_project.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "a76ee183dfcee85bae4628c9be7125312d2c0463",
+      "source_mode": "100644"
+    },
+    "tools/verify_stack.py": {
+      "after_sha256": "76af7e7c8ae1b0876135bed392d10a008c726f48489838a64ae176f072273446",
+      "before_sha256": "397700b4d10effa11ce597dcefbd39807eb454350d93bd4ba40c7cc4de70f0ee",
+      "destination": "modules/usb-power/tools/verify_stack.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "c9b45356e3d41b9bfaae0fb2f71c697f4e1c0297",
+      "source_mode": "100644"
+    },
+    "tools/verify_ts1166.py": {
+      "after_sha256": "6ff04efe1d67a12fbdc0d30ff731946694e4fd7b88173385e8ceed3f6191e235",
+      "before_sha256": "a28ef632b08b2a3ccb18e28a152fd97b87678893bf0eb1fddda6e8523166ae2c",
+      "destination": "modules/usb-power/tools/verify_ts1166.py",
+      "disposition": "migration-path-or-instruction",
+      "source_blob": "6692c6a431d6360b5667a758e4d3442c0a37b74b",
+      "source_mode": "100644"
+    }
+  },
+  "required_module_files": [
+    "modules/usb-power/AGENTS.md",
+    "modules/usb-power/BOM.csv",
+    "modules/usb-power/Code.md",
+    "modules/usb-power/README.md",
+    "modules/usb-power/docs/HRO-RELEASE-STATUS.json",
+    "modules/usb-power/docs/HRO-SOURCE-HANDOFF.md",
+    "modules/usb-power/docs/assembly-geometry.json",
+    "modules/usb-power/docs/assembly.pdf",
+    "modules/usb-power/docs/assembly.svg",
+    "modules/usb-power/docs/basic-passives-checkpoint.md",
+    "modules/usb-power/docs/basic-swaps-checkpoint.md",
+    "modules/usb-power/docs/build.md",
+    "modules/usb-power/docs/electrical-catalog.json",
+    "modules/usb-power/docs/engineering.md",
+    "modules/usb-power/docs/fabrication.md",
+    "modules/usb-power/docs/hro-integration.json",
+    "modules/usb-power/docs/hro-integration.md",
+    "modules/usb-power/docs/ldo-evidence/C13585-bias.json",
+    "modules/usb-power/docs/ldo-evidence/baseline-BOM.csv",
+    "modules/usb-power/docs/ldo-evidence/baseline-pin-net.json",
+    "modules/usb-power/docs/ldo-evidence/capacitor-disposition.json",
+    "modules/usb-power/docs/ldo-evidence/catalog.json",
+    "modules/usb-power/docs/ldo-evidence/common-pcb-inspect-blocker.json",
+    "modules/usb-power/docs/ldo-evidence/datasheets.json",
+    "modules/usb-power/docs/ldo-evidence/dc-budget.json",
+    "modules/usb-power/docs/ldo-evidence/full-regressions.log",
+    "modules/usb-power/docs/ldo-evidence/manufacturer-mlcc-data.json",
+    "modules/usb-power/docs/ldo-evidence/native/drc.json",
+    "modules/usb-power/docs/ldo-evidence/native/erc.json",
+    "modules/usb-power/docs/ldo-evidence/native/netlist.xml",
+    "modules/usb-power/docs/ldo-evidence/native/summary.json",
+    "modules/usb-power/docs/ldo-evidence/pcb-audit.json",
+    "modules/usb-power/docs/ldo-evidence/preserved-hashes.json",
+    "modules/usb-power/docs/ldo-evidence/render-review.json",
+    "modules/usb-power/docs/ldo-evidence/research-limits.json",
+    "modules/usb-power/docs/ldo-evidence/source-audit.json",
+    "modules/usb-power/docs/ldo-evidence/source-promotion.json",
+    "modules/usb-power/docs/ldo-evidence/source-tests.log",
+    "modules/usb-power/docs/ldo-evidence/validation-summary.json",
+    "modules/usb-power/docs/ldo-handoff.md",
+    "modules/usb-power/docs/ldo-review/carrier-back.png",
+    "modules/usb-power/docs/ldo-review/carrier-bottom.png",
+    "modules/usb-power/docs/ldo-review/carrier-top.png",
+    "modules/usb-power/docs/ldo-review/power-flow.png",
+    "modules/usb-power/docs/ldo-review/power-flow.svg",
+    "modules/usb-power/docs/ldo-review/quiet-rails.png",
+    "modules/usb-power/docs/ldo-review/quiet-rails.svg",
+    "modules/usb-power/docs/ldo-review/raw-rails.png",
+    "modules/usb-power/docs/ldo-review/raw-rails.svg",
+    "modules/usb-power/docs/ldo-revision.md",
+    "modules/usb-power/docs/mechanical-baseline.json",
+    "modules/usb-power/docs/mechanical-preservation.json",
+    "modules/usb-power/docs/mechanics.md",
+    "modules/usb-power/docs/migration-evidence/doctor.json",
+    "modules/usb-power/docs/migration-evidence/native-after-drc.json",
+    "modules/usb-power/docs/migration-evidence/native-after-erc.json",
+    "modules/usb-power/docs/migration-evidence/native-after-netlist.xml",
+    "modules/usb-power/docs/migration-evidence/native-after-summary.json",
+    "modules/usb-power/docs/migration-evidence/native-before-drc.json",
+    "modules/usb-power/docs/migration-evidence/native-before-erc.json",
+    "modules/usb-power/docs/migration-evidence/native-before-netlist.xml",
+    "modules/usb-power/docs/migration-evidence/native-before-summary.json",
+    "modules/usb-power/docs/migration-evidence/native-netlist-comparison.json",
+    "modules/usb-power/docs/migration-evidence/panel-drc.json",
+    "modules/usb-power/docs/migration-evidence/project-check.json",
+    "modules/usb-power/docs/migration-evidence/source-parity.json",
+    "modules/usb-power/docs/migration-evidence/tests-migration-regression.log",
+    "modules/usb-power/docs/migration-evidence/tests-module.log",
+    "modules/usb-power/docs/migration-evidence/tests-root.log",
+    "modules/usb-power/docs/migration-recovery-manifest.json",
+    "modules/usb-power/docs/migration-recovery.md",
+    "modules/usb-power/docs/migration-verification.json",
+    "modules/usb-power/docs/pin-net-audit.json",
+    "modules/usb-power/docs/routed-baseline.json",
+    "modules/usb-power/docs/schematic.pdf",
+    "modules/usb-power/docs/usb-fit.json",
+    "modules/usb-power/docs/usb-fit.pdf",
+    "modules/usb-power/docs/usb-fit.svg",
+    "modules/usb-power/docs/usb-hro-review.md",
+    "modules/usb-power/hardware/01_input_protection.kicad_sch",
+    "modules/usb-power/hardware/02_hardgate.kicad_sch",
+    "modules/usb-power/hardware/03_bucks.kicad_sch",
+    "modules/usb-power/hardware/04_bipolar.kicad_sch",
+    "modules/usb-power/hardware/05_quiet_rails.kicad_sch",
+    "modules/usb-power/hardware/07_output_rails.kicad_sch",
+    "modules/usb-power/hardware/BigModular.kicad_sym",
+    "modules/usb-power/hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/D_SMA.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/SOT-23-6.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod",
+    "modules/usb-power/hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod",
+    "modules/usb-power/hardware/fp-lib-table",
+    "modules/usb-power/hardware/mechanics/assembly-envelope.scad",
+    "modules/usb-power/hardware/mechanics/corner_braces.scad",
+    "modules/usb-power/hardware/sym-lib-table",
+    "modules/usb-power/hardware/usb-power-panel.kicad_pcb",
+    "modules/usb-power/hardware/usb-power-panel.kicad_pro",
+    "modules/usb-power/hardware/usb-power.kicad_pcb",
+    "modules/usb-power/hardware/usb-power.kicad_pro",
+    "modules/usb-power/hardware/usb-power.kicad_sch",
+    "modules/usb-power/jlcpcb/Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip",
+    "modules/usb-power/jlcpcb/Big-Modular-LDO-R1-CARRIER-4L-STANDARD-VIAS-BARE-PCB.zip",
+    "modules/usb-power/jlcpcb/Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip",
+    "modules/usb-power/jlcpcb/README.md",
+    "modules/usb-power/jlcpcb/assembly-stencil-support-only/READ-ME-FIRST.txt",
+    "modules/usb-power/jlcpcb/assembly-stencil-support-only/SHA256SUMS.txt",
+    "modules/usb-power/jlcpcb/assembly-stencil-support-only/big_modular-B_Paste.gbr",
+    "modules/usb-power/jlcpcb/assembly-stencil-support-only/big_modular-F_Paste.gbr",
+    "modules/usb-power/jlcpcb/assembly-stencil-support-only/source-sha256.json",
+    "modules/usb-power/jlcpcb/assembly/README.md",
+    "modules/usb-power/jlcpcb/assembly/SHA256SUMS.txt",
+    "modules/usb-power/jlcpcb/assembly/assembly-report.json",
+    "modules/usb-power/jlcpcb/assembly/bom.csv",
+    "modules/usb-power/jlcpcb/assembly/exceptions.json",
+    "modules/usb-power/jlcpcb/assembly/export-report.json",
+    "modules/usb-power/jlcpcb/assembly/positions.csv",
+    "modules/usb-power/jlcpcb/assembly/sourcing-evidence.json",
+    "modules/usb-power/jlcpcb/cam-inspection.json",
+    "modules/usb-power/jlcpcb/carrier/FABRICATION-REQUIREMENTS.md",
+    "modules/usb-power/jlcpcb/carrier/READ-ME-FIRST.txt",
+    "modules/usb-power/jlcpcb/carrier/SHA256SUMS.txt",
+    "modules/usb-power/jlcpcb/carrier/big_modular-B_Cu.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-B_Mask.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-B_Silkscreen.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-Edge_Cuts.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-F_Cu.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-F_Mask.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-F_Silkscreen.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-In1_Cu.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-In2_Cu.gbr",
+    "modules/usb-power/jlcpcb/carrier/big_modular-NPTH.drl",
+    "modules/usb-power/jlcpcb/carrier/big_modular-PTH.drl",
+    "modules/usb-power/jlcpcb/carrier/big_modular-job.gbrjob",
+    "modules/usb-power/jlcpcb/carrier/big_modular.d356",
+    "modules/usb-power/jlcpcb/carrier/drill-report.txt",
+    "modules/usb-power/jlcpcb/carrier/fabrication-spec.json",
+    "modules/usb-power/jlcpcb/carrier/ipc-net-name-map.json",
+    "modules/usb-power/jlcpcb/carrier/source-sha256.json",
+    "modules/usb-power/jlcpcb/carrier/via-audit.json",
+    "modules/usb-power/jlcpcb/carrier/via-process.tsv",
+    "modules/usb-power/jlcpcb/manifest.json",
+    "modules/usb-power/jlcpcb/mechanics.json",
+    "modules/usb-power/jlcpcb/passive-panel/FABRICATION-REQUIREMENTS.md",
+    "modules/usb-power/jlcpcb/passive-panel/READ-ME-FIRST.txt",
+    "modules/usb-power/jlcpcb/passive-panel/SHA256SUMS.txt",
+    "modules/usb-power/jlcpcb/passive-panel/drill-report.txt",
+    "modules/usb-power/jlcpcb/passive-panel/fabrication-spec.json",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-B_Cu.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-B_Mask.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-B_Silkscreen.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-Edge_Cuts.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-F_Cu.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-F_Mask.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-F_Silkscreen.gbr",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-NPTH.drl",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-PTH.drl",
+    "modules/usb-power/jlcpcb/passive-panel/front_panel-job.gbrjob",
+    "modules/usb-power/jlcpcb/passive-panel/source-sha256.json",
+    "modules/usb-power/jlcpcb/previews/carrier-copper-cam.png",
+    "modules/usb-power/jlcpcb/previews/carrier-copper-cam.svg",
+    "modules/usb-power/jlcpcb/previews/carrier-mask-silk-cam.png",
+    "modules/usb-power/jlcpcb/previews/carrier-mask-silk-cam.svg",
+    "modules/usb-power/jlcpcb/previews/efuse-cam.png",
+    "modules/usb-power/jlcpcb/previews/efuse-cam.svg",
+    "modules/usb-power/jlcpcb/previews/hro-cam.png",
+    "modules/usb-power/jlcpcb/previews/hro-cam.svg",
+    "modules/usb-power/jlcpcb/previews/ldo-cam.png",
+    "modules/usb-power/jlcpcb/previews/ldo-cam.svg",
+    "modules/usb-power/jlcpcb/previews/passive-panel-cam.png",
+    "modules/usb-power/jlcpcb/previews/passive-panel-cam.svg",
+    "modules/usb-power/jlcpcb/previews/passive-panel-detail.png",
+    "modules/usb-power/jlcpcb/previews/passive-panel-detail.svg",
+    "modules/usb-power/jlcpcb/recovery-status.json",
+    "modules/usb-power/jlcpcb/release-validation.json",
+    "modules/usb-power/jlcpcb/source-parity.json",
+    "modules/usb-power/jlcpcb/source-state.json",
+    "modules/usb-power/jlcpcb/via-audit.json",
+    "modules/usb-power/tests/test_electrical_design.py",
+    "modules/usb-power/tests/test_hro_fabrication.py",
+    "modules/usb-power/tests/test_hro_source.py",
+    "modules/usb-power/tests/test_kicad_toolkit_setup.py",
+    "modules/usb-power/tests/test_ldo_revision.py",
+    "modules/usb-power/tests/test_led_reservations.py",
+    "modules/usb-power/tests/test_m3_access.py",
+    "modules/usb-power/tests/test_migration_recovery.py",
+    "modules/usb-power/tests/test_schematic_hierarchy.py",
+    "modules/usb-power/tests/test_smd_reset.py",
+    "modules/usb-power/tests/test_stack_geometry.py",
+    "modules/usb-power/tests/test_ts1166_footprint.py",
+    "modules/usb-power/tools/build_mechanics.py",
+    "modules/usb-power/tools/build_project.py",
+    "modules/usb-power/tools/build_stack.py",
+    "modules/usb-power/tools/cam-requirements.txt",
+    "modules/usb-power/tools/check_hro_cam.py",
+    "modules/usb-power/tools/electrical_checks.py",
+    "modules/usb-power/tools/electrical_design.py",
+    "modules/usb-power/tools/fabrication_contract.py",
+    "modules/usb-power/tools/hro_connector.py",
+    "modules/usb-power/tools/hro_fit.py",
+    "modules/usb-power/tools/hro_integration_guard.py",
+    "modules/usb-power/tools/hro_merge_overlay.py",
+    "modules/usb-power/tools/interface_contract.py",
+    "modules/usb-power/tools/kicad-project.json",
+    "modules/usb-power/tools/ldo_budget.py",
+    "modules/usb-power/tools/ldo_design.py",
+    "modules/usb-power/tools/ldo_schematic.py",
+    "modules/usb-power/tools/m3_fit.py",
+    "modules/usb-power/tools/migration_audit.py",
+    "modules/usb-power/tools/native_sheet_patch.py",
+    "modules/usb-power/tools/release_hro.py",
+    "modules/usb-power/tools/render_schematic.py",
+    "modules/usb-power/tools/routed_checks.py",
+    "modules/usb-power/tools/schematic_connectivity.py",
+    "modules/usb-power/tools/sexp.py",
+    "modules/usb-power/tools/stack_geometry.py",
+    "modules/usb-power/tools/verify_ldo_source.py",
+    "modules/usb-power/tools/verify_project.py",
+    "modules/usb-power/tools/verify_stack.py",
+    "modules/usb-power/tools/verify_ts1166.py"
+  ],
+  "schema_version": 1,
+  "source_commit": "8f3c5000b88a09a22e3b49ce209ca87bbc9aeefe",
+  "workspace_base": "e4524354cf803d41dba03c64e6bdb860b69d9b0a"
+}

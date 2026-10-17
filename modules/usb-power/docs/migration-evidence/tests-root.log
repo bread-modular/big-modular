@@ -1,3 +1,4 @@
+test_accepted_local_cap_plan_is_consistent_when_present (test_electrical_design.ElectricalPrototypeTests.test_accepted_local_cap_plan_is_consistent_when_present) ... ok
 test_exact_magnetic_land_patterns (test_electrical_design.ElectricalPrototypeTests.test_exact_magnetic_land_patterns) ... ok
 test_independent_roles_bom_and_visible_feedback (test_electrical_design.ElectricalPrototypeTests.test_independent_roles_bom_and_visible_feedback) ... ok
 test_mid_dc_corner_is_not_a_transient_guarantee (test_electrical_design.ElectricalPrototypeTests.test_mid_dc_corner_is_not_a_transient_guarantee) ... ok
@@ -6,21 +7,36 @@ test_no_onboard_controller_or_programming_build (test_electrical_design.Electric
 test_removed_sensing_cannot_backfeed_or_reappear (test_electrical_design.ElectricalPrototypeTests.test_removed_sensing_cannot_backfeed_or_reappear) ... ok
 test_single_led_and_hardware_only_operation (test_electrical_design.ElectricalPrototypeTests.test_single_led_and_hardware_only_operation) ... ok
 test_tl3340_manufacturer_contacts_and_case (test_electrical_design.ElectricalPrototypeTests.test_tl3340_manufacturer_contacts_and_case) ... ok
-test_all_main_overlap_desired_hashes_are_canonical (test_hro_fabrication.FabricationTests.test_all_main_overlap_desired_hashes_are_canonical) ... ok
 test_cam_report_covers_independent_exported_features (test_hro_fabrication.FabricationTests.test_cam_report_covers_independent_exported_features) ... ok
 test_complete_tolerance_budget_and_negative_old_aperture (test_hro_fabrication.FabricationTests.test_complete_tolerance_budget_and_negative_old_aperture) ... ok
-test_drill_precision_is_bounded_and_dropped_slot_rejected (test_hro_fabrication.FabricationTests.test_drill_precision_is_bounded_and_dropped_slot_rejected) ... ok
-test_frozen_024_routing_and_all_pad_pose_nets_remain_exact (test_hro_fabrication.FabricationTests.test_frozen_024_routing_and_all_pad_pose_nets_remain_exact) ... ok
-test_gerbonara_region_attribute_adapter_preserves_geometry (test_hro_fabrication.FabricationTests.test_gerbonara_region_attribute_adapter_preserves_geometry) ... ok
-test_native_stack_matches_explicit_fabrication_contract (test_hro_fabrication.FabricationTests.test_native_stack_matches_explicit_fabrication_contract) ... ok
-test_native_via_disks_not_annular_rings_or_centres (test_hro_fabrication.FabricationTests.test_native_via_disks_not_annular_rings_or_centres) ... ./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
+test_current_carrier_vias_are_ordinary_unfilled (test_hro_fabrication.FabricationTests.test_current_carrier_vias_are_ordinary_unfilled) ... ./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
 ./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
 ./kicad/include/properties/property.h(607): assert "m_choices.GetCount() > 0" failed in PROPERTY_ENUM(): No enum choices defined
 /usr/lib/python3/dist-packages/pcbnew.py:63: DeprecationWarning: The SWIG-based Python interface to the PCB editor is deprecated and will be removed in a future version of KiCad.  Please plan to move to the new IPC API and/or make use of the kicad-cli tool for your KiCad automation needs.
   warnings.warn("The SWIG-based Python interface to the PCB editor is deprecated and will be removed "
 ok
-test_open_outline_rejected_by_actual_CAM_checker (test_hro_fabrication.FabricationTests.test_open_outline_rejected_by_actual_CAM_checker) ... ok
+test_drill_precision_is_bounded_and_dropped_slot_rejected (test_hro_fabrication.FabricationTests.test_drill_precision_is_bounded_and_dropped_slot_rejected) ... ERROR
+test_frozen_024_routing_and_all_pad_pose_nets_remain_exact (test_hro_fabrication.FabricationTests.test_frozen_024_routing_and_all_pad_pose_nets_remain_exact) ... ok
+test_gerbonara_region_attribute_adapter_preserves_geometry (test_hro_fabrication.FabricationTests.test_gerbonara_region_attribute_adapter_preserves_geometry) ... ERROR
+test_historical_main_overlap_hashes_remain_intact (test_hro_fabrication.FabricationTests.test_historical_main_overlap_hashes_remain_intact) ... ok
+test_native_stack_matches_explicit_fabrication_contract (test_hro_fabrication.FabricationTests.test_native_stack_matches_explicit_fabrication_contract) ... ok
+test_native_via_disks_not_annular_rings_or_centres (test_hro_fabrication.FabricationTests.test_native_via_disks_not_annular_rings_or_centres) ... 14:35:33: Debug: Adding duplicate image handler for 'PNG file'
+14:35:33: Debug: Adding duplicate image handler for 'JPEG file'
+14:35:33: Debug: Adding duplicate image handler for 'TIFF file'
+14:35:33: Debug: Adding duplicate image handler for 'GIF file'
+14:35:33: Debug: Adding duplicate image handler for 'PNM file'
+14:35:33: Debug: Adding duplicate image handler for 'PCX file'
+14:35:33: Debug: Adding duplicate image handler for 'IFF file'
+14:35:33: Debug: Adding duplicate image handler for 'Windows icon file'
+14:35:33: Debug: Adding duplicate image handler for 'Windows cursor file'
+14:35:33: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+14:35:33: Debug: Adding duplicate image handler for 'TGA file'
+14:35:33: Debug: Adding duplicate image handler for 'XPM file'
+ok
+test_open_outline_rejected_by_actual_CAM_checker (test_hro_fabrication.FabricationTests.test_open_outline_rejected_by_actual_CAM_checker) ... ERROR
 test_release_files_match_manifest_and_archives (test_hro_fabrication.FabricationTests.test_release_files_match_manifest_and_archives) ... ok
+test_current_release_source_assets_and_history_marked_stale (test_hro_fabrication.LDOReleaseTests.test_current_release_source_assets_and_history_marked_stale) ... ok
+test_new_CAM_population_sides_and_unchanged_panel (test_hro_fabrication.LDOReleaseTests.test_new_CAM_population_sides_and_unchanged_panel) ... ok
 test_boss_shrink_and_pad_relief_and_missing_mask_are_rejected (test_hro_source.HROSourceTests.test_boss_shrink_and_pad_relief_and_missing_mask_are_rejected) ... ok
 test_generated_SCAD_is_an_envelope_not_borrowed_model (test_hro_source.HROSourceTests.test_generated_SCAD_is_an_envelope_not_borrowed_model) ... ok
 test_independent_contact_mapping_and_all_NCs (test_hro_source.HROSourceTests.test_independent_contact_mapping_and_all_NCs) ... ok
@@ -36,6 +52,43 @@ test_imported_payload_matches_provenance_without_original_checkout (test_kicad_t
 test_private_check_dry_run_is_no_write_and_resolves_full_source_selection (test_kicad_toolkit_setup.KiCadToolkitSetupTests.test_private_check_dry_run_is_no_write_and_resolves_full_source_selection) ... ok
 test_project_profile_explicitly_selects_carrier_and_local_dependencies (test_kicad_toolkit_setup.KiCadToolkitSetupTests.test_project_profile_explicitly_selects_carrier_and_local_dependencies) ... ok
 test_skill_discovery_and_legacy_alias_are_relative_local_links (test_kicad_toolkit_setup.KiCadToolkitSetupTests.test_skill_discovery_and_legacy_alias_are_relative_local_links) ... ok
+test_all_components_front_and_no_bottom_paste (test_ldo_revision.LDOFinalPrototypeTests.test_all_components_front_and_no_bottom_paste) ... 14:35:36: Debug: Adding duplicate image handler for 'PNG file'
+14:35:36: Debug: Adding duplicate image handler for 'JPEG file'
+14:35:36: Debug: Adding duplicate image handler for 'TIFF file'
+14:35:36: Debug: Adding duplicate image handler for 'GIF file'
+14:35:36: Debug: Adding duplicate image handler for 'PNM file'
+14:35:36: Debug: Adding duplicate image handler for 'PCX file'
+14:35:36: Debug: Adding duplicate image handler for 'IFF file'
+14:35:36: Debug: Adding duplicate image handler for 'Windows icon file'
+14:35:36: Debug: Adding duplicate image handler for 'Windows cursor file'
+14:35:36: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+14:35:36: Debug: Adding duplicate image handler for 'TGA file'
+14:35:36: Debug: Adding duplicate image handler for 'XPM file'
+ok
+test_exact_parallel_population_and_screen_rejects_old_banks (test_ldo_revision.LDOFinalPrototypeTests.test_exact_parallel_population_and_screen_rejects_old_banks) ... ok
+test_ldo_exposed_pads_have_nine_ground_thermal_vias_each (test_ldo_revision.LDOFinalPrototypeTests.test_ldo_exposed_pads_have_nine_ground_thermal_vias_each) ... 14:35:36: Debug: Adding duplicate image handler for 'PNG file'
+14:35:36: Debug: Adding duplicate image handler for 'JPEG file'
+14:35:36: Debug: Adding duplicate image handler for 'TIFF file'
+14:35:36: Debug: Adding duplicate image handler for 'GIF file'
+14:35:36: Debug: Adding duplicate image handler for 'PNM file'
+14:35:36: Debug: Adding duplicate image handler for 'PCX file'
+14:35:36: Debug: Adding duplicate image handler for 'IFF file'
+14:35:36: Debug: Adding duplicate image handler for 'Windows icon file'
+14:35:36: Debug: Adding duplicate image handler for 'Windows cursor file'
+14:35:36: Debug: Adding duplicate image handler for 'Windows animated cursor file'
+14:35:36: Debug: Adding duplicate image handler for 'TGA file'
+14:35:36: Debug: Adding duplicate image handler for 'XPM file'
+ok
+test_accepted_cap_plan_matches_frozen_source (test_ldo_revision.LDORevisionTests.test_accepted_cap_plan_matches_frozen_source) ... ok
+test_anyout_is_not_a_feedback_resistor_design (test_ldo_revision.LDORevisionTests.test_anyout_is_not_a_feedback_resistor_design) ... ok
+test_exact_TI_RGW_land_pattern_not_generic_QFN (test_ldo_revision.LDORevisionTests.test_exact_TI_RGW_land_pattern_not_generic_QFN) ... ok
+test_exact_requested_variants_and_ground_exposed_pads (test_ldo_revision.LDORevisionTests.test_exact_requested_variants_and_ground_exposed_pads) ... ok
+test_fixed_interfaces_preserved_and_old_release_not_current (test_ldo_revision.LDORevisionTests.test_fixed_interfaces_preserved_and_old_release_not_current) ... ok
+test_headroom_and_800mA_1A_dissipation_not_supply_ratings (test_ldo_revision.LDORevisionTests.test_headroom_and_800mA_1A_dissipation_not_supply_ratings) ... ok
+test_negative_enable_pad_and_anyout_mutations_are_rejected (test_ldo_revision.LDORevisionTests.test_negative_enable_pad_and_anyout_mutations_are_rejected) ... ok
+test_negative_polarity_feedback_and_shunts (test_ldo_revision.LDORevisionTests.test_negative_polarity_feedback_and_shunts) ... ok
+test_precision_raw_setpoint_and_capacitor_requirements_are_explicit (test_ldo_revision.LDORevisionTests.test_precision_raw_setpoint_and_capacitor_requirements_are_explicit) ... ok
+test_raw_internal_only_and_five_volt_stage_exactly_preserved (test_ldo_revision.LDORevisionTests.test_raw_internal_only_and_five_volt_stage_exactly_preserved) ... ok
 test_reserved_refs_cannot_be_general_diodes (test_led_reservations.LedReservationTests.test_reserved_refs_cannot_be_general_diodes) ... ok
 test_single_power_lamp_clear_usb_and_bracket_envelopes (test_led_reservations.LedReservationTests.test_single_power_lamp_clear_usb_and_bracket_envelopes) ... ok
 test_corner_pattern_and_new_bracket_holes (test_m3_access.M3AccessTests.test_corner_pattern_and_new_bracket_holes) ... ok
@@ -50,6 +103,14 @@ test_selected_reset_is_restored_SMT_with_exposed_lands (test_m3_access.M3AccessT
 test_short_side_screw_rejected (test_m3_access.M3AccessTests.test_short_side_screw_rejected) ... ok
 test_two_plain_Ls_with_loose_nut_tool_access (test_m3_access.M3AccessTests.test_two_plain_Ls_with_loose_nut_tool_access) ... ok
 test_unrelieved_board_blocks_front_leg (test_m3_access.M3AccessTests.test_unrelieved_board_blocks_front_leg) ... ok
+test_active_readme_links_are_valid (test_migration_recovery.MigrationRecoveryTests.test_active_readme_links_are_valid) ... ok
+test_circuit_value_wire_route_and_rule_mutations_fail_closed (test_migration_recovery.MigrationRecoveryTests.test_circuit_value_wire_route_and_rule_mutations_fail_closed) ... ok
+test_essential_native_tool_test_doc_and_shipping_files_are_tracked (test_migration_recovery.MigrationRecoveryTests.test_essential_native_tool_test_doc_and_shipping_files_are_tracked) ... ok
+test_every_original_tracked_file_has_a_verified_disposition (test_migration_recovery.MigrationRecoveryTests.test_every_original_tracked_file_has_a_verified_disposition) ... ok
+test_frozen_export_receipt_does_not_claim_new_exports (test_migration_recovery.MigrationRecoveryTests.test_frozen_export_receipt_does_not_claim_new_exports) ... ok
+test_frozen_native_receipt_proves_identity_without_pinning_future_circuits (test_migration_recovery.MigrationRecoveryTests.test_frozen_native_receipt_proves_identity_without_pinning_future_circuits) ... ok
+test_profile_and_library_paths_resolve_with_root_shared_tools (test_migration_recovery.MigrationRecoveryTests.test_profile_and_library_paths_resolve_with_root_shared_tools) ... ok
+test_provenance_rejects_the_older_043_branch_base (test_migration_recovery.MigrationRecoveryTests.test_provenance_rejects_the_older_043_branch_base) ... ok
 test_build_instructions_cover_current_sources (test_schematic_hierarchy.SchematicHierarchyTests.test_build_instructions_cover_current_sources) ... ok
 test_deterministic_candidate_mode_preserves_all_sources (test_schematic_hierarchy.SchematicHierarchyTests.test_deterministic_candidate_mode_preserves_all_sources) ... ok
 test_directional_ports_match_and_touch_component_wires (test_schematic_hierarchy.SchematicHierarchyTests.test_directional_ports_match_and_touch_component_wires) ... ok
@@ -66,7 +127,7 @@ test_installed_part_and_lands_match_manufacturer_mapping (test_smd_reset.SMDRest
 test_original_THT_panel_axis_is_rejected (test_smd_reset.SMDRestorationTests.test_original_THT_panel_axis_is_rejected) ... ok
 test_pin3_cannot_be_assigned_to_the_opposite_contact (test_smd_reset.SMDRestorationTests.test_pin3_cannot_be_assigned_to_the_opposite_contact) ... ok
 test_undersized_iron_access_land_is_rejected (test_smd_reset.SMDRestorationTests.test_undersized_iron_access_land_is_rejected) ... ok
-test_all_64_pcb_fields_paths_and_routed_placement (test_stack_geometry.StackGeometryTests.test_all_64_pcb_fields_paths_and_routed_placement) ... ok
+test_all_99_pcb_fields_paths_and_routed_placement (test_stack_geometry.StackGeometryTests.test_all_99_pcb_fields_paths_and_routed_placement) ... ok
 test_drawing_and_builder_share_current_geometry (test_stack_geometry.StackGeometryTests.test_drawing_and_builder_share_current_geometry) ... ok
 test_legacy_full_builder_cannot_restore_the_deep_board (test_stack_geometry.StackGeometryTests.test_legacy_full_builder_cannot_restore_the_deep_board) ... ok
 test_native_geometry_ui_power_pin_order_and_routing (test_stack_geometry.StackGeometryTests.test_native_geometry_ui_power_pin_order_and_routing) ... ok
@@ -85,7 +146,37 @@ test_stem_height_does_not_cure_lateral_interference (test_ts1166_footprint.TS116
 test_uploaded_hole_pattern_and_hand_solder_rings (test_ts1166_footprint.TS1166FootprintTests.test_uploaded_hole_pattern_and_hand_solder_rings) ... ok
 test_width_conflict_is_not_hidden_or_promoted (test_ts1166_footprint.TS1166FootprintTests.test_width_conflict_is_not_hidden_or_promoted) ... ok
 
+======================================================================
+ERROR: test_drill_precision_is_bounded_and_dropped_slot_rejected (test_hro_fabrication.FabricationTests.test_drill_precision_is_bounded_and_dropped_slot_rejected)
 ----------------------------------------------------------------------
-Ran 81 tests in 6.114s
+Traceback (most recent call last):
+  File "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tests/test_hro_fabrication.py", line 103, in test_drill_precision_is_bounded_and_dropped_slot_rejected
+    from check_hro_cam import compare_drills
+  File "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tools/check_hro_cam.py", line 10, in <module>
+    from gerbonara import GerberFile, ExcellonFile, ipc356
+ModuleNotFoundError: No module named 'gerbonara'
 
-OK
+======================================================================
+ERROR: test_gerbonara_region_attribute_adapter_preserves_geometry (test_hro_fabrication.FabricationTests.test_gerbonara_region_attribute_adapter_preserves_geometry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tests/test_hro_fabrication.py", line 85, in test_gerbonara_region_attribute_adapter_preserves_geometry
+    from check_hro_cam import read_gerber,area
+  File "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tools/check_hro_cam.py", line 10, in <module>
+    from gerbonara import GerberFile, ExcellonFile, ipc356
+ModuleNotFoundError: No module named 'gerbonara'
+
+======================================================================
+ERROR: test_open_outline_rejected_by_actual_CAM_checker (test_hro_fabrication.FabricationTests.test_open_outline_rejected_by_actual_CAM_checker)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tests/test_hro_fabrication.py", line 95, in test_open_outline_rejected_by_actual_CAM_checker
+    from check_hro_cam import outlines
+  File "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tools/check_hro_cam.py", line 10, in <module>
+    from gerbonara import GerberFile, ExcellonFile, ipc356
+ModuleNotFoundError: No module named 'gerbonara'
+
+----------------------------------------------------------------------
+Ran 106 tests in 9.571s
+
+FAILED (errors=3)

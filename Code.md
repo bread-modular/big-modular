@@ -34,17 +34,10 @@ Source/sourcing and Basic/Economy gates remain distinct; no stock claims without
 
 ## Fabrication outputs
 
-FAB files belong in `modules/<name>/jlcpcb/` and are generated only through the
-common KiCad/JLCPCB tools. For the current board layout the working invocation is:
+`modules/usb-power/jlcpcb/` is the sole shipping-set location; `production/` is
+retired, not an active archive. The recovered Git export snapshot is STALE for the
+migrated project/tool paths. It was not regenerated during recovery.
 
-```sh
-python3 opt/kicad-tools/jlcpcb/export.py modules/usb-power/hardware \
-  --board usb-power.kicad_pcb --include-through-hole --require-part-numbers \
-  -o modules/usb-power/jlcpcb/usb-power --overwrite
-python3 opt/kicad-tools/jlcpcb/export.py modules/usb-power/hardware \
-  --board usb-power-panel.kicad_pcb --pcb-only \
-  -o modules/usb-power/jlcpcb/usb-power-panel --overwrite
-```
-
-See `modules/usb-power/jlcpcb/README.md` for the mirror/verification steps.
-`jlcpcb/` is the upload set; do not hand-edit generated files.
+Read `modules/usb-power/jlcpcb/README.md` for shared-tool export/CAM commands and
+promotion gates. Any native electrical/PCB repair and new export belongs to Astra's
+separate authorized task; never hand-edit generated files or historical manifests.

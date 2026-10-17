@@ -13,7 +13,7 @@ Current source: 107 electrical+4 mechanical footprints,585 tracks,207 ordinary 0
 ```
 
 - [Schematic PDF](docs/schematic.pdf) · [layout/review images](docs/ldo-review/)
-- [FAB upload set + BOM/CPL](jlcpcb/) · [fabrication requirements](docs/fabrication.md)
+- [Recovered FAB snapshot + BOM/CPL](jlcpcb/) · [fabrication requirements](docs/fabrication.md)
 - [Electrical/capacitor limits](docs/ldo-revision.md) · [build/check commands](docs/build.md)
 - [Assembly geometry](docs/assembly-geometry.json) · [mechanical interfaces](docs/mechanics.md)
 - LDO capacitor screen: IN+/OUT+/IN-/OUT- =12.359/23.990/12.359/11.400uF at
@@ -29,6 +29,9 @@ Current source: 107 electrical+4 mechanical footprints,585 tracks,207 ordinary 0
 
 Current source/native checkpoint: [Basic passives + D10 DNP](docs/basic-swaps-checkpoint.md).
 D10 is DNP: footprint/pads retained, not fitted or purchased; R32 remains fitted.
-Production/ldo-r1 is regenerated from the current 043 frozen source, including a
-fresh bare-PCB CAM two-pass export and a separate JLC assembly BOM/CPL. It is not a
-qualified, ordered or supplier-approved build.
+**Recovery status:** hardware, tools, tests, module instructions and missing docs are
+recovered from this repository's accepted Git objects. Both PCBs are byte-identical;
+only native filename/project identity metadata changed. `jlcpcb/` contains the intact
+**STALE recovered 043 export snapshot**, not a fresh export of the migrated tree.
+See [recovery provenance, comparisons and handoff](docs/migration-recovery.md).
+No circuit, routing, current guarantee or assembly qualification changed.

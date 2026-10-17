@@ -1,32 +1,60 @@
 {
-  "parts": 64,
-  "pins_including_NC": 218,
-  "independent_pin_checks": 123,
-  "local_visible_wire_checks": 31,
-  "hierarchical_ports": 17,
-  "footprint_pin_maps": 64,
+  "parts": 107,
+  "pins_including_NC": 342,
+  "independent_pin_checks": 247,
+  "local_visible_wire_checks": 62,
+  "hierarchical_ports": 22,
+  "footprint_pin_maps": 107,
+  "capacitor_plan": {
+    "status": "pass",
+    "present": true,
+    "VPROT_refs": [
+      "C5",
+      "C68",
+      "C18",
+      "C69"
+    ],
+    "MID_local_refs": [
+      "C6",
+      "C70",
+      "C71"
+    ],
+    "P5_local_refs": [
+      "C19",
+      "C38",
+      "C72"
+    ],
+    "retained_C13585_refs": [
+      "C4",
+      "C16",
+      "C17"
+    ],
+    "remote_C37_not_local": true
+  },
   "fabrication_ready": false,
-  "fabrication_ready_scope": "Legacy conservative source-only non-approval flag; this checker does not evaluate bare-PCB artwork release and this false value is not an unresolved fabrication-blocker result.",
-  "bare_pcb_artwork_release_record": "production/hro-r1/release-validation.json",
+  "fabrication_ready_scope": "Integrated LDO-R1 source/layout checks; manufacturing artwork acceptance is recorded separately.",
+  "historical_stale_release_record": "git:c82ca1cabf01f529ae536f5afaa8773d7bbc6d29:production/hro-r1/release-validation.json",
   "assembled_product_qualified": false,
   "physical_validation_pending": [
     "cable/full insertion",
     "ABS brackets/assembled fit",
     "bench/source-current/thermal validation"
   ],
-  "native_connected_pins": 187,
+  "native_connected_pins": 291,
   "boards": {
-    "big_modular.kicad_pcb": {
-      "footprints": 68,
-      "tracks": 421,
-      "vias": 133,
-      "zones": 4
+    "usb-power.kicad_pcb": {
+      "footprints": 111,
+      "tracks": 585,
+      "vias": 207,
+      "zones": 8,
+      "backside_components": 0
     },
-    "front_panel.kicad_pcb": {
+    "usb-power-panel.kicad_pcb": {
       "footprints": 6,
       "tracks": 0,
       "vias": 0,
-      "zones": 0
+      "zones": 0,
+      "backside_components": 0
     }
   },
   "mechanics": {
@@ -92,7 +120,7 @@
       33.5,
       0.8
     ],
-    "electrical_status": "V1:64 active footprints; routed HRO carrier, passive panel",
+    "electrical_status": "107 active footprints; inspected routing, passive panel; not electrical/thermal qualification",
     "finished_module_depth": "unverified; cable connector not confined to 2HP board envelope"
   },
   "UV_rising": [
@@ -113,5 +141,5 @@
   ],
   "onboard_mcu": false,
   "external_controller_qualified": false,
-  "source_scope": "V1 canonical routed HRO carrier; unchanged non-USB electrical identity"
+  "source_scope": "LDO-R1 quiet-rail prototype; explicit PCB integration complete"
 }

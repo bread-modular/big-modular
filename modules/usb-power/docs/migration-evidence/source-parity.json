@@ -1,0 +1,354 @@
+{
+  "parts": 107,
+  "pins_including_NC": 342,
+  "independent_pin_checks": 247,
+  "local_visible_wire_checks": 62,
+  "hierarchical_ports": 22,
+  "footprint_pin_maps": 107,
+  "capacitor_plan": {
+    "status": "pass",
+    "present": true,
+    "VPROT_refs": [
+      "C5",
+      "C68",
+      "C18",
+      "C69"
+    ],
+    "MID_local_refs": [
+      "C6",
+      "C70",
+      "C71"
+    ],
+    "P5_local_refs": [
+      "C19",
+      "C38",
+      "C72"
+    ],
+    "retained_C13585_refs": [
+      "C4",
+      "C16",
+      "C17"
+    ],
+    "remote_C37_not_local": true
+  },
+  "fabrication_ready": false,
+  "status": "integrated native electrical and exact-field parity pass; prototype screen only; negative full-temperature 1 A dropout FAIL not waived",
+  "native_components": 107,
+  "native_pins_including_NC": 334,
+  "native_explicit_NCs": 43,
+  "native_connected_pins": 291,
+  "native_ERC_findings": 0,
+  "native_DRC_findings": 0,
+  "PCB_BOM_schematic_field_checks": 642,
+  "PCB_integration_completed": true,
+  "capacitor_plan_implemented": true,
+  "capacitor_bench_qualified": false,
+  "capacitor_release_gates": {
+    "source": "Accepted Sol041 sizing / Astra043 local implementation plan",
+    "C13585_bias_source": {
+      "url": "https://product.samsungsem.com/mlcc/CL31A106KBHNNN.do",
+      "sha256": "f79803a5cce17f51dd37a88070ec8ecf5581b926ba566b77e3a37812b12b4a4a",
+      "conditions": {
+        "vdc": 0.0,
+        "adc": 0.0,
+        "degC": 25.0,
+        "graphType": "DCBias",
+        "dsDcFre": 1000,
+        "dsDcSign": 1.0,
+        "partsName": "CL31A106KBHNNN"
+      }
+    },
+    "C5_C18_value_uF": 22,
+    "C5_C18_refs": [
+      "C5",
+      "C18"
+    ],
+    "C68_C69_refs": [
+      "C68",
+      "C69"
+    ],
+    "C70_C71_refs": [
+      "C70",
+      "C71"
+    ],
+    "C72_refs": [
+      "C72"
+    ],
+    "VPROT_each_buck_2x22_at9p45V_uF": 10.664266700630645,
+    "MID_local_3x22_at5p5V_uF": 27.63112683569859,
+    "P5_local_3x22_at5p5V_uF": 27.63112683569859,
+    "P5_crossover_estimate_at5V_Hz": 39163.7763922181,
+    "TI_no_feedforward_crossover_guideline_Hz": 40000,
+    "VPROT_local_input_gate": {
+      "required_uF": 10.0,
+      "screened_uF": 10.664266700630645,
+      "screen_pass": true
+    },
+    "P5_output_loop_gate": {
+      "screened_uF": 27.63112683569859,
+      "estimated_crossover_Hz": 39163.7763922181,
+      "guideline_Hz": 40000,
+      "screen_pass": true
+    },
+    "C4_C16_C17_C13585_each_at9p45V_uF": 3.0950537959281497,
+    "C4_C16_C17_C13585_each_at5p5V_uF": 4.970138320689972,
+    "application_recommendation_not_IC_guarantee": true,
+    "bench_pending": true
+  },
+  "negative_full_corner_1A_drop_out_pass": false,
+  "MID_peak_with_allocation_V": 5.4181519688885045,
+  "current_rating_claim": null,
+  "qualified_quiet_hardware": false,
+  "preserved_file_count": 7,
+  "DC_budget": {
+    "status": "static design screening; NOT qualified hardware",
+    "raw_nominal_magnitudes_V": {
+      "positive": 13.537080000000001,
+      "negative": 13.928805774278215
+    },
+    "raw_resistors_ohm": {
+      "R12": 1500000,
+      "R75": 24000,
+      "R13": 150000,
+      "R14": 1600000,
+      "R60": 150000,
+      "R15": 150000,
+      "R76": 2400,
+      "R72": 82000,
+      "R83": 9100,
+      "R73": 1200,
+      "R74": 10000,
+      "R9": 100000,
+      "R10": 13000,
+      "R84": 510,
+      "R17": 100000,
+      "R18": 13000,
+      "R85": 510
+    },
+    "MID_and_P5": {
+      "nominal_V": 5.007547002220577,
+      "DC_V": [
+        4.712886897200467,
+        5.318151968888505
+      ],
+      "peak_with_allocation_V": 5.4181519688885045,
+      "MID_limit_V": 5.5,
+      "MID_margin_V": 0.08184803111149552,
+      "upper_with_ripple_below_5p5": true,
+      "five_percent_accuracy_guaranteed": false
+    },
+    "positive_input_trough_V": 12.810820678334725,
+    "negative_input_trough_magnitude_V": 12.961874268432346,
+    "raw_input_trough_min_V": 12.810820678334725,
+    "raw_trough_above_13V": false,
+    "raw_feedback_bias_assumption_A": [
+      -5e-08,
+      5e-08
+    ],
+    "positive_raw_DC_V": [
+      12.910820678334725,
+      14.184851073391233
+    ],
+    "negative_raw_DC_magnitude_V": [
+      13.061874268432346,
+      14.81739870183099
+    ],
+    "positive_final_nominal_V": 12.0,
+    "negative_final_nominal_V": -12.02025,
+    "positive_final_DC_V": [
+      11.7,
+      12.299999999999999
+    ],
+    "negative_final_DC_magnitude_V": [
+      11.296066753536614,
+      12.783855325698704
+    ],
+    "resistor_tolerance_plus_TCR_factors": {
+      "precision_0p1pct_25ppm": [
+        0.9965025000000001,
+        1.0035024999999997
+      ],
+      "basic_1pct_100ppm": [
+        0.9801,
+        1.0201
+      ]
+    },
+    "ripple_transient_allocation_peak_V": 0.1,
+    "positive_worst_headroom_V": 0.510820678334726,
+    "negative_worst_headroom_V": 0.17801894273364205,
+    "positive_dropout_max_at_1A_V": 0.45,
+    "negative_dropout_max_at_1A_V": 0.8,
+    "positive_dropout_reserve_V": 0.060820678334725986,
+    "negative_dropout_reserve_V": -0.621981057266358,
+    "positive_full_corner_1A_drop_out_pass": true,
+    "negative_full_corner_1A_drop_out_pass": false,
+    "negative_headroom_status": "FAIL: full-temperature 1 A negative dropout/accuracy not assured; conditional prototype limit accepted under looser Basic passives",
+    "no_new_current_guarantee": true,
+    "pass_dissipation_excludes_ground_current": {
+      "0.25": {
+        "positive_pass_nominal_W": 0.38427000000000033,
+        "negative_pass_nominal_W": 0.47713894356955366,
+        "positive_pass_corner_W": 0.6462127683478083,
+        "negative_pass_corner_W": 0.905332987073594
+      },
+      "0.8": {
+        "positive_pass_nominal_W": 1.2296640000000012,
+        "negative_pass_nominal_W": 1.5268446194225718,
+        "positive_pass_corner_W": 2.0678808587129867,
+        "negative_pass_corner_W": 2.897065558635501
+      },
+      "1.0": {
+        "positive_pass_nominal_W": 1.5370800000000013,
+        "negative_pass_nominal_W": 1.9085557742782147,
+        "positive_pass_corner_W": 2.584851073391233,
+        "negative_pass_corner_W": 3.621331948294376
+      }
+    },
+    "thermal_additional_loss": "Add |VIN| * IGND; no full-load maximum IGND is established. JEDEC thetaJA is not this board.",
+    "cap_voltage_rating_margin_V": 10.08260129816901,
+    "capacitor_banks": {
+      "positive_input": {
+        "refs": [
+          "C48",
+          "C49",
+          "C50",
+          "C63"
+        ],
+        "bias_V": 15.0,
+        "nominal_uF": 88,
+        "bias_retention_typical": 0.1932433202074555,
+        "typical_uF": 17.005412178256083,
+        "screened_effective_uF": 12.358683300547609,
+        "required_effective_uF": 10,
+        "screen_pass": true
+      },
+      "positive_output": {
+        "refs": [
+          "C51",
+          "C52",
+          "C53",
+          "C64",
+          "C65",
+          "C66"
+        ],
+        "bias_V": 12.4,
+        "nominal_uF": 132,
+        "bias_retention_typical": 0.25007520079727497,
+        "typical_uF": 33.009926505240294,
+        "screened_effective_uF": 23.989964087683383,
+        "required_effective_uF": 20,
+        "screen_pass": true
+      },
+      "negative_input": {
+        "refs": [
+          "C54",
+          "C55",
+          "C56",
+          "C67"
+        ],
+        "bias_V": 15.0,
+        "nominal_uF": 88,
+        "bias_retention_typical": 0.1932433202074555,
+        "typical_uF": 17.005412178256083,
+        "screened_effective_uF": 12.358683300547609,
+        "required_effective_uF": 10,
+        "screen_pass": true
+      },
+      "negative_output": {
+        "refs": [
+          "C57",
+          "C58",
+          "C59"
+        ],
+        "bias_V": 12.9,
+        "nominal_uF": 66,
+        "bias_retention_typical": 0.23768066919666897,
+        "typical_uF": 15.686924166980152,
+        "screened_effective_uF": 11.400472138352823,
+        "required_effective_uF": 10,
+        "screen_pass": true
+      }
+    },
+    "ldo_bank_screen_passed": true,
+    "capacitor_release_gates": {
+      "source": "Accepted Sol041 sizing / Astra043 local implementation plan",
+      "C13585_bias_source": {
+        "url": "https://product.samsungsem.com/mlcc/CL31A106KBHNNN.do",
+        "sha256": "f79803a5cce17f51dd37a88070ec8ecf5581b926ba566b77e3a37812b12b4a4a",
+        "conditions": {
+          "vdc": 0.0,
+          "adc": 0.0,
+          "degC": 25.0,
+          "graphType": "DCBias",
+          "dsDcFre": 1000,
+          "dsDcSign": 1.0,
+          "partsName": "CL31A106KBHNNN"
+        }
+      },
+      "C5_C18_value_uF": 22,
+      "C5_C18_refs": [
+        "C5",
+        "C18"
+      ],
+      "C68_C69_refs": [
+        "C68",
+        "C69"
+      ],
+      "C70_C71_refs": [
+        "C70",
+        "C71"
+      ],
+      "C72_refs": [
+        "C72"
+      ],
+      "VPROT_each_buck_2x22_at9p45V_uF": 10.664266700630645,
+      "MID_local_3x22_at5p5V_uF": 27.63112683569859,
+      "P5_local_3x22_at5p5V_uF": 27.63112683569859,
+      "P5_crossover_estimate_at5V_Hz": 39163.7763922181,
+      "TI_no_feedforward_crossover_guideline_Hz": 40000,
+      "VPROT_local_input_gate": {
+        "required_uF": 10.0,
+        "screened_uF": 10.664266700630645,
+        "screen_pass": true
+      },
+      "P5_output_loop_gate": {
+        "screened_uF": 27.63112683569859,
+        "estimated_crossover_Hz": 39163.7763922181,
+        "guideline_Hz": 40000,
+        "screen_pass": true
+      },
+      "C4_C16_C17_C13585_each_at9p45V_uF": 3.0950537959281497,
+      "C4_C16_C17_C13585_each_at5p5V_uF": 4.970138320689972,
+      "application_recommendation_not_IC_guarantee": true,
+      "bench_pending": true
+    },
+    "capacitor_plan_screens_pass": true,
+    "capacitor_release_ready": true,
+    "capacitor_bench_qualified": false,
+    "cap_effective_C_verified": false,
+    "cap_ESR_verified": false,
+    "cap_prototype_screen_passed": true,
+    "cap_bank_disposition": "LDO 4/6/4/3 banks PASS the explicit typical-data prototype screen; the accepted 043 local-cap plan screens 10.664 uF per buck at 9.45 V and 27.631 uF at 5.5 V with 39.164 kHz estimated P5 crossover, and the plan is implemented independently in the 043 native source. Bench/lot/loop evidence remains pending; application recommendations, not guaranteed minima.",
+    "accuracy_headroom_budget_applicable_to_present_capacitors": "conditional on screened capacitance and stated ripple/temperature/lot assumptions; not bench verified",
+    "positive_startup_typ_s_at_nominal_1uF": 0.12237754316221156,
+    "negative_startup_typ_s_at_nominal_100nF": 0.12,
+    "screening_only_CCM_at_5V": {
+      "boost": {
+        "assumed_duty": 0.6438005625101517,
+        "inductor_ripple_A": 0.6848942154363317,
+        "ideal_output_at_1p8A_peak_A": 0.5191795203424907
+      },
+      "inverter": {
+        "assumed_duty": 0.7426501629544571,
+        "inductor_ripple_A": 0.7900533648451671,
+        "ideal_output_at_1p8A_peak_A": 0.3615696543318839
+      }
+    },
+    "nominal_efuse_input_power_W_at_9V": 17.880794701986755,
+    "simultaneous_12V_800mA_rail_output_power_W": 19.200000000000003,
+    "current_rating_claim": null,
+    "PCB_integration_completed": true,
+    "reverse_and_shutdown_qualification_completed": false,
+    "assembly_Basic_policy_exception_approved": false
+  }
+}

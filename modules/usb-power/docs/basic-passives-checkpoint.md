@@ -1,5 +1,10 @@
 # Basic-passive native checkpoint — workspace037
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 **Source/native only; not a new fabrication or assembly release.** Base HEAD
 `d0cc00212db695dacd7c6bc8952177468b4842c5`. The exact 72-path workspace034 transfer
 (including two deletions) preceded this work. Its production outputs remain

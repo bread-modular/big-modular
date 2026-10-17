@@ -25,8 +25,8 @@ checking is mandatory because KiCad may subsequently save new content.
 - `hardware/03_bucks.kicad_sch`
 - `hardware/04_bipolar.kicad_sch`
 - `hardware/07_output_rails.kicad_sch`
-- `hardware/big_modular.kicad_sch`
-- `hardware/big_modular.kicad_pro`
+- `hardware/usb-power.kicad_sch`
+- `hardware/usb-power.kicad_pro`
 
 Unrelated dirty `hardware/.history` is NOT in the task delta, backup, patch or desired
 file manifest. No history/GUI/lock files were read for content, copied, edited or removed.
@@ -67,7 +67,7 @@ If the workspace merge service requires clean OVERLAPPING paths, after explicit
 approval stash **only these seven paths**, retaining the returned stash object ID:
 
 ```sh
-git -C /home/azero/data/projects/big-modular stash push -m "HRO reviewed overlap backup" -- hardware/01_input_protection.kicad_sch hardware/02_hardgate.kicad_sch hardware/03_bucks.kicad_sch hardware/04_bipolar.kicad_sch hardware/07_output_rails.kicad_sch hardware/big_modular.kicad_sch hardware/big_modular.kicad_pro
+git -C /home/azero/data/projects/big-modular stash push -m "HRO reviewed overlap backup" -- hardware/01_input_protection.kicad_sch hardware/02_hardgate.kicad_sch hardware/03_bucks.kicad_sch hardware/04_bipolar.kicad_sch hardware/07_output_rails.kicad_sch hardware/usb-power.kicad_sch hardware/usb-power.kicad_pro
 ```
 
 The assistant would verify every stashed file against the saved SHA before proceeding;

@@ -1,5 +1,10 @@
 # LDO-R1 quiet-rail prototype — current 043 capacitor closure
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 Canonical native source is the reviewed 040 basic-passive checkpoint, **not a
 manufacturing release**. The 043 capacitor closure is implemented in the frozen
 native source; its counts/fields are independently rechecked by the release tools.

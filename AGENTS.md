@@ -26,5 +26,6 @@ dependencies or weaken rules.
 
 No advisor/delegation, commit, merge, push, main writes, GUI, orders or vendor
 uploads. Supervisor reviews/merges the workspace; the assistant does not merge.
-Workspace028 and Bread Modular are read-only. No arbitrary raw-rail/current
-guarantee changes.
+No access to other workspaces for recovery. No arbitrary raw-rail/current guarantee
+changes. Read `modules/usb-power/docs/migration-recovery.md`; recovered `jlcpcb/`
+exports are STALE for migrated inputs. No active `production/` archive.
