@@ -60,6 +60,15 @@ selection cannot be mixed. Config paths are relative to the config file:
 }
 ```
 
+Native project `schematic.top_level_sheets` metadata is recognized only as one
+exact `{filename, name, uuid}` entry in the selected root's companion project:
+filename must be the same-directory root basename/resolved path, name its stem,
+and UUID the unique canonical non-nil root UUID already covered by closure hashes.
+Absent metadata remains supported; malformed/unknown, multiple-root, external,
+traversing or different-sheet entries fail closed. Metadata/project bytes are
+retained unchanged in staged, relocated and new candidates. This is not general
+`.kicad_sch` resource support and waives no rule, 3D, UUID, native or findings gate.
+
 ## Bounded existing 3D resources
 
 PCB/explicit local `.pretty` footprint models are preserved, not stripped. Supported

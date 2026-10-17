@@ -50,6 +50,38 @@ class NativeTests(unittest.TestCase):
         logs=[]; checked,_=api._checks(api.executable('kicad-cli'),relocated/result['board'],relocated/result['schematic'],self.root/'relocated checks',api.isolated_env(self.root/'verify runtime'),logs,False)
         self.assertEqual(checked['findings'],{'erc':[],'drc':[]}); self.assertTrue(checked['parity']['equal'])
 
+    def test_exact_root_metadata_native_candidate_and_relocated_reapply(self):
+        self.build(external=True,hierarchical=True)
+        pro=self.source/'synthetic.kicad_pro'; settings=api.load_json(pro)
+        metadata=[{'filename':'synthetic.kicad_sch','name':'synthetic','uuid':uid('schematic')}]
+        settings['schematic']={'top_level_sheets':metadata}
+        pro.write_text(json.dumps(settings,indent=2)+'\n')
+        original=pro.read_bytes(); self.before=hashes(self.source)
+        info=api.inspect(project_dir=self.source)
+        self.assertEqual(info['selection']['source_hashes'][str(pro)]['sha256'],self.before[pro.name])
+        result=self.execute(operations(text_op()))
+        self.assert_status(result,'accepted'); self.assertTrue(result['checks']['parity']['equal'])
+        self.assertEqual(result['checks']['findings'],{'erc':[],'drc':[]})
+        candidate=self.root/'Candidate'; staged=(candidate/result['board']).with_suffix('.kicad_pro')
+        self.assertEqual(staged.read_bytes(),original)
+        relocated=self.root/'Metadata relocated'; shutil.move(candidate,relocated)
+        # All original dependencies are disposable synthetic files, never hardware.
+        shutil.rmtree(self.source); shutil.rmtree(self.pretty)
+        shutil.rmtree(self.root/'External symbol library'); shutil.rmtree(self.root/'External sheets')
+        board=relocated/result['board']; moved_pro=board.with_suffix('.kicad_pro')
+        moved_before=hashes(relocated/'inputs')
+        self.assertEqual(moved_pro.read_bytes(),original)
+        api.inspect(project_dir=board.parent)
+        note={**text_op('relocated metadata'),'text':'RELOCATED','at':[17,16]}
+        planned=api.plan(operations(note),project_dir=board.parent)
+        reapplied=api.apply(planned,self.root/'After metadata relocation')
+        self.assert_status(reapplied,'accepted'); self.assertTrue(reapplied['source_unchanged'])
+        self.assertEqual(reapplied['checks']['findings'],{'erc':[],'drc':[]})
+        self.assertTrue(reapplied['checks']['parity']['equal'])
+        new_pro=(self.root/'After metadata relocation'/reapplied['board']).with_suffix('.kicad_pro')
+        self.assertEqual(new_pro.read_bytes(),original)
+        self.assertEqual(hashes(relocated/'inputs'),moved_before)
+
     def test_models_cli_stale_hash_and_native_relocation(self):
         self.build(external=True,hierarchical=True)
         model_dir=self.root/'External models with spaces'; model_dir.mkdir()

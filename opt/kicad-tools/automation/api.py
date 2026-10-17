@@ -89,13 +89,31 @@ def _closure(selection, operations=None):
             if path.suffix=='.kicad_pcb': _global_and_items(path)
         if path.suffix=='.kicad_pro':
             settings=load_json(path)
-            def check(value,key=''):
+            def check(value,key='',context=()):
+                if context==('schematic','top_level_sheets'):
+                    root=selection.schematic
+                    if (path!=root.with_suffix('.kicad_pro') or root not in closure.files or
+                        not isinstance(value,list) or len(value)!=1 or not isinstance(value[0],dict) or
+                        set(value[0])!={'filename','name','uuid'}):
+                        raise Error('Unsupported schematic.top_level_sheets metadata: expected selected root only')
+                    sheet=value[0]
+                    if (sheet['filename']!=root.name or sheet['name']!=root.stem or
+                        root.resolve().parent!=path.parent.resolve() or
+                        (path.parent/sheet['filename']).resolve()!=root.resolve()):
+                        raise Error('Unsupported schematic.top_level_sheets metadata: selected root path/name mismatch')
+                    schema.identifier(sheet['uuid'])
+                    ast=native.kicad.parse_sexpr(root.read_text(encoding='utf-8-sig'))
+                    if native.kicad.children(ast,'uuid')!=[['uuid',sheet['uuid']]]:
+                        raise Error('Unsupported schematic.top_level_sheets metadata: selected root UUID mismatch')
                 if isinstance(value,dict):
-                    for k,v in value.items(): check(v,k)
+                    for k,v in value.items(): check(v,k,context+(k,))
                 elif isinstance(value,list):
-                    for v in value: check(v,key)
+                    for i,v in enumerate(value): check(v,key,context+(i,))
                 elif isinstance(value,str):
                     if value=='ignore' and key: raise Error('Ignored project rule severities are unsupported; do not weaken checks')
+                    # Only this already-validated metadata token names the covered root;
+                    # it is not a new resource or a schematic-suffix allowance elsewhere.
+                    if context==('schematic','top_level_sheets',0,'filename'): return
                     if value and (key in ('page_layout_descr_file','drawing_sheet') or value.lower().endswith(('.kicad_wks','.kicad_sch','.kicad_pcb','.kicad_sym','.kicad_mod','.step','.stp','.wrl'))):
                         raise Error(f'Unsupported project resource path {key}: {value}')
             check(settings)

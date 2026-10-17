@@ -9,7 +9,7 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import api
 import schema
-from fixtures import uid, operations, text_op
+from fixtures import uid, operations, text_op, hashes
 
 
 class SchemaTests(unittest.TestCase):
@@ -68,6 +68,87 @@ class SchemaTests(unittest.TestCase):
     def test_deterministic_uuid_generation(self):
         self.assertEqual(schema.child_uuid(uid('fp'),1),schema.child_uuid(uid('fp'),1))
         self.assertNotEqual(schema.child_uuid(uid('fp'),1),schema.child_uuid(uid('fp'),2))
+
+
+class RootMetadataTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory(prefix='root metadata '); self.addCleanup(self.tmp.cleanup)
+        self.root=Path(self.tmp.name); self.source=self.root/'source'; self.source.mkdir()
+        self.sch=self.source/'demo.kicad_sch'; self.pro=self.sch.with_suffix('.kicad_pro')
+        (self.source/'demo.kicad_pcb').write_text('(kicad_pcb)')
+        self.sch.write_text('(kicad_sch (uuid "'+uid('schematic')+'"))')
+        self.entry={'filename':self.sch.name,'name':self.sch.stem,'uuid':uid('schematic')}
+        self.settings={'schematic':{'top_level_sheets':[self.entry]}}
+        self.write(self.settings)
+
+    def write(self,settings):
+        self.pro.write_text(json.dumps(settings,indent=2)+'\n')
+
+    def closure(self):
+        return api._closure(api.select(project_dir=self.source))
+
+    def test_exact_root_is_hash_covered_and_metadata_survives_stage_and_relocation(self):
+        before=hashes(self.source); original=self.pro.read_bytes(); closure=self.closure()
+        self.assertEqual(closure.snapshot()[str(self.sch)]['sha256'],before[self.sch.name])
+        self.assertEqual(closure.snapshot()[str(self.pro)]['sha256'],before[self.pro.name])
+        output=self.root/'candidate'; output.mkdir()
+        board,_,_=closure.stage(output); api._rebind(closure,output)
+        self.assertEqual(board.with_suffix('.kicad_pro').read_bytes(),original)
+        moved=output.rename(self.root/'relocated')
+        copied=moved/board.relative_to(output)
+        self.assertEqual(copied.with_suffix('.kicad_pro').read_bytes(),original)
+        api._closure(api.select(project_dir=copied.parent))
+        self.assertEqual(hashes(self.source),before); closure.verify_sources(closure.snapshot())
+        self.pro.write_text(original.decode()+'\n')
+        with self.assertRaisesRegex(api.Error,'SOURCE CHANGED'): closure.verify_sources(closure.snapshot())
+
+    def test_malformed_multiroot_path_name_and_uuid_metadata_fail_closed(self):
+        entries=[None,{},[],[self.entry,self.entry],[{}],['demo.kicad_sch']]
+        for field,values in {
+            'filename':['other.kicad_sch','./demo.kicad_sch','sub/../demo.kicad_sch',
+                        '../source/demo.kicad_sch',str(self.sch),'${KIPRJMOD}/demo.kicad_sch',
+                        'file://'+str(self.sch),'demo.sch','demo.KICAD_SCH',None],
+            'name':['other','',None],
+            'uuid':[uid('leaf'),uid('schematic').upper(),'bad','00000000-0000-0000-0000-000000000000',None],
+        }.items():
+            entries.extend([{**self.entry,field:value}] for value in values)
+        entries.extend([[{**self.entry,'unknown':True}],[{k:v for k,v in self.entry.items() if k!='uuid'}]])
+        for value in entries:
+            with self.subTest(value=value):
+                self.write({'schematic':{'top_level_sheets':value}})
+                with self.assertRaises(api.Error): self.closure()
+
+    def test_unknown_contexts_resources_and_ignored_rules_are_still_blocked(self):
+        bad=[{'top_level_sheets':[self.entry]}, {'other':self.settings},
+             {'schematic':{'other':{'top_level_sheets':[self.entry]}}}]
+        for suffix in ('.kicad_sch','.kicad_wks','.kicad_pcb','.kicad_sym','.kicad_mod','.step','.stp','.wrl'):
+            bad.append({**self.settings,'unknown_resource':'demo'+suffix})
+        bad.extend([{**self.settings,'schematic':{**self.settings['schematic'],'drawing_sheet':'layout'}},
+                    {**self.settings,'board':{'rule_severities':{'clearance':'ignore'}}}])
+        for settings in bad:
+            with self.subTest(settings=settings):
+                self.write(settings)
+                with self.assertRaises(api.Error): self.closure()
+
+    def test_covered_child_and_other_project_metadata_are_not_selected_root(self):
+        child=self.source/'child.kicad_sch'
+        child.write_text('(kicad_sch (uuid "'+uid('leaf')+'"))')
+        self.sch.write_text('(kicad_sch (uuid "'+uid('schematic')+'") (sheet (property "Sheetfile" "child.kicad_sch")))')
+        self.write({'schematic':{'top_level_sheets':[{'filename':child.name,'name':child.stem,'uuid':uid('leaf')}]}})
+        with self.assertRaises(api.Error): self.closure()
+        self.write(self.settings)
+        child.with_suffix('.kicad_pro').write_text(json.dumps(self.settings))
+        with self.assertRaises(api.Error): self.closure()
+
+    def test_external_resolved_root_and_missing_or_duplicate_root_uuid_fail_closed(self):
+        for nodes in ('','(uuid "'+uid('leaf')+'")',2*('(uuid "'+uid('schematic')+'")')):
+            with self.subTest(nodes=nodes):
+                self.sch.write_text('(kicad_sch '+nodes+')')
+                with self.assertRaises(api.Error): self.closure()
+        external=self.root/'external.kicad_sch'
+        external.write_text('(kicad_sch (uuid "'+uid('schematic')+'"))')
+        self.sch.unlink(); self.sch.symlink_to(external)
+        with self.assertRaises(api.Error): self.closure()
 
 
 class IdentityTests(unittest.TestCase):
