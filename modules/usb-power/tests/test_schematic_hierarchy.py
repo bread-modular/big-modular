@@ -33,7 +33,7 @@ class SchematicHierarchyTests(unittest.TestCase):
         with (ROOT/'BOM.csv').open() as f:
             bom_refs={r['Reference'] for r in csv.DictReader(f)}
         self.assertEqual({r for r in self.graph.refs if not r.startswith('#')},bom_refs)
-        self.assertEqual(len(self.graph.hierarchy_links), 22)
+        self.assertEqual(len(self.graph.hierarchy_links), 23)
         self.assertNotIn('D1', self.graph.refs)
 
     def test_page_structure_and_component_distribution(self):
@@ -50,9 +50,9 @@ class SchematicHierarchyTests(unittest.TestCase):
         self.assertEqual(counts, expected_counts)
         root = self.graph.sheets['usb-power.kicad_sch']
         self.assertEqual(one(root, 'paper')[1], 'User')
-        self.assertEqual([one(s, 'paper')[1] for n, s in self.graph.sheets.items() if n!='usb-power.kicad_sch'], ['User']*6)
+        self.assertEqual([one(s, 'paper')[1] for n, s in self.graph.sheets.items() if n!='usb-power.kicad_sch'], ['User']*7)
         pages = {one(one(one(s, 'instances'), 'project'), 'path')[2][1] for s in nodes(root, 'sheet')}
-        self.assertEqual(pages, {str(i) for i in range(2,8)})
+        self.assertEqual(pages, {str(i) for i in range(2,9)})
 
     def test_sensitive_local_networks_are_wires_not_label_only(self):
         from electrical_checks import LOCAL
@@ -60,7 +60,7 @@ class SchematicHierarchyTests(unittest.TestCase):
         for a,b in pairs:
             with self.subTest(pins=(a,b)):self.assertTrue(self.graph.wire_connected(a,b))
         self.assertFalse(self.graph.wire_connected(('U2','8'),('U2','9')))
-        self.assertFalse(self.graph.wire_connected(('U4','17'),('U4','19')))
+        self.assertFalse(self.graph.wire_connected(('U3','1'),('L1','2')))
 
     def test_directional_ports_match_and_touch_component_wires(self):
         g=self.graph
@@ -69,20 +69,20 @@ class SchematicHierarchyTests(unittest.TestCase):
                 filename.startswith('01_') or (filename.startswith('02_') and name=='VPROT') or
                 (filename.startswith('03_') and name in ('MID','P5')) or
                 (filename.startswith('04_') and name in ('PRAW','NRAW')) or
-                (filename.startswith('05_') and name in ('P12','N12')) else 'input')
+                (filename.startswith('05_') and name in ('P12','N12')) or (filename.startswith('06_') and name=='PRAW') else 'input')
             self.assertEqual(g.port_types[(filename,name)],expected,(filename,name))
             self.assertTrue(any(p[0]==filename and g.find(p)==g.find(point) for p in g.pins.values()),(filename,name,'floating port bank'))
 
     def test_root_power_flow_is_real_wires(self):
         g=self.graph
-        pairs=[(0,1,'VIN9'),(1,2,'VPROT'),(2,3,'MID'),(2,5,'P5'),(3,4,'PRAW'),(3,4,'NRAW'),(4,5,'P12'),(4,5,'N12')]
+        pairs=[(0,1,'VIN9'),(1,2,'VPROT'),(1,3,'VPROT'),(1,6,'VPROT'),(2,5,'P5'),(6,4,'PRAW'),(3,4,'NRAW'),(4,5,'P12'),(4,5,'N12')]
         from render_schematic import SHEET_NAMES
         for a,b,n in pairs:
             self.assertEqual(g.find(g.sheet_pins[(SHEET_NAMES[a]+'.kicad_sch',n)]),g.find(g.sheet_pins[(SHEET_NAMES[b]+'.kicad_sch',n)]))
 
     def test_easy_local_connections_and_harness_are_wired(self):
         g=self.graph
-        pairs=[(('R32','2'),('D10','2')),(('U2','1'),('R4','1')),(('U2','1'),('R6','1')),(('U2','1'),('C2','1')),(('U3','3'),('U5','3')),(('R38','1'),('U4','5'))]
+        pairs=[(('R32','2'),('D10','2')),(('U2','1'),('R4','1')),(('U2','1'),('R6','1')),(('U2','1'),('C2','1')),(('U3','3'),('U5','3')),(('U3','3'),('R91','1'))]
         pairs += [(('J7',str(pin)),(ref,'1')) for pin,ref in [(9,'R25'),(1,'R26'),(11,'R27')]]
         for a,b in pairs:self.assertTrue(g.wire_connected(a,b),(a,b))
         self.assertEqual(one(g.refs['J7'][1],'on_board')[1],'yes')

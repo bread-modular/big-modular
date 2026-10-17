@@ -24,7 +24,7 @@ class Connectivity:
         root_name = 'usb-power.kicad_sch'
         root = self.sheets[root_name]
         children = nodes(root, 'sheet')
-        assert len(children) == 6, 'Exactly six authorized ES1 electrical subsheets required'
+        assert len(children) == 7, 'Exactly seven authorized SR1 electrical subsheets required'
         files = {next(p[2] for p in nodes(ch, 'property') if p[1] == 'Sheetfile') for ch in children}
         assert files | {root_name} == set(self.sheets), 'Missing or orphan sheet files'
         assert not nodes(root, 'symbol'), 'Overview must not duplicate circuit components'

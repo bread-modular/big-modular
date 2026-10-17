@@ -10,7 +10,7 @@ from pathlib import Path
 from sexp import parse, dump, nodes, one, atom
 from schematic_connectivity import Connectivity
 
-SHEET_NAMES=('01_input_protection','02_hardgate','03_bucks','04_bipolar','05_quiet_rails','07_output_rails')
+SHEET_NAMES=('01_input_protection','02_hardgate','03_bucks','04_bipolar','05_quiet_rails','07_output_rails','06_positive_boost')
 SHEET_TITLES=('USB PD input','Autonomous hardware window and retry','Independent buck converters','Direct bipolar rails','Quiet bipolar post-regulators','Board output and power LED')
 
 
@@ -27,17 +27,17 @@ def render(hw,sheets,lib,uid,source=None):
         if embedded:
             for i,sym in enumerate(embedded[1:],1):
                 kind=sym[1].split(':',1)[-1]
-                if kind in ('TPS7A4700RGWR','TPS7A3301RGWR'):
+                if kind in ('TPS7A4700RGWR','TPS7A3301RGWR','TPS55340RTER'):
                     replacement=copy.deepcopy(lib[kind]);replacement[1]=sym[1];embedded[i]=replacement
         for symbol in nodes(tree,'symbol'):
             props={p[1]:p for p in nodes(symbol,'property')}
             d=parts[props['Reference'][2]]
             updates={'Value':d['value'],'Footprint':d['fp'],'MPN':d['mpn'],'LCSC':d['lcsc'],'NOTE':d['note'],'Datasheet':d['datasheet']}
             if d.get('manufacturer'):updates['Manufacturer']=d['manufacturer']
-            if d['ref']=='D10':
+            if d.get('dnp'):
                 one(symbol,'dnp')[1]=atom('yes')
                 updates['JLCPCB Exclude']='yes'
-                updates['JLCPCB Audit Requirements']=json.dumps({'reason':'D10 is DNP by user; no fitted purchasing or assembly.'})
+                updates['JLCPCB Audit Requirements']=json.dumps({'reason':('D10 is DNP by user; no fitted purchasing or assembly.' if d['ref']=='D10' else d['note'] if d['ref']=='C93' else 'C62 prototype DNP: retain pads, noise/PSRR tradeoff; no fitted purchasing or assembly.')})
             if d['ref'] in ('J1','SW1'):
                 # Explicitly source these SMT interfaces; supplier mixed shell/J-lead
                 # process acceptance is separate, not a hidden manual exclusion.
@@ -51,7 +51,7 @@ def render(hw,sheets,lib,uid,source=None):
         if name=='usb-power':
             for text in nodes(tree,'text'):
                 if 'J7 is the physical output boundary' in text[1]:
-                    text[1]='J7 is the physical output boundary: one manual harness.\nTop USB/retry/3mm LED are placed together in the native boards.\nLDO-R1: quiet +/-12V, capacitor-bank revision; prototype bench qualification pending.'
+                    text[1]='J7 is the physical output boundary: one manual harness.\nTop USB/retry/3mm LED are placed together in the native boards.\nSR1 SCHEMATIC ONLY: PCB unsynchronized; no fabrication export or PCB parity claim.'
         # Stage wording is factual; engineering limits remain in the engineering notes.
         content=dump(tree).replace('UNROUTED V1 / NOT A MANUFACTURING RELEASE','V1 - UNROUTED / PLACEMENT NEXT')
         content=content.replace('UNROUTED / NOT A MANUFACTURING RELEASE','V1 - UNROUTED / PLACEMENT NEXT')
@@ -61,7 +61,7 @@ def render(hw,sheets,lib,uid,source=None):
                 content=content.replace(old,'LDO-R1 PROTOTYPE / BENCH QUALIFICATION PENDING')
         final_tree=parse(content)
         if name in ('usb-power','04_bipolar','05_quiet_rails') and one(final_tree,'title_block'):
-            one(one(final_tree,'title_block'),'rev')[1]='LDO-R1'
+            one(one(final_tree,'title_block'),'rev')[1]='SR2'
         rendered=dump(final_tree)+'\n'
         # A user's native KiCad formatting is not a reason to rewrite their sheet.
         from native_sheet_patch import rewrite

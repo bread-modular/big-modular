@@ -1,3 +1,18 @@
+> **SR2 current schematic**: see `sr2-schematic.md`; normal deterministic builds use saved SR2 native presentation.
+> `--sr2-revision` is a one-shot SR1-to-SR2 candidate edit, not a PCB synchronization command.
+
+# Current SR1 schematic-only stage
+
+Root plus `01_input_protection.kicad_sch`, `02_hardgate.kicad_sch`,
+`03_bucks.kicad_sch`, `04_bipolar.kicad_sch`, `05_quiet_rails.kicad_sch`,
+**`06_positive_boost.kicad_sch`**, `07_output_rails.kicad_sch`.
+Use commands in [SR1 handoff](split-rail-schematic.md). PCB is intentionally
+unsynchronized; no full integrated suite/parity/release claim. Separate Opus
+review and explicit user ACK must precede PCB work. Instructions below describe
+the historical integrated043 checkpoint, not a completed SR1 PCB.
+
+---
+
 # LDO-R1 build and checks
 
 > Migration recovery: source/electrical content below is retained checkpoint evidence.
