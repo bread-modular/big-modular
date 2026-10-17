@@ -1,0 +1,831 @@
+{
+  "status": "NATIVE_CONNECTIVITY_AND_EXACT_PARITY_PASS_NOT_RELEASED",
+  "source_sha256": "2482301aa94d465a2fd8657f95d511d8167a2dde9c58943f032694273220c340",
+  "candidate_sha256": "23e57358417eb9d9187a7419537295b744b52e7174cbc743de4ab12b85c0735e",
+  "before_DRC": {
+    "errors": 23,
+    "warnings": 15,
+    "opens": 23
+  },
+  "after_DRC": {
+    "errors": 0,
+    "warnings": 0,
+    "opens": 0,
+    "exclusions": 0,
+    "schematic_parity": 0
+  },
+  "ERC": {
+    "before_errors": 0,
+    "before_warnings": 0,
+    "after_errors": 0,
+    "after_warnings": 0,
+    "exclusions": 0
+  },
+  "refs": 116,
+  "pins": 344,
+  "explicit_NCs": [
+    [
+      "J1",
+      "A6",
+      "unconnected-(J1-D+-PadA6)"
+    ],
+    [
+      "J1",
+      "A7",
+      "unconnected-(J1-D--PadA7)"
+    ],
+    [
+      "J1",
+      "A8",
+      "unconnected-(J1-SBU1-PadA8)"
+    ],
+    [
+      "J1",
+      "B6",
+      "unconnected-(J1-D+-PadB6)"
+    ],
+    [
+      "J1",
+      "B7",
+      "unconnected-(J1-D--PadB7)"
+    ],
+    [
+      "J1",
+      "B8",
+      "unconnected-(J1-SBU2-PadB8)"
+    ],
+    [
+      "J7",
+      "13",
+      "unconnected-(J7-Pin_13-Pad13)"
+    ],
+    [
+      "J7",
+      "14",
+      "unconnected-(J7-Pin_14-Pad14)"
+    ],
+    [
+      "J7",
+      "15",
+      "unconnected-(J7-Pin_15-Pad15)"
+    ],
+    [
+      "J7",
+      "16",
+      "unconnected-(J7-Pin_16-Pad16)"
+    ],
+    [
+      "SW1",
+      "MP",
+      "unconnected-(SW1-CASE-PadMP)"
+    ],
+    [
+      "U1",
+      "10",
+      "unconnected-(U1-PG_N-Pad10)"
+    ],
+    [
+      "U1",
+      "2",
+      "unconnected-(U1-CFG2_SCL-Pad2)"
+    ],
+    [
+      "U1",
+      "3",
+      "unconnected-(U1-CFG3_SDA-Pad3)"
+    ],
+    [
+      "U12",
+      "10",
+      "unconnected-(U12-0P4V-Pad10)"
+    ],
+    [
+      "U12",
+      "12",
+      "unconnected-(U12-0P1V-Pad12)"
+    ],
+    [
+      "U12",
+      "17",
+      "unconnected-(U12-NC-Pad17)"
+    ],
+    [
+      "U12",
+      "18",
+      "unconnected-(U12-NC-Pad18)"
+    ],
+    [
+      "U12",
+      "19",
+      "unconnected-(U12-NC-Pad19)"
+    ],
+    [
+      "U12",
+      "2",
+      "unconnected-(U12-NC-Pad2)"
+    ],
+    [
+      "U12",
+      "4",
+      "unconnected-(U12-6P4V2-Pad4)"
+    ],
+    [
+      "U12",
+      "8",
+      "unconnected-(U12-1P6V-Pad8)"
+    ],
+    [
+      "U13",
+      "10",
+      "unconnected-(U13-NC-Pad10)"
+    ],
+    [
+      "U13",
+      "11",
+      "unconnected-(U13-NC-Pad11)"
+    ],
+    [
+      "U13",
+      "12",
+      "unconnected-(U13-NC-Pad12)"
+    ],
+    [
+      "U13",
+      "17",
+      "unconnected-(U13-NC-Pad17)"
+    ],
+    [
+      "U13",
+      "18",
+      "unconnected-(U13-NC-Pad18)"
+    ],
+    [
+      "U13",
+      "19",
+      "unconnected-(U13-NC-Pad19)"
+    ],
+    [
+      "U13",
+      "2",
+      "unconnected-(U13-NC-Pad2)"
+    ],
+    [
+      "U13",
+      "4",
+      "unconnected-(U13-NC-Pad4)"
+    ],
+    [
+      "U13",
+      "5",
+      "unconnected-(U13-NC-Pad5)"
+    ],
+    [
+      "U13",
+      "6",
+      "unconnected-(U13-NC-Pad6)"
+    ],
+    [
+      "U13",
+      "8",
+      "unconnected-(U13-NC-Pad8)"
+    ],
+    [
+      "U13",
+      "9",
+      "unconnected-(U13-NC-Pad9)"
+    ],
+    [
+      "U2",
+      "10",
+      "unconnected-(U2-IMON-Pad10)"
+    ],
+    [
+      "U2",
+      "13",
+      "unconnected-(U2-NC-Pad13)"
+    ],
+    [
+      "U2",
+      "14",
+      "unconnected-(U2-FLT_N-Pad14)"
+    ],
+    [
+      "U2",
+      "4",
+      "unconnected-(U2-NC-Pad4)"
+    ],
+    [
+      "U5",
+      "5",
+      "unconnected-(U5-EN-Pad5)"
+    ]
+  ],
+  "NC_marker_count": 39,
+  "schematic_owned_fields": 1110,
+  "field_differences": [],
+  "DNP_differences": [],
+  "ref_pin_net": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "equal": true
+  },
+  "native_netlist_comparison_to_frozen_075": {
+    "components": {
+      "removed": [],
+      "added": [],
+      "changed": {}
+    },
+    "hierarchy": {
+      "removed": [],
+      "added": [],
+      "changed": {}
+    },
+    "nets": {
+      "removed": [],
+      "added": [],
+      "changed": {}
+    },
+    "equal": true
+  },
+  "all_native_field_UUID_name_text_unchanged": true,
+  "native_schematic_field_parity_scope": "Native DRC --schematic-parity plus ref/pin/net comparison",
+  "fixed_UI": [
+    "J1",
+    "J7",
+    "SW1",
+    "D10"
+  ],
+  "mechanical_mounts_unchanged": 4,
+  "moved_nonfixed_passives": [
+    {
+      "ref": "R15",
+      "uuid": "1410d64b-eab9-5bd8-b69d-0014c7d9923f",
+      "before": {
+        "at": [
+          131.699999,
+          78.7
+        ],
+        "angle": 0.0
+      },
+      "after": {
+        "at": [
+          135.0,
+          99.55
+        ],
+        "angle": 180.0
+      }
+    },
+    {
+      "ref": "R9",
+      "uuid": "18be51db-4361-5d46-b24d-22255132b4a7",
+      "before": {
+        "at": [
+          135.01,
+          100.8
+        ],
+        "angle": 180.0
+      },
+      "after": {
+        "at": [
+          135.01,
+          101.05
+        ],
+        "angle": 180.0
+      }
+    },
+    {
+      "ref": "C93",
+      "uuid": "50653cef-edbd-5f27-8a60-8ddadcc0a530",
+      "before": {
+        "at": [
+          111.7,
+          94.6
+        ],
+        "angle": 0.0
+      },
+      "after": {
+        "at": [
+          135.2,
+          96.9
+        ],
+        "angle": 90.0
+      }
+    },
+    {
+      "ref": "R84",
+      "uuid": "88cd91bd-898a-52d1-9229-66584b659c73",
+      "before": {
+        "at": [
+          132.8,
+          100.45
+        ],
+        "angle": 90.0
+      },
+      "after": {
+        "at": [
+          132.75,
+          100.45
+        ],
+        "angle": 90.0
+      }
+    },
+    {
+      "ref": "C68",
+      "uuid": "9c6da32d-8e19-5bda-9cf6-8dbd84cf4bc9",
+      "before": {
+        "at": [
+          135.3,
+          97.5
+        ],
+        "angle": -90.0
+      },
+      "after": {
+        "at": [
+          111.6,
+          94.45
+        ],
+        "angle": 90.0
+      }
+    },
+    {
+      "ref": "C5",
+      "uuid": "d8701700-e073-5383-ba17-3d55afe81c59",
+      "before": {
+        "at": [
+          112.0,
+          91.4
+        ],
+        "angle": 90.0
+      },
+      "after": {
+        "at": [
+          112.0,
+          89.82
+        ],
+        "angle": 90.0
+      }
+    }
+  ],
+  "all_components_front": true,
+  "copper_layers": 4,
+  "global_settings_stack_rules_and_zone_definitions_unchanged": true,
+  "drawings_outline_groups_unchanged": true,
+  "dependencies_unchanged": {
+    "01_input_protection.kicad_sch": "4777399c48fe21ad3277bb7ff3112d77afa1adad80115f92aae1bcb7a622e47b",
+    "02_hardgate.kicad_sch": "6c4e8322d465028134be0ee9c59989bd884a90fda3f35970ad8918d028245de2",
+    "03_bucks.kicad_sch": "dd703626e14a7e72f25e9e3963e7d5a5df330b21d5a0f392e6a231c5f36da462",
+    "04_bipolar.kicad_sch": "461bd693b8bc373e33d4fb97b6888c0685eb206634d69c4d8a487b7533560393",
+    "05_quiet_rails.kicad_sch": "527e878c851954d8f73f2872367790a856bc5b973aab2f670ec809c1d1cde0fe",
+    "06_positive_boost.kicad_sch": "c6050db3041a5a9cbe6f17ae18928bf68ff48b46b96e2c13b96b6072e964397f",
+    "07_output_rails.kicad_sch": "b9b00acc29b2734b7eafd4480a0d5b18e4d0848559e81dac38ef586e6a8e5e60",
+    "BigModular.kicad_sym": "62e9047a628afe17f99bb02afe46e113c7d2a279a006a33b2578fecb1ce6b4e5",
+    "BigModular.pretty/C_0402_1005Metric.kicad_mod": "1af13ebf8ff9f0cac5b79494c2bb91a856af4d7d47ea9f9fec2ac57d51223968",
+    "BigModular.pretty/C_0603_1608Metric.kicad_mod": "a9b9ab8ea1cb30d32f28da0459c42b49a6cca161012c81bcf66b2b19bf619286",
+    "BigModular.pretty/C_0805_2012Metric.kicad_mod": "5e109c3606a560cac693a70370738d07154e3a1193a42c4f4c425f6345143eb1",
+    "BigModular.pretty/C_1206_3216Metric.kicad_mod": "bbd5a1ce09bb9d80956d1e2336c7bd238844a0a785c3f5b317a9e52bd15d6664",
+    "BigModular.pretty/C_1210_3225Metric.kicad_mod": "0ea3a0230f49d88f8826d6be1d5be3889daf037d82bc608369500f51819da27d",
+    "BigModular.pretty/D_SMA.kicad_mod": "24a05f4a9524423f90992c5ebca6635523fb9004254df43c05fce2a18a3d5226",
+    "BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": "f615cb1bfe89d3d53d34b52f8f92508783e13fb41c1ea6cbb327a40ee79f46af",
+    "BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+    "BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": "aa953a88afb5c30ef8e9529392768b3242cbfbdc055cdc06895fa72d72371fdb",
+    "BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "1f5be8753ced0f519790da804ab2d567e58f38fe37846e4652e46e1448097376",
+    "BigModular.pretty/L_Bourns_SRP1245A.kicad_mod": "ea1c06f76a1b7d9adace42c8aafda7ade649121bfe76a07d9120ac5f7b878093",
+    "BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+    "BigModular.pretty/L_KOHER_MDA1040.kicad_mod": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+    "BigModular.pretty/L_SLO1040H6R8MTT.kicad_mod": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
+    "BigModular.pretty/L_TMPC1205HP_220M.kicad_mod": "58bd21a3cce598b1d6ad5ca89abce253a309c81741d505bfa4788c9b76ad73cc",
+    "BigModular.pretty/R_0603_1608Metric.kicad_mod": "b61f23d83e6d3ecedc1fad6b3d55fb4096b0fb1d8a41a4dfb87aeff20e2eed85",
+    "BigModular.pretty/R_0805_2012Metric.kicad_mod": "27b2113a73513e6c72cfdd9a8687688e32a2c7eee3218bb0acd40e950d7bdb39",
+    "BigModular.pretty/SOT-23-6.kicad_mod": "461231a23bee6c52e1cdf8995dbe57c0a28b62ab3decc4d184f36a1b8f9d47a2",
+    "BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "38719719ddeae7b2d0929d819880dd5a33f78f7643d107d247a47251e5304730",
+    "BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+    "BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+    "BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+    "BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": "84bde6126ecb4ab757c2caffc9bb382c4239d56e6d30b439813c54c42e8971de",
+    "BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+    "BigModular.pretty/Texas_RTE0016C_WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm.kicad_mod": "cc33fbc24bc1a1d93a273a62a0f80f79572277de71a1d85a7abef5d95ea402e2",
+    "BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+    "fp-lib-table": "8b8b428cf30b394eb1637849935fce5c96eab54d2158835b13bc575a08642bdb",
+    "sym-lib-table": "87295ecba9aa2ee84f2e979207aad4b53ea5267c64bbe270545e76040c5cd93f",
+    "usb-power.kicad_pro": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "usb-power.kicad_sch": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500",
+    "candidate-profile.json": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506",
+    "_kicad_models/1c6a269204b3901b5b464cbd2dec266d314fd17c5604f82dd4995d48e1de18b5/R_0805_2012Metric.step": "ded342cdb394fb45395227beaaa75cc390613cf2581b29cd6d22c12abd6103b2",
+    "_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+    "_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "8f5355877fb800c2ab9c9edb0c9553c940df7f91bda73c298d6dc0d451bfdd3b",
+    "_kicad_models/3feaa511e5594da6d40d1e8e6d2b5ee96e566f648a22ca9ff37886065d62010c/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step": "7f57f4040117e2ef4f78a76d74424d6f4d23513883c32457503aaaa3beb70471",
+    "_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+    "_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+    "_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+    "_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step": "11e948c72c90e2b6322436b72745f40ff4e8ba0da64fb2a0df943dfa61e89c1a",
+    "_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step": "c9fe686b4d1b56927a41fa84a9bc1efb61d8a45a123a3db43bcaa05c2891d635",
+    "_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": "f8217a19e2965bc3617c97b8bb851829f4470fb33a5c50462eb6df0f7cc2cd4a",
+    "_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "3623be00464827bd6d94a12acf96d5923399b878c328184fa76e1ecbc0a63bc2",
+    "_kicad_models/b999dd5a9584a248833dc3adde1c96e4688bb46c6fafc0f43164f3a5108982ef/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
+    "_kicad_models/e5888967b26b8f8dc46f419d1aab8085d81e640a412b7005c2f41b70cca0ee68/C_0402_1005Metric.step": "03e44c4b2b727b8d4b6b1fd598cbd12dd5e614f1dfeefa96a92a07e3a3b312a2",
+    "_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c"
+  },
+  "restored_original_EP_vias": [
+    "09cf51f1-958d-4037-8651-88be9afa8fcb",
+    "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+    "2ba0b066-845b-4bd3-b36e-0039d892840a",
+    "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+    "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+    "3830f89a-f0fd-4217-8f17-dffb343eee72",
+    "587a542a-f158-4a2c-991b-4fead55bc366",
+    "597f8272-fb96-4777-8f90-a852896fe0bb",
+    "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+    "62474b73-3213-4477-925b-4de804222738",
+    "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+    "730818e3-1e59-417c-9949-82904f0225ca",
+    "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+    "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+    "aaca74f4-3d82-4787-908e-1e63bfefb057",
+    "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+    "e3c63c2f-15af-4960-9042-450fc3917252",
+    "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+  ],
+  "preserved_external_thermal_vias": [
+    "97f79f47-295e-5a3c-9bb0-17e89074d993",
+    "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+    "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+    "40203dcf-db0d-5dee-9a82-591e98b75e25",
+    "11ef6458-61d0-522d-afad-f23ca3b5cf23",
+    "92318c77-6fe4-5f7c-b960-b5085885b9cf",
+    "dfd9d319-0eb8-50b7-ba00-48f1d2279104",
+    "dcfabe04-bb31-5f2d-a29f-e466e6265a22",
+    "b1168d72-519c-56e7-93e0-3853aac3e2da",
+    "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+    "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+    "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+    "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+    "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+    "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+    "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+  ],
+  "new_tracks": 140,
+  "new_ordinary_routing_vias": 36,
+  "removed_copper_UUIDs": [
+    "85a2aa9d-2c5b-5c79-93b5-070a28789402",
+    "915eceb7-6a1e-41b2-969d-f607f2b97e86",
+    "bb133947-b12b-5be5-88fc-25e5d9bd7dcf",
+    "c9d24745-f477-4037-b383-8fecb98c7838",
+    "d1f8077d-e7dc-5a31-a54f-17dbe337d159",
+    "f2db614a-51fb-4816-b136-65d4d35f1509",
+    "1b192bb1-d4af-4560-b96c-2b50192db358",
+    "64ef3321-acf2-4fd7-a2c6-60ac9c507d8f",
+    "8c314084-3f2a-492d-b820-06569a9b3ce8",
+    "b94927cf-24c3-5880-8785-804693e796da",
+    "d877e79c-33d2-4c6e-b0af-915170bce0c5",
+    "e0cc54d3-d944-4c48-a820-e23336c6cfc7",
+    "3245b1d8-dcbf-5535-9288-06a1c2d89964",
+    "b5cb6168-5880-5a31-b92b-0e7c7bd01945",
+    "cbcc9381-0dd7-593e-bc58-d1fe1f410b2e",
+    "089f073f-17ba-5bcf-a611-f47c62ace655",
+    "1c9a2bb8-f56a-572a-8cb8-d847eb44d0aa",
+    "2171db64-1790-5ba4-887f-840d4bb35a0b",
+    "2580a6f6-dd55-529c-b2f0-10a54e9ba8b1",
+    "975c0ca4-959e-5bee-9b6a-d471acc90c3e",
+    "9abb61ec-8265-505b-88d2-97313b6e4b79",
+    "c9693fff-d1de-52ae-8130-7b0c633ce1f2",
+    "f6a30944-ca48-4533-a663-cb09800f1df8",
+    "feb106f7-4f65-4d26-bab0-0c8bb4202896",
+    "39ffc9ea-1994-5c89-bcc5-3d4e6de1b4b3",
+    "722ce0a1-01b2-5589-9ae4-01271205f379",
+    "692da39a-076c-48e0-bc22-770f009284ff",
+    "8b75d1db-fea8-4061-8404-78f13fe9df4c"
+  ],
+  "changed_existing_tracks": [
+    "618d0d09-b475-5540-ab19-6a153d4e371e",
+    "9569c23e-84c3-546b-9d53-7b59bb039e2f",
+    "db16c3b5-a0dd-508d-b8a8-85394a1ca11b",
+    "3127b869-342e-59eb-83cc-85f908807d20",
+    "265e58bb-22ed-4780-a9b1-4bb8ea36c358",
+    "5d3b52b4-44e5-51f4-8896-3d422ba61bcb",
+    "34831060-a5f4-497a-b2b7-62ca12297c84",
+    "4cd7cbd9-f1cb-467e-ba4d-5b2e7e05a501"
+  ],
+  "new_nonrestored_EP_hole_intersections": [],
+  "new_routing_vias_intersecting_numbered_SMD_copper": [
+    {
+      "via": "4558c21f-70f4-5bf8-8fac-f7e350185b17",
+      "at": [
+        67.325,
+        82.6
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C67",
+          "pad": "1",
+          "net": "/Direct 9V negative IBB/NRAW"
+        }
+      ]
+    },
+    {
+      "via": "e34e9c82-85f0-59b3-b05e-0ce4a1fcda84",
+      "at": [
+        109.975,
+        91.4
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C71",
+          "pad": "1",
+          "net": "/Direct 9V negative IBB/NRAW"
+        }
+      ]
+    },
+    {
+      "via": "fa68bdc5-dd29-5b7c-b0eb-4fc2c47b3c1e",
+      "at": [
+        67.325,
+        83.4
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C67",
+          "pad": "1",
+          "net": "/Direct 9V negative IBB/NRAW"
+        }
+      ]
+    },
+    {
+      "via": "0a3bc009-70b5-5089-81de-a7c5c1b8a8d1",
+      "at": [
+        135.835,
+        101.4
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "R9",
+          "pad": "1",
+          "net": "/GND"
+        }
+      ]
+    },
+    {
+      "via": "148813e6-81db-5719-b9d7-801c6567621b",
+      "at": [
+        146.5,
+        92.4
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C91",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "1c532eac-38d9-5fbf-ab91-36c78c235006",
+      "at": [
+        126.55,
+        85.275
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C88",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "3c3b5526-2db2-5be0-a49a-560f4e8bce2c",
+      "at": [
+        127.3,
+        85.275
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C88",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "5d6a9403-7503-541f-a3fe-0135999b08f4",
+      "at": [
+        111.4,
+        91.295
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C5",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "7e76b54a-0d52-5882-a12f-da158991a236",
+      "at": [
+        112.0,
+        95.925
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C68",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "d1979575-10dd-5582-8dc5-a3bbed4b02d8",
+      "at": [
+        112.1,
+        91.295
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C5",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "f145881a-00aa-5182-bb2c-b7d221fef113",
+      "at": [
+        111.2,
+        95.925
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C68",
+          "pad": "1",
+          "net": "/VPROT"
+        }
+      ]
+    },
+    {
+      "via": "1eff8333-abbe-5faf-bbcc-314ac3ca1700",
+      "at": [
+        123.625,
+        85.1
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "R91",
+          "pad": "2",
+          "net": "/Direct 9V negative IBB/NINV_EN"
+        }
+      ]
+    },
+    {
+      "via": "f73a597f-5bc4-5327-aefb-ccce38747479",
+      "at": [
+        133.6,
+        97.1
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "U3",
+          "pad": "5",
+          "net": "/Direct 9V negative IBB/NINV_EN"
+        }
+      ]
+    },
+    {
+      "via": "7f91c0ec-efc7-5282-9eb9-f37eec92d2b7",
+      "at": [
+        107.225,
+        92.6
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C36",
+          "pad": "2",
+          "net": "/Independent +5V buck/FIVE_SW"
+        }
+      ]
+    },
+    {
+      "via": "c367cdcc-66c5-5ed2-978f-266ae33822cb",
+      "at": [
+        106.8625,
+        95.15
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "U5",
+          "pad": "2",
+          "net": "/Independent +5V buck/FIVE_SW"
+        }
+      ]
+    },
+    {
+      "via": "9793e2d9-47ec-5efe-bff4-4cf8613dd1f1",
+      "at": [
+        109.775,
+        97.5
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "R17",
+          "pad": "1",
+          "net": "/P5"
+        }
+      ]
+    },
+    {
+      "via": "fbd27817-fddd-5d36-a1a6-373677082c24",
+      "at": [
+        54.175,
+        78.9
+      ],
+      "drill_mm": 0.3,
+      "diameter_mm": 0.65,
+      "hits": [
+        {
+          "ref": "C59",
+          "pad": "1",
+          "net": "/N12"
+        }
+      ]
+    }
+  ],
+  "thermal_status": "Exact original 9+9 direct EP barrels restored, all 16 external vias preserved; original physical direct EP-to-In1-GND paths verified. Thermal performance/nonregression NOT qualified by connectivity or area. Manufacturer PCBA review, joint inspection and thermal test remain required.",
+  "order_ready": false,
+  "canonical_board_promoted": false,
+  "frozen_DRC_ignored_rules": [],
+  "DRC_exclusions": [],
+  "ERC_exclusions": [],
+  "B_Paste_component_pads": 0,
+  "no_via_paid_fill_or_cap_enabled": true,
+  "project_default_save_drift_detected_and_repaired": {
+    "detected_by": "strict dependency hash assertion, before handoff",
+    "file": "usb-power.kicad_pro",
+    "frozen_sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "unaccepted_trial_sha256": "201efe0947b15b3f7afa62e5c0208617e5a7315454c274d6447d61b234033267",
+    "unaccepted_trial_ignored_rule_drift": {
+      "footprint_filters_mismatch": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "footprint_type_mismatch": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "missing_courtyard": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "track_not_centered_on_via": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "tuning_profile_track_geometries": {
+        "frozen": "warning",
+        "trial": "ignore"
+      }
+    },
+    "action": "Restored exact 075 project bytes; all earlier native trials/first final-check superseded by full frozen-project rerun. No changed rule/exclusion accepted.",
+    "cause_observed": "Standalone pcbnew save of board loaded outside its frozen project overwrote companion project with native defaults; not an authorized rule edit."
+  }
+}
