@@ -104,15 +104,27 @@ unreviewed links added to a distribution do not enter the next bundle.
 and ordinary-project source, tests and detailed docs: `general_flow.py`,
 `general_native.py`, `project_contract.py`, independent project fixture/native
 checks, `API.md`, `SUPPORTED_SUBSET.md`, `SAFETY.md`, `TESTING.md`, `SMOKE.md`,
-root research and the exact compact evidence files `smoke-summary.json`,
+the research compatibility copy below and the exact compact evidence files `smoke-summary.json`,
 `docs/project-evidence.json`, `docs/premerge-review-evidence.json`.
 Core allowlists include all automation/schematic sources, docs, tests and
 [CLI handoff regression](tests/native_handoff.py). No broad glob/copy, arbitrary
 JSON, runtime/JAR/vendor, work/logs or `*.tmp` payload is authorized.
 
+The canonical [routing research](ROUTING-RESEARCH.md) is included in **every core
+bundle**. Only routing-inclusive bundles also generate the regular compatibility
+file `docs/kicad-routing-research.md` for the unchanged historical routing docs.
+`ROUTING_COMPATIBILITY_FILES` and manifest `routing.compatibility_files` explicitly
+map that destination to `opt/kicad-tools/ROUTING-RESEARCH.md`; its SHA-256 equals
+the canonical file. The legacy path remains in the reviewed routing contract as
+an **output**, never a source dependency (even when an old copy exists). This
+does not restore repository-root docs, read module docs or change historical
+import-manifest hashes/receipts. Re-bundling regenerates the copy from canonical
+shared bytes; both sources and generated payload retain the regular-file gates.
+
 An optional `bundle-files.json` must include the complete reviewed routing payload
 (only the exact routing skill path may be added); it is copied so re-bundling
-preserves that contract. Paths are unique repo-relative files, at most 128, with
+preserves that contract. Paths are unique distribution-relative files (with the
+explicit research output mapping above), at most 128, with
 no symlinks, runtime, secrets or temporary trees. The named JSON files grant no
 general JSON permission. The three core aliases grant no routing exceptions.
 Missing optional sibling is reported gracefully, never installed automatically.

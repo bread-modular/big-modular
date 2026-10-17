@@ -183,6 +183,10 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(result["manifest"]["routing"]["included"])
         names = result["manifest"]["files_sha256"]
         self.assertIn("LICENSE", names)
+        self.assertIn("opt/kicad-tools/ROUTING-RESEARCH.md", names)
+        self.assertNotIn("docs/kicad-routing-research.md", names)
+        self.assertFalse((distribution / "docs").exists())
+        self.assertFalse((distribution / "modules").exists())
         self.assertIn("opt/kicad-tools/skills/kicad-workflow/SKILL.md", names)
         self.assertNotIn("modules/base/base.kicad_pcb", names)
         self.assertFalse(any(".history" in p or p.endswith(".tmp") for p in names))
@@ -201,6 +205,25 @@ class BundleTests(unittest.TestCase):
         self.assertIn("doctor", run.stdout)
         self.assertFalse(any(p.name in (".git", "__pycache__") for p in destination.rglob("*")))
 
+    def test_research_requires_regular_canonical_source_not_legacy_fallback(self):
+        distribution = self.root / "core source"
+        bundle.bundle(distribution)
+        canonical = distribution / "opt/kicad-tools/ROUTING-RESEARCH.md"
+        legacy = distribution / "docs/kicad-routing-research.md"
+        legacy.parent.mkdir()
+        legacy.write_text("not an authorized research source")
+        canonical.unlink()
+        for symlink in (False, True):
+            if symlink:
+                canonical.symlink_to(legacy)
+            pattern = "traverses a symlink" if symlink else "Missing allowlisted bundle source"
+            for routing in (False, True):
+                for dry in (False, True):
+                    destination = self.root / "missing parent/rejected"
+                    with self.subTest(symlink=symlink, routing=routing, dry=dry), self.assertRaisesRegex(Error, pattern):
+                        bundle.bundle(destination, root=distribution, include_routing=routing, dry_run=dry)
+                    self.assertFalse(destination.parent.exists())
+
     def test_symlink_destination_is_refused(self):
         alias = self.root / "alias"
         alias.symlink_to(self.root, target_is_directory=True)
@@ -213,6 +236,8 @@ class BundleTests(unittest.TestCase):
         sibling = distribution / "opt/kicad-routing"
         sibling.mkdir()
         for name in bundle.ROUTING_FILES:
+            if name in bundle.ROUTING_COMPATIBILITY_FILES:
+                continue  # generated output, not a source fixture
             path = distribution / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("# synthetic reviewed payload")
@@ -221,14 +246,18 @@ class BundleTests(unittest.TestCase):
         (sibling / "run.py.tmp").write_text("never bundle")
         (sibling / "runtime").mkdir()
         (sibling / "runtime/freerouting.jar").write_text("never bundle")
-        (distribution / "docs").mkdir(exist_ok=True)
-        (distribution / "docs/kicad-routing-research.md").write_text("# synthetic research")
+        self.assertFalse((distribution / "docs").exists())
+        self.assertFalse((distribution / "modules").exists())
         result = bundle.bundle(self.root / "combined", include_routing=True, root=distribution)
         names = result["manifest"]["files_sha256"]
         self.assertNotIn("opt/kicad-routing/helper.py", names)
         self.assertIn("opt/kicad-routing/tests/test_routing.py", names)
         self.assertIn("opt/kicad-routing/smoke-summary.json", names)
         self.assertIn("docs/kicad-routing-research.md", names)
+        self.assertEqual(names["docs/kicad-routing-research.md"],
+                         sha256(distribution / "opt/kicad-tools/ROUTING-RESEARCH.md"))
+        self.assertEqual(result["manifest"]["routing"]["compatibility_files"],
+                         bundle.ROUTING_COMPATIBILITY_FILES)
         self.assertNotIn("opt/kicad-routing/credentials.json", names)
         self.assertFalse(any("runtime/" in p or p.endswith(".tmp") for p in names))
         (sibling / "bundle-files.json").write_text(json.dumps({"schema_version": 1, "files": ["opt/kicad-routing/run.py", "opt/kicad-routing/runtime/freerouting.jar"]}))
@@ -245,6 +274,10 @@ class BundleTests(unittest.TestCase):
         self.assertTrue(result["manifest"]["routing"]["included"])
         self.assertEqual({p for p in names if p.startswith("opt/kicad-routing/") or p.startswith("docs/")},
                          set(bundle.ROUTING_FILES))
+        self.assertIn("opt/kicad-tools/ROUTING-RESEARCH.md", names)
+        self.assertEqual(names["docs/kicad-routing-research.md"],
+                         names["opt/kicad-tools/ROUTING-RESEARCH.md"])
+        self.assertFalse((distribution / "modules").exists())
         for name, digest in names.items():
             self.assertEqual(sha256(distribution / name), digest)
         readme = distribution / "opt/kicad-routing/README.md"
@@ -253,12 +286,16 @@ class BundleTests(unittest.TestCase):
         self.assertIn("SMOKE.md", links)
         historical = distribution / "opt/kicad-routing/SMOKE.md"
         self.assertIn("smoke-summary.json", re.findall(r"\]\(([^)]+)\)", historical.read_text()))
-        for link in links:
-            self.assertTrue((readme.parent / link).is_file(), link)
+        for doc in (readme, historical):
+            for link in re.findall(r"\]\(([^)]+)\)", doc.read_text()):
+                if "://" not in link and not link.startswith("#"):
+                    self.assertTrue((doc.parent / link.split("#")[0]).is_file(), link)
         help_result = subprocess.run([sys.executable, "-B", str(distribution / "opt/kicad-tools/kicad_tools.py"),
                                       "route", "--help"], cwd=self.root, capture_output=True, text=True)
         self.assertEqual(help_result.returncode, 0, help_result.stderr)
         self.assertIn("prepare-runtime", help_result.stdout)
+        # An old compatibility copy is never an authoritative source on re-bundle.
+        (distribution / "docs/kicad-routing-research.md").write_text("stale legacy copy")
         # A local contract is copied, not silently discarded on the next bundle.
         contract = distribution / "opt/kicad-routing/bundle-files.json"
         contract.write_text(json.dumps({"schema_version": 1, "files": list(bundle.ROUTING_FILES)}))

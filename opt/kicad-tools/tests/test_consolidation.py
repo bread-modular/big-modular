@@ -174,6 +174,7 @@ class ConsolidationTests(unittest.TestCase):
     def test_current_docs_and_canonical_skills_links_in_repository_and_core_bundle(self):
         distribution, _ = self.make_distribution()
         docs = ("README.md", "opt/kicad-tools/README.md", "opt/kicad-tools/GUIDE.md",
+                "opt/kicad-tools/ROUTING-RESEARCH.md",
                 "opt/kicad-tools/BUNDLING.md", "opt/kicad-tools/API.md", "opt/kicad-tools/HYBRID_ROUTING.md",
                 "opt/kicad-tools/automation/README.md", "opt/kicad-tools/automation/docs/api.md",
                 "opt/kicad-tools/automation/docs/safety.md", "opt/kicad-tools/schematic/README.md",
@@ -183,16 +184,21 @@ class ConsolidationTests(unittest.TestCase):
                 "opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md",
                 ".agents/skills/kicad-workflow/SKILL.md", ".agents/skills/jlcpcb-assembly/SKILL.md",
                 "opt/kicad-jlcpcb/README.md", "opt/kicad-jlcpcb/ASSEMBLY.md")
-        for root in (bundle.ROOT, distribution):
+        roots = [bundle.ROOT, distribution]
+        if (bundle.ROOT / "opt/kicad-routing/run.py").is_file():
+            routed = self.root / "Routing-inclusive distribution"
+            bundle.bundle(routed, include_routing=True)
+            roots.append(routed)
+        for root in roots:
             for name in docs:
                 path = root / name
                 for link in re.findall(r"\]\(([^)]+)\)", path.read_text()):
                     if "://" in link or link.startswith("#"):
                         continue
                     target = (path.parent / link.split("#")[0]).resolve()
-                    # Separately owned routing/research are optional in core bundles.
+                    # Only separately owned routing code/docs are optional in core bundles.
                     relative = target.relative_to(root).as_posix()
-                    optional = relative.startswith("opt/kicad-routing/") or relative == "docs/kicad-routing-research.md"
+                    optional = relative.startswith("opt/kicad-routing/")
                     if optional and not (root / "opt/kicad-routing/run.py").is_file():
                         continue
                     if relative.startswith("opt/kicad-tools/tracemaker/") and not (root / "opt/kicad-tools/tracemaker/run.py").is_file():
@@ -280,6 +286,8 @@ class LinkSafetyTests(unittest.TestCase):
 
     def test_optional_routing_regular_sources_get_no_core_link_exception(self):
         for name in bundle.ROUTING_FILES:
+            if name in bundle.ROUTING_COMPATIBILITY_FILES:
+                continue  # generated output, not a source fixture
             path = self.distribution / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("# synthetic reviewed routing payload")
