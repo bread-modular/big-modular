@@ -5176,7 +5176,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BigModular:L_Bourns_SRP1245A"
+		(property "Footprint" "BigModular:L_TMPC1205HP_220M"
 			(at 248.92 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -5187,7 +5187,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_BOURNS-SRP1245A-220M_C1848803.pdf"
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/a9533ef0ce1b123359bb73d86ce35386.pdf?productCode=C357250"
 			(at 248.92 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -5208,7 +5208,7 @@
 				)
 			)
 		)
-		(property "MPN" "SRP1245A-220M"
+		(property "MPN" "TMPC1205HP-220MG-D"
 			(at 248.92 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -5219,7 +5219,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C1848803"
+		(property "LCSC" "C357250"
 			(at 248.92 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -5230,7 +5230,7 @@
 				)
 			)
 		)
-		(property "NOTE" "SRP1245A-220M, Isat10A at20% L drop/25C, Irms6.5A at40C rise, DCR58mohm max. 10A NOT hot guaranteed minimum. Height max5.0mm versus5.1mm allowance leaves0.1mm BEFORE solder. Manufacturer lands14.2 overall/8 gap/5 width; separate PCB fit/hot-fault gate, not fit approval. Stock16 dated handoff, not reserved."
+		(property "NOTE" "TAI-TECH TMPC1205HP-220MG-D; 22uH +/-20%; DCR50mohm typ/58mohm max. Isat10A at approx30% L drop/25C; Irms6.5A at approx40C rise. Height4.8+/-0.2mm (5.0mm max). Land identical to SRP1245A:14.2mm overall/8.0mm gap, two3.1(X)x5.0(Y)mm pads. Stock184 observed2026-10-17, not reserved or guaranteed. 10A is NOT a guaranteed hot minimum. Body-only0.1mm allowance before solder; >=0.15mm paste recommended; PCB fit/stack/hot-fault/thermal qualification pending."
 			(at 248.92 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -5241,7 +5241,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "BOURNS"
+		(property "Manufacturer" "TAI-TECH"
 			(at 248.92 129.54 90)
 			(hide yes)
 			(show_name no)
