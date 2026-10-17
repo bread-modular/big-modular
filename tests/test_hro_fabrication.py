@@ -4,11 +4,14 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 import zipfile
 from collections import Counter
 ROOT=Path(__file__).resolve().parents[1]
+HRO_BASE='c82ca1cabf01f529ae536f5afaa8773d7bbc6d29'
+def historical(path):return subprocess.check_output(['git','show',HRO_BASE+':'+path],cwd=ROOT)
 sys.path.insert(0,str(ROOT/'tools'))
 from hro_fit import verify,corner_margin
 from stack_geometry import geometry
@@ -35,7 +38,8 @@ class FabricationTests(unittest.TestCase):
             with self.assertRaises(AssertionError):validate_stack(p)
 
     def test_frozen_024_routing_and_all_pad_pose_nets_remain_exact(self):
-        r=routing_contract(parse((ROOT/'hardware/big_modular.kicad_pcb').read_text()))
+        r=routing_contract(parse(historical('hardware/big_modular.kicad_pcb').decode()))
+        self.assertEqual(routing_contract(parse((ROOT/'hardware/big_modular.kicad_pcb').read_text())),json.loads((ROOT/'docs/routed-baseline.json').read_text())['routing_contract'])
         self.assertEqual(r['tracks_and_vias'],'e82f731cd8abc0346527a49f9b6100125f6a2d2a81d4673149e2b1d943b9d54c')
         self.assertEqual(r['footprints_pin_net_pose'],'ffc28866536f3205db5cec3ce484f12aa6468bf9c47239dd8b0d3006cb899e51')
         self.assertEqual(r['zones'],'be65ab74cc2a816747efb96e2157b47a7b7481a1c52eee616596823b5846e672')
@@ -43,7 +47,7 @@ class FabricationTests(unittest.TestCase):
 
     def test_native_via_disks_not_annular_rings_or_centres(self):
         r=via_audit(ROOT/'hardware/big_modular.kicad_pcb')
-        self.assertEqual((r['via_count'],r['barrels_over_exposed_SMD_copper'],r['barrels_over_paste'],r['barrels_at_SMD_boundary_only']),(133,35,35,7))
+        self.assertEqual((r['via_count'],r['barrels_over_exposed_SMD_copper'],r['barrels_over_paste'],r['barrels_at_SMD_boundary_only']),(196,92,91,5))
         # U2 EP end vias are outside its separate central mask window; do not
         # assume every thermal-pad via intersects EXPOSED copper or paste.
         self.assertEqual({h['pad'] for v in r['vias'] for h in v['exposed_SMD_copper_hits'] if h['ref']=='U2'},{'5','6'})
@@ -52,7 +56,7 @@ class FabricationTests(unittest.TestCase):
     def test_release_files_match_manifest_and_archives(self):
         root=ROOT/'production/hro-r1';m=json.loads((root/'manifest.json').read_text())
         for f,v in m['files'].items():self.assertEqual(hashlib.sha256((root/f).read_bytes()).hexdigest(),v['sha256'],f)
-        for f,h in m['source_sha256'].items():self.assertEqual(hashlib.sha256((ROOT/f).read_bytes()).hexdigest(),h,f)
+        for f,h in m['source_sha256'].items():self.assertEqual(hashlib.sha256(historical(f)).hexdigest(),h,f)
         for archive in root.glob('*.zip'):
             with zipfile.ZipFile(archive) as z:
                 self.assertIsNone(z.testzip());self.assertFalse(any(n.endswith('.csv') for n in z.namelist()))
@@ -94,11 +98,41 @@ class FabricationTests(unittest.TestCase):
         for actual in [[('round',10,-20,.3)], [('round',10,-20,.3),('slot',1,-4,1,-2.9,.6)]]:
             with self.assertRaises(AssertionError):compare_drills(actual,expected)
 
-    def test_all_main_overlap_desired_hashes_are_canonical(self):
+    def test_historical_main_overlap_hashes_remain_intact(self):
         d=json.loads((ROOT/'docs/hro-integration.json').read_text())
         self.assertEqual(len(d['overlap']),7)
-        for f,v in d['overlap'].items():self.assertEqual(hashlib.sha256((ROOT/f).read_bytes()).hexdigest(),v['desired_sha256'])
+        for f,v in d['overlap'].items():self.assertEqual(hashlib.sha256(historical(f)).hexdigest(),v['desired_sha256'])
         self.assertFalse(any('.history' in f or f.endswith('.lck') for f in d['desired_files_sha256']))
 
 
 if __name__=='__main__':unittest.main()
+
+
+class LDOReleaseTests(unittest.TestCase):
+    def test_current_release_exact_source_assets_and_zip_members(self):
+        root=ROOT/'production/ldo-r1';m=json.loads((root/'manifest.json').read_text())
+        self.assertEqual(m['release'],'LDO-R1')
+        self.assertFalse(m['source_state']['revision_committed'])
+        for f,v in m['files'].items():self.assertEqual(hashlib.sha256((root/f).read_bytes()).hexdigest(),v['sha256'],f)
+        for f,h in m['source_sha256'].items():self.assertEqual(hashlib.sha256((ROOT/f).read_bytes()).hexdigest(),h,f)
+        rec=json.loads((root/'release-validation.json').read_text())
+        for name,record in rec['archives'].items():
+            with zipfile.ZipFile(root/name) as z:
+                self.assertIsNone(z.testzip());self.assertEqual(sorted(z.namelist()),record['members'])
+                folder=root/('assembly-stencil-support-only' if 'STENCIL' in name else 'passive-panel' if 'PANEL' in name else 'carrier')
+                for f in z.namelist():self.assertEqual(z.read(f),(folder/f).read_bytes())
+                self.assertFalse(any(f.endswith('.csv') for f in z.namelist()))
+                if 'BARE-PCB' in name:self.assertFalse(any('Paste.gbr' in f for f in z.namelist()))
+        self.assertEqual({k:rec[k] for k in ['tracks','vias','zones']},{'tracks':536,'vias':196,'zones':8})
+
+    def test_new_CAM_population_sides_and_unchanged_panel(self):
+        d=json.loads((ROOT/'production/ldo-r1/cam-inspection.json').read_text());c=d['carrier']
+        self.assertEqual(c['IPC_records_checked'],506)
+        self.assertEqual(c['drill_tools_mm_hits']['PTH'],{'0.300':196,'0.600':4,'0.900':2,'1.000':16})
+        self.assertEqual((c['via_barrels_exposed_SMD_Cu'],c['via_barrels_paste']),(92,91))
+        self.assertEqual(c['backside_SMD_refs'],['C63','C64','C65','C66']);self.assertEqual(c['backside_paste_pads'],8)
+        self.assertTrue(c['In1_GND_connected_polygon'])
+        for v in c['RTN_GND_CAM_isolation'].values():self.assertGreater(v['GND_RTN_gap_mm'],.25)
+        old=ROOT/'production/hro-r1/passive-panel';new=ROOT/'production/ldo-r1/passive-panel'
+        for f in old.iterdir():
+            if f.suffix in ('.gbr','.drl','.gbrjob'):self.assertEqual(f.read_bytes(),(new/f.name).read_bytes(),f.name)

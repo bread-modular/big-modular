@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce HRO bare-PCB artwork using common staging/CLI and native exporters.
+"""Reproduce LDO-R1 prototype bare-PCB artwork using common staging/CLI and native exporters.
 
 NEW output + NEW raw evidence directories only. No routing, assembly CSV, input
 writes, commits or uploads. Actual CAM checks use Gerbonara, not a new parser.
@@ -34,7 +34,7 @@ def normalize_metadata(path,carrier):
     if path.suffix=='.gbrjob':
         d=json.loads(text);d['Header'].pop('CreationDate',None)
         d['GeneralSpecs']['Size']={'X':100.5 if carrier else 9.8,'Y':30.0 if carrier else 128.5}
-        d['GeneralSpecs']['ProjectId']['Revision']='HRO-R1'
+        d['GeneralSpecs']['ProjectId']['Revision']='LDO-R1' if carrier else 'HRO-R1'
         # These auto-derived fields contain zeros for inner pad clearances; not a
         # manufacturing rule deck. Source native rules remain strict and unchanged.
         d.pop('DesignRules',None)
@@ -44,7 +44,7 @@ def normalize_metadata(path,carrier):
         text='\n'.join(line for line in text.splitlines() if 'TF.CreationDate' not in line and not line.startswith('Created on '))+'\n'
         text=re.sub(r'(G04 Created by KiCad .*?) date [^\n]*\*',r'\1*',text)
         text=re.sub(r'(; DRILL file KiCad [^\n]*?) date [^\n]*',r'\1',text)
-        text=text.replace(',rev?*%',',HRO-R1*%')
+        text=text.replace(',rev?*%',',LDO-R1*%' if carrier else ',HRO-R1*%')
     path.write_text(text)
     return {'file':path.name,'geometry_modified':False,'timestamp_removed':old!=text}
 
@@ -72,6 +72,8 @@ def build(out,reports):
     sources={p.relative_to(ROOT).as_posix():sha(p) for p in hardware.rglob('*') if p.is_file() and not any(x.startswith('.') for x in p.relative_to(hardware).parts) and p.suffix not in ['.lck','.kicad_prl','.bak']}
     for name in ['tools/release_hro.py','tools/check_hro_cam.py','tools/fabrication_contract.py','tools/cam-requirements.txt','docs/fabrication.md','docs/usb-fit.json','docs/routed-baseline.json','tools/kicad-project.json']:
         sources[name]=sha(ROOT/name)
+    for name in ['docs/schematic.pdf','docs/ldo-revision.md','BOM.csv','docs/pin-net-audit.json','docs/assembly-geometry.json','docs/ldo-evidence/manufacturer-mlcc-data.json','docs/ldo-evidence/capacitor-disposition.json','docs/ldo-evidence/backside-fit.json','docs/ldo-evidence/pcb-audit.json']:
+        sources[name]=sha(ROOT/name)
     for folder in ['tools','tests']:
         for p in (ROOT/folder).iterdir():
             if p.is_file() and p.suffix in ['.py','.json','.txt']:sources[p.relative_to(ROOT).as_posix()]=sha(p)
@@ -86,8 +88,17 @@ def build(out,reports):
     summary=json.loads((reports/'carrier/summary.json').read_text())
     assert summary['status']=='no_findings_in_requested_checks' and summary['source_unchanged'] and summary['ref_pin_net_parity']['equal']
     for result in summary['findings'].values():assert result['total_including_exclusions']==0
-    audit=via_audit(hardware/'big_modular.kicad_pcb');assert audit['via_count']==133
+    audit=via_audit(hardware/'big_modular.kicad_pcb')
+    reviewed=json.loads((ROOT/'docs/routed-baseline.json').read_text())['inventory']
+    assert audit['via_count']==reviewed['vias']
+    from verify_ldo_source import verify as verify_source
+    from verify_stack import verify as verify_mechanics
+    source_check=verify_source(reports/'carrier');mechanics=verify_mechanics()
+    write_json(out/'source-parity.json',source_check);write_json(out/'mechanics.json',mechanics)
     write_json(out/'via-audit.json',audit)
+    git_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    source_state={'git_base_HEAD':git_head,'revision_committed':False,'source_identity':'Exact source_sha256, not HEAD alone; intentional uncommitted workspace revision. Supervisor merges; no commit by exporter.'}
+    write_json(out/'source-state.json',source_state)
     cmds=[];normalizations=[]
     with tempfile.TemporaryDirectory(prefix='hro-native-export-') as temp:
         work=Path(temp)
@@ -122,19 +133,19 @@ def build(out,reports):
     record={'status':'bare-PCB artwork ready with required fabrication process; not an assembled product qualification',
         'common_native_carrier_findings':summary['findings'],'ref_pin_net_parity_equal':True,
         'panel_DRC_violations':0,'panel_opens':0,'source_unchanged':True,
-        'ignored_rules':0,'rule_exclusions':0,'tracks':421,'vias':133,'zones':4,
-        'CAM_inspection_passed':True,'source_sha256':sources,'tooling':{'kicad_cli':shared.run_cli('/usr/bin/kicad-cli',['version'],ROOT),
+        'ignored_rules':0,'rule_exclusions':0,**reviewed,
+        'CAM_inspection_passed':True,'source_state':source_state,'source_sha256':sources,'tooling':{'kicad_cli':shared.run_cli('/usr/bin/kicad-cli',['version'],ROOT),
         'common_export_module_sha256':sha(SHARED),'gerbonara':'1.6.3','shapely':'2.1.2'},
         'native_export_commands':cmds,'metadata_normalization':normalizations}
     for key in ['carrier','passive-panel']:
         folder=out/key
         shutil.copyfile(ROOT/'docs/fabrication.md',folder/'FABRICATION-REQUIREMENTS.md')
-        spec={'board':key,'release':'HRO-R1','source_sha256':sources[f'hardware/{"big_modular" if key=="carrier" else "front_panel"}.kicad_pcb'],
+        spec={'board':key,'release':'LDO-R1','source_sha256':sources[f'hardware/{"big_modular" if key=="carrier" else "front_panel"}.kicad_pcb'],
             'finished_thickness_acceptance_mm':[1.44,1.76],'source_of_requirements':'FABRICATION-REQUIREMENTS.md',
             'native_stack':validate_stack(hardware/f'{"big_modular" if key=="carrier" else "front_panel"}.kicad_pcb',key=='carrier'),
             'CAM_checked':cam[key]}
         write_json(folder/'fabrication-spec.json',spec)
-        text=('CARRIER ONLY: four-layer FR4 Tg170 / ENIG / ALL 133 vias IPC-4761 TYPE VII NONCONDUCTIVE EPOXY FILL + PLANARIZED COPPER CAP BOTH SIDES.\n' if key=='carrier' else 'PASSIVE PANEL ONLY: no retained copper / black mask / white front legend / NPTH only / no metal finish.\n')
+        text=(f'CARRIER ONLY: four-layer FR4 Tg170 / ENIG / ALL {audit["via_count"]} vias IPC-4761 TYPE VII NONCONDUCTIVE EPOXY FILL + PLANARIZED COPPER CAP BOTH SIDES.\n' if key=='carrier' else 'PASSIVE PANEL ONLY: no retained copper / black mask / white front legend / NPTH only / no metal finish.\n')
         text+='READ FABRICATION-REQUIREMENTS.md before quoting or manufacturing. No supplier acceptance is implied.\nGerber/Excellon coordinates: absolute mm, X right / Y up; native KiCad Y is down.\nEdge.Cuts centreline is the final profile; do not machine the outside of its plotted stroke.\nNo assembly BOM/CPL. Empty layers/drill files are intentional and checked.\n'
         (folder/'READ-ME-FIRST.txt').write_text(text)
     lines=['via_UUID\tKiCad_X_mm\tKiCad_Y_down_mm\tCAM_X_mm\tCAM_Y_up_mm\tdrill_mm\tprocess']
@@ -142,16 +153,16 @@ def build(out,reports):
         x,y=v['xy_mm'];lines.append(f"{v['uuid']}\t{x:.6f}\t{y:.6f}\t{x:.6f}\t{-y:.6f}\t{v['drill_mm']:.3f}\tIPC-4761 Type VII nonconductive epoxy fill + planarized Cu cap BOTH sides")
     (out/'carrier/via-process.tsv').write_text('\n'.join(lines)+'\n')
     shutil.copyfile(out/'via-audit.json',out/'carrier/via-audit.json')
-    (out/'assembly-stencil-support-only/READ-ME-FIRST.txt').write_text('ASSEMBLY / STENCIL SUPPORT ONLY, NOT BARE-PCB FABRICATION.\nNative front/back paste artwork; bottom is intentionally empty. No shell paste on HRO.\nNo assembly qualification, BOM, CPL, stencil thickness/reduction or reflow approval.\n')
+    (out/'assembly-stencil-support-only/READ-ME-FIRST.txt').write_text('ASSEMBLY / STENCIL SUPPORT ONLY, NOT BARE-PCB FABRICATION.\nNative front/back paste artwork; BACK has C63-C66 (8 lands). C67 and all other SMT components are FRONT. No shell paste on HRO.\nNo assembly qualification, BOM, CPL, stencil thickness/reduction or reflow approval.\n')
     for folder in [out/'carrier',out/'passive-panel',out/'assembly-stencil-support-only']:
         write_json(folder/'source-sha256.json',sources)
         (folder/'SHA256SUMS.txt').write_text(''.join(f'{sha(f)}  {f.name}\n' for f in sorted(folder.iterdir()) if f.is_file()))
     archives={}
-    for folder,name in [('carrier','Big-Modular-HRO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip'),('passive-panel','Big-Modular-HRO-R1-PASSIVE-PANEL-BARE-PCB.zip'),('assembly-stencil-support-only','Big-Modular-HRO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip')]:
+    for folder,name in [('carrier','Big-Modular-LDO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip'),('passive-panel','Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip'),('assembly-stencil-support-only','Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip')]:
         archives[name]=zip_folder(out/folder,out/name)
     record['archives']=archives;write_json(out/'release-validation.json',record)
     files={f.relative_to(out).as_posix():{'sha256':sha(f),'bytes':f.stat().st_size} for f in sorted(out.rglob('*')) if f.is_file()}
-    write_json(out/'manifest.json',{'release':'HRO-R1','source_sha256':sources,'files':files,'manifest_self_hash':'excluded to avoid recursion'})
+    write_json(out/'manifest.json',{'release':'LDO-R1','source_state':source_state,'source_sha256':sources,'files':files,'manifest_self_hash':'excluded to avoid recursion'})
     print(json.dumps({'status':record['status'],'archives':archives,'CAM':cam['carrier']},indent=2))
 
 

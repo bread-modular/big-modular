@@ -61,7 +61,7 @@ def verify_reset_smt(fp,g):
             'qualification':'nominal placement only; sample solder/fit trial pending'}
 
 
-def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.json'):
+def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.json',routing_baseline=None):
     g=json.loads(geometry_file.read_text())
     names=['big_modular','front_panel']
     assert sorted(p.stem for p in hardware.glob('*.kicad_pcb'))==sorted(names), 'obsolete middle board still active'
@@ -72,7 +72,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
              'front_panel':{f'H{i}' for i in range(1,7)}}
     out={'fabrication_ready':False,'boards':{}}
     out['fabrication_ready_scope']='Legacy conservative source-only non-approval flag; this checker does not evaluate bare-PCB artwork release and this false value is not an unresolved fabrication-blocker result.'
-    out['bare_pcb_artwork_release_record']='production/hro-r1/release-validation.json'
+    out['bare_pcb_artwork_release_record']='production/ldo-r1/release-validation.json'
     out['assembled_product_qualified']=False
     out['physical_validation_pending']=['cable/full insertion','ABS brackets/assembled fit','bench/source-current/thermal validation']
     for n,b in boards.items():
@@ -82,7 +82,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         assert all(d.GetLayer() not in [pcb.F_Cu,pcb.B_Cu] for d in b.GetDrawings())
         ts=list(b.GetTracks());nv=sum(t.GetClass()=='PCB_VIA' for t in ts)
         out['boards'][n+'.kicad_pcb']={'footprints':len(fps[n]),'tracks':len(ts)-nv,'vias':nv,'zones':len(list(b.Zones()))}
-    out['routing']=verify_native(boards['big_modular'],hardware)
+    out['routing']=verify_native(boards['big_modular'],hardware,routing_baseline)
     expected=[(14,2),(16.5,2),(16.5,10),(27.5,10),(27.5,2),(101,2),
               (101,10),(112,10),(112,2),(114.5,2),(114.5,32),(14,32)]
     edges=[d for d in boards['big_modular'].GetDrawings() if d.GetLayer()==pcb.Edge_Cuts]
@@ -170,7 +170,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     out['mechanics']={'actual_NPTH_geometry_checks':10,'LED_PTH_pad_checks':2,'LED_polarity_mark_checks':2,'manual_LED_exclusions':1,'switch_SMT_pad_checks':5,'switch_locator_NPTH_checks':2,'switch_fit':switch_check,'power_pin_checks':16,
        'M3_access':verify_access(g,expected),'carrier_depth_mm':30,'PCB_depth_behind_panel_mm':30.4,
        'main_PCB_plane_X_mm':[3.1,4.7],'port_axis_mm':[6.33,33.5,.8],
-       'electrical_status':'V1:64 active footprints; routed HRO carrier, passive panel',
+       'electrical_status':str(len(allowed['big_modular'])-4)+' active footprints; inspected routing, passive panel; not electrical/thermal qualification',
        'finished_module_depth':'unverified; cable connector not confined to 2HP board envelope'}
     return out
 
@@ -180,7 +180,8 @@ if __name__=='__main__':
     p.add_argument('--hardware',type=Path,default=ROOT/'hardware')
     p.add_argument('--geometry',type=Path,default=ROOT/'docs/assembly-geometry.json')
     p.add_argument('--output',type=Path)
-    a=p.parse_args();r=verify(a.hardware,a.geometry)
+    p.add_argument('--routing-baseline',type=Path,help='Explicit reviewed candidate contract; default remains canonical contract')
+    a=p.parse_args();r=verify(a.hardware,a.geometry,a.routing_baseline)
     if a.output:
         with a.output.open('x') as f:f.write(json.dumps(r,indent=2)+'\n')
     print(json.dumps(r,indent=2))
