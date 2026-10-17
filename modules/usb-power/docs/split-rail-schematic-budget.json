@@ -1,0 +1,855 @@
+{
+  "status": "SR1 schematic-only prototype screens; PCB old/unsynchronized",
+  "assumptions": {
+    "resistor_delta_T_K": 100,
+    "precision_factors": [
+      0.9965025000000001,
+      1.0014975,
+      0.9984974999999999,
+      1.0035024999999997
+    ],
+    "basic_factors": [
+      0.9801,
+      0.9999,
+      0.9999,
+      1.0201
+    ],
+    "ripple_allocation_V": 0.1,
+    "AC_sensitivity_factor": 0.83423
+  },
+  "corners": {
+    "positive_nominal_V": 13.519000000000002,
+    "positive_DC_V": [
+      13.15004913540319,
+      13.892123113088083
+    ],
+    "positive_corner_count": 64,
+    "positive_trough_V": 13.05004913540319,
+    "positive_peak_V": 13.992123113088082,
+    "positive_accuracy_input_required_V": 13.0,
+    "positive_accuracy_input_screen_pass": true,
+    "negative_nominal_magnitude_V": 14.1850826446281,
+    "negative_bias_sensitivity_nA": {
+      "50": {
+        "DC_magnitude_V": [
+          13.557726639931193,
+          14.808266385513813
+        ],
+        "corner_count": 2048,
+        "trough_V": 13.457726639931193,
+        "peak_V": 14.908266385513812,
+        "headroom_to_N12_high_V": 1.071475794939854,
+        "accuracy_headroom_screen_pass": true,
+        "recommended_15V_screen_pass": true,
+        "bias_is_guaranteed_bound": false
+      },
+      "100": {
+        "DC_magnitude_V": [
+          13.487236389931194,
+          14.879276635513811
+        ],
+        "corner_count": 2048,
+        "trough_V": 13.387236389931195,
+        "peak_V": 14.979276635513811,
+        "headroom_to_N12_high_V": 1.000985544939855,
+        "accuracy_headroom_screen_pass": true,
+        "recommended_15V_screen_pass": true,
+        "bias_is_guaranteed_bound": false
+      }
+    },
+    "N12_nominal_V": -11.996750000000002,
+    "N12_magnitude_DC_V": [
+      11.61180770947959,
+      12.38625084499134
+    ],
+    "N12_corner_count": 512,
+    "MID_P5_nominal_V": 5.007547002220577,
+    "MID_P5_DC_V": [
+      4.712886897200467,
+      5.318151968888505
+    ],
+    "MID_peak_V": 5.4181519688885045,
+    "MID_below5p5": true,
+    "inverting_switch_span_with_diode_and_2V_ringing_V": 22.947428604402315,
+    "inverting_switch_24V_margin_with_allocations_V": 1.0525713955976848,
+    "VREF_load_uA": [
+      9.68376256995201,
+      10.3599523558316
+    ],
+    "VREF_nominal_load_uA": 10.024793388429753,
+    "VREF_accuracy_test_current_uA": 10.0,
+    "VREF_max_load_guarantee_found": false,
+    "VREF_accuracy_note": "TI table tests10uA; computed9.683..10.360uA close to test but no load-regulation/max-drive bound was found. Not an unconditional reference-accuracy guarantee."
+  },
+  "capacitors": {
+    "positive_input": {
+      "refs": [
+        "C48",
+        "C49",
+        "C50",
+        "C63"
+      ],
+      "bias_V": 14.0,
+      "nominal_uF": 88,
+      "DC_tol_temp_aging_uF": 13.602928517248687,
+      "with_AC_sensitivity_uF": 11.347971056944372,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "positive_output": {
+      "refs": [
+        "C51",
+        "C52",
+        "C53",
+        "C64",
+        "C65",
+        "C66"
+      ],
+      "bias_V": 12.4,
+      "nominal_uF": 132,
+      "DC_tol_temp_aging_uF": 23.989964087683383,
+      "with_AC_sensitivity_uF": 20.01314774086811,
+      "required_uF": 20.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "negative_input": {
+      "refs": [
+        "C54",
+        "C55",
+        "C56",
+        "C67",
+        "C74"
+      ],
+      "bias_V": 15.0,
+      "nominal_uF": 110,
+      "DC_tol_temp_aging_uF": 15.44835412568451,
+      "with_AC_sensitivity_uF": 12.887480462269789,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "negative_output": {
+      "refs": [
+        "C57",
+        "C58",
+        "C59",
+        "C73"
+      ],
+      "bias_V": 12.9,
+      "nominal_uF": 88,
+      "DC_tol_temp_aging_uF": 15.200629517803765,
+      "with_AC_sensitivity_uF": 12.680821162637436,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "negative_local_output": {
+      "refs": [
+        "C9",
+        "C75",
+        "C76"
+      ],
+      "bias_V": 15.0,
+      "nominal_uF": 66,
+      "DC_tol_temp_aging_uF": 9.269012475410708,
+      "with_AC_sensitivity_uF": 7.732488277361876,
+      "required_uF": 4.7,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "boost_local_output": {
+      "refs": [
+        "C77",
+        "C78",
+        "C79",
+        "C80"
+      ],
+      "bias_V": 14.0,
+      "nominal_uF": 88,
+      "DC_tol_temp_aging_uF": 13.602928517248687,
+      "with_AC_sensitivity_uF": 11.347971056944372,
+      "required_uF": 4.7,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "boost_local_input": {
+      "refs": [
+        "C82",
+        "C83",
+        "C84"
+      ],
+      "bias_V": 9.45,
+      "nominal_uF": 66,
+      "DC_tol_temp_aging_uF": 15.99640005094597,
+      "with_AC_sensitivity_uF": 13.344676814500657,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "U4_local_input_supplement": {
+      "refs": [
+        "C81"
+      ],
+      "bias_V": 5.5,
+      "nominal_uF": 22,
+      "DC_tol_temp_aging_uF": 9.210375611899533,
+      "with_AC_sensitivity_uF": 7.683571646714947,
+      "required_uF": 4.7,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    }
+  },
+  "boost_loop": {
+    "R89_ohm": 470,
+    "C86_F": 1e-06,
+    "C87_F": 1e-10,
+    "R88_plus_R90_ohm": 120000,
+    "frequency_nominal_Hz": 400209.61836275656,
+    "frequency_scaled_sensitivity_Hz": [
+      312958.0127178872,
+      523372.80322041217
+    ],
+    "frequency_bound_at120k_guaranteed": false,
+    "CCM_corner_count": 256,
+    "CCM_crossover_Hz": [
+      370.32817733637546,
+      13246.66453339405
+    ],
+    "CCM_phase_margin_model_deg": [
+      41.54594646116624,
+      106.17985224461009
+    ],
+    "min_RHP_zero_Hz": 87214.39700730523,
+    "crossover_below14k_and_RHP5_and_fsw10": true,
+    "Cout_range_F": [
+      1.1347971056944371e-05,
+      0.00019360000000000002
+    ],
+    "Ccomp_range_F": [
+      5e-07,
+      1.15e-06
+    ],
+    "Ccomp_range_is_sensitivity_not_manufacturer_guarantee": true,
+    "R89_adjustment": "1k and510R initial drafts exceeded14kHz local-only max-gm screen; changed to Basic470R.",
+    "boost_duty_adverse": 0.4541672397194334,
+    "boost_ripple_A": 2.117456842766596,
+    "boost_peak_at1A_plus_overhead_A": 3.1470943685810746,
+    "boost_peak_below5p25": true,
+    "L5_table_Isat_A": 11.0,
+    "L5_switch_fault_limit_max_A": 7.75,
+    "local_ripple_at407mA_Vpp": 0.052048224433126254,
+    "estimated_400mA_step_max_over_consistent_CCM_corners_V": 1.1790434758062718,
+    "instant_400mA_step_within100mV_proven": false,
+    "DCM_loop_measured": false,
+    "note": "The broad step envelope exceeds100mV. DC headroom screen does NOT promise no dropout during abrupt full-load steps; bench ramp/load-step gate mandatory."
+  },
+  "power": {
+    "raw_overhead_allowance_A_each": 0.007,
+    "overhead_is_guaranteed_max": false,
+    "eFuse_resistance_ohm": 6040,
+    "eFuse_nominal_current_limit_A": 1.9867549668874172,
+    "current_allocation_A_not_guaranteed_minimum": 1.85,
+    "rows": [
+      {
+        "P12_mA": 600,
+        "N12_mA": 0,
+        "P5_mA": 100,
+        "outputs_W": [
+          7.2,
+          0.0,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 1.1639326418297316,
+          "input_W": 10.475393776467584,
+          "VPROT_load_W": 9.96211908151395,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.006033000000001,
+          "negative_LDO_W": 0.0992955785123967,
+          "positive_theta_max_50C_to125C_C_per_W": 74.55023841166236,
+          "negative_theta_max_50C_to125C_C_per_W": 755.3206408947657,
+          "negative_peak_TI_A": 0.04192060237663659
+        },
+        "adverse": {
+          "input_A": 1.3592329804794634,
+          "input_W": 11.621441983099412,
+          "VPROT_load_W": 10.955678462221712,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.4732187296444665,
+          "negative_LDO_W": 0.10485493644859668,
+          "positive_theta_max_50C_to125C_C_per_W": 50.90893734299715,
+          "negative_theta_max_50C_to125C_C_per_W": 715.2739064103811,
+          "negative_peak_TI_A": 0.04645448575145279
+        }
+      },
+      {
+        "P12_mA": 600,
+        "N12_mA": 0,
+        "P5_mA": 250,
+        "outputs_W": [
+          7.2,
+          0.0,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 1.2651845460377267,
+          "input_W": 11.38666091433954,
+          "VPROT_load_W": 10.796710248550715,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.006033000000001,
+          "negative_LDO_W": 0.0992955785123967,
+          "positive_theta_max_50C_to125C_C_per_W": 74.55023841166236,
+          "negative_theta_max_50C_to125C_C_per_W": 755.3206408947657,
+          "negative_peak_TI_A": 0.04192060237663659
+        },
+        "adverse": {
+          "input_A": 1.483580435012847,
+          "input_W": 12.684612719359842,
+          "VPROT_load_W": 11.911822927319685,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.4732187296444665,
+          "negative_LDO_W": 0.10485493644859668,
+          "positive_theta_max_50C_to125C_C_per_W": 50.90893734299715,
+          "negative_theta_max_50C_to125C_C_per_W": 715.2739064103811,
+          "negative_peak_TI_A": 0.04645448575145279
+        }
+      },
+      {
+        "P12_mA": 800,
+        "N12_mA": 0,
+        "P5_mA": 100,
+        "outputs_W": [
+          9.6,
+          0.0,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 1.5313688029859698,
+          "input_W": 13.782319226873728,
+          "VPROT_load_W": 12.966341303736174,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.3098330000000016,
+          "negative_LDO_W": 0.0992955785123967,
+          "positive_theta_max_50C_to125C_C_per_W": 57.259207853214804,
+          "negative_theta_max_50C_to125C_C_per_W": 755.3206408947657,
+          "negative_peak_TI_A": 0.04192060237663659
+        },
+        "adverse": {
+          "input_A": 1.791727977428554,
+          "input_W": 15.319274207014137,
+          "VPROT_load_W": 14.24794272412479,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.9316433522620828,
+          "negative_LDO_W": 0.10485493644859668,
+          "positive_theta_max_50C_to125C_C_per_W": 38.82704325939362,
+          "negative_theta_max_50C_to125C_C_per_W": 715.2739064103811,
+          "negative_peak_TI_A": 0.04645448575145279
+        }
+      },
+      {
+        "P12_mA": 800,
+        "N12_mA": 0,
+        "P5_mA": 250,
+        "outputs_W": [
+          9.6,
+          0.0,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 1.6349363488061996,
+          "input_W": 14.714427139255797,
+          "VPROT_load_W": 13.800932470772937,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.3098330000000016,
+          "negative_LDO_W": 0.0992955785123967,
+          "positive_theta_max_50C_to125C_C_per_W": 57.259207853214804,
+          "negative_theta_max_50C_to125C_C_per_W": 755.3206408947657,
+          "negative_peak_TI_A": 0.04192060237663659
+        },
+        "adverse": {
+          "input_A": 1.9196891415834685,
+          "input_W": 16.413342160538658,
+          "VPROT_load_W": 15.204087189222763,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.9316433522620828,
+          "negative_LDO_W": 0.10485493644859668,
+          "positive_theta_max_50C_to125C_C_per_W": 38.82704325939362,
+          "negative_theta_max_50C_to125C_C_per_W": 715.2739064103811,
+          "negative_peak_TI_A": 0.04645448575145279
+        }
+      },
+      {
+        "P12_mA": 0,
+        "N12_mA": 200,
+        "P5_mA": 100,
+        "outputs_W": [
+          0.0,
+          2.4,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 0.5614181624576879,
+          "input_W": 5.0527634621191915,
+          "VPROT_load_W": 4.889753149466198,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09463300000000001,
+          "negative_LDO_W": 0.5369621074380162,
+          "positive_theta_max_50C_to125C_C_per_W": 792.5353734955036,
+          "negative_theta_max_50C_to125C_C_per_W": 139.67466039241432,
+          "negative_peak_TI_A": 1.239652098851968
+        },
+        "adverse": {
+          "input_A": 0.7443388982493886,
+          "input_W": 6.364097580032273,
+          "VPROT_load_W": 6.113936646433086,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09794486179161657,
+          "negative_LDO_W": 0.7783487216554408,
+          "positive_theta_max_50C_to125C_C_per_W": 765.7369526904524,
+          "negative_theta_max_50C_to125C_C_per_W": 96.35783796302165,
+          "negative_peak_TI_A": 1.3737255072215329
+        }
+      },
+      {
+        "P12_mA": 0,
+        "N12_mA": 200,
+        "P5_mA": 250,
+        "outputs_W": [
+          0.0,
+          2.4,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 0.6590897328227179,
+          "input_W": 5.931807595404461,
+          "VPROT_load_W": 5.724344316502961,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09463300000000001,
+          "negative_LDO_W": 0.5369621074380162,
+          "positive_theta_max_50C_to125C_C_per_W": 792.5353734955036,
+          "negative_theta_max_50C_to125C_C_per_W": 139.67466039241432,
+          "negative_peak_TI_A": 1.239652098851968
+        },
+        "adverse": {
+          "input_A": 0.8638876900959396,
+          "input_W": 7.386239750320284,
+          "VPROT_load_W": 7.070081111531058,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09794486179161657,
+          "negative_LDO_W": 0.7783487216554408,
+          "positive_theta_max_50C_to125C_C_per_W": 765.7369526904524,
+          "negative_theta_max_50C_to125C_C_per_W": 96.35783796302165,
+          "negative_peak_TI_A": 1.3737255072215329
+        }
+      },
+      {
+        "P12_mA": 0,
+        "N12_mA": 250,
+        "P5_mA": 100,
+        "outputs_W": [
+          0.0,
+          3.0,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 0.6767603944632121,
+          "input_W": 6.090843550168909,
+          "VPROT_load_W": 5.874828333120927,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09463300000000001,
+          "negative_LDO_W": 0.646378739669421,
+          "positive_theta_max_50C_to125C_C_per_W": 792.5353734955036,
+          "negative_theta_max_50C_to125C_C_per_W": 116.03104402591802,
+          "negative_peak_TI_A": 1.5390849729708005
+        },
+        "adverse": {
+          "input_A": 0.901911987778309,
+          "input_W": 7.711347495504543,
+          "VPROT_load_W": 7.372699388913238,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09794486179161657,
+          "negative_LDO_W": 0.9467221679571518,
+          "positive_theta_max_50C_to125C_C_per_W": 765.7369526904524,
+          "negative_theta_max_50C_to125C_C_per_W": 79.22070755123003,
+          "negative_peak_TI_A": 1.7055432625890525
+        }
+      },
+      {
+        "P12_mA": 0,
+        "N12_mA": 250,
+        "P5_mA": 250,
+        "outputs_W": [
+          0.0,
+          3.0,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 0.775097577847923,
+          "input_W": 6.975878200631307,
+          "VPROT_load_W": 6.70941950015769,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09463300000000001,
+          "negative_LDO_W": 0.646378739669421,
+          "positive_theta_max_50C_to125C_C_per_W": 792.5353734955036,
+          "negative_theta_max_50C_to125C_C_per_W": 116.03104402591802,
+          "negative_peak_TI_A": 1.5390849729708005
+        },
+        "adverse": {
+          "input_A": 1.0226547041666372,
+          "input_W": 8.743697720624748,
+          "VPROT_load_W": 8.32884385401121,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.09794486179161657,
+          "negative_LDO_W": 0.9467221679571518,
+          "positive_theta_max_50C_to125C_C_per_W": 765.7369526904524,
+          "negative_theta_max_50C_to125C_C_per_W": 79.22070755123003,
+          "negative_peak_TI_A": 1.7055432625890525
+        }
+      },
+      {
+        "P12_mA": 400,
+        "N12_mA": 200,
+        "P5_mA": 100,
+        "outputs_W": [
+          4.8,
+          2.4,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 1.2775394771563704,
+          "input_W": 11.497855294407334,
+          "VPROT_load_W": 10.898197593910643,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.7022330000000008,
+          "negative_LDO_W": 0.5369621074380162,
+          "positive_theta_max_50C_to125C_C_per_W": 106.80215825801396,
+          "negative_theta_max_50C_to125C_C_per_W": 139.67466039241432,
+          "negative_peak_TI_A": 1.239652098851968
+        },
+        "adverse": {
+          "input_A": 1.5866460200571488,
+          "input_W": 13.565823471488624,
+          "VPROT_load_W": 12.698465170239244,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.0147941070268498,
+          "negative_LDO_W": 0.7783487216554408,
+          "positive_theta_max_50C_to125C_C_per_W": 73.90661758939011,
+          "negative_theta_max_50C_to125C_C_per_W": 96.35783796302165,
+          "negative_peak_TI_A": 1.3737255072215329
+        }
+      },
+      {
+        "P12_mA": 400,
+        "N12_mA": 200,
+        "P5_mA": 250,
+        "outputs_W": [
+          4.8,
+          2.4,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 1.379496179461544,
+          "input_W": 12.415465615153895,
+          "VPROT_load_W": 11.732788760947406,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.7022330000000008,
+          "negative_LDO_W": 0.5369621074380162,
+          "positive_theta_max_50C_to125C_C_per_W": 106.80215825801396,
+          "negative_theta_max_50C_to125C_C_per_W": 139.67466039241432,
+          "negative_peak_TI_A": 1.239652098851968
+        },
+        "adverse": {
+          "input_A": 1.7128676860494423,
+          "input_W": 14.645018715722733,
+          "VPROT_load_W": 13.654609635337215,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.0147941070268498,
+          "negative_LDO_W": 0.7783487216554408,
+          "positive_theta_max_50C_to125C_C_per_W": 73.90661758939011,
+          "negative_theta_max_50C_to125C_C_per_W": 96.35783796302165,
+          "negative_peak_TI_A": 1.3737255072215329
+        }
+      },
+      {
+        "P12_mA": 500,
+        "N12_mA": 200,
+        "P5_mA": 100,
+        "outputs_W": [
+          6.0,
+          2.4,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 1.46150360470795,
+          "input_W": 13.15353244237155,
+          "VPROT_load_W": 12.400308705021754,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.8541330000000009,
+          "negative_LDO_W": 0.5369621074380162,
+          "positive_theta_max_50C_to125C_C_per_W": 87.80833898233638,
+          "negative_theta_max_50C_to125C_C_per_W": 139.67466039241432,
+          "negative_peak_TI_A": 1.239652098851968
+        },
+        "adverse": {
+          "input_A": 1.8046136830278066,
+          "input_W": 15.429446989887747,
+          "VPROT_load_W": 14.344597301190783,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.244006418335658,
+          "negative_LDO_W": 0.7783487216554408,
+          "positive_theta_max_50C_to125C_C_per_W": 60.28907801001673,
+          "negative_theta_max_50C_to125C_C_per_W": 96.35783796302165,
+          "negative_peak_TI_A": 1.3737255072215329
+        }
+      },
+      {
+        "P12_mA": 500,
+        "N12_mA": 200,
+        "P5_mA": 250,
+        "outputs_W": [
+          6.0,
+          2.4,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 1.5646227031480322,
+          "input_W": 14.08160432833229,
+          "VPROT_load_W": 13.234899872058518,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 0.8541330000000009,
+          "negative_LDO_W": 0.5369621074380162,
+          "positive_theta_max_50C_to125C_C_per_W": 87.80833898233638,
+          "negative_theta_max_50C_to125C_C_per_W": 139.67466039241432,
+          "negative_peak_TI_A": 1.239652098851968
+        },
+        "adverse": {
+          "input_A": 1.9326857524687746,
+          "input_W": 16.524463183608024,
+          "VPROT_load_W": 15.300741766288754,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.244006418335658,
+          "negative_LDO_W": 0.7783487216554408,
+          "positive_theta_max_50C_to125C_C_per_W": 60.28907801001673,
+          "negative_theta_max_50C_to125C_C_per_W": 96.35783796302165,
+          "negative_peak_TI_A": 1.3737255072215329
+        }
+      },
+      {
+        "P12_mA": 600,
+        "N12_mA": 150,
+        "P5_mA": 100,
+        "outputs_W": [
+          7.2,
+          1.8,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 1.5253092310830425,
+          "input_W": 13.727783079747383,
+          "VPROT_load_W": 12.917344632478137,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.006033000000001,
+          "negative_LDO_W": 0.42754547520661135,
+          "positive_theta_max_50C_to125C_C_per_W": 74.55023841166236,
+          "negative_theta_max_50C_to125C_C_per_W": 175.4199362389609,
+          "negative_peak_TI_A": 0.940219224733135
+        },
+        "adverse": {
+          "input_A": 1.856368137519203,
+          "input_W": 15.871947575789186,
+          "VPROT_load_W": 14.731966689662169,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.4732187296444665,
+          "negative_LDO_W": 0.6099752753537298,
+          "positive_theta_max_50C_to125C_C_per_W": 50.90893734299715,
+          "negative_theta_max_50C_to125C_C_per_W": 122.95580334220412,
+          "negative_peak_TI_A": 1.0419077518540125
+        }
+      },
+      {
+        "P12_mA": 600,
+        "N12_mA": 150,
+        "P5_mA": 250,
+        "outputs_W": [
+          7.2,
+          1.8,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 1.6288377270982544,
+          "input_W": 14.65953954388429,
+          "VPROT_load_W": 13.751935799514902,
+          "input_1p85A_allocation_pass": true,
+          "positive_LDO_W": 1.006033000000001,
+          "negative_LDO_W": 0.42754547520661135,
+          "positive_theta_max_50C_to125C_C_per_W": 74.55023841166236,
+          "negative_theta_max_50C_to125C_C_per_W": 175.4199362389609,
+          "negative_peak_TI_A": 0.940219224733135
+        },
+        "adverse": {
+          "input_A": 1.9848876014739787,
+          "input_W": 16.970788992602518,
+          "VPROT_load_W": 15.688111154760142,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.4732187296444665,
+          "negative_LDO_W": 0.6099752753537298,
+          "positive_theta_max_50C_to125C_C_per_W": 50.90893734299715,
+          "negative_theta_max_50C_to125C_C_per_W": 122.95580334220412,
+          "negative_peak_TI_A": 1.0419077518540125
+        }
+      },
+      {
+        "P12_mA": 800,
+        "N12_mA": 150,
+        "P5_mA": 100,
+        "outputs_W": [
+          9.6,
+          1.8,
+          0.5
+        ],
+        "nominal": {
+          "input_A": 1.9011477448139118,
+          "input_W": 17.110329703325206,
+          "VPROT_load_W": 15.92156685470036,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.3098330000000016,
+          "negative_LDO_W": 0.42754547520661135,
+          "positive_theta_max_50C_to125C_C_per_W": 57.259207853214804,
+          "negative_theta_max_50C_to125C_C_per_W": 175.4199362389609,
+          "negative_peak_TI_A": 0.940219224733135
+        },
+        "adverse": {
+          "input_A": 2.303687496685958,
+          "input_W": 19.696528096664945,
+          "VPROT_load_W": 18.024230951565244,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.9316433522620828,
+          "negative_LDO_W": 0.6099752753537298,
+          "positive_theta_max_50C_to125C_C_per_W": 38.82704325939362,
+          "negative_theta_max_50C_to125C_C_per_W": 122.95580334220412,
+          "negative_peak_TI_A": 1.0419077518540125
+        }
+      },
+      {
+        "P12_mA": 800,
+        "N12_mA": 150,
+        "P5_mA": 250,
+        "outputs_W": [
+          9.6,
+          1.8,
+          1.25
+        ],
+        "nominal": {
+          "input_A": 2.007155518738756,
+          "input_W": 18.064399668648804,
+          "VPROT_load_W": 16.75615802173712,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.3098330000000016,
+          "negative_LDO_W": 0.42754547520661135,
+          "positive_theta_max_50C_to125C_C_per_W": 57.259207853214804,
+          "negative_theta_max_50C_to125C_C_per_W": 175.4199362389609,
+          "negative_peak_TI_A": 0.940219224733135
+        },
+        "adverse": {
+          "input_A": 2.436208775767202,
+          "input_W": 20.82958503280958,
+          "VPROT_load_W": 18.980375416663215,
+          "input_1p85A_allocation_pass": false,
+          "positive_LDO_W": 1.9316433522620828,
+          "negative_LDO_W": 0.6099752753537298,
+          "positive_theta_max_50C_to125C_C_per_W": 38.82704325939362,
+          "negative_theta_max_50C_to125C_C_per_W": 122.95580334220412,
+          "negative_peak_TI_A": 1.0419077518540125
+        }
+      }
+    ],
+    "rated_output_current": null
+  },
+  "startup": {
+    "eFuse_slope_typ_V_per_s": 1156.2,
+    "eFuse_slope_adverse_screen_V_per_s": 1833.3333333333335,
+    "VPROT_bulk_nominal_uF": 164,
+    "positive_raw_bulk_nominal_uF": 176,
+    "passive_input_plus_raw_precharge_A_typ": 0.39310799999999996,
+    "passive_including_possible_P12_C_charge_A_adverse": 0.9518666666666669,
+    "boost_SS_typ_s": 0.03,
+    "positive_raw_energy_at13p519_J": 0.016083175768,
+    "negative_raw_nominal_uF": 176,
+    "negative_output_nominal_uF": 88,
+    "full_load_startup_guaranteed": false,
+    "EN_is_disconnect": false,
+    "rail_synchronous_shutdown": false,
+    "bench_required": [
+      "PD/eFuse dVdt into zero-bias bulk plus running bucks",
+      "full-load boost foldback recovery",
+      "PRAW short passive L5/D29 current until eFuse latch",
+      "MID/NRAW startup and U4 negative current limit",
+      "unplug/retry/negative FB NR OUT-to-IN limits",
+      "external backdrive prohibited; reverse shunts not isolation"
+    ]
+  },
+  "bounded_R60_search": [
+    {
+      "R60_ohm": 13000,
+      "DC_magnitude_V": [
+        13.468450298541574,
+        14.857936240717445
+      ],
+      "corner_count": 2048,
+      "trough_V": 13.368450298541575,
+      "peak_V": 14.957936240717444,
+      "headroom_to_N12_high_V": 0.9821994535502352,
+      "accuracy_headroom_screen_pass": false,
+      "recommended_15V_screen_pass": true,
+      "bias_is_guaranteed_bound": false
+    },
+    {
+      "R60_ohm": 15000,
+      "DC_magnitude_V": [
+        13.487236389931194,
+        14.879276635513811
+      ],
+      "corner_count": 2048,
+      "trough_V": 13.387236389931195,
+      "peak_V": 14.979276635513811,
+      "headroom_to_N12_high_V": 1.000985544939855,
+      "accuracy_headroom_screen_pass": true,
+      "recommended_15V_screen_pass": true,
+      "bias_is_guaranteed_bound": false
+    },
+    {
+      "R60_ohm": 16000,
+      "DC_magnitude_V": [
+        13.496629435626005,
+        14.889946832911997
+      ],
+      "corner_count": 2048,
+      "trough_V": 13.396629435626005,
+      "peak_V": 14.989946832911997,
+      "headroom_to_N12_high_V": 1.0103785906346658,
+      "accuracy_headroom_screen_pass": true,
+      "recommended_15V_screen_pass": true,
+      "bias_is_guaranteed_bound": false
+    },
+    {
+      "R60_ohm": 18000,
+      "DC_magnitude_V": [
+        13.515415527015625,
+        14.911287227708366
+      ],
+      "corner_count": 2048,
+      "trough_V": 13.415415527015625,
+      "peak_V": 15.011287227708365,
+      "headroom_to_N12_high_V": 1.0291646820242857,
+      "accuracy_headroom_screen_pass": true,
+      "recommended_15V_screen_pass": false,
+      "bias_is_guaranteed_bound": false
+    }
+  ],
+  "selection": "15k Basic retained: numerical100nA headroom reserve0.9855mV. 16k gives more balanced margins but catalog C4210 Extended/C22818 Preferred Extended, NOT Basic; not substituted.",
+  "all_static_screens_pass": true,
+  "unconditional_accuracy_or_current_guarantee": false,
+  "PCB_parity_claim": false
+}

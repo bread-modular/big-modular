@@ -9,6 +9,9 @@ ROOT=Path(__file__).resolve().parent.parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--schematic-only', action='store_true', help='Render a NEW schematic candidate only; create candidate schematic, libraries, BOM and pin audit; never regenerate boards.')
 parser.add_argument('--output', type=Path, help='Required NEW directory for --schematic-only; copies existing project/library context.')
+parser.add_argument('--sr2-source',type=Path,help='Explicit read-only SR1 native snapshot for --sr2-revision; no other workspace recovery.')
+parser.add_argument('--sr2-revision', action='store_true', help='Explicit SR2 schematic-only migration from staged SR1 into NEW output; PCB untouched.')
+parser.add_argument('--split-rail-revision', action='store_true', help='Explicit SR1 schematic-only migration into NEW output; PCB untouched.')
 parser.add_argument('--ldo-revision', action='store_true', help='Explicit one-shot ES1 migration of native schematics into NEW output; never modifies a PCB.')
 parser.add_argument('--capacitor-revision', action='store_true', help='One-shot explicit 4/6/4/3 LDO bank upgrade in NEW schematic candidate.')
 parser.add_argument('--presentation-source', type=Path, help='Explicit already-edited native schematic candidate; exact source pin/ref/net parity is still required. No automatic circuit migration.')
@@ -69,22 +72,29 @@ SHEETS, BOM, CONNS = populate(stock, ic, LIB, ROOT)
 used={d['kind'] for sh in SHEETS.values() for d in sh['parts']}
 LIB={k:v for k,v in LIB.items() if k in used}
 # Exact allowed local footprint filters, including the new raw-divider 0805s.
-for kind in ('TPS7A4700RGWR','TPS7A3301RGWR'):
+for kind in ('TPS7A4700RGWR','TPS7A3301RGWR','TPS55340RTER'):
     fps=sorted({d['fp'].split(':')[-1] for sh in SHEETS.values() for d in sh['parts'] if d['kind']==kind and d['fp']})
     if fps:
         props={p[1]:p for p in nodes(LIB[kind],'property')}
         if 'ki_fp_filters' in props:props['ki_fp_filters'][2]=' '.join(fps)
         else:LIB[kind].append(parse('(property "ki_fp_filters" '+q(' '.join(fps))+' (at 0 0 0) (effects (font (size 1.27 1.27)) hide))'))
 from render_schematic import render
+if args.sr2_source and not args.sr2_revision:parser.error('--sr2-source requires --sr2-revision')
+if args.sr2_revision:
+    from sr2_schematic import stage
+    stage(args.sr2_source or ROOT/'hardware',HW,SHEETS,LIB,uid)
+if args.split_rail_revision:
+    from split_rail_schematic import stage
+    stage(ROOT/'hardware',HW,SHEETS,LIB,uid)
 if args.ldo_revision:
     from ldo_schematic import stage
     stage(ROOT/'hardware',HW,SHEETS,LIB,uid)
 if args.capacitor_revision:
     from ldo_schematic import strengthen_cap_banks
     strengthen_cap_banks(ROOT/'hardware',HW,uid)
-if args.presentation_source and (args.ldo_revision or args.capacitor_revision):
+if args.presentation_source and (args.ldo_revision or args.capacitor_revision or args.split_rail_revision or args.sr2_revision):
     parser.error('--presentation-source cannot be combined with a migration')
-render(HW, SHEETS, LIB, uid, source=args.presentation_source or (HW if (args.ldo_revision or args.capacitor_revision) else None))
+render(HW, SHEETS, LIB, uid, source=args.presentation_source or (HW if (args.ldo_revision or args.capacitor_revision or args.split_rail_revision or args.sr2_revision) else None))
 # Libraries and inventory are emitted ONLY into the new review candidate.
 (HW/'BigModular.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "kicad_symbol_editor")\n'+ '\n'.join(dump(v) for _,v in sorted(LIB.items()))+'\n)\n')
 for name in ['sym-lib-table','fp-lib-table','usb-power.kicad_pro']:

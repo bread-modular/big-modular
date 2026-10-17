@@ -1,0 +1,554 @@
+{
+  "status": "SR2 post-review corrections; dual delta reviews and user ACK pending; PCB unsynchronized",
+  "rated_output_current": null,
+  "corners": {
+    "enumerated_raw_corners": 1024,
+    "resistor_deltaT_K": 100,
+    "upper_initial_tolerance_pct": 0.1246684350132626,
+    "upper_weighted_TCR_ppm_per_K": 27.05570291777188,
+    "raw_nominal_magnitude_V": 14.07752,
+    "raw_DC_magnitude_V": [
+      13.603126946533475,
+      14.55792434536219
+    ],
+    "FB_current_sensitivity_nA": 100,
+    "FB_current_guaranteed_max": false,
+    "N12_nominal_V": -11.996750000000002,
+    "N12_DC_magnitude_V": [
+      11.61180770947959,
+      12.38625084499134
+    ],
+    "raw_dip_allocation_V": 0.1,
+    "raw_trough_V": 13.473025949696254,
+    "raw_peak_V": 14.688025342199412,
+    "LDO_headroom_V": 1.0867751047049143
+  },
+  "voltage": {
+    "normal_high_input_V": 9.45,
+    "normal_static_span_V": 24.00792434536219,
+    "OV_max_including100nA_V": 11.58367894174676,
+    "OV_is_clamp": false,
+    "OV_threshold_plus_raw_DC_V": 26.14160328710895,
+    "recommended_VIN_SW_max_V": 28,
+    "absolute_VIN_SW_max_V": 30,
+    "raw_positive_excursion_allocation_V": 0.1301009968372216,
+    "OV_turnoff_input_overshoot_allocation_V": 0.4,
+    "SW_positive_ringing_allocation_V": 1.0,
+    "allocated_span_V": 27.67170428394617,
+    "allocated_margin_to28_V": 0.32829571605383023,
+    "transient_allocations_measured": false,
+    "negative_SW_undershoot_recommended_V": -0.1,
+    "negative_SW_undershoot_abs_V": -0.3,
+    "BOOT_SW_recommended_max_V": 5.5,
+    "BOOT_SW_abs_max_V": 7,
+    "open_FB_survival_proven": false,
+    "FB_OVP108pct_is_guaranteed_clamp": false
+  },
+  "enable": {
+    "top_ohm": 100000,
+    "bottom_ohm": 22000,
+    "bottom_series_refs_ohm": {
+      "R92": 20000,
+      "R93": 2000
+    },
+    "domain": "NRAW",
+    "start_max_V_ignoring_helpful_pullup": 7.335634397232193,
+    "max_at28V_with5uA_V": 5.308158756004456,
+    "bias_allowance_uA": 5,
+    "bias_guaranteed_max": false,
+    "recommended_max_V": 5.5,
+    "absolute_max_V": 7
+  },
+  "capacitors": {
+    "positive_input": {
+      "refs": [
+        "C48",
+        "C49",
+        "C50",
+        "C63"
+      ],
+      "bias_V": 14.0,
+      "nominal_uF": 88,
+      "DC_tol_temp_aging_uF": 13.602928517248687,
+      "with_AC_sensitivity_uF": 11.347971056944372,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "positive_output": {
+      "refs": [
+        "C51",
+        "C52",
+        "C53",
+        "C64",
+        "C65",
+        "C66"
+      ],
+      "bias_V": 12.4,
+      "nominal_uF": 132,
+      "DC_tol_temp_aging_uF": 23.989964087683383,
+      "with_AC_sensitivity_uF": 20.01314774086811,
+      "required_uF": 20.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "negative_input": {
+      "refs": [
+        "C54",
+        "C55",
+        "C56",
+        "C67",
+        "C74"
+      ],
+      "bias_V": 15.0,
+      "nominal_uF": 110,
+      "DC_tol_temp_aging_uF": 15.44835412568451,
+      "with_AC_sensitivity_uF": 12.887480462269789,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "negative_output": {
+      "refs": [
+        "C57",
+        "C58",
+        "C59",
+        "C73"
+      ],
+      "bias_V": 12.9,
+      "nominal_uF": 88,
+      "DC_tol_temp_aging_uF": 15.200629517803765,
+      "with_AC_sensitivity_uF": 12.680821162637436,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "boost_local_output": {
+      "refs": [
+        "C77",
+        "C78",
+        "C79",
+        "C80"
+      ],
+      "bias_V": 14.0,
+      "nominal_uF": 88,
+      "DC_tol_temp_aging_uF": 13.602928517248687,
+      "with_AC_sensitivity_uF": 11.347971056944372,
+      "required_uF": 4.7,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "boost_local_input": {
+      "refs": [
+        "C82",
+        "C83",
+        "C84"
+      ],
+      "bias_V": 9.45,
+      "nominal_uF": 66,
+      "DC_tol_temp_aging_uF": 15.99640005094597,
+      "with_AC_sensitivity_uF": 13.344676814500657,
+      "required_uF": 10.0,
+      "screen_pass": true,
+      "guaranteed_minimum": false
+    },
+    "IBB_output_local": {
+      "refs": [
+        "C6",
+        "C37",
+        "C70",
+        "C71",
+        "C9",
+        "C75",
+        "C76"
+      ],
+      "bias_screen_V": 15.0,
+      "nominal_uF": 154,
+      "effective_screen_uF": 18.042472647177707,
+      "remote_caps_counted": false,
+      "guaranteed_minimum": false
+    },
+    "IBB_span_bypass": {
+      "refs": [
+        "C89",
+        "C90",
+        "C91",
+        "C92"
+      ],
+      "LCSC": "C50254",
+      "rating_V": 50,
+      "nominal_uF": 8.8,
+      "bias_TCC_tolerance_screen_uF": 3.96,
+      "extra_AC_factor_assumption": 0.8,
+      "extra_aging_factor_assumption": 0.95,
+      "effective_screen_uF": 3.0096,
+      "engineering_allocation_uF": 2.2,
+      "TI_typical_example_uF": 10,
+      "TI_example_is_specified_minimum": false,
+      "startup_current_ripple_qualified": false,
+      "guaranteed_minimum": false,
+      "C7_HF_not_counted": true
+    },
+    "IBB_source_to_system_GND": {
+      "refs": [
+        "C5",
+        "C68"
+      ],
+      "rating_V": 25,
+      "bias_V": 9.45,
+      "effective_screen_uF": 8.896451209667102
+    }
+  },
+  "switch": {
+    "duty_efficiency_screen": 0.6962874030387163,
+    "frequency_screen_Hz": [
+      272600.0,
+      540600.0
+    ],
+    "L_H": [
+      1.76e-05,
+      2.64e-05
+    ],
+    "average_A": 1.0272869914571658,
+    "ripple_pp_A": 1.1519503396626365,
+    "peak_A": 1.603262161288484,
+    "valley_A": 0.4513118216258476,
+    "RMS_A": 1.0797689698439448,
+    "HS_min_A": 4.0,
+    "LS_min_A": 3.1,
+    "HS_fault_max_A": 6.0,
+    "fault_overshoot_allocation_A": 1.0,
+    "L1_table_Isat_25C_A": 10.0,
+    "L1_guaranteed_hot_min_A": null,
+    "fault_screen_margin_A": 3.0,
+    "output_cap_RMS_A": 0.5067098075683455,
+    "capacitive_ripple_pp_V": 0.04416937206155832,
+    "bank_ESR_allowance_ohm": 0.01,
+    "total_ripple_pp_V": 0.06020199367444316,
+    "minimum_on_s": 1.0915229407960903e-06,
+    "minimum_off_s": 5.61806505662752e-07
+  },
+  "negative_loop": {
+    "model": "SLVA933 model2 with actual TPS54302 typical20k/2.04n/2p/240uS; HF pole fs/2 added; C93 DNP, no fitted CFF",
+    "gmps_sensitivity_A_per_V": [
+      4,
+      6.8,
+      10
+    ],
+    "gmps_6p8_is_TPS54202_not_54302_guarantee": true,
+    "slope_amplitude_sensitivity_V": [
+      0.2,
+      1.0
+    ],
+    "parameters_guaranteed": false,
+    "corners": 192,
+    "operating_C_screen_F": [
+      1.8042472647177708e-05,
+      8.359693699239233e-05
+    ],
+    "Cmax_note": "All12 raw caps at low raw bias, +10% tolerance/+15%temperature sensitivity, plus full nominal span bypass; zero-bias bulk used only for startup. Not guaranteed combined C.",
+    "crossover_Hz": [
+      1510.104879352723,
+      8126.3725038769535
+    ],
+    "phase_margin_model_deg": [
+      18.43734038558506,
+      55.41403214940975
+    ],
+    "worst_phase_corner": {
+      "fc_Hz": 1510.45116738577,
+      "phase_margin_deg": 18.43734038558506,
+      "rhp_Hz": 107544.9046896291,
+      "slope_pole_Hz": 33903.958158277994,
+      "C_F": 8.359693699239233e-05,
+      "L_H": 2.64e-05,
+      "gmps_A_per_V": 4.0,
+      "slope_V": 1.0,
+      "Vin_V": 7.9375,
+      "Vraw_V": 14.55792434536219,
+      "Iraw_A": 0.157
+    },
+    "min_RHP_Hz": 54998.53432010349,
+    "efficiency_adverse_RHP_Hz": 37264.74394109019,
+    "crossover_RHP5_screen": "NOT_QUALIFIED",
+    "paired_efficiency_adverse_crossover_Hz": null,
+    "RHP5_note": "Ideal-model corners retain paired fc/RHP values but omit adverse efficiency and D30 leakage. The separate efficiency-adverse RHP sensitivity has no matched crossover calculation. No boolean pass and no claim unrelated extrema co-occur. Measure actual loop; C93 is DNP.",
+    "measured_phase_margin_deg": null,
+    "DCM_pulse_skip_proven": false
+  },
+  "positive_loop_unchanged": {
+    "R89_ohm": 470,
+    "C86_F": 1e-06,
+    "C87_F": 1e-10,
+    "R88_plus_R90_ohm": 120000,
+    "frequency_nominal_Hz": 400209.61836275656,
+    "frequency_scaled_sensitivity_Hz": [
+      312958.0127178872,
+      523372.80322041217
+    ],
+    "frequency_bound_at120k_guaranteed": false,
+    "CCM_corner_count": 256,
+    "CCM_crossover_Hz": [
+      370.32817733637546,
+      13246.66453339405
+    ],
+    "CCM_phase_margin_model_deg": [
+      41.54594646116624,
+      106.17985224461009
+    ],
+    "min_RHP_zero_Hz": 87214.39700730523,
+    "crossover_below14k_and_RHP5_and_fsw10": true,
+    "Cout_range_F": [
+      1.1347971056944371e-05,
+      0.00019360000000000002
+    ],
+    "Ccomp_range_F": [
+      5e-07,
+      1.15e-06
+    ],
+    "Ccomp_range_is_sensitivity_not_manufacturer_guarantee": true,
+    "R89_adjustment": "1k and510R initial drafts exceeded14kHz local-only max-gm screen; changed to Basic470R.",
+    "boost_duty_adverse": 0.4541672397194334,
+    "boost_ripple_A": 2.117456842766596,
+    "boost_peak_at1A_plus_overhead_A": 3.1470943685810746,
+    "boost_peak_below5p25": true,
+    "L5_table_Isat_A": 11.0,
+    "L5_switch_fault_limit_max_A": 7.75,
+    "local_ripple_at407mA_Vpp": 0.052048224433126254,
+    "estimated_400mA_step_max_over_consistent_CCM_corners_V": 1.1790434758062718,
+    "instant_400mA_step_within100mV_proven": false,
+    "DCM_loop_measured": false,
+    "note": "The broad step envelope exceeds100mV. DC headroom screen does NOT promise no dropout during abrupt full-load steps; bench ramp/load-step gate mandatory."
+  },
+  "power": {
+    "eFuse_ILIM_ohm": 6040,
+    "nominal_limit_A": 1.9867549668874172,
+    "input_allocation_A": 1.85,
+    "allocation_basis": "Engineering planning allocation only, not tolerance-bound protection or qualified rating",
+    "nominal_eFuse_is_tolerance_bound": false,
+    "conditional_design_target_mA": {
+      "P12": 400,
+      "N12": 300,
+      "P5_reserve": 250
+    },
+    "D30_reverse_leakage": {
+      "catalog": "docs/electrical-catalog.json#C8678",
+      "catalog_Ir_A": 0.0005,
+      "catalog_Vr_V": 40,
+      "catalog_temperature_C": null,
+      "operating_assumptions_A": {
+        "nominal": 0.0005,
+        "adverse": 0.005
+      },
+      "temperature_sensitivity_assumed_C": [
+        25,
+        125
+      ],
+      "hot_to_nominal_assumed_ratio": 10,
+      "temperature_note": "25C nominal proxy and 125C hot 10x sensitivity are explicitly assumed; cached catalog has no temperature, exact PDF fetch yielded no extracted data. No scaling from40V to14V inferred; actual current and hot maximum unknown. Bench gate, not a guaranteed leakage bound.",
+      "documented_hot_max_A": null,
+      "guaranteed_operating_max": false
+    },
+    "overhead_A_each": 0.007,
+    "efficiencies_nominal": [
+      0.9,
+      0.9,
+      0.9
+    ],
+    "efficiencies_adverse": [
+      0.85,
+      0.8,
+      0.85
+    ],
+    "rows": [
+      {
+        "P12_mA": 400.0,
+        "N12_mA": 200.0,
+        "P5_mA": 250,
+        "nominal": {
+          "input_A": 1.2777867441762005,
+          "VPROT_V": 8.530553313955949,
+          "bus_W": 10.900227945061273,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.0005,
+          "D30_reverse_dissipation_W": 0.00703876,
+          "negative_LDO_W": 0.5146966399999995,
+          "positive_LDO_W": 0.7022330000000008,
+          "negative_theta_50C_to125C_C_per_W": 145.71690229025018
+        },
+        "adverse": {
+          "input_A": 1.5390247490079751,
+          "VPROT_V": 8.015243812748007,
+          "bus_W": 12.335658597152227,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.005,
+          "D30_reverse_dissipation_W": 0.07344012671099706,
+          "negative_LDO_W": 0.7180597039393601,
+          "positive_LDO_W": 1.0147941070268498,
+          "negative_theta_50C_to125C_C_per_W": 104.44813932398819
+        }
+      },
+      {
+        "P12_mA": 400.0,
+        "N12_mA": 300.0,
+        "P5_mA": 250,
+        "nominal": {
+          "input_A": 1.4693988816125696,
+          "VPROT_V": 8.482650279596857,
+          "bus_W": 12.464396833950163,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.0005,
+          "D30_reverse_dissipation_W": 0.00703876,
+          "negative_LDO_W": 0.7227736399999992,
+          "positive_LDO_W": 0.7022330000000008,
+          "negative_theta_50C_to125C_C_per_W": 103.76692763726149
+        },
+        "adverse": {
+          "input_A": 1.781566228787657,
+          "VPROT_V": 7.954608442803086,
+          "bus_W": 14.171661764927153,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.005,
+          "D30_reverse_dissipation_W": 0.07344012671099706,
+          "negative_LDO_W": 1.0256814672113421,
+          "positive_LDO_W": 1.0147941070268498,
+          "negative_theta_50C_to125C_C_per_W": 73.12211675610418
+        }
+      },
+      {
+        "P12_mA": 400.0,
+        "N12_mA": 400.0,
+        "P5_mA": 250,
+        "nominal": {
+          "input_A": 1.6633003049678656,
+          "VPROT_V": 8.434174923758032,
+          "bus_W": 14.028565722839053,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.0005,
+          "D30_reverse_dissipation_W": 0.00703876,
+          "negative_LDO_W": 0.9308506399999991,
+          "positive_LDO_W": 0.7022330000000008,
+          "negative_theta_50C_to125C_C_per_W": 80.57146525676781
+        },
+        "adverse": {
+          "input_A": 2.028089484796096,
+          "VPROT_V": 7.892977628800976,
+          "bus_W": 16.007664932702077,
+          "allocation_1p85A_pass": false,
+          "below_nominal_eFuse_limit": false,
+          "D30_leakage_A": 0.005,
+          "D30_reverse_dissipation_W": 0.07344012671099706,
+          "negative_LDO_W": 1.3333032304833246,
+          "positive_LDO_W": 1.0147941070268498,
+          "negative_theta_50C_to125C_C_per_W": 56.25126999265754
+        }
+      },
+      {
+        "P12_mA": 600.0,
+        "N12_mA": 200.0,
+        "P5_mA": 250,
+        "nominal": {
+          "input_A": 1.647828828134621,
+          "VPROT_V": 8.438042792966344,
+          "bus_W": 13.904450167283498,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.0005,
+          "D30_reverse_dissipation_W": 0.00703876,
+          "negative_LDO_W": 0.5146966399999995,
+          "positive_LDO_W": 1.006033000000001,
+          "negative_theta_50C_to125C_C_per_W": 145.71690229025018
+        },
+        "adverse": {
+          "input_A": 1.976764571667264,
+          "VPROT_V": 7.905808857083184,
+          "bus_W": 15.627922859055305,
+          "allocation_1p85A_pass": false,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.005,
+          "D30_reverse_dissipation_W": 0.07344012671099706,
+          "negative_LDO_W": 0.7180597039393601,
+          "positive_LDO_W": 1.4732187296444663,
+          "negative_theta_50C_to125C_C_per_W": 104.44813932398819
+        }
+      },
+      {
+        "P12_mA": 0.0,
+        "N12_mA": 300.0,
+        "P5_mA": 250,
+        "nominal": {
+          "input_A": 0.7451720609739851,
+          "VPROT_V": 8.663706984756503,
+          "bus_W": 6.4559523895057165,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.0005,
+          "D30_reverse_dissipation_W": 0.00703876,
+          "negative_LDO_W": 0.7227736399999992,
+          "positive_LDO_W": 0.09463300000000001,
+          "negative_theta_50C_to125C_C_per_W": 103.76692763726149
+        },
+        "adverse": {
+          "input_A": 0.9289109688239723,
+          "VPROT_V": 8.167772257794008,
+          "bus_W": 7.587133241120997,
+          "allocation_1p85A_pass": true,
+          "below_nominal_eFuse_limit": true,
+          "D30_leakage_A": 0.005,
+          "D30_reverse_dissipation_W": 0.07344012671099706,
+          "negative_LDO_W": 1.0256814672113421,
+          "positive_LDO_W": 0.09794486179161657,
+          "negative_theta_50C_to125C_C_per_W": 73.12211675610418
+        }
+      }
+    ],
+    "guaranteed_rating": false
+  },
+  "startup": {
+    "softstart_typ_s": 0.005,
+    "guaranteed_softstart_min_s": null,
+    "raw_bulk_zero_bias_uF": 264,
+    "final_N12_bulk_uF": 88,
+    "constant_C_loaded_charge_current_sensitivity_A": 1.0499423616,
+    "constant_C_peak_sensitivity_A": 4.957251521080332,
+    "full_load_startup_proven": false,
+    "positive_NRAW_charge_sharing_no_switch_upper_sensitivity_V": 0.5446989363910846,
+    "positive_NRAW_nominal_at_EN_start_V": 0.23923468719445407,
+    "positive_NRAW_limit_V": 0.3,
+    "positive_kick_note": "Without D30, no-switch fast-step upper sensitivity exceeds0.3V, not a prediction with retained eFuse dVdt/active switching. Must measure positive IN/NR/FB/OUT kick and loaded ramp before acceptance; no positive-input compliance claim. D30 is mitigation only; no guaranteed <=+0.3V clamp for arbitrary surge.",
+    "mitigation": {
+      "ref": "D30",
+      "type": "MDD SS34 / C8678",
+      "anode": "NRAW",
+      "cathode": "GND",
+      "review_basis": "https://www.ti.com/lit/pdf/snva897",
+      "guaranteed_positive_clamp_V": null,
+      "startup_waveforms_qualified": false
+    },
+    "off_EN_at_zero_VPROT_max_sensitivity_V": 2.8036818742495977,
+    "off_is_disconnect": false,
+    "reverse_path": "Residual NRAW leaves U3 VIN/EN high; L1/SW high-side body diode can return stored rail energy to VPROT. U2 reverse blocking does not isolate local converters. SW1 shuts eFuse, not U3 EN. D28 retained, not a -0.3V differential guarantee.",
+    "bench_gates": [
+      "cold/full-load start and eFuse retry with actual biased C",
+      "positive NRAW and U13 IN/FB/NR/OUT limits",
+      "raw/output shorts; eFuse and U3 hiccup interaction",
+      "unplug, residual EN, backfeed, prebias (no external supply permitted)"
+    ]
+  },
+  "mechanical": {
+    "height_max_mm": 5.0,
+    "allowance_mm": 5.1,
+    "pre_solder_arithmetic_margin_mm": 0.1,
+    "actual_fit_approved": false
+  },
+  "PCB_parity_claim": false,
+  "independent_reviews_completed": false,
+  "normal_static_screens_pass": true,
+  "normal_static_screen_scope": "Voltage/headroom/EN/switch-current and +400/-300/+5@250mA allocation arithmetic ONLY; excludes loop/startup/thermal/rating qualification.",
+  "qualification_complete": false
+}

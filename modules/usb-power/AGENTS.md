@@ -1,3 +1,10 @@
+> **Current authorized stage: SR2 SCHEMATIC ONLY.** Latest user steering supersedes
+> the migration-only circuit-preservation clauses below for schematics/generator/BOM.
+> PCB/routing/metadata repair are NOT authorized in this stage. Both boards remain
+> old/unsynchronized. Supervisor performs separate Opus + DeepSeek schematic reviews and must
+> obtain explicit user ACK before starting any PCB worker. Current handoff:
+> `docs/sr2-schematic.md`. Historical recovery/release receipts stay frozen.
+
 # usb-power agent entry point
 
 Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and

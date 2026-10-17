@@ -22,9 +22,8 @@ def populate(stock, ic, lib, root):
     BUCK=chip('TPS54302DDCR',[(3,'VIN','power_in','L'),(5,'EN','input','L'),(1,'GND','power_in','L'),(6,'BOOT','passive','R'),(2,'SW','output','R'),(4,'FB','input','R')],'https://www.ti.com/lit/ds/symlink/tps54302.pdf')
     from ldo_design import symbols as ldo_symbols
     LDO_P,LDO_N=ldo_symbols(chip)
-    BI=stock('Regulator_Switching','TPS65131RGE')
-    for prop in nodes(lib[BI],'property'):
-        if prop[1]=='Footprint':prop[2]='BigModular:Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm'
+    from split_rail_design import symbol as boost_symbol
+    BOOST=boost_symbol(chip)
     # E-Switch P021301 Rev B: 1 and 3 common, momentary closure to 2.
     # The existing footprint calls BOTH case solder lands MP (not contacts4/5).
     SW=chip('TL3340AF160QG',[(1,'COMMON','passive','L'),(3,'COMMON','passive','L'),(2,'NO','passive','R'),('MP','CASE','passive','R')],'https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf')
@@ -35,20 +34,26 @@ def populate(stock, ic, lib, root):
     for name,title,notes in [
       ('01_input_protection','USB PD input','USB_VBUS -> F1 -> VIN9 (fused, may be 5 V during negotiation).\nCH224A fixed 9 V via 6.8k CFG1; CFG2/3 and PG unused. DP/DM shorted locally.\nVHV1 and VBUS8 directly VIN9 per WCH table4-1 / section6.1; EP0 -> footprint11.'),
       ('02_hardgate','Autonomous hardware window and retry','UV rising 7.878 V / OV rising 10.781 V nominal; hysteresis applies. RTN is NOT GND.\nSHDN self-biases internally; SW1 shorts SHDN to RTN while pressed, release resets/retries.\nR8 6.04k: 1.987 A nominal. MODE 402k: current limit with thermal latch-off. No PG/MCU permission.'),
-      ('03_bucks','Independent buck converters','U3 MID5.007547V; full reference/1%/100ppm/K at100K DC upper5.318152V. U4 ceiling5.5V.\nU5 direct 5.007547V from VPROT, never from positive boost. 100n BOOT-to-SW each.\nEN pins intentionally floating: TI internal pullups enable from protected VPROT; no SHDN loading.'),
-      ('04_bipolar','Direct bipolar rails','INTERNAL raw+13.537080/-13.928806V nominal; MID5.007547V.\nP:(1.5M+24k)/150k; N:(1.6M+150k)/(150k+2.4k). FBN returns to BI_REF.\n250mA/rail initial validation target only; ripple, startup and thermal tests pending.'),
+      ('03_bucks','Independent +5V buck','U5 remains direct VPROT to P5, 250mA shared-budget reserve.\nU3 moved to direct negative IBB sheet04; no MID net. BOOT C36 to SW, EN floating.'),
+      ('04_bipolar','Direct 9V negative IBB','SR2 U3 TPS54302: VIN=VPROT, GND=NRAW, SW through22u L1 to systemGND.\nUpper226.2k/bottom10k gives NRAW-14.07752V nominal. EN100k/(20k+2k) in NRAW domain.\nPrototype only: positive kick, loaded start, loop, transients and thermal tests pending.'),
       ('05_quiet_rails','Quiet bipolar post-regulators','TPS7A4700 ANY-OUT +12.000V; TPS7A3301 -12.020250V before IFB. Both EP21=GND.\n4/6/4/3 x22u IN+/OUT+/IN-/OUT-: bias-screened prototype; lot/stability and reverse/FB tests pending.\n1A IC ratings are NOT supply ratings. Never parallel another PSU; no bench qualification claimed.'),
       ('07_output_rails','Board output and power LED','J7 physical board wire landing: 1/2=-12, 3..8=GND, 9/10=+12, 11/12=+5; 13..16 NC.\nOne manual output harness, no second source. Never parallel another active PSU.\nSingle red D10: final P5 -> 1k -> anode2; cathode1 -> GND. +5 V presence only.')]:
         sheets[name]={'title':title,'notes':notes,'parts':[]}
+    sheets['06_positive_boost']={'title':'Direct protected-9V positive boost','notes':'SR1: TPS55340 -> PRAW13.519V; schematic only. PCB unsynchronized.','parts':[]}
     # Catalog records are bounded strict-live snapshots, not procurement approval.
     catalog=json.loads((root/'docs/electrical-catalog.json').read_text())
+    # Preserve inherited native metadata; live evidence is audited separately.
+    catalog.update({k:v for k,v in json.loads((root/'docs/split-rail-catalog.json').read_text()).items() if k not in catalog})
+    selected=json.loads((root/'docs/tps54302-selected-parts.json').read_text())
+    catalog.update({p['code']:p for p in selected['selected_parts'] if p['code'] not in catalog})
     def add(sh,ref,kind,value,nets,fp='',code='',mpn='',note='',manual=False,onboard=True,manufacturer='',dnp=False):
         validate_reference(ref,'rail_indicator' if kind==LED and ref in ('D10','D11','D12') else '')
         if ref in conns:raise ValueError('Duplicate '+ref)
+        dnp=dnp or ref=='C62'
         part=catalog.get(code,{})
         if code and mpn and part and mpn!=part['mpn']:raise ValueError((ref,mpn,part['mpn']))
         mpn=mpn or part.get('mpn','')
-        revised=sh=='05_quiet_rails' or ref in ('R12','R13','R14','R15','R60','R75','R76','R4','R8','R36','R77','R78','R79','R80','R81','R82','R9','R10','R18','R83','R84','R85','C6','C8','C9','C19','C37','C38','C68','C69','C70','C71','C72','R16','C1','C4','C5','C18','C16','C17','C10','C11','C12','C13','C14','J1','SW1')
+        revised=sh in ('04_bipolar','05_quiet_rails','06_positive_boost') or ref in ('R12','R13','R14','R15','R60','R75','R76','R4','R8','R36','R77','R78','R79','R80','R81','R82','R9','R10','R18','R83','R84','R85','C6','C8','C9','C19','C37','C38','C68','C69','C70','C71','C72','R16','C1','C4','C5','C18','C16','C17','C10','C11','C12','C13','C14','J1','SW1')
         if revised:manufacturer=manufacturer or part.get('manufacturer','')
         note=note or 'Prototype candidate; qualify ratings, land pattern and operating corners.'
         footprint=('BigModular:'+fp.split(':')[-1]) if fp else ''
@@ -61,8 +66,8 @@ def populate(stock, ic, lib, root):
         defaults={'100':'C22775','470k':'C23178','82k':'C23254','5.6k':'C23189','220':'C22962','300k':'C23024','2k':'C22975','100k':'C25803','10k':'C25804','1k':'C21190','6.8k':'C23212','20k':'C4184','22k':'C31850','150k':'C22807','562k':'C23205','806k':'C23250','402k':'C23048','6.04k':'C25977','16.5k':'C22812','13.5k':'C861118','1.33M':'C482628'}
         tol=tolerance or ('0.1%' if code in ('C2912578','C149921','C20165687') or v=='13.5k' else '1%')
         return add(sh,ref,R,v+' '+tol,{'1':a,'2':b},'Resistor_SMD:R_0603_1608Metric',code or defaults.get(v,''),note=note)
-    def cc(sh,ref,v,a,b,code='',size='0603_1608',note=''):
-        return add(sh,ref,C,v,{'1':a,'2':b},'Capacitor_SMD:C_'+size+'Metric',code or ('C14663' if v=='100n 50V X7R' else ''),note=note or 'Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.')
+    def cc(sh,ref,v,a,b,code='',size='0603_1608',note='',dnp=False):
+        return add(sh,ref,C,v,{'1':a,'2':b},'Capacitor_SMD:C_'+size+'Metric',code or ('C14663' if v=='100n 50V X7R' else ''),note=note or 'Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.',dnp=dnp)
     def dd(sh,ref,k,a,note=''):return add(sh,ref,D,'SS34 40V',{'1':k,'2':a},'Diode_SMD:D_SMA','C8678',note=note or 'Rectifier polarity, reverse transients and thermal behavior require V1 validation.')
     a='01_input_protection'
     add(a,'J1',USB,MPN,PINS.copy(),'BigModular:'+FOOTPRINT,LCSC,mpn=MPN,note=NOTE+' Economy catalog candidate; front SMT contacts with four plated shell slots requiring explicit supplier solder-process review; not quote approval.',manual=False,manufacturer='HRO (Korean Hroparts Elec)')
@@ -81,7 +86,7 @@ def populate(stock, ic, lib, root):
     cc(a,'C2','100n 50V X7R','VIN9','GND');cc(a,'C3','100n 50V X7R','SLEW','RTN');cc(a,'C4','10u 50V X5R','VPROT','GND',code='C13585',size='1206_3216')
     add(a,'SW1',SW,'TL3340AF160QG',{'1':'EF_SHDN','3':'EF_SHDN','2':'RTN','MP':None},'BigModular:SW_TL3340AF160QG_HandSolder',code='C2886925',mpn='TL3340AF160QG',manual=False,note='P021301 Rev B contacts1+3 common; contact2 RTN. Press disables eFuse; release retries latch-off subject to UV/OV. Internal SHDN pullup only; no downstream EN or external supply load. Case MP floating. Extended/Economy catalog candidate; SMT J-leads/case paste retained. No supplier process/quote approval.')
     a='03_bucks'
-    for u,prefix,out,Lref,Cs,Rt,Rb,rv,base in [('U3','MID','MID','L1',['C5','C6','C7','C35'],'R9','R10','13k',0),('U5','FIVE','P5','L4',['C18','C19','C20','C36'],'R17','R18','13k',1)]:
+    for u,prefix,out,Lref,Cs,Rt,Rb,rv,base in [('U5','FIVE','P5','L4',['C18','C19','C20','C36'],'R17','R18','13k',1)]:
         add(a,u,BUCK,'TPS54302DDCR',{'1':'GND','2':prefix+'_SW','3':'VPROT','4':prefix+'_FB','5':None,'6':prefix+'_BOOT'},'Package_TO_SOT_SMD:SOT-23-6','C311983')
         add(a,Lref,L,'6.8uH 20% shielded',{'1':prefix+'_SW','2':out},'BigModular:L_KOHER_MDA1040','C2847552',note='MDA1040-6R8M; manufacturer A1 p1: height3.8+/-0.2mm; Isat typ12.2 / table Max11A; temperature-rise current typ7.8 / table Max6.8A (not relabeled guaranteed minima). DCR max24.5mohm. Land pattern12.5 overall,5.4 gap,3.5 length; visually verified. See engineering.md. Extended candidate; not allocation or thermal approval.')
         cc(a,Cs[0],'22u 25V X5R','VPROT','GND',code='C12891',size='1206_3216');cc(a,Cs[1],'22u 25V X5R',out,'GND','C12891','1206_3216');cc(a,Cs[2],'100n 50V X7R','VPROT','GND');cc(a,Cs[3],'100n 50V X7R',prefix+'_BOOT',prefix+'_SW')
@@ -92,24 +97,10 @@ def populate(stock, ic, lib, root):
         rr(a,Rt,'100k',out,prefix+'_FB',code='C25803',note='Basic 1%, 100ppm/K; MID/P5 use 100k/(13k+510R), nominal5.007547V. Full independent reference/tolerance/TCR bounds in basic-swaps-checkpoint.md; not a +/-5% output guarantee.' if u=='U3' else 'Independent +5 V divider.')
         rr(a,Rb,rv,prefix+'_FB',prefix+'_DIV_LO',code='C22797',tolerance='1%',note='Basic13k plus510R series bottom leg; retain nominal5V rather than13k alone. 1%,100ppm/K; see basic-swaps-checkpoint.md.')
         rr(a,'R84' if u=='U3' else 'R85','510',prefix+'_DIV_LO','GND',code='C23193',note='Basic510R series with R10/R18; total13.51k bottom leg. 1%,100ppm/K,100mW/75V; dated039 observation lacks raw provenance, release recheck required.')
-    a='04_bipolar'
-    add(a,'U4',BI,'TPS65131RGER',{'1':'BOOST_SW','24':'BOOST_SW','2':'GND','3':'GND','4':'ANA_MID','5':'MID','6':'MID','7':None,'8':'BI_EN','9':'GND','10':'BI_EN','11':'GND','12':None,'13':'INV_SW','14':'INV_SW','15':'NRAW','16':'NEG_FB','17':'BI_REF','18':'COMP_N','19':'GND','20':None,'21':'COMP_P','22':'POS_FB','23':'PRAW','25':'GND'},'BigModular:Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm','C87663')
-    for ref,n1,n2 in [('L2','MID','BOOST_SW'),('L3','INV_SW','GND')]:add(a,ref,L,'4.7uH 20% shielded',{'1':n1,'2':n2},'BigModular:L_CENKER_CKCS6045','C5291878',note='CKCS6045-4.7uH/M; TI typical4.7uH, Isat4.97A, Irms3.30A. Manufacturer newer maxDCR40.30mohm (old catalog31mohm typical). Land pattern F1.8 gap/G2.4 width/H5.7 length. Extended candidate; qualify thermal/loop in V1.')
-    dd(a,'D2','PRAW','BOOST_SW');dd(a,'D3','INV_SW','NRAW')
-    for ref,net in [('C8','PRAW'),('C9','NRAW')]:cc(a,ref,'22u 25V X5R',net,'GND','C12891','1206_3216')
-    for args in [('R12','1.5M','PRAW','POS_DIV'),('R75','24k','POS_DIV','POS_FB'),('R13','150k','POS_FB','GND'),('R14','1.6M','NRAW','NEG_DIV'),('R60','150k','NEG_DIV','NEG_FB'),('R15','150k','NEG_FB','NEG_REF_DIV'),('R76','2.4k','NEG_REF_DIV','BI_REF'),('R16','100','MID','ANA_MID'),('R40','100k','BI_EN','GND'),('R38','100k','MID','BI_EN')]:
-        if args[0] in ('R12','R13','R14','R15','R60','R75','R76'):
-            ref,v,x,y=args;large=ref in ('R12','R14')
-            selection={'R12':('C4223894','CPF0805B1M5E1','TE Connectivity'),
-                       'R14':('C2088870','',''), 'R75':('C23352','',''),
-                       'R76':('C22940','','')}.get(ref,('C22807','',''))
-            add(a,ref,R,v+(' 0.1%' if large else ' 1%'),{'1':x,'2':y},'Resistor_SMD:R_'+('0805_2012Metric' if large else '0603_1608Metric'),
-                selection[0],mpn=selection[1],manufacturer=selection[2],
-                note=('Retained exact precision upper resistor; 0.1%,25ppm/K. ' if large else 'Authorized Basic1%,100ppm/K substitution. ')+
-                     'Raw nominal+13.537080/-13.928806V. Mixed resistor/TCR full corners and conditional dropout in basic-swaps-checkpoint.md; no full-temperature1A guarantee or higher setpoint reserve.')
-        else:rr(a,*args)
-    cc(a,'C10','4.5p 50V C0G','PRAW','POS_FB',code='C501829',size='0402_1005',note='FH 0402CG4R5C500NT, 4.5pF +/-0.25pF, 50V C0G; authorized 0402 land pattern. Positive feedforward across full upper divider; local routing retained, no rail or nominal change. Prototype loop/parasitic validation pending.');cc(a,'C11','4.3p 50V C0G','NRAW','NEG_FB',code='C519375',note='YAGEO CC0603CRNPO9BN4R3: 4.3pF +/-0.25pF, 50V NP0; negative feedforward across full upper divider. Prototype loop/parasitic validation pending.');cc(a,'C12','220n 25V X7R','BI_REF','GND',code='C21120',note='CL10B224KA8NNNC,220n +/-10%,25V X7R0603. BI_REF1.2..1.225V; voltage derating adequate; original nominal bypass retained.');cc(a,'C13','10n 50V X7R','COMP_P','GND',code='C57112');cc(a,'C14','4.7n 50V X7R','COMP_N','GND',code='C53987',note='FH0603B472K500NT:4.7n +/-10%,50V X7R0603. Authorized CN error-correction change from C0G+/-5%; wider temperature/bias/aging and compensation spread. No stability qualification; bench loop/load-step gate remains.');cc(a,'C15','100n 50V X7R','ANA_MID','GND')
-    cc(a,'C16','10u 50V X5R','MID','GND',code='C13585',size='1206_3216');cc(a,'C17','10u 50V X5R','MID','GND',code='C13585',size='1206_3216')
+    from sr2_design import populate as populate_negative
+    populate_negative(add,rr,cc,dd,L,BUCK)
+    from split_rail_design import populate as populate_boost
+    populate_boost(add,rr,cc,dd,L,R,BOOST)
     from ldo_design import populate as populate_ldos
     populate_ldos(add,rr,cc,dd,R,LDO_P,LDO_N)
     a='07_output_rails'
@@ -120,6 +111,8 @@ def populate(stock, ic, lib, root):
     add(a,'J7',IDC,'Manual IDC wire landing',n,'BigModular:WireLanding_2x08_P2.54mm',manual=True,note='ON-CARRIER numbered solder lands, not an extra purchasable box header. Physical output cable boundary; single output, never another active source.')
     for ref,net in [('R25','P12'),('R26','N12'),('R27','P5')]:rr(a,ref,'10k',net,'GND',note='Bleed provision only; does not prove rail discharge time or prevent backfeed.')
     # True passive-source declarations for ERC; no arbitrary error exclusions.
-    for i,(sh,net) in enumerate([('01_input_protection','GND'),('01_input_protection','USB_VBUS'),('01_input_protection','VIN9'),('03_bucks','MID'),('04_bipolar','ANA_MID'),('04_bipolar','PRAW'),('04_bipolar','NRAW'),('03_bucks','P5')]):add(sh,f'#FLG{i+1:02}',FLAG,'PWR_FLAG',{'1':net})
+    for ref,sh,net in [('#FLG01','01_input_protection','GND'),('#FLG02','01_input_protection','USB_VBUS'),('#FLG03','01_input_protection','VIN9'),('#FLG07','04_bipolar','NRAW'),('#FLG08','03_bucks','P5')]:
+        add(sh,ref,FLAG,'PWR_FLAG',{'1':net})
+    add('06_positive_boost','#FLG09',FLAG,'PWR_FLAG',{'1':'PRAW'},note='Real passive L5/D29 rectified source; not an artificial supply. Existing dormant source flag stays separate.')
     # Convert BOM footprint IDs to the same pinned project IDs after copy plan saved.
     return sheets,bom,conns

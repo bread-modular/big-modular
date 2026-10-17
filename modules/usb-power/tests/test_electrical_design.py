@@ -16,7 +16,7 @@ class ElectricalPrototypeTests(unittest.TestCase):
         self.assertEqual(result['local_visible_wire_checks'],len(LOCAL))
         self.assertGreaterEqual(result['independent_pin_checks'],240)
         self.assertGreaterEqual(result['local_visible_wire_checks'],62)
-    def test_mid_dc_corner_is_not_a_transient_guarantee(self):
+    def test_P5_dc_corner_is_not_a_transient_guarantee(self):
         g=[.99*.99,1.01*1.01]
         upper=.611*(1+100e3*max(g)/((13e3+510)*min(g)))
         lower=.581*(1+100e3*min(g)/((13e3+510)*max(g)))
@@ -49,8 +49,8 @@ class ElectricalPrototypeTests(unittest.TestCase):
         self.assertEqual(pins[('R32','1')],'P5')
         self.assertEqual(pins[('U2','7')],'EF_SHDN')
         self.assertEqual(pins[('SW1','2')],'RTN')
-        self.assertIsNone(pins[('U3','5')]);self.assertIsNone(pins[('U5','5')])
-        self.assertEqual(pins[('R38','1')],'MID');self.assertEqual(pins[('R38','2')],'BI_EN')
+        self.assertEqual(pins[('U3','5')],'NINV_EN');self.assertIsNone(pins[('U5','5')])
+        self.assertNotIn('R38',{r for r,p in pins});self.assertEqual(pins[('R93','2')],'NRAW')
         for ref in ['Q2','Q3','D11','D12','R33','R34','R39']:
             self.assertFalse(any(r==ref for r,p in pins))
         self.assertFalse(any(n and ('EXT_' in n or n.endswith('_K')) for n in pins.values()))
@@ -82,19 +82,16 @@ class ElectricalPrototypeTests(unittest.TestCase):
     def test_accepted_local_cap_plan_is_consistent_when_present(self):
         result=check(ROOT/'hardware',ROOT/'docs/pin-net-audit.json',ROOT/'BOM.csv')
         plan=result['capacitor_plan']
-        self.assertIn(plan['status'],('pass','pending_043'))
-        if plan['status']=='pending_043':
-            self.assertEqual(plan['missing'],['C68','C69','C70','C71','C72'])
-        else:
-            self.assertEqual(plan['MID_local_refs'],['C6','C70','C71'])
-            self.assertEqual(plan['P5_local_refs'],['C19','C38','C72'])
-            self.assertNotIn('C37',plan['MID_local_refs'])
+        self.assertEqual(plan['status'],'pass')
+        self.assertEqual(plan['IBB_local_refs'],['C6','C37','C70','C71','C9','C75','C76'])
+        self.assertEqual(plan['IBB_span_refs'],['C89','C90','C91','C92'])
+        self.assertEqual(plan['P5_local_refs'],['C19','C38','C72'])
     def test_mutated_hardware_gate_and_power_contract_are_rejected(self):
         import shutil
         with tempfile.TemporaryDirectory() as tmp:
             dest=Path(tmp)/'copy';shutil.copytree(ROOT/'hardware',dest)
             audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
-            for old,new in [('EF_SHDN','BROKEN_GATE'),('VIN9','USB_VBUS'),('BI_EN','GND')]:
+            for old,new in [('EF_SHDN','BROKEN_GATE'),('VIN9','USB_VBUS'),('NINV_EN','GND')]:
                 with self.subTest(mutation=old):
                     sources={p.name:p.read_text() for p in (ROOT/'hardware').glob('*.kicad_sch')}
                     # Changing both source and generated audit cannot fool the independent checks.

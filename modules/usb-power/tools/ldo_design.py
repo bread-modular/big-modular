@@ -45,19 +45,20 @@ def populate(add, rr, cc, dd, R, pos, neg):
     # tolerance/temperature/aging screen at 14.8V raw and 12.4V output.
     for refs,net,role in [([48,49,50,63],'PRAW','positive input'),
                           ([51,52,53,64,65,66],'P12','positive output'),
-                          ([54,55,56,67],'NRAW','negative input'),
-                          ([57,58,59],'N12','negative output')]:
+                          ([54,55,56,67,74],'NRAW','negative input'),
+                          ([57,58,59,73],'N12','negative output')]:
         for i in refs:
             cc(sh,'C'+str(i),'22u 25V X5R',net,'GND','C12891','1206_3216',note=role+f' bank: {len(refs)} parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.')
     cc(sh,'C60','1u 50V X7R','P_NR','GND','C28323','0805_2012',note='Positive NR sees ~12V; >=10n effective mandatory; 1u nominal targets low noise and ~122ms typical startup. Verify bias.')
     cc(sh,'C61','100n 50V X7R','N_NR','GND','C14663',note='Negative NR/SS ~-1.175V: 100n targets ~120ms typical startup, not guaranteed sequencing; 1u would be ~1.2s. Noise tradeoff must be measured.')
-    cc(sh,'C62','10n 50V X7R','N12','N_LDO_FB','C57112',note='10n from OUT to FB across entire upper divider. Improves AC; fast N12 collapse may kick FB positive. Absolute-limit/shutdown validation required; see SBVA042 section2.3.')
+    cff=cc(sh,'C62','10n 50V X7R','N12','N_LDO_FB','C57112',note='DNP prototype: retain pads; TI TPS7A33 section8.1.4 says CFF not required for stability. Removes capacitive FB-kick path; sacrifices noise/PSRR. Not a proven cure. Shutdown/absolute-limit bench gates remain.')
+    cff['dnp']=True
     for ref,value,a,b,code in [
-        ('R72','82k','N12','N_LDO_SER','C23254'),
-        ('R83','9.1k','N_LDO_SER','N_LDO_DIV','C23260'),
+        ('R72','90.9k','N12','N_LDO_SER','C728600'),
+        ('R83','0','N_LDO_SER','N_LDO_DIV','C21189'),
         ('R73','1.2k','N_LDO_DIV','N_LDO_FB','C22765'),
-        ('R74','10k','N_LDO_FB','GND','C25804')]:
-        add(sh,ref,R,value+' 1%',{'1':a,'2':b},'Resistor_SMD:R_0603_1608Metric',code,
-            note='Basic negative divider:(82k+9.1k+1.2k)/10k=-12.02025V before IFB. R73 is the only1.2k; total upper92.3k. 1%,100ppm/K. Full independent corners and conditional dropout, not full-temperature1A accuracy; see basic-swaps-checkpoint.md.')
+        ('R74','10k','N_LDO_FB','GND','C95204')]:
+        add(sh,ref,R,value+(' 0.1%' if ref in ('R72','R74') else ' 1%'),{'1':a,'2':b},'Resistor_SMD:R_0603_1608Metric',code,
+            note='SR1 final divider:(90.9k+0R+1.2k)/10k=-11.99675V before IFB. R72/R74 precision0.1%,25ppm/K exceptions; R73 Basic1%,100ppm/K; R83 jumper0..0.1ohm screen. Not silently derated to-11.95V. See split-rail-schematic.md.')
     dd(sh,'D27','PRAW','P12',note='Reverse discharge shunt: anode2=P12, cathode1=PRAW. Not reverse blocking. Validate input collapse/backdrive and current/energy; no hot-parallel supply.')
     dd(sh,'D28','N12','NRAW',note='Negative reverse discharge shunt: anode2=NRAW, cathode1=N12. SS34 Vf does NOT establish OUT-IN >= -0.3V, nor FB/NR absolute limits. Transient qualification gate remains open; not reverse blocking.')

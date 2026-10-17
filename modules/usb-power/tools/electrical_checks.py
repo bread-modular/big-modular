@@ -1,149 +1,320 @@
-"""Independent reviewed pin-role checks; not derived from generator inventory."""
-import csv,json
+"""Independent SR2 manufacturer pin/NC and visible-wire contract (not generator-derived)."""
+import csv,json,math
 from pathlib import Path
 from schematic_connectivity import Connectivity
-from sexp import nodes,one,parse,Atom,walk
-import math
-REVIEWED={
- 'U1':{'1':'VIN9','8':'VIN9','11':'GND','2':None,'3':None,'4':'PD_D_SHORT','5':'PD_D_SHORT','6':'CC2','7':'CC1','9':'PD_CFG','10':None},
- 'U2':{'1':'VIN9','2':'VIN9','3':'UV_EN','4':None,'5':'OV_SET','6':'EF_MODE','7':'EF_SHDN','8':'RTN','9':'GND','10':None,'11':'ILIM','12':'SLEW','13':None,'14':None,'15':'VPROT','16':'VPROT','17':'RTN'},
- 'U3':{'1':'GND','2':'MID_SW','3':'VPROT','4':'MID_FB','5':None,'6':'MID_BOOT'},
- 'U5':{'1':'GND','2':'FIVE_SW','3':'VPROT','4':'FIVE_FB','5':None,'6':'FIVE_BOOT'},
- 'U4':{'1':'BOOST_SW','24':'BOOST_SW','2':'GND','3':'GND','4':'ANA_MID','5':'MID','6':'MID','7':None,'8':'BI_EN','9':'GND','10':'BI_EN','11':'GND','12':None,'13':'INV_SW','14':'INV_SW','15':'NRAW','16':'NEG_FB','17':'BI_REF','18':'COMP_N','19':'GND','20':None,'21':'COMP_P','22':'POS_FB','23':'PRAW','25':'GND'},
- 'SW1':{'1':'EF_SHDN','3':'EF_SHDN','2':'RTN','MP':None},
- 'D10':{'1':'GND','2':'LED_P_A'},'R32':{'1':'P5','2':'LED_P_A'},
- 'C35':{'1':'MID_BOOT','2':'MID_SW'},'C36':{'1':'FIVE_BOOT','2':'FIVE_SW'},
- 'R8':{'1':'ILIM','2':'ILIM_SER_1'},'R79':{'1':'ILIM_SER_1','2':'ILIM_SER_2'},'R80':{'1':'ILIM_SER_2','2':'RTN'},
- 'R36':{'1':'EF_MODE','2':'MODE_SER_1'},'R81':{'1':'MODE_SER_1','2':'MODE_SER_2'},'R82':{'1':'MODE_SER_2','2':'RTN'},
- 'R4':{'1':'VIN9','2':'UV_SER_1'},'R77':{'1':'UV_SER_1','2':'UV_SER_2'},'R78':{'1':'UV_SER_2','2':'UV_EN'},'R5':{'1':'UV_EN','2':'RTN'},'R6':{'1':'VIN9','2':'OV_SET'},'R7':{'1':'OV_SET','2':'RTN'},
- 'R14':{'1':'NRAW','2':'NEG_DIV'},'R60':{'1':'NEG_DIV','2':'NEG_FB'},'R15':{'1':'NEG_FB','2':'NEG_REF_DIV'},'R76':{'1':'NEG_REF_DIV','2':'BI_REF'},'R12':{'1':'PRAW','2':'POS_DIV'},'R75':{'1':'POS_DIV','2':'POS_FB'},
- 'R38':{'1':'MID','2':'BI_EN'},'R40':{'1':'BI_EN','2':'GND'},
- 'R9':{'1':'MID','2':'MID_FB'},'R10':{'1':'MID_FB','2':'MID_DIV_LO'},'R84':{'1':'MID_DIV_LO','2':'GND'},
- 'R17':{'1':'P5','2':'FIVE_FB'},'R18':{'1':'FIVE_FB','2':'FIVE_DIV_LO'},'R85':{'1':'FIVE_DIV_LO','2':'GND'},
- 'J7':{str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None) for i in range(1,17)},
- 'L1':{'1':'MID_SW','2':'MID'},'L4':{'1':'FIVE_SW','2':'P5'},'L2':{'1':'MID','2':'BOOST_SW'},'L3':{'1':'INV_SW','2':'GND'},
-}
-# Literal independent manufacturer pin map: never imported from the generator.
-REVIEWED['U12']={'1':'P12','2':None,'3':'P12','4':None,'5':'GND','6':'GND','7':'GND','8':None,'9':'GND','10':None,'11':'GND','12':None,'13':'PRAW','14':'P_NR','15':'PRAW','16':'PRAW','17':None,'18':None,'19':None,'20':'P12','21':'GND'}
-REVIEWED['U13']={'1':'N12','2':None,'3':'N_LDO_FB','4':None,'5':None,'6':None,'7':'GND','8':None,'9':None,'10':None,'11':None,'12':None,'13':'NRAW','14':'N_NR','15':'NRAW','16':'NRAW','17':None,'18':None,'19':None,'20':'N12','21':'GND'}
-for refs,net in [([48,49,50,63],'PRAW'),([51,52,53,64,65,66],'P12'),([54,55,56,67],'NRAW'),([57,58,59],'N12'),([60],'P_NR'),([61],'N_NR')]:
-    for i in refs:REVIEWED['C'+str(i)]={'1':net,'2':'GND'}
-REVIEWED.update({'C62':{'1':'N12','2':'N_LDO_FB'},'R72':{'1':'N12','2':'N_LDO_SER'},'R83':{'1':'N_LDO_SER','2':'N_LDO_DIV'},'R73':{'1':'N_LDO_DIV','2':'N_LDO_FB'},'R74':{'1':'N_LDO_FB','2':'GND'},'R75':{'1':'POS_DIV','2':'POS_FB'},'R76':{'1':'NEG_REF_DIV','2':'BI_REF'},'D27':{'1':'PRAW','2':'P12'},'D28':{'1':'N12','2':'NRAW'}})
-LOCAL=[(('U1','9'),('R2','1')),(('U1','1'),('F1','2')),(('U1','4'),('U1','5')),
- (('U2','3'),('R78','2')),(('U2','5'),('R7','1')),(('U2','11'),('R8','1')),(('U2','12'),('C3','1')),(('U2','6'),('R36','1')),
- (('SW1','1'),('SW1','3')),(('U2','7'),('SW1','1')),(('U2','8'),('SW1','2')),
- (('U3','2'),('L1','1')),(('U3','4'),('R9','2')),(('U3','4'),('R10','1')),(('U3','6'),('C35','1')),(('U3','2'),('C35','2')),
- (('U5','2'),('L4','1')),(('U5','4'),('R17','2')),(('U5','4'),('R18','1')),(('U5','6'),('C36','1')),(('U5','2'),('C36','2')),
- (('U4','22'),('R75','2')), (('R12','2'),('R75','1')),(('U4','22'),('R13','1')),(('U4','16'),('R60','2')),(('U4','16'),('R15','1')),(('U4','17'),('R76','2')), (('R15','2'),('R76','1')),(('U4','17'),('C12','1')),
- (('U4','21'),('C13','1')),(('U4','18'),('C14','1')),(('R32','2'),('D10','2')),(('R38','2'),('R40','1'))]
+from sexp import nodes,one,parse,Atom
+REVIEWED={'C18': {'1': 'VPROT', '2': 'GND'},
+ 'C19': {'1': 'P5', '2': 'GND'},
+ 'C20': {'1': 'VPROT', '2': 'GND'},
+ 'C35': {'1': 'NINV_BOOT', '2': 'NINV_SW'},
+ 'C36': {'1': 'FIVE_BOOT', '2': 'FIVE_SW'},
+ 'C37': {'1': 'NRAW', '2': 'GND'},
+ 'C38': {'1': 'P5', '2': 'GND'},
+ 'C48': {'1': 'PRAW', '2': 'GND'},
+ 'C49': {'1': 'PRAW', '2': 'GND'},
+ 'C5': {'1': 'VPROT', '2': 'GND'},
+ 'C50': {'1': 'PRAW', '2': 'GND'},
+ 'C51': {'1': 'P12', '2': 'GND'},
+ 'C52': {'1': 'P12', '2': 'GND'},
+ 'C53': {'1': 'P12', '2': 'GND'},
+ 'C54': {'1': 'NRAW', '2': 'GND'},
+ 'C55': {'1': 'NRAW', '2': 'GND'},
+ 'C56': {'1': 'NRAW', '2': 'GND'},
+ 'C57': {'1': 'N12', '2': 'GND'},
+ 'C58': {'1': 'N12', '2': 'GND'},
+ 'C59': {'1': 'N12', '2': 'GND'},
+ 'C6': {'1': 'NRAW', '2': 'GND'},
+ 'C60': {'1': 'P_NR', '2': 'GND'},
+ 'C61': {'1': 'N_NR', '2': 'GND'},
+ 'C62': {'1': 'N12', '2': 'N_LDO_FB'},
+ 'C63': {'1': 'PRAW', '2': 'GND'},
+ 'C64': {'1': 'P12', '2': 'GND'},
+ 'C65': {'1': 'P12', '2': 'GND'},
+ 'C66': {'1': 'P12', '2': 'GND'},
+ 'C67': {'1': 'NRAW', '2': 'GND'},
+ 'C68': {'1': 'VPROT', '2': 'GND'},
+ 'C69': {'1': 'VPROT', '2': 'GND'},
+ 'C7': {'1': 'VPROT', '2': 'NRAW'},
+ 'C70': {'1': 'NRAW', '2': 'GND'},
+ 'C71': {'1': 'NRAW', '2': 'GND'},
+ 'C72': {'1': 'P5', '2': 'GND'},
+ 'C73': {'1': 'N12', '2': 'GND'},
+ 'C74': {'1': 'NRAW', '2': 'GND'},
+ 'C75': {'1': 'NRAW', '2': 'GND'},
+ 'C76': {'1': 'NRAW', '2': 'GND'},
+ 'C77': {'1': 'PRAW', '2': 'GND'},
+ 'C78': {'1': 'PRAW', '2': 'GND'},
+ 'C79': {'1': 'PRAW', '2': 'GND'},
+ 'C80': {'1': 'PRAW', '2': 'GND'},
+ 'C82': {'1': 'VPROT', '2': 'GND'},
+ 'C83': {'1': 'VPROT', '2': 'GND'},
+ 'C84': {'1': 'VPROT', '2': 'GND'},
+ 'C85': {'1': 'PBOOST_SS', '2': 'GND'},
+ 'C86': {'1': 'PBOOST_COMP_RC', '2': 'GND'},
+ 'C87': {'1': 'PBOOST_COMP', '2': 'GND'},
+ 'C88': {'1': 'VPROT', '2': 'GND'},
+ 'C89': {'1': 'VPROT', '2': 'NRAW'},
+ 'C9': {'1': 'NRAW', '2': 'GND'},
+ 'C90': {'1': 'VPROT', '2': 'NRAW'},
+ 'C91': {'1': 'VPROT', '2': 'NRAW'},
+ 'C92': {'1': 'VPROT', '2': 'NRAW'},
+ 'C93': {'1': 'GND', '2': 'NINV_FB'},
+ 'D10': {'1': 'GND', '2': 'LED_P_A'},
+ 'D27': {'1': 'PRAW', '2': 'P12'},
+ 'D28': {'1': 'N12', '2': 'NRAW'},
+ 'D29': {'1': 'PRAW', '2': 'PBOOST_SW'},
+ 'D30': {'1': 'GND', '2': 'NRAW'},
+ 'J7': {'1': 'N12',
+        '10': 'P12',
+        '11': 'P5',
+        '12': 'P5',
+        '13': None,
+        '14': None,
+        '15': None,
+        '16': None,
+        '2': 'N12',
+        '3': 'GND',
+        '4': 'GND',
+        '5': 'GND',
+        '6': 'GND',
+        '7': 'GND',
+        '8': 'GND',
+        '9': 'P12'},
+ 'L1': {'1': 'NINV_SW', '2': 'GND'},
+ 'L4': {'1': 'FIVE_SW', '2': 'P5'},
+ 'L5': {'1': 'VPROT', '2': 'PBOOST_SW'},
+ 'R10': {'1': 'NINV_FB', '2': 'NRAW'},
+ 'R15': {'1': 'NINV_DIV1', '2': 'NINV_DIV2'},
+ 'R17': {'1': 'P5', '2': 'FIVE_FB'},
+ 'R18': {'1': 'FIVE_FB', '2': 'FIVE_DIV_LO'},
+ 'R32': {'1': 'P5', '2': 'LED_P_A'},
+ 'R36': {'1': 'EF_MODE', '2': 'MODE_SER_1'},
+ 'R4': {'1': 'VIN9', '2': 'UV_SER_1'},
+ 'R5': {'1': 'UV_EN', '2': 'RTN'},
+ 'R6': {'1': 'VIN9', '2': 'OV_SET'},
+ 'R7': {'1': 'OV_SET', '2': 'RTN'},
+ 'R72': {'1': 'N12', '2': 'N_LDO_SER'},
+ 'R73': {'1': 'N_LDO_DIV', '2': 'N_LDO_FB'},
+ 'R74': {'1': 'N_LDO_FB', '2': 'GND'},
+ 'R77': {'1': 'UV_SER_1', '2': 'UV_SER_2'},
+ 'R78': {'1': 'UV_SER_2', '2': 'UV_EN'},
+ 'R79': {'1': 'ILIM_SER_1', '2': 'ILIM_SER_2'},
+ 'R8': {'1': 'ILIM', '2': 'ILIM_SER_1'},
+ 'R80': {'1': 'ILIM_SER_2', '2': 'RTN'},
+ 'R81': {'1': 'MODE_SER_1', '2': 'MODE_SER_2'},
+ 'R82': {'1': 'MODE_SER_2', '2': 'RTN'},
+ 'R83': {'1': 'N_LDO_SER', '2': 'N_LDO_DIV'},
+ 'R84': {'1': 'NINV_DIV2', '2': 'NINV_FB'},
+ 'R85': {'1': 'FIVE_DIV_LO', '2': 'GND'},
+ 'R86': {'1': 'PRAW', '2': 'PBOOST_FB'},
+ 'R87': {'1': 'PBOOST_FB', '2': 'GND'},
+ 'R88': {'1': 'PBOOST_FREQ', '2': 'PBOOST_FREQ_SER'},
+ 'R89': {'1': 'PBOOST_COMP', '2': 'PBOOST_COMP_RC'},
+ 'R9': {'1': 'GND', '2': 'NINV_DIV1'},
+ 'R90': {'1': 'PBOOST_FREQ_SER', '2': 'GND'},
+ 'R91': {'1': 'VPROT', '2': 'NINV_EN'},
+ 'R92': {'1': 'NINV_EN', '2': 'NINV_EN_LO'},
+ 'R93': {'1': 'NINV_EN_LO', '2': 'NRAW'},
+ 'SW1': {'1': 'EF_SHDN', '2': 'RTN', '3': 'EF_SHDN', 'MP': None},
+ 'U1': {'1': 'VIN9',
+        '10': None,
+        '11': 'GND',
+        '2': None,
+        '3': None,
+        '4': 'PD_D_SHORT',
+        '5': 'PD_D_SHORT',
+        '6': 'CC2',
+        '7': 'CC1',
+        '8': 'VIN9',
+        '9': 'PD_CFG'},
+ 'U12': {'1': 'P12',
+         '10': None,
+         '11': 'GND',
+         '12': None,
+         '13': 'PRAW',
+         '14': 'P_NR',
+         '15': 'PRAW',
+         '16': 'PRAW',
+         '17': None,
+         '18': None,
+         '19': None,
+         '2': None,
+         '20': 'P12',
+         '21': 'GND',
+         '3': 'P12',
+         '4': None,
+         '5': 'GND',
+         '6': 'GND',
+         '7': 'GND',
+         '8': None,
+         '9': 'GND'},
+ 'U13': {'1': 'N12',
+         '10': None,
+         '11': None,
+         '12': None,
+         '13': 'NRAW',
+         '14': 'N_NR',
+         '15': 'NRAW',
+         '16': 'NRAW',
+         '17': None,
+         '18': None,
+         '19': None,
+         '2': None,
+         '20': 'N12',
+         '21': 'GND',
+         '3': 'N_LDO_FB',
+         '4': None,
+         '5': None,
+         '6': None,
+         '7': 'GND',
+         '8': None,
+         '9': None},
+ 'U14': {'1': 'PBOOST_SW',
+         '10': 'GND',
+         '11': 'GND',
+         '12': 'GND',
+         '13': 'GND',
+         '14': 'GND',
+         '15': 'PBOOST_SW',
+         '16': 'PBOOST_SW',
+         '17': 'GND',
+         '2': 'VPROT',
+         '3': 'VPROT',
+         '4': 'PBOOST_SS',
+         '5': 'GND',
+         '6': 'GND',
+         '7': 'PBOOST_COMP',
+         '8': 'PBOOST_FB',
+         '9': 'PBOOST_FREQ'},
+ 'U2': {'1': 'VIN9',
+        '10': None,
+        '11': 'ILIM',
+        '12': 'SLEW',
+        '13': None,
+        '14': None,
+        '15': 'VPROT',
+        '16': 'VPROT',
+        '17': 'RTN',
+        '2': 'VIN9',
+        '3': 'UV_EN',
+        '4': None,
+        '5': 'OV_SET',
+        '6': 'EF_MODE',
+        '7': 'EF_SHDN',
+        '8': 'RTN',
+        '9': 'GND'},
+ 'U3': {'1': 'NRAW', '2': 'NINV_SW', '3': 'VPROT', '4': 'NINV_FB', '5': 'NINV_EN', '6': 'NINV_BOOT'},
+ 'U5': {'1': 'GND', '2': 'FIVE_SW', '3': 'VPROT', '4': 'FIVE_FB', '5': None, '6': 'FIVE_BOOT'}}
+LOCAL=[(('U1', '9'), ('R2', '1')),
+ (('U1', '1'), ('F1', '2')),
+ (('U1', '4'), ('U1', '5')),
+ (('U2', '3'), ('R78', '2')),
+ (('U2', '5'), ('R7', '1')),
+ (('U2', '11'), ('R8', '1')),
+ (('U2', '12'), ('C3', '1')),
+ (('U2', '6'), ('R36', '1')),
+ (('SW1', '1'), ('SW1', '3')),
+ (('U2', '7'), ('SW1', '1')),
+ (('U2', '8'), ('SW1', '2')),
+ (('U5', '2'), ('L4', '1')),
+ (('U5', '4'), ('R17', '2')),
+ (('U5', '4'), ('R18', '1')),
+ (('U5', '6'), ('C36', '1')),
+ (('U5', '2'), ('C36', '2')),
+ (('R32', '2'), ('D10', '2')),
+ (('U12', '15'), ('U12', '16')),
+ (('U12', '13'), ('U12', '15')),
+ (('U12', '1'), ('U12', '20')),
+ (('U12', '1'), ('U12', '3')),
+ (('U12', '14'), ('C60', '1')),
+ (('U12', '21'), ('U12', '7')),
+ (('U13', '15'), ('U13', '16')),
+ (('U13', '13'), ('U13', '15')),
+ (('U13', '1'), ('U13', '20')),
+ (('U13', '14'), ('C61', '1')),
+ (('U13', '21'), ('U13', '7')),
+ (('R72', '2'), ('R83', '1')),
+ (('R83', '2'), ('R73', '1')),
+ (('U13', '3'), ('R73', '2')),
+ (('U13', '3'), ('R74', '1')),
+ (('U13', '3'), ('C62', '2')),
+ (('U13', '1'), ('C62', '1')),
+ (('D27', '1'), ('U12', '15')),
+ (('D27', '2'), ('U12', '1')),
+ (('D28', '1'), ('U13', '1')),
+ (('D28', '2'), ('U13', '15')),
+ (('R4', '2'), ('R77', '1')),
+ (('R77', '2'), ('R78', '1')),
+ (('R8', '2'), ('R79', '1')),
+ (('R79', '2'), ('R80', '1')),
+ (('R36', '2'), ('R81', '1')),
+ (('R81', '2'), ('R82', '1')),
+ (('R18', '2'), ('R85', '1')),
+ (('U3', '2'), ('L1', '1')),
+ (('U3', '2'), ('C35', '2')),
+ (('U3', '6'), ('C35', '1')),
+ (('U3', '4'), ('R84', '2')),
+ (('U3', '4'), ('R10', '1')),
+ (('R9', '2'), ('R15', '1')),
+ (('R15', '2'), ('R84', '1')),
+ (('U3', '5'), ('R91', '2')),
+ (('U3', '5'), ('R92', '1')),
+ (('U3', '3'), ('R91', '1')),
+ (('U14', '1'), ('D29', '2')),
+ (('U14', '15'), ('D29', '2')),
+ (('U14', '16'), ('D29', '2')),
+ (('U14', '8'), ('R86', '2')),
+ (('U14', '8'), ('R87', '1')),
+ (('U14', '7'), ('R89', '1')),
+ (('R89', '2'), ('C86', '1')),
+ (('U14', '4'), ('C85', '1')),
+ (('U14', '9'), ('R88', '1')),
+ (('R88', '2'), ('R90', '1'))]
 
-LOCAL += [(('U12','15'),('U12','16')),(('U12','13'),('U12','15')),(('U12','1'),('U12','20')),(('U12','1'),('U12','3')),
-          (('U12','14'),('C60','1')),(('U12','21'),('U12','7')),
-          (('U13','15'),('U13','16')),(('U13','13'),('U13','15')),(('U13','1'),('U13','20')),
-          (('U13','14'),('C61','1')),(('U13','21'),('U13','7')),
-          (('R72','2'),('R83','1')),(('R83','2'),('R73','1')),
-          (('U13','3'),('R73','2')),(('U13','3'),('R74','1')),
-          (('U13','3'),('C62','2')),(('U13','1'),('C62','1')),
-          (('D27','1'),('U12','15')),(('D27','2'),('U12','1')),
-          (('D28','1'),('U13','1')),(('D28','2'),('U13','15'))]
+LOCAL += [(('R92','2'),('R93','1')), (('C93','1'),('R9','1')), (('C93','2'),('R84','2')), (('D30','1'),('C6','2')), (('D30','2'),('C6','1'))]
 
-LOCAL += [(('R4','2'),('R77','1')),(('R77','2'),('R78','1')),(('R8','2'),('R79','1')),(('R79','2'),('R80','1')),(('R36','2'),('R81','1')),(('R81','2'),('R82','1'))]
-LOCAL += [(('R10','2'),('R84','1')),(('R18','2'),('R85','1'))]
-
-def check_capacitor_plan(rows, actual):
-    """Validate the accepted 043 local-cap plan once its new refs are present.
-
-    Counts are never hardcoded: the check reads the actual BOM/native refs.
-    Before the frozen 043 source arrives, it reports the plan as pending rather
-    than claiming the capacitors exist.
-    """
-    new_refs = ['C68', 'C69', 'C70', 'C71', 'C72']
-    present = [r for r in new_refs if r in rows]
-    if not present:
-        return {'status': 'pending_043', 'present': False,
-                'missing': new_refs,
-                'note': 'Accepted Sol041/Astra043 cap plan not yet in this source tree.'}
-    assert set(present) == set(new_refs), ('incomplete accepted cap plan', present)
-    for ref in ['C5', 'C18'] + new_refs:
-        assert rows[ref]['Value'] == '22u 25V X5R', (ref, 'value')
-        assert rows[ref]['LCSC'] == 'C12891', (ref, 'LCSC')
-        assert rows[ref]['Footprint'] == 'BigModular:C_1206_3216Metric', (ref, '1206 land')
-    for ref, net in [('C68', 'VPROT'), ('C69', 'VPROT'),
-                     ('C70', 'MID'), ('C71', 'MID'), ('C72', 'P5')]:
-        assert actual[(ref, '1')] == net and actual[(ref, '2')] == 'GND', (ref, net)
-    for ref in ['C4', 'C16', 'C17']:
-        assert rows[ref]['LCSC'] == 'C13585', (ref, 'retained C13585')
-    for ref in ['C6', 'C19', 'C38', 'C37']:
-        assert rows[ref]['Value'] == '22u 25V X5R' and rows[ref]['LCSC'] == 'C12891', ref
-    return {'status': 'pass', 'present': True,
-            'VPROT_refs': ['C5', 'C68', 'C18', 'C69'],
-            'MID_local_refs': ['C6', 'C70', 'C71'],
-            'P5_local_refs': ['C19', 'C38', 'C72'],
-            'retained_C13585_refs': ['C4', 'C16', 'C17'],
-            'remote_C37_not_local': True}
-
+def check_capacitor_plan(rows,actual):
+    groups={'IBB_local_refs':['C6','C37','C70','C71','C9','C75','C76'],'IBB_span_refs':['C89','C90','C91','C92'],'P5_local_refs':['C19','C38','C72'],'VPROT_refs':['C5','C68','C18','C69']}
+    for key,refs in groups.items():
+        for ref in refs:
+            span=key=='IBB_span_refs';net='VPROT' if key in ('IBB_span_refs','VPROT_refs') else 'P5' if key=='P5_local_refs' else 'NRAW'
+            assert rows[ref]['LCSC']==('C50254' if span else 'C12891'),ref
+            assert rows[ref]['Value']==('2.2u 50V X7R' if span else '22u 25V X5R'),ref
+            assert rows[ref]['Footprint']=='BigModular:C_1206_3216Metric',ref
+            assert (actual[(ref,'1')],actual[(ref,'2')])==(net,'NRAW' if span else 'GND'),ref
+    return {'status':'pass',**groups,'remote_U13_caps_counted_as_local':False}
 
 def check(hw,audit,bom):
-    graph=Connectivity(hw);actual=graph.named_pins();expected=json.loads(Path(audit).read_text())
-    assert actual=={(r,p):n for r,pins in expected.items() for p,n in pins.items()},'Full pin/no-connect inventory mismatch'
-    with Path(bom).open() as f:rows={r['Reference']:r for r in csv.DictReader(f)}
+    g=Connectivity(hw);actual=g.named_pins();expected=json.loads(Path(audit).read_text())
+    assert actual=={(r,p):n for r,pins in expected.items() for p,n in pins.items()},'Full pin/NC inventory mismatch'
+    rows={r['Reference']:r for r in csv.DictReader(Path(bom).read_text().splitlines())}
     assert set(rows)=={r for r,p in actual if not r.startswith('#')},'BOM/native refs differ'
     for r,pins in REVIEWED.items():
         for p,n in pins.items():assert actual[(r,p)]==n,('independent pin-role',r,p,n)
-    for a,b in LOCAL:assert graph.wire_connected(a,b),('Visible wire missing',a,b)
-    retired=['U6','U7','U8','U9','U10','U11','J2','J8','JP1','Q1','Q2','Q3','R1','R3','R28','R29','R30','R35','R37','D1','D11','D12','C33','C34','C39','C40','C41']
-    retired += [f'R{i}' for i in range(41,60)]+[f'R{i}' for i in range(61,72)]+[f'D{i}' for i in range(13,27)]+[f'C{i}' for i in range(42,48)]
-    for obsolete in retired:assert obsolete not in rows,('obsolete device',obsolete)
-    assert not any('TPS621' in r['MPN'] or 'ATTINY' in r['MPN'].upper() or 'MCP1799' in r['MPN'] for r in rows.values())
-    assert not any(n and any(t in n for t in ('AUX','ADC_','SENSE_','DBG_','UPDI','MCU','VBUS_RAW','VBUS_FUSED','PERMIT','EF_ENABLE','BUTTON')) for n in actual.values())
-    assert rows['R38']['Value']==rows['R40']['Value']=='100k 1%'
-    for r,mpn,code,fp in [('L1','MDA1040-6R8M','C2847552','L_KOHER_MDA1040'),('L4','MDA1040-6R8M','C2847552','L_KOHER_MDA1040'),('L2','CKCS6045-4.7uH/M','C5291878','L_CENKER_CKCS6045'),('L3','CKCS6045-4.7uH/M','C5291878','L_CENKER_CKCS6045')]:
-        assert (rows[r]['MPN'],rows[r]['LCSC'],rows[r]['Footprint'])==(mpn,code,'BigModular:'+fp)
-    footprint_maps=0
+    for a,b in LOCAL:assert g.wire_connected(a,b),('Visible wire missing',a,b)
+    retired={'U4','L2','L3','D2','D3','C8','C10','C11','C12','C13','C14','C15','C16','C17','C81','R12','R13','R14','R16','R38','R40','R60','R75','R76','U6','U7','U8','U9','U10','U11','J2','J8','JP1','Q1','Q2','Q3','D1','D11','D12'}
+    assert not retired&set(rows),('retired references',retired&set(rows))
+    for n in actual.values():
+        assert not n or not any(t in n for t in ('MID','BI_','POS_DORMANT','NEG_REF','COMP_N','COMP_P','ADC_','AUX','UPDI','MCU','PERMIT')),n
+    values={'R4':('470k 1%','C23178'),'R77':('82k 1%','C23254'),'R78':('10k 1%','C25804'),'R8':('5.6k 1%','C23189'),'R79':('220 1%','C22962'),'R80':('220 1%','C22962'),'R6':('806k 1%','C23250'),'R5':('100k 1%','C25803'),'R7':('100k 1%','C25803'),
+    'R9':('100k 0.1%','C122538'),'R15':('120k 0.1%','C705720'),'R84':('6.2k 1%','C4260'),'R10':('10k 0.1%','C95204'),'R91':('100k 1%','C25803'),'R92':('20k 1%','C4184'),'R93':('2k 1%','C22975'),'R17':('100k 1%','C25803'),'R18':('13k 1%','C22797'),'R85':('510 1%','C23193'),'R72':('90.9k 0.1%','C728600'),'R83':('0 1%','C21189'),'R73':('1.2k 1%','C22765'),'R74':('10k 0.1%','C95204'),'R86':('100k 0.1%','C122538'),'R87':('10k 0.1%','C95204'),'R32':('1k 1%','C21190')}
+    for r,v in values.items():assert (rows[r]['Value'],rows[r]['LCSC'])==v,(r,v)
+    for r,mpn,code,fp in [('L1','SRP1245A-220M','C1848803','L_Bourns_SRP1245A'),('L4','MDA1040-6R8M','C2847552','L_KOHER_MDA1040'),('L5','MDA1040-6R8M','C2847552','L_KOHER_MDA1040')]:
+        assert (rows[r]['MPN'],rows[r]['LCSC'],rows[r]['Footprint'])==(mpn,code,'BigModular:'+fp),r
+    for r,mpn in [('U12','TPS7A4700RGWR'),('U13','TPS7A3301RGWR'),('U14','TPS55340RTER'),('U3','TPS54302DDCR'),('U5','TPS54302DDCR')]:assert rows[r]['MPN']==mpn,r
+    assert {r for r,b in rows.items() if b['DNP']=='yes'}=={'D10','C62','C93'}
+    for ref in ('D27','D28','D29','D30'):
+        assert (rows[ref]['MPN'],rows[ref]['LCSC'],rows[ref]['Footprint'],rows[ref]['Manufacturer'])==('SS34','C8678','BigModular:D_SMA','MDD(Microdiode Semiconductor)'),ref
+    assert (rows['C93']['LCSC'],rows['C93']['Footprint'],rows['C93']['Value'])==('C57112','BigModular:C_0603_1608Metric','DNP CFF / TBD')
     for ref,row in rows.items():
-        assert row['Footprint'],('active footprint missing',ref)
-        footprint=parse((Path(hw)/'BigModular.pretty'/(row['Footprint'].split(':')[-1]+'.kicad_mod')).read_text())
-        pads=nodes(footprint,'pad')
-        assert {p[1] for p in pads if p[1]}==set(expected[ref]),('numeric pin/pad mismatch',ref)
+        symbol=g.refs[ref][1];props={p[1]:p[2] for p in nodes(symbol,'property')}
+        for field in ['Value','MPN','Footprint','LCSC']:assert props.get(field,'')==row[field],(ref,field)
+        assert (one(symbol,'dnp')[1]=='yes')==(ref in ('D10','C62','C93')),ref
+        fp=parse((Path(hw)/'BigModular.pretty'/(row['Footprint'].split(':')[-1]+'.kicad_mod')).read_text())
+        pads=nodes(fp,'pad');assert {p[1] for p in pads if p[1]}==set(expected[ref]),('pin/pad map',ref)
         for pad in pads:
             for key in ('at','size'):
-                for v in one(pad,key)[1:]:assert isinstance(v,Atom) and math.isfinite(float(v)),('quoted/non-numeric pad geometry',ref,key,v)
-        footprint_maps+=1
-    for ref,val in [('R4','470k 1%'),('R77','82k 1%'),('R78','10k 1%'),('R8','5.6k 1%'),('R79','220 1%'),('R80','220 1%'),('R36','300k 1%'),('R81','100k 1%'),('R82','2k 1%'),
-                    ('R9','100k 1%'),('R10','13k 1%'),('R84','510 1%'),('R17','100k 1%'),('R18','13k 1%'),('R85','510 1%'),
-                    ('R72','82k 1%'),('R83','9.1k 1%'),('R73','1.2k 1%'),('R74','10k 1%'),('R75','24k 1%'),('R76','2.4k 1%')]:
-        assert rows[ref]['Value']==val,(ref,val)
-    def ohm(value):
-        text=value.split()[0]
-        return float(text[:-1])*{'k':1e3,'M':1e6}[text[-1]] if text[-1] in 'kM' else float(text)
-    # Substituted Basic series networks must total the reviewed electrical values.
-    assert ohm(rows['R10']['Value'])+ohm(rows['R84']['Value'])==13510
-    assert ohm(rows['R18']['Value'])+ohm(rows['R85']['Value'])==13510
-    assert ohm(rows['R72']['Value'])+ohm(rows['R83']['Value'])+ohm(rows['R73']['Value'])==92300
-    assert ohm(rows['R9']['Value'])+ohm(rows['R10']['Value'])==113000
-    assert ohm(rows['R12']['Value'])+ohm(rows['R75']['Value'])==1524000
-    assert ohm(rows['R15']['Value'])+ohm(rows['R76']['Value'])==152400
-    assert ohm(rows['R8']['Value'])+ohm(rows['R79']['Value'])+ohm(rows['R80']['Value'])==6040
-    assert ohm(rows['R36']['Value'])+ohm(rows['R81']['Value'])+ohm(rows['R82']['Value'])==402000
-    # The six changed 1210 capacitor lands are actual 1206 footprints.
-    for ref in ['C6','C8','C9','C19','C37','C38']:
-        assert rows[ref]['Footprint']=='BigModular:C_1206_3216Metric',(ref,'1206 land')
-
-    for r in ['R32']:assert rows[r]['LCSC']=='C21190' and rows[r]['Value']=='1k 1%'
-    assert rows['D10']['Classification']=='DNP' and rows['D10']['DNP']=='yes'
-    assert {r for r,v in rows.items() if v.get('DNP')=='yes'}=={'D10'}
-    for ref,(_,symbol) in graph.refs.items():
-        if not ref.startswith('#'):assert (one(symbol,'dnp')[1]=='yes')==(ref=='D10'),(ref,'native DNP mismatch')
-    for net in ['UV_SER_1','UV_SER_2','ILIM_SER_1','ILIM_SER_2','MODE_SER_1','MODE_SER_2']:
-        assert sum(v==net for v in actual.values())==2,(net,'series branch/bypass')
+                for v in one(pad,key)[1:]:assert isinstance(v,Atom) and math.isfinite(float(v)),(ref,key)
+    for n in ['UV_SER_1','UV_SER_2','ILIM_SER_1','ILIM_SER_2','MODE_SER_1','MODE_SER_2','NINV_DIV1','NINV_DIV2','NINV_EN_LO']:assert list(actual.values()).count(n)==2,n
     assert actual[('U2','8')]!=actual[('U2','9')]
-    assert actual[('U4','17')]!=actual[('U4','19')]
-    for ref in ['J7']:
-        for i in range(1,17):assert actual[(ref,str(i))]==('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None)
-    # Native instance fields must equal BOM exactly, including manual J7.
-    for ref,(_,symbol) in graph.refs.items():
-        if ref.startswith('#'):continue
-        props={p[1]:p[2] for p in nodes(symbol,'property')}
-        for field in ['Value','MPN','Footprint','LCSC']:assert props.get(field,'')==rows[ref][field],(ref,field,'BOM mismatch')
-    plan=check_capacitor_plan(rows,actual)
-    return {'parts':len(rows),'pins_including_NC':len(actual),'independent_pin_checks':sum(map(len,REVIEWED.values())),'local_visible_wire_checks':len(LOCAL),'hierarchical_ports':len(graph.hierarchy_links),'footprint_pin_maps':footprint_maps,'capacitor_plan':plan,'fabrication_ready':False}
+    return {'parts':len(rows),'pins_including_NC':len(actual),'independent_pin_checks':sum(map(len,REVIEWED.values())),'local_visible_wire_checks':len(LOCAL),'hierarchical_ports':len(g.hierarchy_links),'footprint_pin_maps':len(rows),'capacitor_plan':check_capacitor_plan(rows,actual),'fabrication_ready':False}
