@@ -1,0 +1,1594 @@
+{
+  "source_sha256": "23e57358417eb9d9187a7419537295b744b52e7174cbc743de4ab12b85c0735e",
+  "candidate_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+  "exact_parity": {
+    "refs": 116,
+    "pins": 344,
+    "explicit_NCs": [
+      [
+        "J1",
+        "A6",
+        "unconnected-(J1-D+-PadA6)"
+      ],
+      [
+        "J1",
+        "A7",
+        "unconnected-(J1-D--PadA7)"
+      ],
+      [
+        "J1",
+        "A8",
+        "unconnected-(J1-SBU1-PadA8)"
+      ],
+      [
+        "J1",
+        "B6",
+        "unconnected-(J1-D+-PadB6)"
+      ],
+      [
+        "J1",
+        "B7",
+        "unconnected-(J1-D--PadB7)"
+      ],
+      [
+        "J1",
+        "B8",
+        "unconnected-(J1-SBU2-PadB8)"
+      ],
+      [
+        "J7",
+        "13",
+        "unconnected-(J7-Pin_13-Pad13)"
+      ],
+      [
+        "J7",
+        "14",
+        "unconnected-(J7-Pin_14-Pad14)"
+      ],
+      [
+        "J7",
+        "15",
+        "unconnected-(J7-Pin_15-Pad15)"
+      ],
+      [
+        "J7",
+        "16",
+        "unconnected-(J7-Pin_16-Pad16)"
+      ],
+      [
+        "SW1",
+        "MP",
+        "unconnected-(SW1-CASE-PadMP)"
+      ],
+      [
+        "U1",
+        "10",
+        "unconnected-(U1-PG_N-Pad10)"
+      ],
+      [
+        "U1",
+        "2",
+        "unconnected-(U1-CFG2_SCL-Pad2)"
+      ],
+      [
+        "U1",
+        "3",
+        "unconnected-(U1-CFG3_SDA-Pad3)"
+      ],
+      [
+        "U12",
+        "10",
+        "unconnected-(U12-0P4V-Pad10)"
+      ],
+      [
+        "U12",
+        "12",
+        "unconnected-(U12-0P1V-Pad12)"
+      ],
+      [
+        "U12",
+        "17",
+        "unconnected-(U12-NC-Pad17)"
+      ],
+      [
+        "U12",
+        "18",
+        "unconnected-(U12-NC-Pad18)"
+      ],
+      [
+        "U12",
+        "19",
+        "unconnected-(U12-NC-Pad19)"
+      ],
+      [
+        "U12",
+        "2",
+        "unconnected-(U12-NC-Pad2)"
+      ],
+      [
+        "U12",
+        "4",
+        "unconnected-(U12-6P4V2-Pad4)"
+      ],
+      [
+        "U12",
+        "8",
+        "unconnected-(U12-1P6V-Pad8)"
+      ],
+      [
+        "U13",
+        "10",
+        "unconnected-(U13-NC-Pad10)"
+      ],
+      [
+        "U13",
+        "11",
+        "unconnected-(U13-NC-Pad11)"
+      ],
+      [
+        "U13",
+        "12",
+        "unconnected-(U13-NC-Pad12)"
+      ],
+      [
+        "U13",
+        "17",
+        "unconnected-(U13-NC-Pad17)"
+      ],
+      [
+        "U13",
+        "18",
+        "unconnected-(U13-NC-Pad18)"
+      ],
+      [
+        "U13",
+        "19",
+        "unconnected-(U13-NC-Pad19)"
+      ],
+      [
+        "U13",
+        "2",
+        "unconnected-(U13-NC-Pad2)"
+      ],
+      [
+        "U13",
+        "4",
+        "unconnected-(U13-NC-Pad4)"
+      ],
+      [
+        "U13",
+        "5",
+        "unconnected-(U13-NC-Pad5)"
+      ],
+      [
+        "U13",
+        "6",
+        "unconnected-(U13-NC-Pad6)"
+      ],
+      [
+        "U13",
+        "8",
+        "unconnected-(U13-NC-Pad8)"
+      ],
+      [
+        "U13",
+        "9",
+        "unconnected-(U13-NC-Pad9)"
+      ],
+      [
+        "U2",
+        "10",
+        "unconnected-(U2-IMON-Pad10)"
+      ],
+      [
+        "U2",
+        "13",
+        "unconnected-(U2-NC-Pad13)"
+      ],
+      [
+        "U2",
+        "14",
+        "unconnected-(U2-FLT_N-Pad14)"
+      ],
+      [
+        "U2",
+        "4",
+        "unconnected-(U2-NC-Pad4)"
+      ],
+      [
+        "U5",
+        "5",
+        "unconnected-(U5-EN-Pad5)"
+      ]
+    ],
+    "NC_markers": 39,
+    "fields": 1110,
+    "DNP": [
+      "C93",
+      "C62",
+      "D10"
+    ],
+    "XML_pin_net": {
+      "missing_refs": [],
+      "extra_refs": [],
+      "missing_pins": [],
+      "net_mismatches": [],
+      "extra_connected_pads": [],
+      "pads_without_net": [],
+      "mechanical_without_reference": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "equal": true
+    },
+    "XML_identity_vs_078": {
+      "components": {
+        "removed": [],
+        "added": [],
+        "changed": {}
+      },
+      "hierarchy": {
+        "removed": [],
+        "added": [],
+        "changed": {}
+      },
+      "nets": {
+        "removed": [],
+        "added": [],
+        "changed": {}
+      },
+      "equal": true
+    },
+    "all_native_field_UUID_name_text_unchanged": true,
+    "all_pad_UUID_number_net_unchanged": true,
+    "all_front_no_B_Paste": true
+  },
+  "preservation": {
+    "moved_nonfixed": [
+      {
+        "ref": "D29",
+        "uuid": "323079d7-fa01-59a8-bd25-56b96490f601",
+        "before": {
+          "at": [
+            128.0,
+            78.45
+          ],
+          "angle": -90.0
+        },
+        "after": {
+          "at": [
+            131.4,
+            78.0
+          ],
+          "angle": 180.0
+        }
+      },
+      {
+        "ref": "R88",
+        "uuid": "62b9ffcc-f49d-50e2-a896-ad7a8c4de2c2",
+        "before": {
+          "at": [
+            133.2,
+            81.7
+          ],
+          "angle": 90.0
+        },
+        "after": {
+          "at": [
+            136.9,
+            79.2
+          ],
+          "angle": 0.0
+        }
+      },
+      {
+        "ref": "C84",
+        "uuid": "6338580d-ff4c-51bd-838a-0c2cf661986d",
+        "before": {
+          "at": [
+            131.0,
+            75.0
+          ],
+          "angle": 90.0
+        },
+        "after": {
+          "at": [
+            129.0,
+            73.8
+          ],
+          "angle": 0.0
+        }
+      },
+      {
+        "ref": "C78",
+        "uuid": "72949bb1-e28a-5526-98f6-01d5c9d6c147",
+        "before": {
+          "at": [
+            135.0,
+            76.6
+          ],
+          "angle": 0.0
+        },
+        "after": {
+          "at": [
+            132.1,
+            81.1
+          ],
+          "angle": 180.0
+        }
+      },
+      {
+        "ref": "R90",
+        "uuid": "d6a889a3-938e-5854-9bf0-a60b18b10c6f",
+        "before": {
+          "at": [
+            135.7,
+            79.5
+          ],
+          "angle": 0.0
+        },
+        "after": {
+          "at": [
+            140.1,
+            79.2
+          ],
+          "angle": 0.0
+        }
+      }
+    ],
+    "fixed_J1_J7_SW1_D10_identical": true,
+    "four_mounts_identical": true,
+    "all_drawings_outline_identical": true,
+    "setup_stack_layers_identical": true,
+    "zone_definitions_identical": true,
+    "LCSC": {
+      "L1": "C357250",
+      "L4": "C207852",
+      "L5": "C207852"
+    }
+  },
+  "frozen_dependencies": {
+    "01_input_protection.kicad_sch": "4777399c48fe21ad3277bb7ff3112d77afa1adad80115f92aae1bcb7a622e47b",
+    "02_hardgate.kicad_sch": "6c4e8322d465028134be0ee9c59989bd884a90fda3f35970ad8918d028245de2",
+    "03_bucks.kicad_sch": "dd703626e14a7e72f25e9e3963e7d5a5df330b21d5a0f392e6a231c5f36da462",
+    "04_bipolar.kicad_sch": "461bd693b8bc373e33d4fb97b6888c0685eb206634d69c4d8a487b7533560393",
+    "05_quiet_rails.kicad_sch": "527e878c851954d8f73f2872367790a856bc5b973aab2f670ec809c1d1cde0fe",
+    "06_positive_boost.kicad_sch": "c6050db3041a5a9cbe6f17ae18928bf68ff48b46b96e2c13b96b6072e964397f",
+    "07_output_rails.kicad_sch": "b9b00acc29b2734b7eafd4480a0d5b18e4d0848559e81dac38ef586e6a8e5e60",
+    "BigModular.kicad_sym": "62e9047a628afe17f99bb02afe46e113c7d2a279a006a33b2578fecb1ce6b4e5",
+    "BigModular.pretty/C_0402_1005Metric.kicad_mod": "1af13ebf8ff9f0cac5b79494c2bb91a856af4d7d47ea9f9fec2ac57d51223968",
+    "BigModular.pretty/C_0603_1608Metric.kicad_mod": "a9b9ab8ea1cb30d32f28da0459c42b49a6cca161012c81bcf66b2b19bf619286",
+    "BigModular.pretty/C_0805_2012Metric.kicad_mod": "5e109c3606a560cac693a70370738d07154e3a1193a42c4f4c425f6345143eb1",
+    "BigModular.pretty/C_1206_3216Metric.kicad_mod": "bbd5a1ce09bb9d80956d1e2336c7bd238844a0a785c3f5b317a9e52bd15d6664",
+    "BigModular.pretty/C_1210_3225Metric.kicad_mod": "0ea3a0230f49d88f8826d6be1d5be3889daf037d82bc608369500f51819da27d",
+    "BigModular.pretty/D_SMA.kicad_mod": "24a05f4a9524423f90992c5ebca6635523fb9004254df43c05fce2a18a3d5226",
+    "BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": "f615cb1bfe89d3d53d34b52f8f92508783e13fb41c1ea6cbb327a40ee79f46af",
+    "BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+    "BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": "aa953a88afb5c30ef8e9529392768b3242cbfbdc055cdc06895fa72d72371fdb",
+    "BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "1f5be8753ced0f519790da804ab2d567e58f38fe37846e4652e46e1448097376",
+    "BigModular.pretty/L_Bourns_SRP1245A.kicad_mod": "ea1c06f76a1b7d9adace42c8aafda7ade649121bfe76a07d9120ac5f7b878093",
+    "BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+    "BigModular.pretty/L_KOHER_MDA1040.kicad_mod": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+    "BigModular.pretty/L_SLO1040H6R8MTT.kicad_mod": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
+    "BigModular.pretty/L_TMPC1205HP_220M.kicad_mod": "58bd21a3cce598b1d6ad5ca89abce253a309c81741d505bfa4788c9b76ad73cc",
+    "BigModular.pretty/R_0603_1608Metric.kicad_mod": "b61f23d83e6d3ecedc1fad6b3d55fb4096b0fb1d8a41a4dfb87aeff20e2eed85",
+    "BigModular.pretty/R_0805_2012Metric.kicad_mod": "27b2113a73513e6c72cfdd9a8687688e32a2c7eee3218bb0acd40e950d7bdb39",
+    "BigModular.pretty/SOT-23-6.kicad_mod": "461231a23bee6c52e1cdf8995dbe57c0a28b62ab3decc4d184f36a1b8f9d47a2",
+    "BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "38719719ddeae7b2d0929d819880dd5a33f78f7643d107d247a47251e5304730",
+    "BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+    "BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+    "BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+    "BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": "84bde6126ecb4ab757c2caffc9bb382c4239d56e6d30b439813c54c42e8971de",
+    "BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+    "BigModular.pretty/Texas_RTE0016C_WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm.kicad_mod": "cc33fbc24bc1a1d93a273a62a0f80f79572277de71a1d85a7abef5d95ea402e2",
+    "BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+    "fp-lib-table": "8b8b428cf30b394eb1637849935fce5c96eab54d2158835b13bc575a08642bdb",
+    "sym-lib-table": "87295ecba9aa2ee84f2e979207aad4b53ea5267c64bbe270545e76040c5cd93f",
+    "usb-power.kicad_pro": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "usb-power.kicad_sch": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500",
+    "candidate-profile.json": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506",
+    "_kicad_models/1c6a269204b3901b5b464cbd2dec266d314fd17c5604f82dd4995d48e1de18b5/R_0805_2012Metric.step": "ded342cdb394fb45395227beaaa75cc390613cf2581b29cd6d22c12abd6103b2",
+    "_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+    "_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "8f5355877fb800c2ab9c9edb0c9553c940df7f91bda73c298d6dc0d451bfdd3b",
+    "_kicad_models/3feaa511e5594da6d40d1e8e6d2b5ee96e566f648a22ca9ff37886065d62010c/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step": "7f57f4040117e2ef4f78a76d74424d6f4d23513883c32457503aaaa3beb70471",
+    "_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+    "_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+    "_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+    "_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step": "11e948c72c90e2b6322436b72745f40ff4e8ba0da64fb2a0df943dfa61e89c1a",
+    "_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step": "c9fe686b4d1b56927a41fa84a9bc1efb61d8a45a123a3db43bcaa05c2891d635",
+    "_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": "f8217a19e2965bc3617c97b8bb851829f4470fb33a5c50462eb6df0f7cc2cd4a",
+    "_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "3623be00464827bd6d94a12acf96d5923399b878c328184fa76e1ecbc0a63bc2",
+    "_kicad_models/b999dd5a9584a248833dc3adde1c96e4688bb46c6fafc0f43164f3a5108982ef/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
+    "_kicad_models/e5888967b26b8f8dc46f419d1aab8085d81e640a412b7005c2f41b70cca0ee68/C_0402_1005Metric.step": "03e44c4b2b727b8d4b6b1fd598cbd12dd5e614f1dfeefa96a92a07e3a3b312a2",
+    "_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c"
+  },
+  "hole_geometry": {
+    "target_before": {
+      "items": [
+        {
+          "uuid": "687cf235-9b36-4911-a4ab-da685088281d",
+          "at": [
+            79.4,
+            87.475
+          ],
+          "diam": 0.3,
+          "net": "/Autonomous hardware window and retry/EF_MODE"
+        },
+        {
+          "uuid": "ee0541ca-a33d-42e9-b64e-3c3e594f304b",
+          "at": [
+            79.85,
+            86.825
+          ],
+          "diam": 0.3,
+          "net": "/Autonomous hardware window and retry/OV_SET"
+        }
+      ],
+      "edge_gap_mm": 0.49056941504208135
+    },
+    "target_after": {
+      "items": [
+        {
+          "uuid": "687cf235-9b36-4911-a4ab-da685088281d",
+          "at": [
+            79.25,
+            87.475
+          ],
+          "diam": 0.3,
+          "net": "/Autonomous hardware window and retry/EF_MODE"
+        },
+        {
+          "uuid": "ee0541ca-a33d-42e9-b64e-3c3e594f304b",
+          "at": [
+            79.85,
+            86.825
+          ],
+          "diam": 0.3,
+          "net": "/Autonomous hardware window and retry/OV_SET"
+        }
+      ],
+      "edge_gap_mm": 0.5845903006476965
+    },
+    "minimum_different_net_pair": [
+      0.5533024082937952,
+      "e4510c09-4356-49d6-8742-9302dab4f162",
+      "1c532eac-38d9-5fbf-ab91-36c78c235006"
+    ],
+    "different_net_pairs_below_0_50": 0,
+    "hole_count": 282,
+    "slotted_pad_method": "Conservative circumscribed max-diameter; target pair is circular vias"
+  },
+  "dogbones": [
+    {
+      "ref_pad": "U3.5",
+      "uuid": "f73a597f-5bc4-5327-aefb-ccce38747479",
+      "net": "/Direct 9V negative IBB/NINV_EN",
+      "before_at": [
+        133.6,
+        97.1
+      ],
+      "before_center_in_pad": true,
+      "after_at": [
+        131.95,
+        96.64
+      ],
+      "diameter_drill_mm": [
+        0.6,
+        0.3
+      ],
+      "hole_to_original_lead_copper_gap_mm": 0.35122350304032457,
+      "new_drill_intersects_numbered_SMD": [],
+      "center_escape_length_mm": 1.2269907293863442
+    },
+    {
+      "ref_pad": "U5.2",
+      "uuid": "c367cdcc-66c5-5ed2-978f-266ae33822cb",
+      "net": "/Independent +5V buck/FIVE_SW",
+      "before_at": [
+        106.8625,
+        95.15
+      ],
+      "before_center_in_pad": true,
+      "after_at": [
+        105.95,
+        95.15
+      ],
+      "diameter_drill_mm": [
+        0.6,
+        0.3
+      ],
+      "hole_to_original_lead_copper_gap_mm": 0.09999999999999434,
+      "new_drill_intersects_numbered_SMD": [],
+      "center_escape_length_mm": 0.9124999999999943
+    }
+  ],
+  "thermal": {
+    "U12": {
+      "ep": "21",
+      "ep_at": [
+        104.5,
+        82.6
+      ],
+      "ep_size": [
+        3.15,
+        3.15
+      ],
+      "in_EP_vias": [
+        {
+          "uuid": "2ba0b066-845b-4bd3-b36e-0039d892840a",
+          "at": [
+            104.5,
+            82.899999
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+          "at": [
+            103.7,
+            82.1
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+          "at": [
+            105.3,
+            82.899999
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "597f8272-fb96-4777-8f90-a852896fe0bb",
+          "at": [
+            104.5,
+            83.699999
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+          "at": [
+            104.5,
+            82.1
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+          "at": [
+            105.3,
+            83.699999
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "aaca74f4-3d82-4787-908e-1e63bfefb057",
+          "at": [
+            105.3,
+            82.1
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+          "at": [
+            103.7,
+            83.699999
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "f1f1aaca-7976-4564-86b8-39fdc51f381f",
+          "at": [
+            103.7,
+            82.899999
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+                "island": 0,
+                "area_mm2": 25.5923397071355
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+                "island": 0,
+                "area_mm2": 67.5268757320075
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "fd6260e2-9502-41e9-8687-9f681a19e745",
+                "island": 1,
+                "area_mm2": 134.26768557217
+              }
+            ]
+          }
+        }
+      ],
+      "all_existing_GND_vias_within_6mm_exact_preserved": [
+        "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+        "11ef6458-61d0-522d-afad-f23ca3b5cf23",
+        "22b3a2a9-dc30-4276-9c48-54607e0658e5",
+        "2712d700-653d-40c5-869a-abc3fa1a23d4",
+        "2ba0b066-845b-4bd3-b36e-0039d892840a",
+        "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+        "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+        "3e3dc5a2-1d3a-4884-9468-3856178882e3",
+        "40203dcf-db0d-5dee-9a82-591e98b75e25",
+        "45ff3722-777f-4cd7-b062-d50351298d9d",
+        "597f8272-fb96-4777-8f90-a852896fe0bb",
+        "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+        "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+        "92318c77-6fe4-5f7c-b960-b5085885b9cf",
+        "97f79f47-295e-5a3c-9bb0-17e89074d993",
+        "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+        "aaca74f4-3d82-4787-908e-1e63bfefb057",
+        "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+        "dcfabe04-bb31-5f2d-a29f-e466e6265a22",
+        "dfd9d319-0eb8-50b7-ba00-48f1d2279104",
+        "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+      ]
+    },
+    "U13": {
+      "ep": "21",
+      "ep_at": [
+        59.0,
+        77.7
+      ],
+      "ep_size": [
+        3.15,
+        3.15
+      ],
+      "in_EP_vias": [
+        {
+          "uuid": "09cf51f1-958d-4037-8651-88be9afa8fcb",
+          "at": [
+            59.0,
+            77.7
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+          "at": [
+            58.2,
+            78.5
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "3830f89a-f0fd-4217-8f17-dffb343eee72",
+          "at": [
+            59.8,
+            78.5
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "587a542a-f158-4a2c-991b-4fead55bc366",
+          "at": [
+            59.0,
+            78.5
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+          "at": [
+            59.0,
+            76.9
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "62474b73-3213-4477-925b-4de804222738",
+          "at": [
+            59.8,
+            76.9
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "730818e3-1e59-417c-9949-82904f0225ca",
+          "at": [
+            58.2,
+            76.9
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+          "at": [
+            59.8,
+            77.7
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        },
+        {
+          "uuid": "e3c63c2f-15af-4960-9042-450fc3917252",
+          "at": [
+            58.2,
+            77.7
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [
+              {
+                "zone": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+                "island": 0,
+                "area_mm2": 23.0394057972705
+              }
+            ],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [
+              {
+                "zone": "b299d9de-99bf-5528-90b0-5cf17b373103",
+                "island": 0,
+                "area_mm2": 60.393196834926
+              }
+            ],
+            "B.Cu": [
+              {
+                "zone": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+                "island": 0,
+                "area_mm2": 240.5497981230595
+              }
+            ]
+          }
+        }
+      ],
+      "all_existing_GND_vias_within_6mm_exact_preserved": [
+        "09cf51f1-958d-4037-8651-88be9afa8fcb",
+        "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+        "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+        "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+        "3830f89a-f0fd-4217-8f17-dffb343eee72",
+        "587a542a-f158-4a2c-991b-4fead55bc366",
+        "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+        "62474b73-3213-4477-925b-4de804222738",
+        "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+        "6b95200d-66ba-48d2-8072-f639994d040e",
+        "730818e3-1e59-417c-9949-82904f0225ca",
+        "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+        "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+        "b1168d72-519c-56e7-93e0-3853aac3e2da",
+        "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+        "e3c63c2f-15af-4960-9042-450fc3917252",
+        "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+        "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+      ]
+    },
+    "U14": {
+      "ep": "17",
+      "ep_at": [
+        129.8,
+        84.4
+      ],
+      "ep_size": [
+        1.68,
+        1.68
+      ],
+      "in_EP_vias": [
+        {
+          "uuid": "4bcbd804-3a8c-5887-9183-42ba65e75fdf",
+          "at": [
+            129.4,
+            84.8
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [],
+            "B.Cu": []
+          }
+        },
+        {
+          "uuid": "5a972e79-a3d7-524c-a12e-ea4ca6128a1f",
+          "at": [
+            130.2,
+            84.0
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [],
+            "B.Cu": []
+          }
+        },
+        {
+          "uuid": "93bd038c-89ee-52f7-bb64-3965c497e809",
+          "at": [
+            129.4,
+            84.0
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [],
+            "B.Cu": []
+          }
+        },
+        {
+          "uuid": "ef97ec0e-d335-5cef-a91e-bed74e1d9f16",
+          "at": [
+            130.2,
+            84.8
+          ],
+          "diameter_drill_mm": [
+            0.6,
+            0.3
+          ],
+          "regions": {
+            "F.Cu": [],
+            "In1.Cu": [
+              {
+                "zone": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+                "island": 0,
+                "area_mm2": 2045.478375876822
+              }
+            ],
+            "In2.Cu": [],
+            "B.Cu": []
+          }
+        }
+      ]
+    }
+  },
+  "hotloop": {
+    "method": "Hand-selected real copper centerline/pad-center path; straight D29 anode-cathode, C78 pad1-pad2, and U14 PGND13-SW15 closures are component/internal-chip projections, not copper graph edges or electromagnetic simulation. Through-board Z length excluded in both comparisons.",
+    "before": {
+      "vertices_mm": [
+        [
+          129.55,
+          83
+        ],
+        [
+          129.55,
+          82.2
+        ],
+        [
+          128,
+          82.2
+        ],
+        [
+          128,
+          80.45
+        ],
+        [
+          128,
+          76.45
+        ],
+        [
+          126.6,
+          75.9
+        ],
+        [
+          132.5,
+          75.8
+        ],
+        [
+          133.525,
+          75.8
+        ],
+        [
+          133.525,
+          76.6
+        ],
+        [
+          136.475,
+          76.6
+        ],
+        [
+          136.525,
+          78.5
+        ],
+        [
+          131.65,
+          81.8
+        ],
+        [
+          130.9,
+          81.8
+        ],
+        [
+          130.9,
+          82.65
+        ],
+        [
+          130.55,
+          83
+        ]
+      ],
+      "projected_area_mm2": 43.06750000000102,
+      "projected_closed_length_mm": 31.162543656084445,
+      "all_external_copper_legs_geometrically_verified": true
+    },
+    "after": {
+      "vertices_mm": [
+        [
+          129.55,
+          83
+        ],
+        [
+          129.55,
+          82.2
+        ],
+        [
+          129.2,
+          81.85
+        ],
+        [
+          129.2,
+          79.2
+        ],
+        [
+          129.4,
+          78
+        ],
+        [
+          133.4,
+          78
+        ],
+        [
+          133.575,
+          81.1
+        ],
+        [
+          130.625,
+          81.1
+        ],
+        [
+          130.55,
+          82.0
+        ],
+        [
+          130.55,
+          83
+        ]
+      ],
+      "projected_area_mm2": 15.428750000000036,
+      "projected_closed_length_mm": 18.11958243339321,
+      "all_external_copper_legs_geometrically_verified": true
+    },
+    "before_via_group_transitions": 4,
+    "after_via_group_transitions": 0,
+    "after_routed_layers": [
+      "F.Cu"
+    ],
+    "under_10_mm2_target_met": false
+  },
+  "Kelvin_In1": {
+    "old_C78_return_line_before_holes": [
+      [
+        134.549375,
+        78.67999999999999
+      ],
+      [
+        134.40125,
+        78.84
+      ],
+      [
+        134.253125,
+        79.0
+      ],
+      [
+        134.105,
+        79.16
+      ],
+      [
+        133.956875,
+        79.32
+      ]
+    ],
+    "old_corridor_after_holes": [
+      [
+        135.29,
+        77.88
+      ],
+      [
+        135.141875,
+        78.03999999999999
+      ],
+      [
+        134.99375,
+        78.19999999999999
+      ],
+      [
+        134.845625,
+        78.36
+      ]
+    ],
+    "local_C78_return_line_after_holes": [],
+    "old_In1_sense_UUIDs_removed": true,
+    "quiet_FB_AGND_components_and_return_copper_unchanged": true
+  },
+  "operation_counts": {
+    "added": 65,
+    "removed": 60,
+    "modified": 21
+  }
+}
