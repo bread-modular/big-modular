@@ -1,3 +1,11 @@
+# Historical HRO-only handoff — NOT the ES1 handoff
+
+The source hashes/merge preconditions below predate the LDO revision and must
+not be used to overwrite its source changes. Main/display settings were not
+modified by the ES1 work. Use [ES1 handoff](ldo-handoff.md); user controls any merge.
+
+---
+
 # Prepared main integration — user controls merge
 
 **No assistant commit, merge, stash, reset, main write or cleanup has occurred.**

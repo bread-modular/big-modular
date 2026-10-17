@@ -1,0 +1,66 @@
+{
+  "status": "LDO-R1 prototype bare-PCB artwork verified; supervisor review/merge pending",
+  "base_HEAD": "c82ca1cabf01f529ae536f5afaa8773d7bbc6d29",
+  "workspace": "029",
+  "canonical_PCB_sha256": "5c0c6ed366d2f86486748e5a9849dfa34b0669807b9712262310d56e28c6eafc",
+  "canonical_schematic_PDF_sha256": "ad171eb64a516383a9fc3aea84ac230a00df37624df255c2fa907079c315161e",
+  "ERC": 0,
+  "DRC_all_severities": 0,
+  "opens": 0,
+  "native_schematic_parity": 0,
+  "rule_exclusions": 0,
+  "independent_native_pins_including_NC": 306,
+  "independent_field_checks": 558,
+  "tests_run": 96,
+  "tests_passed": 96,
+  "tests_failed": 0,
+  "inventory": {
+    "electrical_footprints": 93,
+    "mechanical_footprints": 4,
+    "tracks": 536,
+    "vias": 196,
+    "zones": 8
+  },
+  "capacitance_screen_uF_INplus_OUTplus_INminus_OUTminus": [
+    12.591827249268636,
+    23.989964087683383,
+    12.591827249268636,
+    11.994982043841691
+  ],
+  "capacitance_screen_not_guaranteed_minima": true,
+  "back_refs": [
+    "C63",
+    "C64",
+    "C65",
+    "C66"
+  ],
+  "back_X0_clearance_mm_after_body_solder_registration": 1.05,
+  "release_manifest": "production/ldo-r1/manifest.json",
+  "release_manifest_sha256": "888e01c0b586948a4b35d005e967d9a8a2cd2a27fe880de27451dd9dce874233",
+  "archives_sha256": {
+    "Big-Modular-LDO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip": "1709a9eb36862c169faf6860223485c533f6f3bdb63fcce4490814794e9ab5c3",
+    "Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip": "db11f14ca4a97af862f7caeedbbef6f22fbcec2d1cd95781b46884679b478fcb",
+    "Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip": "8c5ee8ea423cb572a3215325e05dbea282e60d9070225964ac9ab631f331450d"
+  },
+  "reproducibility": {
+    "all_release_files_byte_identical": true,
+    "asset_count": 66,
+    "manifest_also_identical": true,
+    "independent_native_exports": 2,
+    "all_zip_members_CRC_SHA_verified": true
+  },
+  "panel_CAM_byte_identical_to_HRO_R1": true,
+  "PCB_promotion_complete": true,
+  "advisor_used": false,
+  "committed_merged_pushed": false,
+  "vendor_upload_order": false,
+  "bench_qualified": false,
+  "remaining_prototype_limits": [
+    "actual capacitor lot/bias/AC-level/temperature/aging",
+    "loop stability and input ringing",
+    "startup/reverse/shutdown",
+    "noise/PSRR",
+    "thermal/current and simultaneous loads",
+    "assembled fit, harness/support and neighbor clearance"
+  ]
+}

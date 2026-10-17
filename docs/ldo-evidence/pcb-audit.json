@@ -1,0 +1,44 @@
+{
+  "base_HEAD": "c82ca1cabf01f529ae536f5afaa8773d7bbc6d29",
+  "imported_candidate_sha256": "3d72747b9ea66cf3dfcb908ccd31930d56d04e6a174136a784d20fac8e508138",
+  "final_candidate_sha256": "5c0c6ed366d2f86486748e5a9849dfa34b0669807b9712262310d56e28c6eafc",
+  "original_byte_identical_objects": {
+    "segment": 520,
+    "via": 195,
+    "gr_line": 20,
+    "gr_circle": 4,
+    "gr_text": 11
+  },
+  "removed_original_objects": {
+    "segment": [
+      "50e2ca26-62dc-42a0-8f43-0168306cda72"
+    ],
+    "via": [],
+    "gr_line": [],
+    "gr_circle": [],
+    "gr_text": []
+  },
+  "new_objects": {
+    "segment": 16,
+    "via": 1,
+    "gr_line": 0,
+    "gr_circle": 0,
+    "gr_text": 0
+  },
+  "all_88_original_electrical_footprint_poses_sides_pads_nets_unchanged": true,
+  "only_existing_legend_move": "R25 rear reference to y90.3, clear of C66 mask",
+  "unchanged_stack_outline_layers": true,
+  "original_195_vias_preserved": true,
+  "final_inventory": {
+    "electrical_footprints": 93,
+    "mechanical_footprints": 4,
+    "tracks": 536,
+    "vias": 196,
+    "zones": 8
+  },
+  "back_side_fit": "backside-fit.json",
+  "cap_screen": "capacitor-disposition.json",
+  "native_check": "ERC0 / DRC0 including opens and schematic parity; independent parity true",
+  "prototype_qualification": false,
+  "historical_hro_board_sha256": "e9adb5ef40227f3d447a9d3d143418d0deb466aafc712ee976359611d3f58464"
+}
