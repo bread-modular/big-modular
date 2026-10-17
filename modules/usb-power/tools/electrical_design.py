@@ -46,6 +46,8 @@ def populate(stock, ic, lib, root):
     catalog.update({k:v for k,v in json.loads((root/'docs/split-rail-catalog.json').read_text()).items() if k not in catalog})
     selected=json.loads((root/'docs/tps54302-selected-parts.json').read_text())
     catalog.update({p['code']:p for p in selected['selected_parts'] if p['code'] not in catalog})
+    # Dated, approved L1/L4/L5 substitutions; historical catalog snapshots stay frozen.
+    catalog.update(json.loads((root/'docs/inductor-substitution-catalog.json').read_text()))
     def add(sh,ref,kind,value,nets,fp='',code='',mpn='',note='',manual=False,onboard=True,manufacturer='',dnp=False):
         validate_reference(ref,'rail_indicator' if kind==LED and ref in ('D10','D11','D12') else '')
         if ref in conns:raise ValueError('Duplicate '+ref)
@@ -53,7 +55,7 @@ def populate(stock, ic, lib, root):
         part=catalog.get(code,{})
         if code and mpn and part and mpn!=part['mpn']:raise ValueError((ref,mpn,part['mpn']))
         mpn=mpn or part.get('mpn','')
-        revised=sh in ('04_bipolar','05_quiet_rails','06_positive_boost') or ref in ('R12','R13','R14','R15','R60','R75','R76','R4','R8','R36','R77','R78','R79','R80','R81','R82','R9','R10','R18','R83','R84','R85','C6','C8','C9','C19','C37','C38','C68','C69','C70','C71','C72','R16','C1','C4','C5','C18','C16','C17','C10','C11','C12','C13','C14','J1','SW1')
+        revised=sh in ('04_bipolar','05_quiet_rails','06_positive_boost') or ref in ('L4','R12','R13','R14','R15','R60','R75','R76','R4','R8','R36','R77','R78','R79','R80','R81','R82','R9','R10','R18','R83','R84','R85','C6','C8','C9','C19','C37','C38','C68','C69','C70','C71','C72','R16','C1','C4','C5','C18','C16','C17','C10','C11','C12','C13','C14','J1','SW1')
         if revised:manufacturer=manufacturer or part.get('manufacturer','')
         note=note or 'Prototype candidate; qualify ratings, land pattern and operating corners.'
         footprint=('BigModular:'+fp.split(':')[-1]) if fp else ''
@@ -88,7 +90,7 @@ def populate(stock, ic, lib, root):
     a='03_bucks'
     for u,prefix,out,Lref,Cs,Rt,Rb,rv,base in [('U5','FIVE','P5','L4',['C18','C19','C20','C36'],'R17','R18','13k',1)]:
         add(a,u,BUCK,'TPS54302DDCR',{'1':'GND','2':prefix+'_SW','3':'VPROT','4':prefix+'_FB','5':None,'6':prefix+'_BOOT'},'Package_TO_SOT_SMD:SOT-23-6','C311983')
-        add(a,Lref,L,'6.8uH 20% shielded',{'1':prefix+'_SW','2':out},'BigModular:L_KOHER_MDA1040','C2847552',note='MDA1040-6R8M; manufacturer A1 p1: height3.8+/-0.2mm; Isat typ12.2 / table Max11A; temperature-rise current typ7.8 / table Max6.8A (not relabeled guaranteed minima). DCR max24.5mohm. Land pattern12.5 overall,5.4 gap,3.5 length; visually verified. See engineering.md. Extended candidate; not allocation or thermal approval.')
+        add(a,Lref,L,'6.8uH 20% shielded',{'1':prefix+'_SW','2':out},'BigModular:L_SLO1040H6R8MTT','C207852',manufacturer='Sunltech',note='Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending.')
         cc(a,Cs[0],'22u 25V X5R','VPROT','GND',code='C12891',size='1206_3216');cc(a,Cs[1],'22u 25V X5R',out,'GND','C12891','1206_3216');cc(a,Cs[2],'100n 50V X7R','VPROT','GND');cc(a,Cs[3],'100n 50V X7R',prefix+'_BOOT',prefix+'_SW')
         cc(a,'C37' if u=='U3' else 'C38','22u 25V X5R',out,'GND','C12891','1206_3216')
         cc(a,'C68' if u=='U3' else 'C69','22u 25V X5R','VPROT','GND','C12891','1206_3216',note='Local buck VIN bank: two C12891 per IC; typical-data screen 10.664uF at9.45V, not guaranteed. Remote C4 excluded; input ringing/ripple/startup bench gates remain.')

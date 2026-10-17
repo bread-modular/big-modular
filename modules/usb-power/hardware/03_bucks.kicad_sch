@@ -2910,7 +2910,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BigModular:L_KOHER_MDA1040"
+		(property "Footprint" "BigModular:L_SLO1040H6R8MTT"
 			(at 185.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -2921,7 +2921,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/4b813f0bd1895de8fff894fc302289d3.pdf?productCode=C207852"
 			(at 185.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -2942,7 +2942,7 @@
 				)
 			)
 		)
-		(property "MPN" "MDA1040-6R8M"
+		(property "MPN" "SLO1040H6R8MTT"
 			(at 185.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -2953,7 +2953,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2847552"
+		(property "LCSC" "C207852"
 			(at 185.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -2964,7 +2964,7 @@
 				)
 			)
 		)
-		(property "NOTE" "MDA1040-6R8M; manufacturer A1 p1: height3.8+/-0.2mm; Isat typ12.2 / table Max11A; temperature-rise current typ7.8 / table Max6.8A (not relabeled guaranteed minima). DCR max24.5mohm. Land pattern12.5 overall,5.4 gap,3.5 length; visually verified. See engineering.md. Extended candidate; not allocation or thermal approval."
+		(property "NOTE" "Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending."
 			(at 185.42 205.74 0)
 			(hide yes)
 			(show_name no)
@@ -3011,6 +3011,7 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Sunltech" (at 185.42 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1))))
 	)
 	(symbol
 		(lib_id "BigModular:Device_C")

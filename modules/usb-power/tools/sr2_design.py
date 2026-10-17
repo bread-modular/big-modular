@@ -10,8 +10,8 @@ def populate(add,rr,cc,dd,L,BUCK):
     sh='04_bipolar'
     add(sh,'U3',BUCK,'TPS54302DDCR',PINS.copy(),'Package_TO_SOT_SMD:SOT-23-6','C311983',
         note='SR2 direct VPROT IBB: GND1=NRAW, VIN3=VPROT, SW2 via L1 to SYSTEM GND. TI SLVA933 section5 explicitly includes TPS54302. EN/FB referenced to NRAW, never system ground. 28V recommended/30V absolute span, not an OVP clamp. Prototype screens only.')
-    add(sh,'L1',L,'22uH 20% shielded',{'1':'NINV_SW','2':'GND'},'BigModular:L_Bourns_SRP1245A','C1848803',
-        note='SRP1245A-220M, Isat10A at20% L drop/25C, Irms6.5A at40C rise, DCR58mohm max. 10A NOT hot guaranteed minimum. Height max5.0mm versus5.1mm allowance leaves0.1mm BEFORE solder. Manufacturer lands14.2 overall/8 gap/5 width; separate PCB fit/hot-fault gate, not fit approval. Stock16 dated handoff, not reserved.')
+    add(sh,'L1',L,'22uH 20% shielded',{'1':'NINV_SW','2':'GND'},'BigModular:L_TMPC1205HP_220M','C357250',
+        note='TAI-TECH TMPC1205HP-220MG-D; 22uH +/-20%; DCR50mohm typ/58mohm max. Isat10A at approx30% L drop/25C; Irms6.5A at approx40C rise. Height4.8+/-0.2mm (5.0mm max). Land identical to SRP1245A:14.2mm overall/8.0mm gap, two3.1(X)x5.0(Y)mm pads. Stock184 observed2026-10-17, not reserved or guaranteed. 10A is NOT a guaranteed hot minimum. Body-only0.1mm allowance before solder; >=0.15mm paste recommended; PCB fit/stack/hot-fault/thermal qualification pending.')
     for ref in INPUT_REFS:
         cc(sh,ref,'22u 25V X5R','VPROT','GND','C12891','1206_3216',note='Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass.')
     for ref in SPAN_REFS:

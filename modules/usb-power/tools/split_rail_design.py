@@ -27,7 +27,7 @@ def populate(add,rr,cc,dd,L,R,boost):
     add(sh,'U14',boost,'TPS55340RTER',BOOST_PINS.copy(),'BigModular:'+BOOST_FOOTPRINT,
         'C169167',note='TI RTE pin table: SW1/15/16; reserved10/14 grounded; SYNC5 AGND; EP17 AGND. EN3 follows VPROT, NOT output disconnect. Tie AGND/PGND locally with thermal array; layout worker owns footprint verification. No rail-synchronous shutdown.')
     add(sh,'L5',L,'6.8uH 20% shielded',{'1':'VPROT','2':'PBOOST_SW'},
-        'BigModular:L_KOHER_MDA1040','C2847552',note='Same exact MDA1040-6R8M as L1/L4; height max4.0mm; manufacturer Isat table11A/typ12.2A exceeds TPS55340 maximum7.75A fault limit; Irms table6.8A/typ7.8A, DCRmax24.5mohm. Not a guaranteed hot-lot minimum. Saturation/thermal and frontside placement verification pending.')
+        'BigModular:L_SLO1040H6R8MTT','C207852',manufacturer='Sunltech',note='Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending.')
     dd(sh,'D29','PRAW','PBOOST_SW',note='SS34/C8678 SMA 3A40V Schottky; anode2=PBOOST_SW, cathode1=PRAW. Passive precharge path persists when U14 disabled. eFuse short/latch and diode thermal qualification required; not isolation.')
     for ref,v,a,b,code in [('R86','100k','PRAW','PBOOST_FB','C122538'),
                           ('R87','10k','PBOOST_FB','GND','C95204')]:

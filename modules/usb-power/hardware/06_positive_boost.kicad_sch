@@ -2920,7 +2920,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BigModular:L_KOHER_MDA1040"
+		(property "Footprint" "BigModular:L_SLO1040H6R8MTT"
 			(at 160.02 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -2931,7 +2931,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401281810_KOHERelec-MDA1040-6R8M_C2847552.pdf"
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/4b813f0bd1895de8fff894fc302289d3.pdf?productCode=C207852"
 			(at 160.02 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -2952,7 +2952,7 @@
 				)
 			)
 		)
-		(property "MPN" "MDA1040-6R8M"
+		(property "MPN" "SLO1040H6R8MTT"
 			(at 160.02 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -2963,7 +2963,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2847552"
+		(property "LCSC" "C207852"
 			(at 160.02 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -2974,7 +2974,7 @@
 				)
 			)
 		)
-		(property "NOTE" "Same exact MDA1040-6R8M as L1/L4; height max4.0mm; manufacturer Isat table11A/typ12.2A exceeds TPS55340 maximum7.75A fault limit; Irms table6.8A/typ7.8A, DCRmax24.5mohm. Not a guaranteed hot-lot minimum. Saturation/thermal and frontside placement verification pending."
+		(property "NOTE" "Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending."
 			(at 160.02 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -2985,7 +2985,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "KOHERelec"
+		(property "Manufacturer" "Sunltech"
 			(at 160.02 58.42 0)
 			(hide yes)
 			(show_name no)

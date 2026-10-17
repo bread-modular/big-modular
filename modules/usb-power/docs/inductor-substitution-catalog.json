@@ -1,0 +1,161 @@
+{
+  "C357250": {
+    "code": "C357250",
+    "mpn": "TMPC1205HP-220MG-D",
+    "manufacturer": "TAI-TECH",
+    "package": "SMD",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 184,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Current - Saturation(Isat)": "10A",
+      "Inductance": "22uH",
+      "Tolerance": "\u00b120%",
+      "Current Rating": "6.5A",
+      "DC Resistance(DCR)": "50m\u03a9"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 9,
+        "unit_price": 0.5829
+      },
+      {
+        "start": 10,
+        "end": 29,
+        "unit_price": 0.4637
+      },
+      {
+        "start": 30,
+        "end": 99,
+        "unit_price": 0.4131
+      },
+      {
+        "start": 100,
+        "end": 499,
+        "unit_price": 0.3494
+      },
+      {
+        "start": 500,
+        "end": 999,
+        "unit_price": 0.2906
+      },
+      {
+        "start": 1000,
+        "end": -1,
+        "unit_price": 0.2743
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 2,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://datasheet.lcsc.com/datasheet/pdf/a9533ef0ce1b123359bb73d86ce35386.pdf?productCode=C357250",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-17T16:46:59Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C357250"
+      },
+      "sha256": "b5516c0baa8b1b55ed24a0e940ac1142004bc9d4e3799a7fa0f8614e9f6118d5",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    },
+    "catalog_datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2009171439_TAI-TECH-TMPC1205HP-220MG-D_C357250.pdf",
+    "datasheet_sha256": "49884eeb8eb782b3ba0ca5a1acc1a3fa3dbed37b897e218c9b53f0ae4b9adf3f",
+    "manufacturer_as_printed_in_datasheet": "TAI-TECH",
+    "selection_note": "TAI-TECH TMPC1205HP-220MG-D; 22uH +/-20%; DCR50mohm typ/58mohm max. Isat10A at approx30% L drop/25C; Irms6.5A at approx40C rise. Height4.8+/-0.2mm (5.0mm max). Land identical to SRP1245A:14.2mm overall/8.0mm gap, two3.1(X)x5.0(Y)mm pads. Stock184 observed2026-10-17, not reserved or guaranteed. 10A is NOT a guaranteed hot minimum. Body-only0.1mm allowance before solder; >=0.15mm paste recommended; PCB fit/stack/hot-fault/thermal qualification pending.",
+    "land_status": "vendor drawing verified; exact SRP1245A land copy",
+    "snapshot_notice": "Dated 2026-10-17 public lookup evidence only; not live stock, allocation, reservation, service/quote acceptance or qualification."
+  },
+  "C207852": {
+    "code": "C207852",
+    "mpn": "SLO1040H6R8MTT",
+    "manufacturer": "Sunltech Tech",
+    "package": "SMD,10.8x10mm",
+    "classification": "Extended",
+    "library_type": "expand",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 4991,
+    "kind": null,
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Current - Saturation(Isat)": "10A",
+      "Inductance": "6.8uH",
+      "Type": "Molded inductor",
+      "Current Rating": "7A",
+      "Tolerance": "\u00b120%",
+      "DC Resistance(DCR)": "22m\u03a9"
+    },
+    "specs": {},
+    "prices": [
+      {
+        "start": 1,
+        "end": 49,
+        "unit_price": 0.1976
+      },
+      {
+        "start": 50,
+        "end": 149,
+        "unit_price": 0.1633
+      },
+      {
+        "start": 150,
+        "end": 999,
+        "unit_price": 0.1486
+      },
+      {
+        "start": 1000,
+        "end": 1999,
+        "unit_price": 0.1339
+      },
+      {
+        "start": 2000,
+        "end": 4999,
+        "unit_price": 0.1241
+      },
+      {
+        "start": 5000,
+        "end": -1,
+        "unit_price": 0.1182
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 2,
+    "attrition_quantity_observed": 0,
+    "datasheet_url": "https://datasheet.lcsc.com/datasheet/pdf/4b813f0bd1895de8fff894fc302289d3.pdf?productCode=C207852",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-17T16:47:01Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C207852"
+      },
+      "sha256": "672b9ac75c8e6b8732619cc0b678285f03cdd8aa61be793020e59a4272bdc01d",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    },
+    "catalog_datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2209271230_Sunltech-Tech-SLO1040H6R8MTT_C207852.pdf",
+    "datasheet_sha256": "d545ecca8ef25cd1a1c9d44ecd44a4d4ec46aaca06d2a7d22d737b1e34d051bf",
+    "manufacturer_as_printed_in_datasheet": "Sunltech",
+    "selection_note": "Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending.",
+    "land_status": "engineering-defined, pending vendor drawing; explicit user approval 2026-10-17",
+    "snapshot_notice": "Dated 2026-10-17 public lookup evidence only; not live stock, allocation, reservation, service/quote acceptance or qualification."
+  }
+}
