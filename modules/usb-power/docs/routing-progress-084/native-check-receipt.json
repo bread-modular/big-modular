@@ -1,0 +1,334 @@
+{
+  "status": "HD1_SOURCE_CLOSURE_NOT_RELEASED",
+  "source_081_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+  "candidate_sha256": "69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc",
+  "frozen_project_sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+  "fresh_common_check": {
+    "status": "no_findings_in_requested_checks",
+    "native_cli": {
+      "available": true,
+      "path": "/usr/bin/kicad-cli",
+      "version": "10.0.6",
+      "checks_supported": true,
+      "stderr": ""
+    },
+    "source_unchanged": true,
+    "findings": {
+      "erc": {
+        "categories": {
+          "violations": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      },
+      "drc": {
+        "categories": {
+          "violations": 0,
+          "unconnected_items": 0,
+          "schematic_parity": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      }
+    },
+    "errors": [],
+    "commands": [
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "sch",
+          "export",
+          "netlist",
+          "--format",
+          "kicadxml",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-check/netlist.xml",
+          "/tmp/kicad private checks 04rd61ee/inputs/usb-power.kicad_sch"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "sch",
+          "erc",
+          "--format",
+          "json",
+          "--severity-all",
+          "--exit-code-violations",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-check/erc.json",
+          "/tmp/kicad private checks 04rd61ee/inputs/usb-power.kicad_sch"
+        ],
+        "returncode": 0,
+        "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-check/erc.json\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "pcb",
+          "drc",
+          "--format",
+          "json",
+          "--severity-all",
+          "--exit-code-violations",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-check/drc.json",
+          "--refill-zones",
+          "--all-track-errors",
+          "--schematic-parity",
+          "/tmp/kicad private checks 04rd61ee/inputs/usb-power.kicad_pcb"
+        ],
+        "returncode": 0,
+        "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-check/drc.json\n",
+        "stderr": ""
+      }
+    ],
+    "ref_pin_net_parity": {
+      "missing_refs": [],
+      "extra_refs": [],
+      "missing_pins": [],
+      "net_mismatches": [],
+      "extra_connected_pads": [],
+      "pads_without_net": [],
+      "mechanical_without_reference": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "equal": true
+    },
+    "native_parity_scope": "Native DRC --schematic-parity plus ref/pin/net comparison"
+  },
+  "common_inspect_plan_apply": {
+    "plan_sha256": "00171e2e876d40fd5fa2104496670b4725b9f7559506fdeea4c723944607e04c",
+    "plan_file_sha256": "ba87b7afd85282fa59b021915fcec3ec1e3e70d2bd40712c82bc7ea4a956a0a4",
+    "operations": {
+      "schema_version": 1,
+      "operations": [
+        {
+          "op": "delete_item",
+          "uuid": "8e4785b7-9f30-5b83-8fb8-c7b164066610",
+          "expected_kind": "via"
+        },
+        {
+          "op": "delete_item",
+          "uuid": "b1dbe53d-475c-520a-9397-f12c9fdaa468",
+          "expected_kind": "track"
+        }
+      ]
+    },
+    "changes": {
+      "created": [],
+      "touched": [],
+      "deleted": [
+        "8e4785b7-9f30-5b83-8fb8-c7b164066610",
+        "b1dbe53d-475c-520a-9397-f12c9fdaa468"
+      ]
+    },
+    "status": "accepted",
+    "source_unchanged": true,
+    "completion": {
+      "schema_version": 1,
+      "status": "accepted",
+      "accepted": true,
+      "board": "inputs/usb-power.kicad_pcb",
+      "schematic": "inputs/usb-power.kicad_sch",
+      "result_sha256": "44d2d993aecdcc1adb226c2c0cb995561704c960f17a8487455e55b2bfb0979c"
+    },
+    "result_file_sha256": "44d2d993aecdcc1adb226c2c0cb995561704c960f17a8487455e55b2bfb0979c",
+    "native_commands": [
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "sch",
+          "export",
+          "netlist",
+          "--format",
+          "kicadxml",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/baseline/netlist.xml",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/inputs/usb-power.kicad_sch"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "sch",
+          "erc",
+          "--format",
+          "json",
+          "--units",
+          "mm",
+          "--severity-all",
+          "--exit-code-violations",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/baseline/erc.json",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/inputs/usb-power.kicad_sch"
+        ],
+        "returncode": 0,
+        "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/baseline/erc.json\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "pcb",
+          "drc",
+          "--format",
+          "json",
+          "--units",
+          "mm",
+          "--severity-all",
+          "--exit-code-violations",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/baseline/drc.json",
+          "--refill-zones",
+          "--all-track-errors",
+          "--schematic-parity",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/inputs/usb-power.kicad_pcb"
+        ],
+        "returncode": 0,
+        "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/baseline/drc.json\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "sch",
+          "export",
+          "netlist",
+          "--format",
+          "kicadxml",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/checks/netlist.xml",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/inputs/usb-power.kicad_sch"
+        ],
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "sch",
+          "erc",
+          "--format",
+          "json",
+          "--units",
+          "mm",
+          "--severity-all",
+          "--exit-code-violations",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/checks/erc.json",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/inputs/usb-power.kicad_sch"
+        ],
+        "returncode": 0,
+        "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/checks/erc.json\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "/usr/bin/kicad-cli",
+          "pcb",
+          "drc",
+          "--format",
+          "json",
+          "--units",
+          "mm",
+          "--severity-all",
+          "--exit-code-violations",
+          "--output",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/checks/drc.json",
+          "--refill-zones",
+          "--all-track-errors",
+          "--schematic-parity",
+          "--save-board",
+          "/home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/inputs/usb-power.kicad_pcb"
+        ],
+        "returncode": 0,
+        "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/084/modules/usb-power/research/hd1-084-applied/checks/drc.json\nSaved board\n",
+        "stderr": ""
+      }
+    ],
+    "preflight_only_attempt": {
+      "status": "rejected_before_candidate_creation",
+      "reason": "Candidate must be outside every input directory",
+      "resolution": "NEW sibling research output used; no gate change"
+    }
+  },
+  "packaging": {
+    "common_applied_pcb_sha256": "c465e6bb67b62623445ecb8a6baa3f551220516e93aaa7d4cc1d08d00cb78421",
+    "candidate_sha256": "69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc",
+    "restored_model_path_bindings": {
+      "${KIPRJMOD}/_kicad_models/5a86b52f58e3345bc7f040418586304e5561b87fc98dbd8ff4074848e9fee27e/C_1206_3216Metric.step": "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step",
+      "${KIPRJMOD}/_kicad_models/d31894b2af3caa7d1481b53b4b671a672b589d17d41558e6be6dc9806aeb9cd5/C_0805_2012Metric.step": "${KIPRJMOD}/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step",
+      "${KIPRJMOD}/_kicad_models/7ba1bc78319673b3cce680a3f8aea1e2f57002a85fbb375718bd7ac9725a5e07/R_0603_1608Metric.step": "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step",
+      "${KIPRJMOD}/_kicad_models/8322d0b48ca083c214c6e3cb865b3a3e7e3d0454e9615ba37b1c06614b69ef39/C_0603_1608Metric.step": "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step",
+      "${KIPRJMOD}/_kicad_models/c0a9729955e1ab848d4f771962752ff08426beadea31aba22bae203cc063292c/SOT-23-6.step": "${KIPRJMOD}/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step",
+      "${KIPRJMOD}/_kicad_models/b3ff00c30252efbf256333d211bb0f1c242c360f68344a43c4375b0a956eff89/D_SMA.step": "${KIPRJMOD}/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step",
+      "${KIPRJMOD}/_kicad_models/00c5259d3c2030040cf8b389eb6e4495c26c66a5e32d3b74313cd0b69efd56e0/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "${KIPRJMOD}/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step",
+      "${KIPRJMOD}/_kicad_models/f72004d81392611a715699c8397d0dfe12be5a11944968d96f24608a2fe23dec/Fuse_1206_3216Metric.step": "${KIPRJMOD}/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step",
+      "${KIPRJMOD}/_kicad_models/74fe70d966958f1b10c88b98faff9138e1dc13bea020abe017a6176cd924136d/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": "${KIPRJMOD}/_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step",
+      "${KIPRJMOD}/_kicad_models/31c88c85b0e87ca0ba785b4a94904f9a9c7c99ae5510b8d3b48330cc0d2a2c43/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "${KIPRJMOD}/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step"
+    },
+    "method": "shared native.replace_paths; model assets hash-equal; original 075 closure byte-identical; no geometry edits after common apply"
+  },
+  "actual_raw_native_reports": {
+    "erc": {
+      "path": "after-erc.json",
+      "sha256": "565a89550ad5896713b0b6292b2e39da8600077b5fa9e1ac51374c766edfaa7c"
+    },
+    "drc": {
+      "path": "after-drc.json",
+      "sha256": "6f480dff8fa75b5a175f3640817ca749aa5057b4f4b9b042d82e0e0180a10706"
+    }
+  },
+  "native_netlist_sha256": "e4b5f172ab2479f9026f703872806b0e58cf5081be0fc7f99f3f849cfc0a624d",
+  "actual_common_summary_sha256": "7d541b10cb1395c79b568117fc1170d5589925f994138e479ebb75becd37aa37",
+  "exact_parity_counts": {
+    "refs": 116,
+    "pins": 344,
+    "NC": 39,
+    "fields": 1110,
+    "nets": 89
+  },
+  "exact_parity_and_UUID_proof": "before-after-audit.json",
+  "frozen_closure": {
+    "reference": "../routing-progress-075",
+    "nonPCB_files": 53,
+    "all_original_bytes_verified": true,
+    "DEPENDENCIES_sha256": "e056507eb0d7808f102186036c46688c69e8f2090e4831c2ea94ae9522b7bf6e",
+    "CHECKPOINT_sha256": "f64516722696030e1a8366876a8835df461580fd33e3e04fa95c08d9f2a65ae0",
+    "candidate_profile_sha256": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506"
+  },
+  "ignored_rules": [],
+  "exclusions": [],
+  "preexisting_tracked_file_changes": [],
+  "audit_script": {
+    "path": "modules/usb-power/research/hd1-084/audit.py",
+    "sha256": "11609c348d5f08f007f136f7bd87145b8b0139e3ad297199fae8a76d66011970",
+    "success_stdout_sha256": "2ccbc183f11bdcb15116f0b985049608aa3f8ad0f60ecb18738a91aac11686dc",
+    "stderr_sha256": "4d1150432128531c39513a15eeb02cfb6d8b1ad3b2ef3a50f9f7ece55af9683e",
+    "diagnostics": "Inherited pcbnew PROPERTY_ENUM and duplicate image-handler initialization messages; no native ERC/DRC findings."
+  },
+  "native_exception_used": false,
+  "tools_rules_tests_schematic_parts_stack_mechanics_changed": false,
+  "advisor_used": false,
+  "canonical_promoted": false,
+  "commit_created": false,
+  "fab_exports_created": false,
+  "order_ready": false,
+  "release_holds": [
+    "L1 5.40 vs 5.10 mm height user decision",
+    "Inner-1-oz/plating/drill-tolerance/unfilled-in-pad PCBA service acceptance",
+    "Thermal/EMI/startup/load/void/EP-joint bench qualification"
+  ]
+}
