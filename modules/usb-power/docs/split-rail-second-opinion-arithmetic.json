@@ -1,0 +1,795 @@
+{
+ "status": "Second-opinion screening arithmetic only; not ratings",
+ "sources_sha256": {
+  "tps55340": "e579aa4fcb549eab29e889f7f6dcbd0fd88cac2647082c65f102e411c3f666ca",
+  "tps7a47": "8ca46a9968923d2ec9a4deedacfe37220ee5159f4570009cb7c3163661c5dfe0",
+  "tps7a33": "1b607b7bf1350a0fcce4feb184a30e36d1a14c853157e4ae1e7966315a94d81c",
+  "tps65131": "e8360b9509047317416cfd9163a09d8cdf5c8accbd4e702ad6a43292ef48e0ed"
+ },
+ "assumptions": {
+  "basic_factor": [
+   0.9801,
+   1.0201
+  ],
+  "precise_factor": [
+   0.9965025,
+   1.0035025
+  ],
+  "ripple_alloc_V": 0.1,
+  "TPS55340_VREF_full": [
+   1.204,
+   1.254
+  ],
+  "TPS55340_IFB_sensitivity_A": 1e-07,
+  "LDO_overhead_A": 0.002,
+  "positive_adverse_out_V": 11.7,
+  "efuse_limit_A": 1.85,
+  "cases": {
+   "nominal": "9V, eta .9/.9/.8/.9, |NRAW| 14.17, MID 5.0",
+   "low": "8.55V, eta .85/.85/.7/.85, |NRAW| 14.83, MID 4.62, PRAW at max DC"
+  }
+ },
+ "positive": {
+  "A_allBasic_10k+330_over_1k": {
+   "nominal_V": 13.924570000000001,
+   "full_DC_ifb20nA_V": [
+    13.153427284891613,
+    14.736704153333399
+   ],
+   "full_DC_ifb100nA_V": [
+    13.152617330251612,
+    14.7375471639734
+   ],
+   "25C_DC_V": [
+    13.572839030356436,
+    14.285103009434344
+   ],
+   "trough_full_100nA_V": 13.052617330251612,
+   "peak_full_100nA_V": 14.8375471639734,
+   "trough_25C_V": 13.472839030356436,
+   "accuracy_13V_margin_full_V": 0.052617330251612415,
+   "accuracy_13V_margin_25C_V": 0.47283903035643604,
+   "LDO_W_200mA_nom_adverse": [
+    0.4127631400000002,
+    0.6369845271226269
+   ],
+   "Tj50C_adverse_200mA_theta40_60_80": [
+    75.47938108490507,
+    88.21907162735761,
+    100.95876216981014
+   ],
+   "theta_max_for125C_adverse_200mA": 117.7422634405084,
+   "LDO_W_400mA_nom_adverse": [
+    0.7976771400000005,
+    1.2444939599173068
+   ],
+   "Tj50C_adverse_400mA_theta40_60_80": [
+    99.77975839669227,
+    124.66963759503841,
+    149.55951679338455
+   ],
+   "theta_max_for125C_adverse_400mA": 60.26545922728588,
+   "LDO_W_500mA_nom_adverse": [
+    0.9901341400000006,
+    1.5482486763146468
+   ],
+   "Tj50C_adverse_500mA_theta40_60_80": [
+    111.92994705258587,
+    142.8949205788788,
+    173.85989410517175
+   ],
+   "theta_max_for125C_adverse_500mA": 48.441830532369806,
+   "LDO_W_600mA_nom_adverse": [
+    1.1825911400000007,
+    1.8520033927119868
+   ],
+   "Tj50C_adverse_600mA_theta40_60_80": [
+    124.08013570847947,
+    161.1202035627192,
+    198.16027141695895
+   ],
+   "theta_max_for125C_adverse_600mA": 40.49668607257437,
+   "thermal_max_pos_A_adverse_theta40": 0.607570781965384,
+   "thermal_max_pos_A_adverse_theta60": 0.4018126599474725,
+   "thermal_max_pos_A_adverse_theta80": 0.2989335989385167
+  },
+  "B_precise_100k_over_10k": {
+   "nominal_V": 13.519000000000002,
+   "full_DC_ifb20nA_V": [
+    13.158021155403189,
+    13.884095093088089
+   ],
+   "full_DC_ifb100nA_V": [
+    13.150049135403188,
+    13.89212311308809
+   ],
+   "25C_DC_V": [
+    13.393626375624377,
+    13.644786784784781
+   ],
+   "trough_full_100nA_V": 13.050049135403189,
+   "peak_full_100nA_V": 13.99212311308809,
+   "trough_25C_V": 13.293626375624378,
+   "accuracy_13V_margin_full_V": 0.05004913540318867,
+   "accuracy_13V_margin_25C_V": 0.29362637562437754,
+   "LDO_W_200mA_nom_adverse": [
+    0.3308380000000004,
+    0.4662088688437943
+   ],
+   "Tj50C_adverse_200mA_theta40_60_80": [
+    68.64835475375178,
+    77.97253213062766,
+    87.29670950750355
+   ],
+   "theta_max_for125C_adverse_200mA": 160.87210049435834,
+   "LDO_W_400mA_nom_adverse": [
+    0.6346380000000008,
+    0.9046334914614124
+   ],
+   "Tj50C_adverse_400mA_theta40_60_80": [
+    86.18533965845648,
+    104.27800948768474,
+    122.37067931691298
+   ],
+   "theta_max_for125C_adverse_400mA": 82.90650380281566,
+   "LDO_W_500mA_nom_adverse": [
+    0.786538000000001,
+    1.1238458027702214
+   ],
+   "Tj50C_adverse_500mA_theta40_60_80": [
+    94.95383211080886,
+    117.43074816621328,
+    139.90766422161772
+   ],
+   "theta_max_for125C_adverse_500mA": 66.73513378359283,
+   "LDO_W_600mA_nom_adverse": [
+    0.9384380000000011,
+    1.3430581140790303
+   ],
+   "Tj50C_adverse_600mA_theta40_60_80": [
+    103.72232456316121,
+    130.5834868447418,
+    157.44464912632242
+   ],
+   "theta_max_for125C_adverse_600mA": 55.84270644269883,
+   "thermal_max_pos_A_adverse_theta40": 0.8426605890631808,
+   "thermal_max_pos_A_adverse_theta60": 0.5575488650598928,
+   "thermal_max_pos_A_adverse_theta80": 0.4149930030582488
+  },
+  "C1_hybrid_90k9P+9k1B_over_10kP": {
+   "nominal_V": 13.519000000000002,
+   "full_DC_ifb20nA_V": [
+    13.140115630116362,
+    13.903104660379634
+   ],
+   "full_DC_ifb100nA_V": [
+    13.132155551136362,
+    13.911144763359635
+   ],
+   "25C_DC_V": [
+    13.38364619544256,
+    13.654937792154152
+   ],
+   "trough_full_100nA_V": 13.032155551136363,
+   "peak_full_100nA_V": 14.011144763359635,
+   "trough_25C_V": 13.28364619544256,
+   "accuracy_13V_margin_full_V": 0.0321555511363627,
+   "accuracy_13V_margin_25C_V": 0.28364619544256087,
+   "LDO_W_200mA_nom_adverse": [
+    0.3308380000000004,
+    0.47005124219864647
+   ],
+   "Tj50C_adverse_200mA_theta40_60_80": [
+    68.80204968794587,
+    78.20307453191879,
+    87.60409937589172
+   ],
+   "theta_max_for125C_adverse_200mA": 159.55707222299935,
+   "LDO_W_400mA_nom_adverse": [
+    0.6346380000000008,
+    0.9122801948705737
+   ],
+   "Tj50C_adverse_400mA_theta40_60_80": [
+    86.49120779482294,
+    104.73681169223443,
+    122.9824155896459
+   ],
+   "theta_max_for125C_adverse_400mA": 82.21158414015592,
+   "LDO_W_500mA_nom_adverse": [
+    0.786538000000001,
+    1.1333946712065373
+   ],
+   "Tj50C_adverse_500mA_theta40_60_80": [
+    95.33578684826149,
+    118.00368027239223,
+    140.67157369652298
+   ],
+   "theta_max_for125C_adverse_500mA": 66.17288920209934,
+   "LDO_W_600mA_nom_adverse": [
+    0.9384380000000011,
+    1.3545091475425008
+   ],
+   "Tj50C_adverse_600mA_theta40_60_80": [
+    104.18036590170004,
+    131.27054885255006,
+    158.36073180340009
+   ],
+   "theta_max_for125C_adverse_600mA": 55.37061166111224,
+   "thermal_max_pos_A_adverse_theta40": 0.8353942903614596,
+   "thermal_max_pos_A_adverse_theta60": 0.5527352757384782,
+   "thermal_max_pos_A_adverse_theta80": 0.4114057684269876
+  },
+  "C2_hybrid_90k9P+10kB_over_10kP": {
+   "nominal_V": 13.629610000000001,
+   "full_DC_ifb20nA_V": [
+    13.245930944387721,
+    14.018655583312194
+   ],
+   "full_DC_ifb100nA_V": [
+    13.237900298207721,
+    14.026769133492195
+   ],
+   "25C_DC_V": [
+    13.492221782035966,
+    13.767602819000999
+   ],
+   "trough_full_100nA_V": 13.137900298207722,
+   "peak_full_100nA_V": 14.126769133492195,
+   "trough_25C_V": 13.392221782035966,
+   "accuracy_13V_margin_full_V": 0.13790029820772176,
+   "accuracy_13V_margin_25C_V": 0.3922217820359659,
+   "LDO_W_200mA_nom_adverse": [
+    0.3531812200000003,
+    0.49340736496542353
+   ],
+   "Tj50C_adverse_200mA_theta40_60_80": [
+    69.73629459861694,
+    79.60444189792541,
+    89.47258919723387
+   ],
+   "theta_max_for125C_adverse_200mA": 152.00421664815596,
+   "LDO_W_400mA_nom_adverse": [
+    0.6791032200000006,
+    0.9587611916638628
+   ],
+   "Tj50C_adverse_400mA_theta40_60_80": [
+    88.35044766655452,
+    107.52567149983176,
+    126.70089533310902
+   ],
+   "theta_max_for125C_adverse_400mA": 78.22594474213413,
+   "LDO_W_500mA_nom_adverse": [
+    0.8420642200000007,
+    1.1914381050130822
+   ],
+   "Tj50C_adverse_500mA_theta40_60_80": [
+    97.65752420052328,
+    121.48628630078494,
+    145.31504840104657
+   ],
+   "theta_max_for125C_adverse_500mA": 62.94913658076807,
+   "LDO_W_600mA_nom_adverse": [
+    1.0050252200000007,
+    1.4241150183623017
+   ],
+   "Tj50C_adverse_600mA_theta40_60_80": [
+    106.96460073449207,
+    135.4469011017381,
+    163.92920146898413
+   ],
+   "theta_max_for125C_adverse_600mA": 52.66428556188405,
+   "thermal_max_pos_A_adverse_theta40": 0.7937815725451777,
+   "thermal_max_pos_A_adverse_theta60": 0.5251687604687378,
+   "thermal_max_pos_A_adverse_theta80": 0.3908623544305179
+  },
+  "E_topBasic100k_over_10kP": {
+   "nominal_V": 13.519000000000002,
+   "full_DC_ifb20nA_V": [
+    12.96125714126223,
+    14.092991436951236
+   ],
+   "full_DC_ifb100nA_V": [
+    12.95341634126223,
+    14.101152236951236
+   ],
+   "25C_DC_V": [
+    13.283954065934068,
+    13.756336316316316
+   ],
+   "trough_full_100nA_V": 12.85341634126223,
+   "peak_full_100nA_V": 14.201152236951236,
+   "trough_25C_V": 13.183954065934069,
+   "accuracy_13V_margin_full_V": -0.1465836587377698,
+   "accuracy_13V_margin_25C_V": 0.18395406593406882,
+   "LDO_W_200mA_nom_adverse": [
+    0.3308380000000004,
+    0.5084327518641499
+   ],
+   "Tj50C_adverse_200mA_theta40_60_80": [
+    70.337310074566,
+    80.505965111849,
+    90.674620149132
+   ],
+   "theta_max_for125C_adverse_200mA": 147.5121335614499,
+   "LDO_W_400mA_nom_adverse": [
+    0.6346380000000008,
+    0.9886631992543974
+   ],
+   "Tj50C_adverse_400mA_theta40_60_80": [
+    89.5465279701759,
+    109.31979195526384,
+    129.0930559403518
+   ],
+   "theta_max_for125C_adverse_400mA": 75.86000981584165,
+   "LDO_W_500mA_nom_adverse": [
+    0.786538000000001,
+    1.2287784229495209
+   ],
+   "Tj50C_adverse_500mA_theta40_60_80": [
+    99.15113691798084,
+    123.72670537697125,
+    148.30227383596167
+   ],
+   "theta_max_for125C_adverse_500mA": 61.036228012510485,
+   "LDO_W_600mA_nom_adverse": [
+    0.9384380000000011,
+    1.4688936466446445
+   ],
+   "Tj50C_adverse_600mA_theta40_60_80": [
+    108.75574586578578,
+    138.13361879867867,
+    167.51149173157157
+   ],
+   "theta_max_for125C_adverse_600mA": 51.058836132432425,
+   "thermal_max_pos_A_adverse_theta40": 0.7691297815714475,
+   "thermal_max_pos_A_adverse_theta60": 0.5088380806197546,
+   "thermal_max_pos_A_adverse_theta80": 0.37869223014390807
+  }
+ },
+ "lowest_ratio": {
+  "full_precise": {
+   "ratio_min_required": 9.949804207658145,
+   "nominal_raw_V": 13.457309371211862
+  },
+  "25C_precise": {
+   "ratio_min_required": 9.757199822773591,
+   "nominal_raw_V": 13.220598582188744
+  },
+  "full_basic": {
+   "ratio_min_required": 10.283639102525644,
+   "nominal_raw_V": 13.867592457004017
+  }
+ },
+ "budget": {
+  "A_allBasic_10k+330_over_1k": {
+   "nominal_9V_P5_100mA_neg0mA_max_pos_power_only_A": 0.9464098970381131,
+   "nominal_9V_P5_100mA_neg150mA_max_pos_power_only_A": 0.7556050822395233,
+   "nominal_9V_P5_100mA_neg200mA_max_pos_power_only_A": 0.6920034773066599,
+   "nominal_9V_P5_100mA_neg250mA_max_pos_power_only_A": 0.6284018723737967,
+   "nominal_9V_P5_100mA_pos400_neg200_source_A": 1.289828985927322,
+   "nominal_9V_P5_100mA_pos500_neg200_source_A": 1.4794878338156856,
+   "nominal_9V_P5_100mA_pos600_neg150_source_A": 1.5490734548550869,
+   "nominal_9V_P5_100mA_pos600_neg0_source_A": 1.1875573702737725,
+   "nominal_9V_P5_250mA_neg0mA_max_pos_power_only_A": 0.8925482697131759,
+   "nominal_9V_P5_250mA_neg150mA_max_pos_power_only_A": 0.7017434549145861,
+   "nominal_9V_P5_250mA_neg200mA_max_pos_power_only_A": 0.6381418499817229,
+   "nominal_9V_P5_250mA_neg250mA_max_pos_power_only_A": 0.5745402450488596,
+   "nominal_9V_P5_250mA_pos400_neg200_source_A": 1.3917082630406163,
+   "nominal_9V_P5_250mA_pos500_neg200_source_A": 1.5825659114113328,
+   "nominal_9V_P5_250mA_pos600_neg150_source_A": 1.6525984990300273,
+   "nominal_9V_P5_250mA_pos600_neg0_source_A": 1.2888017418999347,
+   "low_8p55V_P5_100mA_neg0mA_max_pos_power_only_A": 0.7922921993570035,
+   "low_8p55V_P5_100mA_neg150mA_max_pos_power_only_A": 0.5766622096782895,
+   "low_8p55V_P5_100mA_neg200mA_max_pos_power_only_A": 0.5047855464520516,
+   "low_8p55V_P5_100mA_neg250mA_max_pos_power_only_A": 0.43290888322581367,
+   "low_8p55V_P5_100mA_pos400_neg200_source_A": 1.6088937500856293,
+   "low_8p55V_P5_100mA_pos500_neg200_source_A": 1.8389040246468102,
+   "low_8p55V_P5_100mA_pos600_neg150_source_A": 1.9042304522105624,
+   "low_8p55V_P5_100mA_pos600_neg0_source_A": 1.410439503689826,
+   "low_8p55V_P5_250mA_neg0mA_max_pos_power_only_A": 0.7414017769783455,
+   "low_8p55V_P5_250mA_neg150mA_max_pos_power_only_A": 0.5257717872996315,
+   "low_8p55V_P5_250mA_neg200mA_max_pos_power_only_A": 0.4538951240733936,
+   "low_8p55V_P5_250mA_neg250mA_max_pos_power_only_A": 0.3820184608471557,
+   "low_8p55V_P5_250mA_pos400_neg200_source_A": 1.725508388954486,
+   "low_8p55V_P5_250mA_pos500_neg200_source_A": 1.9573256783346658,
+   "low_8p55V_P5_250mA_pos600_neg150_source_A": 2.0231756234248603,
+   "low_8p55V_P5_250mA_pos600_neg0_source_A": 1.525538945518086
+  },
+  "B_precise_100k_over_10k": {
+   "nominal_9V_P5_100mA_neg0mA_max_pos_power_only_A": 0.9748621939492564,
+   "nominal_9V_P5_100mA_neg150mA_max_pos_power_only_A": 0.7783332347067089,
+   "nominal_9V_P5_100mA_neg200mA_max_pos_power_only_A": 0.7128235816258597,
+   "nominal_9V_P5_100mA_neg250mA_max_pos_power_only_A": 0.6473139285450106,
+   "nominal_9V_P5_100mA_pos400_neg200_source_A": 1.2677654863645778,
+   "nominal_9V_P5_100mA_pos500_neg200_source_A": 1.451618952441244,
+   "nominal_9V_P5_100mA_pos600_neg150_source_A": 1.515515042691863,
+   "nominal_9V_P5_100mA_pos600_neg0_source_A": 1.154732197191045,
+   "nominal_9V_P5_250mA_neg0mA_max_pos_power_only_A": 0.9193847178045711,
+   "nominal_9V_P5_250mA_neg150mA_max_pos_power_only_A": 0.7228557585620237,
+   "nominal_9V_P5_250mA_neg200mA_max_pos_power_only_A": 0.6573461054811744,
+   "nominal_9V_P5_250mA_neg250mA_max_pos_power_only_A": 0.5918364524003253,
+   "nominal_9V_P5_250mA_pos400_neg200_source_A": 1.3695071177328586,
+   "nominal_9V_P5_250mA_pos500_neg200_source_A": 1.5545191049218587,
+   "nominal_9V_P5_250mA_pos600_neg150_source_A": 1.618824047974602,
+   "nominal_9V_P5_250mA_pos600_neg0_source_A": 1.2557744684240824,
+   "low_8p55V_P5_100mA_neg0mA_max_pos_power_only_A": 0.8406299317036418,
+   "low_8p55V_P5_100mA_neg150mA_max_pos_power_only_A": 0.611877485660084,
+   "low_8p55V_P5_100mA_neg200mA_max_pos_power_only_A": 0.5356266703122315,
+   "low_8p55V_P5_100mA_neg250mA_max_pos_power_only_A": 0.45937585496437905,
+   "low_8p55V_P5_100mA_pos400_neg200_source_A": 1.556343861226848,
+   "low_8p55V_P5_100mA_pos500_neg200_source_A": 1.7723061391017279,
+   "low_8p55V_P5_100mA_pos600_neg150_source_A": 1.8240530507689527,
+   "low_8p55V_P5_100mA_pos600_neg0_source_A": 1.332821560642607,
+   "low_8p55V_P5_250mA_neg0mA_max_pos_power_only_A": 0.7866425034398218,
+   "low_8p55V_P5_250mA_neg150mA_max_pos_power_only_A": 0.557890057396264,
+   "low_8p55V_P5_250mA_neg200mA_max_pos_power_only_A": 0.4816392420484115,
+   "low_8p55V_P5_250mA_neg250mA_max_pos_power_only_A": 0.4053884267005591,
+   "low_8p55V_P5_250mA_pos400_neg200_source_A": 1.6725533974682136,
+   "low_8p55V_P5_250mA_pos500_neg200_source_A": 1.8901988272085362,
+   "low_8p55V_P5_250mA_pos600_neg150_source_A": 1.9423563354926028,
+   "low_8p55V_P5_250mA_pos600_neg0_source_A": 1.4473390869785607
+  }
+ },
+ "negative_peak_TI_eq": {
+  "nominal_9V_200mA_A": 1.2400593750000002,
+  "low_8p55V_200mA_A": 1.3616578733766234,
+  "nominal_9V_250mA_A": 1.5395906250000002,
+  "low_8p55V_250mA_A": 1.690560741341991,
+  "nominal_9V_300mA_A": 1.839121875,
+  "low_8p55V_300mA_A": 2.019463609307359
+ },
+ "negative": {
+  "precise_90k9P+1k2B_over_10kP|RB150k|rawPrecise|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 11.643515794734979,
+   "raw_DC": [
+    13.486238748970486,
+    14.756540007820982
+   ],
+   "peak_V": 14.856540007820982,
+   "peak_margin_to_15V": 0.14345999217901806,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "precise_90k9P+1k2B_over_10kP|RB150k|rawPrecise|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 11.71899916663308,
+   "raw_DC": [
+    13.486238748970486,
+    14.940249452074617
+   ],
+   "peak_V": 15.040249452074617,
+   "peak_margin_to_15V": -0.040249452074617054,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "precise_90k9P+1k2B_over_10kP|RB150k|rawBasic|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 12.035460117580612,
+   "raw_DC": [
+    13.486238748970486,
+    15.761870225648781
+   ],
+   "peak_V": 15.861870225648781,
+   "peak_margin_to_15V": -0.8618702256487811,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "precise_90k9P+1k2B_over_10kP|RB150k|rawBasic|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 12.114791913472981,
+   "raw_DC": [
+    13.486238748970486,
+    15.958293720620215
+   ],
+   "peak_V": 16.058293720620217,
+   "peak_margin_to_15V": -1.0582937206202168,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "precise_90k9P+1k2B_over_10kP|RB121k|rawPrecise|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 11.629034374318824,
+   "raw_DC": [
+    13.486238748970486,
+    14.721295507876729
+   ],
+   "peak_V": 14.821295507876728,
+   "peak_margin_to_15V": 0.17870449212327166,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "precise_90k9P+1k2B_over_10kP|RB121k|rawPrecise|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 11.689696501247901,
+   "raw_DC": [
+    13.486238748970484,
+    14.868933396131489
+   ],
+   "peak_V": 14.968933396131488,
+   "peak_margin_to_15V": 0.031066603868511677,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "precise_90k9P+1k2B_over_10kP|RB121k|rawBasic|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 12.02024233800567,
+   "raw_DC": [
+    13.486238748970486,
+    15.724191393142958
+   ],
+   "peak_V": 15.824191393142957,
+   "peak_margin_to_15V": -0.8241913931429572,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "precise_90k9P+1k2B_over_10kP|RB121k|rawBasic|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.611807709479589,
+    12.386238748970484
+   ],
+   "raw_ratio_needed": 12.083993255245147,
+   "raw_DC": [
+    13.486238748970486,
+    15.882037031590395
+   ],
+   "peak_V": 15.982037031590394,
+   "peak_margin_to_15V": -0.9820370315903943,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_91k+1k2_over_10k|RB150k|rawPrecise|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 11.975381237776007,
+   "raw_DC": [
+    13.871309843222324,
+    15.176449337872826
+   ],
+   "peak_V": 15.276449337872826,
+   "peak_margin_to_15V": -0.2764493378728261,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_91k+1k2_over_10k|RB150k|rawPrecise|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 12.053016049419526,
+   "raw_DC": [
+    13.871309843222324,
+    15.3653948995658
+   ],
+   "peak_V": 15.4653948995658,
+   "peak_margin_to_15V": -0.4653948995657995,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_91k+1k2_over_10k|RB150k|rawBasic|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 12.378496823549577,
+   "raw_DC": [
+    13.871309843222324,
+    16.210433646442944
+   ],
+   "peak_V": 16.310433646442945,
+   "peak_margin_to_15V": -1.3104336464429451,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_91k+1k2_over_10k|RB150k|rawBasic|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 12.460089747614502,
+   "raw_DC": [
+    13.871309843222326,
+    16.412455636862962
+   ],
+   "peak_V": 16.512455636862963,
+   "peak_margin_to_15V": -1.5124556368629634,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_91k+1k2_over_10k|RB121k|rawPrecise|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 11.960487065482587,
+   "raw_DC": [
+    13.871309843222324,
+    15.140200293270844
+   ],
+   "peak_V": 15.240200293270844,
+   "peak_margin_to_15V": -0.2402002932708438,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_91k+1k2_over_10k|RB121k|rawPrecise|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 12.02287819454333,
+   "raw_DC": [
+    13.871309843222326,
+    15.292046181416627
+   ],
+   "peak_V": 15.392046181416626,
+   "peak_margin_to_15V": -0.3920461814166263,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_91k+1k2_over_10k|RB121k|rawBasic|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 12.362845304264932,
+   "raw_DC": [
+    13.871309843222324,
+    16.171680885523802
+   ],
+   "peak_V": 16.271680885523804,
+   "peak_margin_to_15V": -1.2716808855238035,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_91k+1k2_over_10k|RB121k|rawBasic|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.285069525201253,
+    12.771309843222324
+   ],
+   "raw_ratio_needed": 12.428413260856349,
+   "raw_DC": [
+    13.871309843222324,
+    16.334025466872934
+   ],
+   "peak_V": 16.434025466872935,
+   "peak_margin_to_15V": -1.434025466872935,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_lowZ_9k1+120_over_1k|RB150k|rawPrecise|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 11.968086036294618,
+   "raw_DC": [
+    13.862845053422324,
+    15.167218719768773
+   ],
+   "peak_V": 15.267218719768772,
+   "peak_margin_to_15V": -0.2672187197687723,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_lowZ_9k1+120_over_1k|RB150k|rawPrecise|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 12.045673554112444,
+   "raw_DC": [
+    13.862845053422326,
+    15.356049178993265
+   ],
+   "peak_V": 15.456049178993265,
+   "peak_margin_to_15V": -0.4560491789932648,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_lowZ_9k1+120_over_1k|RB150k|rawBasic|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 12.370956050811614,
+   "raw_DC": [
+    13.862845053422324,
+    16.200573142432976
+   ],
+   "peak_V": 16.300573142432977,
+   "peak_margin_to_15V": -1.3005731424329774,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_lowZ_9k1+120_over_1k|RB150k|rawBasic|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 12.452499269835114,
+   "raw_DC": [
+    13.862845053422326,
+    16.402472064443355
+   ],
+   "peak_V": 16.502472064443356,
+   "peak_margin_to_15V": -1.5024720644433565,
+   "VREF_load_uA": 8.086666666666666
+  },
+  "basic_lowZ_9k1+120_over_1k|RB121k|rawPrecise|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 11.953200937281256,
+   "raw_DC": [
+    13.862845053422324,
+    15.130991757477048
+   ],
+   "peak_V": 15.230991757477048,
+   "peak_margin_to_15V": -0.2309917574770477,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_lowZ_9k1+120_over_1k|RB121k|rawPrecise|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 12.015554058712167,
+   "raw_DC": [
+    13.862845053422324,
+    15.28274514365348
+   ],
+   "peak_V": 15.38274514365348,
+   "peak_margin_to_15V": -0.3827451436534801,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_lowZ_9k1+120_over_1k|RB121k|rawBasic|IFBN50nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 12.355314066170118,
+   "raw_DC": [
+    13.862845053422324,
+    16.161843989046098
+   ],
+   "peak_V": 16.2618439890461,
+   "peak_margin_to_15V": -1.261843989046099,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "basic_lowZ_9k1+120_over_1k|RB121k|rawBasic|IFBN100nA": {
+   "N12_mag_bounds": [
+    11.293202395001254,
+    12.762845053422325
+   ],
+   "raw_ratio_needed": 12.420842079861638,
+   "raw_DC": [
+    13.862845053422326,
+    16.324089672798
+   ],
+   "peak_V": 16.424089672798,
+   "peak_margin_to_15V": -1.4240896727980008,
+   "VREF_load_uA": 10.024793388429753
+  },
+  "prior046_candidate_IFBN50nA": {
+   "raw_DC": [
+    13.500830539285637,
+    14.83237951283287
+   ],
+   "headroom_V": 1.0145917903151531,
+   "peak_V": 14.93237951283287
+  },
+  "prior046_candidate_IFBN100nA": {
+   "raw_DC": [
+    13.412289439285638,
+    14.921840612832872
+   ],
+   "headroom_V": 0.9260506903151544,
+   "peak_V": 15.021840612832872
+  }
+ }
+}
