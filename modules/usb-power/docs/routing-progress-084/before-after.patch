@@ -1,0 +1,32 @@
+--- EXACT081/usb-power.kicad_pcb
++++ 084/usb-power.kicad_pcb
+@@ -31861,14 +31861,6 @@
+ 		(uuid "8d691e00-5688-539b-b413-a23ddca9e760")
+ 	)
+ 	(via
+-		(at 130.9 81.8)
+-		(size 0.65)
+-		(drill 0.3)
+-		(layers "F.Cu" "B.Cu")
+-		(net "/GND")
+-		(uuid "8e4785b7-9f30-5b83-8fb8-c7b164066610")
+-	)
+-	(via
+ 		(at 69.9 83.5)
+ 		(size 0.6)
+ 		(drill 0.3)
+@@ -32331,14 +32323,6 @@
+ 		(layer "B.Cu")
+ 		(net "/GND")
+ 		(uuid "902db384-ea62-5e72-937d-c11ef3896408")
+-	)
+-	(segment
+-		(start 131.65 81.8)
+-		(end 130.9 81.8)
+-		(width 1.5)
+-		(layer "B.Cu")
+-		(net "/GND")
+-		(uuid "b1dbe53d-475c-520a-9397-f12c9fdaa468")
+ 	)
+ 	(segment
+ 		(start 113.2 76.5)
