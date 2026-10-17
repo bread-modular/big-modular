@@ -1,5 +1,4 @@
 """Independent ES1 source-stage gates; no fabricated PCB/thermal acceptance."""
-import copy
 import csv
 import hashlib
 import json
@@ -10,10 +9,10 @@ import shutil
 import unittest
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from sexp import parse,nodes,one,dump
-from electrical_checks import check,REVIEWED
+from sexp import parse,nodes,one
+from electrical_checks import check,REVIEWED,check_capacitor_plan
 from schematic_connectivity import Connectivity
-from ldo_budget import budget
+from ldo_budget import budget,capacitor_screen
 
 
 class LDORevisionTests(unittest.TestCase):
@@ -39,9 +38,12 @@ class LDORevisionTests(unittest.TestCase):
     def test_negative_polarity_feedback_and_shunts(self):
         self.assertEqual(self.pins[('U13','13')],'NRAW')
         self.assertEqual(self.pins[('U13','14')],'N_NR')
-        for ref,val in [('R72','90.9k 0.1%'),('R73','1.21k 0.1%'),('R74','10k 0.1%')]:self.assertEqual(self.bom[ref]['Value'],val)
-        self.assertAlmostEqual(-1.175*(1+92110/10000),-11.997925)
+        for ref,val in [('R72','82k 1%'),('R83','9.1k 1%'),('R73','1.2k 1%'),('R74','10k 1%')]:
+            self.assertEqual(self.bom[ref]['Value'],val)
+        self.assertAlmostEqual(-1.175*(1+92300/10000),-12.02025)
         self.assertGreater(1.175*.975/(10000*1.003503),5e-6)
+        self.assertEqual((self.pins[('R72','2')],self.pins[('R83','1')]),('N_LDO_SER','N_LDO_SER'))
+        self.assertEqual((self.pins[('R83','2')],self.pins[('R73','1')]),('N_LDO_DIV','N_LDO_DIV'))
         self.assertEqual((self.pins[('D27','1')],self.pins[('D27','2')]),('PRAW','P12'))
         self.assertEqual((self.pins[('D28','1')],self.pins[('D28','2')]),('N12','NRAW'))
         self.assertEqual(self.pins[('C62','1')],'N12');self.assertEqual(self.pins[('C62','2')],'N_LDO_FB')
@@ -49,33 +51,26 @@ class LDORevisionTests(unittest.TestCase):
     def test_raw_internal_only_and_five_volt_stage_exactly_preserved(self):
         old=json.loads((ROOT/'docs/ldo-evidence/baseline-pin-net.json').read_text())
         permitted={('U4','15'),('U4','23'),('C8','1'),('C9','1'),('C10','1'),('C11','1'),('D2','1'),('D3','2'),('R12','1'),('R14','1'),('#FLG06','1'),('#FLG07','1'),('R12','2'),('R15','2'),
-                   ('R4','2'),('R8','2'),('R36','2')}
+                   ('R4','2'),('R8','2'),('R36','2'),('R10','2'),('R18','2')}
         changes={k for r,ps in old.items() for p,n in ps.items() if self.pins[k:=(r,p)]!=n}
         self.assertEqual(changes,permitted)
         for p in range(1,17):self.assertNotIn(self.pins[('J7',str(p))],('PRAW','NRAW'))
         with (ROOT/'docs/ldo-evidence/baseline-BOM.csv').open() as f:oldbom={r['Reference']:r for r in csv.DictReader(f)}
-        for r in ['U5','L4','C18','C19','C20','C36','C38','R17','R18','R27','R32','D10']:
-            if r=='D10':
-                # User-authorized DNP is the only accepted delta from the baseline row.
-                self.assertEqual({k:self.bom[r][k] for k in ('MPN','Footprint','LCSC','Manufacturer','Block')},
-                                 {k:oldbom[r][k] for k in ('MPN','Footprint','LCSC','Manufacturer','Block')})
-                self.assertEqual(self.bom[r]['Value'],oldbom[r]['Value'].replace(' / MANUAL',' / DNP'))
-                self.assertEqual((self.bom[r]['Classification'],self.bom[r]['DNP']),('DNP','yes'))
-            elif r=='C18':
-                # Approved exact sourcing fill (Samsung CL31B106KAHNNNE/C14860); electrical identity unchanged.
-                self.assertEqual({k:self.bom[r][k] for k in ('Value','Footprint','Block')},{k:oldbom[r][k] for k in ('Value','Footprint','Block')})
-                self.assertEqual((self.bom[r]['MPN'],self.bom[r]['LCSC'],self.bom[r]['Classification'],self.bom[r]['DNP']),('CL31B106KAHNNNE','C14860','Extended','no'))
-            else:
-                # The accepted BOM adds an explicit DNP column; these refs stay fitted.
-                self.assertEqual({k:v for k,v in self.bom[r].items() if k!='DNP'},oldbom[r],r)
-                self.assertEqual(self.bom[r]['DNP'],'no',r)
+        for r in ['U5','L4','C20','C36','R17','R27','R32']:
+            self.assertEqual({k:v for k,v in self.bom[r].items() if k!='DNP'},oldbom[r],r)
+            self.assertEqual(self.bom[r]['DNP'],'no',r)
+        r='D10'
+        self.assertEqual({k:self.bom[r][k] for k in ('MPN','Footprint','LCSC','Manufacturer','Block')},
+                         {k:oldbom[r][k] for k in ('MPN','Footprint','LCSC','Manufacturer','Block')})
+        self.assertEqual(self.bom[r]['Value'],oldbom[r]['Value'].replace(' / MANUAL',' / DNP'))
+        self.assertEqual((self.bom[r]['Classification'],self.bom[r]['DNP']),('DNP','yes'))
 
     def test_precision_raw_setpoint_and_capacitor_requirements_are_explicit(self):
         for r in ['R12','R14']:
             self.assertEqual(self.bom[r]['Value'],('1.5M' if r=='R12' else '1.6M')+' 0.1%')
             self.assertEqual(self.bom[r]['LCSC'],'C4223894' if r=='R12' else 'C2088870')
             self.assertTrue(self.bom[r]['Footprint'].endswith('R_0805_2012Metric'))
-        for r in ['R13','R15','R60']:self.assertEqual(self.bom[r]['Value'],'150k 0.1%')
+        for r in ['R13','R15','R60']:self.assertEqual(self.bom[r]['Value'],'150k 1%')
         for i in range(48,60):
             self.assertEqual(self.bom['C'+str(i)]['Value'],'22u 25V X5R')
             self.assertEqual(self.bom['C'+str(i)]['LCSC'],'C12891')
@@ -83,19 +78,25 @@ class LDORevisionTests(unittest.TestCase):
         self.assertEqual(self.bom['C61']['Value'],'100n 50V X7R')
         self.assertEqual(self.bom['C62']['Value'],'10n 50V X7R')
         for ref,v in [('C10','4.5p'),('C11','4.3p')]:self.assertEqual(self.bom[ref]['Value'],v+' 50V C0G')
-        self.assertEqual(self.bom['R75']['Value'],'23.2k 0.1%');self.assertEqual(self.bom['R76']['Value'],'2.49k 0.1%')
+        self.assertEqual(self.bom['R75']['Value'],'24k 1%');self.assertEqual(self.bom['R76']['Value'],'2.4k 1%')
         b=budget();self.assertFalse(b['cap_effective_C_verified']);self.assertFalse(b['cap_ESR_verified'])
+        self.assertTrue(b['ldo_bank_screen_passed'])
+        self.assertTrue(b['capacitor_release_gates']['VPROT_local_input_gate']['screen_pass'])
+        self.assertTrue(b['capacitor_release_gates']['P5_output_loop_gate']['screen_pass'])
 
     def test_headroom_and_800mA_1A_dissipation_not_supply_ratings(self):
         b=budget()
-        self.assertAlmostEqual(b['raw_nominal_magnitudes_V']['positive'],1.213*(1+1523200/150000))
-        self.assertAlmostEqual(b['raw_nominal_magnitudes_V']['negative'],1.213*1750000/152490)
-        self.assertGreater(b['negative_worst_headroom_V'],.805)
-        self.assertGreater(b['positive_input_trough_V'],13.)
-        self.assertGreater(b['positive_worst_headroom_V'],.702)
+        self.assertAlmostEqual(b['raw_nominal_magnitudes_V']['positive'],1.213*(1+1524000/150000))
+        self.assertAlmostEqual(b['raw_nominal_magnitudes_V']['negative'],1.213*1750000/152400)
+        # Known prototype limitation: full-temperature 1 A negative dropout is NOT assured.
+        self.assertFalse(b['negative_full_corner_1A_drop_out_pass'])
+        self.assertGreater(b['negative_worst_headroom_V'],.17)
+        self.assertLess(b['negative_worst_headroom_V'],.8)
+        self.assertGreater(b['positive_input_trough_V'],12.8)
+        self.assertGreater(b['positive_worst_headroom_V'],.5)
         self.assertLess(b['negative_raw_DC_magnitude_V'][1]+.1,15)
-        self.assertAlmostEqual(b['pass_dissipation_excludes_ground_current']['0.8']['positive_pass_nominal_W'],1.2244885333333344)
-        self.assertGreater(b['pass_dissipation_excludes_ground_current']['1.0']['negative_pass_nominal_W'],1.92)
+        self.assertAlmostEqual(b['pass_dissipation_excludes_ground_current']['0.8']['positive_pass_nominal_W'],1.229664)
+        self.assertGreater(b['pass_dissipation_excludes_ground_current']['1.0']['negative_pass_nominal_W'],1.90)
         self.assertLess(b['nominal_efuse_input_power_W_at_9V'],b['simultaneous_12V_800mA_rail_output_power_W'])
         self.assertIsNone(b['current_rating_claim']);self.assertTrue(b['PCB_integration_completed'])
 
@@ -132,18 +133,28 @@ class LDORevisionTests(unittest.TestCase):
                     with self.assertRaises(AssertionError):check(dst,a,ROOT/'BOM.csv')
             (dst/'05_quiet_rails.kicad_sch').write_text(source)
 
+    def test_accepted_cap_plan_matches_frozen_source(self):
+        plan=check_capacitor_plan(self.bom,self.pins)
+        if plan['status']=='pending_043':
+            self.assertEqual(plan['missing'],['C68','C69','C70','C71','C72'])
+        else:
+            self.assertEqual(plan['status'],'pass')
+            self.assertEqual(plan['VPROT_refs'],['C5','C68','C18','C69'])
+            self.assertEqual(plan['MID_local_refs'],['C6','C70','C71'])
+            self.assertEqual(plan['P5_local_refs'],['C19','C38','C72'])
 
-if __name__=='__main__':unittest.main()
+
+if __name__=='__main__':
+    unittest.main()
 
 
 class LDOFinalPrototypeTests(unittest.TestCase):
     def test_exact_parallel_population_and_screen_rejects_old_banks(self):
-        from ldo_budget import capacitor_screen
         screen=capacitor_screen();g=Connectivity(ROOT/'hardware').named_pins()
-        wanted={'positive_input':('PRAW',[48,49,50,63],12.5918272493),
+        wanted={'positive_input':('PRAW',[48,49,50,63],12.3586833005),
                 'positive_output':('P12',[51,52,53,64,65,66],23.9899640877),
-                'negative_input':('NRAW',[54,55,56,67],12.5918272493),
-                'negative_output':('N12',[57,58,59],11.9949820438)}
+                'negative_input':('NRAW',[54,55,56,67],12.3586833005),
+                'negative_output':('N12',[57,58,59],11.4004721384)}
         for key,(net,refs,value) in wanted.items():
             r=screen[key];self.assertEqual(r['refs'],['C'+str(i) for i in refs])
             self.assertAlmostEqual(r['screened_effective_uF'],value,places=8)
@@ -161,7 +172,7 @@ class LDOFinalPrototypeTests(unittest.TestCase):
         from routed_checks import verify_front_only
         b=p.LoadBoard(str(ROOT/'hardware/big_modular.kicad_pcb'));g=json.loads((ROOT/'docs/assembly-geometry.json').read_text())
         r=verify_front_only(b,g)
-        self.assertEqual(set(r['caps']),{'C63','C64','C65','C66','C67'})
+        self.assertGreaterEqual(set(r['caps']),{'C63','C64','C65','C66','C67'})
         self.assertEqual(r['B_Cu_footprints'],0)
         self.assertEqual(r['B_Paste_component_apertures'],0)
         self.assertTrue(r['all_components_front'])

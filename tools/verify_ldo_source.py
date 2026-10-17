@@ -10,10 +10,10 @@ import hashlib
 import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
-from electrical_checks import check
+from electrical_checks import check,check_capacitor_plan
 from ldo_budget import budget
 ROOT=Path(__file__).resolve().parents[1]
-NEW_REFS={*(f'C{i}' for i in range(48,68)),'U12','U13','D27','D28','R72','R73','R74','R75','R76'}
+NEW_REFS={*(f'C{i}' for i in range(48,68)),'U12','U13','D27','D28','R72','R73','R74','R75','R76','R83','R84','R85','C68','C69','C70','C71','C72'}
 
 
 def verify(reports):
@@ -69,11 +69,23 @@ def verify(reports):
         for field in ['NOTE','Manufacturer','Datasheet']:
             expected_field=c.findtext('datasheet','') if field=='Datasheet' else schfields.get(field,'')
             assert props.get(field,'')==expected_field,(r,field,'PCB/schematic mismatch');checked+=1
-    screen=budget();assert screen['cap_prototype_screen_passed']
-    result.update(status='integrated native electrical and exact-field parity pass; prototype screen only',
+    screen=budget()
+    # The accepted 043 local-cap plan must actually exist in the frozen source.
+    plan=check_capacitor_plan(bom,actual)
+    assert plan['status']=='pass',('accepted capacitor plan not present',plan)
+    assert screen['ldo_bank_screen_passed']
+    assert screen['capacitor_release_gates']['VPROT_local_input_gate']['screen_pass']
+    assert screen['capacitor_release_gates']['P5_output_loop_gate']['screen_pass']
+    assert screen['MID_and_P5']['upper_with_ripple_below_5p5']
+    # KNOWN prototype limitation: do not turn this into a pass.
+    assert screen['negative_full_corner_1A_drop_out_pass'] is False
+    result.update(status='integrated native electrical and exact-field parity pass; prototype screen only; negative full-temperature 1 A dropout FAIL not waived',
       native_components=len(comps),native_pins_including_NC=len(actual),native_explicit_NCs=nc,
       native_connected_pins=len(actual)-nc,native_ERC_findings=0,native_DRC_findings=0,
       PCB_BOM_schematic_field_checks=checked,PCB_integration_completed=True,
+      capacitor_plan=plan,capacitor_plan_implemented=True,capacitor_bench_qualified=False,capacitor_release_gates=screen['capacitor_release_gates'],
+      negative_full_corner_1A_drop_out_pass=screen['negative_full_corner_1A_drop_out_pass'],
+      MID_peak_with_allocation_V=screen['MID_and_P5']['peak_with_allocation_V'],
       current_rating_claim=None,qualified_quiet_hardware=False,preserved_file_count=len(frozen),DC_budget=screen)
     return result
 

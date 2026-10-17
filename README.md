@@ -1,28 +1,32 @@
 # Big Modular — LDO-R1 prototype
 
-**Canonical PCB integration complete; capacitor-corrected prototype.**
-99 electrical+4 mechanical footprints,552 tracks,201 ordinary 0.300 mm plated through vias,
+**Canonical PCB integration complete; capacitor-closure 043 current.**
+Current source: 107 electrical+4 mechanical footprints,585 tracks,207 ordinary 0.300 mm plated through vias,
 8 zones; unchanged passive panel and fixed USB/retry/redLED/output interfaces.
 
 ```
-9V PD -> TPS26600 -> TPS54302 MID -> TPS65131 raw+13.531/-13.921V
+9V PD -> TPS26600 -> TPS54302 MID -> TPS65131 raw+13.537/-13.929V
                                         -> TPS7A4700/TPS7A3301 -> quiet +/-12V
                  -> independent TPS54302 -> final+5V (no LDO)
 ```
 
 - [Schematic PDF](docs/schematic.pdf) · [layout/review images](docs/ldo-review/)
-- [Current release manifest — exact source/PCB SHA](production/ldo-r1/manifest.json) · [assembly BOM/CPL](production/ldo-r1/assembly/) · [fabrication requirements](docs/fabrication.md)
+- [Current release manifest](production/ldo-r1/manifest.json) · [assembly BOM/CPL](production/ldo-r1/assembly/) · [fabrication requirements](docs/fabrication.md)
 - [Electrical/capacitor limits](docs/ldo-revision.md) · [build/check commands](docs/build.md)
 - [Assembly geometry](docs/assembly-geometry.json) · [mechanical interfaces](docs/mechanics.md)
-- Capacitor screen: IN+/OUT+/IN-/OUT- =12.592/23.990/12.592/11.995uF;
-  typical bias with tolerance/temp/aging allowances, NOT measured/guaranteed minima.
+- LDO capacitor screen: IN+/OUT+/IN-/OUT- =12.359/23.990/12.359/11.400uF at
+  15/12.4/15/12.9V; typical bias with tolerance/temp/aging allowances, NOT
+  measured/guaranteed minima. The implemented 043 local plan adds 2x22u per VPROT
+  buck (10.664uF screen), 3x22u local MID and P5 banks (27.631uF; 39.164kHz
+  estimated crossover); bench/loop evidence remains pending.
 - All components front-side (single-side assembly); C63-C67 on F.Cu. Bare-PCB fabrication
   plus a separate JLC assembly BOM/CPL; no assembly qualification, order/allocation approval,
   verified noise/PSRR/thermal/current or reverse/shutdown performance.
 - Historical production/hro-r1 is STALE for this circuit and untouched.
   Supervisor reviews/merges; no assistant commit/merge/push or vendor upload.
 
-Current source/native checkpoint: [Basic passives + D10 DNP](docs/basic-passives-checkpoint.md).
+Current source/native checkpoint: [Basic passives + D10 DNP](docs/basic-swaps-checkpoint.md).
 D10 is DNP: footprint/pads retained, not fitted or purchased; R32 remains fitted.
-Current production/ldo-r1 has been re-exported from this exact frozen source with
-JLC assembly BOM/CPL; old-count regressions were reconciled without weakening checks.
+Production/ldo-r1 is regenerated from the current 043 frozen source, including a
+fresh bare-PCB CAM two-pass export and a separate JLC assembly BOM/CPL. It is not a
+qualified, ordered or supplier-approved build.

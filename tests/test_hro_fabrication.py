@@ -47,7 +47,7 @@ class FabricationTests(unittest.TestCase):
 
     def test_native_via_disks_not_annular_rings_or_centres(self):
         r=via_audit(ROOT/'hardware/big_modular.kicad_pcb')
-        self.assertEqual((r['via_count'],r['barrels_over_exposed_SMD_copper'],r['barrels_over_paste'],r['barrels_at_SMD_boundary_only']),(201,93,92,6))
+        self.assertEqual((r['via_count'],r['barrels_over_exposed_SMD_copper'],r['barrels_over_paste'],r['barrels_at_SMD_boundary_only']),(207,86,85,7))
         # U2 EP end vias are outside its separate central mask window; do not
         # assume every thermal-pad via intersects EXPOSED copper or paste.
         self.assertEqual({h['pad'] for v in r['vias'] for h in v['exposed_SMD_copper_hits'] if h['ref']=='U2'},{'5','6'})
@@ -115,12 +115,16 @@ if __name__=='__main__':unittest.main()
 
 
 class LDOReleaseTests(unittest.TestCase):
-    def test_current_release_exact_source_assets_and_zip_members(self):
+    def test_current_release_source_assets_and_history_marked_stale(self):
         root=ROOT/'production/ldo-r1';m=json.loads((root/'manifest.json').read_text())
         self.assertEqual(m['release'],'LDO-R1')
         self.assertFalse(m['source_state']['revision_committed'])
+        self.assertIn('STALE',(ROOT/'production/README.md').read_text())
+        # REQUIRED gate: every manifest source hash must match this exact tree.
+        for f,h in m['source_sha256'].items():
+            self.assertEqual(hashlib.sha256((ROOT/f).read_bytes()).hexdigest(),h,f)
+        # Current assets and ZIP members remain independently checked.
         for f,v in m['files'].items():self.assertEqual(hashlib.sha256((root/f).read_bytes()).hexdigest(),v['sha256'],f)
-        for f,h in m['source_sha256'].items():self.assertEqual(hashlib.sha256((ROOT/f).read_bytes()).hexdigest(),h,f)
         rec=json.loads((root/'release-validation.json').read_text())
         for name,record in rec['archives'].items():
             with zipfile.ZipFile(root/name) as z:
@@ -129,13 +133,13 @@ class LDOReleaseTests(unittest.TestCase):
                 for f in z.namelist():self.assertEqual(z.read(f),(folder/f).read_bytes())
                 self.assertFalse(any(f.endswith('.csv') for f in z.namelist()))
                 if 'BARE-PCB' in name:self.assertFalse(any('Paste.gbr' in f for f in z.namelist()))
-        self.assertEqual({k:rec[k] for k in ['tracks','vias','zones']},{'tracks':552,'vias':201,'zones':8})
+        self.assertEqual({k:rec[k] for k in ['tracks','vias','zones']},{'tracks':585,'vias':207,'zones':8})
 
     def test_new_CAM_population_sides_and_unchanged_panel(self):
         d=json.loads((ROOT/'production/ldo-r1/cam-inspection.json').read_text());c=d['carrier']
-        self.assertEqual(c['IPC_records_checked'],523)
-        self.assertEqual(c['drill_tools_mm_hits']['PTH'],{'0.300':201,'0.600':4,'0.900':2,'1.000':16})
-        self.assertEqual((c['via_barrels_exposed_SMD_Cu'],c['via_barrels_paste']),(93,92))
+        self.assertEqual(c['IPC_records_checked'],545)
+        self.assertEqual(c['drill_tools_mm_hits']['PTH'],{'0.300':207,'0.600':4,'0.900':2,'1.000':16})
+        self.assertEqual((c['via_barrels_exposed_SMD_Cu'],c['via_barrels_paste']),(86,85))
         self.assertEqual(c['B_Cu_SMD_lands'],0);self.assertEqual(c['B_Paste_component_apertures'],0);self.assertTrue(c['single_side_assembly'])
         self.assertTrue(c['In1_GND_connected_polygon'])
         for v in c['RTN_GND_CAM_isolation'].values():self.assertGreaterEqual(v['GND_RTN_gap_mm'],.25)

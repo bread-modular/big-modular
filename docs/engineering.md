@@ -1,9 +1,10 @@
 # Current LDO-R1 prototype
 
-See [LDO revision](ldo-revision.md) for approved raw+13.530611/-13.920585V,
-corrected4/6/4/3 capacitor banks and conditional prototype limits. Canonical PCB and
-schematic are synchronized; the new release is production/ldo-r1. HRO-R1 is
-historical and STALE for this circuit. No bench/noise/thermal/current qualification.
+See [LDO revision](ldo-revision.md) for the current 040 checkpoint
+raw+13.537080/-13.928806V, mixed 0.1%/25ppm retained dividers with 1%/100ppm
+Basic substitutions, corrected4/6/4/3 capacitor banks and conditional prototype
+limits. The 043 local-cap delta is implemented; production/ldo-r1 is regenerated
+from this source. HRO-R1 is historical and untouched. No bench/noise/thermal/current qualification.
 The following V1 decisions remain the unchanged upstream/interface baseline.
 
 # V1 electrical decisions / remaining engineering limits
@@ -48,7 +49,7 @@ no5V-to3.3V-controller-safe claim, dead support nets, external controller or fir
 
 ## Footprints and bounded sourcing
 
-All64 active parts have local footprint assignments and are imported into the carrier.
+All active parts have local footprint assignments and are imported into the carrier.
 L1/L4 replaced the6.5mm Sunlord part, which cannot fit the5.1mm component-normal
 allowance. KOHERelec MDA1040-6R8M C2847552:6.8uH +/-20%, body11+/-0.3 x10+/-0.3,
 height3.8+/-0.2mm. Manufacturer A1 p1 visually checked: lands3.55 x3.5mm,
@@ -66,14 +67,15 @@ G pad width2.4mm,H length5.7mm, centres±2.1mm;6.0±0.3mm body,4.7mm height max.
 [Manufacturer datasheet](https://www.cenkersz.com/file/upload/product_series/SMD_Power_Inductor_CKCS6045_Series.pdf).
 [TI TPS65131 application](https://www.ti.com/lit/ds/symlink/tps65131.pdf).
 
-Exact sourcing evidence for all 97 fitted purchased parts is recorded under
+Exact sourcing evidence for all fitted purchased parts is recorded under
 `research/assembly-evidence/` (dated public snapshots with URL/request/hash; the
 previously sourced 035 lookups plus fresh strict-live lookups for the final changed
 codes). C2847552/C5291878 remain Extended and Economy-observed; **none of this is
 allocation, order or qualification**. D10 is DNP and is not purchased; J7 is a
 manual wire landing, not a purchased header. Basic R/C use exact parts or the small
-series networks R4/R77/R78, R8/R79/R80 and R36/R81/R82; precision resistors and the
-special feedforward capacitors remain explicit Extended exceptions. Do not infer
+series networks R4/R77/R78, R8/R79/R80, R36/R81/R82, R10/R84, R18/R85 and
+R72/R83/R73; retained precision R12/R14, R6 and the special feedforward capacitors
+remain explicit Extended exceptions. Do not infer
 all-part stock from catalog snapshots.
 
 U4 footprint follows TI RGE0024B drawing4219013/A:24 lands0.60x0.25mm on0.5mm

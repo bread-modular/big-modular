@@ -53,10 +53,11 @@ def populate(add, rr, cc, dd, R, pos, neg):
     cc(sh,'C61','100n 50V X7R','N_NR','GND','C14663',note='Negative NR/SS ~-1.175V: 100n targets ~120ms typical startup, not guaranteed sequencing; 1u would be ~1.2s. Noise tradeoff must be measured.')
     cc(sh,'C62','10n 50V X7R','N12','N_LDO_FB','C57112',note='10n from OUT to FB across entire upper divider. Improves AC; fast N12 collapse may kick FB positive. Absolute-limit/shutdown validation required; see SBVA042 section2.3.')
     for ref,value,a,b,code in [
-        ('R72','90.9k','N12','N_LDO_DIV','C728600'),
-        ('R73','1.21k','N_LDO_DIV','N_LDO_FB','C705737'),
-        ('R74','10k','N_LDO_FB','GND','C95204')]:
-        add(sh,ref,R,value+' 0.1%',{'1':a,'2':b},'Resistor_SMD:R_0603_1608Metric',code,
-            note='Precision negative divider: (90.9k+1.21k)/10k; -11.997925V before IFB. Extended candidate: Basic-policy exception NOT approved; assembly blocked. 25ppm/K TCR must be verified.')
+        ('R72','82k','N12','N_LDO_SER','C23254'),
+        ('R83','9.1k','N_LDO_SER','N_LDO_DIV','C23260'),
+        ('R73','1.2k','N_LDO_DIV','N_LDO_FB','C22765'),
+        ('R74','10k','N_LDO_FB','GND','C25804')]:
+        add(sh,ref,R,value+' 1%',{'1':a,'2':b},'Resistor_SMD:R_0603_1608Metric',code,
+            note='Basic negative divider:(82k+9.1k+1.2k)/10k=-12.02025V before IFB. R73 is the only1.2k; total upper92.3k. 1%,100ppm/K. Full independent corners and conditional dropout, not full-temperature1A accuracy; see basic-swaps-checkpoint.md.')
     dd(sh,'D27','PRAW','P12',note='Reverse discharge shunt: anode2=P12, cathode1=PRAW. Not reverse blocking. Validate input collapse/backdrive and current/energy; no hot-parallel supply.')
     dd(sh,'D28','N12','NRAW',note='Negative reverse discharge shunt: anode2=NRAW, cathode1=N12. SS34 Vf does NOT establish OUT-IN >= -0.3V, nor FB/NR absolute limits. Transient qualification gate remains open; not reverse blocking.')

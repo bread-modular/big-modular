@@ -18,6 +18,8 @@ REVIEWED={
  'R4':{'1':'VIN9','2':'UV_SER_1'},'R77':{'1':'UV_SER_1','2':'UV_SER_2'},'R78':{'1':'UV_SER_2','2':'UV_EN'},'R5':{'1':'UV_EN','2':'RTN'},'R6':{'1':'VIN9','2':'OV_SET'},'R7':{'1':'OV_SET','2':'RTN'},
  'R14':{'1':'NRAW','2':'NEG_DIV'},'R60':{'1':'NEG_DIV','2':'NEG_FB'},'R15':{'1':'NEG_FB','2':'NEG_REF_DIV'},'R76':{'1':'NEG_REF_DIV','2':'BI_REF'},'R12':{'1':'PRAW','2':'POS_DIV'},'R75':{'1':'POS_DIV','2':'POS_FB'},
  'R38':{'1':'MID','2':'BI_EN'},'R40':{'1':'BI_EN','2':'GND'},
+ 'R9':{'1':'MID','2':'MID_FB'},'R10':{'1':'MID_FB','2':'MID_DIV_LO'},'R84':{'1':'MID_DIV_LO','2':'GND'},
+ 'R17':{'1':'P5','2':'FIVE_FB'},'R18':{'1':'FIVE_FB','2':'FIVE_DIV_LO'},'R85':{'1':'FIVE_DIV_LO','2':'GND'},
  'J7':{str(i):('N12' if i<=2 else 'GND' if i<=8 else 'P12' if i<=10 else 'P5' if i<=12 else None) for i in range(1,17)},
  'L1':{'1':'MID_SW','2':'MID'},'L4':{'1':'FIVE_SW','2':'P5'},'L2':{'1':'MID','2':'BOOST_SW'},'L3':{'1':'INV_SW','2':'GND'},
 }
@@ -26,7 +28,7 @@ REVIEWED['U12']={'1':'P12','2':None,'3':'P12','4':None,'5':'GND','6':'GND','7':'
 REVIEWED['U13']={'1':'N12','2':None,'3':'N_LDO_FB','4':None,'5':None,'6':None,'7':'GND','8':None,'9':None,'10':None,'11':None,'12':None,'13':'NRAW','14':'N_NR','15':'NRAW','16':'NRAW','17':None,'18':None,'19':None,'20':'N12','21':'GND'}
 for refs,net in [([48,49,50,63],'PRAW'),([51,52,53,64,65,66],'P12'),([54,55,56,67],'NRAW'),([57,58,59],'N12'),([60],'P_NR'),([61],'N_NR')]:
     for i in refs:REVIEWED['C'+str(i)]={'1':net,'2':'GND'}
-REVIEWED.update({'C62':{'1':'N12','2':'N_LDO_FB'},'R72':{'1':'N12','2':'N_LDO_DIV'},'R73':{'1':'N_LDO_DIV','2':'N_LDO_FB'},'R74':{'1':'N_LDO_FB','2':'GND'},'D27':{'1':'PRAW','2':'P12'},'D28':{'1':'N12','2':'NRAW'}})
+REVIEWED.update({'C62':{'1':'N12','2':'N_LDO_FB'},'R72':{'1':'N12','2':'N_LDO_SER'},'R83':{'1':'N_LDO_SER','2':'N_LDO_DIV'},'R73':{'1':'N_LDO_DIV','2':'N_LDO_FB'},'R74':{'1':'N_LDO_FB','2':'GND'},'R75':{'1':'POS_DIV','2':'POS_FB'},'R76':{'1':'NEG_REF_DIV','2':'BI_REF'},'D27':{'1':'PRAW','2':'P12'},'D28':{'1':'N12','2':'NRAW'}})
 LOCAL=[(('U1','9'),('R2','1')),(('U1','1'),('F1','2')),(('U1','4'),('U1','5')),
  (('U2','3'),('R78','2')),(('U2','5'),('R7','1')),(('U2','11'),('R8','1')),(('U2','12'),('C3','1')),(('U2','6'),('R36','1')),
  (('SW1','1'),('SW1','3')),(('U2','7'),('SW1','1')),(('U2','8'),('SW1','2')),
@@ -39,12 +41,47 @@ LOCAL += [(('U12','15'),('U12','16')),(('U12','13'),('U12','15')),(('U12','1'),(
           (('U12','14'),('C60','1')),(('U12','21'),('U12','7')),
           (('U13','15'),('U13','16')),(('U13','13'),('U13','15')),(('U13','1'),('U13','20')),
           (('U13','14'),('C61','1')),(('U13','21'),('U13','7')),
-          (('R72','2'),('R73','1')),(('U13','3'),('R73','2')),(('U13','3'),('R74','1')),
+          (('R72','2'),('R83','1')),(('R83','2'),('R73','1')),
+          (('U13','3'),('R73','2')),(('U13','3'),('R74','1')),
           (('U13','3'),('C62','2')),(('U13','1'),('C62','1')),
           (('D27','1'),('U12','15')),(('D27','2'),('U12','1')),
           (('D28','1'),('U13','1')),(('D28','2'),('U13','15'))]
 
 LOCAL += [(('R4','2'),('R77','1')),(('R77','2'),('R78','1')),(('R8','2'),('R79','1')),(('R79','2'),('R80','1')),(('R36','2'),('R81','1')),(('R81','2'),('R82','1'))]
+LOCAL += [(('R10','2'),('R84','1')),(('R18','2'),('R85','1'))]
+
+def check_capacitor_plan(rows, actual):
+    """Validate the accepted 043 local-cap plan once its new refs are present.
+
+    Counts are never hardcoded: the check reads the actual BOM/native refs.
+    Before the frozen 043 source arrives, it reports the plan as pending rather
+    than claiming the capacitors exist.
+    """
+    new_refs = ['C68', 'C69', 'C70', 'C71', 'C72']
+    present = [r for r in new_refs if r in rows]
+    if not present:
+        return {'status': 'pending_043', 'present': False,
+                'missing': new_refs,
+                'note': 'Accepted Sol041/Astra043 cap plan not yet in this source tree.'}
+    assert set(present) == set(new_refs), ('incomplete accepted cap plan', present)
+    for ref in ['C5', 'C18'] + new_refs:
+        assert rows[ref]['Value'] == '22u 25V X5R', (ref, 'value')
+        assert rows[ref]['LCSC'] == 'C12891', (ref, 'LCSC')
+        assert rows[ref]['Footprint'] == 'BigModular:C_1206_3216Metric', (ref, '1206 land')
+    for ref, net in [('C68', 'VPROT'), ('C69', 'VPROT'),
+                     ('C70', 'MID'), ('C71', 'MID'), ('C72', 'P5')]:
+        assert actual[(ref, '1')] == net and actual[(ref, '2')] == 'GND', (ref, net)
+    for ref in ['C4', 'C16', 'C17']:
+        assert rows[ref]['LCSC'] == 'C13585', (ref, 'retained C13585')
+    for ref in ['C6', 'C19', 'C38', 'C37']:
+        assert rows[ref]['Value'] == '22u 25V X5R' and rows[ref]['LCSC'] == 'C12891', ref
+    return {'status': 'pass', 'present': True,
+            'VPROT_refs': ['C5', 'C68', 'C18', 'C69'],
+            'MID_local_refs': ['C6', 'C70', 'C71'],
+            'P5_local_refs': ['C19', 'C38', 'C72'],
+            'retained_C13585_refs': ['C4', 'C16', 'C17'],
+            'remote_C37_not_local': True}
+
 
 def check(hw,audit,bom):
     graph=Connectivity(hw);actual=graph.named_pins();expected=json.loads(Path(audit).read_text())
@@ -72,7 +109,26 @@ def check(hw,audit,bom):
             for key in ('at','size'):
                 for v in one(pad,key)[1:]:assert isinstance(v,Atom) and math.isfinite(float(v)),('quoted/non-numeric pad geometry',ref,key,v)
         footprint_maps+=1
-    for ref,val in [('R4','470k 1%'),('R77','82k 1%'),('R78','10k 1%'),('R8','5.6k 1%'),('R79','220 1%'),('R80','220 1%'),('R36','300k 1%'),('R81','100k 1%'),('R82','2k 1%'),('R9','100k 0.1%'),('R10','12.9k 0.1%')]:assert rows[ref]['Value']==val,(ref,val)
+    for ref,val in [('R4','470k 1%'),('R77','82k 1%'),('R78','10k 1%'),('R8','5.6k 1%'),('R79','220 1%'),('R80','220 1%'),('R36','300k 1%'),('R81','100k 1%'),('R82','2k 1%'),
+                    ('R9','100k 1%'),('R10','13k 1%'),('R84','510 1%'),('R17','100k 1%'),('R18','13k 1%'),('R85','510 1%'),
+                    ('R72','82k 1%'),('R83','9.1k 1%'),('R73','1.2k 1%'),('R74','10k 1%'),('R75','24k 1%'),('R76','2.4k 1%')]:
+        assert rows[ref]['Value']==val,(ref,val)
+    def ohm(value):
+        text=value.split()[0]
+        return float(text[:-1])*{'k':1e3,'M':1e6}[text[-1]] if text[-1] in 'kM' else float(text)
+    # Substituted Basic series networks must total the reviewed electrical values.
+    assert ohm(rows['R10']['Value'])+ohm(rows['R84']['Value'])==13510
+    assert ohm(rows['R18']['Value'])+ohm(rows['R85']['Value'])==13510
+    assert ohm(rows['R72']['Value'])+ohm(rows['R83']['Value'])+ohm(rows['R73']['Value'])==92300
+    assert ohm(rows['R9']['Value'])+ohm(rows['R10']['Value'])==113000
+    assert ohm(rows['R12']['Value'])+ohm(rows['R75']['Value'])==1524000
+    assert ohm(rows['R15']['Value'])+ohm(rows['R76']['Value'])==152400
+    assert ohm(rows['R8']['Value'])+ohm(rows['R79']['Value'])+ohm(rows['R80']['Value'])==6040
+    assert ohm(rows['R36']['Value'])+ohm(rows['R81']['Value'])+ohm(rows['R82']['Value'])==402000
+    # The six changed 1210 capacitor lands are actual 1206 footprints.
+    for ref in ['C6','C8','C9','C19','C37','C38']:
+        assert rows[ref]['Footprint']=='BigModular:C_1206_3216Metric',(ref,'1206 land')
+
     for r in ['R32']:assert rows[r]['LCSC']=='C21190' and rows[r]['Value']=='1k 1%'
     assert rows['D10']['Classification']=='DNP' and rows['D10']['DNP']=='yes'
     assert {r for r,v in rows.items() if v.get('DNP')=='yes'}=={'D10'}
@@ -89,4 +145,5 @@ def check(hw,audit,bom):
         if ref.startswith('#'):continue
         props={p[1]:p[2] for p in nodes(symbol,'property')}
         for field in ['Value','MPN','Footprint','LCSC']:assert props.get(field,'')==rows[ref][field],(ref,field,'BOM mismatch')
-    return {'parts':len(rows),'pins_including_NC':len(actual),'independent_pin_checks':sum(map(len,REVIEWED.values())),'local_visible_wire_checks':len(LOCAL),'hierarchical_ports':len(graph.hierarchy_links),'footprint_pin_maps':footprint_maps,'fabrication_ready':False}
+    plan=check_capacitor_plan(rows,actual)
+    return {'parts':len(rows),'pins_including_NC':len(actual),'independent_pin_checks':sum(map(len,REVIEWED.values())),'local_visible_wire_checks':len(LOCAL),'hierarchical_ports':len(graph.hierarchy_links),'footprint_pin_maps':footprint_maps,'capacitor_plan':plan,'fabrication_ready':False}

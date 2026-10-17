@@ -1,5 +1,5 @@
 {
-  "status": "PASS FOR EXPLICIT PROTOTYPE SCREEN; not a guaranteed minimum or measured/qualified stability",
+  "status": "IMPLEMENTED 043 local-cap closure; PASS for explicit prototype screen, not a guaranteed minimum or measured/qualified stability",
   "mpn": "CL31A226KAHNNNE",
   "code": "C12891",
   "banks": {
@@ -10,11 +10,11 @@
         "C50",
         "C63"
       ],
-      "bias_V": 14.8,
+      "bias_V": 15.0,
       "nominal_uF": 88,
-      "bias_retention_typical": 0.19688881460532004,
-      "typical_uF": 17.326215685268163,
-      "screened_effective_uF": 12.591827249268636,
+      "bias_retention_typical": 0.1932433202074555,
+      "typical_uF": 17.005412178256083,
+      "screened_effective_uF": 12.358683300547609,
       "required_effective_uF": 10,
       "screen_pass": true
     },
@@ -42,11 +42,11 @@
         "C56",
         "C67"
       ],
-      "bias_V": 14.8,
+      "bias_V": 15.0,
       "nominal_uF": 88,
-      "bias_retention_typical": 0.19688881460532004,
-      "typical_uF": 17.326215685268163,
-      "screened_effective_uF": 12.591827249268636,
+      "bias_retention_typical": 0.1932433202074555,
+      "typical_uF": 17.005412178256083,
+      "screened_effective_uF": 12.358683300547609,
       "required_effective_uF": 10,
       "screen_pass": true
     },
@@ -56,11 +56,11 @@
         "C58",
         "C59"
       ],
-      "bias_V": 12.4,
+      "bias_V": 12.9,
       "nominal_uF": 66,
-      "bias_retention_typical": 0.25007520079727497,
-      "typical_uF": 16.504963252620147,
-      "screened_effective_uF": 11.994982043841691,
+      "bias_retention_typical": 0.23768066919666897,
+      "typical_uF": 15.686924166980152,
+      "screened_effective_uF": 11.400472138352823,
       "required_effective_uF": 10,
       "screen_pass": true
     }
@@ -70,7 +70,7 @@
     "temperature": 0.85,
     "aging_allowance": 0.95
   },
-  "conditions": "See manufacturer-mlcc-data.json. Bias14.8V covers actual raw peak<=14.647V; output12.4V covers<=12.386V. No raw setpoint increase.",
+  "conditions": "Manufacturer typical bias curves; inputs15.0V, positive output12.4V, negative output12.9V; tolerance/temp/aging screens only.",
   "rejected_original": "Three caps on positive OUT only16.675uF typical at12.3V before extra derating; negative IN screen9.578uF. Not accepted.",
   "ESR_class_review": "Low-ESR nonpolar ceramic per TI TPS7A47 7.2.2.1 and TPS7A33 8.1.2. No required minimum ESR introduced.",
   "layout_review": "All C63-C67 are FRONT. U13 entire input/output bank including C67 is front per TPS7A33 layout guidance. U12 three-per-bank and the four supplementary positive-rail caps are also front-local, so banks share one side; no B.Cu components or B.Paste apertures. No stability/noise guarantee. Verify startup/load-step loop behavior, input ringing and rail collapse at prototype bring-up.",
@@ -78,8 +78,68 @@
     "X5R<=85C at capacitor body",
     "5% aging allowance is not lifetime qualification",
     "manufacturer typical curves at120Hz/0.5Vrms are not a guaranteed small-signal biased production minimum",
-    "verify actual lot at operating bias and temperature before relying on accuracy/noise/current",
-    "no substitute MPN or smaller population without re-screening"
+    "10uF local-input and <40kHz crossover are application recommendations, not absolute IC guarantees",
+    "bench/loop, lot, inrush and thermal evidence remain pending"
   ],
-  "assembly_side": "Single-side front; C63-C67 FRONT; zero B.Cu electrical footprints and zero B.Paste component apertures; no Economy PCBA approval. Bare PCB FAB only."
+  "assembly_side": "Single-side front; C63-C67 FRONT; zero B.Cu electrical footprints and zero B.Paste component apertures; no Economy PCBA approval. Bare PCB FAB only.",
+  "accepted_043_local_plan": {
+    "source": "Accepted Sol041 sizing / Astra043 local implementation plan",
+    "C5_C18_value_uF": 22,
+    "C5_C18_refs": [
+      "C5",
+      "C18"
+    ],
+    "C68_C69_refs": [
+      "C68",
+      "C69"
+    ],
+    "C70_C71_refs": [
+      "C70",
+      "C71"
+    ],
+    "C72_refs": [
+      "C72"
+    ],
+    "VPROT_each_buck_2x22_at9p45V_uF": 10.664266700630645,
+    "MID_local_3x22_at5p5V_uF": 27.63112683569859,
+    "P5_local_3x22_at5p5V_uF": 27.63112683569859,
+    "P5_crossover_estimate_at5V_Hz": 39163.7763922181,
+    "TI_no_feedforward_crossover_guideline_Hz": 40000,
+    "VPROT_local_input_gate": {
+      "required_uF": 10.0,
+      "screened_uF": 10.664266700630645,
+      "screen_pass": true
+    },
+    "P5_output_loop_gate": {
+      "screened_uF": 27.63112683569859,
+      "estimated_crossover_Hz": 39163.7763922181,
+      "guideline_Hz": 40000,
+      "screen_pass": true
+    },
+    "C4_C16_C17_C13585_each_at9p45V_uF": 3.0950537959281497,
+    "C4_C16_C17_C13585_each_at5p5V_uF": 4.970138320689972,
+    "application_recommendation_not_IC_guarantee": true,
+    "bench_pending": true
+  },
+  "local_plan_implementation": {
+    "C5": "22u C12891",
+    "C18": "22u C12891",
+    "C68": "22u VPROT/GND",
+    "C69": "22u VPROT/GND",
+    "C70": "22u MID/GND",
+    "C71": "22u MID/GND",
+    "C72": "22u P5/GND",
+    "MID_local": [
+      "C6",
+      "C70",
+      "C71"
+    ],
+    "P5_local": [
+      "C19",
+      "C38",
+      "C72"
+    ],
+    "remote_C37_not_local": true,
+    "C4_C16_C17_retained_C13585": true
+  }
 }

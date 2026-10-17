@@ -28,7 +28,7 @@ process is specified.
   green solder mask both sides, white legend. Mask apertures as supplied; do not
   expand them or delete narrow dams without review. Finished mask registration to
   copper <=0.05 mm each axis. Minimum retained dam target 0.10 mm.
-- All **201 through vias**, the **0.300 mm ViaDrill tool** in the PTH file, are
+- All **207 through vias**, the **0.300 mm ViaDrill tool** in the PTH file, are
   **ordinary plated through vias**: no IPC-4761 epoxy fill, no planarization, no
   copper cap, no VIPPO/Type VII add-on. Plated barrel copper minimum 20 um. Use the
   supplied mask artwork unchanged: vias are solder-mask tented where the artwork
@@ -42,7 +42,7 @@ process is specified.
   seal that hole. Inspect and validate such joints in prototype assembly; this is
   not a fabrication reject and no fill/cap process is required.
   `via-audit.json` identifies every barrel/affected pad and its filled/capped flags.
-  `via-process.tsv` lists all 201 vias in KiCad X/Y-down and CAM X/Y-up coordinates.
+  `via-process.tsv` lists all 207 vias in KiCad X/Y-down and CAM X/Y-up coordinates.
   Excellon alone does not encode any fill/cap requirement; none is specified here.
 - Via 0.300 mm is the nominal plated through bore (accepted bore 0.25..0.35 mm); it
   is an open plated hole, tented by mask where artwork permits. Component PTH

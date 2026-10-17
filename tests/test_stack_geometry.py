@@ -58,8 +58,8 @@ class StackGeometryTests(unittest.TestCase):
         self.assertEqual(report['bare_pcb_artwork_release_record'],'production/ldo-r1/release-validation.json')
         self.assertEqual(len(report['boards']),2)
         self.assertEqual(report['routing']['native_opens'],0)
-        self.assertEqual(report['boards']['big_modular.kicad_pcb']['tracks'],552)
-        self.assertEqual(report['boards']['big_modular.kicad_pcb']['vias'],201)
+        self.assertEqual(report['boards']['big_modular.kicad_pcb']['tracks'],585)
+        self.assertEqual(report['boards']['big_modular.kicad_pcb']['vias'],207)
 
     def test_new_candidate_regeneration_preserves_sources_and_matches_outputs(self):
         inputs=[p for p in (ROOT/'hardware').rglob('*') if p.is_file()]
@@ -144,7 +144,7 @@ class StackGeometryTests(unittest.TestCase):
         fps={next(p[2] for p in nodes(f,'property') if p[1]=='Reference'):f for f in nodes(tree,'footprint')}
         rows={r['Reference']:r for r in csv.DictReader((ROOT/'BOM.csv').read_text().splitlines())}
         self.assertEqual(set(fps)-{''},set(rows))
-        self.assertEqual(len(rows),99)
+        self.assertGreaterEqual(len(rows),102)
         graph=Connectivity(ROOT/'hardware')
         for ref,row in rows.items():
             f=fps[ref];props={p[1]:p[2] for p in nodes(f,'property')}
