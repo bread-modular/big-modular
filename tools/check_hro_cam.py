@@ -214,9 +214,27 @@ def inspect_cam(root, hardware, native_audit):
         x,y=v['xy_mm'];disk=Point(x,-y).buffer(v['drill_mm']/2,quad_segs=128)
         if disk.intersection(smdshape).area>1e-9:cam_vip.append(v['uuid'])
         if disk.intersection(pasteshape).area>1e-9:cam_paste.append(v['uuid'])
+    assert set(cam_vip)=={v['uuid'] for v in native_audit['vias'] if any(h['side']=='F.Cu' for h in v['exposed_SMD_copper_hits'])}
+    assert set(cam_paste)=={v['uuid'] for v in native_audit['vias'] if 'F.Cu' in v['paste_overlap_sides']}
+    # Include the four reviewed back-side MLCCs: compare UUID sets on BOTH sides.
+    bottompaste=read_gerber(root/'assembly-stencil-support-only/big_modular-B_Paste.gbr')
+    backpads=[o for o in cam['B_Cu'].objects if isinstance(o,go.Flash) and '.P' in o.attrs
+              and any(k=='.AperFunction' and v[0] in ('SMDPad','HeatsinkPad') for k,v in o.aperture.attrs)]
+    assert {o.attrs['.P'][0] for o in backpads}=={'C63','C64','C65','C66'}
+    assert len(backpads)==8 and len(bottompaste.objects)==8
+    backexposed=area(backpads).intersection(bottommask);backpaste=area(bottompaste.objects)
+    for o in backpads:
+        shape=object_area(o);assert shape.difference(bottommask).area<1e-7
+        assert shape.difference(backpaste).area<1e-7
+    for v in native_audit['vias']:
+        x,y=v['xy_mm'];disk=Point(x,-y).buffer(v['drill_mm']/2,quad_segs=128)
+        if disk.intersection(backexposed).area>1e-9:cam_vip.append(v['uuid'])
+        if disk.intersection(backpaste).area>1e-9:cam_paste.append(v['uuid'])
+    cam_vip=sorted(set(cam_vip));cam_paste=sorted(set(cam_paste))
     assert set(cam_vip)=={v['uuid'] for v in native_audit['vias'] if v['exposed_SMD_copper_hits']}
     assert set(cam_paste)=={v['uuid'] for v in native_audit['vias'] if v['paste_overlap_sides']}
-    assert len(cam_vip)==len(cam_paste)==35
+    assert len(cam_vip)==native_audit['barrels_over_exposed_SMD_copper']
+    assert len(cam_paste)==native_audit['barrels_over_paste']
     # Net-attributed CAM copper: RTN and GND must be distinct at every layer.
     net_geometries={};isolation={}
     for layer in ['F_Cu','In1_Cu','In2_Cu','B_Cu']:
@@ -251,7 +269,7 @@ def inspect_cam(root, hardware, native_audit):
     reports['carrier'].update({'HRO_SMT_lands_copper_mask_paste':12,'HRO_shells_copper_masks_no_paste':4,
         'via_barrels_exposed_SMD_Cu':len(cam_vip),'via_barrels_paste':len(cam_paste),'native_CAM_VIP_UUID_sets_equal':True,'boundary_only_barrels_native':native_audit['barrels_at_SMD_boundary_only'],
         'IPC_records_checked':len(mapped),'IPC_net_aliases_unique':len(netmap),'RTN_GND_CAM_isolation':isolation,
-        'In1_GND_connected_polygon':True,'U2_8_17_RTN_9_GND_verified':True})
+        'In1_GND_connected_polygon':True,'U2_8_17_RTN_9_GND_verified':True,'backside_SMD_refs':['C63','C64','C65','C66'],'backside_paste_pads':8})
     outline=cam['Edge_Cuts'];pth=cam['PTH'];npth=cam['NPTH'];bound=((49,-103),(151,-71.5))
     render_grid(preview/'carrier-copper-cam.svg','ACTUAL EXPORTED CAM | four copper layers, drills + closed profile',[
         (n,bound,[(cam[n],'#eda942'),(outline,'#bfd0dd'),(pth,'#101b29'),(npth,'#f46c65')]) for n in ['F_Cu','In1_Cu','In2_Cu','B_Cu']],1600)
@@ -267,6 +285,14 @@ def inspect_cam(root, hardware, native_audit):
     render_grid(preview/'efuse-cam.svg','ACTUAL CAM | orange: eFuse RTN / green: main GND',[
         (n,close,[(GerberFile(objects=[o for o in cam[n].objects if o.attrs.get('.N')==('/GND',)]),'#4cc8a6'),
                   (GerberFile(objects=[o for o in cam[n].objects if o.attrs.get('.N')==('/Autonomous hardware window and retry/RTN',)]),'#eeaa55')]) for n in ['F_Cu','In1_Cu','In2_Cu','B_Cu']],1400)
+    for ref in ['U12','U13']:
+        ep=[o for o in copperpads if o.attrs['.P'][:2]==(ref,'21')]
+        assert len(ep)==1 and ep[0].attrs['.N']==('/GND',)
+    render_grid(preview/'ldo-cam.svg','LDO-R1 ACTUAL CAM | local banks, ground spreading and back supplemental capacitors',[
+        ('Positive front',((95,-92),(115,-78)),[(cam['F_Cu'],'#eda942')]),
+        ('Positive back, paste overlay',((95,-92),(115,-78)),[(cam['B_Cu'],'#4b9cd3'),(bottompaste,'#d68cf0')]),
+        ('Negative front (all caps same side)',((50,-85),(73,-72)),[(cam['F_Cu'],'#eda942')]),
+        ('Negative back spreading',((50,-85),(73,-72)),[(cam['B_Cu'],'#4b9cd3')])],1600)
     panel=all_files['passive-panel'];g=GerberFile(objects=panel['Edge_Cuts'].objects+panel['F_Silkscreen'].objects+panel['NPTH'].objects)
     # Native library renderer; shape points come from CAM, not PCB geometry.
     import xml.etree.ElementTree as ET

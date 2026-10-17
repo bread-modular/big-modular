@@ -29,8 +29,8 @@ class SchematicHierarchyTests(unittest.TestCase):
         audit = json.loads((ROOT/'docs/pin-net-audit.json').read_text())
         expected = {(ref, pin): net for ref, pins in audit.items() for pin, net in pins.items()}
         self.assertEqual(self.graph.named_pins(), expected)
-        self.assertEqual(sum(not r.startswith('#') for r in self.graph.refs), 64)
-        self.assertEqual(len(self.graph.hierarchy_links), 17)
+        self.assertEqual(sum(not r.startswith('#') for r in self.graph.refs), 93)
+        self.assertEqual(len(self.graph.hierarchy_links), 22)
         self.assertNotIn('D1', self.graph.refs)
 
     def test_page_structure_and_component_distribution(self):
@@ -39,12 +39,12 @@ class SchematicHierarchyTests(unittest.TestCase):
             if not ref.startswith('#'):counts[filename] = counts.get(filename, 0)+1
             path = one(one(one(symbol, 'instances'), 'project'), 'path')[1]
             self.assertEqual(path.count('/'), 2)
-        self.assertEqual(counts, {'01_input_protection.kicad_sch':5,'02_hardgate.kicad_sch':12,'03_bucks.kicad_sch':18,'04_bipolar.kicad_sch':23,'07_output_rails.kicad_sch':6})
+        self.assertEqual(counts, {'01_input_protection.kicad_sch':5,'02_hardgate.kicad_sch':12,'03_bucks.kicad_sch':18,'04_bipolar.kicad_sch':25,'05_quiet_rails.kicad_sch':27,'07_output_rails.kicad_sch':6})
         root = self.graph.sheets['big_modular.kicad_sch']
         self.assertEqual(one(root, 'paper')[1], 'User')
-        self.assertEqual([one(s, 'paper')[1] for n, s in self.graph.sheets.items() if n!='big_modular.kicad_sch'], ['User']*5)
+        self.assertEqual([one(s, 'paper')[1] for n, s in self.graph.sheets.items() if n!='big_modular.kicad_sch'], ['User']*6)
         pages = {one(one(one(s, 'instances'), 'project'), 'path')[2][1] for s in nodes(root, 'sheet')}
-        self.assertEqual(pages, {str(i) for i in range(2,7)})
+        self.assertEqual(pages, {str(i) for i in range(2,8)})
 
     def test_sensitive_local_networks_are_wires_not_label_only(self):
         from electrical_checks import LOCAL
@@ -60,13 +60,14 @@ class SchematicHierarchyTests(unittest.TestCase):
             expected=('passive' if name=='GND' else 'output' if
                 filename.startswith('01_') or (filename.startswith('02_') and name=='VPROT') or
                 (filename.startswith('03_') and name in ('MID','P5')) or
-                (filename.startswith('04_') and name in ('P12','N12')) else 'input')
+                (filename.startswith('04_') and name in ('PRAW','NRAW')) or
+                (filename.startswith('05_') and name in ('P12','N12')) else 'input')
             self.assertEqual(g.port_types[(filename,name)],expected,(filename,name))
             self.assertTrue(any(p[0]==filename and g.find(p)==g.find(point) for p in g.pins.values()),(filename,name,'floating port bank'))
 
     def test_root_power_flow_is_real_wires(self):
         g=self.graph
-        pairs=[(0,1,'VIN9'),(1,2,'VPROT'),(2,3,'MID'),(2,4,'P5'),(3,4,'P12'),(3,4,'N12')]
+        pairs=[(0,1,'VIN9'),(1,2,'VPROT'),(2,3,'MID'),(2,5,'P5'),(3,4,'PRAW'),(3,4,'NRAW'),(4,5,'P12'),(4,5,'N12')]
         from render_schematic import SHEET_NAMES
         for a,b,n in pairs:
             self.assertEqual(g.find(g.sheet_pins[(SHEET_NAMES[a]+'.kicad_sch',n)]),g.find(g.sheet_pins[(SHEET_NAMES[b]+'.kicad_sch',n)]))

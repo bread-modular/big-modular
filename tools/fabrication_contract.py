@@ -115,5 +115,5 @@ def via_audit(path):
         'barrels_over_paste':sum(bool(v['paste_overlap_sides']) for v in records),
         'barrels_at_SMD_boundary_only':sum(bool(v['exposed_SMD_boundary_near_hits']) and not v['exposed_SMD_copper_hits'] for v in records),
         'barrels_at_paste_boundary_only':sum(bool(v['paste_boundary_near_sides']) and not v['paste_overlap_sides'] for v in records),
-        'uniform_process_scope':'ALL 133 through vias, not all PTH component holes/slots. Not every via independently needs filling. No ordinary tenting substitution.',
+        'uniform_process_scope':f'ALL {len(records)} through vias, not all PTH component holes/slots. Not every via independently needs filling. No ordinary tenting substitution.',
         'vias':records}

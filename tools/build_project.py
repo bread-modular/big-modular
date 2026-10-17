@@ -9,7 +9,10 @@ ROOT=Path(__file__).resolve().parent.parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--schematic-only', action='store_true', help='Render a NEW schematic candidate only; create candidate schematic, libraries, BOM and pin audit; never regenerate boards.')
 parser.add_argument('--output', type=Path, help='Required NEW directory for --schematic-only; copies existing project/library context.')
+parser.add_argument('--ldo-revision', action='store_true', help='Explicit one-shot ES1 migration of native schematics into NEW output; never modifies a PCB.')
+parser.add_argument('--capacitor-revision', action='store_true', help='One-shot explicit 4/6/4/3 LDO bank upgrade in NEW schematic candidate.')
 args = parser.parse_args()
+if args.ldo_revision and args.capacitor_revision:parser.error('Choose only one migration')
 if not args.schematic_only:
     parser.error('A4: legacy full regeneration is disabled; use --schematic-only --output NEW, or tools/build_stack.py --output NEW for mechanical candidates')
 if args.schematic_only != bool(args.output):
@@ -64,8 +67,21 @@ from electrical_design import populate
 SHEETS, BOM, CONNS = populate(stock, ic, LIB, ROOT)
 used={d['kind'] for sh in SHEETS.values() for d in sh['parts']}
 LIB={k:v for k,v in LIB.items() if k in used}
+# Exact allowed local footprint filters, including the new raw-divider 0805s.
+for kind in ('TPS7A4700RGWR','TPS7A3301RGWR'):
+    fps=sorted({d['fp'].split(':')[-1] for sh in SHEETS.values() for d in sh['parts'] if d['kind']==kind and d['fp']})
+    if fps:
+        props={p[1]:p for p in nodes(LIB[kind],'property')}
+        if 'ki_fp_filters' in props:props['ki_fp_filters'][2]=' '.join(fps)
+        else:LIB[kind].append(parse('(property "ki_fp_filters" '+q(' '.join(fps))+' (at 0 0 0) (effects (font (size 1.27 1.27)) hide))'))
 from render_schematic import render
-render(HW, SHEETS, LIB, uid)
+if args.ldo_revision:
+    from ldo_schematic import stage
+    stage(ROOT/'hardware',HW,SHEETS,LIB,uid)
+if args.capacitor_revision:
+    from ldo_schematic import strengthen_cap_banks
+    strengthen_cap_banks(ROOT/'hardware',HW,uid)
+render(HW, SHEETS, LIB, uid, source=HW if (args.ldo_revision or args.capacitor_revision) else None)
 # Libraries and inventory are emitted ONLY into the new review candidate.
 (HW/'BigModular.kicad_sym').write_text('(kicad_symbol_lib (version 20241209) (generator "kicad_symbol_editor")\n'+ '\n'.join(dump(v) for _,v in sorted(LIB.items()))+'\n)\n')
 for name in ['sym-lib-table','fp-lib-table','big_modular.kicad_pro']:

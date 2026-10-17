@@ -1,0 +1,172 @@
+{
+  "CAM_checked": {
+    "Gerber_objects": {
+      "B_Cu": 0,
+      "B_Mask": 0,
+      "B_Silkscreen": 0,
+      "Edge_Cuts": 12,
+      "F_Cu": 0,
+      "F_Mask": 0,
+      "F_Silkscreen": 238,
+      "NPTH": 6,
+      "PTH": 0
+    },
+    "closed_outline_loops": 2,
+    "drill_tools_mm_hits": {
+      "NPTH": {
+        "3.200": 5,
+        "3.600": 1
+      },
+      "PTH": {}
+    },
+    "max_drill_coordinate_quantization_error_mm": {
+      "NPTH": 0,
+      "PTH": 0
+    },
+    "native_drills_all_uniquely_matched": true,
+    "outline_centerline_dimensions_mm": [
+      9.8,
+      128.5
+    ],
+    "slot_centreline_endpoints_CAM_mm": []
+  },
+  "board": "passive-panel",
+  "finished_thickness_acceptance_mm": [
+    1.44,
+    1.76
+  ],
+  "native_stack": [
+    "stackup",
+    [
+      "layer",
+      "F.SilkS",
+      [
+        "type",
+        "Top Silk Screen"
+      ],
+      [
+        "color",
+        "White"
+      ]
+    ],
+    [
+      "layer",
+      "F.Paste",
+      [
+        "type",
+        "Top Solder Paste"
+      ]
+    ],
+    [
+      "layer",
+      "F.Mask",
+      [
+        "type",
+        "Top Solder Mask"
+      ],
+      [
+        "color",
+        "Black"
+      ],
+      [
+        "thickness",
+        "0.01"
+      ]
+    ],
+    [
+      "layer",
+      "F.Cu",
+      [
+        "type",
+        "copper"
+      ],
+      [
+        "thickness",
+        "0"
+      ]
+    ],
+    [
+      "layer",
+      "dielectric 1",
+      [
+        "type",
+        "core"
+      ],
+      [
+        "thickness",
+        "1.58"
+      ],
+      [
+        "material",
+        "FR4 Tg170"
+      ],
+      [
+        "epsilon_r",
+        "4.5"
+      ],
+      [
+        "loss_tangent",
+        "0.02"
+      ]
+    ],
+    [
+      "layer",
+      "B.Cu",
+      [
+        "type",
+        "copper"
+      ],
+      [
+        "thickness",
+        "0"
+      ]
+    ],
+    [
+      "layer",
+      "B.Mask",
+      [
+        "type",
+        "Bottom Solder Mask"
+      ],
+      [
+        "color",
+        "Black"
+      ],
+      [
+        "thickness",
+        "0.01"
+      ]
+    ],
+    [
+      "layer",
+      "B.Paste",
+      [
+        "type",
+        "Bottom Solder Paste"
+      ]
+    ],
+    [
+      "layer",
+      "B.SilkS",
+      [
+        "type",
+        "Bottom Silk Screen"
+      ],
+      [
+        "color",
+        "White"
+      ]
+    ],
+    [
+      "copper_finish",
+      "None"
+    ],
+    [
+      "dielectric_constraints",
+      "no"
+    ]
+  ],
+  "release": "LDO-R1",
+  "source_of_requirements": "FABRICATION-REQUIREMENTS.md",
+  "source_sha256": "4b683de0128a8dea323bc2533b75e294d77f4e7dd20bdf7a239358bc5b6f3d77"
+}

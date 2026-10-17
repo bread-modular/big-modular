@@ -55,11 +55,11 @@ class StackGeometryTests(unittest.TestCase):
         self.assertFalse(report['fabrication_ready'])
         self.assertIn('source-only non-approval',report['fabrication_ready_scope'])
         self.assertFalse(report['assembled_product_qualified'])
-        self.assertEqual(report['bare_pcb_artwork_release_record'],'production/hro-r1/release-validation.json')
+        self.assertEqual(report['bare_pcb_artwork_release_record'],'production/ldo-r1/release-validation.json')
         self.assertEqual(len(report['boards']),2)
         self.assertEqual(report['routing']['native_opens'],0)
-        self.assertEqual(report['boards']['big_modular.kicad_pcb']['tracks'],421)
-        self.assertEqual(report['boards']['big_modular.kicad_pcb']['vias'],133)
+        self.assertEqual(report['boards']['big_modular.kicad_pcb']['tracks'],536)
+        self.assertEqual(report['boards']['big_modular.kicad_pcb']['vias'],196)
 
     def test_new_candidate_regeneration_preserves_sources_and_matches_outputs(self):
         inputs=[p for p in (ROOT/'hardware').rglob('*') if p.is_file()]
@@ -136,7 +136,7 @@ class StackGeometryTests(unittest.TestCase):
         self.assertEqual(gaps['LED_to_switch_solder_access'],1.23)
         self.assertEqual(gaps['LED_flange_to_switch_body'],2.35)
 
-    def test_all_64_pcb_fields_paths_and_routed_placement(self):
+    def test_all_93_pcb_fields_paths_and_routed_placement(self):
         import csv
         from sexp import one
         from schematic_connectivity import Connectivity
@@ -144,7 +144,7 @@ class StackGeometryTests(unittest.TestCase):
         fps={next(p[2] for p in nodes(f,'property') if p[1]=='Reference'):f for f in nodes(tree,'footprint')}
         rows={r['Reference']:r for r in csv.DictReader((ROOT/'BOM.csv').read_text().splitlines())}
         self.assertEqual(set(fps)-{''},set(rows))
-        self.assertEqual(len(rows),64)
+        self.assertEqual(len(rows),93)
         graph=Connectivity(ROOT/'hardware')
         for ref,row in rows.items():
             f=fps[ref];props={p[1]:p[2] for p in nodes(f,'property')}

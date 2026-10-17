@@ -42,7 +42,7 @@ class HROSourceTests(unittest.TestCase):
                   'A6':None,'A7':None,'B6':None,'B7':None,'A8':None,'B8':None}
         graph=Connectivity(ROOT/'hardware')
         self.assertEqual({p:n for (r,p),n in graph.named_pins().items() if r=='J1'},expected)
-        self.assertEqual(len([k for k in graph.named_pins() if k[0]!='J1' and not k[0].startswith('#')]),197)
+        self.assertEqual(len([k for k in graph.named_pins() if k[0]!='J1' and not k[0].startswith('#')]),293)
         props={p[1]:p[2] for p in nodes(graph.refs['J1'][1],'property')}
         self.assertEqual(props['LCSC'],'C165948');self.assertEqual(props['MPN'],'TYPE-C-31-M-12')
 
