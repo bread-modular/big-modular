@@ -42,7 +42,9 @@ class HROSourceTests(unittest.TestCase):
                   'A6':None,'A7':None,'B6':None,'B7':None,'A8':None,'B8':None}
         graph=Connectivity(ROOT/'hardware')
         self.assertEqual({p:n for (r,p),n in graph.named_pins().items() if r=='J1'},expected)
-        self.assertEqual(len([k for k in graph.named_pins() if k[0]!='J1' and not k[0].startswith('#')]),305)
+        audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
+        expected_non_j1=sum(len(v) for r,v in audit.items() if r!='J1' and not r.startswith('#'))
+        self.assertEqual(len([k for k in graph.named_pins() if k[0]!='J1' and not k[0].startswith('#')]),expected_non_j1)
         props={p[1]:p[2] for p in nodes(graph.refs['J1'][1],'property')}
         self.assertEqual(props['LCSC'],'C165948');self.assertEqual(props['MPN'],'TYPE-C-31-M-12')
 

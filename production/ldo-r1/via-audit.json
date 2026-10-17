@@ -1,13 +1,13 @@
 {
-  "barrels_at_SMD_boundary_only": 6,
-  "barrels_at_paste_boundary_only": 6,
-  "barrels_over_exposed_SMD_copper": 93,
-  "barrels_over_paste": 92,
-  "board_sha256": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3",
+  "barrels_at_SMD_boundary_only": 7,
+  "barrels_at_paste_boundary_only": 7,
+  "barrels_over_exposed_SMD_copper": 86,
+  "barrels_over_paste": 85,
+  "board_sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
   "filled_or_capped_via_count": 0,
   "method": "Native polygon BooleanIntersection against 1024-vertex actual drill disk; positive area >1e-9mm2. Native curves <=0.001mm error; boundary/tangency within0.001mm recorded separately, not counted as positive overlap.",
-  "uniform_process_scope": "ALL 201 through vias are ordinary 0.300mm plated through vias; no filled/capped add-on. Component PTH holes/slots are excluded. Exposed-pad/thermal-via barrels remain prototype assembly inspection points; mask tenting does not seal a barrel inside an exposed pad.",
-  "via_count": 201,
+  "uniform_process_scope": "ALL 207 through vias are ordinary 0.300mm plated through vias; no filled/capped add-on. Component PTH holes/slots are excluded. Exposed-pad/thermal-via barrels remain prototype assembly inspection points; mask tenting does not seal a barrel inside an exposed pad.",
+  "via_count": 207,
   "vias": [
     {
       "capped_flag": false,
@@ -48,25 +48,16 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "2",
-          "pad_uuid": "cb02dddf-b7ae-5dc2-8c71-f876243dd4ae",
-          "ref": "C18",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/GND",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "08eafbdb-6bf3-4813-b7d9-3d906b9802d4",
       "xy_mm": [
-        105.0,
-        92.9
+        105.95,
+        92.0
       ]
     },
     {
@@ -211,6 +202,23 @@
       "exposed_SMD_boundary_near_hits": [],
       "exposed_SMD_copper_hits": [],
       "filled_flag": false,
+      "net": "/GND",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "181a4c15-436e-50b5-afcc-c61b49a6ee9c",
+      "xy_mm": [
+        124.575,
+        98.8
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [],
+      "filled_flag": false,
       "net": "/Autonomous hardware window and retry/RTN",
       "paste_boundary_near_sides": [],
       "paste_overlap_sides": [],
@@ -252,20 +260,11 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "2",
-          "pad_uuid": "7585c4cd-ebbb-5e6d-878f-2c5a43a55f08",
-          "ref": "C5",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/GND",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "1b192bb1-d4af-4560-b96c-2b50192db358",
       "xy_mm": [
@@ -414,20 +413,11 @@
       "capped_flag": false,
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
-      "exposed_SMD_boundary_near_hits": [
-        {
-          "pad": "1",
-          "pad_uuid": "3462dc19-6975-51ac-8ebf-d3fb5b627644",
-          "ref": "C9",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_boundary_near_hits": [],
       "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/Direct bipolar rails/NRAW",
-      "paste_boundary_near_sides": [
-        "F.Cu"
-      ],
+      "paste_boundary_near_sides": [],
       "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "23310338-71da-41cf-b3b3-53c7a340cbf5",
@@ -535,20 +525,11 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "2",
-          "pad_uuid": "cb02dddf-b7ae-5dc2-8c71-f876243dd4ae",
-          "ref": "C18",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/GND",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "29995a06-b816-4b15-bef6-46d02a01399e",
       "xy_mm": [
@@ -1173,25 +1154,16 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "2",
-          "pad_uuid": "1ad1ba6a-518a-49e3-9fe2-49e412c76901",
-          "ref": "C60",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/GND",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "43c04a56-bfc1-4d03-8984-8bbf8d5d5715",
       "xy_mm": [
-        109.45,
-        90.5
+        106.1,
+        91.2
       ]
     },
     {
@@ -1415,20 +1387,11 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "1",
-          "pad_uuid": "4c82c415-5c7b-5711-8bfc-1903b14adedb",
-          "ref": "C19",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/P5",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "500dd8db-2a05-48a8-a74f-5cc783fae895",
       "xy_mm": [
@@ -1477,6 +1440,23 @@
       "xy_mm": [
         132.525,
         80.275
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [],
+      "filled_flag": false,
+      "net": "/GND",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "5664cf26-7689-5923-b54d-92c14528a2fe",
+      "xy_mm": [
+        119.775,
+        89.65
       ]
     },
     {
@@ -1672,8 +1652,8 @@
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "615eb153-b435-48dd-bc15-0f4fb2f7f0b7",
       "xy_mm": [
-        86.8,
-        97.0
+        87.35,
+        96.8
       ]
     },
     {
@@ -2140,8 +2120,8 @@
       "exposed_SMD_copper_hits": [
         {
           "pad": "2",
-          "pad_uuid": "36012932-b60f-5d36-bb8a-065f26cd327c",
-          "ref": "C38",
+          "pad_uuid": "95afd739-7b1d-5d34-a627-cd6eb873350f",
+          "ref": "C72",
           "side": "F.Cu"
         }
       ],
@@ -2223,8 +2203,8 @@
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "72d98ca1-1f15-4ad2-b98d-46a656613acc",
       "xy_mm": [
-        86.7,
-        90.925
+        83.4,
+        94.8
       ]
     },
     {
@@ -2490,6 +2470,32 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [
+        {
+          "pad": "2",
+          "pad_uuid": "3ce04171-e8ef-5ce0-9e4d-8ce606cb1b9d",
+          "ref": "R10",
+          "side": "F.Cu"
+        }
+      ],
+      "filled_flag": false,
+      "net": "/Independent buck converters/MID_DIV_LO",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [
+        "F.Cu"
+      ],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "81c28ac6-9a42-5855-b9fe-1b50e47b36bb",
+      "xy_mm": [
+        131.3,
+        101.3
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
       "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/MID",
@@ -2575,8 +2581,8 @@
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "84bc8d60-080b-4c95-8b69-3e8d2c68f2c0",
       "xy_mm": [
-        83.6,
-        96.0
+        82.8,
+        96.6
       ]
     },
     {
@@ -2773,11 +2779,20 @@
       "capped_flag": false,
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
-      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_boundary_near_hits": [
+        {
+          "pad": "1",
+          "pad_uuid": "979b40f4-91bc-50bb-b216-9f04584186d8",
+          "ref": "C18",
+          "side": "F.Cu"
+        }
+      ],
       "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/VPROT",
-      "paste_boundary_near_sides": [],
+      "paste_boundary_near_sides": [
+        "F.Cu"
+      ],
       "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "8ee5f2a7-b7bd-4597-8690-b617cba59634",
@@ -2893,8 +2908,7 @@
       "capped_flag": false,
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
-      "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
+      "exposed_SMD_boundary_near_hits": [
         {
           "pad": "2",
           "pad_uuid": "2280dda8-f35f-5620-93f8-a7446fd60c0c",
@@ -2902,12 +2916,13 @@
           "side": "F.Cu"
         }
       ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/GND",
-      "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
+      "paste_boundary_near_sides": [
         "F.Cu"
       ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "9eda3896-575f-440b-bb11-01373a1c0e00",
       "xy_mm": [
@@ -3014,11 +3029,20 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [],
+      "exposed_SMD_copper_hits": [
+        {
+          "pad": "1",
+          "pad_uuid": "b67cd618-733c-5602-9d20-5dcd92d8ecee",
+          "ref": "C5",
+          "side": "F.Cu"
+        }
+      ],
       "filled_flag": false,
       "net": "/VPROT",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [],
+      "paste_overlap_sides": [
+        "F.Cu"
+      ],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "a94444ac-1f47-4d34-a1fb-3a5965c13b76",
       "xy_mm": [
@@ -3134,20 +3158,11 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "1",
-          "pad_uuid": "84fe1e39-9b1c-5394-a378-6d165e4f34c1",
-          "ref": "C8",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/Direct bipolar rails/PRAW",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "ab593d60-c62e-44d8-b7aa-57b71d8a1da8",
       "xy_mm": [
@@ -3168,8 +3183,8 @@
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "ac2051e6-a1a9-4ee8-8c64-fe55141a89e9",
       "xy_mm": [
-        134.5,
-        99.9
+        134.1,
+        100.0
       ]
     },
     {
@@ -3389,6 +3404,23 @@
       "paste_boundary_near_sides": [],
       "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "b94927cf-24c3-5880-8785-804693e796da",
+      "xy_mm": [
+        134.15,
+        99.1
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [],
+      "filled_flag": false,
+      "net": "/GND",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "b95f25dd-e7f3-4782-a652-df810eea1335",
       "xy_mm": [
         86.4,
@@ -3468,20 +3500,11 @@
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
       "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "1",
-          "pad_uuid": "3462dc19-6975-51ac-8ebf-d3fb5b627644",
-          "ref": "C9",
-          "side": "F.Cu"
-        }
-      ],
+      "exposed_SMD_copper_hits": [],
       "filled_flag": false,
       "net": "/Direct bipolar rails/NRAW",
       "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
+      "paste_overlap_sides": [],
       "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
       "uuid": "c211a9d9-8043-4464-bb4c-eefb177d7a86",
       "xy_mm": [
@@ -3590,6 +3613,23 @@
       "xy_mm": [
         127.4,
         85.2
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [],
+      "filled_flag": false,
+      "net": "/VPROT",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "cbcc9381-0dd7-593e-bc58-d1fe1f410b2e",
+      "xy_mm": [
+        134.3,
+        95.3
       ]
     },
     {
@@ -3737,6 +3777,23 @@
       "xy_mm": [
         130.199999,
         80.2
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [],
+      "filled_flag": false,
+      "net": "/Independent buck converters/MID_DIV_LO",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "d8d104fc-9c68-563d-bf07-a1568168a307",
+      "xy_mm": [
+        126.0,
+        98.8
       ]
     },
     {
@@ -4202,6 +4259,23 @@
       "exposed_SMD_boundary_near_hits": [],
       "exposed_SMD_copper_hits": [],
       "filled_flag": false,
+      "net": "/Quiet bipolar post-regulators/P_NR",
+      "paste_boundary_near_sides": [],
+      "paste_overlap_sides": [],
+      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
+      "uuid": "f5797e72-eb27-5a6a-9bbd-ee198d121dc4",
+      "xy_mm": [
+        103.8,
+        90.3
+      ]
+    },
+    {
+      "capped_flag": false,
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "exposed_SMD_boundary_near_hits": [],
+      "exposed_SMD_copper_hits": [],
+      "filled_flag": false,
       "net": "/USB PD input/USB_VBUS",
       "paste_boundary_near_sides": [],
       "paste_overlap_sides": [],
@@ -4227,32 +4301,6 @@
       "xy_mm": [
         96.45,
         82.2
-      ]
-    },
-    {
-      "capped_flag": false,
-      "diameter_mm": 0.6,
-      "drill_mm": 0.3,
-      "exposed_SMD_boundary_near_hits": [],
-      "exposed_SMD_copper_hits": [
-        {
-          "pad": "1",
-          "pad_uuid": "2f204a06-59a6-4704-a677-7688b4cabe43",
-          "ref": "C60",
-          "side": "F.Cu"
-        }
-      ],
-      "filled_flag": false,
-      "net": "/Quiet bipolar post-regulators/P_NR",
-      "paste_boundary_near_sides": [],
-      "paste_overlap_sides": [
-        "F.Cu"
-      ],
-      "process": "ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits",
-      "uuid": "f902fd8d-b732-4e12-bde6-40f6989e510f",
-      "xy_mm": [
-        107.55,
-        90.5
       ]
     },
     {

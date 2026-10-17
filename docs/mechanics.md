@@ -62,7 +62,7 @@ These are front-side envelope budgets, not fitted populated-board approval. Keep
 components on the front; the back carries no parts. Manufacturer height limits must hold.
 99 active footprints and native fields/UUID paths/nets; J1 HRO placement rederived,
 SW1/D10/J7 fixed. All97 purchased fitted parts placed; D10 is DNP (footprint/pads
-retained); carrier552 tracks/201 vias/8 zones.
+retained); carrier585 tracks/207 vias/8 zones.
 Front panel remains passive. Only the USB aperture size/position changed; all other physical interfaces retained.
 D10 remains DNP: no LED MPN/procurement, lead forming or fitted-LED check is claimed;
 USB cable overmould and finished cabled depth still need trial.

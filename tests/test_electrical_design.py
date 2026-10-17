@@ -3,17 +3,26 @@ import json,sys,subprocess,tempfile,unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from electrical_checks import check
+from electrical_checks import check,REVIEWED,LOCAL
 from sexp import parse,nodes,one
 class ElectricalPrototypeTests(unittest.TestCase):
     def test_independent_roles_bom_and_visible_feedback(self):
         result=check(ROOT/'hardware',ROOT/'docs/pin-net-audit.json',ROOT/'BOM.csv')
-        self.assertEqual(result['independent_pin_checks'],233)
-        self.assertEqual(result['local_visible_wire_checks'],59)
+        audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
+        self.assertEqual(result['parts'],sum(1 for r in audit if not r.startswith('#')))
+        self.assertEqual(result['pins_including_NC'],sum(len(p) for p in audit.values()))
+        # Counts derive from actual refs, not a pre-043 hardcoded total.
+        self.assertEqual(result['independent_pin_checks'],sum(map(len,REVIEWED.values())))
+        self.assertEqual(result['local_visible_wire_checks'],len(LOCAL))
+        self.assertGreaterEqual(result['independent_pin_checks'],240)
+        self.assertGreaterEqual(result['local_visible_wire_checks'],62)
     def test_mid_dc_corner_is_not_a_transient_guarantee(self):
-        upper=.611*(1+100e3*1.001/(12.9e3*.999))
-        self.assertGreater(upper,5.35);self.assertLess(upper,5.5)
+        g=[.99*.99,1.01*1.01]
+        upper=.611*(1+100e3*max(g)/((13e3+510)*min(g)))
+        lower=.581*(1+100e3*min(g)/((13e3+510)*max(g)))
+        self.assertGreater(upper,5.3);self.assertLess(upper,5.5)
         self.assertGreater(upper*1.08,5.5)
+        self.assertLess(upper+.1,5.5);self.assertGreater(lower,4.7)
         self.assertGreater(2*1.5/(290e3*(5.5-upper)),44e-6)
         self.assertLess(9*(12000/6040),2*12*.8) # even before conversion losses
     def test_tl3340_manufacturer_contacts_and_case(self):
@@ -68,8 +77,18 @@ class ElectricalPrototypeTests(unittest.TestCase):
             self.assertNotIn(ref,g.refs)
         self.assertFalse((ROOT/'hardware/06_sensing.kicad_sch').exists())
         self.assertFalse(any(n and any(t in n for t in ['ADC_','AUX','DBG_']) for n in p.values()))
-        self.assertAlmostEqual(5.216/2,2.608)
+        self.assertAlmostEqual(5.007547002220577/2,2.5037735011102885)
         self.assertLess(5.5**2/990,.031)
+    def test_accepted_local_cap_plan_is_consistent_when_present(self):
+        result=check(ROOT/'hardware',ROOT/'docs/pin-net-audit.json',ROOT/'BOM.csv')
+        plan=result['capacitor_plan']
+        self.assertIn(plan['status'],('pass','pending_043'))
+        if plan['status']=='pending_043':
+            self.assertEqual(plan['missing'],['C68','C69','C70','C71','C72'])
+        else:
+            self.assertEqual(plan['MID_local_refs'],['C6','C70','C71'])
+            self.assertEqual(plan['P5_local_refs'],['C19','C38','C72'])
+            self.assertNotIn('C37',plan['MID_local_refs'])
     def test_mutated_hardware_gate_and_power_contract_are_rejected(self):
         import shutil
         with tempfile.TemporaryDirectory() as tmp:

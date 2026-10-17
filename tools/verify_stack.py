@@ -153,7 +153,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         assert math.isclose(g['carrier_X_mm'][1]+g['LED']['axis_above_PCB_mm'],6.7)
     assert all(p.GetAttribute()==pcb.PAD_ATTRIB_PTH and mm(p.GetDrillSize().x)>=.8 for p in f['J7'].Pads())
     switch_check=verify_reset_smt(f['SW1'],g)
-    assert any(d.GetText()=='RETRY' and xy(d)==(82.8,96.2) for d in silk)
+    assert any(d.GetText()=='RETRY' and xy(d)==(81.4,96.6) for d in silk)
     assert any(d.GetText()=='RETRY' and xy(d)==(54.9,82.5) for d in panel_silk)
     for label,pos in [('1 / -12V / RED',(78,79.5)),('J7 OUTPUT ONLY',(94.75,79.5))]:
         assert any(d.GetText()==label and xy(d)==pos for d in silk), 'routed J7 legend missing'

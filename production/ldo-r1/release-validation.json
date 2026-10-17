@@ -10,7 +10,7 @@
         "big_modular-F_Paste.gbr",
         "source-sha256.json"
       ],
-      "sha256": "5aa1a610f614565064247d8fd4ac9b0b3f8f035b3125818129b189c0d2be0342"
+      "sha256": "f8fd27ab8cc11f9cea0a4601c4644f27bbda52bf6c3766baaa2f2d05ae9ec772"
     },
     "Big-Modular-LDO-R1-CARRIER-4L-STANDARD-VIAS-BARE-PCB.zip": {
       "CRC_and_member_SHA_verified": true,
@@ -38,7 +38,7 @@
         "via-audit.json",
         "via-process.tsv"
       ],
-      "sha256": "4474fb47819bb101d8cca0b1c008022a78f76c3a29d66b36a894e5ac78f5c297"
+      "sha256": "3afcabc7695dd6ec80bc085c15e56545edd724767973aa244bd70aa3633f0f07"
     },
     "Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip": {
       "CRC_and_member_SHA_verified": true,
@@ -60,8 +60,84 @@
         "front_panel-job.gbrjob",
         "source-sha256.json"
       ],
-      "sha256": "59091b514f738ca760f786fd0d749d2aba5885a06d377cd858faa660d7c053d3"
+      "sha256": "4b5a9dc51406c37656ba143a02a1ef51f456ab5e54cc72a54bee81fa6a40355e"
     }
+  },
+  "assembly": {
+    "bom": {
+      "path": "assembly/bom.csv",
+      "sha256": "4b37256a939de0a02ad9c113ee01a9cbf9fd529bbbb463177c3440b799c6fd40"
+    },
+    "bom_rows": 46,
+    "classification_counts": {
+      "Basic": 86,
+      "Extended": 19
+    },
+    "cpl": {
+      "path": "assembly/positions.csv",
+      "sha256": "468afe58116c11fc1ad9ab9bcd82ad8e716175141cd1d01adb23f5c303fff141"
+    },
+    "cpl_rows": 105,
+    "design_refs": 107,
+    "exceptions": {
+      "extended_instances": 19,
+      "extended_unique": 16,
+      "path": "assembly/exceptions.json",
+      "sha256": "d6c9f1bdd3b5cd8b57646246520309b8d92fe6dfbb7e4ce811856dcf8f7881d3"
+    },
+    "excluded": {
+      "D10": "DNP",
+      "J7": "manual landing"
+    },
+    "fitted_purchased_parts": 105,
+    "included": [
+      "J1",
+      "SW1"
+    ],
+    "non_DNP_design_refs": 106,
+    "rc_instance_counts": {
+      "Basic": 82,
+      "Extended": 5
+    },
+    "readme": {
+      "path": "assembly/README.md",
+      "sha256": "9a8f78db666c54bec856ab766194d32cca5f725979a21ed53ea1543e99116db8"
+    },
+    "report": {
+      "path": "assembly/assembly-report.json",
+      "sha256": "8db355fd4976591882c9e12d1a96a34332b511e67d295a8acb36b61bc4e25870"
+    },
+    "rotations_deg": {
+      "0": 52,
+      "180": 40,
+      "270": 3,
+      "90": 10
+    },
+    "sha256sums": {
+      "path": "assembly/SHA256SUMS.txt",
+      "sha256": "52347ebc9240a06be6337af692afbbbf937dde0119c6b9cb771e15309119e6a6"
+    },
+    "shipped_files": [
+      "README.md",
+      "SHA256SUMS.txt",
+      "assembly-report.json",
+      "bom.csv",
+      "exceptions.json",
+      "export-report.json",
+      "positions.csv",
+      "sourcing-evidence.json"
+    ],
+    "side": "top/front only",
+    "sourcing_evidence": {
+      "all_economy_eligible_observed": true,
+      "path": "assembly/sourcing-evidence.json",
+      "sha256": "c4b9b12e6eacca4927bc4d6e740265506d2235b2e8cf3ca03d8b9f04908846b3"
+    },
+    "unique_classification_counts": {
+      "Basic": 26,
+      "Extended": 16
+    },
+    "unique_codes": 42
   },
   "assembly_side": "single-side front only; no B.Cu components and no B.Paste component apertures",
   "common_native_carrier_findings": {
@@ -328,22 +404,22 @@
   "ref_pin_net_parity_equal": true,
   "rule_exclusions": 0,
   "source_sha256": {
-    "BOM.csv": "70529d6fbb50b32e050fdfa6e9ec70bf46d0f8f013fb3beabba5d13280e1e6b3",
+    "BOM.csv": "2d0e42ce30812bbb3e7bff74edde40b0cd5fadc3992d48a7b5db55a8bc253854",
     "docs/assembly-geometry.json": "a5bcc9a6b2745351f29a6668cb51c92363e0395c8a8dd5507279fd9280db8ee1",
-    "docs/fabrication.md": "d35851d49c205068826c6994fa26dc3b276acf27b1c9a2051e81ab1319d2fdfb",
-    "docs/ldo-evidence/capacitor-disposition.json": "683d9978a31ed17554c86ac33827994deb1f76c9ad8644b482db42fb682dd913",
+    "docs/fabrication.md": "6c89b60d02ef870b2fc5b9568b1ac1fc821f97165fb5029aebb106ad1ef3c75e",
+    "docs/ldo-evidence/capacitor-disposition.json": "f45de4399fae3e017305027880bcf7d2cf23015fb053f1a93ebc2b4c7d434623",
     "docs/ldo-evidence/manufacturer-mlcc-data.json": "7369637756b1387aa502ffbd84477b5eee2548ad3806621a759c2adbcbd0f776",
-    "docs/ldo-evidence/pcb-audit.json": "a699644d2c0b5e3857edd4531f279d4e643fff34ba84cb4c45dfb343fdb0eecc",
-    "docs/ldo-revision.md": "73751b44f8249ff25acbd49adfec1e243ce3af9cf582b650558313a03409902e",
-    "docs/pin-net-audit.json": "92ac0a2feb7c4d1b827c8c7a2b98e52b493a73cbb278267cd383ca27cade285a",
-    "docs/routed-baseline.json": "6a4160ae9f402add07c683b7f3d4b16e245f5c3dd7df4e7fcaa8c846af460484",
-    "docs/schematic.pdf": "470f29e23dca2f0f1278b58c8df574181f74d012eb438adcdc4858eb57eeafaa",
+    "docs/ldo-evidence/pcb-audit.json": "521a1ff1602c99697087e896a1b45fec6758bc9a9ebcaed0feaff7035cba77c7",
+    "docs/ldo-revision.md": "91a48e6e2a533094d71c4cda1eefe3ac45d3ba38771f48911de3ebca431bbf3c",
+    "docs/pin-net-audit.json": "5ed8e37a523dbce1219344a8df2ec07e5e2bee109dd52409a4c5d2c89ed44e7d",
+    "docs/routed-baseline.json": "e3047d3a31940c2ae5b011571c1e489f7d2d227b3b21be6d89da59cd5a6eec4a",
+    "docs/schematic.pdf": "c5534027012f57105f46ad8dff6d3ed27059d145682c94ae14755b782734c220",
     "docs/usb-fit.json": "c6a151184db6a2567b87a3af044c6a21a4537d577e91128ea44173a2b18806ec",
     "hardware/01_input_protection.kicad_sch": "1321892634659ce18274ce0a768b9919fb067827a6b97325bb01090d971b8ebf",
-    "hardware/02_hardgate.kicad_sch": "e751359facc0a4040ed7dc6b54a3f8c7f208e0882257564d807264b50ae8446f",
-    "hardware/03_bucks.kicad_sch": "fd7f243659717aa7668460653ec3b3373b340fbdc58243efc4147525cbec7e46",
-    "hardware/04_bipolar.kicad_sch": "0c01b2df527079222c6b64eadbe5d6f1f578c6c77d75e3fce64c744b9b3cbf13",
-    "hardware/05_quiet_rails.kicad_sch": "e7e5635edbfe26d2c946457c4abe2faf18c17b25ff882b15769876a4e2ef6abf",
+    "hardware/02_hardgate.kicad_sch": "3a59a0fff06c19dc120a17e555a05a4eed56d6f450bedfae79f9b611480319d9",
+    "hardware/03_bucks.kicad_sch": "ea070050a6022dc00eebe8ed5e6696c0fc37654d214aa307970f95fa7ac9cebb",
+    "hardware/04_bipolar.kicad_sch": "cf7970b62096270436e4424f2e09638d9bd57481855002897b42a1827e4fcda4",
+    "hardware/05_quiet_rails.kicad_sch": "751de70cb9c335b9cf507b09aaec39f0aa93f0e73d364df21cca4021c68f67b0",
     "hardware/07_output_rails.kicad_sch": "4521eb630eae7d1fe74df71f7235f5cbee90b9a5b3492d4eddced47470254e3f",
     "hardware/BigModular.kicad_sym": "82c5b6f51703d7e8e9bca4f6ff075a6c1c2d40f88db91844ad36b4c2f7d0d92e",
     "hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
@@ -368,7 +444,7 @@
     "hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
     "hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
     "hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
-    "hardware/big_modular.kicad_pcb": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3",
+    "hardware/big_modular.kicad_pcb": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
     "hardware/big_modular.kicad_pro": "3334530248291a9c49013b88312067a4da10d0c21efa658fd5a77419cc2b1433",
     "hardware/big_modular.kicad_sch": "52046f74d709cb1a075ba766d01b14d6f720abff58218778ae9bcbdf4818ed85",
     "hardware/fp-lib-table": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
@@ -377,24 +453,24 @@
     "hardware/mechanics/assembly-envelope.scad": "f088e2e7029272003fef235149ae715abdcaeedb06dee1ce917c1fec77ec9ab6",
     "hardware/mechanics/corner_braces.scad": "ce564638ca3a664eab28c0053a2430141b3da0bbc1677cf40a0320643fc4176f",
     "hardware/sym-lib-table": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
-    "tests/test_electrical_design.py": "22b1dd361ce820892853a8ea02d8f8723e1526f1a984e63cacd74f574b6a1f2f",
-    "tests/test_hro_fabrication.py": "41c5cfb8b31d04bd92b6fbdecbd6021473a53a354ae0639bc40b733dff1908aa",
-    "tests/test_hro_source.py": "d4d0d78381756a58ca9d7f4eed4123da50f6c3c5649faa52f8f54ca5dfea8c3d",
+    "tests/test_electrical_design.py": "9d178f255571db68a20a4b85583bd9e45afc55de328006b7187c8c0b8eca7cf6",
+    "tests/test_hro_fabrication.py": "a142183504dcbd55cd0f6ed698e373b8548212fa1d4d0ae8dba86db369714b10",
+    "tests/test_hro_source.py": "e173dedf253e49c5d1efb5980df9bcca17528b3c336232360240b64c58733b47",
     "tests/test_kicad_toolkit_setup.py": "1f0c4e0f62b7c54ef23159d199948d5337ad8b0095a865075082f207ae6639f1",
-    "tests/test_ldo_revision.py": "597f8568b4d8435853959aa0544efd9d5d4455df8df87fcc541599ba4dde94df",
+    "tests/test_ldo_revision.py": "66e5a9713dd6c6bc17b8b68e74999ee4c001d4a239c89805f7b74c15d6352ba1",
     "tests/test_led_reservations.py": "9a07748215532efb77f7eb9fa5038d89d64715971cad2b681616d3170d131711",
     "tests/test_m3_access.py": "bae550599013be7abebdbd2d312edb0bbe0ed9ac53e522da24fece1f14b1accc",
-    "tests/test_schematic_hierarchy.py": "85c8b2774ee3d0252ea819f74057e2891af8fac6c68c07efe080ba6d8b5b1555",
+    "tests/test_schematic_hierarchy.py": "be36168627daada166886736568b15420a93f3bbd93a65b8fb6616637721caa0",
     "tests/test_smd_reset.py": "8e0419c715475db900df48025cc29522619b7d746ac36628af1f6b305d3330ea",
-    "tests/test_stack_geometry.py": "be073e8a59791143014299a25651b7fa105aef8d2ad6e4155ad29b2d15cb4575",
+    "tests/test_stack_geometry.py": "a059b6d123b70cfa4e9abc2830064f06a80aca9b9de90b0cd785aef096781b2a",
     "tests/test_ts1166_footprint.py": "3bb4895c3dfce4a15914861433d525941cb5d82b89f8376094fd22a16c0c4f64",
     "tools/build_mechanics.py": "011c0ab67ea01078d5a515a0a1e9c4829620a50bddf905fa140455af32ad0b9b",
     "tools/build_project.py": "8b704fb2a04197488d2168b152dd6641789b057dc2aaf42644ca63bced7d3cc1",
     "tools/build_stack.py": "e057d778dfc8c56d7b7d943cab46c923a326335abcc1b601d1bcd632a7d62fd9",
     "tools/cam-requirements.txt": "28f2df1b2acffccc7e8190f57bf37028ba9b323159d50db4f3e1ffd0ee1fcbe6",
     "tools/check_hro_cam.py": "d66440f34b108d2c3cda5bd5b5bd12719a748894d74e7ffb53f21fb882d245e0",
-    "tools/electrical_checks.py": "3127f9878a040c74a8023c5ee6d893f5af8948c4dd5ed308f9b39ab2c0cca98a",
-    "tools/electrical_design.py": "f298f17df6095959cdb27cb33ad2cabdd5873f449c8dd68fa6bf6a10a8d18bdc",
+    "tools/electrical_checks.py": "7e1cecdb98579038a2d6885145c3ae526838f4c6ab455c11caf3920a5bba4567",
+    "tools/electrical_design.py": "ef5d0ad8f7c1b2a91d270bc81553276c7c8098a99bda1ce86360e9a1092b568b",
     "tools/fabrication_contract.py": "4044c9f3fd57b63337a90eb6c0b211831ee1f29d693a9dd36069b785af0ad19d",
     "tools/hro_connector.py": "ab4d73f462e61e7834bae5c2e0fcdbe6f121d3fd311e767113f091c944ab03a8",
     "tools/hro_fit.py": "904a68ac33e4083c69a41426873089a8b2c766770095a15bb7eba8a2a7ad708c",
@@ -402,9 +478,9 @@
     "tools/hro_merge_overlay.py": "4f7380cbfff4a0d333867c3cc72afc27e0c6e787ce63ea6facebb990e839ba65",
     "tools/interface_contract.py": "6814240a34efa5a706c9742ca9a1d322152d7fb117f1fb7fc5ec9b70d14b1664",
     "tools/kicad-project.json": "b78754fa1c3466856ad974bb7ad68ce8e0f78928002393d9f46b6291b60a1b1d",
-    "tools/ldo_budget.py": "a25fc695a472ca3e97ccf2b49a982383e0d137171a2332d5717ebab015b377c1",
-    "tools/ldo_design.py": "80bc9c99b0d3c580fdcec21a3025da91f8ad8145f959b4cf85c2a8bea962cbf4",
-    "tools/ldo_schematic.py": "5669c75e320df49b937ed0e770f508aba2abe41dcf3f179877610a7e03832d74",
+    "tools/ldo_budget.py": "5a6c0be7aa849273643644b362d9cb8562f820f1acbb6eae3dec29cecc87ba72",
+    "tools/ldo_design.py": "257789308f419b891442cd881b450fdebcee6aa78e6dd4ef994b412ea48b47ff",
+    "tools/ldo_schematic.py": "e451743152e7f037731dbe3a0a364eb534813511f34328dc031d561590a61a2f",
     "tools/m3_fit.py": "9916d8444e128369eeb1e5693de0b83cd1e4529f5d2220058fc8e7551a2307f1",
     "tools/native_sheet_patch.py": "bdf27f3f90dedf9e06b8350b0d1005fc4599e8430dbc61748a4eb66c1a6d2268",
     "tools/release_hro.py": "8207c33f7949fb2e7815b4aeb71c01e4fecc9bb009d43cd89c9b63d7275beaf9",
@@ -413,13 +489,13 @@
     "tools/schematic_connectivity.py": "258388abbd40ee6d8060c72a7e3f6885a90007cc1259bfad84207aa5d7fa77a9",
     "tools/sexp.py": "fc9462862ea7d5acfbd63afa720d206fda0cd854e796c71c9eee4a46a366c0b4",
     "tools/stack_geometry.py": "da7363c987a9b4f1619934acfb1194068483a5a39d04d6287e4f3efb8de69b32",
-    "tools/verify_ldo_source.py": "d5f1ce89ea61ff7136e623b88505d1815ce7874053fb2db77fea6726ebbda8d5",
+    "tools/verify_ldo_source.py": "4cdfa2f45e8fe6ed8b96c93cbb1725fb46442b29e53178708e98ab8673dbc760",
     "tools/verify_project.py": "8cdc6a9ee5e38a461c8298034d97339e72dc1e6d7553bc5f8c571c631279c476",
-    "tools/verify_stack.py": "ec9d5fcdc7dbfb44398da1c4d1e578a5c3750de902802f8d34e16ee98dc759fd",
+    "tools/verify_stack.py": "397700b4d10effa11ce597dcefbd39807eb454350d93bd4ba40c7cc4de70f0ee",
     "tools/verify_ts1166.py": "a28ef632b08b2a3ccb18e28a152fd97b87678893bf0eb1fddda6e8523166ae2c"
   },
   "source_state": {
-    "git_base_HEAD": "d0cc00212db695dacd7c6bc8952177468b4842c5",
+    "git_base_HEAD": "b4d301d075f7556b6c06758ccbffcc1a2b1694fa",
     "revision_committed": false,
     "source_identity": "Exact source_sha256, not HEAD alone; intentional uncommitted workspace revision. Supervisor merges; no commit by exporter."
   },
@@ -431,8 +507,14 @@
     "kicad_cli": "10.0.6",
     "shapely": "2.1.2"
   },
-  "tracks": 552,
+  "tracks": 585,
+  "two_pass_reproducibility": {
+    "differing_bytes": 0,
+    "files_equal": 67,
+    "files_total": 67,
+    "verified": true
+  },
   "via_process": "ordinary 0.300 mm plated through vias; solder-mask tented where artwork permits; no epoxy fill/planarization/copper cap",
-  "vias": 201,
+  "vias": 207,
   "zones": 8
 }

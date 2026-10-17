@@ -138,15 +138,16 @@ def stage(source, hw, sheets, lib, uid):
         port(raw,'input',45.72,yrail,180);port(out,'output',381.,yrail,0)
         if u=='U13':t.append(label('GND',45.72,ygnd,'quiet/'+u))
     port('GND','passive',45.72,127.,180)
-    for r,y in [('R72',203.2),('R73',218.44),('R74',248.92)]:part(r,251.46,y)
-    poly((251.46,182.88),pp('R72',1));poly(pp('R72',2),pp('R73',1));poly(pp('R73',2),(251.46,233.68),pp('R74',1));poly(pp('R74',2),(251.46,281.94))
+    for r,y in [('R72',198.12),('R83',210.82),('R73',223.52),('R74',248.92)]:part(r,251.46,y)
+    poly((251.46,182.88),pp('R72',1));poly(pp('R72',2),pp('R83',1));poly(pp('R83',2),pp('R73',1));poly(pp('R73',2),(251.46,233.68),pp('R74',1));poly(pp('R74',2),(251.46,281.94))
     poly(pp('U13',3),(238.76,pp('U13',3)[1]),(238.76,233.68),(251.46,233.68))
     part('C62',274.32,213.36);poly((274.32,182.88),pp('C62',1));poly(pp('C62',2),(274.32,236.22),(251.46,236.22))
     # Add local labels at existing wire points for all distinct nets, including NR/FB.
-    for ref,pin,n in [('U12','14','P_NR'),('U13','14','N_NR'),('U13','3','N_LDO_FB'),('R72','2','N_LDO_DIV')]:
+    for ref,pin,n in [('U12','14','P_NR'),('U13','14','N_NR'),('U13','3','N_LDO_FB'),('R72','2','N_LDO_SER'),('R83','2','N_LDO_DIV')]:
         x,y=pp(ref,pin)
         if n in ('P_NR','N_NR'):x=170.18
-        if n=='N_LDO_DIV':y=210.82
+        if n=='N_LDO_SER':y=204.47
+        if n=='N_LDO_DIV':y=217.17
         t.append(label(n,x,y,n))
     # Segment split at any explicit endpoint touching a wire (never connect crossings).
     allpoints=set(ends)
@@ -164,9 +165,9 @@ def stage(source, hw, sheets, lib, uid):
     for (x,y),d in degrees.items():
         if d>=3:t.append(parse(f'(junction (at {x} {y}) (diameter 0) (color 0 0 0 0) (uuid {q(uid("ldo-junction/"+str((x,y))))}))'))
     text('05 / QUIET BIPOLAR POST-REGULATORS - ELECTRICAL SOURCE ONLY',20.32,17.78,2)
-    text('Raw +13.530611/-13.920585V remain internal. Final +5V is unchanged and bypasses this sheet.\nBoth exposed pads 21 are GND. Exact requested RGWR parts; NOT a +/-1A supply.',20.32,27.94)
+    text('Raw +13.537080/-13.928806V remain internal. Final +5V is unchanged and bypasses this sheet.\nBoth exposed pads 21 are GND. Exact requested RGWR parts; NOT a +/-1A supply.',20.32,27.94)
     text('U12 ANY-OUT: 5,6,9,11 to GND; 4,8,10,12 float. SENSE3 -> final output.\nC60 sees approximately +12V. Three 22u MLCCs per bank = 66u NOMINAL, not effective.\nRequire >=10u effective at each IN/OUT; >=20u at positive OUT for accuracy conditions.',20.32,137.16)
-    text('R72+R73 / R74 = 92.11k / 10k -> -11.997925V before IFB; 117.5uA nominal divider current (>5uA required).\nC61 100n: typical ~120ms start, not rail sequencing. C62 10n improves AC; shutdown FB kick remains a test gate.\nD27/D28 divert reverse current, do NOT block it. SS34 Vf does NOT prove the negative -0.3V differential limit.\n800mA aspiration is load-dependent, not a simultaneous rail guarantee. Capacitor bias/ESR, transient and board thermal qualification pending.\nRaw-divider and LDO-divider Extended resistor candidates require an explicit Basic-policy exception before assembly.',20.32,292.1)
+    text('R72+R83+R73 / R74 = 92.3k / 10k -> -12.02025V before IFB; 117.5uA nominal divider current (>5uA required).\nBasic 1%,100ppm/K divider; corners and negative full-temperature dropout are conditional, not a1A guarantee.\nC61 100n: typical ~120ms start, not rail sequencing. C62 10n improves AC; shutdown FB kick remains a test gate.\nD27/D28 divert reverse current, do NOT block it. SS34 Vf does NOT prove the negative -0.3V differential limit.\n800mA aspiration is load-dependent, not a simultaneous rail guarantee. Capacitor bias/ESR, transient and board thermal qualification pending.',20.32,292.1)
     (hw/'05_quiet_rails.kicad_sch').write_text(dump(t)+'\n')
 
 

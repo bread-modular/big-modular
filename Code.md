@@ -17,7 +17,9 @@ are read-only. No external project changes.
 
 Preserve9V PD/TPS26600 protection, autonomous retry, both TPS54302 bucks and finalP5
 buck-only circuit, fixed connectors/UI/panel/outline/stack. TPS65131 raw rails are
-+13.530610667/-13.920584956V, followed by exact TPS7A4700RGWR/TPS7A3301RGWR.
++13.537080/-13.928806V, followed by exact TPS7A4700RGWR/TPS7A3301RGWR. The 043
+local-cap closure is implemented (10.664uF VPROT screens, 27.631uF local outputs,
+39.164kHz estimated P5 crossover) but bench/thermal/startup qualification is not.
 LDO-R1 capacitor fix uses4/6/4/3 parallel exactC12891 banks. All components are
 front-side (single-side assembly); no B.Cu electrical footprints or B.Paste
 component apertures, while B.Cu routing/mask/drill layers remain. C67 is front.

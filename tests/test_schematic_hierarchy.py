@@ -29,7 +29,10 @@ class SchematicHierarchyTests(unittest.TestCase):
         audit = json.loads((ROOT/'docs/pin-net-audit.json').read_text())
         expected = {(ref, pin): net for ref, pins in audit.items() for pin, net in pins.items()}
         self.assertEqual(self.graph.named_pins(), expected)
-        self.assertEqual(sum(not r.startswith('#') for r in self.graph.refs), 99)
+        # Derive the active-ref count from the actual BOM; 043 will add local caps.
+        with (ROOT/'BOM.csv').open() as f:
+            bom_refs={r['Reference'] for r in csv.DictReader(f)}
+        self.assertEqual({r for r in self.graph.refs if not r.startswith('#')},bom_refs)
         self.assertEqual(len(self.graph.hierarchy_links), 22)
         self.assertNotIn('D1', self.graph.refs)
 
@@ -39,7 +42,12 @@ class SchematicHierarchyTests(unittest.TestCase):
             if not ref.startswith('#'):counts[filename] = counts.get(filename, 0)+1
             path = one(one(one(symbol, 'instances'), 'project'), 'path')[1]
             self.assertEqual(path.count('/'), 2)
-        self.assertEqual(counts, {'01_input_protection.kicad_sch':5,'02_hardgate.kicad_sch':18,'03_bucks.kicad_sch':18,'04_bipolar.kicad_sch':25,'05_quiet_rails.kicad_sch':27,'07_output_rails.kicad_sch':6})
+        with (ROOT/'BOM.csv').open() as f:
+            expected_counts={}
+            for row in csv.DictReader(f):
+                key=row['Block']+'.kicad_sch'
+                expected_counts[key]=expected_counts.get(key,0)+1
+        self.assertEqual(counts, expected_counts)
         root = self.graph.sheets['big_modular.kicad_sch']
         self.assertEqual(one(root, 'paper')[1], 'User')
         self.assertEqual([one(s, 'paper')[1] for n, s in self.graph.sheets.items() if n!='big_modular.kicad_sch'], ['User']*6)

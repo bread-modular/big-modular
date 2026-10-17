@@ -3,47 +3,47 @@
     "B_Cu_SMD_lands": 0,
     "B_Paste_component_apertures": 0,
     "Gerber_objects": {
-      "B_Cu": 328,
+      "B_Cu": 336,
       "B_Mask": 26,
-      "B_Silkscreen": 1482,
+      "B_Silkscreen": 1400,
       "Edge_Cuts": 12,
-      "F_Cu": 902,
-      "F_Mask": 326,
-      "F_Silkscreen": 546,
-      "In1_Cu": 230,
-      "In2_Cu": 295,
+      "F_Cu": 951,
+      "F_Mask": 342,
+      "F_Silkscreen": 644,
+      "In1_Cu": 236,
+      "In2_Cu": 305,
       "NPTH": 8,
-      "PTH": 223
+      "PTH": 229
     },
     "HRO_SMT_lands_copper_mask_paste": 12,
     "HRO_shells_copper_masks_no_paste": 4,
-    "IPC_net_aliases_unique": 93,
-    "IPC_records_checked": 523,
+    "IPC_net_aliases_unique": 96,
+    "IPC_records_checked": 545,
     "In1_GND_connected_polygon": true,
     "RTN_GND_CAM_isolation": {
       "B_Cu": {
         "GND_RTN_gap_mm": 0.250499,
-        "GND_area_mm2": 470.088468,
-        "RTN_area_mm2": 84.846847
+        "GND_area_mm2": 468.969069,
+        "RTN_area_mm2": 78.210772
       },
       "F_Cu": {
         "GND_RTN_gap_mm": 0.2505,
-        "GND_area_mm2": 199.308788,
+        "GND_area_mm2": 209.867317,
         "RTN_area_mm2": 30.130327
       },
       "In1_Cu": {
         "GND_RTN_gap_mm": 0.250499,
-        "GND_area_mm2": 2318.063075,
+        "GND_area_mm2": 2315.202636,
         "RTN_area_mm2": 5.393582
       },
       "In2_Cu": {
         "GND_RTN_gap_mm": 1.09061,
-        "GND_area_mm2": 51.061005,
+        "GND_area_mm2": 51.909214,
         "RTN_area_mm2": 30.790942
       }
     },
     "U2_8_17_RTN_9_GND_verified": true,
-    "boundary_only_barrels_native": 6,
+    "boundary_only_barrels_native": 7,
     "closed_outline_loops": 1,
     "drill_tools_mm_hits": {
       "NPTH": {
@@ -53,7 +53,7 @@
         "3.200": 2
       },
       "PTH": {
-        "0.300": 201,
+        "0.300": 207,
         "0.600": 4,
         "0.900": 2,
         "1.000": 16
@@ -105,8 +105,8 @@
         0.6
       ]
     ],
-    "via_barrels_exposed_SMD_Cu": 93,
-    "via_barrels_paste": 92,
+    "via_barrels_exposed_SMD_Cu": 86,
+    "via_barrels_paste": 85,
     "via_specific_mask_openings_outside_pads": 0
   },
   "board": "carrier",
@@ -319,5 +319,5 @@
   ],
   "release": "LDO-R1",
   "source_of_requirements": "FABRICATION-REQUIREMENTS.md",
-  "source_sha256": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3"
+  "source_sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9"
 }
