@@ -191,9 +191,9 @@ CLI and `/usr/bin/bwrap`; see the [routing README](../kicad-routing/README.md).
 Only supported ordinary snapshots route; groups, zones and complex rules are
 rejected, not simplified. Use a completed PCB candidate's `inputs/` subtree, not
 its reports/runtime directory; see [handoff](API.md). Routing runtime/JAR/temp
-files are never bundled. Read optional
-[routing research](../../docs/kicad-routing-research.md) when installed; absent
-code/research in a core-only distribution is not a failed electrical gate.
+files are never bundled. The shared [routing research](ROUTING-RESEARCH.md) is
+included in core bundles. An absent optional routing sibling in a core-only
+distribution is not a failed electrical gate.
 
 ## Portable install by copy
 

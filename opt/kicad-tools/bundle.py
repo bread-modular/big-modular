@@ -12,7 +12,7 @@ from project import new_output
 ROOT = Path(__file__).resolve().parents[2]
 TOOLKIT_FILES = (
     "kicad_tools.py", "native.py", "project.py", "bundle.py", "README.md", "GUIDE.md", "BUNDLING.md", "MIGRATION.md",
-    "VERIFICATION.md", "MODEL_VERIFICATION.md", "BUNDLE_README.md", "API.md", "HYBRID_ROUTING.md", "examples/project.json",
+    "VERIFICATION.md", "MODEL_VERIFICATION.md", "BUNDLE_README.md", "API.md", "HYBRID_ROUTING.md", "ROUTING-RESEARCH.md", "examples/project.json",
     "tests/fixtures.py", "tests/test_native.py", "tests/test_project.py", "tests/test_models.py", "tests/test_cli.py", "tests/test_integration.py",
     "tests/test_consolidation.py", "tests/test_facade.py", "tests/native_handoff.py",
     "automation/__init__.py", "automation/run.py", "automation/api.py",
@@ -39,6 +39,11 @@ COMPATIBILITY_LINKS = {
 }
 # Reviewed routing payload only: tests and compact historical evidence are
 # intentional; no glob/recursive discovery or general JSON/runtime permission.
+# Historical routing docs retain this destination link. Always copy from the
+# canonical shared source, never a project-root/module docs tree or old copy.
+ROUTING_COMPATIBILITY_FILES = {
+    "docs/kicad-routing-research.md": "opt/kicad-tools/ROUTING-RESEARCH.md",
+}
 ROUTING_FILES = (
     "opt/kicad-routing/run.py", "opt/kicad-routing/fixture.py",
     "opt/kicad-routing/pcbnew_adapter.py", "opt/kicad-routing/runtime.py",
@@ -103,7 +108,7 @@ def routing_files(root):
         regular(manifest, root)
         data = json.loads(manifest.read_text(encoding="utf-8"))
         if not isinstance(data, dict) or type(data.get("schema_version")) is not int or data["schema_version"] != 1 or set(data) != {"schema_version", "files"} or not isinstance(data["files"], list):
-            raise Error("Routing bundle-files.json must contain schema_version 1 and files (repo-relative source/doc paths)")
+            raise Error("Routing bundle-files.json must contain schema_version 1 and files (reviewed distribution-relative paths)")
         files = data["files"]
         if "opt/kicad-routing/run.py" not in files:
             raise Error("Routing bundle allowlist must include run.py")
@@ -115,13 +120,14 @@ def routing_files(root):
         path = Path(name)
         if path.is_absolute() or ".." in path.parts or name not in ROUTING_ALLOWED or any(part.lower() in ROUTING_FORBIDDEN or part.endswith(".tmp") for part in path.parts):
             raise Error(f"Routing bundle allows reviewed code/docs/tests and exact named evidence JSON only, never runtime/temporary files: {name}")
-        regular(root / path, root)
+        regular(root / ROUTING_COMPATIBILITY_FILES.get(name, name), root)
     if not set(ROUTING_FILES).issubset(files):
         raise Error("Routing bundle contract must include the complete reviewed source/docs/tests/evidence payload")
     # Preserve a supplied contract so re-bundling uses the same reviewed payload.
     if manifest.is_file():
         files.append("opt/kicad-routing/bundle-files.json")
-    return sorted(files), {"available": True, "allowlist": "bundle-files.json" if manifest.is_file() else "fixed reviewed routing source/docs/tests/evidence", "runtime_included": False}
+    return sorted(files), {"available": True, "allowlist": "bundle-files.json" if manifest.is_file() else "fixed reviewed routing source/docs/tests/evidence", "runtime_included": False,
+                           "compatibility_files": dict(ROUTING_COMPATIBILITY_FILES)}
 
 
 TRACEMAKER_FILES = (
@@ -148,7 +154,7 @@ def bundle(destination, dry_run=False, include_routing=False, root=ROOT, *, incl
             raise Error("Requested optional TraceMaker integration unavailable; nothing downloaded")
         files += ["opt/kicad-tools/tracemaker/" + p for p in TRACEMAKER_FILES]
         tracemaker.update(included=True, runtime_included=False, allowlist="fixed reviewed first-party controllers/tests/guides/provision records")
-    mapping = {name: name for name in files}
+    mapping = {name: ROUTING_COMPATIBILITY_FILES.get(name, name) for name in files}
     mapping["README.md"] = "opt/kicad-tools/BUNDLE_README.md"
     hashes = {}
     for target, name in sorted(mapping.items()):
