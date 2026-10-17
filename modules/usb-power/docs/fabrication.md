@@ -2,7 +2,7 @@
 
 This release is **bare-PCB artwork ready with the specified ordinary-via fabrication
 process**, not an assembled-product qualification, supplier acceptance or purchasing approval.
-Canonical files are `hardware/big_modular.kicad_pcb` and `hardware/front_panel.kicad_pcb`.
+Canonical files are `hardware/usb-power.kicad_pcb` and `hardware/usb-power-panel.kicad_pcb`.
 The carrier uses ordinary 0.300 mm plated through vias with solder-mask tenting where
 the supplied artwork permits; no filled, capped, planarized or other special via
 process is specified.
@@ -103,7 +103,7 @@ as completed tests and are not a reason to confuse bare-PCB artwork with a produ
 
 ## Tooling and narrowly scoped gaps
 
-Read canonical `opt/kicad-tools/skills/kicad-workflow/SKILL.md`, `kicad_tools.py --help`,
+Read canonical `../../opt/kicad-tools/skills/kicad-workflow/SKILL.md`, `kicad_tools.py --help`,
 `export --help`, `pcb --help` and actual native CLI help first. Common `check` remains
 mandatory for private all-severity ERC/DRC/native parity. The unchanged common
 `export` always creates assembly BOM/CPL and includes paste in its fabrication ZIP;
@@ -174,7 +174,7 @@ in `mechanics.json` and `assembly-geometry.json`; this is a dimensioned fit chec
 not an assembled sample test. The panel geometry/holes/legend and all fixed
 interfaces are unchanged.
 
-HRO-R1 under production/hro-r1 is historical, STALE for this LDO circuit, and is
-not relabeled or overwritten. Its source hashes refer to Git base c82ca1c.
-This release is an uncommitted workspace revision: exact manifests, not base HEAD
-alone, identify inputs. Supervisor reviews/merges; no commit/push/order/upload here.
+The old HRO-R1 release archive was retired together with the `production/`
+directory; it was STALE for this LDO circuit. Fabrication output is the current
+`jlcpcb/` set. This is an uncommitted workspace revision: each
+`jlcpcb/*/export-report.json` records the exported source hashes. Supervisor reviews/merges; no commit/push/order/upload here.

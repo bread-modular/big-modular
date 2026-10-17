@@ -3,8 +3,8 @@
 See [LDO revision](ldo-revision.md) for the current 040 checkpoint
 raw+13.537080/-13.928806V, mixed 0.1%/25ppm retained dividers with 1%/100ppm
 Basic substitutions, corrected4/6/4/3 capacitor banks and conditional prototype
-limits. The 043 local-cap delta is implemented; production/ldo-r1 is regenerated
-from this source. HRO-R1 is historical and untouched. No bench/noise/thermal/current qualification.
+limits. The 043 local-cap delta is implemented; `jlcpcb/` is exported from this
+source. The old HRO-R1 release archive was retired. No bench/noise/thermal/current qualification.
 The following V1 decisions remain the unchanged upstream/interface baseline.
 
 # V1 electrical decisions / remaining engineering limits
@@ -124,6 +124,6 @@ boundary/tangency cases. Those are prototype assembly inspection points, not a
 reason to add a via process. Four-layer FR4 Tg170/35um copper/ENIG and separate
 no-copper passive panel stacks, finished thickness and hole limits are explicit in
 [fabrication.md](fabrication.md). Canonical native stacks and final jobs agree.
-Archives/CAM evidence are in `production/ldo-r1/`; no supplier acceptance,
+FAB/CAM evidence is in `jlcpcb/`; no supplier acceptance,
 assembly/current/thermal/bench or physical trial qualification is inferred. No main
 write/commit/merge/order occurred.
