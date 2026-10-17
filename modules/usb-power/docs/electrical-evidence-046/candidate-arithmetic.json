@@ -1,0 +1,405 @@
+{
+  "status": "UNMEASURED conditional engineering screens; not guaranteed ratings",
+  "factors": {
+    "basic": [
+      0.9801,
+      1.0201
+    ],
+    "precision": [
+      0.9965025000000001,
+      1.0035024999999997
+    ]
+  },
+  "negative_raw_candidate_nominal_magnitude_V": 14.16758530183727,
+  "negative_output_candidate_nominal_magnitude_V": 11.996750000000002,
+  "negative_raw_candidate_DC_magnitude_V": [
+    13.500830539285639,
+    14.832379512832867
+  ],
+  "negative_output_candidate_DC_magnitude_V": [
+    11.61180770947959,
+    12.38625084499134
+  ],
+  "negative_raw_trough_V": 13.40083053928564,
+  "negative_raw_peak_V": 14.932379512832867,
+  "negative_headroom_V": 1.0145796942942997,
+  "negative_reserve_vs0p8V_V": 0.21457969429429968,
+  "negative_raw_if_100nA_assumed_DC_V": [
+    13.41228943928564,
+    14.921840612832868
+  ],
+  "negative_raw_only_R60_change_DC_V": [
+    13.282822794384295,
+    15.074829322375937
+  ],
+  "tightened_dividers_R60_unchanged_headroom_V": 0.7900113343198853,
+  "candidate_MID_nominal_V": 4.908590448625181,
+  "candidate_MID_DC_V": [
+    4.620203471865291,
+    5.212564623710832
+  ],
+  "candidate_MID_peak_V": 5.3125646237108315,
+  "candidate_MID_min_with_dip_V": 4.520203471865291,
+  "candidate_MID_crossover_at_original27p631uF_Hz": 39949.60329935951,
+  "efuse_nominal_A": 1.9867549668874172,
+  "efuse_planning_min_A": 1.8502276429203472,
+  "efuse_planning_max_A": 2.1284488472929173,
+  "TI_eq_current_screen_1p8A_not_a_rating": {
+    "positive_external_A": 0.3625312347209936,
+    "negative_external_A": 0.2606906405532353
+  },
+  "load_cases": [
+    {
+      "case": "positive-only bring-up",
+      "positive_external_A": 0.2,
+      "negative_external_A": 0,
+      "positive_external_W_at12V": 2.4000000000000004,
+      "negative_external_W_at12V": 0,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 6.445586286020189,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 0.7857046718902048,
+      "MID_buck_output_A": 0.8841881512129732,
+      "positive_LDO_corner_W": 0.5346153721470466,
+      "negative_LDO_corner_W": 0.07931069808885892,
+      "positive_LDO_nominal_pass_W": 0.3074159999999999,
+      "negative_LDO_nominal_pass_W": 0.0,
+      "Tj_at25C_theta80CperW": [
+        67.76922977176372,
+        31.344855847108715
+      ],
+      "Tj_at50C_theta80CperW": [
+        92.76922977176372,
+        56.34485584710871
+      ],
+      "positive_CCM": {
+        "duty": 0.7067763577494378,
+        "inductor_avg_A": 0.6888939733835965,
+        "ripple_pp_A": 0.642815786412326,
+        "peak_A": 1.0103018665897594,
+        "switch_conduction_W": 0.10792671138066497,
+        "inductor_copper_W": 0.028718301950972698,
+        "diode_W": 0.101,
+        "TI_eq3_or4_peak_A": 0.9974453911426651,
+        "CCM_valid": true
+      },
+      "negative_CCM": {
+        "duty": 0.7742865766858342,
+        "inductor_avg_A": 0.03101277672022566,
+        "ripple_pp_A": 0.7412106701542349,
+        "peak_A": 0.40161811179734314,
+        "switch_conduction_W": 0.022440086727262137,
+        "inductor_copper_W": 0.0026373282886052313,
+        "diode_W": 0.0035,
+        "TI_eq3_or4_peak_A": 0.04706925865603529,
+        "CCM_valid": false,
+        "note": "Light-load DCM: CCM peak is not a physical prediction; use startup/light-load bench characterization."
+      },
+      "MID_buck_loss_W_at_assumed85pct": 0.7053018266285357,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 0.3803667981079271
+    },
+    {
+      "case": "negative-only bring-up",
+      "positive_external_A": 0,
+      "negative_external_A": 0.15,
+      "positive_external_W_at12V": 0,
+      "negative_external_W_at12V": 1.7999999999999998,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 5.728529804045792,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 0.6964016200162,
+      "MID_buck_output_A": 0.7493495286881502,
+      "positive_LDO_corner_W": 0.017645157468799837,
+      "negative_LDO_corner_W": 0.5773964685918503,
+      "positive_LDO_nominal_pass_W": 0.0,
+      "negative_LDO_nominal_pass_W": 0.32562529527559025,
+      "Tj_at25C_theta80CperW": [
+        26.411612597503986,
+        71.19171748734803
+      ],
+      "Tj_at50C_theta80CperW": [
+        51.41161259750399,
+        96.19171748734803
+      ],
+      "positive_CCM": {
+        "duty": 0.6943850856768405,
+        "inductor_avg_A": 0.006544183239320531,
+        "ripple_pp_A": 0.6674770717654838,
+        "peak_A": 0.3402827191220624,
+        "switch_conduction_W": 0.007743080406036948,
+        "inductor_copper_W": 0.002097129318778393,
+        "diode_W": 0.001,
+        "TI_eq3_or4_peak_A": 0.009875696942006585,
+        "CCM_valid": false,
+        "note": "Light-load DCM: CCM peak is not a physical prediction; use startup/light-load bench characterization."
+      },
+      "negative_CCM": {
+        "duty": 0.7944707899008061,
+        "inductor_avg_A": 0.7638816882730567,
+        "ripple_pp_A": 0.6767367470688347,
+        "peak_A": 1.102250061807474,
+        "switch_conduction_W": 0.3062219047829694,
+        "inductor_copper_W": 0.03507516410858788,
+        "diode_W": 0.0785,
+        "TI_eq3_or4_peak_A": 1.0556962298567913,
+        "CCM_valid": true
+      },
+      "MID_buck_loss_W_at_assumed85pct": 0.5977433543323759,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 0.5639649851890063
+    },
+    {
+      "case": "simultaneous bring-up",
+      "positive_external_A": 0.2,
+      "negative_external_A": 0.15,
+      "positive_external_W_at12V": 2.4000000000000004,
+      "negative_external_W_at12V": 1.7999999999999998,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 10.210051709423434,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 1.2629541687518255,
+      "MID_buck_output_A": 1.5920756677393788,
+      "positive_LDO_corner_W": 0.5346153721470466,
+      "negative_LDO_corner_W": 0.5773964685918503,
+      "positive_LDO_nominal_pass_W": 0.3074159999999999,
+      "negative_LDO_nominal_pass_W": 0.32562529527559025,
+      "Tj_at25C_theta80CperW": [
+        67.76922977176372,
+        71.19171748734803
+      ],
+      "Tj_at50C_theta80CperW": [
+        92.76922977176372,
+        96.19171748734803
+      ],
+      "positive_CCM": {
+        "duty": 0.7067763577494378,
+        "inductor_avg_A": 0.6888939733835965,
+        "ripple_pp_A": 0.642815786412326,
+        "peak_A": 1.0103018665897594,
+        "switch_conduction_W": 0.10792671138066497,
+        "inductor_copper_W": 0.028718301950972698,
+        "diode_W": 0.101,
+        "TI_eq3_or4_peak_A": 0.9974453911426651,
+        "CCM_valid": true
+      },
+      "negative_CCM": {
+        "duty": 0.7944707899008061,
+        "inductor_avg_A": 0.7638816882730567,
+        "ripple_pp_A": 0.6767367470688347,
+        "peak_A": 1.102250061807474,
+        "switch_conduction_W": 0.3062219047829694,
+        "inductor_copper_W": 0.03507516410858788,
+        "diode_W": 0.0785,
+        "TI_eq3_or4_peak_A": 1.0556962298567913,
+        "CCM_valid": true
+      },
+      "MID_buck_loss_W_at_assumed85pct": 1.2699716401390224,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 0.6641486161636343
+    },
+    {
+      "case": "conditional extension",
+      "positive_external_A": 0.3,
+      "negative_external_A": 0.2,
+      "positive_external_W_at12V": 3.5999999999999996,
+      "negative_external_W_at12V": 2.4000000000000004,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 13.705634469913338,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 1.7196332232817806,
+      "MID_buck_output_A": 2.249401242773795,
+      "positive_LDO_corner_W": 0.7931004794861698,
+      "negative_LDO_corner_W": 0.7434250587595143,
+      "positive_LDO_nominal_pass_W": 0.46112399999999987,
+      "negative_LDO_nominal_pass_W": 0.43416706036745367,
+      "Tj_at25C_theta80CperW": [
+        88.44803835889358,
+        84.47400470076114
+      ],
+      "Tj_at50C_theta80CperW": [
+        113.44803835889358,
+        109.47400470076114
+      ],
+      "positive_CCM": {
+        "duty": 0.7135563426536621,
+        "inductor_avg_A": 1.054308560356262,
+        "ripple_pp_A": 0.6292089447558306,
+        "peak_A": 1.3689130327341774,
+        "switch_conduction_W": 0.2450120999685408,
+        "inductor_copper_W": 0.06457599236343511,
+        "diode_W": 0.151,
+        "TI_eq3_or4_peak_A": 1.4912302382429943,
+        "CCM_valid": true
+      },
+      "negative_CCM": {
+        "duty": 0.8025640716877163,
+        "inductor_avg_A": 1.0484413944790678,
+        "ripple_pp_A": 0.6507627904646017,
+        "peak_A": 1.3738227897113686,
+        "switch_conduction_W": 0.5645256808306152,
+        "inductor_copper_W": 0.0640096395637994,
+        "diode_W": 0.10350000000000001,
+        "TI_eq3_or4_peak_A": 1.3919052202570437,
+        "CCM_valid": true
+      },
+      "MID_buck_loss_W_at_assumed85pct": 1.794309054212508,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 1.059537780799156
+    },
+    {
+      "case": "near separate ceilings together",
+      "positive_external_A": 0.35,
+      "negative_external_A": 0.25,
+      "positive_external_W_at12V": 4.199999999999999,
+      "negative_external_W_at12V": 3.0,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 16.080836754058826,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 2.0379996957131628,
+      "MID_buck_output_A": 2.696045283045404,
+      "positive_LDO_corner_W": 0.9223430331557315,
+      "negative_LDO_corner_W": 0.9094536489271781,
+      "positive_LDO_nominal_pass_W": 0.5379779999999998,
+      "negative_LDO_nominal_pass_W": 0.5427088254593171,
+      "Tj_at25C_theta80CperW": [
+        98.78744265245852,
+        97.75629191417424
+      ],
+      "Tj_at50C_theta80CperW": [
+        123.78744265245852,
+        122.75629191417424
+      ],
+      "positive_CCM": {
+        "duty": 0.7171233479273909,
+        "inductor_avg_A": 1.2443586185743183,
+        "ripple_pp_A": 0.6220189336648501,
+        "peak_A": 1.5553680854067433,
+        "switch_conduction_W": 0.3400607523732673,
+        "inductor_copper_W": 0.08918143907577045,
+        "diode_W": 0.176,
+        "TI_eq3_or4_peak_A": 1.7381226617931587,
+        "CCM_valid": true
+      },
+      "negative_CCM": {
+        "duty": 0.811748857692635,
+        "inductor_avg_A": 1.3651975592285444,
+        "ripple_pp_A": 0.6212048961301193,
+        "peak_A": 1.6758000072936041,
+        "switch_conduction_W": 0.9541879301093058,
+        "inductor_copper_W": 0.10696793819551641,
+        "diode_W": 0.1285,
+        "TI_eq3_or4_peak_A": 1.7281142106572955,
+        "CCM_valid": true
+      },
+      "MID_buck_loss_W_at_assumed85pct": 2.1505893968343317,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 1.5442486824825732
+    },
+    {
+      "case": "positive-only approximate ceiling",
+      "positive_external_A": 0.35,
+      "negative_external_A": 0,
+      "positive_external_W_at12V": 4.199999999999999,
+      "negative_external_W_at12V": 0,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 9.806727715053421,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 1.2111229031791293,
+      "MID_buck_output_A": 1.5162327555013944,
+      "positive_LDO_corner_W": 0.9223430331557315,
+      "negative_LDO_corner_W": 0.07931069808885892,
+      "positive_LDO_nominal_pass_W": 0.5379779999999998,
+      "negative_LDO_nominal_pass_W": 0.0,
+      "Tj_at25C_theta80CperW": [
+        98.78744265245852,
+        31.344855847108715
+      ],
+      "Tj_at50C_theta80CperW": [
+        123.78744265245852,
+        56.34485584710871
+      ],
+      "positive_CCM": {
+        "duty": 0.7171233479273909,
+        "inductor_avg_A": 1.2443586185743183,
+        "ripple_pp_A": 0.6220189336648501,
+        "peak_A": 1.5553680854067433,
+        "switch_conduction_W": 0.3400607523732673,
+        "inductor_copper_W": 0.08918143907577045,
+        "diode_W": 0.176,
+        "TI_eq3_or4_peak_A": 1.7381226617931587,
+        "CCM_valid": true
+      },
+      "negative_CCM": {
+        "duty": 0.7742865766858342,
+        "inductor_avg_A": 0.03101277672022566,
+        "ripple_pp_A": 0.7412106701542349,
+        "peak_A": 0.40161811179734314,
+        "switch_conduction_W": 0.022440086727262137,
+        "inductor_copper_W": 0.0026373282886052313,
+        "diode_W": 0.0035,
+        "TI_eq3_or4_peak_A": 0.04706925865603529,
+        "CCM_valid": false,
+        "note": "Light-load DCM: CCM peak is not a physical prediction; use startup/light-load bench characterization."
+      },
+      "MID_buck_loss_W_at_assumed85pct": 1.2094730409835204,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 0.6125008391005294
+    },
+    {
+      "case": "negative-only approximate ceiling",
+      "positive_external_A": 0,
+      "negative_external_A": 0.25,
+      "positive_external_W_at12V": 0,
+      "negative_external_W_at12V": 3.0,
+      "five_V_reservation_A": 0.25,
+      "five_V_nominal_W": 1.25,
+      "VPROT_input_W": 8.238173419647955,
+      "PD_input_A_at8p55V_minus0p15V_wiring_and0p25ohm_efuse": 1.0111651373064205,
+      "MID_buck_output_A": 1.2212745397057538,
+      "positive_LDO_corner_W": 0.017645157468799837,
+      "negative_LDO_corner_W": 0.9094536489271781,
+      "positive_LDO_nominal_pass_W": 0.0,
+      "negative_LDO_nominal_pass_W": 0.5427088254593171,
+      "Tj_at25C_theta80CperW": [
+        26.411612597503986,
+        97.75629191417424
+      ],
+      "Tj_at50C_theta80CperW": [
+        51.41161259750399,
+        122.75629191417424
+      ],
+      "positive_CCM": {
+        "duty": 0.6943850856768405,
+        "inductor_avg_A": 0.006544183239320531,
+        "ripple_pp_A": 0.6674770717654838,
+        "peak_A": 0.3402827191220624,
+        "switch_conduction_W": 0.007743080406036948,
+        "inductor_copper_W": 0.002097129318778393,
+        "diode_W": 0.001,
+        "TI_eq3_or4_peak_A": 0.009875696942006585,
+        "CCM_valid": false,
+        "note": "Light-load DCM: CCM peak is not a physical prediction; use startup/light-load bench characterization."
+      },
+      "negative_CCM": {
+        "duty": 0.811748857692635,
+        "inductor_avg_A": 1.3651975592285444,
+        "ripple_pp_A": 0.6212048961301193,
+        "peak_A": 1.6758000072936041,
+        "switch_conduction_W": 0.9541879301093058,
+        "inductor_copper_W": 0.10696793819551641,
+        "diode_W": 0.1285,
+        "TI_eq3_or4_peak_A": 1.7281142106572955,
+        "CCM_valid": true
+      },
+      "MID_buck_loss_W_at_assumed85pct": 0.9741898966727004,
+      "TPS65131_die_loss_screen_W_with0p25W_switching_allowance": 1.2119310105153427
+    }
+  ],
+  "inductor_DCR_model_ohm": 0.05642,
+  "current_model_notes": "DCR maximum 40.30mohm, typical31.00mohm, at25C from manufacturer CKCS6045 table. x1.4 hot planning allowance. Lmin3.76uH excludes DC-bias/core temperature loss; no minimum guaranteed curve. Min current-limit1.8A is only at stated datasheet test conditions, not established across this input/output envelope.",
+  "cap_screens_uF": {
+    "negative_input_4_at15V": 12.358683300547609,
+    "negative_output_3_at12p9V": 11.400472138352823,
+    "negative_output_4_at12p9V": 15.200629517803765,
+    "local_raw_C9_at15V": 3.0896708251369023,
+    "AC_level_sensitivity_only_0p01Vrms_factor": 0.8342282696005647,
+    "negative_output_3_with_AC_sensitivity": 9.510596144607526,
+    "negative_output_4_with_AC_sensitivity": 12.680794859476702,
+    "note": "Multiplying separate AC/DC/T curves is sensitivity only, not a validated combined characteristic or guaranteed minimum."
+  }
+}

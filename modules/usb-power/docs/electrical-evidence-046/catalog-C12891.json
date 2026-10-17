@@ -1,0 +1,81 @@
+{
+  "part": {
+    "code": "C12891",
+    "mpn": "CL31A226KAHNNNE",
+    "manufacturer": "Samsung Electro-Mechanics",
+    "package": "1206",
+    "classification": "Basic",
+    "library_type": "base",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "component_product_type": 0,
+    "stock": 493328,
+    "kind": "C",
+    "economy_evidence": "observed per-part componentProductType; frontend mapping is a dated observation, not authenticated order acceptance",
+    "attributes": {
+      "Voltage Rating": "25V",
+      "Tolerance": "\u00b110%",
+      "Capacitance": "22uF",
+      "Temperature Coefficient": "X5R"
+    },
+    "specs": {
+      "value_si": 2.2e-05,
+      "tolerance_fraction": 0.1,
+      "voltage_v": 25.0,
+      "dielectric": "X5R"
+    },
+    "prices": [
+      {
+        "start": 1,
+        "end": 199,
+        "unit_price": 0.1238
+      },
+      {
+        "start": 200,
+        "end": 599,
+        "unit_price": 0.0991
+      },
+      {
+        "start": 600,
+        "end": 1999,
+        "unit_price": 0.0866
+      },
+      {
+        "start": 2000,
+        "end": 9999,
+        "unit_price": 0.076
+      },
+      {
+        "start": 10000,
+        "end": 19999,
+        "unit_price": 0.0724
+      },
+      {
+        "start": 20000,
+        "end": -1,
+        "unit_price": 0.0699
+      }
+    ],
+    "assembly_mode": null,
+    "minimum_assembly_quantity_observed": 5,
+    "attrition_quantity_observed": 4,
+    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+    "issues": [],
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-17T08:50:50Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C12891"
+      },
+      "sha256": "107a220f6f0232954c93a5720446f12281956d4e2f52d01b1960702e0f706a84",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  },
+  "failures": [],
+  "order_ready": false
+}
