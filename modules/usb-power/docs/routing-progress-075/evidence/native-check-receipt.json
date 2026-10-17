@@ -1,0 +1,76 @@
+{
+  "status": "findings",
+  "source_unchanged": true,
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/075/modules/usb-power/research/routing-075/check-thermal05/netlist.xml",
+        "/tmp/kicad private checks f5fzx4yt/inputs/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/075/modules/usb-power/research/routing-075/check-thermal05/erc.json",
+        "/tmp/kicad private checks f5fzx4yt/inputs/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/075/modules/usb-power/research/routing-075/check-thermal05/erc.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/075/modules/usb-power/research/routing-075/check-thermal05/drc.json",
+        "--refill-zones",
+        "--all-track-errors",
+        "--schematic-parity",
+        "/tmp/kicad private checks f5fzx4yt/inputs/usb-power.kicad_pcb"
+      ],
+      "returncode": 5,
+      "stdout": "Found 18 violations\nFound 88 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/075/modules/usb-power/research/routing-075/check-thermal05/drc.json\n",
+      "stderr": ""
+    }
+  ],
+  "ref_pin_net_parity": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "equal": true
+  },
+  "native_parity_scope": "Native DRC --schematic-parity plus ref/pin/net comparison",
+  "errors": []
+}

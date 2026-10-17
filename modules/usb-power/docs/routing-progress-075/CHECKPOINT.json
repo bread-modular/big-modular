@@ -1,0 +1,274 @@
+{
+  "candidate_sha256": "5beca717f4c970b0d47963185425c8935afbc70c7d09db68706dddd7ed4ac130",
+  "status": "UNFINISHED_NOT_FOR_FABRICATION",
+  "files": {
+    "THERMAL_AND_PROCESS.md": {
+      "sha256": "82055ad305c7bd1c5ebf3e1592b52e7962b1fe32a70df31f8884eaf5c28aa19c",
+      "bytes": 1783
+    },
+    "sym-lib-table": {
+      "sha256": "87295ecba9aa2ee84f2e979207aad4b53ea5267c64bbe270545e76040c5cd93f",
+      "bytes": 158
+    },
+    "02_hardgate.kicad_sch": {
+      "sha256": "6c4e8322d465028134be0ee9c59989bd884a90fda3f35970ad8918d028245de2",
+      "bytes": 78558
+    },
+    "01_input_protection.kicad_sch": {
+      "sha256": "4777399c48fe21ad3277bb7ff3112d77afa1adad80115f92aae1bcb7a622e47b",
+      "bytes": 52588
+    },
+    "candidate-profile.json": {
+      "sha256": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506",
+      "bytes": 221
+    },
+    "DEPENDENCIES.json": {
+      "sha256": "e056507eb0d7808f102186036c46688c69e8f2090e4831c2ea94ae9522b7bf6e",
+      "bytes": 10173
+    },
+    "usb-power.kicad_sch": {
+      "sha256": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500",
+      "bytes": 18300
+    },
+    "usb-power.kicad_pcb": {
+      "sha256": "5beca717f4c970b0d47963185425c8935afbc70c7d09db68706dddd7ed4ac130",
+      "bytes": 979395
+    },
+    "ROUTING_HANDOFF.md": {
+      "sha256": "19ec45268551e8a0779071c6858a08afa0dcb22c42919efda432d848aae3a12a",
+      "bytes": 4269
+    },
+    "usb-power.kicad_pro": {
+      "sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+      "bytes": 17336
+    },
+    "05_quiet_rails.kicad_sch": {
+      "sha256": "527e878c851954d8f73f2872367790a856bc5b973aab2f670ec809c1d1cde0fe",
+      "bytes": 134191
+    },
+    "04_bipolar.kicad_sch": {
+      "sha256": "461bd693b8bc373e33d4fb97b6888c0685eb206634d69c4d8a487b7533560393",
+      "bytes": 105534
+    },
+    "fp-lib-table": {
+      "sha256": "8b8b428cf30b394eb1637849935fce5c96eab54d2158835b13bc575a08642bdb",
+      "bytes": 187
+    },
+    "07_output_rails.kicad_sch": {
+      "sha256": "b9b00acc29b2734b7eafd4480a0d5b18e4d0848559e81dac38ef586e6a8e5e60",
+      "bytes": 43480
+    },
+    "06_positive_boost.kicad_sch": {
+      "sha256": "c6050db3041a5a9cbe6f17ae18928bf68ff48b46b96e2c13b96b6072e964397f",
+      "bytes": 89212
+    },
+    "materialize_resume.py": {
+      "sha256": "b83b2e1768ceacba73f41dba9ee4fb8f2090abe53df4599248e9b20e22a75c9a",
+      "bytes": 3258
+    },
+    "BigModular.kicad_sym": {
+      "sha256": "62e9047a628afe17f99bb02afe46e113c7d2a279a006a33b2578fecb1ce6b4e5",
+      "bytes": 41872
+    },
+    "03_bucks.kicad_sch": {
+      "sha256": "dd703626e14a7e72f25e9e3963e7d5a5df330b21d5a0f392e6a231c5f36da462",
+      "bytes": 56721
+    },
+    ".gitignore": {
+      "sha256": "dc00d9b9320f349cb1a45fba3d17f8beadedc684654b3ac8e89bda58f4ebc83f",
+      "bytes": 118
+    },
+    "evidence/normalization.json": {
+      "sha256": "59d395b0066c8e7e182949fe4c7bda78d75b27dd2e63204a23a2b88bd950d7f0",
+      "bytes": 7270
+    },
+    "evidence/repair-05.ops.json": {
+      "sha256": "1a7ae25ad049ff65b36cf8329ee306db4ceb5c40e3e0034a30d076d75bad5aa7",
+      "bytes": 6532
+    },
+    "evidence/cleanup-03-reasons.json": {
+      "sha256": "d0887015729124fcceaa4cea6cb7c40959a89ab253ea4595bd44166203df8c6d",
+      "bytes": 2036
+    },
+    "evidence/before-erc.json": {
+      "sha256": "83dcc026bcf8b44586cbfa1178597faa728fbea125363b4f53202d825892a897",
+      "bytes": 1895
+    },
+    "evidence/cleanup-03.ops.json": {
+      "sha256": "325971ce76f66bdd154be9660597131fcbcec72f01c17a3e5b4936ac0d770cc0",
+      "bytes": 16921
+    },
+    "evidence/thermal05-audit.json": {
+      "sha256": "d6ea4bf41b0d934a9fdd6b670b9a52d04f2afc1bac60862694d5b064f09b0de5",
+      "bytes": 68751
+    },
+    "evidence/remaining-via-in-exposed-pad.json": {
+      "sha256": "af8866e820d2de21f71b6b0bee6f95da84c6887726ce66a9cc6eecc1ab2aa617",
+      "bytes": 8784
+    },
+    "evidence/thermal-connectivity.json": {
+      "sha256": "0b574ab239f72c681b66d06e03f8faf369b6893112ada532684e6802a3a5273b",
+      "bytes": 13712
+    },
+    "evidence/before-drc.json": {
+      "sha256": "3b69058f9a41187d1c3fe41191764bd9c8569a14128789ed0a597776e1762900",
+      "bytes": 264619
+    },
+    "evidence/common-apply-blocker.json": {
+      "sha256": "0ceb65dcea47155e346e6946526bf2c91bb4f77f295cd217b5ff9b7d4a1047c9",
+      "bytes": 522
+    },
+    "evidence/exact-parity.json": {
+      "sha256": "a90760838bc76207e636d1551942bc4fa2c8873600f452e1203d6f8e4117acff",
+      "bytes": 801
+    },
+    "evidence/cleanup03-audit.json": {
+      "sha256": "a88fbf1936af3c202fd764412d3021b5f9cb650445a88d38557d822d1ab5f0d4",
+      "bytes": 191188
+    },
+    "evidence/repair-05-reasons.json": {
+      "sha256": "0f435db84c054b57aea6a7303f43b31be337d26b6c86d089601a1cb745e56855",
+      "bytes": 4335
+    },
+    "evidence/cleanup-02-reasons.json": {
+      "sha256": "f6a07bc1efcef00f5865ccb0094e809930685afc78e694e1a9cffd8bb96e672e",
+      "bytes": 4771
+    },
+    "evidence/STATUS.json": {
+      "sha256": "82d5f2e178fa2010db8cf8f2c8e3048db80767eea8482acb4fbc3f85b8a0eb24",
+      "bytes": 7934
+    },
+    "evidence/native-check-receipt.json": {
+      "sha256": "8a54ffc424cdebc72f7157770bd70d0a396eb91e18ba851488dca21bc52e48bf",
+      "bytes": 2311
+    },
+    "evidence/rejected-reload01-drift.json": {
+      "sha256": "e2c0364b4f31edde2fd00b608b9a64912485c0727278eb37aab5796a98cbdac5",
+      "bytes": 7616
+    },
+    "evidence/after-drc.json": {
+      "sha256": "112d86c2431050e4a9758b53a5a1c2c1bdc0b490e9defd24e42a72c950711001",
+      "bytes": 82149
+    },
+    "evidence/obsolete-copper.json": {
+      "sha256": "ccbbec77d34876534808cf554d7e29ffb31e59b8337c5988a99af0446986f005",
+      "bytes": 40550
+    },
+    "evidence/after-erc.json": {
+      "sha256": "e2c40de04ffa0a7c1dc93c55be5311bd557bd41266de2e4a575364a23e5b631a",
+      "bytes": 1895
+    },
+    "evidence/netlist.xml": {
+      "sha256": "40b377ac0b13ce94611ef05c8ed086a1f2f949f056d89e21147f0ddc74023c3d",
+      "bytes": 294061
+    },
+    "BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": {
+      "sha256": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+      "bytes": 3362
+    },
+    "BigModular.pretty/C_0805_2012Metric.kicad_mod": {
+      "sha256": "5e109c3606a560cac693a70370738d07154e3a1193a42c4f4c425f6345143eb1",
+      "bytes": 2075
+    },
+    "BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
+      "sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+      "bytes": 4259
+    },
+    "BigModular.pretty/C_0603_1608Metric.kicad_mod": {
+      "sha256": "a9b9ab8ea1cb30d32f28da0459c42b49a6cca161012c81bcf66b2b19bf619286",
+      "bytes": 1973
+    },
+    "BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": {
+      "sha256": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+      "bytes": 1978
+    },
+    "BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": {
+      "sha256": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+      "bytes": 2113
+    },
+    "BigModular.pretty/D_SMA.kicad_mod": {
+      "sha256": "24a05f4a9524423f90992c5ebca6635523fb9004254df43c05fce2a18a3d5226",
+      "bytes": 4600
+    },
+    "BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": {
+      "sha256": "84bde6126ecb4ab757c2caffc9bb382c4239d56e6d30b439813c54c42e8971de",
+      "bytes": 7210
+    },
+    "BigModular.pretty/L_Bourns_SRP1245A.kicad_mod": {
+      "sha256": "ea1c06f76a1b7d9adace42c8aafda7ade649121bfe76a07d9120ac5f7b878093",
+      "bytes": 1182
+    },
+    "BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": {
+      "sha256": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+      "bytes": 2812
+    },
+    "BigModular.pretty/C_1206_3216Metric.kicad_mod": {
+      "sha256": "bbd5a1ce09bb9d80956d1e2336c7bd238844a0a785c3f5b317a9e52bd15d6664",
+      "bytes": 1983
+    },
+    "BigModular.pretty/R_0805_2012Metric.kicad_mod": {
+      "sha256": "27b2113a73513e6c72cfdd9a8687688e32a2c7eee3218bb0acd40e950d7bdb39",
+      "bytes": 1991
+    },
+    "BigModular.pretty/C_1210_3225Metric.kicad_mod": {
+      "sha256": "0ea3a0230f49d88f8826d6be1d5be3889daf037d82bc608369500f51819da27d",
+      "bytes": 1981
+    },
+    "BigModular.pretty/C_0402_1005Metric.kicad_mod": {
+      "sha256": "1af13ebf8ff9f0cac5b79494c2bb91a856af4d7d47ea9f9fec2ac57d51223968",
+      "bytes": 1981
+    },
+    "BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": {
+      "sha256": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+      "bytes": 830
+    },
+    "BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": {
+      "sha256": "38719719ddeae7b2d0929d819880dd5a33f78f7643d107d247a47251e5304730",
+      "bytes": 4727
+    },
+    "BigModular.pretty/SOT-23-6.kicad_mod": {
+      "sha256": "461231a23bee6c52e1cdf8995dbe57c0a28b62ab3decc4d184f36a1b8f9d47a2",
+      "bytes": 4320
+    },
+    "BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": {
+      "sha256": "aa953a88afb5c30ef8e9529392768b3242cbfbdc055cdc06895fa72d72371fdb",
+      "bytes": 5936
+    },
+    "BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": {
+      "sha256": "1f5be8753ced0f519790da804ab2d567e58f38fe37846e4652e46e1448097376",
+      "bytes": 2784
+    },
+    "BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": {
+      "sha256": "f615cb1bfe89d3d53d34b52f8f92508783e13fb41c1ea6cbb327a40ee79f46af",
+      "bytes": 1933
+    },
+    "BigModular.pretty/Texas_RTE0016C_WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm.kicad_mod": {
+      "sha256": "cc33fbc24bc1a1d93a273a62a0f80f79572277de71a1d85a7abef5d95ea402e2",
+      "bytes": 3139
+    },
+    "BigModular.pretty/R_0603_1608Metric.kicad_mod": {
+      "sha256": "b61f23d83e6d3ecedc1fad6b3d55fb4096b0fb1d8a41a4dfb87aeff20e2eed85",
+      "bytes": 1989
+    },
+    "BigModular.pretty/L_TMPC1205HP_220M.kicad_mod": {
+      "sha256": "58bd21a3cce598b1d6ad5ca89abce253a309c81741d505bfa4788c9b76ad73cc",
+      "bytes": 1386
+    },
+    "BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": {
+      "sha256": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+      "bytes": 7106
+    },
+    "BigModular.pretty/L_KOHER_MDA1040.kicad_mod": {
+      "sha256": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+      "bytes": 833
+    },
+    "BigModular.pretty/L_SLO1040H6R8MTT.kicad_mod": {
+      "sha256": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
+      "bytes": 1456
+    },
+    "evidence/portable-restoration-check.json": {
+      "sha256": "a60c10bf144e098b1164ddb63267cf5bd2160e4313c86cd9949c498b884bb454",
+      "bytes": 2648
+    }
+  }
+}

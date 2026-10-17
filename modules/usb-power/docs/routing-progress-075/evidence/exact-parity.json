@@ -1,0 +1,35 @@
+{
+  "status": "EXACT_PARITY_PASS_UNFINISHED_ROUTING",
+  "candidate_sha256": "5beca717f4c970b0d47963185425c8935afbc70c7d09db68706dddd7ed4ac130",
+  "ref_pin_net": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "equal": true
+  },
+  "refs": 116,
+  "pins": 344,
+  "explicit_NCs": 39,
+  "schematic_owned_fields": 1110,
+  "field_differences": [],
+  "DNP_differences": [],
+  "fixed_interfaces_preserved": [
+    "J1",
+    "J7",
+    "SW1",
+    "D10"
+  ],
+  "mounting_holes_preserved": 4,
+  "all_drawings_outline_unchanged": true,
+  "all_components_front": true,
+  "source_and_dependency_bytes_unchanged": true
+}
