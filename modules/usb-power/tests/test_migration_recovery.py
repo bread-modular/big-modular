@@ -6,12 +6,13 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parents[1]
 sys.path.insert(0, str(ROOT/'tools'))
-from migration_audit import SOURCE, BASE, audit, git, native_identity, renamed_native, source_inventory
+from migration_audit import SOURCE, BASE, audit, check_legacy_root_paths, git, native_identity, renamed_native, source_inventory
 
 
 class MigrationRecoveryTests(unittest.TestCase):
@@ -111,8 +112,8 @@ class MigrationRecoveryTests(unittest.TestCase):
         self.assertEqual(len(exports), 75)
         for entry in exports:
             self.assertEqual(entry['before_sha256'], entry['after_sha256'])
-        for p in (REPO/'production', ROOT/'production', REPO/'hardware', REPO/'tools', REPO/'tests', REPO/'docs'):
-            self.assertFalse(p.exists(), str(p))
+        check_legacy_root_paths()
+        self.assertFalse((ROOT/'production').exists())
 
     def test_provenance_rejects_the_older_043_branch_base(self):
         self.assertEqual(git('rev-parse', BASE+'^{tree}'), git('rev-parse', '4c11418d26e5f70c0828252644b141c4627fe421^{tree}'))
@@ -120,6 +121,120 @@ class MigrationRecoveryTests(unittest.TestCase):
         self.assertNotEqual(git('show', 'b4d301d075f7556b6c06758ccbffcc1a2b1694fa:'+pcb), git('show', SOURCE+':'+pcb))
         record = json.loads((ROOT/'docs/migration-recovery-manifest.json').read_text())
         self.assertEqual(hashlib.sha256(git('show', SOURCE+':'+pcb)).hexdigest(), record['files'][pcb]['after_sha256'])
+
+
+class LegacyRootArtifactsTests(unittest.TestCase):
+    """Real Git ignore/index checks in disposable, relocated synthetic projects."""
+
+    IGNORES = '.history/\n*.kicad_prl\n__pycache__/\n*.pyc\n'
+    CACHES = (
+        'hardware/.history/big_modular_20261017.kicad_pcb',
+        'hardware/big_modular.kicad_prl',
+        'hardware/front_panel.kicad_prl',
+        'tools/__pycache__/release_hro.cpython-313.pyc',
+    )
+
+    def setUp(self):
+        temp = tempfile.TemporaryDirectory(prefix='migration-local-artifacts-')
+        self.addCleanup(temp.cleanup)
+        self.temp = Path(temp.name)
+        self.repo = self.temp/'relocated project with spaces'
+        self.repo.mkdir()
+        subprocess.run(['git', 'init', '--quiet'], cwd=self.repo, check=True,
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # Host-global excludes must not change these synthetic ignore fixtures.
+        subprocess.run(['git', 'config', 'core.excludesFile', str(self.repo/'.git/info/exclude')],
+                       cwd=self.repo, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.write('.gitignore', self.IGNORES)
+
+    def write(self, name, content='local user data\n'):
+        path = self.repo/name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content)
+        return path
+
+    def test_ignored_legacy_caches_are_allowed_without_changes(self):
+        before = {name: self.write(name).read_bytes() for name in self.CACHES}
+        check_legacy_root_paths(self.repo)
+        # Exercise the ordinary audit's actual root-check call, without creating
+        # any legacy artifacts in this workspace or accessing a project base.
+        with patch('migration_audit.check_legacy_root_paths',
+                   side_effect=lambda: check_legacy_root_paths(self.repo)) as check:
+            self.assertEqual(audit()['status'], 'pass')
+        check.assert_called_once_with()
+        self.assertEqual(before, {name: (self.repo/name).read_bytes() for name in before})
+
+    def test_cache_names_without_git_ignore_are_rejected(self):
+        self.write('.gitignore', '')
+        for name in self.CACHES:
+            self.write(name)
+        with self.assertRaises(AssertionError) as error:
+            check_legacy_root_paths(self.repo)
+        for name in self.CACHES:
+            self.assertIn(name + ': non-ignored', str(error.exception))
+
+    def test_git_ignore_negation_rejects_the_unignored_cache(self):
+        self.write('.gitignore', self.IGNORES + '!hardware/big_modular.kicad_prl\n')
+        for name in self.CACHES:
+            self.write(name)
+        with self.assertRaises(AssertionError) as error:
+            check_legacy_root_paths(self.repo)
+        self.assertIn('hardware/big_modular.kicad_prl: non-ignored', str(error.exception))
+        self.assertNotIn('hardware/front_panel.kicad_prl', str(error.exception))
+
+    def test_real_legacy_files_are_rejected_even_with_blanket_ignores(self):
+        self.write('.gitignore', self.IGNORES +
+                   'hardware/\ntools/\ntests/\ndocs/\nproduction/\nBOM.csv\n')
+        for name in (
+            'hardware/big_modular.kicad_pcb', 'hardware/usb-power.kicad_sch',
+            'tools/release_hro.py', 'tools/__pycache__/real_source.py',
+            'tests/test_source.py', 'docs/design.md',
+            'production/ldo-r1/carrier.zip', 'BOM.csv',
+        ):
+            with self.subTest(path=name):
+                path = self.write(name)
+                with self.assertRaises(AssertionError) as error:
+                    check_legacy_root_paths(self.repo)
+                self.assertIn(name + ': ignored, but not an allowed', str(error.exception))
+                self.assertEqual(path.read_text(), 'local user data\n')
+
+    def test_non_ignored_unknown_user_files_have_a_useful_read_only_diagnostic(self):
+        name = 'hardware/personal notes.txt'
+        path = self.write(name)
+        with self.assertRaises(AssertionError) as error:
+            check_legacy_root_paths(self.repo)
+        self.assertIn(name + ': non-ignored legacy/unknown file', str(error.exception))
+        self.assertIn('modules/usb-power/', str(error.exception))
+        self.assertIn('No files were changed', str(error.exception))
+        self.assertEqual(path.read_text(), 'local user data\n')
+
+    def test_tracked_legacy_source_and_force_tracked_cache_are_rejected(self):
+        for name in ('hardware/big_modular.kicad_pcb', 'hardware/big_modular.kicad_prl'):
+            with self.subTest(path=name):
+                self.write(name)
+                # Staging happens only in this synthetic repository, never here.
+                subprocess.run(['git', 'add', '--force', '--', name], cwd=self.repo,
+                               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                with self.assertRaises(AssertionError) as error:
+                    check_legacy_root_paths(self.repo)
+                self.assertIn('Tracked legacy root paths are forbidden', str(error.exception))
+                self.assertIn(name, str(error.exception))
+
+    def test_legacy_directory_symlink_is_rejected_without_scanning_its_target(self):
+        outside = self.temp/'outside simulated project'
+        outside.mkdir()
+        (outside/'private.txt').write_text('must not be scanned\n')
+        (self.repo/'hardware').symlink_to(outside, target_is_directory=True)
+        with patch.object(Path, 'iterdir', side_effect=AssertionError('outside scan')):
+            with self.assertRaisesRegex(AssertionError, 'hardware: legacy-root symlink'):
+                check_legacy_root_paths(self.repo)
+
+    def test_ignored_history_symlink_is_not_an_allowed_cache(self):
+        history = self.repo/'hardware/.history'
+        history.mkdir(parents=True)
+        (history/'broken-link').symlink_to(self.temp/'absent target')
+        with self.assertRaisesRegex(AssertionError, 'hardware/.history/broken-link: legacy-root symlink'):
+            check_legacy_root_paths(self.repo)
 
 
 if __name__ == '__main__':

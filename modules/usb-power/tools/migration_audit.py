@@ -16,6 +16,63 @@ BASE = 'e4524354cf803d41dba03c64e6bdb860b69d9b0a'
 MODULE = Path(__file__).resolve().parents[1]
 REPO = MODULE.parents[1]
 PREFIX = 'modules/usb-power/'
+LEGACY_ROOT_PATHS = ('hardware', 'tools', 'tests', 'docs', 'production', 'BOM.csv')
+
+
+def check_legacy_root_paths(repo=None):
+    """Reject old project files, not narrow, Git-ignored local history/cache.
+
+    Inspect only the supplied project root (the script's repository by default),
+    never the Git common directory/project base or the targets of symlinks.
+    """
+    repo = Path(repo) if repo is not None else REPO
+    tracked = subprocess.check_output(
+        ['git', 'ls-files', '-z', '--', *LEGACY_ROOT_PATHS], cwd=repo,
+    ).decode().strip('\0')
+    assert not tracked, 'Tracked legacy root paths are forbidden: ' + ', '.join(tracked.split('\0'))
+
+    files, problems = [], []
+
+    def visit(path):
+        name = path.relative_to(repo).as_posix()
+        if path.is_symlink():
+            problems.append(f'{name}: legacy-root symlink (not followed)')
+        elif path.is_dir():
+            for child in sorted(path.iterdir()):
+                visit(child)
+        elif path.exists():
+            files.append(name)
+
+    for name in LEGACY_ROOT_PATHS:
+        visit(repo/name)
+    ignored = set()
+    if files:
+        result = subprocess.run(
+            ['git', 'check-ignore', '--no-index', '-z', '--stdin'], cwd=repo,
+            input=('\0'.join(files) + '\0').encode(), stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if result.returncode not in (0, 1):
+            raise subprocess.CalledProcessError(result.returncode, result.args,
+                                                output=result.stdout, stderr=result.stderr)
+        ignored = set(result.stdout.decode().split('\0'))
+    for name in files:
+        parts = Path(name).parts
+        local_artifact = (
+            (parts[0] == 'hardware' and len(parts) > 2 and parts[1] == '.history')
+            or (parts[0] == 'hardware' and len(parts) == 2 and name.endswith('.kicad_prl'))
+            or (parts[0] == 'tools' and len(parts) == 3 and parts[1] == '__pycache__'
+                and name.endswith('.pyc'))
+        )
+        if name not in ignored:
+            problems.append(f'{name}: non-ignored legacy/unknown file')
+        elif not local_artifact:
+            problems.append(f'{name}: ignored, but not an allowed local history/cache artifact')
+    assert not problems, (
+        'Legacy root files rejected:\n' + '\n'.join(problems)
+        + '\nCanonical design/tool/release files belong under ' + PREFIX
+        + '; inspect unknown files manually. No files were changed.'
+    )
 
 
 def git(*args):
@@ -143,8 +200,7 @@ def audit_frozen_recovery(record=None, require_tracked=True):
         assert not any(extras), ('untracked module files', extras)
         assert set(record['required_module_files']) == {p for p in tracked if p.startswith(PREFIX)}, 'Tracked module inventory differs from recovery ledger'
         assert not any(p.startswith(('hardware/', 'tools/', 'tests/', 'docs/', 'production/')) or p == 'BOM.csv' for p in tracked), 'Legacy project paths still tracked at root'
-    for name in ('hardware', 'tools', 'tests', 'docs', 'production', 'BOM.csv'):
-        assert not (REPO/name).exists(), ('obsolete root project path', name)
+    check_legacy_root_paths()
     assert not (MODULE/'opt').exists() and not (MODULE/'production').exists()
     return {'status': 'pass', 'mode': 'one-time-frozen-recovery-acceptance',
             'current_circuit_hashes_enforced': True, 'source_commit': SOURCE, 'workspace_base': BASE,
@@ -193,8 +249,7 @@ def audit(record=None, require_tracked=True):
         assert (REPO/name).is_file(), ('missing recovery evidence/path', name)
         if require_tracked:
             assert name in tracked, ('untracked recovery evidence/path', name)
-    for name in ('hardware', 'tools', 'tests', 'docs', 'production', 'BOM.csv'):
-        assert not (REPO/name).exists(), ('obsolete root project path', name)
+    check_legacy_root_paths()
     assert not (MODULE/'opt').exists() and not (MODULE/'production').exists()
     verification = json.loads((MODULE/'docs/migration-verification.json').read_text())
     for name, digest in verification['evidence_sha256'].items():
