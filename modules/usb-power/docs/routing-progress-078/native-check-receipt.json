@@ -1,0 +1,159 @@
+{
+  "status": "no_findings_in_requested_checks",
+  "source_unchanged": true,
+  "native_cli": {
+    "available": true,
+    "path": "/usr/bin/kicad-cli",
+    "version": "10.0.6",
+    "checks_supported": true,
+    "stderr": ""
+  },
+  "native_parity_scope": "Native DRC --schematic-parity plus ref/pin/net comparison",
+  "findings": {
+    "erc": {
+      "categories": {
+        "violations": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    },
+    "drc": {
+      "categories": {
+        "violations": 0,
+        "unconnected_items": 0,
+        "schematic_parity": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    }
+  },
+  "ref_pin_net_parity": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "equal": true
+  },
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078-final-frozen-check/netlist.xml",
+        "/tmp/kicad private checks gg7w8p2d/inputs/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078-final-frozen-check/erc.json",
+        "/tmp/kicad private checks gg7w8p2d/inputs/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078-final-frozen-check/erc.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078-final-frozen-check/drc.json",
+        "--refill-zones",
+        "--all-track-errors",
+        "--schematic-parity",
+        "/tmp/kicad private checks gg7w8p2d/inputs/usb-power.kicad_pcb"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078-final-frozen-check/drc.json\n",
+      "stderr": ""
+    }
+  ],
+  "final_refill_save": {
+    "argv": [
+      "kicad-cli",
+      "pcb",
+      "drc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--all-track-errors",
+      "--schematic-parity",
+      "--refill-zones",
+      "--save-board",
+      "--exit-code-violations",
+      "-o",
+      "/home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078/after-drc.json",
+      "/home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078/usb-power.kicad_pcb"
+    ],
+    "returncode": 0,
+    "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/078/modules/usb-power/research/routing-078/after-drc.json\nSaved board\n",
+    "stderr": ""
+  },
+  "project_restoration": {
+    "detected_by": "strict dependency hash assertion, before handoff",
+    "file": "usb-power.kicad_pro",
+    "frozen_sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "unaccepted_trial_sha256": "201efe0947b15b3f7afa62e5c0208617e5a7315454c274d6447d61b234033267",
+    "unaccepted_trial_ignored_rule_drift": {
+      "footprint_filters_mismatch": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "footprint_type_mismatch": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "missing_courtyard": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "track_not_centered_on_via": {
+        "frozen": "warning",
+        "trial": "ignore"
+      },
+      "tuning_profile_track_geometries": {
+        "frozen": "warning",
+        "trial": "ignore"
+      }
+    },
+    "action": "Restored exact 075 project bytes; all earlier native trials/first final-check superseded by full frozen-project rerun. No changed rule/exclusion accepted.",
+    "cause_observed": "Standalone pcbnew save of board loaded outside its frozen project overwrote companion project with native defaults; not an authorized rule edit."
+  },
+  "before_raw_reports": "../routing-progress-076/after-drc.json and after-erc.json",
+  "common_first": {
+    "inspect_and_plan_completed": true,
+    "plan_sha256": "e009f037bfc1c0925b0d27802e056c38fd2fd466bae34d2502abc6e3f16202c1",
+    "apply_status": "rejected",
+    "reason": "Inherited draft warnings; user-authorized narrow native PCB-only exception used. No shared tooling or gates changed."
+  },
+  "order_ready": false
+}

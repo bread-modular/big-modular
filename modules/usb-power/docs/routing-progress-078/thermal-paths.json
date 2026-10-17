@@ -1,0 +1,1268 @@
+{
+  "method": "Native saved filled polygon containment and area, exact restored serialization versus preserved SR2 bytes and 075 removal audit; original_saved_SR2 is historical saved fill, not a newly checked board. Geometry, not thermal impedance qualification.",
+  "checkpoints": {
+    "original_saved_SR2": {
+      "pcb_sha256": "41b64b62a841ce69ab29f291d10b50ff81d3e4d0d79d38117aa7444aec40afce",
+      "ldos": {
+        "U12": {
+          "EP": {
+            "net": "/GND",
+            "at": [
+              104.5,
+              82.6
+            ],
+            "size_mm": [
+              3.15,
+              3.15
+            ]
+          },
+          "original_vias_present": 9,
+          "original_vias_directly_inside_EP": [
+            "2ba0b066-845b-4bd3-b36e-0039d892840a",
+            "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+            "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+            "597f8272-fb96-4777-8f90-a852896fe0bb",
+            "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+            "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+            "aaca74f4-3d82-4787-908e-1e63bfefb057",
+            "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+            "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+          ],
+          "regions_containing_EP_center": [
+            {
+              "layer": "F.Cu",
+              "zone_uuid": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+              "subpolygon": 0,
+              "filled_area_mm2": 24.399228211541,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": []
+            },
+            {
+              "layer": "B.Cu",
+              "zone_uuid": "fd6260e2-9502-41e9-8687-9f681a19e745",
+              "subpolygon": 2,
+              "filled_area_mm2": 41.682465744875,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": []
+            },
+            {
+              "layer": "In1.Cu",
+              "zone_uuid": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+              "subpolygon": 0,
+              "filled_area_mm2": 2295.0693169729784,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": []
+            }
+          ]
+        },
+        "U13": {
+          "EP": {
+            "net": "/GND",
+            "at": [
+              59.0,
+              77.7
+            ],
+            "size_mm": [
+              3.15,
+              3.15
+            ]
+          },
+          "original_vias_present": 9,
+          "original_vias_directly_inside_EP": [
+            "09cf51f1-958d-4037-8651-88be9afa8fcb",
+            "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+            "3830f89a-f0fd-4217-8f17-dffb343eee72",
+            "587a542a-f158-4a2c-991b-4fead55bc366",
+            "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+            "62474b73-3213-4477-925b-4de804222738",
+            "730818e3-1e59-417c-9949-82904f0225ca",
+            "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+            "e3c63c2f-15af-4960-9042-450fc3917252"
+          ],
+          "regions_containing_EP_center": [
+            {
+              "layer": "F.Cu",
+              "zone_uuid": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+              "subpolygon": 0,
+              "filled_area_mm2": 22.5131490184005,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": []
+            },
+            {
+              "layer": "B.Cu",
+              "zone_uuid": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+              "subpolygon": 0,
+              "filled_area_mm2": 250.248313168539,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": []
+            },
+            {
+              "layer": "In1.Cu",
+              "zone_uuid": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+              "subpolygon": 0,
+              "filled_area_mm2": 2295.0693169729784,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": []
+            }
+          ]
+        }
+      }
+    },
+    "076_saved": {
+      "pcb_sha256": "2482301aa94d465a2fd8657f95d511d8167a2dde9c58943f032694273220c340",
+      "ldos": {
+        "U12": {
+          "EP": {
+            "net": "/GND",
+            "at": [
+              104.5,
+              82.6
+            ],
+            "size_mm": [
+              3.15,
+              3.15
+            ]
+          },
+          "original_vias_present": 0,
+          "original_vias_directly_inside_EP": [],
+          "regions_containing_EP_center": [
+            {
+              "layer": "F.Cu",
+              "zone_uuid": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+              "subpolygon": 0,
+              "filled_area_mm2": 25.5923397071355,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25"
+              ]
+            },
+            {
+              "layer": "B.Cu",
+              "zone_uuid": "fd6260e2-9502-41e9-8687-9f681a19e745",
+              "subpolygon": 1,
+              "filled_area_mm2": 134.4080003618685,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25",
+                "dcfabe04-bb31-5f2d-a29f-e466e6265a22"
+              ]
+            },
+            {
+              "layer": "In1.Cu",
+              "zone_uuid": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+              "subpolygon": 0,
+              "filled_area_mm2": 2241.7886004511247,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25",
+                "11ef6458-61d0-522d-afad-f23ca3b5cf23",
+                "92318c77-6fe4-5f7c-b960-b5085885b9cf",
+                "dfd9d319-0eb8-50b7-ba00-48f1d2279104",
+                "dcfabe04-bb31-5f2d-a29f-e466e6265a22"
+              ]
+            },
+            {
+              "layer": "In2.Cu",
+              "zone_uuid": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+              "subpolygon": 0,
+              "filled_area_mm2": 67.5268757320075,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25",
+                "11ef6458-61d0-522d-afad-f23ca3b5cf23",
+                "92318c77-6fe4-5f7c-b960-b5085885b9cf",
+                "dfd9d319-0eb8-50b7-ba00-48f1d2279104",
+                "dcfabe04-bb31-5f2d-a29f-e466e6265a22"
+              ]
+            }
+          ]
+        },
+        "U13": {
+          "EP": {
+            "net": "/GND",
+            "at": [
+              59.0,
+              77.7
+            ],
+            "size_mm": [
+              3.15,
+              3.15
+            ]
+          },
+          "original_vias_present": 0,
+          "original_vias_directly_inside_EP": [],
+          "regions_containing_EP_center": [
+            {
+              "layer": "F.Cu",
+              "zone_uuid": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+              "subpolygon": 0,
+              "filled_area_mm2": 23.0394057972705,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd"
+              ]
+            },
+            {
+              "layer": "B.Cu",
+              "zone_uuid": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+              "subpolygon": 0,
+              "filled_area_mm2": 249.2199436986525,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+                "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+                "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+                "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+                "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+              ]
+            },
+            {
+              "layer": "In1.Cu",
+              "zone_uuid": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+              "subpolygon": 0,
+              "filled_area_mm2": 2241.7886004511247,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+                "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+                "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+                "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+                "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+              ]
+            },
+            {
+              "layer": "In2.Cu",
+              "zone_uuid": "b299d9de-99bf-5528-90b0-5cf17b373103",
+              "subpolygon": 0,
+              "filled_area_mm2": 60.393196834926,
+              "original_EP_vias_in_region": [],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+                "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+                "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+                "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+                "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "078_native_refilled": {
+      "pcb_sha256": "23e57358417eb9d9187a7419537295b744b52e7174cbc743de4ab12b85c0735e",
+      "ldos": {
+        "U12": {
+          "EP": {
+            "net": "/GND",
+            "at": [
+              104.5,
+              82.6
+            ],
+            "size_mm": [
+              3.15,
+              3.15
+            ]
+          },
+          "original_vias_present": 9,
+          "original_vias_directly_inside_EP": [
+            "2ba0b066-845b-4bd3-b36e-0039d892840a",
+            "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+            "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+            "597f8272-fb96-4777-8f90-a852896fe0bb",
+            "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+            "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+            "aaca74f4-3d82-4787-908e-1e63bfefb057",
+            "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+            "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+          ],
+          "regions_containing_EP_center": [
+            {
+              "layer": "F.Cu",
+              "zone_uuid": "9a875a8a-4603-4eb6-beb3-a9801d0678f8",
+              "subpolygon": 0,
+              "filled_area_mm2": 25.5923397071355,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25"
+              ]
+            },
+            {
+              "layer": "B.Cu",
+              "zone_uuid": "fd6260e2-9502-41e9-8687-9f681a19e745",
+              "subpolygon": 1,
+              "filled_area_mm2": 134.267685470889,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25",
+                "dcfabe04-bb31-5f2d-a29f-e466e6265a22"
+              ]
+            },
+            {
+              "layer": "In1.Cu",
+              "zone_uuid": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+              "subpolygon": 0,
+              "filled_area_mm2": 2041.9801030379224,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25",
+                "11ef6458-61d0-522d-afad-f23ca3b5cf23",
+                "92318c77-6fe4-5f7c-b960-b5085885b9cf",
+                "dfd9d319-0eb8-50b7-ba00-48f1d2279104",
+                "dcfabe04-bb31-5f2d-a29f-e466e6265a22"
+              ]
+            },
+            {
+              "layer": "In2.Cu",
+              "zone_uuid": "6ef0d4b3-964e-5333-a5e4-81f696cd2eb7",
+              "subpolygon": 0,
+              "filled_area_mm2": 67.5268757320075,
+              "original_EP_vias_in_region": [
+                "2ba0b066-845b-4bd3-b36e-0039d892840a",
+                "346467c9-1ac6-41bb-b9c5-5b577cadc44e",
+                "37cd2c9b-81db-404f-ac2b-106daa3fe513",
+                "597f8272-fb96-4777-8f90-a852896fe0bb",
+                "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c",
+                "7a39850b-38e9-44ae-9e8a-2bdd04220af8",
+                "aaca74f4-3d82-4787-908e-1e63bfefb057",
+                "c5307105-7400-4d94-a5aa-ec7528b7bccd",
+                "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+              ],
+              "external_vias_in_region": [
+                "97f79f47-295e-5a3c-9bb0-17e89074d993",
+                "00f0de43-c19b-5b1a-be2c-c1e141a72c0d",
+                "98cb4e27-e6bb-5a16-931b-ab8bcdf3a8b0",
+                "40203dcf-db0d-5dee-9a82-591e98b75e25",
+                "11ef6458-61d0-522d-afad-f23ca3b5cf23",
+                "92318c77-6fe4-5f7c-b960-b5085885b9cf",
+                "dfd9d319-0eb8-50b7-ba00-48f1d2279104",
+                "dcfabe04-bb31-5f2d-a29f-e466e6265a22"
+              ]
+            }
+          ]
+        },
+        "U13": {
+          "EP": {
+            "net": "/GND",
+            "at": [
+              59.0,
+              77.7
+            ],
+            "size_mm": [
+              3.15,
+              3.15
+            ]
+          },
+          "original_vias_present": 9,
+          "original_vias_directly_inside_EP": [
+            "09cf51f1-958d-4037-8651-88be9afa8fcb",
+            "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+            "3830f89a-f0fd-4217-8f17-dffb343eee72",
+            "587a542a-f158-4a2c-991b-4fead55bc366",
+            "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+            "62474b73-3213-4477-925b-4de804222738",
+            "730818e3-1e59-417c-9949-82904f0225ca",
+            "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+            "e3c63c2f-15af-4960-9042-450fc3917252"
+          ],
+          "regions_containing_EP_center": [
+            {
+              "layer": "F.Cu",
+              "zone_uuid": "3a4e0ea3-851b-430e-a355-fbe61e0c04fa",
+              "subpolygon": 0,
+              "filled_area_mm2": 23.0394057972705,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd"
+              ]
+            },
+            {
+              "layer": "B.Cu",
+              "zone_uuid": "8f5e8d85-172b-40bf-a75f-88eb71862219",
+              "subpolygon": 0,
+              "filled_area_mm2": 240.5497981230595,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+                "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+                "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+                "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+                "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+              ]
+            },
+            {
+              "layer": "In1.Cu",
+              "zone_uuid": "43e392e3-acd4-4a43-a2ba-4d7641555d67",
+              "subpolygon": 0,
+              "filled_area_mm2": 2041.9801030379224,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+                "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+                "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+                "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+                "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+              ]
+            },
+            {
+              "layer": "In2.Cu",
+              "zone_uuid": "b299d9de-99bf-5528-90b0-5cf17b373103",
+              "subpolygon": 0,
+              "filled_area_mm2": 60.393196834926,
+              "original_EP_vias_in_region": [
+                "09cf51f1-958d-4037-8651-88be9afa8fcb",
+                "258bb461-ce8f-4a48-ac42-faa1d5b6c80b",
+                "3830f89a-f0fd-4217-8f17-dffb343eee72",
+                "587a542a-f158-4a2c-991b-4fead55bc366",
+                "5bc086a7-2a16-4a46-a75b-59a6febf49ea",
+                "62474b73-3213-4477-925b-4de804222738",
+                "730818e3-1e59-417c-9949-82904f0225ca",
+                "77be243d-8bed-4285-8a36-d7ec44d2a32c",
+                "e3c63c2f-15af-4960-9042-450fc3917252"
+              ],
+              "external_vias_in_region": [
+                "b1168d72-519c-56e7-93e0-3853aac3e2da",
+                "df68f0d7-d1db-5c69-933f-1b9928e76cf2",
+                "8fe33f47-fcf0-5324-8105-de778c63f3ef",
+                "eb8ad561-8636-5f7f-bf90-9f30479812dd",
+                "162304d9-7e39-5558-ab14-1d35bb3f4e4f",
+                "650b53bf-4da6-51d2-ba7f-d5b0571a3a4e",
+                "3344ab8f-abfc-5cd4-bd8b-c6862bde588d",
+                "f4b9cb8a-806e-5764-9ee5-7abd850150e9"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "restored_via_geometry": {
+    "09cf51f1-958d-4037-8651-88be9afa8fcb": [
+      "via",
+      [
+        "at",
+        "59",
+        "77.7"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "09cf51f1-958d-4037-8651-88be9afa8fcb"
+      ]
+    ],
+    "258bb461-ce8f-4a48-ac42-faa1d5b6c80b": [
+      "via",
+      [
+        "at",
+        "58.2",
+        "78.5"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "258bb461-ce8f-4a48-ac42-faa1d5b6c80b"
+      ]
+    ],
+    "2ba0b066-845b-4bd3-b36e-0039d892840a": [
+      "via",
+      [
+        "at",
+        "104.5",
+        "82.899999"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "2ba0b066-845b-4bd3-b36e-0039d892840a"
+      ]
+    ],
+    "346467c9-1ac6-41bb-b9c5-5b577cadc44e": [
+      "via",
+      [
+        "at",
+        "103.7",
+        "82.1"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "346467c9-1ac6-41bb-b9c5-5b577cadc44e"
+      ]
+    ],
+    "37cd2c9b-81db-404f-ac2b-106daa3fe513": [
+      "via",
+      [
+        "at",
+        "105.3",
+        "82.899999"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "37cd2c9b-81db-404f-ac2b-106daa3fe513"
+      ]
+    ],
+    "3830f89a-f0fd-4217-8f17-dffb343eee72": [
+      "via",
+      [
+        "at",
+        "59.8",
+        "78.5"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "3830f89a-f0fd-4217-8f17-dffb343eee72"
+      ]
+    ],
+    "587a542a-f158-4a2c-991b-4fead55bc366": [
+      "via",
+      [
+        "at",
+        "59",
+        "78.5"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "587a542a-f158-4a2c-991b-4fead55bc366"
+      ]
+    ],
+    "597f8272-fb96-4777-8f90-a852896fe0bb": [
+      "via",
+      [
+        "at",
+        "104.5",
+        "83.699999"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "597f8272-fb96-4777-8f90-a852896fe0bb"
+      ]
+    ],
+    "5bc086a7-2a16-4a46-a75b-59a6febf49ea": [
+      "via",
+      [
+        "at",
+        "59",
+        "76.9"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "5bc086a7-2a16-4a46-a75b-59a6febf49ea"
+      ]
+    ],
+    "62474b73-3213-4477-925b-4de804222738": [
+      "via",
+      [
+        "at",
+        "59.8",
+        "76.9"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "62474b73-3213-4477-925b-4de804222738"
+      ]
+    ],
+    "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c": [
+      "via",
+      [
+        "at",
+        "104.5",
+        "82.1"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "69bd0891-2d2e-4f0f-9e47-68d4d326ac2c"
+      ]
+    ],
+    "730818e3-1e59-417c-9949-82904f0225ca": [
+      "via",
+      [
+        "at",
+        "58.2",
+        "76.9"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "730818e3-1e59-417c-9949-82904f0225ca"
+      ]
+    ],
+    "77be243d-8bed-4285-8a36-d7ec44d2a32c": [
+      "via",
+      [
+        "at",
+        "59.8",
+        "77.7"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "77be243d-8bed-4285-8a36-d7ec44d2a32c"
+      ]
+    ],
+    "7a39850b-38e9-44ae-9e8a-2bdd04220af8": [
+      "via",
+      [
+        "at",
+        "105.3",
+        "83.699999"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "7a39850b-38e9-44ae-9e8a-2bdd04220af8"
+      ]
+    ],
+    "aaca74f4-3d82-4787-908e-1e63bfefb057": [
+      "via",
+      [
+        "at",
+        "105.3",
+        "82.1"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "aaca74f4-3d82-4787-908e-1e63bfefb057"
+      ]
+    ],
+    "c5307105-7400-4d94-a5aa-ec7528b7bccd": [
+      "via",
+      [
+        "at",
+        "103.7",
+        "83.699999"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "c5307105-7400-4d94-a5aa-ec7528b7bccd"
+      ]
+    ],
+    "e3c63c2f-15af-4960-9042-450fc3917252": [
+      "via",
+      [
+        "at",
+        "58.2",
+        "77.7"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "e3c63c2f-15af-4960-9042-450fc3917252"
+      ]
+    ],
+    "f1f1aaca-7976-4564-86b8-39fdc51f381f": [
+      "via",
+      [
+        "at",
+        "103.7",
+        "82.899999"
+      ],
+      [
+        "size",
+        "0.6"
+      ],
+      [
+        "drill",
+        "0.3"
+      ],
+      [
+        "layers",
+        "F.Cu",
+        "B.Cu"
+      ],
+      [
+        "capping",
+        "no"
+      ],
+      [
+        "filling",
+        "no"
+      ],
+      [
+        "net",
+        "/GND"
+      ],
+      [
+        "uuid",
+        "f1f1aaca-7976-4564-86b8-39fdc51f381f"
+      ]
+    ]
+  }
+}
