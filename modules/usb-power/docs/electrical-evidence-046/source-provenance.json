@@ -1,0 +1,63 @@
+{
+  "workspace_HEAD": "e4524354cf803d41dba03c64e6bdb860b69d9b0a",
+  "accepted_commit": "352437640d67ba1c431b54533f22374c9796b300",
+  "notes": "Git object reads only; no other workspace or external project accessed. Existing root hardware/tools/tests match accepted commit; module migration absent.",
+  "objects": {
+    "AGENTS.md": {
+      "blob": "3b354c7b5425c97fb8a1df0cae9ecefc53131a0c",
+      "sha256": "feb85a5152f89ccc2fa05f4135ecc635adb9ef23cace365ad14e17ee7e53f518"
+    },
+    "Code.md": {
+      "blob": "c4a50f579877e60e8702e2e07336a54e1c6379c9",
+      "sha256": "cfdce28baa348016319bc38f48417751546f57daf1f28342dd6d4c7286784437"
+    },
+    "BOM.csv": {
+      "blob": "f2ebe0eb602fcfbfcfd40b2dad80cf886e25239a",
+      "sha256": "2d0e42ce30812bbb3e7bff74edde40b0cd5fadc3992d48a7b5db55a8bc253854"
+    },
+    "hardware/big_modular.kicad_pcb": {
+      "blob": "1810f050f893126bb2ed6f0c4a3d56f240b6b7e4",
+      "sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9"
+    },
+    "hardware/03_bucks.kicad_sch": {
+      "blob": "caac2f9b9c2a6ea1603773eae6b10f47428c8a72",
+      "sha256": "ea070050a6022dc00eebe8ed5e6696c0fc37654d214aa307970f95fa7ac9cebb"
+    },
+    "hardware/04_bipolar.kicad_sch": {
+      "blob": "ab19a9526083f45204cd228ad033721183310162",
+      "sha256": "cf7970b62096270436e4424f2e09638d9bd57481855002897b42a1827e4fcda4"
+    },
+    "hardware/05_quiet_rails.kicad_sch": {
+      "blob": "bc8525d16522fed7530697a88e1e4b5bee8aecbd",
+      "sha256": "751de70cb9c335b9cf507b09aaec39f0aa93f0e73d364df21cca4021c68f67b0"
+    },
+    "docs/ldo-revision.md": {
+      "blob": "de2a6652495567c4d3076b05ae7800d9927aa009",
+      "sha256": "91a48e6e2a533094d71c4cda1eefe3ac45d3ba38771f48911de3ebca431bbf3c"
+    },
+    "docs/ldo-evidence/dc-budget.json": {
+      "blob": "9b96a8a6d93b01a897bed713035f0e2652b10843",
+      "sha256": "a63ce71b6c103d5c7b614e233b0b21e2123aae03ebf3f78e9f3abfac2fa2a077"
+    },
+    "tools/ldo_budget.py": {
+      "blob": "43fcf61637d6838b8db9f27a108af775eacc50f9",
+      "sha256": "5a6c0be7aa849273643644b362d9cb8562f820f1acbb6eae3dec29cecc87ba72"
+    },
+    "tools/ldo_design.py": {
+      "blob": "441e8c7f4631854b08be74e924786f5ff27ca28a",
+      "sha256": "257789308f419b891442cd881b450fdebcee6aa78e6dd4ef994b412ea48b47ff"
+    },
+    "tools/electrical_design.py": {
+      "blob": "400ca14edc6ebf7703a076213245f29b6a051f78",
+      "sha256": "ef5d0ad8f7c1b2a91d270bc81553276c7c8098a99bda1ce86360e9a1092b568b"
+    },
+    "tools/verify_ldo_source.py": {
+      "blob": "ab29d776149e7b1ed64ef5226922684b621abebf",
+      "sha256": "4cdfa2f45e8fe6ed8b96c93cbb1725fb46442b29e53178708e98ab8673dbc760"
+    },
+    "production/ldo-r1/manifest.json": {
+      "blob": "0f74d6277af9354b1cffd54d9f5f98cfdb525d90",
+      "sha256": "b80d71609b547b54deab03af211c030b1b30a51b38485b8f548c612f8aba558c"
+    }
+  }
+}
