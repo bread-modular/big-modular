@@ -1,0 +1,325 @@
+{
+  "status": "NATIVE_CLEAN_NOT_RELEASED",
+  "source_sha256": "23e57358417eb9d9187a7419537295b744b52e7174cbc743de4ab12b85c0735e",
+  "candidate_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+  "frozen_project_sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+  "native_cli": {
+    "available": true,
+    "path": "/usr/bin/kicad-cli",
+    "version": "10.0.6",
+    "checks_supported": true,
+    "stderr": ""
+  },
+  "source_unchanged": true,
+  "findings": {
+    "erc": {
+      "categories": {
+        "violations": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    },
+    "drc": {
+      "categories": {
+        "violations": 0,
+        "unconnected_items": 0,
+        "schematic_parity": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    }
+  },
+  "baseline_078_findings": {
+    "erc": {
+      "categories": {
+        "violations": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    },
+    "drc": {
+      "categories": {
+        "violations": 0,
+        "unconnected_items": 0,
+        "schematic_parity": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    }
+  },
+  "native_ref_pin_net_parity": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "equal": true
+  },
+  "native_parity_scope": "Native DRC --schematic-parity plus ref/pin/net comparison",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-recovery-final-check/netlist.xml",
+        "/tmp/kicad private checks 7luobjc1/inputs/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-recovery-final-check/erc.json",
+        "/tmp/kicad private checks 7luobjc1/inputs/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-recovery-final-check/erc.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-recovery-final-check/drc.json",
+        "--refill-zones",
+        "--all-track-errors",
+        "--schematic-parity",
+        "/tmp/kicad private checks 7luobjc1/inputs/usb-power.kicad_pcb"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-recovery-final-check/drc.json\n",
+      "stderr": ""
+    }
+  ],
+  "raw_native_reports": {
+    "after-drc.json": "13e119ee51e71fcbb4a99dd14088d34d7ff817a347e5f45ddd63ad68efdd95d9",
+    "after-erc.json": "a4d57cff3cffed8f8b7c698b4c35050b90c58580d6cab1e9d130cded95769814"
+  },
+  "final_fresh_XML_sha256": "e9c9ccd63db78a75b7659bac5baec1ca7af00aa2f19130a2f2a835eb918aa508",
+  "fresh_XML_equal_to_exact_audit_XML": true,
+  "refill_save_receipt": {
+    "argv": [
+      "kicad-cli",
+      "pcb",
+      "drc",
+      "--format",
+      "json",
+      "--severity-all",
+      "--all-track-errors",
+      "--schematic-parity",
+      "--refill-zones",
+      "--save-board",
+      "--exit-code-violations",
+      "--output",
+      "/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-refill-drc.json",
+      "/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-work3/usb-power.kicad_pcb"
+    ],
+    "cwd": "/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-work3",
+    "returncode": 0,
+    "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-refill-drc.json\nSaved board\n",
+    "stderr": "",
+    "project_before": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "project_after_native_save": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "project_after_exact_restore": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "board_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db"
+  },
+  "recovery_final_invocation": {
+    "argv": [
+      "python3",
+      "-B",
+      "opt/kicad-tools/kicad_tools.py",
+      "check",
+      "--config",
+      "modules/usb-power/research/focused-081-work3/candidate-profile.json",
+      "--reports",
+      "modules/usb-power/research/focused-081-recovery-final-check",
+      "--only",
+      "both"
+    ],
+    "returncode": 0,
+    "stdout": "{\n  \"status\": \"no_findings_in_requested_checks\",\n  \"summary\": \"/home/azero/.okbrain/workspaces/big-modular/081/modules/usb-power/research/focused-081-recovery-final-check/summary.json\",\n  \"findings\": {\n    \"erc\": {\n      \"categories\": {\n        \"violations\": 0\n      },\n      \"severity\": {},\n      \"total_including_exclusions\": 0\n    },\n    \"drc\": {\n      \"categories\": {\n        \"violations\": 0,\n        \"unconnected_items\": 0,\n        \"schematic_parity\": 0\n      },\n      \"severity\": {},\n      \"total_including_exclusions\": 0\n    }\n  },\n  \"source_unchanged\": true,\n  \"errors\": [],\n  \"order_ready\": false\n}\n",
+    "stderr": "",
+    "project_before": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "project_after": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+    "board_before": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+    "board_after": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db"
+  },
+  "075_closure_reference": {
+    "DEPENDENCIES.json": "e056507eb0d7808f102186036c46688c69e8f2090e4831c2ea94ae9522b7bf6e",
+    "CHECKPOINT.json": "f64516722696030e1a8366876a8835df461580fd33e3e04fa95c08d9f2a65ae0",
+    "candidate-profile.json": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506"
+  },
+  "common_tool_first": {
+    "inspect_sha256": "e811a87b6eec8110d4ebf2a3dd04b0dda9b2a3f27f5218e78acd843b948e04dd",
+    "plan_sha256": "ed606c7f1f3b060b7b2756820bd8d976ba21d9b2c8e6be3f3fdd0d57ee3e737b",
+    "apply_status": "rejected",
+    "apply_findings": {
+      "erc": [],
+      "drc": [
+        {
+          "category": "violations",
+          "severity": "warning",
+          "identity": {
+            "description": "Track endpoint not centered on via",
+            "items": [
+              {
+                "description": "Track [/GND] on F.Cu, length 0.3536 mm",
+                "pos": {
+                  "x": 129.8,
+                  "y": 84.4
+                },
+                "uuid": "c09b3641-ecc2-524e-bdd2-134d696eb966"
+              },
+              {
+                "description": "Via [/GND] on F.Cu - B.Cu",
+                "pos": {
+                  "x": 130.2,
+                  "y": 84.0
+                },
+                "uuid": "5a972e79-a3d7-524c-a12e-ea4ca6128a1f"
+              }
+            ],
+            "type": "track_not_centered_on_via"
+          },
+          "sha256": "e3df8aa7c91234afb419822b8a3668bbfba35bfc71aa587cf09b17c4d4ae370a"
+        },
+        {
+          "category": "violations",
+          "severity": "warning",
+          "identity": {
+            "description": "Track endpoint not centered on via",
+            "items": [
+              {
+                "description": "Track [/GND] on F.Cu, length 0.6500 mm",
+                "pos": {
+                  "x": 129.55,
+                  "y": 85.0
+                },
+                "uuid": "26351508-e52b-5815-a0dc-ad34d53008c3"
+              },
+              {
+                "description": "Via [/GND] on F.Cu - B.Cu",
+                "pos": {
+                  "x": 129.4,
+                  "y": 84.8
+                },
+                "uuid": "4bcbd804-3a8c-5887-9183-42ba65e75fdf"
+              }
+            ],
+            "type": "track_not_centered_on_via"
+          },
+          "sha256": "86413b710d489f3f1b4b26d72b99d3979005dde2635db48fcc80c345a0b11d96"
+        },
+        {
+          "category": "violations",
+          "severity": "warning",
+          "identity": {
+            "description": "Track endpoint not centered on via",
+            "items": [
+              {
+                "description": "Track [/GND] on F.Cu, length 0.8000 mm",
+                "pos": {
+                  "x": 129.55,
+                  "y": 85.8
+                },
+                "uuid": "be397d70-c6e6-5825-aeaa-67824e529c1c"
+              },
+              {
+                "description": "Via [/GND] on F.Cu - B.Cu",
+                "pos": {
+                  "x": 129.4,
+                  "y": 84.8
+                },
+                "uuid": "4bcbd804-3a8c-5887-9183-42ba65e75fdf"
+              }
+            ],
+            "type": "track_not_centered_on_via"
+          },
+          "sha256": "be27e25d6820f7c92a757b8197337543549277113f52849c7f6ba4da2ab29b78"
+        },
+        {
+          "category": "violations",
+          "severity": "warning",
+          "identity": {
+            "description": "Track endpoint not centered on via",
+            "items": [
+              {
+                "description": "Track [/GND] on F.Cu, length 1.1500 mm",
+                "pos": {
+                  "x": 130.05,
+                  "y": 84.15
+                },
+                "uuid": "f861a7d5-eb0c-5156-9f56-36a257f266a7"
+              },
+              {
+                "description": "Via [/GND] on F.Cu - B.Cu",
+                "pos": {
+                  "x": 130.2,
+                  "y": 84.0
+                },
+                "uuid": "5a972e79-a3d7-524c-a12e-ea4ca6128a1f"
+              }
+            ],
+            "type": "track_not_centered_on_via"
+          },
+          "sha256": "5e28a9ff93a6597b136b00f12f425bcc99f89a3ddfcd38da6e50c86cdab84c1d"
+        }
+      ]
+    },
+    "reason_for_narrow_native_exception": "Common operations have no existing-via relocation or track-endpoint setter. EP-only common apply correctly rejected four endpoint warnings. Unchanged shared validate/perform plus explicitly authorized pcbnew setters used; warnings physically corrected before final all-zero checks. No tools/gates/rules changed."
+  },
+  "research_audit_script_hashes": {
+    "focused-081-edit.py": "a2fd16586d25b34f6ea0b43261f1b64fa6d1a2f251e284d3c072673e7ca2fe3c",
+    "focused-081-repair2.py": "174d7469cfeaa39101b92a00d03b350323f502259a91d1042b717cbea87ec35d",
+    "focused-081-repair3.py": "c16651e42776428ae581111725b1a0ea69a0797955c822f0180194e138b30f40",
+    "focused-081-audit.py": "40ab047df72ef6dc68d21149d6b6c6e414f431928d6c5a93be0abdf3f478e139",
+    "focused-081-supplement.py": "1ecf41906fb78a9e85773c809aec15521cb0d6c7e36c842cfaf482e7a6b821c6"
+  },
+  "render_sources": {
+    "top": {
+      "research_png": "focused-081-top.png",
+      "sha256": "ee81446c98b64783c26686c76d34650fec6508e68c2b790b52117a5403ec616a",
+      "private_preview": "/uploads/81ba71ac-b84e-46f6-9aa0-07fd5f8c65e6.webp"
+    },
+    "boost": {
+      "research_png": "focused-081-boost.png",
+      "sha256": "ccc3129d30525b788a549bc841754dbccf27d844ea60517f2b2bd246d59a9fa9",
+      "private_preview": "/uploads/90acbb50-2080-4f5e-9689-f65f7090f191.webp",
+      "method": "Crop [1730,240,2248,650] of existing native KiCad top render; no geometry redraw."
+    }
+  },
+  "unchanged_frozen_dependencies": true,
+  "frozen_dependency_hashes_receipt": "exact-parity.json / frozen_dependencies",
+  "review": "Fresh independent Opus delta pending with user; no advisor/delegation invoked",
+  "order_ready": false,
+  "canonical_promoted": false,
+  "fab_exports_created": false,
+  "tests_tools_rules_exclusions_changed": false
+}

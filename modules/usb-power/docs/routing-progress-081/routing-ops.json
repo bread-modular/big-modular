@@ -1,0 +1,2908 @@
+{
+  "source_sha256": "23e57358417eb9d9187a7419537295b744b52e7174cbc743de4ab12b85c0735e",
+  "candidate_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+  "changes": {
+    "07742c8c-6422-4056-9df1-03e0c52af640": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "609c9de26a769cc5b4b1fb5b6af140f51d90e3651f2cba550ca446f4d8a8fff9",
+        "net": "/P5",
+        "layer": "B.Cu",
+        "start": [
+          99.0,
+          88.8
+        ],
+        "end": [
+          109.7,
+          99.5
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "09c5a03d-dfff-5277-add1-9d21d84f6b1c": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "14ca35a344e7dba2d8a6dd23a2d763d5f0c890b29f57525159bfecbed442c6eb",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          82.3
+        ],
+        "end": [
+          129.05,
+          82.3
+        ],
+        "width": 0.24
+      },
+      "reason": "SW1 join"
+    },
+    "0b26bd70-eb5c-44c0-8d53-444ed3366535": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "4be16c0217a2a1379b1c71c95f01fc7557641e312c86056cde97b8ac18d8c3b9",
+        "net": "/Autonomous hardware window and retry/EF_MODE",
+        "layer": "B.Cu",
+        "start": [
+          79.4,
+          87.475
+        ],
+        "end": [
+          80.5,
+          87.475
+        ],
+        "width": 0.25
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "e314dcbdfb198f1249480945b0660a397dbf1b33ea3882d2450bf706e384fea4",
+        "net": "/Autonomous hardware window and retry/EF_MODE",
+        "layer": "B.Cu",
+        "start": [
+          79.25,
+          87.475
+        ],
+        "end": [
+          80.5,
+          87.475
+        ],
+        "width": 0.25
+      },
+      "reason": "F2 different-net drill gap margin attached start"
+    },
+    "0b4136d6-f655-56ee-bd4f-73551b3bb3e7": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ecad2d964e91f6f243233e063ded36950284447000e3b15aa230f254cef22080",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.05,
+          82.9
+        ],
+        "end": [
+          128.4,
+          82.25
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "0dc62e2a-d84f-5fca-aba4-191072c9b1da": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "928c04d3893941ea52fb88a970224fab9fb015be7d843a339a429f42e74ef923",
+        "net": "/VPROT",
+        "layer": "In2.Cu",
+        "start": [
+          126.2,
+          74.4
+        ],
+        "end": [
+          128.325,
+          78.5
+        ],
+        "width": 1.2
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "1070413e-3f56-5dda-9332-f82c83b3a5b7": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "c308ca26639077095b0417044a9692eedb3111e42917dea57369c06d757a753a",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "F.Cu",
+        "start": [
+          135.4,
+          78.4
+        ],
+        "end": [
+          136.075,
+          79.2
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "12d19447-9704-59cb-b94a-90cc813222a8": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "9db203cce7cc1decf3c63eb0c1564a7321918a78f2eb60ce84250ff3f3140e4a",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "B.Cu",
+        "start": [
+          133.575,
+          82.2
+        ],
+        "end": [
+          133.575,
+          83.0
+        ],
+        "width": 1.0
+      },
+      "reason": "Cout branch B crossbar2"
+    },
+    "13a71f07-25a7-53c2-a63b-48e193604d55": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "f768baacdd0e842140f8b58afecef199ca96df582151043042a6ae609ca658e3",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          83.0
+        ],
+        "end": [
+          129.05,
+          83.0
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "16aabc79-0c23-5529-9f46-ed792f526572": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "7434f1e40f5125d0850737396c599d9ab286669d6710c6db3629f882cdfc117d",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.55,
+          83.8
+        ],
+        "end": [
+          129.8,
+          84.4
+        ],
+        "width": 0.3
+      },
+      "reason": "PGND13 to EP same layer"
+    },
+    "1cafa839-c775-534d-adb6-c78ea8149cf6": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "cb3c887c9fb39d6a7a07635117d75583e101b801cd194a1d6b258b0b8347e5fa",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          132.5,
+          75.8
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "1cbebd16-0bf8-550c-b53c-044ef90472a6": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "4b0e50bb5f6dad88ee81a809703aba0bd6af665532cd726bd462caed6f0c15f5",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          133.4,
+          78.0
+        ],
+        "end": [
+          133.575,
+          81.1
+        ],
+        "width": 1.2
+      },
+      "reason": "diode cathode to quiet local Cout"
+    },
+    "1f6dc451-f2a2-50f4-96a9-4b34276bf08a": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "02e4558289c5cecc724a5f296e788a0a79a1525697b4f38aa0217cea7e683232",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          133.575,
+          82.2
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Cout distribution barrel 0"
+    },
+    "24fda057-629a-5b3e-80c5-ca83bc9992b3": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "e9fc262bd689b7f58fd2ed2ca4d275960f23a5923d58b65602af996f39563625",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.4,
+          82.25
+        ],
+        "end": [
+          128.0,
+          82.25
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "25ec065d-18a6-5a29-ae72-3444465dd5f5": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "d277d51bae55681d193b6e65cdcd17d714a4278284205daeb0e3275cec2575aa",
+        "net": "/VPROT",
+        "at": [
+          126.2,
+          74.4
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "26351508-e52b-5815-a0dc-ad34d53008c3": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "692e24aa22b4c9e8438f276976bfd5c5758af57765bfdb22388cefb93539ca63",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          85.0
+        ],
+        "end": [
+          129.8,
+          84.4
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "26776ed7-a54b-5c98-9a4c-94819d1c7dce": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "bd1b83ef7b7688591df0eedc6c54bf80b9537e4d97d5f8596fec9fef85e1ddf2",
+        "net": "/GND",
+        "at": [
+          142.0,
+          79.2
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "28e8dba6-cd8c-514f-b8a1-6d578c7859c0": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "7ab99a75144b18e5c04dc8bc9b2b137e686e1e8418e1f8df801899c46a246266",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          133.525,
+          76.6
+        ],
+        "end": [
+          133.525,
+          77.9
+        ],
+        "width": 0.3
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "29690948-3fc8-57cc-a863-be78865af2b1": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "f406caebd06e2e8980e437dbb04ae73958d7271715ce3f432041fc7272f50f1a",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          133.525,
+          74.1
+        ],
+        "end": [
+          133.525,
+          76.6
+        ],
+        "width": 1.2
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "31bbfd34-f902-561b-84a2-36b1ba4eec5a": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "8166b28ab3b0f2beb0e7d9ab604786f7130ef20f7b10ab674c11655ac1440f7e",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "In1.Cu",
+        "start": [
+          133.525,
+          77.9
+        ],
+        "end": [
+          134.3,
+          78.675
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "323079d7-fa01-59a8-bd25-56b96490f601": {
+      "before": {
+        "kind": "footprint",
+        "native_sha256": "28281807f1567a7d6e0ef8d8171fae659f1da37d57199ac632a475705add0a0d",
+        "ref": "D29",
+        "at": [
+          128.0,
+          78.45
+        ],
+        "angle": -90.0
+      },
+      "after": {
+        "kind": "footprint",
+        "native_sha256": "486845da7c1ad44166ff51df377f2ef40c15272b384546afde44ab2c5d2a1e11",
+        "ref": "D29",
+        "at": [
+          131.4,
+          78.0
+        ],
+        "angle": 180.0
+      },
+      "reason": "R1 coherent front cell / interfering passive relocation"
+    },
+    "327fc604-af2b-57f3-91bb-7ad9cbf2ac08": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "12dad89350dfbe95074deb0d190b916343dd038dbda61cbd774313eb03f04d75",
+        "net": "/VPROT",
+        "at": [
+          131.0,
+          77.6
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "36a03ec0-2e9a-52e9-9e5c-3dd5ea3405d3": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "d212310e3ce068e29898eb721fe427a90a6b40da0de2c41805b8a2318b90c7b3",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.4,
+          83.65
+        ],
+        "end": [
+          128.0,
+          83.65
+        ],
+        "width": 0.24
+      },
+      "reason": "SW1 join"
+    },
+    "37d74459-e1bc-5b71-9802-f47a8928dffd": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "2a1ca0f744fd47366ed2efecd33ceeaf7a8bc82aa101aee6ee538c751921578b",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          136.475,
+          76.6
+        ],
+        "end": [
+          136.4,
+          77.9
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "387533b6-3bb8-5ffb-91f0-52aa6b3ce6af": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "54af8cde5470a6222466f522c61c686fda63df68171d45b89e14c1e3e2eb908c",
+        "net": "/GND",
+        "layer": "B.Cu",
+        "start": [
+          130.9,
+          81.8
+        ],
+        "end": [
+          130.2,
+          81.6
+        ],
+        "width": 1.5
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "3e0c545e-c5b9-5a01-a9f1-87ed4903a283": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "0b5b3c4beee77dd2c8dd9484a133c43f602cc257cbb566a022c06696ff69bd9d",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          76.45
+        ],
+        "end": [
+          126.6,
+          75.1
+        ],
+        "width": 0.9
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "40fb7a0e-bd19-586d-9482-d422735572b2": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ae6fbfcf14681159d6238062632a95c307ed6634f076ef93060f7a8eb49a4703",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          126.35,
+          78.8
+        ],
+        "end": [
+          128.0,
+          80.45
+        ],
+        "width": 1.2
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "410b9649-779f-56ce-8908-e71bcbae27cf": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "e5fd89bf9e0c3b1d76b0e2d6ed33c79624de22abe731dab876a4d96f880badf9",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          82.2
+        ],
+        "end": [
+          128.0,
+          82.2
+        ],
+        "width": 0.45
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "432709fe-04d7-5e4c-9612-141eb664749a": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "3cd1b8b2fb76073bcfba08ddecf21ab28eb35701ccab7e885ba5a5a5e5d0c28e",
+        "net": "/VPROT",
+        "layer": "F.Cu",
+        "start": [
+          131.0,
+          76.475
+        ],
+        "end": [
+          131.0,
+          77.6
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "4454c3d5-6150-534a-b9ca-52992f287772": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "a820e2af4ca42d1cffa42c0014587983fe53aede3f60abf757d4666ffe0113bf",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          136.475,
+          76.6
+        ],
+        "end": [
+          136.525,
+          78.5
+        ],
+        "width": 1.0
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "46fb93a9-cdce-52d1-905e-2962cdae5da7": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "d4a4da00d10fc42f867a2c350777540346f2698bf48d18006d2e3f542fbb0cb1",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.475,
+          73.8
+        ],
+        "end": [
+          129.6,
+          74.3
+        ],
+        "width": 0.8
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "478de962-2222-50d6-8b07-1d0df3a9edb3": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "cba32a5f0d372a81a05dd46695ab335f5ac61faa4e386696dce42706824259bb",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.05,
+          83.0
+        ],
+        "end": [
+          129.05,
+          82.2
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "4ab9d183-ea81-5cc8-970d-e0fd52867cbe": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "1cb53c5ec453557965f4120907dc3556d8b3d4718a511cc6e22297881ea92146",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ_SER",
+        "layer": "F.Cu",
+        "start": [
+          137.725,
+          79.2
+        ],
+        "end": [
+          139.275,
+          79.2
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "4b27ede6-9d6a-56d3-90bc-b6bc6c9b6346": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "795c014254c8e3234881e0eca41ba7c3c5cabf594c64e5a87ea7b0a14d4933be",
+        "net": "/P5",
+        "layer": "B.Cu",
+        "start": [
+          105.0,
+          95.6
+        ],
+        "end": [
+          109.7,
+          99.5
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "4bcbd804-3a8c-5887-9183-42ba65e75fdf": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "5d29d423d6dbd7b025aa18d4658a4e37592a085ca5ea348767b59475a2632329",
+        "net": "/GND",
+        "at": [
+          129.4,
+          84.8
+        ],
+        "diameter": 0.6,
+        "drill": 0.3
+      },
+      "reason": "R4 U14 EP17 direct thermal barrels"
+    },
+    "4d6bdec8-cf97-5ab6-ad8d-3e28e3f04d56": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "e2809a8ddeaa4b1dc8ed1e1f773cb5d7d5080f27cbab0ad4591938b8913840af",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          104.9,
+          94.5
+        ],
+        "end": [
+          104.9,
+          96.5
+        ],
+        "width": 1.5
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "b16a2d93a2acdb0c3b942b4fc003898a0b5e8a3ab7b40613340626c441ce6e29",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          104.65,
+          94.5
+        ],
+        "end": [
+          104.65,
+          96.0
+        ],
+        "width": 1.5
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "526b4285-ba7b-51af-9dfa-05a60af69e54": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "b290fe3a8d85687c1537df053c4290c9202027bc90e7bdbd72aaf7494b134b89",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "at": [
+          132.1,
+          85.15
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "FREQ pin escape"
+    },
+    "535e2f38-4ff4-5473-9e09-699fb950194c": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "d9afbdfc6ed6c0194005cedb1048d05c99f5bbf5202e07e626bbf3784366b48e",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          101.0,
+          94.5
+        ],
+        "end": [
+          104.9,
+          94.5
+        ],
+        "width": 1.5
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "64c130a98bf4016f8d1074ef1d7350ad27fc7fc49e4beb79f10132511bc6111b",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          101.0,
+          94.5
+        ],
+        "end": [
+          104.65,
+          94.5
+        ],
+        "width": 1.5
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "5607a382-87b5-5038-b4cc-907b952072aa": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "a2f8eaf02abd940a910fb996c14bb35c65da2de53c6cb9360eded82c2bb49590",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          76.45
+        ],
+        "end": [
+          126.6,
+          76.7
+        ],
+        "width": 0.9
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "5641c3be-9798-5fee-85c5-be2dd9def77f": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "ad0fdf3b68032637c2289cda51ba92dbb37df702a1362e7a4abbd94b91c256e2",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.625,
+          81.1
+        ],
+        "end": [
+          130.55,
+          82.0
+        ],
+        "width": 0.5
+      },
+      "reason": "local Cout to PGND13"
+    },
+    "5713900c-6034-514e-b9ab-8cb037d484e2": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "61070c03874676583e43eab7145e3fe8bb78f7a0fc3505f7eb5cde0ffe75ffca",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.55,
+          82.0
+        ],
+        "end": [
+          130.55,
+          83.0
+        ],
+        "width": 0.5
+      },
+      "reason": "local Cout to PGND13"
+    },
+    "577cfa61-9684-5d9f-8bc2-f14b0201cf36": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "8ac4d357fd298e67450b276902a0a85ffee5b92329a38c9132826c390ea7a308",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ_SER",
+        "layer": "F.Cu",
+        "start": [
+          133.2,
+          79.5
+        ],
+        "end": [
+          134.875,
+          79.5
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "57813efa-e2ab-5d06-91ab-b8a68ef2677c": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "16977db1953825f6ad242a87103f62e4caee3eaffc890215827e95f861def457",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "In2.Cu",
+        "start": [
+          134.3,
+          82.925
+        ],
+        "end": [
+          134.3,
+          83.2
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "57b6886a-9636-5260-8d13-6f8ba3fc9321": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "e3858f1dd0d9d73fad37b0c0479965d1f2a096e2abadddaa1f9ec3774ec20983",
+        "net": "/VPROT",
+        "layer": "In2.Cu",
+        "start": [
+          130.2,
+          77.6
+        ],
+        "end": [
+          131.0,
+          77.6
+        ],
+        "width": 1.0
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "5a972e79-a3d7-524c-a12e-ea4ca6128a1f": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "820dfaa446e95728190bcced2e3ab3685de4e5c07b46a1e8f28e6ed6e95258e7",
+        "net": "/GND",
+        "at": [
+          130.2,
+          84.0
+        ],
+        "diameter": 0.6,
+        "drill": 0.3
+      },
+      "reason": "R4 U14 EP17 direct thermal barrels"
+    },
+    "5b721c9c-a9fb-571d-98d2-9fe0143de5cf": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "06f1d28ad8bb85473c022dc3d69638ad9556f935120ec5d10e167744d3f61685",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "at": [
+          135.4,
+          78.4
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "627ceb5a-824a-59ac-8f9a-f7869bc1b9c7": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "f5bd38900aded3cd2f00df910b82261d345c1b29b5e0e52a3e431aa13184916a",
+        "net": "/VPROT",
+        "layer": "F.Cu",
+        "start": [
+          127.525,
+          73.8
+        ],
+        "end": [
+          126.2,
+          73.6
+        ],
+        "width": 0.8
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "62b9ffcc-f49d-50e2-a896-ad7a8c4de2c2": {
+      "before": {
+        "kind": "footprint",
+        "native_sha256": "4a8d4e2ef856059865143d9b07179f3f8276af65555e92d118fdbe077272c292",
+        "ref": "R88",
+        "at": [
+          133.2,
+          81.7
+        ],
+        "angle": 90.0
+      },
+      "after": {
+        "kind": "footprint",
+        "native_sha256": "54c584b6eda22e12768b7ace734a539afa62eaad8b9863049298630e8e5cca6b",
+        "ref": "R88",
+        "at": [
+          136.9,
+          79.2
+        ],
+        "angle": 0.0
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "6320ea47-d382-508f-b080-a9f33e53b6e3": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "a00a146eec8367862bf20096269de31f7b568fdb25b9f6dcbab5773647943bc9",
+        "net": "/GND",
+        "at": [
+          136.525,
+          78.5
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "6338580d-ff4c-51bd-838a-0c2cf661986d": {
+      "before": {
+        "kind": "footprint",
+        "native_sha256": "913e0d73eef890b55f92706c3217656d20032b511352e369367a6883143331fa",
+        "ref": "C84",
+        "at": [
+          131.0,
+          75.0
+        ],
+        "angle": 90.0
+      },
+      "after": {
+        "kind": "footprint",
+        "native_sha256": "038cf3d964415f5d48e1ec6f748af155cd34982964fdd4551b45b232b4422b3b",
+        "ref": "C84",
+        "at": [
+          129.0,
+          73.8
+        ],
+        "angle": 0.0
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "63982e43-4119-520d-85e8-9a49f12e5f71": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "0ff976be42f31e734de0af176426f1a5ed915ea1ae66d0a138b73fbca5357555",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          104.9,
+          96.5
+        ],
+        "end": [
+          108.3,
+          96.5
+        ],
+        "width": 1.5
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "630e644a7a498102f142ce103815be0085ea034390cdc46eeda20d5737407e90",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          104.8,
+          96.425
+        ],
+        "end": [
+          108.3,
+          96.5
+        ],
+        "width": 1.5
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "64b0ccb1-4c52-5a49-b59b-d72d5acae8a6": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "60ef6d3106eb56e9b4230d2c4d775d5a2d84528d8159c826dfc0f05f79804f81",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          83.65
+        ],
+        "end": [
+          128.0,
+          83.2
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "64fb95c4-b84e-574b-a402-75db70132852": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "9bd50dfb06829a16e636ad9f34b14a3a5e2b873405fd84dbf5a09b989eb1322b",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          136.475,
+          74.1
+        ],
+        "end": [
+          136.475,
+          76.6
+        ],
+        "width": 1.2
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "65a934a1-9b07-591b-a179-856105d02487": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "486532e5c4ae5944722391064e2bc95f0f027ffb740f9245dfb29b3b0e0e199d",
+        "net": "/Direct 9V negative IBB/NINV_EN",
+        "layer": "In1.Cu",
+        "start": [
+          134.2,
+          96.7
+        ],
+        "end": [
+          133.6,
+          97.1
+        ],
+        "width": 0.3
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "cbba6fe25cbc20c157a3606a1fcb6b842578f991760243567cbdb1e2f5ae418e",
+        "net": "/Direct 9V negative IBB/NINV_EN",
+        "layer": "In1.Cu",
+        "start": [
+          134.2,
+          96.7
+        ],
+        "end": [
+          131.95,
+          96.64
+        ],
+        "width": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "67407d45-7071-5b59-9a0d-20b68e01663f": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "25acf7f4c083fd27ca035bed1df9a3d630e742dbfa7c7bf662b24291c0cf6981",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          136.475,
+          74.1
+        ],
+        "end": [
+          136.4,
+          77.9
+        ],
+        "width": 1.0
+      },
+      "reason": "C77 ground remote branch"
+    },
+    "67c5760e-8101-5c3c-a513-d6860f7703e7": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "f11dc972dee358b6a105c8ca33f2f435714dfcc125961822484469ba8fedda9d",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.05,
+          83.0
+        ],
+        "end": [
+          129.05,
+          82.9
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "687cf235-9b36-4911-a4ab-da685088281d": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "17a37d20cecec8f0ce7a41594c303e868afc9ce10334eb414d262753654f628c",
+        "net": "/Autonomous hardware window and retry/EF_MODE",
+        "at": [
+          79.4,
+          87.475
+        ],
+        "diameter": 0.5,
+        "drill": 0.3
+      },
+      "after": {
+        "kind": "via",
+        "native_sha256": "6524c34074bf9442a806a1d804535d0cac655e2779c79554f8c7f87bbf5de364",
+        "net": "/Autonomous hardware window and retry/EF_MODE",
+        "at": [
+          79.25,
+          87.475
+        ],
+        "diameter": 0.5,
+        "drill": 0.3
+      },
+      "reason": "F2 different-net drill gap margin"
+    },
+    "69483ce1-32fe-549e-8c50-86a60e417a4f": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "a567a6d36a28a1be62d55dceae82824f332fac0902e928b60ac07515f96a84d4",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "F.Cu",
+        "start": [
+          132.0,
+          85.15
+        ],
+        "end": [
+          132.0,
+          82.525
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "6b89934b-b1fc-519c-8b82-c1154e6f675f": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "97b3acc744a6c32c8f3cbb06c977fb366148599888455dce372458cec77141ff",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "B.Cu",
+        "start": [
+          126.6,
+          75.1
+        ],
+        "end": [
+          126.6,
+          76.7
+        ],
+        "width": 1.2
+      },
+      "after": null,
+      "reason": "R1 remove obsolete diode output via group"
+    },
+    "6cf6b32f-441b-4660-95d2-95c9eb887493": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "a78b86d0b0dca1a23b5de664ee57ee7f94f8ce89024dedacb53a7eca5c5dd9ca",
+        "net": "/Autonomous hardware window and retry/EF_MODE",
+        "layer": "F.Cu",
+        "start": [
+          79.6375,
+          87.475
+        ],
+        "end": [
+          79.4,
+          87.475
+        ],
+        "width": 0.2
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "35c73b3831ae5439c8078d574a1dea16d9cde7ba7f8fd9b84b42666daa0d0569",
+        "net": "/Autonomous hardware window and retry/EF_MODE",
+        "layer": "F.Cu",
+        "start": [
+          79.6375,
+          87.475
+        ],
+        "end": [
+          79.25,
+          87.475
+        ],
+        "width": 0.2
+      },
+      "reason": "F2 different-net drill gap margin attached end"
+    },
+    "6e2eb5a9-7384-5ad7-acbb-9be4b8202ff8": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "de6ef87d6714ec2d3c530a3f16ab032e687faf319879d1ba2d443d2bfb02365a",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "F.Cu",
+        "start": [
+          131.2,
+          85.15
+        ],
+        "end": [
+          132.0,
+          85.15
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "6ea1f48c-bc5a-5719-b96f-d50ce395193d": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "716dd7d1b8f6124aea2d6da39cbd0789d5ed9f5108fd5b8405ad490f1a842901",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.475,
+          73.8
+        ],
+        "end": [
+          129.6,
+          73.5
+        ],
+        "width": 0.8
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "6f66ccbf-ae44-5531-8dea-e4d9ccaebc59": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "66ff6c6b6d211628c1c3fe77a20dd8cbc414e1a7ba5f95e0112c9c6431f4d726",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          80.45
+        ],
+        "end": [
+          128.0,
+          82.25
+        ],
+        "width": 1.0
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "712e2f01-7170-5640-aca3-f166a505f6b9": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "d7a450b36c749adcf4747df68129c3b759cb14e9bf84bb74e31ae0c62ed958f5",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          133.575,
+          81.1
+        ],
+        "end": [
+          133.575,
+          82.2
+        ],
+        "width": 0.8
+      },
+      "reason": "Cout output F branch 0"
+    },
+    "72949bb1-e28a-5526-98f6-01d5c9d6c147": {
+      "before": {
+        "kind": "footprint",
+        "native_sha256": "36b715c331cf4904215e185dd7d0ce2838c06f1bb7487a60d9bfc060bc67603e",
+        "ref": "C78",
+        "at": [
+          135.0,
+          76.6
+        ],
+        "angle": 0.0
+      },
+      "after": {
+        "kind": "footprint",
+        "native_sha256": "d2d531037780131bc7ffa46b353d768305ff6674ad18ecf0bc4f7f4ad83da1ec",
+        "ref": "C78",
+        "at": [
+          132.1,
+          81.1
+        ],
+        "angle": 180.0
+      },
+      "reason": "R1 coherent front cell / interfering passive relocation"
+    },
+    "73bc08bf-f03c-54b7-bc3e-fe15d4881dae": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "21ff1b2e5dbbf0b3030662ecb29bab31a72af2098a1078506b7a57f6f2db8eda",
+        "net": "/VPROT",
+        "at": [
+          126.2,
+          73.6
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "73faebad-9921-528b-a4b9-2a492dab469c": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "7f64b849b6c38bab0cad6e17becca061b846c12238a05ab1dbb13a83ee991522",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          136.475,
+          76.6
+        ],
+        "end": [
+          136.4,
+          77.9
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "74ac24a4-fe1b-56d4-ae23-3dd298606557": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "ed5f8285ba482f6fc202a1204aa43538f7a962299dbb5b946bf3847a27f190a7",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.05,
+          82.3
+        ],
+        "end": [
+          129.05,
+          83.0
+        ],
+        "width": 0.24
+      },
+      "reason": "SW1 join"
+    },
+    "75a9e5c4-88da-5c46-8abb-6d46ff784885": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "b36e6a18a590f315e60b84e435c02ee55ee5cecdd956e15a3fb2d30e8bbc377f",
+        "net": "/VPROT",
+        "layer": "F.Cu",
+        "start": [
+          131.0,
+          76.475
+        ],
+        "end": [
+          130.2,
+          77.6
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "76326ee0-c76c-5d9e-9b89-cc64efd901cc": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "95c9b2a9055d1d5f7ea659cb8df6c8f9babb87d023c7dc418315adb2f13df010",
+        "net": "/Direct 9V negative IBB/NRAW",
+        "layer": "In1.Cu",
+        "start": [
+          104.65,
+          96.0
+        ],
+        "end": [
+          104.8,
+          96.425
+        ],
+        "width": 1.5
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "77256bb1-1601-52cd-8dda-244fbb670663": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "58742779e8cb307d1cfab1d883dc150813b70ea62a518a7b3ae29ecc1e7d7ace",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.05,
+          82.2
+        ],
+        "end": [
+          128.0,
+          82.2
+        ],
+        "width": 0.45
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "7a60e332-6ab3-5ebf-8689-177eb855bf16": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "10fdae270805812f60d9335708cbe443bf63e69aabd786ea2543f2bdc08116e8",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.05,
+          83.0
+        ],
+        "end": [
+          129.55,
+          83.0
+        ],
+        "width": 0.24
+      },
+      "reason": "SW16 join"
+    },
+    "7c74e304-86db-5316-9992-a98c4599aca7": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "2f595a4b9b6c98404a669193bdb6b5b4398aae774515ec88f296ade345713e89",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          133.525,
+          77.9
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "7fc074c8-7ccb-5de0-b61c-43f7bc281d65": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ffecd9a080e8d318a0a4e77c458d608eba0b9997c17a93e01540744384e1462e",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          134.3,
+          84.0
+        ],
+        "end": [
+          133.2,
+          84.175
+        ],
+        "width": 0.25
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "7d36e19dd3055dcd3d0bcf463a0b7ddca0e616419687aa95747d2f94ba3f3537",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          134.3,
+          83.2
+        ],
+        "end": [
+          133.2,
+          84.175
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "8140ad10-ff8c-5383-9cee-7ae353965a1f": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "baef1c23c13d568d98c40d8d2d4302c46f6963b1b97af3a309f4a331c7dec2ff",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          124.05,
+          78.8
+        ],
+        "end": [
+          126.35,
+          78.8
+        ],
+        "width": 1.2
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "8415db3c-1cc2-551a-8351-229dee11c13e": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "31090bfc3be8521dc829cba79e9fbb6eb01993a7761baa2b252e2e8341497018",
+        "net": "/GND",
+        "layer": "B.Cu",
+        "start": [
+          137.2,
+          77.9
+        ],
+        "end": [
+          136.525,
+          78.5
+        ],
+        "width": 1.0
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "848ff51f-d10f-5495-acaa-929ee4170656": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "f690e5af43adbc8f1f1def0353ad4220f4f1821bca5ecd376739f68e5683071b",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          131.0,
+          73.525
+        ],
+        "end": [
+          129.6,
+          74.3
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "87a975b2-d6c4-52ef-840e-a8f719404362": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "a3dcc25cbb69e7cb9c1cdc16deee255a6037bcecdf0d4c22d99b79a9ab2c98f9",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.4,
+          78.0
+        ],
+        "end": [
+          129.2,
+          79.2
+        ],
+        "width": 1.0
+      },
+      "reason": "SW wide local trunk"
+    },
+    "88266f81-a117-5c52-82b5-350a7cd6d4f9": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "81f7695fdf957cf4f797eed2a460b708fd9c489a018d2694f29994c405ee41a2",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.2,
+          79.2
+        ],
+        "end": [
+          129.2,
+          81.85
+        ],
+        "width": 1.0
+      },
+      "reason": "SW wide local trunk"
+    },
+    "8862364b-eed9-5069-aa5a-533c875d18c3": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "492b693e9cc9f07e5c333cfbf152c59dcb1b6f9f68dd379615a0bda8d23c0062",
+        "net": "/GND",
+        "at": [
+          130.2,
+          81.6
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "8b407c0f-b765-53e6-8563-485eeb850af6": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "eee12067bb6a1880d52f5835491f7fc7ab497c055d1399a84e7037c5fe86d7eb",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          133.575,
+          83.0
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Cout distribution barrel 2"
+    },
+    "8ba3af69-139d-5dc1-9036-8903b20e83ce": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "66ad325b787c541e063c13e2f6c31b21b71e93df9f28408b0eb8dea19a023f0d",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "B.Cu",
+        "start": [
+          133.575,
+          82.2
+        ],
+        "end": [
+          133.575,
+          78.5
+        ],
+        "width": 1.5
+      },
+      "reason": "Cout to existing remote bulk distribution"
+    },
+    "8f4375bc-e87c-5b8b-b74a-f6c9a71e3032": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "f42f27b0023b04701bc49a2f1ec71b9e56ce79694773073a6cf87e68c37b8518",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "B.Cu",
+        "start": [
+          133.0,
+          83.9
+        ],
+        "end": [
+          132.1,
+          85.15
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "90d0516e-c28b-57a2-8953-77177e5ab206": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "3f7a36991f78d33a8ea9c20397471b4c7c0a9a7a7d7f673f9c885eac7bff1a36",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "B.Cu",
+        "start": [
+          135.4,
+          78.4
+        ],
+        "end": [
+          135.4,
+          83.9
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "93bd038c-89ee-52f7-bb64-3965c497e809": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "acc8b8add8bc0997e50eeb5203c5c1d02c2d6866b8aba4db85075dbe41325d79",
+        "net": "/GND",
+        "at": [
+          129.4,
+          84.0
+        ],
+        "diameter": 0.6,
+        "drill": 0.3
+      },
+      "reason": "R4 U14 EP17 direct thermal barrels"
+    },
+    "9557838b-5bb7-5c27-a9be-872d2d81c8a5": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "e144f60e1cb893a8b39c218301d460b79a41aaaa080672b4de3c529c13c07908",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          131.65,
+          81.8
+        ],
+        "end": [
+          131.65,
+          83.3
+        ],
+        "width": 0.8
+      },
+      "reason": "local Cout wide PGND12 return"
+    },
+    "98e9f226-49cb-5b94-8b99-4359be2510eb": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "23f1059232e2372a4761096b393f836cc7ab7e10719f4599fcfdbc5415bee399",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          82.25
+        ],
+        "end": [
+          128.0,
+          80.45
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "99e9466d-93d4-5101-8830-e8ff5065022a": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "4730a8add8c5ff359869214bd54f7553f2255fb1d940d91897aba595265cba38",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          131.0,
+          73.525
+        ],
+        "end": [
+          129.6,
+          73.5
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "9addba54-0def-52be-bb80-d9e9cca17f79": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "37c50ad022568669f671d7f6de10b2b82b213d0b08589a8ff69729f7b645adc3",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          134.3,
+          84.0
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": {
+        "kind": "via",
+        "native_sha256": "558fe0ffbd06fba248e1df3ad12f02355017096db621967fb774bfb1f939d0eb",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          134.3,
+          83.2
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "9b3bdf70-1651-53c2-b3aa-f76742ee4116": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "d48fcd46b1149b9f7972c32d54217fd6d771e7d89bfc6bb2c9b57c048c7842eb",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.625,
+          81.1
+        ],
+        "end": [
+          131.65,
+          81.8
+        ],
+        "width": 0.8
+      },
+      "reason": "local Cout wide PGND12 return"
+    },
+    "9b5a66c8-48c9-521d-8b47-f60c9d0c5687": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "95965fd4175abef8b0fa3012b6fe5421c00f1d36b0e7dba3319381269ddbf656",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          83.65
+        ],
+        "end": [
+          128.0,
+          82.3
+        ],
+        "width": 0.24
+      },
+      "reason": "SW1 join"
+    },
+    "9c7f9ede-a3e6-5574-9d3e-b9f13ad62d03": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "d664a00cde9263dd7b20a23c8ba2a9a152f9af061e1c0ea78d41ffc63773db7e",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          83.0
+        ],
+        "end": [
+          129.55,
+          82.2
+        ],
+        "width": 0.24
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "9d8ab311-8b4e-59e2-9c11-029b6db914ef": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "16f0c386273e33fee18495d30bc2705cfe4e1fc0d15aa94534694dd89a3c56bf",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.05,
+          83.5
+        ],
+        "end": [
+          130.2,
+          84.0
+        ],
+        "width": 0.24
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "a1e420d6-cfda-5da3-b9c0-659e93bcc699": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "7e6f76d7c6dd309daa6abccd8aa1e3bbc6c521476eadfe7962ab682a5283c194",
+        "net": "/VPROT",
+        "at": [
+          130.2,
+          77.6
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "a2746efa-aa47-538c-bc9b-db72a59fa0e9": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "b7bac73bc63cff551d2f8be48b69533af25cec870bf7d3a809310f6a2d989e6d",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.4,
+          83.65
+        ],
+        "end": [
+          128.0,
+          83.65
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "a669f460-ef26-5418-b4e2-cfdc59bfbdb1": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "3c701a54f4c714b3f4d0100bc522213c5518fcf572279df3fc34525aff4a4517",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.4,
+          83.0
+        ],
+        "end": [
+          129.05,
+          83.0
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "a6df741d-a44f-515e-ab5d-e9ab4ae19dab": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "e3a704e0997d4a0619fd35f1664817cfef5499f97d2ba8b4a1eba83cbb6b617d",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ_SER",
+        "layer": "F.Cu",
+        "start": [
+          133.2,
+          80.875
+        ],
+        "end": [
+          133.2,
+          79.5
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "aa586f0d-7de1-5f2f-9c95-8afd9e27ed95": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "51db5f9ccd4492e86e61ab4310674be3c9754e260e3ea210b7b84471236647f9",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          140.925,
+          79.2
+        ],
+        "end": [
+          142.0,
+          79.2
+        ],
+        "width": 0.4
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "ac8531ab-1c68-59ae-be3f-da2eeca725c1": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ebdf38ae79536733c3acf10b8ca9488a73f8efe7f6eed815d5704f1b3a77ec62",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.2,
+          81.6
+        ],
+        "end": [
+          130.9,
+          81.8
+        ],
+        "width": 0.5
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "b084a2df-c509-59d1-aa9b-fa34d12be030": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "e080dc3fee2cba8b5d89c344f73866440f73013076ae3f5c22a98e30ba11ecee",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "F.Cu",
+        "start": [
+          131.2,
+          85.15
+        ],
+        "end": [
+          132.1,
+          85.15
+        ],
+        "width": 0.25
+      },
+      "reason": "FREQ pin F"
+    },
+    "b706a095-3695-539d-8558-69e5dd97b572": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "572edb5b595e03ada49c6cc59f29ea85e424b060405afbf0d2ff9b6267aa97d4",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          85.35
+        ],
+        "end": [
+          129.4,
+          84.8
+        ],
+        "width": 0.24
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "ba5a93c3-48df-54c2-a7cc-7ed3f8976957": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "e9439573872f22e9e14a129aac70f74fd0c2690e859d5e702df08ed889cdd3a3",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "F.Cu",
+        "start": [
+          132.0,
+          82.525
+        ],
+        "end": [
+          133.2,
+          82.525
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "bb0e9d88-b94a-5b79-905d-e11e38ba7fad": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "196415d42f31b204b32506ca4666fed0258e8ab25df7585a7f542a75dea9033d",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          133.575,
+          81.1
+        ],
+        "end": [
+          133.575,
+          83.0
+        ],
+        "width": 0.8
+      },
+      "reason": "Cout output F branch 2"
+    },
+    "bd109cb3-fb30-597a-99b7-dd3855914cd6": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "9b5f13cc6efe74becc754dbd5eff37c956e24d2a997144e7316b90e57ad5d6ae",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.2,
+          81.85
+        ],
+        "end": [
+          129.2,
+          79.2
+        ],
+        "width": 0.45
+      },
+      "reason": "SW15 escape"
+    },
+    "bdf13f78-0148-546d-b029-20ba9e41b28d": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "d4082a7c801ddb2dae29b18b60efb044e5e8a39bc6d2bbddc9ed850a0dc1784a",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          127.4,
+          78.0
+        ],
+        "end": [
+          129.4,
+          78.0
+        ],
+        "width": 1.2
+      },
+      "reason": "SW L5 to D29"
+    },
+    "be397d70-c6e6-5825-aeaa-67824e529c1c": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "76541af4c76f4a6585cd02479cc61e501b8c9bd8b74ee469dc511d1c44fedd3e",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          85.8
+        ],
+        "end": [
+          129.55,
+          85.0
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "bee41874-8aef-558e-b2ef-ec86712b863d": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "f1d29c2dc8d30b79144e71233cec02a9d395347682dd9502233edaf3341e83fa",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          83.0
+        ],
+        "end": [
+          129.55,
+          82.2
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "c09b3641-ecc2-524e-bdd2-134d696eb966": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "dfd60832337c32f91cf521f7d5d7af5e8c07215864eef2f5ab8eee23b68da1df",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          129.8,
+          84.4
+        ],
+        "end": [
+          130.05,
+          84.15
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "c0be8d32-ceb1-55b6-957c-127c50309dae": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "9b4a428544e937deee20b7f1076ea612a342133f7fb4b9827c7fc62c2750891b",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          83.2
+        ],
+        "end": [
+          128.0,
+          82.25
+        ],
+        "width": 0.5
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "c1d3d37f-6aaf-59f8-a55e-db3b0d38487e": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "caacc2776cedd455144f0a7753c1271feebc149b4f21338503a8cb737bf82278",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          126.6,
+          76.7
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "R1 remove obsolete diode output via group"
+    },
+    "c2d9d066-a372-5672-b018-ce55b7680bd5": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "6cd9cc6bb2dcd3d96f5bd2c0d1cd6c23b41458e44a009964e92261cfd7f1e7e3",
+        "net": "/VPROT",
+        "layer": "In2.Cu",
+        "start": [
+          127.3,
+          80.5
+        ],
+        "end": [
+          130.2,
+          77.6
+        ],
+        "width": 0.5
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "25249319fb05f56f187ab9403f77a38e324459f3b9947b328662ae601c051bfc",
+        "net": "/VPROT",
+        "layer": "In2.Cu",
+        "start": [
+          127.3,
+          80.5
+        ],
+        "end": [
+          129.3,
+          78.5
+        ],
+        "width": 0.5
+      },
+      "reason": "R1 C84 relocation: terminate C88 feed on unchanged VPROT trunk"
+    },
+    "c367cdcc-66c5-5ed2-978f-266ae33822cb": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "be31b5f9802d2c421e6e3c975161fc81d26bf224148d3f135b94f1f94adef26d",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "at": [
+          106.8625,
+          95.15
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": {
+        "kind": "via",
+        "native_sha256": "922a901b37e913d5e98d81a8b131f606ca38f11f5284023dc5b0057b37c60065",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "at": [
+          105.95,
+          95.15
+        ],
+        "diameter": 0.6,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "c5b589be-7ffd-51e1-873d-aeaaab150f54": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "e7e461af74ab460f326cd8c2190ce2d47190e92463eeb53ad668839a5634227a",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          85.8
+        ],
+        "end": [
+          129.55,
+          85.35
+        ],
+        "width": 0.24
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "c6794d94-fb2c-50ef-86eb-a25657363fb7": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "470bb46ed3bb01401bcc33944c6d494ba2a1fcbafebbbf46a24a529a598edd98",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          133.575,
+          81.1
+        ],
+        "end": [
+          134.375,
+          82.2
+        ],
+        "width": 0.8
+      },
+      "reason": "Cout output F branch 1"
+    },
+    "cacb4470-8959-59aa-b8bb-44951a14951a": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "533b3cd46c41f9a91a67a1279c00864778285fdf8f2302aa9e63ccf4517261cb",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          126.6,
+          75.1
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "R1 remove obsolete diode output via group"
+    },
+    "cdf9d693-ad64-52fe-968f-e6f6b52eeda6": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ce636bb6cc09a20be53c09e3f666f4994e4c8b387dab0bc3b1845a9db60f04d8",
+        "net": "/VPROT",
+        "layer": "In2.Cu",
+        "start": [
+          131.0,
+          77.6
+        ],
+        "end": [
+          131.0,
+          79.0
+        ],
+        "width": 1.0
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "cedeef23-c280-5c89-bbb8-5741b434f2ef": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "274cf9e50066f1868240ccb4451816fee475ad8549a8698fe531ce6ed5caf0d2",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.2,
+          79.2
+        ],
+        "end": [
+          129.4,
+          78.0
+        ],
+        "width": 0.45
+      },
+      "reason": "SW15 escape"
+    },
+    "cfd749e1-1786-5f15-9e96-8eb2b85c1e6c": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "9c770743cd3313018c7eb4c088034d05d35e5c9e43e2c976ca27f350f2b106bc",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          126.6,
+          78.8
+        ],
+        "end": [
+          127.4,
+          78.0
+        ],
+        "width": 1.2
+      },
+      "reason": "SW L5 to D29"
+    },
+    "d2a9518f-01aa-5c03-862f-163c84b48afd": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "8f6aa78b95b178a9fa295ab9ba6e513a42c669127ee46e112a1dd51f468fc782",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          128.0,
+          76.45
+        ],
+        "end": [
+          126.6,
+          75.9
+        ],
+        "width": 0.9
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "d5856dcc-63b3-5364-835b-4bc5dbd810d5": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "ebfbd82ae3ff6f63f1e88522febc4b0be8ff99764435868dee08c0f0bdfa740f",
+        "net": "/P5",
+        "layer": "B.Cu",
+        "start": [
+          99.0,
+          88.8
+        ],
+        "end": [
+          105.0,
+          95.6
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "d6a889a3-938e-5854-9bf0-a60b18b10c6f": {
+      "before": {
+        "kind": "footprint",
+        "native_sha256": "ae2644aa2712ad5f333ec7161b44ca0484031417cd4f0aaf91706bfa56a54b1f",
+        "ref": "R90",
+        "at": [
+          135.7,
+          79.5
+        ],
+        "angle": 0.0
+      },
+      "after": {
+        "kind": "footprint",
+        "native_sha256": "ac7405f77b2c5b15fd14eaf4e9c295c8a65b7511bd6915fc958db5b03976ac63",
+        "ref": "R90",
+        "at": [
+          140.1,
+          79.2
+        ],
+        "angle": 0.0
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "d6f98cf1-e0e7-5fc9-a1c0-347b7350afca": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "91c7ac5a44b11a979b8fd2c87d593c71b9895833794ad4f13c9cf945847f1abe",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.55,
+          83.0
+        ],
+        "end": [
+          130.55,
+          83.8
+        ],
+        "width": 0.3
+      },
+      "reason": "PGND13 to EP same layer"
+    },
+    "dcbd87d2-195f-5358-b9c4-02afb71034e7": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ee2856b014e0fc209d4cdeb42ec32a89b40b9ec652341e6f304709e0319d8215",
+        "net": "/Direct 9V negative IBB/NINV_EN",
+        "layer": "F.Cu",
+        "start": [
+          133.0875,
+          97.1
+        ],
+        "end": [
+          133.6,
+          97.1
+        ],
+        "width": 0.3
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "02f32a58b8ffa3382a6b0daf11ca6d34a2c2027eaf55949ba000ee48aeab5901",
+        "net": "/Direct 9V negative IBB/NINV_EN",
+        "layer": "F.Cu",
+        "start": [
+          133.0875,
+          97.1
+        ],
+        "end": [
+          131.95,
+          96.64
+        ],
+        "width": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "decb0384-90f0-5410-854c-6c78f049fa56": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "c43f38825c5a801a619795cacb5e0454e6cc43a8d709c7f719e35c580733c3fd",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "In2.Cu",
+        "start": [
+          133.575,
+          82.2
+        ],
+        "end": [
+          134.3,
+          82.925
+        ],
+        "width": 0.25
+      },
+      "reason": "R86 quiet Cout Kelvin In2"
+    },
+    "dff25a0b-13d8-54f9-a0ae-df6fb67bd5d8": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "ab870482773084a311bd6eecc2010510844df286794fb3332ae513898453c964",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          131.65,
+          83.3
+        ],
+        "end": [
+          131.2,
+          83.65
+        ],
+        "width": 0.8
+      },
+      "reason": "local Cout wide PGND12 return"
+    },
+    "e0f3855a-027b-5bb2-b917-82c54f0cacf3": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "f320bda229c779a73b702e64c602bfcb9d9b1c9fc19c275385d047a8f6bbcdbf",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          134.375,
+          82.2
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "reason": "Cout distribution barrel 1"
+    },
+    "e2f4ce9d-3c13-58f4-888d-a90e304c1a31": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "91dc30487348a7349eea782b0e33e5f92cb9f3983df7b657b56ab787a6b871f7",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          136.525,
+          79.5
+        ],
+        "end": [
+          136.525,
+          78.5
+        ],
+        "width": 0.4
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "e6a13c39-37f4-5e97-9ef9-53bdbaf204ae": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "a3fc4a183fc36fe93063279e7651e909f4eb60baa5e1afff09882a3a30d022fc",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          129.55,
+          82.2
+        ],
+        "end": [
+          129.2,
+          81.85
+        ],
+        "width": 0.45
+      },
+      "reason": "SW15 escape"
+    },
+    "e7250a0b-482c-5742-85ba-4949cfe411a6": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "9c0aa3d91801d66101dabb42b96e0ea7d0754a4f38be15716f90ed7a98a2e36b",
+        "net": "/VPROT",
+        "layer": "F.Cu",
+        "start": [
+          127.525,
+          73.8
+        ],
+        "end": [
+          126.2,
+          74.4
+        ],
+        "width": 0.8
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "e879cdb6-5118-5d79-b142-1f2108ecd77b": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "af85d0f9e88d5733b494fb35b24897943edeb29652f7986cd0fda5b17a35fb9f",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "layer": "F.Cu",
+        "start": [
+          106.8625,
+          95.15
+        ],
+        "end": [
+          105.9,
+          95.15
+        ],
+        "width": 0.5
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "7c3e5054eb139b80c5ffdab49c2aa2f7b07009db335226dae6abc6bd281f41fe",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "layer": "F.Cu",
+        "start": [
+          106.8625,
+          95.15
+        ],
+        "end": [
+          105.95,
+          95.15
+        ],
+        "width": 0.5
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "e952c9a8-3744-504c-8c74-78aee78c5c29": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "ab51b53339db602714c7b60de200b7f074904c10cd646ab5f8e92ca9b7f88032",
+        "net": "/GND",
+        "layer": "B.Cu",
+        "start": [
+          136.525,
+          78.5
+        ],
+        "end": [
+          131.65,
+          81.8
+        ],
+        "width": 1.5
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "ef97ec0e-d335-5cef-a91e-bed74e1d9f16": {
+      "before": null,
+      "after": {
+        "kind": "via",
+        "native_sha256": "0a1d1c820431a575842421802aa0da4d0cc580905fd45daa3459553e57407c84",
+        "net": "/GND",
+        "at": [
+          130.2,
+          84.8
+        ],
+        "diameter": 0.6,
+        "drill": 0.3
+      },
+      "reason": "R4 U14 EP17 direct thermal barrels"
+    },
+    "f07ba832-e5cf-5d2c-968d-492ad7afeb33": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "9e97ba85153139a4fdb302f77b1e2dc3877ed5f904624f7c0d8e46cd2fd29eda",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "layer": "F.Cu",
+        "start": [
+          105.9,
+          95.15
+        ],
+        "end": [
+          103.0,
+          95.15
+        ],
+        "width": 0.85
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "6541cd7bd537f43e178d08167c08232f7867e9a3a1c0dac3c87b93a9cb61e413",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "layer": "F.Cu",
+        "start": [
+          105.95,
+          95.15
+        ],
+        "end": [
+          103.0,
+          95.15
+        ],
+        "width": 0.85
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "f1a0a304-09f5-5165-af93-17d6e32daf20": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "29e8390f7c8cbc9e81fb65908fb8a1fa93a3b515d900e45ddc011a6a7c817733",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          124.05,
+          78.8
+        ],
+        "end": [
+          126.6,
+          78.8
+        ],
+        "width": 1.2
+      },
+      "reason": "SW L5 to D29"
+    },
+    "f2428412-cea1-5c5c-a393-c307df323f7b": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "4241dfe9bef262c1d5a7aee859d891c9db5b80beae31bdff27de2e4971eb222f",
+        "net": "/Direct 9V positive boost/PBOOST_SW",
+        "layer": "F.Cu",
+        "start": [
+          128.4,
+          83.65
+        ],
+        "end": [
+          128.4,
+          83.0
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1 replace inspected SW copper, keep pad/net topology"
+    },
+    "f407ad85-c271-5dfd-8e7a-aa9bb861c1a9": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "72507a897ecc5cdd792d45a9944c0a534ace2080a6bdcf99a658b207625a599b",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "B.Cu",
+        "start": [
+          133.575,
+          78.5
+        ],
+        "end": [
+          132.5,
+          75.8
+        ],
+        "width": 1.5
+      },
+      "reason": "Cout to existing remote bulk distribution"
+    },
+    "f6f1636a-aca1-5ed5-9ac7-1ee6da90807e": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "2d98508ddaa294ad75d33b39480036c83216d08a7e41e794d2f85b66248914a5",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.05,
+          83.0
+        ],
+        "end": [
+          130.05,
+          83.5
+        ],
+        "width": 0.24
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "f73312db-6e5d-51ef-acb3-ca0cde985476": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "b6ad1ecf838ed7f2290838d3b59b797976b79a9b0ac93f7e8bb469f8ac6d608f",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          131.2,
+          84.15
+        ],
+        "end": [
+          130.2,
+          84.0
+        ],
+        "width": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "f73a597f-5bc4-5327-aefb-ccce38747479": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "12c2bcfde7208c9c0810b4e1099c6d90b5bfd966cfae5755486777c62106f3a5",
+        "net": "/Direct 9V negative IBB/NINV_EN",
+        "at": [
+          133.6,
+          97.1
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": {
+        "kind": "via",
+        "native_sha256": "3e4df2384c4f3feef37e08d13d6c441441e69064863ca675e1166fc674b64983",
+        "net": "/Direct 9V negative IBB/NINV_EN",
+        "at": [
+          131.95,
+          96.64
+        ],
+        "diameter": 0.6,
+        "drill": 0.3
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "f7439795-f13a-5be7-9f59-7fc86cc60c8c": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "99f9574686c3816d887bc634a4e3eb4ee6b615695bdbe43627d5ddee4cea90da",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "F.Cu",
+        "start": [
+          132.5,
+          75.8
+        ],
+        "end": [
+          133.525,
+          75.8
+        ],
+        "width": 0.8
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "f78772b3-1bd0-579a-9566-924ca5d9ee7a": {
+      "before": {
+        "kind": "via",
+        "native_sha256": "7e72d19a639df95cc3ac6ab4f7b4c93a647d0a56a17673b0c9aeebac5ad7ec8b",
+        "net": "/Direct 9V positive boost/PRAW",
+        "at": [
+          126.6,
+          75.9
+        ],
+        "diameter": 0.65,
+        "drill": 0.3
+      },
+      "after": null,
+      "reason": "R1 remove obsolete diode output via group"
+    },
+    "f861a7d5-eb0c-5156-9f56-36a257f266a7": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "0c5690fa5b611843a8b7a416cc8230555662bfb2cfe43e8c466d05541a4b58c4",
+        "net": "/GND",
+        "layer": "F.Cu",
+        "start": [
+          130.05,
+          84.15
+        ],
+        "end": [
+          130.05,
+          83.0
+        ],
+        "width": 0.24
+      },
+      "after": null,
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "f8c13b1a-4117-5d49-bfe1-6ad335212842": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "49304ba62b1f3393a30c2d5fae53d3a37e1399240e4dad15e0203be0d8644b54",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "layer": "B.Cu",
+        "start": [
+          107.6,
+          94.45
+        ],
+        "end": [
+          106.8625,
+          95.15
+        ],
+        "width": 0.4
+      },
+      "after": {
+        "kind": "track",
+        "native_sha256": "3b3c76dc4343dd539f3c76b330964e200bc22e6e8948815d388ec17ae7fa5d0a",
+        "net": "/Independent +5V buck/FIVE_SW",
+        "layer": "B.Cu",
+        "start": [
+          107.6,
+          94.45
+        ],
+        "end": [
+          105.95,
+          95.15
+        ],
+        "width": 0.4
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    },
+    "fcc10d1c-bca9-5365-90ad-4a1f0896e15b": {
+      "before": {
+        "kind": "track",
+        "native_sha256": "db8783927f4d520ddf882daf82a32107f8433140109fdc76ff312a061202fa92",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "In1.Cu",
+        "start": [
+          134.3,
+          78.675
+        ],
+        "end": [
+          134.3,
+          84.0
+        ],
+        "width": 0.25
+      },
+      "after": null,
+      "reason": "R1/R2 remove replaced boost cell / sense copper by exact UUID"
+    },
+    "fe80c1d8-5ca2-56d5-b729-1f6518d113eb": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "ad46fc56a9c6983e6f69a5052bf8a7f8346c73703ffea079d0b8fed6f140989b",
+        "net": "/VPROT",
+        "layer": "In2.Cu",
+        "start": [
+          126.2,
+          73.6
+        ],
+        "end": [
+          126.2,
+          74.4
+        ],
+        "width": 1.0
+      },
+      "reason": "Physical correction of native check2 findings; no rule/exclusion change"
+    },
+    "fed7f9de-ea2c-509c-8376-1bd8367edefd": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "cf977ead95f2950c4903d436d7100cd1224e3f9ea1e178751f22cc6de191b91d",
+        "net": "/Direct 9V positive boost/PRAW",
+        "layer": "B.Cu",
+        "start": [
+          133.575,
+          82.2
+        ],
+        "end": [
+          134.375,
+          82.2
+        ],
+        "width": 1.0
+      },
+      "reason": "Cout branch B crossbar"
+    },
+    "ffd1088a-b0a2-5d93-889d-83519dd59106": {
+      "before": null,
+      "after": {
+        "kind": "track",
+        "native_sha256": "9e627ab1823919f1864e386d54a544c1ea794200598ca055d5b65bacb602540c",
+        "net": "/Direct 9V positive boost/PBOOST_FREQ",
+        "layer": "B.Cu",
+        "start": [
+          135.4,
+          83.9
+        ],
+        "end": [
+          133.0,
+          83.9
+        ],
+        "width": 0.25
+      },
+      "reason": "Physical correction of native check1 findings; no rule/exclusion change"
+    }
+  }
+}
