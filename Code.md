@@ -1,39 +1,27 @@
-# Current checkpoint override
-
-The exact 037 basic-passive correction is accepted in canonical `hardware/`: exact
-R4/R8/R36 series networks with R77-R82, C10 0402 4.5p, and D10 DNP (footprint/pads
-retained, not fitted or purchased). D10 is not a manual purchased part.
-Source/native ERC/DRC/warnings/exclusions/opens/parity are zero; production/ldo-r1
-is re-exported from this frozen source, including the JLC assembly BOM/CPL.
-
 # Big Modular instructions
 
-Read AGENTS.md and README.md. Work only in this isolated workspace. No advisor,
+Read `AGENTS.md` and `README.md`. Work only in this isolated workspace. No advisor,
 delegation, commits, merges, pushes, main writes, orders/uploads or GUI interaction.
 Supervisor reviews and merges verified work. Prior workspace028 and Bread Modular
 are read-only. No external project changes.
 
-## Current authorized circuit/release
+## Repository layout
 
-Preserve9V PD/TPS26600 protection, autonomous retry, both TPS54302 bucks and finalP5
-buck-only circuit, fixed connectors/UI/panel/outline/stack. TPS65131 raw rails are
-+13.537080/-13.928806V, followed by exact TPS7A4700RGWR/TPS7A3301RGWR. The 043
-local-cap closure is implemented (10.664uF VPROT screens, 27.631uF local outputs,
-39.164kHz estimated P5 crossover) but bench/thermal/startup qualification is not.
-LDO-R1 capacitor fix uses4/6/4/3 parallel exactC12891 banks. All components are
-front-side (single-side assembly); no B.Cu electrical footprints or B.Paste
-component apertures, while B.Cu routing/mask/drill layers remain. C67 is front.
-Keep the narrow side/height/bracket/access safety contract.
-Never reuse retiredD11/D12. No simultaneous800mA guarantee or bench qualification.
-Bare-PCB exports are explicitly authorized under production/ldo-r1; HRO-R1 is
-historical, not current. No assembly/order/allocation approval is implied.
+This is a multi-module repository. Each module lives under `modules/<name>/` and
+owns its KiCad sources, docs, module tooling, tests and upload-ready `jlcpcb/` outputs. `opt/` is shared common tooling and stays at the
+repository root — do not duplicate it inside modules.
+
+Module-specific circuit/release contracts are in `modules/<name>/Code.md` and
+`modules/<name>/AGENTS.md`. For the current module (`usb-power`) read
+`modules/usb-power/Code.md` before any hardware work.
 
 ## Required workflow
 
-Read canonical opt/kicad-tools skills and relevant CLI help; common tools first.
-Use tools/kicad-project.json for the carrier and hierarchical root. New candidates
-and raw reports go in research/; accepted outputs in production/. Reuse
-release_hro.py/native KiCad/common staging/CAM pipeline, not a new exporter/router.
+Read canonical `opt/kicad-tools` skills and relevant CLI help; common tools first.
+Use `modules/usb-power/tools/kicad-project.json` for the carrier and hierarchical
+root. New candidates and raw reports go in the module's `research/`; accepted
+fabrication outputs in the module's `jlcpcb/`. Reuse `tools/release_hro.py`/native
+KiCad/common staging/CAM pipeline, not a new exporter/router.
 Keep generators/BOM/native fields coherent; native schematic presentation owns
 placement/wires and accepted native PCB owns routing. Explicit candidate edits only.
 
@@ -43,3 +31,20 @@ fake power flags or weakened assertions. Update accepted routing baselines only 
 independently inspected intentional changes; historical release SHA integrity remains.
 Typical manufacturer data plus prototype screening is not guaranteed performance.
 Source/sourcing and Basic/Economy gates remain distinct; no stock claims without evidence.
+
+## Fabrication outputs
+
+FAB files belong in `modules/<name>/jlcpcb/` and are generated only through the
+common KiCad/JLCPCB tools. For the current board layout the working invocation is:
+
+```sh
+python3 opt/kicad-tools/jlcpcb/export.py modules/usb-power/hardware \
+  --board usb-power.kicad_pcb --include-through-hole --require-part-numbers \
+  -o modules/usb-power/jlcpcb/usb-power --overwrite
+python3 opt/kicad-tools/jlcpcb/export.py modules/usb-power/hardware \
+  --board usb-power-panel.kicad_pcb --pcb-only \
+  -o modules/usb-power/jlcpcb/usb-power-panel --overwrite
+```
+
+See `modules/usb-power/jlcpcb/README.md` for the mirror/verification steps.
+`jlcpcb/` is the upload set; do not hand-edit generated files.

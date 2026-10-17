@@ -6,21 +6,22 @@ Use system KiCad CLI/pcbnew and a local venv with `tools/cam-requirements.txt`.
 The workspace runtime is `research/ldo-029/cam-venv/bin/python` (system-site-packages).
 No advisor, commit/merge/push, order or vendor upload. Supervisor merges.
 
-Native hierarchy: `big_modular.kicad_sch` -> `01_input_protection.kicad_sch`,
+Native hierarchy: `usb-power.kicad_sch` -> `01_input_protection.kicad_sch`,
 `02_hardgate.kicad_sch`, `03_bucks.kicad_sch`, `04_bipolar.kicad_sch`,
 `05_quiet_rails.kicad_sch`, `07_output_rails.kicad_sch` (seven PDF pages).
 
-All output/report directories below must be NEW:
+Run from this module directory (`modules/usb-power`); common tools stay at the
+repository root under `opt/`. All output/report directories below must be NEW:
 
 ```sh
-python3 -B opt/kicad-tools/kicad_tools.py doctor --config tools/kicad-project.json
+python3 -B ../../opt/kicad-tools/kicad_tools.py doctor --config tools/kicad-project.json
 python3 -B tools/build_project.py --schematic-only --output research/rebuilt-source
 python3 -B tools/ldo_budget.py
-python3 -B opt/kicad-tools/kicad_tools.py check --config tools/kicad-project.json --reports research/fresh-native
+python3 -B ../../opt/kicad-tools/kicad_tools.py check --config tools/kicad-project.json --reports research/fresh-native
 /usr/bin/python3 -B tools/verify_ldo_source.py --reports research/fresh-native --output research/source-parity.json
 /usr/bin/python3 -B tools/verify_project.py --netlist research/fresh-native/netlist.xml --output research/project.json
-research/ldo-029/cam-venv/bin/python -B -m unittest discover -s tests -v
-research/ldo-029/cam-venv/bin/python -B tools/release_hro.py --output research/reproduced-release --reports research/reproduced-native
+python3 -B -m unittest discover -s tests -v
+python3 -B tools/release_hro.py --output research/reproduced-release --reports research/reproduced-native
 ```
 
 Native checks retain ALL severity categories, opens and schematic parity. Independent

@@ -21,9 +21,8 @@ bench, thermal, startup or supplier-order qualification.
   the 0.8 V dropout/accuracy condition FAILS. No full-temperature 1 A rail guarantee.
 - The 10 uF input and <40 kHz crossover figures are application recommendations,
   not absolute IC guarantees. Typical screens and bench/loop evidence remain pending.
-- production/ldo-r1 is regenerated from the 043 source, with fresh bare-PCB CAM,
-  assembly BOM/CPL and two-pass reproducibility; historical production/hro-r1 is
-  byte-identical and untouched.
+- The 043 source is exported to `jlcpcb/` as bare-PCB Gerbers plus assembly
+  BOM/CPL; the old `production/` release archive was retired.
 - Bench limits: capacitance lot/AC/bias/temp/aging, loop stability/input ringing,
   noise/PSRR, thermal/current, startup/reverse/shutdown, physical assembly/harness.
   No simultaneous 800 mA guarantee.

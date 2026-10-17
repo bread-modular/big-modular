@@ -1,32 +1,37 @@
-# Big Modular — LDO-R1 prototype
+# Big Modular
 
-**Canonical PCB integration complete; capacitor-closure 043 current.**
-Current source: 107 electrical+4 mechanical footprints,585 tracks,207 ordinary 0.300 mm plated through vias,
-8 zones; unchanged passive panel and fixed USB/retry/redLED/output interfaces.
+A collection of Eurorack modules built with shared KiCad tooling.
 
+## Modules
+
+| Module | Description | Release |
+| --- | --- | --- |
+| [`usb-power`](modules/usb-power/) | USB-C PD input → protected 9V, dual TPS54302 bucks, TPS65131 raw ±13.5V, TPS7A4700/TPS7A3301 quiet ±12V, +5V | LDO-R1 (`jlcpcb/`) |
+
+Each module is self-contained under `modules/<name>/`:
+
+```text
+modules/usb-power/
+  hardware/     KiCad project (usb-power.kicad_{pro,sch,pcb}, panel, local libs)
+  docs/         design, fabrication and evidence notes
+  tools/        module generators/checkers
+  tests/        module regression tests
+  jlcpcb/       upload-ready Gerber/BOM/CPL files
 ```
-9V PD -> TPS26600 -> TPS54302 MID -> TPS65131 raw+13.537/-13.929V
-                                        -> TPS7A4700/TPS7A3301 -> quiet +/-12V
-                 -> independent TPS54302 -> final+5V (no LDO)
+
+## Common tooling
+
+`opt/` holds shared, module-independent tooling and must not be copied into modules:
+
+- `opt/kicad-tools/` — native KiCad checks, PCB/schematic edits, JLCPCB export/assembly
+- `opt/kicad-routing/` — optional router facade
+
+Read `opt/kicad-tools/skills/kicad-workflow/SKILL.md` and
+`opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md` before KiCad or sourcing work.
+
+## Quick check
+
+```sh
+python3 -B opt/kicad-tools/kicad_tools.py doctor --config modules/usb-power/tools/kicad-project.json
+cd modules/usb-power && python3 -B -m unittest discover -s tests -v
 ```
-
-- [Schematic PDF](docs/schematic.pdf) · [layout/review images](docs/ldo-review/)
-- [Current release manifest](production/ldo-r1/manifest.json) · [assembly BOM/CPL](production/ldo-r1/assembly/) · [fabrication requirements](docs/fabrication.md)
-- [Electrical/capacitor limits](docs/ldo-revision.md) · [build/check commands](docs/build.md)
-- [Assembly geometry](docs/assembly-geometry.json) · [mechanical interfaces](docs/mechanics.md)
-- LDO capacitor screen: IN+/OUT+/IN-/OUT- =12.359/23.990/12.359/11.400uF at
-  15/12.4/15/12.9V; typical bias with tolerance/temp/aging allowances, NOT
-  measured/guaranteed minima. The implemented 043 local plan adds 2x22u per VPROT
-  buck (10.664uF screen), 3x22u local MID and P5 banks (27.631uF; 39.164kHz
-  estimated crossover); bench/loop evidence remains pending.
-- All components front-side (single-side assembly); C63-C67 on F.Cu. Bare-PCB fabrication
-  plus a separate JLC assembly BOM/CPL; no assembly qualification, order/allocation approval,
-  verified noise/PSRR/thermal/current or reverse/shutdown performance.
-- Historical production/hro-r1 is STALE for this circuit and untouched.
-  Supervisor reviews/merges; no assistant commit/merge/push or vendor upload.
-
-Current source/native checkpoint: [Basic passives + D10 DNP](docs/basic-swaps-checkpoint.md).
-D10 is DNP: footprint/pads retained, not fitted or purchased; R32 remains fitted.
-Production/ldo-r1 is regenerated from the current 043 frozen source, including a
-fresh bare-PCB CAM two-pass export and a separate JLC assembly BOM/CPL. It is not a
-qualified, ordered or supplier-approved build.
