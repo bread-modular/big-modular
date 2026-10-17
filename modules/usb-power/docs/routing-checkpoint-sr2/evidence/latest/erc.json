@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-18T00:14:39",
+    "ignored_checks": [],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972",
+            "violations": []
+        },
+        {
+            "path": "/USB PD input/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1",
+            "violations": []
+        },
+        {
+            "path": "/Autonomous hardware window and retry/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56",
+            "violations": []
+        },
+        {
+            "path": "/Independent +5V buck/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/8e531d32-7c80-5585-be67-8ff5a9d7cb0b",
+            "violations": []
+        },
+        {
+            "path": "/Direct 9V negative IBB/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/cc4406b2-eaf9-5e1a-b3b1-3478956813b3",
+            "violations": []
+        },
+        {
+            "path": "/Quiet bipolar post-regulators/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/b4661736-5d66-5f3b-97a1-9dc3e47c41c6",
+            "violations": []
+        },
+        {
+            "path": "/Board output and power LED/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4",
+            "violations": []
+        },
+        {
+            "path": "/Direct 9V positive boost/",
+            "uuid_path": "/d567704c-57ad-5df1-b183-cadb01fd8972/8d1a853d-a749-5780-a716-29b1b49ed8d3",
+            "violations": []
+        }
+    ],
+    "source": "usb-power.kicad_sch"
+}

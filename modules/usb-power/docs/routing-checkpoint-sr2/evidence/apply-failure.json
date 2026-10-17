@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "source_unchanged": true,
+  "candidate": "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005",
+  "plan_sha256": "44c065de85564da4a29005a4e786ccdcdf030026e08ba22d9e4305b273e50cbe",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/baseline/netlist.xml",
+        "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/inputs/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/stale-copper-004/project/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--units",
+        "mm",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/baseline/erc.json",
+        "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/inputs/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/stale-copper-004/project/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/baseline/erc.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--units",
+        "mm",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/baseline/drc.json",
+        "--refill-zones",
+        "--all-track-errors",
+        "--schematic-parity",
+        "/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/inputs/home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/stale-copper-004/project/usb-power.kicad_pcb"
+      ],
+      "returncode": 5,
+      "stdout": "Found 281 violations\nFound 109 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/072/modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/baseline/drc.json\n",
+      "stderr": ""
+    }
+  ],
+  "errors": [
+    "Native worker failed: Save/reload net table changed; stderr: ./kicad/include/properties/property.h(607): assert \"m_choices.GetCount() > 0\" failed in PROPERTY_ENUM(): No enum choices defined\n./kicad/include/properties/property.h(607): assert \"m_choices.GetCount() > 0\" failed in PROPERTY_ENUM(): No enum choices defined\n./kicad/include/properties/property.h(607): assert \"m_choices.GetCount() > 0\" failed in PROPERTY_ENUM(): No enum choices defined\n00:11:03: Debug: Adding duplicate image handler for 'PNG file'\n00:11:03: Debug: Adding duplicate image handler for 'JPEG file'\n00:11:03: Debug: Adding duplicate image handler for 'TIFF file'\n00:11:03: Debug: Adding duplicate image handler for 'GIF file'\n00:11:03: Debug: Adding duplicate image handler for 'PNM file'\n00:11:03: Debug: Adding duplicate image handler for 'PCX file'\n00:11:03: Debug: Adding duplicate image handler for 'IFF file'\n00:11:03: Debug: Adding duplicate image handler for 'Windows icon file'\n00:11:03: Debug: Adding duplicate image handler for 'Windows cursor file'\n00:11:03: Debug: Adding duplicate image handler for 'Windows animated cursor file'\n00:11:03: Debug: Adding duplicate image handler for 'TGA file'\n00:11:03: Debug: Adding duplicate image handler for 'XPM file'\nTraceback (most recent call last):\n  File \"/home/azero/.okbrain/workspaces/big-modular/072/opt/kicad-tools/automation/_worker.py\", line 279, in <module>\n    print(json.dumps({'ok':True,'result':main()},allow_nan=False))\n                                         ~~~~^^\n  File \"/home/azero/.okbrain/workspaces/big-modular/072/opt/kicad-tools/automation/_worker.py\", line 273, in main\n    require(sorted((str(n.GetNetname()),n.GetNetCode()) for name,n in reload.GetNetsByName().items())==changes['nets'],'Save/reload net table changed')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/azero/.okbrain/workspaces/big-modular/072/opt/kicad-tools/automation/_worker.py\", line 22, in require\n    raise Error(message)\n_toolkit_jlc_export.ExportError: Save/reload net table changed\n; returncode: 2"
+  ],
+  "accepted": false,
+  "provenance": {
+    "source": "modules/usb-power/research/sr2-pcb-rework-072/boost-apply-005/result.json",
+    "source_sha256": "865bb94ea49d16f98108d3903e5c114094731b76d1d396529632a0f412aa2afb",
+    "omitted_duplicate_sections": [
+      "baseline",
+      "path_rebindings"
+    ],
+    "complete_rebinding_evidence": "evidence/independent-reload-audit.json",
+    "note": "Existing receipt excerpt only; no apply rerun or acceptance."
+  }
+}

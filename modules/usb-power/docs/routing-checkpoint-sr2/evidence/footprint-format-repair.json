@@ -1,0 +1,1917 @@
+{
+  "schema_version": 1,
+  "status": "FORMAT_REPAIRED_RESIDUAL_COPPER_NET_GATE",
+  "source": "modules/usb-power/research/sr2-pcb-rework-072/footprint-sync-002/project/usb-power.kicad_pcb",
+  "source_sha256": "9d7a332d5acb06026b4c3b758edd2aca4b461d8fca42aa5d47bfd15235a1e947",
+  "candidate": "modules/usb-power/research/sr2-pcb-rework-072/footprint-format-002/project/usb-power.kicad_pcb",
+  "candidate_sha256": "379c48fb32c7ed7a0ad6afd8c0af12ad0fce708e39d56f0443995d5e5703f179",
+  "changed_footprints": [
+    {
+      "footprint_uuid": "10829fcb-ecde-58dd-bfa0-7fba04ed61ca",
+      "ref": "C35",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "14d3d38a-8b4a-5646-87eb-c13e34de0113",
+      "ref": "U3",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "1f4c3122-7734-5050-b37e-782bc862fedf",
+      "ref": "L4",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "60b93173-377f-53a1-a1fa-92207723d91f",
+      "ref": "L1",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "617467fc-4865-5412-8682-967f08f02b07",
+      "ref": "C38",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "6298609f-e4ff-5f64-ae02-ac62b5fde71c",
+      "ref": "C7",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "8ca141ce-a539-4a3f-8be9-57ae8636a135",
+      "ref": "C62",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "c7de2388-77a0-5590-becf-7a3775838ea6",
+      "ref": "C9",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "cd4c795f-10d8-5d6c-96fb-ecaa1bee1ae9",
+      "ref": "C37",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "f1385fad-2400-53aa-ac95-69392498fee7",
+      "ref": "C19",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "f4fa504f-c12b-5973-bbb8-5a742874122d",
+      "ref": "C6",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "88cd91bd-898a-52d1-9229-66584b659c73",
+      "ref": "R84",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "a898bd5b-a9e7-5042-a460-089070c0634a",
+      "ref": "R85",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "c5fec03b-383d-5a3d-8c31-0a882ca5e8ac",
+      "ref": "R83",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "19cbf3e4-d27d-5cf8-8292-36ad797f6eb7",
+      "ref": "C71",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "496cce96-21d1-5520-9a83-cd9a95eff194",
+      "ref": "C72",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "55baeca9-b067-500b-816c-55bdacad35e1",
+      "ref": "C70",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "5f95ff9b-38ea-5ff9-95c5-f0b6eeb74bbf",
+      "ref": "C69",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "9c6da32d-8e19-5bda-9cf6-8dbd84cf4bc9",
+      "ref": "C68",
+      "default_thickness_fields": [],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "83b9a6e1-fc95-5ee4-8e99-dd7fdaf6c6cc",
+      "ref": "C73",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "3239b655-4c22-59ae-896f-ceff6439591b",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "afb963b4-2946-55fb-9e4b-20a6cfae59b7",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "48e2cc42-763d-5282-ba4c-f5048b6064b3",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "26e49bc0-053d-5c02-8e4b-87deb0785c75",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "020a280d-88e6-53db-ba03-8c5a7efd6f1e",
+      "ref": "C74",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "56aefb50-dfd5-5993-92bd-5623819f26e8",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "1f8dcfec-1049-5c12-add8-5c133426522e",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "e856d75c-351b-553e-ab93-d54f422f4c1a",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "6f77abd0-2687-5983-ac85-a88fc1c7fdbd",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "48a7579f-3f7d-565d-9061-fb8c1db3e6ce",
+      "ref": "C75",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "4584120a-9a34-58f0-ab7c-00bd5a278358",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "33a2580b-249f-54d5-ab49-3e0d1695a617",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "4c7e5676-c00e-58d9-80f0-5d661321ab6c",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "5f5543df-5df6-52a8-a895-36d6eda12c31",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "33600b9a-306d-5d97-8bc4-7b358515a43d",
+      "ref": "C76",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "1c44cda0-5290-5d4d-a66f-2796c2974c4c",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "7033c710-614f-5841-b63a-a614136dcc5e",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "3abf1fbd-ce23-5634-aac8-15967478af7a",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "0c9225de-ddbb-50d6-a858-05bc0b99de49",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "36f7a3a8-377d-5433-b994-7bcf55d754ed",
+      "ref": "C77",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "1c591575-a491-5e8b-8339-97964711967c",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "7245287d-20a9-514e-8937-9792cfd159d3",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "f69e151c-a4b1-5e7f-af82-62701179b7dc",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "5c0ea59d-922f-50b7-be55-b49a87fd6777",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "72949bb1-e28a-5526-98f6-01d5c9d6c147",
+      "ref": "C78",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "6217f738-384c-5de4-a4e6-8738d932711f",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "f47a9164-aac7-59f2-ba4c-fa611bb280a4",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "7a67b5f4-09ae-55e3-8a4e-24ae0ebbba2c",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "5da750de-0b28-597b-b4d4-18d27328ce41",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "d111b6f9-24f1-5aa0-9b73-2864617140b4",
+      "ref": "C79",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "288f06d9-c782-5e25-96a3-db35870aa075",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "11697551-fa49-590a-b0cd-162ccdcd4263",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "665a253d-f76f-54f6-8c42-0a3e53d7d4f2",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "4b3e7705-1698-5382-b4eb-ec9231fa810e",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "49fbd5b4-cdb8-5f49-9c51-313fc42fbcfb",
+      "ref": "C80",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "9033b4a2-4d3e-528b-896e-6640178952b0",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "3a882bcd-f94e-59dd-8792-b0cfb1345fb4",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "046ed970-b73e-5de3-8050-81d109d0b436",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "feb2b07b-5219-5970-a9b1-19a1d1684b38",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "a622cbe1-f7a7-5ad3-8661-b33940f07625",
+      "ref": "C82",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "820f63b3-7449-513f-9cff-dbae4193c465",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "e69ca207-e53f-5d14-9180-e397fdbc54bb",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "5ee9aff3-5477-5253-865b-e7c3be3acc97",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "51a3f3cc-7cd6-5d64-911d-32f81b4aa29a",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "de739d52-0748-5de0-aa66-096d67c9d5c9",
+      "ref": "C83",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "ddf12fe9-79e5-55d0-b1d3-eabf2795cd01",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "e66e4499-a377-56a0-b767-378e92d70524",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "b9065224-b262-50ac-8ae2-5fccc1165511",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "f4e26b64-f326-5271-a02f-d02eab774df7",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "6338580d-ff4c-51bd-838a-0c2cf661986d",
+      "ref": "C84",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "c371715a-a833-5fd1-86f7-c141a8d86c1f",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "1e434048-b1ff-58fc-9228-31b586c4c2d5",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "41ac6ef3-f7df-543e-90bc-2c3616b58e43",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "94858f63-cd97-5d7e-9bf7-335d34686802",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "acd43cff-20ee-5787-8b65-2e66b687aaca",
+      "ref": "C85",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "415d0e90-0867-53c0-b6df-fbcab5f3d57a",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "f0580185-ce89-5f06-9502-33ce454b4f8c",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "a4ba7690-be6e-5fd5-a0e0-35d0d9f235b5",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "b30e19b5-6601-57f0-a8b0-2393f6fe9d1c",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "b093f305-5242-56b0-bdab-72506d1f547e",
+      "ref": "C86",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "66ebae48-d330-5f73-a19b-325d1caf966c",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "42a6ac85-64d8-58ea-9c2a-952418503177",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "ad77810c-916f-57e5-98ce-12d46eca0c19",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "59f746ff-586b-573a-af3d-fe6f60c4de88",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "ceffcc1e-71b8-534f-b320-8b65c5b22e1c",
+      "ref": "C87",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "1352658f-8e2d-510a-86bf-2c6dcc33751c",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "4d1b7fae-0806-5b72-930a-7aab826b71ae",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "b19fcc65-faeb-585b-acc7-9e370e205f37",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "7106f375-cf31-5894-a687-9a494997d259",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "614164b2-08ab-57a9-9aa9-cfed9490ce3d",
+      "ref": "C88",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "656a9aa1-98d4-548f-a0fb-e59ea1debe3c",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "b37a5af9-187b-50fb-82d5-b0616a6b7b04",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "953c6136-a06e-5e05-b833-997536f5a1fe",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "2bcd7041-23d1-5158-8bd6-c8f264ffbf03",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "8ac62347-9a3c-591d-b28e-d45f706865f8",
+      "ref": "C89",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "623b2ff1-749a-5eb5-b53d-7825fc086b15",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "1ec4e91e-c6fe-5158-8084-74fcc048ccf4",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "dc6d9fb2-cc1e-5ab0-b753-801b2460a3f9",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "78e1b68c-2e32-5b2b-99c7-a0d468bfb2e9",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "5a88f73d-9f5f-5028-bf0c-713152ba638a",
+      "ref": "C90",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "b1989499-ee1b-5027-a388-b8de7e8ecd74",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "6c70c86d-f939-5b2e-801c-209d46689bcd",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "990e548a-be35-59e4-a081-4eacfd82536f",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "74068ab8-8a19-5734-b11c-32897d7590d1",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "cc6b1494-bc9d-55e1-888e-f51ebb09e432",
+      "ref": "C91",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "efd724a8-bb89-5f3d-8fb8-3caa0a68c73f",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "1d5170fd-d490-572a-b391-3e3b6561aae3",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "9bd1c31d-3ea2-56ca-a5fb-1f346d9f884b",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "f3fca642-8980-5d2c-af7b-d634214a6780",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "53c37f9d-4515-5724-9474-8db9c55592b0",
+      "ref": "C92",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "0a6f9076-a984-5456-b7ba-1613727498cb",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "859a1da3-d222-565f-a44a-2ce9eff41208",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "9859c047-b573-52e2-9ad0-876e76cbe7e9",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "b5afb2e6-c96c-548d-a486-b75c4ebfedf4",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "50653cef-edbd-5f27-8a60-8ddadcc0a530",
+      "ref": "C93",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "9693ad8a-20ea-5486-b792-3850dbef7272",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "7e16d93d-cfef-5c52-8b37-4aa18672978c",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "0fa046a2-14c9-5397-b78d-99d98fa9384a",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "175d5dcb-91d1-5635-8445-938eb5ca395a",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "16cfe5e6-2ff3-51b6-b677-c8ecdd7275a5",
+          "name": "JLCPCB Exclude",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "8cb63d62-5e6c-550c-9079-1b15ec318c92",
+          "name": "JLCPCB Audit Requirements",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "323079d7-fa01-59a8-bd25-56b96490f601",
+      "ref": "D29",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "50bca3f5-e510-5b0b-a02b-d1c09f7aec3f",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "79f8b0cf-63d8-53ca-97b1-e3b1902ab72a",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "f2b1db0c-9ea2-5da4-81ad-39e0bbe61055",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "ac8b2cf1-aa8a-5b5b-b60c-5a84631977c1",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "4fa592a4-933f-5d9d-bedb-0f334401d8b0",
+      "ref": "D30",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "93db02d6-9439-56fe-bd04-5d4556f75110",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "bda2f70d-00fc-5201-b531-2065ae5f5e0f",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "e5401fe8-8edf-5591-a3f4-b0dfb407f143",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "3dee21e2-0e92-567d-adab-ac9166c9f4ce",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "d57253d7-8055-5ced-be86-463482868a63",
+      "ref": "L5",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "8a289b70-7d94-5447-97df-540864c5dbb7",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "761b3ca1-dadd-5f7d-94a8-788ce03596f8",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "9b51fa55-6009-569e-8426-f9c89cfafb19",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "c713ff90-e3d2-5ae1-9d83-c7a9bd4f86c7",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "20f19049-f661-51d9-9e2c-0015136ce5ee",
+      "ref": "R86",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "5a8ce7e7-e555-5100-9c23-a46a5b5bae48",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "e4caa911-303a-5fb6-adbd-ae9e9bb33654",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "742cbf67-dc83-5755-9437-6bef34051bff",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "9aa143ca-a1ae-54de-9ac0-bcc9ce520188",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "0a3268cb-280a-512b-9016-726212e6062e",
+      "ref": "R87",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "61035bea-4a43-5fdd-ac6a-2ef349574bd5",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "dd60d6af-dcfe-5df6-b8c9-0a373a6cef9d",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "a41d204a-ce6c-5966-b738-70f94306f24e",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "6d9f82eb-902d-5543-9bb7-e89485d8cfd5",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "62b9ffcc-f49d-50e2-a896-ad7a8c4de2c2",
+      "ref": "R88",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "e7396587-77e1-524a-8df6-810a227d3413",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "eeb48931-168e-580c-9f72-23769428771b",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "8f10b573-03e2-5bfc-97ff-68dbaac5a3d1",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "d561eab2-8ee0-55f6-a28a-517907d6cc2b",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "7589b3ee-83d4-5538-869b-c43effc38378",
+      "ref": "R89",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "9b15e309-3a5f-5692-8877-a8dbc927315e",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "011556c8-e065-5777-a98a-23c59f9d24a7",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "3e962a8d-aa0e-5e03-af09-c98482fd3816",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "13f39411-8e01-58b5-91e9-4a098a716cc8",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "d6a889a3-938e-5854-9bf0-a60b18b10c6f",
+      "ref": "R90",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "42ff4815-b441-5950-aad2-4e8aeb896fa1",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "8c093df1-27e2-5e4a-83f0-b302917c0b93",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "2d5f88ea-9a88-545c-b18c-a25d78370a15",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "30dda70a-5ef5-5d6d-9398-fc8cfa7a59f3",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "4986299e-b451-5e66-a07d-c8a16d4014d1",
+      "ref": "R91",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "ca4e2e29-e1ba-5df0-8b23-549446f6f9bf",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "aac8f6a0-c0d6-596e-863f-1dca397209a3",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "db699980-deea-5ab8-8171-2415977d4607",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "b8f10f6b-f354-5bcb-bcda-492357e31fd4",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "3d3b7c47-aaa9-50f5-8937-0a1c502c052b",
+      "ref": "R92",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "9ed5b2dd-5269-5b76-a90c-1b57fe09544b",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "97fb1f05-b412-5843-8a76-97a341596212",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "1182af07-a4aa-52c5-87f7-a8402526482e",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "2e2759bb-83c4-5d39-af97-91773455b70f",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "1079d923-a2c5-5ff0-a159-38786e22eaaa",
+      "ref": "R93",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "d373ec10-f043-5de5-99e5-f59701702c4d",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "fc040f10-4e61-5691-9365-f46fea23f2fb",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "80dee381-bc12-543b-9094-624457541643",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "5c9ef947-6dd1-58da-ba46-0b9164908adb",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    },
+    {
+      "footprint_uuid": "5f1c866b-2399-5cca-8076-9a742f4addcc",
+      "ref": "U14",
+      "default_thickness_fields": [
+        {
+          "field_uuid": "b0fd76dc-d035-50fc-aa72-db05aabb6b90",
+          "name": "MPN",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "bac78b76-0f97-5db6-9861-30e9c0808247",
+          "name": "LCSC",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "753af56c-ca29-515d-9d7e-4bd8dfd6ffa8",
+          "name": "NOTE",
+          "implicit_native_default_mm": 0.15
+        },
+        {
+          "field_uuid": "0ab85da5-ee4b-5fcf-979b-5eb6e837fb71",
+          "name": "Manufacturer",
+          "implicit_native_default_mm": 0.15
+        }
+      ],
+      "proof": "Scalar prefix exact; all direct footprint/pad child-node multisets exact after explicit new-hidden-field default expansion. No coordinate/shape vertex lists sorted."
+    }
+  ],
+  "residual_native_copper_net_changes_not_applied": [
+    {
+      "uuid": "088568d3-bc27-4be3-a297-6ae5fa051700",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [
+        "start",
+        "134.7",
+        "84.8"
+      ],
+      "end": [
+        "end",
+        "135.3",
+        "82.6"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "391eed35-023a-4de2-922f-92b695cf5367",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/VPROT",
+      "start": [
+        "start",
+        "127.4",
+        "85.975"
+      ],
+      "end": [
+        "end",
+        "127.4",
+        "85.2"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "695c0daa-c037-4620-b1b0-70ae5e3ff2d9",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [
+        "start",
+        "134.7",
+        "84.8"
+      ],
+      "end": [
+        "end",
+        "134.5",
+        "82.6"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "76bc2dda-25c4-4cf8-9fff-3cfb5c2ab0c3",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/VPROT",
+      "start": [
+        "start",
+        "108.925",
+        "74.4"
+      ],
+      "end": [
+        "end",
+        "108.2",
+        "74.4"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "d3391226-3c41-4d81-9017-77f46c97ced8",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [
+        "start",
+        "129.275",
+        "101.25"
+      ],
+      "end": [
+        "end",
+        "130.199999",
+        "101.1"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "f9d27707-b48c-41d6-b537-5c6bc4182eba",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [
+        "start",
+        "134.7",
+        "84.8"
+      ],
+      "end": [
+        "end",
+        "134.5",
+        "83.4"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "40f1109b-86c3-448f-a16e-8ef5d1bcf69e",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "130.199999",
+        "101.1"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "70f6d51d-63ec-4b88-a3ad-d1fb379e9009",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "134.5",
+        "83.4"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "8b87b2da-9dbd-4a78-9a8f-e57e3c61e71a",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "134.5",
+        "82.6"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "cb00ae15-22f4-495b-a9c3-35a818a08acb",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/VPROT",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "127.4",
+        "85.2"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "cc4b912c-6f0a-4070-9482-742b42978f2f",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NRAW",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "135.3",
+        "82.6"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "ccc2fb2d-7e54-4c9b-ba57-fa16d9d9a6f6",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/VPROT",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "108.2",
+        "74.4"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "075e79ce-4980-4991-abb9-d9ef30b69728",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "131.65",
+        "78.7"
+      ],
+      "end": [
+        "end",
+        "131.65",
+        "77.85"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "45273620-5449-4a85-a3f3-39f9b455d0ea",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "132.524999",
+        "77.2"
+      ],
+      "end": [
+        "end",
+        "132.474999",
+        "75.7"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "4ccad851-c6c1-48f1-9dfa-0e9c8dd56c98",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "130.874999",
+        "78.7"
+      ],
+      "end": [
+        "end",
+        "131.65",
+        "78.7"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "63b54e66-431d-4743-98b3-3088c2c59ba2",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "132.525",
+        "77.85"
+      ],
+      "end": [
+        "end",
+        "132.524999",
+        "77.2"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "7e0a3874-55aa-4a70-ae58-7c830bec7d58",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "125.9",
+        "80.75"
+      ],
+      "end": [
+        "end",
+        "126.8",
+        "80.75"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "a04b8099-8b90-4ca1-9c89-d0110e5359a3",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "131.65",
+        "77.85"
+      ],
+      "end": [
+        "end",
+        "132.525",
+        "77.85"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "bdd7cbb2-75da-4c98-816e-c00b66c9e1f0",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "130.874999",
+        "78.7"
+      ],
+      "end": [
+        "end",
+        "131",
+        "79.5"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "b1fa5ac2-3a08-45ac-b043-06b97f274d61",
+      "kind": "via",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "126.8",
+        "80.75"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "c1982cc7-b078-47a8-89a5-506f925cfbe2",
+      "kind": "via",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "131",
+        "79.5"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "0e7ad413-fc18-4cf8-8b20-0a8569b09506",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "131",
+        "79.2"
+      ],
+      "end": [
+        "end",
+        "131",
+        "79.5"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "617d5f76-3ad8-4656-83d5-60d8ddf6b566",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "129.8",
+        "78"
+      ],
+      "end": [
+        "end",
+        "131",
+        "79.2"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "84b996d2-19c9-4963-a94f-0d1ae9ad19d3",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "126.8",
+        "80.75"
+      ],
+      "end": [
+        "end",
+        "126.8",
+        "78"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "d6a79e24-6881-454a-bc69-8402645a12de",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_FB",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV1",
+      "start": [
+        "start",
+        "126.8",
+        "78"
+      ],
+      "end": [
+        "end",
+        "129.8",
+        "78"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "340f83c6-0b0b-42c2-ab22-ee44f82c87b0",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_SW",
+      "native_net": "/Direct 9V negative IBB/NINV_SW",
+      "start": [
+        "start",
+        "128.3",
+        "93.2"
+      ],
+      "end": [
+        "end",
+        "127.75",
+        "93.75"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "567b57fc-5af4-4516-8c2a-b72d55ba2b4a",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_SW",
+      "native_net": "/Direct 9V negative IBB/NINV_SW",
+      "start": [
+        "start",
+        "129.424999",
+        "93.2"
+      ],
+      "end": [
+        "end",
+        "128.3",
+        "93.2"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "ca7a9330-faee-44b8-8e83-7fbd29c091c2",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_SW",
+      "native_net": "/Direct 9V negative IBB/NINV_SW",
+      "start": [
+        "start",
+        "130.812499",
+        "97.5"
+      ],
+      "end": [
+        "end",
+        "127.8",
+        "97.5"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "f097797b-cb85-487d-96dc-0d273f767cf2",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_SW",
+      "native_net": "/Direct 9V negative IBB/NINV_SW",
+      "start": [
+        "start",
+        "127.75",
+        "93.75"
+      ],
+      "end": [
+        "end",
+        "125.275",
+        "95"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "f7c4e772-e4a7-40ca-9db4-7b650ee9d94b",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_SW",
+      "native_net": "/Direct 9V negative IBB/NINV_SW",
+      "start": [
+        "start",
+        "127.8",
+        "97.5"
+      ],
+      "end": [
+        "end",
+        "125.275",
+        "95"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "73304cac-1d17-4c7c-9804-1237648cc7a8",
+      "kind": "segment",
+      "raw_net": "/Direct bipolar rails/NEG_REF_DIV",
+      "native_net": "/Direct 9V negative IBB/NINV_DIV2",
+      "start": [
+        "start",
+        "132.524999",
+        "78.7"
+      ],
+      "end": [
+        "end",
+        "133.975",
+        "79"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "73eb2948-5273-45ff-80a1-50b920ab8038",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [
+        "start",
+        "107.225",
+        "92.6"
+      ],
+      "end": [
+        "end",
+        "106.725",
+        "92.3"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "80d22125-2562-4ef1-89a1-25e09c6a3d64",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [
+        "start",
+        "106.8625",
+        "95.15"
+      ],
+      "end": [
+        "end",
+        "106.2625",
+        "95"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "eec730a4-6e7e-4f11-bebd-4651f7881b8b",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [
+        "start",
+        "106.8625",
+        "95.15"
+      ],
+      "end": [
+        "end",
+        "100.975",
+        "95"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "2caa06d8-5ba9-49f6-a9e2-452115b67246",
+      "kind": "via",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "106.2625",
+        "95"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "6386d153-f7b2-4940-a394-e50024c31daa",
+      "kind": "via",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "106.725",
+        "92.3"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "15976687-3326-42b7-880d-5467fdcdb1be",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [
+        "start",
+        "107.3",
+        "95"
+      ],
+      "end": [
+        "end",
+        "107.3",
+        "93.399999"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "7cbab4f6-14e2-4526-9109-ff2e63f3930e",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [
+        "start",
+        "107.3",
+        "93.399999"
+      ],
+      "end": [
+        "end",
+        "106.725",
+        "92.3"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "98e7999e-ffc0-437a-981d-f95e21242415",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_SW",
+      "native_net": "/Independent +5V buck/FIVE_SW",
+      "start": [
+        "start",
+        "106.2625",
+        "95"
+      ],
+      "end": [
+        "end",
+        "107.3",
+        "95"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "c1c49eb9-f461-470a-b448-06102ebe13cf",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_BOOT",
+      "native_net": "/Independent +5V buck/FIVE_BOOT",
+      "start": [
+        "start",
+        "109.1375",
+        "94.2"
+      ],
+      "end": [
+        "end",
+        "108.775",
+        "92.6"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "07659f29-0d51-44ed-b8cb-777fd6da09dc",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_FB",
+      "native_net": "/Independent +5V buck/FIVE_FB",
+      "start": [
+        "start",
+        "110.6",
+        "95.5"
+      ],
+      "end": [
+        "end",
+        "113.025",
+        "95.5"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "346ec550-af5f-48e1-ab32-da2e93837622",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_FB",
+      "native_net": "/Independent +5V buck/FIVE_FB",
+      "start": [
+        "start",
+        "113.025",
+        "96.5"
+      ],
+      "end": [
+        "end",
+        "113.025",
+        "98.3"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "8de3ed06-2d00-4bf5-ac9b-84e3e0cc8afa",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_FB",
+      "native_net": "/Independent +5V buck/FIVE_FB",
+      "start": [
+        "start",
+        "110.6",
+        "95.95"
+      ],
+      "end": [
+        "end",
+        "110.6",
+        "95.5"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "960bc616-6b96-404d-a0ad-e49e6f4f76a3",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_FB",
+      "native_net": "/Independent +5V buck/FIVE_FB",
+      "start": [
+        "start",
+        "113.025",
+        "95.5"
+      ],
+      "end": [
+        "end",
+        "113.025",
+        "96.5"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "d1382ca8-0c67-4083-ae5b-ceecc34dd19f",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_FB",
+      "native_net": "/Independent +5V buck/FIVE_FB",
+      "start": [
+        "start",
+        "109.1375",
+        "96.1"
+      ],
+      "end": [
+        "end",
+        "110.6",
+        "95.95"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "0de89ebd-8874-5da9-bb77-4fc3dc10df88",
+      "kind": "segment",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NINV_FB",
+      "start": [
+        "start",
+        "124.575",
+        "101.25"
+      ],
+      "end": [
+        "end",
+        "124.575",
+        "98.8"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "181a4c15-436e-50b5-afcc-c61b49a6ee9c",
+      "kind": "via",
+      "raw_net": "/GND",
+      "native_net": "/Direct 9V negative IBB/NINV_FB",
+      "start": [],
+      "end": [],
+      "at": [
+        "at",
+        "124.575",
+        "98.8"
+      ],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "218d0582-acfb-5027-a7c1-3be97e876262",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_DIV_LO",
+      "native_net": "/Independent +5V buck/FIVE_DIV_LO",
+      "start": [
+        "start",
+        "111.375",
+        "99.1"
+      ],
+      "end": [
+        "end",
+        "110.925",
+        "99.1"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "c2404192-2954-5ffc-bec5-24b3cd38489b",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_DIV_LO",
+      "native_net": "/Independent +5V buck/FIVE_DIV_LO",
+      "start": [
+        "start",
+        "110.925",
+        "99.1"
+      ],
+      "end": [
+        "end",
+        "110.325",
+        "100.2"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "d1d69b07-96ab-5311-a5ba-5a20c2203cde",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/FIVE_DIV_LO",
+      "native_net": "/Independent +5V buck/FIVE_DIV_LO",
+      "start": [
+        "start",
+        "111.375",
+        "98.3"
+      ],
+      "end": [
+        "end",
+        "111.375",
+        "99.1"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "35912805-8604-501a-905c-525a9d17dfaf",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_BOOT",
+      "native_net": "/Direct 9V negative IBB/NINV_BOOT",
+      "start": [
+        "start",
+        "133.0875",
+        "95.4"
+      ],
+      "end": [
+        "end",
+        "130.974999",
+        "95.4"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "91f64a00-55f1-5467-a8ad-8ff990809847",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_BOOT",
+      "native_net": "/Direct 9V negative IBB/NINV_BOOT",
+      "start": [
+        "start",
+        "130.974999",
+        "95.4"
+      ],
+      "end": [
+        "end",
+        "130.974999",
+        "93.2"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    },
+    {
+      "uuid": "c8d9a2bb-7711-577c-87c1-d811f9f7f06a",
+      "kind": "segment",
+      "raw_net": "/Independent buck converters/MID_BOOT",
+      "native_net": "/Direct 9V negative IBB/NINV_BOOT",
+      "start": [
+        "start",
+        "133.0875",
+        "96.55"
+      ],
+      "end": [
+        "end",
+        "133.0875",
+        "95.4"
+      ],
+      "at": [],
+      "decision": "NOT applied: copper net reassignment is not a format-validity repair"
+    }
+  ],
+  "proof": {
+    "all_uuids_exact": true,
+    "all_native_footprint_semantics_exact": true,
+    "all_copper_zones_drawings_globals_byte_identical": true,
+    "all_ref_pin_net_field_values_exact": true
+  },
+  "helper_sha256": "d9547c1233c2b619b2d5dfad269c54faece111dc05b06cf7b66f9fd2662028fe"
+}
