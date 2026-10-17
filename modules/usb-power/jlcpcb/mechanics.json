@@ -1,0 +1,353 @@
+{
+  "HRO_fit": {
+    "acceptance_budget": {
+      "aperture_centre_registration_each_axis_mm": 0.1,
+      "aperture_each_wall_error_mm": 0.1,
+      "aperture_radius_mm": [
+        0.5,
+        0.7
+      ],
+      "assembled_registration_each_axis_mm": 0.1,
+      "finished_board_thickness_mm": [
+        1.44,
+        1.76
+      ],
+      "in_plane_angular_registration_max_deg": 0.5,
+      "in_plane_rotation_sweep_XY_mm": [
+        0.04,
+        0.016
+      ],
+      "outer_profile_each_edge_error_mm": 0.1,
+      "seating_plus_X_mm": 0.05,
+      "shell_height_plus_mm": 0.1,
+      "shell_width_plus_mm": 0.15,
+      "squareness_max_deg": 0.5,
+      "tilt_projection_each_axis_mm": 0.02
+    },
+    "conservative_shell_Xmin_Xmax_Ymin_Ymax_mm": [
+      4.28,
+      8.53,
+      28.719,
+      38.281
+    ],
+    "front_shell_copper_to_carrier_edge_mm": 0.6,
+    "front_slot_drill_to_carrier_edge_mm": 0.8,
+    "land_row_shift_toward_board_rear_mm": 0.34,
+    "locator_nominal_diametral_clearance_mm": 0.15,
+    "minimum_outer_edge_ligament_mm": 0.6,
+    "minimum_rounded_aperture_corner_margin_mm": 0.233458469,
+    "mouth_in_front_of_panel_rear_acceptance_mm": [
+      0.58,
+      1.02
+    ],
+    "mouth_recess_from_panel_front_acceptance_mm": [
+      0.42,
+      1.18
+    ],
+    "mouth_recess_from_panel_front_nominal_mm": 0.8,
+    "native_anchor_xy_mm": [
+      69.25,
+      103.475
+    ],
+    "nominal_shell_axis_XYZ_mm": [
+      6.33,
+      33.5,
+      0.8
+    ],
+    "predecessor_aperture_at_same_extremes_margin_mm": -0.428610207,
+    "qualification": "Positive bare-board aperture clearance at declared acceptance extremes; not supplier approval. Assembly registration/squareness must be measured, not inferred from loose M3 holes. Cable insertion/overmould, ABS strength/shrinkage, connector sample and LED forming remain physical trials."
+  },
+  "assembled_product_qualified": false,
+  "bare_pcb_artwork_release_record": "production/ldo-r1/release-validation.json",
+  "boards": {
+    "big_modular.kicad_pcb": {
+      "backside_components": 0,
+      "footprints": 111,
+      "tracks": 585,
+      "vias": 207,
+      "zones": 8
+    },
+    "front_panel.kicad_pcb": {
+      "backside_components": 0,
+      "footprints": 6,
+      "tracks": 0,
+      "vias": 0,
+      "zones": 0
+    }
+  },
+  "clearances_mm": {
+    "L1/L4_normal_budget_margin": 0.85,
+    "L2/L3_normal_budget_margin": 0.15,
+    "LED_flange_to_panel_edge": 1.2,
+    "LED_flange_to_switch_body": 2.35,
+    "LED_to_switch_solder_access": 1.23,
+    "USB_aperture_to_bracket": 1.1,
+    "USB_aperture_to_rail_head": 22.1,
+    "USB_pad_to_relief": 1.18,
+    "USB_to_LED_solder_access": 2.51,
+    "USB_to_switch_solder_access": 8.08
+  },
+  "fabrication_ready": false,
+  "fabrication_ready_scope": "Legacy conservative source-only non-approval flag; this checker does not evaluate bare-PCB artwork release and this false value is not an unresolved fabrication-blocker result.",
+  "mechanics": {
+    "LED_PTH_pad_checks": 2,
+    "LED_polarity_mark_checks": 2,
+    "M3_access": {
+      "all_fasteners": "M3",
+      "brackets": [
+        {
+          "Y_mm": 22,
+          "front_bolt_exposure_mm": 1.0,
+          "front_nut_right_X_mm": 9.575,
+          "front_nut_upright_clearance_mm": 0.125,
+          "loose_nut_access_clear_nominal": true,
+          "side_bolt_exposure_min_mm": 1.0,
+          "side_tip_X_range_mm": [
+            8.1,
+            8.4
+          ]
+        },
+        {
+          "Y_mm": 106.5,
+          "front_bolt_exposure_mm": 1.0,
+          "front_nut_right_X_mm": 9.575,
+          "front_nut_upright_clearance_mm": 0.125,
+          "loose_nut_access_clear_nominal": true,
+          "side_bolt_exposure_min_mm": 1.0,
+          "side_tip_X_range_mm": [
+            8.1,
+            8.4
+          ]
+        }
+      ],
+      "countersink_in": "printed bracket only; NO FR4 countersink",
+      "identical_parts": true,
+      "limitation": "Nominal envelopes only. Front-nut clearance is tight (0.125mm). Actual tools, ABS shrinkage, screw seating and printed strength require physical trial.",
+      "plain_L": true,
+      "service_condition": "OUT OF RACK, soldered main PCB retained; front nut held from +X with small pliers, side nut driver +X, screwdrivers -X and -Z",
+      "wall_mm": 3
+    },
+    "PCB_depth_behind_panel_mm": 30.4,
+    "actual_NPTH_geometry_checks": 10,
+    "carrier_depth_mm": 30,
+    "electrical_status": "107 active footprints; inspected routing, passive panel; not electrical/thermal qualification",
+    "finished_module_depth": "unverified; cable connector not confined to 2HP board envelope",
+    "main_PCB_plane_X_mm": [
+      3.1,
+      4.7
+    ],
+    "manual_LED_exclusions": 1,
+    "port_axis_mm": [
+      6.33,
+      33.5,
+      0.8
+    ],
+    "power_pin_checks": 16,
+    "switch_SMT_pad_checks": 5,
+    "switch_fit": {
+      "axis_X_mm": 6.4,
+      "body_top_X_mm": 8.0,
+      "locator_NPTHs": 2,
+      "nominal_lateral_clearance_mm": 1.8,
+      "qualification": "nominal placement only; sample solder/fit trial pending",
+      "recess_behind_panel_rear_mm": 0.45,
+      "smd_pads": 5
+    },
+    "switch_locator_NPTH_checks": 2
+  },
+  "physical_validation_pending": [
+    "cable/full insertion",
+    "ABS brackets/assembled fit",
+    "bench/source-current/thermal validation"
+  ],
+  "routing": {
+    "USB": {
+      "3D_model": "absent, explicitly unverified",
+      "drawing_land_length_claim": false,
+      "local_land_length_mm": 1.45,
+      "locator_NPTHs": 2,
+      "nominal_boss_to_nearest_land_clearance_mm": 0.396565139124667,
+      "physical_lands": 12,
+      "plated_shell_slots": 4
+    },
+    "accepted_routing_preserved": true,
+    "all_front": {
+      "B_Cu_footprints": 0,
+      "B_Paste_component_apertures": 0,
+      "all_components_front": true,
+      "caps": {
+        "C63": {
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
+        },
+        "C64": {
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
+        },
+        "C65": {
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
+        },
+        "C66": {
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
+        },
+        "C67": {
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
+        }
+      },
+      "native_placement_preserved": true,
+      "scope": "single-side prototype assembly; no B.Cu parts or B.Paste apertures; B.Cu routing/mask/drill retained"
+    },
+    "connected_pad_counts": {
+      "/Autonomous hardware window and retry/EF_MODE": 2,
+      "/Autonomous hardware window and retry/EF_SHDN": 3,
+      "/Autonomous hardware window and retry/ILIM": 2,
+      "/Autonomous hardware window and retry/ILIM_SER_1": 2,
+      "/Autonomous hardware window and retry/ILIM_SER_2": 2,
+      "/Autonomous hardware window and retry/MODE_SER_1": 2,
+      "/Autonomous hardware window and retry/MODE_SER_2": 2,
+      "/Autonomous hardware window and retry/OV_SET": 3,
+      "/Autonomous hardware window and retry/RTN": 8,
+      "/Autonomous hardware window and retry/SLEW": 2,
+      "/Autonomous hardware window and retry/UV_EN": 3,
+      "/Autonomous hardware window and retry/UV_SER_1": 2,
+      "/Autonomous hardware window and retry/UV_SER_2": 2,
+      "/Board output and power LED/LED_P_A": 2,
+      "/Direct bipolar rails/ANA_MID": 3,
+      "/Direct bipolar rails/BI_EN": 4,
+      "/Direct bipolar rails/BI_REF": 3,
+      "/Direct bipolar rails/BOOST_SW": 4,
+      "/Direct bipolar rails/COMP_N": 2,
+      "/Direct bipolar rails/COMP_P": 2,
+      "/Direct bipolar rails/INV_SW": 4,
+      "/Direct bipolar rails/NEG_DIV": 2,
+      "/Direct bipolar rails/NEG_FB": 4,
+      "/Direct bipolar rails/NEG_REF_DIV": 2,
+      "/Direct bipolar rails/NRAW": 13,
+      "/Direct bipolar rails/POS_DIV": 2,
+      "/Direct bipolar rails/POS_FB": 4,
+      "/Direct bipolar rails/PRAW": 13,
+      "/GND": 85,
+      "/Independent buck converters/FIVE_BOOT": 2,
+      "/Independent buck converters/FIVE_DIV_LO": 2,
+      "/Independent buck converters/FIVE_FB": 3,
+      "/Independent buck converters/FIVE_SW": 3,
+      "/Independent buck converters/MID_BOOT": 2,
+      "/Independent buck converters/MID_DIV_LO": 2,
+      "/Independent buck converters/MID_FB": 3,
+      "/Independent buck converters/MID_SW": 3,
+      "/MID": 13,
+      "/N12": 11,
+      "/P12": 13,
+      "/P5": 9,
+      "/Quiet bipolar post-regulators/N_LDO_DIV": 2,
+      "/Quiet bipolar post-regulators/N_LDO_FB": 4,
+      "/Quiet bipolar post-regulators/N_LDO_SER": 2,
+      "/Quiet bipolar post-regulators/N_NR": 2,
+      "/Quiet bipolar post-regulators/P_NR": 2,
+      "/USB PD input/CC1": 2,
+      "/USB PD input/CC2": 2,
+      "/USB PD input/PD_CFG": 2,
+      "/USB PD input/PD_D_SHORT": 2,
+      "/USB PD input/USB_VBUS": 3,
+      "/VIN9": 9,
+      "/VPROT": 12,
+      "unconnected-(J1-D+-PadA6)": 1,
+      "unconnected-(J1-D+-PadB6)": 1,
+      "unconnected-(J1-D--PadA7)": 1,
+      "unconnected-(J1-D--PadB7)": 1,
+      "unconnected-(J1-SBU1-PadA8)": 1,
+      "unconnected-(J1-SBU2-PadB8)": 1,
+      "unconnected-(J7-Pin_13-Pad13)": 1,
+      "unconnected-(J7-Pin_14-Pad14)": 1,
+      "unconnected-(J7-Pin_15-Pad15)": 1,
+      "unconnected-(J7-Pin_16-Pad16)": 1,
+      "unconnected-(SW1-CASE-PadMP)": 2,
+      "unconnected-(U1-CFG2_SCL-Pad2)": 1,
+      "unconnected-(U1-CFG3_SDA-Pad3)": 1,
+      "unconnected-(U1-PG_N-Pad10)": 1,
+      "unconnected-(U12-0P1V-Pad12)": 1,
+      "unconnected-(U12-0P4V-Pad10)": 1,
+      "unconnected-(U12-1P6V-Pad8)": 1,
+      "unconnected-(U12-6P4V2-Pad4)": 1,
+      "unconnected-(U12-NC-Pad17)": 1,
+      "unconnected-(U12-NC-Pad18)": 1,
+      "unconnected-(U12-NC-Pad19)": 1,
+      "unconnected-(U12-NC-Pad2)": 1,
+      "unconnected-(U13-NC-Pad10)": 1,
+      "unconnected-(U13-NC-Pad11)": 1,
+      "unconnected-(U13-NC-Pad12)": 1,
+      "unconnected-(U13-NC-Pad17)": 1,
+      "unconnected-(U13-NC-Pad18)": 1,
+      "unconnected-(U13-NC-Pad19)": 1,
+      "unconnected-(U13-NC-Pad2)": 1,
+      "unconnected-(U13-NC-Pad4)": 1,
+      "unconnected-(U13-NC-Pad5)": 1,
+      "unconnected-(U13-NC-Pad6)": 1,
+      "unconnected-(U13-NC-Pad8)": 1,
+      "unconnected-(U13-NC-Pad9)": 1,
+      "unconnected-(U2-FLT_N-Pad14)": 1,
+      "unconnected-(U2-IMON-Pad10)": 1,
+      "unconnected-(U2-NC-Pad13)": 1,
+      "unconnected-(U2-NC-Pad4)": 1,
+      "unconnected-(U3-EN-Pad5)": 1,
+      "unconnected-(U4-BSW-Pad7)": 1,
+      "unconnected-(U4-NC-Pad12)": 1,
+      "unconnected-(U4-NC-Pad20)": 1,
+      "unconnected-(U5-EN-Pad5)": 1
+    },
+    "native_opens": 0,
+    "reserved_access_clear": true,
+    "tracks": 585,
+    "vias": 207,
+    "zones": [
+      {
+        "contours": 1,
+        "layer": "F.Cu",
+        "net": "/GND"
+      },
+      {
+        "contours": 1,
+        "layer": "F.Cu",
+        "net": "/Autonomous hardware window and retry/RTN"
+      },
+      {
+        "contours": 1,
+        "layer": "F.Cu",
+        "net": "/GND"
+      },
+      {
+        "contours": 2,
+        "layer": "B.Cu",
+        "net": "/Autonomous hardware window and retry/RTN"
+      },
+      {
+        "contours": 1,
+        "layer": "B.Cu",
+        "net": "/GND"
+      },
+      {
+        "contours": 3,
+        "layer": "B.Cu",
+        "net": "/GND"
+      },
+      {
+        "contours": 1,
+        "layer": "In1.Cu",
+        "net": "/GND"
+      },
+      {
+        "contours": 1,
+        "layer": "In2.Cu",
+        "net": "/Autonomous hardware window and retry/RTN"
+      }
+    ]
+  }
+}
