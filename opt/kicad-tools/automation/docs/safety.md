@@ -16,7 +16,8 @@
 - Hashes cover the complete **supported** native closure: selected PCB, root and
   hierarchical sheets, companion projects/rules, local library tables and all
   local `.pretty`/symbol library files, explicit native config dependencies,
-  config/operations JSON, added `.kicad_mod` inputs and automation/shared code.
+  config/operations JSON, added `.kicad_mod` inputs, bounded referenced STEP/STP/WRL
+  resources and automation/shared code.
   Symlink identity is recorded; copies are dereferenced. Changed bytes, closure,
   path bindings, inspector identities, ops or tool/native versions require a new
   plan. Unresolved variables, unsupported table kinds, rule includes, cyclic or
@@ -35,7 +36,8 @@
 ## Relocatability and preservation
 
 `Plan.stage` normally binds table/sheet strings to absolute staging paths. This
-API immediately rebinds those exact tokens to per-file **relative** paths,
+API immediately rebinds those exact tokens to per-file **relative** paths
+(tables/sheets) or PCB-root `${KIPRJMOD}` paths (models),
 checks that their targets stay inside `inputs`, and rechecks before completion.
 No temporary-stage paths are published. The final candidate directory is used
 from creation (no unsafe rename). The completion marker stores board/schematic
@@ -45,7 +47,7 @@ Synthetic tests relocate the directory, delete the original dependencies, then
 run native XML/ERC/DRC again successfully.
 
 Schematic/library/project/rules bytes are preserved exactly except reported
-relative table/Sheetfile token rebindings. Project settings are never rewritten:
+table/Sheetfile/model path token rebindings. Project settings are never rewritten:
 `SaveBoard(..., aSkipSettings=True)` avoids native helper project normalization.
 CLI refill/save can materialize project text variables into root board properties;
 only **new** properties exactly matching those declared variables are removed
@@ -118,8 +120,10 @@ Simple polygons/through-vias/straight routes/board edges only; no thermal option
 keepouts, arbitrary curves/shapes, net ties, arbitrary field/settings updates,
 blind/buried vias or net code creation. No automatic component numbering,
 schematic synchronization, fabrication exports or component-library downloads.
-Models, images, embedded files, external drawing sheets/resource paths and
-nonlocal libraries are currently unsupported so a full closure is not falsely
-promised for them. Explicit extensions requiring unsupported constraint/resource
-semantics fail closed. Electrical additions with omitted/no-connect pins cannot
+Existing self-contained STEP/STP/VRML2 models have only the bounded support
+documented in [API](api.md#bounded-existing-3d-resources). Nonempty embedded files,
+all images, embedded fonts, external drawing sheets/resource paths and nonlocal
+libraries remain unsupported. Exact empty declarations add no dependency but
+still cannot bypass native preservation checks. Explicit extensions requiring
+unsupported constraint/resource semantics fail closed. Electrical additions with omitted/no-connect pins cannot
 be inferred. Mechanical-only footprints must not have electrical pads/refs.

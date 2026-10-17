@@ -58,6 +58,26 @@ python3 -B opt/kicad-tools/kicad_tools.py netlist inspect '/tmp/new actual check
   intentionally frozen exporter duplicates. See the
   [migration inventory](../../MIGRATION.md).
 
+## Existing PCB 3D resources are dependencies, not disposable decoration
+
+For `pcb inspect|plan|apply`, retain all existing model nodes/transforms. Bind only
+needed preinstalled model directories explicitly in the selected profile's
+`variables` (e.g. `KICAD10_3DMODEL_DIR`); never strip models to gain admission or
+copy a whole system library into the repository. Only referenced self-contained
+STEP/STP/VRML2 files are hashed/copied within the aggregate closure limits.
+Missing/unresolved/escaping/URI/symlink resources fail closed. Model assets stage
+under PCB-local `_kicad_models/` with bounded `${KIPRJMOD}` rebinding, allowing
+candidate relocation and model-bearing template additions without host paths.
+See [resource API and limits](../../automation/docs/api.md#bounded-existing-3d-resources)
+and [focused verification](../../MODEL_VERIFICATION.md).
+
+This does not broaden router/TraceMaker admission or resource/advanced-rule
+support elsewhere. Nonempty embedded/image resources stay unsupported; exact
+empty declarations never waive canonical save checks. Duplicate UUIDs, native
+serialization/rule/lock blockers, ERC/DRC/warnings/parity and stale hashes still
+block. Report the precise next blocker; do not weaken it or repair hardware as a
+tooling smoke test.
+
 ## Candidate edits before routing
 
 Use [PCB](../../automation/docs/api.md) geometry operations for explicit native

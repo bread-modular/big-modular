@@ -60,6 +60,52 @@ selection cannot be mixed. Config paths are relative to the config file:
 }
 ```
 
+## Bounded existing 3D resources
+
+PCB/explicit local `.pretty` footprint models are preserved, not stripped. Supported
+extensions (case-insensitive): `.step`, `.stp` (self-contained STEP Part 21) and
+`.wrl` (self-contained VRML2). Only referenced files enter the existing aggregate
+4096-file / 128 MiB closure bound; an explicit `.pretty` still includes all its
+native footprints and their referenced models. No system model-tree traversal,
+implicit environment binding, download or library installation occurs.
+
+Bind a preinstalled model directory **only when referenced**, in the selected
+profile, for example:
+
+```json
+"variables": {"KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"}
+```
+
+Model paths must be `${NAME}/file.step`, `${KIPRJMOD}/file.step`, or bounded
+file-relative local paths. Config variable directories resolve relative to the
+profile; `KIPRJMOD` means the selected PCB parent, including for library models.
+No ambient environment/native text-variable fallback, nested substitutions,
+absolute unbound paths, aliases/URIs, backslashes or traversal escaping the bound
+root. Missing files, model-file/directory symlinks (even in-root), external STEP
+references, WRL URLs/Inline/EXTERNPROTO/scripts and other formats fail closed.
+These lexical resource guards are not a general STEP/VRML geometry validator.
+
+`selection.source_hashes` and plan `input_hashes` include every required resource.
+Plan `dependency_bindings` maps source file → token kind → original string →
+resolved file, retaining multiple models and sheet/table mappings. Old plans must
+be regenerated after any tool/config/resource or binding change.
+
+Private staging copies model bytes without links, retains original basenames,
+and places them under PCB-local `_kicad_models/<path-identity-hash>/`. PCB and
+library model strings become bounded `${KIPRJMOD}/_kicad_models/...` bindings;
+sheet/table strings remain per-file relative. Added model-bearing templates use
+the same project-root binding. Only path tokens change: model count/order,
+offset/scale/rotation and native object identities stay subject to the existing
+serialization/save/reload checks. No mutable source or host path is published as
+a runtime binding; diagnostics still retain absolute provenance.
+
+Nonempty embedded resources, **all images**, embedded fonts and advanced
+unsupported features remain blocked. Exact `(embedded_files)` and
+`(embedded_fonts no)` are dependency-free declarations only. This does **not**
+waive native canonicalization: if saving drops an explicit empty declaration,
+apply fails its preservation check, with no completion marker. See the focused
+[native/unit verification](../../MODEL_VERIFICATION.md).
+
 ## Operations document
 
 Exactly `{ "schema_version": 1, "operations": [ ... ] }`; 1..256 operations,

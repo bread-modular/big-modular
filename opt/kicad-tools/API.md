@@ -16,6 +16,14 @@ Standalone entrypoints still work: `automation/run.py`, `schematic/cli.py`,
 below; no facade import is required. Quoted absolute paths work from any cwd,
 including repository-free copied distributions.
 
+## PCB model resources
+
+`pcb inspect|plan|apply` preserve and hash bounded referenced STEP/STP/WRL assets
+from explicit local variable/KIPRJMOD bindings, staging only required files with
+relocatable model paths. See [exact resource limits](automation/docs/api.md#bounded-existing-3d-resources)
+and [verification](MODEL_VERIFICATION.md). This does not extend any router subset,
+waive canonical native preservation, or admit nonempty embedded/image resources.
+
 ## PCB edit → supported routing snapshot
 
 Start from a complete independent project, not a live repository/released board.

@@ -83,15 +83,9 @@ def _closure(selection, operations=None):
         for op in operations['operations']:
             if op['op']=='add_footprint': closure.dependency(Path(op['file']))
         closure.anchor=Path(os.path.commonpath([str(p.parent) for p in closure.files]))
-    # Full closure cannot be promised for unsupported secondary native resources.
-    def walk(node):
-        if isinstance(node,list):
-            if node and node[0] in ('model','embedded_files','image'):
-                raise Error('3D models, embedded files and images are unsupported dependencies; fail closed')
-            for child in node: walk(child)
+    # Plan admits only the bounded, hash-covered resource subset.
     for path in closure.files:
         if path.suffix in ('.kicad_pcb','.kicad_mod'):
-            ast=native.kicad.parse_sexpr(path.read_text(encoding='utf-8-sig')); walk(ast)
             if path.suffix=='.kicad_pcb': _global_and_items(path)
         if path.suffix=='.kicad_pro':
             settings=load_json(path)
@@ -102,7 +96,7 @@ def _closure(selection, operations=None):
                     for v in value: check(v,key)
                 elif isinstance(value,str):
                     if value=='ignore' and key: raise Error('Ignored project rule severities are unsupported; do not weaken checks')
-                    if value and (key in ('page_layout_descr_file','drawing_sheet') or value.endswith(('.kicad_wks','.kicad_sch','.kicad_pcb','.kicad_sym','.kicad_mod','.step','.wrl'))):
+                    if value and (key in ('page_layout_descr_file','drawing_sheet') or value.lower().endswith(('.kicad_wks','.kicad_sch','.kicad_pcb','.kicad_sym','.kicad_mod','.step','.stp','.wrl'))):
                         raise Error(f'Unsupported project resource path {key}: {value}')
             check(settings)
     return closure
@@ -146,13 +140,14 @@ def plan(operations, *, ops_base=None, allow_draft_opens=False, python='python3'
         raise Error('pcbnew and CLI patch versions must match')
     closure.verify_sources(before)
     if ops_file and native.sha256(ops_file)!=input_hashes[str(ops_file)]['sha256']: raise Error('Operations file changed during planning')
-    preconditions={'input_hashes':input_hashes,'dependency_bindings':{str(k):v[1] for k,v in closure.rewrites.items()},'inspection_sha256':digest(view),
+    preconditions={'input_hashes':input_hashes,'dependency_bindings':{},'inspection_sha256':digest(view),
                    'native_versions':{'pcbnew':view['pcbnew_version'],'cli':cli_version},'operations_sha256':digest(document),
                    'tool_hashes':{str(p):native.sha256(p) for p in sorted(set(HERE.glob('*.py')) | {Path(native.__file__),Path(project.__file__),Path(native.kicad.__file__)})},
                    'selection':{'project_dir':str(closure.project.directory),'board':str(closure.project.board),'schematic':str(closure.project.schematic),'config':str(closure.project.config) if closure.project.config else None},
                    'policy':{'allow_draft_opens':allow_draft_opens,'all_other_findings_block':True}}
-    # Resolve bindings into JSON paths, rather than Path objects.
-    preconditions['dependency_bindings']={k:{name:str(path) for name,path in v.items()} for k,v in preconditions['dependency_bindings'].items()}
+    # Include every kind, without overwriting resource/table/sheet bindings.
+    for source,(head,targets) in closure.path_rewrites():
+        preconditions['dependency_bindings'].setdefault(str(source),{})[head]={name:str(path) for name,path in targets.items()}
     result={'schema_version':1,'kind':'pcb_edit_plan','operations':document,'preconditions':preconditions,
             'changes':validation['changes'],'source_writes':False,'status':'planned_not_checked',
             'caveats':['Placement does not drag attached copper','Native ERC/DRC and XML parity run only on apply','No live GUI, IPC, push/shove or automatic placement'],
@@ -193,28 +188,35 @@ def compare_findings(before,after):
 def _rebind(closure, directory):
     """Repair Plan.stage absolute staging paths to per-file relative bindings."""
     rewrites=[]
-    for source,(head,targets) in closure.rewrites.items():
-        copy=directory/'inputs'/source.relative_to(closure.anchor)
-        mapping={str(directory/'inputs'/p.relative_to(closure.anchor)):os.path.relpath(directory/'inputs'/p.relative_to(closure.anchor),copy.parent) for p in targets.values()}
+    for source,(head,targets) in closure.path_rewrites():
+        copy=directory/'inputs'/closure.staged_relative(source)
+        mapping={str(directory/'inputs'/closure.staged_relative(p)):
+                 ('${KIPRJMOD}/'+closure.staged_relative(p).relative_to(closure.staged_relative(closure.project.board).parent).as_posix()
+                  if head=='model' else os.path.relpath(directory/'inputs'/closure.staged_relative(p),copy.parent)) for p in targets.values()}
         text=native.replace_paths(copy.read_text(encoding='utf-8-sig'),head,mapping)
         copy.write_text(text,encoding='utf-8')
         rewrites.append({'file':str(copy.relative_to(directory)),'kind':head,'bindings':mapping})
     return rewrites
 
 
-def _relocatable(root):
+def _relocatable(root, project_dir=None):
     for pth in root.rglob('*'):
         if pth.is_symlink(): raise Error(f'Candidate contains symlink: {pth}')
         if pth.is_file() and pth.stat().st_nlink!=1: raise Error(f'Candidate contains linked/aliased file: {pth}')
-        if pth.name not in ('fp-lib-table','sym-lib-table') and pth.suffix!='.kicad_sch': continue
+        if pth.name not in ('fp-lib-table','sym-lib-table') and pth.suffix not in ('.kicad_sch','.kicad_pcb','.kicad_mod'): continue
         ast=native.kicad.parse_sexpr(pth.read_text(encoding='utf-8-sig'))
         def walk(node):
             if not isinstance(node,list): return
-            if len(node)>1 and node[0]=='uri': check(node[1])
+            if len(node)>1 and node[0] in ('uri','model'): check(node[1],node[0]=='model')
+            if len(node)>1 and node[0]=='model' and Path(node[1]).suffix.lower() not in project.MODEL_SUFFIXES:
+                raise Error(f'Candidate has unsupported model resource: {pth}: {node[1]}')
             if len(node)>2 and node[0]=='property' and node[1] in ('Sheetfile','Sheet file'): check(node[2])
             for child in node: walk(child)
-        def check(value):
-            target=pth.parent/value
+        def check(value, model=False):
+            base=pth.parent
+            if model and project_dir is not None and value.startswith('${KIPRJMOD}/'):
+                base=project_dir; value=value[len('${KIPRJMOD}/'):]
+            target=base/value
             if Path(value).is_absolute() or '${' in value or not target.exists() or root.resolve() not in target.resolve().parents:
                 raise Error(f'Candidate is not relocatable/self-contained: {pth}: {value}')
         walk(ast)
@@ -254,7 +256,8 @@ def _global_and_items(board):
             for c in node: yield from all_uuids(c)
     ids=list(all_uuids(root))
     for key in ids: schema.identifier(key)
-    if len(set(ids)) != len(ids): raise Error('Duplicate serialized board UUIDs')
+    duplicates=sorted(key for key,count in Counter(ids).items() if count>1)
+    if duplicates: raise Error(f'Duplicate serialized board UUIDs in {board}: {len(duplicates)} duplicated IDs; first: {duplicates[:8]}')
     item_heads={'footprint','module','segment','arc','via','zone','group','gr_line','gr_arc','gr_rect','gr_circle','gr_poly','gr_text','gr_text_box','dimension','target'}
     for child in root[1:]:
         if isinstance(child,list) and child and child[0] in item_heads and not native.kicad.atom(child,'uuid'): raise Error('All existing editable PCB items must carry explicit UUIDs')
@@ -326,8 +329,8 @@ def apply(edit_plan, output, *, operations=None, python='python3', kicad_cli='ki
     try:
         board,schematic,_=closure.stage(destination)
         result['path_rebindings']=_rebind(closure,destination)
-        _relocatable(destination/'inputs')
-        staged={source:destination/'inputs'/source.relative_to(closure.anchor) for source in closure.files}
+        _relocatable(destination/'inputs',board.parent)
+        staged={source:destination/'inputs'/closure.staged_relative(source) for source in closure.files}
         immutable={path:native.sha256(path) for source,path in staged.items() if source!=closure.project.board}
         env=isolated_env(destination/'runtime'); cli=executable(kicad_cli)
         baseline,netlist=_checks(cli,board,schematic,destination/'baseline',env,result['commands'],False)
@@ -352,7 +355,7 @@ def apply(edit_plan, output, *, operations=None, python='python3', kicad_cli='ki
         result['inspection']=final_view
         for path,hash_value in immutable.items():
             if native.sha256(path)!=hash_value: raise Error(f'Candidate dependency modified by native process: {path}')
-        _relocatable(destination/'inputs')
+        _relocatable(destination/'inputs',board.parent)
         all_findings=checked['findings']['erc']+checked['findings']['drc']
         opens=[v for v in checked['findings']['drc'] if v['severity'] in ('error','warning') and ((v['category']=='unconnected_items' and v['identity']['type']=='unconnected_items') or (v['category']=='violations' and v['identity']['type'] in ('track_dangling','via_dangling')))]
         other=[v for v in all_findings if v not in opens]
