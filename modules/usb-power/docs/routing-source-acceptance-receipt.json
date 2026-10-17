@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "status": "ROUTING_SOURCE_ACCEPTED_NOT_RELEASED",
+  "promotion": {
+    "pcb": "hardware/usb-power.kicad_pcb",
+    "sha256": "69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc",
+    "bytes": 1082046,
+    "source_git_object": "c83ad5bf30ef8a3c1f2ae3aeb4acf443e35f6db8",
+    "source_path": "modules/usb-power/docs/routing-progress-084/usb-power.kicad_pcb",
+    "copied_byte_exact": true,
+    "models_copied": 10,
+    "models_bytes": 794646,
+    "model_provider_check": "every file sha256 == 075 DEPENDENCIES sha256 == 075 provider pin; dir name == sha256(absolute provider path); fail-closed on any mismatch",
+    "frozen_unchanged": {
+      "usb-power.kicad_pro": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+      "usb-power.kicad_sch": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500",
+      "other_hardware_files_unchanged": "42 of 43 pre-existing hardware files; only the PCB changed"
+    }
+  },
+  "native_check": {
+    "command": "python3 -B ../../opt/kicad-tools/kicad_tools.py check --config tools/kicad-project.json --reports research/canonical-084-promotion --only both",
+    "dry_run_first": true,
+    "status": "no_findings_in_requested_checks",
+    "erc_violations": 0,
+    "drc_violations": 0,
+    "drc_unconnected": 0,
+    "drc_schematic_parity": 0,
+    "source_unchanged": true,
+    "order_ready": false,
+    "reports_dir": "research/canonical-084-promotion (ignored, not staged)"
+  },
+  "tests": {
+    "scope": "modules/usb-power/tests only (full local module suite, run once)",
+    "command": "python3 -B -m unittest discover -s modules/usb-power/tests",
+    "promoted": {
+      "ran": 133,
+      "failures": 34,
+      "errors": 8,
+      "ok": 91
+    },
+    "baseline_git_HEAD": {
+      "ran": 133,
+      "failures": 28,
+      "errors": 26,
+      "ok": 79,
+      "note": "measured on a clean git-archive copy of HEAD, i.e. pre-promotion canonical 043 PCB"
+    },
+    "newly_failing": [
+      "test_native_via_disks_not_annular_rings_or_centres (expects 207 vias/old 043 counts)",
+      "test_routing_deletion_and_via_process_changes_are_detected (historical routed baseline)"
+    ],
+    "newly_passing": 14,
+    "known_pre_existing": "3 errors: ModuleNotFoundError gerbonara (environment, also in baseline)",
+    "action_taken": "none; no test, baseline, assertion count or rule was edited"
+  },
+  "exports": "STALE historical 043 jlcpcb/ snapshot; no Gerber/BOM/CPL/stencil/ZIP regenerated",
+  "release_holds": [
+    "L1 5.40 vs 5.10 mm user decision",
+    "explicit JLC inner 1 oz / plating / drill tolerance / unfilled-in-pad PCBA acceptance",
+    "prototype joint/void/thermal/EMI/startup/load bench qualification"
+  ],
+  "licenses": {
+    "dir": "hardware/_kicad_models/licenses",
+    "copied_notices": [
+      {
+        "file": "kicad-packages3d-debian-copyright.txt",
+        "source": "/usr/share/doc/kicad-packages3d/copyright",
+        "bytes": 103515,
+        "sha256": "46fab4abd8347f4aba796756e90351c711c5f19deeaca7c079f6ef51c844d560"
+      },
+      {
+        "file": "GPL-3.txt",
+        "source": "/usr/share/common-licenses/GPL-3",
+        "bytes": 35149,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+      }
+    ],
+    "notes": "Debian copyright carries exact exception wording, per-directory assignments and full CC-BY-SA 4.0 legal code; GPL-3 supplied separately. No model modified, no license changed or dropped."
+  },
+  "inventory": {
+    "track_segments": 721,
+    "arcs": 0,
+    "through_vias": 251,
+    "native_gettracks_objects": 972,
+    "note": "pcbnew.GetTracks() includes vias (721 PCB_TRACK + 251 PCB_VIA); the earlier \"972 tracks\" label double-counted vias."
+  }
+}

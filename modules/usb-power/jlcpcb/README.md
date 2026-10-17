@@ -2,6 +2,12 @@
 
 **STALE recovered snapshot — NOT a fresh export of the migrated tree.**
 
+> The canonical routed source is now the accepted 084 PCB
+> `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc`
+> (`../docs/routing-source-acceptance.md`). Nothing here was regenerated from it:
+> these files remain stale historical 043 evidence, and there is **no fabrication or
+> assembly release**.
+
 This is the sole shipping-set location. All 75 original files from
 `8f3c5000b88a09a22e3b49ce209ca87bbc9aeefe:production/ldo-r1/` were recovered
 byte-for-byte from this repository's Git objects. The original `manifest.json`,

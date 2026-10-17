@@ -1,9 +1,15 @@
-> **Current authorized stage: SR2 SCHEMATIC ONLY.** Latest user steering supersedes
-> the migration-only circuit-preservation clauses below for schematics/generator/BOM.
-> PCB/routing/metadata repair are NOT authorized in this stage. Both boards remain
-> old/unsynchronized. Supervisor performs separate Opus + DeepSeek schematic reviews and must
-> obtain explicit user ACK before starting any PCB worker. Current handoff:
-> `docs/sr2-schematic.md`. Historical recovery/release receipts stay frozen.
+> **Current status: PCB ROUTING SOURCE ACCEPTED — NOT RELEASED.** Canonical
+> `hardware/usb-power.kicad_pcb` is the byte-exact 084 PCB
+> `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc` (independent
+> Opus PASS, `docs/routing-review-082/REPORT.md`, HD-1 closed). Source, resources,
+> hashes and release holds: `docs/routing-source-acceptance.md` and `.json`.
+> No fabrication/assembly release: `jlcpcb/` exports remain STALE and are not
+> regenerated. Open holds: L1 5.40 vs 5.10 mm user decision; explicit JLC inner-1-oz/
+> plating/drill/unfilled-in-pad PCBA acceptance; joint/void/thermal/EMI/startup/load
+> bench qualification. The older "585 tracks / 207 vias / 043 routing" inventory below
+> is historical; the current routed source is 721 track segments + 251 through vias
+> (972 native `GetTracks` objects, vias included). Historical
+> recovery and release receipts stay frozen.
 
 # usb-power agent entry point
 
