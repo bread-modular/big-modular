@@ -1,0 +1,168 @@
+{
+  "status": "UNFINISHED_EXACT_NATIVE_DEPENDENCIES_INCLUDED_MODELS_HASH_PINNED_EXTERNAL",
+  "project_files": [
+    "01_input_protection.kicad_sch",
+    "02_hardgate.kicad_sch",
+    "03_bucks.kicad_sch",
+    "04_bipolar.kicad_sch",
+    "05_quiet_rails.kicad_sch",
+    "06_positive_boost.kicad_sch",
+    "07_output_rails.kicad_sch",
+    "BigModular.kicad_sym",
+    "BigModular.pretty/C_0402_1005Metric.kicad_mod",
+    "BigModular.pretty/C_0603_1608Metric.kicad_mod",
+    "BigModular.pretty/C_0805_2012Metric.kicad_mod",
+    "BigModular.pretty/C_1206_3216Metric.kicad_mod",
+    "BigModular.pretty/C_1210_3225Metric.kicad_mod",
+    "BigModular.pretty/D_SMA.kicad_mod",
+    "BigModular.pretty/Fuse_1206_3216Metric.kicad_mod",
+    "BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod",
+    "BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod",
+    "BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
+    "BigModular.pretty/L_Bourns_SRP1245A.kicad_mod",
+    "BigModular.pretty/L_CENKER_CKCS6045.kicad_mod",
+    "BigModular.pretty/L_KOHER_MDA1040.kicad_mod",
+    "BigModular.pretty/L_SLO1040H6R8MTT.kicad_mod",
+    "BigModular.pretty/L_TMPC1205HP_220M.kicad_mod",
+    "BigModular.pretty/R_0603_1608Metric.kicad_mod",
+    "BigModular.pretty/R_0805_2012Metric.kicad_mod",
+    "BigModular.pretty/SOT-23-6.kicad_mod",
+    "BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod",
+    "BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod",
+    "BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod",
+    "BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod",
+    "BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod",
+    "BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod",
+    "BigModular.pretty/Texas_RTE0016C_WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm.kicad_mod",
+    "BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod",
+    "fp-lib-table",
+    "sym-lib-table",
+    "usb-power.kicad_pcb",
+    "usb-power.kicad_pro",
+    "usb-power.kicad_sch",
+    "candidate-profile.json"
+  ],
+  "external_model_root_default": "/usr/share/kicad/3dmodels",
+  "external_models": [
+    {
+      "project_relative_path": "_kicad_models/1c6a269204b3901b5b464cbd2dec266d314fd17c5604f82dd4995d48e1de18b5/R_0805_2012Metric.step",
+      "sha256": "ded342cdb394fb45395227beaaa75cc390613cf2581b29cd6d22c12abd6103b2",
+      "bytes": 40592,
+      "provider_path": "/usr/share/kicad/3dmodels/Resistor_SMD.3dshapes/R_0805_2012Metric.step",
+      "provider_relative_path": "Resistor_SMD.3dshapes/R_0805_2012Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step",
+      "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+      "bytes": 70794,
+      "provider_path": "/usr/share/kicad/3dmodels/Diode_SMD.3dshapes/D_SMA.step",
+      "provider_relative_path": "Diode_SMD.3dshapes/D_SMA.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step",
+      "sha256": "8f5355877fb800c2ab9c9edb0c9553c940df7f91bda73c298d6dc0d451bfdd3b",
+      "bytes": 48854,
+      "provider_path": "/usr/share/kicad/3dmodels/LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step",
+      "provider_relative_path": "LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/3feaa511e5594da6d40d1e8e6d2b5ee96e566f648a22ca9ff37886065d62010c/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step",
+      "sha256": "7f57f4040117e2ef4f78a76d74424d6f4d23513883c32457503aaaa3beb70471",
+      "bytes": 279621,
+      "provider_path": "/usr/share/kicad/3dmodels/Package_DFN_QFN.3dshapes/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step",
+      "provider_relative_path": "Package_DFN_QFN.3dshapes/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step",
+      "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+      "bytes": 43450,
+      "provider_path": "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "provider_relative_path": "Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step",
+      "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+      "bytes": 40618,
+      "provider_path": "/usr/share/kicad/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provider_relative_path": "Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step",
+      "sha256": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+      "bytes": 40429,
+      "provider_path": "/usr/share/kicad/3dmodels/Fuse.3dshapes/Fuse_1206_3216Metric.step",
+      "provider_relative_path": "Fuse.3dshapes/Fuse_1206_3216Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step",
+      "sha256": "11e948c72c90e2b6322436b72745f40ff4e8ba0da64fb2a0df943dfa61e89c1a",
+      "bytes": 43450,
+      "provider_path": "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "provider_relative_path": "Capacitor_SMD.3dshapes/C_1206_3216Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step",
+      "sha256": "c9fe686b4d1b56927a41fa84a9bc1efb61d8a45a123a3db43bcaa05c2891d635",
+      "bytes": 99639,
+      "provider_path": "/usr/share/kicad/3dmodels/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+      "provider_relative_path": "Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step",
+      "sha256": "f8217a19e2965bc3617c97b8bb851829f4470fb33a5c50462eb6df0f7cc2cd4a",
+      "bytes": 210194,
+      "provider_path": "/usr/share/kicad/3dmodels/Package_SO.3dshapes/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step",
+      "provider_relative_path": "Package_SO.3dshapes/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step",
+      "sha256": "3623be00464827bd6d94a12acf96d5923399b878c328184fa76e1ecbc0a63bc2",
+      "bytes": 153600,
+      "provider_path": "/usr/share/kicad/3dmodels/Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step",
+      "provider_relative_path": "Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/b999dd5a9584a248833dc3adde1c96e4688bb46c6fafc0f43164f3a5108982ef/C_1210_3225Metric.step",
+      "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
+      "bytes": 43502,
+      "provider_path": "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
+      "provider_relative_path": "Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/e5888967b26b8f8dc46f419d1aab8085d81e640a412b7005c2f41b70cca0ee68/C_0402_1005Metric.step",
+      "sha256": "03e44c4b2b727b8d4b6b1fd598cbd12dd5e614f1dfeefa96a92a07e3a3b312a2",
+      "bytes": 43502,
+      "provider_path": "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_0402_1005Metric.step",
+      "provider_relative_path": "Capacitor_SMD.3dshapes/C_0402_1005Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    },
+    {
+      "project_relative_path": "_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step",
+      "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
+      "bytes": 43618,
+      "provider_path": "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "provider_relative_path": "Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "provider_present_with_matching_hash_at_packaging": true
+    }
+  ],
+  "reason": "Do not stage derived _kicad_models caches or binary/model payloads. Preserve all original model tokens; materialize_resume.py restores exact bytes in a fresh project from these hash-pinned system library resources. No geometry or source token edits.",
+  "missing_at_packaging": [],
+  "shared_dependencies": [
+    "opt/kicad-tools (existing tracked toolkit; not copied)",
+    "modules/usb-power/tools/schematic_connectivity.py (existing tracked parity reader)",
+    "modules/usb-power/tools/stack_geometry.py (existing tracked mechanical contract; historical magnetic table is stale)"
+  ],
+  "runtime_note": "KiCad/pcbnew runtime required by shared tools; no install, doctor, DRC, parity, routing or test run during checkpoint packaging."
+}
