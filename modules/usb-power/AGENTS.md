@@ -1,6 +1,6 @@
 # usb-power agent entry point
 
-Read root `AGENTS.md` / `Code.md`, then this module's `Code.md`, `README.md` and
+Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
 `docs/migration-recovery.md`. Paths in module instructions are module-relative.
 
 ## Accepted checkpoint (preserve, do not redesign)

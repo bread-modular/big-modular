@@ -95,7 +95,7 @@ class MigrationRecoveryTests(unittest.TestCase):
         self.assertFalse((ROOT/'opt').exists())
 
     def test_active_readme_links_are_valid(self):
-        for p in (REPO/'README.md', ROOT/'README.md', ROOT/'jlcpcb/README.md'):
+        for p in (REPO/'AGENTS.md', ROOT/'README.md', ROOT/'jlcpcb/README.md'):
             for target in re.findall(r'(?<!!)\[[^\]]+\]\(([^)]+)\)', p.read_text()):
                 if '://' in target or target.startswith('#'):
                     continue
