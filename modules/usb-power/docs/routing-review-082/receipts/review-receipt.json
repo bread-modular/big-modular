@@ -1,0 +1,54 @@
+{
+ "status": "SOURCE_PROMOTION_FAIL_ONE_HARD_DEFECT_NOT_RELEASED",
+ "pcb_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+ "pro_sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+ "candidate_profile_sha256": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506",
+ "netlist_xml_sha256": "e50398f007413bd877478c523bb8ad7b9d232372eddf0fbf1ccbc610a1487213",
+ "closure_non_pcb_files_verified": 53,
+ "common_check": "opt/kicad-tools/kicad_tools.py check --config <new>/candidate-profile.json --only both",
+ "erc_total_incl_exclusions": 0,
+ "drc_violations": 0,
+ "drc_unconnected": 0,
+ "drc_schematic_parity": 0,
+ "source_unchanged": true,
+ "ref_pin_net_parity_equal": true,
+ "refs": 116,
+ "pins": 344,
+ "singleton_nc_nets": 39,
+ "nets": 89,
+ "non_system_fields": 1110,
+ "moved_vs_078": [
+  "D29",
+  "R88",
+  "C84",
+  "C78",
+  "R90"
+ ],
+ "hotloop_shoelace_mm2": 15.42875,
+ "hotloop_length_mm": 18.1196,
+ "hotloop_vias": 0,
+ "hard_defects": [
+  {
+   "id": "HD-1",
+   "ref": "C78.2",
+   "net": "/GND",
+   "pad": [
+    130.625,
+    81.1,
+    1.15,
+    1.8
+   ],
+   "via_uuid": "8e4785b7",
+   "via": [
+    130.9,
+    81.8
+   ],
+   "drill": 0.3,
+   "dia": 0.65,
+   "issue": "pre-existing 078 via now inside pasted C78 GND pad after C78 move (unfilled open hole); not caught by DRC",
+   "fix": "move via to (131.65,81.8); keep F 0.6 to pad; remove redundant B.Cu 1.5 seg; refill + COMMON check",
+   "candidate_nearest_foreign_mm": 0.478
+  }
+ ],
+ "writes": "read-only LoadBoard only; no SaveBoard"
+}
