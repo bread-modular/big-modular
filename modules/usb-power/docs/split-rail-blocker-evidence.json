@@ -1,0 +1,425 @@
+{
+  "status": "BLOCKED COMMON PCB EDIT PATH; NO SPLIT-RAIL HARDWARE IMPLEMENTATION",
+  "base_commit": "26306b089fbd9207a83ad69c4157fb701266ade5",
+  "source_hardware_changed": false,
+  "native_gate_scope": "unchanged current-main 043 source only; NOT a new split-rail design",
+  "common_edit_fault": {
+    "schema_version": 1,
+    "status": "error",
+    "error": "3D models, embedded files and images are unsupported dependencies; fail closed",
+    "accepted": false
+  },
+  "fault_location": "opt/kicad-tools/automation/api.py:90 (_closure)",
+  "native_results": {
+    "findings": {
+      "erc": {
+        "categories": {
+          "violations": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      },
+      "drc": {
+        "categories": {
+          "violations": 0,
+          "unconnected_items": 0,
+          "schematic_parity": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      }
+    },
+    "source_unchanged": true,
+    "exact_ref_pin_net_equal": true,
+    "components": 107,
+    "native_pins_including_NC": 334,
+    "explicit_NCs": 43,
+    "PCB_BOM_schematic_field_comparisons": 642,
+    "boards": {
+      "usb-power.kicad_pcb": {
+        "footprints": 111,
+        "tracks": 585,
+        "vias": 207,
+        "zones": 8,
+        "backside_components": 0
+      },
+      "usb-power-panel.kicad_pcb": {
+        "footprints": 6,
+        "tracks": 0,
+        "vias": 0,
+        "zones": 0,
+        "backside_components": 0
+      }
+    },
+    "panel_drc_findings": 0
+  },
+  "baseline_tests": {
+    "run": 114,
+    "pass": 111,
+    "errors": 3,
+    "failures": 0,
+    "skips": 0,
+    "error": "ModuleNotFoundError: No module named gerbonara",
+    "also_absent": "shapely",
+    "pinned_requirements": "tools/cam-requirements.txt"
+  },
+  "positive_value_scan": {
+    "status": "unimplemented, value-level only; exact resistor sourcing not audited",
+    "basic_tolerance_TCR_factors": [
+      0.9801,
+      1.0201
+    ],
+    "FB_current_sensitivity_A": [
+      -1e-07,
+      1e-07
+    ],
+    "FB_current_sensitivity_is_guarantee": false,
+    "datasheet_IFB_max_20nA_only_at_25C": true,
+    "ripple_each_direction_V": 0.1,
+    "P12_high_V": 12.299999999999999,
+    "dropout_bound_V": 0.45,
+    "accuracy_requires_input_at_least_V": 13.0,
+    "rows": [
+      {
+        "upper_ohm": [
+          10000,
+          0
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.519000000000002,
+        "trough_V": 12.670909322605628,
+        "peak_V": 14.406804611784512
+      },
+      {
+        "upper_ohm": [
+          10000,
+          180
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.74022,
+        "trough_V": 12.879113690412527,
+        "peak_V": 14.641755094796633
+      },
+      {
+        "upper_ohm": [
+          10000,
+          220
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.789380000000001,
+        "trough_V": 12.925381327702949,
+        "peak_V": 14.693966313243772
+      },
+      {
+        "upper_ohm": [
+          10000,
+          270
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.85083,
+        "trough_V": 12.98321587431598,
+        "peak_V": 14.759230336302693
+      },
+      {
+        "upper_ohm": [
+          10000,
+          300
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.887700000000002,
+        "trough_V": 13.017916602283796,
+        "peak_V": 14.798388750138049
+      },
+      {
+        "upper_ohm": [
+          10000,
+          330
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.924570000000001,
+        "trough_V": 13.052617330251612,
+        "peak_V": 14.8375471639734
+      },
+      {
+        "upper_ohm": [
+          10000,
+          390
+        ],
+        "lower_ohm": 1000,
+        "nominal_V": 13.998310000000002,
+        "trough_V": 13.122018786187246,
+        "peak_V": 14.915863991644107
+      }
+    ],
+    "selected_for_planning_only": {
+      "upper_ohm": [
+        10000,
+        330
+      ],
+      "lower_ohm": 1000,
+      "nominal_V": 13.924570000000001,
+      "trough_V": 13.052617330251612,
+      "peak_V": 14.8375471639734
+    }
+  },
+  "conditional_power_screen": {
+    "implemented": false,
+    "negative_raw_nominal_adverse_V": [
+      14.2,
+      14.9
+    ],
+    "negative_values_are_allocations_not_selected_feedback": true,
+    "positive_raw": {
+      "upper_ohm": [
+        10000,
+        330
+      ],
+      "lower_ohm": 1000,
+      "nominal_V": 13.924570000000001,
+      "trough_V": 13.052617330251612,
+      "peak_V": 14.8375471639734
+    },
+    "overhead_A_per_rail": 0.007,
+    "overhead_is_full_temperature_guarantee": false,
+    "source_voltage_nominal_adverse_V": [
+      9,
+      8.55
+    ],
+    "wiring_drop_V": 0.15,
+    "efuse_hot_resistance_ohm": 0.25,
+    "nominal_boost_mid_P5_efficiency": 0.9,
+    "adverse_boost_mid_P5_efficiency": 0.85,
+    "nominal_negative_efficiency": 0.8,
+    "adverse_negative_efficiency": 0.7,
+    "auxiliary_W": 0.15,
+    "current_allocation_A": 1.85,
+    "current_allocation_guaranteed": false,
+    "rows": [
+      {
+        "case": "positive_only",
+        "positive_mA": 800.0,
+        "negative_mA": 0,
+        "P5_mA": 100.0,
+        "output_W": {
+          "positive": 9.600000000000001,
+          "negative": 0,
+          "P5": 0.5
+        },
+        "nominal": {
+          "protected_bus_demand_W": 13.329308877777779,
+          "source_current_A": 1.5763290628688118,
+          "within_1p85A_illustrative_allocation": true,
+          "positive_LDO_loss_W": 1.6371279900000009,
+          "negative_LDO_loss_W": 0.0994,
+          "positive_theta_max_C_per_W_at_50C_125C": 45.81193434973888,
+          "negative_theta_max_C_per_W_at_50C_125C": 754.5271629778672
+        },
+        "adverse": {
+          "protected_bus_demand_W": 15.04966560156063,
+          "source_current_A": 1.8989484400007033,
+          "within_1p85A_illustrative_allocation": false,
+          "positive_LDO_loss_W": 2.613900561326534,
+          "negative_LDO_loss_W": 0.1043,
+          "positive_theta_max_C_per_W_at_50C_125C": 28.692751786218714,
+          "negative_theta_max_C_per_W_at_50C_125C": 719.0795781399808
+        }
+      },
+      {
+        "case": "negative_only",
+        "positive_mA": 0,
+        "negative_mA": 250.0,
+        "P5_mA": 100.0,
+        "output_W": {
+          "positive": 0,
+          "negative": 3.0,
+          "P5": 0.5
+        },
+        "nominal": {
+          "protected_bus_demand_W": 5.882468877777777,
+          "source_current_A": 0.6776580786047859,
+          "within_1p85A_illustrative_allocation": true,
+          "positive_LDO_loss_W": 0.09747199000000001,
+          "negative_LDO_loss_W": 0.6493999999999999,
+          "positive_theta_max_C_per_W_at_50C_125C": 769.4518189276735,
+          "negative_theta_max_C_per_W_at_50C_125C": 115.49122266707732
+        },
+        "adverse": {
+          "protected_bus_demand_W": 7.345419531266337,
+          "source_current_A": 0.8984805167891388,
+          "within_1p85A_illustrative_allocation": true,
+          "positive_LDO_loss_W": 0.10386283014781379,
+          "negative_LDO_loss_W": 0.9263480000000002,
+          "positive_theta_max_C_per_W_at_50C_125C": 722.1062616266352,
+          "negative_theta_max_C_per_W_at_50C_125C": 80.9630937833298
+        }
+      },
+      {
+        "case": "simultaneous_screen",
+        "positive_mA": 400.0,
+        "negative_mA": 200.0,
+        "P5_mA": 100.0,
+        "output_W": {
+          "positive": 4.800000000000001,
+          "negative": 2.4000000000000004,
+          "P5": 0.5
+        },
+        "nominal": {
+          "protected_bus_demand_W": 11.085055544444444,
+          "source_current_A": 1.3003116547227584,
+          "within_1p85A_illustrative_allocation": true,
+          "positive_LDO_loss_W": 0.8672999900000005,
+          "negative_LDO_loss_W": 0.5393999999999999,
+          "positive_theta_max_C_per_W_at_50C_125C": 86.47526907039392,
+          "negative_theta_max_C_per_W_at_50C_125C": 139.04338153503898
+        },
+        "adverse": {
+          "protected_bus_demand_W": 13.075693826917684,
+          "source_current_A": 1.6363188937405688,
+          "within_1p85A_illustrative_allocation": true,
+          "positive_LDO_loss_W": 1.3588816957371737,
+          "negative_LDO_loss_W": 0.7619384000000002,
+          "positive_theta_max_C_per_W_at_50C_125C": 55.19244260576605,
+          "negative_theta_max_C_per_W_at_50C_125C": 98.4331541762431
+        }
+      },
+      {
+        "case": "user_aspiration",
+        "positive_mA": 800.0,
+        "negative_mA": 150.0,
+        "P5_mA": 100.0,
+        "output_W": {
+          "positive": 9.600000000000001,
+          "negative": 1.7999999999999998,
+          "P5": 0.5
+        },
+        "nominal": {
+          "protected_bus_demand_W": 16.287642211111113,
+          "source_current_A": 1.9475579304174069,
+          "within_1p85A_illustrative_allocation": false,
+          "positive_LDO_loss_W": 1.6371279900000009,
+          "negative_LDO_loss_W": 0.4293999999999999,
+          "positive_theta_max_C_per_W_at_50C_125C": 45.81193434973888,
+          "negative_theta_max_C_per_W_at_50C_125C": 174.6623195156032
+        },
+        "adverse": {
+          "protected_bus_demand_W": 18.80596812256903,
+          "source_current_A": 2.411944971271346,
+          "within_1p85A_illustrative_allocation": false,
+          "positive_LDO_loss_W": 2.613900561326534,
+          "negative_LDO_loss_W": 0.5975288000000001,
+          "positive_theta_max_C_per_W_at_50C_125C": 28.692751786218714,
+          "negative_theta_max_C_per_W_at_50C_125C": 125.5169625296722
+        }
+      }
+    ],
+    "no_current_rating": true
+  },
+  "source_references": {
+    "TPS55340": "https://www.ti.com/lit/ds/symlink/tps55340.pdf",
+    "TPS7A4700": "https://www.ti.com/lit/ds/symlink/tps7a47.pdf",
+    "focused_negative_handoff": "electrical-investigation-046.md"
+  },
+  "raw_artifacts": {
+    "pcb-inspect.json": {
+      "path": "research/split-rail/pcb-inspect.json",
+      "sha256": "7aadb56521e45d12dec3f7f8515354c811a9385480f9d227eeadd17374616041"
+    },
+    "doctor.json": {
+      "path": "research/split-rail/doctor.json",
+      "sha256": "1e8f7c70ca708e6883e146f1593063fd42dfb8ff27a779da0b0611fd2d56e4fe"
+    },
+    "baseline-native/summary.json": {
+      "path": "research/split-rail/baseline-native/summary.json",
+      "sha256": "8eca45527767e5410849185321f3138e026579a560cd0500b4f3d28582de534a"
+    },
+    "baseline-native/erc.json": {
+      "path": "research/split-rail/baseline-native/erc.json",
+      "sha256": "496b8bd0be2fb62935252d716b042ef5422ecc0936369407501a6f70a7dc0bfb"
+    },
+    "baseline-native/drc.json": {
+      "path": "research/split-rail/baseline-native/drc.json",
+      "sha256": "81f5c355f520b4a13878040dc9fe6f2f3d956da4ad7fd67f657f97f457af8762"
+    },
+    "baseline-native/netlist.xml": {
+      "path": "research/split-rail/baseline-native/netlist.xml",
+      "sha256": "34dcb4f3fe7c677e3c6a4461419d3d8bc2265c140571aad50629e857d45ed78b"
+    },
+    "baseline-independent.json": {
+      "path": "research/split-rail/baseline-independent.json",
+      "sha256": "d42fc4f4a20f0d506a3f06f671bb147840ed276410e62fdfe7ea180f6f02a962"
+    },
+    "baseline-project.json": {
+      "path": "research/split-rail/baseline-project.json",
+      "sha256": "83f8bb56835e655e47152a49cb458d85ef0ea54f5542782884a8b91a085de836"
+    },
+    "baseline-tests.log": {
+      "path": "research/split-rail/baseline-tests.log",
+      "sha256": "67efe3aa1ba52436adf5e7254caf6ff9a420c0f621febccc97d9e9966be9eb2e"
+    },
+    "baseline-panel-drc.json": {
+      "path": "research/split-rail/baseline-panel-drc.json",
+      "sha256": "eddd8f3f38fae1c2a4757d0ae02fedbb7acbd015dc65b7e7370b219b3a648464"
+    },
+    "tps55340-catalog.json": {
+      "path": "research/split-rail/tps55340-catalog.json",
+      "sha256": "463eda113dd1f8004ce4582f18c728774b36fd6a4bf791b66476bc0ae778914d"
+    },
+    "tps55340.pdf": {
+      "path": "research/split-rail/tps55340.pdf",
+      "sha256": "e579aa4fcb549eab29e889f7f6dcbd0fd88cac2647082c65f102e411c3f666ca"
+    },
+    "tps7a47.pdf": {
+      "path": "research/split-rail/tps7a47.pdf",
+      "sha256": "8ca46a9968923d2ec9a4deedacfe37220ee5159f4570009cb7c3163661c5dfe0"
+    },
+    "baseline-top.png": {
+      "path": "research/split-rail/baseline-top.png",
+      "sha256": "adda5614bc823105fe1c0b8918dc663441cbf08a53de57842bced6713b5a5b6c"
+    },
+    "baseline-bipolar.png": {
+      "path": "research/split-rail/baseline-bipolar.png",
+      "sha256": "9c0326478c08f61051649d272da77400ab4bbaad33e95480a1e73cdb8c8d63ee"
+    }
+  },
+  "source_hashes": {
+    "modules/usb-power/hardware/01_input_protection.kicad_sch": "ea20151de3c821b978a1121ba121a453f32c124a4cd81c537d30327d12e17b83",
+    "modules/usb-power/hardware/02_hardgate.kicad_sch": "6d298942fe57d9cc761b549cc474bbbf2537c79db36058b11e128cef8027910b",
+    "modules/usb-power/hardware/03_bucks.kicad_sch": "935e9cd81fec3a35b4748936a3f045992fd832c514c1a55e4d3d8e5a3e58acd4",
+    "modules/usb-power/hardware/04_bipolar.kicad_sch": "2b50322c3e9e8e3df1ed638ca41964b7401dcf56fc2599adc2403557a3b24529",
+    "modules/usb-power/hardware/05_quiet_rails.kicad_sch": "da595d6babb884a2f4afc9423b5fbf263c853e859bf2afd10b78fc32697a55ee",
+    "modules/usb-power/hardware/07_output_rails.kicad_sch": "7087eecf3ab41a357df804749f59c9e2b71616816fa8a495a2b03c438f2a468c",
+    "modules/usb-power/hardware/BigModular.kicad_sym": "82c5b6f51703d7e8e9bca4f6ff075a6c1c2d40f88db91844ad36b4c2f7d0d92e",
+    "modules/usb-power/hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
+    "modules/usb-power/hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+    "modules/usb-power/hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+    "modules/usb-power/hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+    "modules/usb-power/hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod": "e1dae516e079b70c4736d001fb81bfb4ef5f9c2a37c8175223a44f83a04ff75f",
+    "modules/usb-power/hardware/BigModular.pretty/D_SMA.kicad_mod": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+    "modules/usb-power/hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+    "modules/usb-power/hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+    "modules/usb-power/hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": "f1154f7a5df90086a416a14a23effbbe3658ba33f3d7e5d2cc5e78493d66a6fc",
+    "modules/usb-power/hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+    "modules/usb-power/hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+    "modules/usb-power/hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+    "modules/usb-power/hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+    "modules/usb-power/hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794",
+    "modules/usb-power/hardware/BigModular.pretty/SOT-23-6.kicad_mod": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+    "modules/usb-power/hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+    "modules/usb-power/hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+    "modules/usb-power/hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+    "modules/usb-power/hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+    "modules/usb-power/hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
+    "modules/usb-power/hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+    "modules/usb-power/hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+    "modules/usb-power/hardware/fp-lib-table": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+    "modules/usb-power/hardware/sym-lib-table": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+    "modules/usb-power/hardware/usb-power.kicad_pcb": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
+    "modules/usb-power/hardware/usb-power.kicad_pro": "a06dc170d02a97f4b254dd63131fd2cdc055071bdeee5929002c3022d1c10c6e",
+    "modules/usb-power/hardware/usb-power.kicad_sch": "80bedaba5d4d355fc9acee67a6dc6a6145f45b6a83205f2a279a097fc1077dd1",
+    "modules/usb-power/tools/kicad-project.json": "072b753a5e117c980317e9dfeb914e8ac27aafcab20d7a28520eb66ae1a476c0"
+  },
+  "no_release_CAM_or_order_qualification": true,
+  "supervisor_stop": "Stop now; Sol will implement bounded shared-tool dependency support; no shared opt edit or dependency removal/bypass; fresh implementation context afterward. Opus KiCad permitted.",
+  "handoff_file": "modules/usb-power/docs/split-rail-handoff.md",
+  "file_tool_issue": "write_file failed to verify existing workspace ancestor; handoff was written with shell in the confirmed current workspace instead."
+}
