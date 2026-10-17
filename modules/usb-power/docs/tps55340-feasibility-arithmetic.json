@@ -1,0 +1,261 @@
+{
+  "status": "Feasibility arithmetic only; no implemented or tested rating; conditional efficiencies and thermal model.",
+  "baseline": "e797bec7137b12b8ba958de5abe4ba7d5d2a3de3",
+  "fresh_manufacturer_pdfs": [
+    {"name": "tps55340","url": "https://www.ti.com/lit/ds/symlink/tps55340.pdf","sha256": "e579aa4fcb549eab29e889f7f6dcbd0fd88cac2647082c65f102e411c3f666ca","bytes": 2932213,"retrieved_utc": "2026-10-17T09:27:38.611225+00:00"},
+    {"name": "tps65131","url": "https://www.ti.com/lit/ds/symlink/tps65131.pdf","sha256": "e8360b9509047317416cfd9163a09d8cdf5c8accbd4e702ad6a43292ef48e0ed","bytes": 3145069,"retrieved_utc": "2026-10-17T09:27:35.961829+00:00"},
+    {"name": "tps2660","url": "https://www.ti.com/lit/ds/symlink/tps2660.pdf","sha256": "b781cbce51984715771bde540df2b36404b4fae4b41e27166c84c19b6598e1de","bytes": 4118722,"retrieved_utc": "2026-10-17T09:27:35.725756+00:00"},
+    {"name": "tps7a47","url": "https://www.ti.com/lit/ds/symlink/tps7a47.pdf","sha256": "8ca46a9968923d2ec9a4deedacfe37220ee5159f4570009cb7c3163661c5dfe0","bytes": 2275327,"retrieved_utc": "2026-10-17T09:27:35.751214+00:00"},
+    {"name": "tps7a33","url": "https://www.ti.com/lit/ds/symlink/tps7a33.pdf","sha256": "1b607b7bf1350a0fcce4feb184a30e36d1a14c853157e4ae1e7966315a94d81c","bytes": 1992418,"retrieved_utc": "2026-10-17T09:27:35.503124+00:00"},
+    {"name": "tps54302","url": "https://www.ti.com/lit/ds/symlink/tps54302.pdf","sha256": "1632b388d1ba3a46c8e8f090ddfec2114c0f538cfb8364ddcda583fee3fdbdc5","bytes": 2316621,"retrieved_utc": "2026-10-17T09:27:35.752930+00:00"}
+  ],
+  "assumptions": {
+    "wire_drop_V": 0.15,
+    "efuse_hot_R_ohm": 0.25,
+    "illustrative_min_limit_A": 1.85,
+    "efuse_nominal_limit_A": 1.986755,
+    "positive_raw_overhead_A": 0.002,
+    "negative_raw_overhead_A": 0.007,
+    "aux_W": 0.15,
+    "cases": {
+      "nominal_9V": {
+        "Vsource": 9.0,
+        "eta_boost": 0.9,
+        "eta_mid": 0.9,
+        "eta_inv": 0.8,
+        "eta_5": 0.9,
+        "Vpos": 14.0,
+        "Vneg": 14.0,
+        "Vmid": 5.0,
+        "V5": 5.0
+      },
+      "low_8p55V": {
+        "Vsource": 8.55,
+        "eta_boost": 0.85,
+        "eta_mid": 0.85,
+        "eta_inv": 0.7,
+        "eta_5": 0.85,
+        "Vpos": 14.0,
+        "Vneg": 14.0,
+        "Vmid": 4.712887,
+        "V5": 5.0
+      },
+      "high_raw_sensitivity": {
+        "Vsource": 8.55,
+        "eta_boost": 0.85,
+        "eta_mid": 0.85,
+        "eta_inv": 0.7,
+        "eta_5": 0.85,
+        "Vpos": 14.7,
+        "Vneg": 14.917399,
+        "Vmid": 4.612887,
+        "V5": 5.418152
+      }
+    },
+    "standby_note": "Opposite rail unloaded but raw overhead retained. Disabled U4 boost branch passive/IC burden included in aux; no manufacturer separate-channel max standby guarantee."
+  },
+  "formulas": {
+    "bus": "Vp*(Ip+.002)/eta_boost + Vn*(In+.007)/(eta_mid*eta_inv) + V5*I5/eta_5 + .15",
+    "source": "Pbus = I*(Vsource-.15-.25*I); use lower-current root",
+    "peak_TI": "(Vmid+Vn)*(In+.007)/(Vmid*.64); coefficient is TI peak estimate, not an extra efficiency",
+    "CCM": "Iavg=Iout/(1-D); (Vin-Iavg*(Rsw+RL))*D=(Vout+Vd+Iavg*RL)*(1-D); ripple=(Vin-Iavg*(Rsw+RL))*D/(L*f); Ipeak=Iavg+ripple/2",
+    "LDO": "P=(Vraw-Vfinal)*Iexternal+Vraw*Ioverhead; Tj=Ta+theta*P; overhead entirely assigned to die conservatively"
+  },
+  "load_cases": [
+    {"name": "positive_600_alone","positive_A": 0.6,"negative_A": 0,"P5_A": 0.25,"positive_W": 7.2,"negative_W": 0,"total_external_nominal_W": 8.45,"cases": {"nominal_9V": {"bus_W": 11.0394444,"source_A": 1.2947502,"bus_V": 8.5263125,"limit_margin_A": 0.5552498,"MID_A": 0.0245,"negative_TI_eq4_peak_A": 0.0415625},"low_8p55V": {"bus_W": 11.7005882,"source_A": 1.4560224,"bus_V": 8.0359944,"limit_margin_A": 0.3939776,"MID_A": 0.0297058,"negative_TI_eq4_peak_A": 0.0434282},"high_raw_sensitivity": {"bus_W": 12.3301318,"source_A": 1.5383005,"bus_V": 8.0154249,"limit_margin_A": 0.3116995,"MID_A": 0.0323385,"negative_TI_eq4_peak_A": 0.0463078}}},
+    {"name": "positive_750_alone","positive_A": 0.75,"negative_A": 0,"P5_A": 0.25,"positive_W": 9.0,"negative_W": 0,"total_external_nominal_W": 10.25,"cases": {"nominal_9V": {"bus_W": 13.3727778,"source_A": 1.5817219,"bus_V": 8.4545695,"limit_margin_A": 0.2682781,"MID_A": 0.0245,"negative_TI_eq4_peak_A": 0.0415625},"low_8p55V": {"bus_W": 14.1711765,"source_A": 1.7815016,"bus_V": 7.9546246,"limit_margin_A": 0.0684984,"MID_A": 0.0297058,"negative_TI_eq4_peak_A": 0.0434282},"high_raw_sensitivity": {"bus_W": 14.9242494,"source_A": 1.8821247,"bus_V": 7.9294688,"limit_margin_A": -0.0321247,"MID_A": 0.0323385,"negative_TI_eq4_peak_A": 0.0463078}}},
+    {"name": "positive_850_alone","positive_A": 0.85,"negative_A": 0,"P5_A": 0.25,"positive_W": 10.2,"negative_W": 0,"total_external_nominal_W": 11.45,"cases": {"nominal_9V": {"bus_W": 14.9283333,"source_A": 1.7759092,"bus_V": 8.4060227,"limit_margin_A": 0.0740908,"MID_A": 0.0245,"negative_TI_eq4_peak_A": 0.0415625},"low_8p55V": {"bus_W": 15.8182353,"source_A": 2.0024644,"bus_V": 7.8993839,"limit_margin_A": -0.1524644,"MID_A": 0.0297058,"negative_TI_eq4_peak_A": 0.0434282},"high_raw_sensitivity": {"bus_W": 16.6536612,"source_A": 2.1158127,"bus_V": 7.8710468,"limit_margin_A": -0.2658127,"MID_A": 0.0323385,"negative_TI_eq4_peak_A": 0.0463078}}},
+    {"name": "positive_1A_alone","positive_A": 1,"negative_A": 0,"P5_A": 0.25,"positive_W": 12,"negative_W": 0,"total_external_nominal_W": 13.25,"cases": {"nominal_9V": {"bus_W": 17.2616667,"source_A": 2.0717137,"bus_V": 8.3320716,"limit_margin_A": -0.2217137,"MID_A": 0.0245,"negative_TI_eq4_peak_A": 0.0415625},"low_8p55V": {"bus_W": 18.2888235,"source_A": 2.3402384,"bus_V": 7.8149404,"limit_margin_A": -0.4902384,"MID_A": 0.0297058,"negative_TI_eq4_peak_A": 0.0434282},"high_raw_sensitivity": {"bus_W": 19.2477788,"source_A": 2.4734901,"bus_V": 7.7816275,"limit_margin_A": -0.6234901,"MID_A": 0.0323385,"negative_TI_eq4_peak_A": 0.0463078}}},
+    {"name": "negative_250_alone","positive_A": 0,"negative_A": 0.25,"P5_A": 0.25,"positive_W": 0,"negative_W": 3.0,"total_external_nominal_W": 4.25,"cases": {"nominal_9V": {"bus_W": 6.5672222,"source_A": 0.7583026,"bus_V": 8.6604244,"limit_margin_A": 1.0916974,"MID_A": 0.8995,"negative_TI_eq4_peak_A": 1.5259375},"low_8p55V": {"bus_W": 7.7005882,"source_A": 0.9432145,"bus_V": 8.1641964,"limit_margin_A": 0.9067855,"MID_A": 1.0906266,"negative_TI_eq4_peak_A": 1.5944354},"high_raw_sensitivity": {"bus_W": 8.2214759,"source_A": 1.0090502,"bus_V": 8.1477375,"limit_margin_A": 0.8409498,"MID_A": 1.1872861,"negative_TI_eq4_peak_A": 1.7001566}}},
+    {"name": "negative_300_alone","positive_A": 0,"negative_A": 0.3,"P5_A": 0.25,"positive_W": 0,"negative_W": 3.6,"total_external_nominal_W": 4.85,"cases": {"nominal_9V": {"bus_W": 7.5394444,"source_A": 0.8734667,"bus_V": 8.6316333,"limit_margin_A": 0.9765333,"MID_A": 1.0745,"negative_TI_eq4_peak_A": 1.8228125},"low_8p55V": {"bus_W": 8.8770588,"source_A": 1.0923024,"bus_V": 8.1269244,"limit_margin_A": 0.7576976,"MID_A": 1.3028108,"negative_TI_eq4_peak_A": 1.9046368},"high_raw_sensitivity": {"bus_W": 9.4750388,"source_A": 1.1686263,"bus_V": 8.1078434,"limit_margin_A": 0.6813737,"MID_A": 1.4182756,"negative_TI_eq4_peak_A": 2.0309264}}},
+    {"name": "recommended_400_200","positive_A": 0.4,"negative_A": 0.2,"P5_A": 0.25,"positive_W": 4.8,"negative_W": 2.4,"total_external_nominal_W": 8.45,"cases": {"nominal_9V": {"bus_W": 11.8172222,"source_A": 1.3898464,"bus_V": 8.5025384,"limit_margin_A": 0.4601536,"MID_A": 0.7245,"efuse_W": 0.4829182,"positive_stage_loss_W": 0.6253333,"inverter_total_loss_W": 0.7245,"mid_loss_W": 0.4025,"negative_TI_eq4_peak_A": 1.2290625},"low_8p55V": {"bus_W": 13.1123529,"source_A": 1.6411548,"bus_V": 7.9897113,"limit_margin_A": 0.2088452,"MID_A": 0.8784424,"efuse_W": 0.6733473,"positive_stage_loss_W": 0.9931765,"inverter_total_loss_W": 1.242,"mid_loss_W": 0.7305882,"negative_TI_eq4_peak_A": 1.2842339},"high_raw_sensitivity": {"bus_W": 13.88556,"source_A": 1.7435144,"bus_V": 7.9641214,"limit_margin_A": 0.1064856,"MID_A": 0.9562966,"efuse_W": 0.7599606,"positive_stage_loss_W": 1.0428353,"inverter_total_loss_W": 1.3233864,"mid_loss_W": 0.7784626,"negative_TI_eq4_peak_A": 1.3693869}}},
+    {"name": "stretch_600_200","positive_A": 0.6,"negative_A": 0.2,"P5_A": 0.25,"positive_W": 7.2,"negative_W": 2.4,"total_external_nominal_W": 10.85,"cases": {"nominal_9V": {"bus_W": 14.9283333,"source_A": 1.7759092,"bus_V": 8.4060227,"limit_margin_A": 0.0740908,"MID_A": 0.7245,"negative_TI_eq4_peak_A": 1.2290625},"low_8p55V": {"bus_W": 16.4064706,"source_A": 2.0821837,"bus_V": 7.8794541,"limit_margin_A": -0.2321837,"MID_A": 0.8784424,"negative_TI_eq4_peak_A": 1.2842339},"high_raw_sensitivity": {"bus_W": 17.3443835,"source_A": 2.2101931,"bus_V": 7.8474517,"limit_margin_A": -0.3601931,"MID_A": 0.9562966,"negative_TI_eq4_peak_A": 1.3693869}}},
+    {"name": "alternative_500_250","positive_A": 0.5,"negative_A": 0.25,"P5_A": 0.25,"positive_W": 6.0,"negative_W": 3.0,"total_external_nominal_W": 10.25,"cases": {"nominal_9V": {"bus_W": 14.345,"source_A": 1.7028127,"bus_V": 8.4242968,"limit_margin_A": 0.1471873,"MID_A": 0.8995,"negative_TI_eq4_peak_A": 1.5259375},"low_8p55V": {"bus_W": 15.9358824,"source_A": 2.0183739,"bus_V": 7.8954065,"limit_margin_A": -0.1683739,"MID_A": 1.0906266,"negative_TI_eq4_peak_A": 1.5944354},"high_raw_sensitivity": {"bus_W": 16.8685347,"source_A": 2.1451079,"bus_V": 7.863723,"limit_margin_A": -0.2951079,"MID_A": 1.1872861,"negative_TI_eq4_peak_A": 1.7001566}}}
+  ],
+  "ceilings": {
+    "nominal_9V": {
+      "protected_budget_W": 15.516875,
+      "with_5V_current_A": {
+        "0.25": {
+          "positive_alone_power_only_A": 0.8878348,
+          "positive_at_negative_200mA_power_only_A": 0.6378348
+        },
+        "0": {
+          "positive_alone_power_only_A": 0.9771205,
+          "positive_at_negative_200mA_power_only_A": 0.7271205
+        }
+      },
+      "negative_eq4_ceiling_at_1p8_A": 0.2961579,
+      "negative_eq4_ceiling_at_1p95_A": 0.3214211
+    },
+    "low_8p55V": {
+      "protected_budget_W": 14.684375,
+      "with_5V_current_A": {
+        "0.25": {
+          "positive_alone_power_only_A": 0.7811585,
+          "positive_at_negative_200mA_power_only_A": 0.4954442
+        },
+        "0": {
+          "positive_alone_power_only_A": 0.8704442,
+          "positive_at_negative_200mA_power_only_A": 0.5847299
+        }
+      },
+      "negative_eq4_ceiling_at_1p8_A": 0.2831341,
+      "negative_eq4_ceiling_at_1p95_A": 0.3073119
+    },
+    "high_raw_sensitivity": {
+      "protected_budget_W": 14.684375,
+      "with_5V_current_A": {
+        "0.25": {
+          "positive_alone_power_only_A": 0.7361297,
+          "positive_at_negative_200mA_power_only_A": 0.44619
+        },
+        "0": {
+          "positive_alone_power_only_A": 0.8282752,
+          "positive_at_negative_200mA_power_only_A": 0.5383354
+        }
+      },
+      "negative_eq4_ceiling_at_1p8_A": 0.2650926,
+      "negative_eq4_ceiling_at_1p95_A": 0.287767
+    }
+  },
+  "negative_CCM": [
+    {"case": "nominal","external_negative_A": 0.2,"Vmid": 5,"Vneg": 14,"switch_R": 0.33,"inductor_R": 0.031,"L_H": 4.7e-06,"f_Hz": 1250000.0,"diode_V": 0.5,"duty": 0.7557779,"average_A": 0.8475893,"ripple_App": 0.6038531,"peak_A": 1.1495158,"switch_conduction_W": 0.1867543,"U4_die_W_with_assumed_0p25W_switching": 0.4367543},
+    {"case": "nominal","external_negative_A": 0.25,"Vmid": 5,"Vneg": 14,"switch_R": 0.33,"inductor_R": 0.031,"L_H": 4.7e-06,"f_Hz": 1250000.0,"diode_V": 0.5,"duty": 0.7589808,"average_A": 1.0663052,"ripple_App": 0.5962119,"peak_A": 1.3644112,"switch_conduction_W": 0.2921982,"U4_die_W_with_assumed_0p25W_switching": 0.5421982},
+    {"case": "nominal","external_negative_A": 0.3,"Vmid": 5,"Vneg": 14,"switch_R": 0.33,"inductor_R": 0.031,"L_H": 4.7e-06,"f_Hz": 1250000.0,"diode_V": 0.5,"duty": 0.762305,"average_A": 1.291571,"ripple_App": 0.5882714,"peak_A": 1.5857068,"switch_conduction_W": 0.426897,"U4_die_W_with_assumed_0p25W_switching": 0.676897},
+    {"case": "lossy_corner","external_negative_A": 0.2,"Vmid": 4.612887,"Vneg": 14.917399,"switch_R": 0.62,"inductor_R": 0.05642,"L_H": 3.76e-06,"f_Hz": 1250000.0,"diode_V": 0.5,"duty": 0.7978828,"average_A": 1.0241581,"ripple_App": 0.6654896,"peak_A": 1.3569029,"switch_conduction_W": 0.5371345,"U4_die_W_with_assumed_0p25W_switching": 0.7871345},
+    {"case": "lossy_corner","external_negative_A": 0.25,"Vmid": 4.612887,"Vneg": 14.917399,"switch_R": 0.62,"inductor_R": 0.05642,"L_H": 3.76e-06,"f_Hz": 1250000.0,"diode_V": 0.5,"duty": 0.806632,"average_A": 1.3290721,"ripple_App": 0.6373896,"peak_A": 1.647767,"switch_conduction_W": 0.9003455,"U4_die_W_with_assumed_0p25W_switching": 1.1503455},
+    {"case": "lossy_corner","external_negative_A": 0.3,"Vmid": 4.612887,"Vneg": 14.917399,"switch_R": 0.62,"inductor_R": 0.05642,"L_H": 3.76e-06,"f_Hz": 1250000.0,"diode_V": 0.5,"duty": 0.8167886,"average_A": 1.6756597,"ripple_App": 0.6046733,"peak_A": 1.9779963,"switch_conduction_W": 1.4373427,"U4_die_W_with_assumed_0p25W_switching": 1.6873427}
+  ],
+  "thermal": [
+    {"positive_A": 0.4,"negative_A": 0.2,"case": "14V_raw_12V_final","positive_LDO_W": 0.828,"negative_LDO_W": 0.498,"Tj25_positive_C": [58.12,91.24],"Tj50_positive_C": [83.12,116.24],"Tj25_negative_C": [44.92,64.84],"Tj50_negative_C": [69.92,89.84],"theta_positive_max_at_50C_for_125C": 90.5797101},
+    {"positive_A": 0.4,"negative_A": 0.2,"case": "high_raw_low_output_sensitivity","positive_LDO_W": 1.2294,"negative_LDO_W": 0.8286882,"Tj25_positive_C": [74.176,123.352],"Tj50_positive_C": [99.176,148.352],"Tj25_negative_C": [58.1475277,91.2950554],"Tj50_negative_C": [83.1475277,116.2950554],"theta_positive_max_at_50C_for_125C": 61.0053685},
+    {"positive_A": 0.6,"negative_A": 0.2,"case": "14V_raw_12V_final","positive_LDO_W": 1.228,"negative_LDO_W": 0.498,"Tj25_positive_C": [74.12,123.24],"Tj50_positive_C": [99.12,148.24],"Tj25_negative_C": [44.92,64.84],"Tj50_negative_C": [69.92,89.84],"theta_positive_max_at_50C_for_125C": 61.0749186},
+    {"positive_A": 0.6,"negative_A": 0.2,"case": "high_raw_low_output_sensitivity","positive_LDO_W": 1.8294,"negative_LDO_W": 0.8286882,"Tj25_positive_C": [98.176,171.352],"Tj50_positive_C": [123.176,196.352],"Tj25_negative_C": [58.1475277,91.2950554],"Tj50_negative_C": [83.1475277,116.2950554],"theta_positive_max_at_50C_for_125C": 40.9970482},
+    {"positive_A": 0.75,"negative_A": 0,"case": "14V_raw_12V_final","positive_LDO_W": 1.528,"negative_LDO_W": 0.098,"Tj25_positive_C": [86.12,147.24],"Tj50_positive_C": [111.12,172.24],"Tj25_negative_C": [28.92,32.84],"Tj50_negative_C": [53.92,57.84],"theta_positive_max_at_50C_for_125C": 49.0837696},
+    {"positive_A": 0.75,"negative_A": 0,"case": "high_raw_low_output_sensitivity","positive_LDO_W": 2.2794,"negative_LDO_W": 0.1044218,"Tj25_positive_C": [116.176,207.352],"Tj50_positive_C": [141.176,232.352],"Tj25_negative_C": [29.1768717,33.3537434],"Tj50_negative_C": [54.1768717,58.3537434],"theta_positive_max_at_50C_for_125C": 32.9033956},
+    {"positive_A": 0,"negative_A": 0.25,"case": "14V_raw_12V_final","positive_LDO_W": 0.028,"negative_LDO_W": 0.598,"Tj25_positive_C": [26.12,27.24],"Tj50_positive_C": [51.12,52.24],"Tj25_negative_C": [48.92,72.84],"Tj50_negative_C": [73.92,97.84],"theta_positive_max_at_50C_for_125C": 2678.5714286},
+    {"positive_A": 0,"negative_A": 0.25,"case": "high_raw_low_output_sensitivity","positive_LDO_W": 0.0294,"negative_LDO_W": 1.0097548,"Tj25_positive_C": [26.176,27.352],"Tj50_positive_C": [51.176,52.352],"Tj25_negative_C": [65.3901917,105.7803834],"Tj50_negative_C": [90.3901917,130.7803834],"theta_positive_max_at_50C_for_125C": 2551.0204082},
+    {"positive_A": 0,"negative_A": 0.3,"case": "14V_raw_12V_final","positive_LDO_W": 0.028,"negative_LDO_W": 0.698,"Tj25_positive_C": [26.12,27.24],"Tj50_positive_C": [51.12,52.24],"Tj25_negative_C": [52.92,80.84],"Tj50_negative_C": [77.92,105.84],"theta_positive_max_at_50C_for_125C": 2678.5714286},
+    {"positive_A": 0,"negative_A": 0.3,"case": "high_raw_low_output_sensitivity","positive_LDO_W": 0.0294,"negative_LDO_W": 1.1908214,"Tj25_positive_C": [26.176,27.352],"Tj50_positive_C": [51.176,52.352],"Tj25_negative_C": [72.6328557,120.2657114],"Tj50_negative_C": [97.6328557,145.2657114],"theta_positive_max_at_50C_for_125C": 2551.0204082},
+    {"positive_A": 1,"negative_A": 0,"case": "14V_raw_12V_final","positive_LDO_W": 2.028,"negative_LDO_W": 0.098,"Tj25_positive_C": [106.12,187.24],"Tj50_positive_C": [131.12,212.24],"Tj25_negative_C": [28.92,32.84],"Tj50_negative_C": [53.92,57.84],"theta_positive_max_at_50C_for_125C": 36.9822485},
+    {"positive_A": 1,"negative_A": 0,"case": "high_raw_low_output_sensitivity","positive_LDO_W": 3.0294,"negative_LDO_W": 0.1044218,"Tj25_positive_C": [146.176,267.352],"Tj50_positive_C": [171.176,292.352],"Tj25_negative_C": [29.1768717,33.3537434],"Tj50_negative_C": [54.1768717,58.3537434],"theta_positive_max_at_50C_for_125C": 24.7573777}
+  ],
+  "positive_boost": {
+    "nominal_9V": {
+      "assumed_L_min_H": 8e-06,
+      "assumed_f_min_Hz": 460000.0,
+      "diode_V": 0.5,
+      "bus_V": 8.3875,
+      "duty": 0.4215517,
+      "ripple_App": 0.9608057,
+      "peak_at_1A_external_A": 2.3387238,
+      "switch_only_raw_ceiling_at_5p25_A": 2.5717497
+    },
+    "low_8p55V": {
+      "assumed_L_min_H": 8e-06,
+      "assumed_f_min_Hz": 460000.0,
+      "diode_V": 0.5,
+      "bus_V": 7.9375,
+      "duty": 0.4525862,
+      "ripple_App": 0.9761965,
+      "peak_at_1A_external_A": 2.567283,
+      "switch_only_raw_ceiling_at_5p25_A": 2.294854
+    },
+    "high_raw_sensitivity": {
+      "assumed_L_min_H": 8e-06,
+      "assumed_f_min_Hz": 460000.0,
+      "diode_V": 0.5,
+      "bus_V": 7.9375,
+      "duty": 0.4777961,
+      "ripple_App": 1.0305723,
+      "peak_at_1A_external_A": 2.6984302,
+      "switch_only_raw_ceiling_at_5p25_A": 2.1730968
+    }
+  },
+  "without_5V_examples": {
+    "recommended_400_200": {
+      "nominal_9V": {
+        "bus_W": 10.4283333,
+        "source_A": 1.2204167,
+        "bus_V": 8.5448958,
+        "limit_margin_A": 0.6295833,
+        "MID_A": 0.7245,
+        "efuse_W": 0.3723542,
+        "positive_stage_loss_W": 0.6253333,
+        "inverter_total_loss_W": 0.7245,
+        "mid_loss_W": 0.4025,
+        "negative_TI_eq4_peak_A": 1.2290625
+      },
+      "low_8p55V": {
+        "bus_W": 11.6417647,
+        "source_A": 1.4483571,
+        "bus_V": 8.0379107,
+        "limit_margin_A": 0.4016429,
+        "MID_A": 0.8784424,
+        "efuse_W": 0.5244345,
+        "positive_stage_loss_W": 0.9931765,
+        "inverter_total_loss_W": 1.242,
+        "mid_loss_W": 0.7305882,
+        "negative_TI_eq4_peak_A": 1.2842339
+      },
+      "high_raw_sensitivity": {
+        "bus_W": 12.2919859,
+        "source_A": 1.5333024,
+        "bus_V": 8.0166744,
+        "limit_margin_A": 0.3166976,
+        "MID_A": 0.9562966,
+        "efuse_W": 0.587754,
+        "positive_stage_loss_W": 1.0428353,
+        "inverter_total_loss_W": 1.3233864,
+        "mid_loss_W": 0.7784626,
+        "negative_TI_eq4_peak_A": 1.3693869
+      }
+    },
+    "stretch_600_200": {
+      "nominal_9V": {
+        "bus_W": 13.5394444,
+        "source_A": 1.6024156,
+        "bus_V": 8.4493961,
+        "limit_margin_A": 0.2475844,
+        "MID_A": 0.7245,
+        "efuse_W": 0.641934,
+        "positive_stage_loss_W": 0.9364444,
+        "inverter_total_loss_W": 0.7245,
+        "mid_loss_W": 0.4025,
+        "negative_TI_eq4_peak_A": 1.2290625
+      },
+      "low_8p55V": {
+        "bus_W": 14.9358824,
+        "source_A": 1.8836844,
+        "bus_V": 7.9290789,
+        "limit_margin_A": -0.0336844,
+        "MID_A": 0.8784424,
+        "efuse_W": 0.8870667,
+        "positive_stage_loss_W": 1.4872941,
+        "inverter_total_loss_W": 1.242,
+        "mid_loss_W": 0.7305882,
+        "negative_TI_eq4_peak_A": 1.2842339
+      },
+      "high_raw_sensitivity": {
+        "bus_W": 15.7508094,
+        "source_A": 1.9933541,
+        "bus_V": 7.9016615,
+        "limit_margin_A": -0.1433541,
+        "MID_A": 0.9562966,
+        "efuse_W": 0.9933652,
+        "positive_stage_loss_W": 1.5616588,
+        "inverter_total_loss_W": 1.3233864,
+        "mid_loss_W": 0.7784626,
+        "negative_TI_eq4_peak_A": 1.3693869
+      }
+    }
+  },
+  "model_limits": [
+    "No guaranteed efficiency, one-channel standby bound, temperature or tested current rating.",
+    "Negative minimum switch limit is tabulated at VIN=3.6V, not established at our MID corners.",
+    "TI Eq4 is a screening estimate; unloaded-row peak values are not physical light-load waveform predictions.",
+    "The 1.85A allocation is illustrative, not a guaranteed measured 6.04kohm/9V current threshold.",
+    "High raw values are a sensitivity screen, not a completed feedback design or guaranteed correlated envelope."
+  ]
+}
