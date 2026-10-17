@@ -1,0 +1,165 @@
+{
+  "carrier": {
+    "Gerber_objects": {
+      "B_Cu": 335,
+      "B_Mask": 34,
+      "B_Silkscreen": 1655,
+      "Edge_Cuts": 12,
+      "F_Cu": 863,
+      "F_Mask": 306,
+      "F_Silkscreen": 584,
+      "In1_Cu": 219,
+      "In2_Cu": 291,
+      "NPTH": 8,
+      "PTH": 218
+    },
+    "HRO_SMT_lands_copper_mask_paste": 12,
+    "HRO_shells_copper_masks_no_paste": 4,
+    "IPC_net_aliases_unique": 87,
+    "IPC_records_checked": 506,
+    "In1_GND_connected_polygon": true,
+    "RTN_GND_CAM_isolation": {
+      "B_Cu": {
+        "GND_RTN_gap_mm": 0.250499,
+        "GND_area_mm2": 437.058012,
+        "RTN_area_mm2": 87.433717
+      },
+      "F_Cu": {
+        "GND_RTN_gap_mm": 0.2505,
+        "GND_area_mm2": 191.541302,
+        "RTN_area_mm2": 32.195725
+      },
+      "In1_Cu": {
+        "GND_RTN_gap_mm": 0.250499,
+        "GND_area_mm2": 2339.954682,
+        "RTN_area_mm2": 3.392835
+      },
+      "In2_Cu": {
+        "GND_RTN_gap_mm": 0.703843,
+        "GND_area_mm2": 50.495533,
+        "RTN_area_mm2": 30.508205
+      }
+    },
+    "U2_8_17_RTN_9_GND_verified": true,
+    "backside_SMD_refs": [
+      "C63",
+      "C64",
+      "C65",
+      "C66"
+    ],
+    "backside_paste_pads": 8,
+    "boundary_only_barrels_native": 5,
+    "closed_outline_loops": 1,
+    "drill_tools_mm_hits": {
+      "NPTH": {
+        "0.650": 2,
+        "0.900": 2,
+        "2.500": 2,
+        "3.200": 2
+      },
+      "PTH": {
+        "0.300": 196,
+        "0.600": 4,
+        "0.900": 2,
+        "1.000": 16
+      }
+    },
+    "max_drill_coordinate_quantization_error_mm": {
+      "NPTH": 0,
+      "PTH": 0.0005
+    },
+    "native_CAM_VIP_UUID_sets_equal": true,
+    "native_drills_all_uniquely_matched": true,
+    "outline_centerline_dimensions_mm": [
+      100.5,
+      30.0
+    ],
+    "slot_centreline_endpoints_CAM_mm": [
+      [
+        "slot",
+        64.93,
+        -97.245,
+        64.93,
+        -96.145,
+        0.6
+      ],
+      [
+        "slot",
+        64.93,
+        -101.175,
+        64.93,
+        -100.575,
+        0.6
+      ],
+      [
+        "slot",
+        73.57,
+        -97.245,
+        73.57,
+        -96.145,
+        0.6
+      ],
+      [
+        "slot",
+        73.57,
+        -101.175,
+        73.57,
+        -100.575,
+        0.6
+      ]
+    ],
+    "via_barrels_exposed_SMD_Cu": 92,
+    "via_barrels_paste": 91
+  },
+  "geometry_chord_error_mm": 0.0001,
+  "parser_notices": [
+    {
+      "file": "carrier/big_modular-PTH.drl",
+      "message": "G90 after M48 header; accepted by parser, absolute coordinates independently verified"
+    },
+    {
+      "file": "carrier/big_modular-NPTH.drl",
+      "message": "G90 after M48 header; accepted by parser, absolute coordinates independently verified"
+    },
+    {
+      "file": "passive-panel/front_panel-PTH.drl",
+      "message": "G90 after M48 header; accepted by parser, absolute coordinates independently verified"
+    },
+    {
+      "file": "passive-panel/front_panel-NPTH.drl",
+      "message": "G90 after M48 header; accepted by parser, absolute coordinates independently verified"
+    }
+  ],
+  "passive-panel": {
+    "Gerber_objects": {
+      "B_Cu": 0,
+      "B_Mask": 0,
+      "B_Silkscreen": 0,
+      "Edge_Cuts": 12,
+      "F_Cu": 0,
+      "F_Mask": 0,
+      "F_Silkscreen": 238,
+      "NPTH": 6,
+      "PTH": 0
+    },
+    "closed_outline_loops": 2,
+    "drill_tools_mm_hits": {
+      "NPTH": {
+        "3.200": 5,
+        "3.600": 1
+      },
+      "PTH": {}
+    },
+    "max_drill_coordinate_quantization_error_mm": {
+      "NPTH": 0,
+      "PTH": 0
+    },
+    "native_drills_all_uniquely_matched": true,
+    "outline_centerline_dimensions_mm": [
+      9.8,
+      128.5
+    ],
+    "slot_centreline_endpoints_CAM_mm": []
+  },
+  "status": "actual CAM checks passed; no assembly/product qualification"
+}

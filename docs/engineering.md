@@ -1,3 +1,11 @@
+# Current LDO-R1 prototype
+
+See [LDO revision](ldo-revision.md) for approved raw+13.530611/-13.920585V,
+corrected4/6/4/3 capacitor banks and conditional prototype limits. Canonical PCB and
+schematic are synchronized; the new release is production/ldo-r1. HRO-R1 is
+historical and STALE for this circuit. No bench/noise/thermal/current qualification.
+The following V1 decisions remain the unchanged upstream/interface baseline.
+
 # V1 electrical decisions / remaining engineering limits
 
 ## Autonomous start and retry
@@ -88,7 +96,7 @@ continuous simultaneous +/-800mA rating or manufacturing readiness is claimed.
 - sunlord-manufacturer.pdf: `f6add0cc224973d6a723875e6f68198874aa5c617d9c80b4641c7ee507afd41b`
 - cenker-manufacturer.pdf: `10bd98836aa0fff546c424cba958d33f06c76d703ba7a35c897349fbf5b8992c`
 
-## Current HRO source checkpoint
+## Historical HRO source checkpoint
 
 Carrier421 segments,133 vias,4 zones. Exact HRO C165948 connector, native13-pin
 paired-land symbol, BOM, local library and mechanical aperture are synchronized.

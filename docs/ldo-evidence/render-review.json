@@ -1,0 +1,51 @@
+{
+  "status": "Final native schematic/layout and actual exported CAM visually reviewed",
+  "PDF": {
+    "path": "docs/schematic.pdf",
+    "pages": 7,
+    "sha256": "ad171eb64a516383a9fc3aea84ac230a00df37624df255c2fa907079c315161e"
+  },
+  "reviewed_images": {
+    "docs/ldo-review/quiet-rails.png": {
+      "sha256": "97175c244186130825e865b758e644c8d2dae46940e33c6f4f8b8681f8a22704",
+      "url": "/uploads/f3dc375d-503f-4aa2-b095-e16b8be878f9.webp"
+    },
+    "docs/ldo-review/carrier-top.png": {
+      "sha256": "07a02ef38af474e20e8b35782510a0107af6da7c19ac56a6f636700b8e80bc7e",
+      "url": "/uploads/e05b96cb-df60-46af-b82c-686e8eab8045.webp"
+    },
+    "docs/ldo-review/carrier-back.png": {
+      "sha256": "aed53dde15652bea8526e18d13c2a491781e21abbd6d60af2e968973c676473c",
+      "url": "/uploads/108fd4b8-6334-4069-a7e7-3dc71e92ddc9.webp"
+    },
+    "production/ldo-r1/previews/carrier-copper-cam.png": {
+      "sha256": "98accf752cff4795f78d6d8ec6e5a0d9564e2669e6a1dfec77c3de5c6f0ccd76",
+      "url": "/uploads/cb45e921-bc08-4ec3-87f9-3bf7fda00188.webp"
+    },
+    "production/ldo-r1/previews/carrier-mask-silk-cam.png": {
+      "sha256": "7dadaa1912dd0519f99a6d128055a18818946ddf57e36a49d9b1761ed1299e4f",
+      "url": "/uploads/da753faa-094b-432c-ad2a-4d8fc98294e3.webp"
+    },
+    "production/ldo-r1/previews/ldo-cam.png": {
+      "sha256": "edeba12c3168ae6a9b790d7ff89c7a17f95a279c224482f484c2c24e7b76017e",
+      "url": "/uploads/c75a381f-3c8d-497c-9e5b-925ca7be6f66.webp"
+    },
+    "production/ldo-r1/previews/hro-cam.png": {
+      "sha256": "ff3be60e42bddeffe25bbb12f4477c0c3747615a50c2dc3617828507f3adf9c9",
+      "url": "/uploads/d2980a7a-82da-4d30-8c93-0719e6294be2.webp"
+    },
+    "production/ldo-r1/previews/passive-panel-detail.png": {
+      "sha256": "590a6f023032dd25aa8f79b63a18171a4a7385acbaefb19827041f2f2501cd55",
+      "url": "/uploads/d2b1d1d7-5f33-43b7-9ecf-954d108e27ad.webp"
+    }
+  },
+  "observations": [
+    "4/6/4/3 capacitor banks visible; negative EN/NR/FB and both EP21=GND preserved",
+    "All original top placements retained; C67 front and C63-C66 back",
+    "Back schematic/native identity and full mechanical envelope contract verified separately",
+    "Actual four-layer CAM has continuous In1 GND and isolated eFuse RTN",
+    "Mask/silk/8 back paste lands and USB12 SMT lands/4 plated slots/2 NPTH inspected",
+    "Passive panel actual artwork byte-identical to HRO-R1"
+  ],
+  "bench_qualification": false
+}

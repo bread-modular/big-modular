@@ -1,0 +1,85 @@
+{
+  "status": "PASS FOR EXPLICIT PROTOTYPE SCREEN; not a guaranteed minimum or measured/qualified stability",
+  "mpn": "CL31A226KAHNNNE",
+  "code": "C12891",
+  "banks": {
+    "positive_input": {
+      "refs": [
+        "C48",
+        "C49",
+        "C50",
+        "C63"
+      ],
+      "bias_V": 14.8,
+      "nominal_uF": 88,
+      "bias_retention_typical": 0.19688881460532004,
+      "typical_uF": 17.326215685268163,
+      "screened_effective_uF": 12.591827249268636,
+      "required_effective_uF": 10,
+      "screen_pass": true
+    },
+    "positive_output": {
+      "refs": [
+        "C51",
+        "C52",
+        "C53",
+        "C64",
+        "C65",
+        "C66"
+      ],
+      "bias_V": 12.4,
+      "nominal_uF": 132,
+      "bias_retention_typical": 0.25007520079727497,
+      "typical_uF": 33.009926505240294,
+      "screened_effective_uF": 23.989964087683383,
+      "required_effective_uF": 20,
+      "screen_pass": true
+    },
+    "negative_input": {
+      "refs": [
+        "C54",
+        "C55",
+        "C56",
+        "C67"
+      ],
+      "bias_V": 14.8,
+      "nominal_uF": 88,
+      "bias_retention_typical": 0.19688881460532004,
+      "typical_uF": 17.326215685268163,
+      "screened_effective_uF": 12.591827249268636,
+      "required_effective_uF": 10,
+      "screen_pass": true
+    },
+    "negative_output": {
+      "refs": [
+        "C57",
+        "C58",
+        "C59"
+      ],
+      "bias_V": 12.4,
+      "nominal_uF": 66,
+      "bias_retention_typical": 0.25007520079727497,
+      "typical_uF": 16.504963252620147,
+      "screened_effective_uF": 11.994982043841691,
+      "required_effective_uF": 10,
+      "screen_pass": true
+    }
+  },
+  "factors": {
+    "tolerance": 0.9,
+    "temperature": 0.85,
+    "aging_allowance": 0.95
+  },
+  "conditions": "See manufacturer-mlcc-data.json. Bias14.8V covers actual raw peak<=14.647V; output12.4V covers<=12.386V. No raw setpoint increase.",
+  "rejected_original": "Three caps on positive OUT only16.675uF typical at12.3V before extra derating; negative IN screen9.578uF. Not accepted.",
+  "ESR_class_review": "Low-ESR nonpolar ceramic per TI TPS7A47 7.2.2.1 and TPS7A33 8.1.2. No required minimum ESR introduced.",
+  "layout_review": "U13 entire input/output bank including C67 is FRONT per TPS7A33 layout guidance. U12 primary3-per-bank remain directly front-local; four supplementary positive-rail caps on back use short bottom paths and existing returns. This departs from all-same-side best-performance recommendation; no stability/noise guarantee. Verify startup/load-step loop behavior, input ringing and rail collapse at prototype bring-up.",
+  "prototype_limits": [
+    "X5R<=85C at capacitor body",
+    "5% aging allowance is not lifetime qualification",
+    "manufacturer typical curves at120Hz/0.5Vrms are not a guaranteed small-signal biased production minimum",
+    "verify actual lot at operating bias and temperature before relying on accuracy/noise/current",
+    "no substitute MPN or smaller population without re-screening"
+  ],
+  "two_sided_assembly": "C63-C66 BACK, C67 FRONT; no Economy PCBA approval. Bare PCB FAB only."
+}

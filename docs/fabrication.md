@@ -1,4 +1,4 @@
-# HRO bare-PCB fabrication contract — HRO-R1
+# LDO-R1 prototype bare-PCB fabrication contract
 
 This release is **bare-PCB artwork ready with the required fabrication process**,
 not an assembled-product qualification, supplier acceptance or purchasing approval.
@@ -26,7 +26,7 @@ Do not manufacture the carrier as an ordinary unfilled/tented-via board.
   green solder mask both sides, white legend. Mask apertures as supplied; do not
   expand them or delete narrow dams without review. Finished mask registration to
   copper <=0.05 mm each axis. Minimum retained dam target 0.10 mm.
-- All **133 through vias**, the **0.300 mm ViaDrill tool** in the PTH file, require
+- All **196 through vias**, the **0.300 mm ViaDrill tool** in the PTH file, require
   **IPC-4761 Type VII: nonconductive epoxy filling, planarization, copper capping
   on BOTH sides**, followed by the specified surface finish/mask. Copper cap minimum
   15 um; local dimple or protrusion <=25 um. These numerical limits are project
@@ -34,8 +34,8 @@ Do not manufacture the carrier as an ordinary unfilled/tented-via board.
   copper minimum 20 um. Provide fabricator process confirmation and sample/coupon
   evidence for fill/cap quality. No solder-mask plugging, ordinary tenting, or open
   via substitution. Do NOT fill the component holes or the four USB shell slots.
-- Native and independent CAM audit identify **35** via barrels with positive-area intersection of exposed
-  SMD copper and **35** intersecting paste. Another **7** touch/lie within1um of a
+- Native and independent CAM audit identify **92** via barrels with positive-area intersection of exposed
+  SMD copper and **91** intersecting paste. Another **5** touch/lie within1um of a
   pad/paste boundary (separately recorded; not called positive overlap). All remaining
   vias get the same uniform
   process for unambiguous fabrication; they are not each claimed to require VIP.
@@ -116,9 +116,9 @@ for actual Gerber/Excellon parsing and SVG rendering, and Shapely for geometric
 comparison, not a native-board preview. Optional local environment only:
 
 ```sh
-/usr/bin/python3 -m venv --system-site-packages research/hro-cam-venv
-research/hro-cam-venv/bin/python -m pip install -r tools/cam-requirements.txt
-research/hro-cam-venv/bin/python -B tools/release_hro.py --output research/new-hro-release --reports research/new-hro-native
+/usr/bin/python3 -m venv --system-site-packages research/ldo-029/cam-venv
+research/ldo-029/cam-venv/bin/python -m pip install -r tools/cam-requirements.txt
+research/ldo-029/cam-venv/bin/python -B tools/release_hro.py --output research/new-ldo-release --reports research/new-hro-native
 ```
 
 No installs into main, Bread or system Python. No uploads, orders or assembly CSVs.
@@ -146,3 +146,33 @@ Standard 1.6 mm +/-10% thickness is used as an explicit acceptance bound, not an
 unqualified exact 1.6 mm assumption. [source](https://www.viasion.com/pcb-manufacturing-tolerances/)
 Gerbonara provides actual Gerber/Excellon/IPC-356 parsing and SVG primitives.
 [source](https://gerbolyze.gitlab.io/gerbonara/)
+
+## LDO-R1 capacitor and two-sided assembly requirements
+
+Exact CL31A226KAHNNNE / C12891 banks: IN+4, OUT+6, IN-4, OUT-3.
+Manufacturer typical bias data with 0.9 tolerance x0.85 temperature x0.95 aging
+allowance screens to 12.592 /23.990 /12.592 /11.995uF at14.8 /12.4 /14.8 /12.4V.
+These are **screening estimates, not guaranteed or measured minima**. No unreviewed
+substitutions. X5R body temperature <=85C; lot/bias/temperature, input ringing,
+load-step stability, startup/reverse/shutdown, noise/PSRR and thermal tests remain.
+
+C63-C66 are BACK; C67 is FRONT. U13 capacitors remain front-side as TI recommends.
+U12 original front-local caps remain; back caps supplement effective capacitance.
+Two-sided prototype assembly is NOT qualified for Economy PCBA. No assembly BOM/CPL
+is supplied; root BOM.csv is design identity only, not an order/allocation file.
+Separate stencil-support ZIP contains both actual paste layers, eight back lands;
+no stencil thickness/reflow/adhesive process approval is implied.
+
+Back mounting datum remains X3.1mm. Exact caps maximum1.8mm +0.15mm solder
++0.10mm registration leave **1.05mm** inside the module's X0 neighbor boundary.
+Actual native B.CrtYd extents +0.10mm in-plane registration were checked against
+both brackets, screw/driver volumes, all plated-tail projections, panel and harness.
+Keep the back strap/support corridor X0..3.1,Y41.5..72.5,Z25..29mm; no strap loop
+may sweep across caps outside that reserved corridor. See mechanics.json and
+backside-fit.json. This is a dimensioned fit check, not an assembled sample test.
+The panel geometry/holes/legend and all fixed interfaces are unchanged.
+
+HRO-R1 under production/hro-r1 is historical, STALE for this LDO circuit, and is
+not relabeled or overwritten. Its source hashes refer to Git base c82ca1c.
+This release is an uncommitted workspace revision: exact manifests, not base HEAD
+alone, identify inputs. Supervisor reviews/merges; no commit/push/order/upload here.

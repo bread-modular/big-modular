@@ -1,14 +1,17 @@
 {
-  "input_routed_sha256": "e7e25d1a040b20819c983bb07cf910b98a3aa06ba0c69723f0e9927cfe322eb9",
-  "accepted_revision": "HRO local land, six escapes + CC2 via/approach; no non-USB copper edits",
+  "status": "LDO-R1 reviewed intentional capacitor revision; native/mechanical/screen gates pass",
+  "board_sha256": "5c0c6ed366d2f86486748e5a9849dfa34b0669807b9712262310d56e28c6eafc",
   "routing_contract": {
-    "tracks_and_vias": "e82f731cd8abc0346527a49f9b6100125f6a2d2a81d4673149e2b1d943b9d54c",
-    "footprints_pin_net_pose": "ffc28866536f3205db5cec3ce484f12aa6468bf9c47239dd8b0d3006cb899e51",
-    "zones": "be65ab74cc2a816747efb96e2157b47a7b7481a1c52eee616596823b5846e672",
+    "tracks_and_vias": "d16a1608bbb42fae60a79bf9abc6a4ac4703b1f51968914fad49b118128699f3",
+    "footprints_pin_net_pose": "e1f894dc22c3bd479bd6b0dd56c05c1258fb3bd9d59b4ba88b0b0dee0a3d98ec",
+    "zones": "082ec1c76367982c77a127439c445dd9bf68899e7da8e96614d5fe52649b45aa",
     "outline": "3571138d472efaf95ccc5d0b96b5f57a3a2b1134993baae5140638b534c4a1c8",
     "layers": "924636f8350009e3ede2c9298d1e4e449f3c81cc8d44fde088756a345def9358",
     "setup": "debbc80ac9cee09e4b07167c532f7842435bf6bec5ef868441c3db1a9a6dbcb1"
   },
-  "pre_fabrication_metadata_setup_sha256": "7717b276ac0ce3b4c9861c243ae123c60d7d4769ee3489061d73c20326397013",
-  "fabrication_metadata_delta": "Only stack material Tg170, ENIG and mask/silk colors made explicit; all dimensions/layers/routing/vias/pads/nets/zones/edges unchanged from 024."
+  "inventory": {
+    "tracks": 536,
+    "vias": 196,
+    "zones": 8
+  }
 }

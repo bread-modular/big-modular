@@ -1,40 +1,22 @@
-# Big Modular — autonomous 9 V V1
+# Big Modular — LDO-R1 prototype
 
-**V1 — HRO bare-PCB artwork ready with required fabrication process.**
-64 electrical footprints, 421 segments, 133 vias and four copper zones on the carrier;
-passive front panel. USB is HRO TYPE-C-31-M-12 / C165948. See
-[HRO identity/fit review](docs/usb-hro-review.md) and [build/check instructions](docs/build.md).
+**Canonical PCB integration complete; capacitor-corrected prototype.**
+93 electrical+4 mechanical footprints,536 tracks,196 filled/capped through vias,
+8 zones; unchanged passive panel and fixed USB/retry/redLED/output interfaces.
 
 ```
-USB_VBUS -> F1 -> VIN9 -> TPS26600 UV/OV eFuse -> VPROT
-                 CH224A fixed9V                 |-> TPS54302 -> MID -> TPS65131 +/-12V
-                                               |-> TPS54302 -> final P5
-J7 board output: -12V / GND / +12V / +5V; D10 red power LED on final P5 via 1k
-SW1: press eFuse shutdown, release retry (UV/OV/current/thermal protections remain)
+9V PD -> TPS26600 -> TPS54302 MID -> TPS65131 raw+13.531/-13.921V
+                                        -> TPS7A4700/TPS7A3301 -> quiet +/-12V
+                 -> independent TPS54302 -> final+5V (no LDO)
 ```
 
-- No MCU, firmware, AUX regulator, PG permission transistor/jumper, sensing or debug header.
-- Nominal voltage window: UV rising 7.878 V / OV rising 10.781 V, with hysteresis.
-  This accepts a 9 V voltage, **not proof of a negotiated PD contract/current budget**.
-- [Current schematic PDF](docs/schematic.pdf), [engineering decisions/sourcing](docs/engineering.md),
-  [mechanical interface/pin map](docs/mechanics.md), [build/check instructions](docs/build.md).
-- `tools/electrical_design.py` + `build_project.py` + `render_schematic.py` generate
-  native sheets/libraries, `BOM.csv` and `docs/pin-net-audit.json`; BOM is not an order CSV.
-  Accepted native PCB routing is canonical; the default stack build copies, never reconstructs it.
-- [Current assembly PDF](docs/assembly.pdf): unchanged outlines/M3 brackets; top USB
-  axis Y33.5mm, red3mm LED Y43mm, retry Y49.5mm (panel-top coordinates).
-  Cutbacks suit this bracket/M3 hardware, not all 90-degree face mounts; see [mounting](docs/mechanics.md#m3-bracket-face-mounting-and-current-cutbacks).
-- Independent fabrication ZIPs include process requirements and actual CAM evidence.
-  No assembly CSV or physical/bench qualification is claimed. No commit/merge/push/order was performed.
-
-## Bare-PCB release / user-controlled merge
-
-- [Fabrication requirements](docs/fabrication.md): 4-layer carrier,133 TypeVII filled/capped vias;
-  separate passive panel. Not an assembled/product qualification.
-- [Tracked release](production/hro-r1/manifest.json): two independent PCB ZIPs,
-  separate stencil-support ZIP, actual CAM previews and source/file SHA256.
-- [Toleranced HRO fit](docs/usb-fit.pdf): 5.00 x10.80 R0.60 opening, positive0.233mm
-  worst-case margin including machining/registration/finished thickness.
-- [Safe merge readiness](docs/hro-integration.md): canonical workspace hardware already
-  preserves the user's saved main presentation/settings. User reviews and merges;
-  no assistant commit/merge, no manual file integration, no .history/GUI/lock changes.
+- [Schematic PDF](docs/schematic.pdf) · [layout/review images](docs/ldo-review/)
+- [New prototype FAB release](production/ldo-r1/manifest.json) · [fabrication requirements](docs/fabrication.md)
+- [Electrical/capacitor limits](docs/ldo-revision.md) · [build/check commands](docs/build.md)
+- [Backside clearance](docs/ldo-evidence/backside-fit.json) · [mechanical interfaces](docs/mechanics.md)
+- Capacitor screen: IN+/OUT+/IN-/OUT- =12.592/23.990/12.592/11.995uF;
+  typical bias with tolerance/temp/aging allowances, NOT measured/guaranteed minima.
+- C63-C66 back-side, C67 front-side. Bare-PCB FAB only; no assembly qualification,
+  order/allocation approval, verified noise/PSRR/thermal/current or reverse/shutdown performance.
+- Historical production/hro-r1 is STALE for this circuit and untouched.
+  Supervisor reviews/merges; no assistant commit/merge/push or vendor upload.

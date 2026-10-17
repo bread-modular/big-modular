@@ -1,15 +1,15 @@
 # Agent entry point
 
-Read and follow [`Code.md`](Code.md) before working in this repository.
+Read Code.md. For KiCad read opt/kicad-tools/skills/kicad-workflow/SKILL.md;
+for sourcing/assembly also read skills/jlcpcb-assembly/SKILL.md and jlcpcb docs.
+Common-tool-first; inspect actual CLI help. Do not strip dependencies or weaken rules.
 
-For KiCad work, load `.agents/skills/kicad-workflow/SKILL.md`; for part sourcing,
-BOM audits or assembly work, also load `.agents/skills/jlcpcb-assembly/SKILL.md`.
-Use the local `opt/kicad-tools` common toolkit first and read actual CLI help.
+Current task: finish LDO-R1 prototype capacitor correction, preserve closed routing,
+verify and export fresh bare-PCB release in the assigned isolated workspace.
+Latest user authorization supersedes historical source-only/no-export restrictions.
+Canonical hardware now contains the reviewed LDO board, not the old64-part carrier.
+Read docs/ldo-handoff.md and docs/ldo-revision.md. Historical HRO-R1 stays untouched.
 
-Bread Modular is read-only. No commits without the user's explicit permission.
-Current V1 HRO source is routed and electrically closed. Preserve canonical routing.
-User authorized toleranced HRO aperture/stack/process notes and bare-PCB fabrication
-outputs under tracked production/. Common opt/kicad-tools first; narrow gaps are
-recorded in docs/fabrication.md. No advisor. No commit/merge/push/main writes,
-GUI interaction, uploads, orders or purchases; user performs review/workspace merge.
-Bread and predecessor024 remain read-only. See docs/hro-integration.md.
+No advisor/delegation, commit, merge, push, main writes, GUI, orders or vendor uploads.
+Supervisor reviews/merges the workspace; assistant does not merge. Workspace028
+and Bread Modular are read-only. No arbitrary raw-rail/current guarantee changes.
