@@ -1,0 +1,83 @@
+{
+  "release": "LDO-R1 current prototype assembly",
+  "status": "Assembly BOM/CPL generated from the frozen 037 source with the existing common exporter; not a supplier preview, order or assembly qualification",
+  "source": {
+    "pcb": "hardware/big_modular.kicad_pcb",
+    "pcb_sha256": "7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3",
+    "schematic": "hardware/big_modular.kicad_sch",
+    "schematic_sha256": "52046f74d709cb1a075ba766d01b14d6f720abff58218778ae9bcbdf4818ed85"
+  },
+  "exporter": {
+    "path": "opt/kicad-tools/jlcpcb/export.py",
+    "sha256": "06f08a6d0e1f7883efdeb00528d656044a24f0913b19f7618f788f63a9ed394b",
+    "command": "python3 -B opt/kicad-tools/jlcpcb/export.py hardware --board big_modular --schematic big_modular.kicad_sch --include-through-hole --side top --require-part-numbers -o <scratch>",
+    "kicad_cli": "10.0.6",
+    "origin": "KiCad drill/place origin",
+    "units": "mm",
+    "side": "top",
+    "include_through_hole": true
+  },
+  "counts": {
+    "design_refs": 99,
+    "non_DNP_design_refs": 98,
+    "purchased_fitted_parts": 97,
+    "bom_rows": 49,
+    "cpl_rows": 97,
+    "missing_lcsc": 0,
+    "per_board_qty_sum": 97
+  },
+  "exclusions": {
+    "D10": "Do not populate (user-authorized DNP; physical footprint/pads retained)",
+    "J7": "Excluded from position files (manual IDC wire landing, not a purchased header)"
+  },
+  "explicit_inclusions": {
+    "J1": "Hybrid USB connector included via --include-through-hole because of plated shell slots; shell soldering remains a supplier/process gate",
+    "SW1": "TL3340AF160QG SMT reticle switch included; J-lead/case paste remains a supplier/process gate"
+  },
+  "validation": {
+    "bom_cpl_reference_sets_equal": true,
+    "duplicate_refs": 0,
+    "D10_absent_from_both": true,
+    "J7_absent_from_both": true,
+    "J1_present_both": true,
+    "SW1_present_both": true,
+    "side_all_top": true,
+    "native_field_mismatches": 0,
+    "centroid_coordinate_mismatches": 0,
+    "manual_csv_edits": false,
+    "rotations_deg": {
+      "0": 51,
+      "90": 10,
+      "180": 34,
+      "270": 2
+    }
+  },
+  "sourcing": {
+    "fitted_parts_with_economy_observation": 97,
+    "unique_codes": 45,
+    "all_economy_eligible_observed": true,
+    "classification_counts": {
+      "Basic": 54,
+      "Extended": 43
+    },
+    "rc_instance_counts": {
+      "Basic": 50,
+      "Extended": 29
+    },
+    "evidence": "assembly/sourcing-evidence.json (dated public snapshots shipped with the release; not allocation or stock reservation)",
+    "evidence_sha256": "95fd4e4214769c0d9ec54f5fd8ce2a34d5dd07df2e6e05c6f8a077008d8bef30"
+  },
+  "human_order_gates": [
+    "supplier BOM/CPL preview, rotation and pin-1/polarity check",
+    "J1 shell-slot soldering process and SW1 J-lead/case-paste process review",
+    "current stock/attrition/minimum assembly quantity and order options",
+    "assembly/current/thermal/bench qualification and physical fit"
+  ],
+  "files": {
+    "bom.csv": "ba296e35116f88177365dc9277d2e23fe3f7d6f0dfa5d3255f7749b701101594",
+    "positions.csv": "ff053596799535cfadd5b2321818c17b4874d9bae5da95cd5267913fa6aba4ad",
+    "export-report.json": "c7436c3588b63e41f87b9427d862c3da4f65823fcfcbef663ffe3ed36a65903a",
+    "exceptions.json": "945c771f87a7d964bf99e216033137ab5f61de61d42535b55001298dad5b48f7",
+    "sourcing-evidence.json": "95fd4e4214769c0d9ec54f5fd8ce2a34d5dd07df2e6e05c6f8a077008d8bef30"
+  }
+}

@@ -1,3 +1,11 @@
+# Current checkpoint override
+
+The exact 037 basic-passive correction is accepted in canonical `hardware/`: exact
+R4/R8/R36 series networks with R77-R82, C10 0402 4.5p, and D10 DNP (footprint/pads
+retained, not fitted or purchased). D10 is not a manual purchased part.
+Source/native ERC/DRC/warnings/exclusions/opens/parity are zero; production/ldo-r1
+is re-exported from this frozen source, including the JLC assembly BOM/CPL.
+
 # Big Modular instructions
 
 Read AGENTS.md and README.md. Work only in this isolated workspace. No advisor,
@@ -10,8 +18,10 @@ are read-only. No external project changes.
 Preserve9V PD/TPS26600 protection, autonomous retry, both TPS54302 bucks and finalP5
 buck-only circuit, fixed connectors/UI/panel/outline/stack. TPS65131 raw rails are
 +13.530610667/-13.920584956V, followed by exact TPS7A4700RGWR/TPS7A3301RGWR.
-LDO-R1 capacitor fix uses4/6/4/3 parallel exactC12891 banks. C63-C66 are the ONLY
-back parts; C67 is front. Keep the narrow side/height/bracket/access safety contract.
+LDO-R1 capacitor fix uses4/6/4/3 parallel exactC12891 banks. All components are
+front-side (single-side assembly); no B.Cu electrical footprints or B.Paste
+component apertures, while B.Cu routing/mask/drill layers remain. C67 is front.
+Keep the narrow side/height/bracket/access safety contract.
 Never reuse retiredD11/D12. No simultaneous800mA guarantee or bench qualification.
 Bare-PCB exports are explicitly authorized under production/ldo-r1; HRO-R1 is
 historical, not current. No assembly/order/allocation approval is implied.

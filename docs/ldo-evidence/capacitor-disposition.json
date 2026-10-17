@@ -73,7 +73,7 @@
   "conditions": "See manufacturer-mlcc-data.json. Bias14.8V covers actual raw peak<=14.647V; output12.4V covers<=12.386V. No raw setpoint increase.",
   "rejected_original": "Three caps on positive OUT only16.675uF typical at12.3V before extra derating; negative IN screen9.578uF. Not accepted.",
   "ESR_class_review": "Low-ESR nonpolar ceramic per TI TPS7A47 7.2.2.1 and TPS7A33 8.1.2. No required minimum ESR introduced.",
-  "layout_review": "U13 entire input/output bank including C67 is FRONT per TPS7A33 layout guidance. U12 primary3-per-bank remain directly front-local; four supplementary positive-rail caps on back use short bottom paths and existing returns. This departs from all-same-side best-performance recommendation; no stability/noise guarantee. Verify startup/load-step loop behavior, input ringing and rail collapse at prototype bring-up.",
+  "layout_review": "All C63-C67 are FRONT. U13 entire input/output bank including C67 is front per TPS7A33 layout guidance. U12 three-per-bank and the four supplementary positive-rail caps are also front-local, so banks share one side; no B.Cu components or B.Paste apertures. No stability/noise guarantee. Verify startup/load-step loop behavior, input ringing and rail collapse at prototype bring-up.",
   "prototype_limits": [
     "X5R<=85C at capacitor body",
     "5% aging allowance is not lifetime qualification",
@@ -81,5 +81,5 @@
     "verify actual lot at operating bias and temperature before relying on accuracy/noise/current",
     "no substitute MPN or smaller population without re-screening"
   ],
-  "two_sided_assembly": "C63-C66 BACK, C67 FRONT; no Economy PCBA approval. Bare PCB FAB only."
+  "assembly_side": "Single-side front; C63-C67 FRONT; zero B.Cu electrical footprints and zero B.Paste component apertures; no Economy PCBA approval. Bare PCB FAB only."
 }

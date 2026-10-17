@@ -34,6 +34,15 @@ def render(hw,sheets,lib,uid,source=None):
             d=parts[props['Reference'][2]]
             updates={'Value':d['value'],'Footprint':d['fp'],'MPN':d['mpn'],'LCSC':d['lcsc'],'NOTE':d['note'],'Datasheet':d['datasheet']}
             if d.get('manufacturer'):updates['Manufacturer']=d['manufacturer']
+            if d['ref']=='D10':
+                one(symbol,'dnp')[1]=atom('yes')
+                updates['JLCPCB Exclude']='yes'
+                updates['JLCPCB Audit Requirements']=json.dumps({'reason':'D10 is DNP by user; no fitted purchasing or assembly.'})
+            if d['ref'] in ('J1','SW1'):
+                # Explicitly source these SMT interfaces; supplier mixed shell/J-lead
+                # process acceptance is separate, not a hidden manual exclusion.
+                updates['JLCPCB Exclude']='no'
+                updates['JLCPCB Audit Requirements']=json.dumps({'assembly':'jlcpcb','reason':'Economy catalog candidate; supplier process/preview approval pending.'})
             for key,value in updates.items():
                 if key not in props:
                     prop=copy.deepcopy(props['Value']);prop[1]=key;prop[2]=value

@@ -1,9 +1,11 @@
 # LDO-R1 quiet-rail prototype
 
-Canonical PCB integration is complete. The completed workspace028 placement was
-retained: all88 original electrical footprints keep exact poses, sides, pads and nets.
-Five parallel capacitors fix the demonstrated deficiency. Final inventory is93
-electrical+4 mechanical footprints,536 tracks,196 filled/capped vias,8 zones.
+Canonical PCB integration is complete. The 037 basic-passive correction is accepted:
+the88 original electrical footprints retain their accepted poses except the reviewed
+R4 relocation, and C10 changed from0603 to0402 at the same anchor. Final inventory is
+99 electrical+4 mechanical footprints,552 tracks,201 ordinary 0.300 mm plated through
+vias,8 zones. R4/R8/R36 use exact series networks R77-R82; D10 is DNP with its
+footprint and pads retained (R32 remains fitted).
 No final+5V LDO was added; the independent buck circuit and fixed interfaces remain.
 
 ## Approved setpoints and limits
@@ -41,15 +43,11 @@ interactions require measurement before performance claims. Keep X5R bodies<=85C
 Low-ESR ceramic matches both TI recommendations; individual typical ESR is not
 assembled-bank impedance. No artificial series ESR or changed raw voltage.
 
-C63-C66 are BACK; C67 is FRONT, keeping all U13 capacitors front-local as TI
-recommends. U12 original three-per-bank remain front-local; back parts supplement
-capacitance via short paths and existing returns. This departs from the preferred
-all-same-side U12 layout: verify ringing/load-step stability, not just DC capacitance.
-Only one oldP12 bottom segment was replaced; no P5/MID copper was changed from028.
-Back body+solder+registration=2.05mm from fixedX3.1 datum leaves1.05mm insideX0.
-Actual back courtyards clear brackets, mounting/tool volumes, THT tails, panel,
-harness and the reserved strap corridor; see `ldo-evidence/backside-fit.json`.
-No Economy PCBA qualification is claimed for this two-sided assembly.
+All C63-C66 and C67 are FRONT (single-side assembly); no B.Cu parts and no B.Paste
+component apertures. U13 and U12 capacitors are front-local, so bank placement and
+short return paths share one side; bank values/counts remain 4/6/4/3 and exact
+C12891 identity is unchanged. B.Cu routing/mask/copper and drill layers remain.
+No Economy PCBA qualification is claimed for this single-side assembly.
 
 C60 remains1uF/50V X7R positiveNR, C61 remains100nF/50V X7R negativeNR/SS,
 and C62 remains10nF/50V X7R across the entire negative upper divider. No timing,

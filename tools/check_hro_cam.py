@@ -216,25 +216,28 @@ def inspect_cam(root, hardware, native_audit):
         if disk.intersection(pasteshape).area>1e-9:cam_paste.append(v['uuid'])
     assert set(cam_vip)=={v['uuid'] for v in native_audit['vias'] if any(h['side']=='F.Cu' for h in v['exposed_SMD_copper_hits'])}
     assert set(cam_paste)=={v['uuid'] for v in native_audit['vias'] if 'F.Cu' in v['paste_overlap_sides']}
-    # Include the four reviewed back-side MLCCs: compare UUID sets on BOTH sides.
+    # Single-side assembly: B.Paste must carry zero component apertures and there
+    # must be no B.Cu SMD lands. B.Cu routing/mask/drill artwork is still retained.
     bottompaste=read_gerber(root/'assembly-stencil-support-only/big_modular-B_Paste.gbr')
+    assert not bottompaste.objects,'B.Paste component apertures present'
     backpads=[o for o in cam['B_Cu'].objects if isinstance(o,go.Flash) and '.P' in o.attrs
               and any(k=='.AperFunction' and v[0] in ('SMDPad','HeatsinkPad') for k,v in o.aperture.attrs)]
-    assert {o.attrs['.P'][0] for o in backpads}=={'C63','C64','C65','C66'}
-    assert len(backpads)==8 and len(bottompaste.objects)==8
-    backexposed=area(backpads).intersection(bottommask);backpaste=area(bottompaste.objects)
-    for o in backpads:
-        shape=object_area(o);assert shape.difference(bottommask).area<1e-7
-        assert shape.difference(backpaste).area<1e-7
-    for v in native_audit['vias']:
-        x,y=v['xy_mm'];disk=Point(x,-y).buffer(v['drill_mm']/2,quad_segs=128)
-        if disk.intersection(backexposed).area>1e-9:cam_vip.append(v['uuid'])
-        if disk.intersection(backpaste).area>1e-9:cam_paste.append(v['uuid'])
+    assert not backpads,'B.Cu SMD lands present'
     cam_vip=sorted(set(cam_vip));cam_paste=sorted(set(cam_paste))
     assert set(cam_vip)=={v['uuid'] for v in native_audit['vias'] if v['exposed_SMD_copper_hits']}
     assert set(cam_paste)=={v['uuid'] for v in native_audit['vias'] if v['paste_overlap_sides']}
     assert len(cam_vip)==native_audit['barrels_over_exposed_SMD_copper']
     assert len(cam_paste)==native_audit['barrels_over_paste']
+    # Ordinary tenting: an exported mask layer must not open over a via barrel
+    # except where a pad's own aperture already exposes that region. No claim is
+    # made that mask seals a barrel lying inside an exposed/thermal pad.
+    padcu={layer:area([o for o in cam[layer].objects if '.P' in o.attrs]) for layer in ['F_Cu','B_Cu']}
+    for mask_name,layer,mask in [('F_Mask','F_Cu',topmask),('B_Mask','B_Cu',bottommask)]:
+        extra=[]
+        for v in native_audit['vias']:
+            x,y=v['xy_mm'];disk=Point(x,-y).buffer(v['drill_mm']/2,quad_segs=128)
+            if disk.intersection(mask).difference(padcu[layer]).area>1e-9:extra.append(v['uuid'])
+        assert not extra,(mask_name,'via-specific mask opening outside pads',len(extra))
     # Net-attributed CAM copper: RTN and GND must be distinct at every layer.
     net_geometries={};isolation={}
     for layer in ['F_Cu','In1_Cu','In2_Cu','B_Cu']:
@@ -268,8 +271,9 @@ def inspect_cam(root, hardware, native_audit):
         hits=[o for o in copperpads if o.attrs['.P'][:2]==('U2',pin)];assert len(hits)==1 and hits[0].attrs['.N']==(net,)
     reports['carrier'].update({'HRO_SMT_lands_copper_mask_paste':12,'HRO_shells_copper_masks_no_paste':4,
         'via_barrels_exposed_SMD_Cu':len(cam_vip),'via_barrels_paste':len(cam_paste),'native_CAM_VIP_UUID_sets_equal':True,'boundary_only_barrels_native':native_audit['barrels_at_SMD_boundary_only'],
+        'via_specific_mask_openings_outside_pads':0,'mask_tenting_checked_both_sides':True,
         'IPC_records_checked':len(mapped),'IPC_net_aliases_unique':len(netmap),'RTN_GND_CAM_isolation':isolation,
-        'In1_GND_connected_polygon':True,'U2_8_17_RTN_9_GND_verified':True,'backside_SMD_refs':['C63','C64','C65','C66'],'backside_paste_pads':8})
+        'In1_GND_connected_polygon':True,'U2_8_17_RTN_9_GND_verified':True,'single_side_assembly':True,'B_Cu_SMD_lands':0,'B_Paste_component_apertures':0})
     outline=cam['Edge_Cuts'];pth=cam['PTH'];npth=cam['NPTH'];bound=((49,-103),(151,-71.5))
     render_grid(preview/'carrier-copper-cam.svg','ACTUAL EXPORTED CAM | four copper layers, drills + closed profile',[
         (n,bound,[(cam[n],'#eda942'),(outline,'#bfd0dd'),(pth,'#101b29'),(npth,'#f46c65')]) for n in ['F_Cu','In1_Cu','In2_Cu','B_Cu']],1600)

@@ -8,8 +8,8 @@ from sexp import parse,nodes,one
 class ElectricalPrototypeTests(unittest.TestCase):
     def test_independent_roles_bom_and_visible_feedback(self):
         result=check(ROOT/'hardware',ROOT/'docs/pin-net-audit.json',ROOT/'BOM.csv')
-        self.assertEqual(result['independent_pin_checks'],221)
-        self.assertEqual(result['local_visible_wire_checks'],53)
+        self.assertEqual(result['independent_pin_checks'],233)
+        self.assertEqual(result['local_visible_wire_checks'],59)
     def test_mid_dc_corner_is_not_a_transient_guarantee(self):
         upper=.611*(1+100e3*1.001/(12.9e3*.999))
         self.assertGreater(upper,5.35);self.assertLess(upper,5.5)

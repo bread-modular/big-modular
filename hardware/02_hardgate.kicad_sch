@@ -1132,16 +1132,6 @@
 	)
 	(wire
 		(pts
-			(xy 353.06 109.22) (xy 353.06 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "246dd1ff-a2ca-5146-b87b-5d24bae7a327")
-	)
-	(wire
-		(pts
 			(xy 317.5 143.51) (xy 317.5 160.02)
 		)
 		(stroke
@@ -1189,16 +1179,6 @@
 			(type default)
 		)
 		(uuid "30d94e80-c810-58fb-a88b-0ebf1d6d9232")
-	)
-	(wire
-		(pts
-			(xy 284.48 99.06) (xy 284.48 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "35a248fa-0b9d-5623-89fe-15e8ea75e66e")
 	)
 	(wire
 		(pts
@@ -1282,16 +1262,6 @@
 	)
 	(wire
 		(pts
-			(xy 353.06 156.21) (xy 353.06 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "57c971c4-6407-5ded-b53b-b5ad9724355b")
-	)
-	(wire
-		(pts
 			(xy 172.72 99.06) (xy 198.12 99.06)
 		)
 		(stroke
@@ -1299,16 +1269,6 @@
 			(type default)
 		)
 		(uuid "591701aa-01d7-54f0-9b5f-06314d97b577")
-	)
-	(wire
-		(pts
-			(xy 284.48 130.81) (xy 284.48 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5b0eb00f-2a91-57fa-ac85-aea81fce4239")
 	)
 	(wire
 		(pts
@@ -1359,16 +1319,6 @@
 			(type default)
 		)
 		(uuid "76489b77-2dfe-5e26-82d4-776c48e945d1")
-	)
-	(wire
-		(pts
-			(xy 68.58 95.25) (xy 68.58 102.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "77ef4357-9c7e-514b-8a5e-3989ad56b78c")
 	)
 	(wire
 		(pts
@@ -1631,16 +1581,6 @@
 			(type default)
 		)
 		(uuid "f6d1041a-8fb5-57f5-90cd-8d268688e08d")
-	)
-	(wire
-		(pts
-			(xy 68.58 58.42) (xy 68.58 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f8067787-dc76-5336-9f44-1ee029b998c4")
 	)
 	(label "UV_EN"
 		(at 125.73 76.2 0)
@@ -2035,415 +1975,9 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "BigModular:Device_C")
-		(at 365.76 78.74 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "2adda49d-ba92-52cc-8acd-6f3b131cf637")
-		(property "Reference" "C4"
-			(at 368.76 77.54 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10u 25V X7R"
-			(at 368.76 80.08 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.15 1.15)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "BigModular:C_1206_3216Metric"
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 365.76 78.74 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" ""
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "LCSC" ""
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval."
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Exclude" "no"
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Audit Requirements" "{}"
-			(at 365.76 78.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "05a894d1-f732-50c5-8872-293682b83954")
-		)
-		(pin "2"
-			(uuid "eff36987-36d9-55c4-b1d8-300c11e05a54")
-		)
-		(instances
-			(project "big_modular"
-				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56"
-					(reference "C4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BigModular:TL3340AF160QG")
-		(at 137.16 205.74 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "32c1d4ae-24f4-5dc1-96b1-5fcc78fd3012")
-		(property "Reference" "SW1"
-			(at 137.16 194.66 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "TL3340AF160QG"
-			(at 137.16 197.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.15 1.15)
-				)
-			)
-		)
-		(property "Footprint" "BigModular:SW_TL3340AF160QG_HandSolder"
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Datasheet" "https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf"
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 137.16 205.74 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "TL3340AF160QG"
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "LCSC" ""
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "NOTE" "P021301 Rev B contacts1+3 common; contact2 RTN. Press disables eFuse; release retries latch-off subject to UV/OV. Internal SHDN pullup only; no downstream EN or external supply load. Case MP floating."
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Exclude" "yes"
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Audit Requirements" "{\"assembly\": \"manual\", \"reason\": \"User-selected manual interface/LED, excluded from JLC placement.\"}"
-			(at 137.16 205.74 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c8ac8653-6b31-5804-97b8-d5f35eec3fdd")
-		)
-		(pin "3"
-			(uuid "17d9471e-10b2-5a1f-a4ad-3f66154f1b06")
-		)
-		(pin "2"
-			(uuid "c212fd1f-8a80-5697-8a91-59db308e1216")
-		)
-		(pin "MP"
-			(uuid "7d6a7d54-6321-5468-b96b-9e507402f2f0")
-		)
-		(instances
-			(project "big_modular"
-				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56"
-					(reference "SW1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BigModular:Device_R")
-		(at 353.06 152.4 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "5803d81b-ccd6-544d-b0d3-11b22584b983")
-		(property "Reference" "R36"
-			(at 356.06 151.2 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "402k 1%"
-			(at 356.06 153.74 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.15 1.15)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "BigModular:R_0603_1608Metric"
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 353.06 152.4 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF4023T5E"
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "LCSC" "C23048"
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "NOTE" "Prototype candidate; qualify ratings, land pattern and operating corners."
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Exclude" "no"
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Audit Requirements" "{}"
-			(at 353.06 152.4 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c8b7c8f5-e0cf-5992-9ae8-b67655f65924")
-		)
-		(pin "2"
-			(uuid "8f8be1ab-3d7d-5729-a643-42f9f466be90")
-		)
-		(instances
-			(project "big_modular"
-				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56"
-					(reference "R36")
-					(unit 1)
-				)
-			)
-		)
-	)
+	(symbol (lib_id "BigModular:Device_C") (at 365.76 78.74 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "2adda49d-ba92-52cc-8acd-6f3b131cf637") (property "Reference" "C4" (at 368.76 77.54 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "10u 25V X7R" (at 368.76 80.08 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:C_1206_3216Metric" (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B106KAHNNNE_C14860.pdf" (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 365.76 78.74 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "CL31B106KAHNNNE" (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C14860" (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval." (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 365.76 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "05a894d1-f732-50c5-8872-293682b83954")) (pin "2" (uuid "eff36987-36d9-55c4-b1d8-300c11e05a54")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "C4") (unit 1)))) (property "Manufacturer" "Samsung Electro-Mechanics" (at 368.76 80.08 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(symbol (lib_id "BigModular:TL3340AF160QG") (at 137.16 205.74 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "32c1d4ae-24f4-5dc1-96b1-5fcc78fd3012") (property "Reference" "SW1" (at 137.16 194.66 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "Value" "TL3340AF160QG" (at 137.16 197.2 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)))) (property "Footprint" "BigModular:SW_TL3340AF160QG_HandSolder" (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf" (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 137.16 205.74 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "TL3340AF160QG" (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C2886925" (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "P021301 Rev B contacts1+3 common; contact2 RTN. Press disables eFuse; release retries latch-off subject to UV/OV. Internal SHDN pullup only; no downstream EN or external supply load. Case MP floating. Extended/Economy catalog candidate; SMT J-leads/case paste retained. No supplier process/quote approval." (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{\"assembly\": \"jlcpcb\", \"reason\": \"Economy catalog candidate; supplier process/preview approval pending.\"}" (at 137.16 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "c8ac8653-6b31-5804-97b8-d5f35eec3fdd")) (pin "3" (uuid "17d9471e-10b2-5a1f-a4ad-3f66154f1b06")) (pin "2" (uuid "c212fd1f-8a80-5697-8a91-59db308e1216")) (pin "MP" (uuid "7d6a7d54-6321-5468-b96b-9e507402f2f0")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "SW1") (unit 1)))) (property "Manufacturer" "E-Switch" (at 137.16 197.2 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) hide)))
+	(symbol (lib_id "BigModular:Device_R") (at 353.06 127 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "5803d81b-ccd6-544d-b0d3-11b22584b983") (property "Reference" "R36" (at 356.06 125.8 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "300k 1%" (at 356.06 128.34 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF3003T5E_C23024.pdf" (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 353.06 127 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF3003T5E" (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C23024" (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 353.06 127 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "c8b7c8f5-e0cf-5992-9ae8-b67655f65924")) (pin "2" (uuid "8f8be1ab-3d7d-5729-a643-42f9f466be90")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R36") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 356.06 128.34 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
 	(symbol
 		(lib_id "BigModular:Device_R")
 		(at 121.92 101.6 0)
@@ -3027,141 +2561,7 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "BigModular:Device_R")
-		(at 284.48 127 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d617607b-7c97-5a41-b8f6-4c8449374296")
-		(property "Reference" "R8"
-			(at 287.48 125.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "6.04k 1%"
-			(at 287.48 128.34 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.15 1.15)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "BigModular:R_0603_1608Metric"
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 284.48 127 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF6041T5E"
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "LCSC" "C25977"
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "NOTE" "Prototype candidate; qualify ratings, land pattern and operating corners."
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Exclude" "no"
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Audit Requirements" "{}"
-			(at 284.48 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "17f398cd-e0a3-5f33-b324-bfb972710607")
-		)
-		(pin "2"
-			(uuid "74775e38-8a0a-516c-b1a6-41c9a4ae7afd")
-		)
-		(instances
-			(project "big_modular"
-				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56"
-					(reference "R8")
-					(unit 1)
-				)
-			)
-		)
-	)
+	(symbol (lib_id "BigModular:Device_R") (at 284.48 121.92 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "d617607b-7c97-5a41-b8f6-4c8449374296") (property "Reference" "R8" (at 287.48 120.72 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "5.6k 1%" (at 287.48 123.26 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF5601T5E_C23189.pdf" (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 284.48 121.92 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF5601T5E" (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C23189" (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 284.48 121.92 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "17f398cd-e0a3-5f33-b324-bfb972710607")) (pin "2" (uuid "74775e38-8a0a-516c-b1a6-41c9a4ae7afd")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R8") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 287.48 123.26 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
 	(symbol
 		(lib_id "BigModular:Device_C")
 		(at 317.5 139.7 0)
@@ -3297,139 +2697,31 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "BigModular:Device_R")
-		(at 68.58 91.44 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "eaa79a05-4cb3-54ba-81db-166d158b1a91")
-		(property "Reference" "R4"
-			(at 71.58 90.24 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "562k 1%"
-			(at 71.58 92.78 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.15 1.15)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "BigModular:R_0603_1608Metric"
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 68.58 91.44 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF5623T5E"
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "LCSC" "C23205"
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "NOTE" "Prototype candidate; qualify ratings, land pattern and operating corners."
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Exclude" "no"
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(property "JLCPCB Audit Requirements" "{}"
-			(at 68.58 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1 1)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ac6aeb82-80aa-5ccb-b1f1-c504f28cb5ed")
-		)
-		(pin "2"
-			(uuid "8a99db6e-5caf-5cb5-8633-32933c34fcf9")
-		)
-		(instances
-			(project "big_modular"
-				(path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56"
-					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
- (wire (pts (xy 190.5 158.75) (xy 191.77 158.75)) (stroke (width 0) (type default)) (uuid "ce392e6c-19a9-5c08-93c7-48c45a9d54ef")) (wire (pts (xy 191.77 158.75) (xy 191.77 160.02)) (stroke (width 0) (type default)) (uuid "5a8d0e1c-3d61-5edd-84db-3c6039f9a6a2")) (wire (pts (xy 190.5 160.02) (xy 191.77 160.02)) (stroke (width 0) (type default)) (uuid "e9aa5057-32f0-5cf4-9ee2-a23dbbbbeb1e")) (junction (at 191.77 160.02) (diameter 0) (color 0 0 0 0) (uuid "1279840f-dcad-5c4b-b8e7-b98e04d0ee38")))
+	(symbol (lib_id "BigModular:Device_R") (at 68.58 66.04 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "eaa79a05-4cb3-54ba-81db-166d158b1a91") (property "Reference" "R4" (at 71.58 64.84 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "470k 1%" (at 71.58 67.38 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF4703T5E_C23178.pdf" (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 68.58 66.04 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF4703T5E" (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C23178" (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 68.58 66.04 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "ac6aeb82-80aa-5ccb-b1f1-c504f28cb5ed")) (pin "2" (uuid "8a99db6e-5caf-5cb5-8633-32933c34fcf9")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R4") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 71.58 67.38 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+ (wire (pts (xy 190.5 158.75) (xy 191.77 158.75)) (stroke (width 0) (type default)) (uuid "ce392e6c-19a9-5c08-93c7-48c45a9d54ef")) (wire (pts (xy 191.77 158.75) (xy 191.77 160.02)) (stroke (width 0) (type default)) (uuid "5a8d0e1c-3d61-5edd-84db-3c6039f9a6a2")) (wire (pts (xy 190.5 160.02) (xy 191.77 160.02)) (stroke (width 0) (type default)) (uuid "e9aa5057-32f0-5cf4-9ee2-a23dbbbbeb1e")) (junction (at 191.77 160.02) (diameter 0) (color 0 0 0 0) (uuid "1279840f-dcad-5c4b-b8e7-b98e04d0ee38"))
+	(symbol (lib_id "BigModular:Device_R") (at 68.58 78.74 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "89b87b96-2b33-5e28-8035-00927c60862c") (property "Reference" "R77" (at 71.58 77.54 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "82k 1%" (at 71.58 80.08 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0603WAF8202T5E_C23254.pdf" (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 68.58 78.74 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF8202T5E" (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C23254" (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 68.58 78.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "95a2748d-0306-5206-8435-1833e8c32d9b")) (pin "2" (uuid "c6f19e21-5185-5151-a7f7-c4124c8ddfd0")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R77") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 71.58 80.08 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(symbol (lib_id "BigModular:Device_R") (at 68.58 91.44 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "6bc764b8-4de9-507a-9fb1-d4cbfccd2841") (property "Reference" "R78" (at 71.58 90.24 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "10k 1%" (at 71.58 92.78 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf" (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 68.58 91.44 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF1002T5E" (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C25804" (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 68.58 91.44 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "ba48d04f-76bc-5ecb-9298-4ece7140f13f")) (pin "2" (uuid "3b2c4cfd-8fe9-584a-8bd1-d4382a4ef300")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R78") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 71.58 92.78 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(wire (pts (xy 68.58 58.42) (xy 68.58 62.23)) (stroke (width 0) (type default)) (uuid "080078f9-a2d7-59b9-8d49-57dea3c89e01"))
+	(wire (pts (xy 68.58 69.85) (xy 68.58 74.93)) (stroke (width 0) (type default)) (uuid "8afc8e6e-0bd7-55d0-95bb-eb0b3deedf57"))
+	(wire (pts (xy 68.58 82.55) (xy 68.58 87.63)) (stroke (width 0) (type default)) (uuid "2ad1aef9-7fda-51c1-b15a-a93ae63239db"))
+	(wire (pts (xy 68.58 95.25) (xy 68.58 102.87)) (stroke (width 0) (type default)) (uuid "e2173aee-c9b6-564c-9735-d43d3b92fc5d"))
+	(label "UV_SER_1" (at 68.58 69.85 180) (effects (font (size 0.8 0.8)) (justify right bottom)) (uuid "8039c928-d7ab-59d0-b0dc-a7190d5f9180"))
+	(label "UV_SER_2" (at 68.58 82.55 180) (effects (font (size 0.8 0.8)) (justify right bottom)) (uuid "f797ee9c-1834-5841-a553-f2e0d2e3fba1"))
+	(symbol (lib_id "BigModular:Device_R") (at 284.48 134.62 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "5a8770b2-8f94-5a1c-9b2a-364e075eaaa8") (property "Reference" "R79" (at 287.48 133.42 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "220 1%" (at 287.48 135.96 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF2200T5E_C22962.pdf" (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 284.48 134.62 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF2200T5E" (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C22962" (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 284.48 134.62 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "6bfa2a75-1df1-5301-8608-fb3ddc89301b")) (pin "2" (uuid "5826e241-2d47-5a9b-8f40-28965baf788c")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R79") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 287.48 135.96 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(symbol (lib_id "BigModular:Device_R") (at 284.48 147.32 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "f8ea6542-e3af-5a5e-a780-c9b80ec80a27") (property "Reference" "R80" (at 287.48 146.12 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "220 1%" (at 287.48 148.66 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF2200T5E_C22962.pdf" (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 284.48 147.32 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF2200T5E" (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C22962" (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 284.48 147.32 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "74d6145b-d2bb-52fb-8a6f-10a221fbec00")) (pin "2" (uuid "a2a3b388-c7b2-5fa6-90eb-ec965dc35a4b")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R80") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 287.48 148.66 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(wire (pts (xy 284.48 99.06) (xy 284.48 118.11)) (stroke (width 0) (type default)) (uuid "d255370e-a10d-52ed-9646-bf395d17a51a"))
+	(wire (pts (xy 284.48 125.73) (xy 284.48 130.81)) (stroke (width 0) (type default)) (uuid "6044d2a4-908c-5ee4-80ad-a81924e390bd"))
+	(wire (pts (xy 284.48 138.43) (xy 284.48 143.51)) (stroke (width 0) (type default)) (uuid "675acf6b-02b6-5006-84ac-93a28b1835c2"))
+	(wire (pts (xy 284.48 151.13) (xy 284.48 160.02)) (stroke (width 0) (type default)) (uuid "a562f080-9d92-5ff8-a6fe-73bf2c999c62"))
+	(label "ILIM_SER_1" (at 284.48 125.73 180) (effects (font (size 0.8 0.8)) (justify right bottom)) (uuid "f36442e7-f6e8-53ab-a9cb-8706f330761b"))
+	(label "ILIM_SER_2" (at 284.48 138.43 180) (effects (font (size 0.8 0.8)) (justify right bottom)) (uuid "a0a8baeb-5532-54bf-a990-290d54e03255"))
+	(symbol (lib_id "BigModular:Device_R") (at 353.06 139.7 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "e49bcfe4-5dab-5fb3-9ca6-c0b97def84e0") (property "Reference" "R81" (at 356.06 138.5 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "100k 1%" (at 356.06 141.04 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf" (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 353.06 139.7 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF1003T5E" (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C25803" (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 353.06 139.7 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "7dbc2042-928b-526f-b91b-352f67bdb640")) (pin "2" (uuid "214c5f51-9446-56c5-983f-79b18e870a94")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R81") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 356.06 141.04 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(symbol (lib_id "BigModular:Device_R") (at 353.06 152.4 0) (unit 1) (body_style 1) (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (dnp no) (uuid "0d5d745d-ba04-5291-a5d5-4a44ed89e19a") (property "Reference" "R82" (at 356.06 151.2 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)) (justify left))) (property "Value" "2k 1%" (at 356.06 153.74 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left))) (property "Footprint" "BigModular:R_0603_1608Metric" (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF2001T5E_C22975.pdf" (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "Description" "" (at 353.06 152.4 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.27 1.27)))) (property "MPN" "0603WAF2001T5E" (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "LCSC" "C22975" (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "NOTE" "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review." (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Exclude" "no" (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (property "JLCPCB Audit Requirements" "{}" (at 353.06 152.4 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1)))) (pin "1" (uuid "09ad667d-2cbe-5e90-a271-999e70594f04")) (pin "2" (uuid "37b14e02-366a-5160-9aaf-98b0c87259ca")) (instances (project "big_modular" (path "/d567704c-57ad-5df1-b183-cadb01fd8972/a1db43c9-8f66-506b-99cb-e15d2f492e56" (reference "R82") (unit 1)))) (property "Manufacturer" "UNI-ROYAL(Uniroyal Elec)" (at 356.06 153.74 0) (show_name no) (do_not_autoplace no) (effects (font (size 1.15 1.15)) (justify left) hide)))
+	(wire (pts (xy 353.06 109.22) (xy 353.06 123.19)) (stroke (width 0) (type default)) (uuid "d2d70f89-7066-5cc5-a119-7a6f58bb49e1"))
+	(wire (pts (xy 353.06 130.81) (xy 353.06 135.89)) (stroke (width 0) (type default)) (uuid "07440ccd-9e81-5300-b3f5-8106a44d4074"))
+	(wire (pts (xy 353.06 143.51) (xy 353.06 148.59)) (stroke (width 0) (type default)) (uuid "ed18013e-3422-5b74-8735-963163ed42e9"))
+	(wire (pts (xy 353.06 156.21) (xy 353.06 160.02)) (stroke (width 0) (type default)) (uuid "58f25b9d-77d4-524e-8c69-5074c5be652a"))
+	(label "MODE_SER_1" (at 353.06 130.81 180) (effects (font (size 0.8 0.8)) (justify right bottom)) (uuid "0e097785-8a4f-52fa-aa49-16d37bacdea1"))
+	(label "MODE_SER_2" (at 353.06 143.51 180) (effects (font (size 0.8 0.8)) (justify right bottom)) (uuid "582721c3-2b41-54fd-8bd0-491fc1bd70fa"))
+	(text "Basic series: R4+R77+R78 = 562k; R8+R79+R80 = 6.04k; R36+R81+R82 = 402k. Each 1%." (at 30.48 238.76 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "366c63ae-e9ca-5e7b-8760-304f6907c163"))
+)

@@ -67,6 +67,8 @@ def via_audit(path):
     board has zero pad mask/paste expansion; reject new unsupported margins rather
     than silently ignore them. Boundary proximity <=1um is conservatively counted.
     Exported-CAM audit independently confirms the result from Gerbers.
+    Via filled/capped flags are reported, not enforced here; the current release
+    profile uses ordinary plated through vias and routed_checks rejects add-ons.
     """
     import pcbnew as p
     board=p.LoadBoard(str(path))
@@ -102,18 +104,19 @@ def via_audit(path):
                 if poly.Collide(v.GetPosition(),v.GetDrill()//2+1000):
                     (hits if overlaps(poly) else boundary).append({'side':side,'ref':fp.GetReference(),'pad':pad.GetNumber(),'pad_uuid':pad.m_Uuid.AsString()})
             if paste_poly.Collide(v.GetPosition(),v.GetDrill()//2+1000):(paste_hits if overlaps(paste_poly) else paste_boundary).append(side)
-        assert v.GetPrimaryDrillFilledFlag() and v.GetPrimaryDrillCappedFlag()
         records.append({'uuid':v.m_Uuid.AsString(),'xy_mm':[round(p.ToMM(c),6) for c in v.GetPosition()],
             'net':v.GetNetname(),'drill_mm':round(p.ToMM(v.GetDrill()),6),
             'diameter_mm':round(p.ToMM(v.GetWidth(p.F_Cu)),6),
             'exposed_SMD_copper_hits':hits,'paste_overlap_sides':paste_hits,
             'exposed_SMD_boundary_near_hits':boundary,'paste_boundary_near_sides':paste_boundary,
-            'process':'IPC-4761 Type VII; nonconductive epoxy fill + planarized copper cap, both sides'})
+            'filled_flag':bool(v.GetPrimaryDrillFilledFlag()),'capped_flag':bool(v.GetPrimaryDrillCappedFlag()),
+            'process':'ordinary plated through via; no epoxy fill/planarization/copper cap; solder-mask tenting where artwork permits'})
     return {'board_sha256':hashlib.sha256(Path(path).read_bytes()).hexdigest(),
         'method':'Native polygon BooleanIntersection against 1024-vertex actual drill disk; positive area >1e-9mm2. Native curves <=0.001mm error; boundary/tangency within0.001mm recorded separately, not counted as positive overlap.',
         'via_count':len(records),'barrels_over_exposed_SMD_copper':sum(bool(v['exposed_SMD_copper_hits']) for v in records),
         'barrels_over_paste':sum(bool(v['paste_overlap_sides']) for v in records),
         'barrels_at_SMD_boundary_only':sum(bool(v['exposed_SMD_boundary_near_hits']) and not v['exposed_SMD_copper_hits'] for v in records),
         'barrels_at_paste_boundary_only':sum(bool(v['paste_boundary_near_sides']) and not v['paste_overlap_sides'] for v in records),
-        'uniform_process_scope':f'ALL {len(records)} through vias, not all PTH component holes/slots. Not every via independently needs filling. No ordinary tenting substitution.',
+        'filled_or_capped_via_count':sum(v['filled_flag'] or v['capped_flag'] for v in records),
+        'uniform_process_scope':f'ALL {len(records)} through vias are ordinary 0.300mm plated through vias; no filled/capped add-on. Component PTH holes/slots are excluded. Exposed-pad/thermal-via barrels remain prototype assembly inspection points; mask tenting does not seal a barrel inside an exposed pad.',
         'vias':records}

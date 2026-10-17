@@ -58,12 +58,14 @@ cutout configuration. Its nominal check remains valid, not a physical-fit or str
 
 L1/L4 now MDA1040-6R8M max4.0mm; L2/L3 CKCS6045 max4.7mm. The5.1mm normal
 allowance reserves0.15mm solder +0.10mm assembly offset: margins0.85/0.15mm.
-These are front-side envelope budgets, not fitted populated-board approval. Do not
-flip inductors to the1.3mm backside allowance. Manufacturer height limits must hold.
-64 active footprints and native fields/UUID paths/nets; J1 HRO placement rederived,
-SW1/D10/J7 fixed. All60 power/passive parts placed; carrier421 segments/133 vias/4 zones.
+These are front-side envelope budgets, not fitted populated-board approval. Keep all
+components on the front; the back carries no parts. Manufacturer height limits must hold.
+99 active footprints and native fields/UUID paths/nets; J1 HRO placement rederived,
+SW1/D10/J7 fixed. All97 purchased fitted parts placed; D10 is DNP (footprint/pads
+retained); carrier552 tracks/201 vias/8 zones.
 Front panel remains passive. Only the USB aperture size/position changed; all other physical interfaces retained.
-Exact LED MPN, lead forming, USB cable overmould and finished cabled depth need trial.
+D10 remains DNP: no LED MPN/procurement, lead forming or fitted-LED check is claimed;
+USB cable overmould and finished cabled depth still need trial.
 
 ## J7 physical board output landing
 
@@ -78,7 +80,8 @@ Exact LED MPN, lead forming, USB cable overmould and finished cabled depth need 
 J7 is numbered solder lands, not a second purchased box header. One manual flying
 lead terminates in the keyed16-pin output harness; that off-board connector is not
 modeled as a second schematic connector. Verify orientation/continuity and strain relief before use; never
-parallel an active rack PSU. D10 cathode1=GND, anode2=R32 output; R32=1k from P5.
+parallel an active rack PSU. D10 is DNP: cathode1=GND pad, anode2=R32 output pad, and
+the physical footprint/indicator circuit remain; R32=1k from P5 stays fitted.
 SW1 contacts1+3=EF_SHDN, contact2=RTN, MP case lands unconnected. Keep RTN separate
 from system GND. Press disconnects input; stored output charge does not vanish instantly.
 

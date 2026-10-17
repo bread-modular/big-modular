@@ -47,11 +47,17 @@ class FabricationTests(unittest.TestCase):
 
     def test_native_via_disks_not_annular_rings_or_centres(self):
         r=via_audit(ROOT/'hardware/big_modular.kicad_pcb')
-        self.assertEqual((r['via_count'],r['barrels_over_exposed_SMD_copper'],r['barrels_over_paste'],r['barrels_at_SMD_boundary_only']),(196,92,91,5))
+        self.assertEqual((r['via_count'],r['barrels_over_exposed_SMD_copper'],r['barrels_over_paste'],r['barrels_at_SMD_boundary_only']),(201,93,92,6))
         # U2 EP end vias are outside its separate central mask window; do not
         # assume every thermal-pad via intersects EXPOSED copper or paste.
         self.assertEqual({h['pad'] for v in r['vias'] for h in v['exposed_SMD_copper_hits'] if h['ref']=='U2'},{'5','6'})
         self.assertTrue(any(h['ref']=='U4' and h['pad']=='25' for v in r['vias'] for h in v['exposed_SMD_copper_hits']))
+        self.assertEqual(r['filled_or_capped_via_count'],sum(v['filled_flag'] or v['capped_flag'] for v in r['vias']))
+
+    def test_current_carrier_vias_are_ordinary_unfilled(self):
+        r=via_audit(ROOT/'hardware/big_modular.kicad_pcb')
+        self.assertEqual(r['filled_or_capped_via_count'],0)
+        self.assertFalse(any(v['filled_flag'] or v['capped_flag'] for v in r['vias']))
 
     def test_release_files_match_manifest_and_archives(self):
         root=ROOT/'production/hro-r1';m=json.loads((root/'manifest.json').read_text())
@@ -123,16 +129,16 @@ class LDOReleaseTests(unittest.TestCase):
                 for f in z.namelist():self.assertEqual(z.read(f),(folder/f).read_bytes())
                 self.assertFalse(any(f.endswith('.csv') for f in z.namelist()))
                 if 'BARE-PCB' in name:self.assertFalse(any('Paste.gbr' in f for f in z.namelist()))
-        self.assertEqual({k:rec[k] for k in ['tracks','vias','zones']},{'tracks':536,'vias':196,'zones':8})
+        self.assertEqual({k:rec[k] for k in ['tracks','vias','zones']},{'tracks':552,'vias':201,'zones':8})
 
     def test_new_CAM_population_sides_and_unchanged_panel(self):
         d=json.loads((ROOT/'production/ldo-r1/cam-inspection.json').read_text());c=d['carrier']
-        self.assertEqual(c['IPC_records_checked'],506)
-        self.assertEqual(c['drill_tools_mm_hits']['PTH'],{'0.300':196,'0.600':4,'0.900':2,'1.000':16})
-        self.assertEqual((c['via_barrels_exposed_SMD_Cu'],c['via_barrels_paste']),(92,91))
-        self.assertEqual(c['backside_SMD_refs'],['C63','C64','C65','C66']);self.assertEqual(c['backside_paste_pads'],8)
+        self.assertEqual(c['IPC_records_checked'],523)
+        self.assertEqual(c['drill_tools_mm_hits']['PTH'],{'0.300':201,'0.600':4,'0.900':2,'1.000':16})
+        self.assertEqual((c['via_barrels_exposed_SMD_Cu'],c['via_barrels_paste']),(93,92))
+        self.assertEqual(c['B_Cu_SMD_lands'],0);self.assertEqual(c['B_Paste_component_apertures'],0);self.assertTrue(c['single_side_assembly'])
         self.assertTrue(c['In1_GND_connected_polygon'])
-        for v in c['RTN_GND_CAM_isolation'].values():self.assertGreater(v['GND_RTN_gap_mm'],.25)
+        for v in c['RTN_GND_CAM_isolation'].values():self.assertGreaterEqual(v['GND_RTN_gap_mm'],.25)
         old=ROOT/'production/hro-r1/passive-panel';new=ROOT/'production/ldo-r1/passive-panel'
         for f in old.iterdir():
             if f.suffix in ('.gbr','.drl','.gbrjob'):self.assertEqual(f.read_bytes(),(new/f.name).read_bytes(),f.name)

@@ -72,7 +72,7 @@ def build(out,reports):
     sources={p.relative_to(ROOT).as_posix():sha(p) for p in hardware.rglob('*') if p.is_file() and not any(x.startswith('.') for x in p.relative_to(hardware).parts) and p.suffix not in ['.lck','.kicad_prl','.bak']}
     for name in ['tools/release_hro.py','tools/check_hro_cam.py','tools/fabrication_contract.py','tools/cam-requirements.txt','docs/fabrication.md','docs/usb-fit.json','docs/routed-baseline.json','tools/kicad-project.json']:
         sources[name]=sha(ROOT/name)
-    for name in ['docs/schematic.pdf','docs/ldo-revision.md','BOM.csv','docs/pin-net-audit.json','docs/assembly-geometry.json','docs/ldo-evidence/manufacturer-mlcc-data.json','docs/ldo-evidence/capacitor-disposition.json','docs/ldo-evidence/backside-fit.json','docs/ldo-evidence/pcb-audit.json']:
+    for name in ['docs/schematic.pdf','docs/ldo-revision.md','BOM.csv','docs/pin-net-audit.json','docs/assembly-geometry.json','docs/ldo-evidence/manufacturer-mlcc-data.json','docs/ldo-evidence/capacitor-disposition.json','docs/ldo-evidence/pcb-audit.json']:
         sources[name]=sha(ROOT/name)
     for folder in ['tools','tests']:
         for p in (ROOT/folder).iterdir():
@@ -130,10 +130,12 @@ def build(out,reports):
     cam=inspect_cam(out,hardware,audit);write_json(out/'cam-inspection.json',cam)
     panel=json.loads((reports/'panel-drc.json').read_text())
     assert not panel['violations'] and not panel['unconnected_items']
-    record={'status':'bare-PCB artwork ready with required fabrication process; not an assembled product qualification',
+    record={'status':'bare-PCB artwork ready with the specified ordinary-via fabrication process; not an assembled product qualification',
         'common_native_carrier_findings':summary['findings'],'ref_pin_net_parity_equal':True,
         'panel_DRC_violations':0,'panel_opens':0,'source_unchanged':True,
         'ignored_rules':0,'rule_exclusions':0,**reviewed,
+        'via_process':'ordinary 0.300 mm plated through vias; solder-mask tented where artwork permits; no epoxy fill/planarization/copper cap',
+        'assembly_side':'single-side front only; no B.Cu components and no B.Paste component apertures',
         'CAM_inspection_passed':True,'source_state':source_state,'source_sha256':sources,'tooling':{'kicad_cli':shared.run_cli('/usr/bin/kicad-cli',['version'],ROOT),
         'common_export_module_sha256':sha(SHARED),'gerbonara':'1.6.3','shapely':'2.1.2'},
         'native_export_commands':cmds,'metadata_normalization':normalizations}
@@ -145,20 +147,21 @@ def build(out,reports):
             'native_stack':validate_stack(hardware/f'{"big_modular" if key=="carrier" else "front_panel"}.kicad_pcb',key=='carrier'),
             'CAM_checked':cam[key]}
         write_json(folder/'fabrication-spec.json',spec)
-        text=(f'CARRIER ONLY: four-layer FR4 Tg170 / ENIG / ALL {audit["via_count"]} vias IPC-4761 TYPE VII NONCONDUCTIVE EPOXY FILL + PLANARIZED COPPER CAP BOTH SIDES.\n' if key=='carrier' else 'PASSIVE PANEL ONLY: no retained copper / black mask / white front legend / NPTH only / no metal finish.\n')
+        text=(f'CARRIER ONLY: four-layer FR4 Tg170 / ENIG / all {audit["via_count"]} 0.300 mm plated through vias are ORDINARY (no epoxy fill, planarization or copper cap); solder-mask tented where artwork permits.\n' if key=='carrier' else 'PASSIVE PANEL ONLY: no retained copper / black mask / white front legend / NPTH only / no metal finish.\n')
+        if key=='carrier':text+='Exposed-pad/thermal-via barrels are prototype assembly inspection points; mask tenting does not seal a barrel inside an exposed pad.\n'
         text+='READ FABRICATION-REQUIREMENTS.md before quoting or manufacturing. No supplier acceptance is implied.\nGerber/Excellon coordinates: absolute mm, X right / Y up; native KiCad Y is down.\nEdge.Cuts centreline is the final profile; do not machine the outside of its plotted stroke.\nNo assembly BOM/CPL. Empty layers/drill files are intentional and checked.\n'
         (folder/'READ-ME-FIRST.txt').write_text(text)
     lines=['via_UUID\tKiCad_X_mm\tKiCad_Y_down_mm\tCAM_X_mm\tCAM_Y_up_mm\tdrill_mm\tprocess']
     for v in audit['vias']:
-        x,y=v['xy_mm'];lines.append(f"{v['uuid']}\t{x:.6f}\t{y:.6f}\t{x:.6f}\t{-y:.6f}\t{v['drill_mm']:.3f}\tIPC-4761 Type VII nonconductive epoxy fill + planarized Cu cap BOTH sides")
+        x,y=v['xy_mm'];lines.append(f"{v['uuid']}\t{x:.6f}\t{y:.6f}\t{x:.6f}\t{-y:.6f}\t{v['drill_mm']:.3f}\tordinary plated through via; solder-mask tented where artwork permits; no fill/cap")
     (out/'carrier/via-process.tsv').write_text('\n'.join(lines)+'\n')
     shutil.copyfile(out/'via-audit.json',out/'carrier/via-audit.json')
-    (out/'assembly-stencil-support-only/READ-ME-FIRST.txt').write_text('ASSEMBLY / STENCIL SUPPORT ONLY, NOT BARE-PCB FABRICATION.\nNative front/back paste artwork; BACK has C63-C66 (8 lands). C67 and all other SMT components are FRONT. No shell paste on HRO.\nNo assembly qualification, BOM, CPL, stencil thickness/reduction or reflow approval.\n')
+    (out/'assembly-stencil-support-only/READ-ME-FIRST.txt').write_text('ASSEMBLY / STENCIL SUPPORT ONLY, NOT BARE-PCB FABRICATION.\nSingle-side assembly: all components are FRONT. Native front paste artwork only; B.Paste is intentionally empty. No shell paste on HRO.\nNo assembly qualification, BOM, CPL, stencil thickness/reduction or reflow approval.\n')
     for folder in [out/'carrier',out/'passive-panel',out/'assembly-stencil-support-only']:
         write_json(folder/'source-sha256.json',sources)
         (folder/'SHA256SUMS.txt').write_text(''.join(f'{sha(f)}  {f.name}\n' for f in sorted(folder.iterdir()) if f.is_file()))
     archives={}
-    for folder,name in [('carrier','Big-Modular-LDO-R1-CARRIER-4L-TYPE-VII-BARE-PCB.zip'),('passive-panel','Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip'),('assembly-stencil-support-only','Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip')]:
+    for folder,name in [('carrier','Big-Modular-LDO-R1-CARRIER-4L-STANDARD-VIAS-BARE-PCB.zip'),('passive-panel','Big-Modular-LDO-R1-PASSIVE-PANEL-BARE-PCB.zip'),('assembly-stencil-support-only','Big-Modular-LDO-R1-ASSEMBLY-STENCIL-SUPPORT-ONLY.zip')]:
         archives[name]=zip_folder(out/folder,out/name)
     record['archives']=archives;write_json(out/'release-validation.json',record)
     files={f.relative_to(out).as_posix():{'sha256':sha(f),'bytes':f.stat().st_size} for f in sorted(out.rglob('*')) if f.is_file()}

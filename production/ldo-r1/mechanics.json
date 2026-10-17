@@ -61,12 +61,14 @@
   "bare_pcb_artwork_release_record": "production/ldo-r1/release-validation.json",
   "boards": {
     "big_modular.kicad_pcb": {
-      "footprints": 97,
-      "tracks": 536,
-      "vias": 196,
+      "backside_components": 0,
+      "footprints": 103,
+      "tracks": 552,
+      "vias": 201,
       "zones": 8
     },
     "front_panel.kicad_pcb": {
+      "backside_components": 0,
       "footprints": 6,
       "tracks": 0,
       "vias": 0,
@@ -128,7 +130,7 @@
     "PCB_depth_behind_panel_mm": 30.4,
     "actual_NPTH_geometry_checks": 10,
     "carrier_depth_mm": 30,
-    "electrical_status": "93 active footprints; inspected routing, passive panel; not electrical/thermal qualification",
+    "electrical_status": "99 active footprints; inspected routing, passive panel; not electrical/thermal qualification",
     "finished_module_depth": "unverified; cable connector not confined to 2HP board envelope",
     "main_PCB_plane_X_mm": [
       3.1,
@@ -169,141 +171,54 @@
       "plated_shell_slots": 4
     },
     "accepted_routing_preserved": true,
-    "backside": {
-      "B_Cu_datum_fixed_mm": 3.1,
-      "all_other_components_front": true,
-      "brackets_mount_tools_THT_tails_clear": true,
+    "all_front": {
+      "B_Cu_footprints": 0,
+      "B_Paste_component_apertures": 0,
+      "all_components_front": true,
       "caps": {
         "C63": {
-          "left_module_boundary_margin_mm": 1.05,
-          "max_body_height_mm": 1.8,
-          "native_pose_mm_deg": [
-            113.3,
-            86.1,
-            0
-          ],
-          "registration_mm": 0.1,
-          "side": "B.Cu",
-          "solder_mm": 0.15,
-          "worst_case_module_XYZ_mm": [
-            [
-              1.05,
-              3.1
-            ],
-            [
-              75.105,
-              79.99499999999999
-            ],
-            [
-              16.880000000000003,
-              19.470000000000006
-            ]
-          ]
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
         },
         "C64": {
-          "left_module_boundary_margin_mm": 1.05,
-          "max_body_height_mm": 1.8,
-          "native_pose_mm_deg": [
-            98.8,
-            81.0,
-            180
-          ],
-          "registration_mm": 0.1,
-          "side": "B.Cu",
-          "solder_mm": 0.15,
-          "worst_case_module_XYZ_mm": [
-            [
-              1.05,
-              3.1
-            ],
-            [
-              60.605,
-              65.49499999999999
-            ],
-            [
-              21.979999999999997,
-              24.57
-            ]
-          ]
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
         },
         "C65": {
-          "left_module_boundary_margin_mm": 1.05,
-          "max_body_height_mm": 1.8,
-          "native_pose_mm_deg": [
-            98.8,
-            83.6,
-            180
-          ],
-          "registration_mm": 0.1,
-          "side": "B.Cu",
-          "solder_mm": 0.15,
-          "worst_case_module_XYZ_mm": [
-            [
-              1.05,
-              3.1
-            ],
-            [
-              60.605,
-              65.49499999999999
-            ],
-            [
-              19.380000000000003,
-              21.970000000000006
-            ]
-          ]
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
         },
         "C66": {
-          "left_module_boundary_margin_mm": 1.05,
-          "max_body_height_mm": 1.8,
-          "native_pose_mm_deg": [
-            98.8,
-            87.9,
-            180
-          ],
-          "registration_mm": 0.1,
-          "side": "B.Cu",
-          "solder_mm": 0.15,
-          "worst_case_module_XYZ_mm": [
-            [
-              1.05,
-              3.1
-            ],
-            [
-              60.605,
-              65.49499999999999
-            ],
-            [
-              15.080000000000007,
-              17.67000000000001
-            ]
-          ]
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
+        },
+        "C67": {
+          "lcsc": "C12891",
+          "mpn": "CL31A226KAHNNNE",
+          "side": "F.Cu"
         }
       },
-      "checked_obstacle_count": 29,
-      "scope": "dimensioned prototype fit; actual solder/reflow, harness/support and neighbor trial-fit remain required",
-      "strap_keepout_XYZ_mm": [
-        [
-          0,
-          3.1
-        ],
-        [
-          41.5,
-          72.5
-        ],
-        [
-          25,
-          29
-        ]
-      ]
+      "native_placement_preserved": true,
+      "scope": "single-side prototype assembly; no B.Cu parts or B.Paste apertures; B.Cu routing/mask/drill retained"
     },
     "connected_pad_counts": {
       "/Autonomous hardware window and retry/EF_MODE": 2,
       "/Autonomous hardware window and retry/EF_SHDN": 3,
       "/Autonomous hardware window and retry/ILIM": 2,
+      "/Autonomous hardware window and retry/ILIM_SER_1": 2,
+      "/Autonomous hardware window and retry/ILIM_SER_2": 2,
+      "/Autonomous hardware window and retry/MODE_SER_1": 2,
+      "/Autonomous hardware window and retry/MODE_SER_2": 2,
       "/Autonomous hardware window and retry/OV_SET": 3,
       "/Autonomous hardware window and retry/RTN": 8,
       "/Autonomous hardware window and retry/SLEW": 2,
       "/Autonomous hardware window and retry/UV_EN": 3,
+      "/Autonomous hardware window and retry/UV_SER_1": 2,
+      "/Autonomous hardware window and retry/UV_SER_2": 2,
       "/Board output and power LED/LED_P_A": 2,
       "/Direct bipolar rails/ANA_MID": 3,
       "/Direct bipolar rails/BI_EN": 4,
@@ -387,8 +302,8 @@
     },
     "native_opens": 0,
     "reserved_access_clear": true,
-    "tracks": 536,
-    "vias": 196,
+    "tracks": 552,
+    "vias": 201,
     "zones": [
       {
         "contours": 1,
@@ -416,7 +331,7 @@
         "net": "/GND"
       },
       {
-        "contours": 4,
+        "contours": 3,
         "layer": "B.Cu",
         "net": "/GND"
       },

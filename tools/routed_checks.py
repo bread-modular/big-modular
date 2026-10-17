@@ -86,13 +86,13 @@ def verify_native(board, hardware, baseline_file=None):
     tracks=list(board.GetTracks());vias=[t for t in tracks if t.GetClass()=='PCB_VIA']
     assert {'tracks':len(tracks)-len(vias),'vias':len(vias),'zones':len(list(board.Zones()))}==inventory
     assert board.GetCopperLayerCount()==4
-    assert all(v.GetPrimaryDrillFilledFlag() and v.GetPrimaryDrillCappedFlag() for v in vias), 'specified uniform Type VII process'
+    assert not any(v.GetPrimaryDrillFilledFlag() or v.GetPrimaryDrillCappedFlag() for v in vias), 'unexpected filled/capped via add-on; current release profile is ordinary 0.300mm plated through vias'
     assert all(round(p.ToMM(v.GetDrill()),6)==.3 for v in vias)
     con=board.GetConnectivity();assert con.Build(board);con.RecalculateRatsnest()
     assert con.GetUnconnectedCount(False)==0
     pads=defaultdict(list);fps=list(board.GetFootprints())
     for f in fps:
-        if f.GetReference():assert f.GetLayer()==(p.B_Cu if f.GetReference() in BACK_CAP_POSES else p.F_Cu)
+        if f.GetReference():assert f.GetLayer()==p.F_Cu,(f.GetReference(),'component not on front')
         for pad in f.Pads():
             if pad.GetNumber() and pad.GetNetname():pads[pad.GetNetname()].append(pad)
     connected={}
@@ -119,65 +119,35 @@ def verify_native(board, hardware, baseline_file=None):
     usb=next(f for f in nodes(tree,'footprint') if any(q[1:3]==['Reference','J1'] for q in nodes(f,'property')))
     result=verify_hro(usb,hardware/'BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod')
     return {'tracks':len(tracks)-len(vias),'vias':len(vias),'zones':zones,'native_opens':0,'connected_pad_counts':connected,
-            'USB':result,'accepted_routing_preserved':True,'backside':verify_backside_caps(board,json.loads((ROOT/'docs/assembly-geometry.json').read_text())),'reserved_access_clear':True}
+            'USB':result,'accepted_routing_preserved':True,'all_front':verify_front_only(board,json.loads((ROOT/'docs/assembly-geometry.json').read_text())),'reserved_access_clear':True}
 
 
-# Narrow LDO-R1 side exception; no other part may move to the back.
-BACK_CAP_POSES={'C63':(113.3,86.1,0),'C64':(98.8,81.,180),
-                'C65':(98.8,83.6,180),'C66':(98.8,87.9,180)}
+# All components are front-side again; this replaced the narrow C63-C66 back exception.
+FRONT_CAPS={'C63','C64','C65','C66','C67'}
 
 
-def verify_backside_caps(board, geometry, height_mm=1.8):
-    """Fixed B.Cu datum X3.1; conservative full courtyard+solder 3D envelopes.
+def verify_front_only(board, geometry):
+    """All components on F.Cu; zero B.Cu footprints and zero B.Paste apertures.
 
-    This checks the back independently, not by reusing the front 5.1mm budget.
-    Neighbor boundary is module X=0. Brackets, mounting/tool volumes, all THT
-    tail projections and a reserved 4mm strain-relief strap corridor are checked.
-    The corridor is a routing constraint for prototype harness assembly, not an
-    unverified cable/support solid or a promise about a neighboring module.
+    Placement and routing remain native-owned. This checks side, identity and the
+    fixed mechanics only; it does not require a particular front-side pose.
     """
     import pcbnew as p
     g=geometry;assert g['carrier_X_mm']==[3.1,4.7]
-    assert height_mm==1.8,'Only exact reviewed CL31 max-height package allowed'
     fps={f.GetReference():f for f in board.GetFootprints() if f.GetReference()}
-    assert {r for r,f in fps.items() if f.GetLayer()==p.B_Cu}==set(BACK_CAP_POSES),'unreviewed back-side population'
-    occupied={};report={}
-    def overlap(a,b):return all(min(hi,hj)>max(lo,lj) for (lo,hi),(lj,hj) in zip(a,b))
-    obstacles={'panel':[[0,9.8],[0,128.5],[0,1.76]],
-               'harness':g['harness_envelope_XYZ_mm'],
-               'reserved_back_strap_corridor':[[0,3.1],[41.5,72.5],[25,29]]}
-    br=g['brackets']
-    for i,y in enumerate(br['Y_centres_mm']):
-        obstacles[f'bracket{i}']=[br['outer_X_mm'],[y-5.1,y+5.1],[1.5,20.1]]
-        # Conservative full approach span around each side screw, 8mm driver.
-        obstacles[f'mount_tool{i}']=[[-10,30],[y-4.1,y+4.1],[10.9,19.1]]
-    for f in board.GetFootprints():
-        for pad in f.Pads():
-            if pad.GetAttribute()!=p.PAD_ATTRIB_PTH:continue
-            x,y=p.ToMM(pad.GetPosition());w,h=p.ToMM(pad.GetSize())
-            r=max(w,h)/2+.1
-            obstacles[f'tail/{f.GetReference()}/{pad.m_Uuid.AsString()}']=[[1.2,3.1],[x-35.75-r,x-35.75+r],[104.275-y-r,104.275-y+r]]
-    for ref,(x,y,angle) in BACK_CAP_POSES.items():
-        f=fps[ref]
-        assert tuple(round(v,5) for v in p.ToMM(f.GetPosition()))==(x,y)
-        assert (f.GetOrientationDegrees()%360)==angle
+    back=sorted(r for r,f in fps.items() if f.GetLayer()==p.B_Cu)
+    assert not back,('B.Cu footprints',back)
+    bottom=[(r,pad.GetNumber()) for r,f in fps.items() for pad in f.Pads() if pad.IsOnLayer(p.B_Paste)]
+    assert not bottom,('B.Paste component apertures',bottom)
+    caps={r:f for r,f in fps.items() if r in FRONT_CAPS}
+    assert set(caps)==FRONT_CAPS
+    for r,f in caps.items():
+        assert f.GetLayer()==p.F_Cu,(r,'cap not front')
         assert f.GetFPID().GetLibItemName()=='C_1206_3216Metric'
         assert f.GetFieldText('MPN')=='CL31A226KAHNNNE' and f.GetFieldText('LCSC')=='C12891'
         assert f.GetValue()=='22u 25V X5R'
-        f.BuildCourtyardCaches();bb=f.GetCourtyard(p.B_Cu).BBox()
-        left,top=p.ToMM(bb.GetPosition());w,h=p.ToMM(bb.GetSize())
-        assert w>=3.4 and h>=1.8 # body max already enclosed by actual courtyard
-        env=[[3.1-height_mm-.15-.10,3.1],
-             [left-35.75-.1,left+w-35.75+.1],
-             [104.275-(top+h)-.1,104.275-top+.1]]
-        assert env[0][0]>0,'neighbor/module-boundary overhang'
-        assert 14<env[1][0]<env[1][1]<114.5 and 2<env[2][0]<env[2][1]<32
-        for name,box in {**obstacles,**occupied}.items():assert not overlap(env,box),(ref,'back envelope collision',name)
-        occupied[ref]=env
-        report[ref]={'side':'B.Cu','native_pose_mm_deg':[x,y,angle],
-                     'max_body_height_mm':height_mm,'solder_mm':.15,'registration_mm':.10,
-                     'worst_case_module_XYZ_mm':env,'left_module_boundary_margin_mm':round(env[0][0],3)}
-    return {'caps':report,'all_other_components_front':True,'B_Cu_datum_fixed_mm':3.1,
-            'checked_obstacle_count':len(obstacles),'brackets_mount_tools_THT_tails_clear':True,
-            'strap_keepout_XYZ_mm':obstacles['reserved_back_strap_corridor'],
-            'scope':'dimensioned prototype fit; actual solder/reflow, harness/support and neighbor trial-fit remain required'}
+    return {'caps':{r:{'side':'F.Cu','mpn':f.GetFieldText('MPN'),'lcsc':f.GetFieldText('LCSC')}
+                    for r,f in caps.items()},
+            'B_Cu_footprints':0,'B_Paste_component_apertures':0,
+            'all_components_front':True,'native_placement_preserved':True,
+            'scope':'single-side prototype assembly; no B.Cu parts or B.Paste apertures; B.Cu routing/mask/drill retained'}

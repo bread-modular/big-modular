@@ -10,7 +10,7 @@ GEOMETRY = {
     'board_count': 2,
     'magnetics': {'L1/L4': {'mpn':'MDA1040-6R8M','height_max_mm':4.0,'body_max_mm':[11.3,10.3]},
                   'L2/L3': {'mpn':'CKCS6045-4.7uH/M','height_max_mm':4.7,'body_max_mm':[6.3,6.3]}},
-    'normal_budget_note':'5.1mm from F.Cu to panel edge; reserve0.15mm solder and0.10mm assembly offset. No backside inductors.',
+    'normal_budget_note':'5.1mm from F.Cu to panel edge; reserve0.15mm solder and0.10mm assembly offset. All components front-side; no backside parts.',
     'panel_mm': [9.8, 128.5, 1.6],
     'rail_holes_mm': [[2.42,3,3.2], [2.42,125.5,3.2]],
     'rail_compatibility': 'Common fixed-strip phase: 7.50 - 5.08 = 2.42; also sliding nuts',
@@ -47,8 +47,8 @@ GEOMETRY = {
     ],
     'reset_XY_diameter_mm': [6.4,49.5,3.2],
     'LED': {
-        'type': 'standard RED 3mm round THT LED, leads formed 90 degrees; no proprietary holder',
-        'assembly': 'manual; exclude D10 from both JLC assembly BOM and CPL',
+        'type': 'standard RED 3mm round THT LED footprint, leads formed 90 degrees; no proprietary holder',
+        'assembly': 'DNP by user: footprint/keepout retained, not fitted or purchased; exclude D10 from both JLC assembly BOM and CPL',
         'pin_roles': {'1': 'K (cathode)', '2': 'A (anode)'},
         'footprint': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',
         'pitch_mm':2.54, 'drill_mm':.9, 'pad_diameter_mm':1.8,
@@ -80,7 +80,7 @@ GEOMETRY = {
      'peg_drill_mm': 0.9,
      'datasheet': 'https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf'},
     'led_resistors': {'status': 'R32 is1k SMD from final P5 to D10; placed and routed',
-        'plan': 'Manual D10 cathode GND, anode LED_P_A; no LED controller or blink'},
+        'plan': 'D10 is DNP (footprint/pads retained): cathode GND pad, anode LED_P_A pad; no controller or blink; R32 remains fitted'},
     'brackets': {
         'quantity':2, 'identical':True, 'shape':'Plain L, no nut traps or inserts',
         'Y_centres_mm':[22,106.5], 'outer_X_mm':[.1,9.3], 'width_Y_mm':10.0,
