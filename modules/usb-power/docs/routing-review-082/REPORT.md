@@ -23,3 +23,14 @@ C78.2 `/GND` pad (130.625,81.1; 1.15×1.8; F.Cu/Mask/Paste) now contains pre-exi
 **Canonical source promotion: FAIL** (HD-1 only). All five corrections verified. After HD-1 fix and clean rerun, no other source blocker found in this delta scope. Unchanged release holds: L1 5.40 vs 5.10 mm user decision; JLC inner-1-oz/plating/drill-tolerance/unfilled-in-pad PCBA acceptance; void/thermal/EMI/startup/load/EP-joint bench qualification. NOT RELEASED.
 
 Receipts: `receipts/` (native summary/ERC/DRC, geometry JSON, read-only scripts, review-receipt.json).
+
+## HD-1 closure — PCB 084 (Git object `c83ad5bf`), NOT RELEASED
+
+Checked PCB `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc` (from `git show c83ad5bf:…/routing-progress-084/usb-power.kicad_pcb`), materialized into NEW ignored `research/review-082-hd1` with the frozen 075 closure; PRO `122b817b…529de9` and 53 non-PCB files hash-exact. Read-only `LoadBoard`; no SaveBoard or hardware edits.
+
+- **Exact delta vs reviewed 081:** independent `diff -u` = 16 lines removed, 0 added: only via `8e4785b7-9f30-5b83-8fb8-c7b164066610` (/GND, 130.9,81.8, 0.30/0.65) and B.Cu stub `b1dbe53d-475c-520a-9397-f12c9fdaa468` (/GND, 131.65,81.8→130.9,81.8, 1.5 mm). Tracks 974→972, vias 252→251.
+- **Redundancy/connectivity:** /GND via `80dd5e8d` at (131.65,81.8) F–B 0.30/0.65 is present and unchanged, so deletion (not relocation) is correct. DRC 0 unconnected with refill confirms no orphaned GND.
+- **C78 pads:** zero via-hole intersections; nearest hole-edge gaps C78.1 0.050 mm (unchanged from 081) / C78.2 0.3028 mm. Via-in-pad diff vs 081 is only C78.2 1→0.
+- **COMMON check** (`kicad_tools.py check --config <new>/candidate-profile.json --only both`): ERC 0, DRC 0 violations / 0 unconnected / 0 parity, all including exclusions; `source_unchanged: true`; ref/pin/net parity equal. `netlist inspect`: 116 refs / 344 pins / 39 NC / 1,110 fields.
+
+**HD-1 CLOSED. Canonical source promotion: PASS** (byte-copy of the 084 PCB as NOT RELEASED prototype source). Release holds are unchanged: L1 5.40 vs 5.10 mm height; JLC inner 1 oz/plating/drill tolerance/unfilled-in-pad PCBA acceptance; void/thermal/EMI/startup/load bench qualification. Receipts: `receipts/hd1-084/`.

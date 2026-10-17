@@ -1,0 +1,58 @@
+{
+ "status": "HD1_CLOSED_SOURCE_PROMOTION_PASS_NOT_RELEASED",
+ "git_object": "c83ad5bf30ef8a3c1f2ae3aeb4acf443e35f6db8",
+ "pcb_sha256": "69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc",
+ "parent_081_sha256": "4e4f19a16956be529fd3b08f75de34ff992bf712747fe9da94c303b5080a77db",
+ "pro_sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+ "candidate_profile_sha256": "0fefa34ad1e5465432adf9da9ac734846318ab5f42e0f5ed6ce74c138afc1506",
+ "closure_non_pcb_files_verified": 53,
+ "diff_vs_081": {
+  "lines_removed": 16,
+  "lines_added": 0,
+  "blocks_removed": [
+   "via 8e4785b7-9f30-5b83-8fb8-c7b164066610 /GND (130.9,81.8) 0.30/0.65 F-B",
+   "segment b1dbe53d-475c-520a-9397-f12c9fdaa468 /GND B.Cu (131.65,81.8)->(130.9,81.8) w1.5"
+  ]
+ },
+ "tracks_081_084": [
+  974,
+  972
+ ],
+ "vias_081_084": [
+  252,
+  251
+ ],
+ "retained_neighbor_via": "80dd5e8d /GND (131.65,81.8) 0.30/0.65 F-B unchanged",
+ "c78_hole_edge_gap_mm": {
+  "C78.1": 0.05,
+  "C78.2": 0.3028
+ },
+ "c78_any_hole_in_pad": false,
+ "via_in_pad_diff_vs_081": {
+  "C78.2": [
+   1,
+   0
+  ]
+ },
+ "common_check": {
+  "erc_total_incl_exclusions": 0,
+  "drc_violations": 0,
+  "drc_unconnected": 0,
+  "drc_schematic_parity": 0,
+  "source_unchanged": true,
+  "ref_pin_net_parity_equal": true
+ },
+ "netlist_inspect": {
+  "refs": 116,
+  "pins": 344,
+  "singleton_nc_nets": 39,
+  "nets": 89,
+  "non_system_fields": 1110
+ },
+ "release_holds_unchanged": [
+  "L1 5.40 vs 5.10 mm height decision",
+  "JLC inner 1oz/plating/drill tolerance/unfilled-in-pad PCBA service acceptance",
+  "void/thermal/EMI/startup/load/EP-joint bench qualification"
+ ],
+ "writes": "read-only LoadBoard; no SaveBoard; no hardware edits"
+}
