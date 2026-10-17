@@ -1,0 +1,204 @@
+{
+  "policy": "User-authorized explicit Extended exceptions; the generic strict Basic-only R/C audit may flag these and must not be greenwashed. No Basic claim is made for these instances.",
+  "extended_instance_count": 19,
+  "extended_unique_codes": 16,
+  "rc_basic_instances": 82,
+  "rc_extended_instances": 5,
+  "exceptions": [
+    {
+      "code": "C114839",
+      "mpn": "TPS7A4700RGWR",
+      "refs": [
+        "U12"
+      ],
+      "per_board_qty": 1,
+      "reason": "U12 exact TPS7A4700RGWR positive LDO; Extended by catalog",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:39Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C14165",
+      "mpn": "0466003.NRHF",
+      "refs": [
+        "F1"
+      ],
+      "per_board_qty": 1,
+      "reason": "F1 exact 0466003.NRHF fuse; safety part, Extended by catalog",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:24:54Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C165948",
+      "mpn": "TYPE-C-31-M-12",
+      "refs": [
+        "J1"
+      ],
+      "per_board_qty": 1,
+      "reason": "J1 exact TYPE-C-31-M-12 hybrid USB connector (SMT contacts + plated shell slots); Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:24:52Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C2088870",
+      "mpn": "CPF0805B1M6E1",
+      "refs": [
+        "R14"
+      ],
+      "per_board_qty": 1,
+      "reason": "R14 exact 1.6M 0.1% precision divider; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:38Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C23250",
+      "mpn": "0603WAF8063T5E",
+      "refs": [
+        "R6"
+      ],
+      "per_board_qty": 1,
+      "reason": "R6 exact 806k 1% OV divider; Extended (no exact Basic equivalent used)",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:07Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C2847552",
+      "mpn": "MDA1040-6R8M",
+      "refs": [
+        "L1",
+        "L4"
+      ],
+      "per_board_qty": 2,
+      "reason": "L1/L4 exact MDA1040-6R8M buck inductor; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:19Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C2886925",
+      "mpn": "TL3340AF160QG",
+      "refs": [
+        "SW1"
+      ],
+      "per_board_qty": 1,
+      "reason": "SW1 exact TL3340AF160QG retry switch; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:32:37Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C311983",
+      "mpn": "TPS54302DDCR",
+      "refs": [
+        "U3",
+        "U5"
+      ],
+      "per_board_qty": 2,
+      "reason": "U3/U5 exact TPS54302DDCR buck regulators; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:17Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C4223894",
+      "mpn": "CPF0805B1M5E1",
+      "refs": [
+        "R12"
+      ],
+      "per_board_qty": 1,
+      "reason": "R12 exact 1.5M 0.1% raw positive divider; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:29:20Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C42459160",
+      "mpn": "CH224A",
+      "refs": [
+        "U1"
+      ],
+      "per_board_qty": 1,
+      "reason": "U1 exact CH224A PD controller; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:24:56Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C501829",
+      "mpn": "0402CG4R5C500NT",
+      "refs": [
+        "C10"
+      ],
+      "per_board_qty": 1,
+      "reason": "C10 authorized 0402 4.5p +/-0.25pF C0G feedforward; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:40:00Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C519375",
+      "mpn": "CC0603CRNPO9BN4R3",
+      "refs": [
+        "C11"
+      ],
+      "per_board_qty": 1,
+      "reason": "C11 4.3p +/-0.25pF C0G feedforward; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:32:57Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C5291878",
+      "mpn": "CKCS6045-4.7uH/M",
+      "refs": [
+        "L2",
+        "L3"
+      ],
+      "per_board_qty": 2,
+      "reason": "L2/L3 exact CKCS6045-4.7uH/M bipolar inductors; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:29Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C544399",
+      "mpn": "TPS26600PWPR",
+      "refs": [
+        "U2"
+      ],
+      "per_board_qty": 1,
+      "reason": "U2 exact TPS26600PWPR eFuse; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:24:59Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C87663",
+      "mpn": "TPS65131RGER",
+      "refs": [
+        "U4"
+      ],
+      "per_board_qty": 1,
+      "reason": "U4 exact TPS65131RGER bipolar converter; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:28Z",
+      "economy_eligible_observed": true
+    },
+    {
+      "code": "C90082",
+      "mpn": "TPS7A3301RGWR",
+      "refs": [
+        "U13"
+      ],
+      "per_board_qty": 1,
+      "reason": "U13 exact TPS7A3301RGWR negative LDO; Extended",
+      "evidence_source": "curated-dated-catalog",
+      "retrieved_at_utc": "2026-10-17T03:25:41Z",
+      "economy_eligible_observed": true
+    }
+  ]
+}

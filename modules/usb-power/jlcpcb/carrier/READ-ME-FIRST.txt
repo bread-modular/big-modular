@@ -1,0 +1,6 @@
+CARRIER ONLY: four-layer FR4 Tg170 / ENIG / all 207 0.300 mm plated through vias are ORDINARY (no epoxy fill, planarization or copper cap); solder-mask tented where artwork permits.
+Exposed-pad/thermal-via barrels are prototype assembly inspection points; mask tenting does not seal a barrel inside an exposed pad.
+READ FABRICATION-REQUIREMENTS.md before quoting or manufacturing. No supplier acceptance is implied.
+Gerber/Excellon coordinates: absolute mm, X right / Y up; native KiCad Y is down.
+Edge.Cuts centreline is the final profile; do not machine the outside of its plotted stroke.
+No assembly BOM/CPL. Empty layers/drill files are intentional and checked.
