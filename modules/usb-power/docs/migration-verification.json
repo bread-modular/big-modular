@@ -1,0 +1,304 @@
+{
+  "circuit_changed": false,
+  "committed": false,
+  "deferred": [
+    "Missing gerbonara==1.6.3 and shapely==2.1.2 in system Python; CAM tests remain enabled",
+    "Fresh fabrication/PDF/assembly export and full CAM/promotion gates are Astra handoff; recovered shipping snapshot is STALE",
+    "Native panel project retains inherited nonexistent schematic placeholder; carrier project cached sheet list predates quiet-rail sheet. Actual root hierarchy and explicit profiles are complete; native metadata cleanup deferred to Astra",
+    "Existing full-temperature negative 1 A dropout FAIL, electrical diagnosis and bench/startup/reverse/thermal/noise validation remain outside recovery",
+    "Historical fabrication text contains numerical discrepancies; recovery preserves source/electrical content rather than redesigning it"
+  ],
+  "evidence_sha256": {
+    "doctor.json": "6c07259fc6cc20e1bdc1faa910c304e5439b57093dfd6eb8a9270eb29b7a1250",
+    "native-after-drc.json": "abd1c0144844b6dfa5df37e783149e4d3f9a8031e361abb91840cabb216815d1",
+    "native-after-erc.json": "b6ad761042ec5f8b25f35ca3adcf8d2c65fae1c893ab2813e7d4f20a11b1b1fa",
+    "native-after-netlist.xml": "676ad410cbb0448a183d0dca9b352ca9d6fcb58d261ef42b2d45e988092be681",
+    "native-after-summary.json": "4bf91cefb5369dd8a117bcb4d28eeb1ebd53b578c651bda639c4d079dc35772c",
+    "native-before-drc.json": "748489d399a5c4f69c0c4df4afe5295477cb8649d70f805bfaffc8dafdf7dd6b",
+    "native-before-erc.json": "38ac75a3ab6629dba1b2706b90e71d4f10f270e75edb8884745c49d6367350b8",
+    "native-before-netlist.xml": "a95deec8e094f7c4fb096b3fcbe1afef02bb3cab7b725cae864e13e1d3522b2a",
+    "native-before-summary.json": "52fdb3dfd243d8fa652e6d831979105ebf5ef9fbe161374af262f6eefefef13c",
+    "native-netlist-comparison.json": "a0de5e80562ef6d2e93d8fa64423910135908fb3a9b1bbc5408ce4335ef08ad7",
+    "panel-drc.json": "0949ac67d68501e173526dfc46ff89bd5fc487d948c0ea5736ff347300b689b5",
+    "project-check.json": "83f8bb56835e655e47152a49cb458d85ef0ea54f5542782884a8b91a085de836",
+    "source-parity.json": "d42fc4f4a20f0d506a3f06f671bb147840ed276410e62fdfe7ea180f6f02a962",
+    "tests-migration-regression.log": "96889ab3aa2b343b86af8822b9821e3e990a9398c5dba7f72bdfc023b70ffd37",
+    "tests-module.log": "fbfc39bf574625226d1b96b6fc25d5236041c3c98a74322dbdf770595706750e",
+    "tests-root.log": "e2093fa6c5b56fee2e8a2d5794ce1f4f1a79b548b8fd2bbba96a45ce7031355f"
+  },
+  "fabrication_exports_regenerated": false,
+  "independent_source_check": {
+    "PCB_BOM_schematic_field_checks": 642,
+    "native_DRC_findings": 0,
+    "native_ERC_findings": 0,
+    "native_components": 107,
+    "native_connected_pins": 291,
+    "native_explicit_NCs": 43,
+    "native_pins_including_NC": 334,
+    "negative_full_corner_1A_drop_out_pass": false,
+    "status": "integrated native electrical and exact-field parity pass; prototype screen only; negative full-temperature 1 A dropout FAIL not waived"
+  },
+  "mechanics": {
+    "boards": {
+      "usb-power-panel.kicad_pcb": {
+        "backside_components": 0,
+        "footprints": 6,
+        "tracks": 0,
+        "vias": 0,
+        "zones": 0
+      },
+      "usb-power.kicad_pcb": {
+        "backside_components": 0,
+        "footprints": 111,
+        "tracks": 585,
+        "vias": 207,
+        "zones": 8
+      }
+    },
+    "mechanics": {
+      "LED_PTH_pad_checks": 2,
+      "LED_polarity_mark_checks": 2,
+      "M3_access": {
+        "all_fasteners": "M3",
+        "brackets": [
+          {
+            "Y_mm": 22,
+            "front_bolt_exposure_mm": 1.0,
+            "front_nut_right_X_mm": 9.575,
+            "front_nut_upright_clearance_mm": 0.125,
+            "loose_nut_access_clear_nominal": true,
+            "side_bolt_exposure_min_mm": 1.0,
+            "side_tip_X_range_mm": [
+              8.1,
+              8.4
+            ]
+          },
+          {
+            "Y_mm": 106.5,
+            "front_bolt_exposure_mm": 1.0,
+            "front_nut_right_X_mm": 9.575,
+            "front_nut_upright_clearance_mm": 0.125,
+            "loose_nut_access_clear_nominal": true,
+            "side_bolt_exposure_min_mm": 1.0,
+            "side_tip_X_range_mm": [
+              8.1,
+              8.4
+            ]
+          }
+        ],
+        "countersink_in": "printed bracket only; NO FR4 countersink",
+        "identical_parts": true,
+        "limitation": "Nominal envelopes only. Front-nut clearance is tight (0.125mm). Actual tools, ABS shrinkage, screw seating and printed strength require physical trial.",
+        "plain_L": true,
+        "service_condition": "OUT OF RACK, soldered main PCB retained; front nut held from +X with small pliers, side nut driver +X, screwdrivers -X and -Z",
+        "wall_mm": 3
+      },
+      "PCB_depth_behind_panel_mm": 30.4,
+      "actual_NPTH_geometry_checks": 10,
+      "carrier_depth_mm": 30,
+      "electrical_status": "107 active footprints; inspected routing, passive panel; not electrical/thermal qualification",
+      "finished_module_depth": "unverified; cable connector not confined to 2HP board envelope",
+      "main_PCB_plane_X_mm": [
+        3.1,
+        4.7
+      ],
+      "manual_LED_exclusions": 1,
+      "port_axis_mm": [
+        6.33,
+        33.5,
+        0.8
+      ],
+      "power_pin_checks": 16,
+      "switch_SMT_pad_checks": 5,
+      "switch_fit": {
+        "axis_X_mm": 6.4,
+        "body_top_X_mm": 8.0,
+        "locator_NPTHs": 2,
+        "nominal_lateral_clearance_mm": 1.8,
+        "qualification": "nominal placement only; sample solder/fit trial pending",
+        "recess_behind_panel_rear_mm": 0.45,
+        "smd_pads": 5
+      },
+      "switch_locator_NPTH_checks": 2
+    }
+  },
+  "native_after": {
+    "errors": [],
+    "findings": {
+      "drc": {
+        "categories": {
+          "schematic_parity": 0,
+          "unconnected_items": 0,
+          "violations": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      },
+      "erc": {
+        "categories": {
+          "violations": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      }
+    },
+    "ref_pin_net_parity": {
+      "equal": true,
+      "extra_connected_pads": [],
+      "extra_refs": [],
+      "mechanical_without_reference": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "missing_pins": [],
+      "missing_refs": [],
+      "net_mismatches": [],
+      "pads_without_net": []
+    },
+    "source_unchanged": true,
+    "status": "no_findings_in_requested_checks"
+  },
+  "native_before": {
+    "errors": [],
+    "findings": {
+      "drc": {
+        "categories": {
+          "schematic_parity": 0,
+          "unconnected_items": 0,
+          "violations": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      },
+      "erc": {
+        "categories": {
+          "violations": 0
+        },
+        "severity": {},
+        "total_including_exclusions": 0
+      }
+    },
+    "ref_pin_net_parity": {
+      "equal": true,
+      "extra_connected_pads": [],
+      "extra_refs": [],
+      "mechanical_without_reference": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "missing_pins": [],
+      "missing_refs": [],
+      "net_mismatches": [],
+      "pads_without_net": []
+    },
+    "source_unchanged": true,
+    "status": "no_findings_in_requested_checks"
+  },
+  "native_check_side_effects": {
+    "canonical_native_bytes_unchanged": true,
+    "panel_drc_generated_ignored_preferences_file": "hardware/usb-power-panel.kicad_prl; removed after confirming absent from Git and ignored; no board/project save"
+  },
+  "native_netlist_comparison": {
+    "components": {
+      "added": [],
+      "changed": {},
+      "removed": []
+    },
+    "equal": true,
+    "hierarchy": {
+      "added": [],
+      "changed": {},
+      "removed": []
+    },
+    "input_sha256": {
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/research/migration-recovery/native-after/netlist.xml": "676ad410cbb0448a183d0dca9b352ca9d6fcb58d261ef42b2d45e988092be681",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/research/migration-recovery/native-before/netlist.xml": "a95deec8e094f7c4fb096b3fcbe1afef02bb3cab7b725cae864e13e1d3522b2a"
+    },
+    "nets": {
+      "added": [],
+      "changed": {},
+      "removed": []
+    },
+    "order_ready": false,
+    "source_writes": false
+  },
+  "native_toolchain": {
+    "doctor_exit_code": 0,
+    "kicad_cli": "10.0.6",
+    "pcbnew": "10.0.6-10.0.6~ubuntu26.04.1",
+    "pcbnew_import_diagnostics": "PROPERTY_ENUM: No enum choices defined; original diagnostics retained in migration-evidence/doctor.json"
+  },
+  "panel_drc": {
+    "exit_code": 0,
+    "schematic_parity": "not applicable; passive panel has no schematic",
+    "unconnected_items": 0,
+    "violations": 0
+  },
+  "schema_version": 1,
+  "source_commit": "8f3c5000b88a09a22e3b49ce209ca87bbc9aeefe",
+  "tests": {
+    "migration-regression": {
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "passed": 8,
+      "ran": 8,
+      "raw_log": "research/migration-recovery/tests-migration-regression-handoff.log",
+      "skips": 0,
+      "tracked_log": "migration-evidence/tests-migration-regression.log"
+    },
+    "module": {
+      "errors": 3,
+      "exit_code": 1,
+      "failures": 0,
+      "passed": 103,
+      "ran": 106,
+      "raw_log": "research/migration-recovery/tests-module-handoff.log",
+      "skips": 0,
+      "tracked_log": "migration-evidence/tests-module.log"
+    },
+    "root": {
+      "errors": 3,
+      "exit_code": 1,
+      "failures": 0,
+      "passed": 103,
+      "ran": 106,
+      "raw_log": "research/migration-recovery/tests-root-handoff.log",
+      "skips": 0,
+      "tracked_log": "migration-evidence/tests-root.log"
+    }
+  },
+  "tests_preserved": {
+    "dependency_tests_disabled": false,
+    "new_migration_regression_methods": 8,
+    "original_test_methods_retained": 98,
+    "overall_suite_status": "FAILED only by 3 missing-CAM-dependency import errors; not a clean full-suite pass",
+    "rules_ignored_or_excluded_for_recovery": 0,
+    "tests_removed": 0
+  },
+  "tracked_recovery": {
+    "audit_command": "python3 -B modules/usb-power/tools/migration_audit.py",
+    "module_files_in_index": 236,
+    "native_files_compared": 38,
+    "original_files_recovered_into_module": 213,
+    "original_shared_root_files_preserved": 104,
+    "original_source_files_accounted_for": 393,
+    "retired_original_files_in_git_only": 76
+  },
+  "verification_modes": {
+    "one_time_frozen_acceptance": {
+      "command": "python3 -B modules/usb-power/tools/migration_audit.py --frozen-recovery",
+      "scope": "Exact recovery-delivery bytes/index only. Passed at delivery; expected to fail after intentional engineering changes. Do not wire into ongoing circuit CI or rewrite frozen provenance to conceal later changes."
+    },
+    "ongoing_regressions": {
+      "command": "python3 -B modules/usb-power/tools/migration_audit.py",
+      "current_circuit_hashes_enforced": false,
+      "scope": "Required migrated paths/tracking and frozen historical provenance. Authorized hardware, values, BOM and tool contents may evolve; new tracked engineering files are allowed."
+    }
+  },
+  "workspace_base": "e4524354cf803d41dba03c64e6bdb860b69d9b0a"
+}

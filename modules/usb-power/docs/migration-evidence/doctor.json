@@ -1,0 +1,179 @@
+{
+  "native_cli": {
+    "available": true,
+    "path": "/usr/bin/kicad-cli",
+    "version": "10.0.6",
+    "checks_supported": true,
+    "stderr": ""
+  },
+  "check_requirement": "KiCad CLI 10+; shared exporter retains its own 9+ requirement",
+  "shared_exporter": "/home/azero/.okbrain/workspaces/big-modular/045/opt/kicad-tools/jlcpcb/export.py",
+  "source_writes": false,
+  "order_ready": false,
+  "pcbnew": {
+    "interpreter": "/usr/bin/python3",
+    "available": true,
+    "required_for_this_toolkit": false,
+    "version": "10.0.6-10.0.6~ubuntu26.04.1",
+    "diagnostics": "./kicad/include/properties/property.h(607): assert \"m_choices.GetCount() > 0\" failed in PROPERTY_ENUM(): No enum choices defined\n./kicad/include/properties/property.h(607): assert \"m_choices.GetCount() > 0\" failed in PROPERTY_ENUM(): No enum choices defined\n./kicad/include/properties/property.h(607): assert \"m_choices.GetCount() > 0\" failed in PROPERTY_ENUM(): No enum choices defined\n"
+  },
+  "selection": {
+    "project_dir": "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware",
+    "board": "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/usb-power.kicad_pcb",
+    "root_schematic": "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/usb-power.kicad_sch",
+    "sheet_files": [
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/usb-power.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/01_input_protection.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/03_bucks.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/02_hardgate.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/07_output_rails.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/04_bipolar.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/05_quiet_rails.kicad_sch"
+    ],
+    "dependency_files": 34,
+    "dependency_bytes": 1537885,
+    "source_hashes": {
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/01_input_protection.kicad_sch": {
+        "sha256": "ea20151de3c821b978a1121ba121a453f32c124a4cd81c537d30327d12e17b83",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/02_hardgate.kicad_sch": {
+        "sha256": "6d298942fe57d9cc761b549cc474bbbf2537c79db36058b11e128cef8027910b",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/03_bucks.kicad_sch": {
+        "sha256": "935e9cd81fec3a35b4748936a3f045992fd832c514c1a55e4d3d8e5a3e58acd4",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/04_bipolar.kicad_sch": {
+        "sha256": "2b50322c3e9e8e3df1ed638ca41964b7401dcf56fc2599adc2403557a3b24529",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/05_quiet_rails.kicad_sch": {
+        "sha256": "da595d6babb884a2f4afc9423b5fbf263c853e859bf2afd10b78fc32697a55ee",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/07_output_rails.kicad_sch": {
+        "sha256": "7087eecf3ab41a357df804749f59c9e2b71616816fa8a495a2b03c438f2a468c",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.kicad_sym": {
+        "sha256": "82c5b6f51703d7e8e9bca4f6ff075a6c1c2d40f88db91844ad36b4c2f7d0d92e",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod": {
+        "sha256": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod": {
+        "sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod": {
+        "sha256": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod": {
+        "sha256": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod": {
+        "sha256": "e1dae516e079b70c4736d001fb81bfb4ef5f9c2a37c8175223a44f83a04ff75f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/D_SMA.kicad_mod": {
+        "sha256": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": {
+        "sha256": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
+        "sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": {
+        "sha256": "f1154f7a5df90086a416a14a23effbbe3658ba33f3d7e5d2cc5e78493d66a6fc",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": {
+        "sha256": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": {
+        "sha256": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod": {
+        "sha256": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod": {
+        "sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod": {
+        "sha256": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/SOT-23-6.kicad_mod": {
+        "sha256": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": {
+        "sha256": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": {
+        "sha256": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": {
+        "sha256": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": {
+        "sha256": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": {
+        "sha256": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": {
+        "sha256": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": {
+        "sha256": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/fp-lib-table": {
+        "sha256": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/sym-lib-table": {
+        "sha256": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/usb-power.kicad_pcb": {
+        "sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/usb-power.kicad_pro": {
+        "sha256": "a06dc170d02a97f4b254dd63131fd2cdc055071bdeee5929002c3022d1c10c6e",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/hardware/usb-power.kicad_sch": {
+        "sha256": "80bedaba5d4d355fc9acee67a6dc6a6145f45b6a83205f2a279a097fc1077dd1",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/045/modules/usb-power/tools/kicad-project.json": {
+        "sha256": "072b753a5e117c980317e9dfeb914e8ac27aafcab20d7a28520eb66ae1a476c0",
+        "symlink": null
+      }
+    },
+    "native_schematic_parity": true
+  }
+}

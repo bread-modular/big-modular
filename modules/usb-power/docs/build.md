@@ -1,9 +1,16 @@
 # LDO-R1 build and checks
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 Canonical `hardware/` is the capacitor-corrected LDO board. Never regenerate its
 routing; the mechanical builder copies it. Historical HRO-R1 is not the new circuit.
 Use system KiCad CLI/pcbnew and a local venv with `tools/cam-requirements.txt`.
-The workspace runtime is `research/ldo-029/cam-venv/bin/python` (system-site-packages).
+The historical CAM venv was not recovered. System Python currently lacks the pinned
+CAM dependencies; see `tools/cam-requirements.txt`. Do not install or hide failures
+as part of repository recovery.
 No advisor, commit/merge/push, order or vendor upload. Supervisor merges.
 
 Native hierarchy: `usb-power.kicad_sch` -> `01_input_protection.kicad_sch`,
@@ -43,4 +50,4 @@ checked independently against BOM, native schematic/PCB and routed-baseline.json
 
 Reproduction identifies exact source SHA manifests plus the uncommitted revision;
 base Git HEAD alone is NOT the new design. HRO-R1 tests validate its historical
-source against c82ca1c and its untouched archived assets, not current LDO inputs.
+source against c82ca1c and its immutable Git-object assets (no active archive), not current LDO inputs.

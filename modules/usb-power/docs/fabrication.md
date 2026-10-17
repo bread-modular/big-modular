@@ -1,5 +1,10 @@
 # LDO-R1 prototype bare-PCB fabrication contract
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 This release is **bare-PCB artwork ready with the specified ordinary-via fabrication
 process**, not an assembled-product qualification, supplier acceptance or purchasing approval.
 Canonical files are `hardware/usb-power.kicad_pcb` and `hardware/usb-power-panel.kicad_pcb`.
@@ -175,6 +180,7 @@ not an assembled sample test. The panel geometry/holes/legend and all fixed
 interfaces are unchanged.
 
 The old HRO-R1 release archive was retired together with the `production/`
-directory; it was STALE for this LDO circuit. Fabrication output is the current
-`jlcpcb/` set. This is an uncommitted workspace revision: each
-`jlcpcb/*/export-report.json` records the exported source hashes. Supervisor reviews/merges; no commit/push/order/upload here.
+directory; it was STALE for this LDO circuit. The sole shipping location is
+`jlcpcb/`, currently an intact STALE recovered snapshot. Its historical source hashes
+are not hashes of migrated tools/project identity. No new export was made during
+recovery. Supervisor reviews/merges; no commit/push/order/upload here.

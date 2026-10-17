@@ -1,5 +1,10 @@
 # Basic substitutions — native checkpoint040, not a manufacturing release
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 Base `b4d301d075f7556b6c06758ccbffcc1a2b1694fa`; base PCB SHA256
 `7d709a4fc313b13bddc7f1664f199313f482dd9ed0a82d3592a452cf92d35af3`.
 24 existing parts substituted; R83=9.1k joins R72=82k and R73=1.2k;

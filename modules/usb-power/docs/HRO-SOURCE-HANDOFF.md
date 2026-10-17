@@ -10,8 +10,8 @@ Latest steering: finish source checks, hand off now; fabrication ZIP/CAM packagi
 
 ## Verified checkpoint
 
-- Canonical `hardware/big_modular.kicad_pcb`: `a8cd9e8dbb8451fd426e5dc5feed8090044b879353ade9b36bcf02a0aaa8e4e6`.
-- Canonical `hardware/front_panel.kicad_pcb`: `d6c75c7b9994f7e6fe9d1e6688407e5e3b4f87e4d8c4d073cfd85ff2aa28974b`.
+- Canonical `hardware/usb-power.kicad_pcb`: `a8cd9e8dbb8451fd426e5dc5feed8090044b879353ade9b36bcf02a0aaa8e4e6`.
+- Canonical `hardware/usb-power-panel.kicad_pcb`: `d6c75c7b9994f7e6fe9d1e6688407e5e3b4f87e4d8c4d073cfd85ff2aa28974b`.
 - **71/71 tests pass**, fail-fast full suite. Final log: `research/hro-release-024/final-tests-source-preserving.log`.
 - Fresh carrier ERC: **0 errors /0 warnings /0 exclusions /0 ignored checks**.
 - Fresh carrier DRC: **0 errors /0 warnings /0 exclusions /0 ignored checks /0 opens /0 native parity findings**; independent ref/pin/net parity equal.
@@ -32,7 +32,7 @@ Failed/intermediate checks are retained; do not confuse `final-carrier-check/` (
 
 ## Main overlaps and non-destructive integration
 
-Main is still dirty. Overlap paths are the six `.kicad_sch` files and `hardware/big_modular.kicad_pro`.
+Main is still dirty. Overlap paths are the six `.kicad_sch` files and `hardware/usb-power.kicad_pro`.
 Main's `hardware/.history` is dirty but is NOT a task delta and must stay untouched.
 All98 captured main files, all73 predecessor023 files and four Bread reference files
 still hash-match the initial snapshot. User presentation changes were NOT imported
@@ -101,11 +101,11 @@ hardware/BigModular.kicad_sym
 hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod
 hardware/BigModular.pretty/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.kicad_mod
 hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod
-hardware/big_modular.kicad_pcb
-hardware/big_modular.kicad_pro
-hardware/big_modular.kicad_sch
-hardware/front_panel.kicad_pcb
-hardware/front_panel.kicad_pro
+hardware/usb-power.kicad_pcb
+hardware/usb-power.kicad_pro
+hardware/usb-power.kicad_sch
+hardware/usb-power-panel.kicad_pcb
+hardware/usb-power-panel.kicad_pro
 hardware/mechanics/assembly-envelope.scad
 tests/test_hro_source.py
 tests/test_m3_access.py

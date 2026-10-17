@@ -1,5 +1,10 @@
 # Current LDO-R1 prototype
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 See [LDO revision](ldo-revision.md) for the current 040 checkpoint
 raw+13.537080/-13.928806V, mixed 0.1%/25ppm retained dividers with 1%/100ppm
 Basic substitutions, corrected4/6/4/3 capacitor banks and conditional prototype

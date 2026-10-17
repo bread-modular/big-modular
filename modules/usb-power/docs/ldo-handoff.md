@@ -1,5 +1,10 @@
 # LDO-R1 / basic-passive checkpoint — supervisor review
 
+> Migration recovery: source/electrical content below is retained checkpoint evidence.
+> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
+> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
+
 This workspace starts from base `b4d301d` plus the reviewed 040 basic-passive
 native checkpoint (24 substitutions, R83/R84/R85, six 1206 capacitor lands, D10
 DNP) plus the 043 capacitor closure. It is **not** a qualified manufacturing release.

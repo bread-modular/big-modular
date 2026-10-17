@@ -6,7 +6,7 @@ A collection of Eurorack modules built with shared KiCad tooling.
 
 | Module | Description | Release |
 | --- | --- | --- |
-| [`usb-power`](modules/usb-power/) | USB-C PD input → protected 9V, dual TPS54302 bucks, TPS65131 raw ±13.5V, TPS7A4700/TPS7A3301 quiet ±12V, +5V | LDO-R1 (`jlcpcb/`) |
+| [`usb-power`](modules/usb-power/) | USB-C PD input → protected 9V, dual TPS54302 bucks, TPS65131 raw ±13.5V, TPS7A4700/TPS7A3301 quiet ±12V, +5V | LDO-R1 source; recovered exports STALE |
 
 Each module is self-contained under `modules/<name>/`:
 
@@ -16,7 +16,7 @@ modules/usb-power/
   docs/         design, fabrication and evidence notes
   tools/        module generators/checkers
   tests/        module regression tests
-  jlcpcb/       upload-ready Gerber/BOM/CPL files
+  jlcpcb/       recovered Gerber/BOM/CPL snapshot (STALE until re-export)
 ```
 
 ## Common tooling
@@ -33,5 +33,7 @@ Read `opt/kicad-tools/skills/kicad-workflow/SKILL.md` and
 
 ```sh
 python3 -B opt/kicad-tools/kicad_tools.py doctor --config modules/usb-power/tools/kicad-project.json
-cd modules/usb-power && python3 -B -m unittest discover -s tests -v
+python3 -B -m unittest discover -s modules/usb-power/tests -v
 ```
+
+Recovery evidence and remaining release gates: [`modules/usb-power/docs/migration-recovery.md`](modules/usb-power/docs/migration-recovery.md).
