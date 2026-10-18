@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+ FreeCAD Document, see https://www.freecad.org for more information...
+-->
+<Document SchemaVersion="4" ProgramVersion="1.1R20260725 (Git shallow)" FileVersion="1" StringHasher="1">
+    <StringHasher saveall="0" threshold="0" count="0"></StringHasher>
+    <Properties Count="17" TransientCount="3">
+        <_Property name="FileName" type="App::PropertyString" status="50331649"/>
+        <_Property name="Tip" type="App::PropertyLink" status="33554433"/>
+        <_Property name="TransientDir" type="App::PropertyString" status="50331649"/>
+        <Property name="Comment" type="App::PropertyString">
+            <String value=""/>
+        </Property>
+        <Property name="Company" type="App::PropertyString">
+            <String value=""/>
+        </Property>
+        <Property name="CreatedBy" type="App::PropertyString">
+            <String value=""/>
+        </Property>
+        <Property name="CreationDate" type="App::PropertyString" status="16777217">
+            <String value="2026-10-18T15:47:31+05:30"/>
+        </Property>
+        <Property name="Id" type="App::PropertyString">
+            <String value=""/>
+        </Property>
+        <Property name="Label" type="App::PropertyString" status="16777217">
+            <String value="assembly"/>
+        </Property>
+        <Property name="LastModifiedBy" type="App::PropertyString">
+            <String value=""/>
+        </Property>
+        <Property name="LastModifiedDate" type="App::PropertyString" status="16777217">
+            <String value="2026-10-18T15:47:31+05:30"/>
+        </Property>
+        <Property name="License" type="App::PropertyString" status="1">
+            <String value="All rights reserved"/>
+        </Property>
+        <Property name="LicenseURL" type="App::PropertyString" status="1">
+            <String value="https://en.wikipedia.org/wiki/All_rights_reserved"/>
+        </Property>
+        <Property name="Material" type="App::PropertyMap">
+            <Map count="0">
+            </Map>
+        </Property>
+        <Property name="Meta" type="App::PropertyMap">
+            <Map count="0">
+            </Map>
+        </Property>
+        <Property name="ShowHidden" type="App::PropertyBool" status="1">
+            <Bool value="false"/>
+        </Property>
+        <Property name="TipName" type="App::PropertyString" status="83886080">
+            <String value=""/>
+        </Property>
+        <Property name="Uid" type="App::PropertyUUID" status="16777217">
+            <Uuid value="4198b74a-3b55-49f4-9126-acea11e60ebf"/>
+        </Property>
+        <Property name="UnitSystem" type="App::PropertyEnumeration" status="1">
+            <Integer value="0" CustomEnum="true"/>
+            <CustomEnumList count="10">
+                <Enum value="Standard (mm, kg, s, °)"/>
+                <Enum value="MKS (m, kg, s, °)"/>
+                <Enum value="US customary (in, lb)"/>
+                <Enum value="Imperial decimal (in, lb)"/>
+                <Enum value="Building Euro (cm, m², m³)"/>
+                <Enum value="Building US (ft-in, sqft, cft)"/>
+                <Enum value="Metric small parts &amp; CNC (mm, mm/min)"/>
+                <Enum value="Imperial for Civil Eng (ft, lb, mph)"/>
+                <Enum value="FEM (mm, N, s)"/>
+                <Enum value="Meter decimal (m, m², m³)"/>
+            </CustomEnumList>
+        </Property>
+        <Property name="UseHasher" type="App::PropertyBool" status="67108865">
+            <Bool value="true"/>
+        </Property>
+    </Properties>
+    <Objects Count="5" Dependencies="1">
+        <ObjectDeps Name="bottom_plate" Count="0"/>
+        <ObjectDeps Name="side_panel_left" Count="0"/>
+        <ObjectDeps Name="side_panel_right" Count="0"/>
+        <ObjectDeps Name="rail_front" Count="0"/>
+        <ObjectDeps Name="rail_back" Count="0"/>
+        <Object type="Part::Feature" name="bottom_plate" id="3413" Touched="1" />
+        <Object type="Part::Feature" name="side_panel_left" id="3414" Touched="1" />
+        <Object type="Part::Feature" name="side_panel_right" id="3415" Touched="1" />
+        <Object type="Part::Feature" name="rail_front" id="3416" Touched="1" />
+        <Object type="Part::Feature" name="rail_back" id="3417" Touched="1" />
+    </Objects>
+    <ObjectData Count="5">
+        <Object name="bottom_plate">
+            <Properties Count="7" TransientCount="1">
+                <_Property name="_ElementMapVersion" type="App::PropertyString" status="234881025"/>
+                <Property name="ExpressionEngine" type="App::PropertyExpressionEngine" status="67108864">
+                    <ExpressionEngine count="0">
+                    </ExpressionEngine>
+                </Property>
+                <Property name="Label" type="App::PropertyString" status="134217729">
+                    <String value="bottom_plate"/>
+                </Property>
+                <Property name="Label2" type="App::PropertyString" status="67108992">
+                    <String value=""/>
+                </Property>
+                <Property name="Placement" type="App::PropertyPlacement" status="8388609">
+                    <PropertyPlacement Px="0.0000000000000000" Py="0.0000000000000000" Pz="0.0000000000000000" Q0="0.0000000000000000" Q1="0.0000000000000000" Q2="0.0000000000000000" Q3="1.0000000000000000" A="0.0000000000000000" Ox="0.0000000000000000" Oy="0.0000000000000000" Oz="1.0000000000000000"/>
+                </Property>
+                <Property name="Shape" type="Part::PropertyPartShape" status="1">
+                    <Part HasherIndex="0" ElementMap="15.70200.5" file="bottom_plate.Shape.brp"/>
+                    <ElementMap new="1" count="1"><Element key="Dummy" value="Dummy"/></ElementMap>
+                    <ElementMap2 file="bottom_plate.Shape.Map.txt"/>
+                </Property>
+                <Property name="ShapeMaterial" type="Materials::PropertyMaterial" status="1">
+                    <PropertyMaterial uuid="7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"/>
+                </Property>
+                <Property name="Visibility" type="App::PropertyBool" status="649">
+                    <Bool value="true"/>
+                </Property>
+            </Properties>
+        </Object>
+        <Object name="side_panel_left">
+            <Properties Count="7" TransientCount="1">
+                <_Property name="_ElementMapVersion" type="App::PropertyString" status="234881025"/>
+                <Property name="ExpressionEngine" type="App::PropertyExpressionEngine" status="67108864">
+                    <ExpressionEngine count="0">
+                    </ExpressionEngine>
+                </Property>
+                <Property name="Label" type="App::PropertyString" status="134217729">
+                    <String value="side_panel_left"/>
+                </Property>
+                <Property name="Label2" type="App::PropertyString" status="67108992">
+                    <String value=""/>
+                </Property>
+                <Property name="Placement" type="App::PropertyPlacement" status="8388609">
+                    <PropertyPlacement Px="0.0000000000000000" Py="0.0000000000000000" Pz="0.0000000000000000" Q0="0.0000000000000000" Q1="0.0000000000000000" Q2="0.0000000000000000" Q3="1.0000000000000000" A="0.0000000000000000" Ox="0.0000000000000000" Oy="0.0000000000000000" Oz="1.0000000000000000"/>
+                </Property>
+                <Property name="Shape" type="Part::PropertyPartShape" status="1">
+                    <Part HasherIndex="0" ElementMap="15.70200.5" file="side_panel_left.Shape.brp"/>
+                    <ElementMap new="1" count="1"><Element key="Dummy" value="Dummy"/></ElementMap>
+                    <ElementMap2 file="side_panel_left.Shape.Map.txt"/>
+                </Property>
+                <Property name="ShapeMaterial" type="Materials::PropertyMaterial" status="1">
+                    <PropertyMaterial uuid="7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"/>
+                </Property>
+                <Property name="Visibility" type="App::PropertyBool" status="649">
+                    <Bool value="true"/>
+                </Property>
+            </Properties>
+        </Object>
+        <Object name="side_panel_right">
+            <Properties Count="7" TransientCount="1">
+                <_Property name="_ElementMapVersion" type="App::PropertyString" status="234881025"/>
+                <Property name="ExpressionEngine" type="App::PropertyExpressionEngine" status="67108864">
+                    <ExpressionEngine count="0">
+                    </ExpressionEngine>
+                </Property>
+                <Property name="Label" type="App::PropertyString" status="134217729">
+                    <String value="side_panel_right"/>
+                </Property>
+                <Property name="Label2" type="App::PropertyString" status="67108992">
+                    <String value=""/>
+                </Property>
+                <Property name="Placement" type="App::PropertyPlacement" status="8388609">
+                    <PropertyPlacement Px="0.0000000000000000" Py="0.0000000000000000" Pz="0.0000000000000000" Q0="0.0000000000000000" Q1="0.0000000000000000" Q2="0.0000000000000000" Q3="1.0000000000000000" A="0.0000000000000000" Ox="0.0000000000000000" Oy="0.0000000000000000" Oz="1.0000000000000000"/>
+                </Property>
+                <Property name="Shape" type="Part::PropertyPartShape" status="1">
+                    <Part HasherIndex="0" ElementMap="15.70200.5" file="side_panel_right.Shape.brp"/>
+                    <ElementMap new="1" count="1"><Element key="Dummy" value="Dummy"/></ElementMap>
+                    <ElementMap2 file="side_panel_right.Shape.Map.txt"/>
+                </Property>
+                <Property name="ShapeMaterial" type="Materials::PropertyMaterial" status="1">
+                    <PropertyMaterial uuid="7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"/>
+                </Property>
+                <Property name="Visibility" type="App::PropertyBool" status="649">
+                    <Bool value="true"/>
+                </Property>
+            </Properties>
+        </Object>
+        <Object name="rail_front">
+            <Properties Count="7" TransientCount="1">
+                <_Property name="_ElementMapVersion" type="App::PropertyString" status="234881025"/>
+                <Property name="ExpressionEngine" type="App::PropertyExpressionEngine" status="67108864">
+                    <ExpressionEngine count="0">
+                    </ExpressionEngine>
+                </Property>
+                <Property name="Label" type="App::PropertyString" status="134217729">
+                    <String value="rail_front"/>
+                </Property>
+                <Property name="Label2" type="App::PropertyString" status="67108992">
+                    <String value=""/>
+                </Property>
+                <Property name="Placement" type="App::PropertyPlacement" status="8388609">
+                    <PropertyPlacement Px="0.0000000000000000" Py="0.0000000000000000" Pz="0.0000000000000000" Q0="0.0000000000000000" Q1="0.0000000000000000" Q2="0.0000000000000000" Q3="1.0000000000000000" A="0.0000000000000000" Ox="0.0000000000000000" Oy="0.0000000000000000" Oz="1.0000000000000000"/>
+                </Property>
+                <Property name="Shape" type="Part::PropertyPartShape" status="1">
+                    <Part HasherIndex="0" ElementMap="15.70200.5" file="rail_front.Shape.brp"/>
+                    <ElementMap new="1" count="1"><Element key="Dummy" value="Dummy"/></ElementMap>
+                    <ElementMap2 file="rail_front.Shape.Map.txt"/>
+                </Property>
+                <Property name="ShapeMaterial" type="Materials::PropertyMaterial" status="1">
+                    <PropertyMaterial uuid="7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"/>
+                </Property>
+                <Property name="Visibility" type="App::PropertyBool" status="649">
+                    <Bool value="true"/>
+                </Property>
+            </Properties>
+        </Object>
+        <Object name="rail_back">
+            <Properties Count="7" TransientCount="1">
+                <_Property name="_ElementMapVersion" type="App::PropertyString" status="234881025"/>
+                <Property name="ExpressionEngine" type="App::PropertyExpressionEngine" status="67108864">
+                    <ExpressionEngine count="0">
+                    </ExpressionEngine>
+                </Property>
+                <Property name="Label" type="App::PropertyString" status="134217729">
+                    <String value="rail_back"/>
+                </Property>
+                <Property name="Label2" type="App::PropertyString" status="67108992">
+                    <String value=""/>
+                </Property>
+                <Property name="Placement" type="App::PropertyPlacement" status="8388609">
+                    <PropertyPlacement Px="0.0000000000000000" Py="0.0000000000000000" Pz="0.0000000000000000" Q0="0.0000000000000000" Q1="0.0000000000000000" Q2="0.0000000000000000" Q3="1.0000000000000000" A="0.0000000000000000" Ox="0.0000000000000000" Oy="0.0000000000000000" Oz="1.0000000000000000"/>
+                </Property>
+                <Property name="Shape" type="Part::PropertyPartShape" status="1">
+                    <Part HasherIndex="0" ElementMap="15.70200.5" file="rail_back.Shape.brp"/>
+                    <ElementMap new="1" count="1"><Element key="Dummy" value="Dummy"/></ElementMap>
+                    <ElementMap2 file="rail_back.Shape.Map.txt"/>
+                </Property>
+                <Property name="ShapeMaterial" type="Materials::PropertyMaterial" status="1">
+                    <PropertyMaterial uuid="7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"/>
+                </Property>
+                <Property name="Visibility" type="App::PropertyBool" status="649">
+                    <Bool value="true"/>
+                </Property>
+            </Properties>
+        </Object>
+    </ObjectData>
+</Document>
