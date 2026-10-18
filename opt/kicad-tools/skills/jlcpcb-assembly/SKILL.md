@@ -87,6 +87,19 @@ Use the existing `export.py` for Gerbers/BOM/CPL, and integrated
 wrapper's actual README/`--help`; do not infer its arguments from another job.
 During tooling-only work, do not regenerate board outputs at all.
 
+`export.py --manifest PATH` merges this run's hashes into an existing
+`source-sha256.json`: every reachable `.kicad_sch` plus the PCB/project, and the
+Gerbers/BOM/CPL rows it produced (PCB-only runs update only the Gerbers row).
+Run it for the carrier **and** the panel so one manifest covers both. The shared
+`check` re-hashes those recorded sources and fails the run when they drift, which
+is the guard against exporting and then editing a sheet.
+
+Promote a finished candidate with `pcb promote --candidate DIR --plan PLAN`
+(`--dry-run` first). Never copy a candidate board over the project board by hand:
+candidate staging renames `_kicad_models/<hash>/` by absolute source path, so a
+plain copy leaves unresolved model bindings. `promote` re-resolves each model
+token against the destination by content and refuses on any unresolved token.
+
 ## Electrically constrained alternatives (planning only)
 
 Try direct Basic+Economy parts with the existing land pattern first; search

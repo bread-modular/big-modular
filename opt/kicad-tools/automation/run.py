@@ -6,17 +6,17 @@ from pathlib import Path
 import sys
 sys.dont_write_bytecode=True
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from api import Error, apply, inspect, plan
+from api import Error, apply, inspect, plan, promote
 
 
 def main(argv=None):
     cli=argparse.ArgumentParser(description=__doc__)
     sub=cli.add_subparsers(dest='command',required=True)
-    for name in ('inspect','plan','apply'):
+    for name in ('inspect','plan','apply','promote'):
         parser=sub.add_parser(name)
         parser.add_argument('--pcbnew-python',default='python3')
         if name!='inspect': parser.add_argument('--kicad-cli',default='kicad-cli')
-        if name!='apply':
+        if name not in ('apply','promote'):
             parser.add_argument('--config')
             parser.add_argument('--project-dir')
             parser.add_argument('--board')
@@ -28,11 +28,19 @@ def main(argv=None):
             parser.add_argument('--plan',required=True)
             parser.add_argument('--ops',help='Optional original ops file; hashes always checked')
             parser.add_argument('--output',required=True,help='Exclusively NEW candidate outside every source/input directory')
+        if name=='promote':
+            parser.add_argument('--candidate',required=True,help='Accepted candidate directory containing result.json')
+            parser.add_argument('--plan',help='Plan whose source board is the destination; verifies the source hash')
+            parser.add_argument('--to',help='Destination board (default: the plan source board)')
+            parser.add_argument('--dry-run',action='store_true',help='Report model rebindings; write nothing')
     args=cli.parse_args(argv)
     try:
         if args.command=='apply':
             result=apply(args.plan,args.output,operations=args.ops,python=args.pcbnew_python,kicad_cli=args.kicad_cli)
             code={'accepted':0,'draft':1,'rejected':1,'failed':2}[result['status']]
+        elif args.command=='promote':
+            result=promote(args.candidate,args.to,plan_file=args.plan,dry_run=args.dry_run)
+            code=0
         else:
             selection={k:getattr(args,k) for k in ('project_dir','board','schematic','config')}
             result=inspect(python=args.pcbnew_python,**selection) if args.command=='inspect' else plan(args.ops,python=args.pcbnew_python,kicad_cli=args.kicad_cli,allow_draft_opens=args.allow_draft_opens,**selection)

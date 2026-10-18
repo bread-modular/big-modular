@@ -203,6 +203,93 @@ def compare_findings(before,after):
             'retained':[json.loads(k) for k,v in sorted((left&right).items()) for _ in range(v)]}
 
 
+def promote(candidate, destination=None, *, plan_file=None, dry_run=False):
+    """Copy an accepted candidate board onto its source, restoring model bindings.
+
+    `apply` stages every dependency under the candidate and rebinds `(model ...)`
+    tokens to `${KIPRJMOD}/_kicad_models/<staged-hash>/`. Copying that file back by
+    hand leaves model dependencies pointing at hashes that do not exist in the
+    project, so promotion re-resolves each token against the destination's own
+    `_kicad_models` directories by content and writes only when every token resolves.
+    """
+    folder = Path(candidate).expanduser().resolve()
+    result_file = folder / 'result.json'
+    if not result_file.is_file():
+        raise Error(f'No apply result.json in candidate: {folder}')
+    result = json.loads(result_file.read_text(encoding='utf-8'))
+    if result.get('status') != 'accepted' or not result.get('accepted'):
+        raise Error(f'Only an accepted candidate can be promoted (status={result.get("status")!r})')
+    board = Path(result['board']).expanduser()
+    if not board.is_absolute():
+        board = folder / board
+    board = board.resolve()
+    if not board.is_file():
+        raise Error(f'Candidate board missing: {board}')
+    if plan_file:
+        plan = json.loads(Path(plan_file).read_text(encoding='utf-8'))
+        selection = plan['preconditions']['selection']
+        planned = Path(selection['board']).expanduser().resolve()
+        if destination is None:
+            destination = planned
+        elif Path(destination).expanduser().resolve() != planned:
+            raise Error(f'Destination is not the board this plan edited: {planned}')
+        expected = plan['preconditions']['input_hashes'].get(str(planned), {}).get('sha256')
+        if expected and native.sha256(planned) != expected:
+            raise Error('Source board changed after the plan was made; re-plan before promoting')
+    if destination is None:
+        raise Error('promote needs --to BOARD or --plan PLAN')
+    target = Path(destination).expanduser().resolve()
+    if not target.is_file():
+        raise Error(f'Destination board missing: {target}')
+    if target == board:
+        raise Error('Destination must be the project board, not the candidate copy')
+    text = board.read_text(encoding='utf-8-sig')
+    target_dir = target.parent
+    model_dir = target_dir / '_kicad_models'
+    remapped, unresolved, external = [], [], 0
+
+    def resolve(match):
+        nonlocal external
+        value = match.group(2)
+        if not value.startswith('${KIPRJMOD}/'):
+            external += 1
+            return match.group(0)
+        rel = value[len('${KIPRJMOD}/'):]
+        if (target_dir / rel).is_file():
+            return match.group(0)
+        source_model = board.parent / rel
+        if not source_model.is_file():
+            unresolved.append({'token': value, 'reason': 'candidate model missing'})
+            return match.group(0)
+        name, digest = Path(rel).name, native.sha256(source_model)
+        matches = [p for p in model_dir.glob(f'*/{name}') if p.is_file() and native.sha256(p) == digest]
+        keys = sorted({p.parent.name for p in matches})
+        if len(keys) != 1:
+            unresolved.append({'token': value, 'reason': f'{len(keys)} matching local model copies'})
+            return match.group(0)
+        new_rel = f'_kicad_models/{keys[0]}/{name}'
+        remapped.append({'from': rel, 'to': new_rel})
+        return match.group(1) + '${KIPRJMOD}/' + new_rel + match.group(3)
+
+    promoted = re.sub(r'(\(model\s+")([^"]+)(")', resolve, text)
+    if unresolved:
+        unique = {(item['token'], item['reason']) for item in unresolved}
+        preview = sorted(unique)[:8]
+        raise Error(f'Unresolved model bindings ({len(unique)} distinct); nothing written: {preview}'
+                    + ('' if len(unique) <= 8 else ' …'))
+    record = {'schema_version': 1, 'status': 'dry_run' if dry_run else 'promoted',
+              'source_writes': not dry_run, 'candidate': str(folder), 'board': str(board),
+              'destination': str(target), 'destination_sha256_before': native.sha256(target),
+              'remapped': remapped, 'external_model_tokens': external,
+              'candidate_sha256': native.sha256(board)}
+    if not dry_run:
+        temporary = target.with_name(target.name + '.promote-tmp')
+        temporary.write_text(promoted, encoding='utf-8', newline='')
+        os.replace(temporary, target)
+        record['destination_sha256_after'] = native.sha256(target)
+    return record
+
+
 def _rebind(closure, directory):
     """Repair Plan.stage absolute staging paths to per-file relative bindings."""
     rewrites=[]

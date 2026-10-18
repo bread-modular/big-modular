@@ -88,6 +88,13 @@ review plan then apply to a NEW output. Only a completed `completion.json`
 candidate with explicit `--allow-draft-opens` may hand off connectivity opens;
 shorts, clearances, ERC and parity are never waived. Do not call drafts accepted.
 
+Promote an accepted candidate with `pcb promote --candidate DIR --plan PLAN`
+(`--dry-run` first). Staging rewrites `(model …)` tokens to
+`${KIPRJMOD}/_kicad_models/<staged-hash>/`, so copying the candidate board back by
+hand leaves unresolved model bindings; `promote` re-resolves them by content
+against the destination and aborts on any unresolved token. It also refuses when
+the source board changed after planning.
+
 [Flat schematic primitives](../../schematic/docs/api.md) add only wire polylines,
 junctions and local labels. Review native pin/net delta/ERC/save-reload evidence.
 They never load or synchronize a PCB: perform explicit downstream synchronization

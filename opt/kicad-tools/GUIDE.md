@@ -86,6 +86,13 @@ this unrun graphical/field gate is reported explicitly, not called a pass; the
 separate XML-to-PCB ref/pin/net comparison still runs. PCB-only mechanical refs
 and pads absent from the netlist are reported conservatively, never waived.
 
+When `<module>/jlcpcb/source-sha256.json` exists, `check` also re-hashes its
+`sources` map and reports `source_manifest`: a missing or mismatched source is a
+finding, because the stored manufacturing export no longer describes the project.
+`exports` hashes are reported as `exports_not_byte_identical` only — KiCad stamps a
+creation date into every Gerber/drill file, so those bytes legitimately change on
+each regeneration.
+
 Exit codes: **0** means no findings in the *requested* checks (or successful
 inspection/dry-run), **1** means findings or a netlist difference, **2** means
 selection/dependency/native/schema/operational failure. Raw native violation code
