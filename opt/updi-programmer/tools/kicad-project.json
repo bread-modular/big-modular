@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/updi-programmer.kicad_pcb",
+  "root_schematic": "../hardware/updi-programmer.kicad_sch",
+  "dependencies": [
+    "../hardware/UPDIProgrammer.pretty",
+    "../hardware/UPDIProgrammer.kicad_sym"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}

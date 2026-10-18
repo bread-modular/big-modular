@@ -12,6 +12,9 @@ tooling.
   checks, PCB/schematic edits, JLCPCB export/assembly; `opt/kicad-routing/`
   optional router facade). It stays at the repository root. Never move it into a
   module and never fork or duplicate it per module.
+- `opt/updi-programmer/` — USB-C UPDI programmer (jtag2updi on ATtiny1616) for
+  the modules' UPDI chips: generated KiCad project, firmware and README.
+  `opt/attiny1616-tools/` holds the shared ATtiny1616 compile/flash scripts.
 - `modules/<name>/AGENTS.md` and `modules/<name>/Code.md` — module-specific
   circuit/release contract. Read them before touching that module.
 
