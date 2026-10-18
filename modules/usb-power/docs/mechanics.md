@@ -10,9 +10,9 @@ Panel origin is upper left, X across / Y down; Z into case. [Assembly PDF](assem
 | D10 red3mm | 6.1,43 | pad1:77.48,97.905 |
 | SW1 retry | 5.8,49.5 | 85.25,100.175 |
 
-USB aperture X3.30,Y28.10,W5.00,H10.80,R0.60; SW1 hole3.2mm; LED hole3.6mm.
+USB aperture X3.30,Y28.10,W5.00,H10.80,R0.60 relative to native datum 50.0,30.0; SW1 hole3.2mm; LED hole3.6mm.
 HRO local land imported with honest paired-contact symbol mapping; no verified3D model.
-See [HRO review](usb-hro-review.md) for exact drawing/local deviations and datum derivation. Top bracket and
+See `docs/assembly-geometry.json` and the native sources for drawing/datum derivation. Top bracket and
 cutback end at Y27/Y27.5; the2.5mm carrier lip above them cannot support USB.
 This is the highest practical cluster without changing the outline/brackets.
 Clearances: USB pad-to-relief1.18mm; aperture-to-bracket1.1mm;
@@ -56,10 +56,10 @@ The [geometry contract](../tools/stack_geometry.py),
 [existing nominal M3 access check](../tools/m3_fit.py) describe the retained
 cutout configuration. Its nominal check remains valid, not a physical-fit or strength approval.
 
-L1 is TMPC1205HP-220MG-D max5.0mm; L4 is SLO1040H6R8MTT max4.0mm; L2/L3 are
-CKCS6045 max4.7mm. The5.7mm nominal normal allowance (F.Cu X4.1 to panel edge
-X9.8) reserves0.15mm solder +0.10mm assembly offset. L1 needs5.40mm, leaving0.30mm
-nominal reserve; L4 margin1.45mm, L2/L3 margin0.75mm. The bracket web is2.40mm
+L1 is TMPC1205HP-220MG-D max5.0mm; L4 and L5 are SLO1040H6R8MTT max4.0mm. The
+5.7mm nominal normal allowance (F.Cu X4.1 to panel edge X9.8) reserves0.15mm
+solder +0.10mm assembly offset. L1 needs5.40mm, leaving0.30mm nominal reserve;
+L4/L5 margin1.45mm. The bracket web is2.40mm
 +0.0/-0.1, so the worst-case panel-edge/web/board-thickness stack still leaves
 >=5.44mm at L1.
 
@@ -82,9 +82,9 @@ The printed web must be measured; if it exceeds2.40mm, trim or reprint. The
 holes and routing are unchanged.
 These are front-side envelope budgets, not fitted populated-board approval. Keep all
 components on the front; the back carries no parts. Manufacturer height limits must hold.
-99 active footprints and native fields/UUID paths/nets; J1 HRO placement rederived,
-SW1/D10/J7 fixed. All97 purchased fitted parts placed; D10 is DNP (footprint/pads
-retained); carrier585 tracks/207 vias/8 zones.
+120 footprints (116 electrical + 4 mechanical); J1 HRO placement rederived,
+SW1/D10/J7 fixed. D10, C62 and C93 are DNP (pads retained); J7 is excluded.
+Carrier 721 tracks / 251 vias / 10 zones.
 Front panel remains passive. USB aperture, LED and reset openings moved -0.60mm in X; outline, bracket holes and rail holes retained.
 D10 remains DNP: no LED MPN/procurement, lead forming or fitted-LED check is claimed;
 USB cable overmould and finished cabled depth still need trial.
