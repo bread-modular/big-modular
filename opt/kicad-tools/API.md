@@ -48,6 +48,13 @@ approval. Other findings, ERC, shorts/clearances or parity cannot be waived.
 The complete candidate's `inputs/` subtree is the routing snapshot, **not** the
 candidate root containing reports/runtime. `completion.json.board` is relative
 to candidate root: remove its leading `inputs/` component to obtain `--pcb`.
+
+To adopt an accepted candidate back into the project, use
+`pcb promote --candidate DIR --plan PLAN` (add `--dry-run` first). Staging
+renames model directories by absolute source path, so a manual copy leaves
+`${KIPRJMOD}/_kicad_models/<staged-hash>/` bindings that do not exist in the
+project. `promote` re-resolves every `(model …)` token by content against the
+destination and writes nothing if any token is unresolved.
 Do not edit generated board/library tables/rules. Staging retains local context;
 the router accepts canonical bounded relative and `${KIPRJMOD}` library URIs
 and executes native commands in the actual PCB-parent cwd.

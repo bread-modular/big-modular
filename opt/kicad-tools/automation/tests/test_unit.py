@@ -196,5 +196,41 @@ class IdentityTests(unittest.TestCase):
             for target in (path/'used',path/'alias'/'child'):
                 with self.assertRaises(api.Error): api.project.new_output(target)
 
+    def test_promote_restores_model_bindings_by_content(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); project=root/'hardware'; project.mkdir()
+            models=project/'_kicad_models'/'committed'; models.mkdir(parents=True)
+            (models/'part.step').write_text('MODEL BYTES')
+            board=project/'demo.kicad_pcb'; board.write_text('(kicad_pcb (model "${KIPRJMOD}/_kicad_models/committed/part.step"))')
+            candidate=root/'candidate'; staged=candidate/'inputs'/'hardware'
+            (staged/'_kicad_models'/'staged').mkdir(parents=True)
+            (staged/'_kicad_models'/'staged'/'part.step').write_text('MODEL BYTES')
+            copy=staged/'demo.kicad_pcb'
+            copy.write_text('(kicad_pcb (model "${KIPRJMOD}/_kicad_models/staged/part.step"))')
+            (candidate/'result.json').write_text(json.dumps({'status':'accepted','accepted':True,'board':'inputs/hardware/demo.kicad_pcb'}))
+            before=board.read_text()
+            dry=api.promote(candidate,board,dry_run=True)
+            self.assertEqual(dry['status'],'dry_run')
+            self.assertFalse(dry['source_writes'])
+            self.assertEqual(dry['remapped'],[{'from':'_kicad_models/staged/part.step','to':'_kicad_models/committed/part.step'}])
+            self.assertEqual(board.read_text(),before)
+            result=api.promote(candidate,board)
+            self.assertEqual(result['status'],'promoted')
+            self.assertIn('_kicad_models/committed/part.step',board.read_text())
+            self.assertNotIn('staged/part.step',board.read_text())
+
+    def test_promote_refuses_unresolved_models_and_unaccepted_candidates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp); project=root/'hardware'; project.mkdir()
+            board=project/'demo.kicad_pcb'; board.write_text('(kicad_pcb)')
+            candidate=root/'candidate'; staged=candidate/'inputs'/'hardware'; staged.mkdir(parents=True)
+            copy=staged/'demo.kicad_pcb'
+            copy.write_text('(kicad_pcb (model "${KIPRJMOD}/_kicad_models/missing/part.step"))')
+            (candidate/'result.json').write_text(json.dumps({'status':'accepted','accepted':True,'board':'inputs/hardware/demo.kicad_pcb'}))
+            with self.assertRaisesRegex(api.Error,'Unresolved model bindings'): api.promote(candidate,board)
+            self.assertEqual(board.read_text(),'(kicad_pcb)')
+            (candidate/'result.json').write_text(json.dumps({'status':'rejected','accepted':False,'board':'inputs/hardware/demo.kicad_pcb'}))
+            with self.assertRaisesRegex(api.Error,'Only an accepted candidate'): api.promote(candidate,board)
+
 
 if __name__=='__main__': unittest.main()

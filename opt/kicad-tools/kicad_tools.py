@@ -97,6 +97,36 @@ def findings(report, kind):
             "severity": dict(severity), "total_including_exclusions": sum(len(v) for v in categories.values())}
 
 
+def source_manifest(description):
+    """Compare jlcpcb/source-sha256.json sources with the files on disk.
+
+    Source identity is a gate: a manufacturing export whose recorded sources no
+    longer match the project is stale. Export hashes are reported only, because
+    KiCad writes a creation timestamp into every Gerber/drill file.
+    """
+    module = Path(description["project_dir"]).resolve().parent
+    manifest = module / "jlcpcb" / "source-sha256.json"
+    if not manifest.is_file():
+        return {"present": False}
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    sources = data.get("sources")
+    if not isinstance(sources, dict) or not sources:
+        raise Error(f"{manifest} has no sources map; never treat it as a pass")
+    missing, mismatched = [], []
+    for name, digest in sorted(sources.items()):
+        path = module / name
+        if not path.is_file():
+            missing.append(name)
+        elif sha256(path) != digest:
+            mismatched.append(name)
+    exports = data.get("exports") if isinstance(data.get("exports"), dict) else {}
+    stale = [name for name, digest in sorted(exports.items())
+             if not (module / name).is_file() or sha256(module / name) != digest]
+    return {"present": True, "manifest": str(manifest), "source_count": len(sources),
+            "missing": missing, "mismatched": mismatched, "exports_not_byte_identical": stale,
+            "equal": not missing and not mismatched}
+
+
 def check(args):
     plan = Plan(select_project(args))
     output = new_output(args.reports, plan)
@@ -113,6 +143,7 @@ def check(args):
     result = {"schema_version": 1, "selection": description, "native_cli": cli,
               "source_unchanged": False, "order_ready": False, "commands": [], "findings": {}, "errors": []}
     try:
+        result["source_manifest"] = source_manifest(description)
         with tempfile.TemporaryDirectory(prefix="kicad private checks ") as temp:
             work = Path(temp)
             board, schematic, rewrites = plan.stage(work)
@@ -161,10 +192,13 @@ def check(args):
         else "Native DRC graphical/field parity NOT RUN; explicit ref/pin/net comparison only (root basename differs or ERC-only)")
     has_findings = any(section.get("total_including_exclusions", 0) for section in result["findings"].values())
     has_findings = has_findings or not result.get("ref_pin_net_parity", {}).get("equal", False)
+    manifest = result.get("source_manifest", {})
+    has_findings = has_findings or (manifest.get("present") and not manifest.get("equal", False))
     result["status"] = "operational_error" if result["errors"] else "findings" if has_findings else "no_findings_in_requested_checks"
     save_json(output / "summary.json", result)
     emit({"status": result["status"], "summary": str(output / "summary.json"),
-          "findings": result["findings"], "source_unchanged": result["source_unchanged"], "errors": result["errors"], "order_ready": False})
+          "findings": result["findings"], "source_manifest": result.get("source_manifest"),
+          "source_unchanged": result["source_unchanged"], "errors": result["errors"], "order_ready": False})
     return 2 if result["errors"] else 1 if has_findings else 0
 
 

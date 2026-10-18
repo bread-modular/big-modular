@@ -1,6 +1,6 @@
 # Offline PCB editing for agents
 
-Standalone `inspect | plan | apply` and importable `automation` API. Python stdlib
+Standalone `inspect | plan | apply | promote` and importable `automation` API. Python stdlib
 controller; **matching KiCad CLI + pcbnew 10.0.x** in a separate version-gated
 interpreter. Tested on Linux with Python 3.14.4 / KiCad 10.0.6. No global installs.
 
@@ -10,6 +10,8 @@ python3 -B opt/kicad-tools/automation/run.py plan --project-dir /path/design \
   --ops /path/requests/ops.json > /path/plans/edit.json
 python3 -B opt/kicad-tools/automation/run.py apply --plan /path/plans/edit.json \
   --output /path/candidates/new-design
+python3 -B opt/kicad-tools/automation/run.py promote \
+  --candidate /path/candidates/new-design --plan /path/plans/edit.json --dry-run
 ```
 
 Put plans/requests/candidates in **separate directories outside the source and
@@ -35,6 +37,14 @@ stale hashes, locked items/ancestors, aliases and unsupported inputs.
 
 Only `completion.json` indicates a finished candidate; its `accepted` flag is
 false for a draft. Never consume a partial directory as accepted.
+
+`promote` is the only command that writes a source. It copies an **accepted**
+candidate board back onto its project board and first re-resolves every
+`(model "${KIPRJMOD}/_kicad_models/<staged-hash>/…")` token against the
+destination's own `_kicad_models` directories by content, because candidate
+staging renames those directories by absolute source path. Unresolved tokens
+abort with nothing written; `--dry-run` reports the rebindings only. With
+`--plan` it also refuses when the source board changed after planning.
 
 See [API/schema/examples](docs/api.md), [safety/limitations](docs/safety.md) and
 [verification](VERIFICATION.md). Live GUI/IPC, push-and-shove, arcs, lock changes,

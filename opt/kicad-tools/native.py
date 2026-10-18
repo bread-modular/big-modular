@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 import xml.etree.ElementTree as ET
 
 
@@ -159,17 +160,34 @@ def compare_netlists(before, after):
     return result
 
 
+NC_PAD_SUFFIX = re.compile(r"_\d+$")
+
+
+def nc_pad_base(name):
+    """Return the schematic no-connect net name for a KiCad dummy NC pad net.
+
+    KiCad gives every pad of a duplicated pad number its own ``unconnected-...``
+    net, suffixing the extra pads with ``_1``, ``_2``, ... They are all the same
+    schematic no-connect node, so they must compare equal to that node.
+    """
+    if not name or not name.startswith("unconnected-"):
+        return None
+    return NC_PAD_SUFFIX.sub("", name)
+
+
 def board_parity(path, netlist):
     """Compare electrical PCB refs/pads to native XML, not raw schematic instances.
 
     Mechanical footprints without reference are reported, not invented. Duplicate
-    pad numbers with the same net are legal; conflicting duplicates are not.
+    pad numbers with the same net are legal; conflicting duplicates are not,
+    except KiCad's own per-pad no-connect aliases of one schematic NC node.
     Native DRC is still required for geometric/library/field parity and exclusions.
     """
     root = kicad.parse_sexpr(Path(path).read_text(encoding="utf-8-sig"))
     if not root or root[0] != "kicad_pcb":
         raise Error("Expected modern KiCad PCB")
     refs, pads, mechanical, no_net = set(), {}, [], []
+    nc_aliases = []
     for fp in kicad.children(root, "footprint") + kicad.children(root, "module"):
         props = {p[1]: p[2] for p in kicad.children(fp, "property") if len(p) >= 3}
         ref = props.get("Reference", "")
@@ -188,6 +206,12 @@ def board_parity(path, netlist):
             name = node[2] if len(node) > 2 else node[1] if len(node) == 2 else ""
             key = (ref, pad[1])
             if key in pads and pads[key] != name:
+                base = nc_pad_base(pads[key])
+                if base is not None and base == nc_pad_base(name):
+                    nc_aliases.append({"ref": ref, "pad": pad[1], "schematic_net": base,
+                                       "pcb_net": pads[key], "alias": name})
+                    pads[key] = base
+                    continue
                 raise Error(f"Conflicting PCB pad nets: {key!r}")
             pads[key] = name
             if not name:
@@ -201,7 +225,8 @@ def board_parity(path, netlist):
              for pin, name in sorted(pads.items()) if name and pin not in pin_nets]
     result = {"missing_refs": sorted(expected - refs), "extra_refs": sorted(refs - expected),
               "missing_pins": missing, "net_mismatches": changed, "extra_connected_pads": extra,
-              "pads_without_net": no_net, "mechanical_without_reference": mechanical}
+              "pads_without_net": no_net, "mechanical_without_reference": mechanical,
+              "duplicate_nc_pad_aliases": nc_aliases}
     result["equal"] = not any(result[key] for key in (
         "missing_refs", "extra_refs", "missing_pins", "net_mismatches", "extra_connected_pads"))
     return result

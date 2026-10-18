@@ -7,12 +7,19 @@ import unittest
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from native import (Error, board_parity, compare_netlists, netlist_summary, read_netlist,
-                    replace_paths, source_blocks, write_new_text)
+from native import (Error, board_parity, compare_netlists, nc_pad_base, netlist_summary,
+                    read_netlist, replace_paths, source_blocks, write_new_text)
 from fixtures import board_text, xml_text
 
 
 class NativeTests(unittest.TestCase):
+    def test_nc_pad_alias_only_collapses_no_connect_nets(self):
+        self.assertEqual(nc_pad_base("unconnected-(SW1-CASE-PadMP)_1"), "unconnected-(SW1-CASE-PadMP)")
+        self.assertEqual(nc_pad_base("unconnected-(SW1-CASE-PadMP)"), "unconnected-(SW1-CASE-PadMP)")
+        self.assertIsNone(nc_pad_base("GND"))
+        self.assertIsNone(nc_pad_base("/P5_1"))
+        self.assertIsNone(nc_pad_base(""))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="native tests ")
         self.addCleanup(self.temp.cleanup)

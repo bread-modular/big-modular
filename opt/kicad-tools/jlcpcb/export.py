@@ -273,6 +273,76 @@ def assembly_rows(footprints, positions, symbols, args):
     return bom, placements, excluded, warnings, missing_numbers
 
 
+def sheet_files(root, project_dir):
+    """Every .kicad_sch reachable from the root sheet, in discovery order."""
+    seen, ordered = set(), []
+
+    def walk(path):
+        path = Path(path).resolve()
+        if path in seen or not path.is_file():
+            return
+        seen.add(path)
+        ordered.append(path)
+        try:
+            ast = parse_sexpr(path.read_text(encoding="utf-8-sig"))
+        except OSError:
+            return
+        if not ast or ast[0] != "kicad_sch":
+            return
+        for sheet in children(ast, "sheet"):
+            for prop in children(sheet, "property"):
+                if len(prop) < 3 or prop[1] not in ("Sheetfile", "Sheet file") or not prop[2]:
+                    continue
+                value = prop[2].replace("${KIPRJMOD}", str(project_dir))
+                walk(path.parent / value)
+
+    walk(root)
+    return ordered
+
+
+def manifest_sources(board, schematic, project_dir, manifest):
+    """Source identity entries keyed relative to the manifest's module root."""
+    root = Path(manifest).resolve().parent.parent
+    paths = [board]
+    if project_dir:
+        for suffix in (".kicad_pro",):
+            candidate = board.with_suffix(suffix)
+            if candidate.is_file():
+                paths.append(candidate)
+    if schematic:
+        paths.extend(sheet_files(schematic, project_dir or schematic.parent))
+    entries = {}
+    for path in paths:
+        try:
+            key = Path(path).resolve().relative_to(root).as_posix()
+        except ValueError:
+            key = str(Path(path).resolve())
+        entries[key] = hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return entries
+
+
+def update_manifest(manifest, sources, exports, version):
+    """Merge source and export identity into an existing manifest, never inventing rows."""
+    path = Path(manifest)
+    data = {}
+    if path.is_file():
+        data = json.loads(path.read_text(encoding="utf-8"))
+    data.setdefault("generator", "bread-modular/kicad-jlcpcb")
+    data["kicad_cli"] = version
+    data.setdefault("sources", {}).update(sources)
+    export_rows = data.setdefault("exports", {})
+    for key, digest in exports.items():
+        same_name = [existing for existing in export_rows if Path(existing).name == Path(key).name]
+        if same_name:
+            for existing in same_name:
+                export_rows[existing] = digest
+        else:
+            export_rows[key] = digest
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return data
+
+
 def write_csv(path, header, rows):
     with path.open("w", encoding="utf-8-sig", newline="") as stream:
         writer = csv.writer(stream, lineterminator="\n")
@@ -454,6 +524,20 @@ def export_project(args):
             os.replace(work / name, output / name)
     for message in warnings:
         print(f"Warning: {message}", file=sys.stderr)
+    if args.manifest:
+        sources = manifest_sources(board, schematic, board.parent, args.manifest)
+        module_root = Path(args.manifest).resolve().parent.parent
+        exports = {}
+        # A PCB-only run writes header-only CSVs; only its Gerbers are identity-bearing.
+        for name in (names[:3] if schematic else names[:1]):
+            artifact = (output / name).resolve()
+            try:
+                key = artifact.relative_to(module_root).as_posix()
+            except ValueError:
+                key = str(artifact)
+            exports[key] = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        update_manifest(args.manifest, sources, exports, version)
+        print(f"Updated source identity: {Path(args.manifest)}")
     print(f"Exported {len(cpl)} components in {len(bom)} BOM rows ({len(copper)} copper layers):")
     for name in names:
         print(f"  {output / name}")
@@ -472,6 +556,7 @@ def argument_parser():
     group.add_argument("--schematic", help="root schematic filename/path when it differs from the PCB name")
     group.add_argument("--pcb-only", action="store_true", help="read only PCB footprint fields, not schematic fields")
     parser.add_argument("-o", "--output", help="output directory (default: PROJECT_DIR/jlcpcb/BOARD_NAME)")
+    parser.add_argument("--manifest", help="merge this run's source/export hashes into an existing source-sha256.json")
     parser.add_argument("--overwrite", action="store_true", help="replace only the four named exporter files after successful generation")
     parser.add_argument("--include-through-hole", action="store_true", help="include non-SMD electrical footprints in both BOM and CPL")
     parser.add_argument("--side", choices=("top", "bottom", "both"), default="both", help="assembly side (default: both); does not filter Gerbers")
