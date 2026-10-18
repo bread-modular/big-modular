@@ -16,13 +16,17 @@ complete regenerated carrier and panel export sets are in
   **0.5 oz**; no paid stack, copper, impedance or material options.
 - **HASL with lead (SnPb)**, green mask both sides, white legend. No ENIG or
   lead-free HASL unless separately authorized.
-- **721 track segments, 251 through vias** (140 x 0.60 mm, 109 x 0.65 mm,
-  2 x 0.50 mm in U2 pads 5/6; all 0.30 mm drill), **10 zones**, **120
-  footprints** (116 electrical + 4 mechanical), none on the back.
+- **681 track segments, 246 through vias** (138 x 0.60 mm, 104 x 0.65 mm,
+  4 x 0.50 mm beside U2 pins 5/6, R17/R18 and R73/C62; all 0.30 mm drill),
+  **10 zones**, **120 footprints** (116 electrical + 4 mechanical), none on
+  the back.
 - Vias are ordinary **tented, unfilled** 0.30 mm PTH; no plug, epoxy fill,
   copper cap or VIPPO. Tenting does not seal a barrel inside an exposed pad:
   via-in-pad wicking on prototype assemblies is an inspection point, not a
-  fabrication reject or a supplier guarantee.
+  fabrication reject or a supplier guarantee. No via hole remains in a 0603 or
+  IC pin pad except R9.1 (GND; board-edge notch leaves no off-pad position) and
+  a 0.01 mm corner graze on U5.1 (GND); 1206/diode pads and the EP thermal
+  arrays keep their vias.
 - Holes and slots stay native (component PTH 0.90/1.00 mm, USB shell slots
   0.60 mm wide); all drill/slot tolerances are JLC standard.
 - **DNP:** D10, C62, C93. **J7** is a manual wire landing and is excluded from

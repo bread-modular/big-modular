@@ -9,9 +9,10 @@ are module-relative.
   are regenerated; prototype bench performance is not claimed.
 - SR2 schematic implemented: U3 TPS54302DDCR inverting buck-boost generates
   NRAW; U4/MID/TPS65131 and dormant-positive circuitry are removed.
-- Routing is derived from the 084 baseline, with 670 track segments and 249
+- Routing is derived from the 084 baseline, with 681 track segments and 246
   through vias (merged cleanup: `/P5` loop removed; SW1 case tie deleted, so the
-  two MP pads stay on their separate KiCad unconnected nets). The current
+  two MP pads stay on their separate KiCad unconnected nets; pre-FAB pass: C7
+  tightened at U3 and vias moved out of small SMD pads). The current
   carrier SHA and review status live only in `docs/current-review/REPORT.md`.
 - `jlcpcb/` holds the complete regenerated carrier (4 Cu, mask/legend/edge,
   PTH/NPTH) and panel sets plus both ZIPs, assembly BOM/CPL and

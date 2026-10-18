@@ -18,8 +18,8 @@ PRAW -> TPS7A4700 -> +12V (P12)    NRAW -> TPS7A3301 -> -12V (N12)
 
 Canonical sources: `hardware/usb-power.kicad_{pro,sch,pcb}`,
 `hardware/usb-power-panel.kicad_{pro,pcb}`, seven hierarchical sheets and local
-libraries. Routing is derived from the 084 review baseline and carries 721 track segments and
-251 through vias; the current carrier SHA and review status are recorded only in
+libraries. Routing is derived from the 084 review baseline and carries 681 track segments and
+246 through vias; the current carrier SHA and review status are recorded only in
 `docs/current-review/REPORT.md`.
 
 - U4/MID/TPS65131 and the dormant-positive circuitry are removed; R15 is reused

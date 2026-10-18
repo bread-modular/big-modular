@@ -84,7 +84,7 @@ These are front-side envelope budgets, not fitted populated-board approval. Keep
 components on the front; the back carries no parts. Manufacturer height limits must hold.
 120 footprints (116 electrical + 4 mechanical); J1 HRO placement rederived,
 SW1/D10/J7 fixed. D10, C62 and C93 are DNP (pads retained); J7 is excluded.
-Carrier 721 tracks / 251 vias / 10 zones.
+Carrier 681 tracks / 246 vias / 10 zones.
 Front panel remains passive. USB aperture, LED and reset openings moved -0.60mm in X; outline, bracket holes and rail holes retained.
 D10 remains DNP: no LED MPN/procurement, lead forming or fitted-LED check is claimed;
 USB cable overmould and finished cabled depth still need trial.
