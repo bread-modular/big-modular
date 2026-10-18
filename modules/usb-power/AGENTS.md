@@ -1,56 +1,40 @@
-> **Current status: PCB ROUTING SOURCE ACCEPTED — NOT RELEASED.** Canonical
-> `hardware/usb-power.kicad_pcb` is the byte-exact 084 PCB
-> `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc` (independent
-> Opus PASS, `docs/routing-review-082/REPORT.md`, HD-1 closed). Source, resources,
-> hashes and release holds: `docs/routing-source-acceptance.md` and `.json`.
-> Manufacturing export: `jlcpcb/` is freshly generated from the current sources with
-> the shared `opt/kicad-tools/jlcpcb/export.py`; it is not a supplier-accepted release.
-> Open holds: explicit JLC inner-1-oz/plating/drill/unfilled-in-pad PCBA acceptance;
-> joint/void/thermal/EMI/startup/load bench qualification. The L1 mechanical hold is
-> closed by a 0.60 mm panel/bracket shift: web 2.40 mm +0.0/-0.1, worst-case stack
-> 5.44 mm vs the 5.40 mm required envelope. The older "585 tracks / 207 vias / 043 routing" inventory below
-> is historical; the current routed source is 721 track segments + 251 through vias
-> (972 native `GetTracks` objects, vias included). Historical
-> recovery and release receipts stay frozen.
-
 # usb-power agent entry point
 
-Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
-`docs/migration-recovery.md`. Paths in module instructions are module-relative.
+Read root `AGENTS.md`, then this module's `Code.md` and `README.md`. Module paths
+are module-relative.
 
-## Accepted checkpoint (preserve, do not redesign)
+## Current state (preserve)
 
-Canonical sources are `hardware/usb-power.kicad_{pro,sch,pcb}` and
-`hardware/usb-power-panel.kicad_{pro,pcb}`, with all six child sheets/local libraries.
-They recover the latest accepted **043 / Basic-capacitor closure** from this repo's
-`8f3c5000b88a09a22e3b49ce209ca87bbc9aeefe` tree, not the older 043 branch base.
-107 electrical + 4 mechanical footprints; 585 tracks, 207 ordinary 0.300 mm vias,
-8 zones. C5/C18 and C68-C72 use the accepted exact local 22u C12891 plan.
-D10 stays DNP: footprint/pads retained, not fitted or purchased; R32 stays fitted.
+- SR2 schematic implemented: U3 TPS54302DDCR inverting buck-boost generates
+  NRAW; U4/MID/TPS65131 and dormant-positive circuitry are removed.
+- Routing is derived from the 084 baseline, with 721 track segments and 251
+  through vias. The current carrier SHA and review status live only in
+  `docs/current-review/REPORT.md`.
+- `jlcpcb/` was freshly exported from these sources with shared
+  `opt/kicad-tools`; it is not supplier-accepted.
+- Native ERC/DRC must include warnings/exclusions/opens/parity plus independent
+  exact ref/pin/net/NC/field parity and mechanics. No module unit tests.
+- Standard four-layer JLC04161H-7628 stack (1 oz outer / 0.5 oz inner), HASL,
+  ordinary 0.300 mm vias; no fill or planarization.
+- Open holds: bench joint/void/thermal/EMI/startup/load qualification; loop and
+  startup screens are not qualified. Via wicking on prototype assemblies is an
+  inspection point, not a supplier guarantee.
 
-Preserve circuit values, native schematic presentation/UUIDs, routing, interfaces,
-LDOs, outline, stack, brackets and Basic/Economy sourcing requirements. All components
-are front-side; no B.Cu electrical footprints or B.Paste component apertures.
-B.Cu routing/mask/drill layers remain. Ordinary unfilled/uncapped vias, artwork-defined
-mask tenting; no special fill/planarization/copper-cap process.
+## Preserve
 
-## Recovery/release boundaries
+Circuit values, native schematic presentation/UUIDs, accepted routing,
+interfaces, outline, stack, brackets and sourcing identity. All components are
+front-side; no B.Cu footprints or B.Paste apertures. Retain B.Cu
+routing/mask/drill and ordinary unfilled/tented 0.300 mm vias; no special fill or
+planarization. D10/C62/C93 DNP; R32 fitted. Keep these unless the user
+explicitly authorizes a change.
 
-This migration is file/path recovery only. Do not replay circuit migration,
-regeneration or routing. Native electrical/PCB repair and new fabrication export
-belong to Astra's separate handoff. `jlcpcb/` is the sole manufacturing-export
-location; the current set is generated from the current sources by `opt/kicad-tools`.
-`production/` is retired, not an active archive; historical integrity is preserved in
-Git
-objects. Read `jlcpcb/README.md` before any release work.
+## Boundaries
 
-Shared tools/skills stay at root `../../opt/`; never copy them into this module.
-Read `../../opt/kicad-tools/skills/kicad-workflow/SKILL.md`, and for sourcing/export
-also `../../opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md` and shared JLCPCB docs.
-Common-tool-first; inspect actual help. No stripped dependencies,
-ignored rules, exclusions, fake power flags or hidden native findings.
-
-Work only in the assigned isolated workspace. No advisor/delegation, commit, merge,
-push, main writes, other-workspace access, GUI, orders or vendor uploads. Supervisor
-reviews/merges. Bench/thermal/startup/order qualification is NOT claimed; negative
-full-temperature 1 A dropout remains a disclosed FAIL, not waived by migration.
+`jlcpcb/` is the sole export location. `production/` is retired; history lives in
+Git. Shared tools/skills stay in `../../opt/`; read
+`../../opt/kicad-tools/skills/kicad-workflow/SKILL.md` and, for sourcing/export,
+`../../opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md`. No advisor/delegation,
+commit, merge, push, main writes, other-workspace access, GUI, orders or uploads;
+supervisor reviews and merges. Bench/thermal/startup qualification is not
+claimed; negative full-temperature 1 A dropout remains a disclosed limitation.

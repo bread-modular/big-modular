@@ -1,20 +1,43 @@
-> **Current schematic: SR2**, direct U3 TPS54302 IBB. [Review handoff](docs/sr2-schematic.md).
-> PCB/project/export snapshots remain untouched and unsynchronized; dual reviews, corrections and explicit user ACK precede another PCB worker.
+> **Status: SR2 schematic + current carrier/panel sources. Carrier ERC/DRC and
+> panel DRC are clean; NOT released — manufacturing output is not finalized.** See
+> the [current review](docs/current-review/REPORT.md); nothing here is
+> fabrication- or order-approved.
 
-# usb-power — SR1 schematic review stage
+# usb-power
 
-**Schematics implemented; PCB intentionally OLD/UNSYNCHRONIZED. Not for fabrication.**
+USB-C PD Eurorack supply: 9 V PD input, protected 9 V rail, positive boost,
+TPS54302 inverting buck-boost for the negative rail, TPS7A4700/TPS7A3301 quiet
+±12 V, and an independent +5 V buck.
 
 ```
-9V PD -> TPS26600 (~2A unchanged) -> TPS55340 -> PRAW -> TPS7A4700 -> P12
-                                 -> TPS54302 MID -> TPS65131 negative -> TPS7A3301 -> N12
-                                 -> independent TPS54302 -> P5
+USB-C PD 9V -> TPS26600 eFuse -> 9V -> TPS55340 -> PRAW (+13.5V nom)
+                                   -> U3 TPS54302 IBB -> NRAW (-14.08V nom)
+PRAW -> TPS7A4700 -> +12V (P12)    NRAW -> TPS7A3301 -> -12V (N12)
+9V    -> U5 TPS54302 buck -> +5V (P5)
 ```
 
-- Native root: `hardware/usb-power.kicad_sch`; new `06_positive_boost.kicad_sch`.
-- [Exact implementation/review handoff](docs/split-rail-schematic.md), [corner/power/loop screens](docs/split-rail-schematic-budget.json), [source receipt](docs/split-rail-schematic-receipt.json), [bounded catalog evidence](docs/split-rail-catalog.json).
-- Supervisor runs a separate Opus schematic review, shows images/findings to the user, then **waits for explicit user ACK before any PCB/synchronization/routing**. No delegation/review started here.
-- 131 electrical references; same exact LDOs,9V/~2A protection, independent P5 and fixed interfaces. D10 and C62 DNP; R32 fitted; no D11/D12.
-- Both PCBs/rules and four unaffected sheets remain byte-identical. Existing PCB has24 duplicate property UUIDs; no repair performed. New library-only RTE footprint resolves schematic ERC, not PCB acceptance.
-- Historical [043 LDO handoff](docs/ldo-handoff.md), [recovery receipts](docs/migration-recovery.md) and `jlcpcb/` snapshot remain unchanged. **Exports are STALE**; no new fabrication/CAM/export work.
-- DC/AC/loop/current/thermal/start-stop results are conditional screens, not bench qualification. See the tiny negative margin, transient and inherited non-Basic sourcing cautions in the handoff.
+Canonical sources: `hardware/usb-power.kicad_{pro,sch,pcb}`,
+`hardware/usb-power-panel.kicad_{pro,pcb}`, seven hierarchical sheets and local
+libraries. Routing is derived from the 084 review baseline and carries 721 track segments and
+251 through vias; the current carrier SHA and review status are recorded only in
+`docs/current-review/REPORT.md`.
+
+- U4/MID/TPS65131 and the dormant-positive circuitry are removed; R15 is reused
+  in the U3 feedback divider. U3 is a direct TPS54302DDCR inverting buck-boost.
+- D30 (SS34) is the positive-NRAW startup mitigation; C93, C62 and D10 are DNP.
+- L1: TAI-TECH TMPC1205HP-220MG-D, 22 uH, C357250. L4/L5: Sunltech
+  SLO1040H6R8MTT, 6.8 uH, C207852.
+- `jlcpcb/` is the sole manufacturing-output location; see `jlcpcb/README.md`
+  for the actual source hash and completeness. Regenerate with the shared
+  exporter after PCB changes.
+- Verification is native ERC/DRC with exact ref/pin/net/NC/field parity. There
+  is no module unit-test suite.
+- Bare board is the standard four-layer JLC04161H-7628 stack (1 oz outer / 0.5 oz
+  inner), HASL, with ordinary 0.300 mm plated through vias. Holds are bench
+  joint/void/thermal/EMI/startup/load qualification; loop/phase and zero-bias
+  startup screens remain unqualified. Ordinary via wicking on prototype
+  assemblies is an inspection point, not a supplier guarantee.
+
+Design detail and limits: `docs/sr2-schematic.md`; screening arithmetic:
+`docs/sr2-schematic-budget.json`; engineering constraints: `docs/engineering.md`;
+build/mechanics: `docs/build.md`, `docs/mechanics.md`, `docs/fabrication.md`.

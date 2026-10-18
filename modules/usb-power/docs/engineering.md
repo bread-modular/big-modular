@@ -1,137 +1,91 @@
-# Current LDO-R1 prototype
+# Electrical design and engineering limits
 
-> Migration recovery: source/electrical content below is retained checkpoint evidence.
-> `jlcpcb/` is the current manufacturing export generated from this tree.
-> Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
-> [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
-
-See [LDO revision](ldo-revision.md) for the current 040 checkpoint
-raw+13.537080/-13.928806V, mixed 0.1%/25ppm retained dividers with 1%/100ppm
-Basic substitutions, corrected4/6/4/3 capacitor banks and conditional prototype
-limits. The 043 local-cap delta is implemented; `jlcpcb/` is exported from this
-source. The old HRO-R1 release archive was retired. No bench/noise/thermal/current qualification.
-The following V1 decisions remain the unchanged upstream/interface baseline.
-
-# V1 electrical decisions / remaining engineering limits
+Current topology: 9 V PD input -> TPS26600 protection -> TPS55340 positive boost
+(PRAW) and U3 TPS54302 inverting buck-boost (NRAW) -> TPS7A4700/TPS7A3301
+±12 V, with U5 TPS54302 +5 V. The former U4/MID/TPS65131 negative path and
+dormant-positive circuitry are retired. `jlcpcb/` is exported from this source.
+No bench, noise, thermal or current qualification is claimed.
 
 ## Autonomous start and retry
 
-TPS26600 SHDN7 has an internal bias: 2.0..3.4 V unloaded (table7.5), internal400k
-pullup in block9.2. No external pullup or load is needed: direct SW1 to RTN8 holds
-shutdown while pressed, release restarts and clears the thermal latch subject to
-UV/OV. Supports >=10uA sink at0.4V; recommended SHDN0..4V; absolute SHDN-to-RTN
--0.3..62V is NOT permission to operate it at VIN9. Removed Q1, JP1 and bias networks.
-SHDN never drives both buck EN pins: those use their own TI-approved floating-EN
-internal pullups (TPS54302 sections5/7.3.4; EN absolute max7V). FLT14 is unused NC.
-RTN and EP17 remain separate from GND9; all eFuse bias parts and SW1 return to RTN.
+TPS26600 SHDN7 has an internal bias (2.0..3.4 V unloaded, table 7.5) and a 400k
+internal pullup (block 9.2). No external pullup or load is needed: SW1 to RTN8
+holds shutdown while pressed; release restarts and clears the thermal latch
+subject to UV/OV. SHDN sinks >=10 uA at 0.4 V; recommended 0..4 V; the -0.3..62 V
+absolute SHDN-to-RTN range is not permission to operate at VIN 9 V. Q1, JP1 and
+the bias networks are removed.
 
-R4/R5=562k/100k UV rising7.8778V (falling7.282V nominal), R6/R7=806k/100k OV
-rising10.7814V (recovery9.966V nominal). Exact tolerance/leakage bounds are calculated
-by verify_project.py. 5V fallback rejected; 12/15/20V rejected. R8=6.04k sets nominal
-1.987A (not3A); R36=402k selects active current limit with thermal latch-off. Button
-is retry, not a protection bypass or instant rail discharge. No power-up inhibit.
+SHDN does not drive the buck EN pins. U3 EN is explicitly biased by R91 100k
+with R92 20k + R93 2k to NRAW (22k). U5 EN is as drawn on `03_bucks` and must be
+confirmed in native before any change. FLT14 is NC. RTN and EP17 stay separate
+from GND9; eFuse bias parts and SW1 return to RTN.
+
+R4/R5 = 562k/100k UV rising 7.8778 V (falling 7.282 V nominal); R6/R7 =
+806k/100k OV rising 10.7814 V (recovery 9.966 V nominal). Tolerance and leakage
+bounds are recorded in `docs/sr2-schematic-budget.json`. 5 V fallback and
+12/15/20 V inputs are rejected. R8 = 6.04k sets nominal 1.987 A (not 3 A);
+R36 = 402k selects active current limit with thermal latch-off. The button is
+retry, not a protection bypass or instant rail discharge.
 
 Primary sources: [TI TPS2660](https://www.ti.com/lit/ds/symlink/tps2660.pdf),
 [TI TPS54302](https://www.ti.com/lit/ds/symlink/tps54302.pdf).
 
 ## CH224A and sensing choice
 
-CH224A fixed9V uses CFG1 6.8k; CFG2/3 unused with internal pullups, PG10 NC. WCH
-V2 table4-1 requires VBUS8 shorted to VHV1; app6.1 and replacement7.2.1 agree, and
-rating8.1.1 explicitly lists VBUS/PG as32V-capable. The isolated3.8V statement in7.1
-contradicts those three places; this design follows the pin-specific rating and
-explicit manufacturer application, treats7.1 as a documentation typo, not a need for
-an invented regulator. PG is not pulled to VIN or used as permission at all.
-Independent voltage acceptance replaces PG+Q1: **9V presence is not proof of a PD
-contract or available negotiated current**. Use a suitable9V PD source; no advertised
-contract-current measurement/enforcement. VHV1/VBUS8 routing remains real fused VIN9.
-[WCH manufacturer datasheet mirror](https://done.land/assets/files/ch224a_datasheet.pdf).
+CH224A fixed 9 V uses CFG1 6.8k; CFG2/3 are unused with internal pullups and PG10
+is NC. WCH V2 table 4-1 requires VBUS8 shorted to VHV1; application 6.1 and
+replacement 7.2.1 agree, and rating 8.1.1 lists VBUS/PG as 32 V-capable. The
+isolated 3.8 V statement in 7.1 contradicts those three places; this design
+follows the pin-specific rating and explicit manufacturer application, treating
+7.1 as a documentation typo. PG is not pulled to VIN and is not used as a
+permission signal.
 
-All sensing, U11 TLV9002, clamps/dividers/filters and J8 are removed. Using finalP5
-would not by itself fix residual negative-rail input injection when P5 disappears,
-or clamp backfeed and external3.3V ADC limits. Avoided extra isolation/supplies;
-no5V-to3.3V-controller-safe claim, dead support nets, external controller or firmware.
+Independent voltage acceptance replaces PG+Q1: **9 V presence is not proof of a
+PD contract or available negotiated current**. Use a suitable 9 V PD source.
+VHV1/VBUS8 routing remains real fused VIN9.
+[WCH datasheet mirror](https://done.land/assets/files/ch224a_datasheet.pdf).
+
+All sensing, U11 TLV9002, clamps/dividers/filters and J8 are removed. Using P5
+would not fix residual negative-rail input injection when P5 disappears, nor
+clamp backfeed or external 3.3 V ADC limits.
 
 ## Footprints and bounded sourcing
 
-All active parts have local footprint assignments and are imported into the carrier.
-Current build: **L1 = TAI-TECH TMPC1205HP-220MG-D**, 22uH, 5.0mm max body;
-**L4 = Sunltech SLO1040H6R8MTT**, 6.8uH, 4.0mm max. The paragraph below is the
-earlier MDA1040 selection history, retained for provenance.
-L1/L4 replaced the6.5mm Sunlord part, which cannot fit the5.1mm component-normal
-allowance. KOHERelec MDA1040-6R8M C2847552:6.8uH +/-20%, body11+/-0.3 x10+/-0.3,
-height3.8+/-0.2mm. Manufacturer A1 p1 visually checked: lands3.55 x3.5mm,
-centres +/-4.475 (12.5 overall,5.4 inner gap). DCR22typ/24.5max mOhm.
-Table labels are literally temperature-rise current Typ7.8/Max6.8A and saturation
-Typ12.2/Max11A; lower numbers are conservative design values, NOT invented guaranteed
-minimum ratings. Criteria: deltaT40C / L drop30%. Adequate nominal margin over3A;
-V1 thermal/loop/current-limit testing remains required.
-[Manufacturer PDF](https://datasheet.lcsc.com/datasheet/pdf/2d9718fdfc6265ae4f3f9130b857ccf7.pdf?productCode=C2847552).
+All active parts have local footprint assignments and are imported into the
+carrier. Current magnetics:
 
-L2/L3 CENKER CKCS6045-4.7uH/M C5291878,4.7uH±20% follows TI typical inductance;
-Isat4.97A / rated3.30A; newer manufacturer maxDCR40.30mohm (31mohm is typical in
-that table, despite old catalog max claim). Visually checked page1: F gap1.8mm,
-G pad width2.4mm,H length5.7mm, centres±2.1mm;6.0±0.3mm body,4.7mm height max.
-[Manufacturer datasheet](https://www.cenkersz.com/file/upload/product_series/SMD_Power_Inductor_CKCS6045_Series.pdf).
-[TI TPS65131 application](https://www.ti.com/lit/ds/symlink/tps65131.pdf).
+- **L1 = TAI-TECH TMPC1205HP-220MG-D**, 22 uH ±20%, C357250, 5.0 mm max body;
+  the SR2 inverter inductor.
+- **L4/L5 = Sunltech SLO1040H6R8MTT**, 6.8 uH ±20%, C207852, 4.0 mm max body.
 
-Exact sourcing evidence for all fitted purchased parts is recorded under
-`research/assembly-evidence/` (dated public snapshots with URL/request/hash; the
-previously sourced 035 lookups plus fresh strict-live lookups for the final changed
-codes). C2847552/C5291878 remain Extended and Economy-observed; **none of this is
-allocation, order or qualification**. D10 is DNP and is not purchased; J7 is a
-manual wire landing, not a purchased header. Basic R/C use exact parts or the small
-series networks R4/R77/R78, R8/R79/R80, R36/R81/R82, R10/R84, R18/R85 and
-R72/R83/R73; retained precision R12/R14, R6 and the special feedforward capacitors
-remain explicit Extended exceptions. Do not infer
-all-part stock from catalog snapshots.
+Both are Extended exceptions. Mechanical budget: 0.60 mm panel/bracket shift and
+2.40 mm max web give 5.44 mm worst available against 5.40 mm needed; the current
+mechanical review is pending. Hot saturation and thermal behaviour remain
+prototype gates, not guaranteed ratings.
 
-U4 footprint follows TI RGE0024B drawing4219013/A:24 lands0.60x0.25mm on0.5mm
-pitch, opposing centres3.8mm; EP2.45mm square, four1.08mm paste apertures at±0.64mm.
-Retired2.7mm-EP RGE0024H pattern is removed; current board footprint is synchronized.
+D30 (MDD SS34, C8678, SMA) was added for positive-NRAW startup mitigation.
+D10 is DNP and not purchased; C62 and C93 are DNP. J7 is a manual wire landing,
+not a purchased header. Basic R/C use exact Basic parts; precision R9/R10/R15/
+R72/R74/R86/R87 and inherited R6 are explicit Extended exceptions, as are
+L1/L4/L5. No stock, allocation or order claim follows from catalog snapshots.
 
-## Routing / V1 validation
+## Routing and validation
 
-HRO USB-top UI and all64 footprints are placed/routed. Preserve short hot loops,
-Kelvin feedback/returns and the independent RTN island. This task retained all
-non-USB copper geometry and all197 non-USB native pin identities.
-MID upper DC5.357V is below TPS65131
-5.5V limit but does NOT prove transient headroom. Check startup/stop/short/fallback,
-output load/ripple, capacitor effectiveC/DC bias, inductors/IC thermal, loop stability,
-input/fuse coordination and residual rail discharge on the actual V1. No guaranteed
-continuous simultaneous +/-800mA rating or manufacturing readiness is claimed.
+Current routed source: 721 track segments and 251 through vias, all components
+front-side (no B.Cu electrical footprints, no B.Paste apertures). B.Cu
+routing/mask/drill remains. Preserve short hot loops, Kelvin feedback/returns and
+the independent RTN island.
 
-### Source integrity (local review copies)
-- tps2660.pdf: `b781cbce51984715771bde540df2b36404b4fae4b41e27166c84c19b6598e1de`
-- tps54302.pdf: `1632b388d1ba3a46c8e8f090ddfec2114c0f538cfb8364ddcda583fee3fdbdc5`
-- ch224a.pdf: `3961c67d7f277764ad3e095e2e83fc497ec1850bfc3d887e96198db312b1bfb8`
-- tps65131.pdf: `e8360b9509047317416cfd9163a09d8cdf5c8accbd4e702ad6a43292ef48e0ed`
-- sunlord-manufacturer.pdf: `f6add0cc224973d6a723875e6f68198874aa5c617d9c80b4641c7ee507afd41b`
-- cenker-manufacturer.pdf: `10bd98836aa0fff546c424cba958d33f06c76d703ba7a35c897349fbf5b8992c`
+Validate start/stop, unplug, short and retry; output load/ripple; capacitor
+effective C/DC bias; inductor and IC thermal; loop stability including DCM and
+pulse skip; input/fuse coordination; and residual rail discharge. The negative
+path has no output disconnect, so negative energy can remain with VPROT at 0 V.
+No guaranteed continuous simultaneous ±800 mA rating, full-temperature 1 A
+operation or manufacturing readiness is claimed.
 
-## Historical HRO source checkpoint
-
-Carrier421 segments,133 vias,4 zones. Exact HRO C165948 connector, native13-pin
-paired-land symbol, BOM, local library and mechanical aperture are synchronized.
-All other circuitry and physical poses remain unchanged; the strict preservation
-report compares against the supplied e7e25d1a routed source. See
-[HRO review](usb-hro-review.md) and [build/check commands](build.md).
-
-All inherited optional DRC/ ERC ignores are now enabled. Five four-way junctions
-become paired Ts with identical connectivity, not rule exceptions. J7/hole assembly courtyards and
-exact selected-footprint filters close the resulting metadata warnings without
-relaxing numerical constraints. Passive panel labels meet the existing0.8mm limit.
-Full native/all-severity and regression evidence is retained in the workspace
-handoff. Source verification is not an assembled/product safety qualification.
-
-Bare-PCB release uses all201 through vias as ordinary 0.300 mm plated through vias
-with solder-mask tenting where the artwork permits; no IPC-4761 fill, planarization
-or copper cap is specified. Native shape and exported-CAM audits report93 actual
-positive-area barrel intersections with exposed SMD copper and92 with paste, plus6
-boundary/tangency cases. Those are prototype assembly inspection points, not a
-reason to add a via process. Four-layer JLC04161H-7628 (FR4 Tg155, 1oz outer/0.5oz inner)/HASL, tented standard vias, and separate
-no-copper passive panel stacks, finished thickness and hole limits are explicit in
-[fabrication.md](fabrication.md). Canonical native stacks and final jobs agree.
-FAB/CAM evidence is in `jlcpcb/`; no supplier acceptance,
-assembly/current/thermal/bench or physical trial qualification is inferred. No main
-write/commit/merge/order occurred.
+Bare PCB: four-layer JLC04161H-7628 (FR4 Tg155, 1 oz outer/0.5 oz inner), HASL,
+ordinary 0.300 mm plated through vias. No IPC-4761 fill, planarization or copper
+cap. Barrel/paste intersections are prototype assembly-inspection points, not a
+reason to add a via process. Canonical stack and jobs are defined in
+[fabrication.md](fabrication.md); no supplier acceptance or physical trial is
+inferred.
