@@ -61,11 +61,12 @@ def verify_reset_smt(fp,g):
             'qualification':'nominal placement only; sample solder/fit trial pending'}
 
 
-def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.json',routing_baseline=None):
+def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.json',routing_baseline=None,panel=ROOT/'panels/front-pcb'):
     g=json.loads(geometry_file.read_text())
     names=['usb-power','usb-power-panel']
-    assert sorted(p.stem for p in hardware.glob('*.kicad_pcb'))==sorted(names), 'obsolete middle board still active'
-    boards={n:pcb.LoadBoard(str(hardware/(n+'.kicad_pcb'))) for n in names}
+    assert [p.stem for p in hardware.glob('*.kicad_pcb')]==['usb-power'], 'obsolete middle board still active'
+    assert [p.stem for p in panel.glob('*.kicad_pcb')]==['usb-power-panel'], 'unexpected panel board'
+    boards={n:pcb.LoadBoard(str((panel if n=='usb-power-panel' else hardware)/(n+'.kicad_pcb'))) for n in names}
     fps={n:{(f.GetReference() or f.GetFieldText('MechanicalID')):f for f in b.GetFootprints()} for n,b in boards.items()}
     audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
     allowed={'usb-power':{r for r in audit if not r.startswith('#')}|{'H1','H2','H3','H4'},
@@ -182,10 +183,11 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--hardware',type=Path,default=ROOT/'hardware')
+    p.add_argument('--panel',type=Path,default=ROOT/'panels/front-pcb')
     p.add_argument('--geometry',type=Path,default=ROOT/'docs/assembly-geometry.json')
     p.add_argument('--output',type=Path)
     p.add_argument('--routing-baseline',type=Path,help='Explicit reviewed candidate contract; default remains canonical contract')
-    a=p.parse_args();r=verify(a.hardware,a.geometry,a.routing_baseline)
+    a=p.parse_args();r=verify(a.hardware,a.geometry,a.routing_baseline,a.panel)
     if a.output:
         with a.output.open('x') as f:f.write(json.dumps(r,indent=2)+'\n')
     print(json.dumps(r,indent=2))

@@ -244,8 +244,10 @@ def build_placement_reference(output):
     hw = output/'hardware'; hw.mkdir()
     pretty = hw/'BigModular.pretty'
     shutil.copytree(ROOT/'hardware/BigModular.pretty', pretty)
-    for name in ['fp-lib-table', 'sym-lib-table', 'BigModular.kicad_sym', 'usb-power.kicad_pro', 'usb-power-panel.kicad_pro']:
+    for name in ['fp-lib-table', 'sym-lib-table', 'BigModular.kicad_sym', 'usb-power.kicad_pro']:
         shutil.copyfile(ROOT/'hardware'/name, hw/name)
+    panel = output/'panels/front-pcb'; panel.mkdir(parents=True)
+    shutil.copyfile(ROOT/'panels/front-pcb/usb-power-panel.kicad_pro', panel/'usb-power-panel.kicad_pro')
     for source in (ROOT/'hardware').glob('*.kicad_sch'): shutil.copyfile(source,hw/source.name)
     subprocess.run(['kicad-cli','sch','export','netlist','--format','kicadxml','-o',str(output/'netlist.xml'),str(hw/'usb-power.kicad_sch')],check=True)
     # Keep setup and J1 native physical identity. All electrical fields/nets follow native XML.
@@ -304,11 +306,12 @@ def build_placement_reference(output):
     text(b,'STAGED OFF-BOARD: 60 parts; place power circuits deliberately before routing',250,60,1.2)
     stable_ids(b, 'carrier'); pcb.SaveBoard(str(hw/'usb-power.kicad_pcb'), b)
 
-    build_panel(hw/'usb-power-panel.kicad_pcb')
+    build_panel(panel/'usb-power-panel.kicad_pcb')
 
     (output/'assembly-geometry.json').write_text(json.dumps(G,indent=2)+'\n')
     # Source manifest includes unchanged electrical documents, not only boards.
     sources = [q for q in (ROOT/'hardware').rglob('*') if q.is_file() and q.suffix not in ('.lck','.kicad_prl')]
+    sources += [ROOT/'panels/front-pcb/usb-power-panel.kicad_pro']
     sources += [ROOT/'BOM.csv',ROOT/'docs/pin-net-audit.json']
     (output/'source-manifest.json').write_text(json.dumps({
         'status':'V1 routing preparation / 64 synchronized / 4 fixed + 60 staged / no copper',
@@ -327,6 +330,7 @@ def build(output):
         raise FileExistsError('output must be NEW: '+str(output))
     sources = [p for p in (ROOT/'hardware').rglob('*') if p.is_file()
                and p.suffix not in ('.lck','.kicad_prl','.bak') and not p.name.startswith('.')]
+    sources += [ROOT/'panels/front-pcb'/f'usb-power-panel.kicad_{x}' for x in ('pcb','pro')]
     sources += [ROOT/'BOM.csv',ROOT/'docs/pin-net-audit.json',ROOT/'docs/assembly-geometry.json']
     before = {p:hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
     output.mkdir(parents=True)

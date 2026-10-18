@@ -52,7 +52,8 @@ dimensioned, selected or approved. Current outlines, holes, part positions and
 M3 fasteners remain unchanged; no alternative manufacturing proposal is implied.
 
 The [geometry contract](../tools/stack_geometry.py),
-[bracket source](../hardware/mechanics/corner_braces.scad) and
+[bracket source](../hardware/mechanics/corner_braces.scad) (FreeCAD print model:
+[panels/bracket](../panels/bracket/README.md)) and
 [existing nominal M3 access check](../tools/m3_fit.py) describe the retained
 cutout configuration. Its nominal check remains valid, not a physical-fit or strength approval.
 

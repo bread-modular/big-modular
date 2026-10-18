@@ -17,8 +17,9 @@ PRAW -> TPS7A4700 -> +12V (P12)    NRAW -> TPS7A3301 -> -12V (N12)
 ```
 
 Canonical sources: `hardware/usb-power.kicad_{pro,sch,pcb}`,
-`hardware/usb-power-panel.kicad_{pro,pcb}`, seven hierarchical sheets and local
-libraries. Routing is derived from the 084 review baseline and carries 681 track segments and
+`panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`, seven hierarchical sheets and
+local libraries. `panels/front-cad/` and `panels/bracket/` hold the FreeCAD
+3D-print front panel (no labels) and L bracket; see [panels/README.md](panels/README.md). Routing is derived from the 084 review baseline and carries 681 track segments and
 246 through vias; the current carrier SHA and review status are recorded only in
 `docs/current-review/REPORT.md`.
 
