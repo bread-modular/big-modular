@@ -13,16 +13,16 @@ CARRIER_STACK = '''(stackup
  (layer "F.Paste" (type "Top Solder Paste"))
  (layer "F.Mask" (type "Top Solder Mask") (color "Green") (thickness 0.01))
  (layer "F.Cu" (type "copper") (thickness 0.035))
- (layer "dielectric 1" (type "prepreg") (thickness 0.2) (material "FR4 Tg170") (epsilon_r 4.5) (loss_tangent 0.02))
- (layer "In1.Cu" (type "copper") (thickness 0.035))
- (layer "dielectric 2" (type "core") (thickness 1.04) (material "FR4 Tg170") (epsilon_r 4.5) (loss_tangent 0.02))
- (layer "In2.Cu" (type "copper") (thickness 0.035))
- (layer "dielectric 3" (type "prepreg") (thickness 0.2) (material "FR4 Tg170") (epsilon_r 4.5) (loss_tangent 0.02))
+ (layer "dielectric 1" (type "prepreg") (thickness 0.2104) (material "FR4 Tg155 7628") (epsilon_r 4.4) (loss_tangent 0.02))
+ (layer "In1.Cu" (type "copper") (thickness 0.0152))
+ (layer "dielectric 2" (type "core") (thickness 1.065) (material "FR4 Tg155") (epsilon_r 4.6) (loss_tangent 0.02))
+ (layer "In2.Cu" (type "copper") (thickness 0.0152))
+ (layer "dielectric 3" (type "prepreg") (thickness 0.2104) (material "FR4 Tg155 7628") (epsilon_r 4.4) (loss_tangent 0.02))
  (layer "B.Cu" (type "copper") (thickness 0.035))
  (layer "B.Mask" (type "Bottom Solder Mask") (color "Green") (thickness 0.01))
  (layer "B.Paste" (type "Bottom Solder Paste"))
  (layer "B.SilkS" (type "Bottom Silk Screen") (color "White"))
- (copper_finish "ENIG") (dielectric_constraints no))'''
+ (copper_finish "HAL SnPb") (dielectric_constraints no))'''
 
 # Passive panel has TWO LOGICAL KiCad copper layers but ZERO retained copper.
 # Zero copper thickness is intentional, not an invented 1oz surviving layer.
@@ -31,7 +31,7 @@ PANEL_STACK = '''(stackup
  (layer "F.Paste" (type "Top Solder Paste"))
  (layer "F.Mask" (type "Top Solder Mask") (color "Black") (thickness 0.01))
  (layer "F.Cu" (type "copper") (thickness 0))
- (layer "dielectric 1" (type "core") (thickness 1.58) (material "FR4 Tg170") (epsilon_r 4.5) (loss_tangent 0.02))
+ (layer "dielectric 1" (type "core") (thickness 1.58) (material "FR4 Tg135") (epsilon_r 4.5) (loss_tangent 0.02))
  (layer "B.Cu" (type "copper") (thickness 0))
  (layer "B.Mask" (type "Bottom Solder Mask") (color "Black") (thickness 0.01))
  (layer "B.Paste" (type "Bottom Solder Paste"))
@@ -55,7 +55,8 @@ def validate_stack(path, carrier=True):
     stack=one(one(tree,'setup'),'stackup')
     assert stack==parse(CARRIER_STACK if carrier else PANEL_STACK), 'native stack/finish differs from fabrication requirements'
     assert float(one(one(tree,'general'),'thickness')[1])==1.6
-    assert abs(sum(float(one(l,'thickness')[1]) for l in nodes(stack,'layer') if one(l,'thickness'))-1.6)<1e-9
+    # JLC04161H-7628 nominal layer sum is 1.6062 mm incl. mask; within 1.6 +/-10%.
+    assert abs(sum(float(one(l,'thickness')[1]) for l in nodes(stack,'layer') if one(l,'thickness'))-1.6)<(0.01 if carrier else 1e-9)
     return stack
 
 

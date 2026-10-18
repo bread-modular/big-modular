@@ -129,7 +129,7 @@ with solder-mask tenting where the artwork permits; no IPC-4761 fill, planarizat
 or copper cap is specified. Native shape and exported-CAM audits report93 actual
 positive-area barrel intersections with exposed SMD copper and92 with paste, plus6
 boundary/tangency cases. Those are prototype assembly inspection points, not a
-reason to add a via process. Four-layer FR4 Tg170/35um copper/ENIG and separate
+reason to add a via process. Four-layer JLC04161H-7628 (FR4 Tg155, 1oz outer/0.5oz inner)/HASL, tented standard vias, and separate
 no-copper passive panel stacks, finished thickness and hole limits are explicit in
 [fabrication.md](fabrication.md). Canonical native stacks and final jobs agree.
 FAB/CAM evidence is in `jlcpcb/`; no supplier acceptance,
