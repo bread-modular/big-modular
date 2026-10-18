@@ -20,7 +20,7 @@ tooling.
 | `modules/usb-power/` | USB-C PD 9 V input, TPS26600 protection, TPS55340 boost, TPS54302 inverting buck-boost, TPS7A4700/TPS7A3301 ±12 V, +5 V | SR2 schematic + 084 PCB source accepted; not released |
 
 Canonical sources are `modules/usb-power/hardware/usb-power.kicad_{pro,sch,pcb}`
-plus `usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
+plus `modules/usb-power/panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
 any hardware work.
 
 ## Tools

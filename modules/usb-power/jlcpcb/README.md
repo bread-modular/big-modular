@@ -47,7 +47,7 @@ python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
   --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/carrier
 unzip -o jlcpcb/carrier/usb-power-gerbers.zip -d jlcpcb/carrier
 
-python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
+python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
   --board usb-power-panel --pcb-only \
   --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/passive-panel
 unzip -o jlcpcb/passive-panel/usb-power-panel-gerbers.zip -d jlcpcb/passive-panel

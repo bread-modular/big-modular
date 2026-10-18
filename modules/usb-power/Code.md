@@ -34,8 +34,11 @@ evidence is not live stock or order acceptance. No silent substitutions.
 
 ## Layout and tooling
 
-- `hardware/`: project, schematic, PCB, panel and seven hierarchical sheets;
-  local libraries, models and mechanical source.
+- `hardware/`: project, schematic, PCB and seven hierarchical sheets; local
+  libraries, models and mechanical source.
+- `panels/`: `front-pcb/` native passive panel PCB; `front-cad/` and `bracket/`
+  FreeCAD 3D-print sources/exports generated from the panel PCB and bracket
+  contract.
 - `docs/`, `tools/`, `BOM.csv`: module-local. No module test suite; verify with
   native ERC/DRC and export reports.
 - `jlcpcb/`: complete regenerated canonical export (carrier/panel Gerbers,
