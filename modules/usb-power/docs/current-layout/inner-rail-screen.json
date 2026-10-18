@@ -1,0 +1,887 @@
+{
+  "NRAW": {
+    "layer": "In1.Cu",
+    "from_mm": [
+      130.8125,
+      95.0
+    ],
+    "to_mm": [
+      67.325,
+      83.4
+    ],
+    "length_mm": 86.17566559100963,
+    "length_by_width_mm": {
+      "1.5": 65.21820158770959,
+      "1.0": 19.15746400330005,
+      "0.75": 1.7999999999999972
+    },
+    "copper_thickness_mm": 0.0152,
+    "assumed_rho_ohm_mm": 1.724e-05,
+    "copper_resistance_ohm_20C": 0.07376481642532687,
+    "segments": [
+      {
+        "uuid": "15750fc0-62c8-5fd9-92fe-a9dbf4739a47",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          128.1,
+          95.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          128.1,
+          95.0
+        ],
+        "end": [
+          130.8125,
+          95.0
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "17cd82e2-9952-5cbe-a937-56926d6fc8f2",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          128.1,
+          99.2
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          128.1,
+          99.2
+        ],
+        "end": [
+          128.1,
+          95.0
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "dd39a741-240b-5002-a5fd-ade7993aef01",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          126.0,
+          99.2
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          126.0,
+          99.2
+        ],
+        "end": [
+          128.1,
+          99.2
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "b5c226a1-6f7f-50fc-bf49-7f2f0c15c9c2",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          125.5,
+          99.7
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          125.5,
+          99.7
+        ],
+        "end": [
+          126.0,
+          99.2
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "6704a910-1f3d-5df3-afe6-1f30c4b44ea7",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          108.3,
+          99.7
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          108.3,
+          99.7
+        ],
+        "end": [
+          125.5,
+          99.7
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "e6b3b002-b406-5cf4-8dc6-5b74f065e2ed",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          108.3,
+          96.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          108.3,
+          96.5
+        ],
+        "end": [
+          108.3,
+          99.7
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "63982e43-4119-520d-85e8-9a49f12e5f71",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          104.8,
+          96.425
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          104.8,
+          96.425
+        ],
+        "end": [
+          108.3,
+          96.5
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "76326ee0-c76c-5d9e-9b89-cc64efd901cc",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          104.65,
+          96.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          104.65,
+          96.0
+        ],
+        "end": [
+          104.8,
+          96.425
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "4d6bdec8-cf97-5ab6-ad8d-3e28e3f04d56",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          104.65,
+          94.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          104.65,
+          94.5
+        ],
+        "end": [
+          104.65,
+          96.0
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "535e2f38-4ff4-5473-9e09-699fb950194c",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          101.0,
+          94.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          101.0,
+          94.5
+        ],
+        "end": [
+          104.65,
+          94.5
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "234c3922-bc18-5638-9939-2709c770c780",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          101.0,
+          92.1
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          101.0,
+          92.1
+        ],
+        "end": [
+          101.0,
+          94.5
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "fa47add2-f472-518d-8123-e7eee10a7e13",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          100.5,
+          91.6
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          100.5,
+          91.6
+        ],
+        "end": [
+          101.0,
+          92.1
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "9649b9f9-ae2f-550b-bd7a-8bce15533ea8",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          88.5,
+          91.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          88.5,
+          91.0
+        ],
+        "end": [
+          100.5,
+          91.6
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "f462c767-1020-5aef-950f-a1fe2cd211f5",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          86.5,
+          91.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          86.5,
+          91.0
+        ],
+        "end": [
+          88.5,
+          91.0
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "38a9bfcb-faee-532c-adc7-3c4083007c1e",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          85.9,
+          92.15
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          85.9,
+          92.15
+        ],
+        "end": [
+          86.5,
+          91.0
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "1ee5a4b9-3fbb-5744-b577-1c012556e0e4",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          83.0,
+          92.15
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          83.0,
+          92.15
+        ],
+        "end": [
+          85.9,
+          92.15
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "ac2e325c-5f2f-5b14-aa25-3483ee9a74b0",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          83.0,
+          90.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          83.0,
+          90.5
+        ],
+        "end": [
+          83.0,
+          92.15
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "bbdc1c2b-4ab0-5343-bfab-e499bd1b88e1",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          82.5,
+          90.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          82.5,
+          90.0
+        ],
+        "end": [
+          83.0,
+          90.5
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "533e8ec7-0a65-508c-8a17-b1b43ec94e51",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          81.5,
+          90.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          81.5,
+          90.0
+        ],
+        "end": [
+          82.5,
+          90.0
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "4c9f437c-ea7f-516b-88a7-88104e612441",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          80.7,
+          89.8
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          80.7,
+          89.8
+        ],
+        "end": [
+          81.5,
+          90.0
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "7fa431ae-9e7e-5cfa-8b3b-3b7676232e5d",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          79.6,
+          90.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          79.6,
+          90.5
+        ],
+        "end": [
+          80.7,
+          89.8
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "da5bd72f-0ca2-5819-be23-9c4c81d1e270",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          77.8,
+          90.5
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          77.8,
+          90.5
+        ],
+        "end": [
+          79.6,
+          90.5
+        ],
+        "width_mm": 0.75
+      },
+      {
+        "uuid": "d9effa54-2c5c-5f17-aa55-b62f299fb017",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          76.3,
+          90.65
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          76.3,
+          90.65
+        ],
+        "end": [
+          77.8,
+          90.5
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "6be6deba-8546-5b98-8951-1a5f200031bd",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          74.8,
+          90.0
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          74.8,
+          90.0
+        ],
+        "end": [
+          76.3,
+          90.65
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "cbc1213d-bae4-5d44-b553-d83a0e84cb51",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          72.4,
+          91.2
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          72.4,
+          91.2
+        ],
+        "end": [
+          74.8,
+          90.0
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "11be1087-070e-5e7a-9c1f-69ce937be1be",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          70.8,
+          90.8
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          70.8,
+          90.8
+        ],
+        "end": [
+          72.4,
+          91.2
+        ],
+        "width_mm": 1.0
+      },
+      {
+        "uuid": "fcde4dc8-2e21-50f0-8295-bc4ca3b1666e",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          67.325,
+          90.8
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          67.325,
+          90.8
+        ],
+        "end": [
+          70.8,
+          90.8
+        ],
+        "width_mm": 1.5
+      },
+      {
+        "uuid": "33c81c51-93da-584b-aa7b-dc91dc16f704",
+        "kind": "track",
+        "locked": false,
+        "layer": "In1.Cu",
+        "at": [
+          67.325,
+          83.4
+        ],
+        "group_uuid": null,
+        "net": "/Direct 9V negative IBB/NRAW",
+        "start": [
+          67.325,
+          83.4
+        ],
+        "end": [
+          67.325,
+          90.8
+        ],
+        "width_mm": 1.5
+      }
+    ],
+    "limitations": "One actual series trunk, excludes pad/via resistance and temperature rise. DC screening, not ampacity or simultaneous rail guarantee."
+  },
+  "VPROT": {
+    "layer": "In2.Cu",
+    "from_mm": [
+      87.4,
+      83.4
+    ],
+    "to_mm": [
+      128.7,
+      99.2
+    ],
+    "length_mm": 62.24172337534792,
+    "length_by_width_mm": {
+      "2.0": 61.44172251442144,
+      "0.8": 0.7999999999999972
+    },
+    "copper_thickness_mm": 0.0152,
+    "assumed_rho_ohm_mm": 1.724e-05,
+    "copper_resistance_ohm_20C": 0.0359781347417311,
+    "segments": [
+      {
+        "uuid": "f76ad7a5-d4b0-4d50-bde6-b41279cfd4ed",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          87.4,
+          83.4
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          87.4,
+          83.4
+        ],
+        "end": [
+          87.4,
+          80.2
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "a2152c74-b4da-4583-9539-924ee3caf99e",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          87.4,
+          80.2
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          87.4,
+          80.2
+        ],
+        "end": [
+          98.4,
+          80.2
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "179b11f0-b366-465b-9275-28d9f0f5517a",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          98.4,
+          80.2
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          98.4,
+          80.2
+        ],
+        "end": [
+          100.0,
+          81.8
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "f96bf6df-7410-491d-bc2e-6c8b1a8120e3",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          100.0,
+          81.8
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          100.0,
+          81.8
+        ],
+        "end": [
+          100.0,
+          91.0
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "04818713-2bdb-4946-806b-61b59568f579",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          100.0,
+          91.0
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          100.0,
+          91.0
+        ],
+        "end": [
+          102.5,
+          93.5
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "895dce36-ffaa-4ec0-bffd-2752f25b5670",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          102.5,
+          93.5
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          102.5,
+          93.5
+        ],
+        "end": [
+          102.5,
+          97.6
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "c02dab1e-8c48-4bb0-b3f8-bf749e7b648b",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          102.5,
+          97.6
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          102.5,
+          97.6
+        ],
+        "end": [
+          103.4,
+          97.6
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "383a1cfc-bf17-4b10-ac54-972a48ef7737",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          103.4,
+          97.6
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          103.4,
+          97.6
+        ],
+        "end": [
+          104.2,
+          97.6
+        ],
+        "width_mm": 0.8
+      },
+      {
+        "uuid": "ca393bff-5fb2-47ca-a8b9-5ecbb43a754a",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          104.2,
+          97.6
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          104.2,
+          97.6
+        ],
+        "end": [
+          104.2,
+          99.9
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "52874e3a-2825-44a4-ab37-7a85736eea6b",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          104.2,
+          99.9
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          104.2,
+          99.9
+        ],
+        "end": [
+          106.2,
+          100.5
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "05e6bdc4-c68d-4fb1-a9db-fce71ed53b1e",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          106.2,
+          100.5
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          106.2,
+          100.5
+        ],
+        "end": [
+          126.5,
+          100.5
+        ],
+        "width_mm": 2.0
+      },
+      {
+        "uuid": "9ecfb1f0-e7ad-4849-bf31-b776db110462",
+        "kind": "track",
+        "locked": false,
+        "layer": "In2.Cu",
+        "at": [
+          126.5,
+          100.5
+        ],
+        "group_uuid": null,
+        "net": "/VPROT",
+        "start": [
+          126.5,
+          100.5
+        ],
+        "end": [
+          128.699999,
+          99.2
+        ],
+        "width_mm": 2.0
+      }
+    ],
+    "limitations": "One actual series trunk, excludes pad/via resistance and temperature rise. DC screening, not ampacity or simultaneous rail guarantee."
+  }
+}

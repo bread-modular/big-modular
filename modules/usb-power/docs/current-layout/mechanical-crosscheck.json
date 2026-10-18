@@ -1,0 +1,106 @@
+{
+  "native_to_assembly": {
+    "panel": "X=x-50; Y=y-30",
+    "carrier": "Y=x-35.75; Z=104.275-y; F.Cu X=0.10+2.40+1.60=4.10"
+  },
+  "panel_holes_XYdiameter_mm": [
+    [
+      2.42,
+      3.0,
+      3.2
+    ],
+    [
+      2.42,
+      125.5,
+      3.2
+    ],
+    [
+      5.8,
+      49.5,
+      3.2
+    ],
+    [
+      6.1,
+      43.0,
+      3.6
+    ],
+    [
+      6.4,
+      22.0,
+      3.2
+    ],
+    [
+      6.4,
+      106.5,
+      3.2
+    ]
+  ],
+  "carrier_holes_YZdiameter_mm": [
+    [
+      106.5,
+      15.0,
+      3.2
+    ],
+    [
+      43.5,
+      27.0,
+      2.5
+    ],
+    [
+      22.0,
+      15.0,
+      3.2
+    ],
+    [
+      70.5,
+      27.0,
+      2.5
+    ]
+  ],
+  "USB": {
+    "native_origin": [
+      69.25,
+      103.475
+    ],
+    "axis_XYZ_mm": [
+      5.7299999999999995,
+      33.5,
+      0.8
+    ],
+    "aperture_XYWHR_mm": [
+      3.3,
+      28.1,
+      5,
+      10.8,
+      0.6
+    ]
+  },
+  "D10_DNP": {
+    "native_pad1": [
+      77.48,
+      97.905
+    ],
+    "axis_XY_mm": [
+      6.1,
+      43.0
+    ]
+  },
+  "SW1": {
+    "native_peg_row": [
+      85.25,
+      100.175
+    ],
+    "axis_XY_mm": [
+      5.8,
+      49.5
+    ],
+    "tip_Z_mm": 2.05
+  },
+  "assembly_envelope_line_count": 13,
+  "L1": {
+    "available_worst_mm": 5.44,
+    "required_with_residual_mm": 5.4,
+    "additional_margin_mm": 0.04
+  },
+  "scope": "Native panel/carrier and existing SCAD/drawing-based dimensions crosscheck; not physical cable/ABS/LED/sample approval."
+}
