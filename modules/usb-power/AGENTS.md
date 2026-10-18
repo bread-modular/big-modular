@@ -9,13 +9,15 @@ are module-relative.
   are regenerated; prototype bench performance is not claimed.
 - SR2 schematic implemented: U3 TPS54302DDCR inverting buck-boost generates
   NRAW; U4/MID/TPS65131 and dormant-positive circuitry are removed.
-- Routing is derived from the 084 baseline, with 721 track segments and 251
-  through vias. The current carrier SHA and review status live only in
-  `docs/current-review/REPORT.md`.
+- Routing is derived from the 084 baseline, with 670 track segments and 249
+  through vias (merged cleanup: `/P5` loop removed; SW1 case tie deleted, so the
+  two MP pads stay on their separate KiCad unconnected nets). The current
+  carrier SHA and review status live only in `docs/current-review/REPORT.md`.
 - `jlcpcb/` holds the complete regenerated carrier (4 Cu, mask/legend/edge,
   PTH/NPTH) and panel sets plus both ZIPs, assembly BOM/CPL and
-  `source-sha256.json`; it is not supplier-accepted. Source identity lives
-  there, not as a stale hash in prose.
+  `source-sha256.json` (tool-written by the shared exporter; `check` re-hashes
+  its sources and fails on drift); it is not supplier-accepted. Source identity
+  lives there, not as a stale hash in prose.
 - Native ERC/DRC must include warnings/exclusions/opens/parity plus independent
   exact ref/pin/net/NC/field parity and mechanics. No module unit tests.
 - Standard four-layer JLC04161H-7628 stack (1 oz outer / 0.5 oz inner), HASL,

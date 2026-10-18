@@ -1,13 +1,13 @@
 # usb-power current review (read-only)
 
-Canonical carrier PCB `937cba26…` (user-updated; `69a1e329` + `b7337ce` stack/finish lines only, routing untouched) and all reviewed PCB/PRO/schematic sources are unchanged; current native checks remain 0. Diff-read stack: inner Cu 0.0152 (0.5 oz), 7628 prepreg, HAL SnPb. Reviewed at HEAD 4403b02. Hashes: `raw/SOURCES.sha256`; evidence: `raw/evidence-*.txt`.
+Canonical carrier PCB `a7adc70a…` (merged routing cleanup 9442e03; this pass restored only `exclude_from_pos_files` on J7/D10) and all reviewed PCB/PRO/schematic sources are unchanged; current native checks remain 0 (ERC 0; DRC 0/0/0, refill, all severities+exclusions). Diff-read stack: inner Cu 0.0152 (0.5 oz), 7628 prepreg, HAL SnPb. Reviewed at HEAD b5c537f. Hashes: current source identity is [../../jlcpcb/source-sha256.json](../../jlcpcb/source-sha256.json) (tool-written, no drift); `raw/SOURCES.sha256` and `raw/evidence-*.txt` are the earlier receipts, left unchanged.
 
 Independent physical-layout review: [layout/REPORT.md](layout/REPORT.md).
 
 ## Native checks
 - Carrier common `check` (root+7 sheets, 63 deps): ERC 0; DRC 0 viol / 0 unconnected / 0 parity, refill, all severities+exclusions; source unchanged. `raw/carrier/`
 - Panel: common check exits 2 (no SCH). Standalone kicad-cli 10.0.6 `pcb drc --severity-all --refill-zones` with panel PRO: 0/0; parity not run. `raw/panel/`
-- 721 tracks, 251 vias (140x0.60, 109x0.65, 2x0.50 in U2 pads 5/6; drill 0.30), 10 zones, 120 footprints, none on back.
+- 670 tracks (F.Cu 434, In1 64, In2 68, B.Cu 104), 249 vias (138x0.60, 109x0.65, 2x0.50 in U2 pads 5/6; drill 0.30), 90 board nets, 10 zones, 120 footprints, none on back. Merged cleanup (9442e03): `/P5` loop removed (34->22 tracks, 8->6 vias); SW1 case-tie track deleted, so the two MP case pads stay on their separate KiCad unconnected nets.
 
 ## Engineering
 - U14: SW1/15/16, VIN2+EN3=VPROT, PGND11-13, EP17=GND (4 vias). Loop SW->D29 A(129.40,78.00)->K(133.40,78.00)->C78(133.57,81.10)->C78 GND(130.62,81.10)->0.5 mm->PGND13(130.55,83.00): compact.
@@ -30,7 +30,7 @@ fabrication.md 207 vias, X3.90; mechanics.md L4 (=L5), L2/L3, 585/207/8; enginee
 Native SR2 governs. U14 TPS55340 boost: L5 6.8u, D29, C77-C80 22u PRAW. U3 TPS54302 inverting, IC GND=NRAW, L1 22u to GND, C7+C89-C92 VPROT-NRAW, 22u NRAW-GND bank. U12/U13 LDOs, EP=GND. JLC04161H-7628, 1/0.5 oz, HASL, tented 0.30 vias, all parts front, DNP D10/C62/C93, J7 excluded. Panel 2L Tg135 9.8x128.5; web 2.40 +0/-0.1.
 
 ## Export finding resolution
-Finding 4 is resolved: the shared exporter was rerun on the unchanged sources and produced the complete carrier and panel sets (all copper/mask/legend/paste/edge layers, PTH/NPTH drills), both Gerber ZIPs, and the assembly BOM/CPL. Input and file identities are recorded in [../../jlcpcb/source-sha256.json](../../jlcpcb/source-sha256.json). No supplier acceptance, DFM completion or bench performance is claimed.
+Finding 4 is resolved: the shared exporter was rerun on the unchanged sources and produced the complete carrier and panel sets (all copper/mask/legend/paste/edge layers, PTH/NPTH drills), both Gerber ZIPs, and the assembly BOM/CPL. Input and file identities are recorded in [../../jlcpcb/source-sha256.json](../../jlcpcb/source-sha256.json). The set was regenerated again from the merged board (carrier PTH 249 via holes = 249 vias, 112 refs / 44 BOM rows, manifest tool-written with 0 mismatched sources and 0 stale exports). No supplier acceptance, DFM completion or bench performance is claimed.
 
 ## Physical-layout cross-reference
 Findings 2 (C7.2→U3.1 return) and 3 (inner-rail drop) were UNKNOWN in this pass. The independent layout review traced C7.2→U3.1 as approximately 8.0 mm of planar copper plus two layer transitions and screened the actual NRAW/VPROT/N12 rail segments: [layout/REPORT.md](layout/REPORT.md). Raw receipts above are unchanged.

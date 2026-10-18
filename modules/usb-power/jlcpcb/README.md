@@ -25,7 +25,7 @@ orchestrator, CAM venv, or pinned CAM dependency set.
 
 ## Source identity
 
-- Carrier PCB: `937cba26feb2d0aba6c7add300378e405f82fae2901569460de81e96626c6b1a`;
+- Carrier PCB: `a7adc70af6a8ebfb37c2d32a9fea6614d188b1cc3316107bed07e31933719fd2`;
   project `122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9`;
   root schematic `4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500`.
 - Panel PCB: `5e8b99ea3f9f178ea0030ab29d5c906e31b8a1ed722a0491b78efd74b32f4aab`;
@@ -44,12 +44,19 @@ python3 -B ../../opt/kicad-tools/kicad_tools.py check \
 python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
   --board usb-power --schematic usb-power.kicad_sch \
   --include-through-hole --require-part-numbers \
-  -o research/fresh-carrier
+  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/carrier
+unzip -o jlcpcb/carrier/usb-power-gerbers.zip -d jlcpcb/carrier
 
 python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
   --board usb-power-panel --pcb-only \
-  -o research/fresh-panel
+  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/passive-panel
+unzip -o jlcpcb/passive-panel/usb-power-panel-gerbers.zip -d jlcpcb/passive-panel
 ```
+
+The exporter publishes the ZIP, BOM/CPL and report; the per-layer Gerbers and
+drills in `carrier/` and `passive-panel/` are that ZIP unpacked, so never leave
+stale plots beside a new ZIP. Copy `carrier/bom.csv` and `carrier/positions.csv`
+to `assembly/` and both ZIPs to this directory afterwards.
 
 ## Status
 
