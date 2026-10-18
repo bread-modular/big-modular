@@ -1,8 +1,0 @@
-{
-  "attempt": "cleanup-01b",
-  "status": "failed_not_accepted",
-  "error": "Save/reload item invariants failed",
-  "subsequent_independent_finding": "14 remaining conflicting copper UUIDs propagated from GND to PBOOST_SW on native reload; all original UUIDs explicitly deleted in cleanup03",
-  "normalization": "Native serialization changed bytes only; full native item/geometry/UUID/field and board headers equal; no tool admission checks changed",
-  "new_power_route_trial": "Not applied; discarded at cost boundary"
-}
