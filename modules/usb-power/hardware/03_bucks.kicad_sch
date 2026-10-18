@@ -2997,6 +2997,17 @@
 				)
 			)
 		)
+		(property "Manufacturer" "Sunltech"
+			(at 185.42 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "0e0dbc0a-bdc4-5f21-9def-6e3778971a15")
 		)
@@ -3011,7 +3022,6 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Sunltech" (at 185.42 205.74 0) (hide yes) (show_name no) (do_not_autoplace no) (effects (font (size 1 1))))
 	)
 	(symbol
 		(lib_id "BigModular:Device_C")

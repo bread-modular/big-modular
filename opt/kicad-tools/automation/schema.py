@@ -185,7 +185,7 @@ def validate(document, base=None):
                 refs.add(ref); string(op['value'], 'value', empty=True); string(op['footprint_id'], 'footprint_id')
                 if not re.fullmatch(r'[^\s:/]+:[^\s:/]+', op['footprint_id']): fail('footprint_id must be explicit Library:Name')
                 path_ids = op['symbol_path'].split('/') if isinstance(op['symbol_path'], str) else []
-                if len(path_ids) < 3 or path_ids[0] != '': fail('symbol_path requires /root-uuid/.../symbol-uuid')
+                if len(path_ids) < 2 or path_ids[0] != '': fail('symbol_path requires /<symbol-uuid> or /<sheet-uuid>/.../<symbol-uuid> (PCB link form, no project-root UUID)')
                 for item in path_ids[1:]: identifier(item)
                 if not isinstance(op['pad_nets'], dict) or not op['pad_nets']: fail('Electrical addition requires pad_nets')
                 for pin, net in op['pad_nets'].items(): string(pin, 'pad number', 64); string(net, 'net name')

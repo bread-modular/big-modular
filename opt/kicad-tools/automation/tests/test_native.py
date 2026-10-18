@@ -227,7 +227,7 @@ class NativeTests(unittest.TestCase):
 
     def test_electrical_addition_and_mechanical_only(self):
         self.build(missing=True)
-        op={'op':'add_footprint','uuid':uid('add R2'),'file':str(self.pretty/'R.kicad_mod'),'mechanical_only':False,'reference':'R2','value':'synthetic','footprint_id':'Auto:R','symbol_path':'/'+uid('schematic')+'/'+uid('R2'),'pad_nets':{'1':'SIGNAL'},'at':[30,20],'rotation_deg':0,'side':'front'}
+        op={'op':'add_footprint','uuid':uid('add R2'),'file':str(self.pretty/'R.kicad_mod'),'mechanical_only':False,'reference':'R2','value':'synthetic','footprint_id':'Auto:R','symbol_path':'/'+uid('R2'),'pad_nets':{'1':'SIGNAL'},'at':[30,20],'rotation_deg':0,'side':'front'}
         route={'op':'add_polyline','uuid':uid('new route'),'net':'SIGNAL','layer':'F.Cu','width_mm':0.25,'start':{'pad':{'ref':'R1','number':'1'}},'end':{'pad':{'ref':'R2','number':'1'}}}
         result=self.execute(operations(op,route)); self.assert_status(result,'accepted')
         # A board-only empty mechanical template is explicitly non-electrical.
@@ -278,7 +278,7 @@ class NativeTests(unittest.TestCase):
         self.before=hashes(self.source)
         collide=text_op(); collide['uuid']=uid('R1item')
         with self.assertRaises(api.Error): api.plan(operations(collide),project_dir=self.source)
-        op={'op':'add_footprint','uuid':uid('duplicate'),'file':str(self.pretty/'R.kicad_mod'),'mechanical_only':False,'reference':'R1','value':'synthetic','footprint_id':'Auto:R','symbol_path':'/'+uid('schematic')+'/'+uid('R1'),'pad_nets':{'1':'SIGNAL'},'at':[20,20],'rotation_deg':0,'side':'front'}
+        op={'op':'add_footprint','uuid':uid('duplicate'),'file':str(self.pretty/'R.kicad_mod'),'mechanical_only':False,'reference':'R1','value':'synthetic','footprint_id':'Auto:R','symbol_path':'/'+uid('R1'),'pad_nets':{'1':'SIGNAL'},'at':[20,20],'rotation_deg':0,'side':'front'}
         with self.assertRaises(api.Error): api.plan(operations(op),project_dir=self.source)
         # Allowed named board net, but absent schematic reference: no inference/waiver.
         op.update(reference='R9',uuid=uid('mismatch'),pad_nets={'1':'OTHER'},at=[15,25])

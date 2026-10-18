@@ -154,9 +154,12 @@ field and graphic geometry and rotation; a subsequent absolute rotate sets the
 requested orientation. Never rely on copied top/bottom angles being equivalent.
 
 Electrical additions require `footprint_id="Library:Name"`, an explicit
-`symbol_path="/root-uuid/.../symbol-uuid"`, and a complete `pad_nets` map such as
-`{"1":"SIGNAL","2":"GND"}`. No unknown nets can be created. On apply, ref,
-value/library ID and ref/pin/net membership must match the native schematic XML;
+`symbol_path` in PCB link form `"/<sheet-uuid>/.../<symbol-uuid>"` (the native
+XML `sheetpath` tstamps plus the symbol tstamps, **never** the project root sheet
+UUID, which belongs to schematic instance paths only), and a complete `pad_nets`
+map such as `{"1":"SIGNAL","2":"GND"}`. No unknown nets can be created. On apply,
+ref, value/library ID, ref/pin/net membership and the exact native PCB link must
+match the native schematic XML;
 then native DRC additionally checks schematic paths/fields/library geometry.
 Pins absent from native XML/no-connect electrical pads are not inferred: such
 additions are currently unsupported. Existing no-net pads are preserved.

@@ -42,7 +42,7 @@ def fixture(root, *, routed=True, extra=False, different_net=False, missing=Fals
         ref=f'R{i+1}'; name='OTHER' if different_net and i==2 else 'SIGNAL'
         at=[20,20] if i==0 else [30,20] if i==1 else [25,25]
         fp=p.FOOTPRINT(board); fp.SetFPID(p.LIB_ID('Auto','R')); fp.SetReference(ref); fp.SetValue('synthetic'); fp.SetAttributes(p.FP_SMD)
-        fp.SetPath(p.KIID_PATH('/'+root_id+'/'+uid(ref)))
+        fp.SetPath(p.KIID_PATH('/'+uid(ref)))
         pad=p.PAD(fp); pad.SetNumber('1'); pad.SetAttribute(p.PAD_ATTRIB_SMD); pad.SetShape(p.PAD_SHAPE_RECT); pad.SetSize(p.VECTOR2I(1000000,1000000)); pad.SetPosition(p.VECTOR2I(0,0)); pad.SetLayerSet(p.LSET.FrontMask()); pad.SetNet(other if name=='OTHER' else ni); fp.Add(pad)
         box=p.PCB_SHAPE(fp); box.SetShape(p.SHAPE_T_RECT); box.SetStart(p.VECTOR2I(-1000000,-1000000)); box.SetEnd(p.VECTOR2I(1000000,1000000)); box.SetWidth(50000); box.SetLayer(p.F_CrtYd); fp.Add(box)
         fp.Reference().SetVisible(False); fp.Value().SetVisible(False)
@@ -91,7 +91,7 @@ def fixture(root, *, routed=True, extra=False, different_net=False, missing=Fals
         (directory/'synthetic.kicad_sch').write_text(f'(kicad_sch (version 20250114) (generator "eeschema") (uuid "{root_id}") (paper "A4") (lib_symbols) '+''.join(sheets)+')')
         for fp in board.GetFootprints():
             i=int(fp.GetReference()[1:])-1
-            fp.SetPath(p.KIID_PATH('/'+root_id+'/'+sheet_ids[i]+'/'+uid('leaf symbol')))
+            fp.SetPath(p.KIID_PATH('/'+sheet_ids[i]+'/'+uid('leaf symbol')))
         p.SaveBoard(str(directory/'synthetic.kicad_pcb'),board,True)
     (directory/'synthetic.kicad_pro').write_text(json.dumps({'meta':{'filename':'synthetic.kicad_pro','version':1},'text_variables':{'NOTE':'keep me'}}))
     (directory/'synthetic.kicad_dru').write_text('(version 1)\n# Synthetic, intentionally preserved native rules\n(rule "Synthetic clearance" (constraint clearance (min 0.2mm)))\n')

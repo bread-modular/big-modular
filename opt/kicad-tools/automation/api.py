@@ -313,6 +313,16 @@ def _check_additions(document, netlist):
         pins={pin:name for (r,pin),name in netlist['pins'].items() if r==ref}
         if pins!=op['pad_nets']: raise Error('Added footprint pad_nets do not exactly match native schematic XML')
         if component.get('Footprint')!=op['footprint_id'] or component.get('Value')!=op['value']: raise Error('Added footprint value/library ID must match schematic XML')
+        # A PCB footprint link is sheet-path relative: KiCad stores /<sheet...>/<symbol-uuid>.
+        # The project root sheet UUID belongs to the schematic instance path only; prefixing
+        # it makes every symbol look absent on the next board synchronization.
+        hierarchy=netlist['hierarchy'].get(ref) or {}
+        sheet=(hierarchy.get('tstamps') or '').strip(); symbol=(hierarchy.get('symbol') or '').strip()
+        if not sheet.startswith('/') or not sheet.endswith('/') or not symbol:
+            raise Error('Native schematic XML lacks a usable sheet/symbol path for the added reference')
+        expected=sheet.rstrip('/')+'/'+symbol
+        if op['symbol_path']!=expected:
+            raise Error(f'Added footprint symbol_path must equal the native PCB link {expected} (no project-root UUID)')
 
 
 def apply(edit_plan, output, *, operations=None, python='python3', kicad_cli='kicad-cli'):

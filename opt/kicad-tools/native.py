@@ -108,7 +108,10 @@ def read_netlist(path):
     hierarchy = {}
     for comp in root.findall("components/comp"):
         sheet = comp.find("sheetpath")
-        hierarchy[comp.get("ref")] = dict(sheet.attrib) if sheet is not None else {}
+        symbol = (comp.findtext("tstamps") or "").strip()
+        entry = dict(sheet.attrib) if sheet is not None else {}
+        entry["symbol"] = symbol
+        hierarchy[comp.get("ref")] = entry
     nets, codes, pins = {}, set(), {}
     for net in root.findall("nets/net"):
         name, code = net.get("name"), net.get("code")
