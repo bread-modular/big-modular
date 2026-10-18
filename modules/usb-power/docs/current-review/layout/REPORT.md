@@ -43,6 +43,6 @@ Meaningful datums: panel `X=x-50, Y=y-30`; carrier `Y=x-35.75, Z=104.275-y`, wit
 
 One [current nonblack native copper render](current-layout.png), with four layers and boost/IBB/LDO insets; chat URL: `/uploads/6b5a6fd7-fce4-48f0-91a0-75b25ff9d71a.webp`. It is a review plot, not a manufacturing export.
 
-Before budget-boundary steering, 203 obsolete routing files (12,572,738 bytes, including 22 native-source clones) were retired after exact tracked-blob verification; all remain recoverable in the starting Git commit. [Cleanup receipt](history-cleanup.json). Current status/README pointers were corrected; historical manifests were not rewritten. These uncommitted documentation/deletion changes are for the integrating worker to review.
+Canonical PCB bytes are unchanged; the routing-history cleanup was completed separately and the current manufacturing export set has been regenerated. [JLCPCB export notes](../../../jlcpcb/README.md).
 
-**PCB is settled byte-for-byte for the separate export worker.** `jlcpcb/` was not touched or validated here; the separately reported incomplete manufacturing set must not be treated as released. No further optimization or export work is undertaken in this pass.
+**PCB is settled byte-for-byte for the separate export worker.** `jlcpcb/` was not touched or validated here; the regenerated set is complete but is not supplier-accepted or released. No further optimization or export work is undertaken in this pass.
