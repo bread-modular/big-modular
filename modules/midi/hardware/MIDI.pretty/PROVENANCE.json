@@ -1,0 +1,107 @@
+{
+  "footprints": {
+    "LED_D3.0mm": {
+      "source": "/usr/share/kicad/footprints/LED_THT.pretty/LED_D3.0mm.kicad_mod",
+      "source_sha256": "493343812829a676e4b8f663240f515a8c294600cb39f45a363916c7a034873d",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "09b1cf789988cda940e58c44479dcf381ec2cd678e7b8b3b4cf805449df95016"
+    },
+    "VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm": {
+      "source": "/usr/share/kicad/footprints/Package_DFN_QFN.pretty/VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.kicad_mod",
+      "source_sha256": "c922a27f6abb2d9c05e72e12ca4a1f008498f64a810fd4897af0848e45dd20dc",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "3D model ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.step is not shipped by KiCad; visual proxy ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm.step",
+      "output_sha256": "e444c1e39ecb98e38b0a5c720af9c311259bf94ad5351f4ee7da13921a5d07ea"
+    },
+    "SOT-89-3": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-89-3.kicad_mod",
+      "source_sha256": "0b8db9f4a8f2547a53e80e3d400798979e84b4e0b2972160ddaca99c1f659b93",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "8bba0fa22105acf61e45c82c0509abf79f698262ae362353b51aa501d1d3c625"
+    },
+    "D_SOD-123": {
+      "source": "/usr/share/kicad/footprints/Diode_SMD.pretty/D_SOD-123.kicad_mod",
+      "source_sha256": "fd16785935b01254e1076f490e12f0f096da73cf087adefce51225585c62557a",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "89f25f38d5a1cbed65e6d3695d874afc19181268d387bf498a52ec62288cc6bf"
+    },
+    "R_0603_1608Metric": {
+      "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_0603_1608Metric.kicad_mod",
+      "source_sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "0f30f4b914e1a6cc473a2db169c7b266f9ca654ba46256e9c4e26cfad1d85f45"
+    },
+    "R_1206_3216Metric": {
+      "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_1206_3216Metric.kicad_mod",
+      "source_sha256": "c7320668dc81bbb954cb4f15e4e7a766c120059343d43551468c8f7ccc8fde37",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "852c44db99b6cd8afc7c467aba22ba54922e5abe1c0fceb5a4ac548dbfa23e33"
+    },
+    "C_0603_1608Metric": {
+      "source": "/usr/share/kicad/footprints/Capacitor_SMD.pretty/C_0603_1608Metric.kicad_mod",
+      "source_sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "6f19f62b589dd62d5262a392190f35f3a4e7770c33baf634c6dcbfa011eca2cc"
+    },
+    "C_0805_2012Metric": {
+      "source": "/usr/share/kicad/footprints/Capacitor_SMD.pretty/C_0805_2012Metric.kicad_mod",
+      "source_sha256": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "857b21fbb42fedb65c7dbaf92e462025e5b1e1f48ae27e4572bb392842899a84"
+    },
+    "PinHeader_2x05_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_2x05_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "e92fcd01a2df9c567dbd6e2c8c05c4e021cb1b96ca035b85d568d1710f9d48b1",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "32bb2838331ae6ab6bd9f4f3525d356da9053d2d7b40fa694cba3cd1ae998d21"
+    },
+    "PinHeader_1x02_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x02_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "5301303268f72ba9cc94b7fdbac355951933e6854272ce8d300b679b86b5d45d",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "f2c9b02335c9c12713379560da11bf439c632fba252d3aed26922300c15ca80a"
+    },
+    "PinHeader_1x03_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x03_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "e5f24b6fea852f86171042806da48490229c9c8025b6d266b8cad6485b26e79f",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "0100fdc79ad6a66b1f39e709915b2a99edcae87782ed7795c4b22d673ca0d22f"
+    },
+    "Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical": {
+      "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.pretty/Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical.kicad_mod",
+      "source_sha256": "bdc2ff9278a4d5d0bb204cae32275020bea42d878dfa5c2f0055653642d0bbcd",
+      "license": "MIT (c) 2021 Barwise",
+      "edits": "removed two decorative F.SilkS arcs crossing the TN/R pad; F.CrtYd -> X +/-4.75, Y -6.25..7.8 (model envelope +0.25); 3D model -> ${KIPRJMOD}/MIDI.3dshapes/PJ301M-12.step",
+      "output_sha256": "03e59932ad7365cf65abd1b78f53bb0efce09a967ab4927c07d618de84ce93cf"
+    },
+    "Jack_3.5mm_QingPu_WQP-PJ366ST_Vertical": {
+      "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.pretty/Jack_3.5mm_QingPu_WQP-PJ366ST_Vertical.kicad_mod",
+      "source_sha256": "60e0ce62d4be7145e5089561817ed5c2e65ed118af6bc53db024bc425abb8450",
+      "license": "MIT (c) 2021 Barwise",
+      "edits": "removed two decorative F.SilkS arcs crossing the TN/R pad; F.CrtYd -> X +/-5.25, Y -6.25..7.8 (model envelope +0.25); 3D model -> ${KIPRJMOD}/MIDI.3dshapes/PJ366ST.step",
+      "output_sha256": "164c3b19c4dd77cf4fdfdd841d586686a6bd8aa962e0abb80e0c7e69e030f598"
+    }
+  },
+  "models": {
+    "PJ301M-12.step": {
+      "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.3dshapes/PJ301M-12.step",
+      "sha256": "3ae3e409ef498c9f111f1d10e737c7df1e36df8bfff62e1f66482a8388211620",
+      "license": "MIT (c) 2021 Barwise"
+    },
+    "PJ366ST.step": {
+      "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.3dshapes/PJ366ST.step",
+      "sha256": "63a4bfe339d28c0ac4aeeefacf8a0c48b1a846f8db7ec034be59c18128356ddc",
+      "license": "MIT (c) 2021 Barwise"
+    }
+  }
+}

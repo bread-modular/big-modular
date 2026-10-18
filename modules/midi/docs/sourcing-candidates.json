@@ -1,0 +1,417 @@
+{
+  "note": "Dated public-catalog observations from opt/kicad-tools/jlcpcb/assembly.py lookup --strict-live. Stock is transient and not a reservation; nothing here is order acceptance. Passives are not sourced yet (no schematic). Raw snapshots: research/jlc-cache (ignored).",
+  "s2_note": "S2 (2026-10-18): the opto input was removed from this board; the U2/D9 opto entries are V2 candidates only (docs/research.md 3.5). Roles below are as recorded at lookup time.",
+  "tool": "python3 -B opt/kicad-tools/jlcpcb/assembly.py lookup <code> --strict-live --max-requests 1",
+  "parts": [
+    {
+      "code": "C107626",
+      "mpn": "TLP2361(TPL,E",
+      "manufacturer": "TOSHIBA",
+      "package": "SO-5",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 11525,
+      "key_attributes": {
+        "High level Delay Time": "80ns",
+        "Low level Delay Time": "80ns",
+        "Forward Current(If)": "10mA",
+        "Reverse Voltage": "5V",
+        "Isolation Voltage(Vrms)": "3.75kV",
+        "Data Rate": "15Mbps",
+        "Voltage - Supply": "2.7V~5.5V",
+        "Input threshold current": "1.6mA",
+        "Features": "-",
+        "Output current": "10mA",
+        "Voltage - Forward(Vf)": "1.5V"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_TOSHIBA-TLP2361-TPL-E-T_C107626.pdf",
+      "role": "Not chosen: push-pull output would work with the JP3 1x5 source-select jumper, but the H11L1 (hysteresis, 3-16 V) is preferred",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:29:45Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "075c2543608884d9589a50cf309b5584769d338c5090de75f0612333b2c95c47",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C14289",
+      "mpn": "HT7533-1",
+      "manufacturer": "Holtek Semicon",
+      "package": "SOT-89-3",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock_observed": 118291,
+      "key_attributes": {
+        "Operating Temperature": "-40℃~+85℃@(Ta)",
+        "standby current": "2.5uA",
+        "Voltage - Supply": "30V",
+        "Output Type": "Fixed",
+        "Output Current": "100mA",
+        "Output Configuration": "Positive",
+        "Output Voltage": "3.3V",
+        "Voltage Dropout": "25mV@(1mA)",
+        "Number of Outputs": "1"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312191111_Holtek-Semicon-HT7533-1_C14289.pdf",
+      "role": "Superseded at S3 (5 V rail): was U3 for the 3.3 V design",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:09:50Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "8f86f18978f04fd836b823bd10fb0a42dd05dbe9d5cb7bb8691e3e010f465ab2",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C15825",
+      "mpn": "6N137SDM",
+      "manufacturer": "onsemi",
+      "package": "SOP-8-2.54mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 23321,
+      "key_attributes": {
+        "High level Delay Time": "75ns",
+        "Operating Temperature": "-40℃~+85℃",
+        "Forward Current(If)": "50mA",
+        "Input Type": "DC",
+        "Reverse Voltage": "5V",
+        "Isolation Voltage(Vrms)": "5kV",
+        "CMTI(kV/us)": "10kV/us",
+        "Data Rate": "10Mbps",
+        "Number of Channels": "1",
+        "Voltage - Supply": "4.5V~5.5V",
+        "Input threshold current": "20mA",
+        "Features": "Output enable control、Open-collector output",
+        "Low level Delay Time": "75ns",
+        "Output current": "13mA",
+        "Voltage - Forward(Vf)": "1.45V",
+        "power dissipation": "100mW"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809192312_onsemi-6N137SDM_C15825.pdf",
+      "role": "REJECTED: 6N137 needs 4.5-5.5 V and has IF threshold up to 5 mA (BM 2.0 part that did not work)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:10:09Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "abfe36f0c58a6a97ffe78b01001d89c10302d4bcb40c383c49f7be95ea377c04",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C16587",
+      "mpn": "H11L1M",
+      "manufacturer": "onsemi",
+      "package": "DIP-6",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 11180,
+      "key_attributes": {
+        "High level Delay Time": "4us",
+        "Low level Delay Time": "4us",
+        "Forward Current(If)": "30mA",
+        "Reverse Voltage": "6V",
+        "Isolation Voltage(Vrms)": "4.17kV",
+        "Data Rate": "1Mbit/s",
+        "Voltage - Supply": "3V~15V",
+        "Input threshold current": "1.6mA",
+        "Features": "Built-in Schmitt trigger、Open-collector output",
+        "Output current": "50mA",
+        "Voltage - Forward(Vf)": "1.2V"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809221211_onsemi-H11L1M_C16587.pdf",
+      "role": "U2 THT fallback (H11L1M DIP-6, same pinout; hand-fit)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:29:39Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "0fca7c19da6dd8b7d0569c72dfcfecdac4fed9a4a40151ec043cbcc052bdd927",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C2099",
+      "mpn": "1N4148W",
+      "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+      "package": "SOD-123",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 974842,
+      "key_attributes": {
+        "Voltage - Forward(Vf@If)": "1.25V@150mA",
+        "Non-Repetitive Peak Forward Surge Current": "2A",
+        "Voltage - DC Reverse(Vr)": "100V",
+        "Reverse Recovery Time (trr)": "4ns",
+        "Diode Configuration": "Standalone",
+        "Current - Rectified": "150mA",
+        "Pd - Power Dissipation": "500mW",
+        "Reverse Leakage Current (Ir)": "1uA@75V"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810101111_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--1N4148W_C2099.pdf",
+      "role": "D9 alt (Extended)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:10:00Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "cfb53674adf68e1789f63eb37ea34445df1f2f6b118b6233d5c10ffffcf91eb4",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C41425696",
+      "mpn": "BLH11L1S",
+      "manufacturer": "Galaxy Microelectronics",
+      "package": "SMD-6L",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 1911,
+      "key_attributes": {
+        "High level Delay Time": "4us",
+        "Low level Delay Time": "4us",
+        "Forward Current(If)": "60mA",
+        "Reverse Voltage": "6V",
+        "Isolation Voltage(Vrms)": "5kV",
+        "Data Rate": "2Mbps",
+        "Voltage - Supply": "3V~15V",
+        "Input threshold current": "1.6mA",
+        "Features": "Built-in Schmitt trigger",
+        "Output current": "50mA",
+        "Voltage - Forward(Vf)": "1.24V"
+      },
+      "datasheet_url": null,
+      "role": "U2 second source candidate (H11L1 clone, SMD-6L; no catalog datasheet URL, land pattern unchecked)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:29:41Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "7b151e17dbc10b33a6ebdb0b0f7dbf2993591ac05e34ab273eace879d493fdc3",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C44908",
+      "mpn": "ACPL-M61L-500E",
+      "manufacturer": "Broadcom Limited",
+      "package": "SO-5-4.4mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 8965,
+      "key_attributes": {
+        "High level Delay Time": "80ns",
+        "Low level Delay Time": "80ns",
+        "Forward Current(If)": "8mA",
+        "Reverse Voltage": "5V",
+        "Isolation Voltage(Vrms)": "3.75kV",
+        "Data Rate": "10Mbps",
+        "Voltage - Supply": "2.7V~5.5V",
+        "Input threshold current": "1.3mA",
+        "Features": "-",
+        "Output current": "10mA",
+        "Voltage - Forward(Vf)": "1.3V"
+      },
+      "datasheet_url": "https://datasheet.lcsc.com/lcsc/1912111437_AVAGO-Broadcom-ACPL-M61L-500E_C44908.pdf",
+      "role": "Not chosen: push-pull output would work with the JP3 1x5 source-select jumper, but the H11L1 (hysteresis, 3-16 V) is preferred (output stage not datasheet-confirmed; download blocked)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:29:43Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "be54c247da70c40c47a11d1a7d065250b96207bd041f6d7ddeecdf62b7a825fe",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C507118",
+      "mpn": "ATTINY1616-MNR",
+      "manufacturer": "Microchip Tech",
+      "package": "QFN-20-EP(3x3)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 5626,
+      "key_attributes": {
+        "Operating Temperature": "-40℃~+105℃",
+        "DAC (Bit)": "8bit",
+        "Program Memory Type": "FLASH",
+        "RAM Size": "2KB",
+        "CPU Core": "AVR",
+        "Number of I/O": "18",
+        "Oscillator Type": "Built-in",
+        "EEPROM": "256Byte",
+        "CPU Maximum Speed": "20MHz",
+        "Program Storage Size": "16KB",
+        "Voltage - Supply": "1.8V~5.5V",
+        "Core Size": "8 Bit",
+        "Features": "Power-on reset (POR)、Undervoltage detection (BOR/LVD/LVR/LVI)、Built-in general-purpose timer、Hardware CRC、Touch function、Window watchdog (WWDG)",
+        "ADC (Bit)": "10bit"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2004232205_Microchip-Tech-ATTINY1616-MNR_C507118.pdf",
+      "role": "U1 MCU (same as Bread Modular)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:09:57Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "1ce7c89059e3dcdb8f80ced98a8b2c8f7b237461f6dcc967eb0011ef4c5a0bec",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C55186574",
+      "mpn": "H11L1S",
+      "manufacturer": "GOODWORK",
+      "package": "SOP-6",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 224,
+      "key_attributes": {
+        "Operating Temperature": "-55℃~+100℃",
+        "Forward Current(If)": "60mA",
+        "Output voltage": "0.4V",
+        "Reverse Voltage": "6V",
+        "Isolation Voltage(Vrms)": "5kV",
+        "Output current": "50mA",
+        "Voltage - Forward(Vf)": "1.5V",
+        "power dissipation": "150mW"
+      },
+      "datasheet_url": null,
+      "role": "U2 opto alt (GOODWORK H11L1S; not datasheet-checked)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:09:54Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "314be677c0d0d657f7d78d6f877824b7abc4a18b63bfc845d552cd27d5f6301e",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C78588",
+      "mpn": "H11L1",
+      "manufacturer": "Everlight Elec",
+      "package": "DIP-6",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 2780,
+      "key_attributes": {
+        "High level Delay Time": "-",
+        "Low level Delay Time": "-",
+        "Forward Current(If)": "60mA",
+        "Reverse Voltage": "6V",
+        "Isolation Voltage(Vrms)": "5kV",
+        "Data Rate": "1Mbit/s",
+        "Voltage - Supply": "3V~15V",
+        "Input threshold current": "1.6mA",
+        "Features": "Built-in Schmitt trigger",
+        "Output current": "50mA",
+        "Voltage - Forward(Vf)": "1.15V"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Everlight-Elec-H11L1_C78588.pdf",
+      "role": "U2 THT fallback (Everlight H11L1 DIP-6)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:29:47Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "8f9edde3582574027976acea1e8caa90e2a244ec6f96738c61a30a1391dd9da4",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C81598",
+      "mpn": "1N4148W",
+      "manufacturer": "ST(Semtech)",
+      "package": "SOD-123",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock_observed": 4471112,
+      "key_attributes": {
+        "Voltage - Forward(Vf@If)": "1V@50mA",
+        "Non-Repetitive Peak Forward Surge Current": "1A",
+        "Voltage - DC Reverse(Vr)": "75V",
+        "Reverse Recovery Time (trr)": "4ns",
+        "Diode Configuration": "Standalone",
+        "Current - Rectified": "150mA",
+        "Pd - Power Dissipation": "400mW",
+        "Reverse Leakage Current (Ir)": "1uA@75V"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811061725_ST-Semtech-1N4148W_C81598.pdf",
+      "role": "D9 opto reverse-protection (Basic)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:10:02Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "ccd573608249e90b290fda0a7e5e4ab8ca4390ac8f99d7ffb2b98d8f566f1da9",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C8598",
+      "mpn": "B5819W SL",
+      "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+      "package": "SOD-123",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock_observed": 354667,
+      "key_attributes": {
+        "Voltage - Forward(Vf@If)": "600mV@1A",
+        "Non-Repetitive Peak Forward Surge Current": "9A",
+        "Voltage - DC Reverse(Vr)": "40V",
+        "Diode Configuration": "Standalone",
+        "Current - Rectified": "1A"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--B5819W-SL_C8598.pdf",
+      "role": "D10 +12 V reverse-polarity series Schottky (Basic)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:10:07Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "dd7f85d5558acfd33b3cc4662892b8dc0db25b6fc5861b990e5cf5417be7da16",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C899473",
+      "mpn": "H11L1SM",
+      "manufacturer": "onsemi",
+      "package": "SOP-6-2.54mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock_observed": 2692,
+      "key_attributes": {
+        "High level Delay Time": "4us",
+        "Low level Delay Time": "4us",
+        "Forward Current(If)": "30mA",
+        "Reverse Voltage": "6V",
+        "Isolation Voltage(Vrms)": "4.17kV",
+        "Data Rate": "1Mbit/s",
+        "Voltage - Supply": "3V~16V",
+        "Input threshold current": "1.6mA",
+        "Features": "Built-in Schmitt trigger、Open-collector output",
+        "Output current": "50mA",
+        "Voltage - Forward(Vf)": "1.2V"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2103221135_onsemi-H11L1SM_C899473.pdf",
+      "role": "U2 opto, SELECTED for the jumper-enabled OPTO path (3 V supply OK, 1.6 mA threshold @5 V, open-collector Schmitt; SMD gull-wing DIP-6)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T14:29:37Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "a06de586b048df26761bf2a6f6b71e55fa8e0bfbd2567bceb5c8be9fc40bf024",
+        "mode": "live"
+      }
+    },
+    {
+      "code": "C16106",
+      "mpn": "HT7550-1",
+      "manufacturer": "Holtek Semicon",
+      "package": "SOT-89-3",
+      "classification": "Preferred Extended",
+      "economy_eligible": true,
+      "stock_observed": 206116,
+      "key_attributes": {
+        "Operating Temperature": "-40℃~+85℃@(Ta)",
+        "standby current": "2.5uA",
+        "Voltage - Supply": "30V",
+        "Output Type": "Fixed",
+        "Output Current": "150mA",
+        "Output Configuration": "Positive",
+        "Output Voltage": "5V",
+        "Voltage Dropout": "25mV@(1mA)",
+        "Number of Outputs": "1"
+      },
+      "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2404031722_Holtek-Semicon-HT7550-1_C16106.pdf",
+      "role": "U3 (S3): 12 V -> 5 V LDO, same SOT-89-3 footprint and pinout as HT7533-1. Preferred Extended (not Basic); the only Basic 5 V regulator found was AMS1117-5.0 C6187 (SOT-223, 15 V max input)",
+      "evidence": {
+        "retrieved_at_utc": "2026-10-18T16:20:41Z",
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "sha256": "a4b61b74302cfac8af9f5123f903bf8b33ba4324902340691fac3097216f3ff1",
+        "mode": "live"
+      }
+    }
+  ],
+  "s3_note": "S3 (2026-10-18): the logic rail moved from 3.3 V to 5 V (Bread Modular level); U3 is HT7550-1 C16106."
+}

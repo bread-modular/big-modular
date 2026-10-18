@@ -1,0 +1,628 @@
+{
+  "revision": "S3: 5 V logic rail (HT7550-1); opto deferred to V2; TRS Type A/B on a 1x3 2.54 mm header on B; schematic-derived nets; routed natively from S3 on",
+  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+  "kicad_origin_mm": [
+    100.0,
+    50.0
+  ],
+  "hp": 4,
+  "panel_mm": [
+    20.0,
+    128.5
+  ],
+  "panel_pcb_thickness_mm": 1.6,
+  "panel_print_thickness_mm": 2.0,
+  "rail_holes_mm": [
+    [
+      7.5,
+      3.0,
+      3.2
+    ],
+    [
+      7.5,
+      125.5,
+      3.2
+    ]
+  ],
+  "rail_clear_gap_Y_mm": [
+    8.0,
+    120.5
+  ],
+  "rail_note": "Doepfer 4HP single hole pair at X7.5 (HOLE_X0 in case/tools/build_case.py). The repository skiff rails are 10 mm wide centred on Y3.0/Y125.5, leaving the clear Y8.0..120.5 (112.5 mm) gap; commercial rails differ, so the PCB keeps 1.25 mm margin and the 16-pin IDC socket envelope stays inside the gap.",
+  "main_pcb": {
+    "outline_mm": [
+      0.5,
+      9.25,
+      19.5,
+      119.25
+    ],
+    "thickness_mm": 1.6,
+    "copper_layers": 2,
+    "note": "19.0 x 110.0 mm (Doepfer parallel-PCB maximum), 1.25 mm inside the skiff rail gap at each end; held only by the nine jack bushings/nuts."
+  },
+  "jack_column_X_mm": 8.6,
+  "led_column_X_mm": 17.2,
+  "jack_rotation_deg": 270,
+  "jack_rotation_note": "Rotated so T/TN/S pads run along X with the S (sleeve) pad toward the left board edge; jack bodies are 9.0 mm along Y.",
+  "jacks": [
+    {
+      "ref": "J1",
+      "role": "MIDI_IN_TRS",
+      "part": "QingPu WQP-PJ366ST",
+      "Y": 15.0
+    },
+    {
+      "ref": "J2",
+      "role": "MIDI_OUT_1",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 26.5
+    },
+    {
+      "ref": "J3",
+      "role": "MIDI_OUT_2",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 37.0
+    },
+    {
+      "ref": "J4",
+      "role": "MIDI_OUT_3",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 47.5
+    },
+    {
+      "ref": "J5",
+      "role": "MIDI_OUT_4",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 58.0
+    },
+    {
+      "ref": "J6",
+      "role": "MIDI_OUT_5",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 68.5
+    },
+    {
+      "ref": "J7",
+      "role": "MIDI_OUT_6",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 79.0
+    },
+    {
+      "ref": "J8",
+      "role": "MIDI_OUT_7",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 89.5
+    },
+    {
+      "ref": "J9",
+      "role": "MIDI_OUT_8",
+      "part": "QingPu WQP-PJ301M-12",
+      "Y": 100.0
+    }
+  ],
+  "leds": [
+    {
+      "ref": "D1",
+      "channel": 1,
+      "Y": 26.5
+    },
+    {
+      "ref": "D2",
+      "channel": 2,
+      "Y": 37.0
+    },
+    {
+      "ref": "D3",
+      "channel": 3,
+      "Y": 47.5
+    },
+    {
+      "ref": "D4",
+      "channel": 4,
+      "Y": 58.0
+    },
+    {
+      "ref": "D5",
+      "channel": 5,
+      "Y": 68.5
+    },
+    {
+      "ref": "D6",
+      "channel": 6,
+      "Y": 79.0
+    },
+    {
+      "ref": "D7",
+      "channel": 7,
+      "Y": 89.5
+    },
+    {
+      "ref": "D8",
+      "channel": 8,
+      "Y": 100.0
+    }
+  ],
+  "panel_hole_diameters_mm": {
+    "jack": 6.2,
+    "led": 3.2
+  },
+  "stack_Z_mm": {
+    "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+    "jack_body_top": 8.9,
+    "panel_rear_seat": 10.0,
+    "pj301m12_thread": [
+      10.0,
+      14.51
+    ],
+    "pj366st_thread": [
+      11.0,
+      15.96
+    ],
+    "nut_thickness": 2.0,
+    "led_body_bottom": 6.3,
+    "led_body_height": 5.3,
+    "led_model_body_bottom": 3.0,
+    "led_note": "3 mm LED body (flange to dome) is 5.3 mm; body bottom at Z6.3 puts the dome flush with the 1.6 mm FR4 panel front (Z11.6) and 0.4 mm recessed in the 2.0 mm print. The stock KiCad LED_D3.0mm model already stands its flange at Z3.0, so the board model offset is +3.3 mm.",
+    "source": "Slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks before committing the LED stand-off."
+  },
+  "back_side_parts": [
+    {
+      "ref": "JP1",
+      "value": "TRS TYPE 1x3 2.54 (shunt 1-2 = A, 2-3 = B)",
+      "footprint": "PinHeader_1x03_P2.54mm_Vertical",
+      "XY": [
+        17.2,
+        15.0
+      ],
+      "rot": 0,
+      "band": "LED column beside J1 (no LED there)",
+      "note": "THT 2.54 mm header on B, like the UPDI header. Pin 1 (top) = Tip, pin 2 = DATA, pin 3 = Ring. B.SilkS: TRS above; A level with pin 1, B level with pin 3."
+    },
+    {
+      "ref": "R21",
+      "value": "4.7k (input series, 5 V sender clamp limit)",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        15.0,
+        20.3
+      ],
+      "rot": 0,
+      "band": "J1/J2 band beside JP1"
+    },
+    {
+      "ref": "R2",
+      "value": "22k (RX pull-up)",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        5.8,
+        22.5
+      ],
+      "rot": 180,
+      "band": "J1/J2 band, left of the RX lane (RX pull-up)"
+    },
+    {
+      "ref": "C3",
+      "value": "10u",
+      "footprint": "C_0805_2012Metric",
+      "XY": [
+        4.8,
+        73.8
+      ],
+      "rot": 180,
+      "band": "J6/J7 band left zone on the +5V trunk (bulk)"
+    },
+    {
+      "ref": "R3",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        30.1
+      ],
+      "rot": 90,
+      "band": "beside J2 tip pad (output 1 series)"
+    },
+    {
+      "ref": "R4",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        22.6
+      ],
+      "rot": 270,
+      "band": "above D1 anode (LED 1 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R5",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        40.6
+      ],
+      "rot": 90,
+      "band": "beside J3 tip pad (output 2 series)"
+    },
+    {
+      "ref": "R6",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        33.1
+      ],
+      "rot": 270,
+      "band": "above D2 anode (LED 2 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R7",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        51.1
+      ],
+      "rot": 90,
+      "band": "beside J4 tip pad (output 3 series)"
+    },
+    {
+      "ref": "R8",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        43.6
+      ],
+      "rot": 270,
+      "band": "above D3 anode (LED 3 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R9",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        54.1
+      ],
+      "rot": 270,
+      "band": "above J5 tip pad (output 4 series); rot 270 puts pad 2 (OUT4) toward J5 and keeps the U1 band clear"
+    },
+    {
+      "ref": "R10",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        54.1
+      ],
+      "rot": 270,
+      "band": "above D4 anode (LED 4 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R12",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        72.1
+      ],
+      "rot": 90,
+      "band": "beside J6 tip pad (output 5 series)"
+    },
+    {
+      "ref": "R13",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        64.6
+      ],
+      "rot": 270,
+      "band": "above D5 anode (LED 5 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R14",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        82.6
+      ],
+      "rot": 90,
+      "band": "beside J7 tip pad (output 6 series)"
+    },
+    {
+      "ref": "R15",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        75.1
+      ],
+      "rot": 270,
+      "band": "above D6 anode (LED 6 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R16",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        93.1
+      ],
+      "rot": 90,
+      "band": "beside J8 tip pad (output 7 series)"
+    },
+    {
+      "ref": "R17",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        85.6
+      ],
+      "rot": 270,
+      "band": "above D7 anode (LED 7 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "R18",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.52,
+        103.6
+      ],
+      "rot": 90,
+      "band": "beside J9 tip pad (output 8 series)"
+    },
+    {
+      "ref": "R19",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.2,
+        96.1
+      ],
+      "rot": 270,
+      "band": "above D8 anode (LED 8 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
+    },
+    {
+      "ref": "U1",
+      "value": "ATtiny1616-MNR",
+      "footprint": "VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm",
+      "XY": [
+        8.6,
+        64.25
+      ],
+      "rot": 90,
+      "band": "J5/J6 band, corridor centre, 1 mm low to leave room for the TX1-4 jogs above it"
+    },
+    {
+      "ref": "C1",
+      "value": "100n",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        8.2,
+        68.6
+      ],
+      "rot": 270,
+      "band": "under U1 between the LED8/LED7 lanes, fed from the +5V via under pin 4"
+    },
+    {
+      "ref": "R11",
+      "value": "4.7k (UPDI)",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        14.3,
+        109.0
+      ],
+      "rot": 90,
+      "band": "bottom zone beside J11 (UPDI series)"
+    },
+    {
+      "ref": "R20",
+      "value": "39 (LDO dropper)",
+      "footprint": "R_1206_3216Metric",
+      "XY": [
+        9.4,
+        89.5
+      ],
+      "rot": 0,
+      "band": "J8 pad row gap",
+      "note": "sits between the J8 TN and T pads; checked by DRC"
+    },
+    {
+      "ref": "U3",
+      "value": "HT7550-1",
+      "footprint": "SOT-89-3",
+      "XY": [
+        8.6,
+        94.75
+      ],
+      "rot": 90,
+      "band": "J8/J9"
+    },
+    {
+      "ref": "C4",
+      "value": "10u",
+      "footprint": "C_0805_2012Metric",
+      "XY": [
+        4.3,
+        96.3
+      ],
+      "rot": 0,
+      "band": "J8/J9 band, LDO output"
+    },
+    {
+      "ref": "C5",
+      "value": "1u",
+      "footprint": "C_0805_2012Metric",
+      "XY": [
+        4.3,
+        92.8
+      ],
+      "rot": 0,
+      "band": "J8/J9 band, LDO input"
+    },
+    {
+      "ref": "D10",
+      "value": "B5819W",
+      "footprint": "D_SOD-123",
+      "XY": [
+        9.4,
+        100.5
+      ],
+      "rot": 0,
+      "band": "J9 row corridor, under the IDC overhang (<=1.5 mm)"
+    },
+    {
+      "ref": "J10",
+      "value": "Eurorack 2x5 power (takes 10- or 16-pin IDC)",
+      "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+      "XY": [
+        8.6,
+        110.92
+      ],
+      "rot": 180,
+      "band": "bottom zone, vertical; see power_header"
+    },
+    {
+      "ref": "J11",
+      "value": "UPDI 1x2 2.54 (UPDI / GND)",
+      "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+      "XY": [
+        17.2,
+        109.0
+      ],
+      "rot": 0,
+      "band": "bottom zone, LED column below D8",
+      "note": "THT 2.54 mm header on B for a serialUPDI/UPDI programmer; pin 1 = UPDI (top), pin 2 = GND."
+    }
+  ],
+  "panel_labels": [
+    {
+      "text": "MIDI",
+      "XY": [
+        10.0,
+        8.0
+      ],
+      "size": 2.5
+    },
+    {
+      "text": "IN",
+      "XY": [
+        17.2,
+        15.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "1",
+      "XY": [
+        2.2,
+        26.5
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "2",
+      "XY": [
+        2.2,
+        37.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "3",
+      "XY": [
+        2.2,
+        47.5
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "4",
+      "XY": [
+        2.2,
+        58.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "5",
+      "XY": [
+        2.2,
+        68.5
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "6",
+      "XY": [
+        2.2,
+        79.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "7",
+      "XY": [
+        2.2,
+        89.5
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "8",
+      "XY": [
+        2.2,
+        100.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "BIG MODULAR",
+      "XY": [
+        10.0,
+        114.0
+      ],
+      "size": 1.2
+    }
+  ],
+  "jack_pitch_mm": 10.5,
+  "jack_pitch_note": "10.5 mm output pitch (1.5 mm between 9.0 mm jack bodies) and an 11.5 mm IN->OUT1 gap: the tightest spacing that leaves a jack-free zone at the bottom for a vertical power header taking a 16-pin IDC socket (see power_header).",
+  "power_header": {
+    "ref": "J10",
+    "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+    "side": "B",
+    "pin1_XY_mm": [
+      7.33,
+      116.0
+    ],
+    "column_X_mm": [
+      7.33,
+      9.87
+    ],
+    "pin_rows_Y_mm": [
+      116.0,
+      113.46,
+      110.92,
+      108.38,
+      105.84
+    ],
+    "orientation": "Vertical (pin rows along Y). Pin 1/2 (-12 V) at the bottom row Y116.0, pins 9/10 (+12 V) at the top row Y105.84.",
+    "idc16_socket_envelope_mm": {
+      "X": [
+        4.8,
+        12.4
+      ],
+      "Y": [
+        94.41,
+        119.81
+      ],
+      "bottom_above_B_mm": 2.5
+    },
+    "idc_note": "Eurorack 16-pin cables plug onto a 10-pin header aligned at pin 1 (red stripe = -12 V): socket positions 11-16 (+5 V, CV, Gate) overhang past the +12 V end. With pin 1 at the bottom the overhang runs up over the board, never past the board edge. Envelope = 2x8 IDC socket that fits a box header (25.4 x 6.4 mm body + ~1.2 mm key bump), 3.81 mm beyond the end pin centres. The envelope bottom (Y119.81) stays inside the rail clear gap (Y120.5), so the plug never relies on rail depth. A 10-pin socket uses the lower part of the same envelope."
+  }
+}
