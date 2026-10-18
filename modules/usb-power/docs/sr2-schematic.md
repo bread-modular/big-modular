@@ -3,7 +3,8 @@
 SR2 replaces the U4 TPS65131/MID negative path with a direct TPS54302 inverting
 buck-boost (U3) and removes the dormant-positive circuitry. The schematic and
 canonical PCB are the current sources; routing derives from the 084 baseline,
-the current review is `docs/current-review/REPORT.md`, and nothing here is
+the current review is clean (ERC/DRC/parity 0), manufacturing exports are
+regenerated, and prototype bench performance is not claimed. Nothing here is
 released.
 
 ## Implemented circuit
@@ -79,7 +80,9 @@ or open-feedback survival.
   stack/solder clearance and thin-magnetic availability remain bench gates.
 - Allocations: 1.85 A is an engineering planning value, not an eFuse protection
   rating; 12000/6040 = 1.986755 A nominal is not a worst-case limit.
-  +400/-400 mA and +600/-200 mA exceed the planning/nominal allocations.
+  +400/-400 mA exceeds both the 1.85 A planning allocation and the 1.986755 A
+  nominal eFuse value; +600/-200 mA exceeds the 1.85 A planning allocation but
+  remains below the 1.986755 A nominal eFuse value. No recalculation is implied.
 
 ## Verification
 

@@ -1,7 +1,7 @@
-> **Status: SR2 schematic + current carrier/panel sources. Carrier ERC/DRC and
-> panel DRC are clean; NOT released — manufacturing output is not finalized.** See
-> the [current review](docs/current-review/REPORT.md); nothing here is
-> fabrication- or order-approved.
+> **Status: SR2 schematic + current carrier/panel sources. Current native review
+> is clean (ERC/DRC/parity 0); manufacturing exports are complete and
+> regenerated; NOT supplier-accepted or order-approved. Prototype bench
+> performance is NOT claimed.** See the [current review](docs/current-review/REPORT.md).
 
 # usb-power
 

@@ -13,7 +13,7 @@ orchestrator, CAM venv, or pinned CAM dependency set.
 | `assembly/` | carrier BOM and CPL |
 | `usb-power-gerbers.zip` | carrier Gerber/drill ZIP |
 | `usb-power-panel-gerbers.zip` | panel Gerber/drill ZIP |
-| `source-sha256.json` | source and ZIP SHA-256 |
+| `source-sha256.json` | PCB/PRO/sheet inputs and export/ZIP SHA-256 |
 
 ## Upload map
 
@@ -25,10 +25,13 @@ orchestrator, CAM venv, or pinned CAM dependency set.
 
 ## Source identity
 
-- Carrier: `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc`
-  (accepted 084 routing source; superseded by setup-only JLC standard stackup/finish change, routing unchanged — see docs/routed-baseline.json)
-- Panel: `174607b27726d41fe67a2c25c6ab2ef53fb5d194b0697f97c215f0e744eb7e66`
-  (USB aperture, D10 and SW1 moved -0.60 mm in X; bracket PCB web 2.40 mm)
+- Carrier PCB: `937cba26feb2d0aba6c7add300378e405f82fae2901569460de81e96626c6b1a`;
+  project `122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9`;
+  root schematic `4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500`.
+- Panel PCB: `5e8b99ea3f9f178ea0030ab29d5c906e31b8a1ed722a0491b78efd74b32f4aab`;
+  project `d8211fb9ceb1112ac893d16ada5df17ab439c3295ff61ca9fb112b4154045e52`.
+- `source-sha256.json` binds the complete carrier/panel PCB, project and
+  hierarchical-sheet inputs plus the assembly and ZIP identities.
 
 ## Reproduce
 
@@ -50,8 +53,10 @@ python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
 
 ## Status
 
-This is a fresh manufacturing export, not a supplier-accepted release.
-Before upload: run native ERC/DRC/parity, check BOM/CPL refs/sides/rotations,
-and run JLCPCB DFM. All order options are JLC standard (no paid stack, copper,
-finish or via options; standard tolerances; tented unfilled vias). Bench thermal/joint/EMI/startup/load qualification remains
-outstanding.
+This is the complete regenerated manufacturing export, not a supplier-accepted
+release. The carrier BOM/CPL contain 112 unique fitted refs (44 BOM rows), all
+top-side with LCSC codes; D10/C62/C93 are DNP and J7 is excluded. Before upload:
+confirm BOM/CPL refs/sides/rotations and run JLCPCB DFM. All order options are
+JLC standard (no paid stack, copper, finish or via options; standard tolerances;
+tented unfilled vias). Bench thermal/joint/EMI/startup/load qualification
+remains outstanding and is not claimed.

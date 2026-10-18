@@ -27,3 +27,6 @@ fabrication.md 207 vias, X3.90; mechanics.md L4 (=L5), L2/L3, 585/207/8; enginee
 
 ## Constraints
 Native SR2 governs. U14 TPS55340 boost: L5 6.8u, D29, C77-C80 22u PRAW. U3 TPS54302 inverting, IC GND=NRAW, L1 22u to GND, C7+C89-C92 VPROT-NRAW, 22u NRAW-GND bank. U12/U13 LDOs, EP=GND. JLC04161H-7628, 1/0.5 oz, HASL, tented 0.30 vias, all parts front, DNP D10/C62/C93, J7 excluded. Panel 2L Tg135 9.8x128.5; web 2.40 +0/-0.1.
+
+## Export finding resolution
+Finding 4 is resolved: the shared exporter was rerun on the unchanged sources and produced the complete carrier and panel sets (all copper/mask/legend/paste/edge layers, PTH/NPTH drills), both Gerber ZIPs, and the assembly BOM/CPL. Input and file identities are recorded in [../../jlcpcb/source-sha256.json](../../jlcpcb/source-sha256.json). No supplier acceptance, DFM completion or bench performance is claimed.
