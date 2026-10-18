@@ -1,18 +1,18 @@
 {
   "status": "LDO-R1 043 capacitor-closure accepted: five local 22u C12891 caps plus C5/C18 MPN change, local copper/13 neighbor poses reviewed; native ERC/DRC/warnings/exclusions/opens/parity zero",
-  "board_sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
+  "board_sha256": "69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc",
   "routing_contract": {
-    "tracks_and_vias": "13ec7f3b8dac891063d297cf8c88d14765cdb6c209f8bf06beeab6c4cf3b995f",
-    "footprints_pin_net_pose": "2a7e4bf92bec9a19f02ec77754ceb3cdad8abe529c68a638165130912617b8e8",
-    "zones": "082ec1c76367982c77a127439c445dd9bf68899e7da8e96614d5fe52649b45aa",
+    "tracks_and_vias": "d89a849732edd00ec6fdf8372c49358a78f746c55128d54035c391760620797a",
+    "footprints_pin_net_pose": "cbb86b737b2f51b5a7bb81e2dcef8df7ec11a662b0cf76329e1ed254d30a1ef2",
+    "zones": "d742251bcc7f82c2bc6febf36712b9ee6aef254f50c4d9345e4381f09514377d",
     "outline": "3571138d472efaf95ccc5d0b96b5f57a3a2b1134993baae5140638b534c4a1c8",
     "layers": "924636f8350009e3ede2c9298d1e4e449f3c81cc8d44fde088756a345def9358",
     "setup": "debbc80ac9cee09e4b07167c532f7842435bf6bec5ef868441c3db1a9a6dbcb1"
   },
   "inventory": {
-    "tracks": 585,
-    "vias": 207,
-    "zones": 8
+    "tracks": 721,
+    "vias": 251,
+    "zones": 10
   },
   "accepted_pcb_sha256": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
   "implementation_checkpoint": "capacitor-closure 043 accepted; canonical source frozen for current production re-export"

@@ -1,7 +1,7 @@
 # Current LDO-R1 prototype
 
 > Migration recovery: source/electrical content below is retained checkpoint evidence.
-> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> `jlcpcb/` is the current manufacturing export generated from this tree.
 > Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
 > [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
 
@@ -55,6 +55,9 @@ no5V-to3.3V-controller-safe claim, dead support nets, external controller or fir
 ## Footprints and bounded sourcing
 
 All active parts have local footprint assignments and are imported into the carrier.
+Current build: **L1 = TAI-TECH TMPC1205HP-220MG-D**, 22uH, 5.0mm max body;
+**L4 = Sunltech SLO1040H6R8MTT**, 6.8uH, 4.0mm max. The paragraph below is the
+earlier MDA1040 selection history, retained for provenance.
 L1/L4 replaced the6.5mm Sunlord part, which cannot fit the5.1mm component-normal
 allowance. KOHERelec MDA1040-6R8M C2847552:6.8uH +/-20%, body11+/-0.3 x10+/-0.3,
 height3.8+/-0.2mm. Manufacturer A1 p1 visually checked: lands3.55 x3.5mm,

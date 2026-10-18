@@ -9,19 +9,19 @@
 <circle cx="21.267" cy="212.425" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="26.64" cy="72.7" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
 <circle cx="26.64" cy="186.775" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
-<circle cx="27.045" cy="101.05000000000001" r="2.43" fill="white" stroke="#375775" stroke-width=".25"/>
-<circle cx="26.64" cy="109.825" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
-<rect x="23.265" y="80.935" width="6.75" height="14.580000000000002" fill="white" stroke="#375775" stroke-width=".25" rx="0.81"/>
+<circle cx="26.235" cy="101.05000000000001" r="2.43" fill="white" stroke="#375775" stroke-width=".25"/>
+<circle cx="25.83" cy="109.825" r="2.16" fill="white" stroke="#375775" stroke-width=".25"/>
+<rect x="22.455" y="80.935" width="6.75" height="14.580000000000002" fill="white" stroke="#375775" stroke-width=".25" rx="0.81"/>
 <path d="M31.230000000000004,47.05 L36,47.05" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="48.05" font-size="2.5">Rail X2.42 / dia3.2</text>
 <path d="M31.230000000000004,72.7 L36,72.7" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="73.7" font-size="2.5">M3 bracket X6.4 / Y22</text>
 <path d="M31.230000000000004,101.05000000000001 L36,101.05000000000001" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="37" y="102.05000000000001" font-size="2.5">D10 +5V / X6.7 / Y43 / dia3.6</text>
+<text x="37" y="102.05000000000001" font-size="2.5">D10 +5V / X6.1 / Y43 / dia3.6</text>
 <path d="M31.230000000000004,88.225 L36,88.225" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="37" y="89.225" font-size="2.5">HRO USB axis X6.33</text>
+<text x="37" y="89.225" font-size="2.5">HRO USB axis X5.73</text>
 <path d="M31.230000000000004,109.825 L36,109.825" fill="none" stroke="#375775" stroke-width=".25"/>
-<text x="37" y="110.825" font-size="2.5">Retry X6.4 / Y49.5 / dia3.2</text>
+<text x="37" y="110.825" font-size="2.5">Retry X5.8 / Y49.5 / dia3.2</text>
 <path d="M31.230000000000004,186.775 L36,186.775" fill="none" stroke="#375775" stroke-width=".25"/>
 <text x="37" y="187.775" font-size="2.5">M3 bracket X6.4 / Y106.5</text>
 <path d="M31.230000000000004,212.425 L36,212.425" fill="none" stroke="#375775" stroke-width=".25"/>
@@ -30,6 +30,8 @@
 <text x="15" y="231.5" font-size="2.7">Round corner rail holes retained.</text>
 <text x="15" y="236.0" font-size="2.7">6mm rail screw heads overhang .58mm.</text>
 <text x="15" y="240.5" font-size="2.7">Check adjacent panels; no countersink.</text>
+<text x="15" y="247.0" font-size="2.4">0.60mm panel shift: aperture X3.30..8.30; D10 X6.10; SW1 X5.80.</text>
+<text x="15" y="251.5" font-size="2.4">Carrier and bracket holes unchanged; bracket PCB web2.40mm +0.0/-0.1.</text>
 <text x="116" y="35" font-size="3.3">SIDE / YZ ELEVATION</text>
 <rect x="119" y="43" width="2.16" height="173.47500000000002" fill="#f1dfb6" stroke="#375775" stroke-width=".25"/>
 <polygon points="121.7,61.900000000000006 121.7,65.275 132.5,65.275 132.5,80.125 121.7,80.125 121.7,179.35000000000002 132.5,179.35000000000002 132.5,194.20000000000002 121.7,194.20000000000002 121.7,197.57500000000002 162.2,197.57500000000002 162.2,61.900000000000006" fill="#d6e3f1" stroke="#375775" stroke-width=".25"/>
@@ -55,10 +57,10 @@
 <text x="166" y="159.5" font-size="2.6">Connector not squeezed into 2HP.</text>
 <text x="166" y="164.0" font-size="2.6">No third PCB.</text>
 <text x="117" y="224.0" font-size="2.6">HRO land imported; mouth Y33.5 / Z0.8; NO 3D model.</text>
-<text x="117" y="228.5" font-size="2.6">PCB BACK X3.1 / component face X4.7.</text>
+<text x="117" y="228.5" font-size="2.6">PCB BACK X2.5 / component face X4.1.</text>
 <text x="117" y="233.0" font-size="2.6">Web on PCB BACK; foot on front panel REAR (Z1.6).</text>
 <text x="117" y="237.5" font-size="2.6">Screws normal to each face; PCB not fed through L.</text>
-<text x="117" y="242.0" font-size="2.6">Uncut FR4/foot overlap: X3.1..4.7, Z2..4.6.</text>
+<text x="117" y="242.0" font-size="2.6">Uncut FR4/foot overlap: X2.5..4.1, Z2..4.6.</text>
 <text x="117" y="246.5" font-size="2.6">Y17..27 / 101.5..111.5; current configuration only.</text>
 <text x="117" y="251.0" font-size="2.6">Cutbacks clear THIS L + M3 nut/tool access.</text>
 <text x="117" y="255.5" font-size="2.6">Z10 retained, not a proven minimum.</text>
@@ -107,5 +109,5 @@
 <text x="269" y="238.0" font-size="2.6">11-12: +5V | 13-16: NOT CONNECTED</text>
 <text x="269" y="242.5" font-size="2.6">POWER OUTPUT, not a rack power input!</text>
 <text x="269" y="247.0" font-size="2.6">Do not connect to another active PSU.</text>
-<text x="12" y="282" font-size="2.7">Routed HRO. D10: P5 -&gt; R32 1k -&gt; LED -&gt; GND. No blink/controller. L1/L4 max4.0mm +0.25 assembly budget; L2/L3 max4.7 +0.25. Physical trial/bench validation pending.</text>
+<text x="12" y="282" font-size="2.7">Routed HRO. D10: P5 -&gt; R32 1k -&gt; LED -&gt; GND. No blink/controller. L1 max5.0mm (TMPC1205HP) with5.40mm envelope; L4 max4.0; L2/L3 max4.7. Physical trial/bench validation pending.</text>
 </svg>

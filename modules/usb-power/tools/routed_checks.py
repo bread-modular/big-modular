@@ -133,7 +133,7 @@ def verify_front_only(board, geometry):
     fixed mechanics only; it does not require a particular front-side pose.
     """
     import pcbnew as p
-    g=geometry;assert g['carrier_X_mm']==[3.1,4.7]
+    g=geometry;assert g['carrier_X_mm']==[2.5,4.1]
     fps={f.GetReference():f for f in board.GetFootprints() if f.GetReference()}
     back=sorted(r for r,f in fps.items() if f.GetLayer()==p.B_Cu)
     assert not back,('B.Cu footprints',back)

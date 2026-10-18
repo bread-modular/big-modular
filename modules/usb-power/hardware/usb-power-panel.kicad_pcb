@@ -359,7 +359,7 @@
 	(footprint ""
 		(layer "F.Cu")
 		(uuid "6fe9dab4-0f2f-5e42-b98a-5f8cad809940")
-		(at 56.4 79.5)
+		(at 55.8 79.5)
 		(property "Reference" ""
 			(at 0 0 0)
 			(layer "F.SilkS")
@@ -531,7 +531,7 @@
 	(footprint ""
 		(layer "F.Cu")
 		(uuid "cb07f696-24ad-589e-a5a5-137976d40a3a")
-		(at 56.7 73)
+		(at 56.1 73)
 		(property "Reference" ""
 			(at 0 0 0)
 			(layer "F.SilkS")
@@ -679,9 +679,9 @@
 		(uuid "fc7d1dea-f2c2-5929-b629-9f4efb49c618")
 	)
 	(gr_arc
-		(start 53.9 58.7)
-		(mid 54.075735 58.275735)
-		(end 54.5 58.1)
+		(start 53.3 58.7)
+		(mid 53.475735 58.275735)
+		(end 53.9 58.1)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -690,8 +690,8 @@
 		(uuid "11042b22-b55a-5e20-9f53-dd94e9eceefc")
 	)
 	(gr_line
-		(start 53.9 68.3)
-		(end 53.9 58.7)
+		(start 53.3 68.3)
+		(end 53.3 58.7)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -700,8 +700,8 @@
 		(uuid "d10be60d-bd44-5b26-b315-c14bf53fccee")
 	)
 	(gr_line
-		(start 54.5 58.1)
-		(end 58.3 58.1)
+		(start 53.9 58.1)
+		(end 57.699999 58.1)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -710,9 +710,9 @@
 		(uuid "8789b575-a6aa-5577-8271-7390cb999fcb")
 	)
 	(gr_arc
-		(start 54.5 68.9)
-		(mid 54.075735 68.724264)
-		(end 53.9 68.3)
+		(start 53.9 68.9)
+		(mid 53.475735 68.724264)
+		(end 53.3 68.3)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -721,9 +721,9 @@
 		(uuid "30124b42-1325-57a0-b515-f861d8840d03")
 	)
 	(gr_arc
-		(start 58.3 58.1)
-		(mid 58.724264 58.275735)
-		(end 58.9 58.7)
+		(start 57.699999 58.1)
+		(mid 58.124264 58.275735)
+		(end 58.3 58.7)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -732,8 +732,8 @@
 		(uuid "3ca34fc2-d36f-5f10-9183-ec5bc123c24f")
 	)
 	(gr_line
-		(start 58.3 68.9)
-		(end 54.5 68.9)
+		(start 57.699999 68.9)
+		(end 53.9 68.9)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -742,8 +742,8 @@
 		(uuid "d082a69f-4cd2-5888-a930-74ce09cc0e00")
 	)
 	(gr_line
-		(start 58.9 58.7)
-		(end 58.9 68.3)
+		(start 58.3 58.7)
+		(end 58.3 68.3)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -752,9 +752,9 @@
 		(uuid "d306a129-8592-51b7-afb3-49cbf9d8db15")
 	)
 	(gr_arc
-		(start 58.9 68.3)
-		(mid 58.724264 68.724264)
-		(end 58.3 68.9)
+		(start 58.3 68.3)
+		(mid 58.124264 68.724264)
+		(end 57.699999 68.9)
 		(stroke
 			(width 0.05)
 			(type default)
