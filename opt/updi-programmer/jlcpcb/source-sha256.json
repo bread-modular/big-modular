@@ -1,0 +1,14 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/updi-programmer.kicad_pcb": "9b6b84923106e9b6d03a2745c7425aec39b7eeb9455ce11a05fddaeacdcb38a4",
+    "hardware/updi-programmer.kicad_pro": "97e2c22018e3759a7346f0ed4970cc150ac632604839440eaf52ebd3aab681ca",
+    "hardware/updi-programmer.kicad_sch": "8a3c145cc85d0f229ba1559758edca12380eaa0b7fb6283d11f736a2f139d094"
+  },
+  "exports": {
+    "jlcpcb/board/updi-programmer-gerbers.zip": "4a42443c606a4d5233341fc8eaf6909e6c8f88502861f1359a939cfe97f219c5",
+    "jlcpcb/board/bom.csv": "0b6aac3dbcf1ddfc934740d8c7288bbe53d3386abfa50ab7bd0fb570a9f0dff9",
+    "jlcpcb/board/positions.csv": "51965e346dbb8cf79651983fef2e7f1243d85941613c07a69c93274611f46fc4"
+  }
+}
