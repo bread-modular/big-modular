@@ -25,7 +25,7 @@ orchestrator, CAM venv, or pinned CAM dependency set.
 
 ## Source identity
 
-- Carrier PCB: `697ca11530a42d01c6ff9cc90d5f031ec88a2113c199f5515b80a69ea21f0549`;
+- Carrier PCB: `f4163f66a127813559c85a2d9745ba35fd486490767a84de6da84183088cc889`;
   project `122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9`;
   root schematic `4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500`.
 - Panel PCB: `5e8b99ea3f9f178ea0030ab29d5c906e31b8a1ed722a0491b78efd74b32f4aab`;

@@ -71,7 +71,7 @@ L1/L4/L5. No stock, allocation or order claim follows from catalog snapshots.
 
 ## Routing and validation
 
-Current routed source: 721 track segments and 251 through vias, all components
+Current routed source: 681 track segments and 246 through vias, all components
 front-side (no B.Cu electrical footprints, no B.Paste apertures). B.Cu
 routing/mask/drill remains. Preserve short hot loops, Kelvin feedback/returns and
 the independent RTN island.

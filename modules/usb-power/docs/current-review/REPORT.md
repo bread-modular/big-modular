@@ -1,5 +1,15 @@
 # usb-power current review (read-only)
 
+## Pre-FAB layout pass (2026-10-18, workspace 098) — supersedes the inventory/SHA below
+
+Current carrier PCB `f4163f66…` (PRO/schematic/panel unchanged). Edits were made only through `pcb plan/apply/promote`: 109 explicit operations (raw ops/plan/candidate in ignored `research/`). Candidate and promoted board: ERC 0; DRC 0 viol / 0 unconnected / 0 parity (refill, all severities+exclusions); exact ref/pin/net parity equal; no pad-net changes; zone outlines, drawings and design settings identical; stored fills equal a fresh refill. `jlcpcb/` regenerated with the shared exporter (manifest 0 mismatched / 0 stale; carrier PTH 246 via holes = 246 vias; BOM unchanged, CPL differs only in the five moved refs).
+
+- 681 tracks (F.Cu 441, In1 65, In2 66, B.Cu 109), 246 vias (138x0.60, 104x0.65, 4x0.50; drill 0.30). The earlier 670 omitted the six B.Cu test-pad leads from db45d6c.
+- **U3 input loop:** C7 now at (129.0,99.3) rot 270. C7.1 VPROT goes to U3.3 over about 1.9 mm of F.Cu. C7.2 NRAW goes to the existing NRAW via at (130.5,99.0). A new 1.0 mm In1 return runs from that via straight under the U3 pin column to the U3.1 via. The old VPROT detour (2 vias, In2 stubs) was removed. The loop is no longer the ~8 mm + 2 transitions traced in layout/REPORT.md, but it is still not an all-front-layer bypass and needs bench ringing measurement.
+- **Vias out of small SMD pads:** U2.5 OV_SET and U2.6 EF_MODE (staggered 0.50 mm vias at the pin ends; R6 moved 0.25 mm left, its VIN9 stub re-dropped to an existing via), R72.1, R73.2, R74.2, C61.1/.2 (C61 moved 0.5 mm left), R26.2, R25.2, C36.2 (C36 moved 0.4 mm right), R17.1, R91.2, C88.1 (C88 moved 0.8 mm up; two feed vias below the pad), plus R36.1 and R82.2, where the via hole grazed the pad. The only via hole left in a 0603 or IC pin pad is R9.1 (GND; the x=136.75 edge notch and bottom edge leave no legal off-pad position), plus a 0.01 mm corner graze on U5.1.
+- Bottom test pads re-checked: they are solid 2 mm B.Cu discs on their nets, with mask openings equal to the copper. The nearest foreign pour (GND at TP PRAW, RTN at TP VPROT) is 0.25–0.35 mm away under mask. No change was needed.
+- Not updated: `docs/routed-baseline.json` still records the older 043 checkpoint (721/251); it was already stale before this pass.
+
 Canonical carrier PCB `a7adc70a…` (merged routing cleanup 9442e03; this pass restored only `exclude_from_pos_files` on J7/D10) and all reviewed PCB/PRO/schematic sources are unchanged; current native checks remain 0 (ERC 0; DRC 0/0/0, refill, all severities+exclusions). Diff-read stack: inner Cu 0.0152 (0.5 oz), 7628 prepreg, HAL SnPb. Reviewed at HEAD b5c537f. Hashes: current source identity is [../../jlcpcb/source-sha256.json](../../jlcpcb/source-sha256.json) (tool-written, no drift); `raw/SOURCES.sha256` and `raw/evidence-*.txt` are the earlier receipts, left unchanged.
 
 Independent physical-layout review: [layout/REPORT.md](layout/REPORT.md).
