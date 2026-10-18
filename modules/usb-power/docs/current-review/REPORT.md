@@ -1,7 +1,8 @@
-# usb-power current review 087 (read-only, corrected)
-Replaces my earlier draft, which had unverified statements (SCAD asserts, D5/C21-C26, black image). Only tool-established facts; otherwise UNKNOWN. Hashes: `raw/SOURCES.sha256`; evidence: `raw/evidence-*.txt`.
+# usb-power current review (read-only)
 
-HEAD 4403b02. Carrier PCB 937cba26 = 69a1e329 + b7337ce stack/finish lines only (diff read; routing untouched): inner Cu 0.0152 (0.5 oz), 7628 prepreg, HAL SnPb.
+Canonical carrier PCB `937cba26…` (user-updated; `69a1e329` + `b7337ce` stack/finish lines only, routing untouched) and all reviewed PCB/PRO/schematic sources are unchanged; current native checks remain 0. Diff-read stack: inner Cu 0.0152 (0.5 oz), 7628 prepreg, HAL SnPb. Reviewed at HEAD 4403b02. Hashes: `raw/SOURCES.sha256`; evidence: `raw/evidence-*.txt`.
+
+Independent physical-layout review: [layout/REPORT.md](layout/REPORT.md).
 
 ## Native checks
 - Carrier common `check` (root+7 sheets, 63 deps): ERC 0; DRC 0 viol / 0 unconnected / 0 parity, refill, all severities+exclusions; source unchanged. `raw/carrier/`
@@ -30,3 +31,6 @@ Native SR2 governs. U14 TPS55340 boost: L5 6.8u, D29, C77-C80 22u PRAW. U3 TPS54
 
 ## Export finding resolution
 Finding 4 is resolved: the shared exporter was rerun on the unchanged sources and produced the complete carrier and panel sets (all copper/mask/legend/paste/edge layers, PTH/NPTH drills), both Gerber ZIPs, and the assembly BOM/CPL. Input and file identities are recorded in [../../jlcpcb/source-sha256.json](../../jlcpcb/source-sha256.json). No supplier acceptance, DFM completion or bench performance is claimed.
+
+## Physical-layout cross-reference
+Findings 2 (C7.2→U3.1 return) and 3 (inner-rail drop) were UNKNOWN in this pass. The independent layout review traced C7.2→U3.1 as approximately 8.0 mm of planar copper plus two layer transitions and screened the actual NRAW/VPROT/N12 rail segments: [layout/REPORT.md](layout/REPORT.md). Raw receipts above are unchanged.
