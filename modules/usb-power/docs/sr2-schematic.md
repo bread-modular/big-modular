@@ -1,78 +1,90 @@
-# SR2 schematic — supervisor review checkpoint, NOT final approval
+# SR2 implemented design and limits
 
-**Post-review corrections in isolated workspace067, based on main `181cab5b3cfa42e862890915e25320aaf21ae4bb`.** Staged exact same-repo reviewed candidate `6219eddcb0564f3d4e32e45aaaecf92a3316cbd7` with `cherry-pick --no-commit`: 39 changed files; all 41 candidate paths (including two already-identical selected-parts docs) verified byte-identical before edits. No other-worktree access, advisor/delegation, main write, PCB/pro/rules/panel modification, synchronization, routing, fabrication export, order or vendor upload. One authorized scoped checkpoint commit is for delta review only.
-
-**Mandatory gate:** corrected schematic -> original Opus + DeepSeek **delta** reviews -> final images to user -> explicit ACK -> separate PCB worker. Their reviews of exact `6219edd` and the five correction requests are supplied by the user handoff; delta reviews have NOT run here. Internal supervisor renders are not user approval. See `sr2-review-resolution.md` and NEW `sr2-post-review-receipt.json`; the old SR2 receipt remains historical and byte-frozen.
+SR2 replaces the U4 TPS65131/MID negative path with a direct TPS54302 inverting
+buck-boost (U3) and removes the dormant-positive circuitry. The schematic and
+canonical PCB are the current sources; routing derives from the 084 baseline,
+the current review is `docs/current-review/REPORT.md`, and nothing here is
+released.
 
 ## Implemented circuit
 
-- U3 TPS54302DDCR/C311983: VIN3=VPROT, GND1=NRAW, SW2 -> L1 -> system GND; FB4 referenced to NRAW; BOOT6 -> C35 -> SW2. No PG pin invented.
-- L1 **SRP1245A-220M/C1848803,22uH**; 10A Isat at25C/20%L drop,6.5A Irms/40C rise;58mohm maxDCR. 6A fault limit +1A explicit overshoot allocation leaves3A table margin, NOT guaranteed hot margin. Body max5.0mm leaves only0.1mm before solder against5.1mm allowance. New standalone schematic-library land candidate uses drawing14.2 overall/8 gap/5mm width; PCB placement, actual clearance, solder and 3D fit remain unapproved. Thin stock16 snapshot, no reservation. Taller SRP1265A is rejected. [source](https://www.bourns.com/docs/Product-Datasheets/SRP1245A.pdf)
-- Upper FB **R9 100k C122538 + R15 120k C705720 + R84 6.2k C4260**, bottom **R10 10k C95204**. All0603; three existing precision codes reused. Upper weighted initial tolerance 0.124668%, TCR 27.0557ppm/K, not entirely0.1%.
-- EN upper R91=100k Basic; lower **R92=20k + R93=2k Basic** to NRAW, total22k. C31850 had no Economy evidence in available records; reused C4184/C22975 instead, no live lookup or invented eligibility. Never EF_SHDN, RTN or retired BI_EN. Independent same-tolerance series extrema equal the22k bound, without error cancellation.
-- **C89–C92: four C50254 2.2u50V** across VIN-to-NRAW, plus C7 C14663 100n50V.8.8u nominal,3.96u bias/TCC/tolerance screen; extra0.8 AC/0.95 aging assumptions give3.0096u, NOT guaranteed. A TI typical10uF application example is NOT automatically a specified minimum; startup/current/ripple remain unqualified. C5/C68 remain distinct VPROT-to-system-GND C12891 bank. [source](https://media.digikey.com/pdf/Data%20Sheets/Samsung%20PDFs/CL31B225KBHNNNE_Character.pdf)
-- Local output C6/C37/C70/C71/C9/C75/C76 reuse seven C12891; **18.0425uF** conservative DC+AC/temp/tolerance/aging screen at15V. Remote U13 five-cap input bank excluded from local ripple count. Retained quiet rails banks4/6/5/4, same LDOs, same precision N12 divider, C62/D10 DNP; C93 also DNP after review.
-- Removed U4 and exclusive MID/dormant-positive/VREF/BI_EN/compensation circuitry; R15 reused for new FB, not silently deleted. Exact reference/pin delta is tested:27 old refs including3 flags removed,7 new references;12 surviving refs change pin assignments.114 electrical references,340 component pins including39 NCs, plus6 legitimate source flags. Post-review adds only D30 and DNP C93: **116 components,344 real pins +6 flags=350 total,39 NC markers,23 hierarchical ports (not NCs)**.
-- **Preserved byte-for-byte from SR1**: input protection sheet, eFuse/SW1 sheet, direct U14 TPS55340 positive boost sheet and output/harness sheet. U5 +5V circuit and positive/negative LDO pins/precision N12 divider unchanged. ILIM6.04k, UV562k/100k, OV806k/100k remain; no input-limit increase.
+- U3 TPS54302DDCR/C311983: VIN3=VPROT, GND1=NRAW, SW2 -> L1 -> system GND,
+  FB4 referenced to NRAW, BOOT6 -> C35 -> SW2. No PG pin invented.
+- L1 TAI-TECH TMPC1205HP-220MG-D, 22 uH ±20%, C357250, 5.0 mm max body;
+  Extended exception. Hot saturation, solder clearance and 3D fit remain
+  unqualified.
+- Upper FB R9 100k C122538 + R15 120k C705720 + R84 6.2k C4260; bottom R10 10k
+  C95204, all 0603. Weighted initial tolerance 0.124668%, TCR 27.0557 ppm/K,
+  not entirely 0.1%.
+- EN upper R91 100k; lower R92 20k + R93 2k to NRAW (22k). C93 is DNP across
+  the entire upper R9+R15+R84 divider. Never EF_SHDN, RTN or retired BI_EN.
+- C89-C92 four C50254 2.2 uF/50 V VIN-to-NRAW plus C7 C14663 100 nF: 8.8 uF
+  nominal, 3.96 uF bias/TC/tolerance screen; startup, current and ripple remain
+  unqualified. C5/C68 stay the distinct VPROT-to-system-GND C12891 bank.
+- Local output C6/C37/C70/C71/C9/C75/C76 reuse seven C12891: 18.0425 uF
+  conservative DC+AC/temp/tolerance/aging screen at 15 V. Remote U13 five-cap
+  bank is excluded from local ripple. Quiet-rail banks 4/6/5/4, same LDOs and
+  precision N12 divider. C62/D10/C93 DNP.
+- Added D30, same MDD SS34/C8678/SMA as D27-D29: anode 2 = NRAW, cathode 1 =
+  system GND. Startup mitigation only, not a guaranteed clamp.
+- Removed U4 and exclusive MID/dormant-positive/VREF/BI_EN/compensation
+  circuitry; R15 is reused for the new FB. Current inventory: 116 components,
+  344 real pins + 6 flags (350 total), 39 NC markers, 23 hierarchical ports.
+- Preserved: input protection, eFuse/SW1, TPS55340 positive boost and
+  output/harness sheets; U5 +5 V circuit and LDO pins/dividers. ILIM 6.04k,
+  UV 562k/100k, OV 806k/100k remain.
 
 ## Numeric screens (not bench guarantees)
 
-Machine-readable arithmetic: `sr2-schematic-budget.json`, regenerated by `tools/sr2_budget.py`. TI SLVA933 section5/p23 explicitly supports TPS54302 IBB; the application board's phase data are NOT this board's data. [source](https://www.ti.com/lit/an/slva933/slva933.pdf#page=23)
+Machine-readable arithmetic: `sr2-schematic-budget.json`. TI SLVA933 section 5
+supports the TPS54302 IBB topology; its application-board phase data are not
+this board's data.
 
 | Selected-network screen | Result / boundary |
 |---|---|
-| NRAW nominal / independent1024 corners | -14.07752V / magnitude 13.603127–14.557924V |
-| Reference / bias / resistor assumptions |0.581–0.611V table; ±100nA FB sensitivity (NOT max guarantee); independent tolerance/TCR signs over100K |
-| N12 nominal / high magnitude |-11.996750V / 12.386251V |
-| LDO headroom after0.1V dip plus half screened ripple |1.086775V; >1V accuracy-condition screen, not instant-load-step guarantee |
-| Normal9.45V static span |24.007924V |
-| eFuse OV upper incl100nA leakage |11.583679V; threshold NOT clamp |
-| OV + raw DC span |26.141603V |
-| Additional raw excursion / input turnoff overshoot / SW ringing allocations |0.130101V /0.4V /1V; allocated total 27.671704V, margin 0.328296V to28V; unmeasured |
-| EN startup /28V span +5uA sensitivity |7.335634V / 5.308159V;5uA NOT guaranteed maximum |
-|22uH at-20%,272.6kHz,7.9375V,80% efficiency screen | ILavg 1.0273A, peak 1.6033A, valley 0.4513A, RMS 1.0798A (including5mA assumed hot D30 leakage); below4A HS/3.1A LS minima |
-| Local output ripple / capacitor RMS |60.20mVpp incl10mohm BANK ESR allocation; 0.5067A bank, sharing/heat unmeasured |
-|+400/-300/+5@250mA shared objective | input 1.4694A nominal / 1.7816A adverse including assumed D30 leakage, below1.85A engineering allocation, no supply rating |
-| Negative LDO dissipation |0.723W nominal / 1.026W adverse; PCB thermal qualification required |
+| NRAW nominal / independent 1024 corners | -14.07752 V / magnitude 13.603127-14.557924 V |
+| Reference / bias / resistor assumptions | 0.581-0.611 V table; ±100 nA FB sensitivity (not a max guarantee); independent tolerance/TCR signs |
+| N12 nominal / high magnitude | -11.996750 V / 12.386251 V |
+| LDO headroom after 0.1 V dip plus half screened ripple | 1.086775 V; accuracy screen, not an instant-load-step guarantee |
+| Normal 9.45 V static span | 24.007924 V |
+| eFuse OV upper incl. 100 nA leakage | 11.583679 V; threshold is not a clamp |
+| OV + raw DC span | 26.141603 V |
+| Extra raw excursion / input turnoff overshoot / SW ringing | 0.130101 V / 0.4 V / 1 V; allocated 27.671704 V, 0.328296 V to 28 V, unmeasured |
+| EN startup / 28 V span + 5 uA sensitivity | 7.335634 V / 5.308159 V; 5 uA is not a guaranteed max |
+| 22 uH at -20%, 272.6 kHz, 7.9375 V, 80% efficiency screen | ILavg 1.0273 A, peak 1.6033 A, valley 0.4513 A, RMS 1.0798 A |
+| Local output ripple / capacitor RMS | 60.20 mVpp incl. 10 mOhm bank ESR allocation; 0.5067 A bank, sharing/heat unmeasured |
+| +400/-300/+5 at 250 mA shared objective | 1.4694 A nominal / 1.7816 A adverse; below 1.85 A planning allocation, no supply rating |
+| Negative LDO dissipation | 0.723 W nominal / 1.026 W adverse; PCB thermal qualification required |
 
-TPS5430228V VIN/SW recommended,30V absolute; EN/BOOT-SW5.5V recommended,7V absolute. Negative SW undershoot and bootstrap differential need separate scope checks.108% FB OVP is not a guaranteed clamp or open-feedback survival solution. Assembly-open FB faults are separate from the normal static28V screen. [source](https://www.ti.com/lit/ds/symlink/tps54302.pdf)
+TPS54302 is 28 V recommended / 30 V absolute on VIN/SW; EN and BOOT-SW are
+5.5 V recommended / 7 V absolute. Negative SW undershoot and bootstrap
+differential need separate scope checks. 108% FB OVP is not a guaranteed clamp
+or open-feedback survival.
 
-## Explicit prototype review/bench gates
+## Explicit unresolved gates
 
-- Internal compensation uses actual TPS54302 typical240uS/20k/2.04nF/2pF. SLVA933 model2/RHPZ screen uses selected22u/C banks; gmps4–10A/V and slope0.2–1V are disclosed sensitivities, NOT specified TPS54302 limits. Modeled crossover 1510–8126Hz, phase sensitivity 18.4–55.4deg; **RHP/5 = NOT_QUALIFIED**: original ideal minimum RHP54.999kHz and separate efficiency-adverse sensitivity (now37.265kHz including assumed hot leakage) do not have a matched adverse crossover. Do not combine unrelated extrema or claim they co-occur. **Phase/loop qualification does not pass**. Measure actual loop, DCM/pulse skip and load steps; C93 is a DNP0603 footprint across the ENTIRE upper R9+R15+R84 (system GND to NINV_FB), not just R84. Existing Basic C57112/0603B103K500NT identity is an explicit metadata placeholder only, not purchased; no tuning value selected, no CFF fitted or measured phase claimed.
-- Full zero-bias nominal-C/5ms startup sensitivity reaches 4.957A, above4A minimum current-limit. This is a pessimistic constant-C screen, not a loaded-start guarantee or a predicted current bound; real DC-bias charge/ramp, converter limiting and shared-eFuse behavior must be measured.
-- Full-span bypass can kick NRAW positive before switching. No-switch fast-step upper sensitivity 0.545V exceeds U13+0.3V boundary; nominal estimate at EN start 0.239V. **Added D30, same MDD SS34/C8678/SMA as D27/D28/D29: anode2=NRAW, cathode1=system GND**, drawn by the local NRAW bank. Both reviews cite TI SNVA897; this is mitigation ONLY, not a guaranteed <=+0.3V clamp at arbitrary surge. No Vf/current/temperature compliance guarantee is inferred. Retained eFuse dVdt/active startup are not a demonstrated clamp. [source](https://www.ti.com/lit/pdf/snva897) Review priority: establish actual positive IN/NR/FB/OUT excursion before energizing a production load; no compliance/qualification claim.
-- With VPROT=0 and negative energy remaining, EN sensitivity is 2.804V. No output disconnect: SW1 disables eFuse, not inverter EN. L1/SW/high-side body-diode backfeed into local VPROT, U13/D28 reverse paths and -0.3V differential limits need start/stop/unplug/short/retry tests. No external backdrive permitted.
-- Hot Isat/overshoot, X5R temperature, capacitor sharing/ESR, both LDO thermal paths, actual stack/solder clearance and thin magnetic availability remain later qualification gates. None has been silently waived.
+- Loop/phase does not pass: RHP/5 = NOT_QUALIFIED; modeled crossover
+  1510-8126 Hz with 18.4-55.4 deg phase sensitivity. Measure actual loop,
+  DCM/pulse-skip and load steps. No CFF is fitted or tuned.
+- Zero-bias nominal-C/5 ms startup screen reaches 4.957 A, above the 4 A minimum
+  current limit; pessimistic constant-C screen, not a loaded-start guarantee.
+- Positive-NRAW excursion before switching: 0.545 V fast-step sensitivity,
+  0.239 V nominal estimate at EN start. D30 mitigates but does not guarantee
+  <=+0.3 V at arbitrary surge; establish actual IN/NR/FB/OUT excursion before
+  energizing a production load.
+- With VPROT=0 and negative energy remaining, EN sensitivity is 2.804 V. There
+  is no output disconnect; test start/stop/unplug/short/retry. No external
+  backdrive.
+- Hot Isat/overshoot, X5R temperature, capacitor sharing/ESR, LDO thermal paths,
+  stack/solder clearance and thin-magnetic availability remain bench gates.
+- Allocations: 1.85 A is an engineering planning value, not an eFuse protection
+  rating; 12000/6040 = 1.986755 A nominal is not a worst-case limit.
+  +400/-400 mA and +600/-200 mA exceed the planning/nominal allocations.
 
-## Leakage and failed allocations remain visible
+## Verification
 
-Cached exact MDD C8678 catalog evidence says **500uA at40V**, without temperature.
-One bounded fetch of its exact linked manufacturer PDF yielded no extractable content;
-no substitute SS34 manufacturer or generic datasheet was used. Budget therefore uses
-explicit **0.5mA at assumed25C / 5mA at assumed125C** operating-leakage sensitivities
-(10x hot factor), NOT specified maxima, guaranteed temperature data or scaling from40V
-to14V. D30 load is added to NRAW converter power/current/ripple/startup screens, not
-incorrectly to U13 pass-device dissipation. Actual hot leakage remains a bench gate.
+Native hierarchical ERC/DRC with all severities, opens and parity, plus exact
+ref/pin/net/NC/field parity, is the verification gate; there is no module
+unit-test suite. Current results are recorded in `docs/current-review/REPORT.md`.
 
-All rows retain +5V250mA reserve. `rated_output_current=null`; +400/-300mA is only a
-conditional design target. **1.85A is an engineering planning allocation**, not
-established tolerance-bound eFuse protection or a qualified rating. Nominal eFuse
-12000/6040=1.986755A is not a worst-case limit.
-
-| Allocation (+12/-12) | Recomputed adverse input incl leakage | 1.85A planning | 1.986755A nominal eFuse |
-|---|---:|---|---|
-| +400/-300mA | 1.781566A | below | below |
-| +400/-400mA | 2.028089A | **EXCEEDS** | **EXCEEDS** |
-| +600/-200mA | 1.976765A | **EXCEEDS** | below (not protection/rating qualification) |
-
-## Verification and source boundaries
-
-`sr2-post-review-receipt.json` binds the corrected candidate hashes, command evidence and new `sr2-post-review-erc.json`, plus native pin/net/field parity and all-component classification/type/count audit (`sr2-component-audit.json`). Every assembled part has independently observed Economy eligibility in the selected dated evidence; this is not live stock or order acceptance. Precision R9/R10/R15/R72/R74/R86/R87 and inherited R6 are Extended, NOT Basic. Only new Extended type versus SR1 is selected L1; retired TPS65131/magnetic/precision/feedforward types are itemized in audit.
-
-Focused tests cover current native XML/pins/NCs/fields, literal independent pin maps, visible wires, component values/codes, screens, removals, protected-byte hashes and deterministic builds. Original SR1 tests execute unchanged from the same Git object in a temporary fixture, with their source comparison pinned to `1e5b31f3a441b030da1b9d1c25427a97b03cbe00`, not HEAD. Frozen SR1 receipt/budget/catalog are byte-preserved. Migration test refactors, root instructions, existing libraries, boards/project/rules/panel/JLC/history remain preserved.
-
-Current verification uses native hierarchical ERC `--severity-all --exit-code-violations` (zero violations, zero ignored/excluded issues), native XML pin/net/field parity and deterministic generation. **54 focused tests pass**, including the seven new correction regressions and preserved migration checks; the frozen SR1 test wrapper also runs its original11 tests. No obsolete PCB comparison/DRC/CAM/full-suite work ran. PCB stays OLD/unsynchronized. Old `sr2-schematic-receipt.json` and `sr2-native-erc.json` describe6219 only; do not pass their historical hashes off as new.
-
-Rebuild: `python3 -B modules/usb-power/tools/build_project.py --schematic-only --output NEW_DIRECTORY`.
-One-shot revision accepts only an explicit SR1 native Git fixture via `--sr2-revision --sr2-source SR1_DIRECTORY`; never use another worktree. Generated candidates cannot overwrite existing directories. PCB work remains gated.
+Build/validation commands and the release boundary: [build.md](build.md).
