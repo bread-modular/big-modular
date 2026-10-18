@@ -3,8 +3,9 @@
 Bare-PCB artwork only, built to standard JLCPCB settings. This is not an
 assembled-product, supplier or purchasing approval. Canonical boards are
 `hardware/usb-power.kicad_pcb` and `hardware/usb-power-panel.kicad_pcb`; the
-current export is incomplete, so see [jlcpcb/README.md](../jlcpcb/README.md)
-before ordering. Native review: [REPORT.md](current-review/REPORT.md).
+complete regenerated carrier and panel export sets are in
+[jlcpcb/README.md](../jlcpcb/README.md), with file identities in
+`jlcpcb/source-sha256.json`. Native review: [REPORT.md](current-review/REPORT.md).
 
 ## Carrier — four-layer
 

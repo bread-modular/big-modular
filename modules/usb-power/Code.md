@@ -2,6 +2,9 @@
 
 Read root `AGENTS.md`, module `AGENTS.md` and `README.md` first.
 
+Status: current native review clean (ERC/DRC/parity 0); manufacturing exports
+regenerated; prototype bench performance is not claimed.
+
 ## Circuit
 
 - 9 V PD via CH224A -> TPS26600 eFuse/protection (UV/OV, thermal latch, button
@@ -35,8 +38,9 @@ evidence is not live stock or order acceptance. No silent substitutions.
   local libraries, models and mechanical source.
 - `docs/`, `tools/`, `BOM.csv`: module-local. No module test suite; verify with
   native ERC/DRC and export reports.
-- `jlcpcb/`: canonical export; regenerate only with
-  `../../opt/kicad-tools/jlcpcb/export.py`. `production/` retired.
+- `jlcpcb/`: complete regenerated canonical export (carrier/panel Gerbers,
+  drills, both ZIPs, assembly BOM/CPL, `source-sha256.json`); regenerate only
+  with `../../opt/kicad-tools/jlcpcb/export.py`. `production/` retired.
 - `../../opt/`: shared tooling; never duplicate. `tools/kicad-project.json` is
   the carrier/hierarchical root. Raw candidates go in ignored `research/`.
 
