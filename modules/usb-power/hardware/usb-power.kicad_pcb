@@ -29826,6 +29826,144 @@
 			)
 		)
 	)
+	(gr_circle
+		(center 63.8 87.7)
+		(end 64.8 87.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Cu")
+		(net "/VIN9")
+		(uuid "765a7419-6a80-41a3-913b-784c8c03e8de")
+	)
+	(gr_circle
+		(center 66.95 93.1)
+		(end 67.95 93.1)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Cu")
+		(net "/USB PD input/USB_VBUS")
+		(uuid "06f770aa-9087-454c-923f-0a33c40a58ba")
+	)
+	(gr_circle
+		(center 75.47 96.19)
+		(end 76.47 96.19)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Cu")
+		(net "/GND")
+		(uuid "e8c7a55d-df17-4c2e-a959-04e1c78d8252")
+	)
+	(gr_circle
+		(center 87.4 81.8)
+		(end 88.4 81.8)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Cu")
+		(net "/VPROT")
+		(uuid "42a5b961-93a8-4154-9472-aa1c10d26771")
+	)
+	(gr_circle
+		(center 117.6 86.6)
+		(end 118.6 86.6)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Cu")
+		(net "/Direct 9V positive boost/PRAW")
+		(uuid "9c490ff3-a081-4c40-8c5c-a106e98dd889")
+	)
+	(gr_circle
+		(center 138.8 87.7)
+		(end 139.8 87.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Cu")
+		(net "/Direct 9V negative IBB/NRAW")
+		(uuid "0737081b-73b4-47cd-ae70-380702b3bb10")
+	)
+	(gr_circle
+		(center 63.8 87.7)
+		(end 64.8 87.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "380108f3-e7e1-447d-bb1d-c5406e95955b")
+	)
+	(gr_circle
+		(center 66.95 93.1)
+		(end 67.95 93.1)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "ca420bfa-34c5-448e-9043-8914dfbf9066")
+	)
+	(gr_circle
+		(center 75.47 96.19)
+		(end 76.47 96.19)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "cbdada27-d505-45c1-8ffa-f13a3d4ef38b")
+	)
+	(gr_circle
+		(center 87.4 81.8)
+		(end 88.4 81.8)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "b6973d10-7a48-4ded-9594-2712c85830a6")
+	)
+	(gr_circle
+		(center 117.6 86.6)
+		(end 118.6 86.6)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "fd228704-2f02-45b4-8de7-97e80d75e8ad")
+	)
+	(gr_circle
+		(center 138.8 87.7)
+		(end 139.8 87.7)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.Mask")
+		(uuid "a9ac435f-5311-4d16-ad02-cb436c74c7b7")
+	)
 	(gr_line
 		(start 52.75 84.275)
 		(end 52.75 94.275)
@@ -30134,6 +30272,174 @@
 				(size 0.8 0.8)
 				(thickness 0.12)
 			)
+		)
+	)
+	(gr_text "TP VIN9"
+		(at 63.8 85.8 0)
+		(layer "B.SilkS")
+		(uuid "ad87fbe5-2147-41bc-bd2b-e1d314f6f31f")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "TP VBUS"
+		(at 66.95 91.199999 0)
+		(layer "B.SilkS")
+		(uuid "5cdef654-cb09-4c1b-9c45-60f1a44967b1")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "TP GND"
+		(at 75.47 94.289999 0)
+		(layer "B.SilkS")
+		(uuid "6967a104-666a-4a1e-acbd-67cef2179ec0")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "N12"
+		(at 83.75 79.2 0)
+		(layer "B.SilkS")
+		(uuid "a4d6fd41-d786-437b-a579-119c0db30f88")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "GND"
+		(at 86.29 79.2 0)
+		(layer "B.SilkS")
+		(uuid "13b31030-6e99-4821-849c-281939968e5d")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "GND"
+		(at 88.83 79.2 0)
+		(layer "B.SilkS")
+		(uuid "6edf662e-d57b-4852-9bc6-59d458ce1a3f")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "GND"
+		(at 91.37 79.2 0)
+		(layer "B.SilkS")
+		(uuid "1f4f230e-dfbd-46e6-9718-4809bc57ff64")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "TP VPROT"
+		(at 91.4 81.8 0)
+		(layer "B.SilkS")
+		(uuid "4e52c21d-858d-4170-91e0-0ef4ac09f684")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "P12"
+		(at 93.91 79.2 0)
+		(layer "B.SilkS")
+		(uuid "661e4d30-849d-45d4-9c91-cccc33bb25bd")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "P5"
+		(at 96.45 79.2 0)
+		(layer "B.SilkS")
+		(uuid "4962954a-9fc5-4ce3-a6c3-aace8f6b542d")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "NC"
+		(at 98.99 79.2 0)
+		(layer "B.SilkS")
+		(uuid "5491c3fb-78c7-4149-b746-78f5c34726fa")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "NC"
+		(at 101.53 79.2 0)
+		(layer "B.SilkS")
+		(uuid "b2f21c5d-9e0b-4fa9-bfd1-2ad83891b220")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "TP PRAW"
+		(at 117.6 84.699999 0)
+		(layer "B.SilkS")
+		(uuid "c3a49ad5-f4d5-4559-9768-20883c59620a")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "TP NRAW"
+		(at 138.8 85.8 0)
+		(layer "B.SilkS")
+		(uuid "69e61ae6-51fc-44af-98e3-208af43cab78")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
 		)
 	)
 	(gr_text "USB + 1 RED 3mm THT +5V power LED + hand-solder SMT reset; no middle board"
@@ -30742,6 +31048,14 @@
 		(layers "F.Cu" "B.Cu")
 		(net "/Direct 9V negative IBB/NRAW")
 		(uuid "fa68bdc5-dd29-5b7c-b0eb-4fc2c47b3c1e")
+	)
+	(segment
+		(start 137.2 87.7)
+		(end 138.8 87.7)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "/Direct 9V negative IBB/NRAW")
+		(uuid "fb13bcf0-3571-4b32-9d69-e8c8edd9bef2")
 	)
 	(segment
 		(start 69 73.3)
@@ -33138,6 +33452,14 @@
 		(uuid "e90a83ba-c39c-5e76-a4d8-daa41ec4b244")
 	)
 	(segment
+		(start 73.57 96.695)
+		(end 75.47 96.19)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "/GND")
+		(uuid "f7b9cb9c-5fbe-41c0-b0e3-f636af675ef0")
+	)
+	(segment
 		(start 95.275 83.6)
 		(end 95.275 86.2)
 		(width 0.8)
@@ -33738,6 +34060,14 @@
 		(layer "B.Cu")
 		(net "/VIN9")
 		(uuid "d5d52123-f372-4ff8-8f6e-939814efe386")
+	)
+	(segment
+		(start 65.4 87.7)
+		(end 63.8 87.7)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "/VIN9")
+		(uuid "e7a068e4-d92d-42e0-83c3-4458558c0c4c")
 	)
 	(segment
 		(start 79.6 81.2)
@@ -34654,6 +34984,14 @@
 		(layer "B.Cu")
 		(net "/VPROT")
 		(uuid "431d855a-3a82-5775-ae46-de20baa6a766")
+	)
+	(segment
+		(start 87.4 83.4)
+		(end 87.4 81.8)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "/VPROT")
+		(uuid "52236f55-88e9-418e-8f96-75cb97146ce6")
 	)
 	(segment
 		(start 134.75 98.7)
@@ -35948,6 +36286,14 @@
 		(layer "B.Cu")
 		(net "/Direct 9V positive boost/PRAW")
 		(uuid "cab249c8-c10a-5ffb-817c-5581ddda2419")
+	)
+	(segment
+		(start 117.6 88.2)
+		(end 117.6 86.6)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "/Direct 9V positive boost/PRAW")
+		(uuid "ccbc2e30-0720-45b9-a67d-f06f4f4f6262")
 	)
 	(segment
 		(start 138.5 77.9)
@@ -37386,6 +37732,14 @@
 		(layer "B.Cu")
 		(net "/USB PD input/USB_VBUS")
 		(uuid "06d44423-d590-4353-b254-ad7f235f3cb4")
+	)
+	(segment
+		(start 66.849999 94.7)
+		(end 66.95 93.1)
+		(width 0.3)
+		(layer "B.Cu")
+		(net "/USB PD input/USB_VBUS")
+		(uuid "0963ebbd-c2ab-4285-aa74-d0abe730b7e4")
 	)
 	(segment
 		(start 74.6 91.3)
