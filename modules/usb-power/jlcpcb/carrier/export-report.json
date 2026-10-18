@@ -1,11 +1,11 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/042/hardware/big_modular.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/042/hardware/big_modular.kicad_sch",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/085/modules/usb-power/hardware/usb-power.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/085/modules/usb-power/hardware/usb-power.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/042/hardware/big_modular.kicad_pcb": "7c4e5fbc923ed376fee01d578f52644c276e3cb8a862d67e01b8ec7acaedfae9",
-    "/home/azero/.okbrain/workspaces/big-modular/042/hardware/big_modular.kicad_sch": "52046f74d709cb1a075ba766d01b14d6f720abff58218778ae9bcbdf4818ed85"
+    "/home/azero/.okbrain/workspaces/big-modular/085/modules/usb-power/hardware/usb-power.kicad_pcb": "69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc",
+    "/home/azero/.okbrain/workspaces/big-modular/085/modules/usb-power/hardware/usb-power.kicad_sch": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500"
   },
   "layers": [
     "F.Cu",
@@ -23,11 +23,13 @@
   "copper_layer_count": 4,
   "origin": "KiCad drill/place origin",
   "units": "mm",
-  "side": "top",
+  "side": "both",
   "include_through_hole": true,
-  "component_count": 105,
-  "bom_row_count": 46,
+  "component_count": 112,
+  "bom_row_count": 44,
   "excluded": {
+    "C62": "Do not populate",
+    "C93": "Do not populate",
     "D10": "Do not populate",
     "J7": "Excluded from position files"
   },
@@ -36,7 +38,7 @@
     "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
   ],
   "files": [
-    "big_modular-gerbers.zip",
+    "usb-power-gerbers.zip",
     "bom.csv",
     "positions.csv"
   ]

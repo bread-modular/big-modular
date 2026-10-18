@@ -299,7 +299,7 @@ def check(hw,audit,bom):
     values={'R4':('470k 1%','C23178'),'R77':('82k 1%','C23254'),'R78':('10k 1%','C25804'),'R8':('5.6k 1%','C23189'),'R79':('220 1%','C22962'),'R80':('220 1%','C22962'),'R6':('806k 1%','C23250'),'R5':('100k 1%','C25803'),'R7':('100k 1%','C25803'),
     'R9':('100k 0.1%','C122538'),'R15':('120k 0.1%','C705720'),'R84':('6.2k 1%','C4260'),'R10':('10k 0.1%','C95204'),'R91':('100k 1%','C25803'),'R92':('20k 1%','C4184'),'R93':('2k 1%','C22975'),'R17':('100k 1%','C25803'),'R18':('13k 1%','C22797'),'R85':('510 1%','C23193'),'R72':('90.9k 0.1%','C728600'),'R83':('0 1%','C21189'),'R73':('1.2k 1%','C22765'),'R74':('10k 0.1%','C95204'),'R86':('100k 0.1%','C122538'),'R87':('10k 0.1%','C95204'),'R32':('1k 1%','C21190')}
     for r,v in values.items():assert (rows[r]['Value'],rows[r]['LCSC'])==v,(r,v)
-    for r,mpn,code,fp in [('L1','SRP1245A-220M','C1848803','L_Bourns_SRP1245A'),('L4','MDA1040-6R8M','C2847552','L_KOHER_MDA1040'),('L5','MDA1040-6R8M','C2847552','L_KOHER_MDA1040')]:
+    for r,mpn,code,fp in [('L1','TMPC1205HP-220MG-D','C357250','L_TMPC1205HP_220M'),('L4','SLO1040H6R8MTT','C207852','L_SLO1040H6R8MTT'),('L5','SLO1040H6R8MTT','C207852','L_SLO1040H6R8MTT')]:
         assert (rows[r]['MPN'],rows[r]['LCSC'],rows[r]['Footprint'])==(mpn,code,'BigModular:'+fp),r
     for r,mpn in [('U12','TPS7A4700RGWR'),('U13','TPS7A3301RGWR'),('U14','TPS55340RTER'),('U3','TPS54302DDCR'),('U5','TPS54302DDCR')]:assert rows[r]['MPN']==mpn,r
     assert {r for r,b in rows.items() if b['DNP']=='yes'}=={'D10','C62','C93'}

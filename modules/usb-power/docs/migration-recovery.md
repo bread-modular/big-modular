@@ -25,7 +25,7 @@ GUI, commit, merge, push, upload or circuit/routing edit was used.
 
 ## File disposition and no-circuit-change proof
 
-All hardware, local libraries, mechanical sources, module tools/tests/instructions,
+All hardware, local libraries, mechanical sources, module tools/instructions,
 BOM and missing docs are under `modules/usb-power/`. Sources are
 `hardware/usb-power.kicad_{pro,sch,pcb}` and `usb-power-panel.kicad_{pro,pcb}`.
 Shared `opt/`, discovery links and repository-level instructions stay at root.
@@ -42,12 +42,11 @@ Accepted routing remains **107 electrical + 4 mechanical footprints, 585 tracks,
 
 `migration-recovery-manifest.json` accounts for EVERY file in the original accepted
 Git tree: source commit/blob/mode, old/new path, before/after SHA-256 and disposition.
-`tools/migration_audit.py --frozen-recovery` is the ONE-TIME delivery acceptance
-check of exact native transforms and index/content hashes. Its frozen receipt must
-not be rewritten after later engineering changes. Default `migration_audit.py` and
-normal regression tests verify layout plus immutable historical provenance only;
-they do NOT pin current circuit/tool/BOM contents to recovery hashes. New regression tests also reject
-native value/routing/rule mutations and the older branch-base PCB.
+`migration-recovery-manifest.json` is the ONE-TIME delivery acceptance record of
+exact native transforms and index/content hashes. Its frozen receipt must not be
+rewritten after later engineering changes. Historical provenance is preserved in
+Git; there is no module test suite or migration audit script. Current design checks
+use the shared `kicad_tools.py check` and export reports.
 
 The 75 files in `production/ldo-r1/` were recovered byte-for-byte as the canonical
 `jlcpcb/` shipping snapshot, preserving historical manifests, ZIPs, CAM and BOM/CPL.
@@ -67,11 +66,11 @@ private working reports/earlier attempts stay in ignored `research/migration-rec
 - **236 module files tracked**, including 213 recovered original files and recovery
   evidence. All 393 original tracked files accounted for: 213 module, 104 shared/root,
   76 retired Git-only archives. Both PCB hashes and all native semantic checks match.
-- **106 tests run from BOTH repository root and module directory: 103 pass, 3 import
-  errors**, zero assertion failures/skips. All 98 original methods retained; 8 new
-  migration regression tests pass independently (8/8). Errors are the enabled CAM
-  tests importing missing Gerbonara; pinned Shapely is also absent. No installation,
-  dependency removal, test disablement or fake all-green claim.
+- **Historical test result:** 106 tests run from BOTH repository root and module
+  directory: 103 pass, 3 import errors, zero assertion failures/skips. Errors were the
+  enabled CAM tests importing missing Gerbonara. **Later update (2026-10-18):** the
+  module test suite was removed by owner decision; current verification uses the
+  shared `opt/kicad-tools` exporter/check and the export reports.
 - Pre/post carrier ERC/DRC/warnings/exclusions/opens/parity **zero**; native pre/post
   netlist comparison equal. Passive-panel all-severity DRC/opens zero. Independent
   checks pass for 107 components, 334 pins (43 explicit NCs), 642 PCB/BOM/schematic
@@ -86,21 +85,15 @@ private working reports/earlier attempts stay in ignored `research/migration-rec
 Run from repository root:
 
 ```sh
-python3 -B modules/usb-power/tools/migration_audit.py  # ongoing layout/provenance
-# One-time recovery acceptance ONLY, before subsequent authorized engineering:
-python3 -B modules/usb-power/tools/migration_audit.py --frozen-recovery
-python3 -B -m unittest discover -s modules/usb-power/tests -v
 python3 -B opt/kicad-tools/kicad_tools.py check \
   --config modules/usb-power/tools/kicad-project.json \
   --reports modules/usb-power/research/NEW-native
 ```
 
-**Astra handoff:** no electrical/PCB repair or new fabrication/PDF/assembly export
-was performed. `jlcpcb/` is explicitly **STALE for migrated inputs**, despite exact
-PCB-byte identity; never rewrite historical hashes to call it fresh. See its README
-for existing shared/native/CAM pipeline and separate promotion/sourcing gates.
-System Python lacks `gerbonara==1.6.3` and `shapely==2.1.2`; keep dependency failures
-visible and install only in an explicitly approved isolated environment. No rules or
-valid tests were removed to bypass them. Existing full-temperature negative 1 A
+**Manufacturing export:** `jlcpcb/` is generated from the current sources by the
+shared `opt/kicad-tools/jlcpcb/export.py`; the historical 043 snapshot was removed.
+JLC DFM/process acceptance and bench qualification remain open. The module test
+suite was later removed by owner decision; no electrical/mechanical check was
+bypassed. Existing full-temperature negative 1 A
 dropout FAIL, bench/startup/reverse/thermal/noise qualification, historical document
 numerical discrepancies and live Basic/Economy/order checks remain separate tasks.

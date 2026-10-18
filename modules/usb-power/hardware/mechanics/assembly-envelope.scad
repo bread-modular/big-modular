@@ -3,11 +3,11 @@
 use <corner_braces.scad>;
 $fn=64;
 outline=[[14, 2], [16.5, 2], [16.5, 10], [27.5, 10], [27.5, 2], [101, 2], [101, 10], [112, 10], [112, 2], [114.5, 2], [114.5, 32], [14, 32]];
-holes=[[2.42, 3, 3.2], [2.42, 125.5, 3.2], [6.4, 22, 3.2], [6.4, 106.5, 3.2], [6.7, 43, 3.6], [6.4, 49.5, 3.2]];
+holes=[[2.42, 3, 3.2], [2.42, 125.5, 3.2], [6.4, 22, 3.2], [6.4, 106.5, 3.2], [6.1, 43, 3.6], [5.8, 49.5, 3.2]];
 // Finished thickness1.44..1.76; machined aperture wall +/-0.10, centre +/-0.10, R0.50..0.70.
-module aperture(){translate([3.9+0.6,28.1+0.6])offset(r=0.6)square([5.0-1.2,10.8-1.2]);}
+module aperture(){translate([3.3+0.6,28.1+0.6])offset(r=0.6)square([5.0-1.2,10.8-1.2]);}
 color("gold")linear_extrude(1.6)difference(){square([9.8,128.5]);aperture();for(h=holes)translate([h[0],h[1]])circle(d=h[2]);}
-color("darkgreen")translate([3.1,0,0])multmatrix([[0,0,1,0],[1,0,0,0],[0,1,0,0],[0,0,0,1]])linear_extrude(1.6)difference(){polygon(outline);for(h=[[22,15,3.2],[106.5,15,3.2],[43.5,27,2.5],[70.5,27,2.5]])translate([h[0],h[1]])circle(d=h[2]);}
+color("darkgreen")translate([2.5,0,0])multmatrix([[0,0,1,0],[1,0,0,0],[0,1,0,0],[0,0,0,1]])linear_extrude(1.6)difference(){polygon(outline);for(h=[[22,15,3.2],[106.5,15,3.2],[43.5,27,2.5],[70.5,27,2.5]])translate([h[0],h[1]])circle(d=h[2]);}
 // Gray block: drawing-based HRO body envelope, NOT a STEP/mating model.
-color([.7,.7,.7,.5])translate([4.7,33.5-8.94/2,.8])cube([3.26,8.94,7.35]);
+color([.7,.7,.7,.5])translate([4.1,33.5-8.94/2,.8])cube([3.26,8.94,7.35]);
 for(y=[22,106.5])color("orange")translate([.1,y-5,1.6])bracket();

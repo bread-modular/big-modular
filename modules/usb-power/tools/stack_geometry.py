@@ -1,6 +1,6 @@
 """A4.2 simple-L two-board placement contract. mm; panel front Z=0, +Z into case.
 No middle PCB, spacers or board-to-board UI headers. HRO USB-C local land and drawing-based body; no verified model;
-retained A4 assembly plane (X3.1..4.7); A4.2 uses plain L + restored SMT reset.
+retained A4 assembly plane (X2.5..4.1); A4.2 uses plain L + restored SMT reset.
 """
 from copy import deepcopy
 from interface_contract import LED_RAILS
@@ -8,18 +8,19 @@ from interface_contract import LED_RAILS
 GEOMETRY = {
     'revision': 'V1 routed HRO carrier / passive two-board assembly',
     'board_count': 2,
-    'magnetics': {'L1/L4': {'mpn':'MDA1040-6R8M','height_max_mm':4.0,'body_max_mm':[11.3,10.3]},
+    'magnetics': {'L1': {'mpn':'TMPC1205HP-220MG-D','height_max_mm':5.0,'body_max_mm':[12.5,12.5]},
+                  'L4': {'mpn':'SLO1040H6R8MTT','height_max_mm':4.0,'body_max_mm':[11.3,10.3]},
                   'L2/L3': {'mpn':'CKCS6045-4.7uH/M','height_max_mm':4.7,'body_max_mm':[6.3,6.3]}},
-    'normal_budget_note':'5.1mm from F.Cu to panel edge; reserve0.15mm solder and0.10mm assembly offset. All components front-side; no backside parts.',
+    'normal_budget_note':'5.7mm nominal from F.Cu X4.1 to panel edge X9.8; L1 needs5.40mm (5.00 body +0.15 solder +0.10 assembly +0.15 residual), leaving0.30mm nominal reserve. Reserve0.15mm solder and0.10mm assembly offset. All components front-side; no backside parts.',
     'panel_mm': [9.8, 128.5, 1.6],
     'rail_holes_mm': [[2.42,3,3.2], [2.42,125.5,3.2]],
     'rail_compatibility': 'Common fixed-strip phase: 7.50 - 5.08 = 2.42; also sliding nuts',
     'rail_head_note': '6mm heads overhang left by 0.58mm; check neighbour. No FR4 countersink.',
     'panel_bracket_holes_mm': [[6.4,22,3.2], [6.4,106.5,3.2]],
-    'carrier_X_mm': [3.1,4.7], 'carrier_Y_mm': [14,114.5], 'carrier_Z_mm': [2,32],
+    'carrier_X_mm': [2.5,4.1], 'carrier_Y_mm': [14,114.5], 'carrier_Z_mm': [2,32],
     'carrier_holes_YZ_mm': [[22,15], [106.5,15]],
     'carrier_bracket_reliefs_YZ_mm': [[16.5,27.5,10], [101,112,10]],
-    'aperture_XYWHR_mm': [3.9,28.1,5.0,10.8,.6],
+    'aperture_XYWHR_mm': [3.3,28.1,5.0,10.8,.6],
     'USB_fit_acceptance': {
         'finished_board_thickness_mm':[1.44,1.76],
         'aperture_each_wall_error_mm':.10,
@@ -32,7 +33,7 @@ GEOMETRY = {
         'in_plane_angular_registration_max_deg':.5,
         'in_plane_rotation_sweep_XY_mm':[.04,.016],
         'outer_profile_each_edge_error_mm':.10},
-    'mouth_axis_XYZ_mm': [6.33,33.5,.8],
+    'mouth_axis_XYZ_mm': [5.73,33.5,.8],
     'USB': {'mpn':'TYPE-C-31-M-12','manufacturer':'HRO','LCSC':'C165948',
             'body_width_depth_height_mm':[8.94,7.35,3.26],
             'native_origin_xy_mm':[69.25,103.475], 'orientation_deg':0,
@@ -42,10 +43,10 @@ GEOMETRY = {
             'review':'docs/usb-hro-review.md'},
     'LEDs': [
         {'reference': ref, 'rail': LED_RAILS[ref], 'panel_hole_ref': hole,
-         'panel_XY_diameter_mm': [6.7,y,3.6], 'pad1_YZ_mm': [y-1.27,6.37]}
+         'panel_XY_diameter_mm': [6.1,y,3.6], 'pad1_YZ_mm': [y-1.27,6.37]}
         for ref,hole,y in [('D10','H5',43)]
     ],
-    'reset_XY_diameter_mm': [6.4,49.5,3.2],
+    'reset_XY_diameter_mm': [5.8,49.5,3.2],
     'LED': {
         'type': 'standard RED 3mm round THT LED footprint, leads formed 90 degrees; no proprietary holder',
         'assembly': 'DNP by user: footprint/keepout retained, not fitted or purchased; exclude D10 from both JLC assembly BOM and CPL',
@@ -84,24 +85,24 @@ GEOMETRY = {
     'brackets': {
         'quantity':2, 'identical':True, 'shape':'Plain L, no nut traps or inserts',
         'Y_centres_mm':[22,106.5], 'outer_X_mm':[.1,9.3], 'width_Y_mm':10.0,
-        'outer_Z_mm':[1.6,20], 'wall_mm':3.0,
-        'front_foot_Z_mm':[1.6,4.6], 'side_web_X_mm':[.1,3.1],
+        'outer_Z_mm':[1.6,20], 'wall_mm':3.0, 'web_mm':2.4,
+        'front_foot_Z_mm':[1.6,4.6], 'side_web_X_mm':[.1,2.5],
         'front_hole_X_mm':6.4, 'side_hole_Z_mm':15, 'hole_mm':3.2,
         'front_bolt':'M3 x 8 pan/button head',
         'side_bolt':'M3 x 8 flat countersunk, 90 degrees; length includes head',
         'front_length_mm':8.0, 'side_length_mm':8.0,
-        'side_countersink_diameter_mm':6.0, 'side_countersink_angle_deg':90,
+        'side_countersink_diameter_mm':5.0, 'side_countersink_angle_deg':90,
         'side_head_recess_mm':[0,.3],
-        'front_head_diameter_max_mm':6.0, 'side_head_diameter_max_mm':6.0,
+        'front_head_diameter_max_mm':6.0, 'side_head_diameter_max_mm':5.0,
         'nut_AF_max_mm':5.5, 'nut_thickness_max_mm':2.4,
         'front_thread_exposure_mm':1.0, 'side_thread_exposure_min_mm':1.0,
         'front_tool_X_mm':[6.4,30], 'front_tool_Y_width_mm':10.0,
         'front_tool_Z_mm':[4.6,7.6],
-        'side_nut_driver_diameter_max_mm':8.0, 'side_nut_driver_depth_min_mm':4.0,
+        'side_nut_driver_diameter_max_mm':8.0, 'side_nut_driver_depth_min_mm':4.3,
         'washers':'No washers in specified length stacks. Plain hex nuts, not nyloc.',
         'access':'OUT OF RACK. Loose nuts and holding tool enter from +X. Front driver -Z; flush side driver -X. Main PCB can stay soldered and fitted.',
         'material':'ABS prototype candidate; print L profile flat, measure shrinkage and trial fit',
-        'note':'3mm walls; countersink only in PRINTED bracket, never PCB. Front nut has only 0.125mm nominal clearance to upright at worst rotation. No print/strength qualification.'
+        'note':'Foot3.0mm, PCB web2.4mm +0.0/-0.1 (measured); countersink only in PRINTED bracket, never PCB. Front nut nominal clearance to upright is0.725mm. No print/strength qualification.'
     },
     'power_output': {
         'main_reference':'J7', 'connector_reference':'manual output harness (no schematic reference)',
@@ -147,9 +148,9 @@ def physical_fingerprint(fp):
 def ui_envelopes(g):
     """Conservative XYZ solid/access bounds from actual library/manufacturer dimensions."""
     j=g['mouth_axis_XYZ_mm'][1];s=g['reset_XY_diameter_mm'][1];l=g['LEDs'][0]['panel_XY_diameter_mm'][1]
-    return {'J1':[[4.7,8.06],[j-4.82,j+4.82],[.8,9.22]],
-            'SW1':[[4.7,8.0],[s-3.1,s+3.1],[2.05,6.9]],
-            'D10':[[4.7,8.6],[l-2.17,l+2.17],[-.2,7.27]],
+    return {'J1':[[4.1,7.46],[j-4.82,j+4.82],[.8,9.22]],
+            'SW1':[[4.1,7.4],[s-3.1,s+3.1],[2.05,6.9]],
+            'D10':[[4.1,8.0],[l-2.17,l+2.17],[-.2,7.27]],
             'J7':[[1.3,9.4],[42,72],[25,32]]}
 
 
@@ -167,10 +168,10 @@ def verify_ui_clearances(g):
           'LED_to_switch_solder_access':solder_gap('D10','SW1'),
           'LED_flange_to_switch_body':abs(l-s)-1.9-2.25,
           'USB_aperture_to_rail_head':g['aperture_XYWHR_mm'][1]-6,
-          'LED_flange_to_panel_edge':9.8-(6.7+1.9)}
+          'LED_flange_to_panel_edge':9.8-(g['LEDs'][0]['panel_XY_diameter_mm'][0]+1.9)}
     assert min(gaps.values())>=.8, gaps
     for ref,data in g['magnetics'].items():
-        margin=9.8-4.7-data['height_max_mm']-.15-.1
+        margin=9.8-g['carrier_X_mm'][1]-data['height_max_mm']-.15-.1
         assert margin>=.149999, (ref,'normal envelope collision',margin)
         gaps[ref+'_normal_budget_margin']=margin
     return {k:round(v,3) for k,v in gaps.items()}

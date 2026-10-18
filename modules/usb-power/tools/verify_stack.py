@@ -49,15 +49,15 @@ def verify_reset_smt(fp,g):
     assert sw['mpn']=='TL3340AF160QG' and sw['LCSC']=='C2886925'
     assert sw['peg_row_YZ_mm']==[49.5,4.1] and sw['body_height_mm']==3.3
     assert sw['actuator_axis_height_mm']==1.7 and sw['actuator_tip_Z_mm']==2.05
-    assert g['reset_XY_diameter_mm']==[6.4,49.5,3.2]
-    assert math.isclose(g['carrier_X_mm'][1]+sw['actuator_axis_height_mm'],6.4)
+    assert g['reset_XY_diameter_mm']==[5.8,49.5,3.2]
+    assert math.isclose(g['carrier_X_mm'][1]+sw['actuator_axis_height_mm'],5.8)
     assert g['carrier_X_mm'][1]+sw['body_height_mm']+.4<g['panel_mm'][0], 'switch body exceeds 2HP'
     assert math.isclose(sw['peg_row_YZ_mm'][1]-2.05,sw['actuator_tip_Z_mm'])
     assert math.isclose(sw['actuator_tip_Z_mm']-g['panel_mm'][2],.45)
     # F.Fab = body; Dwgs.User is a future no-trace reservation, NOT copper.
     assert any(d.GetLayer()==pcb.Dwgs_User for d in fp.GraphicalItems())
-    return {'smd_pads':5,'locator_NPTHs':2,'axis_X_mm':6.4,'body_top_X_mm':8.0,
-            'nominal_lateral_clearance_mm':1.8,'recess_behind_panel_rear_mm':.45,
+    return {'smd_pads':5,'locator_NPTHs':2,'axis_X_mm':5.8,'body_top_X_mm':7.4,
+            'nominal_lateral_clearance_mm':2.4,'recess_behind_panel_rear_mm':.45,
             'qualification':'nominal placement only; sample solder/fit trial pending'}
 
 
@@ -100,7 +100,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert min(y for x,y in pts)==30 and max(y for x,y in pts)==158.5
     # USB hole includes four segments and four quarter-arcs, preserved corner radius.
     ap=[p for p in pts if p[0] not in [50,59.8]]
-    assert (min(x for x,y in ap),max(x for x,y in ap),min(y for x,y in ap),max(y for x,y in ap))==(53.9,58.9,58.1,68.9)
+    assert (min(x for x,y in ap),max(x for x,y in ap),min(y for x,y in ap),max(y for x,y in ap))==(53.3,58.3,58.1,68.9)
     def npth(n,ref,pos,d):
         pads=list(fps[n][ref].Pads());assert len(pads)==1
         p=pads[0];assert p.GetAttribute()==pcb.PAD_ATTRIB_NPTH
@@ -111,8 +111,8 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         npth('usb-power-panel',f'H{i+2}',(56.4,y+30),3.2)
         npth('usb-power',f'H{i}',native(y,15),3.2)
     for ref,y in [('H5',43)]:
-        npth('usb-power-panel',ref,(56.7,y+30),3.6)
-    npth('usb-power-panel','H6',(56.4,79.5),3.2)
+        npth('usb-power-panel',ref,(56.1,y+30),3.6)
+    npth('usb-power-panel','H6',(55.8,79.5),3.2)
     for i,y in enumerate([43.5,70.5],3):npth('usb-power',f'H{i}',native(y,27),2.5)
     usb=fps['usb-power']['J1'];assert xy(usb)==(69.25,103.475) and usb.GetOrientationDegrees()==0
     audit=json.loads((ROOT/'docs/pin-net-audit.json').read_text())
@@ -125,8 +125,8 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     for ref in ['J1','J7']:
         node=next(f for f in nodes(tree,'footprint') if any(p[1:3]==['Reference',ref] for p in nodes(f,'property')))
         assert physical_fingerprint(node)==record['physical'][ref], (ref,'physical pad/model pattern changed')
-    assert g['mouth_axis_XYZ_mm']==[6.33,33.5,.8]
-    assert math.isclose(4.7+1.63,6.33) # Intentional assembly plane translation.
+    assert g['mouth_axis_XYZ_mm']==[5.73,33.5,.8]
+    assert math.isclose(4.1+1.63,5.73) # Intentional assembly plane translation.
     f=fps['usb-power']
     for r,pos in [('D10',native(41.73,6.37)),('SW1',native(49.5,4.1)),('J7',native(48,27))]:
         assert xy(f[r])==pos and f[r].GetLayer()==pcb.F_Cu and f[r].IsLocked()
@@ -136,7 +136,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
     assert len(g['LEDs'])==1 and g['LED']['pin_roles']=={'1':'K (cathode)','2':'A (anode)'}
     for (ref,rail,y,hole),record in zip(expected_leds,g['LEDs']):
         fp=f[ref]
-        assert record=={'reference':ref,'rail':rail,'panel_hole_ref':hole,'panel_XY_diameter_mm':[6.7,y,3.6],'pad1_YZ_mm':[y-1.27,6.37]}
+        assert record=={'reference':ref,'rail':rail,'panel_hole_ref':hole,'panel_XY_diameter_mm':[6.1,y,3.6],'pad1_YZ_mm':[y-1.27,6.37]}
         assert fp.GetFPID().GetLibItemName()=='LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge'
         assert fp.GetValue()=='RED 3mm / '+rail+' / DNP' and fp.GetOrientationDegrees()==0
         assert fp.GetAttributes() & pcb.FP_EXCLUDE_FROM_POS_FILES, 'DNP LED must be excluded from JLC BOM/CPL'
@@ -152,7 +152,7 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         assert led['1'].GetShape()==pcb.PAD_SHAPE_RECT, 'square cathode pad required'
         assert any(d.GetText()=='D10 DNP' and xy(d)==(76.5,94.4) for d in silk), 'DNP indicator callout missing'
         assert any(d.GetText()==rail and xy(d)==(54.9,round(y+33.3,5)) for d in panel_silk), 'LED panel callout alignment'
-        assert math.isclose(g['carrier_X_mm'][1]+g['LED']['axis_above_PCB_mm'],6.7)
+        assert math.isclose(g['carrier_X_mm'][1]+g['LED']['axis_above_PCB_mm'],6.1)
     assert all(p.GetAttribute()==pcb.PAD_ATTRIB_PTH and mm(p.GetDrillSize().x)>=.8 for p in f['J7'].Pads())
     switch_check=verify_reset_smt(f['SW1'],g)
     assert any(d.GetText()=='RETRY' and xy(d)==(81.4,96.6) for d in silk)
@@ -167,13 +167,13 @@ def verify(hardware=ROOT/'hardware',geometry_file=ROOT/'docs/assembly-geometry.j
         k=int(n)-1;assert xy(pads[n])==native(48+(k//2)*2.54,27+(k%2)*2.54)
     assert g['power_output']['pinout']==pinout and 'OUTPUT ONLY' in g['power_output']['warning']
     assert g['board_count']==2 and 'headers' not in g and 'spacers' not in g
-    assert g['reset_XY_diameter_mm']==[6.4,49.5,3.2]
-    assert 3.1-g['solder_tail_max_below_B_Cu_mm']>0
+    assert g['reset_XY_diameter_mm']==[5.8,49.5,3.2]
+    assert 2.5-g['solder_tail_max_below_B_Cu_mm']>0
     out['clearances_mm']=verify_ui_clearances(g)
     out['HRO_fit']=verify_hro_fit(g)
     out['mechanics']={'actual_NPTH_geometry_checks':10,'LED_PTH_pad_checks':2,'LED_polarity_mark_checks':2,'manual_LED_exclusions':1,'switch_SMT_pad_checks':5,'switch_locator_NPTH_checks':2,'switch_fit':switch_check,'power_pin_checks':16,
        'M3_access':verify_access(g,expected),'carrier_depth_mm':30,'PCB_depth_behind_panel_mm':30.4,
-       'main_PCB_plane_X_mm':[3.1,4.7],'port_axis_mm':[6.33,33.5,.8],
+       'main_PCB_plane_X_mm':[2.5,4.1],'port_axis_mm':[5.73,33.5,.8],
        'electrical_status':str(len(allowed['usb-power'])-4)+' active footprints; inspected routing, passive panel; not electrical/thermal qualification',
        'finished_module_depth':'unverified; cable connector not confined to 2HP board envelope'}
     return out

@@ -1,7 +1,7 @@
 # LDO-R1 prototype bare-PCB fabrication contract
 
 > Migration recovery: source/electrical content below is retained checkpoint evidence.
-> `jlcpcb/` is a STALE recovered Git export snapshot, not a fresh migrated export.
+> `jlcpcb/` is the current manufacturing export generated from this tree.
 > Run commands from `modules/usb-power`; shared `opt/` stays at repo root. See
 > [migration-recovery.md](migration-recovery.md) for current checks and Astra handoff.
 
@@ -116,20 +116,12 @@ mandatory for private all-severity ERC/DRC/native parity. The unchanged common
 and offers no IPC-D-356/job/process-aware bare-PCB package or actual-CAM renderer.
 Do not run its assembly pipeline and pretend the unreviewed CSV is qualified.
 
-`tools/release_hro.py` is therefore narrow release orchestration: it REUSES the
-common exporter's `stage_cli_project` / `run_cli`, calls actual KiCad Gerber/drill/
-IPC-D-356 exporters, and packages their artwork. It does not redraw/route boards or
-implement a Gerber parser/renderer. `tools/check_hro_cam.py` uses pinned **Gerbonara**
-for actual Gerber/Excellon parsing and SVG rendering, and Shapely for geometric
-comparison, not a native-board preview. Optional local environment only:
-
-```sh
-/usr/bin/python3 -m venv --system-site-packages research/ldo-029/cam-venv
-research/ldo-029/cam-venv/bin/python -m pip install -r tools/cam-requirements.txt
-research/ldo-029/cam-venv/bin/python -B tools/release_hro.py --output research/new-ldo-release --reports research/new-hro-native
-```
-
-No installs into main, Bread or system Python. No uploads, orders or assembly CSVs.
+Use the shared `opt/kicad-tools/jlcpcb/export.py` exporter and `kicad_tools.py check`.
+There is no module-local release orchestrator, CAM parser or renderer: the module
+does not duplicate the shared toolkit. The shared exporter creates the Gerbers,
+drills, BOM and CPL; `kicad_tools.py check` provides private all-severity ERC/DRC
+and native parity. No installs into main, Bread or system Python. No uploads,
+orders or assembly CSVs.
 Native metadata normalization is recorded: remove volatile timestamps; correct
 job size from verified Edge.Cuts centreline (KiCad includes the .05 stroke); omit
 misleading auto-derived zero inner-clearance fields and non-fabrication paste stack
@@ -173,14 +165,15 @@ order/allocation file. The separate stencil-support ZIP carries the actual F.Pas
 component apertures; B.Paste is intentionally empty. No stencil thickness, reduction
 or reflow approval is implied.
 
-The fixed carrier datum X3.1..4.7mm, brackets, panel, harness envelope and all THT
-tail projections remain unchanged. Native placement and assembly-height checks are
-in `mechanics.json` and `assembly-geometry.json`; this is a dimensioned fit check,
-not an assembled sample test. The panel geometry/holes/legend and all fixed
-interfaces are unchanged.
+The fixed carrier datum X2.5..4.1mm, brackets, panel, harness envelope and all THT
+tail projections are retained by the 0.60mm panel-feature shift. Native placement
+and assembly-height checks are in `mechanics.json` and `assembly-geometry.json`;
+this is a dimensioned fit check, not an assembled sample test. The panel outline,
+bracket/rail holes and legend are retained; the USB aperture, LED hole and reset
+hole move -0.60mm in X with the carrier.
 
 The old HRO-R1 release archive was retired together with the `production/`
-directory; it was STALE for this LDO circuit. The sole shipping location is
-`jlcpcb/`, currently an intact STALE recovered snapshot. Its historical source hashes
-are not hashes of migrated tools/project identity. No new export was made during
-recovery. Supervisor reviews/merges; no commit/push/order/upload here.
+directory. The manufacturing-export location is `jlcpcb/`, regenerated from the
+current sources with the shared `opt/kicad-tools/jlcpcb/export.py`; the historical
+043 snapshot was removed. No supplier upload or order was made here. Supervisor
+reviews/merges; no commit/push.

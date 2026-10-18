@@ -3,8 +3,8 @@
 <rect x="5" y="5" width="410" height="287" fill="white" stroke="#375775" stroke-width=".4"/>
 <text x="12" y="15" font-size="5">HRO TYPE-C-31-M-12 | USB FIT AND DATUM REVIEW</text>
 <text x="12" y="23" font-size="2.8">Exact Bread local lands + primary HRO body drawing. NO verified STEP model. This is a dimensioned envelope, not physical qualification.</text>
-<text x="16" y="40" font-size="3.1">Panel X across / Y down / Z into case. Carrier F.Cu X4.7; board front Z2.</text>
-<text x="16" y="46" font-size="3.1">HRO shell: 8.94 wide x 7.35 deep x 3.26 high (drawing). Nominal shell axis X6.33.</text>
+<text x="16" y="40" font-size="3.1">Panel X across / Y down / Z into case. Carrier F.Cu X4.1; board front Z2.</text>
+<text x="16" y="46" font-size="3.1">HRO shell: 8.94 wide x 7.35 deep x 3.26 high (drawing). Nominal shell axis X5.73.</text>
 <text x="16" y="52" font-size="3.1">Mating face Z0.8, Y33.5. Native footprint anchor (69.25,103.475), rotation 0 degrees.</text>
 <text x="16" y="58" font-size="3.1">Datum anchors: front shell tab 2.60 from face; rear 6.77 drawing / 6.78 local.</text>
 <text x="16" y="64" font-size="3.1">Ambiguous drawing vertical 0.50/1.64/4.18/5.79 chain is NOT used to invent a PCB-edge datum.</text>
@@ -16,12 +16,12 @@
 <text x="16" y="100" font-size="3.1">A1/B12, A4/B9, A9/B4, A12/B1 share four wide PCB lands. S1 shell is GND.</text>
 <text x="16" y="106" font-size="3.1">A5=CC1, B5=CC2; all four data and two SBU contacts remain explicit NC.</text>
 <rect x="30" y="145" width="78.4" height="144" fill="#f1dfb6" stroke="#375775" stroke-width=".25"/>
-<rect x="61.2" y="169.8" width="40.0" height="86.4" fill="white" stroke="#375775" stroke-width=".25" rx="4.8"/>
-<rect x="67.6" y="177.24" width="26.08" height="71.52" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
-<rect x="64.24000000000001" y="174.752" width="33.99999999999999" height="76.49599999999998" fill="none" stroke="#375775" stroke-width=".25" stroke-dasharray="1.5 1"/>
+<rect x="56.4" y="169.8" width="40.0" height="86.4" fill="white" stroke="#375775" stroke-width=".25" rx="4.8"/>
+<rect x="62.8" y="177.24" width="26.08" height="71.52" fill="#c7ccd2" stroke="#375775" stroke-width=".25"/>
+<rect x="59.44" y="174.752" width="34.0" height="76.49599999999998" fill="none" stroke="#375775" stroke-width=".25" stroke-dasharray="1.5 1"/>
 <text x="125" y="150" font-size="3">FRONT VIEW: GRAY NOMINAL / DASHED WORST-CASE SHELL</text>
-<text x="125" y="156" font-size="3">Aperture: X3.90, Y28.10, W5.00, H10.80, R0.60 mm.</text>
-<text x="125" y="162" font-size="3">Delta from 024: X -0.33, Y -0.50, width +0.80, height +1.00.</text>
+<text x="125" y="156" font-size="3">Aperture: X3.30, Y28.10, W5.00, H10.80, R0.60 mm.</text>
+<text x="125" y="162" font-size="3">Delta from 024: X -0.93, Y -0.50, width +0.80, height +1.00.</text>
 <text x="125" y="168" font-size="3">Each machined wall +/-0.10; centre registration +/-0.10 X/Y.</text>
 <text x="125" y="174" font-size="3">Corner radius 0.50..0.70; profile acceptance THROUGH thickness.</text>
 <text x="125" y="180" font-size="3">BOTH finished boards 1.60 +/-0.16 mm, including coating.</text>

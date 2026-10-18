@@ -20,15 +20,15 @@ def prisms(outline,x_range):
 def verify_access(g,outline):
     b=g['brackets']; bx=g['carrier_X_mm']; panel=g['panel_mm']
     assert len(g['panel_bracket_holes_mm'])==len(g['carrier_holes_YZ_mm'])==2
-    assert bx==[3.1,4.7] and panel==[9.8,128.5,1.6]
+    assert bx==[2.5,4.1] and panel==[9.8,128.5,1.6]
     assert b['outer_X_mm']==[.1,9.3] and b['outer_Z_mm']==[1.6,20]
-    assert b['wall_mm']==3.0 and b['side_web_X_mm']==[.1,3.1]
+    assert b['wall_mm']==3.0 and b['web_mm']==2.4 and b['side_web_X_mm']==[.1,2.5]
     assert b['front_foot_Z_mm']==[1.6,4.6]
     assert not any('pocket' in key or 'slot' in key for key in b), 'not a plain L'
     assert b['nut_AF_max_mm']<=5.5 and b['nut_thickness_max_mm']<=2.4
     assert b['side_countersink_angle_deg']==90
     sink=(b['side_countersink_diameter_mm']-b['hole_mm'])/2
-    assert b['wall_mm']-sink>=1.5, 'insufficient material behind countersink'
+    assert b['web_mm']-sink>=1.5, 'insufficient material behind countersink'
     assert b['side_head_diameter_max_mm']<=b['side_countersink_diameter_mm'], 'side head not seated'
     assert 0<=b['side_head_recess_mm'][0]<=b['side_head_recess_mm'][1]<=.3, 'side head must be flush or slightly recessed'
     front_x=b['front_hole_X_mm']; foot_back=b['front_foot_Z_mm'][1]
@@ -42,7 +42,7 @@ def verify_access(g,outline):
     side_exit=side_tip[0]-bx[1]-b['nut_thickness_max_mm']
     assert front_exit>=.5 and side_exit>=.5, 'nut not fully engaged / bolt too short'
     assert side_tip[1]<panel[0]-.1, 'side screw tip outside panel width'
-    assert b['side_nut_driver_depth_min_mm']>=side_tip[1]-bx[1], 'side nut driver too shallow'
+    assert b['side_nut_driver_depth_min_mm']+1e-9>=side_tip[1]-bx[1], 'side nut driver too shallow'
     carrier=list(prisms(outline,bx)); reports=[]
     # Conservative reservations for already placed components; no converter fit claim.
     parts=list(ui_envelopes(g).values())
@@ -78,6 +78,6 @@ def verify_access(g,outline):
                         'front_nut_right_X_mm':round(front_x+nut_radius,3),
                         'side_tip_X_range_mm':[round(v,3) for v in side_tip]})
     return {'brackets':reports,'identical_parts':True,'all_fasteners':'M3',
-            'plain_L':True,'wall_mm':3,'countersink_in':'printed bracket only; NO FR4 countersink',
+            'plain_L':True,'wall_mm':3,'web_mm':2.4,'countersink_in':'printed bracket only; NO FR4 countersink',
             'service_condition':'OUT OF RACK, soldered main PCB retained; front nut held from +X with small pliers, side nut driver +X, screwdrivers -X and -Z',
-            'limitation':'Nominal envelopes only. Front-nut clearance is tight (0.125mm). Actual tools, ABS shrinkage, screw seating and printed strength require physical trial.'}
+            'limitation':'Nominal envelopes only. Front-nut clearance is 0.725mm nominal. Actual tools, ABS shrinkage, screw seating and printed strength require physical trial.'}

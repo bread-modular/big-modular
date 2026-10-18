@@ -3,10 +3,12 @@
 > `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc` (independent
 > Opus PASS, `docs/routing-review-082/REPORT.md`, HD-1 closed). Source, resources,
 > hashes and release holds: `docs/routing-source-acceptance.md` and `.json`.
-> No fabrication/assembly release: `jlcpcb/` exports remain STALE and are not
-> regenerated. Open holds: L1 5.40 vs 5.10 mm user decision; explicit JLC inner-1-oz/
-> plating/drill/unfilled-in-pad PCBA acceptance; joint/void/thermal/EMI/startup/load
-> bench qualification. The older "585 tracks / 207 vias / 043 routing" inventory below
+> Manufacturing export: `jlcpcb/` is freshly generated from the current sources with
+> the shared `opt/kicad-tools/jlcpcb/export.py`; it is not a supplier-accepted release.
+> Open holds: explicit JLC inner-1-oz/plating/drill/unfilled-in-pad PCBA acceptance;
+> joint/void/thermal/EMI/startup/load bench qualification. The L1 mechanical hold is
+> closed by a 0.60 mm panel/bracket shift: web 2.40 mm +0.0/-0.1, worst-case stack
+> 5.44 mm vs the 5.40 mm required envelope. The older "585 tracks / 207 vias / 043 routing" inventory below
 > is historical; the current routed source is 721 track segments + 251 through vias
 > (972 native `GetTracks` objects, vias included). Historical
 > recovery and release receipts stay frozen.
@@ -36,15 +38,16 @@ mask tenting; no special fill/planarization/copper-cap process.
 
 This migration is file/path recovery only. Do not replay circuit migration,
 regeneration or routing. Native electrical/PCB repair and new fabrication export
-belong to Astra's separate handoff. No claim of new fabrication exports: `jlcpcb/`
-is the sole shipping-set location, currently an intact **STALE recovered snapshot**.
-`production/` is retired, not an active archive; historical integrity tests use Git
+belong to Astra's separate handoff. `jlcpcb/` is the sole manufacturing-export
+location; the current set is generated from the current sources by `opt/kicad-tools`.
+`production/` is retired, not an active archive; historical integrity is preserved in
+Git
 objects. Read `jlcpcb/README.md` before any release work.
 
 Shared tools/skills stay at root `../../opt/`; never copy them into this module.
 Read `../../opt/kicad-tools/skills/kicad-workflow/SKILL.md`, and for sourcing/export
 also `../../opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md` and shared JLCPCB docs.
-Common-tool-first; inspect actual help. No stripped dependencies, weakened tests,
+Common-tool-first; inspect actual help. No stripped dependencies,
 ignored rules, exclusions, fake power flags or hidden native findings.
 
 Work only in the assigned isolated workspace. No advisor/delegation, commit, merge,

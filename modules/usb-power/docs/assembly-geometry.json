@@ -2,8 +2,16 @@
   "revision": "V1 routed HRO carrier / passive two-board assembly",
   "board_count": 2,
   "magnetics": {
-    "L1/L4": {
-      "mpn": "MDA1040-6R8M",
+    "L1": {
+      "mpn": "TMPC1205HP-220MG-D",
+      "height_max_mm": 5.0,
+      "body_max_mm": [
+        12.5,
+        12.5
+      ]
+    },
+    "L4": {
+      "mpn": "SLO1040H6R8MTT",
       "height_max_mm": 4.0,
       "body_max_mm": [
         11.3,
@@ -19,7 +27,7 @@
       ]
     }
   },
-  "normal_budget_note": "5.1mm from F.Cu to panel edge; reserve0.15mm solder and0.10mm assembly offset. All components front-side; no backside parts.",
+  "normal_budget_note": "5.7mm nominal from F.Cu X4.1 to panel edge X9.8; L1 needs5.40mm (5.00 body +0.15 solder +0.10 assembly +0.15 residual), leaving0.30mm nominal reserve. Reserve0.15mm solder and0.10mm assembly offset. All components front-side; no backside parts.",
   "panel_mm": [
     9.8,
     128.5,
@@ -52,8 +60,8 @@
     ]
   ],
   "carrier_X_mm": [
-    3.1,
-    4.7
+    2.5,
+    4.1
   ],
   "carrier_Y_mm": [
     14,
@@ -86,7 +94,7 @@
     ]
   ],
   "aperture_XYWHR_mm": [
-    3.9,
+    3.3,
     28.1,
     5.0,
     10.8,
@@ -117,7 +125,7 @@
     "outer_profile_each_edge_error_mm": 0.1
   },
   "mouth_axis_XYZ_mm": [
-    6.33,
+    5.73,
     33.5,
     0.8
   ],
@@ -151,7 +159,7 @@
       "rail": "+5V POWER",
       "panel_hole_ref": "H5",
       "panel_XY_diameter_mm": [
-        6.7,
+        6.1,
         43,
         3.6
       ],
@@ -162,7 +170,7 @@
     }
   ],
   "reset_XY_diameter_mm": [
-    6.4,
+    5.8,
     49.5,
     3.2
   ],
@@ -242,13 +250,14 @@
       20
     ],
     "wall_mm": 3.0,
+    "web_mm": 2.4,
     "front_foot_Z_mm": [
       1.6,
       4.6
     ],
     "side_web_X_mm": [
       0.1,
-      3.1
+      2.5
     ],
     "front_hole_X_mm": 6.4,
     "side_hole_Z_mm": 15,
@@ -257,14 +266,14 @@
     "side_bolt": "M3 x 8 flat countersunk, 90 degrees; length includes head",
     "front_length_mm": 8.0,
     "side_length_mm": 8.0,
-    "side_countersink_diameter_mm": 6.0,
+    "side_countersink_diameter_mm": 5.0,
     "side_countersink_angle_deg": 90,
     "side_head_recess_mm": [
       0,
       0.3
     ],
     "front_head_diameter_max_mm": 6.0,
-    "side_head_diameter_max_mm": 6.0,
+    "side_head_diameter_max_mm": 5.0,
     "nut_AF_max_mm": 5.5,
     "nut_thickness_max_mm": 2.4,
     "front_thread_exposure_mm": 1.0,
@@ -279,11 +288,11 @@
       7.6
     ],
     "side_nut_driver_diameter_max_mm": 8.0,
-    "side_nut_driver_depth_min_mm": 4.0,
+    "side_nut_driver_depth_min_mm": 4.3,
     "washers": "No washers in specified length stacks. Plain hex nuts, not nyloc.",
     "access": "OUT OF RACK. Loose nuts and holding tool enter from +X. Front driver -Z; flush side driver -X. Main PCB can stay soldered and fitted.",
     "material": "ABS prototype candidate; print L profile flat, measure shrinkage and trial fit",
-    "note": "3mm walls; countersink only in PRINTED bracket, never PCB. Front nut has only 0.125mm nominal clearance to upright at worst rotation. No print/strength qualification."
+    "note": "Foot3.0mm, PCB web2.4mm +0.0/-0.1 (measured); countersink only in PRINTED bracket, never PCB. Front nut nominal clearance to upright is0.725mm. No print/strength qualification."
   },
   "power_output": {
     "main_reference": "J7",

@@ -24,9 +24,9 @@ def corner_margin(aperture, box, wall=0.10, radius_growth=0.10):
 def verify(g):
     # Independent acceptance literals: never derive requirements from the builder.
     assert g['panel_mm']==[9.8,128.5,1.6]
-    assert g['carrier_X_mm']==[3.1,4.7] and g['carrier_Z_mm']==[2,32]
-    assert g['mouth_axis_XYZ_mm']==[6.33,33.5,.8]
-    assert g['aperture_XYWHR_mm']==[3.9,28.1,5.0,10.8,.6]
+    assert g['carrier_X_mm']==[2.5,4.1] and g['carrier_Z_mm']==[2,32]
+    assert g['mouth_axis_XYZ_mm']==[5.73,33.5,.8]
+    assert g['aperture_XYWHR_mm']==[3.3,28.1,5.0,10.8,.6]
     assert g['USB']['native_origin_xy_mm']==[69.25,103.475]
     assert g['USB']['body_width_depth_height_mm']==[8.94,7.35,3.26]
     budget={
@@ -59,24 +59,24 @@ def verify(g):
     assert 1.76*math.tan(math.radians(.5))<.02
     assert 4.545*math.sin(math.radians(.5))<.04
     assert 1.73*math.sin(math.radians(.5))<.016
-    box=[4.7-.16-.10-.10-.02-.04,
-         4.7+.16+3.26+.10+.05+.10+.10+.02+.04,
+    box=[4.1-.16-.10-.10-.02-.04,
+         4.1+.16+3.26+.10+.05+.10+.10+.02+.04,
          33.5-(8.94+.15)/2-.10-.10-.02-.016,
          33.5+(8.94+.15)/2+.10+.10+.02+.016]
     margin=corner_margin(g['aperture_XYWHR_mm'],box)
     assert margin>.22, ('toleranced shell/aperture interference or reserve lost',margin)
     # The predecessor opening MUST fail this complete budget, a useful negative control.
-    old_margin=corner_margin([4.23,28.6,4.2,9.8,.6],box)
+    old_margin=corner_margin([3.63,28.6,4.2,9.8,.6],box)
     assert old_margin<0
     assert g['brackets']['Y_centres_mm']==[22,106.5]
-    assert g['LEDs'][0]['panel_XY_diameter_mm']==[6.7,43,3.6]
-    assert g['reset_XY_diameter_mm']==[6.4,49.5,3.2]
+    assert g['LEDs'][0]['panel_XY_diameter_mm']==[6.1,43,3.6]
+    assert g['reset_XY_diameter_mm']==[5.8,49.5,3.2]
     assert box[2]>27 and box[3]<43-1.9
     # Largest possible aperture vs smallest outside edge. No unrelated interfaces move.
-    ligament=9.8-.10-(3.9+5+.10+.10)
+    ligament=9.8-.10-(3.3+5+.10+.10)
     assert ligament>=.599999
     return {
-        'nominal_shell_axis_XYZ_mm':[6.33,33.5,.8],
+        'nominal_shell_axis_XYZ_mm':[5.73,33.5,.8],
         'native_anchor_xy_mm':[69.25,103.475],
         'land_row_shift_toward_board_rear_mm':.34,
         'front_shell_copper_to_carrier_edge_mm':round(copper_to_edge,6),

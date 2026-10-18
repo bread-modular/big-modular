@@ -1,57 +1,57 @@
-# usb-power fabrication / assembly shipping set
+# usb-power — manufacturing export
 
-**STALE recovered snapshot — NOT a fresh export of the migrated tree.**
+Generated from the current accepted sources with the shared
+`opt/kicad-tools/jlcpcb/export.py` exporter. There is no module-local release
+orchestrator, CAM venv, or pinned CAM dependency set.
 
-> The canonical routed source is now the accepted 084 PCB
-> `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc`
-> (`../docs/routing-source-acceptance.md`). Nothing here was regenerated from it:
-> these files remain stale historical 043 evidence, and there is **no fabrication or
-> assembly release**.
+## Contents
 
-This is the sole shipping-set location. All 75 original files from
-`8f3c5000b88a09a22e3b49ce209ca87bbc9aeefe:production/ldo-r1/` were recovered
-byte-for-byte from this repository's Git objects. The original `manifest.json`,
-source SHA ledgers, reports, Gerbers, drills, ZIP members and assembly BOM/CPL remain
-unchanged. Legacy `big_modular` / `front_panel` names inside generated outputs are
-intentional provenance, not canonical source names; do not hand-edit them.
+| Path | Data |
+|---|---|
+| `carrier/` | 4-layer Gerbers + PTH/NPTH drills, BOM, CPL, export report |
+| `passive-panel/` | 2-layer panel Gerbers + drills, empty BOM/CPL, export report |
+| `assembly/` | carrier BOM and CPL |
+| `usb-power-gerbers.zip` | carrier Gerber/drill ZIP |
+| `usb-power-panel-gerbers.zip` | panel Gerber/drill ZIP |
+| `source-sha256.json` | source and ZIP SHA-256 |
 
-- `carrier/` and the carrier BARE-PCB ZIP: four-layer carrier fabrication snapshot.
-- `passive-panel/` and the panel BARE-PCB ZIP: passive panel snapshot.
-- `assembly/`: separate assembly BOM/CPL and historical sourcing/export evidence.
-- `assembly-stencil-support-only/`: separate paste/stencil-support snapshot.
-- `recovery-status.json`: explicit stale/recovery status, not supplier approval.
+## Upload map
 
-The PCB bytes still match the accepted 043 design, but project names, schematic
-project identity, tool paths and instructions changed. Consequently the old source
-manifest does NOT describe this exact migrated tree. No new Gerber/BOM/CPL/PDF export,
-CAM signoff, live catalog verification, order, upload or assembly qualification was
-performed during recovery. Older HRO releases/production backups remain in Git only;
-there is no active `production/` archive.
+| Order | Files | Notes |
+|---|---|---|
+| Carrier PCB | `usb-power-gerbers.zip` | 4 layers, 1.6 mm, 1 oz inner copper |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | front side only; D10/C62/C93 DNP, J7 excluded |
+| Passive panel PCB | `usb-power-panel-gerbers.zip` | 2 layers, 1.6 mm, no assembly |
 
-## Astra handoff: regenerate into NEW review directories
+## Source identity
 
-Read [fabrication contract](../docs/fabrication.md),
-[recovery evidence](../docs/migration-recovery.md) and
-[build/check commands](../docs/build.md). Shared tooling is at repository-root `opt/`.
-From `modules/usb-power`, after reading actual help and obtaining export authorization:
+- Carrier: `69a1e329e919ca0f8ddaaec38e30de119fa0d0639823c0017e1675554ff52adc`
+  (accepted 084 routing source; unchanged)
+- Panel: `174607b27726d41fe67a2c25c6ab2ef53fb5d194b0697f97c215f0e744eb7e66`
+  (USB aperture, D10 and SW1 moved -0.60 mm in X; bracket PCB web 2.40 mm)
+
+## Reproduce
+
+From `modules/usb-power`:
 
 ```sh
 python3 -B ../../opt/kicad-tools/kicad_tools.py check \
-  --config tools/kicad-project.json --reports research/NEW-native
-python3 -B tools/release_hro.py \
-  --output research/NEW-bare-pcb --reports research/NEW-release-native
+  --config tools/kicad-project.json --reports research/native
+
 python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
-  --board usb-power.kicad_pcb --include-through-hole --require-part-numbers \
-  -o research/NEW-assembly --overwrite
+  --board usb-power --schematic usb-power.kicad_sch \
+  --include-through-hole --require-part-numbers \
+  -o research/fresh-carrier
+
 python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
-  --board usb-power-panel.kicad_pcb --pcb-only \
-  -o research/NEW-panel-export --overwrite
+  --board usb-power-panel --pcb-only \
+  -o research/fresh-panel
 ```
 
-These are handoff commands, not actions taken or authorization to overwrite shipping
-files. The shared export includes paste/assembly semantics; it does not replace the
-project's bare-PCB/CAM gate. Complete native checks, independent field/net/NC/mechanics
-parity, every copper/mask/drill/paste CAM inspection, source hashes, ZIP/member SHA,
-BOM/CPL ref/side/datum/rotation checks and separate Basic/Economy/live sourcing gates
-before manually promoting one coherent set here. Retain full findings/failures; do not
-rewrite old source ledgers, relabel old output files or mix old/new snapshots.
+## Status
+
+This is a fresh manufacturing export, not a supplier-accepted release.
+Before upload: run native ERC/DRC/parity, check BOM/CPL refs/sides/rotations,
+and obtain JLCPCB DFM/process acceptance (inner 1 oz, plating/drill tolerance,
+unfilled vias). Bench thermal/joint/EMI/startup/load qualification remains
+outstanding.

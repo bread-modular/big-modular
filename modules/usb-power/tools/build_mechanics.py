@@ -40,9 +40,10 @@ def assembly(out,g):
     for x,y,di in g['rail_holes_mm']+g['panel_bracket_holes_mm']+[led['panel_XY_diameter_mm'] for led in g['LEDs']]+[g['reset_XY_diameter_mm']]:
         d.circle(fx+x*s,fy+y*s,di*s/2)
     x,y,w,h,r=g['aperture_XYWHR_mm'];d.rect(fx+x*s,fy+y*s,w*s,h*s,'white',r=r*s)
-    for yy,t in [(3,'Rail X2.42 / dia3.2'),(22,'M3 bracket X6.4 / Y22'),(led,f'D10 +5V / X6.7 / Y{led:g} / dia3.6'),(j,'HRO USB axis X6.33'),(sw,f'Retry X6.4 / Y{sw:g} / dia3.2'),(106.5,'M3 bracket X6.4 / Y106.5'),(125.5,'Rail Y125.5 / dia3.2')]:
+    for yy,t in [(3,'Rail X2.42 / dia3.2'),(22,'M3 bracket X6.4 / Y22'),(led,f'D10 +5V / X{g["LEDs"][0]["panel_XY_diameter_mm"][0]:g} / Y{led:g} / dia3.6'),(j,f'HRO USB axis X{g["mouth_axis_XYZ_mm"][0]:g}'),(sw,f'Retry X{g["reset_XY_diameter_mm"][0]:g} / Y{sw:g} / dia3.2'),(106.5,'M3 bracket X6.4 / Y106.5'),(125.5,'Rail Y125.5 / dia3.2')]:
         d.line(fx+9.8*s,fy+yy*s,36,fy+yy*s);d.text(37,fy+yy*s+1,t,2.5)
     d.lines(15,227,['9.8 x 128.5 x 1.6 FR4','Round corner rail holes retained.','6mm rail screw heads overhang .58mm.','Check adjacent panels; no countersink.'])
+    d.lines(15,247,[f'0.60mm panel shift: aperture X{x:.2f}..{x+w:.2f}; D10 X{g["LEDs"][0]["panel_XY_diameter_mm"][0]:.2f}; SW1 X{g["reset_XY_diameter_mm"][0]:.2f}.','Carrier and bracket holes unchanged; bracket PCB web2.40mm +0.0/-0.1.'],2.4)
     # Side elevation, Y down and Z right; see real relief shape rather than box.
     zx=119; zy=43
     d.text(116,35,'SIDE / YZ ELEVATION',3.3)
@@ -58,10 +59,10 @@ def assembly(out,g):
     d.line(zx+32*s,zy+j*s,184,zy+j*s,True)
     d.lines(166,146,['J7: 16 numbered solder-through lands','Keyed 2x8 MALE IDC on flying lead','75-100mm lead, strain-relieved','Connector not squeezed into 2HP.','No third PCB.'],2.6)
     d.lines(117,224,['HRO land imported; mouth Y33.5 / Z0.8; NO 3D model.',
-                     'PCB BACK X3.1 / component face X4.7.',
+                     f'PCB BACK X{g["carrier_X_mm"][0]:g} / component face X{g["carrier_X_mm"][1]:g}.',
                      'Web on PCB BACK; foot on front panel REAR (Z1.6).',
                      'Screws normal to each face; PCB not fed through L.',
-                     'Uncut FR4/foot overlap: X3.1..4.7, Z2..4.6.',
+                     f'Uncut FR4/foot overlap: X{g["carrier_X_mm"][0]:g}..{g["carrier_X_mm"][1]:g}, Z2..4.6.',
                      'Y17..27 / 101.5..111.5; current configuration only.',
                      'Cutbacks clear THIS L + M3 nut/tool access.',
                      'Z10 retained, not a proven minimum.',
@@ -81,31 +82,31 @@ def assembly(out,g):
         for col in range(2):d.circle(px+(27+col*2.54)*s,py+(48+row*2.54-14)*s,.65*s)
     d.lines(269,191,['D10 ONLY: RED 3mm +5V POWER THT, formed 90 deg.','SW1: E-Switch TL3340AF160QG, SMT.','Three signal pads + two solder anchors.','Front-side fine-tip soldering; 2 locating holes.','3.3mm body height; axis X6.4, recessed Z2.05.','Pins1+3 common; pin2 other contact. No plunger.'],2.6)
     d.lines(269,229,['12 V power output pin pairs:','1-2: -12V | 3-8: GND | 9-10: +12V','11-12: +5V | 13-16: NOT CONNECTED','POWER OUTPUT, not a rack power input!','Do not connect to another active PSU.'],2.6)
-    d.text(12,282,'Routed HRO. D10: P5 -> R32 1k -> LED -> GND. No blink/controller. L1/L4 max4.0mm +0.25 assembly budget; L2/L3 max4.7 +0.25. Physical trial/bench validation pending.',2.7)
+    d.text(12,282,'Routed HRO. D10: P5 -> R32 1k -> LED -> GND. No blink/controller. L1 max5.0mm (TMPC1205HP) with5.40mm envelope; L4 max4.0; L2/L3 max4.7. Physical trial/bench validation pending.',2.7)
     d.save(out,'assembly')
 
 
 def brackets(out,g):
     d=Drawing('A4.1 | PLAIN L BRACKET - PRINT TWO IDENTICAL PARTS',
-              '3mm walls, two holes, no nut traps or inserts. ABS prototype. M3x8 front + M3x8 countersunk side; four loose M3 nuts.')
+              'Foot3.0mm / PCB web2.4mm, two holes, no nut traps or inserts. ABS prototype. M3x8 front + M3x8 countersunk side; four loose M3 nuts.')
     ox=25; oz=50; k=7
     def rect(x,z,w,h,c='none',dash=False):d.rect(ox+x*k,oz+z*k,w*k,h*k,c,dash)
     def poly(pts,c):d.poly([(ox+x*k,oz+z*k) for x,z in pts],c)
     d.text(15,35,'XZ SECTION THROUGH BOTH HOLES',3.2)
     rect(-.1,-1.6,9.8,1.6,'#f1dfb6')
-    poly([(0,0),(9.2,0),(9.2,3),(3,3),(3,18.4),(0,18.4)],'#e8b396')
-    rect(3,8.4,1.6,20,'#d6e3f1')
+    poly([(0,0),(9.2,0),(9.2,3),(2.4,3),(2.4,18.4),(0,18.4)],'#e8b396')
+    rect(2.4,8.4,1.6,20,'#d6e3f1')
     rect(6.3-1.6,0,3.2,3,'white')
-    rect(0,13.4-1.6,3,3.2,'white')
-    poly([(0,10.4),(1.4,11.8),(1.4,15),(0,16.4)],'white')
+    rect(0,13.4-1.6,2.4,3.2,'white')
+    poly([(0,10.9),(0.9,11.8),(0.9,15),(0,15.9)],'white')
     rect(6.3-3.175,3,6.35,2.4,'#b8b8b8')
-    rect(4.6,13.4-3.175,2.4,6.35,'#b8b8b8')
+    rect(4.0,13.4-3.175,2.4,6.35,'#b8b8b8')
     rect(4.8,-1.6,3,8,'none',True)
     rect(0,11.9,8,3,'none',True)
-    d.lines(101,46,['Local origin = assembly X0.1 / Z1.6','Overall 9.2 X x 10 Y x 18.4 Z','BOTH legs are 3.0mm thick.','Upright on PCB BACK face (B.Cu X3.1).','Foot on front panel REAR face (Z1.6).','Screws normal to faces; PCB not fed through L.','Plain nuts sit OUTSIDE the printed L.','No slots, captive pockets, roofs or inserts.'],2.7)
-    d.lines(101,83,['HOLES / LOCAL DIMENSIONS','Front: X6.3 / Y5.0, diameter3.2','Side: Y5.0 / Z13.4, diameter3.2','Side countersink: diameter6.0 x 90 deg','Depth1.4; leaves1.6 of straight bore.','Countersink PLASTIC ONLY, never FR4.'],2.7)
+    d.lines(101,46,['Local origin = assembly X0.1 / Z1.6','Overall 9.2 X x 10 Y x 18.4 Z','Foot3.0mm; PCB web2.4mm +0.0/-0.1.','Upright on PCB BACK face (B.Cu X2.5).','Foot on front panel REAR face (Z1.6).','Screws normal to faces; PCB not fed through L.','Plain nuts sit OUTSIDE the printed L.','No slots, captive pockets, roofs or inserts.'],2.7)
+    d.lines(101,83,['HOLES / LOCAL DIMENSIONS','Front: X6.3 / Y5.0, diameter3.2','Side: Y5.0 / Z13.4, diameter3.2','Side countersink: diameter5.0 x 90 deg','Depth0.9; leaves1.5 of straight bore.','Countersink PLASTIC ONLY, never FR4.'],2.7)
     d.lines(101,121,['FASTENERS','Front M3x8 pan/button, head <=6 dia','Side M3x8 flat countersunk (90 deg)','Side length includes head; seat it flush.','4 loose plain M3 nuts: AF<=5.5, h<=2.4','No washers or tall nyloc nuts.','Minimum nominal thread exit: 1.0 each.'],2.7)
-    d.lines(101,164,['FIT LIMITS','Front nut-to-upright: only 0.125 nominal','Nut swept right edge X9.575 (panel9.8)','Side head flush to0.3mm below face','Side screw tip X8.1..8.4','Measure ABS shrinkage and actual nuts.'],2.7)
+    d.lines(101,164,['FIT LIMITS','Front nut-to-upright: 0.725 nominal','Nut swept right edge X9.575 (panel9.8)','Side head flush to0.3mm below face','Side screw tip X8.1..8.4','Measure ABS shrinkage and actual nuts.'],2.7)
     d.lines(101,203,['CURRENT CARRIER CUTBACKS AT FRONT FOOT',
                      'Y16.5..27.5 / 101..112 to Z10.',
                      'Uncut PCB meets foot at Z2..4.6.',
@@ -120,7 +121,7 @@ def brackets(out,g):
     ax=273; ay=84; q=6
     d.rect(ax,ay,9.2*q,10*q,'#e8b396');d.circle(ax+6.3*q,ay+5*q,1.6*q)
     d.line(ax+3*q,ay,ax+3*q,ay+10*q,True)
-    d.lines(335,103,['Hole (6.3,5.0)','9.2 x 10 face','Dashed: 3mm wall'],2.5)
+    d.lines(335,103,['Hole (6.3,5.0)','9.2 x 10 face','Dashed: 2.4 web / 3.0 foot'],2.5)
     d.text(263,157,'OUTER SIDE / LOCAL YZ',3.1)
     sx=273; sy=164
     d.rect(sx,sy,18.4*4,10*4,'#e8b396')
@@ -137,8 +138,8 @@ def usb_detail(out,g):
     d=Drawing('HRO TYPE-C-31-M-12 | USB FIT AND DATUM REVIEW',
               'Exact Bread local lands + primary HRO body drawing. NO verified STEP model. This is a dimensioned envelope, not physical qualification.')
     d.lines(16,40,[
-      'Panel X across / Y down / Z into case. Carrier F.Cu X4.7; board front Z2.',
-      'HRO shell: 8.94 wide x 7.35 deep x 3.26 high (drawing). Nominal shell axis X6.33.',
+      'Panel X across / Y down / Z into case. Carrier F.Cu X4.1; board front Z2.',
+      'HRO shell: 8.94 wide x 7.35 deep x 3.26 high (drawing). Nominal shell axis X5.73.',
       'Mating face Z0.8, Y33.5. Native footprint anchor (69.25,103.475), rotation 0 degrees.',
       'Datum anchors: front shell tab 2.60 from face; rear 6.77 drawing / 6.78 local.',
       'Ambiguous drawing vertical 0.50/1.64/4.18/5.79 chain is NOT used to invent a PCB-edge datum.',
@@ -152,14 +153,14 @@ def usb_detail(out,g):
     x,y,w,h,r=g['aperture_XYWHR_mm'];scale=8;ox=30;oy=145
     d.rect(ox,oy,9.8*scale,18*scale,'#f1dfb6')
     d.rect(ox+x*scale,oy+(y-25)*scale,w*scale,h*scale,'white',r=r*scale)
-    d.rect(ox+4.7*scale,oy+(33.5-8.94/2-25)*scale,3.26*scale,8.94*scale,'#c7ccd2')
+    d.rect(ox+4.1*scale,oy+(33.5-8.94/2-25)*scale,3.26*scale,8.94*scale,'#c7ccd2')
     from hro_fit import verify
     fit=verify(g);box=fit['conservative_shell_Xmin_Xmax_Ymin_Ymax_mm']
     d.rect(ox+box[0]*scale,oy+(box[2]-25)*scale,(box[1]-box[0])*scale,(box[3]-box[2])*scale,'none',True)
     d.lines(125,150,[
       'FRONT VIEW: GRAY NOMINAL / DASHED WORST-CASE SHELL',
       f'Aperture: X{x:.2f}, Y{y:.2f}, W{w:.2f}, H{h:.2f}, R{r:.2f} mm.',
-      'Delta from 024: X -0.33, Y -0.50, width +0.80, height +1.00.',
+      'Delta from 024: X -0.93, Y -0.50, width +0.80, height +1.00.',
       'Each machined wall +/-0.10; centre registration +/-0.10 X/Y.',
       'Corner radius 0.50..0.70; profile acceptance THROUGH thickness.',
       'BOTH finished boards 1.60 +/-0.16 mm, including coating.',
@@ -190,8 +191,8 @@ def scad_envelope(out,g):
     text+=f'// Finished thickness1.44..1.76; machined aperture wall +/-0.10, centre +/-0.10, R0.50..0.70.\n'
     text+=f'module aperture(){{translate([{x}+{r},{y}+{r}])offset(r={r})square([{w}-{2*r},{h}-{2*r}]);}}\n'
     text+='color("gold")linear_extrude(1.6)difference(){square([9.8,128.5]);aperture();for(h=holes)translate([h[0],h[1]])circle(d=h[2]);}\n'
-    text+='color("darkgreen")translate([3.1,0,0])multmatrix([[0,0,1,0],[1,0,0,0],[0,1,0,0],[0,0,0,1]])linear_extrude(1.6)difference(){polygon(outline);for(h=[[22,15,3.2],[106.5,15,3.2],[43.5,27,2.5],[70.5,27,2.5]])translate([h[0],h[1]])circle(d=h[2]);}\n'
-    text+='// Gray block: drawing-based HRO body envelope, NOT a STEP/mating model.\ncolor([.7,.7,.7,.5])translate([4.7,33.5-8.94/2,.8])cube([3.26,8.94,7.35]);\n'
+    text+='color("darkgreen")translate([2.5,0,0])multmatrix([[0,0,1,0],[1,0,0,0],[0,1,0,0],[0,0,0,1]])linear_extrude(1.6)difference(){polygon(outline);for(h=[[22,15,3.2],[106.5,15,3.2],[43.5,27,2.5],[70.5,27,2.5]])translate([h[0],h[1]])circle(d=h[2]);}\n'
+    text+='// Gray block: drawing-based HRO body envelope, NOT a STEP/mating model.\ncolor([.7,.7,.7,.5])translate([4.1,33.5-8.94/2,.8])cube([3.26,8.94,7.35]);\n'
     text+='for(y=[22,106.5])color("orange")translate([.1,y-5,1.6])bracket();\n'
     (out/'assembly-envelope.scad').write_text(text)
     shutil.copyfile(Path(__file__).resolve().parents[1]/'hardware/mechanics/corner_braces.scad',out/'corner_braces.scad')
