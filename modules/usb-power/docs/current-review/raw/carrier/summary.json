@@ -1,0 +1,4324 @@
+{
+  "schema_version": 1,
+  "selection": {
+    "project_dir": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware",
+    "board": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_pcb",
+    "root_schematic": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_sch",
+    "sheet_files": [
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/01_input_protection.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/06_positive_boost.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/03_bucks.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/02_hardgate.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/07_output_rails.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/05_quiet_rails.kicad_sch",
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/04_bipolar.kicad_sch"
+    ],
+    "dependency_files": 63,
+    "dependency_bytes": 3792028,
+    "source_hashes": {
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/01_input_protection.kicad_sch": {
+        "sha256": "4777399c48fe21ad3277bb7ff3112d77afa1adad80115f92aae1bcb7a622e47b",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/02_hardgate.kicad_sch": {
+        "sha256": "6c4e8322d465028134be0ee9c59989bd884a90fda3f35970ad8918d028245de2",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/03_bucks.kicad_sch": {
+        "sha256": "dd703626e14a7e72f25e9e3963e7d5a5df330b21d5a0f392e6a231c5f36da462",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/04_bipolar.kicad_sch": {
+        "sha256": "461bd693b8bc373e33d4fb97b6888c0685eb206634d69c4d8a487b7533560393",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/05_quiet_rails.kicad_sch": {
+        "sha256": "527e878c851954d8f73f2872367790a856bc5b973aab2f670ec809c1d1cde0fe",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/06_positive_boost.kicad_sch": {
+        "sha256": "c6050db3041a5a9cbe6f17ae18928bf68ff48b46b96e2c13b96b6072e964397f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/07_output_rails.kicad_sch": {
+        "sha256": "b9b00acc29b2734b7eafd4480a0d5b18e4d0848559e81dac38ef586e6a8e5e60",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.kicad_sym": {
+        "sha256": "62e9047a628afe17f99bb02afe46e113c7d2a279a006a33b2578fecb1ce6b4e5",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod": {
+        "sha256": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod": {
+        "sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod": {
+        "sha256": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod": {
+        "sha256": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod": {
+        "sha256": "e1dae516e079b70c4736d001fb81bfb4ef5f9c2a37c8175223a44f83a04ff75f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/D_SMA.kicad_mod": {
+        "sha256": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod": {
+        "sha256": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
+        "sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod": {
+        "sha256": "f1154f7a5df90086a416a14a23effbbe3658ba33f3d7e5d2cc5e78493d66a6fc",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": {
+        "sha256": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/L_Bourns_SRP1245A.kicad_mod": {
+        "sha256": "ea1c06f76a1b7d9adace42c8aafda7ade649121bfe76a07d9120ac5f7b878093",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/L_CENKER_CKCS6045.kicad_mod": {
+        "sha256": "41fedf7a2f85b17abe0b60e9e26cb42d7b1ea952a3c0b27bd06cbfb04ee5a518",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/L_KOHER_MDA1040.kicad_mod": {
+        "sha256": "1d6ded18093ff29661a227bdf71217ba9968ad9e7d71359bdae7e08ae174a56a",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/L_SLO1040H6R8MTT.kicad_mod": {
+        "sha256": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/L_TMPC1205HP_220M.kicad_mod": {
+        "sha256": "58bd21a3cce598b1d6ad5ca89abce253a309c81741d505bfa4788c9b76ad73cc",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod": {
+        "sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod": {
+        "sha256": "f050b6a50cc7e6f86291fb7aa8f87b0d02255e21cfbddf291cdccc87e5889794",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SOT-23-6.kicad_mod": {
+        "sha256": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": {
+        "sha256": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SW_APEM_MJTP1117_RightAngle_THT.kicad_mod": {
+        "sha256": "81100a823739aeaf1059ce76097c957f786054c87c519be35508fd96061f6f66",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": {
+        "sha256": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SW_TS1166VW_RightAngle_THT_P4.50_P7.00_Row2.50mm.kicad_mod": {
+        "sha256": "dff8a8945017cf9e05d375e73e1e1a26eae58d5b10f170063cce7370ce0d86c9",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod": {
+        "sha256": "92af73d1f37e1e375a74c95716ba774c078dcccee01816a9fe4c078cf8987454",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm.kicad_mod": {
+        "sha256": "6c934207b3364097ad7cfa94f73aa7a568dd597e1e0b3b0e7fa6e3c4a60c680f",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/Texas_RTE0016C_WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm.kicad_mod": {
+        "sha256": "cc33fbc24bc1a1d93a273a62a0f80f79572277de71a1d85a7abef5d95ea402e2",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/WireLanding_2x08_P2.54mm.kicad_mod": {
+        "sha256": "45d8f01ca508b17004547bd7a8188ea2a27a4603027182a1522d85fd1c45a5ba",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step": {
+        "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": {
+        "sha256": "8f5355877fb800c2ab9c9edb0c9553c940df7f91bda73c298d6dc0d451bfdd3b",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step": {
+        "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step": {
+        "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step": {
+        "sha256": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step": {
+        "sha256": "11e948c72c90e2b6322436b72745f40ff4e8ba0da64fb2a0df943dfa61e89c1a",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step": {
+        "sha256": "c9fe686b4d1b56927a41fa84a9bc1efb61d8a45a123a3db43bcaa05c2891d635",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": {
+        "sha256": "f8217a19e2965bc3617c97b8bb851829f4470fb33a5c50462eb6df0f7cc2cd4a",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": {
+        "sha256": "3623be00464827bd6d94a12acf96d5923399b878c328184fa76e1ecbc0a63bc2",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step": {
+        "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/fp-lib-table": {
+        "sha256": "a71095e48bbfdcfd830174d828f8c2e95ed05e9ceb7a32538c37d05296d262bf",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/sym-lib-table": {
+        "sha256": "ef4caaf483f74d7386a5f5b08bc8110f2a7397cbae2ff276d3acf3081ec841e1",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_pcb": {
+        "sha256": "937cba26feb2d0aba6c7add300378e405f82fae2901569460de81e96626c6b1a",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_pro": {
+        "sha256": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_sch": {
+        "sha256": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_0402_1005Metric.step": {
+        "sha256": "03e44c4b2b727b8d4b6b1fd598cbd12dd5e614f1dfeefa96a92a07e3a3b312a2",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": {
+        "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_0805_2012Metric.step": {
+        "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_1206_3216Metric.step": {
+        "sha256": "11e948c72c90e2b6322436b72745f40ff4e8ba0da64fb2a0df943dfa61e89c1a",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": {
+        "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Diode_SMD.3dshapes/D_SMA.step": {
+        "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Fuse.3dshapes/Fuse_1206_3216Metric.step": {
+        "sha256": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": {
+        "sha256": "8f5355877fb800c2ab9c9edb0c9553c940df7f91bda73c298d6dc0d451bfdd3b",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Package_DFN_QFN.3dshapes/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step": {
+        "sha256": "7f57f4040117e2ef4f78a76d74424d6f4d23513883c32457503aaaa3beb70471",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Package_SO.3dshapes/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": {
+        "sha256": "f8217a19e2965bc3617c97b8bb851829f4470fb33a5c50462eb6df0f7cc2cd4a",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": {
+        "sha256": "3623be00464827bd6d94a12acf96d5923399b878c328184fa76e1ecbc0a63bc2",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step": {
+        "sha256": "c9fe686b4d1b56927a41fa84a9bc1efb61d8a45a123a3db43bcaa05c2891d635",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step": {
+        "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+        "symlink": null
+      },
+      "/usr/share/kicad/3dmodels/Resistor_SMD.3dshapes/R_0805_2012Metric.step": {
+        "sha256": "ded342cdb394fb45395227beaaa75cc390613cf2581b29cd6d22c12abd6103b2",
+        "symlink": null
+      },
+      "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/tools/kicad-project.json": {
+        "sha256": "f2c8c6080c50a5620c5bc70ebc37a360f08cb66877c9f5509b101702f5888e01",
+        "symlink": null
+      }
+    },
+    "native_schematic_parity": true
+  },
+  "native_cli": {
+    "available": true,
+    "path": "/usr/bin/kicad-cli",
+    "version": "10.0.6",
+    "checks_supported": true,
+    "stderr": ""
+  },
+  "source_unchanged": true,
+  "order_ready": false,
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "/tmp/review087-1792291120/main/netlist.xml",
+        "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/tmp/review087-1792291120/main/erc.json",
+        "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nSaved ERC Report to /tmp/review087-1792291120/main/erc.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/usr/bin/kicad-cli",
+        "pcb",
+        "drc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--exit-code-violations",
+        "--output",
+        "/tmp/review087-1792291120/main/drc.json",
+        "--refill-zones",
+        "--all-track-errors",
+        "--schematic-parity",
+        "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_pcb"
+      ],
+      "returncode": 0,
+      "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /tmp/review087-1792291120/main/drc.json\n",
+      "stderr": ""
+    }
+  ],
+  "findings": {
+    "erc": {
+      "categories": {
+        "violations": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    },
+    "drc": {
+      "categories": {
+        "violations": 0,
+        "unconnected_items": 0,
+        "schematic_parity": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    }
+  },
+  "errors": [],
+  "staged_path_rebindings": [
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/fp-lib-table",
+      "kind": "uri",
+      "path_bindings": {
+        "${KIPRJMOD}/BigModular.pretty": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/sym-lib-table",
+      "kind": "uri",
+      "path_bindings": {
+        "${KIPRJMOD}/BigModular.kicad_sym": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.kicad_sym"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_sch",
+      "kind": "property",
+      "path_bindings": {
+        "01_input_protection.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/01_input_protection.kicad_sch",
+        "06_positive_boost.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/06_positive_boost.kicad_sch",
+        "03_bucks.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/03_bucks.kicad_sch",
+        "02_hardgate.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/02_hardgate.kicad_sch",
+        "07_output_rails.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/07_output_rails.kicad_sch",
+        "05_quiet_rails.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/05_quiet_rails.kicad_sch",
+        "04_bipolar.kicad_sch": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/04_bipolar.kicad_sch"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/usb-power.kicad_pcb",
+      "kind": "model",
+      "path_bindings": {
+        "${KIPRJMOD}/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/a90839e50ba17ff38d86d0dedd097c7c68615358cdc339935fa26adf9e098bea/C_1206_3216Metric.step",
+        "${KIPRJMOD}/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/39fbb2736db8e2d93b6cb20530cebb5d5b562f3ab3e4992ba6c7c369c4e4272b/C_0805_2012Metric.step",
+        "${KIPRJMOD}/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/27e777f3434f640859c02aa50d63e0bb64cb8c37a7cdf3e0ae80ae54b32b25a6/R_0603_1608Metric.step",
+        "${KIPRJMOD}/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/9ea1a202443f965b2fb1185da7fc36f0cbfe41bdec87a10e62ad52d257ce1690/C_0603_1608Metric.step",
+        "${KIPRJMOD}/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/df934a9c7cecf495ee0e5f761ff9b52df02a8db5fc19fe0c5f00fb66d2986d9f/SOT-23-6.step",
+        "${KIPRJMOD}/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/efea2fc85e16f3361dd1b166e79f3c0698ee47f9f6e384ee534d75815e991268/D_SMA.step",
+        "${KIPRJMOD}/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/65091e9b9933a64fcdca7aea1d086214620d0a70486095bcaa921be435cf555e/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step",
+        "${KIPRJMOD}/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/527a57265d6612f87de25f9871011f116d095879866047ffd8959cbf72c72849/Fuse_1206_3216Metric.step",
+        "${KIPRJMOD}/_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/f81d7c10cd740d4409ccc15477553396a2a6e343f01507b1aae374b77db72761/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step",
+        "${KIPRJMOD}/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/60c8f684777cbae929a1c5f0d380de0d2a68f94868e3662d936fb5d805cf7611/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_0402_1005Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0402_1005Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/e5888967b26b8f8dc46f419d1aab8085d81e640a412b7005c2f41b70cca0ee68/C_0402_1005Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_0603_1608Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_0805_2012Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0805_2012Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/e8cd948c67246a66bf57635173a525bd581a179b34eea0f824bc8f98cc7c34cb/C_0805_2012Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_1206_3216Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/C_1210_3225Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/b999dd5a9584a248833dc3adde1c96e4688bb46c6fafc0f43164f3a5108982ef/C_1210_3225Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/D_SMA.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/Fuse_1206_3216Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1206_3216Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/8bb0d568a846d5e5df571ac6ad3595b8f923fd67637815f80db8189ee529080c/HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/R_0603_1608Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/R_0805_2012Metric.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0805_2012Metric.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/1c6a269204b3901b5b464cbd2dec266d314fd17c5604f82dd4995d48e1de18b5/R_0805_2012Metric.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SOT-23-6.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step"
+      }
+    },
+    {
+      "source": "/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/BigModular.pretty/Texas_RGE0024B_VQFN-24-1EP_4x4mm_P0.5mm_EP2.45x2.45mm.kicad_mod",
+      "kind": "model",
+      "path_bindings": {
+        "${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step": "/tmp/kicad private checks xzeqgcmb/inputs/home/azero/.okbrain/workspaces/big-modular/087/modules/usb-power/hardware/_kicad_models/3feaa511e5594da6d40d1e8e6d2b5ee96e566f648a22ca9ff37886065d62010c/Texas_RGE0024H_VQFN-24-1EP_4x4mm_P0.5mm_EP2.7x2.7mm.step"
+      }
+    }
+  ],
+  "netlist": {
+    "components": {
+      "C1": {
+        "MPN": "CL21B105KBFNNNE",
+        "LCSC": "C28323",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_0805_2012Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf",
+        "Description": "",
+        "Reference": "C1",
+        "Value": "1u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "F1": {
+        "MPN": "0466003.NRHF",
+        "LCSC": "C14165",
+        "NOTE": "0466003.NRHF catalog candidate only; source/fuse/eFuse thermal and I2t coordination NOT qualified.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:Fuse_1206_3216Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "F1",
+        "Value": "3A 32V candidate",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "J1": {
+        "MPN": "TYPE-C-31-M-12",
+        "LCSC": "C165948",
+        "NOTE": "HRO C165948; Bread local land. A1 includes B12; A4 includes B9; A9 includes B4; A12 includes B1; S1 shell=GND. USB data/SBU NC. No verified 3D model; see docs/usb-hro-review.md. Economy catalog candidate; front SMT contacts with four plated shell slots requiring explicit supplier solder-process review; not quote approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{\"assembly\": \"jlcpcb\", \"reason\": \"Economy catalog candidate; supplier process/preview approval pending.\"}",
+        "Manufacturer": "HRO (Korean Hroparts Elec)",
+        "Footprint": "BigModular:HRO-TYPE-C-31-M-12",
+        "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/9e56b777c022540fcce7c7f67825f55e.pdf?productCode=C165948",
+        "Description": "",
+        "Reference": "J1",
+        "Value": "TYPE-C-31-M-12",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R2": {
+        "MPN": "0603WAF6801T5E",
+        "LCSC": "C23212",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R2",
+        "Value": "6.8k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U1": {
+        "MPN": "CH224A",
+        "LCSC": "C42459160",
+        "NOTE": "WCH V2 table4-1; VHV1 is high-voltage input. EP0 mapped to pad11. Section7.1 typo resolved against pin table4-1, app6.1 and rating8.1.1; see engineering note.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm",
+        "Datasheet": "https://done.land/assets/files/ch224a_datasheet.pdf",
+        "Description": "",
+        "Reference": "U1",
+        "Value": "CH224A",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C2": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "C2",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C3": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "C3",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C4": {
+        "MPN": "CL31A106KBHNNNE",
+        "LCSC": "C13585",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A106KBHNNNE_C13585.pdf",
+        "Description": "",
+        "Reference": "C4",
+        "Value": "10u 50V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R4": {
+        "MPN": "0603WAF4703T5E",
+        "LCSC": "C23178",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF4703T5E_C23178.pdf",
+        "Description": "",
+        "Reference": "R4",
+        "Value": "470k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R5": {
+        "MPN": "0603WAF1003T5E",
+        "LCSC": "C25803",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R5",
+        "Value": "100k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R6": {
+        "MPN": "0603WAF8063T5E",
+        "LCSC": "C23250",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R6",
+        "Value": "806k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R7": {
+        "MPN": "0603WAF1003T5E",
+        "LCSC": "C25803",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R7",
+        "Value": "100k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R8": {
+        "MPN": "0603WAF5601T5E",
+        "LCSC": "C23189",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF5601T5E_C23189.pdf",
+        "Description": "",
+        "Reference": "R8",
+        "Value": "5.6k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R31": {
+        "MPN": "0603WAF1002T5E",
+        "LCSC": "C25804",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R31",
+        "Value": "10k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R36": {
+        "MPN": "0603WAF3003T5E",
+        "LCSC": "C23024",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF3003T5E_C23024.pdf",
+        "Description": "",
+        "Reference": "R36",
+        "Value": "300k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R77": {
+        "MPN": "0603WAF8202T5E",
+        "LCSC": "C23254",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010100_UNI-ROYAL-Uniroyal-Elec-0603WAF8202T5E_C23254.pdf",
+        "Description": "",
+        "Reference": "R77",
+        "Value": "82k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R78": {
+        "MPN": "0603WAF1002T5E",
+        "LCSC": "C25804",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf",
+        "Description": "",
+        "Reference": "R78",
+        "Value": "10k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R79": {
+        "MPN": "0603WAF2200T5E",
+        "LCSC": "C22962",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF2200T5E_C22962.pdf",
+        "Description": "",
+        "Reference": "R79",
+        "Value": "220 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R80": {
+        "MPN": "0603WAF2200T5E",
+        "LCSC": "C22962",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF2200T5E_C22962.pdf",
+        "Description": "",
+        "Reference": "R80",
+        "Value": "220 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R81": {
+        "MPN": "0603WAF1003T5E",
+        "LCSC": "C25803",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf",
+        "Description": "",
+        "Reference": "R81",
+        "Value": "100k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R82": {
+        "MPN": "0603WAF2001T5E",
+        "LCSC": "C22975",
+        "NOTE": "Basic/Economy series member: R4+R77+R78=562k; R8+R79+R80=6.04k; R36+R81+R82=402k. Each 1%, 100ppm/K, 100mW/75V. See basic-passives-disposition.md for independent corners, fault/derating and local RTN review.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF2001T5E_C22975.pdf",
+        "Description": "",
+        "Reference": "R82",
+        "Value": "2k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "SW1": {
+        "MPN": "TL3340AF160QG",
+        "LCSC": "C2886925",
+        "NOTE": "P021301 Rev B contacts1+3 common; contact2 RTN. Press disables eFuse; release retries latch-off subject to UV/OV. Internal SHDN pullup only; no downstream EN or external supply load. Case MP floating. Extended/Economy catalog candidate; SMT J-leads/case paste retained. No supplier process/quote approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{\"assembly\": \"jlcpcb\", \"reason\": \"Economy catalog candidate; supplier process/preview approval pending.\"}",
+        "Manufacturer": "E-Switch",
+        "Footprint": "BigModular:SW_TL3340AF160QG_HandSolder",
+        "Datasheet": "https://configured-product-images.s3.amazonaws.com/2D/specs/TL3340AF160QG.pdf",
+        "Description": "",
+        "Reference": "SW1",
+        "Value": "TL3340AF160QG",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U2": {
+        "MPN": "TPS26600PWPR",
+        "LCSC": "C544399",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:HTSSOP-16-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask2.66x2.46mm",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps2660.pdf",
+        "Description": "",
+        "Reference": "U2",
+        "Value": "TPS26600PWPR",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C18": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C18",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C19": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C19",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C20": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "C20",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C36": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "C36",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C38": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Effective capacitance under DC bias and temperature must be verified; no automatic reuse approval.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C38",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C69": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Local buck VIN bank: two C12891 per IC; typical-data screen 10.664uF at9.45V, not guaranteed. Remote C4 excluded; input ringing/ripple/startup bench gates remain.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C69",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C72": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Local buck output bank: C6+C70+C71 MID; C19+C38+C72 P5. Three C12891 screen27.6315uF at5.5V; remote C37 excluded. Typical-data screen only; loop/load-step bench qualification pending.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C72",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "L4": {
+        "MPN": "SLO1040H6R8MTT",
+        "LCSC": "C207852",
+        "NOTE": "Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "Sunltech",
+        "Footprint": "BigModular:L_SLO1040H6R8MTT",
+        "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/4b813f0bd1895de8fff894fc302289d3.pdf?productCode=C207852",
+        "Description": "",
+        "Reference": "L4",
+        "Value": "6.8uH 20% shielded",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R17": {
+        "MPN": "0603WAF1003T5E",
+        "LCSC": "C25803",
+        "NOTE": "Independent +5 V divider.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R17",
+        "Value": "100k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R18": {
+        "MPN": "0603WAF1302T5E",
+        "LCSC": "C22797",
+        "NOTE": "Basic13k plus510R series bottom leg; retain nominal5V rather than13k alone. 1%,100ppm/K; see basic-swaps-checkpoint.md.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1302T5E_C22797.pdf",
+        "Description": "",
+        "Reference": "R18",
+        "Value": "13k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R85": {
+        "MPN": "0603WAF5100T5E",
+        "LCSC": "C23193",
+        "NOTE": "Basic510R series with R10/R18; total13.51k bottom leg. 1%,100ppm/K,100mW/75V; dated039 observation lacks raw provenance, release recheck required.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R85",
+        "Value": "510 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U5": {
+        "MPN": "TPS54302DDCR",
+        "LCSC": "C311983",
+        "NOTE": "Prototype candidate; qualify ratings, land pattern and operating corners.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:SOT-23-6",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps54302.pdf",
+        "Description": "",
+        "Reference": "U5",
+        "Value": "TPS54302DDCR",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C5": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C5",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C6": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C6",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C7": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "U3 local HF bypass, VIN-to-NRAW, NOT system GND. Not counted toward minimum effective bulk.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+        "Description": "",
+        "Reference": "C7",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C9": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C9",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C35": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "Bootstrap capacitor to SW2, NOT system GND or NRAW.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+        "Description": "",
+        "Reference": "C35",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C37": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C37",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C68": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Retained two-part VPROT-to-SYSTEM-GND source bank; never across VPROT-to-NRAW span. Separate from C89..92 local50V bypass.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C68",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C70": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C70",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C71": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C71",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C75": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C75",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C76": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Seven local U3 output C12891, systemGND-to-NRAW. Reused former MID/U4 caps. Screen DC+AC/temp/tolerance/aging; remote U13 input5caps not counted as local ripple bank. Loop/thermal qualification remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C76",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C89": {
+        "MPN": "CL31B225KBHNNNE",
+        "LCSC": "C50254",
+        "NOTE": "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf",
+        "Description": "",
+        "Reference": "C89",
+        "Value": "2.2u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C90": {
+        "MPN": "CL31B225KBHNNNE",
+        "LCSC": "C50254",
+        "NOTE": "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf",
+        "Description": "",
+        "Reference": "C90",
+        "Value": "2.2u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C91": {
+        "MPN": "CL31B225KBHNNNE",
+        "LCSC": "C50254",
+        "NOTE": "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf",
+        "Description": "",
+        "Reference": "C91",
+        "Value": "2.2u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C92": {
+        "MPN": "CL31B225KBHNNNE",
+        "LCSC": "C50254",
+        "NOTE": "IC-local VIN3-to-GND1(NRAW) bypass: FOUR C50254 plus C7. 8.8u nominal,3.01u illustrative combined bias/TCC/tol/AC/aging screen; NOT guaranteed minimum. No25V parts across this span.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31B225KBHNNNE_C50254.pdf",
+        "Description": "",
+        "Reference": "C92",
+        "Value": "2.2u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C93": {
+        "MPN": "0603B103K500NT",
+        "LCSC": "C57112",
+        "NOTE": "DNP/not purchased/not fitted. 0603 tuning footprint across ENTIRE upper R9+R15+R84 divider, system GND to NINV_FB. Existing Basic C57112/0603B103K500NT 10n50V identity is a metadata placeholder ONLY, not a selected tuning value. No fitted CFF or loop-stability claim; future value requires measured loop review.",
+        "Manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+        "JLCPCB Exclude": "yes",
+        "JLCPCB Audit Requirements": "{\"reason\": \"DNP/not purchased/not fitted. 0603 tuning footprint across ENTIRE upper R9+R15+R84 divider, system GND to NINV_FB. Existing Basic C57112/0603B103K500NT 10n50V identity is a metadata placeholder ONLY, not a selected tuning value. No fitted CFF or loop-stability claim; future value requires measured loop review.\"}",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.pdf",
+        "Description": "",
+        "Reference": "C93",
+        "Value": "DNP CFF / TBD",
+        "__DNP": "1",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "D30": {
+        "MPN": "SS34",
+        "LCSC": "C8678",
+        "NOTE": "Startup positive-NRAW mitigation: anode2=NRAW, cathode1=SYSTEM GND. Same MDD SS34 C8678/SMA as D27/D28/D29. TI SNVA897 review rationale; NOT a guaranteed +0.3V clamp at arbitrary surge. Measure U13 IN/NR/FB/OUT startup waveforms. Reverse leakage loads NRAW; temperature sensitivity explicitly assumed in sr2-schematic-budget.json.",
+        "Manufacturer": "MDD(Microdiode Semiconductor)",
+        "Footprint": "BigModular:D_SMA",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf",
+        "Description": "",
+        "Reference": "D30",
+        "Value": "SS34 40V",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "L1": {
+        "MPN": "TMPC1205HP-220MG-D",
+        "LCSC": "C357250",
+        "NOTE": "TAI-TECH TMPC1205HP-220MG-D; 22uH +/-20%; DCR50mohm typ/58mohm max. Isat10A at approx30% L drop/25C; Irms6.5A at approx40C rise. Height4.8+/-0.2mm (5.0mm max). Land identical to SRP1245A:14.2mm overall/8.0mm gap, two3.1(X)x5.0(Y)mm pads. Stock184 observed2026-10-17, not reserved or guaranteed. 10A is NOT a guaranteed hot minimum. Body-only0.1mm allowance before solder; >=0.15mm paste recommended; PCB fit/stack/hot-fault/thermal qualification pending.",
+        "Manufacturer": "TAI-TECH",
+        "Footprint": "BigModular:L_TMPC1205HP_220M",
+        "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/a9533ef0ce1b123359bb73d86ce35386.pdf?productCode=C357250",
+        "Description": "",
+        "Reference": "L1",
+        "Value": "22uH 20% shielded",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R9": {
+        "MPN": "RT0603BRD07100KL",
+        "LCSC": "C122538",
+        "NOTE": "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810241722_YAGEO-RT0603BRD07100KL_C122538.pdf",
+        "Description": "",
+        "Reference": "R9",
+        "Value": "100k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R10": {
+        "MPN": "RT0603BRD0710KL",
+        "LCSC": "C95204",
+        "NOTE": "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1811082117_YAGEO-RT0603BRD0710KL_C95204.pdf",
+        "Description": "",
+        "Reference": "R10",
+        "Value": "10k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R15": {
+        "MPN": "RT0603BRD07120KL",
+        "LCSC": "C705720",
+        "NOTE": "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2008171235_YAGEO-RT0603BRD07120KL_C705720.pdf",
+        "Description": "",
+        "Reference": "R15",
+        "Value": "120k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R84": {
+        "MPN": "0603WAF6201T5E",
+        "LCSC": "C4260",
+        "NOTE": "IBB upper100k+120k precision25ppm +6.2k Basic100ppm=226.2k; lower10k precision. Independent corners, no cancellation. Upper weighted0.124668%,27.0557ppm/K, not entirely0.1%. Existing Extended codes reused; see sr2-schematic-budget.json.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF6201T5E_C4260.pdf",
+        "Description": "",
+        "Reference": "R84",
+        "Value": "6.2k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R91": {
+        "MPN": "0603WAF1003T5E",
+        "LCSC": "C25803",
+        "NOTE": "EN upper Basic100k; R92+R93=20k+2k to NRAW. No connection to EF_SHDN/RTN/retired BI_EN. 5uA EN bias is a sensitivity, not guaranteed max. EN can remain high with residual negative rail; not output disconnect.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf",
+        "Description": "",
+        "Reference": "R91",
+        "Value": "100k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R92": {
+        "MPN": "0603WAF2002T5E",
+        "LCSC": "C4184",
+        "NOTE": "EN lower leg20k+2k Basic series to NRAW only; reuses existing C4184/C22975 types instead of C31850 with missing Economy evidence. Startup<=7.34V ignoring helping pullup; 28V span+5uA bias screen below5.5V. Off/residual/reverse-path bench qualification required.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2002T5E_C4184.pdf",
+        "Description": "",
+        "Reference": "R92",
+        "Value": "20k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R93": {
+        "MPN": "0603WAF2001T5E",
+        "LCSC": "C22975",
+        "NOTE": "Series bottom EN member with R92=20k:22k total, each Basic1%100ppm. Existing Economy-evidenced C22975 reused; no new22k type or guessed eligibility.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF2001T5E_C22975.pdf",
+        "Description": "",
+        "Reference": "R93",
+        "Value": "2k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U3": {
+        "MPN": "TPS54302DDCR",
+        "LCSC": "C311983",
+        "NOTE": "SR2 direct VPROT IBB: GND1=NRAW, VIN3=VPROT, SW2 via L1 to SYSTEM GND. TI SLVA933 section5 explicitly includes TPS54302. EN/FB referenced to NRAW, never system ground. 28V recommended/30V absolute span, not an OVP clamp. Prototype screens only.",
+        "Manufacturer": "Texas Instruments",
+        "Footprint": "BigModular:SOT-23-6",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps54302.pdf",
+        "Description": "",
+        "Reference": "U3",
+        "Value": "TPS54302DDCR",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C48": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive input bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C48",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C49": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive input bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C49",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C50": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive input bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C50",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C51": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive output bank: 6 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C51",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C52": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive output bank: 6 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C52",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C53": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive output bank: 6 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C53",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C54": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative input bank: 5 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C54",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C55": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative input bank: 5 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C55",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C56": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative input bank: 5 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C56",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C57": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative output bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C57",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C58": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative output bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C58",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C59": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative output bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C59",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C60": {
+        "MPN": "CL21B105KBFNNNE",
+        "LCSC": "C28323",
+        "NOTE": "Positive NR sees ~12V; >=10n effective mandatory; 1u nominal targets low noise and ~122ms typical startup. Verify bias.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_0805_2012Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf",
+        "Description": "",
+        "Reference": "C60",
+        "Value": "1u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C61": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "Negative NR/SS ~-1.175V: 100n targets ~120ms typical startup, not guaranteed sequencing; 1u would be ~1.2s. Noise tradeoff must be measured.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+        "Description": "",
+        "Reference": "C61",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C62": {
+        "MPN": "0603B103K500NT",
+        "LCSC": "C57112",
+        "NOTE": "DNP prototype: retain pads; TI TPS7A33 section8.1.4 says CFF not required for stability. Removes capacitive FB-kick path; sacrifices noise/PSRR. Not a proven cure. Shutdown/absolute-limit bench gates remain.",
+        "Manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+        "JLCPCB Exclude": "yes",
+        "JLCPCB Audit Requirements": "{\"reason\": \"C62 prototype DNP: retain pads, noise/PSRR tradeoff; no fitted purchasing or assembly.\"}",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_FH--Guangdong-Fenghua-Advanced-Tech-0603B103K500NT_C57112.pdf",
+        "Description": "",
+        "Reference": "C62",
+        "Value": "10n 50V X7R",
+        "__DNP": "1",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C63": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive input bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C63",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C64": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive output bank: 6 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C64",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C65": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive output bank: 6 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C65",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C66": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "positive output bank: 6 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C66",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C67": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative input bank: 5 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C67",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C73": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative output bank: 4 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C73",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C74": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "negative input bank: 5 parallel CL31A226KAHNNNE. Prototype screen at 14.8V raw/12.4V output includes -10% tolerance, -15% temperature, 5% aging allowance. >=10u effective required; positive output >=20u. Typical data is not a guaranteed minimum; lot/bias/temperature and stability bench acceptance required. X5R maximum85C; low-ESR ceramic, nonpolar. See docs/ldo-evidence/capacitor-disposition.json.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C74",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "D27": {
+        "MPN": "SS34",
+        "LCSC": "C8678",
+        "NOTE": "Reverse discharge shunt: anode2=P12, cathode1=PRAW. Not reverse blocking. Validate input collapse/backdrive and current/energy; no hot-parallel supply.",
+        "Manufacturer": "MDD(Microdiode Semiconductor)",
+        "Footprint": "BigModular:D_SMA",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf",
+        "Description": "",
+        "Reference": "D27",
+        "Value": "SS34 40V",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "D28": {
+        "MPN": "SS34",
+        "LCSC": "C8678",
+        "NOTE": "Negative reverse discharge shunt: anode2=NRAW, cathode1=N12. SS34 Vf does NOT establish OUT-IN >= -0.3V, nor FB/NR absolute limits. Transient qualification gate remains open; not reverse blocking.",
+        "Manufacturer": "MDD(Microdiode Semiconductor)",
+        "Footprint": "BigModular:D_SMA",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf",
+        "Description": "",
+        "Reference": "D28",
+        "Value": "SS34 40V",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R72": {
+        "MPN": "RT0603BRD0790K9L",
+        "LCSC": "C728600",
+        "NOTE": "SR1 final divider:(90.9k+0R+1.2k)/10k=-11.99675V before IFB. R72/R74 precision0.1%,25ppm/K exceptions; R73 Basic1%,100ppm/K; R83 jumper0..0.1ohm screen. Not silently derated to-11.95V. See split-rail-schematic.md.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_YAGEO-RT0603BRD0790K9L_C728600.pdf",
+        "Description": "",
+        "Reference": "R72",
+        "Value": "90.9k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R73": {
+        "MPN": "0603WAF1201T5E",
+        "LCSC": "C22765",
+        "NOTE": "SR1 final divider:(90.9k+0R+1.2k)/10k=-11.99675V before IFB. R72/R74 precision0.1%,25ppm/K exceptions; R73 Basic1%,100ppm/K; R83 jumper0..0.1ohm screen. Not silently derated to-11.95V. See split-rail-schematic.md.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R73",
+        "Value": "1.2k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R74": {
+        "MPN": "RT0603BRD0710KL",
+        "LCSC": "C95204",
+        "NOTE": "SR1 final divider:(90.9k+0R+1.2k)/10k=-11.99675V before IFB. R72/R74 precision0.1%,25ppm/K exceptions; R73 Basic1%,100ppm/K; R83 jumper0..0.1ohm screen. Not silently derated to-11.95V. See split-rail-schematic.md.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1811082117_YAGEO-RT0603BRD0710KL_C95204.pdf",
+        "Description": "",
+        "Reference": "R74",
+        "Value": "10k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R83": {
+        "MPN": "0603WAF0000T5E",
+        "LCSC": "C21189",
+        "NOTE": "SR1 final divider:(90.9k+0R+1.2k)/10k=-11.99675V before IFB. R72/R74 precision0.1%,25ppm/K exceptions; R73 Basic1%,100ppm/K; R83 jumper0..0.1ohm screen. Not silently derated to-11.95V. See split-rail-schematic.md.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221126_UNI-ROYAL-Uniroyal-Elec-0603WAF0000T5E_C21189.pdf",
+        "Description": "",
+        "Reference": "R83",
+        "Value": "0 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U12": {
+        "MPN": "TPS7A4700RGWR",
+        "LCSC": "C114839",
+        "NOTE": "ANY-OUT ONLY: 5/6/9/11 GND -> 12.000V; 4/8/10/12 float. SENSE3 final P12. EN13 PRAW. NR14 at ~12V. EP21 GND. Not a 1A supply rating.",
+        "Manufacturer": "Texas Instruments",
+        "Footprint": "BigModular:Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps7a47.pdf",
+        "Description": "",
+        "Reference": "U12",
+        "Value": "TPS7A4700RGWR",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U13": {
+        "MPN": "TPS7A3301RGWR",
+        "LCSC": "C90082",
+        "NOTE": "NEGATIVE IN15/16 and EN13=NRAW; OUT1/20=N12; FB3 negative divider; NR14=-1.175V approx; GND7/EP21=GND, never NRAW. No reverse isolation.",
+        "Manufacturer": "Texas Instruments",
+        "Footprint": "BigModular:Texas_RGW0020A_VQFN-20-1EP_5x5mm_P0.65mm_EP3.15x3.15mm",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps7a33.pdf",
+        "Description": "",
+        "Reference": "U13",
+        "Value": "TPS7A3301RGWR",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "D10": {
+        "MPN": "",
+        "LCSC": "",
+        "NOTE": "DNP by user: not purchased or fitted. Retain physical footprint and indicator circuit: P5 -> R32 1k -> anode2; cathode1 GND. No automatic blink, no external control, not proof all rails are healthy. Top-cluster D10 hole/formed-lead envelope; no LED procurement requested.",
+        "JLCPCB Exclude": "yes",
+        "JLCPCB Audit Requirements": "{\"reason\": \"D10 is DNP by user; no fitted purchasing or assembly.\"}",
+        "Footprint": "BigModular:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "D10",
+        "Value": "RED 3mm / +5V POWER / DNP",
+        "__DNP": "1",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "J7": {
+        "MPN": "",
+        "LCSC": "",
+        "NOTE": "ON-CARRIER numbered solder lands, not an extra purchasable box header. Physical output cable boundary; single output, never another active source.",
+        "JLCPCB Exclude": "yes",
+        "JLCPCB Audit Requirements": "{\"assembly\": \"manual\", \"reason\": \"User-selected manual interface/LED, excluded from JLC placement.\"}",
+        "Footprint": "BigModular:WireLanding_2x08_P2.54mm",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "J7",
+        "Value": "Manual IDC wire landing",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R25": {
+        "MPN": "0603WAF1002T5E",
+        "LCSC": "C25804",
+        "NOTE": "Bleed provision only; does not prove rail discharge time or prevent backfeed.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R25",
+        "Value": "10k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R26": {
+        "MPN": "0603WAF1002T5E",
+        "LCSC": "C25804",
+        "NOTE": "Bleed provision only; does not prove rail discharge time or prevent backfeed.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R26",
+        "Value": "10k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R27": {
+        "MPN": "0603WAF1002T5E",
+        "LCSC": "C25804",
+        "NOTE": "Bleed provision only; does not prove rail discharge time or prevent backfeed.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R27",
+        "Value": "10k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R32": {
+        "MPN": "0603WAF1001T5E",
+        "LCSC": "C21190",
+        "NOTE": "Ordinary final +5V power indicator only: 1k series limits current, no controller or blink. Manual3mm D10 cathode to GND. At5.5V and Vf=0, resistor power<31mW with1% tolerance; exact LED brightness/MPN still pending.",
+        "JLCPCB Exclude": "no",
+        "JLCPCB Audit Requirements": "{}",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "",
+        "Description": "",
+        "Reference": "R32",
+        "Value": "1k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C77": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Four local boost output C12891; count independently from remote U12 input bank. Combined DC+AC+tolerance/temp/aging sensitivity, ripple/load-step and loop tests required.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C77",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C78": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Four local boost output C12891; count independently from remote U12 input bank. Combined DC+AC+tolerance/temp/aging sensitivity, ripple/load-step and loop tests required.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C78",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C79": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Four local boost output C12891; count independently from remote U12 input bank. Combined DC+AC+tolerance/temp/aging sensitivity, ripple/load-step and loop tests required.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C79",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C80": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Four local boost output C12891; count independently from remote U12 input bank. Combined DC+AC+tolerance/temp/aging sensitivity, ripple/load-step and loop tests required.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C80",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C82": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Three local boost VIN C12891; conservative screen exceeds10uF including AC sensitivity at9.45V. eFuse dVdt/precharge budget includes full zero-bias nominal capacitance.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C82",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C83": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Three local boost VIN C12891; conservative screen exceeds10uF including AC sensitivity at9.45V. eFuse dVdt/precharge budget includes full zero-bias nominal capacitance.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C83",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C84": {
+        "MPN": "CL31A226KAHNNNE",
+        "LCSC": "C12891",
+        "NOTE": "Three local boost VIN C12891; conservative screen exceeds10uF including AC sensitivity at9.45V. eFuse dVdt/precharge budget includes full zero-bias nominal capacitance.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_1206_3216Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL31A226KAHNNNE_C12891.pdf",
+        "Description": "",
+        "Reference": "C84",
+        "Value": "22u 25V X5R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C85": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "TI6uA/1.8V soft start ~30ms typical; does NOT limit passive L5/D29 precharge. Full-load startup is unmeasured.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+        "Description": "",
+        "Reference": "C85",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C86": {
+        "MPN": "CL21B105KBFNNNE",
+        "LCSC": "C28323",
+        "NOTE": "Type-II compensation series C; 1u nominal, bias near COMP~1..3V. C87 sets high-frequency pole; loop bench gate remains.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_0805_2012Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf",
+        "Description": "",
+        "Reference": "C86",
+        "Value": "1u 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C87": {
+        "MPN": "CL10C101JB8NNNC",
+        "LCSC": "C14858",
+        "NOTE": "100p compensation high-frequency pole; Basic C0G. Not an output feed-forward capacitor.",
+        "Manufacturer": "Samsung Electro-Mechanics",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C101JB8NNNC_C14858.pdf",
+        "Description": "",
+        "Reference": "C87",
+        "Value": "100p 50V C0G",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "C88": {
+        "MPN": "CC0603KRX7R9BB104",
+        "LCSC": "C14663",
+        "NOTE": "U14 VIN2 local high-frequency bypass; direct AGND return.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:C_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+        "Description": "",
+        "Reference": "C88",
+        "Value": "100n 50V X7R",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "D29": {
+        "MPN": "SS34",
+        "LCSC": "C8678",
+        "NOTE": "SS34/C8678 SMA 3A40V Schottky; anode2=PBOOST_SW, cathode1=PRAW. Passive precharge path persists when U14 disabled. eFuse short/latch and diode thermal qualification required; not isolation.",
+        "Manufacturer": "MDD(Microdiode Semiconductor)",
+        "Footprint": "BigModular:D_SMA",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2407101107_MDD-Microdiode-Semiconductor-SS34_C8678.pdf",
+        "Description": "",
+        "Reference": "D29",
+        "Value": "SS34 40V",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "L5": {
+        "MPN": "SLO1040H6R8MTT",
+        "LCSC": "C207852",
+        "NOTE": "Sunltech SLO1040H6R8MTT; 6.8uH +/-20%; DCR22mohm typ/25mohm max. Isat typ10A at approx20% L drop/25C; Idc typ7A at approx40C rise. Height4.0mm max. Land engineering-defined, pending vendor drawing: 2 rectangular pads3.5(X)x4.0(Y)mm, 5.0mm gap, 12.0mm overall. Stock4991 observed2026-10-17, not reserved or guaranteed. No guaranteed hot-lot minimum; PCB fit/stack/saturation/thermal qualification pending.",
+        "Manufacturer": "Sunltech",
+        "Footprint": "BigModular:L_SLO1040H6R8MTT",
+        "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/4b813f0bd1895de8fff894fc302289d3.pdf?productCode=C207852",
+        "Description": "",
+        "Reference": "L5",
+        "Value": "6.8uH 20% shielded",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R86": {
+        "MPN": "RT0603BRD07100KL",
+        "LCSC": "C122538",
+        "NOTE": "Authorized narrow precision FB exception:0.1%,25ppm/K. 100k/10k gives13.519V; full-ref/100K independent corners +100nA sensitivity and100mV dip screened, not guaranteed bias/transient bounds.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810241722_YAGEO-RT0603BRD07100KL_C122538.pdf",
+        "Description": "",
+        "Reference": "R86",
+        "Value": "100k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R87": {
+        "MPN": "RT0603BRD0710KL",
+        "LCSC": "C95204",
+        "NOTE": "Authorized narrow precision FB exception:0.1%,25ppm/K. 100k/10k gives13.519V; full-ref/100K independent corners +100nA sensitivity and100mV dip screened, not guaranteed bias/transient bounds.",
+        "Manufacturer": "YAGEO",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/1811082117_YAGEO-RT0603BRD0710KL_C95204.pdf",
+        "Description": "",
+        "Reference": "R87",
+        "Value": "10k 0.1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R88": {
+        "MPN": "0603WAF1003T5E",
+        "LCSC": "C25803",
+        "NOTE": "Basic120k1%,100ppm/K; TI Eq6 nominal~400kHz. Frequency extrema scaled from80k table are sensitivities, not guaranteed120k limits; measure startup foldback recovery.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf",
+        "Description": "",
+        "Reference": "R88",
+        "Value": "100k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R89": {
+        "MPN": "0603WAF4700T5E",
+        "LCSC": "C23179",
+        "NOTE": "Basic470R compensation series resistor. With C86=1u and C87=100p; TI Eqs27-39 CCM screen, fc below14kHz with local bias-screened COUT. No measured loop/phase-margin claim.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF4700T5E_C23179.pdf",
+        "Description": "",
+        "Reference": "R89",
+        "Value": "470 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "R90": {
+        "MPN": "0603WAF2002T5E",
+        "LCSC": "C4184",
+        "NOTE": "Basic20k series with R88=100k; total120k. Each independent1%,100ppm/K.",
+        "Manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+        "Footprint": "BigModular:R_0603_1608Metric",
+        "Datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010230_UNI-ROYAL-Uniroyal-Elec-0603WAF2002T5E_C4184.pdf",
+        "Description": "",
+        "Reference": "R90",
+        "Value": "20k 1%",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      },
+      "U14": {
+        "MPN": "TPS55340RTER",
+        "LCSC": "C169167",
+        "NOTE": "TI RTE pin table: SW1/15/16; reserved10/14 grounded; SYNC5 AGND; EP17 AGND. EN3 follows VPROT, NOT output disconnect. Tie AGND/PGND locally with thermal array; layout worker owns footprint verification. No rail-synchronous shutdown.",
+        "Manufacturer": "Texas Instruments",
+        "Footprint": "BigModular:Texas_RTE0016C_WQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm",
+        "Datasheet": "https://www.ti.com/lit/ds/symlink/tps55340.pdf",
+        "Description": "",
+        "Reference": "U14",
+        "Value": "TPS55340RTER",
+        "__DNP": "",
+        "__EXCLUDE_FROM_BOM": "",
+        "__EXCLUDE_FROM_BOARD": ""
+      }
+    },
+    "hierarchy": {
+      "C1": {
+        "names": "/USB PD input/",
+        "tstamps": "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/"
+      },
+      "F1": {
+        "names": "/USB PD input/",
+        "tstamps": "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/"
+      },
+      "J1": {
+        "names": "/USB PD input/",
+        "tstamps": "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/"
+      },
+      "R2": {
+        "names": "/USB PD input/",
+        "tstamps": "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/"
+      },
+      "U1": {
+        "names": "/USB PD input/",
+        "tstamps": "/3f5b5140-2fea-5c66-ba3b-ec707e3f47f1/"
+      },
+      "C2": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "C3": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "C4": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R4": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R5": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R6": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R7": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R8": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R31": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R36": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R77": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R78": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R79": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R80": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R81": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "R82": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "SW1": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "U2": {
+        "names": "/Autonomous hardware window and retry/",
+        "tstamps": "/a1db43c9-8f66-506b-99cb-e15d2f492e56/"
+      },
+      "C18": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C19": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C20": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C36": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C38": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C69": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C72": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "L4": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "R17": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "R18": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "R85": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "U5": {
+        "names": "/Independent +5V buck/",
+        "tstamps": "/8e531d32-7c80-5585-be67-8ff5a9d7cb0b/"
+      },
+      "C5": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C6": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C7": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C9": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C35": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C37": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C68": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C70": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C71": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C75": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C76": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C89": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C90": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C91": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C92": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C93": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "D30": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "L1": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R9": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R10": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R15": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R84": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R91": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R92": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "R93": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "U3": {
+        "names": "/Direct 9V negative IBB/",
+        "tstamps": "/cc4406b2-eaf9-5e1a-b3b1-3478956813b3/"
+      },
+      "C48": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C49": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C50": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C51": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C52": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C53": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C54": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C55": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C56": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C57": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C58": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C59": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C60": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C61": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C62": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C63": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C64": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C65": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C66": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C67": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C73": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "C74": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "D27": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "D28": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "R72": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "R73": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "R74": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "R83": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "U12": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "U13": {
+        "names": "/Quiet bipolar post-regulators/",
+        "tstamps": "/b4661736-5d66-5f3b-97a1-9dc3e47c41c6/"
+      },
+      "D10": {
+        "names": "/Board output and power LED/",
+        "tstamps": "/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4/"
+      },
+      "J7": {
+        "names": "/Board output and power LED/",
+        "tstamps": "/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4/"
+      },
+      "R25": {
+        "names": "/Board output and power LED/",
+        "tstamps": "/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4/"
+      },
+      "R26": {
+        "names": "/Board output and power LED/",
+        "tstamps": "/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4/"
+      },
+      "R27": {
+        "names": "/Board output and power LED/",
+        "tstamps": "/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4/"
+      },
+      "R32": {
+        "names": "/Board output and power LED/",
+        "tstamps": "/a8d4c238-ef1c-5c41-9eba-d79c1c1014c4/"
+      },
+      "C77": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C78": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C79": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C80": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C82": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C83": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C84": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C85": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C86": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C87": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "C88": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "D29": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "L5": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "R86": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "R87": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "R88": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "R89": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "R90": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      },
+      "U14": {
+        "names": "/Direct 9V positive boost/",
+        "tstamps": "/8d1a853d-a749-5780-a716-29b1b49ed8d3/"
+      }
+    },
+    "nets": {
+      "/Autonomous hardware window and retry/EF_MODE": [
+        [
+          "R36",
+          "1"
+        ],
+        [
+          "U2",
+          "6"
+        ]
+      ],
+      "/Autonomous hardware window and retry/EF_SHDN": [
+        [
+          "SW1",
+          "1"
+        ],
+        [
+          "SW1",
+          "3"
+        ],
+        [
+          "U2",
+          "7"
+        ]
+      ],
+      "/Autonomous hardware window and retry/ILIM": [
+        [
+          "R8",
+          "1"
+        ],
+        [
+          "U2",
+          "11"
+        ]
+      ],
+      "/Autonomous hardware window and retry/ILIM_SER_1": [
+        [
+          "R79",
+          "1"
+        ],
+        [
+          "R8",
+          "2"
+        ]
+      ],
+      "/Autonomous hardware window and retry/ILIM_SER_2": [
+        [
+          "R79",
+          "2"
+        ],
+        [
+          "R80",
+          "1"
+        ]
+      ],
+      "/Autonomous hardware window and retry/MODE_SER_1": [
+        [
+          "R36",
+          "2"
+        ],
+        [
+          "R81",
+          "1"
+        ]
+      ],
+      "/Autonomous hardware window and retry/MODE_SER_2": [
+        [
+          "R81",
+          "2"
+        ],
+        [
+          "R82",
+          "1"
+        ]
+      ],
+      "/Autonomous hardware window and retry/OV_SET": [
+        [
+          "R6",
+          "2"
+        ],
+        [
+          "R7",
+          "1"
+        ],
+        [
+          "U2",
+          "5"
+        ]
+      ],
+      "/Autonomous hardware window and retry/RTN": [
+        [
+          "C3",
+          "2"
+        ],
+        [
+          "R5",
+          "2"
+        ],
+        [
+          "R7",
+          "2"
+        ],
+        [
+          "R80",
+          "2"
+        ],
+        [
+          "R82",
+          "2"
+        ],
+        [
+          "SW1",
+          "2"
+        ],
+        [
+          "U2",
+          "17"
+        ],
+        [
+          "U2",
+          "8"
+        ]
+      ],
+      "/Autonomous hardware window and retry/SLEW": [
+        [
+          "C3",
+          "1"
+        ],
+        [
+          "U2",
+          "12"
+        ]
+      ],
+      "/Autonomous hardware window and retry/UV_EN": [
+        [
+          "R5",
+          "1"
+        ],
+        [
+          "R78",
+          "2"
+        ],
+        [
+          "U2",
+          "3"
+        ]
+      ],
+      "/Autonomous hardware window and retry/UV_SER_1": [
+        [
+          "R4",
+          "2"
+        ],
+        [
+          "R77",
+          "1"
+        ]
+      ],
+      "/Autonomous hardware window and retry/UV_SER_2": [
+        [
+          "R77",
+          "2"
+        ],
+        [
+          "R78",
+          "1"
+        ]
+      ],
+      "/Board output and power LED/LED_P_A": [
+        [
+          "D10",
+          "2"
+        ],
+        [
+          "R32",
+          "2"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_BOOT": [
+        [
+          "C35",
+          "1"
+        ],
+        [
+          "U3",
+          "6"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_DIV1": [
+        [
+          "R15",
+          "1"
+        ],
+        [
+          "R9",
+          "2"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_DIV2": [
+        [
+          "R15",
+          "2"
+        ],
+        [
+          "R84",
+          "1"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_EN": [
+        [
+          "R91",
+          "2"
+        ],
+        [
+          "R92",
+          "1"
+        ],
+        [
+          "U3",
+          "5"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_EN_LO": [
+        [
+          "R92",
+          "2"
+        ],
+        [
+          "R93",
+          "1"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_FB": [
+        [
+          "C93",
+          "2"
+        ],
+        [
+          "R10",
+          "1"
+        ],
+        [
+          "R84",
+          "2"
+        ],
+        [
+          "U3",
+          "4"
+        ]
+      ],
+      "/Direct 9V negative IBB/NINV_SW": [
+        [
+          "C35",
+          "2"
+        ],
+        [
+          "L1",
+          "1"
+        ],
+        [
+          "U3",
+          "2"
+        ]
+      ],
+      "/Direct 9V negative IBB/NRAW": [
+        [
+          "C37",
+          "1"
+        ],
+        [
+          "C54",
+          "1"
+        ],
+        [
+          "C55",
+          "1"
+        ],
+        [
+          "C56",
+          "1"
+        ],
+        [
+          "C6",
+          "1"
+        ],
+        [
+          "C67",
+          "1"
+        ],
+        [
+          "C7",
+          "2"
+        ],
+        [
+          "C70",
+          "1"
+        ],
+        [
+          "C71",
+          "1"
+        ],
+        [
+          "C74",
+          "1"
+        ],
+        [
+          "C75",
+          "1"
+        ],
+        [
+          "C76",
+          "1"
+        ],
+        [
+          "C89",
+          "2"
+        ],
+        [
+          "C9",
+          "1"
+        ],
+        [
+          "C90",
+          "2"
+        ],
+        [
+          "C91",
+          "2"
+        ],
+        [
+          "C92",
+          "2"
+        ],
+        [
+          "D28",
+          "2"
+        ],
+        [
+          "D30",
+          "2"
+        ],
+        [
+          "R10",
+          "2"
+        ],
+        [
+          "R93",
+          "2"
+        ],
+        [
+          "U13",
+          "13"
+        ],
+        [
+          "U13",
+          "15"
+        ],
+        [
+          "U13",
+          "16"
+        ],
+        [
+          "U3",
+          "1"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_COMP": [
+        [
+          "C87",
+          "1"
+        ],
+        [
+          "R89",
+          "1"
+        ],
+        [
+          "U14",
+          "7"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_COMP_RC": [
+        [
+          "C86",
+          "1"
+        ],
+        [
+          "R89",
+          "2"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_FB": [
+        [
+          "R86",
+          "2"
+        ],
+        [
+          "R87",
+          "1"
+        ],
+        [
+          "U14",
+          "8"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_FREQ": [
+        [
+          "R88",
+          "1"
+        ],
+        [
+          "U14",
+          "9"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_FREQ_SER": [
+        [
+          "R88",
+          "2"
+        ],
+        [
+          "R90",
+          "1"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_SS": [
+        [
+          "C85",
+          "1"
+        ],
+        [
+          "U14",
+          "4"
+        ]
+      ],
+      "/Direct 9V positive boost/PBOOST_SW": [
+        [
+          "D29",
+          "2"
+        ],
+        [
+          "L5",
+          "2"
+        ],
+        [
+          "U14",
+          "1"
+        ],
+        [
+          "U14",
+          "15"
+        ],
+        [
+          "U14",
+          "16"
+        ]
+      ],
+      "/Direct 9V positive boost/PRAW": [
+        [
+          "C48",
+          "1"
+        ],
+        [
+          "C49",
+          "1"
+        ],
+        [
+          "C50",
+          "1"
+        ],
+        [
+          "C63",
+          "1"
+        ],
+        [
+          "C77",
+          "1"
+        ],
+        [
+          "C78",
+          "1"
+        ],
+        [
+          "C79",
+          "1"
+        ],
+        [
+          "C80",
+          "1"
+        ],
+        [
+          "D27",
+          "1"
+        ],
+        [
+          "D29",
+          "1"
+        ],
+        [
+          "R86",
+          "1"
+        ],
+        [
+          "U12",
+          "13"
+        ],
+        [
+          "U12",
+          "15"
+        ],
+        [
+          "U12",
+          "16"
+        ]
+      ],
+      "/GND": [
+        [
+          "C1",
+          "2"
+        ],
+        [
+          "C18",
+          "2"
+        ],
+        [
+          "C19",
+          "2"
+        ],
+        [
+          "C2",
+          "2"
+        ],
+        [
+          "C20",
+          "2"
+        ],
+        [
+          "C37",
+          "2"
+        ],
+        [
+          "C38",
+          "2"
+        ],
+        [
+          "C4",
+          "2"
+        ],
+        [
+          "C48",
+          "2"
+        ],
+        [
+          "C49",
+          "2"
+        ],
+        [
+          "C5",
+          "2"
+        ],
+        [
+          "C50",
+          "2"
+        ],
+        [
+          "C51",
+          "2"
+        ],
+        [
+          "C52",
+          "2"
+        ],
+        [
+          "C53",
+          "2"
+        ],
+        [
+          "C54",
+          "2"
+        ],
+        [
+          "C55",
+          "2"
+        ],
+        [
+          "C56",
+          "2"
+        ],
+        [
+          "C57",
+          "2"
+        ],
+        [
+          "C58",
+          "2"
+        ],
+        [
+          "C59",
+          "2"
+        ],
+        [
+          "C6",
+          "2"
+        ],
+        [
+          "C60",
+          "2"
+        ],
+        [
+          "C61",
+          "2"
+        ],
+        [
+          "C63",
+          "2"
+        ],
+        [
+          "C64",
+          "2"
+        ],
+        [
+          "C65",
+          "2"
+        ],
+        [
+          "C66",
+          "2"
+        ],
+        [
+          "C67",
+          "2"
+        ],
+        [
+          "C68",
+          "2"
+        ],
+        [
+          "C69",
+          "2"
+        ],
+        [
+          "C70",
+          "2"
+        ],
+        [
+          "C71",
+          "2"
+        ],
+        [
+          "C72",
+          "2"
+        ],
+        [
+          "C73",
+          "2"
+        ],
+        [
+          "C74",
+          "2"
+        ],
+        [
+          "C75",
+          "2"
+        ],
+        [
+          "C76",
+          "2"
+        ],
+        [
+          "C77",
+          "2"
+        ],
+        [
+          "C78",
+          "2"
+        ],
+        [
+          "C79",
+          "2"
+        ],
+        [
+          "C80",
+          "2"
+        ],
+        [
+          "C82",
+          "2"
+        ],
+        [
+          "C83",
+          "2"
+        ],
+        [
+          "C84",
+          "2"
+        ],
+        [
+          "C85",
+          "2"
+        ],
+        [
+          "C86",
+          "2"
+        ],
+        [
+          "C87",
+          "2"
+        ],
+        [
+          "C88",
+          "2"
+        ],
+        [
+          "C9",
+          "2"
+        ],
+        [
+          "C93",
+          "1"
+        ],
+        [
+          "D10",
+          "1"
+        ],
+        [
+          "D30",
+          "1"
+        ],
+        [
+          "J1",
+          "A1"
+        ],
+        [
+          "J1",
+          "A12"
+        ],
+        [
+          "J1",
+          "S1"
+        ],
+        [
+          "J7",
+          "3"
+        ],
+        [
+          "J7",
+          "4"
+        ],
+        [
+          "J7",
+          "5"
+        ],
+        [
+          "J7",
+          "6"
+        ],
+        [
+          "J7",
+          "7"
+        ],
+        [
+          "J7",
+          "8"
+        ],
+        [
+          "L1",
+          "2"
+        ],
+        [
+          "R2",
+          "2"
+        ],
+        [
+          "R25",
+          "2"
+        ],
+        [
+          "R26",
+          "2"
+        ],
+        [
+          "R27",
+          "2"
+        ],
+        [
+          "R31",
+          "2"
+        ],
+        [
+          "R74",
+          "2"
+        ],
+        [
+          "R85",
+          "2"
+        ],
+        [
+          "R87",
+          "2"
+        ],
+        [
+          "R9",
+          "1"
+        ],
+        [
+          "R90",
+          "2"
+        ],
+        [
+          "U1",
+          "11"
+        ],
+        [
+          "U12",
+          "11"
+        ],
+        [
+          "U12",
+          "21"
+        ],
+        [
+          "U12",
+          "5"
+        ],
+        [
+          "U12",
+          "6"
+        ],
+        [
+          "U12",
+          "7"
+        ],
+        [
+          "U12",
+          "9"
+        ],
+        [
+          "U13",
+          "21"
+        ],
+        [
+          "U13",
+          "7"
+        ],
+        [
+          "U14",
+          "10"
+        ],
+        [
+          "U14",
+          "11"
+        ],
+        [
+          "U14",
+          "12"
+        ],
+        [
+          "U14",
+          "13"
+        ],
+        [
+          "U14",
+          "14"
+        ],
+        [
+          "U14",
+          "17"
+        ],
+        [
+          "U14",
+          "5"
+        ],
+        [
+          "U14",
+          "6"
+        ],
+        [
+          "U2",
+          "9"
+        ],
+        [
+          "U5",
+          "1"
+        ]
+      ],
+      "/Independent +5V buck/FIVE_BOOT": [
+        [
+          "C36",
+          "1"
+        ],
+        [
+          "U5",
+          "6"
+        ]
+      ],
+      "/Independent +5V buck/FIVE_DIV_LO": [
+        [
+          "R18",
+          "2"
+        ],
+        [
+          "R85",
+          "1"
+        ]
+      ],
+      "/Independent +5V buck/FIVE_FB": [
+        [
+          "R17",
+          "2"
+        ],
+        [
+          "R18",
+          "1"
+        ],
+        [
+          "U5",
+          "4"
+        ]
+      ],
+      "/Independent +5V buck/FIVE_SW": [
+        [
+          "C36",
+          "2"
+        ],
+        [
+          "L4",
+          "1"
+        ],
+        [
+          "U5",
+          "2"
+        ]
+      ],
+      "/N12": [
+        [
+          "C57",
+          "1"
+        ],
+        [
+          "C58",
+          "1"
+        ],
+        [
+          "C59",
+          "1"
+        ],
+        [
+          "C62",
+          "1"
+        ],
+        [
+          "C73",
+          "1"
+        ],
+        [
+          "D28",
+          "1"
+        ],
+        [
+          "J7",
+          "1"
+        ],
+        [
+          "J7",
+          "2"
+        ],
+        [
+          "R26",
+          "1"
+        ],
+        [
+          "R72",
+          "1"
+        ],
+        [
+          "U13",
+          "1"
+        ],
+        [
+          "U13",
+          "20"
+        ]
+      ],
+      "/P12": [
+        [
+          "C51",
+          "1"
+        ],
+        [
+          "C52",
+          "1"
+        ],
+        [
+          "C53",
+          "1"
+        ],
+        [
+          "C64",
+          "1"
+        ],
+        [
+          "C65",
+          "1"
+        ],
+        [
+          "C66",
+          "1"
+        ],
+        [
+          "D27",
+          "2"
+        ],
+        [
+          "J7",
+          "10"
+        ],
+        [
+          "J7",
+          "9"
+        ],
+        [
+          "R25",
+          "1"
+        ],
+        [
+          "U12",
+          "1"
+        ],
+        [
+          "U12",
+          "20"
+        ],
+        [
+          "U12",
+          "3"
+        ]
+      ],
+      "/P5": [
+        [
+          "C19",
+          "1"
+        ],
+        [
+          "C38",
+          "1"
+        ],
+        [
+          "C72",
+          "1"
+        ],
+        [
+          "J7",
+          "11"
+        ],
+        [
+          "J7",
+          "12"
+        ],
+        [
+          "L4",
+          "2"
+        ],
+        [
+          "R17",
+          "1"
+        ],
+        [
+          "R27",
+          "1"
+        ],
+        [
+          "R32",
+          "1"
+        ]
+      ],
+      "/Quiet bipolar post-regulators/N_LDO_DIV": [
+        [
+          "R73",
+          "1"
+        ],
+        [
+          "R83",
+          "2"
+        ]
+      ],
+      "/Quiet bipolar post-regulators/N_LDO_FB": [
+        [
+          "C62",
+          "2"
+        ],
+        [
+          "R73",
+          "2"
+        ],
+        [
+          "R74",
+          "1"
+        ],
+        [
+          "U13",
+          "3"
+        ]
+      ],
+      "/Quiet bipolar post-regulators/N_LDO_SER": [
+        [
+          "R72",
+          "2"
+        ],
+        [
+          "R83",
+          "1"
+        ]
+      ],
+      "/Quiet bipolar post-regulators/N_NR": [
+        [
+          "C61",
+          "1"
+        ],
+        [
+          "U13",
+          "14"
+        ]
+      ],
+      "/Quiet bipolar post-regulators/P_NR": [
+        [
+          "C60",
+          "1"
+        ],
+        [
+          "U12",
+          "14"
+        ]
+      ],
+      "/USB PD input/CC1": [
+        [
+          "J1",
+          "A5"
+        ],
+        [
+          "U1",
+          "7"
+        ]
+      ],
+      "/USB PD input/CC2": [
+        [
+          "J1",
+          "B5"
+        ],
+        [
+          "U1",
+          "6"
+        ]
+      ],
+      "/USB PD input/PD_CFG": [
+        [
+          "R2",
+          "1"
+        ],
+        [
+          "U1",
+          "9"
+        ]
+      ],
+      "/USB PD input/PD_D_SHORT": [
+        [
+          "U1",
+          "4"
+        ],
+        [
+          "U1",
+          "5"
+        ]
+      ],
+      "/USB PD input/USB_VBUS": [
+        [
+          "F1",
+          "1"
+        ],
+        [
+          "J1",
+          "A4"
+        ],
+        [
+          "J1",
+          "A9"
+        ]
+      ],
+      "/VIN9": [
+        [
+          "C1",
+          "1"
+        ],
+        [
+          "C2",
+          "1"
+        ],
+        [
+          "F1",
+          "2"
+        ],
+        [
+          "R4",
+          "1"
+        ],
+        [
+          "R6",
+          "1"
+        ],
+        [
+          "U1",
+          "1"
+        ],
+        [
+          "U1",
+          "8"
+        ],
+        [
+          "U2",
+          "1"
+        ],
+        [
+          "U2",
+          "2"
+        ]
+      ],
+      "/VPROT": [
+        [
+          "C18",
+          "1"
+        ],
+        [
+          "C20",
+          "1"
+        ],
+        [
+          "C4",
+          "1"
+        ],
+        [
+          "C5",
+          "1"
+        ],
+        [
+          "C68",
+          "1"
+        ],
+        [
+          "C69",
+          "1"
+        ],
+        [
+          "C7",
+          "1"
+        ],
+        [
+          "C82",
+          "1"
+        ],
+        [
+          "C83",
+          "1"
+        ],
+        [
+          "C84",
+          "1"
+        ],
+        [
+          "C88",
+          "1"
+        ],
+        [
+          "C89",
+          "1"
+        ],
+        [
+          "C90",
+          "1"
+        ],
+        [
+          "C91",
+          "1"
+        ],
+        [
+          "C92",
+          "1"
+        ],
+        [
+          "L5",
+          "1"
+        ],
+        [
+          "R31",
+          "1"
+        ],
+        [
+          "R91",
+          "1"
+        ],
+        [
+          "U14",
+          "2"
+        ],
+        [
+          "U14",
+          "3"
+        ],
+        [
+          "U2",
+          "15"
+        ],
+        [
+          "U2",
+          "16"
+        ],
+        [
+          "U3",
+          "3"
+        ],
+        [
+          "U5",
+          "3"
+        ]
+      ],
+      "unconnected-(J1-D+-PadA6)": [
+        [
+          "J1",
+          "A6"
+        ]
+      ],
+      "unconnected-(J1-D+-PadB6)": [
+        [
+          "J1",
+          "B6"
+        ]
+      ],
+      "unconnected-(J1-D--PadA7)": [
+        [
+          "J1",
+          "A7"
+        ]
+      ],
+      "unconnected-(J1-D--PadB7)": [
+        [
+          "J1",
+          "B7"
+        ]
+      ],
+      "unconnected-(J1-SBU1-PadA8)": [
+        [
+          "J1",
+          "A8"
+        ]
+      ],
+      "unconnected-(J1-SBU2-PadB8)": [
+        [
+          "J1",
+          "B8"
+        ]
+      ],
+      "unconnected-(J7-Pin_13-Pad13)": [
+        [
+          "J7",
+          "13"
+        ]
+      ],
+      "unconnected-(J7-Pin_14-Pad14)": [
+        [
+          "J7",
+          "14"
+        ]
+      ],
+      "unconnected-(J7-Pin_15-Pad15)": [
+        [
+          "J7",
+          "15"
+        ]
+      ],
+      "unconnected-(J7-Pin_16-Pad16)": [
+        [
+          "J7",
+          "16"
+        ]
+      ],
+      "unconnected-(SW1-CASE-PadMP)": [
+        [
+          "SW1",
+          "MP"
+        ]
+      ],
+      "unconnected-(U1-CFG2_SCL-Pad2)": [
+        [
+          "U1",
+          "2"
+        ]
+      ],
+      "unconnected-(U1-CFG3_SDA-Pad3)": [
+        [
+          "U1",
+          "3"
+        ]
+      ],
+      "unconnected-(U1-PG_N-Pad10)": [
+        [
+          "U1",
+          "10"
+        ]
+      ],
+      "unconnected-(U12-0P1V-Pad12)": [
+        [
+          "U12",
+          "12"
+        ]
+      ],
+      "unconnected-(U12-0P4V-Pad10)": [
+        [
+          "U12",
+          "10"
+        ]
+      ],
+      "unconnected-(U12-1P6V-Pad8)": [
+        [
+          "U12",
+          "8"
+        ]
+      ],
+      "unconnected-(U12-6P4V2-Pad4)": [
+        [
+          "U12",
+          "4"
+        ]
+      ],
+      "unconnected-(U12-NC-Pad17)": [
+        [
+          "U12",
+          "17"
+        ]
+      ],
+      "unconnected-(U12-NC-Pad18)": [
+        [
+          "U12",
+          "18"
+        ]
+      ],
+      "unconnected-(U12-NC-Pad19)": [
+        [
+          "U12",
+          "19"
+        ]
+      ],
+      "unconnected-(U12-NC-Pad2)": [
+        [
+          "U12",
+          "2"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad10)": [
+        [
+          "U13",
+          "10"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad11)": [
+        [
+          "U13",
+          "11"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad12)": [
+        [
+          "U13",
+          "12"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad17)": [
+        [
+          "U13",
+          "17"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad18)": [
+        [
+          "U13",
+          "18"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad19)": [
+        [
+          "U13",
+          "19"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad2)": [
+        [
+          "U13",
+          "2"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad4)": [
+        [
+          "U13",
+          "4"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad5)": [
+        [
+          "U13",
+          "5"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad6)": [
+        [
+          "U13",
+          "6"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad8)": [
+        [
+          "U13",
+          "8"
+        ]
+      ],
+      "unconnected-(U13-NC-Pad9)": [
+        [
+          "U13",
+          "9"
+        ]
+      ],
+      "unconnected-(U2-FLT_N-Pad14)": [
+        [
+          "U2",
+          "14"
+        ]
+      ],
+      "unconnected-(U2-IMON-Pad10)": [
+        [
+          "U2",
+          "10"
+        ]
+      ],
+      "unconnected-(U2-NC-Pad13)": [
+        [
+          "U2",
+          "13"
+        ]
+      ],
+      "unconnected-(U2-NC-Pad4)": [
+        [
+          "U2",
+          "4"
+        ]
+      ],
+      "unconnected-(U5-EN-Pad5)": [
+        [
+          "U5",
+          "5"
+        ]
+      ]
+    },
+    "component_count": 116,
+    "net_count": 89,
+    "pin_count": 344,
+    "singleton_nets": [
+      "unconnected-(J1-D+-PadA6)",
+      "unconnected-(J1-D+-PadB6)",
+      "unconnected-(J1-D--PadA7)",
+      "unconnected-(J1-D--PadB7)",
+      "unconnected-(J1-SBU1-PadA8)",
+      "unconnected-(J1-SBU2-PadB8)",
+      "unconnected-(J7-Pin_13-Pad13)",
+      "unconnected-(J7-Pin_14-Pad14)",
+      "unconnected-(J7-Pin_15-Pad15)",
+      "unconnected-(J7-Pin_16-Pad16)",
+      "unconnected-(SW1-CASE-PadMP)",
+      "unconnected-(U1-CFG2_SCL-Pad2)",
+      "unconnected-(U1-CFG3_SDA-Pad3)",
+      "unconnected-(U1-PG_N-Pad10)",
+      "unconnected-(U12-0P1V-Pad12)",
+      "unconnected-(U12-0P4V-Pad10)",
+      "unconnected-(U12-1P6V-Pad8)",
+      "unconnected-(U12-6P4V2-Pad4)",
+      "unconnected-(U12-NC-Pad17)",
+      "unconnected-(U12-NC-Pad18)",
+      "unconnected-(U12-NC-Pad19)",
+      "unconnected-(U12-NC-Pad2)",
+      "unconnected-(U13-NC-Pad10)",
+      "unconnected-(U13-NC-Pad11)",
+      "unconnected-(U13-NC-Pad12)",
+      "unconnected-(U13-NC-Pad17)",
+      "unconnected-(U13-NC-Pad18)",
+      "unconnected-(U13-NC-Pad19)",
+      "unconnected-(U13-NC-Pad2)",
+      "unconnected-(U13-NC-Pad4)",
+      "unconnected-(U13-NC-Pad5)",
+      "unconnected-(U13-NC-Pad6)",
+      "unconnected-(U13-NC-Pad8)",
+      "unconnected-(U13-NC-Pad9)",
+      "unconnected-(U2-FLT_N-Pad14)",
+      "unconnected-(U2-IMON-Pad10)",
+      "unconnected-(U2-NC-Pad13)",
+      "unconnected-(U2-NC-Pad4)",
+      "unconnected-(U5-EN-Pad5)"
+    ],
+    "unconnected_named_nets": [
+      "unconnected-(J1-D+-PadA6)",
+      "unconnected-(J1-D+-PadB6)",
+      "unconnected-(J1-D--PadA7)",
+      "unconnected-(J1-D--PadB7)",
+      "unconnected-(J1-SBU1-PadA8)",
+      "unconnected-(J1-SBU2-PadB8)",
+      "unconnected-(J7-Pin_13-Pad13)",
+      "unconnected-(J7-Pin_14-Pad14)",
+      "unconnected-(J7-Pin_15-Pad15)",
+      "unconnected-(J7-Pin_16-Pad16)",
+      "unconnected-(SW1-CASE-PadMP)",
+      "unconnected-(U1-CFG2_SCL-Pad2)",
+      "unconnected-(U1-CFG3_SDA-Pad3)",
+      "unconnected-(U1-PG_N-Pad10)",
+      "unconnected-(U12-0P1V-Pad12)",
+      "unconnected-(U12-0P4V-Pad10)",
+      "unconnected-(U12-1P6V-Pad8)",
+      "unconnected-(U12-6P4V2-Pad4)",
+      "unconnected-(U12-NC-Pad17)",
+      "unconnected-(U12-NC-Pad18)",
+      "unconnected-(U12-NC-Pad19)",
+      "unconnected-(U12-NC-Pad2)",
+      "unconnected-(U13-NC-Pad10)",
+      "unconnected-(U13-NC-Pad11)",
+      "unconnected-(U13-NC-Pad12)",
+      "unconnected-(U13-NC-Pad17)",
+      "unconnected-(U13-NC-Pad18)",
+      "unconnected-(U13-NC-Pad19)",
+      "unconnected-(U13-NC-Pad2)",
+      "unconnected-(U13-NC-Pad4)",
+      "unconnected-(U13-NC-Pad5)",
+      "unconnected-(U13-NC-Pad6)",
+      "unconnected-(U13-NC-Pad8)",
+      "unconnected-(U13-NC-Pad9)",
+      "unconnected-(U2-FLT_N-Pad14)",
+      "unconnected-(U2-IMON-Pad10)",
+      "unconnected-(U2-NC-Pad13)",
+      "unconnected-(U2-NC-Pad4)",
+      "unconnected-(U5-EN-Pad5)"
+    ],
+    "limits": "XML does not enumerate every no-connect/omitted pin; ERC remains required."
+  },
+  "ref_pin_net_parity": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "equal": true
+  },
+  "native_parity_scope": "Native DRC --schematic-parity plus ref/pin/net comparison",
+  "status": "no_findings_in_requested_checks"
+}
