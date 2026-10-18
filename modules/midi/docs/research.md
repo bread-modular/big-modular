@@ -1,11 +1,14 @@
 # MIDI module research
 
-Status: **S3 schematic + R1 routed carrier** (rev. 2026-10-18): native schematic
-(`hardware/midi.kicad_sch`, ERC 0) at the **5 V** Bread Modular logic level (S3), and
-the fully routed 2-layer carrier (R1, section 3.6; shared check: no findings). Opto
-removed, deferred to V2. This document records the Bread Modular baseline, the
-circuit as drawn, the remaining open checks and dated sourcing observations.
-Nothing here is bench-validated and nothing is released.
+Status: **V1.0 fabrication export (R3)** (rev. 2026-10-19): native schematic
+(`hardware/midi.kicad_sch`, ERC 0) at the **5 V** Bread Modular logic level, every
+assembled part carrying JLCPCB fields (section 5), and the fully routed 2-layer
+carrier with the regulator beside J10 on its heat sink (R3, section 3.6; shared
+check: no findings). The
+JLCPCB files are in [`../jlcpcb/`](../jlcpcb/README.md). Opto removed, deferred to
+V2. This document records the Bread Modular baseline, the circuit as drawn, the
+remaining open checks and dated sourcing observations. Nothing here is
+bench-validated, and the export is not a supplier-accepted order.
 
 ## 1. Goal
 
@@ -68,7 +71,7 @@ Candidate causes to check on a V2 board, not conclusions:
 - EN floating and a 4.5-5.5 V supply (C15825 catalog). The supply would fit the
   5 V rail here, but the part is still not reused (section 3.5).
 
-## 3. Circuit (as drawn in the S3 schematic, routed in R1)
+## 3. Circuit (as drawn in the S3 schematic, routed in R1/R2)
 
 ### 3.1 Power and the power header
 
@@ -115,10 +118,19 @@ typical and 0.50 W in the worst case, which is too hot for a bare SOT-89.
 about 0.27 W; at 15 mA they take 0.01 W / 0.09 W. The LDO input then sits at about
 8.5 V (77 mA) to 11 V (15 mA), above the 5 V output plus dropout even on an
 11.4 V rail (7.9 V at 77 mA). The worst case is a fault (every output shorted and
-every LED lit at once). R20 then runs at about 92 % of a standard 0.25 W 1206
-rating. Prefer a 0.5 W 1206 part at the sourcing step (same footprint).
-The R1 routing adds no extra copper to the U3 tab (VIN_LDO) beyond its own pad and
-0.4 mm tracks, so check U3's temperature on the bench in that fault case.
+every LED lit at once). A standard 0.25 W 1206 would run at about 92 % there, so
+R20 is a 0.5 W 1206 (UNI-ROYAL HP06W2F390JT5E, C414944, Extended), at about 46 %.
+The HT75xx-1 SOT-89 tab is pin 2 (VIN), so U3's tab and R20's pad 2 sit on
+dedicated **VIN_LDO heat-sink copper on both layers** (section 3.6). Since R3 the
+regulator group (U3, R20, C4, C5, D10) sits right of the power header J10, and the
+heat sink is the copper there: about 75 mm² on B.Cu around the tab and about
+210 mm² on F.Cu across the whole board below the J9 pad row (around J10 and J11),
+joined by nine vias. The total (~285 mm²) is about the same as R2's (~280 mm²), but
+the B.Cu copper at the tab is doubled, there are nine vias instead of five, and the
+heat now stays at the bottom edge, away from the J8/J9 jacks. Estimate only (no
+thermal model or measurement): with that copper a SOT-89 is roughly 100-130 °C/W,
+so U3 rises about 10 °C typical (0.09 W) and about 30-35 °C in the 77 mA fault case
+(0.27 W). Check U3 on the bench in that fault case.
 Eurorack draw is about 15 mA typical / 77 mA maximum on +12 V, and 0 mA on
 -12 V and +5 V.
 
@@ -181,8 +193,8 @@ the V2 opto input's job (section 3.5).
 | LED1-LED8 | PC0, PC1, PC2, PC3, PA1, PA2, PA3, PA4 | BM gate pins, now driving LEDs |
 | UPDI | PA0 via R11 4.7 k to J11 | same |
 
-- **UPDI header J11: 1x2 2.54 mm THT pin header on the B side** (bottom of the LED
-  column, beside the power header), pin 1 at the top: **1 UPDI, 2 GND**. Use a
+- **UPDI header J11: 1x2 2.54 mm THT pin header on the B side** (left of the
+  power header J10 since R3), pin 1 at the top: **1 UPDI, 2 GND**. Use a
   serialUPDI adapter or any UPDI programmer with 2.54 mm Dupont leads. There is no
   VCC pin: program with the module on Eurorack power. The rail is 5 V, so 5 V
   serialUPDI adapters match it, and UPDI goes through R11 4.7 k as in Bread
@@ -224,18 +236,42 @@ as a properly isolated input:
 - Space: the J1/J2 band on the back (where the S1 opto sat) now carries R2 and the
   RX/+5 V/LED1 tracks of R1, so V2 will need that band re-laid out.
 
-### 3.6 Routing (R1)
+### 3.6 Routing (R1; U3 heat sink R2; regulator moved beside J10 in R3)
 
 Two layers, every net routed with explicit geometry (no autorouter), written by
 `tools/route_plan.py` and applied with the shared `pcb plan/apply/promote`
 transaction (README "Rebuild").
 
 - **Widths:** 0.25 mm signals, 0.2 mm at the U1 fan-out (0.4 mm QFN pitch), 0.3 mm
-  +5 V trunk, 0.4 mm VIN_D/VIN_LDO, 0.5 mm +12 V. Vias 0.6/0.3 mm (37 in total).
+  +5 V trunk, 0.4 mm VIN_D/VIN_LDO and regulator GND returns, 0.5 mm +12 V. Vias
+  0.6/0.3 mm (48 in total).
 - **GND:** F.Cu and B.Cu are both poured with GND, stitched by 14 edge vias
-  between the jack rows plus one via in U1's exposed pad (pin 3 tied to the pad).
-  The shared zone op connects pads solidly (no thermal reliefs), so the THT jack
-  sleeve and LED cathode pads need a hot iron when hand-soldering.
+  between the jack rows, one via in U1's exposed pad (pin 3 tied to the pad) and
+  two vias in the B.Cu strip between the CH8_LED/CH7_LED lanes (C1 pad 2). Before
+  R2 that strip reached the rest of GND only through a ~0.2 mm neck between R17's
+  pads. The shared zone op connects pads solidly (no thermal reliefs), so the THT
+  jack sleeve and LED cathode pads need a hot iron when hand-soldering.
+- **U3 heat sink (R3):** the regulator group moved from the J8/J9 band to the
+  area right of J10 (board mm x 111.7-119, y 155-169), outside the 16-pin IDC
+  overhang; the UPDI header J11 and R11 moved to the strip left of J10. GND is
+  removed there and replaced by VIN_LDO copper (the tab's own net):
+  - B.Cu: everything right of J10 below y 155 (U3's tab, R20 pad 2 and C5 pad 1
+    sit on it; D10 and the GND/+5 V pads are cleared out of it).
+  - F.Cu: the whole board width below y 153.9 (the J9 pad row), around J10 and
+    J11. Their GND pins are cleared out of it on F.Cu and stay on the B.Cu GND pour;
+    J10's +12 V pins are cleared too.
+  - U3, C4 and C5 return to GND through 0.4 mm B.Cu tracks to J10 pin 4. Those
+    tracks split the B.Cu heat sink into the tab piece (~50 mm²) and a piece under
+    the caps (~25 mm²); both reach F.Cu through vias.
+  - Nine VIN_LDO vias: five beside the tab (not in the pad, to avoid solder
+    wicking) and four in the lower piece.
+  - +5 V leaves U3 pin 3 through a via and runs up F.Cu through the J9 pad-row gap
+    (x 111.55) to the trunk. UPDI comes down F.Cu to a via in the J8/J9 band and
+    reaches R11 on B.Cu through the same gap (x 107.2). The rest of that gap is
+    B.Cu GND, which joins the J10 GND pins to the main pour.
+  - The shared `add_zone` has no zone priority and KiCad rejects intersecting
+    zones, so each GND pour is the complement polygon kept 0.3 mm off its heat
+    sink.
 - **Layer plan.** The pin map is Bread Modular's, so on every side of U1 some
   nets go up and some go down. Each layer keeps a lane order that matches its turn
   order:
@@ -246,7 +282,7 @@ transaction (README "Rebuild").
   - TX6-TX8: up on B to vias in the J4/J5 gap, then down on F into the right
     channel, entering their resistors from the right.
   - TX5: across the F side of U1 and down the corridor.
-  - UPDI: down the corridor on F to the J11 corner.
+  - UPDI: down the corridor on F, then on B to J11 left of J10.
   - LED5-LED8: down on B. LED8 crosses into the right channel above the power
     cluster.
   - +5 V: up the left channel on F (LDO -> C3 -> via under U1 pin 4 -> C1), then
@@ -264,43 +300,72 @@ transaction (README "Rebuild").
     refilled, 0 unconnected, schematic parity 0, ref/pin/net parity equal, and
     no exclusions.
   - The 3D fit is unchanged (`fit/fit-report.json`).
+  - R2 re-ran the same checks after the heat sink, the part fields and the
+    silkscreen release label: all still clean. R3 (regulator beside J10) re-ran
+    them and the 3D fit again: all clean, fit report unchanged.
 
 ## 4. Decisions
 
 | # | Decision | Recommendation |
 |---|---|---|
 | D1 | TS output logic level | **Decided (S3): 5 V.** U1 runs at 5 V from HT7550-1 on +12 V, so the outputs meet a 5 V BM receiver's VIH. A 16-pin cable's +5 V isn't used, which keeps 10-pin cables working. The input handles 3.3 V senders through R2 (section 3.2) |
-| D2 | LDO thermal margin vs fault cases | **Decided: R20 = 39 R 1206** (section 3.1); prefer a 0.5 W part, and bench-check U3 in the fault case |
+| D2 | LDO thermal margin vs fault cases | **Decided (R2/R3): R20 = 39 R 0.5 W 1206 (C414944) + VIN_LDO heat-sink copper on both layers, regulator group beside J10 (R3)** (sections 3.1, 3.6); bench-check U3 in the fault case |
 | D3 | Opto | **Decided: none in this version**; isolated, voltage-sensed opto input in V2 (section 3.5) |
 | D4 | TRS type selection | **Decided: JP1 1x3 2.54 mm header + shunt on the back**, `A` (1-2) / `B` (2-3) |
 | D5 | LED colour/value | Drawn as high-efficiency red, 1 k (~3.1 mA at 5 V); confirm brightness behind the panel |
-| D6 | R21 value | 4.7 k unless the ATtiny1616 injection-current limit (~1.4 mA from a +12 V wrong cable) asks for more; raising it lowers the 3.3 V-sender high margin |
+| D6 | R21 value | 4.7 k unless the ATtiny1616 injection-current limit asks for more (a wrong cable gives ~1.4 mA at +12 V, ~2.6 mA at -12.6 V); raising it lowers the 3.3 V-sender high margin |
 
-## 5. Sourcing observations (dated, transient)
+## 5. Sourcing (V1.0 release, dated, transient)
 
-Retrieved 2026-10-18 ~14:10 UTC with `opt/kicad-tools/jlcpcb/assembly.py lookup
---strict-live`. Compact record: [`sourcing-candidates.json`](sourcing-candidates.json).
-Raw snapshots are in the ignored `research/jlc-cache/`. Stock is a snapshot, not a
-reservation or order acceptance. Passives are not sourced yet.
+Observed 2026-10-18 ~18:40 UTC by the shared native audit
+(`opt/kicad-tools/jlcpcb/assembly.py audit --strict-live`, 5 boards). Re-run at
+~19:16 UTC on the R3 placement file (`research/hs3/audit/audit.json`): the same
+result for every part (only six positions changed; the BOM is identical). Compact
+record: `release_parts` in [`sourcing-candidates.json`](sourcing-candidates.json).
+Raw report and snapshots: the ignored `research/audit-r2.json` and
+`research/jlc-cache/`. Stock is a snapshot, not a reservation or order
+acceptance. The audit checks the policy below against the catalog; the
+requirements are in [`jlcpcb-audit-requirements.json`](jlcpcb-audit-requirements.json).
 
-| Ref | C-code | MPN | Package | Class | Economy | Stock observed |
+| Refs | Value | C-code | MPN | Package | Class | Stock observed |
 |---|---|---|---|---|---|---:|
-| U3 | C16106 | HT7550-1 (Holtek, 30 V) | SOT-89-3 | Preferred Extended | yes | 206,116 |
-| U1 | C507118 | ATTINY1616-MNR | QFN-20-EP 3x3 | Extended | yes | 5,626 |
-| D10 | C8598 | B5819W SL | SOD-123 | **Basic** | yes | 354,667 |
+| R3-R10, R12-R19 (16) | 1 k 1 % 0.1 W | C21190 | UNI-ROYAL 0603WAF1001T5E | 0603 | **Basic** | 23.2 M |
+| R11, R21 | 4.7 k 1 % | C23162 | UNI-ROYAL 0603WAF4701T5E | 0603 | **Basic** | 18.6 M |
+| R2 | 22 k 1 % | C31850 | UNI-ROYAL 0603WAF2202T5E | 0603 | **Basic** | 3.4 M |
+| R20 | 39 R 1 % **0.5 W** | C414944 | UNI-ROYAL HP06W2F390JT5E | 1206 | Extended (chosen) | 1,717 |
+| C1 | 100 n 50 V X7R | C14663 | YAGEO CC0603KRX7R9BB104 | 0603 | **Basic** | 32.3 M |
+| C3, C4 | 10 u 25 V X5R | C15850 | Samsung CL21A106KAYNNNE | 0805 | **Basic** | 6.5 M |
+| C5 | 1 u 50 V X7R | C28323 | Samsung CL21B105KBFNNNE | 0805 | **Basic** | 2.3 M |
+| D10 | B5819W 40 V 1 A | C8598 | CJ B5819W SL | SOD-123 | **Basic** | 602,705 |
+| U1 | ATtiny1616 | C507118 | Microchip ATTINY1616-MNR | QFN-20 3x3 | Extended | 5,627 |
+| U3 | HT7550-1 | C16106 | Holtek HT7550-1 | SOT-89-3 | Preferred Extended | 206,116 |
 
-U3 was looked up again at S3 (same day). C14289 HT7533-1 (Basic, 118,291) is
-superseded by the 5 V rail; the only Basic 5 V regulator found was AMS1117-5.0
-C6187 (SOT-223, 15 V max input), so HT7550-1 stays.
+- **Every resistor and capacitor except R20 is Basic + Economy** with the existing
+  land patterns, so no footprint changes or series/parallel networks were
+  needed.
+- **R20 is Extended by request** (a better part than a 0.25 W 1206). JLCPCB has no Basic
+  39 R 1206 at all. The 0.5 W UNI-ROYAL HP06 has a full catalog record (200 V).
+  Vishay RCS120639R0FKEA C4037776 (0.5 W anti-surge, 3,995 in stock) is the
+  alternative; it wasn't chosen because the catalog omits its voltage rating.
+- **Extended parts mean loading fees:** R20 and U1 are Extended and U3 is
+  Preferred Extended, so expect JLCPCB's per-part Extended loading fee for each.
+- **Audit result:**
+  - Exact C-code, MPN, Economy and stock all pass, and R21 and R20 pass their
+    stress checks.
+  - The only hard "fail" is the repo's Basic-only R/C policy flagging R20, which
+    is intentional.
+  - **Unknown:** the per-part human review attestations (land pattern, pin
+    mapping, ratings, capacitor role); capacitor ESR and effective capacitance;
+    and the D10/U1/U3 package-to-footprint matches.
+  - These are left open on purpose (no boilerplate review notes).
+- Earlier history: C14289 HT7533-1 (Basic) was superseded by the 5 V rail. The
+  only Basic 5 V regulator found was AMS1117-5.0 C6187 (SOT-223, 15 V max), so
+  HT7550-1 stays. V2 opto candidates (not on this board): H11L1SM C899473,
+  H11L1M DIP-6 C16587, 1N4148W C81598.
 
-V2 opto candidates from the same pass (not on this board): H11L1SM C899473
-(Extended, 2,692), H11L1M DIP-6 C16587 (Extended, 11,180), 1N4148W C81598 (Basic).
-
-Hand-fitted, not JLC-assembled: J1 PJ366ST, J2-J9 PJ301M-12, D1-D8 3 mm LEDs,
-J10 2x5 header, J11 1x2 UPDI header, JP1 1x3 TRS header + 1 shunt. The schematic
-carries `LCSC` fields for the three parts above only. Passives are unsourced, no
-export has been made, and the ATtiny1616 and land patterns still need the
-per-part audit in `opt/kicad-tools/skills/jlcpcb-assembly/SKILL.md`.
+Hand-soldered, not JLC-assembled (no `LCSC` field, listed as manual in the
+audit): J1 PJ366ST, J2-J9 PJ301M-12, D1-D8 3 mm LEDs, J10 2x5 header, J11 1x2
+UPDI header, JP1 1x3 TRS header + 1 shunt.
 
 ## 6. References
 

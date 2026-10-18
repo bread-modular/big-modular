@@ -215,11 +215,11 @@ def build_carrier():
     ph = GEO['power_header']
     pin1 = next(pad for pad in fps['J10'].Pads() if pad.GetNumber() == '1').GetPosition()
     assert abs(pcbnew.ToMM(pin1.y) - OY - ph['pin1_XY_mm'][1]) < 0.01, 'J10 pin 1 is not at the bottom row'
-    text(board, pcbnew.B_SilkS, '-12V', 15.0, ph['pin1_XY_mm'][1] + 1.6, 0.8, mirrored=True)
+    text(board, pcbnew.B_SilkS, '-12V', 3.9, ph['pin1_XY_mm'][1], 0.8, mirrored=True)
     sx, sy = ph['idc16_socket_envelope_mm']['X'], ph['idc16_socket_envelope_mm']['Y']
     rect(board, pcbnew.Dwgs_User, sx[0], sy[0], sx[1], sy[1])
     text(board, pcbnew.Dwgs_User, 'IDC16', (sx[0] + sx[1]) / 2, sy[0] + 1.0, 0.8)
-    text(board, pcbnew.B_SilkS, 'UPDI', 17.2, 105.0, 0.8, mirrored=True)
+    text(board, pcbnew.B_SilkS, 'UPDI', 2.6, 113.6, 0.8, mirrored=True)
     # JP1 TRS type header: shunt 1-2 = Type A, 2-3 = Type B. Each letter sits level with
     # the end pin its shunt covers (A = pin 1, B = pin 3); the shared middle pin is unlabelled.
     jp1 = {pad.GetNumber(): pcbnew.ToMM(pad.GetPosition().y) - OY for pad in fps['JP1'].Pads()}
@@ -227,7 +227,9 @@ def build_carrier():
     text(board, pcbnew.B_SilkS, 'TRS', 17.2, jp1['1'] - 1.9, 0.8, mirrored=True)
     text(board, pcbnew.B_SilkS, 'A', 15.2, jp1['1'], 1.0, mirrored=True)
     text(board, pcbnew.B_SilkS, 'B', 15.2, jp1['3'], 1.0, mirrored=True)
-    text(board, pcbnew.B_SilkS, 'MIDI S3', 7.3, 11.6, 0.8, mirrored=True)
+    text(board, pcbnew.B_SilkS, 'MIDI V1.0', 7.3, 11.6, 0.8, mirrored=True)
+    # JLCPCB prints its order number in place of this marker instead of at a random spot.
+    text(board, pcbnew.B_SilkS, 'JLCJLCJLCJLC', 8.6, 18.0, 0.8, mirrored=True)
     save_canonical(path, board)
     return path
 

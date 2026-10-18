@@ -414,67 +414,67 @@
       "value": "4.7k (UPDI)",
       "footprint": "R_0603_1608Metric",
       "XY": [
-        14.3,
-        109.0
+        2.6,
+        104.3
       ],
-      "rot": 90,
-      "band": "bottom zone beside J11 (UPDI series)"
+      "rot": 270,
+      "band": "bottom zone left strip, above J11 (UPDI series)"
     },
     {
       "ref": "R20",
       "value": "39 (LDO dropper)",
       "footprint": "R_1206_3216Metric",
       "XY": [
-        9.4,
-        89.5
+        18.1,
+        107.6
       ],
-      "rot": 0,
-      "band": "J8 pad row gap",
-      "note": "sits between the J8 TN and T pads; checked by DRC"
+      "rot": 270,
+      "band": "regulator group right of J10, right column (LDO dropper, on the heat sink)",
+      "note": "0.5 W 1206; pad 2 (VIN_LDO) sits on the U3 heat sink"
     },
     {
       "ref": "U3",
       "value": "HT7550-1",
       "footprint": "SOT-89-3",
       "XY": [
-        8.6,
-        94.75
+        14.3,
+        110.25
       ],
       "rot": 90,
-      "band": "J8/J9"
+      "band": "regulator group right of J10: tab (VIN) up into the B.Cu heat sink, pins down"
     },
     {
       "ref": "C4",
       "value": "10u",
       "footprint": "C_0805_2012Metric",
       "XY": [
-        4.3,
-        96.3
+        12.75,
+        114.7
       ],
-      "rot": 0,
-      "band": "J8/J9 band, LDO output"
+      "rot": 270,
+      "band": "regulator group under U3 pin 3 (LDO output)"
     },
     {
       "ref": "C5",
       "value": "1u",
       "footprint": "C_0805_2012Metric",
       "XY": [
-        4.3,
-        92.8
+        18.1,
+        111.7
       ],
-      "rot": 0,
-      "band": "J8/J9 band, LDO input"
+      "rot": 270,
+      "band": "regulator group right column under R20 (LDO input)"
     },
     {
       "ref": "D10",
       "value": "B5819W",
       "footprint": "D_SOD-123",
       "XY": [
-        9.4,
-        100.5
+        14.3,
+        106.4
       ],
       "rot": 0,
-      "band": "J9 row corridor, under the IDC overhang (<=1.5 mm)"
+      "band": "regulator group right of J10, top row (reverse-polarity series diode)"
     },
     {
       "ref": "J10",
@@ -492,11 +492,11 @@
       "value": "UPDI 1x2 2.54 (UPDI / GND)",
       "footprint": "PinHeader_1x02_P2.54mm_Vertical",
       "XY": [
-        17.2,
+        2.6,
         109.0
       ],
       "rot": 0,
-      "band": "bottom zone, LED column below D8",
+      "band": "bottom zone left strip beside J10 (UPDI header)",
       "note": "THT 2.54 mm header on B for a serialUPDI/UPDI programmer; pin 1 = UPDI (top), pin 2 = GND."
     }
   ],

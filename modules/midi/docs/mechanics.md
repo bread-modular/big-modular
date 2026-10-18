@@ -45,23 +45,25 @@ from [`geometry.json`](geometry.json). The nominal 3D check is in
 ## Back (B) layout: SMD for JLC assembly, plus headers
 
 Each jack's three pads form a stripe ±1.3 mm around its Y. The SMD parts sit in
-the bands between stripes; R20 uses the gap between J8's TN and T pads. The
-through-hole headers on B need their F-side pads clear of jack bodies and LEDs, so
-they go where F is free: beside J1 (no LED there) and below J9.
+the bands between stripes. The regulator group and the through-hole headers go
+below J9, where there are no jacks; the through-hole headers on B need their
+F-side pads clear of jack bodies and LEDs, so JP1 sits beside J1 (no LED there)
+and J10/J11 below J9.
 
 | Band | Parts |
 |---|---|
 | LED column beside J1 (X17.2, Y12.5..17.5) | **JP1** 1x3 2.54 mm TRS Type header (pin 1 Tip at the top, 2 DATA, 3 Ring), B silk `TRS`, `A` level with pin 1, `B` level with pin 3 (the shunt covers the lettered pin) |
+| Top edge and just below J1's pads | B silk `MIDI V1.0` (Y11.6) and `JLCJLCJLCJLC` (Y18.0; JLCPCB prints its order number there) |
 | J1/J2 | R21 (4.7 k input series, X15.0), R2 (22 k RX pull-up, X5.8, beside the RX lane), R4 (ch1 LED) |
 | Jn/Jn+1, every band | output n series resistor below jack n's tip (X13.52, jack + 3.6, rot 90) and LED n+1 resistor above its LED (X17.2, rot 270 so pad 2 faces the anode) |
 | J4/J5 | ch3 pair, **R9** (ch4 output series) moved above J5 (Y54.1, rot 270), TX6-TX8 layer-change vias |
 | J5/J6 (Y 64.25) | U1 ATtiny1616 (VQFN-20, 1 mm below the band centre for the fan-out), C1 100 n under U1, TX1-TX5 vias in the left zone, ch5 LED resistor R13 |
 | J6/J7 | C3 10 u bulk in the left zone (X4.8), ch5/ch6 pairs |
 | J7/J8, J8/J9 | ch6-ch8 pairs |
-| J8 TN–T gap | R20 39 R 1206 LDO dropper |
-| J8/J9 (Y 94.75) | U3 HT7550-1 SOT-89, C4, C5, D10 |
-| Bottom zone, X8.6 (Y105.8..116.0) | **J10** 2x5 Eurorack power, vertical, pin 1 (-12 V) at the bottom, B silk `-12V` |
-| Bottom zone, LED column (X17.2, Y107.7..110.3) | **J11** 1x2 2.54 mm UPDI header (pin 1 UPDI at the top, pin 2 GND), B silk `UPDI` |
+| J8/J9 | UPDI layer-change via and the +5 V track to the trunk (the gap is otherwise GND) |
+| Bottom zone, X8.6 (Y105.8..116.0) | **J10** 2x5 Eurorack power, vertical, pin 1 (-12 V) at the bottom, B silk `-12V` left of pin 1 |
+| Bottom zone right of J10 (X11.7..19, Y105..119) | Regulator group on its heat sink: D10 B5819W (X14.3, Y106.4), R20 39 R 0.5 W 1206 (X18.1, Y107.6, rot 270), U3 HT7550-1 SOT-89 (X14.3, Y110.25, tab up), C5 1 u input (X18.1, Y111.7), C4 10 u output (X12.75, Y114.7). U3's tab, R20 pad 2 and C5 pad 1 sit on VIN_LDO copper: B.Cu right of J10 below Y105, F.Cu across the board below Y103.9 (`research.md` §3.6) |
+| Bottom zone left of J10 (X2.6) | R11 4.7 k UPDI series (Y104.3), **J11** 1x2 2.54 mm UPDI header (Y107.73/110.27; pin 1 UPDI at the top, pin 2 GND), B silk `UPDI` below it |
 
 ### Power header and 16-pin IDC cables
 
@@ -74,9 +76,10 @@ they go where F is free: beside J1 (no LED there) and below J9.
   header's plastic spacer). The envelope stays inside the 20 mm slot and inside
   the rail gap (Y ≤ 120.5), so it doesn't depend on rail depth. The repo case rail
   is 12 mm deep and the socket starts about 14 mm behind the panel.
-- Parts under the overhang: U3 SOT-89 (1.5 mm), C4 0805 (≤1.25 mm) and the
-  clipped J9 jack leads, all below the 2.5 mm socket floor. Keep the J9 leads
-  clipped to ≤1.5 mm. The envelope is drawn on `Dwgs.User` (`IDC16`) in the carrier.
+- Under the overhang (Y94.4..105) there are only tracks and the clipped J9 jack
+  leads; keep those leads clipped to ≤1.5 mm, below the 2.5 mm socket floor. Beside
+  J10, the edges of U3 (SOT-89, 1.5 mm) and C4 (0805, ≤1.25 mm) reach about 0.35 mm
+  under the socket's right side (X ≤ 12.4), also below its floor. The envelope is drawn on `Dwgs.User` (`IDC16`) in the carrier.
 - Unshrouded on purpose: a shrouded 10-pin box header would block the 16-pin
   socket, and it's wider than the board anyway. Key by the `-12V` silk.
 

@@ -81,20 +81,21 @@ def circuit():
                   Note='Unshrouded vertical header, pin 1 (-12 V) at the board bottom; '
                        'also takes a 16-pin IDC socket (positions 11-16 overhang, unused)'))
     c.append(part('D10', 'D_Schottky', 'B5819W', 'SOD123', (91.44, 45.72), 0,
-                  {'1': 'VIN_D', '2': '+12V'}, LCSC='C8598',
+                  {'1': 'VIN_D', '2': '+12V'},
                   Note='Series reverse-polarity protection'))
     c.append(part('R20', 'R', '39', 'R1206', (91.44, 55.88), 90,
-                  {'1': 'VIN_D', '2': 'VIN_LDO'}, Power='0.25W',
-                  Note='Dropper: shares LDO heat in the ~77 mA worst case (research 3.1)'))
+                  {'1': 'VIN_D', '2': 'VIN_LDO'}, Power='0.5W',
+                  Note='Dropper: shares LDO heat in the ~77 mA worst case (research 3.1); '
+                       'anti-surge 0.5 W part, sits on the VIN_LDO heat-sink copper'))
     c.append(part('C5', 'C', '1u', 'C0805', (91.44, 66.04), 90,
-                  {'1': 'VIN_LDO', '2': 'GND'}, Voltage='25V'))
+                  {'1': 'VIN_LDO', '2': 'GND'}, Voltage='50V'))
     c.append(part('U3', 'HT75xx-1-SOT89', 'HT7550-1', 'SOT89', (124.46, 50.8), 0,
-                  {'1': 'GND', '2': 'VIN_LDO', '3': '+5V'}, LCSC='C16106',
-                  Note='30 V max input, 150 mA'))
+                  {'1': 'GND', '2': 'VIN_LDO', '3': '+5V'},
+                  Note='30 V max input, 150 mA. Tab = pin 2 (VIN): heat-sink copper is VIN_LDO'))
     c.append(part('C4', 'C', '10u', 'C0805', (124.46, 66.04), 90,
-                  {'1': '+5V', '2': 'GND'}, Voltage='16V', Note='LDO output'))
+                  {'1': '+5V', '2': 'GND'}, Voltage='25V', Note='LDO output'))
     c.append(part('C3', 'C', '10u', 'C0805', (124.46, 78.74), 90,
-                  {'1': '+5V', '2': 'GND'}, Voltage='16V', Note='Local bulk'))
+                  {'1': '+5V', '2': 'GND'}, Voltage='25V', Note='Local bulk'))
     c.append(part('#FLG01', 'PWR_FLAG', 'PWR_FLAG', None, (45.72, 78.74), 0, {'1': 'GND'}))
     c.append(part('#FLG02', 'PWR_FLAG', 'PWR_FLAG', None, (101.6, 78.74), 0, {'1': 'VIN_LDO'}))
 
@@ -119,9 +120,9 @@ def circuit():
         u1[str(OUT_PINS[ch])] = f'CH{ch}_TX'
         u1[str(LED_PINS[ch])] = f'CH{ch}_LED'
     c.append(part('U1', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', (210.82, 104.14), 0, u1,
-                  LCSC='C507118', Note='5 V: 20 MHz as Bread Modular'))
+                  Note='5 V: 20 MHz as Bread Modular'))
     c.append(part('C1', 'C', '100n', 'C0603', (190.5, 142.24), 90,
-                  {'1': '+5V', '2': 'GND'}, Voltage='16V', Note='U1 decoupling'))
+                  {'1': '+5V', '2': 'GND'}, Voltage='50V', Note='U1 decoupling'))
     c.append(part('R11', 'R', '4.7k', 'R0603', (190.5, 152.4), 90,
                   {'1': 'UPDI_PA0', '2': 'UPDI'}, Note='UPDI series resistor (Bread Modular)'))
     c.append(part('J11', 'Conn_01x02', 'UPDI', 'H1x2', (190.5, 165.1), 0,
@@ -141,7 +142,28 @@ def circuit():
                       {'1': f'CH{ch}_LED', '2': f'LED{ch}_A'}, Note=f'LED {ch} current'))
         c.append(part(f'D{ch}', 'LED', 'LED_3mm_red', 'LED3', (x0 + 30.48, y0 + 12.7), 180,
                       {'2': f'LED{ch}_A', '1': 'GND'}, Note='Hand-soldered 3 mm THT'))
+    for p in c:
+        p['fields'].update(SOURCING.get((p['sym'], p['value'], p['fp']), {}))
     return c
+
+
+# JLCPCB parts for every assembled (SMD, back-side) part, keyed (symbol, value, footprint).
+# Live strict lookups 2026-10-18, recorded in docs/sourcing-candidates.json (jlc_release).
+# Passives and D10 are JLCPCB Basic; R20, U1 and U3 are Extended by choice/necessity.
+# The THT jacks, LEDs and headers are hand-soldered and carry no LCSC field.
+SOURCING = {
+    ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '39', 'R1206'): dict(LCSC='C414944', MPN='HP06W2F390JT5E', Manufacturer='UNI-ROYAL'),
+    ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
+    ('C', '1u', 'C0805'): dict(LCSC='C28323', MPN='CL21B105KBFNNNE', Manufacturer='Samsung'),
+    ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
+    ('D_Schottky', 'B5819W', 'SOD123'): dict(LCSC='C8598', MPN='B5819W SL', Manufacturer='CJ (Jiangsu Changjing)'),
+    ('HT75xx-1-SOT89', 'HT7550-1', 'SOT89'): dict(LCSC='C16106', MPN='HT7550-1', Manufacturer='Holtek'),
+    ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR',
+                                                       Manufacturer='Microchip'),
+}
 
 
 # Reference / value text offsets from the symbol origin (default: just above/below).

@@ -5,8 +5,8 @@ All geometry is written out here in board millimetres; nothing is autorouted.
 Layer plan (docs/research.md section 3.6). The Bread Modular pin map sends nets up and
 down from every side of U1, so each layer keeps a lane order that matches its turn order:
   B.Cu  RX + LED1-LED4 up, LED5-LED8 down, TX6-TX8 up to their layer-change vias,
-        resistor stubs, power chain, R2 +5V, GND pour.
-  F.Cu  TX1-TX4 up, TX5-TX8 + UPDI down, +5V trunk, TIP/RING, GND pour.
+        resistor stubs, power chain, R2 +5V, U3 heat sink, GND pour.
+  F.Cu  TX1-TX4 up, TX5-TX8 + UPDI down, +5V trunk, TIP/RING, U3 heat sink, GND pour.
 Vias 0.6/0.3 mm. Tracks 0.25 mm signal, 0.2 mm U1 fan-out, 0.3 mm +5V, 0.4-0.5 mm power.
 
   python3 -B tools/route_plan.py > research/route/plan.json   (then shared pcb plan/apply/promote)
@@ -62,11 +62,16 @@ track('data', '/DATA', B, ('JP1', '2'), [(115.6, 65.0), (115.6, 69.5)], ('R21', 
 
 # ---- power chain: J10 +12V -> D10 -> R20 -> U3 (HT7550) -> +5V --------------------------
 track('p12a', '/+12V', B, ('J10', '10'), [], ('J10', '9'), 0.5)
-track('p12b', '/+12V', B, ('J10', '9'), [(107.75, 153.0)], ('D10', '2'), 0.5)
-track('vind', '/VIN_D', B, ('D10', '1'), [(111.05, 149.0), (111.0, 141.0)], ('R20', '1'), PWR)
-track('vinldo', '/VIN_LDO', B, ('R20', '2'), [(108.6, 141.5)], ('U3', '2'), PWR)
-track('vinc5', '/VIN_LDO', B, ('C5', '1'), [(107.9, 142.8)], ('U3', '2'), PWR)
+# The regulator group sits right of J10 (outside the 16-pin IDC overhang) on its heat sink.
+track('p12b', '/+12V', B, ('J10', '10'), [], ('D10', '2'), 0.5)
+track('vind', '/VIN_D', B, ('D10', '1'), [], ('R20', '1'), PWR)
+track('vinldo', '/VIN_LDO', B, ('R20', '2'), [(114.3, 159.06)], ('U3', '2'), PWR)
+track('vinc5', '/VIN_LDO', B, ('C5', '1'), [], ('R20', '2'), PWR)
 track('p5c4', '/+5V', B, ('U3', '3'), [], ('C4', '1'), PWR)
+# GND returns of U3/C4/C5 run on B.Cu through the heat sink to J10 pin 4.
+track('gu3', '/GND', B, ('U3', '1'), [(115.8, 165.65)], ('C4', '2'), PWR)
+track('gc5', '/GND', B, ('C5', '2'), [(118.1, 164.2), (115.8, 164.2)], ('U3', '1'), PWR)
+track('gc4', '/GND', B, ('C4', '2'), [(111.5, 165.65), (111.5, 164.3)], ('J10', '4'), PWR)
 
 # ---- U1 fan-out, up side ------------------------------------------------------------------
 FAN = 0.2                       # 0.4 mm QFN pitch: 0.2 mm stubs keep 0.2 mm to the next pad
@@ -125,12 +130,13 @@ track('tx5s', '/CH5_TX', B, ('U1', '10'), [(106.85, 113.45)], 'tx5a', FAN)
 track('tx5f', '/CH5_TX', F, 'tx5a', [(107.45, 113.0), (111.85, 113.0), (111.85, TXV[5])], 'tx5b', FAN)
 track('tx5r', '/CH5_TX', B, 'tx5b', [], ('R12', '1'))
 
-# UPDI (PA0): via right of U1, F.Cu down the corridor (left of TX5) to the J11 corner.
+# UPDI (PA0): via right of U1, F.Cu down the corridor (left of TX5) into the J8/J9 band, then
+# B.Cu through the J9 pad-row gap to R11/J11 in the strip left of J10.
 via('updia', '/UPDI_PA0', 111.25, 114.85)
-via('updib', '/UPDI_PA0', 113.2, 159.825)
+via('updib', '/UPDI_PA0', 110.9, 146.0)
 track('updis', '/UPDI_PA0', B, ('U1', '19'), [(110.45, 114.65)], 'updia', FAN)
-track('updif', '/UPDI_PA0', F, 'updia', [(110.9, 115.2), (110.9, 153.9), (113.2, 153.9)], 'updib')
-track('updir', '/UPDI_PA0', B, 'updib', [], ('R11', '1'))
+track('updif', '/UPDI_PA0', F, 'updia', [(110.9, 115.2)], 'updib')
+track('updir', '/UPDI_PA0', B, 'updib', [(107.2, 146.0), (107.2, 152.2), (102.6, 152.2)], ('R11', '1'))
 track('updij', '/UPDI', B, ('R11', '2'), [], ('J11', '1'))
 
 # LED5 local on B.Cu under the UPDI via; LED6-LED8 down the corridor on B.Cu (L->R LED8, LED7, LED6).
@@ -141,12 +147,12 @@ track('led8', '/CH8_LED', B, ('U1', '5'), [(107.8, 116.1), (107.3, 116.6), (107.
 
 # ---- +5V trunk: LDO -> F.Cu left channel -> C3 -> U1 (via under pin 4, C1); B.Cu left channel -> R2 --
 P5 = 0.3
-via('p5ldo', '/+5V', 104.3, 148.0)
+via('p5ldo', '/+5V', 111.55, 161.9)
 via('p5c3', '/+5V', 103.545, 125.4)
 via('p5j', '/+5V', 103.4, 116.2)
 via('p5u1', '/+5V', 108.2, 116.85)
-track('p5a', '/+5V', B, ('C4', '1'), [], 'p5ldo', PWR)
-track('p5b', '/+5V', F, 'p5ldo', [(103.545, 147.2)], 'p5c3', P5)
+track('p5a', '/+5V', B, ('U3', '3'), [], 'p5ldo', PWR)
+track('p5b', '/+5V', F, 'p5ldo', [(111.55, 147.6), (104.3, 147.6), (103.545, 146.85)], 'p5c3', P5)
 track('p5c', '/+5V', B, 'p5c3', [], ('C3', '1'), P5)
 track('p5d', '/+5V', F, 'p5c3', [(103.545, 124.6), (103.545, 117.0)], 'p5j', P5)
 track('p5e', '/+5V', F, 'p5j', [(103.9, 116.6), (107.95, 116.6)], 'p5u1', P5)
@@ -154,16 +160,44 @@ track('p5f', '/+5V', B, ('U1', '4'), [], 'p5u1', FAN)
 track('p5g', '/+5V', B, 'p5u1', [], ('C1', '1'), P5)
 track('p5h', '/+5V', B, 'p5j', [(103.545, 115.6), (103.545, 73.3)], ('R2', '1'), P5)
 
-# ---- GND: both layers poured, U1 exposed pad stitched, edge stitching between jack rows ---------
+# ---- GND stitching: U1 exposed pad, edge vias between the jack rows ------------------------
 track('gndu1', '/GND', B, ('U1', '3'), [], ('U1', '21'), FAN)
 via('gndep', '/GND', 108.6, 114.25)
+# The B.Cu GND strip between the CH8_LED/CH7_LED lanes (C1 pad 2) gets its own vias to F.Cu
+# rather than relying on the ~0.2 mm pour neck between R17's pads.
+via('gndc1a', '/GND', 108.15, 124.0)
+via('gndc1b', '/GND', 108.15, 131.0)
 for n in range(1, 8):
     via(f'gndl{n}', '/GND', 101.8, JACK[n] + 5.25)
     via(f'gndr{n}', '/GND', 118.5, JACK[n] + 5.25)
-OUTLINE = [[100.475, 59.225], [119.525, 59.225], [119.525, 169.275], [100.475, 169.275]]
-for lyr in (F, B):
-    ops.append({'op': 'add_zone', 'uuid': uid('zone/gnd/' + lyr), 'net': '/GND', 'layer': lyr,
-                'polygon': OUTLINE, 'clearance_mm': 0.25, 'min_thickness_mm': 0.2})
+
+
+def zone(name, net, layer, poly):
+    ops.append({'op': 'add_zone', 'uuid': uid('zone/' + name), 'net': net, 'layer': layer,
+                'polygon': [[r(x), r(y)] for x, y in poly], 'clearance_mm': 0.25, 'min_thickness_mm': 0.2})
+
+
+# ---- U3 heat sink: VIN_LDO copper on both layers (the HT75xx SOT-89 tab is pin 2, VIN) -----
+# B.Cu: the whole area right of J10 below the J9 pad row (U3, R20, C5, D10 sit on it).
+# F.Cu: the whole board below the J9 pad row, around J10/J11 (their GND pins are cleared on
+# F.Cu and stay on the B.Cu GND pour). Vias beside the tab (not in the pad, so they do not
+# wick solder) and in the B.Cu island under the U3/C4/C5 GND returns tie the two layers.
+# The shared add_zone has no priority and KiCad rejects intersecting zones, so each GND pour
+# is the complement polygon kept 0.3 mm off its heat sink.
+X0, X1, Y0, Y1 = 100.475, 119.525, 59.225, 169.275       # board outline
+HS_B = [(111.2, 155.1), (X1, 155.1), (X1, Y1), (111.2, Y1)]
+HS_F = [(X0, 153.9), (X1, 153.9), (X1, Y1), (X0, Y1)]
+for n, (x, y) in enumerate([(112.6, 158.6), (112.6, 160.0), (116.0, 158.6), (116.0, 160.0), (114.3, 157.2),
+                            (113.5, 167.6), (115.5, 167.6), (117.5, 167.6), (118.5, 165.5)]):
+    via(f'hs{n}', '/VIN_LDO', x, y)
+zone('hs/' + B, '/VIN_LDO', B, HS_B)
+zone('hs/' + F, '/VIN_LDO', F, HS_F)
+
+# ---- GND pours: everything else on both layers ---------------------------------------------
+GND_B = [(X0, Y0), (X1, Y0), (X1, 154.8), (110.9, 154.8), (110.9, Y1), (X0, Y1)]
+GND_F = [(X0, Y0), (X1, Y0), (X1, 153.6), (X0, 153.6)]
+zone('gnd/' + B, '/GND', B, GND_B)
+zone('gnd/' + F, '/GND', F, GND_F)
 
 if __name__ == '__main__':
     json.dump({'schema_version': 1, 'operations': ops}, sys.stdout, indent=1)
