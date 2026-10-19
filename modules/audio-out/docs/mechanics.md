@@ -1,4 +1,4 @@
-# Audio Out mechanics and 4HP fit (P4 placement, R3 routing)
+# Audio Out mechanics and 4HP fit (P4 placement, R4 routing)
 
 **Verdict: the module fits 4HP.** The verdict is nominal, from models: no physical
 jack, pot or printed-panel trial has been done, and the pot model follows the

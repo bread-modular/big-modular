@@ -5,7 +5,10 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
 
 ## Current state
 
-**S3 schematic + R3 routed carrier (2026-10-19), exported to `jlcpcb/` (not supplier-accepted), not built.** S3/R3
+**S3 schematic + R4 routed carrier (2026-10-19), exported to `jlcpcb/` (not supplier-accepted), not built.** R4
+(user request): both GND pours use thermal reliefs; C9 moved 0.5 mm left (+12 V
+pad 1.05 mm from RV1 pin 1) and R9 0.65 mm right / 0.15 mm down so its GND pad gets
+two spokes. S3/R3
 (user request): J5 is a 10-pin power header on the 10-pin cable, so no 16-pin plug
 overhangs the PHONES leads; PHONES moved up 2.5 mm, the pots and U2 group 1 mm, and
 D1/C3/D2/C4 stand beside the header. J5 is the user's unshrouded 2x5 pin header
@@ -17,11 +20,11 @@ user's sample (no threaded bushing, 16 mm knurled shaft above the body).
 - S3 schematic (`hardware/audio-out.kicad_sch`, ERC 0). Every assembled part
   carries `LCSC`, `MPN` and `Manufacturer` from `SOURCING` in
   `tools/build_schematic.py`.
-- R3 carrier: placed from `docs/geometry.json`, copper from `tools/route_plan.py`
+- R4 carrier: placed from `docs/geometry.json`, copper from `tools/route_plan.py`
   through the shared plan/apply/promote. Shared `check`: ERC 0, DRC 0 at all
-  severities, 0 unconnected, parity equal (`docs/fit/`). The R1 and R2 boards are
-  kept in the ignored `research/r1-backup/` and `research/r2-backup/`.
-- Strict-live assembly audit on an export in `research/export-r3b/` (pin-header J5): 24 Basic +
+  severities, 0 unconnected, parity equal (`docs/fit/`). The R1, R2 and R3 boards are
+  kept in the ignored `research/r1-backup/`, `research/r2-backup/` and `research/r3-backup/`.
+- Strict-live assembly audit on the R4 `jlcpcb/` CPL (`research/review-r4/audit.json`): 24 Basic +
   2 Extended (U1/U2); only the human review gates are open, as midi.
 - JLCPCB export in `jlcpcb/` (carrier, panel, BOM/CPL, `source-sha256.json`),
   made with the shared exporter; strict-live audit rerun on its CPL with the same

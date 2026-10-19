@@ -22,7 +22,7 @@ schematic must have the same stem and directory. `--pcbnew-python` and
 
 Supported: absolute footprint move/rotate/native side flip, explicit local
 footprint additions, same-net polylines/pad or branch endpoints, through-vias,
-simple solid zones, edge lines/closed outlines, non-copper text, selected
+simple solid or thermal-relief zones, edge lines/closed outlines, non-copper text, selected
 UUID-based deletion of top-level straight tracks/vias/edge lines/text.
 
 **Moving a footprint does not drag copper.** Plans are not DRC approval. Apply

@@ -1,6 +1,6 @@
 # audio-out research: Bread Modular baseline, circuit, decisions
 
-S3 schematic (`hardware/audio-out.kicad_sch`, ERC 0) and R3 routed carrier
+S3 schematic (`hardware/audio-out.kicad_sch`, ERC 0) and R4 routed carrier
 (`hardware/audio-out.kicad_pcb`, DRC 0 at all severities, 0 unconnected, parity
 equal). This document records the Bread Modular baseline, the circuit as drawn,
 the decisions, and what is still open. Nothing has been built or bench-tested.
@@ -131,7 +131,7 @@ Rejected (`sourcing-candidates.json`): NJM4556AM (70 mA, but its DMP-8 package
 needs a non-stock land pattern); NE5532DR (Basic, but bipolar input bias gives
 tens of mV of DC at the outputs from the divider source).
 
-### 3.6 Layout and routing (R3)
+### 3.6 Layout and routing (R4)
 
 - 4HP, one column at X10.0, top to bottom: IN L (J1, Y19.5), IN R (J2, Y33.0),
   LINE (J3, Y46.5), VOL L (RV1, shaft Y62.5), VOL R (RV2, Y81.5), PHONES (J4,
@@ -151,6 +151,11 @@ tens of mV of DC at the outputs from the divider source).
   left (X2.4) to PHONES, 0.4 mm.
 - Both layers carry a whole-board GND pour, with 17 stitching vias. The jack S
   pads, pot pin 1 and the J5 GND pins tie the pours as well.
+- R4 (user request): both pours connect pads through thermal reliefs (0.5 mm gap
+  and spokes), for hand-soldered GND pins and even reflow of the 0603 parts. C9
+  sits 0.5 mm further left so its +12 V pad is 1.05 mm from RV1 pin 1 (GND; was
+  0.55 mm). R9 sits 0.65 mm right and 0.15 mm down, so its GND pad clears U2 pin 8
+  and gets the two spokes DRC requires.
 - `tools/route_plan.py` holds every segment and via (shared ops v1).
   Nothing is autorouted.
 

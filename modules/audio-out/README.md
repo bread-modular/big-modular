@@ -15,9 +15,9 @@ Signal chain per channel: 1k -> 1 uF -> 47k/56k divider -> **OPA1678** follower
 -> 100R line out, and -> 50k pot (15k taper load) -> **MC33178** follower -> 10R
 phones.
 
-**Status: S3 schematic + R3 routed carrier, exported to `jlcpcb/` (not supplier-accepted), not built.**
+**Status: S3 schematic + R4 routed carrier, exported to `jlcpcb/` (not supplier-accepted), not built.**
 - The schematic is drawn (native ERC 0).
-- The 2-layer carrier is fully routed with GND poured on both sides: DRC 0 at all
+- The 2-layer carrier is fully routed with GND poured on both sides (thermal reliefs): DRC 0 at all
   severities, 0 unconnected, parity equal, and the shared `check` has no
   findings.
 - The 4HP panels (FR4 + printed) are checked for fit against nominal models.
@@ -28,7 +28,7 @@ phones.
 
 | Path | Contents |
 |---|---|
-| `hardware/audio-out.kicad_{pro,sch,pcb}` | Carrier (19 x 110 mm, routed R3) and flat schematic (S3); PDF in `docs/audio-out-schematic.pdf` |
+| `hardware/audio-out.kicad_{pro,sch,pcb}` | Carrier (19 x 110 mm, routed R4) and flat schematic (S3); PDF in `docs/audio-out-schematic.pdf` |
 | `hardware/AudioOut.kicad_sym`, `sym-lib-table` | Pinned stock symbols (`docs/schematic-symbols.json`) |
 | `hardware/AudioOut.pretty`, `AudioOut.3dshapes` | Pinned footprints, jack models, RV09 model from the user's sample (`PROVENANCE.json`) |
 | `hardware/_kicad_models/` | Vendored 3D models (`<sha256>/<name>`) |
