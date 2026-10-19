@@ -35,8 +35,9 @@
   SW1: BM `K2-1808SN-A4SW-01`, copper unedited (added courtyard, removed pad-overlapping
   silk). Everything else is stock KiCad. `hardware/8BIT.pretty/PROVENANCE.json` records every source and hash.
 - All JLC-assembled SMD parts on the back (one assembly side); jacks, pots, LED,
-  headers and the F-side SW1 are hand-soldered. All R/C and the TL072 are JLCPCB Basic;
-  ATtiny1616, HT7550-1, BAT54SW and MCP6001 are Extended.
+  headers and the F-side SW1 are hand-soldered. All R/C and the TL072 are JLCPCB Basic
+  except R12 (0.5 W 1206 for the ±12 V mis-patch, no Basic exists); ATtiny1616, HT7550-1,
+  BAT54SW and MCP6001 are Extended.
 - Power header and IDC-16 envelope identical to `modules/midi` (J4 vertical, pin 1
   -12 V at the bottom, unshrouded). UPDI on a 2-pin 2.54 mm header (J5: UPDI, GND).
 - PWR_FLAGs: `#FLG01` GND, `#FLG04` -12V, `#FLG05` +12V at the J4 entry; `#FLG02` +12V_F,
@@ -83,6 +84,7 @@
 - Live strict JLCPCB lookups of every LCSC code (and SW1's C92589):
   `docs/sourcing-candidates.json`.
 - Export (2026-10-19): 37 parts / 24 BOM rows, bottom side. Live strict audit: all
-  codes resolved and Economy-eligible; R12 fault power fails (0.28 W vs 0.25 W);
-  human reviews empty, so `order_ready: false`.
+  codes resolved and Economy-eligible; R12 (0.5 W) passes its 0.28 W fault power and
+  fails only the R/C Basic policy (intentional Extended); human reviews empty, so
+  `order_ready: false`.
 - Not done: 3D fit, printed panel, actuator test print, bench.

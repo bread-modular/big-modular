@@ -9,9 +9,9 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   mixer in the Bread Modular `imix` topology: per channel an inverting TL072 buffer
   (100k input impedance, 100k ∥ 20p) -> 100R -> Thonk Tall Trimmer B50K (Bread
   Modular RV09 footprint) -> 100k into a TL072 summer on ±12 V (B5819W per rail),
-  100n at every op-amp, 1k 1206 output. Every assembled part carries
+  100n at every op-amp, 1k 1 W 2512 output. Every assembled part carries
   `LCSC`, `MPN` and `Manufacturer` from `SOURCING` in `tools/build_schematic.py`
-  (all JLCPCB Basic).
+  (all JLCPCB Basic except R18, Extended).
 - R3 carrier (6HP): each channel's jack and pot share a row, MIX jack at the bottom;
   buffer TL072s U1/U2 between rows 1-2 and 3-4, summer U3 below row 4.
   Fully routed on 2 layers, GND on both layers, SMD on B. The routed native PCB owns

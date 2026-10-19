@@ -85,9 +85,14 @@ Buffers: ch1 U1B, ch2 U1A, ch3 U2B, ch4 U2A (one TL072 per channel pair, see 3.3
   about ±10 V, so each buffer passes inputs up to about ±10 V and the sum clips at
   about ±10 V. Four full-level ±5 V audio signals at full CW will clip; turn the
   pots down. Unity gain by intent.
-- **Output:** 1k series (short-circuit/cable protection). Output impedance 1k. R18
-  is a **1206** (250 mW): with the MIX tip shorted to sleeve and a 10.5 V DC output
-  it dissipates about 110 mW, above a 0603's 100 mW rating.
+- **Output:** 1k series (short-circuit/cable/mis-patch protection). Output
+  impedance 1k. R18 is a **1 W 2512** (UNI-ROYAL 25121WF1001T4E). With the MIX tip
+  shorted to sleeve and a 10.5 V DC output it dissipates about 110 mW (11 %). The
+  sized case is a hard -12 V source patched into MIX while U3 sits at +10.5 V:
+  22.5 V across R18, 22.5 mA (below the TL072 short-circuit limit), about 0.51 W
+  continuously (51 % of 1 W). The earlier 250 mW 1206 would have run at about 2x
+  its rating there, and a 0.5 W 1206 at about 100 %. No Basic 1 W 1k was found, so
+  R18 is the one Extended part (by request, 2026-10-19).
 - **DC offset (CV use):** TL072CDT Vos ≤3 mV max per stage. Each buffer has noise
   gain 2 (≤6 mV at BUF, scaled by its pot); the summer's worst-case noise gain is
   about 5 (all pots full CW). Worst case about 15 + 4 x 6 ≈ 40 mV at OUT if every
@@ -144,7 +149,9 @@ Buffers: ch1 U1B, ch2 U1A, ch3 U2B, ch4 U2A (one TL072 per channel pair, see 3.3
 - SUM: wiper -> 100k (B) -> via -> F to the right-edge bus X28.3 -> down to
   Y91.5 -> via -> C13/R17 -> U3 pin 2. The bus sits on F at the board edge, away
   from the input lanes, between GND pours.
-- U3: MIX -> R18 -> J5 tip between the T and TN pads; U3B pins 6-7 shorted.
+- U3: MIX -> R18 -> J5 tip; R18 stands vertically left of U3 between the J4 sleeve
+  and J5 tip pads, MIX pad up (direct from R17/C13), OUT pad down to the J5 tip.
+  U3B pins 6-7 shorted.
 - Rails: B at the header/diodes/bulk caps. +12 V: F at Y103.05 to U3 and on to the
   left edge, then B up X3.2. -12 V: B along the bottom edge Y118.4 and up X1.6; F
   up X26.0 to U3. Each cluster takes F taps (+12 V at row+11, -12 V at row+14.2) to
@@ -165,25 +172,30 @@ Buffers: ch1 U1B, ch2 U1A, ch3 U2B, ch4 U2A (one TL072 per channel pair, see 3.3
 
 ## 5. Sourcing (docs/sourcing-candidates.json)
 
-Live strict audit, 2026-10-19T15:10:40Z (`assembly.py audit --strict-live --boards 5
+Live strict audit, 2026-10-19T17:00:35Z (`assembly.py audit --strict-live --boards 5
 --side bottom`, `docs/jlcpcb-audit-requirements.json`). Every assembled part is
-JLCPCB **Basic** and economy-eligible, and every code, MPN, package, stock and
-voltage/power/dielectric requirement passes:
+economy-eligible and JLCPCB **Basic** except R18 (Extended, see below), and every
+code, MPN, package, stock and voltage/power/dielectric requirement passes:
 
 | Refs | Part | LCSC |
 |---|---|---|
 | U1, U2, U3 | TL072CDT (ST), SO-8 | C6961 |
 | R1-R8, R13-R17 | 100k 1 % 0603 UNI-ROYAL 0603WAF1003T5E | C25803 |
 | R9-R12 | 100R 1 % 0603 UNI-ROYAL 0603WAF1000T5E | C22775 |
-| R18 | 1k 1 % 1206 (250 mW) UNI-ROYAL 1206W4F1001T5E | C4410 |
+| R18 | 1k 1 % 2512 (1 W) UNI-ROYAL 25121WF1001T4E, **Extended** | C54315 |
 | C9-C13 | 20 pF C0G 50 V 0603 CL10C200JB8NNNC | C1648 |
 | C3-C8 | 100 nF X7R 50 V 0603 CC0603KRX7R9BB104 | C14663 |
 | C1, C2 | 10 µF X5R 25 V 0805 CL21A106KAYNNNE | C15850 |
 | D1, D2 | B5819W SOD-123 (CJ) | C8598 |
 
-36 assembled parts in 8 BOM lines. The audit still reports
-`catalog_and_requirements_pass: false` because of gates it treats as **unknown**,
-all left open on purpose:
+36 assembled parts in 8 BOM lines. The audit has one hard failure, on purpose:
+R18 fails the shared "R/C requires actual Basic" policy, because no Basic 1 W 1k
+was found (the same trade-off as 8bit R12 and midi V2 R20). The rule is not weakened;
+expect an Extended-part fee on the order. R18's requirement is the -12 V mis-patch
+(22.5 V, 22.5 mA, 0.511 W worst case at -1 %) with its package stated as `2512`,
+because the shared footprint matcher only knows 0402-1210. Its power, voltage and
+current checks pass. The audit also reports gates it treats as **unknown**, all
+left open on purpose:
 - the human review attestations (land pattern, pin mapping, ratings; and the role
   for each capacitor) for every part;
 - the capacitor ESR/ESL/DC-bias limits;

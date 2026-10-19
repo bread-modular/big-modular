@@ -20,8 +20,9 @@
   at the bottom of the jack column.
 - Power: 10-pin header, and a **16-pin IDC socket must also fit** (J10 vertical,
   pin 1 at the bottom, unshrouded; envelope as midi).
-- JLCPCB assembly: every SMD part on the back (one side), all Basic. Jacks, pots and
-  the header are hand-soldered.
+- JLCPCB assembly: every SMD part on the back (one side), all Basic except R18 (1 W
+  2512 output resistor, Extended by request 2026-10-19: no Basic 1 W 1k found).
+  Jacks, pots and the header are hand-soldered.
 
 ## S3/R3 state
 
@@ -35,7 +36,7 @@
   equals `circuit()`; `kicad-cli sch upgrade --force` writes it natively. `SOURCING` adds `LCSC`/`MPN`/`Manufacturer` to every
   assembled part; THT parts carry none.
 - `tools/import_footprints.py` builds `hardware/IMIX.pretty` (`PROVENANCE.json`):
-  stock footprints unchanged (R18 is a 1206 for its short-circuit dissipation); the
+  stock footprints unchanged (R18 is a 1 W 2512 for a -12 V mis-patch on MIX); the
   PJ301M-12 with midi's edits plus removal of the F.SilkS body-outline segments; the RV09 with its Value text moved to F.Fab and the nominal 3D proxy from
   `tools/build_pot_model.py` attached.
 - `docs/geometry.json` owns placement, panel, labels and stack.

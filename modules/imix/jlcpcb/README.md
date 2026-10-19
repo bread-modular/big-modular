@@ -23,7 +23,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | Order | Files | Options |
 |---|---|---|
 | Carrier PCB | `imix-gerbers.zip` | 2 layers, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz, HASL, standard everything else. The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately: "Remove" (check the quote for any fee), or JLCPCB prints the number where it chooses |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 36 parts in 8 BOM rows, all on the back, all Basic |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 36 parts in 8 BOM rows, all on the back; all Basic except R18 (C54315, Extended: expect the Extended-part fee) |
 | Front panel PCB | `imix-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly; black mask suits a panel |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -50,9 +50,9 @@ Soldering notes:
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift.
 
-- Carrier PCB `5c8ca5380ba8c14ed10b067b57eaf71db4da67c6d209562a01d5d8a814e824ca` (R3).
+- Carrier PCB `4915aeb6b15b33167156240cfd300496ac529eba97153b70664cd3140c965f37` (R3, R18 1 W 2512).
 - Carrier project `6b4cfec5c1272aace4c13a072669b0aaa79d76b38955a9fae91e453d621b5ba4`.
-- Carrier schematic `238caf9e2c937303275e7bae7e0cdce6145d75533cae75da130fdcc00c26b70d` (S3).
+- Carrier schematic `429354893e38863ea2794794cf13491e17b8e9c6ff7fd2fbb364029b3f1e48c7` (S3, R18 C54315).
 - Panel PCB `af1a08834a5f38c900e2c137716ac28a7c82b60535cdcfd95d01f90d7b98ac85`.
 - Panel project `e7156bbbb5883643c9fab0d81e72337c84d60000f11303adfe4c4a63853bb2f1`.
 
@@ -107,11 +107,14 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/imix-symbols.xml hardware
   there are no front SMD parts.
 - **3D fit:** 0 mm³ interference against both panels; the pot shafts stand 13.4 mm
   (FR4) / 13.0 mm (printed) proud (`docs/fit/fit-report.json`).
-- **Assembly audit** (live, 5 boards, 2026-10-19T15:10:40Z):
-  - Every C-code, MPN, Basic class, Economy flag, stock level and
+- **Assembly audit** (live, 5 boards, 2026-10-19T17:00:35Z):
+  - Every C-code, MPN, Economy flag, stock level and
     voltage/power/dielectric requirement passes.
-  - It still reports `catalog_and_requirements_pass: false`, only because of gates
-    it treats as unknown:
+  - One intentional hard failure: R18 (UNI-ROYAL 25121WF1001T4E, 1 W 2512) is
+    Extended and fails the shared "R/C requires actual Basic" rule. No Basic 1 W
+    1k was found; the rule is not weakened (`docs/research.md` §5). R18's power
+    check is sized for a -12 V source on MIX against +10.5 V (0.51 W, 51 %).
+  - It also reports gates it treats as unknown:
     - the human review attestations;
     - the capacitor ESR/ESL/DC-bias limits;
     - the package review for D1, D2 and U1-U3.

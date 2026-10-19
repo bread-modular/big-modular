@@ -13,11 +13,12 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   via shared plan/apply/promote): shared `check` no findings (DRC 0, 0 unconnected,
   parity equal). 4HP FR4 panel DRC 0. Printed button actuator in `panels/button-actuator/`.
 - `jlcpcb/` export (bottom-side assembly, 37 parts) with source manifest; live audit
-  passes except R12's fault power and the empty human reviews. Not supplier-accepted.
+  passes except R12's intentional Extended class (0.5 W ROHM ESR18EZPF1001, as MIDI V2's R20)
+  and the empty human reviews. Not supplier-accepted.
   Re-export after any source change (`jlcpcb/README.md`). No 3D fit or printed panel yet.
 - `opt/kicad-tools/automation` was synced to `main` (thermal-relief zones); 5 files are
   byte-identical to `main`.
-- Open: R12 rating, part reviews/placement preview, actuator test print, pot measurement, bench
+- Open: part reviews/placement preview, actuator test print, pot measurement, bench
   (`docs/research.md` §6).
 
 ## Boundaries

@@ -142,7 +142,7 @@
    "min_power_w": 0.2822,
    "operating_current_a": 0.0168,
    "power_derating": 1.0,
-   "note": "OUT series 1k (1206): normal output is +/-4.8 V into >=10k. Fault: a hard -12 V source on J3 tip against +4.8 V from U3 puts 16.8 V / 16.8 mA / 0.282 W in R12 continuously (below the TL072 short-circuit limit). Above the 0.25 W rating; open gate (docs/research.md 3.3)",
+   "note": "OUT series 1k (1206): normal output is +/-4.8 V into >=10k. Fault: a hard -12 V source on J3 tip against +4.8 V from U3 puts 16.8 V / 16.8 mA / 0.282 W in R12 continuously (below the TL072 short-circuit limit). Fitted part is 0.5 W (ROHM ESR18EZPF1001), 56 % in that fault (docs/research.md 3.3)",
    "reviews": {}
   },
   "R13": {

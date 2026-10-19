@@ -138,9 +138,9 @@ Vout = 2.2 x FILT - 1.2 x VOFF:  0 V -> -4.78 V, 2.17 V -> 0 V, 4.34 V -> +4.77 
   ±0.1 V. The DAC reference is the internal 4.34 V. C14 filters +5V noise off VOFF (2 Hz).
 - Protection: R12 1k limits short/mis-patch current; the TL072 is short-circuit
   limited. A Eurorack source can't exceed ±12 V, which is only one Schottky drop
-  outside the op-amp rails. A ±12 V source against a ±4.8 V output puts ≤16.8 V / 0.28 W in R12
-  (1206 is rated 0.25 W): a brief mis-patch is fine, a permanent one is not
-  (§6).
+  outside the op-amp rails. A ±12 V source against a ±4.8 V output puts ≤16.8 V / 0.28 W in R12,
+  so R12 is a 0.5 W 1206 (ROHM ESR18EZPF1001, C2074262, 56 % in that fault) and a
+  permanent mis-patch is within rating.
 
 ### 3.5 MCU, knobs, button, LED
 
@@ -171,7 +171,8 @@ Vout = 2.2 x FILT - 1.2 x VOFF:  0 V -> -4.78 V, 2.17 V -> 0 V, 4.34 V -> +4.77 
 Every assembled part has `LCSC`/`MPN`/`Manufacturer` in the schematic
 (`SOURCING` in `tools/build_schematic.py`). The live strict lookups are recorded in
 `sourcing-candidates.json`. All resistors and capacitors are JLCPCB **Basic** and
-Economy-eligible; TL072CDT (C6961), B5819W, MMBT3904 and 1N4148W are Basic too. Extended:
+Economy-eligible except R12 (ROHM ESR18EZPF1001 C2074262, 0.5 W 1206, Extended by request:
+no Basic 0.5 W 1k 1206 was found, and the 0.25 W C4410 fails the mis-patch case); TL072CDT (C6961), B5819W, MMBT3904 and 1N4148W are Basic too. Extended:
 ATtiny1616-MNR (C507118), BAT54SWT1G (C78260) and HT7550-1 (C16106, preferred
 Extended), the same parts MIDI V2 uses, plus the CV buffer MCP6001T-E/OT (C29429,
 Extended). The S4 level-shift resistors are Basic: 56k C23206, 51k C23196, 510k C23192. C13 1 nF is C1588 (Basic, X7R). THT jacks,
@@ -213,7 +214,5 @@ gates are open.
 - **Pots**: the RV09 model is audio-out's nominal user-sample proxy; measure shaft tip to
   PCB seat on a real pot before ordering panels. 3D fit check and printed panel not
   done yet.
-- R12 dissipation under a permanent ±12 V mis-patch (16.8 V / 0.28 W vs 0.25 W; the live audit fails R12 on this): accept, or
-  swap the 1206 for a 0.5 W part (same pads only if 1206).
 - Bench: MIDI front end with this firmware (P and D), CV range/zero and clamp, filter sweep with the
   1M pot, output level/offset, TL072 behaviour with the DAC's step output.

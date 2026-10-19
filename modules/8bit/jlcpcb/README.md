@@ -47,9 +47,9 @@ parts, SW1 as "Other assembly side" and JP1 as "Excluded from BOM".
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift (`tools/kicad-project.json` declares the manifest).
 
-- Carrier PCB `919f847f67bed6cd195489e19a2134474ebabe79f920f777b2f82c99e3295ec1`.
+- Carrier PCB `d1b84b72785a7b21e30b765396bbbb93f105156ea390f9b7165945a9003e2446`.
 - Carrier project `b4337e9349fdb9270bee7f9cfc48e3ac45cecf26ea330f6865b30e4eb8c867ae`.
-- Carrier schematic `97d834922f23424ee57993d2e3a55d5fed6773822a10c2a27c44cad52dafa4f5`.
+- Carrier schematic `0c085ca90db368af0d46f6ebc6686d334470a84f51672d4a2def63bff53f0b5a`.
 - Panel PCB `dcc36e381ada0b5bbd317156feb388718ffb0c100dc95bd42ada6b2cd66a5844`.
 - Panel project `e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6`.
 
@@ -99,13 +99,14 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/8bit-symbols.xml hardware
   slots (jack and pot lugs), matching the board. No NPTH holes on the carrier.
   The panel has 10 NPTH holes and no PTH.
 - **Outlines:** carrier 19.0 x 110.0 mm, panel 20.0 x 128.5 mm (Edge.Cuts Gerbers).
-- **Live assembly audit** (`--strict-live`, 2026-10-19T16:17:06Z, 5 boards):
+- **Live assembly audit** (`--strict-live`, 2026-10-19T16:35:45Z, 5 boards):
   - Every C-code and MPN resolved and every part is Economy-eligible, with stock
     far above the 5-board demand (lowest: U1 ATtiny1616, 1,769).
-  - Basic: all R/C, D2, D4, D5, Q1, U3 (TL072CDT). Extended: U1 (ATtiny1616),
-    D3 (BAT54SW), U4 (MCP6001); Preferred Extended: U2 (HT7550-1). These carry
+  - Basic: all R/C except R12, D2, D4, D5, Q1, U3 (TL072CDT). Extended: R12
+    (ESR18EZPF1001), U1 (ATtiny1616), D3 (BAT54SW), U4 (MCP6001); Preferred Extended: U2 (HT7550-1). These carry
     JLCPCB's Extended fees.
-  - All resistor stress checks pass **except R12** (see gate 1).
+  - All resistor stress checks pass, including R12's 0.28 W fault case on its
+    0.5 W rating. R12's one hard fail is the shared R/C Basic policy (gate 1).
   - Still `unknown` by design: the human land-pattern/pin-mapping/ratings/role
     reviews in `docs/jlcpcb-audit-requirements.json` (empty, never auto-filled),
     capacitor DC-bias/ESR/ESL data, and the package match for the non-passives.
@@ -115,10 +116,11 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/8bit-symbols.xml hardware
 
 This is a complete export, not a supplier-accepted release.
 
-1. **R12 power rating (hard audit fail).** A permanent hard -12 V source on OUT
-   against +4.8 V puts 16.8 V / 0.28 W in R12, above the 1206's 0.25 W. Normal
-   use and short mis-patches are fine. Fix by fitting a 0.5 W 1206 (re-export
-   needed), or accept it knowingly.
+1. **R12 Extended class (hard audit fail, intentional).** R12 is ROHM
+   ESR18EZPF1001 (C2074262), a 0.5 W 1206, so a permanent -12 V source on OUT
+   (16.8 V / 0.28 W) is within rating. The shared audit requires Basic for R/C,
+   and no Basic 0.5 W 1k 1206 exists, so this stays a known fail (as MIDI V2's
+   R20). Accept the Extended fee knowingly.
 2. **Your reviews:** land pattern, pin mapping and ratings for each assembled
    part (and role for the capacitors), recorded in the requirements file.
 3. **JLCPCB placement preview** of every back-side part: U1 pin 1 and the
