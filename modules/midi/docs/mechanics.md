@@ -1,13 +1,19 @@
-# MIDI mechanics and 4HP fit (S2 placement)
+# MIDI mechanics and 4HP fit (S2 placement; V1 and V2)
 
-**Verdict: the module fits 4HP**, so 6HP is not needed. The verdict is nominal,
+**Verdict: the module fits 4HP**, so 6HP is not needed. This applies to both
+carrier versions: V2 (`hardware/v2/`) keeps every V1 mechanical key (panel, jacks,
+LEDs, stack, power header; asserted by `tools/v2/build_layout.py`) and only adds or
+moves B-side SMD parts (`v2/geometry.json`, `research.md` §7.5). Its fit report
+(`v2/fit/fit-report.json`) is identical to V1's, and no V2 part sits inside the
+16-pin IDC envelope. The tables below give V1's B-side placement. The verdict is nominal,
 from models: no physical jack, LED or printed-panel trial has been done.
 
 Frame: panel origin at the upper-left corner seen from the front, X across, Y
 down, mm. KiCad position = (100, 50) + panel XY on both boards. The carrier's F
 side faces the panel, so the KiCad top view *is* the front view. All numbers come
 from [`geometry.json`](geometry.json). The nominal 3D check is in
-[`fit/fit-report.json`](fit/fit-report.json), produced by `tools/fit_assembly.sh`.
+[`fit/fit-report.json`](fit/fit-report.json), produced by `tools/fit_assembly.sh v1`
+(`tools/fit_assembly.sh v2` for V2).
 
 ## Stack
 
@@ -88,7 +94,8 @@ and J10/J11 below J9.
 - JP1 (TRS Type) is a 1x3 header on B, next to J1, like the UPDI header. With a
   shunt it stands about 8.5 mm proud, less than J10, and it's reachable with the
   module out of the case. **Shunt on the `A` pair (1-2) = Type A; on the `B`
-  pair (2-3) = Type B.** No shunt = no input (RX idles high). See
+  pair (2-3) = Type B.** No shunt = no input (V1: RX floats; V2: R22 holds the
+  input idle). See
   [research.md §3.2](research.md).
 
 ## Assembly notes

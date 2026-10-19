@@ -1,0 +1,474 @@
+{
+ "defaults": {},
+ "components": {
+  "R3": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT1 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D11 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R4": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED1 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R5": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT2 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D12 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R6": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED2 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R7": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT3 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D13 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R8": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED3 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R9": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT4 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D14 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R10": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED4 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R12": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT5 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D15 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R13": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED5 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R14": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT6 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D16 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R15": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED6 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R16": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT7 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D17 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R17": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED7 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R18": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.6,
+   "operating_voltage_v": 10.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.102,
+   "operating_current_a": 0.0101,
+   "power_derating": 1.0,
+   "note": "OUT8 series 1k (0805): sized for a mis-patch, not normal use (normal worst case: tip shorted to sleeve, 5 V, 25 mW). Fault target: a hard -10.5 V op-amp output on the tip with D18 holding the node at -0.4 V puts 10.1 V / 10.1 mA / 0.102 W in the resistor, inside the 0.125 W rating with no further derating (fault-only). A zero-impedance -12 V source would be 0.134 W, 7 % over the rating; +12 V is 6.6 V / 44 mW (docs/research.md 7.4)",
+   "reviews": {}
+  },
+  "R19": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 3.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.011,
+   "operating_current_a": 0.0033,
+   "power_derating": 0.5,
+   "note": "LED8 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R11": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0053,
+   "operating_current_a": 0.0011,
+   "power_derating": 0.5,
+   "note": "UPDI series 4.7k: 5 V, ~1 mA",
+   "reviews": {}
+  },
+  "R20": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 3.0,
+   "operating_voltage_v": 3.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.23,
+   "operating_current_a": 0.077,
+   "power_derating": 0.5,
+   "note": "LDO dropper 39R: 77 mA fault case (all outputs shorted, all LEDs lit), 3.0 V, 0.23 W; sits on the VIN_LDO heat-sink copper",
+   "reviews": {}
+  },
+  "C1": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U1 decoupling, +5V",
+   "reviews": {}
+  },
+  "C3": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "+5V local bulk near U1",
+   "reviews": {}
+  },
+  "C4": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "HT7550-1 output capacitor",
+   "reviews": {}
+  },
+  "C5": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 14.8,
+   "operating_voltage_v": 11.8,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "HT7550-1 input capacitor (VIN_LDO <= 12.6 V rail - diode)",
+   "reviews": {}
+  },
+  "D10": {
+   "note": "B5819W reverse-polarity diode, 77 mA fault max, 12.6 V reverse",
+   "reviews": {}
+  },
+  "U1": {
+   "note": "ATtiny1616 at 5 V, 20 MHz",
+   "reviews": {}
+  },
+  "U3": {
+   "note": "HT7550-1, VIN <= 12.6 V, <= 77 mA, ~0.5 W fault dissipation incl. R20 split",
+   "reviews": {}
+  },
+  "D1": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D2": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D3": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D4": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D5": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D6": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D7": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "D8": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "J1": {
+   "assembly": "manual",
+   "reason": "PJ366ST TRS jack (Bread Modular part), hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J2": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J3": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J4": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J5": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J6": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J7": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J8": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J9": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J10": {
+   "assembly": "manual",
+   "reason": "2x5 2.54 mm Eurorack power header, hand-soldered (THT, back side)"
+  },
+  "J11": {
+   "assembly": "manual",
+   "reason": "1x2 2.54 mm UPDI header, hand-soldered (THT, back side)"
+  },
+  "JP1": {
+   "assembly": "manual",
+   "reason": "1x3 2.54 mm TRS A/B header + shunt, hand-soldered (THT, back side)"
+  },
+  "R1": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 11.3,
+   "operating_voltage_v": 11.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.01277,
+   "operating_current_a": 0.00113,
+   "power_derating": 0.5,
+   "note": "Q1 base 10k: +/-12 V mis-patch on MIDI_IN, 11.3 V (D9 or the Q1 B-E junction takes 0.7 V), 1.13 mA, 13 mW",
+   "reviews": {}
+  },
+  "R2": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5.0,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.00115,
+   "operating_current_a": 0.00023,
+   "power_derating": 0.5,
+   "note": "Q1 collector pull-up 22k to +5V: Q1 on, 5 V, 0.23 mA, 1.1 mW",
+   "reviews": {}
+  },
+  "R22": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 17.0,
+   "operating_voltage_v": 17.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.00289,
+   "operating_current_a": 0.00017,
+   "power_derating": 0.5,
+   "note": "MIDI_IN idle pull-up 100k to +5V: -12 V mis-patch, 17 V across, 0.17 mA, 2.9 mW",
+   "reviews": {}
+  },
+  "R23": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 3.1,
+   "operating_voltage_v": 3.1,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.00081,
+   "operating_current_a": 0.00026,
+   "power_derating": 0.5,
+   "note": "U2 clamp divider top 12k: +5V at the 5.58 V clamp limit minus REF 2.5 V, 3.1 V, 0.26 mA",
+   "reviews": {}
+  },
+  "R24": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 2.52,
+   "operating_voltage_v": 2.52,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.00063,
+   "operating_current_a": 0.00025,
+   "power_derating": 0.5,
+   "note": "U2 clamp divider bottom 10k: REF 2.52 V max, 0.25 mA",
+   "reviews": {}
+  },
+  "D9": {
+   "note": "1N4148W B-E clamp for Q1: forward ~1.1 mA (R1) when MIDI_IN is at -12 V; reverse <= 0.8 V",
+   "reviews": {}
+  },
+  "D11": {
+   "note": "BAT54SW output 1 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH1_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D12": {
+   "note": "BAT54SW output 2 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH2_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D13": {
+   "note": "BAT54SW output 3 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH3_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D14": {
+   "note": "BAT54SW output 4 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH4_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D15": {
+   "note": "BAT54SW output 5 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH5_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D16": {
+   "note": "BAT54SW output 6 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH6_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D17": {
+   "note": "BAT54SW output 7 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH7_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "D18": {
+   "note": "BAT54SW output 8 clamp (pin 1 anode GND, pin 2 cathode +5V, pin 3 CH8_TX): forward <= 11.6 mA (-12 V on OUT through 1k) or 6.7 mA (+12 V), ~5 mW; reverse 5.6 V max",
+   "reviews": {}
+  },
+  "Q1": {
+   "note": "MMBT3904 inverting MIDI input buffer: Ic 0.23 mA (R2), Ib 0.26-1.13 mA, VCE <= 5.6 V; VEB held to 0.7 V by D9",
+   "reviews": {}
+  },
+  "U2": {
+   "note": "CJ431 +5V shunt clamp (SOT-23 pin 1 REF, 2 K, 3 A; datasheet PD 300 mW, RthJA 417 K/W): off below ~5.39 V (12k/10k, Vref 2.475 V min, 1 % resistors), clamps by ~5.69 V worst case; all 8 outputs on a hard +12 V inject ~49 mA, minus ~10 mA MCU load: ~39 mA x 5.5 V = 0.21 W (70 % of PD, fault-only)",
+   "reviews": {}
+  }
+ },
+ "verified_specs": {}
+}
