@@ -1,0 +1,12763 @@
+{
+"checks": {
+"findings": {
+"drc": [],
+"erc": []
+},
+"parity": {
+"duplicate_nc_pad_aliases": [],
+"equal": true,
+"extra_connected_pads": [],
+"extra_refs": [],
+"mechanical_without_reference": [],
+"missing_pins": [],
+"missing_refs": [],
+"net_mismatches": [],
+"pads_without_net": []
+}
+},
+"created_uuids": [
+"d6e3a654-201b-50b7-a27e-236c4ada3d24",
+"2ec03050-0c40-5064-a6f1-93bbfc0b6216",
+"68030f73-05fd-5fc9-a3f0-1c1dff534ac5",
+"24e2e294-ea71-56b6-ab07-3b43af6565a9",
+"54f8603a-e112-5187-9ab2-2d58fdcfa614",
+"ba0c5686-d8b6-5b40-9ad3-1fa94234c5fd",
+"185466c5-348e-51ee-b892-34d1ef1ea74c",
+"60d4e432-54ec-575b-912c-6a63bedfd95d",
+"7800db04-50a4-5d2e-8c72-b50e4ab02050",
+"c52e5e58-3d5f-5527-b3b2-a7028e563465",
+"7ce52276-215d-5f3d-a11e-d95b61ea0874",
+"43991f62-8241-5a24-a703-2b60eec27f84",
+"7476acbd-4ed6-56a7-89a5-9c124b942632",
+"6645bc5c-d270-5e3c-9693-29c8665f9c52",
+"51d70383-77e8-53f3-be5b-dee66a293a06",
+"6a009f9e-0efa-51bd-88e1-478b5d2af16f",
+"3fbf2c27-7e1b-5060-b185-f1b4954938b8",
+"79996bfb-4d9f-55b2-9c68-3ee16809250b",
+"62567fc4-53f7-5934-8ef6-c9ece938393b",
+"2333f995-5628-52a9-ad6b-63c77f970505",
+"1f5eae17-a0c3-50d5-8c60-a77d97af5bde",
+"bb28da92-76d1-5bf1-9073-5fa4cd56e2b3",
+"d4fc1306-1c80-5c50-930b-ac190f10183d",
+"84644109-80d4-5f74-b2d9-ac049a9fd510",
+"cc4f1cd3-b7be-5f51-ad2a-566063e310b3",
+"e4ed09eb-e6d6-5726-b276-d73bd06077af",
+"37d8c7ce-0215-549b-bf8b-6e705cbc6a3b",
+"c6142fca-ead8-571b-a9ce-6fd2ee8810e5",
+"88d43e66-157f-538a-a10c-d767dbf7e51f",
+"ee61aa22-b7be-5dee-8e03-ffb319338a1a",
+"27e61794-50e0-5dc5-b757-785e847fc3c6",
+"3126561f-baf6-59e2-8085-012e7db1ae86",
+"21b41e9e-f2ee-5c7f-9055-9dfbce1cb7d7",
+"b051fade-88ac-5bdb-bbbf-4d616e1196bb",
+"6727d8c6-0a75-5f53-90c2-39bd7bccb180",
+"2f8a0fe6-faa1-5efe-9deb-af391c2900b5",
+"da48787e-33b3-5ec4-a1b7-3d132f1d53e2",
+"68ebfe1a-f72e-5891-ba71-434ccc899309",
+"1fde7f6c-27eb-5c2a-9dcc-c19a0163ef98",
+"05a3ea2d-d0f1-5772-bc88-170d97ef0c97",
+"77c47334-2467-5bce-b484-475d2c5cb070",
+"97b5e136-53b6-5814-998f-4eaa816c5f12",
+"b25e3d3e-32df-57c2-b32d-8caf6a62ffbb",
+"2a5220c6-2e96-5ae8-83dc-dfee28d70927",
+"2fe8da75-77c4-56b6-89ce-ff9f2841c3d8",
+"40082408-0a11-5e48-81ac-9761edf81d7f",
+"def5857e-d5ef-5cf2-ab1a-ae664e393169",
+"906688e6-6d18-5d0e-8042-69deeea2adef",
+"997e232a-2075-5f30-a9dc-11805da738b2",
+"71ecee9c-c49e-505f-81b5-bbe1274247f9",
+"6c8d3395-5ad4-5bd5-af84-1f34117fb60a",
+"c38aba2c-3ead-5223-8e43-68838838e140",
+"61b70eac-3609-5e85-b2e7-03f09a8d17ce",
+"c7d20d41-c366-5540-a9b8-8aa1c8d23a3d",
+"c9bacfbe-f2b9-5010-9c89-1c1d4afbc5f6",
+"4e4b339f-e8c3-54c6-9250-488eba359e3b",
+"2c775190-6c1f-5456-8c03-1b96a983b8d2",
+"340a7fbc-9d81-5980-84eb-19085f570dae",
+"a6f643fa-d9d0-5133-98a4-d2fb4fb513f1",
+"e5ac1fef-2865-5753-9952-3a93ebc7708d",
+"ca4959c3-cf53-5206-8e38-ea93d386e803",
+"defdd7a5-15ca-5ab1-883b-bd98c1e6a9fe",
+"d042a4eb-3280-54b3-88c3-b7fcfefd1d9d",
+"ac126e93-09b9-50e3-bea0-391a9e954164",
+"10a6c9fd-d16b-5e48-b3c6-3883b161d988",
+"96aee505-881d-5817-b02d-3ca090d32e68",
+"b82e8f1b-f800-5564-baec-3213ab559047",
+"83527acb-ffa6-5744-8a3d-9c701e5ea00f",
+"cfa639b6-6398-5554-a888-4a31fecc2ab4",
+"811ad29c-7c83-5fb4-96a9-8358c981c3f2",
+"c1232776-a13e-59d7-af22-75de37c1e020",
+"90712159-55ce-5ea8-b5ab-ed2a619ae050",
+"c1b4344c-fdef-584b-9e29-adafabdad940",
+"5127710f-c3b4-5a42-98d7-6d550f1642aa",
+"9cf7477c-e9d9-5a27-a48b-25369d694bc6",
+"713c1eb6-94f2-5c2c-84e1-98892be06550",
+"6816da99-2bff-5a2d-a936-bf4f90834f18",
+"8f537ab0-8d2b-585b-abc1-4c8b65b98768",
+"ba99f028-de38-5aca-8701-52f4022dca9a",
+"fa61367b-5cc5-5bad-b359-3e1590fd4879",
+"2b921ef4-e013-5239-a3fc-1e43d143a197",
+"b43570f7-e0f7-5bf1-923a-fb224f4fb02f",
+"6b8ae46d-dcb2-5088-90cf-4f7bbd5f688f",
+"a50936ed-e124-5c72-ad1e-bac4a76561ec",
+"c08fd4ce-f2b7-5359-9f43-c03dfdf40a71",
+"2263f1f6-5985-5d0a-9ef8-7f386109a77d",
+"13528b83-07f5-556b-8c8c-943ad88ee34a",
+"e0238682-5ab7-52a0-a13b-474be36bdb6d",
+"a748bb27-e5c5-5659-b53e-bc5bf2a55265",
+"5a1d8c3c-30c2-573f-8207-4cc48c50bfd5",
+"b6d37be4-4feb-5504-bc8a-90084eda3eaf",
+"6c6360ff-e467-5d58-abb4-d5d0c6ab216d",
+"b92ec4d5-79a3-5ac0-afad-4a1b2e5b3c19",
+"fb71c66b-fdfe-5ffc-882e-4f58a5128640",
+"3a599792-e183-51b7-8a27-362f629ddc29",
+"bb7d15c7-05b1-5cf6-bcea-45d6a81d0ca7",
+"a744b109-10ea-5405-8d83-0edd0729e280",
+"48ef143a-7042-55df-bd48-f96c616c9d1e",
+"635cb7bb-f09d-53c1-aeb8-fb02fb7ab634",
+"10b6cf55-3824-5d49-bbee-4e7d8fe8a576",
+"deb801c9-6bee-52c8-bca6-da6993766710",
+"49cbf866-cd41-5af8-b1ef-4b88ff2c3ec6",
+"9d90aa1a-73c7-51b0-bb0d-dc3606277ae3",
+"fcf9c003-7862-53ec-be00-bdff913af2d3",
+"e78164f0-f04a-551a-be67-43e5d3348bb6",
+"aed4b503-75e7-5f8e-8cbf-676ed7e32935",
+"a3e7e67f-fbce-56f9-a823-b95c238b92e4",
+"8d674f69-15b6-5a73-af20-a44aac0dce4e",
+"150f0ff6-5c43-5d20-a3ea-30692a854a27",
+"cca29548-6ca5-5c85-9b0d-70ab47cc88e1",
+"71bfe128-d5af-52a1-9d35-fac75de3b143",
+"cd886eb0-7a9e-5214-a510-805f12184a36",
+"4dfd5ef4-bc95-58a3-bf76-8c644dcbc08e",
+"ef0f6e20-062e-5fa2-9a29-4f2551b4a983",
+"5389b688-e6d6-5440-a651-aa67dc935181",
+"3dfd8600-ab3b-56e0-834f-3e2bfa42799c",
+"23e07f5e-b7a6-53a0-8c74-062a95f102c9",
+"6e63cbdf-15ae-5fd8-8f44-cd03ee9ce410",
+"301fbe0e-3940-5f17-999b-70b6feef8c07",
+"e37c5f21-a0cd-58bf-aa59-c58485ec150d",
+"c2f1f8a6-a4c0-5e67-8498-a2aed2b7a86d",
+"de8ef28e-9f7f-5829-b5a3-f0acf5143249",
+"c13ce293-024d-5a88-90e6-b8f79b460dc7",
+"afb4e39d-31f3-5542-885c-0732834f6911",
+"96f40589-8211-51a1-9586-bee0c3d71183",
+"b1db570b-2407-5a50-b36f-a78efc742428",
+"f6c39a23-dd1f-557d-b455-a7cca84205aa",
+"e5c4750f-11fb-5f8e-b535-420d64830ee2",
+"f356b3fa-4674-5964-a4f6-21a2ce39185c",
+"8721b7d8-9b8f-5c93-bdb9-d34c2ef1ef64",
+"a682b1a1-fb88-5ed0-b2bb-ca64a744e1e5",
+"87633566-5083-53fe-8aa5-521caa52a077",
+"daf8a8af-b7b3-539d-8785-7e9bbf2ee02c",
+"c5ee20f0-92ce-5ab0-b070-7ca04e402a61",
+"7c061645-cfab-5d4a-b868-7dc05165e01a",
+"1ee39e47-4245-5ca1-a9ab-273326764636",
+"cc14d37d-0909-55aa-ad70-f995955aa0a0",
+"666ff9a2-49da-56f0-a968-8769e714a0df",
+"48ec97bb-3432-5b09-a972-ea8a57085cd5",
+"4559fa5b-5f10-58ba-ae28-b088e4073ff7",
+"14f3cbce-10dc-5ef8-9621-f34e64b520b1",
+"1a10dc28-99d4-5e81-bdab-4be020580764",
+"1b3f3968-3fe9-52e4-ba3f-1556339d2834",
+"3bf1f4f6-51f6-58f5-9dd2-f8c67481f9ef",
+"4e6f4244-a7c2-596a-80a1-72228068b179",
+"d9fd440b-170a-59ae-ace7-711303d6c401",
+"6cc2c1c3-94ae-5ff9-a433-566aa67a4a7b",
+"2eb629cb-975f-5b09-8616-267dced2ca0e",
+"42d8465c-a0c3-5210-95a0-ecff34c2fe98",
+"5bc5278d-3b9d-5bb4-b983-a3a8514858d8",
+"a29c5a04-6b31-50ea-a238-990a72cc32d4",
+"1b4576a5-6a19-5837-b9f4-138906be69d6",
+"f60c205b-03a2-5348-bebb-4ed1f123b1fa",
+"50a4b782-3da3-54ac-8c36-2424fe00afe0",
+"5fc502bf-73c9-5c7b-a4b6-6e865a72154f",
+"a812a2fc-9d00-500a-8184-abcf984c3dad",
+"07afacbc-31cb-5975-a3ab-140c884dd788",
+"a4481fa2-e90b-5e38-8190-8c996304a524",
+"52bdd6ec-c071-5a13-ace0-fd9a75107de3",
+"4bb218dd-7ef9-5da6-8b20-ab45fcbf7926",
+"39fd6508-d24d-5169-8e71-b6fe9772f57f",
+"dd9d0b7a-b44e-5cfa-9b96-0518b8b72004",
+"ded1bbf2-80e5-5286-97f8-dc6719d1ae3b",
+"7e20d666-da74-5d92-9da7-a8aaaf19e7a0",
+"6a03a2e6-17d3-5c12-962b-8182d338bebb",
+"976c6c36-ab24-5e59-b9e6-e265b86e233d",
+"9ae615ef-c1ac-5f75-839f-baa60ecb5345",
+"dd44f4c7-6dee-5139-8f89-93740b32a1ff",
+"a0b27577-9f4e-556c-a764-537fa3adcc55",
+"c243b577-9c4d-5123-a8a4-70afb1fc41ac",
+"3d76fe9a-cb44-5bd8-8a66-43d06ad20565",
+"c035cba0-4a34-5eb6-9c02-1f153a6ca85f",
+"81bf4044-94fe-5c74-b35a-3a4ace5f00ba",
+"9d17d19d-967d-562b-8cad-b82905171631",
+"b51b85f6-2ff4-57fe-856e-e9cb18feb87d",
+"132e02be-8c02-50d8-85e0-675049148a93",
+"cf95ad68-8af7-528c-8971-0867185e44e2",
+"8e179677-8ab6-5183-984c-c3f94ae976ce",
+"5c8455f3-9005-53f4-92ea-d30a9e7e27fa",
+"5ba8b87c-ac65-55ea-b74f-a59ddf34c41f",
+"5254c40c-5a5b-5130-a8ae-96a490c9c9b9",
+"65988360-d8c2-59fa-960d-5be00065dacb",
+"4e6264d5-4b32-5b92-a1eb-f14790412118",
+"73a38db9-a360-5a9d-9961-c7724195633d",
+"83e2c534-2ece-5582-9a32-d47a96135496",
+"5f880590-0080-5116-86e9-28883b8b805a",
+"1dbe0c40-aa2f-5d57-bd26-d7747b6c4e4d",
+"8f5bb844-1926-5d78-a564-1b4816fad95c",
+"a023b24d-c0d3-5437-b363-4a791479e6fb",
+"9ba20f45-309b-5a59-a186-f83ce67d72ec",
+"70b0362e-a07a-5191-b3a2-6113fe23e1d5",
+"85005f03-3d85-5598-9874-d4fe26b89059",
+"16da0ee0-6918-59c7-8aa0-0d39d8f5a505",
+"174f0fb0-0102-5168-9a15-1888e96a4660",
+"8b92c679-b38b-5b91-8553-3e5979d6b6b8",
+"df70973e-e929-58cb-bad2-c516e3aba238",
+"2aac681a-ae21-579a-8ebb-be79d12c3b48",
+"0bdde249-df4b-5667-92f1-f39c1a092e1f",
+"6d136648-1c28-5f83-b994-fa408b7be47f",
+"c723065f-aca1-501d-88a5-abe40c8f6e88",
+"ba077c46-3087-573b-94e0-a1b969e259f8",
+"f9902c2f-1169-5d4b-b11c-2fc3ded47a54",
+"3eaa950c-a312-5956-8d20-3892d2f26ce4",
+"2270e305-5988-53c4-8394-6446c7db4658",
+"6c2e1843-3210-5b18-9851-42c4217a7d1a",
+"b78b3de8-b067-57f8-8169-dda3aebbdbe7",
+"ea46c843-342c-539c-b2b6-a4b6a47613d5",
+"bcdb892a-48d0-510c-a0a1-be20e8914089",
+"6749d042-5309-57c4-8e3d-3173387ddc58",
+"8093a4af-2645-547b-a67b-3a88fcd51459",
+"16adb08c-7a0a-5e86-902e-b1ad5c7de0b3",
+"d532a451-1aed-5bc2-9248-e0eb470d253e",
+"3f369bb9-301f-53fc-8cbe-802c1a42cd97",
+"88721d69-2835-595a-9f00-cbb9d177e30e",
+"24ac78ab-1956-5d82-8116-b78534e0e033",
+"7d623b41-a9f4-5941-a619-5eb3aadd08fd",
+"891bd6fb-b2da-5415-b680-57d4c06fd931",
+"ed1b164a-681f-5deb-ad2a-5851dfdc9f03",
+"c99755c7-1db7-5fbd-a560-00590ef38570",
+"9dba0805-6a66-56e8-af25-ae299391d75c",
+"05ed7d7d-241a-5cf1-9a43-1b71a901e3da",
+"6233a570-3c9a-522e-82f9-5574f92722e8",
+"1410d404-02fb-5fb0-9d28-52da29e4fae2",
+"22f1d68a-e202-5be5-85dc-41eec7e52128",
+"4537b164-7892-5f05-aa49-e1004e84bc1f",
+"e2126978-ee37-5e41-bbce-d84b91602e9e",
+"170c68af-546d-5064-80a2-a9239db0da00",
+"4e840ed5-e358-59e5-a4b7-0ad20a8e6794",
+"2ffb024e-6f22-57a5-94f8-a303245b2ae2",
+"6c74a9be-6f2f-5b05-b562-405166919472",
+"11bfa7d4-cf61-5a0e-bce0-bd6a062efc9d",
+"924f6457-e0f2-547a-bb06-ee9d7391cc7b",
+"95db7649-511d-5b9b-ab66-0d2987506e21",
+"25c5f14e-9ba5-5603-b5e4-9ff41b9e3b05",
+"4ee7d2d1-1685-51bd-ab22-909ed7efe271",
+"8b363d46-13be-5179-b0e5-d547dbdbca97",
+"b7b6e300-a961-5e77-841b-8c44c57e68ed",
+"d71f7692-64e8-5821-bb3a-8fcfc2e3266a",
+"193da732-08a8-5b61-8c84-8387c40ca38e",
+"74708693-86ac-5038-bbb2-c95073099cee",
+"28e36e0e-9fcc-5780-ba85-b9e850ed907f",
+"70414591-9ae1-5a39-9234-4c8d3e16a8f9",
+"c0ee9762-0be2-5e58-8e91-bbb591f8561f",
+"0f5ad1d2-1a9a-545a-8540-bbc2c26265e1",
+"141c66a3-7cc0-5572-b013-427cff095df9",
+"bb164f5e-5cc5-55c2-a22d-6dd571df2dff",
+"c8e9cc44-8d06-57da-82c5-fdef37f74618",
+"a915da7a-2fe1-58c8-8b1b-984daa1f71f4",
+"5b54a49b-923b-57f3-b138-32a13cde4ac3",
+"c369de8f-8f67-5988-b83c-3e87fbfe0922",
+"0b10c5a2-a9ad-556e-98bf-c79bb9f2af6a",
+"041b069e-cd89-5e15-815e-294eaafa52be",
+"f5e88035-6366-58f1-91cd-e24cca1a13d0",
+"0d174e55-e210-5207-a323-aa8a2db319de",
+"26c24724-9019-5dcf-91e8-dc946dd5e69a",
+"8e1abbf5-67c5-55e3-944f-90a2271be463",
+"1a0ad496-234c-559f-b31f-fc75b3f0ba13",
+"efe971a3-3ba7-5737-acc1-2fbeb0e0f68e",
+"6c8a95a8-d541-5cf8-8aa9-8734e3006109",
+"e7b288ea-46a9-5672-9aaa-b15d76503b05",
+"9f81faff-f75c-5050-b8cd-10b3aaec1e46",
+"e64c5319-d6e6-5aa0-b86a-e12579296645",
+"bfe8c6c8-eb20-5286-94a6-386f539c40bb",
+"9fc642d1-0816-5ee7-a50e-d8c8da7dcd7d",
+"87c601b8-c839-5157-99c1-58f8bf268354",
+"f76d318a-db7b-57c1-8b08-ba9588e97234",
+"91e543f9-75c8-5bad-bfbd-48f7f660dd58",
+"2f915b70-735d-5acd-9273-a905b5556fd3",
+"8d2c4d61-034d-5840-b733-1c978baf287d",
+"b59ce786-e918-5bb9-bb79-c98302a995ba",
+"9ecdd9ac-b5a9-5b9f-8dfb-7f3f1b79ea75",
+"cbc870eb-55f2-5f82-a591-25a808ef3166",
+"35e465da-783d-537c-a7c4-5a7b7890ee79",
+"324a0511-5738-5726-88a2-76de76f2ccb8",
+"de4e39d6-c16b-57f5-8d2d-5649cd587c20",
+"e04a3300-2b1d-5c1e-b451-ea2e9773e381",
+"16ed5762-2f40-501a-a13b-eaa4c0420ce8",
+"9a6abc0b-9c1d-5ed3-8904-385fc1736d04",
+"092bcd44-1fa4-5eb4-b29b-96ed1ba74f59"
+],
+"items": [
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "C1",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/722c3ffa-210e-5e6c-b211-fd268c321f59",
+"uuid": "1e970b06-d776-41bc-83f9-0a0796b72fc2",
+"value": "100n"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "C3",
+"rotation_deg": 0.0,
+"side": "back",
+"symbol_path": "/03041d28-5236-536d-bfb6-497749d4483b",
+"uuid": "b1f9a067-4fd1-465b-bd63-1ea23581d5b6",
+"value": "10u"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "C4",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/bc251b33-f1a7-5d93-80bd-39e35a7e64b2",
+"uuid": "c86a76b8-4a26-4f88-ad0a-28590ace7fc9",
+"value": "10u"
+},
+{
+"at": [
+118.1,
+161.7
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "C5",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/09288eda-5e53-518f-8298-d927139a3669",
+"uuid": "97598eab-2908-40bf-b7bc-83a000b8925a",
+"value": "1u"
+},
+{
+"at": [
+117.2,
+77.77
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D1",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/7a1c2612-a48c-51da-91aa-5e7ebaf10308",
+"uuid": "8086f4bb-4f3b-41fe-90ed-b8f3f63833eb",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+114.3,
+156.4
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D10",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/b989371b-237e-56b1-adc1-cdb17869190f",
+"uuid": "b30b4089-8b6f-4f1e-b607-57e5f7b31cd7",
+"value": "B5819W"
+},
+{
+"at": [
+116.7,
+80.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D11",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/19342b71-fca9-5748-b63a-dd4b7227fa25",
+"uuid": "f3440484-0b06-44c2-af27-ccf571ee38aa",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+90.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D12",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/e5188fbf-2717-5b66-b48b-8b59ad62a62d",
+"uuid": "0ae18c59-9cc7-4bdf-9ff4-0ea14a63b74a",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+101.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D13",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/78ecafb7-0be6-5d92-84f3-af7d4cbf8299",
+"uuid": "babe05a9-aec4-41fa-a928-ea37018a81ca",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+104.5
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D14",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/4f5789f8-1985-5e53-b711-b1e5e599940b",
+"uuid": "7756c5ef-8ef5-4e26-94cc-d7574721e27c",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+122.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D15",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/a3e13732-bd8c-58a8-b9fa-d3a717b6c264",
+"uuid": "72f23130-c035-43cd-a2d3-2ea4e1838c3b",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+132.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D16",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/83cf1866-e0a2-55d9-86b8-02040fa22595",
+"uuid": "9752d7e7-e3df-4ba1-a8d6-6f2b77503366",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+143.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D17",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/268ca650-17f6-55c4-ab28-bf7969319e97",
+"uuid": "b2624ed7-15c0-491b-96d3-ec600e5206d8",
+"value": "BAT54SW"
+},
+{
+"at": [
+116.7,
+153.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D18",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/e0871dc4-4b18-5ba8-a51f-4e9f0d14d716",
+"uuid": "40fa3102-4e2c-4f2e-ad99-164aa304a008",
+"value": "BAT54SW"
+},
+{
+"at": [
+117.2,
+88.27
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D2",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/92418934-ba0b-53fb-9bda-35c72b6288c5",
+"uuid": "23b8e691-b084-4066-b904-5dfd1034ee2a",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+117.2,
+98.77
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D3",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/75738f14-c444-5c47-9272-4aa922f36a9f",
+"uuid": "5930ceff-a089-44c7-9ee0-59b235657a7b",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+117.2,
+109.27
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D4",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/4fa215db-9aba-5c23-87ac-3f7ee09e6577",
+"uuid": "75d95980-d89e-4ee7-bf03-e321da2b8e46",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+117.2,
+119.77
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D5",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/bc4b909f-d351-58cc-b059-149beca213d2",
+"uuid": "d31529d1-9a7e-4976-852d-dd5904091e84",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+117.2,
+130.27
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D6",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/01e332bd-067e-5fcf-a21c-5994d7c426fa",
+"uuid": "5c9ced06-b73e-4d23-9ebb-7365175585d9",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+117.2,
+140.77
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D7",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/352c27c4-64e4-58d5-ae00-ec0d07bfd1fb",
+"uuid": "b795b385-8a9e-4d93-8798-77117dfb95bc",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+117.2,
+151.27
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "D8",
+"rotation_deg": 90.0,
+"side": "front",
+"symbol_path": "/21fb58a8-8bee-5910-93d8-0e175ce440e5",
+"uuid": "544eb2b2-a9ff-4daf-ba05-15b1f8b3b5ca",
+"value": "LED_3mm_red"
+},
+{
+"at": [
+109.2,
+65.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "D9",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/ac4c5c71-9e94-5509-9251-05f33bf3f4d6",
+"uuid": "cf204450-e71b-4b9e-863a-a4a88ccdbe36",
+"value": "1N4148W"
+},
+{
+"at": [
+108.6,
+65.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J1",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/0c0025b9-6bf8-5520-aa57-a607783619ea",
+"uuid": "a93b03cf-2eb4-43b2-ab09-e3b4451e61a2",
+"value": "PJ366ST"
+},
+{
+"at": [
+107.33,
+166.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "J10",
+"rotation_deg": 0.0,
+"side": "back",
+"symbol_path": "/2b380b2d-03ef-535f-8542-2968b58f0941",
+"uuid": "84a7e9ce-4706-4953-9826-723cdb02edd1",
+"value": "Eurorack_2x5"
+},
+{
+"at": [
+102.6,
+157.73
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "J11",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/55a78acb-d00e-5b0d-a35e-8bf23534954f",
+"uuid": "345c4507-27ce-4f1e-9bb2-d6dce45f5970",
+"value": "UPDI"
+},
+{
+"at": [
+108.6,
+76.5
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J2",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/95dd08f5-4f13-5b8d-be0f-0147289ef2f1",
+"uuid": "576b6b0c-0b0f-4510-bc4b-b8315b9f4034",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+87.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J3",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/36af4326-83c6-51ba-b066-8ccfde8b2245",
+"uuid": "502a5996-0a4a-475d-aa4c-9a5b60bb0310",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+97.5
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J4",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/142b5df1-a2f4-5dd4-87c2-39247a15e3b0",
+"uuid": "33e5f2f2-1a54-4d01-9834-3cc625e60b10",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+108.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J5",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/f1f2ecb1-4bb8-562c-9f13-0754a5cbe5d4",
+"uuid": "e0743854-36c7-48f1-bf54-1015f5444be2",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+118.5
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J6",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/89554296-56d1-5147-bdff-4301e08fbc80",
+"uuid": "4e7677ef-83c4-423e-b80f-89a2c675c1aa",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+129.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J7",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/1ef8b2db-9634-5d28-9014-392bf0030c07",
+"uuid": "c34ca017-d638-49c7-a446-e99a3c7ba0a7",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+139.5
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J8",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/cf0d0248-b15c-5045-a170-f65563c31ef0",
+"uuid": "df856f5e-1556-4c37-a728-f257bd54fece",
+"value": "PJ301M-12"
+},
+{
+"at": [
+108.6,
+150.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "F.Cu",
+"locked": false,
+"reference": "J9",
+"rotation_deg": -90.0,
+"side": "front",
+"symbol_path": "/e756218b-1984-5ed2-99e2-cd0e240103a5",
+"uuid": "49926bcf-c07d-4840-a18a-45c2142e920a",
+"value": "PJ301M-12"
+},
+{
+"at": [
+117.2,
+62.46
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "JP1",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/dbc844c5-d95c-5369-9904-2ae6a7dec9e2",
+"uuid": "1405dda9-7c74-49b0-bbaa-f0f07d78c8a3",
+"value": "TRS_A/B"
+},
+{
+"at": [
+103.2,
+69.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "JP2",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/7b7bdf87-8f02-5263-896d-6b9edb000f7f",
+"uuid": "c887c08f-5d2f-4e76-9679-8733bf4f88bc",
+"value": "RX_PROT/DIRECT"
+},
+{
+"at": [
+108.0,
+68.9
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "Q1",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/e05e193f-f611-5f23-b807-e1e308f1f9c6",
+"uuid": "8031fc47-c6f2-485c-b287-c09a19ba9b25",
+"value": "MMBT3904"
+},
+{
+"at": [
+111.3,
+67.975
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R1",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/8b3b4430-dc64-5428-be5f-696df289e38e",
+"uuid": "4e54bcbc-10e1-48ae-b736-6a8d3925e4fb",
+"value": "10k"
+},
+{
+"at": [
+115.6,
+111.8
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R10",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/5f69740b-297c-590a-91a9-78da7c26178c",
+"uuid": "55e247a5-0479-4866-8ff3-b879e2465f12",
+"value": "1k"
+},
+{
+"at": [
+102.6,
+154.3
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R11",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/98814904-fb8a-5c9c-8e58-dc95b418dd86",
+"uuid": "9af77777-7ace-448a-8e5b-ed21d9a44373",
+"value": "4.7k"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R12",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/e2d6b461-ff17-558b-a878-bc0d6771cd8e",
+"uuid": "6167adef-2c54-435f-999b-f541be208019",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+114.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R13",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/df3b8182-c8db-5ffa-a48c-c21826ce43f4",
+"uuid": "31f5a0ab-4aaf-4ace-98ce-c2bf85f321f5",
+"value": "1k"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R14",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/7c9fd833-206c-54da-80b5-39ddcbdadbd7",
+"uuid": "01b036b4-c39c-49e9-baed-44e5a23126a0",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+125.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R15",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/3665edde-db88-59e5-ac1a-2a9af9a802eb",
+"uuid": "8ef11539-e465-497f-8b60-25128d3168a1",
+"value": "1k"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R16",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/08f5281a-aa4f-598b-b4b1-2e5bb1cfa81e",
+"uuid": "3a99281e-086a-4b6f-b7ba-388d76898e60",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+135.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R17",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/da2dec1b-3c72-5354-9925-332d753ab68c",
+"uuid": "99342903-9872-4e03-a05d-e58be1c5dfd5",
+"value": "1k"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R18",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/d2ef9d9b-c02b-5350-9083-14c459be8933",
+"uuid": "58bc2640-9f7b-4251-adde-26d8ad2615fd",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+146.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R19",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/def67c0e-b450-56d3-be1e-4965de472b0b",
+"uuid": "ebd8525e-e8c5-4e68-9cfa-a4bb29c9bd6d",
+"value": "1k"
+},
+{
+"at": [
+105.45,
+69.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R2",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/f95ebf5b-aff3-5256-af7c-6c97fe3b372c",
+"uuid": "78d5ebe3-f7e1-4350-bddc-30352840a3f5",
+"value": "22k"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R20",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/c503fa90-1297-5d34-b1b0-d252ebb99ca8",
+"uuid": "4e3edf9c-c9e1-4366-b234-842e2f948ae9",
+"value": "39"
+},
+{
+"at": [
+113.6,
+68.8
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R22",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/c3ad541e-f301-5c85-b826-773c3b6762ac",
+"uuid": "2a8ffa8d-2ab3-4731-8f59-8b7a54449053",
+"value": "100k"
+},
+{
+"at": [
+105.7,
+83.05
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R23",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/d207c5e7-97d1-5f12-81f3-6f1f64b199e4",
+"uuid": "fd2bebe7-e5fe-415a-bd09-7fb164d61f76",
+"value": "12k"
+},
+{
+"at": [
+105.7,
+79.9
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R24",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/39a92009-b714-5528-bc8c-5587f91ee888",
+"uuid": "cdfc0e37-fad9-4c10-b314-a11b51e1db59",
+"value": "10k"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R3",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/01f0beab-b15b-56b4-821c-5deb21fe0751",
+"uuid": "900e9f94-0013-4556-9152-36c356c95117",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+72.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R4",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/71d55de9-63f4-502f-8cc2-daf269ff42e5",
+"uuid": "c2d14667-f166-49e5-b5d9-6370d4fa22e1",
+"value": "1k"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R5",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/573c7d63-29e6-5256-854a-d3e15027ab1c",
+"uuid": "802ef5e0-201b-40b8-8eda-edc11f6c9974",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+83.1
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R6",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/398319ab-c086-55d0-ab8c-e5abfa8fa104",
+"uuid": "20b2aa6d-6e42-4db1-ad4b-089acb25d17d",
+"value": "1k"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R7",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/7c8e5e74-d0b4-52c5-b2c7-fda59e18c32f",
+"uuid": "77b05228-cb73-4931-84c9-88feaf6360ac",
+"value": "1k"
+},
+{
+"at": [
+117.2,
+93.6
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R8",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/ba47b1bd-bf35-5595-b4d2-7967ba0a0d20",
+"uuid": "e42a019c-4f63-43fa-ae8f-0a9c7dd9c75c",
+"value": "1k"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "R9",
+"rotation_deg": -90.0,
+"side": "back",
+"symbol_path": "/fd34bd53-d79a-5177-b739-3e93668c4bc7",
+"uuid": "4b6945fe-8c7c-4c70-a9ae-63046faa1eaf",
+"value": "1k"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "U1",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/5fc9f858-f2fe-5c35-b94a-bb8ff8227837",
+"uuid": "6c22eb31-4229-492c-8dff-1c62e3c9d74b",
+"value": "ATtiny1616-MNR"
+},
+{
+"at": [
+102.9,
+81.0
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "U2",
+"rotation_deg": 180.0,
+"side": "back",
+"symbol_path": "/27d5c1bf-8df6-5531-86c8-467cdde32799",
+"uuid": "e1cf62d3-dd21-414b-93d2-3d5ca64315d9",
+"value": "CJ431"
+},
+{
+"at": [
+114.3,
+159.95
+],
+"group_uuid": null,
+"kind": "footprint",
+"layer": "B.Cu",
+"locked": false,
+"reference": "U3",
+"rotation_deg": 90.0,
+"side": "back",
+"symbol_path": "/f9dd4e11-b7c8-5b29-9da1-dd5f9e80b577",
+"uuid": "35a00f51-0c0e-48e1-93f6-da2ff81407ba",
+"value": "HT7550-1"
+},
+{
+"at": [
+108.2,
+117.825
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "1",
+"reference": "C1",
+"uuid": "64ae0d84-a1f3-4109-b569-67d72e8d1c68"
+},
+{
+"at": [
+108.2,
+119.375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "C1",
+"uuid": "edc6b3aa-6ca6-4e84-becb-ca58babcd421"
+},
+{
+"at": [
+105.75,
+123.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "C3",
+"uuid": "8379d813-b884-45fa-84ae-efbae894e04b"
+},
+{
+"at": [
+103.85,
+123.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "1",
+"reference": "C3",
+"uuid": "ed1a9b61-6c6f-4230-a5ff-8cf74ddce3d7"
+},
+{
+"at": [
+112.75,
+163.75
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "1",
+"reference": "C4",
+"uuid": "2b34b0eb-bf30-4552-b188-651bba5f95eb"
+},
+{
+"at": [
+112.75,
+165.65
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "C4",
+"uuid": "a703c0d4-e3fc-4cd0-92d6-894682e052b4"
+},
+{
+"at": [
+118.1,
+160.75
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"number": "1",
+"reference": "C5",
+"uuid": "0b733935-24be-40de-be14-ddce521c167c"
+},
+{
+"at": [
+118.1,
+162.65
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "C5",
+"uuid": "5ecb301d-991e-4a98-aab0-c52eca846a83"
+},
+{
+"at": [
+117.2,
+77.77
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D1",
+"uuid": "9211699e-4fdb-4eb1-84f9-dfb041e40df5"
+},
+{
+"at": [
+117.2,
+75.23
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED1_A",
+"number": "2",
+"reference": "D1",
+"uuid": "a7c9921b-7df6-4bb1-a18e-86fb2063bbfc"
+},
+{
+"at": [
+112.65,
+156.4
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+12V",
+"number": "2",
+"reference": "D10",
+"uuid": "bb6de5a2-dfb9-415a-9c7b-97f28f265c34"
+},
+{
+"at": [
+115.95,
+156.4
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_D",
+"number": "1",
+"reference": "D10",
+"uuid": "f4c91cfc-3654-45a8-be5b-1273c9e8af9d"
+},
+{
+"at": [
+117.5875,
+80.75
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D11",
+"uuid": "8428155f-b8c6-442c-8865-6044d1c394e9"
+},
+{
+"at": [
+115.8125,
+80.1
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"number": "3",
+"reference": "D11",
+"uuid": "b97c5d02-88d9-40f2-9ab3-69eaef72df14"
+},
+{
+"at": [
+117.5875,
+79.45
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D11",
+"uuid": "f9f7ff0a-e3bd-439a-ab9f-39288e9887bb"
+},
+{
+"at": [
+117.5875,
+91.25
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D12",
+"uuid": "c8c1e0a2-48db-4907-9562-707085da29e8"
+},
+{
+"at": [
+117.5875,
+89.95
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D12",
+"uuid": "e70837ff-239c-4de0-b92e-8d4d8d1f5880"
+},
+{
+"at": [
+115.8125,
+90.6
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"number": "3",
+"reference": "D12",
+"uuid": "f238940d-bce0-425a-93c4-72b22a0af9ff"
+},
+{
+"at": [
+117.5875,
+100.45
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D13",
+"uuid": "618c3fb1-fae9-4407-bd28-10b0b230ae93"
+},
+{
+"at": [
+117.5875,
+101.75
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D13",
+"uuid": "a88fee82-5ed5-4000-8acd-93c55ef65540"
+},
+{
+"at": [
+115.8125,
+101.1
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"number": "3",
+"reference": "D13",
+"uuid": "e1b986ba-bbd4-4a6b-b996-edf592500004"
+},
+{
+"at": [
+117.5875,
+103.85
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D14",
+"uuid": "82250450-e5af-4c42-8018-e336ca51a4a7"
+},
+{
+"at": [
+117.5875,
+105.15
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D14",
+"uuid": "dfcec56e-8654-4170-8f07-7ead0bdf9d00"
+},
+{
+"at": [
+115.8125,
+104.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"number": "3",
+"reference": "D14",
+"uuid": "ea61f23b-aac4-4fac-8bad-ec1928536c64"
+},
+{
+"at": [
+115.8125,
+122.1
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"number": "3",
+"reference": "D15",
+"uuid": "19b0fa6b-1517-4a55-ad32-f8b0e809ce28"
+},
+{
+"at": [
+117.5875,
+122.75
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D15",
+"uuid": "23bc8d33-1485-4971-845a-6d2f8cd9b1cd"
+},
+{
+"at": [
+117.5875,
+121.45
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D15",
+"uuid": "2f75563b-3a6c-4eeb-9701-79a4a3d007f3"
+},
+{
+"at": [
+117.5875,
+131.95
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D16",
+"uuid": "4ee570a9-def0-4443-91cc-877734fe2423"
+},
+{
+"at": [
+115.8125,
+132.6
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"number": "3",
+"reference": "D16",
+"uuid": "92c58fea-f47a-4070-bfef-ab40f4fa6a13"
+},
+{
+"at": [
+117.5875,
+133.25
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D16",
+"uuid": "ddb5f011-0a84-4f0e-bf55-7890bc758b7e"
+},
+{
+"at": [
+117.5875,
+143.75
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D17",
+"uuid": "a18c7141-339d-451e-9ed7-24c6fb86b85f"
+},
+{
+"at": [
+115.8125,
+143.1
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"number": "3",
+"reference": "D17",
+"uuid": "c85eabbb-b1a9-4d7f-bf8c-55bfe69f07cb"
+},
+{
+"at": [
+117.5875,
+142.45
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D17",
+"uuid": "d5508511-08bb-400b-b668-0a86c86d2fa1"
+},
+{
+"at": [
+115.8125,
+153.6
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"number": "3",
+"reference": "D18",
+"uuid": "abfcb8d7-f35f-4e6b-be2b-6ed80965ae70"
+},
+{
+"at": [
+117.5875,
+154.25
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "D18",
+"uuid": "aca6f029-80e7-47e1-9f3e-5819ff190a64"
+},
+{
+"at": [
+117.5875,
+152.95
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D18",
+"uuid": "ec921dd9-4db8-4653-ae95-db11b3c66fc5"
+},
+{
+"at": [
+117.2,
+85.73
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED2_A",
+"number": "2",
+"reference": "D2",
+"uuid": "7dbcea65-d6ff-41ab-b5de-eae801e57f0e"
+},
+{
+"at": [
+117.2,
+88.27
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D2",
+"uuid": "fa752e5c-8177-4509-b86b-262404a8b2b9"
+},
+{
+"at": [
+117.2,
+98.77
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D3",
+"uuid": "07335d72-2b9f-4c54-a3d3-292cca0c2aa6"
+},
+{
+"at": [
+117.2,
+96.23
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED3_A",
+"number": "2",
+"reference": "D3",
+"uuid": "c1c7058c-6119-4bf2-b78f-d128ed8102d3"
+},
+{
+"at": [
+117.2,
+106.73
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED4_A",
+"number": "2",
+"reference": "D4",
+"uuid": "577f5141-7ed9-4a24-8832-6997fbd62a7b"
+},
+{
+"at": [
+117.2,
+109.27
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D4",
+"uuid": "af850f38-c19c-49fa-b502-23e00fe2b497"
+},
+{
+"at": [
+117.2,
+117.23
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED5_A",
+"number": "2",
+"reference": "D5",
+"uuid": "467734da-c52f-4413-a868-a1a21e0abc73"
+},
+{
+"at": [
+117.2,
+119.77
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D5",
+"uuid": "f556c37b-87e5-40c0-a6c5-cdf55f053724"
+},
+{
+"at": [
+117.2,
+130.27
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D6",
+"uuid": "37e573e3-8c58-46cf-8a8f-6d806a497c68"
+},
+{
+"at": [
+117.2,
+127.73
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED6_A",
+"number": "2",
+"reference": "D6",
+"uuid": "eb8d9d36-c475-40de-aea4-7b0e27626955"
+},
+{
+"at": [
+117.2,
+138.23
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED7_A",
+"number": "2",
+"reference": "D7",
+"uuid": "870f1b91-0b98-428e-9785-6fb9f2da12b9"
+},
+{
+"at": [
+117.2,
+140.77
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D7",
+"uuid": "cc7561ba-ee21-4065-bff7-07fd8dbcacef"
+},
+{
+"at": [
+117.2,
+151.27
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "D8",
+"uuid": "57b9946f-1021-4dfb-ab9d-6eb22791cd9f"
+},
+{
+"at": [
+117.2,
+148.73
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED8_A",
+"number": "2",
+"reference": "D8",
+"uuid": "96bfc807-3cb4-4f65-9114-eba9cc37944d"
+},
+{
+"at": [
+107.55,
+65.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "D9",
+"uuid": "15699e76-ec6c-4604-a13d-ac596cf6598e"
+},
+{
+"at": [
+110.85,
+65.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/Q1_B",
+"number": "1",
+"reference": "D9",
+"uuid": "2e484b75-3303-4a8a-b8d6-898aeae7f11e"
+},
+{
+"at": [
+105.22,
+65.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RING",
+"number": "R",
+"reference": "J1",
+"uuid": "0f3ab665-4b50-4c9c-86b0-9876f15dd553"
+},
+{
+"at": [
+102.12,
+65.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J1",
+"uuid": "2a8eaffb-dd58-436b-a490-65d6c71f3c9a"
+},
+{
+"at": [
+113.52,
+65.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/TIP",
+"number": "T",
+"reference": "J1",
+"uuid": "d5a44d6f-ea8c-447b-9beb-a5fa1f9dd5d5"
+},
+{
+"at": [
+107.33,
+163.46
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "3",
+"reference": "J10",
+"uuid": "1638d38c-d683-4d14-a8e8-0a2733d5fe6b"
+},
+{
+"at": [
+109.87,
+158.38
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "8",
+"reference": "J10",
+"uuid": "2104ba2d-69af-4c69-92c8-7a245699ac6e"
+},
+{
+"at": [
+109.87,
+155.84
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+12V",
+"number": "10",
+"reference": "J10",
+"uuid": "2e8d6858-5142-456f-a41a-c70d03bd1f1a"
+},
+{
+"at": [
+109.87,
+160.92
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "6",
+"reference": "J10",
+"uuid": "597fd51a-a59d-45a0-bc00-74c58fb43a01"
+},
+{
+"at": [
+107.33,
+155.84
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+12V",
+"number": "9",
+"reference": "J10",
+"uuid": "5faac775-0001-4910-9c2e-12f581efe338"
+},
+{
+"at": [
+109.87,
+163.46
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "4",
+"reference": "J10",
+"uuid": "68612a91-da29-422d-acb6-94136759ff10"
+},
+{
+"at": [
+107.33,
+160.92
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "5",
+"reference": "J10",
+"uuid": "76d5a0dc-700f-49fe-9587-afc0039dc548"
+},
+{
+"at": [
+109.87,
+166.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J10-Pin_2-Pad2)",
+"number": "2",
+"reference": "J10",
+"uuid": "8258e6c3-e442-4532-889f-144debe547d0"
+},
+{
+"at": [
+107.33,
+158.38
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "7",
+"reference": "J10",
+"uuid": "8c8a59fb-2dc2-428f-8f60-f371f1e5bda6"
+},
+{
+"at": [
+107.33,
+166.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J10-Pin_1-Pad1)",
+"number": "1",
+"reference": "J10",
+"uuid": "abbc3247-62f4-4b0f-8efc-207b95b0fd81"
+},
+{
+"at": [
+102.6,
+160.27
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "J11",
+"uuid": "4fc08803-ee77-4048-a1e5-3fa5ea869fc7"
+},
+{
+"at": [
+102.6,
+157.73
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI",
+"number": "1",
+"reference": "J11",
+"uuid": "a81bb700-0026-4d47-bd38-672eb8956c9c"
+},
+{
+"at": [
+113.52,
+76.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT1",
+"number": "T",
+"reference": "J2",
+"uuid": "65a7a7ce-dddb-4f99-9488-04d5a741f8d5"
+},
+{
+"at": [
+102.12,
+76.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J2",
+"uuid": "d8f209ea-181a-4877-8fb0-7d4097bd20e2"
+},
+{
+"at": [
+105.22,
+76.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J2-PadTN)",
+"number": "TN",
+"reference": "J2",
+"uuid": "eb018cb5-ea99-44ff-8e61-d74a40f78281"
+},
+{
+"at": [
+102.12,
+87.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J3",
+"uuid": "21f2b7ce-a3ed-4438-8ac8-370518469fbf"
+},
+{
+"at": [
+105.22,
+87.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J3-PadTN)",
+"number": "TN",
+"reference": "J3",
+"uuid": "e21ae3f3-0d9c-4135-9308-d882102732da"
+},
+{
+"at": [
+113.52,
+87.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT2",
+"number": "T",
+"reference": "J3",
+"uuid": "f379127a-b845-4e28-a55f-0a6953410325"
+},
+{
+"at": [
+113.52,
+97.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT3",
+"number": "T",
+"reference": "J4",
+"uuid": "005fca41-8e85-456a-9b85-816723a27bbc"
+},
+{
+"at": [
+102.12,
+97.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J4",
+"uuid": "06f085ed-8d0a-4530-8851-6e5b1949df7d"
+},
+{
+"at": [
+105.22,
+97.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J4-PadTN)",
+"number": "TN",
+"reference": "J4",
+"uuid": "4f8fa544-9fe6-4d3d-8983-fede6bb7a373"
+},
+{
+"at": [
+105.22,
+108.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J5-PadTN)",
+"number": "TN",
+"reference": "J5",
+"uuid": "0af465c9-10dd-4c0b-a966-57fabde894ec"
+},
+{
+"at": [
+102.12,
+108.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J5",
+"uuid": "70dfa358-def8-42e3-92b6-4f3b0c052c12"
+},
+{
+"at": [
+113.52,
+108.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT4",
+"number": "T",
+"reference": "J5",
+"uuid": "96932712-f61e-4d51-b645-5e9bbc1c3192"
+},
+{
+"at": [
+113.52,
+118.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT5",
+"number": "T",
+"reference": "J6",
+"uuid": "53950ebc-4698-4af2-a25d-a234d69b7075"
+},
+{
+"at": [
+102.12,
+118.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J6",
+"uuid": "ca3d42f9-d713-4e62-a087-8b333aa2e714"
+},
+{
+"at": [
+105.22,
+118.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J6-PadTN)",
+"number": "TN",
+"reference": "J6",
+"uuid": "f9ee08c8-168e-4a7c-9b42-b51a2d594036"
+},
+{
+"at": [
+105.22,
+129.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J7-PadTN)",
+"number": "TN",
+"reference": "J7",
+"uuid": "3eb287f1-5e27-4a1d-b987-ca6675fcc008"
+},
+{
+"at": [
+102.12,
+129.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J7",
+"uuid": "5defdd1b-a192-4c7f-b854-3d68dad62d68"
+},
+{
+"at": [
+113.52,
+129.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT6",
+"number": "T",
+"reference": "J7",
+"uuid": "97860a62-bdda-4a65-85aa-db4035e3d618"
+},
+{
+"at": [
+113.52,
+139.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT7",
+"number": "T",
+"reference": "J8",
+"uuid": "a09dd045-70dc-4cd7-a8fc-8205d2cf9caa"
+},
+{
+"at": [
+102.12,
+139.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J8",
+"uuid": "b595cc2e-773b-42e0-aa6e-86290fcf56dc"
+},
+{
+"at": [
+105.22,
+139.5
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J8-PadTN)",
+"number": "TN",
+"reference": "J8",
+"uuid": "fa1c9ae8-6222-40c1-a3fd-e13432ace13d"
+},
+{
+"at": [
+102.12,
+150.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "S",
+"reference": "J9",
+"uuid": "4ead3b60-7a6b-4ceb-9a57-98f99b28ebf1"
+},
+{
+"at": [
+113.52,
+150.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT8",
+"number": "T",
+"reference": "J9",
+"uuid": "a8bbdea3-0cc1-4fb9-9ce3-46fc391e0eaf"
+},
+{
+"at": [
+105.22,
+150.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "unconnected-(J9-PadTN)",
+"number": "TN",
+"reference": "J9",
+"uuid": "bf0a4f82-4dd7-4a3c-9714-0a74eb8a46e1"
+},
+{
+"at": [
+117.2,
+65.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"number": "2",
+"reference": "JP1",
+"uuid": "29e27ca0-ae55-46bd-9232-2b75c02e5935"
+},
+{
+"at": [
+117.2,
+62.46
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/TIP",
+"number": "1",
+"reference": "JP1",
+"uuid": "d817bc5b-0992-40d2-984d-e71564c72c1a"
+},
+{
+"at": [
+117.2,
+67.54
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RING",
+"number": "3",
+"reference": "JP1",
+"uuid": "e8ba59e1-dc4f-4ffc-9e56-277aa17bdeec"
+},
+{
+"at": [
+103.2,
+69.6
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RX",
+"number": "2",
+"reference": "JP2",
+"uuid": "1a6df1f6-9b05-4e1f-a42c-99774598accf"
+},
+{
+"at": [
+103.2,
+70.9
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"number": "3",
+"reference": "JP2",
+"uuid": "5264bb1d-b30d-4d87-90b0-6d852038cca4"
+},
+{
+"at": [
+103.2,
+68.3
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RX_Q",
+"number": "1",
+"reference": "JP2",
+"uuid": "87108773-739d-45d2-8d60-6c65e67de4cd"
+},
+{
+"at": [
+108.0,
+67.9625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RX_Q",
+"number": "3",
+"reference": "Q1",
+"uuid": "6fec0349-241e-458e-9a45-3bfe26c1eeb6"
+},
+{
+"at": [
+107.05,
+69.8375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "Q1",
+"uuid": "b4c2411c-99df-4f7c-82e0-d950204ad9fe"
+},
+{
+"at": [
+108.95,
+69.8375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/Q1_B",
+"number": "1",
+"reference": "Q1",
+"uuid": "d902e9f1-7be3-4b1f-be24-657664d026ca"
+},
+{
+"at": [
+110.475,
+67.975
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/Q1_B",
+"number": "2",
+"reference": "R1",
+"uuid": "670ab2b0-39d6-4bb5-b3da-fa66072727de"
+},
+{
+"at": [
+112.125,
+67.975
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"number": "1",
+"reference": "R1",
+"uuid": "7affc3f4-6157-4db8-8b2e-e60702f98b54"
+},
+{
+"at": [
+115.6,
+110.975
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED4_A",
+"number": "2",
+"reference": "R10",
+"uuid": "005e7ec0-aed9-49de-a195-8e05a6a998e0"
+},
+{
+"at": [
+115.6,
+112.625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_LED",
+"number": "1",
+"reference": "R10",
+"uuid": "e87ede95-79d7-4862-8211-0c3a4a1aee8b"
+},
+{
+"at": [
+102.6,
+155.125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI",
+"number": "2",
+"reference": "R11",
+"uuid": "86bed950-e9db-4c9b-90ef-9bddee966281"
+},
+{
+"at": [
+102.6,
+153.475
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"number": "1",
+"reference": "R11",
+"uuid": "e75daa03-0dfa-49f2-aaf2-31d2eb5a41a0"
+},
+{
+"at": [
+113.52,
+123.0125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"number": "1",
+"reference": "R12",
+"uuid": "30ccb4d9-72e8-43de-b48e-d38a613118f9"
+},
+{
+"at": [
+113.52,
+121.1875
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT5",
+"number": "2",
+"reference": "R12",
+"uuid": "814a10ca-99b4-477d-a165-bb56eece64ca"
+},
+{
+"at": [
+117.2,
+115.425
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED5_A",
+"number": "2",
+"reference": "R13",
+"uuid": "538fd5fc-8e5e-401e-94e7-795fdf0a4604"
+},
+{
+"at": [
+117.2,
+113.775
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"number": "1",
+"reference": "R13",
+"uuid": "569f59fa-1dec-4ce0-8d82-6f332a099e96"
+},
+{
+"at": [
+113.52,
+131.6875
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT6",
+"number": "2",
+"reference": "R14",
+"uuid": "58e48df2-f9fd-4ec3-9cfc-bdb04ea4e51e"
+},
+{
+"at": [
+113.52,
+133.5125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"number": "1",
+"reference": "R14",
+"uuid": "f51e9c8c-7432-4582-9540-7b9f7a2dd79b"
+},
+{
+"at": [
+117.2,
+125.925
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED6_A",
+"number": "2",
+"reference": "R15",
+"uuid": "578ad5e5-170d-4471-a587-c2cfcb196434"
+},
+{
+"at": [
+117.2,
+124.275
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_LED",
+"number": "1",
+"reference": "R15",
+"uuid": "73271921-a0e8-4742-8c22-7cde03446a64"
+},
+{
+"at": [
+113.52,
+142.1875
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT7",
+"number": "2",
+"reference": "R16",
+"uuid": "13e4e39f-bacf-41fb-9962-cf71d9b63ec1"
+},
+{
+"at": [
+113.52,
+144.0125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"number": "1",
+"reference": "R16",
+"uuid": "92620da8-424c-4184-b430-8f5d36b1fdaa"
+},
+{
+"at": [
+117.2,
+136.425
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED7_A",
+"number": "2",
+"reference": "R17",
+"uuid": "0790ec6f-7cf6-4f5e-94bd-239fbf1e8bce"
+},
+{
+"at": [
+117.2,
+134.775
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_LED",
+"number": "1",
+"reference": "R17",
+"uuid": "7af78596-e9f3-413d-9ab3-5c398c2f95d6"
+},
+{
+"at": [
+113.52,
+154.3625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"number": "1",
+"reference": "R18",
+"uuid": "792226db-091c-4784-91ed-89e5b71cad07"
+},
+{
+"at": [
+113.52,
+152.5375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT8",
+"number": "2",
+"reference": "R18",
+"uuid": "9217c516-6df2-498a-84fa-2386adc9e293"
+},
+{
+"at": [
+117.2,
+145.275
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_LED",
+"number": "1",
+"reference": "R19",
+"uuid": "bc1b3c38-c6db-4cc1-af12-c34576c1bb81"
+},
+{
+"at": [
+117.2,
+146.925
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED8_A",
+"number": "2",
+"reference": "R19",
+"uuid": "c65224d9-d735-48f2-b559-e056535a6945"
+},
+{
+"at": [
+105.45,
+70.425
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "R2",
+"uuid": "1e3f7a4f-b8f4-4a79-9c10-8dfecb060363"
+},
+{
+"at": [
+105.45,
+68.775
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RX_Q",
+"number": "1",
+"reference": "R2",
+"uuid": "5610c7bd-d032-4fa9-96a4-4f468a8e21ca"
+},
+{
+"at": [
+118.1,
+156.1375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_D",
+"number": "1",
+"reference": "R20",
+"uuid": "2e4dec99-d048-4c0e-8fb5-1bdd680b55a4"
+},
+{
+"at": [
+118.1,
+159.0625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"number": "2",
+"reference": "R20",
+"uuid": "62f62aba-53a9-4067-9e64-dd989a476d0f"
+},
+{
+"at": [
+113.6,
+69.625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "R22",
+"uuid": "668ca454-b44a-4d84-a236-ca3e5fda08db"
+},
+{
+"at": [
+113.6,
+67.975
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"number": "1",
+"reference": "R22",
+"uuid": "8ee6dfd1-adc8-470e-8369-8ab9aa17b552"
+},
+{
+"at": [
+105.7,
+83.875
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "1",
+"reference": "R23",
+"uuid": "2901e09a-ba26-4d82-99bd-e6930fa7b658"
+},
+{
+"at": [
+105.7,
+82.225
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CLAMP_REF",
+"number": "2",
+"reference": "R23",
+"uuid": "8dad3341-a7cc-4ec8-a7c3-e2ed7504c8c9"
+},
+{
+"at": [
+105.7,
+79.075
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "2",
+"reference": "R24",
+"uuid": "8794e1d7-3d7d-4060-8b30-74c1e9212cbd"
+},
+{
+"at": [
+105.7,
+80.725
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CLAMP_REF",
+"number": "1",
+"reference": "R24",
+"uuid": "b53353a8-0d9c-4888-8185-477edfca4ab3"
+},
+{
+"at": [
+113.52,
+81.0125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"number": "1",
+"reference": "R3",
+"uuid": "61934167-2c21-4cf1-a0dc-7a17a1454a2d"
+},
+{
+"at": [
+113.52,
+79.1875
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT1",
+"number": "2",
+"reference": "R3",
+"uuid": "dfced7af-8f28-4a58-ab0d-8a783a4e1603"
+},
+{
+"at": [
+117.2,
+73.425
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED1_A",
+"number": "2",
+"reference": "R4",
+"uuid": "13cb5cc4-584a-4982-9742-896e466c3405"
+},
+{
+"at": [
+117.2,
+71.775
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_LED",
+"number": "1",
+"reference": "R4",
+"uuid": "c6bb30d8-99e3-4d7a-b54e-bc4b4bc2b8be"
+},
+{
+"at": [
+113.52,
+91.5125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"number": "1",
+"reference": "R5",
+"uuid": "9e755c23-57c2-4c3f-b5f5-abc9e6edf74f"
+},
+{
+"at": [
+113.52,
+89.6875
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT2",
+"number": "2",
+"reference": "R5",
+"uuid": "fba70e7a-056f-4b2d-bf3c-ea5b4dc568dc"
+},
+{
+"at": [
+117.2,
+83.925
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED2_A",
+"number": "2",
+"reference": "R6",
+"uuid": "06bbd2a0-ba24-4726-9284-025dad2f5d3d"
+},
+{
+"at": [
+117.2,
+82.275
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_LED",
+"number": "1",
+"reference": "R6",
+"uuid": "37ba47a0-8f40-4e06-8ca8-8979ffc1e9ed"
+},
+{
+"at": [
+113.52,
+99.8375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT3",
+"number": "2",
+"reference": "R7",
+"uuid": "011b6621-1a0d-43d2-a8f3-9dfedb771059"
+},
+{
+"at": [
+113.52,
+101.6625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"number": "1",
+"reference": "R7",
+"uuid": "070ed43a-48a0-4ba2-a529-0abc115f8668"
+},
+{
+"at": [
+117.2,
+94.425
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/LED3_A",
+"number": "2",
+"reference": "R8",
+"uuid": "08b99a1e-60fb-4eb8-be4d-bbc99d35c937"
+},
+{
+"at": [
+117.2,
+92.775
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_LED",
+"number": "1",
+"reference": "R8",
+"uuid": "dc3c67fe-88d6-4bae-8332-8eb4b4e9b739"
+},
+{
+"at": [
+113.52,
+105.1625
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/OUT4",
+"number": "2",
+"reference": "R9",
+"uuid": "68b8b4f0-3df7-4baa-a55b-0b06d803fdf9"
+},
+{
+"at": [
+113.52,
+103.3375
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"number": "1",
+"reference": "R9",
+"uuid": "f39b73cb-0af6-47e5-8f38-446a1aa818ed"
+},
+{
+"at": [
+107.8,
+115.7
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_LED",
+"number": "5",
+"reference": "U1",
+"uuid": "09b9ce64-e3b1-4dce-9a85-054f61db214c"
+},
+{
+"at": [
+107.15,
+115.05
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"number": "6",
+"reference": "U1",
+"uuid": "1069e558-a233-496f-aa93-e1f2af7d8770"
+},
+{
+"at": [
+110.05,
+114.65
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"number": "19",
+"reference": "U1",
+"uuid": "1724b768-ee26-4872-8086-c58ecef54d13"
+},
+{
+"at": [
+110.05,
+114.25
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_LED",
+"number": "18",
+"reference": "U1",
+"uuid": "1caadeda-6e4e-4a20-98e4-26b576f48cfc"
+},
+{
+"at": [
+108.2,
+115.7
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "4",
+"reference": "U1",
+"uuid": "216505aa-5c82-4add-94bc-4d71f3464086"
+},
+{
+"at": [
+108.6,
+112.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"number": "13",
+"reference": "U1",
+"uuid": "34203b55-5624-4963-a3de-6370dba28194"
+},
+{
+"at": [
+110.05,
+115.05
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"number": "20",
+"reference": "U1",
+"uuid": "34c6258b-4f86-4078-a53b-84487f94fa75"
+},
+{
+"at": [
+110.05,
+113.45
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_LED",
+"number": "16",
+"reference": "U1",
+"uuid": "43f8e5cd-8eab-466e-a99a-fc65bd7a7305"
+},
+{
+"at": [
+107.15,
+113.85
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"number": "9",
+"reference": "U1",
+"uuid": "4f173dc6-f2e2-4b85-a3ff-c3b31bd92c0a"
+},
+{
+"at": [
+107.15,
+113.45
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"number": "10",
+"reference": "U1",
+"uuid": "681bd358-5a03-4c29-97c0-bd325a1e6d5b"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "21",
+"reference": "U1",
+"uuid": "691b9769-113c-40fb-93e6-a0c884059e98"
+},
+{
+"at": [
+108.2,
+112.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"number": "12",
+"reference": "U1",
+"uuid": "6a85cdb9-3475-4cbb-b6ee-fae8e46a4f61"
+},
+{
+"at": [
+108.175,
+113.825
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "",
+"number": "",
+"reference": "U1",
+"uuid": "6e5ae8bb-7650-4c7b-8067-6df1dd5d8dd0"
+},
+{
+"at": [
+109.0,
+112.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"number": "14",
+"reference": "U1",
+"uuid": "9375e0ce-085e-447b-9aec-28ef4934a7ef"
+},
+{
+"at": [
+110.05,
+113.85
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_LED",
+"number": "17",
+"reference": "U1",
+"uuid": "9d71f2eb-68af-4a71-bddb-8158a0dab265"
+},
+{
+"at": [
+109.025,
+114.675
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "",
+"number": "",
+"reference": "U1",
+"uuid": "aab5ea11-0955-44f1-a8a6-54db368cbeb4"
+},
+{
+"at": [
+109.0,
+115.7
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_LED",
+"number": "2",
+"reference": "U1",
+"uuid": "acd6f692-f301-4431-8c9a-573381c3792d"
+},
+{
+"at": [
+107.15,
+114.25
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"number": "8",
+"reference": "U1",
+"uuid": "afde500a-6620-4a0a-9fee-4debed2aa7d9"
+},
+{
+"at": [
+109.025,
+113.825
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "",
+"number": "",
+"reference": "U1",
+"uuid": "b6f2e314-39c4-42d7-af5e-3db3ce18a8d8"
+},
+{
+"at": [
+109.4,
+115.7
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_LED",
+"number": "1",
+"reference": "U1",
+"uuid": "be2036e1-f47d-494e-9070-d2f326ea7fa1"
+},
+{
+"at": [
+108.6,
+115.7
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "3",
+"reference": "U1",
+"uuid": "c18377e4-c180-4a4b-abd2-83ca6046653b"
+},
+{
+"at": [
+109.4,
+112.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_LED",
+"number": "15",
+"reference": "U1",
+"uuid": "c6889cfc-530b-4e7d-84ab-edb5b8e9afcb"
+},
+{
+"at": [
+107.8,
+112.8
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RX",
+"number": "11",
+"reference": "U1",
+"uuid": "cc8ebbb3-58c4-492f-96ff-ca1f860c2293"
+},
+{
+"at": [
+108.175,
+114.675
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "",
+"number": "",
+"reference": "U1",
+"uuid": "ea45826c-f031-481d-8b64-7495448d74b5"
+},
+{
+"at": [
+107.15,
+114.65
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"number": "7",
+"reference": "U1",
+"uuid": "f390eb26-eb48-4497-a3b0-f6a5faa6bfe2"
+},
+{
+"at": [
+103.8375,
+81.95
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "2",
+"reference": "U2",
+"uuid": "a29df30e-8dd1-4acc-b087-1d904b4fa7a5"
+},
+{
+"at": [
+103.8375,
+80.05
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CLAMP_REF",
+"number": "1",
+"reference": "U2",
+"uuid": "b94a2d85-a1db-4a0b-afef-45cdb027d7ba"
+},
+{
+"at": [
+101.9625,
+81.0
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "3",
+"reference": "U2",
+"uuid": "db0dd3ce-a147-4d88-8fd0-79a993a3d7ed"
+},
+{
+"at": [
+112.8,
+161.9
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"number": "3",
+"reference": "U3",
+"uuid": "2587547a-e869-4842-861b-d2f67a0b030b"
+},
+{
+"at": [
+114.3,
+161.8125
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"number": "2",
+"reference": "U3",
+"uuid": "5379d03d-8bdd-473b-bb0e-24303f405e9b"
+},
+{
+"at": [
+115.8,
+161.9
+],
+"group_uuid": null,
+"kind": "pad",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"number": "1",
+"reference": "U3",
+"uuid": "eb740880-f3d8-4ee6-8a51-5e441cece4dc"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "01073e85-82d2-4c97-b5c8-c7c84487ce04"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/no_lead",
+"uuid": "01fa4946-a5f9-4cf7-8529-7a7cf1ab5e53"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Local bulk",
+"uuid": "026e5970-e3d6-4a92-ae0e-90c457f0944e"
+},
+{
+"at": [
+113.6,
+68.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "02a08bd0-7602-4d58-9011-de6b27376ae6"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "04682fc9-2618-4d25-8a9f-4c83fdb6ca38"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Microchip",
+"uuid": "05404cc1-0525-4753-8c7e-2b0a0687fe38"
+},
+{
+"at": [
+117.2,
+109.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "072e757b-ef13-4030-9255-66fb586702e7"
+},
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "U1 decoupling",
+"uuid": "07f08aba-fe6d-44d0-8ad2-a81ae3ca92d3"
+},
+{
+"at": [
+108.6,
+118.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 5 (TS)",
+"uuid": "0b670c1e-9730-4df8-90f4-4913ddc59d6c"
+},
+{
+"at": [
+116.7,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "0d805c60-3138-42fa-b79a-e364a985c70f"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 6 series (Bread Modular 1k); limits mis-patch current into D16",
+"uuid": "0f13268f-b61a-4036-b0dc-26ed5d510616"
+},
+{
+"at": [
+108.6,
+139.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 7 (TS)",
+"uuid": "115d6ebc-f2db-4855-b6d7-3f3a8c82a0d4"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "1359b06f-e7f6-4d39-8ead-40ad4ac7a6a1"
+},
+{
+"at": [
+116.7,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "13a76056-384c-401e-bb69-f4c3f9fac895"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 8 series (Bread Modular 1k); limits mis-patch current into D18",
+"uuid": "17a496f2-5955-4106-a80f-882f00831622"
+},
+{
+"at": [
+116.7,
+153.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "17e5c904-a294-47e9-a1a1-63ed7ba6567a"
+},
+{
+"at": [
+116.7,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "180d7ac6-84bb-4fc0-a00f-286b44ebf7f8"
+},
+{
+"at": [
+105.7,
+79.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "197f9431-4c42-4f1f-8fc5-947c369531a7"
+},
+{
+"at": [
+117.2,
+72.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "1cfab56a-ef15-432d-88c3-81460db124b5"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "1d29e0e7-4da2-414c-afb5-1f3ef01aca32"
+},
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "1d458000-69e1-4cdf-9b3f-f6b844787511"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C507118",
+"uuid": "1d932df9-cc25-41d9-a767-ce07f22d5387"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "1daf0455-0981-4ce5-bfcf-e99ce60a2d9f"
+},
+{
+"at": [
+108.0,
+68.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "MMBT3904(RANGE:100-300)",
+"uuid": "1e211bc8-3a54-4f6b-8e9d-ff92e9b4a108"
+},
+{
+"at": [
+115.6,
+111.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "1f597d00-7331-4a30-81d4-5365b7e1b31e"
+},
+{
+"at": [
+102.9,
+81.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "1fb8394a-38e1-498e-bf5e-f4772c586ecd"
+},
+{
+"at": [
+117.2,
+72.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "20980fbc-cee0-47f4-949b-1a3aa639220b"
+},
+{
+"at": [
+116.7,
+104.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "20f6e4ef-1233-4349-a7f4-6c0282ac9077"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "21b7f9e7-fb13-4f44-a12e-5149a6bf72e6"
+},
+{
+"at": [
+116.7,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "21c86fdb-c3dd-4d91-9f36-21af3447eebc"
+},
+{
+"at": [
+105.45,
+69.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C31850",
+"uuid": "2362380c-c1ae-4c5f-a5ed-8e9a79567cb3"
+},
+{
+"at": [
+102.6,
+154.3
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF4701T5E",
+"uuid": "23dea83b-e418-486e-8f7a-8253ac6a47e8"
+},
+{
+"at": [
+105.7,
+79.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C25804",
+"uuid": "25a87826-85da-4143-94fb-0c1467e9994b"
+},
+{
+"at": [
+115.2,
+67.54
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "B",
+"uuid": "2868294f-e294-475f-bd90-ba51b4a5df56"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 1 series (Bread Modular 1k); limits mis-patch current into D11",
+"uuid": "298a8e8d-6b4e-497b-8497-33af0a5a7dd0"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "29e871ea-9241-43c6-b9b0-62de8c0a82df"
+},
+{
+"at": [
+117.2,
+62.46
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "1x3 2.54 mm header + shunt. 1-2 = Type A (Tip = data), 2-3 = Type B (Ring = data). No shunt = idle (R22 pulls MIDI_IN high)",
+"uuid": "2aeeee2d-d405-484e-a94f-05ce61e849b7"
+},
+{
+"at": [
+116.7,
+153.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 8 clamp: keeps the GPIO within -0.4..+5.4 V when OUT8 is mis-patched",
+"uuid": "2af19b0e-2929-4399-b3f8-fa049143b71c"
+},
+{
+"at": [
+117.2,
+83.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "2c32259e-e4d9-42cf-8a58-c85c7c0f39e2"
+},
+{
+"at": [
+108.6,
+97.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 3 (TS)",
+"uuid": "2dcfc5e4-1130-4035-b5c7-5a03ae7c403f"
+},
+{
+"at": [
+103.9,
+166.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "-12V",
+"uuid": "2ea3b179-1845-4831-beb8-09a400f42bf6"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "2ec9103d-5407-41c8-aafe-a1eb86bcfc7c"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "2f93bf55-2d6a-4fa9-9e2d-63396b5696b0"
+},
+{
+"at": [
+117.2,
+93.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "30c17dc7-a00f-41f3-bc4c-8f3f2a28aeb6"
+},
+{
+"at": [
+116.7,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 5 clamp: keeps the GPIO within -0.4..+5.4 V when OUT5 is mis-patched",
+"uuid": "30df11b9-06dc-42a0-9078-714c9323a2d4"
+},
+{
+"at": [
+105.45,
+69.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Q1 collector pull-up (RX idles low = inverted idle). On RX_Q, so the JP2 bypass leaves PB3 loaded only by MIDI_IN, as V1",
+"uuid": "3247bb87-2e8e-4dbf-b992-430aef1f2f08"
+},
+{
+"at": [
+116.7,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "329a7266-24ed-4f45-971e-760067f3afec"
+},
+{
+"at": [
+114.3,
+156.4
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C8598",
+"uuid": "32f65cce-e94c-4090-9ac1-76af1249f219"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "HP06W2F390JT5E",
+"uuid": "349807c7-d545-453f-ae28-a5bc58021e52"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "36b634eb-a997-4766-92e3-21737560db5e"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "5 V: 20 MHz as Bread Modular",
+"uuid": "36cd5d1a-dfdd-4581-b532-e4b13e8e3274"
+},
+{
+"at": [
+114.3,
+156.4
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Series reverse-polarity protection",
+"uuid": "37962351-0752-4ccf-987c-2b229bf83117"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "37acb4ea-07ea-4f5d-b65e-4310727d4897"
+},
+{
+"at": [
+117.2,
+62.46
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "connector/pin_header_socket",
+"uuid": "3afffccf-5ad8-4837-8619-437de4d8da6c"
+},
+{
+"at": [
+102.6,
+154.3
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UPDI series resistor (Bread Modular)",
+"uuid": "3b07c6e3-4bfe-498d-9cef-5ab2e1fdf0c1"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "3b6376b6-d138-425b-9437-8bdfb26e6236"
+},
+{
+"at": [
+103.2,
+69.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Solder jumper, copper only. 1-2 (default copper bridge) = protected: Q1 drives PB3, PORT_INVEN on. Cut 1-2 and bridge 2-3 = direct/unprotected debug path (MIDI_IN to PB3 as V1), PORT_INVEN off. Never both, never neither",
+"uuid": "3b7c4e2c-4db0-4737-939b-99d393195b04"
+},
+{
+"at": [
+116.7,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 6 clamp: keeps the GPIO within -0.4..+5.4 V when OUT6 is mis-patched",
+"uuid": "3bba21c8-26e0-4292-85c6-a60c051f9f1d"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "3d473398-950d-4ceb-b3cb-580a3ad1830e"
+},
+{
+"at": [
+107.3,
+61.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "MIDI V2.0",
+"uuid": "3de8e7b1-4b18-4238-9198-1431be4b68a7"
+},
+{
+"at": [
+102.6,
+157.73
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power",
+"uuid": "3e054d0b-57db-4833-a7fb-dba6c4496768"
+},
+{
+"at": [
+117.2,
+146.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "405b0e15-0b7d-4396-acf7-f8604e296aad"
+},
+{
+"at": [
+111.3,
+67.975
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1002T5E",
+"uuid": "4136d4d4-9e1d-4048-9fc6-bef49e95372a"
+},
+{
+"at": [
+117.2,
+114.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "417638d9-acc0-4581-b22e-34939aa57e41"
+},
+{
+"at": [
+118.1,
+161.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "50V",
+"uuid": "46724384-60ce-4605-b165-ac29e9a3161f"
+},
+{
+"at": [
+102.9,
+81.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "+5V shunt clamp, 2.495 V x (1 + R23/R24) = 5.49 V nominal. CJ431 SOT-23: 1 REF, 2 K, 3 A (TL432DBZ pinout)",
+"uuid": "46ce87df-579f-4b1c-bae4-dff83bf2b1e3"
+},
+{
+"at": [
+108.0,
+68.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C20526",
+"uuid": "4776d81b-46ce-495c-85e2-a04c367dd222"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "47a1bda4-cc11-4ad5-aa17-1e0080f7e6cf"
+},
+{
+"at": [
+109.2,
+65.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "1N4148W",
+"uuid": "495b63e2-3f25-4e4f-81bc-e854d80064aa"
+},
+{
+"at": [
+116.7,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 2 clamp: keeps the GPIO within -0.4..+5.4 V when OUT2 is mis-patched",
+"uuid": "4a85061d-167f-4882-92ef-f9f6489e3bc3"
+},
+{
+"at": [
+117.2,
+72.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "4b1f959f-5c3c-43cd-bc6d-561563f09181"
+},
+{
+"at": [
+111.3,
+67.975
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C25804",
+"uuid": "4bb2124b-1145-4ec0-a030-be8143b9da3b"
+},
+{
+"at": [
+117.2,
+98.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "4c21f6fb-4d10-4c7c-9cc7-ab99c3c93a2d"
+},
+{
+"at": [
+117.2,
+135.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "4d569d65-b143-4421-9367-2820851a0477"
+},
+{
+"at": [
+117.2,
+114.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "4da516af-1f96-4cd4-9d6f-7f0b51abab12"
+},
+{
+"at": [
+117.2,
+98.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "4dd141be-d181-4761-bcc5-a61b576c2dc6"
+},
+{
+"at": [
+108.6,
+87.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 2 (TS)",
+"uuid": "4e5367ff-2d8b-40c1-9188-b93daf6d75f4"
+},
+{
+"at": [
+108.6,
+129.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 6 (TS)",
+"uuid": "4fba9c2a-e2f6-4909-b947-a1170b90d0f8"
+},
+{
+"at": [
+113.6,
+68.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1003T5E",
+"uuid": "509cfd41-2205-4461-97e8-fe41fd001e12"
+},
+{
+"at": [
+117.2,
+146.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "50ec1eed-9128-4646-83aa-c1af639d8ba1"
+},
+{
+"at": [
+116.7,
+104.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 4 clamp: keeps the GPIO within -0.4..+5.4 V when OUT4 is mis-patched",
+"uuid": "512b16f3-d5aa-4cf4-9cbc-f49e1261b1cf"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "52a5afc2-79c1-4c51-b294-6797f4dca6da"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "53b153dd-027d-4a0f-b63c-6dba4ea6d6bd"
+},
+{
+"at": [
+117.2,
+146.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "54f010d6-d49b-4979-8def-3cad2816d0f4"
+},
+{
+"at": [
+113.6,
+68.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Idle pull-up: no cable / no shunt turns Q1 on = UART idle",
+"uuid": "559c9d17-72a3-4646-8516-4ef104ceada0"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "25V",
+"uuid": "55a3b27c-f52f-4d55-a808-63327891a7d4"
+},
+{
+"at": [
+116.7,
+104.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "56121cc7-3d95-4504-9f0e-0b18ab2bcb11"
+},
+{
+"at": [
+117.2,
+77.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "566862e4-b029-4684-9431-3cdb9491657d"
+},
+{
+"at": [
+109.2,
+65.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "ST(Semtech)",
+"uuid": "56c0aa66-12a0-4212-8478-f1604ca9fe80"
+},
+{
+"at": [
+118.1,
+161.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Samsung",
+"uuid": "57c0228c-c693-438a-81e7-e3ea827a7aff"
+},
+{
+"at": [
+113.6,
+68.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C25803",
+"uuid": "590f2174-5e7a-433f-8976-a596b6e69074"
+},
+{
+"at": [
+117.2,
+140.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "59fcee8e-34dc-4360-8cd0-42c35ae715c8"
+},
+{
+"at": [
+115.6,
+111.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 4 current",
+"uuid": "5bec0069-1d1b-47f1-ac8d-f9ebd5ee2146"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "5c7bcf25-169a-4d89-b8b6-744348add01c"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "5d1488a9-e007-4793-ab54-b56a9d306d32"
+},
+{
+"at": [
+116.7,
+101.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 3 clamp: keeps the GPIO within -0.4..+5.4 V when OUT3 is mis-patched",
+"uuid": "5d5af780-6ce7-4149-8d3c-db22038eaa86"
+},
+{
+"at": [
+116.7,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "5e3b0b70-9700-4d99-a892-3b4c347600e1"
+},
+{
+"at": [
+102.6,
+154.3
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "5ea6029e-0c31-4f32-98d5-fbab043a28e0"
+},
+{
+"at": [
+117.2,
+125.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "620229c2-0a70-45ba-9c55-d14ea25fb8b2"
+},
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "50V",
+"uuid": "628ce1a9-f1c2-4ef3-a313-c5940a9ca240"
+},
+{
+"at": [
+116.7,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "6372b2da-17ab-44a1-9407-3e64b0fef9e4"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "6533e14f-70d5-4259-b330-943a25d1650b"
+},
+{
+"at": [
+114.3,
+159.95
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C16106",
+"uuid": "65362db5-e1b5-4479-9038-fd8205630fd2"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C15850",
+"uuid": "65eb9748-f802-413a-9139-90d9930134ae"
+},
+{
+"at": [
+117.2,
+93.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "66774d5d-af9d-4f3e-9c5f-52c29c8ccb6d"
+},
+{
+"at": [
+117.2,
+60.56
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "TRS",
+"uuid": "678919e2-8e6a-44b4-925f-2a77dc8f79c5"
+},
+{
+"at": [
+116.7,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "688816e0-0c3a-42f1-bcf6-7f9996128176"
+},
+{
+"at": [
+116.7,
+153.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "68986235-4b1c-4d70-ac7f-39a32db8350a"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "699616d8-103b-4cc6-ab9b-d862e145315c"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "6c49dd8b-ab06-4588-8cd5-bc409adf83e8"
+},
+{
+"at": [
+111.3,
+67.975
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "6c6c93af-1b6c-47b8-8e4a-8c0aed861a47"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "6c765239-a087-45ce-aa2f-77240ad19bb3"
+},
+{
+"at": [
+117.2,
+109.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "6feba1eb-012a-4c5f-b4ef-5bb7626954d0"
+},
+{
+"at": [
+116.7,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "712110f4-421c-4e7c-a036-1a3a1647af92"
+},
+{
+"at": [
+105.7,
+83.05
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C22790",
+"uuid": "71657f18-8001-4eb3-8922-17241f0f200e"
+},
+{
+"at": [
+117.2,
+146.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 8 current",
+"uuid": "71923183-1107-4713-82d4-bc91a623cf97"
+},
+{
+"at": [
+105.7,
+83.05
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "72b4fe64-02c2-4889-aced-6a86746774d4"
+},
+{
+"at": [
+117.2,
+83.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "7326ae1f-0176-47fc-ac14-463559809ff9"
+},
+{
+"at": [
+102.9,
+81.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CJ (Jiangsu Changjing)",
+"uuid": "74104cce-7e85-4f6f-9be0-f056d7525838"
+},
+{
+"at": [
+117.2,
+93.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 3 current",
+"uuid": "7565b1be-65d5-4cb9-bbf1-aee77b126207"
+},
+{
+"at": [
+108.6,
+108.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 4 (TS)",
+"uuid": "76281729-710e-45c9-ac9a-05c419439821"
+},
+{
+"at": [
+107.33,
+166.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Unshrouded vertical header, pin 1 (-12 V) at the board bottom; also takes a 16-pin IDC socket (positions 11-16 overhang, unused)",
+"uuid": "7a2d1940-3b7f-4e19-a9a6-aac371fc6710"
+},
+{
+"at": [
+116.7,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "7bb6f979-7fdb-483b-8e11-5a85acd5b421"
+},
+{
+"at": [
+116.7,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "7ca49820-9ee1-46ff-a6ee-7a8a5e091cdb"
+},
+{
+"at": [
+108.0,
+68.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Inverting input buffer: input high = RX low. Firmware: PORT_INVEN on PB3",
+"uuid": "7d80ca2f-4f67-41de-904e-dd61f062e587"
+},
+{
+"at": [
+101.35,
+68.3
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "P",
+"uuid": "7ed7e19e-d515-4758-b346-ef2b6a5a2c7d"
+},
+{
+"at": [
+117.2,
+93.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "800a3ae2-c7e7-46ec-8128-260fed750dee"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "8098575b-31b3-46c9-9e13-9feccc3788b4"
+},
+{
+"at": [
+116.7,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "822ac9aa-995b-41e7-81d5-3da96ca92ec4"
+},
+{
+"at": [
+117.2,
+88.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "82ba55aa-28ed-4d5d-90aa-3a5b27ac1b1e"
+},
+{
+"at": [
+102.6,
+163.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UPDI",
+"uuid": "85abc668-65a9-4bf4-ab75-2c04431a6f9e"
+},
+{
+"at": [
+111.3,
+67.975
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Base resistor: ~1.1 mA at +/-12 V; 0.26 mA from a 3.3 V sender",
+"uuid": "8635e3b9-77e7-4343-b1b2-e712e25067a2"
+},
+{
+"at": [
+115.6,
+111.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "86796d38-c9ff-4606-9459-99d37fbad0ca"
+},
+{
+"at": [
+118.1,
+161.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "87995ef9-068b-4364-adf9-32ddc94de290"
+},
+{
+"at": [
+117.2,
+151.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "899a449a-e1d8-4c31-8191-36cca9507baa"
+},
+{
+"at": [
+108.6,
+150.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 8 (TS)",
+"uuid": "8d0689bd-90ec-4f9e-91c0-6a05feb8924f"
+},
+{
+"at": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "ATTINY1616-MNR",
+"uuid": "8d30cbdf-a8e7-4259-8eee-daecaac7e029"
+},
+{
+"at": [
+105.7,
+79.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Clamp divider bottom",
+"uuid": "8ea0a82a-1d11-4d78-8502-1946a7c1fee4"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "8f69cb81-fa00-4336-b693-4e9915ed20d0"
+},
+{
+"at": [
+117.2,
+114.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "8f956613-c6f8-4538-a72a-37f60d64237f"
+},
+{
+"at": [
+114.3,
+159.95
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "HT7550-1",
+"uuid": "90228b18-e616-4fc9-982d-18322f5a77bb"
+},
+{
+"at": [
+116.7,
+153.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "9097da32-eec0-405d-8d51-099f49db1f2f"
+},
+{
+"at": [
+113.6,
+68.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "90caaea6-6e3f-45ab-8a36-9974cff6d419"
+},
+{
+"at": [
+105.45,
+69.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "90f14e23-33cb-4f9d-9606-88009f8360c6"
+},
+{
+"at": [
+116.7,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 7 clamp: keeps the GPIO within -0.4..+5.4 V when OUT7 is mis-patched",
+"uuid": "91292ab0-3c2f-4f34-bfed-c1efb7286269"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.5W",
+"uuid": "94a57e12-1407-4e7b-bbd7-57c374e94f16"
+},
+{
+"at": [
+107.33,
+166.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "connector/pin_header_socket",
+"uuid": "94a9acba-49e4-4dc2-bbf2-96eeae64949d"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "95740085-b1b5-4703-a37e-9b5017ec9b30"
+},
+{
+"at": [
+108.0,
+68.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CJ (Jiangsu Changjing)",
+"uuid": "96b1a874-0511-4b1b-b0b7-1220a3a35ecb"
+},
+{
+"at": [
+117.2,
+135.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 7 current",
+"uuid": "9706eec5-e073-41fa-9e66-937f1555b9ae"
+},
+{
+"at": [
+116.7,
+101.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "97ea2bae-8625-45be-9575-af6780ccf7bf"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "99651290-9964-4f1c-96da-a8e56c9a4c3a"
+},
+{
+"at": [
+102.6,
+154.3
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "996e038e-d46e-4134-a523-701feb822b3e"
+},
+{
+"at": [
+116.7,
+101.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "9a3cf831-7f92-48fd-b9ed-ad98c6d4882a"
+},
+{
+"at": [
+117.2,
+88.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "9c54107f-b32e-4b67-bdbb-f395c0244179"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "9c6378ce-00e4-41e5-a3cf-38d5640aab1e"
+},
+{
+"at": [
+114.3,
+159.95
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "30 V max input, 150 mA. Tab = pin 2 (VIN): heat-sink copper is VIN_LDO",
+"uuid": "9e8895d4-5457-4ded-8505-150ee7fe8ec1"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "9f02573f-0277-44ce-83b4-454e37b342fd"
+},
+{
+"at": [
+117.2,
+114.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 5 current",
+"uuid": "9f5673cd-c869-40bd-a48f-6267eb8c6aa1"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Samsung",
+"uuid": "a076c23e-6b73-4921-86bd-4d806f576681"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 5 series (Bread Modular 1k); limits mis-patch current into D15",
+"uuid": "a12922a5-c61d-43a1-b64b-fd434900877e"
+},
+{
+"at": [
+102.9,
+81.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C3113",
+"uuid": "a141f76b-1596-40b5-9f09-88a88785a0b4"
+},
+{
+"at": [
+117.2,
+125.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "a17707b4-2326-41a3-a676-54c61b4f7f3e"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "a3607ec1-889d-4880-9e0f-294fe9ca5301"
+},
+{
+"at": [
+108.0,
+68.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "a63134d5-5e9b-411a-8114-266bd94651c8"
+},
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CC0603KRX7R9BB104",
+"uuid": "a70ee5f8-e20b-42d4-8ade-3c084f87a657"
+},
+{
+"at": [
+105.7,
+83.05
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Clamp divider top",
+"uuid": "a73fbfe7-18f9-4a40-9cf8-dc5586a0b20a"
+},
+{
+"at": [
+108.6,
+76.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "MIDI out 1 (TS)",
+"uuid": "a795e719-7b5c-4f95-98cd-52ab50582723"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 4 series (Bread Modular 1k); limits mis-patch current into D14",
+"uuid": "a8518fed-de9c-4a1d-90d0-f0e6b2eec8d3"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 3 series (Bread Modular 1k); limits mis-patch current into D13",
+"uuid": "a8d0277d-22d1-4c11-8c30-a5abf71921be"
+},
+{
+"at": [
+116.7,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "aa1ef232-18df-4454-9a03-cc18404326de"
+},
+{
+"at": [
+117.2,
+72.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 1 current",
+"uuid": "ab2d8a53-43ce-4add-8f9e-bbd535dc0e58"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "ab4cb674-8435-4602-a5a8-35874ee99bc9"
+},
+{
+"at": [
+116.7,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 1 clamp: keeps the GPIO within -0.4..+5.4 V when OUT1 is mis-patched",
+"uuid": "aba24f02-4d05-412a-bfeb-8151b132eb8c"
+},
+{
+"at": [
+101.35,
+70.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "D",
+"uuid": "ac05d398-06f5-44ac-8fb7-dd4f925311f5"
+},
+{
+"at": [
+117.2,
+151.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "acd451b1-8955-4e0d-869f-4803b8e7c026"
+},
+{
+"at": [
+117.2,
+140.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "ad4bf5f4-a651-4f58-80e8-f6f118970bb7"
+},
+{
+"at": [
+105.7,
+79.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "afb3d8fc-4ce3-4c4f-905a-6f84fcdc44d1"
+},
+{
+"at": [
+115.6,
+111.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "b151f96e-ab48-4e91-86c2-5be5c4830427"
+},
+{
+"at": [
+113.52,
+104.25
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "b1652e59-0333-4d3b-a17a-74740b727a03"
+},
+{
+"at": [
+117.2,
+146.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "b2071dd1-bcee-4301-ae8d-b3956232e0ce"
+},
+{
+"at": [
+115.6,
+111.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "b24912ab-fd4c-43a7-90cf-113710cfdc2c"
+},
+{
+"at": [
+108.6,
+65.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "TRS MIDI in",
+"uuid": "b2df3baa-2601-4c21-a040-09b80ae966fc"
+},
+{
+"at": [
+105.7,
+79.9
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1002T5E",
+"uuid": "b3ccd59d-2057-4d74-ad23-60bed06cdd2f"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "b46586f8-c270-4819-bc10-5982a4315a30"
+},
+{
+"at": [
+102.6,
+157.73
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "connector/pin_header_socket",
+"uuid": "b50f37a6-8480-40a0-9990-20f0dd0ec589"
+},
+{
+"at": [
+117.2,
+125.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "b5cb3ba2-b947-4bd5-a0a3-093eb522a268"
+},
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C14663",
+"uuid": "b64b6afb-2a6f-4e8c-8629-b9ba1ab717f7"
+},
+{
+"at": [
+105.7,
+83.05
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "b7c0c531-ae8d-40d1-b673-41d65e55e56d"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "b8020162-fd12-4c08-8252-9553abc23f63"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LDO output",
+"uuid": "b9512f12-7fda-42a4-87ca-00920b5f7496"
+},
+{
+"at": [
+117.2,
+119.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "b9def19f-ce54-456e-b36d-4881755d100e"
+},
+{
+"at": [
+102.6,
+154.3
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C23162",
+"uuid": "bbf24bce-2c81-4883-9d5e-7b4f94684bec"
+},
+{
+"at": [
+113.52,
+153.45
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "bcb59d37-0d37-4ea5-9459-582f8d0a95ee"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "bf01bbbe-e6ae-4543-8910-b3feb3ce2101"
+},
+{
+"at": [
+116.7,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "c0c62deb-acbc-4d7c-abde-dda1dc23a452"
+},
+{
+"at": [
+116.7,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "c180ca97-e410-41e6-9240-f803c3abbeb4"
+},
+{
+"at": [
+105.45,
+69.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "c181f331-6e1f-4dd7-8326-64e815c26af4"
+},
+{
+"at": [
+116.7,
+153.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "c4405cff-3aec-495a-be5d-b69e499eaf54"
+},
+{
+"at": [
+116.7,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "c5fe86f6-e32c-4cb5-961d-ec5d0e3cc7d3"
+},
+{
+"at": [
+117.2,
+93.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "c60bf03b-4f84-4f3c-bc8f-1ef48aab8a76"
+},
+{
+"at": [
+113.52,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 7 series (Bread Modular 1k); limits mis-patch current into D17",
+"uuid": "c6395810-9703-4abe-9fb4-99e033955897"
+},
+{
+"at": [
+117.2,
+119.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "c66a5cf7-63c0-4aa8-9bb4-63f00a55424c"
+},
+{
+"at": [
+109.2,
+65.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C81598",
+"uuid": "c88a4e53-9118-49e1-adce-cd4d6a19fb9f"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "c97339b7-eb83-4832-81a1-bbcfa4d80fc2"
+},
+{
+"at": [
+117.2,
+125.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "c98fa7f5-e982-4d90-9852-30b2bf9021cf"
+},
+{
+"at": [
+117.2,
+114.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "c9d8cc6b-5beb-43d0-a717-30cd9ad5dd7d"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C414944",
+"uuid": "cc2887be-ed22-4c98-866b-7d81cdde6f85"
+},
+{
+"at": [
+117.2,
+83.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 2 current",
+"uuid": "cc40560e-dee6-4da4-9b4e-8c1c5a462b55"
+},
+{
+"at": [
+116.7,
+143.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "ceae20bb-aed7-4729-b3da-8adf8e6035d8"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CL21A106KAYNNNE",
+"uuid": "d0fe2c69-6d34-4711-80ac-c5bf6843859a"
+},
+{
+"at": [
+116.7,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "d1ce90a6-f1c7-442f-bfa9-c94ce23464d3"
+},
+{
+"at": [
+112.75,
+164.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CL21A106KAYNNNE",
+"uuid": "d2aea73f-6912-4ba4-a9ed-5ee3d500a589"
+},
+{
+"at": [
+117.2,
+135.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1001T5E",
+"uuid": "d2c2f1d7-a02b-4154-851b-3d7d00c402be"
+},
+{
+"at": [
+114.3,
+156.4
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "B5819W SL",
+"uuid": "d354bcf1-e4e2-4093-b6dd-560a60b8840d"
+},
+{
+"at": [
+116.7,
+101.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "d3a04cde-5a62-4751-aab1-25e31cee14cc"
+},
+{
+"at": [
+113.52,
+80.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "d5411aa7-b2c5-4c4e-8745-859503b26589"
+},
+{
+"at": [
+113.52,
+122.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "d5c3b256-2a10-4c25-bc09-7fe913f91111"
+},
+{
+"at": [
+114.3,
+156.4
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CJ (Jiangsu Changjing)",
+"uuid": "d616e67f-86dc-481e-a41e-26ce8803ee34"
+},
+{
+"at": [
+105.7,
+83.05
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF1202T5E",
+"uuid": "d6f315e0-c55c-4146-9774-a90789d2e802"
+},
+{
+"at": [
+109.2,
+65.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Clamps Q1 B-E to -0.7 V for a negative input (VEBO 6 V)",
+"uuid": "d85d420b-9757-438c-9291-c57cad1bb296"
+},
+{
+"at": [
+118.1,
+161.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CL21B105KBFNNNE",
+"uuid": "dae866e2-a64e-4319-8a3c-44314957c2d0"
+},
+{
+"at": [
+108.2,
+118.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "YAGEO",
+"uuid": "db6ac503-93d8-45c5-aa97-8d2a8a2f3892"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "dc0d665f-36e4-4791-a681-af8af39d67a4"
+},
+{
+"at": [
+116.7,
+101.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "BAT54SWT1G",
+"uuid": "dc468584-0682-4ed6-b39a-0dc31d747af5"
+},
+{
+"at": [
+117.2,
+83.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "SMD_2terminal_chip_molded",
+"uuid": "dcc2035a-d8a8-4853-85e2-a10b5bc3ff95"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "25V",
+"uuid": "dd29285c-9ba3-4422-b6c6-730fe2844690"
+},
+{
+"at": [
+115.2,
+62.46
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "A",
+"uuid": "dd62c3ec-17ff-4ebf-90a2-56e98808fc40"
+},
+{
+"at": [
+117.2,
+135.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "ddd50b8a-42ac-4703-ad34-db371efccd9c"
+},
+{
+"at": [
+116.7,
+104.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "package/gullwing",
+"uuid": "df2ae05a-e483-43fb-9cc6-4bbf4ca7bcaf"
+},
+{
+"at": [
+118.1,
+157.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Dropper: shares LDO heat in the ~77 mA worst case (research 3.1); anti-surge 0.5 W part, sits on the VIN_LDO heat-sink copper",
+"uuid": "df6fb17c-ef50-4850-85bc-07284f194ee7"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C15850",
+"uuid": "e0e5b4a7-9b9d-4c8f-a7ac-74f8103dc3a9"
+},
+{
+"at": [
+117.2,
+135.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "e31d2cd5-4a85-423c-b652-81c7cddbefe8"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "e364c346-92ff-4479-9501-9653593eda2a"
+},
+{
+"at": [
+116.7,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "e38a8066-4f93-4340-bf1f-70fe2be13189"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0.125W",
+"uuid": "e47dd990-b4b3-4eae-9239-ec813e35d555"
+},
+{
+"at": [
+117.2,
+130.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "LED/THT",
+"uuid": "e4936cf3-3951-4518-a162-bd67916229d0"
+},
+{
+"at": [
+102.9,
+81.0
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "CJ431",
+"uuid": "e6bb4625-d11e-4b1a-83b5-2b432d6bbd06"
+},
+{
+"at": [
+111.3,
+67.975
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "e8603dc7-4631-4fa6-b6f0-11480ff4761a"
+},
+{
+"at": [
+117.2,
+83.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "ea67f3e3-f23b-4591-83e8-62d653571969"
+},
+{
+"at": [
+117.2,
+72.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C21190",
+"uuid": "ec510f38-e2a5-470b-9931-2f1b7791de31"
+},
+{
+"at": [
+114.3,
+159.95
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Holtek",
+"uuid": "ec695d3d-6b67-4c64-b566-e1a0123ef334"
+},
+{
+"at": [
+113.52,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Output 2 series (Bread Modular 1k); limits mis-patch current into D12",
+"uuid": "ee627fd5-39a9-4207-8faa-ccfd4279810c"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "UNI-ROYAL",
+"uuid": "ef53a862-d012-4d5b-a625-b302cc67f4b6"
+},
+{
+"at": [
+116.7,
+90.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C78260",
+"uuid": "ef5eb086-6710-4d3a-b8b7-39c02e4e52dd"
+},
+{
+"at": [
+113.52,
+100.75
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C17513",
+"uuid": "f5292985-08ab-4b35-b68b-8561bc755dd2"
+},
+{
+"at": [
+104.8,
+123.8
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "Samsung",
+"uuid": "f57141a5-9822-432d-a560-0c0294b91d67"
+},
+{
+"at": [
+117.2,
+130.27
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "f59395f9-dba5-4d87-9aa1-5789b6ba0a98"
+},
+{
+"at": [
+117.2,
+77.77
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "F.Silkscreen",
+"locked": false,
+"text": "Hand-soldered 3 mm THT",
+"uuid": "f9f64218-28b6-43ce-8c97-3332434d51a8"
+},
+{
+"at": [
+118.1,
+161.7
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "C28323",
+"uuid": "fb555866-2bd9-4bd1-b44e-5386482885d4"
+},
+{
+"at": [
+117.2,
+125.1
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "LED 6 current",
+"uuid": "fbf06f50-99aa-4876-820c-f0f2e4a98d42"
+},
+{
+"at": [
+105.45,
+69.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0603WAF2202T5E",
+"uuid": "fced6be1-23a3-4e11-938d-ec7074f81a5b"
+},
+{
+"at": [
+113.52,
+132.6
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "0805W8F1001T5E",
+"uuid": "fe0f2506-e2a9-4dde-99af-a4b7fe46997a"
+},
+{
+"at": [
+116.7,
+104.5
+],
+"group_uuid": null,
+"kind": "text",
+"layer": "B.Silkscreen",
+"locked": false,
+"text": "onsemi",
+"uuid": "fecf2972-b64a-4776-a977-8ce155783214"
+},
+{
+"at": [
+103.545,
+71.55
+],
+"end": [
+105.45,
+71.55
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+71.55
+],
+"uuid": "041b069e-cd89-5e15-815e-294eaafa52be",
+"width_mm": 0.3
+},
+{
+"at": [
+107.2,
+146.0
+],
+"end": [
+107.2,
+152.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+107.2,
+146.0
+],
+"uuid": "07afacbc-31cb-5975-a3ab-140c884dd788",
+"width_mm": 0.25
+},
+{
+"at": [
+103.545,
+83.4
+],
+"end": [
+103.545,
+71.55
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+83.4
+],
+"uuid": "0b10c5a2-a9ad-556e-98bf-c79bb9f2af6a",
+"width_mm": 0.3
+},
+{
+"at": [
+105.45,
+70.85
+],
+"end": [
+113.6,
+70.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+105.45,
+70.85
+],
+"uuid": "0d174e55-e210-5207-a323-aa8a2db319de",
+"width_mm": 0.3
+},
+{
+"at": [
+118.6,
+105.15
+],
+"end": [
+118.6,
+101.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+105.15
+],
+"uuid": "0f5ad1d2-1a9a-545a-8540-bbc2c26265e1",
+"width_mm": 0.3
+},
+{
+"at": [
+104.35,
+109.75
+],
+"end": [
+106.85,
+109.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+104.35,
+109.75
+],
+"uuid": "10a6c9fd-d16b-5e48-b3c6-3883b161d988",
+"width_mm": 0.2
+},
+{
+"at": [
+109.4,
+112.8
+],
+"end": [
+109.4,
+112.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_LED",
+"start": [
+109.4,
+112.8
+],
+"uuid": "10b6cf55-3824-5d49-bbee-4e7d8fe8a576",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+133.25
+],
+"end": [
+118.6,
+133.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+133.25
+],
+"uuid": "11bfa7d4-cf61-5a0e-bce0-bd6a062efc9d",
+"width_mm": 0.25
+},
+{
+"at": [
+115.8125,
+122.1
+],
+"end": [
+114.9,
+123.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+115.8125,
+122.1
+],
+"uuid": "1410d404-02fb-5fb0-9d28-52da29e4fae2",
+"width_mm": 0.25
+},
+{
+"at": [
+118.6,
+101.75
+],
+"end": [
+118.6,
+91.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+101.75
+],
+"uuid": "141c66a3-7cc0-5572-b013-427cff095df9",
+"width_mm": 0.3
+},
+{
+"at": [
+110.85,
+92.775
+],
+"end": [
+117.2,
+92.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_LED",
+"start": [
+110.85,
+92.775
+],
+"uuid": "150f0ff6-5c43-5d20-a3ea-30692a854a27",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+122.75
+],
+"end": [
+118.6,
+122.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+122.75
+],
+"uuid": "170c68af-546d-5064-80a2-a9239db0da00",
+"width_mm": 0.25
+},
+{
+"at": [
+113.52,
+105.1625
+],
+"end": [
+113.52,
+108.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT4",
+"start": [
+113.52,
+105.1625
+],
+"uuid": "185466c5-348e-51ee-b892-34d1ef1ea74c",
+"width_mm": 0.25
+},
+{
+"at": [
+117.5875,
+154.25
+],
+"end": [
+118.6,
+154.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+154.25
+],
+"uuid": "193da732-08a8-5b61-8c84-8387c40ca38e",
+"width_mm": 0.25
+},
+{
+"at": [
+113.6,
+69.625
+],
+"end": [
+113.6,
+70.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+113.6,
+69.625
+],
+"uuid": "1a0ad496-234c-559f-b31f-fc75b3f0ba13",
+"width_mm": 0.3
+},
+{
+"at": [
+107.15,
+113.45
+],
+"end": [
+106.85,
+113.45
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+107.15,
+113.45
+],
+"uuid": "1b3f3968-3fe9-52e4-ba3f-1556339d2834",
+"width_mm": 0.2
+},
+{
+"at": [
+110.05,
+114.65
+],
+"end": [
+110.45,
+114.65
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+110.05,
+114.65
+],
+"uuid": "1b4576a5-6a19-5837-b9f4-138906be69d6",
+"width_mm": 0.2
+},
+{
+"at": [
+103.945,
+116.6
+],
+"end": [
+107.95,
+116.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.945,
+116.6
+],
+"uuid": "1dbe0c40-aa2f-5d57-bd26-d7747b6c4e4d",
+"width_mm": 0.3
+},
+{
+"at": [
+110.6,
+104.7
+],
+"end": [
+110.6,
+109.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+110.6,
+104.7
+],
+"uuid": "1ee39e47-4245-5ca1-a9ab-273326764636",
+"width_mm": 0.2
+},
+{
+"at": [
+116.0,
+67.9
+],
+"end": [
+117.2,
+67.54
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RING",
+"start": [
+116.0,
+67.9
+],
+"uuid": "1f5eae17-a0c3-50d5-8c60-a77d97af5bde",
+"width_mm": 0.25
+},
+{
+"at": [
+107.55,
+65.0
+],
+"end": [
+107.55,
+66.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+107.55,
+65.0
+],
+"uuid": "21b41e9e-f2ee-5c7f-9055-9dfbce1cb7d7",
+"width_mm": 0.25
+},
+{
+"at": [
+112.3,
+101.6625
+],
+"end": [
+113.52,
+101.6625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+112.3,
+101.6625
+],
+"uuid": "2263f1f6-5985-5d0a-9ef8-7f386109a77d",
+"width_mm": 0.25
+},
+{
+"at": [
+114.9,
+81.0125
+],
+"end": [
+113.52,
+81.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+114.9,
+81.0125
+],
+"uuid": "2270e305-5988-53c4-8394-6446c7db4658",
+"width_mm": 0.25
+},
+{
+"at": [
+114.9,
+123.0125
+],
+"end": [
+113.52,
+123.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+114.9,
+123.0125
+],
+"uuid": "22f1d68a-e202-5be5-85dc-41eec7e52128",
+"width_mm": 0.25
+},
+{
+"at": [
+107.6,
+67.9
+],
+"end": [
+116.0,
+67.9
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RING",
+"start": [
+107.6,
+67.9
+],
+"uuid": "2333f995-5628-52a9-ad6b-63c77f970505",
+"width_mm": 0.25
+},
+{
+"at": [
+108.6,
+105.75
+],
+"end": [
+108.6,
+110.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+108.6,
+105.75
+],
+"uuid": "23e07f5e-b7a6-53a0-8c74-062a95f102c9",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+100.45
+],
+"end": [
+117.2,
+98.77
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+100.45
+],
+"uuid": "24ac78ab-1956-5d82-8116-b78534e0e033",
+"width_mm": 0.25
+},
+{
+"at": [
+117.2,
+83.925
+],
+"end": [
+117.2,
+85.73
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED2_A",
+"start": [
+117.2,
+83.925
+],
+"uuid": "24e2e294-ea71-56b6-ab07-3b43af6565a9",
+"width_mm": 0.25
+},
+{
+"at": [
+113.6,
+70.85
+],
+"end": [
+118.6,
+70.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+113.6,
+70.85
+],
+"uuid": "26c24724-9019-5dcf-91e8-dc946dd5e69a",
+"width_mm": 0.3
+},
+{
+"at": [
+118.6,
+143.75
+],
+"end": [
+118.6,
+133.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+143.75
+],
+"uuid": "28e36e0e-9fcc-5780-ba85-b9e850ed907f",
+"width_mm": 0.3
+},
+{
+"at": [
+102.7,
+72.55
+],
+"end": [
+103.2,
+70.9
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+102.7,
+72.55
+],
+"uuid": "2a5220c6-2e96-5ae8-83dc-dfee28d70927",
+"width_mm": 0.25
+},
+{
+"at": [
+106.2,
+114.25
+],
+"end": [
+105.55,
+113.95
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+106.2,
+114.25
+],
+"uuid": "2b921ef4-e013-5239-a3fc-1e43d143a197",
+"width_mm": 0.2
+},
+{
+"at": [
+112.75,
+165.65
+],
+"end": [
+111.5,
+165.65
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+112.75,
+165.65
+],
+"uuid": "2c775190-6c1f-5456-8c03-1b96a983b8d2",
+"width_mm": 0.4
+},
+{
+"at": [
+111.85,
+123.0125
+],
+"end": [
+112.3,
+123.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+111.85,
+123.0125
+],
+"uuid": "2eb629cb-975f-5b09-8616-267dced2ca0e",
+"width_mm": 0.2
+},
+{
+"at": [
+117.2,
+73.425
+],
+"end": [
+117.2,
+75.23
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED1_A",
+"start": [
+117.2,
+73.425
+],
+"uuid": "2ec03050-0c40-5064-a6f1-93bbfc0b6216",
+"width_mm": 0.25
+},
+{
+"at": [
+106.9,
+68.3
+],
+"end": [
+108.0,
+67.9625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX_Q",
+"start": [
+106.9,
+68.3
+],
+"uuid": "2f8a0fe6-faa1-5efe-9deb-af391c2900b5",
+"width_mm": 0.25
+},
+{
+"at": [
+109.87,
+155.84
+],
+"end": [
+107.33,
+155.84
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+12V",
+"start": [
+109.87,
+155.84
+],
+"uuid": "2fe8da75-77c4-56b6-89ce-ff9f2841c3d8",
+"width_mm": 0.5
+},
+{
+"at": [
+117.5875,
+131.95
+],
+"end": [
+117.2,
+130.27
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+131.95
+],
+"uuid": "2ffb024e-6f22-57a5-94f8-a303245b2ae2",
+"width_mm": 0.25
+},
+{
+"at": [
+115.2,
+110.5
+],
+"end": [
+115.2,
+133.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+115.2,
+110.5
+],
+"uuid": "301fbe0e-3940-5f17-999b-70b6feef8c07",
+"width_mm": 0.2
+},
+{
+"at": [
+111.5,
+165.65
+],
+"end": [
+111.5,
+164.3
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+111.5,
+165.65
+],
+"uuid": "340a7fbc-9d81-5980-84eb-19085f570dae",
+"width_mm": 0.4
+},
+{
+"at": [
+110.475,
+69.0
+],
+"end": [
+109.6,
+69.8375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/Q1_B",
+"start": [
+110.475,
+69.0
+],
+"uuid": "37d8c7ce-0215-549b-bf8b-6e705cbc6a3b",
+"width_mm": 0.25
+},
+{
+"at": [
+110.05,
+115.05
+],
+"end": [
+110.45,
+115.45
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"start": [
+110.05,
+115.05
+],
+"uuid": "39fd6508-d24d-5169-8e71-b6fe9772f57f",
+"width_mm": 0.2
+},
+{
+"at": [
+112.3,
+103.3375
+],
+"end": [
+113.52,
+103.3375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+112.3,
+103.3375
+],
+"uuid": "3a599792-e183-51b7-8a27-362f629ddc29",
+"width_mm": 0.25
+},
+{
+"at": [
+106.85,
+113.45
+],
+"end": [
+106.85,
+112.4
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+106.85,
+113.45
+],
+"uuid": "3bf1f4f6-51f6-58f5-9dd2-f8c67481f9ef",
+"width_mm": 0.2
+},
+{
+"at": [
+109.0,
+134.775
+],
+"end": [
+117.2,
+134.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH7_LED",
+"start": [
+109.0,
+134.775
+],
+"uuid": "3d76fe9a-cb44-5bd8-8a66-43d06ad20565",
+"width_mm": 0.2
+},
+{
+"at": [
+108.85,
+105.5
+],
+"end": [
+108.6,
+105.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+108.85,
+105.5
+],
+"uuid": "3dfd8600-ab3b-56e0-834f-3e2bfa42799c",
+"width_mm": 0.2
+},
+{
+"at": [
+115.8125,
+80.1
+],
+"end": [
+114.9,
+81.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+115.8125,
+80.1
+],
+"uuid": "3eaa950c-a312-5956-8d20-3892d2f26ce4",
+"width_mm": 0.25
+},
+{
+"at": [
+115.8125,
+101.1
+],
+"end": [
+114.9,
+101.6625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+115.8125,
+101.1
+],
+"uuid": "3f369bb9-301f-53fc-8cbe-802c1a42cd97",
+"width_mm": 0.25
+},
+{
+"at": [
+115.6,
+106.73
+],
+"end": [
+117.2,
+106.73
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED4_A",
+"start": [
+115.6,
+106.73
+],
+"uuid": "3fbf2c27-7e1b-5060-b185-f1b4954938b8",
+"width_mm": 0.25
+},
+{
+"at": [
+109.87,
+155.84
+],
+"end": [
+112.65,
+156.4
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+12V",
+"start": [
+109.87,
+155.84
+],
+"uuid": "40082408-0a11-5e48-81ac-9761edf81d7f",
+"width_mm": 0.5
+},
+{
+"at": [
+112.3,
+123.0125
+],
+"end": [
+113.52,
+123.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+112.3,
+123.0125
+],
+"uuid": "42d8465c-a0c3-5210-95a0-ecff34c2fe98",
+"width_mm": 0.25
+},
+{
+"at": [
+113.52,
+142.1875
+],
+"end": [
+113.52,
+139.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT7",
+"start": [
+113.52,
+142.1875
+],
+"uuid": "43991f62-8241-5a24-a703-2b60eec27f84",
+"width_mm": 0.25
+},
+{
+"at": [
+117.5875,
+121.45
+],
+"end": [
+117.2,
+119.77
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+121.45
+],
+"uuid": "4537b164-7892-5f05-aa49-e1004e84bc1f",
+"width_mm": 0.25
+},
+{
+"at": [
+114.75,
+154.3625
+],
+"end": [
+113.52,
+154.3625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+114.75,
+154.3625
+],
+"uuid": "4559fa5b-5f10-58ba-ae28-b088e4073ff7",
+"width_mm": 0.25
+},
+{
+"at": [
+116.0,
+154.3625
+],
+"end": [
+114.75,
+154.3625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+116.0,
+154.3625
+],
+"uuid": "48ec97bb-3432-5b09-a972-ea8a57085cd5",
+"width_mm": 0.2
+},
+{
+"at": [
+106.3,
+72.7
+],
+"end": [
+106.3,
+69.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX",
+"start": [
+106.3,
+72.7
+],
+"uuid": "48ef143a-7042-55df-bd48-f96c616c9d1e",
+"width_mm": 0.2
+},
+{
+"at": [
+110.05,
+111.35
+],
+"end": [
+110.05,
+71.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_LED",
+"start": [
+110.05,
+111.35
+],
+"uuid": "49cbf866-cd41-5af8-b1ef-4b88ff2c3ec6",
+"width_mm": 0.2
+},
+{
+"at": [
+102.6,
+155.125
+],
+"end": [
+102.6,
+157.73
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI",
+"start": [
+102.6,
+155.125
+],
+"uuid": "4bb218dd-7ef9-5da6-8b20-ab45fcbf7926",
+"width_mm": 0.25
+},
+{
+"at": [
+115.8,
+164.2
+],
+"end": [
+115.8,
+161.9
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+115.8,
+164.2
+],
+"uuid": "4e4b339f-e8c3-54c6-9250-488eba359e3b",
+"width_mm": 0.4
+},
+{
+"at": [
+103.545,
+146.85
+],
+"end": [
+103.545,
+125.4
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+146.85
+],
+"uuid": "4e6264d5-4b32-5b92-a1eb-f14790412118",
+"width_mm": 0.3
+},
+{
+"at": [
+106.85,
+112.4
+],
+"end": [
+107.45,
+113.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+106.85,
+112.4
+],
+"uuid": "4e6f4244-a7c2-596a-80a1-72228068b179",
+"width_mm": 0.2
+},
+{
+"at": [
+115.8125,
+132.6
+],
+"end": [
+114.75,
+133.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+115.8125,
+132.6
+],
+"uuid": "4e840ed5-e358-59e5-a4b7-0ad20a8e6794",
+"width_mm": 0.25
+},
+{
+"at": [
+117.5875,
+143.75
+],
+"end": [
+118.6,
+143.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+143.75
+],
+"uuid": "4ee7d2d1-1685-51bd-ab22-909ed7efe271",
+"width_mm": 0.25
+},
+{
+"at": [
+111.25,
+114.85
+],
+"end": [
+110.9,
+115.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+111.25,
+114.85
+],
+"uuid": "50a4b782-3da3-54ac-8c36-2424fe00afe0",
+"width_mm": 0.25
+},
+{
+"at": [
+104.95,
+110.15
+],
+"end": [
+107.25,
+110.15
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+104.95,
+110.15
+],
+"uuid": "5127710f-c3b4-5a42-98d7-6d550f1642aa",
+"width_mm": 0.2
+},
+{
+"at": [
+117.2,
+146.925
+],
+"end": [
+117.2,
+148.73
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED8_A",
+"start": [
+117.2,
+146.925
+],
+"uuid": "51d70383-77e8-53f3-be5b-dee66a293a06",
+"width_mm": 0.25
+},
+{
+"at": [
+111.55,
+147.6
+],
+"end": [
+104.3,
+147.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+111.55,
+147.6
+],
+"uuid": "5254c40c-5a5b-5130-a8ae-96a490c9c9b9",
+"width_mm": 0.3
+},
+{
+"at": [
+102.6,
+152.2
+],
+"end": [
+102.6,
+153.475
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+102.6,
+152.2
+],
+"uuid": "52bdd6ec-c071-5a13-ace0-fd9a75107de3",
+"width_mm": 0.25
+},
+{
+"at": [
+108.6,
+106.0
+],
+"end": [
+108.85,
+105.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+108.6,
+106.0
+],
+"uuid": "5389b688-e6d6-5440-a651-aa67dc935181",
+"width_mm": 0.2
+},
+{
+"at": [
+113.52,
+99.8375
+],
+"end": [
+113.52,
+97.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT3",
+"start": [
+113.52,
+99.8375
+],
+"uuid": "54f8603a-e112-5187-9ab2-2d58fdcfa614",
+"width_mm": 0.25
+},
+{
+"at": [
+106.6,
+113.85
+],
+"end": [
+106.15,
+113.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+106.6,
+113.85
+],
+"uuid": "5a1d8c3c-30c2-573f-8207-4cc48c50bfd5",
+"width_mm": 0.2
+},
+{
+"at": [
+111.55,
+161.9
+],
+"end": [
+111.55,
+147.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+111.55,
+161.9
+],
+"uuid": "5ba8b87c-ac65-55ea-b74f-a59ddf34c41f",
+"width_mm": 0.3
+},
+{
+"at": [
+112.8,
+161.9
+],
+"end": [
+111.55,
+161.9
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+112.8,
+161.9
+],
+"uuid": "5c8455f3-9005-53f4-92ea-d30a9e7e27fa",
+"width_mm": 0.4
+},
+{
+"at": [
+103.545,
+117.0
+],
+"end": [
+103.945,
+116.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+117.0
+],
+"uuid": "5f880590-0080-5116-86e9-28883b8b805a",
+"width_mm": 0.3
+},
+{
+"at": [
+110.9,
+115.2
+],
+"end": [
+110.9,
+146.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+110.9,
+115.2
+],
+"uuid": "5fc502bf-73c9-5c7b-a4b6-6e865a72154f",
+"width_mm": 0.25
+},
+{
+"at": [
+113.52,
+121.1875
+],
+"end": [
+113.52,
+118.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT5",
+"start": [
+113.52,
+121.1875
+],
+"uuid": "60d4e432-54ec-575b-912c-6a63bedfd95d",
+"width_mm": 0.25
+},
+{
+"at": [
+115.8,
+165.65
+],
+"end": [
+112.75,
+165.65
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+115.8,
+165.65
+],
+"uuid": "61b70eac-3609-5e85-b2e7-03f09a8d17ce",
+"width_mm": 0.4
+},
+{
+"at": [
+117.5875,
+105.15
+],
+"end": [
+118.6,
+105.15
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+105.15
+],
+"uuid": "6233a570-3c9a-522e-82f9-5574f92722e8",
+"width_mm": 0.25
+},
+{
+"at": [
+105.22,
+65.0
+],
+"end": [
+107.6,
+67.9
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/RING",
+"start": [
+105.22,
+65.0
+],
+"uuid": "62567fc4-53f7-5934-8ef6-c9ece938393b",
+"width_mm": 0.25
+},
+{
+"at": [
+106.3,
+69.6
+],
+"end": [
+103.2,
+69.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX",
+"start": [
+106.3,
+69.6
+],
+"uuid": "635cb7bb-f09d-53c1-aeb8-fb02fb7ab634",
+"width_mm": 0.2
+},
+{
+"at": [
+104.3,
+147.6
+],
+"end": [
+103.545,
+146.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+104.3,
+147.6
+],
+"uuid": "65988360-d8c2-59fa-960d-5be00065dacb",
+"width_mm": 0.3
+},
+{
+"at": [
+113.52,
+152.5375
+],
+"end": [
+113.52,
+150.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT8",
+"start": [
+113.52,
+152.5375
+],
+"uuid": "6645bc5c-d270-5e3c-9693-29c8665f9c52",
+"width_mm": 0.25
+},
+{
+"at": [
+116.0,
+109.7
+],
+"end": [
+116.0,
+154.3625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+116.0,
+109.7
+],
+"uuid": "666ff9a2-49da-56f0-a968-8769e714a0df",
+"width_mm": 0.2
+},
+{
+"at": [
+105.45,
+68.775
+],
+"end": [
+106.9,
+68.3
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX_Q",
+"start": [
+105.45,
+68.775
+],
+"uuid": "6727d8c6-0a75-5f53-90c2-39bd7bccb180",
+"width_mm": 0.25
+},
+{
+"at": [
+114.9,
+91.5125
+],
+"end": [
+113.52,
+91.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+114.9,
+91.5125
+],
+"uuid": "6749d042-5309-57c4-8e3d-3173387ddc58",
+"width_mm": 0.25
+},
+{
+"at": [
+113.52,
+89.6875
+],
+"end": [
+113.52,
+87.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT2",
+"start": [
+113.52,
+89.6875
+],
+"uuid": "68030f73-05fd-5fc9-a3f0-1c1dff534ac5",
+"width_mm": 0.25
+},
+{
+"at": [
+112.3,
+91.5125
+],
+"end": [
+113.52,
+91.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+112.3,
+91.5125
+],
+"uuid": "6816da99-2bff-5a2d-a936-bf4f90834f18",
+"width_mm": 0.25
+},
+{
+"at": [
+104.7,
+68.775
+],
+"end": [
+105.45,
+68.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX_Q",
+"start": [
+104.7,
+68.775
+],
+"uuid": "68ebfe1a-f72e-5891-ba71-434ccc899309",
+"width_mm": 0.25
+},
+{
+"at": [
+115.6,
+110.975
+],
+"end": [
+115.6,
+106.73
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED4_A",
+"start": [
+115.6,
+110.975
+],
+"uuid": "6a009f9e-0efa-51bd-88e1-478b5d2af16f",
+"width_mm": 0.25
+},
+{
+"at": [
+116.2,
+113.775
+],
+"end": [
+117.2,
+113.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"start": [
+116.2,
+113.775
+],
+"uuid": "6a03a2e6-17d3-5c12-962b-8182d338bebb",
+"width_mm": 0.2
+},
+{
+"at": [
+105.55,
+110.55
+],
+"end": [
+107.65,
+110.55
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+105.55,
+110.55
+],
+"uuid": "6b8ae46d-dcb2-5088-90cf-4f7bbd5f688f",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+79.45
+],
+"end": [
+117.2,
+77.77
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+79.45
+],
+"uuid": "6c2e1843-3210-5b18-9851-42c4217a7d1a",
+"width_mm": 0.25
+},
+{
+"at": [
+106.15,
+110.95
+],
+"end": [
+108.05,
+110.95
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+106.15,
+110.95
+],
+"uuid": "6c6360ff-e467-5d58-abb4-d5d0c6ab216d",
+"width_mm": 0.2
+},
+{
+"at": [
+103.545,
+83.4
+],
+"end": [
+103.8375,
+81.95
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+83.4
+],
+"uuid": "6c8a95a8-d541-5cf8-8aa9-8734e3006109",
+"width_mm": 0.3
+},
+{
+"at": [
+112.8,
+161.9
+],
+"end": [
+112.75,
+163.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+112.8,
+161.9
+],
+"uuid": "6c8d3395-5ad4-5bd5-af84-1f34117fb60a",
+"width_mm": 0.4
+},
+{
+"at": [
+111.85,
+113.0
+],
+"end": [
+111.85,
+123.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+111.85,
+113.0
+],
+"uuid": "6cc2c1c3-94ae-5ff9-a433-566aa67a4a7b",
+"width_mm": 0.2
+},
+{
+"at": [
+108.6,
+110.5
+],
+"end": [
+115.2,
+110.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+108.6,
+110.5
+],
+"uuid": "6e63cbdf-15ae-5fd8-8f44-cd03ee9ce410",
+"width_mm": 0.2
+},
+{
+"at": [
+118.6,
+133.25
+],
+"end": [
+118.6,
+122.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+133.25
+],
+"uuid": "70414591-9ae1-5a39-9234-4c8d3e16a8f9",
+"width_mm": 0.3
+},
+{
+"at": [
+108.6,
+115.7
+],
+"end": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+108.6,
+115.7
+],
+"uuid": "70b0362e-a07a-5191-b3a2-6113fe23e1d5",
+"width_mm": 0.2
+},
+{
+"at": [
+107.25,
+91.5125
+],
+"end": [
+112.3,
+91.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+107.25,
+91.5125
+],
+"uuid": "713c1eb6-94f2-5c2c-84e1-98892be06550",
+"width_mm": 0.2
+},
+{
+"at": [
+115.6,
+114.25
+],
+"end": [
+115.6,
+112.625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_LED",
+"start": [
+115.6,
+114.25
+],
+"uuid": "71bfe128-d5af-52a1-9d35-fac75de3b143",
+"width_mm": 0.2
+},
+{
+"at": [
+118.1,
+160.75
+],
+"end": [
+118.1,
+159.0625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+118.1,
+160.75
+],
+"uuid": "71ecee9c-c49e-505f-81b5-bbe1274247f9",
+"width_mm": 0.4
+},
+{
+"at": [
+103.545,
+125.4
+],
+"end": [
+103.85,
+123.8
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+125.4
+],
+"uuid": "73a38db9-a360-5a9d-9961-c7724195633d",
+"width_mm": 0.3
+},
+{
+"at": [
+118.6,
+154.25
+],
+"end": [
+118.6,
+143.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+154.25
+],
+"uuid": "74708693-86ac-5038-bbb2-c95073099cee",
+"width_mm": 0.3
+},
+{
+"at": [
+117.2,
+136.425
+],
+"end": [
+117.2,
+138.23
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED7_A",
+"start": [
+117.2,
+136.425
+],
+"uuid": "7476acbd-4ed6-56a7-89a5-9c124b942632",
+"width_mm": 0.25
+},
+{
+"at": [
+112.125,
+67.975
+],
+"end": [
+112.15,
+69.35
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+112.125,
+67.975
+],
+"uuid": "77c47334-2467-5bce-b484-475d2c5cb070",
+"width_mm": 0.25
+},
+{
+"at": [
+117.2,
+115.425
+],
+"end": [
+117.2,
+117.23
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED5_A",
+"start": [
+117.2,
+115.425
+],
+"uuid": "7800db04-50a4-5d2e-8c72-b50e4ab02050",
+"width_mm": 0.25
+},
+{
+"at": [
+113.52,
+65.0
+],
+"end": [
+117.2,
+62.46
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/TIP",
+"start": [
+113.52,
+65.0
+],
+"uuid": "79996bfb-4d9f-55b2-9c68-3ee16809250b",
+"width_mm": 0.25
+},
+{
+"at": [
+108.85,
+104.7
+],
+"end": [
+110.6,
+104.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+108.85,
+104.7
+],
+"uuid": "7c061645-cfab-5d4a-b868-7dc05165e01a",
+"width_mm": 0.2
+},
+{
+"at": [
+117.2,
+125.925
+],
+"end": [
+117.2,
+127.73
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED6_A",
+"start": [
+117.2,
+125.925
+],
+"uuid": "7ce52276-215d-5f3d-a11e-d95b61ea0874",
+"width_mm": 0.25
+},
+{
+"at": [
+116.2,
+116.3
+],
+"end": [
+116.2,
+113.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"start": [
+116.2,
+116.3
+],
+"uuid": "7e20d666-da74-5d92-9da7-a8aaaf19e7a0",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+89.95
+],
+"end": [
+117.2,
+88.27
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+89.95
+],
+"uuid": "8093a4af-2645-547b-a67b-3a88fcd51459",
+"width_mm": 0.25
+},
+{
+"at": [
+107.8,
+116.1
+],
+"end": [
+107.3,
+116.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_LED",
+"start": [
+107.8,
+116.1
+],
+"uuid": "81bf4044-94fe-5c74-b35a-3a4ace5f00ba",
+"width_mm": 0.2
+},
+{
+"at": [
+112.3,
+81.0125
+],
+"end": [
+113.52,
+81.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+112.3,
+81.0125
+],
+"uuid": "83527acb-ffa6-5744-8a3d-9c701e5ea00f",
+"width_mm": 0.25
+},
+{
+"at": [
+103.545,
+125.4
+],
+"end": [
+103.545,
+117.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+125.4
+],
+"uuid": "83e2c534-2ece-5582-9a32-d47a96135496",
+"width_mm": 0.3
+},
+{
+"at": [
+115.6,
+67.975
+],
+"end": [
+113.6,
+67.975
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+115.6,
+67.975
+],
+"uuid": "84644109-80d4-5f74-b2d9-ac049a9fd510",
+"width_mm": 0.25
+},
+{
+"at": [
+114.75,
+144.0125
+],
+"end": [
+113.52,
+144.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+114.75,
+144.0125
+],
+"uuid": "8721b7d8-9b8f-5c93-bdb9-d34c2ef1ef64",
+"width_mm": 0.25
+},
+{
+"at": [
+114.9,
+101.6625
+],
+"end": [
+113.52,
+101.6625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+114.9,
+101.6625
+],
+"uuid": "88721d69-2835-595a-9f00-cbb9d177e30e",
+"width_mm": 0.25
+},
+{
+"at": [
+110.85,
+65.0
+],
+"end": [
+110.85,
+67.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/Q1_B",
+"start": [
+110.85,
+65.0
+],
+"uuid": "88d43e66-157f-538a-a10c-d767dbf7e51f",
+"width_mm": 0.25
+},
+{
+"at": [
+117.5875,
+101.75
+],
+"end": [
+118.6,
+101.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+101.75
+],
+"uuid": "891bd6fb-b2da-5415-b680-57d4c06fd931",
+"width_mm": 0.25
+},
+{
+"at": [
+115.8125,
+153.6
+],
+"end": [
+114.75,
+154.3625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+115.8125,
+153.6
+],
+"uuid": "8b363d46-13be-5179-b0e5-d547dbdbca97",
+"width_mm": 0.25
+},
+{
+"at": [
+110.85,
+113.85
+],
+"end": [
+110.85,
+92.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_LED",
+"start": [
+110.85,
+113.85
+],
+"uuid": "8d674f69-15b6-5a73-af20-a44aac0dce4e",
+"width_mm": 0.2
+},
+{
+"at": [
+118.6,
+70.85
+],
+"end": [
+118.6,
+80.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+70.85
+],
+"uuid": "8e1abbf5-67c5-55e3-944f-90a2271be463",
+"width_mm": 0.3
+},
+{
+"at": [
+107.95,
+116.6
+],
+"end": [
+108.2,
+116.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+107.95,
+116.6
+],
+"uuid": "8f5bb844-1926-5d78-a564-1b4816fad95c",
+"width_mm": 0.3
+},
+{
+"at": [
+118.1,
+159.0625
+],
+"end": [
+114.3,
+159.06
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+118.1,
+159.0625
+],
+"uuid": "906688e6-6d18-5d0e-8042-69deeea2adef",
+"width_mm": 0.4
+},
+{
+"at": [
+105.6,
+114.65
+],
+"end": [
+104.95,
+114.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+105.6,
+114.65
+],
+"uuid": "90712159-55ce-5ea8-b5ab-ed2a619ae050",
+"width_mm": 0.2
+},
+{
+"at": [
+115.8125,
+143.1
+],
+"end": [
+114.75,
+144.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+115.8125,
+143.1
+],
+"uuid": "924f6457-e0f2-547a-bb06-ee9d7391cc7b",
+"width_mm": 0.25
+},
+{
+"at": [
+117.5875,
+142.45
+],
+"end": [
+117.2,
+140.77
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+142.45
+],
+"uuid": "95db7649-511d-5b9b-ab66-0d2987506e21",
+"width_mm": 0.25
+},
+{
+"at": [
+106.85,
+109.75
+],
+"end": [
+106.85,
+81.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+106.85,
+109.75
+],
+"uuid": "96aee505-881d-5817-b02d-3ca090d32e68",
+"width_mm": 0.2
+},
+{
+"at": [
+109.0,
+106.75
+],
+"end": [
+109.45,
+106.3
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+109.0,
+106.75
+],
+"uuid": "96f40589-8211-51a1-9586-bee0c3d71183",
+"width_mm": 0.2
+},
+{
+"at": [
+109.4,
+115.7
+],
+"end": [
+109.4,
+116.1
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_LED",
+"start": [
+109.4,
+115.7
+],
+"uuid": "976c6c36-ab24-5e59-b9e6-e265b86e233d",
+"width_mm": 0.2
+},
+{
+"at": [
+112.15,
+69.35
+],
+"end": [
+102.7,
+69.35
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+112.15,
+69.35
+],
+"uuid": "97b5e136-53b6-5814-998f-4eaa816c5f12",
+"width_mm": 0.25
+},
+{
+"at": [
+114.3,
+159.06
+],
+"end": [
+114.3,
+161.8125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+114.3,
+159.06
+],
+"uuid": "997e232a-2075-5f30-a9dc-11805da738b2",
+"width_mm": 0.4
+},
+{
+"at": [
+109.4,
+116.1
+],
+"end": [
+109.9,
+116.6
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_LED",
+"start": [
+109.4,
+116.1
+],
+"uuid": "9ae615ef-c1ac-5f75-839f-baa60ecb5345",
+"width_mm": 0.2
+},
+{
+"at": [
+108.2,
+116.85
+],
+"end": [
+108.2,
+117.825
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+108.2,
+116.85
+],
+"uuid": "9ba20f45-309b-5a59-a186-f83ce67d72ec",
+"width_mm": 0.3
+},
+{
+"at": [
+107.25,
+110.15
+],
+"end": [
+107.25,
+91.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+107.25,
+110.15
+],
+"uuid": "9cf7477c-e9d9-5a27-a48b-25369d694bc6",
+"width_mm": 0.2
+},
+{
+"at": [
+107.3,
+116.6
+],
+"end": [
+107.3,
+145.275
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_LED",
+"start": [
+107.3,
+116.6
+],
+"uuid": "9d17d19d-967d-562b-8cad-b82905171631",
+"width_mm": 0.2
+},
+{
+"at": [
+110.05,
+71.775
+],
+"end": [
+117.2,
+71.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_LED",
+"start": [
+110.05,
+71.775
+],
+"uuid": "9d90aa1a-73c7-51b0-bb0d-dc3606277ae3",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+103.85
+],
+"end": [
+117.2,
+102.8
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+103.85
+],
+"uuid": "9dba0805-6a66-56e8-af25-ae299391d75c",
+"width_mm": 0.25
+},
+{
+"at": [
+103.8375,
+80.05
+],
+"end": [
+104.9,
+80.725
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CLAMP_REF",
+"start": [
+103.8375,
+80.05
+],
+"uuid": "9f81faff-f75c-5050-b8cd-10b3aaec1e46",
+"width_mm": 0.25
+},
+{
+"at": [
+101.9625,
+81.0
+],
+"end": [
+101.8,
+81.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.9625,
+81.0
+],
+"uuid": "9fc642d1-0816-5ee7-a50e-d8c8da7dcd7d",
+"width_mm": 0.25
+},
+{
+"at": [
+108.2,
+115.7
+],
+"end": [
+108.2,
+116.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+108.2,
+115.7
+],
+"uuid": "a023b24d-c0d3-5437-b363-4a791479e6fb",
+"width_mm": 0.2
+},
+{
+"at": [
+109.9,
+124.275
+],
+"end": [
+117.2,
+124.275
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_LED",
+"start": [
+109.9,
+124.275
+],
+"uuid": "a0b27577-9f4e-556c-a764-537fa3adcc55",
+"width_mm": 0.2
+},
+{
+"at": [
+110.05,
+113.85
+],
+"end": [
+110.85,
+113.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_LED",
+"start": [
+110.05,
+113.85
+],
+"uuid": "a3e7e67f-fbce-56f9-a823-b95c238b92e4",
+"width_mm": 0.2
+},
+{
+"at": [
+107.2,
+152.2
+],
+"end": [
+102.6,
+152.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+107.2,
+152.2
+],
+"uuid": "a4481fa2-e90b-5e38-8190-8c996304a524",
+"width_mm": 0.25
+},
+{
+"at": [
+107.65,
+110.55
+],
+"end": [
+107.65,
+101.6625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+107.65,
+110.55
+],
+"uuid": "a50936ed-e124-5c72-ad1e-bac4a76561ec",
+"width_mm": 0.2
+},
+{
+"at": [
+111.5,
+164.3
+],
+"end": [
+109.87,
+163.46
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+111.5,
+164.3
+],
+"uuid": "a6f643fa-d9d0-5133-98a4-d2fb4fb513f1",
+"width_mm": 0.4
+},
+{
+"at": [
+107.8,
+72.7
+],
+"end": [
+106.3,
+72.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX",
+"start": [
+107.8,
+72.7
+],
+"uuid": "a744b109-10ea-5405-8d83-0edd0729e280",
+"width_mm": 0.2
+},
+{
+"at": [
+107.15,
+113.85
+],
+"end": [
+106.6,
+113.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+107.15,
+113.85
+],
+"uuid": "a748bb27-e5c5-5659-b53e-bc5bf2a55265",
+"width_mm": 0.2
+},
+{
+"at": [
+110.9,
+146.0
+],
+"end": [
+107.2,
+146.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+110.9,
+146.0
+],
+"uuid": "a812a2fc-9d00-500a-8184-abcf984c3dad",
+"width_mm": 0.25
+},
+{
+"at": [
+104.35,
+115.45
+],
+"end": [
+104.35,
+109.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+104.35,
+115.45
+],
+"uuid": "ac126e93-09b9-50e3-bea0-391a9e954164",
+"width_mm": 0.2
+},
+{
+"at": [
+110.45,
+82.275
+],
+"end": [
+117.2,
+82.275
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_LED",
+"start": [
+110.45,
+82.275
+],
+"uuid": "aed4b503-75e7-5f8e-8cbf-676ed7e32935",
+"width_mm": 0.2
+},
+{
+"at": [
+109.0,
+112.8
+],
+"end": [
+109.0,
+106.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+109.0,
+112.8
+],
+"uuid": "afb4e39d-31f3-5542-885c-0732834f6911",
+"width_mm": 0.2
+},
+{
+"at": [
+107.05,
+69.8375
+],
+"end": [
+107.05,
+71.9
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+107.05,
+69.8375
+],
+"uuid": "b051fade-88ac-5bdb-bbbf-4d616e1196bb",
+"width_mm": 0.25
+},
+{
+"at": [
+109.45,
+106.3
+],
+"end": [
+109.45,
+110.1
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+109.45,
+106.3
+],
+"uuid": "b1db570b-2407-5a50-b36f-a78efc742428",
+"width_mm": 0.2
+},
+{
+"at": [
+102.7,
+69.35
+],
+"end": [
+102.7,
+72.55
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+102.7,
+69.35
+],
+"uuid": "b25e3d3e-32df-57c2-b32d-8caf6a62ffbb",
+"width_mm": 0.25
+},
+{
+"at": [
+105.55,
+113.95
+],
+"end": [
+105.55,
+110.55
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+105.55,
+113.95
+],
+"uuid": "b43570f7-e0f7-5bf1-923a-fb224f4fb02f",
+"width_mm": 0.2
+},
+{
+"at": [
+107.3,
+145.275
+],
+"end": [
+117.2,
+145.275
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_LED",
+"start": [
+107.3,
+145.275
+],
+"uuid": "b51b85f6-2ff4-57fe-856e-e9cb18feb87d",
+"width_mm": 0.2
+},
+{
+"at": [
+106.15,
+113.2
+],
+"end": [
+106.15,
+110.95
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+106.15,
+113.2
+],
+"uuid": "b6d37be4-4feb-5504-bc8a-90084eda3eaf",
+"width_mm": 0.2
+},
+{
+"at": [
+117.5875,
+152.95
+],
+"end": [
+117.2,
+151.27
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.5875,
+152.95
+],
+"uuid": "b7b6e300-a961-5e77-841b-8c44c57e68ed",
+"width_mm": 0.25
+},
+{
+"at": [
+106.85,
+81.0125
+],
+"end": [
+112.3,
+81.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+106.85,
+81.0125
+],
+"uuid": "b82e8f1b-f800-5564-baec-3213ab559047",
+"width_mm": 0.2
+},
+{
+"at": [
+108.05,
+110.95
+],
+"end": [
+108.05,
+103.3375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+108.05,
+110.95
+],
+"uuid": "b92ec4d5-79a3-5ac0-afad-4a1b2e5b3c19",
+"width_mm": 0.2
+},
+{
+"at": [
+117.2,
+94.425
+],
+"end": [
+117.2,
+96.23
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/LED3_A",
+"start": [
+117.2,
+94.425
+],
+"uuid": "ba0c5686-d8b6-5b40-9ad3-1fa94234c5fd",
+"width_mm": 0.25
+},
+{
+"at": [
+118.6,
+91.25
+],
+"end": [
+118.6,
+80.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+91.25
+],
+"uuid": "bb164f5e-5cc5-55c2-a22d-6dd571df2dff",
+"width_mm": 0.3
+},
+{
+"at": [
+117.2,
+65.0
+],
+"end": [
+115.6,
+65.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+117.2,
+65.0
+],
+"uuid": "bb28da92-76d1-5bf1-9073-5fa4cd56e2b3",
+"width_mm": 0.25
+},
+{
+"at": [
+107.8,
+112.8
+],
+"end": [
+107.8,
+72.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX",
+"start": [
+107.8,
+112.8
+],
+"uuid": "bb7d15c7-05b1-5cf6-bcea-45d6a81d0ca7",
+"width_mm": 0.2
+},
+{
+"at": [
+115.8125,
+90.6
+],
+"end": [
+114.9,
+91.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+115.8125,
+90.6
+],
+"uuid": "bcdb892a-48d0-510c-a0a1-be20e8914089",
+"width_mm": 0.25
+},
+{
+"at": [
+105.7,
+80.725
+],
+"end": [
+105.7,
+82.225
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CLAMP_REF",
+"start": [
+105.7,
+80.725
+],
+"uuid": "bfe8c6c8-eb20-5286-94a6-386f539c40bb",
+"width_mm": 0.25
+},
+{
+"at": [
+107.8,
+115.7
+],
+"end": [
+107.8,
+116.1
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_LED",
+"start": [
+107.8,
+115.7
+],
+"uuid": "c035cba0-4a34-5eb6-9c02-1f153a6ca85f",
+"width_mm": 0.2
+},
+{
+"at": [
+107.65,
+101.6625
+],
+"end": [
+112.3,
+101.6625
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+107.65,
+101.6625
+],
+"uuid": "c08fd4ce-f2b7-5359-9f43-c03dfdf40a71",
+"width_mm": 0.2
+},
+{
+"at": [
+118.6,
+122.75
+],
+"end": [
+118.6,
+105.15
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+122.75
+],
+"uuid": "c0ee9762-0be2-5e58-8e91-bbb591f8561f",
+"width_mm": 0.3
+},
+{
+"at": [
+107.15,
+114.65
+],
+"end": [
+105.6,
+114.65
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+107.15,
+114.65
+],
+"uuid": "c1232776-a13e-59d7-af22-75de37c1e020",
+"width_mm": 0.2
+},
+{
+"at": [
+104.95,
+114.7
+],
+"end": [
+104.95,
+110.15
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+104.95,
+114.7
+],
+"uuid": "c1b4344c-fdef-584b-9e29-adafabdad940",
+"width_mm": 0.2
+},
+{
+"at": [
+109.0,
+115.7
+],
+"end": [
+109.0,
+134.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH7_LED",
+"start": [
+109.0,
+115.7
+],
+"uuid": "c243b577-9c4d-5123-a8a4-70afb1fc41ac",
+"width_mm": 0.2
+},
+{
+"at": [
+114.75,
+133.5125
+],
+"end": [
+113.52,
+133.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+114.75,
+133.5125
+],
+"uuid": "c2f1f8a6-a4c0-5e67-8498-a2aed2b7a86d",
+"width_mm": 0.25
+},
+{
+"at": [
+103.545,
+83.4
+],
+"end": [
+103.545,
+117.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+83.4
+],
+"uuid": "c369de8f-8f67-5988-b83c-3e87fbfe0922",
+"width_mm": 0.3
+},
+{
+"at": [
+115.8,
+161.9
+],
+"end": [
+115.8,
+165.65
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+115.8,
+161.9
+],
+"uuid": "c38aba2c-3ead-5223-8e43-68838838e140",
+"width_mm": 0.4
+},
+{
+"at": [
+113.52,
+131.6875
+],
+"end": [
+113.52,
+129.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT6",
+"start": [
+113.52,
+131.6875
+],
+"uuid": "c52e5e58-3d5f-5527-b3b2-a7028e563465",
+"width_mm": 0.25
+},
+{
+"at": [
+108.2,
+104.7
+],
+"end": [
+108.85,
+104.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+108.2,
+104.7
+],
+"uuid": "c5ee20f0-92ce-5ab0-b070-7ca04e402a61",
+"width_mm": 0.2
+},
+{
+"at": [
+109.6,
+69.8375
+],
+"end": [
+108.95,
+69.8375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/Q1_B",
+"start": [
+109.6,
+69.8375
+],
+"uuid": "c6142fca-ead8-571b-a9ce-6fd2ee8810e5",
+"width_mm": 0.25
+},
+{
+"at": [
+118.1,
+162.65
+],
+"end": [
+118.1,
+164.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+118.1,
+162.65
+],
+"uuid": "c7d20d41-c366-5540-a9b8-8aa1c8d23a3d",
+"width_mm": 0.4
+},
+{
+"at": [
+114.9,
+103.3375
+],
+"end": [
+113.52,
+103.3375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+114.9,
+103.3375
+],
+"uuid": "c99755c7-1db7-5fbd-a560-00590ef38570",
+"width_mm": 0.25
+},
+{
+"at": [
+118.1,
+164.2
+],
+"end": [
+115.8,
+164.2
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+118.1,
+164.2
+],
+"uuid": "c9bacfbe-f2b9-5010-9c89-1c1d4afbc5f6",
+"width_mm": 0.4
+},
+{
+"at": [
+110.6,
+109.7
+],
+"end": [
+116.0,
+109.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+110.6,
+109.7
+],
+"uuid": "cc14d37d-0909-55aa-ad70-f995955aa0a0",
+"width_mm": 0.2
+},
+{
+"at": [
+113.6,
+67.975
+],
+"end": [
+112.125,
+67.975
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+113.6,
+67.975
+],
+"uuid": "cc4f1cd3-b7be-5f51-ad2a-566063e310b3",
+"width_mm": 0.25
+},
+{
+"at": [
+110.05,
+114.25
+],
+"end": [
+115.6,
+114.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_LED",
+"start": [
+110.05,
+114.25
+],
+"uuid": "cca29548-6ca5-5c85-9b0d-70ab47cc88e1",
+"width_mm": 0.2
+},
+{
+"at": [
+106.75,
+115.45
+],
+"end": [
+104.35,
+115.45
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+106.75,
+115.45
+],
+"uuid": "d042a4eb-3280-54b3-88c3-b7fcfefd1d9d",
+"width_mm": 0.2
+},
+{
+"at": [
+115.6,
+65.0
+],
+"end": [
+115.6,
+67.975
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+115.6,
+65.0
+],
+"uuid": "d4fc1306-1c80-5c50-930b-ac190f10183d",
+"width_mm": 0.25
+},
+{
+"at": [
+117.5875,
+91.25
+],
+"end": [
+118.6,
+91.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+91.25
+],
+"uuid": "d532a451-1aed-5bc2-9248-e0eb470d253e",
+"width_mm": 0.25
+},
+{
+"at": [
+113.52,
+79.1875
+],
+"end": [
+113.52,
+76.5
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/OUT1",
+"start": [
+113.52,
+79.1875
+],
+"uuid": "d6e3a654-201b-50b7-a27e-236c4ada3d24",
+"width_mm": 0.25
+},
+{
+"at": [
+107.45,
+113.0
+],
+"end": [
+111.85,
+113.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+107.45,
+113.0
+],
+"uuid": "d9fd440b-170a-59ae-ace7-711303d6c401",
+"width_mm": 0.2
+},
+{
+"at": [
+103.2,
+68.3
+],
+"end": [
+104.7,
+68.775
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/RX_Q",
+"start": [
+103.2,
+68.3
+],
+"uuid": "da48787e-33b3-5ec4-a1b7-3d132f1d53e2",
+"width_mm": 0.25
+},
+{
+"at": [
+108.2,
+112.8
+],
+"end": [
+108.2,
+104.7
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+108.2,
+112.8
+],
+"uuid": "daf8a8af-b7b3-539d-8785-7e9bbf2ee02c",
+"width_mm": 0.2
+},
+{
+"at": [
+109.9,
+116.6
+],
+"end": [
+109.9,
+124.275
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_LED",
+"start": [
+109.9,
+116.6
+],
+"uuid": "dd44f4c7-6dee-5139-8f89-93740b32a1ff",
+"width_mm": 0.2
+},
+{
+"at": [
+110.45,
+115.45
+],
+"end": [
+110.45,
+116.3
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"start": [
+110.45,
+115.45
+],
+"uuid": "dd9d0b7a-b44e-5cfa-9b96-0518b8b72004",
+"width_mm": 0.2
+},
+{
+"at": [
+109.4,
+112.0
+],
+"end": [
+110.05,
+111.35
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_LED",
+"start": [
+109.4,
+112.0
+],
+"uuid": "deb801c9-6bee-52c8-bca6-da6993766710",
+"width_mm": 0.2
+},
+{
+"at": [
+110.45,
+116.3
+],
+"end": [
+116.2,
+116.3
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH5_LED",
+"start": [
+110.45,
+116.3
+],
+"uuid": "ded1bbf2-80e5-5286-97f8-dc6719d1ae3b",
+"width_mm": 0.2
+},
+{
+"at": [
+115.95,
+156.4
+],
+"end": [
+118.1,
+156.1375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/VIN_D",
+"start": [
+115.95,
+156.4
+],
+"uuid": "def5857e-d5ef-5cf2-ab1a-ae664e393169",
+"width_mm": 0.4
+},
+{
+"at": [
+107.15,
+115.05
+],
+"end": [
+106.75,
+115.45
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+107.15,
+115.05
+],
+"uuid": "defdd7a5-15ca-5ab1-883b-bd98c1e6a9fe",
+"width_mm": 0.2
+},
+{
+"at": [
+115.2,
+133.5125
+],
+"end": [
+114.75,
+133.5125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+115.2,
+133.5125
+],
+"uuid": "e37c5f21-a0cd-58bf-aa59-c58485ec150d",
+"width_mm": 0.2
+},
+{
+"at": [
+110.475,
+67.975
+],
+"end": [
+110.475,
+69.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/Q1_B",
+"start": [
+110.475,
+67.975
+],
+"uuid": "e4ed09eb-e6d6-5726-b276-d73bd06077af",
+"width_mm": 0.25
+},
+{
+"at": [
+115.6,
+110.1
+],
+"end": [
+115.6,
+144.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+115.6,
+110.1
+],
+"uuid": "e5c4750f-11fb-5f8e-b535-420d64830ee2",
+"width_mm": 0.2
+},
+{
+"at": [
+104.9,
+80.725
+],
+"end": [
+105.7,
+80.725
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CLAMP_REF",
+"start": [
+104.9,
+80.725
+],
+"uuid": "e64c5319-d6e6-5aa0-b86a-e12579296645",
+"width_mm": 0.25
+},
+{
+"at": [
+110.45,
+113.45
+],
+"end": [
+110.45,
+82.275
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_LED",
+"start": [
+110.45,
+113.45
+],
+"uuid": "e78164f0-f04a-551a-be67-43e5d3348bb6",
+"width_mm": 0.2
+},
+{
+"at": [
+103.545,
+83.4
+],
+"end": [
+105.7,
+83.875
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+83.4
+],
+"uuid": "e7b288ea-46a9-5672-9aaa-b15d76503b05",
+"width_mm": 0.3
+},
+{
+"at": [
+117.5875,
+80.75
+],
+"end": [
+118.6,
+80.75
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+117.5875,
+80.75
+],
+"uuid": "ea46c843-342c-539c-b2b6-a4b6a47613d5",
+"width_mm": 0.25
+},
+{
+"at": [
+115.8125,
+104.5
+],
+"end": [
+114.9,
+103.3375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+115.8125,
+104.5
+],
+"uuid": "ed1b164a-681f-5deb-ad2a-5851dfdc9f03",
+"width_mm": 0.25
+},
+{
+"at": [
+110.85,
+67.2
+],
+"end": [
+110.475,
+67.975
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/Q1_B",
+"start": [
+110.85,
+67.2
+],
+"uuid": "ee61aa22-b7be-5dee-8e03-ffb319338a1a",
+"width_mm": 0.25
+},
+{
+"at": [
+108.6,
+112.8
+],
+"end": [
+108.6,
+106.0
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+108.6,
+112.8
+],
+"uuid": "ef0f6e20-062e-5fa2-9a29-4f2551b4a983",
+"width_mm": 0.2
+},
+{
+"at": [
+105.45,
+70.425
+],
+"end": [
+105.45,
+71.55
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+105.45,
+70.425
+],
+"uuid": "efe971a3-3ba7-5737-acc1-2fbeb0e0f68e",
+"width_mm": 0.3
+},
+{
+"at": [
+115.6,
+144.0125
+],
+"end": [
+114.75,
+144.0125
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+115.6,
+144.0125
+],
+"uuid": "f356b3fa-4674-5964-a4f6-21a2ce39185c",
+"width_mm": 0.2
+},
+{
+"at": [
+105.45,
+71.55
+],
+"end": [
+105.45,
+70.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+105.45,
+71.55
+],
+"uuid": "f5e88035-6366-58f1-91cd-e24cca1a13d0",
+"width_mm": 0.3
+},
+{
+"at": [
+110.45,
+114.65
+],
+"end": [
+111.25,
+114.85
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+110.45,
+114.65
+],
+"uuid": "f60c205b-03a2-5348-bebb-4ed1f123b1fa",
+"width_mm": 0.2
+},
+{
+"at": [
+109.45,
+110.1
+],
+"end": [
+115.6,
+110.1
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+109.45,
+110.1
+],
+"uuid": "f6c39a23-dd1f-557d-b455-a7cca84205aa",
+"width_mm": 0.2
+},
+{
+"at": [
+105.7,
+79.075
+],
+"end": [
+106.85,
+79.075
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+105.7,
+79.075
+],
+"uuid": "f76d318a-db7b-57c1-8b08-ba9588e97234",
+"width_mm": 0.25
+},
+{
+"at": [
+107.15,
+114.25
+],
+"end": [
+106.2,
+114.25
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+107.15,
+114.25
+],
+"uuid": "fa61367b-5cc5-5bad-b359-3e1590fd4879",
+"width_mm": 0.2
+},
+{
+"at": [
+108.05,
+103.3375
+],
+"end": [
+112.3,
+103.3375
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+108.05,
+103.3375
+],
+"uuid": "fb71c66b-fdfe-5ffc-882e-4f58a5128640",
+"width_mm": 0.2
+},
+{
+"at": [
+110.05,
+113.45
+],
+"end": [
+110.45,
+113.45
+],
+"group_uuid": null,
+"kind": "track",
+"layer": "B.Cu",
+"locked": false,
+"net": "/CH2_LED",
+"start": [
+110.05,
+113.45
+],
+"uuid": "fcf9c003-7862-53ec-be00-bdff913af2d3",
+"width_mm": 0.2
+},
+{
+"at": [
+102.7,
+72.55
+],
+"drill_mm": 0.3,
+"end": [
+102.7,
+72.55
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+102.7,
+72.55
+],
+"uuid": "05a3ea2d-d0f1-5772-bc88-170d97ef0c97",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+105.15
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+105.15
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+105.15
+],
+"uuid": "05ed7d7d-241a-5cf1-9a43-1b71a901e3da",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+113.25
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+113.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+113.25
+],
+"uuid": "0bdde249-df4b-5667-92f1-f39c1a092e1f",
+"width_mm": 0.6
+},
+{
+"at": [
+111.55,
+161.9
+],
+"drill_mm": 0.3,
+"end": [
+111.55,
+161.9
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+111.55,
+161.9
+],
+"uuid": "132e02be-8c02-50d8-85e0-675049148a93",
+"width_mm": 0.6
+},
+{
+"at": [
+106.15,
+113.2
+],
+"drill_mm": 0.3,
+"end": [
+106.15,
+113.2
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+106.15,
+113.2
+],
+"uuid": "13528b83-07f5-556b-8c8c-943ad88ee34a",
+"width_mm": 0.6
+},
+{
+"at": [
+106.85,
+112.4
+],
+"drill_mm": 0.3,
+"end": [
+106.85,
+112.4
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+106.85,
+112.4
+],
+"uuid": "14f3cbce-10dc-5ef8-9621-f34e64b520b1",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+91.25
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+91.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+91.25
+],
+"uuid": "16adb08c-7a0a-5e86-902e-b1ad5c7de0b3",
+"width_mm": 0.6
+},
+{
+"at": [
+108.15,
+124.0
+],
+"drill_mm": 0.3,
+"end": [
+108.15,
+124.0
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+108.15,
+124.0
+],
+"uuid": "16da0ee0-6918-59c7-8aa0-0d39d8f5a505",
+"width_mm": 0.6
+},
+{
+"at": [
+108.15,
+131.0
+],
+"drill_mm": 0.3,
+"end": [
+108.15,
+131.0
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+108.15,
+131.0
+],
+"uuid": "174f0fb0-0102-5168-9a15-1888e96a4660",
+"width_mm": 0.6
+},
+{
+"at": [
+112.3,
+123.0125
+],
+"drill_mm": 0.3,
+"end": [
+112.3,
+123.0125
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH5_TX",
+"start": [
+112.3,
+123.0125
+],
+"uuid": "1a10dc28-99d4-5e81-bdab-4be020580764",
+"width_mm": 0.6
+},
+{
+"at": [
+112.15,
+69.35
+],
+"drill_mm": 0.3,
+"end": [
+112.15,
+69.35
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/MIDI_IN",
+"start": [
+112.15,
+69.35
+],
+"uuid": "1fde7f6c-27eb-5c2a-9dcc-c19a0163ef98",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+143.75
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+143.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+143.75
+],
+"uuid": "25c5f14e-9ba5-5603-b5e4-9ff41b9e3b05",
+"width_mm": 0.6
+},
+{
+"at": [
+107.55,
+66.6
+],
+"drill_mm": 0.3,
+"end": [
+107.55,
+66.6
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+107.55,
+66.6
+],
+"uuid": "27e61794-50e0-5dc5-b757-785e847fc3c6",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+102.75
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+102.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+102.75
+],
+"uuid": "2aac681a-ae21-579a-8ebb-be79d12c3b48",
+"width_mm": 0.6
+},
+{
+"at": [
+112.6,
+160.0
+],
+"drill_mm": 0.3,
+"end": [
+112.6,
+160.0
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+112.6,
+160.0
+],
+"uuid": "2f915b70-735d-5acd-9273-a905b5556fd3",
+"width_mm": 0.6
+},
+{
+"at": [
+107.05,
+71.9
+],
+"drill_mm": 0.3,
+"end": [
+107.05,
+71.9
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+107.05,
+71.9
+],
+"uuid": "3126561f-baf6-59e2-8085-012e7db1ae86",
+"width_mm": 0.6
+},
+{
+"at": [
+117.5,
+167.6
+],
+"drill_mm": 0.3,
+"end": [
+117.5,
+167.6
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+117.5,
+167.6
+],
+"uuid": "324a0511-5738-5726-88a2-76de76f2ccb8",
+"width_mm": 0.6
+},
+{
+"at": [
+115.5,
+167.6
+],
+"drill_mm": 0.3,
+"end": [
+115.5,
+167.6
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+115.5,
+167.6
+],
+"uuid": "35e465da-783d-537c-a7c4-5a7b7890ee79",
+"width_mm": 0.6
+},
+{
+"at": [
+114.75,
+133.5125
+],
+"drill_mm": 0.3,
+"end": [
+114.75,
+133.5125
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+114.75,
+133.5125
+],
+"uuid": "4dfd5ef4-bc95-58a3-bf76-8c644dcbc08e",
+"width_mm": 0.6
+},
+{
+"at": [
+103.545,
+83.4
+],
+"drill_mm": 0.3,
+"end": [
+103.545,
+83.4
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+83.4
+],
+"uuid": "5b54a49b-923b-57f3-b138-32a13cde4ac3",
+"width_mm": 0.6
+},
+{
+"at": [
+111.25,
+114.85
+],
+"drill_mm": 0.3,
+"end": [
+111.25,
+114.85
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+111.25,
+114.85
+],
+"uuid": "5bc5278d-3b9d-5bb4-b983-a3a8514858d8",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+133.25
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+133.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+133.25
+],
+"uuid": "6c74a9be-6f2f-5b05-b562-405166919472",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+123.75
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+123.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+123.75
+],
+"uuid": "6d136648-1c28-5f83-b994-fa408b7be47f",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+101.75
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+101.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+101.75
+],
+"uuid": "7d623b41-a9f4-5941-a619-5eb3aadd08fd",
+"width_mm": 0.6
+},
+{
+"at": [
+112.3,
+91.5125
+],
+"drill_mm": 0.3,
+"end": [
+112.3,
+91.5125
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+112.3,
+91.5125
+],
+"uuid": "811ad29c-7c83-5fb4-96a9-8358c981c3f2",
+"width_mm": 0.6
+},
+{
+"at": [
+108.6,
+114.25
+],
+"drill_mm": 0.3,
+"end": [
+108.6,
+114.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+108.6,
+114.25
+],
+"uuid": "85005f03-3d85-5598-9874-d4fe26b89059",
+"width_mm": 0.6
+},
+{
+"at": [
+114.75,
+154.3625
+],
+"drill_mm": 0.3,
+"end": [
+114.75,
+154.3625
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+114.75,
+154.3625
+],
+"uuid": "87633566-5083-53fe-8aa5-521caa52a077",
+"width_mm": 0.6
+},
+{
+"at": [
+106.85,
+79.075
+],
+"drill_mm": 0.3,
+"end": [
+106.85,
+79.075
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+106.85,
+79.075
+],
+"uuid": "87c601b8-c839-5157-99c1-58f8bf268354",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+81.75
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+81.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+81.75
+],
+"uuid": "8b92c679-b38b-5b91-8553-3e5979d6b6b8",
+"width_mm": 0.6
+},
+{
+"at": [
+116.0,
+158.6
+],
+"drill_mm": 0.3,
+"end": [
+116.0,
+158.6
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+116.0,
+158.6
+],
+"uuid": "8d2c4d61-034d-5840-b733-1c978baf287d",
+"width_mm": 0.6
+},
+{
+"at": [
+108.2,
+116.85
+],
+"drill_mm": 0.3,
+"end": [
+108.2,
+116.85
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+108.2,
+116.85
+],
+"uuid": "8e179677-8ab6-5183-984c-c3f94ae976ce",
+"width_mm": 0.6
+},
+{
+"at": [
+105.55,
+113.95
+],
+"drill_mm": 0.3,
+"end": [
+105.55,
+113.95
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+105.55,
+113.95
+],
+"uuid": "8f537ab0-8d2b-585b-abc1-4c8b65b98768",
+"width_mm": 0.6
+},
+{
+"at": [
+112.6,
+158.6
+],
+"drill_mm": 0.3,
+"end": [
+112.6,
+158.6
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+112.6,
+158.6
+],
+"uuid": "91e543f9-75c8-5bad-bfbd-48f7f660dd58",
+"width_mm": 0.6
+},
+{
+"at": [
+114.3,
+157.2
+],
+"drill_mm": 0.3,
+"end": [
+114.3,
+157.2
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+114.3,
+157.2
+],
+"uuid": "9ecdd9ac-b5a9-5b9f-8dfb-7f3f1b79ea75",
+"width_mm": 0.6
+},
+{
+"at": [
+110.9,
+146.0
+],
+"drill_mm": 0.3,
+"end": [
+110.9,
+146.0
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/UPDI_PA0",
+"start": [
+110.9,
+146.0
+],
+"uuid": "a29c5a04-6b31-50ea-a238-990a72cc32d4",
+"width_mm": 0.6
+},
+{
+"at": [
+108.85,
+104.7
+],
+"drill_mm": 0.3,
+"end": [
+108.85,
+104.7
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH8_TX",
+"start": [
+108.85,
+104.7
+],
+"uuid": "a682b1a1-fb88-5ed0-b2bb-ca64a744e1e5",
+"width_mm": 0.6
+},
+{
+"at": [
+105.45,
+71.55
+],
+"drill_mm": 0.3,
+"end": [
+105.45,
+71.55
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+105.45,
+71.55
+],
+"uuid": "a915da7a-2fe1-58c8-8b1b-984daa1f71f4",
+"width_mm": 0.6
+},
+{
+"at": [
+116.0,
+160.0
+],
+"drill_mm": 0.3,
+"end": [
+116.0,
+160.0
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+116.0,
+160.0
+],
+"uuid": "b59ce786-e918-5bb9-bb79-c98302a995ba",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+80.75
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+80.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+80.75
+],
+"uuid": "b78b3de8-b067-57f8-8169-dda3aebbdbe7",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+144.75
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+144.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+144.75
+],
+"uuid": "ba077c46-3087-573b-94e0-a1b969e259f8",
+"width_mm": 0.6
+},
+{
+"at": [
+112.3,
+101.6625
+],
+"drill_mm": 0.3,
+"end": [
+112.3,
+101.6625
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH3_TX",
+"start": [
+112.3,
+101.6625
+],
+"uuid": "ba99f028-de38-5aca-8701-52f4022dca9a",
+"width_mm": 0.6
+},
+{
+"at": [
+114.75,
+144.0125
+],
+"drill_mm": 0.3,
+"end": [
+114.75,
+144.0125
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+114.75,
+144.0125
+],
+"uuid": "c13ce293-024d-5a88-90e6-b8f79b460dc7",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+134.25
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+134.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+134.25
+],
+"uuid": "c723065f-aca1-501d-88a5-abe40c8f6e88",
+"width_mm": 0.6
+},
+{
+"at": [
+113.6,
+70.85
+],
+"drill_mm": 0.3,
+"end": [
+113.6,
+70.85
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+113.6,
+70.85
+],
+"uuid": "c8e9cc44-8d06-57da-82c5-fdef37f74618",
+"width_mm": 0.6
+},
+{
+"at": [
+112.3,
+81.0125
+],
+"drill_mm": 0.3,
+"end": [
+112.3,
+81.0125
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+112.3,
+81.0125
+],
+"uuid": "ca4959c3-cf53-5206-8e38-ea93d386e803",
+"width_mm": 0.6
+},
+{
+"at": [
+113.5,
+167.6
+],
+"drill_mm": 0.3,
+"end": [
+113.5,
+167.6
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+113.5,
+167.6
+],
+"uuid": "cbc870eb-55f2-5f82-a591-25a808ef3166",
+"width_mm": 0.6
+},
+{
+"at": [
+108.85,
+105.5
+],
+"drill_mm": 0.3,
+"end": [
+108.85,
+105.5
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH6_TX",
+"start": [
+108.85,
+105.5
+],
+"uuid": "cd886eb0-7a9e-5214-a510-805f12184a36",
+"width_mm": 0.6
+},
+{
+"at": [
+103.545,
+125.4
+],
+"drill_mm": 0.3,
+"end": [
+103.545,
+125.4
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+103.545,
+125.4
+],
+"uuid": "cf95ad68-8af7-528c-8971-0867185e44e2",
+"width_mm": 0.6
+},
+{
+"at": [
+104.95,
+114.7
+],
+"drill_mm": 0.3,
+"end": [
+104.95,
+114.7
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH2_TX",
+"start": [
+104.95,
+114.7
+],
+"uuid": "cfa639b6-6398-5554-a888-4a31fecc2ab4",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+154.25
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+154.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+154.25
+],
+"uuid": "d71f7692-64e8-5821-bb3a-8fcfc2e3266a",
+"width_mm": 0.6
+},
+{
+"at": [
+118.5,
+165.5
+],
+"drill_mm": 0.3,
+"end": [
+118.5,
+165.5
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"start": [
+118.5,
+165.5
+],
+"uuid": "de4e39d6-c16b-57f5-8d2d-5649cd587c20",
+"width_mm": 0.6
+},
+{
+"at": [
+109.45,
+106.3
+],
+"drill_mm": 0.3,
+"end": [
+109.45,
+106.3
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH7_TX",
+"start": [
+109.45,
+106.3
+],
+"uuid": "de8ef28e-9f7f-5829-b5a3-f0acf5143249",
+"width_mm": 0.6
+},
+{
+"at": [
+101.8,
+92.25
+],
+"drill_mm": 0.3,
+"end": [
+101.8,
+92.25
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+101.8,
+92.25
+],
+"uuid": "df70973e-e929-58cb-bad2-c516e3aba238",
+"width_mm": 0.6
+},
+{
+"at": [
+112.3,
+103.3375
+],
+"drill_mm": 0.3,
+"end": [
+112.3,
+103.3375
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH4_TX",
+"start": [
+112.3,
+103.3375
+],
+"uuid": "e0238682-5ab7-52a0-a13b-474be36bdb6d",
+"width_mm": 0.6
+},
+{
+"at": [
+118.6,
+122.75
+],
+"drill_mm": 0.3,
+"end": [
+118.6,
+122.75
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/+5V",
+"start": [
+118.6,
+122.75
+],
+"uuid": "e2126978-ee37-5e41-bbce-d84b91602e9e",
+"width_mm": 0.6
+},
+{
+"at": [
+104.35,
+115.45
+],
+"drill_mm": 0.3,
+"end": [
+104.35,
+115.45
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/CH1_TX",
+"start": [
+104.35,
+115.45
+],
+"uuid": "e5ac1fef-2865-5753-9952-3a93ebc7708d",
+"width_mm": 0.6
+},
+{
+"at": [
+117.2,
+102.8
+],
+"drill_mm": 0.3,
+"end": [
+117.2,
+102.8
+],
+"group_uuid": null,
+"kind": "via",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"start": [
+117.2,
+102.8
+],
+"uuid": "f9902c2f-1169-5d4b-b11c-2fc3ded47a54",
+"width_mm": 0.6
+},
+{
+"at": [
+100.475,
+59.225
+],
+"group_uuid": null,
+"kind": "zone",
+"layer": "F.Cu",
+"locked": false,
+"net": "/GND",
+"uuid": "092bcd44-1fa4-5eb4-b29b-96ed1ba74f59"
+},
+{
+"at": [
+100.475,
+153.9
+],
+"group_uuid": null,
+"kind": "zone",
+"layer": "F.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"uuid": "16ed5762-2f40-501a-a13b-eaa4c0420ce8"
+},
+{
+"at": [
+100.475,
+59.225
+],
+"group_uuid": null,
+"kind": "zone",
+"layer": "B.Cu",
+"locked": false,
+"net": "/GND",
+"uuid": "9a6abc0b-9c1d-5ed3-8904-385fc1736d04"
+},
+{
+"at": [
+111.2,
+155.1
+],
+"group_uuid": null,
+"kind": "zone",
+"layer": "B.Cu",
+"locked": false,
+"net": "/VIN_LDO",
+"uuid": "e04a3300-2b1d-5c1e-b451-ea2e9773e381"
+}
+],
+"nets": [
+"/+12V",
+"/+5V",
+"/CH1_LED",
+"/CH1_TX",
+"/CH2_LED",
+"/CH2_TX",
+"/CH3_LED",
+"/CH3_TX",
+"/CH4_LED",
+"/CH4_TX",
+"/CH5_LED",
+"/CH5_TX",
+"/CH6_LED",
+"/CH6_TX",
+"/CH7_LED",
+"/CH7_TX",
+"/CH8_LED",
+"/CH8_TX",
+"/CLAMP_REF",
+"/GND",
+"/LED1_A",
+"/LED2_A",
+"/LED3_A",
+"/LED4_A",
+"/LED5_A",
+"/LED6_A",
+"/LED7_A",
+"/LED8_A",
+"/MIDI_IN",
+"/OUT1",
+"/OUT2",
+"/OUT3",
+"/OUT4",
+"/OUT5",
+"/OUT6",
+"/OUT7",
+"/OUT8",
+"/Q1_B",
+"/RING",
+"/RX",
+"/RX_Q",
+"/TIP",
+"/UPDI",
+"/UPDI_PA0",
+"/VIN_D",
+"/VIN_LDO",
+"unconnected-(J10-Pin_1-Pad1)",
+"unconnected-(J10-Pin_2-Pad2)",
+"unconnected-(J2-PadTN)",
+"unconnected-(J3-PadTN)",
+"unconnected-(J4-PadTN)",
+"unconnected-(J5-PadTN)",
+"unconnected-(J6-PadTN)",
+"unconnected-(J7-PadTN)",
+"unconnected-(J8-PadTN)",
+"unconnected-(J9-PadTN)"
+],
+"pcbnew_version": "10.0.6-10.0.6~ubuntu26.04.1",
+"plan_sha256": "42c3b169446cf3a7f791b881b7906a209f529a17665340bd3a8951bd48ff023a",
+"source": "~/recovery-107/b22045jd2.txt line 2 (workspace 107 shared pcb apply acceptance report, candidate research/v2-bypass/route-cand1; V2 R2 routing incl. JP2)",
+"source_sha256": "d0f5ca826b08b57e6383a35b10feb4f85bfe0653c11980cc6765f3205fa11168",
+"status": "accepted"
+}

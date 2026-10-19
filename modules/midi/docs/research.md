@@ -647,6 +647,11 @@ plan/apply/promote; nothing autorouted):
 
 ### 7.6 Checks (V2)
 
+The ignored `research/` evidence named below (`v2-src/`, `v2-bypass/`,
+`v2-jp2open/`) was lost with the original V2 tree on 2026-10-19. The tree was rebuilt
+and every check below was rerun against the recovered evidence
+(`rebuild-status.md`). The live assembly audit was not rerun.
+
 - ERC 0 (`--severity-all`). The native netlist matches the generator's circuit
   table pin for pin (ignored `research/v2-src/check_netlist.py`): 62 components,
   46 nets, 10 no-connects (S2; S3 changes only JP2's symbol and footprint).

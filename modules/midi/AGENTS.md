@@ -18,7 +18,8 @@ export (table in `Code.md`).
     the power header J10 on VIN_LDO heat-sink copper on both layers, with the UPDI
     header J11 left of J10. B silk `MIDI V1.0`.
   - Moving it into `hardware/v1/` changed no source byte. The re-export differs from
-    the old one only in the Gerber dates.
+    the old one only in the Gerber dates (and the absolute paths in the export
+    reports).
   - Mis-patching (input and outputs) is a known V1 risk (D6).
 - **V2** (`hardware/v2/`, V2.0 / S3/R3): V1 plus mis-patch protection
   (`docs/research.md` §7). The fabrication export is in `jlcpcb/v2/`
@@ -30,6 +31,9 @@ export (table in `Code.md`).
   - BAT54SW clamps behind 0805 1 k outputs.
   - CJ431 +5V shunt clamp.
   - No opto. Same panels and mechanics as V1. B silk `MIDI V2.0`.
+  - Rebuilt on 2026-10-19 from the recovered evidence (`docs/v2/recovered/`) after
+    the original tree was lost. `docs/rebuild-status.md` lists what equals the
+    evidence and the recorded deviations (all non-electrical).
 - Every assembled part carries `LCSC`, `MPN` and `Manufacturer` fields from
   `SOURCING` in `tools/<v>/build_schematic.py`. The routed native PCB owns copper;
   `tools/<v>/route_plan.py` records its explicit geometry for the shared

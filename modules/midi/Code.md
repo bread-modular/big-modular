@@ -93,11 +93,13 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
 - **The routed native PCB is the source of truth for copper** (root `AGENTS.md`).
   `tools/<v>/route_plan.py` holds its explicit geometry as shared `pcb plan` ops v1:
   - V1: R1 routing, two GND stitching vias from R2, the R3 regulator group beside J10
-    on its VIN_LDO heat sink with reshaped GND pours, the R4 direct RX track to JP1,
-    and R5's deletion of the B silk `JLCJLCJLCJLC` marker (copper unchanged).
+    on its VIN_LDO heat sink with reshaped GND pours, and the R4 direct RX track to
+    JP1. R5 only dropped the B silk `JLCJLCJLCJLC` marker, which
+    `tools/v1/build_layout.py` no longer writes (copper unchanged).
   - V2: the V1 copper plus the clamps, the F.Cu +5V clamp rail and spine, the input
     stage, U2, the moved R10, (R2) JP2 with its RX/RX_Q/MIDI_IN tracks and (R3)
-    JP2 as the open footprint (`docs/research.md` §7.5).
+    JP2 as the open footprint (`docs/research.md` §7.5). Its item UUIDs use the
+    `big-modular/midi-v2/route/` uuid5 namespace (V1: `big-modular/midi/route/`).
 
   A plan reproduces its board only on the matching placement, through
   plan -> apply (new candidate under `research/`) -> promote. Don't rerun either
@@ -118,7 +120,8 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
 - Local footprint edits are limited to the two jack courtyards (resized to the
   model envelope), removal of two decorative jack silk arcs, and the documented
   U1 3D-model proxy. All are recorded in `hardware/<v>/MIDI.pretty/PROVENANCE.json`.
-  V2's library adds the stock SOT-23, SOT-323_SC-70 and R_0805 footprints, unedited.
+  V2's library adds the stock SOT-23, SOT-323_SC-70, R_0805 and
+  SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm footprints, unedited.
 
 ## Shared-tool profiles and manifests
 
@@ -128,6 +131,11 @@ re-hashes that version's export sources and fails on drift. Manifest keys are
 relative to the module (the parent of `jlcpcb/`).
 
 ## Verification (both versions)
+
+The two-version tree was rebuilt on 2026-10-19 after a merge lost the untracked V2,
+`tools/v1|v2` and `jlcpcb/v1|v2` files. `docs/rebuild-status.md` records what was
+recovered, how each version was verified against the evidence, and every deviation.
+The checks below were rerun on the rebuilt tree.
 
 - Native ERC `--severity-all`: 0 (V1 `docs/fit/schematic-erc.json`, V2
   `docs/v2/fit/schematic-erc.json`).

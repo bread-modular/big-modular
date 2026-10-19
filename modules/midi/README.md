@@ -35,6 +35,8 @@ There are two hardware versions. Both use the same panels and mechanics:
 | `docs/research.md` | BM baseline, circuit, decisions, sourcing (V1 §1-6, V2 §7) |
 | `docs/geometry.json`, `docs/mechanics.md` | 4HP fit, stack, panel and V1 placement contract |
 | `docs/v2/geometry.json` | V2 placement (mechanics asserted equal to V1's) |
+| `docs/v2/recovered/` | Evidence the V2 rebuild was checked against (netlist + field dump, routed-board inspection) |
+| `docs/rebuild-status.md` | How the two-version tree was rebuilt and verified after the 2026-10-19 loss; deviations |
 | `docs/midi-schematic.pdf`, `docs/v2/midi-schematic.pdf` | Schematic PDFs |
 | `docs/fit/`, `docs/v2/fit/` | Native DRC/ERC JSON, nominal 3D fit report, renders |
 | `docs/sourcing-candidates.json`, `docs/jlcpcb-audit-requirements.json`, `docs/v2/jlcpcb-audit-requirements.json` | Dated JLCPCB part records; assembly-audit circuit requirements |
