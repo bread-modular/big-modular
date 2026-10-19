@@ -13,7 +13,7 @@ survived, what has to be regenerated, and every deviation from the contract in
 |---|---|
 | 1 Inventory + gap analysis | done (this file, `docs/v2/recovered/`) |
 | 2 Layout (`hardware/v1`, `tools/v1`, `jlcpcb/v1`, shared-tool patch) | done: see below |
-| 3 V1 restore + verification | pending |
+| 3 V1 restore + verification | done: see below |
 | 4 V2 rebuild + verification | pending |
 | 5 Docs pass | pending |
 
@@ -100,6 +100,57 @@ Notes on the evidence:
   values, so the move changed no source byte. `check` exits 1 **only** because
   `jlcpcb/v1/source-sha256.json` still keys the old flat paths (generated file,
   not hand-edited; re-exported in step 3).
+
+## Step 3 result (V1)
+
+Reproduction test, in a scratch copy of the module (so no committed source was
+rewritten): `tools/v1/build_schematic.py` -> `tools/v1/build_layout.py` ->
+`tools/v1/route_plan.py` (71 polylines, 47 vias, 4 zones) -> shared `pcb plan` ->
+`pcb apply` (accepted: ERC/DRC findings empty, parity equal) -> `pcb promote`
+(0 external model tokens).
+
+- `midi.kicad_sch`, `MIDI.kicad_sym`, `sym-lib-table`, `midi.kicad_pro`,
+  `docs/schematic-symbols.json`: **byte-identical** to the committed files (after the
+  generator's symbols note was updated to the `v1` paths the committed doc already
+  had).
+- `midi.kicad_pcb`: **semantically identical**. A pcbnew comparison of every
+  footprint (FPID, position, rotation, side, value, symbol path, attributes, all
+  fields, pad numbers/nets/positions, 3D model tokens, graphics), all 149 tracks,
+  47 vias, 4 zones (layer, net, every outline vertex, settings), drawings, texts,
+  title block and net list found 0 differences. It is not byte-identical: pcbnew
+  gives new footprints random UUIDs, which also changes the footprint order in the
+  file. So the committed (accepted, previously verified) board is kept as is.
+- `_kicad_models/`: same 13 content-hash directories.
+- The panel generator (`build_layout.py` also writes the panel) uses random UUIDs
+  too; the shared panel is not regenerated.
+- `tools/v1/route_plan.py` (flat `tools/route_plan.py` from 6ea27cb) is the S4/R5
+  copper. The only R5 change was deleting the B silk marker; the flat
+  `build_layout.py` already writes no marker.
+
+Re-export (`jlcpcb/v1/`, shared `export.py`, README commands with `hardware/v1`
+and `--manifest jlcpcb/v1/source-sha256.json`): the stale generated manifest and
+unpacked plots were deleted first, then regenerated. `bom.csv` and `positions.csv`
+are byte-identical to before; Gerber/drill files differ only in the creation
+date; export reports differ only in absolute paths. The manifest now keys
+`hardware/v1/*` and `jlcpcb/v1/*`.
+
+Verification:
+- native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`)
+- native DRC `--severity-all --schematic-parity --refill-zones`: carrier 0/0/0,
+  panel 0/0 (`docs/fit/carrier-drc.json`, `docs/fit/panel-drc.json`; only the
+  date changed)
+- `kicad_tools.py check --config tools/v1/kicad-project.json`:
+  `no_findings_in_requested_checks`, exit 0, ref/pin/net parity `equal: true`,
+  manifest equal (5 sources), `source_unchanged: true`
+- `tools/fit_assembly.sh v1`: 0 mm³ against the FR4 and printed panels, board
+  inside rail gap and panel width; `docs/fit/fit-report.json` byte-unchanged
+- Renders (`docs/fit/*.png`) were not regenerated (no render command is recorded,
+  and the board bytes are unchanged, so the images are still current).
+- The live assembly audit was not rerun: BOM/CPL are byte-identical to the export
+  it audited.
+
+Helpers used for these comparisons (ignored, not deliverables):
+`research/rebuild/boardsig.py`, `research/rebuild/extract.py`.
 
 ## Deviations
 
