@@ -90,7 +90,10 @@ During tooling-only work, do not regenerate board outputs at all.
 `export.py --manifest PATH` merges this run's hashes into an existing
 `source-sha256.json`: every reachable `.kicad_sch` plus the PCB/project, and the
 Gerbers/BOM/CPL rows it produced (PCB-only runs update only the Gerbers row).
-Run it for the carrier **and** the panel so one manifest covers both. The shared
+Run it for the carrier **and** the panel so one manifest covers both. A module
+with several projects keeps one manifest per variant (`jlcpcb/<variant>/source-sha256.json`,
+keys still relative to the module) and declares it as `source_manifest` in that
+variant's profile. The shared
 `check` re-hashes those recorded sources and fails the run when they drift, which
 is the guard against exporting and then editing a sheet.
 

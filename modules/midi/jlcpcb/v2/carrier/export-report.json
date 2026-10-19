@@ -1,0 +1,60 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/111/modules/midi/hardware/v2/midi.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/111/modules/midi/hardware/v2/midi.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/111/modules/midi/hardware/v2/midi.kicad_pcb": "27ccaa1cd2b5702bdd8b1d6cab1d3d57e6ea9d15d0f04922671c636c022fd659",
+    "/home/azero/.okbrain/workspaces/big-modular/111/modules/midi/hardware/v2/midi.kicad_sch": "93e7eadb477a8649cbcdb2dc380337d70a9e271f24452db68410355044df40ae"
+  },
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 2,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "bottom",
+  "include_through_hole": false,
+  "component_count": 41,
+  "bom_row_count": 18,
+  "excluded": {
+    "D1": "Not an SMD footprint (use --include-through-hole)",
+    "D2": "Not an SMD footprint (use --include-through-hole)",
+    "D3": "Not an SMD footprint (use --include-through-hole)",
+    "D4": "Not an SMD footprint (use --include-through-hole)",
+    "D5": "Not an SMD footprint (use --include-through-hole)",
+    "D6": "Not an SMD footprint (use --include-through-hole)",
+    "D7": "Not an SMD footprint (use --include-through-hole)",
+    "D8": "Not an SMD footprint (use --include-through-hole)",
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J5": "Not an SMD footprint (use --include-through-hole)",
+    "J6": "Not an SMD footprint (use --include-through-hole)",
+    "J7": "Not an SMD footprint (use --include-through-hole)",
+    "J8": "Not an SMD footprint (use --include-through-hole)",
+    "J9": "Not an SMD footprint (use --include-through-hole)",
+    "J10": "Not an SMD footprint (use --include-through-hole)",
+    "J11": "Not an SMD footprint (use --include-through-hole)",
+    "JP1": "Not an SMD footprint (use --include-through-hole)",
+    "JP2": "Excluded from BOM"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "midi-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}

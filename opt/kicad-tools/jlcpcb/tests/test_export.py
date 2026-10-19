@@ -97,6 +97,17 @@ def schematic_text(root_id, components, paths=None, project="assembly"):
 
 
 class ParsingTests(unittest.TestCase):
+    def test_manifest_keys_are_relative_to_the_enclosing_jlcpcb_parent(self):
+        with tempfile.TemporaryDirectory() as temp:
+            module = Path(temp) / "module"
+            board = module / "hardware" / "v2" / "x.kicad_pcb"
+            board.parent.mkdir(parents=True)
+            board.write_text("(kicad_pcb)")
+            for manifest in (module / "jlcpcb" / "source-sha256.json", module / "jlcpcb" / "v2" / "source-sha256.json"):
+                self.assertEqual(jlc.manifest_root(manifest), module.resolve())
+                self.assertEqual(list(jlc.manifest_sources(board, None, None, manifest)), ["hardware/v2/x.kicad_pcb"])
+            self.assertEqual(jlc.manifest_root(module / "other" / "m.json"), module.resolve())
+
     def test_sexpr_escaped_strings_and_unicode(self):
         self.assertEqual(jlc.parse_sexpr(r'(root (field "a (b) \"c\" \\ Ω") (x -1.2))'),
                          ["root", ["field", 'a (b) "c" \\ Ω'], ["x", "-1.2"]])

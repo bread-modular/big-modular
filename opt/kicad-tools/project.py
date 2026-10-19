@@ -40,6 +40,7 @@ class Project:
     dependencies: list = field(default_factory=list)
     variables: dict = field(default_factory=dict)
     config: Path = None
+    manifest: Path = None
 
 
 def select_project(args):
@@ -48,7 +49,7 @@ def select_project(args):
             raise Error("--config cannot be mixed with project/board/schematic selection")
         cfg = absolute(args.config)
         data = json.loads(cfg.read_text(encoding="utf-8"))
-        keys = {"schema_version", "project_dir", "board", "root_schematic", "dependencies", "variables"}
+        keys = {"schema_version", "project_dir", "board", "root_schematic", "dependencies", "variables", "source_manifest"}
         if not isinstance(data, dict) or set(data) - keys or type(data.get("schema_version")) is not int or data["schema_version"] != 1:
             raise Error("Expected manifest schema_version 1 with only documented keys")
         for key in ("project_dir", "board", "root_schematic"):
@@ -59,9 +60,13 @@ def select_project(args):
             raise Error("dependencies must be a list of native files or .pretty directory paths")
         if not isinstance(variables, dict) or any(not isinstance(k, str) or not isinstance(v, str) for k, v in variables.items()) or "KIPRJMOD" in variables:
             raise Error("variables must be string pairs; KIPRJMOD cannot be overridden")
+        manifest = data.get("source_manifest")
+        if manifest is not None and (not isinstance(manifest, str) or not manifest.endswith(".json")):
+            raise Error("source_manifest must be the path of a source-sha256 JSON file")
         project = Project(absolute(data["project_dir"], cfg.parent), absolute(data["board"], cfg.parent),
                           absolute(data["root_schematic"], cfg.parent),
-                          [absolute(p, cfg.parent) for p in dependencies], variables, cfg)
+                          [absolute(p, cfg.parent) for p in dependencies], variables, cfg,
+                          absolute(manifest, cfg.parent) if manifest else None)
     else:
         if not args.project_dir:
             raise Error("Select --config FILE or --project-dir DIRECTORY (no recursive discovery)")
@@ -332,7 +337,8 @@ class Plan:
                 "root_schematic": str(self.project.schematic), "sheet_files": [str(p) for p in self.sheets],
                 "dependency_files": len(self.files), "dependency_bytes": self.bytes,
                 "source_hashes": self.snapshot(),
-                "native_schematic_parity": self.project.board.with_suffix(".kicad_sch") == self.project.schematic}
+                "native_schematic_parity": self.project.board.with_suffix(".kicad_sch") == self.project.schematic,
+                "source_manifest": str(self.project.manifest) if self.project.manifest else None}
 
     def staged_relative(self, path):
         if path.suffix.lower() in MODEL_SUFFIXES:

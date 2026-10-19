@@ -89,6 +89,11 @@ and pads absent from the netlist are reported conservatively, never waived.
 When `<module>/jlcpcb/source-sha256.json` exists, `check` also re-hashes its
 `sources` map and reports `source_manifest`: a missing or mismatched source is a
 finding, because the stored manufacturing export no longer describes the project.
+A module with several projects (e.g. `hardware/v1`, `hardware/v2`) gives each
+profile an explicit `"source_manifest": "../../jlcpcb/<variant>/source-sha256.json"`.
+A declared manifest that is missing is an error. Manifest keys are relative to the
+parent of the nearest enclosing `jlcpcb/` directory (the module), for both the
+exporter that writes them and `check` that re-hashes them.
 `exports` hashes are reported as `exports_not_byte_identical` only — KiCad stamps a
 creation date into every Gerber/drill file, so those bytes legitimately change on
 each regeneration.
