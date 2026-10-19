@@ -1,0 +1,450 @@
+{
+ "defaults": {},
+ "components": {
+  "R1": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 11.3,
+   "operating_voltage_v": 11.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0128,
+   "operating_current_a": 0.00113,
+   "power_derating": 1.0,
+   "note": "MIDI_IN to Q1 base 10k: fault-only, +/-12 V on J1 tip with Q1_B at +0.7/-0.7 V (D2), 11.3 V / 1.13 mA / 13 mW",
+   "reviews": {}
+  },
+  "R2": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 5.0,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0011,
+   "operating_current_a": 0.00023,
+   "power_derating": 0.5,
+   "note": "RX_Q pull-up 22k: 5 V, 1.1 mW",
+   "reviews": {}
+  },
+  "R3": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 17.0,
+   "operating_voltage_v": 17.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0029,
+   "operating_current_a": 0.00017,
+   "power_derating": 1.0,
+   "note": "MIDI_IN idle pull-up 100k: fault-only, -12 V on J1 tip vs +5 V, 17 V / 2.9 mW",
+   "reviews": {}
+  },
+  "R4": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 11.7,
+   "operating_voltage_v": 11.7,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0025,
+   "operating_current_a": 0.00021,
+   "power_derating": 1.0,
+   "note": "CV series 56k: fault-only, -12 V on J2 tip with CV_BUF clamped at -0.3 V by D3, 11.7 V / 2.4 mW (docs/research.md 3.2b)",
+   "reviews": {}
+  },
+  "R5": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 5.0,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0053,
+   "operating_current_a": 0.00106,
+   "power_derating": 0.5,
+   "note": "UPDI series 4.7k: 5 V, ~1 mA, 5.3 mW",
+   "reviews": {}
+  },
+  "R6": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 3.2,
+   "operating_voltage_v": 3.2,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0102,
+   "operating_current_a": 0.0032,
+   "power_derating": 0.5,
+   "note": "LED 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "reviews": {}
+  },
+  "R7": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 4.3,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "DAC to P3 filter 10k: DAC 0-4.34 V into the RV3/C13 low-pass, 1.9 mW worst (wiper at 0 V)",
+   "reviews": {}
+  },
+  "R8": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 15.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0225,
+   "operating_current_a": 0.0015,
+   "power_derating": 1.0,
+   "note": "Gain-stage 10k OUT_FB-VOFF: normal <=4 V; fault-only bound 15 V (U3 output railed) = 23 mW",
+   "reviews": {}
+  },
+  "R9": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 15.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0187,
+   "operating_current_a": 0.00125,
+   "power_derating": 1.0,
+   "note": "Gain-stage feedback 12k AMP_OUT-OUT_FB: normal <=6 V; fault-only bound 15 V = 19 mW",
+   "reviews": {}
+  },
+  "R10": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 1.0,
+   "operating_voltage_v": 1.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0001,
+   "operating_current_a": 0.0001,
+   "power_derating": 0.5,
+   "note": "VREF divider top 10k: 5 V -> 3.98 V, 0.1 mW",
+   "reviews": {}
+  },
+  "R11": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 4.0,
+   "operating_voltage_v": 4.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0004,
+   "operating_current_a": 0.0001,
+   "power_derating": 0.5,
+   "note": "VREF divider bottom 39k: 3.98 V, 0.4 mW",
+   "reviews": {}
+  },
+  "R12": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 16.8,
+   "operating_voltage_v": 16.8,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.2822,
+   "operating_current_a": 0.0168,
+   "power_derating": 1.0,
+   "note": "OUT series 1k (1206): normal output is +/-4.8 V into >=10k. Fault: a hard -12 V source on J3 tip against +4.8 V from U3 puts 16.8 V / 16.8 mA / 0.282 W in R12 continuously (below the TL072 short-circuit limit). Above the 0.25 W rating; open gate (docs/research.md 3.3)",
+   "reviews": {}
+  },
+  "R13": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 5.3,
+   "operating_voltage_v": 5.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0005,
+   "operating_current_a": 0.0001,
+   "power_derating": 0.5,
+   "note": "CV offset 51k to +5V: <=5.3 V fault, 0.55 mW",
+   "reviews": {}
+  },
+  "R14": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 5.3,
+   "operating_voltage_v": 5.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0001,
+   "operating_current_a": 1e-05,
+   "power_derating": 0.5,
+   "note": "CV divider 510k to GND: <=5.3 V, 0.06 mW",
+   "reviews": {}
+  },
+  "C1": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U1 decoupling, +5V",
+   "reviews": {}
+  },
+  "C2": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 output bulk, +5V",
+   "reviews": {}
+  },
+  "C3": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "+5V bulk near U1",
+   "reviews": {}
+  },
+  "C15": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U4 decoupling, +5V",
+   "reviews": {}
+  },
+  "C4": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 input, +12V_F",
+   "reviews": {}
+  },
+  "C5": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "+12V_F bulk at power entry",
+   "reviews": {}
+  },
+  "C6": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "-12V_F bulk at power entry (nonpolar MLCC, GND on pin 1)",
+   "reviews": {}
+  },
+  "C7": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U3 V+ decoupling",
+   "reviews": {}
+  },
+  "C8": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U3 V- decoupling",
+   "reviews": {}
+  },
+  "C9": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.7,
+   "operating_voltage_v": 5.3,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "CV_BUF anti-alias/HF filter at U4 input, clamped <=5.3 V",
+   "reviews": {}
+  },
+  "C10": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "POT1 ADC filter",
+   "reviews": {}
+  },
+  "C11": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 5.0,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "POT2 ADC filter",
+   "reviews": {}
+  },
+  "C13": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 4.34,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "P3 passive low-pass capacitor on FILT (sets 160 Hz-15.9 kHz with R7+RV3); C0G preferred but X7R accepted as BM",
+   "reviews": {}
+  },
+  "C14": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 6.2,
+   "operating_voltage_v": 3.98,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "VREF_DIV filter for the U3B offset buffer",
+   "reviews": {}
+  },
+  "D2": {
+   "note": "1N4148W Q1 base clamp: <=1.2 mA forward under a -12 V MIDI mis-patch, 5.7 V reverse",
+   "reviews": {}
+  },
+  "D3": {
+   "note": "BAT54SW CV clamp to +5V/GND: <=0.21 mA under +/-12 V on J2 (docs/research.md 3.2b)",
+   "reviews": {}
+  },
+  "D4": {
+   "note": "B5819W +12 V reverse-polarity diode: ~40 mA load, 12.6 V reverse",
+   "reviews": {}
+  },
+  "D5": {
+   "note": "B5819W -12 V reverse-polarity diode: ~10 mA load, 12.6 V reverse",
+   "reviews": {}
+  },
+  "Q1": {
+   "note": "MMBT3904 MIDI input inverter: VCE <=5 V, IC <=0.25 mA",
+   "reviews": {}
+  },
+  "U1": {
+   "note": "ATtiny1616 at 5 V, 20 MHz",
+   "reviews": {}
+  },
+  "U2": {
+   "note": "HT7550-1, VIN 11.6-12.6 V, <=25 mA, ~0.2 W",
+   "reviews": {}
+  },
+  "U3": {
+   "note": "TL072CDT on +/-12 V (12V_F rails after D4/D5), output +/-4.8 V into 1k+load",
+   "reviews": {}
+  },
+  "U4": {
+   "note": "MCP6001 follower on +5 V, input 0-5 V (clamped by D3), drives PB0",
+   "reviews": {}
+  },
+  "D1": {
+   "assembly": "manual",
+   "reason": "3 mm THT LED, hand-soldered after panel fit (height set by the panel)"
+  },
+  "J1": {
+   "assembly": "manual",
+   "reason": "QingPu WQP-PJ301M-12 TS jack, front THT, fitted to the panel before soldering"
+  },
+  "J2": {
+   "assembly": "manual",
+   "reason": "QingPu WQP-PJ301M-12 TS jack, front THT, fitted to the panel before soldering"
+  },
+  "J3": {
+   "assembly": "manual",
+   "reason": "QingPu WQP-PJ301M-12 TS jack, front THT, fitted to the panel before soldering"
+  },
+  "J4": {
+   "assembly": "manual",
+   "reason": "2x5 2.54 mm Eurorack power header, back THT, hand-soldered"
+  },
+  "J5": {
+   "assembly": "manual",
+   "reason": "1x2 2.54 mm UPDI header, back THT, hand-soldered"
+  },
+  "RV1": {
+   "assembly": "manual",
+   "reason": "RV09 50k pot (user stock), front THT, hand-soldered"
+  },
+  "RV2": {
+   "assembly": "manual",
+   "reason": "RV09 50k pot (user stock), front THT, hand-soldered"
+  },
+  "RV3": {
+   "assembly": "manual",
+   "reason": "RV09 1M pot (user stock), front THT, hand-soldered"
+  },
+  "SW1": {
+   "assembly": "manual",
+   "reason": "K2-1808SN-A4SW-01 (BM switch), front-side SMD, hand-soldered; assembly is bottom-side only"
+  },
+  "JP1": {
+   "assembly": "manual",
+   "reason": "3-pad solder jumper, copper only, shipped open; user bridges P or D"
+  }
+ },
+ "verified_specs": {}
+}
