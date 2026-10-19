@@ -1,0 +1,459 @@
+{
+  "defaults": {},
+  "components": {
+    "R1": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 15.75,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.0031752,
+      "operating_current_a": 0.000126,
+      "power_derating": 0.5,
+      "note": "Input 1 100k: jack tip at most +/-12.6 V into the buffer virtual ground: 126 uA, 1.6 mW",
+      "reviews": {}
+    },
+    "R2": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 15.75,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.0031752,
+      "operating_current_a": 0.000126,
+      "power_derating": 0.5,
+      "note": "Input 2 100k: jack tip at most +/-12.6 V into the buffer virtual ground: 126 uA, 1.6 mW",
+      "reviews": {}
+    },
+    "R3": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 15.75,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.0031752,
+      "operating_current_a": 0.000126,
+      "power_derating": 0.5,
+      "note": "Input 3 100k: jack tip at most +/-12.6 V into the buffer virtual ground: 126 uA, 1.6 mW",
+      "reviews": {}
+    },
+    "R4": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 15.75,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.0031752,
+      "operating_current_a": 0.000126,
+      "power_derating": 0.5,
+      "note": "Input 4 100k: jack tip at most +/-12.6 V into the buffer virtual ground: 126 uA, 1.6 mW",
+      "reviews": {}
+    },
+    "R5": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Buffer 1 feedback 100k: BUF1 swing <= 10.5 V across it",
+      "reviews": {}
+    },
+    "R6": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Buffer 2 feedback 100k: BUF2 swing <= 10.5 V across it",
+      "reviews": {}
+    },
+    "R7": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Buffer 3 feedback 100k: BUF3 swing <= 10.5 V across it",
+      "reviews": {}
+    },
+    "R8": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Buffer 4 feedback 100k: BUF4 swing <= 10.5 V across it",
+      "reviews": {}
+    },
+    "R9": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 0.04,
+      "operating_voltage_v": 0.03,
+      "voltage_derating": 0.8,
+      "min_power_w": 1.26e-05,
+      "operating_current_a": 0.00021,
+      "power_derating": 0.5,
+      "note": "Buffer 1 100R into the 50k pot: <= 10.5 V / 50k = 0.21 mA, 21 mV, 4.4 uW",
+      "reviews": {}
+    },
+    "R10": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 0.04,
+      "operating_voltage_v": 0.03,
+      "voltage_derating": 0.8,
+      "min_power_w": 1.26e-05,
+      "operating_current_a": 0.00021,
+      "power_derating": 0.5,
+      "note": "Buffer 2 100R into the 50k pot: <= 10.5 V / 50k = 0.21 mA, 21 mV, 4.4 uW",
+      "reviews": {}
+    },
+    "R11": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 0.04,
+      "operating_voltage_v": 0.03,
+      "voltage_derating": 0.8,
+      "min_power_w": 1.26e-05,
+      "operating_current_a": 0.00021,
+      "power_derating": 0.5,
+      "note": "Buffer 3 100R into the 50k pot: <= 10.5 V / 50k = 0.21 mA, 21 mV, 4.4 uW",
+      "reviews": {}
+    },
+    "R12": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 0.04,
+      "operating_voltage_v": 0.03,
+      "voltage_derating": 0.8,
+      "min_power_w": 1.26e-05,
+      "operating_current_a": 0.00021,
+      "power_derating": 0.5,
+      "note": "Buffer 4 100R into the 50k pot: <= 10.5 V / 50k = 0.21 mA, 21 mV, 4.4 uW",
+      "reviews": {}
+    },
+    "R13": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Summing 100k 1: wiper <= the 10.5 V buffer swing, into the virtual ground",
+      "reviews": {}
+    },
+    "R14": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Summing 100k 2: wiper <= the 10.5 V buffer swing, into the virtual ground",
+      "reviews": {}
+    },
+    "R15": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Summing 100k 3: wiper <= the 10.5 V buffer swing, into the virtual ground",
+      "reviews": {}
+    },
+    "R16": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Summing 100k 4: wiper <= the 10.5 V buffer swing, into the virtual ground",
+      "reviews": {}
+    },
+    "R17": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.12,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.002205,
+      "operating_current_a": 0.000105,
+      "power_derating": 0.5,
+      "note": "Summer feedback 100k: MIX swing <= 10.5 V across it",
+      "reviews": {}
+    },
+    "R18": {
+      "kind": "R",
+      "tolerance_fraction": 0.01,
+      "min_voltage_v": 13.1,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "min_power_w": 0.1103,
+      "operating_current_a": 0.0105,
+      "power_derating": 0.5,
+      "note": "Output series 1k: worst case MIX jack tip shorted to sleeve with the output at 10.5 V DC: 10.5 mA, 110 mW (1206 250 mW part)",
+      "reviews": {}
+    },
+    "C1": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "+12V bulk after D1 (rail <= 12.6 V)",
+      "reviews": {}
+    },
+    "C2": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "-12V bulk after D2 (rail <= 12.6 V)",
+      "reviews": {}
+    },
+    "C3": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "U1 V+ decoupling",
+      "reviews": {}
+    },
+    "C4": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "U1 V- decoupling",
+      "reviews": {}
+    },
+    "C5": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "U2 V+ decoupling",
+      "reviews": {}
+    },
+    "C6": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "U2 V- decoupling",
+      "reviews": {}
+    },
+    "C7": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "U3 V+ decoupling",
+      "reviews": {}
+    },
+    "C8": {
+      "kind": "C",
+      "tolerance_fraction": 0.2,
+      "min_voltage_v": 15.7,
+      "operating_voltage_v": 12.6,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "X7R",
+        "X5R"
+      ],
+      "role": "U3 V- decoupling",
+      "reviews": {}
+    },
+    "C9": {
+      "kind": "C",
+      "tolerance_fraction": 0.05,
+      "min_voltage_v": 13.1,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "C0G"
+      ],
+      "role": "Buffer 1 feedback (HF roll-off / stability), <= 10.5 V",
+      "reviews": {}
+    },
+    "C10": {
+      "kind": "C",
+      "tolerance_fraction": 0.05,
+      "min_voltage_v": 13.1,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "C0G"
+      ],
+      "role": "Buffer 2 feedback (HF roll-off / stability), <= 10.5 V",
+      "reviews": {}
+    },
+    "C11": {
+      "kind": "C",
+      "tolerance_fraction": 0.05,
+      "min_voltage_v": 13.1,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "C0G"
+      ],
+      "role": "Buffer 3 feedback (HF roll-off / stability), <= 10.5 V",
+      "reviews": {}
+    },
+    "C12": {
+      "kind": "C",
+      "tolerance_fraction": 0.05,
+      "min_voltage_v": 13.1,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "C0G"
+      ],
+      "role": "Buffer 4 feedback (HF roll-off / stability), <= 10.5 V",
+      "reviews": {}
+    },
+    "C13": {
+      "kind": "C",
+      "tolerance_fraction": 0.05,
+      "min_voltage_v": 13.1,
+      "operating_voltage_v": 10.5,
+      "voltage_derating": 0.8,
+      "polarity": "nonpolar",
+      "dielectrics": [
+        "C0G"
+      ],
+      "role": "U3A summer feedback (HF roll-off / stability), <= 10.5 V",
+      "reviews": {}
+    },
+    "D1": {
+      "note": "B5819W +12 V reverse-polarity series diode: ~10 mA load (3 x TL072), 12.6 V reverse when miswired",
+      "reviews": {}
+    },
+    "D2": {
+      "note": "B5819W -12 V reverse-polarity series diode: ~10 mA load (3 x TL072), 12.6 V reverse when miswired",
+      "reviews": {}
+    },
+    "U1": {
+      "note": "TL072CDT channel 1/2 input buffers on +/-11.6 V (23.2 V total, abs max 36 V), 0..70 C",
+      "reviews": {}
+    },
+    "U2": {
+      "note": "TL072CDT channel 3/4 input buffers on +/-11.6 V (23.2 V total, abs max 36 V), 0..70 C",
+      "reviews": {}
+    },
+    "U3": {
+      "note": "TL072CDT summer + unused grounded follower on +/-11.6 V (23.2 V total, abs max 36 V), 0..70 C",
+      "reviews": {}
+    },
+    "J1": {
+      "assembly": "manual",
+      "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+    },
+    "J2": {
+      "assembly": "manual",
+      "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+    },
+    "J3": {
+      "assembly": "manual",
+      "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+    },
+    "J4": {
+      "assembly": "manual",
+      "reason": "PJ301M-12 TS jack, hand-soldered: front-side THT, panel-nut fixed"
+    },
+    "J5": {
+      "assembly": "manual",
+      "reason": "PJ301M-12 TS jack (MIX out), hand-soldered: front-side THT, panel-nut fixed"
+    },
+    "J10": {
+      "assembly": "manual",
+      "reason": "2x5 2.54 mm Eurorack power header, hand-soldered (THT, back side)"
+    },
+    "RV1": {
+      "assembly": "manual",
+      "reason": "Thonk Tall Trimmer B50K (Song Huei R0904N), not a JLCPCB part: front-side THT, hand-soldered after panel fit"
+    },
+    "RV2": {
+      "assembly": "manual",
+      "reason": "Thonk Tall Trimmer B50K (Song Huei R0904N), not a JLCPCB part: front-side THT, hand-soldered after panel fit"
+    },
+    "RV3": {
+      "assembly": "manual",
+      "reason": "Thonk Tall Trimmer B50K (Song Huei R0904N), not a JLCPCB part: front-side THT, hand-soldered after panel fit"
+    },
+    "RV4": {
+      "assembly": "manual",
+      "reason": "Thonk Tall Trimmer B50K (Song Huei R0904N), not a JLCPCB part: front-side THT, hand-soldered after panel fit"
+    }
+  },
+  "verified_specs": {}
+}

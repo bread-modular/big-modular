@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/imix.kicad_pcb": "5c8ca5380ba8c14ed10b067b57eaf71db4da67c6d209562a01d5d8a814e824ca",
+    "hardware/imix.kicad_pro": "6b4cfec5c1272aace4c13a072669b0aaa79d76b38955a9fae91e453d621b5ba4",
+    "hardware/imix.kicad_sch": "238caf9e2c937303275e7bae7e0cdce6145d75533cae75da130fdcc00c26b70d",
+    "panels/front-pcb/imix-panel.kicad_pcb": "af1a08834a5f38c900e2c137716ac28a7c82b60535cdcfd95d01f90d7b98ac85",
+    "panels/front-pcb/imix-panel.kicad_pro": "e7156bbbb5883643c9fab0d81e72337c84d60000f11303adfe4c4a63853bb2f1"
+  },
+  "exports": {
+    "jlcpcb/carrier/imix-gerbers.zip": "4b964931f0a491774d1ae3f961fa0dbef07cf6274854b84afbcb9ed664ff30f8",
+    "jlcpcb/carrier/bom.csv": "c120a94db558de629355abad35fe62dcfa98d1163a7aca789efc17b5dd749576",
+    "jlcpcb/carrier/positions.csv": "459cc996b3c0a4ee8eb82f47d08c0809c72f2072f607936e851d43645b2a00ef",
+    "jlcpcb/panel/imix-panel-gerbers.zip": "d14ed673b835b1f421ba2c08ef9d388241a2e56dc7bda8a9b5dd6c5be1675d56"
+  }
+}
