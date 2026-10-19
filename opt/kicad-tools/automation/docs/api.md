@@ -149,7 +149,7 @@ existing pads/footprints are regenerated.
 | `add_footprint` electrical | mechanical keys with `mechanical_only:false`, plus `reference`, `value`, `footprint_id`, `symbol_path`, `pad_nets` | none |
 | `add_polyline` | `uuid`, `net`, `layer`, `width_mm`, `start`, `end` | `waypoints` (default `[]`) |
 | `add_via` | `uuid`, `net`, `at`, `diameter_mm`, `drill_mm` | none |
-| `add_zone` | `uuid`, `net`, `layer`, `polygon`, `clearance_mm`, `min_thickness_mm` | none |
+| `add_zone` | `uuid`, `net`, `layer`, `polygon`, `clearance_mm`, `min_thickness_mm` | `pad_connection` (`solid` default, or `thermal`: native thermal reliefs) |
 | `add_outline` | `uuid`, `polygon`, `width_mm` | none |
 | `add_edge_line` | `uuid`, `start`, `end`, `width_mm` | none |
 | `add_text` | `uuid`, `text`, `layer`, `at`, `rotation_deg`, `size_mm`, `thickness_mm` | none |

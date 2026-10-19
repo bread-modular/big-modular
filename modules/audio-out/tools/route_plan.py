@@ -11,7 +11,7 @@ PHONES (docs/geometry.json):
   B.Cu  every SMD-local connection (input chains, opamp pins, decoupling, line-out
         build-outs), HP_L right edge (X18.6) and HP_R left (X2.4) down to PHONES; GND pour.
 Vias 0.6/0.3 mm. Tracks 0.25 mm signal, 0.4 mm rails and headphone outputs, 0.5 mm at the
-power header.
+power header. GND pours on both layers with thermal-relief pad connections.
 
   python3 -B tools/route_plan.py > research/route/plan.json   (then shared pcb plan/apply/promote)
 """
@@ -71,7 +71,7 @@ via('p12u2', '+12V', XL, 71.6)
 via('p12u1', '+12V', 4.6, 24.6)
 track('p12f1', '+12V', F, 'p12', [], 'p12u2', PWR)
 track('p12f2', '+12V', F, 'p12u2', [(XL, 24.6)], 'p12u1', PWR)
-track('p12c9', '+12V', B, 'p12u2', [(5.55, 71.6)], ('C9', '1'), PWR)
+track('p12c9', '+12V', B, 'p12u2', [(5.05, 71.6)], ('C9', '1'), PWR)
 track('p12c7', '+12V', B, 'p12u2', [(4.7, 71.6)], ('C7', '1'), PWR)
 track('p12u2b', '+12V', B, ('C7', '1'), [(6.2, 73.595)], ('U2', '8'), SIG)
 track('p12u1a', '+12V', B, 'p12u1', [], ('U1', '8'), PWR)
@@ -149,10 +149,12 @@ for n, (x, y) in enumerate([(3.0, 12.0), (17.0, 12.0), (17.0, 26.0), (3.0, 28.5)
 
 def zone(name, net, layer, poly):
     ops.append({'op': 'add_zone', 'uuid': uid('zone/' + name), 'net': '/' + net, 'layer': layer,
-                'polygon': [a(x, y) for x, y in poly], 'clearance_mm': 0.25, 'min_thickness_mm': 0.2})
+                'polygon': [a(x, y) for x, y in poly], 'clearance_mm': 0.25, 'min_thickness_mm': 0.2,
+                'pad_connection': 'thermal'})
 
 
-# ---- GND pours on both layers (whole board) ---------------------------------------------
+# ---- GND pours on both layers (whole board), thermal reliefs: hand-soldered GND pins and no
+#      0603 tombstoning on the reflowed back ------------------------------------------------
 X0, X1, Y0, Y1 = 0.475, 19.525, 9.225, 119.275       # board outline
 zone('gnd/' + B, 'GND', B, [(X0, Y0), (X1, Y0), (X1, Y1), (X0, Y1)])
 zone('gnd/' + F, 'GND', F, [(X0, Y0), (X1, Y0), (X1, Y1), (X0, Y1)])

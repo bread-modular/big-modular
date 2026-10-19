@@ -224,7 +224,7 @@ def perform(board, document):
         elif operation == 'add_via':
             item=p.PCB_VIA(board); item.SetViaType(p.VIATYPE_THROUGH); item.SetLayerPair(p.F_Cu,p.B_Cu); item.SetPosition(vector(op['at'])); item.SetWidth(round(op['diameter_mm']*1_000_000)); item.SetDrill(round(op['drill_mm']*1_000_000)); item.SetNet(net(board,op['net'])); insert(item,op['uuid'])
         elif operation == 'add_zone':
-            item=p.ZONE(board); item.SetLayer(layer(board,op['layer'],True)); item.SetNet(net(board,op['net'])); item.SetLocalClearance(round(op['clearance_mm']*1_000_000)); item.SetMinThickness(round(op['min_thickness_mm']*1_000_000)); item.SetPadConnection(p.ZONE_CONNECTION_FULL)
+            item=p.ZONE(board); item.SetLayer(layer(board,op['layer'],True)); item.SetNet(net(board,op['net'])); item.SetLocalClearance(round(op['clearance_mm']*1_000_000)); item.SetMinThickness(round(op['min_thickness_mm']*1_000_000)); item.SetPadConnection(p.ZONE_CONNECTION_THERMAL if op.get('pad_connection')=='thermal' else p.ZONE_CONNECTION_FULL)
             poly=item.Outline(); poly.NewOutline()
             for pt in op['polygon']: poly.Append(vector(pt))
             insert(item,op['uuid'])

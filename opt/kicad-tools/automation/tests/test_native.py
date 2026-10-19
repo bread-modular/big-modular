@@ -215,7 +215,11 @@ class NativeTests(unittest.TestCase):
         self.build(routed=False)
         doc=operations({'op':'add_zone','uuid':uid('z'),'net':'SIGNAL','layer':'F.Cu','polygon':[[15,15],[35,15],[35,30],[15,30]],'clearance_mm':0.2,'min_thickness_mm':0.25})
         result=self.execute(doc); self.assert_status(result,'accepted')
-        self.assertIn('(filled_polygon',(self.root/'Candidate'/result['board']).read_text())
+        text=(self.root/'Candidate'/result['board']).read_text()
+        self.assertIn('(filled_polygon',text); self.assertIn('(connect_pads yes',text)
+        thermal=operations({'op':'add_zone','uuid':uid('zt'),'net':'SIGNAL','layer':'F.Cu','polygon':[[15,15],[35,15],[35,30],[15,30]],'clearance_mm':0.2,'min_thickness_mm':0.25,'pad_connection':'thermal'})
+        result=self.execute(thermal,name='Thermal'); self.assert_status(result,'accepted')
+        self.assertNotIn('(connect_pads yes',(self.root/'Thermal'/result['board']).read_text())
         # Add outline on a fixture with its original rectangle removed synthetically.
         import pcbnew as p
         board=p.LoadBoard(str(self.source/'synthetic.kicad_pcb'))

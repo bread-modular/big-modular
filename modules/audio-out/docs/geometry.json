@@ -270,11 +270,11 @@
    "value": "15k",
    "footprint": "R_0603_1608Metric",
    "XY": [
-    9.175,
-    71.9
+    9.825,
+    72.05
    ],
    "rot": 0,
-   "band": "on the VOL_L track between RV1 wiper and U2 (pad 1 on the track)"
+   "band": "on the VOL_L track between RV1 wiper and U2 (pad 1 on the track; GND pad right of U2 pin 8 so its thermal relief gets a second spoke)"
   },
   {
    "ref": "R10",
@@ -336,11 +336,11 @@
    "value": "10u",
    "footprint": "C_0805_2012Metric",
    "XY": [
-    4.6,
+    4.1,
     69.4
    ],
    "rot": 0,
-   "band": "U2 +12 V bulk at the +12 V drop"
+   "band": "U2 +12 V bulk at the +12 V drop (+12 V pad 1.05 mm clear of the RV1 GND pin)"
   },
   {
    "ref": "C10",

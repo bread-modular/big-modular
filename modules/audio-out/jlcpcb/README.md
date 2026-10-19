@@ -1,4 +1,4 @@
-# audio-out — manufacturing export (S3/R3)
+# audio-out — manufacturing export (S3/R4)
 
 Generated from the current accepted sources with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
@@ -39,8 +39,11 @@ The exporter excluded exactly these 7 refs, as THT (`carrier/export-report.json`
 The shared native audit lists them as manual too.
 
 Soldering notes:
-- **GND pads have no thermal reliefs** (both pours connect solid to jack
-  sleeves, pot pin 1 and J5 GND), so use a hot iron.
+- Both GND pours connect to every GND pad through **thermal reliefs** (R4), so
+  the jack sleeves, pot pin 1 and the J5 GND pins solder with a normal iron. The
+  nearest other-net pad to a hand-soldered pin is 0.85 mm away (RV1 pin 2 to R9's
+  GND pad; a bridge there would only mute VOL L). C9's +12 V pad is 1.05 mm from
+  RV1 pin 1 (GND).
 - **J5 has no key.** Plug the cable with the red stripe (-12 V) at the bottom,
   next to the `-12V` silk. On a 16-pin bus use a 10-to-16 cable; a 16-pin plug
   would sit over the PHONES jack's pins (`docs/mechanics.md`).
@@ -50,7 +53,7 @@ Soldering notes:
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift.
 
-- Carrier PCB `dff25364351ea354da193f12c628f2446fd015ef290e49a80c6cd250bc481186`.
+- Carrier PCB `c8dbf3c39228b5e72253473c35b836655244b3582c208eb03bd316e133cf9aaa`.
 - Carrier project `3b1412c553e3847a26ff6911666a6d0abe15d51aa3ab741ec6182649cc448648`.
 - Carrier schematic `aaf04615a5f6b2d455a4ab37434182d8a380d8b269ff094f2f162a00d056792c`.
 - Panel PCB `9b4087a569cd4c55a5e2df693f4d49a838a2bf8e7b968eaa96502e323e313d77`.
@@ -111,7 +114,7 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/audio-out-symbols.xml har
 - **Assembly audit** (live, 5 boards, run 2026-10-19 on this CPL):
   - No catalog failures: every C-code, MPN, Economy flag and stock level passes.
   - All R/C/diodes are Basic; U1 (OPA1678, 14,019 in stock) and U2 (MC33178,
-    36,998 in stock) are Extended.
+    36,980 in stock) are Extended.
   - Every part is still `fail` only on the open review items below.
 
 ## Status and order gates (not done here)

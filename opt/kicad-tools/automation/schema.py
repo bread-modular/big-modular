@@ -201,8 +201,9 @@ def validate(document, base=None):
             point(op['at']); positive(op['diameter_mm'],'diameter'); positive(op['drill_mm'],'drill')
             if op['drill_mm'] >= op['diameter_mm']: fail('Through-via drill must be smaller than diameter')
         elif kind == 'add_zone':
-            fields(op, common | {'net','layer','polygon','clearance_mm','min_thickness_mm'})
+            fields(op, common | {'net','layer','polygon','clearance_mm','min_thickness_mm'}, {'pad_connection'})
             points(op['polygon'], True); positive(op['clearance_mm'],'clearance'); positive(op['min_thickness_mm'],'minimum thickness')
+            if op.get('pad_connection', 'solid') not in ('solid','thermal'): fail('Zone pad_connection must be solid or thermal')
         elif kind == 'add_outline':
             fields(op, common | {'polygon','width_mm'}); points(op['polygon'], True); positive(op['width_mm'],'width')
         elif kind == 'add_edge_line':

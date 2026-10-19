@@ -1,4 +1,4 @@
-# audio-out contract (S3 schematic, R3 routing)
+# audio-out contract (S3 schematic, R4 routing)
 
 ## Fixed by the brief
 
@@ -28,7 +28,7 @@
   choice. All SMD parts are on the back.
 - 4HP panel, in both a KiCad FR4 version and a FreeCAD printable version.
 
-## S3/R3 state
+## S3/R4 state
 
 - `tools/build_schematic.py` owns `hardware/audio-out.kicad_sch`,
   `AudioOut.kicad_sym` and `sym-lib-table`. It uses stock KiCad 10 symbols,
@@ -45,25 +45,26 @@
   `tools/build_layout.py` places from it and takes refs, values, fields, symbol
   links and pad nets **only** from the native netlist. It writes an **unrouted**
   board and the panel PCB.
-- **The routed native PCB (R3) is the source of truth for copper.**
+- **The routed native PCB (R4) is the source of truth for copper.**
   `tools/route_plan.py` holds every segment, via and both GND pours as shared
-  `pcb plan` ops v1. It reproduces R3 only on the matching placement, through
+  `pcb plan` ops v1. It reproduces R4 only on the matching placement, through
   plan -> apply (new candidate under `research/`) -> promote. Don't rerun either
   generator over the routed board, except as the full README rebuild followed by
-  the full verification below. Route changes are explicit edits to
+  the full verification below. Both GND pours use thermal-relief pad connections
+  (`pad_connection: thermal`, R4); every GND pad needs two resolved spokes (DRC). Route changes are explicit edits to
   `route_plan.py`; nothing is autorouted.
 - PWR_FLAGs: `#FLG01` (GND at the entry), `#FLG02` (+12V) and `#FLG03` (-12V).
   The rails are fed only through D1/D2. No other flags.
 - The FreeCAD panel is generated from the native panel PCB and asserts against
   `geometry.json`. Never hand-edit the `.step`/`.stl`/`.FCStd`.
 
-## Verification (S3/R3)
+## Verification (S3/R4)
 
 - Native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`).
 - Native DRC `--severity-all --schematic-parity --refill-zones`: carrier 0
   violations, 0 unconnected, 0 parity (`docs/fit/carrier-drc.json`); panel 0/0
   (`docs/fit/panel-drc.json`).
-- The shared `pcb apply` accepted the R3 candidate (ERC/DRC empty, parity equal,
+- The shared `pcb apply` accepted the R4 candidate (ERC/DRC empty, parity equal,
   source unchanged). `pcb promote` re-bound every model token (0 external).
 - `kicad_tools.py doctor` passes. `kicad_tools.py check` returns
   `no_findings_in_requested_checks`, with no exclusions and no ignored rules.
