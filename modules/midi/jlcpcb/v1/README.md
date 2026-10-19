@@ -64,35 +64,42 @@ From `modules/midi`:
 
 ```sh
 python3 -B ../../opt/kicad-tools/kicad_tools.py check \
-  --config tools/kicad-project.json --reports research/native
+  --config tools/v1/kicad-project.json --reports research/v1/native-NEW
 
-python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
+python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware/v1 \
   --board midi --schematic midi.kicad_sch --side bottom --require-part-numbers \
-  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/carrier
-unzip -o jlcpcb/carrier/midi-gerbers.zip -d jlcpcb/carrier
+  --manifest jlcpcb/v1/source-sha256.json --overwrite -o jlcpcb/v1/carrier
+unzip -o jlcpcb/v1/carrier/midi-gerbers.zip -d jlcpcb/v1/carrier
 
 python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
   --board midi-panel --pcb-only \
-  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/panel
-unzip -o jlcpcb/panel/midi-panel-gerbers.zip -d jlcpcb/panel
+  --manifest jlcpcb/v1/source-sha256.json --overwrite -o jlcpcb/v1/panel
+unzip -o jlcpcb/v1/panel/midi-panel-gerbers.zip -d jlcpcb/v1/panel
 
-cp jlcpcb/carrier/bom.csv jlcpcb/carrier/positions.csv jlcpcb/assembly/
-cp jlcpcb/carrier/midi-gerbers.zip jlcpcb/panel/midi-panel-gerbers.zip jlcpcb/
+cp jlcpcb/v1/carrier/bom.csv jlcpcb/v1/carrier/positions.csv jlcpcb/v1/assembly/
+cp jlcpcb/v1/carrier/midi-gerbers.zip jlcpcb/v1/panel/midi-panel-gerbers.zip jlcpcb/v1/
 ```
 
-Delete the unpacked Gerbers first if layers change, so no stale plots remain
-beside a new ZIP. The assembly audit (`docs/research.md` §5) is:
+The exporter merges into an existing manifest and keeps rows it did not write, so
+delete `jlcpcb/v1/source-sha256.json` first when a source path changes. Delete the
+unpacked Gerbers first if layers change, so no stale plots remain beside a new ZIP.
+The assembly audit (`docs/research.md` §5) is:
 
 ```sh
-kicad-cli sch export netlist --format kicadxml -o /tmp/midi-symbols.xml hardware/midi.kicad_sch
+kicad-cli sch export netlist --format kicadxml -o /tmp/midi-symbols.xml hardware/v1/midi.kicad_sch
 (cd ../.. && python3 -B opt/kicad-tools/jlcpcb/assembly.py audit \
-  --project-dir modules/midi/hardware --board midi.kicad_pcb --symbols-xml /tmp/midi-symbols.xml \
-  --cpl modules/midi/jlcpcb/carrier/positions.csv \
+  --project-dir modules/midi/hardware/v1 --board midi.kicad_pcb --symbols-xml /tmp/midi-symbols.xml \
+  --cpl modules/midi/jlcpcb/v1/carrier/positions.csv \
   --requirements modules/midi/docs/jlcpcb-audit-requirements.json \
   --boards 5 --side bottom --strict-live)
 ```
 
 ## Checks done for this export
+
+Re-exported on 2026-10-19 after the sources moved to `hardware/v1/` (no source
+byte changed; `docs/rebuild-status.md`): `bom.csv` and `positions.csv` are
+byte-identical to the audited export, and the Gerber/drill files differ only in
+their creation date.
 
 - **Shared `check`:** `no_findings_in_requested_checks`. That covers:
   - ERC 0 and DRC 0 at all severities, with zones refilled;

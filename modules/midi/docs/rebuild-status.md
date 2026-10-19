@@ -4,8 +4,23 @@ Why this file exists: workspace 107 held the complete V1 + V2 project. It was me
 into `main` (6bb9ae7) from a stash that left out untracked files, and then the
 worktree was deleted. The new directories (`hardware/v2/`, `tools/v1|v2/`,
 `jlcpcb/v1|v2/`) were never added to git, so they were lost. This file records what
-survived, what has to be regenerated, and every deviation from the contract in
-`Code.md`. It is updated after each rebuild step.
+survived, what was regenerated and how it was verified, and every deviation from
+the contract in `Code.md`.
+
+## Current state (after step 5)
+
+| | V1 (S4/R5) | V2 (S3/R3) |
+|---|---|---|
+| Sources | `hardware/v1/` = the pre-loss accepted files, moved (no byte changed) | `hardware/v2/` regenerated; netlist, fields, placement and all 279 copper items equal the recovered evidence |
+| Generators | `tools/v1/` reproduce the schematic byte-identically and the board semantically (0 differences) | `tools/v2/` rebuilt; they reproduce the recovered evidence (0 differences) |
+| Export | `jlcpcb/v1/` re-exported (BOM/CPL byte-identical, Gerbers differ only in dates) | `jlcpcb/v2/` re-exported (41 parts, 18 BOM rows) |
+| ERC / DRC / parity | 0 / 0-0-0 / equal | 0 / 0-0-0 / equal |
+| Shared `check` | no findings, manifest equal | no findings, manifest equal |
+| 3D fit | 0 mm³ both panels | 0 mm³ both panels (report identical to V1's) |
+| Not rerun | renders, live audit (BOM/CPL unchanged) | renders, live audit (gate in `jlcpcb/v2/README.md`) |
+
+Nothing is missing from the `Code.md` layout. The deviations at the end are the
+only places where a detail had to be chosen rather than reproduced.
 
 ## Step log
 
@@ -15,7 +30,7 @@ survived, what has to be regenerated, and every deviation from the contract in
 | 2 Layout (`hardware/v1`, `tools/v1`, `jlcpcb/v1`, shared-tool patch) | done: see below |
 | 3 V1 restore + verification | done: see below |
 | 4 V2 rebuild + verification | done: see below |
-| 5 Docs pass | pending |
+| 5 Docs pass | done: `Code.md`, `README.md`, `AGENTS.md`, `docs/research.md` §7.6, `jlcpcb/v1/README.md` (v1 paths), `jlcpcb/v2/README.md` (rewritten) |
 
 ## Recovered evidence (outside the repo, read-only)
 
@@ -40,7 +55,7 @@ Notes on the evidence:
   from the V1 generator logic (complement polygons 0.3 mm off the VIN_LDO heat
   sink); V2 keeps the V1 heat sink, and the recovered anchors match V1's corners.
 
-## What `main` has (6bb9ae7)
+## What `main` had before the rebuild (6bb9ae7)
 
 | Path | State |
 |---|---|
@@ -55,7 +70,7 @@ Notes on the evidence:
 | `panels/` | shared panels: present, unchanged |
 | `opt/kicad-tools` | lacks the `source_manifest` support from the patch |
 
-## Gap per version
+## Gap per version (before the rebuild; all closed in steps 2-4)
 
 ### V1 (S4/R5)
 
