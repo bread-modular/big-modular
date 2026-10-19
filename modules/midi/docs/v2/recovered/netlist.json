@@ -1,0 +1,1707 @@
+{
+ "component_count": 62,
+ "components": {
+  "C1": {
+   "Datasheet": "",
+   "Description": "Unpolarized capacitor",
+   "Footprint": "MIDI:C_0603_1608Metric",
+   "LCSC": "C14663",
+   "MPN": "CC0603KRX7R9BB104",
+   "Manufacturer": "YAGEO",
+   "Note": "U1 decoupling",
+   "Reference": "C1",
+   "Value": "100n",
+   "Voltage": "50V",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "C3": {
+   "Datasheet": "",
+   "Description": "Unpolarized capacitor",
+   "Footprint": "MIDI:C_0805_2012Metric",
+   "LCSC": "C15850",
+   "MPN": "CL21A106KAYNNNE",
+   "Manufacturer": "Samsung",
+   "Note": "Local bulk",
+   "Reference": "C3",
+   "Value": "10u",
+   "Voltage": "25V",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "C4": {
+   "Datasheet": "",
+   "Description": "Unpolarized capacitor",
+   "Footprint": "MIDI:C_0805_2012Metric",
+   "LCSC": "C15850",
+   "MPN": "CL21A106KAYNNNE",
+   "Manufacturer": "Samsung",
+   "Note": "LDO output",
+   "Reference": "C4",
+   "Value": "10u",
+   "Voltage": "25V",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "C5": {
+   "Datasheet": "",
+   "Description": "Unpolarized capacitor",
+   "Footprint": "MIDI:C_0805_2012Metric",
+   "LCSC": "C28323",
+   "MPN": "CL21B105KBFNNNE",
+   "Manufacturer": "Samsung",
+   "Reference": "C5",
+   "Value": "1u",
+   "Voltage": "50V",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D1": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D1",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D10": {
+   "Datasheet": "",
+   "Description": "Schottky diode",
+   "Footprint": "MIDI:D_SOD-123",
+   "LCSC": "C8598",
+   "MPN": "B5819W SL",
+   "Manufacturer": "CJ (Jiangsu Changjing)",
+   "Note": "Series reverse-polarity protection",
+   "Reference": "D10",
+   "Value": "B5819W",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D11": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 1 clamp: keeps the GPIO within -0.4..+5.4 V when OUT1 is mis-patched",
+   "Reference": "D11",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D12": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 2 clamp: keeps the GPIO within -0.4..+5.4 V when OUT2 is mis-patched",
+   "Reference": "D12",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D13": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 3 clamp: keeps the GPIO within -0.4..+5.4 V when OUT3 is mis-patched",
+   "Reference": "D13",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D14": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 4 clamp: keeps the GPIO within -0.4..+5.4 V when OUT4 is mis-patched",
+   "Reference": "D14",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D15": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 5 clamp: keeps the GPIO within -0.4..+5.4 V when OUT5 is mis-patched",
+   "Reference": "D15",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D16": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 6 clamp: keeps the GPIO within -0.4..+5.4 V when OUT6 is mis-patched",
+   "Reference": "D16",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D17": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 7 clamp: keeps the GPIO within -0.4..+5.4 V when OUT7 is mis-patched",
+   "Reference": "D17",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D18": {
+   "Datasheet": "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf",
+   "Description": "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323",
+   "Footprint": "MIDI:SOT-323_SC-70",
+   "LCSC": "C78260",
+   "MPN": "BAT54SWT1G",
+   "Manufacturer": "onsemi",
+   "Note": "Output 8 clamp: keeps the GPIO within -0.4..+5.4 V when OUT8 is mis-patched",
+   "Reference": "D18",
+   "Value": "BAT54SW",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D2": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D2",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D3": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D3",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D4": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D4",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D5": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D5",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D6": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D6",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D7": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D7",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D8": {
+   "Datasheet": "",
+   "Description": "Light emitting diode",
+   "Footprint": "MIDI:LED_D3.0mm",
+   "Note": "Hand-soldered 3 mm THT",
+   "Reference": "D8",
+   "Value": "LED_3mm_red",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "D9": {
+   "Datasheet": "https://www.vishay.com/docs/85748/1n4148w.pdf",
+   "Description": "75V 0.15A Fast Switching Diode, SOD-123",
+   "Footprint": "MIDI:D_SOD-123",
+   "LCSC": "C81598",
+   "MPN": "1N4148W",
+   "Manufacturer": "ST(Semtech)",
+   "Note": "Clamps Q1 B-E to -0.7 V for a negative input (VEBO 6 V)",
+   "Reference": "D9",
+   "Value": "1N4148W",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J1": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 3 Poles (Stereo / TRS)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ366ST_Vertical",
+   "Note": "TRS MIDI in",
+   "Reference": "J1",
+   "Value": "PJ366ST",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J10": {
+   "Datasheet": "",
+   "Description": "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)",
+   "Footprint": "MIDI:PinHeader_2x05_P2.54mm_Vertical",
+   "Note": "Unshrouded vertical header, pin 1 (-12 V) at the board bottom; also takes a 16-pin IDC socket (positions 11-16 overhang, unused)",
+   "Reference": "J10",
+   "Value": "Eurorack_2x5",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J11": {
+   "Datasheet": "",
+   "Description": "Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)",
+   "Footprint": "MIDI:PinHeader_1x02_P2.54mm_Vertical",
+   "Note": "Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power",
+   "Reference": "J11",
+   "Value": "UPDI",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J2": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 1 (TS)",
+   "Reference": "J2",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J3": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 2 (TS)",
+   "Reference": "J3",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J4": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 3 (TS)",
+   "Reference": "J4",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J5": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 4 (TS)",
+   "Reference": "J5",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J6": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 5 (TS)",
+   "Reference": "J6",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J7": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 6 (TS)",
+   "Reference": "J7",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J8": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 7 (TS)",
+   "Reference": "J8",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "J9": {
+   "Datasheet": "",
+   "Description": "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)",
+   "Footprint": "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+   "Note": "MIDI out 8 (TS)",
+   "Reference": "J9",
+   "Value": "PJ301M-12",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "JP1": {
+   "Datasheet": "",
+   "Description": "Jumper, 3-pole, both open",
+   "Footprint": "MIDI:PinHeader_1x03_P2.54mm_Vertical",
+   "Note": "1x3 2.54 mm header + shunt. 1-2 = Type A (Tip = data), 2-3 = Type B (Ring = data). No shunt = idle (R22 pulls MIDI_IN high)",
+   "Reference": "JP1",
+   "Value": "TRS_A/B",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "JP2": {
+   "Datasheet": "",
+   "Description": "Solder Jumper, 3-pole, open",
+   "Footprint": "MIDI:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm",
+   "Note": "Solder jumper, copper only, shipped open (all three pads apart). Solder 1-2 = protected: Q1 drives PB3, PORT_INVEN on. Solder 2-3 = direct/unprotected debug path (MIDI_IN to PB3 as V1), PORT_INVEN off. Exactly one bridge, never both",
+   "Reference": "JP2",
+   "Value": "RX_PROT/DIRECT",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": "1"
+  },
+  "Q1": {
+   "Datasheet": "https://www.onsemi.com/pdf/datasheet/pzt3904-d.pdf",
+   "Description": "0.2A Ic, 40V Vce, Small Signal NPN Transistor, SOT-23",
+   "Footprint": "MIDI:SOT-23",
+   "LCSC": "C20526",
+   "MPN": "MMBT3904(RANGE:100-300)",
+   "Manufacturer": "CJ (Jiangsu Changjing)",
+   "Note": "Inverting input buffer: input high = RX low. Firmware: PORT_INVEN on PB3",
+   "Reference": "Q1",
+   "Value": "MMBT3904",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R1": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C25804",
+   "MPN": "0603WAF1002T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Base resistor: ~1.1 mA at +/-12 V; 0.26 mA from a 3.3 V sender",
+   "Reference": "R1",
+   "Value": "10k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R10": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 4 current",
+   "Reference": "R10",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R11": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C23162",
+   "MPN": "0603WAF4701T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "UPDI series resistor (Bread Modular)",
+   "Reference": "R11",
+   "Value": "4.7k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R12": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 5 series (Bread Modular 1k); limits mis-patch current into D15",
+   "Power": "0.125W",
+   "Reference": "R12",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R13": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 5 current",
+   "Reference": "R13",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R14": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 6 series (Bread Modular 1k); limits mis-patch current into D16",
+   "Power": "0.125W",
+   "Reference": "R14",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R15": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 6 current",
+   "Reference": "R15",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R16": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 7 series (Bread Modular 1k); limits mis-patch current into D17",
+   "Power": "0.125W",
+   "Reference": "R16",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R17": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 7 current",
+   "Reference": "R17",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R18": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 8 series (Bread Modular 1k); limits mis-patch current into D18",
+   "Power": "0.125W",
+   "Reference": "R18",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R19": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 8 current",
+   "Reference": "R19",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R2": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C31850",
+   "MPN": "0603WAF2202T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Q1 collector pull-up (RX idles low = inverted idle). On RX_Q, so the JP2 bypass leaves PB3 loaded only by MIDI_IN, as V1",
+   "Reference": "R2",
+   "Value": "22k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R20": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_1206_3216Metric",
+   "LCSC": "C414944",
+   "MPN": "HP06W2F390JT5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Dropper: shares LDO heat in the ~77 mA worst case (research 3.1); anti-surge 0.5 W part, sits on the VIN_LDO heat-sink copper",
+   "Power": "0.5W",
+   "Reference": "R20",
+   "Value": "39",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R22": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C25803",
+   "MPN": "0603WAF1003T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Idle pull-up: no cable / no shunt turns Q1 on = UART idle",
+   "Reference": "R22",
+   "Value": "100k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R23": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C22790",
+   "MPN": "0603WAF1202T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Clamp divider top",
+   "Reference": "R23",
+   "Value": "12k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R24": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C25804",
+   "MPN": "0603WAF1002T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Clamp divider bottom",
+   "Reference": "R24",
+   "Value": "10k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R3": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 1 series (Bread Modular 1k); limits mis-patch current into D11",
+   "Power": "0.125W",
+   "Reference": "R3",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R4": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 1 current",
+   "Reference": "R4",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R5": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 2 series (Bread Modular 1k); limits mis-patch current into D12",
+   "Power": "0.125W",
+   "Reference": "R5",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R6": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 2 current",
+   "Reference": "R6",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R7": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 3 series (Bread Modular 1k); limits mis-patch current into D13",
+   "Power": "0.125W",
+   "Reference": "R7",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R8": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0603_1608Metric",
+   "LCSC": "C21190",
+   "MPN": "0603WAF1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "LED 3 current",
+   "Reference": "R8",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "R9": {
+   "Datasheet": "",
+   "Description": "Resistor",
+   "Footprint": "MIDI:R_0805_2012Metric",
+   "LCSC": "C17513",
+   "MPN": "0805W8F1001T5E",
+   "Manufacturer": "UNI-ROYAL",
+   "Note": "Output 4 series (Bread Modular 1k); limits mis-patch current into D14",
+   "Power": "0.125W",
+   "Reference": "R9",
+   "Value": "1k",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "U1": {
+   "Datasheet": "http://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny3216_ATtiny1616-data-sheet-40001997B.pdf",
+   "Description": "20MHz, 16kB Flash, 2kB SRAM, 256B EEPROM, VQFN-20",
+   "Footprint": "MIDI:VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm",
+   "LCSC": "C507118",
+   "MPN": "ATTINY1616-MNR",
+   "Manufacturer": "Microchip",
+   "Note": "5 V: 20 MHz as Bread Modular",
+   "Reference": "U1",
+   "Value": "ATtiny1616-MNR",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "U2": {
+   "Datasheet": "http://www.ti.com/lit/ds/symlink/tl431.pdf",
+   "Description": "Shunt Regulator, SOT-23",
+   "Footprint": "MIDI:SOT-23",
+   "LCSC": "C3113",
+   "MPN": "CJ431",
+   "Manufacturer": "CJ (Jiangsu Changjing)",
+   "Note": "+5V shunt clamp, 2.495 V x (1 + R23/R24) = 5.49 V nominal. CJ431 SOT-23: 1 REF, 2 K, 3 A (TL432DBZ pinout)",
+   "Reference": "U2",
+   "Value": "CJ431",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  },
+  "U3": {
+   "Datasheet": "https://www.holtek.com/documents/10179/116711/HT75xx-1v250.pdf",
+   "Description": "100mA Low Dropout Voltage Regulator, Fixed Output, SOT89",
+   "Footprint": "MIDI:SOT-89-3",
+   "LCSC": "C16106",
+   "MPN": "HT7550-1",
+   "Manufacturer": "Holtek",
+   "Note": "30 V max input, 150 mA. Tab = pin 2 (VIN): heat-sink copper is VIN_LDO",
+   "Reference": "U3",
+   "Value": "HT7550-1",
+   "__DNP": "",
+   "__EXCLUDE_FROM_BOARD": "",
+   "__EXCLUDE_FROM_BOM": ""
+  }
+ },
+ "net_count": 56,
+ "nets": {
+  "/+12V": [
+   [
+    "D10",
+    "2"
+   ],
+   [
+    "J10",
+    "10"
+   ],
+   [
+    "J10",
+    "9"
+   ]
+  ],
+  "/+5V": [
+   [
+    "C1",
+    "1"
+   ],
+   [
+    "C3",
+    "1"
+   ],
+   [
+    "C4",
+    "1"
+   ],
+   [
+    "D11",
+    "2"
+   ],
+   [
+    "D12",
+    "2"
+   ],
+   [
+    "D13",
+    "2"
+   ],
+   [
+    "D14",
+    "2"
+   ],
+   [
+    "D15",
+    "2"
+   ],
+   [
+    "D16",
+    "2"
+   ],
+   [
+    "D17",
+    "2"
+   ],
+   [
+    "D18",
+    "2"
+   ],
+   [
+    "R2",
+    "2"
+   ],
+   [
+    "R22",
+    "2"
+   ],
+   [
+    "R23",
+    "1"
+   ],
+   [
+    "U1",
+    "4"
+   ],
+   [
+    "U2",
+    "2"
+   ],
+   [
+    "U3",
+    "3"
+   ]
+  ],
+  "/CH1_LED": [
+   [
+    "R4",
+    "1"
+   ],
+   [
+    "U1",
+    "15"
+   ]
+  ],
+  "/CH1_TX": [
+   [
+    "D11",
+    "3"
+   ],
+   [
+    "R3",
+    "1"
+   ],
+   [
+    "U1",
+    "6"
+   ]
+  ],
+  "/CH2_LED": [
+   [
+    "R6",
+    "1"
+   ],
+   [
+    "U1",
+    "16"
+   ]
+  ],
+  "/CH2_TX": [
+   [
+    "D12",
+    "3"
+   ],
+   [
+    "R5",
+    "1"
+   ],
+   [
+    "U1",
+    "7"
+   ]
+  ],
+  "/CH3_LED": [
+   [
+    "R8",
+    "1"
+   ],
+   [
+    "U1",
+    "17"
+   ]
+  ],
+  "/CH3_TX": [
+   [
+    "D13",
+    "3"
+   ],
+   [
+    "R7",
+    "1"
+   ],
+   [
+    "U1",
+    "8"
+   ]
+  ],
+  "/CH4_LED": [
+   [
+    "R10",
+    "1"
+   ],
+   [
+    "U1",
+    "18"
+   ]
+  ],
+  "/CH4_TX": [
+   [
+    "D14",
+    "3"
+   ],
+   [
+    "R9",
+    "1"
+   ],
+   [
+    "U1",
+    "9"
+   ]
+  ],
+  "/CH5_LED": [
+   [
+    "R13",
+    "1"
+   ],
+   [
+    "U1",
+    "20"
+   ]
+  ],
+  "/CH5_TX": [
+   [
+    "D15",
+    "3"
+   ],
+   [
+    "R12",
+    "1"
+   ],
+   [
+    "U1",
+    "10"
+   ]
+  ],
+  "/CH6_LED": [
+   [
+    "R15",
+    "1"
+   ],
+   [
+    "U1",
+    "1"
+   ]
+  ],
+  "/CH6_TX": [
+   [
+    "D16",
+    "3"
+   ],
+   [
+    "R14",
+    "1"
+   ],
+   [
+    "U1",
+    "13"
+   ]
+  ],
+  "/CH7_LED": [
+   [
+    "R17",
+    "1"
+   ],
+   [
+    "U1",
+    "2"
+   ]
+  ],
+  "/CH7_TX": [
+   [
+    "D17",
+    "3"
+   ],
+   [
+    "R16",
+    "1"
+   ],
+   [
+    "U1",
+    "14"
+   ]
+  ],
+  "/CH8_LED": [
+   [
+    "R19",
+    "1"
+   ],
+   [
+    "U1",
+    "5"
+   ]
+  ],
+  "/CH8_TX": [
+   [
+    "D18",
+    "3"
+   ],
+   [
+    "R18",
+    "1"
+   ],
+   [
+    "U1",
+    "12"
+   ]
+  ],
+  "/CLAMP_REF": [
+   [
+    "R23",
+    "2"
+   ],
+   [
+    "R24",
+    "1"
+   ],
+   [
+    "U2",
+    "1"
+   ]
+  ],
+  "/GND": [
+   [
+    "C1",
+    "2"
+   ],
+   [
+    "C3",
+    "2"
+   ],
+   [
+    "C4",
+    "2"
+   ],
+   [
+    "C5",
+    "2"
+   ],
+   [
+    "D1",
+    "1"
+   ],
+   [
+    "D11",
+    "1"
+   ],
+   [
+    "D12",
+    "1"
+   ],
+   [
+    "D13",
+    "1"
+   ],
+   [
+    "D14",
+    "1"
+   ],
+   [
+    "D15",
+    "1"
+   ],
+   [
+    "D16",
+    "1"
+   ],
+   [
+    "D17",
+    "1"
+   ],
+   [
+    "D18",
+    "1"
+   ],
+   [
+    "D2",
+    "1"
+   ],
+   [
+    "D3",
+    "1"
+   ],
+   [
+    "D4",
+    "1"
+   ],
+   [
+    "D5",
+    "1"
+   ],
+   [
+    "D6",
+    "1"
+   ],
+   [
+    "D7",
+    "1"
+   ],
+   [
+    "D8",
+    "1"
+   ],
+   [
+    "D9",
+    "2"
+   ],
+   [
+    "J1",
+    "S"
+   ],
+   [
+    "J10",
+    "3"
+   ],
+   [
+    "J10",
+    "4"
+   ],
+   [
+    "J10",
+    "5"
+   ],
+   [
+    "J10",
+    "6"
+   ],
+   [
+    "J10",
+    "7"
+   ],
+   [
+    "J10",
+    "8"
+   ],
+   [
+    "J11",
+    "2"
+   ],
+   [
+    "J2",
+    "S"
+   ],
+   [
+    "J3",
+    "S"
+   ],
+   [
+    "J4",
+    "S"
+   ],
+   [
+    "J5",
+    "S"
+   ],
+   [
+    "J6",
+    "S"
+   ],
+   [
+    "J7",
+    "S"
+   ],
+   [
+    "J8",
+    "S"
+   ],
+   [
+    "J9",
+    "S"
+   ],
+   [
+    "Q1",
+    "2"
+   ],
+   [
+    "R24",
+    "2"
+   ],
+   [
+    "U1",
+    "21"
+   ],
+   [
+    "U1",
+    "3"
+   ],
+   [
+    "U2",
+    "3"
+   ],
+   [
+    "U3",
+    "1"
+   ]
+  ],
+  "/LED1_A": [
+   [
+    "D1",
+    "2"
+   ],
+   [
+    "R4",
+    "2"
+   ]
+  ],
+  "/LED2_A": [
+   [
+    "D2",
+    "2"
+   ],
+   [
+    "R6",
+    "2"
+   ]
+  ],
+  "/LED3_A": [
+   [
+    "D3",
+    "2"
+   ],
+   [
+    "R8",
+    "2"
+   ]
+  ],
+  "/LED4_A": [
+   [
+    "D4",
+    "2"
+   ],
+   [
+    "R10",
+    "2"
+   ]
+  ],
+  "/LED5_A": [
+   [
+    "D5",
+    "2"
+   ],
+   [
+    "R13",
+    "2"
+   ]
+  ],
+  "/LED6_A": [
+   [
+    "D6",
+    "2"
+   ],
+   [
+    "R15",
+    "2"
+   ]
+  ],
+  "/LED7_A": [
+   [
+    "D7",
+    "2"
+   ],
+   [
+    "R17",
+    "2"
+   ]
+  ],
+  "/LED8_A": [
+   [
+    "D8",
+    "2"
+   ],
+   [
+    "R19",
+    "2"
+   ]
+  ],
+  "/MIDI_IN": [
+   [
+    "JP1",
+    "2"
+   ],
+   [
+    "JP2",
+    "3"
+   ],
+   [
+    "R1",
+    "1"
+   ],
+   [
+    "R22",
+    "1"
+   ]
+  ],
+  "/OUT1": [
+   [
+    "J2",
+    "T"
+   ],
+   [
+    "R3",
+    "2"
+   ]
+  ],
+  "/OUT2": [
+   [
+    "J3",
+    "T"
+   ],
+   [
+    "R5",
+    "2"
+   ]
+  ],
+  "/OUT3": [
+   [
+    "J4",
+    "T"
+   ],
+   [
+    "R7",
+    "2"
+   ]
+  ],
+  "/OUT4": [
+   [
+    "J5",
+    "T"
+   ],
+   [
+    "R9",
+    "2"
+   ]
+  ],
+  "/OUT5": [
+   [
+    "J6",
+    "T"
+   ],
+   [
+    "R12",
+    "2"
+   ]
+  ],
+  "/OUT6": [
+   [
+    "J7",
+    "T"
+   ],
+   [
+    "R14",
+    "2"
+   ]
+  ],
+  "/OUT7": [
+   [
+    "J8",
+    "T"
+   ],
+   [
+    "R16",
+    "2"
+   ]
+  ],
+  "/OUT8": [
+   [
+    "J9",
+    "T"
+   ],
+   [
+    "R18",
+    "2"
+   ]
+  ],
+  "/Q1_B": [
+   [
+    "D9",
+    "1"
+   ],
+   [
+    "Q1",
+    "1"
+   ],
+   [
+    "R1",
+    "2"
+   ]
+  ],
+  "/RING": [
+   [
+    "J1",
+    "R"
+   ],
+   [
+    "JP1",
+    "3"
+   ]
+  ],
+  "/RX": [
+   [
+    "JP2",
+    "2"
+   ],
+   [
+    "U1",
+    "11"
+   ]
+  ],
+  "/RX_Q": [
+   [
+    "JP2",
+    "1"
+   ],
+   [
+    "Q1",
+    "3"
+   ],
+   [
+    "R2",
+    "1"
+   ]
+  ],
+  "/TIP": [
+   [
+    "J1",
+    "T"
+   ],
+   [
+    "JP1",
+    "1"
+   ]
+  ],
+  "/UPDI": [
+   [
+    "J11",
+    "1"
+   ],
+   [
+    "R11",
+    "2"
+   ]
+  ],
+  "/UPDI_PA0": [
+   [
+    "R11",
+    "1"
+   ],
+   [
+    "U1",
+    "19"
+   ]
+  ],
+  "/VIN_D": [
+   [
+    "D10",
+    "1"
+   ],
+   [
+    "R20",
+    "1"
+   ]
+  ],
+  "/VIN_LDO": [
+   [
+    "C5",
+    "1"
+   ],
+   [
+    "R20",
+    "2"
+   ],
+   [
+    "U3",
+    "2"
+   ]
+  ],
+  "unconnected-(J10-Pin_1-Pad1)": [
+   [
+    "J10",
+    "1"
+   ]
+  ],
+  "unconnected-(J10-Pin_2-Pad2)": [
+   [
+    "J10",
+    "2"
+   ]
+  ],
+  "unconnected-(J2-PadTN)": [
+   [
+    "J2",
+    "TN"
+   ]
+  ],
+  "unconnected-(J3-PadTN)": [
+   [
+    "J3",
+    "TN"
+   ]
+  ],
+  "unconnected-(J4-PadTN)": [
+   [
+    "J4",
+    "TN"
+   ]
+  ],
+  "unconnected-(J5-PadTN)": [
+   [
+    "J5",
+    "TN"
+   ]
+  ],
+  "unconnected-(J6-PadTN)": [
+   [
+    "J6",
+    "TN"
+   ]
+  ],
+  "unconnected-(J7-PadTN)": [
+   [
+    "J7",
+    "TN"
+   ]
+  ],
+  "unconnected-(J8-PadTN)": [
+   [
+    "J8",
+    "TN"
+   ]
+  ],
+  "unconnected-(J9-PadTN)": [
+   [
+    "J9",
+    "TN"
+   ]
+  ]
+ },
+ "pin_count": 173,
+ "ref_pin_net_parity": {
+  "duplicate_nc_pad_aliases": [],
+  "equal": true,
+  "extra_connected_pads": [],
+  "extra_refs": [],
+  "mechanical_without_reference": [],
+  "missing_pins": [],
+  "missing_refs": [],
+  "net_mismatches": [],
+  "pads_without_net": []
+ },
+ "source": "~/recovery-107/bl2u65eu9.txt line 4 (workspace 107 V2 S3 native netlist + field dump, 2026-10-19)",
+ "source_sha256": "f0877f5b5f4365b6e2953a03b22d3b0f65c38dd1f5d42ce7d01ee52f0c227ada",
+ "symbol_uuids": {
+  "C1": "722c3ffa-210e-5e6c-b211-fd268c321f59",
+  "C3": "03041d28-5236-536d-bfb6-497749d4483b",
+  "C4": "bc251b33-f1a7-5d93-80bd-39e35a7e64b2",
+  "C5": "09288eda-5e53-518f-8298-d927139a3669",
+  "D1": "7a1c2612-a48c-51da-91aa-5e7ebaf10308",
+  "D10": "b989371b-237e-56b1-adc1-cdb17869190f",
+  "D11": "19342b71-fca9-5748-b63a-dd4b7227fa25",
+  "D12": "e5188fbf-2717-5b66-b48b-8b59ad62a62d",
+  "D13": "78ecafb7-0be6-5d92-84f3-af7d4cbf8299",
+  "D14": "4f5789f8-1985-5e53-b711-b1e5e599940b",
+  "D15": "a3e13732-bd8c-58a8-b9fa-d3a717b6c264",
+  "D16": "83cf1866-e0a2-55d9-86b8-02040fa22595",
+  "D17": "268ca650-17f6-55c4-ab28-bf7969319e97",
+  "D18": "e0871dc4-4b18-5ba8-a51f-4e9f0d14d716",
+  "D2": "92418934-ba0b-53fb-9bda-35c72b6288c5",
+  "D3": "75738f14-c444-5c47-9272-4aa922f36a9f",
+  "D4": "4fa215db-9aba-5c23-87ac-3f7ee09e6577",
+  "D5": "bc4b909f-d351-58cc-b059-149beca213d2",
+  "D6": "01e332bd-067e-5fcf-a21c-5994d7c426fa",
+  "D7": "352c27c4-64e4-58d5-ae00-ec0d07bfd1fb",
+  "D8": "21fb58a8-8bee-5910-93d8-0e175ce440e5",
+  "D9": "ac4c5c71-9e94-5509-9251-05f33bf3f4d6",
+  "J1": "0c0025b9-6bf8-5520-aa57-a607783619ea",
+  "J10": "2b380b2d-03ef-535f-8542-2968b58f0941",
+  "J11": "55a78acb-d00e-5b0d-a35e-8bf23534954f",
+  "J2": "95dd08f5-4f13-5b8d-be0f-0147289ef2f1",
+  "J3": "36af4326-83c6-51ba-b066-8ccfde8b2245",
+  "J4": "142b5df1-a2f4-5dd4-87c2-39247a15e3b0",
+  "J5": "f1f2ecb1-4bb8-562c-9f13-0754a5cbe5d4",
+  "J6": "89554296-56d1-5147-bdff-4301e08fbc80",
+  "J7": "1ef8b2db-9634-5d28-9014-392bf0030c07",
+  "J8": "cf0d0248-b15c-5045-a170-f65563c31ef0",
+  "J9": "e756218b-1984-5ed2-99e2-cd0e240103a5",
+  "JP1": "dbc844c5-d95c-5369-9904-2ae6a7dec9e2",
+  "JP2": "7b7bdf87-8f02-5263-896d-6b9edb000f7f",
+  "Q1": "e05e193f-f611-5f23-b807-e1e308f1f9c6",
+  "R1": "8b3b4430-dc64-5428-be5f-696df289e38e",
+  "R10": "5f69740b-297c-590a-91a9-78da7c26178c",
+  "R11": "98814904-fb8a-5c9c-8e58-dc95b418dd86",
+  "R12": "e2d6b461-ff17-558b-a878-bc0d6771cd8e",
+  "R13": "df3b8182-c8db-5ffa-a48c-c21826ce43f4",
+  "R14": "7c9fd833-206c-54da-80b5-39ddcbdadbd7",
+  "R15": "3665edde-db88-59e5-ac1a-2a9af9a802eb",
+  "R16": "08f5281a-aa4f-598b-b4b1-2e5bb1cfa81e",
+  "R17": "da2dec1b-3c72-5354-9925-332d753ab68c",
+  "R18": "d2ef9d9b-c02b-5350-9083-14c459be8933",
+  "R19": "def67c0e-b450-56d3-be1e-4965de472b0b",
+  "R2": "f95ebf5b-aff3-5256-af7c-6c97fe3b372c",
+  "R20": "c503fa90-1297-5d34-b1b0-d252ebb99ca8",
+  "R22": "c3ad541e-f301-5c85-b826-773c3b6762ac",
+  "R23": "d207c5e7-97d1-5f12-81f3-6f1f64b199e4",
+  "R24": "39a92009-b714-5528-bc8c-5587f91ee888",
+  "R3": "01f0beab-b15b-56b4-821c-5deb21fe0751",
+  "R4": "71d55de9-63f4-502f-8cc2-daf269ff42e5",
+  "R5": "573c7d63-29e6-5256-854a-d3e15027ab1c",
+  "R6": "398319ab-c086-55d0-ab8c-e5abfa8fa104",
+  "R7": "7c8e5e74-d0b4-52c5-b2c7-fda59e18c32f",
+  "R8": "ba47b1bd-bf35-5595-b4d2-7967ba0a0d20",
+  "R9": "fd34bd53-d79a-5177-b739-3e93668c4bc7",
+  "U1": "5fc9f858-f2fe-5c35-b94a-bb8ff8227837",
+  "U2": "27d5c1bf-8df6-5531-86c8-467cdde32799",
+  "U3": "f9dd4e11-b7c8-5b29-9da1-dd5f9e80b577"
+ }
+}
