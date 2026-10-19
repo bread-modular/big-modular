@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/8bit.kicad_pcb",
+  "root_schematic": "../hardware/8bit.kicad_sch",
+  "dependencies": [
+    "../hardware/8BIT.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  },
+  "source_manifest": "../jlcpcb/source-sha256.json"
+}

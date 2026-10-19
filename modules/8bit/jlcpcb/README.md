@@ -1,0 +1,131 @@
+# 8bit — manufacturing export (S4/R3)
+
+Generated from the current accepted sources with the shared
+`opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
+the sources, then re-export with the commands below.
+
+## Contents
+
+| Path | Data |
+|---|---|
+| `8bit-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
+| `8bit-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
+| `assembly/bom.csv`, `assembly/positions.csv` | Carrier BOM and CPL (upload these) |
+| `carrier/` | Carrier export: ZIP unpacked (2 copper layers, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
+| `panel/` | Panel export: ZIP unpacked, empty BOM/CPL, export report |
+| `source-sha256.json` | PCB/project/schematic inputs and export SHA-256 |
+
+The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files in
+`carrier/` and `panel/`.
+
+## Upload map
+
+| Order | Files | Options |
+|---|---|---|
+| Carrier PCB | `8bit-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.0 x 110.0 mm, 1 oz, HASL, standard everything else. No `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 37 parts in 24 BOM rows, all on the back |
+| Front panel PCB | `8bit-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 20.0 x 128.5 mm (4HP), no assembly; black mask suits a panel |
+| Button actuator | `../panels/button-actuator/*.stl` | 3D print (two parts, glued); not a JLCPCB PCB order |
+
+### Hand-soldered after delivery (not in the BOM/CPL)
+
+| Refs | Part | Why it's manual |
+|---|---|---|
+| J1-J3 | QingPu WQP-PJ301M-12 TS jack | Front-side THT, panel-nut fixed; fit to the panel before soldering |
+| RV1, RV2 / RV3 | RV09 pot, 50k / 1M (no bushing) | Front-side THT, user stock |
+| D1 | 3 mm red LED | Height is set by the panel (`docs/mechanics.md`) |
+| SW1 | K2-1808SN-A4SW-01 (Bread Modular switch, LCSC C92589) | Front-side SMD; the assembly is bottom-side only. Solder it before fitting the actuator |
+| J4 | 2x5 2.54 mm pin header | Eurorack power, back side; pin 1 (-12 V) marked `-12V` |
+| J5 | 1x2 2.54 mm pin header | UPDI, back side |
+| JP1 | 3-pad solder jumper (copper only) | **Shipped open; solder exactly one bridge** (`docs/jumpers.md`). `P` = protected input, firmware sets `PORT_INVEN` on PB3. `D` = direct, stock Bread Modular firmware |
+
+The exporter excluded these 11 refs (`carrier/export-report.json`): the 9 THT
+parts, SW1 as "Other assembly side" and JP1 as "Excluded from BOM".
+
+## Source identity
+
+Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
+drift (`tools/kicad-project.json` declares the manifest).
+
+- Carrier PCB `919f847f67bed6cd195489e19a2134474ebabe79f920f777b2f82c99e3295ec1`.
+- Carrier project `b4337e9349fdb9270bee7f9cfc48e3ac45cecf26ea330f6865b30e4eb8c867ae`.
+- Carrier schematic `97d834922f23424ee57993d2e3a55d5fed6773822a10c2a27c44cad52dafa4f5`.
+- Panel PCB `dcc36e381ada0b5bbd317156feb388718ffb0c100dc95bd42ada6b2cd66a5844`.
+- Panel project `e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6`.
+
+## Reproduce
+
+From `modules/8bit`:
+
+```sh
+python3 -B ../../opt/kicad-tools/kicad_tools.py check \
+  --config tools/kicad-project.json --reports research/native-NEW
+
+python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
+  --board 8bit --schematic 8bit.kicad_sch --side bottom --require-part-numbers \
+  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/carrier
+unzip -o jlcpcb/carrier/8bit-gerbers.zip -d jlcpcb/carrier
+
+python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
+  --board 8bit-panel --pcb-only \
+  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/panel
+unzip -o jlcpcb/panel/8bit-panel-gerbers.zip -d jlcpcb/panel
+
+cp jlcpcb/carrier/bom.csv jlcpcb/carrier/positions.csv jlcpcb/assembly/
+cp jlcpcb/carrier/8bit-gerbers.zip jlcpcb/panel/8bit-panel-gerbers.zip jlcpcb/
+```
+
+The exporter merges into an existing manifest and keeps rows it did not write, so
+delete `jlcpcb/source-sha256.json` first when a source path changes. Delete the
+unpacked Gerbers first if layers change. The assembly audit is:
+
+```sh
+kicad-cli sch export netlist --format kicadxml -o /tmp/8bit-symbols.xml hardware/8bit.kicad_sch
+(cd ../.. && python3 -B opt/kicad-tools/jlcpcb/assembly.py audit \
+  --project-dir modules/8bit/hardware --board 8bit.kicad_pcb --symbols-xml /tmp/8bit-symbols.xml \
+  --cpl modules/8bit/jlcpcb/carrier/positions.csv \
+  --requirements modules/8bit/docs/jlcpcb-audit-requirements.json \
+  --boards 5 --side bottom --strict-live --max-requests 64)
+```
+
+## Checks done for this export (2026-10-19)
+
+- **Shared `check`:** `no_findings_in_requested_checks`, with the manifest
+  present and equal. That covers ERC 0 and DRC 0 at all severities with zones
+  refilled, 0 unconnected, schematic parity 0 and ref/pin/net parity equal.
+- **Exporter:** 37 components in 24 BOM rows, bottom side, no missing part
+  numbers.
+- **Drill files:** 62 round PTH hits (39 vias + 23 round THT pads) plus 15 routed
+  slots (jack and pot lugs), matching the board. No NPTH holes on the carrier.
+  The panel has 10 NPTH holes and no PTH.
+- **Outlines:** carrier 19.0 x 110.0 mm, panel 20.0 x 128.5 mm (Edge.Cuts Gerbers).
+- **Live assembly audit** (`--strict-live`, 2026-10-19T16:17:06Z, 5 boards):
+  - Every C-code and MPN resolved and every part is Economy-eligible, with stock
+    far above the 5-board demand (lowest: U1 ATtiny1616, 1,769).
+  - Basic: all R/C, D2, D4, D5, Q1, U3 (TL072CDT). Extended: U1 (ATtiny1616),
+    D3 (BAT54SW), U4 (MCP6001); Preferred Extended: U2 (HT7550-1). These carry
+    JLCPCB's Extended fees.
+  - All resistor stress checks pass **except R12** (see gate 1).
+  - Still `unknown` by design: the human land-pattern/pin-mapping/ratings/role
+    reviews in `docs/jlcpcb-audit-requirements.json` (empty, never auto-filled),
+    capacitor DC-bias/ESR/ESL data, and the package match for the non-passives.
+    So the audit reports `order_ready: false`.
+
+## Status and order gates (not done here)
+
+This is a complete export, not a supplier-accepted release.
+
+1. **R12 power rating (hard audit fail).** A permanent hard -12 V source on OUT
+   against +4.8 V puts 16.8 V / 0.28 W in R12, above the 1206's 0.25 W. Normal
+   use and short mis-patches are fine. Fix by fitting a 0.5 W 1206 (re-export
+   needed), or accept it knowingly.
+2. **Your reviews:** land pattern, pin mapping and ratings for each assembled
+   part (and role for the capacitors), recorded in the requirements file.
+3. **JLCPCB placement preview** of every back-side part: U1 pin 1 and the
+   exposed pad, U3/U4 pin 1 (mirrored on the back), D3 and Q1 (SOT-323/SOT-23
+   orientation), and D2/D4/D5 cathode bars.
+4. **Live recheck** of stock, attrition and minimums just before ordering, plus
+   JLCPCB's DFM check in their Gerber viewer.
+5. **Not yet done:** 3D fit against the panel, an actuator test print, measuring
+   a real RV09 pot against the 3D model, and bench testing (output level, CV range
+   and zero, MIDI on both JP1 settings).

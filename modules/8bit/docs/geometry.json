@@ -1,0 +1,683 @@
+{
+ "revision": "S4 placement, R3 routed carrier: Bread Modular 8bit for Eurorack, 4HP",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 4,
+ "panel_mm": [
+  20.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "panel_print_thickness_mm": 2.0,
+ "rail_holes_mm": [
+  [
+   7.5,
+   3.0,
+   3.2
+  ],
+  [
+   7.5,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "Doepfer 4HP single hole pair at X7.5 (HOLE_X0 in case/tools/build_case.py). The repository skiff rails are 10 mm wide centred on Y3.0/Y125.5, leaving the clear Y8.0..120.5 (112.5 mm) gap; commercial rails differ, so the PCB keeps 1.25 mm margin and the 16-pin IDC socket envelope stays inside the gap.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   19.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 2,
+  "note": "19.0 x 110.0 mm (as modules/midi), 1.25 mm inside the skiff rail gap at each end; held by the three jack bushings/nuts. The pots have no bushing or nut (user stock, as modules/audio-out): they are soldered only."
+ },
+ "control_column_X_mm": 10.0,
+ "jack_rotation_deg": 270,
+ "jack_rotation_note": "As modules/midi: T/TN/S pads run along X with the S (sleeve) pad toward the left board edge; jack bodies are 9.0 mm along Y.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "MIDI_IN_TS",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 17.5
+  },
+  {
+   "ref": "J2",
+   "role": "CV_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 30.0
+  },
+  {
+   "ref": "J3",
+   "role": "AUDIO_OUT",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 100.0
+  }
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "KNOB_1 (PA1)",
+   "shaft_Y": 43.5,
+   "value": "50k"
+  },
+  {
+   "ref": "RV2",
+   "role": "KNOB_2 (PA2)",
+   "shaft_Y": 58.5,
+   "value": "50k"
+  },
+  {
+   "ref": "RV3",
+   "role": "KNOB_3 (passive LPF)",
+   "shaft_Y": 73.5,
+   "value": "1M"
+  }
+ ],
+ "pot_footprint": "Potentiometer_RV09",
+ "pot_shaft_offset_mm": [
+  -0.127,
+  -0.508
+ ],
+ "pot_note": "Bread Modular RV09 footprint (pins 7.5 mm below the shaft on 2.5 mm pitch, bracket tabs 9.6 mm apart on the shaft line). User stock pots, as modules/audio-out: no threaded bushing, no nut, 16 mm knurled shaft above the body; 3D proxy hardware/8BIT.3dshapes/RV09_proxy.step (from audio-out). pot_shaft_offset_mm = shaft centre relative to the footprint origin at rotation 0. Rotation 0: pins below the shaft, pin 1 on the left (front view), so CW turns the wiper toward pin 3.",
+ "button": {
+  "ref": "SW1",
+  "footprint": "K2-1808SN-A4SW-01",
+  "side": "F",
+  "XY": [
+   7.0,
+   87.0
+  ],
+  "part": "Korean Hroparts K2-1808SN-A4SW-01 (Bread Modular 8bit SW1, LCSC C92589): SMD tact 4.2 x 3.25 mm, 2.5 mm tall, 2.5 N",
+  "note": "SMD on the carrier F side (faces the panel), hand-soldered. Placed by the pad-pattern centre = actuator centre. The panel is 7.5 mm above the switch top, so a two-part printed actuator (panels/button-actuator) bridges the gap. Rotated 180: pad 1 (BUTTON) on the bottom row.",
+  "rot": 180
+ },
+ "leds": [
+  {
+   "ref": "D1",
+   "role": "MODE_LED",
+   "X": 15.5,
+   "Y": 87.0
+  }
+ ],
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2,
+  "led": 3.2,
+  "button": 4.2
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+  "jack_body_top": 8.9,
+  "panel_rear_seat": 10.0,
+  "pj301m12_thread": [
+   10.0,
+   14.51
+  ],
+  "pj366st_thread": [
+   11.0,
+   15.96
+  ],
+  "nut_thickness": 2.0,
+  "led_body_bottom": 6.3,
+  "led_body_height": 5.3,
+  "led_model_body_bottom": 3.0,
+  "led_note": "3 mm LED body (flange to dome) is 5.3 mm; body bottom at Z6.3 puts the dome flush with the 1.6 mm FR4 panel front (Z11.6) and 0.4 mm recessed in the 2.0 mm print. The stock KiCad LED_D3.0mm model already stands its flange at Z3.0, so the board model offset is +3.3 mm.",
+  "source": "Slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks before committing the LED stand-off.",
+  "pot_note": "User RV09 (as modules/audio-out): body 6.8 mm nominal, 1 mm collar, shaft to Z22.8 (11.2 mm past the FR4 front). No bushing, no nut. Measure a real pot before ordering panels.",
+  "switch_top": 2.5
+ },
+ "back_side_parts": [
+  {
+   "ref": "JP1",
+   "footprint": "SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm",
+   "XY": [
+    3.2,
+    24.0
+   ],
+   "rot": 270,
+   "band": "J1/J2 band, left edge: MIDI RX source (pin 1 top = P protected, pin 3 = D direct)"
+  },
+  {
+   "ref": "R2",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    5.6,
+    23.5
+   ],
+   "rot": 270,
+   "band": "J1/J2 band: Q1 collector pull-up"
+  },
+  {
+   "ref": "Q1",
+   "footprint": "SOT-23",
+   "XY": [
+    8.4,
+    23.5
+   ],
+   "rot": 90,
+   "band": "J1/J2 band: MIDI NPN"
+  },
+  {
+   "ref": "R1",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    11.8,
+    22.0
+   ],
+   "rot": 0,
+   "band": "J1/J2 band: Q1 base"
+  },
+  {
+   "ref": "R3",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    15.2,
+    22.0
+   ],
+   "rot": 0,
+   "band": "J1/J2 band, beside the J1 tip pad: MIDI_IN idle pull-up"
+  },
+  {
+   "ref": "D2",
+   "footprint": "D_SOD-123",
+   "XY": [
+    12.8,
+    25.9
+   ],
+   "rot": 0,
+   "band": "J1/J2 band: Q1 B-E clamp"
+  },
+  {
+   "ref": "C9",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    5.5,
+    33.2
+   ],
+   "rot": 0,
+   "band": "J2/RV1 band: CV ADC cap"
+  },
+  {
+   "ref": "D3",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    9.0,
+    33.4
+   ],
+   "rot": 0,
+   "band": "J2/RV1 band: CV clamp"
+  },
+  {
+   "ref": "R4",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    10.8,
+    30.0
+   ],
+   "rot": 0,
+   "band": "J2 pad row, between TN and T: CV series (CV_IN pad toward J2 T)"
+  },
+  {
+   "ref": "U1",
+   "footprint": "VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm",
+   "XY": [
+    10.0,
+    38.3
+   ],
+   "rot": 0,
+   "band": "J2/RV1 band: MCU"
+  },
+  {
+   "ref": "C1",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    13.9,
+    38.3
+   ],
+   "rot": 90,
+   "band": "right of U1: decoupling"
+  },
+  {
+   "ref": "C2",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    14.6,
+    52.8
+   ],
+   "rot": 270,
+   "band": "below RV1 pin 3: +5V bulk on the +5V trunk"
+  },
+  {
+   "ref": "U4",
+   "footprint": "SOT-23-5",
+   "XY": [
+    10.6,
+    47.6
+   ],
+   "rot": 180,
+   "band": "below the RV1 tabs (Y45.5-49.8): CV buffer MCP6001 (B side: pins 3/2/1 on the left, 4/5 on the right)"
+  },
+  {
+   "ref": "R13",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    13.4,
+    47.3
+   ],
+   "rot": 90,
+   "band": "right of U4: CV level-shift to +5V (+5V pad at the bottom)"
+  },
+  {
+   "ref": "R14",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    5.6,
+    48.4
+   ],
+   "rot": 270,
+   "band": "below the RV1 left tab: CV level-shift to GND (GND pad at the bottom)"
+  },
+  {
+   "ref": "C15",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    14.9,
+    47.3
+   ],
+   "rot": 90,
+   "band": "right of R13: U4 decoupling (+5V pad at the bottom)"
+  },
+  {
+   "ref": "C10",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    10.0,
+    53.6
+   ],
+   "rot": 270,
+   "band": "below RV1 pin 2, between the B lanes X8.75/X11.25: knob 1 ADC cap"
+  },
+  {
+   "ref": "R10",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.5,
+    85.0
+   ],
+   "rot": 270,
+   "band": "Y83-90 band left (free on B: SW1 is SMD on F): offset divider top"
+  },
+  {
+   "ref": "R11",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.5,
+    88.4
+   ],
+   "rot": 270,
+   "band": "Y83-90 band left: offset divider bottom"
+  },
+  {
+   "ref": "C14",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    5.0,
+    86.7
+   ],
+   "rot": 180,
+   "band": "Y83-90 band left: offset filter"
+  },
+  {
+   "ref": "C11",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    10.0,
+    63.0
+   ],
+   "rot": 90,
+   "band": "above RV2 pin 2, between the B lanes: knob 2 ADC cap"
+  },
+  {
+   "ref": "R7",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    13.8,
+    88.9
+   ],
+   "rot": 90,
+   "band": "left of the LED, under RV3 pin 3: DAC series (DAC_R at the top, to RV3 pin 3)"
+  },
+  {
+   "ref": "C13",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    15.3,
+    96.6
+   ],
+   "rot": 180,
+   "band": "right of U3 pin 3: filter capacitor (FILT)"
+  },
+  {
+   "ref": "R6",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    17.6,
+    83.0
+   ],
+   "rot": 270,
+   "band": "right edge above the LED: LED current (LED_DRV at the top)"
+  },
+  {
+   "ref": "R9",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    14.6,
+    93.23
+   ],
+   "rot": 90,
+   "band": "right of U3 pins 1/2 (U3 is mirrored on B: pins 1-4 on the right): Rf"
+  },
+  {
+   "ref": "C8",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    10.0,
+    98.0
+   ],
+   "rot": 180,
+   "band": "below U3 pin 4: V- decoupling"
+  },
+  {
+   "ref": "U3",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    10.0,
+    94.5
+   ],
+   "rot": 0,
+   "band": "SW1/J3 band: TL072 output stage"
+  },
+  {
+   "ref": "C7",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    5.5,
+    91.3
+   ],
+   "rot": 90,
+   "band": "left of U3 pin 8: V+ decoupling"
+  },
+  {
+   "ref": "R8",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    4.8,
+    94.8
+   ],
+   "rot": 270,
+   "band": "left of U3 pins 6/7: Rg (OUT_FB crosses between pins 8 and 7)"
+  },
+  {
+   "ref": "R12",
+   "footprint": "R_1206_3216Metric",
+   "XY": [
+    18.1,
+    94.6
+   ],
+   "rot": 270,
+   "band": "right edge above J3, AMP_OUT pad at the top: output series 1k"
+  },
+  {
+   "ref": "R5",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.6,
+    104.3
+   ],
+   "rot": 270,
+   "band": "bottom zone left of J4: UPDI series (as modules/midi)"
+  },
+  {
+   "ref": "J5",
+   "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+   "XY": [
+    2.6,
+    109.0
+   ],
+   "rot": 0,
+   "band": "bottom zone left of J4: UPDI header (as modules/midi)"
+  },
+  {
+   "ref": "J4",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    8.6,
+    110.92
+   ],
+   "rot": 180,
+   "band": "bottom zone: Eurorack power (as modules/midi)"
+  },
+  {
+   "ref": "D4",
+   "footprint": "D_SOD-123",
+   "XY": [
+    14.3,
+    106.4
+   ],
+   "rot": 0,
+   "band": "bottom zone right of J4: +12 V series diode (as modules/midi D10)"
+  },
+  {
+   "ref": "C5",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    18.1,
+    107.6
+   ],
+   "rot": 270,
+   "band": "bottom zone right edge: +12V_F bulk"
+  },
+  {
+   "ref": "U2",
+   "footprint": "SOT-89-3",
+   "XY": [
+    14.3,
+    110.25
+   ],
+   "rot": 90,
+   "band": "bottom zone right of J4: HT7550-1 (as modules/midi U3)"
+  },
+  {
+   "ref": "C4",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    18.1,
+    111.7
+   ],
+   "rot": 270,
+   "band": "bottom zone right edge: LDO input"
+  },
+  {
+   "ref": "C3",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    12.75,
+    114.7
+   ],
+   "rot": 270,
+   "band": "bottom zone right of J4: LDO output"
+  },
+  {
+   "ref": "C6",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    18.1,
+    115.3
+   ],
+   "rot": 270,
+   "band": "bottom zone right edge: -12V_F bulk"
+  },
+  {
+   "ref": "D5",
+   "footprint": "D_SOD-123",
+   "XY": [
+    14.7,
+    117.85
+   ],
+   "rot": 180,
+   "band": "bottom zone, bottom edge: -12 V series diode (-12V_F pad on the right, next to C6)"
+  }
+ ],
+ "panel_labels": [
+  {
+   "text": "8BIT",
+   "XY": [
+    10.0,
+    8.0
+   ],
+   "size": 2.5
+  },
+  {
+   "text": "MIDI",
+   "XY": [
+    10.0,
+    11.6
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV",
+   "XY": [
+    10.0,
+    24.3
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P1",
+   "XY": [
+    10.0,
+    36.3
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P2",
+   "XY": [
+    10.0,
+    51.3
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P3",
+   "XY": [
+    10.0,
+    66.3
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "MODE",
+   "XY": [
+    7.0,
+    81.6
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT",
+   "XY": [
+    10.0,
+    93.6
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    10.0,
+    114.0
+   ],
+   "size": 1.2
+  }
+ ],
+ "power_header": {
+  "ref": "J4",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   7.33,
+   116.0
+  ],
+  "column_X_mm": [
+   7.33,
+   9.87
+  ],
+  "pin_rows_Y_mm": [
+   116.0,
+   113.46,
+   110.92,
+   108.38,
+   105.84
+  ],
+  "orientation": "Vertical (pin rows along Y). Pin 1/2 (-12 V) at the bottom row Y116.0, pins 9/10 (+12 V) at the top row Y105.84.",
+  "idc16_socket_envelope_mm": {
+   "X": [
+    4.8,
+    12.4
+   ],
+   "Y": [
+    94.41,
+    119.81
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc_note": "Eurorack 16-pin cables plug onto a 10-pin header aligned at pin 1 (red stripe = -12 V): socket positions 11-16 (+5 V, CV, Gate) overhang past the +12 V end. With pin 1 at the bottom the overhang runs up over the board, never past the board edge. Envelope = 2x8 IDC socket that fits a box header (25.4 x 6.4 mm body + ~1.2 mm key bump), 3.81 mm beyond the end pin centres. The envelope bottom (Y119.81) stays inside the rail clear gap (Y120.5), so the plug never relies on rail depth. A 10-pin socket uses the lower part of the same envelope."
+ },
+ "button_actuator": {
+  "source": "panels/button-actuator/build_button_actuator.py (FreeCAD, STEP + STL)",
+  "plunger": {
+   "note": "behind the panel, printed foot up; rests on the switch, its top stops 0.3 mm below the panel rear",
+   "foot_D": 2.4,
+   "foot_Z": [
+    2.5,
+    4.5
+   ],
+   "body_D": 7.0,
+   "body_Z": [
+    4.5,
+    9.7
+   ],
+   "socket_D": 3.9,
+   "socket_Z": [
+    6.7,
+    9.7
+   ]
+  },
+  "cap": {
+   "note": "in front of the panel, printed cap down; its stem passes the panel hole and is glued into the plunger socket",
+   "stem_D": 3.6,
+   "stem_Z": [
+    6.7,
+    13.0
+   ],
+   "cap_D": 8.0,
+   "cap_Z": [
+    13.0,
+    15.5
+   ]
+  },
+  "travel_note": "Switch travel ~0.25 mm. Cap-to-panel gap 1.4 mm (FR4 front Z11.6) / 1.0 mm (print front Z12.0); plunger-to-panel-rear play 0.3 mm."
+ }
+}

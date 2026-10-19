@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/8bit.kicad_pcb": "919f847f67bed6cd195489e19a2134474ebabe79f920f777b2f82c99e3295ec1",
+    "hardware/8bit.kicad_pro": "b4337e9349fdb9270bee7f9cfc48e3ac45cecf26ea330f6865b30e4eb8c867ae",
+    "hardware/8bit.kicad_sch": "97d834922f23424ee57993d2e3a55d5fed6773822a10c2a27c44cad52dafa4f5",
+    "panels/front-pcb/8bit-panel.kicad_pcb": "dcc36e381ada0b5bbd317156feb388718ffb0c100dc95bd42ada6b2cd66a5844",
+    "panels/front-pcb/8bit-panel.kicad_pro": "e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6"
+  },
+  "exports": {
+    "jlcpcb/carrier/8bit-gerbers.zip": "10486676a2b2909037f8b2dab09fe4ca555609f7b27133cdaa025cb0aeaedb25",
+    "jlcpcb/carrier/bom.csv": "64aca285771bd39c740b31db2661134be160efc55c418468af38bec831c8810c",
+    "jlcpcb/carrier/positions.csv": "9082db8b214e506ce206d00129ccc0162003ef83108fa48dce4fa55cc8541c60",
+    "jlcpcb/panel/8bit-panel-gerbers.zip": "e23f4848e22db68b0ec1191092cc6b8490cf0311f1f25771e33fe2a5db28f441"
+  }
+}
