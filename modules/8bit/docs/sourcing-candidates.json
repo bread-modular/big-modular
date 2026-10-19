@@ -1,5 +1,5 @@
 {
- "note": "Live strict JLCPCB public-catalog lookups (opt/kicad-tools/jlcpcb/assembly.py lookup --strict-live). Stock is a dated web observation, not a reservation or order acceptance.",
+ "note": "Live strict JLCPCB public-catalog lookups (opt/kicad-tools/jlcpcb/assembly.py lookup --strict-live). Stock is a dated web observation, not a reservation or order acceptance. R12 (2026-10-19): C4410 (0.25 W, Basic) replaced by ROHM ESR18EZPF1001 C2074262 (0.5 W 1206, Extended by request; no Basic 0.5 W 1k 1206 found with --basic-only) for the permanent +/-12 V mis-patch (0.28 W).",
  "parts": [
   {
    "code": "C14663",
@@ -506,23 +506,23 @@
    "issues": []
   },
   {
-   "code": "C4410",
-   "mpn": "1206W4F1001T5E",
-   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "code": "C2074262",
+   "mpn": "ESR18EZPF1001",
+   "manufacturer": "ROHM Semicon",
    "package": "1206",
-   "classification": "Basic",
+   "classification": "Extended",
    "economy_eligible": true,
-   "stock": 2049559,
+   "stock": 101178,
    "evidence": {
     "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-    "retrieved_at_utc": "2026-10-19T16:06:59Z",
+    "retrieved_at_utc": "2026-10-19T16:37:05Z",
     "http_status": 200,
     "request": {
      "currentPage": 1,
      "pageSize": 20,
-     "keyword": "C4410"
+     "keyword": "C2074262"
     },
-    "sha256": "2362ecbc4f8c20149862b9e30871e95aea339dd90f4f799e6f7eed88f6c2f92f",
+    "sha256": "cba8a5267ef5abe9f05eed187ab3ce888af6ed1a75b00bbe1c4f8873ae95ff23",
     "mode": "live",
     "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
     "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"

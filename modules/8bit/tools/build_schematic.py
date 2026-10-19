@@ -240,8 +240,8 @@ def circuit():
     c.append(part('C14', 'C', '10u', 'C0805', (231.14, 191.77), 0,
                   {'1': 'VREF_DIV', '2': 'GND'}, Voltage='25V', Note='Filters +5V noise off the offset (2 Hz)'))
     c.append(part('R12', 'R', '1k', 'R1206', (304.8, 160.02), 90,
-                  {'1': 'AMP_OUT', '2': 'AUDIO_OUT'}, Power='0.25W',
-                  Note='Output series: short / mis-patch current limit (op-amp also current-limits)'))
+                  {'1': 'AMP_OUT', '2': 'AUDIO_OUT'}, Power='0.5W',
+                  Note='Output series: short / mis-patch current limit (op-amp also current-limits); 0.5 W for a permanent +/-12 V mis-patch (0.28 W)'))
     c.append(part('J3', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (330.2, 160.02), 180,
                   {'T': 'AUDIO_OUT', 'S': 'GND', 'TN': None}, Note='Audio out, Eurorack level (~10 Vpp)'))
     c.append(part('C7', 'C', '100n', 'C0603', (355.6, 176.53), 0,
@@ -255,11 +255,12 @@ def circuit():
 
 # JLCPCB parts for every assembled (SMD, back-side) part, keyed (symbol, value, footprint).
 # Live strict lookups 2026-10-19, recorded in docs/sourcing-candidates.json. Codes shared
-# with modules/midi are the same parts. All R/C are JLCPCB Basic; U1 and U2 are Extended.
+# with modules/midi are the same parts. All R/C are JLCPCB Basic except R12 (0.5 W 1206, no
+# Basic exists); U1 and U2 are Extended.
 # The THT jacks, pots, LED and headers and the F-side SW1 are hand-soldered and carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '1k', 'R1206'): dict(LCSC='C4410', MPN='1206W4F1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM Semicon'),
     ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '12k', 'R0603'): dict(LCSC='C22790', MPN='0603WAF1202T5E', Manufacturer='UNI-ROYAL'),

@@ -41,7 +41,7 @@ STOCK_FOOTPRINTS = [
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Diode_SMD', 'D_SOD-123'),
     ('Resistor_SMD', 'R_0603_1608Metric'),
-    ('Resistor_SMD', 'R_1206_3216Metric'),
+    ('Resistor_SMD', 'R_2512_6332Metric'),
     ('Capacitor_SMD', 'C_0603_1608Metric'),
     ('Capacitor_SMD', 'C_0805_2012Metric'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),

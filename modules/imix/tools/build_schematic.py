@@ -49,7 +49,7 @@ SYMBOLS = {
 }
 
 FP = {
-    'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric', 'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
+    'R0603': 'R_0603_1608Metric', 'R2512': 'R_2512_6332Metric', 'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
     'SOD123': 'D_SOD-123', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
     'RV09': 'Potentiometer_RV09', 'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical',
     'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
@@ -165,8 +165,8 @@ def circuit():
                   {'1': 'SUM', '2': 'MIX'}, text=FB_TEXT, Note='Summer feedback (unity gain per channel)'))
     c.append(part('C13', 'C', '20p', 'C0603', (165.1, YS - CF), 90,
                   {'1': 'SUM', '2': 'MIX'}, text=CF_TEXT, Voltage='50V', Note='Summer HF roll-off / stability'))
-    c.append(part('R18', 'R', '1k', 'R1206', (193.04, YS + 2.54), 90,
-                  {'1': 'MIX', '2': 'OUT'}, Note='Output series / short-circuit protection; 1206 (250 mW): ~110 mW with a +/-10.5 V output shorted'))
+    c.append(part('R18', 'R', '1k', 'R2512', (193.04, YS + 2.54), 90,
+                  {'1': 'MIX', '2': 'OUT'}, Note='Output series / short-circuit and mis-patch protection; 2512 (1 W): ~0.51 W with a -12 V source on MIX against +10.5 V'))
     c.append(part('J5', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (215.9, YS + 2.54), 180,
                   {'T': 'OUT', 'S': 'GND', 'TN': None}, Note='Mix output'))
     psym(c, 'GND', (208.28, YS + 5.08))
@@ -238,11 +238,12 @@ def wiring():
 
 # JLCPCB parts for every assembled (SMD, back-side) part, keyed (symbol, value, footprint).
 # Live strict lookups 2026-10-19, recorded in docs/sourcing-candidates.json. All are
-# JLCPCB Basic. The THT jacks, pots and header are hand-soldered and carry no LCSC field.
+# JLCPCB Basic except the 1 W 2512 output resistor (Extended; no Basic 1 W 1k found).
+# The THT jacks, pots and header are hand-soldered and carry no LCSC field.
 SOURCING = {
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100', 'R0603'): dict(LCSC='C22775', MPN='0603WAF1000T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '1k', 'R1206'): dict(LCSC='C4410', MPN='1206W4F1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '1k', 'R2512'): dict(LCSC='C54315', MPN='25121WF1001T4E', Manufacturer='UNI-ROYAL'),
     ('C', '20p', 'C0603'): dict(LCSC='C1648', MPN='CL10C200JB8NNNC', Manufacturer='Samsung'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),

@@ -1,7 +1,7 @@
 {
-  "retrieved_utc": "2026-10-19T15:10:40Z",
+  "retrieved_utc": "2026-10-19T17:00:35Z",
   "tool": "opt/kicad-tools/jlcpcb/assembly.py audit --strict-live --boards 5 --side bottom (catalog section)",
-  "note": "Public catalog snapshot, not a stock reservation or order acceptance. Re-check before any order. C1653 (22 pF CL10C220JB8NNNC, Basic in search) was rejected because its exact strict lookup returned missing/ambiguous/truncated; C5/C6 use 20 pF C1648 instead. R8 moved from 0603 1k C21190 to 1206 1k C4410 (250 mW): a shorted MIX output at 10.5 V DC dissipates ~110 mW, above a 0603 rating. S3 adds per-channel inverting input buffers (U1/U2 TL072, U3 summer): 100R pot-drive resistors R9-R12 are C22775 (UNI-ROYAL 0603WAF1000T5E, Basic, live lookup 2026-10-19); reference designators were renumbered (output 1k is now R18, feedback caps C9-C13, decoupling C3-C8).",
+  "note": "Public catalog snapshot, not a stock reservation or order acceptance. Re-check before any order. C1653 (22 pF CL10C220JB8NNNC, Basic in search) was rejected because its exact strict lookup returned missing/ambiguous/truncated; C5/C6 use 20 pF C1648 instead. R8 moved from 0603 1k C21190 to 1206 1k C4410 (250 mW): a shorted MIX output at 10.5 V DC dissipates ~110 mW, above a 0603 rating. S3 adds per-channel inverting input buffers (U1/U2 TL072, U3 summer): 100R pot-drive resistors R9-R12 are C22775 (UNI-ROYAL 0603WAF1000T5E, Basic, live lookup 2026-10-19); reference designators were renumbered (output 1k is now R18, feedback caps C9-C13, decoupling C3-C8). R18 (2026-10-19, by request): 1206 1k C4410 (250 mW, Basic) replaced by UNI-ROYAL 25121WF1001T4E C54315 (1 W 2512, Extended; no Basic 1 W 1k found) for a permanent -12 V source patched into MIX against +10.5 V (0.51 W).",
   "parts": {
     "C15850": {
       "refs": "C1, C2",
@@ -10,7 +10,7 @@
       "package": "0805",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 9869096,
+      "stock": 9867871,
       "attributes": {
         "Voltage Rating": "25V",
         "Tolerance": "\u00b110%",
@@ -25,7 +25,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 39666586,
+      "stock": 39663559,
       "attributes": {
         "Voltage Rating": "50V",
         "Tolerance": "\u00b110%",
@@ -40,7 +40,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1789137,
+      "stock": 1792422,
       "attributes": {
         "Voltage Rating": "50V",
         "Tolerance": "\u00b15%",
@@ -55,7 +55,7 @@
       "package": "SOD-123",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 514930,
+      "stock": 541171,
       "attributes": {}
     },
     "C25803": {
@@ -65,7 +65,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 19126776,
+      "stock": 19123015,
       "attributes": {
         "Resistance": "100k\u03a9",
         "Power(Watts)": "100mW",
@@ -80,7 +80,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 10545052,
+      "stock": 10563283,
       "attributes": {
         "Resistance": "100\u03a9",
         "Power(Watts)": "100mW",
@@ -88,17 +88,17 @@
         "Temperature Coefficient": "\u00b1100ppm/\u2103"
       }
     },
-    "C4410": {
+    "C54315": {
       "refs": "R18",
-      "mpn": "1206W4F1001T5E",
+      "mpn": "25121WF1001T4E",
       "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
-      "package": "1206",
-      "classification": "Basic",
+      "package": "2512",
+      "classification": "Extended",
       "economy_eligible": true,
-      "stock": 2050396,
+      "stock": 72288,
       "attributes": {
         "Resistance": "1k\u03a9",
-        "Power(Watts)": "250mW",
+        "Power(Watts)": "1W",
         "Tolerance": "\u00b11%",
         "Temperature Coefficient": "\u00b1100ppm/\u2103"
       }
@@ -110,7 +110,7 @@
       "package": "SO-8",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 186347,
+      "stock": 186267,
       "attributes": {}
     }
   }

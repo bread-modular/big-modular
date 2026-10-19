@@ -19,8 +19,8 @@ bushing, 16 mm shaft, no nut), as `modules/audio-out`.
 **Status: S4 schematic + R3 routed carrier, JLCPCB export in `jlcpcb/`, not
 supplier-accepted, not bench-tested.** Shared `check`: ERC 0, DRC 0 at all
 severities, 0 unconnected, parity equal, source manifest equal, no exclusions
-(`docs/fit/`). Live assembly audit: all parts resolved and Economy-eligible; R12's
-fault power is the one hard fail (`jlcpcb/README.md`). No 3D fit or printed panel
+(`docs/fit/`). Live assembly audit: all parts resolved and Economy-eligible; the one
+hard fail is R12's intentional Extended class (0.5 W 1206, `jlcpcb/README.md`). No 3D fit or printed panel
 yet (`docs/research.md` §6).
 
 | Path | Contents |

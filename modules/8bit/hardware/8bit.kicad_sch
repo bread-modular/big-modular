@@ -7453,7 +7453,7 @@
 				)
 			)
 		)
-		(property "Power" "0.25W"
+		(property "Power" "0.5W"
 			(at 304.8 160.02 90)
 			(hide yes)
 			(show_name no)
@@ -7464,7 +7464,7 @@
 				)
 			)
 		)
-		(property "Note" "Output series: short / mis-patch current limit (op-amp also current-limits)"
+		(property "Note" "Output series: short / mis-patch current limit (op-amp also current-limits); 0.5 W for a permanent +/-12 V mis-patch (0.28 W)"
 			(at 304.8 160.02 90)
 			(hide yes)
 			(show_name no)
@@ -7475,7 +7475,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C4410"
+		(property "LCSC" "C2074262"
 			(at 304.8 160.02 90)
 			(hide yes)
 			(show_name no)
@@ -7486,7 +7486,7 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F1001T5E"
+		(property "MPN" "ESR18EZPF1001"
 			(at 304.8 160.02 90)
 			(hide yes)
 			(show_name no)
@@ -7497,7 +7497,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL"
+		(property "Manufacturer" "ROHM Semicon"
 			(at 304.8 160.02 90)
 			(hide yes)
 			(show_name no)
