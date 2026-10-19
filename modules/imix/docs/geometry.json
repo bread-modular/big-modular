@@ -1,0 +1,648 @@
+{
+  "revision": "S3/R3: 6HP 4-channel buffered DC mixer; each channel row = input jack (left) + level pot (right), MIX jack at the bottom of the jack column; per-channel inverting input buffers (TL072 U1/U2 between rows 1-2 and 3-4), summer U3; SMD on B; schematic-derived nets",
+  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+  "kicad_origin_mm": [
+    100.0,
+    50.0
+  ],
+  "hp": 6,
+  "panel_mm": [
+    30.0,
+    128.5
+  ],
+  "panel_pcb_thickness_mm": 1.6,
+  "panel_print_thickness_mm": 2.0,
+  "rail_holes_mm": [
+    [
+      7.5,
+      3.0,
+      3.2
+    ],
+    [
+      7.5,
+      125.5,
+      3.2
+    ]
+  ],
+  "rail_clear_gap_Y_mm": [
+    8.0,
+    120.5
+  ],
+  "rail_note": "6HP (30.0 mm, as Bread Modular Panel_6HP): one Doepfer hole pair at X7.5, as modules/midi; skiff rails leave the clear Y8.0..120.5 gap.",
+  "main_pcb": {
+    "outline_mm": [
+      0.5,
+      9.25,
+      29.5,
+      119.25
+    ],
+    "thickness_mm": 1.6,
+    "copper_layers": 2,
+    "note": "29.0 x 110.0 mm; held by the five jack bushings/nuts (the snap-in pots have no bushing)."
+  },
+  "pot_rotation_deg": 0,
+  "pot_note": "Thonk Tall Trimmer (Song Huei R0904N, 9 mm snap-in, 6 mm insulated shaft, no bushing) on the Bread Modular Potentiometer_RV09 footprint. Placed by the shaft axis = midpoint of the two bracket pads (footprint (-0.127,-0.508)); rot 0 puts pins 1-2-3 left to right 7.5 mm below the shaft seen from the front, so clockwise turns the wiper toward pin 3 (input). Each pot shares its row (shaft Y) with its input jack.",
+  "pots": [
+    {
+      "ref": "RV1",
+      "channel": 1,
+      "XY": [
+        21.0,
+        19.0
+      ]
+    },
+    {
+      "ref": "RV2",
+      "channel": 2,
+      "XY": [
+        21.0,
+        40.0
+      ]
+    },
+    {
+      "ref": "RV3",
+      "channel": 3,
+      "XY": [
+        21.0,
+        61.0
+      ]
+    },
+    {
+      "ref": "RV4",
+      "channel": 4,
+      "XY": [
+        21.0,
+        82.0
+      ]
+    }
+  ],
+  "jack_rotation_deg": 0,
+  "jack_note": "PJ301M-12 rot 0: T pad 4.92 mm above the shaft, TN/S below; body 9.0 x 10.5 mm. One jack column at X7.0: IN1-IN4 on the channel rows (21.0 mm pitch), MIX (OUT) at the bottom.",
+  "jacks": [
+    {
+      "ref": "J1",
+      "role": "IN_1",
+      "part": "QingPu WQP-PJ301M-12",
+      "XY": [
+        7.0,
+        19.0
+      ]
+    },
+    {
+      "ref": "J2",
+      "role": "IN_2",
+      "part": "QingPu WQP-PJ301M-12",
+      "XY": [
+        7.0,
+        40.0
+      ]
+    },
+    {
+      "ref": "J3",
+      "role": "IN_3",
+      "part": "QingPu WQP-PJ301M-12",
+      "XY": [
+        7.0,
+        61.0
+      ]
+    },
+    {
+      "ref": "J4",
+      "role": "IN_4",
+      "part": "QingPu WQP-PJ301M-12",
+      "XY": [
+        7.0,
+        82.0
+      ]
+    },
+    {
+      "ref": "J5",
+      "role": "OUT",
+      "part": "QingPu WQP-PJ301M-12",
+      "XY": [
+        7.0,
+        105.0
+      ]
+    }
+  ],
+  "panel_hole_diameters_mm": {
+    "jack": 6.2,
+    "pot": 7.2
+  },
+  "panel_hole_note": "Pot hole 7.2 mm = Bread Modular PanelHole_Potentiometer_RV09; it clears the 6 mm shaft by 0.6 mm radially for pot placement tolerance.",
+  "stack_Z_mm": {
+    "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+    "jack_body_top": 8.9,
+    "panel_rear_seat": 10.0,
+    "pj301m12_thread": [
+      10.0,
+      14.51
+    ],
+    "nut_thickness": 2.0,
+    "pot_body_top": 6.8,
+    "pot_collar": [
+      6.8,
+      7.8
+    ],
+    "pot_shaft_top": 25.0,
+    "pot_note": "Thonk R0904N drawing (L-25 shaft): body 6.8 mm, collar 1.0 mm, shaft to 25.0 mm above the mounting plane. The collar stays 2.2 mm behind the panel rear (Z10.0); the shaft stands 13.4 mm (FR4) / 13.0 mm (printed) proud. Thonk Tall Trimmer Toppers need >= 8 mm, ideally 12 mm.",
+    "source": "Jack values as modules/midi (slices of the Bread Modular AudioJacks STEP models)."
+  },
+  "back_side_parts": [
+    {
+      "ref": "U1",
+      "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+      "XY": [
+        16.0,
+        32.0
+      ],
+      "rot": 0,
+      "band": "between rows 1 and 2: left pins 8-5 (V+, B = ch1), right pins 1-4 (A = ch2, V-)"
+    },
+    {
+      "ref": "R5",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        11.5,
+        32.0
+      ],
+      "rot": 90,
+      "band": "ch1 feedback across pins 7 (top pad) / 6"
+    },
+    {
+      "ref": "C9",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        9.9,
+        32.0
+      ],
+      "rot": 90,
+      "band": "ch1 feedback cap beside R5"
+    },
+    {
+      "ref": "R1",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.7,
+        34.9
+      ],
+      "rot": 180,
+      "band": "ch1 input resistor below the feedback pair (IN pad left)"
+    },
+    {
+      "ref": "R9",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.7,
+        29.4
+      ],
+      "rot": 0,
+      "band": "ch1 100R above the feedback pair; POT pad left"
+    },
+    {
+      "ref": "C3",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        13.525,
+        27.75
+      ],
+      "rot": 90,
+      "band": "U1 V+ (pin 8) decoupling above pin 8"
+    },
+    {
+      "ref": "R6",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        20.5,
+        30.73
+      ],
+      "rot": 90,
+      "band": "ch2 feedback across pins 1 (top pad) / 2"
+    },
+    {
+      "ref": "C10",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        22.1,
+        30.73
+      ],
+      "rot": 90,
+      "band": "ch2 feedback cap beside R6"
+    },
+    {
+      "ref": "R2",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        21.3,
+        34.7
+      ],
+      "rot": 0,
+      "band": "ch2 input resistor below the feedback pair (IN pad right)"
+    },
+    {
+      "ref": "R10",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        23.7,
+        30.73
+      ],
+      "rot": 270,
+      "band": "ch2 100R right of the feedback pair; POT pad down to RV2"
+    },
+    {
+      "ref": "C4",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        18.475,
+        36.25
+      ],
+      "rot": 90,
+      "band": "U1 V- (pin 4) decoupling below pin 4"
+    },
+    {
+      "ref": "U2",
+      "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+      "XY": [
+        16.0,
+        74.0
+      ],
+      "rot": 0,
+      "band": "between rows 3 and 4: left pins 8-5 (V+, B = ch3), right pins 1-4 (A = ch4, V-)"
+    },
+    {
+      "ref": "R7",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        11.5,
+        74.0
+      ],
+      "rot": 90,
+      "band": "ch3 feedback across pins 7 (top pad) / 6"
+    },
+    {
+      "ref": "C11",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        9.9,
+        74.0
+      ],
+      "rot": 90,
+      "band": "ch3 feedback cap beside R7"
+    },
+    {
+      "ref": "R3",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.7,
+        76.9
+      ],
+      "rot": 180,
+      "band": "ch3 input resistor below the feedback pair (IN pad left)"
+    },
+    {
+      "ref": "R11",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.7,
+        71.4
+      ],
+      "rot": 0,
+      "band": "ch3 100R above the feedback pair; POT pad left"
+    },
+    {
+      "ref": "C5",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        13.525,
+        69.75
+      ],
+      "rot": 90,
+      "band": "U2 V+ (pin 8) decoupling above pin 8"
+    },
+    {
+      "ref": "R8",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        20.5,
+        72.73
+      ],
+      "rot": 90,
+      "band": "ch4 feedback across pins 1 (top pad) / 2"
+    },
+    {
+      "ref": "C12",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        22.1,
+        72.73
+      ],
+      "rot": 90,
+      "band": "ch4 feedback cap beside R8"
+    },
+    {
+      "ref": "R4",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        21.3,
+        76.7
+      ],
+      "rot": 0,
+      "band": "ch4 input resistor below the feedback pair (IN pad right)"
+    },
+    {
+      "ref": "R12",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        23.7,
+        72.73
+      ],
+      "rot": 270,
+      "band": "ch4 100R right of the feedback pair; POT pad down to RV4"
+    },
+    {
+      "ref": "C6",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        18.475,
+        78.25
+      ],
+      "rot": 90,
+      "band": "U2 V- (pin 4) decoupling below pin 4"
+    },
+    {
+      "ref": "R13",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        21.0,
+        23.4
+      ],
+      "rot": 90,
+      "band": "ch1 summing resistor under RV1, wiper pad down to pin 2"
+    },
+    {
+      "ref": "R14",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        21.0,
+        44.4
+      ],
+      "rot": 90,
+      "band": "ch2 summing resistor under RV2, wiper pad down to pin 2"
+    },
+    {
+      "ref": "R15",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        21.0,
+        65.4
+      ],
+      "rot": 90,
+      "band": "ch3 summing resistor under RV3, wiper pad down to pin 2"
+    },
+    {
+      "ref": "R16",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        21.0,
+        86.4
+      ],
+      "rot": 90,
+      "band": "ch4 summing resistor under RV4, wiper pad down to pin 2"
+    },
+    {
+      "ref": "C13",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        12.73,
+        90.9
+      ],
+      "rot": 0,
+      "band": "summer feedback cap above U3"
+    },
+    {
+      "ref": "R17",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        12.73,
+        92.5
+      ],
+      "rot": 0,
+      "band": "summer feedback above U3 pins 1-2"
+    },
+    {
+      "ref": "U3",
+      "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+      "XY": [
+        14.0,
+        97.5
+      ],
+      "rot": 270,
+      "band": "below RV4, left of the J10 IDC envelope: pins 1-4 up (summer), 5-8 down (spare)"
+    },
+    {
+      "ref": "C8",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        18.3,
+        95.0
+      ],
+      "rot": 0,
+      "band": "U3 V- (pin 4) decoupling"
+    },
+    {
+      "ref": "C7",
+      "footprint": "C_0603_1608Metric",
+      "XY": [
+        12.095,
+        102.9
+      ],
+      "rot": 270,
+      "band": "U3 V+ (pin 8) decoupling below pin 8"
+    },
+    {
+      "ref": "R18",
+      "footprint": "R_1206_3216Metric",
+      "XY": [
+        10.0,
+        97.0
+      ],
+      "rot": 270,
+      "band": "output series 1206 left of U3, MIX pad up, OUT pad down to the MIX jack tip"
+    },
+    {
+      "ref": "D1",
+      "footprint": "D_SOD-123",
+      "XY": [
+        25.8,
+        106.34
+      ],
+      "rot": 0,
+      "band": "+12 V series diode right of J10 pins 9/10"
+    },
+    {
+      "ref": "C1",
+      "footprint": "C_0805_2012Metric",
+      "XY": [
+        27.6,
+        103.4
+      ],
+      "rot": 90,
+      "band": "+12 V bulk"
+    },
+    {
+      "ref": "D2",
+      "footprint": "D_SOD-123",
+      "XY": [
+        25.8,
+        116.5
+      ],
+      "rot": 180,
+      "band": "-12 V series diode right of J10 pins 1/2"
+    },
+    {
+      "ref": "C2",
+      "footprint": "C_0805_2012Metric",
+      "XY": [
+        27.6,
+        113.6
+      ],
+      "rot": 270,
+      "band": "-12 V bulk"
+    },
+    {
+      "ref": "J10",
+      "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+      "XY": [
+        20.27,
+        111.42
+      ],
+      "rot": 180,
+      "band": "bottom-right, vertical; see power_header"
+    }
+  ],
+  "power_header": {
+    "ref": "J10",
+    "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+    "side": "B",
+    "pin1_XY_mm": [
+      19.0,
+      116.5
+    ],
+    "column_X_mm": [
+      19.0,
+      21.54
+    ],
+    "pin_rows_Y_mm": [
+      116.5,
+      113.96,
+      111.42,
+      108.88,
+      106.34
+    ],
+    "orientation": "Vertical, as midi: pins 1/2 (-12 V) at the bottom row Y116.5, pins 9/10 (+12 V) at the top row Y106.34.",
+    "idc16_socket_envelope_mm": {
+      "X": [
+        16.47,
+        24.07
+      ],
+      "Y": [
+        94.91,
+        120.31
+      ],
+      "bottom_above_B_mm": 2.5
+    },
+    "idc_note": "Same envelope rule as midi: a 16-pin IDC socket on the 10-pin header (pin 1 aligned) overhangs up over the board, Y94.91..120.31, inside the rail gap. B-side SMD parts under it (U3, C8, D1 edge) are below 2.5 mm (SOIC/0603/SOD-123). No THT tails under it: RV4 pins end at Y90.4."
+  },
+  "panel_labels": [
+    {
+      "text": "IMIX",
+      "XY": [
+        15.0,
+        8.0
+      ],
+      "size": 3.0
+    },
+    {
+      "text": "IN",
+      "XY": [
+        7.0,
+        12.5
+      ],
+      "size": 1.5
+    },
+    {
+      "text": "LEVEL",
+      "XY": [
+        21.0,
+        12.5
+      ],
+      "size": 1.5
+    },
+    {
+      "text": "1",
+      "XY": [
+        14.0,
+        19.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "2",
+      "XY": [
+        14.0,
+        40.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "3",
+      "XY": [
+        14.0,
+        61.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "4",
+      "XY": [
+        14.0,
+        82.0
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "MIX",
+      "XY": [
+        21.0,
+        105.0
+      ],
+      "size": 2.0
+    },
+    {
+      "text": "BIG MODULAR",
+      "XY": [
+        15.0,
+        116.0
+      ],
+      "size": 1.2
+    }
+  ],
+  "back_silk": [
+    {
+      "text": "-12V",
+      "XY": [
+        15.5,
+        116.5
+      ],
+      "size": 0.8
+    },
+    {
+      "text": "IMIX R3",
+      "XY": [
+        5.0,
+        117.6
+      ],
+      "size": 0.8
+    }
+  ]
+}
