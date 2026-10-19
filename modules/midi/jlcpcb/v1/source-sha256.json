@@ -2,16 +2,17 @@
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_cli": "10.0.6",
   "sources": {
-    "hardware/v1/midi.kicad_pcb": "e99ec404ce789c56e8e17eaccda157199d27e6832ceb1ecb04f0d729133809e2",
+    "hardware/v1/midi.kicad_pcb": "f1af0a050ce838ab668ab36c213664c52498ac5d2f7b7d35e26db8705188f071",
     "hardware/v1/midi.kicad_pro": "d4fe2f305c6613a1c0186c7cef4a40a5ce36714e00cac635064ebd5999d4a5c2",
-    "hardware/v1/midi.kicad_sch": "245db40d54a29ca96c01690b1b47e70fced984da89ce177e9470e3bbf4751144",
+    "hardware/v1/midi.kicad_sch": "dd58c3b4b6f7f99e0a1f8037a57cf6fcb039db82f8f53d78e8e5f1c2287df3be",
     "panels/front-pcb/midi-panel.kicad_pcb": "c0e0cd7924a8ec1f52c5319f707667d83c51914fabf856feda238937fcdf3ff6",
-    "panels/front-pcb/midi-panel.kicad_pro": "a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c"
+    "panels/front-pcb/midi-panel.kicad_pro": "a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c",
+    "hardware/v1/out.kicad_sch": "c6308694bed8fc728e09087815ed6fd04d6da39c257aa438d91683c8103826bb"
   },
   "exports": {
-    "jlcpcb/v1/carrier/midi-gerbers.zip": "441439ddc21fdce634d6f8c08a6b0175c41559a6d50b18247cd56fdb316c10c7",
-    "jlcpcb/v1/carrier/bom.csv": "582708e5515e18ed897face63b55de85cf39a2e505848e7443320221f915b2ce",
-    "jlcpcb/v1/carrier/positions.csv": "80b625f1da085144d036de848d018433632d6856c87115a1727d7f0b42cc9efc",
-    "jlcpcb/v1/panel/midi-panel-gerbers.zip": "6c5e63782acb7efac42eb0045af6d8ed8707dd2bb63d510f5ec9ace1d3b371db"
+    "jlcpcb/v1/carrier/midi-gerbers.zip": "d427621f87e9d842c9de11bfa1bdbee1e956face4a20aa6a559ef7422e69780b",
+    "jlcpcb/v1/carrier/bom.csv": "a8eceff4a7f4a406a78feb3566d9e9e420547961b7307f2d980960495cbcd5a5",
+    "jlcpcb/v1/carrier/positions.csv": "3679d098d668b14fae44a68cdd26e62e4846ee515e625aa6cd83b2b4e32a8726",
+    "jlcpcb/v1/panel/midi-panel-gerbers.zip": "1b48e41e315dd8554f0fd65b0f643e1f79c7ec311de2416be8337410ce47171e"
   }
 }

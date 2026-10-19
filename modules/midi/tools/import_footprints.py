@@ -17,7 +17,8 @@ intentional edits are on the two jacks:
   Y -7.25..7.58) is sized around the reference text, not the body; the model body
   is X +/-4.5 (PJ301M-12) / +/-5.0 (PJ366ST), Y -6.0..4.5 with the S pad to 7.53.
 
-V2 adds the stock footprints of its protection parts (V2_FOOTPRINTS). The STEP files
+Both carry SOT-23 for the LED driver transistors. V2 adds the stock footprints of its
+protection parts (V2_FOOTPRINTS). The STEP files
 are copied byte-exactly. hardware/<version>/MIDI.pretty/PROVENANCE.json records
 source paths and SHA-256 of every input and output.
 """
@@ -36,6 +37,7 @@ STOCK_FOOTPRINTS = [
     ('LED_THT', 'LED_D3.0mm'),
     ('Package_DFN_QFN', 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm'),
     ('Package_TO_SOT_SMD', 'SOT-89-3'),
+    ('Package_TO_SOT_SMD', 'SOT-23'),           # LED driver transistors Q11-Q18 (both versions)
     ('Diode_SMD', 'D_SOD-123'),
     ('Resistor_SMD', 'R_0603_1608Metric'),
     ('Resistor_SMD', 'R_1206_3216Metric'),
@@ -46,10 +48,9 @@ STOCK_FOOTPRINTS = [
     ('Connector_PinHeader_2.54mm', 'PinHeader_1x03_P2.54mm_Vertical'),
 ]
 
-# V2 input front end (Q1, U2 shunt), output clamps (SOT-323 BAT54SW), 0805 output resistors
-# and the JP2 input-bypass solder jumper (copper only, shipped open; bridged by hand).
+# V2 input front end (Q1, U2 shunt: SOT-23 above), output clamps (SOT-323 BAT54SW), 0805
+# output resistors and the JP2 input-bypass solder jumper (copper only, shipped open; bridged by hand).
 V2_FOOTPRINTS = [
-    ('Package_TO_SOT_SMD', 'SOT-23'),
     ('Package_TO_SOT_SMD', 'SOT-323_SC-70'),
     ('Resistor_SMD', 'R_0805_2012Metric'),
     ('Jumper', 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm'),

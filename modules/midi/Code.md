@@ -1,4 +1,4 @@
-# midi contract (V1: S4/R5, V1.0 export; V2: S3/R3, V2.0 export)
+# midi contract (V1: S5/R6, V1.0 export; V2: S4/R4, V2.0 export)
 
 There are two hardware versions. Each is a complete, independently checked KiCad
 project with its own generators, shared-tool profile and fabrication export:
@@ -22,7 +22,13 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
 - Outputs: eight TS jacks, **QingPu WQP-PJ301M-12** (PCB-soldered, panel-fixed with
   their own nut). Tip = per-channel MIDI, sleeve = GND. They drive another module's
   ATtiny1616 RX through **1 k** at **5 V**.
-- Eight LEDs, hand-soldered 3 mm THT.
+- Eight LEDs, hand-soldered 3 mm THT, **switched by a transistor, not driven by
+  the MCU pin** (Bread Modular `gate_out`): GPIO -> 10 k -> MMBT3904 base (emitter
+  GND); +5V -> LED -> 1 k -> collector. Q11-Q18, R31-R38 (base), LED resistors keep
+  R4, R6, R8, R10, R13, R15, R17, R19. LEDs are rotated 270 (cathode up).
+- Each output (series 1 k, TS jack, LED driver; V2 also its clamp) is one
+  hierarchical sheet, `hardware/<v>/out.kicad_sch`, instanced eight times as
+  CH1-CH8 (ports TX, LED, +5V, GND).
 - MCU: ATtiny1616. Supply is Eurorack +12 V through a simple linear regulator;
   the logic rail is **5 V** (decision D1, HT7550-1).
 - MIDI IN must accept 3.3 V and 5 V MIDI senders. **No optocoupler in V1 or V2.**
@@ -76,7 +82,7 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
 
 ## Sources and generators (per version)
 
-- `tools/<v>/build_schematic.py` owns `hardware/<v>/midi.kicad_sch`,
+- `tools/<v>/build_schematic.py` owns `hardware/<v>/midi.kicad_sch`, `out.kicad_sch`,
   `MIDI.kicad_sym` and `sym-lib-table`: stock KiCad 10 symbols, flattened and pinned
   (recorded in the version's `schematic-symbols.json`; the only edit is
   footprint-filter patterns that drop the stock library names). Every pin has a
@@ -86,7 +92,8 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
 - The version's `geometry.json` owns placement; `docs/geometry.json` also owns the
   panel and the stack. `tools/<v>/build_layout.py` places from it and takes
   references, values, fields, symbol links and pad nets **only** from the native
-  netlist exported from the schematic. It vendors 3D models into
+  netlist exported from the schematic, including each footprint's hierarchical sheet
+  path. It vendors 3D models into
   `hardware/<v>/_kicad_models/<sha256>/` (the usb-power convention that `pcb promote`
   resolves) and writes an **unrouted** board. Only `tools/v1/build_layout.py` writes
   the panel.
@@ -95,10 +102,13 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
   - V1: R1 routing, two GND stitching vias from R2, the R3 regulator group beside J10
     on its VIN_LDO heat sink with reshaped GND pours, and the R4 direct RX track to
     JP1. R5 only dropped the B silk `JLCJLCJLCJLC` marker, which
-    `tools/v1/build_layout.py` no longer writes (copper unchanged).
+    `tools/v1/build_layout.py` no longer writes (copper unchanged). R6 adds the LED
+    driver clusters, the F.Cu +5V LED anode rail at x 118.6 and the moved RX/LED4
+    lanes (`docs/research.md` §3.6).
   - V2: the V1 copper plus the clamps, the F.Cu +5V clamp rail and spine, the input
     stage, U2, the moved R10, (R2) JP2 with its RX/RX_Q/MIDI_IN tracks and (R3)
-    JP2 as the open footprint (`docs/research.md` §7.5). Its item UUIDs use the
+    JP2 as the open footprint, and (R4) the LED driver clusters with the turned
+    clamps D11-D17 (`docs/research.md` §7.5). Its item UUIDs use the
     `big-modular/midi-v2/route/` uuid5 namespace (V1: `big-modular/midi/route/`).
 
   A plan reproduces its board only on the matching placement, through
@@ -120,7 +130,8 @@ Shared by both: the panels (`panels/`), `docs/mechanics.md`, `docs/research.md`,
 - Local footprint edits are limited to the two jack courtyards (resized to the
   model envelope), removal of two decorative jack silk arcs, and the documented
   U1 3D-model proxy. All are recorded in `hardware/<v>/MIDI.pretty/PROVENANCE.json`.
-  V2's library adds the stock SOT-23, SOT-323_SC-70, R_0805 and
+  V1's library adds the stock SOT-23 (S5, unedited). V2's library adds the stock
+  SOT-23, SOT-323_SC-70, R_0805 and
   SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm footprints, unedited.
 
 ## Shared-tool profiles and manifests
@@ -151,13 +162,16 @@ The checks below were rerun on the rebuilt tree.
   `jlcpcb/<v>/source-sha256.json` manifest equal.
 - The shared assembly audit (native mode, `--strict-live`, `--side bottom`):
   catalog codes, MPNs, Economy and stock pass for both; the human review gates stay
-  open (`docs/research.md` §5, §7.6).
+  open (`docs/research.md` §5, §7.6). It was not rerun after the LED drivers
+  (V1 S5/R6, V2 S4/R4).
 - `tools/fit_assembly.sh v1|v2`: nominal 3D check, 0 mm³ interference against both
   panels, board inside the rail gap and the panel width. The two reports are
   identical.
 - Not covered by DRC (different-side items): through-hole header pads on F were
   checked against F-side jack/LED courtyards (no overlap), and the 16-pin IDC
   socket envelope against the slot, the rail gap and B-side part heights
-  (`docs/mechanics.md`). No V2 part sits inside the envelope.
+  (`docs/mechanics.md`). Since S5/R6 (V1) and S4/R4 (V2) the LED drivers put
+  0603/SOT-23 parts under the envelope's top edge (V1 R38; V2 Q18, R38), all below
+  the 2.5 mm socket floor.
 - No bench, physical-fit, order-ready or supplier-acceptance claim. The
   remaining order gates are listed in `jlcpcb/<v>/README.md`.

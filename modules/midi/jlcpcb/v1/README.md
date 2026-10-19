@@ -1,4 +1,4 @@
-# midi — manufacturing export (V1.0, S4/R5)
+# midi — manufacturing export (V1.0, S5/R6)
 
 Generated from the current accepted sources with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
@@ -23,7 +23,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | Order | Files | Options |
 |---|---|---|
 | Carrier PCB | `midi-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.05 x 110.05 mm, 1 oz, HASL, standard everything else. The board has no `JLCJLCJLCJLC` marker (removed in R5), so pick the order-number option deliberately: "Remove" (check the quote for any fee), or JLCPCB prints the number where it chooses |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 25 parts in 9 BOM rows, all on the back |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 41 parts in 11 BOM rows, all on the back |
 | Front panel PCB | `midi-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 20.05 x 128.55 mm (4HP), no assembly; black mask suits a panel |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -52,9 +52,10 @@ Soldering notes:
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift.
 
-- Carrier PCB `e99ec404ce789c56e8e17eaccda157199d27e6832ceb1ecb04f0d729133809e2`.
+- Carrier PCB `f1af0a050ce838ab668ab36c213664c52498ac5d2f7b7d35e26db8705188f071`.
 - Carrier project `d4fe2f305c6613a1c0186c7cef4a40a5ce36714e00cac635064ebd5999d4a5c2`.
-- Carrier schematic `245db40d54a29ca96c01690b1b47e70fced984da89ce177e9470e3bbf4751144`.
+- Carrier schematic `dd58c3b4b6f7f99e0a1f8037a57cf6fcb039db82f8f53d78e8e5f1c2287df3be`.
+- Output channel sheet `hardware/v1/out.kicad_sch` `c6308694bed8fc728e09087815ed6fd04d6da39c257aa438d91683c8103826bb`.
 - Panel PCB `c0e0cd7924a8ec1f52c5319f707667d83c51914fabf856feda238937fcdf3ff6`.
 - Panel project `a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c`.
 
@@ -96,10 +97,11 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/midi-symbols.xml hardware
 
 ## Checks done for this export
 
-Re-exported on 2026-10-19 after the sources moved to `hardware/v1/` (no source
-byte changed; `docs/rebuild-status.md`): `bom.csv` and `positions.csv` are
-byte-identical to the audited export, and the Gerber/drill files differ only in
-their creation date.
+Re-exported on 2026-10-19 for S5/R6: Bread Modular `gate_out` transistor LED
+drivers (Q11-Q18 MMBT3904, R31-R38 10 k) on the hierarchical output channel sheet,
+LEDs rotated 270 (`docs/research.md` §3.4, §3.6). The exporter reports 41
+components in 11 BOM rows, bottom side, no missing part numbers, and the same 20
+THT refs excluded.
 
 - **Shared `check`:** `no_findings_in_requested_checks`. That covers:
   - ERC 0 and DRC 0 at all severities, with zones refilled;
@@ -107,14 +109,16 @@ their creation date.
   - ref/pin/net parity equal;
   - the manifest equal.
 - **Panel DRC:** 0.
-- **Drill files:** 78 round PTH hits plus 27 routed slots (the 3 jack lugs × 9
-  jacks) = 105. That matches 47 vias + 58 THT pads. There are no NPTH holes on the
+- **Drill files:** 79 round PTH hits plus 27 routed slots (the 3 jack lugs × 9
+  jacks) = 106. That matches 48 vias + 58 THT pads. There are no NPTH holes on the
   carrier.
 - **Gerber ZIP:** has both copper layers with their pours (GND and the VIN_LDO
   heat sink), both masks, silkscreens and pastes, the edge, and PTH/NPTH drills.
   F.Paste is empty because there are no front SMD parts.
 - **3D fit:** 0 mm³ interference against both panels (`docs/fit/fit-report.json`).
-- **Assembly audit** (live, 5 boards):
+- **Assembly audit** (live, 5 boards; run on S4/R5, **not rerun for S5/R6**: Q11-Q18
+  and R31-R38 reuse the C20526/C25804 observations from the V2 audit, so run it
+  again before ordering):
   - Every C-code, MPN, Economy flag and stock level passes.
   - R/C parts are Basic except R20, which is Extended by choice.
   - R20 passes its stress check.

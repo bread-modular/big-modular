@@ -4,10 +4,12 @@ Run from modules/midi:
   python3 -B tools/v1/build_schematic.py
 
 Writes hardware/v1/MIDI.kicad_sym (stock KiCad 10 symbols, derived symbols flattened,
-renamed into the MIDI library), hardware/v1/sym-lib-table and the flat root schematic,
-then lets `kicad-cli sch upgrade --force` re-save it natively. CIRCUIT below is the
-circuit intent of docs/research.md section 3. Every pin gets a short stub and a
-local net label (usb-power style), so connectivity is explicit by name.
+renamed into the MIDI library), hardware/v1/sym-lib-table, the root schematic and the
+output channel sheet hardware/v1/out.kicad_sch, then lets `kicad-cli sch upgrade --force`
+re-save them natively. The channel sheet (series 1 k, TS jack, Bread Modular `gate_out`
+LED driver) is instanced eight times as CH1-CH8. circuit() and channel() are the circuit
+intent of docs/research.md section 3. Every pin gets a short stub and a local (or, for the
+sheet ports, hierarchical) net label (usb-power style), so connectivity is explicit by name.
 
 The PCB never reads this table: tools/v1/build_layout.py takes nets, values and
 footprints from the native netlist that kicad-cli exports from this schematic.
@@ -50,6 +52,7 @@ SYMBOLS = {
     'Jumper_3_Open': ('Jumper', 'Jumper_3_Open'),
     'Conn_01x02': ('Connector_Generic', 'Conn_01x02'),
     'Conn_02x05_Odd_Even': ('Connector_Generic', 'Conn_02x05_Odd_Even'),
+    'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
     'PWR_FLAG': ('power', 'PWR_FLAG'),
 }
 
@@ -58,7 +61,7 @@ FP = {
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
     'SOD123': 'D_SOD-123', 'LED3': 'LED_D3.0mm',
     'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm',
-    'SOT89': 'SOT-89-3', 'PJ366ST': 'Jack_3.5mm_QingPu_WQP-PJ366ST_Vertical',
+    'SOT89': 'SOT-89-3', 'SOT23': 'SOT-23', 'PJ366ST': 'Jack_3.5mm_QingPu_WQP-PJ366ST_Vertical',
     'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical',
     'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H1x3': 'PinHeader_1x03_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
 }
@@ -68,6 +71,14 @@ OUT_PINS = {1: 6, 2: 7, 3: 8, 4: 9, 5: 10, 6: 13, 7: 14, 8: 12}   # PA5 PA6 PA7 
 LED_PINS = {1: 15, 2: 16, 3: 17, 4: 18, 5: 20, 6: 1, 7: 2, 8: 5}  # PC0-PC3, PA1-PA4
 CH_RES = {1: ('R3', 'R4'), 2: ('R5', 'R6'), 3: ('R7', 'R8'), 4: ('R9', 'R10'),
           5: ('R12', 'R13'), 6: ('R14', 'R15'), 7: ('R16', 'R17'), 8: ('R18', 'R19')}
+# Channel sheet CHn: TX -> RTX -> J tip; LED -> RB 10k -> Q base; +5V -> D -> RLED -> Q collector.
+SHEET = 'out.kicad_sch'
+PORTS = {'TX': 'input', 'LED': 'input', '+5V': 'passive', 'GND': 'passive'}
+
+
+def channel_refs(ch):
+    rout, rled = CH_RES[ch]
+    return {'RTX': rout, 'J': f'J{ch + 1}', 'RB': f'R{ch + 30}', 'Q': f'Q{ch + 10}', 'RLED': rled, 'D': f'D{ch}'}
 
 
 def part(ref, sym, value, fp, at, rot, pins, **fields):
@@ -126,19 +137,34 @@ def circuit():
                   {'1': 'UPDI', '2': 'GND'},
                   Note='Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power'))
 
-    # ---- Outputs: GPIO -> 1k -> TS tip; GPIO -> 1k -> LED -> GND
+    # ---- Outputs: one channel sheet per output (channel() below)
     for ch in range(1, 9):
         col, row = (ch - 1) // 4, (ch - 1) % 4
-        x0, y0 = 256.54 + col * 76.2, 45.72 + row * 33.02
-        rout, rled = CH_RES[ch]
-        c.append(part(rout, 'R', '1k', 'R0603', (x0, y0), 90,
-                      {'1': f'CH{ch}_TX', '2': f'OUT{ch}'}, Note=f'Output {ch} series (Bread Modular)'))
-        c.append(part(f'J{ch + 1}', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (x0 + 43.18, y0 + 2.54), 0,
-                      {'T': f'OUT{ch}', 'S': 'GND', 'TN': None}, Note=f'MIDI out {ch} (TS)'))
-        c.append(part(rled, 'R', '1k', 'R0603', (x0, y0 + 12.7), 90,
-                      {'1': f'CH{ch}_LED', '2': f'LED{ch}_A'}, Note=f'LED {ch} current'))
-        c.append(part(f'D{ch}', 'LED', 'LED_3mm_red', 'LED3', (x0 + 30.48, y0 + 12.7), 180,
-                      {'2': f'LED{ch}_A', '1': 'GND'}, Note='Hand-soldered 3 mm THT'))
+        c.append(dict(sheet=f'CH{ch}', at=(256.54 + col * 76.2, 45.72 + row * 33.02),
+                      pins={'TX': f'CH{ch}_TX', 'LED': f'CH{ch}_LED', '+5V': '+5V', 'GND': 'GND'}))
+    for p in c:
+        if 'sym' in p:
+            p['fields'].update(SOURCING.get((p['sym'], p['value'], p['fp']), {}))
+    return c
+
+
+def channel():
+    """Output channel sheet: ports TX, LED, +5V, GND; refs are keys of channel_refs().
+    GPIO -> 1k -> TS tip (Bread Modular). LED driver as Bread Modular gate_out: the GPIO
+    switches Q through 10k and the LED current comes from +5V, not from the GPIO pin."""
+    c = [part('RTX', 'R', '1k', 'R0603', (50.8, 50.8), 90,
+              {'1': 'TX', '2': 'OUT'}, Note='Output series (Bread Modular)'),
+         part('J', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (93.98, 53.34), 0,
+              {'T': 'OUT', 'S': 'GND', 'TN': None}, Note='MIDI out (TS)'),
+         part('RB', 'R', '10k', 'R0603', (50.8, 99.06), 90,
+              {'1': 'LED', '2': 'Q_B'}, Note='Base resistor (Bread Modular gate_out)'),
+         part('Q', 'MMBT3904', 'MMBT3904', 'SOT23', (76.2, 99.06), 0,
+              {'1': 'Q_B', '2': 'GND', '3': 'Q_C'},
+              Note='LED switch: the LED current comes from +5V, not from the GPIO (Bread Modular SS8050)'),
+         part('D', 'LED', 'LED_3mm_red', 'LED3', (101.6, 76.2), 90,
+              {'2': '+5V', '1': 'LED_K'}, Note='Hand-soldered 3 mm THT'),
+         part('RLED', 'R', '1k', 'R0603', (127.0, 88.9), 90,
+              {'1': 'LED_K', '2': 'Q_C'}, Note='LED current, ~3 mA from +5V')]
     for p in c:
         p['fields'].update(SOURCING.get((p['sym'], p['value'], p['fp']), {}))
     return c
@@ -151,6 +177,7 @@ def circuit():
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '39', 'R1206'): dict(LCSC='C414944', MPN='HP06W2F390JT5E', Manufacturer='UNI-ROYAL'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0805'): dict(LCSC='C28323', MPN='CL21B105KBFNNNE', Manufacturer='Samsung'),
@@ -159,6 +186,8 @@ SOURCING = {
     ('HT75xx-1-SOT89', 'HT7550-1', 'SOT89'): dict(LCSC='C16106', MPN='HT7550-1', Manufacturer='Holtek'),
     ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR',
                                                        Manufacturer='Microchip'),
+    ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
+                                            Manufacturer='CJ (Jiangsu Changjing)'),
 }
 
 
@@ -172,6 +201,7 @@ TEXT_AT = {
     'Jumper_3_Open': ((0, -6.35), (0, -3.81)),
     'AudioJack2_SwitchT': ((0, -6.35), (0, 6.35)),
     'PWR_FLAG': ((0, -5.08), (0, -2.54)),
+    'MMBT3904': ((10.16, -1.27), (10.16, 1.27)),
 }
 
 TEXTS = [
@@ -186,7 +216,15 @@ TEXTS = [
                      'Opto-isolated input (ground-loop break, voltage-sensed) is deferred to V2.', 1.1),
     ((175.26, 71.12), 'MCU: ATtiny1616 at 5 V, 20 MHz; pin map identical to Bread Modular', 1.4),
     ((175.26, 177.8), 'UPDI J11: pin 1 UPDI, pin 2 GND (2.54 mm). Power the module from Eurorack while programming.', 1.1),
-    ((256.54, 33.02), 'OUTPUTS 1-8: GPIO -> 1k -> TS tip (sleeve GND); GPIO -> 1k -> LED -> GND', 1.4),
+    ((256.54, 33.02), 'OUTPUTS 1-8: sheets CH1-CH8 (out.kicad_sch): GPIO -> 1k -> TS tip (sleeve GND);\n'
+                      'LED: GPIO -> 10k -> NPN, +5V -> LED -> 1k -> collector (Bread Modular gate_out)', 1.4),
+]
+
+CH_TEXTS = [
+    ((25.4, 25.4), 'OUTPUT CHANNEL (instanced as CH1-CH8). TX = U1 output pin, LED = U1 LED pin.', 1.6),
+    ((25.4, 33.02), 'MIDI out: TX -> 1k -> TS tip, sleeve GND (Bread Modular).', 1.27),
+    ((25.4, 116.84), 'LED driver as Bread Modular gate_out (SS8050 there): the GPIO only drives the base\n'
+                     'through 10k (~0.4 mA); the ~3 mA LED current comes from +5V through the LED and 1k.', 1.27),
 ]
 
 
@@ -266,25 +304,33 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - MIDI") (rev "S4") (company "Big Modular")
-        (comment 1 "SCHEMATIC S3 - 5 V logic - not released, not for fabrication")
+      (title_block (title "Big Modular - MIDI") (rev "S5") (company "Big Modular")
+        (comment 1 "SCHEMATIC S5 - 5 V logic, LED transistor drivers - not released, not for fabrication")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
-    embedded = one(sch, 'lib_symbols')
-    for k in sorted(lib_syms):
-        s = copy.deepcopy(lib_syms[k])
-        s[1] = 'MIDI:' + k
-        embedded.append(s)
+    sub = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
+      (uuid {q(uid('out/file'))}) (paper "A4")
+      (title_block (title "Big Modular - MIDI output channel") (rev "S5") (company "Big Modular")
+        (comment 1 "Instanced as CH1-CH8 in midi.kicad_sch")
+        (comment 2 "Circuit intent: docs/research.md 3.4"))
+      (lib_symbols))''')
+    for doc in (sch, sub):
+        embedded = one(doc, 'lib_symbols')
+        for k in sorted(lib_syms):
+            s = copy.deepcopy(lib_syms[k])
+            s[1] = 'MIDI:' + k
+            embedded.append(s)
 
-    items, nets = [], {}
-    for p in circuit():
+    def symbol(p, key, instances, items, nets):
+        """Symbol p with one stub + label per pin; instances = [(path, ref)]."""
         sym = lib_syms[p['sym']]
         pins = pin_table(sym)
         assert set(p['pins']) == set(pins), (p['ref'], sorted(pins), sorted(p['pins']))
         x, y = p['at']
-        is_flag = p['ref'].startswith('#')
-        dr, dv = TEXT_AT.get(p['ref'], TEXT_AT.get(p['sym'], ((0, -3.81), (0, 3.81))))
-        props = [('Reference', p['ref'], (x + dr[0], y + dr[1]), False),
+        ref = instances[0][1]
+        is_flag = ref.startswith('#')
+        dr, dv = TEXT_AT.get(ref, TEXT_AT.get(p['sym'], ((0, -3.81), (0, 3.81))))
+        props = [('Reference', ref, (x + dr[0], y + dr[1]), False),
                  ('Value', p['value'], (x + dv[0], y + dv[1]), is_flag),
                  ('Footprint', f"MIDI:{FP[p['fp']]}" if p['fp'] else '', (x, y), True),
                  ('Datasheet', next((pp[2] for pp in nodes(sym, 'property') if pp[1] == 'Datasheet'), ''), (x, y), True),
@@ -296,55 +342,120 @@ def build():
                 [atom('in_bom'), atom('no' if is_flag else 'yes')],
                 [atom('on_board'), atom('no' if is_flag else 'yes')],
                 [atom('in_pos_files'), atom('no' if is_flag else 'yes')], [atom('dnp'), atom('no')],
-                [atom('uuid'), uid('sym/' + p['ref'])]]
+                [atom('uuid'), uid('sym/' + key)]]
         for name, value, (px, py), hide in props:
             prop = [atom('property'), name, value, [atom('at'), r(px), r(py), fang],
                     [atom('effects'), [atom('font'), [atom('size'), 1.27, 1.27]]]]
             if hide:
                 prop[-1].append([atom('hide'), atom('yes')])
             node.append(prop)
-        node += [[atom('pin'), n, [atom('uuid'), uid(f"pin/{p['ref']}/{n}")]] for n in sorted(pins)]
-        node.append([atom('instances'), [atom('project'), PROJECT,
-                     [atom('path'), '/' + root, [atom('reference'), p['ref']], [atom('unit'), 1]]]])
+        node += [[atom('pin'), n, [atom('uuid'), uid(f"pin/{key}/{n}")]] for n in sorted(pins)]
+        node.append([atom('instances'), [atom('project'), PROJECT] + [
+            [atom('path'), path, [atom('reference'), rf], [atom('unit'), 1]] for path, rf in instances]])
         items.append(node)
         for n, net in sorted(p['pins'].items()):
             px, py, ang, _ = pins[n]
             ox, oy = xform(px, py, p['rot'])
-            ex, ey = r(x + ox), r(y + oy)
-            key = f"{p['ref']}/{n}"
-            if net is None:
-                items.append([atom('no_connect'), [atom('at'), ex, ey], [atom('uuid'), uid('nc/' + key)]])
-                continue
-            nets.setdefault(net, []).append(key)
-            dx, dy = outward(ang, p['rot'])
-            sx, sy = r(ex + dx * STUB), r(ey + dy * STUB)
-            items.append([atom('wire'), [atom('pts'), [atom('xy'), ex, ey], [atom('xy'), sx, sy]],
-                          [atom('stroke'), [atom('width'), 0], [atom('type'), atom('default')]],
-                          [atom('uuid'), uid('wire/' + key)]])
-            lang, just = {(1, 0): (0, 'left'), (-1, 0): (180, 'right'),
-                          (0, -1): (90, 'left'), (0, 1): (270, 'right')}[(dx, dy)]
-            items.append([atom('label'), net, [atom('at'), sx, sy, lang],
-                          [atom('effects'), [atom('font'), [atom('size'), 1.27, 1.27]],
-                           [atom('justify'), atom(just), atom('bottom')]],
+            stub(items, nets, f'{key}/{n}', r(x + ox), r(y + oy), outward(ang, p['rot']), net)
+
+    def stub(items, nets, key, ex, ey, d, net, hier=False):
+        if net is None:
+            items.append([atom('no_connect'), [atom('at'), ex, ey], [atom('uuid'), uid('nc/' + key)]])
+            return
+        nets.setdefault(net, []).append(key)
+        dx, dy = d
+        sx, sy = r(ex + dx * STUB), r(ey + dy * STUB)
+        items.append([atom('wire'), [atom('pts'), [atom('xy'), ex, ey], [atom('xy'), sx, sy]],
+                      [atom('stroke'), [atom('width'), 0], [atom('type'), atom('default')]],
+                      [atom('uuid'), uid('wire/' + key)]])
+        lang, just = {(1, 0): (0, 'left'), (-1, 0): (180, 'right'),
+                      (0, -1): (90, 'left'), (0, 1): (270, 'right')}[(dx, dy)]
+        effects = [atom('effects'), [atom('font'), [atom('size'), 1.27, 1.27]],
+                   [atom('justify'), atom(just), atom('bottom')]]
+        if hier:
+            effects[-1] = [atom('justify'), atom(just)]
+            items.append([atom('hierarchical_label'), net, [atom('shape'), atom(PORTS[net])],
+                          [atom('at'), sx, sy, lang], effects, [atom('uuid'), uid('hlabel/' + key)]])
+        else:
+            items.append([atom('label'), net, [atom('at'), sx, sy, lang], effects,
                           [atom('uuid'), uid('label/' + key)]])
+
+    def texts(items, entries, prefix):
+        for i, ((x, y), s, size) in enumerate(entries):
+            items.append([atom('text'), s, [atom('exclude_from_sim'), atom('no')], [atom('at'), x, y, 0],
+                          [atom('effects'), [atom('font'), [atom('size'), size, size]], [atom('justify'), atom('left')]],
+                          [atom('uuid'), uid(f'{prefix}{i}')]])
+
+    items, nets, sheets = [], {}, []
+    for p in circuit():
+        if 'sheet' in p:
+            sheets.append(p)
+            continue
+        symbol(p, p['ref'], [('/' + root, p['ref'])], items, nets)
+    paths = {}
+    for page, p in enumerate(sheets, start=2):
+        x, y = p['at']
+        sid = uid('sheet/' + p['sheet'])
+        paths[p['sheet']] = f'/{root}/{sid}'
+        w, h = 25.4, 15.24
+        node = [atom('sheet'), [atom('at'), x, y], [atom('size'), w, h],
+                [atom('exclude_from_sim'), atom('no')], [atom('in_bom'), atom('yes')],
+                [atom('on_board'), atom('yes')], [atom('dnp'), atom('no')],
+                [atom('stroke'), [atom('width'), 0.1524], [atom('type'), atom('solid')]],
+                [atom('fill'), [atom('color'), 0, 0, 0, 0.0]], [atom('uuid'), sid],
+                [atom('property'), 'Sheetname', p['sheet'], [atom('at'), x, r(y - 0.7), 0],
+                 [atom('effects'), [atom('font'), [atom('size'), 1.27, 1.27]], [atom('justify'), atom('left'), atom('bottom')]]],
+                [atom('property'), 'Sheetfile', SHEET, [atom('at'), x, r(y + h + 0.6), 0],
+                 [atom('effects'), [atom('font'), [atom('size'), 1.27, 1.27]], [atom('justify'), atom('left'), atom('top')]]]]
+        for k, (port, net) in enumerate(p['pins'].items()):
+            py = r(y + 2.54 * (k + 1))
+            node.append([atom('pin'), port, atom(PORTS[port]), [atom('at'), x, py, 180],
+                         [atom('uuid'), uid(f"sheetpin/{p['sheet']}/{port}")],
+                         [atom('effects'), [atom('font'), [atom('size'), 1.27, 1.27]], [atom('justify'), atom('left')]]])
+            stub(items, nets, f"{p['sheet']}/{port}", x, py, (-1, 0), net)
+        node.append([atom('instances'), [atom('project'), PROJECT,
+                     [atom('path'), '/' + root, [atom('page'), str(page)]]]])
+        items.append(node)
     single = {n: k for n, k in nets.items() if len(k) < 2}
     assert not single, f'single-pin nets: {single}'
-    for i, ((x, y), s, size) in enumerate(TEXTS):
-        items.append([atom('text'), s, [atom('exclude_from_sim'), atom('no')], [atom('at'), x, y, 0],
-                      [atom('effects'), [atom('font'), [atom('size'), size, size]], [atom('justify'), atom('left')]],
-                      [atom('uuid'), uid(f'text/{i}')]])
+    texts(items, TEXTS, 'text/')
     sch += items
     sch.append([atom('sheet_instances'), [atom('path'), '/', [atom('page'), '1']]])
     sch.append([atom('embedded_fonts'), atom('no')])
+
+    sub_items, sub_nets = [], {}
+    for p in channel():
+        key = 'out/' + p['ref']
+        instances = [(paths[f'CH{ch}'], channel_refs(ch)[p['ref']]) for ch in range(1, 9)]
+        sym = lib_syms[p['sym']]
+        pins = pin_table(sym)
+        hier = {n: net for n, net in p['pins'].items() if net in PORTS}
+        symbol(dict(p, pins={n: (None if n in hier else net) for n, net in p['pins'].items()}),
+               key, instances, sub_items, sub_nets)
+        # Ports: replace the placeholder no-connects of port pins with hierarchical labels.
+        x, y = p['at']
+        for n, net in hier.items():
+            px, py, ang, _ = pins[n]
+            ox, oy = xform(px, py, p['rot'])
+            nc = uid(f'nc/{key}/{n}')
+            sub_items[:] = [it for it in sub_items if not (it[0] == 'no_connect' and one(it, 'uuid')[1] == nc)]
+            stub(sub_items, sub_nets, f'{key}/{n}', r(x + ox), r(y + oy), outward(ang, p['rot']), net, hier=True)
+    single = {n: k for n, k in sub_nets.items() if len(k) < 2 and n not in PORTS}
+    assert not single, f'single-pin channel nets: {single}'
+    texts(sub_items, CH_TEXTS, 'out/text/')
+    sub += sub_items
+    sub.append([atom('embedded_fonts'), atom('no')])
+    (HW / SHEET).write_text(dump(sub) + '\n')
     out = HW / 'midi.kicad_sch'
     out.write_text(dump(sch) + '\n')
-    subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
-                   stdout=subprocess.DEVNULL)
+    for f in (out, HW / SHEET):
+        subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(f)], check=True,
+                       stdout=subprocess.DEVNULL)
     (MODULE / 'docs/schematic-symbols.json').write_text(json.dumps(
         {'note': 'Pinned stock KiCad 10 symbols in hardware/v1/MIDI.kicad_sym (generated by tools/v1/build_schematic.py)',
          'symbols': sources},
         indent=2) + '\n')
-    print(out, f'{len(nets)} nets')
+    print(out, f'{len(nets)} root nets', HW / SHEET, f'{len(sub_nets)} channel nets')
 
 
 if __name__ == '__main__':

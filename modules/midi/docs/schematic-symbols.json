@@ -85,6 +85,13 @@
       "flattened_from": null,
       "edits": "ki_fp_filters 'Connector*:*_2x??_*' -> '*_2x??_*'"
     },
+    "MMBT3904": {
+      "library": "Transistor_BJT:MMBT3904",
+      "source": "/usr/share/kicad/symbols/Transistor_BJT.kicad_sym",
+      "source_sha256": "e88f0c9bd2bb124915b54783b25792db26896f913a1f5b3e7201c996bedf4390",
+      "flattened_from": "Q_NPN_BEC",
+      "edits": null
+    },
     "PWR_FLAG": {
       "library": "power:PWR_FLAG",
       "source": "/usr/share/kicad/symbols/power.kicad_sym",
