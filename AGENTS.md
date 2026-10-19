@@ -21,13 +21,15 @@ tooling.
 | Module | Description | Release |
 | --- | --- | --- |
 | `modules/usb-power/` | USB-C PD 9 V input, TPS26600 protection, TPS55340 boost, TPS54302 inverting buck-boost, TPS7A4700/TPS7A3301 ±12 V, +5 V | SR2 schematic + 084 PCB source accepted; not released |
-| `modules/midi/` | 4HP TRS MIDI in (V1 direct input, A/B jumper header; opto deferred to V2) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based) | V1.0: S4 schematic (BM V1 direct input) + R5 routed carrier (U3 heat sink; R4 copper, marker-free silk) + 4HP panels; JLCPCB export in `modules/midi/jlcpcb/`, not supplier-accepted |
+| `modules/midi/` | 4HP TRS MIDI in (TRS A/B jumper header, no opto) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based). Two versions: `hardware/v1/` (BM V1 direct input, unprotected) and `hardware/v2/` (±12 V mis-patch protected NPN input with a JP2 debug bypass, clamped outputs, +5V shunt) | V1.0 (S4/R5) and V2.0 (S3/R3) routed carriers + shared 4HP panels; JLCPCB exports in `modules/midi/jlcpcb/v1/` and `jlcpcb/v2/`, not supplier-accepted |
 
 Canonical sources are `modules/usb-power/hardware/usb-power.kicad_{pro,sch,pcb}`
 plus `modules/usb-power/panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
 any hardware work. The MIDI module's sources are
-`modules/midi/hardware/midi.kicad_{pro,sch,pcb}` plus
-`modules/midi/panels/front-pcb/midi-panel.kicad_{pro,pcb}`; read
+`modules/midi/hardware/v1/midi.kicad_{pro,sch,pcb}` (V1) and
+`modules/midi/hardware/v2/midi.kicad_{pro,sch,pcb}` (V2), plus the shared
+`modules/midi/panels/front-pcb/midi-panel.kicad_{pro,pcb}`; their shared-tool
+profiles are `modules/midi/tools/v1|v2/kicad-project.json`. Read
 `modules/midi/Code.md` first.
 
 ## Tools

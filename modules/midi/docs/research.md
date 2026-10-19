@@ -1,13 +1,26 @@
 # MIDI module research
 
-Status: **V1.0 fabrication export (S4/R5)** (rev. 2026-10-19): native schematic
-(`hardware/midi.kicad_sch`, ERC 0) at the **5 V** Bread Modular logic level, every
+There are two hardware versions, each a complete KiCad project:
+
+- **V1** (`hardware/v1/`, sections 1-6): the Bread Modular V1 circuit, unchanged by
+  this split. Fabrication export in [`../jlcpcb/v1/`](../jlcpcb/v1/README.md).
+- **V2** (`hardware/v2/`, section 7): V1 plus mis-patch protection on the MIDI input
+  and all eight outputs; MIDI IN takes 3.3 V and 5 V senders; still no optocoupler.
+  Same panels, jacks, LEDs and stack. Fabrication export in
+  [`../jlcpcb/v2/`](../jlcpcb/v2/README.md).
+
+Sections 1-6 describe V1; paths there are relative to `hardware/v1/`, `tools/v1/`
+and `jlcpcb/v1/`, and the shared mechanics (`geometry.json`, `mechanics.md`, panels)
+apply to both versions.
+
+Status (V1): **V1.0 fabrication export (S4/R5)** (rev. 2026-10-19): native schematic
+(`hardware/v1/midi.kicad_sch`, ERC 0) at the **5 V** Bread Modular logic level, every
 assembled part carrying JLCPCB fields (section 5), and the fully routed 2-layer
 carrier with the regulator beside J10 on its heat sink (R3, section 3.6) and,
 since S4/R4, the exact Bread Modular V1 input with no series resistor or pull-up
 (section 3.2; shared check: no findings). The
-JLCPCB files are in [`../jlcpcb/`](../jlcpcb/README.md). Opto removed, deferred to
-V2. This document records the Bread Modular baseline, the circuit as drawn, the
+JLCPCB files are in [`../jlcpcb/v1/`](../jlcpcb/v1/README.md). Opto removed and deferred
+past V2 (section 3.5). This document records the Bread Modular baseline, the circuit as drawn, the
 remaining open checks and dated sourcing observations. Nothing here is
 bench-validated, and the export is not a supplier-accepted order.
 
@@ -19,8 +32,8 @@ bench-validated, and the export is not a supplier-accepted order.
 - **ATtiny1616** firmware routes MIDI channel *n* to output *n*, as Bread Modular
   `midi` does.
 - One LED per output, hand-soldered 3 mm THT.
-- **Input = Bread Modular V1 direct input.** No optocoupler in this version; an
-  isolated input with automatic voltage sensing is planned for **V2** (section 3.5).
+- **Input = Bread Modular V1 direct input.** No optocoupler in this version (nor
+  in V2); an isolated input with automatic voltage sensing is a later item (section 3.5).
 - TRS Type A/B selected with a shunt on **JP1, a 1x3 2.54 mm header on the back**.
 - Must accept **both 3.3 V and 5 V MIDI senders**.
 - Outputs must drive 5 V Bread Modular receivers, so the logic rail is **5 V**
@@ -191,15 +204,16 @@ fix is PB3's internal pull-up (`PORTB.PIN3CTRL |= PORT_PULLUPEN_bm` after
 **Mis-patching is a known V1 risk (D6).** A ±12 V CV/gate cable patched into the
 3.5 mm MIDI IN drives PB3's clamp diode directly, limited only by the source's
 own output resistance, which is far above the ATtiny1616 injection-current
-rating. That is accepted for V1 (Bread Modular V1 is the same); input
-protection comes with the V2 input (section 3.5).
+rating. That is accepted for V1 (Bread Modular V1 is the same); V2 adds input
+and output protection (section 7).
 
 **No galvanic isolation.** The sleeve is tied to GND, so the module shares ground
 with the sender (V1 behaviour; it also suits senders that want the shield
 grounded, per the Bread Modular changelog note on Elektron gear). Ground loops are
-the V2 opto input's job (section 3.5).
+the job of the later opto input (section 3.5).
 
-**Firmware:** no inversion (do **not** carry over V2's `PORT_INVEN`); RX idles high.
+**Firmware:** no inversion (do **not** carry over Bread Modular V2's `PORT_INVEN`);
+RX idles high. (This module's own V2 does need `PORT_INVEN`: section 7.2.)
 
 ### 3.3 MCU and pin map (kept identical to BM so the firmware ports)
 
@@ -219,7 +233,7 @@ the V2 opto input's job (section 3.5).
   Modular.
 - **Clock:** at 5 V the ATtiny1616 runs at 20 MHz, as the BM firmware does
   (`board_build.f_cpu = 20000000L`). The firmware ports without clock changes; just
-  don't carry over V2's `PORT_INVEN`.
+  don't carry over Bread Modular V2's `PORT_INVEN` (this module's V2 needs it, 7.2).
 - All 18 I/O are used (17 GPIO + UPDI), as in BM. There is no spare pin for a
   MIDI-in activity LED.
 
@@ -231,18 +245,19 @@ the V2 opto input's job (section 3.5).
   +12 V pushes about (12 - 5.3) V / 1 k ≈ 6 mA through U1's clamp diode into
   +5 V. The HT7550-1 can't sink current, so with several outputs mis-patched
   +5 V can rise above U1's 5.5 V rating. Accepted for V1 (BM output stage, per the
-  brief); output clamps are a V2 item along with the input protection.
+  brief); V2 adds output clamps and the input protection (section 7).
 - `GPIO -> 1 k -> LED -> GND`: about 3.1 mA per red LED at 5 V. Use
   high-efficiency 3 mm LEDs and raise the 1 k if they are too bright behind the
   panel (D5).
 
-### 3.5 V2: opto-isolated input with voltage sensing (deferred)
+### 3.5 Later: opto-isolated input with voltage sensing (deferred past V2)
 
 The reason for an optocoupler here is to **break ground loops**. The S1 attempt
 (H11L1 enabled by a shunt, sharing RX with the always-connected direct path)
 could not do that: the direct path and the sleeve-to-GND kept the sender's ground
-tied to the module. So the opto is removed from this version and comes back in V2
-as a properly isolated input:
+tied to the module. So the opto is removed. It is not in V2 either (V2 adds
+mis-patch protection, section 7); it comes back in a later version as a properly
+isolated input:
 
 - In opto mode, nothing but the opto LED loop may touch the jack: the direct
   path and the sleeve-to-GND link must both be disconnected.
@@ -256,13 +271,14 @@ as a properly isolated input:
   rejected: it needs 4.5-5.5 V and is the V2-Bread-Modular part that did not work.
   Loop-current estimates: 5 V MIDI 1.0 sender ≈ 5.5 mA, 3.3 V MMA sender ≈ 7.2 mA,
   3.3 V sender with 220 R/220 R ≈ 2.9 mA, against a worst-case threshold ≈ 1.9 mA.
-- Space: the J1/J2 band on the back (where the S1 opto sat) now carries only the
-  RX and LED1 tracks, so V2 has room there for its input.
+- Space: on V1 the J1/J2 band on the back (where the S1 opto sat) carries only
+  the RX and LED1 tracks. On V2 the input front end (Q1, R1, R2, R22, D9) and
+  U2 use that area, so a later opto input needs its own layout pass.
 
 ### 3.6 Routing (R1; U3 heat sink R2; regulator moved beside J10 in R3; direct input R4; R5 silk only)
 
 Two layers, every net routed with explicit geometry (no autorouter), written by
-`tools/route_plan.py` and applied with the shared `pcb plan/apply/promote`
+`tools/v1/route_plan.py` and applied with the shared `pcb plan/apply/promote`
 transaction (README "Rebuild").
 
 - **Widths:** 0.25 mm signals, 0.2 mm at the U1 fan-out (0.4 mm QFN pitch), 0.3 mm
@@ -344,10 +360,11 @@ transaction (README "Rebuild").
 |---|---|---|
 | D1 | TS output logic level | **Decided (S3): 5 V.** U1 runs at 5 V from HT7550-1 on +12 V, so the outputs meet a 5 V BM receiver's VIH. A 16-pin cable's +5 V isn't used, which keeps 10-pin cables working. The input takes 3.3 V senders as Bread Modular V1 does (section 3.2) |
 | D2 | LDO thermal margin vs fault cases | **Decided (R2/R3): R20 = 39 R 0.5 W 1206 (C414944) + VIN_LDO heat-sink copper on both layers, regulator group beside J10 (R3)** (sections 3.1, 3.6). R20 stays on the U3 island, so the island takes ~0.5 W in the fault case (estimate ~50-75 K rise); the bench fault test is the gate |
-| D3 | Opto | **Decided: none in this version**; isolated, voltage-sensed opto input in V2 (section 3.5) |
+| D3 | Opto | **Decided: none in V1 or V2**; an isolated, voltage-sensed opto input is a later item (section 3.5) |
 | D4 | TRS type selection | **Decided: JP1 1x3 2.54 mm header + shunt on the back**, `A` (1-2) / `B` (2-3) |
 | D5 | LED colour/value | Drawn as high-efficiency red, 1 k (~3.1 mA at 5 V); confirm brightness behind the panel |
-| D6 | Input resistors / protection | **Decided (S4): none, exactly Bread Modular V1.** R21 and R2 removed; JP1 drives PB3 directly. The input is for 5 V / 3.3 V MIDI senders (BM V1 works with both). A mis-patched ±12 V CV/gate cable exceeds the injection rating; accepted for V1, protection (input and outputs) comes in V2 (sections 3.2, 3.4) |
+| D6 | Input resistors / protection | **Decided (S4): none, exactly Bread Modular V1.** R21 and R2 removed; JP1 drives PB3 directly. The input is for 5 V / 3.3 V MIDI senders (BM V1 works with both). A mis-patched ±12 V CV/gate cable exceeds the injection rating; accepted for V1, protection (input and outputs) is V2 (section 7) |
+| D7 | V2 mis-patch protection | **Decided (V2 S3/R3):** NPN input front end (JP2 solder jumper can bypass it for debugging), BAT54SW clamp behind every 0805 1 k output resistor, CJ431 +5V shunt clamp (section 7) |
 
 ## 5. Sourcing (V1.0 release, dated, transient)
 
@@ -396,7 +413,7 @@ requirements are in [`jlcpcb-audit-requirements.json`](jlcpcb-audit-requirements
   - These are left open on purpose (no boilerplate review notes).
 - Earlier history: C14289 HT7533-1 (Basic) was superseded by the 5 V rail. The
   only Basic 5 V regulator found was AMS1117-5.0 C6187 (SOT-223, 15 V max), so
-  HT7550-1 stays. V2 opto candidates (not on this board): H11L1SM C899473,
+  HT7550-1 stays. Later opto candidates (not on either board): H11L1SM C899473,
   H11L1M DIP-6 C16587, 1N4148W C81598.
 
 Hand-soldered, not JLC-assembled (no `LCSC` field, listed as manual in the
@@ -422,3 +439,318 @@ UPDI header, JP1 1x3 TRS header + 1 shunt.
   the pin-map, land-pattern and ratings pages.
 - Mechanical fit: [mechanics.md](mechanics.md), [geometry.json](geometry.json),
   [fit/fit-report.json](fit/fit-report.json).
+
+## 7. V2: mis-patch protection (S3 schematic, R3 routing)
+
+V2 is V1 plus protection against a CV/gate cable (up to ±12 V, any source
+impedance) patched into MIDI IN or any MIDI OUT, for as long as it stays in. The
+outputs still drive another module's ATtiny1616 RX pin through 1 k at 5 V, MIDI IN
+takes 3.3 V and 5 V senders, and there is still no optocoupler. The panels, jacks,
+LEDs, stack and every V1 mechanical key in `geometry.json` are unchanged:
+`tools/v2/build_layout.py` asserts that `docs/v2/geometry.json` differs from
+`docs/geometry.json` only in `revision` and `back_side_parts`.
+
+Sources: `hardware/v2/` (generators in `tools/v2/`, placement in
+`docs/v2/geometry.json`, schematic PDF `docs/v2/midi-schematic.pdf`). Datasheets
+read for this section (LCSC copies, SHA-256 of the PDFs in the ignored
+`research/datasheets/`):
+
+| Part | Document | SHA-256 | Used for |
+|---|---|---|---|
+| ATtiny1616 (C507118) | Microchip 40001997C, Table 37-1 (p. 552), 37.x I/O (VIH/VIL, Rp) | `97b2c869…` | Injection-current limit, VIH 0.7·VDD |
+| BAT54SWT1G (C78260) | onsemi BAT54SWT1/D Rev. 11 | `800844c4…` | Pinout 1 A / 2 K / 3 common, VF, CT |
+| MMBT3904 (C20526) | JSCJ MMBT3904 Rev. 2.1 | `6c2034cb…` | Pinout 1 B / 2 E / 3 C, VEBO 6 V, ts |
+| CJ431 (C3113) | JCET CJ431/CD431 (Oct 2017) | `68a40507…` | SOT-23 pinout 1 REF / 2 K / 3 A, Vref, PD |
+| 1N4148W (C81598) | Semtech 1N4148W | `54de8e40…` | SOD-123, pad 1 = cathode |
+
+### 7.1 Why V1 is not protected
+
+The ATtiny1616 absolute maximum ratings (Table 37-1) allow **±1 mA** of I/O pin
+injection current at 4.9 V < VDD ≤ 5.5 V (the ±15 mA figure only applies at
+VDD ≤ 4.9 V), 45 mA summed over all pins, and a pin voltage of −0.5 V to VDD + 0.5 V.
+On V1:
+
+- An output (GPIO → 1 k → tip) patched to +12 V pushes (12 − 5.3)/1 k ≈ 6.7 mA
+  into the pin's clamp, and that current lands on +5V, which the HT7550-1 cannot
+  sink. −12 V pulls about 11.4 mA out of the pin, and the 0603 1 k dissipates
+  ~0.13 W against its 0.1 W rating.
+- The input drives PB3 directly, limited only by the source's output resistance.
+
+### 7.2 MIDI input: NPN front end
+
+```
+J1 T/R -> JP1 (TRS A/B) -> MIDI_IN --+-- R22 100k -- +5V      (idle pull-up)
+                                     +-- R1 10k --+-- Q1 B    MMBT3904
+                                     |            +-|<|- GND  D9 1N4148W (K at base)
+                                     |   Q1 E -- GND
+                                     |   Q1 C -- RX_Q --+-- R2 22k -- +5V
+                                     |                  |
+                                     |              JP2 1
+                                     |              JP2 2 ------------ RX (U1 PB3)
+                                     +------------- JP2 3
+JP2: shipped open; solder 1-2 = protected, or 2-3 = direct (7.2.1)
+```
+
+- **3.3 V and 5 V senders.** Q1 switches at its VBE (~0.6 V), so a 3.3 V high gives
+  (3.3 − 0.7)/10 k ≈ 0.26 mA of base current and a 5 V high 0.43 mA, against
+  0.23 mA of collector current (R2). Q1 saturates with any hFE above ~1 (MMBT3904:
+  100 minimum at 10 mA). A sender pulling its data line low through 220 R (or
+  10-33 R) leaves MIDI_IN at a few millivolts (R22 sources 23 µA), far below 0.6 V.
+  An open-collector sender works too: R22 is its pull-up.
+- **±12 V.** +12 V drives (12 − 0.7)/10 k ≈ 1.1 mA into the base. −12 V is clamped
+  by D9 at about −0.7 V at the base (Q1's VEBO is 6 V), again ~1.1 mA. R22 then
+  sees 17 V (2.9 mW). PB3 only ever sees Q1's collector, 0 to 5 V.
+- **Idle.** With no cable (the PJ366ST has no switch) or no shunt, R22 + R1 give
+  Q1 about 39 µA of base current, enough to hold RX low = inverted idle. A shunt on
+  the wrong conductor puts the sender's +V side on MIDI_IN: also idle.
+- **Inverting.** RX is low for a MIDI high. **Firmware must set `PORT_INVEN` on
+  PB3** (`PORTB.PIN3CTRL |= PORT_INVEN_bm`, with no pull-up), the opposite of V1
+  (section 3.2) and the same pattern Bread Modular V2 used with its 6N137. The pin
+  map is otherwise unchanged, so V1 and V2 firmware differ only in this one line.
+- **Speed (simulated, 7.9).** Q1 is overdriven (forced gain ~1-2) and turned off
+  only by R1 (~65 µA), so its storage time is longer than the datasheet's 200 ns
+  (IB1 = IB2 = 1 mA). Simulated, a MIDI start edge reaches PB3 (RX past VIH) 0.9-2.3 µs
+  late, and up to 4.4 µs at the stress corner. The opposite edge is 0.1-0.4 µs late.
+  The worst skew is 12.5 % of the 32 µs bit. The ATtiny USART samples at mid-bit, so
+  decoding is unaffected: the receiver clock-error window stays within 0.3 % of an
+  ideal input's. The skew would have to pass ~4 µs before the window shrinks.
+- No galvanic isolation (sleeve = GND, as V1).
+
+#### 7.2.1 JP2: debug bypass of the input front end
+
+JP2 is a 3-pad solder jumper (KiCad `SolderJumper-3_P1.3mm_Open`, copper only,
+not in the BOM/CPL) on the back, left of R2 under the J1 sleeve pad. It selects
+what drives PB3 (RX). **It ships open** (S3/R3): all three pads are separate, and
+you solder one bridge by hand before first use. Switching is then desoldering one
+bridge and soldering the other, with no copper to cut. (S2/R2 had pads 1-2 joined
+by a copper strip.)
+
+| JP2 | PB3 is driven by | Firmware | Mis-patch protection |
+|---|---|---|---|
+| **1-2** (solder bridge, silk `P`; the normal position) | Q1 collector (RX_Q), R2 pull-up | `PORT_INVEN` **on** | Yes (7.2) |
+| **2-3** (solder bridge, silk `D`) | MIDI_IN directly, as V1 | `PORT_INVEN` **off** (V1 firmware) | **None**, as V1 |
+
+- **Why a solder jumper, not a pin header:** a 2.54 mm 1x3 header needs ~8 mm of
+  board length free on both sides (its THT pins come through the F side, where the
+  jack bodies are). The only such spots are far from the input stage (the bottom
+  zone, which is J10/J11 and the IDC socket envelope). The 1.3 mm-pitch pads fit
+  between R2 and the left board edge with no other part moved.
+- **Why R2 is on RX_Q, not RX:** in the direct position PB3 then sees only
+  MIDI_IN, as in V1 (no 22 k on the pin). Q1 still switches from R1, but its
+  collector is open and drives nothing.
+- **Direct-mode levels:** MIDI_IN still carries R22 (100 k to +5V) and R1 + Q1's
+  base (to ~0.7 V). A 5 V sender through 1 k (a V1/V2 output) gives a high of
+  ~4.6 V (VIH 3.5 V) and a low of ~0.05 V. A 3.3 V sender through 33 Ω gives
+  ~3.29 V: the same as V1, so below the datasheet VIH (0.7 VDD = 3.5 V) and only
+  working on typical thresholds (section 3.2). Use the protected position for
+  3.3 V senders.
+- **No cable in direct mode:** R22 holds MIDI_IN, and so PB3, high = idle
+  (non-inverted). V1 has no pull-up there at all.
+- **As delivered, JP2 is open and PB3 floats:** MIDI IN does nothing until one
+  bridge is soldered. The floating pin is harmless to the chip, but the received
+  data is noise, so bridge 1-2 (or 2-3) before testing. **Never bridge all three
+  pads:** that ties MIDI_IN to the Q1 collector, which pulls it
+  down whenever the input is high, and nothing decodes.
+- Switching: wick the solder off the present bridge, check with a meter that the
+  pads are apart, then bridge the other pair.
+
+### 7.3 Outputs: Schottky clamp behind the 1 k
+
+```
+GPIO (CHn_TX) --+-- Rn 1k 0805 -- OUTn tip      (Rn = R3, R5, R7, R9, R12, R14, R16, R18)
+                +-- D(n+10) BAT54SW pin 3       pin 1 (anode) GND, pin 2 (cathode) +5V
+```
+
+- **Normal operation is unchanged:** the receiver still sees GPIO → 1 k → tip, a
+  ~4.9 V high and ~0 V low. The clamps conduct only beyond about −0.3 V / +5.3 V.
+  Their leakage is µA-level (2 µA max at 25 V). Their ≤ 10 pF sits on the GPIO
+  side, driven by the pin (≤ 67 Ω), not behind the 1 k. Simulated (7.9), the
+  receiver-side edges are identical to V1's to within 10 ns. The 1 k and cable
+  capacitance set them, as in V1: 0.14 µs to VIL/VIH with 100 pF, 0.6 µs with
+  450 pF, 1.3 µs with 1 nF.
+- **Mis-patch:** the 1 k limits the current and the Schottky diverts it from the
+  pin's internal diodes. −12 V on the tip draws 11.6 mA through the lower diode
+  (VF ≤ 0.40 V at 10 mA, ≤ 0.50 V at 30 mA), so the pin stays above −0.5 V. +12 V
+  pushes 6.7 mA through the upper diode (VF ≤ 0.40 V), so the pin stays below
+  VDD + 0.5 V. The pin's own clamp current is then negligible, within the
+  ±1 mA limit. Diode dissipation is ~5 mW.
+- **Resistors:** 0805 (0.125 W, Basic C17513) instead of 0603. A hard −10.5 V
+  op-amp output (the usual swing on ±12 V rails) puts 10.1 V / 0.102 W into the
+  resistor, within its rating. A zero-impedance −12 V source would be 0.134 W, 7 %
+  over the rating, and is not covered by the rating. Typical Eurorack outputs have
+  ~1 k of output resistance, which halves the current (34 mW). A 1206 (0.25 W) did
+  not fit: R7 and R9 share the J4/J5 band, and the via, the LED lanes and the tip
+  pads leave no room for the longer pads.
+
+### 7.4 +5V clamp: U2 CJ431 shunt
+
+The upper clamps return the mis-patch current to +5V, and the HT7550-1 can only
+source current. With several outputs on +12 V, the injected current (up to
+8 × 6.2 mA ≈ 49 mA from hard sources) can exceed what U1 and the LEDs draw, and +5V
+would rise toward U1's 6 V absolute maximum. U2 (CJ431, a TL431-type shunt
+regulator) with R23 12 k / R24 10 k turns on at 2.495 V × (1 + 12/10) = **5.49 V**
+nominal:
+
+- Worst case (Vref 2.475-2.525 V, 1 % resistors, 4 µA REF current, 0.5 Ω dynamic
+  impedance), it stays off below 5.39 V and clamps by 5.69 V. That is below the
+  6 V absolute maximum and above the HT7550-1 output (5.0 V ± a few %), so U2 never
+  fights the regulator. It is off in normal operation: ≤ 1 µA off-state current
+  plus 0.23 mA in R23/R24.
+- Worst-case dissipation: all eight outputs on a hard +12 V gives ~49 mA minus
+  ~10 mA of MCU load, so ~39 mA × 5.5 V ≈ 0.21 W. That is 70 % of the 300 mW SOT-23
+  rating (417 K/W), fault-only. One or two mis-patched outputs give ≤ 70 mW.
+- The CJ431 SOT-23 pinout is **1 REF, 2 K, 3 A**. That is KiCad's `TL432DBZ`
+  symbol, not `TL431DBZ` (TI's 1 K, 2 REF). The schematic uses `TL432DBZ` with
+  value CJ431, and the netlist parity check confirms the pads.
+- TL431-type parts can oscillate with some load capacitances. U2 sits on +5V with
+  C3/C4 (10 µF each) and C1 (100 nF), and it is off unless there is a fault. Whether
+  it is stable while clamping is a bench item (7.7).
+
+### 7.5 Layout (R1, R2, R3)
+
+V2 starts from the V1 R4/R5 copper (`tools/v2/route_plan.py`, shared
+plan/apply/promote; nothing autorouted):
+
+- **Clamps D11-D18** sit right of each output resistor, in the gap between the jack
+  tip pad and the LED. Pin 3 goes to the resistor's GPIO-side pad (to the TX via for
+  outputs 6-8), pin 1 to the LED's GND pad just above it, and pin 2 to a +5V via.
+  D14 (output 4) has no LED GND pad above it and gets its own GND via.
+- **R10** (LED 4) moved from the J4/J5 band to just below J5. LED4_A runs up
+  between the J5 tip pad and D4 to the anode, which frees the J4/J5 band for D13 and
+  D14. R7/R9 moved slightly apart and R18 0.15 mm up, for the longer 0805 courtyards.
+- **+5V clamp rail:** F.Cu, 0.3 mm, along the right board edge (x 118.6), through
+  the eight clamp vias. It is fed from the top: a new F.Cu spine branches off the
+  V1 +5V trunk above J6 and runs straight up x 103.545 through the S/TN pad gaps of
+  J5-J2 (the same gap the V1 trunk uses lower down) to U2. From there it continues
+  to the J1/J2 band (R2, R22) and east to the top of the rail. The rail does not
+  reach the LDO directly, so the F.Cu VIN_LDO heat sink stays one piece exactly as
+  in V1.
+- **Input stage:** Q1, R1, D9, R2 and R22 sit between the J1 ring and tip pads and
+  below the tip pad. JP1 pin 2 is MIDI_IN.
+- **JP2 (added in routing R2)** sits left of R2, under the J1 sleeve pad (pin 1 at the top). R2's
+  top pad joins Q1's collector to JP2 pin 1 (RX_Q). RX comes up the V1 corridor
+  lane, runs under the Q1 emitter GND via, up x 106.3 and between the R2 pads into
+  pin 2. MIDI_IN leaves R1 through a via, crosses on F.Cu at y 69.35 (between the
+  RING track and the +5V rail) and comes back to B.Cu through a via under pin 3.
+  B silk `P` (pin 1) and `D` (pin 3) sit left of the jumper. Routing R2 changed
+  nothing else: every other footprint, track, via and zone is as R1.
+- **Routing R3** swaps JP2 to the stock `Open` footprint (same pads, no 1-2
+  copper strip, no net tie). Nothing else on the board changed.
+- **U2/R23/R24** sit in the J2/J3 band left of the corridor.
+- **LED8's lane** stays in the corridor down to its resistor row. V1 crossed over at
+  y 136.4, where D17 now sits.
+- **GND stitching:** V1's right-edge stitching vias are gone (the rail runs there).
+  The LED GND pads, the jack sleeve pads, the left-edge vias and four new GND vias
+  join the pours.
+- **Version marking:** B silk `MIDI V2.0` in the place of V1's `MIDI V1.0`.
+  Both are visible on the assembled board's back.
+
+### 7.6 Checks (V2)
+
+- ERC 0 (`--severity-all`). The native netlist matches the generator's circuit
+  table pin for pin (ignored `research/v2-src/check_netlist.py`): 62 components,
+  46 nets, 10 no-connects (S2; S3 changes only JP2's symbol and footprint).
+- Shared `pcb apply` accepted the routing candidate: ERC/DRC empty, 0 unconnected,
+  parity 0. `pcb promote` re-bound every model by content (0 external). The
+  routing-R2 candidate (ignored `research/v2-bypass/`) differs from R1 only in JP2, its three
+  nets' tracks, two MIDI_IN vias and the `P`/`D` silk (checked by a board diff).
+  The routing-R3 candidate (ignored `research/v2-jp2open/`) differs from R2 only in
+  JP2's footprint (the 1-2 strip removed) and the title block: board diff, and
+  per-layer plots pixel-identical except that strip on B.Cu.
+- Shared `check` (`tools/v2/kicad-project.json`): `no_findings_in_requested_checks`
+  (ERC 0, DRC 0 at all severities with zones refilled, 0 unconnected, schematic
+  parity 0, ref/pin/net parity equal, `jlcpcb/v2/source-sha256.json` equal).
+  Reports: `docs/v2/fit/schematic-erc.json`, `docs/v2/fit/carrier-drc.json`.
+- 3D fit (`tools/fit_assembly.sh v2`): 0 mm³ interference against both panels. The
+  report is identical to V1's (`docs/v2/fit/fit-report.json`), also after R2 and R3. No new
+  part sits inside the 16-pin IDC socket envelope.
+- Live assembly audit (2026-10-19 ~03:13 UTC, re-run for S2/R2 at 03:54 UTC and for S3/R3
+  at 05:10 UTC, each with the same per-part result and JP2 reported as excluded
+  from the BOM; `--strict-live`, 5 boards, bottom
+  side): 41 parts in 18 BOM rows. Every C-code, MPN, Economy flag and stock level
+  passes, and every resistor passes its stress check, including the 0805s against
+  the 0.102 W fault requirement in `docs/v2/jlcpcb-audit-requirements.json`. The
+  only hard fail is R20's intentional Extended class (as V1). Human review
+  attestations remain open (section 5).
+
+### 7.7 Open items (V2)
+
+- **Bench:** patch +12 V and −12 V (bench supply, and a real CV output) into
+  MIDI IN and each output for minutes, with the module running. Pass if U1 keeps
+  routing and +5V stays below 5.7 V. Also check that U2 does not oscillate while
+  clamping (scope on +5V with 2-8 outputs on +12 V).
+- **Input:** receive from a 3.3 V sender and a 5 V sender, Type A and B, with V2
+  firmware (`PORT_INVEN` on PB3) and JP2 1-2 soldered. Then, on one board, move
+  the JP2 bridge to 2-3 and receive from a 5 V sender with V1 firmware (no
+  `PORT_INVEN`) to confirm the direct path, and move it back.
+- **Firmware:** V2 needs the one-line `PORT_INVEN` change (7.2). There is no
+  firmware in this repository yet. For ATtiny-to-ATtiny links (V1 and V2 alike),
+  correct the USART `BAUD` with the factory `SIGROW.OSC20ERR5V` value (7.9).
+- The V1 items still apply to V2: U3 fault test and LED brightness (section 4),
+  plus the order gates in `jlcpcb/v2/README.md`.
+
+### 7.8 Sourcing (V2 additions, observed 2026-10-19)
+
+| Refs | Part | C-code | Class | Stock observed |
+|---|---|---|---|---:|
+| D11-D18 (8) | onsemi BAT54SWT1G, SOT-323 | C78260 | Extended (no Basic dual Schottky found) | 62,593 |
+| Q1 | CJ MMBT3904, SOT-23 | C20526 | **Basic** | 431,331 |
+| U2 | CJ CJ431, SOT-23 | C3113 | **Basic** | 312,593 |
+| D9 | Semtech 1N4148W, SOD-123 | C81598 | **Basic** | 4,453,208 |
+| R3, R5, R7, R9, R12, R14, R16, R18 | 1 k 0805 0.125 W | C17513 | **Basic** | 44.2 M |
+| R1, R24 | 10 k 0603 | C25804 | **Basic** | 39.6 M |
+| R2 | 22 k 0603 | C31850 | **Basic** | 3.4 M |
+| R22 | 100 k 0603 | C25803 | **Basic** | 19.3 M |
+| R23 | 12 k 0603 | C22790 | **Basic** | 0.94 M |
+
+Every V2 R/C is Basic except R20 (as V1). The clamps add one Extended part type
+(one loading fee covers all eight). Stock is a snapshot, not a reservation.
+
+### 7.9 Signal timing at 31.25 kbaud (simulated 2026-10-19)
+
+ngspice transient (system libngspice, ignored `research/v2-sim/midi_timing.py`,
+output `research/v2-sim/results.txt`). The bytes `90 3C 64 55 AA F8 FE 00 7F` are
+sent back to back, and the receiver pin is read at the ATtiny datasheet limits
+VIL 0.3 VDD / VIH 0.7 VDD. A model of the tinyAVR USART in normal-speed mode
+(16 samples per bit, majority of 8/9/10, start validated, stop checked, 8 sample
+phases) decodes the result. "Window" is the receiver clock error over which every
+byte decodes. An ideal digital input gives −3.8/+5.5 % in this model. The
+datasheet's Table 24-6 limit is about ±4.5 % for 8 data bits.
+
+Models: Fairchild 2N3904 (MMBT3904 die), 1N4148, and a BAT54 fitted to the
+BAT54SW typical VF with 10 pF CT. Q1 corners:
+
+- **typ:** the model as published. Its storage time in the datasheet test circuit
+  is 111 ns.
+- **ds-max:** Tr ×1.82, so the datasheet test circuit gives the 200 ns maximum
+  (`calibrate.py`).
+- **stress:** 2 × ds-max, hFE 100, 85 °C.
+
+| MIDI IN case (cable C, C on RX) | Start edge late | Other edge late | Window |
+|---|---:|---:|---:|
+| V2 OUT → 100 pF → V2 IN, 10 pF (typ / ds-max / stress) | 0.9 / 1.2 / 2.4 µs | 0.1 µs | −3.8 / −3.8 / −3.7 % |
+| V2 OUT → 450 pF, 30 pF | 2.1 / 2.3 / 3.4 µs | 0.3 µs | −3.8 / −3.7 / −3.7 % |
+| V2 OUT → 1 nF, 30 pF | 3.3 / 3.4 / 4.4 µs | 0.4 µs | −3.7 / −3.7 / −3.5 % |
+| 3.3 V / 33 Ω → 450 pF, 30 pF | 1.2 / 1.4 / 2.4 µs | 0.1 µs | −3.8 / −3.8 / −3.7 % |
+| 3.3 V / 1 k → 450 pF, 30 pF | 1.8 / 2.0 / 3.0 µs | 0.3 µs | −3.8 / −3.8 / −3.7 % |
+| 5 V / 220 Ω → 450 pF, 30 pF | 1.4 / 1.6 / 2.8 µs | 0.1 µs | −3.8 / −3.8 / −3.7 % |
+
+- RX is at 0.03 V and 5.00 V at mid-bit in every case, so 3.3 V and 5 V senders
+  give full logic levels. The + side of the window is ≥ +5.5 % throughout.
+- Skew budget: delaying the start-type edges of an ideal waveform by 4 µs gives
+  −3.5 %. At 6 µs the window is −2.8 %, and at 10 µs −1.4 %. The worst simulated case
+  (4.4 µs) is at the edge of where the window starts to shrink. A typical
+  patch cable (≤ 450 pF) keeps it ≤ 3.4 µs.
+- **Outputs:** V2 and V1 outputs give the same receiver-pin delays (to VIL/VIH),
+  with GPIO drive 25 or 67 Ω (the VOH ≥ 4 V at 15 mA limit): 0.14 µs into
+  100 pF, 0.6 µs into 450 pF, 1.3 µs into 1 nF. The window is the ideal one in every
+  case. The CHn_TX node stays at 0.00-5.00 V, so the clamps never conduct.
+  The mid-bit clamp current is 15 nA at 25 °C and 27 µA at 85 °C (model leakage),
+  supplied by the GPIO.
+- **Clock budget (V1 and V2 alike, not a front-end effect):** OSC20M is ±2 %
+  only relative to its factory-stored error value (0-70 °C), but ±3 % at 25 °C and
+  ±5 % over full operation without that correction. Two uncorrected ATtinys can
+  exceed the ~4 % window. Firmware should therefore apply `SIGROW.OSC20ERR5V` to
+  the `BAUD` value (or use a crystal-accurate sender).
+- This is a simulation with generic models, not a measurement. The bench check in
+  7.7 (3.3 V and 5 V senders) still applies.

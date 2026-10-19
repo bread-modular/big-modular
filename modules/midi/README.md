@@ -1,59 +1,69 @@
 # midi — TRS MIDI to 8 x TS modular MIDI (4HP)
 
-Based on Bread Modular `midi`. TRS MIDI in goes to an ATtiny1616 (Bread Modular
-V1-style direct input, TRS Type A/B on a jumper header; no opto until V2),
-which sends MIDI channel *n* to TS output *n* (tip = logic-level MIDI, sleeve =
-GND). There is one hand-soldered 3 mm LED per output, and power comes from
-Eurorack +12 V through a 5 V LDO (5 V logic, as Bread Modular).
+Based on Bread Modular `midi`. TRS MIDI in goes to an ATtiny1616 (TRS Type A/B on a
+jumper header, no opto), which sends MIDI channel *n* to TS output *n* (tip =
+logic-level MIDI, sleeve = GND). There is one hand-soldered 3 mm LED per output, and
+power comes from Eurorack +12 V through a 5 V LDO (5 V logic, as Bread Modular).
 
-**Status: V1.0 (S4/R5) fabrication export, not supplier-accepted.**
-- The schematic is drawn (native ERC 0). The MIDI input is exactly Bread
-  Modular V1's: JP1 drives PB3 directly, with no series resistor or pull-up.
-- The 2-layer carrier is fully routed. The regulator sits beside the power header
-  on heat-sink copper on both layers
-  (DRC 0 at all severities, 0 unconnected, parity equal, shared `check` with no
-  findings).
-- The 4HP panels (FR4 + printed) are checked for fit.
-- All 25 SMD parts on the back are JLCPCB-sourced (Basic for every R/C except
-  R20).
-- Gerbers, BOM and CPL are in [`jlcpcb/`](jlcpcb/README.md).
+There are two hardware versions. Both use the same panels and mechanics:
+
+| | **V1** (`hardware/v1/`) | **V2** (`hardware/v2/`) |
+|---|---|---|
+| MIDI IN | Bread Modular V1 direct input: JP1 drives PB3, no series R or pull-up | NPN front end: 3.3 V and 5 V senders, survives ±12 V. Inverting: firmware sets `PORT_INVEN` on PB3. JP2 solder jumper (shipped open; solder 1-2 = protected, 2-3 = V1 direct path for debugging) |
+| MIDI OUT | GPIO → 0603 1 k → tip | GPIO → 0805 1 k → tip, BAT54SW clamp to +5V/GND on the GPIO side |
+| +5V | HT7550-1 | HT7550-1 plus CJ431 shunt clamp (5.49 V), so clamp current can't pump the rail |
+| Mis-patched ±12 V CV/gate cable | Known risk | Survives indefinitely (design; bench test open) |
+| Back silk | `MIDI V1.0` | `MIDI V2.0` |
+| SMD parts (JLC-assembled) | 25 in 9 BOM rows | 41 in 18 BOM rows |
+| Fabrication export | [`jlcpcb/v1/`](jlcpcb/v1/README.md) | [`jlcpcb/v2/`](jlcpcb/v2/README.md) |
+
+**Status: V1.0 (S4/R5) and V2.0 (S3/R3) fabrication exports, not supplier-accepted.**
+- Both schematics are drawn (native ERC 0).
+- Both 2-layer carriers are fully routed: DRC 0 at all severities, 0 unconnected,
+  parity equal, shared `check` with no findings. The regulator sits beside the power
+  header on heat-sink copper on both layers.
+- The 4HP panels (FR4 + printed) are checked for fit with both carriers.
+- Every SMD part on the back is JLCPCB-sourced. Every R/C is Basic except R20, as
+  the brief requires.
 - Nothing is bench-tested.
 
 | Path | Contents |
 |---|---|
-| `hardware/midi.kicad_{pro,pcb}` | Carrier: 19 x 110 mm, routed on 2 layers (R4), GND poured both sides, U3 heat sink beside J10 |
-| `hardware/midi.kicad_sch` | Flat root schematic (S4); PDF in `docs/midi-schematic.pdf` |
-| `hardware/_kicad_models/` | Vendored 3D models (`<sha256>/<name>`), bound via `${KIPRJMOD}` |
-| `hardware/MIDI.kicad_sym`, `sym-lib-table` | Pinned stock symbols (`docs/schematic-symbols.json`) |
-| `hardware/MIDI.pretty`, `MIDI.3dshapes` | Pinned footprints and jack models (`PROVENANCE.json`) |
-| `panels/front-pcb/midi-panel.kicad_{pro,pcb}` | 4HP FR4 front panel: NPTH only, silkscreen labels |
+| `hardware/v1/`, `hardware/v2/` | KiCad projects: `midi.kicad_{pro,sch,pcb}` (19 x 110 mm carrier, 2 layers, GND poured both sides, U3 heat sink beside J10), pinned symbols (`MIDI.kicad_sym`, `sym-lib-table`), footprints and jack models (`MIDI.pretty`, `MIDI.3dshapes`, `PROVENANCE.json`), vendored 3D models (`_kicad_models/<sha256>/`) |
+| `panels/front-pcb/midi-panel.kicad_{pro,pcb}` | 4HP FR4 front panel: NPTH only, silkscreen labels (shared by V1 and V2) |
 | `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
-| `docs/research.md` | BM baseline, circuit, decisions, sourcing |
-| `docs/sourcing-candidates.json`, `docs/jlcpcb-audit-requirements.json` | Dated JLCPCB part records; assembly-audit circuit requirements |
-| `jlcpcb/` | Fabrication export: Gerber ZIPs, BOM, CPL, source manifest ([README](jlcpcb/README.md)) |
-| `docs/mechanics.md`, `docs/geometry.json` | 4HP fit, stack and placement contract |
-| `docs/fit/` | Native DRC/ERC JSON, nominal 3D fit report, renders |
-| `tools/` | Footprint import, schematic and layout generators, routing plan, fit check, `kicad-project.json` |
+| `docs/research.md` | BM baseline, circuit, decisions, sourcing (V1 §1-6, V2 §7) |
+| `docs/geometry.json`, `docs/mechanics.md` | 4HP fit, stack, panel and V1 placement contract |
+| `docs/v2/geometry.json` | V2 placement (mechanics asserted equal to V1's) |
+| `docs/midi-schematic.pdf`, `docs/v2/midi-schematic.pdf` | Schematic PDFs |
+| `docs/fit/`, `docs/v2/fit/` | Native DRC/ERC JSON, nominal 3D fit report, renders |
+| `docs/sourcing-candidates.json`, `docs/jlcpcb-audit-requirements.json`, `docs/v2/jlcpcb-audit-requirements.json` | Dated JLCPCB part records; assembly-audit circuit requirements |
+| `jlcpcb/v1/`, `jlcpcb/v2/` | Fabrication exports: Gerber ZIPs, BOM, CPL, source manifest |
+| `tools/v1/`, `tools/v2/` | Schematic and layout generators, routing plan, shared-tool profile (`kicad-project.json`) |
+| `tools/` | Shared: footprint import and fit check (take `v1`/`v2`), S-expression helper |
 
-Rebuild (from `modules/midi`; the routed PCB is the source of truth, so only run
-the layout steps as this whole sequence, then the checks in `Code.md`):
+Rebuild one version (from `modules/midi`, with `V=v1` or `V=v2`). The routed PCB is
+the source of truth, so only run the layout steps as this whole sequence, then the
+checks in `Code.md`:
 
 ```sh
-python3 -B tools/import_footprints.py          # one-time library import (pcbnew)
-python3 -B tools/build_schematic.py            # schematic + pinned symbols
-python3 -B tools/build_layout.py               # placement + netlist nets + vendored models, UNROUTED
-git checkout panels/front-pcb/midi-panel.kicad_pcb  # unless the panel really changed: the generator re-UUIDs it
-python3 -B tools/route_plan.py > research/route/plan.json   # R4 copper as shared ops v1
-(cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb plan --config modules/midi/tools/kicad-project.json \
-   --ops modules/midi/research/route/plan.json > modules/midi/research/route/edit-plan.json)
-(cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb apply --plan modules/midi/research/route/edit-plan.json \
-   --ops modules/midi/research/route/plan.json --output modules/midi/research/route-cand-NEW)
-(cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb promote --candidate modules/midi/research/route-cand-NEW \
-   --plan modules/midi/research/route/edit-plan.json)
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-tools/fit_assembly.sh                          # nominal panel/carrier 3D fit
+python3 -B tools/import_footprints.py --version $V    # one-time library import (pcbnew)
+python3 -B tools/$V/build_schematic.py         # schematic + pinned symbols
+python3 -B tools/$V/build_layout.py            # placement + netlist nets + vendored models, UNROUTED
+git checkout panels/front-pcb/midi-panel.kicad_pcb  # V1 only, unless the panel really changed: the generator re-UUIDs it
+mkdir -p research/$V/route
+python3 -B tools/$V/route_plan.py > research/$V/route/plan.json   # copper as shared ops v1
+(cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb plan --config modules/midi/tools/$V/kicad-project.json \
+   --ops modules/midi/research/$V/route/plan.json > modules/midi/research/$V/route/edit-plan.json)
+(cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb apply --plan modules/midi/research/$V/route/edit-plan.json \
+   --ops modules/midi/research/$V/route/plan.json --output modules/midi/research/$V/route-cand-NEW)
+(cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb promote --candidate modules/midi/research/$V/route-cand-NEW \
+   --plan modules/midi/research/$V/route/edit-plan.json)
+~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py   # only if the panel changed
+tools/fit_assembly.sh $V                       # nominal panel/carrier 3D fit
 ```
 
-After any source change, re-export with the commands in [`jlcpcb/README.md`](jlcpcb/README.md).
+After any source change, re-export that version with the commands in its
+`jlcpcb/<v>/README.md`.
 
 Read [`Code.md`](Code.md) before changing hardware.

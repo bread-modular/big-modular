@@ -658,5 +658,493 @@
    "snapshot_sha256": "a4b61b74302cfac8af9f5123f903bf8b33ba4324902340691fac3097216f3ff1",
    "qty_per_board": 1
   }
+ ],
+ "v2_note": "V2 (2026-10-19): hardware/v2 adds the mis-patch protection parts (docs/research.md section 7). v2_release_parts is every assembled V2 part as observed by the native assembly audit (assembly.py audit --strict-live, 5 boards, bottom side; raw report research/v2/audit.json). V1 records above (release_parts) are unchanged.",
+ "v2_release_parts": [
+  {
+   "code": "C14663",
+   "mpn": "CC0603KRX7R9BB104",
+   "manufacturer": "YAGEO",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 40731249,
+   "key_attributes": {
+    "Voltage Rating": "50V",
+    "Tolerance": "±10%",
+    "Capacitance": "100nF",
+    "Temperature Coefficient": "X7R"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+   "refs": [
+    "C1"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:18Z",
+   "snapshot_sha256": "1a6fff1f1e0455162730b2bc8dd2ea911e286b9d5c50b7d9d68cd4261e021991",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C15850",
+   "mpn": "CL21A106KAYNNNE",
+   "manufacturer": "Samsung Electro-Mechanics",
+   "package": "0805",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 6440083,
+   "key_attributes": {
+    "Voltage Rating": "25V",
+    "Tolerance": "±10%",
+    "Capacitance": "10uF",
+    "Temperature Coefficient": "X5R"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A106KAYNNNE_C15850.pdf",
+   "refs": [
+    "C3",
+    "C4"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:20Z",
+   "snapshot_sha256": "9a7809b0788fef01d5f65c7fa49e8f7a187bf7710cf1d61b653ca8561a27cfd7",
+   "qty_per_board": 2
+  },
+  {
+   "code": "C28323",
+   "mpn": "CL21B105KBFNNNE",
+   "manufacturer": "Samsung Electro-Mechanics",
+   "package": "0805",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 2313293,
+   "key_attributes": {
+    "Voltage Rating": "50V",
+    "Tolerance": "±10%",
+    "Capacitance": "1uF",
+    "Temperature Coefficient": "X7R"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf",
+   "refs": [
+    "C5"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:23Z",
+   "snapshot_sha256": "65777330cce4def7a42b1933a029e50be0e5bb39a1157facedf6c816df73d9e0",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C81598",
+   "mpn": "1N4148W",
+   "manufacturer": "ST(Semtech)",
+   "package": "SOD-123",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 4453208,
+   "key_attributes": {
+    "Voltage - Forward(Vf@If)": "1V@50mA",
+    "Non-Repetitive Peak Forward Surge Current": "1A",
+    "Voltage - DC Reverse(Vr)": "75V",
+    "Operating Junction Temperature Range": "-",
+    "Reverse Recovery Time (trr)": "4ns",
+    "Diode Configuration": "Standalone",
+    "Current - Rectified": "150mA",
+    "Pd - Power Dissipation": "400mW",
+    "Reverse Leakage Current (Ir)": "1uA@75V"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811061725_ST-Semtech-1N4148W_C81598.pdf",
+   "refs": [
+    "D9"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:24Z",
+   "snapshot_sha256": "d362b7ffeef204147ca7ae6403025b73156c3f5aa28043ae5a39f26bdb0830ec",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C8598",
+   "mpn": "B5819W SL",
+   "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "package": "SOD-123",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 593244,
+   "key_attributes": {
+    "Voltage - Forward(Vf@If)": "600mV@1A",
+    "Non-Repetitive Peak Forward Surge Current": "9A",
+    "Voltage - DC Reverse(Vr)": "40V",
+    "Diode Configuration": "Standalone",
+    "Current - Rectified": "1A",
+    "Reverse Leakage Current (Ir)": "-"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--B5819W-SL_C8598.pdf",
+   "refs": [
+    "D10"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:26Z",
+   "snapshot_sha256": "524f83375cd3d8e8aa19b91ccb4c644fefd335bc5ca55da563aa0e778b18bb3e",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C78260",
+   "mpn": "BAT54SWT1G",
+   "manufacturer": "onsemi",
+   "package": "SOT-323",
+   "classification": "Extended",
+   "economy_eligible": true,
+   "stock_observed": 62593,
+   "key_attributes": {
+    "Voltage - Forward(Vf@If)": "800mV@100mA",
+    "Non-Repetitive Peak Forward Surge Current": "600mA",
+    "Voltage - DC Reverse(Vr)": "30V",
+    "Operating Junction Temperature Range": "-55℃~+125℃",
+    "Diode Configuration": "1 Pair Series Connection",
+    "Current - Rectified": "200mA",
+    "Reverse Leakage Current (Ir)": "2uA@25V"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_onsemi-BAT54SWT1G_C78260.pdf",
+   "refs": [
+    "D11",
+    "D12",
+    "D13",
+    "D14",
+    "D15",
+    "D16",
+    "D17",
+    "D18"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:28Z",
+   "snapshot_sha256": "3fd564ef34e07616560f65ca4d2201669561cdfa267fcb8f1fbd7d6cea696f0c",
+   "qty_per_board": 8
+  },
+  {
+   "code": "C20526",
+   "mpn": "MMBT3904(RANGE:100-300)",
+   "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "package": "SOT-23",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 431331,
+   "key_attributes": {
+    "Operating Temperature": "-55℃~+150℃",
+    "Transition frequency(fT)": "300MHz",
+    "Collector - Emitter Voltage VCEO": "40V",
+    "Number": "1 NPN",
+    "DC Current Gain": "100",
+    "Current - Collector(Ic)": "200mA",
+    "Vce Saturation(VCE(sat))": "300mV",
+    "Emitter-Base Voltage(Vebo)": "6V",
+    "Pd - Power Dissipation": "200mW",
+    "type": "NPN",
+    "Current - Collector Cutoff": "100nA"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2207041900_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--MMBT3904-RANGE-100-300_C20526.pdf",
+   "refs": [
+    "Q1"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:30Z",
+   "snapshot_sha256": "7cfdeccbb772ae60d17411a65ff99882c183a9339fc67624825410a34a9fd986",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C25804",
+   "mpn": "0603WAF1002T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 39557370,
+   "key_attributes": {
+    "Resistance": "10kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf",
+   "refs": [
+    "R1",
+    "R24"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:31Z",
+   "snapshot_sha256": "dbdd68a70ab30556c46f732ca8d2284f19d6e4e2f7226e4a26b4ad979d6d1b59",
+   "qty_per_board": 2
+  },
+  {
+   "code": "C31850",
+   "mpn": "0603WAF2202T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 3396978,
+   "key_attributes": {
+    "Resistance": "22kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010030_UNI-ROYAL-Uniroyal-Elec-0603WAF2202T5E_C31850.pdf",
+   "refs": [
+    "R2"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:34Z",
+   "snapshot_sha256": "8e0e6e56ffded0388f64ea557f569a86b0f1a19e028f41692387ac78354efe4a",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C17513",
+   "mpn": "0805W8F1001T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0805",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 44228587,
+   "key_attributes": {
+    "Resistance": "1kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "125mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "150V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2205311800_UNI-ROYAL-Uniroyal-Elec-0805W8F1001T5E_C17513.pdf",
+   "refs": [
+    "R3",
+    "R5",
+    "R7",
+    "R9",
+    "R12",
+    "R14",
+    "R16",
+    "R18"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:35Z",
+   "snapshot_sha256": "96bb537d1bfade217752f072f6bef26e89884b18ae858aecfaeae75493295f13",
+   "qty_per_board": 8
+  },
+  {
+   "code": "C21190",
+   "mpn": "0603WAF1001T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 23028134,
+   "key_attributes": {
+    "Resistance": "1kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1001T5E_C21190.pdf",
+   "refs": [
+    "R4",
+    "R6",
+    "R8",
+    "R10",
+    "R13",
+    "R15",
+    "R17",
+    "R19"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:37Z",
+   "snapshot_sha256": "ec86b0a3e5c63d486368dd112e6c28d68b4d73dfc49d8aa793b84b797986774a",
+   "qty_per_board": 8
+  },
+  {
+   "code": "C23162",
+   "mpn": "0603WAF4701T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 18503029,
+   "key_attributes": {
+    "Resistance": "4.7kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF4701T5E_C23162.pdf",
+   "refs": [
+    "R11"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:39Z",
+   "snapshot_sha256": "c8d823dd13e6e0aa409b193d172f2c198201716d2123a6443cbf005ec3cc3b2b",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C414944",
+   "mpn": "HP06W2F390JT5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "1206",
+   "classification": "Extended",
+   "economy_eligible": true,
+   "stock_observed": 1717,
+   "key_attributes": {
+    "Resistance": "39Ω",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "500mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "200V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_UNI-ROYAL-Uniroyal-Elec-HP06W2F390JT5E_C414944.pdf",
+   "refs": [
+    "R20"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:40Z",
+   "snapshot_sha256": "28d0344b9f062ab4f899959d43bf4a2a9bcd587742a26a7cd49fa72a6b296aba",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C25803",
+   "mpn": "0603WAF1003T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 19267659,
+   "key_attributes": {
+    "Resistance": "100kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf",
+   "refs": [
+    "R22"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:42Z",
+   "snapshot_sha256": "a7e4f75cbc913c40d0c5e90ba4545b2c1fea7027fae35f142c2bdb40a327ec2e",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C22790",
+   "mpn": "0603WAF1202T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 944324,
+   "key_attributes": {
+    "Resistance": "12kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010130_UNI-ROYAL-Uniroyal-Elec-0603WAF1202T5E_C22790.pdf",
+   "refs": [
+    "R23"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:44Z",
+   "snapshot_sha256": "bd85b7e6752361366d86faf86f62124a5bdb69b8972c448b099a1aee07807d96",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C507118",
+   "mpn": "ATTINY1616-MNR",
+   "manufacturer": "Microchip Tech",
+   "package": "QFN-20-EP(3x3)",
+   "classification": "Extended",
+   "economy_eligible": true,
+   "stock_observed": 5627,
+   "key_attributes": {
+    "Operating Temperature": "-40℃~+105℃",
+    "DAC (Bit)": "8bit",
+    "Program Memory Type": "FLASH",
+    "RAM Size": "2KB",
+    "CPU Core": "AVR",
+    "Number of I/O": "18",
+    "Oscillator Type": "Built-in",
+    "EEPROM": "256Byte",
+    "CPU Maximum Speed": "20MHz",
+    "Program Storage Size": "16KB",
+    "Voltage - Supply": "1.8V~5.5V",
+    "Core Size": "8 Bit",
+    "Features": "Power-on reset (POR)、Undervoltage detection (BOR/LVD/LVR/LVI)、Built-in general-purpose timer、Hardware CRC、Touch function、Window watchdog (WWDG)",
+    "ADC (Bit)": "10bit"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2004232205_Microchip-Tech-ATTINY1616-MNR_C507118.pdf",
+   "refs": [
+    "U1"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:46Z",
+   "snapshot_sha256": "0f3c06d9ee54bf9c28d2dd661140dee06f8f4b7d5b6b17ee5867de68898443ba",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C3113",
+   "mpn": "CJ431",
+   "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "package": "SOT-23",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 312593,
+   "key_attributes": {
+    "Operating Temperature": "-25℃~+85℃",
+    "Noise - 1/10Hz to 10Hz": "-",
+    "Output Type": "Adjustable",
+    "Voltage - Supply": "-",
+    "Output Current": "100mA",
+    "Tolerance": "±0.5%",
+    "Minimum Cathode Current for Regulation": "1mA",
+    "Quiescent Current": "-",
+    "Features": "Temperature compensation control",
+    "Temperature Coefficient": "50ppm/℃",
+    "Output Voltage": "2.5V~36V",
+    "Reference Type": "Parallel",
+    "Noise - 10Hz to 10kHz": "-"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--CJ431_C3113.pdf",
+   "refs": [
+    "U2"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:48Z",
+   "snapshot_sha256": "609683ca5956c5cc1110f6bcc03d6bddb85394f339ef3cbf09455b23b23a6184",
+   "qty_per_board": 1
+  },
+  {
+   "code": "C16106",
+   "mpn": "HT7550-1",
+   "manufacturer": "Holtek Semicon",
+   "package": "SOT-89-3",
+   "classification": "Preferred Extended",
+   "economy_eligible": true,
+   "stock_observed": 206067,
+   "key_attributes": {
+    "Power Supply Rejection Ratio (PSRR)": "-",
+    "Operating Temperature": "-40℃~+85℃@(Ta)",
+    "standby current": "2.5uA",
+    "Voltage - Supply": "30V",
+    "Output Type": "Fixed",
+    "Output Current": "150mA",
+    "Output Configuration": "Positive",
+    "Output Voltage": "5V",
+    "Voltage Dropout": "25mV@(1mA)",
+    "Number of Outputs": "1"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2404031722_Holtek-Semicon-HT7550-1_C16106.pdf",
+   "refs": [
+    "U3"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:50Z",
+   "snapshot_sha256": "7fc55db1aacaeafec9a2d3541486c367ba9a9c738b0a2153e80611d13bf7bed5",
+   "qty_per_board": 1
+  }
  ]
 }
