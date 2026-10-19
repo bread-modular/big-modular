@@ -97,17 +97,38 @@ def findings(report, kind):
             "severity": dict(severity), "total_including_exclusions": sum(len(v) for v in categories.values())}
 
 
-def source_manifest(description):
-    """Compare jlcpcb/source-sha256.json sources with the files on disk.
+def manifest_root(manifest):
+    """Directory the manifest's keys are relative to: the parent of the nearest
+    enclosing `jlcpcb` directory (`<module>/jlcpcb/source-sha256.json` and
+    `<module>/jlcpcb/<variant>/source-sha256.json` both key from `<module>`).
+    Same rule as jlcpcb/export.py, which writes the keys."""
+    manifest = Path(manifest).resolve()
+    for parent in manifest.parents:
+        if parent.name == "jlcpcb":
+            return parent.parent
+    return manifest.parent.parent
 
-    Source identity is a gate: a manufacturing export whose recorded sources no
-    longer match the project is stale. Export hashes are reported only, because
-    KiCad writes a creation timestamp into every Gerber/drill file.
+
+def source_manifest(description):
+    """Compare a source-sha256.json manifest's sources with the files on disk.
+
+    The manifest is the profile's explicit `source_manifest`, else the
+    conventional `<project_dir>/../jlcpcb/source-sha256.json`. Source identity is a
+    gate: a manufacturing export whose recorded sources no longer match the
+    project is stale. A declared manifest that is missing is an error, never an
+    absent gate. Export hashes are reported only, because KiCad writes a creation
+    timestamp into every Gerber/drill file.
     """
-    module = Path(description["project_dir"]).resolve().parent
-    manifest = module / "jlcpcb" / "source-sha256.json"
-    if not manifest.is_file():
-        return {"present": False}
+    declared = description.get("source_manifest")
+    if declared:
+        manifest = Path(declared)
+        if not manifest.is_file():
+            raise Error(f"Declared source_manifest is missing: {manifest}")
+    else:
+        manifest = Path(description["project_dir"]).resolve().parent / "jlcpcb" / "source-sha256.json"
+        if not manifest.is_file():
+            return {"present": False}
+    module = manifest_root(manifest)
     data = json.loads(manifest.read_text(encoding="utf-8"))
     sources = data.get("sources")
     if not isinstance(sources, dict) or not sources:

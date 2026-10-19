@@ -12,7 +12,7 @@ survived, what has to be regenerated, and every deviation from the contract in
 | Step | State |
 |---|---|
 | 1 Inventory + gap analysis | done (this file, `docs/v2/recovered/`) |
-| 2 Layout (`hardware/v1`, `tools/v1`, `jlcpcb/v1`, shared-tool patch) | pending |
+| 2 Layout (`hardware/v1`, `tools/v1`, `jlcpcb/v1`, shared-tool patch) | done: see below |
 | 3 V1 restore + verification | pending |
 | 4 V2 rebuild + verification | pending |
 | 5 Docs pass | pending |
@@ -78,6 +78,28 @@ Notes on the evidence:
 | `tools/v2/kicad-project.json` | **lost**; recreate |
 | `jlcpcb/v2/` | **lost**; re-export with the shared exporter |
 | `docs/v2/fit/` | present (pre-loss); refresh after the rebuild |
+
+## Step 2 result
+
+- Applied `107-uncommitted-tracked.patch` unchanged (12 files). Shared tests:
+  `tests/test_project` 13 OK, `jlcpcb/tests/test_export` 38 OK (4 skipped).
+- `git mv` of the flat project into `hardware/v1/`; `fp-lib-table`/`sym-lib-table`
+  are `${KIPRJMOD}`-relative, so they resolve again with no edit. The 11 + 3
+  `_kicad_models` dirs were merged into `hardware/v1/_kicad_models/` (13; the
+  duplicate PJ301M-12 was byte-identical).
+- Flat generators -> `tools/v1/` (paths now `hardware/v1`, `tools/v1`; `sexp` is
+  imported from `tools/`). Text the generators embed in outputs (board comment
+  `nets: hardware/midi.kicad_sch`, sym-lib-table descr, schematic-symbols note) is
+  left as it was so that step 3 can test byte reproduction.
+- `tools/v1/kicad-project.json` points at `hardware/v1` and declares
+  `source_manifest: ../../jlcpcb/v1/source-sha256.json`.
+- Flat `jlcpcb/*` -> `jlcpcb/v1/` (moved, not regenerated).
+- Verification: `kicad-cli` ERC 0; DRC (`--severity-all --schematic-parity
+  --refill-zones`) 0/0/0; `doctor` exit 0. The sha256 values of
+  `hardware/v1/midi.kicad_{pcb,pro,sch}` and the panel equal the old manifest's
+  values, so the move changed no source byte. `check` exits 1 **only** because
+  `jlcpcb/v1/source-sha256.json` still keys the old flat paths (generated file,
+  not hand-edited; re-exported in step 3).
 
 ## Deviations
 

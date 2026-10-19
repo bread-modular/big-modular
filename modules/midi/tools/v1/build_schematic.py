@@ -1,15 +1,15 @@
-"""Generate the S4 MIDI schematic (hardware/midi.kicad_sch) and its pinned symbols.
+"""Generate the V1 S4 MIDI schematic (hardware/v1/midi.kicad_sch) and its pinned symbols.
 
 Run from modules/midi:
-  python3 -B tools/build_schematic.py
+  python3 -B tools/v1/build_schematic.py
 
-Writes hardware/MIDI.kicad_sym (stock KiCad 10 symbols, derived symbols flattened,
-renamed into the MIDI library), hardware/sym-lib-table and the flat root schematic,
+Writes hardware/v1/MIDI.kicad_sym (stock KiCad 10 symbols, derived symbols flattened,
+renamed into the MIDI library), hardware/v1/sym-lib-table and the flat root schematic,
 then lets `kicad-cli sch upgrade --force` re-save it natively. CIRCUIT below is the
 circuit intent of docs/research.md section 3. Every pin gets a short stub and a
 local net label (usb-power style), so connectivity is explicit by name.
 
-The PCB never reads this table: tools/build_layout.py takes nets, values and
+The PCB never reads this table: tools/v1/build_layout.py takes nets, values and
 footprints from the native netlist that kicad-cli exports from this schematic.
 """
 import copy
@@ -17,13 +17,15 @@ import hashlib
 import json
 import math
 import subprocess
+import sys
 import uuid
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # shared tools/sexp.py
 from sexp import parse, dump, nodes, one, walk, atom
 
-MODULE = Path(__file__).resolve().parents[1]
-HW = MODULE / 'hardware'
+MODULE = Path(__file__).resolve().parents[2]
+HW = MODULE / 'hardware/v1'
 STOCK = Path('/usr/share/kicad/symbols')
 PROJECT = 'midi'
 STUB = 2.54

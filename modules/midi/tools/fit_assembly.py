@@ -1,19 +1,21 @@
 """Nominal panel-over-carrier fit check (FreeCAD, headless). Use tools/fit_assembly.sh.
 
 Inputs (written by the wrapper with kicad-cli, user origin = panel origin):
-  research/fit/board.step      carrier body only
-  research/fit/<REF>.step      one STEP per front-side THT part (J1..J9, D1..D8)
-  research/fit/back.step       all back-side parts
+  research/<version>/fit/board.step   carrier body only
+  research/<version>/fit/<REF>.step   one STEP per front-side THT part (J1..J9, D1..D8)
+  research/<version>/fit/back.step    all back-side parts
 Panels: the printed panel STEP (panels/front-cad) and an FR4 plate built from the
 native panel PCB holes at panel_pcb_thickness_mm.
 
 KiCad STEP frame: X = panel X, Y = -panel Y, board Z0..1.6 with F.Cu at Z1.6.
 The panel rear face sits stack_Z_mm.panel_rear_seat above F.Cu.
-Writes docs/fit/fit-report.json and research/fit/midi-fit-assembly.step.
+Writes the version's fit-report.json (docs/fit/ for V1, docs/v2/fit/ for V2) and
+research/<version>/fit/midi-fit-assembly.step. MIDI_VERSION (v1|v2) comes from the wrapper.
 Nominal model geometry only: the jack models are 'Untested' upstream.
 """
 import json
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -24,7 +26,9 @@ MODULE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE / 'tools'))
 from sexp import nodes, one, parse  # noqa: E402
 
-FIT = MODULE / 'research/fit'
+VERSION = os.environ['MIDI_VERSION']
+assert VERSION in ('v1', 'v2'), VERSION
+FIT = MODULE / 'research' / VERSION / 'fit'
 GEO = json.loads((MODULE / 'docs/geometry.json').read_text())
 BOARD_T = GEO['main_pcb']['thickness_mm']
 SEAT = GEO['stack_Z_mm']['panel_rear_seat']
@@ -95,7 +99,8 @@ def main():
         }
     asm = Part.makeCompound([board, back, *parts.values(), printed_panel()[0]])
     asm.exportStep(str(FIT / 'midi-fit-assembly.step'))
-    out = MODULE / 'docs/fit/fit-report.json'
+    out = MODULE / ('docs/fit' if VERSION == 'v1' else f'docs/{VERSION}/fit') / 'fit-report.json'
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 

@@ -9,7 +9,7 @@ down from every side of U1, so each layer keeps a lane order that matches its tu
   F.Cu  TX1-TX4 up, TX5-TX8 + UPDI down, +5V trunk, TIP/RING, U3 heat sink, GND pour.
 Vias 0.6/0.3 mm. Tracks 0.25 mm signal, 0.2 mm U1 fan-out, 0.3 mm +5V, 0.4-0.5 mm power.
 
-  python3 -B tools/route_plan.py > research/route/plan.json   (then shared pcb plan/apply/promote)
+  python3 -B tools/v1/route_plan.py > research/v1/route/plan.json   (then shared pcb plan/apply/promote)
 """
 import json
 import sys

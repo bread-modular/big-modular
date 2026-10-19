@@ -1,9 +1,9 @@
-"""Import the pinned MIDI footprints into hardware/MIDI.pretty (one-time, reviewable).
+"""Import the pinned MIDI footprints into hardware/<version>/MIDI.pretty (one-time, reviewable).
 
 The library is rebuilt from scratch: footprints no longer listed are removed.
 
 Run from modules/midi with KiCad's Python (pcbnew 10):
-  python3 -B tools/import_footprints.py [--bread-modular ~/data/projects/bread-modular]
+  python3 -B tools/import_footprints.py --version v1|v2 [--bread-modular ~/data/projects/bread-modular]
 
 Sources are read-only: the Bread Modular AudioJacks library (MIT, Barwise) for the
 two jacks and the installed KiCad stock library for everything else. Footprints are
@@ -17,7 +17,8 @@ intentional edits are on the two jacks:
   Y -7.25..7.58) is sized around the reference text, not the body; the model body
   is X +/-4.5 (PJ301M-12) / +/-5.0 (PJ366ST), Y -6.0..4.5 with the S pad to 7.53.
 
-The STEP files are copied byte-exactly. hardware/MIDI.pretty/PROVENANCE.json records
+V2 adds the stock footprints of its protection parts (V2_FOOTPRINTS). The STEP files
+are copied byte-exactly. hardware/<version>/MIDI.pretty/PROVENANCE.json records
 source paths and SHA-256 of every input and output.
 """
 import argparse
@@ -29,9 +30,6 @@ from pathlib import Path
 import pcbnew
 
 MODULE = Path(__file__).resolve().parents[1]
-HW = MODULE / 'hardware'
-LIB = HW / 'MIDI.pretty'
-MODELS = HW / 'MIDI.3dshapes'
 STOCK = Path('/usr/share/kicad/footprints')
 
 STOCK_FOOTPRINTS = [
@@ -46,6 +44,15 @@ STOCK_FOOTPRINTS = [
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_1x03_P2.54mm_Vertical'),
+]
+
+# V2 input front end (Q1, U2 shunt), output clamps (SOT-323 BAT54SW), 0805 output resistors
+# and the JP2 input-bypass solder jumper (copper only, shipped open; bridged by hand).
+V2_FOOTPRINTS = [
+    ('Package_TO_SOT_SMD', 'SOT-23'),
+    ('Package_TO_SOT_SMD', 'SOT-323_SC-70'),
+    ('Resistor_SMD', 'R_0805_2012Metric'),
+    ('Jumper', 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm'),
 ]
 
 # name -> (step file, courtyard half-width X, courtyard Y top, courtyard Y bottom)
@@ -99,8 +106,12 @@ def fix_jack(fp, step, hx, ytop, ybot):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--version', required=True, choices=('v1', 'v2'), help='hardware/<version> to rebuild')
     ap.add_argument('--bread-modular', default=str(Path.home() / 'data/projects/bread-modular'))
     args = ap.parse_args()
+    hw = MODULE / 'hardware' / args.version
+    LIB, MODELS = hw / 'MIDI.pretty', hw / 'MIDI.3dshapes'
+    stock = STOCK_FOOTPRINTS + (V2_FOOTPRINTS if args.version == 'v2' else [])
     jacks = Path(args.bread_modular) / 'opt/AudioJacks'
     LIB.mkdir(exist_ok=True)
     for old in LIB.glob('*.kicad_mod'):
@@ -108,7 +119,7 @@ def main():
     MODELS.mkdir(exist_ok=True)
     record = {'footprints': {}, 'models': {}}
     io = pcbnew.PCB_IO_MGR.FindPlugin(pcbnew.PCB_IO_MGR.KICAD_SEXP)
-    for lib, name in STOCK_FOOTPRINTS:
+    for lib, name in stock:
         src = STOCK / f'{lib}.pretty' / f'{name}.kicad_mod'
         fp = io.FootprintLoad(str(src.parent), name)
         fp.SetFPID(pcbnew.LIB_ID('MIDI', name))

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_dir": "../../hardware/v1",
+  "board": "../../hardware/v1/midi.kicad_pcb",
+  "root_schematic": "../../hardware/v1/midi.kicad_sch",
+  "dependencies": [
+    "../../hardware/v1/MIDI.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  },
+  "source_manifest": "../../jlcpcb/v1/source-sha256.json"
+}

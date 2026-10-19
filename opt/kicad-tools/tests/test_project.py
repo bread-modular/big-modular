@@ -50,6 +50,44 @@ class ProjectTests(unittest.TestCase):
             with self.assertRaises(Error):
                 select_project(args)
 
+    def test_declared_source_manifest_keys_from_enclosing_jlcpcb_parent(self):
+        from kicad_tools import manifest_root, source_manifest
+        module = self.root / "module"
+        variant = module / "jlcpcb" / "v2"
+        variant.mkdir(parents=True)
+        source = module / "hardware" / "v2" / "board.kicad_pcb"
+        source.parent.mkdir(parents=True)
+        source.write_text("(kicad_pcb)")
+        manifest = variant / "source-sha256.json"
+        import hashlib
+        manifest.write_text(json.dumps({"sources": {"hardware/v2/board.kicad_pcb": hashlib.sha256(source.read_bytes()).hexdigest()}}))
+        self.assertEqual(manifest_root(manifest), module.resolve())
+        self.assertEqual(manifest_root(module / "jlcpcb" / "source-sha256.json"), module.resolve())
+        result = source_manifest({"project_dir": str(source.parent), "source_manifest": str(manifest)})
+        self.assertTrue(result["equal"])
+        source.write_text("(kicad_pcb edited)")
+        self.assertEqual(source_manifest({"project_dir": str(source.parent), "source_manifest": str(manifest)})["mismatched"],
+                         ["hardware/v2/board.kicad_pcb"])
+        # Without a declaration the conventional <project_dir>/../jlcpcb manifest is absent here.
+        self.assertEqual(source_manifest({"project_dir": str(source.parent), "source_manifest": None}), {"present": False})
+        with self.assertRaisesRegex(Error, "missing"):
+            source_manifest({"project_dir": str(source.parent), "source_manifest": str(variant / "absent.json")})
+
+    def test_profile_source_manifest_is_resolved_and_validated(self):
+        config = self.root / "profile.json"
+        base = {"schema_version": 1, "project_dir": "Synthetic project", "board": "Synthetic project/gadget.kicad_pcb",
+                "root_schematic": "Synthetic project/gadget.kicad_sch"}
+        config.write_text(json.dumps({**base, "source_manifest": "out/jlcpcb/v2/source-sha256.json"}))
+        args = parser().parse_args(["doctor", "--config", str(config)])
+        plan = Plan(select_project(args))
+        self.assertEqual(plan.describe()["source_manifest"], str(self.root / "out/jlcpcb/v2/source-sha256.json"))
+        config.write_text(json.dumps(base))
+        self.assertIsNone(Plan(select_project(args)).describe()["source_manifest"])
+        for bad in (True, "", "manifest.txt", ["a.json"]):
+            config.write_text(json.dumps({**base, "source_manifest": bad}))
+            with self.assertRaises(Error):
+                select_project(args)
+
     def test_missing_sheet_cycle_and_missing_variable_fail_before_writes(self):
         leaf = self.project / "sheets with spaces/child.kicad_sch"
         leaf.unlink()

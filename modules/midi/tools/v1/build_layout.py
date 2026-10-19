@@ -1,21 +1,21 @@
 """Generate the MIDI boards from docs/geometry.json and the native schematic netlist.
 
-Run from modules/midi with KiCad's Python (pcbnew 10), after tools/build_schematic.py:
-  python3 -B tools/build_layout.py
+Run from modules/midi with KiCad's Python (pcbnew 10), after tools/v1/build_schematic.py:
+  python3 -B tools/v1/build_layout.py
 
-Writes hardware/midi.kicad_pcb (carrier: placed footprints with schematic nets, no
+Writes hardware/v1/midi.kicad_pcb (carrier: placed footprints with schematic nets, no
 routing) and panels/front-pcb/midi-panel.kicad_pcb (passive 4HP panel: outline, NPTH
 holes, silkscreen labels). Placement comes from the geometry contract; references,
 values, fields, symbol links and pad nets come from the netlist that kicad-cli
-exports from hardware/midi.kicad_sch (what "Update PCB from Schematic" would do).
+exports from hardware/v1/midi.kicad_sch (what "Update PCB from Schematic" would do).
 
 This generator owns placement and net assignment and writes an UNROUTED carrier.
-Copper comes from tools/route_plan.py through the shared `pcb plan/apply/promote`
+Copper comes from tools/v1/route_plan.py through the shared `pcb plan/apply/promote`
 transaction (README "Rebuild"); the accepted routed native PCB is the source of
 truth (root AGENTS.md). Rerunning this script discards routing, so only do it as
 the first step of that full rebuild.
 
-3D models are vendored into hardware/_kicad_models/<sha256>/<name> and bound via
+3D models are vendored into hardware/v1/_kicad_models/<sha256>/<name> and bound via
 ${KIPRJMOD}, the repository convention (as usb-power) that `pcb promote` resolves.
 """
 import hashlib
@@ -29,9 +29,10 @@ from pathlib import Path
 
 import pcbnew
 
-MODULE = Path(__file__).resolve().parents[1]
+MODULE = Path(__file__).resolve().parents[2]
+HW = MODULE / 'hardware/v1'
 GEO = json.loads((MODULE / 'docs/geometry.json').read_text())
-LIB = MODULE / 'hardware/MIDI.pretty'
+LIB = HW / 'MIDI.pretty'
 OX, OY = GEO['kicad_origin_mm']
 IO = pcbnew.PCB_IO_MGR.FindPlugin(pcbnew.PCB_IO_MGR.KICAD_SEXP)
 
@@ -93,7 +94,7 @@ def schematic_netlist():
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / 'midi.xml'
         subprocess.run(['kicad-cli', 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(out),
-                        str(MODULE / 'hardware/midi.kicad_sch')], check=True, stdout=subprocess.DEVNULL)
+                        str(HW / 'midi.kicad_sch')], check=True, stdout=subprocess.DEVNULL)
         root = ET.parse(out).getroot()
     comps = {}
     for c in root.find('components'):
@@ -106,17 +107,17 @@ def schematic_netlist():
     return comps, nets
 
 
-MODEL_VARS = {'KICAD10_3DMODEL_DIR': '/usr/share/kicad/3dmodels', 'KIPRJMOD': str(MODULE / 'hardware')}
+MODEL_VARS = {'KICAD10_3DMODEL_DIR': '/usr/share/kicad/3dmodels', 'KIPRJMOD': str(HW)}
 
 
 def vendor_model(token):
-    """Copy a footprint's model into hardware/_kicad_models/<sha256>/ and return its ${KIPRJMOD} token."""
+    """Copy a footprint's model into hardware/v1/_kicad_models/<sha256>/ and return its ${KIPRJMOD} token."""
     path = token
     for var, val in MODEL_VARS.items():
         path = path.replace('${%s}' % var, os.environ.get(var, val))
     src = Path(path)
     digest = hashlib.sha256(src.read_bytes()).hexdigest()
-    dest = MODULE / 'hardware/_kicad_models' / digest / src.name
+    dest = HW / '_kicad_models' / digest / src.name
     if not dest.is_file():
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dest)
@@ -167,7 +168,7 @@ def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre', model_
 
 
 def build_carrier():
-    path = MODULE / 'hardware/midi.kicad_pcb'
+    path = HW / 'midi.kicad_pcb'
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - MIDI carrier', [
         'S4: 5 V logic, BM V1 direct input, routed natively - not released, not for fabrication',

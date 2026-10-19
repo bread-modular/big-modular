@@ -60,6 +60,13 @@ selection cannot be mixed. Config paths are relative to the config file:
 }
 ```
 
+An optional `"source_manifest": "../jlcpcb/v2/source-sha256.json"` (a `.json`
+path, relative to the profile) selects the manufacturing manifest that `check`
+re-hashes. Without it, `check` uses `<project_dir>/../jlcpcb/source-sha256.json`
+when present. A declared manifest that is missing is an error, not an absent gate.
+Use it when one module holds several projects (e.g. `hardware/v1`, `hardware/v2`),
+each with its own export under `jlcpcb/<variant>/`.
+
 Native project `schematic.top_level_sheets` metadata is recognized only as one
 exact `{filename, name, uuid}` entry in the selected root's companion project:
 filename must be the same-directory root basename/resolved path, name its stem,

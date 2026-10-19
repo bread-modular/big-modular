@@ -300,9 +300,21 @@ def sheet_files(root, project_dir):
     return ordered
 
 
+def manifest_root(manifest):
+    """Directory the manifest's keys are relative to: the parent of the nearest
+    enclosing `jlcpcb` directory (`<module>/jlcpcb/source-sha256.json` and
+    `<module>/jlcpcb/<variant>/source-sha256.json` both key from `<module>`).
+    Same rule as the shared `check` (kicad_tools.py), which re-hashes them."""
+    manifest = Path(manifest).resolve()
+    for parent in manifest.parents:
+        if parent.name == "jlcpcb":
+            return parent.parent
+    return manifest.parent.parent
+
+
 def manifest_sources(board, schematic, project_dir, manifest):
     """Source identity entries keyed relative to the manifest's module root."""
-    root = Path(manifest).resolve().parent.parent
+    root = manifest_root(manifest)
     paths = [board]
     if project_dir:
         for suffix in (".kicad_pro",):
@@ -526,7 +538,7 @@ def export_project(args):
         print(f"Warning: {message}", file=sys.stderr)
     if args.manifest:
         sources = manifest_sources(board, schematic, board.parent, args.manifest)
-        module_root = Path(args.manifest).resolve().parent.parent
+        module_root = manifest_root(args.manifest)
         exports = {}
         # A PCB-only run writes header-only CSVs; only its Gerbers are identity-bearing.
         for name in (names[:3] if schematic else names[:1]):
