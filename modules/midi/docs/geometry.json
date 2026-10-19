@@ -176,29 +176,7 @@
       ],
       "rot": 0,
       "band": "LED column beside J1 (no LED there)",
-      "note": "THT 2.54 mm header on B, like the UPDI header. Pin 1 (top) = Tip, pin 2 = DATA, pin 3 = Ring. B.SilkS: TRS above; A level with pin 1, B level with pin 3."
-    },
-    {
-      "ref": "R21",
-      "value": "4.7k (input series, 5 V sender clamp limit)",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        15.0,
-        20.3
-      ],
-      "rot": 0,
-      "band": "J1/J2 band beside JP1"
-    },
-    {
-      "ref": "R2",
-      "value": "22k (RX pull-up)",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        5.8,
-        22.5
-      ],
-      "rot": 180,
-      "band": "J1/J2 band, left of the RX lane (RX pull-up)"
+      "note": "THT 2.54 mm header on B, like the UPDI header. Pin 1 (top) = Tip, pin 2 = RX (direct to U1 PB3), pin 3 = Ring. B.SilkS: TRS above; A level with pin 1, B level with pin 3."
     },
     {
       "ref": "C3",

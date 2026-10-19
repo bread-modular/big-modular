@@ -170,10 +170,10 @@ def build_carrier():
     path = MODULE / 'hardware/midi.kicad_pcb'
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - MIDI carrier', [
-        'S3: 5 V logic, routed natively - not released, not for fabrication',
+        'S4: 5 V logic, BM V1 direct input, routed natively - not released, not for fabrication',
         'Front (F) faces the panel; THT jacks/LEDs hand-soldered; SMD on B',
         'Geometry contract: docs/geometry.json; nets: hardware/midi.kicad_sch',
-    ], rev="S3")
+    ], rev="S4")
     x0, y0, x1, y1 = GEO['main_pcb']['outline_mm']
     rect(board, pcbnew.Edge_Cuts, x0, y0, x1, y1)
     # Fit references (non-fabricated): panel outline and rail keep-out bands.
@@ -228,8 +228,6 @@ def build_carrier():
     text(board, pcbnew.B_SilkS, 'A', 15.2, jp1['1'], 1.0, mirrored=True)
     text(board, pcbnew.B_SilkS, 'B', 15.2, jp1['3'], 1.0, mirrored=True)
     text(board, pcbnew.B_SilkS, 'MIDI V1.0', 7.3, 11.6, 0.8, mirrored=True)
-    # JLCPCB prints its order number in place of this marker instead of at a random spot.
-    text(board, pcbnew.B_SilkS, 'JLCJLCJLCJLC', 8.6, 18.0, 0.8, mirrored=True)
     save_canonical(path, board)
     return path
 

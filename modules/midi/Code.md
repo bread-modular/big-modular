@@ -1,4 +1,4 @@
-# midi contract (S3 schematic, R3 routing, V1.0 export)
+# midi contract (S4 schematic, R4 routing + R5 silk, V1.0 export)
 
 ## Fixed by the brief
 
@@ -10,7 +10,9 @@
   the logic rail is **5 V** (decision D1, HT7550-1) so outputs drive 5 V Bread
   Modular receivers.
 - Input: Bread Modular **V1** direct input only (not the V2 6N137). It must
-  accept 3.3 V and 5 V MIDI senders. **No optocoupler in this version.** The
+  accept 3.3 V and 5 V MIDI senders. JP1 drives PB3 directly, with no series
+  resistor or pull-up, exactly as V1 (R21/R2 removed in S4); input protection
+  comes in V2. **No optocoupler in this version.** The
   opto exists to break ground loops, and an opto that shares RX with the direct
   path can't do that, so it is deferred to **V2**, where an isolated input will
   be selected automatically by voltage sensing (`docs/research.md` §3.5).
@@ -28,7 +30,7 @@
   vias.
 - 4HP panel, in both a KiCad FR4 version and a FreeCAD printable version.
 
-## S3/R3 state
+## S4/R5 state
 
 - `tools/build_schematic.py` owns `hardware/midi.kicad_sch`, `MIDI.kicad_sym` and
   `sym-lib-table`: stock KiCad 10 symbols, flattened and pinned (recorded in
@@ -43,11 +45,14 @@
   schematic, and vendors 3D models into `hardware/_kicad_models/<sha256>/` (the
   usb-power convention that `pcb promote` resolves). It writes an **unrouted**
   board.
-- **The routed native PCB (R3) is the source of truth for copper** (root
-  `AGENTS.md`). `tools/route_plan.py` holds R3's explicit geometry (R1 routing,
+- **The routed native PCB (R4) is the source of truth for copper** (root
+  `AGENTS.md`). `tools/route_plan.py` holds R4's explicit geometry (R1 routing,
   two GND stitching vias from R2, and since R3 the regulator group beside J10 on
-  its VIN_LDO heat sink with the reshaped GND pours), as shared `pcb plan` ops v1.
-  It reproduces R3 only on the matching placement, through
+  its VIN_LDO heat sink with the reshaped GND pours, and since R4 the direct RX
+  track to JP1), as shared `pcb plan` ops v1. R5 deleted the B silk
+  `JLCJLCJLCJLC` marker with a shared `delete_item` text op (copper unchanged);
+  `build_layout.py` no longer draws it, so a rebuild reproduces R5.
+  It reproduces R4 only on the matching placement, through
   plan -> apply (new candidate under `research/`) -> promote. Don't rerun either
   generator over the routed board, except as the full README rebuild followed
   by the full verification below. Route changes are explicit edits to
@@ -65,13 +70,13 @@
   model envelope), removal of two decorative jack silk arcs, and the documented
   U1 3D-model proxy. All are recorded in `hardware/MIDI.pretty/PROVENANCE.json`.
 
-## Verification (S3/R3)
+## Verification (S4/R4)
 
 - Native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`).
 - Native DRC `--severity-all --schematic-parity --refill-zones`: carrier 0
   violations, 0 unconnected, 0 parity issues (`docs/fit/carrier-drc.json`);
   panel 0/0.
-- The shared `pcb apply` accepted the R3 routing candidate: ERC/DRC findings
+- The shared `pcb apply` accepted the R4 routing candidate: ERC/DRC findings
   empty, parity equal, source unchanged. `pcb promote` re-bound every model token
   by content (0 external).
 - `kicad_tools.py doctor` passes. `kicad_tools.py check` returns

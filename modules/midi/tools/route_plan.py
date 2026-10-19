@@ -5,7 +5,7 @@ All geometry is written out here in board millimetres; nothing is autorouted.
 Layer plan (docs/research.md section 3.6). The Bread Modular pin map sends nets up and
 down from every side of U1, so each layer keeps a lane order that matches its turn order:
   B.Cu  RX + LED1-LED4 up, LED5-LED8 down, TX6-TX8 up to their layer-change vias,
-        resistor stubs, power chain, R2 +5V, U3 heat sink, GND pour.
+        resistor stubs, power chain, U3 heat sink, GND pour.
   F.Cu  TX1-TX4 up, TX5-TX8 + UPDI down, +5V trunk, TIP/RING, U3 heat sink, GND pour.
 Vias 0.6/0.3 mm. Tracks 0.25 mm signal, 0.2 mm U1 fan-out, 0.3 mm +5V, 0.4-0.5 mm power.
 
@@ -55,10 +55,9 @@ for n in range(1, 9):
     track(f'out{n}', f'/OUT{n}', B, (RTX[n], '2'), [], (JREF[n], 'T'))
     track(f'leda{n}', f'/LED{n}_A', B, (RLED[n], '2'), [], (f'D{n}', '2'))
 
-# ---- MIDI input: J1 -> JP1 (TRS A/B) -> R21 -> RX ---------------------------------------
+# ---- MIDI input: J1 -> JP1 (TRS A/B) -> RX (U1 PB3), Bread Modular V1 direct -------------
 track('tip', '/TIP', F, ('J1', 'T'), [], ('JP1', '1'))
 track('ring', '/RING', F, ('J1', 'R'), [(107.6, 67.9), (116.0, 67.9)], ('JP1', '3'))
-track('data', '/DATA', B, ('JP1', '2'), [(115.6, 65.0), (115.6, 69.5)], ('R21', '1'))
 
 # ---- power chain: J10 +12V -> D10 -> R20 -> U3 (HT7550) -> +5V --------------------------
 track('p12a', '/+12V', B, ('J10', '10'), [], ('J10', '9'), 0.5)
@@ -98,8 +97,7 @@ for n in range(1, 5):
 # RX + LED1-LED4 up on B.Cu (lanes L->R: RX, TX8, TX6, TX7 to their vias, LED1, LED2, LED3);
 # LED4 takes the right channel because R9 sits in its tip-column crossing.
 LEDY = {n: JACK[n] - 4.725 for n in range(1, 9)}             # LEDn resistor pad 1 Y
-track('rx', '/RX', B, ('U1', '11'), [(107.8, 73.1)], ('R2', '2'), FAN)
-track('rx2', '/RX', B, ('R2', '2'), [(107.8, 71.9), (107.8, 70.3)], ('R21', '2'), FAN)
+track('rx', '/RX', B, ('U1', '11'), [(107.8, 70.3), (115.6, 70.3), (115.6, 65.0)], ('JP1', '2'), FAN)
 track('led1', '/CH1_LED', B, ('U1', '15'), [(109.4, 112.0), (110.05, 111.35), (110.05, LEDY[1])], ('R4', '1'), FAN)
 track('led2', '/CH2_LED', B, ('U1', '16'), [(110.45, 113.45), (110.45, LEDY[2])], ('R6', '1'), FAN)
 track('led3', '/CH3_LED', B, ('U1', '17'), [(110.85, 113.85), (110.85, LEDY[3])], ('R8', '1'), FAN)
@@ -145,20 +143,17 @@ track('led6', '/CH6_LED', B, ('U1', '1'), [(109.4, 116.1), (109.9, 116.6), (109.
 track('led7', '/CH7_LED', B, ('U1', '2'), [(109.0, LEDY[7])], ('R17', '1'), FAN)
 track('led8', '/CH8_LED', B, ('U1', '5'), [(107.8, 116.1), (107.3, 116.6), (107.3, 136.4), (115.6, 136.4), (115.6, LEDY[8])], ('R19', '1'), FAN)
 
-# ---- +5V trunk: LDO -> F.Cu left channel -> C3 -> U1 (via under pin 4, C1); B.Cu left channel -> R2 --
+# ---- +5V trunk: LDO -> F.Cu left channel -> C3 -> U1 (via under pin 4, C1) -----------------
 P5 = 0.3
 via('p5ldo', '/+5V', 111.55, 161.9)
 via('p5c3', '/+5V', 103.545, 125.4)
-via('p5j', '/+5V', 103.4, 116.2)
 via('p5u1', '/+5V', 108.2, 116.85)
 track('p5a', '/+5V', B, ('U3', '3'), [], 'p5ldo', PWR)
 track('p5b', '/+5V', F, 'p5ldo', [(111.55, 147.6), (104.3, 147.6), (103.545, 146.85)], 'p5c3', P5)
 track('p5c', '/+5V', B, 'p5c3', [], ('C3', '1'), P5)
-track('p5d', '/+5V', F, 'p5c3', [(103.545, 124.6), (103.545, 117.0)], 'p5j', P5)
-track('p5e', '/+5V', F, 'p5j', [(103.9, 116.6), (107.95, 116.6)], 'p5u1', P5)
+track('p5d', '/+5V', F, 'p5c3', [(103.545, 117.0), (103.945, 116.6), (107.95, 116.6)], 'p5u1', P5)
 track('p5f', '/+5V', B, ('U1', '4'), [], 'p5u1', FAN)
 track('p5g', '/+5V', B, 'p5u1', [], ('C1', '1'), P5)
-track('p5h', '/+5V', B, 'p5j', [(103.545, 115.6), (103.545, 73.3)], ('R2', '1'), P5)
 
 # ---- GND stitching: U1 exposed pad, edge vias between the jack rows ------------------------
 track('gndu1', '/GND', B, ('U1', '3'), [], ('U1', '21'), FAN)

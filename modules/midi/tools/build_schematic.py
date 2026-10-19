@@ -1,4 +1,4 @@
-"""Generate the S3 MIDI schematic (hardware/midi.kicad_sch) and its pinned symbols.
+"""Generate the S4 MIDI schematic (hardware/midi.kicad_sch) and its pinned symbols.
 
 Run from modules/midi:
   python3 -B tools/build_schematic.py
@@ -104,15 +104,10 @@ def circuit():
     c.append(part('J1', 'AudioJack3', 'PJ366ST', 'PJ366ST', (27.94, 127.0), 0,
                   {'T': 'TIP', 'R': 'RING', 'S': 'GND'}, Note='TRS MIDI in'))
     c.append(part('JP1', 'Jumper_3_Open', 'TRS_A/B', 'H1x3', (63.5, 127.0), 0,
-                  {'1': 'TIP', '2': 'DATA', '3': 'RING'},
+                  {'1': 'TIP', '2': 'RX', '3': 'RING'},
                   Note='1x3 2.54 mm header + shunt. 1-2 = Type A (Tip = data), '
-                       '2-3 = Type B (Ring = data). No shunt = no input'))
-    c.append(part('R21', 'R', '4.7k', 'R0603', (91.44, 134.62), 90,
-                  {'1': 'DATA', '2': 'RX'},
-                  Note='Series input resistor; limits clamp current from a wrong (CV/gate) cable'))
-    c.append(part('R2', 'R', '22k', 'R0603', (101.6, 124.46), 90,
-                  {'1': '+5V', '2': 'RX'},
-                  Note='RX pull-up: idle high; lifts a 3.3 V sender high above VIH (research 3.2)'))
+                       '2-3 = Type B (Ring = data). No shunt = no input. '
+                       'Common drives PB3 directly, as Bread Modular V1 (no series R, no pull-up)'))
 
     # ---- MCU and programming
     u1 = {'4': '+5V', '3': 'GND', '21': 'GND', '19': 'UPDI_PA0', '11': 'RX'}
@@ -154,7 +149,6 @@ def circuit():
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
     ('R', '39', 'R1206'): dict(LCSC='C414944', MPN='HP06W2F390JT5E', Manufacturer='UNI-ROYAL'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0805'): dict(LCSC='C28323', MPN='CL21B105KBFNNNE', Manufacturer='Samsung'),
@@ -179,7 +173,7 @@ TEXT_AT = {
 }
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR MIDI - S3 schematic (5 V logic). Circuit intent: docs/research.md', 2.0),
+    ((20.32, 20.32), 'BIG MODULAR MIDI - S4 schematic (5 V logic, BM V1 direct input). Circuit intent: docs/research.md', 2.0),
     ((20.32, 33.02), 'POWER: Eurorack +12V -> B5819W -> 39R -> HT7550-1 -> +5V.  -12V (J10 pins 1-2) unused.', 1.4),
     ((20.32, 86.36), 'PWR_FLAG: #FLG01 marks the Eurorack GND entry; #FLG02 marks VIN_LDO, which is\n'
                      'fed from +12V only through passives (D10, R20) that ERC cannot see through.', 1.1),
@@ -270,7 +264,7 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - MIDI") (rev "S3") (company "Big Modular")
+      (title_block (title "Big Modular - MIDI") (rev "S4") (company "Big Modular")
         (comment 1 "SCHEMATIC S3 - 5 V logic - not released, not for fabrication")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')

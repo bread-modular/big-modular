@@ -1,4 +1,4 @@
-# midi — manufacturing export (V1.0, R3)
+# midi — manufacturing export (V1.0, S4/R5)
 
 Generated from the current accepted sources with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
@@ -22,8 +22,8 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `midi-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.05 x 110.05 mm, 1 oz, HASL, standard everything else |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 27 parts in 10 BOM rows, all on the back |
+| Carrier PCB | `midi-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.05 x 110.05 mm, 1 oz, HASL, standard everything else. The board has no `JLCJLCJLCJLC` marker (removed in R5), so pick the order-number option deliberately: "Remove" (check the quote for any fee), or JLCPCB prints the number where it chooses |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 25 parts in 9 BOM rows, all on the back |
 | Front panel PCB | `midi-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 20.05 x 128.55 mm (4HP), no assembly; black mask suits a panel |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -52,9 +52,9 @@ Soldering notes:
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift.
 
-- Carrier PCB `4bcc7082103b1bc989b0fc59cfb9ebff9046d9131966d36da97cf3fa0f084637`.
+- Carrier PCB `e99ec404ce789c56e8e17eaccda157199d27e6832ceb1ecb04f0d729133809e2`.
 - Carrier project `d4fe2f305c6613a1c0186c7cef4a40a5ce36714e00cac635064ebd5999d4a5c2`.
-- Carrier schematic `6781b0539281b1ca711e97c77ca4648c237464e267425b57af270ebef628b493`.
+- Carrier schematic `245db40d54a29ca96c01690b1b47e70fced984da89ce177e9470e3bbf4751144`.
 - Panel PCB `c0e0cd7924a8ec1f52c5319f707667d83c51914fabf856feda238937fcdf3ff6`.
 - Panel project `a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c`.
 
@@ -100,8 +100,8 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/midi-symbols.xml hardware
   - ref/pin/net parity equal;
   - the manifest equal.
 - **Panel DRC:** 0.
-- **Drill files:** 79 round PTH hits plus 27 routed slots (the 3 jack lugs × 9
-  jacks) = 106. That matches 48 vias + 58 THT pads. There are no NPTH holes on the
+- **Drill files:** 78 round PTH hits plus 27 routed slots (the 3 jack lugs × 9
+  jacks) = 105. That matches 47 vias + 58 THT pads. There are no NPTH holes on the
   carrier.
 - **Gerber ZIP:** has both copper layers with their pours (GND and the VIN_LDO
   heat sink), both masks, silkscreens and pastes, the edge, and PTH/NPTH drills.
@@ -110,7 +110,7 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/midi-symbols.xml hardware
 - **Assembly audit** (live, 5 boards):
   - Every C-code, MPN, Economy flag and stock level passes.
   - R/C parts are Basic except R20, which is Extended by choice.
-  - R20 and R21 pass their stress checks.
+  - R20 passes its stress check.
 
 ## Status and order gates (not done here)
 
@@ -122,9 +122,12 @@ This is a complete export, not a supplier-accepted release. Before ordering:
    - Confirm that the quote form offers **Bottom** for Economic. If it doesn't,
      Standard PCBA is needed, and its stated 70 x 70 mm minimum board size means
      JLCPCB would also have to panelise this 19 mm board.
+   - In the same quote, check whether the 19 mm width needs edge rails (courtyards
+     sit ~0.2 mm from the edge) and whether that keeps Economic eligibility.
 2. **Placement preview.** Check these parts in JLCPCB's bottom-side preview:
    - U1: the pin 1 dot. It's a 0.4 mm-pitch QFN, exactly at the Economic limit.
-   - U3: the tab faces R20, away from J10.
+   - U3: the three pins point down (toward the board's bottom edge) and the
+     tab points up, toward D10 (`docs/mechanics.md`).
    - D10: the cathode bar is on pad 1, the VIN_D net that runs up to R20. The
      anode is pad 2, on the +12 V track from J10.
    - Every rotation: bottom-side CPL rotations are the usual place for errors.
@@ -133,10 +136,13 @@ This is a complete export, not a supplier-accepted release. Before ordering:
    snapshot, not a reservation.
 4. **Your review attestations** in the audit (land pattern, pin mapping, ratings,
    capacitor role). These are left open rather than filled with boilerplate.
+   Archive the U1/U3/D10 datasheet PDFs with SHA-256 first and cite their pages;
+   the HT7550-1 catalog URL no longer serves a PDF (`docs/research.md` §6).
 5. **JLCPCB DFM / Gerber viewer check** of both ZIPs.
 6. **Bench:**
-   - U3 temperature in the fault case (`docs/research.md` D2);
+   - U3 fault test (`docs/research.md` §3.1, D2): 12.6 V, all outputs shorted,
+     all LEDs lit, 30 min, thermocouple on U3's tab; +5 V must stay below 5.5 V.
+     Needs firmware with a drive-everything test mode (none is in the repo yet);
    - LED brightness (D5);
-   - the R21 injection-current limit (D6);
-   - 3.3 V-sender margin;
+   - seat two brands of 16-pin IDC socket on J10 (one-sided key bump over U3/C4);
    - the real jack panel height and hole fit.

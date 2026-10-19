@@ -21,7 +21,7 @@ tooling.
 | Module | Description | Release |
 | --- | --- | --- |
 | `modules/usb-power/` | USB-C PD 9 V input, TPS26600 protection, TPS55340 boost, TPS54302 inverting buck-boost, TPS7A4700/TPS7A3301 ±12 V, +5 V | SR2 schematic + 084 PCB source accepted; not released |
-| `modules/midi/` | 4HP TRS MIDI in (V1 direct input, A/B jumper header; opto deferred to V2) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based) | V1.0: S3 schematic + R2 routed carrier (U3 heat sink) + 4HP panels; JLCPCB export in `modules/midi/jlcpcb/`, not supplier-accepted |
+| `modules/midi/` | 4HP TRS MIDI in (V1 direct input, A/B jumper header; opto deferred to V2) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based) | V1.0: S4 schematic (BM V1 direct input) + R5 routed carrier (U3 heat sink; R4 copper, marker-free silk) + 4HP panels; JLCPCB export in `modules/midi/jlcpcb/`, not supplier-accepted |
 
 Canonical sources are `modules/usb-power/hardware/usb-power.kicad_{pro,sch,pcb}`
 plus `modules/usb-power/panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
