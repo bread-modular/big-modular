@@ -4100,7 +4100,7 @@
 		)
 		(uuid "8b379a0b-4cc4-5ec5-ba3a-d33a42f0bda3")
 	)
-	(text "BIG MODULAR MIDI V2 - S3 schematic (5 V logic, mis-patch protected in/out). Circuit intent: docs/research.md §7"
+	(text "BIG MODULAR MIDI V2 - S3 schematic (5 V logic, mis-patch protected in/out). Circuit intent: docs/research.md 7"
 		(exclude_from_sim no)
 		(at 20.32 20.32 0)
 		(effects
@@ -7555,7 +7555,7 @@
 			(uuid "17013a67-881f-5a0c-9201-fc3487ec2740")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D6")
 					(unit 1)
@@ -7689,7 +7689,7 @@
 			(uuid "b2cbc659-c11f-547c-bd26-be654d899043")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R3")
 					(unit 1)
@@ -7823,7 +7823,7 @@
 			(uuid "446b1bfc-a420-5660-99e8-daa45f4717f0")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "C3")
 					(unit 1)
@@ -7957,7 +7957,7 @@
 			(uuid "b595aa89-4d0a-54c0-8e60-e8295ab33f27")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R16")
 					(unit 1)
@@ -8080,7 +8080,7 @@
 			(uuid "60db7cca-0593-5f27-9956-967d9a3c813b")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "C5")
 					(unit 1)
@@ -8173,7 +8173,7 @@
 			(uuid "38c236a9-8bef-5eca-ba86-4918166524df")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J1")
 					(unit 1)
@@ -8266,7 +8266,7 @@
 			(uuid "93be5e48-6e68-531e-9d72-2ddff8324810")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J4")
 					(unit 1)
@@ -8392,7 +8392,7 @@
 			(uuid "4e48d13e-bf51-59d0-870d-bf4418ecd27d")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D11")
 					(unit 1)
@@ -8485,7 +8485,7 @@
 			(uuid "13695c04-237b-534a-a07c-2d997353af25")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J7")
 					(unit 1)
@@ -8562,7 +8562,7 @@
 			(uuid "62fd3adc-5612-5a55-a571-35e0c98ffd4f")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "#FLG02")
 					(unit 1)
@@ -8639,7 +8639,7 @@
 			(uuid "2db9f7f1-5eb1-59f9-8102-6d5e45b9e43a")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "#FLG01")
 					(unit 1)
@@ -8729,7 +8729,7 @@
 			(uuid "a12bca15-7820-5971-9bf8-41794c87bf93")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D8")
 					(unit 1)
@@ -8855,7 +8855,7 @@
 			(uuid "80ccdc1c-5c86-59ba-86ed-5bde7b97c0f5")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D17")
 					(unit 1)
@@ -8981,7 +8981,7 @@
 			(uuid "802432cc-1c58-53d4-8ac0-89c3bb4625bb")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "U2")
 					(unit 1)
@@ -9095,7 +9095,7 @@
 			(uuid "f97bb8db-7be7-58b7-81fd-a115d54327d5")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J10")
 					(unit 1)
@@ -9185,7 +9185,7 @@
 			(uuid "2daf2087-c747-5aec-aedf-e0e9ceaa52ca")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D7")
 					(unit 1)
@@ -9308,7 +9308,7 @@
 			(uuid "e5a8fbec-be0e-5da6-8588-cd123b29cedc")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R15")
 					(unit 1)
@@ -9401,7 +9401,7 @@
 			(uuid "30f45044-0ddd-5675-8557-a49f0b81c837")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J3")
 					(unit 1)
@@ -9524,7 +9524,7 @@
 			(uuid "10b95a73-a817-5ff6-a632-0e5bcf6f111b")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R6")
 					(unit 1)
@@ -9647,7 +9647,7 @@
 			(uuid "75820001-e190-5a10-9e61-75bdfe9a6665")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R24")
 					(unit 1)
@@ -9773,7 +9773,7 @@
 			(uuid "ed66a897-e911-56ee-b250-68a134ec7e1b")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D14")
 					(unit 1)
@@ -9863,7 +9863,7 @@
 			(uuid "c8a5c0ba-d53c-59b4-abb5-ab035e7fcf9f")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D4")
 					(unit 1)
@@ -9953,7 +9953,7 @@
 			(uuid "58ed9003-5e5c-5eb6-a762-032eb45d7cce")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J11")
 					(unit 1)
@@ -10087,7 +10087,7 @@
 			(uuid "d9b4750e-55fe-5486-8bd1-77ccc082a889")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R5")
 					(unit 1)
@@ -10210,7 +10210,7 @@
 			(uuid "45f97008-be80-5991-a84d-9fe56e6d593a")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R10")
 					(unit 1)
@@ -10390,7 +10390,7 @@
 			(uuid "085a9faf-b15e-5526-bbd2-0d444526deaf")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "U1")
 					(unit 1)
@@ -10513,7 +10513,7 @@
 			(uuid "15c94396-b628-57ad-9338-deebfc143dd7")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R4")
 					(unit 1)
@@ -10647,7 +10647,7 @@
 			(uuid "b7d5210a-15cf-57ce-ab85-7b0a18bf92c8")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "C1")
 					(unit 1)
@@ -10737,7 +10737,7 @@
 			(uuid "32a71ddd-75f2-5071-ac9d-acc608801569")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D3")
 					(unit 1)
@@ -10863,7 +10863,7 @@
 			(uuid "ae2f4d41-6813-566d-931a-447f1dacf225")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D13")
 					(unit 1)
@@ -10953,7 +10953,7 @@
 			(uuid "d317dd34-7481-5609-a6f3-a913624e057d")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D1")
 					(unit 1)
@@ -11046,7 +11046,7 @@
 			(uuid "6eefd527-6f62-5e21-8b8e-aaf2b24fd624")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "JP2")
 					(unit 1)
@@ -11180,7 +11180,7 @@
 			(uuid "980d14c0-e447-5b89-b101-5f7658c97cde")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R7")
 					(unit 1)
@@ -11314,7 +11314,7 @@
 			(uuid "1ce573fc-fa32-5883-b92e-31c57cbdfcb5")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R14")
 					(unit 1)
@@ -11440,7 +11440,7 @@
 			(uuid "740c1692-4a91-5e58-ac50-e9c7cfdf106f")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D16")
 					(unit 1)
@@ -11533,7 +11533,7 @@
 			(uuid "72c6b26a-500e-518f-8e85-303df2892617")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J6")
 					(unit 1)
@@ -11656,7 +11656,7 @@
 			(uuid "8b193837-5fbf-573e-8a69-1932d1506e43")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R1")
 					(unit 1)
@@ -11746,7 +11746,7 @@
 			(uuid "c38e2ef2-a9bb-51ee-8d14-2a14c434824c")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D2")
 					(unit 1)
@@ -11839,7 +11839,7 @@
 			(uuid "0ade731a-9b27-5b3c-9daf-8e82ba5969a3")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J2")
 					(unit 1)
@@ -11962,7 +11962,7 @@
 			(uuid "972da225-8797-5705-ac3d-b38141153da2")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R11")
 					(unit 1)
@@ -12088,7 +12088,7 @@
 			(uuid "2abf7cc3-d967-57bb-97e7-840b552ccd97")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D15")
 					(unit 1)
@@ -12211,7 +12211,7 @@
 			(uuid "281c6c8b-36b3-55d6-9ad8-84a3b0f3073b")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D9")
 					(unit 1)
@@ -12334,7 +12334,7 @@
 			(uuid "28c50c85-0434-51e0-b7e8-a7d6c89a47c2")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D10")
 					(unit 1)
@@ -12457,7 +12457,7 @@
 			(uuid "36cd703b-ded1-5992-86fe-cb3220c97164")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R8")
 					(unit 1)
@@ -12591,7 +12591,7 @@
 			(uuid "6d70d296-1a05-5556-b290-209b7d8149a6")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "C4")
 					(unit 1)
@@ -12681,7 +12681,7 @@
 			(uuid "f13aff5f-2927-52c8-87ba-b51a1626b696")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D5")
 					(unit 1)
@@ -12804,7 +12804,7 @@
 			(uuid "27332752-ec5d-5e55-bd39-10615de773ab")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R22")
 					(unit 1)
@@ -12938,7 +12938,7 @@
 			(uuid "a3ab46fe-1af9-526e-bfe6-94ca6c3f4eec")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R20")
 					(unit 1)
@@ -13031,7 +13031,7 @@
 			(uuid "f2bca2d2-e420-5f9e-a0f0-4c83830afef5")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J8")
 					(unit 1)
@@ -13154,7 +13154,7 @@
 			(uuid "db9cc8e6-f87e-5ff7-aae3-e5ba83d6a4b3")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R23")
 					(unit 1)
@@ -13288,7 +13288,7 @@
 			(uuid "3a71b04e-a005-55b3-84ab-08ba292d6639")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R18")
 					(unit 1)
@@ -13411,7 +13411,7 @@
 			(uuid "fa4e08b4-6490-5646-b43e-7179e61e8984")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R17")
 					(unit 1)
@@ -13504,7 +13504,7 @@
 			(uuid "6ec7584e-5299-500b-81d1-414507517f30")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "JP1")
 					(unit 1)
@@ -13627,7 +13627,7 @@
 			(uuid "2ab48659-75ff-5b80-8ac2-2868dda60824")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R19")
 					(unit 1)
@@ -13750,7 +13750,7 @@
 			(uuid "8c330f14-1b48-5d70-934e-b90cb6b9bda2")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R13")
 					(unit 1)
@@ -13876,7 +13876,7 @@
 			(uuid "ad0828b2-6e9f-5129-ae9d-f63d72c3df9a")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "Q1")
 					(unit 1)
@@ -14002,7 +14002,7 @@
 			(uuid "b7a924ce-6140-5400-b1a1-8b58163eeab2")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D18")
 					(unit 1)
@@ -14136,7 +14136,7 @@
 			(uuid "bc92e181-337d-5d5d-9385-c3c480e27d86")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R12")
 					(unit 1)
@@ -14262,7 +14262,7 @@
 			(uuid "45d0a435-f302-51db-a494-c6c6e6cd52b7")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "D12")
 					(unit 1)
@@ -14355,7 +14355,7 @@
 			(uuid "e381547d-48eb-5f65-a4c9-0d33733567a8")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J9")
 					(unit 1)
@@ -14448,7 +14448,7 @@
 			(uuid "06cf6f98-7084-53a0-ba7a-a2f399361a52")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J5")
 					(unit 1)
@@ -14571,7 +14571,7 @@
 			(uuid "0bbd51fa-d0aa-5a10-b7bf-fa99e3a88b62")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R2")
 					(unit 1)
@@ -14697,7 +14697,7 @@
 			(uuid "10d2e38f-8cf1-5130-b755-c00ecf48bce0")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "U3")
 					(unit 1)
@@ -14831,7 +14831,7 @@
 			(uuid "271d90a6-e06a-526c-a4a5-4667be738e95")
 		)
 		(instances
-			(project ""
+			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R9")
 					(unit 1)

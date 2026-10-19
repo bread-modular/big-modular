@@ -240,7 +240,7 @@ TEXT_AT = {
 
 TEXTS = [
     ((20.32, 20.32), 'BIG MODULAR MIDI V2 - S3 schematic (5 V logic, mis-patch protected in/out). '
-                     'Circuit intent: docs/research.md §7', 2.0),
+                     'Circuit intent: docs/research.md 7', 2.0),
     ((20.32, 33.02), 'POWER: Eurorack +12V -> B5819W -> 39R -> HT7550-1 -> +5V.  -12V (J10 pins 1-2) unused.', 1.4),
     ((20.32, 86.36), 'PWR_FLAG: #FLG01 marks the Eurorack GND entry; #FLG02 marks VIN_LDO, which is\n'
                      'fed from +12V only through passives (D10, R20) that ERC cannot see through.', 1.1),

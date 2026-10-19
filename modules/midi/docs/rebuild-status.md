@@ -14,7 +14,7 @@ survived, what has to be regenerated, and every deviation from the contract in
 | 1 Inventory + gap analysis | done (this file, `docs/v2/recovered/`) |
 | 2 Layout (`hardware/v1`, `tools/v1`, `jlcpcb/v1`, shared-tool patch) | done: see below |
 | 3 V1 restore + verification | done: see below |
-| 4 V2 rebuild + verification | pending |
+| 4 V2 rebuild + verification | done: see below |
 | 5 Docs pass | pending |
 
 ## Recovered evidence (outside the repo, read-only)
@@ -152,6 +152,80 @@ Verification:
 Helpers used for these comparisons (ignored, not deliverables):
 `research/rebuild/boardsig.py`, `research/rebuild/extract.py`.
 
+## Step 4 result (V2)
+
+Rebuilt from `docs/v2/geometry.json`, `docs/v2/schematic-symbols.json`,
+`docs/research.md` §7, `docs/v2/midi-schematic.pdf` (presentation) and the recovered
+evidence in `docs/v2/recovered/`. Every comparison below is against that evidence.
+
+- `tools/v2/build_schematic.py` (V1 generator + the V2 circuit): the native netlist
+  equals the recovered S3 netlist: 62 refs, 56 nets, 173 pins, every field value and
+  field order, every symbol UUID (same uuid5 scheme as V1), JP2 excluded from the BOM.
+  The schematic plotted to PDF is word-for-word identical to the surviving
+  `docs/v2/midi-schematic.pdf` (750 words, same bounding boxes to 0.01 mm), so that
+  PDF is kept as it is. ERC 0. `docs/v2/schematic-symbols.json` regenerates
+  byte-identically.
+- `tools/import_footprints.py --version v2` -> `hardware/v2/MIDI.pretty` (V1 set + stock
+  SOT-23, SOT-323_SC-70, R_0805, SolderJumper-3 Open). `midi.kicad_pro` and
+  `fp-lib-table` copied from V1.
+- `tools/v2/build_layout.py` (V1 generator, V2 geometry, asserts that V2 geometry
+  equals V1 except `revision`/`back_side_parts`, no panel output, B silk
+  `MIDI V2.0` + JP2 `P`/`D`): all 62 footprints (position, rotation, side, value,
+  symbol path) and all 177 pads (position, net) equal the recovered board.
+- `tools/v2/route_plan.py`: the recovered items carry uuid5 names under
+  `big-modular/midi-v2/route/` (found from the zone UUIDs), so the original plan
+  names were recovered: 91 V1 items unchanged, the TX vias/tracks that follow the
+  0805 pads, R10/LED4, RX to JP2, LED8, the seven right-edge GND vias removed, and
+  the V2 items (`cl*`, `clg*`, `clp*`, `p5cl*`, `rail*`, `railin`, `railr2`,
+  `railu2`, `spine`, `u2p`, `r23p`, `r2p`, `r22p`, `midin*`, `midina/b`, `q1b`,
+  `q1e`, `d9a`, `d9k`, `rxq`, `rxr2`, `uref`, `uref2`, `u2g`, `r24g`, `gnd*` vias).
+  The plan predicts all 279 recovered items (218 tracks, 57 vias, 4 zones) with
+  equal UUID, layer, net, endpoints and width: 0 differences.
+- Shared `pcb plan` -> `pcb apply` (`research/v2/route-cand1`: accepted, ERC/DRC
+  findings empty, parity equal, source unchanged) -> `pcb promote` (0 external
+  model tokens). The promoted `hardware/v2/midi.kicad_pcb` has the 279 items with
+  the recovered UUIDs and geometry (pcbnew read-back, 0 differences).
+- Export `jlcpcb/v2/` (shared `export.py`, bottom side, `--require-part-numbers`):
+  41 components in 18 BOM rows, JP2 excluded from the BOM, equal to the recovered
+  V2 export report.
+
+Verification:
+- native ERC `--severity-all`: 0 (`docs/v2/fit/schematic-erc.json`)
+- native DRC `--severity-all --schematic-parity --refill-zones`: 0/0/0
+  (`docs/v2/fit/carrier-drc.json`); both reports differ from the surviving ones
+  only in the date
+- `kicad_tools.py check --config tools/v2/kicad-project.json`:
+  `no_findings_in_requested_checks`, exit 0, ref/pin/net parity `equal: true`,
+  `jlcpcb/v2/source-sha256.json` equal (5 sources); `doctor` exit 0
+- `tools/fit_assembly.sh v2`: 0 mm³ against both panels, board inside rail gap and
+  panel width; `docs/v2/fit/fit-report.json` byte-unchanged and identical to V1's
+
+Helpers (ignored): `research/rebuild/{netcmp,placecmp,plancmp,coppercmp,v1inv2}.py`.
+
 ## Deviations
 
-None yet.
+Each one is a detail the surviving sources do not fix. The choice and its basis are
+recorded here.
+
+1. **Not byte-identical files.** pcbnew gives new footprints and library items random
+   UUIDs, so `hardware/v2/midi.kicad_pcb` and `hardware/v2/MIDI.pretty/*.kicad_mod`
+   cannot equal 107's bytes (which are lost anyway). Placement, pads, nets and
+   copper equal the recovered board (above); the footprints come from the same stock
+   sources (`PROVENANCE.json` source hashes).
+2. **V2 schematic title text.** The surviving PDF shows `... Circuit intent:
+   docs/research.md 7` with no `§` glyph (the `7` starts where `§7` would). It is
+   reproduced as shown, so the plot is word-identical. `§7` was probably intended.
+3. **V2 board title block** (title, rev, comments) is not in any surviving source
+   (§7.6 says R3 changed it). Chosen: title `Big Modular - MIDI V2 carrier`, rev
+   `V2-S3`, comments in the V1 style. Not electrical.
+4. **JP2 `P`/`D` silk size** is not in the inspection (position only). 1.0 mm,
+   like `A`/`B`, matching their height in the surviving `docs/v2/fit/carrier-back.png`.
+5. **Zone outlines.** The inspection only has each zone's first vertex. The V2 plan
+   uses V1's polygons (same names, same anchors; `Code.md`: V2 keeps the V1 heat
+   sink). DRC with refilled zones is 0.
+6. **`hardware/v2/midi.kicad_pro`** is a copy of V1's (107's V2 project file is lost).
+7. **`jlcpcb/v2/` layout** mirrors `jlcpcb/v1/` (carrier, panel, assembly, top-level
+   ZIPs); 107's `jlcpcb/v2/README.md` is lost and is rewritten in step 5.
+8. **Not rerun:** the renders (`docs/v2/fit/*.png`, from 107; no render command
+   is recorded) and the live assembly audit (network; parts and fields equal
+   the S3 netlist it audited).
