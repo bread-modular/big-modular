@@ -1,0 +1,39 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/108/modules/audio-out/panels/front-pcb/audio-out-panel.kicad_pcb",
+  "schematic": null,
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/108/modules/audio-out/panels/front-pcb/audio-out-panel.kicad_pcb": "9b4087a569cd4c55a5e2df693f4d49a838a2bf8e7b968eaa96502e323e313d77"
+  },
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 2,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "both",
+  "include_through_hole": false,
+  "component_count": 0,
+  "bom_row_count": 0,
+  "excluded": {},
+  "missing_part_numbers": [],
+  "warnings": [
+    "PCB-only export: schematic fields and exclusion flags were not read.",
+    "No assembly components selected; BOM and positions CSVs contain headers only.",
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "audio-out-panel-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}
