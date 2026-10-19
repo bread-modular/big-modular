@@ -1,5 +1,5 @@
 {
-  "revision": "V2 R3: V1 (S4/R5) mechanics and panel unchanged; adds the mis-patch protection parts (Q1 input front end, D11-D18 output clamps, U2 +5V clamp), 0805 output resistors, R10 moved below J5; V2 R2 adds the JP2 input-bypass solder jumper left of R2 (R2/Q1 collector are now RX_Q); V2 R3 ships JP2 open (stock Open footprint, same pads, no copper bridge)",
+  "revision": "V2 S4: LED transistor drivers (Q11-Q18, R31-R38) on the channel sheet; clamps D11-D18 turned (COM right). V2 R3: V1 (S4/R5) mechanics and panel unchanged; adds the mis-patch protection parts (Q1 input front end, D11-D18 output clamps, U2 +5V clamp), 0805 output resistors, R10 moved below J5; V2 R2 adds the JP2 input-bypass solder jumper left of R2 (R2/Q1 collector are now RX_Q); V2 R3 ships JP2 open (stock Open footprint, same pads, no copper bridge)",
   "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
   "kicad_origin_mm": [
     100.0,
@@ -42,6 +42,8 @@
   },
   "jack_column_X_mm": 8.6,
   "led_column_X_mm": 17.2,
+  "led_rotation_deg": 270,
+  "led_rotation_note": "Pad 1 (cathode, square) at the top toward the transistor driver above each LED; pad 2 (anode, +5V) at the bottom. The body stays centred on the panel hole.",
   "jack_rotation_deg": 270,
   "jack_rotation_note": "Rotated so T/TN/S pads run along X with the S (sleeve) pad toward the left board edge; jack bodies are 9.0 mm along Y.",
   "jacks": [
@@ -201,17 +203,6 @@
       "band": "beside J2 tip pad (output 1 series, 0805 for mis-patch dissipation)"
     },
     {
-      "ref": "R4",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        22.6
-      ],
-      "rot": 270,
-      "band": "above D1 anode (LED 1 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R5",
       "value": "1k",
       "footprint": "R_0805_2012Metric",
@@ -221,17 +212,6 @@
       ],
       "rot": 90,
       "band": "beside J3 tip pad (output 2 series, 0805 for mis-patch dissipation)"
-    },
-    {
-      "ref": "R6",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        33.1
-      ],
-      "rot": 270,
-      "band": "above D2 anode (LED 2 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "R7",
@@ -245,17 +225,6 @@
       "band": "beside J4 tip pad (output 3 series, 0805 for mis-patch dissipation)"
     },
     {
-      "ref": "R8",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        43.6
-      ],
-      "rot": 270,
-      "band": "above D3 anode (LED 3 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R9",
       "value": "1k",
       "footprint": "R_0805_2012Metric",
@@ -265,17 +234,6 @@
       ],
       "rot": 270,
       "band": "above J5 tip pad (output 4 series, 0805 for mis-patch dissipation); rot 270 puts pad 2 (OUT4) toward J5 and keeps the U1 band clear"
-    },
-    {
-      "ref": "R10",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        15.6,
-        61.8
-      ],
-      "rot": 90,
-      "band": "below J5 between the J5 tip pad and D4 (LED 4 series); LED4_A runs up x 115.6 to the D4 anode, freeing the J4/J5 band for D14"
     },
     {
       "ref": "R12",
@@ -289,17 +247,6 @@
       "band": "beside J6 tip pad (output 5 series, 0805 for mis-patch dissipation)"
     },
     {
-      "ref": "R13",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        64.6
-      ],
-      "rot": 270,
-      "band": "above D5 anode (LED 5 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R14",
       "value": "1k",
       "footprint": "R_0805_2012Metric",
@@ -309,17 +256,6 @@
       ],
       "rot": 90,
       "band": "beside J7 tip pad (output 6 series, 0805 for mis-patch dissipation)"
-    },
-    {
-      "ref": "R15",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        75.1
-      ],
-      "rot": 270,
-      "band": "above D6 anode (LED 6 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "R16",
@@ -333,17 +269,6 @@
       "band": "beside J8 tip pad (output 7 series, 0805 for mis-patch dissipation)"
     },
     {
-      "ref": "R17",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        85.6
-      ],
-      "rot": 270,
-      "band": "above D7 anode (LED 7 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R18",
       "value": "1k",
       "footprint": "R_0805_2012Metric",
@@ -353,17 +278,6 @@
       ],
       "rot": 90,
       "band": "beside J9 tip pad (output 8 series, 0805 for mis-patch dissipation); 0.15 mm higher than V1 so the 0805 courtyard clears D10"
-    },
-    {
-      "ref": "R19",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        96.1
-      ],
-      "rot": 270,
-      "band": "above D8 anode (LED 8 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "U1",
@@ -485,8 +399,8 @@
         16.7,
         30.1
       ],
-      "rot": 0,
-      "band": "right of output 1 series resistor: pin 3 (CH1_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 1 series resistor: pin 3 (CH1_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D12",
@@ -496,8 +410,8 @@
         16.7,
         40.6
       ],
-      "rot": 0,
-      "band": "right of output 2 series resistor: pin 3 (CH2_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 2 series resistor: pin 3 (CH2_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D13",
@@ -507,8 +421,8 @@
         16.7,
         51.1
       ],
-      "rot": 0,
-      "band": "right of output 3 series resistor: pin 3 (CH3_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 3 series resistor: pin 3 (CH3_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D14",
@@ -518,8 +432,8 @@
         16.7,
         54.5
       ],
-      "rot": 0,
-      "band": "right of output 4 series resistor: pin 3 (CH4_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 4 series resistor: pin 3 (CH4_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D15",
@@ -529,8 +443,8 @@
         16.7,
         72.1
       ],
-      "rot": 0,
-      "band": "right of output 5 series resistor: pin 3 (CH5_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 5 series resistor: pin 3 (CH5_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D16",
@@ -540,8 +454,8 @@
         16.7,
         82.6
       ],
-      "rot": 0,
-      "band": "right of output 6 series resistor: pin 3 (CH6_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 6 series resistor: pin 3 (CH6_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D17",
@@ -551,8 +465,8 @@
         16.7,
         93.1
       ],
-      "rot": 0,
-      "band": "right of output 7 series resistor: pin 3 (CH7_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "rot": 180,
+      "band": "right of output 7 series resistor: pin 3 (CH7_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; COM (pin 3) right, K (pin 2) upper left toward the LED anode above, A (pin 1) lower left to a GND via"
     },
     {
       "ref": "D18",
@@ -563,7 +477,7 @@
         103.6
       ],
       "rot": 0,
-      "band": "right of output 8 series resistor: pin 3 (CH8_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail"
+      "band": "right of output 8 series resistor: pin 3 (CH8_TX) faces it, pin 1 (GND) up toward the LED GND pad, pin 2 (+5V) to a via on the F.Cu +5V rail; kept COM left: turned, its GND via would land on the U3 heat sink"
     },
     {
       "ref": "R22",
@@ -664,6 +578,270 @@
       ],
       "rot": 90,
       "band": "beside U2, above R23 (clamp divider bottom: REF on its lower pad, GND on its upper pad)"
+    },
+    {
+      "ref": "Q11",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        21.05
+      ],
+      "rot": 180,
+      "band": "right column above D1 (LED 1 switch); rot 180: B (pin 1) lower left toward R31, E (pin 2) upper left, C (pin 3) right toward R4"
+    },
+    {
+      "ref": "R4",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        23.6
+      ],
+      "rot": 180,
+      "band": "right column between Q11 and the D1 cathode (LED 1 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R31",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        22.0
+      ],
+      "rot": 180,
+      "band": "tip column below J1, beside Q11 (LED 1 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q12",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        13.1,
+        33.6
+      ],
+      "rot": 180,
+      "band": "tip column below R3 (LED 2 switch); rot 180: B lower left toward R32, E upper left, C right toward R6"
+    },
+    {
+      "ref": "R6",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        33.65
+      ],
+      "rot": 0,
+      "band": "right column below D11 (LED 2 current); rot 0: pad 2 (Q_C) left toward Q12, pad 1 (LED_K) right toward the D2 cathode"
+    },
+    {
+      "ref": "R32",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.0,
+        33.75
+      ],
+      "rot": 270,
+      "band": "corridor left of Q12 (LED 2 base); rot 270: pad 1 (CH2_LED) up, pad 2 (Q_B) down to the base"
+    },
+    {
+      "ref": "Q13",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        13.1,
+        44.1
+      ],
+      "rot": 180,
+      "band": "tip column below R5 (LED 3 switch); rot 180: B lower left toward R33, E upper left, C right toward R8"
+    },
+    {
+      "ref": "R8",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        44.15
+      ],
+      "rot": 0,
+      "band": "right column below D12 (LED 3 current); rot 0: pad 2 (Q_C) left toward Q13, pad 1 (LED_K) right toward the D3 cathode"
+    },
+    {
+      "ref": "R33",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.0,
+        44.25
+      ],
+      "rot": 270,
+      "band": "corridor left of Q13 (LED 3 base); rot 270: pad 1 (CH3_LED) up, pad 2 (Q_B) down to the base"
+    },
+    {
+      "ref": "Q14",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        13.1,
+        61.5
+      ],
+      "rot": 180,
+      "band": "tip column below the J5 tip pad (LED 4 switch; the J4/J5 right column holds D13/D14); rot 180: B lower left toward R34, E upper left, C right toward R10"
+    },
+    {
+      "ref": "R10",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        15.6,
+        58.0
+      ],
+      "rot": 270,
+      "band": "beside the J5 tip pad, left of D4 (LED 4 current); rot 270: pad 1 (LED_K) up to the D4 cathode, pad 2 (Q_C) down to Q14"
+    },
+    {
+      "ref": "R34",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        12.7,
+        64.05
+      ],
+      "rot": 180,
+      "band": "below Q14 right of U1 (LED 4 base); rot 180: pad 1 (CH4_LED) left toward U1 pin 18"
+    },
+    {
+      "ref": "Q15",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        62.6
+      ],
+      "rot": 180,
+      "band": "right column above D5 (LED 5 switch); rot 180: B (pin 1) lower left toward R35, E (pin 2) upper left, C (pin 3) right toward R13"
+    },
+    {
+      "ref": "R13",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        65.15
+      ],
+      "rot": 180,
+      "band": "right column between Q15 and the D5 cathode (LED 5 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R35",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        66.0
+      ],
+      "rot": 180,
+      "band": "tip column below J5 (LED 5 base), above the J6 tip pad; rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q16",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        13.1,
+        75.6
+      ],
+      "rot": 180,
+      "band": "tip column below R12 (LED 6 switch); rot 180: B lower left toward R36, E upper left, C right toward R15"
+    },
+    {
+      "ref": "R15",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        75.65
+      ],
+      "rot": 0,
+      "band": "right column below D15 (LED 6 current); rot 0: pad 2 (Q_C) left toward Q16, pad 1 (LED_K) right toward the D6 cathode"
+    },
+    {
+      "ref": "R36",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.0,
+        75.75
+      ],
+      "rot": 270,
+      "band": "corridor left of Q16 (LED 6 base); rot 270: pad 1 (CH6_LED) up, pad 2 (Q_B) down to the base"
+    },
+    {
+      "ref": "Q17",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        13.1,
+        86.1
+      ],
+      "rot": 180,
+      "band": "tip column below R14 (LED 7 switch); rot 180: B lower left toward R37, E upper left, C right toward R17"
+    },
+    {
+      "ref": "R17",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        86.15
+      ],
+      "rot": 0,
+      "band": "right column below D16 (LED 7 current); rot 0: pad 2 (Q_C) left toward Q17, pad 1 (LED_K) right toward the D7 cathode"
+    },
+    {
+      "ref": "R37",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.0,
+        86.25
+      ],
+      "rot": 270,
+      "band": "corridor left of Q17 (LED 7 base); rot 270: pad 1 (CH7_LED) up, pad 2 (Q_B) down to the base"
+    },
+    {
+      "ref": "Q18",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        13.1,
+        96.6
+      ],
+      "rot": 180,
+      "band": "tip column below R16 (LED 8 switch); rot 180: B lower left toward R38, E upper left, C right toward R19"
+    },
+    {
+      "ref": "R19",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        96.65
+      ],
+      "rot": 0,
+      "band": "right column below D17 (LED 8 current); rot 0: pad 2 (Q_C) left toward Q18, pad 1 (LED_K) right toward the D8 cathode"
+    },
+    {
+      "ref": "R38",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        10.0,
+        96.75
+      ],
+      "rot": 270,
+      "band": "corridor left of Q18 (LED 8 base); rot 270: pad 1 (CH8_LED) up, pad 2 (Q_B) down to the base"
     }
   ],
   "panel_labels": [

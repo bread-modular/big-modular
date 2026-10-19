@@ -657,6 +657,74 @@
    "retrieved_at_utc": "2026-10-18T18:41:56Z",
    "snapshot_sha256": "a4b61b74302cfac8af9f5123f903bf8b33ba4324902340691fac3097216f3ff1",
    "qty_per_board": 1
+  },
+  {
+   "code": "C20526",
+   "mpn": "MMBT3904(RANGE:100-300)",
+   "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "package": "SOT-23",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 431331,
+   "key_attributes": {
+    "Operating Temperature": "-55℃~+150℃",
+    "Transition frequency(fT)": "300MHz",
+    "Collector - Emitter Voltage VCEO": "40V",
+    "Number": "1 NPN",
+    "DC Current Gain": "100",
+    "Current - Collector(Ic)": "200mA",
+    "Vce Saturation(VCE(sat))": "300mV",
+    "Emitter-Base Voltage(Vebo)": "6V",
+    "Pd - Power Dissipation": "200mW",
+    "type": "NPN",
+    "Current - Collector Cutoff": "100nA"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2207041900_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--MMBT3904-RANGE-100-300_C20526.pdf",
+   "refs": [
+    "Q11",
+    "Q12",
+    "Q13",
+    "Q14",
+    "Q15",
+    "Q16",
+    "Q17",
+    "Q18"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:30Z",
+   "snapshot_sha256": "7cfdeccbb772ae60d17411a65ff99882c183a9339fc67624825410a34a9fd986",
+   "qty_per_board": 8
+  },
+  {
+   "code": "C25804",
+   "mpn": "0603WAF1002T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 39557370,
+   "key_attributes": {
+    "Resistance": "10kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf",
+   "refs": [
+    "R31",
+    "R32",
+    "R33",
+    "R34",
+    "R35",
+    "R36",
+    "R37",
+    "R38"
+   ],
+   "retrieved_at_utc": "2026-10-19T03:13:31Z",
+   "snapshot_sha256": "dbdd68a70ab30556c46f732ca8d2284f19d6e4e2f7226e4a26b4ad979d6d1b59",
+   "qty_per_board": 8
   }
  ],
  "v2_note": "V2 (2026-10-19): hardware/v2 adds the mis-patch protection parts (docs/research.md section 7). v2_release_parts is every assembled V2 part as observed by the native assembly audit (assembly.py audit --strict-live, 5 boards, bottom side; raw report research/v2/audit.json). V1 records above (release_parts) are unchanged.",
@@ -834,11 +902,19 @@
    },
    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2207041900_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--MMBT3904-RANGE-100-300_C20526.pdf",
    "refs": [
-    "Q1"
+    "Q1",
+    "Q11",
+    "Q12",
+    "Q13",
+    "Q14",
+    "Q15",
+    "Q16",
+    "Q17",
+    "Q18"
    ],
    "retrieved_at_utc": "2026-10-19T03:13:30Z",
    "snapshot_sha256": "7cfdeccbb772ae60d17411a65ff99882c183a9339fc67624825410a34a9fd986",
-   "qty_per_board": 1
+   "qty_per_board": 9
   },
   {
    "code": "C25804",
@@ -860,11 +936,19 @@
    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf",
    "refs": [
     "R1",
-    "R24"
+    "R24",
+    "R31",
+    "R32",
+    "R33",
+    "R34",
+    "R35",
+    "R36",
+    "R37",
+    "R38"
    ],
    "retrieved_at_utc": "2026-10-19T03:13:31Z",
    "snapshot_sha256": "dbdd68a70ab30556c46f732ca8d2284f19d6e4e2f7226e4a26b4ad979d6d1b59",
-   "qty_per_board": 2
+   "qty_per_board": 10
   },
   {
    "code": "C31850",
@@ -1146,5 +1230,6 @@
    "snapshot_sha256": "7fc55db1aacaeafec9a2d3541486c367ba9a9c738b0a2153e80611d13bf7bed5",
    "qty_per_board": 1
   }
- ]
+ ],
+ "led_driver_note": "S5 / V2-S4 (2026-10-19): LED transistor drivers as Bread Modular gate_out (Q11-Q18 MMBT3904, R31-R38 10k, both versions). They reuse the V2 Q1/R1 parts: release_parts got the C20526 and C25804 records copied from v2_release_parts (observed 2026-10-19 for V2). The strict-live assembly audit was NOT rerun for these boards; stock is not re-verified."
 }

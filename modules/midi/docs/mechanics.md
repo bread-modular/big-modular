@@ -4,8 +4,8 @@
 carrier versions: V2 (`hardware/v2/`) keeps every V1 mechanical key (panel, jacks,
 LEDs, stack, power header; asserted by `tools/v2/build_layout.py`) and only adds or
 moves B-side SMD parts (`v2/geometry.json`, `research.md` §7.5). Its fit report
-(`v2/fit/fit-report.json`) is identical to V1's, and no V2 part sits inside the
-16-pin IDC envelope. The tables below give V1's B-side placement. The verdict is nominal,
+(`v2/fit/fit-report.json`) is identical to V1's. The LED driver parts nearest
+J10 sit under the top edge of the 16-pin IDC envelope, below its floor (see below). The tables below give V1's B-side placement. The verdict is nominal,
 from models: no physical jack, LED or printed-panel trial has been done.
 
 Frame: panel origin at the upper-left corner seen from the front, X across, Y
@@ -60,9 +60,9 @@ and J10/J11 below J9.
 |---|---|
 | LED column beside J1 (X17.2, Y12.5..17.5) | **JP1** 1x3 2.54 mm TRS Type header (pin 1 Tip at the top, 2 RX direct to U1 PB3, 3 Ring), B silk `TRS`, `A` level with pin 1, `B` level with pin 3 (the shunt covers the lettered pin) |
 | Top edge and just below J1's pads | B silk `MIDI V1.0` (Y11.6); no `JLCJLCJLCJLC` order-number marker (removed in R5) |
-| J1/J2 | R4 (ch1 LED); the RX track from JP1 (R21/R2 removed in S4/R4) |
-| Jn/Jn+1, every band | output n series resistor below jack n's tip (X13.52, jack + 3.6, rot 90) and LED n+1 resistor above its LED (X17.2, rot 270 so pad 2 faces the anode) |
-| J4/J5 | ch3 pair, **R9** (ch4 output series) moved above J5 (Y54.1, rot 270), TX6-TX8 layer-change vias |
+| J1/J2 | ch1 LED driver: Q11 (X17.3, Y21.05) and R4 (X17.3, Y23.6) in the right column, R31 base (X13.5, Y22.0) below J1; the RX track from JP1 at x 115.2 (R21/R2 removed in S4/R4) |
+| Jn/Jn+1, every band | output n series resistor below jack n's tip (X13.52, jack + 3.6, rot 90); LED n+1 driver (S5/R6): Q (X17.3, LED Y - 6.05) and LED resistor (X17.3, LED Y - 3.4) above the LED, base resistor (X13.5) below the series resistor, emitter GND via at X14.55. LEDs are rotated 270 (cathode up, anode on the F.Cu +5V rail at X18.6). V2 places these differently around its clamps (`v2/geometry.json`, `research.md` §7.5) |
+| J4/J5 | ch3 pair, **R9** (ch4 output series) moved above J5 (Y54.1, rot 270), TX6-TX8 layer-change vias; R34 (ch4 LED base) stands beside the J5 tip pad (X15.6, Y58.0) |
 | J5/J6 (Y 64.25) | U1 ATtiny1616 (VQFN-20, 1 mm below the band centre for the fan-out), C1 100 n under U1, TX1-TX5 vias in the left zone, ch5 LED resistor R13 |
 | J6/J7 | C3 10 u bulk in the left zone (X4.8), ch5/ch6 pairs |
 | J7/J8, J8/J9 | ch6-ch8 pairs |
@@ -82,8 +82,11 @@ and J10/J11 below J9.
   header's plastic spacer). The envelope stays inside the 20 mm slot and inside
   the rail gap (Y ≤ 120.5), so it doesn't depend on rail depth. The repo case rail
   is 12 mm deep and the socket starts about 14 mm behind the panel.
-- Under the overhang (Y94.4..105) there are only tracks and the clipped J9 jack
-  leads; keep those leads clipped to ≤1.5 mm, below the 2.5 mm socket floor. Beside
+- Under the overhang (Y94.4..105) there are tracks, the clipped J9 jack leads and,
+  since the LED drivers, the edge of LED 8's driver: V1 R38 (0603, 0.5 mm tall)
+  reaches X ≤ 12.4 by ~0.4 mm at Y95.5; V2 R38 (0603) at X10.0 and Q18 (SOT-23,
+  ≤1.1 mm) at X13.1, Y96.6 sit under it. All are below the 2.5 mm socket floor.
+  Keep the J9 leads clipped to ≤1.5 mm, below the socket floor. Beside
   J10, the edges of U3 (SOT-89, 1.5 mm) and C4 (0805, ≤1.25 mm) reach about 0.35 mm
   under the socket's right side (X ≤ 12.4), also below its floor. The envelope is drawn on `Dwgs.User` (`IDC16`) in the carrier.
 - Unshrouded on purpose: a shrouded 10-pin box header would block the 16-pin

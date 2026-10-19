@@ -6,9 +6,9 @@
 	(paper "A3")
 	(title_block
 		(title "Big Modular - MIDI V2")
-		(rev "V2-S3")
+		(rev "V2-S4")
 		(company "Big Modular")
-		(comment 1 "V2 SCHEMATIC S3 - 5 V logic, mis-patch protected input and outputs, JP2 input bypass (open)")
+		(comment 1 "V2 SCHEMATIC S4 - 5 V logic, mis-patch protected input and outputs, JP2 input bypass (open), LED transistor drivers")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/v2/geometry.json")
 	)
 	(lib_symbols
@@ -4034,7 +4034,7 @@
 		)
 		(uuid "06fed3aa-b3e6-5d85-825d-81c050cce8eb")
 	)
-	(text "OUTPUTS 1-8: GPIO -> 1k -> TS tip (sleeve GND), BAT54SW clamp to +5V/GND on the GPIO side;\nGPIO -> 1k -> LED -> GND"
+	(text "OUTPUTS 1-8: sheets CH1-CH8 (out.kicad_sch): GPIO -> 1k -> TS tip (sleeve GND), BAT54SW\nclamp on the GPIO side; LED: GPIO -> 10k -> NPN, +5V -> LED -> 1k -> collector (Bread Modular gate_out)"
 		(exclude_from_sim no)
 		(at 256.54 25.4 0)
 		(effects
@@ -4134,44 +4134,12 @@
 		(uuid "dbf8f37e-fe95-59bd-b17a-3d3ce9777f20")
 	)
 	(no_connect
-		(at 381 50.8)
-		(uuid "011e6ae5-ce44-5584-8789-3cbd551b70bb")
-	)
-	(no_connect
-		(at 304.8 149.86)
-		(uuid "3000fa5b-87db-59e4-a638-250f2a867130")
-	)
-	(no_connect
-		(at 304.8 83.82)
-		(uuid "62e22416-a410-533f-b397-0dd903c6290e")
-	)
-	(no_connect
 		(at 40.64 53.34)
 		(uuid "66eeae40-2a5e-5d8a-ab49-2344dba2c0c7")
 	)
 	(no_connect
-		(at 304.8 116.84)
-		(uuid "b2fb1f35-41d9-5ea9-a521-e3ed4cc350dc")
-	)
-	(no_connect
-		(at 381 149.86)
-		(uuid "c6c112f5-d409-5829-bfac-8dff0751c853")
-	)
-	(no_connect
 		(at 53.34 53.34)
 		(uuid "d0cc618f-401f-5849-9a0d-230d95e33796")
-	)
-	(no_connect
-		(at 381 116.84)
-		(uuid "d5a2f5e9-2e5f-5e13-9ee5-7bb78b2804e5")
-	)
-	(no_connect
-		(at 381 83.82)
-		(uuid "dd4d3397-719e-54b6-b844-6da7c337e2ef")
-	)
-	(no_connect
-		(at 304.8 50.8)
-		(uuid "ee89853f-cf1d-5474-8a10-7d5edeb38474")
 	)
 	(wire
 		(pts
@@ -4192,26 +4160,6 @@
 			(type default)
 		)
 		(uuid "017ed673-b594-5d29-80bb-ce971906b925")
-	)
-	(wire
-		(pts
-			(xy 345.44 104.14) (xy 342.9 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0a54c6af-f8b2-5b70-a022-7ce93e4536ef")
-	)
-	(wire
-		(pts
-			(xy 269.24 104.14) (xy 266.7 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0a96697a-9002-5f36-b8ad-3861be212f7d")
 	)
 	(wire
 		(pts
@@ -4255,13 +4203,13 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 91.44) (xy 262.89 91.44)
+			(xy 332.74 83.82) (xy 330.2 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1662bf5d-3193-5d2e-99ca-5110cfdc846d")
+		(uuid "14edd4ad-d6ed-5a77-b944-80031b1623d2")
 	)
 	(wire
 		(pts
@@ -4272,16 +4220,6 @@
 			(type default)
 		)
 		(uuid "17c24320-584c-5ab2-9c16-6d8830bd26ec")
-	)
-	(wire
-		(pts
-			(xy 290.83 157.48) (xy 293.37 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ce2adc8-55d6-5000-a293-be1ff4de43fb")
 	)
 	(wire
 		(pts
@@ -4305,13 +4243,13 @@
 	)
 	(wire
 		(pts
-			(xy 367.03 91.44) (xy 369.57 91.44)
+			(xy 332.74 116.84) (xy 330.2 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1d8d2722-10f1-55af-b934-ed960ddad6a8")
+		(uuid "1ef1e8bd-9a71-5b60-a835-221586d7adfa")
 	)
 	(wire
 		(pts
@@ -4365,6 +4303,16 @@
 	)
 	(wire
 		(pts
+			(xy 256.54 81.28) (xy 254 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "27ccfda8-6689-519d-b891-720da1172d19")
+	)
+	(wire
+		(pts
 			(xy 132.08 48.26) (xy 134.62 48.26)
 		)
 		(stroke
@@ -4372,26 +4320,6 @@
 			(type default)
 		)
 		(uuid "285d6d30-1ceb-563c-a4a0-78edc521b6f9")
-	)
-	(wire
-		(pts
-			(xy 283.21 58.42) (xy 280.67 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "28b95862-12f8-5d07-a5e1-9673dc2835db")
-	)
-	(wire
-		(pts
-			(xy 304.8 81.28) (xy 307.34 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2b366d07-feb3-5373-ad7c-0af15f92936d")
 	)
 	(wire
 		(pts
@@ -4425,13 +4353,33 @@
 	)
 	(wire
 		(pts
-			(xy 328.93 78.74) (xy 326.39 78.74)
+			(xy 256.54 116.84) (xy 254 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "30ca58dd-49d0-505b-91f3-aa2459b78e54")
+		(uuid "2dda28e7-e860-52ec-a3ba-23ec230e6989")
+	)
+	(wire
+		(pts
+			(xy 256.54 154.94) (xy 254 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "322bfec9-2fff-5bb9-a908-ab9687720828")
+	)
+	(wire
+		(pts
+			(xy 332.74 119.38) (xy 330.2 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "359b564c-f0f7-5952-9244-9f835b1af52c")
 	)
 	(wire
 		(pts
@@ -4455,43 +4403,23 @@
 	)
 	(wire
 		(pts
-			(xy 381 48.26) (xy 383.54 48.26)
+			(xy 332.74 48.26) (xy 330.2 48.26)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3f62e8b2-1d16-57c5-a66f-b3a2b3ca92f5")
+		(uuid "3ee1c0c6-3bab-5e9a-9243-ec5c9a8ac392")
 	)
 	(wire
 		(pts
-			(xy 276.86 109.22) (xy 276.86 111.76)
+			(xy 256.54 88.9) (xy 254 88.9)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "402a1c45-86e1-55aa-bf7c-b9a8824b2124")
-	)
-	(wire
-		(pts
-			(xy 360.68 71.12) (xy 363.22 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "409c2e13-bbe7-5605-a2d2-2e1264a7f6a7")
-	)
-	(wire
-		(pts
-			(xy 359.41 58.42) (xy 356.87 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41b80c02-11c7-5280-8914-f435b9009553")
+		(uuid "44273c5a-f6e0-5bd2-a9af-422f8e8194f2")
 	)
 	(wire
 		(pts
@@ -4525,36 +4453,6 @@
 	)
 	(wire
 		(pts
-			(xy 336.55 91.44) (xy 339.09 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "49c47bc6-025e-54e7-90d5-2b7c68fc8f5e")
-	)
-	(wire
-		(pts
-			(xy 269.24 38.1) (xy 266.7 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "49ef2ddc-c11a-5661-a6c8-2f4e81a65285")
-	)
-	(wire
-		(pts
-			(xy 260.35 124.46) (xy 262.89 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4c2b69a9-8a5a-5c34-aa37-7d99ab94293d")
-	)
-	(wire
-		(pts
 			(xy 87.63 45.72) (xy 85.09 45.72)
 		)
 		(stroke
@@ -4565,43 +4463,23 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 144.78) (xy 250.19 144.78)
+			(xy 256.54 149.86) (xy 254 149.86)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "4fbeba0a-8949-5a88-bada-bb006950cec6")
+		(uuid "506f485d-f37a-570c-a661-c3dae1f9986a")
 	)
 	(wire
 		(pts
-			(xy 276.86 76.2) (xy 276.86 78.74)
+			(xy 332.74 55.88) (xy 330.2 55.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "50aeb48b-5c78-563b-9f3b-98cb139d8b0c")
-	)
-	(wire
-		(pts
-			(xy 328.93 144.78) (xy 326.39 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "51e2b814-21ef-5a85-9c81-94f6f2983e8a")
-	)
-	(wire
-		(pts
-			(xy 252.73 91.44) (xy 250.19 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "51eeb95b-e2e8-5a29-9e10-b46e159522ef")
+		(uuid "51aa52fa-bdb1-5d83-8c80-4a752cc9e41e")
 	)
 	(wire
 		(pts
@@ -4625,53 +4503,23 @@
 	)
 	(wire
 		(pts
-			(xy 360.68 38.1) (xy 363.22 38.1)
+			(xy 332.74 114.3) (xy 330.2 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "55b64271-40c6-5d98-88e3-c76fb6e533f3")
+		(uuid "56f0defa-2b95-50ca-8ac2-8ea950196e6e")
 	)
 	(wire
 		(pts
-			(xy 359.41 91.44) (xy 356.87 91.44)
+			(xy 256.54 147.32) (xy 254 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "55e1a6f1-17fc-5bdd-abad-e55663e3cb75")
-	)
-	(wire
-		(pts
-			(xy 304.8 114.3) (xy 307.34 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "564ae257-cc1c-57db-8315-890658d0dee9")
-	)
-	(wire
-		(pts
-			(xy 336.55 157.48) (xy 339.09 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5787f83b-adb3-5121-be0f-196135321a51")
-	)
-	(wire
-		(pts
-			(xy 284.48 71.12) (xy 287.02 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "58623d59-70db-516f-a93b-9da7e0872497")
+		(uuid "5b7470e5-9fef-5b38-b9a9-3e3db37bcb16")
 	)
 	(wire
 		(pts
@@ -4685,23 +4533,13 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 144.78) (xy 262.89 144.78)
+			(xy 256.54 48.26) (xy 254 48.26)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "5e47af65-680c-58ce-89e0-7ac84279ad6e")
-	)
-	(wire
-		(pts
-			(xy 304.8 45.72) (xy 307.34 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "63631853-f0be-5469-866f-eb2db9fafd76")
+		(uuid "5ca9525e-12c8-5f69-ba96-a82154d0cb1f")
 	)
 	(wire
 		(pts
@@ -4712,16 +4550,6 @@
 			(type default)
 		)
 		(uuid "649d0867-545a-5be7-9d82-164c58dd5044")
-	)
-	(wire
-		(pts
-			(xy 283.21 157.48) (xy 280.67 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "651c2c01-d757-562b-8fc7-88aac7b3ab83")
 	)
 	(wire
 		(pts
@@ -4765,33 +4593,13 @@
 	)
 	(wire
 		(pts
-			(xy 336.55 58.42) (xy 339.09 58.42)
+			(xy 332.74 149.86) (xy 330.2 149.86)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "680c3793-c3bb-5f80-b08a-381f72b3ce04")
-	)
-	(wire
-		(pts
-			(xy 345.44 38.1) (xy 342.9 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "688911fb-c87b-5b78-a2a6-382515f98bd2")
-	)
-	(wire
-		(pts
-			(xy 260.35 78.74) (xy 262.89 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "69212fcd-9aef-5bbd-ba05-4f62631e867e")
+		(uuid "6b05c14c-0e81-5d71-b21c-b465a4ba69fa")
 	)
 	(wire
 		(pts
@@ -4825,76 +4633,6 @@
 	)
 	(wire
 		(pts
-			(xy 269.24 71.12) (xy 266.7 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c838c85-dbff-54df-961f-c87d4f3ac9a0")
-	)
-	(wire
-		(pts
-			(xy 290.83 91.44) (xy 293.37 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6cbe844b-8c22-5e70-9aa9-4b97fad4e852")
-	)
-	(wire
-		(pts
-			(xy 336.55 124.46) (xy 339.09 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6cdde001-d4f1-5cd0-8e01-cd5a9f5ba6b3")
-	)
-	(wire
-		(pts
-			(xy 260.35 58.42) (xy 262.89 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6d18391b-23f1-5705-8054-66aec84e5293")
-	)
-	(wire
-		(pts
-			(xy 336.55 111.76) (xy 339.09 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "74d1093b-5499-59af-a1c2-4757cb3db1b4")
-	)
-	(wire
-		(pts
-			(xy 304.8 144.78) (xy 307.34 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "75077317-6709-5a78-8d12-191071a38afd")
-	)
-	(wire
-		(pts
-			(xy 381 78.74) (xy 383.54 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "77417383-bf01-5a67-b029-12b78500e01f")
-	)
-	(wire
-		(pts
 			(xy 124.46 137.16) (xy 124.46 139.7)
 		)
 		(stroke
@@ -4915,16 +4653,6 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 111.76) (xy 262.89 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "78a84b41-5fcb-5bcc-82d0-257ed8e32ea8")
-	)
-	(wire
-		(pts
 			(xy 186.69 152.4) (xy 184.15 152.4)
 		)
 		(stroke
@@ -4935,33 +4663,13 @@
 	)
 	(wire
 		(pts
-			(xy 290.83 58.42) (xy 293.37 58.42)
+			(xy 256.54 86.36) (xy 254 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7b274832-2db3-55db-a3d5-ec04cc911c27")
-	)
-	(wire
-		(pts
-			(xy 304.8 48.26) (xy 307.34 48.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7ce750f0-3c2a-5ff3-8b40-75cdba1f4856")
-	)
-	(wire
-		(pts
-			(xy 328.93 91.44) (xy 326.39 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8180c1ac-84cb-57af-9a88-ac061c5ce7cd")
+		(uuid "80e26445-e1f3-55e8-a628-fb644622ff1a")
 	)
 	(wire
 		(pts
@@ -4975,33 +4683,23 @@
 	)
 	(wire
 		(pts
-			(xy 276.86 142.24) (xy 276.86 144.78)
+			(xy 332.74 50.8) (xy 330.2 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8866cb31-72b2-5713-b2fc-cb1ba30d3e80")
+		(uuid "84d61df1-d65f-5fe9-9ce2-497a141d051d")
 	)
 	(wire
 		(pts
-			(xy 367.03 124.46) (xy 369.57 124.46)
+			(xy 332.74 81.28) (xy 330.2 81.28)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8beae949-e39a-5285-bce7-a8667336ced8")
-	)
-	(wire
-		(pts
-			(xy 328.93 58.42) (xy 326.39 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c50da03-e364-5512-8bc8-b2d83dc57a25")
+		(uuid "8b278be0-a326-5182-ba0d-57bfc990c002")
 	)
 	(wire
 		(pts
@@ -5012,16 +4710,6 @@
 			(type default)
 		)
 		(uuid "8d9a358a-c180-50ed-bc39-051c0fda6160")
-	)
-	(wire
-		(pts
-			(xy 276.86 43.18) (xy 276.86 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8e0bc09e-f382-5bef-826e-528ffe986021")
 	)
 	(wire
 		(pts
@@ -5055,16 +4743,6 @@
 	)
 	(wire
 		(pts
-			(xy 359.41 124.46) (xy 356.87 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9706a245-0ea0-574e-9cd6-1fd730b90faf")
-	)
-	(wire
-		(pts
 			(xy 137.16 113.03) (xy 137.16 110.49)
 		)
 		(stroke
@@ -5075,23 +4753,13 @@
 	)
 	(wire
 		(pts
-			(xy 345.44 71.12) (xy 342.9 71.12)
+			(xy 256.54 152.4) (xy 254 152.4)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "98b76f4d-d368-580d-bdde-e34b01fb5777")
-	)
-	(wire
-		(pts
-			(xy 360.68 104.14) (xy 363.22 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "998c520c-bf82-5b67-9d21-02c9ea7e96e8")
+		(uuid "9916fe7e-ffd8-514d-9b5a-c04eb3f22068")
 	)
 	(wire
 		(pts
@@ -5102,16 +4770,6 @@
 			(type default)
 		)
 		(uuid "9ad24934-b20f-5a3d-8439-d8b30905e7f9")
-	)
-	(wire
-		(pts
-			(xy 381 114.3) (xy 383.54 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9dc615fc-6cf4-5ac3-a5fa-91621099d5b0")
 	)
 	(wire
 		(pts
@@ -5135,16 +4793,6 @@
 	)
 	(wire
 		(pts
-			(xy 328.93 111.76) (xy 326.39 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9f69e1fc-b488-5cf6-bfda-252e30cab93d")
-	)
-	(wire
-		(pts
 			(xy 124.46 127) (xy 124.46 124.46)
 		)
 		(stroke
@@ -5152,26 +4800,6 @@
 			(type default)
 		)
 		(uuid "9fedd048-d996-5f13-84ba-50be84bfc7d4")
-	)
-	(wire
-		(pts
-			(xy 353.06 142.24) (xy 353.06 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a0490c1b-550b-5f47-8ba4-fe92abb35f2f")
-	)
-	(wire
-		(pts
-			(xy 269.24 137.16) (xy 266.7 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a04a3993-7850-5026-bae2-90cbf2d442a5")
 	)
 	(wire
 		(pts
@@ -5185,16 +4813,6 @@
 	)
 	(wire
 		(pts
-			(xy 290.83 124.46) (xy 293.37 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a3dce484-7491-5626-a874-e6e6a3fe8755")
-	)
-	(wire
-		(pts
 			(xy 124.46 55.88) (xy 124.46 58.42)
 		)
 		(stroke
@@ -5205,13 +4823,13 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 78.74) (xy 250.19 78.74)
+			(xy 332.74 86.36) (xy 330.2 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a4dc5421-afaa-5d8d-9241-3fb952b53f90")
+		(uuid "a71e9f98-b13d-5aaa-b800-7a901f3313f2")
 	)
 	(wire
 		(pts
@@ -5235,83 +4853,13 @@
 	)
 	(wire
 		(pts
-			(xy 381 81.28) (xy 383.54 81.28)
+			(xy 332.74 53.34) (xy 330.2 53.34)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "aa6112ad-b9c9-5208-b63c-4326ebd4fc78")
-	)
-	(wire
-		(pts
-			(xy 284.48 137.16) (xy 287.02 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ace85847-896b-575d-b501-7d09af400a58")
-	)
-	(wire
-		(pts
-			(xy 381 144.78) (xy 383.54 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "acf5265f-2c66-5881-bc65-a225762f922e")
-	)
-	(wire
-		(pts
-			(xy 353.06 43.18) (xy 353.06 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ad0d1aed-e7d6-5c87-99dc-862a1aa7821f")
-	)
-	(wire
-		(pts
-			(xy 304.8 111.76) (xy 307.34 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ae9d15ae-e359-58e7-b03f-65d06cb83c90")
-	)
-	(wire
-		(pts
-			(xy 304.8 78.74) (xy 307.34 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "af721ae0-026a-52b8-bd09-f7a7a36ef123")
-	)
-	(wire
-		(pts
-			(xy 336.55 144.78) (xy 339.09 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "af729ca7-9e34-5d1b-adc4-6dbf18a6638b")
-	)
-	(wire
-		(pts
-			(xy 381 111.76) (xy 383.54 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b02e3508-03c7-5143-9dd6-e45cfc15be4b")
+		(uuid "aad35ff0-3bce-5129-9824-afe4fb167263")
 	)
 	(wire
 		(pts
@@ -5325,33 +4873,13 @@
 	)
 	(wire
 		(pts
-			(xy 381 45.72) (xy 383.54 45.72)
+			(xy 332.74 88.9) (xy 330.2 88.9)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b085dad2-5c22-5143-839c-5fc9aeff66bf")
-	)
-	(wire
-		(pts
-			(xy 353.06 76.2) (xy 353.06 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b0ec180f-b0b6-5a88-a601-f53b627ee7bd")
-	)
-	(wire
-		(pts
-			(xy 252.73 58.42) (xy 250.19 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b197daa8-31cf-5016-bece-9d12e4a06f6f")
+		(uuid "b2bd12c1-ce64-55c5-a4e7-79c23012a8ad")
 	)
 	(wire
 		(pts
@@ -5362,6 +4890,16 @@
 			(type default)
 		)
 		(uuid "b4b7ae87-fc01-57c4-8e2a-78c4061f21fb")
+	)
+	(wire
+		(pts
+			(xy 332.74 152.4) (xy 330.2 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b56a4613-4945-5f08-89de-3f7c462aa142")
 	)
 	(wire
 		(pts
@@ -5385,16 +4923,6 @@
 	)
 	(wire
 		(pts
-			(xy 336.55 78.74) (xy 339.09 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b94d821a-0005-570c-b928-e54fe66a8ad3")
-	)
-	(wire
-		(pts
 			(xy 147.32 55.88) (xy 144.78 55.88)
 		)
 		(stroke
@@ -5405,23 +4933,13 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 45.72) (xy 262.89 45.72)
+			(xy 256.54 50.8) (xy 254 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "bca44aa7-a2ab-5285-b021-f34ef9cab1aa")
-	)
-	(wire
-		(pts
-			(xy 336.55 45.72) (xy 339.09 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bf6b60ab-0f4a-5bfc-b081-4ed5ee583e6d")
+		(uuid "bf7c7756-60f7-5d18-90ec-141ee9d2ba0f")
 	)
 	(wire
 		(pts
@@ -5435,13 +4953,13 @@
 	)
 	(wire
 		(pts
-			(xy 381 147.32) (xy 383.54 147.32)
+			(xy 332.74 121.92) (xy 330.2 121.92)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c1bcc22b-653f-5fe1-9959-b9fe1eddefe2")
+		(uuid "c1053e6e-fac9-50b6-ba4f-b5d0f5bed3cf")
 	)
 	(wire
 		(pts
@@ -5455,13 +4973,13 @@
 	)
 	(wire
 		(pts
-			(xy 328.93 124.46) (xy 326.39 124.46)
+			(xy 256.54 114.3) (xy 254 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c5abdc2a-cb0c-57a2-b622-a3608b8514cb")
+		(uuid "c538453d-f5a2-54e4-abcf-6e859c1eb128")
 	)
 	(wire
 		(pts
@@ -5485,36 +5003,6 @@
 	)
 	(wire
 		(pts
-			(xy 304.8 147.32) (xy 307.34 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c7691b06-11e1-5157-a54d-a192f08efa90")
-	)
-	(wire
-		(pts
-			(xy 252.73 45.72) (xy 250.19 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c77b8aad-4969-5a38-8a7e-e0420537c5b1")
-	)
-	(wire
-		(pts
-			(xy 345.44 137.16) (xy 342.9 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c88c72b0-4d44-5e53-9add-42dbc8691bfc")
-	)
-	(wire
-		(pts
 			(xy 195.58 114.3) (xy 193.04 114.3)
 		)
 		(stroke
@@ -5522,26 +5010,6 @@
 			(type default)
 		)
 		(uuid "c95b92ac-4d10-52e9-8788-d7cbd76349d1")
-	)
-	(wire
-		(pts
-			(xy 367.03 58.42) (xy 369.57 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ca2e6656-5c3c-512c-8306-4a178880b79b")
-	)
-	(wire
-		(pts
-			(xy 252.73 157.48) (xy 250.19 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cac564b3-5738-5da9-b827-e77910ebace4")
 	)
 	(wire
 		(pts
@@ -5565,13 +5033,13 @@
 	)
 	(wire
 		(pts
-			(xy 283.21 124.46) (xy 280.67 124.46)
+			(xy 256.54 55.88) (xy 254 55.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ccdda1af-8a62-54c3-bca0-a393bf4c17c3")
+		(uuid "cd6180cd-26fb-51f6-9d0b-bbf3f7922a8e")
 	)
 	(wire
 		(pts
@@ -5595,33 +5063,33 @@
 	)
 	(wire
 		(pts
-			(xy 284.48 38.1) (xy 287.02 38.1)
+			(xy 256.54 121.92) (xy 254 121.92)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d935b892-f37f-5507-b23f-8f7a35aeb4b4")
+		(uuid "d3738462-1078-57c3-bad6-342908d1a3df")
 	)
 	(wire
 		(pts
-			(xy 360.68 137.16) (xy 363.22 137.16)
+			(xy 256.54 119.38) (xy 254 119.38)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "dc55c57c-5cea-5f3d-8dd4-66a45f809d68")
+		(uuid "d3e33cef-012a-5e35-a087-c283ac43bfda")
 	)
 	(wire
 		(pts
-			(xy 252.73 111.76) (xy 250.19 111.76)
+			(xy 332.74 147.32) (xy 330.2 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "de84100d-d2ec-54ff-acff-002efe3711e4")
+		(uuid "ddc4adb6-62a3-528f-8127-93b71fb379a0")
 	)
 	(wire
 		(pts
@@ -5632,16 +5100,6 @@
 			(type default)
 		)
 		(uuid "dfc8b478-1a4f-5761-8ecf-788411790d0f")
-	)
-	(wire
-		(pts
-			(xy 328.93 45.72) (xy 326.39 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e16960ed-de92-5e47-8a54-0890bc636d6b")
 	)
 	(wire
 		(pts
@@ -5662,26 +5120,6 @@
 			(type default)
 		)
 		(uuid "e27064e3-dd5b-5369-b044-f2f7f626e380")
-	)
-	(wire
-		(pts
-			(xy 283.21 91.44) (xy 280.67 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e3471a27-c0cc-5711-8c77-311fd37f68d6")
-	)
-	(wire
-		(pts
-			(xy 367.03 157.48) (xy 369.57 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e49a8168-4ad1-5a15-bc8a-2638e9387077")
 	)
 	(wire
 		(pts
@@ -5725,33 +5163,23 @@
 	)
 	(wire
 		(pts
-			(xy 260.35 157.48) (xy 262.89 157.48)
+			(xy 256.54 53.34) (xy 254 53.34)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ef1e2bb4-ea99-5e5d-8802-1105c3f5041a")
+		(uuid "ec80f136-b3c0-54a8-80d8-fda422356883")
 	)
 	(wire
 		(pts
-			(xy 359.41 157.48) (xy 356.87 157.48)
+			(xy 256.54 83.82) (xy 254 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "efec212a-c7c9-5ac6-8cdc-41b6202135bf")
-	)
-	(wire
-		(pts
-			(xy 353.06 109.22) (xy 353.06 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f1328725-9ce9-5d1d-9a86-3ef6395b3f1a")
+		(uuid "ef343e88-1fdd-5e61-92bf-14e3e85bbfa5")
 	)
 	(wire
 		(pts
@@ -5765,33 +5193,13 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 124.46) (xy 250.19 124.46)
+			(xy 332.74 154.94) (xy 330.2 154.94)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f70cab0f-330f-5540-8591-b973553ead06")
-	)
-	(wire
-		(pts
-			(xy 328.93 157.48) (xy 326.39 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f9eda57d-8eed-5870-8877-24c6fb5c7944")
-	)
-	(wire
-		(pts
-			(xy 284.48 104.14) (xy 287.02 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fb5a04f9-3a56-5f48-a4ed-c27ea0b86f1b")
+		(uuid "fb596061-81cb-52aa-970d-f467ee8b2321")
 	)
 	(wire
 		(pts
@@ -5823,36 +5231,6 @@
 		)
 		(uuid "fe493929-476f-5abe-9a85-d1adb993c70d")
 	)
-	(label "LED7_A"
-		(at 356.87 124.46 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "0009f28a-1d21-566e-a2fc-3e81523cd57e")
-	)
-	(label "GND"
-		(at 293.37 157.48 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "01266b06-07f2-51ad-ac40-9d58fdf13aee")
-	)
-	(label "GND"
-		(at 369.57 157.48 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "019e730e-963a-5b24-9d30-6042aa9fe1a7")
-	)
 	(label "UPDI"
 		(at 196.85 152.4 0)
 		(effects
@@ -5862,26 +5240,6 @@
 			(justify left bottom)
 		)
 		(uuid "01fbdb69-b342-5d6e-84cd-6aed9770f1c9")
-	)
-	(label "OUT5"
-		(at 339.09 45.72 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "030978fb-c9c4-5214-ad72-43c2c4c6f823")
-	)
-	(label "LED3_A"
-		(at 262.89 124.46 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "07769701-af70-59b4-b9d5-13392180d764")
 	)
 	(label "VIN_D"
 		(at 85.09 45.72 180)
@@ -5893,16 +5251,6 @@
 		)
 		(uuid "0a38fb00-dab9-5624-9d36-ec110c3d2bfa")
 	)
-	(label "OUT6"
-		(at 383.54 81.28 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "0a6b97d1-bb52-5473-ab2f-7b311e9f26ca")
-	)
 	(label "CH1_TX"
 		(at 228.6 99.06 0)
 		(effects
@@ -5913,105 +5261,25 @@
 		)
 		(uuid "0a767e5b-daae-5448-8ad7-69591e7a7f82")
 	)
-	(label "CH5_TX"
-		(at 353.06 45.72 270)
+	(label "CH7_TX"
+		(at 330.2 114.3 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "0b18ef82-2923-5b3d-81f4-948e8f64e9e9")
+		(uuid "0fa09011-74a1-5f7b-9680-d989e7ed9193")
 	)
-	(label "CH1_TX"
-		(at 250.19 45.72 180)
+	(label "CH5_LED"
+		(at 330.2 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "106aaf2a-9e13-5336-824b-4f5761f1327d")
-	)
-	(label "CH4_LED"
-		(at 250.19 157.48 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "10c0fb73-8cb7-59bc-9796-566bcd101bb0")
-	)
-	(label "OUT4"
-		(at 262.89 144.78 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "126246e8-d22d-5906-8cd4-2aa9bb954dd0")
-	)
-	(label "LED1_A"
-		(at 280.67 58.42 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "12fc0983-0d4b-5be7-a4ec-d66589a082d4")
-	)
-	(label "CH3_TX"
-		(at 250.19 111.76 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "139b48d0-f93d-5171-afa2-c11385a753cb")
-	)
-	(label "LED2_A"
-		(at 280.67 91.44 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "1409eeb6-8e40-524d-b7ec-29694be568f9")
-	)
-	(label "OUT7"
-		(at 339.09 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "152361ef-5efc-53d2-a191-b205d43e5548")
-	)
-	(label "GND"
-		(at 342.9 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "15601898-1eee-55d3-b39d-c39284ceb0b1")
-	)
-	(label "CH3_TX"
-		(at 276.86 111.76 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "16720c57-abdc-5e25-a46b-99566ac9c54c")
+		(uuid "139d48f0-77a9-5533-aad9-98abc2c13c25")
 	)
 	(label "GND"
 		(at 38.1 60.96 180)
@@ -6033,16 +5301,6 @@
 		)
 		(uuid "195f9fd1-08cb-5e23-9043-6fe67827c53f")
 	)
-	(label "GND"
-		(at 383.54 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "19b70eb7-1566-571b-b090-63ce1f708023")
-	)
 	(label "+5V"
 		(at 184.15 142.24 180)
 		(effects
@@ -6052,26 +5310,6 @@
 			(justify right bottom)
 		)
 		(uuid "19cf0992-27e3-5644-85f3-f8d824bf5a7d")
-	)
-	(label "CH7_LED"
-		(at 326.39 124.46 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "1a2a3905-2ec5-5cca-8b87-ef20ccd6fead")
-	)
-	(label "LED4_A"
-		(at 280.67 157.48 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "1b6b33a5-9619-55e7-9dbf-6d7c4db89371")
 	)
 	(label "Q1_B"
 		(at 109.22 153.67 270)
@@ -6083,15 +5321,15 @@
 		)
 		(uuid "1bc0c2dc-00f0-5972-9a9f-514dd9fedf9a")
 	)
-	(label "GND"
-		(at 342.9 137.16 180)
+	(label "CH4_LED"
+		(at 254 149.86 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "1c90438e-c2a1-5b20-802b-fc9583649653")
+		(uuid "1c167601-0650-581f-8566-1f527ba7dc67")
 	)
 	(label "GND"
 		(at 182.88 167.64 180)
@@ -6103,35 +5341,15 @@
 		)
 		(uuid "1d1bb5e1-f745-5ed3-b0ff-913e7b50a0c1")
 	)
-	(label "OUT2"
-		(at 262.89 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "1e500fbc-86d9-5ba0-92e6-d3bbc6962e50")
-	)
-	(label "LED8_A"
-		(at 356.87 157.48 180)
+	(label "GND"
+		(at 254 154.94 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "211c0f8e-f5b8-528a-9047-3c8d376fa268")
-	)
-	(label "LED5_A"
-		(at 339.09 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "220ba6a7-ee49-5a22-94f3-44862bd6360f")
+		(uuid "1d397837-4368-575c-b30b-e4f64287e46c")
 	)
 	(label "RING"
 		(at 35.56 127 0)
@@ -6143,16 +5361,6 @@
 		)
 		(uuid "22b40f63-56e8-5004-80d7-b6ad0178b831")
 	)
-	(label "OUT5"
-		(at 383.54 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "22f78d6e-ed43-51e0-8c99-0288c7a3791a")
-	)
 	(label "CH8_LED"
 		(at 228.6 96.52 0)
 		(effects
@@ -6163,15 +5371,15 @@
 		)
 		(uuid "248cfa6e-2fcf-560e-b628-894e4e835b31")
 	)
-	(label "CH4_TX"
-		(at 276.86 144.78 270)
+	(label "GND"
+		(at 330.2 55.88 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "2a1482bb-e2aa-5825-a1dc-34efb1850048")
+		(uuid "2884429a-72cf-5055-8e98-4de7149ba04e")
 	)
 	(label "GND"
 		(at 55.88 58.42 0)
@@ -6183,35 +5391,55 @@
 		)
 		(uuid "2b06ed10-6ac4-56bb-883d-93f3d934f5de")
 	)
-	(label "GND"
-		(at 369.57 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2b0a1558-c44c-5ca6-a552-7c446cdce6a9")
-	)
-	(label "CH8_TX"
-		(at 326.39 144.78 180)
+	(label "CH1_LED"
+		(at 254 50.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "2ba6f4b1-edc0-50d1-86f2-f146255d20eb")
+		(uuid "2cbe8546-f7f7-59ae-bee7-17cebdde63b7")
 	)
 	(label "+5V"
-		(at 287.02 137.16 0)
+		(at 330.2 152.4 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
-		(uuid "328aba64-6940-59dd-9d17-4eb8d2782f6e")
+		(uuid "30904d38-3468-5e15-8e75-c39cbc8bb51f")
+	)
+	(label "GND"
+		(at 330.2 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "312d39a2-b8ba-5d00-8b42-2fe18ade765a")
+	)
+	(label "+5V"
+		(at 254 86.36 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3132e6b4-8f3c-5e26-991a-7680171d1e0d")
+	)
+	(label "GND"
+		(at 254 121.92 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "33a6383f-2c11-53c2-bc6a-c9f9e7bf5490")
 	)
 	(label "CH6_LED"
 		(at 228.6 91.44 0)
@@ -6273,26 +5501,6 @@
 		)
 		(uuid "38f18eef-1561-5bfb-af1a-a3ed65b1879d")
 	)
-	(label "GND"
-		(at 266.7 38.1 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "3cc9370c-d99a-5b2f-a79e-6da95e25be72")
-	)
-	(label "GND"
-		(at 293.37 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3d466ed2-e221-586d-b35f-afd2797676ce")
-	)
 	(label "CH8_TX"
 		(at 228.6 114.3 0)
 		(effects
@@ -6302,6 +5510,16 @@
 			(justify left bottom)
 		)
 		(uuid "3d502b46-7d1a-59b7-9dd4-808a7ddd239e")
+	)
+	(label "CH8_LED"
+		(at 330.2 149.86 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3e00cafb-9448-5063-8e71-67b2a7c15a56")
 	)
 	(label "UPDI_PA0"
 		(at 184.15 152.4 180)
@@ -6313,16 +5531,6 @@
 		)
 		(uuid "3e263b3f-78a3-5ec8-8e0c-0ead0b2a2ed5")
 	)
-	(label "GND"
-		(at 293.37 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "3e728daa-e8c9-5846-9c9d-2459f50296d6")
-	)
 	(label "VIN_LDO"
 		(at 97.79 55.88 0)
 		(effects
@@ -6332,66 +5540,6 @@
 			(justify left bottom)
 		)
 		(uuid "3f85ba14-2849-5a1c-afcd-6b03b4f349fe")
-	)
-	(label "OUT4"
-		(at 307.34 147.32 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "40c02750-e2a8-5d3a-b6b2-04baf5750e18")
-	)
-	(label "+5V"
-		(at 363.22 71.12 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "41a7cbf1-877b-51e1-8adb-22ec09c251b8")
-	)
-	(label "GND"
-		(at 266.7 71.12 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "443db353-9d29-5ba9-a81e-ffa82110fb7f")
-	)
-	(label "GND"
-		(at 307.34 45.72 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "45b5b2c7-a15b-5667-a331-7e6553620adb")
-	)
-	(label "GND"
-		(at 342.9 38.1 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "48d09d5b-7ed4-5f4b-9649-63ffb560127f")
-	)
-	(label "CH6_LED"
-		(at 326.39 91.44 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4933cf58-66a9-51b6-955e-65c49b8aa662")
 	)
 	(label "CLAMP_REF"
 		(at 166.37 58.42 180)
@@ -6433,45 +5581,15 @@
 		)
 		(uuid "4d15c527-c084-55fe-b0f4-e74b8a6de913")
 	)
-	(label "LED3_A"
-		(at 280.67 124.46 180)
+	(label "+5V"
+		(at 254 53.34 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "4dcec2e4-2170-5893-b4f1-174fb98bccd9")
-	)
-	(label "CH2_TX"
-		(at 250.19 78.74 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4eb17aa0-34cf-58a9-8134-a7c84b97ea7d")
-	)
-	(label "GND"
-		(at 369.57 124.46 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "50b2206a-bafd-5a77-b867-23ece3804610")
-	)
-	(label "OUT6"
-		(at 339.09 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "51c626ab-e4ce-535d-9aa7-07cc2ee21214")
+		(uuid "4f1cd984-c7ca-5c3b-9176-8e813b1e0f11")
 	)
 	(label "VIN_LDO"
 		(at 85.09 66.04 180)
@@ -6493,6 +5611,26 @@
 		)
 		(uuid "54220e73-e466-5299-bc03-692fad666504")
 	)
+	(label "CH4_TX"
+		(at 254 147.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "56e9dc13-74d2-5ca0-8883-c2b2e31b0866")
+	)
+	(label "CH6_LED"
+		(at 330.2 83.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "57f764b1-ec00-530e-a900-a72fbb5bbfec")
+	)
 	(label "CH7_LED"
 		(at 228.6 93.98 0)
 		(effects
@@ -6512,6 +5650,26 @@
 			(justify left bottom)
 		)
 		(uuid "5acf4a5b-769d-5edf-8e2e-111e5d24b550")
+	)
+	(label "CH2_TX"
+		(at 254 81.28 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5baa4a11-fa40-5b78-b090-10e10771867b")
+	)
+	(label "GND"
+		(at 330.2 154.94 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5c714008-8de5-5916-94a0-2870da53db8f")
 	)
 	(label "CH1_LED"
 		(at 193.04 109.22 180)
@@ -6533,15 +5691,15 @@
 		)
 		(uuid "5ea2950b-5bda-53d5-9df5-28185235065d")
 	)
-	(label "OUT1"
-		(at 262.89 45.72 0)
+	(label "+5V"
+		(at 330.2 119.38 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
-		(uuid "615847e1-6737-5fd5-996a-da3791f204a3")
+		(uuid "6179c820-7095-591d-8a8d-04d88cfa69f1")
 	)
 	(label "MIDI_IN"
 		(at 63.5 133.35 270)
@@ -6552,16 +5710,6 @@
 			(justify right bottom)
 		)
 		(uuid "61e55eb0-2840-5b90-b333-ab300a9006a1")
-	)
-	(label "LED8_A"
-		(at 339.09 157.48 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "65ffab26-0994-5e4b-9c85-a784ba40edad")
 	)
 	(label "VIN_LDO"
 		(at 114.3 48.26 180)
@@ -6583,15 +5731,15 @@
 		)
 		(uuid "67b623a0-ccc8-513f-b2b1-533fc49126a9")
 	)
-	(label "CH6_TX"
-		(at 353.06 78.74 270)
+	(label "CH5_TX"
+		(at 330.2 48.26 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "67bdbf56-c8ba-503d-99f9-4db1638f013e")
+		(uuid "69ba78dc-744d-5cdb-9867-96110d556b74")
 	)
 	(label "TIP"
 		(at 35.56 129.54 0)
@@ -6602,16 +5750,6 @@
 			(justify left bottom)
 		)
 		(uuid "6aa14711-1598-5716-b015-2941326b369f")
-	)
-	(label "OUT1"
-		(at 307.34 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6d360aa0-9f09-508f-b6a3-a4e905a04e24")
 	)
 	(label "GND"
 		(at 55.88 55.88 0)
@@ -6632,36 +5770,6 @@
 			(justify left bottom)
 		)
 		(uuid "6e067ae7-b005-56e0-9279-ecaac1bb6092")
-	)
-	(label "GND"
-		(at 383.54 144.78 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6e0b5350-932e-5fda-8338-b24b578c1e75")
-	)
-	(label "+5V"
-		(at 287.02 104.14 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "6e158f38-16b5-5122-81f9-e9ba7de823dd")
-	)
-	(label "GND"
-		(at 266.7 104.14 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "6f56f2a2-206f-5343-bb68-b395b51f36f9")
 	)
 	(label "CH4_LED"
 		(at 193.04 116.84 180)
@@ -6693,35 +5801,15 @@
 		)
 		(uuid "746e79a4-d3fb-5bbb-bceb-d57ac6b95ca7")
 	)
-	(label "+5V"
-		(at 363.22 137.16 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "74e37d3a-1197-57bc-828c-e188bc4365f3")
-	)
 	(label "GND"
-		(at 383.54 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "77c67c7b-84ba-5369-a38b-56740e8143f1")
-	)
-	(label "CH1_TX"
-		(at 276.86 45.72 270)
+		(at 254 55.88 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "78f6a16f-9705-54f3-930d-ca57256d71d9")
+		(uuid "770415eb-4410-5b64-bd08-c0778a8f7502")
 	)
 	(label "CH2_LED"
 		(at 193.04 111.76 180)
@@ -6733,25 +5821,15 @@
 		)
 		(uuid "791d16a8-3538-50af-acbf-1db6454ed7d8")
 	)
-	(label "GND"
-		(at 266.7 137.16 180)
+	(label "CH3_TX"
+		(at 254 114.3 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "7a727d42-ec60-51a4-bc7c-b397b2262976")
-	)
-	(label "GND"
-		(at 307.34 144.78 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "7c91fd62-4716-5e99-8c5e-166f4a787916")
+		(uuid "7b0b65e5-8b40-5c82-9499-f4b798814ad6")
 	)
 	(label "VIN_LDO"
 		(at 101.6 81.28 270)
@@ -6762,6 +5840,16 @@
 			(justify right bottom)
 		)
 		(uuid "804f7f14-6c80-5975-87cf-276cdfb41a2a")
+	)
+	(label "CH3_LED"
+		(at 254 116.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8292200d-2d6f-52b6-a4a1-80d924552fe4")
 	)
 	(label "CH5_LED"
 		(at 228.6 88.9 0)
@@ -6782,16 +5870,6 @@
 			(justify left bottom)
 		)
 		(uuid "8351db31-b088-5b9e-8ed8-da5b9c8910eb")
-	)
-	(label "+5V"
-		(at 287.02 71.12 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8667a2c2-5232-5478-9d1a-efea81e4909e")
 	)
 	(label "GND"
 		(at 210.82 129.54 270)
@@ -6823,26 +5901,6 @@
 		)
 		(uuid "8a889a05-e1ca-5a81-a1f8-9af7e2e5900c")
 	)
-	(label "LED6_A"
-		(at 339.09 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8ca9e0c6-b780-5a41-be53-d310348c8fac")
-	)
-	(label "LED2_A"
-		(at 262.89 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "8dc2f4b5-0d3d-5b95-8687-96cdbbaf39b6")
-	)
 	(label "GND"
 		(at 38.1 55.88 180)
 		(effects
@@ -6852,16 +5910,6 @@
 			(justify right bottom)
 		)
 		(uuid "8ddde800-3b9a-566a-a790-148590b25232")
-	)
-	(label "CH4_TX"
-		(at 250.19 144.78 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "8f866fc0-a72f-5d98-9e1a-b28ff77e2df3")
 	)
 	(label "CH3_LED"
 		(at 193.04 114.3 180)
@@ -6883,36 +5931,6 @@
 		)
 		(uuid "91072538-6493-58a5-9ff6-feb2d6ece706")
 	)
-	(label "CH2_LED"
-		(at 250.19 91.44 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "9323577e-6b47-596a-99f4-017ff5f11008")
-	)
-	(label "CH2_TX"
-		(at 276.86 78.74 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "97542f6e-fe4d-55e9-b8a6-5b338a2da3c2")
-	)
-	(label "CH6_TX"
-		(at 326.39 78.74 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "98050501-d3ae-5c46-bfe5-0144c3c57514")
-	)
 	(label "+5V"
 		(at 93.98 123.19 270)
 		(effects
@@ -6933,36 +5951,6 @@
 		)
 		(uuid "9a3296a9-52ad-5f5f-8346-f9dfa72c7916")
 	)
-	(label "CH8_LED"
-		(at 326.39 157.48 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "9cba3fbd-64bb-5762-ba49-e369b6ac5b87")
-	)
-	(label "OUT3"
-		(at 307.34 114.3 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "9e24acab-a9aa-5f43-af94-7a302c56e4e0")
-	)
-	(label "CH5_TX"
-		(at 326.39 45.72 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a032e41e-8e88-51a9-87f9-d58a22669734")
-	)
 	(label "CH2_TX"
 		(at 228.6 101.6 0)
 		(effects
@@ -6972,36 +5960,6 @@
 			(justify left bottom)
 		)
 		(uuid "a0bc5401-f0d5-5bb3-8f5d-c30b539bbfe8")
-	)
-	(label "CH3_LED"
-		(at 250.19 124.46 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a543cca1-81da-5345-ba61-f70fb147e403")
-	)
-	(label "OUT7"
-		(at 383.54 114.3 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a6366c07-4d7a-5af3-918c-ad3d46f4dad0")
-	)
-	(label "+5V"
-		(at 363.22 38.1 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "a8d06b76-b22b-5508-a11f-5099fadb4b3a")
 	)
 	(label "CLAMP_REF"
 		(at 179.07 45.72 0)
@@ -7043,15 +6001,15 @@
 		)
 		(uuid "ae2acb68-9aa5-5091-8f06-5ef0f797ece7")
 	)
-	(label "+5V"
-		(at 363.22 104.14 0)
+	(label "CH2_LED"
+		(at 254 83.82 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
-		(uuid "b0abec2e-4cea-58bc-aedc-66d90f0726b0")
+		(uuid "b0dc5a5e-d91d-59c4-ab4d-59081fffb8a3")
 	)
 	(label "MIDI_IN"
 		(at 167.64 134.62 0)
@@ -7063,26 +6021,6 @@
 		)
 		(uuid "b1d64968-d9f2-5aa9-a913-9418b3de38e5")
 	)
-	(label "GND"
-		(at 342.9 104.14 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "b341fa91-dabb-5b35-8b65-d0299316fbd8")
-	)
-	(label "CH7_TX"
-		(at 326.39 111.76 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "b39fc2c0-1a7e-5fc4-9995-545507f2f90b")
-	)
 	(label "Q1_B"
 		(at 114.3 132.08 180)
 		(effects
@@ -7092,16 +6030,6 @@
 			(justify right bottom)
 		)
 		(uuid "b5e9ea68-3a5b-5ffe-b330-e92095b4d4ac")
-	)
-	(label "CH5_LED"
-		(at 326.39 58.42 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "b75ad409-2e3f-5cac-8b9d-f01efc3413fa")
 	)
 	(label "UPDI_PA0"
 		(at 228.6 86.36 0)
@@ -7133,15 +6061,15 @@
 		)
 		(uuid "bde8e308-c302-5b4d-b647-b0caf1588091")
 	)
-	(label "OUT8"
-		(at 383.54 147.32 0)
+	(label "+5V"
+		(at 330.2 53.34 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
-		(uuid "c2e6a32c-4044-575d-9318-1ff098c0cf61")
+		(uuid "bfc2e298-a681-5275-a63c-9bac4a52a935")
 	)
 	(label "GND"
 		(at 38.1 58.42 180)
@@ -7173,6 +6101,16 @@
 		)
 		(uuid "c47d95ae-06e3-5fed-90a8-69c330731657")
 	)
+	(label "+5V"
+		(at 330.2 86.36 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "c507ee35-b284-54bb-ab44-883cda2cc35e")
+	)
 	(label "RX"
 		(at 160.02 140.97 270)
 		(effects
@@ -7193,66 +6131,6 @@
 		)
 		(uuid "c89e0976-0aa3-59bd-823a-6cefe29654b4")
 	)
-	(label "OUT3"
-		(at 262.89 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ca10a53c-ad67-5778-996f-6314f942a81c")
-	)
-	(label "LED1_A"
-		(at 262.89 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "cd318db6-14ca-5350-b42e-c8f1312f77a3")
-	)
-	(label "OUT2"
-		(at 307.34 81.28 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "cd876638-68cb-58ec-a6f1-794300d34fb1")
-	)
-	(label "LED7_A"
-		(at 339.09 124.46 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ce5f6bf0-d8d2-56bb-ac4b-1f19acee91a9")
-	)
-	(label "GND"
-		(at 383.54 45.72 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d11d481c-8267-5c59-b137-dd5c846754cd")
-	)
-	(label "CH8_TX"
-		(at 353.06 144.78 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "d2a9896b-dfc9-5f9d-a6ab-c0cea209348f")
-	)
 	(label "VIN_D"
 		(at 85.09 55.88 180)
 		(effects
@@ -7263,35 +6141,45 @@
 		)
 		(uuid "d34221a5-96d1-5c40-9a01-59d593d28353")
 	)
-	(label "GND"
-		(at 307.34 111.76 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d37cc0f6-a55d-5ce5-b425-85b71f860133")
-	)
-	(label "GND"
-		(at 307.34 78.74 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d9335ebf-8195-5fba-8957-369429db9689")
-	)
 	(label "+5V"
-		(at 287.02 38.1 0)
+		(at 254 152.4 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
-		(uuid "dac9c9dc-b949-502b-80df-6ddc8ba8695d")
+		(uuid "d629be23-18c6-5d46-acc5-e9371d9d471b")
+	)
+	(label "CH8_TX"
+		(at 330.2 147.32 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "daeab67f-958a-5ebf-a5b3-664ee4e570b9")
+	)
+	(label "GND"
+		(at 254 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "dc07597a-d2a7-536a-a5d8-e0da4ac02834")
+	)
+	(label "GND"
+		(at 330.2 121.92 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "dfe80236-f7fc-515d-9330-ed665fec6611")
 	)
 	(label "GND"
 		(at 124.46 58.42 270)
@@ -7303,16 +6191,6 @@
 		)
 		(uuid "e01eb918-8e3c-5996-965a-28f3f062ae9b")
 	)
-	(label "LED5_A"
-		(at 356.87 58.42 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "e17ea4bf-ff8e-57fe-82ab-4822044b819b")
-	)
 	(label "CLAMP_REF"
 		(at 149.86 50.8 90)
 		(effects
@@ -7323,25 +6201,35 @@
 		)
 		(uuid "e3591a91-9e0f-5ee8-a8b6-93bae1fb25ea")
 	)
-	(label "CH1_LED"
-		(at 250.19 58.42 180)
+	(label "CH7_LED"
+		(at 330.2 116.84 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "e3b416ad-2532-5339-a3c6-de804903a598")
+		(uuid "e6cb8b5f-478f-5bbb-bfe7-3858c8f01d40")
 	)
-	(label "CH7_TX"
-		(at 353.06 111.76 270)
+	(label "+5V"
+		(at 254 119.38 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "ea261990-8e74-5125-9bac-fceb8211fb92")
+		(uuid "e6e010a3-408e-53da-b711-0f6d45b0976d")
+	)
+	(label "CH1_TX"
+		(at 254 48.26 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ecbad5b2-879d-57a7-bfa1-403ebec2e341")
 	)
 	(label "GND"
 		(at 196.85 142.24 0)
@@ -7383,26 +6271,6 @@
 		)
 		(uuid "f41af44d-a800-557c-af0d-d8a24840a466")
 	)
-	(label "LED4_A"
-		(at 262.89 157.48 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f481ac66-cf16-57fe-9bd5-7a43cf2e674d")
-	)
-	(label "OUT8"
-		(at 339.09 144.78 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f4974203-ae59-5f71-9cba-6d4511d8fdfc")
-	)
 	(label "CH4_TX"
 		(at 228.6 121.92 0)
 		(effects
@@ -7414,6 +6282,16 @@
 		(uuid "f6fd1f1b-8430-56a1-863f-bdcff72d1d85")
 	)
 	(label "CH6_TX"
+		(at 330.2 81.28 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "f83f0a53-0094-5888-bc99-29b67a838897")
+	)
+	(label "CH6_TX"
 		(at 228.6 111.76 0)
 		(effects
 			(font
@@ -7422,36 +6300,6 @@
 			(justify left bottom)
 		)
 		(uuid "fa8c2f68-215c-5b47-93fd-7b05aa244cf0")
-	)
-	(label "GND"
-		(at 293.37 124.46 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb4864ef-3041-5b85-a32a-b2bc93d87411")
-	)
-	(label "GND"
-		(at 369.57 91.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "fb489bb8-80e7-58ac-92c0-9d1ba73f8512")
-	)
-	(label "LED6_A"
-		(at 356.87 91.44 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "fbe495f7-3752-5d85-a2b9-708a5d1ba354")
 	)
 	(label "GND"
 		(at 130.81 66.04 0)
@@ -7472,230 +6320,6 @@
 			(justify right bottom)
 		)
 		(uuid "fc9d3b6f-ea53-51a5-b734-9b339f5b8cdc")
-	)
-	(symbol
-		(lib_id "MIDI:LED")
-		(at 363.22 91.44 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "01e332bd-067e-5fcf-a21c-5994d7c426fa")
-		(property "Reference" "D6"
-			(at 363.22 87.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 363.22 95.25 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 363.22 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 363.22 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 363.22 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 363.22 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f7812fa3-0646-59a0-8c72-52e504e38359")
-		)
-		(pin "2"
-			(uuid "17013a67-881f-5a0c-9201-fc3487ec2740")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 45.72 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "01f0beab-b15b-56b4-821c-5deb21fe0751")
-		(property "Reference" "R3"
-			(at 256.54 41.91 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 49.53 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 1 series (Bread Modular 1k); limits mis-patch current into D11"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "69229a08-6886-5c22-ab22-e3884e3afb46")
-		)
-		(pin "2"
-			(uuid "b2cbc659-c11f-547c-bd26-be654d899043")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R3")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "MIDI:C")
@@ -7826,140 +6450,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "C3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 111.76 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "08f5281a-aa4f-598b-b4b1-2e5bb1cfa81e")
-		(property "Reference" "R16"
-			(at 332.74 107.95 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 115.57 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 7 series (Bread Modular 1k); limits mis-patch current into D17"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "340f3d0e-6f08-5740-a5b8-7996d9a3b04d")
-		)
-		(pin "2"
-			(uuid "b595aa89-4d0a-54c0-8e60-e8295ab33f27")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -8182,318 +6672,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 299.72 114.3 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "142b5df1-a2f4-5dd4-87c2-39247a15e3b0")
-		(property "Reference" "J4"
-			(at 299.72 107.95 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 299.72 120.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 299.72 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 299.72 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 299.72 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 3 (TS)"
-			(at 299.72 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "9b465c26-12a5-56b0-8fe1-eb366b9798ce")
-		)
-		(pin "T"
-			(uuid "a551c027-e3d6-52d0-8e41-4c6f22b67838")
-		)
-		(pin "TN"
-			(uuid "93be5e48-6e68-531e-9d72-2ddff8324810")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 276.86 38.1 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "19342b71-fca9-5748-b63a-dd4b7227fa25")
-		(property "Reference" "D11"
-			(at 276.86 34.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 284.48 41.91 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 1 clamp: keeps the GPIO within -0.4..+5.4 V when OUT1 is mis-patched"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 276.86 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "38fa0e51-966e-5270-ade9-4a2ed5e6356c")
-		)
-		(pin "2"
-			(uuid "35214078-226e-5597-ae67-ba7dc2735281")
-		)
-		(pin "3"
-			(uuid "4e48d13e-bf51-59d0-870d-bf4418ecd27d")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 375.92 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "1ef8b2db-9634-5d28-9014-392bf0030c07")
-		(property "Reference" "J7"
-			(at 375.92 74.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 375.92 87.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 375.92 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 375.92 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 375.92 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 6 (TS)"
-			(at 375.92 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "a2568c81-0839-5fcf-b9ae-b8e04edfc67f")
-		)
-		(pin "T"
-			(uuid "83711529-3052-50d9-8a55-4960a2eed2bf")
-		)
-		(pin "TN"
-			(uuid "13695c04-237b-534a-a07c-2d997353af25")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:PWR_FLAG")
 		(at 101.6 78.74 0)
 		(unit 1)
@@ -8642,222 +6820,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:LED")
-		(at 363.22 157.48 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "21fb58a8-8bee-5910-93d8-0e175ce440e5")
-		(property "Reference" "D8"
-			(at 363.22 153.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 363.22 161.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 363.22 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 363.22 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 363.22 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 363.22 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6303b94c-e169-5b50-85a1-a8f650943e9b")
-		)
-		(pin "2"
-			(uuid "a12bca15-7820-5971-9bf8-41794c87bf93")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 353.06 104.14 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "268ca650-17f6-55c4-ab28-bf7969319e97")
-		(property "Reference" "D17"
-			(at 353.06 100.33 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 360.68 107.95 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 7 clamp: keeps the GPIO within -0.4..+5.4 V when OUT7 is mis-patched"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 353.06 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "dc4c28bb-45ec-5950-a464-80f205d9296c")
-		)
-		(pin "2"
-			(uuid "65ed7013-9c59-5e87-b7b2-f904c17c4877")
-		)
-		(pin "3"
-			(uuid "80ccdc1c-5c86-59ba-86ed-5bde7b97c0f5")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D17")
 					(unit 1)
 				)
 			)
@@ -9104,435 +7066,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:LED")
-		(at 363.22 124.46 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "352c27c4-64e4-58d5-ae00-ec0d07bfd1fb")
-		(property "Reference" "D7"
-			(at 363.22 120.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 363.22 128.27 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 363.22 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 363.22 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 363.22 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 363.22 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e5ed2f3e-5fc5-55cf-93db-aeb8423e173f")
-		)
-		(pin "2"
-			(uuid "2daf2087-c747-5aec-aedf-e0e9ceaa52ca")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 91.44 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "3665edde-db88-59e5-ac1a-2a9af9a802eb")
-		(property "Reference" "R15"
-			(at 332.74 87.63 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 95.25 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 6 current"
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "88bc8b19-bd07-5bd8-8790-ee2a346d83ea")
-		)
-		(pin "2"
-			(uuid "e5a8fbec-be0e-5da6-8588-cd123b29cedc")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 299.72 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "36af4326-83c6-51ba-b066-8ccfde8b2245")
-		(property "Reference" "J3"
-			(at 299.72 74.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 299.72 87.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 299.72 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 299.72 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 299.72 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 2 (TS)"
-			(at 299.72 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "219e4a6b-005b-5933-b15d-b07f27dabdc4")
-		)
-		(pin "T"
-			(uuid "72728f8f-a1f6-529b-9406-0e12b3758444")
-		)
-		(pin "TN"
-			(uuid "30f45044-0ddd-5675-8557-a49f0b81c837")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 91.44 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "398319ab-c086-55d0-ab8c-e5abfa8fa104")
-		(property "Reference" "R6"
-			(at 256.54 87.63 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 95.25 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 2 current"
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 91.44 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "de8f1b91-b07a-5995-97f5-3ee2dc55f413")
-		)
-		(pin "2"
-			(uuid "10b95a73-a817-5ff6-a632-0e5bcf6f111b")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:R")
 		(at 172.72 58.42 90)
 		(unit 1)
@@ -9656,222 +7189,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 276.86 137.16 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "4f5789f8-1985-5e53-b711-b1e5e599940b")
-		(property "Reference" "D14"
-			(at 276.86 133.35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 284.48 140.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 4 clamp: keeps the GPIO within -0.4..+5.4 V when OUT4 is mis-patched"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 276.86 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5314f045-a119-53d9-aa37-34d596d74563")
-		)
-		(pin "2"
-			(uuid "6110c53d-b041-59df-9331-c8300cb84446")
-		)
-		(pin "3"
-			(uuid "ed66a897-e911-56ee-b250-68a134ec7e1b")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:LED")
-		(at 287.02 157.48 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "4fa215db-9aba-5c23-87ac-3f7ee09e6577")
-		(property "Reference" "D4"
-			(at 287.02 153.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 287.02 161.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 287.02 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 287.02 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 287.02 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 287.02 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fdedfea2-7110-5ca7-abf9-c6412abb9292")
-		)
-		(pin "2"
-			(uuid "c8a5c0ba-d53c-59b4-abb5-ab035e7fcf9f")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:Conn_01x02")
 		(at 190.5 165.1 0)
 		(unit 1)
@@ -9956,263 +7273,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "J11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 78.74 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "573c7d63-29e6-5256-854a-d3e15027ab1c")
-		(property "Reference" "R5"
-			(at 256.54 74.93 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 82.55 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 2 series (Bread Modular 1k); limits mis-patch current into D12"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "efa68e1b-2d68-5d71-8b53-e34f0dc9ed89")
-		)
-		(pin "2"
-			(uuid "d9b4750e-55fe-5486-8bd1-77ccc082a889")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 157.48 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "5f69740b-297c-590a-91a9-78da7c26178c")
-		(property "Reference" "R10"
-			(at 256.54 153.67 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 161.29 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 4 current"
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ccc96753-b334-5829-b2c8-6c4af743c9ac")
-		)
-		(pin "2"
-			(uuid "45f97008-be80-5991-a84d-9fe56e6d593a")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R10")
 					(unit 1)
 				)
 			)
@@ -10399,129 +7459,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 58.42 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "71d55de9-63f4-502f-8cc2-daf269ff42e5")
-		(property "Reference" "R4"
-			(at 256.54 54.61 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 62.23 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 1 current"
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "91b149fc-e133-5919-8c8d-b289c1d433ad")
-		)
-		(pin "2"
-			(uuid "15c94396-b628-57ad-9338-deebfc143dd7")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:C")
 		(at 190.5 142.24 90)
 		(unit 1)
@@ -10656,312 +7593,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:LED")
-		(at 287.02 124.46 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "75738f14-c444-5c47-9272-4aa922f36a9f")
-		(property "Reference" "D3"
-			(at 287.02 120.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 287.02 128.27 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 287.02 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 287.02 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 287.02 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 287.02 124.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c4bc304b-403b-58f6-af24-082dc1fef0c8")
-		)
-		(pin "2"
-			(uuid "32a71ddd-75f2-5071-ac9d-acc608801569")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 276.86 104.14 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "78ecafb7-0be6-5d92-84f3-af7d4cbf8299")
-		(property "Reference" "D13"
-			(at 276.86 100.33 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 284.48 107.95 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 3 clamp: keeps the GPIO within -0.4..+5.4 V when OUT3 is mis-patched"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 276.86 104.14 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ddf56597-b2b1-560c-865e-bb8400368cfa")
-		)
-		(pin "2"
-			(uuid "ccb0b258-53f5-5915-911b-000659b493e8")
-		)
-		(pin "3"
-			(uuid "ae2f4d41-6813-566d-931a-447f1dacf225")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:LED")
-		(at 287.02 58.42 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7a1c2612-a48c-51da-91aa-5e7ebaf10308")
-		(property "Reference" "D1"
-			(at 287.02 54.61 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 287.02 62.23 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 287.02 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 287.02 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 287.02 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 287.02 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fd200cb1-b136-5b32-aa7b-51f9dfdc4bf1")
-		)
-		(pin "2"
-			(uuid "d317dd34-7481-5609-a6f3-a913624e057d")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:SolderJumper_3_Open")
 		(at 160.02 134.62 0)
 		(unit 1)
@@ -11049,493 +7680,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "JP2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 111.76 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7c8e5e74-d0b4-52c5-b2c7-fda59e18c32f")
-		(property "Reference" "R7"
-			(at 256.54 107.95 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 115.57 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 3 series (Bread Modular 1k); limits mis-patch current into D13"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5612199c-856c-5ea4-9297-c9f77e32742d")
-		)
-		(pin "2"
-			(uuid "980d14c0-e447-5b89-b101-5f7658c97cde")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 78.74 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7c9fd833-206c-54da-80b5-39ddcbdadbd7")
-		(property "Reference" "R14"
-			(at 332.74 74.93 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 82.55 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 6 series (Bread Modular 1k); limits mis-patch current into D16"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 78.74 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "189bba08-fa11-5977-9a8e-04247ce4c1bd")
-		)
-		(pin "2"
-			(uuid "1ce573fc-fa32-5883-b92e-31c57cbdfcb5")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 353.06 71.12 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "83cf1866-e0a2-55d9-86b8-02040fa22595")
-		(property "Reference" "D16"
-			(at 353.06 67.31 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 360.68 74.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 6 clamp: keeps the GPIO within -0.4..+5.4 V when OUT6 is mis-patched"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 353.06 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2e725387-e17b-5f46-8f7d-a07e7b4c9f51")
-		)
-		(pin "2"
-			(uuid "0a27d9af-7eb7-5e37-9b9a-d0105342c67d")
-		)
-		(pin "3"
-			(uuid "740c1692-4a91-5e58-ac50-e9c7cfdf106f")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 375.92 48.26 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "89554296-56d1-5147-bdff-4301e08fbc80")
-		(property "Reference" "J6"
-			(at 375.92 41.91 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 375.92 54.61 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 375.92 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 375.92 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 375.92 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 5 (TS)"
-			(at 375.92 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "72de2dae-a9f5-5b5e-bf78-0cb2f3a080b4")
-		)
-		(pin "T"
-			(uuid "a808489e-a25b-5740-9b90-a37af8487f36")
-		)
-		(pin "TN"
-			(uuid "72c6b26a-500e-518f-8e85-303df2892617")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J6")
 					(unit 1)
 				)
 			)
@@ -11665,189 +7809,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:LED")
-		(at 287.02 91.44 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "92418934-ba0b-53fb-9bda-35c72b6288c5")
-		(property "Reference" "D2"
-			(at 287.02 87.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 287.02 95.25 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 287.02 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 287.02 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 287.02 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 287.02 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a233451a-c3cc-5aa0-8fb7-4831c505cff8")
-		)
-		(pin "2"
-			(uuid "c38e2ef2-a9bb-51ee-8d14-2a14c434824c")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 299.72 48.26 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "95dd08f5-4f13-5b8d-be0f-0147289ef2f1")
-		(property "Reference" "J2"
-			(at 299.72 41.91 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 299.72 54.61 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 299.72 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 299.72 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 299.72 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 1 (TS)"
-			(at 299.72 48.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "760cdebc-0149-53a0-8bef-82d090012993")
-		)
-		(pin "T"
-			(uuid "b5641a29-0ed7-5469-a100-5c7153b68e16")
-		)
-		(pin "TN"
-			(uuid "0ade731a-9b27-5b3c-9daf-8e82ba5969a3")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:R")
 		(at 190.5 152.4 90)
 		(unit 1)
@@ -11965,132 +7926,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 353.06 38.1 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "a3e13732-bd8c-58a8-b9fa-d3a717b6c264")
-		(property "Reference" "D15"
-			(at 353.06 34.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 360.68 41.91 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 5 clamp: keeps the GPIO within -0.4..+5.4 V when OUT5 is mis-patched"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 353.06 38.1 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7ddda90b-ae83-53b9-98e4-512351870b4a")
-		)
-		(pin "2"
-			(uuid "bde30bfa-0360-528f-94d3-dc6318a12bf3")
-		)
-		(pin "3"
-			(uuid "2abf7cc3-d967-57bb-97e7-840b552ccd97")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D15")
 					(unit 1)
 				)
 			)
@@ -12343,129 +8178,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 124.46 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "ba47b1bd-bf35-5595-b4d2-7967ba0a0d20")
-		(property "Reference" "R8"
-			(at 256.54 120.65 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 256.54 128.27 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 3 current"
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "dd5ec268-cd1a-5efb-97eb-965dfa8be225")
-		)
-		(pin "2"
-			(uuid "36cd703b-ded1-5992-86fe-cb3220c97164")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:C")
 		(at 124.46 66.04 90)
 		(unit 1)
@@ -12594,96 +8306,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "C4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:LED")
-		(at 363.22 58.42 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "bc4b909f-d351-58cc-b059-149beca213d2")
-		(property "Reference" "D5"
-			(at 363.22 54.61 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 363.22 62.23 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:LED_D3.0mm"
-			(at 363.22 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 363.22 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 363.22 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Hand-soldered 3 mm THT"
-			(at 363.22 58.42 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2d5cc21d-5e81-5a0a-879d-896bcef15a7d")
-		)
-		(pin "2"
-			(uuid "f13aff5f-2927-52c8-87ba-b51a1626b696")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -12947,99 +8569,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 375.92 114.3 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "cf0d0248-b15c-5045-a170-f65563c31ef0")
-		(property "Reference" "J8"
-			(at 375.92 107.95 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 375.92 120.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 375.92 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 375.92 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 375.92 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 7 (TS)"
-			(at 375.92 114.3 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "48e08cad-db1d-571e-a1bb-7e8ab8051cd6")
-		)
-		(pin "T"
-			(uuid "19400780-791e-5daa-b580-9307f1fc6fdc")
-		)
-		(pin "TN"
-			(uuid "f2bca2d2-e420-5f9e-a0f0-4c83830afef5")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:R")
 		(at 172.72 45.72 90)
 		(unit 1)
@@ -13163,263 +8692,6 @@
 		)
 	)
 	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 144.78 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d2ef9d9b-c02b-5350-9083-14c459be8933")
-		(property "Reference" "R18"
-			(at 332.74 140.97 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 148.59 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 8 series (Bread Modular 1k); limits mis-patch current into D18"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "799a8ce5-3602-5c5d-b1bb-2e7591330c47")
-		)
-		(pin "2"
-			(uuid "3a71b04e-a005-55b3-84ab-08ba292d6639")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R18")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 124.46 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "da2dec1b-3c72-5354-9925-332d753ab68c")
-		(property "Reference" "R17"
-			(at 332.74 120.65 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 128.27 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 7 current"
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 124.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "79549bb8-5489-51db-a00c-cb96ecc54e3f")
-		)
-		(pin "2"
-			(uuid "fa4e08b4-6490-5646-b43e-7179e61e8984")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "MIDI:Jumper_3_Open")
 		(at 63.5 127 0)
 		(unit 1)
@@ -13507,252 +8779,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "JP1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 157.48 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "def67c0e-b450-56d3-be1e-4965de472b0b")
-		(property "Reference" "R19"
-			(at 332.74 153.67 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 161.29 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 8 current"
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 157.48 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "58aa81d6-0ce3-5dd5-b54d-e3bc2399411e")
-		)
-		(pin "2"
-			(uuid "2ab48659-75ff-5b80-8ac2-2868dda60824")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R19")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 58.42 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "df3b8182-c8db-5ffa-a48c-c21826ce43f4")
-		(property "Reference" "R13"
-			(at 332.74 54.61 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 62.23 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0603_1608Metric"
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "LED 5 current"
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C21190"
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF1001T5E"
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 58.42 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "70cf9872-61a0-5b5a-8a6e-604d99dd4626")
-		)
-		(pin "2"
-			(uuid "8c330f14-1b48-5d70-934e-b90cb6b9bda2")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -13879,578 +8905,6 @@
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
 					(reference "Q1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 353.06 137.16 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e0871dc4-4b18-5ba8-a51f-4e9f0d14d716")
-		(property "Reference" "D18"
-			(at 353.06 133.35 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 360.68 140.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 8 clamp: keeps the GPIO within -0.4..+5.4 V when OUT8 is mis-patched"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 353.06 137.16 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "84f72579-1353-5c90-964d-974f84ce49f0")
-		)
-		(pin "2"
-			(uuid "ed568d3a-d279-50df-8d07-b994e8833a19")
-		)
-		(pin "3"
-			(uuid "b7a924ce-6140-5400-b1a1-8b58163eeab2")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D18")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 332.74 45.72 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e2d6b461-ff17-558b-a878-bc0d6771cd8e")
-		(property "Reference" "R12"
-			(at 332.74 41.91 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "1k"
-			(at 332.74 49.53 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Power" "0.125W"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 5 series (Bread Modular 1k); limits mis-patch current into D15"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 332.74 45.72 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c58edb6b-c26c-589d-9255-f990e44d61ba")
-		)
-		(pin "2"
-			(uuid "bc92e181-337d-5d5d-9385-c3c480e27d86")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:BAT54SW")
-		(at 276.86 71.12 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e5188fbf-2717-5b66-b48b-8b59ad62a62d")
-		(property "Reference" "D12"
-			(at 276.86 67.31 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BAT54SW"
-			(at 284.48 74.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:SOT-323_SC-70"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAT54W_SER.pdf"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Vr 30V, If 200mA, Dual schottky barrier diode, in series, SOT-323"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Output 2 clamp: keeps the GPIO within -0.4..+5.4 V when OUT2 is mis-patched"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C78260"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "BAT54SWT1G"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "onsemi"
-			(at 276.86 71.12 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "31c471cb-1b1f-56a3-9f07-61dc512efc56")
-		)
-		(pin "2"
-			(uuid "2422adfa-c421-5625-8f36-7d7be2f127a1")
-		)
-		(pin "3"
-			(uuid "45d0a435-f302-51db-a494-c6c6e6cd52b7")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "D12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 375.92 147.32 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "e756218b-1984-5ed2-99e2-cd0e240103a5")
-		(property "Reference" "J9"
-			(at 375.92 140.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 375.92 153.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 375.92 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 375.92 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 375.92 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 8 (TS)"
-			(at 375.92 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "5c7b9f9e-9dba-54f0-b6d3-a6162d4d148e")
-		)
-		(pin "T"
-			(uuid "c1ff211c-bc1a-5c4c-b8e7-121cfb19a7a3")
-		)
-		(pin "TN"
-			(uuid "e381547d-48eb-5f65-a4c9-0d33733567a8")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MIDI:AudioJack2_SwitchT")
-		(at 299.72 147.32 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f1f2ecb1-4bb8-562c-9f13-0754a5cbe5d4")
-		(property "Reference" "J5"
-			(at 299.72 140.97 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PJ301M-12"
-			(at 299.72 153.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MIDI:Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical"
-			(at 299.72 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 299.72 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 299.72 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "MIDI out 4 (TS)"
-			(at 299.72 147.32 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "S"
-			(uuid "3e3fb30d-1445-5329-88a5-e859fff8fbc3")
-		)
-		(pin "T"
-			(uuid "0ab94947-54ff-5068-afb8-230bfc9dc5b4")
-		)
-		(pin "TN"
-			(uuid "06cf6f98-7084-53a0-ba7a-a2f399361a52")
-		)
-		(instances
-			(project "midi"
-				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "J5")
 					(unit 1)
 				)
 			)
@@ -14705,136 +9159,682 @@
 			)
 		)
 	)
-	(symbol
-		(lib_id "MIDI:R")
-		(at 256.54 144.78 90)
-		(unit 1)
-		(body_style 1)
+	(sheet
+		(at 256.54 78.74)
+		(size 25.4 15.24)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(in_pos_files yes)
 		(dnp no)
-		(uuid "fd34bd53-d79a-5177-b739-3e93668c4bc7")
-		(property "Reference" "R9"
-			(at 256.54 140.97 90)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "2d6420ea-fb20-5a56-ba23-12dc823e31b2")
+		(property "Sheetname" "CH2"
+			(at 256.54 78.04 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left bottom)
 			)
 		)
-		(property "Value" "1k"
-			(at 256.54 148.59 90)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 256.54 94.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left top)
 			)
 		)
-		(property "Footprint" "MIDI:R_0805_2012Metric"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(pin "TX" input
+			(at 256.54 81.28 180)
+			(uuid "e6509ad2-09fd-5edc-a152-591fc2107b74")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Datasheet" ""
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(pin "LED" input
+			(at 256.54 83.82 180)
+			(uuid "e25b3b71-5b7e-5c1c-b35b-f1c732c5028b")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Description" "Resistor"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(pin "+5V" passive
+			(at 256.54 86.36 180)
+			(uuid "7d58e1b3-1312-585f-bbd4-236976e1b045")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Power" "0.125W"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
+		(pin "GND" passive
+			(at 256.54 88.9 180)
+			(uuid "ebafc3c0-f62e-5353-9264-cee0eb8bf718")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
-		)
-		(property "Note" "Output 4 series (Bread Modular 1k); limits mis-patch current into D14"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C17513"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0805W8F1001T5E"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 256.54 144.78 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b5e60243-a567-532b-94a5-bcd5d73bfd01")
-		)
-		(pin "2"
-			(uuid "271d90a6-e06a-526c-a4a5-4667be738e95")
 		)
 		(instances
 			(project "midi"
 				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
-					(reference "R9")
-					(unit 1)
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 256.54 144.78)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "3392709b-ee4e-5889-9020-7afeedfae152")
+		(property "Sheetname" "CH4"
+			(at 256.54 144.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 256.54 160.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 256.54 147.32 180)
+			(uuid "5b0043b9-d6e2-555b-8150-55db680c29f6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 256.54 149.86 180)
+			(uuid "59d9003a-56d8-55c9-a043-1122ad387e08")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 256.54 152.4 180)
+			(uuid "bea39c1f-b47b-53c1-9392-7477256cb6b0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 256.54 154.94 180)
+			(uuid "498b1cf7-4c98-54ca-9c9c-52f183ee7a8f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 256.54 45.72)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "355e8e18-1296-5b27-a4f9-e15c7f8236c7")
+		(property "Sheetname" "CH1"
+			(at 256.54 45.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 256.54 61.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 256.54 48.26 180)
+			(uuid "68daaedc-a5de-56f3-9e3f-4af6dc645a82")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 256.54 50.8 180)
+			(uuid "f87aabcc-7ade-5a9f-8114-ed0d0252f65f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 256.54 53.34 180)
+			(uuid "4f047890-04ff-5871-bfbb-7918647d5e34")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 256.54 55.88 180)
+			(uuid "5a2368e3-345d-53ba-a750-9c84598de456")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 332.74 111.76)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "35db2a5f-9558-5139-81d6-1b5b8064dd07")
+		(property "Sheetname" "CH7"
+			(at 332.74 111.06 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 332.74 127.6 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 332.74 114.3 180)
+			(uuid "74b44b82-f287-53d8-801d-2d02799c748f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 332.74 116.84 180)
+			(uuid "d5f9dd6b-3bcb-5433-9192-6fc49c0aa180")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 332.74 119.38 180)
+			(uuid "a08d6ca8-0d2b-5d74-aabe-dc2968cece56")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 332.74 121.92 180)
+			(uuid "8c6ab50f-2207-534b-9b5d-69e1da57bcb7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 256.54 111.76)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "459fab16-70ae-547b-b207-c1ed7984fae7")
+		(property "Sheetname" "CH3"
+			(at 256.54 111.06 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 256.54 127.6 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 256.54 114.3 180)
+			(uuid "f9fd3e5c-339a-5a69-ace4-dc412a10d52c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 256.54 116.84 180)
+			(uuid "442f76a8-0620-5fb0-89f1-c3bf57af1c32")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 256.54 119.38 180)
+			(uuid "b0619516-c3a4-5c72-9803-9f540d1ebb92")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 256.54 121.92 180)
+			(uuid "c942be13-b294-528f-82ce-d3b17b3d57c2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 332.74 144.78)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "d718c541-95c5-53cb-b27e-29b8b0986c7b")
+		(property "Sheetname" "CH8"
+			(at 332.74 144.08 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 332.74 160.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 332.74 147.32 180)
+			(uuid "334faeed-d13d-504b-aeb5-eae8cbbc87c0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 332.74 149.86 180)
+			(uuid "7570e8ca-fb8f-5234-81cd-dd84316dc675")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 332.74 152.4 180)
+			(uuid "1fd60002-1ca1-5e55-a31e-4df17bb1c8f9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 332.74 154.94 180)
+			(uuid "aa27188c-665f-5235-8f4c-d4139bd44821")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "9")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 332.74 45.72)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "e1851efd-bec7-565f-a2b9-53832d299de2")
+		(property "Sheetname" "CH5"
+			(at 332.74 45.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 332.74 61.56 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 332.74 48.26 180)
+			(uuid "6862e461-07b2-5dd9-8923-a2646123c36e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 332.74 50.8 180)
+			(uuid "dfe9d01c-0ab3-5430-b8ac-9dc0cecbf5f8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 332.74 53.34 180)
+			(uuid "fd623b96-2df7-570f-9837-30120a6e5763")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 332.74 55.88 180)
+			(uuid "266dc864-c5fc-5761-8252-808d3e9cb3be")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 332.74 78.74)
+		(size 25.4 15.24)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "f45d9987-3f23-5840-b1cd-40d975108e7c")
+		(property "Sheetname" "CH6"
+			(at 332.74 78.04 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "out.kicad_sch"
+			(at 332.74 94.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "TX" input
+			(at 332.74 81.28 180)
+			(uuid "ccb21baf-7a01-5214-8ce6-e7ead5c90461")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED" input
+			(at 332.74 83.82 180)
+			(uuid "790ab642-7ea1-5c8f-a48b-f820a5b26429")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" passive
+			(at 332.74 86.36 180)
+			(uuid "234573c9-56e8-5e75-a141-fe7216f1f958")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" passive
+			(at 332.74 88.9 180)
+			(uuid "0b0cd731-bde6-5020-b3e8-e4e175fc4faa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "midi"
+				(path "/f611d503-4be8-5096-9d60-b95e081716b0"
+					(page "7")
 				)
 			)
 		)

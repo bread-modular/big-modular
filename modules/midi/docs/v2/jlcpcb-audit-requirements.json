@@ -17,12 +17,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED1 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED1 1k (+5V -> LED -> 1k -> Q11 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R5": {
@@ -41,12 +41,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED2 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED2 1k (+5V -> LED -> 1k -> Q12 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R7": {
@@ -65,12 +65,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED3 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED3 1k (+5V -> LED -> 1k -> Q13 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R9": {
@@ -89,12 +89,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED4 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED4 1k (+5V -> LED -> 1k -> Q14 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R12": {
@@ -113,12 +113,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED5 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED5 1k (+5V -> LED -> 1k -> Q15 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R14": {
@@ -137,12 +137,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED6 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED6 1k (+5V -> LED -> 1k -> Q16 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R16": {
@@ -161,12 +161,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED7 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED7 1k (+5V -> LED -> 1k -> Q17 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R18": {
@@ -185,12 +185,12 @@
    "kind": "R",
    "tolerance_fraction": 0.05,
    "min_voltage_v": 5,
-   "operating_voltage_v": 3.3,
+   "operating_voltage_v": 3.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.011,
-   "operating_current_a": 0.0033,
+   "min_power_w": 0.009,
+   "operating_current_a": 0.003,
    "power_derating": 0.5,
-   "note": "LED8 1k: 5 V - ~1.8 V LED, 3.2 mA, 10 mW",
+   "note": "LED8 1k (+5V -> LED -> 1k -> Q18 collector): 5 V - ~1.8 V LED - ~0.2 V VCE(sat), 3.0 mA, 9 mW",
    "reviews": {}
   },
   "R11": {
@@ -467,6 +467,134 @@
   },
   "U2": {
    "note": "CJ431 +5V shunt clamp (SOT-23 pin 1 REF, 2 K, 3 A; datasheet PD 300 mW, RthJA 417 K/W): off below ~5.39 V (12k/10k, Vref 2.475 V min, 1 % resistors), clamps by ~5.69 V worst case; all 8 outputs on a hard +12 V inject ~49 mA, minus ~10 mA MCU load: ~39 mA x 5.5 V = 0.21 W (70 % of PD, fault-only)",
+   "reviews": {}
+  },
+  "Q11": {
+   "note": "MMBT3904 LED1 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q12": {
+   "note": "MMBT3904 LED2 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q13": {
+   "note": "MMBT3904 LED3 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q14": {
+   "note": "MMBT3904 LED4 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q15": {
+   "note": "MMBT3904 LED5 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q16": {
+   "note": "MMBT3904 LED6 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q17": {
+   "note": "MMBT3904 LED7 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "Q18": {
+   "note": "MMBT3904 LED8 switch (Bread Modular gate_out, SS8050 there): Ic 3.0 mA, Ib 0.43 mA (forced beta ~7, saturated), VCE <= 5 V",
+   "reviews": {}
+  },
+  "R31": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q11 base 10k from the CH1_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R32": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q12 base 10k from the CH2_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R33": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q13 base 10k from the CH3_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R34": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q14 base 10k from the CH4_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R35": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q15 base 10k from the CH5_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R36": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q16 base 10k from the CH6_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R37": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q17 base 10k from the CH7_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
+   "reviews": {}
+  },
+  "R38": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 5,
+   "operating_voltage_v": 4.3,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0019,
+   "operating_current_a": 0.00043,
+   "power_derating": 0.5,
+   "note": "Q18 base 10k from the CH8_LED GPIO: 5 V - 0.7 V VBE, 0.43 mA, 1.9 mW",
    "reviews": {}
   }
  },

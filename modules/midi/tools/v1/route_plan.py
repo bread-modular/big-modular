@@ -2,11 +2,13 @@
 """Emit the explicit routing plan (shared `pcb plan/apply` ops v1) for the midi carrier.
 
 All geometry is written out here in board millimetres; nothing is autorouted.
-Layer plan (docs/research.md section 3.6). The Bread Modular pin map sends nets up and
+Layer plan (docs/research.md section 3.6; S5 LED drivers section 3.4). The Bread Modular pin map sends nets up and
 down from every side of U1, so each layer keeps a lane order that matches its turn order:
   B.Cu  RX + LED1-LED4 up, LED5-LED8 down, TX6-TX8 up to their layer-change vias,
         resistor stubs, power chain, U3 heat sink, GND pour.
-  F.Cu  TX1-TX4 up, TX5-TX8 + UPDI down, +5V trunk, TIP/RING, U3 heat sink, GND pour.
+  F.Cu  TX1-TX4 up, TX5-TX8 + UPDI down, +5V trunk and LED anode rail, TIP/RING, U3 heat
+        sink, GND pour.
+  LED drivers: B.Cu clusters (Qn, RLEDn, RBn) above each LED; the LED lanes end at RBn.
 Vias 0.6/0.3 mm. Tracks 0.25 mm signal, 0.2 mm U1 fan-out, 0.3 mm +5V, 0.4-0.5 mm power.
 
   python3 -B tools/v1/route_plan.py > research/v1/route/plan.json   (then shared pcb plan/apply/promote)
@@ -21,6 +23,8 @@ JACK = {n: 76.5 + 10.5 * (n - 1) for n in range(1, 9)}           # OUTn jack cen
 JREF = {n: f'J{n + 1}' for n in range(1, 9)}
 RTX = {1: 'R3', 2: 'R5', 3: 'R7', 4: 'R9', 5: 'R12', 6: 'R14', 7: 'R16', 8: 'R18'}
 RLED = {1: 'R4', 2: 'R6', 3: 'R8', 4: 'R10', 5: 'R13', 6: 'R15', 7: 'R17', 8: 'R19'}
+RB = {n: f'R{n + 30}' for n in range(1, 9)}                     # LED n base resistor (10k)
+Q = {n: f'Q{n + 10}' for n in range(1, 9)}                      # LED n switch (MMBT3904)
 
 ops = []
 
@@ -42,7 +46,14 @@ def via(name, net, x, y):
 def end(e):
     if isinstance(e, tuple):
         return {'pad': {'ref': e[0], 'number': e[1]}}
+    if isinstance(e, dict):
+        return e
     return {'uuid': uid('via/' + e)}
+
+
+def on(name, x, y):
+    """Branch endpoint on the first (straight) segment of an earlier polyline."""
+    return {'track': uid('trk/' + name), 'at': [r(x), r(y)]}
 
 
 def track(name, net, layer, a, pts, b, w=SIG):
@@ -52,8 +63,35 @@ def track(name, net, layer, a, pts, b, w=SIG):
 
 # ---- per-channel stubs at the jacks (B.Cu, straight) ------------------------------------
 for n in range(1, 9):
-    track(f'out{n}', f'/OUT{n}', B, (RTX[n], '2'), [], (JREF[n], 'T'))
-    track(f'leda{n}', f'/LED{n}_A', B, (RLED[n], '2'), [], (f'D{n}', '2'))
+    track(f'out{n}', f'/CH{n}/OUT', B, (RTX[n], '2'), [], (JREF[n], 'T'))
+
+# ---- LED drivers (Bread Modular gate_out), one cluster in the band above each LED --------
+# LEDs are rotated 270: cathode (pad 1) up toward the cluster, anode (pad 2, +5V) down.
+# Right column: Qn (rot 180: B lower left, E upper left, C right) above RLEDn (pad 1 LED_K
+# left, pad 2 Q_C right). Tip column below the previous series resistor: RBn (pad 1 CHn_LED
+# left toward the lane, pad 2 Q_B right). E goes to a GND via left of Q, clear of the F.Cu
+# TX6-TX8 channel. Exceptions: Q11 sits below JP1 (E via right of it, above the rail start),
+# R34 stands beside the J5 tip pad (R9 fills the J4/J5 tip column), R35 sits low in the U1 band.
+QY = {n: JACK[n] - 6.05 for n in range(1, 9)}
+QY[1] = 71.05
+EVIA = {n: (114.55, JACK[n] - 7.6) for n in range(1, 9)}
+EVIA[1] = (118.6, 69.1)
+EVIA[5] = (114.4, 111.4)
+for n in range(1, 9):
+    qy, ch = QY[n], f'/CH{n}'
+    via(f'e{n}', '/GND', *EVIA[n])
+    track(f'qe{n}', '/GND', B, (Q[n], '2'), [(116.95, 69.1)] if n == 1 else [], f'e{n}')
+    track(f'qc{n}', f'{ch}/Q_C', B, (Q[n], '3'), [], (RLED[n], '2'))
+    track(f'ledk{n}', f'{ch}/LED_K', B, (RLED[n], '1'), [], (f'D{n}', '1'))
+    if n == 1:
+        qb = []                                   # R31 pad 2 is level with the Q11 base
+    elif n == 4:
+        qb = [(115.6, qy + 0.95)]                 # up the J5 tip / D4 gap from R34
+    elif n == 5:
+        qb = [(115.2, 116.0), (115.2, qy + 0.95)]  # up beside R13 from R35
+    else:
+        qb = [(114.925, qy + 0.95)]
+    track(f'qb{n}', f'{ch}/Q_B', B, (RB[n], '2'), qb, (Q[n], '1'))
 
 # ---- MIDI input: J1 -> JP1 (TRS A/B) -> RX (U1 PB3), Bread Modular V1 direct -------------
 track('tip', '/TIP', F, ('J1', 'T'), [], ('JP1', '1'))
@@ -75,7 +113,6 @@ track('gc4', '/GND', B, ('C4', '2'), [(111.5, 165.65), (111.5, 164.3)], ('J10', 
 # ---- U1 fan-out, up side ------------------------------------------------------------------
 FAN = 0.2                       # 0.4 mm QFN pitch: 0.2 mm stubs keep 0.2 mm to the next pad
 TXV = lambda n: JACK[n] + 4.425  # TXn series resistor pad 1 Y (R_odd at jack + 3.6, rot 90)
-LEDY = lambda n: JACK[n] - 4.725 # LEDn series resistor pad 1 Y (R_even at jack - 3.9, rot 270)
 
 # TX1-TX4: left pins -> vias on a diagonal in the left zone -> F.Cu up the corridor ->
 # via at x 112.3 -> B.Cu stub into the series resistor pad 1.
@@ -94,14 +131,14 @@ for n in range(1, 5):
     track(f'tx{n}f', net, F, f'tx{n}a', [(vx, TXJ[n]), (TXL[n], TXJ[n]), (TXL[n], TXV[n])], f'tx{n}b', FAN)
     track(f'tx{n}r', net, B, f'tx{n}b', [], (RTX[n], '1'))
 
-# RX + LED1-LED4 up on B.Cu (lanes L->R: RX, TX8, TX6, TX7 to their vias, LED1, LED2, LED3);
-# LED4 takes the right channel because R9 sits in its tip-column crossing.
-LEDY = {n: JACK[n] - 4.725 for n in range(1, 9)}             # LEDn resistor pad 1 Y
-track('rx', '/RX', B, ('U1', '11'), [(107.8, 70.3), (115.6, 70.3), (115.6, 65.0)], ('JP1', '2'), FAN)
-track('led1', '/CH1_LED', B, ('U1', '15'), [(109.4, 112.0), (110.05, 111.35), (110.05, LEDY[1])], ('R4', '1'), FAN)
-track('led2', '/CH2_LED', B, ('U1', '16'), [(110.45, 113.45), (110.45, LEDY[2])], ('R6', '1'), FAN)
-track('led3', '/CH3_LED', B, ('U1', '17'), [(110.85, 113.85), (110.85, LEDY[3])], ('R8', '1'), FAN)
-track('led4', '/CH4_LED', B, ('U1', '18'), [(115.6, 114.25), (115.6, LEDY[4])], ('R10', '1'), FAN)
+# RX + LED1-LED4 up on B.Cu (lanes L->R: RX, TX8, TX6, TX7 to their vias, LED1, LED2, LED3, LED4).
+# RX climbs to JP1 left of Q11 (x 115.2, clear of the J1 tip pad).
+track('rx', '/RX', B, ('U1', '11'), [(107.8, 70.3), (115.2, 70.3), (115.2, 65.0)], ('JP1', '2'), FAN)
+track('led1', '/CH1_LED', B, ('U1', '15'), [(109.4, 112.0), (110.05, 111.35), (110.05, 72.0)], (RB[1], '1'), FAN)
+track('led2', '/CH2_LED', B, ('U1', '16'), [(110.45, 113.45), (110.45, 82.5)], (RB[2], '1'), FAN)
+track('led3', '/CH3_LED', B, ('U1', '17'), [(110.85, 113.85), (110.85, 93.0)], (RB[3], '1'), FAN)
+# LED4 climbs x 111.9 (right of LED1-LED3, under the J5 tip pad row) and enters R34 from below.
+track('led4', '/CH4_LED', B, ('U1', '18'), [(111.9, 114.25), (111.9, 109.65), (115.6, 109.65)], (RB[4], '1'), FAN)
 
 # TX8/TX6/TX7: top pins up on B.Cu to vias in the J4/J5 gap, then F.Cu back down past U1 into
 # the right channel (L->R TX6, TX7, TX8) and in from the right at x 114.6.
@@ -137,11 +174,12 @@ track('updif', '/UPDI_PA0', F, 'updia', [(110.9, 115.2)], 'updib')
 track('updir', '/UPDI_PA0', B, 'updib', [(107.2, 146.0), (107.2, 152.2), (102.6, 152.2)], ('R11', '1'))
 track('updij', '/UPDI', B, ('R11', '2'), [], ('J11', '1'))
 
-# LED5 local on B.Cu under the UPDI via; LED6-LED8 down the corridor on B.Cu (L->R LED8, LED7, LED6).
-track('led5', '/CH5_LED', B, ('U1', '20'), [(110.45, 115.45), (110.45, 116.3), (116.2, 116.3), (116.2, LEDY[5])], ('R13', '1'), FAN)
-track('led6', '/CH6_LED', B, ('U1', '1'), [(109.4, 116.1), (109.9, 116.6), (109.9, LEDY[6])], ('R15', '1'), FAN)
-track('led7', '/CH7_LED', B, ('U1', '2'), [(109.0, LEDY[7])], ('R17', '1'), FAN)
-track('led8', '/CH8_LED', B, ('U1', '5'), [(107.8, 116.1), (107.3, 116.6), (107.3, 136.4), (115.6, 136.4), (115.6, LEDY[8])], ('R19', '1'), FAN)
+# LED5 local on B.Cu under the UPDI via into R35; LED6-LED8 down the corridor on B.Cu
+# (L->R LED8, LED7, LED6), each turning right into its base resistor.
+track('led5', '/CH5_LED', B, ('U1', '20'), [(110.45, 115.45), (110.45, 116.0)], (RB[5], '1'), FAN)
+track('led6', '/CH6_LED', B, ('U1', '1'), [(109.4, 116.1), (109.9, 116.6), (109.9, 124.5)], (RB[6], '1'), FAN)
+track('led7', '/CH7_LED', B, ('U1', '2'), [(109.0, 135.0)], (RB[7], '1'), FAN)
+track('led8', '/CH8_LED', B, ('U1', '5'), [(107.8, 116.1), (107.3, 116.6), (107.3, 145.0), (112.2, 145.0)], (RB[8], '1'), FAN)
 
 # ---- +5V trunk: LDO -> F.Cu left channel -> C3 -> U1 (via under pin 4, C1) -----------------
 P5 = 0.3
@@ -164,7 +202,16 @@ via('gndc1a', '/GND', 108.15, 124.0)
 via('gndc1b', '/GND', 108.15, 131.0)
 for n in range(1, 8):
     via(f'gndl{n}', '/GND', 101.8, JACK[n] + 5.25)
-    via(f'gndr{n}', '/GND', 118.5, JACK[n] + 5.25)
+
+# ---- LED anode rail: +5V on F.Cu, fed from the top so it never crosses the U3 heat sink or
+# the F.Cu TX6-TX8 channel: up the left channel from the +5V trunk, across above J2, down
+# x 118.6 beside the LED column, touching each anode (pad 2, bottom) in turn. -----------------
+ANODE = {n: JACK[n] + 1.27 for n in range(1, 9)}
+track('rail0', '/+5V', F, on('p5d', 103.545, 117.0), [(103.545, 70.85), (118.6, 70.85), (118.6, ANODE[1] - 0.4)],
+      ('D1', '2'), P5)
+for n in range(1, 8):
+    track(f'rail{n}', '/+5V', F, (f'D{n}', '2'), [(118.6, ANODE[n] + 0.4), (118.6, ANODE[n + 1] - 0.4)],
+          (f'D{n + 1}', '2'), P5)
 
 
 def zone(name, net, layer, poly):

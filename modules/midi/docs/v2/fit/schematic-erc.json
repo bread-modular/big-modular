@@ -1,7 +1,7 @@
 {
     "$schema": "https://schemas.kicad.org/erc.v1.json",
     "coordinate_units": "mm",
-    "date": "2026-10-19T11:23:37",
+    "date": "2026-10-19T15:00:49",
     "ignored_checks": [],
     "included_severities": [
         "error",
@@ -13,6 +13,46 @@
         {
             "path": "/",
             "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0",
+            "violations": []
+        },
+        {
+            "path": "/CH1/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/355e8e18-1296-5b27-a4f9-e15c7f8236c7",
+            "violations": []
+        },
+        {
+            "path": "/CH2/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/2d6420ea-fb20-5a56-ba23-12dc823e31b2",
+            "violations": []
+        },
+        {
+            "path": "/CH3/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/459fab16-70ae-547b-b207-c1ed7984fae7",
+            "violations": []
+        },
+        {
+            "path": "/CH4/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/3392709b-ee4e-5889-9020-7afeedfae152",
+            "violations": []
+        },
+        {
+            "path": "/CH5/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/e1851efd-bec7-565f-a2b9-53832d299de2",
+            "violations": []
+        },
+        {
+            "path": "/CH6/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/f45d9987-3f23-5840-b1cd-40d975108e7c",
+            "violations": []
+        },
+        {
+            "path": "/CH7/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/35db2a5f-9558-5139-81d6-1b5b8064dd07",
+            "violations": []
+        },
+        {
+            "path": "/CH8/",
+            "uuid_path": "/f611d503-4be8-5096-9d60-b95e081716b0/d718c541-95c5-53cb-b27e-29b8b0986c7b",
             "violations": []
         }
     ],

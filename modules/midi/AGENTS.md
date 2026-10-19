@@ -8,20 +8,19 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
 There are two hardware versions. Each has its own project, generators, profile and
 export (table in `Code.md`).
 
-- **V1** (`hardware/v1/`, V1.0 / S4/R5): the Bread Modular V1 circuit. The
+- **V1** (`hardware/v1/`, V1.0 / S5/R6): the Bread Modular V1 circuit. The
   fabrication export is in `jlcpcb/v1/` (`jlcpcb/v1/README.md`); it is not a
   supplier-accepted order.
-  - Schematic: S4 at 5 V logic, Bread Modular V1 direct input (R21/R2 removed),
-    no opto, ERC 0.
-  - Carrier: R5 (R4 copper; R5 only removed the B silk `JLCJLCJLCJLC` marker),
+  - Schematic: S5 at 5 V logic, Bread Modular V1 direct input (R21/R2 removed),
+    no opto, ERC 0. S5 adds the transistor LED drivers (Bread Modular `gate_out`)
+    on the reusable output channel sheet `out.kicad_sch` (CH1-CH8).
+  - Carrier: R6 (R6 added the LED driver clusters; R5 removed the B silk
+    `JLCJLCJLCJLC` marker),
     fully routed on 2 layers, GND on both layers. The regulator group sits right of
     the power header J10 on VIN_LDO heat-sink copper on both layers, with the UPDI
     header J11 left of J10. B silk `MIDI V1.0`.
-  - Moving it into `hardware/v1/` changed no source byte. The re-export differs from
-    the old one only in the Gerber dates (and the absolute paths in the export
-    reports).
   - Mis-patching (input and outputs) is a known V1 risk (D6).
-- **V2** (`hardware/v2/`, V2.0 / S3/R3): V1 plus mis-patch protection
+- **V2** (`hardware/v2/`, V2.0 / S4/R4): V1 plus mis-patch protection
   (`docs/research.md` §7). The fabrication export is in `jlcpcb/v2/`
   (`jlcpcb/v2/README.md`); it is not a supplier-accepted order.
   - NPN MIDI input (3.3 V and 5 V senders, ±12 V tolerant; firmware sets
@@ -30,6 +29,7 @@ export (table in `Code.md`).
     (firmware then without `PORT_INVEN`). Exactly one bridge.
   - BAT54SW clamps behind 0805 1 k outputs.
   - CJ431 +5V shunt clamp.
+  - The same transistor LED drivers and channel sheet as V1 (S4/R4).
   - No opto. Same panels and mechanics as V1. B silk `MIDI V2.0`.
   - Rebuilt on 2026-10-19 from the recovered evidence (`docs/v2/recovered/`) after
     the original tree was lost. `docs/rebuild-status.md` lists what equals the
@@ -46,6 +46,8 @@ export (table in `Code.md`).
 - Open checks:
   - Bench items (`docs/research.md` §4): the U3 fault test (D2) and LED brightness
     (D5).
+  - The live assembly audit was not rerun after the LED drivers (Q11-Q18,
+    R31-R38).
   - V2 bench items (§7.7): ±12 V mis-patch soak, U2 stability, 3.3 V/5 V senders
     with V2 firmware.
   - For the user: the per-part assembly review attestations (§5) and the

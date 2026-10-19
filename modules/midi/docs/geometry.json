@@ -1,5 +1,5 @@
 {
-  "revision": "S3: 5 V logic rail (HT7550-1); opto deferred to V2; TRS Type A/B on a 1x3 2.54 mm header on B; schematic-derived nets; routed natively from S3 on",
+  "revision": "S5: LED transistor drivers (Q11-Q18, R31-R38, Bread Modular gate_out) on the output channel sheet; LEDs rotated 270 (cathode up). S3: 5 V logic rail (HT7550-1); opto deferred to V2; TRS Type A/B on a 1x3 2.54 mm header on B; schematic-derived nets; routed natively from S3 on",
   "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
   "kicad_origin_mm": [
     100.0,
@@ -42,6 +42,8 @@
   },
   "jack_column_X_mm": 8.6,
   "led_column_X_mm": 17.2,
+  "led_rotation_deg": 270,
+  "led_rotation_note": "Pad 1 (cathode, square) at the top toward the transistor driver above each LED; pad 2 (anode, +5V) at the bottom. The body stays centred on the panel hole.",
   "jack_rotation_deg": 270,
   "jack_rotation_note": "Rotated so T/TN/S pads run along X with the S (sleeve) pad toward the left board edge; jack bodies are 9.0 mm along Y.",
   "jacks": [
@@ -201,17 +203,6 @@
       "band": "beside J2 tip pad (output 1 series)"
     },
     {
-      "ref": "R4",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        22.6
-      ],
-      "rot": 270,
-      "band": "above D1 anode (LED 1 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R5",
       "value": "1k",
       "footprint": "R_0603_1608Metric",
@@ -221,17 +212,6 @@
       ],
       "rot": 90,
       "band": "beside J3 tip pad (output 2 series)"
-    },
-    {
-      "ref": "R6",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        33.1
-      ],
-      "rot": 270,
-      "band": "above D2 anode (LED 2 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "R7",
@@ -245,17 +225,6 @@
       "band": "beside J4 tip pad (output 3 series)"
     },
     {
-      "ref": "R8",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        43.6
-      ],
-      "rot": 270,
-      "band": "above D3 anode (LED 3 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R9",
       "value": "1k",
       "footprint": "R_0603_1608Metric",
@@ -265,17 +234,6 @@
       ],
       "rot": 270,
       "band": "above J5 tip pad (output 4 series); rot 270 puts pad 2 (OUT4) toward J5 and keeps the U1 band clear"
-    },
-    {
-      "ref": "R10",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        54.1
-      ],
-      "rot": 270,
-      "band": "above D4 anode (LED 4 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "R12",
@@ -289,17 +247,6 @@
       "band": "beside J6 tip pad (output 5 series)"
     },
     {
-      "ref": "R13",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        64.6
-      ],
-      "rot": 270,
-      "band": "above D5 anode (LED 5 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R14",
       "value": "1k",
       "footprint": "R_0603_1608Metric",
@@ -309,17 +256,6 @@
       ],
       "rot": 90,
       "band": "beside J7 tip pad (output 6 series)"
-    },
-    {
-      "ref": "R15",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        75.1
-      ],
-      "rot": 270,
-      "band": "above D6 anode (LED 6 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "R16",
@@ -333,17 +269,6 @@
       "band": "beside J8 tip pad (output 7 series)"
     },
     {
-      "ref": "R17",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        85.6
-      ],
-      "rot": 270,
-      "band": "above D7 anode (LED 7 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
-    },
-    {
       "ref": "R18",
       "value": "1k",
       "footprint": "R_0603_1608Metric",
@@ -353,17 +278,6 @@
       ],
       "rot": 90,
       "band": "beside J9 tip pad (output 8 series)"
-    },
-    {
-      "ref": "R19",
-      "value": "1k",
-      "footprint": "R_0603_1608Metric",
-      "XY": [
-        17.2,
-        96.1
-      ],
-      "rot": 270,
-      "band": "above D8 anode (LED 8 series); rot 270 puts pad 2 (LEDn_A) toward the LED anode"
     },
     {
       "ref": "U1",
@@ -476,6 +390,270 @@
       "rot": 0,
       "band": "bottom zone left strip beside J10 (UPDI header)",
       "note": "THT 2.54 mm header on B for a serialUPDI/UPDI programmer; pin 1 = UPDI (top), pin 2 = GND."
+    },
+    {
+      "ref": "Q11",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        21.05
+      ],
+      "rot": 180,
+      "band": "right column above D1 (LED 1 switch); rot 180: B (pin 1) lower left toward R31, E (pin 2) upper left, C (pin 3) right toward R4"
+    },
+    {
+      "ref": "R4",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        23.6
+      ],
+      "rot": 180,
+      "band": "right column between Q11 and the D1 cathode (LED 1 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R31",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        22.0
+      ],
+      "rot": 180,
+      "band": "tip column below J1, beside Q11 (LED 1 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q12",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        30.95
+      ],
+      "rot": 180,
+      "band": "right column above D2 (LED 2 switch); rot 180: B (pin 1) lower left toward R32, E (pin 2) upper left, C (pin 3) right toward R6"
+    },
+    {
+      "ref": "R6",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        33.6
+      ],
+      "rot": 180,
+      "band": "right column between Q12 and the D2 cathode (LED 2 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R32",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        32.5
+      ],
+      "rot": 180,
+      "band": "tip column below R3 (LED 2 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q13",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        41.45
+      ],
+      "rot": 180,
+      "band": "right column above D3 (LED 3 switch); rot 180: B (pin 1) lower left toward R33, E (pin 2) upper left, C (pin 3) right toward R8"
+    },
+    {
+      "ref": "R8",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        44.1
+      ],
+      "rot": 180,
+      "band": "right column between Q13 and the D3 cathode (LED 3 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R33",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        43.0
+      ],
+      "rot": 180,
+      "band": "tip column below R5 (LED 3 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q14",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        51.95
+      ],
+      "rot": 180,
+      "band": "right column above D4 (LED 4 switch); rot 180: B (pin 1) lower left toward R34, E (pin 2) upper left, C (pin 3) right toward R10"
+    },
+    {
+      "ref": "R10",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        54.6
+      ],
+      "rot": 180,
+      "band": "right column between Q14 and the D4 cathode (LED 4 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R34",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        15.6,
+        58.0
+      ],
+      "rot": 90,
+      "band": "beside the J5 tip pad, left of D4 (LED 4 base): R9 fills the J4/J5 tip column; rot 90 puts pad 1 (CH4_LED) at the bottom"
+    },
+    {
+      "ref": "Q15",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        62.45
+      ],
+      "rot": 180,
+      "band": "right column above D5 (LED 5 switch); rot 180: B (pin 1) lower left toward R35, E (pin 2) upper left, C (pin 3) right toward R13"
+    },
+    {
+      "ref": "R13",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        65.1
+      ],
+      "rot": 180,
+      "band": "right column between Q15 and the D5 cathode (LED 5 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R35",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        66.0
+      ],
+      "rot": 180,
+      "band": "tip column below J5 (LED 5 base), above the J6 tip pad; rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q16",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        72.95
+      ],
+      "rot": 180,
+      "band": "right column above D6 (LED 6 switch); rot 180: B (pin 1) lower left toward R36, E (pin 2) upper left, C (pin 3) right toward R15"
+    },
+    {
+      "ref": "R15",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        75.6
+      ],
+      "rot": 180,
+      "band": "right column between Q16 and the D6 cathode (LED 6 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R36",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        74.5
+      ],
+      "rot": 180,
+      "band": "tip column below R12 (LED 6 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q17",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        83.45
+      ],
+      "rot": 180,
+      "band": "right column above D7 (LED 7 switch); rot 180: B (pin 1) lower left toward R37, E (pin 2) upper left, C (pin 3) right toward R17"
+    },
+    {
+      "ref": "R17",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        86.1
+      ],
+      "rot": 180,
+      "band": "right column between Q17 and the D7 cathode (LED 7 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R37",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        85.0
+      ],
+      "rot": 180,
+      "band": "tip column below R14 (LED 7 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
+    },
+    {
+      "ref": "Q18",
+      "value": "MMBT3904",
+      "footprint": "SOT-23",
+      "XY": [
+        17.3,
+        93.95
+      ],
+      "rot": 180,
+      "band": "right column above D8 (LED 8 switch); rot 180: B (pin 1) lower left toward R38, E (pin 2) upper left, C (pin 3) right toward R19"
+    },
+    {
+      "ref": "R19",
+      "value": "1k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        17.3,
+        96.6
+      ],
+      "rot": 180,
+      "band": "right column between Q18 and the D8 cathode (LED 8 current); rot 180: pad 1 (LED_K) left toward the cathode, pad 2 (Q_C) right toward the collector"
+    },
+    {
+      "ref": "R38",
+      "value": "10k",
+      "footprint": "R_0603_1608Metric",
+      "XY": [
+        13.5,
+        95.5
+      ],
+      "rot": 180,
+      "band": "tip column below R16 (LED 8 base); rot 180 puts pad 1 (CHn_LED) left toward the lane"
     }
   ],
   "panel_labels": [

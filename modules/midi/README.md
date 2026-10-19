@@ -2,7 +2,8 @@
 
 Based on Bread Modular `midi`. TRS MIDI in goes to an ATtiny1616 (TRS Type A/B on a
 jumper header, no opto), which sends MIDI channel *n* to TS output *n* (tip =
-logic-level MIDI, sleeve = GND). There is one hand-soldered 3 mm LED per output, and
+logic-level MIDI, sleeve = GND). There is one hand-soldered 3 mm LED per output, switched by
+an NPN transistor from +5V as in Bread Modular's `gate_out`, and
 power comes from Eurorack +12 V through a 5 V LDO (5 V logic, as Bread Modular).
 
 There are two hardware versions. Both use the same panels and mechanics:
@@ -14,10 +15,11 @@ There are two hardware versions. Both use the same panels and mechanics:
 | +5V | HT7550-1 | HT7550-1 plus CJ431 shunt clamp (5.49 V), so clamp current can't pump the rail |
 | Mis-patched ±12 V CV/gate cable | Known risk | Survives indefinitely (design; bench test open) |
 | Back silk | `MIDI V1.0` | `MIDI V2.0` |
-| SMD parts (JLC-assembled) | 25 in 9 BOM rows | 41 in 18 BOM rows |
+| LEDs | +5V → LED → 1 k → MMBT3904 (GPIO → 10 k base), one channel sheet per output | same |
+| SMD parts (JLC-assembled) | 41 in 11 BOM rows | 57 in 18 BOM rows |
 | Fabrication export | [`jlcpcb/v1/`](jlcpcb/v1/README.md) | [`jlcpcb/v2/`](jlcpcb/v2/README.md) |
 
-**Status: V1.0 (S4/R5) and V2.0 (S3/R3) fabrication exports, not supplier-accepted.**
+**Status: V1.0 (S5/R6) and V2.0 (S4/R4) fabrication exports, not supplier-accepted.**
 - Both schematics are drawn (native ERC 0).
 - Both 2-layer carriers are fully routed: DRC 0 at all severities, 0 unconnected,
   parity equal, shared `check` with no findings. The regulator sits beside the power

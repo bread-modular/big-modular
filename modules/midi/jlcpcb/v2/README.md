@@ -1,4 +1,4 @@
-# midi — manufacturing export (V2.0, S3/R3)
+# midi — manufacturing export (V2.0, S4/R4)
 
 Generated from the current accepted sources with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
@@ -27,7 +27,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | Order | Files | Options |
 |---|---|---|
 | Carrier PCB | `midi-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.05 x 110.05 mm, 1 oz, HASL, standard everything else. No `JLCJLCJLCJLC` marker (as V1), so pick the order-number option deliberately |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 41 parts in 18 BOM rows, all on the back |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 57 parts in 18 BOM rows, all on the back |
 | Front panel PCB | `midi-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 20.05 x 128.55 mm (4HP), no assembly; black mask suits a panel |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -56,9 +56,10 @@ Soldering notes (as V1):
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift.
 
-- Carrier PCB `27ccaa1cd2b5702bdd8b1d6cab1d3d57e6ea9d15d0f04922671c636c022fd659`.
+- Carrier PCB `77a19f8c22efafb24277d22281a981bc6c1aeb940dad2a0777a9e29469e9b177`.
 - Carrier project `d4fe2f305c6613a1c0186c7cef4a40a5ce36714e00cac635064ebd5999d4a5c2`.
-- Carrier schematic `93e7eadb477a8649cbcdb2dc380337d70a9e271f24452db68410355044df40ae`.
+- Carrier schematic `172151d3215bb00243517165d3a3a0974aa0c6ba1704cf0faec67bdafa460a45`.
+- Output channel sheet `hardware/v2/out.kicad_sch` `9dd609a81f0ce45db64018ef26e2ac1141a48d47c8ac81350f16f7e3462b641e`.
 - Panel PCB `c0e0cd7924a8ec1f52c5319f707667d83c51914fabf856feda238937fcdf3ff6`.
 - Panel project `a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c`.
 
@@ -100,20 +101,20 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/midi-v2-symbols.xml hardw
 
 ## Checks done for this export
 
-This export was regenerated on 2026-10-19 by the rebuild in
-`docs/rebuild-status.md` (the original V2 tree was lost). The rebuilt sources
-equal the recovered V2 S3/R3 evidence: netlist, fields, placement, and all 218
-tracks, 57 vias and 4 zones.
+Re-exported on 2026-10-19 for S4/R4: Bread Modular `gate_out` transistor LED
+drivers (Q11-Q18 MMBT3904, R31-R38 10 k) on the hierarchical output channel sheet,
+LEDs rotated 270, clamps D11-D17 turned (`docs/research.md` §7.5). S3/R3 before it
+was the rebuild in `docs/rebuild-status.md`, equal to the recovered evidence.
 
 - **Shared `check`:** `no_findings_in_requested_checks`. That covers:
   - ERC 0 and DRC 0 at all severities, with zones refilled;
   - 0 unconnected and schematic parity 0;
   - ref/pin/net parity equal;
   - the manifest equal.
-- **Exporter:** 41 components in 18 BOM rows, bottom side, no missing part
-  numbers. This equals the recovered pre-loss V2 export report.
-- **Drill files:** 88 round PTH hits plus 27 routed slots (the 3 jack lugs × 9
-  jacks) = 115. That matches 57 vias + 58 THT pads. There are no NPTH holes on the
+- **Exporter:** 57 components in 18 BOM rows, bottom side, no missing part
+  numbers (the new parts join the existing MMBT3904 and 10 k rows).
+- **Drill files:** 98 round PTH hits plus 27 routed slots (the 3 jack lugs × 9
+  jacks) = 125. That matches 67 vias + 58 THT pads. There are no NPTH holes on the
   carrier.
 - **3D fit:** 0 mm³ interference against both panels
   (`docs/v2/fit/fit-report.json`, identical to V1's).
@@ -121,7 +122,8 @@ tracks, 57 vias and 4 zones.
   S3/R3, `docs/research.md` §7.6). Every C-code, MPN, Economy flag and stock level
   passed, and every resistor passed its stress check (including the 0805s). The
   only hard fail was R20's intentional Extended class. It was **not rerun** on this
-  regenerated export. The parts and fields are the same, but run it again before
+  export. S4/R4 adds 16 parts (Q11-Q18, R31-R38) of the already-audited C20526 and
+  C25804, so their stock/quantity check is not re-verified; run it again before
   ordering (gate 2 below).
 
 ## Status and order gates (not done here)

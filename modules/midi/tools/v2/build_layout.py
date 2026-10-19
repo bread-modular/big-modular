@@ -105,8 +105,13 @@ def schematic_netlist():
     for c in root.find('components'):
         skip = ('Footprint',)
         fields = {f.get('name'): f.text or '' for f in c.find('fields') if f.get('name') not in skip}
+        sheet = c.find('sheetpath')
         comps[c.get('ref')] = {'value': c.findtext('value'), 'footprint': c.findtext('footprint'),
-                               'uuid': c.findtext('tstamps').strip(), 'fields': fields}
+                               'path': sheet.get('tstamps') + c.findtext('tstamps').strip(),
+                               'sheetname': sheet.get('names'),
+                               'sheetfile': next(p.get('value') for p in c.findall('property')
+                                                 if p.get('name') == 'Sheetfile'),
+                               'fields': fields}
     nets = {n.get('name'): [(d.get('ref'), d.get('pin')) for d in n.findall('node')]
             for n in root.find('nets')}
     return comps, nets
@@ -143,9 +148,9 @@ def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre', model_
     fp.SetFPID(pcbnew.LIB_ID('MIDI', name))
     fp.SetReference(ref)
     fp.SetValue(comp['value'])
-    fp.SetPath(pcbnew.KIID_PATH('/' + comp['uuid']))
-    fp.SetSheetname('/')
-    fp.SetSheetfile('midi.kicad_sch')
+    fp.SetPath(pcbnew.KIID_PATH(comp['path']))
+    fp.SetSheetname(comp['sheetname'])
+    fp.SetSheetfile(comp['sheetfile'])
     for key, val in comp['fields'].items():
         fp.SetField(key, val)
         fp.GetField(key).SetVisible(False)
@@ -199,7 +204,7 @@ def build_carrier():
     lz = stack['led_body_bottom'] - stack['led_model_body_bottom']
     for d in GEO['leds']:
         place(board, d['ref'], 'LED_D3.0mm',
-              GEO['led_column_X_mm'], d['Y'], 90, comps[d['ref']], model_z=lz)
+              GEO['led_column_X_mm'], d['Y'], GEO['led_rotation_deg'], comps[d['ref']], model_z=lz)
     for p in GEO['back_side_parts']:
         place(board, p['ref'], p['footprint'], *p['XY'], p['rot'], comps[p['ref']], back=True)
     fps = {fp.GetReference(): fp for fp in board.GetFootprints()}

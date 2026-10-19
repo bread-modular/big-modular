@@ -13,12 +13,13 @@ Sections 1-6 describe V1; paths there are relative to `hardware/v1/`, `tools/v1/
 and `jlcpcb/v1/`, and the shared mechanics (`geometry.json`, `mechanics.md`, panels)
 apply to both versions.
 
-Status (V1): **V1.0 fabrication export (S4/R5)** (rev. 2026-10-19): native schematic
+Status (V1): **V1.0 fabrication export (S5/R6)** (rev. 2026-10-19): native schematic
 (`hardware/v1/midi.kicad_sch`, ERC 0) at the **5 V** Bread Modular logic level, every
 assembled part carrying JLCPCB fields (section 5), and the fully routed 2-layer
 carrier with the regulator beside J10 on its heat sink (R3, section 3.6) and,
 since S4/R4, the exact Bread Modular V1 input with no series resistor or pull-up
-(section 3.2; shared check: no findings). The
+(section 3.2) and, since S5/R6, Bread Modular `gate_out` transistor LED drivers on a
+reusable output channel sheet (section 3.4; shared check: no findings). The
 JLCPCB files are in [`../jlcpcb/v1/`](../jlcpcb/v1/README.md). Opto removed and deferred
 past V2 (section 3.5). This document records the Bread Modular baseline, the circuit as drawn, the
 remaining open checks and dated sourcing observations. Nothing here is
@@ -120,7 +121,7 @@ Screening power budget (estimates, not measurements):
 | Load | Typical | Worst case |
 |---|---:|---:|
 | U1 ATtiny1616 at 20 MHz, 5 V | ~10 mA | 12 mA |
-| 8 LEDs, (5 - ~1.9 V)/1 k each (~3.1 mA) | ~3-6 mA (activity flashes) | 25 mA (all lit) |
+| 8 LEDs from +5V through Q11-Q18, (5 - ~1.9 V - ~0.2 V)/1 k each (~3.0 mA), plus ~0.43 mA base drive each | ~3-7 mA (activity flashes) | 28 mA (all lit) |
 | 8 TS outputs into high-impedance inputs / into shorts (idle-high UART: 5 mA each) | ~0 | 40 mA |
 | **Total from +12 V** | **~15 mA** | **~77 mA** |
 
@@ -222,7 +223,7 @@ RX idles high. (This module's own V2 does need `PORT_INVEN`: section 7.2.)
 | MIDI in RX | PB3 (USART0 RX): direct from JP1 pin 2 | same pin, same circuit |
 | OUT1-OUT7 | PA5, PA6, PA7, PB5, PB4, PB1, PB0 (`SoftwareSerial` TX) | same |
 | OUT8 | PB2 (USART0 TX) | same (V1.0.3) |
-| LED1-LED8 | PC0, PC1, PC2, PC3, PA1, PA2, PA3, PA4 | BM gate pins, now driving LEDs |
+| LED1-LED8 | PC0, PC1, PC2, PC3, PA1, PA2, PA3, PA4 | BM gate pins, now driving the LED transistors (section 3.4) |
 | UPDI | PA0 via R11 4.7 k to J11 | same |
 
 - **UPDI header J11: 1x2 2.54 mm THT pin header on the B side** (left of the
@@ -246,9 +247,24 @@ RX idles high. (This module's own V2 does need `PORT_INVEN`: section 7.2.)
   +5 V. The HT7550-1 can't sink current, so with several outputs mis-patched
   +5 V can rise above U1's 5.5 V rating. Accepted for V1 (BM output stage, per the
   brief); V2 adds output clamps and the input protection (section 7).
-- `GPIO -> 1 k -> LED -> GND`: about 3.1 mA per red LED at 5 V. Use
-  high-efficiency 3 mm LEDs and raise the 1 k if they are too bright behind the
-  panel (D5).
+- **LED driver = Bread Modular `gate_out` (S5):**
+
+  ```
+  GPIO (CHn_LED) -- RBn 10k -- Qn MMBT3904 base     emitter GND
+  +5V -- Dn LED -- RLEDn 1k -- Qn collector         (Qn = Q11-Q18, RBn = R31-R38)
+  ```
+
+  The GPIO only drives the base, about (5 - 0.7) V / 10 k ≈ 0.43 mA. The LED
+  current (~3.0 mA, Q saturated at a forced beta of ~7) comes from +5V, not from
+  the pin. Bread Modular used an SS8050; the MMBT3904 is the Basic SOT-23 NPN
+  already on V2 (Q1). The PJ301M output and the LED driver are separate pins here,
+  so the transistor does not buffer the jack as in Bread Modular; it keeps the LED
+  current off U1.
+- Each output (1 k series, TS jack, LED driver) is one hierarchical channel sheet,
+  `hardware/v1/out.kicad_sch`, instanced eight times as CH1-CH8 (ports TX, LED,
+  +5V, GND). Channel nets are `/CHn/OUT`, `/CHn/Q_B`, `/CHn/Q_C`, `/CHn/LED_K`.
+- Use high-efficiency 3 mm LEDs and raise the 1 k if they are too bright behind
+  the panel (D5).
 
 ### 3.5 Later: opto-isolated input with voltage sensing (deferred past V2)
 
@@ -275,7 +291,7 @@ isolated input:
   the RX and LED1 tracks. On V2 the input front end (Q1, R1, R2, R22, D9) and
   U2 use that area, so a later opto input needs its own layout pass.
 
-### 3.6 Routing (R1; U3 heat sink R2; regulator moved beside J10 in R3; direct input R4; R5 silk only)
+### 3.6 Routing (R1; U3 heat sink R2; regulator moved beside J10 in R3; direct input R4; R5 silk only; LED drivers R6)
 
 Two layers, every net routed with explicit geometry (no autorouter), written by
 `tools/v1/route_plan.py` and applied with the shared `pcb plan/apply/promote`
@@ -353,6 +369,16 @@ transaction (README "Rebuild").
     accepted it (ERC/DRC empty, finding delta empty), the shared `check` has no
     findings, and the re-export differs from R4's only in B.Silkscreen. Copper,
     masks, paste, edge, drills, BOM and CPL are identical.
+  - R6 (S5 schematic: LED transistor drivers, channel sheet) rebuilt the board
+    through the README sequence. The LEDs are rotated 270 (cathode up). Each band
+    above an LED holds its cluster on B.Cu: Qn and RLEDn in the right column
+    (X17.3), RBn in the tip column (X13.5) where the LED lane ends. Exceptions: R34
+    stands beside the J5 tip pad (R9 fills that tip column), and R35 sits low in
+    the U1 band. Each Qn emitter has its own GND via. The anodes take +5V from an
+    F.Cu rail at x 118.6 down the right edge. The RX track moved to x 115.2 to clear
+    Q11, and LED4 now climbs x 111.9. Footprints keep their hierarchical sheet
+    paths. `pcb apply` accepted it (ERC/DRC empty, 0 unconnected, parity equal),
+    the shared `check` has no findings, and the 3D fit report is unchanged.
 
 ## 4. Decisions
 
@@ -362,7 +388,7 @@ transaction (README "Rebuild").
 | D2 | LDO thermal margin vs fault cases | **Decided (R2/R3): R20 = 39 R 0.5 W 1206 (C414944) + VIN_LDO heat-sink copper on both layers, regulator group beside J10 (R3)** (sections 3.1, 3.6). R20 stays on the U3 island, so the island takes ~0.5 W in the fault case (estimate ~50-75 K rise); the bench fault test is the gate |
 | D3 | Opto | **Decided: none in V1 or V2**; an isolated, voltage-sensed opto input is a later item (section 3.5) |
 | D4 | TRS type selection | **Decided: JP1 1x3 2.54 mm header + shunt on the back**, `A` (1-2) / `B` (2-3) |
-| D5 | LED colour/value | Drawn as high-efficiency red, 1 k (~3.1 mA at 5 V); confirm brightness behind the panel |
+| D5 | LED colour/value/drive | **Drive decided (S5): Bread Modular `gate_out` transistor (MMBT3904 + 10 k base), LED fed from +5V.** Drawn as high-efficiency red, 1 k (~3.0 mA); confirm brightness behind the panel |
 | D6 | Input resistors / protection | **Decided (S4): none, exactly Bread Modular V1.** R21 and R2 removed; JP1 drives PB3 directly. The input is for 5 V / 3.3 V MIDI senders (BM V1 works with both). A mis-patched ±12 V CV/gate cable exceeds the injection rating; accepted for V1, protection (input and outputs) is V2 (section 7) |
 | D7 | V2 mis-patch protection | **Decided (V2 S3/R3):** NPN input front end (JP2 solder jumper can bypass it for debugging), BAT54SW clamp behind every 0805 1 k output resistor, CJ431 +5V shunt clamp (section 7) |
 
@@ -374,7 +400,9 @@ Observed 2026-10-18 ~18:40 UTC by the shared native audit
 result for every part (only six positions changed; the BOM is identical). Re-run
 2026-10-19 ~02:22 UTC on the S4/R4 files (ignored `research/audit-r4.json`): 25
 parts in 9 BOM rows (R2 and R21 gone, so the 22 k row is gone), and the same
-result for every remaining part. Compact
+result for every remaining part. S5/R6 adds Q11-Q18 and R31-R38: the live
+audit was **not** rerun for them; their rows reuse the V2 Q1/R1 observations
+(2026-10-19 ~03:13 UTC). Compact
 record: `release_parts` in [`sourcing-candidates.json`](sourcing-candidates.json).
 Raw report and snapshots: the ignored `research/audit-r2.json` and
 `research/jlc-cache/`. Stock is a snapshot, not a reservation or order
@@ -384,6 +412,8 @@ requirements are in [`jlcpcb-audit-requirements.json`](jlcpcb-audit-requirements
 | Refs | Value | C-code | MPN | Package | Class | Stock observed |
 |---|---|---|---|---|---|---:|
 | R3-R10, R12-R19 (16) | 1 k 1 % 0.1 W | C21190 | UNI-ROYAL 0603WAF1001T5E | 0603 | **Basic** | 23.2 M |
+| Q11-Q18 (S5 LED drivers) | MMBT3904 NPN | C20526 | CJ MMBT3904(RANGE:100-300) | SOT-23 | **Basic** | 431,331 (V2 audit, 2026-10-19) |
+| R31-R38 (S5 LED bases) | 10 k 1 % | C25804 | UNI-ROYAL 0603WAF1002T5E | 0603 | **Basic** | 39.6 M (V2 audit, 2026-10-19) |
 | R11 | 4.7 k 1 % | C23162 | UNI-ROYAL 0603WAF4701T5E | 0603 | **Basic** | 18.6 M |
 | R20 | 39 R 1 % **0.5 W** | C414944 | UNI-ROYAL HP06W2F390JT5E | 1206 | Extended (chosen) | 1,717 |
 | C1 | 100 n 50 V X7R | C14663 | YAGEO CC0603KRX7R9BB104 | 0603 | **Basic** | 32.3 M |
@@ -440,7 +470,7 @@ UPDI header, JP1 1x3 TRS header + 1 shunt.
 - Mechanical fit: [mechanics.md](mechanics.md), [geometry.json](geometry.json),
   [fit/fit-report.json](fit/fit-report.json).
 
-## 7. V2: mis-patch protection (S3 schematic, R3 routing)
+## 7. V2: mis-patch protection (S4 schematic, R4 routing)
 
 V2 is V1 plus protection against a CV/gate cable (up to ±12 V, any source
 impedance) patched into MIDI IN or any MIDI OUT, for as long as it stays in. The
@@ -645,6 +675,18 @@ plan/apply/promote; nothing autorouted):
 - **Version marking:** B silk `MIDI V2.0` in the place of V1's `MIDI V1.0`.
   Both are visible on the assembled board's back.
 
+- **LED drivers (S4/R4):** the same channel sheet and Bread Modular `gate_out`
+  driver as V1 S5 (section 3.4; `hardware/v2/out.kicad_sch` also carries the D11-D18
+  clamp). The clamps fill V1's driver column, so most V2 clusters are laid out
+  differently: RLEDn in the right column below each clamp, Qn in the tip column
+  below the previous series resistor and RBn in the corridor left of it. LED1 and
+  LED5 use the V1 clusters (no clamp in their bands). LED4's cluster sits in the U1
+  band (Q14, R34 under it, R10 beside the J5 tip pad). D11-D17 are turned (COM right)
+  so each K reaches the LED anode above it on B.Cu. The +5V rail at x 118.6 now
+  touches each LED anode too. LED1-LED3 step left in the J4/J5 band to reach
+  their base resistors. `pcb apply` accepted it (ERC/DRC empty, 0 unconnected,
+  parity equal).
+
 ### 7.6 Checks (V2)
 
 The ignored `research/` evidence named below (`v2-src/`, `v2-bypass/`,
@@ -678,6 +720,12 @@ and every check below was rerun against the recovered evidence
   only hard fail is R20's intentional Extended class (as V1). Human review
   attestations remain open (section 5).
 
+- S4/R4 (LED drivers): the native netlist differs from S3 only by the intended
+  channel-sheet nets and the 16 new parts. The shared `check` has no findings, and
+  the 3D fit report is unchanged. Q18 and R38 sit under the 16-pin IDC socket
+  envelope, below its floor (`mechanics.md`). The live assembly audit was **not**
+  rerun; Q11-Q18 and R31-R38 reuse the C20526/C25804 records observed for Q1/R1.
+
 ### 7.7 Open items (V2)
 
 - **Bench:** patch +12 V and −12 V (bench supply, and a real CV output) into
@@ -699,11 +747,11 @@ and every check below was rerun against the recovered evidence
 | Refs | Part | C-code | Class | Stock observed |
 |---|---|---|---|---:|
 | D11-D18 (8) | onsemi BAT54SWT1G, SOT-323 | C78260 | Extended (no Basic dual Schottky found) | 62,593 |
-| Q1 | CJ MMBT3904, SOT-23 | C20526 | **Basic** | 431,331 |
+| Q1, Q11-Q18 (LED drivers, S4) | CJ MMBT3904, SOT-23 | C20526 | **Basic** | 431,331 |
 | U2 | CJ CJ431, SOT-23 | C3113 | **Basic** | 312,593 |
 | D9 | Semtech 1N4148W, SOD-123 | C81598 | **Basic** | 4,453,208 |
 | R3, R5, R7, R9, R12, R14, R16, R18 | 1 k 0805 0.125 W | C17513 | **Basic** | 44.2 M |
-| R1, R24 | 10 k 0603 | C25804 | **Basic** | 39.6 M |
+| R1, R24, R31-R38 (LED bases, S4) | 10 k 0603 | C25804 | **Basic** | 39.6 M |
 | R2 | 22 k 0603 | C31850 | **Basic** | 3.4 M |
 | R22 | 100 k 0603 | C25803 | **Basic** | 19.3 M |
 | R23 | 12 k 0603 | C22790 | **Basic** | 0.94 M |
