@@ -415,6 +415,7 @@
  ],
  "s3_note": "S3 (2026-10-18): the logic rail moved from 3.3 V to 5 V (Bread Modular level); U3 is HT7550-1 C16106.",
  "release_note": "R2 release (2026-10-18 UTC): every assembled part below was observed by the native assembly audit (opt/kicad-tools/jlcpcb/assembly.py audit --strict-live, 5 boards; raw report research/audit-r2.json). All R/C and D10 are JLCPCB Basic + Economy. R20 is Extended by request: UNI-ROYAL HP06W2F390JT5E 0.5 W 1206 (no Basic 39R 1206 exists; 0.25 W parts ran at ~92 % in the fault case). Alternative observed: Vishay RCS120639R0FKEA C4037776 (0.5 W anti-surge, stock 3995), not chosen because the catalog omits its voltage rating. U1 is Extended, U3 Preferred Extended. Older entries in parts[] are the opto/3.3 V history.",
+ "s4_note": "S4 (2026-10-19): R21 (4.7k input series) and R2 (22k RX pull-up) removed to match the Bread Modular V1 direct input; C31850 (22k) is no longer used and R11 is the only C23162 ref.",
  "release_parts": [
   {
    "code": "C14663",
@@ -526,36 +527,10 @@
    },
    "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF4701T5E_C23162.pdf",
    "refs": [
-    "R11",
-    "R21"
+    "R11"
    ],
    "retrieved_at_utc": "2026-10-18T18:41:51Z",
    "snapshot_sha256": "2bd592cfac71f6e83cc6cb14df29689f95945b8db1acb4c4ed6c2ecfe611aa5e",
-   "qty_per_board": 2
-  },
-  {
-   "code": "C31850",
-   "mpn": "0603WAF2202T5E",
-   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
-   "package": "0603",
-   "classification": "Basic",
-   "economy_eligible": true,
-   "stock_observed": 3405837,
-   "key_attributes": {
-    "Resistance": "22kΩ",
-    "Operating Temperature": "-55℃~+155℃",
-    "Power(Watts)": "100mW",
-    "Type": "Thick Film Resistor",
-    "Voltage-Supply(Max)": "75V",
-    "Tolerance": "±1%",
-    "Temperature Coefficient": "±100ppm/℃"
-   },
-   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010030_UNI-ROYAL-Uniroyal-Elec-0603WAF2202T5E_C31850.pdf",
-   "refs": [
-    "R2"
-   ],
-   "retrieved_at_utc": "2026-10-18T18:41:47Z",
-   "snapshot_sha256": "17c90ff2616a5ff5954aae1f77cdcd04bf8238c5bd7ec37f4a527452314acfa6",
    "qty_per_board": 1
   },
   {

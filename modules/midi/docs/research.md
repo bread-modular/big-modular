@@ -1,10 +1,11 @@
 # MIDI module research
 
-Status: **V1.0 fabrication export (R3)** (rev. 2026-10-19): native schematic
+Status: **V1.0 fabrication export (S4/R5)** (rev. 2026-10-19): native schematic
 (`hardware/midi.kicad_sch`, ERC 0) at the **5 V** Bread Modular logic level, every
 assembled part carrying JLCPCB fields (section 5), and the fully routed 2-layer
-carrier with the regulator beside J10 on its heat sink (R3, section 3.6; shared
-check: no findings). The
+carrier with the regulator beside J10 on its heat sink (R3, section 3.6) and,
+since S4/R4, the exact Bread Modular V1 input with no series resistor or pull-up
+(section 3.2; shared check: no findings). The
 JLCPCB files are in [`../jlcpcb/`](../jlcpcb/README.md). Opto removed, deferred to
 V2. This document records the Bread Modular baseline, the circuit as drawn, the
 remaining open checks and dated sourcing observations. Nothing here is
@@ -50,8 +51,7 @@ was not modified.
 In use this works with both 3.3 V and 5 V senders: 5 V is native to the 5 V
 ATtiny1616, and 3.3 V highs read correctly in practice, although by datasheet a
 3.3 V high is below the 0.7·VDD ≈ 3.5 V VIH at 5 V (it relies on typical
-thresholds). This module also runs U1 at 5 V and adds R2 22 k to +5 V so that a
-3.3 V high lands just above VIH (section 3.2).
+thresholds). This module keeps that input exactly (section 3.2).
 
 ### 2.2 V2 (2.0.x): the 6N137 version, which did not work
 
@@ -71,7 +71,7 @@ Candidate causes to check on a V2 board, not conclusions:
 - EN floating and a 4.5-5.5 V supply (C15825 catalog). The supply would fit the
   5 V rail here, but the part is still not reused (section 3.5).
 
-## 3. Circuit (as drawn in the S3 schematic, routed in R1/R2)
+## 3. Circuit (as drawn in the S3 schematic, routed in R3)
 
 ### 3.1 Power and the power header
 
@@ -107,7 +107,6 @@ Screening power budget (estimates, not measurements):
 | Load | Typical | Worst case |
 |---|---:|---:|
 | U1 ATtiny1616 at 20 MHz, 5 V | ~10 mA | 12 mA |
-| R2 22 k RX pull-up | 0 (RX idle high) | 0.23 mA |
 | 8 LEDs, (5 - ~1.9 V)/1 k each (~3.1 mA) | ~3-6 mA (activity flashes) | 25 mA (all lit) |
 | 8 TS outputs into high-impedance inputs / into shorts (idle-high UART: 5 mA each) | ~0 | 40 mA |
 | **Total from +12 V** | **~15 mA** | **~77 mA** |
@@ -128,9 +127,18 @@ heat sink is the copper there: about 75 mm² on B.Cu around the tab and about
 joined by nine vias. The total (~285 mm²) is about the same as R2's (~280 mm²), but
 the B.Cu copper at the tab is doubled, there are nine vias instead of five, and the
 heat now stays at the bottom edge, away from the J8/J9 jacks. Estimate only (no
-thermal model or measurement): with that copper a SOT-89 is roughly 100-130 °C/W,
-so U3 rises about 10 °C typical (0.09 W) and about 30-35 °C in the 77 mA fault case
-(0.27 W). Check U3 on the bench in that fault case.
+thermal model or measurement): R20 pad 2 sits on the same VIN_LDO island as U3's
+tab, so R20 does not move its 0.23 W anywhere else. The island takes the whole
+dropper + LDO loss: about 0.10 W typical and about 0.50 W in the 77 mA fault case.
+R20 only keeps its share off U3's die. With ~100-150 K/W for that copper the
+island rises about 10-15 K typical and about 50-75 K in the fault case, and U3's
+junction a little more. In a warm case (~40 °C) that puts U3 at roughly
+100-120 °C in the fault case. The fault case needs every output shorted and every
+LED lit at once, and the 1 k resistors cap it at ~77 mA. The layout is kept (R20
+stays on the island); the bench fault test is the gate (README order gate 6):
+12.6 V, all outputs shorted, all LEDs lit, 30 min, thermocouple on U3's tab, +5 V
+must stay below 5.5 V. If the tab runs too hot, the fix is a later routing
+revision that gives R20 pad 2 its own small pad off the island.
 Eurorack draw is about 15 mA typical / 77 mA maximum on +12 V, and 0 mA on
 -12 V and +5 V.
 
@@ -138,16 +146,17 @@ Eurorack draw is about 15 mA typical / 77 mA maximum on +12 V, and 0 mA on
 
 ```
 J1 Tip  --> JP1.1 (A)
-            JP1.2 (DATA) --R21 4.7k--> RX (PB3, USART0 RX)
+            JP1.2 --> RX (PB3, USART0 RX)   (direct: no series resistor, no pull-up)
 J1 Ring --> JP1.3 (B)
 J1 Sleeve --> GND (direct, as Bread Modular V1 / 0.5.0)
-RX pull-up: R2 22k to +5V
 ```
 
-This is the Bread Modular V1 input (TRS conductor chosen by a header jumper,
-straight into PB3) plus two resistors: R21 limits the clamp current if a wrong
-(CV/gate) cable is plugged in, and R2 holds RX idle-high when there is no cable
-or no shunt, and lifts 3.3 V highs.
+This is exactly the Bread Modular V1 input (1.0.0-1.0.3: TRS conductor chosen by
+a header jumper, straight into PB3; checked against the BM `midi_1.0.1` and 1.0.3
+netlists). S3 had added R21 4.7 k in series and R2 22 k to +5 V; S4 removed both
+to match V1, which works in use with 5 V and 3.3 V senders. The input is for 5 V
+and 3.3 V MIDI senders only; it is not protected against a mis-patched CV/gate
+cable (decision D6).
 
 **JP1 = TRS Type, 1x3 2.54 mm THT header on the back** (beside J1, in the LED
 column, like the UPDI header J11). B silkscreen: `TRS` above the header, `A`
@@ -158,7 +167,7 @@ pin (1-2 = A, 2-3 = B); the shared middle pin 2 is unlabelled.
 |---|---|---|---|
 | **1-2 (`A`)** | **Type A** (MMA/AMEI standard) | Tip (MIDI pin 5) | Korg, Make Noise, most current gear |
 | **2-3 (`B`)** | Type B | Ring (MIDI pin 5) | Arturia, Novation (older), some others |
-| none | - | - | No input; RX idles high, no garbage bytes |
+| none | - | - | No input; RX floats (see below) |
 
 Only the data conductor (MIDI pin 5, the one the sender pulls low) is used. The
 other conductor (pin 4, the sender's +V side) is left open, as in V1. With the
@@ -167,14 +176,23 @@ idle: harmless, move the shunt.
 
 **3.3 V and 5 V senders.** U1 runs at 5 V: VIH ≥ 0.7·VDD = 3.5 V and
 VIL ≤ 0.3·VDD = 1.5 V by datasheet. A 5 V sender is in spec directly. A 3.3 V
-sender's high alone is below VIH, so R2 (22 k to +5 V) lifts it. With R21 4.7 k
-plus a 33-220 R sender output, RX sits at about 3.3 + 1.7 x 4.9/26.9 ≈ 3.6 V
-for a 1 bit (just above 3.5 V) and 5 x 4.9/26.9 ≈ 0.9 V for a 0 bit (below
-1.5 V). The 3.3 V high margin is only ~0.1 V by datasheet, so bench-check with a
-real 3.3 V sender. A wrong cable carrying +12 V into the jack is clamped at PB3
-through R21: (12 - 5.3 V) / 4.7 k ≈ 1.4 mA. Check that against the ATtiny1616
-injection-current limit at the sourcing step (decision D6). R21 with ~10 pF of
-pin capacitance is ~50 ns, negligible at 31.25 kbaud.
+sender's high (3.3 V) is ~0.2 V below VIH by datasheet and relies on the typical
+input threshold, as on Bread Modular V1, which works in use with both 3.3 V and
+5 V senders. Accepted as is; not a bench item. With these senders PB3's clamp
+diode carries almost nothing: a 5 V high is at most a few hundred mV above the
+rail (limited by the sender's own output resistor), a 3.3 V high is below it,
+and MIDI senders don't drive negative.
+
+**Idle input floats.** With no cable (the PJ366ST has no switch) or no shunt, PB3
+is not driven, as on Bread Modular V1. If that gives stray bytes, the firmware
+fix is PB3's internal pull-up (`PORTB.PIN3CTRL |= PORT_PULLUPEN_bm` after
+`Serial.begin`); no hardware change.
+
+**Mis-patching is a known V1 risk (D6).** A ±12 V CV/gate cable patched into the
+3.5 mm MIDI IN drives PB3's clamp diode directly, limited only by the source's
+own output resistance, which is far above the ATtiny1616 injection-current
+rating. That is accepted for V1 (Bread Modular V1 is the same); input
+protection comes with the V2 input (section 3.5).
 
 **No galvanic isolation.** The sleeve is tied to GND, so the module shares ground
 with the sender (V1 behaviour; it also suits senders that want the shield
@@ -187,7 +205,7 @@ the V2 opto input's job (section 3.5).
 
 | Function | Pin | BM role |
 |---|---|---|
-| MIDI in RX | PB3 (USART0 RX): R21 4.7 k from JP1 + R2 22 k pull-up to +5 V | same pin |
+| MIDI in RX | PB3 (USART0 RX): direct from JP1 pin 2 | same pin, same circuit |
 | OUT1-OUT7 | PA5, PA6, PA7, PB5, PB4, PB1, PB0 (`SoftwareSerial` TX) | same |
 | OUT8 | PB2 (USART0 TX) | same (V1.0.3) |
 | LED1-LED8 | PC0, PC1, PC2, PC3, PA1, PA2, PA3, PA4 | BM gate pins, now driving LEDs |
@@ -209,6 +227,11 @@ the V2 opto input's job (section 3.5).
 
 - `GPIO -> 1 k -> TS tip`, sleeve = GND, exactly as in BM. There is no extra clamp
   or ESD part, per the brief.
+- **Output mis-patching is a known V1 risk.** An idle-high output patched to
+  +12 V pushes about (12 - 5.3) V / 1 k ≈ 6 mA through U1's clamp diode into
+  +5 V. The HT7550-1 can't sink current, so with several outputs mis-patched
+  +5 V can rise above U1's 5.5 V rating. Accepted for V1 (BM output stage, per the
+  brief); output clamps are a V2 item along with the input protection.
 - `GPIO -> 1 k -> LED -> GND`: about 3.1 mA per red LED at 5 V. Use
   high-efficiency 3 mm LEDs and raise the 1 k if they are too bright behind the
   panel (D5).
@@ -233,10 +256,10 @@ as a properly isolated input:
   rejected: it needs 4.5-5.5 V and is the V2-Bread-Modular part that did not work.
   Loop-current estimates: 5 V MIDI 1.0 sender ≈ 5.5 mA, 3.3 V MMA sender ≈ 7.2 mA,
   3.3 V sender with 220 R/220 R ≈ 2.9 mA, against a worst-case threshold ≈ 1.9 mA.
-- Space: the J1/J2 band on the back (where the S1 opto sat) now carries R2 and the
-  RX/+5 V/LED1 tracks of R1, so V2 will need that band re-laid out.
+- Space: the J1/J2 band on the back (where the S1 opto sat) now carries only the
+  RX and LED1 tracks, so V2 has room there for its input.
 
-### 3.6 Routing (R1; U3 heat sink R2; regulator moved beside J10 in R3)
+### 3.6 Routing (R1; U3 heat sink R2; regulator moved beside J10 in R3; direct input R4; R5 silk only)
 
 Two layers, every net routed with explicit geometry (no autorouter), written by
 `tools/route_plan.py` and applied with the shared `pcb plan/apply/promote`
@@ -275,7 +298,7 @@ transaction (README "Rebuild").
 - **Layer plan.** The pin map is Bread Modular's, so on every side of U1 some
   nets go up and some go down. Each layer keeps a lane order that matches its turn
   order:
-  - B.Cu up: RX (to R21/R2), LED1-LED3 up the corridor, LED4 up the right
+  - B.Cu up: RX (straight to JP1 pin 2), LED1-LED3 up the corridor, LED4 up the right
     channel (R9 sits in its crossing).
   - F.Cu up: TX1-TX4 from vias in the left zone. Each comes back to B through a
     via at x 112.3 beside its resistor.
@@ -285,14 +308,13 @@ transaction (README "Rebuild").
   - UPDI: down the corridor on F, then on B to J11 left of J10.
   - LED5-LED8: down on B. LED8 crosses into the right channel above the power
     cluster.
-  - +5 V: up the left channel on F (LDO -> C3 -> via under U1 pin 4 -> C1), then
-    on B to R2 at the top.
+  - +5 V: up the left channel on F (LDO -> C3 -> via under U1 pin 4 -> C1).
 - **Placement changes made for routing** (all in `geometry.json`, generator
   rerun, fit re-checked):
   - The LED resistors are rotated 270 so pad 2 (LEDn_A) faces its LED.
   - R9 moved above J5.
   - U1 moved 1 mm lower.
-  - C1 is under U1, C3 is in the left zone, and R2 is beside the RX lane.
+  - C1 is under U1 and C3 is in the left zone.
   - These also cleared two pad shorts (C1/R9 and C3/R8) left by the S3 5 V
     regeneration.
 - **Checks:**
@@ -303,24 +325,39 @@ transaction (README "Rebuild").
   - R2 re-ran the same checks after the heat sink, the part fields and the
     silkscreen release label: all still clean. R3 (regulator beside J10) re-ran
     them and the 3D fit again: all clean, fit report unchanged.
+  - R4 (S4 schematic: R21 and R2 removed) rebuilt the board through the README
+    sequence: RX runs on B.Cu from U1 pin 11 up x 107.8, across y 70.3 (where R21
+    sat) and up x 115.6 to JP1 pin 2; the +5 V stub to R2 and its via are gone,
+    so the F.Cu +5 V track runs straight from C3's via to U1's. `pcb apply`
+    accepted it (ERC/DRC empty, parity equal), the shared `check` has no
+    findings, and the 3D fit report is unchanged. Every other footprint position
+    is unchanged (the CPL only lost the R2 and R21 rows).
+  - R5 deleted the B silk `JLCJLCJLCJLC` order-number marker (one shared
+    `delete_item` text op; `build_layout.py` no longer draws it). `pcb apply`
+    accepted it (ERC/DRC empty, finding delta empty), the shared `check` has no
+    findings, and the re-export differs from R4's only in B.Silkscreen. Copper,
+    masks, paste, edge, drills, BOM and CPL are identical.
 
 ## 4. Decisions
 
 | # | Decision | Recommendation |
 |---|---|---|
-| D1 | TS output logic level | **Decided (S3): 5 V.** U1 runs at 5 V from HT7550-1 on +12 V, so the outputs meet a 5 V BM receiver's VIH. A 16-pin cable's +5 V isn't used, which keeps 10-pin cables working. The input handles 3.3 V senders through R2 (section 3.2) |
-| D2 | LDO thermal margin vs fault cases | **Decided (R2/R3): R20 = 39 R 0.5 W 1206 (C414944) + VIN_LDO heat-sink copper on both layers, regulator group beside J10 (R3)** (sections 3.1, 3.6); bench-check U3 in the fault case |
+| D1 | TS output logic level | **Decided (S3): 5 V.** U1 runs at 5 V from HT7550-1 on +12 V, so the outputs meet a 5 V BM receiver's VIH. A 16-pin cable's +5 V isn't used, which keeps 10-pin cables working. The input takes 3.3 V senders as Bread Modular V1 does (section 3.2) |
+| D2 | LDO thermal margin vs fault cases | **Decided (R2/R3): R20 = 39 R 0.5 W 1206 (C414944) + VIN_LDO heat-sink copper on both layers, regulator group beside J10 (R3)** (sections 3.1, 3.6). R20 stays on the U3 island, so the island takes ~0.5 W in the fault case (estimate ~50-75 K rise); the bench fault test is the gate |
 | D3 | Opto | **Decided: none in this version**; isolated, voltage-sensed opto input in V2 (section 3.5) |
 | D4 | TRS type selection | **Decided: JP1 1x3 2.54 mm header + shunt on the back**, `A` (1-2) / `B` (2-3) |
 | D5 | LED colour/value | Drawn as high-efficiency red, 1 k (~3.1 mA at 5 V); confirm brightness behind the panel |
-| D6 | R21 value | 4.7 k unless the ATtiny1616 injection-current limit asks for more (a wrong cable gives ~1.4 mA at +12 V, ~2.6 mA at -12.6 V); raising it lowers the 3.3 V-sender high margin |
+| D6 | Input resistors / protection | **Decided (S4): none, exactly Bread Modular V1.** R21 and R2 removed; JP1 drives PB3 directly. The input is for 5 V / 3.3 V MIDI senders (BM V1 works with both). A mis-patched ±12 V CV/gate cable exceeds the injection rating; accepted for V1, protection (input and outputs) comes in V2 (sections 3.2, 3.4) |
 
 ## 5. Sourcing (V1.0 release, dated, transient)
 
 Observed 2026-10-18 ~18:40 UTC by the shared native audit
 (`opt/kicad-tools/jlcpcb/assembly.py audit --strict-live`, 5 boards). Re-run at
 ~19:16 UTC on the R3 placement file (`research/hs3/audit/audit.json`): the same
-result for every part (only six positions changed; the BOM is identical). Compact
+result for every part (only six positions changed; the BOM is identical). Re-run
+2026-10-19 ~02:22 UTC on the S4/R4 files (ignored `research/audit-r4.json`): 25
+parts in 9 BOM rows (R2 and R21 gone, so the 22 k row is gone), and the same
+result for every remaining part. Compact
 record: `release_parts` in [`sourcing-candidates.json`](sourcing-candidates.json).
 Raw report and snapshots: the ignored `research/audit-r2.json` and
 `research/jlc-cache/`. Stock is a snapshot, not a reservation or order
@@ -330,8 +367,7 @@ requirements are in [`jlcpcb-audit-requirements.json`](jlcpcb-audit-requirements
 | Refs | Value | C-code | MPN | Package | Class | Stock observed |
 |---|---|---|---|---|---|---:|
 | R3-R10, R12-R19 (16) | 1 k 1 % 0.1 W | C21190 | UNI-ROYAL 0603WAF1001T5E | 0603 | **Basic** | 23.2 M |
-| R11, R21 | 4.7 k 1 % | C23162 | UNI-ROYAL 0603WAF4701T5E | 0603 | **Basic** | 18.6 M |
-| R2 | 22 k 1 % | C31850 | UNI-ROYAL 0603WAF2202T5E | 0603 | **Basic** | 3.4 M |
+| R11 | 4.7 k 1 % | C23162 | UNI-ROYAL 0603WAF4701T5E | 0603 | **Basic** | 18.6 M |
 | R20 | 39 R 1 % **0.5 W** | C414944 | UNI-ROYAL HP06W2F390JT5E | 1206 | Extended (chosen) | 1,717 |
 | C1 | 100 n 50 V X7R | C14663 | YAGEO CC0603KRX7R9BB104 | 0603 | **Basic** | 32.3 M |
 | C3, C4 | 10 u 25 V X5R | C15850 | Samsung CL21A106KAYNNNE | 0805 | **Basic** | 6.5 M |
@@ -350,8 +386,8 @@ requirements are in [`jlcpcb-audit-requirements.json`](jlcpcb-audit-requirements
 - **Extended parts mean loading fees:** R20 and U1 are Extended and U3 is
   Preferred Extended, so expect JLCPCB's per-part Extended loading fee for each.
 - **Audit result:**
-  - Exact C-code, MPN, Economy and stock all pass, and R21 and R20 pass their
-    stress checks.
+  - Exact C-code, MPN, Economy and stock all pass, and R20 passes its stress
+    check.
   - The only hard "fail" is the repo's Basic-only R/C policy flagging R20, which
     is intentional.
   - **Unknown:** the per-part human review attestations (land pattern, pin
@@ -377,5 +413,12 @@ UPDI header, JP1 1x3 TRS header + 1 shunt.
   STEP models. Marked "Untested" upstream.
 - Supplier attribute data: LCSC/JLCPCB catalog (URLs and hashes in
   `sourcing-candidates.json`); datasheet URLs are listed there per part.
+- **Datasheets are not archived in the repo.** The HT7550-1 C16106 URL in
+  `sourcing-candidates.json` no longer serves a PDF (it returns an HTML page,
+  checked 2026-10-19), so "tab = pin 2 = VIN" (the heat-sink premise) and the
+  ceramic output-capacitor question rest on the usual HT75xx-1 SOT-89 pinout, not
+  on a document in the repo. Before the U1/U3/D10 review attestations are signed
+  (§5, README order gate 4), archive their datasheet PDFs with SHA-256 and cite
+  the pin-map, land-pattern and ratings pages.
 - Mechanical fit: [mechanics.md](mechanics.md), [geometry.json](geometry.json),
   [fit/fit-report.json](fit/fit-report.json).

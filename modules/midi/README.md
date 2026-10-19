@@ -6,22 +6,23 @@ which sends MIDI channel *n* to TS output *n* (tip = logic-level MIDI, sleeve =
 GND). There is one hand-soldered 3 mm LED per output, and power comes from
 Eurorack +12 V through a 5 V LDO (5 V logic, as Bread Modular).
 
-**Status: V1.0 (R3) fabrication export, not supplier-accepted.**
-- The schematic is drawn (native ERC 0).
+**Status: V1.0 (S4/R5) fabrication export, not supplier-accepted.**
+- The schematic is drawn (native ERC 0). The MIDI input is exactly Bread
+  Modular V1's: JP1 drives PB3 directly, with no series resistor or pull-up.
 - The 2-layer carrier is fully routed. The regulator sits beside the power header
   on heat-sink copper on both layers
   (DRC 0 at all severities, 0 unconnected, parity equal, shared `check` with no
   findings).
 - The 4HP panels (FR4 + printed) are checked for fit.
-- All 27 SMD parts on the back are JLCPCB-sourced (Basic for every R/C except
+- All 25 SMD parts on the back are JLCPCB-sourced (Basic for every R/C except
   R20).
 - Gerbers, BOM and CPL are in [`jlcpcb/`](jlcpcb/README.md).
 - Nothing is bench-tested.
 
 | Path | Contents |
 |---|---|
-| `hardware/midi.kicad_{pro,pcb}` | Carrier: 19 x 110 mm, routed on 2 layers (R3), GND poured both sides, U3 heat sink beside J10 |
-| `hardware/midi.kicad_sch` | Flat root schematic (S3); PDF in `docs/midi-schematic.pdf` |
+| `hardware/midi.kicad_{pro,pcb}` | Carrier: 19 x 110 mm, routed on 2 layers (R4), GND poured both sides, U3 heat sink beside J10 |
+| `hardware/midi.kicad_sch` | Flat root schematic (S4); PDF in `docs/midi-schematic.pdf` |
 | `hardware/_kicad_models/` | Vendored 3D models (`<sha256>/<name>`), bound via `${KIPRJMOD}` |
 | `hardware/MIDI.kicad_sym`, `sym-lib-table` | Pinned stock symbols (`docs/schematic-symbols.json`) |
 | `hardware/MIDI.pretty`, `MIDI.3dshapes` | Pinned footprints and jack models (`PROVENANCE.json`) |
@@ -42,7 +43,7 @@ python3 -B tools/import_footprints.py          # one-time library import (pcbnew
 python3 -B tools/build_schematic.py            # schematic + pinned symbols
 python3 -B tools/build_layout.py               # placement + netlist nets + vendored models, UNROUTED
 git checkout panels/front-pcb/midi-panel.kicad_pcb  # unless the panel really changed: the generator re-UUIDs it
-python3 -B tools/route_plan.py > research/route/plan.json   # R3 copper as shared ops v1
+python3 -B tools/route_plan.py > research/route/plan.json   # R4 copper as shared ops v1
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb plan --config modules/midi/tools/kicad-project.json \
    --ops modules/midi/research/route/plan.json > modules/midi/research/route/edit-plan.json)
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb apply --plan modules/midi/research/route/edit-plan.json \

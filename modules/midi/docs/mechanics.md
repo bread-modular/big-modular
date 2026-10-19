@@ -52,9 +52,9 @@ and J10/J11 below J9.
 
 | Band | Parts |
 |---|---|
-| LED column beside J1 (X17.2, Y12.5..17.5) | **JP1** 1x3 2.54 mm TRS Type header (pin 1 Tip at the top, 2 DATA, 3 Ring), B silk `TRS`, `A` level with pin 1, `B` level with pin 3 (the shunt covers the lettered pin) |
-| Top edge and just below J1's pads | B silk `MIDI V1.0` (Y11.6) and `JLCJLCJLCJLC` (Y18.0; JLCPCB prints its order number there) |
-| J1/J2 | R21 (4.7 k input series, X15.0), R2 (22 k RX pull-up, X5.8, beside the RX lane), R4 (ch1 LED) |
+| LED column beside J1 (X17.2, Y12.5..17.5) | **JP1** 1x3 2.54 mm TRS Type header (pin 1 Tip at the top, 2 RX direct to U1 PB3, 3 Ring), B silk `TRS`, `A` level with pin 1, `B` level with pin 3 (the shunt covers the lettered pin) |
+| Top edge and just below J1's pads | B silk `MIDI V1.0` (Y11.6); no `JLCJLCJLCJLC` order-number marker (removed in R5) |
+| J1/J2 | R4 (ch1 LED); the RX track from JP1 (R21/R2 removed in S4/R4) |
 | Jn/Jn+1, every band | output n series resistor below jack n's tip (X13.52, jack + 3.6, rot 90) and LED n+1 resistor above its LED (X17.2, rot 270 so pad 2 faces the anode) |
 | J4/J5 | ch3 pair, **R9** (ch4 output series) moved above J5 (Y54.1, rot 270), TX6-TX8 layer-change vias |
 | J5/J6 (Y 64.25) | U1 ATtiny1616 (VQFN-20, 1 mm below the band centre for the fan-out), C1 100 n under U1, TX1-TX5 vias in the left zone, ch5 LED resistor R13 |
@@ -108,5 +108,5 @@ and J10/J11 below J9.
 - The printed panel holes are nominal; drill or ream to Ø6.2 / Ø3.2.
 - The U1 3D model is the shipped UQFN-20 3x3 P0.4 body, used as a visual proxy:
   KiCad doesn't ship the VQFN model its footprint references.
-- Routing (R1) is complete on two layers with native DRC 0 (research.md §3.6); the
+- Routing (R1, heat sink R2, regulator beside J10 R3, direct input R4) is complete on two layers with native DRC 0 (research.md §3.6); the
   3D fit was re-run after the routing placement changes and is unchanged.
