@@ -1,0 +1,333 @@
+{
+ "defaults": {},
+ "components": {
+  "C1": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "L input DC block: up to +/-12.6 V DC from a patched CV",
+   "reviews": {}
+  },
+  "C10": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 -12V local bulk (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C2": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "R input DC block: up to +/-12.6 V DC from a patched CV",
+   "reviews": {}
+  },
+  "C3": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "+12V entry bulk (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C4": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "-12V entry bulk (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C5": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U1 V+ decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C6": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U1 V- decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C7": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 V+ decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C8": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 V- decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C9": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 +12V local bulk (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "D1": {
+   "note": "B5819W +12 V series reverse-polarity diode, < 0.1 A, 12.6 V reverse",
+   "reviews": {}
+  },
+  "D2": {
+   "note": "B5819W -12 V series reverse-polarity diode, < 0.1 A, 12.6 V reverse",
+   "reviews": {}
+  },
+  "J1": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS input jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J2": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 TS input jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J3": {
+   "assembly": "manual",
+   "reason": "PJ366ST TRS line out jack (Bread Modular part), hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J4": {
+   "assembly": "manual",
+   "reason": "PJ366ST TRS phones jack (Bread Modular part), hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J5": {
+   "assembly": "manual",
+   "reason": "2x5 2.54 mm unshrouded Eurorack pin header (10-pin cable, red stripe = -12 V at the bottom), hand-soldered (THT, back side)"
+  },
+  "R1": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 4.43,
+   "operating_voltage_v": 3.54,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.025,
+   "operating_current_a": 0.0035,
+   "power_derating": 0.5,
+   "note": "IN_L series 1k. DC is blocked by C1/C2; steady signal current is <=35 uA (10 Vpp into ~104 k), <0.01 mW. Limits kept at the conservative 3.54 Vrms / 12.5 mW figure; a hot-plug step charges C1/C2 through the 1k with a 1 ms time constant (pulse, not steady)",
+   "reviews": {}
+  },
+  "R10": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 6.88,
+   "operating_voltage_v": 5.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.004,
+   "operating_current_a": 0.0004,
+   "power_derating": 0.5,
+   "note": "15k taper load (R): <= 5.5 V peak",
+   "reviews": {}
+  },
+  "R11": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 1.0,
+   "operating_voltage_v": 0.8,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.128,
+   "operating_current_a": 0.08,
+   "power_derating": 0.5,
+   "note": "HP_L 10R build-out: phones shorted, MC33178 current-limited at ~80 mA -> 64 mW",
+   "reviews": {}
+  },
+  "R12": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 1.0,
+   "operating_voltage_v": 0.8,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.128,
+   "operating_current_a": 0.08,
+   "power_derating": 0.5,
+   "note": "HP_R 10R build-out: phones shorted, MC33178 current-limited at ~80 mA -> 64 mW",
+   "reviews": {}
+  },
+  "R2": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 4.43,
+   "operating_voltage_v": 3.54,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.025,
+   "operating_current_a": 0.0035,
+   "power_derating": 0.5,
+   "note": "IN_R series 1k. DC is blocked by C1/C2; steady signal current is <=35 uA (10 Vpp into ~104 k), <0.01 mW. Limits kept at the conservative 3.54 Vrms / 12.5 mW figure; a hot-plug step charges C1/C2 through the 1k with a 1 ms time constant (pulse, not steady)",
+   "reviews": {}
+  },
+  "R3": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.004,
+   "operating_current_a": 0.00025,
+   "power_derating": 0.5,
+   "note": "47k divider top (L): <= 12 V transient, < 0.25 mA",
+   "reviews": {}
+  },
+  "R4": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 15.0,
+   "operating_voltage_v": 12.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.004,
+   "operating_current_a": 0.00025,
+   "power_derating": 0.5,
+   "note": "47k divider top (R): <= 12 V transient, < 0.25 mA",
+   "reviews": {}
+  },
+  "R5": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 8.25,
+   "operating_voltage_v": 6.6,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.002,
+   "operating_current_a": 0.00012,
+   "power_derating": 0.5,
+   "note": "56k divider bottom (L): <= 6.6 V",
+   "reviews": {}
+  },
+  "R6": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 8.25,
+   "operating_voltage_v": 6.6,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.002,
+   "operating_current_a": 0.00012,
+   "power_derating": 0.5,
+   "note": "56k divider bottom (R): <= 6.6 V",
+   "reviews": {}
+  },
+  "R7": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 2.4,
+   "operating_voltage_v": 1.92,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.074,
+   "operating_current_a": 0.019,
+   "power_derating": 0.5,
+   "note": "LINE_L 100R build-out: line out shorted at full scale, 1.92 Vrms / 100R = 19 mA rms, 37 mW",
+   "reviews": {}
+  },
+  "R8": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 2.4,
+   "operating_voltage_v": 1.92,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.074,
+   "operating_current_a": 0.019,
+   "power_derating": 0.5,
+   "note": "LINE_R 100R build-out: line out shorted at full scale, 1.92 Vrms / 100R = 19 mA rms, 37 mW",
+   "reviews": {}
+  },
+  "R9": {
+   "kind": "R",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 6.88,
+   "operating_voltage_v": 5.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.004,
+   "operating_current_a": 0.0004,
+   "power_derating": 0.5,
+   "note": "15k taper load (L): <= 5.5 V peak",
+   "reviews": {}
+  },
+  "RV1": {
+   "assembly": "manual",
+   "reason": "Bread Modular RV09 50k volume pot, hand-soldered: front-side THT"
+  },
+  "RV2": {
+   "assembly": "manual",
+   "reason": "Bread Modular RV09 50k volume pot, hand-soldered: front-side THT"
+  },
+  "U1": {
+   "note": "OPA1678IDR dual, +/-11.7 V supply (limit +/-18 V), unity-gain followers",
+   "reviews": {}
+  },
+  "U2": {
+   "note": "MC33178DR2G dual, +/-11.7 V supply (limit +/-18 V), unity-gain headphone followers, 10R loads in series",
+   "reviews": {}
+  }
+ }
+}

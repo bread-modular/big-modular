@@ -1,0 +1,77 @@
+{
+  "frame": "KiCad STEP, user origin = panel origin; Z0 = board bottom",
+  "board_bbox_mm": [
+    0.5,
+    19.5,
+    9.25,
+    119.25
+  ],
+  "panels": {
+    "fr4_1.6": {
+      "thickness_mm": 1.6,
+      "front_face_Z_mm": 13.2,
+      "depth_behind_panel_rear_mm": 20.225,
+      "parts": {
+        "J1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J3": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 4.358
+        },
+        "J4": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 4.358
+        },
+        "RV1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 11.195
+        },
+        "RV2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 11.195
+        }
+      },
+      "max_interference_mm3": 0.0
+    },
+    "printed_2.0": {
+      "thickness_mm": 2.0,
+      "front_face_Z_mm": 13.6,
+      "depth_behind_panel_rear_mm": 20.225,
+      "parts": {
+        "J1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J3": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 3.958
+        },
+        "J4": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 3.958
+        },
+        "RV1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 10.795
+        },
+        "RV2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 10.795
+        }
+      },
+      "max_interference_mm3": 0.0
+    }
+  },
+  "board_inside_rail_gap": true,
+  "board_inside_panel_width": true
+}

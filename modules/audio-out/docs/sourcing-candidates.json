@@ -1,0 +1,157 @@
+{
+ "note": "Dated public-catalog observations from opt/kicad-tools/jlcpcb/assembly.py audit --strict-live (native mode, --side bottom, --boards 5). Stock is transient and not a reservation; nothing here is order acceptance. Raw snapshots: research/sourcing (ignored).",
+ "observed_utc": "2026-10-19T03:56:32Z",
+ "parts": {
+  "C28323": {
+   "mpn": "CL21B105KBFNNNE",
+   "manufacturer": "Samsung Electro-Mechanics",
+   "package": "0805",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 2307038,
+   "refs": [
+    "C1",
+    "C2"
+   ]
+  },
+  "C15850": {
+   "mpn": "CL21A106KAYNNNE",
+   "manufacturer": "Samsung Electro-Mechanics",
+   "package": "0805",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 6422940,
+   "refs": [
+    "C3",
+    "C4",
+    "C9",
+    "C10"
+   ]
+  },
+  "C14663": {
+   "mpn": "CC0603KRX7R9BB104",
+   "manufacturer": "YAGEO",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 40622139,
+   "refs": [
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+   ]
+  },
+  "C8598": {
+   "mpn": "B5819W SL",
+   "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "package": "SOD-123",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 569887,
+   "refs": [
+    "D1",
+    "D2"
+   ]
+  },
+  "C21190": {
+   "mpn": "0603WAF1001T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 23010414,
+   "refs": [
+    "R1",
+    "R2"
+   ]
+  },
+  "C25819": {
+   "mpn": "0603WAF4702T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 1858803,
+   "refs": [
+    "R3",
+    "R4"
+   ]
+  },
+  "C23206": {
+   "mpn": "0603WAF5602T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 850326,
+   "refs": [
+    "R5",
+    "R6"
+   ]
+  },
+  "C22775": {
+   "mpn": "0603WAF1000T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 10690835,
+   "refs": [
+    "R7",
+    "R8"
+   ]
+  },
+  "C22809": {
+   "mpn": "0603WAF1502T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 4081875,
+   "refs": [
+    "R9",
+    "R10"
+   ]
+  },
+  "C17903": {
+   "mpn": "1206W4F100JT5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "1206",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 1062161,
+   "refs": [
+    "R11",
+    "R12"
+   ]
+  },
+  "C192421": {
+   "mpn": "OPA1678IDR",
+   "manufacturer": "Texas Instruments",
+   "package": "SOIC-8-150mil",
+   "classification": "Extended",
+   "economy_eligible": true,
+   "stock_observed": 13794,
+   "refs": [
+    "U1"
+   ]
+  },
+  "C39113": {
+   "mpn": "MC33178DR2G",
+   "manufacturer": "onsemi",
+   "package": "SOIC-8",
+   "classification": "Extended",
+   "economy_eligible": true,
+   "stock_observed": 36998,
+   "refs": [
+    "U2"
+   ]
+  }
+ },
+ "rejected_candidates": {
+  "C3018893 NJM4556AM-TE1": "Classic headphone opamp (70 mA) but DMP-8 (5.0 mm body, 6.8 mm span) needs a non-stock land pattern; MC33178DR2G (standard SOIC-8, 80 mA class) chosen instead.",
+  "C7426 NE5532DR": "Basic, good audio part, but ~200-800 nA bipolar input bias into the ~25 k divider gives tens of mV of offset at the DC-coupled outputs; OPA1678 (CMOS, pA bias) chosen for the input buffers.",
+  "43k 0603": "no Basic part; divider uses 47k/56k (x0.544) instead of 43k/56k (x0.566)."
+ }
+}

@@ -1,0 +1,538 @@
+{
+ "revision": "S3/P4: jacks IN L, IN R, LINE on top, volume pots VOL L/VOL R, PHONES jack at the bottom; IN R normalled to IN L; unshrouded 2x5 pin header J5 (10-pin cable). R3 routed",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 4,
+ "panel_mm": [
+  20.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "panel_print_thickness_mm": 2.0,
+ "rail_holes_mm": [
+  [
+   7.5,
+   3.0,
+   3.2
+  ],
+  [
+   7.5,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "Doepfer 4HP single hole pair at X7.5 (HOLE_X0 in case/tools/build_case.py). The repository skiff rails are 10 mm wide centred on Y3.0/Y125.5, leaving the clear Y8.0..120.5 (112.5 mm) gap; commercial rails differ, so the PCB keeps 1.25 mm margin and the 10-pin IDC socket envelope on J5 stays on the board, inside the gap.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   19.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 2,
+  "note": "19.0 x 110.0 mm (Doepfer parallel-PCB maximum), 1.25 mm inside the skiff rail gap at each end; held only by the four jack bushings/nuts (the pots are soldered; their nuts are optional, docs/mechanics.md)."
+ },
+ "column_X_mm": 10.0,
+ "column_note": "Jacks and pots share one centred column at X10.0 (the panel centre line). Top to bottom: IN L, IN R, LINE, VOL L, VOL R, PHONES.",
+ "jack_rotation_deg": 270,
+ "jack_rotation_note": "As modules/midi: T/TN(R)/S pads run along X with the S (sleeve) pad toward the left board edge (T at X+4.92, TN/R at X-3.38, S at X-6.48); jack bodies are 9.0 mm along Y.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "IN_L",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 19.5
+  },
+  {
+   "ref": "J2",
+   "role": "IN_R",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 33.0
+  },
+  {
+   "ref": "J3",
+   "role": "LINE_OUT_TRS",
+   "part": "QingPu WQP-PJ366ST",
+   "Y": 46.5
+  },
+  {
+   "ref": "J4",
+   "role": "PHONES_TRS",
+   "part": "QingPu WQP-PJ366ST",
+   "Y": 96.0
+  }
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "VOL_L",
+   "shaft_Y": 62.5
+  },
+  {
+   "ref": "RV2",
+   "role": "VOL_R",
+   "shaft_Y": 81.5
+  }
+ ],
+ "pot_note": "Bread Modular Potentiometer_RV09 footprint; its origin is offset (+0.127, +0.508) from the shaft centre. Placed by shaft centre, rotation 0: mounting tabs at shaft Y, pins 1-2-3 (GND, wiper, CW end) 7.5 mm below the shaft at X-2.5/0/+2.5. PHONES (J4) sits as high as the RV2 courtyard allows (J4 F courtyard Y90.71 vs RV2 Y90.69) so a 10-pin IDC socket on J5 below it clears the J4 B-side pads (J4 pad bottom Y97.3, socket envelope top Y99.73); the pots keep the 19 mm pitch.",
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2
+ },
+ "panel_hole_note": "Pot hole 7.2 mm = Bread Modular PanelHole_Potentiometer_RV09. The user's pot has no threaded bushing (plain \u00d86 knurled shaft), so the hole is shaft clearance only.",
+ "stack_Z_mm": {
+  "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+  "jack_body_top": 8.9,
+  "panel_rear_seat": 10.0,
+  "pj301m12_thread": [
+   10.0,
+   14.51
+  ],
+  "pj366st_thread": [
+   11.0,
+   15.96
+  ],
+  "nut_thickness": 2.0,
+  "source": "Jacks: slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks. Pot: user sample (2026-10-19 photo, B1M RV09 'tall trimmer' style): no threaded bushing, 16 mm knurled shaft above the body (user measurement); body height nominal.",
+  "pot_body_top": 6.8,
+  "pot_shaft_top": 22.8,
+  "pot_note": "RV09 proxy (tools/make_pot_model.py): body 6.8 mm (nominal), 1 mm collar, shaft to Z22.8 = 11.2 mm past the FR4 front (10.8 mm past the printed front) for a push-on knob. No bushing, so no pot nut: the carrier hangs on the four jack nuts only (as before).",
+  "pot_collar": [
+   6.8,
+   7.8
+  ]
+ },
+ "back_side_parts": [
+  {
+   "ref": "U2",
+   "value": "MC33178DR2G",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    10.0,
+    75.5
+   ],
+   "rot": 0,
+   "band": "between RV1 pins (Y71.0) and RV2 tabs (Y82.5)"
+  },
+  {
+   "ref": "U1",
+   "value": "OPA1678IDR",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    10.0,
+    26.25
+   ],
+   "rot": 0,
+   "band": "between IN L and IN R"
+  },
+  {
+   "ref": "R1",
+   "value": "1k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    15.0,
+    15.4
+   ],
+   "rot": 0,
+   "band": "L input chain row (above IN L)"
+  },
+  {
+   "ref": "C1",
+   "value": "1u",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    11.7,
+    15.4
+   ],
+   "rot": 0,
+   "band": "L input chain row"
+  },
+  {
+   "ref": "R3",
+   "value": "47k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    8.4,
+    15.4
+   ],
+   "rot": 0,
+   "band": "L input chain row"
+  },
+  {
+   "ref": "R5",
+   "value": "56k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    5.3,
+    15.4
+   ],
+   "rot": 0,
+   "band": "L input chain row"
+  },
+  {
+   "ref": "R2",
+   "value": "1k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    15.0,
+    36.3
+   ],
+   "rot": 0,
+   "band": "R input chain row (band IN R / LINE)"
+  },
+  {
+   "ref": "C2",
+   "value": "1u",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    11.7,
+    36.3
+   ],
+   "rot": 0,
+   "band": "R input chain row"
+  },
+  {
+   "ref": "R4",
+   "value": "47k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    8.4,
+    36.3
+   ],
+   "rot": 0,
+   "band": "R input chain row"
+  },
+  {
+   "ref": "R6",
+   "value": "56k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    5.3,
+    36.3
+   ],
+   "rot": 0,
+   "band": "R input chain row"
+  },
+  {
+   "ref": "C5",
+   "value": "100n",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    5.3,
+    22.8
+   ],
+   "rot": 0,
+   "band": "U1 V+ (pin 8) decoupling"
+  },
+  {
+   "ref": "C6",
+   "value": "100n",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    11.5,
+    30.4
+   ],
+   "rot": 180,
+   "band": "U1 V- (pin 4) decoupling, below U1"
+  },
+  {
+   "ref": "R7",
+   "value": "100",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    14.92,
+    42.9
+   ],
+   "rot": 270,
+   "band": "line out L build-out above the LINE tip pad"
+  },
+  {
+   "ref": "R8",
+   "value": "100",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    6.62,
+    42.9
+   ],
+   "rot": 270,
+   "band": "line out R build-out above the LINE ring pad"
+  },
+  {
+   "ref": "R9",
+   "value": "15k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    9.175,
+    71.9
+   ],
+   "rot": 0,
+   "band": "on the VOL_L track between RV1 wiper and U2 (pad 1 on the track)"
+  },
+  {
+   "ref": "R10",
+   "value": "15k",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    9.175,
+    83.5
+   ],
+   "rot": 0,
+   "band": "on the VOL_R track between RV2 wiper and U2 (pad 1 on the track)"
+  },
+  {
+   "ref": "R11",
+   "value": "10",
+   "footprint": "R_1206_3216Metric",
+   "XY": [
+    17.2,
+    74.2
+   ],
+   "rot": 270,
+   "band": "HP L build-out, right of U2"
+  },
+  {
+   "ref": "R12",
+   "value": "10",
+   "footprint": "R_1206_3216Metric",
+   "XY": [
+    2.4,
+    79.0
+   ],
+   "rot": 270,
+   "band": "HP R build-out, left of U2"
+  },
+  {
+   "ref": "C7",
+   "value": "100n",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    5.2,
+    73.6
+   ],
+   "rot": 270,
+   "band": "U2 V+ (pin 8) decoupling"
+  },
+  {
+   "ref": "C8",
+   "value": "100n",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    15.3,
+    77.6
+   ],
+   "rot": 0,
+   "band": "U2 V- (pin 4) decoupling"
+  },
+  {
+   "ref": "C9",
+   "value": "10u",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    4.6,
+    69.4
+   ],
+   "rot": 0,
+   "band": "U2 +12 V bulk at the +12 V drop"
+  },
+  {
+   "ref": "C10",
+   "value": "10u",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    17.0,
+    70.0
+   ],
+   "rot": 0,
+   "band": "U2 -12 V bulk"
+  },
+  {
+   "ref": "J5",
+   "value": "Eurorack 2x5 pin header (unshrouded, 10-pin cable)",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    10.0,
+    108.62
+   ],
+   "rot": 180,
+   "band": "bottom zone, vertical; see power_header"
+  },
+  {
+   "ref": "D1",
+   "value": "B5819W",
+   "footprint": "D_SOD-123",
+   "XY": [
+    3.0,
+    105.2
+   ],
+   "rot": 90,
+   "band": "left of the J5 header: +12 V series diode, vertical"
+  },
+  {
+   "ref": "C3",
+   "value": "10u",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    3.0,
+    109.6
+   ],
+   "rot": 270,
+   "band": "left of the J5 header, below D1: +12 V bulk"
+  },
+  {
+   "ref": "D2",
+   "value": "B5819W",
+   "footprint": "D_SOD-123",
+   "XY": [
+    17.0,
+    115.0
+   ],
+   "rot": 90,
+   "band": "right of the J5 header: -12 V series diode, vertical"
+  },
+  {
+   "ref": "C4",
+   "value": "10u",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    17.0,
+    110.5
+   ],
+   "rot": 270,
+   "band": "right of the J5 header, above D2: -12 V bulk"
+  }
+ ],
+ "panel_labels": [
+  {
+   "text": "AUDIO OUT",
+   "XY": [
+    10.0,
+    8.0
+   ],
+   "size": 1.6
+  },
+  {
+   "text": "IN",
+   "XY": [
+    10.0,
+    13.3
+   ],
+   "size": 1.3
+  },
+  {
+   "text": "L",
+   "XY": [
+    2.6,
+    19.5
+   ],
+   "size": 1.6
+  },
+  {
+   "text": "R",
+   "XY": [
+    2.6,
+    33.0
+   ],
+   "size": 1.6
+  },
+  {
+   "text": "LINE",
+   "XY": [
+    10.0,
+    40.1
+   ],
+   "size": 1.3
+  },
+  {
+   "text": "PHONES",
+   "XY": [
+    10.0,
+    90.6
+   ],
+   "size": 1.3
+  },
+  {
+   "text": "VOL L",
+   "XY": [
+    10.0,
+    53.3
+   ],
+   "size": 1.3
+  },
+  {
+   "text": "VOL R",
+   "XY": [
+    10.0,
+    72.0
+   ],
+   "size": 1.3
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    10.0,
+    114.0
+   ],
+   "size": 1.2
+  }
+ ],
+ "power_header": {
+  "ref": "J5",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   8.73,
+   113.7
+  ],
+  "column_X_mm": [
+   8.73,
+   11.27
+  ],
+  "pin_rows_Y_mm": [
+   113.7,
+   111.16,
+   108.62,
+   106.08,
+   103.54
+  ],
+  "orientation": "Vertical (pin rows along Y). Pin 1/2 (-12 V) at the bottom row Y113.7, pins 9/10 (+12 V) at the top row Y103.54.",
+  "idc10_socket_envelope_mm": {
+   "X": [
+    6.2,
+    13.8
+   ],
+   "Y": [
+    99.73,
+    117.51
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc16_overhang_top_Y_mm": 92.11,
+  "idc_note": "Unshrouded 2x5 pin header (the user's part: bare 2.54 mm pins, no box), same pads as the earlier keyed box header, so copper is unchanged. Plug a 10-pin IDC socket with the red stripe (-12 V, pin 1) at the bottom; there is no key, so check the stripe. Envelope = 2x5 IDC socket (12.7 x 6.4 mm body + ~1.2 mm key bump), 3.81 mm beyond the end pin centres, X as MIDI: bottom Y117.51 stays on the board (Y119.25) and inside the rail clear gap (Y120.5); top Y99.73 is 2.4 mm below the J4 B-side pads (Y97.3). A 16-pin socket aligned at pin 1 would reach Y92.11 and sit over the J4 (PHONES) leads, so use a 10-to-16 cable on a 16-pin bus; the board is not changed for 16-pin plugs (user, 2026-10-19). D1/C3 and D2/C4 stand vertically in the strips beside the header, outside the socket envelope."
+ },
+ "back_silk": [
+  {
+   "text": "-12V",
+   "XY": [
+    3.0,
+    114.6
+   ],
+   "size": 0.8
+  },
+  {
+   "text": "AUDIO OUT V1.0",
+   "XY": [
+    10.0,
+    11.0
+   ],
+   "size": 0.8
+  }
+ ]
+}
