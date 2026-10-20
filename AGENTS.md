@@ -106,6 +106,47 @@ results, pick the best and improve it; don't settle for whichever finishes first
   shared gates still apply in full.
 - Record the comparison and the choice in the module's `docs/research.md`.
 
+### Learnings (modules/16bit, 4-layer RP2350 QFN-60 at 0.4 mm pitch)
+
+- **Run routers detached and never wait inside a turn.** Agent turns have a 1-hour
+  watchdog, and processes started from a tool shell die when the turn ends. Start
+  every run with `systemd-run --user --unit <name> ...` and a router time limit
+  (`--time`), end the turn, and collect results in the next turn with
+  `systemctl --user is-active <name>`.
+- **TraceMaker is the primary router for fine-pitch MCU boards.** Freerouting (40
+  passes) stalled with its unrouted count swinging between 77 and 148; TraceMaker
+  routed 226/234 on its first run. Still run Freerouting for the comparison.
+- **Protect the planes in the router flags**: `--no-tracks-on In1.Cu` keeps the
+  GND plane solid (without it TraceMaker routed on In1 and split the plane),
+  `--layer-cost In2.Cu=3..6` keeps signals mostly off the power plane, and
+  `--no-neck-nets <power nets>` stops thin power neck-downs.
+- **Run a portfolio**, not one run: results are time-limited and not reproducible, so
+  launch 3 variants (`--seed`, `--first-nets` for the boxed-in nets such as crystal,
+  QSPI, `+1V1`, `--via-cost-mm`, `--global`) and pick by the comparison metrics.
+- **Finish the last opens by hand, not with more router rounds.** Pick the best run
+  (fewest opens, DRC 0, whole planes) and stop there: a box rip-up around the MCU plus
+  a re-route made it worse (11-13 opens vs 4). `tracemaker escape`/`stuck_report` names
+  the pins with no 0.2 mm channel; for those, rip only the few nets next to the pin
+  (whole nets, never a box), add an explicit escape stub + via (check clearances by
+  hand), and route from that via. `tracemaker session` routes the easy rest; give it
+  hints `{"version": 1, "layers": {"no_tracks": ["In1.Cu"], "cost": {"In2.Cu": 4}}}`,
+  otherwise it puts tracks on the GND plane. A small research-only grid router (exact
+  point-in-polygon obstacles, no PIL rasterising) works for long hops; adjacent pins
+  whose nets must cross (crystal XIN/XOUT next to DVDD) need a hand-planned escape
+  per pin (one inward, one outward). Re-run full native DRC after every edit,
+  including snapping/cleanup passes.
+- **Watch the +3V3 plane**: In2 signal hops can fence off a plane island; check the
+  fill islands and move the fencing signal to F/B.
+- **Clean before freezing**: drop zero-length/duplicate/dangling segments, centre
+  track ends on vias, collapse sub-0.1 mm via stubs; router stubs that wander inside a
+  pad are trimmed at the pad centre (pads are convex).
+- **GPU builds don't help**: the upstream Linux release is CPU-only. A CUDA build
+  (CUDA 12.4 + GCC 13, PTX JIT on sm_120) works, but routing time is dominated by
+  CPU path searches, so it was no faster or better.
+- **Shared `pcb plan` caps a plan at 256 ops**: a full board needs `route_plan.py` to
+  split the copper into stages of whole nets. A stale root-sheet UUID in the
+  `.kicad_pro` makes the shared planner refuse the project.
+
 ## Fabrication outputs
 
 `modules/usb-power/jlcpcb/` is the sole shipping-set location; `production/` is
