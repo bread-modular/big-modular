@@ -1,0 +1,242 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-20T08:41:34",
+    "ignored_checks": [],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.6",
+    "schematic_parity": [],
+    "source": "vca-mix.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad 1 [/LEDK3] of U304",
+                    "pos": {
+                        "x": 115.35,
+                        "y": 144.53
+                    },
+                    "uuid": "355a9eb3-e75f-45b5-a83c-89a971e76d9b"
+                },
+                {
+                    "description": "Footprint RV3",
+                    "pos": {
+                        "x": 115.127,
+                        "y": 145.007999
+                    },
+                    "uuid": "001bb03b-2742-4774-94d1-27d598645a7e"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad 2 [/LEDA3] of U304",
+                    "pos": {
+                        "x": 115.35,
+                        "y": 147.07
+                    },
+                    "uuid": "9b981b09-7b0a-4856-9c56-5e6489a84cca"
+                },
+                {
+                    "description": "Footprint RV3",
+                    "pos": {
+                        "x": 115.127,
+                        "y": 145.007999
+                    },
+                    "uuid": "001bb03b-2742-4774-94d1-27d598645a7e"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad [<no net>] of RV3",
+                    "pos": {
+                        "x": 110.2,
+                        "y": 144.499999
+                    },
+                    "uuid": "769f1d57-c36a-43d2-8442-1d64302d7c08"
+                },
+                {
+                    "description": "Footprint U304",
+                    "pos": {
+                        "x": 109.0,
+                        "y": 145.8
+                    },
+                    "uuid": "8290137b-860a-4a02-9e24-d215968c1879"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad 1 [/LEDK1] of U104",
+                    "pos": {
+                        "x": 115.35,
+                        "y": 86.53
+                    },
+                    "uuid": "68478448-579d-46b6-8347-a16eb5d6d87d"
+                },
+                {
+                    "description": "Footprint RV1",
+                    "pos": {
+                        "x": 115.127,
+                        "y": 87.008
+                    },
+                    "uuid": "11721bd0-0b00-4b11-9ee5-bdada5e7fc20"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad 2 [/LEDA1] of U104",
+                    "pos": {
+                        "x": 115.35,
+                        "y": 89.07
+                    },
+                    "uuid": "c1b2b807-407a-449e-b361-24aa369859fd"
+                },
+                {
+                    "description": "Footprint RV1",
+                    "pos": {
+                        "x": 115.127,
+                        "y": 87.008
+                    },
+                    "uuid": "11721bd0-0b00-4b11-9ee5-bdada5e7fc20"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad [<no net>] of RV1",
+                    "pos": {
+                        "x": 110.2,
+                        "y": 86.5
+                    },
+                    "uuid": "af9ecc93-cc5f-456a-bf9f-816148c141e2"
+                },
+                {
+                    "description": "Footprint U104",
+                    "pos": {
+                        "x": 109.0,
+                        "y": 87.8
+                    },
+                    "uuid": "94a8827c-03a7-4218-808c-e4209a2e680c"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad [<no net>] of RV2",
+                    "pos": {
+                        "x": 110.2,
+                        "y": 115.5
+                    },
+                    "uuid": "e470e613-d9bf-4426-a311-00b45ee5ada8"
+                },
+                {
+                    "description": "Footprint U204",
+                    "pos": {
+                        "x": 109.0,
+                        "y": 116.8
+                    },
+                    "uuid": "80cc488d-6b21-42af-83f7-3539e83dda75"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad 1 [/LEDK2] of U204",
+                    "pos": {
+                        "x": 115.35,
+                        "y": 115.53
+                    },
+                    "uuid": "167fe971-626a-4e44-b5a7-96dc5d789591"
+                },
+                {
+                    "description": "Footprint RV2",
+                    "pos": {
+                        "x": 115.127,
+                        "y": 116.008
+                    },
+                    "uuid": "8b246304-3401-467d-a3a4-8da871ad4918"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        },
+        {
+            "comment": "D10: vactrol behind pot (Bread Modular SVF stacking), user-approved 2026-10-20",
+            "description": "PTH inside courtyard",
+            "excluded": true,
+            "items": [
+                {
+                    "description": "PTH pad 2 [/LEDA2] of U204",
+                    "pos": {
+                        "x": 115.35,
+                        "y": 118.07
+                    },
+                    "uuid": "0b0f8d5c-deb4-4d2e-aa0c-1e38bf68e8fa"
+                },
+                {
+                    "description": "Footprint RV2",
+                    "pos": {
+                        "x": 115.127,
+                        "y": 116.008
+                    },
+                    "uuid": "8b246304-3401-467d-a3a4-8da871ad4918"
+                }
+            ],
+            "severity": "error",
+            "type": "pth_inside_courtyard"
+        }
+    ]
+}
