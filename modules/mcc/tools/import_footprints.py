@@ -42,7 +42,7 @@ STOCK_FOOTPRINTS = [
     ('Package_TO_SOT_SMD', 'SOT-323_SC-70'),
     ('Diode_SMD', 'D_SOD-123'),
     ('Resistor_SMD', 'R_0603_1608Metric'),
-    ('Resistor_SMD', 'R_0805_2012Metric'),
+    ('Resistor_SMD', 'R_1206_3216Metric'),
     ('Capacitor_SMD', 'C_0603_1608Metric'),
     ('Capacitor_SMD', 'C_0805_2012Metric'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),

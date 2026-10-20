@@ -1,5 +1,5 @@
 {
- "revision": "S3 schematic, R3 placement: Bread Modular MCC for Eurorack, 6HP",
+ "revision": "S4 schematic, R4 placement (V1): Bread Modular MCC for Eurorack, 6HP",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -279,13 +279,13 @@
   },
   {
    "ref": "R4",
-   "footprint": "R_0805_2012Metric",
+   "footprint": "R_1206_3216Metric",
    "XY": [
-    18.3,
+    18.8,
     12.1
    ],
    "rot": 0,
-   "band": "MIDI out series 1k"
+   "band": "MIDI out series 1k (0.5 W 1206)"
   },
   {
    "ref": "D2",
@@ -812,7 +812,7 @@
     26.5,
     117.6
    ],
-   "MCC S2",
+   "MCC V1",
    0.8
   ],
   [

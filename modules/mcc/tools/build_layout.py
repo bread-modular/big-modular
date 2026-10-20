@@ -185,7 +185,7 @@ def build_carrier():
     path = HW / 'mcc.kicad_pcb'
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - MCC carrier', [
-        'S2 schematic, placement R1: UNROUTED - not released, not for fabrication',
+        'S4 schematic, R4 placement (V1); routing: tools/route_plan.py',
         'Front (F) faces the panel; THT jacks/pots/LEDs and SMD SW1 hand-soldered; SMD on B',
         'Geometry contract: docs/geometry.json; nets: hardware/mcc.kicad_sch',
     ])

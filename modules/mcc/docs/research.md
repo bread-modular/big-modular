@@ -71,3 +71,21 @@ Shared `opt/kicad-tools/jlcpcb/export.py` into `jlcpcb/` (carrier bottom-side SM
 panel PCB-only); commands, upload map and checks in `jlcpcb/README.md`. Shared `check` after
 the export: ERC 0, DRC 0, unconnected 0, parity 0, manifest equal (5 sources). Not
 supplier-accepted.
+
+## V1: R4 to 0.5 W 1206, back silk `MCC V1` (S4/R4, 2026-10-20)
+
+Pre-fab review, on user direction (manual edit, no router).
+
+- **R4 (MIDI OUT series 1k)**: 0805 (125 mW) was too small. With JP2 on P and a permanent
+  -12 V on the J2 tip, PB2 idling high (~5 V) puts ~17 V across R4, ~0.29 W (the old note's
+  45 mW was the +12 V case into the +5V clamp). Now ROHM ESR18EZPF1001 C2074262 (1k 1 %,
+  0.5 W 1206, Extended; the part modules/8bit R12 uses). PB2 then sources ~17 mA, inside
+  the ATtiny1616 pin limit.
+- **Placement**: R4 moved from X18.3 to X18.8 so pad 2 stays at X17.34 beside the MIDI_OUT
+  via (X16.2) and pad 1 (X20.26) clears the J2 tip pad by 0.33 mm. Route plan: the two TX_P
+  legs start at X20.26 and the D2 leg runs at Y13.4 (was 13.2) to clear the taller pads.
+- **Silk**: back text `MCC S2` -> `MCC V1` (`geometry.json` `back_silk`).
+- Base rebuilt, route plan re-applied (`research/route-cand-r4`), promoted. Against R3 only R4
+  and its six B.Cu segments changed; vias, pours and every other track are identical.
+  Shared `check`: ERC 0, DRC 0, unconnected 0, parity 0, no exclusions, manifest equal after
+  the carrier re-export. The panel is unchanged.

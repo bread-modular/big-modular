@@ -3,7 +3,7 @@
 
 Hand-routed: every track, via and pour is written out here in panel-frame millimetres
 (KiCad = +100/+50); nothing is autorouted (TraceMaker failed fast at U1, docs/research.md).
-Placement: docs/geometry.json (R3). Layer plan:
+Placement: docs/geometry.json (R4). Layer plan:
   U1    turned so each side faces its traffic: PB3/PB2/PB1/PB0 + PC0 up, PC1-PC3 + PA0
         right, PA2/PA3 + supply down, PA4-PA7 left. The bank/LED lines drop through the
         F.Cu shadow of the package (EP GND via between them); the rest escape on B.Cu.
@@ -254,8 +254,8 @@ track('rx/f', 'RX', F, 'rx/1', [(15.3, 63.5), (15.3, 32.5)], 'rx/2')
 track('rx/jp', 'RX', B, 'rx/2', [(2.0, 17.0)], ('JP1', '2'))
 
 # ---- MIDI out (JP2 -> R4/D2 -> J2) ---------------------------------------------------------
-track('txp/jp', 'TX_P', B, ('R4', '1'), [(19.21, 10.2), (28.6, 10.2), (28.6, 18.3)], ('JP2', '1'))
-track('txp/d2', 'TX_P', B, ('R4', '1'), [(19.21, 13.2), (18.3, 13.2), (17.41, 14.1)], ('D2', '3'))
+track('txp/jp', 'TX_P', B, ('R4', '1'), [(20.26, 10.2), (28.6, 10.2), (28.6, 18.3)], ('JP2', '1'))
+track('txp/d2', 'TX_P', B, ('R4', '1'), [(20.26, 13.4), (18.3, 13.4), (17.41, 14.1)], ('D2', '3'))
 via('mout/1', 'MIDI_OUT', 16.2, 12.1)
 track('mout/r4', 'MIDI_OUT', B, ('R4', '2'), [], 'mout/1')
 track('mout/f', 'MIDI_OUT', F, 'mout/1', [], ('J2', 'T'))

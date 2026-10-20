@@ -6,9 +6,9 @@
 	(paper "A3")
 	(title_block
 		(title "Big Modular - MCC")
-		(rev "S3")
+		(rev "S4")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S3 - BM MCC for Eurorack: 4 knobs + 4 CV in -> MIDI CC")
+		(comment 1 "SCHEMATIC S4 - BM MCC for Eurorack: 4 knobs + 4 CV in -> MIDI CC")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -4588,7 +4588,7 @@
 		)
 		(uuid "2a1874ab-424a-53f9-9cc3-39b61c086ee7")
 	)
-	(text "BIG MODULAR MCC - S3 schematic (Bread Modular MCC for Eurorack, 6HP): 4 knobs + 4 CV in -> MIDI CC. Circuit intent: docs/research.md"
+	(text "BIG MODULAR MCC - S4 schematic (Bread Modular MCC for Eurorack, 6HP): 4 knobs + 4 CV in -> MIDI CC. Circuit intent: docs/research.md"
 		(exclude_from_sim no)
 		(at 20.32 17.78 0)
 		(effects
@@ -10424,7 +10424,7 @@
 				)
 			)
 		)
-		(property "Footprint" "MCC:R_0805_2012Metric"
+		(property "Footprint" "MCC:R_1206_3216Metric"
 			(at 226.06 254 90)
 			(hide yes)
 			(show_name no)
@@ -10457,7 +10457,7 @@
 				)
 			)
 		)
-		(property "Note" "Output series 1k (0805, as MIDI V2): <= 6.7 mA / 45 mW into the clamp on a +/-12 V mis-patch"
+		(property "Power" "0.5W"
 			(at 226.06 254 90)
 			(hide yes)
 			(show_name no)
@@ -10468,7 +10468,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C17513"
+		(property "Note" "Output series 1k, 0.5 W 1206 (as 8bit R12): a permanent -12 V on the tip against PB2 idling high is ~17 V / 0.29 W (+12 V into the +5V clamp: 45 mW)"
 			(at 226.06 254 90)
 			(hide yes)
 			(show_name no)
@@ -10479,7 +10479,7 @@
 				)
 			)
 		)
-		(property "MPN" "0805W8F1001T5E"
+		(property "LCSC" "C2074262"
 			(at 226.06 254 90)
 			(hide yes)
 			(show_name no)
@@ -10490,7 +10490,18 @@
 				)
 			)
 		)
-		(property "Manufacturer" "UNI-ROYAL"
+		(property "MPN" "ESR18EZPF1001"
+			(at 226.06 254 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ROHM Semicon"
 			(at 226.06 254 90)
 			(hide yes)
 			(show_name no)
