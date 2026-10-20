@@ -23,6 +23,7 @@ tooling.
 | `modules/usb-power/` | USB-C PD 9 V input, TPS26600 protection, TPS55340 boost, TPS54302 inverting buck-boost, TPS7A4700/TPS7A3301 ±12 V, +5 V | SR2 schematic + 084 PCB source accepted; not released |
 | `modules/midi/` | 4HP TRS MIDI in (TRS A/B jumper header, no opto) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based). Two versions: `hardware/v1/` (BM V1 direct input, unprotected) and `hardware/v2/` (±12 V mis-patch protected NPN input with a JP2 debug bypass, clamped outputs, +5V shunt) | V1.0 (S4/R5) and V2.0 (S3/R3) routed carriers + shared 4HP panels; JLCPCB exports in `modules/midi/jlcpcb/v1/` and `jlcpcb/v2/`, not supplier-accepted |
 | `modules/audio-out/` | 4HP ±12 V pure-analog stereo out: 2 x TS in (IN R normalled to IN L; OPA1678 buffers) -> TRS consumer line out + TRS headphone out (MC33178, RV09 50k volume per ear) (Bread Modular `base` based) | S3 schematic (IN R normalled to IN L, no MONO jumper, unshrouded 10-pin power header, 10-pin cable) + R4 routed carrier (thermal-relief GND pours) (IN L, IN R, LINE, VOL L, VOL R, PHONES); 4HP panels; JLCPCB export in `modules/audio-out/jlcpcb/`, not supplier-accepted, not built |
+| `modules/vca-mix/` | VCA-MIX, 6HP: 3 x vactrol VCA (Bread Modular V2CA, no CURVE; Bread Modular LOW/SVF vactrol driver; IN/CV/OUT per channel, CV unpatched = open) + per-channel volume after the VCA (OUT post-volume) + MIX out (Bread Modular imix style), buffered inputs/CV, 1 W output resistors, ±12 V, 10 x TL072 | S4 schematic + P4 placement + 6HP panels; R1 routed carrier, final (TraceMaker + cleanup, 0 unconnected; the 9 vactrol/pot stacking findings are user-approved DRC exclusions, D10; copied into `hardware/` past the shared gate, which still counts them, D14, user-verified manually; vactrol build notes on silk); not released |
 
 Canonical sources are `modules/usb-power/hardware/usb-power.kicad_{pro,sch,pcb}`
 plus `modules/usb-power/panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
@@ -31,7 +32,10 @@ any hardware work. The MIDI module's sources are
 `modules/midi/hardware/v2/midi.kicad_{pro,sch,pcb}` (V2), plus the shared
 `modules/midi/panels/front-pcb/midi-panel.kicad_{pro,pcb}`; their shared-tool
 profiles are `modules/midi/tools/v1|v2/kicad-project.json`. Read
-`modules/midi/Code.md` first.
+`modules/midi/Code.md` first. The VCA-MIX module's sources are
+`modules/vca-mix/hardware/vca-mix.kicad_{pro,sch,pcb}` plus
+`modules/vca-mix/panels/front-pcb/vca-mix-panel.kicad_{pro,pcb}`; read
+`modules/vca-mix/Code.md` first.
 
 ## Tools
 
@@ -71,6 +75,36 @@ exclusions, fake power flags or weakened assertions. Update accepted routing
 baselines only for independently inspected intentional changes. Manufacturer
 data plus prototype screening is not guaranteed performance. Source/sourcing
 and Basic/Economy gates remain distinct; no stock claims without evidence.
+
+## Routing with autorouters
+
+Autorouters may route a carrier (user direction, 2026-10-20). Run **both Freerouting
+and TraceMaker** on the same frozen placement, rules and GND pours, compare the
+results, pick the best and improve it; don't settle for whichever finishes first.
+
+- **Freerouting**: the repo-pinned runtime via `opt/kicad-routing/` (`route doctor`,
+  `prepare-runtime` needs an explicit download opt-in). If its supported subset
+  refuses the board, the same pinned JAR may be driven through native DSN export /
+  SES import. Pass flags that turn its analytics off.
+- **TraceMaker**: the shared controller and recipe in `opt/kicad-tools/tracemaker/`
+  and `opt/kicad-tools/HYBRID_ROUTING.md`, or a hash-verified upstream release run on
+  a research copy (`--no-kb --no-gpu`; `--soft-zones` with the pours present worked
+  best on modules/vca-mix).
+- Runtimes, builds and driver scripts stay outside the repository or in the module's
+  ignored `research/`. Don't add router tooling.
+- Give routers only **tighter** rules than the native ones (track widths, Power net
+  class, clearance margin, edge inset). Never lower a native rule or accept
+  below-rule neck-downs.
+- **Compare** with full native DRC + parity: unrouted, DRC findings beyond the
+  baseline, via count, track length, below-rule segments, GND-pour continuity and the
+  critical analog/power paths (inspect renders).
+- **Improve** the pick with explicit, recorded cleanup edits, e.g. removing redundant
+  rail legs or freeing crowded pads.
+- **Freeze and promote**: freeze the copper as module data and emit it with
+  `tools/route_plan.py` as shared `pcb plan/apply/promote` ops (as modules/vca-mix).
+  Raw router output never goes into `hardware/`. Router success is not acceptance: the
+  shared gates still apply in full.
+- Record the comparison and the choice in the module's `docs/research.md`.
 
 ## Fabrication outputs
 

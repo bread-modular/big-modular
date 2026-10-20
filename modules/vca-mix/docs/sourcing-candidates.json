@@ -1,0 +1,355 @@
+{
+ "note": "Dated public-catalog observations (S4 part set) from opt/kicad-tools/jlcpcb/assembly.py via kicad_tools.py assembly. Stock is transient and not a reservation; nothing here is order acceptance. Raw snapshots: research/jlc-cache (ignored).",
+ "tool": "python3 -B opt/kicad-tools/kicad_tools.py assembly lookup <code> --strict-live --max-requests 1",
+ "op_amp_note": "S4 uses TL072CDT (ST, C6961), Basic at the 2026-10-20 lookup (S1-S3 used Extended TL074CDR). The only Extended part is the 1 W 2512 1k (C54315), the same trade-off as modules/imix.",
+ "parts": [
+  {
+   "code": "C1648",
+   "mpn": "CL10C200JB8NNNC",
+   "manufacturer": "Samsung Electro-Mechanics",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 1788533,
+   "key_attributes": {
+    "Voltage Rating": "50V",
+    "Tolerance": "±5%",
+    "Capacitance": "20pF",
+    "Temperature Coefficient": "C0G"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL10C200JB8NNNC_C1648.pdf",
+   "role": "Cn01/Cn02, C401/C402 20p C0G feedback",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T23:32:54Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "6ccc410dbcca3adfeaee5100422b3021ab5944af08f8aa1f1ca44a7fe4d91e3a",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C6961",
+   "mpn": "TL072CDT",
+   "manufacturer": "STMicroelectronics",
+   "package": "SO-8",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 185962,
+   "key_attributes": {
+    "Operating Temperature": "0℃~+70℃",
+    "Vos - Input Offset Voltage": "3mV",
+    "Input Offset Current(Ios)": "5pA",
+    "Output Current": "40mA",
+    "Input Offset Voltage Drift(Vos TC)": "10uV/℃",
+    "Single Supply": "6V~36V",
+    "Slew Rate": "16V/us",
+    "Gain Bandwidth Product": "4MHz",
+    "Quiescent Current(Iq)": "1.4mA",
+    "Common Mode Rejection Ratio(CMRR)": "86dB",
+    "Number of Channels": "2",
+    "Noise density(eN)": "15nV/√Hz@1kHz",
+    "Features": "Short-Circuit  Protection、Built-in compensation、Latch-up suppression",
+    "Ib - Input Bias Current": "20pA"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809051915_STMicroelectronics-TL072CDT_C6961.pdf",
+   "role": "U101-U103, U201-U203, U301-U303, U401 TL072 dual op amp",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T23:32:52Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "53a43b4e11e1f6b9c0201ee8df92c2e599c4e89893bcc0d633beddf870ef7654",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C8598",
+   "mpn": "B5819W SL",
+   "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+   "package": "SOD-123",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 569862,
+   "key_attributes": {
+    "Voltage - Forward(Vf@If)": "600mV@1A",
+    "Non-Repetitive Peak Forward Surge Current": "9A",
+    "Voltage - DC Reverse(Vr)": "40V",
+    "Diode Configuration": "Standalone",
+    "Current - Rectified": "1A"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Jiangsu-Changjing-Electronics-Technology-Co---Ltd--B5819W-SL_C8598.pdf",
+   "role": "D501/D502 B5819W rail reverse protection",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:27Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "a28830f821b767d1714a4802a237cab82195f0647f58d3b938f46862ac510589",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C14663",
+   "mpn": "CC0603KRX7R9BB104",
+   "manufacturer": "YAGEO",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 40578031,
+   "key_attributes": {
+    "Voltage Rating": "50V",
+    "Tolerance": "±10%",
+    "Capacitance": "100nF",
+    "Temperature Coefficient": "X7R"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2211101700_YAGEO-CC0603KRX7R9BB104_C14663.pdf",
+   "role": "100n X7R decoupling (one per TL072 supply pin)",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:16Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "86e1c487f9b936d623a9f3571bdf3591584a7b4476c2c929780cbbfc808c17be",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C15850",
+   "mpn": "CL21A106KAYNNNE",
+   "manufacturer": "Samsung Electro-Mechanics",
+   "package": "0805",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 6422857,
+   "key_attributes": {
+    "Voltage Rating": "25V",
+    "Tolerance": "±10%",
+    "Capacitance": "10uF",
+    "Temperature Coefficient": "X5R"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21A106KAYNNNE_C15850.pdf",
+   "role": "C501/C502 10u bulk",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:18Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "12af07ac5557c514d2c962f540892285bdea550da020e68bfa3e0616781c7e26",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C22775",
+   "mpn": "0603WAF1000T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 10690360,
+   "key_attributes": {
+    "Resistance": "100Ω",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2411221126_UNI-ROYAL-Uniroyal-Elec-0603WAF1000T5E_C22775.pdf",
+   "role": "Rn10 100R pot feed",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:14Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "144348e8a5074d9366ae5b521fe0011da6fd3eb508ab6a2dc4257d4bb2d54db3",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C23138",
+   "mpn": "0603WAF3300T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 4171482,
+   "key_attributes": {
+    "Resistance": "330Ω",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF3300T5E_C23138.pdf",
+   "role": "Rn09 330R LED current sense",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:12Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "f668a093c01bbeec13edf7c7824eb758525a036eb95364bc7e5b28860bd4abfa",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C23196",
+   "mpn": "0603WAF5102T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 2392618,
+   "key_attributes": {
+    "Resistance": "51kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF5102T5E_C23196.pdf",
+   "role": "Rn06 51k CV buffer feedback",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T23:32:56Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "5f155327af0b1c662678d0998d03036630838423cc7566bfe056d1b23379fa0f",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C23206",
+   "mpn": "0603WAF5602T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 840921,
+   "key_attributes": {
+    "Resistance": "56kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010116_UNI-ROYAL-Uniroyal-Elec-0603WAF5602T5E_C23206.pdf",
+   "role": "Rn07 56k CV normal to +12V",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T23:32:58Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "314b9dcde0f031046e206d91727894ce39e9e7cab7bc22452d56d9e1b345bb19",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C25803",
+   "mpn": "0603WAF1003T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 19240253,
+   "key_attributes": {
+    "Resistance": "100kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1003T5E_C25803.pdf",
+   "role": "Rn01/Rn02/Rn08/Rn11, R401-R403 100k",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:04Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "6329e91da321eda19a7c55bd81e68141f9cd720ef9c57c614843b5fcb6c4dba5",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C25804",
+   "mpn": "0603WAF1002T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 39468325,
+   "key_attributes": {
+    "Resistance": "10kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "100mW",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "75V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010045_UNI-ROYAL-Uniroyal-Elec-0603WAF1002T5E_C25804.pdf",
+   "role": "Rn03/Rn04 10k (V2CA VCA stage)",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:08Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "8183c78d28932690be28574f8d0d1b8b456838ee62ebcae6f669075afa2e40c1",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C54315",
+   "mpn": "25121WF1001T4E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "2512",
+   "classification": "Extended",
+   "economy_eligible": true,
+   "stock_observed": 72267,
+   "key_attributes": {
+    "Resistance": "1kΩ",
+    "Operating Temperature": "-55℃~+155℃",
+    "Power(Watts)": "1W",
+    "Type": "Thick Film Resistor",
+    "Voltage-Supply(Max)": "200V",
+    "Tolerance": "±1%",
+    "Temperature Coefficient": "±100ppm/℃"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_2206010000_UNI-ROYAL-Uniroyal-Elec-25121WF1001T4E_C54315.pdf",
+   "role": "Rn05, R404 1k 1 W 2512 output series (as imix R18)",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T23:33:00Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "6283cef03d01b8bbd021d1eae833b438d6328f6d9802b61fba72227387b10838",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  },
+  {
+   "code": "C81598",
+   "mpn": "1N4148W",
+   "manufacturer": "ST(Semtech)",
+   "package": "SOD-123",
+   "classification": "Basic",
+   "economy_eligible": true,
+   "stock_observed": 4449084,
+   "key_attributes": {
+    "Voltage - Forward(Vf@If)": "1V@50mA",
+    "Non-Repetitive Peak Forward Surge Current": "1A",
+    "Voltage - DC Reverse(Vr)": "75V",
+    "Reverse Recovery Time (trr)": "4ns",
+    "Diode Configuration": "Standalone",
+    "Current - Rectified": "150mA",
+    "Pd - Power Dissipation": "400mW",
+    "Reverse Leakage Current (Ir)": "1uA@75V"
+   },
+   "datasheet_url": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811061725_ST-Semtech-1N4148W_C81598.pdf",
+   "role": "Dn01 1N4148W anti-parallel to the LED",
+   "evidence": {
+    "retrieved_at_utc": "2026-10-19T04:06:25Z",
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "sha256": "b2488433784fa7110e0318ef47d9acb9ebade9e0c51ce49131b1233e68ff2944",
+    "mode": "live"
+   },
+   "tool": "lookup <code> --strict-live"
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/vca-mix.kicad_pcb",
+  "root_schematic": "../hardware/vca-mix.kicad_sch",
+  "dependencies": [
+    "../hardware/VCA_MIX.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}

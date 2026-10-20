@@ -1,0 +1,154 @@
+{
+  "frame": "KiCad STEP, user origin = panel origin; Z0 = board bottom",
+  "board_bbox_mm": [
+    0.5,
+    29.5,
+    9.25,
+    119.25
+  ],
+  "panels": {
+    "fr4_1.6": {
+      "thickness_mm": 1.6,
+      "front_face_Z_mm": 13.2,
+      "depth_behind_panel_rear_mm": 20.225,
+      "parts": {
+        "J1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J3": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J4": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J5": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J6": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J7": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J8": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J9": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "J11": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.903
+        },
+        "RV1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 13.4,
+          "knurl_bottom_vs_panel_front_mm": 6.4,
+          "body_top_below_panel_rear_mm": 2.4
+        },
+        "RV2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 13.4,
+          "knurl_bottom_vs_panel_front_mm": 6.4,
+          "body_top_below_panel_rear_mm": 2.4
+        },
+        "RV3": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 13.4,
+          "knurl_bottom_vs_panel_front_mm": 6.4,
+          "body_top_below_panel_rear_mm": 2.4
+        }
+      },
+      "max_interference_mm3": 0.0
+    },
+    "printed_2.0": {
+      "thickness_mm": 2.0,
+      "front_face_Z_mm": 13.6,
+      "depth_behind_panel_rear_mm": 20.225,
+      "parts": {
+        "J1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J3": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J4": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J5": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J6": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J7": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J8": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J9": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "J11": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 2.503
+        },
+        "RV1": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 13.0,
+          "knurl_bottom_vs_panel_front_mm": 6.0,
+          "body_top_below_panel_rear_mm": 2.4
+        },
+        "RV2": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 13.0,
+          "knurl_bottom_vs_panel_front_mm": 6.0,
+          "body_top_below_panel_rear_mm": 2.4
+        },
+        "RV3": {
+          "interference_mm3": 0.0,
+          "top_vs_panel_front_mm": 13.0,
+          "knurl_bottom_vs_panel_front_mm": 6.0,
+          "body_top_below_panel_rear_mm": 2.4
+        }
+      },
+      "max_interference_mm3": 0.0
+    }
+  },
+  "pot_model": "Song Huei R0904N envelope from geometry.json pot_model (datasheet nominal, no vendor 3D model)",
+  "not_modelled": {
+    "vactrols": [
+      "U104",
+      "U204",
+      "U304"
+    ],
+    "note": "No VTL5C 3D model exists upstream; the vactrols are on B, behind the board (docs/research.md D4)."
+  },
+  "board_inside_rail_gap": true,
+  "board_inside_panel_width": true
+}
