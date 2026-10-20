@@ -1,0 +1,965 @@
+{
+ "revision": "S3 schematic, R3 placement: Bread Modular MCC for Eurorack, 6HP",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 6,
+ "panel_mm": [
+  30.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "panel_print_thickness_mm": 2.0,
+ "rail_holes_mm": [
+  [
+   7.5,
+   3.0,
+   3.2
+  ],
+  [
+   7.5,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   29.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 2,
+  "note": "29.0 x 110.0 mm (as modules/vca-mix), 0.5 mm inside the 30.0 mm panel each side and 1.25 mm inside the rail gap at each end; held by the six jack nuts. The pots have no bushing or nut."
+ },
+ "control_columns_X_mm": {
+  "knobs": 8.0,
+  "jacks": 22.5
+ },
+ "rows_note": "Top to bottom: MIDI IN (left) and MIDI OUT (right) at Y17; four rows of knob n (left) + CV n jack (right) at Y37/58.25/79.5/100.75 (21.25 mm pitch); the bank row (SW1 left, LEDs A/B/C right) at Y114 on the bottom edge. Back: J3 along the top under the MIDI band with the LDO beside it, the CV input stages in the strip right of the jack pads, op-amps/MCU/UPDI/shunt in the strip between the knob pins and the jack pads.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "MIDI_IN_TS",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    8.0,
+    17.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J2",
+   "role": "MIDI_OUT_TS",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    17.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J11",
+   "role": "CV1_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    37.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J12",
+   "role": "CV2_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    58.25
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J13",
+   "role": "CV3_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    79.5
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J14",
+   "role": "CV4_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    100.75
+   ],
+   "rot": 0
+  }
+ ],
+ "jack_rotation_note": "All jacks rot 0: pads along Y below the hole, T at the top (Y-4.92), TN (Y+3.38), S (Y+6.48).",
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "KNOB_1 (PA4)",
+   "shaft_XY": [
+    8.0,
+    37.0
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV2",
+   "role": "KNOB_2 (PA5)",
+   "shaft_XY": [
+    8.0,
+    58.25
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV3",
+   "role": "KNOB_3 (PA6)",
+   "shaft_XY": [
+    8.0,
+    79.5
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV4",
+   "role": "KNOB_4 (PA7)",
+   "shaft_XY": [
+    8.0,
+    100.75
+   ],
+   "value": "50k"
+  }
+ ],
+ "pot_footprint": "Potentiometer_RV09",
+ "pot_shaft_offset_mm": [
+  -0.127,
+  -0.508
+ ],
+ "pot_note": "Bread Modular RV09 footprint (pins 7.5 mm below the shaft on 2.5 mm pitch, bracket tabs 9.6 mm apart on the shaft line). User stock pots, as modules/audio-out: no threaded bushing, no nut, 16 mm knurled shaft; 3D proxy hardware/MCC.3dshapes/RV09_proxy.step. pot_shaft_offset_mm = shaft centre relative to the footprint origin at rotation 0. Pin 1 (GND) left, pin 3 (+5V) right: CW = more.",
+ "button": {
+  "ref": "SW1",
+  "footprint": "SW_PUSH_6mm_H7.3mm",
+  "side": "F",
+  "XY": [
+   8.0,
+   114.0
+  ],
+  "rot": 0,
+  "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (body 3.5 mm, \u00d83.5 round stem 3.5 mm), pins 6.5 x 4.5 mm, 0.7 mm legs; pins 1-2 and 3-4 are joined inside (as modules/8bit S5)",
+  "note": "THT on the carrier F side (faces the panel), hand-soldered; the legs come through to B. Stock KiCad SW_PUSH_6mm_H7.3mm (the 7.3 mm model is the closest stock height). Placed by the pad-pattern centre = stem centre, under the knob column. A printed cap bridges stem top to panel."
+ },
+ "leds": [
+  {
+   "ref": "D4",
+   "role": "BANK_A_LED",
+   "XY": [
+    16.5,
+    114.0
+   ],
+   "rot": 270
+  },
+  {
+   "ref": "D5",
+   "role": "BANK_B_LED",
+   "XY": [
+    21.5,
+    114.0
+   ],
+   "rot": 270
+  },
+  {
+   "ref": "D6",
+   "role": "BANK_C_LED",
+   "XY": [
+    26.5,
+    114.0
+   ],
+   "rot": 270
+  }
+ ],
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2,
+  "led": 3.2,
+  "button": 4.2
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+  "jack_body_top": 8.9,
+  "panel_rear_seat": 10.0,
+  "pj301m12_thread": [
+   10.0,
+   14.51
+  ],
+  "nut_thickness": 2.0,
+  "led_body_bottom": 6.3,
+  "led_body_height": 5.3,
+  "led_model_body_bottom": 3.0,
+  "led_note": "3 mm LED body bottom at Z6.3 puts the dome flush with the 1.6 mm FR4 panel front (as 8bit).",
+  "pot_note": "User RV09 (as modules/audio-out): body 6.8 mm nominal, shaft to Z22.8. Measure a real pot before ordering panels.",
+  "switch_body_top": 3.5,
+  "switch_stem_top": 7.0,
+  "switch_stem_D": 3.5
+ },
+ "back_side_parts": [
+  {
+   "ref": "R1",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    11.5,
+    12.1
+   ],
+   "rot": 0,
+   "band": "MIDI in base resistor"
+  },
+  {
+   "ref": "R3",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    11.5,
+    14.1
+   ],
+   "rot": 0,
+   "band": "MIDI in idle pull-up"
+  },
+  {
+   "ref": "Q1",
+   "footprint": "SOT-23",
+   "XY": [
+    12.0,
+    17.0
+   ],
+   "rot": 0,
+   "band": "MIDI in NPN"
+  },
+  {
+   "ref": "D1",
+   "footprint": "D_SOD-123",
+   "XY": [
+    12.0,
+    20.6
+   ],
+   "rot": 0,
+   "band": "MIDI in B-E clamp"
+  },
+  {
+   "ref": "R2",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    14.9,
+    13.1
+   ],
+   "rot": 90,
+   "band": "Q1 collector pull-up"
+  },
+  {
+   "ref": "JP1",
+   "footprint": "SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm",
+   "XY": [
+    3.2,
+    17.0
+   ],
+   "rot": 90,
+   "band": "MIDI IN jumper (P top, D bottom)"
+  },
+  {
+   "ref": "R4",
+   "footprint": "R_0805_2012Metric",
+   "XY": [
+    18.3,
+    12.1
+   ],
+   "rot": 0,
+   "band": "MIDI out series 1k"
+  },
+  {
+   "ref": "D2",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    18.3,
+    15.0
+   ],
+   "rot": 0,
+   "band": "MIDI out clamp"
+  },
+  {
+   "ref": "JP2",
+   "footprint": "SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm",
+   "XY": [
+    27.2,
+    17.0
+   ],
+   "rot": 90,
+   "band": "MIDI OUT jumper"
+  },
+  {
+   "ref": "U2",
+   "footprint": "SOT-89-3",
+   "XY": [
+    21.0,
+    27.6
+   ],
+   "rot": 0,
+   "band": "HT7550-1, right of J3"
+  },
+  {
+   "ref": "C4",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    25.0,
+    27.6
+   ],
+   "rot": 90,
+   "band": "LDO input"
+  },
+  {
+   "ref": "C3",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    27.6,
+    27.6
+   ],
+   "rot": 90,
+   "band": "LDO output"
+  },
+  {
+   "ref": "D3",
+   "footprint": "D_SOD-123",
+   "XY": [
+    16.5,
+    33.0
+   ],
+   "rot": 0,
+   "band": "+12 V series diode, below J3 pins 9/10"
+  },
+  {
+   "ref": "C5",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    16.5,
+    35.6
+   ],
+   "rot": 0,
+   "band": "+12V_F bulk"
+  },
+  {
+   "ref": "C2",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    16.5,
+    38.2
+   ],
+   "rot": 0,
+   "band": "+5V bulk"
+  },
+  {
+   "ref": "U3",
+   "footprint": "SOT-23",
+   "XY": [
+    17.0,
+    41.5
+   ],
+   "rot": 0,
+   "band": "+5V shunt clamp"
+  },
+  {
+   "ref": "R9",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    20.0,
+    41.3
+   ],
+   "rot": 90,
+   "band": "shunt divider top"
+  },
+  {
+   "ref": "R10",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    14.0,
+    41.3
+   ],
+   "rot": 270,
+   "band": "shunt divider bottom"
+  },
+  {
+   "ref": "R11",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    32.1
+   ],
+   "rot": 0,
+   "band": "CV1 input 56k, beside J11 tip"
+  },
+  {
+   "ref": "R21",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    34.1
+   ],
+   "rot": 0,
+   "band": "CV1 offset 51k to +5V"
+  },
+  {
+   "ref": "R31",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    36.1
+   ],
+   "rot": 0,
+   "band": "CV1 trim 510k to GND"
+  },
+  {
+   "ref": "C11",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    26.0,
+    38.1
+   ],
+   "rot": 0,
+   "band": "CV1 filter 1n"
+  },
+  {
+   "ref": "D11",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    26.4,
+    40.6
+   ],
+   "rot": 0,
+   "band": "CV1 clamp"
+  },
+  {
+   "ref": "C31",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    8.0,
+    47.0
+   ],
+   "rot": 0,
+   "band": "knob 1 wiper filter, below RV1 pin 2"
+  },
+  {
+   "ref": "R12",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    53.35
+   ],
+   "rot": 0,
+   "band": "CV2 input 56k, beside J12 tip"
+  },
+  {
+   "ref": "R22",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    55.35
+   ],
+   "rot": 0,
+   "band": "CV2 offset 51k to +5V"
+  },
+  {
+   "ref": "R32",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    57.35
+   ],
+   "rot": 0,
+   "band": "CV2 trim 510k to GND"
+  },
+  {
+   "ref": "C12",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    26.0,
+    59.35
+   ],
+   "rot": 0,
+   "band": "CV2 filter 1n"
+  },
+  {
+   "ref": "D12",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    26.4,
+    61.85
+   ],
+   "rot": 0,
+   "band": "CV2 clamp"
+  },
+  {
+   "ref": "C32",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    8.0,
+    68.25
+   ],
+   "rot": 0,
+   "band": "knob 2 wiper filter, below RV2 pin 2"
+  },
+  {
+   "ref": "R13",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    74.6
+   ],
+   "rot": 0,
+   "band": "CV3 input 56k, beside J13 tip"
+  },
+  {
+   "ref": "R23",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    76.6
+   ],
+   "rot": 0,
+   "band": "CV3 offset 51k to +5V"
+  },
+  {
+   "ref": "R33",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    78.6
+   ],
+   "rot": 0,
+   "band": "CV3 trim 510k to GND"
+  },
+  {
+   "ref": "C13",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    26.0,
+    80.6
+   ],
+   "rot": 0,
+   "band": "CV3 filter 1n"
+  },
+  {
+   "ref": "D13",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    26.4,
+    83.1
+   ],
+   "rot": 0,
+   "band": "CV3 clamp"
+  },
+  {
+   "ref": "C33",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    8.0,
+    89.5
+   ],
+   "rot": 0,
+   "band": "knob 3 wiper filter, below RV3 pin 2"
+  },
+  {
+   "ref": "R14",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    95.85
+   ],
+   "rot": 0,
+   "band": "CV4 input 56k, beside J14 tip"
+  },
+  {
+   "ref": "R24",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    97.85
+   ],
+   "rot": 0,
+   "band": "CV4 offset 51k to +5V"
+  },
+  {
+   "ref": "R34",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.0,
+    99.85
+   ],
+   "rot": 0,
+   "band": "CV4 trim 510k to GND"
+  },
+  {
+   "ref": "C14",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    26.0,
+    101.85
+   ],
+   "rot": 0,
+   "band": "CV4 filter 1n"
+  },
+  {
+   "ref": "D14",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    26.4,
+    104.35
+   ],
+   "rot": 0,
+   "band": "CV4 clamp"
+  },
+  {
+   "ref": "C34",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    8.0,
+    110.75
+   ],
+   "rot": 0,
+   "band": "knob 4 wiper filter, below RV4 pin 2"
+  },
+  {
+   "ref": "U4",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    17.0,
+    47.0
+   ],
+   "rot": 0,
+   "band": "MCP6002 CV1/CV2, between rows 1 and 2"
+  },
+  {
+   "ref": "C6",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    17.0,
+    50.8
+   ],
+   "rot": 0,
+   "band": "U4 decoupling"
+  },
+  {
+   "ref": "U1",
+   "footprint": "VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm",
+   "XY": [
+    17.0,
+    67.75
+   ],
+   "rot": 90,
+   "band": "MCU, between rows 2 and 3, turned: PB0/PB1 up to U4, PA2/PA3 down to U5, PC1-PC3 right, PA4-PA7 left"
+  },
+  {
+   "ref": "C1",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    15.5,
+    71.2
+   ],
+   "rot": 180,
+   "band": "U1 decoupling, +5V pad west (fed from the knob +5V column)"
+  },
+  {
+   "ref": "R5",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    20.0,
+    71.0
+   ],
+   "rot": 270,
+   "band": "UPDI series, between U1 and J4"
+  },
+  {
+   "ref": "J4",
+   "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+   "XY": [
+    23.87,
+    69.65
+   ],
+   "rot": 270,
+   "band": "UPDI header across the front gap between J12 and J13 bodies (pin 1 UPDI on the left)"
+  },
+  {
+   "ref": "U5",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    17.0,
+    89.5
+   ],
+   "rot": 0,
+   "band": "MCP6002 CV3/CV4, between rows 3 and 4"
+  },
+  {
+   "ref": "C7",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    14.6,
+    85.6
+   ],
+   "rot": 180,
+   "band": "U5 decoupling, above U5 pin 8"
+  },
+  {
+   "ref": "R6",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    16.5,
+    109.4
+   ],
+   "rot": 0,
+   "band": "bank LED A current, above its LED"
+  },
+  {
+   "ref": "R7",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    21.5,
+    109.4
+   ],
+   "rot": 0,
+   "band": "bank LED B current, above its LED"
+  },
+  {
+   "ref": "R8",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    26.5,
+    109.4
+   ],
+   "rot": 0,
+   "band": "bank LED C current, above its LED"
+  },
+  {
+   "ref": "J3",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    9.58,
+    27.6
+   ],
+   "rot": 270,
+   "band": "Eurorack power, along the top under the MIDI band"
+  }
+ ],
+ "power_header": {
+  "ref": "J3",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   4.5,
+   26.33
+  ],
+  "orientation": "Horizontal along the top, under the MIDI band (rot 270 on B): pin 1 (-12 V) at the left of the upper row, pins 9/10 (+12 V) at the right.",
+  "idc16_socket_envelope_mm": {
+   "X": [
+    0.69,
+    26.09
+   ],
+   "Y": [
+    23.8,
+    31.4
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc_note": "A 16-pin IDC socket overhangs to the right past pins 9/10 (positions 11-16 unused). Envelope = 2x8 socket body 25.4 x 6.4 mm + ~1.2 mm key bump; it stays inside the panel width. Back-side parts under it are SMD (<= 1.75 mm).",
+  "silk": [
+   [
+    [
+     4.5,
+     23.6
+    ],
+    "-12V",
+    0.8
+   ]
+  ]
+ },
+ "jumpers": [
+  {
+   "ref": "JP1",
+   "letter_offset_mm": [
+    2.1,
+    0.0
+   ]
+  },
+  {
+   "ref": "JP2",
+   "letter_offset_mm": [
+    -2.1,
+    0.0
+   ]
+  }
+ ],
+ "back_silk": [
+  [
+   [
+    26.5,
+    117.6
+   ],
+   "MCC S2",
+   0.8
+  ],
+  [
+   [
+    22.6,
+    72.25
+   ],
+   "UPDI",
+   1.0
+  ],
+  [
+   [
+    25.14,
+    67.6
+   ],
+   "GND",
+   1.0
+  ]
+ ],
+ "panel_labels": [
+  {
+   "text": "MCC",
+   "XY": [
+    20.5,
+    5.2
+   ],
+   "size": 2.0
+  },
+  {
+   "text": "MIDI IN",
+   "XY": [
+    8.0,
+    10.6
+   ],
+   "size": 1.0
+  },
+  {
+   "text": "MIDI OUT",
+   "XY": [
+    22.5,
+    10.6
+   ],
+   "size": 1.0
+  },
+  {
+   "text": "1",
+   "XY": [
+    8.0,
+    30.0
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "2",
+   "XY": [
+    8.0,
+    51.25
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "3",
+   "XY": [
+    8.0,
+    72.5
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "4",
+   "XY": [
+    8.0,
+    93.75
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV1",
+   "XY": [
+    22.5,
+    31.0
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV2",
+   "XY": [
+    22.5,
+    52.25
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV3",
+   "XY": [
+    22.5,
+    73.5
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV4",
+   "XY": [
+    22.5,
+    94.75
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BANK",
+   "XY": [
+    8.0,
+    109.0
+   ],
+   "size": 1.0
+  },
+  {
+   "text": "A",
+   "XY": [
+    16.5,
+    110.8
+   ],
+   "size": 1.0
+  },
+  {
+   "text": "B",
+   "XY": [
+    21.5,
+    110.8
+   ],
+   "size": 1.0
+  },
+  {
+   "text": "C",
+   "XY": [
+    26.5,
+    110.8
+   ],
+   "size": 1.0
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    19.0,
+    123.3
+   ],
+   "size": 1.0
+  }
+ ]
+}
