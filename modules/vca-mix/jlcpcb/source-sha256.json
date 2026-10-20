@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/vca-mix.kicad_pcb": "ce6988072882559cbbac5108f4447019db4ff28b7b68ad9aac9cdc9700597509",
+    "hardware/vca-mix.kicad_pro": "cd8ac5fcfe2f606b9ed0794aa53dc5de7db0516c540cc34ddc14a904eb36c780",
+    "hardware/vca-mix.kicad_sch": "b9288a508a262cef9beb223b59c811b66cc1af1d7fba18c255943d9ce8262cac",
+    "panels/front-pcb/vca-mix-panel.kicad_pcb": "8f0a6a40ff273fed8b3afa6ef543ff23ba210a5ee70ef208f1e9b87de2f1bdd7",
+    "panels/front-pcb/vca-mix-panel.kicad_pro": "2cd86d43edad4b1d86d82b000a0a98e3fd2915bce9128e00555f6ee850019447"
+  },
+  "exports": {
+    "jlcpcb/carrier/vca-mix-gerbers.zip": "b429bb0e7f9977f5ec5fd09fd5a594fbd594b67205ea4a48d2891e17dfadb022",
+    "jlcpcb/carrier/bom.csv": "41e8a718ed6e111c877da393724e3aa84c8c94025d0b4a1b4b47efcd1022de5f",
+    "jlcpcb/carrier/positions.csv": "64ebadae5c73e8f31f86d15f2571289c34128bfe64d0e7611e57d413dc2a6bf5",
+    "jlcpcb/panel/vca-mix-panel-gerbers.zip": "20f0ba9928bffce714af0267c296c101eea099706ad6b8a1ff8b9e6a19cf43d8"
+  }
+}

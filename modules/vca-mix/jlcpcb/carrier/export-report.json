@@ -1,0 +1,56 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/122/modules/vca-mix/hardware/vca-mix.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/122/modules/vca-mix/hardware/vca-mix.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/122/modules/vca-mix/hardware/vca-mix.kicad_pcb": "ce6988072882559cbbac5108f4447019db4ff28b7b68ad9aac9cdc9700597509",
+    "/home/azero/.okbrain/workspaces/big-modular/122/modules/vca-mix/hardware/vca-mix.kicad_sch": "b9288a508a262cef9beb223b59c811b66cc1af1d7fba18c255943d9ce8262cac"
+  },
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 2,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "bottom",
+  "include_through_hole": false,
+  "component_count": 82,
+  "bom_row_count": 13,
+  "excluded": {
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J5": "Not an SMD footprint (use --include-through-hole)",
+    "J6": "Not an SMD footprint (use --include-through-hole)",
+    "J7": "Not an SMD footprint (use --include-through-hole)",
+    "J8": "Not an SMD footprint (use --include-through-hole)",
+    "J9": "Not an SMD footprint (use --include-through-hole)",
+    "J10": "Not an SMD footprint (use --include-through-hole)",
+    "J11": "Not an SMD footprint (use --include-through-hole)",
+    "RV1": "Not an SMD footprint (use --include-through-hole)",
+    "RV2": "Not an SMD footprint (use --include-through-hole)",
+    "RV3": "Not an SMD footprint (use --include-through-hole)",
+    "U104": "Not an SMD footprint (use --include-through-hole)",
+    "U204": "Not an SMD footprint (use --include-through-hole)",
+    "U304": "Not an SMD footprint (use --include-through-hole)"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "vca-mix-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}
