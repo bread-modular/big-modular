@@ -9,14 +9,14 @@ reads MIDI, a CV input and three knobs. Bread Modular's firmware pin map is kept
 | **CV** in | Bipolar: 56k/51k/510k level shift maps **-5.5..+5.5 V to 0..5 V** (input impedance 102k), BAT54SW clamp + 1n, MCP6001 follower on +5 V into PB0 (ADC). ±12 V tolerant; unpatched = 0 V = mid-scale (~509 of 1023) |
 | **P1**, **P2** | 50k linear dividers into PA1 / PA2 (BM knobs) |
 | **P3** (1M linear) | Passive low-pass on the DAC, as Bread Modular (~160 Hz..15.9 kHz, CW = brighter). No jumpers |
-| **MODE** button + LED | Bread Modular's SMD tact switch (K2-1808SN-A4SW-01) on the carrier front, pressed through the panel by a printed two-part actuator (`panels/button-actuator/`); LED on PA5 |
+| **MODE** button + LED | Hand-soldered 6 x 6 mm THT tact switch, 7 mm tall, on the carrier front, pressed through the panel by a one-piece printed cap (`panels/button-actuator/`); LED on PA5 |
 | **OUT** | TL072 on ±12 V: DAC 0..4.34 V -> ±4.8 V, DC coupled, 1k series |
 
 Power: Eurorack 10-pin (16-pin IDC fits), ±12 V through series Schottkys, +5 V from
 an HT7550-1. UPDI on a 2-pin header. Pots: the user's RV09 stock (50k and 1M, no
 bushing, 16 mm shaft, no nut), as `modules/audio-out`.
 
-**Status: S4 schematic + R3 routed carrier, JLCPCB export in `jlcpcb/`, not
+**Status: S5 schematic + R4 routed carrier, JLCPCB export in `jlcpcb/`, not
 supplier-accepted, not bench-tested.** Shared `check`: ERC 0, DRC 0 at all
 severities, 0 unconnected, parity equal, source manifest equal, no exclusions
 (`docs/fit/`). Live assembly audit: all parts resolved and Economy-eligible; the one
@@ -27,10 +27,10 @@ yet (`docs/research.md` §6).
 |---|---|
 | `hardware/` | KiCad project `8bit.kicad_{pro,sch,pcb}` (19 x 110 mm carrier, 2 layers, routed), pinned symbols, footprints and models (`8BIT.pretty`, `8BIT.3dshapes`, `PROVENANCE.json`), vendored 3D models (`_kicad_models/<sha256>/`) |
 | `panels/front-pcb/8bit-panel.kicad_{pro,pcb}` | 4HP FR4 front panel: NPTH only, silkscreen labels |
-| `panels/button-actuator/` | Printed MODE actuator: plunger + cap STL (print orientation), assembled STEP, FreeCAD generator |
+| `panels/button-actuator/` | Printed MODE cap: STL (print orientation), STEP at SW1, FreeCAD generator |
 | `docs/jumpers.md` | The JP1 MIDI-input jumper and the firmware pin map |
 | `docs/research.md` | BM baseline, decisions, circuit, sourcing, open items |
-| `docs/geometry.json`, `docs/mechanics.md` | 4HP fit, stack, button actuator, panel and placement contract |
+| `docs/geometry.json`, `docs/mechanics.md` | 4HP fit, stack, button cap, panel and placement contract |
 | `docs/8bit-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON and renders |
 | `docs/schematic-symbols.json`, `docs/sourcing-candidates.json` | Pinned-symbol provenance; dated live JLCPCB lookups |
 | `docs/jlcpcb-audit-requirements.json` | Circuit stress/manual-part policy for the assembly audit (reviews empty) |

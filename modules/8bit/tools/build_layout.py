@@ -45,7 +45,7 @@ def pt(x, y):
     return pcbnew.VECTOR2I(pcbnew.FromMM(OX + x), pcbnew.FromMM(OY + y))
 
 
-def new_board(path, title, comments, rev='S4'):
+def new_board(path, title, comments, rev='S5'):
     board = pcbnew.NewBoard(str(path))
     tb = board.GetTitleBlock()
     tb.SetTitle(title)
@@ -149,7 +149,7 @@ def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre', model_
         fp.SetField(key, val)
         fp.GetField(key).SetVisible(False)
     # Stable pad UUIDs (library pad UUIDs are not kept): tools/route_plan.py names duplicated
-    # pad numbers (SW1 pad 1 twice) by UUID, as the shared `pcb apply` requires.
+    # pad numbers (SW1 pads 1 and 2 twice) by UUID, as the shared `pcb apply` requires.
     for i, pad in enumerate(fp.Pads()):
         pad.SetUuid(pcbnew.KIID(pad_uuid(ref, pad.GetNumber(), i)))
     board.Add(fp)
@@ -185,8 +185,8 @@ def build_carrier():
     path = HW / '8bit.kicad_pcb'
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - 8bit carrier', [
-        'S4: placement only, UNROUTED - not released, not for fabrication',
-        'Front (F) faces the panel; THT jacks/pots/LED and SMD SW1 hand-soldered; SMD on B',
+        'S5: placement only, UNROUTED - not released, not for fabrication',
+        'Front (F) faces the panel; THT jacks, pots, LED and SW1 hand-soldered; SMD on B',
         'Geometry contract: docs/geometry.json; nets: hardware/8bit.kicad_sch',
     ])
     x0, y0, x1, y1 = GEO['main_pcb']['outline_mm']
@@ -256,7 +256,7 @@ def build_carrier():
     text(board, pcbnew.B_SilkS, 'D', 1.35, jp1['3'][1], 1.0, mirrored=True)
     text(board, pcbnew.B_SilkS, 'JP1 MIDI IN:', cx, 12.8, 0.8, mirrored=True)
     text(board, pcbnew.B_SilkS, 'P=PROTECTED D=DIRECT', cx, 14.2, 0.8, mirrored=True)
-    text(board, pcbnew.B_SilkS, '8BIT S4', cx, 11.3, 0.8, mirrored=True)
+    text(board, pcbnew.B_SilkS, '8BIT S5', cx, 11.3, 0.8, mirrored=True)
     save_canonical(path, board)
     return path
 
@@ -294,7 +294,7 @@ def npth(board, mech_id, x, y, d):
 def build_panel():
     path = MODULE / 'panels/front-pcb/8bit-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - 8bit 4HP front panel', [
-        'S4 FIT STUDY: passive panel, NPTH only, no copper',
+        'S5 FIT STUDY: passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']

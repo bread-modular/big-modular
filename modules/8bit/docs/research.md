@@ -1,4 +1,4 @@
-# 8bit research and circuit intent (S4 schematic, R3 routed carrier)
+# 8bit research and circuit intent (S5 schematic, R4 routed carrier)
 
 Bread Modular `8bit` (an ATtiny1616 DAC synth voice on a breadboard module), moved
 to a 4HP Eurorack module. The brief:
@@ -16,6 +16,9 @@ to a 4HP Eurorack module. The brief:
   wired schematic.
 - S4 (user): buffer the CV with an op-amp at Eurorack input impedance, keep the MCU pin
   safe (MCP6001 on +5 V), and read the full bipolar CV range with headroom (±5.5 V).
+- S5 (user, 2026-10-20): the MODE button is a **hand-soldered 6 x 6 mm THT tact
+  switch, 7 mm tall** (AliExpress stock goes to 10 mm; 7 mm leaves room for a flange),
+  with a one-piece printed cap. Footprint per the user's drawing: 4 pins, 6.5 x 4.5 mm.
 
 Nothing here is bench-tested. Sourcing is a dated catalog observation, not an order.
 
@@ -49,7 +52,7 @@ natively from `8bit.kicad_sch`; firmware in `code/{helloworld,drums,lfo,supersaw
 | E8 | Output: TL072 on ±12 V, U3A non-inverting gain 2.2 with an offset from U3B (buffered 3.98 V): 0..4.34 V -> ±4.8 V. DC coupled. 1k series | Eurorack audio level (~10 Vpp), polarity kept and DC coupling so the BM LFO firmware still works. The high-impedance + input leaves the passive filter unloaded |
 | E9 | ±12 V each through a B5819W series Schottky (reverse protection); +5V from +12V_F through an HT7550-1 (no dropper) | ~15 mA on +5V: ~0.1 W in the SOT-89. The MIDI module's dropper R20 was for 77 mA |
 | E10 | No +5V shunt clamp (MIDI V2 U2/CJ431 not carried over) | Clamp current into +5V is ≤0.2 mA (CV 0.12 mA at +12 V + R3 0.07 mA), far below the MCU's own load, so it cannot pump the rail |
-| E11 | MODE button = **BM 8bit SW1, K2-1808SN-A4SW-01** (SMD 4.2 x 3.25 x 2.5 mm, LCSC C92589) on the carrier F side, hand-soldered, pressed through the panel by a **two-part printed actuator** (`mechanics.md`). Mode LED 3 mm THT | User (S2): use the BM button. All BM 8bit firmwares use PA4/PA5. The switch sits 7.5 mm below the panel rear, so it needs an extender; two glued parts make it captive in the panel and print without supports |
+| E11 | MODE button = **generic 6 x 6 x 7 mm THT tact switch** (stock KiCad `SW_PUSH_6mm_H7.3mm`, pins 6.5 x 4.5 mm) on the carrier F side at the BM SW1 net (PA4 to GND), hand-soldered, pressed through the panel by a **one-piece printed cap** (`mechanics.md`). Mode LED 3 mm THT | User (S5, replaces S2's BM K2-1808SN SMD switch + two-part glued actuator): a hand-solderable switch the user can buy. All BM 8bit firmwares use PA4/PA5. 7 mm (not 10 mm) leaves 3 mm under the panel for the cap's captive flange and press-fit socket |
 | E12 | Drop BM's gate output (PA7) and MIDI thru (PB2) | Not in the brief; 4HP space |
 
 ## 3. Circuit (S1, `hardware/8bit.kicad_sch`, ERC 0)
@@ -149,7 +152,7 @@ Vout = 2.2 x FILT - 1.2 x VOFF:  0 V -> -4.78 V, 2.17 V -> 0 V, 4.34 V -> +4.77 
 | 20 | PA1 | POT1 | Knob 1 50k (BM `PIN_CV1`), C10 10n |
 | 1 | PA2 | POT2 | Knob 2 50k (BM `PIN_CV2`), C11 10n |
 | 14 | PB0 | CV_ADC | CV in via U4 (§3.2b) |
-| 5 | PA4 | BUTTON | SW1 (BM K2-1808SN) to GND, internal pull-up (BM `TOGGLE_PIN`) |
+| 5 | PA4 | BUTTON | SW1 (6x6 THT tact) to GND, internal pull-up (BM `TOGGLE_PIN`) |
 | 6 | PA5 | LED_DRV | R6 1k -> D1 (BM `TOGGLE_LED`) |
 | 7 | PA6 | DAC | Audio (R7) |
 | 9 | PB5 | - | Spare (unconnected) |
@@ -176,19 +179,18 @@ no Basic 0.5 W 1k 1206 was found, and the 0.25 W C4410 fails the mis-patch case)
 ATtiny1616-MNR (C507118), BAT54SWT1G (C78260) and HT7550-1 (C16106, preferred
 Extended), the same parts MIDI V2 uses, plus the CV buffer MCP6001T-E/OT (C29429,
 Extended). The S4 level-shift resistors are Basic: 56k C23206, 51k C23196, 510k C23192. C13 1 nF is C1588 (Basic, X7R). THT jacks,
-pots, LED, headers and the F-side SW1 are hand-soldered and carry no LCSC field; SW1's
-part (C92589, Extended, 16 565 in stock on 2026-10-19) is recorded as a buying
-reference. No assembly audit or export has been run yet; the per-part human review
-gates are open.
+pots, LED, switch and headers are hand-soldered and carry no LCSC field. SW1 is a generic
+6 x 6 x 7 mm THT tact switch bought by the user (no catalog lookup recorded). The per-part
+human review gates are open.
 
-### 3.6 Routing (R3, `tools/route_plan.py`)
+### 3.6 Routing (R4, `tools/route_plan.py`)
 
 2 layers, everything explicit (no autorouter), through the shared plan/apply/promote.
 
 - **F.Cu** carries the long trunks: +5V (LDO via -> left edge X1.4 -> top -> D3/R2/R3 and
   the middle trunk through the pot pin-3 pads RV1 -> RV2),
   UPDI (X1.95 to R5), POT1/POT2 to their wipers, MIDI_IN to JP1, ±12V_F from the power
-  entry to U3, FILT to U3, BUTTON and LED_A to the F-side SW1 and LED.
+  entry to U3, FILT to U3, BUTTON and LED_A to SW1 (pad-1 pair linked along Y89.25) and the LED.
 - **B.Cu** carries the SMD wiring, the U1 fan-out (0.2 mm), RX (left edge), DAC /
   LED_DRV / BUTTON (right edge), R7 -> RV3 pin 3 and the wiper to the FILT via, and U3.
   U3 is mirrored on B (pins 1-4 on the right): OUT_FB crosses under its body between
@@ -197,7 +199,11 @@ gates are open.
   down from C9 and CV_ADC (F X7.65) back up to U1 pin 14, below the F UPDI lane at
   Y35.3. U4's follower feedback runs under its body between the pad columns; +5V comes
   from the RV1 pin 3 pad; U4's GND pin has its own via.
-- GND pours on both layers, thermal reliefs (as audio-out R4), 12 stitching vias plus
+- **SW1 area (R4):** the THT legs come through to B, so the offset divider R10/R11/C14
+  moved from under SW1 to the left edge below the RV3 tab (+5V via on the F lane at
+  Y76.4, UPDI jogs around it); VREF_DIV runs down B X1.5 past SW1 to U3 pin 5. The RV3
+  wiper runs on B between the SW1 pin columns to the FILT via at (7.0, 90.5).
+- GND pours on both layers, thermal reliefs (as audio-out R4), 13 stitching vias plus
   the U1 exposed-pad via (as MIDI) and a cathode via for the LED.
 - Widths: 0.2 QFN, 0.25 signal, 0.3 +5V, 0.4 ±12V_F, 0.5 at the header. Vias 0.6/0.3.
 - The shared tool here was synced to `main` for the thermal-relief zone option
@@ -209,8 +215,8 @@ gates are open.
 - **Export and audit**: done 2026-10-19 (`jlcpcb/README.md`). Remaining: the human
   land-pattern/pin-mapping/ratings reviews in `docs/jlcpcb-audit-requirements.json`, the
   JLCPCB placement preview and a live recheck before ordering.
-- **Button actuator**: print and test-fit (`mechanics.md`). Nominal only; the switch
-  actuator shape (oval, height above the housing) is from the catalogue, not measured.
+- **Button cap**: measure the bought switch (stem Ø and top height, nominal Ø3.5 at
+  Z7.0), tune `socket_D` for the press fit, then print and test-fit (`mechanics.md`).
 - **Pots**: the RV09 model is audio-out's nominal user-sample proxy; measure shaft tip to
   PCB seat on a real pot before ordering panels. 3D fit check and printed panel not
   done yet.

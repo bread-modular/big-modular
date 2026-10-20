@@ -2,11 +2,11 @@
 """Emit the explicit routing plan (shared `pcb plan/apply` ops v1) for the 8bit carrier.
 
 All geometry is written out here in panel-frame millimetres (KiCad = +100/+50); nothing
-is autorouted. Placement: docs/geometry.json (S4). Layer plan (docs/research.md section 3.7):
+is autorouted. Placement: docs/geometry.json (S5). Layer plan (docs/research.md section 3.7):
   F.Cu  long trunks: +5V (LDO -> left edge X1.4 -> top -> middle trunk X12.5 through the
         pot pin-3 pads, ending at RV2), UPDI (X1.95), POT1/POT2 to their
         wipers, MIDI_IN to JP1, -12V_F/+12V_F from the power entry to U3, FILT to U3,
-        BUTTON and LED_A (the F-side SW1 pads and the LED); GND pour.
+        BUTTON and LED_A (the SW1 pad-1 pair and the LED); GND pour.
   B.Cu  SMD-local wiring, the U1 fan-out, RX (left edge), DAC / LED_DRV / BUTTON (right
         edge X16.75 / X17.3 / X17.9), the knob 3 filter under RV3; GND pour.
 Vias 0.6/0.3 mm. Tracks 0.2 mm at the QFN, 0.25 mm signal, 0.3 mm +5V, 0.4-0.5 mm power.
@@ -112,18 +112,18 @@ via('filtu3', 'FILT', 10.6, 95.6)
 track('filt1', 'FILT', B, 'filtu3', [], ('U3', '3'))
 track('filt2', 'FILT', B, ('U3', '3'), [(14.0, 95.135)], ('C13', '1'))
 
-# ---- offset divider (R10/R11/C14, left of SW1) -> VREF lane -> U3 pin 5 --------------------
-via('p5r10', '+5V', 1.45, 83.4)
+# ---- offset divider (R10/R11/C14, left edge below the RV3 tab) -> VREF lane past SW1 -> U3 pin 5
+via('p5r10', '+5V', 1.45, 76.4)       # on the F +5V lane; F UPDI jogs around it
 track('p5r10', '+5V', B, 'p5r10', [], ('R10', '1'), P5)
 track('vref1', 'VREF_DIV', B, ('R10', '2'), [], ('R11', '1'))
-track('vref2', 'VREF_DIV', B, ('C14', '1'), [(2.5, 86.7)], ('R10', '2'))
-track('vref3', 'VREF_DIV', B, ('R11', '1'), [(XRX, 87.9), (XRX, 96.405)], ('U3', '5'))
+track('vref2', 'VREF_DIV', B, ('C14', '1'), [(2.6, 78.6)], ('R11', '1'))
+track('vref3', 'VREF_DIV', B, ('R11', '1'), [(XRX, 80.175), (XRX, 96.405)], ('U3', '5'))
 
 # ---- knob 3 passive low-pass under RV3: R7 -> RV3 pin 3, wiper -> FILT (pin 1 open) ---------
 track('dacr', 'DAC_R', B, ('R7', '2'), [(13.8, 82.3)], ('RV3', '3'))
-via('filtrv', 'FILT', 7.4, 90.0)      # between the SW1 pad row and the F BUTTON track
-track('filtrv', 'FILT', B, ('RV3', '2'), [(10.0, 83.0), (7.4, 85.6)], 'filtrv')
-track('filtf', 'FILT', F, 'filtrv', [(10.6, 93.2)], 'filtu3')
+via('filtrv', 'FILT', 7.0, 90.5)      # below the F BUTTON link between the SW1 pin rows
+track('filtrv', 'FILT', B, ('RV3', '2'), [(10.0, 82.2), (7.0, 85.2)], 'filtrv')
+track('filtf', 'FILT', F, 'filtrv', [(10.6, 94.1)], 'filtu3')
 
 # ---- top: MIDI input, CV input ---------------------------------------------------------------
 track('mi1', 'MIDI_IN', B, ('J1', 'T'), [], ('R3', '1'))
@@ -199,7 +199,7 @@ track('p5rv2', '+5V', F, ('RV1', '3'), [], ('RV2', '3'), P5)
 # ---- UPDI (F.Cu X1.95, around the R10 tap via) -> R5 -> J5 --------------------------------
 via('updib', 'UPDI_PA0', 5.2, 97.6)
 track('updif', 'UPDI_PA0', F, 'updi',
-      [(XUPDI, 35.3), (XUPDI, 82.3), (2.6, 82.9), (2.6, 84.0), (XUPDI, 84.6), (XUPDI, 96.8)], 'updib')
+      [(XUPDI, 35.3), (XUPDI, 75.3), (2.6, 75.9), (2.6, 76.9), (XUPDI, 77.5), (XUPDI, 96.8)], 'updib')
 track('updir5', 'UPDI_PA0', B, 'updib', [(4.95, 98.2), (4.95, 101.9)], ('R5', '1'))
 track('updij5', 'UPDI', B, ('R5', '2'), [], ('J5', '1'))
 
@@ -215,8 +215,10 @@ via('gndled', 'GND', 15.5, 89.9)
 track('gndled', 'GND', B, ('D1', '1'), [], 'gndled', P5)
 track('leda1', 'LED_A', B, ('R6', '2'), [], 'leda')
 track('leda2', 'LED_A', F, 'leda', [], ('D1', '2'))
-SW1R, SW1L = pad('SW1', '1', 0), pad('SW1', '1', 1)      # pad 1 right (X9.105) / left (X4.905)
-track('btnf', 'BUTTON', F, 'btn', [(18.4, 90.6), (9.1, 90.6)], SW1R)
+# SW1 (THT 6x6, rotated 180): pad 1 pair on the bottom row Y89.25, joined inside the switch but
+# linked in copper too; the pad 2 pair (GND, top row) sits in both pours.
+SW1R, SW1L = pad('SW1', '1', 0), pad('SW1', '1', 1)      # pad 1 right (X10.25) / left (X3.75)
+track('btnf', 'BUTTON', F, 'btn', [(18.4, 90.6), (11.6, 90.6)], SW1R)
 track('btnsw', 'BUTTON', F, SW1R, [], SW1L)
 
 
@@ -228,7 +230,7 @@ def zone(name, net, layer, poly):
 
 # ---- GND stitching: ties the two pours across the islands the lanes cut on B.Cu -------------
 for n, (x, y) in enumerate([(17.0, 34.0), (3.4, 36.6), (2.9, 50.2), (16.0, 49.6), (4.0, 63.0), (15.0, 62.5),
-                            (4.0, 78.5), (15.0, 78.5), (5.0, 113.0), (17.5, 101.5), (12.6, 108.6), (16.6, 108.6)]):
+                            (4.6, 77.0), (15.0, 78.5), (2.8, 91.6), (5.0, 113.0), (17.5, 101.5), (12.6, 108.6), (16.6, 108.6)]):
     via(f'gnd{n}', 'GND', x, y)
 
 
