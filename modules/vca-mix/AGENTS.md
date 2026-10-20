@@ -30,7 +30,7 @@ Read the root `AGENTS.md`, then this module's `Code.md`, `README.md` and
 ## Boundaries
 
 Shared tools stay in `../../opt/`. Use `tools/kicad-project.json` for doctor/check.
-Raw reports and caches go in the ignored `research/`. There is no `jlcpcb/` export
-yet: that needs D14 resolved and a separate release task using the shared
-exporter.
+Raw reports and caches go in the ignored `research/`. `jlcpcb/` holds the shared-exporter
+release set (2026-10-20, user direction with D14 accepted; `jlcpcb/README.md`). Never
+hand-edit it: re-export after any source change, or `check` fails on the manifest.
 Bread Modular is read-only. No merges, pushes, orders or uploads.

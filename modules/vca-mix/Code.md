@@ -82,4 +82,6 @@
 - `tools/fit_assembly.sh` (nominal, P4): 0 mm³ interference for all jacks and the three
   pots against both panels, board inside the rail gap and the panel width. Vactrols are
   not modelled (D4; build notes on the footprint silk).
-- No bench, physical-fit, export or order claim.
+- JLCPCB export (2026-10-20, user direction, D14 accepted): `jlcpcb/` from the shared
+  exporter, manifest equal in `check` (`jlcpcb/README.md`). Not supplier-accepted.
+- No bench, physical-fit or order claim.

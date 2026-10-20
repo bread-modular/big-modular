@@ -8,8 +8,9 @@ D10 exclusions only. The shared gate still counts those 9 (D14), so the shared a
 output was copied into `hardware/` with `tools/promote_r1.py` on user direction
 (2026-10-20) instead of `pcb promote`. R1 is final on user direction (2026-10-20): the
 user accepts the D10 exceptions and verifies the board manually (D14), and the vactrol
-build notes are on the footprint silk (D4). Nothing has been bench-tested, and there is
-no fabrication export.
+build notes are on the footprint silk (D4). Nothing has been bench-tested. The JLCPCB
+export (2026-10-20, shared exporter, user direction) is in `jlcpcb/` (`jlcpcb/README.md`);
+it is not supplier-accepted.
 
 History (all review feedback): **S2** (2026-10-19) renamed IMIX to VCA-MIX, put the
 volume after each VCA with OUT following it, replaced the V2CA LED drive with the

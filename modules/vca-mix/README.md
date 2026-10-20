@@ -9,7 +9,7 @@ fully open, so VCA-MIX also works as a plain 3-channel mixer. Power is Eurorack
 ±12 V (10 x TL072). Inputs and CVs are buffered; OUT and MIX drive through 1 W
 1k resistors.
 
-**Status: S4 schematic + P4 placement + R1 routing (final), not released.**
+**Status: S4 schematic + P4 placement + R1 routing (final); JLCPCB export in `jlcpcb/`, not supplier-accepted.**
 - Schematic drawn with wired nets (native ERC 0).
 - 6HP panels (FR4 + printed) generated.
 - Carrier placed with schematic nets (parity equal). One row per channel, the knob
