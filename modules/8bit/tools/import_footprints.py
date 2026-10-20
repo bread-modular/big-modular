@@ -13,11 +13,9 @@ Sources are read-only:
   (Bread Modular footprints are preferred: the user's builds prove them). Upstream has no 3D
   model; it gets the user-sample RV09 proxy of modules/audio-out (same footprint frame:
   no bushing, 16 mm shaft), copied into 8BIT.3dshapes/RV09_proxy.step;
-- the Bread Modular 8bit `BreadModular_MISC:K2-1808SN-A4SW-01` mode switch (BM SW1), copper
-  unedited; upstream has no courtyard, so one is added (body + pads + 0.25 mm) for DRC, and its
-  four F.SilkS body lines (which touch its own pads) are removed: SW1 sits under the panel;
-- the installed KiCad stock library for everything else, unedited except for the
-  recorded VQFN-20 3D-model proxy (as modules/midi).
+- the installed KiCad stock library for everything else (including the SW1 6x6 mm THT
+  tact switch, `SW_PUSH_6mm_H7.3mm`), unedited except for the recorded VQFN-20 3D-model
+  proxy (as modules/midi).
 
 hardware/8BIT.pretty/PROVENANCE.json records source paths and SHA-256 of every input
 and output.
@@ -47,6 +45,7 @@ STOCK_FOOTPRINTS = [
     ('Resistor_SMD', 'R_1206_3216Metric'),
     ('Capacitor_SMD', 'C_0603_1608Metric'),
     ('Capacitor_SMD', 'C_0805_2012Metric'),
+    ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical'),
     ('Jumper', 'SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm'),
@@ -56,12 +55,10 @@ STOCK_FOOTPRINTS = [
 # Bread Modular footprints copied unedited: (library dir relative to the BM repo, name)
 BM_FOOTPRINTS = [
     ('modules/8bit/footprints/BreadModular_Pots.pretty', 'Potentiometer_RV09'),
-    ('modules/8bit/footprints/BreadModular_MISC.pretty', 'K2-1808SN-A4SW-01'),
 ]
 
 # BM footprints without a courtyard: name -> (half-width X, half-height Y) of the added F.CrtYd.
-# K2-1808SN-A4SW-01: body 4.2 x 3.25 mm (LCSC C92589), pads reach X +/-2.665, Y +/-1.45.
-BM_COURTYARD = {'K2-1808SN-A4SW-01': (2.95, 1.9)}
+BM_COURTYARD = {}
 
 # BM footprint -> 3D model (in 8BIT.3dshapes) and its recorded source.
 BM_MODEL = {'Potentiometer_RV09': ('RV09_proxy.step',

@@ -1,5 +1,5 @@
 {
- "revision": "S4 placement, R3 routed carrier: Bread Modular 8bit for Eurorack, 4HP",
+ "revision": "S5 placement, R4 routed carrier: Bread Modular 8bit for Eurorack, 4HP",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -91,14 +91,14 @@
  "pot_note": "Bread Modular RV09 footprint (pins 7.5 mm below the shaft on 2.5 mm pitch, bracket tabs 9.6 mm apart on the shaft line). User stock pots, as modules/audio-out: no threaded bushing, no nut, 16 mm knurled shaft above the body; 3D proxy hardware/8BIT.3dshapes/RV09_proxy.step (from audio-out). pot_shaft_offset_mm = shaft centre relative to the footprint origin at rotation 0. Rotation 0: pins below the shaft, pin 1 on the left (front view), so CW turns the wiper toward pin 3.",
  "button": {
   "ref": "SW1",
-  "footprint": "K2-1808SN-A4SW-01",
+  "footprint": "SW_PUSH_6mm_H7.3mm",
   "side": "F",
   "XY": [
    7.0,
    87.0
   ],
-  "part": "Korean Hroparts K2-1808SN-A4SW-01 (Bread Modular 8bit SW1, LCSC C92589): SMD tact 4.2 x 3.25 mm, 2.5 mm tall, 2.5 N",
-  "note": "SMD on the carrier F side (faces the panel), hand-soldered. Placed by the pad-pattern centre = actuator centre. The panel is 7.5 mm above the switch top, so a two-part printed actuator (panels/button-actuator) bridges the gap. Rotated 180: pad 1 (BUTTON) on the bottom row.",
+  "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (body 3.5 mm, \u00d83.5 round stem 3.5 mm), pins 6.5 x 4.5 mm, 0.7 mm legs; pins 1-2 and 3-4 are joined inside (along the 6.5 mm side)",
+  "note": "THT on the carrier F side (faces the panel), hand-soldered; the legs come through to B. Stock KiCad SW_PUSH_6mm_H7.3mm (copper identical to every SW_PUSH_6mm variant; the 7.3 mm model is the closest stock height). Placed by the pad-pattern centre = stem centre. Rotated 180: pad 1 (BUTTON) on the bottom row (Y89.25), pad 2 (GND) on the top row (Y84.75). The panel rear is 3.0 mm above the stem top; a one-piece printed cap (panels/button-actuator) bridges it.",
   "rot": 180
  },
  "leds": [
@@ -134,7 +134,9 @@
   "led_note": "3 mm LED body (flange to dome) is 5.3 mm; body bottom at Z6.3 puts the dome flush with the 1.6 mm FR4 panel front (Z11.6) and 0.4 mm recessed in the 2.0 mm print. The stock KiCad LED_D3.0mm model already stands its flange at Z3.0, so the board model offset is +3.3 mm.",
   "source": "Slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks before committing the LED stand-off.",
   "pot_note": "User RV09 (as modules/audio-out): body 6.8 mm nominal, 1 mm collar, shaft to Z22.8 (11.2 mm past the FR4 front). No bushing, no nut. Measure a real pot before ordering panels.",
-  "switch_top": 2.5
+  "switch_body_top": 3.5,
+  "switch_stem_top": 7.0,
+  "switch_stem_D": 3.5
  },
  "back_side_parts": [
   {
@@ -311,31 +313,31 @@
    "ref": "R10",
    "footprint": "R_0603_1608Metric",
    "XY": [
-    2.5,
-    85.0
+    2.6,
+    77.6
    ],
    "rot": 270,
-   "band": "Y83-90 band left (free on B: SW1 is SMD on F): offset divider top"
+   "band": "left edge below the RV3 left tab: offset divider top (+5V pad at the top)"
   },
   {
    "ref": "R11",
    "footprint": "R_0603_1608Metric",
    "XY": [
-    2.5,
-    88.4
+    2.6,
+    81.0
    ],
    "rot": 270,
-   "band": "Y83-90 band left: offset divider bottom"
+   "band": "left edge above SW1: offset divider bottom (GND pad at the bottom)"
   },
   {
    "ref": "C14",
    "footprint": "C_0805_2012Metric",
    "XY": [
-    5.0,
-    86.7
+    5.1,
+    78.6
    ],
    "rot": 180,
-   "band": "Y83-90 band left: offset filter"
+   "band": "right of R10/R11 below the RV3 tab: offset filter (VREF_DIV pad on the left)"
   },
   {
    "ref": "C11",
@@ -647,37 +649,24 @@
  },
  "button_actuator": {
   "source": "panels/button-actuator/build_button_actuator.py (FreeCAD, STEP + STL)",
-  "plunger": {
-   "note": "behind the panel, printed foot up; rests on the switch, its top stops 0.3 mm below the panel rear",
-   "foot_D": 2.4,
-   "foot_Z": [
-    2.5,
-    4.5
+  "cap": {
+   "note": "one piece, printed socket-down; press-fits over the switch stem, its flange is held behind the panel, its tip passes the panel hole",
+   "socket_D": 3.6,
+   "socket_Z": [
+    4.5,
+    7.0
    ],
    "body_D": 7.0,
    "body_Z": [
     4.5,
     9.7
    ],
-   "socket_D": 3.9,
-   "socket_Z": [
-    6.7,
-    9.7
-   ]
-  },
-  "cap": {
-   "note": "in front of the panel, printed cap down; its stem passes the panel hole and is glued into the plunger socket",
-   "stem_D": 3.6,
-   "stem_Z": [
-    6.7,
+   "tip_D": 3.6,
+   "tip_Z": [
+    9.7,
     13.0
-   ],
-   "cap_D": 8.0,
-   "cap_Z": [
-    13.0,
-    15.5
    ]
   },
-  "travel_note": "Switch travel ~0.25 mm. Cap-to-panel gap 1.4 mm (FR4 front Z11.6) / 1.0 mm (print front Z12.0); plunger-to-panel-rear play 0.3 mm."
+  "travel_note": "Switch travel ~0.25 mm. Flange 1.0 mm above the switch body, 0.3 mm below the panel rear; tip 1.4 mm (FR4 front Z11.6) / 1.0 mm (print front Z12.0) proud of the panel."
  }
 }

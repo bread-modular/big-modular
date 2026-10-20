@@ -1,4 +1,4 @@
-# 8bit — manufacturing export (S4/R3)
+# 8bit — manufacturing export (S5/R4)
 
 Generated from the current accepted sources with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
@@ -25,7 +25,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | Carrier PCB | `8bit-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.0 x 110.0 mm, 1 oz, HASL, standard everything else. No `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
 | Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 37 parts in 24 BOM rows, all on the back |
 | Front panel PCB | `8bit-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 20.0 x 128.5 mm (4HP), no assembly; black mask suits a panel |
-| Button actuator | `../panels/button-actuator/*.stl` | 3D print (two parts, glued); not a JLCPCB PCB order |
+| Button cap | `../panels/button-actuator/8bit-button-cap.stl` | 3D print (one part, socket down); not a JLCPCB PCB order |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
 
@@ -34,23 +34,23 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | J1-J3 | QingPu WQP-PJ301M-12 TS jack | Front-side THT, panel-nut fixed; fit to the panel before soldering |
 | RV1, RV2 / RV3 | RV09 pot, 50k / 1M (no bushing) | Front-side THT, user stock |
 | D1 | 3 mm red LED | Height is set by the panel (`docs/mechanics.md`) |
-| SW1 | K2-1808SN-A4SW-01 (Bread Modular switch, LCSC C92589) | Front-side SMD; the assembly is bottom-side only. Solder it before fitting the actuator |
+| SW1 | 6 x 6 mm THT tact switch, 7 mm tall, 4 pins (user-bought) | Front-side THT. Solder it, then press the cap on before fitting the panel |
 | J4 | 2x5 2.54 mm pin header | Eurorack power, back side; pin 1 (-12 V) marked `-12V` |
 | J5 | 1x2 2.54 mm pin header | UPDI, back side |
 | JP1 | 3-pad solder jumper (copper only) | **Shipped open; solder exactly one bridge** (`docs/jumpers.md`). `P` = protected input, firmware sets `PORT_INVEN` on PB3. `D` = direct, stock Bread Modular firmware |
 
-The exporter excluded these 11 refs (`carrier/export-report.json`): the 9 THT
-parts, SW1 as "Other assembly side" and JP1 as "Excluded from BOM".
+The exporter excluded these 11 refs (`carrier/export-report.json`): the 10 THT
+parts (including SW1) and JP1 as "Excluded from BOM".
 
 ## Source identity
 
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift (`tools/kicad-project.json` declares the manifest).
 
-- Carrier PCB `d1b84b72785a7b21e30b765396bbbb93f105156ea390f9b7165945a9003e2446`.
+- Carrier PCB `c8f6993b8ef236e1c781ab7e2af8957816d3f5c7ed0471fd7007fd391eecb92b`.
 - Carrier project `b4337e9349fdb9270bee7f9cfc48e3ac45cecf26ea330f6865b30e4eb8c867ae`.
-- Carrier schematic `0c085ca90db368af0d46f6ebc6686d334470a84f51672d4a2def63bff53f0b5a`.
-- Panel PCB `dcc36e381ada0b5bbd317156feb388718ffb0c100dc95bd42ada6b2cd66a5844`.
+- Carrier schematic `35d01fae7afce0db8058bebd11fa1eef0154198896dce0b386b83a7e24bb984f`.
+- Panel PCB `75296fc743db0f707dc66300c8c68dd866b2bdb35fd2343029eec1ecd65103f6`.
 - Panel project `e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6`.
 
 ## Reproduce
@@ -88,20 +88,20 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/8bit-symbols.xml hardware
   --boards 5 --side bottom --strict-live --max-requests 64)
 ```
 
-## Checks done for this export (2026-10-19)
+## Checks done for this export (2026-10-20, S5/R4)
 
 - **Shared `check`:** `no_findings_in_requested_checks`, with the manifest
   present and equal. That covers ERC 0 and DRC 0 at all severities with zones
   refilled, 0 unconnected, schematic parity 0 and ref/pin/net parity equal.
 - **Exporter:** 37 components in 24 BOM rows, bottom side, no missing part
   numbers.
-- **Drill files:** 62 round PTH hits (39 vias + 23 round THT pads) plus 15 routed
+- **Drill files:** 67 round PTH hits (40 vias + 27 round THT pads) plus 15 routed
   slots (jack and pot lugs), matching the board. No NPTH holes on the carrier.
   The panel has 10 NPTH holes and no PTH.
 - **Outlines:** carrier 19.0 x 110.0 mm, panel 20.0 x 128.5 mm (Edge.Cuts Gerbers).
-- **Live assembly audit** (`--strict-live`, 2026-10-19T16:35:45Z, 5 boards):
+- **Live assembly audit** (`--strict-live`, 2026-10-20T02:38:52Z, 5 boards, S5/R4):
   - Every C-code and MPN resolved and every part is Economy-eligible, with stock
-    far above the 5-board demand (lowest: U1 ATtiny1616, 1,769).
+    far above the 5-board demand (lowest: U1 ATtiny1616, 7,581).
   - Basic: all R/C except R12, D2, D4, D5, Q1, U3 (TL072CDT). Extended: R12
     (ESR18EZPF1001), U1 (ATtiny1616), D3 (BAT54SW), U4 (MCP6001); Preferred Extended: U2 (HT7550-1). These carry
     JLCPCB's Extended fees.
@@ -128,6 +128,6 @@ This is a complete export, not a supplier-accepted release.
    orientation), and D2/D4/D5 cathode bars.
 4. **Live recheck** of stock, attrition and minimums just before ordering, plus
    JLCPCB's DFM check in their Gerber viewer.
-5. **Not yet done:** 3D fit against the panel, an actuator test print, measuring
+5. **Not yet done:** 3D fit against the panel, a button-cap test print, measuring
    a real RV09 pot against the 3D model, and bench testing (output level, CV range
    and zero, MIDI on both JP1 settings).

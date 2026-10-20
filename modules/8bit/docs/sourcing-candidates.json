@@ -709,36 +709,6 @@
    "qty_per_board": 2,
    "exit": 0,
    "issues": []
-  },
-  {
-   "code": "C92589",
-   "mpn": "K2-1808SN-A4SW-01",
-   "manufacturer": "Korean Hroparts Elec",
-   "package": "SMD,4.2x3.3mm",
-   "classification": "Extended",
-   "economy_eligible": true,
-   "stock": 16565,
-   "evidence": {
-    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-    "retrieved_at_utc": "2026-10-19T12:01:47Z",
-    "http_status": 200,
-    "request": {
-     "currentPage": 1,
-     "pageSize": 20,
-     "keyword": "C92589"
-    },
-    "sha256": "7f000e08a444e93a1a07538335e038cc969fc9ed515a618c597154f60b4d986d",
-    "mode": "live",
-    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
-    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
-   },
-   "refs": [
-    "SW1"
-   ],
-   "qty_per_board": 1,
-   "exit": 0,
-   "issues": [],
-   "note": "Hand-soldered on the carrier F side (BM 8bit SW1); buying reference, not in the B-side CPL"
   }
  ]
 }

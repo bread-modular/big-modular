@@ -1,4 +1,4 @@
-"""Generate the 8bit S4 schematic (hardware/8bit.kicad_sch) and its pinned symbols.
+"""Generate the 8bit S5 schematic (hardware/8bit.kicad_sch) and its pinned symbols.
 
 Run from modules/8bit:
   python3 -B tools/build_schematic.py
@@ -70,7 +70,7 @@ FP = {
     'SOD123': 'D_SOD-123', 'LED3': 'LED_D3.0mm', 'SOT23': 'SOT-23', 'SOT23-5': 'SOT-23-5', 'SOT323': 'SOT-323_SC-70',
     'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
     'SOT89': 'SOT-89-3', 'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical',
-    'RV09': 'Potentiometer_RV09', 'SWK2': 'K2-1808SN-A4SW-01',
+    'RV09': 'Potentiometer_RV09', 'SW6': 'SW_PUSH_6mm_H7.3mm',
     'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
     'SJ3': 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm',
 }
@@ -186,11 +186,11 @@ def circuit():
     c.append(part('J5', 'Conn_01x02', 'UPDI', 'H1x2', (213.36, 96.52), 0,
                   {'1': 'UPDI', '2': 'GND'},
                   Note='Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power'))
-    c.append(part('SW1', 'SW_Push', 'MODE', 'SWK2', (213.36, 111.76), 270,
-                  {'1': 'BUTTON', '2': 'GND'}, MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec',
-                  Note='Mode button = Bread Modular SW1 (LCSC C92589, 4.2 x 3.25 x 2.5 mm SMD tact), '
-                       'PA4 internal pull-up. Hand-soldered on the F side; pressed through the panel by '
-                       'the printed actuator (panels/button-actuator)'))
+    c.append(part('SW1', 'SW_Push', 'MODE', 'SW6', (213.36, 111.76), 270,
+                  {'1': 'BUTTON', '2': 'GND'}, MPN='6x6x7 mm THT tact switch, 4 pins (generic)',
+                  Note='Mode button (as Bread Modular SW1, PA4 internal pull-up): generic 6 x 6 mm THT '
+                       'tact, 7 mm tall, Ø3.5 round stem, pins 6.5 x 4.5 mm. Hand-soldered on the F side; '
+                       'pressed through the panel by the printed cap (panels/button-actuator)'))
     c.append(part('R6', 'R', '1k', 'R0603', (203.2, 113.03), 0,
                   {'1': 'LED_DRV', '2': 'LED_A'}, Note='Mode LED current'))
     c.append(part('D1', 'LED', 'LED_3mm_red', 'LED3', (203.2, 127.0), 90,
@@ -257,7 +257,7 @@ def circuit():
 # Live strict lookups 2026-10-19, recorded in docs/sourcing-candidates.json. Codes shared
 # with modules/midi are the same parts. All R/C are JLCPCB Basic except R12 (0.5 W 1206, no
 # Basic exists); U1 and U2 are Extended.
-# The THT jacks, pots, LED and headers and the F-side SW1 are hand-soldered and carry no LCSC field.
+# The THT jacks, pots, LED, switch and headers are hand-soldered and carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM Semicon'),
@@ -402,7 +402,7 @@ LABELS = [
 ]
 
 TEXTS = [
-    ((20.32, 17.78), 'BIG MODULAR 8BIT - S4 schematic (Bread Modular 8bit for Eurorack, 4HP). '
+    ((20.32, 17.78), 'BIG MODULAR 8BIT - S5 schematic (Bread Modular 8bit for Eurorack, 4HP). '
                      'Circuit intent: docs/research.md', 2.0),
     ((20.32, 30.48), 'POWER: +12V -> B5819W -> +12V_F (U3 V+, HT7550-1 -> +5V); '
                      '-12V -> B5819W -> -12V_F (U3 V-).', 1.4),
@@ -630,8 +630,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - 8bit") (rev "S4") (company "Big Modular")
-        (comment 1 "SCHEMATIC S4 - Bread Modular 8bit for Eurorack: protected MIDI in, bipolar buffered CV in, knob 3 passive LPF, +/-5 V out")
+      (title_block (title "Big Modular - 8bit") (rev "S5") (company "Big Modular")
+        (comment 1 "SCHEMATIC S5 - Bread Modular 8bit for Eurorack: protected MIDI in, bipolar buffered CV in, knob 3 passive LPF, +/-5 V out")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')

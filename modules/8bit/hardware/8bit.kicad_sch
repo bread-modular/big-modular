@@ -6,9 +6,9 @@
 	(paper "A3")
 	(title_block
 		(title "Big Modular - 8bit")
-		(rev "S4")
+		(rev "S5")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S4 - Bread Modular 8bit for Eurorack: protected MIDI in, bipolar buffered CV in, knob 3 passive LPF, +/-5 V out")
+		(comment 1 "SCHEMATIC S5 - Bread Modular 8bit for Eurorack: protected MIDI in, bipolar buffered CV in, knob 3 passive LPF, +/-5 V out")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -4565,7 +4565,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "BIG MODULAR 8BIT - S4 schematic (Bread Modular 8bit for Eurorack, 4HP). Circuit intent: docs/research.md"
+	(text "BIG MODULAR 8BIT - S5 schematic (Bread Modular 8bit for Eurorack, 4HP). Circuit intent: docs/research.md"
 		(exclude_from_sim no)
 		(at 20.32 17.78 0)
 		(effects
@@ -10567,7 +10567,7 @@
 				)
 			)
 		)
-		(property "Footprint" "8BIT:K2-1808SN-A4SW-01"
+		(property "Footprint" "8BIT:SW_PUSH_6mm_H7.3mm"
 			(at 213.36 111.76 90)
 			(hide yes)
 			(show_name no)
@@ -10600,7 +10600,7 @@
 				)
 			)
 		)
-		(property "MPN" "K2-1808SN-A4SW-01"
+		(property "MPN" "6x6x7 mm THT tact switch, 4 pins (generic)"
 			(at 213.36 111.76 90)
 			(hide yes)
 			(show_name no)
@@ -10611,18 +10611,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Korean Hroparts Elec"
-			(at 213.36 111.76 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Mode button = Bread Modular SW1 (LCSC C92589, 4.2 x 3.25 x 2.5 mm SMD tact), PA4 internal pull-up. Hand-soldered on the F side; pressed through the panel by the printed actuator (panels/button-actuator)"
+		(property "Note" "Mode button (as Bread Modular SW1, PA4 internal pull-up): generic 6 x 6 mm THT tact, 7 mm tall, Ø3.5 round stem, pins 6.5 x 4.5 mm. Hand-soldered on the F side; pressed through the panel by the printed cap (panels/button-actuator)"
 			(at 213.36 111.76 90)
 			(hide yes)
 			(show_name no)
