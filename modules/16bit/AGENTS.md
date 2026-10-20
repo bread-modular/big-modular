@@ -14,9 +14,12 @@ Module paths are module-relative.
   TL074 ±5 V outputs (gain 6.1), AMS1117-5.0/-3.3 from +12 V, USB-C data only.
 - **S5 placement + R1 routing** (`hardware/16bit.kicad_pcb`, 4 layers, ROUTED from
   `tools/route_r1.json` via `tools/route_plan.py`): shared check DRC 0 / unconnected 0 / parity 0,
-  In1 GND and In2 +3V3 planes each one piece (`docs/research.md` §6). Awaiting user review. CV jacks + RV1/RV2 grouped, RV3/RV4 22 mm lower, MCU between the rows; OUT jacks at Y99; MODE button + LED in the bottom corners near the edge; regulators between RV3/RV4 and the OUT jacks;
+  In2 +3V3 one piece, In1 GND one main piece + two spoke-tied 2.6 mm² pieces at J6. Reviewed in
+  rev1 (`docs/research.md` §7): 9 in-pad vias moved off U1/D5/D6, router jogs tidied; **the board
+  requires via-in-pad fill (POFV) at the fab** for the remaining 123 in-pad vias + U1 EP array
+  (`Code.md`). Next schematic rev: add an input cap at U8 (§7.3 F2). CV jacks + RV1/RV2 grouped, RV3/RV4 22 mm lower, MCU between the rows; OUT jacks at Y99; MODE button + LED in the bottom corners near the edge; regulators between RV3/RV4 and the OUT jacks;
   USB-C on B at the top edge, opening up. 6HP FR4 panel DRC 0.
-- Open: sourcing, firmware notes, 3D fit, bench (`docs/research.md` §5).
+- Open: sourcing, firmware notes, 3D fit, bench (`docs/research.md` §5, §7.6).
 
 ## Boundaries
 

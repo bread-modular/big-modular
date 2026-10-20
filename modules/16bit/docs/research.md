@@ -1,4 +1,4 @@
-# 16bit research and circuit intent (S3 schematic, S5 placement, R1 routed)
+# 16bit research and circuit intent (S3 schematic, S5 placement, R1 routed, rev1 review)
 
 Bread Modular `16bit` (RP2350 + PT8211 I2S DAC) as a 6HP Eurorack module on a 4-layer
 carrier. Brief (user, 2026-10-20):
@@ -98,7 +98,8 @@ The MODE button reuses the modules/8bit two-part printed actuator (same switch a
 
 ## 5. Open items
 
-- Routing: done (R1, §6), awaiting user review. Open: router-made jogs could be tidied by hand; In2 carries 63 mm of signals.
+- Routing: done (R1, §6) and reviewed (rev1, §7). **Fabrication requires via-in-pad fill (resin
+  plugged + copper capped, POFV)**: §7.2. Remaining router jogs are cosmetic; In2 carries 62.8 mm of signals.
 - Sourcing: LCSC codes are filled only for parts already verified for modules/8bit; RP2350A, W25Q128JVS, APS6404L, PT8211, AMS1117s, TL074, TL072, MCP6002, crystal, inductor, 0402 passives, USB-C need dated live lookups before any export.
 - Firmware: GPIO5 inversion when JP1 = protected; P1/P2 now arrive on ADC0/1 (rescale the unpatched 1.63..3.01 V knob range), P3/P4 on ADC2/3; LED PWM on GPIO13; CV scaling (0 V = mid-scale).
 - Bench: PT8211 output swing / output level, LED brightness, AMS1117-5.0 temperature.
@@ -106,8 +107,10 @@ The MODE button reuses the modules/8bit two-part printed actuator (same switch a
 
 ## 6. Routing R1 (2026-10-20, `tools/route_r1.json` -> `tools/route_plan.py`)
 
-Stack: F.Cu/B.Cu signals 0.2 mm, rails 0.4 mm; In1.Cu solid GND (no tracks); In2.Cu +3V3 plane, a
-few signal hops cost-weighted; vias 0.5/0.3 mm (board default). Router rules were never lower than
+Stack: F.Cu/B.Cu signals 0.2 mm; the +5V, ±12 V and ±12V_F rails 0.4 mm. **Correction (rev1 review):
++1V1 (68.7 mm), VREG_AVDD (19.0 mm), VREG_LX (6.8 mm) and the local +3V3 stubs (19.6 mm) are 0.2 mm,
+not 0.4 mm** (the QFN pads are 0.2 mm wide; Bread Modular runs +1V1 at 0.15 mm, §7.3). In1.Cu
+solid GND (no tracks); In2.Cu +3V3 plane, a few signal hops cost-weighted; vias 0.5/0.3 mm (board default). Router rules were never lower than
 the native ones.
 
 | Run (same frozen placement, rules, pours) | Unrouted | Vias | Notes |
@@ -137,4 +140,107 @@ Finishing r3a (explicit, research/r2/s3..s35, every step checked with full nativ
 Result (`hardware/16bit.kicad_pcb`, promoted from the accepted stage-3 candidate of 3 shared
 `pcb plan/apply` stages, 563 ops): 0 unconnected, DRC 0 at all severities (0 exclusions), parity 0,
 ERC 0; 252 vias; copper F 871 mm, B 943 mm, In2 63 mm; widths 0.2 (966) / 0.4 (131), none below
-rule; GND In1 1 piece (83 %), +3V3 In2 1 piece (78.5 %). Render `docs/fit/routed-render.png`.
+rule; +3V3 In2 1 piece (78.5 %). **Correction (rev1 review):** GND on In1 is one main piece (83 %) **plus
+two 2.6 mm² fill pieces** between the J6 GND pins (115.0/159.65 and 115.0/162.19), each tied to GND
+only by its pad's thermal spokes; electrically GND, not an isolated island, but not "exactly 1 piece".
+The rev1 review (§7) changed this copper; current numbers are in §7.5. Render `docs/fit/routed-render.png`.
+
+## 7. Rev1 review of R1 (2026-10-20, independent review + finish pass)
+
+Research notes and audit scripts: `research/rev1/` (ignored). Coordinates are KiCad board mm.
+
+### 7.1 Claims re-verified from scratch
+
+Shared `kicad_tools check` and native `kicad-cli pcb drc --severity-all --schematic-parity` on
+the committed R1 board: ERC 0, DRC 0, unconnected 0, parity 0, 0 exclusions; panel DRC 0/0. 252 vias,
+no tracks on In1, In2 signals 62.8 mm, widths 0.2/0.4 only. The two R1 doc claims that were wrong are
+corrected in §6 (+1V1 is 0.2 mm, not 0.4 mm; In1 GND has two extra 2.6 mm² spoke-tied pieces at J6).
+
+### 7.2 Fabrication requirement: via-in-pad fill (resin plugged + copper capped)
+
+**This revision requires via-in-pad fill at the fab.** The router centred many vias in SMD pads.
+Ordered as a plain 4-layer board (vias only tented), solder wicks down the open barrels during
+reflow: starved joints and tombstoned 0402s are likely.
+
+- Order wording: **"Via in pad: resin filled + copper capped (POFV, IPC-4761 type VII), plated over;
+  all vias"** (at JLCPCB: "Via Covering: Epoxy Filled & Capped"). Confirm availability, price and
+  the drill range for the 0.2/0.25/0.3 mm drills at order time; no live lookup was made.
+- Board setup (`tools/build_layout.py` -> `hardware/16bit.kicad_pcb`): via tenting kept, **filling
+  yes, capping yes**, so the requirement travels with the board file.
+- Fallback if POFV is not available: hand-apply solder paste and reflow with the vias tented only;
+  expect a higher reflow defect rate (inspect and touch up every in-pad joint, especially the 0402s).
+- In-pad vias left after rev1 (counted by `research/rev1/scripts/vip.py`, a via whose copper overlaps
+  an SMD pad of the same net):
+
+| Category | Vias in SMD pads |
+| --- | --- |
+| GND plane stitch (to In1) | 53 (51 centred, 2 on the pad edge) |
+| +3V3 plane stitch (to In2) | 27 (24 centred, 3 on the pad edge) |
+| Signal or other rail | 43 (34 centred, 9 on the pad edge) |
+| **Board vias in pads** | **123** |
+| U1 exposed-pad thermal array (footprint vias, 0.25 mm drill, 0.6 mm pads) | 9 |
+
+  U1's signal and power pads have **no** in-pad vias after rev1; the EP array is the only via copper
+  inside U1's footprint pads.
+
+### 7.3 Findings
+
+| # | Sev | Finding | Location | Status |
+| --- | --- | --- | --- | --- |
+| F1 | Major (DFM) | Open vias inside SMD pads, board only tented (132 incl. U1 EP array) | §7.2 | 9 moved/removed (§7.4); rest = POFV fab requirement |
+| F2 | Minor | U8 AMS1117-5.0 has no local input cap: nearest on +12V_F are C37 100n at 18.6 mm and C1 10u at 26.8 mm | U8.3 127.15/140.1 | Left: needs a schematic change (add ~10u at U8.3) |
+| F3 | Minor | VREG_LX switch node goes through 2 vias and runs 4.3 mm on In2, the +3V3 plane layer | 111.54/115.57 -> 109.59/119.02 | Left: BM's LX is 10 mm at 0.15 mm on 2 layers; next rev route LX on B beside L1 |
+| F4 | Minor | +1V1 is 68.7 mm of 0.2 mm track, 16 vias, one In2 hop (docs said 0.4 mm) | U1 / L1 / C13-C16 | Doc fixed; copper left (BM: 21.8 mm at 0.15 mm) |
+| F5 | Minor | Four In2 hops (VREG_AVDD, +1V1, LX, POT3) cut slots into +3V3 left of U1 | x106-111.5, y114.7-119.3 | Left: slots run with the current flow; plane is one piece |
+| F6 | Minor | XIN 17.0 mm, 2 vias, F.Cu among U1's thermal vias (XOUT 8.6 mm) | Y1 -> U1.21 | Left: placement-driven (BM 13.9 mm) |
+| F7 | Minor | C17 (VREG_AVDD 4.7u) 8.2 mm from U1.46 through an In2 hop | C17 | Left: BM similar (5-7 mm) |
+| F8 | Minor | QSPI: SCLK 54.2 mm / 7 vias, SS 53.5 mm (both branch to flash + PSRAM); SD0-SD3 31.6/36.6/42.1/42.6 mm (11 mm spread) | U1 -> U2, U3 | Accepted (§7.6) |
+| F9 | Minor | AMS1117 tabs are VOUT (+5V/+3V3), so D9's "GND pour under the tab" doesn't heat-sink them; U8 (~0.45 W) cools through its pad and 0.4 mm tracks only | U8, U9 | Left: bench temperature check (§5) |
+| F10 | Nit | U1.1's moved via clears the pad by only 0.03 mm (boxed in by an In2 QSPI_SD0 hop and B PSRAM_CS) | via 117.5/114.83 | Accepted: DRC clean; the edge sits outside the pad |
+| F11 | Nit | Router jogs: duplicate QSPI_SS loop 0.065 mm beside its twin, QSPI_SD2 spur (11-15°), PSRAM_CS hairpin (12.5°), USB D- hairpin (5.4°), 5 tees running back along their parent, 0.05 mm zig-zags | U1.60, U1.58, R8, J7 | Fixed (§7.4) |
+| F12 | Nit | USB D+/D- not pair-routed (about 2 mm mismatch, separate paths) | J7 -> U1 | Left: full-speed USB (12 Mbps) tolerates it |
+| F13 | Nit | GND In1 has two extra 2.6 mm² pieces between the J6 GND pins | 115.0/159.65, 115.0/162.19 | Doc fixed (spoke-tied to GND) |
+
+Checked and fine: decoupling C5-C12 1.7-2.8 mm, C13 4.0 mm (+1V1, U1.23), C14 2.0, C15 3.3,
+C16 2.5 mm (straight line to the nearest U1 pin of the same net); no track under the U1 exposed pad;
+annular rings 0.1 mm (0.5/0.3) and 0.15 mm (0.5/0.2); edge clearance, silk over pads and courtyards
+pass native DRC at all severities; panel jacks align exactly, and the pot, switch and LED offsets match
+`docs/geometry.json` and the footprint origins.
+
+### 7.4 Rev1 copper edits (`tools/route_r1.json`, through the shared pipeline)
+
+Edits are made by `research/rev1/scripts/edits.py`, prototyped with full native DRC, then rebuilt
+end to end: `build_layout.py` (unrouted), `route_plan.py` (3 stages), shared `pcb plan/apply`
+(intermediate stages with `--allow-draft-opens`, the last without), `pcb promote`. The promoted
+copper equals the prototype (1311 items, 0 differences).
+
+- U1.45 (+3V3, 0.2 mm pad): in-pad via 110.565/115.18 removed; pins 44/45 tie to the via at 110.11/114.79.
+- U1.53/54 + C6.1 (+3V3): via 114.205/114.075 -> 114.205/113.7, 45° stub between the pad tips.
+- U1.1 (+3V3): via 117.455/114.985 -> 117.5/114.83 + stub.
+- U1.30 (+3V3): via 110.955/121.42 -> 110.65/121.75 + corner stub.
+- U1.16 (/BUTTON): via 117.0/121.615 -> 117.35/121.615 on the same F.Cu lane.
+- D5/D6 (BAT54SW SOT-323, 0.45 mm pads): GND/+3V3 vias 104.39/89.44, 104.39/90.74, 127.4/89.44,
+  127.4/90.74 -> 0.75 mm right (105.15/128.15), 0.3 mm past the pad tip.
+- Jog cleanup (F11): only loops and spurs that double back; same endpoints, nothing re-routed.
+  Waypoints 788 -> 753.
+- `tools/build_layout.py`: board setup filling + capping yes (§7.2).
+
+### 7.5 Numbers after rev1
+
+ERC 0; DRC 0 at all severities, 0 exclusions; unconnected 0; parity 0 (shared check and native,
+`docs/fit/`); panel 0/0. 251 vias (246 at 0.5/0.3 mm, 5 at 0.5/0.2 mm); 1065 segments, widths 0.2 mm
+(934) / 0.4 mm (131), none below rule; F 869.9 mm, B 933.5 mm, In2 62.8 mm (signals), In1 no tracks.
+In2 +3V3 one piece; In1 GND one main piece + two 2.6 mm² spoke-tied pieces at J6.
+Render (F | In2 | B): `docs/fit/routed-render.png`.
+
+### 7.6 Pre-fabrication calls
+
+1. **Via-in-pad**: order POFV (§7.2). Without it this revision is not fab-ready for reflow.
+2. **QSPI 11 mm skew / 54 mm SCLK: acceptable, yes.** 11 mm on FR4 is about 70 ps, roughly 1 % of a
+   75 MHz (clk_sys/2) SCLK period. The 54 mm branched SCLK is longer than a ~1 ns edge's critical
+   length, so expect some ringing. The fix belongs in firmware, not copper: bring up at the
+   default/conservative flash clock divider, run a PSRAM memory test, and raise the clock only if
+   that passes.
+3. Add a local input cap at U8 (F2) in the next schematic revision; until then, check U8's input
+   on a scope at power-up and under load.
+4. Bench: AMS1117-5.0 temperature (F9), VREG_LX ripple on +1V1 (F3), crystal start-up (F6).

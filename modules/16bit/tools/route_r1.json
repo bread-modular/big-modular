@@ -1,5 +1,5 @@
 {
- "provenance": "TraceMaker 0.10.0 r3a + session + explicit hand/grid finishing (research/r2/s35)",
+ "provenance": "TraceMaker 0.10.0 r3a + session + explicit hand/grid finishing (research/r2/s35) + rev1 review: 9 in-pad vias moved off/dropped (U1, D5, D6) (research/rev1)",
  "units": "board mm (KiCad frame)",
  "vias": [
   {
@@ -212,8 +212,8 @@
   {
    "net": "+3V3",
    "at": [
-    104.39,
-    90.74
+    105.15,
+    90.75
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -293,15 +293,6 @@
   {
    "net": "+3V3",
    "at": [
-    110.565,
-    115.18
-   ],
-   "diameter_mm": 0.5,
-   "drill_mm": 0.3
-  },
-  {
-   "net": "+3V3",
-   "at": [
     110.695,
     62.595
    ],
@@ -311,8 +302,8 @@
   {
    "net": "+3V3",
    "at": [
-    110.955,
-    121.42
+    110.65,
+    121.75
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -411,7 +402,7 @@
    "net": "+3V3",
    "at": [
     114.205,
-    114.075
+    113.7
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -473,8 +464,8 @@
   {
    "net": "+3V3",
    "at": [
-    117.455,
-    114.985
+    117.5,
+    114.83
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -545,8 +536,8 @@
   {
    "net": "+3V3",
    "at": [
-    127.4,
-    90.74
+    128.15,
+    90.75
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -743,7 +734,7 @@
   {
    "net": "/BUTTON",
    "at": [
-    117.0,
+    117.35,
     121.615
    ],
    "diameter_mm": 0.5,
@@ -1715,8 +1706,8 @@
   {
    "net": "GND",
    "at": [
-    104.39,
-    89.44
+    105.15,
+    89.45
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -2192,8 +2183,8 @@
   {
    "net": "GND",
    "at": [
-    127.4,
-    89.44
+    128.15,
+    89.45
    ],
    "diameter_mm": 0.5,
    "drill_mm": 0.3
@@ -2804,18 +2795,6 @@
      115.1
     ],
     [
-     118.35,
-     115.05
-    ],
-    [
-     118.4,
-     115.0
-    ],
-    [
-     118.45,
-     114.95
-    ],
-    [
      118.5,
      114.9
     ],
@@ -2884,16 +2863,12 @@
     [
      116.65,
      118.4
-    ],
-    [
-     117.2,
-     118.95
     ]
    ],
    "end": {
     "tee": [
      117.2,
-     119.4
+     118.95
     ]
    }
   },
@@ -3007,7 +2982,7 @@
    ],
    "end": {
     "tee": [
-     110.045,
+     109.785,
      117.585
     ]
    }
@@ -3054,21 +3029,6 @@
     "pad": [
      "U1",
      "50"
-    ]
-   }
-  },
-  {
-   "net": "+1V1",
-   "layer": "B.Cu",
-   "width_mm": 0.2,
-   "start": {
-    "via": 11
-   },
-   "waypoints": [],
-   "end": {
-    "tee": [
-     112.775,
-     115.115
     ]
    }
   },
@@ -3148,14 +3108,6 @@
      117.4
     ],
     [
-     116.75,
-     117.35
-    ],
-    [
-     116.8,
-     117.3
-    ],
-    [
      116.85,
      117.25
     ],
@@ -3193,18 +3145,6 @@
     [
      118.75,
      123.85
-    ],
-    [
-     118.85,
-     123.95
-    ],
-    [
-     118.9,
-     124.0
-    ],
-    [
-     118.95,
-     124.05
     ],
     [
      119.0,
@@ -3331,7 +3271,10 @@
     ]
    ],
    "end": {
-    "via": 32
+    "pad": [
+     "U1",
+     "45"
+    ]
    }
   },
   {
@@ -3359,7 +3302,7 @@
     ]
    ],
    "end": {
-    "via": 36
+    "via": 35
    }
   },
   {
@@ -3367,7 +3310,10 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 32
+    "pad": [
+     "U1",
+     "45"
+    ]
    },
    "waypoints": [
     [
@@ -3387,7 +3333,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 38
+    "via": 37
    },
    "waypoints": [
     [
@@ -3415,7 +3361,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 40
+    "via": 39
    },
    "waypoints": [],
    "end": {
@@ -3430,7 +3376,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 41
+    "via": 40
    },
    "waypoints": [
     [
@@ -3470,7 +3416,7 @@
     ]
    ],
    "end": {
-    "via": 42
+    "via": 41
    }
   },
   {
@@ -3478,26 +3424,18 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 43
+    "via": 42
    },
    "waypoints": [
     [
      113.49,
      109.85
-    ],
-    [
-     113.49,
-     112.06
-    ],
-    [
-     113.815,
-     112.385
     ]
    ],
    "end": {
-    "pad": [
-     "C6",
-     "1"
+    "tee": [
+     113.49,
+     111.15
     ]
    }
   },
@@ -3513,12 +3451,16 @@
    },
    "waypoints": [
     [
-     114.075,
-     114.14
+     114.0,
+     114.3
+    ],
+    [
+     114.205,
+     114.095
     ]
    ],
    "end": {
-    "via": 45
+    "via": 44
    }
   },
   {
@@ -3538,11 +3480,11 @@
     ],
     [
      114.075,
-     114.14
+     113.57
     ]
    ],
    "end": {
-    "via": 45
+    "via": 44
    }
   },
   {
@@ -3550,12 +3492,15 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 45
+    "tee": [
+     114.205,
+     114.095
+    ]
    },
    "waypoints": [
     [
-     114.335,
-     114.205
+     114.4,
+     114.29
     ]
    ],
    "end": {
@@ -3582,7 +3527,7 @@
     ]
    ],
    "end": {
-    "via": 47
+    "via": 46
    }
   },
   {
@@ -3590,7 +3535,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 51
+    "via": 50
    },
    "waypoints": [
     [
@@ -3614,7 +3559,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 55
+    "via": 54
    },
    "waypoints": [
     [
@@ -3638,7 +3583,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 57
+    "via": 56
    },
    "waypoints": [
     [
@@ -3658,7 +3603,7 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 61
+    "via": 60
    },
    "waypoints": [
     [
@@ -3671,7 +3616,7 @@
     ]
    ],
    "end": {
-    "via": 62
+    "via": 61
    }
   },
   {
@@ -3679,7 +3624,7 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 63
+    "via": 62
    },
    "waypoints": [
     [
@@ -3688,7 +3633,7 @@
     ]
    ],
    "end": {
-    "via": 64
+    "via": 63
    }
   },
   {
@@ -3696,7 +3641,7 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 65
+    "via": 64
    },
    "waypoints": [
     [
@@ -3752,11 +3697,11 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 66
+    "via": 65
    },
    "waypoints": [],
    "end": {
-    "via": 67
+    "via": 66
    }
   },
   {
@@ -3798,7 +3743,22 @@
    },
    "waypoints": [],
    "end": {
+    "via": 60
+   }
+  },
+  {
+   "net": "+5V",
+   "layer": "B.Cu",
+   "width_mm": 0.4,
+   "start": {
     "via": 61
+   },
+   "waypoints": [],
+   "end": {
+    "pad": [
+     "C3",
+     "1"
+    ]
    }
   },
   {
@@ -3806,29 +3766,14 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
+    "pad": [
+     "C3",
+     "1"
+    ]
+   },
+   "waypoints": [],
+   "end": {
     "via": 62
-   },
-   "waypoints": [],
-   "end": {
-    "pad": [
-     "C3",
-     "1"
-    ]
-   }
-  },
-  {
-   "net": "+5V",
-   "layer": "B.Cu",
-   "width_mm": 0.4,
-   "start": {
-    "pad": [
-     "C3",
-     "1"
-    ]
-   },
-   "waypoints": [],
-   "end": {
-    "via": 63
    }
   },
   {
@@ -3849,23 +3794,7 @@
     ]
    ],
    "end": {
-    "via": 64
-   }
-  },
-  {
-   "net": "+5V",
-   "layer": "B.Cu",
-   "width_mm": 0.4,
-   "start": {
-    "pad_uuid": "2e8a2a51-cb0c-5c24-a344-ec741a2cfa85",
-    "pad_of": [
-     "U8",
-     "2"
-    ]
-   },
-   "waypoints": [],
-   "end": {
-    "via": 66
+    "via": 63
    }
   },
   {
@@ -3889,7 +3818,23 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 67
+    "pad_uuid": "2e8a2a51-cb0c-5c24-a344-ec741a2cfa85",
+    "pad_of": [
+     "U8",
+     "2"
+    ]
+   },
+   "waypoints": [],
+   "end": {
+    "via": 64
+   }
+  },
+  {
+   "net": "+5V",
+   "layer": "B.Cu",
+   "width_mm": 0.4,
+   "start": {
+    "via": 66
    },
    "waypoints": [],
    "end": {
@@ -3944,7 +3889,7 @@
     ]
    ],
    "end": {
-    "via": 68
+    "via": 67
    }
   },
   {
@@ -3952,7 +3897,7 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 68
+    "via": 67
    },
    "waypoints": [
     [
@@ -3972,7 +3917,7 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 69
+    "via": 68
    },
    "waypoints": [
     [
@@ -4013,7 +3958,7 @@
     ]
    ],
    "end": {
-    "via": 70
+    "via": 69
    }
   },
   {
@@ -4021,11 +3966,11 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
+    "via": 72
+   },
+   "waypoints": [],
+   "end": {
     "via": 73
-   },
-   "waypoints": [],
-   "end": {
-    "via": 74
    }
   },
   {
@@ -4033,11 +3978,11 @@
    "layer": "F.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 76
+    "via": 75
    },
    "waypoints": [],
    "end": {
-    "via": 77
+    "via": 76
    }
   },
   {
@@ -4045,7 +3990,7 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 69
+    "via": 68
    },
    "waypoints": [],
    "end": {
@@ -4076,7 +4021,7 @@
     ]
    ],
    "end": {
-    "via": 71
+    "via": 70
    }
   },
   {
@@ -4084,7 +4029,7 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 70
+    "via": 69
    },
    "waypoints": [],
    "end": {
@@ -4130,7 +4075,7 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 72
+    "via": 71
    },
    "waypoints": [
     [
@@ -4162,7 +4107,7 @@
     ]
    ],
    "end": {
-    "via": 73
+    "via": 72
    }
   },
   {
@@ -4190,7 +4135,7 @@
     ]
    ],
    "end": {
-    "via": 75
+    "via": 74
    }
   },
   {
@@ -4210,7 +4155,7 @@
     ]
    ],
    "end": {
-    "via": 76
+    "via": 75
    }
   },
   {
@@ -4218,7 +4163,7 @@
    "layer": "B.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 77
+    "via": 76
    },
    "waypoints": [],
    "end": {
@@ -4233,7 +4178,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 71
+    "via": 70
    },
    "waypoints": [
     [
@@ -4242,7 +4187,7 @@
     ]
    ],
    "end": {
-    "via": 72
+    "via": 71
    }
   },
   {
@@ -4250,11 +4195,11 @@
    "layer": "In2.Cu",
    "width_mm": 0.4,
    "start": {
-    "via": 74
+    "via": 73
    },
    "waypoints": [],
    "end": {
-    "via": 75
+    "via": 74
    }
   },
   {
@@ -4348,11 +4293,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 78
+    "via": 77
    },
    "waypoints": [],
    "end": {
-    "via": 79
+    "via": 78
    }
   },
   {
@@ -4376,7 +4321,7 @@
     ]
    ],
    "end": {
-    "via": 78
+    "via": 77
    }
   },
   {
@@ -4384,7 +4329,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 79
+    "via": 78
    },
    "waypoints": [
     [
@@ -4468,7 +4413,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 80
+    "via": 79
    },
    "waypoints": [
     [
@@ -4489,7 +4434,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 81
+    "via": 80
    },
    "waypoints": [
     [
@@ -4514,7 +4459,7 @@
     ]
    ],
    "end": {
-    "via": 82
+    "via": 81
    }
   },
   {
@@ -4522,7 +4467,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 80
+    "via": 79
    },
    "waypoints": [
     [
@@ -4543,7 +4488,7 @@
     ]
    ],
    "end": {
-    "via": 81
+    "via": 80
    }
   },
   {
@@ -4558,12 +4503,12 @@
    },
    "waypoints": [
     [
-     116.87,
+     116.8,
      121.615
     ]
    ],
    "end": {
-    "via": 82
+    "via": 81
    }
   },
   {
@@ -4649,7 +4594,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 83
+    "via": 82
    },
    "waypoints": [
     [
@@ -4666,7 +4611,7 @@
     ]
    ],
    "end": {
-    "via": 86
+    "via": 85
    }
   },
   {
@@ -4674,7 +4619,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 84
+    "via": 83
    },
    "waypoints": [
     [
@@ -4683,7 +4628,7 @@
     ]
    ],
    "end": {
-    "via": 85
+    "via": 84
    }
   },
   {
@@ -4691,7 +4636,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 83
+    "via": 82
    },
    "waypoints": [
     [
@@ -4704,7 +4649,7 @@
     ]
    ],
    "end": {
-    "via": 84
+    "via": 83
    }
   },
   {
@@ -4728,7 +4673,7 @@
     ]
    ],
    "end": {
-    "via": 85
+    "via": 84
    }
   },
   {
@@ -4736,7 +4681,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 86
+    "via": 85
    },
    "waypoints": [],
    "end": {
@@ -4852,11 +4797,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 87
+    "via": 86
    },
    "waypoints": [],
    "end": {
-    "via": 88
+    "via": 87
    }
   },
   {
@@ -4996,7 +4941,7 @@
     ]
    ],
    "end": {
-    "via": 87
+    "via": 86
    }
   },
   {
@@ -5004,7 +4949,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 88
+    "via": 87
    },
    "waypoints": [
     [
@@ -5040,7 +4985,7 @@
     ]
    ],
    "end": {
-    "via": 89
+    "via": 88
    }
   },
   {
@@ -5048,7 +4993,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 89
+    "via": 88
    },
    "waypoints": [
     [
@@ -5068,11 +5013,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 90
+    "via": 89
    },
    "waypoints": [],
    "end": {
-    "via": 91
+    "via": 90
    }
   },
   {
@@ -5132,7 +5077,7 @@
     ]
    ],
    "end": {
-    "via": 91
+    "via": 90
    }
   },
   {
@@ -5140,7 +5085,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 90
+    "via": 89
    },
    "waypoints": [
     [
@@ -5187,7 +5132,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 92
+    "via": 91
    },
    "waypoints": [
     [
@@ -5196,7 +5141,7 @@
     ]
    ],
    "end": {
-    "via": 93
+    "via": 92
    }
   },
   {
@@ -5204,7 +5149,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 94
+    "via": 93
    },
    "waypoints": [
     [
@@ -5217,7 +5162,7 @@
     ]
    ],
    "end": {
-    "via": 95
+    "via": 94
    }
   },
   {
@@ -5259,7 +5204,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 92
+    "via": 91
    }
   },
   {
@@ -5267,7 +5212,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 93
+    "via": 92
    },
    "waypoints": [
     [
@@ -5284,7 +5229,7 @@
     ]
    ],
    "end": {
-    "via": 94
+    "via": 93
    }
   },
   {
@@ -5292,7 +5237,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 95
+    "via": 94
    },
    "waypoints": [
     [
@@ -5312,11 +5257,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 96
+    "via": 95
    },
    "waypoints": [],
    "end": {
-    "via": 97
+    "via": 96
    }
   },
   {
@@ -5352,15 +5297,15 @@
     ]
    ],
    "end": {
+    "via": 95
+   }
+  },
+  {
+   "net": "/CV2_BUF",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
     "via": 96
-   }
-  },
-  {
-   "net": "/CV2_BUF",
-   "layer": "B.Cu",
-   "width_mm": 0.2,
-   "start": {
-    "via": 97
    },
    "waypoints": [],
    "end": {
@@ -5375,7 +5320,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 97
+    "via": 96
    },
    "waypoints": [],
    "end": {
@@ -5390,7 +5335,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 97
+    "via": 96
    },
    "waypoints": [],
    "end": {
@@ -5549,7 +5494,7 @@
     ]
    ],
    "end": {
-    "via": 98
+    "via": 97
    }
   },
   {
@@ -5573,7 +5518,7 @@
     ]
    ],
    "end": {
-    "via": 98
+    "via": 97
    }
   },
   {
@@ -5632,7 +5577,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 99
+    "via": 98
    },
    "waypoints": [
     [
@@ -5645,7 +5590,7 @@
     ]
    ],
    "end": {
-    "via": 100
+    "via": 99
    }
   },
   {
@@ -5708,7 +5653,7 @@
     ]
    ],
    "end": {
-    "via": 99
+    "via": 98
    }
   },
   {
@@ -5716,7 +5661,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 100
+    "via": 99
    },
    "waypoints": [],
    "end": {
@@ -5731,11 +5676,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 101
+    "via": 100
    },
    "waypoints": [],
    "end": {
-    "via": 102
+    "via": 101
    }
   },
   {
@@ -5767,7 +5712,7 @@
     ]
    ],
    "end": {
-    "via": 101
+    "via": 100
    }
   },
   {
@@ -5775,7 +5720,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 102
+    "via": 101
    },
    "waypoints": [
     [
@@ -5823,7 +5768,7 @@
     ]
    ],
    "end": {
-    "via": 103
+    "via": 102
    }
   },
   {
@@ -5831,7 +5776,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 104
+    "via": 103
    },
    "waypoints": [
     [
@@ -5882,7 +5827,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 103
+    "via": 102
    },
    "waypoints": [
     [
@@ -5891,7 +5836,7 @@
     ]
    ],
    "end": {
-    "via": 104
+    "via": 103
    }
   },
   {
@@ -5899,7 +5844,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 105
+    "via": 104
    },
    "waypoints": [
     [
@@ -5908,7 +5853,7 @@
     ]
    ],
    "end": {
-    "via": 106
+    "via": 105
    }
   },
   {
@@ -5955,7 +5900,7 @@
     ]
    ],
    "end": {
-    "via": 105
+    "via": 104
    }
   },
   {
@@ -5963,7 +5908,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 106
+    "via": 105
    },
    "waypoints": [
     [
@@ -5991,7 +5936,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 107
+    "via": 106
    },
    "waypoints": [
     [
@@ -6000,7 +5945,7 @@
     ]
    ],
    "end": {
-    "via": 108
+    "via": 107
    }
   },
   {
@@ -6015,7 +5960,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 107
+    "via": 106
    }
   },
   {
@@ -6023,7 +5968,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 108
+    "via": 107
    },
    "waypoints": [],
    "end": {
@@ -6065,7 +6010,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 110
+    "via": 109
    },
    "waypoints": [
     [
@@ -6082,7 +6027,7 @@
     ]
    ],
    "end": {
-    "via": 111
+    "via": 110
    }
   },
   {
@@ -6106,7 +6051,7 @@
     ]
    ],
    "end": {
-    "via": 109
+    "via": 108
    }
   },
   {
@@ -6130,7 +6075,7 @@
     ]
    ],
    "end": {
-    "via": 111
+    "via": 110
    }
   },
   {
@@ -6138,7 +6083,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 109
+    "via": 108
    },
    "waypoints": [
     [
@@ -6167,7 +6112,7 @@
     ]
    ],
    "end": {
-    "via": 110
+    "via": 109
    }
   },
   {
@@ -6175,7 +6120,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 112
+    "via": 111
    },
    "waypoints": [
     [
@@ -6192,7 +6137,7 @@
     ]
    ],
    "end": {
-    "via": 113
+    "via": 112
    }
   },
   {
@@ -6220,7 +6165,7 @@
     ]
    ],
    "end": {
-    "via": 113
+    "via": 112
    }
   },
   {
@@ -6235,7 +6180,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 112
+    "via": 111
    }
   },
   {
@@ -6243,24 +6188,12 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 116
+    "via": 115
    },
    "waypoints": [
     [
      121.05,
      134.25
-    ],
-    [
-     121.1,
-     134.2
-    ],
-    [
-     121.15,
-     134.15
-    ],
-    [
-     121.2,
-     134.1
     ],
     [
      121.25,
@@ -6276,7 +6209,7 @@
     ]
    ],
    "end": {
-    "via": 117
+    "via": 116
    }
   },
   {
@@ -6284,7 +6217,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 114
+    "via": 113
    },
    "waypoints": [
     [
@@ -6315,24 +6248,12 @@
      137.4
     ],
     [
-     118.55,
-     136.95
-    ],
-    [
-     118.6,
-     136.9
-    ],
-    [
-     118.65,
-     136.85
-    ],
-    [
      118.7,
      136.8
     ]
    ],
    "end": {
-    "via": 116
+    "via": 115
    }
   },
   {
@@ -6340,11 +6261,11 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 115
+    "via": 114
    },
    "waypoints": [],
    "end": {
-    "via": 117
+    "via": 116
    }
   },
   {
@@ -6352,7 +6273,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 114
+    "via": 113
    },
    "waypoints": [
     [
@@ -6365,7 +6286,7 @@
     ]
    ],
    "end": {
-    "via": 115
+    "via": 114
    }
   },
   {
@@ -6373,11 +6294,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 118
+    "via": 117
    },
    "waypoints": [],
    "end": {
-    "via": 119
+    "via": 118
    }
   },
   {
@@ -6401,7 +6322,7 @@
     ]
    ],
    "end": {
-    "via": 118
+    "via": 117
    }
   },
   {
@@ -6409,7 +6330,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 119
+    "via": 118
    },
    "waypoints": [
     [
@@ -6554,7 +6475,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 120
+    "via": 119
    },
    "waypoints": [
     [
@@ -6563,7 +6484,7 @@
     ]
    ],
    "end": {
-    "via": 122
+    "via": 121
    }
   },
   {
@@ -6571,7 +6492,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 121
+    "via": 120
    },
    "waypoints": [
     [
@@ -6588,7 +6509,7 @@
     ]
    ],
    "end": {
-    "via": 123
+    "via": 122
    }
   },
   {
@@ -6596,7 +6517,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 124
+    "via": 123
    },
    "waypoints": [
     [
@@ -6621,7 +6542,7 @@
     ]
    ],
    "end": {
-    "via": 125
+    "via": 124
    }
   },
   {
@@ -6629,7 +6550,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 120
+    "via": 119
    },
    "waypoints": [],
    "end": {
@@ -6644,7 +6565,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 121
+    "via": 120
    },
    "waypoints": [
     [
@@ -6677,7 +6598,7 @@
     ]
    ],
    "end": {
-    "via": 122
+    "via": 121
    }
   },
   {
@@ -6685,11 +6606,11 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 123
+    "via": 122
    },
    "waypoints": [],
    "end": {
-    "via": 124
+    "via": 123
    }
   },
   {
@@ -6704,7 +6625,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 125
+    "via": 124
    }
   },
   {
@@ -6712,7 +6633,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 126
+    "via": 125
    },
    "waypoints": [
     [
@@ -6743,7 +6664,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 126
+    "via": 125
    }
   },
   {
@@ -6775,7 +6696,7 @@
     ]
    ],
    "end": {
-    "via": 127
+    "via": 126
    }
   },
   {
@@ -6783,7 +6704,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 127
+    "via": 126
    },
    "waypoints": [],
    "end": {
@@ -6798,7 +6719,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 128
+    "via": 127
    },
    "waypoints": [
     [
@@ -6814,18 +6735,6 @@
      121.2
     ],
     [
-     106.45,
-     121.15
-    ],
-    [
-     106.5,
-     121.1
-    ],
-    [
-     106.55,
-     121.05
-    ],
-    [
      106.6,
      121.0
     ],
@@ -6835,7 +6744,7 @@
     ]
    ],
    "end": {
-    "via": 129
+    "via": 128
    }
   },
   {
@@ -6843,7 +6752,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 128
+    "via": 127
    },
    "waypoints": [
     [
@@ -6897,7 +6806,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 130
+    "via": 129
    }
   },
   {
@@ -6905,7 +6814,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 129
+    "via": 128
    },
    "waypoints": [
     [
@@ -6926,7 +6835,7 @@
     ]
    ],
    "end": {
-    "via": 130
+    "via": 129
    }
   },
   {
@@ -6934,7 +6843,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 131
+    "via": 130
    },
    "waypoints": [
     [
@@ -6951,7 +6860,7 @@
     ]
    ],
    "end": {
-    "via": 132
+    "via": 131
    }
   },
   {
@@ -6959,7 +6868,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 131
+    "via": 130
    },
    "waypoints": [
     [
@@ -7007,7 +6916,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 132
+    "via": 131
    },
    "waypoints": [
     [
@@ -7070,7 +6979,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 133
+    "via": 132
    },
    "waypoints": [
     [
@@ -7091,7 +7000,7 @@
     ]
    ],
    "end": {
-    "via": 134
+    "via": 133
    }
   },
   {
@@ -7123,7 +7032,7 @@
     ]
    ],
    "end": {
-    "via": 133
+    "via": 132
    }
   },
   {
@@ -7131,14 +7040,9 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 134
+    "via": 133
    },
-   "waypoints": [
-    [
-     122.2,
-     108.745
-    ]
-   ],
+   "waypoints": [],
    "end": {
     "pad": [
      "R8",
@@ -7190,7 +7094,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 135
+    "via": 134
    },
    "waypoints": [
     [
@@ -7227,7 +7131,7 @@
     ]
    ],
    "end": {
-    "via": 139
+    "via": 138
    }
   },
   {
@@ -7235,7 +7139,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 136
+    "via": 135
    },
    "waypoints": [
     [
@@ -7288,7 +7192,7 @@
     ]
    ],
    "end": {
-    "via": 138
+    "via": 137
    }
   },
   {
@@ -7296,7 +7200,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 137
+    "via": 136
    },
    "waypoints": [
     [
@@ -7305,7 +7209,7 @@
     ]
    ],
    "end": {
-    "via": 140
+    "via": 139
    }
   },
   {
@@ -7313,7 +7217,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 135
+    "via": 134
    },
    "waypoints": [
     [
@@ -7337,7 +7241,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 136
+    "via": 135
    },
    "waypoints": [
     [
@@ -7372,7 +7276,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 137
+    "via": 136
    }
   },
   {
@@ -7380,7 +7284,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 140
+    "via": 139
    },
    "waypoints": [
     [
@@ -7393,7 +7297,7 @@
     ]
    ],
    "end": {
-    "via": 141
+    "via": 140
    }
   },
   {
@@ -7401,11 +7305,11 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 139
+    "via": 138
    },
    "waypoints": [],
    "end": {
-    "via": 141
+    "via": 140
    }
   },
   {
@@ -7484,7 +7388,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 142
+    "via": 141
    },
    "waypoints": [
     [
@@ -7504,7 +7408,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 143
+    "via": 142
    },
    "waypoints": [
     [
@@ -7532,7 +7436,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 142
+    "via": 141
    },
    "waypoints": [
     [
@@ -7561,7 +7465,7 @@
     ]
    ],
    "end": {
-    "via": 143
+    "via": 142
    }
   },
   {
@@ -7569,7 +7473,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 144
+    "via": 143
    },
    "waypoints": [
     [
@@ -7578,7 +7482,7 @@
     ]
    ],
    "end": {
-    "via": 145
+    "via": 144
    }
   },
   {
@@ -7586,7 +7490,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 146
+    "via": 145
    },
    "waypoints": [
     [
@@ -7619,7 +7523,7 @@
     ]
    ],
    "end": {
-    "via": 147
+    "via": 146
    }
   },
   {
@@ -7671,7 +7575,7 @@
     ]
    ],
    "end": {
-    "via": 146
+    "via": 145
    }
   },
   {
@@ -7679,7 +7583,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 144
+    "via": 143
    },
    "waypoints": [],
    "end": {
@@ -7694,7 +7598,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 145
+    "via": 144
    },
    "waypoints": [
     [
@@ -7738,7 +7642,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 147
+    "via": 146
    },
    "waypoints": [
     [
@@ -7758,7 +7662,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 148
+    "via": 147
    },
    "waypoints": [
     [
@@ -7779,7 +7683,7 @@
     ]
    ],
    "end": {
-    "via": 151
+    "via": 150
    }
   },
   {
@@ -7787,7 +7691,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 149
+    "via": 148
    },
    "waypoints": [
     [
@@ -7796,7 +7700,7 @@
     ]
    ],
    "end": {
-    "via": 152
+    "via": 151
    }
   },
   {
@@ -7804,16 +7708,11 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 149
+    "via": 148
    },
-   "waypoints": [
-    [
-     116.025,
-     115.31
-    ]
-   ],
+   "waypoints": [],
    "end": {
-    "via": 150
+    "via": 149
    }
   },
   {
@@ -7829,15 +7728,11 @@
    "waypoints": [
     [
      116.0,
-     115.0825
-    ],
-    [
-     116.025,
-     115.115
+     115.35
     ]
    ],
    "end": {
-    "via": 150
+    "via": 149
    }
   },
   {
@@ -7845,27 +7740,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 150
-   },
-   "waypoints": [
-    [
-     116.025,
-     115.31
-    ]
-   ],
-   "end": {
-    "tee": [
-     116.025,
-     115.115
-    ]
-   }
-  },
-  {
-   "net": "/QSPI_SD2",
-   "layer": "B.Cu",
-   "width_mm": 0.2,
-   "start": {
-    "via": 152
+    "via": 151
    },
    "waypoints": [
     [
@@ -7905,7 +7780,7 @@
     ]
    ],
    "end": {
-    "via": 153
+    "via": 152
    }
   },
   {
@@ -7913,7 +7788,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 148
+    "via": 147
    },
    "waypoints": [
     [
@@ -7942,7 +7817,7 @@
     ]
    ],
    "end": {
-    "via": 150
+    "via": 149
    }
   },
   {
@@ -7950,11 +7825,11 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 151
+    "via": 150
    },
    "waypoints": [],
    "end": {
-    "via": 153
+    "via": 152
    }
   },
   {
@@ -7962,7 +7837,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 155
+    "via": 154
    },
    "waypoints": [
     [
@@ -7975,7 +7850,7 @@
     ]
    ],
    "end": {
-    "via": 157
+    "via": 156
    }
   },
   {
@@ -7983,11 +7858,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 156
+    "via": 155
    },
    "waypoints": [],
    "end": {
-    "via": 158
+    "via": 157
    }
   },
   {
@@ -8063,7 +7938,7 @@
     ]
    ],
    "end": {
-    "via": 156
+    "via": 155
    }
   },
   {
@@ -8071,7 +7946,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 154
+    "via": 153
    },
    "waypoints": [
     [
@@ -8081,8 +7956,8 @@
    ],
    "end": {
     "tee": [
-     116.155,
-     109.655
+     116.61,
+     109.2
     ]
    }
   },
@@ -8091,7 +7966,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 158
+    "via": 157
    },
    "waypoints": [
     [
@@ -8111,7 +7986,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 154
+    "via": 153
    },
    "waypoints": [
     [
@@ -8128,7 +8003,7 @@
     ]
    ],
    "end": {
-    "via": 157
+    "via": 156
    }
   },
   {
@@ -8136,11 +8011,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 159
+    "via": 158
    },
    "waypoints": [],
    "end": {
-    "via": 160
+    "via": 159
    }
   },
   {
@@ -8216,37 +8091,6 @@
    "width_mm": 0.2,
    "start": {
     "pad": [
-     "U1",
-     "60"
-    ]
-   },
-   "waypoints": [
-    [
-     116.87,
-     114.595
-    ],
-    [
-     118.495,
-     112.97
-    ],
-    [
-     118.495,
-     110.045
-    ]
-   ],
-   "end": {
-    "tee": [
-     119.6,
-     108.94
-    ]
-   }
-  },
-  {
-   "net": "/QSPI_SS",
-   "layer": "B.Cu",
-   "width_mm": 0.2,
-   "start": {
-    "pad": [
      "R7",
      "2"
     ]
@@ -8258,7 +8102,7 @@
     ]
    ],
    "end": {
-    "via": 159
+    "via": 158
    }
   },
   {
@@ -8266,22 +8110,13 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 160
+    "via": 159
    },
-   "waypoints": [
-    [
-     123.76,
-     109.655
-    ],
-    [
-     122.135,
-     109.655
-    ]
-   ],
+   "waypoints": [],
    "end": {
     "tee": [
-     121.42,
-     108.94
+     123.37,
+     110.045
     ]
    }
   },
@@ -8290,7 +8125,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 161
+    "via": 160
    },
    "waypoints": [
     [
@@ -8331,7 +8166,7 @@
     ]
    ],
    "end": {
-    "via": 162
+    "via": 161
    }
   },
   {
@@ -8339,7 +8174,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 161
+    "via": 160
    },
    "waypoints": [
     [
@@ -8375,10 +8210,6 @@
      122.15
     ],
     [
-     112.7,
-     122.1
-    ],
-    [
      112.8,
      122.0
     ],
@@ -8399,7 +8230,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 162
+    "via": 161
    },
    "waypoints": [
     [
@@ -8519,7 +8350,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 163
+    "via": 162
    },
    "waypoints": [
     [
@@ -8532,7 +8363,7 @@
     ]
    ],
    "end": {
-    "via": 164
+    "via": 163
    }
   },
   {
@@ -8556,7 +8387,7 @@
     ]
    ],
    "end": {
-    "via": 163
+    "via": 162
    }
   },
   {
@@ -8564,7 +8395,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 165
+    "via": 164
    },
    "waypoints": [
     [
@@ -8585,7 +8416,7 @@
     ]
    ],
    "end": {
-    "via": 166
+    "via": 165
    }
   },
   {
@@ -8609,7 +8440,7 @@
     ]
    ],
    "end": {
-    "via": 165
+    "via": 164
    }
   },
   {
@@ -8617,7 +8448,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 166
+    "via": 165
    },
    "waypoints": [],
    "end": {
@@ -8632,11 +8463,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 167
+    "via": 166
    },
    "waypoints": [],
    "end": {
-    "via": 168
+    "via": 167
    }
   },
   {
@@ -8644,7 +8475,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 169
+    "via": 168
    },
    "waypoints": [
     [
@@ -8653,7 +8484,7 @@
     ]
    ],
    "end": {
-    "via": 170
+    "via": 169
    }
   },
   {
@@ -8661,7 +8492,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 171
+    "via": 170
    },
    "waypoints": [
     [
@@ -8682,7 +8513,7 @@
     ]
    ],
    "end": {
-    "via": 172
+    "via": 171
    }
   },
   {
@@ -8690,11 +8521,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 173
+    "via": 172
    },
    "waypoints": [],
    "end": {
-    "via": 174
+    "via": 173
    }
   },
   {
@@ -8709,7 +8540,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 169
+    "via": 168
    }
   },
   {
@@ -8717,7 +8548,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 170
+    "via": 169
    },
    "waypoints": [
     [
@@ -8771,7 +8602,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 171
+    "via": 170
    }
   },
   {
@@ -8779,11 +8610,11 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 172
+    "via": 171
    },
    "waypoints": [],
    "end": {
-    "via": 173
+    "via": 172
    }
   },
   {
@@ -8791,7 +8622,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 174
+    "via": 173
    },
    "waypoints": [],
    "end": {
@@ -8806,11 +8637,11 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 175
+    "via": 174
    },
    "waypoints": [],
    "end": {
-    "via": 176
+    "via": 175
    }
   },
   {
@@ -8818,7 +8649,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 176
+    "via": 175
    },
    "waypoints": [
     [
@@ -8900,7 +8731,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 177
+    "via": 176
    },
    "waypoints": [
     [
@@ -8909,7 +8740,7 @@
     ]
    ],
    "end": {
-    "via": 179
+    "via": 178
    }
   },
   {
@@ -8917,7 +8748,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 178
+    "via": 177
    },
    "waypoints": [
     [
@@ -8941,7 +8772,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 179
+    "via": 178
    },
    "waypoints": [
     [
@@ -9000,7 +8831,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 177
+    "via": 176
    },
    "waypoints": [
     [
@@ -9009,7 +8840,7 @@
     ]
    ],
    "end": {
-    "via": 178
+    "via": 177
    }
   },
   {
@@ -9029,7 +8860,7 @@
     ]
    ],
    "end": {
-    "via": 180
+    "via": 179
    }
   },
   {
@@ -9037,7 +8868,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 181
+    "via": 180
    },
    "waypoints": [
     [
@@ -9073,7 +8904,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 180
+    "via": 179
    },
    "waypoints": [
     [
@@ -9082,7 +8913,7 @@
     ]
    ],
    "end": {
-    "via": 181
+    "via": 180
    }
   },
   {
@@ -9090,7 +8921,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 182
+    "via": 181
    },
    "waypoints": [
     [
@@ -9134,32 +8965,12 @@
      119.7
     ],
     [
-     113.45,
-     119.75
-    ],
-    [
-     113.5,
-     119.8
-    ],
-    [
-     113.55,
-     119.85
-    ],
-    [
-     113.6,
-     119.9
-    ],
-    [
-     113.65,
-     119.95
-    ],
-    [
      113.7,
      120.0
     ]
    ],
    "end": {
-    "via": 183
+    "via": 182
    }
   },
   {
@@ -9214,7 +9025,7 @@
     ]
    ],
    "end": {
-    "via": 182
+    "via": 181
    }
   },
   {
@@ -9234,7 +9045,7 @@
     ]
    ],
    "end": {
-    "via": 183
+    "via": 182
    }
   },
   {
@@ -9242,7 +9053,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 184
+    "via": 183
    },
    "waypoints": [
     [
@@ -9251,7 +9062,7 @@
     ]
    ],
    "end": {
-    "via": 185
+    "via": 184
    }
   },
   {
@@ -9259,7 +9070,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 185
+    "via": 184
    },
    "waypoints": [
     [
@@ -9283,7 +9094,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 200
+    "via": 199
    },
    "waypoints": [],
    "end": {
@@ -9314,7 +9125,7 @@
     ]
    ],
    "end": {
-    "via": 204
+    "via": 203
    }
   },
   {
@@ -9322,7 +9133,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 208
+    "via": 207
    },
    "waypoints": [
     [
@@ -9354,7 +9165,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 215
+    "via": 214
    },
    "waypoints": [
     [
@@ -9374,7 +9185,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 222
+    "via": 221
    },
    "waypoints": [
     [
@@ -9414,7 +9225,7 @@
     ]
    ],
    "end": {
-    "via": 227
+    "via": 226
    }
   },
   {
@@ -9422,7 +9233,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 224
+    "via": 223
    },
    "waypoints": [
     [
@@ -9446,7 +9257,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 228
+    "via": 227
    },
    "waypoints": [
     [
@@ -9482,7 +9293,7 @@
     ]
    ],
    "end": {
-    "via": 231
+    "via": 230
    }
   },
   {
@@ -9497,7 +9308,7 @@
    },
    "waypoints": [],
    "end": {
-    "via": 238
+    "via": 237
    }
   },
   {
@@ -9809,24 +9620,12 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "pad": [
-     "J7",
-     "B7"
+    "tee": [
+     123.37,
+     68.38
     ]
    },
    "waypoints": [
-    [
-     123.435,
-     67.99
-    ],
-    [
-     123.435,
-     68.185
-    ],
-    [
-     123.63,
-     68.38
-    ],
     [
      124.15,
      68.38
@@ -9902,7 +9701,7 @@
     ]
    ],
    "end": {
-    "via": 247
+    "via": 246
    }
   },
   {
@@ -9939,7 +9738,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 247
+    "via": 246
    },
    "waypoints": [],
    "end": {
@@ -10134,7 +9933,7 @@
    "layer": "F.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 248
+    "via": 247
    },
    "waypoints": [
     [
@@ -10143,7 +9942,7 @@
     ]
    ],
    "end": {
-    "via": 249
+    "via": 248
    }
   },
   {
@@ -10151,7 +9950,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 248
+    "via": 247
    },
    "waypoints": [
     [
@@ -10171,7 +9970,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 249
+    "via": 248
    },
    "waypoints": [],
    "end": {
@@ -10214,7 +10013,7 @@
     ]
    ],
    "end": {
-    "via": 250
+    "via": 249
    }
   },
   {
@@ -10222,7 +10021,7 @@
    "layer": "B.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 251
+    "via": 250
    },
    "waypoints": [
     [
@@ -10246,7 +10045,7 @@
    "layer": "In2.Cu",
    "width_mm": 0.2,
    "start": {
-    "via": 250
+    "via": 249
    },
    "waypoints": [
     [
@@ -10259,7 +10058,107 @@
     ]
    ],
    "end": {
-    "via": 251
+    "via": 250
+   }
+  },
+  {
+   "net": "+3V3",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
+    "pad": [
+     "U1",
+     "1"
+    ]
+   },
+   "waypoints": [
+    [
+     117.5,
+     115.2
+    ]
+   ],
+   "end": {
+    "via": 51
+   }
+  },
+  {
+   "net": "+3V3",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
+    "pad": [
+     "U1",
+     "30"
+    ]
+   },
+   "waypoints": [
+    [
+     111.2,
+     121.75
+    ]
+   ],
+   "end": {
+    "via": 33
+   }
+  },
+  {
+   "net": "GND",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
+    "pad": [
+     "D5",
+     "1"
+    ]
+   },
+   "waypoints": [],
+   "end": {
+    "via": 189
+   }
+  },
+  {
+   "net": "+3V3",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
+    "pad": [
+     "D5",
+     "2"
+    ]
+   },
+   "waypoints": [],
+   "end": {
+    "via": 23
+   }
+  },
+  {
+   "net": "GND",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
+    "pad": [
+     "D6",
+     "1"
+    ]
+   },
+   "waypoints": [],
+   "end": {
+    "via": 242
+   }
+  },
+  {
+   "net": "+3V3",
+   "layer": "B.Cu",
+   "width_mm": 0.2,
+   "start": {
+    "pad": [
+     "D6",
+     "2"
+    ]
+   },
+   "waypoints": [],
+   "end": {
+    "via": 59
    }
   }
  ]
