@@ -15,8 +15,14 @@ its firmware ports (UF2 over the USB-C on the back).
 Power: Eurorack 10-pin (16-pin IDC fits), ±12 V through series Schottkys, AMS1117-5.0 ->
 +5V -> AMS1117-3.3 -> +3V3. USB-C (back, top edge, plug from above) is data only (as BM): flash with the module powered.
 
-**Status: S3 schematic + S5 placement + R1 routing, not released.** Shared `check`: ERC 0,
-DRC 0 violations, 0 unconnected, parity 0 (`docs/fit/routed-render.png`, `docs/research.md` §6). No sourcing lookups yet (`docs/research.md` §5).
+**Status: S3 schematic + S5 placement + R1 routing (rev1 reviewed), not released.** Shared `check`: ERC 0,
+DRC 0 violations, 0 unconnected, parity 0 (`docs/fit/routed-render.png`, `docs/research.md` §6-§7). No sourcing lookups yet (`docs/research.md` §5).
+
+> **Fabrication requirement: via-in-pad fill.** 123 vias sit in SMD pads (53 GND, 27 +3V3,
+> 43 signal/rail) plus U1's 9 exposed-pad thermal vias. Order **"via in pad: resin filled + copper
+> capped (POFV), all vias"** (JLCPCB: "Via Covering: Epoxy Filled & Capped"). A plain tented
+> 4-layer order risks solder wicking and tombstoned 0402s. Fallback if POFV isn't available:
+> hand-apply paste and reflow with tented vias, and expect more joints to touch up. See `Code.md`.
 
 | Path | Contents |
 |---|---|
@@ -34,7 +40,8 @@ python3 -B tools/import_footprints.py   # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py     # schematic + pinned symbols, netlist asserted
 python3 -B tools/build_layout.py        # placement + netlist nets + models, UNROUTED; panel
 python3 -B tools/route_plan.py research/route/ops   # frozen R1 copper -> shared ops, 3 stages
-# then `kicad_tools.py pcb plan/apply` each stage on the previous candidate, `pcb promote` the last
+# then `kicad_tools.py pcb plan/apply` each stage on the previous candidate (stages 1-2 with
+# `--allow-draft-opens`), `pcb promote` the last
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/16bit/tools/kicad-project.json \
    --reports modules/16bit/research/check-NEW)
 ```

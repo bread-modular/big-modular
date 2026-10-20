@@ -24,6 +24,7 @@ tooling.
 | `modules/midi/` | 4HP TRS MIDI in (TRS A/B jumper header, no opto) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based). Two versions: `hardware/v1/` (BM V1 direct input, unprotected) and `hardware/v2/` (±12 V mis-patch protected NPN input with a JP2 debug bypass, clamped outputs, +5V shunt) | V1.0 (S4/R5) and V2.0 (S3/R3) routed carriers + shared 4HP panels; JLCPCB exports in `modules/midi/jlcpcb/v1/` and `jlcpcb/v2/`, not supplier-accepted |
 | `modules/audio-out/` | 4HP ±12 V pure-analog stereo out: 2 x TS in (IN R normalled to IN L; OPA1678 buffers) -> TRS consumer line out + TRS headphone out (MC33178, RV09 50k volume per ear) (Bread Modular `base` based) | S3 schematic (IN R normalled to IN L, no MONO jumper, unshrouded 10-pin power header, 10-pin cable) + R4 routed carrier (thermal-relief GND pours) (IN L, IN R, LINE, VOL L, VOL R, PHONES); 4HP panels; JLCPCB export in `modules/audio-out/jlcpcb/`, not supplier-accepted, not built |
 | `modules/vca-mix/` | VCA-MIX, 6HP: 3 x vactrol VCA (Bread Modular V2CA, no CURVE; Bread Modular LOW/SVF vactrol driver; IN/CV/OUT per channel, CV unpatched = open) + per-channel volume after the VCA (OUT post-volume) + MIX out (Bread Modular imix style), buffered inputs/CV, 1 W output resistors, ±12 V, 10 x TL072 | S4 schematic + P4 placement + 6HP panels; R1 routed carrier, final (TraceMaker + cleanup, 0 unconnected; the 9 vactrol/pot stacking findings are user-approved DRC exclusions, D10; copied into `hardware/` past the shared gate, which still counts them, D14, user-verified manually; vactrol build notes on silk); JLCPCB export in `modules/vca-mix/jlcpcb/`, not supplier-accepted, not built |
+| `modules/16bit/` | 16bit, 6HP: RP2350A + W25Q128 flash + APS6404L PSRAM, PT8211 I2S DAC -> TL074 ±5 V outs, MIDI in (NPN, JP1), 2 x CV in with attenuators, 2 knobs, MODE button + LED, USB-C data, 4-layer (Bread Modular `16bit` based) | S3 schematic + S5 placement + R1 routed carrier (TraceMaker + hand finish, rev1 reviewed); **needs via-in-pad fill (POFV) at the fab**; 6HP panel; no sourcing or export yet |
 
 Canonical sources are `modules/usb-power/hardware/usb-power.kicad_{pro,sch,pcb}`
 plus `modules/usb-power/panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
@@ -119,7 +120,9 @@ results, pick the best and improve it; don't settle for whichever finishes first
 - **Protect the planes in the router flags**: `--no-tracks-on In1.Cu` keeps the
   GND plane solid (without it TraceMaker routed on In1 and split the plane),
   `--layer-cost In2.Cu=3..6` keeps signals mostly off the power plane, and
-  `--no-neck-nets <power nets>` stops thin power neck-downs.
+  `--no-neck-nets <power nets>` stops thin power neck-downs. It does not widen rails
+  into 0.2 mm QFN pads: on 16bit +1V1, VREG_AVDD and VREG_LX came out 0.2 mm end to
+  end, so report widths per net, not per class (rev1 review).
 - **Run a portfolio**, not one run: results are time-limited and not reproducible, so
   launch 3 variants (`--seed`, `--first-nets` for the boxed-in nets such as crystal,
   QSPI, `+1V1`, `--via-cost-mm`, `--global`) and pick by the comparison metrics.
@@ -136,16 +139,27 @@ results, pick the best and improve it; don't settle for whichever finishes first
   per pin (one inward, one outward). Re-run full native DRC after every edit,
   including snapping/cleanup passes.
 - **Watch the +3V3 plane**: In2 signal hops can fence off a plane island; check the
-  fill islands and move the fencing signal to F/B.
+  fill islands and move the fencing signal to F/B. Count plane pieces from the filled
+  polygons and report spoke-tied fragments separately (16bit's In1 GND has two 2.6 mm²
+  pieces between the J6 GND pins; "one piece" was an overclaim).
+- **Count vias in pads before you pick a run** (rev1 review): TraceMaker centres vias in
+  SMD pads. 16bit R1 ended with 132 (123 board vias, mostly in 0402 pads, plus the U1 EP
+  array), so it needs POFV fill at the fab. Moving them out afterwards is a re-route. Make
+  in-pad vias a comparison metric, and decide POFV vs dogbones before routing.
 - **Clean before freezing**: drop zero-length/duplicate/dangling segments, centre
   track ends on vias, collapse sub-0.1 mm via stubs; router stubs that wander inside a
-  pad are trimmed at the pad centre (pads are convex).
+  pad are trimmed at the pad centre (pads are convex). Also look for what that pass
+  missed on 16bit R1: a second copy of a track 0.065 mm beside the first, spurs and
+  hairpins under 20°, and tees that run back along their parent before joining it.
 - **GPU builds don't help**: the upstream Linux release is CPU-only. A CUDA build
   (CUDA 12.4 + GCC 13, PTX JIT on sm_120) works, but routing time is dominated by
   CPU path searches, so it was no faster or better.
 - **Shared `pcb plan` caps a plan at 256 ops**: a full board needs `route_plan.py` to
   split the copper into stages of whole nets. A stale root-sheet UUID in the
-  `.kicad_pro` makes the shared planner refuse the project.
+  `.kicad_pro` makes the shared planner refuse the project. Intermediate stages need
+  `pcb plan --allow-draft-opens` (opens remain until the last stage; plan the last
+  without it). Use absolute paths in stage driver scripts: a relative `..` path broke
+  once its parent candidate dir was deleted, and a stale board was re-promoted.
 
 ## Fabrication outputs
 

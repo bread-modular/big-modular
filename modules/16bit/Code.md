@@ -1,4 +1,4 @@
-# 16bit contract (S3 schematic, S5 placement, R1 routed)
+# 16bit contract (S3 schematic, S5 placement, R1 routed, rev1 reviewed)
 
 | | |
 |---|---|
@@ -34,6 +34,21 @@
 - PWR_FLAGs only where ERC can't see a source: Eurorack entry (GND, +12V, -12V), behind
   D2/D3 (+12V_F, -12V_F), +1V1 (L1) and VREG_AVDD (R4).
 
+## Fabrication requirement (rev1 review)
+
+- **Via-in-pad fill is required.** 123 board vias sit in SMD pads (53 GND stitch, 27 +3V3
+  stitch, 43 signal/other rail), plus U1's 9 exposed-pad thermal vias. Order **"via in pad: resin
+  filled + copper capped (POFV, IPC-4761 type VII), all vias"** (JLCPCB: "Via Covering: Epoxy
+  Filled & Capped"). Ordered as a plain tented 4-layer board, solder wicks into the barrels:
+  expect starved joints and tombstoned 0402s.
+- `tools/build_layout.py` writes the requirement into the board setup (tenting kept, filling yes,
+  capping yes); keep it there.
+- Fallback if POFV is not available: hand-apply paste and reflow with tented vias, then inspect
+  and touch up every in-pad joint. Expect a higher defect rate.
+- Copper widths: signals 0.2 mm; +5V, ±12 V, ±12V_F 0.4 mm; **+1V1, VREG_AVDD, VREG_LX and the
+  local +3V3 stubs are 0.2 mm** (QFN pads are 0.2 mm; BM runs +1V1 at 0.15 mm).
+- Details, findings and counts: `docs/research.md` §7.
+
 ## Sources and generators
 
 - `tools/build_schematic.py` owns `hardware/16bit.kicad_sch`, `16BIT.kicad_sym` and
@@ -50,11 +65,13 @@
 - `tools/import_footprints.py` rebuilds `hardware/16BIT.pretty` / `16BIT.3dshapes`
   (provenance and every edit in `PROVENANCE.json`).
 
-## Verification (S3, 2026-10-20)
+## Verification (R1 + rev1 review, 2026-10-20)
 
 - Native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`).
-- Native DRC `--severity-all --schematic-parity` (R1 routed): carrier 0 violations, 0 parity,
-  0 unconnected, 0 exclusions; panel 0/0.
-- Shared `kicad_tools.py check` (R1): ERC 0, DRC 0 violations, unconnected 0, parity 0;
+- Native DRC `--severity-all --schematic-parity` (R1 + rev1 edits): carrier 0 violations, 0 parity,
+  0 unconnected, 0 exclusions; panel 0/0 (`docs/fit/carrier-drc.json`, `panel-drc.json`).
+- Shared `kicad_tools.py check`: ERC 0, DRC 0 violations, unconnected 0, parity 0;
   no source manifest (no export yet), `order_ready: false`.
-- Not done: routing, sourcing, 3D fit, bench.
+- 251 vias (246 at 0.5/0.3 mm, 5 at 0.5/0.2 mm); In1 GND no tracks, one main piece + two 2.6 mm²
+  spoke-tied pieces at J6; In2 +3V3 one piece.
+- Not done: sourcing, JLCPCB export, 3D fit, bench.
