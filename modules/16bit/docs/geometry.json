@@ -1,0 +1,1191 @@
+{
+ "revision": "S5 placement (UNROUTED): Bread Modular 16bit for Eurorack, 6HP, 4 layers; MODE button + LED in the bottom corners near the edge; OUT jacks lowered to Y99 (22.5 mm below RV3/RV4); regulators moved up between RV3/RV4 and the OUT jacks",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The carrier F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 6,
+ "panel_mm": [
+  30.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "rail_holes_mm": [
+  [
+   7.5,
+   3.0,
+   3.2
+  ],
+  [
+   7.5,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "Doepfer hole at X7.5 from the left edge (as modules/8bit and case/tools/build_case.py HOLE_X0), one per rail.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   29.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "29.0 x 110.0 mm, 1.25 mm inside the skiff rail gap at each end (as modules/8bit). 4 layers (F.Cu, In1, In2, B.Cu); not routed. Held by the five jack bushings/nuts; pots are soldered only."
+ },
+ "jack_rotation_deg": 0,
+ "jack_rotation_note": "Rotation 0: T pad above the jack centre, TN and S below (vertical stack), so two jacks fit side by side in 6HP.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "MIDI_IN_TS",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    14.6,
+    17.5
+   ],
+   "note": "0.4 mm left of the panel centre: keeps the J7 SH pad (right SH pad held 0.5 mm off the board edge) clear of the J1 courtyard"
+  },
+  {
+   "ref": "J2",
+   "role": "CV1_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.5,
+    37.0
+   ]
+  },
+  {
+   "ref": "J3",
+   "role": "CV2_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    37.0
+   ]
+  },
+  {
+   "ref": "J4",
+   "role": "OUT_L",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.5,
+    99.0
+   ]
+  },
+  {
+   "ref": "J5",
+   "role": "OUT_R",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.5,
+    99.0
+   ]
+  }
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "CV1 attenuator (J2 tip -> U7A -> ADC0); unpatched = 0..+5 V knob",
+   "shaft_XY": [
+    7.5,
+    53.5
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV2",
+   "role": "CV2 attenuator (J3 tip -> U7B -> ADC1); unpatched = 0..+5 V knob",
+   "shaft_XY": [
+    22.5,
+    53.5
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV3",
+   "role": "Knob 3 (+3V3 divider -> ADC2, BM knob channel)",
+   "shaft_XY": [
+    7.5,
+    75.5
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV4",
+   "role": "Knob 4 (+3V3 divider -> ADC3, BM knob channel)",
+   "shaft_XY": [
+    22.5,
+    75.5
+   ],
+   "value": "50k"
+  }
+ ],
+ "pot_footprint": "Potentiometer_RV09",
+ "pot_shaft_offset_mm": [
+  -0.127,
+  -0.508
+ ],
+ "pot_note": "Bread Modular RV09 footprint (pins 7.5 mm below the shaft, bracket tabs 9.6 mm apart on the shaft line); user stock 50k RV09, no bushing/nut (as modules/8bit). Rotation 0: pin 1 left, CW toward pin 3 (CV tip on RV1/RV2, +3V3 on RV3/RV4).",
+ "button": {
+  "ref": "SW1",
+  "footprint": "SW_PUSH_6mm_H7.3mm",
+  "side": "F",
+  "XY": [
+   5.0,
+   113.5
+  ],
+  "rot": 90,
+  "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (Ø3.5 round stem), pins 6.5 x 4.5 mm (as modules/8bit SW1)",
+  "note": "THT on the carrier F side, hand-soldered; legs come through to B. Stock KiCad SW_PUSH_6mm_H7.3mm placed by the pad-pattern centre = stem centre. Rotated 90 (6.5 mm pin pitch along Y); bottom-left corner, near the panel bottom edge (legs 1.5 mm above the board edge), C19 between the legs. Same Z stack as modules/8bit, so its one-piece printed cap (body D7, Y110..117, inside the rail gap) fits unchanged."
+ },
+ "leds": [
+  {
+   "ref": "D1",
+   "role": "MODE_LED",
+   "footprint": "LED_D3.0mm",
+   "XY": [
+    25.0,
+    113.5
+   ],
+   "rot": 0,
+   "note": "3 mm red THT (as 8bit D1), pads along X centred on XY. Mirrors SW1 about the panel centre line, bottom-right corner near the panel bottom edge."
+  }
+ ],
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2,
+  "led": 3.2,
+  "button": 4.2
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = carrier F.Cu, +Z toward the panel",
+  "panel_rear_seat": 10.0,
+  "note": "As modules/8bit (PJ301M-12 boss top = panel rear; 3 mm LED dome flush with the 1.6 mm FR4 front; the stem top is 3.0 mm below the panel rear, bridged by the 8bit printed cap).",
+  "switch_body_top": 3.5,
+  "switch_stem_top": 7.0,
+  "switch_stem_D": 3.5,
+  "led_body_bottom": 6.3,
+  "led_body_height": 5.3,
+  "led_model_body_bottom": 3.0
+ },
+ "back_side_parts": [
+  {
+   "ref": "JP1",
+   "footprint": "SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm",
+   "XY": [
+    3.2,
+    13.5
+   ],
+   "rot": 90,
+   "band": "top band, left edge: MIDI RX source (P protected / D direct)"
+  },
+  {
+   "ref": "R2",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    6.5,
+    13.0
+   ],
+   "rot": 90,
+   "band": "top band: Q1 collector pull-up"
+  },
+  {
+   "ref": "R3",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    11.5,
+    12.6
+   ],
+   "rot": 0,
+   "band": "top band, beside the J1 tip pad: MIDI_IN idle pull-up"
+  },
+  {
+   "ref": "R1",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    11.5,
+    15.0
+   ],
+   "rot": 0,
+   "band": "top band: Q1 base"
+  },
+  {
+   "ref": "D4",
+   "footprint": "D_SOD-123",
+   "XY": [
+    7.0,
+    18.6
+   ],
+   "rot": 0,
+   "band": "top band: Q1 B-E clamp"
+  },
+  {
+   "ref": "Q1",
+   "footprint": "SOT-23",
+   "XY": [
+    11.4,
+    18.6
+   ],
+   "rot": 0,
+   "band": "top band: MIDI NPN"
+  },
+  {
+   "ref": "J7",
+   "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+   "XY": [
+    24.15,
+    13.25
+   ],
+   "rot": 180,
+   "band": "top band, right: USB-C opening UP, front face 0.35 mm inside the top board edge (keeps its front silk on the board; plug from above, behind the panel). X set by the 0.5 mm copper-edge rule on the right SH pad"
+  },
+  {
+   "ref": "R9",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    19.8,
+    19.6
+   ],
+   "rot": 90,
+   "band": "below the USB-C: USB D+ 27R"
+  },
+  {
+   "ref": "R10",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    21.1,
+    19.6
+   ],
+   "rot": 90,
+   "band": "below the USB-C: USB D- 27R"
+  },
+  {
+   "ref": "R11",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    22.6,
+    19.6
+   ],
+   "rot": 90,
+   "band": "below the USB-C: CC1 5.1k"
+  },
+  {
+   "ref": "R12",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    23.9,
+    19.6
+   ],
+   "rot": 90,
+   "band": "below the USB-C: CC2 5.1k"
+  },
+  {
+   "ref": "C24",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    27.6,
+    19.6
+   ],
+   "rot": 90,
+   "band": "below the right SH pad: shield 10n"
+  },
+  {
+   "ref": "SW2",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    25.3,
+    23.7
+   ],
+   "rot": 0,
+   "band": "below the USB-C: BOOT"
+  },
+  {
+   "ref": "SW3",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    18.7,
+    24.6
+   ],
+   "rot": 90,
+   "band": "below the USB-C, left of BOOT: RUN"
+  },
+  {
+   "ref": "R6",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    21.4,
+    23.5
+   ],
+   "rot": 90,
+   "band": "between RUN and BOOT: RUN series 1k"
+  },
+  {
+   "ref": "R7",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    25.3,
+    26.2
+   ],
+   "rot": 0,
+   "band": "below BOOT: BOOT series 1k"
+  },
+  {
+   "ref": "U6",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    15.0,
+    37.5
+   ],
+   "rot": 0,
+   "band": "CV band, between J2 and J3: MCP6002"
+  },
+  {
+   "ref": "C27",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    15.0,
+    42.1
+   ],
+   "rot": 0,
+   "band": "CV band: U6 decoupling"
+  },
+  {
+   "ref": "U7",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    15.0,
+    46.6
+   ],
+   "rot": 0,
+   "band": "CV band, centre column below U6 (between the CV jacks and the RV1/RV2 tabs): TL072 CV attenuator buffers"
+  },
+  {
+   "ref": "R13",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.4,
+    33.0
+   ],
+   "rot": 90,
+   "band": "CV band, left edge: CV1 100k"
+  },
+  {
+   "ref": "R14",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    4.6,
+    33.0
+   ],
+   "rot": 90,
+   "band": "CV1 56k to +3V3"
+  },
+  {
+   "ref": "R15",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.4,
+    36.5
+   ],
+   "rot": 90,
+   "band": "CV1 120k to GND"
+  },
+  {
+   "ref": "C25",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    4.6,
+    36.5
+   ],
+   "rot": 90,
+   "band": "CV1 1n"
+  },
+  {
+   "ref": "D5",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    3.5,
+    40.1
+   ],
+   "rot": 0,
+   "band": "CV1 clamp"
+  },
+  {
+   "ref": "R16",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    27.6,
+    33.0
+   ],
+   "rot": 90,
+   "band": "CV band, right edge: CV2 100k"
+  },
+  {
+   "ref": "R17",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    25.4,
+    33.0
+   ],
+   "rot": 90,
+   "band": "CV2 56k to +3V3"
+  },
+  {
+   "ref": "R18",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    27.6,
+    36.5
+   ],
+   "rot": 90,
+   "band": "CV2 120k to GND"
+  },
+  {
+   "ref": "C26",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    25.4,
+    36.5
+   ],
+   "rot": 90,
+   "band": "CV2 1n"
+  },
+  {
+   "ref": "D6",
+   "footprint": "SOT-323_SC-70",
+   "XY": [
+    26.5,
+    40.1
+   ],
+   "rot": 0,
+   "band": "CV2 clamp"
+  },
+  {
+   "ref": "C28",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    15.0,
+    53.5
+   ],
+   "rot": 90,
+   "band": "between the RV1/RV2 inner tabs: U7 V+ decoupling"
+  },
+  {
+   "ref": "C29",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    15.0,
+    50.4
+   ],
+   "rot": 0,
+   "band": "below U7: U7 V- decoupling"
+  },
+  {
+   "ref": "C30",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    7.5,
+    79.0
+   ],
+   "rot": 0,
+   "band": "RV3 wiper cap"
+  },
+  {
+   "ref": "C31",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    22.5,
+    79.0
+   ],
+   "rot": 0,
+   "band": "RV4 wiper cap"
+  },
+  {
+   "ref": "R20",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    20.7,
+    111.2
+   ],
+   "rot": 0,
+   "band": "left of D1: LED series 1k"
+  },
+  {
+   "ref": "U1",
+   "footprint": "RP2350-QFN-60-1EP_7x7_P0.4mm_EP3.4x3.4mm_ThermalVias",
+   "XY": [
+    14.0,
+    68.0
+   ],
+   "rot": 0,
+   "band": "MCU zone, between the RV1/RV2 pins and the RV3/RV4 tabs: RP2350A"
+  },
+  {
+   "ref": "U2",
+   "footprint": "SOIC-8_5.3x5.3mm_P1.27mm",
+   "XY": [
+    24.6,
+    68.0
+   ],
+   "rot": 0,
+   "band": "MCU zone, right (between the RV2 pins and the RV4 tabs): W25Q128 flash"
+  },
+  {
+   "ref": "U3",
+   "footprint": "SOIC-8 Generic",
+   "XY": [
+    22.5,
+    52.0
+   ],
+   "rot": 90,
+   "band": "under the RV2 body (between its bracket tabs, above its pins): PSRAM"
+  },
+  {
+   "ref": "C22",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    24.6,
+    72.3
+   ],
+   "rot": 0,
+   "band": "below U2, above the RV4 tabs: flash decoupling"
+  },
+  {
+   "ref": "C23",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    22.5,
+    57.0
+   ],
+   "rot": 0,
+   "band": "below U3, above the RV2 pins: PSRAM decoupling"
+  },
+  {
+   "ref": "R8",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    22.5,
+    58.5
+   ],
+   "rot": 0,
+   "band": "below C23, above the RV2 pins: PSRAM CS pull-up"
+  },
+  {
+   "ref": "R4",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    11.6,
+    62.1
+   ],
+   "rot": 90,
+   "band": "U1 top row, between the RV1/RV2 pins: VREG_AVDD 33R"
+  },
+  {
+   "ref": "C5",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    12.85,
+    62.1
+   ],
+   "rot": 90,
+   "band": "U1 top row: decoupling"
+  },
+  {
+   "ref": "C6",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    14.1,
+    62.1
+   ],
+   "rot": 90,
+   "band": "U1 top row: decoupling"
+  },
+  {
+   "ref": "C7",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    15.35,
+    62.1
+   ],
+   "rot": 90,
+   "band": "U1 top row: decoupling"
+  },
+  {
+   "ref": "C8",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    16.6,
+    62.1
+   ],
+   "rot": 90,
+   "band": "U1 top row: decoupling"
+  },
+  {
+   "ref": "C12",
+   "footprint": "C_0402_1005Metric_small_pads",
+   "XY": [
+    17.85,
+    62.1
+   ],
+   "rot": 90,
+   "band": "U1 top row: VREG_VIN 4.7u"
+  },
+  {
+   "ref": "C14",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    19.3,
+    66.0
+   ],
+   "rot": 90,
+   "band": "DVDD 4.7u"
+  },
+  {
+   "ref": "C15",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    19.3,
+    64.0
+   ],
+   "rot": 90,
+   "band": "DVDD 100n"
+  },
+  {
+   "ref": "C16",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    8.7,
+    65.5
+   ],
+   "rot": 90,
+   "band": "DVDD 100n"
+  },
+  {
+   "ref": "L1",
+   "footprint": "L_pol_2016",
+   "XY": [
+    8.7,
+    69.0
+   ],
+   "rot": 90,
+   "band": "core regulator inductor"
+  },
+  {
+   "ref": "C17",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    8.7,
+    71.9
+   ],
+   "rot": 90,
+   "band": "VREG_AVDD 4.7u"
+  },
+  {
+   "ref": "C9",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    10.8,
+    73.1
+   ],
+   "rot": 0,
+   "band": "U1 decoupling"
+  },
+  {
+   "ref": "C10",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    12.9,
+    73.1
+   ],
+   "rot": 0,
+   "band": "U1 decoupling"
+  },
+  {
+   "ref": "C11",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    15.0,
+    73.1
+   ],
+   "rot": 0,
+   "band": "U1 decoupling"
+  },
+  {
+   "ref": "C13",
+   "footprint": "C_0402_1005Metric_small_pads",
+   "XY": [
+    17.1,
+    73.1
+   ],
+   "rot": 0,
+   "band": "core regulator output 4.7u"
+  },
+  {
+   "ref": "Y1",
+   "footprint": "Crystal_SMD_3225-4Pin_3.2x2.5mm",
+   "XY": [
+    3.8,
+    66.6
+   ],
+   "rot": 0,
+   "band": "MCU zone, left: 12 MHz"
+  },
+  {
+   "ref": "C18",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    3.0,
+    63.3
+   ],
+   "rot": 0,
+   "band": "above Y1: XIN load"
+  },
+  {
+   "ref": "C20",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    3.0,
+    69.9
+   ],
+   "rot": 0,
+   "band": "below Y1: XTAL load"
+  },
+  {
+   "ref": "R5",
+   "footprint": "R_0402_1005Metric",
+   "XY": [
+    6.2,
+    71.6
+   ],
+   "rot": 0,
+   "band": "below Y1: XOUT series"
+  },
+  {
+   "ref": "U4",
+   "footprint": "SOIC-8_3.9x4.9mm_P1.27mm",
+   "XY": [
+    15.0,
+    88.3
+   ],
+   "rot": 0,
+   "band": "regulator band, centre between U9 and U8: PT8211"
+  },
+  {
+   "ref": "C33",
+   "footprint": "C_0402_1005Metric",
+   "XY": [
+    15.0,
+    84.7
+   ],
+   "rot": 0,
+   "band": "above U4, between the RV3/RV4 pins: PT8211 decoupling"
+  },
+  {
+   "ref": "U5",
+   "footprint": "SOIC-14_3.9x8.7mm_P1.27mm",
+   "XY": [
+    15.0,
+    96.0
+   ],
+   "rot": 0,
+   "band": "OUT band, centre between the OUT jacks (under the IDC socket envelope, 1.75 mm): TL074"
+  },
+  {
+   "ref": "C37",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    10.1,
+    96.7
+   ],
+   "rot": 90,
+   "band": "U5 V+ decoupling"
+  },
+  {
+   "ref": "R34",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    10.1,
+    99.9
+   ],
+   "rot": 90,
+   "band": "offset divider top"
+  },
+  {
+   "ref": "C36",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    15.0,
+    102.4
+   ],
+   "rot": 0,
+   "band": "below U5, above J6: offset filter"
+  },
+  {
+   "ref": "C38",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    19.9,
+    96.7
+   ],
+   "rot": 90,
+   "band": "U5 V- decoupling"
+  },
+  {
+   "ref": "R35",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    19.9,
+    99.9
+   ],
+   "rot": 90,
+   "band": "offset divider bottom"
+  },
+  {
+   "ref": "R26",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.4,
+    93.6
+   ],
+   "rot": 90,
+   "band": "L: DAC RC"
+  },
+  {
+   "ref": "C34",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    4.6,
+    93.6
+   ],
+   "rot": 90,
+   "band": "L: DAC RC"
+  },
+  {
+   "ref": "R28",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    2.4,
+    96.9
+   ],
+   "rot": 90,
+   "band": "L: Rf"
+  },
+  {
+   "ref": "R29",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    4.6,
+    96.9
+   ],
+   "rot": 90,
+   "band": "L: Rg"
+  },
+  {
+   "ref": "R30",
+   "footprint": "R_1206_3216Metric",
+   "XY": [
+    3.5,
+    101.2
+   ],
+   "rot": 90,
+   "band": "L: output 1k 0.5 W"
+  },
+  {
+   "ref": "R27",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    27.6,
+    93.6
+   ],
+   "rot": 90,
+   "band": "R: DAC RC"
+  },
+  {
+   "ref": "C35",
+   "footprint": "C_0603_1608Metric",
+   "XY": [
+    25.4,
+    93.6
+   ],
+   "rot": 90,
+   "band": "R: DAC RC"
+  },
+  {
+   "ref": "R31",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    27.6,
+    96.9
+   ],
+   "rot": 90,
+   "band": "R: Rf"
+  },
+  {
+   "ref": "R32",
+   "footprint": "R_0603_1608Metric",
+   "XY": [
+    25.4,
+    96.9
+   ],
+   "rot": 90,
+   "band": "R: Rg"
+  },
+  {
+   "ref": "R33",
+   "footprint": "R_1206_3216Metric",
+   "XY": [
+    26.5,
+    101.2
+   ],
+   "rot": 90,
+   "band": "R: output 1k 0.5 W"
+  },
+  {
+   "ref": "J6",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    15.0,
+    110.92
+   ],
+   "rot": 180,
+   "band": "bottom zone: Eurorack power (as modules/8bit, centred)"
+  },
+  {
+   "ref": "U8",
+   "footprint": "SOT-223-3_TabPin2",
+   "XY": [
+    24.0,
+    87.8
+   ],
+   "rot": 0,
+   "band": "regulator band, right (between the RV4 pins and the J5 T pad): AMS1117-5.0"
+  },
+  {
+   "ref": "U9",
+   "footprint": "SOT-223-3_TabPin2",
+   "XY": [
+    6.0,
+    87.8
+   ],
+   "rot": 0,
+   "band": "regulator band, left (between the RV3 pins and the J4 T pad): AMS1117-3.3"
+  },
+  {
+   "ref": "C3",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    19.87,
+    93.3
+   ],
+   "rot": 90,
+   "band": "strip between U5 and the J5 pads, below U8: U8 output 22u"
+  },
+  {
+   "ref": "C4",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    10.13,
+    93.3
+   ],
+   "rot": 90,
+   "band": "strip between the J4 pads and U5, below U9: U9 output 22u"
+  },
+  {
+   "ref": "D2",
+   "footprint": "D_SOD-123",
+   "XY": [
+    10.1,
+    109.3
+   ],
+   "rot": 90,
+   "band": "bottom strip between the SW1 legs and J6: +12 V series diode"
+  },
+  {
+   "ref": "C1",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    26.4,
+    116.9
+   ],
+   "rot": 0,
+   "band": "bottom right, below D1: +12V_F bulk"
+  },
+  {
+   "ref": "C19",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    5.0,
+    113.5
+   ],
+   "rot": 90,
+   "band": "between the SW1 legs: +3V3 bulk"
+  },
+  {
+   "ref": "C21",
+   "footprint": "C_1206_3216Metric",
+   "XY": [
+    10.1,
+    114.6
+   ],
+   "rot": 90,
+   "band": "bottom strip between the SW1 legs and J6, below D2: +3V3 100u"
+  },
+  {
+   "ref": "D3",
+   "footprint": "D_SOD-123",
+   "XY": [
+    21.6,
+    108.4
+   ],
+   "rot": 0,
+   "band": "bottom right, below the J5 sleeve pad: -12 V series diode"
+  },
+  {
+   "ref": "C2",
+   "footprint": "C_0805_2012Metric",
+   "XY": [
+    26.4,
+    108.4
+   ],
+   "rot": 0,
+   "band": "bottom right, beside D3: -12V_F bulk"
+  }
+ ],
+ "panel_labels": [
+  {
+   "text": "16BIT",
+   "XY": [
+    15.0,
+    8.0
+   ],
+   "size": 2.5
+  },
+  {
+   "text": "MIDI",
+   "XY": [
+    14.6,
+    11.4
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV1",
+   "XY": [
+    7.5,
+    30.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV2",
+   "XY": [
+    22.5,
+    30.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P1",
+   "XY": [
+    7.5,
+    47.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P2",
+   "XY": [
+    22.5,
+    47.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P3",
+   "XY": [
+    7.5,
+    69.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P4",
+   "XY": [
+    22.5,
+    69.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "MODE",
+   "XY": [
+    5.0,
+    108.4
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT L",
+   "XY": [
+    7.5,
+    92.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT R",
+   "XY": [
+    22.5,
+    92.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    15.0,
+    113.5
+   ],
+   "size": 1.2
+  }
+ ],
+ "power_header": {
+  "ref": "J6",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   13.73,
+   116.0
+  ],
+  "column_X_mm": [
+   13.73,
+   16.27
+  ],
+  "pin_rows_Y_mm": [
+   116.0,
+   113.46,
+   110.92,
+   108.38,
+   105.84
+  ],
+  "orientation": "Vertical, pin 1 (-12 V) at the bottom row (as modules/8bit and modules/midi), centred on the 6HP carrier.",
+  "idc16_socket_envelope_mm": {
+   "X": [
+    11.2,
+    18.8
+   ],
+   "Y": [
+    94.41,
+    119.81
+   ],
+   "bottom_above_B_mm": 2.5
+  }
+ },
+ "pot_layout_note": "CV jacks (Y37) + RV1/RV2 (Y53.5, 16.5 mm under their jacks) form one group; RV3/RV4 sit 22 mm lower (the B-side MCU zone lives between the rows); OUT jacks 23.5 mm under RV3/RV4 (Y99) so they read as their own row; MODE button (X5) and LED (X25) at Y113.5 in the bottom corners, near the panel edge."
+}
