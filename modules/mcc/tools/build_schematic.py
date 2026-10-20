@@ -1,4 +1,4 @@
-"""Generate the MCC S3 schematic (hardware/mcc.kicad_sch) and its pinned symbols.
+"""Generate the MCC S4 schematic (hardware/mcc.kicad_sch) and its pinned symbols.
 
 Run from modules/mcc:
   python3 -B tools/build_schematic.py
@@ -38,7 +38,7 @@ HW = MODULE / 'hardware'
 STOCK = Path('/usr/share/kicad/symbols')
 PROJECT = 'mcc'
 LIB = 'MCC'
-REV = 'S3'
+REV = 'S4'
 
 # Footprint filters of these stock symbols are qualified with stock library names
 # (Connector*:...); the pinned footprints live in the MCC library, so the copies
@@ -71,7 +71,7 @@ SYMBOLS = {
 }
 
 FP = {
-    'R0603': 'R_0603_1608Metric', 'R0805': 'R_0805_2012Metric',
+    'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
     'SOD123': 'D_SOD-123', 'LED3': 'LED_D3.0mm', 'SOT23': 'SOT-23', 'SOT323': 'SOT-323_SC-70',
     'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
@@ -306,7 +306,7 @@ def circuit():
                        '(Q1 drives PB3, PORT_INVEN on). Solder 2-3 = direct/unprotected '
                        '(MIDI_IN to PB3, PORT_INVEN off, stock BM MCC firmware). Never both'))
 
-    # ---- MIDI output (TS): the MIDI V2 output clamp (0805 1k + BAT54SW) with its JP2 bypass
+    # ---- MIDI output (TS): the MIDI V2 output clamp (1k + BAT54SW) with its JP2 bypass; 1k is 0.5 W 1206
     mx, my = MX, MY
     c.append(part('JP2', 'SolderJumper_3_Open', 'TX_PROT/DIRECT', 'SJ3', (mx + 7.62, my + 5.08), 0,
                   {'1': 'TX_P', '2': 'TX', '3': 'MIDI_OUT'},
@@ -316,9 +316,10 @@ def circuit():
     c.append(part('D2', 'BAT54SW', 'BAT54SW', 'SOT323', (mx + 12.7, my - 12.7), 0,
                   {'1': 'GND', '2': '+5V', '3': 'TX_P'},
                   Note='Output clamp to +5V/GND on the GPIO side of R4 (MIDI V2)'))
-    c.append(part('R4', 'R', '1k', 'R0805', (mx + 25.4, my - 5.08), 90,
-                  {'1': 'TX_P', '2': 'MIDI_OUT'},
-                  Note='Output series 1k (0805, as MIDI V2): <= 6.7 mA / 45 mW into the clamp on a +/-12 V mis-patch'))
+    c.append(part('R4', 'R', '1k', 'R1206', (mx + 25.4, my - 5.08), 90,
+                  {'1': 'TX_P', '2': 'MIDI_OUT'}, Power='0.5W',
+                  Note='Output series 1k, 0.5 W 1206 (as 8bit R12): a permanent -12 V on the tip against '
+                       'PB2 idling high is ~17 V / 0.29 W (+12 V into the +5V clamp: 45 mW)'))
     c.append(part('J2', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (mx + 53.34, my - 5.08), 180,
                   {'T': 'MIDI_OUT', 'S': 'GND', 'TN': None}, Note='MIDI out (TS: tip = 5 V logic-level MIDI)'))
 
@@ -332,11 +333,12 @@ def circuit():
 
 # JLCPCB parts for every assembled (SMD, back-side) part, keyed (symbol, value, footprint).
 # Codes shared with modules/8bit and modules/midi V2 are the same parts; live lookups are
-# recorded in docs/sourcing-candidates.json. All R/C are JLCPCB Basic.
+# recorded in docs/sourcing-candidates.json. All R/C are JLCPCB Basic except R4 (0.5 W 1206,
+# no Basic exists; the same part as modules/8bit R12 and modules/16bit).
 # The THT jacks, pots, LEDs and headers and the THT SW1 are hand-soldered and carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '1k', 'R0805'): dict(LCSC='C17513', MPN='0805W8F1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM Semicon'),
     ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '12k', 'R0603'): dict(LCSC='C22790', MPN='0603WAF1202T5E', Manufacturer='UNI-ROYAL'),
@@ -476,7 +478,7 @@ for _n in range(1, CHANNELS + 1):
 POWER += supply()[1]
 
 TEXTS = [
-    ((20.32, 17.78), 'BIG MODULAR MCC - S3 schematic (Bread Modular MCC for Eurorack, 6HP): 4 knobs + 4 CV in -> MIDI CC. '
+    ((20.32, 17.78), 'BIG MODULAR MCC - S4 schematic (Bread Modular MCC for Eurorack, 6HP): 4 knobs + 4 CV in -> MIDI CC. '
                      'Circuit intent: docs/research.md', 2.0),
     ((190.5, 30.48), 'POWER: +12V -> B5819W -> +12V_F -> HT7550-1 -> +5V (MCU, op-amps). -12V is not used.\n'
                      'U3 CJ431 shunt clamps +5V at 5.49 V, so clamp current from a mis-patched jack cannot pump the rail.', 1.4),
@@ -712,7 +714,7 @@ def build():
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
       (title_block (title "Big Modular - MCC") (rev {q(REV)}) (company "Big Modular")
-        (comment 1 "SCHEMATIC S3 - BM MCC for Eurorack: 4 knobs + 4 CV in -> MIDI CC")
+        (comment 1 "SCHEMATIC S4 - BM MCC for Eurorack: 4 knobs + 4 CV in -> MIDI CC")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
