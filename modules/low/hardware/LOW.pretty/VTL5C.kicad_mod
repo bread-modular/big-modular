@@ -1,0 +1,222 @@
+(footprint "VTL5C"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 8.89 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "ac5add43-ea10-476b-8ab3-2cd4ed150c9e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "VTL5C"
+		(at 0 2.27 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "d0d34a47-154f-4855-b171-cba1ad240814")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 1.27 1.27 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "1589d048-c915-4aec-8a11-eb43f6c2c338")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 1.27 1.27 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "02f38c47-d615-459a-86e8-23a61cbbe2af")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -5.08 -7.62)
+		(end -2.54 -7.62)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "c7815063-29df-440e-97cc-0467366568ac")
+	)
+	(fp_line
+		(start -5.08 7.62)
+		(end -5.08 -7.62)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "80397ba4-ac04-41c6-9f7c-fd975da7873b")
+	)
+	(fp_line
+		(start -2.54 -7.62)
+		(end 2.54 -7.62)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "985db7f1-700b-4686-adaf-764fac600566")
+	)
+	(fp_line
+		(start 2.54 -7.62)
+		(end 5.08 -7.62)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "4addd8fe-2d04-484c-864c-38ee64705b16")
+	)
+	(fp_line
+		(start 5.08 -7.62)
+		(end 5.08 7.62)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "4ad0184a-bdca-432f-95da-555dd9e35f1b")
+	)
+	(fp_line
+		(start 5.08 7.62)
+		(end -5.08 7.62)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "3744174c-9289-45a8-a52e-16a25bd8e7e4")
+	)
+	(fp_rect
+		(start -5.38 -7.92)
+		(end 5.38 7.92)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "3c0b8614-6b29-4d04-be2f-f713b30a2274")
+	)
+	(fp_text user "+"
+		(at -1.905 -8.255 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "93def318-7ecf-4ea1-b519-87460e20656e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "TRIM FLUSH"
+		(at 0 3.1 0)
+		(layer "F.SilkS")
+		(uuid "75d87fd0-7bc3-44a5-8ed2-0b9bcde350f0")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "SOLDER FIRST"
+		(at 0 4.4 0)
+		(layer "F.SilkS")
+		(uuid "345ac6ea-f5cf-439a-afee-abd6cf162685")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(fp_text user "-"
+		(at 0.635 -8.255 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "cc6d35e9-bbb7-4d3c-85f0-dac1b456d5f7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 3.77 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "aff714a7-1d5a-4ab6-a880-1413a4f4090b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 1.27 -6.35)
+		(size 1.8 1.8)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "ca5f527c-befe-4a4e-a524-f5f45ab0d888")
+	)
+	(pad "2" thru_hole circle
+		(at -1.27 -6.35 90)
+		(size 1.8 1.8)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "0b51e87b-c09b-46f1-80c6-f8ac7b078721")
+	)
+	(pad "3" thru_hole circle
+		(at 1.27 6.35)
+		(size 1.8 1.8)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "7b49169e-f763-47a4-b004-d5712309b557")
+	)
+	(pad "4" thru_hole circle
+		(at -1.27 6.35)
+		(size 1.8 1.8)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "adc56915-2613-40af-8a4a-f5ffc8612d2f")
+	)
+	(embedded_fonts no)
+)
