@@ -23,7 +23,8 @@ Module paths are module-relative.
   `SOURCING` in `tools/build_schematic.py`, copied onto the routed board's footprints (fields
   only). Bottom-side Economic, 86 parts / 43 rows; R/C all Basic except R9/R10 27 Ω. U4 =
   TM8211-TA2302 (BM 16bit-5v), L1 = cjiang FTC201610S3R3MBCA (unmarked: check the core
-  regulator at bring-up). Not supplier-accepted.
+  regulator at bring-up), U3 = Adafruit 4677 C17430771 (user-stocked ESP-PSRAM64H, same
+  APS6404L pinout). Not supplier-accepted.
 - Open: firmware notes, 3D fit, bench (`docs/research.md` §5, §7.6).
 
 ## Boundaries
