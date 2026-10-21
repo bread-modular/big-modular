@@ -1,5 +1,5 @@
 {
- "revision": "S5 placement (UNROUTED): Bread Modular 16bit for Eurorack, 6HP, 4 layers; MODE button + LED in the bottom corners near the edge; OUT jacks lowered to Y99 (22.5 mm below RV3/RV4); regulators moved up between RV3/RV4 and the OUT jacks",
+ "revision": "R2 placement (manual re-route): Bread Modular 16bit for Eurorack, 6HP, 4 layers; MODE button + LED in the bottom corners near the edge; OUT jacks lowered to Y99 (22.5 mm below RV3/RV4); regulators moved up between RV3/RV4 and the OUT jacks; R2: CV jacks to the side edges and up 5 mm with RV1/RV2, RV3/RV4 down 5 mm, then up 3 mm (net down 2 mm, Y77.5)",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The carrier F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -57,8 +57,8 @@
    "role": "CV1_IN",
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
-    7.5,
-    37.0
+    5.5,
+    32.0
    ]
   },
   {
@@ -66,8 +66,8 @@
    "role": "CV2_IN",
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
-    22.5,
-    37.0
+    24.5,
+    32.0
    ]
   },
   {
@@ -95,7 +95,7 @@
    "role": "CV1 attenuator (J2 tip -> U7A -> ADC0); unpatched = 0..+5 V knob",
    "shaft_XY": [
     7.5,
-    53.5
+    48.5
    ],
    "value": "50k"
   },
@@ -104,7 +104,7 @@
    "role": "CV2 attenuator (J3 tip -> U7B -> ADC1); unpatched = 0..+5 V knob",
    "shaft_XY": [
     22.5,
-    53.5
+    48.5
    ],
    "value": "50k"
   },
@@ -113,7 +113,7 @@
    "role": "Knob 3 (+3V3 divider -> ADC2, BM knob channel)",
    "shaft_XY": [
     7.5,
-    75.5
+    77.5
    ],
    "value": "50k"
   },
@@ -122,7 +122,7 @@
    "role": "Knob 4 (+3V3 divider -> ADC3, BM knob channel)",
    "shaft_XY": [
     22.5,
-    75.5
+    77.5
    ],
    "value": "50k"
   }
@@ -1077,16 +1077,16 @@
   {
    "text": "CV1",
    "XY": [
-    7.5,
-    30.9
+    5.5,
+    25.9
    ],
    "size": 1.2
   },
   {
    "text": "CV2",
    "XY": [
-    22.5,
-    30.9
+    24.5,
+    25.9
    ],
    "size": 1.2
   },
@@ -1094,7 +1094,7 @@
    "text": "P1",
    "XY": [
     7.5,
-    47.1
+    42.1
    ],
    "size": 1.2
   },
@@ -1102,7 +1102,7 @@
    "text": "P2",
    "XY": [
     22.5,
-    47.1
+    42.1
    ],
    "size": 1.2
   },
@@ -1110,7 +1110,7 @@
    "text": "P3",
    "XY": [
     7.5,
-    69.1
+    74.1
    ],
    "size": 1.2
   },
@@ -1118,7 +1118,7 @@
    "text": "P4",
    "XY": [
     22.5,
-    69.1
+    74.1
    ],
    "size": 1.2
   },
@@ -1187,5 +1187,5 @@
    "bottom_above_B_mm": 2.5
   }
  },
- "pot_layout_note": "CV jacks (Y37) + RV1/RV2 (Y53.5, 16.5 mm under their jacks) form one group; RV3/RV4 sit 22 mm lower (the B-side MCU zone lives between the rows); OUT jacks 23.5 mm under RV3/RV4 (Y99) so they read as their own row; MODE button (X5) and LED (X25) at Y113.5 in the bottom corners, near the panel edge."
+ "pot_layout_note": "R2 (user, 2026-10-21): CV jacks moved out to X5.5/X24.5 and up to Y32 with RV1/RV2 (Y48.5, 16.5 mm under the jacks); RV3/RV4 moved down to Y80.5, then back up 3 mm to Y77.5 (user: more room for the regulators), so the B-side MCU zone between the pot rows is 15 mm tall (was 8 mm). OUT jacks Y99; MODE button (X5) and LED (X25) at Y113.5 in the bottom corners."
 }

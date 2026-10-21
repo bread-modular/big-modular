@@ -19,6 +19,10 @@ Module paths are module-relative.
   requires via-in-pad fill (POFV) at the fab** for the remaining 123 in-pad vias + U1 EP array
   (`Code.md`). Next schematic rev: add an input cap at U8 (§7.3 F2). CV jacks + RV1/RV2 grouped, RV3/RV4 22 mm lower, MCU between the rows; OUT jacks at Y99; MODE button + LED in the bottom corners near the edge; regulators between RV3/RV4 and the OUT jacks;
   USB-C on B at the top edge, opening up. 6HP FR4 panel DRC 0.
+- **Manual re-route in progress (2026-10-21):** R1 copper was stripped and the SMD parts moved
+  off-board for hand placement/routing. **No vias in SMD pads.** Fan out with a short track
+  (dogbone) to a via clear of the pad, so the board does not need POFV fill. The R1/POFV notes
+  above and in `Code.md` describe the old router copper only.
 - Open: sourcing, firmware notes, 3D fit, bench (`docs/research.md` §5, §7.6).
 
 ## Boundaries

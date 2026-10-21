@@ -34,7 +34,14 @@
 - PWR_FLAGs only where ERC can't see a source: Eurorack entry (GND, +12V, -12V), behind
   D2/D3 (+12V_F, -12V_F), +1V1 (L1) and VREG_AVDD (R4).
 
-## Fabrication requirement (rev1 review)
+## Manual routing rule (2026-10-21)
+
+- **No vias in SMD pads.** Every via sits clear of the pad copper (and its paste/mask
+  opening), joined by a short dogbone track. This replaces the R1 POFV requirement below once
+  the hand-routed copper lands. U1's exposed-pad thermal vias are part of the footprint and are
+  the only exception.
+
+## Fabrication requirement (rev1 review, R1 router copper, superseded by the manual re-route)
 
 - **Via-in-pad fill is required.** 123 board vias sit in SMD pads (53 GND stitch, 27 +3V3
   stitch, 43 signal/other rail), plus U1's 9 exposed-pad thermal vias. Order **"via in pad: resin
