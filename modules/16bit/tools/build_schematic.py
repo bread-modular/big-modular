@@ -508,8 +508,10 @@ SOURCING = {
                                                           Manufacturer='Korean Hroparts Elec'),
     ('RP2350A', 'RP2350A', 'QFN60'): dict(LCSC='C42411118', MPN='RP2350A', Manufacturer='Raspberry Pi'),
     ('W25Q128JVS', 'W25Q128JVS', 'SOIC8W'): dict(LCSC='C97521', MPN='W25Q128JVSIQ', Manufacturer='Winbond'),
-    ('APS6404L-3SQRx-SN', 'APS6404L-3SQR-SN', 'SOIC8BM'): dict(LCSC='C5333729', MPN='APS6404L-3SQR-SN',
-                                                              Manufacturer='AP Memory'),
+    # User-stocked Adafruit 4677 (ESP-PSRAM64H-compatible 3.3 V 64 Mbit QSPI PSRAM, 150 mil SOIC-8):
+    # same pinout as the APS6404L (1 CE#, 2 SIO1, 3 SIO2, 4 VSS, 5 SIO0, 6 SCLK, 7 SIO3, 8 VCC).
+    ('APS6404L-3SQRx-SN', 'APS6404L-3SQR-SN', 'SOIC8BM'): dict(LCSC='C17430771', MPN='4677',
+                                                              Manufacturer='Adafruit Industries'),
     # PT8211 (C92004) is out of stock; Bread Modular 16bit-5v uses this pin-compatible SOP-8 TM8211.
     ('PT8211', 'PT8211', 'SOIC8'): dict(LCSC='C22381766', MPN='TM8211-TA2302', Manufacturer='Titan Micro (TM)'),
     ('TL074', 'TL074', 'SOIC14'): dict(LCSC='C12594', MPN='TL074CDR', Manufacturer='Texas Instruments'),

@@ -50,12 +50,13 @@ Every C-code resolves to its MPN and package and is Economy-eligible (`research/
   lookup rejects it (its keyword search is truncated), so the audit lists it as unresolved.
 - **Basic semis/ICs:** B5819W, 1N4148W, MMBT3904, W25Q128JVSIQ (C97521), TL072CDT,
   AMS1117-5.0/-3.3.
-- **Extended (one setup fee each):** RP2350A C42411118 (5,951), APS6404L C5333729 (3,867),
+- **Extended (one setup fee each):** RP2350A C42411118 (5,951), PSRAM Adafruit 4677 C17430771
+  (user-stocked, see below),
   TM8211-TA2302 C22381766 (9,039), TL074CDR C12594, MCP6002T C7377 (preferred), ABM8-272-T3
   C20625731 (4,849), FTC201610S3R3MBCA C5832345 (1,411), TYPE-C-31-M-12 C165948,
   K2-1808SN-A4SW-01 C92589, BAT54SWT1G C78260, 27 Ω C25100.
 
-Substitutions against Bread Modular 16bit, both on the same footprint with no copper change:
+Substitutions against Bread Modular 16bit, all on the same footprint with no copper change:
 
 - **U4: TM8211-TA2302** in place of the PT8211 (C92004, stock 1). Bread Modular 16bit-5v uses
   it; same SOP-8 pinout. The schematic value stays `PT8211`.
@@ -65,14 +66,27 @@ Substitutions against Bread Modular 16bit, both on the same footprint with no co
   1.6 mm body, 2.0 mm pitch). **It has no polarity mark**, so its orientation on the reel
   is random and the silk dot can't be honoured. Check the core regulator (+1V1 ripple,
   load steps) at bring-up.
+- **U3: Adafruit 4677 (C17430771)** in place of the APS6404L-3SQR-SN (C5333729), on user
+  direction: the user holds it in their own JLCPCB parts stock (public LCSC stock 0 on
+  2026-10-21 08:10 UTC). It is a generic ESP-PSRAM64H (3.3 V, 2.7-3.6 V, 64 Mbit QSPI,
+  133 MHz); the Espressif datasheet Adafruit links gives the same pins as the APS6404L
+  (1 CE#, 2 SIO1, 3 SIO2, 4 VSS, 5 SIO0, 6 SCLK, 7 SIO3, 8 VCC) and a JEDEC MS-012 150 mil
+  SOIC-8 body (4.90 x 3.90 mm, 1.27 mm pitch), so `SOIC-8 Generic` fits. The schematic
+  value stays `APS6404L-3SQR-SN`. The chips are sanded/unbranded: check pin 1 in the preview.
+
+**JLCPCB RP2350 notice.** At upload JLCPCB warns that the design "does not use the
+recommended crystal and polarised inductor circuitry". The crystal network already is the
+Raspberry Pi reference: ABM8-272-T3 12 MHz (C20625731) with 15 pF loads (C18/C20) and a
+1 kΩ XOUT series resistor (R5), as in the RP2350 minimal design and Bread Modular 16bit. The
+notice is triggered by L1 (the unmarked cjiang part above); accepted by the user.
 
 ## Source identity
 
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
 
-- Carrier PCB `d41f06236f673cf207ffececf37276732b4bd5ec2bc7526da5049dda2a144866`.
+- Carrier PCB `2e918ffee15b1e45b8404e306be3466a3c2cba5d1c3e22752b557fb6c2621576`.
 - Carrier project `c900706434bc85d82a08bdb539912c25897c19516f1e8bdc43f2ca29872212a0`.
-- Carrier schematic `9935e4e437e30fb739d220f68360961cf3b1cbaf1a6d057371a65b86f555e251`.
+- Carrier schematic `2501429c498721b70116b66f9d2b8eb4c65f5a72295e18f49ad33dcbaef7fe73`.
 - Panel PCB `f7c154c2fa2eaa191081287fe374488e83d9e63d06462710d1cc3388fad315c9`.
 - Panel project `da9d97ae5b440cca0097db590d1f6c90e41f6a2c02534180f7577e4164a57822`.
 
@@ -137,11 +151,12 @@ This is a complete export, not a supplier-accepted release. Before ordering:
 1. **Bottom-side Economic assembly.** Confirm the quote offers **Bottom** for Economic on a
    4-layer board, with the QFN-60 (0.4 mm pitch) and the USB-C.
 2. **Placement preview.** Check in JLCPCB's bottom-side preview:
-   - U1 RP2350A (QFN-60) pin 1 and the U2-U7 SOIC pin-1 dots;
+   - U1 RP2350A (QFN-60) pin 1 and the U2-U7 SOIC pin-1 dots (U3 is unbranded);
    - D2-D4 cathode bands, D5/D6 and Q1 (SOT) orientation;
    - J7 USB-C and SW2/SW3 sitting on their pads;
    - every rotation: bottom-side CPL rotations are the usual place for errors.
-3. **Live recheck before ordering:** stock (L1 1,411 and APS6404L 3,867 are the thinnest),
+3. **Live recheck before ordering:** stock (L1 1,411 is the thinnest; U3 C17430771 must be
+   in your own parts stock, public stock 0),
    Basic/Extended class, minimum quantities and attrition. The figures above are a snapshot.
 4. **JLCPCB DFM / Gerber viewer check** of both ZIPs, and the min-via-hole option above.
 5. **Bench:** core regulator with the unmarked L1, U8 temperature (F9), MIDI JP1 both ways,

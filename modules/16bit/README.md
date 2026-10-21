@@ -19,7 +19,8 @@ Power: Eurorack 10-pin (16-pin IDC fits), ±12 V through series Schottkys, AMS11
 violations, 0 unconnected, parity 0. No vias in SMD pads, so a plain tented 4-layer order (no
 via-in-pad fill / POFV). JLCPCB export (2026-10-21) in `jlcpcb/`: bottom-side Economic
 assembly, 86 parts; every R/C Basic except the 27 Ω USB pair. U4 is a TM8211 (PT8211 out of
-stock) and L1 a cjiang FTC201610S3R3MBCA (Abracon part out of stock, no polarity mark): see
+stock), L1 a cjiang FTC201610S3R3MBCA (Abracon part out of stock, no polarity mark) and U3
+the user-stocked Adafruit 4677 PSRAM (C17430771): see
 `jlcpcb/README.md`. Not supplier-accepted.
 
 | Path | Contents |
