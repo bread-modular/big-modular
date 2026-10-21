@@ -24,7 +24,7 @@ tooling.
 | `modules/midi/` | 4HP TRS MIDI in (TRS A/B jumper header, no opto) -> ATtiny1616 -> 8 x TS modular MIDI outs + LEDs, +12 V -> 5 V LDO (Bread Modular `midi` based). Two versions: `hardware/v1/` (BM V1 direct input, unprotected) and `hardware/v2/` (±12 V mis-patch protected NPN input with a JP2 debug bypass, clamped outputs, +5V shunt) | V1.0 (S4/R5) and V2.0 (S3/R3) routed carriers + shared 4HP panels; JLCPCB exports in `modules/midi/jlcpcb/v1/` and `jlcpcb/v2/`, not supplier-accepted |
 | `modules/audio-out/` | 4HP ±12 V pure-analog stereo out: 2 x TS in (IN R normalled to IN L; OPA1678 buffers) -> TRS consumer line out + TRS headphone out (MC33178, RV09 50k volume per ear) (Bread Modular `base` based) | S3 schematic (IN R normalled to IN L, no MONO jumper, unshrouded 10-pin power header, 10-pin cable) + R4 routed carrier (thermal-relief GND pours) (IN L, IN R, LINE, VOL L, VOL R, PHONES); 4HP panels; JLCPCB export in `modules/audio-out/jlcpcb/`, not supplier-accepted, not built |
 | `modules/vca-mix/` | VCA-MIX, 6HP: 3 x vactrol VCA (Bread Modular V2CA, no CURVE; Bread Modular LOW/SVF vactrol driver; IN/CV/OUT per channel, CV unpatched = open) + per-channel volume after the VCA (OUT post-volume) + MIX out (Bread Modular imix style), buffered inputs/CV, 1 W output resistors, ±12 V, 10 x TL072 | S4 schematic + P4 placement + 6HP panels; R1 routed carrier, final (TraceMaker + cleanup, 0 unconnected; the 9 vactrol/pot stacking findings are user-approved DRC exclusions, D10; copied into `hardware/` past the shared gate, which still counts them, D14, user-verified manually; vactrol build notes on silk); JLCPCB export in `modules/vca-mix/jlcpcb/`, not supplier-accepted, not built |
-| `modules/16bit/` | 16bit, 6HP: RP2350A + W25Q128 flash + APS6404L PSRAM, PT8211 I2S DAC -> TL074 ±5 V outs, MIDI in (NPN, JP1), 2 x CV in with attenuators, 2 knobs, MODE button + LED, USB-C data, 4-layer (Bread Modular `16bit` based) | S3 schematic + S5 placement + R1 routed carrier (TraceMaker + hand finish, rev1 reviewed); **needs via-in-pad fill (POFV) at the fab**; 6HP panel; no sourcing or export yet |
+| `modules/16bit/` | 16bit, 6HP: RP2350A + W25Q128 flash + APS6404L PSRAM, PT8211 I2S DAC -> TL074 ±5 V outs, MIDI in (NPN, JP1), 2 x CV in with attenuators, 2 knobs, MODE button + LED, USB-C data, 4-layer (Bread Modular `16bit` based) | S3 schematic; R1 TraceMaker copper stripped, **manual divide-and-conquer re-route in progress** (no vias in SMD pads, so no POFV); 6HP panel; no sourcing or export yet |
 
 Canonical sources are `modules/usb-power/hardware/usb-power.kicad_{pro,sch,pcb}`
 plus `modules/usb-power/panels/front-pcb/usb-power-panel.kicad_{pro,pcb}`. Read `modules/usb-power/Code.md` before
@@ -77,89 +77,66 @@ baselines only for independently inspected intentional changes. Manufacturer
 data plus prototype screening is not guaranteed performance. Source/sourcing
 and Basic/Economy gates remain distinct; no stock claims without evidence.
 
-## Routing with autorouters
+## Routing: manual, divide and conquer (no autorouters)
 
-Autorouters may route a carrier (user direction, 2026-10-20). Run **both Freerouting
-and TraceMaker** on the same frozen placement, rules and GND pours, compare the
-results, pick the best and improve it; don't settle for whichever finishes first.
+User direction, 2026-10-21. It replaces the 2026-10-20 autorouter direction: the
+16bit R1 TraceMaker copper needed 123 in-pad vias (POFV) and was stripped and
+re-routed this way instead.
 
-- **Freerouting**: the repo-pinned runtime via `opt/kicad-routing/` (`route doctor`,
-  `prepare-runtime` needs an explicit download opt-in). If its supported subset
-  refuses the board, the same pinned JAR may be driven through native DSN export /
-  SES import. Pass flags that turn its analytics off.
-- **TraceMaker**: the shared controller and recipe in `opt/kicad-tools/tracemaker/`
-  and `opt/kicad-tools/HYBRID_ROUTING.md`, or a hash-verified upstream release run on
-  a research copy (`--no-kb --no-gpu`; `--soft-zones` with the pours present worked
-  best on modules/vca-mix).
-- Runtimes, builds and driver scripts stay outside the repository or in the module's
-  ignored `research/`. Don't add router tooling.
-- Give routers only **tighter** rules than the native ones (track widths, Power net
-  class, clearance margin, edge inset). Never lower a native rule or accept
-  below-rule neck-downs.
-- **Compare** with full native DRC + parity: unrouted, DRC findings beyond the
-  baseline, via count, track length, below-rule segments, GND-pour continuity and the
-  critical analog/power paths (inspect renders).
-- **Improve** the pick with explicit, recorded cleanup edits, e.g. removing redundant
-  rail legs or freeing crowded pads.
-- **Freeze and promote**: freeze the copper as module data and emit it with
-  `tools/route_plan.py` as shared `pcb plan/apply/promote` ops (as modules/vca-mix).
-  Raw router output never goes into `hardware/`. Router success is not acceptance: the
-  shared gates still apply in full.
-- Record the comparison and the choice in the module's `docs/research.md`.
+- **No autorouters.** Do not run Freerouting, TraceMaker (`route`, `tracemaker run`,
+  `tracemaker session`) or any other full-board/bulk router, and do not hand them the
+  board as a fallback. A small path-finding helper for **one connection at a time** is
+  fine, as long as you check and accept each path yourself.
+- **No vias in SMD pads.** Fan out with a short dogbone track to a via clear of the pad
+  copper and its mask opening. The only exception is a footprint's own exposed-pad
+  thermal vias (e.g. RP2350 EP). Check every via against every SMD pad after each batch;
+  never propose POFV as the fix.
+- **Work straight on the board** (`modules/<name>/hardware/*.kicad_pcb`), not on a
+  research copy, and **update the board after every batch** so the user can reload it
+  in KiCad and follow along. Back up the board to `/tmp/` before each round; DRC reports
+  go in the module's ignored `research/`.
 
-### Learnings (modules/16bit, 4-layer RP2350 QFN-60 at 0.4 mm pitch)
+### Divide and conquer
 
-- **Run routers detached and never wait inside a turn.** Agent turns have a 1-hour
-  watchdog, and processes started from a tool shell die when the turn ends. Start
-  every run with `systemd-run --user --unit <name> ...` and a router time limit
-  (`--time`), end the turn, and collect results in the next turn with
-  `systemctl --user is-active <name>`.
-- **TraceMaker is the primary router for fine-pitch MCU boards.** Freerouting (40
-  passes) stalled with its unrouted count swinging between 77 and 148; TraceMaker
-  routed 226/234 on its first run. Still run Freerouting for the comparison.
-- **Protect the planes in the router flags**: `--no-tracks-on In1.Cu` keeps the
-  GND plane solid (without it TraceMaker routed on In1 and split the plane),
-  `--layer-cost In2.Cu=3..6` keeps signals mostly off the power plane, and
-  `--no-neck-nets <power nets>` stops thin power neck-downs. It does not widen rails
-  into 0.2 mm QFN pads: on 16bit +1V1, VREG_AVDD and VREG_LX came out 0.2 mm end to
-  end, so report widths per net, not per class (rev1 review).
-- **Run a portfolio**, not one run: results are time-limited and not reproducible, so
-  launch 3 variants (`--seed`, `--first-nets` for the boxed-in nets such as crystal,
-  QSPI, `+1V1`, `--via-cost-mm`, `--global`) and pick by the comparison metrics.
-- **Finish the last opens by hand, not with more router rounds.** Pick the best run
-  (fewest opens, DRC 0, whole planes) and stop there: a box rip-up around the MCU plus
-  a re-route made it worse (11-13 opens vs 4). `tracemaker escape`/`stuck_report` names
-  the pins with no 0.2 mm channel; for those, rip only the few nets next to the pin
-  (whole nets, never a box), add an explicit escape stub + via (check clearances by
-  hand), and route from that via. `tracemaker session` routes the easy rest; give it
-  hints `{"version": 1, "layers": {"no_tracks": ["In1.Cu"], "cost": {"In2.Cu": 4}}}`,
-  otherwise it puts tracks on the GND plane. A small research-only grid router (exact
-  point-in-polygon obstacles, no PIL rasterising) works for long hops; adjacent pins
-  whose nets must cross (crystal XIN/XOUT next to DVDD) need a hand-planned escape
-  per pin (one inward, one outward). Re-run full native DRC after every edit,
-  including snapping/cleanup passes.
-- **Watch the +3V3 plane**: In2 signal hops can fence off a plane island; check the
-  fill islands and move the fencing signal to F/B. Count plane pieces from the filled
-  polygons and report spoke-tied fragments separately (16bit's In1 GND has two 2.6 mm²
-  pieces between the J6 GND pins; "one piece" was an overclaim).
-- **Count vias in pads before you pick a run** (rev1 review): TraceMaker centres vias in
-  SMD pads. 16bit R1 ended with 132 (123 board vias, mostly in 0402 pads, plus the U1 EP
-  array), so it needs POFV fill at the fab. Moving them out afterwards is a re-route. Make
-  in-pad vias a comparison metric, and decide POFV vs dogbones before routing.
-- **Clean before freezing**: drop zero-length/duplicate/dangling segments, centre
-  track ends on vias, collapse sub-0.1 mm via stubs; router stubs that wander inside a
-  pad are trimmed at the pad centre (pads are convex). Also look for what that pass
-  missed on 16bit R1: a second copy of a track 0.065 mm beside the first, spurs and
-  hairpins under 20°, and tees that run back along their parent before joining it.
-- **GPU builds don't help**: the upstream Linux release is CPU-only. A CUDA build
-  (CUDA 12.4 + GCC 13, PTX JIT on sm_120) works, but routing time is dominated by
-  CPU path searches, so it was no faster or better.
-- **Shared `pcb plan` caps a plan at 256 ops**: a full board needs `route_plan.py` to
-  split the copper into stages of whole nets. A stale root-sheet UUID in the
-  `.kicad_pro` makes the shared planner refuse the project. Intermediate stages need
-  `pcb plan --allow-draft-opens` (opens remain until the last stage; plan the last
-  without it). Use absolute paths in stage driver scripts: a relative `..` path broke
-  once its parent candidate dir was deleted, and a stale board was re-promoted.
+1. **Clear the board first if asked:** strip tracks/vias, keep footprints and zone
+   outlines, then park the SMD parts in a grid off the board edge so they can be
+   placed group by group.
+2. **Set up the layers before routing.** 4-layer: F.Cu signal / In1 solid GND /
+   In2 main power plane (+3V3) / B.Cu signal, plus a Power net class. No tracks on In1.
+   In2 only for short power hops when F/B are blocked, and check that the plane stays
+   one piece afterwards.
+3. **Place and route one functional group at a time**, near its connector: e.g. power
+   entry + regulators by the power header, output amps between the output jacks, USB
+   at its port, MIDI input at its jack, CV buffers by their pots, then the MCU with its
+   memories, DAC and decoupling. Keep the space reserved for the MCU empty until it's
+   that group's turn.
+4. **Route a few traces per batch** (one net or a handful of local links), write them
+   to the board, then run full native DRC + parity. Fix every new finding before the
+   next batch. Report what the batch added and what is still open.
+5. **Leave cross-board links until both ends are placed** (MCU pins, rails that cross
+   the middle), and say so in the report instead of forcing a long detour.
+6. **Stop and ask** when a choice needs the user: moving a fixed jack/pot or a part the
+   user placed, ripping up earlier groups, or a schematic change such as a pin swap.
+   Respect parts and copper the user routed by hand; only move them with a reason
+   you report.
+7. **Commit only when the user asks**, at the end of a group.
+
+### Routing rules learned on modules/16bit
+
+- **Short critical paths first**: regulator input caps within 2-3 mm, decoupling cap
+  at its pin with its own GND via, memories right beside the MCU so QSPI runs with no
+  vias, USB D+/D- side by side on one layer with vias only at the port and the MCU.
+- **Use F.Cu when only through-hole parts sit there**: it's the free layer for long
+  runs and rail feeds. Hop with a via pair placed clear of the pads.
+- **Heat**: a linear regulator dropping ~0.5 W gets a tab patch on F and B tied by
+  thermal vias beside (not in) the tab.
+- **Check after every edit, cleanup passes included**: native DRC + parity, vias in SMD
+  pads, tracks on In1, plane pieces counted from the filled polygons (report small
+  spoke-tied fragments separately), and inspect a render of the area.
+- **Clean as you go**: no zero-length/duplicate/dangling segments, track ends centred
+  on vias and pads, coordinates on a round 0.05/0.1 mm grid.
+- **Shared `pcb plan` caps a plan at 256 ops** if you freeze copper as plan ops: split
+  into stages of whole nets; intermediate stages need `--allow-draft-opens`.
 
 ## Fabrication outputs
 
