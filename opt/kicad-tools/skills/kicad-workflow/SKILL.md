@@ -1,6 +1,6 @@
 ---
 name: kicad-workflow
-description: Common-tool-first portable KiCad native hierarchy/netlist inspection, offline PCB/schematic edits, private ERC/DRC, JLCPCB exports and recommended hybrid TraceMaker signal routing (with explicit format blockers) without source or approval policy changes.
+description: Common-tool-first portable KiCad native hierarchy/netlist inspection, offline PCB/schematic edits, private ERC/DRC, JLCPCB exports and manual divide-and-conquer routing (no autorouters, no vias in SMD pads) without source or approval policy changes.
 ---
 
 # Portable KiCad workflow
@@ -101,9 +101,27 @@ They never load or synchronize a PCB: perform explicit downstream synchronizatio
 and PCB DRC/parity before accepting a circuit change. Existing approval policies
 still govern every operation; no source overwrite or frozen migration.
 
-## Recommended hybrid TraceMaker sequence (optional, never automatic)
+## Routing: manual, divide and conquer (repository policy)
 
-Actively **recommend the hybrid approach for compatible ordinary signal work**, not
+Routing is done by hand in small batches, straight on the board (user direction,
+2026-10-21). The full rules are in the root `AGENTS.md` section *Routing: manual,
+divide and conquer*. In short:
+
+- **No autorouters**: don't run Freerouting, TraceMaker or any bulk router. A helper
+  that finds one connection at a time is fine if you check each path yourself.
+- **No vias in SMD pads**: dogbone to a via clear of the pad copper and mask opening
+  (footprint-owned exposed-pad thermal vias are the only exception).
+- **Divide and conquer**: place and route one functional group at a time, a few traces
+  per batch. **Write each batch to the board** so the user can reload it, run full
+  native DRC + parity, fix new findings, report what is still open, then continue.
+  Back up the board to `/tmp/` before each round; reports go in `research/`.
+
+The TraceMaker and Freerouting sections below are kept as reference only. **Do not
+use them** unless the user explicitly reverses this policy.
+
+## Hybrid TraceMaker sequence (retired: do not use)
+
+Formerly recommended for compatible ordinary signal work, not
 an autorouter-first/full-board workflow. See the [exact recipe](../../HYBRID_ROUTING.md)
 and the optional [TraceMaker controller](../../tracemaker/README.md).
 
@@ -149,7 +167,7 @@ ERC/baseline-policy conflicts stay blocked/draft. Only opens-only completed PCB 
 with explicit policy may proceed where supported; never waive shorts, clearance, ERC,
 parity or known warnings/exclusions to gain admission. No tests provision a runtime.
 
-## Explicit Freerouting alternative
+## Explicit Freerouting alternative (retired: do not use)
 
 
 Manually inspect and constrain critical nets **before** optional autorouting:
