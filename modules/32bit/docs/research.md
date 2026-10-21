@@ -1,0 +1,83 @@
+# 32bit research and circuit intent (S1 schematic, S1 THT placement)
+
+Bread Modular `32bit-5v` (the updated 32bit: ESP32-S3 + ES8388) as a 6HP Eurorack module on a
+4-layer carrier. Brief (user, 2026-10-21):
+
+- 6HP, modules/16bit as the inspiration, 4 layers allowed.
+- MIDI in on top; two audio inputs and two CV inputs on the top; two outputs at the bottom.
+- Two pots, a mode button and an LED.
+- USB and BOOT/RESET buttons as in modules/16bit.
+- Schematic with nets connected for readability; THT placement to see it; **no routing yet**.
+
+Nothing here is bench-tested. LCSC codes are reused from modules/16bit and the BM 32bit-5v BOM;
+no live sourcing check was made for this module.
+
+## 1. Bread Modular 32bit-5v baseline (read-only source)
+
+Source: `~/data/projects/bread-modular/modules/32bit-5v` (netlist exported natively from
+`32bit-5v.kicad_sch`; firmware `code/32bit/main`).
+
+| Function | Bread Modular 32bit-5v | Firmware |
+|---|---|---|
+| MCU | ESP32-S3-WROOM-1U-N16R8 on +3V3_ESP32 (FB1 GZ2012D121TF, 100n + 10u); EN 10k/1u/100n + RESET button; IO0 BOOT button | ESP-IDF |
+| Codec | ES8388 on +3V3_8388 (10R + 100u, 3 x 10u, 4 x 100n), VREF 10u, VMID 10u + 100n, ADCVREF 10u + 100n, CE = GND (0x10) | `bm_es8388_init_new_bus(I2C_NUM_0, 48, 47)` |
+| I2S | IO21 MCLK, IO14 SCLK, IO12 LRCK, IO13 DSDIN, IO11 ASDOUT, each through 33R | `bm_audio.c` |
+| I2C | IO47 CCLK, IO48 CDATA, 4.7k pull-ups to +3V3_8388 | |
+| Audio | AIN_1/2 header -> LIN1/RIN1 with 100k to VMID (DC coupled); LOUT1/ROUT1 -> 1k -> header | |
+| CV | CV1/2 header (100k pull-up to +3V3) -> MCP6002 follower -> 1.5k -> RV1/RV2 50k -> IO9/IO10 | `ADC_CHANNEL_8/9` |
+| MIDI | RXD0 (GPIO44) from the INPUT header, TXD0 to the OUTPUT header | `UART_NUM_0`, RX 44 |
+| Mode | SW4 IO8 to GND, LED IO18 -> LED -> 1k | `LED_PIN 18` |
+| Gates | IO1/IO2 -> 1k -> header | |
+| USB | USB-C data only, D+/D- straight to the module, 5.1k CC, 10n shield; VBUS unused | |
+| Power | 5 V header -> AP2112K-3.3 | |
+
+## 2. Decisions
+
+| # | Decision | Why |
+|---|---|---|
+| D1 | Keep the BM core: ESP32-S3-WROOM-1U-N16R8, ES8388 with all BM decoupling/reference parts, BM I2S 33R series, I2C pull-ups, FB1, EN RC, BOOT/RESET, USB-C data only, and BM's GPIO map | BM firmware ports unchanged (except the MIDI inversion, D5) |
+| D2 | Power as modules/16bit: ±12 V through B5819W, AMS1117-5.0 -> +5V -> AMS1117-3.3 -> +3V3 | Proven in 16bit. **Thermal limit:** at ~110 mA (ESP32-S3 at 240 MHz, radio never used, codec) U8 drops 6.6 V = ~0.75 W, so it needs a tab patch + thermal vias. Wi-Fi/BT bursts (300-500 mA) are out of scope; the U.FL connector stays unused. User 2026-10-21: the radio is never used (firmware keeps Wi-Fi/BT off), so the linear chain stays |
+| D3 | CV1/CV2 = the modules/16bit chain: jack normalled to +5V -> RV1/RV2 50k attenuator -> U7B/U7A follower (±12 V) -> 100k / 56k / 120k level shift, BAT54SW, 1n -> U6B/U6A MCP6002 -> IO9/IO10 (CV1 on the B halves, CV2 on the A halves since R1, for layout) | Same as BM's behaviour (unpatched = knob, patched = pot scales the CV) but bipolar ±5 V CV safe on 3.3 V ADC pins. The two pots are these attenuators, as on BM |
+| D4 | Audio in: 100k / 22k divider (x0.18) -> U7C/U7D follower -> 1u -> 1k -> LIN1/RIN1, 100k to VMID (BM). No IN R normal (user 2026-10-21: the firmware handles mono) | ±5 V -> ±0.9 V (ES8388 ADC full scale ~1 Vrms at 0 dB PGA; clips near ±7.5 V); PGA adds gain for quieter sources. AC coupling because the codec input sits on VMID. The 1k limits clamp current on a ±12 V mis-patch |
+| D5 | MIDI in = modules/16bit NPN front end + JP1 (shipped open) -> RXD0 | 1-2 protected (firmware: `uart_set_line_inverse(UART_NUM_0, UART_SIGNAL_RXD_INV)`), 2-3 direct (stock BM firmware) |
+| D6 | Audio out: LOUT1/ROUT1 -> BM 1k -> 10u -> 100k to GND -> U5 TL072 gain 3.55 (56k/22k) -> 1k 0.5 W -> jack | ~1 Vrms codec full scale -> ±5 V; the codec output volume trims it. AC coupled (removes VMID). Bench check: full-scale swing (lesson from 16bit's low output) |
+| D7 | Op-amps: U7 TL074 (CV A/B + audio-in C/D, all near the top jacks), U5 TL072 (outputs, near the OUT jacks), U6 MCP6002 (CV on +3V3) | One quad where the inputs are, one dual where the outputs are |
+| D8 | MODE = 6 x 6 mm THT tact (16bit SW1) on IO8; LED = 3 mm red THT (16bit D1) on IO18 through 1k | BM pins; user's 16bit parts and printed cap |
+| D9 | Dropped: TXD0 (BM TX header), IO1/IO2 gate outs, LIN2/RIN2/LOUT2/ROUT2 | Not in the brief; pins open |
+| D10 | Footprints: BM ES8388 QFN-28 thermal-via land (model proxy: KiCad 10 QFN-28 4x4 0.4 mm), stock ESP32-S3-WROOM-1U (no 3D model: KiCad 10 ships none, a WROOM-1 proxy would misstate the length), BM RV09, BM K2 switches, BM FB1 on C_0805, BM AudioJacks PJ301M-12; stock for the rest | User preference for BM footprints |
+
+## 3. Circuit (`hardware/32bit.kicad_sch`, ERC 0)
+
+```
+POWER  J6 ±12V -> D2/D3 -> ±12V_F; +12V_F -> U8 AMS1117-5.0 -> +5V -> U9 AMS1117-3.3 -> +3V3
+ESP32  +3V3 -> FB1 -> +3V3_ESP32 (C5/C6); EN: R4 10k, C7 1u, C8 100n, SW3 RESET; IO0: SW2 BOOT
+USB    J7 D+/D- -> U1 USB PHY; R11/R12 5.1k CC; C24 shield; VBUS open
+MIDI   J1 T -> R3 100k to +3V3; R1 10k -> Q1 (D4) -> RX_Q (R2 22k); JP1 1 RX_Q / 2 MIDI_RX (RXD0) / 3 MIDI_IN
+CV1/2  Jx T (TN = +5V) -> RVx 50k, wiper -> U7B/A -> 100k -> CVx_BUF (56k +3V3, 120k GND, BAT54SW, 1n) -> U6B/A -> IO9/IO10
+IN L/R J8/J9 T (J9 TN = IN_L) -> 100k/22k -> U7C/D -> 1u -> 1k -> LIN1/RIN1 (100k to VMID)
+CODEC  U4 ES8388: +3V3 -> R5 10R -> +3V3_8388 (C30 100u, C31-33 10u, C34-37 100n); VREF C42,
+       VMID C40/C41, ADCVREF C38/C39; I2S via R23-R27 33R; CDATA/CCLK R21/R22 4.7k; CE GND
+OUT    LOUT1/ROUT1 -> R50/R55 1k -> C45/C46 10u -> U5A/B (R51/R56 100k bias, 56k/22k) -> R54/R59 1k -> J4/J5
+MODE   SW1 IO8 to GND; IO18 -> R20 1k -> D1 -> GND
+```
+
+PWR_FLAGs: GND/+12V/-12V at J6, ±12V_F behind D2/D3, +3V3_ESP32 (FB1), +3V3_8388 (R5).
+
+## 4. Placement (S1, `docs/geometry.json`)
+
+6HP panel 30 x 128.5 mm, carrier 29 x 110 mm (as 16bit). Front, top to bottom: MIDI (X14.6 Y17.5),
+IN L / IN R (Y32), CV1 / CV2 (Y46.5) at the side edges, P1 / P2 (Y62), OUT L / OUT R (Y99, side edges X5.5 / X24.5 like the top jacks, S2), MODE / LED
+in the bottom corners (Y113.5), power header centred at the bottom. B side: USB-C at the top edge with
+BOOT / RESET below it, as 16bit. The U1 module zone (courtyard 19.5 x 20.15 mm, X5.25-24.75,
+Y71.0-91.15) is reserved between the pot pins and the OUT jack pads (0.6 / 1.6 mm). Every other SMD
+part is parked in columns right of the board for group-by-group placement.
+
+SMD space is the hard part: the module takes the band where 16bit had its regulators. Plan for the
+placement round: codec + audio-in + CV chain in the Y27-70 band (between the jack pads and under the
+pot bodies), outputs + U5 between the OUT jacks, U8/U9 beside J6 / under the OUT jack bodies.
+
+## 5. Open
+
+- Thermal: U8 at ~0.75 W (D2). The radio is never used (user 2026-10-21).
+- ES8388 full-scale levels (in/out) are datasheet-nominal; bench check gains.
+- Sourcing not live-checked; SMD placement and routing not started.
