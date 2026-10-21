@@ -1,4 +1,4 @@
-# 16bit contract (S3 schematic, S5 placement, R1 routed, rev1 reviewed)
+# 16bit contract (S3 schematic, R2 manual routing)
 
 | | |
 |---|---|
@@ -37,24 +37,23 @@
 ## Manual routing rule (2026-10-21)
 
 - **No vias in SMD pads.** Every via sits clear of the pad copper (and its paste/mask
-  opening), joined by a short dogbone track. This replaces the R1 POFV requirement below once
-  the hand-routed copper lands. U1's exposed-pad thermal vias are part of the footprint and are
+  opening), joined by a short dogbone track. This replaced the R1 POFV requirement (R2 landed
+  2026-10-21). U1's exposed-pad thermal vias are part of the footprint and are
   the only exception.
 
-## Fabrication requirement (rev1 review, R1 router copper, superseded by the manual re-route)
+## Fabrication (R2 manual routing, 2026-10-21)
 
-- **Via-in-pad fill is required.** 123 board vias sit in SMD pads (53 GND stitch, 27 +3V3
-  stitch, 43 signal/other rail), plus U1's 9 exposed-pad thermal vias. Order **"via in pad: resin
-  filled + copper capped (POFV, IPC-4761 type VII), all vias"** (JLCPCB: "Via Covering: Epoxy
-  Filled & Capped"). Ordered as a plain tented 4-layer board, solder wicks into the barrels:
-  expect starved joints and tombstoned 0402s.
-- `tools/build_layout.py` writes the requirement into the board setup (tenting kept, filling yes,
-  capping yes); keep it there.
-- Fallback if POFV is not available: hand-apply paste and reflow with tented vias, then inspect
-  and touch up every in-pad joint. Expect a higher defect rate.
-- Copper widths: signals 0.2 mm; +5V, ±12 V, ±12V_F 0.4 mm; **+1V1, VREG_AVDD, VREG_LX and the
-  local +3V3 stubs are 0.2 mm** (QFN pads are 0.2 mm; BM runs +1V1 at 0.15 mm).
-- Details, findings and counts: `docs/research.md` §7.
+- **Plain tented 4-layer board, no via-in-pad fill (POFV).** 145 vias, all 0.6/0.3 mm, none in
+  or touching an SMD pad or its mask opening. U1's 9 exposed-pad thermal vias (0.25 mm, part of
+  the footprint) are the only vias in a pad: tented on F, open inside the EP on B.
+- `tools/build_layout.py` writes tenting front/back yes, filling no, capping no; the board setup
+  matches.
+- B silk: BOOT / RESET under SW2 / SW3, `D` / `P` beside JP1's pads, and a `MIDI JP1`,
+  `P=PROT`, `D=DIRECT` legend right of R1 (JP1 ships open: bridge one side).
+- The R1 POFV requirement (123 in-pad vias from the router) is retired with that copper.
+- Copper widths (R2): signals 0.2-0.3 mm; ±12 V 0.5 mm; +5V, ±12V_F 0.3-0.5 mm; +3V3/+1V1
+  0.2-0.5 mm; VREG_AVDD and VREG_LX 0.2 mm at the QFN (pads are 0.2 mm wide).
+- R1 details, findings and counts: `docs/research.md` §7 (retired copper).
 
 ## Sources and generators
 
@@ -64,15 +63,25 @@
   and that the native netlist equals `circuit()` (`_`-prefixed nets are unlabelled local links).
 - `tools/build_layout.py` places from `docs/geometry.json` and takes values, fields,
   symbol links and pad nets only from the native netlist; writes the **unrouted** carrier
-  and the panel. The routed PCB owns copper: rerunning this script writes the unrouted
-  board, after which the frozen R1 copper (`tools/route_r1.json`) must be re-applied through
-  `tools/route_plan.py` stages and `pcb plan/apply/promote` (`docs/research.md` §6).
-- `tools/route_r1.json` is frozen module data (vias + polylines from pad/via/tee to pad/via);
-  `tools/route_plan.py` turns it into ≤256-op shared stages of whole nets (zones first).
+  and the panel. The routed PCB owns copper and placement: the R2 hand placement and copper
+  live only in `hardware/16bit.kicad_pcb`, so do not rerun this script over it.
+- `tools/route_r1.json` / `tools/route_plan.py` hold the retired R1 router copper (POFV); kept as
+  history, not a way to rebuild R2.
 - `tools/import_footprints.py` rebuilds `hardware/16BIT.pretty` / `16BIT.3dshapes`
   (provenance and every edit in `PROVENANCE.json`).
 
-## Verification (R1 + rev1 review, 2026-10-20)
+## Verification (R2 manual routing, 2026-10-21)
+
+- Shared `kicad_tools.py check`: ERC 0, DRC 0 violations (all severities), unconnected 0,
+  parity 0, 0 exclusions; source manifest equal after the export; `order_ready: false`.
+- 145 vias (0.6/0.3 mm), 0 in SMD pads/mask openings; tracks 0.2-0.5 mm; no tracks on In1; 3
+  short In2 hops, In2 +3V3 one piece; In1 GND one main piece + two spoke-tied 2.6 mm² pieces at
+  J6; zones refilled and saved.
+- JLCPCB export 2026-10-21 (`jlcpcb/README.md`): 86 bottom-side parts, live catalog audit,
+  board fields synced from the schematic without touching copper (830 tracks/vias unchanged).
+- Not done: supplier acceptance, 3D fit, bench (core regulator with the unmarked L1).
+
+## Verification (R1 + rev1 review, 2026-10-20, retired copper)
 
 - Native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`).
 - Native DRC `--severity-all --schematic-parity` (R1 + rev1 edits): carrier 0 violations, 0 parity,

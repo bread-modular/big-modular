@@ -190,11 +190,11 @@ def build_carrier():
         'Geometry contract: docs/geometry.json; nets: hardware/16bit.kicad_sch',
     ])
     board.SetCopperLayerCount(GEO['main_pcb']['copper_layers'])
-    # R1 leaves 123 vias in SMD pads (+ U1's EP thermal vias): the fab must resin-fill and
-    # copper-cap them (IPC-4761 type VII, "POFV"); vias stay tented. docs/research.md section 7.2.
+    # Manual routing keeps every via clear of the SMD pads (only U1's EP thermal vias sit in a
+    # pad), so plain tented vias: no resin fill / copper cap (the R1 POFV requirement is retired).
     ds = board.GetDesignSettings()
-    ds.m_FillVias = True
-    ds.m_CapVias = True
+    ds.m_FillVias = False
+    ds.m_CapVias = False
     x0, y0, x1, y1 = GEO['main_pcb']['outline_mm']
     rect(board, pcbnew.Edge_Cuts, x0, y0, x1, y1)
     # Fit references (non-fabricated): panel outline and rail keep-out bands.
