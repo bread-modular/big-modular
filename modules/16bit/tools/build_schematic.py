@@ -187,7 +187,9 @@ def circuit():
     c.append(two('C12', 'C', '4.7u', 'C0402S', (299.72, 83.82), '+3V3', 'GND', rot=0, Voltage='10V',
                  Note='VREG_VIN (Bread Modular C6)'))
     c.append(two('L1', 'L', '3.3u', 'L2016', (304.8, 96.52), 'VREG_LX', '+1V1',
-                 MPN='AOTA-B201610S3R3-101-T', Note='Core regulator inductor (Bread Modular L1, RP2350 reference)'))
+                 Note='Core regulator inductor. Bread Modular L1 / RP2350 reference AOTA-B201610S3R3-101-T is '
+                      'out of stock at LCSC; cjiang FTC201610S3R3MBCA meets its L/DCR/Isat/shielding but has no '
+                      'polarity mark (orientation random): check the core regulator at bring-up'))
     for ref, x, val, fp, note in (('C13', 320.04, '4.7u', 'C0402S', 'Core regulator output (Bread Modular C7)'),
                                   ('C14', 330.2, '4.7u', 'C0402', 'DVDD (Bread Modular C10)'),
                                   ('C15', 340.36, '100n', 'C0402', 'DVDD decoupling'),
@@ -464,11 +466,20 @@ def drawing():
     return W, P, L
 
 
-# JLCPCB parts already verified for modules/8bit (docs/sourcing-candidates.json there). Every
-# other part still needs a dated live lookup before an export: docs/research.md section 5.
+# JLCPCB parts (LCSC codes checked live for the 2026-10-21 export, research/export-1/catalog).
+# Every R/C is JLCPCB Basic except the 27R USB resistors (no Basic 27R 0402). The THT jacks,
+# pots, LED, MODE switch and power header are hand-soldered: no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM Semicon'),
+    ('R', '1k', 'R1206'): dict(LCSC='C4410', MPN='1206W4F1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '33', 'R0402'): dict(LCSC='C25105', MPN='0402WGF330JTCE', Manufacturer='UNI-ROYAL'),
+    ('R', '1k', 'R0402'): dict(LCSC='C11702', MPN='0402WGF1001TCE', Manufacturer='UNI-ROYAL'),
+    ('R', '10k', 'R0402'): dict(LCSC='C25744', MPN='0402WGF1002TCE', Manufacturer='UNI-ROYAL'),
+    ('R', '27', 'R0402'): dict(LCSC='C25100', MPN='0402WGF270JTCE', Manufacturer='UNI-ROYAL'),
+    ('R', '5.1k', 'R0402'): dict(LCSC='C25905', MPN='0402WGF5101TCE', Manufacturer='UNI-ROYAL'),
+    ('R', '120k', 'R0603'): dict(LCSC='C25808', MPN='0603WAF1203T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '51k', 'R0603'): dict(LCSC='C23196', MPN='0603WAF5102T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '15k', 'R0603'): dict(LCSC='C22809', MPN='0603WAF1502T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
@@ -477,11 +488,35 @@ SOURCING = {
     ('C', '10n', 'C0603'): dict(LCSC='C57112', MPN='0603B103K500NT', Manufacturer='FH (Guangdong Fenghua)'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
+    ('C', '100n', 'C0402'): dict(LCSC='C1525', MPN='CL05B104KO5NNNC', Manufacturer='Samsung'),
+    ('C', '4.7u', 'C0402'): dict(LCSC='C23733', MPN='CL05A475MP5NRNC', Manufacturer='Samsung'),
+    ('C', '4.7u', 'C0402S'): dict(LCSC='C23733', MPN='CL05A475MP5NRNC', Manufacturer='Samsung'),
+    ('C', '15p', 'C0402'): dict(LCSC='C1548', MPN='0402CG150J500NT', Manufacturer='FH (Guangdong Fenghua)'),
+    ('C', '10n', 'C0402'): dict(LCSC='C15195', MPN='CL05B103KB5NNNC', Manufacturer='Samsung'),
+    ('C', '22u', 'C0805'): dict(LCSC='C45783', MPN='CL21A226MAQNNNE', Manufacturer='Samsung'),
+    ('C', '100u', 'C1206'): dict(LCSC='C15008', MPN='CL31A107MQHNNNE', Manufacturer='Samsung'),
     ('D_Schottky', 'B5819W', 'SOD123'): dict(LCSC='C8598', MPN='B5819W SL', Manufacturer='CJ (Jiangsu Changjing)'),
     ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
                                             Manufacturer='CJ (Jiangsu Changjing)'),
     ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
     ('BAT54SW', 'BAT54SW', 'SOT323'): dict(LCSC='C78260', MPN='BAT54SWT1G', Manufacturer='onsemi'),
+    ('L', '3.3u', 'L2016'): dict(LCSC='C5832345', MPN='FTC201610S3R3MBCA', Manufacturer='cjiang (Changjiang Micro)'),
+    ('Crystal_GND24', '12MHz', 'XTAL3225'): dict(LCSC='C20625731', MPN='ABM8-272-T3', Manufacturer='Abracon'),
+    ('SW_Push', 'RUN', 'SWK2'): dict(LCSC='C92589', MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec'),
+    ('SW_Push', 'BOOT', 'SWK2'): dict(LCSC='C92589', MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec'),
+    ('USB_C_Receptacle_USB2.0_14P', 'USB-C', 'USBC'): dict(LCSC='C165948', MPN='TYPE-C-31-M-12',
+                                                          Manufacturer='Korean Hroparts Elec'),
+    ('RP2350A', 'RP2350A', 'QFN60'): dict(LCSC='C42411118', MPN='RP2350A', Manufacturer='Raspberry Pi'),
+    ('W25Q128JVS', 'W25Q128JVS', 'SOIC8W'): dict(LCSC='C97521', MPN='W25Q128JVSIQ', Manufacturer='Winbond'),
+    ('APS6404L-3SQRx-SN', 'APS6404L-3SQR-SN', 'SOIC8BM'): dict(LCSC='C5333729', MPN='APS6404L-3SQR-SN',
+                                                              Manufacturer='AP Memory'),
+    # PT8211 (C92004) is out of stock; Bread Modular 16bit-5v uses this pin-compatible SOP-8 TM8211.
+    ('PT8211', 'PT8211', 'SOIC8'): dict(LCSC='C22381766', MPN='TM8211-TA2302', Manufacturer='Titan Micro (TM)'),
+    ('TL074', 'TL074', 'SOIC14'): dict(LCSC='C12594', MPN='TL074CDR', Manufacturer='Texas Instruments'),
+    ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
+    ('MCP6002-xSN', 'MCP6002', 'SOIC8'): dict(LCSC='C7377', MPN='MCP6002T-I/SN', Manufacturer='Microchip'),
+    ('AMS1117-5.0', 'AMS1117-5.0', 'SOT223'): dict(LCSC='C6187', MPN='AMS1117-5.0', Manufacturer='AMS'),
+    ('AMS1117-3.3', 'AMS1117-3.3', 'SOT223'): dict(LCSC='C6186', MPN='AMS1117-3.3', Manufacturer='AMS'),
 }
 
 # Block titles (drawn as sheet text).

@@ -15,14 +15,12 @@ its firmware ports (UF2 over the USB-C on the back).
 Power: Eurorack 10-pin (16-pin IDC fits), ±12 V through series Schottkys, AMS1117-5.0 ->
 +5V -> AMS1117-3.3 -> +3V3. USB-C (back, top edge, plug from above) is data only (as BM): flash with the module powered.
 
-**Status: S3 schematic + S5 placement + R1 routing (rev1 reviewed), not released.** Shared `check`: ERC 0,
-DRC 0 violations, 0 unconnected, parity 0 (`docs/fit/routed-render.png`, `docs/research.md` §6-§7). No sourcing lookups yet (`docs/research.md` §5).
-
-> **Fabrication requirement: via-in-pad fill.** 123 vias sit in SMD pads (53 GND, 27 +3V3,
-> 43 signal/rail) plus U1's 9 exposed-pad thermal vias. Order **"via in pad: resin filled + copper
-> capped (POFV), all vias"** (JLCPCB: "Via Covering: Epoxy Filled & Capped"). A plain tented
-> 4-layer order risks solder wicking and tombstoned 0402s. Fallback if POFV isn't available:
-> hand-apply paste and reflow with tented vias, and expect more joints to touch up. See `Code.md`.
+**Status: S3 schematic + R2 manual routing, not released.** Shared `check`: ERC 0, DRC 0
+violations, 0 unconnected, parity 0. No vias in SMD pads, so a plain tented 4-layer order (no
+via-in-pad fill / POFV). JLCPCB export (2026-10-21) in `jlcpcb/`: bottom-side Economic
+assembly, 86 parts; every R/C Basic except the 27 Ω USB pair. U4 is a TM8211 (PT8211 out of
+stock) and L1 a cjiang FTC201610S3R3MBCA (Abracon part out of stock, no polarity mark): see
+`jlcpcb/README.md`. Not supplier-accepted.
 
 | Path | Contents |
 |---|---|
@@ -31,6 +29,7 @@ DRC 0 violations, 0 unconnected, parity 0 (`docs/fit/routed-render.png`, `docs/r
 | `docs/research.md` | BM baseline, decisions, circuit, placement, open items |
 | `docs/geometry.json` | 6HP panel and placement contract |
 | `docs/16bit-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON; placement render |
+| `jlcpcb/` | JLCPCB Gerber ZIPs (carrier + panel), assembly BOM/CPL, export reports, source manifest (`jlcpcb/README.md`) |
 | `tools/` | Generators and the shared-tool profile `kicad-project.json` |
 
 Rebuild (from `modules/16bit`):

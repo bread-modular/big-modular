@@ -12,18 +12,19 @@ Module paths are module-relative.
   MCP6002 on +3V3 -> ADC0/1), two 50k knobs RV3/RV4 (-> ADC2/3), no mux,
   6x6 mm THT mode button (8bit SW1, GPIO12), 3 mm red mode LED (GPIO13 PWM, 1k),
   TL074 ±5 V outputs (gain 6.1), AMS1117-5.0/-3.3 from +12 V, USB-C data only.
-- **S5 placement + R1 routing** (`hardware/16bit.kicad_pcb`, 4 layers, ROUTED from
-  `tools/route_r1.json` via `tools/route_plan.py`): shared check DRC 0 / unconnected 0 / parity 0,
-  In2 +3V3 one piece, In1 GND one main piece + two spoke-tied 2.6 mm² pieces at J6. Reviewed in
-  rev1 (`docs/research.md` §7): 9 in-pad vias moved off U1/D5/D6, router jogs tidied; **the board
-  requires via-in-pad fill (POFV) at the fab** for the remaining 123 in-pad vias + U1 EP array
-  (`Code.md`). Next schematic rev: add an input cap at U8 (§7.3 F2). CV jacks + RV1/RV2 grouped, RV3/RV4 22 mm lower, MCU between the rows; OUT jacks at Y99; MODE button + LED in the bottom corners near the edge; regulators between RV3/RV4 and the OUT jacks;
-  USB-C on B at the top edge, opening up. 6HP FR4 panel DRC 0.
-- **Manual re-route in progress (2026-10-21):** R1 copper was stripped and the SMD parts moved
-  off-board for hand placement/routing. **No vias in SMD pads.** Fan out with a short track
-  (dogbone) to a via clear of the pad, so the board does not need POFV fill. The R1/POFV notes
-  above and in `Code.md` describe the old router copper only.
-- Open: sourcing, firmware notes, 3D fit, bench (`docs/research.md` §5, §7.6).
+- **S5 placement + R2 manual routing (2026-10-21)** (`hardware/16bit.kicad_pcb`, 4 layers):
+  R1 TraceMaker copper (123 in-pad vias, POFV) was stripped and the board placed and routed by
+  hand, group by group. **No vias in SMD pads** (dogbone to a via clear of the pad), so it is a
+  plain tented 4-layer board, no POFV. Shared check ERC 0 / DRC 0 / unconnected 0 / parity 0;
+  In2 +3V3 one piece, In1 GND one main piece + two spoke-tied 2.6 mm² pieces at J6. B silk
+  labels BOOT / RESET and the JP1 MIDI legend (`Code.md`). The board owns placement and copper:
+  do not rerun `tools/build_layout.py` over it. 6HP FR4 panel DRC 0.
+- **JLCPCB export (2026-10-21)** in `jlcpcb/` (`jlcpcb/README.md`): LCSC/MPN fields from
+  `SOURCING` in `tools/build_schematic.py`, copied onto the routed board's footprints (fields
+  only). Bottom-side Economic, 86 parts / 43 rows; R/C all Basic except R9/R10 27 Ω. U4 =
+  TM8211-TA2302 (BM 16bit-5v), L1 = cjiang FTC201610S3R3MBCA (unmarked: check the core
+  regulator at bring-up). Not supplier-accepted.
+- Open: firmware notes, 3D fit, bench (`docs/research.md` §5, §7.6).
 
 ## Boundaries
 
