@@ -1,4 +1,4 @@
-# LOW contract (S2 schematic, R1 routed carrier)
+# LOW contract (S3 schematic, R2 routed carrier, JLCPCB export)
 
 | | |
 |---|---|
@@ -27,4 +27,7 @@
   computed; the build fails if a wire touches another net). Supply pins get a stub and a
   power symbol. VEL_CV is the only label-joined signal net (U2 DAC -> U4B NC2). Only PWR_FLAGs `#FLG01`-`#FLG05` (J10 entry and
   the rails behind D1/D2).
-- All SMD on B (one assembly side). JP1 is copper only (not in BOM/CPL).
+- All SMD on B (one assembly side), every SMD pad >= 3 mm from the pot/jack pads (R2, hand soldering). JP1 is copper only (not in BOM/CPL).
+- JLCPCB parts live in `SOURCING` (`build_schematic.py`); every R/C must stay JLCPCB Basic. After a
+  schematic field change, write the same fields onto the PCB footprints (never rerun `build_layout.py`)
+  and re-export per `jlcpcb/README.md`.

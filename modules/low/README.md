@@ -12,12 +12,12 @@ low-pass gate) on one Eurorack module, at Bread Modular's 3.3 V signal level.
 | **CUTOFF** | BM LOW vactrol LED current |
 | **OUT** | TL072, 0..3.3 V -> ±5 V |
 
-**Status: S2 schematic (wired nets) + R1 routed carrier (manual, DRC: only the 3 known U5/RV3 stacking items, 0 unconnected, parity 0); not sourced, not built.**
+**Status: S3 schematic (wired nets, LCSC fields) + R2 routed carrier (manual, SMD >= 3 mm from pot/jack pads, DRC: only the 3 known U5/RV3 stacking items, 0 unconnected, parity 0); JLCPCB export in [`jlcpcb/`](jlcpcb/README.md), not supplier-accepted, not built.**
 
 ```sh
 python3 -B tools/import_footprints.py   # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py     # schematic + pinned symbols
-python3 -B tools/build_layout.py        # P2 only: THT placement + parked SMD, UNROUTED. Do NOT rerun over the R1 board
+python3 -B tools/build_layout.py        # P2 only: THT placement + parked SMD, UNROUTED. Do NOT rerun over the routed board
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/low/tools/kicad-project.json \
    --reports modules/low/research/check-NEW)
 ```

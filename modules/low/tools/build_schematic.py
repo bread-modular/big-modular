@@ -332,15 +332,15 @@ def circuit():
     c.append(part('J3', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
                   {'T': 'CVIN', 'S': 'GND', 'TN': 'CV_SENSE'},
                   Note='CV bypass in, 0..5 V. Unpatched: the LPG follows the MCO velocity DAC (TN switch -> U4)'))
-    c.append(part('R17', 'R', '51k', 'R0603', {'1': 'CVIN', '2': 'CVIN_DIV'},
-                  Note='CV divider top; input impedance 161k. Limits the clamp current to 0.23 mA at -12 V'))
-    c.append(part('R18', 'R', '110k', 'R0603', {'1': 'CVIN_DIV', '2': 'GND'},
-                  Note='CV divider bottom: 110k || R24 1M = 99.1k -> 5.0 V in = 3.30 V at the LPG'))
+    c.append(part('R17', 'R', '47k', 'R0603', {'1': 'CVIN', '2': 'CVIN_DIV'},
+                  Note='CV divider top; input impedance 147k. Limits the clamp current to 0.26 mA at -12 V'))
+    c.append(part('R18', 'R', '100k', 'R0603', {'1': 'CVIN_DIV', '2': 'GND'},
+                  Note='CV divider bottom: 100k || R24 1M = 90.9k -> 5.0 V in = 3.30 V at the LPG (47k/100k: JLCPCB Basic values)'))
     c.append(part('D4', 'BAT54SW', 'BAT54SW', 'SOT323',
                   {'1': 'GND', '2': '+3V3', '3': 'CVIN_DIV'},
                   Note='CV clamp: holds U4 / U8 within -0.3..+3.6 V for a +/-12 V mis-patch'))
     c.append(part('R19', 'R', '1M', 'R0603', {'1': '+3V3', '2': 'CV_SENSE'},
-                  Note='Jack-detect pull-up: unplugged 0.46 V (R17 + R18 to GND), plugged = high = external CV'))
+                  Note='Jack-detect pull-up: unplugged 0.42 V (R17 + R18 to GND), plugged = high = external CV'))
 
     # ---- Normals: TS5A23157 dual SPDT. IN low (jack empty) -> COM = NC = the MCO signal;
     # IN high (jack patched) -> COM = NO = the bypass input. Pins as TI SCDS175 (DGS).
@@ -444,7 +444,43 @@ def circuit():
                   {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='U9 V+ decoupling'))
     c.append(part('C17', 'C', '100n', 'C0603',
                   {'1': 'GND', '2': '-12V_F'}, Voltage='50V', Note='U9 V- decoupling'))
+    for p in c:
+        p['fields'].update(SOURCING.get((p['sym'], p['value'], p['fp']), {}))
     return c
+
+
+# JLCPCB parts (LCSC codes checked live for the 2026-10-21 export, research/export-1/).
+# Every R/C is JLCPCB Basic. The jacks, pots, vactrols, headers and JP1 are hand-soldered
+# or copper only: no LCSC field.
+SOURCING = {
+    ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '1k', 'R1206'): dict(LCSC='C4410', MPN='1206W4F1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '330', 'R0603'): dict(LCSC='C23138', MPN='0603WAF3300T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '20k', 'R0603'): dict(LCSC='C4184', MPN='0603WAF2002T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '33k', 'R0603'): dict(LCSC='C4216', MPN='0603WAF3302T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '47k', 'R0603'): dict(LCSC='C25819', MPN='0603WAF4702T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '200k', 'R0603'): dict(LCSC='C25811', MPN='0603WAF2003T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '1M', 'R0603'): dict(LCSC='C22935', MPN='0603WAF1004T5E', Manufacturer='UNI-ROYAL'),
+    ('C', '10n', 'C0603'): dict(LCSC='C57112', MPN='0603B103K500NT', Manufacturer='FH (Guangdong Fenghua)'),
+    ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
+    ('C', '1u', 'C0805'): dict(LCSC='C28323', MPN='CL21B105KBFNNNE', Manufacturer='Samsung'),
+    ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
+    ('C', '100u', 'C1206'): dict(LCSC='C15008', MPN='CL31A107MQHNNNE', Manufacturer='Samsung'),
+    ('D_Schottky', 'B5819W', 'SOD123'): dict(LCSC='C8598', MPN='B5819W SL', Manufacturer='CJ (Jiangsu Changjing)'),
+    ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
+    ('BAT54SW', 'BAT54SW', 'SOT323'): dict(LCSC='C78260', MPN='BAT54SWT1G', Manufacturer='onsemi'),
+    ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
+                                            Manufacturer='CJ (Jiangsu Changjing)'),
+    ('HT75xx-1-SOT89', 'HT7533-1', 'SOT89'): dict(LCSC='C14289', MPN='HT7533-1', Manufacturer='Holtek'),
+    ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR', Manufacturer='Microchip'),
+    ('MCP6002-xSN', 'MCP6002', 'SOIC8'): dict(LCSC='C7377', MPN='MCP6002T-I/SN', Manufacturer='Microchip'),
+    ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
+    ('TS5A23157DGS', 'TS5A23157', 'TSSOP10'): dict(LCSC='C11133', MPN='TS5A23157DGSR', Manufacturer='Texas Instruments'),
+}
 
 
 def T(x, y):
