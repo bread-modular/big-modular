@@ -1,4 +1,4 @@
-# LOW research and circuit intent (S2)
+# LOW research and circuit intent (S3/R3)
 
 ## 1. Brief (user, 2026-10-21)
 
@@ -120,6 +120,46 @@ and U7's courtyard below box it in; moving it means re-placing the LOW cluster (
 Y75 band, R23/C14 of U8 moved). D4 and C12 at 0.93 mm (3 mm from J3 / clear of U6), C8 1.22 mm
 (3 mm from J2 tip). C16 sits 0.55 mm from the bottom edge (rail side, unchanged).
 Result: 3 DRC errors (U5 under RV3), 0 unconnected, parity 0, no vias in SMD pads.
+
+### 5.3 R3: 1 mm board-edge keep-out and U5 exclusions (2026-10-22)
+
+User direction (fab review): no tracks or components within 1 mm of the board edge (a must, now a
+root AGENTS.md rule), and exclude the 3 expected U5/RV3 DRC items in the KiCad project.
+- `min_copper_edge_clearance` 0.5 -> 1.0 mm; GND pours refilled (they now stop 1 mm from the edge).
+- Left: +3V3 trunk X101.3 -> X101.8 (F and B, both vias); U5 0.5 mm right (courtyard 1.06 mm) so the
+  trunk passes its LPF1/LPG_IN pads; VAC_NEG riser X116.6 -> X117.1, LPF1/LPG_IN re-angled; C5 0.2 mm
+  right (its GND pad was 0.1 mm from the moved trunk).
+- Right: VEL_CV (F) now passes left of RV2's right lug (X125.3, between TONE2 and the lug) and drops
+  on X126.3, since the lug pad itself is only 1.1 mm from the edge; +3V3 column X128.75 -> X128.35;
+  VMID_LPG via/riser X128.6 -> X128.2; DAC via X128.45 -> X128.2; +3V3 riser to C6 X125.75 -> X125.4
+  and J11 0.3 mm left; C12 0.1 mm left with LPG_AMP X125.5 -> X125.3; U6 GND via 0.04 mm left;
+  D4 0.075 mm left (courtyard incl. line width 1.005 mm, pad 1 now 2.95 mm from J3.TN); new GND via + stub for D4.1/R18.2 (the narrower edge
+  strip had cut their B pour island off).
+- Bottom: U9 0.45 mm up (OUT_IN link Y159.4 -> Y159.0), C16 0.5 mm up (courtyard 1.05 mm), -12V_F F
+  run Y168.3 -> Y167.95 and its via, U9 GND via to Y167.0.
+- `tools/u5_exclusions.py` writes exactly the 3 U5/RV3 `pth_inside_courtyard` exclusions into
+  `low.kicad_pro` (refuses anything else).
+
+Result: KiCad DRC 0 violations (3 excluded), 0 unconnected, parity 0; no vias in SMD pads; every
+track, via, pad and pour >= 1.0 mm from the edge. Courtyards >= 1.0 mm except RV1/RV2 (0.82 mm:
+the courtyard's 0.25 mm margin around the mounting lugs; lug pads 1.12 mm, pot body 2.5 mm).
+Moving the pots needs a panel change and is left to the user. Batch scripts: ignored `research/edge/`.
+
+### 5.4 Hand-solder clearance relaxed to 2 mm (2026-10-22)
+
+User direction: the 3 mm pot/jack rule (5.1) is too strict; it is now a root AGENTS.md rule at
+2 mm (every SMD pad >= 2.0 mm copper to copper from every pot/jack pad, lugs included). RV1/RV2
+courtyards at 0.82 mm from the edge are user-accepted. Measured on the R3 board (59 SMD parts,
+none under 2 mm): U6.1-RV3 lug 2.20, C9.2-J2.S 2.43, D4.1-J3.TN 2.95, then C8 3.005. So the D4
+edge/hand-solder conflict is gone and U6/C9 are no longer exceptions. No board or export change.
+
+Follow-up (same day, board + export): the 3 mm rule had held D4 at exactly 1.0 mm from the edge
+(5.3). D4 X127.375 -> X127.25, in line with R11/R17: courtyard 1.125 mm from the edge, D4.1-J3.TN
+2.83 mm. GND dogbone re-angled to the existing via (one 45-degree leg), CVIN_DIV and +3V3 stubs
+pad-centred. The user had rerouted DETUNE on F.Cu by hand (X114.3 -> X115.1 jog, Y94.7 run) and
+saved without a refill (5 zone-clearance hits on the F pour); the refill cleared them. KiCad DRC 0
+(3 excluded), 0 unconnected, parity 0; 51 vias, none in SMD pads; copper >= 1.0 mm from the edge.
+JLCPCB carrier re-exported (CPL: D4 only, BOM unchanged). Script: ignored `research/hs2/`.
 
 ## 6. JLCPCB export (S3, 2026-10-21)
 

@@ -1,7 +1,9 @@
-# LOW — manufacturing export (S3/R2)
+# LOW — manufacturing export (S3/R3)
 
 Generated on 2026-10-21 from the S3 schematic (S2 + LCSC/MPN/Manufacturer fields, R17/R18
-47k/100k) and the R2 hand-routed board with the user's C9/U6 moves, using the shared
+47k/100k) and the R2 hand-routed board with the user's C9/U6 moves; the carrier was re-exported
+on 2026-10-22 from R3 (1 mm board-edge keep-out, U5/RV3 DRC exclusions, `docs/research.md` 5.3;
+panel unchanged), using the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. Never hand-edit these files:
 change the sources, then re-export with the commands below.
 
@@ -23,7 +25,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `low-gerbers.zip` | 2 layers, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz, HASL, tented vias (all 0.3/0.6 mm, none in SMD pads). The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
+| Carrier PCB | `low-gerbers.zip` | 2 layers, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz, HASL, tented vias (all 0.3/0.6 mm, none in SMD pads; no copper or courtyard within 1 mm of the edge except the RV1/RV2 courtyards, 0.82 mm). The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
 | Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 58 parts in 26 BOM rows, all on the back |
 | Front panel PCB | `low-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
 
@@ -33,7 +35,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 |---|---|---|
 | J1-J4 | QingPu WQP-PJ301M-12 TS jack (MIDI, AUDIO, CV, OUT) | Front-side THT, panel-nut fixed; fit to the panel before soldering |
 | RV1-RV3 | RV09 50k linear pot (DETUNE, MIX, CUTOFF) | Front-side THT, no nut |
-| U5, U7 | VTL5C-type vactrol (Bread Modular footprint) | Back-side THT. **Fit U5 before CUTOFF (RV3)**: its leads sit under the pot body (the 3 DRC items) |
+| U5, U7 | VTL5C-type vactrol (Bread Modular footprint) | Back-side THT. **Fit U5 before CUTOFF (RV3)**: its leads sit under the pot body (the 3 excluded DRC items) |
 | J10 | 2x5 2.54 mm pin header | Eurorack power, back side, vertical at the bottom; pin 1 (-12 V) at the `-12V` silk. **No key**: red stripe to `-12V` |
 | J11 | 1x2 2.54 mm pin header (`UPDI` silk) | Optional, for programming; pin 1 (square) UPDI, pin 2 GND |
 | JP1 | 3-pad solder jumper (`PROT RX DIR` silk) | Copper only, **shipped open**: bridge 1-2 (protected) or 2-3 (direct), never both |
@@ -65,8 +67,8 @@ failure.
 
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
 
-- Carrier PCB `da4b73e9c94a3505526fa0b4f8911228bb8c4aff3c2838a61a48464498cfcba8`.
-- Carrier project `e2d2f925b0995afefe9bf72ef9050de1f54564e6fcd4e8448104ea32d146376a`.
+- Carrier PCB `4c6164de3fe4a4a08f2969cd181c59d5a96184f4cd8f0494a068ff628d86668d`.
+- Carrier project `dc765a35f7ed9e3740062da90224665f8036652e058907e47d776e9bd0a8a827`.
 - Carrier schematic `4cc827516e4b8de62f52750d17837487db5f271716ce57c83b59ca6876ea040d`.
 - Panel PCB `1cf9270112fd5b5ae8f7b9d860ccab96a449ba9d3c795fb72cdcefe1dd3ea50b`.
 - Panel project `a84349687ec42c51876c9bda27a01b3788d09101e8d0697de8d2435ce09328ba`.
@@ -106,17 +108,24 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/low-symbols.xml hardware/
 
 ## Checks done for this export
 
-- **Shared `check`** (after the export): ERC 0, 0 unconnected, schematic parity 0, manifest
-  equal (5 sources, all exports byte-identical). DRC = the **3 `pth_inside_courtyard` items of
-  U5 under RV3** (vactrol/pot stacking, accepted by the user, no exclusions), so
-  `order_ready` is `false`.
+- **Shared `check`** (after the 2026-10-22 export): ERC 0, 0 unconnected, schematic parity 0,
+  ref/pin/net parity equal, manifest equal (5 sources, all exports byte-identical). DRC = the
+  **3 `pth_inside_courtyard` items of U5 under RV3** (vactrol/pot stacking, user-approved). They
+  are native exclusions in `low.kicad_pro` (`tools/u5_exclusions.py`), so KiCad's own DRC reports
+  0; the shared gate still counts excluded items, so `order_ready` stays `false` (as vca-mix D14).
+- **R3 edge keep-out:** copper-to-edge rule 1.0 mm (pours refilled), every track/via/pad >= 1.0 mm
+  from the edge, every courtyard >= 1.0 mm except RV1/RV2 (0.82 mm, panel-fixed, user-accepted). CPL changes vs
+  2026-10-21: C5, C12, C16, D4, U9 positions; BOM unchanged. Every SMD pad >= 2 mm from the pot/jack pads (closest U6 2.20 mm).
+- **2 mm re-export (2026-10-22):** D4 0.125 mm in (X127.25, in line with R11/R17; courtyard 1.0 -> 1.125 mm
+  from the edge, pad 2.83 mm from J3) and the user's hand-rerouted DETUNE F.Cu run, pours refilled. CPL: D4 only;
+  BOM unchanged. KiCad DRC 0 (3 excluded) / 0 unconnected / parity 0; no vias in SMD pads.
 - **Before export:** the user's U6 move had left U6 pin 7 (LPG_AMP) unconnected; a 0.25 mm
   B.Cu link from pin 7 to the pin 6 track fixed it. The LCSC/MPN/Manufacturer fields, R17/R18
   values and their Notes were written to the PCB footprints; placement and copper are
   otherwise unchanged. No vias in SMD pads.
 - **Panel DRC:** 0 / 0.
-- **Carrier drill file:** 79 round PTH hits (50 vias + 29 round pads) plus 18 slots = 97,
-  matching 50 vias + 47 THT pads. No NPTH holes.
+- **Carrier drill file:** 80 round PTH hits (51 vias + 29 round pads) plus 18 slots = 98,
+  matching 51 vias + 47 THT pads. No NPTH holes.
 - **Panel drill file:** 9 NPTH holes: 4 jacks (6.2 mm), 3 pots (7.2 mm), 2 rail holes (3.2 mm).
 - **BOM/CPL:** 58 parts, 26 rows, every row with LCSC, MPN and manufacturer; every CPL row is
   `bottom`.
