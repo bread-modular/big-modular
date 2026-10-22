@@ -16,7 +16,9 @@ Module paths are module-relative.
   DRC reports in `research/r1/`). Native DRC 0 / unconnected 0 / parity 0, no exclusions; no vias in SMD
   pads, no tracks on In1, both planes one piece. USB-C + BOOT/RESET as 16bit; 6HP FR4 panel DRC 0.
   Firmware-visible changes (CV ADC IO1/IO2, I2C IO38/IO39, codec LIN2/RIN2) in `docs/firmware-pins.md`.
-- Open: JLCPCB export, sourcing check, bench (U8 thermal, codec levels). Radio never used.
+- JLCPCB export in `jlcpcb/` (2026-10-22, not supplier-accepted). U1 is Standard-PCBA only: Standard
+  PCBA or hand-solder U1 is an open user decision (`jlcpcb/README.md`).
+- Open: U1 PCBA route, bench (U8 thermal, codec levels). Radio never used.
 
 ## Boundaries
 

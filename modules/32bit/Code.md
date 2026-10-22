@@ -54,4 +54,6 @@
 - Shared `kicad_tools.py check`: ERC 0, DRC 0 violations, 0 unconnected, parity 0; `order_ready: false`.
 - Manual: no vias in/touching SMD pads, no tracks on In1, In1 GND and In2 +3V3 planes one piece each,
   no zero-length/duplicate segments (off-grid ends only on 1.27 mm pad axes).
-- Not done: JLCPCB export, sourcing check, 3D fit, bench.
+- JLCPCB export (2026-10-22): `jlcpcb/` (bottom side, 90 parts / 38 rows, live catalog audit). U1
+  (C3013946) is Standard-PCBA only, not Economic: PCBA route open (`jlcpcb/README.md`).
+- Not done: 3D fit, supplier acceptance, bench.

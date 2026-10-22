@@ -17,7 +17,7 @@ USB-C on the back). Pin map, change log and the code changes a port needs (CV sc
 Power: Eurorack 10-pin, ±12 V through series Schottkys, AMS1117-5.0 -> +5V -> AMS1117-3.3 -> +3V3
 (radio never used: see `docs/research.md` D2). USB-C (back, top edge) is data only, with BOOT / RESET below it.
 
-**Status: S2 schematic + R1 routed carrier (manual, 4 layers), not released.** Shared `check`: ERC 0,
+**Status: S2 schematic + R1 routed carrier (manual, 4 layers); JLCPCB export in [`jlcpcb/`](jlcpcb/README.md) (U1 is Standard-PCBA only, route open); not supplier-accepted, not built.** Shared `check`: ERC 0,
 DRC 0 violations, 0 unconnected, parity 0. Firmware pin changes vs Bread Modular: `docs/firmware-pins.md`.
 
 | Path | Contents |
@@ -27,6 +27,7 @@ DRC 0 violations, 0 unconnected, parity 0. Firmware pin changes vs Bread Modular
 | `docs/research.md` | BM baseline, decisions, circuit, placement, open items |
 | `docs/geometry.json` | 6HP panel and placement contract |
 | `docs/32bit-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON; placement render |
+| `jlcpcb/` | JLCPCB Gerbers, BOM, CPL, upload map and sourcing notes |
 | `tools/` | Generators (`circuit32.py` holds the circuit table) and the shared-tool profile |
 
 Rebuild (from `modules/32bit`):
