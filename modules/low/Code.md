@@ -1,4 +1,4 @@
-# LOW contract (S3 schematic, R2 routed carrier, JLCPCB export)
+# LOW contract (S3 schematic, R3 routed carrier, JLCPCB export)
 
 | | |
 |---|---|
@@ -27,7 +27,10 @@
   computed; the build fails if a wire touches another net). Supply pins get a stub and a
   power symbol. VEL_CV is the only label-joined signal net (U2 DAC -> U4B NC2). Only PWR_FLAGs `#FLG01`-`#FLG05` (J10 entry and
   the rails behind D1/D2).
-- All SMD on B (one assembly side), every SMD pad >= 3 mm from the pot/jack pads (R2, hand soldering). JP1 is copper only (not in BOM/CPL).
+- All SMD on B (one assembly side), every SMD pad >= 2 mm from the pot/jack pads (root rule; R2 used 3 mm, relaxed 2026-10-22; closest U6 2.20 mm). JP1 is copper only (not in BOM/CPL).
+- 1 mm board-edge keep-out (root AGENTS.md, R3): `min_copper_edge_clearance` 1.0 mm in `low.kicad_pro`,
+  every courtyard >= 1 mm from the edge (RV1/RV2 0.82 mm: panel-fixed, user-accepted).
+- DRC exclusions: only the 3 U5/RV3 stacking items, via `tools/u5_exclusions.py` (re-run after moving U5 or RV3).
 - JLCPCB parts live in `SOURCING` (`build_schematic.py`); every R/C must stay JLCPCB Basic. After a
   schematic field change, write the same fields onto the PCB footprints (never rerun `build_layout.py`)
   and re-export per `jlcpcb/README.md`.

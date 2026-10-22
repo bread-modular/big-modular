@@ -111,6 +111,13 @@ divide and conquer*. In short:
   that finds one connection at a time is fine if you check each path yourself.
 - **No vias in SMD pads**: dogbone to a via clear of the pad copper and mask opening
   (footprint-owned exposed-pad thermal vias are the only exception).
+- **1 mm board-edge keep-out (must)**: no tracks, vias, pads, zone copper or component
+  courtyards within 1.0 mm of `Edge.Cuts`. Set `min_copper_edge_clearance` to 1.0 mm so
+  DRC enforces the copper part, refill and save; measure courtyards yourself (DRC
+  doesn't). Root `AGENTS.md` section *1 mm board-edge keep-out*.
+- **2 mm hand-solder clearance**: every SMD pad >= 2.0 mm (copper to copper) from every
+  hand-soldered pot/jack pad, lugs included. DRC doesn't check it; measure it per batch.
+  Root `AGENTS.md` section *2 mm hand-solder clearance around pots and jacks*.
 - **Divide and conquer**: place and route one functional group at a time, a few traces
   per batch. **Write each batch to the board** so the user can reload it, run full
   native DRC + parity, fix new findings, report what is still open, then continue.

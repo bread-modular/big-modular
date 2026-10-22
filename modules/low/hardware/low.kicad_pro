@@ -70,7 +70,20 @@
         }
       },
       "diff_pair_dimensions": [],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "pth_inside_courtyard|110200000|131999999|9594184b-0a0e-4d7c-bb8b-acd87712c985|cef92eee-73e1-49d5-9344-f7769ddf4752",
+          "U5 vactrol under CUTOFF pot RV3 (vca-mix D10 stacking), user-approved 2026-10-22"
+        ],
+        [
+          "pth_inside_courtyard|115850000|132030000|a818c7a6-b189-4f82-8b47-b3ac901bb3fe|c6e6f0f7-b34f-40b2-8ce2-7a94e34aab04",
+          "U5 vactrol under CUTOFF pot RV3 (vca-mix D10 stacking), user-approved 2026-10-22"
+        ],
+        [
+          "pth_inside_courtyard|115850000|134570000|6a0de43a-1bf0-42e8-8100-30bd736635cb|c6e6f0f7-b34f-40b2-8ce2-7a94e34aab04",
+          "U5 vactrol under CUTOFF pot RV3 (vca-mix D10 stacking), user-approved 2026-10-22"
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -142,7 +155,7 @@
         "max_error": 0.005,
         "min_clearance": 0.0,
         "min_connection": 0.0,
-        "min_copper_edge_clearance": 0.5,
+        "min_copper_edge_clearance": 1.0,
         "min_groove_width": 0.0,
         "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.25,
