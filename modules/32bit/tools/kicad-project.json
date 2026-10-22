@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/32bit.kicad_pcb",
+  "root_schematic": "../hardware/32bit.kicad_sch",
+  "dependencies": [
+    "../hardware/32BIT.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}

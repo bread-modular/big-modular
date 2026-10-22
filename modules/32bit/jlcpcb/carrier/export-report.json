@@ -1,0 +1,54 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/135/modules/32bit/hardware/32bit.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/135/modules/32bit/hardware/32bit.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/135/modules/32bit/hardware/32bit.kicad_pcb": "a9691d5551cc7b44e1e977a700de6d6b9cbb31e2ad237e7e04444e13f3eff62a",
+    "/home/azero/.okbrain/workspaces/big-modular/135/modules/32bit/hardware/32bit.kicad_sch": "db630e9ff2f68f8567e658e9e4f2509087f7b2dea860fcf4b79c4ca978c7b775"
+  },
+  "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 4,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "bottom",
+  "include_through_hole": false,
+  "component_count": 90,
+  "bom_row_count": 38,
+  "excluded": {
+    "D1": "Not an SMD footprint (use --include-through-hole)",
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J5": "Not an SMD footprint (use --include-through-hole)",
+    "J6": "Not an SMD footprint (use --include-through-hole)",
+    "J8": "Not an SMD footprint (use --include-through-hole)",
+    "J9": "Not an SMD footprint (use --include-through-hole)",
+    "JP1": "Excluded from BOM",
+    "RV1": "Not an SMD footprint (use --include-through-hole)",
+    "RV2": "Not an SMD footprint (use --include-through-hole)",
+    "SW1": "Not an SMD footprint (use --include-through-hole)"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "32bit-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}

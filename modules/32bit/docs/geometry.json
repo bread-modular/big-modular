@@ -1,0 +1,378 @@
+{
+ "revision": "S2 placement (THT only): Bread Modular 32bit-5v for Eurorack, 6HP, 4 layers. THT jacks/pots/MODE/LED/power header placed, USB-C + BOOT/RESET as modules/16bit; every other SMD part parked off the board edge for group-by-group placement; U1 zone reserved. Not routed. S2: OUT L/R moved to the side edges (X5.5/X24.5) like IN and CV; IN R not normalled. R1 (in progress): manual routing; SW2/SW3 at the 16bit top-left spot, U1 rot 0 at Y82.25.",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The carrier F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 6,
+ "panel_mm": [
+  30.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "rail_holes_mm": [
+  [
+   7.5,
+   3.0,
+   3.2
+  ],
+  [
+   7.5,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "Doepfer hole at X7.5 from the left edge (as modules/8bit and case/tools/build_case.py HOLE_X0), one per rail.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   29.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "29.0 x 110.0 mm, 1.25 mm inside the skiff rail gap at each end (as modules/16bit). 4 layers (F.Cu, In1, In2, B.Cu); not routed. Held by the seven jack bushings/nuts; pots are soldered only."
+ },
+ "jack_rotation_deg": 0,
+ "jack_rotation_note": "Rotation 0: T pad above the jack centre, TN and S below (vertical stack), so two jacks fit side by side in 6HP.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "MIDI_IN_TS",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    14.6,
+    17.5
+   ],
+   "note": "As modules/16bit: 0.4 mm left of the panel centre keeps the J7 SH pad clear of the J1 courtyard"
+  },
+  {
+   "ref": "J8",
+   "role": "AUDIO_IN_L",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    5.5,
+    32.0
+   ]
+  },
+  {
+   "ref": "J9",
+   "role": "AUDIO_IN_R",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    24.5,
+    32.0
+   ]
+  },
+  {
+   "ref": "J2",
+   "role": "CV1_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    5.5,
+    46.5
+   ]
+  },
+  {
+   "ref": "J3",
+   "role": "CV2_IN",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    24.5,
+    46.5
+   ]
+  },
+  {
+   "ref": "J4",
+   "role": "OUT_L",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    5.5,
+    99.0
+   ]
+  },
+  {
+   "ref": "J5",
+   "role": "OUT_R",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    24.5,
+    99.0
+   ]
+  }
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "CV1 attenuator (J2 tip -> U7A -> IO9); unpatched = 0..+5 V knob",
+   "shaft_XY": [
+    7.5,
+    62.0
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV2",
+   "role": "CV2 attenuator (J3 tip -> U7B -> IO10); unpatched = 0..+5 V knob",
+   "shaft_XY": [
+    22.5,
+    62.0
+   ],
+   "value": "50k"
+  }
+ ],
+ "pot_footprint": "Potentiometer_RV09",
+ "pot_shaft_offset_mm": [
+  -0.127,
+  -0.508
+ ],
+ "pot_note": "Bread Modular RV09 footprint (pins 7.5 mm below the shaft, bracket tabs 9.6 mm apart on the shaft line); user stock 50k RV09, no bushing/nut (as modules/8bit). Rotation 0: pin 1 left, CW toward pin 3 (CV tip on RV1/RV2, +3V3 on RV3/RV4).",
+ "button": {
+  "ref": "SW1",
+  "footprint": "SW_PUSH_6mm_H7.3mm",
+  "side": "F",
+  "XY": [
+   5.0,
+   113.5
+  ],
+  "rot": 90,
+  "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (Ø3.5 round stem), pins 6.5 x 4.5 mm (as modules/8bit SW1)",
+  "note": "As modules/16bit SW1: THT on the carrier F side, hand-soldered, rotated 90, bottom-left corner; the modules/8bit printed cap fits unchanged."
+ },
+ "leds": [
+  {
+   "ref": "D1",
+   "role": "MODE_LED",
+   "footprint": "LED_D3.0mm",
+   "XY": [
+    25.0,
+    113.5
+   ],
+   "rot": 0,
+   "note": "3 mm red THT (as modules/16bit D1), bottom-right corner, mirrors SW1."
+  }
+ ],
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2,
+  "led": 3.2,
+  "button": 4.2
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = carrier F.Cu, +Z toward the panel",
+  "panel_rear_seat": 10.0,
+  "note": "As modules/8bit (PJ301M-12 boss top = panel rear; 3 mm LED dome flush with the 1.6 mm FR4 front; the stem top is 3.0 mm below the panel rear, bridged by the 8bit printed cap).",
+  "switch_body_top": 3.5,
+  "switch_stem_top": 7.0,
+  "switch_stem_D": 3.5,
+  "led_body_bottom": 6.3,
+  "led_body_height": 5.3,
+  "led_model_body_bottom": 3.0
+ },
+ "back_side_parts": [
+  {
+   "ref": "J7",
+   "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+   "XY": [
+    24.15,
+    13.25
+   ],
+   "rot": 180,
+   "band": "top band, right: USB-C opening UP, front face 0.35 mm inside the top board edge (keeps its front silk on the board; plug from above, behind the panel). X set by the 0.5 mm copper-edge rule on the right SH pad"
+  },
+  {
+   "ref": "SW2",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    9.8,
+    11.4
+   ],
+   "rot": 0,
+   "band": "top-left, B side: BOOT (IO0), exactly as modules/16bit SW2 (R1, 2026-10-21)"
+  },
+  {
+   "ref": "SW3",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    3.6,
+    11.4
+   ],
+   "rot": 0,
+   "band": "top-left, B side: RESET (EN), exactly as modules/16bit SW3 (R1, 2026-10-21)"
+  },
+  {
+   "ref": "J6",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    15.0,
+    110.92
+   ],
+   "rot": 180,
+   "band": "bottom zone: Eurorack power (as modules/16bit, centred). THT, B side"
+  }
+ ],
+ "panel_labels": [
+  {
+   "text": "32BIT",
+   "XY": [
+    15.0,
+    8.0
+   ],
+   "size": 2.5
+  },
+  {
+   "text": "MIDI",
+   "XY": [
+    14.6,
+    11.4
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN L",
+   "XY": [
+    5.5,
+    25.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN R",
+   "XY": [
+    24.5,
+    25.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV1",
+   "XY": [
+    5.5,
+    40.4
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV2",
+   "XY": [
+    24.5,
+    40.4
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P1",
+   "XY": [
+    7.5,
+    55.6
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P2",
+   "XY": [
+    22.5,
+    55.6
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "MODE",
+   "XY": [
+    5.0,
+    108.4
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT L",
+   "XY": [
+    5.5,
+    92.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT R",
+   "XY": [
+    24.5,
+    92.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    15.0,
+    113.5
+   ],
+   "size": 1.2
+  }
+ ],
+ "power_header": {
+  "ref": "J6",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   13.73,
+   116.0
+  ],
+  "column_X_mm": [
+   13.73,
+   16.27
+  ],
+  "pin_rows_Y_mm": [
+   116.0,
+   113.46,
+   110.92,
+   108.38,
+   105.84
+  ],
+  "orientation": "Vertical, pin 1 (-12 V) at the bottom row (as modules/8bit and modules/midi), centred on the 6HP carrier.",
+  "idc16_socket_envelope_mm": {
+   "X": [
+    11.2,
+    18.8
+   ],
+   "Y": [
+    94.41,
+    119.81
+   ],
+   "bottom_above_B_mm": 2.5
+  }
+ },
+ "pot_layout_note": "S1 (user brief 2026-10-21): MIDI on top, then IN L/IN R (Y32) and CV1/CV2 (Y46.5) at the side edges (as the modules/16bit CV jacks), P1/P2 (CV1/CV2 attenuators, Bread Modular RV1/RV2) 15.5 mm below at Y62; the ESP32-S3 module zone sits between the pot pins and the OUT jacks (Y99); MODE/LED in the bottom corners as modules/16bit. S2 (user 2026-10-21): OUT L/OUT R at the side edges (X5.5/X24.5) like the top jacks, freeing the centre band X~10-20 below U1 for the power/output groups.",
+ "reserved_zones": [
+  {
+   "name": "U1 ESP32-S3-WROOM-1U (B side)",
+   "X": [
+    5.205,
+    24.795
+   ],
+   "Y": [
+    72.13,
+    92.37
+   ],
+   "note": "R1: U1 placed rot 0 on B (pin row 15-26 facing up toward the pots/codec, U.FL end down), courtyard centred X15 Y82.25 (1.4 mm lower than S2 so two traces fit between the pot pins and the module top pads). Courtyard bottom Y92.37 is 0.4 mm above the OUT jack T pads."
+  }
+ ],
+ "parking": {
+  "origin_XY": [
+   38.0,
+   10.0
+  ],
+  "gap_mm": 1.5,
+  "column_height_mm": 110.0,
+  "u1_XY": [
+   48.0,
+   135.0
+  ],
+  "note": "Unplaced SMD parts (B side) packed in columns right of the board (own size + 1.5 mm gap), sorted by reference prefix and number, for group-by-group placement. U1 sits in its own spot below the board."
+ }
+}
