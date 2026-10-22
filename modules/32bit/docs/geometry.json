@@ -190,11 +190,11 @@
    "ref": "SW2",
    "footprint": "K2-1808SN-A4SW-01",
    "XY": [
-    9.8,
-    11.4
+    9.85,
+    12.45
    ],
-   "rot": 0,
-   "band": "top-left, B side: BOOT (IO0), exactly as modules/16bit SW2 (R1, 2026-10-21)"
+   "rot": 90,
+   "band": "top-left, B side: BOOT (IO0). R1 had it as modules/16bit SW2 (X9.8 Y11.4 rot 0); R2 (2026-10-22) turned it 90 deg beside SW3 so its pads stay 2 mm from the J1 tip pad"
   },
   {
    "ref": "SW3",

@@ -81,7 +81,7 @@ pot bodies), outputs + U5 between the OUT jacks, U8/U9 beside J6 / under the OUT
 
 - Thermal: U8 at ~0.75 W (D2). The radio is never used (user 2026-10-21).
 - ES8388 full-scale levels (in/out) are datasheet-nominal; bench check gains.
-- Sourcing not live-checked; no JLCPCB export yet.
+- JLCPCB export: `jlcpcb/` (R2, section 7); stock is a dated web count, recheck before ordering.
 
 ## 6. R1 routing (2026-10-21)
 
@@ -95,3 +95,53 @@ the codec (user-placed, F01); a 0.4 mm F hop feeds C30 at pins 2/3, and a 0.3 mm
 pin 16/17 island (C36/C37). Edge rule stays 0.5 mm (1 mm keep-out not required here): U1's left pin row (0.6 mm) and the EN/BUTTON lane beside it, J7, SW2/SW3, the RV1/RV2 tabs and the user-placed codec cluster (C36, C42 and their vias) cannot meet 1 mm. G01 pulled the free-standing items to >= 1 mm copper clearance: C24 + via, D6 + vias, C27 + vias, C46 and the LED run (1 mm test: 69 -> 55 items, all tied to the parts above). ESP32 decoupling / EN RC
 in the strip below the module. LED along the bottom edge on F to R20 beside D1.
 Firmware-visible changes: `docs/firmware-pins.md`. Result: DRC 0 / unconnected 0 / parity 0.
+
+## 7. R2: 2 mm hand-solder clearance (2026-10-22)
+
+User direction: meet the root `AGENTS.md` 2 mm rule (every SMD pad >= 2.0 mm, copper to copper, from
+every jack and pot pad, lugs included). R1 had 35 SMD parts under 2 mm (worst R3 0.25 mm from J1).
+Jacks, pots, SW1, D1, J6 and the panel are unchanged. Batch scripts, path helper (`rt.py`, one
+connection at a time, each path checked), audit and DRC reports: ignored `research/r2mm/`. Every batch
+written to the board with full native DRC + parity.
+
+- Free space: a full-width band Y106.0-108.4 (between the J2/J3 S zones and the pot lugs), the RV1/RV2
+  lug gaps (X106.1-108.9 / X121.1-123.9), a 1 mm band Y115.65-116.6 under the lugs, the band
+  Y147.4-149.1 between the OUT jack T and TN pads, and a 1 mm strip beside J4/J5 at each edge.
+- Top: SW2 (BOOT) turned 90 deg beside SW3 (X109.85 Y62.45); JP1 0.75 mm down, R1 0.3 mm down; MIDI_RX
+  leaves JP1 between the SW2 pad columns on an F hop to the left bus. R3 (MIDI pull-up) to X119.0 Y71.0,
+  between J1 and J9. R40/R44 in the pockets beside J1's sleeve, R41/C43/R42 and R45/C44/R46 in the
+  columns beside U7 (CODEC_RIN via moved off R46's pad); C29 below U7 on a -12V_F F tap.
+- Regulators: U8/U9 2.5 mm down (pads in the Y106-108 band), tab patches, pours and the four thermal
+  vias moved with U8; C1 / C4 beside them in the band; C3 above the U8 tab. J3's +5V normal now runs
+  above the U9 tab.
+- CV conditioning: R13/R14 (R16/R17) stacked in the lug gap, D5 (D6) at its foot, R15 + C25 (R18 + C26)
+  horizontal in the 1 mm band under the lugs (2.02-2.03 mm, the tightest spots on the board).
+- Codec side: U6 0.6 mm up (2.02 mm from J5 T), C40 0.23 mm up/0.5 mm left (user-placed codec cluster,
+  moved only for U6's courtyard), R5 0.8 mm right. C27 and R55 in the right edge strip, R58 and C46 in
+  the Y148 band, D2 1.6 mm down below J5. R54 0.3 mm right, R59 0.4 mm left.
+- ESP32 side: C5, C6 (+3V3_ESP32) and C7, C8, R4 (EN RC) stacked in the 1 mm strip left of J4, FB1 in
+  the Y148 band; C5's GND pad ties straight to U1 pin 1 with its own via.
+
+Result: 0 SMD pads under 2 mm (closest U6/R15/R18 2.02 mm, C25/C26 2.03 mm, R5 2.05 mm, R54 2.06 mm).
+Native ERC 0; DRC 0 / unconnected 0 / parity 0, no exclusions; no vias in or touching SMD pads; no
+tracks on In1; In1 GND and In2 +3V3 one piece each; no dangling ends, zero-length or duplicate
+segments; new off-grid points only on pad axes (45 deg bends off 1.27 mm / 0603 pad centres).
+Courtyards under 0.5 mm from the edge (copper still >= 0.5 mm, the 32bit edge rule): C6 0.25 mm,
+C27/R55 0.30 mm, R5 0.35 mm, besides R1's J7, SW2/SW3 and jacks. The R1 JLCPCB export no longer
+matches the board (CPL positions, Gerbers): it needs a new export.
+
+B silk MIDI JP1 labels (2026-10-22, user request, as modules/16bit): "P" beside pad 1 (RX_Q, protected)
+and "D" beside pad 3 (MIDI_IN, direct), legend "P=PROT / MIDI JP1 / D=DIRECT" between JP1 and J7
+(X116.5 Y65.35-68.15), 0.15 mm stroke, mirrored. Silk only; DRC 0 / 0 / 0 with silk checks included.
+
+User edge-margin moves, option A (2026-10-22): the user moved C6, R5, C27, R55 and C46 in KiCad for
+more courtyard-to-edge margin (C6 0.53 mm, C27/R55 0.82 mm, R5 > 1 mm) and chose to keep them over the
+2 mm compromise spots (R5 0.39 mm, C27/R55 0.47 mm edge). Accepted 32bit exceptions to the 2 mm
+hand-solder rule: R5 1.33 mm from RV2 pad 3, C27 1.62 mm and R55 1.63 mm from J5 T, C46 1.75 mm from
+J5 TN. Every other SMD pad >= 2.02 mm. DRC 0 / 0 / 0, no vias in SMD pads, planes one piece.
+
+R2 JLCPCB export (2026-10-22, shared exporter, commands in `jlcpcb/README.md`): carrier ZIP, BOM and
+CPL re-exported; BOM byte-identical to R1, 43 CPL rows moved; every CPL row matches its footprint
+position and side (90 / 90). PTH drill: 106 routed vias (all 0.3/0.6 mm), 21 x 0.2 mm footprint
+thermal vias. Panel re-exported unchanged (only Gerber dates differ). Shared `check` afterwards: ERC 0,
+DRC 0 / 0 / 0, manifest equal. Reports in `research/export-r2/`.
