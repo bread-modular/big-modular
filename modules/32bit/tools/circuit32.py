@@ -6,7 +6,7 @@ modules/16bit: the Eurorack power entry, the TS MIDI in NPN front end (JP1 bypas
 chain (jack normalled to +5V -> 50k attenuator -> op-amp follower -> level shift -> MCP6002 ->
 ADC), the 6 x 6 mm THT mode button, the 3 mm red mode LED and the USB-C / BOOT / RESET parts.
 New for Eurorack: two audio inputs (100k / 22k divider -> TL074 follower -> 1u -> 1k -> ES8388
-LIN1/RIN1, no normal; firmware handles mono) and two audio outputs (ES8388 LOUT1/ROUT1 -> BM 1k -> 10u ->
+LIN2/RIN2 (R1; BM LIN1/RIN1), no normal; firmware handles mono) and two audio outputs (ES8388 LOUT1/ROUT1 -> BM 1k -> 10u ->
 TL072 gain 3.5 -> 1k 0.5 W -> jack).
 """
 
@@ -18,25 +18,28 @@ RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+5V': '+5V', '+12V': '+12V', '-12V
 MIRROR_X = {'RV1', 'RV2', 'J1'}
 
 # ESP32-S3-WROOM-1U pin -> net. Bread Modular 32bit-5v GPIO map kept so its firmware ports:
-# IO11/12/13/14/21 = I2S DIN/WS/DOUT/BCLK/MCLK, IO47/IO48 = I2C SCL/SDA to the ES8388,
-# IO9/IO10 = ADC1 CH8/CH9 (CV1/CV2), IO8 mode button, IO18 mode LED, RXD0 (GPIO44) = MIDI in
-# (UART0). Dropped (left open): TXD0 (BM TX header), IO1/IO2 (BM gate outs).
+# IO11/12/13/14/21 = I2S DIN/WS/DOUT/BCLK/MCLK, IO8 mode button, IO18 mode LED, RXD0 (GPIO44) =
+# MIDI in (UART0). Moved in R1 (docs/firmware-pins.md): CV1/CV2 = IO1/IO2 (ADC1 CH0/CH1, BM IO9/IO10)
+# so U6 sits beside the module's right pin row; I2C SCL/SDA = IO38/IO39 (BM IO47/IO48) so the ES8388
+# beside that row reaches them directly (the band above the top row only has room for the I2S lines).
+# Dropped (left open): TXD0 (BM TX header), IO9/IO10, IO47/IO48, BM gate outs (BM IO1/IO2).
 # IO35/36/37 are the N16R8 octal PSRAM pins and must stay unconnected.
 MCU = {'1': 'GND', '40': 'GND', '41': 'GND', '2': '+3V3_ESP32', '3': 'EN', '27': 'BOOT',
        '13': 'USB_DM', '14': 'USB_DP', '36': 'MIDI_RX', '37': None,
-       '12': 'BUTTON', '11': 'LED', '17': 'CV1_ADC', '18': 'CV2_ADC',
+       '12': 'BUTTON', '11': 'LED', '39': 'CV1_ADC', '38': 'CV2_ADC',
        '19': 'I2S_DIN', '20': 'I2S_LRCK', '21': 'I2S_DOUT', '22': 'I2S_BCLK', '23': 'I2S_MCLK',
-       '24': 'CCLK', '25': 'CDATA',
+       '31': 'CCLK', '32': 'CDATA',
        '4': None, '5': None, '6': None, '7': None, '8': None, '9': None, '10': None, '15': None,
-       '16': None, '26': None, '28': None, '29': None, '30': None, '31': None, '32': None,
-       '33': None, '34': None, '35': None, '38': None, '39': None}
+       '16': None, '24': None, '25': None, '26': None, '28': None, '29': None, '30': None,
+       '33': None, '34': None, '35': None, '17': None, '18': None}
 
-# ES8388 (BM Module32 symbol) pin -> net. CE low = I2C address 0x10 (BM). Second line pair,
-# LOUT2/ROUT2 and the NC pins are open, as on Bread Modular.
+# ES8388 (BM Module32 symbol) pin -> net. CE low = I2C address 0x10 (BM). R1 layout: the audio inputs
+# use the second input pair LIN2/RIN2 (pins 22/21, the corner beside the VMID caps; BM: LIN1/RIN1),
+# so firmware selects input 2 (ADCCONTROL2). LIN1/RIN1, LOUT2/ROUT2 and the NC pins are open.
 CODEC = {'1': 'MCLK', '2': '+3V3_8388', '3': '+3V3_8388', '4': 'GND', '5': 'SCLK', '6': 'DSDIN',
          '7': 'LRCK', '8': 'ASDOUT', '9': None, '10': 'VREF', '11': 'CODEC_ROUT', '12': 'CODEC_LOUT',
          '13': 'GND', '14': None, '15': None, '16': '+3V3_8388', '17': '+3V3_8388', '18': 'GND',
-         '19': 'ADCVREF', '20': 'VMID', '21': None, '22': None, '23': 'CODEC_RIN', '24': 'CODEC_LIN',
+         '19': 'ADCVREF', '20': 'VMID', '21': 'CODEC_RIN', '22': 'CODEC_LIN', '23': None, '24': None,
          '25': None, '26': 'GND', '27': 'CDATA', '28': 'CCLK', '29': 'GND'}
 
 # Block rows (sheet mm).
@@ -164,7 +167,7 @@ def circuit():
 
     # ---- CV inputs (as modules/16bit): jack -> RV1/RV2 attenuator (tip normalled to +5V: unpatched =
     # 0..+5 V knob) -> U7B/U7A follower (CV1/CV2) on +/-12 V -> 100k / 56k to +3V3 / 120k to GND, BAT54SW clamp, 1n
-    # -> U6 MCP6002 follower on +3V3 -> IO9/IO10 (BM BUFF_CV1/BUFF_CV2, ADC1 CH8/CH9)
+    # -> U6 MCP6002 follower on +3V3 -> IO1/IO2 (BM BUFF_CV1/BUFF_CV2 on IO9/IO10; moved in R1)
     for i, (y, jack, rv, rin, rup, rdn, d, cf) in enumerate(zip(CV_Y, ('J2', 'J3'), ('RV1', 'RV2'), ('R13', 'R16'),
                                                                 ('R14', 'R17'), ('R15', 'R18'), ('D5', 'D6'),
                                                                 ('C25', 'C26')), 1):
@@ -240,14 +243,15 @@ def circuit():
         c.append(two(ref, 'C', val, 'C0402', (x, 190.5), net, 'GND', rot=0,
                      Voltage='10V' if val == '10u' else '16V', Note=note))
     for ref, x, net in (('R21', 441.96, 'CDATA'), ('R22', 452.12, 'CCLK')):
-        c.append(two(ref, 'R', '4.7k', 'R0402', (x, 190.5), '+3V3_8388', net, rot=0,
-                     Note=f'I2C {net} pull-up (Bread Modular {"R24" if net == "CDATA" else "R25"})'))
+        c.append(two(ref, 'R', '4.7k', 'R0402', (x, 190.5), '+3V3', net, rot=0,
+                     Note=f'I2C {net} pull-up to +3V3 (Bread Modular {"R24" if net == "CDATA" else "R25"}: '
+                          '+3V3_8388; R1 layout uses the +3V3 plane, same level through the 10R)'))
     for i, (ref, a, b, note) in enumerate(I2S):
         c.append(two(ref, 'R', '33', 'R0402', (342.9, 93.98 + 7.62 * i), a, b,
                      Note=f'I2S series, Bread Modular: {note}'))
 
     # ---- Audio inputs: J8 IN L / J9 IN R (not normalled; firmware handles mono) -> 100k / 22k (x0.18: +/-5 V -> +/-0.9 V,
-    # clip at about +/-7.5 V) -> U7C/U7D follower on +/-12 V -> 1u -> 1k -> ES8388 LIN1/RIN1, 100k bias to VMID
+    # clip at about +/-7.5 V) -> U7C/U7D follower on +/-12 V -> 1u -> 1k -> ES8388 LIN2/RIN2 (R1), 100k bias to VMID
     for ch, y in IN_Y.items():
         o = IN_PARTS[ch]
         c.append(part(o['j'], 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (444.5, y), 0,
@@ -263,8 +267,8 @@ def circuit():
                      Note='AC coupling into the VMID-biased codec input (1.3 Hz with 122k)'))
         c.append(two(o['rs'], 'R', '1k', 'R0603', (514.35, y + 2.54), f'_IN{ch}_AC', o['net'],
                      Note='Limits the codec pin clamp current on a +/-12 V mis-patch'))
-        c.append(two(o['rb'], 'R', '100k', 'R0603', (523.24, y + 6.35), o['net'], 'VMID', rot=0,
-                     Note='Input bias to VMID (Bread Modular R19/R16)'))
+        c.append(two(o['rb'], 'R', '100k', 'R0402', (523.24, y + 6.35), o['net'], 'VMID', rot=0,
+                     Note='Input bias to VMID (Bread Modular R19/R16); 0402 to fit beside the codec (R1)'))
 
     # ---- Audio outputs: ES8388 LOUT1/ROUT1 -> BM 1k -> 10u -> U5A/U5B gain 1 + 56k/22k = 3.55 on +/-12 V
     # -> 1k 0.5 W -> J4 OUT L / J5 OUT R. About 1 Vrms codec full scale -> +/-5 V
@@ -405,6 +409,7 @@ SOURCING = {
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '100k', 'R0402'): dict(LCSC='C25741', MPN='0402WGF1003TCE', Manufacturer='UNI-ROYAL'),
     ('R', '56k', 'R0603'): dict(LCSC='C23206', MPN='0603WAF5602T5E', Manufacturer='UNI-ROYAL'),
     ('C', '1n', 'C0603'): dict(LCSC='C1588', MPN='CL10B102KB8NNNC', Manufacturer='Samsung'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
@@ -448,7 +453,7 @@ TEXTS = [
     ((20.32, 180.34), 'JP1 RX SOURCE (back, shipped OPEN, bridge one pair): 1-2 = PROTECTED (Q1 drives RXD0,\n'
                       'firmware inverts the UART RX line); 2-3 = DIRECT (unprotected, stock BM firmware). Never both.', 1.1),
     ((20.32, 203.2), 'CV IN 1/2: tip normalled to +5V -> RV1/RV2 50k attenuator -> U7B/U7A TL074 follower\n'
-                     '-> 100k / 56k to +3V3 / 120k to GND, BAT54SW clamp, 1n -> U6B/U6A MCP6002 follower -> IO9/IO10.\n'
+                     '-> 100k / 56k to +3V3 / 120k to GND, BAT54SW clamp, 1n -> U6B/U6A MCP6002 follower -> IO1/IO2.\n'
                      'Unpatched: RV = 0..+5 V knob. Patched: RV scales the CV. -5.9..+6.0 V -> 0..3.3 V.', 1.1),
     ((116.84, 139.7), 'USB-C (data only, as Bread Modular): VBUS not connected,\n'
                       'D+/D- straight to the ESP32-S3 USB PHY (flash over USB).', 1.1),
@@ -457,8 +462,8 @@ TEXTS = [
     ((322.58, 248.92), 'MODE: SW1 (6 x 6 mm THT tact) on IO8, red LED on IO18 through 1k (Bread Modular pins).\n'
                        'IO18 LEDC PWM sets the LED brightness.', 1.1),
     ((330.2, 71.12), 'ES8388 CODEC (Bread Modular U4): I2S IO11-14/IO21 through 33R,\n'
-                    'I2C IO47 (CCLK) / IO48 (CDATA), CE = GND (0x10). +3V3 -> R5 10R -> +3V3_8388.', 1.1),
-    ((436.88, 33.02), 'AUDIO IN L/R: 100k / 22k (x0.18) -> U7C/U7D follower -> 1u -> 1k -> LIN1/RIN1 (100k to VMID).\n'
+                    'I2C IO38 (CCLK) / IO39 (CDATA), CE = GND (0x10). Inputs on LIN2/RIN2. +3V3 -> R5 10R -> +3V3_8388.', 1.1),
+    ((436.88, 33.02), 'AUDIO IN L/R: 100k / 22k (x0.18) -> U7C/U7D follower -> 1u -> 1k -> LIN2/RIN2 (100k to VMID).\n'
                       '+/-5 V -> +/-0.9 V; codec PGA sets the gain. No IN R normal: firmware handles mono.', 1.1),
     ((436.88, 101.6), 'AUDIO OUT L/R: LOUT1/ROUT1 -> 1k -> 10u -> U5A/U5B gain 3.55 (56k/22k) -> 1k 0.5 W -> J4/J5.\n'
                       '~1 Vrms codec full scale -> +/-5 V; the codec output volume trims the level.', 1.1),

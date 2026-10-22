@@ -17,20 +17,25 @@
 - USB-C and BOOT/RESET as modules/16bit (B side, top edge).
 - S2 (user, 2026-10-21): the radio is never used; IN R is **not** normalled (firmware handles mono);
   OUT L/OUT R sit at the side edges (X5.5/X24.5) like the top jacks.
-- Schematic nets connected for readability; THT placement only, **no routing**.
+- Schematic nets connected for readability. R1 (user 2026-10-21): all parts placed and routed by hand
+  (manual divide and conquer, root `AGENTS.md`); batch scripts and DRC reports in `research/r1/`.
 
 ## Design rules kept from the repo
 
-- BM 32bit-5v GPIO map (I2S IO11-14/IO21, I2C IO47/48, CV IO9/IO10, button IO8, LED IO18, MIDI RXD0).
+- BM 32bit-5v GPIO map (I2S IO11-14/IO21, button IO8, LED IO18, MIDI RXD0) except the R1 moves below.
   User 2026-10-21: ESP32 pins and op-amp halves may change for routing, but every change that
   touches firmware is logged in `docs/firmware-pins.md` (BM GPIO -> 32bit GPIO, change log,
-  behaviour differences). R1 so far: CV1 = U7B/U6B, CV2 = U7A/U6A; no ESP32 pin moved.
+  behaviour differences). R1: CV1 = U7B/U6B, CV2 = U7A/U6A; CV1/CV2 ADC IO9/IO10 -> IO1/IO2;
+  I2C IO47/IO48 -> IO38/IO39; codec inputs LIN1/RIN1 -> LIN2/RIN2.
   IO35-37 (octal PSRAM) stay open.
 - modules/16bit parts for jacks (PJ301M-12), pots (BM RV09 50k), MODE switch, LED, power entry,
   MIDI front end, CV chain. BM footprints preferred (ES8388, RV09, K2, FB1 on C_0805).
 - All SMD on B (one assembly side); jacks, pots, LED, header and SW1 hand-soldered.
 - PWR_FLAGs only where ERC can't see a source: J6 entry, ±12V_F, +3V3_ESP32 (FB1), +3V3_8388 (R5).
-- Routing (later): manual divide and conquer, no autorouters, no vias in SMD pads (root `AGENTS.md`).
+- Routing: manual divide and conquer, no autorouters, no vias in SMD pads (root `AGENTS.md`). F carries
+  the long runs and every crossing of the pot row (RV1/RV2 tab gaps, not between pot pins); In1 solid GND,
+  no tracks; In2 +3V3 plane, one short +3V3_8388 hop joining the codec's two supply islands (plane stays
+  one piece). U8 has +5V tab patches on F and B tied by four thermal vias beside the tab.
 
 ## Sources and generators
 
@@ -42,9 +47,11 @@
   the board owns placement: do not rerun it over hand work.
 - `tools/import_footprints.py` rebuilds `hardware/32BIT.pretty` / `32BIT.3dshapes` (`PROVENANCE.json`).
 
-## Verification (S2, 2026-10-21)
+## Verification (R1 routed, 2026-10-21)
 
-- Native ERC `--severity-all`: 0. Native DRC `--severity-all --schematic-parity`: 0 violations,
-  0 parity, 236 unconnected (unrouted). Panel DRC 0.
-- Shared `kicad_tools.py check`: ERC 0, DRC 0 violations, parity 0, 236 unconnected; `order_ready: false`.
-- Not done: SMD placement, routing, sourcing check, 3D fit, bench.
+- Native ERC `--severity-all`: 0. Native DRC `--severity-all --schematic-parity --refill-zones`:
+  0 violations, 0 unconnected, 0 parity, no exclusions. Panel DRC 0.
+- Shared `kicad_tools.py check`: ERC 0, DRC 0 violations, 0 unconnected, parity 0; `order_ready: false`.
+- Manual: no vias in/touching SMD pads, no tracks on In1, In1 GND and In2 +3V3 planes one piece each,
+  no zero-length/duplicate segments (off-grid ends only on 1.27 mm pad axes).
+- Not done: JLCPCB export, sourcing check, 3D fit, bench.

@@ -9,16 +9,16 @@ USB-C on the back). Pin map, change log and the code changes a port needs (CV sc
 | Panel (top to bottom) | Circuit |
 |---|---|
 | **MIDI** in (TS) | modules/16bit NPN front end at 3.3 V -> RXD0; JP1 (back, shipped open): `P` protected (firmware inverts RX), `D` direct (stock BM firmware) |
-| **IN L**, **IN R** | 100k / 22k -> TL074 follower -> 1u -> 1k -> ES8388 LIN1/RIN1 (±5 V -> ±0.9 V) (no normal: firmware handles mono) |
-| **CV1**, **CV2** + **P1**, **P2** | Jack normalled to +5V -> 50k attenuator -> TL074 follower -> level shift -> MCP6002 -> IO9/IO10 (as modules/16bit) |
+| **IN L**, **IN R** | 100k / 22k -> TL074 follower -> 1u -> 1k -> ES8388 LIN2/RIN2 (±5 V -> ±0.9 V) (no normal: firmware handles mono) |
+| **CV1**, **CV2** + **P1**, **P2** | Jack normalled to +5V -> 50k attenuator -> TL074 follower -> level shift -> MCP6002 -> IO1/IO2 (modules/16bit chain) |
 | **OUT L**, **OUT R** | ES8388 LOUT1/ROUT1 -> 1k -> 10u -> TL072 gain 3.55 -> 1k 0.5 W (~±5 V) |
 | **MODE** + LED | 6 x 6 mm THT tact on IO8, 3 mm red LED on IO18 (as modules/16bit) |
 
 Power: Eurorack 10-pin, ±12 V through series Schottkys, AMS1117-5.0 -> +5V -> AMS1117-3.3 -> +3V3
 (radio never used: see `docs/research.md` D2). USB-C (back, top edge) is data only, with BOOT / RESET below it.
 
-**Status: S1 schematic + S1 THT placement, not routed, not released.** Shared `check`: ERC 0,
-DRC 0 violations, parity 0, 237 unconnected (nothing routed yet). SMD parts are parked off the board.
+**Status: S2 schematic + R1 routed carrier (manual, 4 layers), not released.** Shared `check`: ERC 0,
+DRC 0 violations, 0 unconnected, parity 0. Firmware pin changes vs Bread Modular: `docs/firmware-pins.md`.
 
 | Path | Contents |
 |---|---|
@@ -34,7 +34,7 @@ Rebuild (from `modules/32bit`):
 ```sh
 python3 -B tools/import_footprints.py   # library import (pcbnew)
 python3 -B tools/build_schematic.py     # schematic + pinned symbols, netlist asserted
-python3 -B tools/build_layout.py        # S1 THT placement, parked SMD, panel (UNROUTED)
+# tools/build_layout.py made the S1 placement only: the routed board owns placement now, do not rerun it
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/32bit/tools/kicad-project.json \
    --reports modules/32bit/research/check-NEW)
 ```

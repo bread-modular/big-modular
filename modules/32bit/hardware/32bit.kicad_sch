@@ -7035,7 +7035,7 @@
 		)
 		(uuid "25471184-7e19-5926-a88d-68a984677da7")
 	)
-	(text "AUDIO IN L/R: 100k / 22k (x0.18) -> U7C/U7D follower -> 1u -> 1k -> LIN1/RIN1 (100k to VMID).\n+/-5 V -> +/-0.9 V; codec PGA sets the gain. No IN R normal: firmware handles mono."
+	(text "AUDIO IN L/R: 100k / 22k (x0.18) -> U7C/U7D follower -> 1u -> 1k -> LIN2/RIN2 (100k to VMID).\n+/-5 V -> +/-0.9 V; codec PGA sets the gain. No IN R normal: firmware handles mono."
 		(exclude_from_sim no)
 		(at 436.88 33.02 0)
 		(effects
@@ -7101,7 +7101,7 @@
 		)
 		(uuid "a7d72c75-96ae-5cc7-987d-1296be6df433")
 	)
-	(text "CV IN 1/2: tip normalled to +5V -> RV1/RV2 50k attenuator -> U7B/U7A TL074 follower\n-> 100k / 56k to +3V3 / 120k to GND, BAT54SW clamp, 1n -> U6B/U6A MCP6002 follower -> IO9/IO10.\nUnpatched: RV = 0..+5 V knob. Patched: RV scales the CV. -5.9..+6.0 V -> 0..3.3 V."
+	(text "CV IN 1/2: tip normalled to +5V -> RV1/RV2 50k attenuator -> U7B/U7A TL074 follower\n-> 100k / 56k to +3V3 / 120k to GND, BAT54SW clamp, 1n -> U6B/U6A MCP6002 follower -> IO1/IO2.\nUnpatched: RV = 0..+5 V knob. Patched: RV scales the CV. -5.9..+6.0 V -> 0..3.3 V."
 		(exclude_from_sim no)
 		(at 20.32 203.2 0)
 		(effects
@@ -7123,7 +7123,7 @@
 		)
 		(uuid "af43d65d-dfb6-5abd-a173-942392e2d3c3")
 	)
-	(text "ES8388 CODEC (Bread Modular U4): I2S IO11-14/IO21 through 33R,\nI2C IO47 (CCLK) / IO48 (CDATA), CE = GND (0x10). +3V3 -> R5 10R -> +3V3_8388."
+	(text "ES8388 CODEC (Bread Modular U4): I2S IO11-14/IO21 through 33R,\nI2C IO38 (CCLK) / IO39 (CDATA), CE = GND (0x10). Inputs on LIN2/RIN2. +3V3 -> R5 10R -> +3V3_8388."
 		(exclude_from_sim no)
 		(at 330.2 71.12 0)
 		(effects
@@ -7694,12 +7694,8 @@
 		(uuid "0cc8954f-8c6d-53a2-b72e-796d12d8d599")
 	)
 	(no_connect
-		(at 294.64 157.48)
-		(uuid "0f50660f-5a1c-536e-907f-b2d987d2b853")
-	)
-	(no_connect
-		(at 406.4 110.49)
-		(uuid "11cb8ee4-2ee0-5f97-a401-a7ebb6408025")
+		(at 264.16 157.48)
+		(uuid "10f4f963-2d32-5815-9588-da03a8af5581")
 	)
 	(no_connect
 		(at 27.94 149.86)
@@ -7722,6 +7718,14 @@
 		(uuid "31b9ec8b-4d01-5ef8-8a0f-ff8cee916469")
 	)
 	(no_connect
+		(at 406.4 114.3)
+		(uuid "4474bb6a-dfd9-5e14-baaf-0bb44d8bb44a")
+	)
+	(no_connect
+		(at 294.64 172.72)
+		(uuid "478cb601-e2de-5499-8b51-703e4b3ade26")
+	)
+	(no_connect
 		(at 264.16 172.72)
 		(uuid "524368ad-f233-5943-8897-d23bde96db38")
 	)
@@ -7742,8 +7746,8 @@
 		(uuid "6f0f6cd7-9a3a-526d-811d-7518032a64cd")
 	)
 	(no_connect
-		(at 406.4 106.68)
-		(uuid "7078f60d-42dd-55ce-8c63-985f96f2f30e")
+		(at 264.16 160.02)
+		(uuid "6fe55a9b-14f2-5b89-baa7-7671cd2d09a8")
 	)
 	(no_connect
 		(at 377.19 114.3)
@@ -7752,10 +7756,6 @@
 	(no_connect
 		(at 406.4 121.92)
 		(uuid "932f77e0-331e-564a-8e2e-4a3fc96efa44")
-	)
-	(no_connect
-		(at 264.16 139.7)
-		(uuid "95402b14-0056-5ad9-a658-7296b1d24abf")
 	)
 	(no_connect
 		(at 264.16 175.26)
@@ -7770,12 +7770,16 @@
 		(uuid "a64de2e5-9a87-5a93-b657-521d7765bf7e")
 	)
 	(no_connect
-		(at 264.16 137.16)
-		(uuid "c3971fd0-0d4a-5617-9831-3cea87dba130")
-	)
-	(no_connect
 		(at 294.64 165.1)
 		(uuid "c5784e74-7728-588e-9fc9-e7bd9151a509")
+	)
+	(no_connect
+		(at 294.64 175.26)
+		(uuid "c60419eb-5721-5a5e-aa03-85f0e0fdc55f")
+	)
+	(no_connect
+		(at 406.4 118.11)
+		(uuid "c6e54475-59e4-5e72-8e46-2c3d83fc124c")
 	)
 	(no_connect
 		(at 294.64 162.56)
@@ -7800,10 +7804,6 @@
 	(no_connect
 		(at 264.16 149.86)
 		(uuid "efaecb1b-ce7f-5895-a012-a05964c228b1")
-	)
-	(no_connect
-		(at 294.64 154.94)
-		(uuid "f2b558bb-1416-587b-83ba-765cb55c9c93")
 	)
 	(no_connect
 		(at 449.58 53.34)
@@ -8445,16 +8445,6 @@
 	)
 	(wire
 		(pts
-			(xy 261.62 160.02) (xy 264.16 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "32d16b61-a7ef-5c9e-8a22-5ef3d4eb8de9")
-	)
-	(wire
-		(pts
 			(xy 520.7 116.84) (xy 520.7 119.38)
 		)
 		(stroke
@@ -8525,13 +8515,13 @@
 	)
 	(wire
 		(pts
-			(xy 406.4 118.11) (xy 408.94 118.11)
+			(xy 261.62 137.16) (xy 264.16 137.16)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "392799d2-c1bc-5760-9eee-e471895896cc")
+		(uuid "3947f864-7e13-5fdb-a618-993cff85b88f")
 	)
 	(wire
 		(pts
@@ -8945,6 +8935,16 @@
 	)
 	(wire
 		(pts
+			(xy 406.4 106.68) (xy 408.94 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "53dbd74d-ab69-5021-8f72-e42e76905cfb")
+	)
+	(wire
+		(pts
 			(xy 421.64 153.67) (xy 421.64 156.21)
 		)
 		(stroke
@@ -9012,16 +9012,6 @@
 			(type default)
 		)
 		(uuid "561829f8-df74-55a9-8761-e8c2ae34d371")
-	)
-	(wire
-		(pts
-			(xy 294.64 172.72) (xy 297.18 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5649af7d-2142-5b8c-8ea1-46be4cbc8771")
 	)
 	(wire
 		(pts
@@ -9122,6 +9112,16 @@
 			(type default)
 		)
 		(uuid "5d85b8ee-7c21-59ff-afb4-a8c836eff10a")
+	)
+	(wire
+		(pts
+			(xy 261.62 139.7) (xy 264.16 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d9a056b-d5c2-5d9d-bde9-15b1f5682dd1")
 	)
 	(wire
 		(pts
@@ -9835,16 +9835,6 @@
 	)
 	(wire
 		(pts
-			(xy 261.62 157.48) (xy 264.16 157.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "88623c53-a81c-515a-b9c9-6544af91900b")
-	)
-	(wire
-		(pts
 			(xy 99.06 287.02) (xy 104.14 287.02)
 		)
 		(stroke
@@ -10122,6 +10112,16 @@
 			(type default)
 		)
 		(uuid "9b2479d6-2e65-58f9-ba96-7b09deb4cacf")
+	)
+	(wire
+		(pts
+			(xy 294.64 157.48) (xy 297.18 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9bec6dcf-108d-5da5-b300-104f3975bf07")
 	)
 	(wire
 		(pts
@@ -10505,6 +10505,16 @@
 	)
 	(wire
 		(pts
+			(xy 406.4 110.49) (xy 408.94 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bac5fb10-4ad5-5640-8ac3-d105ebda3bdf")
+	)
+	(wire
+		(pts
 			(xy 243.84 129.54) (xy 256.54 129.54)
 		)
 		(stroke
@@ -10582,16 +10592,6 @@
 			(type default)
 		)
 		(uuid "c07da60e-eb5e-506a-83a7-a6f55e47f4cc")
-	)
-	(wire
-		(pts
-			(xy 294.64 175.26) (xy 297.18 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c17fcb47-5a00-50f8-ac56-a4a12aa499cf")
 	)
 	(wire
 		(pts
@@ -10752,6 +10752,16 @@
 			(type default)
 		)
 		(uuid "c829ffd3-c54b-579b-bd37-d8abaa3089c2")
+	)
+	(wire
+		(pts
+			(xy 294.64 154.94) (xy 297.18 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c82b921a-6b38-581c-9bdb-5c6b6794e105")
 	)
 	(wire
 		(pts
@@ -11545,16 +11555,6 @@
 	)
 	(wire
 		(pts
-			(xy 406.4 114.3) (xy 408.94 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fd47f313-a6f5-5c73-9b29-15febf3be793")
-	)
-	(wire
-		(pts
 			(xy 45.72 231.14) (xy 45.72 233.68)
 		)
 		(stroke
@@ -11813,8 +11813,8 @@
 		)
 		(uuid "37737161-108d-5100-b762-5ff690b2b973")
 	)
-	(label "CV1_ADC"
-		(at 261.62 157.48 180)
+	(label "CV2_ADC"
+		(at 261.62 139.7 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11904,7 +11904,7 @@
 		(uuid "521f6b94-c406-5403-8a80-cad50fca7ecd")
 	)
 	(label "CODEC_LIN"
-		(at 408.94 118.11 0)
+		(at 408.94 110.49 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11953,8 +11953,8 @@
 		)
 		(uuid "6ec984b2-4fc7-592f-be12-f8c04ec494fb")
 	)
-	(label "CV2_ADC"
-		(at 261.62 160.02 180)
+	(label "BUTTON"
+		(at 261.62 154.94 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11964,7 +11964,7 @@
 		(uuid "7017ce64-41cc-52de-a9a7-5c58ec839f78")
 	)
 	(label "CODEC_RIN"
-		(at 408.94 114.3 0)
+		(at 408.94 106.68 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -12024,7 +12024,7 @@
 		(uuid "871e80fb-8946-50d5-866d-dbb8fc4185f5")
 	)
 	(label "CDATA"
-		(at 297.18 175.26 0)
+		(at 297.18 157.48 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -12043,8 +12043,8 @@
 		)
 		(uuid "8fa67056-5652-5bbe-a220-1ac6cc8288df")
 	)
-	(label "BUTTON"
-		(at 261.62 154.94 180)
+	(label "CV1_ADC"
+		(at 261.62 137.16 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -12234,7 +12234,7 @@
 		(uuid "d1fec359-9bab-53f0-96e6-0a9664c81b2d")
 	)
 	(label "CCLK"
-		(at 297.18 172.72 0)
+		(at 297.18 154.94 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -13070,7 +13070,7 @@
 				)
 			)
 		)
-		(property "Note" "I2C CCLK pull-up (Bread Modular R25)"
+		(property "Note" "I2C CCLK pull-up to +3V3 (Bread Modular R25: +3V3_8388; R1 layout uses the +3V3 plane, same level through the 10R)"
 			(at 452.12 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -17689,7 +17689,7 @@
 				)
 			)
 		)
-		(property "Value" "+3V3_8388"
+		(property "Value" "+3V3"
 			(at 441.96 180.34 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25917,7 +25917,7 @@
 				)
 			)
 		)
-		(property "Note" "I2C CDATA pull-up (Bread Modular R24)"
+		(property "Note" "I2C CDATA pull-up to +3V3 (Bread Modular R24: +3V3_8388; R1 layout uses the +3V3 plane, same level through the 10R)"
 			(at 441.96 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -27799,7 +27799,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "32BIT:R_0603_1608Metric"
+		(property "Footprint" "32BIT:R_0402_1005Metric"
 			(at 523.24 57.15 0)
 			(hide yes)
 			(show_name no)
@@ -27832,7 +27832,7 @@
 				)
 			)
 		)
-		(property "Note" "Input bias to VMID (Bread Modular R19/R16)"
+		(property "Note" "Input bias to VMID (Bread Modular R19/R16); 0402 to fit beside the codec (R1)"
 			(at 523.24 57.15 0)
 			(hide yes)
 			(show_name no)
@@ -27843,7 +27843,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25803"
+		(property "LCSC" "C25741"
 			(at 523.24 57.15 0)
 			(hide yes)
 			(show_name no)
@@ -27854,7 +27854,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1003T5E"
+		(property "MPN" "0402WGF1003TCE"
 			(at 523.24 57.15 0)
 			(hide yes)
 			(show_name no)
@@ -32560,7 +32560,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "32BIT:R_0603_1608Metric"
+		(property "Footprint" "32BIT:R_0402_1005Metric"
 			(at 523.24 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -32593,7 +32593,7 @@
 				)
 			)
 		)
-		(property "Note" "Input bias to VMID (Bread Modular R19/R16)"
+		(property "Note" "Input bias to VMID (Bread Modular R19/R16); 0402 to fit beside the codec (R1)"
 			(at 523.24 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -32604,7 +32604,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C25803"
+		(property "LCSC" "C25741"
 			(at 523.24 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -32615,7 +32615,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1003T5E"
+		(property "MPN" "0402WGF1003TCE"
 			(at 523.24 82.55 0)
 			(hide yes)
 			(show_name no)
