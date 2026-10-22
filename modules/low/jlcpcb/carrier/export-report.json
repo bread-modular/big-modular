@@ -1,0 +1,51 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/136/modules/low/hardware/low.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/136/modules/low/hardware/low.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/136/modules/low/hardware/low.kicad_pcb": "da4b73e9c94a3505526fa0b4f8911228bb8c4aff3c2838a61a48464498cfcba8",
+    "/home/azero/.okbrain/workspaces/big-modular/136/modules/low/hardware/low.kicad_sch": "4cc827516e4b8de62f52750d17837487db5f271716ce57c83b59ca6876ea040d"
+  },
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 2,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "bottom",
+  "include_through_hole": false,
+  "component_count": 58,
+  "bom_row_count": 26,
+  "excluded": {
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J10": "Not an SMD footprint (use --include-through-hole)",
+    "J11": "Not an SMD footprint (use --include-through-hole)",
+    "JP1": "Excluded from BOM",
+    "RV1": "Not an SMD footprint (use --include-through-hole)",
+    "RV2": "Not an SMD footprint (use --include-through-hole)",
+    "RV3": "Not an SMD footprint (use --include-through-hole)",
+    "U5": "Not an SMD footprint (use --include-through-hole)",
+    "U7": "Not an SMD footprint (use --include-through-hole)"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "low-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}

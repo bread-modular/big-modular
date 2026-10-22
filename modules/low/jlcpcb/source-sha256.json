@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/low.kicad_pcb": "da4b73e9c94a3505526fa0b4f8911228bb8c4aff3c2838a61a48464498cfcba8",
+    "hardware/low.kicad_pro": "e2d2f925b0995afefe9bf72ef9050de1f54564e6fcd4e8448104ea32d146376a",
+    "hardware/low.kicad_sch": "4cc827516e4b8de62f52750d17837487db5f271716ce57c83b59ca6876ea040d",
+    "panels/front-pcb/low-panel.kicad_pcb": "1cf9270112fd5b5ae8f7b9d860ccab96a449ba9d3c795fb72cdcefe1dd3ea50b",
+    "panels/front-pcb/low-panel.kicad_pro": "a84349687ec42c51876c9bda27a01b3788d09101e8d0697de8d2435ce09328ba"
+  },
+  "exports": {
+    "jlcpcb/carrier/low-gerbers.zip": "62bcd2fba9f9cd4e4eaf646c784824fa486b898f90a9cbf908fc8bf1c3cc3b63",
+    "jlcpcb/carrier/bom.csv": "83a729e6bc736acf6a970c83eda9cc3a8f20d8e562052cc64275b9dbdd2c5f68",
+    "jlcpcb/carrier/positions.csv": "cae8188119b4566a47bc230a5c86e66b2bb80f7369e4db7537c44b730b731b9e",
+    "jlcpcb/panel/low-panel-gerbers.zip": "52349c03a30d96913a35ed77aff797a4611f0492fd45fde5fdcd9e4863a626fb"
+  }
+}
