@@ -16,9 +16,15 @@ Module paths are module-relative.
   DRC reports in `research/r1/`). Native DRC 0 / unconnected 0 / parity 0, no exclusions; no vias in SMD
   pads, no tracks on In1, both planes one piece. USB-C + BOOT/RESET as 16bit; 6HP FR4 panel DRC 0.
   Firmware-visible changes (CV ADC IO1/IO2, I2C IO38/IO39, codec LIN2/RIN2) in `docs/firmware-pins.md`.
-- JLCPCB export in `jlcpcb/` (2026-10-22, not supplier-accepted). U1 is Standard-PCBA only: Standard
-  PCBA or hand-solder U1 is an open user decision (`jlcpcb/README.md`).
-- Open: U1 PCBA route, bench (U8 thermal, codec levels). Radio never used.
+- **R2 (2026-10-22)**: 2 mm hand-solder clearance (every SMD pad >= 2.0 mm from jack/pot pads) except
+  four user-accepted parts: the user moved R5, C27, R55 and C46 for edge margin and kept them there
+  (option A, 2026-10-22): R5 1.33 mm from RV2, C27 1.62 / R55 1.63 / C46 1.75 mm from J5. Everything
+  else >= 2.02 mm. SMD parts moved/re-routed by hand, jacks/pots/panel unchanged (`docs/research.md`
+  section 7, scripts in `research/r2mm/`). DRC 0 / unconnected 0 / parity 0. B silk MIDI JP1 labels
+  (P/D + legend, as modules/16bit).
+- JLCPCB export in `jlcpcb/` re-exported from R2 (2026-10-22, not supplier-accepted); manifest equal.
+  U1 is Standard-PCBA only: user chose Standard PCBA (2026-10-22).
+- Open: bench (U8 thermal, codec levels). Radio never used.
 
 ## Boundaries
 

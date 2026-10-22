@@ -54,6 +54,23 @@
 - Shared `kicad_tools.py check`: ERC 0, DRC 0 violations, 0 unconnected, parity 0; `order_ready: false`.
 - Manual: no vias in/touching SMD pads, no tracks on In1, In1 GND and In2 +3V3 planes one piece each,
   no zero-length/duplicate segments (off-grid ends only on 1.27 mm pad axes).
-- JLCPCB export (2026-10-22): `jlcpcb/` (bottom side, 90 parts / 38 rows, live catalog audit). U1
-  (C3013946) is Standard-PCBA only, not Economic: PCBA route open (`jlcpcb/README.md`).
+- JLCPCB export: `jlcpcb/` re-exported from R2 (2026-10-22; bottom side, 90 parts / 38 rows, BOM
+  unchanged from R1, live catalog audit from R1). U1 (C3013946) is Standard-PCBA only, not Economic:
+  user chose Standard PCBA (2026-10-22). Shared `check` manifest equal.
 - Not done: 3D fit, supplier acceptance, bench.
+
+## Verification (R2 hand-solder clearance, 2026-10-22)
+
+- Every SMD pad >= 2.0 mm (copper to copper) from every jack and pot pad, lugs included (R1: 35 parts
+  under 2 mm), except four user-accepted parts (option A, 2026-10-22: the user moved them inward for
+  edge margin and kept them): R5 1.33 mm from RV2, C27 1.62 / R55 1.63 / C46 1.75 mm from J5. Next
+  closest: U6, R15, R18 2.02 mm; C6, C25, C26 2.03 mm; R54 2.06 mm. Moves and free-space map:
+  `docs/research.md` section 7.
+- Native ERC 0; native DRC `--severity-all --schematic-parity --refill-zones`: 0 violations,
+  0 unconnected, 0 parity, no exclusions. Shared `check`: ERC 0, DRC 0 / 0 / 0.
+- Manual: no vias in/touching SMD pads, no tracks on In1, In1 GND and In2 +3V3 one piece each, no
+  dangling ends, zero-length or duplicate segments; new off-grid points only on pad axes.
+- Courtyards under 0.5 mm from the edge (copper >= 0.5 mm): R4 0.49 mm, plus R1's J7, SW2/SW3, U1 and
+  the jacks. After the user's moves C6 is 0.53 mm, C27/R55 0.82 mm, R5 > 1 mm.
+- B silk MIDI JP1 labels as modules/16bit: P (pad 1 RX_Q, protected), D (pad 3 MIDI_IN, direct),
+  legend P=PROT / MIDI JP1 / D=DIRECT beside it. DRC 0 / 0 / 0 after adding them.
