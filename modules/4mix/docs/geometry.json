@@ -1,0 +1,599 @@
+{
+  "revision": "S2/P6: 18HP 4-channel audio mixer (Bread Modular 4mix for Eurorack, no overdrive, AC-coupled inputs). User hand placement (P3, tidied to grid): top line SEND A, SEND B | RETURN A over its level knob | RETURN B over its level knob | MAIN, OUT. Four channel strips below (IN jack on top, SEND A, SEND B, VOL with big-knob space). EXP IN left / EXP OUT right at the top, power bottom right, all on B. THT placed only; SMD parked; not routed. P6: two 10 mm M3 F-F hex standoffs (mount_standoffs, user stock) hold the bottom of the carrier to the panel (replace the P5 printed L brackets).",
+  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The carrier F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+  "kicad_origin_mm": [
+    100.0,
+    50.0
+  ],
+  "hp": 18,
+  "panel_mm": [
+    91.3,
+    128.5
+  ],
+  "panel_note": "18HP = 91.3 mm (Doepfer A-100 panel width table).",
+  "panel_pcb_thickness_mm": 1.6,
+  "rail_holes_mm": [
+    [
+      7.5,
+      3.0,
+      3.2
+    ],
+    [
+      83.7,
+      3.0,
+      3.2
+    ],
+    [
+      7.5,
+      125.5,
+      3.2
+    ],
+    [
+      83.7,
+      125.5,
+      3.2
+    ]
+  ],
+  "rail_clear_gap_Y_mm": [
+    8.0,
+    120.5
+  ],
+  "rail_note": "Doepfer holes at X7.5 and X7.5 + 15 HP (83.7), one pair per rail (case/tools/build_case.py HOLE_X0 7.5, 2 HP spacer pitch: both land on spacers).",
+  "main_pcb": {
+    "outline_mm": [
+      0.65,
+      9.25,
+      90.65,
+      119.25
+    ],
+    "thickness_mm": 1.6,
+    "copper_layers": 4,
+    "note": "90.0 x 110.0 mm, 1.25 mm inside the skiff rail gap at each end, 0.65 mm inside each panel side. 4 layers (user, 2026-10-22): F.Cu signal (only THT bodies on F, free for long runs) / In1 solid GND plane (no tracks) / In2 +12V power plane (short hops only, must stay one piece) / B.Cu signal + SMD; -12V as Power-class tracks. Held by the nine jack bushings/nuts and the two M3x10 standoffs; pots are soldered only.",
+    "planes": {
+      "In1.Cu": "GND",
+      "In2.Cu": "+12V"
+    },
+    "plane_rules": {
+      "clearance_mm": 0.25,
+      "min_width_mm": 0.25,
+      "thermal_gap_mm": 0.3,
+      "thermal_spoke_mm": 0.4
+    }
+  },
+  "columns_X_mm": [
+    15.17,
+    35.49,
+    55.81,
+    76.13
+  ],
+  "columns_note": "Four channel columns on a 4HP (20.32 mm) pitch centred on the panel. Rows (P3, user spacing): IN Y47, SEND A Y65.5, SEND B Y84 (18.5 mm pitch), VOL Y106 (22 mm, room for the big VOL knobs). The top line does not use the columns: see top_line.",
+  "jack_rotation_deg": 0,
+  "jack_note": "PJ301M-12 rot 0, placed by footprint origin (bushing axis): T pad above, TN/S below; courtyard X +/-4.75, Y -6.25..+7.8.",
+  "jacks": [
+    {
+      "ref": "J1",
+      "role": "SEND_A_OUT",
+      "XY": [
+        6.6,
+        16.6
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J3",
+      "role": "RETURN_A_IN",
+      "XY": [
+        35.0,
+        16.6
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J2",
+      "role": "SEND_B_OUT",
+      "XY": [
+        20.0,
+        16.6
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J4",
+      "role": "RETURN_B_IN",
+      "XY": [
+        52.0,
+        16.6
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J5",
+      "role": "MAIN_OUT",
+      "XY": [
+        84.5,
+        16.6
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J101",
+      "role": "CH1_IN",
+      "XY": [
+        15.17,
+        47.0
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J201",
+      "role": "CH2_IN",
+      "XY": [
+        35.49,
+        47.0
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J301",
+      "role": "CH3_IN",
+      "XY": [
+        55.81,
+        47.0
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    },
+    {
+      "ref": "J401",
+      "role": "CH4_IN",
+      "XY": [
+        76.13,
+        47.0
+      ],
+      "part": "QingPu WQP-PJ301M-12"
+    }
+  ],
+  "pot_footprint": "Potentiometer_RV09",
+  "pot_shaft_offset_mm": [
+    -0.127,
+    -0.508
+  ],
+  "pot_note": "Bread Modular RV09 footprint, user-stock RV09 50k B, no bushing/nut (as modules/32bit). Rotation 0: pins 1-2-3 left to right 7.5 mm below the shaft, CW toward pin 3 (drive). Courtyard about shaft X +/-6.41, Y -5.1..+8.65. The channel VOL pots (RVx01) are the same pot; only the panel space around them is larger (big_knob).",
+  "pots": [
+    {
+      "ref": "RV2",
+      "role": "RETURN A level",
+      "shaft_XY": [
+        35.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "RV3",
+      "role": "RETURN B level",
+      "shaft_XY": [
+        52.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "RV1",
+      "role": "MAIN",
+      "shaft_XY": [
+        69.0,
+        16.6
+      ]
+    },
+    {
+      "ref": "RV102",
+      "role": "CH1 SEND A",
+      "shaft_XY": [
+        15.17,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV103",
+      "role": "CH1 SEND B",
+      "shaft_XY": [
+        15.17,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV101",
+      "role": "CH1 VOL (big knob)",
+      "shaft_XY": [
+        15.17,
+        106.0
+      ]
+    },
+    {
+      "ref": "RV202",
+      "role": "CH2 SEND A",
+      "shaft_XY": [
+        35.49,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV203",
+      "role": "CH2 SEND B",
+      "shaft_XY": [
+        35.49,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV201",
+      "role": "CH2 VOL (big knob)",
+      "shaft_XY": [
+        35.49,
+        106.0
+      ]
+    },
+    {
+      "ref": "RV302",
+      "role": "CH3 SEND A",
+      "shaft_XY": [
+        55.81,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV303",
+      "role": "CH3 SEND B",
+      "shaft_XY": [
+        55.81,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV301",
+      "role": "CH3 VOL (big knob)",
+      "shaft_XY": [
+        55.81,
+        106.0
+      ]
+    },
+    {
+      "ref": "RV402",
+      "role": "CH4 SEND A",
+      "shaft_XY": [
+        76.13,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV403",
+      "role": "CH4 SEND B",
+      "shaft_XY": [
+        76.13,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV401",
+      "role": "CH4 VOL (big knob)",
+      "shaft_XY": [
+        76.13,
+        106.0
+      ]
+    }
+  ],
+  "panel_hole_diameters_mm": {
+    "jack": 6.2,
+    "pot": 7.2
+  },
+  "panel_hole_note": "Pot hole 7.2 mm = Bread Modular PanelHole_Potentiometer_RV09.",
+  "back_side_parts": [
+    {
+      "ref": "J8",
+      "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+      "XY": [
+        86.3,
+        111.0
+      ],
+      "rot": 180,
+      "band": "Eurorack power, bottom-right side margin right of the CH4 column (pads centre); see power_header"
+    },
+    {
+      "ref": "J6",
+      "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+      "XY": [
+        5.0,
+        31.0
+      ],
+      "rot": 0,
+      "band": "EXP IN (back, no jack), top-left side margin: below SEND A / RETURN A, left of the RETURN A level pot"
+    },
+    {
+      "ref": "J7",
+      "footprint": "PinHeader_2x03_P2.54mm_Vertical",
+      "XY": [
+        85.8,
+        31.0
+      ],
+      "rot": 0,
+      "band": "EXP OUT (back, no jack), top-right side margin: below OUT, right of the MAIN pot"
+    }
+  ],
+  "expansion_note": "J6 EXP IN (top left) / J7 EXP OUT (top right): 2x3 2.54 mm headers on B (pins 1/3/5 = MAIN, SEND A, SEND B; 2/4/6 = GND), on opposite sides so a short 6-way ribbon joins an expander placed LEFT of the master (expander J7, right edge) to the master J6 (left edge). The master (rightmost) owns the returns and the MAIN knob. A reversed plug only grounds the signals (through the 1k outputs).",
+  "power_header": {
+    "ref": "J8",
+    "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+    "side": "B",
+    "pin1_XY_mm": [
+      85.03,
+      116.08
+    ],
+    "column_X_mm": [
+      85.03,
+      87.57
+    ],
+    "pin_rows_Y_mm": [
+      116.08,
+      113.54,
+      111.0,
+      108.46,
+      105.92
+    ],
+    "orientation": "Vertical, pin 1 (-12 V) at the bottom row (as modules/imix and modules/32bit).",
+    "idc16_socket_envelope_mm": {
+      "X": [
+        82.5,
+        90.1
+      ],
+      "Y": [
+        94.49,
+        119.89
+      ],
+      "bottom_above_B_mm": 2.5
+    },
+    "idc_note": "A 16-pin IDC socket (pin 1 aligned) overhangs up over the board inside the rail gap and inside the panel width (X 82.5..90.1). No THT tails under it: the CH4 pot bracket tabs end at X ~81.6."
+  },
+  "panel_labels": [
+    {
+      "text": "4MIX",
+      "XY": [
+        45.65,
+        6.0
+      ],
+      "size": 3.0
+    },
+    {
+      "text": "SEND A",
+      "XY": [
+        6.6,
+        10.3
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "SEND B",
+      "XY": [
+        20.0,
+        10.3
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "RTN A",
+      "XY": [
+        35.0,
+        10.3
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "RTN B",
+      "XY": [
+        52.0,
+        10.3
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "OUT",
+      "XY": [
+        84.5,
+        10.3
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "LVL A",
+      "XY": [
+        35.0,
+        37.6
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "LVL B",
+      "XY": [
+        52.0,
+        37.6
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "MAIN",
+      "XY": [
+        69.0,
+        24.200000000000003
+      ],
+      "size": 1.1
+    },
+    {
+      "text": "1",
+      "XY": [
+        15.17,
+        40.8
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "2",
+      "XY": [
+        35.49,
+        40.8
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "3",
+      "XY": [
+        55.81,
+        40.8
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "4",
+      "XY": [
+        76.13,
+        40.8
+      ],
+      "size": 1.8
+    },
+    {
+      "text": "IN",
+      "XY": [
+        3.4,
+        47.0
+      ],
+      "size": 1.3
+    },
+    {
+      "text": "A",
+      "XY": [
+        3.4,
+        65.5
+      ],
+      "size": 1.3
+    },
+    {
+      "text": "B",
+      "XY": [
+        3.4,
+        84.0
+      ],
+      "size": 1.3
+    },
+    {
+      "text": "VOL",
+      "XY": [
+        3.4,
+        106.0
+      ],
+      "size": 1.3
+    },
+    {
+      "text": "BIG MODULAR",
+      "XY": [
+        45.65,
+        122.0
+      ],
+      "size": 1.2
+    }
+  ],
+  "back_silk": [
+    {
+      "text": "-12V",
+      "XY": [
+        86.3,
+        118.05
+      ],
+      "size": 0.8
+    },
+    {
+      "text": "EXP IN",
+      "XY": [
+        5.0,
+        25.7
+      ],
+      "size": 0.8
+    },
+    {
+      "text": "EXP OUT",
+      "XY": [
+        85.8,
+        26.2
+      ],
+      "size": 0.8
+    },
+    {
+      "text": "4MIX S2/R1",
+      "XY": [
+        60.0,
+        117.6
+      ],
+      "size": 0.8
+    }
+  ],
+  "parking": {
+    "origin_XY": [
+      98.0,
+      10.0
+    ],
+    "gap_mm": 1.5,
+    "column_height_mm": 110.0,
+    "note": "Unplaced SMD parts (B side) packed in columns right of the board (own size + 1.5 mm gap), sorted by reference prefix and number, for group-by-group placement."
+  },
+  "stack_Z_mm": {
+    "datum": "Z0 = carrier F.Cu, +Z toward the panel",
+    "panel_rear_seat": 10.0,
+    "note": "As modules/32bit: PJ301M-12 boss top = panel rear; RV09 pots soldered only. The 10 mm M3 standoffs fill the same 10 mm (carrier F to panel rear)."
+  },
+  "top_line": {
+    "jack_row_Y_mm": 16.6,
+    "level_pot_row_Y_mm": 30.0,
+    "order": [
+      "J1 SEND A",
+      "J2 SEND B",
+      "J3 RETURN A (RV2 level below)",
+      "J4 RETURN B (RV3 level below)",
+      "RV1 MAIN",
+      "J5 OUT"
+    ],
+    "note": "User hand placement (P3): both sends together at the top left, each return jack with its level knob right below it (13.4 mm down), MAIN knob on the jack row beside OUT. Tidied: positions on a 0.1 mm grid, return A left of return B (the hand move had J3/J4 swapped over the other channel's level knob)."
+  },
+  "big_knob": {
+    "refs": [
+      "RV101",
+      "RV201",
+      "RV301",
+      "RV401"
+    ],
+    "reserve_D_mm": 18.0,
+    "jack_nut_R_mm": 4.6,
+    "small_knob_R_mm": 5.5,
+    "note": "Front-panel keep-clear circle for a large knob on each channel VOL (up to 18 mm diameter; 2.3 mm between neighbouring VOL knobs on the 20.32 mm pitch, 7 mm to the SEND B knobs). Drawn on Dwgs.User of the carrier and panel; build_layout.py asserts no jack nut, small knob or label box inside any circle and the circles do not overlap."
+  },
+  "mount_standoffs": {
+    "refs": [
+      "MS1",
+      "MS2"
+    ],
+    "XY_mm": [
+      [
+        25.33,
+        114.0
+      ],
+      [
+        65.97,
+        114.0
+      ]
+    ],
+    "length_mm": 10.0,
+    "hex_af_mm": 5.5,
+    "thread": "M3 female both ends",
+    "carrier_hole_d_mm": 3.2,
+    "panel_hole_d_mm": 3.2,
+    "F_courtyard_R_mm": 3.3,
+    "carrier_B_keepout_R_mm": 3.5,
+    "panel_bolt_head_R_mm": 2.75,
+    "hardware": "per standoff: 1 x M3 F-F hex standoff 10 mm (user stock), 2 x M3x6 pan/button head (ISO 7380). Not M3x8: with a 1.6 mm board/panel, two M3x8 would meet inside a through-tapped 10 mm standoff (2 x 6.4 > 10).",
+    "note": "No jacks along the carrier bottom, so two 10 mm M3 F-F hex standoffs (user stock, 2026-10-22; replace the P5 printed L brackets) hold it to the panel there. The carrier F to panel rear stack is 10 mm, so the standoff is coaxial: carrier hole = panel hole. X midway between the CH1/CH2 and CH3/CH4 VOL pots, Y 114 so the panel bolt head clears the 18 mm big-knob circles (1.18 mm) and the rail band, and the hex (corners R 3.18) clears the VOL pot courtyards (0.57 mm) and the board edge (>1 mm). One M3 from the carrier B side, one from the panel front. Carrier footprint MSn: board-only (no symbol, no BOM/CPL), NPTH 3.2, F courtyard = hex circumcircle, B courtyard = bolt head keep-out, 3D model mechanical/standoff-m3x10.step (tools/build_standoff.py)."
+  }
+}
