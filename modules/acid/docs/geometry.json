@@ -1,0 +1,506 @@
+{
+    "revision": "S2/P3: schematic S2 (no DRIVE; LP/HP/BP outs, each one TL072 gain stage; CV 0..5 V <-> 0..3.3 V as modules/low; RES 500k). Placement P2 = the user's P1 edits (ENV pots + buttons as one group, ENV OUT beside the buttons, LP/HP/BP out row, J10 at the right) + J6/J7. SMD parked, nothing routed. P3 (user OK 2026-10-22): J10 1.25 mm left, CURVE 1.27 mm left (its lug sat in the J10 courtyard), MODE button 0.4 mm left (courtyard clear of J5), J5 0.625 mm left (1 mm edge keep-out); LP/HP/BP jacks aligned on the AUDIO/FREQ/CV columns at Y110.1; RES/CURVE Y91.3, DETUNE/MIX Y30.45, REC button Y64.4 aligned.",
+    "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+    "kicad_origin_mm": [
+        100.0,
+        50.0
+    ],
+    "hp": 8,
+    "panel_mm": [
+        40.3,
+        128.5
+    ],
+    "panel_pcb_thickness_mm": 1.6,
+    "rail_holes_mm": [
+        [
+            7.5,
+            3.0,
+            3.2
+        ],
+        [
+            32.9,
+            3.0,
+            3.2
+        ],
+        [
+            7.5,
+            125.5,
+            3.2
+        ],
+        [
+            32.9,
+            125.5,
+            3.2
+        ]
+    ],
+    "rail_clear_gap_Y_mm": [
+        8.0,
+        120.5
+    ],
+    "rail_note": "Doepfer A-100 8HP: 40.3 mm wide; holes at X7.5 and X7.5 + 5 x 5.08 = 32.9 (both rails). Skiff rails as modules/low: clear Y8.0..120.5.",
+    "main_pcb": {
+        "outline_mm": [
+            0.5,
+            9.25,
+            39.8,
+            119.25
+        ],
+        "thickness_mm": 1.6,
+        "copper_layers": 2,
+        "note": "39.3 x 110.0 mm, 0.5 mm inside the 40.3 mm panel each side and 1.25 mm inside the rail gap at each end (as modules/low); held by the six jack nuts (RV09 pots take no nut). 1 mm edge keep-out (root AGENTS.md): every courtyard >= 1.0 mm from the outline."
+    },
+    "jack_part": "QingPu WQP-PJ301M-12",
+    "panel_order": "Top to bottom (user brief + user board edits 2026-10-22): MIDI; DETUNE + MIX; ATTACK + RELEASE with the HR/AR/ASR LED column between them; REC LED + REC button (left), MODE button (centre), ENV OUT jack (right); AUDIO + FREQ + CV; RES + CURVE; LP / HP / BP OUT.",
+    "layout_note": "8HP leaves 37.3 mm between the 1 mm edge keep-outs. An RV09 courtyard is 12.82 mm wide, so three SVF knobs cannot share one row (lug copper would be 0.3 mm apart); FREQ sits between the two bypass jacks (jack 9.5 + pot 12.82 + jack 9.5 mm) and RESONANCE + CURVE take the next row.",
+    "jacks": [
+        {
+            "ref": "J1",
+            "role": "MIDI",
+            "XY": [
+                20.15,
+                17.5
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J2",
+            "role": "AUDIO (bypass in)",
+            "XY": [
+                7.5,
+                76.5
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J3",
+            "role": "CV (bypass in)",
+            "XY": [
+                32.8,
+                76.5
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J5",
+            "role": "ENV OUT (envelope CV 0..5 V)",
+            "XY": [
+                30.9,
+                63.9
+            ],
+            "rot": 90.0
+        },
+        {
+            "ref": "J4",
+            "role": "LP OUT",
+            "XY": [
+                7.5,
+                110.1
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J6",
+            "role": "HP OUT",
+            "XY": [
+                20.15,
+                110.1
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J7",
+            "role": "BP OUT",
+            "XY": [
+                32.8,
+                110.1
+            ],
+            "rot": 0.0
+        }
+    ],
+    "pot_part": "Song Huei R0904N (user stock 50k / 1M linear), vertical snap-in, no bushing, no nut, on the Bread Modular Potentiometer_RV09 footprint (as modules/low)",
+    "pot_shaft_offset_from_footprint_origin_mm": [
+        -0.127,
+        -0.508
+    ],
+    "pots": [
+        {
+            "ref": "RV1",
+            "role": "DETUNE (50k)",
+            "shaft_XY": [
+                10.15,
+                30.45
+            ]
+        },
+        {
+            "ref": "RV2",
+            "role": "MIX (50k)",
+            "shaft_XY": [
+                30.15,
+                30.45
+            ]
+        },
+        {
+            "ref": "RV3",
+            "role": "ATTACK (50k)",
+            "shaft_XY": [
+                10.15,
+                46.5
+            ]
+        },
+        {
+            "ref": "RV4",
+            "role": "RELEASE (50k)",
+            "shaft_XY": [
+                30.15,
+                46.5
+            ]
+        },
+        {
+            "ref": "RV6",
+            "role": "FREQ (1M)",
+            "shaft_XY": [
+                20.15,
+                76.5
+            ]
+        },
+        {
+            "ref": "RV5",
+            "role": "RESONANCE (500k)",
+            "shaft_XY": [
+                11.773,
+                91.3
+            ]
+        },
+        {
+            "ref": "RV7",
+            "role": "CURVE (50k)",
+            "shaft_XY": [
+                26.2,
+                91.3
+            ]
+        }
+    ],
+    "leds": [
+        {
+            "ref": "D4",
+            "role": "HR",
+            "XY": [
+                20.3,
+                57.9
+            ]
+        },
+        {
+            "ref": "D5",
+            "role": "AR",
+            "XY": [
+                20.3,
+                53.2
+            ]
+        },
+        {
+            "ref": "D6",
+            "role": "ASR",
+            "XY": [
+                20.3,
+                48.5
+            ]
+        },
+        {
+            "ref": "D7",
+            "role": "REC",
+            "XY": [
+                9.23,
+                58.2
+            ]
+        }
+    ],
+    "led_note": "3 mm THT on F at rotation 0 (pads side by side, anode pad 2 on the right), placed by the pad centre = body centre; dome flush with the panel front as modules/8bit (model Z +3.3).",
+    "buttons": [
+        {
+            "ref": "SW1",
+            "role": "MODE",
+            "XY": [
+                19.7,
+                64.4
+            ],
+            "rot": 180.0
+        },
+        {
+            "ref": "SW2",
+            "role": "REC",
+            "XY": [
+                9.35,
+                64.4
+            ],
+            "rot": 180.0
+        }
+    ],
+    "button_note": "Generic 6 x 6 mm THT tact (7 mm), stock SW_PUSH_6mm_H7.3mm on F, placed by the pad-pattern centre = stem centre, rot 180 (pad 1 signal on the bottom row) as modules/8bit; pressed through the panel by the modules/8bit printed cap (panels/button-actuator).",
+    "panel_hole_diameters_mm": {
+        "jack": 6.2,
+        "pot": 7.2,
+        "led": 3.2,
+        "button": 4.2
+    },
+    "stack_Z_mm": {
+        "led_body_bottom": 6.3,
+        "led_model_body_bottom": 3.0,
+        "note": "As modules/8bit (LED dome flush with the 1.6 mm FR4 panel front)."
+    },
+    "vactrol_part": "Chinese VTL5C-type vactrol, Bread Modular VTL5C footprint + modules/low courtyard. Mounted on B (hand-soldered, leads soldered on F), as modules/low and modules/vca-mix.",
+    "vactrols": [
+        {
+            "ref": "U8",
+            "side": "B",
+            "XY": [
+                7.75,
+                19.0
+            ],
+            "rot": 0,
+            "note": "SVF integrator 1 (HP -> BP). Top-left beside the MIDI jack, vertical: body X2.4..13.1, Y11.1..26.9; LED pads (1, 2) at the top (Y12.65), LDR pads (3, 4) at the bottom (Y25.35), 0.15 mm above the DETUNE courtyard. The only B spots with no pad-in-courtyard conflict (research.md 4); U5B and C10 go right beside it so the summing node stays short."
+        },
+        {
+            "ref": "U7",
+            "side": "B",
+            "XY": [
+                28.5,
+                19.0
+            ],
+            "rot": 0,
+            "note": "SVF integrator 2 (BP -> LP). Top-right beside the MIDI jack, mirror of U8: body X23.1..33.9; U6A and C11 go right beside it."
+        }
+    ],
+    "power_header": {
+        "ref": "J10",
+        "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+        "side": "B",
+        "pin1_XY_mm": [
+            34.41,
+            98.46
+        ],
+        "column_X_mm": [
+            34.41,
+            36.95
+        ],
+        "pin_rows_Y_mm": [
+            98.46,
+            95.92,
+            93.38,
+            90.84,
+            88.3
+        ],
+        "orientation": "Vertical at the right edge (user placement S2): rot 180 on B, pin 1/2 (-12 V) at the bottom row Y98.46, pins 9/10 (+12 V) at the top row Y88.3, odd pins in the left column.",
+        "idc16_socket_envelope_mm": {
+            "X": [
+                31.88,
+                39.48
+            ],
+            "Y": [
+                76.87,
+                102.27
+            ],
+            "bottom_above_B_mm": 2.5
+        },
+        "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the board. B-side parts placed under it later must stay <= 2 mm tall.",
+        "edge_note": "P3: moved 1.25 mm left (user OK 2026-10-22): outer pads 2.0 mm and the courtyard 1.03 mm from the right edge; the IDC16 socket envelope ends at X39.48, inside the 40.3 mm panel."
+    },
+    "back_side_tht": [
+        {
+            "ref": "J10",
+            "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+            "XY": [
+                35.68,
+                93.38
+            ],
+            "rot": 180,
+            "note": "right edge beside RES/CURVE, vertical, pin 1 (-12 V) at the bottom; P3 1.25 mm left of the user S2 spot for the 1 mm edge keep-out"
+        },
+        {
+            "ref": "J11",
+            "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+            "XY": [
+                36.5,
+                20.27
+            ],
+            "rot": 0,
+            "note": "UPDI (pin 1 UPDI at Y19.0, pin 2 GND at Y21.54), on B at the right edge beside the MIDI jack"
+        }
+    ],
+    "smd_parking": {
+        "side": "B",
+        "origin_XY": [
+            46.0,
+            12.0
+        ],
+        "pitch_XY": [
+            8.0,
+            7.0
+        ],
+        "columns": 8,
+        "note": "Every SMD part waits here, off the board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer)."
+    },
+    "panel_labels": [
+        {
+            "text": "ACID",
+            "XY": [
+                20.15,
+                5.5
+            ],
+            "size": 2.5
+        },
+        {
+            "text": "MIDI",
+            "XY": [
+                20.15,
+                11.0
+            ],
+            "size": 1.4
+        },
+        {
+            "text": "DETUNE",
+            "XY": [
+                10.15,
+                23.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "MIX",
+            "XY": [
+                30.15,
+                23.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "ATTACK",
+            "XY": [
+                10.15,
+                39.6
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "RELEASE",
+            "XY": [
+                30.15,
+                39.6
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "FREQ",
+            "XY": [
+                20.15,
+                69.6
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "RES",
+            "XY": [
+                11.773,
+                84.4
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CURVE",
+            "XY": [
+                26.2,
+                84.4
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "ASR",
+            "XY": [
+                17.25,
+                48.5
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "AR",
+            "XY": [
+                17.25,
+                53.2
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "HR",
+            "XY": [
+                17.25,
+                57.9
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "REC",
+            "XY": [
+                13.2,
+                58.2
+            ],
+            "size": 1.0
+        },
+        {
+            "text": "MODE",
+            "XY": [
+                19.7,
+                60.95
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "AUDIO",
+            "XY": [
+                7.5,
+                70.4
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CV",
+            "XY": [
+                32.8,
+                70.4
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "ENV OUT",
+            "XY": [
+                30.9,
+                57.8
+            ],
+            "size": 1.0
+        },
+        {
+            "text": "LP",
+            "XY": [
+                7.5,
+                104.0
+            ],
+            "size": 1.4
+        },
+        {
+            "text": "HP",
+            "XY": [
+                20.15,
+                104.0
+            ],
+            "size": 1.4
+        },
+        {
+            "text": "BP",
+            "XY": [
+                32.8,
+                104.0
+            ],
+            "size": 1.4
+        }
+    ],
+    "vactrol_note": "Both SVF vactrols sit on B in the two top corners (P1 search, research/place/vactrol_search.py): every spot near the SVF knobs stacks a vactrol pad inside a pot courtyard (the modules/low U5 pattern); these two have no DRC conflict. Only the LED drive (low impedance, DC) and the op-amp-driven LDR ends travel; the integrator op-amps sit at the vactrols.",
+    "jack_note": "Jacks placed by the footprint origin = barrel = panel hole; rot per jack (J5 ENV OUT at 90, user choice; P3 moved 0.625 mm left for the 1 mm edge keep-out, rot 270 would put its sleeve pad on the MODE button pad)."
+}

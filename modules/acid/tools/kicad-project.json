@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/acid.kicad_pcb",
+  "root_schematic": "../hardware/acid.kicad_sch",
+  "dependencies": [
+    "../hardware/ACID.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}
