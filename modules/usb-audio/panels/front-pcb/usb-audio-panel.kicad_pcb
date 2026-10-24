@@ -1,0 +1,1089 @@
+(kicad_pcb
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(general
+		(thickness 1.6)
+		(legacy_teardrops no)
+	)
+	(paper "A4")
+	(title_block
+		(title "Big Modular - USB-AUDIO 6HP front panel")
+		(rev "S1")
+		(company "Big Modular")
+		(comment 1 "S1 FIT STUDY: passive panel, NPTH only (holes + USB-C slot), no copper")
+		(comment 2 "Geometry contract: ../../docs/geometry.json")
+	)
+	(layers
+		(0 "F.Cu" signal)
+		(2 "B.Cu" signal)
+		(9 "F.Adhes" user "F.Adhesive")
+		(11 "B.Adhes" user "B.Adhesive")
+		(13 "F.Paste" user)
+		(15 "B.Paste" user)
+		(5 "F.SilkS" user "F.Silkscreen")
+		(7 "B.SilkS" user "B.Silkscreen")
+		(1 "F.Mask" user)
+		(3 "B.Mask" user)
+		(17 "Dwgs.User" user "User.Drawings")
+		(19 "Cmts.User" user "User.Comments")
+		(21 "Eco1.User" user "User.Eco1")
+		(23 "Eco2.User" user "User.Eco2")
+		(25 "Edge.Cuts" user)
+		(27 "Margin" user)
+		(31 "F.CrtYd" user "F.Courtyard")
+		(29 "B.CrtYd" user "B.Courtyard")
+		(35 "F.Fab" user)
+		(33 "B.Fab" user)
+		(39 "User.1" user)
+		(41 "User.2" user)
+		(43 "User.3" user)
+		(45 "User.4" user)
+	)
+	(setup
+		(pad_to_mask_clearance 0)
+		(allow_soldermask_bridges_in_footprints no)
+		(tenting
+			(front yes)
+			(back yes)
+		)
+		(covering
+			(front no)
+			(back no)
+		)
+		(plugging
+			(front no)
+			(back no)
+		)
+		(capping no)
+		(filling no)
+		(pcbplotparams
+			(layerselection 0x00000000_00000000_55555555_5755f5ff)
+			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
+			(disableapertmacros no)
+			(usegerberextensions no)
+			(usegerberattributes yes)
+			(usegerberadvancedattributes yes)
+			(creategerberjobfile yes)
+			(dashed_line_dash_ratio 12)
+			(dashed_line_gap_ratio 3)
+			(svgprecision 4)
+			(plotframeref no)
+			(mode 1)
+			(useauxorigin no)
+			(pdf_front_fp_property_popups yes)
+			(pdf_back_fp_property_popups yes)
+			(pdf_metadata yes)
+			(pdf_single_document no)
+			(dxfpolygonmode yes)
+			(dxfimperialunits yes)
+			(dxfusepcbnewfont yes)
+			(psnegative no)
+			(psa4output no)
+			(plot_black_and_white yes)
+			(sketchpadsonfab no)
+			(plotpadnumbers no)
+			(hidednponfab no)
+			(sketchdnponfab yes)
+			(crossoutdnponfab yes)
+			(subtractmaskfromsilk no)
+			(outputformat 1)
+			(mirror no)
+			(drillshape 1)
+			(scaleselection 1)
+			(outputdirectory "")
+		)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "2897e5fe-a6a8-4495-9946-6871ded647c8")
+		(at 122 96)
+		(property "Reference" "H7"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "9c23fcfa-d0da-48bd-9c41-2e22d679043c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4c74713d-d1ca-4169-9bf5-2451e7c31c4f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0f06b6c2-093e-4ba9-9180-18b96a5af017")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "deb15ac9-9b95-46a6-9de2-371f3d35c46f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H7"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "efc366b2-990b-4ec7-a3c6-96065ce99304")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "0e65d239-a302-4cb6-a114-e88b0466573c")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 7.2 7.2)
+			(drill 7.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "6d223c82-9245-4b23-ae24-2981acae9821")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "32eedd47-5adb-4897-939f-02c000debb26")
+		(at 122 112)
+		(property "Reference" "H8"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "7f829e29-7b26-46e1-9912-b2e4823f923e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "68c29b6f-a3f1-4885-9277-3fb15703a24c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "25eab176-1cea-4b15-8859-fcf8a8d34082")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "070f7dab-4b7f-4e72-98a4-76a6096cba6a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H8"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "fa9b331b-3310-46c9-afbe-ce10ccc4c1a4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "43af4d6d-1753-4bf1-9aa4-c0978e4b4549")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 7.2 7.2)
+			(drill 7.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "3acb18b8-c868-4877-a9e9-1de03dd7de6b")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "4923eb23-0066-44e4-afa1-91b57d69371b")
+		(at 107.5 53)
+		(property "Reference" "H1"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "e271b5cf-ebc0-4a66-b037-7da7e23b22fa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7214d68f-99f0-43cf-881c-e57129e68434")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b4de5e49-0c6e-4562-aebf-fd0bdf4db298")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "437df906-0a84-493d-89bf-e6b9ff6d5ee8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H1"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "0b1da3ee-61b9-4318-ad3e-3747a4294e8b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 1.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "ae4bbd74-003b-43a1-9751-9419799a5c55")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 3.2 3.2)
+			(drill 3.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "5058dfa3-628b-4b0d-8e2b-e0d59d393691")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "65940431-ed20-491a-9683-ff6c4ea6105a")
+		(at 108 145)
+		(property "Reference" "H10"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "ef739aa6-ecb8-4be3-8ba0-fe940c6796e3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "63cd8e88-3ed4-4b29-99ed-8286c511f219")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4fe8203d-6af9-400b-b084-12956b4624f9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8bd936a4-13f7-4f7d-b9f0-22c4067be2d3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H10"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "ba63bfa9-aef7-4a87-a6f0-c55876999bea")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "c52ff1de-7641-487d-b25c-b8d4ff7e027f")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 7.2 7.2)
+			(drill 7.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "315a3bf0-2d6c-4710-8b75-848454c833cc")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "a912d46f-0a47-4dae-ad2c-15404f46fbf3")
+		(at 122 145)
+		(property "Reference" "H6"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "bf38bf2a-1502-456f-9cfa-0eb6ccff68c2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2385f03e-edb0-42dc-830c-06152a20af2b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e7ad6779-0e54-4afd-94ed-9460847cfe7b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b5e188a6-a428-422d-b79b-821c0a6cc2a5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H6"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "a02dfa3b-a34d-48a2-a8e3-ff4bab98da92")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.35 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "6205fd25-f69c-4a38-80a7-1563816a98c0")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 6.2 6.2)
+			(drill 6.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "c273c324-dcd0-4fb0-9daf-c05194c71b0d")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "b29a0e51-dc8f-4758-b98e-453a76c52b43")
+		(at 107.5 175.5)
+		(property "Reference" "H2"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "6ef187bb-5c84-4bd0-a6fe-712c3859f0e7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f7572e75-b240-4b30-bb40-6705730b4e42")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6331c34a-2d0b-45b7-a98f-af6caf6e8869")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "63e574fc-d799-4763-af0b-49553ea69d5c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H2"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "74d8b4fe-8d46-486d-a927-284ad2b63e9a")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 1.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "97c0fc97-3079-40ac-a044-ec470203a578")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 3.2 3.2)
+			(drill 3.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "3566be29-34ac-4707-9b20-e29c3977e36b")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "b3d04c61-80ff-4bbd-8579-da316b125b9c")
+		(at 122 129)
+		(property "Reference" "H5"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "a06e6cd3-cb2d-414f-bcdf-112090d98782")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a81d1a4b-243c-4468-b239-86a9ddd88e8b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8317482b-f6b4-4c36-a58d-3635fac44689")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "296f1d6a-8b18-4a33-8b98-64314f795ad6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H5"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "3c7f5a70-06df-4e9d-b97e-672ae7426961")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.35 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "64377421-5ef7-4543-9db0-d43b2e2bda76")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 6.2 6.2)
+			(drill 6.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "c879b34f-4280-4f52-b74c-7936de623985")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "c37d41f0-ec92-43ec-b144-0f18887d2234")
+		(at 108 129)
+		(property "Reference" "H9"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "f813f19f-8cb9-48b1-b95d-480487f5a6f3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "668a53c1-8e7d-440b-97ed-f18cfa5c3fb1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "95a0bb28-d5c9-4bd2-8eaf-0adc6826b6ce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b3e991a6-b5a2-4853-8a99-decdad56c009")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H9"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "27e353d0-f776-40bd-beba-b8382e974858")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.85 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "8ce745a3-11c3-4155-96e3-4a6acb56f06d")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 7.2 7.2)
+			(drill 7.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "17121de4-c73c-4afb-8718-41a0f25d2de5")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "ccf255a8-678e-463b-b8fc-48c3a2718b7d")
+		(at 115 66)
+		(property "Reference" "H11"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "862d26f5-4ee8-4ccb-a9a3-e3588fbd18e1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "abf96071-3245-41f6-82c3-b4e47ab8c8b8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f81b7d2e-7d32-489e-b675-146b6378690c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4bc7465e-1f0e-4a6a-b3e4-18de21dd17ff")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H11"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "38002653-1ceb-484d-9816-e5a33d9b1bf1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -5 -2.1)
+			(end 5 2.1)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "2a7fcdfd-0882-4b1f-bf7e-4cbbddb48947")
+		)
+		(pad "" np_thru_hole oval
+			(at 0 0)
+			(size 9.5 3.7)
+			(drill oval 9.5 3.7)
+			(layers "*.Cu" "*.Mask")
+			(thermal_bridge_angle 45)
+			(uuid "1327e4f5-4fd2-4598-b38e-be5b57886705")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "e37e02a3-cbd6-4e7b-8df4-876a008b77ad")
+		(at 108 96)
+		(property "Reference" "H3"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "788bd631-3f65-4e17-97aa-40e8331c048e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0cfe2ce9-e808-4ea4-be6e-642f643d2738")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c02d0ec8-abf0-46e5-af43-46cfd0ba175f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3f7293e1-ae8a-4dd3-823c-b4e1166581cf")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H3"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "3b2ea620-61d0-46a7-ab33-049300d301d2")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.35 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "876f3946-746b-4801-8ee6-a22590dc0f40")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 6.2 6.2)
+			(drill 6.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "b79a46d0-f432-4705-82ff-6a851df41ce7")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "f29fb7d6-da86-4343-a5f2-ce7dec77ea23")
+		(at 108 112)
+		(property "Reference" "H4"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "c80a89c0-0757-4b4e-a990-5e3824b9e31d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "15019e54-50d7-431f-a530-711e2c2a1ce4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "d3c34826-1a90-451f-9e20-d0c7e0b38ca0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8eca649a-370b-432f-ab12-16e87cc483bd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H4"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "98ffb363-9188-42e0-a51e-cef2071ee6d2")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.35 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "aa637eb7-13b0-4330-954e-ee80cc99cea0")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 6.2 6.2)
+			(drill 6.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "2b61818d-ce06-4930-b39b-86b6a896721f")
+		)
+		(embedded_fonts no)
+	)
+	(gr_rect
+		(start 100 50)
+		(end 130 178.5)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "Edge.Cuts")
+		(uuid "eab68334-a99e-4fc3-b560-3fe083928388")
+	)
+	(gr_text "IN 1"
+		(at 108 89.9 0)
+		(layer "F.SilkS")
+		(uuid "f4bbd6a7-948f-4625-8399-4eab31d99756")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.18)
+			)
+		)
+	)
+	(gr_text "IN 2"
+		(at 108 105.9 0)
+		(layer "F.SilkS")
+		(uuid "01fe81ac-ee91-44e8-bf0a-6a6d61ed56fa")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.18)
+			)
+		)
+	)
+	(gr_text "USB"
+		(at 115 70.8 0)
+		(layer "F.SilkS")
+		(uuid "e113f2eb-217c-4ce9-bc76-63492cfc32cb")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.18)
+			)
+		)
+	)
+	(gr_text "BIG MODULAR"
+		(at 115 163.5 0)
+		(layer "F.SilkS")
+		(uuid "a9c532f6-39fe-4b46-b7f9-b26e9e11122e")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.18)
+			)
+		)
+	)
+	(gr_text "OUT 1"
+		(at 122 122.9 0)
+		(layer "F.SilkS")
+		(uuid "851778f0-9b24-424e-ba04-240add847f79")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.18)
+			)
+		)
+	)
+	(gr_text "OUT 2"
+		(at 122 138.9 0)
+		(layer "F.SilkS")
+		(uuid "d9ea4301-7950-40bc-9372-5f748faac787")
+		(effects
+			(font
+				(size 1.2 1.2)
+				(thickness 0.18)
+			)
+		)
+	)
+	(gr_text "USB AUDIO"
+		(at 115 59.4 0)
+		(layer "F.SilkS")
+		(uuid "cbadb149-1abd-4187-9393-07bbd4f6a1c8")
+		(effects
+			(font
+				(size 2 2)
+				(thickness 0.3)
+			)
+		)
+	)
+	(embedded_fonts no)
+)

@@ -1,0 +1,345 @@
+{
+ "revision": "S1 placement (THT only + the vertical USB-C and the board-to-board headers). 6HP, two boards: carrier (jack/pot board, 4 layers) and MCU board (4 layers) stacked on the carrier F side on 2.54 mm pin headers. Every other SMD part parked off-board for group-by-group placement. Not routed.",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY, for the carrier, the MCU board and the panel. The carrier F side faces the panel; the MCU board sits on the carrier F side with its own F side facing the panel, so both KiCad top views equal the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 6,
+ "panel_mm": [
+  30.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "rail_holes_mm": [
+  [
+   7.5,
+   3.0,
+   3.2
+  ],
+  [
+   7.5,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   29.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "29.0 x 110.0 mm carrier as modules/32bit. Held by the four jack nuts; the MCU board hangs on it."
+ },
+ "mcu_pcb": {
+  "outline_mm": [
+   0.5,
+   10.0,
+   29.5,
+   39.55
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "29.0 x 29.55 mm (R1: 2.55 mm longer than S1 so U101 fits below U102 and the USB-C). 4 layers for the USB 2.0 HS pair (90 ohm differential over In1 GND). All SMD on F (one assembly side), facing the panel."
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = carrier F.Cu, +Z toward the panel",
+  "panel_rear_seat": 10.0,
+  "note": "PJ301M-12 boss top = panel rear (as modules/8bit/32bit).",
+  "header_plastic": 2.5,
+  "mcu_board_bottom": 2.5,
+  "mcu_board_top": 4.1,
+  "usbc_height_above_mcu_board": 8.8,
+  "usbc_top": 12.9,
+  "panel_front": 11.6,
+  "usbc_proud_of_panel_front": 1.3,
+  "usbc_note": "USB-C needs its mouth no more than ~0.3 mm behind the panel front or the plug cannot seat (receptacle depth 6.20 mm vs plug shell 6.51-6.65 mm). HRO TYPE-C-31-D-15 (8.8 mm) on a 1.6 mm MCU board on 2.5 mm header plastic puts it 1.3 mm proud; the same land takes D-15A..D (9.3/10/10.5/12.4 mm). A 1.0 mm MCU board would make it 0.7 mm proud."
+ },
+ "jack_rotation_deg": 0,
+ "jacks": [
+  {
+   "ref": "J2",
+   "role": "IN1",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    8.0,
+    46.0
+   ]
+  },
+  {
+   "ref": "J3",
+   "role": "IN2",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    8.0,
+    62.0
+   ]
+  },
+  {
+   "ref": "J4",
+   "role": "OUT1",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.0,
+    79.0
+   ]
+  },
+  {
+   "ref": "J5",
+   "role": "OUT2",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    22.0,
+    95.0
+   ]
+  }
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "IN1 volume 0..1",
+   "shaft_XY": [
+    22.0,
+    46.0
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV2",
+   "role": "IN2 volume 0..1",
+   "shaft_XY": [
+    22.0,
+    62.0
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV3",
+   "role": "OUT1 volume 0..1",
+   "shaft_XY": [
+    8.0,
+    79.0
+   ],
+   "value": "50k"
+  },
+  {
+   "ref": "RV4",
+   "role": "OUT2 volume 0..1",
+   "shaft_XY": [
+    8.0,
+    95.0
+   ],
+   "value": "50k"
+  }
+ ],
+ "pot_footprint": "Potentiometer_RV09",
+ "pot_shaft_offset_mm": [
+  -0.127,
+  -0.508
+ ],
+ "layout_note": "User brief 2026-10-23: inputs = socket then pot (left to right), outputs = pot then socket. Columns X8.0 / X22.0 keep the RV09 courtyards >= 1.0 mm from the carrier edge (1.55 / 1.05 mm). Rows IN1 Y46, IN2 Y62, OUT1 Y79, OUT2 Y95 (16-17 mm pitch, 1 mm between courtyards in a row pair). The MCU board takes the top band (Y10-37) with the USB-C at X15 Y16.",
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2
+ },
+ "usb_slot": {
+  "XY": [
+   15.0,
+   16.0
+  ],
+  "size_mm": [
+   9.5,
+   3.7
+  ],
+  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm) with ~0.27 mm clearance a side; the shell passes through and stands 1.3 mm proud."
+ },
+ "carrier_headers": [
+  {
+   "ref": "J6",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    3.4,
+    13.0
+   ],
+   "side": "F"
+  },
+  {
+   "ref": "J7",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    26.6,
+    13.0
+   ],
+   "side": "F"
+  }
+ ],
+ "mcu_parts": [
+  {
+   "ref": "J102",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    3.4,
+    13.0
+   ],
+   "side": "F",
+   "note": "same holes as carrier J6"
+  },
+  {
+   "ref": "J103",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    26.6,
+    13.0
+   ],
+   "side": "F",
+   "note": "same holes as carrier J7"
+  },
+  {
+   "ref": "J101",
+   "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical",
+   "XY": [
+    15.0,
+    16.0
+   ],
+   "rot": 90,
+   "side": "F"
+  }
+ ],
+ "back_side_parts": [
+  {
+   "ref": "J1",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    15.0,
+    110.92
+   ],
+   "rot": 180,
+   "band": "Eurorack power, bottom centre (as modules/32bit). THT, B side"
+  },
+  {
+   "ref": "J8",
+   "footprint": "PinHeader_1x04_P2.54mm_Vertical",
+   "XY": [
+    24.0,
+    106.5
+   ],
+   "rot": 0,
+   "band": "SWD (WCH-LinkE): pin 1 +3V3 at the top, B side, beside J1"
+  },
+  {
+   "ref": "SW1",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    6.0,
+    108.5
+   ],
+   "rot": 0,
+   "band": "RESET, B side, bottom-left"
+  },
+  {
+   "ref": "SW2",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    6.0,
+    113.5
+   ],
+   "rot": 0,
+   "band": "BOOT, B side, below RESET"
+  }
+ ],
+ "power_header": {
+  "ref": "J1",
+  "pin1_XY_mm": [
+   13.73,
+   116.0
+  ],
+  "column_X_mm": [
+   13.73,
+   16.27
+  ],
+  "idc16_socket_envelope_mm": {
+   "X": [
+    11.2,
+    18.8
+   ],
+   "Y": [
+    94.41,
+    119.81
+   ],
+   "bottom_above_B_mm": 2.5
+  }
+ },
+ "panel_labels": [
+  {
+   "text": "USB AUDIO",
+   "XY": [
+    15.0,
+    9.4
+   ],
+   "size": 2.0
+  },
+  {
+   "text": "USB",
+   "XY": [
+    15.0,
+    20.8
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 1",
+   "XY": [
+    8.0,
+    39.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 2",
+   "XY": [
+    8.0,
+    55.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 1",
+   "XY": [
+    22.0,
+    72.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 2",
+   "XY": [
+    22.0,
+    88.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    15.0,
+    113.5
+   ],
+   "size": 1.2
+  }
+ ],
+ "parking": {
+  "origin_XY": [
+   38.0,
+   10.0
+  ],
+  "gap_mm": 1.5,
+  "column_height_mm": 110.0
+ }
+}
