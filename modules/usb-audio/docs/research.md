@@ -142,3 +142,12 @@ R/C (except the C0G and 2512 parts), AMS1117, B5819W are Basic. Live audit of th
   DC calibration table.
 - Bench: 192 kHz I2S slave timing on the CH32V307 (no I2S timing table in its datasheet), output
   power-up transient, thermal of U2/R1.
+
+## 8. Authorized USB / output-resistor repair
+
+Carrier S3/R3 and MCU S1/R2 supersede the earlier routing notes above. USB now uses
+specified-width fanouts and a paired MCU-side section over explicit ground references
+on both F/B, with balanced per-orientation via counts; the two-layer connector escapes
+are intentional. R36/R38 and R37/R39 form 1k/0.5 W networks from two Basic 2k parts.
+See [the detailed repair and verification note](usb-output-fix.md). The other review
+issues were explicitly deferred by the user; no claim that they passed is made.

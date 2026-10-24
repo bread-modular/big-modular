@@ -46,8 +46,8 @@ MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and
 
 # Projects built by this script: circuit module -> (project name, title, revision, comment)
 PROJECTS = {
-    'circuit_carrier': ('usb-audio', 'Big Modular - USB-AUDIO carrier (jack/pot board)', 'S2',
-                        'SCHEMATIC S2 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; '
+    'circuit_carrier': ('usb-audio', 'Big Modular - USB-AUDIO carrier (jack/pot board)', 'S3',
+                        'SCHEMATIC S3 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; '
                         'MCU board on 2.54 mm headers J6/J7'),
     'circuit_mcu': ('usb-audio-mcu', 'Big Modular - USB-AUDIO MCU board', 'S1',
                     'SCHEMATIC S1 - CH32V307RCT6 USB 2.0 High-Speed (UAC2), vertical USB-C through the panel; '

@@ -63,3 +63,13 @@
 - JLCPCB export (2026-10-24, `jlcpcb/README.md`): carrier 72 parts bottom, MCU board 23 parts top,
   live audit: C20-C23 (C0G 0603) and R1 (2512) are Extended R/C, user decision open.
 - Not done: firmware, bench.
+
+## Scoped repair (carrier S3/R3, MCU S1/R2)
+
+User authorization: fix USB and R36/R37 only; other review findings deferred for now.
+See `docs/usb-output-fix.md` for actual path lengths, geometry, source references,
+resistor derating assumptions and the limits of the repair. No fixed/mechanical
+placements or MCU pins changed. Carrier R36/R38 and R37/R39 are 2k/0.25 W pairs in
+parallel (1k/0.5 W effective); MCU has an explicit JLC04161H-7628 stack, In2 USB GND
+island and USB_HS class. Run `tools/check_usb.py` in addition to the shared gate.
+Regulator, mute, firmware and other deferred items remain unchanged/unqualified.

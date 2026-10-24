@@ -1,11 +1,11 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio.kicad_sch",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/148/modules/usb-audio/hardware/usb-audio.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/148/modules/usb-audio/hardware/usb-audio.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio.kicad_pcb": "ed67556f2844d61cc1fc01c1c33227c9180f0cc385de373d4ef70c7de38b887f",
-    "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio.kicad_sch": "87139a2b2d0df0bd364a4a133c20ad58bf096d546e55226daacb5f2d4a414dd5"
+    "/home/azero/.okbrain/workspaces/big-modular/148/modules/usb-audio/hardware/usb-audio.kicad_pcb": "cb6e5914ed0b7469306e509f67f0f5c22af2417153b82ad040021bcda9f6e2ed",
+    "/home/azero/.okbrain/workspaces/big-modular/148/modules/usb-audio/hardware/usb-audio.kicad_sch": "4efe0e5ba31a7bf9f9bd1b43320f10fb4bb580f385f3b7988ac21d7caaeaf712"
   },
   "layers": [
     "F.Cu",
@@ -25,7 +25,7 @@
   "units": "mm",
   "side": "bottom",
   "include_through_hole": false,
-  "component_count": 72,
+  "component_count": 74,
   "bom_row_count": 29,
   "excluded": {
     "J1": "Not an SMD footprint (use --include-through-hole)",

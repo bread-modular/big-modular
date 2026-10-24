@@ -6,9 +6,9 @@
 	(paper "A2")
 	(title_block
 		(title "Big Modular - USB-AUDIO carrier (jack/pot board)")
-		(rev "S2")
+		(rev "S3")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S2 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; MCU board on 2.54 mm headers J6/J7")
+		(comment 1 "SCHEMATIC S3 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; MCU board on 2.54 mm headers J6/J7")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -4689,7 +4689,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n-> 50k volume (0..1) -> U7A/B follower -> 1k -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\nPower-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s."
+	(text "OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n-> 50k volume (0..1) -> U7A/B follower -> 2k || 2k (1k / 0.5W) -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\nPower-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s."
 		(exclude_from_sim no)
 		(at 322.58 223.52 0)
 		(effects
@@ -4733,7 +4733,7 @@
 		)
 		(uuid "b276629e-4447-5d16-8be4-15f107e50c39")
 	)
-	(text "BIG MODULAR USB-AUDIO - carrier (jack/pot board), S1. 2 in / 2 out, DC-coupled +/-5 V, CS4270 24-bit 192 kHz. Circuit intent: docs/research.md; placement: docs/geometry.json"
+	(text "BIG MODULAR USB-AUDIO - carrier (jack/pot board), S3. 2 in / 2 out, DC-coupled +/-5 V, CS4270 24-bit 192 kHz. Circuit intent: docs/research.md; placement: docs/geometry.json"
 		(exclude_from_sim no)
 		(at 20.32 20.32 0)
 		(effects
@@ -4958,6 +4958,12 @@
 		(uuid "7220c99b-2e48-537a-8414-53e4f63f846d")
 	)
 	(junction
+		(at 408.94 250.19)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "72cb49be-aaa8-5944-a7df-8137d5f6cbab")
+	)
+	(junction
 		(at 256.54 176.53)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5108,6 +5114,12 @@
 		(uuid "c6b44e31-6aab-5bed-ac72-91798a65b32d")
 	)
 	(junction
+		(at 408.94 283.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c7ae4ab4-bf4a-575b-af3e-b9f150507d50")
+	)
+	(junction
 		(at 71.12 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5138,6 +5150,12 @@
 		(uuid "e4887fe1-c0fb-5440-80db-d84b40d8894e")
 	)
 	(junction
+		(at 420.37 250.19)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e6518b49-f370-5b31-8f16-753454a42695")
+	)
+	(junction
 		(at 78.74 280.67)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5160,6 +5178,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "eb546a6e-a134-513e-9a2d-6572c41293c1")
+	)
+	(junction
+		(at 420.37 283.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eccafb90-c454-5d11-a000-4afa22e83d1a")
 	)
 	(junction
 		(at 279.4 190.5)
@@ -5583,6 +5607,16 @@
 	)
 	(wire
 		(pts
+			(xy 406.4 250.19) (xy 408.94 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f03bfb7-3889-5ec9-b756-de5a660755af")
+	)
+	(wire
+		(pts
 			(xy 111.76 101.6) (xy 116.84 101.6)
 		)
 		(stroke
@@ -5680,6 +5714,16 @@
 			(type default)
 		)
 		(uuid "244fd7ea-427a-5681-8727-9573f270804b")
+	)
+	(wire
+		(pts
+			(xy 420.37 275.59) (xy 420.37 283.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2472ddc2-f791-5180-abdc-d00bf0db1175")
 	)
 	(wire
 		(pts
@@ -5933,6 +5977,26 @@
 	)
 	(wire
 		(pts
+			(xy 420.37 242.57) (xy 420.37 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "397e4686-21bc-502c-9a0d-da112d26a4d7")
+	)
+	(wire
+		(pts
+			(xy 417.83 242.57) (xy 420.37 242.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "398be39c-b023-5a4c-a404-72a3c9cfed8c")
+	)
+	(wire
+		(pts
 			(xy 40.64 281.94) (xy 40.64 284.48)
 		)
 		(stroke
@@ -5960,6 +6024,16 @@
 			(type default)
 		)
 		(uuid "3a1a3dbc-bdcd-5c9e-8f5a-cdeb98f03c1f")
+	)
+	(wire
+		(pts
+			(xy 417.83 275.59) (xy 420.37 275.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a679f16-5f36-570f-99a0-092e9424a3ec")
 	)
 	(wire
 		(pts
@@ -6593,6 +6667,16 @@
 	)
 	(wire
 		(pts
+			(xy 408.94 242.57) (xy 408.94 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "764426d1-5c48-5054-9680-c2b504937062")
+	)
+	(wire
+		(pts
 			(xy 78.74 63.5) (xy 78.74 66.04)
 		)
 		(stroke
@@ -6640,6 +6724,16 @@
 			(type default)
 		)
 		(uuid "7987e156-d7eb-5123-b90f-19e713701295")
+	)
+	(wire
+		(pts
+			(xy 408.94 250.19) (xy 410.21 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79eac514-04e9-5612-8355-ee8383d089b7")
 	)
 	(wire
 		(pts
@@ -6863,6 +6957,16 @@
 	)
 	(wire
 		(pts
+			(xy 408.94 283.21) (xy 410.21 283.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8bbc82b1-91dc-59fe-b390-42fb975f3b6c")
+	)
+	(wire
+		(pts
 			(xy 44.45 245.11) (xy 46.99 245.11)
 		)
 		(stroke
@@ -7070,6 +7174,16 @@
 			(type default)
 		)
 		(uuid "9895527b-9a26-5f8f-8ebc-d00685a0e284")
+	)
+	(wire
+		(pts
+			(xy 408.94 275.59) (xy 408.94 283.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "98dd77d6-6de3-5d4c-9e7e-7e8d7f8dbb19")
 	)
 	(wire
 		(pts
@@ -7413,16 +7527,6 @@
 	)
 	(wire
 		(pts
-			(xy 406.4 250.19) (xy 410.21 250.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b171d916-6d33-5373-832a-a210923c30eb")
-	)
-	(wire
-		(pts
 			(xy 256.54 199.39) (xy 266.7 199.39)
 		)
 		(stroke
@@ -7603,6 +7707,16 @@
 	)
 	(wire
 		(pts
+			(xy 408.94 242.57) (xy 410.21 242.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c146e89a-7f4a-5899-86bb-8f9d342decf9")
+	)
+	(wire
+		(pts
 			(xy 114.3 245.11) (xy 118.11 245.11)
 		)
 		(stroke
@@ -7743,16 +7857,6 @@
 	)
 	(wire
 		(pts
-			(xy 406.4 283.21) (xy 410.21 283.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cb6d5c25-7460-532a-9aad-10c487a3fcca")
-	)
-	(wire
-		(pts
 			(xy 420.37 283.21) (xy 426.72 283.21)
 		)
 		(stroke
@@ -7810,6 +7914,16 @@
 			(type default)
 		)
 		(uuid "d54372c7-8713-580f-abe4-380731506ac9")
+	)
+	(wire
+		(pts
+			(xy 406.4 283.21) (xy 408.94 283.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d5d34ed2-d441-53f9-b2c9-218142d028bd")
 	)
 	(wire
 		(pts
@@ -8180,6 +8294,16 @@
 			(type default)
 		)
 		(uuid "eeae84e2-cdf7-5d2b-97c4-cafd7bb323ed")
+	)
+	(wire
+		(pts
+			(xy 408.94 275.59) (xy 410.21 275.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef7542b1-b339-52b2-9a9d-350a7aa28746")
 	)
 	(wire
 		(pts
@@ -17462,6 +17586,151 @@
 		)
 	)
 	(symbol
+		(lib_id "USBAUDIO:R")
+		(at 414.02 242.57 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7298c04c-cb7f-586e-bb2d-c47d7adc7d03")
+		(property "Reference" "R38"
+			(at 414.02 240.03 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2k"
+			(at 414.02 245.11 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "USBAUDIO:R_1206_3216Metric"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.25W"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Parallel with R36: 1k / 0.5W effective. Opposing 5.5V output / 12.6V patch: <=0.166W each incl 1% R. Resistor sizing to 85C; U7 and simultaneous-fault thermal qualification still required."
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17944"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "1206W4F2001T5E"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 414.02 242.57 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9dc7a8be-f18a-516b-ad91-ebc78cff0e08")
+		)
+		(pin "2"
+			(uuid "2509b09f-38dc-534b-9a2d-ecf63289a386")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "R38")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "USBAUDIO:C")
 		(at 220.98 340.36 0)
 		(unit 1)
@@ -21480,7 +21749,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "2k"
 			(at 414.02 252.73 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21534,7 +21803,7 @@
 				)
 			)
 		)
-		(property "Note" "Output series: short / mis-patch limit (1206: 0.14 W on a permanent +/-12 V mis-patch)"
+		(property "Tolerance" "1%"
 			(at 414.02 250.19 0)
 			(hide yes)
 			(show_name no)
@@ -21545,7 +21814,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C4410"
+		(property "Note" "Parallel with R38: 1k / 0.5W effective. Opposing 5.5V output / 12.6V patch: <=0.166W each incl 1% R. Resistor sizing to 85C; U7 and simultaneous-fault thermal qualification still required."
 			(at 414.02 250.19 0)
 			(hide yes)
 			(show_name no)
@@ -21556,7 +21825,18 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F1001T5E"
+		(property "LCSC" "C17944"
+			(at 414.02 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "1206W4F2001T5E"
 			(at 414.02 250.19 0)
 			(hide yes)
 			(show_name no)
@@ -21739,7 +22019,7 @@
 				)
 			)
 		)
-		(property "Value" "1k"
+		(property "Value" "2k"
 			(at 414.02 285.75 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21793,7 +22073,7 @@
 				)
 			)
 		)
-		(property "Note" "Output series: short / mis-patch limit (1206: 0.14 W on a permanent +/-12 V mis-patch)"
+		(property "Tolerance" "1%"
 			(at 414.02 283.21 0)
 			(hide yes)
 			(show_name no)
@@ -21804,7 +22084,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C4410"
+		(property "Note" "Parallel with R39: 1k / 0.5W effective. Opposing 5.5V output / 12.6V patch: <=0.166W each incl 1% R. Resistor sizing to 85C; U7 and simultaneous-fault thermal qualification still required."
 			(at 414.02 283.21 0)
 			(hide yes)
 			(show_name no)
@@ -21815,7 +22095,18 @@
 				)
 			)
 		)
-		(property "MPN" "1206W4F1001T5E"
+		(property "LCSC" "C17944"
+			(at 414.02 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "1206W4F2001T5E"
 			(at 414.02 283.21 0)
 			(hide yes)
 			(show_name no)
@@ -24818,6 +25109,151 @@
 			(project "usb-audio"
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "#PWR041")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:R")
+		(at 414.02 275.59 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "cabd22db-eacf-539c-af51-f8116b55bd9a")
+		(property "Reference" "R39"
+			(at 414.02 273.05 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2k"
+			(at 414.02 278.13 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "USBAUDIO:R_1206_3216Metric"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.25W"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Parallel with R37: 1k / 0.5W effective. Opposing 5.5V output / 12.6V patch: <=0.166W each incl 1% R. Resistor sizing to 85C; U7 and simultaneous-fault thermal qualification still required."
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C17944"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "1206W4F2001T5E"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 414.02 275.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "316ea463-fe8e-5049-84eb-627c3ecb8a71")
+		)
+		(pin "2"
+			(uuid "1b477bf3-cfc1-53ae-af03-3d3ed42ffe6d")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "R39")
 					(unit 1)
 				)
 			)
