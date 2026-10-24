@@ -1,135 +1,113 @@
-# HATS — manufacturing export (S2/R1)
+# HATS manufacturing export — S3 / R2 / P4
 
-Generated on 2026-10-24 from the S2 schematic and the R1 manual divide-and-conquer routed
-board (4-layer, SW1/U7 DRC exclusions), using the shared `opt/kicad-tools/jlcpcb/export.py`
-exporter, on user direction. Never hand-edit these files: change the sources, then re-export
-with the commands below.
+Generated from the current S3 schematic, R2 routed carrier and P4 panel using the unchanged
+shared `opt/kicad-tools/jlcpcb/export.py`. Recording hardware is removed, pot row pitch is
+34 mm, NOISE IN detection has R49/D7 protection, and all copper has >=1 mm edge setback.
+**Complete matched export, not supplier-accepted or bench-validated.**
 
-## Contents
+## Files to upload
 
-| Path | Data |
+| Order | Files | Configuration |
+|---|---|---|
+| Carrier PCB | `hats-gerbers.zip` | 4 layers, FR4, 1.6 mm, 29 x 110 mm; F/In1 GND/In2 +3V3/B; ordinary tented vias, no POFV |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | Bottom-side Economic target; **89 placements / 33 BOM rows** |
+| Front panel | `hats-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30 x 128.5 mm, no assembly; 11 NPTH holes |
+
+`carrier/` and `panel/` contain the exporter outputs, loose Gerbers/drills and export reports.
+The upload ZIPs and assembly CSVs are byte-identical mirrors. `source-sha256.json` covers
+all five native source files and the four carrier/panel export payloads. All hashes match;
+the earlier stale project hash has been replaced by a genuinely regenerated package.
+
+Select supplier stack-up/finish/color/order quantity deliberately. The previous target was
+standard stack-up, 1 oz outer copper and HASL. The board has no order-number marker; select
+that supplier option explicitly. No supplier quote or order settings were submitted.
+
+## Manual assembly (excluded from both CSVs)
+
+| Refs | Part / instruction |
 |---|---|
-| `hats-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
-| `hats-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
-| `assembly/bom.csv`, `assembly/positions.csv` | Carrier BOM and CPL (upload these) |
-| `carrier/` | Carrier export: ZIP unpacked (4 copper layers incl. In1 GND / In2 +3V3, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
-| `panel/` | Panel export: ZIP unpacked, empty BOM/CPL, export report |
-| `source-sha256.json` | PCB/project/schematic inputs and export SHA-256 |
+| J1-J4 | PJ301M-12 TS jacks, F side; align to panel before soldering |
+| RV1, RV3, RV4 | RV09 50k linear pots, F side; RV3/RV4 rotated 180 degrees, solder pins above shafts |
+| RV2 | RV09 1M linear pot, F side |
+| D5 | 3 mm ENV LED only, F side; cathode to square pad, dome flush with panel |
+| U7 | VTL5C-type vactrol, B side; no switch underneath |
+| J10 | Unshrouded 2x5 power header on B, horizontal at bottom; red stripe / pin 1 to -12V |
+| J11, J12 | Optional 1x2 UPDI headers on B; square pin UPDI, other pin GND |
+| JP1 | Copper-only jumper, shipped open. Bridge 1-2 for protected/inverted RX or 2-3 for direct/unprotected 3.3 V RX; never both |
 
-The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files in
-`carrier/` and `panel/`.
+Exactly 13 THT refs plus JP1 are excluded. SW1, D6 and R48 are **absent**, not DNP or manual
+assembly options. The panel has no REC button/LED apertures or legend.
 
-## Upload map
+## Verification
 
-| Order | Files | Options |
-|---|---|---|
-| Carrier PCB | `hats-gerbers.zip` | 4 layers, FR4, 1.6 mm, 29.0 x 110.0 mm, JLC standard stack-up, 1 oz outer, HASL, tented vias (all 97 are 0.3/0.6 mm, none in SMD pads; no copper or courtyard within 1 mm of the edge except the RV1-RV4 courtyards, 0.77 mm, user-accepted). The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 88 parts in 31 BOM rows, all on the back |
-| Front panel PCB | `hats-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
+- Shared native check: **ERC 0, DRC 0, unconnected 0, schematic parity 0**; includes warnings
+  and exclusions. Exact ref/pin/net and metadata parity pass; no ignored ERC/DRC severities or
+  DRC exclusions remain. Source files are unchanged by checks/export.
+- Panel native DRC: 0 violations / 0 opens; all 11 holes align to the carrier/geometry contract.
+- Four saved copper layers and all four exported copper Gerbers: **1.0005 mm** pour setback.
+  Copper-edge rule = 1.0 mm. Other pad/track/via copper is >=1.09 mm from the outline.
+- Existing user-approved RV1-RV4 courtyard exception remains: 0.815 mm measured line-box
+  margin (historical cached-yard documentation quoted 0.77 mm). No copper exception.
+- 546 tracks / 101 through vias (0.3 mm drill, 0.6 mm copper); no in-pad/mask-opening vias,
+  no inner-layer tracks, one continuous filled piece per inner plane, no disconnected outer
+  GND pours. No zero-length/duplicate tracks or off-centre via endpoints remain.
+- SMD-to-pot/jack pad clearance >= **2.0465 mm**. Pot rows Y41/Y75, 34 mm pitch; U7 centre Y88.
+- BOM/CPL refs and quantities match; all selected parts are bottom-side with LCSC/MPN fields.
+  CPL transforms match native footprints. ZIP CRCs, loose members, upload mirrors and hashes pass.
+- Native schematic, all copper plots, bottom paste/assembly and panel drawing were inspected.
+  This is not an authenticated supplier placement preview or a full Gerber CAM/DFM signoff.
 
-### Hand-soldered after delivery (not in the BOM/CPL)
+Raw evidence: `../research/s3-r2/` (ignored), including `final-native/`, `panel-drc.json`,
+`geometry-audit.json`, `independent-verification.json`, `package-verification.json`,
+`assembly-audit.json` and catalog snapshots.
 
-| Refs | Part | Why it's manual |
-|---|---|---|
-| J1-J4 | QingPu WQP-PJ301M-12 TS jack (MIDI, NOISE IN, AUDIO, HAT CV) | Front-side THT, panel-nut fixed; fit to the panel before soldering |
-| RV1, RV3, RV4 | RV09 50k linear pot (NOISE TONE, CUTOFF, DECAY) | Front-side THT, no nut |
-| RV2 | RV09 1M linear pot (BLUE TONE) | Front-side THT, no nut |
-| D5, D6 | 3 mm red LED (ENV, REC) | Front-side THT; flat/cathode to the square pad |
-| SW1 | 6 mm tactile button (REC) | Front-side THT, **inside the U7 vactrol outline** (the 4 excluded DRC items). Solder SW1 from the back **before** U7 |
-| U7 | VTL5C-type vactrol (Bread Modular footprint) | Back-side THT over SW1's pins; trim SW1's leads flush first |
-| J10 | 2x5 2.54 mm pin header | Eurorack power, back side, horizontal along the bottom edge; pin 1 (-12 V) at the `-12V` silk. **No key**: red stripe to `-12V` |
-| J11, J12 | 1x2 2.54 mm pin header (`UPDI N` / `UPDI H` silk) | Optional, for programming the NOISE (U2) / HIHAT (U3) chip; pin 1 (square) UPDI, pin 2 GND |
-| JP1 | 3-pad solder jumper (MIDI RX path) | Copper only, **shipped open**: bridge 1-2 (protected, needs inverted RX in firmware) or 2-3 (direct, stock firmware), never both |
+## Sourcing and remaining assembly gates
 
-The exporter excluded exactly these 15 THT refs plus JP1 (`carrier/export-report.json`).
+A new strict-live audit covered all **33 C-codes**, using **5 boards as a screening quantity**
+only, not as an order. All codes resolved to the intended MPNs and showed Economy eligibility
+and enough public stock for that screening quantity at retrieval. Exact UTC timestamps,
+source URLs and raw-response hashes are retained in `assembly-audit.json` / `catalog/`.
 
-## Parts (live catalog, 2026-10-24 05:34 UTC, 5 boards)
+- New R14 C23178 (470k) and R49 C31850 (22k) are Basic; D7 C40919 (BAV199,215) is Extended.
+- Existing Extended nonpassives remain SS8050, SS8550, MCP6002, ATtiny1616 and TS5A23157.
+  Preferred Extended is not Basic.
+- **R43/R46, ROHM ESR18EZPF1001 C2074262 (1k, 1206, 0.5 W), remain Extended.** The package is
+  not all-Basic passives; the strict passive sourcing/signoff exception remains unresolved.
+- The formal audit is **not passed/order-ready**: per-reference human land-pattern/pin-mapping/
+  rating attestations and complete application requirements are still missing. No blanket
+  approval records were fabricated. Public stock is not reserved and excludes unverified
+  attrition/minimum/reel requirements.
 
-Every C-code resolves to its MPN and package and is Economy-eligible
-(`research/export/audit.json`, ignored).
+Before ordering, verify exact bottom-side component matches, pin 1/polarity/rotations,
+carrier/panel DFM and drill/outline previews, service options, stock and attrition at the
+chosen quantity. Bench validation remains for power/thermal, MIDI jumper/inversion,
+NOISE IN contact transients/normalling, physical fit and actual audio/CV levels.
+Firmware clock/reference settings were deliberately left untouched at the user's request.
 
-- **Resistors and capacitors: all JLCPCB Basic** except the 2 x 1 kΩ 1206 0.5 W output
-  resistors (ROHM ESR18EZPF1001 C2074262, Extended, the same part as ACID).
-- **Basic semis/ICs:** B5819W C8598, 1N4148W C81598, MMBT3904 C20526, HT7533-1 C14289
-  (141,810), TL072CDT C6961.
-- **Extended (one setup fee each):** SS8050 C431710 (preferred, 1,335,938), SS8550 C364314
-  (105,567), ESR18EZPF1001 C2074262 (101,016), MCP6002T-I/SN C7377 (preferred, 72,582),
-  **ATTINY1616-MNR C507118 (4,626; 2 per board)**, **TS5A23157DGSR C11133 (422 in stock: the
-  lowest; recheck before ordering)**.
+## Reproduce from the repository root
 
-The audit exits non-zero, as for low/acid: there is no `docs/jlcpcb-audit-requirements.json`,
-so the per-part requirement/review rows stay `unknown`, and the 15 THT refs and JP1 have no
-catalog code. That is expected, not a catalog failure.
-
-## Source identity
-
-Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
-
-- Carrier PCB `4350be78d73a19a3d2ff35469d955ce864dcb223bdb9defa4a900c0fe75c14a7`.
-- Carrier project `4e1d1a704d1b48590add008ae991018219ee643c3899b32bc33a0f7c5b8d388f`.
-- Carrier schematic `cff2c7c0873aca2d200dad3df90d79bd262b931c2868fae12406c3f66aef8f89`.
-- Panel PCB `512bfb9e5e4ab3fd8de43ca5e85a7e84c34e6e8d7f1c4e7a34ca2bf51e5f9e36`.
-- Panel project `1532ee8aea234b7885b42a7099ed9d474e1b50d3268b2cad903bf7292cccb1ea`.
-
-## Reproduce
-
-From `modules/hats`:
+Do not hand-edit generated CSV/Gerber files. Update native sources, refill/save, verify,
+then use the shared exporter for **both** boards:
 
 ```sh
-python3 -B ../../opt/kicad-tools/kicad_tools.py check \
-  --config tools/kicad-project.json --reports research/native
+python3 -B opt/kicad-tools/kicad_tools.py check \
+  --config modules/hats/tools/kicad-project.json --reports modules/hats/research/new-check
 
-python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
+python3 -B opt/kicad-tools/jlcpcb/export.py modules/hats/hardware \
   --board hats --schematic hats.kicad_sch --side bottom --require-part-numbers \
-  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/carrier
-unzip -o jlcpcb/carrier/hats-gerbers.zip -d jlcpcb/carrier
+  --manifest modules/hats/jlcpcb/source-sha256.json --overwrite -o modules/hats/jlcpcb/carrier
 
-python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
-  --board hats-panel --pcb-only \
-  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/panel
-unzip -o jlcpcb/panel/hats-panel-gerbers.zip -d jlcpcb/panel
+python3 -B opt/kicad-tools/jlcpcb/export.py modules/hats/panels/front-pcb \
+  --board hats-panel --pcb-only --manifest modules/hats/jlcpcb/source-sha256.json \
+  --overwrite -o modules/hats/jlcpcb/panel
 
-cp jlcpcb/carrier/bom.csv jlcpcb/carrier/positions.csv jlcpcb/assembly/
-cp jlcpcb/carrier/hats-gerbers.zip jlcpcb/panel/hats-panel-gerbers.zip jlcpcb/
+unzip -o modules/hats/jlcpcb/carrier/hats-gerbers.zip -d modules/hats/jlcpcb/carrier
+unzip -o modules/hats/jlcpcb/panel/hats-panel-gerbers.zip -d modules/hats/jlcpcb/panel
+cp modules/hats/jlcpcb/carrier/bom.csv modules/hats/jlcpcb/carrier/positions.csv modules/hats/jlcpcb/assembly/
+cp modules/hats/jlcpcb/carrier/hats-gerbers.zip modules/hats/jlcpcb/panel/hats-panel-gerbers.zip modules/hats/jlcpcb/
 ```
 
-Delete the unpacked Gerbers first if layers change. The catalog audit is:
-
-```sh
-kicad-cli sch export netlist --format kicadxml -o /tmp/hats-symbols.xml hardware/hats.kicad_sch
-(cd ../.. && python3 -B opt/kicad-tools/jlcpcb/assembly.py audit \
-  --project-dir modules/hats/hardware --board hats.kicad_pcb --symbols-xml /tmp/hats-symbols.xml \
-  --cpl modules/hats/jlcpcb/carrier/positions.csv \
-  --export-report modules/hats/jlcpcb/carrier/export-report.json \
-  --boards 5 --side bottom --strict-live --max-requests 64)
-```
-
-## Checks done for this export
-
-- **Shared `check`:** ERC 0, 0 unconnected, schematic parity 0, manifest equal (5 sources, all
-  exports byte-identical). DRC = the **4 `pth_inside_courtyard` items of SW1's pins inside U7's
-  courtyard** (button inside the vactrol, user-approved 2026-10-24). They are native exclusions
-  in `hats.kicad_pro` (`tools/sw1_exclusions.py`), so KiCad's own DRC reports 0; the shared gate
-  still counts excluded items, so `order_ready` stays `false` (as low/acid).
-- **Zones:** a refill of a copy changed no filled polygon, so the exported fills are current.
-- **R1 routing:** 4 layers (F.Cu / In1 GND / In2 +3V3 / B.Cu), no tracks on In1/In2, In1 and
-  In2 one piece each, no vias in SMD pads. Every SMD pad >= 2 mm from the pot/jack pads
-  (closest R36 to RV4, 2.02 mm). Copper-to-edge rule 1.0 mm.
-- **Panel DRC:** 0 / 0. Panel drill file: 13 NPTH holes (4 jacks, 4 pots, 2 LEDs, 1 button,
-  2 rail holes).
-- **BOM/CPL:** 88 parts, 31 rows, every row with LCSC, MPN and manufacturer; BOM and CPL
-  reference sets equal; every CPL row is `bottom`.
-
-## Status and order gates (not done here)
-
-This is a complete export, not a supplier-accepted release. Before ordering:
-
-1. **Bottom-side Economic assembly** with the Extended parts above.
-2. **Placement preview** in JLCPCB's bottom-side view: pin 1 of U2/U3 (QFN-20), the
-   TS5A23157 (MSOP-10), the SOIC-8 op-amps; HT7533 tab; diode cathode bands; SOT-23
-   orientation; every rotation.
-3. **Live recheck before ordering:** stock (TS5A23157 and ATtiny1616 especially), class,
-   attrition.
-4. **JLCPCB DFM / Gerber viewer check** of both ZIPs.
-5. **Firmware:** the REC button/LED need new code on both chips (not written yet).
-6. **Bench:** SW1/U7 fit, MIDI JP1 paths, NOISE IN normalling, output levels.
+Prune stale board-prefixed loose Gerber/drill files if the layer/member set changes. Recheck
+all manifest entries and mirrors after export. To update just the panel from geometry:
+`/usr/bin/python3 -B modules/hats/tools/build_layout.py --panel-only`.
+Never run the carrier builder over a routed design.

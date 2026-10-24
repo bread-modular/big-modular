@@ -1,29 +1,35 @@
-# HATS contract (S2 schematic, R1 routed carrier)
+# HATS contract (S3 schematic, R2 routed carrier, P4 panel)
 
 | | |
 |---|---|
 | KiCad project | `hardware/hats.kicad_{pro,sch,pcb}` |
-| Panel | `panels/front-pcb/hats-panel.kicad_{pro,pcb}` (FR4, NPTH only, 6HP) |
-| Generators, profile | `tools/` (`import_footprints.py`, `build_schematic.py`, `build_layout.py`, `kicad-project.json`) |
-| Placement contract | `docs/geometry.json` |
-| Circuit intent and decisions | `docs/research.md` |
+| Panel | `panels/front-pcb/hats-panel.kicad_{pro,pcb}` (FR4, 11 NPTH holes, 6HP) |
+| Circuit intent / source profile | `tools/build_schematic.py`, `tools/kicad-project.json` |
+| Placement contract | `docs/geometry.json`; native PCB owns routed SMD placement |
+| Circuit / protection rationale | `docs/research.md`, `docs/noise-in-protection.md` |
 
 ## Fixed by the brief
 
-- Bread Modular NOISE (blue output) -> HIHAT, 6HP, 3.3 V internal signals, BM values and topology.
-- Panel: MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED; CUTOFF + DECAY; REC LED + REC button;
-  AUDIO OUT + HAT CV OUT. J10 horizontal along the bottom edge (B).
-- Two ATtiny1616: U2 runs BM NOISE, U3 runs BM HIHAT (pin maps unchanged), both on one RX net.
-- REC (S2): SW1 on PC2 of U2 and U3 (internal pull-ups), REC LED D6 on U3 PC3 only.
+- Bread Modular NOISE (blue output) -> HIHAT; 6HP; 3.3 V internal signals.
+- Two ATtiny1616 (U2 NOISE / U3 HIHAT), original functional pin maps, one RX net.
+- Panel: MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED; CUTOFF + DECAY;
+  AUDIO + HAT CV. J10 horizontal on B along the bottom.
+- **No recording functionality.** No SW1, D6 or R48; former recording GPIOs are NC.
+- Pot shaft rows Y41 / Y75 (34 mm pitch); lower pots rotated 180 degrees. U7 centre Y88.
+- NOISE IN sense: R14 470k, R49 22k series, D7 BAV199 low-leakage dual rail clamp.
+- Leave firmware clock/DAC reference settings unchanged (user scope decision).
 
 ## Rules
 
-- Pots: BM `Potentiometer_RV09`, user stock 50k / 1M linear. Jacks PJ301M-12, VTL5C, LED as
-  modules/low / modules/acid. `hardware/HATS.pretty/PROVENANCE.json` records sources.
-- `build_schematic.py` asserts the exported netlist equals `circuit()`; only `VMID_H` is
-  label-joined; PWR_FLAGs only `#FLG01`-`#FLG05`.
-- 1 mm board-edge keep-out (`min_copper_edge_clearance` 1.0 mm); RV1-RV4 courtyards 0.77 mm
-  (same pot columns as modules/low, user-accepted 2026-10-24).
-- 2 mm hand-solder clearance and manual divide-and-conquer routing; the native PCB owns copper.
-- DRC exclusions: only the 4 SW1-in-U7 `pth_inside_courtyard` items (`tools/sw1_exclusions.py`;
-  re-run it after moving SW1 or U7).
+- Pots: BM `Potentiometer_RV09`, stock 50k / 1M linear. Jacks PJ301M-12; vactrol VTL5C.
+  Footprint provenance: `hardware/HATS.pretty/PROVENANCE.json`.
+- Native netlist must equal `build_schematic.circuit()` including NCs and metadata.
+  Only VMID_H is label-joined; power flags remain #FLG01-#FLG05.
+- 1 mm copper-edge keep-out, including filled polygons, with native rule 1.0 mm.
+  Only the existing RV1-RV4 courtyard exception remains: measured line-box margin
+  0.815 mm (historical cached-yard documentation quoted 0.77 mm), user accepted.
+- Every SMD pad >=2 mm from hand-soldered jack/pot pads and lugs.
+- Manual divide-and-conquer routing; no autorouters or in-pad vias. Keep both inner
+  planes continuous. No ignored ERC/DRC rule severities or DRC exclusions.
+- Use the shared exporter for both carrier and panel, refresh the shared source
+  manifest, and verify all upload mirrors. Export success is not supplier signoff.
