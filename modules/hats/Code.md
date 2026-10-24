@@ -12,7 +12,7 @@
 
 - Bread Modular NOISE (blue output) -> HIHAT; 6HP; 3.3 V internal signals.
 - Two ATtiny1616 (U2 NOISE / U3 HIHAT), original functional pin maps, one RX net.
-- Panel: MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED; CUTOFF + DECAY;
+- Panel: MIDI + NOISE IN; NOISE TONE + BLUE TONE; CUTOFF + DECAY; ENV LED beside HAT CV (X26 Y93);
   AUDIO + HAT CV. J10 horizontal on B along the bottom.
 - **No recording functionality.** No SW1, D6 or R48; former recording GPIOs are NC.
 - Pot shaft rows Y41 / Y75 (34 mm pitch); lower pots rotated 180 degrees. U7 centre Y88.
