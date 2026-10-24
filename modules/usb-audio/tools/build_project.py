@@ -25,11 +25,14 @@ def project(name, rails):
     d['board']['design_settings']['rules']['min_copper_edge_clearance'] = 1.0
     d['net_settings']['netclass_patterns'] = [{'netclass': 'Power', 'pattern': r} for r in rails]
     if name.endswith('-mcu'):
+        # JLC04161H-7628: 0.40 mm single-ended fanout; 0.30/0.20 mm coupled pair.
+        # Physical stackup/reference geometry lives on the accepted MCU PCB.
         usb = copy.deepcopy(next(c for c in d['net_settings']['classes'] if c['name'] == 'Default'))
-        usb.update(name='USB_HS', priority=1, diff_pair_width=0.2, diff_pair_gap=0.2, track_width=0.2)
+        usb.update(name='USB_HS', priority=1, diff_pair_width=0.3, diff_pair_gap=0.2, track_width=0.4)
         d['net_settings']['classes'].append(usb)
         d['net_settings']['netclass_patterns'] += [{'netclass': 'USB_HS', 'pattern': p}
-                                                   for p in ('/USB_DP', '/USB_DM')]
+                                                   for p in ('/USB_DP', '/USB_DM',
+                                                             'Net-(J101-D+-PadA6)', 'Net-(J101-D--PadA7)')]
     d['schematic']['top_level_sheets'] = [dict(d['schematic']['top_level_sheets'][0],
                                                filename=f'{name}.kicad_sch', name=name)]
     return d

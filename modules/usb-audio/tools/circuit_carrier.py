@@ -1,4 +1,4 @@
-"""USB-AUDIO carrier (jack/pot board) S1 circuit table, drawing and sourcing (tools/build_schematic.py).
+"""USB-AUDIO carrier (jack/pot board) S3 circuit table, drawing and sourcing (tools/build_schematic.py).
 
 CIRCUIT is docs/research.md section 3. 6HP, 2 in / 2 out, DC-coupled, +/-5 V (CV too), 192 kHz:
 
@@ -16,8 +16,8 @@ CIRCUIT is docs/research.md section 3. 6HP, 2 in / 2 out, DC-coupled, +/-5 V (CV
 - Outputs: AOUTA/AOUTB -> 470R / 1n C0G -> U5A/U5B non-inverting gain 3.2 (22k/10k) with Rg to
   VREF_OUT = VQ x 32/22, so VQ out = 0 V; DAC full scale 0.65 x VA = 3.25 Vpp -> +/-5.2 V. AOUT
   sees only an op-amp input (CS4270 AOUT DC load max 10 uA). -> RV3/RV4 50k volume -> U7A/U7B
-  follower (by the OUT pots) -> 1k 1206 -> jack. U4 and U7 are separate duals (R2, 2026-10-24) so
-  each follower sits at its pot wiper; the gain stages U5 sit at the codec AOUT pins.
+  follower (by the OUT pots) -> 2 x 2k 1206 in parallel (1k, 0.5 W) -> jack. U4 and U7 are separate
+  duals (R2, 2026-10-24), each at its pot wiper; the gain stages U5 sit at the codec AOUT pins.
 - References on +5VA: U6C buffers VQ (25k source, max 1 uA) for the VB_IN divider; U6D makes
   VREF_OUT from VQ. Both track the codec's own mid-rail.
 - MCU board link: J6/J7 1x10 2.54 mm pin headers (the MCU board solders on top of them, F side).
@@ -48,9 +48,9 @@ IN_PARTS = [dict(j='J2', rv='RV1', rs='R20', fu='U4', fun=1, rin='R22', rf='R24'
                  ro='R26', c='C20', ch='1', adc='ADC_A'),
             dict(j='J3', rv='RV2', rs='R21', fu='U4', fun=2, rin='R23', rf='R25', du='U6', dun=2,
                  ro='R27', c='C21', ch='2', adc='ADC_B')]
-OUT_PARTS = [dict(rs='R30', c='C22', u='U5', un=1, rg='R32', rf='R34', rv='RV3', fu='U7', fun=1, ro='R36',
+OUT_PARTS = [dict(rs='R30', c='C22', u='U5', un=1, rg='R32', rf='R34', rv='RV3', fu='U7', fun=1, ro='R36', rp='R38',
                   j='J4', ch='1', dac='DAC_A'),
-             dict(rs='R31', c='C23', u='U5', un=2, rg='R33', rf='R35', rv='RV4', fu='U7', fun=2, ro='R37',
+             dict(rs='R31', c='C23', u='U5', un=2, rg='R33', rf='R35', rv='RV4', fu='U7', fun=2, ro='R37', rp='R39',
                   j='J5', ch='2', dac='DAC_B')]
 # Op-amp unit pins: unit -> (+, -, out)
 OPA4 = {1: ('3', '2', '1'), 2: ('5', '6', '7'), 3: ('10', '9', '8'), 4: ('12', '13', '14')}
@@ -206,8 +206,15 @@ def circuit():
                       Note=f'OUT {n} volume 0..1 (RV09 9 mm, linear, user stock). Hand-soldered'))
         c.append(opamp(o['fu'], o['fun'], (x0 + 60.96, y + 8.89), f'_OUT{n}_POT', f'_OUT{n}_BUF', f'_OUT{n}_BUF',
                        quad=False, Note='+/-12 V output pot-wiper followers, placed by RV3/RV4'))
-        c.append(two(o['ro'], 'R', '1k', 'R1206', (x0 + 78.74, y + 8.89), f'_OUT{n}_BUF', f'OUT{n}', Power='0.25W',
-                     Note='Output series: short / mis-patch limit (1206: 0.14 W on a permanent +/-12 V mis-patch)'))
+        # Preserve 1k output impedance using two Basic 2k/0.25 W parts per channel.
+        # Each sees the full fault voltage: 18.1 V / 1.98k -> 0.166 W maximum per part
+        # (output <=5.5 V, external patch <=12.6 V, 1% tolerance). No unlimited-rail guarantee.
+        for ref, yy in ((o['ro'], y + 8.89), (o['rp'], y + 1.27)):
+            c.append(two(ref, 'R', '2k', 'R1206', (x0 + 78.74, yy), f'_OUT{n}_BUF', f'OUT{n}',
+                         Power='0.25W', Tolerance='1%',
+                         Note=f'Parallel with {o["rp"] if ref == o["ro"] else o["ro"]}: 1k / 0.5W effective. '
+                              'Opposing 5.5V output / 12.6V patch: <=0.166W each incl 1% R. '
+                              'Resistor sizing to 85C; U7 and simultaneous-fault thermal qualification still required.'))
         c.append(part(o['j'], 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (x0 + 96.52, y + 8.89), 180,
                       {'T': f'OUT{n}', 'S': 'GND', 'TN': None}, Note=f'OUT {n}: +/-5 V, DC-coupled'))
 
@@ -327,6 +334,8 @@ def drawing():
               [(xf + 10.16, y + 8.89), (xf + 10.16, y + 13.97), (xf - 10.16, y + 13.97), (xf - 10.16, y + 11.43),
                f'{fu}.{fm}'],
               [f"{o['ro']}.2", f"{o['j']}.T"],
+              [(x0 + 73.66, y + 8.89), (x0 + 73.66, y + 1.27), f"{o['rp']}.1"],
+              [f"{o['rp']}.2", (x0 + 85.09, y + 1.27), (x0 + 85.09, y + 8.89)],
               [f"{o['j']}.S", (x0 + 88.9, y + 11.43), (x0 + 88.9, y + 13.97)]]
         P += [('GND', (x0 + 88.9, y + 13.97), 0)]
         L += [(f'OUT{n}', (x0 + 85.09, y + 8.89), 'R')]
@@ -354,7 +363,7 @@ SOURCING = {
     ('R', '220', 'R0603'): dict(LCSC='C22962', MPN='0603WAF2200T5E', Manufacturer='UNI-ROYAL'),
     ('R', '470', 'R0603'): dict(LCSC='C23179', MPN='0603WAF4700T5E', Manufacturer='UNI-ROYAL'),
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '1k', 'R1206'): dict(LCSC='C4410', MPN='1206W4F1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '2k', 'R1206'): dict(LCSC='C17944', MPN='1206W4F2001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '33', 'R2512'): dict(LCSC='C53728', MPN='25121WF330JT4E', Manufacturer='UNI-ROYAL'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0603'): dict(LCSC='C15849', MPN='CL10A105KB8NNNC', Manufacturer='Samsung'),
@@ -377,7 +386,7 @@ SOURCING = {
 }
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR USB-AUDIO - carrier (jack/pot board), S1. 2 in / 2 out, DC-coupled +/-5 V, '
+    ((20.32, 20.32), 'BIG MODULAR USB-AUDIO - carrier (jack/pot board), S3. 2 in / 2 out, DC-coupled +/-5 V, '
                      'CS4270 24-bit 192 kHz. Circuit intent: docs/research.md; placement: docs/geometry.json', 2.0),
     ((20.32, 33.02), 'POWER: +12V -> D2 -> +12V_F (op-amps; U1 AMS1117-5.0 -> +5VA; R1 33R -> U2 AMS1117-3.3 -> +3V3 '
                      '-> FB1 -> +3V3_C); -12V -> D1 -> -12V_F', 1.4),
@@ -390,7 +399,7 @@ TEXTS = [
                       '-> U6A/B inverting driver on +5VA (-0.255, + at VB_IN) -> 220R / 2.2n C0G -> AINA/AINB.\n'
                       '+/-5.49 V = 2.8 Vpp ADC full scale. ADC_INV restores the polarity.', 1.1),
     ((322.58, 223.52), 'OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n'
-                       '-> 50k volume (0..1) -> U7A/B follower -> 1k -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\n'
+                       '-> 50k volume (0..1) -> U7A/B follower -> 2k || 2k (1k / 0.5W) -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\n'
                        'Power-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s.', 1.1),
     ((20.32, 309.88), 'REFERENCES (+5VA): U6C buffers VQ (VA/2) -> VB_IN = VQ x 20/25.1 (input drivers);\n'
                       'U6D: VREF_OUT = VQ x 32/22 (output stages). Both track the codec mid-rail.', 1.1),

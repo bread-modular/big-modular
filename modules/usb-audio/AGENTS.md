@@ -5,6 +5,17 @@ Module paths are module-relative.
 
 ## Current state
 
+- **Latest scoped repair: carrier S3/R3, MCU S1/R2** (2026-10-24), superseding the
+  S2/R2 and MCU R1 baselines below. R36/R38 and R37/R39 are Basic 2k/0.25 W 1206
+  pairs in parallel (1k/0.5 W per output). USB active paths have two signal vias
+  per polarity, In2 GND beneath B-side USB, an explicit JLC04161H-7628 stackup and
+  USB_HS geometry on both sides of U102. See `docs/usb-output-fix.md` and run
+  `tools/check_usb.py` as well as native checks. No existing footprints moved.
+  Other review findings are deferred by the user, not proven resolved. Current
+  exports: carrier 74 bottom placements / MCU 23 top placements; no supplier acceptance.
+
+### Prior placement/routing baselines
+
 - **Schematics** (ERC 0 both): carrier S2 `hardware/usb-audio.kicad_sch` (±12 V power, CS4270 codec
   as I2S master at 192 kHz, 2 DC-coupled ±5 V input chains and 2 output chains with 0..1 volume pots,
   U4 / U7 OPA1678 pot-wiper followers (S2 split of the S1 quad), U5 OPA1678 gain, U6 OPA1679 drivers,

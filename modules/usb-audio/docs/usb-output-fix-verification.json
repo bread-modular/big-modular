@@ -1,0 +1,262 @@
+{
+  "scope": "USB routing and R36/R37 sizing only; other review items user-deferred",
+  "source_sha256": {
+    "hardware/usb-audio.kicad_sch": "4efe0e5ba31a7bf9f9bd1b43320f10fb4bb580f385f3b7988ac21d7caaeaf712",
+    "hardware/usb-audio.kicad_pcb": "cb6e5914ed0b7469306e509f67f0f5c22af2417153b82ad040021bcda9f6e2ed",
+    "hardware/usb-audio.kicad_pro": "095104386085c81b91d7e1a976b0d5593ef90aa2836cffa86d18e02661adace0",
+    "hardware/usb-audio-mcu.kicad_sch": "43e70f7855c31936ca631a70b1bd3d0c74125455bdd0d3efadcd9271dfb442f2",
+    "hardware/usb-audio-mcu.kicad_pcb": "57fb7b79e46997ecd9e7e4dcdf776cd3aed611b3a8c92895fcc015990066581b",
+    "hardware/usb-audio-mcu.kicad_pro": "f44b54905d91b705c30585a41b4d6e7ee1d2b8077a96b3c0d53c274076169620"
+  },
+  "native": {
+    "carrier": {
+      "version": "10.0.6",
+      "findings": {
+        "erc": {
+          "categories": {
+            "violations": 0
+          },
+          "severity": {},
+          "total_including_exclusions": 0
+        },
+        "drc": {
+          "categories": {
+            "violations": 0,
+            "unconnected_items": 0,
+            "schematic_parity": 0
+          },
+          "severity": {},
+          "total_including_exclusions": 0
+        }
+      },
+      "manifest_equal": true,
+      "source_unchanged_during_checks": true
+    },
+    "mcu": {
+      "version": "10.0.6",
+      "findings": {
+        "erc": {
+          "categories": {
+            "violations": 0
+          },
+          "severity": {},
+          "total_including_exclusions": 0
+        },
+        "drc": {
+          "categories": {
+            "violations": 0,
+            "unconnected_items": 0,
+            "schematic_parity": 0
+          },
+          "severity": {},
+          "total_including_exclusions": 0
+        }
+      },
+      "manifest_equal": true,
+      "source_unchanged_during_checks": true
+    }
+  },
+  "independent": {
+    "carrier": {
+      "original_footprints_unchanged_except_fields": [
+        "R37",
+        "R36"
+      ],
+      "new_refs": [
+        "R38",
+        "R39"
+      ],
+      "original_tracks_changed_or_removed": 0,
+      "new_tracks_vias": 12,
+      "via_count": 87,
+      "min_via_to_smd_copper_mm": 0.147681,
+      "min_changed_via_to_smd_copper_mm": 0.325,
+      "native_hidden_font_default_normalizations": [],
+      "zones": [
+        {
+          "net": "GND",
+          "layer": "In1.Cu",
+          "pieces": 1
+        },
+        {
+          "net": "+5VA",
+          "layer": "In2.Cu",
+          "pieces": 1
+        },
+        {
+          "net": "+3V3",
+          "layer": "In2.Cu",
+          "pieces": 1
+        }
+      ],
+      "circuit_schematic_pcb_parity": true,
+      "rules_preserved": true
+    },
+    "mcu": {
+      "original_footprints_unchanged_except_fields": [],
+      "new_refs": [],
+      "original_tracks_changed_or_removed": 26,
+      "new_tracks_vias": 17,
+      "via_count": 49,
+      "min_via_to_smd_copper_mm": 0.063289,
+      "min_changed_via_to_smd_copper_mm": 0.225,
+      "native_hidden_font_default_normalizations": [
+        "J102:Note",
+        "J103:Note"
+      ],
+      "zones": [
+        {
+          "net": "GND",
+          "layer": "In1.Cu",
+          "pieces": 1
+        },
+        {
+          "net": "+3V3",
+          "layer": "In2.Cu",
+          "pieces": 1
+        },
+        {
+          "net": "GND",
+          "layer": "In2.Cu",
+          "pieces": 1
+        }
+      ],
+      "circuit_schematic_pcb_parity": true,
+      "rules_preserved": true
+    },
+    "resistor_sizing": {
+      "effective_ohm_corners_25c": [
+        990.0,
+        999.9,
+        999.9,
+        1010.0
+      ],
+      "max_per_part_w_with_tolerance_tcr": 0.1665421197378923,
+      "per_part_derated_limit_85c_w": 0.20588235294117646
+    },
+    "exports": {
+      "usb-audio": {
+        "bom_rows": 29,
+        "placements": 74,
+        "side": "bottom",
+        "crc_loose_files_mirrors_and_refs_equal": true
+      },
+      "usb-audio-mcu": {
+        "bom_rows": 12,
+        "placements": 23,
+        "side": "top",
+        "crc_loose_files_mirrors_and_refs_equal": true
+      },
+      "usb-audio-panel": {
+        "bom_rows": 0,
+        "placements": 0,
+        "side": null,
+        "crc_loose_files_mirrors_and_refs_equal": true
+      }
+    }
+  },
+  "usb": {
+    "pass": true,
+    "errors": [],
+    "orientations": {
+      "A": {
+        "P": {
+          "connector_to_esd": {
+            "length_with_vias_mm": 9.083896103067893,
+            "signal_vias": 2,
+            "planar_mm": 5.883896103067893
+          },
+          "esd_to_mcu": {
+            "length_with_vias_mm": 3.027449493661167,
+            "signal_vias": 0,
+            "planar_mm": 3.027449493661167
+          },
+          "total_mm": 12.111345596729059
+        },
+        "M": {
+          "connector_to_esd": {
+            "length_with_vias_mm": 9.498109665440987,
+            "signal_vias": 2,
+            "planar_mm": 6.298109665440987
+          },
+          "esd_to_mcu": {
+            "length_with_vias_mm": 3.027449493661167,
+            "signal_vias": 0,
+            "planar_mm": 3.027449493661167
+          },
+          "total_mm": 12.525559159102155
+        },
+        "mismatch_mm": 0.4142135623730958
+      },
+      "B": {
+        "P": {
+          "connector_to_esd": {
+            "length_with_vias_mm": 12.89810966544099,
+            "signal_vias": 2,
+            "planar_mm": 9.698109665440988
+          },
+          "esd_to_mcu": {
+            "length_with_vias_mm": 3.027449493661167,
+            "signal_vias": 0,
+            "planar_mm": 3.027449493661167
+          },
+          "total_mm": 15.925559159102157
+        },
+        "M": {
+          "connector_to_esd": {
+            "length_with_vias_mm": 12.67347207014836,
+            "signal_vias": 2,
+            "planar_mm": 9.473472070148361
+          },
+          "esd_to_mcu": {
+            "length_with_vias_mm": 3.027449493661167,
+            "signal_vias": 0,
+            "planar_mm": 3.027449493661167
+          },
+          "total_mm": 15.700921563809526
+        },
+        "mismatch_mm": 0.22463759529263072
+      }
+    },
+    "reference_samples": 1302,
+    "impedance_estimate_ohms": {
+      "single_0p40mm": 45.66981427870506,
+      "differential_0p30mm_gap_0p20mm": 88.61708519321847
+    },
+    "limits": "IPC-2141-style nominal uncoated estimates, not a field solution. Pad escapes, connector branches, vias, solder mask and package internals require supplier/bench validation. No USB certification claim."
+  },
+  "negative_control": {
+    "baseline_sha256": "eee16aeb32fd74a83f6a42815e8742b26c21d7be73a073722fe73f892b16c85d",
+    "failed_as_expected": true,
+    "findings": 128
+  },
+  "fabrication_supplier_accepted": false,
+  "bench_tested": false,
+  "new_part_live_evidence": {
+    "code": "C17944",
+    "mpn": "1206W4F2001T5E",
+    "package": "1206",
+    "classification": "Basic",
+    "economy_eligible": true,
+    "specs": {
+      "value_si": 2000.0,
+      "tolerance_fraction": 0.01,
+      "power_w": 0.25,
+      "voltage_v": 200.0
+    },
+    "evidence": {
+      "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+      "retrieved_at_utc": "2026-10-24T16:38:51Z",
+      "http_status": 200,
+      "request": {
+        "currentPage": 1,
+        "pageSize": 20,
+        "keyword": "C17944"
+      },
+      "sha256": "668acdb735b6eb253fd83adf4b4bb021d68e3e8679e22a8e6d0b2fbcceee99e1",
+      "mode": "live",
+      "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+      "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+    }
+  }
+}
