@@ -9,7 +9,7 @@ holes, silkscreen labels). Placement comes from the geometry contract; reference
 values, fields, symbol links and pad nets come from the netlist that kicad-cli exports
 from hardware/hats.kicad_sch (what "Update PCB from Schematic" would do).
 
-P2 places only the THT parts (jacks, pots, LEDs and the REC button on F, vactrol and headers
+P2 places only the THT parts (jacks, pots and ENV LED on F, vactrol and headers
 on B, as modules/low and modules/8bit). Every SMD part is parked on B in a grid off the right board edge
 (geometry.json smd_parking), so the ratsnest shows all nets; the parts move onto the
 board group by group with the manual routing (root AGENTS.md). Once routing starts the
@@ -18,6 +18,8 @@ native PCB is the source of truth: rerunning this script discards it.
 3D models are vendored into hardware/_kicad_models/<sha256>/<name> and bound via
 ${KIPRJMOD}, the repository convention (as usb-power/midi) that `pcb promote` resolves.
 """
+import argparse
+import math
 import hashlib
 import json
 import os
@@ -49,7 +51,7 @@ def mm_xy(v):
     return pcbnew.ToMM(v.x) - OX, pcbnew.ToMM(v.y) - OY
 
 
-def new_board(path, title, comments, rev='P3'):
+def new_board(path, title, comments, rev='P4'):
     board = pcbnew.NewBoard(str(path))
     tb = board.GetTitleBlock()
     tb.SetTitle(title)
@@ -172,10 +174,12 @@ def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre', model_
 
 def build_carrier():
     path = MODULE / 'hardware/hats.kicad_pcb'
+    if path.exists() and list(pcbnew.LoadBoard(str(path)).GetTracks()):
+        raise RuntimeError('Refusing to overwrite routed native carrier; edit it explicitly. Use --panel-only for panel.')
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - HATS carrier', [
-        'S2/P3: THT placed, SMD parked off the board, UNROUTED - not released',
-        'Front (F) faces the panel; THT jacks/pots/LEDs/buttons on F, vactrols and headers on B, hand-soldered; SMD on B',
+        'S3/P4: THT placed, SMD parked off the board, UNROUTED - not released',
+        'Front (F) faces the panel; THT jacks/pots/LED on F, vactrols and headers on B, hand-soldered; SMD on B',
         'Geometry contract: docs/geometry.json; nets: hardware/hats.kicad_sch',
     ])
     x0, y0, x1, y1 = GEO['main_pcb']['outline_mm']
@@ -194,7 +198,9 @@ def build_carrier():
     ox, oy = GEO['pot_shaft_offset_from_footprint_origin_mm']
     for p in GEO['pots']:
         sx, sy = p['shaft_XY']
-        fp = place(board, p['ref'], POT_FP, sx - ox, sy - oy, 0, comps[p['ref']], anchor='origin')
+        rot = p.get('rot', 0); angle = math.radians(rot)
+        dx, dy = ox * math.cos(angle) + oy * math.sin(angle), -ox * math.sin(angle) + oy * math.cos(angle)
+        fp = place(board, p['ref'], POT_FP, sx - dx, sy - dy, rot, comps[p['ref']], anchor='origin')
         # The vactrol LED pads sit under the pot body (P3/P4), so its value text goes to Fab too.
         fp.Value().SetLayer(pcbnew.F_Fab)
     lz = GEO['stack_Z_mm']['led_body_bottom'] - GEO['stack_Z_mm']['led_model_body_bottom']
@@ -249,7 +255,7 @@ def build_carrier():
     sx, sy = ph['idc16_socket_envelope_mm']['X'], ph['idc16_socket_envelope_mm']['Y']
     rect(board, pcbnew.Dwgs_User, sx[0], sy[0], sx[1], sy[1])
     text(board, pcbnew.Dwgs_User, 'IDC16', (sx[0] + sx[1]) / 2, sy[0] + 1.5, 0.8)
-    text(board, pcbnew.B_SilkS, 'HATS P3', 22.5, 116.5, 0.8, mirrored=True)
+    text(board, pcbnew.B_SilkS, 'HATS P4', 22.5, 116.5, 0.8, mirrored=True)
     text(board, pcbnew.B_SilkS, 'UPDI N', 26.45, 35.0, 0.8, mirrored=True)
     text(board, pcbnew.B_SilkS, 'UPDI H', 3.55, 35.0, 0.8, mirrored=True)
     save_canonical(path, board)
@@ -289,7 +295,7 @@ def npth(board, mech_id, x, y, d):
 def build_panel():
     path = MODULE / 'panels/front-pcb/hats-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - HATS 6HP front panel', [
-        'P3: passive panel, NPTH only, no copper',
+        'P4: no recording controls; 34 mm pot rows; passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -318,5 +324,9 @@ def build_panel():
 
 
 if __name__ == '__main__':
-    print(build_carrier())
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--panel-only', action='store_true', help='Regenerate only the passive panel; never touch carrier routing')
+    args = ap.parse_args()
+    if not args.panel_only:
+        print(build_carrier())
     print(build_panel())

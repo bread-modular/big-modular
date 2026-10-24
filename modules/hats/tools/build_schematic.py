@@ -1,4 +1,4 @@
-"""Generate the HATS S2 schematic (hardware/hats.kicad_sch) and its pinned symbols.
+"""Generate the HATS S3 schematic (hardware/hats.kicad_sch) and its pinned symbols.
 
 Run from modules/hats:
   python3 -B tools/build_schematic.py
@@ -66,7 +66,7 @@ SYMBOLS = {
     '1N4148W': ('Diode', '1N4148W'),
     'GND': ('power', 'GND'), '+3V3': ('power', '+3V3'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
     'SolderJumper_3_Open': ('Jumper', 'SolderJumper_3_Open'),
-    'SW_Push': ('Switch', 'SW_Push'),
+    'D_Dual_Series_AKC': ('Device', 'D_Dual_Series_AKC'),
 }
 
 FP = {
@@ -78,7 +78,7 @@ FP = {
     'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09', 'VTL5C': 'VTL5C',
     'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
     'SJ3': 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm',
-    'LED3': 'LED_D3.0mm', 'SW6': 'SW_PUSH_6mm_H7.3mm',
+    'LED3': 'LED_D3.0mm',
 }
 
 # Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
@@ -96,15 +96,13 @@ LABEL_NETS = {'VMID_H'}
 # unchanged. U2 = Bread Modular NOISE 1.0.1 (PB3 MIDI RX, PA6 DAC = white noise, PA7 TONE knob).
 # U3 = Bread Modular HIHAT 1.0.0 (PB3 MIDI RX, PA5 gate, PA7 open-hat select, PA6 DAC = velocity).
 # PA0 = UPDI on both. PB2 (BM TX / MIDI THRU) is not used: both MCUs listen to one RX net.
-# S2 (user brief 2026-10-23): one REC button on PC2 of both MCUs (internal pull-ups, as the
-# modules/acid REC on PC2), the REC LED on U3 PC3 (as modules/acid). Recording is new firmware
-# on both chips (NOISE records TONE, HIHAT records DECAY / CUTOFF moves); the BM pin maps stay.
-MCU_NOISE = {'11': 'RX', '7': 'N_DAC', '8': 'NOISE_TONE', '19': 'N_UPDI_PA0', '17': 'REC_SW',
+# S3: no recording controls. PC2/PC3 are explicitly no-connects.
+MCU_NOISE = {'11': 'RX', '7': 'N_DAC', '8': 'NOISE_TONE', '19': 'N_UPDI_PA0', '17': None,
              '4': '+3V3', '3': 'GND', '21': 'GND',
              '1': None, '2': None, '5': None, '6': None, '9': None, '10': None, '12': None, '13': None,
              '14': None, '15': None, '16': None, '18': None, '20': None}
 MCU_HIHAT = {'11': 'RX', '6': 'MIDI_GATE', '7': 'H_DAC', '8': 'MIDI_OPEN', '19': 'H_UPDI_PA0',
-             '17': 'REC_SW', '18': 'LED_REC',
+             '17': None, '18': None,
              '4': '+3V3', '3': 'GND', '21': 'GND',
              '1': None, '2': None, '5': None, '9': None, '10': None, '12': None, '13': None,
              '14': None, '15': None, '16': None, '20': None}
@@ -139,6 +137,7 @@ LAYOUT = {
     # NOISE IN bypass (U9B), as modules/low AUDIO
     'J2': (100, 20, 0), 'R11': (107, 25, 0), 'C10': (110, 20, 90), 'R12': (115, 20, 90),
     'U9.2': (124, 21, 0), 'R13': (123, 15, 90), 'R14': (106, 12, 0),
+    'R49': (104, 25, 90), 'D7': (117, 32, 270),
     # Normal: U5 TS5A23157 (channel 2 unused)
     'U5': (136, 40, 0, 'mirror'), 'U5.2': (136, 56, 0, 'mirror'),
     # Hi-hat filter (Bread Modular HIHAT U2A)
@@ -151,8 +150,6 @@ LAYOUT = {
     'R24': (150, 60, 0), 'R25': (150, 65, 0), 'C15': (154, 63, 0),
     # Hi-hat MCU + UPDI
     'U3': (44, 90, 0), 'C7': (34, 78, 0), 'R5': (56, 83, 90), 'J12': (62, 83, 0),
-    # REC: SW1 to PC2 of both MCUs, LED on U3 PC3
-    'SW1': (35, 102, 270), 'R48': (31, 95, 270), 'D6': (25, 95, 0),
     # Trigger: MIDI gate -> 10n differentiator -> U8A comparator -> Q2 switch
     'R26': (60, 88, 90), 'C17': (66, 88, 90), 'R27': (70, 92, 0), 'U8': (78, 89, 0), 'R28': (85, 89, 90),
     'Q2': (92, 89, 0),
@@ -288,18 +285,23 @@ def circuit():
 
     # ---- NOISE IN bypass (as modules/low AUDIO): AC coupled, inverting x0.33 around V_MID, clips at the rails
     c.append(part('J2', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
-                  {'T': 'NIN', 'S': 'GND', 'TN': 'NIN_SENSE'},
+                  {'T': 'NIN', 'S': 'GND', 'TN': 'NIN_SENSE_RAW'},
                   Note='NOISE in. Unpatched: the hi-hat gets the internal blue noise (TN switch -> U5)'))
     c.append(part('R11', 'R', '100k', 'R0603', {'1': 'NIN', '2': 'GND'},
-                  Note='Input bias (keeps C10 discharged) and the jack-detect low level: 0.3 V with R14'))
+                  Note='Input bias (keeps C10 discharged) and the jack-detect low level: about 0.68 V with R14/R49'))
     c.append(part('C10', 'C', '1u', 'C0805', {'1': 'NIN', '2': 'NIN_AC'},
                   Voltage='50V', Note='AC coupling: 1.6 Hz with R12 (removes the Eurorack DC reference)'))
     c.append(part('R12', 'R', '100k', 'R0603', {'1': 'NIN_AC', '2': 'NIN_SUM'},
                   Note='Input resistor; virtual ground at V_MID, so +/-12 V in stays within the U9 rails'))
     c.append(part('R13', 'R', '33k', 'R0603', {'1': 'NIN_SUM', '2': 'NIN_BUF'},
                   Note='Feedback: gain -0.33 (10 Vpp -> 3.3 Vpp around V_MID; hotter clips)'))
-    c.append(part('R14', 'R', '1M', 'R0603', {'1': '+3V3', '2': 'NIN_SENSE'},
-                  Note='Jack-detect pull-up: plugged = TN open = high = external noise'))
+    c.append(part('R14', 'R', '470k', 'R0603', {'1': '+3V3', '2': 'NIN_SENSE'},
+                  Note='Jack-detect pull-up: 470k with 100k R11 + 22k R49. Plugged high; empty about 0.68 V'))
+    c.append(part('R49', 'R', '22k', 'R0603', {'1': 'NIN_SENSE_RAW', '2': 'NIN_SENSE'},
+                  Power='0.1W', Note='Sense-only series protection: limits +/-12 V jack-contact fault current to <0.6 mA'))
+    c.append(part('D7', 'D_Dual_Series_AKC', 'BAV199', 'SOT23',
+                  {'1': 'GND', '2': '+3V3', '3': 'NIN_SENSE'},
+                  Note='Low-leakage dual rail clamp: 1 anode GND, 2 cathode +3V3, 3 common sense. Negative faults also current-limited into U5 internal clamp; see docs/noise-in-protection.md'))
 
     # ---- Normal: TS5A23157 (as modules/low). IN1 low (jack empty) -> COM1 = NC1 = internal blue noise.
     u5 = ('Dual 10R SPDT on +3V3: the NOISE IN normal (channel 2 unused, IN2 tied low). Pin map TI DGS: '
@@ -373,16 +375,6 @@ def circuit():
     c.append(part('J12', 'Conn_01x02', 'UPDI_HIHAT', 'H1x2',
                   {'1': 'H_UPDI', '2': 'GND'},
                   Note='HIHAT MCU (U3) UPDI: pin 1 UPDI, pin 2 GND. Program on Eurorack power (3.3 V target)'))
-
-    # ---- REC (user brief S2): one button read by both MCUs, LED from U3 (as modules/acid REC)
-    c.append(part('SW1', 'SW_Push', 'REC', 'SW6',
-                  {'1': 'REC_SW', '2': 'GND'}, MPN='6x6x7 mm THT tact switch, 4 pins (generic)',
-                  Note='Record: NOISE (U2) records the TONE moves, HIHAT (U3) the envelope moves. PC2 of both '
-                       'MCUs, internal pull-ups. Generic 6 x 6 mm THT tact as modules/acid, printed cap'))
-    c.append(part('R48', 'R', '330', 'R0603', {'1': 'LED_REC', '2': 'LED_REC_A'},
-                  Note='REC LED current ~4 mA at 3.3 V (as modules/acid R16)'))
-    c.append(part('D6', 'LED', 'LED_3mm_red', 'LED3', {'2': 'LED_REC_A', '1': 'GND'},
-                  Note='REC LED, U3 PC3. Hand-soldered 3 mm THT, dome flush with the panel (as modules/8bit)'))
 
     # ---- Trigger (Bread Modular HIHAT): gate edge -> 10n / 100k differentiator -> U8A comparator
     # against V_MID -> Q2 passes the accent level (U8B) to the envelope capacitor through D4.
@@ -501,6 +493,7 @@ SOURCING = {
     ('R', '51k', 'R0603'): dict(LCSC='C23196', MPN='0603WAF5102T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
     ('R', '200k', 'R0603'): dict(LCSC='C25811', MPN='0603WAF2003T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '470k', 'R0603'): dict(LCSC='C23178', MPN='0603WAF4703T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1M', 'R0603'): dict(LCSC='C22935', MPN='0603WAF1004T5E', Manufacturer='UNI-ROYAL'),
     ('C', '100p', 'C0603'): dict(LCSC='C14858', MPN='CL10C101JB8NNNC', Manufacturer='Samsung'),
     ('C', '1n', 'C0603'): dict(LCSC='C1588', MPN='CL10B102KB8NNNC', Manufacturer='Samsung'),
@@ -511,6 +504,7 @@ SOURCING = {
     ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
     ('C', '47u', 'C0805'): dict(LCSC='C16780', MPN='CL21A476MQYNNNE', Manufacturer='Samsung'),
     ('C', '100u', 'C1206'): dict(LCSC='C15008', MPN='CL31A107MQHNNNE', Manufacturer='Samsung'),
+    ('D_Dual_Series_AKC', 'BAV199', 'SOT23'): dict(LCSC='C40919', MPN='BAV199,215', Manufacturer='Nexperia'),
     ('D_Schottky', 'B5819W', 'SOD123'): dict(LCSC='C8598', MPN='B5819W SL', Manufacturer='CJ (Jiangsu Changjing)'),
     ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
     ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
@@ -531,7 +525,7 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 2), 'BIG MODULAR HATS - S2 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, two ATtiny1616 '
+    (T(4, 2), 'BIG MODULAR HATS - S3 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, two ATtiny1616 '
               '(each runs its Bread Modular firmware), 3.3 V internal signals. Circuit intent: docs/research.md', 2.0),
     (T(4, 5), 'Signal nets are wired; supplies use power symbols. VMID_H (hi-hat V_MID, R24/R25/C15) is joined by its net labels.', 1.27),
     (T(4, 9), 'MIDI IN (TS): 8bit / LOW NPN front end, pull-ups on +3V3; RX feeds both MCUs. '
@@ -543,7 +537,6 @@ TEXTS = [
                  'patched -> TN open, R14 pulls IN1 high -> COM1 = NO1 = NIN_BUF.', 1.27),
     (T(142, 28), 'HI-HAT FILTER + VCA (Bread Modular HIHAT): U6A bridged-T filter (CUTOFF), U7 vactrol VCA, U6B x3.2.', 1.27),
     (T(36, 106), 'HIHAT MCU U3 (Bread Modular HIHAT): PA5 gate, PA7 open hat (note > 60), PA6 velocity DAC.', 1.27),
-    (T(4, 108), 'REC: SW1 -> PC2 of U2 and U3 (internal pull-ups); REC LED D6 on U3 PC3.', 1.27),
     (T(58, 66), 'TRIGGER + ACCENT: gate edge (C17/R27) -> U8A comparator -> Q2 passes the U8B accent level.', 1.27),
     (T(96, 86), 'ENVELOPE: D4 charges C18; R34 decays (open hat), Q3 adds R35 + DECAY (closed hat); Q4 + U9A x2 -> HAT_CV.', 1.27),
     (T(186, 58), 'AUDIO OUT: AC coupled, U10A x3 (3.3 Vpp -> ~10 Vpp), 1k to J3 (as modules/low).', 1.27),
@@ -685,7 +678,7 @@ def text_at(p):
 
 
 # Per-part text placement overrides (reference offset, value offset, justify), mm.
-TEXT_SIDE = {}
+TEXT_SIDE = {'J2': ((0, -8.89), (-3.81, 8.89), None), 'D7': ((7.62, -1.27), (7.62, 1.27), 'left')}
 
 
 def power_symbol(net, x, y, d, key, root):
@@ -1069,8 +1062,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - HATS") (rev "S2") (company "Big Modular")
-        (comment 1 "SCHEMATIC S2 - Bread Modular NOISE (blue) + HIHAT, two ATtiny1616, 3.3 V signals, wired nets")
+      (title_block (title "Big Modular - HATS") (rev "S3") (company "Big Modular")
+        (comment 1 "SCHEMATIC S3 - Bread Modular NOISE (blue) + HIHAT, two ATtiny1616, 3.3 V signals, wired nets")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')

@@ -1,5 +1,5 @@
 {
-    "revision": "S2/P3: schematic S2 (S1 + REC button SW1 on PC2 of both MCUs, REC LED D6 on U3 PC3). Placement P3 (user 2026-10-23): P2 + the REC button SW1 on F inside the vactrol U7 outline (U7 on B, the user solders the button from the other side) and the REC LED D6 in a row with it (Y84.7). P2: J10 horizontal at the bottom, AUDIO/CV jacks moved down, ENV LED centred above CUTOFF/DECAY, pot row pitch 24 mm. Routing (R1) starts from P3 on the native board.",
+    "revision": "S3/R2: recording hardware removed. Upper pot shafts Y41; lower pot shafts Y75 (34 mm row pitch), lower pots rotated 180 degrees to keep their solder pins above the bodies. Vactrol moved down 3.3 mm to Y88 to clear the lower pots. Native PCB owns routing.",
     "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
     "kicad_origin_mm": [
         100.0,
@@ -36,12 +36,12 @@
             119.25
         ],
         "thickness_mm": 1.6,
-        "copper_layers": 2,
-        "note": "29.0 x 110.0 mm as modules/low, held by the four jack nuts (RV09 pots take no nut). 1 mm edge keep-out (root AGENTS.md); ~89 SMD parts on B: 4 layers likely at routing (as modules/acid)."
+        "copper_layers": 4,
+        "note": "29 x 110 mm; four layers F/In1 GND/In2 +3V3/B. All assembled SMD on B. 1 mm copper-edge keep-out."
     },
     "jack_part": "QingPu WQP-PJ301M-12",
-    "panel_order": "Top to bottom (user brief 2026-10-23, P3): MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED (centre); CUTOFF + DECAY; REC button (left) and REC LED (right) in one row; AUDIO OUT + HAT CV OUT; power header (B) along the bottom edge.",
-    "row_note": "Columns X7.75 / X22.25 (modules/low). F rows: jacks Y21 (courtyard Y14.72..28.83); pots Y41 (35.88..49.68); ENV LED X15 Y54.8 (52.57..57.03); pots Y65 (59.88..73.68), 10.2 mm courtyard gap between the pot rows; REC button X7.75 and REC LED X22.25 in one row at Y84.7 (button courtyard 80.9..88.5); out jacks Y102 (95.72..109.83). B: vactrol U7 under the REC button (76.75..92.65), J10 horizontal along the bottom (111.57..117.73).",
+    "panel_order": "MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED; CUTOFF + DECAY; AUDIO OUT + HAT CV OUT. No recording controls.",
+    "row_note": "Pot shaft rows Y41 and Y75, 34 mm pitch (was 24). Lower pots face 180 degrees with solder pins at Y67.5. ENV LED remains Y54.8. Vactrol centre X7/Y88; input/output jacks unchanged.",
     "jacks": [
         {
             "ref": "J1",
@@ -92,7 +92,8 @@
             "shaft_XY": [
                 7.75,
                 41.0
-            ]
+            ],
+            "rot": 0
         },
         {
             "ref": "RV2",
@@ -100,23 +101,26 @@
             "shaft_XY": [
                 22.25,
                 41.0
-            ]
+            ],
+            "rot": 0
         },
         {
             "ref": "RV3",
             "role": "CUTOFF (50k)",
             "shaft_XY": [
                 7.75,
-                65.0
-            ]
+                75
+            ],
+            "rot": 180
         },
         {
             "ref": "RV4",
             "role": "DECAY (50k)",
             "shaft_XY": [
                 22.25,
-                65.0
-            ]
+                75
+            ],
+            "rot": 180
         }
     ],
     "leds": [
@@ -127,33 +131,14 @@
                 15.0,
                 54.8
             ]
-        },
-        {
-            "ref": "D6",
-            "role": "REC",
-            "XY": [
-                22.25,
-                84.7
-            ]
         }
     ],
-    "led_note": "3 mm THT on F at rotation 0 (pads side by side, anode pad 2 right), placed by the pad centre = body centre; dome flush with the panel front as modules/8bit. D5 (envelope / HAT CV) centred above CUTOFF + DECAY; D6 (REC, U3 PC3) in a row with the REC button (P3).",
-    "buttons": [
-        {
-            "ref": "SW1",
-            "role": "REC",
-            "XY": [
-                7.75,
-                84.7
-            ],
-            "rot": 180.0
-        }
-    ],
+    "led_note": "D5 ENV only: 3 mm THT on F, body centre X15 Y54.8, anode to the right; dome flush with panel front.",
+    "buttons": [],
     "panel_hole_diameters_mm": {
         "jack": 6.2,
         "pot": 7.2,
-        "led": 3.2,
-        "button": 4.2
+        "led": 3.2
     },
     "stack_Z_mm": {
         "led_body_bottom": 6.3,
@@ -167,10 +152,10 @@
             "side": "B",
             "XY": [
                 7.0,
-                84.7
+                88
             ],
             "rot": 0,
-            "note": "Hi-hat VCA, vertical on B in the left column between CUTOFF (courtyard Y73.68) and AUDIO OUT (Y95.72): courtyard X1.59..12.41, Y76.75..92.65; pads at Y78.35 / 91.05. P3 (user 2026-10-23): the REC button SW1 sits on F inside this outline (pads X4.5/11.0, Y82.45/86.95, clear of the vactrol pads); the user solders it from the other side."
+            "note": "VCA on B; centre Y88 (3.3 mm lower than R1), lead rows Y81.65/94.35. Clears the rotated lower pots and output-jack holes; no overlapping button."
         }
     ],
     "power_header": {
@@ -304,7 +289,7 @@
             "text": "CUTOFF",
             "XY": [
                 7.75,
-                57.5
+                67.5
             ],
             "size": 1.2
         },
@@ -312,15 +297,7 @@
             "text": "DECAY",
             "XY": [
                 22.25,
-                57.5
-            ],
-            "size": 1.2
-        },
-        {
-            "text": "REC",
-            "XY": [
-                15.0,
-                84.7
+                67.5
             ],
             "size": 1.2
         },
@@ -340,6 +317,5 @@
             ],
             "size": 1.2
         }
-    ],
-    "button_note": "Generic 6 x 6 mm THT tact (7 mm), stock SW_PUSH_6mm_H7.3mm on F, placed by the pad-pattern centre = stem centre, rot 180 (pad 1 signal on the bottom row) as modules/acid; pressed through the panel by the modules/8bit printed cap. P3: centred on the REC column X7.75 Y84.7, inside the vactrol U7 outline (U7 on B)."
+    ]
 }

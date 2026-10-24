@@ -1,11 +1,11 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/144/modules/hats/hardware/hats.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/144/modules/hats/hardware/hats.kicad_sch",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/147/modules/hats/hardware/hats.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/147/modules/hats/hardware/hats.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/144/modules/hats/hardware/hats.kicad_pcb": "4350be78d73a19a3d2ff35469d955ce864dcb223bdb9defa4a900c0fe75c14a7",
-    "/home/azero/.okbrain/workspaces/big-modular/144/modules/hats/hardware/hats.kicad_sch": "cff2c7c0873aca2d200dad3df90d79bd262b931c2868fae12406c3f66aef8f89"
+    "/home/azero/.okbrain/workspaces/big-modular/147/modules/hats/hardware/hats.kicad_pcb": "96bc1367090665061d79c92f330211dca8627fc6e52bc6edd30636ca3b8ba0f2",
+    "/home/azero/.okbrain/workspaces/big-modular/147/modules/hats/hardware/hats.kicad_sch": "bd83dbcf398c0f6067677e016b26810e6354e9acaa02d2aa91a010a9be2d1315"
   },
   "layers": [
     "F.Cu",
@@ -25,11 +25,10 @@
   "units": "mm",
   "side": "bottom",
   "include_through_hole": false,
-  "component_count": 88,
-  "bom_row_count": 31,
+  "component_count": 89,
+  "bom_row_count": 33,
   "excluded": {
     "D5": "Not an SMD footprint (use --include-through-hole)",
-    "D6": "Not an SMD footprint (use --include-through-hole)",
     "J1": "Not an SMD footprint (use --include-through-hole)",
     "J2": "Not an SMD footprint (use --include-through-hole)",
     "J3": "Not an SMD footprint (use --include-through-hole)",
@@ -42,7 +41,6 @@
     "RV2": "Not an SMD footprint (use --include-through-hole)",
     "RV3": "Not an SMD footprint (use --include-through-hole)",
     "RV4": "Not an SMD footprint (use --include-through-hole)",
-    "SW1": "Not an SMD footprint (use --include-through-hole)",
     "U7": "Not an SMD footprint (use --include-through-hole)"
   },
   "missing_part_numbers": [],

@@ -6,9 +6,9 @@
 	(paper "A2")
 	(title_block
 		(title "Big Modular - HATS")
-		(rev "S2")
+		(rev "S3")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S2 - Bread Modular NOISE (blue) + HIHAT, two ATtiny1616, 3.3 V signals, wired nets")
+		(comment 1 "SCHEMATIC S3 - Bread Modular NOISE (blue) + HIHAT, two ATtiny1616, 3.3 V signals, wired nets")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -1976,6 +1976,233 @@
 						)
 					)
 					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "HATS:D_Dual_Series_AKC"
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 1.27 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_Dual_Series_AKC"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Dual diode, anode/cathode/center"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "D_Dual_Series_AKC_0_1"
+				(polyline
+					(pts
+						(xy -3.81 1.27) (xy -1.27 0) (xy -3.81 -1.27) (xy -3.81 1.27) (xy -3.81 1.27) (xy -3.81 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.81 0) (xy 3.81 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy -1.27 1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 0)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 3.81 0) (xy 1.27 -1.27) (xy 1.27 1.27) (xy 1.27 1.27) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.81 1.27) (xy 3.81 -1.27) (xy 3.81 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 6.35 0) (xy 7.62 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -7.62 0 0)
+					(length 3.81)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 0 180)
+					(length 3.81)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "common"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4077,170 +4304,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "HATS:SW_Push"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "SW"
-				(at 1.27 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "SW_Push"
-				(at 0 -1.524 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Push button switch, generic, two pins"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "switch normally-open pushbutton push-button"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "SW_Push_0_1"
-				(circle
-					(center -2.032 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.27) (xy 0 3.048)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 1.27) (xy -2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 0 180)
-					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "HATS:SolderJumper_3_Open"
 			(pin_names
 				(offset 0)
@@ -5855,7 +5918,7 @@
 		)
 		(uuid "3f21ee17-6337-5742-80e0-3bf5ff8b57b5")
 	)
-	(text "BIG MODULAR HATS - S2 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, two ATtiny1616 (each runs its Bread Modular firmware), 3.3 V internal signals. Circuit intent: docs/research.md"
+	(text "BIG MODULAR HATS - S3 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, two ATtiny1616 (each runs its Bread Modular firmware), 3.3 V internal signals. Circuit intent: docs/research.md"
 		(exclude_from_sim no)
 		(at 20.32 15.24 0)
 		(effects
@@ -5876,17 +5939,6 @@
 			(justify left)
 		)
 		(uuid "4316dcb9-9412-595a-949e-d0d007d354f0")
-	)
-	(text "REC: SW1 -> PC2 of U2 and U3 (internal pull-ups); REC LED D6 on U3 PC3."
-		(exclude_from_sim no)
-		(at 20.32 284.48 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "432e40e4-7226-56f2-b9cf-ec89b5738e7c")
 	)
 	(text "ENVELOPE: D4 charges C18; R34 decays (open hat), Q3 adds R35 + DECAY (closed hat); Q4 + U9A x2 -> HAT_CV."
 		(exclude_from_sim no)
@@ -6000,6 +6052,12 @@
 		(uuid "0a2f0cd8-fdd1-5094-8b33-6d7ced55d177")
 	)
 	(junction
+		(at 289.56 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1551e035-8bd5-5e39-920c-f6a719dc2934")
+	)
+	(junction
 		(at 274.32 246.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6090,10 +6148,10 @@
 		(uuid "6d9e4b77-6213-5359-a960-c6cd8b4d91b0")
 	)
 	(junction
-		(at 279.4 63.5)
+		(at 279.4 68.58)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "79859da4-a853-5e18-beff-43f6a6466bea")
+		(uuid "7a9ed7bd-3eaa-56d0-859b-aa74d85cac8c")
 	)
 	(junction
 		(at 518.16 121.92)
@@ -6148,12 +6206,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9d28c2f3-31b5-548a-92ef-f06dc6f032d1")
-	)
-	(junction
-		(at 104.14 248.92)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a3396b6a-2f55-5b55-b463-49c808c326ca")
 	)
 	(junction
 		(at 274.32 251.46)
@@ -6240,6 +6292,14 @@
 		(uuid "114cfcf1-a77b-5e5b-9dc9-c1d58b290a38")
 	)
 	(no_connect
+		(at 106.68 248.92)
+		(uuid "19547a49-8584-5783-9967-288980a859d4")
+	)
+	(no_connect
+		(at 106.68 127)
+		(uuid "27de3306-b3b8-5fa1-af10-b74f64e69cee")
+	)
+	(no_connect
 		(at 30.48 68.58)
 		(uuid "2ef44e09-4705-53b4-8fef-af21076de278")
 	)
@@ -6314,6 +6374,10 @@
 	(no_connect
 		(at 137.16 228.6)
 		(uuid "af023ac5-b713-5de5-91ab-307351b46877")
+	)
+	(no_connect
+		(at 106.68 251.46)
+		(uuid "b856bb9e-ef82-5426-aa99-2efa9f1e3307")
 	)
 	(no_connect
 		(at 106.68 129.54)
@@ -6461,16 +6525,6 @@
 	)
 	(wire
 		(pts
-			(xy 289.56 121.92) (xy 289.56 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "069dfcc0-e1b2-5fab-b88b-fec9ec15fc98")
-	)
-	(wire
-		(pts
 			(xy 425.45 157.48) (xy 427.99 157.48)
 		)
 		(stroke
@@ -6481,6 +6535,16 @@
 	)
 	(wire
 		(pts
+			(xy 307.34 99.06) (xy 307.34 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0836d3b6-cc36-5bfb-b102-4d4a65073a66")
+	)
+	(wire
+		(pts
 			(xy 45.72 66.04) (xy 45.72 68.58)
 		)
 		(stroke
@@ -6488,16 +6552,6 @@
 			(type default)
 		)
 		(uuid "094369c2-0947-597e-9a87-13cd0e8d3865")
-	)
-	(wire
-		(pts
-			(xy 106.68 251.46) (xy 92.71 251.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "09d6d770-a2d4-5578-b44e-293922f2e53b")
 	)
 	(wire
 		(pts
@@ -6721,16 +6775,6 @@
 	)
 	(wire
 		(pts
-			(xy 279.4 63.5) (xy 269.24 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "181ae030-5b3c-564e-b569-79112918d746")
-	)
-	(wire
-		(pts
 			(xy 185.42 360.68) (xy 185.42 363.22)
 		)
 		(stroke
@@ -6748,6 +6792,16 @@
 			(type default)
 		)
 		(uuid "1bc9d500-e886-574c-a5e6-ca674ed43204")
+	)
+	(wire
+		(pts
+			(xy 279.4 73.66) (xy 279.4 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1bdb5bb2-5824-51f0-b03e-3af06c19630a")
 	)
 	(wire
 		(pts
@@ -7001,26 +7055,6 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 127) (xy 99.06 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3434299d-f12f-5575-9a9d-2cc8b84756d4")
-	)
-	(wire
-		(pts
-			(xy 106.68 248.92) (xy 104.14 248.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "34e4c0af-a243-5ff9-9816-95bb1dd30278")
-	)
-	(wire
-		(pts
 			(xy 224.79 129.54) (xy 223.52 129.54)
 		)
 		(stroke
@@ -7058,6 +7092,16 @@
 			(type default)
 		)
 		(uuid "38939bd5-4ea5-59af-a934-80dcd078452a")
+	)
+	(wire
+		(pts
+			(xy 289.56 91.44) (xy 302.26 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3920ec0a-03c6-5c5d-9b45-0f70b9f04646")
 	)
 	(wire
 		(pts
@@ -7148,16 +7192,6 @@
 			(type default)
 		)
 		(uuid "3e93a17e-892a-5c21-b182-3b5ff48778c9")
-	)
-	(wire
-		(pts
-			(xy 99.06 127) (xy 99.06 203.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3f2d79f1-3d2b-5f92-a29a-42ee09e3c778")
 	)
 	(wire
 		(pts
@@ -7341,16 +7375,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 274.32) (xy 99.06 276.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b0655a4-4679-555a-80b3-d06f530721f7")
-	)
-	(wire
-		(pts
 			(xy 40.64 58.42) (xy 40.64 55.88)
 		)
 		(stroke
@@ -7471,6 +7495,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 68.58) (xy 270.51 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5c51dbb0-e68f-5364-80b8-a6e8d401265b")
+	)
+	(wire
+		(pts
 			(xy 429.26 109.22) (xy 431.8 109.22)
 		)
 		(stroke
@@ -7588,6 +7622,16 @@
 			(type default)
 		)
 		(uuid "634f8681-0fba-531e-9d69-77ca2c3282b1")
+	)
+	(wire
+		(pts
+			(xy 289.56 68.58) (xy 289.56 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "652653ba-44b0-526f-aab1-895964b723f0")
 	)
 	(wire
 		(pts
@@ -7778,6 +7822,16 @@
 			(type default)
 		)
 		(uuid "77b7563d-df7f-5a61-872d-adc3e8c83169")
+	)
+	(wire
+		(pts
+			(xy 289.56 91.44) (xy 289.56 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "792540d0-e035-57ba-ad0a-c10f43114921")
 	)
 	(wire
 		(pts
@@ -8451,16 +8505,6 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 248.92) (xy 99.06 248.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9f6f1e2d-4f3d-5bc7-9f70-262534cbb21d")
-	)
-	(wire
-		(pts
 			(xy 332.74 259.08) (xy 332.74 256.54)
 		)
 		(stroke
@@ -8741,16 +8785,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 203.2) (xy 104.14 203.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b05e1020-396d-53e7-bda8-8d32f08216e4")
-	)
-	(wire
-		(pts
 			(xy 412.75 110.49) (xy 412.75 111.76)
 		)
 		(stroke
@@ -9021,16 +9055,6 @@
 	)
 	(wire
 		(pts
-			(xy 85.09 251.46) (xy 77.47 251.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c225a8db-c38c-5581-84b6-79713ce8e192")
-	)
-	(wire
-		(pts
 			(xy 55.88 386.08) (xy 55.88 388.62)
 		)
 		(stroke
@@ -9221,6 +9245,16 @@
 	)
 	(wire
 		(pts
+			(xy 278.13 73.66) (xy 279.4 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd643104-a71f-5823-80e7-ee467e5031b7")
+	)
+	(wire
+		(pts
 			(xy 33.02 68.58) (xy 33.02 66.04)
 		)
 		(stroke
@@ -9228,16 +9262,6 @@
 			(type default)
 		)
 		(uuid "cd7b4a86-35c8-5e01-8149-ab687b72d240")
-	)
-	(wire
-		(pts
-			(xy 104.14 203.2) (xy 104.14 248.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd883b46-ea7c-5bb0-b58b-0f825f31f9e5")
 	)
 	(wire
 		(pts
@@ -9561,16 +9585,6 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 251.46) (xy 67.31 251.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7aaf5df-9302-5e75-b246-7ef48c2ea634")
-	)
-	(wire
-		(pts
 			(xy 162.56 118.11) (xy 162.56 115.57)
 		)
 		(stroke
@@ -9708,6 +9722,26 @@
 			(type default)
 		)
 		(uuid "ed2bb3c4-0381-55b5-a880-a8d62793fa3f")
+	)
+	(wire
+		(pts
+			(xy 307.34 83.82) (xy 307.34 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ed5a7d93-1164-5104-887b-7f9819808660")
+	)
+	(wire
+		(pts
+			(xy 269.24 63.5) (xy 269.24 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "edca83c4-1186-5a7a-bc60-fc0ac8a07773")
 	)
 	(wire
 		(pts
@@ -9931,16 +9965,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 248.92) (xy 99.06 264.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fa75099a-8c19-5ecf-bd7c-21ccaafcff8e")
-	)
-	(wire
-		(pts
 			(xy 513.08 271.78) (xy 513.08 274.32)
 		)
 		(stroke
@@ -9968,6 +9992,16 @@
 			(type default)
 		)
 		(uuid "fbd4c572-1489-5413-a0b1-d5b1e0c98ac2")
+	)
+	(wire
+		(pts
+			(xy 269.24 68.58) (xy 270.51 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fbdc6a9b-bb01-501f-ac48-5adaa78085a6")
 	)
 	(wire
 		(pts
@@ -10058,16 +10092,6 @@
 			(justify right bottom)
 		)
 		(uuid "13a86b23-ec1d-566b-a487-eecdc2f16d8c")
-	)
-	(label "REC_SW"
-		(at 99.7 127 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "150a5847-7b32-5e15-a56b-01d16e04e4a0")
 	)
 	(label "PULSE"
 		(at 247.01 246.38 0)
@@ -10189,16 +10213,6 @@
 		)
 		(uuid "45778a9a-06d6-5839-af35-bbd3eb102065")
 	)
-	(label "LED_REC"
-		(at 93.34 251.46 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "4d6a2765-4668-53a2-bf8a-cd5fa077fcef")
-	)
 	(label "RX"
 		(at 94.62 60.96 0)
 		(effects
@@ -10318,6 +10332,16 @@
 			(justify left bottom)
 		)
 		(uuid "727cb2bd-8f0d-5167-aea8-20e26b17a852")
+	)
+	(label "NIN_SENSE_RAW"
+		(at 269.24 68.58 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "79f9c2d1-8a6a-5292-9c77-5b5acf993f4f")
 	)
 	(label "VAC_K"
 		(at 442.59 119.38 0)
@@ -10608,16 +10632,6 @@
 			(justify left bottom)
 		)
 		(uuid "ddd716b0-0ab5-574e-8eb8-42240ee920ae")
-	)
-	(label "LED_REC_A"
-		(at 78.11 251.46 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "de33f9ce-0dc7-514c-9656-e4e9b7fb1d87")
 	)
 	(label "FILTERED"
 		(at 440.06 132.08 0)
@@ -12790,83 +12804,6 @@
 			(project "hats"
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "#PWRU4_8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "HATS:GND")
-		(at 99.06 276.86 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "12dd4ab2-35e8-59a2-9998-8c271cf75e46")
-		(property "Reference" "#PWRSW1_2"
-			(at 99.06 276.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 99.06 280.67 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 99.06 276.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 99.06 276.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 99.06 276.86 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5caad092-e4a6-593b-a6f3-60baf4864801")
-		)
-		(instances
-			(project "hats"
-				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
-					(reference "#PWRSW1_2")
 					(unit 1)
 				)
 			)
@@ -15963,109 +15900,6 @@
 		)
 	)
 	(symbol
-		(lib_id "HATS:SW_Push")
-		(at 99.06 269.24 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "388d83fe-548c-5c28-962a-9160c7dbdffb")
-		(property "Reference" "SW1"
-			(at 97.16 268.61 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "REC"
-			(at 97.16 270.51 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "HATS:SW_PUSH_6mm_H7.3mm"
-			(at 99.06 269.24 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 99.06 269.24 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Push button switch, generic, two pins"
-			(at 99.06 269.24 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "6x6x7 mm THT tact switch, 4 pins (generic)"
-			(at 99.06 269.24 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "Record: NOISE (U2) records the TONE moves, HIHAT (U3) the envelope moves. PC2 of both MCUs, internal pull-ups. Generic 6 x 6 mm THT tact as modules/acid, printed cap"
-			(at 99.06 269.24 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8736ef3b-a5d2-521b-80da-bf610dee13af")
-		)
-		(pin "2"
-			(uuid "33d20997-e984-5380-8827-02dab4b12ed6")
-		)
-		(instances
-			(project "hats"
-				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
-					(reference "SW1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "HATS:GND")
 		(at 271.78 58.42 90)
 		(unit 1)
@@ -16320,7 +16154,7 @@
 			)
 		)
 		(property "Value" "PJ301M-12"
-			(at 264.16 69.85 0)
+			(at 260.35 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16386,6 +16220,83 @@
 			(project "hats"
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "HATS:GND")
+		(at 307.34 81.28 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "3ec023e6-dda9-5cde-aa7d-cfe9f8a77238")
+		(property "Reference" "#PWRD7_1"
+			(at 307.34 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 307.34 77.47 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 307.34 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 307.34 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 307.34 81.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1bde7e4d-f140-508e-b1d3-d126c30ef704")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#PWRD7_1")
 					(unit 1)
 				)
 			)
@@ -18162,6 +18073,133 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:D_Dual_Series_AKC")
+		(at 307.34 91.44 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "55028a09-f635-5ca6-8ffb-757d1baa36a4")
+		(property "Reference" "D7"
+			(at 314.96 90.17 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "BAV199"
+			(at 314.96 92.71 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "HATS:SOT-23"
+			(at 307.34 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/BAV199.pdf"
+			(at 307.34 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 307.34 91.44 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Low-leakage dual rail clamp: 1 anode GND, 2 cathode +3V3, 3 common sense. Negative faults also current-limited into U5 internal clamp; see docs/noise-in-protection.md"
+			(at 307.34 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C40919"
+			(at 307.34 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "BAV199,215"
+			(at 307.34 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Nexperia"
+			(at 307.34 91.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b23cd23e-f181-5c86-8bb8-827ec5b3d4f9")
+		)
+		(pin "2"
+			(uuid "515cd784-9c02-5f00-810c-33f569d306bc")
+		)
+		(pin "3"
+			(uuid "a0ca6442-4509-510f-9d70-4e10f1e022f9")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "D7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:-12V")
 		(at 57.15 370.84 90)
 		(unit 1)
@@ -18591,6 +18629,83 @@
 			(project "hats"
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "R24")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "HATS:+3V3")
+		(at 307.34 101.6 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "5828561e-b870-5a5a-baca-60a5d06aa4c0")
+		(property "Reference" "#PWRD7_2"
+			(at 307.34 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 307.34 105.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 307.34 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 307.34 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 307.34 101.6 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a710c137-3aec-569b-8854-f8c830466273")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#PWRD7_2")
 					(unit 1)
 				)
 			)
@@ -20276,96 +20391,6 @@
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "U6")
 					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "HATS:LED")
-		(at 73.66 251.46 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "6eb44833-6e8e-5d2f-8f9c-92d03de21d82")
-		(property "Reference" "D6"
-			(at 73.66 248.28 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "LED_3mm_red"
-			(at 73.66 254.64 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "HATS:LED_D3.0mm"
-			(at 73.66 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 73.66 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Light emitting diode"
-			(at 73.66 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "REC LED, U3 PC3. Hand-soldered 3 mm THT, dome flush with the panel (as modules/8bit)"
-			(at 73.66 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2f449937-70e6-56a7-9e85-d286c61bf24e")
-		)
-		(pin "2"
-			(uuid "3f5d4e3e-5845-5574-874b-df61cccd3980")
-		)
-		(instances
-			(project "hats"
-				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
-					(reference "D6")
-					(unit 1)
 				)
 			)
 		)
@@ -22540,6 +22565,139 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:R")
+		(at 274.32 73.66 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7eb2be79-009f-5163-9607-b77d8bb12075")
+		(property "Reference" "R49"
+			(at 274.32 71.12 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22k"
+			(at 274.32 76.2 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "HATS:R_0603_1608Metric"
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 274.32 73.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Power" "0.1W"
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Sense-only series protection: limits +/-12 V jack-contact fault current to <0.6 mA"
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C31850"
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2202T5E"
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 274.32 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dd2e45e1-5250-5860-8335-8e0f108145c9")
+		)
+		(pin "2"
+			(uuid "b36445da-49f7-58fd-b9d8-701b77896f46")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "R49")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:+3V3")
 		(at 121.92 91.44 0)
 		(unit 1)
@@ -23166,129 +23324,6 @@
 			(project "hats"
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "#FLG05")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "HATS:R")
-		(at 88.9 251.46 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "8bee96df-d087-58ff-8541-ca27d1526295")
-		(property "Reference" "R48"
-			(at 88.9 248.92 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "330"
-			(at 88.9 254 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "HATS:R_0603_1608Metric"
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Note" "REC LED current ~4 mA at 3.3 V (as modules/acid R16)"
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C23138"
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "0603WAF3300T5E"
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "UNI-ROYAL"
-			(at 88.9 251.46 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a1780948-6e28-5aa9-87b7-883f001f090e")
-		)
-		(pin "2"
-			(uuid "0dc261a0-d28a-5536-8886-160edf84832d")
-		)
-		(instances
-			(project "hats"
-				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
-					(reference "R48")
 					(unit 1)
 				)
 			)
@@ -24329,84 +24364,6 @@
 			(project "hats"
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "R32")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "HATS:GND")
-		(at 67.31 251.46 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "9e5991a1-f729-59b0-aefa-fedbdc5755fe")
-		(property "Reference" "#PWRD6_1"
-			(at 67.31 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 63.5 251.46 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 67.31 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 67.31 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 67.31 251.46 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "abb56a0d-26b1-5f78-8b7b-f20980a0d403")
-		)
-		(instances
-			(project "hats"
-				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
-					(reference "#PWRD6_1")
 					(unit 1)
 				)
 			)
@@ -25661,7 +25618,7 @@
 				)
 			)
 		)
-		(property "Note" "Input bias (keeps C10 discharged) and the jack-detect low level: 0.3 V with R14"
+		(property "Note" "Input bias (keeps C10 discharged) and the jack-detect low level: about 0.68 V with R14/R49"
 			(at 281.94 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -26102,7 +26059,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "470k"
 			(at 281.3 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26146,7 +26103,7 @@
 				)
 			)
 		)
-		(property "Note" "Jack-detect pull-up: plugged = TN open = high = external noise"
+		(property "Note" "Jack-detect pull-up: 470k with 100k R11 + 22k R49. Plugged high; empty about 0.68 V"
 			(at 279.4 40.64 0)
 			(hide yes)
 			(show_name no)
@@ -26157,7 +26114,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22935"
+		(property "LCSC" "C23178"
 			(at 279.4 40.64 0)
 			(hide yes)
 			(show_name no)
@@ -26168,7 +26125,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF1004T5E"
+		(property "MPN" "0603WAF4703T5E"
 			(at 279.4 40.64 0)
 			(hide yes)
 			(show_name no)

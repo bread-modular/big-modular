@@ -50,8 +50,7 @@ STOCK_FOOTPRINTS = [
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical'),
     ('Jumper', 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm'),
-    ('LED_THT', 'LED_D3.0mm'),                   # HAT CV / REC LEDs, as modules/8bit
-    ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'), # REC tact switch, as modules/acid
+    ('LED_THT', 'LED_D3.0mm'),                   # HAT CV ENV LED, as modules/8bit
 ]
 
 # The stock footprint references a model KiCad does not ship; the only shipped 3x3 mm
