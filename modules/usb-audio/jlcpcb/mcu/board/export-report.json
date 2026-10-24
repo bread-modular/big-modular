@@ -1,0 +1,43 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio-mcu.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio-mcu.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio-mcu.kicad_pcb": "eee16aeb32fd74a83f6a42815e8742b26c21d7be73a073722fe73f892b16c85d",
+    "/home/azero/.okbrain/workspaces/big-modular/145/modules/usb-audio/hardware/usb-audio-mcu.kicad_sch": "43e70f7855c31936ca631a70b1bd3d0c74125455bdd0d3efadcd9271dfb442f2"
+  },
+  "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 4,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "top",
+  "include_through_hole": false,
+  "component_count": 23,
+  "bom_row_count": 12,
+  "excluded": {
+    "J102": "Excluded from BOM",
+    "J103": "Excluded from BOM"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "usb-audio-mcu-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}

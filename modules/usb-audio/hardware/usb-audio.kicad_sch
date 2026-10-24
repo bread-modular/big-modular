@@ -6,9 +6,9 @@
 	(paper "A2")
 	(title_block
 		(title "Big Modular - USB-AUDIO carrier (jack/pot board)")
-		(rev "S1")
+		(rev "S2")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S1 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; MCU board on 2.54 mm headers J6/J7")
+		(comment 1 "SCHEMATIC S2 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; MCU board on 2.54 mm headers J6/J7")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -4689,7 +4689,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n-> 50k volume (0..1) -> U4C/D follower -> 1k -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\nPower-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s."
+	(text "OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n-> 50k volume (0..1) -> U7A/B follower -> 1k -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\nPower-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s."
 		(exclude_from_sim no)
 		(at 322.58 223.52 0)
 		(effects
@@ -4700,7 +4700,7 @@
 		)
 		(uuid "49ce06b5-af0d-5d40-b061-ab88b02a0cb4")
 	)
-	(text "INPUTS: jack (TN = GND) -> 50k volume (0..1) -> 1k -> U4A/B follower (+/-12 V)\n-> U6A/B inverting driver on +5VA (-0.255, + at VB_IN) -> 220R / 2.2n C0G -> AINA/AINB.\n+/-5.49 V = 2.8 Vpp ADC full scale. ADC_INV restores the polarity."
+	(text "INPUTS: jack (TN = GND) -> 50k volume (0..1) -> 1k -> U4A/B follower (+/-12 V, at the pots)\n-> U6A/B inverting driver on +5VA (-0.255, + at VB_IN) -> 220R / 2.2n C0G -> AINA/AINB.\n+/-5.49 V = 2.8 Vpp ADC full scale. ADC_INV restores the polarity."
 		(exclude_from_sim no)
 		(at 20.32 223.52 0)
 		(effects
@@ -5443,6 +5443,16 @@
 	)
 	(wire
 		(pts
+			(xy 251.46 330.2) (xy 251.46 332.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15b5b74f-c9e0-5f15-98da-c3e7ee44e050")
+	)
+	(wire
+		(pts
 			(xy 382.27 280.67) (xy 388.62 280.67)
 		)
 		(stroke
@@ -5630,6 +5640,16 @@
 			(type default)
 		)
 		(uuid "2303b25d-a049-553e-a0a1-e932f13fd079")
+	)
+	(wire
+		(pts
+			(xy 279.4 334.01) (xy 279.4 336.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23e3d9db-01e2-56e6-9b76-40f8f41d67fd")
 	)
 	(wire
 		(pts
@@ -6663,6 +6683,16 @@
 	)
 	(wire
 		(pts
+			(xy 266.7 334.01) (xy 266.7 336.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7dc1a57b-bd5d-5dfd-b82a-1eba770adce0")
+	)
+	(wire
+		(pts
 			(xy 27.94 271.78) (xy 30.48 271.78)
 		)
 		(stroke
@@ -7673,6 +7703,16 @@
 	)
 	(wire
 		(pts
+			(xy 266.7 344.17) (xy 266.7 346.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c885dd5c-4748-52e4-be90-40d0de963fbc")
+	)
+	(wire
+		(pts
 			(xy 304.8 212.09) (xy 314.96 212.09)
 		)
 		(stroke
@@ -7933,6 +7973,16 @@
 	)
 	(wire
 		(pts
+			(xy 279.4 344.17) (xy 279.4 346.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e21c84dc-99d9-5546-815b-bc5e102028b2")
+	)
+	(wire
+		(pts
 			(xy 520.7 127) (xy 523.24 127)
 		)
 		(stroke
@@ -8100,6 +8150,16 @@
 			(type default)
 		)
 		(uuid "eaaace3a-ec20-599a-a033-bb1003931ed8")
+	)
+	(wire
+		(pts
+			(xy 251.46 347.98) (xy 251.46 350.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ec492efc-007a-5402-9a8d-20f2a826bfa5")
 	)
 	(wire
 		(pts
@@ -9385,7 +9445,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 474.98 68.58 270)
+		(at 304.8 212.09 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9395,7 +9455,7 @@
 		(dnp no)
 		(uuid "0622145c-69c4-5d3f-b759-c95e8ed6b7cb")
 		(property "Reference" "#PWR067"
-			(at 474.98 68.58 0)
+			(at 304.8 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9406,18 +9466,17 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 469.9 68.58 90)
+			(at 304.8 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Footprint" ""
-			(at 474.98 68.58 0)
+			(at 304.8 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9428,7 +9487,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 474.98 68.58 0)
+			(at 304.8 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9439,7 +9498,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 474.98 68.58 0)
+			(at 304.8 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10315,7 +10374,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 297.18 137.16 180)
+		(at 256.54 212.09 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10325,7 +10384,7 @@
 		(dnp no)
 		(uuid "0bb1fb5c-6ff7-5e92-9fa6-1968afd40a26")
 		(property "Reference" "#PWR059"
-			(at 297.18 137.16 0)
+			(at 256.54 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10336,7 +10395,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 297.18 132.08 0)
+			(at 256.54 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10346,7 +10405,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 297.18 137.16 0)
+			(at 256.54 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10357,7 +10416,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 297.18 137.16 0)
+			(at 256.54 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10368,7 +10427,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 297.18 137.16 0)
+			(at 256.54 212.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10603,8 +10662,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:+3V3")
-		(at 490.22 129.54 270)
+		(lib_id "USBAUDIO:GND")
+		(at 378.46 254 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10614,7 +10673,7 @@
 		(dnp no)
 		(uuid "110472d7-34ea-5eb6-be8f-36b2b4632a38")
 		(property "Reference" "#PWR070"
-			(at 490.22 129.54 0)
+			(at 378.46 254 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10624,19 +10683,18 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 494.03 129.54 90)
+		(property "Value" "GND"
+			(at 378.46 259.08 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 490.22 129.54 0)
+			(at 378.46 254 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10647,7 +10705,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 490.22 129.54 0)
+			(at 378.46 254 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10658,7 +10716,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 490.22 129.54 0)
+			(at 378.46 254 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10676,6 +10734,147 @@
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "#PWR070")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:OPA1678")
+		(at 396.24 283.21 0)
+		(unit 2)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "11e6b004-7ac2-59ab-af14-a4eacefa50f3")
+		(property "Reference" "U7"
+			(at 396.24 278.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "OPA1678"
+			(at 396.24 288.29 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "USBAUDIO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "+/-12 V output pot-wiper followers, placed by RV3/RV4"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C192421"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "OPA1678IDR"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 396.24 283.21 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "34fd6c8f-d829-5431-bc55-0327cb57c717")
+		)
+		(pin "2"
+			(uuid "fbd0de46-3893-5cde-a8bc-495e2a91d76c")
+		)
+		(pin "3"
+			(uuid "ea0724ba-0266-5f27-a065-c6b0408f5015")
+		)
+		(pin "4"
+			(uuid "8472bd2a-008d-594c-9608-79eaa1c004a2")
+		)
+		(pin "5"
+			(uuid "344610a6-e0b1-5deb-a096-f6e776db2c76")
+		)
+		(pin "6"
+			(uuid "16875938-b534-528e-be0d-09d2cb83e098")
+		)
+		(pin "7"
+			(uuid "1e111f80-8573-55b4-94e5-34fd9c76f0b4")
+		)
+		(pin "8"
+			(uuid "e582eec7-61be-5d9d-a207-01ca49f52ca8")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "U7")
+					(unit 2)
 				)
 			)
 		)
@@ -10818,7 +11017,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 505.46 68.58 270)
+		(at 505.46 73.66 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10826,9 +11025,9 @@
 		(on_board no)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "167286f0-45dc-5054-842c-9affe4098fca")
-		(property "Reference" "#PWR072"
-			(at 505.46 68.58 0)
+		(uuid "13b09d29-5a23-5295-bb4d-84bbe8af05aa")
+		(property "Reference" "#PWR079"
+			(at 505.46 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10839,7 +11038,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 500.38 68.58 90)
+			(at 500.38 73.66 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10850,7 +11049,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 505.46 68.58 0)
+			(at 505.46 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10861,7 +11060,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 505.46 68.58 0)
+			(at 505.46 73.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10872,7 +11071,221 @@
 			)
 		)
 		(property "Description" ""
-			(at 505.46 68.58 0)
+			(at 505.46 73.66 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d7791dc2-34bb-5aa8-b0f3-89c8b8994947")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "#PWR079")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:C")
+		(at 266.7 340.36 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "159e1bbe-d0d5-5fac-acab-524c8b3de8e3")
+		(property "Reference" "C31"
+			(at 269.24 339.09 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 269.24 341.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "USBAUDIO:C_0603_1608Metric"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "50V"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "U7 V+ decoupling"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 266.7 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "26b8d56a-6c6c-5adf-b764-e53752498da3")
+		)
+		(pin "2"
+			(uuid "acd46deb-a88b-515f-94a0-edeb2f6951f5")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "C31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:+3V3")
+		(at 474.98 66.04 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "167286f0-45dc-5054-842c-9affe4098fca")
+		(property "Reference" "#PWR072"
+			(at 474.98 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 471.17 66.04 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 474.98 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 474.98 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 474.98 66.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10967,6 +11380,162 @@
 			(project "usb-audio"
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "#PWR026")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:+3V3")
+		(at 520.7 121.92 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "168acabf-4fbc-508b-a705-e1822c1bec25")
+		(property "Reference" "#PWR081"
+			(at 520.7 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 516.89 121.92 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 520.7 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 520.7 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 520.7 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4064508d-3d8a-5835-a7d1-11f69cc3e9a9")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "#PWR081")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:GND")
+		(at 505.46 68.58 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "1832f344-d808-5ac3-9d5b-64a8288c11bf")
+		(property "Reference" "#PWR078"
+			(at 505.46 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 500.38 68.58 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 505.46 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 505.46 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 505.46 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6e4da536-23bb-591e-b42b-f4b51db6244d")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "#PWR078")
 					(unit 1)
 				)
 			)
@@ -11103,6 +11672,161 @@
 			(project "usb-audio"
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:GND")
+		(at 520.7 129.54 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "1a80cf89-d9c3-58e3-b947-4dd12400e1f0")
+		(property "Reference" "#PWR082"
+			(at 520.7 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 515.62 129.54 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 520.7 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 520.7 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 520.7 129.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7ce08529-feca-5f8d-ab4f-b9f19f3e71ec")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "#PWR082")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:GND")
+		(at 505.46 88.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "1bc1c93c-78f6-582f-9a75-ae38fc8f8ae1")
+		(property "Reference" "#PWR080"
+			(at 505.46 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 505.46 93.98 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 505.46 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 505.46 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 505.46 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c306ed87-6607-577d-bfbf-f9d8e5f3dea8")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "#PWR080")
 					(unit 1)
 				)
 			)
@@ -11376,158 +12100,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:OPA1679")
-		(at 116.84 340.36 0)
-		(unit 5)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "21bb898d-2d3d-56db-ae75-09d9bac19de3")
-		(property "Reference" "U4"
-			(at 111.76 339.09 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "OPA1679"
-			(at 111.76 341.63 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "USBAUDIO:SOIC-14_3.9x8.7mm_P1.27mm"
-			(at 116.84 340.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
-			(at 116.84 340.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-14/TSSOP-14"
-			(at 116.84 340.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2878631"
-			(at 116.84 340.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "OPA1679IDR"
-			(at 116.84 340.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "Texas Instruments"
-			(at 116.84 340.36 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "745525e1-fa73-5354-acc1-4d1794d04f27")
-		)
-		(pin "10"
-			(uuid "08e4948d-32aa-52a0-bda8-cfb225ad05a8")
-		)
-		(pin "11"
-			(uuid "175a7085-43f6-5140-8700-43585b2cba92")
-		)
-		(pin "12"
-			(uuid "c720be70-04e9-51e1-bd7a-ea86c72f4bfc")
-		)
-		(pin "13"
-			(uuid "7cf80a79-814e-5671-92fe-fd70a009b52c")
-		)
-		(pin "14"
-			(uuid "fba9c61c-8eab-5518-8f25-9116639a6955")
-		)
-		(pin "2"
-			(uuid "221f057d-2b17-5232-bb8f-c01ef3c42326")
-		)
-		(pin "3"
-			(uuid "0ff10e0e-4001-5d07-bc8a-e5043433bcbf")
-		)
-		(pin "4"
-			(uuid "2166e6cf-196a-5ec4-af99-5cf82a17e023")
-		)
-		(pin "5"
-			(uuid "ed02f855-1cf8-5138-b8cd-1663338d1dde")
-		)
-		(pin "6"
-			(uuid "f6ddd8db-9b34-57b5-a6ba-e92b6a00fd65")
-		)
-		(pin "7"
-			(uuid "f0afbd71-0550-5c53-8aae-db3626f7f35a")
-		)
-		(pin "8"
-			(uuid "4784c414-2a37-5bf2-8f97-c4585b31fa15")
-		)
-		(pin "9"
-			(uuid "0493cfdc-15b6-5d45-9ac9-1f60da21cfd5")
-		)
-		(instances
-			(project "usb-audio"
-				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
-					(reference "U4")
-					(unit 5)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 505.46 73.66 270)
+		(at 474.98 68.58 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11537,7 +12111,7 @@
 		(dnp no)
 		(uuid "268fa974-a820-511e-b5e4-84f59f246c4e")
 		(property "Reference" "#PWR073"
-			(at 505.46 73.66 0)
+			(at 474.98 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11548,7 +12122,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 500.38 73.66 90)
+			(at 469.9 68.58 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11559,7 +12133,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 505.46 73.66 0)
+			(at 474.98 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11570,7 +12144,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 505.46 73.66 0)
+			(at 474.98 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11581,7 +12155,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 505.46 73.66 0)
+			(at 474.98 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12913,8 +13487,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:GND")
-		(at 378.46 254 0)
+		(lib_id "USBAUDIO:-12V")
+		(at 279.4 346.71 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12924,7 +13498,7 @@
 		(dnp no)
 		(uuid "3996db9a-8c73-541a-a0b2-523cb4a306f6")
 		(property "Reference" "#PWR064"
-			(at 378.46 254 0)
+			(at 279.4 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12934,8 +13508,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 378.46 259.08 0)
+		(property "Value" "-12V_F"
+			(at 279.4 350.52 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12945,7 +13519,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 378.46 254 0)
+			(at 279.4 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12956,7 +13530,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 378.46 254 0)
+			(at 279.4 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12967,7 +13541,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 378.46 254 0)
+			(at 279.4 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13494,6 +14068,138 @@
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "#PWR033")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:OPA1678")
+		(at 254 340.36 0)
+		(unit 3)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "41278af3-419f-55bf-935f-00fb01c5f1f6")
+		(property "Reference" "U7"
+			(at 248.92 339.09 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "OPA1678"
+			(at 248.92 341.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "USBAUDIO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 254 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+			(at 254 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+			(at 254 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C192421"
+			(at 254 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "OPA1678IDR"
+			(at 254 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 254 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9aa90238-12a0-5e31-8f13-6570b68155f1")
+		)
+		(pin "2"
+			(uuid "3bb7c8cc-d843-57ec-b7b5-468b32b5abbe")
+		)
+		(pin "3"
+			(uuid "30c3449c-60d5-5629-8d8e-9603fa339420")
+		)
+		(pin "4"
+			(uuid "fbb803b6-0f6f-572a-a5e8-47259df25ddc")
+		)
+		(pin "5"
+			(uuid "cd5279c4-d824-50b9-bcd4-0d690f5b1a76")
+		)
+		(pin "6"
+			(uuid "bd35a0ff-abd3-55d6-8a0c-b56f50ea016e")
+		)
+		(pin "7"
+			(uuid "269ae73c-032d-5ae7-9ea1-8f525b50072c")
+		)
+		(pin "8"
+			(uuid "198103a2-f8f6-5cfc-9fd3-a740ba6d00d1")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "U7")
+					(unit 3)
 				)
 			)
 		)
@@ -14678,8 +15384,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:GND")
-		(at 256.54 212.09 0)
+		(lib_id "USBAUDIO:-12V")
+		(at 251.46 350.52 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14689,7 +15395,7 @@
 		(dnp no)
 		(uuid "4cd85ffb-eaf3-5d99-94f1-2881257a5fa4")
 		(property "Reference" "#PWR057"
-			(at 256.54 212.09 0)
+			(at 251.46 350.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14699,8 +15405,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 256.54 217.17 0)
+		(property "Value" "-12V_F"
+			(at 251.46 354.33 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14710,7 +15416,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 256.54 212.09 0)
+			(at 251.46 350.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14721,7 +15427,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 212.09 0)
+			(at 251.46 350.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14732,7 +15438,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 256.54 212.09 0)
+			(at 251.46 350.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14832,8 +15538,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:GND")
-		(at 520.7 129.54 270)
+		(lib_id "USBAUDIO:+3V3")
+		(at 490.22 129.54 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14843,7 +15549,7 @@
 		(dnp no)
 		(uuid "4d8055d4-dcff-53ff-8b48-bee5fb78befd")
 		(property "Reference" "#PWR076"
-			(at 520.7 129.54 0)
+			(at 490.22 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14853,19 +15559,19 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 515.62 129.54 90)
+		(property "Value" "+3V3"
+			(at 494.03 129.54 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 520.7 129.54 0)
+			(at 490.22 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14876,7 +15582,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 520.7 129.54 0)
+			(at 490.22 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14887,7 +15593,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 520.7 129.54 0)
+			(at 490.22 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14910,8 +15616,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:+3V3")
-		(at 520.7 121.92 90)
+		(lib_id "USBAUDIO:GND")
+		(at 490.22 116.84 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14921,7 +15627,7 @@
 		(dnp no)
 		(uuid "4e02e5ad-b205-587f-ae6f-a19f23cd470c")
 		(property "Reference" "#PWR075"
-			(at 520.7 121.92 0)
+			(at 490.22 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14931,19 +15637,19 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 516.89 121.92 90)
+		(property "Value" "GND"
+			(at 495.3 116.84 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Footprint" ""
-			(at 520.7 121.92 0)
+			(at 490.22 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14954,7 +15660,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 520.7 121.92 0)
+			(at 490.22 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14965,7 +15671,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 520.7 121.92 0)
+			(at 490.22 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15438,6 +16144,147 @@
 			(project "usb-audio"
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "R42")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:OPA1678")
+		(at 396.24 250.19 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "54c32192-d4dc-50d7-a5b1-34894d252b8d")
+		(property "Reference" "U7"
+			(at 396.24 245.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "OPA1678"
+			(at 396.24 255.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "USBAUDIO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "+/-12 V output pot-wiper followers, placed by RV3/RV4"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C192421"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "OPA1678IDR"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Texas Instruments"
+			(at 396.24 250.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dc3aebd8-b786-5cb3-9a83-614bed090e59")
+		)
+		(pin "2"
+			(uuid "dc40b140-cfe5-5ac5-b4f0-b000232eaf60")
+		)
+		(pin "3"
+			(uuid "1f95b03f-e6e3-51a6-afd4-0a63f583e986")
+		)
+		(pin "4"
+			(uuid "9b36c7fb-0828-570c-97f8-21a006182239")
+		)
+		(pin "5"
+			(uuid "3ef93960-6f0d-53d1-8f04-238d1282329f")
+		)
+		(pin "6"
+			(uuid "50d84bf7-76dc-51f5-b45f-cb504ba122fc")
+		)
+		(pin "7"
+			(uuid "e8b62af7-6db0-5850-bf52-a0c606ca7378")
+		)
+		(pin "8"
+			(uuid "e216ecad-e28f-590c-9bc5-fb6b61db3eb7")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "U7")
 					(unit 1)
 				)
 			)
@@ -15995,7 +16842,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 505.46 88.9 0)
+		(at 474.98 88.9 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16005,7 +16852,7 @@
 		(dnp no)
 		(uuid "669f2a16-4bd4-587d-a596-baa0c851483b")
 		(property "Reference" "#PWR074"
-			(at 505.46 88.9 0)
+			(at 474.98 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16016,7 +16863,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 505.46 93.98 0)
+			(at 474.98 93.98 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16026,7 +16873,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 505.46 88.9 0)
+			(at 474.98 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16037,7 +16884,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 505.46 88.9 0)
+			(at 474.98 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16048,7 +16895,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 505.46 88.9 0)
+			(at 474.98 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16538,8 +17385,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:GND")
-		(at 279.4 190.5 0)
+		(lib_id "USBAUDIO:+3V3")
+		(at 256.54 199.39 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16549,7 +17396,7 @@
 		(dnp no)
 		(uuid "7291101a-568e-509c-bd53-9ec013a7347f")
 		(property "Reference" "#PWR058"
-			(at 279.4 190.5 0)
+			(at 256.54 199.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16559,8 +17406,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 279.4 195.58 0)
+		(property "Value" "+3V3_C"
+			(at 256.54 195.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16570,7 +17417,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 279.4 190.5 0)
+			(at 256.54 199.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16581,7 +17428,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 279.4 190.5 0)
+			(at 256.54 199.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16592,7 +17439,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 279.4 190.5 0)
+			(at 256.54 199.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16752,7 +17599,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 378.46 287.02 0)
+		(at 297.18 137.16 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16762,7 +17609,7 @@
 		(dnp no)
 		(uuid "72ff1abb-706f-5123-aaa6-3faf3005dbbf")
 		(property "Reference" "#PWR065"
-			(at 378.46 287.02 0)
+			(at 297.18 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16773,7 +17620,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 378.46 292.1 0)
+			(at 297.18 132.08 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16783,7 +17630,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 378.46 287.02 0)
+			(at 297.18 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16794,7 +17641,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 378.46 287.02 0)
+			(at 297.18 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16805,7 +17652,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 378.46 287.02 0)
+			(at 297.18 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17059,8 +17906,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:OPA1679")
-		(at 396.24 250.19 0)
+		(lib_id "USBAUDIO:OPA1678")
+		(at 116.84 340.36 0)
 		(unit 3)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17070,27 +17917,29 @@
 		(dnp no)
 		(uuid "7492ae60-3909-56fe-a5ba-a0bca33a4e68")
 		(property "Reference" "U4"
-			(at 396.24 245.11 0)
+			(at 111.76 339.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
-		(property "Value" "OPA1679"
-			(at 396.24 255.27 0)
+		(property "Value" "OPA1678"
+			(at 111.76 341.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
-		(property "Footprint" "USBAUDIO:SOIC-14_3.9x8.7mm_P1.27mm"
-			(at 396.24 250.19 0)
+		(property "Footprint" "USBAUDIO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 116.84 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17101,7 +17950,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
-			(at 396.24 250.19 0)
+			(at 116.84 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17111,8 +17960,8 @@
 				)
 			)
 		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-14/TSSOP-14"
-			(at 396.24 250.19 0)
+		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+			(at 116.84 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17122,8 +17971,8 @@
 				)
 			)
 		)
-		(property "LCSC" "C2878631"
-			(at 396.24 250.19 0)
+		(property "LCSC" "C192421"
+			(at 116.84 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17133,8 +17982,8 @@
 				)
 			)
 		)
-		(property "MPN" "OPA1679IDR"
-			(at 396.24 250.19 0)
+		(property "MPN" "OPA1678IDR"
+			(at 116.84 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17145,7 +17994,7 @@
 			)
 		)
 		(property "Manufacturer" "Texas Instruments"
-			(at 396.24 250.19 0)
+			(at 116.84 340.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17157,21 +18006,6 @@
 		)
 		(pin "1"
 			(uuid "e8423102-3726-59b5-a02c-053674ff37e2")
-		)
-		(pin "10"
-			(uuid "c61141ac-3817-5d7e-9ef6-a0386ead3e51")
-		)
-		(pin "11"
-			(uuid "1974704b-f183-5828-a83b-02ca67a7f28d")
-		)
-		(pin "12"
-			(uuid "4b0166b3-5249-5aa2-ac2f-40d5c7463b52")
-		)
-		(pin "13"
-			(uuid "34f427e8-0af3-52a8-99bf-227a8067e65a")
-		)
-		(pin "14"
-			(uuid "ffca2985-33bd-54ef-a97b-870d5f5b2ec0")
 		)
 		(pin "2"
 			(uuid "eaf84e31-836c-513d-ad7f-677a478d3e71")
@@ -17193,9 +18027,6 @@
 		)
 		(pin "8"
 			(uuid "4c7ab97b-7f1c-5f93-b534-12b9cc0f5ce9")
-		)
-		(pin "9"
-			(uuid "b6e4c7f3-ab07-5b68-9aa5-d7d41647cfe7")
 		)
 		(instances
 			(project "usb-audio"
@@ -17284,8 +18115,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:+3V3")
-		(at 256.54 199.39 0)
+		(lib_id "USBAUDIO:+12V")
+		(at 251.46 330.2 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17295,7 +18126,7 @@
 		(dnp no)
 		(uuid "76cdd723-4d1e-53f7-a5aa-468db9ab0324")
 		(property "Reference" "#PWR056"
-			(at 256.54 199.39 0)
+			(at 251.46 330.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17305,8 +18136,8 @@
 				)
 			)
 		)
-		(property "Value" "+3V3_C"
-			(at 256.54 195.58 0)
+		(property "Value" "+12V_F"
+			(at 251.46 326.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17316,7 +18147,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 256.54 199.39 0)
+			(at 251.46 330.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17327,7 +18158,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 199.39 0)
+			(at 251.46 330.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17338,7 +18169,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 256.54 199.39 0)
+			(at 251.46 330.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17608,7 +18439,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 342.9 284.48 0)
+		(at 279.4 334.01 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17618,7 +18449,7 @@
 		(dnp no)
 		(uuid "79ba87d7-89a9-5304-83ac-e530654c0113")
 		(property "Reference" "#PWR063"
-			(at 342.9 284.48 0)
+			(at 279.4 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17629,7 +18460,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 342.9 289.56 0)
+			(at 279.4 328.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17639,7 +18470,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 342.9 284.48 0)
+			(at 279.4 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17650,7 +18481,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 342.9 284.48 0)
+			(at 279.4 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17661,7 +18492,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 342.9 284.48 0)
+			(at 279.4 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18789,6 +19620,84 @@
 		)
 	)
 	(symbol
+		(lib_id "USBAUDIO:+3V3")
+		(at 505.46 66.04 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "897913bd-8b3a-5c4d-9e6e-ffaa8765ae32")
+		(property "Reference" "#PWR077"
+			(at 505.46 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 501.65 66.04 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 505.46 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 505.46 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 505.46 66.04 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "047489f5-8993-518b-980a-8449ca22975b")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "#PWR077")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "USBAUDIO:GND")
 		(at 129.54 288.29 0)
 		(unit 1)
@@ -18860,6 +19769,142 @@
 			(project "usb-audio"
 				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
 					(reference "#PWR032")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "USBAUDIO:C")
+		(at 279.4 340.36 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8a3a7411-51e7-52e1-80ba-778f765b9419")
+		(property "Reference" "C32"
+			(at 281.94 339.09 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 281.94 341.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "USBAUDIO:C_0603_1608Metric"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Voltage" "50V"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "U7 V- decoupling"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C14663"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "CC0603KRX7R9BB104"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "YAGEO"
+			(at 279.4 340.36 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e485b26f-82e5-50e0-9f10-e6f9989adf5b")
+		)
+		(pin "2"
+			(uuid "2780eee1-a546-5b6b-b3c9-d9c3a7b43a66")
+		)
+		(instances
+			(project "usb-audio"
+				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
+					(reference "C32")
 					(unit 1)
 				)
 			)
@@ -19348,7 +20393,7 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:OPA1679")
+		(lib_id "USBAUDIO:OPA1678")
 		(at 68.58 247.65 0)
 		(unit 1)
 		(body_style 1)
@@ -19368,7 +20413,7 @@
 				)
 			)
 		)
-		(property "Value" "OPA1679"
+		(property "Value" "OPA1678"
 			(at 68.58 252.73 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -19378,7 +20423,7 @@
 				)
 			)
 		)
-		(property "Footprint" "USBAUDIO:SOIC-14_3.9x8.7mm_P1.27mm"
+		(property "Footprint" "USBAUDIO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 68.58 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -19400,7 +20445,7 @@
 				)
 			)
 		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-14/TSSOP-14"
+		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
 			(at 68.58 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -19411,7 +20456,7 @@
 				)
 			)
 		)
-		(property "Note" "+/-12 V: pot-wiper followers (A/B) and output followers (C/D)"
+		(property "Note" "+/-12 V input pot-wiper followers, placed by RV1/RV2"
 			(at 68.58 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -19422,7 +20467,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2878631"
+		(property "LCSC" "C192421"
 			(at 68.58 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -19433,7 +20478,7 @@
 				)
 			)
 		)
-		(property "MPN" "OPA1679IDR"
+		(property "MPN" "OPA1678IDR"
 			(at 68.58 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -19458,21 +20503,6 @@
 		(pin "1"
 			(uuid "7d0a5ad5-f42d-50bd-82fc-a8105e51789f")
 		)
-		(pin "10"
-			(uuid "4a28f232-8207-509d-8c3f-d1259388b426")
-		)
-		(pin "11"
-			(uuid "fbc69651-841a-52d4-8614-fa8f026bb3ce")
-		)
-		(pin "12"
-			(uuid "c78f7d73-9493-518f-906a-ac3ba02d407e")
-		)
-		(pin "13"
-			(uuid "e9b5343e-c1ca-5b7a-8ad7-a9d147f6aa87")
-		)
-		(pin "14"
-			(uuid "e213295f-fa1b-5f12-a9fa-c1ba61b65e71")
-		)
 		(pin "2"
 			(uuid "7a0a7740-71a5-5b63-9fe2-218ee814deef")
 		)
@@ -19493,9 +20523,6 @@
 		)
 		(pin "8"
 			(uuid "ae037598-43e8-5f06-9b7d-0f69e620cbe2")
-		)
-		(pin "9"
-			(uuid "f738ed46-0d71-5f9e-b859-e0af564ceca7")
 		)
 		(instances
 			(project "usb-audio"
@@ -21317,154 +22344,6 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:OPA1679")
-		(at 396.24 283.21 0)
-		(unit 4)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "9fe09bc8-99e9-562a-b41c-9efbc63db189")
-		(property "Reference" "U4"
-			(at 396.24 278.13 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "OPA1679"
-			(at 396.24 288.29 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "USBAUDIO:SOIC-14_3.9x8.7mm_P1.27mm"
-			(at 396.24 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
-			(at 396.24 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-14/TSSOP-14"
-			(at 396.24 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC" "C2878631"
-			(at 396.24 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "OPA1679IDR"
-			(at 396.24 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "Texas Instruments"
-			(at 396.24 283.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fc688c50-16dc-5748-a2b9-48e6f683cc99")
-		)
-		(pin "10"
-			(uuid "3ed50ac8-810a-5c6c-9a0d-32d0b22dd11b")
-		)
-		(pin "11"
-			(uuid "acff2d33-82e8-5daa-9336-badde70c04e9")
-		)
-		(pin "12"
-			(uuid "1d05f023-dddd-5b41-b0b2-34c257979751")
-		)
-		(pin "13"
-			(uuid "2372e844-357d-5688-bdd7-39839fd0977e")
-		)
-		(pin "14"
-			(uuid "e97163e5-604d-5031-beb7-b5534ce5e94a")
-		)
-		(pin "2"
-			(uuid "38d218a5-60d4-5fd9-ab4e-6abec28adc1d")
-		)
-		(pin "3"
-			(uuid "6d8acb2e-0bf0-5074-8d9a-73f0a4c284c2")
-		)
-		(pin "4"
-			(uuid "dc14bb14-2875-533e-a63a-857bfdb88cea")
-		)
-		(pin "5"
-			(uuid "ba2ed46c-35c1-5ea1-aba8-37403c487067")
-		)
-		(pin "6"
-			(uuid "f8ce261b-f065-55d2-a8b0-1c672ab4dd4a")
-		)
-		(pin "7"
-			(uuid "de8a134c-588b-51d3-a520-3fb9c87f17e3")
-		)
-		(pin "8"
-			(uuid "4d26b976-229e-5d51-bc20-e63dcda162b2")
-		)
-		(pin "9"
-			(uuid "3717d105-e992-5b83-874b-6e9cb4e67536")
-		)
-		(instances
-			(project "usb-audio"
-				(path "/af7115dc-3260-5bb7-b1c7-1bfecde52260"
-					(reference "U4")
-					(unit 4)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "USBAUDIO:R")
 		(at 256.54 154.94 90)
 		(unit 1)
@@ -22570,7 +23449,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 304.8 212.09 0)
+		(at 266.7 346.71 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -22580,7 +23459,7 @@
 		(dnp no)
 		(uuid "b6ab1732-cd58-5173-94ef-9a0e028142a3")
 		(property "Reference" "#PWR061"
-			(at 304.8 212.09 0)
+			(at 266.7 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22591,7 +23470,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 304.8 217.17 0)
+			(at 266.7 351.79 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -22601,7 +23480,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 304.8 212.09 0)
+			(at 266.7 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22612,7 +23491,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 304.8 212.09 0)
+			(at 266.7 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22623,7 +23502,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 304.8 212.09 0)
+			(at 266.7 346.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22878,7 +23757,7 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:OPA1679")
+		(lib_id "USBAUDIO:OPA1678")
 		(at 68.58 280.67 0)
 		(unit 2)
 		(body_style 1)
@@ -22898,7 +23777,7 @@
 				)
 			)
 		)
-		(property "Value" "OPA1679"
+		(property "Value" "OPA1678"
 			(at 68.58 285.75 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22908,7 +23787,7 @@
 				)
 			)
 		)
-		(property "Footprint" "USBAUDIO:SOIC-14_3.9x8.7mm_P1.27mm"
+		(property "Footprint" "USBAUDIO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 68.58 280.67 0)
 			(hide yes)
 			(show_name no)
@@ -22930,7 +23809,7 @@
 				)
 			)
 		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-14/TSSOP-14"
+		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
 			(at 68.58 280.67 0)
 			(hide yes)
 			(show_name no)
@@ -22941,7 +23820,7 @@
 				)
 			)
 		)
-		(property "Note" "+/-12 V: pot-wiper followers (A/B) and output followers (C/D)"
+		(property "Note" "+/-12 V input pot-wiper followers, placed by RV1/RV2"
 			(at 68.58 280.67 0)
 			(hide yes)
 			(show_name no)
@@ -22952,7 +23831,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C2878631"
+		(property "LCSC" "C192421"
 			(at 68.58 280.67 0)
 			(hide yes)
 			(show_name no)
@@ -22963,7 +23842,7 @@
 				)
 			)
 		)
-		(property "MPN" "OPA1679IDR"
+		(property "MPN" "OPA1678IDR"
 			(at 68.58 280.67 0)
 			(hide yes)
 			(show_name no)
@@ -22988,21 +23867,6 @@
 		(pin "1"
 			(uuid "85403a7e-7398-5e3b-add1-fcd1e774a889")
 		)
-		(pin "10"
-			(uuid "0b2107a9-bff3-500c-9f3c-a50e48dcf277")
-		)
-		(pin "11"
-			(uuid "78ea0d10-2575-5123-87e6-34ac349a0b50")
-		)
-		(pin "12"
-			(uuid "cffa3068-24ab-51d0-b4df-5ae7b5db3ce2")
-		)
-		(pin "13"
-			(uuid "4611b73d-36d3-5146-b200-af1b184d7f92")
-		)
-		(pin "14"
-			(uuid "45d01ca0-1656-514e-8447-693dcbadce97")
-		)
 		(pin "2"
 			(uuid "a8841e78-29ce-562c-925a-3e06dcef2d39")
 		)
@@ -23023,9 +23887,6 @@
 		)
 		(pin "8"
 			(uuid "bbd62e2f-75bb-52d3-a079-6a621a20260c")
-		)
-		(pin "9"
-			(uuid "0c97ff4e-c80d-5176-976d-5680d8160771")
 		)
 		(instances
 			(project "usb-audio"
@@ -24391,7 +25252,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 342.9 251.46 0)
+		(at 279.4 190.5 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -24401,7 +25262,7 @@
 		(dnp no)
 		(uuid "ce29985d-fb73-5fc3-b62c-23f506040d70")
 		(property "Reference" "#PWR062"
-			(at 342.9 251.46 0)
+			(at 279.4 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24412,7 +25273,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 342.9 256.54 0)
+			(at 279.4 195.58 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -24422,7 +25283,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 342.9 251.46 0)
+			(at 279.4 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24433,7 +25294,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 342.9 251.46 0)
+			(at 279.4 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -24444,7 +25305,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 342.9 251.46 0)
+			(at 279.4 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25746,8 +26607,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:+3V3")
-		(at 474.98 66.04 90)
+		(lib_id "USBAUDIO:GND")
+		(at 302.26 187.96 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -25757,7 +26618,7 @@
 		(dnp no)
 		(uuid "ef05d75c-c832-5a01-8db3-cdc87620b0cc")
 		(property "Reference" "#PWR066"
-			(at 474.98 66.04 0)
+			(at 302.26 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25767,19 +26628,18 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 471.17 66.04 90)
+		(property "Value" "GND"
+			(at 302.26 193.04 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 474.98 66.04 0)
+			(at 302.26 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25790,7 +26650,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 474.98 66.04 0)
+			(at 302.26 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25801,7 +26661,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 474.98 66.04 0)
+			(at 302.26 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25825,7 +26685,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 474.98 88.9 0)
+		(at 342.9 251.46 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -25835,7 +26695,7 @@
 		(dnp no)
 		(uuid "ef94b6fc-6872-553e-a350-b68b2f8d3dda")
 		(property "Reference" "#PWR068"
-			(at 474.98 88.9 0)
+			(at 342.9 251.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25846,7 +26706,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 474.98 93.98 0)
+			(at 342.9 256.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -25856,7 +26716,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 474.98 88.9 0)
+			(at 342.9 251.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25867,7 +26727,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 474.98 88.9 0)
+			(at 342.9 251.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -25878,7 +26738,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 474.98 88.9 0)
+			(at 342.9 251.46 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26038,7 +26898,7 @@
 	)
 	(symbol
 		(lib_id "USBAUDIO:GND")
-		(at 490.22 116.84 90)
+		(at 342.9 284.48 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26048,7 +26908,7 @@
 		(dnp no)
 		(uuid "f10fa68f-4de9-5d64-9ca7-a3e20be41cc0")
 		(property "Reference" "#PWR069"
-			(at 490.22 116.84 0)
+			(at 342.9 284.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26059,18 +26919,17 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 495.3 116.84 90)
+			(at 342.9 289.56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Footprint" ""
-			(at 490.22 116.84 0)
+			(at 342.9 284.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26081,7 +26940,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 490.22 116.84 0)
+			(at 342.9 284.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26092,7 +26951,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 490.22 116.84 0)
+			(at 342.9 284.48 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26347,8 +27206,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:+3V3")
-		(at 505.46 66.04 90)
+		(lib_id "USBAUDIO:GND")
+		(at 378.46 287.02 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26358,7 +27217,7 @@
 		(dnp no)
 		(uuid "f4e1273f-652a-517d-9256-a48848989ab3")
 		(property "Reference" "#PWR071"
-			(at 505.46 66.04 0)
+			(at 378.46 287.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26368,19 +27227,18 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 501.65 66.04 90)
+		(property "Value" "GND"
+			(at 378.46 292.1 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 505.46 66.04 0)
+			(at 378.46 287.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26391,7 +27249,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 505.46 66.04 0)
+			(at 378.46 287.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26402,7 +27260,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 505.46 66.04 0)
+			(at 378.46 287.02 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26425,8 +27283,8 @@
 		)
 	)
 	(symbol
-		(lib_id "USBAUDIO:GND")
-		(at 302.26 187.96 0)
+		(lib_id "USBAUDIO:+12V")
+		(at 266.7 334.01 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -26436,7 +27294,7 @@
 		(dnp no)
 		(uuid "f6fefca4-1f3a-5581-a8fc-011b62a41786")
 		(property "Reference" "#PWR060"
-			(at 302.26 187.96 0)
+			(at 266.7 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26446,8 +27304,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 302.26 193.04 0)
+		(property "Value" "+12V_F"
+			(at 266.7 330.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -26457,7 +27315,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 302.26 187.96 0)
+			(at 266.7 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26468,7 +27326,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 302.26 187.96 0)
+			(at 266.7 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -26479,7 +27337,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 302.26 187.96 0)
+			(at 266.7 334.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

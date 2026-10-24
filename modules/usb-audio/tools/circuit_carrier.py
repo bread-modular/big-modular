@@ -9,14 +9,15 @@ CIRCUIT is docs/research.md section 3. 6HP, 2 in / 2 out, DC-coupled, +/-5 V (CV
   (MCLK/LRCK 128: Y1 24.576 MHz -> 192 kHz; 96/48 kHz via the MCLK divider). It drives SCLK/LRCK
   to both CH32V307 I2S ports (slaves). RST held low by R17 until the MCU releases it.
 - Inputs: jack (TN to GND: unpatched = 0 V) -> RV1/RV2 50k volume (0..1) -> R20/R21 1k -> U4A/U4B
-  follower (+/-12 V) -> U6A/U6B inverting driver on +5VA (gain -5.1k/20k, + input at VB_IN =
+  follower (+/-12 V, by the IN pots) -> U6A/U6B inverting driver on +5VA (gain -5.1k/20k, + input at VB_IN =
   VQ x 20/25.1 so 0 V in = VQ) -> 220R / 2.2n C0G -> AINA/AINB. +/-5.49 V = ADC full scale
   (0.56 x VA = 2.8 Vpp); the 5 V driver cannot push AIN outside 0..5 V on a +/-12 V mis-patch.
   The CS4270 ADC_INV bits restore the polarity; its HPF is frozen for DC (register 04h bits 7/6).
 - Outputs: AOUTA/AOUTB -> 470R / 1n C0G -> U5A/U5B non-inverting gain 3.2 (22k/10k) with Rg to
   VREF_OUT = VQ x 32/22, so VQ out = 0 V; DAC full scale 0.65 x VA = 3.25 Vpp -> +/-5.2 V. AOUT
-  sees only an op-amp input (CS4270 AOUT DC load max 10 uA). -> RV3/RV4 50k volume -> U4C/U4D
-  follower -> 1k 1206 -> jack.
+  sees only an op-amp input (CS4270 AOUT DC load max 10 uA). -> RV3/RV4 50k volume -> U7A/U7B
+  follower (by the OUT pots) -> 1k 1206 -> jack. U4 and U7 are separate duals (R2, 2026-10-24) so
+  each follower sits at its pot wiper; the gain stages U5 sit at the codec AOUT pins.
 - References on +5VA: U6C buffers VQ (25k source, max 1 uA) for the VB_IN divider; U6D makes
   VREF_OUT from VQ. Both track the codec's own mid-rail.
 - MCU board link: J6/J7 1x10 2.54 mm pin headers (the MCU board solders on top of them, F side).
@@ -47,9 +48,9 @@ IN_PARTS = [dict(j='J2', rv='RV1', rs='R20', fu='U4', fun=1, rin='R22', rf='R24'
                  ro='R26', c='C20', ch='1', adc='ADC_A'),
             dict(j='J3', rv='RV2', rs='R21', fu='U4', fun=2, rin='R23', rf='R25', du='U6', dun=2,
                  ro='R27', c='C21', ch='2', adc='ADC_B')]
-OUT_PARTS = [dict(rs='R30', c='C22', u='U5', un=1, rg='R32', rf='R34', rv='RV3', fu='U4', fun=3, ro='R36',
+OUT_PARTS = [dict(rs='R30', c='C22', u='U5', un=1, rg='R32', rf='R34', rv='RV3', fu='U7', fun=1, ro='R36',
                   j='J4', ch='1', dac='DAC_A'),
-             dict(rs='R31', c='C23', u='U5', un=2, rg='R33', rf='R35', rv='RV4', fu='U4', fun=4, ro='R37',
+             dict(rs='R31', c='C23', u='U5', un=2, rg='R33', rf='R35', rv='RV4', fu='U7', fun=2, ro='R37',
                   j='J5', ch='2', dac='DAC_B')]
 # Op-amp unit pins: unit -> (+, -, out)
 OPA4 = {1: ('3', '2', '1'), 2: ('5', '6', '7'), 3: ('10', '9', '8'), 4: ('12', '13', '14')}
@@ -173,7 +174,7 @@ def circuit():
         c.append(two(o['rs'], 'R', '1k', 'R0603', (x0 + 27.94, y + 3.81), f'_IN{n}_POT', f'_IN{n}_P',
                      Note='Follower input protection (no effect on the pot: FET-input op-amp)'))
         c.append(opamp(o['fu'], o['fun'], (x0 + 45.72, y + 6.35), f'_IN{n}_P', f'_IN{n}_BUF', f'_IN{n}_BUF',
-                       Note='+/-12 V: pot-wiper followers (A/B) and output followers (C/D)'))
+                       quad=False, Note='+/-12 V input pot-wiper followers, placed by RV1/RV2'))
         c.append(two(o['rin'], 'R', '20k', 'R0603', (x0 + 63.5, y + 6.35), f'_IN{n}_BUF', f'_IN{n}_SUM',
                      Note='Driver Rin: gain -5.1k/20k = -0.255 (+/-5.49 V -> 2.8 Vpp ADC full scale)'))
         c.append(opamp(o['du'], o['dun'], (x0 + 81.28, y + 3.81), 'VB_IN', f'_IN{n}_SUM', f'_IN{n}_DRV',
@@ -203,7 +204,8 @@ def circuit():
         c.append(part(o['rv'], 'R_Potentiometer', '50k', 'RV09', (x0 + 43.18, y + 6.35), 0,
                       {'3': f'_OUT{n}_AMP', '2': f'_OUT{n}_POT', '1': 'GND'},
                       Note=f'OUT {n} volume 0..1 (RV09 9 mm, linear, user stock). Hand-soldered'))
-        c.append(opamp(o['fu'], o['fun'], (x0 + 60.96, y + 8.89), f'_OUT{n}_POT', f'_OUT{n}_BUF', f'_OUT{n}_BUF'))
+        c.append(opamp(o['fu'], o['fun'], (x0 + 60.96, y + 8.89), f'_OUT{n}_POT', f'_OUT{n}_BUF', f'_OUT{n}_BUF',
+                       quad=False, Note='+/-12 V output pot-wiper followers, placed by RV3/RV4'))
         c.append(two(o['ro'], 'R', '1k', 'R1206', (x0 + 78.74, y + 8.89), f'_OUT{n}_BUF', f'OUT{n}', Power='0.25W',
                      Note='Output series: short / mis-patch limit (1206: 0.14 W on a permanent +/-12 V mis-patch)'))
         c.append(part(o['j'], 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (x0 + 96.52, y + 8.89), 180,
@@ -222,12 +224,14 @@ def circuit():
     c.append(two('R42', 'R', '22k', 'R0603', (40.64, REF_Y[1] + 13.97), '_VREF_FB', 'GND', rot=0))
 
     # ---- Op-amp supplies and decoupling
-    c.append(part('U4', 'OPA1679', 'OPA1679', 'SOIC14', (116.84, 340.36), 0, {'4': '+12V_F', '11': '-12V_F'}, unit=5))
+    c.append(part('U4', 'OPA1678', 'OPA1678', 'SOIC8', (116.84, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
     c.append(part('U5', 'OPA1678', 'OPA1678', 'SOIC8', (162.56, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
     c.append(part('U6', 'OPA1679', 'OPA1679', 'SOIC14', (208.28, 340.36), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
+    c.append(part('U7', 'OPA1678', 'OPA1678', 'SOIC8', (254.0, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
     for ref, xx, a, b, note in (('C26', 129.54, '+12V_F', 'GND', 'U4 V+'), ('C27', 142.24, 'GND', '-12V_F', 'U4 V-'),
                                 ('C28', 175.26, '+12V_F', 'GND', 'U5 V+'), ('C29', 187.96, 'GND', '-12V_F', 'U5 V-'),
-                                ('C30', 220.98, '+5VA', 'GND', 'U6 V+')):
+                                ('C30', 220.98, '+5VA', 'GND', 'U6 V+'),
+                                ('C31', 266.7, '+12V_F', 'GND', 'U7 V+'), ('C32', 279.4, 'GND', '-12V_F', 'U7 V-')):
         c.append(two(ref, 'C', '100n', 'C0603', (xx, 340.36), a, b, rot=0, Voltage='50V', Note=f'{note} decoupling'))
 
     # ---- MCU board headers, BOOT/RESET, SWD
@@ -290,7 +294,7 @@ def drawing():
     for o, y in zip(IN_PARTS, IN_Y):
         x0 = IN_X0
         n = o['ch']
-        fp, fm, fo = OPA4[o['fun']]
+        fp, fm, fo = OPA2[o['fun']]
         dp, dm, do = OPA4[o['dun']]
         fu, du = o['fu'], o['du']
         xo, xd = x0 + 45.72, x0 + 81.28
@@ -311,7 +315,7 @@ def drawing():
         x0 = OUT_X0
         n = o['ch']
         up, um, uo = OPA2[o['un']]
-        fp, fm, fo = OPA4[o['fun']]
+        fp, fm, fo = OPA2[o['fun']]
         u, fu = o['u'], o['fu']
         xo, xf = x0 + 22.86, x0 + 60.96
         W += [[f"{o['rs']}.2", f'{u}.{up}'],
@@ -382,11 +386,11 @@ TEXTS = [
     ((203.2, 116.84), 'CS4270 CODEC: I2C control port, address 0x48. Master, quad speed: MCLK 24.576 MHz / 128 = 192 kHz;\n'
                       'SCLK = 64 x Fs to both CH32V307 I2S slaves (I2S2 RX, I2S3 TX). HPF freeze (reg 04h b7/b6) for DC.\n'
                       'Firmware: RST high after clocks, write PDN within 1045 LRCK periods, then FM = quad master.', 1.1),
-    ((20.32, 223.52), 'INPUTS: jack (TN = GND) -> 50k volume (0..1) -> 1k -> U4A/B follower (+/-12 V)\n'
+    ((20.32, 223.52), 'INPUTS: jack (TN = GND) -> 50k volume (0..1) -> 1k -> U4A/B follower (+/-12 V, at the pots)\n'
                       '-> U6A/B inverting driver on +5VA (-0.255, + at VB_IN) -> 220R / 2.2n C0G -> AINA/AINB.\n'
                       '+/-5.49 V = 2.8 Vpp ADC full scale. ADC_INV restores the polarity.', 1.1),
     ((322.58, 223.52), 'OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n'
-                       '-> 50k volume (0..1) -> U4C/D follower -> 1k -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\n'
+                       '-> 50k volume (0..1) -> U7A/B follower -> 1k -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\n'
                        'Power-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s.', 1.1),
     ((20.32, 309.88), 'REFERENCES (+5VA): U6C buffers VQ (VA/2) -> VB_IN = VQ x 20/25.1 (input drivers);\n'
                       'U6D: VREF_OUT = VQ x 32/22 (output stages). Both track the codec mid-rail.', 1.1),
@@ -397,7 +401,8 @@ TEXTS = [
 
 TEXT_LEFT = {'R15', 'R17', 'R41', 'R42'}
 TEXT_POS = {'U1': ((0, -6.35), (0, -3.81)), 'U2': ((0, -6.35), (0, -3.81)),
-            'U4/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'), 'U5/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
+            'U4/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'), 'U7/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
+            'U5/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U6/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U3': ((0, -26.67), (10.16, 26.67)), 'Y1': ((0, -10.16), (0, 10.16)),
             'R11': ((-2.54, 2.54), (2.54, 2.54), 'right'),
@@ -405,4 +410,4 @@ TEXT_POS = {'U1': ((0, -6.35), (0, -3.81)), 'U2': ((0, -6.35), (0, -3.81)),
             'SW1': ((0, -3.81), (0, 3.81)), 'SW2': ((0, -3.81), (0, 3.81)),
             'J6': ((0, -13.97), (0, 16.51)), 'J7': ((0, -13.97), (0, 16.51)), 'J8': ((0, -6.35), (0, 6.35))}
 
-MULTI_UNIT = {'U4': {1, 2, 3, 4, 5}, 'U5': {1, 2, 3}, 'U6': {1, 2, 3, 4, 5}}
+MULTI_UNIT = {'U4': {1, 2, 3}, 'U5': {1, 2, 3}, 'U6': {1, 2, 3, 4, 5}, 'U7': {1, 2, 3}}

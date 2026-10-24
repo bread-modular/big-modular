@@ -51,4 +51,15 @@
 - Shared `kicad_tools.py check` (both profiles): ERC 0, DRC 0 violations, parity 0; only the
   unrouted items; `order_ready: false`.
 - Courtyards >= 1.02 mm from the edges; closest SMD to a pot/jack pad 3.66 mm.
-- Not done: SMD placement, routing, JLCPCB export / assembly audit, firmware, bench.
+- Not done (at S1): SMD placement, routing, JLCPCB export / assembly audit, firmware, bench.
+
+## Verification (carrier S2 + R2, 2026-10-24)
+
+- S2: U4 OPA1679 quad -> U4 + U7 OPA1678 duals (+ C31 / C32 decoupling). Native ERC 0.
+- R2 routing (`research/route/r2.py`): native DRC 0 violations / 0 unconnected / parity 0, shared
+  `check` clean, no vias in SMD pads, no In1 tracks, one 3.1 mm -12V_F In2 hop; In1 GND, In2 +3V3 and
+  the In2 +5VA island one piece each. Courtyards >= 1 mm from the edge; closest SMD pad to a pot/jack
+  pad 2.03 mm.
+- JLCPCB export (2026-10-24, `jlcpcb/README.md`): carrier 72 parts bottom, MCU board 23 parts top,
+  live audit: C20-C23 (C0G 0603) and R1 (2512) are Extended R/C, user decision open.
+- Not done: firmware, bench.

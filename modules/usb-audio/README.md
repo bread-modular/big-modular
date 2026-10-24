@@ -7,7 +7,7 @@ coupled at ±5 V, so CV works too. Each jack has its own 0..1 volume pot.
 | Panel (top to bottom) | Circuit |
 |---|---|
 | **USB** (USB-C through the panel) | MCU board: CH32V307RCT6, USBLC6-2SC6, data only (powered from the rack) |
-| **IN 1**, **IN 2** (jack, pot) | 50k volume -> OPA1679 follower -> 5 V driver -> CS4270 AIN; ±5.49 V = full scale |
+| **IN 1**, **IN 2** (jack, pot) | 50k volume -> OPA1678 follower -> 5 V driver -> CS4270 AIN; ±5.49 V = full scale |
 | **OUT 1**, **OUT 2** (pot, jack) | CS4270 AOUT -> gain 3.2 -> 50k volume -> follower -> 1k; full scale ±5.2 V |
 
 Two boards: the **carrier** (jacks, pots, codec, analog, power; SMD on the back) and the **MCU
@@ -16,9 +16,10 @@ MCU board sits between the carrier and the panel; its vertical USB-C stands 1.3 
 panel. BOOT / RESET and an SWD header are on the carrier back: hold BOOT, press RESET, flash with
 `wchisp` over the front USB-C.
 
-**Status: S1 schematics (ERC 0) + R1 manual routing of both boards (carrier and MCU board, 4-layer,
-1x10 board-to-board strips).** Native DRC 0 violations / 0 unconnected / parity 0 on both boards,
-no vias in SMD pads; not supplier-accepted, no JLCPCB export, no firmware yet.
+**Status: carrier S2 schematic + R2 manual routing (codec-centred: short DAC/ADC analog paths), MCU
+board S1 + R1 (both 4-layer, 1x10 board-to-board strips), ERC 0.** Native DRC 0 violations / 0 unconnected / parity 0 on both boards,
+no vias in SMD pads; JLCPCB export in `jlcpcb/` (`main/` carrier + panel, `mcu/`; Economic PCBA, carrier bottom, MCU board top; 5 R/C
+still Extended, see `jlcpcb/README.md`); not supplier-accepted, no firmware yet.
 
 ![overview](docs/fit/overview.png)
 

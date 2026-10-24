@@ -28,13 +28,14 @@ carrier: CS4270 (I2S master, Y1 24.576 MHz) -- 2 x input chain, 2 x output chain
 | D2 | CS4270 (TSSOP-24), I2C control-port mode, master, quad speed | 105 dB DR, 192 kHz. Master: MCLK/LRCK 128 -> 24.576 MHz / 128 = 192 kHz, SCLK = 64 Fs = 12.288 MHz; both CH32V307 I2S ports run as slaves on the same SCLK/LRCK (I2S2 receives SDOUT, I2S3 sends SDIN). 96/48 kHz via MCLK_FREQ (÷2/÷4) with the same oscillator. 44.1 kHz family would need a second oscillator (not fitted). **Cirrus lists the CS4270 as discontinued**; JLC had 1389 in stock on 2026-10-23 |
 | D3 | Two boards | The MCU board sits on the carrier F side (between carrier and panel) so a vertical USB-C reaches the panel; each board is single-sided SMD (carrier B, MCU board F). Section 5 |
 | D4 | DC coupling | ADC: CS4270 HPF, then freeze (register 04h bits 7/6 = ADC_HPF_FRZ_A/B) after it settles with the inputs at 0 V, so real DC passes. DAC: AOUT is DC coupled into a high-Z op-amp input (AOUT DC load max 10 µA, so no inverting stage on AOUT) |
-| D5 | Input = jack (TN to GND) -> 50k pot (0..1) -> 1k -> U4A/B follower (±12 V) -> U6A/B inverting driver on +5VA | Follower keeps the pot linear; the driver's single 5 V supply means AIN can never leave 0..5 V on a ±12 V mis-patch (CS4270 AIN abs max -0.7..VA+0.7) |
-| D6 | Output = AOUT -> 470R/1n C0G -> U5A/B gain 3.2 (Rg to VREF_OUT) -> 50k pot -> U4C/D follower -> 1k -> jack | 0.65 x VA = 3.25 Vpp DAC full scale -> ±5.2 V; follower = low output impedance at any pot setting |
+| D5 | Input = jack (TN to GND) -> 50k pot (0..1) -> 1k -> U4A/B follower (±12 V, by the IN pots) -> U6A/B inverting driver on +5VA | Follower keeps the pot linear; the driver's single 5 V supply means AIN can never leave 0..5 V on a ±12 V mis-patch (CS4270 AIN abs max -0.7..VA+0.7) |
+| D6 | Output = AOUT -> 470R/1n C0G -> U5A/B gain 3.2 (Rg to VREF_OUT) -> 50k pot -> U7A/B follower (by the OUT pots) -> 1k -> jack | 0.65 x VA = 3.25 Vpp DAC full scale -> ±5.2 V; follower = low output impedance at any pot setting |
 | D7 | References from the codec's own VQ (VA/2): U6C buffer -> VB_IN divider; U6D -> VREF_OUT | VQ is 25k / 1 µA max, so buffered; tracking VQ removes VA tolerance from the zero point. Residual offsets are calibrated in firmware (as the ES-8) |
-| D8 | Op-amps OPA1679 (quad) x 2 + OPA1678 (dual) | Low noise / distortion audio parts; rail-to-rail output on 5 V (U6). Both in JLC stock |
+| D8 | Op-amps OPA1679 (quad, U6) + OPA1678 (dual) x 3 (U4, U5, U7; S2: the S1 U4 quad split so each follower sits at its pot) | Low noise / distortion audio parts; rail-to-rail output on 5 V (U6). Both in JLC stock |
 | D9 | Power: ±12 V -> B5819W; +12V_F -> AMS1117-5.0 -> +5VA (codec VA, U6); +12V_F -> 33R 1 W -> AMS1117-3.3 -> +3V3 (MCU board, oscillator, I2C); +3V3 -> FB1 -> +3V3_C (codec VD/VLC) | CS4270 needs VA 4.75-5.25 V. The 33R pre-drop shares the 3.3 V regulator's heat (100 mA: 0.33 W + 0.54 W) |
 | D10 | USB: data only, VBUS -> 10k/20k -> PA9 (sense), CC 5.1k, USBLC6-2SC6 ESD, 8 MHz HSE | Self-powered device: connect the D+ pull-up only while a host is there. The ROM bootloader also enumerates on PB6/PB7 |
 | D11 | BOOT (BOOT0 to +3V3) / RESET (NRST to GND) K2 switches and a 1x4 SWD header on the carrier B side | The MCU board faces the panel, so nothing on it is reachable; hold BOOT, press RESET, flash with `wchisp`/WCHISPTool over the panel USB-C |
+| D12 | Carrier R2 (2026-10-24): codec-centred re-placement; In2 = +3V3 plane with a +5VA island under the codec / U5 / U6 | R1 ran DAC_A/B 51-57 mm raw from AOUT, VREF_OUT 75 mm and IN1 63 mm across the board. R2: analog row faces down, U5 under the DAC end, U6 under the ADC end, followers at their pots; the island gives the codec VA / U6 a quiet reference under the analog B traces. +3V3 stays a plane because J6.1 / J8.1 are walled in on F and B |
 
 ## 2. Levels
 
@@ -56,7 +57,7 @@ CODEC  U3 CS4270: VA +5VA (C10 1u, C11 100n); VD/VLC +3V3_C (C12-C14); FILT+ C15
 IN 1/2 J2/J3 T (TN GND) -> RV1/RV2 50k -> R20/R21 1k -> U4A/B -> R22/R23 20k -> U6A/B (R24/R25 5.1k, + VB_IN)
        -> R26/R27 220R -> AINA/AINB (C20/C21 2.2n C0G)
 OUT1/2 AOUTA/B -> R30/R31 470R (C22/C23 1n C0G) -> U5A/B (R32/R33 10k to VREF_OUT, R34/R35 22k)
-       -> RV3/RV4 50k -> U4C/D -> R36/R37 1k 1206 -> J4/J5
+       -> RV3/RV4 50k -> U7A/B -> R36/R37 1k 1206 -> J4/J5
 REFS   U6C: VQ -> R40 5.1k / R41 20k (C24) = VB_IN; U6D: VQ x (1 + R43 10k / R42 22k) = VREF_OUT
 LINK   J6: +3V3 GND SWDIO SWCLK NRST BOOT0 SCL SDA GND GND; J7: +3V3 GND SCLK GND LRCK ADC DAC CODEC_RST GND GND
        (1x10 strips: the user stocks 1x10 headers, 2026-10-24; pin 10 is an extra GND on both. J6/J7 and
@@ -73,8 +74,8 @@ the circuit tables (`tools/circuit_carrier.py`, `tools/circuit_mcu.py`).
 
 ## 4. Placement (S1, `docs/geometry.json`)
 
-6HP panel 30 x 128.5 mm. Carrier 29 x 110 mm (as modules/32bit), MCU board 29 x 27 mm (X0.5-29.5,
-Y10-37). Columns X8 / X22 (pot courtyards 1.05 mm from the carrier edge).
+6HP panel 30 x 128.5 mm. Carrier 29 x 110 mm (as modules/32bit), MCU board 29 x 29.55 mm (X0.5-29.5,
+Y10-39.55). Columns X8 / X22 (pot courtyards 1.05 mm from the carrier edge).
 
 | Row | Y | Left (X8) | Right (X22) |
 |---|---|---|---|
@@ -126,8 +127,9 @@ the MCU board (Z 8.5, below the panel rear).
 | 33R 2512 1 W | C53728 | Extended | 69379 |
 | K2-1808SN-A4SW-01 | C92589 | Extended | 10340 |
 
-R/C (except the C0G and 2512 parts), AMS1117, B5819W are Basic. Basic/Economic eligibility for the
-assembly is not audited yet (no BOM/CPL export at S1).
+R/C (except the C0G and 2512 parts), AMS1117, B5819W are Basic. Live audit of the R2 export (2026-10-24,
+`jlcpcb/README.md`): every part Economic-eligible; C20-C23 and R1 are the only non-Basic R/C
+(no Basic C0G 2.2n / 1n in 0603, no Basic 33R above 0805).
 
 ## 7. Open
 
