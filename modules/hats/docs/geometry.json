@@ -1,0 +1,345 @@
+{
+    "revision": "S2/P3: schematic S2 (S1 + REC button SW1 on PC2 of both MCUs, REC LED D6 on U3 PC3). Placement P3 (user 2026-10-23): P2 + the REC button SW1 on F inside the vactrol U7 outline (U7 on B, the user solders the button from the other side) and the REC LED D6 in a row with it (Y84.7). P2: J10 horizontal at the bottom, AUDIO/CV jacks moved down, ENV LED centred above CUTOFF/DECAY, pot row pitch 24 mm. Routing (R1) starts from P3 on the native board.",
+    "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+    "kicad_origin_mm": [
+        100.0,
+        50.0
+    ],
+    "hp": 6,
+    "panel_mm": [
+        30.0,
+        128.5
+    ],
+    "panel_pcb_thickness_mm": 1.6,
+    "rail_holes_mm": [
+        [
+            7.5,
+            3.0,
+            3.2
+        ],
+        [
+            7.5,
+            125.5,
+            3.2
+        ]
+    ],
+    "rail_clear_gap_Y_mm": [
+        8.0,
+        120.5
+    ],
+    "rail_note": "Doepfer single hole pair at X7.5 (HOLE_X0 in case/tools/build_case.py; the Bread Modular Panel_6HP has the same pair). Skiff rails as the MIDI module: clear Y8.0..120.5.",
+    "main_pcb": {
+        "outline_mm": [
+            0.5,
+            9.25,
+            29.5,
+            119.25
+        ],
+        "thickness_mm": 1.6,
+        "copper_layers": 2,
+        "note": "29.0 x 110.0 mm as modules/low, held by the four jack nuts (RV09 pots take no nut). 1 mm edge keep-out (root AGENTS.md); ~89 SMD parts on B: 4 layers likely at routing (as modules/acid)."
+    },
+    "jack_part": "QingPu WQP-PJ301M-12",
+    "panel_order": "Top to bottom (user brief 2026-10-23, P3): MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED (centre); CUTOFF + DECAY; REC button (left) and REC LED (right) in one row; AUDIO OUT + HAT CV OUT; power header (B) along the bottom edge.",
+    "row_note": "Columns X7.75 / X22.25 (modules/low). F rows: jacks Y21 (courtyard Y14.72..28.83); pots Y41 (35.88..49.68); ENV LED X15 Y54.8 (52.57..57.03); pots Y65 (59.88..73.68), 10.2 mm courtyard gap between the pot rows; REC button X7.75 and REC LED X22.25 in one row at Y84.7 (button courtyard 80.9..88.5); out jacks Y102 (95.72..109.83). B: vactrol U7 under the REC button (76.75..92.65), J10 horizontal along the bottom (111.57..117.73).",
+    "jacks": [
+        {
+            "ref": "J1",
+            "role": "MIDI",
+            "XY": [
+                7.75,
+                21.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J2",
+            "role": "NOISE IN",
+            "XY": [
+                22.25,
+                21.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J3",
+            "role": "AUDIO OUT",
+            "XY": [
+                7.75,
+                102.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J4",
+            "role": "HAT CV OUT",
+            "XY": [
+                22.25,
+                102.0
+            ],
+            "rot": 0.0
+        }
+    ],
+    "pot_part": "Song Huei R0904N 50k / 1M linear (user stock), vertical snap-in, tall shaft (L = 25 mm, knurled, no threaded bushing, no nut): the pot Bread Modular uses, on the Bread Modular Potentiometer_RV09 footprint",
+    "pot_shaft_offset_from_footprint_origin_mm": [
+        -0.127,
+        -0.508
+    ],
+    "pots": [
+        {
+            "ref": "RV1",
+            "role": "NOISE TONE (50k)",
+            "shaft_XY": [
+                7.75,
+                41.0
+            ]
+        },
+        {
+            "ref": "RV2",
+            "role": "BLUE TONE (1M)",
+            "shaft_XY": [
+                22.25,
+                41.0
+            ]
+        },
+        {
+            "ref": "RV3",
+            "role": "CUTOFF (50k)",
+            "shaft_XY": [
+                7.75,
+                65.0
+            ]
+        },
+        {
+            "ref": "RV4",
+            "role": "DECAY (50k)",
+            "shaft_XY": [
+                22.25,
+                65.0
+            ]
+        }
+    ],
+    "leds": [
+        {
+            "ref": "D5",
+            "role": "ENV (HAT CV)",
+            "XY": [
+                15.0,
+                54.8
+            ]
+        },
+        {
+            "ref": "D6",
+            "role": "REC",
+            "XY": [
+                22.25,
+                84.7
+            ]
+        }
+    ],
+    "led_note": "3 mm THT on F at rotation 0 (pads side by side, anode pad 2 right), placed by the pad centre = body centre; dome flush with the panel front as modules/8bit. D5 (envelope / HAT CV) centred above CUTOFF + DECAY; D6 (REC, U3 PC3) in a row with the REC button (P3).",
+    "buttons": [
+        {
+            "ref": "SW1",
+            "role": "REC",
+            "XY": [
+                7.75,
+                84.7
+            ],
+            "rot": 180.0
+        }
+    ],
+    "panel_hole_diameters_mm": {
+        "jack": 6.2,
+        "pot": 7.2,
+        "led": 3.2,
+        "button": 4.2
+    },
+    "stack_Z_mm": {
+        "led_body_bottom": 6.3,
+        "led_model_body_bottom": 3.0,
+        "note": "As modules/8bit (LED dome flush with the 1.6 mm FR4 panel front)."
+    },
+    "vactrol_part": "Chinese VTL5C-type vactrol, Bread Modular VTL5C footprint + modules/low courtyard, hand-soldered on B.",
+    "vactrols": [
+        {
+            "ref": "U7",
+            "side": "B",
+            "XY": [
+                7.0,
+                84.7
+            ],
+            "rot": 0,
+            "note": "Hi-hat VCA, vertical on B in the left column between CUTOFF (courtyard Y73.68) and AUDIO OUT (Y95.72): courtyard X1.59..12.41, Y76.75..92.65; pads at Y78.35 / 91.05. P3 (user 2026-10-23): the REC button SW1 sits on F inside this outline (pads X4.5/11.0, Y82.45/86.95, clear of the vactrol pads); the user solders it from the other side."
+        }
+    ],
+    "power_header": {
+        "ref": "J10",
+        "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+        "side": "B",
+        "pin1_XY_mm": [
+            4.5,
+            113.4
+        ],
+        "pin_columns_X_mm": [
+            4.5,
+            7.04,
+            9.58,
+            12.12,
+            14.66
+        ],
+        "pin_rows_Y_mm": [
+            113.4,
+            115.94
+        ],
+        "orientation": "Horizontal along the bottom edge (user direction 2026-10-23), rot 270 on B as modules/vca-mix: odd pins on the upper row Y113.4, even pins on Y115.94; pins 1/2 (-12 V) at the left, pins 9/10 (+12 V) at the right. Courtyard Y111.61..117.73 (1 mm edge keep-out: board edge Y119.25).",
+        "idc16_socket_envelope_mm": {
+            "X": [
+                0.69,
+                26.09
+            ],
+            "Y": [
+                110.27,
+                119.07
+            ],
+            "bottom_above_B_mm": 2.5
+        },
+        "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the left); positions 11-16 overhang to the right, over the board, never past an edge. Envelope = 2x8 socket (25.4 x 6.4 mm body, 3.81 mm beyond the end pin centres) plus a 1.2 mm key bump on either side. No THT pad under it (out-jack sleeve pads end at Y109.53). B-side SMD placed under it later must stay <= 2 mm tall."
+    },
+    "back_side_tht": [
+        {
+            "ref": "J10",
+            "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+            "XY": [
+                9.58,
+                114.67
+            ],
+            "rot": 270,
+            "note": "bottom edge, horizontal, as modules/vca-mix power_header (rot 270 on B)"
+        },
+        {
+            "ref": "J11",
+            "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+            "XY": [
+                26.65,
+                31.27
+            ],
+            "rot": 0,
+            "note": "NOISE MCU (U2) UPDI: pin 1 UPDI Y30.0, pin 2 GND Y32.54, right edge between NOISE IN and BLUE TONE"
+        },
+        {
+            "ref": "J12",
+            "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+            "XY": [
+                3.35,
+                31.27
+            ],
+            "rot": 0,
+            "note": "HIHAT MCU (U3) UPDI: pin 1 UPDI Y30.0, pin 2 GND Y32.54, left edge between MIDI and NOISE TONE"
+        }
+    ],
+    "smd_parking": {
+        "side": "B",
+        "origin_XY": [
+            36.0,
+            12.0
+        ],
+        "pitch_XY": [
+            8.0,
+            7.0
+        ],
+        "columns": 8,
+        "note": "Every SMD part waits here, off the board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer)."
+    },
+    "panel_labels": [
+        {
+            "text": "HATS",
+            "XY": [
+                15.0,
+                7.0
+            ],
+            "size": 2.5
+        },
+        {
+            "text": "MIDI",
+            "XY": [
+                7.75,
+                13.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "NOISE",
+            "XY": [
+                22.25,
+                13.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "TONE",
+            "XY": [
+                7.75,
+                33.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "BLUE",
+            "XY": [
+                22.25,
+                33.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "ENV",
+            "XY": [
+                15.0,
+                51.3
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CUTOFF",
+            "XY": [
+                7.75,
+                57.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "DECAY",
+            "XY": [
+                22.25,
+                57.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "REC",
+            "XY": [
+                15.0,
+                84.7
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "OUT",
+            "XY": [
+                7.75,
+                94.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CV",
+            "XY": [
+                22.25,
+                94.5
+            ],
+            "size": 1.2
+        }
+    ],
+    "button_note": "Generic 6 x 6 mm THT tact (7 mm), stock SW_PUSH_6mm_H7.3mm on F, placed by the pad-pattern centre = stem centre, rot 180 (pad 1 signal on the bottom row) as modules/acid; pressed through the panel by the modules/8bit printed cap. P3: centred on the REC column X7.75 Y84.7, inside the vactrol U7 outline (U7 on B)."
+}
