@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/hats.kicad_pcb",
+  "root_schematic": "../hardware/hats.kicad_sch",
+  "dependencies": [
+    "../hardware/HATS.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}
