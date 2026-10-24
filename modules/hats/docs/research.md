@@ -35,7 +35,7 @@ unchanged even though the lower two footprints rotate mechanically.
   copper and two panel apertures are gone. U2 PC2 and U3 PC2/PC3 are explicit NCs.
   There is no promise of recording analog CUTOFF/DECAY movements.
 - Increase pot row pitch from 24 to **34 mm**: upper shafts Y41, lower shafts Y75.
-  Lower pots rotate 180 degrees with pin rows at Y67.5. Jack/ENV LED locations stay fixed.
+  Lower pots rotate 180 degrees with pin rows at Y67.5. Jack locations stay fixed. The ENV LED D5 (with R47) sits beside the HAT CV jack, body X26 Y93 (user direction 2026-10-24; was X15 Y54.8).
 - Move the vactrol down **3.3 mm to Y88**, clearing the lower pots without an overlapping
   switch. Local SMD placement and affected connections were reworked; unrelated routing
   and functional nets were retained. No full-board or bulk router was used.
@@ -56,8 +56,8 @@ Fresh native ERC, carrier DRC (warnings/exclusions included), unconnected count,
 parity and exact ref/pin/net comparison are zero. No ignored DRC severities or exclusions.
 Panel DRC is also zero; all 11 holes align with the carrier/geometry contract.
 
-Carrier: 29 x 110 mm, 1.6 mm, four copper layers. All assembled SMD on B; 546 tracks,
-101 ordinary 0.3/0.6 mm vias; no inner signal tracks, no via-in-pad/mask overlap, each inner
+Carrier: 29 x 110 mm, 1.6 mm, four copper layers. All assembled SMD on B; 536 tracks,
+99 ordinary 0.3/0.6 mm vias; no inner signal tracks, no via-in-pad/mask overlap, each inner
 plane one piece. Outer GND pieces are electrically joined; no disconnected pours remain.
 Minimum SMD-to-hand-solder pad gap 2.0465 mm. The original approved RV1-RV4 courtyard-edge
 exception remains (0.815 mm measured line boxes); no copper-edge exception.

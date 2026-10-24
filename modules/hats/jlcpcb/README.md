@@ -48,7 +48,7 @@ assembly options. The panel has no REC button/LED apertures or legend.
   Copper-edge rule = 1.0 mm. Other pad/track/via copper is >=1.09 mm from the outline.
 - Existing user-approved RV1-RV4 courtyard exception remains: 0.815 mm measured line-box
   margin (historical cached-yard documentation quoted 0.77 mm). No copper exception.
-- 546 tracks / 101 through vias (0.3 mm drill, 0.6 mm copper); no in-pad/mask-opening vias,
+- 536 tracks / 99 through vias (0.3 mm drill, 0.6 mm copper); no in-pad/mask-opening vias,
   no inner-layer tracks, one continuous filled piece per inner plane, no disconnected outer
   GND pours. No zero-length/duplicate tracks or off-centre via endpoints remain.
 - SMD-to-pot/jack pad clearance >= **2.0465 mm**. Pot rows Y41/Y75, 34 mm pitch; U7 centre Y88.

@@ -40,8 +40,8 @@
         "note": "29 x 110 mm; four layers F/In1 GND/In2 +3V3/B. All assembled SMD on B. 1 mm copper-edge keep-out."
     },
     "jack_part": "QingPu WQP-PJ301M-12",
-    "panel_order": "MIDI + NOISE IN; NOISE TONE + BLUE TONE; ENV LED; CUTOFF + DECAY; AUDIO OUT + HAT CV OUT. No recording controls.",
-    "row_note": "Pot shaft rows Y41 and Y75, 34 mm pitch (was 24). Lower pots face 180 degrees with solder pins at Y67.5. ENV LED remains Y54.8. Vactrol centre X7/Y88; input/output jacks unchanged.",
+    "panel_order": "MIDI + NOISE IN; NOISE TONE + BLUE TONE; CUTOFF + DECAY; AUDIO OUT + HAT CV OUT with the ENV LED beside HAT CV. No recording controls.",
+    "row_note": "Pot shaft rows Y41 and Y75, 34 mm pitch (was 24). Lower pots face 180 degrees with solder pins at Y67.5. ENV LED at X26 Y93 beside HAT CV. Vactrol centre X7/Y88; input/output jacks unchanged.",
     "jacks": [
         {
             "ref": "J1",
@@ -128,12 +128,12 @@
             "ref": "D5",
             "role": "ENV (HAT CV)",
             "XY": [
-                15.0,
-                54.8
+                26.0,
+                93.0
             ]
         }
     ],
-    "led_note": "D5 ENV only: 3 mm THT on F, body centre X15 Y54.8, anode to the right; dome flush with panel front.",
+    "led_note": "D5 ENV only: 3 mm THT on F, body centre X26 Y93 (beside the HAT CV jack J4, user direction 2026-10-24; was X15 Y54.8), rot 180: anode (pad 2) on the left; dome flush with panel front. R47 sits beside it on B.",
     "buttons": [],
     "panel_hole_diameters_mm": {
         "jack": 6.2,
@@ -280,8 +280,8 @@
         {
             "text": "ENV",
             "XY": [
-                15.0,
-                51.3
+                26.0,
+                89.6
             ],
             "size": 1.2
         },

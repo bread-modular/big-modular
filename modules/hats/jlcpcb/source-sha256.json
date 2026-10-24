@@ -2,16 +2,16 @@
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_cli": "10.0.6",
   "sources": {
-    "hardware/hats.kicad_pcb": "96bc1367090665061d79c92f330211dca8627fc6e52bc6edd30636ca3b8ba0f2",
+    "hardware/hats.kicad_pcb": "25e3576d25b6aa507817a7e0665a4c39ccee5d95be481b77ab29b646c5c9fb3e",
     "hardware/hats.kicad_pro": "1510812e14b7c3bcb367c7bfa50cb5fa92c11df7c64ac7d772b1ffcf62644899",
     "hardware/hats.kicad_sch": "bd83dbcf398c0f6067677e016b26810e6354e9acaa02d2aa91a010a9be2d1315",
-    "panels/front-pcb/hats-panel.kicad_pcb": "ae17012f110e9fba08eef4467d057e81326a4dee2327b033fc186185032acecd",
+    "panels/front-pcb/hats-panel.kicad_pcb": "68ec23fef9d284cf22a5be45cd1d87f81c2a4a01665d727db389fe41576e2773",
     "panels/front-pcb/hats-panel.kicad_pro": "1532ee8aea234b7885b42a7099ed9d474e1b50d3268b2cad903bf7292cccb1ea"
   },
   "exports": {
-    "jlcpcb/carrier/hats-gerbers.zip": "287e06f3b915475e84947e0bb42ec4d73196456468f4b378a13e199f3219c6d5",
+    "jlcpcb/carrier/hats-gerbers.zip": "0eca2c7d53c649f1780a97ac755291914ecdb8ea30c3aede6ea32aa72a53d82d",
     "jlcpcb/carrier/bom.csv": "5d442f6b4ded1666ab2dbf3c3e51135babea9283ce27915e83f3905b093a5a58",
-    "jlcpcb/carrier/positions.csv": "8116760de3e23b5314b7bece0ca9faaa4f5d5aea03b25d96ee190e87bdcd26d6",
-    "jlcpcb/panel/hats-panel-gerbers.zip": "c2d285a2f05d37b725fc1be18141cf45d5a518af8924555e9b566ea9110d31fc"
+    "jlcpcb/carrier/positions.csv": "e285f632cf3d15746b1705b9dad2e787bf2a0567c750c64c4b64e4be66e95310",
+    "jlcpcb/panel/hats-panel-gerbers.zip": "f8c581358769c73295b9f6560540e9fa8856966a7a387d70a9fc3c4c5f0c161c"
   }
 }
