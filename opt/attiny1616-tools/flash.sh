@@ -28,33 +28,89 @@ if ! command -v arduino-cli >/dev/null 2>&1; then
 fi
 
 # Resolve the upload port: explicit arg > $PORT env > interactive selection.
-PORT="${1:-${PORT:-}}"
-if [[ -z "$PORT" ]]; then
-  echo "==> Detecting serial ports..."
-  # Collect candidate ports (skip Bluetooth / debug-console virtual ports).
-  PORTS=()
-  while IFS= read -r line; do
-    [[ -n "$line" ]] && PORTS+=("$line")
+# Candidates come from the OS's USB-serial device names (the CH340/CP210x/FTDI
+# and CDC-ACM names the UPDI programmer shows up as), plus anything else
+# arduino-cli's serial discovery reports.
+PORTS=()
+add_port() {
+  local p="$1" q
+  [[ -n "$p" && -e "$p" ]] || return 0
+  for q in "${PORTS[@]+"${PORTS[@]}"}"; do [[ "$q" == "$p" ]] && return 0; done
+  PORTS+=("$p")
+}
+collect_ports() {
+  local pattern p
+  case "$(uname -s)" in
+    Darwin)
+      # macOS: use the call-out (cu.*) devices; tty.* blocks on open.
+      for pattern in /dev/cu.usbserial* /dev/cu.wchusbserial* \
+                     /dev/cu.usbmodem* /dev/cu.SLAB_USBtoUART*; do
+        for p in $pattern; do add_port "$p"; done
+      done
+      ;;
+    Linux)
+      for pattern in /dev/ttyUSB* /dev/ttyACM* /dev/serial/by-id/*; do
+        for p in $pattern; do
+          # by-id links are only a fallback when the plain names are missing.
+          if [[ "$p" == /dev/serial/by-id/* ]]; then
+            [[ ${#PORTS[@]} -eq 0 ]] && add_port "$(readlink -f "$p")"
+          else
+            add_port "$p"
+          fi
+        done
+      done
+      ;;
+    MINGW*|MSYS*|CYGWIN*)
+      for p in /dev/ttyS*; do
+        [[ -e "$p" ]] || continue
+        add_port "$p"
+      done
+      ;;
+  esac
+  # Anything else arduino-cli sees (skip Bluetooth / debug-console ports, and
+  # macOS tty.* twins of cu.* devices).
+  while IFS= read -r p; do
+    add_port "$p"
   done < <(arduino-cli board list --format json 2>/dev/null | \
     python3 -c 'import sys,json
 try:
     d=json.load(sys.stdin)
 except Exception:
     sys.exit(0)
-skip=("bluetooth","debug-console","debug_console")
+skip=("bluetooth","debug-console","debug_console","/dev/tty.")
 for b in d.get("detected_ports", []):
     p=b.get("port",{})
-    addr=p.get("address","")
-    if not addr:
+    if p.get("protocol","serial")!="serial":
         continue
-    if any(s in addr.lower() for s in skip):
+    addr=p.get("address","")
+    if not addr or any(s in addr.lower() for s in skip):
         continue
     print(addr)
-' 2>/dev/null)
+' 2>/dev/null || true)
+}
+
+PORT="${1:-${PORT:-}}"
+if [[ -n "$PORT" && ! -e "$PORT" && "$PORT" != COM* ]]; then
+  echo "Serial port not found: $PORT" >&2
+  collect_ports
+  if [[ ${#PORTS[@]} -gt 0 ]]; then
+    echo "Candidate ports:" >&2
+    printf '  %s\n' "${PORTS[@]}" >&2
+  fi
+  exit 1
+fi
+if [[ -z "$PORT" ]]; then
+  echo "==> Detecting serial ports ($(uname -s))..."
+  collect_ports
 
   if [[ ${#PORTS[@]} -eq 0 ]]; then
+    case "$(uname -s)" in
+      Darwin) EXAMPLE=/dev/cu.usbserial-XXXX ;;
+      Linux)  EXAMPLE=/dev/ttyUSB0 ;;
+      *)      EXAMPLE=COM3 ;;
+    esac
     echo "No serial ports found. Plug in the UPDI adapter and retry, or pass a port:" >&2
-    echo "  ./flash.sh /dev/cu.usbserial-XXXX" >&2
+    echo "  ./flash.sh $EXAMPLE" >&2
     exit 1
   fi
 
