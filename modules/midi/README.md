@@ -17,6 +17,7 @@ There are two hardware versions. Both use the same panels and mechanics:
 | Back silk | `MIDI V1.0` | `MIDI V2.0` |
 | LEDs | +5V → LED → 1 k → MMBT3904 (GPIO → 10 k base), one channel sheet per output | same |
 | SMD parts (JLC-assembled) | 41 in 11 BOM rows | 57 in 18 BOM rows |
+| Firmware | [`firmware/`](firmware/README.md): `./flash.sh v1` | `./flash.sh v2` (JP2 1-2) or `v2-direct` (JP2 2-3) |
 | Fabrication export | [`jlcpcb/v1/`](jlcpcb/v1/README.md) | [`jlcpcb/v2/`](jlcpcb/v2/README.md) |
 
 **Status: V1.0 (S5/R6) and V2.0 (S4/R4) fabrication exports, not supplier-accepted.**

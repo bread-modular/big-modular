@@ -53,6 +53,10 @@ export (table in `Code.md`).
   - For the user: the per-part assembly review attestations (§5) and the
     `jlcpcb/<v>/README.md` order gates.
 
+- Firmware: `firmware/` (Bread Modular `midi` 2.0.1 port, one source, version
+  flag `MIDI_HW_VERSION` / `MIDI_RX_INVERT` chosen by `./compile.sh|flash.sh
+  v1|v2|v2-direct`; `firmware/README.md`). Compiles; not bench-tested.
+
 ## Boundaries
 
 Shared tools stay in `../../opt/`. Use `tools/<v>/kicad-project.json` for
