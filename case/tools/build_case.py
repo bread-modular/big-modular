@@ -85,7 +85,8 @@ class Dims:
         self.wall = 3.0                         # socket wall thickness
         self.socket_h = 8.0                     # socket wall height above the plate
         self.socket_clr = 0.3                   # side panel to socket total clearance (X)
-        self.frame = 20.0                       # plate frame width around the centre window
+        self.frame = 20.0                       # plate frame width around the centre pocket
+        self.skin = 1.2                         # floor left under the centre pocket
         # bolts side panel -> plate
         self.bolt_y = (25.0, PANEL_H - 25.0)
 
@@ -145,6 +146,7 @@ class Dims:
                             f"M3x{SPACER_L:g} hex spacer, {self.rail_floor} mm floor with M3 vent hole",
             "side_panel_mm": [self.T, round(self.ylen, 3), self.depth],
             "bottom_plate_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.P],
+            "bottom_plate_centre_floor_mm": self.skin,
             "overall_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.top],
             "hardware": self.screws(),
         }
@@ -239,14 +241,15 @@ def side_panel(d, left):
 
 def bottom_plate(d):
     """Floor plate with a socket at each end that the side panels stand in, counterbored M3
-    holes from underneath, and a centre window to save filament."""
+    holes from underneath, and a centre pocket (open at the top, 1.2 mm floor left) to save
+    filament."""
     x0, w = d.plate_x0, d.wall
     sock = d.T + d.socket_clr
     s = box((x0, d.y0, 0), (d.plate_len, d.ylen, d.P))
     for sx in (x0, x0 + d.plate_len - (2 * w + sock)):
         s = s.fuse(box((sx, d.y0, d.P), (w, d.ylen, d.socket_h)))
         s = s.fuse(box((sx + w + sock, d.y0, d.P), (w, d.ylen, d.socket_h)))
-    cuts = [box((d.frame, d.y0 + d.frame, -1), (d.L - 2 * d.frame, d.ylen - 2 * d.frame, d.P + 2))]
+    cuts = [box((d.frame, d.y0 + d.frame, d.skin), (d.L - 2 * d.frame, d.ylen - 2 * d.frame, d.P))]
     for bx in (-d.T / 2, d.L + d.T / 2):
         for by in d.bolt_y:
             cuts.append(cyl(M3_CLEAR / 2, d.P + 2, (bx, by, -1)))
