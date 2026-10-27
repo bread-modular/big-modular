@@ -16,6 +16,8 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   passes except R12's intentional Extended class (0.5 W ROHM ESR18EZPF1001, as MIDI V2's R20)
   and the empty human reviews. Not supplier-accepted.
   Re-exported for S5/R4 (2026-10-20); live audit not rerun (BOM unchanged). Re-export after any source change (`jlcpcb/README.md`). No 3D fit or printed panel yet.
+- `firmware/`: BM `drums`, `supersaw` (MIDI only, CV1 pitch mode removed) and `crash`,
+  built per JP1 setting (`p`/`d`) with the shared `opt/attiny1616-tools`. Compiled, not bench-tested.
 - `opt/kicad-tools/automation` was synced to `main` (thermal-relief zones); 5 files are
   byte-identical to `main`.
 - Open: part reviews/placement preview, cap press-fit/test print, pot measurement, bench

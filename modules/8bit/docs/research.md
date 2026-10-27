@@ -162,6 +162,7 @@ Vout = 2.2 x FILT - 1.2 x VOFF:  0 V -> -4.78 V, 2.17 V -> 0 V, 4.34 V -> +4.77 
 
 ## 4. Firmware notes (not part of this hardware task)
 
+- Ported firmwares (`drums`, `supersaw`, `crash`) live in `firmware/` (`firmware/README.md`).
 - Protected MIDI (JP1 P): add `PORTB.PIN3CTRL |= PORT_INVEN_bm;` after `Serial.begin`.
 - CV: `analogRead(PIN_PB0)` reads 0..1023 for -5.5..+5.5 V; 0 V ≈ 509. Bipolar value:
   `analogRead(PIN_PB0) - 509` (≈ 10.8 mV of CV per count). Calibrate the zero per unit
