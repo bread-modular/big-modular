@@ -101,7 +101,7 @@ Taken from the manifests; the shared `check` re-hashes them and fails on drift.
 - MCU PCB `57fb7b79e46997ecd9e7e4dcdf776cd3aed611b3a8c92895fcc015990066581b`.
 - MCU project `f44b54905d91b705c30585a41b4d6e7ee1d2b8077a96b3c0d53c274076169620`.
 - MCU schematic `43e70f7855c31936ca631a70b1bd3d0c74125455bdd0d3efadcd9271dfb442f2`.
-- Panel PCB `5614c0b8e9bfd885f8bb476bd55104b4b70a33c0972542ec8d502a77d4ad1369`.
+- Panel PCB `8f438113d7c205553e69991f26a00d4808e77872ad9b9a4215ff3aebd4fb874e`.
 - Panel project `9742319ffc9e26c7d1e061c14dd3f10fe0a9ccb5b08de1d4e744babafa57fb64`.
 
 ## Reproduce
@@ -154,6 +154,8 @@ python3 -B opt/kicad-tools/jlcpcb/assembly.py audit \
 ```
 
 ## Checks done for this export
+
+Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `main/panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 
 - `tools/check_usb.py`: both orientations pass (0.41421 / 0.22464 mm mismatch), two
   signal vias per polarity, ground-reference coverage and explicit geometry/stackup checked.

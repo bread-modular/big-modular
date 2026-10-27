@@ -58,7 +58,7 @@ drift.
 - Carrier PCB `68fa5b80d353423f6c3291b70dc06557a05c9e6712f1e769729a04d91fb602b5`.
 - Carrier project `2a8604afe522f17e912630e01a05c314e0123be3ff37672a3f5f65f9ceb9031d`.
 - Carrier schematic `3071429902812b74a6de5574a5ab26794f905b695be2f35be41cfc75f15703eb`.
-- Panel PCB `42b80b5f1065b05e1c844914afcad34bfff20a10f65f63948d0e82f54034ff9f`.
+- Panel PCB `ff255ba28c202edead43e7418eac53112d2715e334c515b6129c25ed599dbfc3`.
 - Panel project `a8725155bfbaef36716bc4bc383541eef6aef42bfe2f956d0f0662d3ffa023cb`.
 
 ## Reproduce
@@ -96,6 +96,8 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/mcc-symbols.xml hardware/
 ```
 
 ## Checks done for this export
+
+Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 
 - **Shared `check`** (after the export): ERC 0, DRC 0, 0 unconnected, schematic
   parity 0, no exclusions, manifest equal (5 sources, all exports

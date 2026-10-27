@@ -70,7 +70,7 @@ Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on 
 - Carrier PCB `4c6164de3fe4a4a08f2969cd181c59d5a96184f4cd8f0494a068ff628d86668d`.
 - Carrier project `dc765a35f7ed9e3740062da90224665f8036652e058907e47d776e9bd0a8a827`.
 - Carrier schematic `4cc827516e4b8de62f52750d17837487db5f271716ce57c83b59ca6876ea040d`.
-- Panel PCB `1cf9270112fd5b5ae8f7b9d860ccab96a449ba9d3c795fb72cdcefe1dd3ea50b`.
+- Panel PCB `c7cd173b359867675152d2ba582aab87a6b30e521c5736066f567c488679b29b`.
 - Panel project `a84349687ec42c51876c9bda27a01b3788d09101e8d0697de8d2435ce09328ba`.
 
 ## Reproduce
@@ -107,6 +107,8 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/low-symbols.xml hardware/
 ```
 
 ## Checks done for this export
+
+Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 
 - **Shared `check`** (after the 2026-10-22 export): ERC 0, 0 unconnected, schematic parity 0,
   ref/pin/net parity equal, manifest equal (5 sources, all exports byte-identical). DRC = the

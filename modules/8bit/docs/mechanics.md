@@ -15,7 +15,7 @@ panel, so the KiCad top view is the front view. All numbers come from
 
 | Item | Value |
 |---|---|
-| Panel | 4HP, 20.0 x 128.5 mm, FR4 1.6 mm (`panels/front-pcb/8bit-panel.kicad_pcb`). Rail holes Ø3.2 at (7.5, 3.0) and (7.5, 125.5) |
+| Panel | 4HP, 20.0 x 128.5 mm, FR4 1.6 mm (`panels/front-pcb/8bit-panel.kicad_pcb`). Rail holes Ø3.2 at (12.58, 3.0) and (12.58, 125.5) (Doepfer X7.5 moved 1HP right, as midi) |
 | Carrier PCB | 19.0 x 110.0 x 1.6 mm, 2 layers, X 0.5..19.5, Y 9.25..119.25 (as `modules/midi`) |
 | Fixing | The three jack bushings and nuts (J1, J2, J3). The pots are soldered only |
 | Panel rear seat | Z 10.0 above carrier F.Cu (PJ301M-12 boss top, as `modules/midi`) |

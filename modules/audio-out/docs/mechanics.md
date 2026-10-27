@@ -15,7 +15,7 @@ boards. The carrier's F side faces the panel. All numbers come from
 | Item | Value |
 |---|---|
 | Panel | 4HP, 20.0 x 128.5 mm. FR4 1.6 mm (`panels/front-pcb`) or printed 2.0 mm (`panels/front-cad`) |
-| Rail holes | Ø3.2 at (7.5, 3.0) and (7.5, 125.5), as midi |
+| Rail holes | Ø3.2 at (12.58, 3.0) and (12.58, 125.5) (Doepfer X7.5 moved 1HP right), as midi |
 | Carrier PCB | 19.0 x 110.0 x 1.6 mm, 2 layers, X 0.5..19.5, Y 9.25..119.25 |
 | Fixing | The carrier hangs on the four jack bushings and nuts, as midi. The pots are soldered only |
 | Panel rear seat | Z 10.0 above carrier F.Cu (top of the jack boss) |

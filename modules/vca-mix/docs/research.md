@@ -208,7 +208,7 @@ own current on top.
 
 | Item | Value |
 |---|---|
-| Panel | 6HP, 30.0 x 128.5 mm, FR4 1.6 mm (`panels/front-pcb`) or printed 2.0 mm (`panels/front-cad`); rail holes Ø3.2 at (7.5, 3.0)/(7.5, 125.5) |
+| Panel | 6HP, 30.0 x 128.5 mm, FR4 1.6 mm (`panels/front-pcb`) or printed 2.0 mm (`panels/front-cad`); rail holes Ø3.2 at (12.58, 3.0)/(12.58, 125.5) |
 | Carrier | 29.0 x 110.0 x 1.6 mm, 2 layers, X0.5..29.5, Y9.25..119.25; hangs on the 10 jack nuts only (the R0904N pots are snap-in with a plain shaft and take no nut) |
 | Channel rows | One row per channel, 29.0 mm pitch: IN/CV/OUT jacks at Y23.0 / 52.0 / 81.0, then the VOLn pot shaft 13.5 mm **below** them at (15.0, 36.5 / 65.5 / 94.5), right under the CV jack. F courtyards: jacks to their pot 0.4 mm, pot to the next jack row 0.6 mm |
 | Jacks | PJ301M-12, unrotated, columns IN X5.25 / CV 15.0 / OUT 24.75 (9.75 mm pitch); **MIX** (15.0, 110.0), 15.5 mm below the row-3 pot |
