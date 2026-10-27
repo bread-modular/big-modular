@@ -5,6 +5,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# A module wrapper may point at its firmware dir and add defines (KEY=VALUE,
+# space-separated), e.g. ATTINY_DEFINES="MIDI_HW_VERSION=2".
+SCRIPT_DIR="${ATTINY_SKETCH_ROOT:-$SCRIPT_DIR}"
 export PATH="$HOME/bin:$PATH"
 
 # megaTinyCore board = grouped "atxy6" (16 KB flash family), chip = ATtiny1616,
@@ -46,6 +49,9 @@ if [[ -f "$SCRIPT_DIR/.config" ]]; then
     EXTRA_FLAGS+=" -D${key}=${val}"
   done < "$SCRIPT_DIR/.config"
 fi
+for def in ${ATTINY_DEFINES:-}; do
+  EXTRA_FLAGS+=" -D${def}"
+done
 
 COMPILE_ARGS=(compile --fqbn "$FQBN")
 if [[ -n "$EXTRA_FLAGS" ]]; then
