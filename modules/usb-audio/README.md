@@ -29,6 +29,7 @@ Scoped repair details and test limits: [USB / output-resistor repair](docs/usb-o
 |---|---|
 | `hardware/` | `usb-audio.kicad_{pro,sch,pcb}` (carrier, 4 layers), `usb-audio-mcu.kicad_{pro,sch,pcb}` (MCU board, 4 layers), shared `USBAUDIO.kicad_sym`, `USBAUDIO.pretty` (+ `PROVENANCE.json`), `USBAUDIO.3dshapes`, vendored models |
 | `panels/front-pcb/usb-audio-panel.kicad_{pro,pcb}` | 6HP FR4 panel: NPTH holes, USB-C slot, labels |
+| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `docs/research.md` | Brief, decisions, levels, circuit, stack, sourcing, open items |
 | `docs/geometry.json` | Panel, placement and Z-stack contract |
 | `docs/*-schematic.pdf`, `docs/fit/` | Schematic PDFs; native ERC/DRC JSON; renders |

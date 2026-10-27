@@ -2,7 +2,8 @@
 
 **Verdict: the module fits 4HP** on the nominal footprints and courtyards (native DRC 0
 at all severities on the routed carrier). It is not yet a 3D-checked fit: no
-interference run and no printed (FreeCAD) panel yet (`research.md` §6).
+interference run yet (`research.md` §6). The printed FreeCAD panel (`panels/front-cad/`,
+2.0 mm) is generated but not test-printed.
 
 Frame, origin and conventions are those of `modules/midi` (`geometry.json` `frame`):
 panel origin at the upper-left corner seen from the front, X across, Y down, mm;
@@ -81,7 +82,8 @@ Keep the J3 jack leads clipped to ≤1.5 mm.
 
 ## Not yet verified
 
-- 3D interference against the panel (pot proxy and button cap exist), printed panel.
+- 3D interference against the panel (pot proxy and button cap exist); test-print the panel
+  (`panels/front-cad/`, generated, not printed).
 - The jack STEP model is marked "Untested" upstream (as `modules/midi`); the pot model
   is a nominal proxy of the user's sample; SW1 uses the stock 7.3 mm model (the bought part is 7.0 mm).
 - Cap test print, press fit and feel.

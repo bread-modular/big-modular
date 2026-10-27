@@ -20,13 +20,14 @@ bushing, 16 mm shaft, no nut), as `modules/audio-out`.
 supplier-accepted, not bench-tested.** Shared `check`: ERC 0, DRC 0 at all
 severities, 0 unconnected, parity equal, source manifest equal, no exclusions
 (`docs/fit/`). Live assembly audit: all parts resolved and Economy-eligible; the one
-hard fail is R12's intentional Extended class (0.5 W 1206, `jlcpcb/README.md`). No 3D fit or printed panel
-yet (`docs/research.md` §6).
+hard fail is R12's intentional Extended class (0.5 W 1206, `jlcpcb/README.md`). No 3D fit yet; printed panel
+generated (`panels/front-cad/`), not test-printed (`docs/research.md` §6).
 
 | Path | Contents |
 |---|---|
 | `hardware/` | KiCad project `8bit.kicad_{pro,sch,pcb}` (19 x 110 mm carrier, 2 layers, routed), pinned symbols, footprints and models (`8BIT.pretty`, `8BIT.3dshapes`, `PROVENANCE.json`), vendored 3D models (`_kicad_models/<sha256>/`) |
 | `panels/front-pcb/8bit-panel.kicad_{pro,pcb}` | 4HP FR4 front panel: NPTH only, silkscreen labels |
+| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `panels/button-actuator/` | Printed MODE cap: STL (print orientation), STEP at SW1, FreeCAD generator |
 | `docs/jumpers.md` | The JP1 MIDI-input jumper and the firmware pin map |
 | `docs/research.md` | BM baseline, decisions, circuit, sourcing, open items |
@@ -52,6 +53,7 @@ python3 -B tools/route_plan.py > research/route/plan.json        # copper as sha
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb promote --candidate modules/8bit/research/route-cand-NEW \
    --plan modules/8bit/research/route/edit-plan.json)
 ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/button-actuator/build_button_actuator.py
+~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/8bit/tools/kicad-project.json \
    --reports modules/8bit/research/check-NEW)
 ```
