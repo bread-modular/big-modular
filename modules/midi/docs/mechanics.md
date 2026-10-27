@@ -46,7 +46,8 @@ from [`geometry.json`](geometry.json). The nominal 3D check is in
   to free a jack-free zone at the bottom for a vertical power header that takes a
   16-pin IDC socket (below).
 - Panel holes are jack Ø6.2 and LED Ø3.2. Labels: `MIDI`, `IN`, `1`..`8`,
-  `BIG MODULAR`. The printed panel engraves them 0.4 mm deep.
+  `BIG MODULAR`. The printed panel is plain
+  (no labels).
 
 ## Back (B) layout: SMD for JLC assembly, plus headers
 

@@ -15,6 +15,7 @@ parity 0) + 18HP panel fit study + JLCPCB export (`jlcpcb/`, bottom Economic PCB
 | `hardware/channel.kicad_sch` | Channel strip, instantiated CH1..CH4 (PDF: `docs/4mix-schematic.pdf`) |
 | `hardware/4mix.kicad_{pro,pcb}` | 90 x 110 mm 4-layer carrier (In1 GND, In2 +12V): THT on F, SMD on B, routed (R1) |
 | `panels/front-pcb/4mix-panel.kicad_{pro,pcb}` | 18HP (91.3 mm) FR4 panel: NPTH + silkscreen |
+| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `mechanical/standoff-m3x10.step` | 10 mm M3 F-F hex standoff (x2, user stock): carrier 3D model |
 | `jlcpcb/` | Carrier and panel Gerber ZIPs, BOM/CPL, source manifest (`jlcpcb/README.md`) |
 | `docs/geometry.json` | Placement, panel, labels, big-knob reserve, headers, parking |

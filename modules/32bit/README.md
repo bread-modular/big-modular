@@ -24,6 +24,7 @@ DRC 0 violations, 0 unconnected, parity 0. Firmware pin changes vs Bread Modular
 |---|---|
 | `hardware/` | `32bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 4 layers), pinned symbols/footprints (`32BIT.kicad_sym`, `32BIT.pretty` + `PROVENANCE.json`, `32BIT.3dshapes`), vendored models |
 | `panels/front-pcb/32bit-panel.kicad_{pro,pcb}` | 6HP FR4 front panel: NPTH only, silkscreen labels |
+| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `docs/research.md` | BM baseline, decisions, circuit, placement, open items |
 | `docs/geometry.json` | 6HP panel and placement contract |
 | `docs/32bit-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON; placement render |

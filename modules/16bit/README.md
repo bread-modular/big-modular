@@ -27,6 +27,7 @@ the user-stocked Adafruit 4677 PSRAM (C17430771): see
 |---|---|
 | `hardware/` | `16bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 4 layers, placed and routed), pinned symbols/footprints (`16BIT.kicad_sym`, `16BIT.pretty` + `PROVENANCE.json`, `16BIT.3dshapes`), vendored models (`_kicad_models/`) |
 | `panels/front-pcb/16bit-panel.kicad_{pro,pcb}` | 6HP FR4 front panel: NPTH only, silkscreen labels |
+| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `docs/research.md` | BM baseline, decisions, circuit, placement, open items |
 | `docs/geometry.json` | 6HP panel and placement contract |
 | `docs/16bit-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON; placement render |

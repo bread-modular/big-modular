@@ -218,7 +218,7 @@ human review gates are open.
 - **Button cap**: measure the bought switch (stem Ø and top height, nominal Ø3.5 at
   Z7.0), tune `socket_D` for the press fit, then print and test-fit (`mechanics.md`).
 - **Pots**: the RV09 model is audio-out's nominal user-sample proxy; measure shaft tip to
-  PCB seat on a real pot before ordering panels. 3D fit check and printed panel not
-  done yet.
+  PCB seat on a real pot before ordering panels. 3D fit check not done yet; the printed
+  panel (`panels/front-cad/`) is generated, not test-printed.
 - Bench: MIDI front end with this firmware (P and D), CV range/zero and clamp, filter sweep with the
   1M pot, output level/offset, TL072 behaviour with the DAC's step output.
