@@ -56,7 +56,7 @@ drift.
 - Carrier project `d4fe2f305c6613a1c0186c7cef4a40a5ce36714e00cac635064ebd5999d4a5c2`.
 - Carrier schematic `dd58c3b4b6f7f99e0a1f8037a57cf6fcb039db82f8f53d78e8e5f1c2287df3be`.
 - Output channel sheet `hardware/v1/out.kicad_sch` `c6308694bed8fc728e09087815ed6fd04d6da39c257aa438d91683c8103826bb`.
-- Panel PCB `c0e0cd7924a8ec1f52c5319f707667d83c51914fabf856feda238937fcdf3ff6`.
+- Panel PCB `49cfeed81f05879b6126808b0bf4a03ef9f6609973c3de5993d1a7367b6f35e0`.
 - Panel project `a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c`.
 
 ## Reproduce
@@ -97,7 +97,14 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/midi-symbols.xml hardware
 
 ## Checks done for this export
 
-Re-exported on 2026-10-19 for S5/R6: Bread Modular `gate_out` transistor LED
+Re-exported on 2026-10-27 for the panel rail-hole move: H1/H2 on the shared
+panel went 1HP (5.08 mm) right, X 7.5 to X 12.58 (Y 3.0 / 125.5 kept;
+`docs/mechanics.md`). The carrier sources are unchanged, so the carrier Gerbers,
+drills, BOM and CPL differ from the 2026-10-19 export only in plot dates. The
+panel NPTH drill now has the two rail holes at X 12.58. Shared `check` and panel
+DRC rerun: no findings, 0 unconnected.
+
+Before that, re-exported on 2026-10-19 for S5/R6: Bread Modular `gate_out` transistor LED
 drivers (Q11-Q18 MMBT3904, R31-R38 10 k) on the hierarchical output channel sheet,
 LEDs rotated 270 (`docs/research.md` §3.4, §3.6). The exporter reports 41
 components in 11 BOM rows, bottom side, no missing part numbers, and the same 20

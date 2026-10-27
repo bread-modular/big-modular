@@ -20,7 +20,7 @@ from [`geometry.json`](geometry.json). The nominal 3D check is in
 | Item | Value |
 |---|---|
 | Panel | 4HP, 20.0 x 128.5 mm. FR4 1.6 mm (`panels/front-pcb`) or printed 2.0 mm (`panels/front-cad`) |
-| Rail holes | Ø3.2 at (7.5, 3.0) and (7.5, 125.5): the Doepfer 4HP single pair (`HOLE_X0` in `case/tools/build_case.py`) |
+| Rail holes | Ø3.2 at (12.58, 3.0) and (12.58, 125.5): the Doepfer 4HP single pair (X7.5, `HOLE_X0` in `case/tools/build_case.py`) moved 1HP (5.08 mm) right |
 | Carrier PCB | 19.0 x 110.0 x 1.6 mm, 2 layers, X 0.5..19.5, Y 9.25..119.25, parallel to the panel |
 | Rail clearance | Skiff clear gap Y 8.0..120.5 (112.5 mm). The PCB keeps 1.25 mm per side (110 mm is the usual parallel-PCB maximum); the 16-pin IDC socket envelope also stays inside the gap |
 | Fixing | The carrier hangs on the nine jack bushings and nuts. No brackets or standoffs |
