@@ -5,7 +5,7 @@ Generated from the current accepted sources with the shared
 the sources, then re-export with the commands below.
 
 V2 is V1 plus mis-patch protection (`docs/research.md` §7). The panels are shared
-with V1 and unchanged, so `midi-panel-gerbers.zip` matches `jlcpcb/v1/` apart from
+with V1, so `midi-panel-gerbers.zip` matches `jlcpcb/v1/` apart from
 the plot dates.
 
 ## Contents
@@ -60,7 +60,7 @@ drift.
 - Carrier project `d4fe2f305c6613a1c0186c7cef4a40a5ce36714e00cac635064ebd5999d4a5c2`.
 - Carrier schematic `172151d3215bb00243517165d3a3a0974aa0c6ba1704cf0faec67bdafa460a45`.
 - Output channel sheet `hardware/v2/out.kicad_sch` `9dd609a81f0ce45db64018ef26e2ac1141a48d47c8ac81350f16f7e3462b641e`.
-- Panel PCB `c0e0cd7924a8ec1f52c5319f707667d83c51914fabf856feda238937fcdf3ff6`.
+- Panel PCB `49cfeed81f05879b6126808b0bf4a03ef9f6609973c3de5993d1a7367b6f35e0`.
 - Panel project `a44750bd6a13746dd643dac6b0c2ab6b0706ecf73fd3ac8787128754f8f6e44c`.
 
 ## Reproduce
@@ -101,7 +101,14 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/midi-v2-symbols.xml hardw
 
 ## Checks done for this export
 
-Re-exported on 2026-10-19 for S4/R4: Bread Modular `gate_out` transistor LED
+Re-exported on 2026-10-27 for the panel rail-hole move: H1/H2 on the shared
+panel went 1HP (5.08 mm) right, X 7.5 to X 12.58 (Y 3.0 / 125.5 kept;
+`docs/mechanics.md`). The carrier sources are unchanged, so the carrier Gerbers,
+drills, BOM and CPL differ from the 2026-10-19 export only in plot dates. The
+panel NPTH drill now has the two rail holes at X 12.58. Shared `check` and panel
+DRC rerun: no findings, 0 unconnected.
+
+Before that, re-exported on 2026-10-19 for S4/R4: Bread Modular `gate_out` transistor LED
 drivers (Q11-Q18 MMBT3904, R31-R38 10 k) on the hierarchical output channel sheet,
 LEDs rotated 270, clamps D11-D17 turned (`docs/research.md` §7.5). S3/R3 before it
 was the rebuild in `docs/rebuild-status.md`, equal to the recovered evidence.
