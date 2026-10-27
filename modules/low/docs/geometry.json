@@ -13,12 +13,12 @@
  "panel_pcb_thickness_mm": 1.6,
  "rail_holes_mm": [
   [
-   7.5,
+   12.58,
    3.0,
    3.2
   ],
   [
-   7.5,
+   12.58,
    125.5,
    3.2
   ]
@@ -27,7 +27,7 @@
   8.0,
   120.5
  ],
- "rail_note": "Doepfer single hole pair at X7.5 (HOLE_X0 in case/tools/build_case.py; the Bread Modular Panel_6HP has the same pair). Skiff rails as the MIDI module: clear Y8.0..120.5.",
+ "rail_note": "Single hole pair at X12.58: the Doepfer X7.5 (HOLE_X0 in case/tools/build_case.py; the Bread Modular Panel_6HP has the same pair) moved 1HP (5.08 mm) right, as modules/midi. Skiff rails as the MIDI module: clear Y8.0..120.5.",
  "main_pcb": {
   "outline_mm": [
    0.5,

@@ -14,12 +14,12 @@
  "panel_print_thickness_mm": 2.0,
  "rail_holes_mm": [
   [
-   7.5,
+   12.58,
    3.0,
    3.2
   ],
   [
-   7.5,
+   12.58,
    125.5,
    3.2
   ]
@@ -28,7 +28,7 @@
   8.0,
   120.5
  ],
- "rail_note": "Doepfer 4HP single hole pair at X7.5 (HOLE_X0 in case/tools/build_case.py). The repository skiff rails are 10 mm wide centred on Y3.0/Y125.5, leaving the clear Y8.0..120.5 (112.5 mm) gap; commercial rails differ, so the PCB keeps 1.25 mm margin and the 16-pin IDC socket envelope stays inside the gap.",
+ "rail_note": "Single hole pair at X12.58: the Doepfer 4HP X7.5 (HOLE_X0 in case/tools/build_case.py) moved 1HP (5.08 mm) right, as modules/midi. The repository skiff rails are 10 mm wide centred on Y3.0/Y125.5, leaving the clear Y8.0..120.5 (112.5 mm) gap; commercial rails differ, so the PCB keeps 1.25 mm margin and the 16-pin IDC socket envelope stays inside the gap.",
  "main_pcb": {
   "outline_mm": [
    0.5,

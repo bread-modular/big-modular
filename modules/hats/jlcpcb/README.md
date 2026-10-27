@@ -40,6 +40,8 @@ assembly options. The panel has no REC button/LED apertures or legend.
 
 ## Verification
 
+Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
+
 - Shared native check: **ERC 0, DRC 0, unconnected 0, schematic parity 0**; includes warnings
   and exclusions. Exact ref/pin/net and metadata parity pass; no ignored ERC/DRC severities or
   DRC exclusions remain. Source files are unchanged by checks/export.
