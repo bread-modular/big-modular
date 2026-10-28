@@ -17,10 +17,12 @@ Every module's rail hole is 1 HP off the A-100 7.5 mm phase (12.58 mm, or 2.42 m
 module row that starts on a rail spacer begins 1 HP right of the rail origin: a 1 HP lip on top of
 the left side panel, flush with the module fronts and one module panel thick, covers that gap. The
 side panels are both 12 mm thick; rails and bottom plate are unchanged; the lip uses the spare width
-on the right. The rails slide into the notches from the front / back, under the lip.
+on the right.
 Each module screw goes into a 10 mm M3 hex spacer superglued in a hex socket in the rail.
-The rail ends drop into notches at the top of the side panels; a horizontal M3 through the side
-panel wall goes into a hex spacer superglued in the rail end.
+The rail ends slide into notches in the top corners of the side panels from the front / back (under
+the left lip too). The notches are closed on top by a roof flush with the side panel top, so both side
+panel tops are one flat surface level with the module fronts; the rails cannot drop in from the top.
+A horizontal M3 through the side panel wall goes into a hex spacer superglued in the rail end.
 The front and back of the case stay open. Each side panel's inner face has a vertical groove near
 its front and back edge for a slide-in cover plate (2 mm thick): the groove runs from the panel
 bottom up into the rail notch. The rail underside and the bottom plate top have matching grooves
@@ -143,7 +145,7 @@ class Dims:
         # rail end engaged in the side panel notch: long enough that the end spacer socket
         # (10.2 deep along X) keeps a wall to the first module socket
         self.tenon = 8.0
-        self.notch_clr = 0.2                    # notch clearance on X and on the inner Y wall
+        self.notch_clr = 0.2                    # notch clearance on X, on the inner Y wall and over the rail
         self.lip_clr = 0.3                      # lip fillet end to the rail notch (Y)
         # cover grooves in the side panel inner faces, front and back
         self.cover_t = 2.0                      # cover plate thickness (Y)
@@ -226,6 +228,9 @@ class Dims:
             "rail_top_below_side_panel_top_mm": self.panel_t,
             "clear_depth_under_rails_mm": round(self.top - self.P, 3),
             "left_side_panel_top_lip_mm": [round(self.fill, 3), self.panel_t],
+            "rail_notch_roof_mm": {"thickness": round(self.panel_t - self.notch_clr, 3),
+                                   "clearance_over_rail": self.notch_clr,
+                                   "rail_entry": "slides in from the case front / back"},
             "left_lip_inside_fillet_and_top_round_mm": [self.lip_fillet, self.lip_round],
             "first_module_left_edge_x_mm": round(self.row_x0, 3),
             "rail_length_mm": round(self.rail_len, 3),
@@ -302,7 +307,7 @@ def rail(d, i):
     """Bar centred on a module hole line with a hex spacer socket every 2 HP, open at the top
     (the module side). The spacer sits 0.2 mm below the top so the module panel clamps on the
     rail. A small floor carries the spacer; an M3 clearance vent under it lets glue and air out
-    and takes a screw that is too long. Each end is a tenon that drops into a side panel notch; a
+    and takes a screw that is too long. Each end is a tenon that slides into a side panel notch from the front / back; a
     hex spacer glued into the end face takes a screw through the side panel wall. The underside has
     a cover groove along its full length on both sides (the cover's top edge sits in the outer
     one), so the rail stays one part either way round."""
@@ -325,8 +330,9 @@ def rail(d, i):
 
 def side_panel(d, left):
     """Vertical plate, 128.5 mm long (one 3U module height). The top corners have rail notches
-    open to the top, the inner face and the front/back edge: the rail drops in and an M3 through
-    the outer wall goes into the spacer in the rail end. The bottom edge has two blind hex sockets for
+    open to the inner face and the front/back edge, under a roof flush with the panel top: the rail
+    slides in from the front / back and an M3 through the outer wall goes into the spacer in the
+    rail end. The bottom edge has two blind hex sockets for
     superglued M3 hex spacers that take the bolts coming up through the bottom plate."""
     sgn = 1 if left else -1
     x_out = -d.T if left else d.L + d.T
@@ -351,8 +357,11 @@ def side_panel(d, left):
     nx = x_in - nd if left else x_in
     cuts = []
     for i, ny in enumerate((d.y0, d.y0 + d.ylen - nw)):
-        # open to the top: the rail plus the module panel lying on it
-        cuts.append(box((nx, ny, d.top - d.rail_h), (nd, nw, d.rail_h + d.panel_t + 1)))
+        # closed on top: the roof over the rail end is flush with the panel top, notch_clr over the
+        # rail so it slides in from the front / back. On the left the clearance runs on under the lip
+        cuts.append(box((nx, ny, d.top - d.rail_h), (nd, nw, d.rail_h + d.notch_clr)))
+        if left:
+            cuts.append(box((0, ny, d.top), (d.fill + 1, nw, d.notch_clr)))
         rail_mid = (d.rail_y[i] + d.rail_w / 2, d.top - d.rail_h / 2)
         cuts.append(cyl(M3_CLEAR / 2, d.T + 2, (x_out - sgn, rail_mid[0], rail_mid[1]), (sgn, 0, 0)))
     # cover grooves: open at the panel bottom, running up into the rail notch
@@ -643,6 +652,22 @@ def checks(d, asm):
     out["module_row_capacity_mm"] = round(d.L - d.row_x0, 3)
     out["module_panel_top_z_mm"] = round(d.top + d.panel_t, 3)
     out["side_panel_top_z_mm"] = round(d.case_top, 3)
+    # rail notch roofs: the side panel top is solid over every rail end (no hole, no step), with
+    # notch_clr between the roof and the rail top
+    roof = {}
+    for name, x_in, sg in (("side-panel-left", 0.0, -1), ("side-panel-right", d.L, 1)):
+        s = asm[name]
+        for i, ry in enumerate(d.rail_y):
+            pts = [(x_in + sg * dx, y) for dx in (0.5, d.tenon / 2, d.tenon - 0.1)
+                   for y in (ry + 0.1, ry + d.rail_w / 2, ry + d.rail_w - 0.1)]
+            solid = all(s.isInside(V(x, y, z), 1e-6, True) for x, y in pts
+                        for z in (d.case_top - 0.05, d.top + d.notch_clr + 0.05))
+            gap = all(not s.isInside(V(x, y, d.top + d.notch_clr / 2), 1e-6, True) for x, y in pts)
+            top = s.common(box((x_in + (sg * d.tenon if sg < 0 else 0), ry, d.case_top - 0.01),
+                               (d.tenon, d.rail_w, 0.02))).Volume
+            assert solid and gap and abs(top - d.tenon * d.rail_w * 0.01) < 1e-6, (name, i, solid, gap, top)
+            roof[f"{name}/{('front', 'back')[i]}"] = "closed, flush with the top"
+    out["rail_notch_roofs"] = roof
     assert abs(out["module_panel_top_z_mm"] - out["side_panel_top_z_mm"]) < 1e-6
     return out
 
