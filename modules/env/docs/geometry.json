@@ -1,0 +1,368 @@
+{
+    "revision": "S3/P7: schematic S3 adds GATE IN (J6, NPN gate buffer -> PB2, TN jack detect -> PB1: patched = MIDI notes bypassed). Placement P7 (user, 2026-10-28): GATE IN + MIDI IN in the top row, ENV OUT + MIDI OUT in the bottom row (inputs over outputs, X7 / X23), ENV LED D8 between them next to ENV OUT; J3 power moved off the REC row (a 16-pin socket would cover the MIDI OUT pads) to the right edge between the pots, vertical on B, pin 1 (-12 V) at the bottom. P6: ENV LED next to ENV OUT, J4 UPDI to the left edge. SMD parked off the board, nothing routed. R1 (2026-10-28): SMD placed and routed on the board (research.md 4); the native PCB owns SMD placement and copper.",
+    "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+    "kicad_origin_mm": [
+        100.0,
+        50.0
+    ],
+    "hp": 6,
+    "panel_mm": [
+        30.0,
+        128.5
+    ],
+    "panel_pcb_thickness_mm": 1.6,
+    "panel_print_thickness_mm": 2.0,
+    "rail_holes_mm": [
+        [
+            12.58,
+            3.0,
+            3.2
+        ],
+        [
+            12.58,
+            125.5,
+            3.2
+        ]
+    ],
+    "rail_clear_gap_Y_mm": [
+        8.0,
+        120.5
+    ],
+    "rail_note": "Doepfer A-100 6HP: 30.0 mm wide; single hole pair at X12.58 (both rails) as modules/hats, modules/low and modules/16bit. Skiff rails: clear Y8.0..120.5.",
+    "main_pcb": {
+        "outline_mm": [
+            0.5,
+            9.25,
+            29.5,
+            119.25
+        ],
+        "thickness_mm": 1.6,
+        "copper_layers": 2,
+        "note": "29.0 x 110.0 mm (as modules/hats and modules/low), 1.25 mm inside the rail gap at each end; held by the three jack nuts (RV09 pots take no nut). 1 mm edge keep-out (root AGENTS.md): every courtyard >= 1.0 mm from the outline. Layer count is decided at routing (2 layers planned; 4 if the SMD does not fit)."
+    },
+    "column_X_mm": 15.0,
+    "jack_part": "QingPu WQP-PJ301M-12",
+    "panel_order": "Top to bottom: GATE IN + MIDI IN; ATTACK; RELEASE; MODE button + HR / AR / ASR LEDs in one row; REC button + REC LED; ENV OUT + ENV LED + MIDI OUT at the bottom (inputs over outputs).",
+    "layout_note": "6HP leaves 27.0 mm between the 1 mm edge keep-outs: jack columns X7 / X23 (16 mm pitch) in both jack rows, so the ENV LED fits between the bottom jacks (X14.5, next to ENV OUT); pots in the centre column X15, ATTACK Y36.5 / RELEASE Y66.5 (30 mm pitch); buttons on the left (X6.5) with the mode LEDs (5.5 mm pitch) / REC LED to their right; J3 power (B, vertical) on the right edge between the pots, J4 UPDI (B) on the left edge between the pots.",
+    "jacks": [
+        {
+            "ref": "J6",
+            "role": "GATE IN (patched: MIDI notes bypassed)",
+            "XY": [
+                7.0,
+                17.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J1",
+            "role": "MIDI IN",
+            "XY": [
+                23.0,
+                17.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J2",
+            "role": "ENV OUT (envelope CV 0..5 V)",
+            "XY": [
+                7.0,
+                110.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J5",
+            "role": "MIDI OUT (passive thru, wired to J1)",
+            "XY": [
+                23.0,
+                110.0
+            ],
+            "rot": 0.0
+        }
+    ],
+    "pot_part": "Song Huei R0904N (user stock 50k linear), vertical snap-in, no bushing, no nut, on the Bread Modular Potentiometer_RV09 footprint (as modules/acid)",
+    "pot_shaft_offset_from_footprint_origin_mm": [
+        -0.127,
+        -0.508
+    ],
+    "pots": [
+        {
+            "ref": "RV1",
+            "role": "ATTACK (50k)",
+            "shaft_XY": [
+                15.0,
+                36.5
+            ]
+        },
+        {
+            "ref": "RV2",
+            "role": "RELEASE (50k)",
+            "shaft_XY": [
+                15.0,
+                66.5
+            ]
+        }
+    ],
+    "leds": [
+        {
+            "ref": "D4",
+            "role": "HR",
+            "XY": [
+                14.5,
+                84.0
+            ]
+        },
+        {
+            "ref": "D5",
+            "role": "AR",
+            "XY": [
+                20.0,
+                84.0
+            ]
+        },
+        {
+            "ref": "D6",
+            "role": "ASR",
+            "XY": [
+                25.5,
+                84.0
+            ]
+        },
+        {
+            "ref": "D7",
+            "role": "REC",
+            "XY": [
+                14.5,
+                96.0
+            ]
+        },
+        {
+            "ref": "D8",
+            "role": "ENV (level)",
+            "XY": [
+                14.5,
+                110.0
+            ]
+        }
+    ],
+    "led_note": "3 mm THT on F at rotation 0 (pads side by side, anode pad 2 on the right), placed by the pad centre = body centre; dome flush with the panel front as modules/8bit (model Z +3.3).",
+    "buttons": [
+        {
+            "ref": "SW1",
+            "role": "MODE",
+            "XY": [
+                6.5,
+                84.0
+            ],
+            "rot": 180.0
+        },
+        {
+            "ref": "SW2",
+            "role": "REC",
+            "XY": [
+                6.5,
+                96.0
+            ],
+            "rot": 180.0
+        }
+    ],
+    "button_note": "Generic 6 x 6 mm THT tact (7 mm), stock SW_PUSH_6mm_H7.3mm on F, placed by the pad-pattern centre = stem centre, rot 180 (pad 1 signal on the bottom row) as modules/acid; pressed through the panel by the modules/8bit printed cap.",
+    "panel_hole_diameters_mm": {
+        "jack": 6.2,
+        "pot": 7.2,
+        "led": 3.2,
+        "button": 4.2
+    },
+    "stack_Z_mm": {
+        "led_body_bottom": 6.3,
+        "led_model_body_bottom": 3.0,
+        "note": "As modules/8bit (LED dome flush with the 1.6 mm FR4 panel front)."
+    },
+    "power_header": {
+        "ref": "J3",
+        "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+        "side": "B",
+        "pin1_XY_mm": [
+            23.8,
+            56.58
+        ],
+        "column_X_mm": [
+            23.8,
+            26.34
+        ],
+        "pin_rows_Y_mm": [
+            56.58,
+            54.04,
+            51.5,
+            48.96,
+            46.42
+        ],
+        "orientation": "Vertical on B on the right board edge between the pots (P7): pin 1/2 (-12 V) in the bottom row Y56.58, odd pins in the left column X23.8, pins 9/10 (+12 V) at the top Y46.42. Moved from the REC row because a socket there covers the MIDI OUT pads (P7 bottom-right jack). Columns 0.3 mm right of P6 so the socket envelope (X >= 21.27) clears the pot lug pads (X <= 21.16).",
+        "idc_note": "A 10- or 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); 16-pin positions 11-16 overhang upwards (to Y35.0) over the free right strip between the pots, clear of every B-side pad. Envelope = socket body 3.81 mm beyond the end pin centres along the header, 2.53 mm across. B-side SMD placed under it later must stay <= 2 mm tall.",
+        "idc_socket_envelope_mm": {
+            "IDC10": {
+                "X": [
+                    21.27,
+                    28.87
+                ],
+                "Y": [
+                    42.61,
+                    60.39
+                ]
+            },
+            "IDC16": {
+                "X": [
+                    21.27,
+                    28.87
+                ],
+                "Y": [
+                    35.0,
+                    60.39
+                ]
+            }
+        }
+    },
+    "back_side_tht": [
+        {
+            "ref": "J3",
+            "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+            "XY": [
+                25.07,
+                51.5
+            ],
+            "rot": 180,
+            "note": "vertical on the right edge between the pots, pin 1 (-12 V) bottom left"
+        },
+        {
+            "ref": "J4",
+            "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+            "XY": [
+                3.5,
+                51.5
+            ],
+            "rot": 0,
+            "note": "UPDI on the left board edge between the pots, vertical (pin 1 UPDI on top at Y50.23, pin 2 GND Y52.77); centre column left free for the MCU"
+        }
+    ],
+    "smd_parking": {
+        "side": "B",
+        "origin_XY": [
+            36.0,
+            12.0
+        ],
+        "pitch_XY": [
+            8.0,
+            7.0
+        ],
+        "columns": 4,
+        "note": "Every SMD part waits here, off the board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer)."
+    },
+    "panel_labels": [
+        {
+            "text": "ENV",
+            "XY": [
+                15.0,
+                7.0
+            ],
+            "size": 2.0
+        },
+        {
+            "text": "GATE IN",
+            "XY": [
+                7.0,
+                11.0
+            ],
+            "size": 1.1
+        },
+        {
+            "text": "MIDI IN",
+            "XY": [
+                23.0,
+                11.0
+            ],
+            "size": 1.1
+        },
+        {
+            "text": "ATTACK",
+            "XY": [
+                15.0,
+                29.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "RELEASE",
+            "XY": [
+                15.0,
+                59.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "MODE",
+            "XY": [
+                6.5,
+                88.8
+            ],
+            "size": 1.0
+        },
+        {
+            "text": "HR",
+            "XY": [
+                14.5,
+                87.2
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "AR",
+            "XY": [
+                20.0,
+                87.2
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "ASR",
+            "XY": [
+                25.5,
+                87.2
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "REC",
+            "XY": [
+                6.5,
+                100.8
+            ],
+            "size": 1.0
+        },
+        {
+            "text": "ENV OUT",
+            "XY": [
+                7.0,
+                116.5
+            ],
+            "size": 1.1
+        },
+        {
+            "text": "ENV",
+            "XY": [
+                14.5,
+                113.2
+            ],
+            "size": 0.9
+        },
+        {
+            "text": "MIDI OUT",
+            "XY": [
+                23.0,
+                116.5
+            ],
+            "size": 1.1
+        }
+    ]
+}
