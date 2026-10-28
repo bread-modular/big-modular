@@ -1,0 +1,14 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/busboard.kicad_pcb": "f08755a59c7b6a72a90d7a73ca7934750063e51bbe8fcbc9c94df514bc517869",
+    "hardware/busboard.kicad_pro": "59a81aa3887428c7c360117d910c0d57171acd27c72fe576e11483a406f835da",
+    "hardware/busboard.kicad_sch": "dd9a8d5970400b408ad7a8980bd4e6f42061a7252932272adba548ed55c3e973"
+  },
+  "exports": {
+    "jlcpcb/busboard-gerbers.zip": "8aa59b88b36344aea506062fb642ed45247d7ec3d4f5cd028dc0c6e7430c1204",
+    "jlcpcb/bom.csv": "b235e0a0f79e95fb932052166cc0749604810ae3647582cde4f771e54d37c61d",
+    "jlcpcb/positions.csv": "689d0139a661e7561c0e9c6cd7e1404c6f1713c720d980a916abb09dec41d1e5"
+  }
+}

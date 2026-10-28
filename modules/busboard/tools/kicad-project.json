@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/busboard.kicad_pcb",
+  "root_schematic": "../hardware/busboard.kicad_sch",
+  "dependencies": [
+    "../hardware/Busboard.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}

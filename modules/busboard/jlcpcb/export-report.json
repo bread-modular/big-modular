@@ -1,0 +1,48 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/164/modules/busboard/hardware/busboard.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/164/modules/busboard/hardware/busboard.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/164/modules/busboard/hardware/busboard.kicad_pcb": "f08755a59c7b6a72a90d7a73ca7934750063e51bbe8fcbc9c94df514bc517869",
+    "/home/azero/.okbrain/workspaces/big-modular/164/modules/busboard/hardware/busboard.kicad_sch": "dd9a8d5970400b408ad7a8980bd4e6f42061a7252932272adba548ed55c3e973"
+  },
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 2,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "both",
+  "include_through_hole": false,
+  "component_count": 0,
+  "bom_row_count": 0,
+  "excluded": {
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J5": "Not an SMD footprint (use --include-through-hole)",
+    "J6": "Not an SMD footprint (use --include-through-hole)",
+    "J7": "Not an SMD footprint (use --include-through-hole)",
+    "J8": "Not an SMD footprint (use --include-through-hole)"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "No assembly components selected; BOM and positions CSVs contain headers only.",
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "busboard-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}
