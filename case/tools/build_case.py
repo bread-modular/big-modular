@@ -1,8 +1,8 @@
 """FreeCAD generator for the 3D-printed Eurorack skiff (Bambu Lab P2S).
 
 Run with FreeCAD's headless interpreter (see case/tools/build.sh):
-  case/tools/build.sh                         # 42 HP, 70 mm clear depth
-  CASE_HP=36 CASE_DEPTH=60 case/tools/build.sh
+  case/tools/build.sh                         # 42 HP, 60 mm side panels
+  CASE_HP=36 CASE_DEPTH=50 case/tools/build.sh
 
 Assembly frame (all dimensions mm):
   X  along the rails (module row, left -> right); X = 0 is the inner face of the left side panel
@@ -10,10 +10,22 @@ Assembly frame (all dimensions mm):
      front edge. The rails and the case reach RAIL_OH past both panel edges (Y < 0, Y > 128.5)
   Z  up; Z = 0 is the floor under the bottom plate
 
-Modules lie flat: their front panels rest on top of the rails, parallel to the bottom plate.
+Modules lie flat: their front panels rest on top of the rails, parallel to the bottom plate. The
+rails sit one module panel thickness (read from the modules' KiCad panel boards) below the side
+panel top, so the module fronts are flush with the side panels.
+Every module's rail hole is 1 HP off the A-100 7.5 mm phase (12.58 mm, or 2.42 mm on 2 HP), so a
+module row that starts on a rail spacer begins 1 HP right of the rail origin: a 1 HP lip on top of
+the left side panel, flush with the module fronts and one module panel thick, covers that gap. The
+side panels are both 12 mm thick; rails and bottom plate are unchanged; the lip uses the spare width
+on the right. The rails slide into the notches from the front / back, under the lip.
 Each module screw goes into a 10 mm M3 hex spacer superglued in a hex socket in the rail.
 The rail ends drop into notches at the top of the side panels; a horizontal M3 through the side
 panel wall goes into a hex spacer superglued in the rail end.
+The front and back of the case stay open. Each side panel's inner face has a vertical groove near
+its front and back edge for a slide-in cover plate (printed later, 2 mm thick): the groove runs
+from the panel bottom up into the rail notch, under the rail, so the cover's top edge hides under
+the rail. Covers slide in from below before the side panels go into the bottom plate (or, on the
+right panel, drop in through the rail notch before the rail).
 """
 
 import json
@@ -23,6 +35,8 @@ import sys
 import time
 from pathlib import Path
 
+import re
+
 import FreeCAD as App
 import Mesh
 import MeshPart
@@ -30,6 +44,7 @@ import Part
 
 V = App.Vector
 CASE = Path(os.environ.get("CASE_DIR", Path(__file__).resolve().parents[1]))
+MODULES = CASE.parent / "modules"
 
 # --- Eurorack (Doepfer A-100) ---------------------------------------------
 HP = 5.08            # horizontal pitch
@@ -57,21 +72,65 @@ SPACER_WALL = (10.0 - SPACER_SOCKET_AF) / 2   # 2.15: same walls as the side pan
 RAIL_OH = SPACER_SOCKET_AF / 2 + SPACER_WALL - HOLE_EDGE
 
 
+def module_panels():
+    """Front panel boards of every module (modules/*/panels/front-pcb/*.kicad_pcb): board
+    thickness, Edge.Cuts width/height and the rail hole X from the panel's left edge."""
+    out = {}
+    for f in sorted(MODULES.glob("*/panels/front-pcb/*.kicad_pcb")):
+        s = f.read_text()
+        thick = float(re.search(r"\(general\s*\(thickness ([\d.]+)\)", s).group(1))
+        xs, ys = [], []
+        for m in re.finditer(r"\(gr_(?:line|rect|arc)\s*\(start ([\d.-]+) ([\d.-]+)\)(.*?)\(layer \"([^\"]+)\"\)", s, re.S):
+            if m.group(4) != "Edge.Cuts" or "(gr_" in m.group(3):
+                continue
+            pts = [(float(m.group(1)), float(m.group(2)))]
+            pts += [(float(a), float(b)) for a, b in re.findall(r"\((?:mid|end) ([\d.-]+) ([\d.-]+)\)", m.group(3))]
+            xs += [p[0] for p in pts]
+            ys += [p[1] for p in pts]
+        x0, y0 = min(xs), min(ys)
+        holes = []
+        for m in re.finditer(r"\(footprint \"[^\"]*\"\s*\(layer[^)]*\)\s*\(uuid[^)]*\)\s*\(at ([\d.-]+) ([\d.-]+)", s):
+            body = s[m.end():m.end() + 6000].split("(footprint ", 1)[0]
+            if re.search(r'np_thru_hole circle\s*\(at 0 0\)\s*\(size 3\.2 3\.2\)', body):
+                hy = float(m.group(2)) - y0
+                if abs(hy - HOLE_EDGE) < 0.5 or abs(hy - (PANEL_H - HOLE_EDGE)) < 0.5:
+                    holes.append(round(float(m.group(1)) - x0, 3))
+        assert holes, f"{f}: no rail holes found"
+        out[f.parts[-4]] = {"thickness": thick, "width": round(max(xs) - x0, 3),
+                            "height": round(max(ys) - y0, 3), "hole_x": min(holes)}
+    assert out, "no module panels found"
+    return out
+
+
 class Dims:
-    def __init__(self, hp, depth, row_gap):
+    def __init__(self, hp, depth, row_gap, panels):
         self.hp = hp
+        self.panels = panels
+        thick = {p["thickness"] for p in panels.values()}
+        assert len(thick) == 1, f"module panels differ in thickness: {thick}"
+        self.panel_t = thick.pop()              # module panel board thickness above the rails
+        # module rail holes sit 1 HP off the 7.5 mm phase (12.58, 2.42 on 2 HP): cover that HP on
+        # the left so the first module is row_gap / 2 from the panel
+        phases = {round((p["hole_x"] - HOLE_X0) % (2 * HP), 2) for p in panels.values()}
+        assert phases == {HP}, f"module rail hole phases: {phases}"
+        self.fill = HP                          # top lip on the left side panel's inner face
+        self.lip_fillet = 4.0                   # inside fillet under the lip, between the rails
+        self.lip_round = 0.5                    # round on the lip's top outer edge
         self.row_gap = row_gap                  # free play across the whole module row
         # rail spacer sockets every 2 HP from the first module hole. The inner width puts the last
         # socket as far from the right panel as the first is from the left, so a rail turned end for
-        # end is the same part: one rail file, print 2. The width left over past the module row
-        # (about 1 HP at 42 HP) is free space on the right.
+        # end is the same part: one rail file, print 2. The rails (and so the inner width) are sized
+        # for the bare module row; the left lip takes its 1 HP from the width left over on the
+        # right, and the module row starts row_gap / 2 after the lip.
         self.hole_x0 = row_gap / 2 + HOLE_X0
         self.n_sockets = math.ceil((hp * HP + row_gap - 2 * self.hole_x0) / (2 * HP) - 1e-9) + 1
         self.L = 2 * self.hole_x0 + (self.n_sockets - 1) * 2 * HP   # inner width between side panels
-        self.spare = self.L - (hp * HP + row_gap)
+        self.spare = self.L - (self.fill + hp * HP + row_gap / 2)
+        if self.spare < -1e-6:
+            raise ValueError(f"{hp} HP and the 1 HP left lip do not fit the {self.L:.2f} mm rails")
         # side panel
         self.T = 12.0                           # side panel thickness (X)
-        self.depth = depth                      # side panel height = clear depth under the rails
+        self.depth = depth                      # side panel height above the bottom plate
         # rail
         self.rail_w = SPACER_SOCKET_AF + 2 * SPACER_WALL   # Y, centred on the hole line
         self.rail_floor = 1.8                   # under the spacer socket
@@ -80,6 +139,13 @@ class Dims:
         # (10.2 deep along X) keeps a wall to the first module socket
         self.tenon = 8.0
         self.notch_clr = 0.2                    # notch clearance on X and on the inner Y wall
+        self.lip_clr = 0.3                      # lip fillet end to the rail notch (Y)
+        # cover grooves in the side panel inner faces, front and back
+        self.cover_t = 2.0                      # cover plate thickness (Y)
+        self.groove_w = self.cover_t + 0.4      # groove width (Y)
+        self.groove_d = 3.0                     # groove depth into the side panel (X)
+        self.groove_edge = 2.0                  # side panel wall left in front of the groove (Y)
+        self.cover_clr = 0.3                    # cover to groove bottom (X), plate socket and rail (Z)
         # bottom plate
         self.P = 5.0                            # plate thickness
         self.wall = 3.0                         # socket wall thickness
@@ -92,22 +158,35 @@ class Dims:
 
         self.y0 = -RAIL_OH                      # case front edge
         self.ylen = PANEL_H + 2 * RAIL_OH       # case depth (Y) of side panels and bottom plate
-        self.top = self.P + self.depth          # rail top / module panel underside
+        self.case_top = self.P + self.depth     # side panel top = module panel front
+        self.top = self.case_top - self.panel_t  # rail top / module panel underside
         self.hole_y = (HOLE_EDGE, PANEL_H - HOLE_EDGE)   # front and back module hole lines
         self.rail_y = tuple(y - self.rail_w / 2 for y in self.hole_y)   # rail Y origins
         self.plate_x0 = -self.T - self.wall - self.socket_clr / 2
         self.plate_len = self.L + 2 * (self.T + self.wall) + self.socket_clr
+        self.row_x0 = self.fill + row_gap / 2  # first module's left edge
         self.rail_len = self.L + 2 * self.tenon
+        self.groove_y = (self.y0 + self.groove_edge, self.y0 + self.ylen - self.groove_edge - self.groove_w)
 
         assert self.rail_y[1] - (self.rail_y[0] + self.rail_w) >= RAIL_GAP_MIN - 1e-9
         for size, what in ((self.plate_len, "bottom plate"), (self.rail_len, "rail")):
             if size > BED - 4:
-                sys.exit(f"{what} is {size:.1f} mm: does not fit the P2S bed ({BED} mm); lower CASE_HP")
+                raise ValueError(f"{what} is {size:.1f} mm: does not fit the P2S bed ({BED} mm); lower CASE_HP")
 
     def module_hole_x(self):
         """Rail spacer X positions: every 2 HP, symmetric about the rail centre. All modules are
         2N HP wide and sit on even HP slots, so each module's left hole lands on a spacer."""
         return [self.hole_x0 + k * 2 * HP for k in range(self.n_sockets)]
+
+    def cover_blank_size(self):
+        """Front/back cover plate blank (X width, Y thickness, Z height) and its two bottom corner
+        notches (X, Z) that clear the bottom plate's inner socket walls."""
+        w = self.L + 2 * (self.groove_d - self.cover_clr)
+        h = self.top - self.rail_h - self.cover_clr - self.P
+        notch = (self.groove_d - self.cover_clr + self.socket_clr / 2 + self.wall + self.cover_clr,
+                 self.socket_h + self.cover_clr)
+        return {"plate": [round(w, 2), self.cover_t, round(h, 2)],
+                "bottom_corner_notches_x_z": [round(notch[0], 2), round(notch[1], 2)]}
 
     def screws(self):
         """Shortest standard M3 lengths that reach ~4 mm into the hex spacer."""
@@ -132,7 +211,13 @@ class Dims:
             "hp": self.hp,
             "inner_width_mm": round(self.L, 3),
             "spare_width_right_of_module_row_mm": round(self.spare, 3),
-            "clear_depth_under_rails_mm": self.depth,
+            "side_panel_height_mm": self.depth,
+            "module_panel_thickness_mm": self.panel_t,
+            "rail_top_below_side_panel_top_mm": self.panel_t,
+            "clear_depth_under_rails_mm": round(self.top - self.P, 3),
+            "left_side_panel_top_lip_mm": [round(self.fill, 3), self.panel_t],
+            "left_lip_inside_fillet_and_top_round_mm": [self.lip_fillet, self.lip_round],
+            "first_module_left_edge_x_mm": round(self.row_x0, 3),
             "rail_length_mm": round(self.rail_len, 3),
             "rail_section_mm": [self.rail_w, self.rail_h],
             "rail_spacer_sockets_per_rail": len(xs),
@@ -145,9 +230,13 @@ class Dims:
             "module_holes": f"{SPACER_SOCKET_AF} AF x {SPACER_SOCKET_DEPTH} deep hex socket for a "
                             f"M3x{SPACER_L:g} hex spacer, {self.rail_floor} mm floor with M3 vent hole",
             "side_panel_mm": [self.T, round(self.ylen, 3), self.depth],
+            "cover_groove_mm": {"width": self.groove_w, "depth": self.groove_d,
+                                "from_case_front_back_edge": self.groove_edge,
+                                "z_range": [self.P, round(self.top - self.rail_h, 3)]},
+            "cover_plate_blank_mm": self.cover_blank_size(),
             "bottom_plate_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.P],
             "bottom_plate_centre_floor_mm": self.skin,
-            "overall_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.top],
+            "overall_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.case_top],
             "hardware": self.screws(),
         }
 
@@ -225,14 +314,33 @@ def side_panel(d, left):
     x_out = -d.T if left else d.L + d.T
     x_in = 0.0 if left else d.L
     s = box((min(x_out, x_in), d.y0, d.P), (d.T, d.ylen, d.depth))
+    if left:
+        # 1 HP lip on top of the inner face, over the rails and flush with the module fronts. Its
+        # top outer edge is rounded; between the rail notches an inside fillet under the lip ties
+        # it to the wall (it prints as a ramp in the print pose, no supports)
+        r, f = d.lip_round, d.lip_fillet
+        lip = box((0, d.y0, d.top), (d.fill, d.ylen, d.panel_t))
+        corner = box((d.fill - r, d.y0 - 1, d.case_top - r), (r + 1, d.ylen + 2, r + 1))
+        corner = corner.cut(cyl(r, d.ylen + 4, (d.fill - r, d.y0 - 2, d.case_top - r), (0, 1, 0)))
+        lip = lip.cut(corner)
+        gy0 = d.y0 + d.rail_w + d.notch_clr + d.lip_clr
+        gy1 = d.y0 + d.ylen - (d.rail_w + d.notch_clr + d.lip_clr)
+        web = box((0, gy0, d.top - f), (f, gy1 - gy0, f))
+        web = web.cut(cyl(f, gy1 - gy0 + 2, (f, gy0 - 1, d.top - f), (0, 1, 0)))
+        s = s.fuse([lip, web]).removeSplitter()
     nd = d.tenon + d.notch_clr
     nw = d.rail_w + d.notch_clr
     nx = x_in - nd if left else x_in
     cuts = []
     for i, ny in enumerate((d.y0, d.y0 + d.ylen - nw)):
-        cuts.append(box((nx, ny, d.top - d.rail_h), (nd, nw, d.rail_h + 1)))
+        # open to the top: the rail plus the module panel lying on it
+        cuts.append(box((nx, ny, d.top - d.rail_h), (nd, nw, d.rail_h + d.panel_t + 1)))
         rail_mid = (d.rail_y[i] + d.rail_w / 2, d.top - d.rail_h / 2)
         cuts.append(cyl(M3_CLEAR / 2, d.T + 2, (x_out - sgn, rail_mid[0], rail_mid[1]), (sgn, 0, 0)))
+    # cover grooves: open at the panel bottom, running up into the rail notch
+    gz = d.top - d.rail_h - d.P + 1.5
+    for gy in d.groove_y:
+        cuts.append(box((x_in - d.groove_d if left else x_in, gy, d.P - 1), (d.groove_d, d.groove_w, gz)))
     bx = x_out + sgn * d.T / 2
     for by in d.bolt_y:
         cuts.append(spacer_socket((bx, by), d.P, SPACER_SOCKET_DEPTH))
@@ -260,12 +368,24 @@ def bottom_plate(d):
 def print_pose(name, shape, d):
     """Move a part from its assembly position to its print orientation, corner at the origin."""
     s = shape.copy()
-    if name == "side-panel":
+    if name.startswith("side-panel"):
         # outer face down: notches, spacer sockets and rail screw holes print without supports
-        s.rotate(V(0, 0, 0), V(0, 1, 0), -90)
+        s.rotate(V(0, 0, 0), V(0, 1, 0), -90 if name.endswith("left") else 90)
     bb = s.BoundBox
     s.translate(V(-bb.XMin, -bb.YMin, -bb.ZMin))
     return s
+
+
+def cover_blank(d, i):
+    """Check-only front (i = 0) / back cover plate in its grooves: not exported."""
+    c = d.cover_blank_size()
+    w, t, h = c["plate"]
+    nx, nz = c["bottom_corner_notches_x_z"]
+    x0 = -(d.groove_d - d.cover_clr)
+    y = d.groove_y[i] + (d.groove_w - d.cover_t) / 2
+    s = box((x0, y, d.P), (w, t, h))
+    return s.cut(Part.makeCompound([box((x0 - 1, y - 1, d.P - 1), (nx + 1, t + 2, nz + 1)),
+                                    box((x0 + w - nx, y - 1, d.P - 1), (nx + 1, t + 2, nz + 1))]))
 
 
 # --- checks ------------------------------------------------------------------
@@ -281,6 +401,20 @@ def checks(d, asm):
             if v > 1e-3:
                 clashes[f"{na}/{nb}"] = round(v, 4)
     out["interference_mm3"] = clashes or "none"
+    # cover grooves: a cover blank in each groove clears every part, and its ears sit in the
+    # grooves of both side panels
+    cov = {}
+    for i, cname in enumerate(("cover-front", "cover-back")):
+        c = cover_blank(d, i)
+        hit = {n: round(c.common(b).Volume, 4) for n, b in asm.items() if c.common(b).Volume > 1e-3}
+        assert not hit, f"{cname} clashes: {hit}"
+        gy = d.groove_y[i] + d.groove_w / 2
+        zm = (d.P + d.top - d.rail_h) / 2
+        ears = [not asm[n].isInside(V(x, gy, zm), 1e-6, True) and c.isInside(V(x, gy, zm), 1e-6, True)
+                for n, x in (("side-panel-left", -d.groove_d / 2), ("side-panel-right", d.L + d.groove_d / 2))]
+        assert all(ears), (cname, ears)
+        cov[cname] = "fits, no interference"
+    out["cover_grooves"] = cov
     for name, s in asm.items():
         assert s.isValid() and len(s.Solids) == 1, f"{name}: invalid or not one solid"
     # rail spacer sockets: open at the top and the spacer length deep (probed on the axis and
@@ -339,13 +473,24 @@ def checks(d, asm):
     assert max(diff.values()) < 1e-3, f"rails are not one interchangeable part: {diff}"
     out["rail_interchangeable_diff_mm3"] = diff
     out["measured_rail_hole_line_spacing_mm"] = round(d.hole_y[1] - d.hole_y[0], 3)
-    # every module position: 2N HP module at even slot s has its left hole at s*HP + 7.5 (+ row gap)
-    out["module_widths_checked_hp"] = "2, 4 .. %d at every even slot" % (d.hp - d.hp % 2)
-    xs = set(round(x, 6) for x in d.module_hole_x())
-    for n in range(2, d.hp + 1, 2):
-        for slot in range(0, d.hp - n + 1, 2):
-            hx = round(d.row_gap / 2 + slot * HP + HOLE_X0, 6)
-            assert hx in xs, (n, slot)
+    # every module panel at every even HP slot from the left lip: its rail hole lands on a
+    # spacer and the panel stays inside the side panels
+    xs = [x for x in d.module_hole_x()]
+    placed = {}
+    for name, p in d.panels.items():
+        n = round(p["width"] / HP)
+        slots = [k for k in range(0, d.hp, 2)
+                 if d.row_x0 + k * HP + p["width"] <= d.L + 1e-6]
+        for k in slots:
+            hx = d.row_x0 + k * HP + p["hole_x"]
+            assert min(abs(hx - x) for x in xs) < 0.05, (name, k, hx)
+        placed[name] = {"hp": n, "panel_mm": [p["width"], p["height"], p["thickness"]],
+                        "rail_hole_x_mm": p["hole_x"], "even_slots": len(slots)}
+    out["module_panels"] = placed
+    out["module_row_capacity_mm"] = round(d.L - d.row_x0, 3)
+    out["module_panel_top_z_mm"] = round(d.top + d.panel_t, 3)
+    out["side_panel_top_z_mm"] = round(d.case_top, 3)
+    assert abs(out["module_panel_top_z_mm"] - out["side_panel_top_z_mm"]) < 1e-6
     return out
 
 
@@ -361,8 +506,8 @@ def export(shape, base):
 
 
 def main():
-    d = Dims(int(os.environ.get("CASE_HP", 42)), float(os.environ.get("CASE_DEPTH", 70)),
-             float(os.environ.get("CASE_ROW_GAP", 0.5)))
+    d = Dims(int(os.environ.get("CASE_HP", 42)), float(os.environ.get("CASE_DEPTH", 60)),
+             float(os.environ.get("CASE_ROW_GAP", 0.5)), module_panels())
     t0 = time.time()
     asm = {
         "bottom-plate": bottom_plate(d),
@@ -383,17 +528,17 @@ def main():
     doc.saveAs(str(cad / "assembly.FCStd"))
     Part.makeCompound(list(asm.values())).exportStep(str(out / "assembly-preview.step"))
 
-    # one print file per unique part. The right side panel is the left one turned 180 deg about
-    # Z, and the back rail is the front one (either way round; checked above): print 2 of each.
-    parts = {"rail": asm["rail-front"], "side-panel": asm["side-panel-left"],
-             "bottom-plate": asm["bottom-plate"]}
+    # one print file per unique part. The left side panel carries the 1 HP top lip, so the side
+    # panels are two parts; the back rail is the front one (either way round; checked above).
+    parts = {"rail": asm["rail-front"], "side-panel-left": asm["side-panel-left"],
+             "side-panel-right": asm["side-panel-right"], "bottom-plate": asm["bottom-plate"]}
     report["print"] = {}
     for name, s in parts.items():
         p = print_pose(name, s, d)
         bb = p.BoundBox
         mesh_info = export(p, out / name)
         report["print"][name] = {
-            "qty": 1 if name == "bottom-plate" else 2,
+            "qty": 2 if name == "rail" else 1,
             "bbox_mm": [round(bb.XLength, 2), round(bb.YLength, 2), round(bb.ZLength, 2)],
             "fits_p2s_bed": max(bb.XLength, bb.YLength, bb.ZLength) <= BED,
             "volume_cm3": round(p.Volume / 1000, 2),
