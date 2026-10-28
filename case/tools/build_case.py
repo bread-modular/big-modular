@@ -75,6 +75,14 @@ SPACER_WALL = (10.0 - SPACER_SOCKET_AF) / 2   # 2.15: same walls as the side pan
 # rails are centred on the hole line, so they reach this far past the module panel edges
 RAIL_OH = SPACER_SOCKET_AF / 2 + SPACER_WALL - HOLE_EDGE
 
+# modules/busboard (tools/build_layout.py): 205 x 32 mm, lies flat on the plate top, centred, and
+# bolts down with 4 M3 from underneath (counterbored) into nuts on the board. The holes sit in the
+# solid frame at each side panel; ribs in the pocket hold the board up in the gaps between headers.
+BUS_SIZE = (205.0, 32.0)
+BUS_HOLE_PITCH = (196.0, 21.0)     # hole to hole, X / Y
+BUS_RIB_X = [23.77 + 22.5 * (k + 0.5) - 102.5 for k in range(7)]   # from the board centre
+BUS_RIB_W = 4.0
+
 
 def module_panels():
     """Front panel boards of every module (modules/*/panels/front-pcb/*.kicad_pcb): board
@@ -208,7 +216,10 @@ class Dims:
         rail_need = (self.T - self.tenon - self.notch_clr) + self.notch_clr + (SPACER_SOCKET_DEPTH - SPACER_L) + 4
         # through the plate under the counterbore and the 0.2 mm recess, then ~4 mm into the spacer
         plate_need = (self.P - M3_CB_DEPTH) + (SPACER_SOCKET_DEPTH - SPACER_L) + 4
+        # counterbored plate, board, nut, ~1 mm thread past the nut
+        bus_need = (self.P - M3_CB_DEPTH) + 1.6 + 2.4 + 1
         return {
+            "busboard_to_bottom_plate": f"4x M3x{pick(bus_need)} socket head from underneath + 4x M3 nut",
             "side_panel_to_rail": f"4x M3x{pick(rail_need)} socket head into "
                                   f"4x M3x{SPACER_L:g} hex spacer (superglued in the rail ends)",
             "bottom_plate_to_side_panel": f"4x M3x{pick(plate_need)} socket head into "
@@ -255,6 +266,10 @@ class Dims:
             "cover_plate_blank_mm": self.cover_blank_size(),
             "bottom_plate_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.P],
             "bottom_plate_centre_floor_mm": self.skin,
+            "busboard_mm": {"board": list(BUS_SIZE), "hole_pitch": list(BUS_HOLE_PITCH),
+                            "board_to_inner_socket_wall_x": round((self.L - BUS_SIZE[0]) / 2 - self.socket_clr / 2 - self.wall, 3),
+                            "hole_centre_to_pocket_x": round(self.frame - (self.L - BUS_HOLE_PITCH[0]) / 2, 3),
+                            "support_ribs": len(BUS_RIB_X)},
             "overall_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.case_top],
             "hardware": self.screws(),
         }
@@ -376,8 +391,9 @@ def side_panel(d, left):
 
 def bottom_plate(d):
     """Floor plate with a socket at each end that the side panels stand in, counterbored M3
-    holes from underneath, a centre pocket (open at the top, 1.2 mm floor left) to save filament,
-    and a front and back cover groove between the inner socket walls."""
+    holes from underneath (side panels and the busboard), a centre pocket (open at the top, 1.2 mm
+    floor left) to save filament, with ribs under the busboard, and a front and back cover groove
+    between the inner socket walls."""
     x0, w = d.plate_x0, d.wall
     sock = d.T + d.socket_clr
     s = box((x0, d.y0, 0), (d.plate_len, d.ylen, d.P))
@@ -385,14 +401,21 @@ def bottom_plate(d):
         s = s.fuse(box((sx, d.y0, d.P), (w, d.ylen, d.socket_h)))
         s = s.fuse(box((sx + w + sock, d.y0, d.P), (w, d.ylen, d.socket_h)))
     cuts = [box((d.frame, d.y0 + d.frame, d.skin), (d.L - 2 * d.frame, d.ylen - 2 * d.frame, d.P))]
-    for bx in (-d.T / 2, d.L + d.T / 2):
-        for by in d.bolt_y:
-            cuts.append(cyl(M3_CLEAR / 2, d.P + 2, (bx, by, -1)))
-            cuts.append(cyl(M3_CB_D / 2, M3_CB_DEPTH + 1, (bx, by, -1)))
+    # busboard: holes through the frame, counterbored from underneath like the side panel bolts
+    bus = [(d.L / 2 + sx * BUS_HOLE_PITCH[0] / 2, PANEL_H / 2 + sy * BUS_HOLE_PITCH[1] / 2)
+           for sx in (-1, 1) for sy in (-1, 1)]
+    for bx, by in [(-d.T / 2, by) for by in d.bolt_y] + [(d.L + d.T / 2, by) for by in d.bolt_y] + bus:
+        cuts.append(cyl(M3_CLEAR / 2, d.P + 2, (bx, by, -1)))
+        cuts.append(cyl(M3_CB_D / 2, M3_CB_DEPTH + 1, (bx, by, -1)))
     gx0 = d.socket_in_x
     for gy in d.groove_y:
         cuts.append(box((gx0, gy, d.P - d.plate_groove_d), (d.L - 2 * gx0, d.groove_w, d.plate_groove_d + 1)))
-    return cut_all(s, cuts)
+    s = cut_all(s, cuts)
+    # busboard support ribs, up to the plate top, under the gaps between the headers
+    for rx in BUS_RIB_X:
+        s = s.fuse(box((d.L / 2 + rx - BUS_RIB_W / 2, PANEL_H / 2 - BUS_SIZE[1] / 2, d.skin - 0.01),
+                       (BUS_RIB_W, BUS_SIZE[1], d.P - d.skin + 0.01)))
+    return s.removeSplitter()
 
 
 def print_pose(name, shape, d):
