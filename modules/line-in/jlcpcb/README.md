@@ -1,4 +1,4 @@
-# line-in — manufacturing export (S2/R1)
+# line-in — manufacturing export (S3/R2)
 
 Generated from the current accepted sources with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter. Never hand-edit these files: change
@@ -23,7 +23,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | Order | Files | Options |
 |---|---|---|
 | Carrier PCB | `line-in-gerbers.zip` | 2 layers, FR4, 1.6 mm, 19.0 x 110.0 mm, 1 oz, HASL, standard everything else. The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately: "Remove" (check the quote for any fee), or JLCPCB prints the number where it chooses |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 30 parts in 11 BOM rows, all on the back |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 36 parts in 13 BOM rows, all on the back |
 | Front panel PCB | `line-in-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 20.0 x 128.5 mm (4HP), no assembly; black mask suits a panel |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -47,9 +47,9 @@ silk. A 16-pin plug does not fit the 4HP width; use a 10-to-16 cable on a 16-pin
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift.
 
-- Carrier PCB `f4d7b89bb3f6a08610d53da92d1ad3c5a975fe6906c49c6df376e9530c045cd8`.
+- Carrier PCB `701a3622482cad18dfa23476d50285287b1e1e9b1e95afd3699a4d95609f2393`.
 - Carrier project `9f220a34c031f68083e4a78b6324ee8500c0e2569131c8259dd13e3506e8bb11`.
-- Carrier schematic `91af959c7dabcf4fd5b6f28f14eb3ea7545c181970517a209e09f18e76c9a043`.
+- Carrier schematic `8a8b3e1bb5fb586039720fdd33fe70f88051c1a458112b6ce8d00a70e4ef5a32`.
 - Panel PCB `3177a65783898872f1e9ef40b08d03ff0147b26ce7b3645f717cbbf6f87061e2`.
 - Panel project `1065016ea74056ee5e1ea5843ab82ee5f65016d8633078b9daaea47756d0d4ef`.
 
@@ -87,56 +87,62 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/line-in-symbols.xml hardw
   --boards 5 --side bottom --strict-live)
 ```
 
-## Checks done for this export (2026-10-28)
+## S3/R2 checks and changes
 
-- **Shared `check`** (run before and after the export):
-  `no_findings_in_requested_checks`. That covers:
-  - ERC 0 and DRC 0 at all severities, with zones refilled;
-  - 0 unconnected and schematic parity 0;
-  - the manifest equal (5 sources, all exports byte-identical).
-- **Panel DRC:** 0.
-- **Carrier drill file:** 47 round PTH hits (31 vias + 16 round pads) plus 16
-  routed slots (jack and pot lugs) = 63. That matches 31 vias + 32 THT pads. There
-  are no NPTH holes on the carrier.
-- **Panel drill file:** 8 NPTH holes: 4 jacks (6.2 mm), 2 pots (7.2 mm), 2 rail
-  holes (3.2 mm, X 12.58). No copper holes.
-- **Gerber ZIP:** both copper layers with their GND pours, both masks,
-  silkscreens and pastes, the edge, and PTH/NPTH drills. F.Paste is empty
-  because there are no front SMD parts.
-- **Assembly audit** (live, 5 boards, run 2026-10-28T14:40Z on this CPL; raw JSON in
-  the ignored `research/jlcpcb-audit.json`):
-  - Every C-code and MPN matches the catalog, every part is Economy-eligible and in
-    stock (lowest: R7/R8/R12 C2074262, 100,736).
-  - All capacitors, D1/D2 (B5819W) and U1-U3 (TL072CDT) and the 0603 resistors are
-    **Basic**.
-  - **R7, R8, R12 (ROHM ESR18EZPF1001, 1k 1206 0.5 W) are Extended**, the only
-    catalog failure ("R/C requires actual Basic"). The only Basic 1206 1k is
-    UNI-ROYAL 1206W4F1001T5E (C4410, 0.25 W), below the ~0.36 W a ±12 V
-    output patched into OUT L/R/MONO can put in the resistor. Same part and
-    trade-off as acid and 8bit. Open user decision; not changed.
-  - D1/D2 and U1-U3 report `package/footprint: unknown` (catalog "SOD-123" / "SO-8"
-    versus the pinned footprint names); the land patterns match, but this is left
-    for your review attestation.
-  - Every part is still `fail` on the open review items (land pattern, pin
-    mapping, ratings, role; DC-bias / ESR for the caps). These are left open rather
-    than filled with boilerplate.
+- Added input protection: R13/R14 10k and D3-D6 low-leakage BAV199 ground clamps.
+  All existing placements and the output resistors remain unchanged. See
+  `../docs/input-protection.md` for the powered-transient envelope and limits.
+- Shared full check: ERC 0, DRC 0, unconnected 0, native parity 0, independent
+  ref/pin/net parity equal, no exclusions. The profile explicitly verifies the
+  source manifest; all five source hashes and all exports match.
+- Panel DRC 0; panel source and shipping files are unchanged.
+- Hand-solder gap >=2.081mm; courtyard-to-edge >=1.075mm. All 44 vias are outside
+  SMD pad copper/mask openings. No panel axes moved.
+- Carrier drill file: 60 round PTH hits (44 vias + 16 round THT pads) plus 16
+  plated slots. Carrier NPTH is empty. The panel still has eight NPTH holes.
+- Both copper layers, masks, silks, pastes, edge and drills are in the ZIP.
+  BOM/CPL reference sets are equal: 36 Bottom components, 13 rows, seven manual
+  THT refs excluded consistently. CSV/ZIP/loose-file mirrors are byte-identical.
+- Final native plots were inspected. This is not an independent Gerber CAM or
+  authenticated placement-preview approval.
 
-## Status and order gates (not done here)
+## Sourcing and accepted review findings
 
-This is a complete export, not a supplier-accepted release. Before ordering:
+The user accepted the previous assembly-review and physical-fit concerns and
+instructed that the output resistors be left alone if shared with other modules.
+**R7/R8/R12 are exactly ESR18EZPF1001 / C2074262**, as ACID, HATS, 8bit and MCC,
+and remain unchanged. Their Extended classification and the earlier continuous
+opposite-rail fault uncertainty are accepted as-is, not proved harmless.
 
-1. **R7/R8/R12 class:** accept the Extended 0.5 W ESR18 (Extended feeder fee) or
-   decide otherwise.
-2. **Bottom-side Economic assembly.** Confirm the quote form offers **Bottom**
-   for Economic, and whether the 19 mm width needs edge rails.
-3. **Placement preview.** Check in JLCPCB's bottom-side preview:
-   - U1, U2 (0°) and U3 (90°): the pin 1 dot (SOIC-8).
-   - D1: the cathode bar on pad 1, the +12 V rail; the anode on the J10 +12 V pin.
-   - D2: the cathode bar on pad 1, the J10 -12 V pin; the anode on the -12 V rail.
-   - Every rotation: bottom-side CPL rotations are the usual place for errors.
-4. **Live recheck before ordering:** stock, Basic/Extended class, minimum assembly
-   quantities and attrition. The stock figures above are a snapshot, not a
-   reservation.
-5. **JLCPCB DFM / Gerber viewer check** of both ZIPs.
-6. **Bench:** real RV09 height against the panel, jack hole fit, line level to
-   ~10 Vpp at the outputs, MONO sum.
+A fresh strict-live audit of all 36 SMD references observed all 13 exact C-codes
+and MPNs, Economy eligibility, and stock above the five-board placement demand.
+This is a snapshot, not a reservation or an attrition/minimum-order approval.
+
+- **R13/R14:** UNI-ROYAL 0603WAF1002T5E, C25804, 10k/1%/100mW/75V, Basic.
+  The auditor's conservative voltage/current/power checks pass.
+- **D3-D6:** Nexperia BAV199,215, C40919, SOT-23, Extended and Economy-eligible.
+  This is **one additional unique Extended diode type**. Do not substitute
+  ordinary BAV99/BAT54 parts: the low leakage is intentional.
+- All R/C except the accepted ESR18 output resistors were observed Basic; existing
+  D1/D2 and U1-U3 were also Basic.
+- Human review attestations and capacitor impedance/bias evidence remain open.
+  The unchanged shared Basic-only passive gate still flags ESR18. The audit
+  therefore returns failure; no rule or review was falsified to make it green.
+
+Evidence: ignored `research/input-protection/assembly-audit.json`, catalog
+snapshots, `release-final/`, `geometry-review.json`, `preservation.json` and
+`package-final.json`.
+
+## User-controlled order / prototype checks
+
+The accepted review concerns are not reopened as design-change requests, but no
+supplier acceptance or physical test has been performed. Before approving an
+order, verify Bottom-side service options, final Gerber DFM and the actual vendor
+placement preview, including U1-U3 pin 1, D1/D2 cathode bars and D3-D6 SOT-23
+orientation. Recheck stock/attrition/minimum quantities and the new Extended
+diode type.
+
+Bench qualification is still outstanding: low-level audio THD/noise, clipping
+recovery, input step faults over temperature, and actual panel fit. **Powered-off
+input immunity is not established**; the external ground clamp does not provide
+a zero-volt clamp or a qualified power-off disconnect. No IEC ESD/surge claim.

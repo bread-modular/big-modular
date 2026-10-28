@@ -5,19 +5,23 @@ IN jack (tip L, ring R), a LEVEL knob per side, and three outputs: OUT L, OUT R 
 MONO (L + R). Based on Bread Modular `line_in`, moved to ±12 V Eurorack levels
 (`docs/research.md`).
 
-**Status: S2 schematic + R1 manual routing + 4HP panels; JLCPCB export in
+**Status: S3 schematic + R2 manual routing + 4HP panels; JLCPCB export in
 `jlcpcb/` (bottom Economic). Not supplier-accepted, nothing built.**
 - Schematic: native ERC 0 (`docs/fit/schematic-erc.json`); nets drawn as wires; the
   generator checks that the native netlist equals its circuit table.
-- Carrier: 19 x 110 mm, 2 layers, R1 routed by hand (all SMD on B). DRC 0,
-  unconnected 0, parity 0 (`Code.md` R1).
+- Carrier: 19 x 110 mm, 2 layers, R2 routed by hand (all SMD on B). DRC 0,
+  unconnected 0, parity 0 (`Code.md` R2).
 - Export: `jlcpcb/README.md` (upload map, hand-soldered parts, audit, order gates).
-  R7/R8/R12 (0.5 W 1206 1k) are Extended; every other part is Basic.
+  36 SMD parts / 13 rows. R7/R8/R12 (0.5W 1206 1k) are retained unchanged, matching
+  ACID/HATS/8bit/MCC. They and the new D3-D6 BAV199 clamps are Extended.
+- Protection: R13/R14 10k after the coupling caps, D3-D6 low-leakage ground
+  clamps. Powered-transient protection only; no qualified powered-off immunity.
+  See [`docs/input-protection.md`](docs/input-protection.md) for the circuit and limits.
 - Panels: FR4 (DRC 0) and FreeCAD printed panel (2.0 mm).
 
 | Path | Contents |
 |---|---|
-| `hardware/line-in.kicad_{pro,sch,pcb}` | Schematic S2, carrier R1 (routed) |
+| `hardware/line-in.kicad_{pro,sch,pcb}` | Schematic S3, carrier R2 (routed) |
 | `jlcpcb/` | Gerbers, BOM/CPL, panel Gerbers, source manifest |
 | `docs/jlcpcb-audit-requirements.json` | Circuit stress requirements for the assembly audit |
 | `hardware/LineIn.kicad_sym`, `sym-lib-table` | Pinned stock symbols (`docs/schematic-symbols.json`) |
@@ -39,6 +43,12 @@ python3 -B tools/import_footprints.py      # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py        # schematic + pinned symbols, netlist self-check
 python3 -B tools/build_layout.py           # THT placement + parked SMD + panel PCB
 ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+```
+
+Read-only protection regression check (KiCad Python, from repository root):
+
+```sh
+/usr/bin/python3 -B modules/line-in/tools/check_input_protection.py
 ```
 
 Read [`Code.md`](Code.md) before changing hardware.

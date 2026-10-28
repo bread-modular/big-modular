@@ -36,6 +36,13 @@
       "flattened_from": "LM2904",
       "edits": null
     },
+    "BAV199": {
+      "library": "Diode:BAV99",
+      "source": "/usr/share/kicad/symbols/Diode.kicad_sym",
+      "source_sha256": "e6a8ac06651527e2700b3e1a7ca8b077a2c28ac1ebdbf57aae163f5777d4c65c",
+      "flattened_from": null,
+      "edits": "BAV99 series-dual graphic/pins reused for BAV199; value, description, datasheet and sub-symbol names changed"
+    },
     "AudioJack3": {
       "library": "Connector_Audio:AudioJack3",
       "source": "/usr/share/kicad/symbols/Connector_Audio.kicad_sym",

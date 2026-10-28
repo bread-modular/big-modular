@@ -1,4 +1,4 @@
-"""Generate the S2 LINE IN schematic (hardware/line-in.kicad_sch) and its pinned symbols.
+"""Generate the S3 LINE IN schematic (hardware/line-in.kicad_sch) and its pinned symbols.
 
 Run from modules/line-in:
   python3 -B tools/build_schematic.py
@@ -43,6 +43,8 @@ SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'D_Schottky': ('Device', 'D_Schottky'),
     'R_Potentiometer': ('Device', 'R_Potentiometer'),
     'TL072': ('Amplifier_Operational', 'TL072'),
+    # Same 1=A1, 2=K2, 3=K1/A2 series-dual topology; identity updated below.
+    'BAV199': ('Diode', 'BAV99'),
     'AudioJack3': ('Connector_Audio', 'AudioJack3'),
     'AudioJack2_SwitchT': ('Connector_Audio', 'AudioJack2_SwitchT'),
     'Conn_02x05_Odd_Even': ('Connector_Generic', 'Conn_02x05_Odd_Even'),
@@ -53,7 +55,7 @@ SYMBOLS = {
 FP = {
     'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
-    'SOD123': 'D_SOD-123', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
+    'SOD123': 'D_SOD-123', 'SOT23': 'SOT-23', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
     'RV09': 'Potentiometer_RV09', 'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical',
     'PJ366ST': 'Jack_3.5mm_QingPu_WQP-PJ366ST_Vertical',
     'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
@@ -136,7 +138,7 @@ def circuit():
     psym(c, 'GND', (JIN[0] + 7.62, JIN[1] + 2.54))
 
     # ---- Channels (Bread Modular line_in topology on +/-12 V, ground-referenced):
-    # jack -> RV (50k level, pin 3) -> wiper -> 1u -> 1M to GND -> follower ->
+    # jack -> RV -> 1u / 1M bias -> 10k -> ground-referenced two-diode clamps -> follower ->
     # 5.1k -> inverting gain (100k || 20p, x-19.6, Doepfer A-119 style x20) -> 1k -> OUT jack.
     for ch, y in ROW.items():
         n, u = CH[ch]
@@ -145,12 +147,24 @@ def circuit():
                       Taper='B (linear)', Note=f'LEVEL {ch}: ' + POTNOTE))
         psym(c, 'GND', (55.88, y + 7.62))
         c.append(part(f'C{9 + n}', 'C', '1u', 'C0805', (68.58, y + 3.81), 90,
-                      {'1': f'LVL_{ch}', '2': f'AC_{ch}'}, text=FB_TEXT, Voltage='25V',
+                      {'1': f'LVL_{ch}', '2': f'COUP_{ch}'}, text=FB_TEXT, Voltage='50V',
                       Note=f'{ch} input coupling (BM 100n; 1u with 1M: 0.16 Hz corner, less signal across the X7R)'))
-        c.append(part(f'R{1 + n}', 'R', '1M', 'R0603', (77.47, y + 8.89), 0,
-                      {'1': f'AC_{ch}', '2': 'GND'}, text=R_LEFT,
-                      Note=f'{ch} follower bias to GND (BM: to V_MID)'))
-        psym(c, 'GND', (77.47, y + 12.7))
+        c.append(part(f'R{13 + n}', 'R', '10k', 'R0603', (76.2, y + 3.81), 90,
+                      {'1': f'COUP_{ch}', '2': f'AC_{ch}'}, text=((0, -2.54), (0, -5.08)),
+                      Note=f'{ch} transient-current limiter AFTER C{9+n}; 25.2V step / 9.9k < 2.55mA; 64.2mW conservative peak'))
+        for ref, rot, yy, pins in [
+            (f'D{3+2*n}', 180, y+20.32, {'1': f'AC_{ch}', '2': 'GND', '3': None}),
+            (f'D{4+2*n}', 0, y+33.02, {'1': 'GND', '2': f'AC_{ch}', '3': None}),
+        ]:
+            c.append(part(ref, 'BAV199', 'BAV199', 'SOT23', (57.15, yy), rot, pins,
+                          text=((6.35, -3.81), (6.35, 3.81)),
+                          Note=f'{ch} low-leakage ground clamp: BOTH internal diodes in series, midpoint pin 3 externally NC. '
+                               'Opposite pair handles the other polarity; no supply-rail injection. Powered patch protection, not qualified powered-off immunity.'))
+        psym(c, 'GND', (45.72, y + 33.02))
+        c.append(part(f'R{1 + n}', 'R', '1M', 'R0603', (73.66, y + 13.97), 0,
+                      {'1': f'COUP_{ch}', '2': 'GND'}, text=R_LEFT,
+                      Note=f'{ch} follower DC bias through R{13+n}; on the capacitor side of the limiter (BM: to V_MID)'))
+        psym(c, 'GND', (73.66, y + 17.78), 270)
         c.append(part(u, 'TL072', 'TL072CDT', 'SOIC8', (88.9, y + 1.27), 0,
                       {'2': f'BUF_{ch}', '3': f'AC_{ch}', '1': f'BUF_{ch}'}, unit=1, mirror='x',
                       text=OPAMP_TEXT, Note=f'{ch} input follower'))
@@ -229,11 +243,16 @@ def wiring():
     w += [[(jx + 5.08, jy - 2.54), (jx + 10.16, jy - 2.54), (jx + 10.16, yl), (55.88, yl)],
           [(jx + 5.08, jy), (jx + 12.7, jy), (jx + 12.7, yr), (55.88, yr)],
           [(jx + 5.08, jy + 2.54), (jx + 7.62, jy + 2.54)]]
-    # Channels: pot -> coupling cap -> follower (loop above) -> 10k -> inverting gain
+    # Channels: pot -> coupling/bias -> limiter/clamps -> follower -> 5.1k -> inverting gain
     # (feedback loop above) -> 1k -> OUT jack; GAIN tapped at TAP for the mono summer.
     for ch, y in ROW.items():
         w += [[(59.69, y + 3.81), (64.77, y + 3.81)],                                     # LVL
-              [(72.39, y + 3.81), (81.28, y + 3.81)], [(77.47, y + 3.81), (77.47, y + 5.08)],  # AC
+              [(72.39, y + 3.81), (72.39, y + 10.16), (73.66, y + 10.16)],
+              [(80.01, y + 3.81), (81.28, y + 3.81)],                                  # AC after R13/14
+              [(81.28, y + 3.81), (81.28, y + 20.32), (68.58, y + 20.32), (68.58, y + 33.02)],
+              [(49.53, y + 20.32), (45.72, y + 20.32), (45.72, y + 33.02), (49.53, y + 33.02)],
+              [(64.77, y + 20.32), (68.58, y + 20.32)],
+              [(64.77, y + 33.02), (68.58, y + 33.02)],
               [(81.28, y - 1.27), (78.74, y - 1.27), (78.74, y - 6.35), (99.06, y - 6.35),
                (99.06, y + 1.27)],                                                         # follower loop
               [(96.52, y + 1.27), (102.87, y + 1.27)],                                    # BUF
@@ -247,7 +266,7 @@ def wiring():
               [(153.67, y + 3.81), (162.56, y + 3.81)],                                   # OUT
               [(162.56, y + 6.35), (160.02, y + 6.35)]]
         lab += [(f'IN_{ch}', (45.72, y), 0), (f'LVL_{ch}', (60.96, y + 3.81), 0),
-                (f'AC_{ch}', (73.66, y + 3.81), 0), (f'BUF_{ch}', (100.33, y + 1.27), 0),
+                (f'COUP_{ch}', (72.39, y + 10.16), 180), (f'AC_{ch}', (81.28, y + 15.24), 90), (f'BUF_{ch}', (100.33, y + 1.27), 0),
                 (f'INV_{ch}', (111.76, y + 1.27), 0), (f'GAIN_{ch}', (138.43, y + 3.81), 0),
                 (f'OUT_{ch}', (154.94, y + 3.81), 0)]
     w += [[(TAP, yl + 3.81), (TAP, 149.86), (186.69, 149.86)],
@@ -276,9 +295,11 @@ def wiring():
 
 # JLCPCB parts for every assembled (SMD, back-side) part, keyed (symbol, value, footprint).
 # Reused from modules/imix, audio-out and acid (their live strict lookups); re-audit
-# before export. All Basic except the ROHM ESR18 1206 1k (Extended, as acid).
+# before export. ESR18 output resistors (as acid) and BAV199 clamps are Extended.
 # The THT jacks, pots and header are hand-soldered and carry no LCSC field.
 SOURCING = {
+    ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
+    ('BAV199', 'BAV199', 'SOT23'): dict(LCSC='C40919', MPN='BAV199,215', Manufacturer='Nexperia'),
     ('R', '1M', 'R0603'): dict(LCSC='C22935', MPN='0603WAF1004T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
     ('R', '51k', 'R0603'): dict(LCSC='C23196', MPN='0603WAF5102T5E', Manufacturer='UNI-ROYAL'),
@@ -307,15 +328,15 @@ TEXT_AT = {
 SHOW_VALUE = {'+12V', '-12V'}  # power symbols whose value text is drawn
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR LINE IN - S2 schematic: stereo line input to Eurorack level '
+    ((20.32, 20.32), 'BIG MODULAR LINE IN - S3 schematic: stereo line input to Eurorack level '
                      '(Bread Modular line_in on +/-12 V). Circuit intent: docs/research.md', 2.0),
     ((20.32, 33.02), 'POWER: Eurorack +12V / -12V -> B5819W per rail -> +12V / -12V (about +/-11.6 V). J10 +5V unused.\n'
                      'C3..C8: 100n at every op-amp supply pin; C1/C2: 10u bulk.', 1.4),
     ((20.32, 86.36), 'PWR_FLAG: #FLG01 marks the Eurorack GND; #FLG02/#FLG03 mark the +12V/-12V rails,\n'
                      'fed from the header only through D1/D2, which ERC cannot see through.', 1.1),
-    ((20.32, 96.52), 'CHANNELS L/R (Bread Modular line_in, ground-referenced): J1 tip/ring -> 50k LEVEL pot -> 1u -> 1M bias\n'
+    ((20.32, 96.52), 'CHANNELS L/R (Bread Modular line_in, ground-referenced): J1 tip/ring -> 50k LEVEL pot -> 1u / 1M bias -> 10k current limit -> low-leakage clamps\n'
                      '-> follower -> 5.1k -> inverting gain (100k || 20p) = -19.6 (~x20, Doepfer A-119) -> 1k -> OUT jack.\n'
-                     'Consumer line (-10 dBV, 0.9 Vpp) reaches ~10 Vpp near half LEVEL; hotter sources: turn LEVEL down.', 1.4),
+                     'D3..D6: opposite two-diode strings to GND, not MIDI transistor shaping. Powered mis-patch protection; bench validation pending.', 1.4),
     ((190.5, 118.11), 'MONO: U3A sums the two gain-stage outputs (before the 1k, so a load on OUT L/R\n'
                       'does not move MONO): MONO = -0.51 x (GAIN_L + GAIN_R) = +10 x (L + R) at the inputs.\n'
                       'OUT L/R are inverted (BM topology); MONO is in phase. U3B unused: grounded follower.', 1.4),
@@ -415,6 +436,15 @@ def build():
     for key, (lib, name) in SYMBOLS.items():
         sym, src, parent = stock_symbol(lib, name)
         edit = None
+        if key == 'BAV199':
+            sym[1] = key
+            for sub in nodes(sym, 'symbol'):
+                sub[1] = sub[1].replace(name, key, 1)
+            for prop in nodes(sym, 'property'):
+                if prop[1] == 'Value': prop[2] = key
+                elif prop[1] == 'Datasheet': prop[2] = 'https://assets.nexperia.com/documents/data-sheet/BAV199.pdf'
+                elif prop[1] == 'Description': prop[2] = 'Low-leakage series dual diode, 1=A1, 2=K2, 3=K1/A2, SOT-23'
+            edit = 'BAV99 series-dual graphic/pins reused for BAV199; value, description, datasheet and sub-symbol names changed'
         if key in FILTER_EDITS:
             prop = next(pp for pp in nodes(sym, 'property') if pp[1] == 'ki_fp_filters')
             edit = f'ki_fp_filters {prop[2]!r} -> {FILTER_EDITS[key]!r}'
@@ -437,8 +467,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - LINE IN") (rev "S2") (company "Big Modular")
-        (comment 1 "S2 - stereo line in, OUT L/R + MONO, +/-12 V, 4HP - not released")
+      (title_block (title "Big Modular - LINE IN") (rev "S3") (company "Big Modular")
+        (comment 1 "S3 - input transient limit/clamps, OUT L/R + MONO, +/-12 V, 4HP - not released")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
