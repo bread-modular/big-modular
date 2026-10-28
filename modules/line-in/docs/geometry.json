@@ -1,0 +1,262 @@
+{
+ "revision": "S2/P3: schematic S2 (gain x20, signal nets wired); placement P3 = THT only. P3 (user review 2026-10-28): IN jack on top (as audio-out), then LEVEL L / LEVEL R (21.5 mm pitch), OUT L / OUT R / MONO at the bottom (14 mm pitch), power header horizontal along the bottom edge. SMD parts are parked off the board edge for group-by-group placement; nothing is routed.",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 4,
+ "panel_mm": [
+  20.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "panel_print_thickness_mm": 2.0,
+ "rail_holes_mm": [
+  [
+   12.58,
+   3.0,
+   3.2
+  ],
+  [
+   12.58,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "As modules/audio-out (4HP): single hole pair at X12.58 (Doepfer X7.5 moved 1HP right, as modules/midi); skiff rails leave the clear Y8.0..120.5 gap.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   19.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 2,
+  "note": "19.0 x 110.0 mm as modules/audio-out, 1.25 mm inside the rail gap at each end; held by the four jack bushings/nuts (the RV09 pots take no nut). 2 layers like audio-out; SMD on B."
+ },
+ "column_X_mm": 10.0,
+ "column_note": "Jacks and pots share one centred column at X10.0 (the panel centre line). Top to bottom (P3, user 2026-10-28: IN on top, knobs next, outputs as low as possible): IN, LEVEL L, LEVEL R, OUT L, OUT R, MONO.",
+ "jack_rotation_deg": 270,
+ "jack_rotation_note": "As modules/midi: T/TN(R)/S pads run along X with the S (sleeve) pad toward the left board edge (T at X+4.92, TN/R at X-3.38, S at X-6.48); jack bodies are 9.0 mm along Y.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "IN (stereo TRS: tip L, ring R)",
+   "part": "QingPu WQP-PJ366ST",
+   "Y": 19.0
+  },
+  {
+   "ref": "J2",
+   "role": "OUT L",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 78.5
+  },
+  {
+   "ref": "J3",
+   "role": "OUT R",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 92.5
+  },
+  {
+   "ref": "J4",
+   "role": "MONO",
+   "part": "QingPu WQP-PJ301M-12",
+   "Y": 106.5
+  }
+ ],
+ "jack_note": "P3: IN (J1) on top at Y19.0 (audio-out IN L at Y19.5); OUT L / OUT R / MONO at the bottom on a 14 mm pitch, MONO as low as the horizontal J10 allows (J4 courtyard bottom Y111.29, J10 courtyard top Y111.61; J4 pads end Y108.05, 2.2 mm above the IDC10 socket envelope). The carrier hangs on the four jack nuts (the RV09 pots take no nut): one at the top, three in the lower half.",
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "LEVEL L",
+   "shaft_Y": 36.5
+  },
+  {
+   "ref": "RV2",
+   "role": "LEVEL R",
+   "shaft_Y": 58.0
+  }
+ ],
+ "pot_part": "RV09 50k linear (user stock: no threaded bushing, no nut, 16 mm knurled shaft), Bread Modular Potentiometer_RV09 footprint",
+ "pot_note": "Footprint origin is offset (+0.127, +0.508) from the shaft centre (audio-out). Rotation 0: tabs at shaft Y, pins 1-2-3 (GND, wiper, CW = jack) 7.5 mm below the shaft; courtyard shaft-5.12..shaft+8.67. P3: 21.5 mm pot pitch; the free height between IN and OUT L is split evenly: courtyard gaps IN-RV1 7.1, RV1-RV2 7.7, RV2-OUT L 7.05 mm.",
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2
+ },
+ "panel_hole_note": "Pot hole 7.2 mm = Bread Modular PanelHole_Potentiometer_RV09. The user's pot has no threaded bushing (plain \u00d86 knurled shaft), so the hole is shaft clearance only.",
+ "stack_Z_mm": {
+  "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+  "jack_body_top": 8.9,
+  "panel_rear_seat": 10.0,
+  "pj301m12_thread": [
+   10.0,
+   14.51
+  ],
+  "pj366st_thread": [
+   11.0,
+   15.96
+  ],
+  "nut_thickness": 2.0,
+  "source": "Jacks: slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks. Pot: user sample (2026-10-19 photo, B1M RV09 'tall trimmer' style): no threaded bushing, 16 mm knurled shaft above the body (user measurement); body height nominal.",
+  "pot_body_top": 6.8,
+  "pot_shaft_top": 22.8,
+  "pot_note": "RV09 proxy (tools/make_pot_model.py): body 6.8 mm (nominal), 1 mm collar, shaft to Z22.8 = 11.2 mm past the FR4 front (10.8 mm past the printed front) for a push-on knob. No bushing, so no pot nut: the carrier hangs on the four jack nuts only (as before).",
+  "pot_collar": [
+   6.8,
+   7.8
+  ]
+ },
+ "power_header": {
+  "ref": "J10",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   4.92,
+   113.4
+  ],
+  "column_X_mm": [
+   8.73,
+   11.27
+  ],
+  "pin_rows_Y_mm": [
+   113.4,
+   115.94
+  ],
+  "orientation": "Horizontal along the bottom edge (user direction 2026-10-28; as modules/hats and modules/vca-mix), rot 270 on B: odd pins on the upper row Y113.4, even pins on Y115.94; pins 1/2 (-12 V) at the left, pins 9/10 (+12 V) at the right. Courtyard Y111.61..117.73 (1 mm edge keep-out: board edge Y119.25).",
+  "idc10_socket_envelope_mm": {
+   "X": [
+    1.11,
+    18.89
+   ],
+   "Y": [
+    110.27,
+    119.07
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc_note": "10-pin cable only (as audio-out: 10-to-16 cable on a 16-pin bus): a 16-pin socket would overhang the 4HP width. Envelope = 2x5 IDC socket (3.81 mm beyond the end pin centres along X, 6.4 mm body + 1.2 mm key bump on either side along Y): on the board (X0.5..19.5, Y..119.25) and clear of every THT pad (J4 pads end Y108.05). Unshrouded, so nothing keys it: red stripe (-12 V) to the left, marked on B silk. B-side SMD placed under it later must stay <= 2 mm tall. D1/D2 and the bulk caps go in the band between MONO and J10 or beside the jacks when the power group is placed.",
+  "pin_columns_X_mm": [
+   4.92,
+   7.46,
+   10.0,
+   12.54,
+   15.08
+  ]
+ },
+ "back_side_tht": [
+  {
+   "ref": "J10",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    10.0,
+    114.67
+   ],
+   "rot": 270,
+   "note": "bottom edge, horizontal, as modules/hats J10 (rot 270 on B)"
+  }
+ ],
+ "smd_parking": {
+  "side": "B",
+  "origin_XY": [
+   28.0,
+   14.0
+  ],
+  "pitch_XY": [
+   8.0,
+   7.0
+  ],
+  "columns": 5,
+  "note": "Every SMD part waits here, off the right board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer). DRC reports them as outside the board until then."
+ },
+ "panel_labels": [
+  {
+   "text": "LINE IN",
+   "XY": [
+    10.0,
+    8.0
+   ],
+   "size": 1.6
+  },
+  {
+   "text": "IN",
+   "XY": [
+    10.0,
+    12.8
+   ],
+   "size": 1.3
+  },
+  {
+   "text": "LEVEL L",
+   "XY": [
+    10.0,
+    27.6
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "LEVEL R",
+   "XY": [
+    10.0,
+    49.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT L",
+   "XY": [
+    10.0,
+    72.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT R",
+   "XY": [
+    10.0,
+    86.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "MONO",
+   "XY": [
+    10.0,
+    100.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    10.0,
+    116.0
+   ],
+   "size": 1.2
+  }
+ ],
+ "panel_label_note": "P3: labels centred on the column above each part (8.9 mm above a pot shaft, 6.4 mm above a jack, IN 6.2 mm as audio-out). Knobs up to ~15 mm clear the labels (repo practice: Thonk Tall Trimmer Toppers 7.8 mm, imix; audio-out 19 mm pitch rated ~15 mm; 8bit 15 mm pitch ~11 mm; 4mix big knob 18 mm reserve). 4HP width (20 mm) is the real limit: keep knobs <= ~15 mm.",
+ "back_silk": [
+  {
+   "text": "-12V",
+   "XY": [
+    4.9,
+    110.4
+   ],
+   "size": 0.8
+  },
+  {
+   "text": "LINE IN R1",
+   "XY": [
+    10.0,
+    30.5
+   ],
+   "size": 0.8
+  }
+ ]
+}

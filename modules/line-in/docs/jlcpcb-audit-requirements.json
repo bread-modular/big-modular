@@ -1,0 +1,379 @@
+{
+ "defaults": {},
+ "components": {
+  "C1": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "+12V entry bulk (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C10": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "R input DC block after LEVEL R: up to +/-12.6 V DC if a CV/output is patched into IN",
+   "reviews": {}
+  },
+  "C11": {
+   "kind": "C",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "C0G",
+    "NP0"
+   ],
+   "role": "U1B feedback 20p across the op-amp output swing (<= rail); C0G for audio linearity",
+   "reviews": {}
+  },
+  "C12": {
+   "kind": "C",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "C0G",
+    "NP0"
+   ],
+   "role": "U2B feedback 20p across the op-amp output swing (<= rail); C0G for audio linearity",
+   "reviews": {}
+  },
+  "C13": {
+   "kind": "C",
+   "tolerance_fraction": 0.05,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "C0G",
+    "NP0"
+   ],
+   "role": "U3A feedback 20p across the op-amp output swing (<= rail); C0G for audio linearity",
+   "reviews": {}
+  },
+  "C2": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "-12V entry bulk (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C3": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U1 +12V decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C4": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U1 -12V decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C5": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 +12V decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C6": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U2 -12V decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C7": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U3 +12V decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C8": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "U3 -12V decoupling (rail <= 12.6 V)",
+   "reviews": {}
+  },
+  "C9": {
+   "kind": "C",
+   "tolerance_fraction": 0.2,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "polarity": "nonpolar",
+   "dielectrics": [
+    "X7R",
+    "X5R"
+   ],
+   "role": "L input DC block after LEVEL L: up to +/-12.6 V DC if a CV/output is patched into IN",
+   "reviews": {}
+  },
+  "D1": {
+   "note": "B5819W +12 V series reverse-polarity diode, < 20 mA (3 x TL072), 12.6 V reverse (24 V on a reversed cable)",
+   "reviews": {}
+  },
+  "D2": {
+   "note": "B5819W -12 V series reverse-polarity diode, < 20 mA (3 x TL072), 12.6 V reverse (24 V on a reversed cable)",
+   "reviews": {}
+  },
+  "J1": {
+   "assembly": "manual",
+   "reason": "PJ366ST TRS input jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J10": {
+   "assembly": "manual",
+   "reason": "2x5 2.54 mm Eurorack power header, back-side THT, hand-soldered"
+  },
+  "J2": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 OUT L jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J3": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 OUT R jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "J4": {
+   "assembly": "manual",
+   "reason": "PJ301M-12 MONO jack, hand-soldered: front-side THT, panel-nut fixed"
+  },
+  "R1": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0003,
+   "operating_current_a": 1.26e-05,
+   "power_derating": 0.5,
+   "note": "Buffer input bias 1M to GND: <= 12.6 V (only during a DC step on C9/C10), 0.16 mW",
+   "reviews": {}
+  },
+  "R10": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0022,
+   "operating_current_a": 0.000105,
+   "power_derating": 0.5,
+   "note": "Mono summing 100k from a gain-stage output to the U3 virtual ground: <= 10.5 V, 1.1 mW",
+   "reviews": {}
+  },
+  "R11": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0043,
+   "operating_current_a": 0.000206,
+   "power_derating": 0.5,
+   "note": "Mono feedback 51k: <= 10.5 V output swing, 2.2 mW",
+   "reviews": {}
+  },
+  "R12": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 23.75,
+   "operating_voltage_v": 19.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.361,
+   "operating_current_a": 0.019,
+   "power_derating": 1.0,
+   "note": "J4 MONO series 1k (1206): normal output <= 10 Vpp into >= 10k (< 2 mW). Fault: a hard -12 V source patched into the jack against the op-amp at its loaded swing (~+7 V at 19 mA, TL072 swing vs load) puts ~19 V / 19 mA / 0.361 W in the resistor continuously; the 0.5 W ROHM ESR18 runs at 72 %. Bound if the TL072 held its unloaded +10.5 V: 22.5 V / 0.506 W, which its output stage cannot source at that load",
+   "reviews": {}
+  },
+  "R2": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 15.75,
+   "operating_voltage_v": 12.6,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0003,
+   "operating_current_a": 1.26e-05,
+   "power_derating": 0.5,
+   "note": "Buffer input bias 1M to GND: <= 12.6 V (only during a DC step on C9/C10), 0.16 mW",
+   "reviews": {}
+  },
+  "R3": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0433,
+   "operating_current_a": 0.00206,
+   "power_derating": 0.5,
+   "note": "Gain-stage input 5.1k from the follower to the virtual-ground node: <= 10.5 V (TL072 swing), 2.06 mA, 21.6 mW",
+   "reviews": {}
+  },
+  "R4": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0433,
+   "operating_current_a": 0.00206,
+   "power_derating": 0.5,
+   "note": "Gain-stage input 5.1k from the follower to the virtual-ground node: <= 10.5 V (TL072 swing), 2.06 mA, 21.6 mW",
+   "reviews": {}
+  },
+  "R5": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0022,
+   "operating_current_a": 0.000105,
+   "power_derating": 0.5,
+   "note": "Gain-stage feedback 100k: <= 10.5 V output swing, 1.1 mW",
+   "reviews": {}
+  },
+  "R6": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0022,
+   "operating_current_a": 0.000105,
+   "power_derating": 0.5,
+   "note": "Gain-stage feedback 100k: <= 10.5 V output swing, 1.1 mW",
+   "reviews": {}
+  },
+  "R7": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 23.75,
+   "operating_voltage_v": 19.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.361,
+   "operating_current_a": 0.019,
+   "power_derating": 1.0,
+   "note": "J2 OUT L series 1k (1206): normal output <= 10 Vpp into >= 10k (< 2 mW). Fault: a hard -12 V source patched into the jack against the op-amp at its loaded swing (~+7 V at 19 mA, TL072 swing vs load) puts ~19 V / 19 mA / 0.361 W in the resistor continuously; the 0.5 W ROHM ESR18 runs at 72 %. Bound if the TL072 held its unloaded +10.5 V: 22.5 V / 0.506 W, which its output stage cannot source at that load",
+   "reviews": {}
+  },
+  "R8": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 23.75,
+   "operating_voltage_v": 19.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.361,
+   "operating_current_a": 0.019,
+   "power_derating": 1.0,
+   "note": "J3 OUT R series 1k (1206): normal output <= 10 Vpp into >= 10k (< 2 mW). Fault: a hard -12 V source patched into the jack against the op-amp at its loaded swing (~+7 V at 19 mA, TL072 swing vs load) puts ~19 V / 19 mA / 0.361 W in the resistor continuously; the 0.5 W ROHM ESR18 runs at 72 %. Bound if the TL072 held its unloaded +10.5 V: 22.5 V / 0.506 W, which its output stage cannot source at that load",
+   "reviews": {}
+  },
+  "R9": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 13.12,
+   "operating_voltage_v": 10.5,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.0022,
+   "operating_current_a": 0.000105,
+   "power_derating": 0.5,
+   "note": "Mono summing 100k from a gain-stage output to the U3 virtual ground: <= 10.5 V, 1.1 mW",
+   "reviews": {}
+  },
+  "RV1": {
+   "assembly": "manual",
+   "reason": "RV09 50k vertical pot (LEVEL L), front-side THT, hand-soldered after panel fit"
+  },
+  "RV2": {
+   "assembly": "manual",
+   "reason": "RV09 50k vertical pot (LEVEL R), front-side THT, hand-soldered after panel fit"
+  },
+  "U1": {
+   "note": "TL072CDT SOIC-8 on +/-12.6 V (36 V max supply), L follower + x-19.6 gain",
+   "reviews": {}
+  },
+  "U2": {
+   "note": "TL072CDT SOIC-8 on +/-12.6 V (36 V max supply), R follower + x-19.6 gain",
+   "reviews": {}
+  },
+  "U3": {
+   "note": "TL072CDT SOIC-8 on +/-12.6 V (36 V max supply), mono summer (B tied off)",
+   "reviews": {}
+  }
+ }
+}
