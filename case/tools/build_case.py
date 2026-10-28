@@ -96,7 +96,9 @@ def module_panels():
                 if abs(hy - HOLE_EDGE) < 0.5 or abs(hy - (PANEL_H - HOLE_EDGE)) < 0.5:
                     holes.append(round(float(m.group(1)) - x0, 3))
         assert holes, f"{f}: no rail holes found"
-        out[f.parts[-4]] = {"thickness": thick, "width": round(max(xs) - x0, 3),
+        # one panel per module is named after the module; modules with several (blank) by file
+        name = f.parts[-4] if len(list(f.parent.glob("*.kicad_pcb"))) == 1 else f.stem
+        out[name] = {"thickness": thick, "width": round(max(xs) - x0, 3),
                             "height": round(max(ys) - y0, 3), "hole_x": min(holes)}
     assert out, "no module panels found"
     return out
