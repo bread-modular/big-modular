@@ -41,6 +41,7 @@ STOCK = Path('/usr/share/kicad/footprints')
 STOCK_FOOTPRINTS = [
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Diode_SMD', 'D_SOD-123'),
+    ('Package_TO_SOT_SMD', 'SOT-23'),
     ('Resistor_SMD', 'R_0603_1608Metric'),
     ('Resistor_SMD', 'R_1206_3216Metric'),
     ('Capacitor_SMD', 'C_0603_1608Metric'),

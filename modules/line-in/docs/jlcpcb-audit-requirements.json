@@ -214,13 +214,13 @@
   "R1": {
    "kind": "R",
    "tolerance_fraction": 0.01,
-   "min_voltage_v": 15.75,
-   "operating_voltage_v": 12.6,
+   "min_voltage_v": 31.5,
+   "operating_voltage_v": 25.2,
    "voltage_derating": 0.8,
-   "min_power_w": 0.0003,
-   "operating_current_a": 1.26e-05,
+   "min_power_w": 0.0013,
+   "operating_current_a": 2.5454545454545454e-05,
    "power_derating": 0.5,
-   "note": "Buffer input bias 1M to GND: <= 12.6 V (only during a DC step on C9/C10), 0.16 mW",
+   "note": "1M capacitor-side bias, up to 25.2V initial polarity-reversal step; follower biased through R13/R14. Conservative resistor peak <0.65mW.",
    "reviews": {}
   },
   "R10": {
@@ -256,19 +256,19 @@
    "min_power_w": 0.361,
    "operating_current_a": 0.019,
    "power_derating": 1.0,
-   "note": "J4 MONO series 1k (1206): normal output <= 10 Vpp into >= 10k (< 2 mW). Fault: a hard -12 V source patched into the jack against the op-amp at its loaded swing (~+7 V at 19 mA, TL072 swing vs load) puts ~19 V / 19 mA / 0.361 W in the resistor continuously; the 0.5 W ROHM ESR18 runs at 72 %. Bound if the TL072 held its unloaded +10.5 V: 22.5 V / 0.506 W, which its output stage cannot source at that load",
+   "note": "Retained unchanged by user instruction after exact C2074262/ESR18EZPF1001/1206 match to ACID, HATS, 8bit and MCC. The legacy 19V/19mA audit figures are a typical load-line estimate, not a guaranteed fault bound; continuous opposite-rail immunity remains unqualified and is accepted as-is, not a new protective guarantee.",
    "reviews": {}
   },
   "R2": {
    "kind": "R",
    "tolerance_fraction": 0.01,
-   "min_voltage_v": 15.75,
-   "operating_voltage_v": 12.6,
+   "min_voltage_v": 31.5,
+   "operating_voltage_v": 25.2,
    "voltage_derating": 0.8,
-   "min_power_w": 0.0003,
-   "operating_current_a": 1.26e-05,
+   "min_power_w": 0.0013,
+   "operating_current_a": 2.5454545454545454e-05,
    "power_derating": 0.5,
-   "note": "Buffer input bias 1M to GND: <= 12.6 V (only during a DC step on C9/C10), 0.16 mW",
+   "note": "1M capacitor-side bias, up to 25.2V initial polarity-reversal step; follower biased through R13/R14. Conservative resistor peak <0.65mW.",
    "reviews": {}
   },
   "R3": {
@@ -328,7 +328,7 @@
    "min_power_w": 0.361,
    "operating_current_a": 0.019,
    "power_derating": 1.0,
-   "note": "J2 OUT L series 1k (1206): normal output <= 10 Vpp into >= 10k (< 2 mW). Fault: a hard -12 V source patched into the jack against the op-amp at its loaded swing (~+7 V at 19 mA, TL072 swing vs load) puts ~19 V / 19 mA / 0.361 W in the resistor continuously; the 0.5 W ROHM ESR18 runs at 72 %. Bound if the TL072 held its unloaded +10.5 V: 22.5 V / 0.506 W, which its output stage cannot source at that load",
+   "note": "Retained unchanged by user instruction after exact C2074262/ESR18EZPF1001/1206 match to ACID, HATS, 8bit and MCC. The legacy 19V/19mA audit figures are a typical load-line estimate, not a guaranteed fault bound; continuous opposite-rail immunity remains unqualified and is accepted as-is, not a new protective guarantee.",
    "reviews": {}
   },
   "R8": {
@@ -340,7 +340,7 @@
    "min_power_w": 0.361,
    "operating_current_a": 0.019,
    "power_derating": 1.0,
-   "note": "J3 OUT R series 1k (1206): normal output <= 10 Vpp into >= 10k (< 2 mW). Fault: a hard -12 V source patched into the jack against the op-amp at its loaded swing (~+7 V at 19 mA, TL072 swing vs load) puts ~19 V / 19 mA / 0.361 W in the resistor continuously; the 0.5 W ROHM ESR18 runs at 72 %. Bound if the TL072 held its unloaded +10.5 V: 22.5 V / 0.506 W, which its output stage cannot source at that load",
+   "note": "Retained unchanged by user instruction after exact C2074262/ESR18EZPF1001/1206 match to ACID, HATS, 8bit and MCC. The legacy 19V/19mA audit figures are a typical load-line estimate, not a guaranteed fault bound; continuous opposite-rail immunity remains unqualified and is accepted as-is, not a new protective guarantee.",
    "reviews": {}
   },
   "R9": {
@@ -373,6 +373,50 @@
   },
   "U3": {
    "note": "TL072CDT SOIC-8 on +/-12.6 V (36 V max supply), mono summer (B tied off)",
+   "reviews": {}
+  },
+  "R13": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 36.0,
+   "operating_voltage_v": 25.2,
+   "voltage_derating": 0.7,
+   "min_power_w": 0.092,
+   "operating_current_a": 0.002545454545454545,
+   "power_derating": 0.7,
+   "note": "10k after the coupling capacitor. Passive +/-12.6V bounded source reversal: <=25.2V across 9.9k, <=2.546mA, <=64.15mW peak (conservative zero clamp voltage). 0.1W rating at <=70C gives 70% design ceiling; not a higher-voltage/IEC ESD rating. See docs/input-protection.md.",
+   "reviews": {}
+  },
+  "R14": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 36.0,
+   "operating_voltage_v": 25.2,
+   "voltage_derating": 0.7,
+   "min_power_w": 0.092,
+   "operating_current_a": 0.002545454545454545,
+   "power_derating": 0.7,
+   "note": "10k after the coupling capacitor. Passive +/-12.6V bounded source reversal: <=25.2V across 9.9k, <=2.546mA, <=64.15mW peak (conservative zero clamp voltage). 0.1W rating at <=70C gives 70% design ceiling; not a higher-voltage/IEC ESD rating. See docs/input-protection.md.",
+   "reviews": {}
+  },
+  "D3": {
+   "package": "SOT-23",
+   "note": "Nexperia BAV199,215 C40919; both internal junctions in series between pins 1 and 2, pin 3 externally NC. Opposite devices clamp to GND, not rails. <2.55mA fault; <=2V static pair at 25C using the 10mA point, <=3.5V forward-recovery pair at the stated 10mA/20ns test. Powered-only qualification; low-level THD/temperature/powered-off bench tests outstanding. Extended diode (one additional unique feeder code), not a Basic resistor/cap exception.",
+   "reviews": {}
+  },
+  "D4": {
+   "package": "SOT-23",
+   "note": "Nexperia BAV199,215 C40919; both internal junctions in series between pins 1 and 2, pin 3 externally NC. Opposite devices clamp to GND, not rails. <2.55mA fault; <=2V static pair at 25C using the 10mA point, <=3.5V forward-recovery pair at the stated 10mA/20ns test. Powered-only qualification; low-level THD/temperature/powered-off bench tests outstanding. Extended diode (one additional unique feeder code), not a Basic resistor/cap exception.",
+   "reviews": {}
+  },
+  "D5": {
+   "package": "SOT-23",
+   "note": "Nexperia BAV199,215 C40919; both internal junctions in series between pins 1 and 2, pin 3 externally NC. Opposite devices clamp to GND, not rails. <2.55mA fault; <=2V static pair at 25C using the 10mA point, <=3.5V forward-recovery pair at the stated 10mA/20ns test. Powered-only qualification; low-level THD/temperature/powered-off bench tests outstanding. Extended diode (one additional unique feeder code), not a Basic resistor/cap exception.",
+   "reviews": {}
+  },
+  "D6": {
+   "package": "SOT-23",
+   "note": "Nexperia BAV199,215 C40919; both internal junctions in series between pins 1 and 2, pin 3 externally NC. Opposite devices clamp to GND, not rails. <2.55mA fault; <=2V static pair at 25C using the 10mA point, <=3.5V forward-recovery pair at the stated 10mA/20ns test. Powered-only qualification; low-level THD/temperature/powered-off bench tests outstanding. Extended diode (one additional unique feeder code), not a Basic resistor/cap exception.",
    "reviews": {}
   }
  }

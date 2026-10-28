@@ -69,6 +69,13 @@
       "license": "MIT (c) 2024 Arunoda Susiripala (Bread Modular)",
       "edits": "Value text F.SilkS -> F.Fab; 3D model (none upstream) -> ${KIPRJMOD}/LineIn.3dshapes/RV09_proxy.step (user-sample proxy)",
       "output_sha256": "32e6cf8210b96ad3f1f1e6fda4dd226bbb5685752e2536d41dc3ed1a60578196"
+    },
+    "SOT-23": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-23.kicad_mod",
+      "source_sha256": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "e6ccf415b962452de11db3823d16783d1547bfb1bdb4e72611b8d89cd810d775"
     }
   },
   "models": {

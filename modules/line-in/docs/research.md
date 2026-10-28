@@ -1,4 +1,4 @@
-# line-in research notes (S2/P3/R1)
+# line-in research notes (S3/P3/R2)
 
 ## 1. Brief (user, 2026-10-28)
 
@@ -22,7 +22,7 @@ OUT_L / OUT_R on a 5-pin header. Mono: OUT_L and OUT_R (after the 1k) -> 100k ea
 | Op-amps | MCP6002 x3 | TL072CDT x3 (same unit use: U1 L, U2 R, U3 mono) | ±12 V rails, JLCPCB Basic |
 | Coupling | 100n, 1M to V_MID | 1u (0805 X7R), 1M to GND | 0.16 Hz corner; ~10x less signal across the X7R at 20 Hz |
 | Gain | 100k/22k = -4.55 | 100k/5.1k = -19.6, 20p across the feedback (~80 kHz) | S2 (user 2026-10-28): ~x20 as Doepfer A-119; -10 dBV (0.9 Vpp) reaches ~10 Vpp near half LEVEL, weak sources still get to Eurorack level; hotter sources clip near ±10 V, so turn LEVEL down |
-| Outputs | 5-pin header, 1k 0402 | 3 x PJ301M-12 jacks, 1k 1206 0.5 W (ROHM ESR18, as acid) | Patchable; survives a ±12 V output patched in |
+| Outputs | 5-pin header, 1k 0402 | 3 x PJ301M-12 jacks, 1k 1206 0.5 W (ROHM ESR18, as acid) | Patchable; reused output part, continuous opposite-rail immunity not qualified (user accepts as-is) |
 | Mono | sum after the 1k | sum from the gain-stage outputs (before the 1k), 100k/100k/51k, 20p | Loading OUT L/R no longer changes MONO |
 | Spare U3B | (+) floating | grounded follower | No oscillating idle section |
 
@@ -74,4 +74,21 @@ Details in `Code.md` (R1).
 ## 7. Open points
 
 - Live strict audit done at export (2026-10-28, `jlcpcb/README.md`): every code
-  matches; R7/R8/R12 ESR18 0.5 W are Extended (user decision open).
+  matches; R7/R8/R12 ESR18 0.5 W are Extended (subsequently accepted unchanged by the user).
+
+
+## 8. S3/R2 input protection and review disposition
+
+The user accepted the assembly/physical-fit concerns and asked to retain the
+1k/0.5W output resistors if they match the other modules. ACID, HATS, 8bit and MCC
+shipping BOMs use exactly ESR18EZPF1001/C2074262, so they are unchanged.
+
+Added R13/R14 10k after C9/C10, and opposite BAV199 two-junction strings D3-D6 to
+GND. The low-leakage audio clamp is deliberately not the MIDI module's digital
+NPN input stage. Existing LEVEL/gain/MONO behavior, all prior placements and
+panel hardware remain unchanged. Full native checks pass and the carrier export
+is regenerated. New BAV199 diodes are Extended; the new resistors are Basic.
+
+See `input-protection.md` for pin mapping, bounds, preserved geometry, evidence,
+and the explicit powered-off limitation. This change is not a hardware/ESD or
+supplier-acceptance certification.

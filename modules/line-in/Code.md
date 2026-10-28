@@ -1,4 +1,4 @@
-# line-in contract (S2 schematic, P3 placement, R1 routing)
+# line-in contract (S3 schematic, P3 placement, R2 routing)
 
 ## Fixed by the brief
 
@@ -20,7 +20,7 @@
 - OUT L / OUT R keep Bread Modular's inverting gain stage (user, 2026-10-28: no
   re-inversion stage); L stays L and R stays R.
 
-## S2/P3 state
+## S2/P3 baseline (historical)
 
 - `tools/build_schematic.py` owns `hardware/line-in.kicad_sch`, `LineIn.kicad_sym` and
   `sym-lib-table` (modules/imix generator: stock KiCad 10 symbols flattened and
@@ -34,7 +34,7 @@
   values, fields and pad nets only from the native netlist.
 - `min_copper_edge_clearance` = 1.0 mm in the `.kicad_pro`.
 
-## Verification (S2/P3)
+## Verification (S2/P3, historical)
 
 - Native ERC `--severity-all`: 0.
 - Native DRC `--severity-all --schematic-parity --refill-zones`: carrier 0 violations,
@@ -70,10 +70,37 @@
 - Decoupling: C3/C5 sit under their op-amp; C7 is ~6 mm from U3 pin 8 (fed by the
   +12V F lane), C4/C6/C8 within ~3 mm.
 
-## Export (2026-10-28)
+## Original S2/R1 export (historical)
 
 - Shared `export.py` (carrier `--side bottom --require-part-numbers`, panel
   `--pcb-only`) into `jlcpcb/`, one `source-sha256.json`; shared `check` passes with
   the manifest equal. Live strict audit (5 boards): all Basic + Economy except
   R7/R8/R12 ROHM ESR18 (Extended; Basic 1206 1k is 0.25 W, below the ~0.36 W
   output mis-patch fault). Review attestations left open. See `jlcpcb/README.md`.
+
+
+## S3/R2 input protection (user, 2026-10-28)
+
+- The user accepted the prior assembly/fit concerns and requested input protection;
+  the 1k/0.5W output parts are confirmed identical to ACID/HATS/8bit/MCC and retained.
+  This accepts the residual continuous-fault concern, not a new fault guarantee.
+- `docs/input-protection.md` is the detailed design/disposition record. R13/R14
+  (10k, C25804) follow C9/C10. R1/R2 bias the capacitor side (COUP_L/R), while
+  AC_L/R feed U1A/U2A through the limiter. D3-D6 (BAV199,215, C40919) are opposite
+  two-internal-diode strings to GND; pin 3 explicitly NC. No rail pumping through
+  the external clamp network. The MIDI NPN input is digital, not copied into audio.
+- Nominal gain/polarity unchanged. Powered +/-12.6V mis-patch design envelope:
+  <=2.546mA initial current / <=64.15mW in the 10k for a 25.2V reversal.
+  Powered-off immunity and full-temperature THD/fault behavior remain unqualified.
+- All existing placements, output resistors and non-input copper preserved; six
+  old input segments replaced. Added SOT-23 footprint and vendored model; the
+  schematic generator and footprint importer reproduce the new parts.
+- Native ERC 0, DRC 0, unconnected 0, parity 0; independent exact ref/pin/net parity
+  equal. No ignored rules/exclusions. 44 vias, none in SMD pads/mask openings.
+  Minimum SMD-to-pot/jack pad 2.081mm; courtyard-to-edge 1.075mm; fixed panel axes
+  unchanged. R2 GND regions/pockets are detailed in the protection note.
+- Shared export: 36 bottom SMD parts / 13 BOM rows, seven manual THT. Carrier
+  Gerbers/BOM/CPL/mirrors refreshed; original panel files unchanged. Explicit
+  `source_manifest` added to the shared-tool profile; final check requires equality.
+- D3-D6 add one Extended diode type (Economy-eligible); R13/R14 are Basic.
+  Existing human review gates are retained, not filled with blanket attestations.
