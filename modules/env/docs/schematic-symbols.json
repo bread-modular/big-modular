@@ -113,13 +113,6 @@
       "flattened_from": null,
       "edits": null
     },
-    "+3V3": {
-      "library": "power:+3V3",
-      "source": "/usr/share/kicad/symbols/power.kicad_sym",
-      "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
-      "flattened_from": null,
-      "edits": null
-    },
     "+12V": {
       "library": "power:+12V",
       "source": "/usr/share/kicad/symbols/power.kicad_sym",
@@ -138,6 +131,13 @@
       "library": "Jumper:SolderJumper_3_Open",
       "source": "/usr/share/kicad/symbols/Jumper.kicad_sym",
       "source_sha256": "6548a7155352ede1997c88e2fc104cb22078437a08bc7779552a8326ebc13e6b",
+      "flattened_from": null,
+      "edits": null
+    },
+    "+5V": {
+      "library": "power:+5V",
+      "source": "/usr/share/kicad/symbols/power.kicad_sym",
+      "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
       "flattened_from": null,
       "edits": null
     }

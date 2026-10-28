@@ -5,12 +5,12 @@ module-relative.
 
 ## Current state
 
-- **S3 schematic** (`hardware/env.kicad_sch`, ERC 0, every signal net wired): the ACID
+- **S4 schematic** (`hardware/env.kicad_sch`, ERC 0, every signal net wired): the ACID
   envelope block on its own 6HP module. 8bit / ACID MIDI input (+ J5 MIDI OUT, passive thru) and
-  J6 GATE IN (NPN buffer -> PB2, TN jack detect -> PB1: patched = MIDI notes bypassed) -> one ATtiny1616 at 3.3 V
-  (Bread Modular ENV pin map as ACID) -> PA6 DAC envelope 0..3.3 V -> TL072 x1.51 -> protected
+  J6 GATE IN (NPN buffer -> PB2, TN jack detect -> PB1: patched = MIDI notes bypassed) -> one ATtiny1616 at 5 V (HT7550-1, as our 8bit)
+  (Bread Modular ENV pin map as ACID) -> PA6 DAC INT43V, firmware codes 0..194 (~0..3.3 V) -> TL072 x1.51 -> protected
   0..5 V ENV OUT + envelope-level LED. ATTACK / RELEASE knobs, MODE button + HR / AR / ASR LEDs,
-  REC button + LED.
+  REC button + LED. R5-R8 are 1k; the separate ENV LED resistor R13 stays 1k.
 - **P7 placement** (`docs/geometry.json`, 6HP): GATE IN + MIDI IN at the top, ENV OUT + ENV
   LED + MIDI OUT at the bottom (jack columns X7 / X23), pots in the centre column at a 30 mm
   pitch, MODE button in the mode LED row and REC button + LED below (buttons on the left); J3
@@ -25,10 +25,12 @@ module-relative.
 - B silk labels: `JP1 D=DIRECT P=PROT` (+ `D` / `P` under the pads) and `UPDI` / `GND` at J4
   (research.md 5).
 - 6HP panel `panels/front-pcb/env-panel.kicad_pcb`, DRC 0. No printed (FreeCAD) panel yet.
-- **JLCPCB export** in `jlcpcb/` (`jlcpcb/README.md`): carrier bottom Economic, 36 parts / 19 rows,
-  all R/C Basic except R12 (ESR18 0.5 W, Extended) + ATtiny1616 Extended; panel Gerbers. The
+- **JLCPCB export** in `jlcpcb/` (`jlcpcb/README.md`): carrier bottom Economic, 36 parts / 18 rows,
+  all R/C Basic except R12 (ESR18 0.5 W, Extended) + ATtiny1616 Extended + U1 HT7550-1 Preferred Extended; panel Gerbers. The
   manifest is checked by the shared `check`: re-export after any source edit. Not
   supplier-accepted, not built.
+- S4 supply/LED conversion is documented in research.md 6; R1 geometry/copper and the panel are unchanged.
+  Use JP1 protected mode for 3.3 V MIDI senders; direct mode is now 5 V logic only.
 - ACID is unchanged: its envelope still lives there too (research.md 1).
 
 ## Boundaries

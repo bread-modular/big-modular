@@ -1,4 +1,4 @@
-"""Generate the ENV S3 schematic (hardware/env.kicad_sch) and its pinned symbols.
+"""Generate the ENV S4 schematic (hardware/env.kicad_sch) and its pinned symbols.
 
 Run from modules/env:
   python3 -B tools/build_schematic.py
@@ -6,11 +6,11 @@ Run from modules/env:
 Writes hardware/ENV.kicad_sym (stock KiCad 10 symbols, derived symbols flattened,
 renamed into the ENV library), hardware/sym-lib-table and the flat root schematic,
 then lets `kicad-cli sch upgrade --force` re-save it natively. circuit() is the circuit
-of docs/research.md section 3: the ACID envelope block taken out on its own 6HP module.
-The 8bit / ACID MIDI input drives one ATtiny1616 at 3.3 V running the Bread Modular ENV
+of docs/research.md section 2: the ACID envelope block taken out on its own 6HP module.
+The 8bit / ACID MIDI input drives one ATtiny1616 at 5 V running the Bread Modular ENV
 models (HR / AR / ASR, MODE button + three LEDs), a REC button + LED that records the
 knob positions, ATTACK / RELEASE knobs and the PA6 DAC envelope, which one TL072 stage
-maps from 0..3.3 V to a protected 0..5 V ENV OUT with an envelope-level LED.
+maps the scaled DAC from approximately 0..3.3 V to a protected 0..5 V ENV OUT with an envelope-level LED.
 
 Placement (LAYOUT) is by hand. Signal wires are found by route_wires(): a small grid
 router (1.27 mm) that draws every signal net as axis-aligned wires, never touching a
@@ -59,7 +59,7 @@ SYMBOLS = {
     'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
     '1N4148W': ('Diode', '1N4148W'),
     'SW_Push': ('Switch', 'SW_Push'),
-    'GND': ('power', 'GND'), '+3V3': ('power', '+3V3'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
+    'GND': ('power', 'GND'), '+5V': ('power', '+5V'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
     'SolderJumper_3_Open': ('Jumper', 'SolderJumper_3_Open'),
 }
 
@@ -78,7 +78,7 @@ FP = {
 NOT_ASSEMBLED = {'JP1'}
 
 # Supply nets are drawn with power symbols (net name = symbol value).
-RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+12V': '+12V', '-12V': '-12V',
+RAIL_SYMBOL = {'GND': 'GND', '+5V': '+5V', '+12V': '+12V', '-12V': '-12V',
                '+12V_F': '+12V', '-12V_F': '-12V'}
 
 # Signal nets joined by name labels instead of wires: none, every signal net is wired.
@@ -92,7 +92,7 @@ LABEL_NETS = set()
 MCU = {'11': 'RX', '7': 'DAC', '19': 'UPDI_PA0',
        '20': 'ENV_A', '1': 'ENV_R', '15': 'MODE_SW', '16': 'LED_HR', '5': 'LED_AR', '6': 'LED_ASR',
        '17': 'REC_SW', '18': 'LED_REC',
-       '4': '+3V3', '3': 'GND', '21': 'GND',
+       '4': '+5V', '3': 'GND', '21': 'GND',
        '12': 'GATE', '13': 'GATE_SENSE',
        '2': None, '8': None, '9': None, '10': None, '14': None}
 
@@ -152,7 +152,7 @@ LABEL_AT = {}
 
 def circuit():
     c = []
-    # ---- Power: Eurorack +/-12 V -> series Schottkys -> +12V_F / -12V_F; HT7533-1 -> +3V3 (as ACID)
+    # ---- Power: Eurorack +/-12 V -> series Schottkys -> +12V_F / -12V_F; HT7550-1 -> +5V (as modules/8bit)
     c.append(part('J3', 'Conn_02x05_Odd_Even', 'Eurorack_2x5', 'H2x5',
                   {'1': '-12V', '2': '-12V', '3': 'GND', '4': 'GND', '5': 'GND', '6': 'GND',
                    '7': 'GND', '8': 'GND', '9': '+12V', '10': '+12V'},
@@ -166,15 +166,15 @@ def circuit():
                   {'1': '+12V_F', '2': 'GND'}, Voltage='25V', Note='+12V_F bulk'))
     c.append(part('C2', 'C', '10u', 'C0805',
                   {'1': 'GND', '2': '-12V_F'}, Voltage='25V', Note='-12V_F bulk'))
-    c.append(part('U1', 'HT75xx-1-SOT89', 'HT7533-1', 'SOT89',
-                  {'1': 'GND', '2': '+12V_F', '3': '+3V3'},
-                  Note='3.3 V LDO, 30 V max input, 100 mA. Load ~20 mA (MCU, 4 LEDs at 4 mA): ~0.17 W at 11.6 V in'))
+    c.append(part('U1', 'HT75xx-1-SOT89', 'HT7550-1', 'SOT89',
+                  {'1': 'GND', '2': '+12V_F', '3': '+5V'},
+                  Note='5 V LDO, as modules/8bit; 30 V max input, 100 mA. Estimated 20 mA budget (MCU + 4 LEDs at ~3 mA): ~0.13 W at 11.6 V in; verify on bench'))
     c.append(part('C3', 'C', '1u', 'C0805',
                   {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='LDO input'))
     c.append(part('C4', 'C', '10u', 'C0805',
-                  {'1': '+3V3', '2': 'GND'}, Voltage='25V', Note='LDO output'))
+                  {'1': '+5V', '2': 'GND'}, Voltage='25V', Note='LDO output'))
     c.append(part('C5', 'C', '100u', 'C1206',
-                  {'1': '+3V3', '2': 'GND'}, Voltage='6.3V', Note='+3V3 bulk (Bread Modular ENV C1 100uF 1206)'))
+                  {'1': '+5V', '2': 'GND'}, Voltage='6.3V', Note='+5V bulk, 100uF nominal / 6.3V rated; effective capacitance at 5V and startup overshoot require bench validation'))
     c.append(part('#FLG01', 'PWR_FLAG', 'PWR_FLAG', None, {'1': 'GND'}))
     c.append(part('#FLG02', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '+12V_F'}))
     c.append(part('#FLG03', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '-12V_F'}))
@@ -188,7 +188,7 @@ def circuit():
                   {'T': 'MIDI_IN', 'S': 'GND', 'TN': None},
                   Note='MIDI out: passive thru, wired in parallel with J1 (daisy chain); no buffer'))
     c.append(part('R1', 'R', '100k', 'R0603',
-                  {'1': 'MIDI_IN', '2': '+3V3'}, Note='Idle pull-up: no cable turns Q1 on = UART idle'))
+                  {'1': 'MIDI_IN', '2': '+5V'}, Note='Idle pull-up: no cable turns Q1 on = UART idle'))
     c.append(part('R2', 'R', '10k', 'R0603',
                   {'1': 'MIDI_IN', '2': 'Q1_B'},
                   Note='Base resistor: ~1.1 mA at +/-12 V; 0.26 mA from a 3.3 V sender'))
@@ -199,13 +199,13 @@ def circuit():
                   {'1': 'Q1_B', '2': 'GND', '3': 'RX_Q'},
                   Note='Inverting input buffer: input high = RX low. Firmware: PORT_INVEN on PB3'))
     c.append(part('R3', 'R', '22k', 'R0603',
-                  {'1': 'RX_Q', '2': '+3V3'},
+                  {'1': 'RX_Q', '2': '+5V'},
                   Note='Q1 collector pull-up, on RX_Q so the JP1 direct path leaves PB3 unloaded'))
     c.append(part('JP1', 'SolderJumper_3_Open', 'RX_PROT/DIRECT', 'SJ3',
                   {'1': 'RX_Q', '2': 'RX', '3': 'MIDI_IN'},
                   Note='Solder jumper, copper only, shipped open. Solder 1-2 = protected '
                        '(Q1 drives PB3, PORT_INVEN on). Solder 2-3 = direct/unprotected '
-                       '(MIDI_IN to PB3, PORT_INVEN off; 3.3 V senders only). Never both'))
+                       '(MIDI_IN to PB3, PORT_INVEN off; 5 V logic only, no mis-patch protection). Use protected mode for 3.3 V senders. Never both'))
 
     # ---- GATE IN (S3): the MIDI NPN front end for a gate, plus a jack detect. Patched (TN open,
     # GATE_SENSE high) the firmware takes the gate from J6 and ignores MIDI notes (MIDI bypassed);
@@ -224,37 +224,37 @@ def circuit():
                   Note='Clamps Q2 B-E to -0.7 V for a negative input (as D3)'))
     c.append(part('Q2', 'MMBT3904', 'MMBT3904', 'SOT23', {'1': 'Q2_B', '2': 'GND', '3': 'GATE'},
                   Note='Inverting gate buffer: gate high = PB2 low. Firmware: PORT_INVEN on PB2'))
-    c.append(part('R17', 'R', '22k', 'R0603', {'1': 'GATE', '2': '+3V3'}, Note='Q2 collector pull-up (as R3)'))
+    c.append(part('R17', 'R', '22k', 'R0603', {'1': 'GATE', '2': '+5V'}, Note='Q2 collector pull-up (as R3)'))
     c.append(part('R18', 'R', '51k', 'R0603', {'1': 'GATE_TN', '2': 'GATE_SENSE'},
                   Note='Jack-detect series R: limits the PB1 clamp current to 0.24 mA while a +/-12 V plug '
                        'touches TN on insertion'))
-    c.append(part('R19', 'R', '1M', 'R0603', {'1': 'GATE_SENSE', '2': '+3V3'},
-                  Note='Jack-detect pull-up (as ACID R20): patched = TN open = 3.3 V; unpatched 0.33 V '
+    c.append(part('R19', 'R', '1M', 'R0603', {'1': 'GATE_SENSE', '2': '+5V'},
+                  Note='Jack-detect pull-up (as ACID R20): patched = TN open = 5 V; unpatched ~0.50 V '
                        '(R18 + R14 || R15-R16 to GND)'))
 
-    # ---- MCU: one ATtiny1616 at 3.3 V runs the ENV firmware (the ENV half of the ACID firmware)
+    # ---- MCU: one ATtiny1616 at 5 V runs the ENV firmware (the ENV half of the ACID firmware)
     c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', MCU,
-                  Note='3.3 V, as Bread Modular ENV. Firmware: MIDI note on/off = gate (PB2 GATE IN instead while '
+                  Note='5 V, as modules/8bit; DAC INT43V (4.34 V setting), codes 0..194; knob ADC reference = VDD. Firmware: MIDI note on/off = gate (PB2 GATE IN instead while '
                        'PB1 GATE_SENSE is high), 3 envelope models '
                        '(HR / AR / ASR, saved in EEPROM), REC knob recording, envelope on the PA6 DAC'))
     c.append(part('C6', 'C', '100n', 'C0603',
-                  {'1': '+3V3', '2': 'GND'}, Voltage='50V', Note='U2 decoupling (Bread Modular ENV C2)'))
+                  {'1': '+5V', '2': 'GND'}, Voltage='50V', Note='U2 decoupling (Bread Modular ENV C2)'))
     c.append(part('R4', 'R', '4.7k', 'R0603',
                   {'1': 'UPDI_PA0', '2': 'UPDI'}, Note='UPDI series resistor (Bread Modular R17)'))
     c.append(part('J4', 'Conn_01x02', 'UPDI', 'H1x2',
                   {'1': 'UPDI', '2': 'GND'},
-                  Note='Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power (3.3 V target)'))
+                  Note='Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power (5 V target; use a 5 V-compatible UPDI programmer)'))
 
     # ---- Envelope UI (Bread Modular ENV knobs, buttons and LEDs; ACID values)
     c.append(part('R9', 'R', '1k', 'R0603',
                   {'1': 'DAC', '2': 'ENV_CV'},
                   Note='DAC series R (Bread Modular ENV R2 / ACID R12)'))
     c.append(part('RV1', 'R_Potentiometer', '50k', 'RV09',
-                  {'1': 'GND', '2': 'ENV_A', '3': '+3V3'},
+                  {'1': 'GND', '2': 'ENV_A', '3': '+5V'},
                   Note='ATTACK (Bread Modular ENV CV1, PA1): attack / hold time. CW = longer. '
                        'RV09 9 mm vertical, linear (user stock). Hand-soldered'))
     c.append(part('RV2', 'R_Potentiometer', '50k', 'RV09',
-                  {'1': 'GND', '2': 'ENV_R', '3': '+3V3'},
+                  {'1': 'GND', '2': 'ENV_R', '3': '+5V'},
                   Note='RELEASE (Bread Modular ENV CV2, PA2): release time. CW = longer. '
                        'RV09 9 mm vertical, linear (user stock). Hand-soldered'))
     c.append(part('SW1', 'SW_Push', 'MODE', 'SW6',
@@ -268,8 +268,8 @@ def circuit():
                                  ('D5', 'R6', 'LED_AR', 'Mode LED AR (attack-release), PA4'),
                                  ('D6', 'R7', 'LED_ASR', 'Mode LED ASR (attack-sustain-release), PA5'),
                                  ('D7', 'R8', 'LED_REC', 'Record LED, PC3')):
-        c.append(part(rref, 'R', '330', 'R0603', {'1': net, '2': net + '_A'},
-                      Note='LED current ~4 mA at 3.3 V (Bread Modular ENV R6/R9 330R)'))
+        c.append(part(rref, 'R', '1k', 'R0603', {'1': net, '2': net + '_A'},
+                      Note='LED current ~3 mA at 5 V with ~2 V red LED; 1k as modules/8bit'))
         c.append(part(ref, 'LED', 'LED_3mm_red', 'LED3', {'2': net + '_A', '1': 'GND'},
                       Note=role + '. Hand-soldered 3 mm THT, dome flush with the panel (as modules/8bit)'))
 
@@ -303,13 +303,12 @@ def circuit():
 
 
 # JLCPCB parts: the ACID SOURCING rows this circuit uses (re-checked live for ACID 2026-10-22;
-# not re-checked for ENV, see docs/research.md). All Basic except the 0.5 W 1206 1k (no Basic
-# 0.5 W 1206 exists) and the ATtiny1616. Stock is a dated observation, not a guarantee. THT
+# S4 changed parts checked live, see docs/research.md). R/C Basic except the 0.5 W 1206 1k.
+# HT7550-1 is Preferred Extended, ATtiny1616 Extended. Stock is not guaranteed. THT
 # parts carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM'),
-    ('R', '330', 'R0603'): dict(LCSC='C23138', MPN='0603WAF3300T5E', Manufacturer='UNI-ROYAL'),
     ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
@@ -324,7 +323,7 @@ SOURCING = {
     ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
     ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
                                             Manufacturer='CJ (Jiangsu Changjing)'),
-    ('HT75xx-1-SOT89', 'HT7533-1', 'SOT89'): dict(LCSC='C14289', MPN='HT7533-1', Manufacturer='Holtek'),
+    ('HT75xx-1-SOT89', 'HT7550-1', 'SOT89'): dict(LCSC='C16106', MPN='HT7550-1', Manufacturer='Holtek'),
     ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR', Manufacturer='Microchip'),
     ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
 }
@@ -336,19 +335,19 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 4), 'BIG MODULAR ENV - S3 schematic: the ACID envelope (Bread Modular ENV on one ATtiny1616) as its own '
-              '6HP MIDI + GATE module, 3.3 V internal signals. Circuit intent: docs/research.md', 2.0),
+    (T(4, 4), 'BIG MODULAR ENV - S4 schematic: the ACID envelope (Bread Modular ENV on one ATtiny1616) as its own '
+              '6HP MIDI + GATE module, 5 V internal signals. Circuit intent: docs/research.md', 2.0),
     (T(4, 6.5), 'Every signal net is wired; supplies use power symbols.', 1.27),
-    (T(4, 10), 'MIDI IN (TS): 8bit / LOW / ACID NPN front end, pull-ups on +3V3; J5 MIDI OUT = passive thru of J1. '
+    (T(4, 10), 'MIDI IN (TS): 8bit / LOW / ACID NPN front end, pull-ups on +5V; J5 MIDI OUT = passive thru of J1. '
                'JP1 shipped OPEN: 1-2 = protected (PORT_INVEN on PB3), 2-3 = direct.\n'
                'GATE IN (J6): NPN gate buffer -> PB2 (inverted); TN jack detect -> PB1: patched = high = '
                'MIDI notes bypassed, the gate drives the envelope.', 1.27),
     (T(4, 76), 'ENVELOPE UI (Bread Modular ENV): MODE (PC0) + LEDs HR/AR/ASR (PC1, PA4, PA5);\n'
                'REC (PC2) + LED (PC3) records the knob positions (8bit crash style). Internal pull-ups.', 1.27),
-    (T(48, 26), 'ATTACK (PA1) / RELEASE (PA2). DAC PA6 -> R9 -> ENV_CV (0..3.3 V).', 1.27),
-    (T(76, 40), 'ENV OUT: U3A x1.51: envelope 0..3.3 V -> 0..5.0 V,\n'
+    (T(48, 26), 'ATTACK (PA1) / RELEASE (PA2). PA6 DAC: INT43V, codes 0..194.', 1.27),
+    (T(76, 40), 'ENV OUT: U3A x1.51: scaled DAC ~0..3.3 V -> ~0..5 V,\n'
                 'DC coupled, 1k 0.5 W to J2; D8 shows the level.', 1.27),
-    (T(4, 83), 'POWER: +12V -> D1 -> +12V_F (U3, U1 HT7533-1 -> +3V3); -12V -> D2 -> -12V_F (U3).', 1.27),
+    (T(4, 83), 'POWER: +12V -> D1 -> +12V_F (U3, U1 HT7550-1 -> +5V); -12V -> D2 -> -12V_F (U3).', 1.27),
     (T(68, 83), 'SUPPLY PINS + DECOUPLING', 1.27),
 ]
 
@@ -870,8 +869,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - ENV") (rev "S3") (company "Big Modular")
-        (comment 1 "SCHEMATIC S3 - MIDI envelope (Bread Modular ENV from ACID), 3.3 V signals, 0..5 V out, wired nets")
+      (title_block (title "Big Modular - ENV") (rev "S4") (company "Big Modular")
+        (comment 1 "S4: MIDI/GATE envelope, 5 V MCU, 0..5 V output")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
