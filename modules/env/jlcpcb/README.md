@@ -1,131 +1,151 @@
-# ENV — manufacturing export (S3/R1)
+# ENV — manufacturing export (S4/R1, 5 V)
 
-Generated on 2026-10-28 from the S3 schematic and the R1 hand-routed 2-layer board (plus the
-B silk UPDI / JP1 labels, `docs/research.md` 5) with the shared
-`opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. Never hand-edit these files:
-change the sources, then re-export with the commands below.
+Re-exported after the user-approved **U1 HT7550-1 / +5V** and **R5-R8 1k** conversion,
+using the unchanged shared `opt/kicad-tools/jlcpcb/export.py`. The schematic is S4; P7
+placement, R1 routing and panel geometry are unchanged. See `docs/research.md` section 6.
+Never hand-edit generated fabrication or assembly files: change the sources, then export.
 
-## Contents
-
-| Path | Data |
-|---|---|
-| `env-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
-| `env-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
-| `assembly/bom.csv`, `assembly/positions.csv` | Carrier BOM and CPL (upload these) |
-| `carrier/` | Carrier export: ZIP unpacked (F/B copper, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
-| `panel/` | Panel export: ZIP unpacked, empty BOM/CPL, export report |
-| `source-sha256.json` | PCB/project/schematic inputs and export SHA-256 |
-
-The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files in
-`carrier/` and `panel/`.
-
-## Upload map
+## Upload files
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `env-gerbers.zip` | 2 layers, FR4, 1.6 mm, 29.05 x 110.05 mm, 1 oz, HASL, tented vias (all 26 are 0.3/0.6 mm, none in SMD pads; no copper or courtyard within 1 mm of the edge). The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 36 parts in 19 BOM rows, all on the back |
-| Front panel PCB | `env-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
+| Carrier PCB | **`env-gerbers.zip`** | 2 layers, FR4, 1.6 mm, nominal 29.0 x 110.0 mm, 1 oz, HASL, tented vias; no filled/capped via-in-pad requirement |
+| Carrier assembly | **`assembly/bom.csv`, `assembly/positions.csv`** | Bottom-side Economic PCBA target; **36 parts in 18 BOM rows**, all on B. Supplier acceptance is still pending |
+| Front panel PCB | **`env-panel-gerbers.zip`** | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
 
-### Hand-soldered after delivery (not in the BOM/CPL)
+The carrier has no `JLCJLCJLCJLC` marker; choose the order-number option deliberately.
+All 26 vias are 0.3 mm drill / 0.6 mm copper and clear of SMD copper/mask openings.
+The board's stroke-inclusive outline bounding box is 29.05 x 110.05 mm, not its nominal
+edge-centre dimensions above.
 
-| Refs | Part | Why it's manual |
+`carrier/` and `panel/` contain the exporter ZIPs, their unpacked Gerbers/drills, BOM/CPL
+and export reports. Top-level ZIPs and `assembly/` CSVs are byte-identical mirrors.
+`source-sha256.json` binds the five native sources to the exported ZIPs/BOM/CPL.
+
+### Changed assembly parts
+
+| References | S3 | S4 |
 |---|---|---|
-| J1, J2, J5, J6 | QingPu WQP-PJ301M-12 TS jack (J6 GATE IN, J1 MIDI IN, J2 ENV OUT, J5 MIDI OUT) | Front-side THT, panel-nut fixed; fit to the panel before soldering |
-| RV1, RV2 | RV09 50k linear pot (ATTACK, RELEASE) | Front-side THT, no nut |
-| SW1, SW2 | 6 x 6 mm THT tact switch (MODE, REC) | Front-side THT |
-| D4-D8 | 3 mm red LED (HR / AR / ASR, REC, ENV) | Front-side THT; set the height to the panel holes |
-| J3 | 2x5 2.54 mm pin header | Eurorack power, back side, vertical on the right edge; pin 1 (-12 V) at the bottom, at the `-12V` silk. **No key**: red stripe to `-12V`. 10- or 16-pin cable |
-| J4 | 1x2 2.54 mm pin header (`UPDI` / `GND` silk) | Optional, for programming; pin 1 (square, top) UPDI, pin 2 GND |
-| JP1 | 3-pad solder jumper (`JP1 D=DIRECT P=PROT` silk, `D` / `P` under the pads) | Copper only, **shipped open**: bridge P (1-2, protected, PORT_INVEN on) or D (2-3, direct, 3.3 V senders only), never both |
+| U1 | HT7533-1, C14289 | **HT7550-1, C16106**, Holtek, SOT-89-3; same pin mapping / land pattern |
+| R5, R6, R7, R8 | 330R, C23138 | **1k, C21190**, UNI-ROYAL 0603WAF1001T5E, 0603 |
 
-The exporter excluded exactly these 15 THT refs plus JP1 (`carrier/export-report.json`).
+R9/R13 already use the same 1k 0603 part, so their row now includes R5-R8 and the BOM
+shrinks from 19 to 18 rows. R13 (ENV level LED) and R10/R11 (output gain) are unchanged.
+The complete CPL is byte-identical to S3: no part moved or rotated.
 
-## Parts (live catalog, 2026-10-28 17:12 UTC, 5 boards)
+## Hand-soldered after delivery (excluded from BOM and CPL)
 
-Every C-code resolves to its MPN and package and is Economy-eligible
-(`research/export-1/audit.json`, ignored).
+| Refs | Part / handling |
+|---|---|
+| J1, J2, J5, J6 | QingPu WQP-PJ301M-12 TS jacks: MIDI IN, ENV OUT, MIDI OUT, GATE IN; front-side THT, fit to panel before soldering |
+| RV1, RV2 | RV09 50k linear ATTACK / RELEASE pots; front-side THT, no nut |
+| SW1, SW2 | 6 x 6 mm THT MODE / REC switches |
+| D4-D8 | 3 mm red HR / AR / ASR / REC / ENV LEDs; set height to panel holes |
+| J3 | 2x5 2.54 mm header, back side, vertical; pin 1 (-12 V) at bottom. **Unkeyed: red stripe to -12V silk.** 10- or 16-pin cable |
+| J4 | Optional 1x2 UPDI/GND header; pin 1 square/top = UPDI. Module is now a **5 V target**; use a compatible programmer, module externally powered |
+| JP1 | Copper-only 3-pad jumper, shipped open. P = 1-2 protected, PB3 inversion on; D = 2-3 direct, inversion off. Never both. **Use P for 3.3 V senders; D is unprotected 5 V logic only** |
 
-- **Resistors and capacitors: all JLCPCB Basic**, except R12, the 1206 1k 0.5 W ENV OUT
-  resistor: ROHM ESR18EZPF1001 C2074262, Extended (no Basic 0.5 W 1206 1k exists; as ACID).
-- **Basic semis/ICs:** B5819W C8598, 1N4148W C81598, MMBT3904 C20526, HT7533-1 C14289,
-  TL072CDT C6961.
-- **Extended (one setup fee each):** ESR18EZPF1001 C2074262 (100,736),
-  **ATTINY1616-MNR C507118 (1,902 in stock: the lowest; recheck before ordering)**.
+The export excludes exactly 15 THT references plus JP1; see `carrier/export-report.json`.
 
-The audit exits non-zero, as for ACID, LOW and vca-mix: there is no
-`docs/jlcpcb-audit-requirements.json`, so the per-part requirement/review rows stay
-`unknown`, and the 15 THT refs and JP1 have no catalog code. That is expected, not a catalog
-failure.
+## Catalog observations and unresolved assembly gates
+
+The final strict-live audit checked all 36 assembled references / 18 unique codes for
+**one board of placement demand** (not an order quantity), with public responses at
+**2026-10-28T18:42:56Z..18:43:38Z**. Raw records and request hashes are in ignored
+`research/5v-conversion/catalog-audit.json` and `catalog/`.
+
+- All 18 exact codes resolved to their intended MPN/package and exposed
+  **Economic eligibility**. Public stock exceeded this one-board demand at retrieval;
+  this is not reserved inventory or authenticated service acceptance.
+- R/C are observed **Basic except R12**, the retained ROHM ESR18EZPF1001 C2074262
+  1206 1k 0.5 W output resistor, which is **Extended**. Its Basic-policy exception is
+  still unresolved; the audit does not waive it.
+- **U1 HT7550-1 C16106 is Preferred Extended, not Basic.** It is the same part used in
+  our 8bit. Check the current portal's fees and options before ordering.
+- U2 ATTINY1616-MNR C507118 is **Extended**; the other selected semiconductors are Basic
+  in this observation. Recheck stock, classification, attrition/minimums and service
+  options immediately before an order.
+
+**The formal audit exits nonzero:** R12 fails the R/C Basic rule, per-part electrical /
+land-pattern review requirements are not fully recorded, and supplier preview warnings
+remain open. No placeholder attestations or rule waivers were added. The export is
+complete, but **`order_ready` remains false**.
 
 ## Source identity
 
-Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
+The shared check verifies these hashes against `source-sha256.json`:
 
-- Carrier PCB `dc25c581983aa1c500294b832293f20d7598f5fa37186c8093d22287dac25a51`.
-- Carrier project `e94c57bf60d418eeb3101fdff8468f466f9fcdbff976f230a3a9376088a0a18c`.
-- Carrier schematic `03183a9730254a8e0042f91cf188b8e37167c15642c115252709ee6f5104bee5`.
-- Panel PCB `b4fe51e87cda4470639b13283c55074fc8afb5f667741ba2e21b7f9c18e0ad52`.
-- Panel project `6d22f07fec3e78d77b7bd951908fa575494a745a4fc166cf66ae9bb95dc45946`.
+- Carrier PCB: `3085ff4ccd97b09c13f0451283a57246693ee982213c8ee72aef18faee9eaf19`
+- Carrier project: `e6d7ff817ec3c7e4d4445ad57061dafb8d49e9cdf08a747443d04f12220dd735`
+- Carrier schematic: `fa86c6c52459d9ed105aacdcafc8cdbd5f2a1e2355cdd9972b234f91f4246f86`
+- Panel PCB: `b4fe51e87cda4470639b13283c55074fc8afb5f667741ba2e21b7f9c18e0ad52`
+- Panel project: `6d22f07fec3e78d77b7bd951908fa575494a745a4fc166cf66ae9bb95dc45946`
 
 ## Reproduce
 
-From `modules/env`:
+From the repository root, after saving/refilling and checking authorized source edits:
 
 ```sh
-python3 -B ../../opt/kicad-tools/kicad_tools.py check \
-  --config tools/kicad-project.json --reports research/native
-
-python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
+python3 -B opt/kicad-tools/jlcpcb/export.py modules/env/hardware \
   --board env --schematic env.kicad_sch --side bottom --require-part-numbers \
-  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/carrier
-unzip -o jlcpcb/carrier/env-gerbers.zip -d jlcpcb/carrier
+  --manifest modules/env/jlcpcb/source-sha256.json --overwrite \
+  -o modules/env/jlcpcb/carrier
+unzip -o modules/env/jlcpcb/carrier/env-gerbers.zip -d modules/env/jlcpcb/carrier
 
-python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
+python3 -B opt/kicad-tools/jlcpcb/export.py modules/env/panels/front-pcb \
   --board env-panel --pcb-only \
-  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/panel
-unzip -o jlcpcb/panel/env-panel-gerbers.zip -d jlcpcb/panel
+  --manifest modules/env/jlcpcb/source-sha256.json --overwrite \
+  -o modules/env/jlcpcb/panel
+unzip -o modules/env/jlcpcb/panel/env-panel-gerbers.zip -d modules/env/jlcpcb/panel
 
-cp jlcpcb/carrier/bom.csv jlcpcb/carrier/positions.csv jlcpcb/assembly/
-cp jlcpcb/carrier/env-gerbers.zip jlcpcb/panel/env-panel-gerbers.zip jlcpcb/
+cp modules/env/jlcpcb/carrier/bom.csv modules/env/jlcpcb/carrier/positions.csv \
+  modules/env/jlcpcb/assembly/
+cp modules/env/jlcpcb/carrier/env-gerbers.zip modules/env/jlcpcb/panel/env-panel-gerbers.zip \
+  modules/env/jlcpcb/
+
+python3 -B opt/kicad-tools/kicad_tools.py check \
+  --config modules/env/tools/kicad-project.json --reports modules/env/research/check-NEW
 ```
 
-Delete the unpacked Gerbers first if layers change. The catalog audit is:
+Use fresh report directories. If layer selection changes, remove only stale unpacked
+Gerber/drill members not present in the fresh ZIP. Panel-only shared `check` currently
+requires a schematic; use full native `kicad-cli pcb drc` on a private copy with its
+project rules instead (do not invent a panel schematic or weaken the common gate).
 
-```sh
-kicad-cli sch export netlist --format kicadxml -o /tmp/env-symbols.xml hardware/env.kicad_sch
-(cd ../.. && python3 -B opt/kicad-tools/jlcpcb/assembly.py audit \
-  --project-dir modules/env/hardware --board env.kicad_pcb --symbols-xml /tmp/env-symbols.xml \
-  --cpl modules/env/jlcpcb/carrier/positions.csv \
-  --export-report modules/env/jlcpcb/carrier/export-report.json \
-  --boards 5 --side bottom --strict-live --max-requests 64)
-```
+## Verification for S4
 
-## Checks done for this export
+Evidence: `research/5v-conversion/` (ignored).
 
-- **Shared `check`** (after export): ERC 0, DRC 0, 0 unconnected, schematic parity 0, no
-  exclusions, manifest equal (5 sources, all exports byte-identical). `order_ready` stays
-  `false`: the supplier gates below are manual.
-- **Zones:** a refill on a scratch copy gives byte-identical filled polygons (13), so the
-  exported pours are current.
-- **Silk:** native DRC with all severities (silk over copper, overlap, edge at warning): 0
-  findings with the new labels.
-- **Carrier drill file:** 62 round PTH hits (26 vias + 36 round pads) plus 16 slots = 78,
-  matching 26 vias + 52 THT pads. No NPTH holes.
-- **Panel:** DRC 0 / 0. 15 NPTH holes: 4 jacks (6.2 mm), 2 pots (7.2 mm), 2 buttons (4.2 mm),
-  5 LEDs + 2 rail holes (3.2 mm).
-- **BOM/CPL:** 36 parts, 19 rows, every row with LCSC, MPN and manufacturer; every CPL row is
-  `bottom`.
+- Full carrier native **ERC 0 / DRC 0 / unconnected 0 / schematic parity 0**;
+  warnings/exclusions included, no ignored checks. Independent 147-pin circuit contract,
+  eight NC pins, all native fields and generator values/nets agree.
+- Before/after native connectivity differs only by the intentional +3V3 -> +5V rename
+  on 11 supply pins; purchased values change only for U1 and R5-R8.
+- Schematic render reviewed; native schematic save/reload retains the netlist. PCB
+  geometry, model paths, source libraries except the +5V symbol, and project rules are
+  preserved. Only the Power net-class pattern is renamed in the project.
+- Fresh native saved refill is semantically identical (13 filled polygons); no vias in
+  SMD pads or their mask openings. Copper-edge DRC uses 1.0 mm; closest measured
+  courtyard bounding-box edge is 1.045 mm, closest SMD-to-pot/jack copper is 2.101 mm.
+- Panel full native DRC: zero findings, no ignored checks. All panel/control centres
+  still align; panel sources are byte-identical to S3.
+- Both ZIPs pass CRC, have 11 expected members each, and match loose files exactly.
+  All copper/mask/paste/silk/outline/drill fabrication commands equal the S3 baseline;
+  only revision and creation-time metadata differ. This is a deterministic comparison,
+  **not a supplier CAM-viewer signoff**.
+- Carrier: 62 round PTH hits plus 16 routed slots, no NPTH. Panel: 15 NPTH holes, no PTH.
+- BOM/CPL: 36 matching unique references, 18 correctly grouped rows, complete part
+  numbers, bottom-only; positions/rotations match the native PCB and the prior CPL.
+- Final shared check: all five source hashes and recorded exports match the manifest;
+  all ZIP/CSV mirrors match. No design uploads, orders, commits or changes outside ENV.
 
-## Status and order gates (not done here)
+## Remaining release gates
 
-This is a complete export, not a supplier-accepted release. Before ordering:
-
-1. **Bottom-side Economic assembly** with the two Extended parts above.
-2. **Placement preview** in JLCPCB's bottom-side view: pin 1 of U2 (QFN-20) and U3 (SOIC-8);
-   U1 tab; D1-D3, D9 cathode bands; Q1/Q2 orientation; every rotation.
-3. **Live recheck before ordering:** stock (ATtiny1616 especially), class, attrition.
-4. **JLCPCB DFM / Gerber viewer check** of both ZIPs.
-5. **Bench:** GATE IN threshold and jack detect, MIDI JP1 paths, MIDI OUT thru, DAC / ENV OUT
-   range, ENV LED. Firmware (MIDI / GATE IN gate with the PB1 bypass, three envelope models,
-   REC) is not written.
+- Resolve the R12 Basic-parts exception and incomplete formal per-part review evidence.
+- Supplier CAM/DFM review of both ZIPs and bottom-side placement preview: U2 QFN pin 1,
+  U3 pin 1, U1 tab, diode cathodes, Q1/Q2 and every placement/rotation.
+- Physical assembly/fit and prototype testing, including LDO startup/temperature,
+  gate threshold/detect, MIDI/direct/thru behavior, LED current and DAC/output range.
+- **ENV firmware is not written.** It must use the 4.34 V reference setting at 5 V,
+  scale envelopes to DAC codes **0..194**, and use VDD for knob ADC conversions. The
+  ~0..5 V output is nominal, not a precision/clamped 5 V guarantee.

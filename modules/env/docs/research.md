@@ -1,4 +1,4 @@
-# ENV research and circuit intent (S3/P7/R1, exported)
+# ENV research and circuit intent (S4/P7/R1, exported)
 
 ## 1. Brief (user, 2026-10-28)
 
@@ -21,18 +21,19 @@
   MIDI OUT at the bottom; a patched GATE IN bypasses MIDI.
 - Round 8 (user, 2026-10-28): start routing (R1, section 4).
 
-## 2. Circuit (S3, `tools/build_schematic.py`)
+## 2. Circuit (S4, `tools/build_schematic.py`)
 
-ACID research.md 2-3 values throughout; the ACID references in brackets.
+Inherited ACID research.md 2-3 values, except S4: U1 HT7550-1 / +5V and R5-R8 1k
+(user-approved conversion, section 6). The ACID references are in brackets.
 
 | Block | Parts | Notes |
 | --- | --- | --- |
-| Power | J3, D1/D2 B5819W, C1/C2, U1 HT7533-1, C3-C5 | ACID J10 ... C5. +3V3 load ~20 mA |
+| Power | J3, D1/D2 B5819W, C1/C2, U1 HT7550-1, C3-C5 | +5V as our 8bit; estimated 20 mA budget, ~0.13 W LDO loss at 11.6 V input |
 | MIDI | J1, R1-R3, D3, Q1, JP1 | ACID / modules/low front end (JP1 1-2 protected / 2-3 direct) |
 | MIDI OUT | J5 | Passive thru: tip on MIDI_IN, sleeve GND, in parallel with J1 (no buffer). The downstream module sees the upstream sender plus R1 100k / R2 10k loading |
-| GATE IN (S3) | J6, R14-R19, D9, Q2 | MIDI front end again: R14 100k tip pull-down, R15 100k / R16 51k base divider (threshold ~1.9 V, 0.11 mA at +/-12 V), D9 B-E clamp, Q2 inverts to PB2 (R17 22k pull-up). Jack detect as ACID: TN -> R18 51k -> PB1 GATE_SENSE with R19 1M to +3V3. Unpatched TN touches the tip: 0.33 V (low); patched TN opens: 3.3 V (high). R18 keeps the PB1 clamp current at 0.24 mA when a +/-12 V plug touches TN during insertion |
+| GATE IN (S3) | J6, R14-R19, D9, Q2 | MIDI front end again: R14 100k tip pull-down, R15 100k / R16 51k base divider (threshold ~1.9 V, 0.11 mA at +/-12 V), D9 B-E clamp, Q2 inverts to PB2 (R17 22k pull-up). Jack detect as ACID: TN -> R18 51k -> PB1 GATE_SENSE with R19 1M to +5V. Unpatched TN touches the tip: ~0.50 V (low); patched TN opens: 5 V (high). R18 keeps the PB1 clamp current at 0.24 mA when a +/-12 V plug touches TN during insertion |
 | MCU | U2 ATtiny1616, C6, R4, J4 UPDI | ACID U2 pin map minus the MCO pins |
-| ENV UI | RV1 ATTACK, RV2 RELEASE (50k), SW1 MODE, SW2 REC, D4-D7 + R5-R8 330R | ACID RV3/RV4, SW1/SW2, D4-D7 |
+| ENV UI | RV1 ATTACK, RV2 RELEASE (50k), SW1 MODE, SW2 REC, D4-D7 + R5-R8 1k | ACID UI; S4 indicators ~3 mA at 5 V with ~2 V red LEDs |
 | Envelope | R9 1k (DAC -> ENV_CV) | ACID R12 |
 | ENV OUT | U3A TL072 x1.51 (R10 51k / R11 100k), R12 1k 0.5 W 1206, J2 | ACID U11B, R55-R57, J5: 3.30 V -> 4.98 V |
 | ENV LED | R13 1k, D8 from U3A out (before R12) | New: ~3 mA at 5 V, lights above ~1.8 V; a patched load does not dim it |
@@ -46,7 +47,7 @@ Firmware pin map (ACID's ENV pins):
 | PB3 | MIDI RX (PORT_INVEN when JP1 = protected) |
 | PB2 | GATE IN (inverted by Q2: PORT_INVEN; gate high = envelope on) |
 | PB1 | GATE_SENSE (no pull-up): high = GATE IN patched -> the gate drives the envelope and MIDI notes are ignored (bypassed); low = MIDI notes drive it |
-| PA6 | DAC envelope (scale to codes 0..194 with the 4.34 V reference at 3.3 V, ACID 3.2) |
+| PA6 | DAC envelope (scale to codes 0..194 with the 4.34 V reference setting at a 5 V supply; section 6) |
 | PA1, PA2 | ATTACK (hold in HR) / RELEASE knobs |
 | PC0 | MODE button (pull-up): HR -> AR -> ASR, saved in EEPROM |
 | PC1, PA4, PA5 | mode LEDs HR / AR / ASR |
@@ -55,7 +56,8 @@ Firmware pin map (ACID's ENV pins):
 | PA0 | UPDI |
 | PA3, PA7, PB0, PB4, PB5 | unused (no-connect) |
 
-Sourcing: the ACID SOURCING rows (checked live for ACID 2026-10-22), not re-checked for ENV.
+Sourcing: inherited ACID rows plus our 8bit HT7550-1 C16106; R5-R8 now use the existing
+1k 0603 C21190 row. Current export/catalog status: `jlcpcb/README.md`.
 
 ## 3. Placement (P7, `docs/geometry.json`)
 
@@ -158,7 +160,79 @@ Silk only (text inserted into the board file, no pcbnew save), board backed up t
 a zone refill on a scratch copy is byte-identical. Export: `jlcpcb/README.md` (bottom Economic,
 36 parts / 19 rows; Extended: R12 ESR18 and the ATtiny1616).
 
-## 6. Not done
+## 6. S4: 5 V supply and 1k indicator resistors (user-approved)
+
+The user requested our working `modules/8bit` supply/reference arrangement and the 1k LED
+change, followed by a fresh Gerber export. This changes ENV only; ACID, 8bit and Bread Modular
+sources are untouched.
+
+- U1: **HT7533-1 C14289 -> HT7550-1 C16106**, same SOT-89-3 footprint and pin mapping:
+  1 GND, 2/tab +12V_F, 3 +5V. Rename the entire former +3V3 net to +5V, including the
+  project Power net-class assignment, supply symbols, MCU, pots and MIDI/gate pull-ups.
+- R5-R8: **330R C23138 -> 1k C21190 / 0603WAF1001T5E**, same 0603 land patterns.
+  Approximate indicator current is (5 - 2) / 1000 = 3 mA. Even with a shorted LED and
+  5.5 V supply, the 1% resistor dissipates <31 mW versus its 100 mW catalog rating.
+- **No footprint, pad, track, via, silk, model, board edge or panel geometry changed.**
+  R1 routing remains 217 segments / 26 vias. R9-R13, including the separate ENV LED's
+  existing 1k R13, are unchanged. The PCB title block now correctly identifies S4/R1
+  instead of claiming the routed board is an unrouted P7 placement.
+
+### Reference, output and firmware contract
+
+Microchip DS40002204A Table 36-22 requires VDD >=4.75 V for INT43V; Table 36-29 applies that
+requirement to the DAC. Our 8bit uses HT7550-1 and `VREF_DAC0REFSEL_4V34_gc`; S4 adopts that
+supply/reference combination rather than relying on Bread Modular's undocumented behavior
+with the same reference selection at 3.3 V. [source](https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny1614-16-17-DataSheet-DS40002204A.pdf)
+
+Keep U3A gain = 1 + 51k/100k = 1.51 and scale the envelope to **DAC codes 0..194**. At a
+4.34 V assumed reference, code 194 gives 3.289 V DAC and 4.966 V before R12/loading; using
+4.3 V gives 4.921 V. These are nominal calculations, not a precision 5 V guarantee.
+Full 0..255 codes would instead give approximately 6.5 V with this amplifier, so do **not**
+copy 8bit's DAC sample range or bipolar output circuit. The future firmware should scale
+0..255 envelope values to 0..194 (not simply saturate at 194), use **VDD as the knob ADC
+reference**, and preserve the PB1/PB2 gate-detect/inversion behavior. No ENV firmware exists
+or was written in this hardware task.
+
+### Interfaces and electrical checks
+
+- **MIDI:** Q1/R3 translate the protected input to the new MCU rail; 3.3 V senders must use
+  JP1 P (1-2, PB3 inversion enabled). Direct mode is unprotected **5 V logic only**: the MCU
+  input-high specification is 0.7 x VDD, so 3.3 V is not guaranteed high at a 5 V target.
+  J5 is still a passive thru, not a new 5 V output driver. [source](https://ww1.microchip.com/downloads/en/DeviceDoc/ATtiny1614-16-17-DataSheet-DS40002204A.pdf)
+- **GATE:** no resistor/topology change. Q2 collector pull-up now draws approximately
+  5/22k = 0.23 mA. The ~1.9 V base-divider figure is an onset estimate; actual switching
+  threshold/hysteresis must be measured. The nominal unpatched PB1 voltage is
+  5 x (51k + (100k || 151k)) / (1M + 51k + (100k || 151k)) = 0.50 V, below the 1.5 V
+  input-low limit at 5 V; patched TN open tends to 5 V. Leakage, insertion transients and
+  clamp behavior remain bench checks, not guaranteed by ERC.
+- **UPDI/pots/buttons:** J4 remains UPDI/GND only, with the module powered externally;
+  use a 5 V-compatible programmer. Pots span the same VDD used as the ADC reference;
+  buttons still switch to GND using internal pull-ups.
+- **Supply/capacitors:** HT7550-1 is pin-compatible; its specified 25 C output at 7 V in /
+  10 mA is 4.85..5.15 V. C4 (25 V), C5 (6.3 V), C6 (50 V) remain above the nominal 5 V rail;
+  this does not establish effective MLCC capacitance or transient margin. Holtek warns
+  about fast-input-rise overshoot; verify startup, load changes, rail staying above
+  4.75 V while using INT43V and below MCU/capacitor limits, and LDO temperature on a prototype.
+  No new universal rail/current guarantee is claimed. [source](https://www.holtek.com/webapi/116711/HT75xx-1v281.pdf) [source](https://www.holtek.com/webapi/116745/an0553en.pdf)
+
+### Implementation and checks
+
+A private candidate was edited using the shared native block tokenizer because the common
+PCB/schematic edit APIs do not expose value/field/net-name edits. The schematic generator's
+`circuit()` and sourcing rows were updated, but **neither the schematic wire router nor
+`build_layout.py` was run**. Native schematic geometry/UUIDs and all PCB geometry/model paths
+were retained; only approved fields, the rail name and presentation notes changed. A native
+save/refill on a scratch copy reproduced all 13 saved fill polygons; native schematic
+save/reload preserved the netlist. Full candidate ERC/DRC, exact ref/pin/net/NC delta, and
+all generator/native field checks passed. Project rules/exclusions were not weakened.
+
+Raw evidence is in ignored `research/5v-conversion/`; it includes the baseline, scoped edit
+record, native before/candidate/final checks, geometry/field comparison, schematic render,
+refill proof and catalog evidence. Shipping files and remaining release gates are in
+`jlcpcb/README.md`. The earlier ignored `research/fab-review/REVIEW.md` describes the S3
+snapshot and is historical, not the current S4 verdict.
+
+## 7. Not done
 
 FreeCAD printed panel, firmware (MIDI / GATE IN gate with the PB1 bypass, three models, REC),
 supplier preview / order gates, bench.

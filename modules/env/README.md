@@ -1,6 +1,6 @@
 # ENV: MIDI envelope (6HP)
 
-The ACID envelope on its own module: Bread Modular **ENV** on one ATtiny1616 at 3.3 V,
+The ACID envelope on its own module: Bread Modular **ENV** on one ATtiny1616 at 5 V (the same HT7550-1 supply as our 8bit),
 triggered by MIDI notes, with three envelope models, knob recording and a protected 0..5 V
 output.
 
@@ -10,12 +10,16 @@ output.
 | **ATTACK**, **RELEASE** | BM ENV time knobs, 50k dividers (attack = hold in HR mode), 30 mm apart |
 | **MODE** button + **HR / AR / ASR** LEDs (one row) | Envelope model select (BM ENV algorithms) |
 | **REC** button + LED | Records the knob positions (firmware later) |
-| **ENV OUT**, **ENV** LED, **MIDI OUT** (bottom row) | DAC 0..3.3 V -> TL072 x1.51 -> 0..5 V, 1k 0.5 W series; the LED shows the envelope level (driven by the output amp). MIDI OUT is a passive thru wired to MIDI IN (daisy chain) |
+| **ENV OUT**, **ENV** LED, **MIDI OUT** (bottom row) | Scaled DAC ~0..3.3 V (INT43V, codes 0..194) -> TL072 x1.51 -> 0..5 V, 1k 0.5 W series; the LED shows the envelope level (driven by the output amp). MIDI OUT is a passive thru wired to MIDI IN (daisy chain) |
 
-**Status: S3 schematic (ERC 0, every net wired) + P7 THT placement + R1 manual routing (2 layers,
+**Status: S4 schematic (ERC 0, every net wired) + P7 THT placement + R1 manual routing (2 layers,
 DRC 0, unconnected 0, parity 0; B silk JP1 / UPDI labels); 6HP panel. JLCPCB export in
 [`jlcpcb/`](jlcpcb/README.md) (bottom Economic, 36 parts), not supplier-accepted, not built. No
-firmware.**
+firmware.** R5-R8 (HR/AR/ASR/REC indicators) are now 1k; R13 (ENV LED) was already 1k.
+
+**Firmware contract:** 4.34 V DAC setting at a 5 V supply, scale the envelope to DAC codes
+0..194; use VDD for the knob ADC reference. Use JP1 **P/protected** for 3.3 V MIDI senders
+(direct mode is 5 V logic only) and a 5 V-compatible UPDI programmer.
 
 ```sh
 python3 -B tools/import_footprints.py   # one-time library import (pcbnew)

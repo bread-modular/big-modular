@@ -1,4 +1,4 @@
-# ENV contract (S3 schematic, P7 THT placement, R1 routing, JLCPCB export)
+# ENV contract (S4 schematic, P7 THT placement, R1 routing, JLCPCB export)
 
 | | |
 |---|---|
@@ -11,10 +11,11 @@
 
 ## Fixed by the brief
 
-- The ACID envelope (Bread Modular ENV on an ATtiny1616, ACID pin map and values) as its own
+- The ACID envelope (Bread Modular ENV on an ATtiny1616, ACID pin map; S4 uses our 8bit 5 V supply and 1k indicator resistors) as its own
   MIDI module: MIDI IN + MIDI OUT (passive thru, J5 wired in parallel with J1), GATE IN (patched:
   MIDI notes bypassed, the gate drives the envelope; PB1 jack detect), ATTACK + RELEASE, MODE button with HR / AR / ASR LEDs, REC button + LED
-  (records the knob positions), ENV OUT 0..5 V protected. 3.3 V internal signals.
+  (records the knob positions), ENV OUT 0..5 V protected. 5 V internal signals (U1 HT7550-1); R5-R8 1k. Keep R10/R11 = 51k/100k and firmware DAC
+  INT43V codes 0..194 for nominal ~0..5 V ENV OUT; do not copy 8bit's full-scale/bipolar output stage.
 - 6HP panel top to bottom (user, 2026-10-28, P7): GATE IN + MIDI IN in one row; ATTACK;
   RELEASE (30 mm pitch); MODE button + HR / AR / ASR LEDs in one row; REC button + REC LED
   (buttons on the left); ENV OUT + ENV LED + MIDI OUT at the bottom. J3 power header vertical on
@@ -23,7 +24,7 @@
 
 ## Rules
 
-- Same parts and footprints as ACID (`hardware/ENV.pretty/PROVENANCE.json`): RV09 50k linear
+- Same footprints and inherited parts as ACID, except the authorized S4 U1 and R5-R8 substitutions (`hardware/ENV.pretty/PROVENANCE.json`): RV09 50k linear
   (user stock), PJ301M-12, 3 mm LEDs, 6 x 6 mm tact switches.
 - `build_schematic.py` asserts the exported netlist equals `circuit()`; placement by hand
   (`LAYOUT`), every signal net wired by the ACID grid router. PWR_FLAGs only `#FLG01`-`#FLG05`.
