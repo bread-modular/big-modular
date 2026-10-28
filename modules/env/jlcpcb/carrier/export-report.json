@@ -1,0 +1,55 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/166/modules/env/hardware/env.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/166/modules/env/hardware/env.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/166/modules/env/hardware/env.kicad_pcb": "dc25c581983aa1c500294b832293f20d7598f5fa37186c8093d22287dac25a51",
+    "/home/azero/.okbrain/workspaces/big-modular/166/modules/env/hardware/env.kicad_sch": "03183a9730254a8e0042f91cf188b8e37167c15642c115252709ee6f5104bee5"
+  },
+  "layers": [
+    "F.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 2,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "bottom",
+  "include_through_hole": false,
+  "component_count": 36,
+  "bom_row_count": 19,
+  "excluded": {
+    "D4": "Not an SMD footprint (use --include-through-hole)",
+    "D5": "Not an SMD footprint (use --include-through-hole)",
+    "D6": "Not an SMD footprint (use --include-through-hole)",
+    "D7": "Not an SMD footprint (use --include-through-hole)",
+    "D8": "Not an SMD footprint (use --include-through-hole)",
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J5": "Not an SMD footprint (use --include-through-hole)",
+    "J6": "Not an SMD footprint (use --include-through-hole)",
+    "JP1": "Excluded from BOM",
+    "RV1": "Not an SMD footprint (use --include-through-hole)",
+    "RV2": "Not an SMD footprint (use --include-through-hole)",
+    "SW1": "Not an SMD footprint (use --include-through-hole)",
+    "SW2": "Not an SMD footprint (use --include-through-hole)"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "env-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}
