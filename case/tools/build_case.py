@@ -390,6 +390,126 @@ def cover_blank(d, i):
                                     box((x0 + w - nx, y - 1, d.P - 1), (nx + 1, t + 2, nz + 1))]))
 
 
+# --- slide-in cover plates -----------------------------------------------------
+# Built flat in their print pose: X along the plate (width), Y up the plate (height), Z the 2 mm
+# thickness. Every cutout goes straight through Z, so the plates print flat with no supports and
+# no bridges. Front and back covers are the same part; print any two.
+
+COVER_MARGIN = 6.0      # solid border from the side panel inner face / plate top and bottom edge
+COVER_WEB = 2.0         # narrowest web between cutouts (about 4-5 perimeters at 0.4 mm)
+
+
+def _prism(points):
+    """Closed XY polygon extruded through the plate (Z -1 .. 3+)."""
+    w = Part.makePolygon([V(x, y, -1) for x, y in points] + [V(*points[0], -1)])
+    return Part.Face(w).extrude(V(0, 0, 10))
+
+
+def _stadium(p0, p1, width):
+    """Rounded slot between centre points p0 and p1."""
+    (x0, y0), (x1, y1) = p0, p1
+    L = math.hypot(x1 - x0, y1 - y0)
+    r = width / 2
+    s = box((0, -r, -1), (L, width, 10)).fuse([cyl(r, 10, (0, 0, -1)), cyl(r, 10, (L, 0, -1))])
+    s.rotate(V(0, 0, 0), V(0, 0, 1), math.degrees(math.atan2(y1 - y0, x1 - x0)))
+    s.translate(V(x0, y0, 0))
+    return s.removeSplitter()
+
+
+def _hexagon(cx, cy, af):
+    """Hexagon with flats facing +-X (corners up and down), so neighbours in a row share flats."""
+    r = af / math.sqrt(3)
+    return _prism([(cx + r * math.cos(math.radians(90 + 60 * i)), cy + r * math.sin(math.radians(90 + 60 * i)))
+                   for i in range(6)])
+
+
+def _rows(region, px, py, stagger):
+    """Centres filling region (x0, y0, x1, y1), every row centred; staggered odd rows hold one
+    centre fewer, which shifts them half a pitch."""
+    x0, y0, x1, y1 = region
+    ny = int((y1 - y0) / py + 1e-9) + 1
+    nx = int((x1 - x0) / px + 1e-9) + 1
+    oy = y0 + ((y1 - y0) - (ny - 1) * py) / 2
+    out = []
+    for j in range(ny):
+        n = nx - 1 if stagger and j % 2 else nx
+        ox = (x0 + x1) / 2 - (n - 1) * px / 2
+        out += [(ox + i * px, oy + j * py) for i in range(n)]
+    return out
+
+
+def cover_patterns(region):
+    """Cutout tools per variant, each kept inside region (x0, y0, x1, y1). The feature size is
+    shrunk to the region so the outer features keep COVER_MARGIN."""
+    x0, y0, x1, y1 = region
+    web = COVER_WEB
+    pats = {"solid": []}
+
+    # grill: vertical rounded slots, full region height
+    sw, pitch = 3.2, 3.2 + web * 1.5
+    n = int((x1 - x0 - sw) / pitch) + 1
+    ox = (x0 + x1) / 2 - (n - 1) * pitch / 2
+    pats["grill"] = [_stadium((ox + i * pitch, y0 + sw / 2), (ox + i * pitch, y1 - sw / 2), sw) for i in range(n)]
+
+    # honeycomb: hexagons 6 AF, rows share flats
+    af = 6.0
+    px, py = af + web, (af + web) * math.sqrt(3) / 2
+    r = af / math.sqrt(3)
+    pats["honeycomb"] = [_hexagon(cx, cy, af) for cx, cy in
+                         _rows((x0 + af / 2, y0 + r, x1 - af / 2, y1 - r), px, py, True)]
+
+    # perforated: staggered round holes
+    dia = 4.5
+    px = dia + web + 0.5
+    pats["perforated"] = [cyl(dia / 2, 10, (cx, cy, -1)) for cx, cy in
+                          _rows((x0 + dia / 2, y0 + dia / 2, x1 - dia / 2, y1 - dia / 2), px, px * math.sqrt(3) / 2, True)]
+
+    # louvres: slanted parallelogram slots, 30 deg off vertical, flat ends on the margin lines
+    slant = math.tan(math.radians(30))
+    h = y1 - y0
+    sw = 3.0 / math.cos(math.radians(30))          # 3.0 mm slot measured across the slant
+    pitch = sw + web / math.cos(math.radians(30))
+    span = sw + h * slant
+    n = int((x1 - x0 - span) / pitch) + 1
+    ox = (x0 + x1) / 2 - ((n - 1) * pitch + span) / 2
+    pats["louvres"] = [_prism([(a, y0), (a + sw, y0), (a + sw + h * slant, y1), (a + h * slant, y1)])
+                       for a in (ox + i * pitch for i in range(n))]
+
+    # diamonds: 45 deg squares on a staggered grid, web between parallel edges
+    a = 3.6                                         # centre to corner
+    px = 2 * a + web * math.sqrt(2)
+    pats["diamonds"] = [_prism([(cx + a, cy), (cx, cy + a), (cx - a, cy), (cx, cy - a)]) for cx, cy in
+                        _rows((x0 + a, y0 + a, x1 - a, y1 - a), px, px / 2, True)]
+    return pats
+
+
+def cover_plates(d):
+    """Cover plate blank (print pose) with each cutout pattern. The pattern region keeps
+    COVER_MARGIN from the side panel inner faces and from the plate's top and bottom edges."""
+    c = d.cover_blank_size()
+    w, t, h = c["plate"]
+    nx, nz = c["bottom_corner_notches_x_z"]
+    blank = box((0, 0, 0), (w, h, t)).cut(Part.makeCompound(
+        [box((-1, -1, -1), (nx + 1, nz + 1, t + 2)), box((w - nx, -1, -1), (nx + 1, nz + 1, t + 2))]))
+    ear = d.groove_d - d.cover_clr                    # plate edge to the side panel inner face
+    region = (ear + COVER_MARGIN, COVER_MARGIN, w - ear - COVER_MARGIN, h - COVER_MARGIN)
+    out = {}
+    for name, tools in cover_patterns(region).items():
+        s = cut_all(blank, tools) if tools else blank.copy()
+        border = blank.cut(box((region[0], region[1], -1), (region[2] - region[0], region[3] - region[1], t + 2)))
+        assert abs(s.common(border).Volume - border.Volume) < 1e-3, f"cover-{name}: cutout in the border"
+        out[name] = (s, len(tools), round(1 - s.Volume / blank.Volume, 3))
+    return out, region, blank
+
+
+def cover_in_assembly(d, s, i):
+    """Print-pose cover moved into the front (i = 0) / back groove, as cover_blank()."""
+    a = s.copy()
+    a.rotate(V(0, 0, 0), V(1, 0, 0), 90)              # (X, Y, Z) -> (X, -Z, Y)
+    a.translate(V(-(d.groove_d - d.cover_clr), d.groove_y[i] + (d.groove_w + d.cover_t) / 2, d.P))
+    return a
+
+
 # --- checks ------------------------------------------------------------------
 
 def checks(d, asm):
@@ -545,6 +665,31 @@ def main():
             "fits_p2s_bed": max(bb.XLength, bb.YLength, bb.ZLength) <= BED,
             "volume_cm3": round(p.Volume / 1000, 2),
             **mesh_info,
+        }
+
+    # slide-in cover plates: one blank, six faces. Each is the blank minus through-cutouts, so it
+    # fits both grooves as the checked blank does; checked again here in the assembly.
+    covers, region, blank = cover_plates(d)
+    cover_dir = out / "covers"
+    cover_dir.mkdir(exist_ok=True)
+    report["covers"] = {"print": "flat, 2 mm, cutouts through the plate: no supports, no bridges",
+                        "qty": "2 per case (front + back), any mix",
+                        "pattern_region_mm": [round(v, 2) for v in region],
+                        "min_web_mm": COVER_WEB, "border_mm": COVER_MARGIN}
+    for name, (s, n, open_frac) in covers.items():
+        assert s.isValid() and len(s.Solids) == 1, f"cover-{name}: invalid or not one solid"
+        assert s.cut(blank).Volume < 1e-3
+        for i in (0, 1):
+            a = cover_in_assembly(d, s, i)
+            hit = {k: round(a.common(b).Volume, 4) for k, b in asm.items() if a.common(b).Volume > 1e-3}
+            assert not hit, f"cover-{name} clashes: {hit}"
+        bb = s.BoundBox
+        report["covers"][f"cover-{name}"] = {
+            "cutouts": n, "open_area_fraction": open_frac,
+            "bbox_mm": [round(bb.XLength, 2), round(bb.YLength, 2), round(bb.ZLength, 2)],
+            "fits_p2s_bed": max(bb.XLength, bb.YLength) <= BED,
+            "volume_cm3": round(s.Volume / 1000, 2), "front_back_grooves": "fit, no interference",
+            **export(s, cover_dir / f"cover-{name}"),
         }
     (CASE / "research" / "build-report.json").write_text(json.dumps(report, indent=1) + "\n")
     print(json.dumps(report, indent=1))
