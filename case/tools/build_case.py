@@ -22,10 +22,12 @@ Each module screw goes into a 10 mm M3 hex spacer superglued in a hex socket in 
 The rail ends drop into notches at the top of the side panels; a horizontal M3 through the side
 panel wall goes into a hex spacer superglued in the rail end.
 The front and back of the case stay open. Each side panel's inner face has a vertical groove near
-its front and back edge for a slide-in cover plate (printed later, 2 mm thick): the groove runs
-from the panel bottom up into the rail notch, under the rail, so the cover's top edge hides under
-the rail. Covers slide in from below before the side panels go into the bottom plate (or, on the
-right panel, drop in through the rail notch before the rail).
+its front and back edge for a slide-in cover plate (2 mm thick): the groove runs from the panel
+bottom up into the rail notch. The rail underside and the bottom plate top have matching grooves
+along X, so the cover is held on all four edges. Assembly: screw the rails into the side panels,
+turn the frame upside down, slide the covers in from the open panel bottoms until their edges seat
+in the rail grooves, then set the bottom plate on: the side panels drop into its sockets and the
+cover edges into its grooves.
 """
 
 import json
@@ -135,7 +137,8 @@ class Dims:
         self.depth = depth                      # side panel height above the bottom plate
         # rail
         self.rail_w = SPACER_SOCKET_AF + 2 * SPACER_WALL   # Y, centred on the hole line
-        self.rail_floor = 1.8                   # under the spacer socket
+        self.rail_groove_d = 1.5                # cover groove in the rail underside (Z)
+        self.rail_floor = 1.8 + self.rail_groove_d   # under the spacer socket; 1.8 left over the groove
         self.rail_h = SPACER_SOCKET_DEPTH + self.rail_floor  # Z
         # rail end engaged in the side panel notch: long enough that the end spacer socket
         # (10.2 deep along X) keeps a wall to the first module socket
@@ -147,7 +150,8 @@ class Dims:
         self.groove_w = self.cover_t + 0.4      # groove width (Y)
         self.groove_d = 3.0                     # groove depth into the side panel (X)
         self.groove_edge = 2.0                  # side panel wall left in front of the groove (Y)
-        self.cover_clr = 0.3                    # cover to groove bottom (X), plate socket and rail (Z)
+        self.cover_clr = 0.3                    # cover to every groove bottom and the plate socket walls
+        self.plate_groove_d = 2.0               # cover groove in the bottom plate top (Z)
         # bottom plate
         self.P = 5.0                            # plate thickness
         self.wall = 3.0                         # socket wall thickness
@@ -169,6 +173,9 @@ class Dims:
         self.row_x0 = self.fill + row_gap / 2  # first module's left edge
         self.rail_len = self.L + 2 * self.tenon
         self.groove_y = (self.y0 + self.groove_edge, self.y0 + self.ylen - self.groove_edge - self.groove_w)
+        self.socket_in_x = self.plate_x0 + 2 * self.wall + self.T + self.socket_clr   # inner socket wall face
+        self.cover_z0 = self.P - self.plate_groove_d + self.cover_clr   # cover bottom edge
+        self.cover_z1 = self.top - self.rail_h + self.rail_groove_d - self.cover_clr   # cover top edge
 
         assert self.rail_y[1] - (self.rail_y[0] + self.rail_w) >= RAIL_GAP_MIN - 1e-9
         for size, what in ((self.plate_len, "bottom plate"), (self.rail_len, "rail")):
@@ -182,11 +189,12 @@ class Dims:
 
     def cover_blank_size(self):
         """Front/back cover plate blank (X width, Y thickness, Z height) and its two bottom corner
-        notches (X, Z) that clear the bottom plate's inner socket walls."""
+        notches (X, Z) that clear the bottom plate's inner socket walls. Between the notches the
+        bottom edge sits in the plate groove; the top edge sits in the rail groove."""
         w = self.L + 2 * (self.groove_d - self.cover_clr)
-        h = self.top - self.rail_h - self.cover_clr - self.P
-        notch = (self.groove_d - self.cover_clr + self.socket_clr / 2 + self.wall + self.cover_clr,
-                 self.socket_h + self.cover_clr)
+        h = self.cover_z1 - self.cover_z0
+        notch = (self.groove_d - self.cover_clr + self.socket_in_x + self.cover_clr,
+                 self.P + self.socket_h + self.cover_clr - self.cover_z0)
         return {"plate": [round(w, 2), self.cover_t, round(h, 2)],
                 "bottom_corner_notches_x_z": [round(notch[0], 2), round(notch[1], 2)]}
 
@@ -234,7 +242,11 @@ class Dims:
             "side_panel_mm": [self.T, round(self.ylen, 3), self.depth],
             "cover_groove_mm": {"width": self.groove_w, "depth": self.groove_d,
                                 "from_case_front_back_edge": self.groove_edge,
-                                "z_range": [self.P, round(self.top - self.rail_h, 3)]},
+                                "z_range": [self.P, round(self.top - self.rail_h, 3)],
+                                "rail_underside_depth": self.rail_groove_d,
+                                "bottom_plate_depth": self.plate_groove_d,
+                                "cover_edge_engagement_rail_plate": [round(self.rail_groove_d - self.cover_clr, 2),
+                                                                     round(self.plate_groove_d - self.cover_clr, 2)]},
             "cover_plate_blank_mm": self.cover_blank_size(),
             "bottom_plate_mm": [round(self.plate_len, 3), round(self.ylen, 3), self.P],
             "bottom_plate_centre_floor_mm": self.skin,
@@ -291,7 +303,9 @@ def rail(d, i):
     (the module side). The spacer sits 0.2 mm below the top so the module panel clamps on the
     rail. A small floor carries the spacer; an M3 clearance vent under it lets glue and air out
     and takes a screw that is too long. Each end is a tenon that drops into a side panel notch; a
-    hex spacer glued into the end face takes a screw through the side panel wall."""
+    hex spacer glued into the end face takes a screw through the side panel wall. The underside has
+    a cover groove along its full length on both sides (the cover's top edge sits in the outer
+    one), so the rail stays one part either way round."""
     y0, hole_y = d.rail_y[i], d.hole_y[i]
     zb = d.top - d.rail_h
     s = box((-d.tenon, y0, zb), (d.rail_len, d.rail_w, d.rail_h))
@@ -304,6 +318,8 @@ def rail(d, i):
     mid_y, mid_z = y0 + d.rail_w / 2, zb + d.rail_h / 2
     for x_end, sgn in ((-d.tenon, 1), (d.L + d.tenon, -1)):
         cuts.append(end_spacer_socket(x_end, sgn, mid_y, mid_z))
+    for gy in (d.groove_y[i], 2 * hole_y - d.groove_y[i] - d.groove_w):
+        cuts.append(box((-d.tenon - 1, gy, zb - 1), (d.rail_len + 2, d.groove_w, d.rail_groove_d + 1)))
     return cut_all(s, cuts)
 
 
@@ -351,8 +367,8 @@ def side_panel(d, left):
 
 def bottom_plate(d):
     """Floor plate with a socket at each end that the side panels stand in, counterbored M3
-    holes from underneath, and a centre pocket (open at the top, 1.2 mm floor left) to save
-    filament."""
+    holes from underneath, a centre pocket (open at the top, 1.2 mm floor left) to save filament,
+    and a front and back cover groove between the inner socket walls."""
     x0, w = d.plate_x0, d.wall
     sock = d.T + d.socket_clr
     s = box((x0, d.y0, 0), (d.plate_len, d.ylen, d.P))
@@ -364,6 +380,9 @@ def bottom_plate(d):
         for by in d.bolt_y:
             cuts.append(cyl(M3_CLEAR / 2, d.P + 2, (bx, by, -1)))
             cuts.append(cyl(M3_CB_D / 2, M3_CB_DEPTH + 1, (bx, by, -1)))
+    gx0 = d.socket_in_x
+    for gy in d.groove_y:
+        cuts.append(box((gx0, gy, d.P - d.plate_groove_d), (d.L - 2 * gx0, d.groove_w, d.plate_groove_d + 1)))
     return cut_all(s, cuts)
 
 
@@ -385,9 +404,10 @@ def cover_blank(d, i):
     nx, nz = c["bottom_corner_notches_x_z"]
     x0 = -(d.groove_d - d.cover_clr)
     y = d.groove_y[i] + (d.groove_w - d.cover_t) / 2
-    s = box((x0, y, d.P), (w, t, h))
-    return s.cut(Part.makeCompound([box((x0 - 1, y - 1, d.P - 1), (nx + 1, t + 2, nz + 1)),
-                                    box((x0 + w - nx, y - 1, d.P - 1), (nx + 1, t + 2, nz + 1))]))
+    z0 = d.cover_z0
+    s = box((x0, y, z0), (w, t, h))
+    return s.cut(Part.makeCompound([box((x0 - 1, y - 1, z0 - 1), (nx + 1, t + 2, nz + 1)),
+                                    box((x0 + w - nx, y - 1, z0 - 1), (nx + 1, t + 2, nz + 1))]))
 
 
 # --- slide-in cover plates -----------------------------------------------------
@@ -395,7 +415,7 @@ def cover_blank(d, i):
 # thickness. Every cutout goes straight through Z, so the plates print flat with no supports and
 # no bridges. Front and back covers are the same part; print any two.
 
-COVER_MARGIN = 6.0      # solid border from the side panel inner face / plate top and bottom edge
+COVER_MARGIN = 6.0      # visible solid border: side panel inner face, rail underside, plate top
 COVER_WEB = 2.0         # narrowest web between cutouts (about 4-5 perimeters at 0.4 mm)
 
 
@@ -485,14 +505,17 @@ def cover_patterns(region):
 
 def cover_plates(d):
     """Cover plate blank (print pose) with each cutout pattern. The pattern region keeps
-    COVER_MARGIN from the side panel inner faces and from the plate's top and bottom edges."""
+    COVER_MARGIN from the side panel inner faces, the rail underside and the bottom plate top (the
+    edges hidden in the grooves come on top)."""
     c = d.cover_blank_size()
     w, t, h = c["plate"]
     nx, nz = c["bottom_corner_notches_x_z"]
     blank = box((0, 0, 0), (w, h, t)).cut(Part.makeCompound(
         [box((-1, -1, -1), (nx + 1, nz + 1, t + 2)), box((w - nx, -1, -1), (nx + 1, nz + 1, t + 2))]))
     ear = d.groove_d - d.cover_clr                    # plate edge to the side panel inner face
-    region = (ear + COVER_MARGIN, COVER_MARGIN, w - ear - COVER_MARGIN, h - COVER_MARGIN)
+    low = d.P - d.cover_z0                            # bottom edge hidden in the plate groove
+    high = d.cover_z1 - (d.top - d.rail_h)            # top edge hidden in the rail groove
+    region = (ear + COVER_MARGIN, low + COVER_MARGIN, w - ear - COVER_MARGIN, h - high - COVER_MARGIN)
     out = {}
     for name, tools in cover_patterns(region).items():
         s = cut_all(blank, tools) if tools else blank.copy()
@@ -506,7 +529,7 @@ def cover_in_assembly(d, s, i):
     """Print-pose cover moved into the front (i = 0) / back groove, as cover_blank()."""
     a = s.copy()
     a.rotate(V(0, 0, 0), V(1, 0, 0), 90)              # (X, Y, Z) -> (X, -Z, Y)
-    a.translate(V(-(d.groove_d - d.cover_clr), d.groove_y[i] + (d.groove_w + d.cover_t) / 2, d.P))
+    a.translate(V(-(d.groove_d - d.cover_clr), d.groove_y[i] + (d.groove_w + d.cover_t) / 2, d.cover_z0))
     return a
 
 
@@ -535,6 +558,14 @@ def checks(d, asm):
         ears = [not asm[n].isInside(V(x, gy, zm), 1e-6, True) and c.isInside(V(x, gy, zm), 1e-6, True)
                 for n, x in (("side-panel-left", -d.groove_d / 2), ("side-panel-right", d.L + d.groove_d / 2))]
         assert all(ears), (cname, ears)
+        # top edge in the rail groove, bottom edge (between the socket walls) in the plate groove
+        rname = ("rail-front", "rail-back")[i]
+        edges = [c.isInside(V(x, gy, z), 1e-6, True) and not asm[n].isInside(V(x, gy, z), 1e-6, True)
+                 and asm[n].isInside(V(x, gy + (1 if i else -1) * d.groove_w, z), 1e-6, True)
+                 for n, z in ((rname, d.top - d.rail_h + d.rail_groove_d / 2),
+                              ("bottom-plate", d.P - d.plate_groove_d / 2))
+                 for x in (d.socket_in_x + 1.0, d.L / 2, d.L - d.socket_in_x - 1.0)]
+        assert all(edges), (cname, "rail/plate groove", edges)
         cov[cname] = "fits, no interference"
     out["cover_grooves"] = cov
     for name, s in asm.items():
