@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/line-in.kicad_pcb",
+  "root_schematic": "../hardware/line-in.kicad_sch",
+  "dependencies": [
+    "../hardware/LineIn.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}
