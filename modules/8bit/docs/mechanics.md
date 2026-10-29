@@ -21,7 +21,7 @@ panel, so the KiCad top view is the front view. All numbers come from
 | Panel rear seat | Z 10.0 above carrier F.Cu (PJ301M-12 boss top, as `modules/midi`) |
 | Pots | User RV09 stock (as `modules/audio-out`): no threaded bushing, no nut, body 6.8 mm (nominal), 1 mm collar, Ø6 knurled shaft to Z 22.8 = **11.2 mm past the FR4 front** for a push-on knob. Panel hole Ø7.2. 3D proxy `hardware/8BIT.3dshapes/RV09_proxy.step` (copied from audio-out) |
 | LED | 3 mm THT, body bottom Z 6.3: dome flush with the FR4 front (as `modules/midi`) |
-| Button | SW1 = 6 x 6 mm THT tact, 7 mm tall, on the carrier F side: body to Z 3.5, Ø3.5 stem to Z 7.0. One-piece printed cap through a Ø4.2 panel hole (below) |
+| Button | SW1 = 6 x 6 mm THT tact, 7 mm tall, on the carrier F side: body to Z 3.1, tapered stem (Ø3.4 at the body to Ø3.2 at the top, measured) to Z 7.0. One-piece printed cap through a Ø4.2 panel hole (below) |
 
 ## MODE button cap (`panels/button-actuator/`)
 
@@ -30,13 +30,14 @@ socket-down without supports:
 
 | Feature | Shape (carrier Z) |
 |---|---|
-| **Socket** | Ø3.6 blind hole Z 4.5..7.0, press-fit over the Ø3.5 stem; the stem top bottoms in it (sets the height) |
-| **Flange** | Ø7.0 Z 4.5..9.7: wider than the Ø4.2 hole, so it is captive behind the panel; 1.0 mm above the switch body |
-| **Tip** | Ø3.6 Z 9.7..13.0 through the Ø4.2 panel hole |
+| **Socket** | Ø3.4 blind hole Z 4.5..7.0, press-fit over the tapered stem (Ø3.33..3.2 in the grip zone, Ø3.3 nominal); the stem top bottoms in it (sets the height) |
+| **Flange** | Ø7.0 Z 4.5..8.5: wider than the Ø4.2 hole, so it is captive behind the panel; 1.4 mm above the switch body, 1.5 mm below the panel rear |
+| **Tip** | Ø3.6 Z 8.5..13.5 through the Ø4.2 panel hole |
 
 - Assembly: solder SW1, press the cap onto the stem, fit the panel over the tip.
-- Gaps (nominal): flange 0.3 mm behind the panel rear; tip 1.4 mm (FR4) / 1.0 mm (2.0 mm
-  print) proud of the panel front. Switch travel is ~0.25 mm.
+- Gaps (nominal): flange 1.5 mm behind the panel rear (the first cut had 0.3 mm: a
+  tightened panel pressed the flange and held the switch on); tip 1.9 mm (FR4) / 1.5 mm
+  (2.0 mm print) proud of the panel front. Switch travel is ~0.25 mm.
 - The generator asserts these gaps, the captive flange, the socket grip (2.5 mm) and roof,
   the tip clearance and ≥1 mm from the flange to the LED, RV3 and J3 bodies. FDM holes
   print undersize: measure the bought stem and tune `socket_D` for a firm press fit.

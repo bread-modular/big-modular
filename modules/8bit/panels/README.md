@@ -8,7 +8,7 @@
 
 The two panels are alternatives with the same holes (jacks Ø6.2, pots Ø7.2, LED Ø3.2, MODE button Ø4.2, rail holes Ø3.2). Either
 one mounts on the jack bushings with the PJ301M-12 nuts plus the rail screws; the RV09
-pots take no nut. The MODE cap (`button-actuator/`) tip stands 1.0 mm proud of the 2.0 mm print (1.4 mm on FR4). Regenerate the printed panel headless from `modules/8bit`:
+pots take no nut. The MODE cap (`button-actuator/`) tip stands 1.5 mm proud of the 2.0 mm print (1.9 mm on FR4). Regenerate the printed panel headless from `modules/8bit`:
 
 ```sh
 ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
