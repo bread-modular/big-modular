@@ -20,8 +20,10 @@
 //   * Note data is ignored: every note fires the same crash.
 //   * CV MOTION RECORDER: click MODE (PA4) once — LED blinks while a 4-bar
 //     CV1/CV2 take is recorded on the MIDI-clock grid; after 4 bars the LED
-//     goes solid and the take loops back (knobs ignored). Click MODE again to
-//     return to normal live-CV mode.
+//     goes solid and the take loops back. The knobs are ignored for the first
+//     looped pass; after that turning a knob shifts its whole recorded curve
+//     (shared lib/CvRecorder offset). Click MODE again to return to normal
+//     live-CV mode.
 // ----------------------------------------------------------------------------
 
 // JP1 on the 8bit carrier picks the MIDI input path (set by ../jumper.sh):
@@ -162,26 +164,39 @@ void loop() {
     recorder.update();
     synth.update();   // glides the CV1 metallic pitch toward its target
 
-    // Read the CVs continuously so liveCV1/2 are always current (the recorder
-    // snapshots them each clock tick while recording). Applying them to the
-    // synth is gated: during PLAYBACK the recorded 4-bar loop owns the colours
-    // and knob moves don't matter; in LIVE and RECORDING the knobs drive the
+    // Read the CVs continuously (with the deadband) so liveCV1/2 are always
+    // current: the recorder snapshots them each clock tick while recording,
+    // and in PLAYBACK uses them as the whole-loop offset (after its one-pass
+    // guard). Applying them to the synth directly is gated: in PLAYBACK the
+    // recorder owns the colours; in LIVE and RECORDING the knobs drive the
     // sound directly (so you hear exactly what you record).
-    if (!recorder.isPlayingBack()) {
-        // CV1 -> brightness: metallic pitch + noise/filter cutoffs.
-        uint16_t cv1 = analogRead(PIN_CV1);
-        if (abs((int)cv1 - (int)lastCV1) > CV_THRESHOLD) {
-            lastCV1 = cv1;
-            liveCV1 = cv1;
+    // CV1 -> brightness: metallic pitch + noise/filter cutoffs.
+    uint16_t cv1 = analogRead(PIN_CV1);
+    if (abs((int)cv1 - (int)lastCV1) > CV_THRESHOLD) {
+        lastCV1 = cv1;
+        liveCV1 = cv1;
+        if (!recorder.isPlayingBack()) {
             synth.setColor1(cv1);
         }
+    }
 
-        // CV2 -> hiss/metal balance (capped: metal always rings through).
-        uint16_t cv2 = analogRead(PIN_CV2);
-        if (abs((int)cv2 - (int)lastCV2) > CV_THRESHOLD) {
-            lastCV2 = cv2;
-            liveCV2 = cv2;
+    // CV2 -> hiss/metal balance (capped: metal always rings through).
+    uint16_t cv2 = analogRead(PIN_CV2);
+    if (abs((int)cv2 - (int)lastCV2) > CV_THRESHOLD) {
+        lastCV2 = cv2;
+        liveCV2 = cv2;
+        if (!recorder.isPlayingBack()) {
             synth.setColor2(cv2);
         }
     }
+
+    // Leaving PLAYBACK: hand the colours back to the knobs at once (they were
+    // tracked during playback, so the deadband above won't re-apply them).
+    static bool wasPlayingBack = false;
+    bool playingBack = recorder.isPlayingBack();
+    if (wasPlayingBack && !playingBack) {
+        synth.setColor1(liveCV1);
+        synth.setColor2(liveCV2);
+    }
+    wasPlayingBack = playingBack;
 }

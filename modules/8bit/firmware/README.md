@@ -58,7 +58,7 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   exponentially, from a ~5 ms pulse at 0 up to a ~3 s time constant; the top
   of the travel (ADC >= 1000) holds until the next note-on. Note-off is
   ignored. Silent until the first note. P2 sets the octave-down level.
-  MODE = 4-bar P1/P2 motion recorder on MIDI clock, as crash: click to
+  MODE = 4-bar P1/P2 motion recorder on MIDI clock (shared, as crash): click to
   record (LED blinks), after 4 bars it loops (LED solid); click again for
   live knobs (LED off). While looping, the knobs are ignored for the first
   4-bar pass (so the hand that ends the take can't nudge it); after that
@@ -68,8 +68,10 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 - **crash**: synthesized TR-808-style crash (no samples) on MIDI note-on,
   velocity = level, note ignored. P1 = brightness, P2 = hiss/metal balance.
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED
-  blinks), it then loops (LED solid); click again for live knobs. MIDI Start
-  rewinds. Tuning constants are in `crash/crash/CrashSynth.h`.
+  blinks), it then loops (LED solid); click again for live knobs. While
+  looping, the knobs are ignored for the first 4-bar pass, then turning a
+  knob shifts its whole recorded curve (as supersaw). MIDI Start rewinds.
+  Tuning constants are in `crash/crash/CrashSynth.h`.
 
 ## Changes from Bread Modular
 
@@ -94,11 +96,19 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 - Build scripts: module wrappers (`compile.sh`, `flash.sh`, `jumper.sh`) over the
   shared `opt/attiny1616-tools` instead of BM's per-firmware symlinks; BM's
   per-firmware READMEs are folded into this one.
-- Everything else (`SimpleMIDI.h` (crash's in supersaw), samples, `CrashSynth.h`, `CvRecorder.h`,
-  the crash `sim/`) is the BM file, unchanged.
+- crash: its `CvRecorder.h` is now the same symlink to the shared
+  `opt/attiny1616-tools/lib/CvRecorder/CvRecorder.h` (loop offset, user
+  request 2026-10-29). `loop()` reads P1/P2 with the deadband into
+  `liveCV1/2` in every state (BM skips the reads in PLAYBACK) and applies
+  them to the synth only outside PLAYBACK; leaving PLAYBACK re-applies the
+  live knobs at once.
+- Everything else (`SimpleMIDI.h` (crash's in supersaw), samples, `CrashSynth.h`,
+  the crash `sim/`) is the BM file, unchanged. The crash `sim/` now tests
+  the shared recorder through the symlink.
 
 Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
 drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
-(recorder, 2026-10-29); crash 6587 / 6577 B, 1161 B. `crash/sim.sh`: 66
+(recorder, 2026-10-29); crash 6821 / 6811 B, 1168 B (shared recorder,
+2026-10-29). `crash/sim.sh`: 66
 checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
 Not bench-tested on the 8bit carrier yet.

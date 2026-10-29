@@ -19,7 +19,7 @@ ln -s "$(realpath --relative-to=. "$(git rev-parse --show-toplevel)/opt/attiny16
 
 Then `#include "CvRecorder.h"`. Edit the file here, never through a copy.
 
-Users: `modules/8bit/firmware/supersaw`.
+Users: `modules/8bit/firmware/supersaw`, `modules/8bit/firmware/crash`.
 
 ## Tests
 
