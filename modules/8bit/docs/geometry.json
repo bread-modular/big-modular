@@ -97,7 +97,7 @@
    7.0,
    87.0
   ],
-  "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (body 3.5 mm, \u00d83.5 round stem 3.5 mm), pins 6.5 x 4.5 mm, 0.7 mm legs; pins 1-2 and 3-4 are joined inside (along the 6.5 mm side)",
+  "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (body 3.1 mm, tapered round stem 3.9 mm, \u00d83.4 to \u00d83.2), pins 6.5 x 4.5 mm, 0.7 mm legs; pins 1-2 and 3-4 are joined inside (along the 6.5 mm side)",
   "note": "THT on the carrier F side (faces the panel), hand-soldered; the legs come through to B. Stock KiCad SW_PUSH_6mm_H7.3mm (copper identical to every SW_PUSH_6mm variant; the 7.3 mm model is the closest stock height). Placed by the pad-pattern centre = stem centre. Rotated 180: pad 1 (BUTTON) on the bottom row (Y89.25), pad 2 (GND) on the top row (Y84.75). The panel rear is 3.0 mm above the stem top; a one-piece printed cap (panels/button-actuator) bridges it.",
   "rot": 180
  },
@@ -134,9 +134,10 @@
   "led_note": "3 mm LED body (flange to dome) is 5.3 mm; body bottom at Z6.3 puts the dome flush with the 1.6 mm FR4 panel front (Z11.6) and 0.4 mm recessed in the 2.0 mm print. The stock KiCad LED_D3.0mm model already stands its flange at Z3.0, so the board model offset is +3.3 mm.",
   "source": "Slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks before committing the LED stand-off.",
   "pot_note": "User RV09 (as modules/audio-out): body 6.8 mm nominal, 1 mm collar, shaft to Z22.8 (11.2 mm past the FR4 front). No bushing, no nut. Measure a real pot before ordering panels.",
-  "switch_body_top": 3.5,
+  "switch_body_top": 3.1,
   "switch_stem_top": 7.0,
-  "switch_stem_D": 3.5
+  "switch_stem_D": 3.3,
+  "switch_note": "Measured SW1: 7.0 mm tall, body 3.1 mm, tapered stem 3.9 mm (\u00d83.4 at the body to \u00d83.2 at the top). switch_stem_D is the mean stem diameter in the socket grip zone (Z4.5..7.0: \u00d83.33..3.2)."
  },
  "back_side_parts": [
   {
@@ -651,7 +652,7 @@
   "source": "panels/button-actuator/build_button_actuator.py (FreeCAD, STEP + STL)",
   "cap": {
    "note": "one piece, printed socket-down; press-fits over the switch stem, its flange is held behind the panel, its tip passes the panel hole",
-   "socket_D": 3.6,
+   "socket_D": 3.4,
    "socket_Z": [
     4.5,
     7.0
@@ -659,14 +660,14 @@
    "body_D": 7.0,
    "body_Z": [
     4.5,
-    9.7
+    8.5
    ],
    "tip_D": 3.6,
    "tip_Z": [
-    9.7,
-    13.0
+    8.5,
+    13.5
    ]
   },
-  "travel_note": "Switch travel ~0.25 mm. Flange 1.0 mm above the switch body, 0.3 mm below the panel rear; tip 1.4 mm (FR4 front Z11.6) / 1.0 mm (print front Z12.0) proud of the panel."
+  "travel_note": "Switch travel ~0.25 mm. Flange 1.4 mm above the switch body, 1.5 mm below the panel rear (the 0.3 mm of rev 1 let the panel press the flange and hold the switch on); tip 1.9 mm (FR4 front Z11.6) / 1.5 mm (print front Z12.0) proud of the panel."
  }
 }

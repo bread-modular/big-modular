@@ -3,15 +3,16 @@
 Run headless from modules/8bit:
   ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/button-actuator/build_button_actuator.py
 
-SW1 is a generic 6 x 6 mm THT tact switch, 7 mm tall (body to Z3.5, Ø3.5 round stem to
-Z7.0), on the carrier F side; the panel rear is 3.0 mm above the stem top. The cap is one
+SW1 is a generic 6 x 6 mm THT tact switch, 7 mm tall (body to Z3.1, tapered stem Ø3.4..3.2
+to Z7.0), on the carrier F side; the panel rear is 3.0 mm above the stem top. The cap is one
 part, printable without supports, no glue:
 
 - SOCKET (Z4.5..7.0): a blind hole that press-fits over the switch stem; the stem top
   bottoms in it, which sets the height.
-- FLANGE (Z4.5..9.7): Ø7, wider than the panel hole, so the cap cannot leave through the
-  front. It stays 1.0 mm above the switch body and 0.3 mm below the panel rear.
-- TIP (Z9.7..13.0): Ø3.6 through the Ø4.2 panel hole, 1.4 mm (FR4) / 1.0 mm (print)
+- FLANGE (Z4.5..8.5): Ø7, wider than the panel hole, so the cap cannot leave through the
+  front. It stays 1.4 mm above the switch body and 1.5 mm below the panel rear, so a
+  tightened panel never presses the switch.
+- TIP (Z8.5..13.5): Ø3.6 through the Ø4.2 panel hole, 1.9 mm (FR4) / 1.5 mm (print)
   proud of the panel front, more than the ~0.25 mm switch travel.
 
 Assembly: press the cap onto the soldered switch, then fit the panel over the tip.
@@ -54,7 +55,7 @@ def check(cap):
     assert 0.0 <= cap['socket_D'] - st['switch_stem_D'] <= 0.2, 'socket vs stem (press fit, FDM undersize)'
     assert cap['body_Z'][0] - st['switch_body_top'] >= TRAVEL + 0.5, 'flange vs switch body'
     assert cap['body_Z'][1] - cap['socket_Z'][1] >= 1.5, 'socket roof thickness'
-    assert 0.2 <= rear - cap['body_Z'][1] <= 0.5, 'flange play behind the panel'
+    assert 1.0 <= rear - cap['body_Z'][1] <= 2.0, 'flange gap behind the panel (a tight panel must not press it)'
     assert cap['body_D'] >= hole + 2.0, 'the flange must be captive behind the panel'
     assert cap['body_D'] - cap['socket_D'] >= 2.4, 'socket wall'
     assert cap['tip_D'] <= hole - 0.5, 'tip clearance in the panel hole'
