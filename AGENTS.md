@@ -14,7 +14,9 @@ tooling.
   module and never fork or duplicate it per module.
 - `opt/updi-programmer/` — USB-C UPDI programmer (jtag2updi on ATtiny1616) for
   the modules' UPDI chips: generated KiCad project, firmware and README.
-  `opt/attiny1616-tools/` holds the shared ATtiny1616 compile/flash scripts.
+  `opt/attiny1616-tools/` holds the shared ATtiny1616 compile/flash scripts and
+  shared sketch libraries in `lib/` (e.g. `lib/CvRecorder/`), symlinked into
+  each sketch folder.
 - `modules/<name>/AGENTS.md` and `modules/<name>/Code.md` — module-specific
   circuit/release contract. Read them before touching that module.
 

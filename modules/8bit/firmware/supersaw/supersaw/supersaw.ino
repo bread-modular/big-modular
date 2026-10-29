@@ -2,6 +2,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "SimpleMIDI.h"
+#include "CvRecorder.h"
 #include "SoftwareSerial.h"
 
 // JP1 on the 8bit carrier picks the MIDI input path (set by ../jumper.sh):
@@ -39,6 +40,8 @@
 #define ENV_HOLD_CV 1000      // P1 at or above this: hold
 
 SimpleMIDI MIDI;
+// MODE = 4-bar P1/P2 motion recorder on MIDI clock (crash's, plus offset)
+CvRecorder recorder(TOGGLE_PIN, TOGGLE_LED);
 // TODO: Change this to real serial port. (We need to update the schematic for that)
 SoftwareSerial logger(-1, LOGGER_PIN_TX);
 
@@ -56,7 +59,9 @@ volatile uint16_t sawtoothMaxStepOctaveDown = DAC_MAX_VALUE;
 volatile uint16_t currentFrequencyOctaveDown = DEFAULT_SAWTOOTH_FREQ / OCTAVE_DIVIDER;
 
 // Variables for CV control
-uint16_t lastCV2Value = 0;
+uint16_t lastCV2Value = 0xFFFF;
+uint16_t liveCV1 = 0;  // deadbanded knob readings (recorder input)
+uint16_t liveCV2 = 0;
 uint8_t octaveDownVolume = 128; // Default volume (0-255, where 255 is full volume)
 
 // Keep the current note for gate handling
@@ -108,26 +113,21 @@ uint16_t getSawtoothFrequency() {
     return currentFrequency;
 }
 
-// Update volume of octave-down sawtooth based on CV2 input
-void updateVolumeFromCV2() {    
-    // Read CV2 (0-1023)
-    uint16_t rawCV2 = analogRead(PIN_CV2);
-    
-    // Only update if the CV2 value has changed beyond the threshold
-    if (abs((int)rawCV2 - (int)lastCV2Value) > CV_THRESHOLD) {
-        // Save the current CV2 value
-        lastCV2Value = rawCV2;
-        
-        // Map the CV2 value (0-1023) to volume range (0-255)
-        octaveDownVolume = map(rawCV2, 0, 1023, 0, 255);
+// Set the octave-down volume from a CV2 value (0-1023)
+void setVolumeFromCV2(uint16_t cv2) {
+    if (cv2 == lastCV2Value) {
+        return;
     }
+    lastCV2Value = cv2;
+
+    // Map the CV2 value (0-1023) to volume range (0-255)
+    octaveDownVolume = map(cv2, 0, 1023, 0, 255);
 }
 
-// Map P1 to the envelope decay: exponential knob law from
+// Map a CV1 value (0-1023) to the envelope decay: exponential knob law from
 // ENV_TAU_MIN_MS to ENV_TAU_MAX_MS, hold at the top of the travel.
-void updateDecayFromCV1() {
-    uint16_t rawCV1 = analogRead(PIN_CV1);
-    if (lastCV1Value != 0xFFFF && abs((int)rawCV1 - (int)lastCV1Value) <= CV_THRESHOLD) {
+void setDecayFromCV1(uint16_t rawCV1) {
+    if (rawCV1 == lastCV1Value) {
         return;
     }
     lastCV1Value = rawCV1;
@@ -139,6 +139,40 @@ void updateDecayFromCV1() {
     float x = rawCV1 / (float)ENV_HOLD_CV;
     float tauMs = ENV_TAU_MIN_MS * pow(ENV_TAU_MAX_MS / ENV_TAU_MIN_MS, x);
     envDecayCoef = (uint16_t)(65536.0 * exp(-1.0 / tauMs));
+}
+
+// Read P1/P2 with the deadband into liveCV1/2. In LIVE and RECORDING they
+// drive the sound directly; in PLAYBACK the recorder owns the sound and uses
+// them as the offset for the whole loop (after its one-pass guard).
+void readKnobs() {
+    uint16_t cv1 = analogRead(PIN_CV1);
+    if (abs((int)cv1 - (int)liveCV1) > CV_THRESHOLD) {
+        liveCV1 = cv1;
+    }
+    uint16_t cv2 = analogRead(PIN_CV2);
+    if (abs((int)cv2 - (int)liveCV2) > CV_THRESHOLD) {
+        liveCV2 = cv2;
+    }
+    if (!recorder.isPlayingBack()) {
+        setDecayFromCV1(liveCV1);
+        setVolumeFromCV2(liveCV2);
+    }
+}
+
+// Playback consumer: push a recorded (+ offset) CV pair into the voice.
+void applyRecorded(uint16_t cv1, uint16_t cv2) {
+    setDecayFromCV1(cv1);
+    setVolumeFromCV2(cv2);
+}
+
+// MIDI clock tick: advance the 4-bar playhead, record or replay.
+void onMidiClock() {
+    recorder.onClock(liveCV1, liveCV2, applyRecorded);
+}
+
+// MIDI Start: rewind the loop to bar 1.
+void onMidiStart() {
+    recorder.onStart();
 }
 
 // Run the envelope once per millisecond.
@@ -293,6 +327,7 @@ void setup() {
   
   // Set the analog reference for ADC with supply voltage.
   analogReference(VDD);
+  pinMode(PIN_CV1, INPUT);
   pinMode(PIN_CV2, INPUT);
  
   // DAC0 setup for sending velocity via the PA6 pin
@@ -312,26 +347,34 @@ void setup() {
   // Timer related - this will start both sawtooth wave generators
   setupTimers();
   
-  // MIDI only (no CV1 pitch mode): the MODE button is unused and the LED
-  // stays on, as Bread Modular's MIDI mode.
-  pinMode(TOGGLE_PIN, INPUT_PULLUP);
-  pinMode(TOGGLE_LED, OUTPUT);
-  digitalWrite(TOGGLE_LED, HIGH);
+  // MODE + LED: P1/P2 motion recorder (LED off = live, blink = recording,
+  // solid = looping the take).
+  recorder.begin();
+
+  // Start from the real knob positions (first ADC read discarded).
+  (void)analogRead(PIN_CV1);
+  (void)analogRead(PIN_CV2);
+  liveCV1 = analogRead(PIN_CV1);
+  liveCV2 = analogRead(PIN_CV2);
+  setDecayFromCV1(liveCV1);
+  setVolumeFromCV2(liveCV2);
 
   // Register MIDI callbacks
   MIDI.setNoteOnCallback(onNoteOn);
   MIDI.setNoteOffCallback(onNoteOff);
   MIDI.setControlChangeCallback(onControlChange);
+  MIDI.setClockCallback(onMidiClock);
+  MIDI.setStartCallback(onMidiStart);
 }
 
 void loop() {
   // Process MIDI messages
   MIDI.update();
 
-  // Update volume of the octave-down saw from CV2
-  updateVolumeFromCV2();
+  // MODE button + LED
+  recorder.update();
 
-  // P1 envelope decay, then run the envelope
-  updateDecayFromCV1();
+  // P1 envelope decay and P2 octave-down level (live or recorded + offset)
+  readKnobs();
   updateEnvelope();
 }
