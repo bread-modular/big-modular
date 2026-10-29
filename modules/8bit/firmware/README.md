@@ -35,6 +35,7 @@ other setting receives nothing usable.
 ./flash.sh supersaw p             # build + flash, pick the UPDI port
 ./flash.sh crash d /dev/ttyUSB0   # explicit port (macOS: /dev/cu.usbserial-XXXX)
 crash/sim.sh                      # crash host self-tests (no hardware)
+../../../opt/attiny1616-tools/lib/CvRecorder/sim.sh  # supersaw recorder host self-tests
 ```
 
 `compile.sh` / `flash.sh` call the shared `opt/attiny1616-tools` scripts
@@ -57,7 +58,13 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   exponentially, from a ~5 ms pulse at 0 up to a ~3 s time constant; the top
   of the travel (ADC >= 1000) holds until the next note-on. Note-off is
   ignored. Silent until the first note. P2 sets the octave-down level.
-  MODE does nothing; the LED stays on.
+  MODE = 4-bar P1/P2 motion recorder on MIDI clock, as crash: click to
+  record (LED blinks), after 4 bars it loops (LED solid); click again for
+  live knobs (LED off). While looping, the knobs are ignored for the first
+  4-bar pass (so the hand that ends the take can't nudge it); after that
+  their positions are the reference and turning a knob shifts its whole
+  recorded curve up or down (clamped 0..1023). Needs a running MIDI clock;
+  MIDI Start rewinds.
 - **crash**: synthesized TR-808-style crash (no samples) on MIDI note-on,
   velocity = level, note ignored. P1 = brightness, P2 = hiss/metal balance.
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED
@@ -69,8 +76,17 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 - All three: the `MIDI_RX_INVERT` guard and `PORTB.PIN3CTRL |= PORT_INVEN_bm`
   after `MIDI.begin()` for JP1 = P.
 - supersaw: the CV1 pitch mode is removed (user decision, MIDI only):
-  no `updateFrequencyFromCV()`, no `ModeHandler`, MODE stays a pulled-up
-  input, LED on. Its unused `ModeHandler.h` / `LEDToggler.h` are not copied.
+  no `updateFrequencyFromCV()`, no `ModeHandler`. Its unused
+  `ModeHandler.h` / `LEDToggler.h` are not copied.
+- supersaw: MODE/LED run the crash `CvRecorder.h` (user request, 2026-10-29;
+  BM supersaw has none), with crash's `SimpleMIDI.h` (MIDI clock/Start).
+  Its `CvRecorder.h` is a symlink to the shared
+  `opt/attiny1616-tools/lib/CvRecorder/CvRecorder.h` (crash's recorder plus
+  the loop offset, user request 2026-10-29), which adds: a one-pass
+  guard (`REC_GUARD_TICKS` = 384 clocks) after the take, then
+  `apply(recorded + knob - reference)`. The knobs are read with the deadband
+  into `liveCV1/2` in `readKnobs()`; `setDecayFromCV1()` / `setVolumeFromCV2()`
+  take the live value, or the recorded one in PLAYBACK.
 - supersaw: P1 envelope added (user request; BM has none): `updateDecayFromCV1()`
   and `updateEnvelope()` in `loop()` (1 ms steps on `millis()`), the TCB0 ISR
   scales the mix by `envLevel`. The note-on velocity sets the envelope start
@@ -78,10 +94,11 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 - Build scripts: module wrappers (`compile.sh`, `flash.sh`, `jumper.sh`) over the
   shared `opt/attiny1616-tools` instead of BM's per-firmware symlinks; BM's
   per-firmware READMEs are folded into this one.
-- Everything else (`SimpleMIDI.h`, samples, `CrashSynth.h`, `CvRecorder.h`,
+- Everything else (`SimpleMIDI.h` (crash's in supersaw), samples, `CrashSynth.h`, `CvRecorder.h`,
   the crash `sim/`) is the BM file, unchanged.
 
 Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
-drums 15350 / 15340 B flash, 396 B RAM; supersaw 6628 / 6618 B, 340 B;
-crash 6587 / 6577 B, 1161 B. `crash/sim.sh`: 66 checks, 0 failures.
+drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
+(recorder, 2026-10-29); crash 6587 / 6577 B, 1161 B. `crash/sim.sh`: 66
+checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
 Not bench-tested on the 8bit carrier yet.
