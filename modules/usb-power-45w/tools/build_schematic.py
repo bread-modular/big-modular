@@ -1,10 +1,10 @@
-"""Generate the usb-power-45w S2 schematic (hardware/usb-power-45w.kicad_sch) and its pinned symbols.
+"""Generate the usb-power-45w S5 schematic (hardware/usb-power-45w.kicad_sch) and its pinned symbols.
 
 Run from modules/usb-power-45w:
   python3 -B tools/build_schematic.py
 
 Writes hardware/USBPOWER45.kicad_sym (stock KiCad 10 symbols, derived symbols flattened, the CH224A,
-HRO TYPE-C-31-M-12 and TL3340AF160QG symbols of modules/usb-power, and the hand-drawn LMR38020F / TPS259470A symbols of
+HRO TYPE-C-31-M-12 and TL3340AF160QG symbols of modules/usb-power, and the hand-drawn LMR38020F / TPS16630 symbols of
 tools/USBPOWER45-src.kicad_sym), hardware/sym-lib-table and the flat root schematic, then lets
 `kicad-cli sch upgrade --force` re-save it natively.
 
@@ -17,6 +17,7 @@ connection point and junction dots are added; the build asserts nothing dangles 
 exported native netlist equals the circuit table. Nets named with a leading '_' are short local
 links drawn without a label (compared by pins only).
 """
+import argparse
 import copy
 import hashlib
 import json
@@ -50,9 +51,10 @@ FILTER_EDITS = {
 SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'C_Polarized': ('Device', 'C_Polarized'), 'L': ('Device', 'L'),
     'Fuse': ('Device', 'Fuse'), 'LED': ('Device', 'LED'), 'D_Schottky': ('Device', 'D_Schottky'),
-    'D_Zener': ('Device', 'D_Zener'), 'MMBT3906': ('Transistor_BJT', 'MMBT3906'),
+    'D_Zener': ('Device', 'D_Zener'), 'BCX53_NXP': ('LOCAL', 'BCX53_NXP'), 'MMBT3906': ('Transistor_BJT', 'MMBT3906'),
     'TPS62933F': ('Regulator_Switching', 'TPS62933F'), 'LMR38020FDDA': ('LOCAL', 'LMR38020FDDA'),
-    'TPS259470ARPW': ('LOCAL', 'TPS259470ARPW'),
+    'TPS16630PWP': ('LOCAL', 'TPS16630PWP'),
+    'TestPoint': ('Connector', 'TestPoint'),
     'CH224A': ('UP', 'CH224A'), 'HRO_TYPE_C_31_M_12': ('UP', 'HRO_TYPE_C_31_M_12'),
     'TL3340AF160QG': ('UP', 'TL3340AF160QG'),
     'Conn_02x08_Odd_Even': ('Connector_Generic', 'Conn_02x08_Odd_Even'),
@@ -61,18 +63,19 @@ SYMBOLS = {
 }
 
 FP = {
-    'R0603': 'R_0603_1608Metric', 'C0603': 'C_0603_1608Metric', 'C1206': 'C_1206_3216Metric',
-    'CP63': 'CP_Elec_6.3x7.7', 'F1206': 'Fuse_1206_3216Metric', 'SMA': 'D_SMA', 'SMB': 'D_SMB',
-    'LED0603': 'LED_0603_1608Metric', 'SOT23': 'SOT-23', 'USBC': 'HRO-TYPE-C-31-M-12',
+    'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric', 'C0603': 'C_0603_1608Metric', 'C1206': 'C_1206_3216Metric',
+    'CP63': 'CP_Elec_6.3x7.7', 'F1206': 'Fuse_1206_3216Metric', 'SMA': 'D_SMA', 'SMB': 'D_SMB', 'SMC': 'D_SMC',
+    'LED0603': 'LED_0603_1608Metric', 'SOT89': 'SOT-89-3', 'SOT23': 'SOT-23', 'USBC': 'HRO-TYPE-C-31-M-12',
     'SSOP10': 'SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm',
     'SOT583': 'SOT-583-8', 'PPAD8': 'TI_SO-PowerPAD-8_ThermalVias',
-    'RPW10': 'Texas_RPW0010A_VQFN-HR-10_2x2mm_P0.45mm',
+    'PWP20': 'HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias',
+    'TP': 'TestPoint_Pad_D1.0mm',
     'SLO1040': 'L_SLO1040H6R8MTT', 'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical',
     'TL3340': 'SW_TL3340AF160QG_HandSolder', 'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',
 }
 
 # Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
-NOT_ASSEMBLED = set()
+NOT_ASSEMBLED = {f'TP{i}' for i in range(1, 9)}
 
 
 def uid(key):
@@ -374,7 +377,11 @@ def text_at(p, sym):
     return out
 
 
-def build():
+def build(output_root=None):
+    output_root = Path(output_root).resolve() if output_root else MODULE
+    HW = output_root / 'hardware'
+    HW.mkdir(parents=True, exist_ok=True)
+    (output_root / 'docs').mkdir(parents=True, exist_ok=True)
     lib_syms, sources = {}, {}
     for key, (lib, name) in SYMBOLS.items():
         sym, src, parent = stock_symbol(lib, name)
@@ -386,7 +393,8 @@ def build():
         if lib == 'UP':
             edit = 'symbol of modules/usb-power (KiCad 10 stock has no CH224A / HRO TYPE-C-31-M-12 / TL3340AF160QG)'
         if lib == 'LOCAL':
-            edit = 'hand-drawn from the TI datasheet pin table (KiCad 10 stock has no LMR38020 / TPS25947)'
+            edit = ('Nexperia BCX53 E=1 C=2 B=3; adapted stock drawing, exact manufacturer pin map'
+                    if key == 'BCX53_NXP' else 'hand-drawn from the TI datasheet pin table (LMR38020 / TPS16630)')
         sym[1] = key
         for u in nodes(sym, 'symbol'):
             u[1] = key + '_' + '_'.join(u[1].rsplit('_', 2)[-2:])
@@ -406,9 +414,9 @@ def build():
     root = uid('root')
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
-      (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - usb-power-45w") (rev "S3") (company "Big Modular")
-        (comment 1 "S3: PD 20 V -> eFuse -> forced-PWM switchers; no LDOs; RESET + panel LED")
+      (uuid {q(root)}) (paper "A2")
+      (title_block (title "Big Modular - usb-power-45w") (rev "S5") (company "Big Modular")
+        (comment 1 "S5: board-side 4.19 A limit; 20 V / 5 A for full load; PGOOD; unchanged converters")
         (comment 2 "Design notes and budget: docs/design.md"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
@@ -491,11 +499,14 @@ def build():
     subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
                    stdout=subprocess.DEVNULL)
     check_netlist(out, nets, {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None})
-    (MODULE / 'docs/schematic-symbols.json').write_text(json.dumps(
+    (output_root / 'docs/schematic-symbols.json').write_text(json.dumps(
         {'note': f'Pinned symbols in hardware/{LIB}.kicad_sym (generated by tools/build_schematic.py)',
          'symbols': sources}, indent=2) + '\n')
     print(out, f'{len(nets)} nets, {len({p["ref"] for p in parts if not p["ref"].startswith("#")})} parts')
 
 
 if __name__ == '__main__':
-    build()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-root', type=Path, help='Explicit candidate module root; default is this module')
+    args = parser.parse_args()
+    build(args.output_root)

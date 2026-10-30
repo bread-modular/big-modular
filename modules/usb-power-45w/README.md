@@ -1,58 +1,60 @@
-> **Status: S3 schematic only (ERC 0, netlist = circuit table). No PCB, no panel,
-> no JLCPCB export. Not built or bench-tested.**
+> **S5 schematic only: native ERC 0, XML/table and pad-number parity checked.**
+> No PCB, panel, manufacturing release or bench qualification. Full-load rail targets are not bench-qualified.
 
 # usb-power-45w
 
-A USB-C PD Eurorack supply for 45 W and up. It asks the charger for **20 V**
-(CH224A) and turns it straight into the rails with switchers. There are no LDOs
-and no boost stage.
+USB-C PD Eurorack power with direct forced-PWM switchers, no LDOs. S5 sizes the
+eFuse for **board-side protection**, not a 45 W adapter budget. The three
+converter stages are unchanged; the historical module/directory name is retained.
 
-```
-USB-C PD 20 V -> F1 5 A + SMBJ20A -> U5 TPS259470A eFuse -> VIN
-VIN -> U2 TPS62933F buck, 1.2 MHz                -> +12V  (2.5 A)
-VIN -> U3 TPS62933F buck, ~2.0 MHz               -> +5V   (2.5 A)
-VIN -> U4 LMR38020F inverting buck-boost, ~790 kHz -> -12V (1.0 A), enabled from +12V
-Out: J2 + J3 16-pin Eurorack box headers in parallel
-Panel: SW1 RESET (U5 EN/UVLO) + D8 red 3 mm +5V power LED, as usb-power
-```
+- **eFuse:** TPS16630PWPR, C1849461, 60 V input. **4.186 A nominal** main-path
+  threshold using R5 3.3k + R29 1k; conservative static input screen **<=4.724 A**,
+  including normal auxiliary current, with margin below the 5 A connector class.
+- **Source:** for full load, verify a **20 V / 5 A PD contract and 5 A e-marked
+  cable**, typically a dedicated 100 W-capable port. No MCU/NVM/current-contract
+  tracking. Smaller supplies can trip or cycle; they are not automatically budgeted.
+- **Input path:** D10 upgraded from SMA SS56 to **60 V / 10 A SMC SS1060**.
+  D1 TVS, U1's separate supply protection, UVLO/OVP, PGOOD, inrush ramp and
+  auto-retry remain. The larger diode still requires substantial thermal copper.
+- **Outputs:** +12 V / 2.5 A, +5 V / 2.5 A, -12 V / 1 A remain the design targets,
+  **54.5 W combined**, not proven simultaneous ratings. Estimated full-load input
+  is about 66–67 W with the documented assumptions. No 100 W output claim.
+- **Panel:** SW1 disables/restarts U5 through SHDN; it does not guarantee discharge
+  of module capacitors. D8 indicates +5 V presence.
+- **Sourcing:** R5/R29 Basic + Economic. Four inherited electrolytics remain
+  Extended and an unresolved Basic-policy gate. U5 remains below $3 at the checked
+  quantity-1 tier; stock/prices in the sourcing record are observations, not reservations.
 
-- VBUS sees only about 2 uF when the cable goes in. The eFuse ramps the bulk
-  capacitors at 2 V/ms (about 0.15 A), limits at 4.1 A and retries by itself.
-- Everything stays off unless the charger gives 17.6-25.3 V, so a charger without
-  20 V leaves the rails off.
-- Front panel as in `modules/usb-power`: SW1 (TL3340AF160QG) is a RESET button.
-  Pressing it pulls the eFuse EN/UVLO pin low, so all rails turn off; releasing it
-  restarts them in order. D8 is a red 3 mm +5V power LED, hand-soldered.
-- All three converters run in forced PWM (fixed frequency at every load, no
-  light-load pulse skipping).
-- A 45 W charger gives about 39 W across all rails together; a 60 W charger gives
-  about 52 W.
-- All parts come from the JLCPCB catalog (checked live on 2026-10-30/31). Every R/C
-  is Basic; the active parts, magnetics and connectors are Extended.
+Read [design and budget](docs/design.md), [S5 changes and qualification](docs/s5-current.md),
+[BOM](docs/bom.csv), and the [schematic PDF](docs/usb-power-45w-schematic.pdf).
 
-Design maths, budget and open points: [docs/design.md](docs/design.md). The parts
-list is in [docs/bom.csv](docs/bom.csv), and the schematic PDF in
-[docs/usb-power-45w-schematic.pdf](docs/usb-power-45w-schematic.pdf).
+## Files
 
-| Path | Contents |
-|---|---|
-| `hardware/usb-power-45w.kicad_{pro,sch}` | Native project and flat S2 schematic (generated) |
-| `hardware/USBPOWER45.{kicad_sym,pretty}` | Pinned symbols (KiCad 10 stock, CH224A / HRO USB-C from `modules/usb-power`, LMR38020F / TPS259470A from `tools/USBPOWER45-src.kicad_sym`) and footprints (RPW0010A hand-made from the TI land pattern) |
-| `tools/circuit45.py` | Circuit table, drawing, values and JLCPCB fields |
-| `tools/build_schematic.py` | Generator (modules/32bit engine): writes the schematic and checks the native netlist against the table |
+| Path | Purpose |
+| --- | --- |
+| `hardware/usb-power-45w.kicad_{pro,sch}` | Native S5 project and schematic |
+| `hardware/USBPOWER45.{kicad_sym,pretty}` | Pinned symbols and footprints |
+| `tools/circuit45.py` | Circuit table, drawing, parts and native fields |
+| `tools/build_schematic.py` | Existing generator, now supports `--output-root` for review candidates |
+| `tools/verify_design.py` | Circuit-specific native XML/field/pad checks and tolerance calculations |
+| `docs/s5-sourcing.json` | Dated catalog evidence, source hashes and explicit policy blockers |
 
-## Regenerate and check
+## Rebuild and check (from repository root)
 
-From `modules/usb-power-45w`:
+Generate into an explicit candidate first; copy required local hardware libraries
+and project settings there before running this command. Without `--output-root`,
+the generator writes the module's canonical sources, so only do that for an
+authorized circuit change.
 
 ```sh
-python3 -B tools/build_schematic.py
-kicad-cli sch erc --severity-all --exit-code-violations -o research/erc.rpt hardware/usb-power-45w.kicad_sch
-kicad-cli sch export pdf -o docs/usb-power-45w-schematic.pdf hardware/usb-power-45w.kicad_sch
-kicad-cli sch export bom --fields 'Reference,Value,Footprint,LCSC,MPN,Manufacturer,Voltage,QUANTITY' \
-  --labels 'Refs,Value,Footprint,LCSC,MPN,Manufacturer,Voltage,Qty' --group-by 'Value,Footprint,LCSC' \
-  --sort-field LCSC -o docs/bom.csv hardware/usb-power-45w.kicad_sch
+python3 -B modules/usb-power-45w/tools/build_schematic.py --output-root <candidate-module-root>
+kicad-cli sch erc --severity-all --exit-code-violations -o <reports>/erc.rpt <candidate-module-root>/hardware/usb-power-45w.kicad_sch
+kicad-cli sch export netlist --format kicadxml -o <reports>/netlist.xml <candidate-module-root>/hardware/usb-power-45w.kicad_sch
+python3 -B modules/usb-power-45w/tools/verify_design.py --netlist <reports>/netlist.xml --hardware <candidate-module-root>/hardware
 ```
 
-`tools/kicad-project.json` is the shared-check profile. The shared `check` needs a
-board, so it can only run once there is a PCB.
+Native PDF/BOM exports use `kicad-cli sch export pdf` / `sch export bom`.
+No new exporter is provided. `tools/kicad-project.json` is the shared-tool profile;
+full shared `check` needs a PCB, which does not exist yet. Shared schematic inspect
+also reports an unresolved 3D-model variable; dependencies/rules were not stripped
+to bypass it. Native CLI schematic checks are independent of those blocked gates.

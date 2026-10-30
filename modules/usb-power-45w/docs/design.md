@@ -1,186 +1,274 @@
-# usb-power-45w: design notes (S2 schematic)
+# usb-power-45w — S5 schematic
 
-Goal: a USB-C PD Eurorack supply that can use **at least 45 W**. The current
-`modules/usb-power` takes 9 V and goes boost/inverter -> LDOs (about 15 W). This one
-asks the charger for **20 V** and makes +12 V, -12 V and +5 V straight from it with
-switchers: no boost and no LDOs.
+**Schematic design, not built or production-qualified.** S5 raises the input-current limit for board protection,
+not a 45 W adapter budget, and upgrades the series reverse-blocking diode. All three converter power stages, feedback
+values, frequencies and individual rail design targets are retained from S3.
 
-S2 changes from S1 (user review 2026-10-30):
+## Architecture and source contract
 
-- **eFuse in front, small VBUS capacitance.** A cheap TPS259470A eFuse (one of the
-  parts the user proposed) now sits between the PD input and every bulk capacitor.
-  VBUS sees only about 2 uF when the cable goes in.
-- **All three converters run in forced PWM** at a fixed frequency at every load.
-  S1's LMR33630 and TPS54360B drop into pulse skipping at light load, and that can
-  bring switching bursts down into the audio band. +12V and +5V now use the TPS62933F
-  (1.2 MHz and about 2.0 MHz) and -12V uses the LMR38020F (about 790 kHz).
-
-```
-USB-C --VBUS--> F1 5 A --> VPD --> U5 TPS259470A eFuse --> VIN (20 V) --+--> U2 TPS62933F buck -----> +12V
-  CC1/CC2 -> U1 CH224A (asks for 20 V, powered from VPD)                 +--> U3 TPS62933F buck -----> +5V
-  D1 SMBJ20A, C1 + C2 = 2 uF on VPD                                      +--> U4 LMR38020F inverting -> -12V
-  U5: on 17.6-25.3 V only, VIN ramp 2 V/ms, limit 4.1 A, auto-retry           (IC ground = -12V; EN from +12V via Q1)
-  U5 AUXOFF -> EN_P: U2/U3 start only after VIN has ramped
-Outputs: J2 + J3 16-pin box headers in parallel, bulk caps, SS34 clamps, LEDs
-Panel: SW1 RESET on U5 EN/UVLO, D8 red 3 mm +5V power LED
+```text
+USB-C -> F1 5 A / 63 V -> VPD -> D10 SS1060 -> EF_IN -> U5 TPS16630 -> VIN
+                        |                                  PGOOD -> EN_P -> U2/U3
+                        +-> D1 SMBJ22A -> GND
+                        +-> R23/Q2/Q3 current limiter -> VPD_U1 -> CH224A
+                                                     |-> D9 SMAZ24 -> GND
+VIN -> U2 TPS62933F, 1.2 MHz, 6.8 uH -> +12 V
+VIN -> U3 TPS62933F, ~2 MHz, 3.3 uH  -> +5 V
+VIN -> U4 LMR38020F inverting, ~790 kHz, 15 uH -> -12 V (Q1 enable from +12 V)
+SW1 -> U5 SHDN; D8 indicates +5 V presence. J2/J3 are parallel 16-pin outputs.
 ```
 
-All parts were checked live in the JLCPCB catalog on 2026-10-30/31 (`opt/kicad-tools/jlcpcb/assembly.py
-search/lookup --strict-live`). Catalog stock is not a reservation. Every R/C is
-**Basic**. The ICs, inductors, fuse, TVS, SS34, MMBT3906, electrolytics and USB-C are
-**Extended** (each adds the usual JLC Extended setup fee). The full list is in
-`docs/bom.csv`, exported from the native schematic fields.
+**Policy: protect the board's input path; do not constrain it to a 45 W adapter.**
+The design still requests 20 V without an MCU or PD NVM programming. For full
+load, use a negotiated **20 V / 5 A contract and a 5 A e-marked cable**, typically
+from a dedicated 100 W-capable USB-C port. A multiport charger's total label is
+not enough. Confirm the actual contract/cable with a PD analyzer.
 
-## Input and eFuse
+S5 sets a **4.186 A nominal main-path overload threshold**. It is fixed hardware,
+not a power target and not an automatic available-current detector. The threshold
+is based on the **5 A class of the board's USB connector/input path**, allowing
+for tolerances, auxiliary current and a static guard, rather than protecting a
+small adapter. A weaker source can droop, trip, renegotiate or cycle under excess
+load; the board does not automatically reduce its demand or reject low-current
+20 V contracts. A defective source/cable is not made safe by this change.
 
-| Item | Choice | Why |
-|---|---|---|
-| PD sink | U1 CH224A (C42459160), CFG1 = R1 120k to GND | WCH CH224 datasheet V2.0 table 5-1: 120k asks for 20 V. It runs from VPD, ahead of the eFuse, because it has to negotiate while the eFuse is still off |
-| Connector | J1 HRO TYPE-C-31-M-12 (C165948) | Same part as usb-power. Catalog rating 5 A / 20 V |
-| Fuse | F1 0466005.NRHF 5 A 1206 (C57525) | Back-up only: U5 limits at about 4 A first |
-| TVS | D1 SMBJ20A (C10213) | 20 V stand-off, 22.2 V minimum breakdown, so it stays off at the 21 V PD maximum. Lower than S1's SMBJ22A because the eFuse's absolute maximum is 28 V |
-| eFuse | U5 TPS259470ARPWR (C3662799, about $0.71 at LCSC / $1.29 at JLC qty 1) | 2.7-23 V, 28 mOhm, adjustable UVLO and OVLO, dVdt ramp, active current limit, auto-retry. The A (auto-retry) version: it retries by itself; SW1 RESET adds a manual off/restart |
+The module's historical `usb-power-45w` name is retained. The unchanged rail
+**targets** total 54.5 W; this is not a measured output rating or a 100 W-output
+module. S4's 1.98 A / 26–29 W planning restriction is superseded.
 
-**VBUS capacitance.** The Type-C spec allows a sink about 10 uF on VBUS at attach.
-Here VBUS only sees C1 (CH224A, 1 uF) and C2 (eFuse input, 1 uF), about 2 uF. Every
-other capacitor (C5 47 uF electrolytic and all the converter input ceramics, about
-75 uF effective at 20 V) sits behind U5 and is charged slowly.
+## Input protection
 
-**Window (R2 100k / R3 2.2k / R4 5.1k, one divider on EN/UVLO and OVLO).** U5 thresholds
-are 1.20 V rising and 1.09 V falling (1.183-1.223 V):
+### Main eFuse and reverse-current blocking
 
-- on above VPD = 1.2 x 107.3 / 7.3 = **17.6 V** (18.0 V worst case); off below 16.0 V
-- cut off above VPD = 1.2 x 107.3 / 5.1 = **25.3 V** (24.9 V minimum); back on below 22.9 V
+U5 is **TPS16630PWPR**, JLCPCB **C1849461**, HTSSOP-20 with exposed pad. The part has
+60 V operating input capability, programmable UVLO/OVP, a typical 31 mOhm power
+path, dVdt startup control, current limiting, and PGOOD. It does **not** include
+reverse-current blocking; D10 explicitly supplies that function. The USB source
+must not be connected to the eFuse OUT through its body diode when unplugged.
 
-A 20 V contract (19-21 V) always passes. A 5 / 9 / 12 / 15 V contract, a charger
-without a 20 V profile or a plain 5 V port leaves **everything off**. OVLO keeps a
-faulty charger above 25 V away from the converters (TPS62933 recommended max 30 V).
-As in usb-power, seeing 20 V does not prove the charger can supply 45 W: use a
-20 V PD charger rated 45 W or more.
+D10 is now **ZHIDE SS1060, C2917888, 60 V / 10 A, SMC (DO-214AB)** instead
+of the small SMA SS56. Its anode remains VPD; cathode remains EF_IN. Its larger
+package offers more thermal layout area; the 10 A nameplate is **not** permission
+to draw 10 A through the module. Treat its dissipation as a PCB design constraint:
 
-**Inrush (C3 1 nF on dVdt).** Slew = 2000 / 1000 pF = 2 V/ms (datasheet eq. 4; the dVdt
-charge current is 0.81-3.82 uA, so 0.8-3.8 V/ms). VIN rises from 0 to 20 V in about
-10 ms, and the inrush into about 75 uF is about 75 uF x 2 V/ms = **0.15 A**. The
-converters do not load VIN during the ramp (next paragraph), so this is the whole
-start-up current the charger sees.
+- Use **0.75 V at 5 A** for screening, from the available ZHIDE manufacturer-sheet
+  mirror, rather than the catalog's more optimistic 0.70 V at 10 A. Use a
+  conservative **125 C junction ceiling**. The documents differ in surge and
+  temperature figures; do not use the catalog's larger surge number for signoff.
+- At 3.5 A, budget **2.63 W**; at the screened 4.698 A threshold, **3.53 W**.
+  At 50 C ambient, target effective junction-to-ambient thermal resistance
+  **<=20 C/W** (21.3 C/W is the calculated ceiling at 3.53 W). This is a board
+  requirement to achieve and measure, not a claimed package free-air rating.
+- The sheet's **2 C/W is junction-to-case**, not junction-to-ambient. Its
+  16 x 16 mm copper reference must not be treated as proof that the actual board
+  achieves the required cooling. Use generous connected copper on both sides
+  with thermal vias outside the SMD solder lands, and verify temperature.
+- Verify cold/hot forward drop, reverse leakage, hot-plug and fault pulses using
+  the actual ordered revision. At cold temperatures the screening drop is not
+  a guaranteed upper bound.
 
-**Start order.** U5 AUXOFF is an open drain that stays low until VIN is in the window
-and the ramp is done. It holds EN_P (U2 and U3 enable) low, so the bucks start only once
-VIN is up. Then R6 100k / R7 10k set EN_P = VIN / 11 = 1.8 V (TPS62933 EN threshold
-1.21-1.28 V, EN max 5.5 V; AUXOFF max 6.5 V). -12V follows +12V through Q1.
+The eFuse dissipates approximately **0.65 W at 3.5 A** or **1.17 W at 4.698 A**,
+using the full-temperature 53 mOhm RON maximum, plus its supply consumption.
+Its own thermal shutdown senses **U5**, not D10, F1 or the connector. Adequate
+thermal-pad soldering, copper and external-part thermal qualification are required.
 
-**Current limit (R5 820).** I_LIM = 3334 / 820 = **4.1 A** (+/-10 %, 3.7 A minimum). That
-is above the 3 A a 60 W charger gives. U5 is the board's short-circuit and overload
-protection; on a 45 W charger the charger's own limit acts first. C4 10 nF lets
-overloads pass for 1.51 V x 10 nF / 1.8 uA = 8 ms before U5 turns off. It then retries
-by itself. At 3 A, U5 drops about 0.1 V and dissipates 0.25-0.4 W.
+D1 is changed to **SMBJ22A, C10214**: 22 V stand-off, rated 35.5 V clamp at 16.9 A
+for the specified 10/1000 us waveform. This provides input-voltage headroom for
+the 60 V eFuse and avoids a 20 V stand-off device on a possible 21 V supply.
+F1 is changed to **S1206-SD-5.0A, C553937**, 5 A / 63 V DC, 50 A interrupt rating.
+It is backup fault protection, not an accurate 5 A electronic trip. Verify its
+continuous-current derating, time/current curve and I2t against the actual board
+ambient and fault pulses; a 5 A marking alone is not an all-temperature rating.
 
-FLT is left open: it is an open drain rated to 6.5 V, and there is no low-voltage rail
-that stays up during a fault to pull it up to.
+These are **not** declarations of a 60 V-rated module or IEC surge compliance.
+The TVS is transient-rated; it cannot absorb arbitrary sustained high-voltage
+sources. Cable/layout inductance, TVS pulse derating and U5's finite OVP response
+must be validated. In particular, check the downstream TPS62933 VIN peak during
+an already-powered surge; the eFuse's IN rating does not protect OUT by itself.
 
-## Rails
+### Independently protected PD controller
 
-| Rail | Converter | Parts | Output set point |
-|---|---|---|---|
-| +12V | U2 TPS62933FDRLR (C5219272), sync, 3 A, FCCM, **1.2 MHz** (RT to GND) | L1 SLO1040H6R8MTT 6.8 uH (C207852, Isat 10 A); 2 x 10 uF/50 V + 100 nF in; SS 22 nF (~3 ms); 4 x 22 uF/25 V out | R8 47k / R9 3.3k: 0.8 V x 15.24 = **12.19 V** |
-| +5V | U3 TPS62933FDRLR, sync, 3 A, FCCM, **~2.0 MHz** (RT R10 10k) | L2 SLO1040H3R3MTT 3.3 uH (C207850, Isat 16 A); same caps | R11 68k / R12 13k: 0.8 V x 6.23 = **4.98 V** |
-| -12V | U4 LMR38020FDDAR (C5149193), 80 V, 2 A, sync, FPWM, inverting buck-boost, **~790 kHz** (RT R13 33k) | L3 SLO1040H150MTT 15 uH (C182184, Isat 7 A); 2 x 10 uF/50 V + 100 nF across VIN and -12V, 10 uF VIN to GND; 5 x 22 uF out | R14 100k / R15 9.1k: 1.0 V x 11.99 = **11.99 V** |
+CH224A sits ahead of U5 so it can negotiate before the main rails start. Its
+VHV/VBUS limit is lower than D1's rated clamp, so both pins now connect to
+**VPD_U1**, not directly to VPD.
 
-The FB resistors are 1 % E24 Basic values. +12V comes out 1.6 % high (12.19 V) because
-the exact 140k / 10k pair is not a Basic part. That is well inside Eurorack's +/-5 %.
+- R23 = 33 ohm, Q2 = Nexperia BCX53-16,115, Q3 = MMBT3906LT1G form a simple
+  two-PNP current-limited pass stage. Q3 senses the R23 drop and reduces Q2 drive.
+  The current is approximately VBE/33, around 18–21 mA, **not precision regulated**.
+- D11 (SS34) clamps VPD_U1 back to VPD on input collapse, preventing C1 from
+  reverse-biasing the PNP base-emitter junctions. This small auxiliary-capacitor
+  discharge path does not bypass D10 or backfeed the main bulk to USB.
+- R27 = 10k / 250 mW pulls Q2's base down. It draws about 2 mA at 20 V and is
+  sized for roughly 0.13 W at the main TVS's 35.5 V clamp.
+- D9 = **SMAZ24-13-F, C155317**, shunts VPD_U1; C1 = 1 uF decouples it.
+  The zener is 22.8–25.2 V at its 25 mA test current, not an ideal 24 V limiter.
+  Its 1 W rating requires the datasheet PCB and thermal conditions; it is not
+  a no-copper/free-air allowance.
+- The active current limiter avoids forcing a large sustained current into D9
+  from a low-value resistor during an overvoltage. For screening, 30 mA at 26 V
+  is 0.78 W in D9 and approximately 0.3 W in Q2 at 35.5 V input. These are
+  **assumed qualification points**, not guaranteed transistor current bounds.
+- Give Q2 at least **1 cm2 collector-connected copper**, following Nexperia's
+  thermal example. Its collector/tab is **VPD_U1, not GND**. Test a shorted U1
+  supply at 21 V as well as overvoltage with an unloaded U1 branch. Target
+  verification through 50 C ambient; do not claim a full-temperature system rating.
+- Verify startup at the lowest supported attach voltage, 12 mA U1 load pulses,
+  PD negotiation/voltage sensing with the pass-stage drop, hot-plug peak below
+  **30 V at U1**, and absence of limiter oscillation with the actual C1.
 
-**Frequencies.**
+**Manufacturer-specific pin map:** the pinned `BCX53_NXP` symbol uses the
+Nexperia table-2 mapping **1=E, 2=C/tab, 3=B**. The installed KiCad `BCX53` symbol
+points to an Infineon datasheet and uses **1=B, 2=C, 3=E**. They must not be
+substituted by symbol name. The exact native symbol and physical pad map are
+checked by `tools/verify_design.py`.
 
-- TPS62933 RT: f = 17293 x RT^-0.942 kHz (datasheet eq. 2), so 10k gives about 1.98 MHz.
-  RT to GND gives 1.2 MHz (1.0-1.35 MHz).
-- LMR38020 RT: datasheet table 8-1 (34.8k = 750 kHz, 25.5k = 1 MHz), so 33k gives about
-  790 kHz. The LMR38020 oscillator tolerance is wide (-18 / +24 % at 525 kHz).
-- All three converters are free-running, not synchronised. The fundamentals are set
-  well apart (0.79 / 1.2 / 2.0 MHz) so they can't beat against each other in the
-  audio band. Some higher harmonic pairs could still land close once the tolerances
-  add up. That needs checking on the bench.
-- Forced PWM means none of them skips pulses at light load. This is the bigger
-  audible-noise fix than the frequency itself.
+### Voltage window, ramp and fault behavior
 
-**+12V and +5V (TPS62933F).**
+UVLO uses R2 100k / R3 7.5k. OVP uses R28 10k + R4 120k over R24 6.8k.
+Both sense VPD before D10. RESET no longer pulls the divider: it grounds the
+separate, internally pulled-up SHDN pin.
 
-| Rail | Inductor ripple | Peak at 2.5 A | Device limit |
-|---|---|---|---|
-| +12V | (20 - 12) x 0.6 / (1.2 MHz x 6.8 uH) = 0.59 A | 2.8 A | high side 4.2 A min, low side 2.9 A min |
-| +5V | 15 x 0.25 / (1.98 MHz x 3.3 uH) = 0.57 A | 2.8 A | same |
+| Threshold | Nominal | Screened range |
+| --- | --- | --- |
+| UVLO rising | 17.20 V | 16.23–18.23 V |
+| UVLO falling | 16.08 V | 15.04–17.12 V |
+| OVP rising | 24.14 V | 22.76–25.60 V |
+| OVP falling | 22.57 V | 21.09–24.05 V |
 
-- Inductors are scaled from TI table 10-2 (12 uH at 500 kHz for 12 V; 3.3 uH at
-  1.2 MHz for 5 V).
-- +5V on-time at 2 MHz is about 126 ns, above the 70 ns minimum.
-- Both inductors saturate well above the high-side current limit.
+The calculation includes threshold limits, +/-150 nA input leakage, 1% resistor
+tolerance and 100 ppm/K over a 100 K temperature difference. The OVP **falling**
+corner was checked as well: after a transient, even a valid 21 V input can
+recover without needing a lower-voltage power cycle. A 15 V PDO's 15.75 V upper
+corner cannot newly start the main rails; a valid 19–21 V input can.
 
-**Heat.** The TPS62933 is a small SOT-583 with no exposed pad (60 C/W on TI's 2-layer
-2 oz EVM). At +12V 2.5 A and 1.2 MHz the estimate is about 0.9 W in the IC, so
-roughly 55 C above ambient. That's fine, but the PCB needs wide copper on VIN, GND and
-SW. It is the first thing to measure. If it runs hot, set RT floating (500 kHz) on U2.
+C3 = 22 nF sets approximately 2.27 V/ms (2 uA x gain 25 / 22 nF), about 9 ms for
+the protected input ramp. U5 PGOOD adds an 8–13 ms rising deglitch before releasing
+EN_P. R6 100k / R7 10k keep EN_P within U2/U3 limits. MODE is tied to GND for
+**auto-retry**, preserving that behavior from S3.
 
-**-12V inverter (U4 LMR38020F).**
+Overload causes active current limiting, then shutdown after the internal timer
+(129–202 ms) or thermal shutdown. Auto-retry waits approximately 648 ms typical.
+PGOOD is driven low when the FET is off, with **8–13 ms falling deglitch**; it is
+not an instantaneous rail-voltage comparator. FLT is monitored at TP6, not wired
+back to EN, avoiding immediate load-shedding/re-enabling chatter. C4, the old
+external ITIMER capacitor, is removed. IMON at TP7 is approximately 0.558 V/A
+with R26 = 20k; no bypass capacitor is fitted on IMON.
 
-- The IC's ground (pin 1 and the pad) is the -12V node. L3 goes from SW to system GND.
-  The part is synchronous, so the S1 catch diode is gone.
-- Voltage on U4 and the VIN-to-(-12V) caps: VIN + 12 V = 32 V, or 37 V at the 25 V
-  OVLO. That is fine for the 80 V part and the 50 V caps.
-- Duty cycle: D = 12 / 32 = 0.375-0.385.
-- Inductor current: average = Iout / (1 - D) = 1.63 A at 1 A out. Ripple =
-  20 V x 0.385 / (790 kHz x 15 uH) = 0.65 A, so the peak is 1.95 A.
-- Limits: high side 2.6 A minimum, low side (valley) 1.8 A minimum. That allows about
-  1.3 A out before current limit, so the rail is rated **1.0 A**.
-- Right-half-plane zero at 1 A: 12 ohm x (0.615)^2 / (2 pi x 15 uH x 0.385) = about
-  125 kHz. U4 is internally compensated. 5 x 22 uF plus the 100 uF electrolytic keeps
-  the crossover low, but loop stability in the inverting setup is a bench item.
-- Enable (as in S1): Q1 (MMBT3906, emitter on +12V, base 100k to GND) feeds R17 100k /
-  R18 20k into EN_N, so EN = (V+12 - V-12) / 6. U4 starts when +12V passes about 8 V
-  (EN 1.1-1.4 V), runs with EN at about 4 V (maximum VIN + 0.3 V), and stops as soon
-  as +12V goes. -12V never runs alone.
+C1 + C2 total about 2 uF before the main eFuse, versus the nominal 10 uF attach
+capacitance limit. C5 and all converter input bulk remain behind U5. Subsequent
+output-rail/module-capacitor charging is still a separate startup-load test.
 
-**Output side** (unchanged from S1).
+## Board-side current setting and output targets
 
-- J2 and J3 are hand-soldered 16-pin box headers, in parallel with the Doepfer pinout
-  (1-2 -12V, 3-8 GND, 9-10 +12V, 11-12 +5V; CV/GATE open). Use both cables above
-  about 1.5 A per rail.
-- Each rail has a 100 uF / 35 V electrolytic, an SS34 clamp and a red LED.
+R5 = **3.3k** and new R29 = **1k**, in series from ILIM to GND:
 
-**Front panel (S3, as `modules/usb-power`)**
+```text
+R_ILIM = 3300 + 1000 = 4300 ohm
+I_LIM_nominal = 18000 / 4300 = 4.186 A
+```
 
-- SW1 TL3340AF160QG (C2886925, Extended, Economy eligible; same part and footprint as
-  usb-power SW1). Contacts 1 + 3 to EF_UV, contact 2 to GND, case floating. Pressed,
-  it holds U5 EN/UVLO at 0 V: U5 shuts down, VIN and EN_P fall and all three rails go
-  off. Released, EN/UVLO is back at 20 x 7.3 / 107.3 = 1.36 V (above the 1.2 V
-  threshold), so U5 clears any fault, ramps VIN again and the rails start in order.
-  Only works inside the 17.6-25.3 V window. Pressed current: 20 V / 100k = 0.2 mA
-  (switch rated 50 mA / 12 V; the node sits at about 1.4 V).
-- D8 red 3 mm THT LED (usb-power D10 footprint, leads formed 90 degrees, hand-soldered,
-  no LCSC) from +5V through R22 1k: about 3 mA. Shows +5V present only. The three
-  0603 rail LEDs D5-D7 stay on the board.
+Both are 1% Basic/Economic 0603 resistors. The single 4.3k candidate C23159 is
+currently Preferred Extended, so it is not silently treated as Basic. R29 must
+not be bypassed: 3.3k alone would permit an excessive current threshold.
 
-## Power budget
+| Quantity | Screened value |
+| --- | --- |
+| Main-path threshold, nominal | 4.186 A |
+| Main-path threshold, minimum | 3.693 A |
+| Main-path threshold, maximum | 4.698 A |
+| Normal auxiliary-current reserve | 25 mA |
+| Total static input at maximum limiting | 4.723 A |
+| Board connector/input-path class | 5 A |
+| Required static design guard below 5 A | >=0.25 A |
+| IMON worst screened voltage at limiting | 2.84 V, below its 4 V operating ceiling |
 
-Per-rail design maximum: **+12V 2.5 A, +5V 2.5 A, -12V 1.0 A**. The charger limits
-the total:
+Screening uses +/-10% for U5, plus each resistor's 1% tolerance and 100 ppm/K
+over 100 K. This deliberately exceeds TI's +/-7% at the nearby 4.02k/4.5 A test
+point; interpolation and the final current threshold still need prototype checks.
+This is the highest E24-equivalent setting satisfying that stated 0.25 A guard:
+4.3k passes; the next lower E24 value, 3.9k, does not. It is **not** a universal
+"maximum safe" rating independent of layout and temperature. Setting a nominal
+5 A or U5's 6 A maximum would exceed the board's 5 A class at tolerance corners.
 
-| Charger | Input | About this much out, all rails together |
-|---|---|---|
-| 45 W (20 V / 2.25 A) | 45 W | 39 W |
-| 60 W (20 V / 3 A) | 60 W | 52 W |
+An overload threshold is **not** a continuous operating target. The internal
+fast-trip level is about twice the limiting threshold and short-circuit response
+is finite; instantaneous current can exceed 5 A. Test current overshoot, input
+inductance/TVS stress, fuse pulse tolerance and repeated auto-retry thermals.
+The 25 mA reserve covers normal auxiliary consumption, not a zener fault.
 
-These assume roughly 91 % (+12V), 86 % (+5V) and 84 % (-12V) efficiency. That is a
-few points below S1 because of the higher frequencies and forced PWM. The numbers are
-estimates, not measurements. Example: a case drawing +12V 1.5 A, -12V 0.8 A and
-+5V 0.5 A uses 30.1 W out, about 35 W in.
+Per-rail targets remain **+12 V 2.5 A, +5 V 2.5 A, -12 V 1 A**. S5 removes the
+input-budget obstacle to attempting all three together; it does **not** increase
+the converters' individual ratings or prove simultaneous thermal/stability
+performance. The shared eFuse cannot impose an accurate independent limit on
+each output. Their own cycle-current/thermal protection remains essential, and
+an internally failed converter can still overvoltage its output. D2–D4 are
+polarity clamps, not output overvoltage protection.
 
-## Not done / open
+With actual divider setpoints and the existing **unmeasured** efficiencies:
 
-- **PCB:** not started. Keep the hot loops short: VIN caps to the IC pins, and for U4
-  the VIN-to-(-12V) cap loop. Use a solid GND plane, make the -12V node under U4 a
-  copper island, and give U2/U3 wide copper for heat. Footprints are pinned in
-  `hardware/USBPOWER45.pretty`. The U5 RPW0010A land pattern is hand-made from the TI
-  example board layout (4225183/A). Check it against the datasheet before ordering.
-- **Not measured:** noise and ripple (no LDOs: expect switcher ripple of a few tens of
-  mV p-p at the headers before module filtering), converter interaction, -12V loop
-  stability, thermals (U2 first), start-up with real case loads, and EMI. None of it
-  has been prototyped.
+```text
+Pconverters = 12.194*Iplus12/0.91 + 4.985*Iplus5/0.86 + 11.989*Iminus12/0.84
+VIN = V_USB_receptacle - VD10 - Iload*(RON + Rother)
+I_USB ~= Pconverters/VIN + Iaux
+```
+
+At all three current targets the rounded nominal rails total **54.5 W**; the
+actual divider values give approximately **54.94 W** and **62.26 W** converter
+input. With VD10 = 0.75 V, RON = 53 mOhm, a 50 mOhm additional connector/fuse/PCB
+allowance, and Iaux = 25 mA:
+
+| Voltage at USB receptacle | Estimated total input | Estimated input power |
+| --- | --- | --- |
+| 18.5 V (after cable drop) | 3.61 A | 66.73 W |
+| 19 V | 3.50 A | 66.59 W |
+| 20 V | 3.32 A | 66.35 W |
+| 21 V | 3.15 A | 66.14 W |
+
+These are estimates, not guaranteed worst-case converter efficiency or a cable
+loss model. The full-load main-path estimate at 18.5 V is 3.582 A, below the
+3.693 A screened minimum threshold but with limited transient margin. If actual
+efficiency, cable drop, startup load or thermal performance is worse, derate the
+loads; do **not** simply raise ILIM further. Source-terminal voltage and receptacle
+voltage are different. Use the actual measured full-load profile for signoff.
+
+## Unchanged converter stages and remaining review issues
+
+| Rail | Converter | Frequency / L | Nominal divider output |
+| --- | --- | --- | --- |
+| +12 V | TPS62933FDRLR | 1.2 MHz / 6.8 uH | 47k / 3.3k -> 12.194 V |
+| +5 V | TPS62933FDRLR | ~2.0 MHz / 3.3 uH | 68k / 13k -> 4.985 V |
+| -12 V | LMR38020FDDAR, IC ground = -12 V | ~790 kHz / 15 uH | 100k / 9.1k -> -11.989 V |
+
+The positive buck thermal margins, exact DC-bias capacitor curves, inverter
+loop stability and audio/EMI performance remain prototype work. Forced PWM is
+retained; it is not a universal fixed-frequency/noise guarantee during startup,
+faults or duty-cycle limits. The +12 V divider's high tolerance corner remains
+an identified improvement outside this protection-only change.
+
+Q1 is a level-shifted enable, not a precision rail-tracking supervisor. SW1
+removes input power but does not guarantee that module capacitors have discharged
+or that a brief press fully resets every module. D2–D4 are polarity clamps, not
+rail-overvoltage protection. Use two qualified cables where required by the
+header/cable current rating; parallel outputs do not actively balance current.
+
+## Sourcing, verification and release boundaries
+
+See [S5 changes/sourcing and qualification](s5-current.md) and the historical
+[S4 protection record](s4-protection.md). R5/R29 are independently live-checked
+Basic + Economic; D10 and the retained U5 are Extended + Economic.
+**Inherited C5/C34/C35/C36 are Extended**, contrary to the old blanket Basic claim.
+They are unchanged; their Basic-policy gate is unresolved, not silently waived.
+
+Native ERC, XML/table/pad parity, source-preservation checks and drawing inspection
+are schematic evidence only. No PCB, DRC, EMI, thermal qualification, supplier
+upload, reservation, order or commit is implied. Raw evidence is in ignored
+`research/s5-current/` (S4 history remains in `research/s4-protection/`); dated
+sourcing evidence is retained in `docs/s5-sourcing.json`. The existing Basic-policy
+blockers, shared 3D-model inspection blocker, F1/D1/J1 supplier-document and
+prototype qualification gates are not cleared by a successful schematic check.
+
+Primary references: [TI TPS1663](https://www.ti.com/lit/ds/symlink/tps1663.pdf),
+[WCH CH224](https://done.land/assets/files/ch224aq_datasheet.pdf),
+[Nexperia BCX53](https://assets.nexperia.com/documents/data-sheet/BCX53_SER.pdf),
+[Diodes SMAZ24](https://www.diodes.com/assets/Datasheets/ds18015.pdf),
+[ZHIDE SS1060 manufacturer-sheet mirror](https://datasheet4u.com/pdf/942007/SS1060.pdf).
