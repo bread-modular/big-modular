@@ -9,8 +9,10 @@ are module-relative.
   are regenerated; prototype bench performance is not claimed.
 - SR2 schematic implemented: U3 TPS54302DDCR inverting buck-boost generates
   NRAW; U4/MID/TPS65131 and dormant-positive circuitry are removed.
-- Routing is derived from the 084 baseline, with 681 track segments and 246
-  through vias (merged cleanup: `/P5` loop removed; SW1 case tie deleted, so the
+- Routing is derived from the 084 baseline, with 695 track segments and 249
+  through vias (2026-10-30: carrier deepened to 35 mm, J7 is a hand-soldered
+  2x8 IDC box header in the new top strip, pin 1 (-12 V) toward the module
+  bottom; merged cleanup: `/P5` loop removed; SW1 case tie deleted, so the
   two MP pads stay on their separate KiCad unconnected nets; pre-FAB pass: C7
   tightened at U3 and vias moved out of small SMD pads). The current
   carrier SHA and review status live only in `docs/current-review/REPORT.md`.

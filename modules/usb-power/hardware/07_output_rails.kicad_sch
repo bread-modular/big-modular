@@ -85,7 +85,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "WireLanding_2x08_P2.54mm"
+			(property "ki_fp_filters" "IDC?Header?2x08*"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2140,7 +2140,7 @@
 				)
 			)
 		)
-		(property "Value" "Manual IDC wire landing"
+		(property "Value" "IDC 2x8 box header"
 			(at 97.282 92.964 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2150,7 +2150,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BigModular:WireLanding_2x08_P2.54mm"
+		(property "Footprint" "BigModular:IDC-Header_2x08_P2.54mm_Vertical"
 			(at 96.52 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -2204,7 +2204,7 @@
 				)
 			)
 		)
-		(property "NOTE" "ON-CARRIER numbered solder lands, not an extra purchasable box header. Physical output cable boundary; single output, never another active source."
+		(property "NOTE" "Hand-soldered 2x8 shrouded IDC box header (Eurorack 16-pin power cable). Pin 1/2 = -12 V toward module bottom. Single output, never another active source."
 			(at 96.52 114.3 0)
 			(hide yes)
 			(show_name no)
