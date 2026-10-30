@@ -40748,4 +40748,28 @@
 		)
 	)
 	(embedded_fonts no)
+	(gr_text "P"
+		(at 116.25 67.6 0)
+		(layer "B.SilkS")
+		(uuid "aeb79143-e7ac-421b-9525-46ff3f0eed95")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "D"
+		(at 113.65 67.6 0)
+		(layer "B.SilkS")
+		(uuid "bdcf235c-bfc7-4e1d-9caf-e219bc124bd0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
 )
