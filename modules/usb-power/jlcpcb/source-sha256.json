@@ -2,7 +2,7 @@
   "generator": "opt/kicad-tools/jlcpcb/export.py",
   "kicad_cli": "10.0.6",
   "sources": {
-    "hardware/usb-power.kicad_pcb": "f4163f66a127813559c85a2d9745ba35fd486490767a84de6da84183088cc889",
+    "hardware/usb-power.kicad_pcb": "9af7362164024cbf7633330342c507518941e1b95ca605212c8e2e1d4dfce567",
     "hardware/usb-power.kicad_pro": "122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9",
     "hardware/usb-power.kicad_sch": "4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500",
     "hardware/01_input_protection.kicad_sch": "4777399c48fe21ad3277bb7ff3112d77afa1adad80115f92aae1bcb7a622e47b",
@@ -11,12 +11,12 @@
     "hardware/04_bipolar.kicad_sch": "461bd693b8bc373e33d4fb97b6888c0685eb206634d69c4d8a487b7533560393",
     "hardware/05_quiet_rails.kicad_sch": "527e878c851954d8f73f2872367790a856bc5b973aab2f670ec809c1d1cde0fe",
     "hardware/06_positive_boost.kicad_sch": "c6050db3041a5a9cbe6f17ae18928bf68ff48b46b96e2c13b96b6072e964397f",
-    "hardware/07_output_rails.kicad_sch": "cbc08d6df2a00e8bab480b8c714d5f74860025e710757080acc6db2b795eecf3",
+    "hardware/07_output_rails.kicad_sch": "88944bee2a52226de24a1390071b501f1bfdf5a8bdd0c895e832586000ea7656",
     "panels/front-pcb/usb-power-panel.kicad_pcb": "5e8b99ea3f9f178ea0030ab29d5c906e31b8a1ed722a0491b78efd74b32f4aab",
     "panels/front-pcb/usb-power-panel.kicad_pro": "d8211fb9ceb1112ac893d16ada5df17ab439c3295ff61ca9fb112b4154045e52"
   },
   "exports": {
-    "jlcpcb/usb-power-gerbers.zip": "90893978ee662b9d8b684f731f273a458932286d0680e43b50539bb12755c861",
+    "jlcpcb/usb-power-gerbers.zip": "e53ff0d5d1b99a7a154c9863cbd4ce8170e9a41d183de1a1f8e09bebca2e8439",
     "jlcpcb/usb-power-panel-gerbers.zip": "a4fd983ab2551ab08ac3789e7d2bb9c927ccd2b85772cd8a1766f4f4b4ad3d1f",
     "jlcpcb/assembly/bom.csv": "b7ce5ea68ab581153f9bcb356188b05209512cdc402fe8a95d8ed89db866a48f",
     "jlcpcb/assembly/positions.csv": "9909d40d37dc05712dfa7c63d07cec8b2f7cbe944fdedc6ba234ee01f1256590"

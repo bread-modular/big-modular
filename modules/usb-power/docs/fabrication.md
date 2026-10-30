@@ -9,16 +9,16 @@ complete regenerated carrier and panel export sets are in
 
 ## Carrier — four-layer
 
-- Outline **100.50 x 30.00 mm**, including the two front cutbacks. Machine to
+- Outline **100.50 x 35.00 mm**, including the two front cutbacks. Machine to
   the Edge.Cuts **centreline** (not the outside of the 0.05 mm stroke), edge
   location ±0.10 mm. No V-score, castellation, edge plating or countersink.
 - **JLC04161H-7628**, FR4 Tg155, **1.6 mm ±10%**, outer **1 oz** / inner
   **0.5 oz**; no paid stack, copper, impedance or material options.
 - **HASL with lead (SnPb)**, green mask both sides, white legend. No ENIG or
   lead-free HASL unless separately authorized.
-- **681 track segments, 246 through vias** (138 x 0.60 mm, 104 x 0.65 mm,
+- **695 track segments, 249 through vias** (141 x 0.60 mm, 104 x 0.65 mm,
   4 x 0.50 mm beside U2 pins 5/6, R17/R18 and R73/C62; all 0.30 mm drill),
-  **10 zones**, **120 footprints** (116 electrical + 4 mechanical), none on
+  **10 zones**, **118 footprints** (116 electrical + 2 mechanical), none on
   the back.
 - Vias are ordinary **tented, unfilled** 0.30 mm PTH; no plug, epoxy fill,
   copper cap or VIPPO. Tenting does not seal a barrel inside an exposed pad:

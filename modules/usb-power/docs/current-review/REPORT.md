@@ -1,5 +1,25 @@
 # usb-power current review (read-only)
 
+## 35 mm carrier, J7 moved up, strain-relief holes removed (2026-10-30, workspace 175, round 2) — supersedes the 40 mm entry below
+
+Current carrier PCB `9af73621…`. User request: drop the two spare strain-relief holes, move J7 toward the parts and shrink the depth to about 35 mm.
+
+- Outline: rear (top) edge Y62.275 -> Y67.275, carrier 100.5 x 35.0 mm. Panel side unchanged. In1 GND plane rear edge at Y68.275 (1.0 mm from the edge), one piece.
+- Removed both 2.5 mm NPTH strain-relief holes (79.25/106.25, 77.28) and their User.Drawings circles; carrier NPTH drill now has only the 0.65/0.90/3.2 mm tools.
+- J7 moved +4.6 mm in Y: pin 1 at (101.53, 72.6), rot 270 (pins 1/2 N12 still at the module-bottom end). Courtyard 78.1..107.2 x 68.9..78.9, 1.6 mm from the rear edge; nearest courtyards U12 0.56, R4 0.86, C51/C64 0.94 mm; nearest SMD pad to a J7 pad 4.14 mm (C51.2).
+- J7 feeds re-laid: N12 B.Cu 1.2 mm along Y68.9 (1.03 mm copper-to-edge); P12 B.Cu 1.2 mm from (101.3,79.1) along Y77.0; P5 B.Cu stub shortened to row 2; GND F.Cu tie with 3 GND vias moved to Y70.7. Pin labels: B silk at Y77.3, F silk "J7 OUTPUT ONLY" / "1 / -12V / RED" beside the header ends. 695 tracks / 249 vias.
+- Checks: ERC 0; DRC 0 viol / 0 unconnected / 0 parity (refill, all severities); independent ref/pin/net parity 305/305 pins, 0 diffs; source manifest equal after carrier re-export. New vias not in any SMD pad. Panel unchanged, not re-exported.
+- Not updated (legacy generator inputs): `docs/assembly-geometry.json` / `tools/stack_geometry.py` still list the old wire landing and strain-relief holes; the native PCB owns J7 now.
+
+## 40 mm carrier + J7 IDC box header (2026-10-30, workspace 175) — supersedes the pre-FAB SHA below
+
+Current carrier PCB `d6d3e8d1…`. User request: a real IDC box header on J7 hit nearby parts, and -12 V must be at the module bottom.
+
+- Outline: rear (top) edge moved from Y72.275 to Y62.275, so the carrier is 100.5 x 40 mm. Panel-side edge, bracket cutbacks/holes, J1/D10/SW1 unchanged. In1 GND plane extended into the new strip (one piece).
+- J7 footprint changed to `BigModular:IDC-Header_2x08_P2.54mm_Vertical` (copied from busboard; schematic Value/Footprint/NOTE/fp-filter and BOM.csv updated; still JLC-excluded, hand-soldered). Pin 1 at (101.53, 68.0), rot 270: pins 1/2 N12 at the high-X (module bottom) end. Courtyard 2.0 mm from the rear edge, nearest other courtyards: spare 2.5 mm NPTH holes 0.97 mm, C82 1.28 mm.
+- Rerouted only the J7 feeds: N12 B.Cu 1.2 mm from the D28/B.Cu node along Y64.8; P12 B.Cu 1.2 mm from the existing (101.3,79.1) node; P5 B.Cu 1.2 mm from the existing (96.45,82.2) via (old In1 P5 stub and the In2 N12 run removed); GND pins tied on F.Cu with 3 new GND vias at Y72.6. 695 tracks / 249 vias.
+- Checks: ERC 0; DRC 0 viol / 0 unconnected / 0 parity (refill, all severities); ref/pin/net parity equal; source manifest equal after carrier re-export (`jlcpcb/`). No new via in an SMD pad. Panel unchanged and not re-exported. `min_copper_edge_clearance` stays 0.5 mm (whole-board 1 mm keep-out not applied to this older board); new copper is >= 1.9 mm from the edge.
+
 ## Pre-FAB layout pass (2026-10-18, workspace 098) — supersedes the inventory/SHA below
 
 Current carrier PCB `f4163f66…` (PRO/schematic/panel unchanged). Edits were made only through `pcb plan/apply/promote`: 109 explicit operations (raw ops/plan/candidate in ignored `research/`). Candidate and promoted board: ERC 0; DRC 0 viol / 0 unconnected / 0 parity (refill, all severities+exclusions); exact ref/pin/net parity equal; no pad-net changes; zone outlines, drawings and design settings identical; stored fills equal a fresh refill. `jlcpcb/` regenerated with the shared exporter (manifest 0 mismatched / 0 stale; carrier PTH 246 via holes = 246 vias; BOM unchanged, CPL differs only in the five moved refs).

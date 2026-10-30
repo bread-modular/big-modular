@@ -1,6 +1,6 @@
 # V1 HRO toleranced bare-PCB mechanics
 
-Panel9.8 x128.5 x1.6mm; carrier100.5 x30 x1.6mm, perpendicular, B.Cu X2.5 /
+Panel9.8 x128.5 x1.6mm; carrier100.5 x35 x1.6mm (deepened from 30mm on 2026-10-30, then trimmed from 40 to 35mm; the extra depth is on the rear edge, panel-side geometry unchanged), perpendicular, B.Cu X2.5 /
 F.Cu X4.1. Existing outline/reliefs, bracket hole pattern and J7 landing stay unchanged.
 Panel origin is upper left, X across / Y down; Z into case. [Assembly PDF](assembly.pdf).
 
@@ -85,7 +85,7 @@ These are front-side envelope budgets, not fitted populated-board approval. Keep
 components on the front; the back carries no parts. Manufacturer height limits must hold.
 120 footprints (116 electrical + 4 mechanical); J1 HRO placement rederived,
 SW1/D10/J7 fixed. D10, C62 and C93 are DNP (pads retained); J7 is excluded.
-Carrier 681 tracks / 246 vias / 10 zones.
+Carrier 695 tracks / 249 vias / 10 zones.
 Front panel remains passive. USB aperture, LED and reset openings moved -0.60mm in X; outline, bracket holes and rail holes retained.
 D10 remains DNP: no LED MPN/procurement, lead forming or fitted-LED check is claimed;
 USB cable overmould and finished cabled depth still need trial.
@@ -100,10 +100,12 @@ USB cable overmould and finished cabled depth still need trial.
 | 11,12 | P5 / +5 V |
 | 13..16 | NC; no CV/gate/bus drive |
 
-J7 is numbered solder lands, not a second purchased box header. One manual flying
-lead terminates in the keyed16-pin output harness; that off-board connector is not
-modeled as a second schematic connector. Verify orientation/continuity and strain relief before use; never
-parallel an active rack PSU. D10 is DNP: cathode1=GND pad, anode2=R32 output pad, and
+J7 is a hand-soldered 2x8 shrouded IDC box header (BigModular:IDC-Header_2x08_P2.54mm_Vertical,
+JLC-excluded) in the rear strip added on 2026-10-30: pin 1 at native (101.53, 72.6), rotated
+270 so pins 1/2 (-12V, red stripe) sit at the high-X end, i.e. toward the module bottom
+(panel Y = native X - 35.75). Courtyard 78.1..107.2 x 68.9..78.9 (1.6mm from the rear edge, >= 0.56mm
+from the U12 courtyard). The old 2.5mm strain-relief holes are removed (the ribbon plugs in). A standard Eurorack 16-pin ribbon plugs in directly.
+Verify orientation/continuity before use; never parallel an active rack PSU. D10 is DNP: cathode1=GND pad, anode2=R32 output pad, and
 the physical footprint/indicator circuit remain; R32=1k from P5 stays fitted.
 SW1 contacts1+3=EF_SHDN, contact2=RTN, MP case lands unconnected. Keep RTN separate
 from system GND. Press disconnects input; stored output charge does not vanish instantly.
