@@ -1,0 +1,1 @@
+float midiToFrequency(float midiNote);

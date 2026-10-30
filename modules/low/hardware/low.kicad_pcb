@@ -18389,13 +18389,25 @@
 			(justify mirror)
 		)
 	)
-	(gr_text "PROT RX DIR"
-		(at 110.4 81.95 0)
+	(gr_text "P"
+		(at 109.1 82 0)
 		(layer "B.SilkS")
-		(uuid "fa285a8e-0a98-4305-a0b3-6d762c48b234")
+		(uuid "0f6a710e-0d97-4152-a4e6-a79a2b693f46")
 		(effects
 			(font
-				(size 0.8 0.8)
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(gr_text "D"
+		(at 111.7 82 0)
+		(layer "B.SilkS")
+		(uuid "9fcac300-17da-486b-bf03-28285fd68436")
+		(effects
+			(font
+				(size 1 1)
 				(thickness 0.15)
 			)
 			(justify mirror)
