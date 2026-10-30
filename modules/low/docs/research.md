@@ -103,6 +103,13 @@ taps. Back silk: "PROT RX DIR" over JP1 (bridge 1-2 protected or 2-3 direct), "U
 (square pin 1 = UPDI, pin 2 = GND), board text "LOW R2". Result unchanged: 3 DRC errors (U5
 under RV3), 0 unconnected, parity 0, no vias in SMD pads.
 
+JP1 silk fix (2026-10-30, after the first build): the mirrored "PROT RX DIR" string put PROT over
+pad 3 (MIDI_IN, direct) and DIR over pad 1 (RX_Q, protected), so a "PROT" bridge joined 2-3 (RX
+read 3.7 V, `p` firmware heard nothing). Replaced, as on the 8bit, by single letters over the pads:
+"P" at pad 1 (X109.1, bridge P-centre = protected) and "D" at pad 3 (X111.7, direct). Copper
+unchanged; check: ERC 0, 3 DRC errors (the U5/RV3 exclusions), 0 unconnected, parity 0. The
+`jlcpcb/` silk Gerbers predate this fix (source manifest now mismatched); re-export is pending.
+
 ### 5.2 Side-edge clearance (2026-10-21)
 
 User direction: keep parts off the side edges, especially the ones placed around the pots.
@@ -172,5 +179,5 @@ without touching placement or copper. Export, parts, order gates: `jlcpcb/README
 
 ## 7. Not done
 
-Panel fit / 3D check, firmware check of PORT_INVEN for the protected MIDI path, JLCPCB
-preview, bench.
+Panel fit / 3D check, JLCPCB preview, bench (including the `firmware/` PORT_INVEN build
+for the protected MIDI path: compiled, not tested on hardware).

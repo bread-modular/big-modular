@@ -38,7 +38,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | U5, U7 | VTL5C-type vactrol (Bread Modular footprint) | Back-side THT. **Fit U5 before CUTOFF (RV3)**: its leads sit under the pot body (the 3 excluded DRC items) |
 | J10 | 2x5 2.54 mm pin header | Eurorack power, back side, vertical at the bottom; pin 1 (-12 V) at the `-12V` silk. **No key**: red stripe to `-12V` |
 | J11 | 1x2 2.54 mm pin header (`UPDI` silk) | Optional, for programming; pin 1 (square) UPDI, pin 2 GND |
-| JP1 | 3-pad solder jumper (`PROT RX DIR` silk) | Copper only, **shipped open**: bridge 1-2 (protected) or 2-3 (direct), never both |
+| JP1 | 3-pad solder jumper (`P` / `D` silk) | Copper only, **shipped open**: bridge P to the centre pad (1-2, protected, `p` firmware) or D to the centre pad (2-3, direct, `d` firmware), never both |
 
 The exporter excluded exactly the 11 THT refs plus JP1 (`carrier/export-report.json`).
 
@@ -107,6 +107,8 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/low-symbols.xml hardware/
 ```
 
 ## Checks done for this export
+
+Carrier re-exported on 2026-10-30 for the JP1 silk fix: the mirrored `PROT RX DIR` text put PROT over pad 3 (direct) and DIR over pad 1 (protected); it is replaced by `P` over pad 1 (RX_Q) and `D` over pad 3 (MIDI_IN), as modules/8bit. Only `low-B_Silkscreen.gbr` changed (the other Gerbers differ by timestamp only; drills, BOM and CPL are identical). Shared `check`: ERC 0, DRC = the same 3 excluded U5/RV3 items, 0 unconnected, parity 0, manifest equal.
 
 Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 

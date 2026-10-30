@@ -20,6 +20,9 @@ are module-relative.
 - 6HP panel `panels/front-pcb/low-panel.kicad_pcb`, DRC 0.
 - **JLCPCB export** in `jlcpcb/` (2026-10-22 re-export of R3, bottom Economic, all R/C Basic): see
   `jlcpcb/README.md`. Not supplier-accepted, not built.
+- `firmware/`: BM MCO firmware (MCO 1.0.1) plus the 8bit `MIDI_RX_INVERT` JP1 guard
+  (`PORT_INVEN` on PB3 for `p`), built per JP1 setting (`p`/`d`) with the shared
+  `opt/attiny1616-tools`. Compiled, not bench-tested.
 
 ## Boundaries
 
