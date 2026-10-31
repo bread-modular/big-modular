@@ -1,0 +1,18 @@
+(version 1)
+# User-authorised (2026-10-31) front-interface copper-edge allowances. The ONLY custom rules.
+# Every other item keeps the 1.0 mm board-setup copper-edge clearance (the two rear J1
+# lugs, SW1 signal pads 1-3, the LEDs and all other copper included). Each window holds
+# only the named pads at their current positions; moving the part takes them out of the
+# window, so the 1.0 mm rule applies again.
+
+# J1: "USB is fine. Make an exception for that." Two forward HRO TYPE-C-31-M-12 S1 shell
+# lugs at X64.93 / X73.57, Y100.875 (measured 0.604 mm to the Y102.275 front edge).
+(rule "J1_front_shell_lugs_edge_0p55"
+	(constraint edge_clearance (min 0.55mm))
+	(condition "A.Type == 'Pad' && A.Parent == 'J1' && A.Pad_Number == 'S1' && A.Position_Y > 100.6mm && A.Position_Y < 101.15mm && ((A.Position_X > 64.8mm && A.Position_X < 65.06mm) || (A.Position_X > 73.44mm && A.Position_X < 73.7mm))"))
+
+# SW1 (RESET): "Yes. Allow it." Two TL3340 MP case pads at X102.60 / X106.90, Y101.325
+# (1.9 x 0.7, measured 0.600 mm to the Y102.275 front edge).
+(rule "SW1_MP_case_pads_edge_0p55"
+	(constraint edge_clearance (min 0.55mm))
+	(condition "A.Type == 'Pad' && A.Parent == 'SW1' && A.Pad_Number == 'MP' && A.Position_Y > 101.2mm && A.Position_Y < 101.45mm && ((A.Position_X > 102.47mm && A.Position_X < 102.73mm) || (A.Position_X > 106.77mm && A.Position_X < 107.03mm))"))
