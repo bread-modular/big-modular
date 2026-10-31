@@ -86,13 +86,66 @@
   ],
   "new_commit": false,
   "candidate_files_sha256": {
-    "04_negative_converter.kicad_sch": "7adae5b84d40ee2cf4392d974a294e34ebddc19853e76ff093af904d8287a676",
-    "03_positive_5v.kicad_sch": "2a63c7242ab0cc6af08a20e228e195e0de4f6d99d93b2121a435e3050267bad8",
-    "02_positive_12v.kicad_sch": "b5db834e601e290119519c9ff0a708e558a748662515001df301ecc45d81b56f",
-    "05_negative_protection.kicad_sch": "0b6f2c7f9a955e1cd3587503a7567d3ce145b939a10d5ec068d5173ca7a8595f",
-    "07_outputs_status.kicad_sch": "c419dc6ba64825928b34ffe81782d8bd9209a397f1a40a3a09d0feb90c8b3a90",
-    "usb-power-45w.kicad_sch": "eac8f64041f246950a75b6d7ccd6d37b0109b1fe8ebfd6b35746e8ecda44db00",
-    "01_usb_input.kicad_sch": "b1ed912e5730d2231a3b46b089d2b15f7546b8c9735f8d5c99fdf9af36d970b8",
-    "06_fault_reset.kicad_sch": "25ac313034578cb8bab5ba8e9c07eced7408b203fdd1fa40eeafe912056bb471"
+    "01_usb_input.kicad_sch": "afab9df1ad978fb3c95bfefc06c4c123cec87aab81e99c42f957a736972a92f1",
+    "02_positive_12v.kicad_sch": "1286a0ca1e930c08e77edc57a12770e62cac8d2d7b8f41299e93482bae0a68d9",
+    "03_positive_5v.kicad_sch": "c7a6b5452a2bdd4c9afa1bd05f27130a61c89eddf9cb706f220287f922e34691",
+    "04_negative_converter.kicad_sch": "9cc80be1fe71c6ae5b1a58456cf04b66b0b44f8c4799ea8ffdd5b7fc7a7dd681",
+    "05_negative_protection.kicad_sch": "b7bbf47d0cd1992577261251b3f802976300e0f8fd8e45e3e31e87d0f95ddb7f",
+    "06_fault_reset.kicad_sch": "b56f1e7eb536cfffd3119e19a7bb28459d6cb4388c92758d6fc95ba8d81a0382",
+    "07_outputs_status.kicad_sch": "ffe5d64e272f79015d16ff56f73f4c3610d87e556e363aabf933f647ec58efdc",
+    "usb-power-45w.kicad_sch": "eac8f64041f246950a75b6d7ccd6d37b0109b1fe8ebfd6b35746e8ecda44db00"
+  },
+  "tps3808_pin_correction": {
+    "date": "2026-10-31",
+    "scope": "Targeted repair only; not a new full review, PCB or bench qualification.",
+    "source": {
+      "document": "TI SBVS050N TPS3808 datasheet, Figure 5-1 / Table 5-1 (DBV SOT-23-6)",
+      "url": "https://www.ti.com/lit/ds/symlink/tps3808.pdf",
+      "sha256": "74d889c0f68af88032f1633c26381817cc03e10d9fd3b4c177a044ad3ed86eed",
+      "pins": {
+        "1": "RESET",
+        "2": "GND",
+        "3": "MR",
+        "4": "CT",
+        "5": "SENSE",
+        "6": "VDD"
+      }
+    },
+    "previous_symbol_pins": {
+      "3": "SENSE",
+      "5": "MR_N"
+    },
+    "net_changes": {
+      "U10.3": [
+        "POR_SENSE",
+        "RESET_BTN_N"
+      ],
+      "U10.5": [
+        "RESET_BTN_N",
+        "POR_SENSE"
+      ],
+      "U11.3": [
+        "START_SENSE",
+        "RESET_N"
+      ],
+      "U11.5": [
+        "RESET_N",
+        "START_SENSE"
+      ]
+    },
+    "other_component_net_field_NC_changes": 0,
+    "schematic_wire_label_NC_changes": 0,
+    "native_root_ERC": {
+      "errors": 0,
+      "warnings": 0,
+      "exclusions": 0,
+      "ignored_checks": 0
+    },
+    "flat_to_hierarchy_parity": true,
+    "deterministic_rebuild_identical": true,
+    "native_save_reload_netlist_equal": true,
+    "verify_design": "pass (217 components, 149 nets incl. NC, 256 digital cases, 210 S5 connections)",
+    "regression_tests": "tools/test_tps3808_pins.py: 6 passed (current design passes; old self-consistent map, real 077905c schematic, old-symbol/new-net and new-symbol/old-net all rejected by the independent TI-table check)",
+    "shared_kicad_tools_check": "not run: profile has no board (\"Manifest requires explicit board\"); native CLI gates used instead"
   }
 }

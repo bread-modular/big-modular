@@ -130,7 +130,7 @@ def extend(c, part, two, res, cap):
 
     # POR/manual RESET and separate qualified-input startup timer.
     c.append(part('U10','TPS3808G01','TPS3808G01DBVR','SOT236',(177.8,462.28),0,
-                  {'1':'RESET_N','2':'GND','3':'POR_SENSE','4':None,'5':'RESET_BTN_N','6':'V3V3'},
+                  {'1':'RESET_N','2':'GND','3':'RESET_BTN_N','4':None,'5':'POR_SENSE','6':'V3V3'},
                   LCSC='C19653',MPN='TPS3808G01DBVR',Manufacturer='Texas Instruments',Note='2.916 V nominal logic POR, 20 ms typical holdoff (CT open); asynchronous reset of both latches.'))
     c.append(res('R65','47k',(149.86,497.84),'POR_SER','POR_SENSE'))
     c.append(res('R91','15k',(149.86,480.06),'V3V3','POR_SER',Note='62k total POR top: 2.916 V nominal; adequate margin below minimum 3.3-V LDO output.'))
@@ -139,7 +139,7 @@ def extend(c, part, two, res, cap):
     c.append(res('R68','10k',(205.74,497.84),'V3V3','RESET_BTN_N'))
     c.append(cap('C48','100n','C0603',(233.68,497.84),'V3V3','GND'))
     c.append(part('U11','TPS3808G01','TPS3808G01DBVR','SOT236',(302.26,462.28),0,
-                  {'1':'START_READY','2':'GND','3':'START_SENSE','4':'START_CT','5':'RESET_N','6':'V3V3'},
+                  {'1':'START_READY','2':'GND','3':'RESET_N','4':'START_CT','5':'START_SENSE','6':'V3V3'},
                   LCSC='C19653',MPN='TPS3808G01DBVR',Manufacturer='Texas Instruments',Note='Timer begins only at RUN and >=20-V-class input. 1u gives ~5.7 s qualification, not reset by individual bad rails.'))
     c.append(res('R69','33k',(274.32,497.84),'TIMER_GO','START_SENSE'))
     c.append(res('R70','10k',(274.32,515.62),'START_SENSE','GND'))

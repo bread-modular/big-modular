@@ -15,6 +15,57 @@ from build_schematic import FP
 from sexp import parse, nodes, one
 
 
+# Independently specified function pin -> net expectations of the critical parts.
+CRIT={
+  'U5':{1:'EF_IN',2:'EF_IN',3:'EF_IN',6:'EF_IN',7:'EF_UV',8:'EF_OV',9:'GND',10:'EF_DVDT',11:'EF_ILM',12:'GND',13:'RUN',14:'EF_IMON',15:'MAIN_OK',16:'MAIN_OK',18:'VIN',19:'VIN',20:'VIN',21:'GND'},
+  'U6':{1:'P12_RAW',2:'P12_RAW',3:'P12_RAW',6:'P12_RAW',7:'P12_UV',8:'P12_OV',9:'GND',10:'P12_DVDT',11:'P12_ILIM',13:'RUN',15:'P12_OK',16:'P12_OK',18:'+12V',19:'+12V',20:'+12V',21:'GND'},
+  'U7':{1:'P5_RAW',2:'P5_RAW',3:'P5_RAW',6:'P5_RAW',7:'P5_UV',8:'P5_OV',9:'GND',10:'P5_DVDT',11:'P5_ILIM',13:'RUN',15:'P5_OK',16:'P5_OK',18:'+5V',19:'+5V',20:'+5V',21:'GND'},
+  'U8':{1:'N_VCC',2:'N_UV',3:'N_OV',4:'N_PWR',5:'N12_RAW',6:'N_TIMER',7:'N_SENSE_PIN',8:'N_GATE',9:'N_OUT_PIN',10:'N_PGD'},
+  'Q4':{1:'N_GATE',2:'-12V',3:'N_SENSE'},
+  'U9':{1:'V3V3',4:'GND',5:'VPD',8:'VPD',9:'GND'},
+  'U10':{1:'RESET_N',2:'GND',3:'RESET_BTN_N',5:'POR_SENSE',6:'V3V3'},
+  'U11':{1:'START_READY',2:'GND',3:'RESET_N',4:'START_CT',5:'START_SENSE',6:'V3V3'},
+  'U12':{1:'RESET_N',2:'V3V3',3:'START_READY',4:'V3V3',5:'ARMED',7:'GND',8:'NOT_FAULT',9:'FAULT_LATCH',10:'V3V3',11:'FAULT_CLK',12:'V3V3',13:'RESET_N',14:'V3V3'},
+  'U16':{1:'NEG_OFF_LED',2:'NEG_OFF_K',3:'N12_RAW',4:'N_UV'},
+  'U17':{1:'N_PGD_LED',2:'N_PGD',3:'GND',4:'N12_STATUS'},
+  'U18':{1:'P12_OK',2:'P5_OK',3:'V3V3',4:'REF_GOOD',5:'MON_P5',6:'REF_GOOD',7:'MON_P12',8:'MON_N12',9:'REF_GOOD',10:'REF_GOOD',11:'MON_20',12:'GND',13:'V20_OK',14:'N12_STATUS'},
+  'U19':{2:'N12_STATUS',3:'GND',4:'N12_OK',5:'V3V3'},
+  'SW1':{1:'RESET_BTN_N',3:'RESET_BTN_N',2:'GND'},
+  'D10':{1:'EF_IN',2:'VPD'},'Q2':{1:'PD_SENSE',2:'VPD_U1',3:'PD_BASE'},
+  'U2':{2:'MAIN_OK'},'U3':{2:'MAIN_OK'},'U4':{1:'N12_RAW',9:'N12_RAW'},
+  'Q10':{1:'RUN',2:'GND',3:'LED_RETURN'},
+}
+
+# TPS3808G01DBVR manufacturer pin identity, transcribed from TI SBVS050N
+# (https://www.ti.com/lit/ds/symlink/tps3808.pdf) Figure 5-1 / Table 5-1, DBV
+# 6-pin SOT-23. Kept apart from circuit(), CRIT and the local symbol so a
+# self-consistent wrong map in all of those cannot pass (S6 had SENSE=3/MR=5).
+TPS3808_DBV={'1':'RESET','2':'GND','3':'MR','4':'CT','5':'SENSE','6':'VDD'}
+# Datasheet role -> pin of another part it must share a net with (circuit intent).
+TPS3808_ROLES={
+  'U10':{'SENSE':('R66','1'),'MR':('SW1','1'),'RESET':('U12','1')},
+  'U11':{'SENSE':('R70','1'),'MR':('U10','RESET'),'RESET':('U12','3'),'CT':('C49','1')},
+}
+
+
+def check_tps3808(root,comps,pins):
+    """Native symbol pin names, instance pin functions and roles against TI's pin table."""
+    plain=lambda name:name[:-2] if name.endswith('_N') else name
+    lib={p.get('part'):{x.get('num'):plain(x.get('name')) for x in p.findall('pins/pin')}
+         for p in root.findall('libparts/libpart')}
+    assert lib.get('TPS3808G01')==TPS3808_DBV,('TPS3808G01 symbol pin identity differs from TI DBV Table 5-1',lib.get('TPS3808G01'))
+    role={name:num for num,name in TPS3808_DBV.items()}
+    for ref,roles in TPS3808_ROLES.items():
+        assert comps[ref].findtext('fields/field[@name="MPN"]')=='TPS3808G01DBVR',(ref,'TPS3808 MPN')
+        for node in root.iter('node'):
+            if node.get('ref')==ref:   # KiCad 10 exports pinfunction as NAME_NUMBER
+                num=node.get('pin');func=node.get('pinfunction').removesuffix('_'+num)
+                assert plain(func)==TPS3808_DBV[num],(ref,num,func,'TPS3808 pin function')
+        for name,(other,opin) in roles.items():
+            opin=role.get(opin,opin) if other in TPS3808_ROLES else opin
+            assert pins[(ref,role[name])]==pins[(other,opin)],(ref,name,'pin',role[name],'TPS3808 role not on',other,opin)
+
+
 def load_xml(path):
     root=ET.parse(path).getroot()
     comps={c.get('ref'):c for c in root.findall('components/comp')}
@@ -49,28 +100,10 @@ def verify(netlist,hardware,previous=None):
     def value(ref):
         s=comps[ref].findtext('value')
         return float(s[:-1])*{'k':1e3,'u':1e-6,'n':1e-9}[s[-1]] if s[-1] in 'kun' else float(s)
-    # Independently specified manufacturer/function pin expectations.
-    crit={
-      'U5':{1:'EF_IN',2:'EF_IN',3:'EF_IN',6:'EF_IN',7:'EF_UV',8:'EF_OV',9:'GND',10:'EF_DVDT',11:'EF_ILM',12:'GND',13:'RUN',14:'EF_IMON',15:'MAIN_OK',16:'MAIN_OK',18:'VIN',19:'VIN',20:'VIN',21:'GND'},
-      'U6':{1:'P12_RAW',2:'P12_RAW',3:'P12_RAW',6:'P12_RAW',7:'P12_UV',8:'P12_OV',9:'GND',10:'P12_DVDT',11:'P12_ILIM',13:'RUN',15:'P12_OK',16:'P12_OK',18:'+12V',19:'+12V',20:'+12V',21:'GND'},
-      'U7':{1:'P5_RAW',2:'P5_RAW',3:'P5_RAW',6:'P5_RAW',7:'P5_UV',8:'P5_OV',9:'GND',10:'P5_DVDT',11:'P5_ILIM',13:'RUN',15:'P5_OK',16:'P5_OK',18:'+5V',19:'+5V',20:'+5V',21:'GND'},
-      'U8':{1:'N_VCC',2:'N_UV',3:'N_OV',4:'N_PWR',5:'N12_RAW',6:'N_TIMER',7:'N_SENSE_PIN',8:'N_GATE',9:'N_OUT_PIN',10:'N_PGD'},
-      'Q4':{1:'N_GATE',2:'-12V',3:'N_SENSE'},
-      'U9':{1:'V3V3',4:'GND',5:'VPD',8:'VPD',9:'GND'},
-      'U10':{1:'RESET_N',2:'GND',3:'POR_SENSE',5:'RESET_BTN_N',6:'V3V3'},
-      'U11':{1:'START_READY',2:'GND',3:'START_SENSE',4:'START_CT',5:'RESET_N',6:'V3V3'},
-      'U12':{1:'RESET_N',2:'V3V3',3:'START_READY',4:'V3V3',5:'ARMED',7:'GND',8:'NOT_FAULT',9:'FAULT_LATCH',10:'V3V3',11:'FAULT_CLK',12:'V3V3',13:'RESET_N',14:'V3V3'},
-      'U16':{1:'NEG_OFF_LED',2:'NEG_OFF_K',3:'N12_RAW',4:'N_UV'},
-      'U17':{1:'N_PGD_LED',2:'N_PGD',3:'GND',4:'N12_STATUS'},
-      'U18':{1:'P12_OK',2:'P5_OK',3:'V3V3',4:'REF_GOOD',5:'MON_P5',6:'REF_GOOD',7:'MON_P12',8:'MON_N12',9:'REF_GOOD',10:'REF_GOOD',11:'MON_20',12:'GND',13:'V20_OK',14:'N12_STATUS'},
-      'U19':{2:'N12_STATUS',3:'GND',4:'N12_OK',5:'V3V3'},
-      'SW1':{1:'RESET_BTN_N',3:'RESET_BTN_N',2:'GND'},
-      'D10':{1:'EF_IN',2:'VPD'},'Q2':{1:'PD_SENSE',2:'VPD_U1',3:'PD_BASE'},
-      'U2':{2:'MAIN_OK'},'U3':{2:'MAIN_OK'},'U4':{1:'N12_RAW',9:'N12_RAW'},
-      'Q10':{1:'RUN',2:'GND',3:'LED_RETURN'},
-    }
-    for ref,m in crit.items():
+    # Independently specified manufacturer/function pin expectations (CRIT above).
+    for ref,m in CRIT.items():
         for pin,net in m.items():isnet(ref,pin,net)
+    check_tps3808(root,comps,pins)
     for ref in ['U5','U6','U7']:
         assert comps[ref].findtext('fields/field[@name="MPN"]')=='TPS16630PWPR'
         assert comps[ref].findtext('fields/field[@name="LCSC"]')=='C1849461'

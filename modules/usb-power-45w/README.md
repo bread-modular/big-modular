@@ -44,6 +44,7 @@ python3 -B modules/usb-power-45w/tools/build_schematic.py --output-root <candida
 kicad-cli sch erc --severity-all --exit-code-violations -o <erc-report> <candidate-module-root>/hardware/usb-power-45w.kicad_sch
 kicad-cli sch export netlist --format kicadxml -o <netlist.xml> <candidate-module-root>/hardware/usb-power-45w.kicad_sch
 python3 -B modules/usb-power-45w/tools/verify_design.py --netlist <netlist.xml> --hardware <candidate-module-root>/hardware
+python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
 ```
 
 The generator verifies a flat intermediate, builds the hierarchy and verifies
@@ -54,6 +55,9 @@ it is not an analog simulator or a manufacturing signoff.
 
 ## Remaining gates
 
+- **TPS3808 pin map corrected 2026-10-31** (U10/U11 MR = pin 3, SENSE = pin 5, per
+  TI SBVS050N; [record](docs/s6-rail-protection.md#tps3808-pin-map-correction-2026-10-31)).
+  A new independent full schematic review is still required before any PCB work.
 - Thermal, startup with real rack capacitance/load, overload/short, reset,
   reverse-collapse/backfeed, pin-voltage transients, noise and loop validation.
 - Exact manufacturing footprint/assembly review and inherited supplier-document gates.

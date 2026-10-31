@@ -126,6 +126,39 @@ The 10k/100n filter adds approximately millisecond-scale status deglitching, not
 a guaranteed exact delay. IC FLT/PGOOD deglitch and optocoupler delays also apply.
 Rapid faults still use each protection IC's local limiting/trip mechanisms.
 
+### TPS3808 pin-map correction (2026-10-31)
+
+The first S6 local `TPS3808G01` symbol numbered **SENSE = 3 and MR = 5**. For the
+exact part, TPS3808G01DBVR (6-pin SOT-23 DBV), TI
+[SBVS050N](https://www.ti.com/lit/ds/symlink/tps3808.pdf) Figure 5-1 / Table 5-1
+gives **RESET = 1, GND = 2, MR = 3, CT = 4, SENSE = 5, VDD = 6** (same PDF SHA-256
+as `s6-datasheet-sources.json`). As built, the analog POR/timer dividers drove the
+real MR pins, so RESET could stay asserted and the board could never start.
+
+Corrected (circuit table, local symbol, regenerated native library/sheets/PDF):
+
+| Ref | Pin 3 (MR) | Pin 5 (SENSE) |
+|---|---|---|
+| U10 | RESET_BTN_N (was POR_SENSE) | POR_SENSE (was RESET_BTN_N) |
+| U11 | RESET_N (was START_SENSE) | START_SENSE (was RESET_N) |
+
+The symbol pins keep their drawing positions, so every wire, label and NC on page
+06 is unchanged; only the pin numbers move. No other ref, net, field, value,
+footprint or NC changed (native netlist compared against the previous commit).
+The intended behaviour above is now what the pins do: SW1 and U10 RESET drive MR;
+the 62k/10k and 33k/10k dividers drive SENSE.
+
+`verify_design.py` now holds TI's DBV table separately from the circuit table,
+the per-pin expectations and the symbol, and checks the native symbol pin names,
+instance pin functions and pin roles (SENSE on the divider, MR on SW1 / U10 RESET)
+against it. `tools/test_tps3808_pins.py` proves that the old self-consistent map
+(symbol, circuit table and expectations all reverted, and the real pre-fix commit
+`077905c` schematic) passes without that check and is rejected with it, as are the
+mixed old-symbol/new-net and new-symbol/old-net cases.
+
+This is a targeted repair, **not** a new full design review. No PCB, layout or
+bench work exists; startup/reset behaviour still needs prototype testing.
+
 ## LED behavior
 
 | Panel LED | Conditions to illuminate |
@@ -187,7 +220,9 @@ are J2/J3 and D8/D16/D17/D18. TP1–TP16 are copper only, excluded from BOM/plac
 - Exact circuit-table/native ref, value, field, pin, NC and footprint pad-set parity.
 - Exact flat-to-hierarchical electrical membership parity; only net paths change.
 - Independent manufacturer-role checks for the eFuses, negative controller/FET,
-  optocouplers, supervisors, dual flip-flop and voltage comparator.
+  optocouplers, supervisors, dual flip-flop and voltage comparator. The TPS3808
+  supervisors are also checked against TI's own pin table, and regression tests
+  reject the earlier swapped SENSE/MR map (see the correction above).
 - 256 settled digital combinations plus five persistent-fault/reset scenarios.
   These use native gate nets. They are **not** SPICE or physical timing proof.
 - S5 preservation checks include 210 unchanged connections under explicit RAW

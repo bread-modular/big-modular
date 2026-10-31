@@ -144,7 +144,9 @@ remains set through subsequent rail/input loss; the board does not automatically
 retry after that common latch trips.
 
 SW1 clears both latches through a POR/reset supervisor and disables all switches
-while held, with about 20 ms release holdoff. Local protection remains active
+while held, with about 20 ms release holdoff. The TPS3808 supervisors use TI's
+DBV pin map (MR = 3, SENSE = 5), corrected on 2026-10-31; see the
+[correction record](s6-rail-protection.md#tps3808-pin-map-correction-2026-10-31). Local protection remains active
 while common startup qualification is pending. Normal positive and negative
 ramps are not simultaneous; see the detailed record. External output capacitance
 is not force-discharged and a brief RESET is not a guaranteed full module reboot.
