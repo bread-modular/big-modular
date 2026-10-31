@@ -1,0 +1,16 @@
+# 32bit module: ESP32-S3-WROOM-1U-N16R8 (16 MB flash; PSRAM not used).
+CONFIG_IDF_TARGET="esp32s3"
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+
+# BM 32bit-5v runs at 160 MHz ("more stability"); the polysynth fits easily.
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_160=y
+CONFIG_COMPILER_OPTIMIZATION_PERF=y
+CONFIG_FREERTOS_HZ=1000
+
+# Logs on the USB-C port (USB-Serial/JTAG). UART0 (GPIO44) is MIDI in only.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+
+# No radio: the 5 V linear regulator is sized for the module without Wi-Fi/BT.
+# MINIMAL_BUILD links neither (main/CMakeLists.txt REQUIRES no esp_wifi / bt).
