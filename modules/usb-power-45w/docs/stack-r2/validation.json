@@ -15,13 +15,13 @@
  "drc": {
   "base": {
    "violations": {},
-   "unconnected": 318,
+   "unconnected": 0,
    "parity": 0,
    "excluded": 0
   },
   "top": {
    "violations": {},
-   "unconnected": 163,
+   "unconnected": 0,
    "parity": 0,
    "excluded": 0
   }
@@ -215,11 +215,102 @@
      1.53
     ]
    ],
-   "vias": 0,
+   "vias": 314,
    "vias_in_smd_pads": [],
    "tracks_on_In1": 0,
-   "tracks": 0,
-   "planes": {}
+   "tracks": 1064,
+   "planes": {
+    "F.Cu:+5V": {
+     "pieces": 1,
+     "areas_mm2": [
+      24.3
+     ]
+    },
+    "F.Cu:/EF_IN": {
+     "pieces": 1,
+     "areas_mm2": [
+      17.1
+     ]
+    },
+    "F.Cu:VIN": {
+     "pieces": 1,
+     "areas_mm2": [
+      6.5
+     ]
+    },
+    "F.Cu:N12_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      20.9
+     ]
+    },
+    "F.Cu:+12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      48.3
+     ]
+    },
+    "F.Cu:-12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      56.3
+     ]
+    },
+    "F.Cu:/VPD": {
+     "pieces": 1,
+     "areas_mm2": [
+      51.6
+     ]
+    },
+    "F.Cu:/N_SENSE": {
+     "pieces": 1,
+     "areas_mm2": [
+      22.8
+     ]
+    },
+    "B.Cu:/EF_IN": {
+     "pieces": 1,
+     "areas_mm2": [
+      87.5
+     ]
+    },
+    "B.Cu:/VBUS": {
+     "pieces": 1,
+     "areas_mm2": [
+      12.5
+     ]
+    },
+    "B.Cu:-12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      107.4
+     ]
+    },
+    "B.Cu:/VPD": {
+     "pieces": 1,
+     "areas_mm2": [
+      50.1
+     ]
+    },
+    "In1.Cu:GND": {
+     "pieces": 1,
+     "areas_mm2": [
+      2922.5
+     ]
+    },
+    "In2.Cu:VIN": {
+     "pieces": 1,
+     "areas_mm2": [
+      399.7
+     ]
+    },
+    "In2.Cu:V3V3": {
+     "pieces": 1,
+     "areas_mm2": [
+      2373.6
+     ]
+    }
+   }
   },
   "top": {
    "courtyard_edge_lt_1mm": [],
@@ -275,66 +366,131 @@
     ],
     [
      [
+      "R44",
+      "XT2"
+     ],
+     2.085
+    ],
+    [
+     [
+      "R35",
+      "XT2"
+     ],
+     2.085
+    ],
+    [
+     [
       "U7",
       "XT1"
      ],
      2.1
-    ],
-    [
-     [
-      "R13",
-      "XT1"
-     ],
-     2.175
-    ],
-    [
-     [
-      "C26",
-      "XT1"
-     ],
-     2.24
     ]
    ],
-   "vias": 22,
+   "vias": 121,
    "vias_in_smd_pads": [],
    "tracks_on_In1": 0,
-   "tracks": 16,
+   "tracks": 308,
    "planes": {
+    "F.Cu:VIN": {
+     "pieces": 1,
+     "areas_mm2": [
+      18.7
+     ]
+    },
+    "F.Cu:Net-(U3-SW)": {
+     "pieces": 1,
+     "areas_mm2": [
+      10.3
+     ]
+    },
     "F.Cu:GND": {
      "pieces": 1,
      "areas_mm2": [
-      151.4
+      8.4
+     ]
+    },
+    "F.Cu:+12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      7.5
+     ]
+    },
+    "F.Cu:P12_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      85.3
      ]
     },
     "F.Cu:N12_RAW": {
      "pieces": 1,
      "areas_mm2": [
-      107.7
+      106.3
      ]
     },
-    "F.Cu:VIN": {
+    "F.Cu:Net-(U2-SW)": {
      "pieces": 1,
      "areas_mm2": [
-      19.2
+      4.8
+     ]
+    },
+    "B.Cu:+12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      77.2
+     ]
+    },
+    "B.Cu:P5_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      386.6
+     ]
+    },
+    "B.Cu:GND": {
+     "pieces": 1,
+     "areas_mm2": [
+      64.6
+     ]
+    },
+    "B.Cu:P12_RAW": {
+     "pieces": 2,
+     "areas_mm2": [
+      438.9,
+      10.2
      ]
     },
     "B.Cu:N12_RAW": {
      "pieces": 1,
      "areas_mm2": [
-      230.7
+      221.2
+     ]
+    },
+    "B.Cu:+5V": {
+     "pieces": 1,
+     "areas_mm2": [
+      63.3
+     ]
+    },
+    "B.Cu:VIN": {
+     "pieces": 1,
+     "areas_mm2": [
+      18.7
      ]
     },
     "In1.Cu:GND": {
-     "pieces": 1,
+     "pieces": 3,
      "areas_mm2": [
-      2482.4
+      2417.8,
+      2.8,
+      2.1
      ]
     },
     "In2.Cu:VIN": {
-     "pieces": 2,
+     "pieces": 4,
      "areas_mm2": [
-      2451.6,
-      2.6
+      2360.2,
+      2.6,
+      2.3,
+      2.0
      ]
     }
    }

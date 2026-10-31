@@ -1,8 +1,10 @@
-> **R2 stack (2026-10-31): S7 schematic (J3 removed, one output) + two canonical stacked boards
-> `hardware/base/` and `hardware/top/`, placed and checked; routing started (top U4 power stage).**
-> ERC 0 (root, base, top); DRC 0 violations / 0 warnings / parity 0 on both boards; base 318 and
-> top 163 unconnected (routing in progress). Aggregate base+top netlist == S7 netlist (exact).
-> Not a release, no fab export, no 45 W rating. Record: [docs/stack-r2.md](docs/stack-r2.md).
+> **R3 routing finished (2026-11-01): S7 schematic + two canonical stacked boards `hardware/base/`
+> and `hardware/top/`, both fully routed.** ERC 0 (root, base, top); DRC 0 violations / 0 warnings /
+> 0 exclusions / parity 0 and **0 unconnected on both boards**; aggregate base+top netlist == S7
+> netlist (216 refs, 145 nets); support annuli, 9 unit tests and check_stack clean. BASE SHA-256
+> `b5f4e6b2...`, TOP `922d34ab...`. Prototype routing checkpoint, **not factory-ready**: no fab
+> export, no 45 W rating, header height/current, thermal bench and fab gates open. Records:
+> [BASE final](docs/r3-base/final/README.md), [TOP](docs/r3-top/README.md), [R2 stack](docs/stack-r2.md).
 > The monolithic carrier `hardware/usb-power-45w.kicad_pcb` and the R1 notes are **superseded**
 > history (it still carries J3); the [fit study](docs/stacked-fit-study/README.md) is historical.
 

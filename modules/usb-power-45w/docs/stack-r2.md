@@ -1,8 +1,8 @@
 # usb-power-45w R2: two stacked boards, one output header (refit + first routing)
 
-> **Status (2026-10-31): canonical boards placed and checked; routing STARTED, not complete.**
-> Top: first critical group routed (U4 negative converter power stage), 163 unconnected left.
-> Base: placed, **no copper yet**, 318 unconnected. Not a manufacturing release, no fab export,
+> **Status (2026-11-01): both boards fully routed (R3), 0 unconnected, DRC/ERC/parity 0;** see
+> [BASE final](r3-base/final/README.md) and [TOP](r3-top/README.md). The R2 placement record below is
+> history (its 318/163 open counts are superseded). Not a manufacturing release, no fab export,
 > no 45 W / 54.5 W rating, no thermal or connector-current qualification.
 
 User direction (2026-10-31): "Refit with one IDC. Then start routing. I like this design." Two
