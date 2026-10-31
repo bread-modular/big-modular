@@ -1,0 +1,149 @@
+{
+ "drc_violations": {},
+ "unconnected": 0,
+ "parity": 0,
+ "excluded": 0,
+ "details": [],
+ "open_by_net": {},
+ "vias": 121,
+ "vias_in_smd_pad_or_mask": [],
+ "tracks": 308,
+ "tracks_on_In1": 0,
+ "tracks_on_In2": 0,
+ "zero_length": [],
+ "duplicate_segments": [],
+ "dangling_track_ends": [],
+ "vias_not_joining_two_layers": [],
+ "zone_fill_pieces": {
+  "F.Cu:VIN": [
+   [
+    22.03
+   ],
+   [
+    14.55
+   ],
+   [
+    18.42
+   ],
+   [
+    18.66
+   ]
+  ],
+  "F.Cu:Net-(U3-SW)": [
+   [
+    10.25
+   ]
+  ],
+  "F.Cu:GND": [
+   [
+    151.43
+   ],
+   [
+    7.86
+   ],
+   [
+    43.96
+   ],
+   [
+    10.36
+   ],
+   [
+    14.16
+   ],
+   [
+    8.36
+   ]
+  ],
+  "F.Cu:+12V": [
+   [
+    25.18
+   ],
+   [
+    7.53
+   ]
+  ],
+  "F.Cu:P12_RAW": [
+   [
+    12.61
+   ],
+   [
+    85.28
+   ]
+  ],
+  "F.Cu:N12_RAW": [
+   [
+    106.3
+   ]
+  ],
+  "F.Cu:Net-(U2-SW)": [
+   [
+    4.83
+   ]
+  ],
+  "B.Cu:+12V": [
+   [
+    77.21
+   ]
+  ],
+  "B.Cu:P5_RAW": [
+   [
+    386.55
+   ]
+  ],
+  "B.Cu:GND": [
+   [
+    10.36
+   ],
+   [
+    8.9
+   ],
+   [
+    7.87
+   ],
+   [
+    64.58
+   ]
+  ],
+  "B.Cu:P12_RAW": [
+   [
+    440.01,
+    10.18
+   ]
+  ],
+  "B.Cu:N12_RAW": [
+   [
+    221.2
+   ]
+  ],
+  "B.Cu:+5V": [
+   [
+    63.3
+   ]
+  ],
+  "B.Cu:VIN": [
+   [
+    18.66
+   ]
+  ],
+  "In1.Cu:GND": [
+   [
+    2423.16,
+    2.85,
+    2.08
+   ]
+  ],
+  "In2.Cu:VIN": [
+   [
+    2365.52,
+    2.59,
+    2.26,
+    2.01
+   ]
+  ]
+ },
+ "thermal_terminal_nets_ok": {
+  "U4.9": true,
+  "U6.21": true,
+  "U7.21": true
+ }
+}
