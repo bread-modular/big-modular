@@ -1,60 +1,66 @@
-> **S5 schematic only: native ERC 0, XML/table and pad-number parity checked.**
-> No PCB, panel, manufacturing release or bench qualification. Full-load rail targets are not bench-qualified.
+> **S6 schematic only — eight native pages, no PCB or bench qualification.**
+> Root ERC 0 errors / 0 warnings; exact pin/field/NC/pad checks and flat-to-hierarchy parity.
 
 # usb-power-45w
 
-USB-C PD Eurorack power with direct forced-PWM switchers, no LDOs. S5 sizes the
-eFuse for **board-side protection**, not a 45 W adapter budget. The three
-converter stages are unchanged; the historical module/directory name is retained.
+USB-C PD Eurorack supply with direct forced-PWM converters, independent output
+protection and **common latched shutdown/reset**. The historical name is retained;
+it does not promise 45 W output or a simultaneous 54.5 W rating.
 
-- **eFuse:** TPS16630PWPR, C1849461, 60 V input. **4.186 A nominal** main-path
-  threshold using R5 3.3k + R29 1k; conservative static input screen **<=4.724 A**,
-  including normal auxiliary current, with margin below the 5 A connector class.
-- **Source:** for full load, verify a **20 V / 5 A PD contract and 5 A e-marked
-  cable**, typically a dedicated 100 W-capable port. No MCU/NVM/current-contract
-  tracking. Smaller supplies can trip or cycle; they are not automatically budgeted.
-- **Input path:** D10 upgraded from SMA SS56 to **60 V / 10 A SMC SS1060**.
-  D1 TVS, U1's separate supply protection, UVLO/OVP, PGOOD, inrush ramp and
-  auto-retry remain. The larger diode still requires substantial thermal copper.
-- **Outputs:** +12 V / 2.5 A, +5 V / 2.5 A, -12 V / 1 A remain the design targets,
-  **54.5 W combined**, not proven simultaneous ratings. Estimated full-load input
-  is about 66–67 W with the documented assumptions. No 100 W output claim.
-- **Panel:** SW1 disables/restarts U5 through SHDN; it does not guarantee discharge
-  of module capacitors. D8 indicates +5 V presence.
-- **Sourcing:** R5/R29 Basic + Economic. Four inherited electrolytics remain
-  Extended and an unresolved Basic-policy gate. U5 remains below $3 at the checked
-  quantity-1 tier; stock/prices in the sourcing record are observations, not reservations.
+- **Input:** verify a 20 V / 5 A contract and 5 A cable for full-load experiments.
+  No automatic PD-current tracking. TPS16630 main limit remains 4.186 A nominal.
+- **Positive rails:** the same TPS16630 IC on each output, 2.647 A nominal limits.
+- **Negative rail:** LM5067 + external N-MOSFET and 50 mOhm sense network, 1 A nominal.
+- **Faults:** after startup qualification, a persistent fault disables all rails
+  until RESET/power cycle. Internal current protection also operates during startup.
+- **Panel:** D8 MAIN plus three new LEDs: D16 +12, D17 +5, D18 -12. Each rail lamp
+  follows its protected output/status. All four turn off on common latched shutdown.
+- **Readability:** wired overview and seven functional subpages, following the
+  existing `usb-power` module's style. Power, feedback, protection, timing and LED
+  paths are connected; distributed power/control interfaces remain named.
+- **Limits:** current settings have tolerances and can trip below old rail targets.
+  Startup qualification is about 5.7 s typical; output ramps are not simultaneous.
+  RESET disconnects, but does not actively discharge arbitrary rack capacitors.
 
-Read [design and budget](docs/design.md), [S5 changes and qualification](docs/s5-current.md),
-[BOM](docs/bom.csv), and the [schematic PDF](docs/usb-power-45w-schematic.pdf).
+## Open / read
 
-## Files
+- [KiCad hierarchy root](hardware/usb-power-45w.kicad_sch)
+- [Eight-page schematic PDF](docs/usb-power-45w-schematic.pdf)
+- [Current design](docs/design.md)
+- [S6 protection, LED behavior, sourcing and qualification](docs/s6-rail-protection.md)
+- [Native BOM](docs/bom.csv) · [Sourcing snapshots](docs/s6-sourcing.json)
 
-| Path | Purpose |
-| --- | --- |
-| `hardware/usb-power-45w.kicad_{pro,sch}` | Native S5 project and schematic |
-| `hardware/USBPOWER45.{kicad_sym,pretty}` | Pinned symbols and footprints |
-| `tools/circuit45.py` | Circuit table, drawing, parts and native fields |
-| `tools/build_schematic.py` | Existing generator, now supports `--output-root` for review candidates |
-| `tools/verify_design.py` | Circuit-specific native XML/field/pad checks and tolerance calculations |
-| `docs/s5-sourcing.json` | Dated catalog evidence, source hashes and explicit policy blockers |
+The root contains USB input, +12 buck/eFuse, +5 buck/eFuse, negative converter,
+negative protection, common fault/reset control, and output/status subpages.
+Do not open a child as an independent root to assess overall ERC/connectivity.
 
-## Rebuild and check (from repository root)
+## Rebuild and check
 
-Generate into an explicit candidate first; copy required local hardware libraries
-and project settings there before running this command. Without `--output-root`,
-the generator writes the module's canonical sources, so only do that for an
-authorized circuit change.
+Run from the repository root. Keep review outputs in the ignored `research/`
+area; copy the module hardware dependencies into the candidate first.
 
 ```sh
 python3 -B modules/usb-power-45w/tools/build_schematic.py --output-root <candidate-module-root>
-kicad-cli sch erc --severity-all --exit-code-violations -o <reports>/erc.rpt <candidate-module-root>/hardware/usb-power-45w.kicad_sch
-kicad-cli sch export netlist --format kicadxml -o <reports>/netlist.xml <candidate-module-root>/hardware/usb-power-45w.kicad_sch
-python3 -B modules/usb-power-45w/tools/verify_design.py --netlist <reports>/netlist.xml --hardware <candidate-module-root>/hardware
+kicad-cli sch erc --severity-all --exit-code-violations -o <erc-report> <candidate-module-root>/hardware/usb-power-45w.kicad_sch
+kicad-cli sch export netlist --format kicadxml -o <netlist.xml> <candidate-module-root>/hardware/usb-power-45w.kicad_sch
+python3 -B modules/usb-power-45w/tools/verify_design.py --netlist <netlist.xml> --hardware <candidate-module-root>/hardware
 ```
 
-Native PDF/BOM exports use `kicad-cli sch export pdf` / `sch export bom`.
-No new exporter is provided. `tools/kicad-project.json` is the shared-tool profile;
-full shared `check` needs a PCB, which does not exist yet. Shared schematic inspect
-also reports an unresolved 3D-model variable; dependencies/rules were not stripped
-to bypass it. Native CLI schematic checks are independent of those blocked gates.
+The generator verifies a flat intermediate, builds the hierarchy and verifies
+exact component/field/pin-membership preservation. `protection6.py` owns the added
+circuit; `hierarchy6.py` owns page groups and explicit schematic connections.
+`verify_design.py` checks the native result and a settled digital logic model;
+it is not an analog simulator or a manufacturing signoff.
+
+## Remaining gates
+
+- Thermal, startup with real rack capacitance/load, overload/short, reset,
+  reverse-collapse/backfeed, pin-voltage transients, noise and loop validation.
+- Exact manufacturing footprint/assembly review and inherited supplier-document gates.
+- Four inherited electrolytics remain Extended, not Basic; no sourcing-policy waiver.
+- LM5067 negative controller: only 33 units observed, about $3.08 at quantity 1.
+  Main/positive TPS16630 remain under $3 each. S6 adds about $14.86 in sourced parts
+  on a quantity-1 comparison, before manual parts, assembly/setup or shipping.
+- No PCB/panel, manufacturing release, vendor order or new commit in this task.
+
+S4/S5 change records and sourcing files remain as clearly superseded history.

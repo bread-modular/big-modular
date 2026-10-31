@@ -1,4 +1,4 @@
-"""usb-power-45w S5 circuit table and drawing.
+"""usb-power-45w S6 circuit table and drawing.
 
 Board-protection policy: USB PD 20 V; use a 5 A contract/cable for full load.
 U5 TPS16630 (60 V) limits the load path to 4.19 A nominal with PGOOD buck gating.
@@ -10,7 +10,7 @@ See docs/design.md for tolerance, transient, thermal and total-load constraints.
 """
 
 # Supply nets drawn with power symbols (net name = symbol value); every other net is a local label.
-RAIL_SYMBOL = {'GND': 'GND', 'VIN': 'VCC', '+12V': '+12V', '+5V': '+5V', '-12V': '-12V'}
+RAIL_SYMBOL = {'GND': 'GND', 'VIN': 'VCC', '+12V': '+12V', '+5V': '+5V', '-12V': '-12V', 'V3V3': 'VCC', 'P12_RAW': 'VCC', 'P5_RAW': 'VCC', 'N12_RAW': 'VCC'}
 
 # Q1 drawn mirrored about X: emitter (to +12V) on top, collector at the bottom.
 MIRROR_X = {'Q1', 'Q2', 'Q3'}
@@ -40,11 +40,11 @@ LED_AT = (505.46, 332.74)  # front panel power LED (R22 above D8)
 # Extended electrolytics: a documented unresolved Basic-policy gate, NOT an approved exception.
 UNIROYAL = 'UNI-ROYAL'
 R0603 = {'120k': 'C25808', '100k': 'C25803', '68k': 'C23231', '47k': 'C25819', '33k': 'C4216', '20k': 'C4184',
-         '13k': 'C22797', '12k': 'C22790', '10k': 'C25804', '9.1k': 'C23260', '7.5k': 'C23234', '6.8k': 'C23212', '5.1k': 'C23186', '3.3k': 'C22978',
+         '13k': 'C22797', '12k': 'C22790', '10k': 'C25804', '9.1k': 'C23260', '7.5k': 'C23234', '6.8k': 'C23212', '5.1k': 'C23186', '3.3k': 'C22978', '22k': 'C31850', '15k': 'C22809', '220k': 'C22961', '470k': 'C23178',
          '2.2k': 'C4190', '1k': 'C21190', '820': 'C23253', '33': 'C23140'}
 R_MPN = {'120k': '0603WAF1203T5E', '100k': '0603WAF1003T5E', '68k': '0603WAF6802T5E', '47k': '0603WAF4702T5E',
          '33k': '0603WAF3302T5E', '20k': '0603WAF2002T5E', '13k': '0603WAF1302T5E', '12k': '0603WAF1202T5E',
-         '10k': '0603WAF1002T5E', '9.1k': '0603WAF9101T5E', '7.5k': '0603WAF7501T5E', '6.8k': '0603WAF6801T5E', '5.1k': '0603WAF5101T5E', '3.3k': '0603WAF3301T5E',
+         '10k': '0603WAF1002T5E', '9.1k': '0603WAF9101T5E', '7.5k': '0603WAF7501T5E', '6.8k': '0603WAF6801T5E', '5.1k': '0603WAF5101T5E', '3.3k': '0603WAF3301T5E', '22k': '0603WAF2202T5E', '15k': '0603WAF1502T5E', '220k': '0603WAF2203T5E', '470k': '0603WAF4703T5E',
          '2.2k': '0603WAF2201T5E', '1k': '0603WAF1001T5E', '820': '0603WAF8200T5E', '33': '0603WAF330JT5E'}
 CAPS = {  # (value, footprint) -> fields
     ('100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO', Voltage='50V'),
@@ -300,7 +300,8 @@ def circuit():
                          ('#FLG05', '+5V', (429.26, 198.12)),
                          ('#FLG06', 'VPD_U1', (119.38, 133.35)), ('#FLG07', 'EF_IN', (182.88, 45.72))):
         c.append(part(ref, 'PWR_FLAG', 'PWR_FLAG', None, at, 0, {'1': net}))
-    return c
+    from protection6 import extend
+    return extend(c, part, two, res, cap)
 
 
 def drawing():
@@ -315,12 +316,12 @@ def drawing():
           ['U1.4', (81.28, 71.12), (81.28, 76.2), 'U1.5'], ['U1.9', 'R1.1'],
           ['C1.1', 'D9.1'], ['Q3.3', 'R27.1'], ['R23.2', 'Q2.1'],
           ['Q3.1', (71.12, 114.3), (71.12, 121.92), (55.88, 121.92)],
-          ['R2.2', 'R3.1'], ['R5.2', 'R29.1'], ['R28.2', 'R4.1'], ['R4.2', 'R24.1'], ['R6.2', 'R7.1']]
+          ['R2.2', 'R3.1'], ['R5.2', 'R29.1'], ['R28.2', 'R4.1'], ['R4.2', 'R24.1']]
     P += [('VIN', (259.08, 45.72), 270)]
     L += [('VBUS', (55.88, 45.72), 'R'), ('CC1', (58.42, 50.8), 'R'), ('CC2', (58.42, 53.34), 'R'),
           ('VPD', (129.54, 45.72), 'U'), ('EF_IN', (182.88, 45.72), 'U'),
           ('VPD_U1', (83.82, 50.8), 'U'),  ('VPD_U1', 'C1.1', 'U'), ('PD_SENSE', (71.12, 121.92), 'R'), ('PD_BASE', 'R27.1', 'R'),
-          ('EF_UV', 'R3.1', 'L'), ('EF_OV', 'R24.1', 'L'), ('EN_P', 'R7.1', 'R')]
+          ('EF_UV', 'R3.1', 'L'), ('EF_OV', 'R24.1', 'L')]
 
     def buck(u, at, out, rt):
         x, y = at
@@ -353,6 +354,8 @@ def drawing():
     P += [('VIN', (x - 63.5, yr), 90), ('-12V', (x + 45.72, y + 12.7), 90), ('-12V', (x + 86.36, y + 12.7), 270)]
     L += [('FB_N', 'R15.1', 'L'), ('EN_N', 'R18.1', 'R')]
 
+    remap = {'+12V': 'P12_RAW', '+5V': 'P5_RAW', '-12V': 'N12_RAW'}
+    P = [(remap.get(n,n),pt,rot) for n,pt,rot in P]
     # Output headers: every pin wired out to its rail symbol, GND pins joined per side
     for j, (hx, hy) in (('J2', J2_AT), ('J3', J3_AT)):
         lx, rx = hx - 5.08 - 5.08, hx + 7.62 + 5.08
@@ -370,16 +373,26 @@ def drawing():
     # Front panel RESET: both common contacts joined to dedicated SHDN
     x, y = SW_AT
     W += [['SW1.1', (x - 20.32, y - 5.08), (x - 20.32, y), 'SW1.3']]
-    L += [('EF_SHDN', (x - 20.32, y - 5.08), 'L')]
+    L += [('RESET_BTN_N', (x - 20.32, y - 5.08), 'L')]
+    from protection6 import extra_drawing
+    added = extra_drawing()
+    pin_nets = {p['ref']+'.'+pin: net for p in circuit() for pin,net in p['pins'].items()}
+    for line in added:
+        net = pin_nets[line[0]]
+        if net in RAIL_SYMBOL:
+            P.append((net, line[0], 90))
+        elif not net.startswith('_'):
+            L.append((net, line[0], 'L'))
+    W += added
     return W, P, L
 
 
 TEXTS = [
-    ((25.4, 25.4), 'S5 INPUT: USB PD 20 V; 5 A contract/cable for full load. Board eFuse limit 4.19 A; no adapter-power tracking.', 1.8),
+    ((25.4, 25.4), 'S6 INPUT: USB PD 20 V; 5 A contract/cable for full load. Board eFuse limit 4.19 A; no adapter-power tracking.', 1.8),
     ((25.4, 30.48), 'U5 TPS16630: 60 V input; UVLO 17.2 V / OVP 24.14 V nominal; ~9 ms ramp + PGOOD delay; auto-retry.', 1.5),
     ((25.4, 99.06), 'U1 ONLY: Q2/Q3 + R23 current limiter (~18 mA typ) feeds a 24 V shunt. Verify U1 <30 V.', 1.5),
     ((149.86, 139.7), 'UVLO / OVP / ramp / current / enable / diagnostic networks', 1.5),
-    ((25.4, 172.72), 'TP5 = EN_P; TP6 = raw-voltage FLT; TP7 = 0.558 V/A typical; TP8 = system GND. D10 blocks USB backfeed.', 1.5),
+    ((25.4, 172.72), 'TP5 = MAIN_OK; TP6 = FAULT_LATCH; TP7 = 0.558 V/A typical; TP8 = system GND. D10 blocks USB backfeed.', 1.5),
     ((320.04, 35.56), '+12V: TPS62933F, forced PWM, 1.2 MHz, 6.8 uH', 1.8),
     ((320.04, 40.64), 'Unchanged divider: 0.8 x (1 + 47k/3.3k) = 12.19 V nominal', 1.5),
     ((320.04, 162.56), '+5V: TPS62933F, forced PWM, ~2.0 MHz, 3.3 uH', 1.8),
@@ -387,10 +400,19 @@ TEXTS = [
     ((25.4, 184.15), '-12V: LMR38020F inverting buck-boost, forced PWM, ~790 kHz, 15 uH. IC ground = -12V.', 1.8),
     ((25.4, 189.23), 'Unchanged power stage. Q1 enables from +12V, not a precision all-rail supervisor. Validate loop stability.', 1.5),
     ((25.4, 309.88), 'OUTPUTS: parallel 16-pin Eurorack headers (pin 1 = -12V). Not for paralleling independent supplies.', 1.8),
-    ((175.26, 316.23), 'Bulk caps, polarity clamps and rail LEDs (unchanged)', 1.5),
-    ((414.02, 309.88), 'PANEL: SW1 input disable/restart; D8 +5V presence', 1.5),
+    ((175.26, 316.23), 'RAW bulk caps, polarity clamps and local SMD LEDs', 1.5),
+    ((414.02, 309.88), 'PANEL: SW1 common latched RESET; D8 moved to status block', 1.5),
     ((414.02, 314.96), 'No guaranteed discharge time / complete module reset', 1.5),
     ((25.4, 378.46), 'TARGETS: +12V 2.5 A / +5V 2.5 A / -12V 1.0 A = 54.5 W total; simultaneous operation needs bench qualification.', 1.8),
-    ((25.4, 383.54), 'Board limit: 4.3k = 3.3k + 1k; screened USB steady limit <=4.724 A. Full-load estimate ~66 W input, not a rating.', 1.5),
+    ((25.4, 383.54), 'Board limit: 4.3k = 3.3k + 1k; new aux budget 50 mA, screen <=4.748 A. Full-load estimate ~66 W input, not a rating.', 1.5),
     ((25.4, 388.62), 'D10 upgraded to 10 A SMC; thermal copper required. Smaller sources may trip/cycle. Test thermal / PD / surge / startup.', 1.5),
 ]
+
+from protection6 import TEXTS6
+TEXTS += TEXTS6
+
+for _ref in ('Q4','Q5','Q6','Q7','Q8','Q9','Q10'):
+    TEXT_POS[_ref] = ((5.08,-2.54),(5.08,0),'left')
+
+for _ref in ('D8','D16','D17','D18'):
+    TEXT_POS[_ref] = ((5.08,-1.27),(5.08,1.27),'left')
