@@ -1,0 +1,667 @@
+{
+ "revision": "M1 mechanical preview: 4HP panel + perpendicular carrier, UNROUTED",
+ "status": "Preview for user approval before placement/routing. No copper tracks, vias or zones.",
+ "hp": 4,
+ "panel_mm": [
+  20.0,
+  128.5,
+  1.6
+ ],
+ "panel_source": "modules/blank/docs/geometry.json blank-4hp: 20.0 x 128.5, rail hole X12.58, Y3/Y125.5, dia 3.2",
+ "rail_holes_mm": [
+  [
+   12.58,
+   3.0,
+   3.2
+  ],
+  [
+   12.58,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_head_diameter_mm": 6.0,
+ "rail_profile_YZ_mm": {
+  "note": "case/tools/build_case.py: rail 10.0 wide centred on the hole line, 13.5 deep behind the panel rear; clear gap >= 112.5",
+  "top_Y": [
+   -2.0,
+   8.0
+  ],
+  "bottom_Y": [
+   120.5,
+   130.5
+  ],
+  "depth_behind_rear": 13.5
+ },
+ "panel_bracket_holes_mm": [
+  [
+   6.4,
+   22.0,
+   3.2
+  ],
+  [
+   6.4,
+   106.5,
+   3.2
+  ]
+ ],
+ "native_panel_origin_mm": [
+  50.0,
+  30.0
+ ],
+ "native_carrier_map": "native x = Y + 35.75; native y = 104.275 - Z (old usb-power carrier map)",
+ "carrier_X_mm": [
+  2.5,
+  4.1
+ ],
+ "carrier_Y_mm": [
+  14.0,
+  114.5
+ ],
+ "carrier_Z_mm": [
+  2.0,
+  42.0
+ ],
+ "carrier_thickness_mm": 1.6,
+ "carrier_layers": 4,
+ "carrier_holes_YZ_mm": [
+  [
+   22.0,
+   15.0
+  ],
+  [
+   106.5,
+   15.0
+  ]
+ ],
+ "carrier_hole_mm": 3.2,
+ "carrier_bracket_reliefs_YZ_mm": [
+  [
+   16.5,
+   27.5,
+   10.0
+  ],
+  [
+   101.0,
+   112.0,
+   10.0
+  ]
+ ],
+ "depth_target": {
+  "limit_behind_panel_rear_mm": 42.0,
+  "basis": "user target <= 42 mm; case/busboard: plate top to panel rear 58.4, bus header tops 15.7 -> 42.7 mm free behind the panel rear",
+  "strict_reading": "also checked against Z <= 42.0 from the panel FRONT"
+ },
+ "aperture_XYWHR_mm": [
+  3.3,
+  28.1,
+  5.0,
+  10.8,
+  0.6
+ ],
+ "mouth_axis_XYZ_mm": [
+  5.73,
+  33.5,
+  0.8
+ ],
+ "USB": {
+  "reference": "J1",
+  "mpn": "TYPE-C-31-M-12",
+  "manufacturer": "HRO",
+  "LCSC": "C165948",
+  "mount": "SMD signal pads + 4 THT shell lugs (mixed)",
+  "body_width_depth_height_mm": [
+   8.94,
+   7.35,
+   3.26
+  ],
+  "native_origin_xy_mm": [
+   69.25,
+   103.475
+  ],
+  "orientation_deg": 0,
+  "model_status": "No verified 3D model: dimensioned envelope only (copied from usb-power)."
+ },
+ "LEDs": [
+  {
+   "reference": "D8",
+   "label": "MAIN",
+   "panel_XY_diameter_mm": [
+    6.1,
+    43.0,
+    3.6
+   ],
+   "pad1_YZ_mm": [
+    41.73,
+    6.37
+   ]
+  },
+  {
+   "reference": "D16",
+   "label": "+12V",
+   "panel_XY_diameter_mm": [
+    6.1,
+    49.5,
+    3.6
+   ],
+   "pad1_YZ_mm": [
+    48.23,
+    6.37
+   ]
+  },
+  {
+   "reference": "D17",
+   "label": "+5V",
+   "panel_XY_diameter_mm": [
+    6.1,
+    56.0,
+    3.6
+   ],
+   "pad1_YZ_mm": [
+    54.73,
+    6.37
+   ]
+  },
+  {
+   "reference": "D18",
+   "label": "-12V",
+   "panel_XY_diameter_mm": [
+    6.1,
+    62.5,
+    3.6
+   ],
+   "pad1_YZ_mm": [
+    61.23,
+    6.37
+   ]
+  }
+ ],
+ "LED": {
+  "type": "THT 3 mm round LED, leads formed 90 degrees (old D10 footprint/style, hand-soldered)",
+  "footprint": "USBPOWER45:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge",
+  "pitch_mm": 2.54,
+  "pad_diameter_mm": 1.8,
+  "axis_above_PCB_mm": 2.0,
+  "nominal_tip_Z_mm": -0.2,
+  "max_body_diameter_mm": 3.25,
+  "max_flange_diameter_mm": 3.8,
+  "panel_pitch_mm": 6.5,
+  "note": "No LED MPN selected (BOM has none). Generic 5.3 mm lamp envelope as old D10; form leads in a jig with the panel."
+ },
+ "reset_XY_diameter_mm": [
+  5.8,
+  69.0,
+  3.2
+ ],
+ "switch": {
+  "reference": "SW1",
+  "mpn": "TL3340AF160QG",
+  "manufacturer": "E-Switch",
+  "LCSC": "C2886925",
+  "mount": "SMT side-actuated (NOT through-hole); hand-solder toe pads; 2 NPTH pegs",
+  "peg_row_YZ_mm": [
+   69.0,
+   4.1
+  ],
+  "actuator_axis_height_mm": 1.7,
+  "body_height_mm": 3.3,
+  "body_width_Y_mm": 4.5,
+  "body_Z_mm": [
+   2.9,
+   5.45
+  ],
+  "actuator_tip_Z_mm": 2.05,
+  "actuator_diameter_mm": 2.0,
+  "model_status": "No verified 3D model: dimensioned envelope only (copied from usb-power)."
+ },
+ "headers": [
+  {
+   "reference": "J2",
+   "pin1_YZ_mm": [
+    76.0,
+    36.0
+   ],
+   "rotation_deg": 270
+  },
+  {
+   "reference": "J3",
+   "pin1_YZ_mm": [
+    107.0,
+    36.0
+   ],
+   "rotation_deg": 270
+  }
+ ],
+ "header": {
+  "footprint": "USBPOWER45:IDC-Header_2x08_P2.54mm_Vertical (THT, hand-soldered, unchanged pads)",
+  "orientation": "long axis along Y; pins 1/2 (-12V) at the high-Y end (module bottom), odd row at the higher Z; ribbon must leave toward +Z (case floor/bus)",
+  "reference_body": "Wurth 61201621621 WR-BHD box header: L 27.98, W 8.85, H 9.1 (+/-0.15) above PCB",
+  "reference_url": "https://www.we-online.com/components/products/datasheet/61201621621.pdf",
+  "body_LWH_max_mm": [
+   28.18,
+   9.0,
+   9.25
+  ],
+  "kicad_courtyard_local_mm": [
+   -4.68,
+   -5.6,
+   6.22,
+   23.38
+  ],
+  "note": "BOM J2/J3 carry no MPN; the Wurth part is the dimension reference, not a selection."
+ },
+ "mating_plug": {
+  "status": "PROPOSAL ENVELOPE - cable/plug is not specified in the BOM; fit is NOT proven",
+  "reference": "3M D891 / 89116 16-way IDC socket drawing 78-5100-2243-3: body 24.9 x 6.1; assembled height 14.5 without, 16.3 with standard strain relief (text-extracted drawing values; dimension assignment to be confirmed)",
+  "reference_url": "https://multimedia.3m.com/mws/media/485893O/3m-tm-idc-ribbon-cable-socket-ts2243.pdf",
+  "required_mated_height_above_FCu_max_mm": 14.8,
+  "proposal_body_LW_mm": [
+   25.2,
+   6.2
+  ],
+  "proposal_X_mm": [
+   7.1,
+   18.9
+  ],
+  "ribbon_X_mm": [
+   15.9,
+   18.9
+  ],
+  "ribbon_width_Y_mm": 20.8,
+  "ribbon_exit": "+Z",
+  "ribbon_shown_to_Z_mm": 50.0,
+  "strain_relief_worst_height_mm": 16.3,
+  "requirement": "16-pin keyed IDC socket + 1.27 mm ribbon, mated height <= 14.8 mm above carrier F.Cu (X <= 18.9), ribbon leaving toward +Z. A clip-type strain relief reaching 16.3 mm (X 20.4) overhangs the 4HP panel edge X20.0 and is not allowed unless measured lower."
+ },
+ "cans": {
+  "status": "PROVISIONAL height-context positions only, NOT a placement. Retained per capacitor study.",
+  "body": "SamYoung MVK 6.3 x 7.7 (8.0 max incl. base) SMD aluminium can, footprint CP_Elec_6.3x7.7",
+  "height_max_mm": 8.0,
+  "base_square_mm": 6.6,
+  "parts": [
+   {
+    "reference": "C5",
+    "YZ_mm": [
+     45.0,
+     22.0
+    ],
+    "rotation_deg": 0
+   },
+   {
+    "reference": "C34",
+    "YZ_mm": [
+     56.0,
+     22.0
+    ],
+    "rotation_deg": 0
+   },
+   {
+    "reference": "C35",
+    "YZ_mm": [
+     67.0,
+     22.0
+    ],
+    "rotation_deg": 0
+   },
+   {
+    "reference": "C36",
+    "YZ_mm": [
+     78.0,
+     22.0
+    ],
+    "rotation_deg": 0
+   }
+  ]
+ },
+ "brackets": {
+  "quantity": 2,
+  "identical": true,
+  "shape": "Plain L, no nut traps or inserts",
+  "Y_centres_mm": [
+   22,
+   106.5
+  ],
+  "outer_X_mm": [
+   0.1,
+   9.3
+  ],
+  "width_Y_mm": 10.0,
+  "outer_Z_mm": [
+   1.6,
+   20
+  ],
+  "wall_mm": 3.0,
+  "web_mm": 2.4,
+  "front_foot_Z_mm": [
+   1.6,
+   4.6
+  ],
+  "side_web_X_mm": [
+   0.1,
+   2.5
+  ],
+  "front_hole_X_mm": 6.4,
+  "side_hole_Z_mm": 15,
+  "hole_mm": 3.2,
+  "front_bolt": "M3 x 8 pan/button head",
+  "side_bolt": "M3 x 8 flat countersunk, 90 degrees; length includes head",
+  "front_length_mm": 8.0,
+  "side_length_mm": 8.0,
+  "side_countersink_diameter_mm": 5.0,
+  "side_countersink_angle_deg": 90,
+  "side_head_recess_mm": [
+   0,
+   0.3
+  ],
+  "front_head_diameter_max_mm": 6.0,
+  "side_head_diameter_max_mm": 5.0,
+  "nut_AF_max_mm": 5.5,
+  "nut_thickness_max_mm": 2.4,
+  "front_thread_exposure_mm": 1.0,
+  "side_thread_exposure_min_mm": 1.0,
+  "front_tool_X_mm": [
+   6.4,
+   30
+  ],
+  "front_tool_Y_width_mm": 10.0,
+  "front_tool_Z_mm": [
+   4.6,
+   7.6
+  ],
+  "side_nut_driver_diameter_max_mm": 8.0,
+  "side_nut_driver_depth_min_mm": 4.3,
+  "washers": "No washers in specified length stacks. Plain hex nuts, not nyloc.",
+  "access": "OUT OF RACK. Loose nuts and holding tool enter from +X. Front driver -Z; flush side driver -X. Main PCB can stay soldered and fitted.",
+  "material": "ABS prototype candidate; print L profile flat, measure shrinkage and trial fit",
+  "note": "Foot3.0mm, PCB web2.4mm +0.0/-0.1 (measured); countersink only in PRINTED bracket, never PCB. Front nut nominal clearance to upright is0.725mm. No print/strength qualification."
+ },
+ "solder_tail_max_below_B_Cu_mm": 1.8,
+ "hand_solder_clearance_mm": 2.0,
+ "edge_keepout_mm": 1.0,
+ "smd_parking": {
+  "origin_native_mm": [
+   160.0,
+   60.0
+  ],
+  "pitch_mm": [
+   6.0,
+   5.0
+  ],
+  "columns": 16,
+  "note": "Unplaced SMD parked OFF-BOARD to the +native-x side (beyond Y114.5): NOT placed"
+ },
+ "envelopes_XYZ_mm": {
+  "J1": {
+   "kind": "manufacturer drawing envelope (no model)",
+   "XYZ": [
+    [
+     4.1,
+     7.46
+    ],
+    [
+     28.68,
+     38.32
+    ],
+    [
+     0.8,
+     9.22
+    ]
+   ]
+  },
+  "SW1": {
+   "kind": "manufacturer drawing envelope (no model)",
+   "XYZ": [
+    [
+     4.1,
+     7.4
+    ],
+    [
+     65.9,
+     72.1
+    ],
+    [
+     2.05,
+     6.9
+    ]
+   ]
+  },
+  "D8": {
+   "kind": "generic 3 mm LED envelope",
+   "XYZ": [
+    [
+     4.1,
+     8.0
+    ],
+    [
+     40.83,
+     45.17
+    ],
+    [
+     -0.2,
+     7.27
+    ]
+   ]
+  },
+  "D16": {
+   "kind": "generic 3 mm LED envelope",
+   "XYZ": [
+    [
+     4.1,
+     8.0
+    ],
+    [
+     47.33,
+     51.67
+    ],
+    [
+     -0.2,
+     7.27
+    ]
+   ]
+  },
+  "D17": {
+   "kind": "generic 3 mm LED envelope",
+   "XYZ": [
+    [
+     4.1,
+     8.0
+    ],
+    [
+     53.83,
+     58.17
+    ],
+    [
+     -0.2,
+     7.27
+    ]
+   ]
+  },
+  "D18": {
+   "kind": "generic 3 mm LED envelope",
+   "XYZ": [
+    [
+     4.1,
+     8.0
+    ],
+    [
+     60.33,
+     64.67
+    ],
+    [
+     -0.2,
+     7.27
+    ]
+   ]
+  },
+  "J2": {
+   "kind": "Wurth 61201621621 body max",
+   "XYZ": [
+    [
+     4.1,
+     13.35
+    ],
+    [
+     53.019999999999996,
+     81.2
+    ],
+    [
+     30.229999999999997,
+     39.23
+    ]
+   ]
+  },
+  "J2_plug": {
+   "kind": "PROPOSAL mated IDC socket envelope",
+   "XYZ": [
+    [
+     7.1,
+     18.9
+    ],
+    [
+     54.51,
+     79.71
+    ],
+    [
+     31.629999999999995,
+     37.83
+    ]
+   ]
+  },
+  "J2_ribbon": {
+   "kind": "PROPOSAL ribbon envelope (continues to bus)",
+   "XYZ": [
+    [
+     15.9,
+     18.9
+    ],
+    [
+     56.71,
+     77.51
+    ],
+    [
+     37.83,
+     50.0
+    ]
+   ]
+  },
+  "J3": {
+   "kind": "Wurth 61201621621 body max",
+   "XYZ": [
+    [
+     4.1,
+     13.35
+    ],
+    [
+     84.02,
+     112.2
+    ],
+    [
+     30.229999999999997,
+     39.23
+    ]
+   ]
+  },
+  "J3_plug": {
+   "kind": "PROPOSAL mated IDC socket envelope",
+   "XYZ": [
+    [
+     7.1,
+     18.9
+    ],
+    [
+     85.51,
+     110.71
+    ],
+    [
+     31.629999999999995,
+     37.83
+    ]
+   ]
+  },
+  "J3_ribbon": {
+   "kind": "PROPOSAL ribbon envelope (continues to bus)",
+   "XYZ": [
+    [
+     15.9,
+     18.9
+    ],
+    [
+     87.71,
+     108.51
+    ],
+    [
+     37.83,
+     50.0
+    ]
+   ]
+  },
+  "C5": {
+   "kind": "PROVISIONAL can position, MVK max body",
+   "XYZ": [
+    [
+     4.1,
+     12.1
+    ],
+    [
+     41.7,
+     48.3
+    ],
+    [
+     18.7,
+     25.3
+    ]
+   ]
+  },
+  "C34": {
+   "kind": "PROVISIONAL can position, MVK max body",
+   "XYZ": [
+    [
+     4.1,
+     12.1
+    ],
+    [
+     52.7,
+     59.3
+    ],
+    [
+     18.7,
+     25.3
+    ]
+   ]
+  },
+  "C35": {
+   "kind": "PROVISIONAL can position, MVK max body",
+   "XYZ": [
+    [
+     4.1,
+     12.1
+    ],
+    [
+     63.7,
+     70.3
+    ],
+    [
+     18.7,
+     25.3
+    ]
+   ]
+  },
+  "C36": {
+   "kind": "PROVISIONAL can position, MVK max body",
+   "XYZ": [
+    [
+     4.1,
+     12.1
+    ],
+    [
+     74.7,
+     81.3
+    ],
+    [
+     18.7,
+     25.3
+    ]
+   ]
+  }
+ }
+}

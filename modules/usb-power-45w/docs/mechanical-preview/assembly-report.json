@@ -1,0 +1,273 @@
+{
+ "panel": {
+  "label": "Native 4HP panel PCB (kicad-cli STEP)",
+  "count": 1,
+  "bbox_XYZ": [
+   [
+    0.0,
+    20.0
+   ],
+   [
+    0.0,
+    128.5
+   ],
+   [
+    0.015,
+    1.6
+   ]
+  ]
+ },
+ "carrier": {
+  "label": "Native carrier PCB body (kicad-cli STEP)",
+  "count": 1,
+  "bbox_XYZ": [
+   [
+    2.5,
+    4.016
+   ],
+   [
+    14.0,
+    114.5
+   ],
+   [
+    2.0,
+    42.0
+   ]
+  ]
+ },
+ "leds": {
+  "label": "KiCad LED_D3.0mm_Horizontal model (THT, hand-soldered)",
+  "count": 4,
+  "bbox_XYZ": [
+   [
+    2.101,
+    8.001
+   ],
+   [
+    41.43,
+    64.4
+   ],
+   [
+    -0.2,
+    6.67
+   ]
+  ]
+ },
+ "headers": {
+  "label": "KiCad IDC-Header_2x08 model (THT, hand-soldered)",
+  "count": 2,
+  "bbox_XYZ": [
+   [
+    1.101,
+    13.201
+   ],
+   [
+    53.12,
+    112.1
+   ],
+   [
+    30.055,
+    39.155
+   ]
+  ]
+ },
+ "cans": {
+  "label": "GENERIC KiCad CP_Elec_6.3x7.7 model (7.7 body; BOM ~8.0 max incl. base/solder, checks use 8.0) - envelope, NOT exact model; PROVISIONAL positions",
+  "count": 4,
+  "bbox_XYZ": [
+   [
+    4.101,
+    11.801
+   ],
+   [
+    41.1,
+    82.706
+   ],
+   [
+    17.698,
+    26.302
+   ]
+  ]
+ },
+ "ui_envelopes": {
+  "label": "J1 HRO USB-C / SW1 TL3340 (SMT) drawing envelopes - NO verified model",
+  "count": 3,
+  "bbox_XYZ": [
+   [
+    4.1,
+    7.46
+   ],
+   [
+    28.68,
+    72.1
+   ],
+   [
+    0.8,
+    9.22
+   ]
+  ]
+ },
+ "brackets": {
+  "label": "Plain M3 L brackets x2 (tools/bracket45.py)",
+  "count": 2,
+  "bbox_XYZ": [
+   [
+    0.1,
+    9.3
+   ],
+   [
+    17.0,
+    111.5
+   ],
+   [
+    1.6,
+    20.0
+   ]
+  ]
+ },
+ "screws": {
+  "label": "M3x8 pan (panel) + M3x8 90deg flat (side) PROXIES",
+  "count": 8,
+  "bbox_XYZ": [
+   [
+    0.1,
+    9.4
+   ],
+   [
+    19.0,
+    109.5
+   ],
+   [
+    -2.4,
+    17.5
+   ]
+  ]
+ },
+ "nuts": {
+  "label": "M3 hex nut AF5.5 x 2.4 PROXIES",
+  "count": 4,
+  "bbox_XYZ": [
+   [
+    3.65,
+    9.15
+   ],
+   [
+    18.825,
+    109.675
+   ],
+   [
+    4.6,
+    17.75
+   ]
+  ]
+ },
+ "tools": {
+  "label": "ENVELOPE: 8 mm side nut driver / front-nut pliers paths (out of rack)",
+  "count": 4,
+  "bbox_XYZ": [
+   [
+    6.4,
+    30.0
+   ],
+   [
+    17.0,
+    111.5
+   ],
+   [
+    4.6,
+    19.0
+   ]
+  ]
+ },
+ "plugs": {
+  "label": "ENVELOPE PROPOSAL: mated 16-pin IDC socket, <=14.8 mm above F.Cu",
+  "count": 2,
+  "bbox_XYZ": [
+   [
+    7.1,
+    18.9
+   ],
+   [
+    54.51,
+    110.71
+   ],
+   [
+    31.63,
+    37.83
+   ]
+  ]
+ },
+ "ribbons": {
+  "label": "ENVELOPE PROPOSAL: 16-way 1.27 mm ribbon leaving +Z (to bus)",
+  "count": 2,
+  "bbox_XYZ": [
+   [
+    15.9,
+    18.9
+   ],
+   [
+    56.71,
+    108.51
+   ],
+   [
+    37.83,
+    50.0
+   ]
+  ]
+ },
+ "strain_relief_conflict": {
+  "label": "CONFLICT ENVELOPE: clip strain relief worst case 16.3 mm -> X20.4",
+  "count": 2,
+  "bbox_XYZ": [
+   [
+    18.9,
+    20.4
+   ],
+   [
+    54.51,
+    110.71
+   ],
+   [
+    31.63,
+    37.83
+   ]
+  ]
+ },
+ "rails": {
+  "label": "CONTEXT: case rail section (case/tools/build_case.py)",
+  "count": 2,
+  "bbox_XYZ": [
+   [
+    -4.0,
+    24.0
+   ],
+   [
+    -2.0,
+    130.5
+   ],
+   [
+    1.6,
+    15.1
+   ]
+  ]
+ },
+ "limits": {
+  "label": "LIMITS: 4HP edge X20.0; Z42.0 from panel FRONT (=40.4 behind rear) and Z43.6 (=42 behind rear); cable envelope to Z50 is beyond both",
+  "count": 3,
+  "bbox_XYZ": [
+   [
+    0.0,
+    20.05
+   ],
+   [
+    0.0,
+    128.5
+   ],
+   [
+    0.0,
+    43.65
+   ]
+  ]
+ },
+ "_solid_interference_mm3": []
+}
