@@ -1,0 +1,169 @@
+{
+ "tool": "opt/kicad-tools check (native kicad-cli 10.0.6 ERC/DRC --severity-all, schematic parity) + kicad-cli pcb drc for the panel",
+ "erc": {
+  "categories": {
+   "violations": 0
+  },
+  "severity": {},
+  "total_including_exclusions": 0
+ },
+ "carrier_drc": {
+  "categories": {
+   "violations": 13,
+   "unconnected_items": 493,
+   "schematic_parity": 0
+  },
+  "severity": {
+   "error": 505,
+   "warning": 1
+  },
+  "total_including_exclusions": 506
+ },
+ "carrier_drc_classification": {
+  "unconnected_items_493": "EXPECTED: unrouted preview, no tracks/vias/zones; parked SMD are off-board",
+  "copper_edge_clearance_4": "REAL MECHANICAL/RULE CONFLICT: J1 S1 front lugs and SW1 MP pads 0.60 mm from the Z2 front edge (rule 1.0 mm); copied usb-power edge-mount geometry; user decision",
+  "clearance_8": "REAL FOOTPRINT/RULE FINDING (not mechanical): U8 MSOP-10 0.5 mm pitch pads 0.15 mm apart vs 0.20 mm default netclass clearance; U8 is parked; must be resolved before layout, not waived",
+  "footprint_type_mismatch_1": "WARNING: U4 TI_SO-PowerPAD-8_ThermalVias footprint attribute through_hole while pads are SMD + via pads; library attribute review"
+ },
+ "carrier_violations": [
+  {
+   "type": "copper_edge_clearance",
+   "severity": "error",
+   "items": [
+    "Segment on Edge.Cuts",
+    "Pad MP [unconnected-(SW1-CASE-PadMP)] of SW1 on F.Cu"
+   ]
+  },
+  {
+   "type": "copper_edge_clearance",
+   "severity": "error",
+   "items": [
+    "Segment on Edge.Cuts",
+    "Pad MP [unconnected-(SW1-CASE-PadMP)] of SW1 on F.Cu"
+   ]
+  },
+  {
+   "type": "copper_edge_clearance",
+   "severity": "error",
+   "items": [
+    "Segment on Edge.Cuts",
+    "PTH pad S1 [GND] of J1"
+   ]
+  },
+  {
+   "type": "copper_edge_clearance",
+   "severity": "error",
+   "items": [
+    "Segment on Edge.Cuts",
+    "PTH pad S1 [GND] of J1"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 2 [/Negative rail protection and level shifting/N_UV] of U8 on F.Cu",
+    "Pad 1 [/Negative rail protection and level shifting/N_VCC] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 2 [/Negative rail protection and level shifting/N_UV] of U8 on F.Cu",
+    "Pad 3 [/Negative rail protection and level shifting/N_OV] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 3 [/Negative rail protection and level shifting/N_OV] of U8 on F.Cu",
+    "Pad 4 [/Negative rail protection and level shifting/N_PWR] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 4 [/Negative rail protection and level shifting/N_PWR] of U8 on F.Cu",
+    "Pad 5 [N12_RAW] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 6 [/Negative rail protection and level shifting/N_TIMER] of U8 on F.Cu",
+    "Pad 7 [/Negative rail protection and level shifting/N_SENSE_PIN] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 7 [/Negative rail protection and level shifting/N_SENSE_PIN] of U8 on F.Cu",
+    "Pad 8 [/Negative rail protection and level shifting/N_GATE] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 8 [/Negative rail protection and level shifting/N_GATE] of U8 on F.Cu",
+    "Pad 9 [/Negative rail protection and level shifting/N_OUT_PIN] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "clearance",
+   "severity": "error",
+   "items": [
+    "Pad 9 [/Negative rail protection and level shifting/N_OUT_PIN] of U8 on F.Cu",
+    "Pad 10 [/Negative rail protection and level shifting/N_PGD] of U8 on F.Cu"
+   ]
+  },
+  {
+   "type": "footprint_type_mismatch",
+   "severity": "warning",
+   "items": [
+    "Footprint U4"
+   ]
+  }
+ ],
+ "native_schematic_parity": 0,
+ "shared_ref_pin_net_parity": {
+  "missing_refs": [],
+  "extra_refs": [],
+  "missing_pins": [],
+  "net_mismatches": [
+   {
+    "ref": "R13",
+    "pin": "2",
+    "schematic_net": "Net-(U4-RT/SYNC)",
+    "pcb_net": "Net-(U4-RT{slash}SYNC)"
+   },
+   {
+    "ref": "U4",
+    "pin": "4",
+    "schematic_net": "Net-(U4-RT/SYNC)",
+    "pcb_net": "Net-(U4-RT{slash}SYNC)"
+   }
+  ],
+  "extra_connected_pads": [],
+  "pads_without_net": [],
+  "mechanical_without_reference": [
+   "",
+   ""
+  ],
+  "duplicate_nc_pad_aliases": [],
+  "equal": false
+ },
+ "shared_parity_note": "Only difference is KiCad {slash} escaping of Net-(U4-RT/SYNC); native DRC parity is 0 with the escaped name and reports 2 net_conflicts with the raw name. tools/check_mechanics.py compares unescaped: exact.",
+ "panel_drc": {
+  "violations": 0,
+  "unconnected": 0
+ },
+ "exclusions": 0,
+ "rules_changed": "none (min_copper_edge_clearance stays 1.0 mm)",
+ "source_unchanged": true
+}

@@ -1,0 +1,140 @@
+{
+ "report": {
+  "panel_matches_blank_4hp": true,
+  "rail_vs_bracket_holes_distinct": true,
+  "copied_from_old_usb_power": {
+   "carrier_X_mm": true,
+   "carrier_holes_YZ_mm": true,
+   "carrier_bracket_reliefs_YZ_mm": true,
+   "panel_bracket_holes_mm": true,
+   "brackets": true,
+   "aperture_XYWHR_mm": true,
+   "mouth_axis_XYZ_mm": true,
+   "carrier_Y_mm": true
+  },
+  "changed_from_old_usb_power": {
+   "panel_width": [
+    9.8,
+    20.0
+   ],
+   "rail_hole_X": [
+    2.42,
+    12.58
+   ],
+   "carrier_rear_Z": [
+    37.0,
+    42.0
+   ],
+   "panel_LEDs": "one D10 at Y43 -> four D8/D16/D17/D18 at Y43/49.5/56/62.5 (6.5 pitch, same X6.1/hole 3.6)",
+   "reset_Y": [
+    49.5,
+    69.0
+   ],
+   "output_header": "single J7 2x8 -> J2 + J3 2x8 at the rear edge"
+  },
+  "panel_ligaments_mm": {
+   "rail@Y3_edge_ligament": 1.4,
+   "rail@Y125.5_edge_ligament": 1.4,
+   "bracket@Y22_edge_ligament": 4.8,
+   "bracket@Y106.5_edge_ligament": 4.8,
+   "D8@Y43_edge_ligament": 4.3,
+   "D16@Y49.5_edge_ligament": 4.3,
+   "D17@Y56_edge_ligament": 4.3,
+   "D18@Y62.5_edge_ligament": 4.3,
+   "SW1@Y69_edge_ligament": 4.2,
+   "USB_aperture_edge_ligament": 3.3,
+   "USB_to_D8_panel_web": 2.3,
+   "D8_to_D16_panel_web": 2.9,
+   "D16_to_D17_panel_web": 2.9,
+   "D17_to_D18_panel_web": 2.9,
+   "D18_to_SW1_panel_web": 3.1,
+   "USB_aperture_to_top_bracket_head": 3.1,
+   "rail_head_to_bracket_head_Y_gap": 13.0
+  },
+  "front_cluster_access_gaps_mm": {
+   "J1_to_D8": 2.51,
+   "D8_to_D16": 2.16,
+   "D16_to_D17": 2.16,
+   "D17_to_D18": 2.16,
+   "D18_to_SW1": 1.23
+  },
+  "margin_to_panel_right_edge_X20_mm": {
+   "J1": 12.54,
+   "SW1": 12.6,
+   "D8": 12.0,
+   "D16": 12.0,
+   "D17": 12.0,
+   "D18": 12.0,
+   "J2": 6.65,
+   "J2_plug": 1.1,
+   "J3": 6.65,
+   "J3_plug": 1.1,
+   "C5": 7.9,
+   "C34": 7.9,
+   "C35": 7.9,
+   "C36": 7.9,
+   "J2_ribbon": 1.1,
+   "J3_ribbon": 1.1,
+   "IDC_strain_relief_worst_case": -0.4
+  },
+  "B_side_tail_min_X_mm": 0.7,
+  "width_conflicts": {
+   "IDC_strain_relief_worst_case": -0.4
+  },
+  "depth_mm": {
+   "bare_carrier_rear_from_panel_front": 42.0,
+   "bare_carrier_behind_panel_rear": 40.4,
+   "assembled_solid_max_from_panel_front": 42.0,
+   "assembled_solid_max_behind_panel_rear": 40.4,
+   "limit_behind_panel_rear": 42.0,
+   "margin_behind_rear_reading": 1.6,
+   "margin_strict_from_front_reading": 0.0,
+   "cabled_envelope_from_panel_front": 50.0,
+   "cabled_envelope_behind_panel_rear": 48.4,
+   "cabled_depth_within_42": false,
+   "datum_note": "Both datums shown; none shifted. Bare board/solids Z42.0 from the panel front = 40.4 behind the rear. The PROVISIONAL cable envelope reaches Z50 from the front = 48.4 behind the rear, so the cabled depth is NOT <= 42 in this draft (cable route still open).",
+   "ribbon": "leaves the plug at Z <= 37.83 toward +Z (the case floor); it necessarily continues past the module envelope to the bus header - shown to Z50, not counted as module depth",
+   "front_protrusion": "LED tips Z-0.2 (0.2 mm proud of the panel front, as old D10); screw heads in front"
+  },
+  "rail_clearance_mm": {
+   "carrier_top_to_rail": 6.0,
+   "carrier_bottom_to_rail": 6.0,
+   "bracket_top_to_rail": 9.0,
+   "bracket_bottom_to_rail": 9.0
+  },
+  "envelope_collisions": [],
+  "m3_fastening": {
+   "brackets": [
+    {
+     "Y_mm": 22,
+     "blocked": [],
+     "front_bolt_exposure_mm": 1.0,
+     "side_bolt_exposure_min_mm": 1.6,
+     "front_nut_upright_clearance_mm": 0.725,
+     "front_nut_right_X_mm": 9.575,
+     "front_head_right_X_mm": 9.4,
+     "side_tip_X_mm": [
+      8.1,
+      8.4
+     ]
+    },
+    {
+     "Y_mm": 106.5,
+     "blocked": [],
+     "front_bolt_exposure_mm": 1.0,
+     "side_bolt_exposure_min_mm": 1.6,
+     "front_nut_upright_clearance_mm": 0.725,
+     "front_nut_right_X_mm": 9.575,
+     "front_head_right_X_mm": 9.4,
+     "side_tip_X_mm": [
+      8.1,
+      8.4
+     ]
+    }
+   ],
+   "service": "OUT OF RACK. Loose nuts and holding tool enter from +X. Front driver -Z; flush side driver -X. Main PCB can stay soldered and fitted.",
+   "limitation": "Nominal envelopes; actual tools, ABS shrinkage and screw seating need trial."
+  }
+ },
+ "problems": []
+}

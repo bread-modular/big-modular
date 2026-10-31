@@ -1,5 +1,8 @@
-> **S6 schematic only — eight native pages, no PCB or bench qualification.**
+> **S6 schematic + M1 mechanical preview (4HP panel, unrouted carrier) — no routing or bench qualification.**
 > Root ERC 0 errors / 0 warnings; exact pin/field/NC/pad checks and flat-to-hierarchy parity.
+> M1 awaits user approval; open user decisions (1 mm edge rule exception, cabled depth, IDC plug) before
+> placement; board area is a non-blocking planning estimate —
+> see [mechanical preview](docs/mechanical-preview.md).
 
 # usb-power-45w
 
@@ -29,6 +32,9 @@ it does not promise 45 W output or a simultaneous 54.5 W rating.
 - [Current design](docs/design.md)
 - [S6 protection, LED behavior, sourcing and qualification](docs/s6-rail-protection.md)
 - [Native BOM](docs/bom.csv) · [Sourcing snapshots](docs/s6-sourcing.json)
+- [M1 mechanical preview](docs/mechanical-preview.md): 4HP panel
+  `panels/front-pcb/usb-power-45w-panel.kicad_pcb`, unrouted carrier
+  `hardware/usb-power-45w.kicad_pcb` (SMD parked off-board), brackets, 3D assembly
 
 The root contains USB input, +12 buck/eFuse, +5 buck/eFuse, negative converter,
 negative protection, common fault/reset control, and output/status subpages.
@@ -65,6 +71,6 @@ it is not an analog simulator or a manufacturing signoff.
 - LM5067 negative controller: only 33 units observed, about $3.08 at quantity 1.
   Main/positive TPS16630 remain under $3 each. S6 adds about $14.86 in sourced parts
   on a quantity-1 comparison, before manual parts, assembly/setup or shipping.
-- No PCB/panel, manufacturing release, vendor order or new commit in this task.
+- M1 mechanical preview only: no routing, manufacturing release or vendor order.
 
 S4/S5 change records and sourcing files remain as clearly superseded history.

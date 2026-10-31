@@ -1,0 +1,292 @@
+{
+ "report": {
+  "copper": {
+   "tracks_and_vias": 0,
+   "zones": 0,
+   "copper_layers": 4
+  },
+  "parity": {
+   "schematic_refs": 217,
+   "pcb_refs": 217,
+   "missing_refs": [],
+   "extra_refs": [],
+   "pad_net_mismatches": [],
+   "pcb_pads_not_in_netlist": [],
+   "conflicting_duplicate_pads": [],
+   "field_mismatches": [],
+   "net_escape_note": "Net-(U4-RT/SYNC) is stored natively as Net-(U4-RT{slash}SYNC); compared unescaped here, native DRC parity requires the escaped form"
+  },
+  "library_pad_maps_identical": true,
+  "outline_matches_contract": true,
+  "carrier_m3_holes_YZd": [
+   [
+    22.0,
+    15.0,
+    3.2
+   ],
+   [
+    106.5,
+    15.0,
+    3.2
+   ]
+  ],
+  "inventory": {
+   "placed_on_board": [
+    "C34",
+    "C35",
+    "C36",
+    "C5",
+    "D16",
+    "D17",
+    "D18",
+    "D8",
+    "J1",
+    "J2",
+    "J3",
+    "SW1"
+   ],
+   "parked_off_board_count": 205,
+   "parked_off_board_min_gap_to_board_mm": 9.75,
+   "note": "Parked parts are NOT placed. C5/C34/C35/C36 positions are PROVISIONAL height context."
+  },
+  "courtyard_to_edge_mm": {
+   "C34": 16.425,
+   "C35": 16.425,
+   "C36": 16.425,
+   "C5": 15.303,
+   "D16": -1.535,
+   "D17": -1.535,
+   "D18": -1.535,
+   "D8": -1.535,
+   "J1": -0.875,
+   "J2": 2.295,
+   "J3": 1.875,
+   "SW1": -0.325
+  },
+  "pad_copper_to_edge_mm": {
+   "C34": 19.2,
+   "C35": 19.2,
+   "C36": 19.2,
+   "C5": 17.3,
+   "D16": 3.47,
+   "D17": 3.47,
+   "D18": 3.47,
+   "D8": 3.47,
+   "J1": 0.604,
+   "J2": 5.15,
+   "J3": 5.15,
+   "SW1": 0.6
+  },
+  "edge_rule_conflicts": {
+   "courtyard_lt_1mm": {
+    "D16": -1.535,
+    "D17": -1.535,
+    "D18": -1.535,
+    "D8": -1.535,
+    "J1": -0.875,
+    "SW1": -0.325
+   },
+   "copper_lt_1mm": {
+    "J1": 0.604,
+    "SW1": 0.6
+   },
+   "note": "J1/SW1/D8/D16-D18 are edge-mounted panel interfaces copied from usb-power; their bodies intentionally overhang the front edge into the panel. NOT waived: needs a user decision."
+  },
+  "placed_courtyard_bbox_overlaps": [],
+  "hand_solder_2mm": {
+   "J2": {
+    "closest_smd_pad": "C34.2",
+    "gap_mm": 9.814
+   },
+   "J3": {
+    "closest_smd_pad": "C36.2",
+    "gap_mm": 11.881
+   },
+   "D8": {
+    "closest_smd_pad": "J1.A12",
+    "gap_mm": 3.85
+   },
+   "D16": {
+    "closest_smd_pad": "J1.A12",
+    "gap_mm": 10.33
+   },
+   "D17": {
+    "closest_smd_pad": "SW1.MP",
+    "gap_mm": 8.261
+   },
+   "D18": {
+    "closest_smd_pad": "SW1.1",
+    "gap_mm": 2.734
+   }
+  },
+  "panel_registration": {
+   "D8": {
+    "axis_Y_minus_hole_Y": 0.0,
+    "axis_X_minus_hole_X": 0.0,
+    "radial_clearance_body_mm": 0.175
+   },
+   "D16": {
+    "axis_Y_minus_hole_Y": 0.0,
+    "axis_X_minus_hole_X": 0.0,
+    "radial_clearance_body_mm": 0.175
+   },
+   "D17": {
+    "axis_Y_minus_hole_Y": 0.0,
+    "axis_X_minus_hole_X": 0.0,
+    "radial_clearance_body_mm": 0.175
+   },
+   "D18": {
+    "axis_Y_minus_hole_Y": 0.0,
+    "axis_X_minus_hole_X": 0.0,
+    "radial_clearance_body_mm": 0.175
+   },
+   "SW1": {
+    "peg_mid_Y_minus_hole_Y": 0.0,
+    "peg_Z": 4.1,
+    "actuator_axis_X_minus_hole_X": 0.0,
+    "radial_clearance_actuator_mm": 0.6
+   },
+   "J1": {
+    "body_centre_Y_minus_aperture_centre_Y": 0.0,
+    "body_axis_X_minus_aperture_centre_X": -0.07,
+    "aperture_minus_shell_each_side_Y_mm": 0.93,
+    "aperture_minus_shell_each_side_X_mm": 0.87,
+    "note": "copied unchanged: the old aperture is intentionally asymmetric about the X5.73 shell axis (usb-power docs/usb-fit.json conservative shell X3.68..7.93, min corner margin 0.233); that acceptance budget is inherited, not re-qualified here"
+   },
+   "brackets": {
+    "carrier_hole_Y_equals_panel_hole_Y": true,
+    "carrier_side_hole_Z_equals_bracket_side_hole_Z": true
+   }
+  },
+  "area_budget_mm2": {
+   "B_side_alternative_usable_low_profile": 2835.5,
+   "B_side_excluded": {
+    "bracket_web_contact": 242.0,
+    "tht_pad_rows": 457.5
+   },
+   "gross_outline": 3844.0,
+   "inside_1mm_keepout": 3535.0,
+   "reserved": {
+    "placed_courtyards_on_board": 848.0,
+    "front_cluster_strip_Y28..72_Z2..9.3": 321.9,
+    "M3_nut_driver_keepouts_2x(8x9)": 144.0
+   },
+   "J2_J3_courtyards": 577.7,
+   "usable_for_smd_single_sided": 2491.4,
+   "smd_courtyard_sum_incl_cans": 2833.4,
+   "courtyard_utilisation": 1.137,
+   "courtyard_utilisation_F_plus_B": 0.532,
+   "note": "Courtyard bbox sum, single-sided F placement as the old module; a planning indicator, not a placement result.",
+   "F_only_parts_over_2mm": {
+    "refs": [
+     "C34",
+     "C35",
+     "C36",
+     "C5",
+     "D1",
+     "D10",
+     "D11",
+     "D12",
+     "D13",
+     "D14",
+     "D2",
+     "D3",
+     "D4",
+     "D9",
+     "L1",
+     "L2",
+     "L3",
+     "Q4",
+     "U16",
+     "U17"
+    ],
+    "courtyard_sum": 1127.2,
+    "share_of_F_usable": 0.452,
+    "low_profile_remainder": 1706.2,
+    "basis": "heights > 2.0 mm (SLO1040 4.0, SMA/SMB/SMC 2.3-2.6, TO-252 2.4, LTV-354T ~2.2, cans 8.0) stay on F"
+   },
+   "status": "NON-BLOCKING PLANNING ESTIMATE",
+   "limitations": "Courtyard bounding boxes are summed, not unioned; cans are counted in the required sum and also fall in reserved strips; reserved strips/keep-outs are coarse rectangles. Neither proves fit nor failure and does not mandate a redesign. B-side placement is a later option only; double-sided assembly is not authorized."
+  },
+  "panel": {
+   "size_mm": [
+    20.0,
+    128.5
+   ],
+   "thickness_mm": 1.6,
+   "holes_XYd": [
+    [
+     5.8,
+     69.0,
+     3.2
+    ],
+    [
+     6.1,
+     43.0,
+     3.6
+    ],
+    [
+     6.1,
+     49.5,
+     3.6
+    ],
+    [
+     6.1,
+     56.0,
+     3.6
+    ],
+    [
+     6.1,
+     62.5,
+     3.6
+    ],
+    [
+     6.4,
+     22.0,
+     3.2
+    ],
+    [
+     6.4,
+     106.5,
+     3.2
+    ],
+    [
+     12.58,
+     3.0,
+     3.2
+    ],
+    [
+     12.58,
+     125.5,
+     3.2
+    ]
+   ],
+   "holes_match_contract": true,
+   "aperture_XYWHR": [
+    3.3,
+    28.1,
+    5.0,
+    10.8,
+    0.6
+   ],
+   "aperture_matches_contract": true,
+   "all_pads_npth": true,
+   "copper_items": 0,
+   "silk_labels": [
+    "+12V",
+    "+5V",
+    "-12V",
+    "BIG MOD",
+    "MAIN",
+    "PD 20V",
+    "POWER",
+    "RESET",
+    "USB",
+    "USB-C"
+   ]
+  }
+ },
+ "problems": [
+  "1 mm edge rule conflict for edge-mounted panel parts (legacy concept): user decision"
+ ]
+}
