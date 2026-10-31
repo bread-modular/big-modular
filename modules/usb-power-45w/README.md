@@ -1,9 +1,10 @@
-> **S6 schematic + M1 mechanical concept (user-approved) + R1 steps 0-2. Authorization gate cleared; placement/routing next; no copper.**
-> Root ERC 0; carrier DRC 0 violations, 0 warnings, 0 exclusions, parity 0; 493 unconnected (nothing placed).
-> All components on F only (user, 2026-10-31); B copper for routing/thermal only. Only user-authorised
-> edge allowances: J1 front S1 lugs and SW1 MP pads, 0.55 mm (`hardware/usb-power-45w.kicad_dru`),
-> plus documented J1/SW1/D8/D16-D18 courtyard overhangs — see [R1 record](docs/r1-routing.md);
-> [mechanical preview](docs/mechanical-preview.md) is historical (pre-repair).
+> **R2 stack (2026-10-31): S7 schematic (J3 removed, one output) + two canonical stacked boards
+> `hardware/base/` and `hardware/top/`, placed and checked; routing started (top U4 power stage).**
+> ERC 0 (root, base, top); DRC 0 violations / 0 warnings / parity 0 on both boards; base 318 and
+> top 163 unconnected (routing in progress). Aggregate base+top netlist == S7 netlist (exact).
+> Not a release, no fab export, no 45 W rating. Record: [docs/stack-r2.md](docs/stack-r2.md).
+> The monolithic carrier `hardware/usb-power-45w.kicad_pcb` and the R1 notes are **superseded**
+> history (it still carries J3); the [fit study](docs/stacked-fit-study/README.md) is historical.
 
 # usb-power-45w
 
@@ -15,6 +16,8 @@ it does not promise 45 W output or a simultaneous 54.5 W rating.
   No automatic PD-current tracking. TPS16630 main limit remains 4.186 A nominal.
 - **Positive rails:** the same TPS16630 IC on each output, 2.647 A nominal limits.
 - **Negative rail:** LM5067 + external N-MOSFET and 50 mOhm sense network, 1 A nominal.
+- **Output:** one protected 16-pin header J2 (S7 removed the parallel J3); a passive expander/cable
+  comes later. One cable/contact pair per rail limits the usable load.
 - **Faults:** after startup qualification, a persistent fault disables all rails
   until RESET/power cycle. Internal current protection also operates during startup.
 - **Panel:** D8 MAIN plus three new LEDs: D16 +12, D17 +5, D18 -12. Each rail lamp
@@ -28,7 +31,8 @@ it does not promise 45 W output or a simultaneous 54.5 W rating.
 
 ## Open / read
 
-- [KiCad hierarchy root](hardware/usb-power-45w.kicad_sch)
+- [KiCad hierarchy root (S7)](hardware/usb-power-45w.kicad_sch)
+- **R2 boards:** [base](hardware/base/usb-power-45w-base.kicad_pcb), [top](hardware/top/usb-power-45w-top.kicad_pcb) (native per-board schematics beside them), [R2 record](docs/stack-r2.md)
 - [Eight-page schematic PDF](docs/usb-power-45w-schematic.pdf)
 - [Current design](docs/design.md)
 - [S6 protection, LED behavior, sourcing and qualification](docs/s6-rail-protection.md)

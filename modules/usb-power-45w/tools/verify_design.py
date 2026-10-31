@@ -108,7 +108,8 @@ def verify(netlist,hardware,previous=None):
         assert comps[ref].findtext('fields/field[@name="MPN"]')=='TPS16630PWPR'
         assert comps[ref].findtext('fields/field[@name="LCSC"]')=='C1849461'
     for ref in ['U6','U7']:assert 'unconnected-' in n(ref,12),'MODE must be local latch-off'
-    for ref in ['J2','J3']:
+    # S7: J3 removed; the exact native/table component equality above enforces its absence.
+    for ref in ['J2']:
         for pin in range(3,9):isnet(ref,pin,'GND')
         for pin in (1,2):isnet(ref,pin,'-12V')
         for pin in (9,10):isnet(ref,pin,'+12V')
@@ -192,7 +193,7 @@ def verify(netlist,hardware,previous=None):
         s=comb(inp,True,True);assert not s[netids['RUN']]
         inp['RESET_N']=False;s=comb(inp,False,False);assert not s[netids['RUN']]
         seq.append(missing)
-    report={'status':'S6_schematic_checks_not_bench_qualification','components':len(comps),'nets_including_NC':len(nets),'sheets':len(files),
+    report={'status':'S7_schematic_checks_not_bench_qualification','components':len(comps),'nets_including_NC':len(nets),'sheets':len(files),
             'exact_field_pin_NC_pad_parity':True,'digital_combinations_checked':cases,'persistent_fault_reset_scenarios':seq,
             'main_limit':main,'normal_auxiliary_reserve_A':.05,'positive_rail_limit':pos,'negative_rail_limit':neg,
             'nominal_voltage_valid_thresholds':mon,'logic_POR_nominal_V':por,'logic_POR_high_screen_V':por_max,

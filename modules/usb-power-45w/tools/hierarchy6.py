@@ -38,7 +38,7 @@ def layout(parts):
     put(['C34','D2','R19','D5'],2,-25.4,-203.2)
     put(['C35','D3','R20','D6'],3,-88.9,-203.2)
     put(['C36','D4','R21','D7'],4,-50.8,-241.3)
-    put(['J2','J3'],7,0,-86.36)
+    put(['J2'],7,0,-86.36)
     put(['SW1'],6,-38.1,-254)
     put(['U6','D12'],2,-464.82,0)
     put(rr('R',30,38)+rr('C',37,39),2,-464.82,68.58)
@@ -92,8 +92,8 @@ def split(output_root, api):
     for i,(name,title,size) in PAGES.items():
         trees[i]=parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
           (uuid "{api.uid('S6/file/'+name)}") (paper "User" {size[0]} {size[1]})
-          (title_block (title {json.dumps(title)}) (rev "S6") (company "Big Modular")
-          (comment 1 "Schematic only - see design.md and s6-rail-protection.md"))
+          (title_block (title {json.dumps(title)}) (rev "S7") (company "Big Modular")
+          (comment 1 "S7 - see design.md, s6-rail-protection.md and stack-r2.md"))
           (lib_symbols) (embedded_fonts no))''')
         one(trees[i],'lib_symbols').extend(copy.deepcopy(nodes(one(flat,'lib_symbols'),'symbol')))
     def move(node,dx,dy):
@@ -282,7 +282,7 @@ def split(output_root, api):
     one(root,'paper')[1:]=['User',650,530];one(root,'lib_symbols')[1:]=[]
     one(one(root,'title_block'),'title')[1]='USB power - wired power flow and protection overview'
     text(root,'USB POWER / ALL-RAIL PROTECTION AND RESET',20.32,15.24,2.4)
-    text(root,'S6 schematic only. All three converters retained; main and + rails TPS16630; negative LM5067 + MOSFET.',20.32,25.4,1.2)
+    text(root,'S7: S6 circuit with the second output header J3 removed. All three converters retained; main and + rails TPS16630; negative LM5067 + MOSFET.',20.32,25.4,1.2)
     boxes={1:(40.64,60.96,81.28,111.76),2:(177.8,50.8,101.6,81.28),3:(177.8,162.56,101.6,81.28),
            4:(177.8,284.48,101.6,71.12),5:(340.36,284.48,101.6,101.6),6:(40.64,406.4,259.08,96.52),7:(497.84,60.96,96.52,243.84)}
     # Preferred power pins at right; control/input/status ports at left.
@@ -300,7 +300,7 @@ def split(output_root, api):
                 rootpins[(pg,n)]=(px,py)
                 sh.append(parse(f'(pin {json.dumps(n)} bidirectional (at {px} {py} {ang}) (effects (font (size 1.1 1.1)) (justify {"left" if side=="L" else "right"})) (uuid "{api.uid("S6/sheetpin/"+str(pg)+n)}"))'))
         root.append(sh)
-        descriptions={1:'CH224A: 20 V request\nTPS16630: 4.186 A nominal',2:'TPS62933F -> TPS16630\n+12 V protected output',3:'TPS62933F -> TPS16630\n+5 V protected output',4:'LMR38020F inverting buck-boost\nRAW negative supply',5:'LM5067 + external N-MOSFET\n1.0 A nominal / optical control',6:'60 V always-on LDO / retained ARMED + FAULT\nManual RESET disables all three rails',7:'Parallel Eurorack headers\nMAIN, +12, +5 and -12 LEDs'}
+        descriptions={1:'CH224A: 20 V request\nTPS16630: 4.186 A nominal',2:'TPS62933F -> TPS16630\n+12 V protected output',3:'TPS62933F -> TPS16630\n+5 V protected output',4:'LMR38020F inverting buck-boost\nRAW negative supply',5:'LM5067 + external N-MOSFET\n1.0 A nominal / optical control',6:'60 V always-on LDO / retained ARMED + FAULT\nManual RESET disables all three rails',7:'One Eurorack output header (S7)\nMAIN, +12, +5 and -12 LEDs'}
         text(root,descriptions[pg],x+10.16,y+h-20.32,1.4)
     # Explicit root wires for power flow; other interfaces use named wire stubs.
     routed=set()
