@@ -1,176 +1,176 @@
 {
   "schema_version": 1,
   "selection": {
-    "project_dir": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top",
-    "board": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb",
-    "root_schematic": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch",
+    "project_dir": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top",
+    "board": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb",
+    "root_schematic": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch",
     "sheet_files": [
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch"
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch"
     ],
     "dependency_files": 68,
-    "dependency_bytes": 5279523,
+    "dependency_bytes": 5308910,
     "source_hashes": {
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.kicad_sym": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.kicad_sym": {
         "sha256": "67b657419e56977a2f2a9fbe27fffeac18c3b4d9d4c992c9886862ec6818c32b",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/CP_Elec_6.3x7.7.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/CP_Elec_6.3x7.7.kicad_mod": {
         "sha256": "5dd8fd24f704c6b1cff4e68302d61d80f9c0fd0e703478891b918fe51807f43e",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": {
         "sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": {
         "sha256": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMA.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMA.kicad_mod": {
         "sha256": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMB.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMB.kicad_mod": {
         "sha256": "e25e9f4acef5b55585afebc48c685e151fd0d2f33a5c3c61f9fdf0389e19ae67",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMC.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMC.kicad_mod": {
         "sha256": "f17a366cbe28020fc5f12a4a5cecd11590af4d96b61ad8d82c33dc2393a3b64b",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod": {
         "sha256": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/HRO-TYPE-C-31-M-12.kicad_mod": {
         "sha256": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias.kicad_mod": {
         "sha256": "8aee9fef17fb3bbdd66f38b4d7b0ba7e39975a92d877184d4d2edfd14104fd6c",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical.kicad_mod": {
         "sha256": "0c00fadc79e443c032fb621251557a751dfc0f5d8e62995b12a7fe30de7da12a",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod": {
         "sha256": "2d0fac128f41253ed8a38dcb8b7361edde17d3ad544016591842909cf1dd1b54",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_0603_1608Metric.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_0603_1608Metric.kicad_mod": {
         "sha256": "7931ed1efba34cb13c8d74a60eb1dca4b0be57d950c38e08c3e7f007db500a1c",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": {
         "sha256": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/L_SLO1040H6R8MTT.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/L_SLO1040H6R8MTT.kicad_mod": {
         "sha256": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/MSOP-10_3x3mm_P0.5mm.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/MSOP-10_3x3mm_P0.5mm.kicad_mod": {
         "sha256": "025ef6f67f230ec35fada867e35b5173cff2190f1cc0f559ef658c62859ba521",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x03_P2.54mm_Vertical.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x03_P2.54mm_Vertical.kicad_mod": {
         "sha256": "8bb8f0a71c1009c3d1e966e2c66c65cf301d26696ac9603fc7cbbfe58a27153e",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x10_P2.54mm_Vertical.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x10_P2.54mm_Vertical.kicad_mod": {
         "sha256": "166e4137daa5d34bf93b79d37cfb1392e5af3414aaa4270726ab905d6129efbd",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_0603_1608Metric.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_0603_1608Metric.kicad_mod": {
         "sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_1206_3216Metric.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_1206_3216Metric.kicad_mod": {
         "sha256": "c7320668dc81bbb954cb4f15e4e7a766c120059343d43551468c8f7ccc8fde37",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SO-4_4.4x3.6mm_P2.54mm.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SO-4_4.4x3.6mm_P2.54mm.kicad_mod": {
         "sha256": "41e22b53da5825510bed8effd848885fb01d8ac199e1b6e3010a7f852909e455",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": {
         "sha256": "a885b619b22880c9559522d2bf865b059d80453b95a98defc9e6ceef284da1fc",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-5.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-5.kicad_mod": {
         "sha256": "455a3f7c3e5eb5b8847eaa5df23e18651e78ab9f75afd09a0883758a0d901761",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-6.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-6.kicad_mod": {
         "sha256": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23.kicad_mod": {
         "sha256": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-583-8.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-583-8.kicad_mod": {
         "sha256": "1edaacd60f1584e013c38b687337db19c484be7c6c19f20a838c1b6126afa596",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-89-3.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-89-3.kicad_mod": {
         "sha256": "0b8db9f4a8f2547a53e80e3d400798979e84b4e0b2972160ddaca99c1f659b93",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": {
         "sha256": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": {
         "sha256": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/Stack_M3_Spacer_Base.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/Stack_M3_Spacer_Base.kicad_mod": {
         "sha256": "ee351833c096c7a8c9115f48fef922e9f1743993f126f787511694137473d3fb",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/Stack_M3_Spacer_Top.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/Stack_M3_Spacer_Top.kicad_mod": {
         "sha256": "391cf511facacef83000451154d10cba38ba368a482529bfd61da0771a04765a",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_ThermalVias.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_ThermalVias.kicad_mod": {
         "sha256": "a028811923d20ff700426296c0a38e36b893572aa8d4f59115124034772a5d6b",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TO-252-2.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TO-252-2.kicad_mod": {
         "sha256": "18c28e5e147d5e9b17a8ccf47f4992abde94d1436cc611e6f7e395af6edc4969",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TPS7A16_DGN0008C.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TPS7A16_DGN0008C.kicad_mod": {
         "sha256": "26bb32544efc33247e28fa65976f4012f718c8671aa8efc9a3591e1e87623efa",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TestPoint_Pad_D1.0mm.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TestPoint_Pad_D1.0mm.kicad_mod": {
         "sha256": "6d602c576b4ab0de29fa4cc096f419a62e828ba45ceee30c1263d86b420b2b12",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/Texas_RPW0010A_VQFN-HR-10_2x2mm_P0.45mm.kicad_mod": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/Texas_RPW0010A_VQFN-HR-10_2x2mm_P0.45mm.kicad_mod": {
         "sha256": "48068a5b1d96a5cc52e9bc5196566d91a41240f5967eac3f53fb34616541d816",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/fp-lib-table": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/fp-lib-table": {
         "sha256": "a9ba085387ed2b12791872c4c5784413ce0e032a4466be915cd4fdd5673729ba",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/sym-lib-table": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/sym-lib-table": {
         "sha256": "b71f2653cc06a7eaa285ea5f92f29bdf983c7d61ae8721ad80d94945484a05e3",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb": {
-        "sha256": "837c9711e771d78da257789676c32223c18a2dd25bc0fa09184608bc5c58d202",
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb": {
+        "sha256": "922d34ab36596f123d9b7b7c67e7a22c116e14a0e083846d21c92b0f8b1a91eb",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pro": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pro": {
         "sha256": "3b601dedcf6d821254f8f3d7b0a14f43b40b97ee4da51b0451feb12ccbc5e496",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch": {
         "sha256": "a28543097cec622d82a1c8229ae543f4dd873c1205a939ea7383722e0c5d0525",
         "symlink": null
       },
@@ -282,7 +282,7 @@
         "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
         "symlink": null
       },
-      "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/tools/kicad-project-top.json": {
+      "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/tools/kicad-project-top.json": {
         "sha256": "7587745a0a922c15bcb9f525c7485de8ae3ade7b41b3e0d0dd7a41dc4c282185",
         "symlink": null
       }
@@ -309,8 +309,8 @@
         "--format",
         "kicadxml",
         "--output",
-        "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/research/r3-top/check-final/shared/netlist.xml",
-        "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch"
+        "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/research/r3-top-support/shared-check/netlist.xml",
+        "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch"
       ],
       "returncode": 0,
       "stdout": "",
@@ -326,11 +326,11 @@
         "--severity-all",
         "--exit-code-violations",
         "--output",
-        "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/research/r3-top/check-final/shared/erc.json",
-        "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch"
+        "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/research/r3-top-support/shared-check/erc.json",
+        "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_sch"
       ],
       "returncode": 0,
-      "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/research/r3-top/check-final/shared/erc.json\n",
+      "stdout": "Found 0 violations\nSaved ERC Report to /home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/research/r3-top-support/shared-check/erc.json\n",
       "stderr": ""
     },
     {
@@ -343,14 +343,14 @@
         "--severity-all",
         "--exit-code-violations",
         "--output",
-        "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/research/r3-top/check-final/shared/drc.json",
+        "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/research/r3-top-support/shared-check/drc.json",
         "--refill-zones",
         "--all-track-errors",
         "--schematic-parity",
-        "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb"
+        "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb"
       ],
       "returncode": 0,
-      "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/research/r3-top/check-final/shared/drc.json\n",
+      "stdout": "Found 0 violations\nFound 0 unconnected items\nFound 0 schematic parity issues\nSaved DRC Report to /home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/research/r3-top-support/shared-check/drc.json\n",
       "stderr": ""
     }
   ],
@@ -378,231 +378,231 @@
   },
   "staged_path_rebindings": [
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/fp-lib-table",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/fp-lib-table",
       "kind": "uri",
       "path_bindings": {
-        "${KIPRJMOD}/../USBPOWER45.pretty": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty"
+        "${KIPRJMOD}/../USBPOWER45.pretty": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/sym-lib-table",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/sym-lib-table",
       "kind": "uri",
       "path_bindings": {
-        "${KIPRJMOD}/../USBPOWER45.kicad_sym": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.kicad_sym"
+        "${KIPRJMOD}/../USBPOWER45.kicad_sym": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.kicad_sym"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step",
-        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step",
-        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/CP_Elec_6.3x7.7.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/e87f23b1349f44decf6373d5576f935240bbd9ebb2498739ea9b2675db97dfd0/CP_Elec_6.3x7.7.step",
-        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step",
-        "${KICAD10_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0603_1608Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/b0c0b5c2ab16ff372f6e36080cafd87bd193c025dd39d73b63fdf8e4cebfc9a7/LED_0603_1608Metric.step",
-        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step",
-        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x03_P2.54mm_Vertical.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/01783430e38ba05152dd0714505ffd434b0303a7dc78e69e6bccaf84f9066c8b/PinHeader_2x03_P2.54mm_Vertical.step",
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/0f9806dd370fbb961f7561c587d68d6e357670fa2eef864381558d879fe3d360/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step",
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-583-8.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/a9ffa3b9cfafa7db23c17bf22b30ee401e0bc8fe7a666630d65995eb3b881823/SOT-583-8.step",
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/c5fd250f1b4c5c6e39322f9205ac840b2ba2940cb6df9134e0e2eacfd9676a59/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step",
-        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x10_P2.54mm_Vertical.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/b02bf6c7609fcd3950b9724d93d42040a9dd97c5f76c0d0774c95f3d9bce2179/PinHeader_2x10_P2.54mm_Vertical.step",
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/52397aacb2c623a8cf5f937ddcf9cfaf22a4038c2b4d417e0a95004f686e754e/SOT-23.step"
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step",
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step",
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/CP_Elec_6.3x7.7.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/e87f23b1349f44decf6373d5576f935240bbd9ebb2498739ea9b2675db97dfd0/CP_Elec_6.3x7.7.step",
+        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step",
+        "${KICAD10_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0603_1608Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/b0c0b5c2ab16ff372f6e36080cafd87bd193c025dd39d73b63fdf8e4cebfc9a7/LED_0603_1608Metric.step",
+        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step",
+        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x03_P2.54mm_Vertical.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/01783430e38ba05152dd0714505ffd434b0303a7dc78e69e6bccaf84f9066c8b/PinHeader_2x03_P2.54mm_Vertical.step",
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/0f9806dd370fbb961f7561c587d68d6e357670fa2eef864381558d879fe3d360/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step",
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-583-8.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/a9ffa3b9cfafa7db23c17bf22b30ee401e0bc8fe7a666630d65995eb3b881823/SOT-583-8.step",
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/c5fd250f1b4c5c6e39322f9205ac840b2ba2940cb6df9134e0e2eacfd9676a59/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step",
+        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x10_P2.54mm_Vertical.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/b02bf6c7609fcd3950b9724d93d42040a9dd97c5f76c0d0774c95f3d9bce2179/PinHeader_2x10_P2.54mm_Vertical.step",
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/52397aacb2c623a8cf5f937ddcf9cfaf22a4038c2b4d417e0a95004f686e754e/SOT-23.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/CP_Elec_6.3x7.7.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/CP_Elec_6.3x7.7.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/CP_Elec_6.3x7.7.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/e87f23b1349f44decf6373d5576f935240bbd9ebb2498739ea9b2675db97dfd0/CP_Elec_6.3x7.7.step"
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/CP_Elec_6.3x7.7.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/e87f23b1349f44decf6373d5576f935240bbd9ebb2498739ea9b2675db97dfd0/CP_Elec_6.3x7.7.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/4a236847aaaebe614c2077c21fd1dd3f5b07094291fec6b1cf2ae35716e0c6d4/C_0603_1608Metric.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
+        "${KICAD10_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_1206_3216Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/7670406091f4fd4369bd0dd62d965e0312a0a9bca33a5eee6c9fbfdeb39f4fbd/C_1206_3216Metric.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMA.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMA.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
+        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/23e57092ee618dadc07bdeb02737c787c355b6c0d70ccab968303ab1d3b6ba04/D_SMA.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMB.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMB.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMB.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/bc1a2ef24ceeed4374286786b90f1892eeea4e35b15b628b8fcd4aa7975225ba/D_SMB.step"
+        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMB.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/bc1a2ef24ceeed4374286786b90f1892eeea4e35b15b628b8fcd4aa7975225ba/D_SMB.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMC.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/D_SMC.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMC.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/5ea42988e36ac179e6e3b0d6e380643e709f4d68ad86020a177a07d2c1ef2087/D_SMC.step"
+        "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMC.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/5ea42988e36ac179e6e3b0d6e380643e709f4d68ad86020a177a07d2c1ef2087/D_SMC.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1206_3216Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step"
+        "${KICAD10_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1206_3216Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/72d9767138948e379d088efdc90bbbdeac1c2dce8e1391ad618f8eb49022fb71/Fuse_1206_3216Metric.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/0f9806dd370fbb961f7561c587d68d6e357670fa2eef864381558d879fe3d360/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/0f9806dd370fbb961f7561c587d68d6e357670fa2eef864381558d879fe3d360/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Connector_IDC.3dshapes/IDC-Header_2x08_P2.54mm_Vertical.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/9ad6214c622bb1df25a9419d5121d1fe40bafc04e7f814dfc18a8d33733c15b6/IDC-Header_2x08_P2.54mm_Vertical.step"
+        "${KICAD10_3DMODEL_DIR}/Connector_IDC.3dshapes/IDC-Header_2x08_P2.54mm_Vertical.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/9ad6214c622bb1df25a9419d5121d1fe40bafc04e7f814dfc18a8d33733c15b6/IDC-Header_2x08_P2.54mm_Vertical.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Connector_IDC.3dshapes/IDC-Header_2x08_P2.54mm_Vertical.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/9ad6214c622bb1df25a9419d5121d1fe40bafc04e7f814dfc18a8d33733c15b6/IDC-Header_2x08_P2.54mm_Vertical.step"
+        "${KICAD10_3DMODEL_DIR}/Connector_IDC.3dshapes/IDC-Header_2x08_P2.54mm_Vertical.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/9ad6214c622bb1df25a9419d5121d1fe40bafc04e7f814dfc18a8d33733c15b6/IDC-Header_2x08_P2.54mm_Vertical.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_0603_1608Metric.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_0603_1608Metric.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0603_1608Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/b0c0b5c2ab16ff372f6e36080cafd87bd193c025dd39d73b63fdf8e4cebfc9a7/LED_0603_1608Metric.step"
+        "${KICAD10_3DMODEL_DIR}/LED_SMD.3dshapes/LED_0603_1608Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/b0c0b5c2ab16ff372f6e36080cafd87bd193c025dd39d73b63fdf8e4cebfc9a7/LED_0603_1608Metric.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step"
+        "${KICAD10_3DMODEL_DIR}/LED_THT.3dshapes/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/36fda5cef4275ce65e22b1d8a01ebac73f55562b96bb5574a7bc76b2a9d3bcc0/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/MSOP-10_3x3mm_P0.5mm.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/MSOP-10_3x3mm_P0.5mm.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/MSOP-10_3x3mm_P0.5mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/9f55b8da6a209967189fa7650655e59e522b1b11b9aed953d53fe906e9c7c6cf/MSOP-10_3x3mm_P0.5mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/MSOP-10_3x3mm_P0.5mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/9f55b8da6a209967189fa7650655e59e522b1b11b9aed953d53fe906e9c7c6cf/MSOP-10_3x3mm_P0.5mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x03_P2.54mm_Vertical.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x03_P2.54mm_Vertical.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x03_P2.54mm_Vertical.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/01783430e38ba05152dd0714505ffd434b0303a7dc78e69e6bccaf84f9066c8b/PinHeader_2x03_P2.54mm_Vertical.step"
+        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x03_P2.54mm_Vertical.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/01783430e38ba05152dd0714505ffd434b0303a7dc78e69e6bccaf84f9066c8b/PinHeader_2x03_P2.54mm_Vertical.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x10_P2.54mm_Vertical.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/PinHeader_2x10_P2.54mm_Vertical.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x10_P2.54mm_Vertical.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/b02bf6c7609fcd3950b9724d93d42040a9dd97c5f76c0d0774c95f3d9bce2179/PinHeader_2x10_P2.54mm_Vertical.step"
+        "${KICAD10_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x10_P2.54mm_Vertical.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/b02bf6c7609fcd3950b9724d93d42040a9dd97c5f76c0d0774c95f3d9bce2179/PinHeader_2x10_P2.54mm_Vertical.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_0603_1608Metric.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_0603_1608Metric.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
+        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/60d43693d57ec3c2e375dcdcad9fbc56c69775507e9ad5f7768f084c5cfcb0f4/R_0603_1608Metric.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_1206_3216Metric.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/R_1206_3216Metric.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_1206_3216Metric.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/460ce72e3f52eeb4c9e4072e5b814a644e7368c5996a2e1c1cc98696573ba097/R_1206_3216Metric.step"
+        "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_1206_3216Metric.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/460ce72e3f52eeb4c9e4072e5b814a644e7368c5996a2e1c1cc98696573ba097/R_1206_3216Metric.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SO-4_4.4x3.6mm_P2.54mm.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SO-4_4.4x3.6mm_P2.54mm.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SO-4_4.4x3.6mm_P2.54mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/d9a68bd1a56f7cd4903f5b5a785b3316f16e8f32505c370116e3815a774cd0e7/SO-4_4.4x3.6mm_P2.54mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SO-4_4.4x3.6mm_P2.54mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/d9a68bd1a56f7cd4903f5b5a785b3316f16e8f32505c370116e3815a774cd0e7/SO-4_4.4x3.6mm_P2.54mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SOIC-14_3.9x8.7mm_P1.27mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/4fecabef897cd30757b70ce766ad040869ff2bfe4e1e38bd86c14c3b5300eabe/SOIC-14_3.9x8.7mm_P1.27mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SOIC-14_3.9x8.7mm_P1.27mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/4fecabef897cd30757b70ce766ad040869ff2bfe4e1e38bd86c14c3b5300eabe/SOIC-14_3.9x8.7mm_P1.27mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-5.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-5.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/e07fe1286150bc42609e48f176e88954ea889a6f638308aab78b9851bb7485f8/SOT-23-5.step"
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/e07fe1286150bc42609e48f176e88954ea889a6f638308aab78b9851bb7485f8/SOT-23-5.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-6.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23-6.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step"
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/7ec1f4341d0a8658c277600d04dc12bd2225e4f384107ade42afd07414dd68b1/SOT-23-6.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-23.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/52397aacb2c623a8cf5f937ddcf9cfaf22a4038c2b4d417e0a95004f686e754e/SOT-23.step"
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/52397aacb2c623a8cf5f937ddcf9cfaf22a4038c2b4d417e0a95004f686e754e/SOT-23.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-583-8.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-583-8.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-583-8.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/a9ffa3b9cfafa7db23c17bf22b30ee401e0bc8fe7a666630d65995eb3b881823/SOT-583-8.step"
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-583-8.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/a9ffa3b9cfafa7db23c17bf22b30ee401e0bc8fe7a666630d65995eb3b881823/SOT-583-8.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-89-3.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SOT-89-3.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-89-3.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/d7e345d7f96b9ddc2f748753758f36956699486f8525ae8e7b91a96d4b8ecaff/SOT-89-3.step"
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-89-3.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/d7e345d7f96b9ddc2f748753758f36956699486f8525ae8e7b91a96d4b8ecaff/SOT-89-3.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/ae9972bca16df00266aaa911c7259380a80625a0a0f15daa77109330505ce502/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_ThermalVias.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_ThermalVias.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/c5fd250f1b4c5c6e39322f9205ac840b2ba2940cb6df9134e0e2eacfd9676a59/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/c5fd250f1b4c5c6e39322f9205ac840b2ba2940cb6df9134e0e2eacfd9676a59/HTSOP-8-1EP_3.9x4.9mm_P1.27mm.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TO-252-2.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TO-252-2.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/TO-252-2.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/91a0c49fd0f02ee07a7f439796f01237c7671ba1f642496323c91051cc02948a/TO-252-2.step"
+        "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/TO-252-2.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/91a0c49fd0f02ee07a7f439796f01237c7671ba1f642496323c91051cc02948a/TO-252-2.step"
       }
     },
     {
-      "source": "/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/USBPOWER45.pretty/TPS7A16_DGN0008C.kicad_mod",
+      "source": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/USBPOWER45.pretty/TPS7A16_DGN0008C.kicad_mod",
       "kind": "model",
       "path_bindings": {
-        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step": "/tmp/kicad private checks a1ksl064/inputs/home/azero/.okbrain/workspaces/big-modular/202/modules/usb-power-45w/hardware/top/_kicad_models/3c536dfb4990601d1528e3d957d410d2ba6d24af7b56b4d8f87fafffbd82da3b/MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step"
+        "${KICAD10_3DMODEL_DIR}/Package_SO.3dshapes/MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step": "/tmp/kicad private checks 27rkt34x/inputs/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/_kicad_models/3c536dfb4990601d1528e3d957d410d2ba6d24af7b56b4d8f87fafffbd82da3b/MSOP-8-1EP_3x3mm_P0.65mm_EP1.68x1.88mm.step"
       }
     }
   ],

@@ -6,10 +6,11 @@
 > No fab export. No 45 W / 54.5 W rating, no thermal qualification, no connector-current
 > qualification.
 
-Batch log, placement refinements and gotchas: [NOTES.md](NOTES.md). Images: `img/`. Raw reports:
+Batch log, placement refinements and gotchas: [NOTES.md](NOTES.md). M3 support keep-out repair
+(seamed annulus, fixed 2026-10-31): [SUPPORT-KEEPOUT.md](SUPPORT-KEEPOUT.md). Images: `img/`. Raw reports:
 `reports/` (copied from the ignored `research/r3-top/`).
 
-## Final checks (board SHA-256 `837c9711e771d78da257789676c32223c18a2dd25bc0fa09184608bc5c58d202`)
+## Final checks (board SHA-256 `922d34ab36596f123d9b7b7c67e7a22c116e14a0e083846d21c92b0f8b1a91eb`, after the support keep-out repair)
 
 | Gate | Result |
 | --- | --- |
@@ -17,6 +18,7 @@ Batch log, placement refinements and gotchas: [NOTES.md](NOTES.md). Images: `img
 | Shared `kicad_tools.py check --config tools/kicad-project-top.json` (`reports/shared-check-summary.json`) | `no_findings_in_requested_checks`: ERC 0, DRC 0, unconnected 0, parity 0, source unchanged |
 | `check_stack.py` (`reports/validation-stack.json`) | `problems: []` for the top board. ERC root/base/top 0. Aggregate base+top = S7 root: 216 refs, 145 nets incl. NC, exact (ref, pin) partition, no value/footprint/field mismatch. Header manifest OK. Stack mechanics unchanged (width 0.28 worst case, J2 1.50/2.93/5.19, 0 collisions) |
 | 1 mm edge | copper rule 1.0 mm (DRC); courtyards: min 1.00 (R11), supports 1.004 |
+| M3 support annulus r1.7..3.6, all Cu layers (`tools/check_support_copper.py`, `reports/support-copper-after.json`) | 0 copper items (tracks, vias, pads, stored and refilled fills); nearest 3.600999 mm; sector keep-outs cover the whole annulus |
 | 2 mm hand-solder to the XT1/XT2 posts | min 2.00 (D12-XT1), then C33-XT2 2.02, C25 2.04, R44/R35-XT2 2.085, U7 2.10 |
 | Vias in SMD pads / mask | 0 (check_stack gate is via radius + 0.05 mm; own audit requires >= 0.1 mm clearance) |
 | Tracks on In1 / In2 | 0 / 0 |
@@ -29,15 +31,17 @@ is not part of this diff. The copy in `reports/` is the final run.
 
 ## Layer use and power paths (prototype sizing, not a current rating)
 
-- **In1** = solid GND (2422 mm2 main piece). **In2** = VIN plane (2366 mm2 main piece). No tracks on
+- **In1** = solid GND (2418 mm2 main piece). **In2** = VIN plane (2360 mm2 main piece). No tracks on
   either.
 - Small plane pieces, reported separately: In1 GND 2.8 / 2.1 mm2 and In2 VIN 2.6 / 2.3 / 2.0 mm2.
   They sit in the XT1 post field between the VIN and GND posts and are tied to their posts by thermal
-  spokes (the VIN centre via also ties the 2.6 mm2 piece solidly). B P12_RAW has a 10.2 mm2 piece west
-  of U2, connected through via ps0 to R8.2.
-- **XT1 posts**: the In1/In2 planes meet the posts with thermal spokes. Solid F+B patches with a
-  centre via on the VIN posts (3-6) and on each GND pair (1/2, 7/8, 13/14) give the current a solid
-  path into the planes. +12V (9-12): F pour plus 4 vias to the B band. +5V (15-18): B pour.
+  spokes. B P12_RAW has a 10.2 mm2 piece west of U2, connected through via ps0 to R8.2.
+- **XT1 posts**: the In1/In2 planes meet the posts with thermal spokes (0.50 mm). Solid F+B patches
+  with a centre via tie the VIN posts (3-6) and each GND pair (1/2, 7/8, 13/14) together on F/B. On
+  In2 the VIN centre via (94.56, 79.805) lands in the 2.59 mm2 centre fragment between posts 3-6,
+  which reaches the posts by four spokes; the main In2 plane meets posts 3-6 through eight 0.50 mm
+  spokes. The centre via does not bypass those spokes. The GND pair centre vias sit in the posts'
+  thermal gaps on In1 (no In1 fill around them). This is a description, not an ampacity finding. +12V (9-12): F pour plus 4 vias to the B band. +5V (15-18): B pour.
   N12_RAW (19/20): two 0.4 mm B runs into the B N12_RAW pour.
 - **VIN to the converters**: through the In2 plane. U2: C8/C7/C6 F pour + 4 vias. U3: C17/C15/C16
   F pour + 3 vias. U4: F pour + 3 vias + C24. C5: 2 vias. Pin stubs to U2/U3 pin 3 are 0.3 mm (the
@@ -66,6 +70,7 @@ python3 -B modules/usb-power-45w/tools/route_top_r3.py audit modules/usb-power-4
 python3 -B opt/kicad-tools/kicad_tools.py check --config modules/usb-power-45w/tools/kicad-project-top.json --reports <new-dir>
 python3 -B modules/usb-power-45w/tools/check_stack.py --scratch modules/usb-power-45w/research/r3-top/stack   # rewrites docs/stack-r2/validation.json
 python3 -B modules/usb-power-45w/tools/route_top_r3.py view <png> 49 151 61.5 103 F.Cu,B.Cu
+python3 -B modules/usb-power-45w/tools/check_support_copper.py top --refill   # M3 support annulus, all Cu layers
 ```
 
 Routed copper is never regenerated. The batch tables in `tools/route_top_r3.py` are the record of
