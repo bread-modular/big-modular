@@ -12,6 +12,11 @@ Printable set: [mechanical-preview/usb-power-45w-mechanical-preview.pdf](mechani
 (front, side, top, isometric). Also `front-view`, `side-view`, `top-view` SVG/PNG,
 `iso-front.png` / `iso-rear.png`, and `usb-power-45w-assembly.step` / `.FCStd`.
 
+> **Historical (pre-R1 repair).** The native-check figures below and in
+> `mechanical-preview/native-check-summary.json` describe M1 (`03648aee`). R1 step 0 fixed the
+> U8 land and U4 type warning; current checks and the exact J1/SW1 edge envelope are in
+> [r1-routing.md](r1-routing.md).
+
 ## Frame and sources
 
 Same frame as `modules/usb-power`: origin at the panel's upper-left front corner, X
@@ -99,6 +104,8 @@ Z42.0 (from front) and Z43.6 (42 behind rear) lines; the cable envelope passes b
    (b) move J1 and SW1 0.4 mm rearward (copper 1.0; USB mouth recess 0.8 -> 1.2, SW1 button
    0.45 -> 0.85 behind the panel rear; aperture fit not re-qualified); (c) carrier front edge
    Z2 -> Z1.6 touching the panel rear (copper 1.0; outline/tolerance stack change).
+   *Resolved 2026-10-31 (user): option (a) for J1 and SW1 only, exact-pad 0.55 mm rules plus
+   J1/SW1/D8/D16-D18 courtyard overhangs; see [r1-routing.md](r1-routing.md) steps 1-2.*
 2. **Board area (non-blocking planning concern).** Heuristic only: summed courtyard
    bounding boxes 2833 mm2 (cans included) vs ~2491 mm2 "usable" F area (x1.14). The
    estimate double-counts: cans are both subtracted (front strip/reserved areas) and summed,
@@ -107,6 +114,8 @@ Z42.0 (from front) and Z43.6 (42 behind rear) lines; the cable envelope passes b
    redesign; real placement decides. Parts over 2 mm (inductors, SMA/SMB/SMC diodes, Q4,
    optos, cans: ~1127 mm2) would stay on F. B-face low-profile placement (~2836 mm2
    estimate) is only a possible later option; **double-sided assembly is not authorized**.
+   *Superseded 2026-10-31: user rule, all components on F; B-face placement withdrawn
+   (see [R1 record](r1-routing.md)).*
 3. IDC cable: no clip strain relief unless its measured height is <= 14.8.
 4. Cans/J2/J3 positions are proposals; LED part numbers are still unselected.
 5. Cabled depth: the draft cable envelope reaches Z50 (48.4 behind rear). Accept that for the

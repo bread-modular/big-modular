@@ -1,8 +1,9 @@
-> **S6 schematic + M1 mechanical preview (4HP panel, unrouted carrier) — no routing or bench qualification.**
-> Root ERC 0 errors / 0 warnings; exact pin/field/NC/pad checks and flat-to-hierarchy parity.
-> M1 awaits user approval; open user decisions (1 mm edge rule exception, cabled depth, IDC plug) before
-> placement; board area is a non-blocking planning estimate —
-> see [mechanical preview](docs/mechanical-preview.md).
+> **S6 schematic + M1 mechanical concept (user-approved) + R1 steps 0-2. Authorization gate cleared; placement/routing next; no copper.**
+> Root ERC 0; carrier DRC 0 violations, 0 warnings, 0 exclusions, parity 0; 493 unconnected (nothing placed).
+> All components on F only (user, 2026-10-31); B copper for routing/thermal only. Only user-authorised
+> edge allowances: J1 front S1 lugs and SW1 MP pads, 0.55 mm (`hardware/usb-power-45w.kicad_dru`),
+> plus documented J1/SW1/D8/D16-D18 courtyard overhangs — see [R1 record](docs/r1-routing.md);
+> [mechanical preview](docs/mechanical-preview.md) is historical (pre-repair).
 
 # usb-power-45w
 
@@ -72,5 +73,6 @@ it is not an analog simulator or a manufacturing signoff.
   Main/positive TPS16630 remain under $3 each. S6 adds about $14.86 in sourced parts
   on a quantity-1 comparison, before manual parts, assembly/setup or shipping.
 - M1 mechanical preview only: no routing, manufacturing release or vendor order.
+- R1: [placement/routing record](docs/r1-routing.md) (steps 0-2 done; J1/SW1 allowances applied, authorization gate cleared, placement/routing next, no copper).
 
 S4/S5 change records and sourcing files remain as clearly superseded history.

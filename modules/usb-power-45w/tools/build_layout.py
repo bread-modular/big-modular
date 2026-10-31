@@ -144,7 +144,7 @@ def rect(board, layer, a, b, width=0.05):
     return shape(board, layer, pcbnew.SHAPE_T_RECT, width, start=a, end=b)
 
 
-def text(board, layer, s, at, size, thickness=None, rot=0):
+def text(board, layer, s, at, size, thickness=None, rot=0, justify=None, mirror=False):
     t = pcbnew.PCB_TEXT(board)
     t.SetText(s)
     t.SetLayer(layer)
@@ -152,6 +152,9 @@ def text(board, layer, s, at, size, thickness=None, rot=0):
     t.SetTextThickness(pcbnew.FromMM(thickness or max(0.12, size * 0.15)))
     t.SetPosition(at)
     t.SetTextAngleDegrees(rot)
+    if justify is not None:
+        t.SetHorizJustify(justify)
+    t.SetMirrored(mirror)
     board.Add(t)
     t.thisown = 0
 
@@ -325,8 +328,14 @@ def build_carrier():
         e = GEO['envelopes_XYZ_mm'][h['reference'] + '_plug']['XYZ']
         rect(board, D, CV(e[1][0], e[2][0]), CV(e[1][1], e[2][1]), 0.1)
         text(board, D, f'{h["reference"]} IDC plug PROPOSAL envelope; ribbon exits +Z (rear)', CV(sum(e[1]) / 2, 42.8), 0.8)
-        y1, z1 = h['pin1_YZ_mm']
-        text(board, pcbnew.F_SilkS, '-12V', CV(y1 + 3.0, z1 - 1.27), 0.8, rot=90)
+        # Old usb-power J7 marking: horizontal "1 / -12V / RED" outside the box body (front side,
+        # visible with the plug mated) and B silk per-pin labels (R1 step 0, tools/r1_prep.py).
+        hp = {p.GetNumber(): p.GetPosition() for p in placed[h['reference']].Pads()}
+        x1, y2 = pcbnew.ToMM(hp['1'].x), pcbnew.ToMM(hp['2'].y)
+        text(board, pcbnew.F_SilkS, '1 / -12V / RED', V(x1 + 5.25, y2 + 4.3), 0.8,
+             justify=pcbnew.GR_TEXT_H_ALIGN_RIGHT)
+        for i, lab in enumerate(['N12', 'GND', 'GND', 'GND', 'P12', 'P5', 'NC', 'NC']):
+            text(board, pcbnew.B_SilkS, lab, V(x1 - 2.54 * i, y2 + 2.16), 0.8, mirror=True)
     z = GEO['depth_target']['limit_behind_panel_rear_mm'] + GEO['panel_mm'][2]
     y0, y1 = GEO['carrier_Y_mm']
     line(board, C, CV(y0, z), CV(y1, z), 0.1)
