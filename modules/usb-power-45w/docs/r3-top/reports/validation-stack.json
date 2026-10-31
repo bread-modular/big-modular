@@ -1,0 +1,699 @@
+{
+ "problems": [],
+ "not_claimed": [
+  "manufacturing release / fabrication export",
+  "45 W or simultaneous 54.5 W rating",
+  "thermal performance or junction temperatures",
+  "connector/pin current rating (vendor data)",
+  "can/LED/header/bolt heights beyond the assumed envelopes listed in stack_assumptions"
+ ],
+ "erc": {
+  "root": 0,
+  "base": 0,
+  "top": 0
+ },
+ "drc": {
+  "base": {
+   "violations": {},
+   "unconnected": 318,
+   "parity": 0,
+   "excluded": 0
+  },
+  "top": {
+   "violations": {},
+   "unconnected": 0,
+   "parity": 0,
+   "excluded": 0
+  }
+ },
+ "interconnect_equivalence": {
+  "root_refs": 216,
+  "base_refs": 130,
+  "top_refs": 86,
+  "refs_on_both_boards": [],
+  "refs_missing": [],
+  "refs_extra": [],
+  "value_footprint_field_mismatch": [],
+  "root_nets_incl_NC": 145,
+  "joined_nets_incl_NC": 145,
+  "nets_only_in_root": 0,
+  "nets_only_in_join": 0,
+  "equal": true,
+  "method": "union of the two native board netlists, XB1.n=XT1.n and XB2.n=XT2.n, header pins removed, compared as exact (ref, pin) partitions incl. single-pin no-connect nets"
+ },
+ "header_manifest": {
+  "XP_power_2x10": [
+   "GND",
+   "GND",
+   "VIN",
+   "VIN",
+   "VIN",
+   "VIN",
+   "GND",
+   "GND",
+   "+12V",
+   "+12V",
+   "+12V",
+   "+12V",
+   "GND",
+   "GND",
+   "+5V",
+   "+5V",
+   "+5V",
+   "+5V",
+   "N12_RAW",
+   "N12_RAW"
+  ],
+  "XL_logic_2x3": [
+   "GND",
+   "MAIN_OK",
+   "RUN",
+   "P12_OK",
+   "P5_OK",
+   "V3V3"
+  ],
+  "pin_net_mismatches": [],
+  "pin_position_or_net_mismatch_base_vs_top": [],
+  "crossing_nets": [
+   "+12V",
+   "+5V",
+   "GND",
+   "MAIN_OK",
+   "N12_RAW",
+   "P12_OK",
+   "P5_OK",
+   "RUN",
+   "V3V3",
+   "VIN"
+  ],
+  "crossing_not_carried": [],
+  "carried_not_crossing": [],
+  "no_SW_BOOT_FB_SENSE_Kelvin_crossing": true,
+  "current_screen": {
+   "VIN": {
+    "I_screen_A": 4.748,
+    "pins": 4,
+    "A_per_pin": 1.187,
+    "within_assumed_budget": true
+   },
+   "+12V": {
+    "I_screen_A": 2.971,
+    "pins": 4,
+    "A_per_pin": 0.743,
+    "within_assumed_budget": true
+   },
+   "+5V": {
+    "I_screen_A": 2.971,
+    "pins": 4,
+    "A_per_pin": 0.743,
+    "within_assumed_budget": true
+   },
+   "N12_RAW": {
+    "I_screen_A": 1.143,
+    "pins": 2,
+    "A_per_pin": 0.572,
+    "within_assumed_budget": true
+   },
+   "GND": {
+    "I_screen_A": 6.0,
+    "pins": 7,
+    "A_per_pin": 0.857,
+    "within_assumed_budget": true
+   }
+  },
+  "note": "1.5 A/pin is an ASSUMED design budget for soldered 0.64 mm square pins in a poorly ventilated gap, not a vendor rating. GND: 7 pins carry the input return (down) and the +12/+5 load return (up) in opposite directions; no cancellation is assumed (6 A screen)."
+ },
+ "fixed_interfaces_same_as_accepted": {
+  "J1": true,
+  "J2": true,
+  "SW1": true,
+  "D8": true,
+  "D16": true,
+  "D17": true,
+  "D18": true
+ },
+ "J3_absent": true,
+ "geometry": {
+  "base": {
+   "courtyard_edge_lt_1mm": [],
+   "closest_courtyard_edge_mm": [
+    [
+     "D8",
+     0.0
+    ],
+    [
+     "SW1",
+     0.0
+    ],
+    [
+     "D17",
+     0.0
+    ],
+    [
+     "D16",
+     0.0
+    ],
+    [
+     "D18",
+     0.0
+    ],
+    [
+     "J1",
+     0.0
+    ]
+   ],
+   "approved_overhangs": [
+    "D16",
+    "D17",
+    "D18",
+    "D8",
+    "J1",
+    "SW1"
+   ],
+   "hand_solder_lt_2mm": [],
+   "closest_hand_solder_mm": [
+    [
+     [
+      "R49",
+      "XB1"
+     ],
+     1.215
+    ],
+    [
+     [
+      "C48",
+      "XB1"
+     ],
+     1.46
+    ],
+    [
+     [
+      "R91",
+      "XB1"
+     ],
+     1.46
+    ],
+    [
+     [
+      "R69",
+      "XB1"
+     ],
+     1.46
+    ],
+    [
+     [
+      "TP14",
+      "XB1"
+     ],
+     1.53
+    ],
+    [
+     [
+      "TP10",
+      "XB1"
+     ],
+     1.53
+    ]
+   ],
+   "vias": 0,
+   "vias_in_smd_pads": [],
+   "tracks_on_In1": 0,
+   "tracks": 0,
+   "planes": {}
+  },
+  "top": {
+   "courtyard_edge_lt_1mm": [],
+   "closest_courtyard_edge_mm": [
+    [
+     "R11",
+     1.0
+    ],
+    [
+     "support@Y109.2",
+     1.004
+    ],
+    [
+     "support@Y20.5",
+     1.004
+    ],
+    [
+     "support@Y82.0",
+     1.004
+    ],
+    [
+     "support@Y89.0",
+     1.004
+    ],
+    [
+     "support@Y46.2",
+     1.004
+    ]
+   ],
+   "approved_overhangs": [],
+   "hand_solder_lt_2mm": [],
+   "closest_hand_solder_mm": [
+    [
+     [
+      "D12",
+      "XT1"
+     ],
+     2.0
+    ],
+    [
+     [
+      "C33",
+      "XT2"
+     ],
+     2.02
+    ],
+    [
+     [
+      "C25",
+      "XT1"
+     ],
+     2.04
+    ],
+    [
+     [
+      "R44",
+      "XT2"
+     ],
+     2.085
+    ],
+    [
+     [
+      "R35",
+      "XT2"
+     ],
+     2.085
+    ],
+    [
+     [
+      "U7",
+      "XT1"
+     ],
+     2.1
+    ]
+   ],
+   "vias": 121,
+   "vias_in_smd_pads": [],
+   "tracks_on_In1": 0,
+   "tracks": 308,
+   "planes": {
+    "F.Cu:VIN": {
+     "pieces": 1,
+     "areas_mm2": [
+      18.7
+     ]
+    },
+    "F.Cu:Net-(U3-SW)": {
+     "pieces": 1,
+     "areas_mm2": [
+      10.3
+     ]
+    },
+    "F.Cu:GND": {
+     "pieces": 1,
+     "areas_mm2": [
+      8.4
+     ]
+    },
+    "F.Cu:+12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      7.5
+     ]
+    },
+    "F.Cu:P12_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      85.3
+     ]
+    },
+    "F.Cu:N12_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      106.3
+     ]
+    },
+    "F.Cu:Net-(U2-SW)": {
+     "pieces": 1,
+     "areas_mm2": [
+      4.8
+     ]
+    },
+    "B.Cu:+12V": {
+     "pieces": 1,
+     "areas_mm2": [
+      77.2
+     ]
+    },
+    "B.Cu:P5_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      386.6
+     ]
+    },
+    "B.Cu:GND": {
+     "pieces": 1,
+     "areas_mm2": [
+      64.6
+     ]
+    },
+    "B.Cu:P12_RAW": {
+     "pieces": 2,
+     "areas_mm2": [
+      440.0,
+      10.2
+     ]
+    },
+    "B.Cu:N12_RAW": {
+     "pieces": 1,
+     "areas_mm2": [
+      221.2
+     ]
+    },
+    "B.Cu:+5V": {
+     "pieces": 1,
+     "areas_mm2": [
+      63.3
+     ]
+    },
+    "B.Cu:VIN": {
+     "pieces": 1,
+     "areas_mm2": [
+      18.7
+     ]
+    },
+    "In1.Cu:GND": {
+     "pieces": 3,
+     "areas_mm2": [
+      2423.2,
+      2.8,
+      2.1
+     ]
+    },
+    "In2.Cu:VIN": {
+     "pieces": 4,
+     "areas_mm2": [
+      2365.5,
+      2.6,
+      2.3,
+      2.0
+     ]
+    }
+   }
+  }
+ },
+ "stack": {
+  "X_stack": {
+   "panel_X": [
+    0.0,
+    20.0
+   ],
+   "base_B": 2.5,
+   "base_F": 4.1,
+   "thickness": 1.6,
+   "gap": 5.0,
+   "top_B": 9.1,
+   "top_F": 10.7
+  },
+  "tolerances_assumed": {
+   "bracket_web_X": 0.2,
+   "base_thickness": 0.16,
+   "spacer_length": 0.1,
+   "top_thickness": 0.16,
+   "solder_standoff": 0.1,
+   "top_board_bow": 0.3
+  },
+  "linear_tolerance_sum": 1.02,
+  "tallest_top_part": "C34",
+  "top_X_max_nominal": 18.7,
+  "width_margin_to_X20_nominal": 1.3,
+  "width_margin_worst_linear": 0.28,
+  "base_parts_under_top_lowest_clearance": [
+   [
+    "D8",
+    3.9,
+    1.1
+   ],
+   [
+    "D17",
+    3.9,
+    1.1
+   ],
+   [
+    "D16",
+    3.9,
+    1.1
+   ],
+   [
+    "D18",
+    3.9,
+    1.1
+   ],
+   [
+    "J1",
+    3.36,
+    1.64
+   ],
+   [
+    "SW1",
+    3.3,
+    1.7
+   ]
+  ],
+  "under_top_min_nominal": 1.1,
+  "under_top_min_worst_linear": 0.44,
+  "top_outline_to_J2_box_plug_ribbon_mm": {
+   "J2": 1.5,
+   "J2_plug": 2.93,
+   "J2_ribbon": 5.19
+  },
+  "collisions_brackets_nuts_tools_panel_vs_top": [],
+  "through_bolt": {
+   "hardware_class": "ISO 7380 M3 x 12 button head under base B, plain 5.0 mm spacer (OD <= 6), DIN 934 M3 nut on top F",
+   "head_X_min": 0.85,
+   "grip_plus_nut_mm": 10.6,
+   "thread_exposure_nominal_mm": 1.4,
+   "thread_exposure_worst_mm": 0.63,
+   "tip_X_nominal": 14.5,
+   "tools": "hex key on the head from the open base-B side (module out of the rack); nut held by a thin-wall 5.5 AF socket, OD <= 8.5 (top tool courtyard r4.25) or flat pliers",
+   "opposing_screw_collision": "not possible: one through bolt per support",
+   "supports_YZ": [
+    [
+     20.5,
+     36.7
+    ],
+    [
+     46.2,
+     36.7
+    ],
+    [
+     89.0,
+     36.7
+    ],
+    [
+     82.0,
+     7.3
+    ],
+    [
+     109.2,
+     36.7
+    ]
+   ]
+  },
+  "header_pins": {
+   "part": "Samtec TSW-110-07-G-D / TSW-103-07-G-D (catalogue F-226 lead style -07)",
+   "plastic_on_base_F": 2.54,
+   "air_gap_above_plastic": 2.46,
+   "tail_below_base_B": 0.94,
+   "tail_below_base_B_max": 1.8,
+   "post_end_X": 12.48,
+   "post_above_top_F": 1.78,
+   "post_above_top_F_min": 0.5,
+   "note": "nominal catalogue lengths; soldered all-pins-loaded current is a prototype gate; pins are not supports"
+  },
+  "cabled_envelope": "bare boards end at Z42; the mated J2 plug + ribbon envelope reaches Z50 (proposal envelope) - 42 mm is NOT claimed with the cable fitted"
+ },
+ "converters": {
+  "U2": {
+   "input_caps_VIN_pad_gap_mm": [
+    [
+     "C8",
+     1.05
+    ],
+    [
+     "C7",
+     3.29
+    ],
+    [
+     "C6",
+     5.68
+    ],
+    [
+     "C16",
+     16.77
+    ],
+    [
+     "C15",
+     18.4
+    ],
+    [
+     "C17",
+     19.87
+    ],
+    [
+     "C24",
+     61.62
+    ],
+    [
+     "C5",
+     67.98
+    ]
+   ],
+   "BOOT_cap_gap_mm": [
+    [
+     "C10",
+     1.05
+    ]
+   ],
+   "FB_pad_gap_to_SW_copper_mm": [
+    [
+     "R9",
+     2.25
+    ],
+    [
+     "R8",
+     3.79
+    ]
+   ]
+  },
+  "U3": {
+   "input_caps_VIN_pad_gap_mm": [
+    [
+     "C17",
+     1.05
+    ],
+    [
+     "C15",
+     3.07
+    ],
+    [
+     "C16",
+     5.45
+    ],
+    [
+     "C6",
+     16.27
+    ],
+    [
+     "C7",
+     17.16
+    ],
+    [
+     "C8",
+     19.91
+    ],
+    [
+     "C24",
+     49.0
+    ],
+    [
+     "C5",
+     58.0
+    ]
+   ],
+   "BOOT_cap_gap_mm": [
+    [
+     "C19",
+     1.05
+    ]
+   ],
+   "FB_pad_gap_to_SW_copper_mm": [
+    [
+     "R12",
+     2.38
+    ],
+    [
+     "R11",
+     2.89
+    ]
+   ]
+  },
+  "U4": {
+   "input_caps_VIN_pad_gap_mm": [
+    [
+     "C27",
+     0.95
+    ],
+    [
+     "C25",
+     2.47
+    ],
+    [
+     "C26",
+     4.92
+    ]
+   ],
+   "BOOT_cap_gap_mm": [
+    [
+     "C28",
+     0.7
+    ]
+   ],
+   "FB_pad_gap_to_SW_copper_mm": [
+    [
+     "R15",
+     7.95
+    ],
+    [
+     "R14",
+     6.37
+    ]
+   ]
+  }
+ },
+ "thermal_terminals": {
+  "U4.9": {
+   "board": "top",
+   "net": [
+    "N12_RAW"
+   ],
+   "expected": "N12_RAW",
+   "ok": true
+  },
+  "Q4.2": {
+   "board": "base",
+   "net": [
+    "-12V"
+   ],
+   "expected": "-12V",
+   "ok": true
+  },
+  "U5.21": {
+   "board": "base",
+   "net": [
+    "GND"
+   ],
+   "expected": "GND",
+   "ok": true
+  },
+  "U6.21": {
+   "board": "top",
+   "net": [
+    "GND"
+   ],
+   "expected": "GND",
+   "ok": true
+  },
+  "U7.21": {
+   "board": "top",
+   "net": [
+    "GND"
+   ],
+   "expected": "GND",
+   "ok": true
+  }
+ }
+}
