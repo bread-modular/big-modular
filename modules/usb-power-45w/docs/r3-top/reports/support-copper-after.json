@@ -1,0 +1,226 @@
+{
+ "board": "/home/azero/.okbrain/workspaces/big-modular/205/modules/usb-power-45w/hardware/top/usb-power-45w-top.kicad_pcb",
+ "R_IN": 1.7,
+ "R_OUT": 3.6,
+ "layers": [
+  "F.Cu",
+  "In1.Cu",
+  "In2.Cu",
+  "B.Cu"
+ ],
+ "max_error_mm": 0.005,
+ "supports": [
+  {
+   "centre": [
+    56.25,
+    67.575
+   ],
+   "hits": [],
+   "nearest": {
+    "items:F.Cu": [
+     3.975,
+     "track P12_RAW"
+    ],
+    "stored:B.Cu": [
+     3.601,
+     "stored fill P12_RAW"
+    ],
+    "stored:In1.Cu": [
+     3.601,
+     "stored fill GND"
+    ],
+    "stored:In2.Cu": [
+     3.601,
+     "stored fill VIN"
+    ],
+    "refilled:B.Cu": [
+     3.601,
+     "refilled fill P12_RAW"
+    ],
+    "refilled:In1.Cu": [
+     3.601,
+     "refilled fill GND"
+    ],
+    "refilled:In2.Cu": [
+     3.601,
+     "refilled fill VIN"
+    ]
+   },
+   "keepout": {
+    "zones": [
+     "MHT1_copper_keepout_r3.6_s1",
+     "MHT1_copper_keepout_r3.6_s4",
+     "MHT1_copper_keepout_r3.6_s3",
+     "MHT1_copper_keepout_r3.6_s2"
+    ],
+    "grid_points": 138240,
+    "grid_points_uncovered": 0
+   }
+  },
+  {
+   "centre": [
+    81.95,
+    67.575
+   ],
+   "hits": [],
+   "nearest": {
+    "items:F.Cu": [
+     4.230025,
+     "via /P12_OK"
+    ],
+    "items:In1.Cu": [
+     4.230025,
+     "via /P12_OK"
+    ],
+    "items:In2.Cu": [
+     4.230025,
+     "via /P12_OK"
+    ],
+    "items:B.Cu": [
+     4.230025,
+     "via /P12_OK"
+    ],
+    "stored:In1.Cu": [
+     3.601,
+     "stored fill GND"
+    ],
+    "stored:In2.Cu": [
+     3.601,
+     "stored fill VIN"
+    ],
+    "refilled:In1.Cu": [
+     3.601,
+     "refilled fill GND"
+    ],
+    "refilled:In2.Cu": [
+     3.601,
+     "refilled fill VIN"
+    ]
+   },
+   "keepout": {
+    "zones": [
+     "MHT2_copper_keepout_r3.6_s3",
+     "MHT2_copper_keepout_r3.6_s4",
+     "MHT2_copper_keepout_r3.6_s2",
+     "MHT2_copper_keepout_r3.6_s1"
+    ],
+    "grid_points": 138240,
+    "grid_points_uncovered": 0
+   }
+  },
+  {
+   "centre": [
+    117.75,
+    96.975
+   ],
+   "hits": [],
+   "nearest": {
+    "items:B.Cu": [
+     4.075,
+     "track /MAIN_OK"
+    ],
+    "items:F.Cu": [
+     4.599887,
+     "pad C28.2 Net-(U4-BOOT)"
+    ],
+    "stored:In1.Cu": [
+     3.601,
+     "stored fill GND"
+    ],
+    "stored:In2.Cu": [
+     3.600999,
+     "stored fill VIN"
+    ],
+    "refilled:In1.Cu": [
+     3.601,
+     "refilled fill GND"
+    ],
+    "refilled:In2.Cu": [
+     3.600999,
+     "refilled fill VIN"
+    ]
+   },
+   "keepout": {
+    "zones": [
+     "MHT4_copper_keepout_r3.6_s2",
+     "MHT4_copper_keepout_r3.6_s4",
+     "MHT4_copper_keepout_r3.6_s1",
+     "MHT4_copper_keepout_r3.6_s3"
+    ],
+    "grid_points": 138240,
+    "grid_points_uncovered": 0
+   }
+  },
+  {
+   "centre": [
+    124.75,
+    67.575
+   ],
+   "hits": [],
+   "nearest": {
+    "stored:In1.Cu": [
+     3.600999,
+     "stored fill GND"
+    ],
+    "stored:In2.Cu": [
+     3.600999,
+     "stored fill VIN"
+    ],
+    "refilled:In1.Cu": [
+     3.600999,
+     "refilled fill GND"
+    ],
+    "refilled:In2.Cu": [
+     3.600999,
+     "refilled fill VIN"
+    ]
+   },
+   "keepout": {
+    "zones": [
+     "MHT3_copper_keepout_r3.6_s3",
+     "MHT3_copper_keepout_r3.6_s1",
+     "MHT3_copper_keepout_r3.6_s4",
+     "MHT3_copper_keepout_r3.6_s2"
+    ],
+    "grid_points": 138240,
+    "grid_points_uncovered": 0
+   }
+  },
+  {
+   "centre": [
+    144.95,
+    67.575
+   ],
+   "hits": [],
+   "nearest": {
+    "stored:In1.Cu": [
+     3.601,
+     "stored fill GND"
+    ],
+    "stored:In2.Cu": [
+     3.601,
+     "stored fill VIN"
+    ],
+    "refilled:In1.Cu": [
+     3.601,
+     "refilled fill GND"
+    ],
+    "refilled:In2.Cu": [
+     3.601,
+     "refilled fill VIN"
+    ]
+   },
+   "keepout": {
+    "zones": [
+     "MHT5_copper_keepout_r3.6_s4",
+     "MHT5_copper_keepout_r3.6_s1",
+     "MHT5_copper_keepout_r3.6_s3",
+     "MHT5_copper_keepout_r3.6_s2"
+    ],
+    "grid_points": 138240,
+    "grid_points_uncovered": 0
+   }
+  }
+ ],
+ "problems": []
+}

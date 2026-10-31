@@ -39,6 +39,7 @@ Gotchas:
 | T9-polish | F+B solid patches and centre vias on the XT1 VIN/GND posts; B GND heat pour at the U6 pad; 3rd U7 P5_RAW via; 2nd XT1-20 N12_RAW run | 0 |
 | T10-via-margin | moved 8 same-net vias that sat only 0.05-0.07 mm off pad copper (flagged by the check_stack via-in-pad gate) | 1 (index slip) |
 | T11-fix | removed the orphan L2.2 stub, restored R11.2 -> pr11 | 0 |
+| T12-support-keepout | no copper change: the 5 seamed M3 support rule areas replaced by 4 sector rule areas each (`tools/fix_support_keepouts.py`), native refill pulls In1/In2/B fills out of r1.7..3.6. See [SUPPORT-KEEPOUT.md](SUPPORT-KEEPOUT.md) | 0 |
 
 ## Placement refinements (unrouted AI-placed SMD only; footprint, value and net unchanged)
 

@@ -16,7 +16,8 @@ per-board schematics from tools/board_schematics.py. Changes, all explicit:
 - Every pad net, Value/field and symbol link (path, sheet file) from the board's own native
   netlist, so native DRC schematic parity runs per board.
 - Supports: 5 x M3 through-bolt positions (study 4 + one in the freed J3 volume), board-only
-  holes with a copper keep-out annulus and a courtyard (top: nut-driver access radius).
+  holes with a copper keep-out annulus r1.7..3.6 (4 overlapping hole-free sector rule areas, see
+  keepout_sectors) and a courtyard (top: nut-driver access radius).
 - Top outline grown into the freed J3 volume (tools/stack_r2.py TOP_OUTLINE).
 - Board setup: 4 layers, 1.0 mm copper-to-edge, Power net class on the real rails.
 
@@ -41,6 +42,55 @@ LIB = HW / 'USBPOWER45.pretty'
 POWER_NETS = ['GND', 'VPD', 'EF_IN', 'VIN', 'P12_RAW', 'P5_RAW', 'N12_RAW', '+12V', '+5V', '-12V']
 J2_FP = 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621'
 STALE_TEXT = ('M1 PREVIEW', 'PARKED OFF-BOARD', 'PROVISIONAL', 'J3 IDC plug')
+
+
+KEEPOUT_R_IN = 1.7          # all-layer copper keep-out annulus r1.7..STANDOFF_CU_R; the r1.6 NPTH stays clear
+KEEPOUT_STEPS = 72          # 5 deg
+KEEPOUT_SECTORS = 4
+
+
+def keepout_sectors(cx, cy, r_in=KEEPOUT_R_IN, r_out=st.STANDOFF_CU_R):
+    """Simple native-mm polygons whose union contains the annulus r_in..r_out around (cx, cy).
+
+    KiCad 10 saves a zone hole by appending its vertices to the outline, so an outline + hole ring
+    reloads as ONE contour with a radial seam that admits copper. The annulus is therefore built
+    from KEEPOUT_SECTORS hole-free annular sectors, each one step over its neighbours. Outer chain:
+    edges tangent to r_out + 1 um (vertices at that / cos(step/2)); inner chain: vertices at
+    r_in - 1 um (chords inside r_in). The 1 um absorbs the 1 nm save grid; tools/check_support_copper.py
+    tests the union against the ideal annulus.
+    """
+    d = 2 * math.pi / KEEPOUT_STEPS
+    ro, ri = (r_out + 0.001) / math.cos(d / 2), r_in - 0.001
+    per = KEEPOUT_STEPS // KEEPOUT_SECTORS
+    out = []
+    for k in range(KEEPOUT_SECTORS):
+        idx = list(range(k * per - 1, (k + 1) * per + 2))
+        ring = [(cx + ro * math.cos(i * d), cy + ro * math.sin(i * d)) for i in idx] + \
+               [(cx + ri * math.cos(i * d), cy + ri * math.sin(i * d)) for i in reversed(idx)]
+        out.append([(round(x, 6), round(y, 6)) for x, y in ring])
+    return out
+
+
+def add_support_keepout(b, centre, prefix):
+    """All-copper-layer rule areas (no tracks/vias/pads/pours) <prefix>_copper_keepout_r<R>_s<j>."""
+    import pcbnew
+    zones = []
+    for j, ring in enumerate(keepout_sectors(*centre), 1):
+        zone = pcbnew.ZONE(b)
+        zone.SetIsRuleArea(True)
+        for fn in (zone.SetDoNotAllowTracks, zone.SetDoNotAllowVias, zone.SetDoNotAllowPads,
+                   zone.SetDoNotAllowZoneFills):
+            fn(True)
+        zone.SetDoNotAllowFootprints(False)
+        zone.SetLayerSet(pcbnew.LSET.AllCuMask())
+        zone.SetZoneName(f'{prefix}_copper_keepout_r{st.STANDOFF_CU_R}_s{j}')
+        o = zone.Outline()
+        o.NewOutline()
+        for x, y in ring:
+            o.Append(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
+        b.Add(zone)
+        zones.append(zone)
+    return zones
 
 
 def netlist(board):
@@ -157,24 +207,7 @@ def one(board):
         f.SetPosition(nat(y, z))
         f.Reference().SetVisible(False)
         f.Value().SetVisible(False)
-        zone = pcbnew.ZONE(b)
-        zone.SetIsRuleArea(True)
-        for fn in (zone.SetDoNotAllowTracks, zone.SetDoNotAllowVias, zone.SetDoNotAllowPads,
-                   zone.SetDoNotAllowZoneFills):
-            fn(True)
-        zone.SetDoNotAllowFootprints(False)
-        zone.SetLayerSet(pcbnew.LSET.AllCuMask())
-        zone.SetZoneName(f'MH{pre[1]}{k}_copper_keepout_r{st.STANDOFF_CU_R}')
-        o = zone.Outline()
-        o.NewOutline()
-        for a in range(36):
-            t = 2 * math.pi * a / 36
-            o.Append(nat(y + st.STANDOFF_CU_R * math.cos(t), z + st.STANDOFF_CU_R * math.sin(t)))
-        o.NewHole()
-        for a in range(36):
-            t = -2 * math.pi * a / 36
-            o.Append(nat(y + 1.7 * math.cos(t), z + 1.7 * math.sin(t)))
-        b.Add(zone)
+        add_support_keepout(b, (y + 35.75, 104.275 - z), f'MH{pre[1]}{k}')
     if board == 'top':
         poly = st.TOP_OUTLINE
         for a, c in zip(poly, poly[1:] + poly[:1]):
