@@ -57,6 +57,13 @@
       "flattened_from": null,
       "edits": null
     },
+    "BCX53_NXP": {
+      "library": "LOCAL:BCX53_NXP",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "Nexperia BCX53 E=1 C=2 B=3; adapted stock drawing, exact manufacturer pin map"
+    },
     "MMBT3906": {
       "library": "Transistor_BJT:MMBT3906",
       "source": "/usr/share/kicad/symbols/Transistor_BJT.kicad_sym",
@@ -73,35 +80,126 @@
     },
     "LMR38020FDDA": {
       "library": "LOCAL:LMR38020FDDA",
-      "source": "~/.okbrain/workspaces/big-modular/177/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
-      "source_sha256": "d2cc20b4dbf32fb62814e40db6395250718a57bae973c0034532b129b2aba784",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
       "flattened_from": null,
-      "edits": "hand-drawn from the TI datasheet pin table (KiCad 10 stock has no LMR38020 / TPS25947)"
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
     },
-    "TPS259470ARPW": {
-      "library": "LOCAL:TPS259470ARPW",
-      "source": "~/.okbrain/workspaces/big-modular/177/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
-      "source_sha256": "d2cc20b4dbf32fb62814e40db6395250718a57bae973c0034532b129b2aba784",
+    "TPS16630PWP": {
+      "library": "LOCAL:TPS16630PWP",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
       "flattened_from": null,
-      "edits": "hand-drawn from the TI datasheet pin table (KiCad 10 stock has no LMR38020 / TPS25947)"
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "TestPoint": {
+      "library": "Connector:TestPoint",
+      "source": "/usr/share/kicad/symbols/Connector.kicad_sym",
+      "source_sha256": "50b42bf755009d3d459c310182dca1c37e1ff1a01fa6ae23846b416fafffc914",
+      "flattened_from": null,
+      "edits": null
+    },
+    "2N7002": {
+      "library": "Transistor_FET:2N7002",
+      "source": "/usr/share/kicad/symbols/Transistor_FET.kicad_sym",
+      "source_sha256": "4fffc88e10091df229ea6ff032afa8ca8f1c2f3d72c8dabf25c6d31704ac6b50",
+      "flattened_from": "Q_NMOS_GSD",
+      "edits": null
+    },
+    "LTV354": {
+      "library": "Isolator:LTV-354T",
+      "source": "/usr/share/kicad/symbols/Isolator.kicad_sym",
+      "source_sha256": "6fc2301ac84dc73d85cd925e296375a1314a80d7a2f009076719a9517a47ec4a",
+      "flattened_from": null,
+      "edits": null
+    },
+    "BAT54S": {
+      "library": "Diode:BAT54S",
+      "source": "/usr/share/kicad/symbols/Diode.kicad_sym",
+      "source_sha256": "e6a8ac06651527e2700b3e1a7ca8b077a2c28ac1ebdbf57aae163f5777d4c65c",
+      "flattened_from": null,
+      "edits": null
+    },
+    "LM5067MM": {
+      "library": "LOCAL:LM5067MM",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "TPS7A1633DGN": {
+      "library": "LOCAL:TPS7A1633DGN",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "TPS3808G01": {
+      "library": "LOCAL:TPS3808G01",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "HC74_DUAL": {
+      "library": "LOCAL:HC74_DUAL",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "HC08_QUAD": {
+      "library": "LOCAL:HC08_QUAD",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "HC20_DUAL": {
+      "library": "LOCAL:HC20_DUAL",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "LVC1G17": {
+      "library": "LOCAL:LVC1G17",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "LM2901_QUAD": {
+      "library": "LOCAL:LM2901_QUAD",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
+    },
+    "FQD13N06L": {
+      "library": "LOCAL:FQD13N06L",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power-45w/tools/USBPOWER45-src.kicad_sym",
+      "source_sha256": "e86536051caeaf97303ae93b47f1a40785724b4e54bbd8561a5ba81a5ab0e59b",
+      "flattened_from": null,
+      "edits": "manufacturer pin-table functional symbol; see S6 design/source provenance"
     },
     "CH224A": {
       "library": "UP:CH224A",
-      "source": "~/.okbrain/workspaces/big-modular/177/modules/usb-power/hardware/BigModular.kicad_sym",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power/hardware/BigModular.kicad_sym",
       "source_sha256": "59c46a53c05c9f92653b2f9d7f1e588af738dc59573e3965f87865fbc7664b53",
       "flattened_from": null,
       "edits": "symbol of modules/usb-power (KiCad 10 stock has no CH224A / HRO TYPE-C-31-M-12 / TL3340AF160QG)"
     },
     "HRO_TYPE_C_31_M_12": {
       "library": "UP:HRO_TYPE_C_31_M_12",
-      "source": "~/.okbrain/workspaces/big-modular/177/modules/usb-power/hardware/BigModular.kicad_sym",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power/hardware/BigModular.kicad_sym",
       "source_sha256": "59c46a53c05c9f92653b2f9d7f1e588af738dc59573e3965f87865fbc7664b53",
       "flattened_from": null,
       "edits": "symbol of modules/usb-power (KiCad 10 stock has no CH224A / HRO TYPE-C-31-M-12 / TL3340AF160QG)"
     },
     "TL3340AF160QG": {
       "library": "UP:TL3340AF160QG",
-      "source": "~/.okbrain/workspaces/big-modular/177/modules/usb-power/hardware/BigModular.kicad_sym",
+      "source": "~/.okbrain/workspaces/big-modular/178/modules/usb-power/hardware/BigModular.kicad_sym",
       "source_sha256": "59c46a53c05c9f92653b2f9d7f1e588af738dc59573e3965f87865fbc7664b53",
       "flattened_from": null,
       "edits": "symbol of modules/usb-power (KiCad 10 stock has no CH224A / HRO TYPE-C-31-M-12 / TL3340AF160QG)"
