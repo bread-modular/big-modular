@@ -1,0 +1,1081 @@
+{
+ "assumption_level": "passive/averaged screening only; not closed-loop qualification",
+ "bias_bounds": {
+  "22u25V_1206@5.0V": [
+   0.55,
+   0.8
+  ],
+  "22u25V_1206@12.2V": [
+   0.3,
+   0.5
+  ],
+  "10u50V_1206@20.0V": [
+   0.35,
+   0.6
+  ],
+  "10u50V_1206@32.0V": [
+   0.2,
+   0.4
+  ]
+ },
+ "banks_uF": {
+  "VIN ceramics C6/C7/C15/C16/C24 @20V": [
+   12.5,
+   33.0
+  ],
+  "P12_RAW 4x22u @12.2V": [
+   18.8,
+   48.4
+  ],
+  "P5_RAW 4x22u @5V": [
+   34.4,
+   77.4
+  ],
+  "N12_RAW 5x22u @12V": [
+   23.5,
+   60.5
+  ],
+  "C34-36 can 100u": [
+   57.8,
+   120.0
+  ],
+  "C5 can 47u": [
+   27.2,
+   56.4
+  ]
+ },
+ "datasheet_cap_figures_uF": {
+  "TPS62933 12V/500k table min": 10,
+  "TPS62933 5V/1.2M table min": 10,
+  "LMR38020 Table 9-1 buck guide, RATED (not effective, not IBB min)": {
+   "12V 400kHz": {
+    "nominal": "1x22",
+    "minimum_rated": "1x15"
+   },
+   "12V 1MHz": {
+    "nominal": "2x10",
+    "minimum_rated": "1x10"
+   }
+  },
+  "LMR38020 CIN min (effective)": 4.7
+ },
+ "eq21_cout_min_uF": {
+  "P12 dI=1A dV=3%": 3.0,
+  "P5 dI=1A dV=3%": 8.6
+ },
+ "vin_stability": {
+  "A": {
+   "zeta": 0.07392777021047428,
+   "zmax": 1.6242455388835586,
+   "unstable": 0,
+   "n": 1296,
+   "zeta_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 2,
+    "csrc": "none",
+    "c5c": "hi"
+   },
+   "zmax_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 2,
+    "csrc": "none",
+    "c5c": "hi"
+   },
+   "margin_dB": 8.1
+  },
+  "B0": {
+   "zeta": 0.02500349880655899,
+   "zmax": 2.6818920921717853,
+   "unstable": 0,
+   "n": 216,
+   "zeta_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "none",
+    "c5c": "lo"
+   },
+   "zmax_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "none",
+    "c5c": "lo"
+   },
+   "margin_dB": 3.7
+  },
+  "B_Cx2": {
+   "zeta": 0.04564819339115331,
+   "zmax": 1.9705568280913695,
+   "unstable": 0,
+   "n": 216,
+   "zeta_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "none",
+    "c5c": "lo"
+   },
+   "zmax_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "none",
+    "c5c": "lo"
+   },
+   "margin_dB": 6.4
+  },
+  "B_RCx2": {
+   "zeta": 0.10141763404507853,
+   "zmax": 1.1420660748386458,
+   "unstable": 0,
+   "n": 216,
+   "zeta_case": {
+    "L": 4e-07,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "cer10u",
+    "c5c": "lo"
+   },
+   "zmax_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "none",
+    "c5c": "lo"
+   },
+   "margin_dB": 11.1
+  },
+  "B_RCx4": {
+   "zeta": 0.1014157001705906,
+   "zmax": 0.842787132714229,
+   "unstable": 0,
+   "n": 216,
+   "zeta_case": {
+    "L": 4e-07,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "cer10u",
+    "c5c": "lo"
+   },
+   "zmax_case": {
+    "L": 2e-06,
+    "R": 0.02,
+    "Rb": 0.02,
+    "Ron": 0.019,
+    "cer": "lo",
+    "esr_i": 0,
+    "csrc": "none",
+    "c5c": "lo"
+   },
+   "margin_dB": 13.8
+  }
+ },
+ "middlebrook_zin_ohm": 4.109,
+ "rd_sweep": {
+  "0.1": {
+   "B_RCx2": {
+    "zeta": 0.057,
+    "margin_dB": 7.4
+   },
+   "B_RCx4": {
+    "zeta": 0.093,
+    "margin_dB": 10.8
+   }
+  },
+  "0.33": {
+   "B_RCx2": {
+    "zeta": 0.081,
+    "margin_dB": 9.3
+   },
+   "B_RCx4": {
+    "zeta": 0.102,
+    "margin_dB": 13.8
+   }
+  },
+  "0.5": {
+   "B_RCx2": {
+    "zeta": 0.097,
+    "margin_dB": 10.2
+   },
+   "B_RCx4": {
+    "zeta": 0.102,
+    "margin_dB": 14.6
+   }
+  },
+  "1.0": {
+   "B_RCx2": {
+    "zeta": 0.101,
+    "margin_dB": 11.1
+   },
+   "B_RCx4": {
+    "zeta": 0.101,
+    "margin_dB": 13.8
+   }
+  },
+  "2.0": {
+   "B_RCx2": {
+    "zeta": 0.101,
+    "margin_dB": 10.1
+   },
+   "B_RCx4": {
+    "zeta": 0.101,
+    "margin_dB": 10.8
+   }
+  }
+ },
+ "zratio_no_can_vs_can": {
+  "P12_RAW": {
+   "10kHz": [
+    2.75,
+    1.06
+   ],
+   "30kHz": [
+    1.5,
+    1.01
+   ],
+   "60kHz": [
+    1.16,
+    1.0
+   ],
+   "100kHz": [
+    1.06,
+    1.0
+   ]
+  },
+  "P5_RAW": {
+   "10kHz": [
+    1.93,
+    1.02
+   ],
+   "30kHz": [
+    1.23,
+    1.0
+   ],
+   "60kHz": [
+    1.07,
+    1.0
+   ],
+   "100kHz": [
+    1.03,
+    1.0
+   ]
+  },
+  "N12_RAW": {
+   "10kHz": [
+    2.39,
+    1.04
+   ],
+   "30kHz": [
+    1.37,
+    1.01
+   ],
+   "60kHz": [
+    1.11,
+    1.0
+   ],
+   "100kHz": [
+    1.05,
+    1.0
+   ]
+  }
+ },
+ "ibb": [
+  {
+   "vin": 17.2,
+   "io": 0.8,
+   "D": 0.411,
+   "f_rhpz_kHz": 134.4,
+   "il_avg": 1.358,
+   "il_pk": 1.656,
+   "i_cout_rms": 0.668,
+   "i_cin_rms": 0.668
+  },
+  {
+   "vin": 17.2,
+   "io": 1.0,
+   "D": 0.411,
+   "f_rhpz_kHz": 107.5,
+   "il_avg": 1.697,
+   "il_pk": 1.995,
+   "i_cout_rms": 0.835,
+   "i_cin_rms": 0.835
+  },
+  {
+   "vin": 17.2,
+   "io": 1.143,
+   "D": 0.411,
+   "f_rhpz_kHz": 94.1,
+   "il_avg": 1.94,
+   "il_pk": 2.238,
+   "i_cout_rms": 0.954,
+   "i_cin_rms": 0.954
+  },
+  {
+   "vin": 20.0,
+   "io": 0.8,
+   "D": 0.375,
+   "f_rhpz_kHz": 165.8,
+   "il_avg": 1.28,
+   "il_pk": 1.596,
+   "i_cout_rms": 0.619,
+   "i_cin_rms": 0.619
+  },
+  {
+   "vin": 20.0,
+   "io": 1.0,
+   "D": 0.375,
+   "f_rhpz_kHz": 132.7,
+   "il_avg": 1.599,
+   "il_pk": 1.916,
+   "i_cout_rms": 0.774,
+   "i_cin_rms": 0.774
+  },
+  {
+   "vin": 20.0,
+   "io": 1.143,
+   "D": 0.375,
+   "f_rhpz_kHz": 116.1,
+   "il_avg": 1.828,
+   "il_pk": 2.144,
+   "i_cout_rms": 0.885,
+   "i_cin_rms": 0.885
+  },
+  {
+   "vin": 24.1,
+   "io": 0.8,
+   "D": 0.332,
+   "f_rhpz_kHz": 213.5,
+   "il_avg": 1.198,
+   "il_pk": 1.536,
+   "i_cout_rms": 0.564,
+   "i_cin_rms": 0.564
+  },
+  {
+   "vin": 24.1,
+   "io": 1.0,
+   "D": 0.332,
+   "f_rhpz_kHz": 170.8,
+   "il_avg": 1.497,
+   "il_pk": 1.835,
+   "i_cout_rms": 0.705,
+   "i_cin_rms": 0.705
+  },
+  {
+   "vin": 24.1,
+   "io": 1.143,
+   "D": 0.332,
+   "f_rhpz_kHz": 149.4,
+   "il_avg": 1.712,
+   "il_pk": 2.049,
+   "i_cout_rms": 0.806,
+   "i_cin_rms": 0.806
+  }
+ ],
+ "input_ripple": {
+  "i_cin_rms_U2": 1.22,
+  "i_cin_rms_U3": 1.081
+ },
+ "inrush": {
+  "A": {
+   "sr_V_per_ms": [
+    2.27,
+    2.92
+   ],
+   "i_inrush_A_max": 0.261
+  },
+  "B0": {
+   "sr_V_per_ms": [
+    2.27,
+    2.92
+   ],
+   "i_inrush_A_max": 0.096
+  }
+ },
+ "can_life_h": {
+  "45 C": 64000,
+  "55 C": 32000,
+  "65 C": 16000,
+  "75 C": 8000
+ },
+ "stress": {
+  "C25_C26_normal": 31.99,
+  "C25_C26_ovp_hi": 39.15,
+  "C25_C26_tvs_window": 47.7,
+  "rating": 50,
+  "C25_C26_eff_lo_uF": 2.85,
+  "C25_C26_eff_hi_uF": 8.8,
+  "lmr38020_min_cin_eff_uF": 4.7
+ },
+ "ripple_outputs": {
+  "P12_RAW": {
+   "A": {
+    "can_rms": 0.0045,
+    "part_rms": 0.1071,
+    "vpp_synth": 0.0038,
+    "vpp_synth_noESL": 0.0043,
+    "total_rms": 0.213,
+    "part_mW_at_ESRmax": 0.11,
+    "can_limit_A_rms_105C": [
+     0.052,
+     0.094
+    ],
+    "can_P_mW_max": 0.06
+   },
+   "B_x2": {
+    "can_rms": 0.0,
+    "part_rms": 0.071,
+    "vpp_synth": 0.0025,
+    "vpp_synth_noESL": 0.0029,
+    "total_rms": 0.213,
+    "part_mW_at_ESRmax": 0.05
+   }
+  },
+  "P5_RAW": {
+   "A": {
+    "can_rms": 0.0031,
+    "part_rms": 0.0875,
+    "vpp_synth": 0.0046,
+    "vpp_synth_noESL": 0.0018,
+    "total_rms": 0.175,
+    "part_mW_at_ESRmax": 0.08,
+    "can_limit_A_rms_105C": [
+     0.052,
+     0.094
+    ],
+    "can_P_mW_max": 0.03
+   },
+   "B_x2": {
+    "can_rms": 0.0,
+    "part_rms": 0.0583,
+    "vpp_synth": 0.0031,
+    "vpp_synth_noESL": 0.0012,
+    "total_rms": 0.175,
+    "part_mW_at_ESRmax": 0.03
+   }
+  },
+  "N12_RAW": {
+   "A": {
+    "can_rms": 0.0236,
+    "part_rms": 0.3857,
+    "vpp_synth": 0.1374,
+    "vpp_synth_noESL": 0.0288,
+    "total_rms": 0.961,
+    "part_mW_at_ESRmax": 1.49,
+    "can_limit_A_rms_105C": [
+     0.052,
+     0.094
+    ],
+    "can_P_mW_max": 1.68
+   },
+   "B_x2": {
+    "can_rms": 0.0,
+    "part_rms": 0.2745,
+    "vpp_synth": 0.099,
+    "vpp_synth_noESL": 0.0206,
+    "total_rms": 0.961,
+    "part_mW_at_ESRmax": 0.75
+   },
+   "role": "diagnostic single-node (no C25/C26 coupling); not combined with ripple_ibb_input"
+  }
+ },
+ "ripple_ibb_input": {
+  "A": {
+   "c25_rms": 0.3836,
+   "c25_vpp_synth": 0.144,
+   "c25_vpp_synth_noESL": 0.0619,
+   "gnd_path_rms": 0.73,
+   "can_c5_rms": 0.0201,
+   "can_c36_rms": 0.0176,
+   "damper_rms": 0.0,
+   "n12_cer_rms": 0.7318,
+   "kcl_residual_A": 4.97e-16,
+   "total_in_rms": 0.958,
+   "total_out_rms": 0.961,
+   "c25_part_rms_x2imb": 0.3836,
+   "n12_cer_part_rms_x2imb": 0.2927,
+   "n12_cer_part_mW_at_ESRmax": 0.8569,
+   "damper_mW_1ohm": 0.0
+  },
+  "B": {
+   "c25_rms": 0.3793,
+   "c25_vpp_synth": 0.1308,
+   "c25_vpp_synth_noESL": 0.0577,
+   "gnd_path_rms": 0.7533,
+   "can_c5_rms": 0.0,
+   "can_c36_rms": 0.0,
+   "damper_rms": 0.0105,
+   "n12_cer_rms": 0.754,
+   "kcl_residual_A": 2.78e-16,
+   "total_in_rms": 0.958,
+   "total_out_rms": 0.961,
+   "c25_part_rms_x2imb": 0.3793,
+   "n12_cer_part_rms_x2imb": 0.2154,
+   "n12_cer_part_mW_at_ESRmax": 0.4641,
+   "damper_mW_1ohm": 0.1109
+  },
+  "role": "primary for C25/C26, C36, N12_RAW ceramics and the U4 share of C5"
+ },
+ "ripple_vin_bucks": {
+  "A": {
+   "can_rms": 0.0297,
+   "damper_rms": 0.0,
+   "part_rms": 0.6447,
+   "vpp_synth_U2": 0.2729,
+   "vpp_synth_noESL_U2": 0.0473,
+   "damper_mW_1ohm": 0.0
+  },
+  "B": {
+   "can_rms": 0.0,
+   "damper_rms": 0.0245,
+   "part_rms": 0.6435,
+   "vpp_synth_U2": 0.2635,
+   "vpp_synth_noESL_U2": 0.0472,
+   "damper_mW_1ohm": 0.5986
+  }
+ },
+ "cost_panel_quotes": {
+  "observed": "2026-10-31 ~04:37 UTC (panel live quote, not re-verified here)",
+  "unit_usd": {
+   "C165527": 0.1267,
+   "C350012": 0.1173,
+   "C13585": 0.2115,
+   "C12891": 0.118
+  },
+  "removed_cans_usd_per_board": 0.4786,
+  "excluded": "damper R (new code, unquoted), Extended fees, setup, attrition, placement, MOQ remainder",
+  "A (retain C5 + C34/C35/C36)": {
+   "added_usd": 0.0,
+   "removed_usd": 0.0,
+   "net_parts_usd_per_board": 0.0
+  },
+  "B_full (C5 -> 2x C13585 + R; C34/35/36 -> 2x C12891 each)": {
+   "added_usd": 1.131,
+   "removed_usd": 0.4786,
+   "net_parts_usd_per_board": 0.6524,
+   "breakeven_boards_if_ext_fee_usd": {
+    "1 (hypothetical)": 3.1,
+    "3 (hypothetical)": 9.2
+   }
+  },
+  "B_min (C5 -> 2x C13585 + R; C35 -> 2x C12891; C34/C36 removed)": {
+   "added_usd": 0.659,
+   "removed_usd": 0.4786,
+   "net_parts_usd_per_board": 0.1804,
+   "breakeven_boards_if_ext_fee_usd": {
+    "1 (hypothetical)": 11.1,
+    "3 (hypothetical)": 33.3
+   }
+  },
+  "B_bare (C5 -> 2x C13585 + R; C34/C35/C36 removed)": {
+   "added_usd": 0.423,
+   "removed_usd": 0.4786,
+   "net_parts_usd_per_board": -0.0556
+  },
+  "note": "B removes two Extended codes; breakeven batch = 2 x fee / net delta, i.e. B is cheaper only for batches below that size. Fee not quoted: no cost claim either way."
+ },
+ "ripple_checks": {
+  "vin_17.2": {
+   "D": 0.4107,
+   "mean_out_A": 1.143,
+   "mean_in_A": 0.7967,
+   "power_balance_W": [
+    13.704,
+    13.703
+   ],
+   "mean_iL": 1.9397,
+   "iL_eq_in_plus_out": true,
+   "ac_rms_out_time": 0.9634,
+   "ac_rms_in_time": 0.9606,
+   "nh80": {
+    "parseval_out_frac": 0.9974,
+    "parseval_in_frac": 0.9973,
+    "C36_rms": 0.01715,
+    "C25_C26_rms": 0.3095,
+    "C25_C26_vpp_synth": 0.0679,
+    "C25_C26_vpp_synth_noESL": 0.0556,
+    "kcl_residual_A": 2.24e-16
+   },
+   "nh160": {
+    "parseval_out_frac": 0.9987,
+    "parseval_in_frac": 0.9987,
+    "C36_rms": 0.01716,
+    "C25_C26_rms": 0.3102,
+    "C25_C26_vpp_synth": 0.0915,
+    "C25_C26_vpp_synth_noESL": 0.0559,
+    "kcl_residual_A": 2.24e-16
+   },
+   "nh320": {
+    "parseval_out_frac": 0.9994,
+    "parseval_in_frac": 0.9993,
+    "C36_rms": 0.01716,
+    "C25_C26_rms": 0.3106,
+    "C25_C26_vpp_synth": 0.2044,
+    "C25_C26_vpp_synth_noESL": 0.056,
+    "kcl_residual_A": 2.24e-16
+   }
+  },
+  "vin_24.1": {
+   "D": 0.3322,
+   "mean_out_A": 1.143,
+   "mean_in_A": 0.5686,
+   "power_balance_W": [
+    13.704,
+    13.703
+   ],
+   "mean_iL": 1.7116,
+   "iL_eq_in_plus_out": true,
+   "ac_rms_out_time": 0.8218,
+   "ac_rms_in_time": 0.814,
+   "nh80": {
+    "parseval_out_frac": 0.9972,
+    "parseval_in_frac": 0.9971,
+    "C36_rms": 0.01405,
+    "C25_C26_rms": 0.2331,
+    "C25_C26_vpp_synth": 0.0556,
+    "C25_C26_vpp_synth_noESL": 0.044,
+    "kcl_residual_A": 1.57e-16
+   },
+   "nh160": {
+    "parseval_out_frac": 0.9986,
+    "parseval_in_frac": 0.9986,
+    "C36_rms": 0.01407,
+    "C25_C26_rms": 0.2339,
+    "C25_C26_vpp_synth": 0.0832,
+    "C25_C26_vpp_synth_noESL": 0.0444,
+    "kcl_residual_A": 1.57e-16
+   },
+   "nh320": {
+    "parseval_out_frac": 0.9993,
+    "parseval_in_frac": 0.9993,
+    "C36_rms": 0.01407,
+    "C25_C26_rms": 0.2342,
+    "C25_C26_vpp_synth": 0.1843,
+    "C25_C26_vpp_synth_noESL": 0.0446,
+    "kcl_residual_A": 1.57e-16
+   }
+  }
+ },
+ "can_ripple_screen": {
+  "C5_rms_A": 0.0359,
+  "C5_limit_A": [
+   0.07,
+   0.126
+  ],
+  "C36_rms_A": 0.0176,
+  "C36_rms_A_single_node_diagnostic": 0.0236,
+  "C34_rms_A": 0.0045,
+  "C35_rms_A": 0.0031,
+  "C34_36_limit_A": [
+   0.052,
+   0.094
+  ],
+  "can_P_mW_model": {
+   "C5": 5.14,
+   "C36": 0.93
+  },
+  "note": "max over swept corners under assumed ESR/ESL brackets; equal sharing inside a bank; HF multiplier is an MVG-family proxy; dissipation uses cold-high ESR with the max current (not a coincident corner): assumed-model figures, not a thermal measurement"
+ },
+ "vo_hi": {
+  "P12_RAW": {
+   "full_temp": 12.673,
+   "tj_0_85C": 12.61,
+   "ov_lo": 13.85,
+   "margin_full": 1.177,
+   "margin_0_85C": 1.24
+  },
+  "P5_RAW": {
+   "full_temp": 5.171,
+   "tj_0_85C": 5.145,
+   "ov_lo": 5.356,
+   "margin_full": 0.185,
+   "margin_0_85C": 0.211
+  },
+  "N12_RAW": {
+   "full_temp": 12.394,
+   "tj_0_85C": 12.394,
+   "ov_lo": 14.25,
+   "margin_full": 1.856,
+   "margin_0_85C": 1.856
+  }
+ },
+ "vin_transient_case": {
+  "L": 2e-06,
+  "R": 0.02,
+  "Rb": 0.02,
+  "Ron": 0.019,
+  "cer": "lo",
+  "esr_i": 1,
+  "csrc": "none",
+  "c5c": "lo"
+ },
+ "vin_transient": {
+  "A": {
+   "step_up_min": 18.566,
+   "step_up_dc": 19.439,
+   "release_peak_vs21": 21.313
+  },
+  "B0": {
+   "step_up_min": 18.427,
+   "step_up_dc": 19.439,
+   "release_peak_vs21": 21.467
+  },
+  "B_Cx2": {
+   "step_up_min": 18.544,
+   "step_up_dc": 19.439,
+   "release_peak_vs21": 21.34
+  },
+  "B_RCx2": {
+   "step_up_min": 18.563,
+   "step_up_dc": 19.439,
+   "release_peak_vs21": 21.317
+  },
+  "B_RCx4": {
+   "step_up_min": 18.612,
+   "step_up_dc": 19.439,
+   "release_peak_vs21": 21.261
+  }
+ },
+ "raw_release": {
+  "P12_RAW": {
+   "A N=2": {
+    "overshoot_V": [
+     0.082,
+     0.22
+    ],
+    "ov_margin_V": 1.177
+   },
+   "A N=8": {
+    "overshoot_V": [
+     0.246,
+     0.731
+    ],
+    "ov_margin_V": 1.177
+   },
+   "A N=16": {
+    "overshoot_V": [
+     0.412,
+     1.353
+    ],
+    "ov_margin_V": 1.177
+   },
+   "A rack-side release N=8": 0.184,
+   "B0 N=2": {
+    "overshoot_V": [
+     0.09,
+     0.226
+    ],
+    "ov_margin_V": 1.177
+   },
+   "B0 N=8": {
+    "overshoot_V": [
+     0.313,
+     0.782
+    ],
+    "ov_margin_V": 1.177
+   },
+   "B0 N=16": {
+    "overshoot_V": [
+     0.61,
+     1.523
+    ],
+    "ov_margin_V": 1.177
+   },
+   "B0 rack-side release N=8": 0.199,
+   "B_x2 N=2": {
+    "overshoot_V": [
+     0.061,
+     0.153
+    ],
+    "ov_margin_V": 1.177
+   },
+   "B_x2 N=8": {
+    "overshoot_V": [
+     0.21,
+     0.53
+    ],
+    "ov_margin_V": 1.177
+   },
+   "B_x2 N=16": {
+    "overshoot_V": [
+     0.409,
+     1.033
+    ],
+    "ov_margin_V": 1.177
+   },
+   "B_x2 rack-side release N=8": 0.149,
+   "Zpk A ESR 0.3": 0.3256,
+   "Zpk A ESR 1.5": 0.3279,
+   "Zpk B0": 0.3661,
+   "Zpk B_x2": 0.3592
+  },
+  "P5_RAW": {
+   "A N=2": {
+    "overshoot_V": [
+     0.039,
+     0.091
+    ],
+    "ov_margin_V": 0.185
+   },
+   "A N=8": {
+    "overshoot_V": [
+     0.113,
+     0.273
+    ],
+    "ov_margin_V": 0.185
+   },
+   "A N=16": {
+    "overshoot_V": [
+     0.2,
+     0.508
+    ],
+    "ov_margin_V": 0.185
+   },
+   "A rack-side release N=8": 0.063,
+   "B0 N=2": {
+    "overshoot_V": [
+     0.042,
+     0.093
+    ],
+    "ov_margin_V": 0.185
+   },
+   "B0 N=8": {
+    "overshoot_V": [
+     0.127,
+     0.281
+    ],
+    "ov_margin_V": 0.185
+   },
+   "B0 N=16": {
+    "overshoot_V": [
+     0.24,
+     0.532
+    ],
+    "ov_margin_V": 0.185
+   },
+   "B0 rack-side release N=8": 0.066,
+   "B_x2 N=2": {
+    "overshoot_V": [
+     0.028,
+     0.062
+    ],
+    "ov_margin_V": 0.185
+   },
+   "B_x2 N=8": {
+    "overshoot_V": [
+     0.085,
+     0.189
+    ],
+    "ov_margin_V": 0.185
+   },
+   "B_x2 N=16": {
+    "overshoot_V": [
+     0.161,
+     0.358
+    ],
+    "ov_margin_V": 0.185
+   },
+   "B_x2 rack-side release N=8": 0.045,
+   "Zpk A ESR 0.3": 0.3164,
+   "Zpk A ESR 1.5": 0.3187,
+   "Zpk B0": 0.3547,
+   "Zpk B_x2": 0.3429
+  },
+  "N12_RAW": {
+   "A N=2": {
+    "overshoot_V": [
+     0.033,
+     0.089
+    ],
+    "ov_margin_V": 1.856
+   },
+   "A N=8": {
+    "overshoot_V": [
+     0.104,
+     0.315
+    ],
+    "ov_margin_V": 1.856
+   },
+   "A N=16": {
+    "overshoot_V": [
+     0.174,
+     0.585
+    ],
+    "ov_margin_V": 1.856
+   },
+   "A rack-side release N=8": 0.079,
+   "B0 N=2": {
+    "overshoot_V": [
+     0.036,
+     0.091
+    ],
+    "ov_margin_V": 1.856
+   },
+   "B0 N=8": {
+    "overshoot_V": [
+     0.135,
+     0.339
+    ],
+    "ov_margin_V": 1.856
+   },
+   "B0 N=16": {
+    "overshoot_V": [
+     0.267,
+     0.67
+    ],
+    "ov_margin_V": 1.856
+   },
+   "B0 rack-side release N=8": 0.087,
+   "B_x2 N=2": {
+    "overshoot_V": [
+     0.026,
+     0.066
+    ],
+    "ov_margin_V": 1.856
+   },
+   "B_x2 N=8": {
+    "overshoot_V": [
+     0.097,
+     0.245
+    ],
+    "ov_margin_V": 1.856
+   },
+   "B_x2 N=16": {
+    "overshoot_V": [
+     0.191,
+     0.484
+    ],
+    "ov_margin_V": 1.856
+   },
+   "B_x2 rack-side release N=8": 0.072,
+   "Zpk A ESR 0.3": 0.3228,
+   "Zpk A ESR 1.5": 0.3251,
+   "Zpk B0": 0.3627,
+   "Zpk B_x2": 0.3558
+  }
+ },
+ "screens": {
+  "P5_RAW_OV_margin": {
+   "classification": "conditional screening risk (static stack passes; dynamic part is model-dependent)",
+   "static_known": {
+    "vo_hi": 5.171,
+    "ov_lo": 5.356,
+    "margin_V": 0.185,
+    "source": "SLUSEA4D VFB 816 mV max; SLVSET9G OVPR 1.176 V min; 1 % divider"
+   },
+   "imposed_model": "converter current held N cycles after a 2.2 A release, then slews at Vo/L; no FCCM sinking, no compensator. N=2/8/16 is an assumption, not TPS62933F data",
+   "overshoot_V_by_option_and_N": {
+    "A N=2": [
+     0.039,
+     0.091
+    ],
+    "A N=8": [
+     0.113,
+     0.273
+    ],
+    "A N=16": [
+     0.2,
+     0.508
+    ],
+    "B0 N=2": [
+     0.042,
+     0.093
+    ],
+    "B0 N=8": [
+     0.127,
+     0.281
+    ],
+    "B0 N=16": [
+     0.24,
+     0.532
+    ],
+    "B_x2 N=2": [
+     0.028,
+     0.062
+    ],
+    "B_x2 N=8": [
+     0.085,
+     0.189
+    ],
+    "B_x2 N=16": [
+     0.161,
+     0.358
+    ]
+   },
+   "exceeds_static_margin_under_assumed_N": {
+    "A N=2": false,
+    "A N=8": true,
+    "A N=16": true,
+    "B0 N=2": false,
+    "B0 N=8": true,
+    "B0 N=16": true,
+    "B_x2 N=2": false,
+    "B_x2 N=8": true,
+    "B_x2 N=16": true
+   },
+   "pass_condition": "bench: P5_RAW peak during 0->2.2 A->0 steps (cold/hot, min/max VIN) stays below U7 OVPR trip with U7 FLT never asserted; static margin 0.185 V is the budget",
+   "not_claimed": "no closed-loop overshoot forecast"
+  },
+  "C25_C26_effective_C": {
+   "classification": "conditional screening risk (guessed bias band, not a measured violation)",
+   "known": "2 x 10 uF/50 V X5R 1206 at ~32 V DC; LMR38020 SNVSC40E CIN >= 4.7 uF effective",
+   "bounded_eff_uF": [
+    2.85,
+    8.8
+   ],
+   "required_bias_retention_at_32V": {
+    "nominal_only": 0.235,
+    "with_tol_temp_aging_low_corner": 0.33
+   },
+   "pass_condition": "Samsung curve or measured C at 32 V/25 C >= the retention above for CL31A106KBHNNNE (and U4 input ripple/temperature on bench); otherwise review needed"
+  },
+  "C25_C26_voltage_in_TVS_window": {
+   "classification": "conditional screening risk (needs verified source surge spec and U5 dynamics)",
+   "normal_V": 31.99,
+   "ovp_hi_V": 39.15,
+   "if_vin_reaches_clamp_V": 47.7,
+   "rating_V": 50,
+   "pass_condition": "measured VIN-to-N12_RAW peak during defined surge/hot-plug tests < 50 V"
+  },
+  "VIN_above_TPS62933_abs_max": {
+   "classification": "conditional screening risk, pre-existing, not capacitor-driven",
+   "known": "SMBJ22A Vc 35.5 V at its rated Ipp; TPS62933F VIN abs max 32 V (SLUSEA4D 8.1); U5 OVP response delay per SLVSET9G",
+   "not_established": "actual downstream VIN peak: depends on source surge energy/current, cable, F1/D10, U5 turn-off dynamics; none verified here",
+   "pass_condition": "measured VIN peak < 32 V under the chosen surge/hot-plug test set"
+  },
+  "ceramic_only_bank_sufficiency": {
+   "classification": "not established",
+   "evidence": "passive |Z| with bracketed can ESR; ceramic counts meet TI minimum tables under bounded bias. Neither shows actual loop margin with or without the cans",
+   "pass_condition": "Bode (phase margin/gain margin per TI guidance) and load-step on built boards for every option kept"
+  }
+ }
+}
