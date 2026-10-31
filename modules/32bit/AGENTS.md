@@ -24,7 +24,12 @@ Module paths are module-relative.
   (P/D + legend, as modules/16bit).
 - JLCPCB export in `jlcpcb/` re-exported from R2 (2026-10-22, not supplier-accepted); manifest equal.
   U1 is Standard-PCBA only: user chose Standard PCBA (2026-10-22).
-- Open: bench (U8 thermal, codec levels). Radio never used.
+- **Firmware (2026-10-31)**: `firmware/polysynth` (ESP-IDF v5.5.1), 9-voice MIDI polysynth after
+  the BM 16bit polysynth on the BM 32bit-5v drivers with the R1 pins; CV1 = release, CV2 = one-knob
+  filter (0 = bypass), MODE = saw + 7 build-time wavetables (saved in NVS, LED brightness shows it).
+  `firmware/setup.sh|compile.sh|flash.sh p|d` over the shared `opt/esp32-tools`.
+  Builds and host DSP tests pass; not bench-tested. See `firmware/README.md`.
+- Open: bench (U8 thermal, codec levels, firmware). Radio never used.
 
 ## Boundaries
 
