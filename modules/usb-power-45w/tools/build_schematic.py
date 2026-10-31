@@ -44,6 +44,8 @@ MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and
 
 FILTER_EDITS = {
     'Conn_02x08_Odd_Even': '*_2x??_*',
+    'Conn_02x10_Odd_Even': '*_2x??_*',
+    'Conn_02x03_Odd_Even': '*_2x??_*',
 }
 
 # lib symbol -> (stock library, stock name); 'UP' = modules/usb-power/hardware/BigModular.kicad_sym,
@@ -69,6 +71,9 @@ SYMBOLS = {
     'CH224A': ('UP', 'CH224A'), 'HRO_TYPE_C_31_M_12': ('UP', 'HRO_TYPE_C_31_M_12'),
     'TL3340AF160QG': ('UP', 'TL3340AF160QG'),
     'Conn_02x08_Odd_Even': ('Connector_Generic', 'Conn_02x08_Odd_Even'),
+    # R2 stacked boards only (tools/board_schematics.py): board-to-board headers, not in the S7 root.
+    'Conn_02x10_Odd_Even': ('Connector_Generic', 'Conn_02x10_Odd_Even'),
+    'Conn_02x03_Odd_Even': ('Connector_Generic', 'Conn_02x03_Odd_Even'),
     'PWR_FLAG': ('power', 'PWR_FLAG'), 'GND': ('power', 'GND'), 'VCC': ('power', 'VCC'),
     '+5V': ('power', '+5V'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
 }
@@ -84,9 +89,11 @@ FP = {
     'MSOP10': 'MSOP-10_3x3mm_P0.5mm', 'DGN8': 'TPS7A16_DGN0008C',
     'SOT235': 'SOT-23-5', 'SOT236': 'SOT-23-6', 'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm',
     'OPTO4': 'SO-4_4.4x3.6mm_P2.54mm', 'DPAK': 'TO-252-2',
-    'SLO1040': 'L_SLO1040H6R8MTT', 'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical',
+    'SLO1040': 'L_SLO1040H6R8MTT', 'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621',
     'TL3340': 'SW_TL3340AF160QG_HandSolder', 'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',
+    'HDR2x10': 'PinHeader_2x10_P2.54mm_Vertical', 'HDR2x03': 'PinHeader_2x03_P2.54mm_Vertical',
 }
+BOARD_ONLY_SYMBOLS = {'Conn_02x10_Odd_Even', 'Conn_02x03_Odd_Even'}   # embedded only where used
 
 # Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
 NOT_ASSEMBLED = {f'TP{i}' for i in range(1, 17)}
@@ -159,7 +166,7 @@ def net_name(net):
     return net if net in RAIL_SYMBOL else '/' + net
 
 
-def power_symbol(i, net, x, y, rot, root):
+def power_symbol(i, net, x, y, rot, root, project=PROJECT):
     sym = RAIL_SYMBOL[net]
     body = (0, -1) if sym == 'GND' else (0, 1)          # library direction pin -> body
     dx, dy = xform(*body, rot)
@@ -179,7 +186,7 @@ def power_symbol(i, net, x, y, rot, root):
             [atom('exclude_from_sim'), atom('no')], [atom('in_bom'), atom('no')], [atom('on_board'), atom('no')],
             [atom('in_pos_files'), atom('no')], [atom('dnp'), atom('no')], [atom('uuid'), uid(f'pwr/{i}')],
             *props, [atom('pin'), '1', [atom('uuid'), uid(f'pwr/{i}/pin')]],
-            [atom('instances'), [atom('project'), PROJECT,
+            [atom('instances'), [atom('project'), project,
              [atom('path'), '/' + root, [atom('reference'), ref], [atom('unit'), 1]]]]]
 
 
@@ -189,12 +196,13 @@ def is_local(net):
     return net.startswith('_')
 
 
-def draw(ends, root):
+def draw(ends, root, source=None, project=PROJECT):
     """Wires, power symbols, labels and junctions: drawing() plus automatic stubs.
 
     ends: {pin end (x, y): (net, outward (dx, dy), [pin keys])} of every connected pin (stacked
-    pins share one end). Pins on a drawn wire are left alone; every other pin gets a stub."""
-    wires_in, power_in, labels_in = drawing()
+    pins share one end). Pins on a drawn wire are left alone; every other pin gets a stub.
+    source: a derived (per-board) drawing from tools/board_schematics.py; None = drawing()."""
+    wires_in, power_in, labels_in = source if source is not None else drawing()
 
     def at(pt):
         if isinstance(pt, str):
@@ -298,6 +306,10 @@ def draw(ends, root):
         chain = [a_] + cuts + [b_]
         split += list(zip(chain, chain[1:]))
     split = sorted(set(tuple(sorted(s_)) for s_ in split))
+    if source is not None:      # derived per-board sheet: drop branches that led to the other board
+        split, power, labels = prune(split, pin_pts, power, labels, ends)
+        power_pts = {pt for _, pt, _ in power}
+        label_pts = {pt for _, pt, _ in labels}
     degree = {}
     for a_, b_ in split:
         for e in (a_, b_):
@@ -317,7 +329,7 @@ def draw(ends, root):
             out.append([atom('junction'), [atom('at'), *pt], [atom('diameter'), 0],
                         [atom('color'), 0, 0, 0, 0], [atom('uuid'), uid(f'junction/{pt}')]])
     for i, (net, (x, y), rot) in enumerate(power):
-        out.append(power_symbol(i, net, x, y, rot, root))
+        out.append(power_symbol(i, net, x, y, rot, root, project))
     for i, (net, (x, y), side) in enumerate(labels):
         lang, just = {'R': (0, 'left'), 'L': (180, 'right'), 'U': (90, 'left'), 'D': (270, 'right')}[side]
         out.append([atom('label'), net, [atom('at'), x, y, lang],
@@ -325,6 +337,53 @@ def draw(ends, root):
                      [atom('justify'), atom(just), atom('bottom')]],
                     [atom('uuid'), uid(f'label/{i}')]])
     return out
+
+
+def prune(split, pins, power, labels, ends):
+    """Derived per-board sheets only. Remove wire tips that no longer reach anything, wire islands
+    without a pin, and the symbols/labels they carried; then name every pin island that lost its
+    name (rail: power symbol at the pin end; other nets: a label there). Connectivity is checked
+    afterwards by check_netlist against the board's share of the circuit table."""
+    named = {pt for _, pt, _ in power} | {pt for _, pt, _ in labels}
+    while True:
+        deg = {}
+        for a_, b_ in split:
+            deg[a_] = deg.get(a_, 0) + 1
+            deg[b_] = deg.get(b_, 0) + 1
+        tips = {e for e, n in deg.items() if n == 1 and e not in pins and e not in named}
+        if not tips:
+            break
+        split = [s_ for s_ in split if s_[0] not in tips and s_[1] not in tips]
+    parent = {}
+
+    def find(p_):
+        parent.setdefault(p_, p_)
+        while parent[p_] != p_:
+            parent[p_] = parent[parent[p_]]
+            p_ = parent[p_]
+        return p_
+    for a_, b_ in split:
+        parent[find(a_)] = find(b_)
+    with_pin = {find(e) for e in pins if e in parent}
+    split = [s_ for s_ in split if find(s_[0]) in with_pin]
+    alive = {e for s_ in split for e in s_} | set(pins)
+    power = [x for x in power if x[1] in alive]
+    labels = [x for x in labels if x[1] in alive]
+    named = {find(pt) if pt in parent else pt for _, pt, _ in power + labels}
+    for e, (net, d, keys) in sorted(ends.items()):
+        key = find(e) if e in parent else e
+        if is_local(net) or key in named:
+            continue
+        if net in RAIL_SYMBOL:
+            if RAIL_SYMBOL[net] == 'GND':
+                rot = {(0, 1): 0, (0, -1): 180, (1, 0): 90, (-1, 0): 270}[d]
+            else:
+                rot = {(0, -1): 0, (0, 1): 180, (-1, 0): 90, (1, 0): 270}[d]
+            power.append((net, e, rot))
+        else:
+            labels.append((net, e, {(1, 0): 'R', (-1, 0): 'L', (0, -1): 'U', (0, 1): 'D'}[d]))
+        named.add(key)
+    return split, power, labels
 
 
 def check_netlist(sch, nets, no_connects):
@@ -425,23 +484,57 @@ def build(output_root=None):
         f'(sym_lib_table (version 7) (lib (name "{LIB}") (type "KiCad") (uri "${{KIPRJMOD}}/{LIB}.kicad_sym") '
         '(options "") (descr "usb-power-45w pinned symbols; see tools/build_schematic.py")))\n')
 
-    root = uid('root')
+    sch, nets, parts = flat_sheet(circuit(), lib_syms)
+    out = HW / f'{PROJECT}.kicad_sch'
+    out.write_text(dump(sch) + '\n')
+    subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
+                   stdout=subprocess.DEVNULL)
+    check_netlist(out, nets, {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None})
+    (output_root / 'docs/schematic-symbols.json').write_text(json.dumps(
+        {'note': f'Pinned symbols in hardware/{LIB}.kicad_sym (generated by tools/build_schematic.py)',
+         'symbols': sources}, indent=2) + '\n')
+    print(out, f'{len(nets)} nets, {len({p["ref"] for p in parts if not p["ref"].startswith("#")})} parts')
+    from hierarchy6 import split
+    split(output_root, sys.modules[__name__])
+
+
+def lib_symbols():
+    """{lib symbol key: flattened symbol} as written to hardware/USBPOWER45.kicad_sym."""
+    out = {}
+    for key, (lib, name) in SYMBOLS.items():
+        sym, _, _ = stock_symbol(lib, name)
+        if key in FILTER_EDITS:
+            prop = next(pp for pp in nodes(sym, 'property') if pp[1] == 'ki_fp_filters')
+            prop[2] = FILTER_EDITS[key]
+        sym[1] = key
+        for u in nodes(sym, 'symbol'):
+            u[1] = key + '_' + '_'.join(u[1].rsplit('_', 2)[-2:])
+        out[key] = sym
+    return out
+
+
+def flat_sheet(parts, lib_syms, project=PROJECT, key='root', title='Big Modular - usb-power-45w',
+               comments=('S7: S6 per-rail protection, fault latch/reset, four LEDs; one output header (J3 removed)',
+                         'Design notes and budget: docs/design.md'), source=None, texts=None):
+    """One wired flat sheet of `parts` (the whole circuit, or one stacked board's share of it)."""
+    root = uid(key)
     q = json.dumps
+    com = ' '.join(f'(comment {i} {q(c)})' for i, c in enumerate(comments, 1))
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A0")
-      (title_block (title "Big Modular - usb-power-45w") (rev "S6") (company "Big Modular")
-        (comment 1 "S6: per-rail protection; all-rail fault latch/reset; four status LEDs")
-        (comment 2 "Design notes and budget: docs/design.md"))
+      (title_block (title {q(title)}) (rev "S7") (company "Big Modular") {com})
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
+    used = {p['sym'] for p in parts}
     for k in sorted(lib_syms):
+        if k in BOARD_ONLY_SYMBOLS and k not in used:
+            continue
         s = copy.deepcopy(lib_syms[k])
         s[1] = f'{LIB}:' + k
         embedded.append(s)
 
     items, nets, ends = [], {}, {}
     units = {}
-    parts = circuit()
     for p in parts:
         sym = lib_syms[p['sym']]
         pins = pin_table(sym, p['unit'])
@@ -477,7 +570,7 @@ def build(output_root=None):
             node.append(prop)
         all_pins = set().union(*(pin_table(sym, u) for u in range(1, 10)))
         node += [[atom('pin'), n, [atom('uuid'), uid(f"pin/{ukey}/{n}")]] for n in sorted(all_pins)]
-        node.append([atom('instances'), [atom('project'), PROJECT,
+        node.append([atom('instances'), [atom('project'), project,
                      [atom('path'), '/' + root, [atom('reference'), p['ref']], [atom('unit'), p['unit']]]]])
         items.append(node)
         for n, net in sorted(p['pins'].items()):
@@ -497,28 +590,19 @@ def build(output_root=None):
             else:
                 ends[(ex, ey)] = (net, d, [key])
     multi = {ref: u for ref, u in units.items() if len(u) > 1}
-    assert multi == MULTI_UNIT, multi
+    if source is None:
+        assert multi == MULTI_UNIT, multi
     single = {n: k for n, k in nets.items() if len(k) < 2}
     assert not single, f'single-pin nets: {single}'
-    items += draw(ends, root)
-    for i, ((x, y), s, size) in enumerate(TEXTS):
+    items += draw(ends, root, source, project)
+    for i, ((x, y), s, size) in enumerate(TEXTS if texts is None else texts):
         items.append([atom('text'), s, [atom('exclude_from_sim'), atom('no')], [atom('at'), x, y, 0],
                       [atom('effects'), [atom('font'), [atom('size'), size, size]], [atom('justify'), atom('left')]],
                       [atom('uuid'), uid(f'text/{i}')]])
     sch += items
     sch.append([atom('sheet_instances'), [atom('path'), '/', [atom('page'), '1']]])
     sch.append([atom('embedded_fonts'), atom('no')])
-    out = HW / f'{PROJECT}.kicad_sch'
-    out.write_text(dump(sch) + '\n')
-    subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
-                   stdout=subprocess.DEVNULL)
-    check_netlist(out, nets, {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None})
-    (output_root / 'docs/schematic-symbols.json').write_text(json.dumps(
-        {'note': f'Pinned symbols in hardware/{LIB}.kicad_sym (generated by tools/build_schematic.py)',
-         'symbols': sources}, indent=2) + '\n')
-    print(out, f'{len(nets)} nets, {len({p["ref"] for p in parts if not p["ref"].startswith("#")})} parts')
-    from hierarchy6 import split
-    split(output_root, sys.modules[__name__])
+    return sch, nets, parts
 
 
 if __name__ == '__main__':

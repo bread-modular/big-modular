@@ -1,0 +1,870 @@
+{
+ "R2-refit-1-U4": {
+  "top": {
+   "C24": {
+    "YZ": [
+     95.0,
+     15.62
+    ],
+    "rot": 0,
+    "reason": "U4 VIN-GND 10u: GND pad beside the L3 GND pad, VIN pad on the In2 VIN plane"
+   },
+   "C29": {
+    "YZ": [
+     95.0,
+     18.1
+    ],
+    "rot": 0,
+    "reason": "N12_RAW-GND output cap column between U4 N12_RAW and the L3 GND pad"
+   },
+   "C30": {
+    "YZ": [
+     95.0,
+     20.6
+    ],
+    "rot": 0,
+    "reason": "output cap column (was split around the study standoff MHT3)"
+   },
+   "C32": {
+    "YZ": [
+     95.0,
+     23.1
+    ],
+    "rot": 0,
+    "reason": "output cap column"
+   },
+   "C31": {
+    "YZ": [
+     95.0,
+     25.6
+    ],
+    "rot": 0,
+    "reason": "output cap column (was 20-25 mm from U4)"
+   },
+   "C33": {
+    "YZ": [
+     95.0,
+     28.1
+    ],
+    "rot": 0,
+    "reason": "output cap column"
+   },
+   "D4": {
+    "YZ": [
+     89.0,
+     26.4
+    ],
+    "rot": 180,
+    "reason": "N12_RAW clamp next to C36/U4 N12_RAW (was at Y108.8)"
+   }
+  }
+ },
+ "R2-refit-2-base-header": {
+  "base": {
+   "U17": {
+    "YZ": [
+     100.0,
+     33.0
+    ],
+    "rot": 0,
+    "reason": "N_PGD level-shift opto out from under the 2x10 XB1 into the freed J3 area"
+   },
+   "R61": {
+    "YZ": [
+     96.5,
+     37.0
+    ],
+    "rot": 0,
+    "reason": "U17 LED-side resistor, at U17 pin 1"
+   },
+   "R62": {
+    "YZ": [
+     103.0,
+     37.0
+    ],
+    "rot": 0,
+    "reason": "N12_STATUS pull-up, at U17 pin 4"
+   },
+   "TEXT:1 / -12V / RED": {
+    "YZ": [
+     75.6,
+     29.16
+    ],
+    "rot": "left",
+    "reason": "J2 -12V marking now starts at pin 1 (Y76) and reads toward the freed J3 side instead of over C48/U17; same Z, size and layer"
+   }
+  }
+ },
+ "R2-refit-3-converters": {
+  "top": {
+   "U4": {
+    "YZ": [
+     82.25,
+     17.0
+    ],
+    "rot": 270,
+    "reason": "U4 0.97 deeper (support #4 tool courtyard); SW pin 8 to L3, FB pin 5 away"
+   },
+   "C28": {
+    "YZ": [
+     83.5,
+     12.35
+    ],
+    "rot": 180,
+    "reason": "BOOT cap across U4 pins 7/8 (BOOT/SW)"
+   },
+   "C27": {
+    "YZ": [
+     82.4,
+     21.7
+    ],
+    "rot": 0,
+    "reason": "U4 100n VIN-N12_RAW right at pins 3/1"
+   },
+   "C25": {
+    "YZ": [
+     82.7,
+     23.85
+    ],
+    "rot": 0,
+    "reason": "U4 10u VIN-N12_RAW under C27"
+   },
+   "R13": {
+    "YZ": [
+     78.6,
+     18.95
+    ],
+    "rot": 90,
+    "reason": "RT/SYNC at U4 pin 4"
+   },
+   "U2": {
+    "YZ": [
+     31.0,
+     26.0
+    ],
+    "rot": 180,
+    "reason": "pins 4/5 (GND/SW) face L1; FB pin 8 at the far corner"
+   },
+   "L1": {
+    "YZ": [
+     30.3,
+     34.4
+    ],
+    "rot": 90,
+    "reason": "SW pad 3.4 mm straight below U2 pin 5"
+   },
+   "C10": {
+    "YZ": [
+     28.4,
+     26.5
+    ],
+    "rot": 90,
+    "reason": "BOOT cap beside U2 pins 6/5"
+   },
+   "C8": {
+    "YZ": [
+     33.6,
+     26.5
+    ],
+    "rot": 90,
+    "reason": "U2 100n VIN-GND beside pins 3/4"
+   },
+   "C7": {
+    "YZ": [
+     36.0,
+     25.7
+    ],
+    "rot": 90,
+    "reason": "U2 10u VIN-GND next to C8"
+   },
+   "C6": {
+    "YZ": [
+     38.5,
+     25.7
+    ],
+    "rot": 90,
+    "reason": "U2 second 10u VIN-GND"
+   },
+   "R9": {
+    "YZ": [
+     27.9,
+     24.6
+    ],
+    "rot": 180,
+    "reason": "FB lower resistor at U2 pin 8, away from SW/L1"
+   },
+   "R8": {
+    "YZ": [
+     27.9,
+     22.9
+    ],
+    "rot": 180,
+    "reason": "FB upper resistor (P12_RAW sense), stacked on R9"
+   },
+   "C9": {
+    "YZ": [
+     31.0,
+     23.3
+    ],
+    "rot": 0,
+    "reason": "SS cap above U2 (pin 7 track between the pad rows)"
+   },
+   "C11": {
+    "YZ": [
+     38.1,
+     39.6
+    ],
+    "rot": 0,
+    "reason": "P12_RAW 22u column at the L1 output pad"
+   },
+   "C12": {
+    "YZ": [
+     38.1,
+     37.2
+    ],
+    "rot": 0,
+    "reason": "P12_RAW 22u column"
+   },
+   "C13": {
+    "YZ": [
+     38.1,
+     34.8
+    ],
+    "rot": 0,
+    "reason": "P12_RAW 22u column"
+   },
+   "C14": {
+    "YZ": [
+     38.1,
+     32.4
+    ],
+    "rot": 0,
+    "reason": "P12_RAW 22u column"
+   },
+   "C34": {
+    "YZ": [
+     46.0,
+     26.5
+    ],
+    "rot": 90,
+    "reason": "P12_RAW bulk can between the U2 input caps and support #2"
+   },
+   "L2": {
+    "YZ": [
+     36.2,
+     9.4
+    ],
+    "rot": 90,
+    "reason": "SW pad at the top, beside U3 pin 5 and BOOT C19"
+   },
+   "U3": {
+    "YZ": [
+     44.5,
+     7.0
+    ],
+    "rot": 270,
+    "reason": "SW pin 5 toward L2, FB pin 8 at the far end"
+   },
+   "C19": {
+    "YZ": [
+     43.5,
+     4.4
+    ],
+    "rot": 180,
+    "reason": "BOOT cap above U3 pins 6/5"
+   },
+   "C17": {
+    "YZ": [
+     43.5,
+     9.6
+    ],
+    "rot": 180,
+    "reason": "U3 100n VIN-GND below pins 3/4"
+   },
+   "C15": {
+    "YZ": [
+     44.0,
+     12.0
+    ],
+    "rot": 180,
+    "reason": "U3 10u VIN-GND"
+   },
+   "C16": {
+    "YZ": [
+     44.0,
+     14.4
+    ],
+    "rot": 180,
+    "reason": "U3 second 10u back at U3 (was VIN trunk in the study)"
+   },
+   "R12": {
+    "YZ": [
+     47.5,
+     5.4
+    ],
+    "rot": 0,
+    "reason": "FB lower resistor at U3 pin 8"
+   },
+   "R11": {
+    "YZ": [
+     47.5,
+     3.8
+    ],
+    "rot": 0,
+    "reason": "FB upper resistor (P5_RAW sense)"
+   },
+   "C18": {
+    "YZ": [
+     47.5,
+     7.0
+    ],
+    "rot": 0,
+    "reason": "SS cap, pin 7 track between the pad rows"
+   },
+   "R10": {
+    "YZ": [
+     47.6,
+     10.4
+    ],
+    "rot": 90,
+    "reason": "RT resistor at U3 pin 1"
+   }
+  }
+ },
+ "R2-refit-4-repack": {
+  "top": {
+   "C5": {
+    "YZ": [
+     104.5,
+     25.2
+    ],
+    "rot": 0,
+    "reason": "VIN bulk can to the free rear area (In2 VIN plane); frees the middle for U7"
+   },
+   "XT2": {
+    "YZ": [
+     66.0,
+     15.0
+    ],
+    "rot": 90,
+    "reason": "logic header beside U7 (base XB2 follows)"
+   },
+   "C35": {
+    "YZ": [
+     55.0,
+     6.9
+    ],
+    "rot": 0,
+    "reason": "P5_RAW bulk can turned flat above U7"
+   },
+   "U7": {
+    "YZ": [
+     53.6,
+     16.6
+    ],
+    "rot": 90,
+    "reason": "+5 eFuse between U3 output and the XT1 +5V pins"
+   },
+   "C20": {
+    "YZ": [
+     61.0,
+     6.0
+    ],
+    "rot": 90,
+    "reason": "P5_RAW 22u beside C35"
+   },
+   "C21": {
+    "YZ": [
+     63.45,
+     6.0
+    ],
+    "rot": 90,
+    "reason": "P5_RAW 22u"
+   },
+   "C23": {
+    "YZ": [
+     70.15,
+     6.0
+    ],
+    "rot": 90,
+    "reason": "P5_RAW 22u"
+   },
+   "C22": {
+    "YZ": [
+     70.15,
+     10.75
+    ],
+    "rot": 90,
+    "reason": "P5_RAW 22u"
+   },
+   "R42": {
+    "YZ": [
+     58.5,
+     11.8
+    ],
+    "rot": 0,
+    "reason": "U7 OV divider"
+   },
+   "R41": {
+    "YZ": [
+     58.7,
+     13.6
+    ],
+    "rot": 0,
+    "reason": "U7 OV divider"
+   },
+   "C40": {
+    "YZ": [
+     58.7,
+     15.2
+    ],
+    "rot": 0,
+    "reason": "U7 dV/dt"
+   },
+   "R43": {
+    "YZ": [
+     58.7,
+     16.8
+    ],
+    "rot": 0,
+    "reason": "U7 ILIM"
+   },
+   "D13": {
+    "YZ": [
+     63.8,
+     11.35
+    ],
+    "rot": 0,
+    "reason": "+5V output clamp at U7"
+   },
+   "C42": {
+    "YZ": [
+     42.95,
+     17.5
+    ],
+    "rot": 0,
+    "reason": "P5_RAW 100n at the L2 output pad"
+   },
+   "C41": {
+    "YZ": [
+     51.0,
+     22.6
+    ],
+    "rot": 90,
+    "reason": "+5V 1u at U7 OUT pins 18-20"
+   },
+   "R9": {
+    "YZ": [
+     27.6,
+     24.1
+    ],
+    "rot": 180,
+    "reason": "U2 FB lower at pin 8"
+   },
+   "R8": {
+    "YZ": [
+     27.6,
+     22.5
+    ],
+    "rot": 180,
+    "reason": "U2 FB upper"
+   },
+   "U6": {
+    "YZ": [
+     45.5,
+     24.5
+    ],
+    "rot": 90,
+    "reason": "+12 eFuse between C34-old pocket and U7, shorter +12V run to XT1 pins 9-12"
+   },
+   "C38": {
+    "YZ": [
+     42.4,
+     29.6
+    ],
+    "rot": 0,
+    "reason": "+12V 1u at U6 OUT pins 18-20"
+   },
+   "R30": {
+    "YZ": [
+     43.0,
+     19.3
+    ],
+    "rot": 0,
+    "reason": "U6 UV divider top at pin 7"
+   },
+   "R31": {
+    "YZ": [
+     46.2,
+     19.3
+    ],
+    "rot": 0,
+    "reason": "U6 UV divider bottom"
+   },
+   "R32": {
+    "YZ": [
+     47.9,
+     16.1
+    ],
+    "rot": 0,
+    "reason": "U6 OV divider top"
+   },
+   "R33": {
+    "YZ": [
+     48.45,
+     14.5
+    ],
+    "rot": 0,
+    "reason": "U6 OV divider bottom"
+   },
+   "R38": {
+    "YZ": [
+     39.85,
+     18.2
+    ],
+    "rot": 0,
+    "reason": "U6 OV series"
+   },
+   "R34": {
+    "YZ": [
+     48.6,
+     29.6
+    ],
+    "rot": 0,
+    "reason": "U6 ILIM at pin 11"
+   },
+   "R36": {
+    "YZ": [
+     42.4,
+     31.2
+    ],
+    "rot": 0,
+    "reason": "+12V bleeder"
+   },
+   "C39": {
+    "YZ": [
+     40.05,
+     29.6
+    ],
+    "rot": 90,
+    "reason": "P12_RAW 100n at the output column"
+   },
+   "D2": {
+    "YZ": [
+     19.6,
+     30.57
+    ],
+    "rot": 0,
+    "reason": "P12_RAW clamp under C34"
+   },
+   "R19": {
+    "YZ": [
+     25.4,
+     26.45
+    ],
+    "rot": 90,
+    "reason": "P12_RAW LED resistor"
+   },
+   "D5": {
+    "YZ": [
+     24.05,
+     30.3
+    ],
+    "rot": 90,
+    "reason": "P12_RAW LED"
+   },
+   "R35": {
+    "YZ": [
+     45.5,
+     31.2
+    ],
+    "rot": 0,
+    "reason": "P12_OK pull-up at pins 15/16"
+   },
+   "C34": {
+    "YZ": [
+     19.8,
+     25.15
+    ],
+    "rot": 0,
+    "reason": "P12_RAW bulk can flat in the left pocket"
+   },
+   "C37": {
+    "YZ": [
+     48.45,
+     17.7
+    ],
+    "rot": 0,
+    "reason": "U6 dV/dt at pin 10"
+   },
+   "R37": {
+    "YZ": [
+     45.5,
+     29.6
+    ],
+    "rot": 0,
+    "reason": "U6 RUN pull-down at pin 13"
+   },
+   "D12": {
+    "YZ": [
+     62.05,
+     17.2
+    ],
+    "rot": 90,
+    "reason": "+12V clamp on the +12V run above XT1 pins 9-12"
+   },
+   "R14": {
+    "YZ": [
+     77.1,
+     11.05
+    ],
+    "rot": 90,
+    "reason": "U4 FB lower, out of the support #4 tool courtyard"
+   },
+   "D7": {
+    "YZ": [
+     72.15,
+     11.05
+    ],
+    "rot": 90,
+    "reason": "N12_RAW LED out of the support #4 tool courtyard"
+   },
+   "C26": {
+    "YZ": [
+     78.2,
+     15.0
+    ],
+    "rot": 90,
+    "reason": "third U4 VIN-N12_RAW 10u left of U4 (XT1 blocks the spot under C25)"
+   },
+   "D3": {
+    "YZ": [
+     32.4,
+     18.3
+    ],
+    "rot": 0,
+    "reason": "P5_RAW clamp right under the L2 output pad"
+   },
+   "R39": {
+    "YZ": [
+     49.95,
+     11.5
+    ],
+    "rot": 0,
+    "reason": "U7 UV divider top"
+   },
+   "R40": {
+    "YZ": [
+     53.05,
+     11.3
+    ],
+    "rot": 0,
+    "reason": "U7 UV divider bottom"
+   },
+   "D6": {
+    "YZ": [
+     39.9,
+     19.8
+    ],
+    "rot": 0,
+    "reason": "P5_RAW LED under the L2 output pad"
+   },
+   "R20": {
+    "YZ": [
+     40.35,
+     21.4
+    ],
+    "rot": 0,
+    "reason": "P5_RAW LED resistor next to D6"
+   }
+  },
+  "base": {
+   "U14": {
+    "YZ": [
+     29.5,
+     35.28
+    ],
+    "rot": 0,
+    "reason": "0.65 mm toward -Y with U13 (support #2 moved to Y46.2 for the top tool courtyard)"
+   },
+   "U13": {
+    "YZ": [
+     37.9,
+     36.08
+    ],
+    "rot": 90,
+    "reason": "0.65 mm toward -Y: clears the moved support #2"
+   }
+  }
+ },
+ "R2-refit-5-logic-header": {
+  "base": {
+   "XB2": {
+    "YZ": [
+     95.25,
+     36.25
+    ],
+    "rot": 0,
+    "reason": "logic header pair in the freed J3 volume, turned so U17 fits beside it"
+   },
+   "R61": {
+    "YZ": [
+     101.9,
+     30.7
+    ],
+    "rot": 0,
+    "reason": "U17 LED-side resistor"
+   },
+   "R62": {
+    "YZ": [
+     105.0,
+     30.7
+    ],
+    "rot": 0,
+    "reason": "N12_STATUS pull-up at U17"
+   },
+   "U17": {
+    "YZ": [
+     102.25,
+     36.0
+    ],
+    "rot": 90,
+    "reason": "N_PGD opto beside XB2 (displaced by the logic header)"
+   }
+  },
+  "top": {
+   "XT2": {
+    "YZ": [
+     95.25,
+     36.25
+    ],
+    "rot": 0,
+    "reason": "logic header pair (same pins as XB2)"
+   }
+  }
+ },
+ "R2-refit-6-hand-solder": {
+  "base": {
+   "XB1": {
+    "YZ": [
+     55.0,
+     23.2
+    ],
+    "rot": 90,
+    "reason": "power header pair 0.6 deeper (top outline now Z28.7, 1.53 mm from the J2 box)"
+   },
+   "XB2": {
+    "YZ": [
+     95.25,
+     36.95
+    ],
+    "rot": 0,
+    "reason": "logic header pair 0.7 deeper: 2 mm from the C33 pads on the top"
+   }
+  },
+  "top": {
+   "XT1": {
+    "YZ": [
+     55.0,
+     23.2
+    ],
+    "rot": 90,
+    "reason": "same pins as XB1: posts 2 mm from the U7 / D12 pads"
+   },
+   "XT2": {
+    "YZ": [
+     95.25,
+     36.95
+    ],
+    "rot": 0,
+    "reason": "same pins as XB2"
+   }
+  }
+ },
+ "R2-refit-7-fixups": {
+  "base": {
+   "TP12": {
+    "YZ": [
+     53.0,
+     28.62
+    ],
+    "rot": 0,
+    "reason": "test pad row between XB1 and J2, probe-reachable outside the top outline"
+   },
+   "TP13": {
+    "YZ": [
+     55.2,
+     28.62
+    ],
+    "rot": 0,
+    "reason": "test pad row"
+   },
+   "TP10": {
+    "YZ": [
+     60.5,
+     28.62
+    ],
+    "rot": 0,
+    "reason": "test pad row"
+   },
+   "TP15": {
+    "YZ": [
+     62.7,
+     28.62
+    ],
+    "rot": 0,
+    "reason": "test pad row"
+   },
+   "TP14": {
+    "YZ": [
+     64.9,
+     28.62
+    ],
+    "rot": 0,
+    "reason": "test pad row"
+   }
+  },
+  "top": {
+   "C25": {
+    "YZ": [
+     82.8,
+     23.85
+    ],
+    "rot": 0,
+    "reason": "VIN pad 2 mm from the XT1 posts"
+   },
+   "D12": {
+    "YZ": [
+     62.05,
+     17.1
+    ],
+    "rot": 90,
+    "reason": "pads 2 mm from the XT1 posts"
+   }
+  }
+ },
+ "R2-refit-8-U4-input": {
+  "top": {
+   "C26": {
+    "YZ": [
+     83.0,
+     26.3
+    ],
+    "rot": 0,
+    "reason": "third U4 VIN-N12_RAW 10u stacked under C25 (top edge now Z28.7), out of the FB corner; VIN pad 2.1 mm from the XT1 posts"
+   }
+  }
+ },
+ "R2-refit-9-U4-EN": {
+  "top": {
+   "C27": {
+    "YZ": [
+     82.39,
+     21.9
+    ],
+    "rot": 0,
+    "reason": "pad 1 under U4 pin 3; 0.2 mm lower so the EN_N escape via fits between the pin row and C27 (EN pin 2 sits between VIN and N12_RAW)"
+   }
+  }
+ }
+}

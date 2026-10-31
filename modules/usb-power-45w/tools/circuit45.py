@@ -29,7 +29,7 @@ U5_AT = (208.28, 60.96)   # eFuse
 U2_AT = (368.3, 71.12)    # +12V buck
 U3_AT = (368.3, 198.12)   # +5V buck
 U4_AT = (111.76, 218.44)   # -12V inverting buck-boost
-J2_AT, J3_AT = (45.72, 335.28), (101.6, 335.28)
+J2_AT = (45.72, 335.28)       # S7: J3 (was at (101.6, 335.28)) removed
 EF_Y = 104.14               # eFuse set-up resistor / capacitor row
 EXTRA_Y = 332.74          # bulk caps / clamps / LEDs row
 SW_AT = (444.5, 332.74)  # front panel RESET button
@@ -222,7 +222,7 @@ def circuit():
     # GND. FB = 1.0 V above -12V: |Vout| = 1.0 x (1 + 100k / 9.1k) = 11.99 V.
     x, y = U4_AT
     c.append(part('U4', 'LMR38020FDDA', 'LMR38020FDDAR', 'PPAD8', U4_AT, 0,
-                  {'3': 'VIN', '2': 'EN_N', '4': '_RT_U4', '7': '_BOOT_U4', '8': '_SW_U4', '6': None, '5': 'FB_N',
+                  {'3': 'VIN', '2': 'EN_N', '4': 'RT_U4', '7': '_BOOT_U4', '8': '_SW_U4', '6': None, '5': 'FB_N',
                    '1': '-12V', '9': '-12V'},
                   LCSC='C5149193', MPN='LMR38020FDDAR', Manufacturer='Texas Instruments',
                   Note='Synchronous inverting buck-boost, forced PWM: device sees VIN + 12 V = 32 V (80 V part). '
@@ -233,7 +233,7 @@ def circuit():
                            ('C27', -35.56, '100n', 'C0603')):
         c.append(cap(ref, v, fp, (x + dx, yr + 3.81), 'VIN', '-12V',
                      Note='U4 input across VIN and the IC ground (-12V): sees 32 V, 50 V part'))
-    c.append(res('R13', '33k', (x - 16.51, y + 5.08), '-12V', '_RT_U4', rot=90,
+    c.append(res('R13', '33k', (x - 16.51, y + 5.08), '-12V', 'RT_U4', rot=90,
                  Note='RT: ~790 kHz (TI table 8-1: 34.8k = 750 kHz, 25.5k = 1 MHz)'))
     c.append(cap('C28', '100n', 'C0603', (x + 15.24, y - 8.89), '_SW_U4', '_BOOT_U4', Note='U4 bootstrap'))
     c.append(inductor('L3', '15u', (x + 35.56, y + 3.81), '_SW_U4', 'GND',
@@ -252,14 +252,17 @@ def circuit():
     c.append(res('R17', '100k', (x - 20.32, y + 27.94), '_QC', 'EN_N', rot=90, Note='EN_N divider top'))
     c.append(res('R18', '20k', (x - 12.7, y + 31.75), 'EN_N', '-12V', Note='EN_N divider bottom (to IC ground)'))
 
-    # ---- Outputs: 2 x 16-pin box header in parallel (Doepfer: 1-2 -12V, 3-8 GND, 9-10 +12V, 11-12 +5V)
-    for ref, at in (('J2', J2_AT), ('J3', J3_AT)):
+    # ---- Output: one 16-pin box header (Doepfer: 1-2 -12V, 3-8 GND, 9-10 +12V, 11-12 +5V).
+    # S7 (user, 2026-10-31): the second parallel header J3 is removed; a passive expander/cable later.
+    for ref, at in (('J2', J2_AT),):
         pins = {'1': '-12V', '2': '-12V', '9': '+12V', '10': '+12V', '11': '+5V', '12': '+5V'}
         pins.update({str(n): 'GND' for n in range(3, 9)})
         pins.update({str(n): None for n in range(13, 17)})
         c.append(part(ref, 'Conn_02x08_Odd_Even', 'IDC 2x8 box header', 'IDC16', at, 0, pins,
-                      Note='Hand-soldered shrouded 16-pin box header, pin 1 = -12V (red stripe). J2 and J3 are in '
-                           'parallel: use both cables above ~1.5 A per rail. CV/GATE (13-16) open'))
+                      MPN='61201621621', Manufacturer='Wurth Elektronik',
+                      Note='Hand-soldered shrouded 16-pin box header, pin 1 = -12V (red stripe). Single protected '
+                           'output (S7); one cable/contact pair per rail limits the load, use the later passive '
+                           'expander/busboard for more. CV/GATE (13-16) open'))
     ey = EXTRA_Y
     c.append(cap('C34', '100u', 'CP63', (175.26, ey), '+12V', 'GND', Note='+12V bulk at the headers'))
     c.append(two('D2', 'D_Schottky', 'SS34', 'SMA', (193.04, ey), '+12V', 'GND', rot=270,
@@ -357,7 +360,7 @@ def drawing():
     remap = {'+12V': 'P12_RAW', '+5V': 'P5_RAW', '-12V': 'N12_RAW'}
     P = [(remap.get(n,n),pt,rot) for n,pt,rot in P]
     # Output headers: every pin wired out to its rail symbol, GND pins joined per side
-    for j, (hx, hy) in (('J2', J2_AT), ('J3', J3_AT)):
+    for j, (hx, hy) in (('J2', J2_AT),):
         lx, rx = hx - 5.08 - 5.08, hx + 7.62 + 5.08
         W += [[f'{j}.1', (lx, hy - 7.62)], [f'{j}.2', (rx, hy - 7.62)],
               [f'{j}.3', (lx + 2.54, hy - 5.08), (lx + 2.54, hy), f'{j}.7'], [f'{j}.5', (lx + 2.54, hy - 2.54)],

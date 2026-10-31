@@ -12,7 +12,7 @@ def extend(c, part, two, res, cap):
     # Converter feedback, bypass/bulk, clamps, local SMD LEDs and inverter ground
     # remain on the converter side. Only header pins retain the delivered rails.
     for p in c:
-        if p['ref'] not in {'J2', 'J3'}:
+        if p['ref'] != 'J2':
             p['pins'] = {n: raw.get(v, v) for n, v in p['pins'].items()}
     for ref in ('C34','C35','C36'):
         by[ref]['fields']['Note'] = 'RAW converter-side bulk before the new rail protection; keep with converter output network, NOT after the switch.'

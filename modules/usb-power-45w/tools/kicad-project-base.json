@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware/base",
+  "board": "../hardware/base/usb-power-45w-base.kicad_pcb",
+  "root_schematic": "../hardware/base/usb-power-45w-base.kicad_sch",
+  "dependencies": [
+    "../hardware/USBPOWER45.pretty",
+    "../hardware/USBPOWER45.kicad_sym"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  }
+}

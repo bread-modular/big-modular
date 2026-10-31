@@ -43,12 +43,28 @@ def symbol_pins(lib_file, name='TPS3808G01'):
     return {one(p, 'number')[1]: plain(one(p, 'name')[1]) for p in walk(sym, 'pin')}
 
 
-def old_circuit():
+def old_circuit(pre_s7=False):
     parts = copy.deepcopy(circuit45.circuit())
     for p in parts:
         if p['ref'] in OLD_PINS:
             p['pins'] = dict(OLD_PINS[p['ref']])
+    if pre_s7:   # the committed pre-fix hardware still has the second parallel header J3 (removed in S7)
+        for p in parts:                  # and the unnamed U4 RT net (S7 names it RT_U4)
+            p['pins'] = {n: ('_RT_U4' if v == 'RT_U4' else v) for n, v in p['pins'].items()}
+        j2 = next(p for p in parts if p['ref'] == 'J2')
+        j2['fields']['Note'] = PRE_S7_HEADER_NOTE
+        for k in PRE_S7_J2_DROPPED:                 # S7 R2 added the Wurth MPN/Manufacturer; 077905c had none
+            assert j2['fields'].pop(k, None), k
+        j3 = copy.deepcopy(j2)
+        j3['ref'] = 'J3'
+        parts.append(j3)
     return parts
+
+
+PRE_S7_J2_DROPPED = ('MPN', 'Manufacturer')
+PRE_S7_FP = {'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical'}   # 077905c footprint; S7 R2 pins the Wurth 61201621621 land
+PRE_S7_HEADER_NOTE = ('Hand-soldered shrouded 16-pin box header, pin 1 = -12V (red stripe). J2 and J3 are in '
+                      'parallel: use both cables above ~1.5 A per rail. CV/GATE (13-16) open')
 
 
 def mutate(src, dst, swap_symbol, swap_nets):
@@ -92,9 +108,10 @@ class TPS3808PinIdentity(unittest.TestCase):
     def verify(self, netlist, hardware=HW):
         return verify_design.verify(netlist, hardware)
 
-    def old_tables(self):
+    def old_tables(self, pre_s7=False):
         crit = {**verify_design.CRIT, **OLD_CRIT}
-        return mock.patch.multiple(verify_design, circuit=old_circuit, CRIT=crit)
+        fp = {**verify_design.FP, **PRE_S7_FP} if pre_s7 else verify_design.FP
+        return mock.patch.multiple(verify_design, circuit=lambda: old_circuit(pre_s7), CRIT=crit, FP=fp)
 
     def test_symbols_match_ti_table(self):
         self.assertEqual(verify_design.TPS3808_DBV, {'1': 'RESET', '2': 'GND', '3': 'MR', '4': 'CT', '5': 'SENSE', '6': 'VDD'})
@@ -137,7 +154,7 @@ class TPS3808PinIdentity(unittest.TestCase):
             dst.write_bytes(subprocess.run(['git', '-C', str(repo), 'show', f'{OLD_COMMIT}:{name}'],
                                            check=True, capture_output=True).stdout)
         old = export_netlist(old_hw / 'usb-power-45w.kicad_sch', self.tmp / 'old.xml')
-        with self.old_tables():
+        with self.old_tables(pre_s7=True):
             with mock.patch.object(verify_design, 'check_tps3808'):
                 self.verify(old, old_hw)
             with self.assertRaisesRegex(AssertionError, 'TPS3808G01 symbol pin identity'):
