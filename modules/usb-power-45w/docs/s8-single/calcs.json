@@ -7,8 +7,15 @@
     "TPS3808": "TI SBVS050N (https://www.ti.com/lit/ds/symlink/tps3808.pdf): delay (s) = CT (nF) / 175 + 0.5 ms; open-CT delay 12/20/28 ms (+-40 %)",
     "TPS7A16": "TI SBVS171F (https://www.ti.com/lit/ds/symlink/tps7a16.pdf): overall accuracy +-2 %",
     "LM2901": "TI SLCS006Z (https://www.ti.com/lit/ds/symlink/lm2901.pdf): VIO 7 mV (25 C) / 15 mV (-40..125 C), input bias -500 nA, common mode 0..VCC-2 V (one input in range gives a proper output state)",
+    "LM2901B": "TI SLCS006Z 6.8 (https://www.ti.com/lit/ds/symlink/lm2901b.pdf): VIO 3.5 mV (25 C) / 5.5 mV (-40..125 C), IB -25 nA / -50 nA, common mode (V-) to (V+) - 1.5 V at 25 C, (V+) - 2.0 V full range; input below -0.3 V: output can be incorrect and excessive input current can flow (footnote 1)",
+    "TLV431B": "TI SLVS139Z (https://www.ti.com/lit/ds/symlink/tlv431.pdf): TLV431BI VREF 1.234-1.246 V (25 C), 1.224-1.259 V (-40..85 C) at IK 10 mA, |zKA| 0.25/0.4 ohm, IK(min) 55/100 uA, IK 0.1-15 mA; stable without a capacitor, Fig. 5-18/5-19: oscillation region about 3 nF..1 uF at VKA = VREF; DBZ pins REF 1, CATHODE 2, ANODE 3 (Table 4-1)",
+    "BAT54SL": "onsemi BAT54SLT1/D rev 17: VF 0.24 V max at 0.1 mA, 0.32 V at 1 mA; IR 2 uA max at 25 V (25 C); pin 1 anode, 2 cathode, 3 cathode-anode",
     "SMAJ5.0A": "JLC/LCSC C113952 listing (MDD): VRWM 5.0 V, VBR 6.4-7.0 V class, VC 9.2 V at 43.5 A (10/1000 us), IR <= 800 uA at VRWM",
-    "cap_study": "docs/capacitor-study/README.md bounds (BIAS, tol/temp/aging, ESR, source grid)"
+    "cap_study": "docs/capacitor-study/README.md bounds (BIAS, tol/temp/aging, ESR, source grid)",
+    "TS1220": "ST DocID027645 Rev 2 (https://www.st.com/resource/en/datasheet/ts1220.pdf): 12 A DPAK SCR, ITSM 110 A (10 ms), I2t 60 A2s, dI/dt 50 A/us (60 Hz, 125 C, IG = 2 x IGT), IGM 4 A (20 us), IGT <= 200 uA, VGT <= 0.8 V, IH <= 5 mA / IL <= 6 mA (RGK 1k), VTM <= 1.6 V at 24 A, Vt0 0.85 V + Rd 30 mOhm (125 C), dV/dt >= 5 V/us (RGK 220 ohm; Fig. 8: ~0.25 x at 1k), Rth(j-c) 1.3 C/W, Rth(j-a) 70 C/W (0.5 cm2), Fig. 5 Zth(j-a) ~0.09 x Rth(j-a) at 0.5 s, Fig. 6 IGT x 1.9 at -40 C, Fig. 11 ITSM ~750 A at 0.1 ms and, for shorter pulses, the dotted 50 A/us dI/dt line (~250 A at 10 us); Fig. 1 DPAK pin 1 K, pin 2 / tab A, pin 3 G",
+    "TLVH432B": "TI SLVS555N (https://www.ti.com/lit/ds/symlink/tlvh431.pdf): TLVH432BI VREF 1.224-1.259 V (-40..85 C, IK 10 mA), VKA up to 18 V (20 V abs max), IK 0.1-70 mA, Iref 0.5 uA max + 0.4 uA over temperature, IK(off) 0.1 uA at 18 V, |zKA| <= 0.4 ohm; DBZ pins CATHODE 1, REF 2, ANODE 3 (TLV431: VKA 7 V abs max)",
+    "AO3401A": "AOS AO3401A datasheet (LCSC C15127): -30 V, VGS +-12 V, VGS(th) -0.5/-0.9/-1.3 V, RDS(on) < 60 mOhm at -4.5 V, Ciss 645 pF",
+    "MMBT3904": "MMBT3904 (2N3904 class, LCSC C20526): hFE >= 40 at 0.1 mA, >= 70 at 1 mA; VBE(on) <= ~0.75 V at 0.25 mA (25 C), -2 mV/C"
   },
   "banks": {
     "+12V": {
@@ -311,6 +318,8 @@
         "no_load": 3.48,
         "S7_22n_full_load": 0.27
       },
+      "onboard_bank_high_mF": 0.073,
+      "rack_allowance_full_load_mF": 1.14,
       "reach_65pct_before_hiccup_max_C_mF": 1.9
     },
     "+5V": {
@@ -320,6 +329,8 @@
         "no_load": 8.66,
         "S7_22n_full_load": 0.68
       },
+      "onboard_bank_high_mF": 0.116,
+      "rack_allowance_full_load_mF": 2.99,
       "reach_65pct_before_hiccup_max_C_mF": 4.89
     },
     "-12V": {
@@ -329,16 +340,19 @@
         "full_load_1A": 0.49,
         "no_load": 1.99
       },
+      "onboard_bank_high_mF": 0.085,
+      "rack_allowance_full_load_mF": 0.4,
       "ti_limit": "<= ~10 x design COUT or 1000 uF, whichever is smaller (SNVSC40E 9.2.2.5)"
     },
-    "rack_reference": "Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. S7 isolated this through the eFuse/LM5067 dV/dt; S8 relies on the converter soft start"
+    "rack_reference": "Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. S7 isolated this through the eFuse/LM5067 dV/dt; S8 relies on the converter soft start",
+    "note": "track_ramp_max_C / max_C are TOTAL capacitance (onboard + rack); rack_allowance subtracts the onboard bank at its high corner. Loads that draw less than the full target during start-up leave more room (no_load column). Bench item: -12V start-up into the real rack."
   },
   "ov_guard": {
     "+12V": {
       "guard_V": [
-        14.86,
-        16.58,
-        18.45
+        14.48,
+        14.88,
+        15.272
       ],
       "setpoint_V": [
         11.512,
@@ -346,21 +360,23 @@
         12.912
       ],
       "worst_imposed_release_peak_V": 13.71,
-      "release_margin_to_guard_min_V": 1.15,
-      "filter_us": 3.1,
+      "release_margin_to_guard_min_V": 0.774,
+      "stacked_setpoint_plus_release_V": 13.945,
+      "stacked_margin_to_guard_min_V": 0.535,
+      "downstream_limit_V": 16.0,
+      "margin_guard_max_to_limit_V": 0.728,
+      "filter_us": 9.2,
       "converter_OVP_V": [
         12.89,
         14.02,
         15.24
-      ],
-      "margin_nominal_V": 2.56,
-      "margin_worst_V": -0.38
+      ]
     },
     "+5V": {
       "guard_V": [
-        5.84,
-        6.5,
-        7.22
+        5.677,
+        5.828,
+        5.976
       ],
       "setpoint_V": [
         4.724,
@@ -368,21 +384,23 @@
         5.259
       ],
       "worst_imposed_release_peak_V": 5.53,
-      "release_margin_to_guard_min_V": 0.31,
-      "filter_us": 8.0,
+      "release_margin_to_guard_min_V": 0.148,
+      "stacked_setpoint_plus_release_V": 5.617,
+      "stacked_margin_to_guard_min_V": 0.06,
+      "downstream_limit_V": 6.0,
+      "margin_guard_max_to_limit_V": 0.024,
+      "filter_us": 7.9,
       "converter_OVP_V": [
         5.29,
         5.73,
         6.21
-      ],
-      "margin_nominal_V": 0.77,
-      "margin_worst_V": -0.36
+      ]
     },
     "-12V": {
       "guard_V": [
-        13.92,
-        15.1,
-        16.36
+        13.265,
+        13.64,
+        14.018
       ],
       "setpoint_V": [
         11.385,
@@ -390,19 +408,411 @@
         12.624
       ],
       "worst_imposed_release_peak_V": 12.88,
-      "release_margin_to_guard_min_V": 1.04,
-      "filter_us": 6.5,
-      "converter_OVP_V": "none (LMR38020 has no output OVP)",
-      "margin_to_setpoint_max_V": 1.3
+      "release_margin_to_guard_min_V": 0.387,
+      "stacked_setpoint_plus_release_V": 13.108,
+      "stacked_margin_to_guard_min_V": 0.157,
+      "downstream_limit_V": 16.0,
+      "margin_guard_max_to_limit_V": 1.982,
+      "filter_us": 9.2,
+      "converter_OVP_V": "none (LMR38020 has no output OVP)"
+    },
+    "previous": {
+      "S8_nominal_V": {
+        "+12V": 16.58,
+        "+5V": 6.5,
+        "-12V": 15.1
+      },
+      "S8_corners_V": {
+        "+12V": [
+          14.86,
+          18.45
+        ],
+        "+5V": [
+          5.84,
+          7.22
+        ],
+        "-12V": [
+          13.92,
+          16.36
+        ]
+      },
+      "S7_eFuse_OV_nominal_V": {
+        "+12V": 14.4,
+        "+5V": 5.55,
+        "-12V": 14.25
+      }
     },
     "response_us": {
-      "filter": "3-8 (RC)",
-      "comparator": 1.3,
+      "filter": "8-9 (RC)",
+      "comparator": 1.0,
       "hc74_preset": 0.05,
       "tps1663_shdn": 1.5,
-      "total_after_crossing": "~5-15 us + RC; then U5 off, rails decay"
+      "total_after_crossing": "~3 us + RC; then U5 off, rails decay"
     },
-    "note": "Nominal guard is ~2.5 V (+12) / ~0.8 V (+5) above the converter OVP; at the stacked worst corner the bands touch, so a false trip (safe: latched off, press RESET) is a bench item. A shorted high side or an open feedback resistor drives the rail toward VIN (~20 V) or, for the inverting stage, beyond -15 V: all three trip with margin."
+    "note": "The bands are threshold screens, not a peak-voltage guarantee: opening U5 does not stop the energy already stored behind it (hs_short). The +5V band overlaps the TPS62933F OVP band (non-latching, stops the high side); either may act first on a slow excursion. A false trip latches every rail off (MAIN off, press RESET). Common-mode: both comparator inputs sit at ~1.24 V at a positive trip, inside (V+) - 1.5 V at 25 C; the -12V channel compares around 0 V."
+  },
+  "ov_reference": {
+    "R100_ohm": 2200.0,
+    "IK_min_mA": 0.711,
+    "IK_max_mA": 0.975,
+    "IK_required_mA": 0.1,
+    "divider_load_at_minus20V_mA": 0.177,
+    "C67_uF": 10.0,
+    "settle_to_1V259_ms": [
+      9.2,
+      12.1
+    ],
+    "earliest_rail_rise_ms": "> 12 (TPS3808 open-CT POR minimum) + U5 ramp + converter soft start",
+    "stability": "TLV431 is stable without a capacitor; 10u X5R (~9 uF at 1.24 V) is right of the oscillation region (~3 nF..1 uF at VKA = VREF, SLVS139Z Fig. 5-18; Fig. 5-19 phase margin ~25-40 deg at 0.4-1.5 mA)",
+    "ldo_extra_mW": 18.8
+  },
+  "ov_clamp": {
+    "-12V": {
+      "open_circuit_V": -1.0,
+      "clamp_current_uA": 82.9,
+      "pin_V_max": -0.24
+    },
+    "-12.624V": {
+      "open_circuit_V": -1.052,
+      "clamp_current_uA": 88.6,
+      "pin_V_max": -0.24
+    },
+    "-16V": {
+      "open_circuit_V": -1.333,
+      "clamp_current_uA": 119.3,
+      "pin_V_max": -0.32
+    },
+    "S8_without_clamp": {
+      "open_circuit_V": -1.651,
+      "note": "S8: R98 7.5k to V3V3, R99 47k to -12V, no clamp"
+    },
+    "note": "BAT54SL VF <= 0.24 V at 0.1 mA (25 C): U20 pin 9 stays above the -0.3 V input limit at room temperature (VF rises ~2 mV/C when cold); U20 is unpowered in this state, so its output state does not matter, only the input current (tens of uA, limit -50 mA). In normal operation the diode is reverse biased by 0.14 V and by ~0 V at the trip point, so its leakage does not move the threshold."
+  },
+  "hs_short": {
+    "C_in_uF": 46.2,
+    "VIN_V": 20.0,
+    "+12V": {
+      "onboard_low_uF": 28.2,
+      "rows": {
+        "rack_0mF": {
+          "Vf": 17.04,
+          "LC_bound": 21.89
+        },
+        "rack_0.1mF": {
+          "Vf": 14.26,
+          "LC_bound": 16.33
+        },
+        "rack_0.22mF": {
+          "Vf": 13.42,
+          "LC_bound": 14.64
+        },
+        "rack_0.47mF": {
+          "Vf": 12.86,
+          "LC_bound": 13.52
+        },
+        "rack_1mF": {
+          "Vf": 12.53,
+          "LC_bound": 12.87
+        }
+      },
+      "limit_V": 16.0,
+      "rack_C_for_Vf_below_limit_mF": 0.02,
+      "rack_C_for_LC_bound_below_limit_mF": 0.115
+    },
+    "+5V": {
+      "onboard_low_uF": 51.7,
+      "rows": {
+        "rack_0mF": {
+          "Vf": 12.07,
+          "LC_bound": 19.16
+        },
+        "rack_0.1mF": {
+          "Vf": 8.49,
+          "LC_bound": 12.0
+        },
+        "rack_0.22mF": {
+          "Vf": 7.17,
+          "LC_bound": 9.35
+        },
+        "rack_0.47mF": {
+          "Vf": 6.21,
+          "LC_bound": 7.43
+        },
+        "rack_1mF": {
+          "Vf": 5.62,
+          "LC_bound": 6.25
+        }
+      },
+      "limit_V": 6.0,
+      "rack_C_for_Vf_below_limit_mF": 0.586,
+      "rack_C_for_LC_bound_below_limit_mF": 1.269
+    },
+    "note": "Lossless bounds WITHOUT the crowbar (the S8.1 screen, kept for comparison). +5V: with less than ~0.6 mF of rack capacitance (~1.3 mF for the undamped bound) the stored charge alone lifts the rail past 6 V after U5 opens; D21 SMAJ5.0A clamps it from its 6.4-7.0 V breakdown. S8.2 adds the Q11 crowbar: see crowbar.hs_short_time_domain. +12V: ~0.02 mF of rack capacitance keeps Vf under 16 V (~0.12 mF for the undamped bound); there is no +12V clamp or crowbar"
+  },
+  "crowbar": {
+    "parts": "Q11 TS1220-600B-TR, U22 TLVH432BIDBZR, Q12 AO3401A, Q13 MMBT3904, R101/R102 37k/10k 0.1 %, C68 1n, R103 3.3k, R104 2.2k, R105 1k, R106 10k",
+    "trip_band_V": [
+      5.703,
+      5.828,
+      5.983
+    ],
+    "guard_band_V": [
+      5.677,
+      5.828,
+      5.976
+    ],
+    "margin_min_to_stacked_peak_V": 0.086,
+    "margin_max_to_6V_V": 0.017,
+    "filter_us": 7.87,
+    "trigger": {
+      "R103_current_at_trip_mA": 1.33,
+      "Q12_VGS_at_trip_V": -4.4,
+      "R103_current_at_12V_misconnection_mA": 3.24,
+      "U22_cathode_max_V": "+5V itself while U22 is off: up to ~10 V (D21 at 30-56 A, hs_short_time_domain) before the SCR fires; TLVH432 18 V (TLV431 would be 7 V abs max)",
+      "Q12_VGS_at_10V_rail_V": -8.7,
+      "Q12_VGS_limit_V": -12.0,
+      "idle_U22_leakage_x_R103_mV": 0.33
+    },
+    "gate": {
+      "drive_at_trip_min_mA": {
+        "-40C": 1.21,
+        "25C": 1.4
+      },
+      "overdrive_x_IGT_max": {
+        "-40C": 3.2,
+        "25C": 7.0
+      },
+      "peak_gate_current_at_9V2_mA": 3.82,
+      "IGM_A": 4.0,
+      "note": "IGT max x 1.9 at -40 C (Fig. 6); VGT assumed 0.93 V at -40 C (+2 mV/C). Strong gate drive also helps the SCR spread its turn-on (dI/dt rating is given at IG = 2 x IGT)"
+    },
+    "latch_link": {
+      "CROW_DRV_at_SCR_fire_min_V": {
+        "-40C": 1.89,
+        "25C": 1.42,
+        "125C": 0.95
+      },
+      "Q13_turn_on_max_V": {
+        "-40C": 0.93,
+        "25C": 0.8,
+        "125C": 0.6
+      },
+      "margin_V": {
+        "-40C": 0.96,
+        "25C": 0.62,
+        "125C": 0.35
+      },
+      "Q13_base_current_full_drive_mA": 0.5,
+      "note": "Q13 must sink 0.25 mA from R97 (OV_N < 0.9 V) with hFE >= 50; the SCR cannot fire before CROW_DRV reaches VGT x (1 + R104/R105). VGT minimum is not specified: 0.30 V at 125 C is a screening assumption. U5 then opens through FAULT even if the guard comparator never sees the overvoltage"
+    },
+    "hs_short_time_domain": {
+      "model": "Explicit-Euler screen of a hard high-side short of U3 at t = 0: VIN (C_in, fed by U5 at its 4.698 A limit until it opens) -> shorted FET -> SW -> L2 -> +5V bank (C5) with D21 (VBR + 50 mOhm), optional rack branch, no load. SW cannot fall below -0.7 V (U3 low-side body diode: L2 then freewheels from GND) and +5V not below -0.3 V (D3 SS34 from GND). The U20 guard (band max, RC tau) opens U5 t_u5 after its node crosses; the crowbar node (band max, same tau) fires the SCR t_fire later (TLVH432 + Q12 + SCR turn-on) and its latch link opens U5 t_link later. SCR: Vt0 + Rd x I behind 15 nH / 5 mOhm of bank-to-Q11 copper, forward current only, drops out below IH.",
+      "C_in_uF": 46.2,
+      "C5_onboard_low_uF": 51.7,
+      "cases": {
+        "no_rack_L3u3_VBR7.0": {
+          "crowbar": {
+            "v5_peak_before_fire": 8.44,
+            "scr_peak_A": 166.41,
+            "scr_peak_dI_dt_A_us": 506.17,
+            "i2t_A2s": 0.1393,
+            "e_scr_mJ": 6.38,
+            "e_d21_mJ": 0.74,
+            "d21_peak_A": 28.88,
+            "v5_max_after_fire_2us": 4.45,
+            "t_above_6V_us": 8.17,
+            "v5_min_V": -0.38,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 1.6,
+            "t_guard_cross_us": 7.59,
+            "t_u5_open_us": 10.19,
+            "t_scr_fire_us": 10.63,
+            "t_scr_dropout_us": 93.1,
+            "v5_end_V": 0.14,
+            "vin_end_V": 0.34
+          },
+          "S8.1_no_crowbar": {
+            "v5_peak_before_fire": 9.13,
+            "scr_peak_A": 0.0,
+            "scr_peak_dI_dt_A_us": 0.0,
+            "i2t_A2s": 0.0,
+            "e_scr_mJ": 0.0,
+            "e_d21_mJ": 8.34,
+            "d21_peak_A": 42.53,
+            "v5_max_after_fire_2us": 0.0,
+            "t_above_6V_us": 49.93,
+            "v5_min_V": 0.21,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 0.0,
+            "t_guard_cross_us": 7.59,
+            "t_u5_open_us": 10.19,
+            "t_scr_fire_us": null,
+            "t_scr_dropout_us": null,
+            "v5_end_V": 2.75,
+            "vin_end_V": 4.24
+          }
+        },
+        "no_rack_L1u0_saturated_VBR7.0": {
+          "crowbar": {
+            "v5_peak_before_fire": 9.79,
+            "scr_peak_A": 196.76,
+            "scr_peak_dI_dt_A_us": 596.24,
+            "i2t_A2s": 0.1378,
+            "e_scr_mJ": 5.45,
+            "e_d21_mJ": 1.8,
+            "d21_peak_A": 55.93,
+            "v5_max_after_fire_2us": 5.49,
+            "t_above_6V_us": 7.86,
+            "v5_min_V": -0.38,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 1.62,
+            "t_guard_cross_us": 5.3,
+            "t_u5_open_us": 7.9,
+            "t_scr_fire_us": 8.32,
+            "t_scr_dropout_us": 39.7,
+            "v5_end_V": 0.18,
+            "vin_end_V": 0.2
+          },
+          "S8.1_no_crowbar": {
+            "v5_peak_before_fire": 10.2,
+            "scr_peak_A": 0.0,
+            "scr_peak_dI_dt_A_us": 0.0,
+            "i2t_A2s": 0.0,
+            "e_scr_mJ": 0.0,
+            "e_d21_mJ": 7.54,
+            "d21_peak_A": 64.05,
+            "v5_max_after_fire_2us": 0.0,
+            "t_above_6V_us": 29.18,
+            "v5_min_V": 2.17,
+            "vin_min_V": 1.18,
+            "d3_peak_A": 0.0,
+            "t_guard_cross_us": 5.3,
+            "t_u5_open_us": 7.9,
+            "t_scr_fire_us": null,
+            "t_scr_dropout_us": null,
+            "v5_end_V": 4.52,
+            "vin_end_V": 4.45
+          }
+        },
+        "no_rack_L3u3_VBR6.4": {
+          "crowbar": {
+            "v5_peak_before_fire": 7.98,
+            "scr_peak_A": 156.02,
+            "scr_peak_dI_dt_A_us": 475.27,
+            "i2t_A2s": 0.1332,
+            "e_scr_mJ": 6.16,
+            "e_d21_mJ": 0.99,
+            "d21_peak_A": 31.6,
+            "v5_max_after_fire_2us": 4.3,
+            "t_above_6V_us": 8.32,
+            "v5_min_V": -0.38,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 1.6,
+            "t_guard_cross_us": 7.87,
+            "t_u5_open_us": 10.47,
+            "t_scr_fire_us": 10.92,
+            "t_scr_dropout_us": 93.1,
+            "v5_end_V": 0.14,
+            "vin_end_V": 0.34
+          },
+          "S8.1_no_crowbar": {
+            "v5_peak_before_fire": 8.6,
+            "scr_peak_A": 0.0,
+            "scr_peak_dI_dt_A_us": 0.0,
+            "i2t_A2s": 0.0,
+            "e_scr_mJ": 0.0,
+            "e_d21_mJ": 8.48,
+            "d21_peak_A": 43.94,
+            "v5_max_after_fire_2us": 0.0,
+            "t_above_6V_us": 41.02,
+            "v5_min_V": 0.14,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 0.0,
+            "t_guard_cross_us": 7.87,
+            "t_u5_open_us": 10.47,
+            "t_scr_fire_us": null,
+            "t_scr_dropout_us": null,
+            "v5_end_V": 2.38,
+            "vin_end_V": 3.96
+          }
+        },
+        "rack_0.47mF_L3u3_VBR7.0": {
+          "crowbar": {
+            "v5_peak_before_fire": 8.07,
+            "scr_peak_A": 157.33,
+            "scr_peak_dI_dt_A_us": 481.47,
+            "i2t_A2s": 0.1846,
+            "e_scr_mJ": 9.15,
+            "e_d21_mJ": 0.54,
+            "d21_peak_A": 21.45,
+            "v5_max_after_fire_2us": 4.12,
+            "t_above_6V_us": 8.2,
+            "v5_min_V": 0.89,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 0.0,
+            "t_guard_cross_us": 7.86,
+            "t_u5_open_us": 10.46,
+            "t_scr_fire_us": 10.9,
+            "t_scr_dropout_us": null,
+            "v5_end_V": 0.93,
+            "vin_end_V": 0.8
+          },
+          "S8.1_no_crowbar": {
+            "v5_peak_before_fire": 8.44,
+            "scr_peak_A": 0.0,
+            "scr_peak_dI_dt_A_us": 0.0,
+            "i2t_A2s": 0.0,
+            "e_scr_mJ": 0.0,
+            "e_d21_mJ": 5.04,
+            "d21_peak_A": 28.84,
+            "v5_max_after_fire_2us": 0.0,
+            "t_above_6V_us": 65.32,
+            "v5_min_V": 3.14,
+            "vin_min_V": -0.7,
+            "d3_peak_A": 0.0,
+            "t_guard_cross_us": 7.86,
+            "t_u5_open_us": 10.46,
+            "t_scr_fire_us": null,
+            "t_scr_dropout_us": null,
+            "v5_end_V": 5.65,
+            "vin_end_V": 5.65
+          }
+        }
+      },
+      "note": "The crowbar cannot stop the first microseconds: the rail passes 6 V about 3-4 us after a hard short and D21 holds it at 8-10 V until the 8 us RC + trigger fire the SCR (8-11 us). Within ~1.5 us of firing +5V is under 5 V, after ~3-5 us under ~3.5 V; the SCR then carries the VIN charge and the L2 current (50-75 A, +5V ~2.5-3.5 V falling to ~1 V; the U3 low-side body diode takes L2 over once VIN is empty) and drops out below IH after 40-95 us with +5V near 0 V; D3 holds the remaining ring above -0.4 V. Without it D21 held the rail above 6 V for 29-65 us (S8.1). L2 (SLO1040, Isat 16 A) saturates in this fault: the 1 uH case bounds the faster, higher dump"
+    },
+    "surge": {
+      "worst_case_peak_A": 196.76,
+      "worst_peak_dI_dt_A_us": 596.24,
+      "worst_i2t_A2s": 0.1846,
+      "I2t_rating_A2s": 60,
+      "ITSM_10ms_A": 110,
+      "ITSM_short_pulse": "Fig. 11: ~750 A at 0.1 ms; shorter pulses follow the dotted 50 A/us dI/dt line (~250 A at 10 us)",
+      "rack_discharge": {
+        "0.47mF": {
+          "peak_A": 64.2,
+          "i2t_A2s": 0.077
+        },
+        "1mF": {
+          "peak_A": 64.2,
+          "i2t_A2s": 0.165
+        },
+        "3mF": {
+          "peak_A": 64.2,
+          "i2t_A2s": 0.494
+        }
+      },
+      "di_dt": "The onboard bank (at 8-10 V when Q11 fires) discharges into Q11 at up to ~500-600 A/us through the 15 nH loop in this screen, ~10 x the TS1220 dI/dt rating (50 A/us: 60 Hz repetitive, 125 C, IG = 2 x IGT, which also limits Fig. 11 below 0.1 ms). The screen is an upper bound: it has no SCR turn-on time, which slows the real rise. The anode is at <= 10 V instead of hundreds of volts, so the turn-on energy while the conduction area spreads is small (~0.3 mJ), Q12 drives 3-17 x IGT max and I2t is ~0.3 % of the rating. Survival of repeated firing is NOT covered by the rating: bench item. A crowbar SCR that fails, fails short: the rack stays protected and Q11 must be replaced"
+    },
+    "thermal": {
+      "case": "latch link and guard both fail inside the 0.57 s startup window: U5 feeds its 4.698 A limit into the shorted rail until U18 latches (or U5 overheats)",
+      "P_W": 4.66,
+      "Zth_ja_0s5_CW": 6.3,
+      "dT_C": 29.3,
+      "note": "DPAK on the +5V pour (> 0.5 cm2): Tj rise ~30 C for 0.5 s. Normal crowbar events are tens of mJ. A second supply that keeps feeding the bus (misconnection) is not rated: the SCR then carries that supply's current limit until it fails (normally short)"
+    },
+    "holding": "IH <= 5 mA (25 C, RGK 1k; x 0.5 at 125 C): the SCR drops out once U5 is open and the stored charge is gone; RESET restarts normally (and re-fires if the fault is still there)",
+    "false_trigger": "Same nominal and RC as the U20 guard: the band minimum sits above the stacked setpoint + N=16 release; U22 cannot conduct below its threshold and needs no V3V3, so power-up and power-down cannot fire it; R105 1k + R104/Q12 off hold the gate near 0 V (Q12 IDSS 1 uA)"
   },
   "startup_window": {
     "typ_s": 0.572,
@@ -474,12 +884,12 @@
     "rail_max_setpoint_V": 5.26,
     "vin_cap_dump_mJ": 8.1,
     "rating_J_10_1000us": 0.4,
-    "note": "Above VRWM only at the stacked worst-case setpoint; <= ~5 mW even at 1 mA. Transient clamp only; sustained overvoltage is removed by U20 -> FAULT -> U5"
+    "note": "Above VRWM only at the stacked worst-case setpoint; <= ~5 mW even at 1 mA. Transient clamp only (not a 5 V limit): sustained overvoltage is removed by U20 -> FAULT -> U5 and shorted by the Q11 crowbar (S8.2); D21 sets the +5V peak only for the microseconds before Q11 fires"
   },
   "area": {
-    "S8_courtyard_mm2": 2733,
+    "S8_courtyard_mm2": 2900,
     "board_inset_mm2": 4324,
-    "fill": 0.632,
+    "fill": 0.671,
     "outline": "Y14..114.5 x Z2..50",
     "routed_R3_fill": {
       "base": 0.637,
@@ -489,7 +899,7 @@
       "J2+J3": 573,
       "L1-L3": 401,
       "panel J1/SW1/D8": 168,
-      "test pads": 50
+      "test pads": 53
     },
     "note": "courtyard polygons from the pinned footprints, panel parts counted whole (they overhang the front edge by design). The placed P1 board record is docs/s8-single/board-p1.json"
   }

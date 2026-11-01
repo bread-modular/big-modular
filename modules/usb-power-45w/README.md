@@ -7,17 +7,31 @@
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | **Main project = the routed BASE board** (`usb-power-45w.kicad_{pcb,sch,dru}`: USB/PD, main eFuse, negative protection, latch/RESET, LEDs, J2 output) |
 | [`hardware/usb-power-45w-top.kicad_pro`](hardware/usb-power-45w-top.kicad_pro) | The routed TOP board (`usb-power-45w-top.kicad_{pcb,sch}`: the three converters, +12/+5 eFuses, cans) |
 | [`hardware/usb-power-45w-system.kicad_pro`](hardware/usb-power-45w-system.kicad_pro) | Whole-circuit S7 schematic (`usb-power-45w-system.kicad_sch` + pages `01`..`07`, 216 refs / 145 nets); schematic only, no PCB |
-| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S8 single board** (2026-11-01): **final schematic** (no per-rail eFuses, no rail LEDs, MAIN LED only, ceramic bulk, two IDC outputs J2 + J3, overvoltage guard; 166 refs / 76 nets, ERC 0) + **P1 trial placement**, 100.5 x 48 mm (50 mm deep), every part on F, not routed (DRC 0 / parity 0). Panel `panels/front-pcb/usb-power-45w-single-panel.kicad_pcb`. Review package: [S8 record](docs/s8-single-board.md) |
+| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S8 single board** (2026-11-01): **S8.2 schematic** (no per-rail eFuses, no rail LEDs, MAIN LED only, ceramic bulk, two IDC outputs J2 + J3, overvoltage guard with its own TLV431B reference + MON_OVN clamp after the external review, +5V SCR crowbar; 182 refs / 82 nets, ERC 0) + **P1.2 trial placement**, 100.5 x 48 mm (50 mm deep), every part on F, not routed (DRC 0 / parity 0). Panel `panels/front-pcb/usb-power-45w-single-panel.kicad_pcb`. Review package: [S8 record](docs/s8-single-board.md) |
 
 > **S8 (2026-11-01): single board, final schematic + P1 trial placement (review package).** The three
 > rail eFuses (U6/U7 and the LM5067 negative switch) and every rail LED are removed; U5 is the only switch
 > and the fault latch still turns every rail off until RESET, so D8 MAIN (the only LED) off = not working.
 > The four cans become ceramics (VIN: 1 ohm + 2 x 10u damper; rails: 22u at each header); two parallel
 > 16-pin outputs J2 + J3; overvoltage guard (+12/+5/-12) on the latch preset plus a TVS on +5V. The board
-> is 50 mm deep (Z2..50), all 166 parts placed on the F side, 63 % courtyard fill, not routed; brackets,
+> is 50 mm deep (Z2..50), all 171 parts placed on the F side, 64 % courtyard fill, not routed; brackets,
 > panel and a 3D assembly (STEP, renders, collision screen: 0 overlaps) are in
-> [docs/s8-single-board.md](docs/s8-single-board.md) with the points for the reviewer. Parts ~$18.37 vs
-> $27.11. The S7 schematic and the routed R3 stack below are unchanged.
+> [docs/s8-single-board.md](docs/s8-single-board.md) with the points for the reviewer. Parts ~$19.32 vs
+> $27.12. The S7 schematic and the routed R3 stack below are unchanged.
+>
+> **S8.1 (2026-11-01, external review fixes):** the guard has its own reference (U21 TLV431B, R100, C67,
+> TP17), LM2901B comparators and 0.1 % dividers: trips +12V 14.88 V (14.48-15.27), +5V 5.83 V (5.68-5.98),
+> -12V -13.64 V (13.27-14.02) instead of 16.6 / 6.5 / 15.1 V; the -12V sense no longer uses V3V3 and D22
+> clamps it at GND. A shorted converter high side can still lift +5V into D21's clamp range (6.4-7 V breakdown, more at amps) when the rack holds
+> less than ~0.6 mF on +5V; S8.2 adds the crowbar below. See the S8.1 section of the record.
+>
+> **S8.2 (2026-11-01, user: "Do that"): +5V crowbar.** Q11 (TS1220 SCR, DPAK) across +5V, fired by its own
+> trigger powered by +5V itself (U22 TLVH432B, 0.1 % 37k/10k divider, Q12 gate driver): +5V above 5.83 V
+> (5.70-5.98 V over all corners) shorts the rail, and Q13 pulls OV_N low at the same time so the fault latch
+> opens U5. In the shorted-high-side screen +5V spends ~8 us above 6 V instead of 29-65 us; D21 still sets
+> the 8-10 V peak of those first microseconds. Board P1.2: Q11 in the free front-right corner, 182 parts,
+> 67 % fill, DRC 0, 3D screen 0 overlaps. Parts ~$21.50 (+$2.18; TS1220 and TLVH432B are new Extended codes).
+> The SCR's dI/dt in the bank discharge exceeds its rating in the screen: survival is a bench gate.
 
 Each board project has its own matching flat schematic (its share of S7 + the board-to-board
 headers XB*/XT*); `tools/check_stack.py` proves base + top joined through the headers equals the

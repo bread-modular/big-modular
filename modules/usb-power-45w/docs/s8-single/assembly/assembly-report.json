@@ -38,25 +38,25 @@
   },
   "ics": {
    "label": "ICs, transistors, diodes, fuse (KiCad library models)",
-   "count": 29,
+   "count": 35,
    "bbox_XYZ": [
     [
      4.101,
-     6.411
+     6.421
     ],
     [
      17.75,
-     97.75
+     99.31
     ],
     [
-     6.875,
+     3.325,
      45.625
     ]
    ]
   },
   "passives": {
    "label": "R / C (KiCad library models)",
-   "count": 113,
+   "count": 122,
    "bbox_XYZ": [
     [
      4.101,
@@ -67,7 +67,7 @@
      111.85
     ],
     [
-     4.275,
+     3.425,
      47.375
     ]
    ]
@@ -290,7 +290,7 @@
   }
  },
  "solid_interference_mm3": [],
- "parts_with_model": 145,
+ "parts_with_model": 160,
  "proxies": [
   "J1",
   "L1",

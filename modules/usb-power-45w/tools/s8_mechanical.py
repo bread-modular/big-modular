@@ -49,7 +49,7 @@ LEGEND = [([0.91, 0.84, 0.66], 'S8 4HP panel (USB-C, MAIN LED, RESET)'),
           ([0.62, 0.66, 0.74], 'PROPOSAL: ribbon leaving +Z to the bus'),
           ([0.23, 0.65, 0.79], 'Tool paths: M3 nut driver / pliers'),
           ([0.75, 0.75, 0.75], 'Case rail section (context)')]
-STAMP = 'S8 SINGLE BOARD P1 - TRIAL PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
+STAMP = 'S8.1 SINGLE BOARD P1.1 - TRIAL PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
 
 
 def footprints():
