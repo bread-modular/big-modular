@@ -88,7 +88,7 @@ def uid(board, key):
 def board_net(board, short):
     """Short net name -> exact board net name (auto 'Net-(U4-SW)' style names included)."""
     import pcbnew
-    b = pcbnew.LoadBoard(str(MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'))
+    b = pcbnew.LoadBoard(str(st.board_file(board)))
     names = [str(n) for n in b.GetNetsByName().keys()]
     for cand in (short, '/' + short, f'Net-({short})'):
         if cand in names:
@@ -133,9 +133,10 @@ def tools(*args):
 
 
 def apply(board, batch):
+    st.refuse_replay(f'route_r2.py apply {board} {batch}')
     work = MOD / 'research/r2/route' / f'{board}-{batch}-{time.strftime("%H%M%S")}'
     work.mkdir(parents=True)
-    src = MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'
+    src = st.board_file(board)
     shutil.copy(src, f'/tmp/{src.stem}-{time.strftime("%H%M%S")}.kicad_pcb')
     (work / 'ops.json').write_text(json.dumps(emit(board, batch), indent=1))
     cfg = MOD / 'tools' / f'kicad-project-{board}.json'

@@ -558,11 +558,27 @@
       },
       {
         "netclass": "Power",
-        "pattern": "+3V3"
+        "pattern": "VPD"
       },
       {
         "netclass": "Power",
-        "pattern": "+5V"
+        "pattern": "EF_IN"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "VIN"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "P12_RAW"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "P5_RAW"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "N12_RAW"
       },
       {
         "netclass": "Power",
@@ -570,27 +586,11 @@
       },
       {
         "netclass": "Power",
+        "pattern": "+5V"
+      },
+      {
+        "netclass": "Power",
         "pattern": "-12V"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "+12V_F"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "-12V_F"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "/VBUS"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "+3V3_ESP32"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "+3V3_8388"
       }
     ]
   },
@@ -730,9 +730,9 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "32bit.kicad_sch",
-        "name": "32bit",
-        "uuid": "19eb50f8-c6bd-5527-a09f-292bb168591e"
+        "filename": "usb-power-45w.kicad_sch",
+        "name": "usb-power-45w",
+        "uuid": "594c1575-c1b5-5383-998f-84817626898e"
       }
     ],
     "used_designators": "",

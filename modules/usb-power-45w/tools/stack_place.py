@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Explicit, reviewed placement moves on the canonical R2 boards (no automatic placement).
 
-  python3 -B tools/stack_place.py apply <batch>      # apply MOVES[batch] in place (board backed up to /tmp)
-  python3 -B tools/stack_place.py replay             # all batches in order (only after a fresh build_stack.py seed)
+  python3 -B tools/stack_place.py apply <batch>      # R2 history: refused now that R3 copper is finished
+  python3 -B tools/stack_place.py replay             # R2 history: refused (needed a fresh build_stack.py seed)
   python3 -B tools/stack_place.py show <board> REF...  # footprint origin, courtyard bbox, pad YZ + nets
   python3 -B tools/stack_place.py free <board> REF Y Z [rot] [--ignore REF,...]
       # helper for ONE part: nearest positions where its courtyard clears every other courtyard
@@ -24,6 +24,8 @@ import pcbnew
 
 MOD = Path(__file__).resolve().parents[1]
 REC = MOD / 'docs/stack-r2/placement-moves.json'
+sys.path.insert(0, str(MOD / 'tools'))
+import stack_r2 as st  # noqa: E402
 
 # batch -> board -> ref: (Y, Z, rot, reason)
 MOVES = {
@@ -182,7 +184,7 @@ def nat(y, z):
 
 
 def path(board):
-    return MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'
+    return st.board_file(board)
 
 
 def show(board, refs):
@@ -197,6 +199,7 @@ def show(board, refs):
 
 
 def apply(batch):
+    st.refuse_replay(f'stack_place.py apply {batch}')   # footprint moves would not drag the routed copper
     rec = json.loads(REC.read_text()) if REC.exists() else {}
     for board, moves in MOVES[batch].items():
         src = path(board)
@@ -230,8 +233,6 @@ def apply(batch):
 
 def free(board, ref, y, z, rot=None, ignore=(), raw=False, span=10):
     import numpy as np
-    sys.path.insert(0, str(MOD / 'tools'))
-    import stack_r2 as st
     b = pcbnew.LoadBoard(str(path(board)))
     f = b.FindFootprintByReference(ref)
     if rot is not None:

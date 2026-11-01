@@ -34,7 +34,7 @@ REPO = MOD.parents[1]
 sys.path.insert(0, str(MOD / 'tools'))
 import route_r2  # noqa: E402  (shared plan/apply wrapper, writeback proof)
 
-BOARD = MOD / 'hardware/base/usb-power-45w-base.kicad_pcb'
+BOARD = route_r2.st.board_file('base')
 CFG = MOD / 'tools/kicad-project-base.json'
 RES = MOD / 'research/r3-base'
 V6 = (0.6, 0.3)
@@ -113,6 +113,7 @@ def emit(batch):
 
 
 def apply(batch):
+    route_r2.st.refuse_replay(f'route_base_r3.py apply {batch}')
     stamp = time.strftime('%H%M%S')
     work = RES / 'route' / f'{batch}-{stamp}'
     work.mkdir(parents=True)

@@ -1,6 +1,8 @@
 """Small pcbnew helpers for explicit, reviewed edits of the usb-power-45w carrier (R1 work).
 
-Edits go straight to hardware/usb-power-45w.kicad_pcb (root AGENTS.md routing policy) after a
+History: the R1 monolithic carrier is archived read-only at archive/r1-monolithic/ and the routed
+boards are owned by their native PCBs, so save() refuses (r1_prep.py cannot be replayed).
+Edits went straight to the carrier (root AGENTS.md routing policy) after a
 /tmp backup. The project file is never rewritten (SaveBoard aSkipSettings). Nothing here places
 or routes automatically: every op names its ref, pad, net, layer and coordinates.
 """
@@ -11,7 +13,7 @@ from pathlib import Path
 import pcbnew
 
 MODULE = Path(__file__).resolve().parents[1]
-BOARD = MODULE / 'hardware/usb-power-45w.kicad_pcb'
+BOARD = MODULE / 'archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb'
 
 
 def mm(v):
@@ -33,7 +35,8 @@ def backup(tag):
 
 
 def save(board, path=BOARD):
-    assert pcbnew.SaveBoard(str(path), board, True)
+    raise SystemExit(f'pcb45.save({path}): refused. The R1 monolithic carrier is archived read-only '
+                     'history; R3 routing is owned by hardware/usb-power-45w{,-top}.kicad_pcb.')
 
 
 def fps(board):

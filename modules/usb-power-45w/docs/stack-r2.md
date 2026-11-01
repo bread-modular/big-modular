@@ -13,10 +13,10 @@ protected 16-pin output (J2), passive expander/cable later (no powered bus).
 
 | What | Where |
 | --- | --- |
-| S7 circuit (authoritative, readable hierarchy) | `hardware/usb-power-45w.kicad_sch` + 7 pages, `docs/usb-power-45w-schematic.pdf`, `docs/bom.csv` |
-| Base board (native project) | `hardware/base/usb-power-45w-base.kicad_{pro,sch,pcb,dru}` |
-| Top board (native project) | `hardware/top/usb-power-45w-top.kicad_{pro,sch,pcb}` |
-| Shared-tool check profiles | `tools/kicad-project-base.json`, `tools/kicad-project-top.json` |
+| S7 circuit (authoritative, readable hierarchy) | `hardware/usb-power-45w-system.kicad_{pro,sch}` + 7 pages, `docs/usb-power-45w-schematic.pdf`, `docs/bom.csv` |
+| Base board (native project, **the module's main project**) | `hardware/usb-power-45w.kicad_{pro,sch,pcb,dru}` |
+| Top board (native project) | `hardware/usb-power-45w-top.kicad_{pro,sch,pcb}` |
+| Shared-tool check profiles | `tools/kicad-project.json` (= `kicad-project-base.json`, BASE), `tools/kicad-project-top.json` |
 | Partition, header pin maps, stack geometry, assumed heights/tolerances | `tools/stack_r2.py` |
 | Per-board schematics generator | `tools/board_schematics.py` |
 | Board seed (one time) / reviewed placement moves | `tools/build_stack.py` / `tools/stack_place.py` (+ `docs/stack-r2/placement-moves.json`) |
@@ -24,7 +24,11 @@ protected 16-pin output (J2), passive expander/cable later (no powered bus).
 | Independent checks | `tools/check_stack.py` -> `docs/stack-r2/validation.json`, `tools/drc_summary.py` |
 | Views | `docs/stack-r2/img/` (`face-base.png`, `face-top.png`, `face-top-U4-T1.png`, `assembly-rear.png`) |
 
-The old monolithic carrier `hardware/usb-power-45w.kicad_pcb` (+ `tools/kicad-project.json`) is
+**Paths (2026-11-01):** the boards were moved (PCB, schematic and rules byte-identical) from `hardware/base/usb-power-45w-base.*`
+and `hardware/top/usb-power-45w-top.*` to the paths above, and the S7 root from
+`hardware/usb-power-45w.kicad_sch` to `hardware/usb-power-45w-system.kicad_sch`; the records below
+keep the old paths as history. The old monolithic carrier (was `hardware/usb-power-45w.kicad_pcb`,
+now `archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb`) is
 **superseded** and kept unchanged as history: it still carries J3, so its DRC parity against the
 S7 root now reports J3. The fit study `docs/stacked-fit-study/` stays historical.
 

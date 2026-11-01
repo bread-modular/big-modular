@@ -26,7 +26,7 @@ across, Y down, Z into the case (panel front Z0, rear Z1.6). Carrier native map:
 | File | Role |
 |---|---|
 | `tools/mechanics45.py` -> `docs/mechanical-geometry.json` | Contract, envelopes, width/depth/M3 checks |
-| `tools/build_layout.py` (pcbnew) | `hardware/usb-power-45w.kicad_pcb`, `panels/front-pcb/usb-power-45w-panel.kicad_{pro,pcb}` |
+| `tools/build_layout.py` (pcbnew) | M1 carrier (archived 2026-11-01: `archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb`, rebuild refused), `panels/front-pcb/usb-power-45w-panel.kicad_{pro,pcb}` |
 | `tools/bracket45.py`, `panels/bracket/build_bracket.py` | L bracket (FCStd/STEP/STL), `hardware/mechanics/corner_braces.scad` copy |
 | `tools/build_assembly.py` (FreeCAD) | 3D assembly from native kicad-cli STEP + brackets + proxies/envelopes |
 | `tools/check_mechanics.py`, `tools/render_preview.py` | Independent native checks; drawings/renders |

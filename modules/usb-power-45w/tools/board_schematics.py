@@ -2,14 +2,14 @@
 
   python3 -B tools/board_schematics.py [--output-root <candidate-module-root>]
 
-Writes hardware/base/usb-power-45w-base.kicad_sch and hardware/top/usb-power-45w-top.kicad_sch
-(one wired flat sheet each, same drawing engine and coordinates as the verified S7 flat
+Writes hardware/usb-power-45w.kicad_sch (BASE, the main project) and
+hardware/usb-power-45w-top.kicad_sch (TOP) (one wired flat sheet each, same drawing engine and coordinates as the verified S7 flat
 intermediate). Each sheet holds exactly the board's share of the S7 circuit table
 (tools/stack_r2.py) plus its two board-to-board headers. Drawn wires that led to the other
 board are dropped; the pins they served are re-joined by their net's power symbol or label.
 Every native netlist is checked against the board's table, and the aggregate proof
 (both boards joined pin-for-pin through the headers == the S7 root netlist) is
-tools/check_stack.py's job. The S7 hierarchy (hardware/usb-power-45w.kicad_sch) stays the
+tools/check_stack.py's job. The S7 hierarchy (hardware/usb-power-45w-system.kicad_sch) stays the
 readable, authoritative circuit.
 
 Header-fed supply nets: a board whose supply only arrives through the header pins gets ONE
@@ -61,20 +61,12 @@ def build(output_root=None):
     lib = bs.lib_symbols()
     report = {}
     for board in ('base', 'top'):
-        d = hw / board
-        d.mkdir(parents=True, exist_ok=True)
-        project = f'usb-power-45w-{board}'
-        pro = d / f'{project}.kicad_pro'
-        if not pro.exists():     # kicad-cli upgrade takes the instance project name from it
-            shutil.copy(hw / 'usb-power-45w.kicad_pro', pro)
-        (d / 'sym-lib-table').write_text(
-            f'(sym_lib_table (version 7) (lib (name "{bs.LIB}") (type "KiCad") '
-            f'(uri "${{KIPRJMOD}}/../{bs.LIB}.kicad_sym") (options "") '
-            '(descr "usb-power-45w pinned symbols (shared with the S7 root)")))\n')
-        (d / 'fp-lib-table').write_text(
-            f'(fp_lib_table (version 7) (lib (name "{bs.LIB}") (type "KiCad") '
-            f'(uri "${{KIPRJMOD}}/../{bs.LIB}.pretty") (options "") '
-            '(descr "usb-power-45w pinned footprints (shared with the S7 root)")))\n')
+        hw.mkdir(parents=True, exist_ok=True)
+        project = st.STEM[board]   # = the board project's name (native save relabels instances to it)
+        pro = st.board_file(board, '.kicad_pro', root)
+        if not pro.exists():     # board project: rules copied from the system project, sheet record below
+            shutil.copy(hw / f'{st.SYSTEM_STEM}.kicad_pro', pro)
+        # Library tables: the module's hardware/sym-lib-table and fp-lib-table (shared by all projects).
         sub = [p for p in parts if side[p['ref']] == board]
         sub += st.header_parts(board, part)
         hdr = {h[0]: h for h in st.HEADERS[board]}
@@ -85,15 +77,15 @@ def build(output_root=None):
         refs = {p['ref'] for p in sub}
         title = f'usb-power-45w {board.upper()} board (R2 stack) - derived from S7'
         comments = (f'{board.upper()} share of the S7 circuit + board-to-board headers; tools/board_schematics.py',
-                    'Authoritative readable circuit: ../usb-power-45w.kicad_sch (S7 hierarchy)',
+                    f'Authoritative readable circuit: {st.SYSTEM_STEM}.kicad_sch (S7 hierarchy)',
                     'Header pins: tools/stack_r2.py; aggregate proof: tools/check_stack.py')
         sch, nets, _ = bs.flat_sheet(sub, lib, project=project, key=f'R2/{board}/root', title=title,
                                      comments=comments, source=board_drawing(refs), texts=[])
-        out = d / f'{project}.kicad_sch'
+        out = st.board_file(board, '.kicad_sch', root)
         out.write_text(dump(sch) + '\n')
         subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True, stdout=subprocess.DEVNULL)
         meta = json.loads(pro.read_text())   # copied root project: point its sheet record at this root
-        meta['schematic']['top_level_sheets'] = [{'filename': out.name, 'name': project,
+        meta['schematic']['top_level_sheets'] = [{'filename': out.name, 'name': out.stem,
                                                   'uuid': bs.uid(f'R2/{board}/root')}]
         pro.write_text(json.dumps(meta, indent=2) + '\n')
         nc = {f"{p['ref']}/{n}" for p in sub for n, net in p['pins'].items() if net is None}

@@ -1,5 +1,8 @@
 """Independent M1 mechanical-preview checks on the NATIVE boards (read-only, pcbnew 10).
 
+History: the M1 carrier is the superseded monolithic board, now archive/r1-monolithic/ (read-only);
+the current boards are checked by tools/check_stack.py.
+
 Run from the repository root after tools/build_layout.py:
   python3 -B modules/usb-power-45w/tools/check_mechanics.py --out modules/usb-power-45w/docs/mechanical-preview/verification.json
 
@@ -23,6 +26,7 @@ import pcbnew
 MODULE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE / 'tools'))
 from mechanics45 import carrier_outline  # noqa: E402
+from stack_r2 import R1_ARCHIVE, system_root  # noqa: E402
 
 GEO = json.loads((MODULE / 'docs/mechanical-geometry.json').read_text())
 HW = MODULE / 'hardware'
@@ -40,7 +44,7 @@ def netlist():
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / 'n.xml'
         subprocess.run(['kicad-cli', 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(out),
-                        str(HW / 'usb-power-45w.kicad_sch')], check=True, stdout=subprocess.DEVNULL)
+                        str(system_root())], check=True, stdout=subprocess.DEVNULL)
         return ET.parse(out).getroot()
 
 
@@ -112,7 +116,7 @@ def poly_gap(a, b):
 
 
 def check_carrier(rep, problems):
-    board = pcbnew.LoadBoard(str(HW / 'usb-power-45w.kicad_pcb'))
+    board = pcbnew.LoadBoard(str(R1_ARCHIVE))   # the M1/R1 monolithic carrier, archived history
     root = netlist()
     rep['copper'] = {'tracks_and_vias': len(board.GetTracks()), 'zones': len(list(board.Zones())),
                      'copper_layers': board.GetCopperLayerCount()}

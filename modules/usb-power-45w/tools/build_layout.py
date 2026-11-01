@@ -4,7 +4,9 @@ Run from the repository root, after tools/mechanics45.py:
   python3 -B modules/usb-power-45w/tools/build_layout.py [--panel-only]
 
 Writes
-- hardware/usb-power-45w.kicad_pcb: perpendicular 4-layer carrier. Outline, M3 holes and
+- (history, now refused) the perpendicular 4-layer M1 carrier, archived read-only at
+  archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb (hardware/usb-power-45w.kicad_pcb
+  is the routed BASE board now and is never written here). Was: Outline, M3 holes and
   bracket cutbacks copied from modules/usb-power (rear edge moved to Z42). References,
   values, fields, hierarchical symbol links and pad nets come from the native root
   schematic netlist (what "Update PCB from Schematic" does), so every schematic footprint
@@ -35,12 +37,13 @@ MODULE = Path(__file__).resolve().parents[1]
 HW = MODULE / 'hardware'
 sys.path.insert(0, str(MODULE / 'tools'))
 from mechanics45 import carrier_outline, carrier_xy, panel_xy  # noqa: E402
+from stack_r2 import R1_ARCHIVE, system_root  # noqa: E402
 
 GEO = json.loads((MODULE / 'docs/mechanical-geometry.json').read_text())
 LIBNAME = 'USBPOWER45'
 LIB = HW / f'{LIBNAME}.pretty'
 IO = pcbnew.PCB_IO_MGR.FindPlugin(pcbnew.PCB_IO_MGR.KICAD_SEXP)
-CARRIER = HW / 'usb-power-45w.kicad_pcb'
+CARRIER = R1_ARCHIVE   # archived R1 history: build_carrier() refuses to write it
 PANEL_DIR = MODULE / 'panels/front-pcb'
 PANEL = PANEL_DIR / 'usb-power-45w-panel.kicad_pcb'
 OLD_PANEL_PRO = MODULE.parent / 'usb-power/panels/front-pcb/usb-power-panel.kicad_pro'
@@ -82,7 +85,7 @@ def schematic_netlist():
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp) / 'n.xml'
         subprocess.run(['kicad-cli', 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(out),
-                        str(HW / 'usb-power-45w.kicad_sch')], check=True, stdout=subprocess.DEVNULL)
+                        str(system_root())], check=True, stdout=subprocess.DEVNULL)
         root = ET.parse(out).getroot()
     comps = {}
     for c in root.find('components'):
@@ -258,6 +261,8 @@ def save_canonical(board, dest, pro_src, stackup=None):
 
 
 def build_carrier():
+    raise SystemExit(f'build_layout.py carrier: refused. {CARRIER.relative_to(MODULE)} is archived R1 history '
+                     'and the stacked boards own the copper; use --panel-only.')
     if CARRIER.exists():
         old = pcbnew.LoadBoard(str(CARRIER))
         if list(old.GetTracks()) or list(old.Zones()):
@@ -267,7 +272,7 @@ def build_carrier():
         'M1 PREVIEW, UNROUTED: no tracks/vias/zones. Not a placement or release.',
         'Placed: J1 SW1 D8 D16 D17 D18 J2 J3; C5 C34 C35 C36 PROVISIONAL height context only',
         'All other SMD PARKED OFF-BOARD (native x >= 160): NOT placed',
-        'Geometry: docs/mechanical-geometry.json; nets: hardware/usb-power-45w.kicad_sch'], 'M1')
+        'Geometry: docs/mechanical-geometry.json; nets: hardware/usb-power-45w-system.kicad_sch'], 'M1')
     board.SetCopperLayerCount(GEO['carrier_layers'])
     board.GetDesignSettings().SetBoardThickness(pcbnew.FromMM(GEO['carrier_thickness_mm']))
     pts = carrier_outline(GEO)
@@ -346,7 +351,7 @@ def build_carrier():
         text(board, D, 'PROVISIONAL', CV(c['YZ_mm'][0], c['YZ_mm'][1] - 4.6), 0.8)
     text(board, C, 'PARKED OFF-BOARD SMD: NOT PLACED (M1 mechanical preview)', V(px + 40, py - 3), 1.2)
     text(board, C, 'M1 PREVIEW - UNROUTED - SMD PARKED - NOT FOR FABRICATION', CV(64, 39.5), 1.2)
-    save_canonical(board, CARRIER, HW / 'usb-power-45w.kicad_pro', STACKUP_4L)
+    save_canonical(board, CARRIER, CARRIER.with_suffix('.kicad_pro'), STACKUP_4L)
     return CARRIER
 
 
