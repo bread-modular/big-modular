@@ -14,7 +14,8 @@ Ports of four Bread Modular 8bit firmwares
 | PA7, PB4 | BM gate / logger TX: still driven, not connected on this board |
 | PB0 | CV in: `lfo` only (adds to the rate); not used by the others |
 
-`lfo` uses no MIDI; its MODE button is a free-time (no MIDI clock) P1/P2 recorder.
+`lfo` uses no MIDI; its MODE button toggles the output range (-5..+5 V /
+0..+5 V).
 
 ## JP1 setting (required)
 
@@ -76,16 +77,13 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   reading before the rate curve, clamped 0..1023, so ±5 V moves it about ±45 % of
   the knob travel (knob centre 5.9 Hz: +5 V -> 18.2 Hz, -5 V -> 0.43 Hz).
   Unpatched = 0 V = knob only. **No MIDI** (BM's unused MIDI receiver is
-  removed). **MODE (REC) = free-time P1/P2 recorder**, no MIDI clock: click
-  to record, click again to stop; the take (as long as you held it open) then
-  loops with its own timing; a third click returns to the live knobs. Samples
-  start at 10 ms; each time the 640-sample buffer fills, every second sample is
-  kept and the period doubles (up to 640 ms, ~6.8 min, where a full buffer ends
-  the take and starts the loop). Playback interpolates linearly. For the first
-  loop pass the knobs are ignored, then turning a knob shifts its whole curve
-  (clamped 0..1023). CV in is never recorded; it adds to the rate live in every
-  state. LED follows the LFO level: dim (1/8) on live knobs, full while looping,
-  full and blinking while recording (BM: half brightness, no recorder). Use the
+  removed). **MODE = output range**, toggled per click, BIPOLAR at power-up
+  (not stored): BIPOLAR uses the full DAC (about -4.8..+4.8 V); UNIPOLAR
+  scales the wave into the upper half of the DAC (`128 + sample / 2`, about
+  0..+4.8 V, 7-bit steps). No recorder. The LED follows the wave's position in
+  the active range: dim (1/8) in BIPOLAR, full brightness in UNIPOLAR (BM: half
+  brightness, no range switch). Gate (PA7, not connected) stays on the wave
+  sample > 127. Use the
   LFO panel (no MIDI jack, no P3 hole, MODE labelled REC), leave J1 and RV3
   off and wire-bridge RV3 (`../docs/mechanics.md`): with RV3 off the board and
   no bridge, the output is silent.
@@ -107,9 +105,9 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   instead of being clamped there. MIDI removed (user decision 2026-11-01: no MIDI
   on the LFO build): no `SimpleMIDI.h`, no `MIDI.begin()`/`update()`, no
   (empty) callbacks, no `MIDI_RX_INVERT` guard; built without a JP1 setting.
-  MODE/LED: own free-time recorder in `lfo.ino` (user request, 2026-11-01;
-  the shared `CvRecorder.h` is MIDI-clock based and stays unchanged), LED
-  brightness by mode. Its unused `ModeHandler.h` / `LEDToggler.h` are not copied; `WaveTables.*`
+  MODE/LED: own output-range toggle in `lfo.ino` (user request, 2026-11-01;
+  replaces the earlier free-time recorder, removed), LED brightness by range.
+  Its unused `ModeHandler.h` / `LEDToggler.h` are not copied; `WaveTables.*`
   are the BM files, unchanged.
 
 - drums, supersaw, crash: the `MIDI_RX_INVERT` guard and `PORTB.PIN3CTRL |= PORT_INVEN_bm`
@@ -146,6 +144,6 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
 drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
 (recorder, 2026-10-29); crash 6821 / 6811 B, 1168 B (shared recorder,
-2026-10-29); lfo 6679 B, 1467 B (no MIDI, no JP1 build, free-time recorder, 2026-11-01). `crash/sim.sh`: 66
+2026-10-29); lfo 5737 B, 170 B (no MIDI, no JP1 build, MODE range toggle, 2026-11-01). `crash/sim.sh`: 66
 checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
 Not bench-tested on the 8bit carrier yet.
