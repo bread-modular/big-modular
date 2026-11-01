@@ -1,7 +1,7 @@
 {
   "status": "S8_schematic_checks_not_bench_qualification",
-  "components": 188,
-  "nets_including_NC": 117,
+  "components": 190,
+  "nets_including_NC": 118,
   "sheets": 7,
   "exact_field_pin_NC_pad_parity": true,
   "removed_S7_refs": 69,
@@ -34,6 +34,7 @@
     "R103",
     "R104",
     "R107",
+    "R108",
     "R92",
     "R93",
     "R94",
@@ -44,6 +45,7 @@
     "R99",
     "TP17",
     "TP18",
+    "TP21",
     "U20",
     "U21",
     "U23"
@@ -118,17 +120,17 @@
     "model": "REF_OV TLV431BI 1.2204-1.259 V, LM2901B 5.5 mV / 50 nA, 0.1 % + 25 ppm x 100 C",
     "converter_setpoint_max_V": {
       "+12V": 12.912,
-      "+5V": 5.259,
+      "+5V": 5.114,
       "-12V": 12.624
     },
     "stacked_normal_peak_V": {
       "+12V": 13.945,
-      "+5V": 5.52,
+      "+5V": 5.375,
       "-12V": 13.108
     },
     "margin_min_to_peak_V": {
       "+12V": 0.535,
-      "+5V": 0.157,
+      "+5V": 0.302,
       "-12V": 0.157
     },
     "downstream_limit_V": {
@@ -143,7 +145,7 @@
     },
     "converter_OVP_max_V": {
       "+12V": 15.24,
-      "+5V": 6.21
+      "+5V": 6.03
     },
     "corner_overlap_with_converter_OVP": {
       "+12V": true,
@@ -160,15 +162,41 @@
       5.8475
     ],
     "current_min_nom_max_A": [
-      2.674,
+      2.647,
       3.031,
-      3.402
+      3.367
     ],
-    "margin_min_to_stacked_peak_V": 0.0652,
+    "release_min_nom_max_V": [
+      5.0793,
+      5.1786,
+      5.3362
+    ],
+    "margin_min_to_stacked_peak_V": 0.2095,
+    "margin_min_to_ILIM_max_release_peak_V": 0.1075,
+    "reconnect_margin_worst_V": -0.035,
     "raw_feedback_and_banks_upstream": true,
-    "delivered_status": "AUXOFF + FLT + U18",
+    "delivered_status": "AUXOFF + U18 (S8.4: FLT only to R108/TP21)",
+    "FLT_isolated_from_latch": true,
+    "P5_FLT_N_members": [
+      "R108.2",
+      "TP21.1",
+      "U23.4"
+    ],
     "OVLO_latched_internally": false,
     "OVLO_response_max_specified": false
+  },
+  "assembly_checks": [
+    "S8.4 M7: U23 copper-pad mask expansion 0.025 mm, every mask web >= 0.15 mm (IN/OUT included)",
+    "Unpowered, TP18 (P5_RAW) to J2/J3 pin 11/12 (+5V) must not read a short in either meter polarity: ~18k / ~55k plus a clamp-diode drop via GND (calcs.json bringup_tp18); near 0 ohm = U23 IN/OUT bridge bypassing the eFuse"
+  ],
+  "startup_arming": {
+    "TIMER_GO": "RUN AND MAIN_OK",
+    "MAIN_OK_is_converter_enable": true,
+    "V20_OK_in_arming_path": false,
+    "TIMER_GO_members": [
+      "R69.1",
+      "U13.8"
+    ]
   },
   "comparator_supply": {
     "supply": "VPD",
@@ -180,7 +208,7 @@
     "P12_V": 9.976744186046512,
     "P5_V": 4.22093023255814,
     "N12_magnitude_V": 10.053488372093023,
-    "input_V": 17.651162790697676
+    "input_V": 16.116279069767444
   },
   "logic_POR_high_screen_V": 3.063197551270278,
   "startup_qualification_typ_s": 0.5719285714285715,
@@ -191,13 +219,15 @@
     "P5_OK",
     "N12_OK",
     "V20_OK",
+    "TIMER_GO = RUN AND MAIN_OK (marginal input below V20_OK arms, then latches)",
     "OV_N preset (unarmed) + latched after release"
   ],
   "warnings": [
     "Arithmetic stacks every tolerance at once; it is a screen, not a rating.",
     "Digital truth checks do not model analog propagation, comparator/LED timing or MOSFET transients.",
-    "No routed PCB, thermal/startup/fault-injection qualification; <6V peak is not established.",
-    "OVLO-only pulses may auto-recover during startup or below status-filter duration."
+    "No routed PCB, thermal/startup/fault-injection qualification.",
+    "<6 V at the header is NOT guaranteed (review C2): U23 OVLO response is 1.2 us typical with no maximum; neither D10 nor a bench-supply ceiling bounds it. The 3 us delay case reaches 6.33 V and stays above 6 V for ~193 us (rest of the 200 us window; with reverse blocking only R77-R79 or the modules discharge it); the 30 V / 1 ohm / 3 us stress case reaches 6.52 V (calcs.json).",
+    "OVLO-only pulses may auto-recover during startup or below status-filter duration; after a genuine OVLO trip U23 may stay open at stacked corners (setpoint max above the release minimum) and the common latch then holds every rail off until RESET."
   ],
   "order_ready": false
 }

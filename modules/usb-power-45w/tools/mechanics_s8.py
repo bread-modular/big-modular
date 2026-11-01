@@ -16,6 +16,8 @@ changes the user asked for on 2026-11-01:
 Frame (unchanged): origin at the panel's upper-left FRONT corner, X across, Y down, Z into the
 case. Native carrier map: native x = Y + 35.75, native y = 104.275 - Z.
 Nominal envelopes, not a physical-fit, strength or tolerance qualification.
+S8.4 (review M9): main() also writes an explicit `risks` list derived from the checks (IDC strain-relief
+overshoot past the 4HP panel edge, the 1.1 mm IDC envelope margin, case depth, nominal proxies).
 """
 import json
 import math
@@ -126,11 +128,37 @@ def verify(g):
     return rep, problems
 
 
+def risks(g, rep):
+    """S8.4 (review M9): open mechanical risks, numbers taken from the checks so they cannot drift."""
+    width = rep['margin_to_panel_right_edge_X20_mm']
+    plug = min(width[f'{h["reference"]}_{k}'] for h in g['headers'] for k in ('plug', 'ribbon'))
+    sr = width['IDC_strain_relief_worst_case']
+    return [
+        {'id': 'IDC_strain_relief_overshoot', 'severity': 'open (not approved)',
+         'value_mm': sr, 'measure': 'margin to the 4HP panel edge X20 (negative = beyond the panel)',
+         'detail': f'A clip-type strain relief at the drawing worst case ({g["mating_plug"]["strain_relief_worst_height_mm"]}'
+                   f' mm mated height) reaches X{20 - sr:g}: {abs(sr):g} mm past the 4HP edge, into the neighbouring '
+                   'module. Use a socket without the tall strain relief (or measure a lower one) on J2/J3.'},
+        {'id': 'IDC_envelope_margin', 'severity': 'open (tight)', 'value_mm': plug,
+         'measure': 'mated IDC plug/ribbon envelope margin to the 4HP panel edge X20',
+         'detail': f'The PROPOSAL mated envelope (14.8 mm max above F.Cu) leaves only {plug:g} mm. The cable/plug is '
+                   'not in the BOM and the drawing dimensions were text-extracted; freeze the socket/ribbon part and '
+                   'check the tolerance stack with the neighbouring module in the case.'},
+        {'id': 'case_depth', 'severity': 'open (user check)',
+         'value_mm': rep['depth_mm']['board_below_bus_header_tops_mm'],
+         'measure': 'board rear edge below the bus header tops in the 60 mm case',
+         'detail': 'The 48.4 mm deep board cannot sit directly over a busboard header in the 60 mm case.'},
+        {'id': 'nominal_proxies', 'severity': 'open',
+         'detail': 'U23 (2.1 x 2.1 x 1.0 max-body proxy), J1, SW1 and L1-L3 are proxies, not manufacturer models; '
+                   'the 3D screen is nominal, not an assembly approval.'}]
+
+
 def main():
     g = geometry()
     g['envelopes_XYZ_mm'] = {k: {'kind': v[0], 'XYZ': v[1]} for k, v in m45.envelopes(g).items()}
     rep, problems = verify(g)
     g['checks'] = {'report': rep, 'problems': problems}
+    g['risks'] = risks(g, rep)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(g, indent=1) + '\n')
     print(json.dumps({'report': rep, 'problems': problems}, indent=1))

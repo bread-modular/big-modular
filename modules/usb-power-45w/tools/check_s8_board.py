@@ -12,8 +12,10 @@ DRC does not check these, so this does (root AGENTS.md placement rules + docs/s8
   bracket webs (Y17..27 / Y101.5..111.5, Z1.6..20);
 - 2 mm hand-solder clearance: every SMD pad >= 2.0 mm (copper edge to copper edge) from the THT pads of the
   hand-soldered parts J1 (shell lugs), D8, J2 and J3; SW1 (machine-placed SMD, R1 "extra margin") reported;
-- J2/J3 pin 1 against the contract; board depth; courtyard fill.
-Not a fit, routability or thermal proof.
+- J2/J3 pin 1 against the contract; board depth; courtyard fill;
+- S8.4 local-loop contract (review M4): pad-centre distance from each listed IC pin to the nearest pad of its
+  bypass capacitor / clamp on the same net, against the LOCAL_LOOPS limits (straight line, the review's metric).
+Not a fit, routability or thermal proof; a short straight-line distance is not a routed loop.
 """
 import argparse
 import json
@@ -33,6 +35,55 @@ APPROVED_OVERHANG = {'J1', 'SW1', 'D8'}          # R1 steps 1-2 (docs/r1-routing
 HAND_SOLDERED = ('J1', 'D8', 'J2', 'J3')          # THT pads soldered by hand
 REPORT_ONLY = ('SW1',)
 mm = pcbnew.ToMM
+# S8.4 local decoupling / protection-loop contract: (IC, pins, net, qualifying refs or prefix, value, limit mm, why).
+# A qualifying part is any listed ref, or any ref with the prefix (and value, if given), with a pad on `net`.
+# TI SLVSFC9C 8.4.1: U23 IN/OUT bypass and the TVS/Schottky "physically close"; IC bypass at the supply pin.
+LOCAL_LOOPS = [
+    ('U23', ('5',), 'P5_RAW', 'C', '22u', 3.5, 'U23 IN local 22u bypass'),
+    ('U23', ('6',), '+5V', 'C', '22u', 3.5, 'U23 OUT local 22u bypass'),
+    ('U23', ('5',), 'P5_RAW', ('D21',), None, 6.0, 'D21 IN transient clamp beside U23 IN/GND'),
+    ('U23', ('6',), '+5V', ('D23',), None, 6.0, 'D23 OUT negative clamp beside U23 OUT/GND'),
+    ('U20', ('3',), 'VPD', ('C65',), None, 4.5, 'U20 VCC (VPD) bypass'),
+    ('U18', ('3',), 'VPD', ('C57',), None, 4.5, 'U18 VCC (VPD) bypass'),
+    ('U9', ('8',), 'VPD', ('C46',), None, 4.5, 'LDO input'),
+    ('U9', ('1',), 'V3V3', ('C47',), None, 4.5, 'LDO output'),
+    ('U5', ('1', '2', '3', '6'), 'EF_IN', ('C2',), None, 4.5, 'main eFuse IN'),
+    ('U1', ('1', '8'), 'VPD_U1', ('C1',), None, 4.5, 'CH224A VHV (R3 BASE block)'),
+    ('U2', ('3',), 'VIN', 'C', '100n', 4.5, '+12V converter HF input cap'),
+    ('U3', ('3',), 'VIN', 'C', '100n', 4.5, '+5V converter HF input cap'),
+    ('U4', ('3',), 'VIN', 'C', '100n', 4.5, '-12V converter HF input cap'),
+    ('U21', ('1',), 'REF_OV', ('C67',), None, 4.5, 'TLV431 stabilising cap'),
+    *[(u, (p,), 'V3V3', 'C', '100n', 6.0, f'{u} logic bypass')
+      for u, p in (('U10', '6'), ('U11', '6'), ('U12', '14'), ('U13', '14'), ('U14', '14'), ('U15', '5'))],
+]
+
+
+def local_loops(fps):
+    """Measured LOCAL_LOOPS rows; a missing qualifying part counts as a violation."""
+    def net(p):
+        return p.GetNetname().split('/')[-1]
+    rows = []
+    for ic, pins, netname, who, value, limit, why in LOCAL_LOOPS:
+        src = [p for p in fps[ic].Pads() if p.GetNumber() in pins]
+        assert src and all(net(p) == netname for p in src), (ic, pins, netname)
+        best = None
+        for ref, fp in fps.items():
+            if ref == ic or not (ref in who if isinstance(who, tuple) else
+                                 (ref.startswith(who) and ref[len(who):].isdigit()
+                                  and (value is None or fp.GetValue() == value))):
+                continue
+            for q in fp.Pads():
+                if q.GetNumber() and net(q) == netname:
+                    for p in src:
+                        d = math.dist((mm(p.GetPosition().x), mm(p.GetPosition().y)),
+                                      (mm(q.GetPosition().x), mm(q.GetPosition().y)))
+                        if best is None or d < best[0]:
+                            best = (d, f'{ic}.{p.GetNumber()}', f'{ref}.{q.GetNumber()}')
+        rows.append({'from': best[1] if best else f'{ic}.{pins[0]}', 'to': best[2] if best else None, 'net': netname,
+                     'distance_mm': round(best[0], 2) if best else None, 'limit_mm': limit, 'purpose': why,
+                     'ok': best is not None and best[0] <= limit})
+    return {'metric': 'pad-centre straight-line distance, same net (the metric of the S8.3 reviews)',
+            'rows': rows, 'violations': [r for r in rows if not r['ok']]}
 
 
 def seg_dist(p, a, b):
@@ -165,6 +216,7 @@ def check(board_path):
         headers[h['reference']] = dict(pin1_native=[round(mm(p1.x), 3), round(mm(p1.y), 3)], contract=list(want),
                                        rot=fps[h['reference']].GetOrientationDegrees(),
                                        matches=abs(mm(p1.x) - want[0]) < 1e-3 and abs(mm(p1.y) - want[1]) < 1e-3)
+    loops = local_loops(fps)
     inset = pcbnew.SHAPE_POLY_SET(outline)
     inset.Deflate(pcbnew.FromMM(1.0), pcbnew.CORNER_STRATEGY_ROUND_ALL_CORNERS, pcbnew.FromMM(0.01))
     occ = sum(v['polys'].Area() for v in placed.values()) / 1e12
@@ -178,7 +230,7 @@ def check(board_path):
            'edge_rule_findings_not_approved': edge_bad, 'closest_courtyards_to_edge_mm': closest_edge,
            'approved_panel_overhangs': {r: placed[r] for r in sorted(APPROVED_OVERHANG) if r in placed},
            'bracket_driver_circles': driver, 'tht_tails_under_B_bracket_webs': tails,
-           'hand_solder_2mm': hand, 'headers_vs_contract': headers,
+           'hand_solder_2mm': hand, 'headers_vs_contract': headers, 'local_loops': loops,
            'board_rear_edge_Z_from_panel_front': z_rear,
            'area_mm2': {'outline': round(outline.Area() / 1e12), 'inset_1mm': round(inset.Area() / 1e12),
                         'courtyards_sum': round(occ), 'fill_of_inset': round(occ / (inset.Area() / 1e12), 3)},
@@ -186,7 +238,8 @@ def check(board_path):
     res['pass'] = (not parked and not on_back and not overlaps and not edge_bad and not tails
                    and not any(v['violations'] for v in driver.values())
                    and not any(v['violations_lt_2mm'] for r, v in hand.items() if r not in REPORT_ONLY)
-                   and all(h['matches'] for h in headers.values()) and z_rear <= GEO['carrier_Z_mm'][1] + 1e-6)
+                   and all(h['matches'] for h in headers.values()) and z_rear <= GEO['carrier_Z_mm'][1] + 1e-6
+                   and not loops['violations'])
     return res
 
 

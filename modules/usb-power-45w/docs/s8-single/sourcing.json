@@ -1,5 +1,5 @@
 {
-  "note": "Public JLCPCB catalog lookups via the shared tool, --strict-live, one request per code. Stock and price are dated observations, not reservations, quotes or order acceptance. Quantity-1 unit prices only: no setup/Extended fees, attrition, manual parts, PCB or shipping. Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities and totals recomputed for the current S8 table. This is not a full live re-audit.",
+  "note": "Public JLCPCB catalog lookups via the shared tool, --strict-live, one request per code. Stock and price are dated observations, not reservations, quotes or order acceptance. Quantity-1 unit prices only: no setup/Extended fees, attrition, manual parts, PCB or shipping. Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities and totals recomputed for the current S8 table. This is not a full live re-audit. S8.4: rows of new codes come from the live selected-part evidence s84-sourcing.json.",
   "codes": {
     "C10214": {
       "code": "C10214",
@@ -781,7 +781,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 1,
+      "qty_S8": 0,
       "qty_S7": 2
     },
     "C22809": {
@@ -862,7 +862,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 1,
+      "qty_S8": 0,
       "qty_S7": 1
     },
     "C22978": {
@@ -1024,7 +1024,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 1,
+      "qty_S8": 0,
       "qty_S7": 2
     },
     "C23234": {
@@ -1186,7 +1186,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 19,
+      "qty_S8": 20,
       "qty_S7": 27
     },
     "C25808": {
@@ -1215,6 +1215,68 @@
       "failures": [],
       "qty_S8": 3,
       "qty_S7": 3
+    },
+    "C25811": {
+      "code": "C25811",
+      "mpn": "0603WAF2003T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 2199238,
+      "unit_price_q1_usd": 0.0021,
+      "price_ladder_usd": [
+        [
+          1,
+          999,
+          0.0021
+        ],
+        [
+          1000,
+          4999,
+          0.0016
+        ],
+        [
+          5000,
+          9999,
+          0.0013
+        ],
+        [
+          10000,
+          49999,
+          0.0012
+        ],
+        [
+          50000,
+          50199,
+          0.001
+        ],
+        [
+          50200,
+          -1,
+          0.001
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T19:52:36Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25811"
+        },
+        "sha256": "c86acac5919c5e21433abb829ca6edf382bbb5c00dac1e09627c41963065c853",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R83"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
     },
     "C25819": {
       "code": "C25819",
@@ -1783,6 +1845,68 @@
       "qty_S8": 1,
       "qty_S7": 1
     },
+    "C705793": {
+      "code": "C705793",
+      "mpn": "RT0603BRD0768KL",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 23453,
+      "unit_price_q1_usd": 0.035,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.035
+        ],
+        [
+          200,
+          599,
+          0.0296
+        ],
+        [
+          600,
+          4999,
+          0.0266
+        ],
+        [
+          5000,
+          9999,
+          0.0248
+        ],
+        [
+          10000,
+          19999,
+          0.0232
+        ],
+        [
+          20000,
+          -1,
+          0.0224
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T19:52:29Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C705793"
+        },
+        "sha256": "bc2524c57dfec67e69f248570cbd7d65044f812d9a09cd54e024ba96d6a8d094",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R11"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
     "C7836": {
       "code": "C7836",
       "mpn": "SN74LVC1G17DBVR",
@@ -1864,6 +1988,68 @@
       "qty_S8": 2,
       "qty_S7": 6
     },
+    "C861121": {
+      "code": "C861121",
+      "mpn": "RT0603BRD0713KL",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 24301,
+      "unit_price_q1_usd": 0.0394,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.0394
+        ],
+        [
+          200,
+          599,
+          0.0337
+        ],
+        [
+          600,
+          4999,
+          0.0306
+        ],
+        [
+          5000,
+          9999,
+          0.0279
+        ],
+        [
+          10000,
+          19999,
+          0.0263
+        ],
+        [
+          20000,
+          -1,
+          0.0255
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T19:52:31Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C861121"
+        },
+        "sha256": "69b70ecd8fea2e5e54cb67657120916cb629c33c31fd5ae460c258f04c599c93",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R12"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
     "C8678": {
       "code": "C8678",
       "mpn": "SS34",
@@ -1922,9 +2108,9 @@
   "summary": {
     "S8_codes": 62,
     "S7_codes": 57,
-    "S8_placements": 167,
+    "S8_placements": 168,
     "S7_placements": 195,
-    "S8_parts_usd_q1": 21.88,
+    "S8_parts_usd_q1": 21.96,
     "S7_parts_usd_q1": 27.12,
     "S8_non_basic_codes": [
       "C10214",
@@ -1954,7 +2140,9 @@
       "C53444",
       "C553937",
       "C6762",
+      "C705793",
       "C7836",
+      "C861121",
       "C95204"
     ],
     "S7_non_basic_codes": [
@@ -2002,5 +2190,23 @@
       ]
     },
     "failures": []
+  },
+  "basic_only_policy": {
+    "decision": "ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other passive stays Basic. Not an order approval.",
+    "refs": [
+      "R93",
+      "R94",
+      "R95",
+      "R96",
+      "R98",
+      "R99",
+      "R101",
+      "R102",
+      "R11",
+      "R12"
+    ],
+    "why": "They set protection thresholds: the U20 overvoltage guard bands (R93-R96, R98/R99), the U23 OVLO divider (R101/R102) and, since S8.4, the U3 +5V setpoint (R11/R12) that the OVLO release proof depends on. With 1 % + 1 % TCR Basic parts the screens fail (calcs.json basic_only_counterfactual). The searched JLC catalog has no Basic 0.1 % 0603 resistor (keyword snapshots in research/s84/catalog; every hit Extended).",
+    "cost": "Extended per-unique-part fees apply to the precision codes (not included in the q1 parts totals); all selected codes were observed Economic-eligible.",
+    "not_done": "No Basic substitute was qualified; replacing them with 1 % parts would need a new threshold design."
   }
 }

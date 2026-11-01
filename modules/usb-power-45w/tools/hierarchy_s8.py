@@ -7,7 +7,8 @@ parity (components, fields, pin memberships). Page 05 of S7 (negative protection
 S7 pages 06/07 become 05/06. No component field or connection is changed here. S8 final: the rail
 LEDs are gone, page 06 keeps the MAIN LED only. S8.1: the guard reference (U21, R100, C67, TP17) and
 the MON_OVN clamp D22 join the page-06 monitor group. S8.3: the +5V disconnect and split banks replace the crowbar on page 06.
-U18/U20 now run from always-on VPD with 3.3 V logic pull-ups.
+U18/U20 now run from always-on VPD with 3.3 V logic pull-ups. S8.4: U23 FLT gets its own R108/TP21 on page 06 (off P5_OK);
+TIMER_GO = RUN AND MAIN_OK on page 05.
 """
 import copy
 import json
@@ -66,25 +67,28 @@ NOTES = {
     2: 'TPS62933F +12 V, unchanged power stage; its output IS the delivered +12V (no rail eFuse).\n'
        'Soft start C9 100n = ~14.5 ms into rack capacitance. Own protection: 4.2-5.8 A peak limit, hiccup, OVP 112-118 %, TSD.\n'
        'Rail ceramics: C11-C14 here + C34 (J2) and C59 (J3) on page 06; the 100u can is gone.',
-    3: 'TPS62933F +5 V: P5_RAW before U23. Feedback and C20-C23 remain upstream; never sense after U23.\n'
+    3: 'TPS62933F +5 V: P5_RAW before U23. Feedback R11/R12 (0.1 %, S8.4) and C20-C23 remain upstream; never sense after U23.\n'
        'C69-C72/C75/C76 extend the upstream bank to 10 x 22u. Delivered +5V has C35/C60/C73/C74 after U23.\n'
        'C18 100n converter soft start; U23 has its own dVdt ramp. Converter/load stability is not bench qualified.',
     4: 'LMR38020F inverting buck-boost; IC ground / exposed pad = the delivered -12V (no series switch).\n'
-       '4 ms soft start, 18 ms OCP blanking at start-up. Q1 follows +12V. C29-C33 here + C36 (J2) and C61 (J3).',
+       '4 ms soft start, 18 ms OCP blanking at start-up. Q1 follows +12V. C29-C33 here + C36 (J2) and C61 (J3).\n'
+       'S8.4: hiccup needs |Vout| < 40 % after the blanking. Rack allowance 0.85 mF (TI 1000 uF COUT guidance; hiccup model\n'
+       '1.08 mF at 15.2 V converter input, 1 A) covers a typical 0.44 mF rack. Bench start-up test still required.',
     5: 'RESET clears ARMED and FAULT; RUN is forced low while reset is asserted.\n'
-       'Startup qualification ~0.57 s typical (C49 100n), then any persistent bad status latches every rail OFF until RESET.\n'
+       'S8.4: TIMER_GO = RUN AND MAIN_OK, the U2/U3 enable: qualification (~0.57 s, 0.31-0.88 s) starts with the converters,\n'
+       'so ARMED cannot stay masked while they run. Then any persistent bad status latches every rail OFF until RESET.\n'
        'OV_N (U20, page 06) presets FAULT at once, also inside the startup window. U14 gate 2 unused (inputs to GND).',
     6: 'J2 + J3: two parallel 16-pin outputs, pin 1 = -12V. C34-C36 at J2, C59-C61 at J3 (22u each, replace the 100u cans).\n'
        'D8 MAIN is the only status LED (rail LEDs removed): input-valid AND main-eFuse status AND RUN. Any bad rail after the\n'
        'startup window or a U20 guard trip latches every rail off. Short OVLO-only pulses may recover. P12/P5/N12_OK: logic + test pads.\n'
        'U20 overvoltage guard (S8.1): +12V > 14.88 V, +5V > 5.83 V or -12V < -13.64 V nominal (corners 14.48-15.27 / 5.68-5.98 /\n'
        '13.27-14.02 V) pulls OV_N -> FAULT -> U5 off. Own reference REF_OV = U21 TLV431B (R100, C67, TP17); U18/U20 LM2901B;\n'
-       'R93-R96, R98, R99 are 0.1 % / 25 ppm. The -12V channel compares MON_OVN with GND (no V3V3 term); D22 clamps MON_OVN\n'
-       'at GND if V3V3 is lost while the rack holds -12V. D21 SMAJ5.0A is a transient clamp (6.4 V min breakdown), not an OV limit.\n'
+       'R93-R96, R98, R99 are 0.1 % / 25 ppm. The -12V channel compares MON_OVN with GND (no V3V3 term); D22 holds MON_OVN near\n'
+       '-0.24 V (25 C only, <=0.15 mA) if V3V3 is lost while the rack holds -12V. D21 SMAJ5.0A is a transient clamp, not an OV limit.\n'
        'S8.3: U18/U20 supplies are always-on VPD; outputs remain 3.3 V logic. U20 +5V guard monitors P5_RAW.\n'
        'U23 TPS259470A independently disconnects +5V at ~5.70 V (1.2 us typical, no maximum specified). D21 moved to P5_RAW.\n'
-       'AUXOFF + FLT join P5_OK; faults latch after startup qualification. Severe raw OV is unmasked through U20.\n'
-       'Q11/Q12/Q13/U22 crowbar removed. No guaranteed 6 V peak or prototype qualification is claimed.',
+       'S8.4: P5_OK = AUXOFF + U18 only; FLT (reverse current/overload/OT) goes to R108/TP21, never to the latch.\n'
+       'Severe raw OV is unmasked through U20. No guaranteed 6 V header peak or prototype qualification is claimed.',
 }
 
 
@@ -137,8 +141,8 @@ def split(root_path, docs_dir, api):
     for i, (name, title, size) in PAGES.items():
         trees[i] = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
           (uuid "{api.uid('S8/file/' + name)}") (paper "User" {size[0]} {size[1]})
-          (title_block (title {json.dumps(title)}) (rev "S8.3") (company "Big Modular")
-          (comment 1 "S8 single board, S8.3 schematic (+5V series eFuse, VPD-powered comparators) - see docs/s8-single-board.md"))
+          (title_block (title {json.dumps(title)}) (rev "S8.4") (company "Big Modular")
+          (comment 1 "S8.4 single board: +5V series eFuse, FLT off the latch, MAIN_OK arming - docs/s8-single-board.md"))
           (lib_symbols) (embedded_fonts no))''')
         one(trees[i], 'lib_symbols').extend(copy.deepcopy(nodes(one(flat, 'lib_symbols'), 'symbol')))
 
@@ -300,9 +304,9 @@ def split(root_path, docs_dir, api):
                ['version', 'generator', 'generator_version', 'uuid', 'paper', 'title_block', 'lib_symbols', 'embedded_fonts']]
     one(root, 'paper')[1:] = ['User', 560, 530]; one(root, 'lib_symbols')[1:] = []
     one(one(root, 'title_block'), 'title')[1] = 'USB power S8 single board - wired power flow overview'
-    text(root, 'USB POWER 45W S8.3 / SINGLE BOARD, +5V SERIES PROTECTION', 20.32, 15.24, 2.4)
-    text(root, 'S8.3: +5V fast series disconnect; +/-12V directly from converters; ceramic banks; two parallel outputs; '
-               'VPD-powered OV guard; MAIN LED only. No crowbar.', 20.32, 25.4, 1.2)
+    text(root, 'USB POWER 45W S8.4 / SINGLE BOARD, +5V SERIES PROTECTION', 20.32, 15.24, 2.4)
+    text(root, 'S8.4: +5V fast series disconnect (FLT off the latch); +/-12V directly from converters; ceramic banks; two '
+               'parallel outputs; VPD-powered OV guard; arming from MAIN_OK; MAIN LED only.', 20.32, 25.4, 1.2)
     boxes = {1: (40.64, 60.96, 81.28, 111.76), 2: (177.8, 50.8, 101.6, 81.28), 3: (177.8, 162.56, 101.6, 81.28),
              4: (177.8, 284.48, 101.6, 71.12), 5: (40.64, 406.4, 259.08, 96.52), 6: (370.84, 60.96, 106.68, 254.0)}
     outputs = {1: ['VPD', 'VIN', 'MAIN_OK'], 2: ['+12V'], 3: ['P5_RAW'], 4: ['-12V'],
@@ -343,11 +347,12 @@ def split(root_path, docs_dir, api):
         root.append(parse(f'(label {json.dumps(n)} (at {target[0]} {target[1]} {0 if side == "R" else 180}) '
                           f'(effects (font (size 1 1)) (justify {"left" if side == "R" else "right"} bottom)) '
                           f'(uuid "{api.uid("S8/rootlabel/" + str(count))}"))'))
-    text(root, 'FAULT POLICY\nPersistent bad rail/status after ~0.57 s -> all OFF until RESET.\n'
-               'Severe OV via U20 acts even before ARMED.\nU23 independently cuts +5V; OVLO alone is auto-recovering.\n'
-               'MAIN indicates enabled/status, not precision regulation.', 370.84, 340.36, 1.4)
-    text(root, 'OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\n+5V has U23 current limit (~3.03 A nominal). '
-               '+/-12V retain converter-only limits.\nTargets 2.5 / 2.5 / 1.0 A; not a qualified simultaneous rating.',
+    text(root, 'FAULT POLICY\nQualification starts at MAIN_OK (converters enabled); persistent bad status after\n'
+               '~0.57 s -> all OFF until RESET. Severe OV via U20 acts even before ARMED.\nU23 independently cuts +5V; '
+               'OVLO alone is auto-recovering. U23 FLT is not latched.\nMAIN indicates enabled/status, not precision regulation.',
+         370.84, 340.36, 1.4)
+    text(root, 'OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\nPublished conservative rating (S8.4, prototype): 2.5 / 2.0 / 0.9 A,\n'
+               '<=45 W total; above 2 A per rail use both headers. U23 ILIM 3.03 A nominal is a threshold, not a rating.',
          370.84, 386.08, 1.2)
     trees[0] = root
     # Split added wires at endpoints and pin ends, then add junctions (as hierarchy6).
