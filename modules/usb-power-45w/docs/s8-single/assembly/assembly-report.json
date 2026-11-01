@@ -38,25 +38,25 @@
   },
   "ics": {
    "label": "ICs, transistors, diodes, fuse (KiCad library models)",
-   "count": 35,
+   "count": 32,
    "bbox_XYZ": [
     [
      4.101,
-     6.421
+     6.411
     ],
     [
      17.75,
-     99.31
+     99.4
     ],
     [
-     3.325,
+     4.075,
      45.625
     ]
    ]
   },
   "passives": {
    "label": "R / C (KiCad library models)",
-   "count": 122,
+   "count": 129,
    "bbox_XYZ": [
     [
      4.101,
@@ -67,7 +67,7 @@
      111.85
     ],
     [
-     3.425,
+     3.675,
      47.375
     ]
    ]
@@ -127,8 +127,8 @@
    ]
   },
   "ui_envelopes": {
-   "label": "J1 USB-C / SW1 reset drawing envelopes (no model)",
-   "count": 3,
+   "label": "J1 / SW1 / U23 maximum body envelopes (no model)",
+   "count": 4,
    "bbox_XYZ": [
     [
      4.1,
@@ -136,11 +136,11 @@
     ],
     [
      28.68,
-     72.1
+     85.4
     ],
     [
      0.8,
-     9.22
+     14.175
     ]
    ]
   },
@@ -290,13 +290,14 @@
   }
  },
  "solid_interference_mm3": [],
- "parts_with_model": 160,
+ "parts_with_model": 164,
  "proxies": [
   "J1",
   "L1",
   "L2",
   "L3",
-  "SW1"
+  "SW1",
+  "U23"
  ],
  "extents": {
   "parts_X_max": 13.201,

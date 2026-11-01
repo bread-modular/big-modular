@@ -1,0 +1,180 @@
+{
+  "note": "Live exact-code rows for S8.3 selected/changed parts; raw snapshots in research/s83/catalog-current. Not order acceptance. U23 is Extended, not Basic. Existing precision divider R/C exceptions remain unresolved under Basic-only policy.",
+  "codes": {
+    "C12891": {
+      "code": "C12891",
+      "mpn": "CL31A226KAHNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "1206",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1728599,
+      "unit_price_q1_usd": 0.118,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:39Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C12891"
+        },
+        "sha256": "19151704b0e6296bc79e860e66eb383da4408527b342b3ad8b5885b87dd8ea26",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    },
+    "C22427890": {
+      "code": "C22427890",
+      "mpn": "LM2901BIDR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOIC-14",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 1750,
+      "unit_price_q1_usd": 0.2559,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:43Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22427890"
+        },
+        "sha256": "913520018c17f6092db31085660cb10a549cc43bc3572a4f1e7f63958536510f",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    },
+    "C22775": {
+      "code": "C22775",
+      "mpn": "0603WAF1000T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 9371717,
+      "unit_price_q1_usd": 0.0023,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:44Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22775"
+        },
+        "sha256": "ebfa659bd1a250331d5dbb2da6892ea387c4ed9d713b940fa4c73b00ee4aa037",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    },
+    "C23193": {
+      "code": "C23193",
+      "mpn": "0603WAF5100T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 4534094,
+      "unit_price_q1_usd": 0.0021,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:48Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23193"
+        },
+        "sha256": "335da058467cba2b3f59891ec9373227a7809cab82e4b6617df4c128a8314d89",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    },
+    "C3662799": {
+      "code": "C3662799",
+      "mpn": "TPS259470ARPWR",
+      "manufacturer": "Texas Instruments",
+      "package": "QFN-10(2x2)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 2525,
+      "unit_price_q1_usd": 1.2943,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:52Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C3662799"
+        },
+        "sha256": "162f78225f8c9d74fb4d3682e7c34d87b5cd236a9ff37f7ff202cd236b54b699",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    },
+    "C57112": {
+      "code": "C57112",
+      "mpn": "0603B103K500NT",
+      "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 5555547,
+      "unit_price_q1_usd": 0.0097,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:54Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C57112"
+        },
+        "sha256": "4ee6be27ebe5601300e4f683cc5d84341640648eb2e9cf56ef0d25d795bc4d5d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    },
+    "C8678": {
+      "code": "C8678",
+      "mpn": "SS34",
+      "manufacturer": "MDD(Microdiode Semiconductor)",
+      "package": "SMA(DO-214AC)",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3360022,
+      "unit_price_q1_usd": 0.0352,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T15:42:57Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C8678"
+        },
+        "sha256": "da8c25560c11e50e83bef7181a0e4342762d2935544e0eb2c617df862812ae59",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": []
+    }
+  }
+}

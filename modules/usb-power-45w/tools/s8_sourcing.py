@@ -82,7 +82,7 @@ def main():
             'unit prices only: no setup/Extended fees, attrition, manual parts, PCB or shipping.')
     if snap:
         note += (' Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities '
-                 'and totals recomputed for the S8 final table (rail LEDs removed, no new code).')
+                 'and totals recomputed for the current S8 table. This is not a full live re-audit.')
     out = {'note': note,
            'codes': rows,
            'summary': {'S8_codes': len(use8), 'S7_codes': len(use7),

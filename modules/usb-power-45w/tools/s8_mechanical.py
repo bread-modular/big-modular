@@ -25,9 +25,10 @@ import pcbnew
 from PIL import Image, ImageDraw, ImageFont
 
 MODULE = Path(__file__).resolve().parents[1]
-BOARD = MODULE / 'hardware/single/usb-power-45w-single.kicad_pcb'
-WORK = MODULE / 'research/s8f/assembly'
-OUT = MODULE / 'docs/s8-single/assembly'
+DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
+BOARD = DESIGN / 'hardware/single/usb-power-45w-single.kicad_pcb'
+WORK = Path(os.environ.get('S8_ASM_WORK', str(MODULE / 'research/s83/assembly')))
+OUT = DESIGN / 'docs/s8-single/assembly'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 FONTB = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 COLORS = [('panel', [0.91, 0.84, 0.66, 1]), ('carrier', [0.30, 0.58, 0.36, 1]), ('brackets', [0.90, 0.55, 0.23, 1]),
@@ -42,14 +43,14 @@ LEGEND = [([0.91, 0.84, 0.66], 'S8 4HP panel (USB-C, MAIN LED, RESET)'),
           ([0.35, 0.36, 0.40], 'L1-L3 proxy 10.3 x 10.3 x 4.0 (no model)'),
           ([0.15, 0.15, 0.17], 'J2 / J3 16-pin box headers (THT)'),
           ([0.85, 0.15, 0.15], 'D8 MAIN LED (THT)'),
-          ([0.55, 0.58, 0.63], 'J1 USB-C / SW1 reset envelopes (no model)'),
+          ([0.55, 0.58, 0.63], 'J1 / SW1 / U23 body envelopes (no model)'),
           ([0.90, 0.55, 0.23], 'Two plain M3 L brackets'),
           ([0.75, 0.77, 0.80], 'M3 screws / nuts (proxies)'),
           ([0.95, 0.72, 0.29], 'PROPOSAL: mated IDC plug envelope'),
           ([0.62, 0.66, 0.74], 'PROPOSAL: ribbon leaving +Z to the bus'),
           ([0.23, 0.65, 0.79], 'Tool paths: M3 nut driver / pliers'),
           ([0.75, 0.75, 0.75], 'Case rail section (context)')]
-STAMP = 'S8.1 SINGLE BOARD P1.1 - TRIAL PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
+STAMP = 'S8.3 SINGLE BOARD P1.3 - TRIAL PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
 
 
 def footprints():
@@ -162,7 +163,7 @@ def main():
     (OUT / 'assembly-report.json').write_text(json.dumps(rep, indent=1) + '\n')
     raw = scad_render('iso-front', [230, -120, 90], [10, 25, -64], size=(1700, 1400))
     compose(raw, OUT / 'iso-front.png', 'usb-power-45w S8 single board - 3D assembly, front-right (F side)',
-            ['Native S8 board + S8 panel (kicad-cli STEP), brackets, M3 hardware, proxies and envelopes.',
+            ['Native S8.3 board + S8 panel, brackets, M3, L1-L3/J1/SW1/U23 body proxies and envelopes.',
              'X across 4HP (20.0), Y down, Z into the case (50 mm deep board). Every part on F; unrouted.',
              f'Collision screen: {len(rep["solid_interference_mm3"])} part-to-part / part-to-hardware overlaps.'])
     raw = scad_render('iso-rear', [-230, 110, 90], [10, 25, -64], size=(1700, 1400))
@@ -173,7 +174,7 @@ def main():
     kicad = kicad_renders()
     placement_pdf()
     print(json.dumps({'report': {k: rep[k] for k in ('solid_interference_mm3', 'extents', 'proxies')},
-                      'images': sorted(str(p.relative_to(MODULE)) for p in OUT.glob('*.[pj][np]g'))}, indent=1))
+                      'images': sorted(str(p.relative_to(DESIGN)) for p in OUT.glob('*.[pj][np]g'))}, indent=1))
     return rep, kicad
 
 

@@ -2,10 +2,11 @@
 S8.1 / P1.1 (review fixes, same day): the guard reference U21 + C67 sits above U20 between the shifted OV
 dividers and the MON_OVN clamp D22; R100 takes the free slot of the R98/R99 column, TP17 the rear row; D15
 moved to the free spot left of its old place to make room.
-S8.2 / P1.2 (+5V crowbar, same day): the TS1220 DPAK Q11 lies along the front edge in the free front-right corner
-(left of the right bracket cutback), leads toward the trigger; the trigger (U22 + divider, Q12) sits behind it and
-the gate network, latch link Q13 and R103 left of it. The U11 start-timer group (U11, C49, C50, C52, R69-R71) moved
-right, into the space above the DPAK, to make room; nothing else moved.
+S8.3 / P1.3: U23 TPS259470A and split +5V banks replace the S8.2 crowbar. The U11 timer stays
+in its S8.2 position. U12 shifts 0.8 mm; R91 and TP11/TP16 move to make room for the bank.
+All fixed mechanical parts stay put. This is a FIT draft: shorten U23 bypass/clamp loops before routing.
+Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
+--write is the older seed-based placement entry point, not a native edit-preservation tool.
 
   python3 -B tools/place_s8.py [--write] [--png <file>] [--force]
 
@@ -22,7 +23,7 @@ Floor plan (one functional group per region, see docs/s8-single-board.md):
   front-left   USB-C PD input, fuse, TVS, D10, U5 main eFuse, VIN damper, always-on LDO, MAIN LED driver
   rear strip   header caps / clamps right at the J2 and J3 rail pins
   middle-right +12V cell (U2/L1) and +5V cell (U3/L2) in front of J2, -12V cell (U4/L3) in front of J3
-  front-right  latch / reset / timer logic around SW1, +5V crowbar (S8.2) in the corner left of the cutback
+  front-right  latch / reset / timer logic around SW1, +5V series disconnect and split capacitor bank
 
 --write refuses a board with copper/zones and a board whose placement was edited outside this table
 (it must equal the seed or the last placement this tool wrote, docs/s8-single/placement.json).
@@ -74,7 +75,7 @@ GROUPS = [
      'they serve (where a backfeed or transient from the rack enters)',
      {'D3': (92.0, 68.45, 0), 'C35': (97.95, 68.45, 0), 'C34': (102.7, 68.45, 0), 'D2': (108.65, 68.45, 0),
       'C36': (114.6, 68.45, 180),
-      'D21': (122.9, 68.45, 0), 'C60': (128.85, 68.45, 0), 'C59': (133.6, 68.45, 0)}),
+      'D23': (122.9, 68.45, 0), 'C60': (128.85, 68.45, 0), 'C59': (133.6, 68.45, 0)}),
     ('-12V converter (U4/L3)',
      'Compact inverting cell in front of J3: C27/C25/C26 (VIN to the IC ground -12V) at pins 3/1, BOOT C28 '
      'between U4 and L3, SW pin 2.5 mm from L3, output row (C29-C32 + C61) behind L3 at the J3 -12V pins, '
@@ -130,23 +131,25 @@ GROUPS = [
      'Front strip around SW1: U10 (POR + RESET) right behind SW1, U13 AND gates and U12 latch either side, U11 '
      'start timer on the right (P1.2: moved right, above the crowbar SCR: R71/C52/C50 in one row under C24, '
      'C49/R70/R69 beside its CT/SENSE pins); pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front',
-     {'U13': (94.2, 94.4, 90), 'U12': (113.4, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (128.4, 92.35, 0),
+     {'U13': (94.2, 94.4, 90), 'U12': (112.6, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (128.4, 92.35, 0),
       'C53': (88.8, 94.4, 90), 'C52': (130.85, 88.65, 0), 'C48': (101.4, 93.7, 90),
-      'R68': (103.75, 94.85, 0), 'R67': (99.75, 90.6, 90), 'R91': (106.9, 94.85, 0), 'R65': (101.4, 90.6, 90),
+      'R68': (103.75, 94.85, 0), 'R67': (99.75, 90.6, 90), 'R91': (99.8, 96.8, 90), 'R65': (101.4, 90.6, 90),
       'R66': (99.75, 93.7, 90), 'R71': (127.75, 88.65, 0), 'R70': (132.95, 92.6, 90), 'R69': (134.55, 92.6, 90),
       'C49': (131.35, 92.6, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
-      'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (111.0, 99.8, 0),
-      'TP16': (113.3, 99.8, 0)}),
-    ('+5V crowbar (S8.2)',
-     'Q11 TS1220 DPAK along the front edge, 1 mm from it and from the right cutback, leads (K, G) toward the trigger, '
-     'anode tab toward the cutback; divider R101/R102/C68 in one row with the CROW_SENSE pads facing U22 below it; U22 '
-     'cathode beside the Q12 gate; Q13 (latch link, OV_N) next to the U12 OV_N corner; R103 between Q13 and the SCR '
-     'cathode; R104/R105 at the SCR gate pin',
-     {'Q11': (130.95, 97.7, 0),
-      'R101': (119.7, 87.73, 270), 'R102': (121.3, 87.73, 90), 'C68': (122.9, 87.73, 90),
-      'U22': (120.1, 91.15, 180), 'Q12': (124.2, 91.15, 0),
-      'Q13': (120.05, 96.2, 0), 'R103': (123.0, 95.9, 90),
-      'R106': (119.6, 98.9, 0), 'R104': (122.75, 98.85, 0), 'R105': (122.75, 100.45, 180)}),
+      'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (65.0, 71.4, 0),
+      'TP16': (67.3, 71.4, 0)}),
+    ('+5V series disconnect (S8.3)',
+     'U23 replaces the crowbar trigger. C73/C74 downstream; C69-C72/C75/C76 extend the upstream bank. '
+     'D21 on P5_RAW in the cleared SCR area; D23 at the headers. Fit placement only: tighten D21/D23/local '
+     'bypass loops around U23 before routing; distributed bulk ceramics are not an ideal lumped bank.',
+     {'U23': (120.1, 91.15, 0),
+      'R101': (119.7, 87.73, 270), 'R102': (121.3, 87.73, 90), 'R107': (122.9, 87.73, 270),
+      'R103': (123.4, 91.15, 90), 'R104': (125.0, 91.15, 90), 'C68': (123.8, 94.1, 0),
+      'C73': (119.8, 95.5, 0), 'C74': (120.1, 98.0, 0),
+      'C69': (124.8, 96.8, 0), 'C70': (124.8, 99.3, 0),
+      'C71': (129.55, 96.8, 0), 'C72': (129.55, 99.3, 0),
+      'D21': (133.8, 97.7, 90), 'TP18': (119.8, 100.23, 0),
+      'C75': (110.7, 99.8, 0), 'C76': (115.4, 99.8, 0)}),
 ]
 
 
@@ -166,8 +169,8 @@ def table():
 def board(root=MODULE):
     b = seed.seed_board(root)
     tb = b.GetTitleBlock()
-    tb.SetRevision('S8.2-P1.2')
-    for i, t in enumerate(['S8.2 schematic (review fixes + +5V crowbar). P1.2 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
+    tb.SetRevision('S8.3-P1.3')
+    for i, t in enumerate(['S8.3 schematic (+5V series disconnect, U20 supply fix). P1.3 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
                            'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
                            'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json',
                            'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json']):
@@ -215,6 +218,110 @@ def write(force=False):
     rec = {'note': 'Last placement written by tools/place_s8.py (guard against overwriting KiCad edits).',
            'parts': snapshot(pcbnew.LoadBoard(str(dest)))}
     RECORD.write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
+    return dest
+
+
+def sync_candidate(source_board, output_root):
+    """S8-only native XML synchronization to a distinct candidate; retained identity/model preservation.
+
+    Shared flat primitives cannot add an IC or synchronize PCB nets. Reuse the
+    existing module native netlist reader and S-expression parser; pcbnew owns
+    transforms/save/reload. Text metadata editing avoids this host's broken
+    KiCad-10 Python GetField() wrapper (returns an untyped SWIG pointer).
+    """
+    import copy
+    from sexp import parse, dump, nodes, one, atom, walk
+    src, root = Path(source_board).resolve(), Path(output_root).resolve()
+    dest = root / 'hardware/single' / BOARD.name
+    assert dest.resolve() != src, 'candidate must not overwrite source'
+    old = pcbnew.LoadBoard(str(src))
+    assert not list(old.GetTracks()) and not list(old.Zones()), 'refuse routed/zone-bearing board'
+    before = snapshot(old)
+    assert before == json.loads(RECORD.read_text())['parts'], 'native placement changed since recorded baseline'
+    comps, nets = seed.netlist(build_s8.root_file(root))
+    membership = {rp: name for name, members in nets.items() for rp in members}
+    tree = parse(src.read_text())
+    def ref(f):
+        return next((p[2] for p in nodes(f, 'property') if p[1] == 'Reference'), '')
+    fps = {ref(f): f for f in nodes(tree, 'footprint') if ref(f)}
+    original_ids = {r: one(f, 'uuid')[1] for r, f in fps.items()}
+    original_models = {r: copy.deepcopy(nodes(f, 'model')) for r, f in fps.items()}
+    for r in set(fps) - set(comps):
+        tree.remove(fps.pop(r))
+    for r, comp in comps.items():
+        if r not in fps:
+            f = parse((MODULE / 'hardware/USBPOWER45.pretty' / (comp['footprint'].split(':')[1] + '.kicad_mod')).read_text())
+            f[1] = comp['footprint']
+            f[:] = [v for v in f if not isinstance(v, list) or v[0] not in ('version', 'generator', 'uuid')]
+            f.append([atom('uuid'), build_s8.uid('pcb/footprint/' + r)])
+            f.append([atom('at'), 0, 0, 0])
+            for i, node in enumerate(walk(f, 'uuid')):
+                node[1] = build_s8.uid(f'pcb/{r}/item/{i}')
+            tree.append(f); fps[r] = f
+        f = fps[r]
+        assert f[1] == comp['footprint'], (r, 'footprint replacement needs review')
+        fields = {p[1]: p for p in nodes(f, 'property')}
+        for key, val in {'Reference': r, 'Value': comp['value'], **comp['fields']}.items():
+            if key in fields:
+                fields[key][2] = val
+            else:
+                f.append(parse(f'(property {json.dumps(key)} {json.dumps(val)} (at 0 0 0) (layer "F.Fab") '
+                               '(hide yes) (effects (font (size 1 1) (thickness 0.15))))'))
+        for key in ('path', 'sheetname', 'sheetfile'):
+            node = one(f, key)
+            if node is None: f.append([atom(key), comp[key]])
+            else: node[1] = comp[key]
+        attrs = one(f, 'attr')
+        for key, flag in [('no_bom', 'exclude_from_bom'), ('no_pos', 'exclude_from_pos_files'), ('dnp', 'dnp')]:
+            if comp[key] and atom(flag) not in attrs:
+                attrs.append(atom(flag))
+        for i, pad in enumerate(nodes(f, 'pad')):
+            if not pad[1]: continue
+            net = membership[(r, str(pad[1]))]
+            n = one(pad, 'net')
+            if n is None: pad.append([atom('net'), net])
+            else: n[1:] = [net]
+            if one(pad, 'uuid') is None: pad.append([atom('uuid'), build_s8.uid(f'pcb/{r}/pad/{i}')])
+        if r in original_ids:
+            assert one(f, 'uuid')[1] == original_ids[r]
+            assert nodes(f, 'model') == original_models[r]
+    one(one(tree, 'title_block'), 'rev')[1] = 'S8.3-P1.3'
+    one(one(tree, 'title_block'), 'comment')[2] = 'S8.3 +5V series disconnect; VPD comparators. P1.3 DRAFT placement, UNROUTED.'
+    one(tree, 'title_block').append([atom('comment'), 5, 'S8.3: +5V series eFuse; crowbar removed; UNROUTED'])
+    draft = dest.with_suffix('.sync.kicad_pcb')
+    draft.write_text(dump(tree) + '\n')
+    # A differently named temporary PCB otherwise loads DEFAULT design settings.
+    # Bind the exact candidate project and restore it byte-for-byte after SaveBoard.
+    project = dest.with_suffix('.kicad_pro')
+    project_bytes = project.read_bytes()
+    draft_project = draft.with_suffix('.kicad_pro')
+    draft_project.write_bytes(project_bytes)
+    b = pcbnew.LoadBoard(str(draft))
+    for f in b.GetFootprints():
+        r = f.GetReference()
+        if r and r not in original_ids:
+            f.Reference().SetLayer(pcbnew.F_Fab)  # same presentation as all existing S8 references
+        if r in table():
+            x, y, angle = table()[r]
+            f.SetOrientationDegrees(angle)
+            f.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
+    # Existing native stackup/rules are already present; the seed writer would add them twice.
+    pcbnew.SaveBoard(str(dest), b)
+    project.write_bytes(project_bytes)
+    draft.unlink()
+    draft_project.unlink()
+    after = snapshot(pcbnew.LoadBoard(str(dest)))
+    reloaded = parse(dest.read_text())
+    for f in nodes(reloaded, 'footprint'):
+        r = ref(f)
+        if r in original_ids:
+            assert one(f, 'uuid')[1] == original_ids[r]
+            assert nodes(f, 'model') == original_models[r]
+    rec = {'note': 'S8.3 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
+           'parts': after,
+           'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r]),
+           'added_refs': sorted(set(after) - set(before)), 'removed_refs': sorted(set(before) - set(after))}
+    (root / 'docs/s8-single/placement.json').write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
     return dest
 
 

@@ -6,8 +6,8 @@ real hierarchical pins for every net that crosses pages, then checks native flat
 parity (components, fields, pin memberships). Page 05 of S7 (negative protection) is gone; the
 S7 pages 06/07 become 05/06. No component field or connection is changed here. S8 final: the rail
 LEDs are gone, page 06 keeps the MAIN LED only. S8.1: the guard reference (U21, R100, C67, TP17) and
-the MON_OVN clamp D22 join the page-06 monitor group. S8.2: the +5V crowbar (Q11-Q13, U22, R101-R106, C68)
-joins the page-06 header group, right of D21.
+the MON_OVN clamp D22 join the page-06 monitor group. S8.3: the +5V disconnect and split banks replace the crowbar on page 06.
+U18/U20 now run from always-on VPD with 3.3 V logic pull-ups.
 """
 import copy
 import json
@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from pathlib import Path
 
-from circuit_s8 import CROWBAR
+from circuit_s8 import DISCONNECT
 from sexp import parse, dump, nodes, one, walk
 
 PAGES = {
@@ -49,7 +49,7 @@ def layout(parts):
     put(['D2'], 2, -25.4, -203.2)
     put(['D3'], 3, -88.9, -203.2)
     put(['D4'], 4, -50.8, -241.3)
-    put(['J2', 'J3', 'C34', 'C35', 'C36', 'C59', 'C60', 'C61', 'D21', *CROWBAR], 6, 0, -86.36)
+    put(['J2', 'J3', 'C34', 'C35', 'C36', 'C59', 'C60', 'C61', 'D21', *DISCONNECT], 6, 0, -86.36)
     put(['SW1'], 5, -38.1, -254)
     put(['U9', 'U10', 'U11', 'U12', 'U13', 'U14', 'U15', *rr('R', 63, 72), 'R91', *rr('C', 46, 55),
          *rr('TP', 9, 16), 'TP6'], 5, 0, -393.7)
@@ -61,14 +61,14 @@ def layout(parts):
 
 
 NOTES = {
-    1: '20 V PD request; U5 TPS16630 (60 V, 4.186 A nominal) is the ONLY switch: RUN low turns every rail off.\n'
+    1: '20 V PD request; U5 TPS16630 (60 V, 4.186 A nominal) is the common input switch: RUN low turns every rail off.\n'
        'MAIN_OK = FLT + PGOOD at 3.3 V. R92 1R + C5/C62 2 x 10u damp the all-ceramic VIN bus (replaces the 47u can).',
     2: 'TPS62933F +12 V, unchanged power stage; its output IS the delivered +12V (no rail eFuse).\n'
        'Soft start C9 100n = ~14.5 ms into rack capacitance. Own protection: 4.2-5.8 A peak limit, hiccup, OVP 112-118 %, TSD.\n'
        'Rail ceramics: C11-C14 here + C34 (J2) and C59 (J3) on page 06; the 100u can is gone.',
-    3: 'TPS62933F +5 V, unchanged power stage; its output IS the delivered +5V (no rail eFuse).\n'
-       'Soft start C18 100n = ~14.5 ms into rack capacitance. Own protection: 4.2-5.8 A peak limit, hiccup, OVP 112-118 %, TSD.\n'
-       'Rail ceramics: C20-C23 here + C35 (J2) and C60 (J3) on page 06; D21 TVS and the U20 OV guard on page 06.',
+    3: 'TPS62933F +5 V: P5_RAW before U23. Feedback and C20-C23 remain upstream; never sense after U23.\n'
+       'C69-C72/C75/C76 extend the upstream bank to 10 x 22u. Delivered +5V has C35/C60/C73/C74 after U23.\n'
+       'C18 100n converter soft start; U23 has its own dVdt ramp. Converter/load stability is not bench qualified.',
     4: 'LMR38020F inverting buck-boost; IC ground / exposed pad = the delivered -12V (no series switch).\n'
        '4 ms soft start, 18 ms OCP blanking at start-up. Q1 follows +12V. C29-C33 here + C36 (J2) and C61 (J3).',
     5: 'RESET clears ARMED and FAULT; RUN is forced low while reset is asserted.\n'
@@ -76,14 +76,15 @@ NOTES = {
        'OV_N (U20, page 06) presets FAULT at once, also inside the startup window. U14 gate 2 unused (inputs to GND).',
     6: 'J2 + J3: two parallel 16-pin outputs, pin 1 = -12V. C34-C36 at J2, C59-C61 at J3 (22u each, replace the 100u cans).\n'
        'D8 MAIN is the only status LED (rail LEDs removed): input-valid AND main-eFuse status AND RUN. Any bad rail after the\n'
-       'startup window or any overvoltage latches every rail off, so MAIN off = not working. P12/P5/N12_OK: logic + test pads only.\n'
+       'startup window or a U20 guard trip latches every rail off. Short OVLO-only pulses may recover. P12/P5/N12_OK: logic + test pads.\n'
        'U20 overvoltage guard (S8.1): +12V > 14.88 V, +5V > 5.83 V or -12V < -13.64 V nominal (corners 14.48-15.27 / 5.68-5.98 /\n'
        '13.27-14.02 V) pulls OV_N -> FAULT -> U5 off. Own reference REF_OV = U21 TLV431B (R100, C67, TP17); U18/U20 LM2901B;\n'
        'R93-R96, R98, R99 are 0.1 % / 25 ppm. The -12V channel compares MON_OVN with GND (no V3V3 term); D22 clamps MON_OVN\n'
        'at GND if V3V3 is lost while the rack holds -12V. D21 SMAJ5.0A is a transient clamp (6.4 V min breakdown), not an OV limit.\n'
-       '+5V crowbar (S8.2, beside D21): U22 TLVH432B, powered by +5V itself, trips at +5V > 5.83 V nominal (5.70-5.98 V) and turns\n'
-       'Q12 on; Q12 fires the SCR Q11 (TS1220, DPAK), which holds +5V at ~1-3.5 V until the stored energy is gone, and Q13 pulls\n'
-       'OV_N low at the same time, so FAULT is set and U5 opens. D21 holds the first microseconds before Q11 fires.',
+       'S8.3: U18/U20 supplies are always-on VPD; outputs remain 3.3 V logic. U20 +5V guard monitors P5_RAW.\n'
+       'U23 TPS259470A independently disconnects +5V at ~5.70 V (1.2 us typical, no maximum specified). D21 moved to P5_RAW.\n'
+       'AUXOFF + FLT join P5_OK; faults latch after startup qualification. Severe raw OV is unmasked through U20.\n'
+       'Q11/Q12/Q13/U22 crowbar removed. No guaranteed 6 V peak or prototype qualification is claimed.',
 }
 
 
@@ -136,8 +137,8 @@ def split(root_path, docs_dir, api):
     for i, (name, title, size) in PAGES.items():
         trees[i] = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
           (uuid "{api.uid('S8/file/' + name)}") (paper "User" {size[0]} {size[1]})
-          (title_block (title {json.dumps(title)}) (rev "S8.2") (company "Big Modular")
-          (comment 1 "S8 single board, S8.2 schematic (S8.1 review fixes + +5V crowbar) - see docs/s8-single-board.md"))
+          (title_block (title {json.dumps(title)}) (rev "S8.3") (company "Big Modular")
+          (comment 1 "S8 single board, S8.3 schematic (+5V series eFuse, VPD-powered comparators) - see docs/s8-single-board.md"))
           (lib_symbols) (embedded_fonts no))''')
         one(trees[i], 'lib_symbols').extend(copy.deepcopy(nodes(one(flat, 'lib_symbols'), 'symbol')))
 
@@ -299,20 +300,18 @@ def split(root_path, docs_dir, api):
                ['version', 'generator', 'generator_version', 'uuid', 'paper', 'title_block', 'lib_symbols', 'embedded_fonts']]
     one(root, 'paper')[1:] = ['User', 560, 530]; one(root, 'lib_symbols')[1:] = []
     one(one(root, 'title_block'), 'title')[1] = 'USB power S8 single board - wired power flow overview'
-    text(root, 'USB POWER 45W S8 / SINGLE BOARD, NO PER-RAIL EFUSES', 20.32, 15.24, 2.4)
-    text(root, 'S8.2: S7 converters kept; U6/U7 and the LM5067 negative switch removed; cans -> ceramics; '
-               'two parallel 16-pin outputs; overvoltage guard (own TLV431B reference) on the fault latch; +5V SCR crowbar; '
-               'MAIN LED only.',
-         20.32, 25.4, 1.2)
+    text(root, 'USB POWER 45W S8.3 / SINGLE BOARD, +5V SERIES PROTECTION', 20.32, 15.24, 2.4)
+    text(root, 'S8.3: +5V fast series disconnect; +/-12V directly from converters; ceramic banks; two parallel outputs; '
+               'VPD-powered OV guard; MAIN LED only. No crowbar.', 20.32, 25.4, 1.2)
     boxes = {1: (40.64, 60.96, 81.28, 111.76), 2: (177.8, 50.8, 101.6, 81.28), 3: (177.8, 162.56, 101.6, 81.28),
              4: (177.8, 284.48, 101.6, 71.12), 5: (40.64, 406.4, 259.08, 96.52), 6: (370.84, 60.96, 106.68, 254.0)}
-    outputs = {1: ['VPD', 'VIN', 'MAIN_OK'], 2: ['+12V'], 3: ['+5V'], 4: ['-12V'],
+    outputs = {1: ['VPD', 'VIN', 'MAIN_OK'], 2: ['+12V'], 3: ['P5_RAW'], 4: ['-12V'],
                5: ['RUN', 'V3V3', 'MAIN_LED_OK', 'FAULT_LATCH'], 6: ['P12_OK', 'P5_OK', 'N12_OK', 'V20_OK', 'OV_N']}
-    descriptions = {1: 'CH224A: 20 V request\nTPS16630: 4.186 A, the only switch\nVIN damper 1R + 2 x 10u',
-                    2: 'TPS62933F\n+12 V delivered rail', 3: 'TPS62933F\n+5 V delivered rail',
+    descriptions = {1: 'CH224A: 20 V request\nTPS16630: 4.186 A common input switch\nVIN damper 1R + 2 x 10u',
+                    2: 'TPS62933F\n+12 V delivered rail', 3: 'TPS62933F\nP5_RAW before disconnect',
                     4: 'LMR38020F inverting buck-boost\n-12 V delivered rail',
                     5: '60 V always-on LDO / retained ARMED + FAULT\nManual RESET; OV_N presets FAULT',
-                    6: 'Two Eurorack outputs J2 + J3\nMonitors, OV guard, +5V crowbar\nMAIN LED (only status LED)'}
+                    6: 'Two Eurorack outputs J2 + J3\nMonitors, OV guard, +5V eFuse\nMAIN LED (only status LED)'}
     rootpins = {}
     for pg, (x, y, w, h) in boxes.items():
         names = sorted(n for n, pgs in crossing.items() if pg in pgs)
@@ -335,7 +334,7 @@ def split(root_path, docs_dir, api):
     for pg in [2, 3, 4]:
         rootlink((1, 'VIN'), (pg, 'VIN'), 137.16)
     rootlink((2, '+12V'), (6, '+12V'), 304.8)
-    rootlink((3, '+5V'), (6, '+5V'), 317.5)
+    rootlink((3, 'P5_RAW'), (6, 'P5_RAW'), 317.5)
     rootlink((4, '-12V'), (6, '-12V'), 330.2)
     for key, pt in rootpins.items():
         n = key[1]; side = 'R' if n in outputs[key[0]] else 'L'; dx = 7.62 if side == 'R' else -7.62
@@ -344,12 +343,12 @@ def split(root_path, docs_dir, api):
         root.append(parse(f'(label {json.dumps(n)} (at {target[0]} {target[1]} {0 if side == "R" else 180}) '
                           f'(effects (font (size 1 1)) (justify {"left" if side == "R" else "right"} bottom)) '
                           f'(uuid "{api.uid("S8/rootlabel/" + str(count))}"))'))
-    text(root, 'FAULT POLICY\nEach rail is monitored after its converter.\nPersistent low rail (after ~0.57 s) or any '
-               'overvoltage -> all OFF until RESET.\n+5V above ~5.8 V is also shorted by the SCR crowbar Q11.\n'
-               'Main LED is not merely a +5 V lamp.', 370.84, 340.36, 1.4)
-    text(root, 'OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\nNo per-rail current limit below the converter limits '
-               '(TPS62933F 4.2-5.8 A peak; LMR38020F 2.6-3.8 A switch).\nTargets 2.5 / 2.5 / 1.0 A; not a guaranteed '
-               '54.5 W simultaneous rating.', 370.84, 386.08, 1.2)
+    text(root, 'FAULT POLICY\nPersistent bad rail/status after ~0.57 s -> all OFF until RESET.\n'
+               'Severe OV via U20 acts even before ARMED.\nU23 independently cuts +5V; OVLO alone is auto-recovering.\n'
+               'MAIN indicates enabled/status, not precision regulation.', 370.84, 340.36, 1.4)
+    text(root, 'OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\n+5V has U23 current limit (~3.03 A nominal). '
+               '+/-12V retain converter-only limits.\nTargets 2.5 / 2.5 / 1.0 A; not a qualified simultaneous rating.',
+         370.84, 386.08, 1.2)
     trees[0] = root
     # Split added wires at endpoints and pin ends, then add junctions (as hierarchy6).
     for pg, t in trees.items():
