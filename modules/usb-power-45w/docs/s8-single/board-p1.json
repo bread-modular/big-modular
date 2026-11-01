@@ -1,6 +1,6 @@
 {
  "board": "hardware/single/usb-power-45w-single.kicad_pcb",
- "parts_on_board": 188,
+ "parts_on_board": 190,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 0,
@@ -9,28 +9,28 @@
  "edge_rule_findings_not_approved": [],
  "closest_courtyards_to_edge_mm": [
   [
-   1.049,
-   "TP18"
+   1.05,
+   "D23"
+  ],
+  [
+   1.079,
+   "TP21"
   ],
   [
    1.08,
-   "D21"
+   "R101"
+  ],
+  [
+   1.08,
+   "R107"
+  ],
+  [
+   1.08,
+   "R108"
   ],
   [
    1.329,
    "TP12"
-  ],
-  [
-   1.329,
-   "TP13"
-  ],
-  [
-   1.329,
-   "TP14"
-  ],
-  [
-   1.329,
-   "TP15"
   ]
  ],
  "approved_panel_overhangs": {
@@ -85,6 +85,10 @@
    "radius_mm": 4.0,
    "closest_courtyards_gap_mm": [
     [
+     0.405,
+     "C71"
+    ],
+    [
      0.83,
      "L3"
     ],
@@ -93,12 +97,8 @@
      "C50"
     ],
     [
-     3.216,
+     3.015,
      "R69"
-    ],
-    [
-     4.322,
-     "D21"
     ]
    ],
    "violations": []
@@ -199,12 +199,12 @@
      "C60.2"
     ],
     [
-     3.889,
-     "D23.2"
-    ],
-    [
      3.89,
      "C59.1"
+    ],
+    [
+     4.289,
+     "C29.1"
     ]
    ],
    "violations_lt_2mm": [],
@@ -268,12 +268,198 @@
    "matches": true
   }
  },
+ "local_loops": {
+  "metric": "pad-centre straight-line distance, same net (the metric of the S8.3 reviews)",
+  "rows": [
+   {
+    "from": "U23.5",
+    "to": "C69.1",
+    "net": "P5_RAW",
+    "distance_mm": 3.01,
+    "limit_mm": 3.5,
+    "purpose": "U23 IN local 22u bypass",
+    "ok": true
+   },
+   {
+    "from": "U23.6",
+    "to": "C73.1",
+    "net": "+5V",
+    "distance_mm": 3.01,
+    "limit_mm": 3.5,
+    "purpose": "U23 OUT local 22u bypass",
+    "ok": true
+   },
+   {
+    "from": "U23.5",
+    "to": "D21.1",
+    "net": "P5_RAW",
+    "distance_mm": 5.75,
+    "limit_mm": 6.0,
+    "purpose": "D21 IN transient clamp beside U23 IN/GND",
+    "ok": true
+   },
+   {
+    "from": "U23.6",
+    "to": "D23.1",
+    "net": "+5V",
+    "distance_mm": 5.78,
+    "limit_mm": 6.0,
+    "purpose": "D23 OUT negative clamp beside U23 OUT/GND",
+    "ok": true
+   },
+   {
+    "from": "U20.3",
+    "to": "C65.1",
+    "net": "VPD",
+    "distance_mm": 2.31,
+    "limit_mm": 4.5,
+    "purpose": "U20 VCC (VPD) bypass",
+    "ok": true
+   },
+   {
+    "from": "U18.3",
+    "to": "C57.1",
+    "net": "VPD",
+    "distance_mm": 2.92,
+    "limit_mm": 4.5,
+    "purpose": "U18 VCC (VPD) bypass",
+    "ok": true
+   },
+   {
+    "from": "U9.8",
+    "to": "C46.1",
+    "net": "VPD",
+    "distance_mm": 1.91,
+    "limit_mm": 4.5,
+    "purpose": "LDO input",
+    "ok": true
+   },
+   {
+    "from": "U9.1",
+    "to": "C47.1",
+    "net": "V3V3",
+    "distance_mm": 2.93,
+    "limit_mm": 4.5,
+    "purpose": "LDO output",
+    "ok": true
+   },
+   {
+    "from": "U5.1",
+    "to": "C2.1",
+    "net": "EF_IN",
+    "distance_mm": 2.56,
+    "limit_mm": 4.5,
+    "purpose": "main eFuse IN",
+    "ok": true
+   },
+   {
+    "from": "U1.1",
+    "to": "C1.1",
+    "net": "VPD_U1",
+    "distance_mm": 4.02,
+    "limit_mm": 4.5,
+    "purpose": "CH224A VHV (R3 BASE block)",
+    "ok": true
+   },
+   {
+    "from": "U2.3",
+    "to": "C8.1",
+    "net": "VIN",
+    "distance_mm": 1.93,
+    "limit_mm": 4.5,
+    "purpose": "+12V converter HF input cap",
+    "ok": true
+   },
+   {
+    "from": "U3.3",
+    "to": "C17.1",
+    "net": "VIN",
+    "distance_mm": 1.93,
+    "limit_mm": 4.5,
+    "purpose": "+5V converter HF input cap",
+    "ok": true
+   },
+   {
+    "from": "U4.3",
+    "to": "C27.1",
+    "net": "VIN",
+    "distance_mm": 2.26,
+    "limit_mm": 4.5,
+    "purpose": "-12V converter HF input cap",
+    "ok": true
+   },
+   {
+    "from": "U21.1",
+    "to": "C67.1",
+    "net": "REF_OV",
+    "distance_mm": 3.5,
+    "limit_mm": 4.5,
+    "purpose": "TLV431 stabilising cap",
+    "ok": true
+   },
+   {
+    "from": "U10.6",
+    "to": "C52.1",
+    "net": "V3V3",
+    "distance_mm": 3.72,
+    "limit_mm": 6.0,
+    "purpose": "U10 logic bypass",
+    "ok": true
+   },
+   {
+    "from": "U11.6",
+    "to": "C50.1",
+    "net": "V3V3",
+    "distance_mm": 3.99,
+    "limit_mm": 6.0,
+    "purpose": "U11 logic bypass",
+    "ok": true
+   },
+   {
+    "from": "U12.14",
+    "to": "C52.1",
+    "net": "V3V3",
+    "distance_mm": 2.27,
+    "limit_mm": 6.0,
+    "purpose": "U12 logic bypass",
+    "ok": true
+   },
+   {
+    "from": "U13.14",
+    "to": "C53.1",
+    "net": "V3V3",
+    "distance_mm": 3.62,
+    "limit_mm": 6.0,
+    "purpose": "U13 logic bypass",
+    "ok": true
+   },
+   {
+    "from": "U14.14",
+    "to": "C55.1",
+    "net": "V3V3",
+    "distance_mm": 2.13,
+    "limit_mm": 6.0,
+    "purpose": "U14 logic bypass",
+    "ok": true
+   },
+   {
+    "from": "U15.5",
+    "to": "C54.1",
+    "net": "V3V3",
+    "distance_mm": 5.26,
+    "limit_mm": 6.0,
+    "purpose": "U15 logic bypass",
+    "ok": true
+   }
+  ],
+  "violations": []
+ },
  "board_rear_edge_Z_from_panel_front": 50.0,
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2910,
-  "fill_of_inset": 0.673
+  "courtyards_sum": 2917,
+  "fill_of_inset": 0.675
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",
  "pass": true

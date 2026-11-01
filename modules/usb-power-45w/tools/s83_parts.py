@@ -7,10 +7,16 @@ RPW is NOT a generic 10-pad DFN: 5/6 are long internal IN/OUT strips;
 The corner land is represented by two overlapping, identically numbered SMD
 pads, matching the manufacturer's L shape. Separate paste apertures follow the
 0.100 mm stencil example (93% corners / 82% power strips). No vias are added.
+
+S8.4 (review M7): copper-pad solder-mask expansion 0.025 mm, inside TI's NSMD "0.05 MAX ALL AROUND".
+Every copper gap of this land pattern is 0.20 mm, so every mask web, including the IN(5)/OUT(6) web whose
+bridge would bypass the eFuse, is 0.20 - 2 x 0.025 = 0.15 mm (was 0.10 mm). MASK_WEB_MIN is the contract.
 """
 from sexp import parse
 
 FP_S83 = {'RPW10': 'TI_RPW0010A_VQFN-HR-10_2x2mm'}
+MASK_MARGIN = 0.025      # mm per side on every copper pad (S8.4)
+MASK_WEB_MIN = 0.15      # mm, minimum solder-mask web between differently numbered copper pads
 
 
 def symbol():
@@ -50,8 +56,9 @@ def footprint():
       (fp_circle (center -1.4 -1.4) (end -1.3 -1.4) (stroke (width 0.12) (type default)) (fill solid) (layer "F.SilkS"))
     '''
     def pad(n, x, y, w, h, layers='"F.Cu" "F.Mask"'):
+        margin = MASK_MARGIN if 'F.Cu' in layers else 0.05      # paste-only apertures unchanged from S8.3
         return (f'(pad "{n}" smd roundrect (at {x} {y}) (size {w} {h}) '
-                f'(layers {layers}) (solder_mask_margin 0.05) (roundrect_rratio {min(.05/w, .05/h):.8f}))\n')
+                f'(layers {layers}) (solder_mask_margin {margin}) (roundrect_rratio {min(.05/w, .05/h):.8f}))\n')
     for n, x, y in [(1, -.9, -.7), (4, -.9, .7), (7, .9, .7), (10, .9, -.7)]:
         text += pad(n, x, y, .6, .3)
         text += pad(n, -.725 if x < 0 else .725, -.875 if y < 0 else .875, .25, .65)

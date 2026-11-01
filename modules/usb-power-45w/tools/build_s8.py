@@ -7,9 +7,9 @@ the S7 system schematic (tools/build_schematic.py flat_sheet + tools/hierarchy_s
 intermediate is checked pin-for-pin against the table (check_netlist) and the hierarchy against the
 flat sheet (exact component/field/pin-membership parity). S8 UUIDs use their own namespace.
 
-Writes a separate review candidate with --output-root. S8.3 replaces the S8.2 crowbar
-with the pinned TPS259470 symbol/land pattern in tools/s83_parts.py. Shared S7
-symbols, footprints and native projects are not rewritten.
+Writes a separate review candidate with --output-root. S8.3 replaced the S8.2 crowbar
+with the pinned TPS259470 symbol/land pattern in tools/s83_parts.py; S8.4 applies the review
+fixes listed in tools/circuit_s8.py. Shared S7 symbols, footprints and native projects are not rewritten.
 """
 import argparse
 import copy
@@ -112,10 +112,10 @@ def build(output_root=None):
 
     sch, nets, _ = bs.flat_sheet(
         parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 single board',
-        comments=('S8.3: single board, +5V fast series eFuse; +/-12V unswitched; two headers; MAIN only',
-                  'Crowbar removed; U18/U20 on VPD; split +5V banks; see docs/s8-single-board.md'),
+        comments=('S8.4: single board, +5V series eFuse (FLT off the latch); +/-12V unswitched; MAIN only',
+                  'Arming from MAIN_OK; U18/U20 on VPD; split +5V banks; see docs/s8-single-board.md'),
         source=circuit_s8.drawing(), texts=circuit_s8.TEXTS)
-    one(one(sch, 'title_block'), 'rev')[1] = 'S8.3'
+    one(one(sch, 'title_block'), 'rev')[1] = 'S8.4'
     out.write_text(dump(sch) + '\n')
     subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True, stdout=subprocess.DEVNULL)
     nc = {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None}
@@ -125,7 +125,7 @@ def build(output_root=None):
     crossing = hierarchy_s8.split(out, docs, api)
 
     refs = sorted(p['ref'] for p in parts if not p['ref'].startswith('#'))
-    record = {'revision': 'S8.3', 'project': f'hardware/single/{pro.name}', 'components': len(refs),
+    record = {'revision': 'S8.4', 'project': f'hardware/single/{pro.name}', 'components': len(refs),
               'nets': len(nets), 'no_connect_pins': len(nc), 'removed_from_S7': sorted(circuit_s8.S8_REMOVED),
               'inter_sheet_nets': {n: sorted(p) for n, p in sorted(crossing.items())},
               'symbols': sorted(syms),

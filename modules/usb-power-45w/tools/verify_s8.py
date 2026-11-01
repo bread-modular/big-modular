@@ -10,8 +10,11 @@ digital model of the latch/LED logic including the overvoltage preset. S8 final:
 (rail LEDs removed). S8.1 (review fixes): the guard's own TLV431B reference REF_OV (pin roles against TI's DBZ
 table kept here), LM2901B on U18/U20, the -12V channel compared with GND, the D22 clamp on MON_OVN, 0.1 %
 dividers and the guard bands. S8.3 checks TPS259470A pin roles, split raw/delivered +5V,
-OVLO/current programming, AUXOFF + FLT status, VPD-powered comparator headroom, and the absence
-of every removed crowbar device/net. Static checks and settled logic, not a peak-voltage guarantee.
+OVLO/current programming, VPD-powered comparator headroom, and the absence of every removed crowbar
+device/net. S8.4 (review fixes): U23 FLT (pin 4) only reaches its own pull-up R108 and pad TP21, never P5_OK
+or the latch (C1); P5_OK = AUXOFF + U18; the startup timer input TIMER_GO = RUN AND MAIN_OK, the converter
+enable net, not V20_OK (M1); R11/R12 0.1 % with the OVLO margin from U23's highest current limit (M2).
+Static checks and settled logic, not a peak-voltage guarantee: <6 V at the header is NOT established.
 """
 import argparse
 import itertools
@@ -45,6 +48,10 @@ TPS259470_TI = {'1': 'EN/UVLO', '2': 'OVLO', '3': 'AUXOFF', '4': '~{FLT}', '5': 
 VIO_B, IB_B = 0.0055, 50e-9
 R01_LO, R01_HI = 0.999 * 0.9975, 1.001 * 1.0025
 RELEASE_N16_V = {'+12V': 1.033, '+5V': 0.261, '-12V': 0.484}
+# S8.4 (M2): release from U23's highest current limit (3.367 A) into the upstream bank only, same model, rounded up.
+RELEASE_ILIM_MAX_V = 0.363
+# TI SLVSFC9C ILIM table (1.65k: 1.800/2.200 A, 750R: 3.960/4.840 A) against 3334/RILM: -10.9 % / +8.9 %.
+ILIM_TABLE = (0.8908, 1.0888)
 DOWNSTREAM_MAX_V = {'+12V': 16.0, '+5V': 6.0, '-12V': 16.0}    # 16 V module caps / 6.0 V 5 V-logic absolute maxima
 
 # Independently specified function pin -> net expectations of the critical parts (S8).
@@ -58,6 +65,10 @@ CRIT = {
     'U11': {1: 'START_READY', 2: 'GND', 3: 'RESET_N', 4: 'START_CT', 5: 'START_SENSE', 6: 'V3V3'},
     'U12': {1: 'RESET_N', 2: 'V3V3', 3: 'START_READY', 4: 'V3V3', 5: 'ARMED', 7: 'GND', 8: 'NOT_FAULT', 9: 'FAULT_LATCH',
             10: 'OV_N', 11: 'FAULT_CLK', 12: 'V3V3', 13: 'RESET_N', 14: 'V3V3'},
+    # S8.4 (M1): gate 3 = TIMER_GO = RUN AND MAIN_OK (the U2/U3 enable); gate 4 = MAIN_LED_OK = MAIN_OK AND V20_OK.
+    'U13': {1: 'RESET_N', 2: 'NOT_FAULT', 3: 'RUN', 4: 'ARMED', 5: 'BAD_FILTERED', 6: 'FAULT_CLK', 7: 'GND',
+            8: 'TIMER_GO', 9: 'RUN', 10: 'MAIN_OK', 11: 'MAIN_LED_OK', 12: 'MAIN_OK', 13: 'V20_OK', 14: 'V3V3'},
+    'R69': {1: 'TIMER_GO', 2: 'START_SENSE'},
     'U14': {1: 'MAIN_LED_OK', 2: 'P12_OK', 4: 'P5_OK', 5: 'N12_OK', 6: 'ANY_BAD', 7: 'GND', 9: 'GND', 10: 'GND',
             12: 'GND', 13: 'GND', 14: 'V3V3'},
     'U18': {1: 'P12_OK', 2: 'P5_OK', 3: 'VPD', 4: 'REF_GOOD', 5: 'MON_P5', 6: 'REF_GOOD', 7: 'MON_P12', 8: 'MON_N12',
@@ -71,8 +82,9 @@ CRIT = {
     'R98': {1: 'REF_OV', 2: 'MON_OVN'}, 'R99': {1: 'MON_OVN', 2: '-12V'},
     'R35': {1: 'V3V3', 2: 'P12_OK'}, 'R44': {1: 'V3V3', 2: 'P5_OK'}, 'R62': {1: 'V3V3', 2: 'N12_OK'},
     'R97': {1: 'V3V3', 2: 'OV_N'}, 'D21': {1: 'P5_RAW', 2: 'GND'},
-    'U23': {1: 'RUN', 2: 'P5_OVLO', 3: 'P5_OK', 4: 'P5_OK', 5: 'P5_RAW',
+    'U23': {1: 'RUN', 2: 'P5_OVLO', 3: 'P5_OK', 4: 'P5_FLT_N', 5: 'P5_RAW',
             6: '+5V', 7: 'P5_DVDT', 8: 'GND', 9: 'P5_ILM'},
+    'R108': {1: 'V3V3', 2: 'P5_FLT_N'}, 'TP21': {1: 'P5_FLT_N'},
     'R101': {1: 'P5_OV_TOP', 2: 'P5_OVLO'}, 'R102': {1: 'P5_OVLO', 2: 'GND'},
     'R107': {1: 'P5_RAW', 2: 'P5_OV_TOP'}, 'R103': {1: 'P5_ILM', 2: 'P5_ILM_SER'},
     'R104': {1: 'P5_ILM_SER', 2: 'GND'}, 'C68': {1: 'P5_DVDT', 2: 'GND'},
@@ -161,7 +173,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert netids['V3V3'] not in {n('R98', 1), n('R99', 1)}, '-12V guard divider must not depend on V3V3'
     assert nets[netids['MON_OVN']] == {('R98', '2'), ('R99', '1'), ('C66', '1'), ('D22', '2'), ('D22', '3'),
                                        ('U20', '9')}, 'MON_OVN members (D22 clamp at the comparator node)'
-    for r in ('R93', 'R94', 'R95', 'R96', 'R98', 'R99', 'R101', 'R102'):
+    for r in ('R93', 'R94', 'R95', 'R96', 'R98', 'R99', 'R101', 'R102', 'R11', 'R12'):
         assert comps[r].findtext('fields/field[@name="Tolerance"]') == '0.1%', (r, '0.1 % divider')
     # ---- S8.3 series switch: independent pin-role checks, no bypass, no old crowbar.
     assert {k: libparts['TPS259470_RPW'][k] for k in TPS259470_TI} == TPS259470_TI
@@ -209,6 +221,23 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     for net, tp in (('P12_OK', 'TP12'), ('P5_OK', 'TP13'), ('N12_OK', 'TP14')):   # status: logic + pull-up + pad
         assert {r for r, _ in nets[netids[net]]} == ({'U18', 'U14', {'P12_OK': 'R35', 'P5_OK': 'R44', 'N12_OK': 'R62'}[net], tp}
                                                        | ({'U23'} if net == 'P5_OK' else set())), net
+    # ---- S8.4 C1: U23 FLT is diagnostic only. P5_OK = AUXOFF (pin 3) + U18 delivered-voltage comparator; FLT (pin 4:
+    # reverse current, persistent current limit, ILM fault, over-temperature) reaches only R108 and TP21.
+    assert nets[netids['P5_OK']] == {('U18', '2'), ('U23', '3'), ('R44', '2'), ('TP13', '1'), ('U14', '4')}, \
+        ('C1: P5_OK must be AUXOFF + U18 only', sorted(nets[netids['P5_OK']]))
+    assert n('U23', 4) != netids['P5_OK'] and n('U23', 4) == netids['P5_FLT_N'], 'C1: U23 FLT must stay off P5_OK'
+    assert nets[netids['P5_FLT_N']] == {('U23', '4'), ('R108', '2'), ('TP21', '1')}, \
+        ('C1: FLT must reach only its pull-up and test pad', sorted(nets[netids['P5_FLT_N']]))
+    latch_inputs = {n(u, k) for u, ks in (('U12', (1, 3, 10, 11, 13)), ('U13', (1, 2, 4, 5, 9, 10, 12, 13)),
+                                         ('U14', (1, 2, 4, 5)), ('U15', (2,))) for k in ks}
+    assert netids['P5_FLT_N'] not in latch_inputs, 'C1: FLT must not drive any latch/arming input'
+    # ---- S8.4 M1: the startup timer runs from the converter enable. TIMER_GO = RUN AND MAIN_OK, and MAIN_OK is the
+    # U2/U3 EN net, so ARMED cannot stay masked while the converters run. V20_OK only qualifies MAIN_LED_OK.
+    assert n('U13', 10) == netids['MAIN_OK'] and n('U13', 9) == netids['RUN'], 'M1: TIMER_GO = RUN AND MAIN_OK'
+    assert netids['V20_OK'] not in {n('U13', 9), n('U13', 10)}, 'M1: V20_OK must not gate the startup timer'
+    assert nets[netids['TIMER_GO']] == {('U13', '8'), ('R69', '1')}, 'M1: TIMER_GO drives only the U11 sense divider'
+    assert {('U2', '2'), ('U3', '2'), ('U13', '10')} <= nets[netids['MAIN_OK']], 'M1: timer input = converter enable'
+    assert nets[netids['V20_OK']] == {('U18', '13'), ('R85', '2'), ('TP15', '1'), ('U13', '13')}, 'V20_OK -> MAIN_LED_OK only'
     assert n('U9', 8) != n('U5', 18), 'Latch supply must survive main switch off'
 
     # ---- Ceramic banks and the VIN damper (no electrolytics)
@@ -251,8 +280,12 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         return (v * r99 + (ib * r98 * r99 / (r98 + r99) - e) * (r98 + r99)) / r98
     ov12, ov5, ovneg = positive('R93', 'R94'), positive('R95', 'R96'), guard(negative)
 
+    def fac(ref):                     # each divider resistor's own tolerance (R11/R12 are 0.1 % since S8.4)
+        t = comps[ref].findtext('fields/field[@name="Tolerance"]')
+        return (R01_LO, R01_HI) if t == '0.1%' else (lo, hi)
+
     def setpoint(top, bot, vfb):
-        return vfb * (1 + value(top) * hi / (value(bot) * lo))
+        return vfb * (1 + value(top) * fac(top)[1] / (value(bot) * fac(bot)[0]))
     p12_max, p5_max = setpoint('R8', 'R9', .816), setpoint('R11', 'R12', .816)    # SLUSEA4D VFB max
     n12_max = setpoint('R14', 'R15', 1.015)                                        # SNVSC40E FB max
     ovp12_max, ovp5_max = 1.18 * p12_max, 1.18 * p5_max                           # OVP 118 % max
@@ -265,8 +298,16 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         trips.append(v*(1+rt/rb)+leak*rt)
     ef_trip = [min(trips), 1.2*(1+(value('R101')+value('R107'))/value('R102')), max(trips)]
     ilm_r = value('R103')+value('R104')
-    ilm = [3334*.9/(ilm_r*hi),3334/ilm_r,3334*1.1/(ilm_r*lo)]
+    ilm = [3334*ILIM_TABLE[0]/(ilm_r*hi),3334/ilm_r,3334*ILIM_TABLE[1]/(ilm_r*lo)]
     assert ilm[0] > 2.5 and ilm[2] < 3.5, ('+5V eFuse current screen',ilm)
+    assert ilm[0] - 2.0 > 0.6, ('S8.4 published 2.0 A +5V rating needs >= 0.6 A headroom to ILIM min (ITIMER open)', ilm)
+    # S8.4 M2: OVLO falling (release) band and the release from U23's highest current limit.
+    rel = []
+    for v, a, b, c, leak in itertools.product((1.076, 1.116), (R01_LO, R01_HI), (lo, hi),
+                                             (R01_LO, R01_HI), (-.1e-6, .1e-6)):
+        rt, rb = value('R101')*a + value('R107')*b, value('R102')*c
+        rel.append(v*(1+rt/rb)+leak*rt)
+    ef_release = [min(rel), 1.09*(1+(value('R101')+value('R107'))/value('R102')), max(rel)]
     assert value('C68') == 10e-9
     peak = {'+12V': p12_max + RELEASE_N16_V['+12V'], '+5V': p5_max + RELEASE_N16_V['+5V'],
             '-12V': n12_max + RELEASE_N16_V['-12V']}
@@ -275,6 +316,10 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         assert band[0] > peak[rail], (rail, 'guard minimum must clear the stacked setpoint + N=16 release', band, peak[rail])
         assert band[2] <= DOWNSTREAM_MAX_V[rail], (rail, 'guard maximum above the downstream limit', band)
     assert ef_trip[0] > peak['+5V']+0.05, ('OVLO release headroom <50mV in imposed screen',ef_trip,peak)
+    assert ef_trip[0] > p5_max + RELEASE_ILIM_MAX_V, ('M2 (imposed-current screen): a release from U23 ILIM max '
+                                                      'must stay below OVLO min',
+                                                      ef_trip, p5_max)
+    assert ov5[0] > p5_max + RELEASE_ILIM_MAX_V, ('M2: ... and below the unmasked U20 +5V guard', ov5, p5_max)
     assert ef_trip[2] < 5.85, ('static OVLO upper threshold',ef_trip)
     # REF_OV bias: R100 must keep U21 above IK(min) 0.1 mA with the -12V divider drawing (1.26 + 20 V) / (R98 + R99)
     ik_min = ((3.3 * .98 - VREF_OV[2]) / (value('R100') * 1.01)
@@ -315,6 +360,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         run = reset and ovn and not fault
         assert s[netids['RUN']] == run, (i, arm, fault)
         assert s[netids['FAULT_CLK']] == (arm and reset and not (mainok and v20 and p12 and p5 and n12))
+        assert s[netids['TIMER_GO']] == (run and mainok), ('M1: timer must follow RUN AND MAIN_OK', i, arm, fault)
         for qg, want in [('Q6', mainok and v20)]:
             assert (run and s[n(qg, 1)]) == (run and want)
         if not ovn:
@@ -331,6 +377,14 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         s = comb(inp, True, True); assert not s[netids['RUN']]                               # no self-restart
         inp['RESET_N'] = False; s = comb(inp, False, False); assert not s[netids['RUN']]
         seq.append(missing)
+    # S8.4 M1: input between U5 turn-on and V20_OK: converters enabled (MAIN_OK) -> the timer runs although V20_OK is
+    # low, and once ARMED the low V20_OK clocks FAULT (fail-safe latch, never masked).
+    inp = dict(base); inp['V20_OK'] = False
+    s = comb(inp, False, False); assert s[netids['TIMER_GO']] and s[netids['RUN']]
+    assert comb(inp, True, False)[netids['FAULT_CLK']]
+    inp = dict(base); inp['MAIN_OK'] = False
+    assert not comb(inp, False, False)[netids['TIMER_GO']], 'no qualification while the converters are disabled'
+    seq.append('TIMER_GO = RUN AND MAIN_OK (marginal input below V20_OK arms, then latches)')
     inp = dict(base); inp['OV_N'] = False
     assert not comb(inp, False, False)[netids['RUN']], 'OV preset acts inside the startup window'
     inp['OV_N'] = True
@@ -366,17 +420,38 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
             'disconnect': {'MPN': 'TPS259470ARPWR', 'LCSC': 'C3662799',
                            'trip_min_nom_max_V': [round(v,4) for v in ef_trip],
                            'current_min_nom_max_A': [round(v,3) for v in ilm],
+                           'release_min_nom_max_V': [round(v, 4) for v in ef_release],
                            'margin_min_to_stacked_peak_V': round(ef_trip[0]-peak['+5V'],4),
-                           'raw_feedback_and_banks_upstream': True, 'delivered_status': 'AUXOFF + FLT + U18',
+                           'margin_min_to_ILIM_max_release_peak_V': round(ef_trip[0]-p5_max-RELEASE_ILIM_MAX_V, 4),
+                           'reconnect_margin_worst_V': round(ef_release[0]-p5_max, 4),
+                           'raw_feedback_and_banks_upstream': True,
+                           'delivered_status': 'AUXOFF + U18 (S8.4: FLT only to R108/TP21)',
+                           'FLT_isolated_from_latch': True, 'P5_FLT_N_members': sorted(f'{r}.{q}' for r, q in nets[netids['P5_FLT_N']]),
                            'OVLO_latched_internally': False, 'OVLO_response_max_specified': False},
+            'assembly_checks': ['S8.4 M7: U23 copper-pad mask expansion 0.025 mm, every mask web >= 0.15 mm (IN/OUT included)',
+                                'Unpowered, TP18 (P5_RAW) to J2/J3 pin 11/12 (+5V) must not read a short in either meter '
+                                'polarity: ~%.0fk / ~%.0fk plus a clamp-diode drop via GND (calcs.json bringup_tp18); near '
+                                '0 ohm = U23 IN/OUT bridge bypassing the eFuse' % (
+                                    1 / (1 / (value('R11') + value('R12')) + 1 / (value('R107') + value('R101') + value('R102'))
+                                         + 1 / (value('R95') + value('R96'))) / 1e3,
+                                    (value('R77') + value('R78') + value('R79')) / 1e3)],
+            'startup_arming': {'TIMER_GO': 'RUN AND MAIN_OK', 'MAIN_OK_is_converter_enable': True,
+                               'V20_OK_in_arming_path': False,
+                               'TIMER_GO_members': sorted(f'{r}.{q}' for r, q in nets[netids['TIMER_GO']])},
             'comparator_supply': {'supply': 'VPD', 'output_pullups': 'V3V3',
                                   'full_temp_headroom_V': cm_headroom, 'bypass_rating_V': 50},
             'nominal_voltage_valid_thresholds': mon, 'logic_POR_high_screen_V': por_max,
             'startup_qualification_typ_s': t_start, 'digital_combinations_checked': cases, 'scenarios': seq,
             'warnings': ['Arithmetic stacks every tolerance at once; it is a screen, not a rating.',
                          'Digital truth checks do not model analog propagation, comparator/LED timing or MOSFET transients.',
-                         'No routed PCB, thermal/startup/fault-injection qualification; <6V peak is not established.',
-                         'OVLO-only pulses may auto-recover during startup or below status-filter duration.'],
+                         'No routed PCB, thermal/startup/fault-injection qualification.',
+                         '<6 V at the header is NOT guaranteed (review C2): U23 OVLO response is 1.2 us typical with no '
+                         'maximum; neither D10 nor a bench-supply ceiling bounds it. The 3 us delay case reaches 6.33 V and '
+                         'stays above 6 V for ~193 us (rest of the 200 us window; with reverse blocking only R77-R79 '
+                         'or the modules discharge it); the 30 V / 1 ohm / 3 us stress case reaches 6.52 V (calcs.json).',
+                         'OVLO-only pulses may auto-recover during startup or below status-filter duration; after a genuine '
+                         'OVLO trip U23 may stay open at stacked corners (setpoint max above the release minimum) and the '
+                         'common latch then holds every rail off until RESET.'],
             'order_ready': False}
 
 

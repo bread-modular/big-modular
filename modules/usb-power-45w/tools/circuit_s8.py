@@ -1,23 +1,27 @@
-"""S8.3 single-board circuit: common input protection plus a fast +5 V series eFuse.
+"""S8.4 single-board circuit: common input protection plus a fast +5 V series eFuse.
 
 User-authorized replacement of the S8.2 crowbar (2026-11-01): U23 TPS259470ARPWR,
 C3662799, independent adjustable OVLO, current limit and true reverse blocking.
 The A variant is deliberately selected for stock/cost; the common retained latch
-owns system restart. AUXOFF + FLT join delivered-voltage P5_OK (startup qualified).
-U20 still provides unmasked severe-OV shutdown, now sensing P5_RAW before U23.
+owns system restart. U20 still provides unmasked severe-OV shutdown, sensing P5_RAW before U23.
 
-Q11/Q12/Q13/U22 and SCR-only resistors are gone. R101/R102 are reused as the
-precision eFuse divider, R103/R104 as ILM programming, C68 as dVdt. D21 moves
-upstream: a transient energy clamp protecting U23, NOT a 5 V rack clamp.
-C20-C23 and six new 22u capacitors remain upstream with buck feedback; C35/C60
-and C73/C74 are downstream. The extra upstream bank creates normal-release
-headroom without changing the original nominal regulator voltage/current target.
-
-U18/U20 keep LM2901B, but their supplies and 50 V bypasses now use always-on VPD
-instead of V3V3 (before U5, after F1, clamped by D1). Outputs still pull up only to V3V3. At qualified 20 V operation
-this fixes both U20 full-temperature common-mode headroom and its >=5 V offset
-specification condition. D22 and the separate REF_OV reference are retained.
-No ±12 V rail switches/LEDs are restored. Original S7 circuit45 is untouched.
+S8.4 (2026-11-02, fixes of the three S8.3 reviews, docs/s8-single-board.md changelog):
+- C1: U23 FLT (pin 4) is OFF P5_OK. TI SLVSFC9C Table 7-3 asserts FLT on reverse-current
+  blocking, persistent current limit, ILM faults and over-temperature, so a hot plug into a
+  live +5V bus or a large +5V load release (U23 holding the overshoot downstream) latched
+  every rail off. FLT now has its own pull-up R108 and test pad TP21 (diagnostic only).
+  P5_OK = U23 AUXOFF (input valid + inrush done; Table 7-4: NOT asserted by load-side events)
+  wire-AND U18 delivered-voltage comparator, unchanged.
+- M1: TIMER_GO = RUN AND MAIN_OK (U13 pin 10 was V20_OK). MAIN_OK is the net that enables
+  U2/U3, so the startup qualification window starts with the converters and ARMED cannot be
+  masked while they run. V20_OK stays in MAIN_LED_OK / ANY_BAD; R83 220k -> 200k re-centres it
+  (16.1 V nominal, 17.7 V high corner) below the 18.25 V minimum loaded PD input so the new
+  arming path cannot latch off a legitimate 20 V source.
+- M2: R11/R12 (U3 feedback) are 0.1 % / 25 ppm: setpoint 4.856-5.114 V. In the imposed-current release
+  screen (s8_calcs ovlo_release) any release from within U23's current limit stays below the OVLO minimum;
+  a loop-level load-release test is still open, as is the -35 mV OVLO reconnect corner.
+U18/U20 keep LM2901B on always-on VPD (before U5, after F1, clamped by D1) with V3V3 output
+pull-ups. No +/-12V rail switches/LEDs are restored. Original S7 circuit45 is untouched.
 """
 import copy
 
@@ -63,6 +67,8 @@ R0603_01 = {  # 0.1 %, 25 ppm/C thin film: (LCSC, MPN, manufacturer)
     '10k': ('C95204', 'RT0603BRD0710KL', 'YAGEO'),
     '110k': ('C326736', 'RT0603BRD07110KL', 'YAGEO'),
     '37k': ('C1694418', 'TNPW060337K0BEEA', 'Vishay'),
+    '68k': ('C705793', 'RT0603BRD0768KL', 'YAGEO'),     # S8.4 R11, U3 FB top (review M2)
+    '13k': ('C861121', 'RT0603BRD0713KL', 'YAGEO'),     # S8.4 R12, U3 FB bottom
 }
 # Symbol of U21: KiCad stock Reference_Voltage:TL431DBZ drawing, pins renumbered to the TI TLV431 DBZ
 # package (SLVS139Z Table 4-1: REF 1, CATHODE 2, ANODE 3; the TL431 DBZ order differs). See build_s8.py.
@@ -71,7 +77,9 @@ TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left')}
 TPS259470A = dict(LCSC='C3662799', MPN='TPS259470ARPWR', Manufacturer='Texas Instruments')
 CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
 DISCONNECT = ('U23', 'R101', 'R102', 'R103', 'R104', 'R107', 'C68',
-              'C69', 'C70', 'C71', 'C72', 'C73', 'C74', 'C75', 'C76', 'D23', 'TP18')
+              'C69', 'C70', 'C71', 'C72', 'C73', 'C74', 'C75', 'C76', 'D23', 'TP18', 'R108', 'TP21')
+# S8.4 V20_OK re-centre (review M1 consequence): JLC Basic, live evidence docs/s8-single/s84-sourcing.json.
+R83_S84 = dict(LCSC='C25811', MPN='0603WAF2003T5E')
 HDR = (0.0, 86.36)
 MIRROR_S8 = set()
 
@@ -117,6 +125,12 @@ def circuit():
         '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V. S8.3: common input switch; RUN also disables U23 on +5V')
     by['U2']['fields']['Note'] += '. S8: output is the delivered +12V (no rail eFuse); hiccup/OVP/TSD are its own'
     by['U3']['fields']['Note'] += '. S8.3: P5_RAW stays upstream of U23, including local output capacitors and feedback'
+    for ref, role in (('R11', 'top (P5_RAW)'), ('R12', 'bottom (GND)')):
+        code, mpn, maker = R0603_01[by[ref]['value']]
+        by[ref]['fields'].update(LCSC=code, MPN=mpn, Manufacturer=maker, Tolerance='0.1%', TCR='25ppm')
+        by[ref]['fields']['Note'] = (f'U3 FB {role}, 0.1 % / 25 ppm (S8.4, review M2): P5_RAW setpoint 4.856-5.114 V '
+                                     'over VFB 784-816 mV; the imposed-current load-release screen stays below the U23 '
+                                     'OVLO minimum (bench load-release test open)')
     by['U18']['pins']['3'] = 'VPD'
     by['C57']['pins']['1'] = 'VPD'
     by['C57']['fields']['Note'] = 'U18 always-on VPD bypass, 50 V rated; logic outputs still pull up to V3V3'
@@ -141,7 +155,12 @@ def circuit():
         if p['value'] != '10k':
             p.update(value='10k')
             p['fields'].update(LCSC=circuit45.R0603['10k'], MPN=circuit45.R_MPN['10k'])
-        p['fields']['Note'] = f'{net} pull-up: delivered-voltage monitor; P5_OK additionally includes U23 AUXOFF and FLT (S8.3)'
+        p['fields']['Note'] = (f'{net} pull-up: delivered-voltage monitor' + ('; P5_OK also has U23 AUXOFF (input valid + inrush '
+                               'done). S8.4: U23 FLT is NOT on P5_OK (reverse-current/overload flags, see TP21)'
+                               if net == 'P5_OK' else ''))
+    by['R83'].update(value='200k')
+    by['R83']['fields'].update(**R83_S84, Note='MON_20 top. S8.4: 200k (was 220k): V20_OK 16.1 V nominal, 14.6-17.7 V corners, '
+                                               'below the 18.25 V minimum loaded 20 V PD input; V20_OK no longer gates arming')
     by['U18']['value'] = LM2901B['MPN']
     by['U18']['fields'] = {**LM2901B, 'Note': 'Output-valid comparators on the delivered rails. +12/+5/input use '
                                               'signal on + input; -12V uses the offset negative sense on - input. Clamp '
@@ -152,14 +171,19 @@ def circuit():
     by['U12']['fields']['Note'] += (' S8: 2PRE_N = OV_N, so the overvoltage guard sets FAULT at once, '
                                     'also during the startup window.')
     by['U14']['pins'].update({'8': None, '9': 'GND', '10': 'GND', '12': 'GND', '13': 'GND'})
+    by['U13']['pins']['10'] = 'MAIN_OK'
+    by['U13']['fields']['Note'] = ('RUN=RESET_N & NOT_FAULT; fault clock=ARMED & filtered bad; S8.4 timer=RUN & MAIN_OK '
+                                   '(the U2/U3 enable net, so ARMED cannot stay masked while the converters run); '
+                                   'main LED=main status & input voltage.')
     by['U14']['fields']['Note'] = ('Four-input NAND combines the four good signals (ANY_BAD). Second NAND unused '
                                    '(S8 has no negative-switch opto): inputs tied to GND, output open.')
     by['C49'].update(value='100n')
     by['C49']['fields'] = {**circuit45.CAPS[('100n', 'C0603')],
                            'Note': 'Startup qualification ~0.57 s typical (TPS3808: CT nF / 175 + 0.5 ms). '
                                    'S7 had 1u (5.7 s) for the removed LM5067 insertion delay'}
-    by['U11']['fields']['Note'] = ('Timer begins only at RUN and >=20-V-class input. 100n gives ~0.57 s '
-                                   'qualification, not reset by individual bad rails.')
+    by['U11']['fields']['Note'] = ('S8.4: timer starts at RUN and MAIN_OK (U5 on in its 17.2-24.1 V window and PGOOD, the '
+                                   'same net that enables U2/U3). 100n gives ~0.57 s (0.31-0.88 s) qualification; '
+                                   'a MAIN_OK drop restarts it. Not reset by individual bad rails.')
     tp6 = by['TP6']
     tp6.update(value='OV_N', at=(309.88, 721.36))   # end of the page-05 test-pad row (was FAULT_LATCH twice)
     tp6['pins'] = {'1': 'OV_N'}
@@ -186,8 +210,8 @@ def circuit():
     c.append(two('D21', 'D_Zener', 'SMAJ5.0A', 'SMA', hp(259.08, 248.92), 'P5_RAW', 'GND', rot=270,
                  LCSC='C113952', MPN='SMAJ5.0A', Manufacturer='MDD(Microdiode Semiconductor)',
                  Note='S8.3 moved BEFORE U23 to P5_RAW: 5 V stand-off, 6.4-7.0 V breakdown, 9.2 V at 43.5 A. '
-                      'Absorbs failed-buck stored energy until U20 latches U5 off; keep beside U23 IN/GND. '
-                      'Not a rack voltage limit or a sustained-fault clamp. Qualify pulse energy/ringing/temperature.'))
+                      'Absorbs failed-buck stored energy until U20 latches U5 off; S8.4 placement contract: cathode '
+                      '<=6 mm from U23 IN. Not a rack voltage limit or a sustained-fault clamp. Qualify pulse energy/ringing.'))
 
     # ---- VIN: series-R damper replaces the 47u can (capacitor study B_RCx2)
     c[c.index(by['C5'])] = cap('C5', '10u', 'C1206', (243.84, 60.96), '_VIN_DAMP', 'GND',
@@ -208,10 +232,10 @@ def circuit():
                    '10': 'REF_OV', '11': 'GND', '13': None,            # spare: output held low, unconnected
                    '3': 'VPD', '12': 'GND'},
                   **LM2901B,
-                  Note='S8.3: always-on VPD supply (not V3V3), V3V3 pull-up on OV_N. Full-temperature input '
-                       'ceiling VPD-2 V; qualified input is >=15 V, REF_OV <=1.259 V. U20 senses +12V, P5_RAW and -12V; '
-                       'severe OV presets FAULT even before ARMED. Opening U5 alone cannot isolate stored energy; U23 '
-                       'disconnects +5V independently. Clamp D22 retained. Cold shutdown/replug remains a bench gate.'))
+                  Note='Always-on VPD supply (not V3V3), V3V3 pull-up on OV_N. Full-temperature input ceiling VPD-2 V; '
+                       'qualified input >=15 V, REF_OV <=1.259 V. Senses +12V, P5_RAW and -12V; severe OV presets FAULT '
+                       'even before ARMED. S8.4: with V3V3 lost but VPD present U20 may stay powered; its outputs then '
+                       'drive dead pull-ups and R64 holds RUN low, so it cannot enable anything (s8_calcs v3v3_loss).'))
     c.append(part('U21', 'TLV431_DBZ', 'TLV431BIDBZR', 'SOT23', m(210.82, 134.62), 90,
                   {TLV431_DBZ_PINS['REF']: 'REF_OV', TLV431_DBZ_PINS['K']: 'REF_OV', TLV431_DBZ_PINS['A']: 'GND'},
                   LCSC='C398375', MPN='TLV431BIDBZR', Manufacturer='Texas Instruments',
@@ -245,21 +269,23 @@ def circuit():
     c.append(cap('C66', '1n', 'C0603', m(314.96, 127.0), 'MON_OVN', 'GND', Note='~9 us filter'))
     c.append(part('D22', 'BAT54S', 'BAT54SLT1G', 'SOT23', m(289.56, 120.65), 0,
                   {'1': 'GND', '2': 'MON_OVN', '3': 'MON_OVN'}, LCSC='C19726', MPN='BAT54SLT1G', Manufacturer='onsemi',
-                  Note='MON_OVN clamp (review): diode 1 GND -> MON_OVN holds U20 pin 9 near -0.24 V (0.1 mA, BAT54 '
-                       'VF max) when V3V3 is gone and the rack keeps -12V; diode 2 shorted. ~0 V across it at the trip'))
+                  Note='MON_OVN clamp: diode 1 GND -> MON_OVN, diode 2 shorted. With V3V3 gone and -12V held it keeps U20 '
+                       'pin 9 near -0.24 V at 25 C only (0.1 mA VF max); cold it can pass -0.3 V. Not a guaranteed input '
+                       'clamp: R99 limits the node current to <=0.15 mA at -16 V (input rating 50 mA). ~0 V across it at the trip'))
     c.append(res('R97', '10k', m(231.14, 67.31), 'V3V3', 'OV_N',
                  Note='OV_N pull-up (wired-AND of the U20 guard outputs)'))
-    c.append(cap('C65', '100n', 'C0603', m(241.3, 99.06), 'VPD', 'GND', Note='U20 always-on VPD decoupling, 50 V; do not reconnect to V3V3'))
+    c.append(cap('C65', '100n', 'C0603', m(241.3, 99.06), 'VPD', 'GND',
+                 Note='U20 always-on VPD decoupling, 50 V, at U20 pin 3 (S8.4 placement contract <=4.5 mm); not V3V3'))
 
     # ---- S8.3: self-powered series disconnect. Do NOT put buck FB after the switch.
     c.append(part('U23', 'TPS259470_RPW', TPS259470A['MPN'], 'RPW10', hp(205.74, 269.24), 0,
-                  {'1': 'RUN', '2': 'P5_OVLO', '3': 'P5_OK', '4': 'P5_OK', '5': 'P5_RAW',
+                  {'1': 'RUN', '2': 'P5_OVLO', '3': 'P5_OK', '4': 'P5_FLT_N', '5': 'P5_RAW',
                    '6': '+5V', '7': 'P5_DVDT', '8': 'GND', '9': 'P5_ILM', '10': None}, **TPS259470A,
                   Note='TPS259470A: adjustable OVLO (~5.70 V nominal), 1.2 us TYP (no max specified), '
-                       '2.7-23 V operation / 28 V abs max, true reverse blocking, 28 mOhm typ. '
-                       'IN protected by D21 on P5_RAW. 1k+100 sets ~3.03 A nominal (not a guaranteed load rating). '
-                       'AUXOFF + FLT + U18 wire-AND into P5_OK: common latch after startup; U20 severe OV unmasked. '
-                       'FLT alone does NOT report OVLO. Auto-retry is suppressed once common FAULT is latched.'))
+                       '2.7-23 V operation / 28 V abs max, true reverse blocking, 28 mOhm typ. IN protected by D21. '
+                       '1k+100 = ILIM 3.03 A nominal, a protection threshold: published +5V rating 2.0 A (S8.4). '
+                       'AUXOFF + U18 wire-AND into P5_OK (latched after ARMED); U20 severe OV unmasked. S8.4: FLT '
+                       '(reverse current, overload, OT) only to R108/TP21, never into the common latch.'))
     c.append(res01('R101', '37k', hp(154.94, 264.16), 'P5_OV_TOP', 'P5_OVLO',
                    Note='Reused precision divider, now U23 OVLO. With R107 510R and R102 10k: 1.2*(1+37.51/10)=5.7012 V.'))
     c.append(res01('R102', '10k', hp(154.94, 281.94), 'P5_OVLO', 'GND', Note='U23 OVLO bottom; no intentional RC delay'))
@@ -281,7 +307,15 @@ def circuit():
                  LCSC='C8678', MPN='SS34', Manufacturer='MDD',
                  Note='U23 OUT negative-transient clamp, cathode +5V / anode GND. Keep close to OUT/GND.'))
     c.append(part('TP18', 'TestPoint', 'P5_RAW', 'TP', hp(177.8, 248.92), 0, {'1': 'P5_RAW'},
-                  Note='Raw +5V before U23; header +5V is isolated. No assembly part.'))
+                  Note='Raw +5V before U23; header +5V is isolated. No assembly part. S8.4 bring-up (review M7): unpowered, '
+                       'TP18 to J2/J3 pin 11/12 must not read a short in either meter polarity (expect ~18k / ~55k plus a '
+                       'diode drop via GND, rising while the banks charge); near 0 ohm = U23 IN/OUT bridge bypassing U23'))
+    # ---- S8.4 (review C1): FLT has its own pull-up and pad; it never reaches P5_OK / the common latch.
+    c.append(res('R108', '10k', hp(251.46, 264.16), 'V3V3', 'P5_FLT_N',
+                 Note='U23 FLT pull-up (diagnostic only, S8.4): low on reverse-current blocking, persistent current '
+                      'limit, ILM fault or over-temperature (TI SLVSFC9C Table 7-3). Not on P5_OK'))
+    c.append(part('TP21', 'TestPoint', 'P5_FLT_N', 'TP', hp(264.16, 271.78), 0, {'1': 'P5_FLT_N'},
+                  Note='U23 FLT test pad (S8.4): 3.3 V normal, low while U23 flags a fault. Copper-only, no assembly part'))
     return c
 
 
@@ -331,7 +365,8 @@ def drawing():
     L += [('REF_OV', m(214.63, 127.0), 'R')]
     # S8.3 U23 settings; power and logic pins get named stubs from the common drawing engine.
     W += [['R107.2', 'R101.1'], ['R101.2', 'R102.1'], ['R103.2', 'R104.1'],
-          ['U23.7', hp(208.28, 289.56), hp(220.98, 289.56), 'C68.1']]
+          ['U23.7', hp(208.28, 289.56), hp(220.98, 289.56), 'C68.1'],
+          ['R108.2', hp(251.46, 271.78), 'TP21.1']]               # S8.4: FLT pull-up and its own pad
     L += [('P5_OVLO', ('R101.2', 0, 3.81), 'R'), ('P5_ILM', ('R103.1', 0, -2.54), 'U')]
     return W, P, L
 

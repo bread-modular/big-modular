@@ -5,6 +5,10 @@ moved to the free spot left of its old place to make room.
 S8.3 / P1.3: U23 TPS259470A and split +5V banks replace the S8.2 crowbar. The U11 timer stays
 in its S8.2 position. U12 shifts 0.8 mm; R91 and TP11/TP16 move to make room for the bank.
 All fixed mechanical parts stay put. This is a FIT draft: shorten U23 bypass/clamp loops before routing.
+S8.4 / P1.4 (review M4): the U23 cell is re-placed so its IN/OUT 22u bypasses, D21 and D23 meet the
+local-loop contract in tools/check_s8_board.py (LOCAL_LOOPS); D23 leaves the header strip (C74 and TP18 take
+the slot), C70 continues the P5_RAW column under C23, the U11 timer group shifts 1.1 mm toward C24, C65 sits at
+U20 pin 3 (R73 to the rear test-pad row), C57 turns, C52 moves to U12 pin 14; R108/TP21 (U23 FLT) are new.
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
 --write is the older seed-based placement entry point, not a native edit-preservation tool.
 
@@ -71,11 +75,12 @@ GROUPS = [
      'Same block as +12V (same IC, same layout) one cell to the right; R10 (RT) at U3 pin 1',
      {**P5, 'R10': (112.79, 87.85, 270)}),
     ('Header strip (J2/J3 rail pins)',
-     'Header ceramics, the +12/+5 polarity clamps and the +5V TVS in one row 3.9 mm in front of the J2/J3 pins '
-     'they serve (where a backfeed or transient from the rack enters)',
+     'Header ceramics and the +12/+5 polarity clamps in one row 3.9 mm in front of the J2/J3 pins they serve '
+     '(where a backfeed or transient from the rack enters). P1.4: D23 moved to the U23 cell; C74 (delivered +5V) '
+     'takes its slot and TP18 (P5_RAW) sits beside it for the TP18-to-header-+5V open check',
      {'D3': (92.0, 68.45, 0), 'C35': (97.95, 68.45, 0), 'C34': (102.7, 68.45, 0), 'D2': (108.65, 68.45, 0),
       'C36': (114.6, 68.45, 180),
-      'D23': (122.9, 68.45, 0), 'C60': (128.85, 68.45, 0), 'C59': (133.6, 68.45, 0)}),
+      'C74': (119.4, 68.5, 0), 'TP18': (123.0, 68.5, 0), 'C60': (128.85, 68.45, 0), 'C59': (133.6, 68.45, 0)}),
     ('-12V converter (U4/L3)',
      'Compact inverting cell in front of J3: C27/C25/C26 (VIN to the IC ground -12V) at pins 3/1, BOOT C28 '
      'between U4 and L3, SW pin 2.5 mm from L3, output row (C29-C32 + C61) behind L3 at the J3 -12V pins, '
@@ -108,14 +113,15 @@ GROUPS = [
      '(left of U18: +12/+5 dividers and outputs; between them: VPD/-12V dividers and the REF divider; right of '
      'U20: OV_N pull-up, REF_OV bias R100, -12V OV divider); in front of U20 the OV dividers (shifted left, S8.1), the '
      'TLV431 U21 with C67 above U20 pins 5/7/10 and the MON_OVN clamp D22 above C66/R99; D15 left of the dividers; '
-     'status test pads (TP17 = REF_OV) in the rear row',
+     'status test pads (TP17 = REF_OV) in the rear row. P1.4 (review M4): C65 at U20 pin 3 (VPD) in the former R73 '
+     'slot, R73 to the rear row; C57 turned so its VPD pad faces U18 pin 3',
      {'U18': (68.95, 63.0, 0), 'U20': (81.3, 63.0, 0),
-      'R35': (63.6, 59.95, 90), 'C57': (63.6, 63.0, 90), 'R76': (63.6, 66.05, 90),
+      'R35': (63.6, 59.95, 90), 'C57': (63.6, 63.0, 270), 'R76': (63.6, 66.05, 90),
       'R44': (61.95, 59.95, 90), 'R79': (61.95, 63.0, 90), 'R75': (61.95, 66.05, 90),
       'R62': (73.55, 59.95, 90), 'R84': (73.55, 63.0, 90), 'R81': (73.55, 66.05, 90),
       'R85': (75.15, 59.95, 90), 'R83': (75.15, 63.0, 90), 'R82': (75.15, 66.05, 90),
-      'R73': (76.75, 59.95, 90), 'R74': (76.75, 63.0, 90), 'C56': (76.75, 66.05, 90),
-      'R97': (85.9, 59.95, 90), 'C65': (85.9, 63.0, 90), 'C66': (85.9, 66.05, 270),
+      'C65': (76.75, 59.95, 90), 'R73': (77.0, 57.0, 0), 'R74': (76.75, 63.0, 90), 'C56': (76.75, 66.05, 90),
+      'R97': (85.9, 59.95, 90), 'C66': (85.9, 66.05, 270),
       'R100': (87.5, 59.95, 270), 'R98': (87.5, 63.0, 270), 'R99': (87.5, 66.05, 270),
       'R78': (63.2, 68.45, 0), 'R77': (66.4, 68.45, 0), 'R80': (69.6, 68.45, 0), 'D15': (71.3, 73.15, 0),
       'C63': (75.4, 68.45, 0), 'C64': (78.6, 68.45, 0), 'R94': (75.4, 70.05, 0), 'R96': (78.6, 70.05, 0),
@@ -129,26 +135,29 @@ GROUPS = [
       'C54': (51.9, 72.9, 90), 'C55': (51.9, 69.4, 90), 'TP7': (64.75, 74.8, 90), 'TP3': (62.8, 86.5, 0)}),
     ('Latch / reset / timer logic (U10-U13)',
      'Front strip around SW1: U10 (POR + RESET) right behind SW1, U13 AND gates and U12 latch either side, U11 '
-     'start timer on the right (P1.2: moved right, above the crowbar SCR: R71/C52/C50 in one row under C24, '
-     'C49/R70/R69 beside its CT/SENSE pins); pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front',
-     {'U13': (94.2, 94.4, 90), 'U12': (112.6, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (128.4, 92.35, 0),
-      'C53': (88.8, 94.4, 90), 'C52': (130.85, 88.65, 0), 'C48': (101.4, 93.7, 90),
+     'start timer on the right (P1.2: moved right, above the crowbar SCR: R71/C50 in one row under C24, '
+     'C49/R70/R69 beside its CT/SENSE pins; P1.4: U11 group 1.1 mm toward C24, C52 to U12 pin 14 (review M4), '
+     'C50 stays the U11 bypass); pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front',
+     {'U13': (94.2, 94.4, 90), 'U12': (112.6, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (128.4, 91.25, 0),
+      'C53': (88.8, 94.4, 90), 'C52': (110.0, 89.7, 0), 'C48': (101.4, 93.7, 90),
       'R68': (103.75, 94.85, 0), 'R67': (99.75, 90.6, 90), 'R91': (99.8, 96.8, 90), 'R65': (101.4, 90.6, 90),
-      'R66': (99.75, 93.7, 90), 'R71': (127.75, 88.65, 0), 'R70': (132.95, 92.6, 90), 'R69': (134.55, 92.6, 90),
-      'C49': (131.35, 92.6, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
+      'R66': (99.75, 93.7, 90), 'R71': (127.75, 88.65, 0), 'R70': (132.95, 91.5, 90), 'R69': (134.55, 91.5, 90),
+      'C49': (131.35, 91.5, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
       'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (65.0, 71.4, 0),
       'TP16': (67.3, 71.4, 0)}),
-    ('+5V series disconnect (S8.3)',
-     'U23 replaces the crowbar trigger. C73/C74 downstream; C69-C72/C75/C76 extend the upstream bank. '
-     'D21 on P5_RAW in the cleared SCR area; D23 at the headers. Fit placement only: tighten D21/D23/local '
-     'bypass loops around U23 before routing; distributed bulk ceramics are not an ideal lumped bank.',
-     {'U23': (120.1, 91.15, 0),
-      'R101': (119.7, 87.73, 270), 'R102': (121.3, 87.73, 90), 'R107': (122.9, 87.73, 270),
-      'R103': (123.4, 91.15, 90), 'R104': (125.0, 91.15, 90), 'C68': (123.8, 94.1, 0),
-      'C73': (119.8, 95.5, 0), 'C74': (120.1, 98.0, 0),
-      'C69': (124.8, 96.8, 0), 'C70': (124.8, 99.3, 0),
-      'C71': (129.55, 96.8, 0), 'C72': (129.55, 99.3, 0),
-      'D21': (133.8, 97.7, 90), 'TP18': (119.8, 100.23, 0),
+    ('+5V series disconnect (S8.3, P1.4 local-loop cell)',
+     'P1.4 (review M4): U23 turned 90 deg so its IN strip (pad 5) faces C69 + D21 and its OUT strip (pad 6) faces '
+     'C73 + D23, each across one courtyard gap (LOCAL_LOOPS in tools/check_s8_board.py: 22u <= 3.5 mm, clamp <= 6 mm '
+     'pad centre to pad centre). OVLO divider R102/R101/R107 and ILM R103/R104 + dVdt C68 above/below the logic pins, '
+     'FLT pull-up R108 in the divider row, TP21 beside C76. C70 extends the P5_RAW column under C23, C71/C72 sit on '
+     'the P5_RAW side; C74 is at the header strip. Straight-line screens only: the routed loops are not proven.',
+     {'U23': (126.8, 96.6, 90),
+      'C69': (124.05, 96.6, 90), 'C73': (129.55, 96.6, 270),
+      'D21': (121.05, 94.85, 90), 'D23': (132.55, 97.73, 270),
+      'R103': (126.8, 94.28, 0), 'R104': (124.4, 91.17, 180), 'C68': (124.4, 92.73, 180),
+      'R102': (126.8, 98.92, 0), 'R101': (125.2, 100.47, 0), 'R107': (122.1, 100.47, 0),
+      'R108': (128.3, 100.47, 180), 'TP21': (118.9, 100.2, 0),
+      'C70': (117.29, 81.4, 0), 'C71': (136.7, 89.2, 90), 'C72': (121.3, 88.0, 0),
       'C75': (110.7, 99.8, 0), 'C76': (115.4, 99.8, 0)}),
 ]
 
@@ -169,8 +178,8 @@ def table():
 def board(root=MODULE):
     b = seed.seed_board(root)
     tb = b.GetTitleBlock()
-    tb.SetRevision('S8.3-P1.3')
-    for i, t in enumerate(['S8.3 schematic (+5V series disconnect, U20 supply fix). P1.3 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
+    tb.SetRevision('S8.4-P1.4')
+    for i, t in enumerate(['S8.4 schematic (+5V series disconnect, FLT off the latch, arming from MAIN_OK). P1.4 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
                            'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
                            'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json',
                            'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json']):
@@ -221,6 +230,29 @@ def write(force=False):
     return dest
 
 
+FP_REFRESH = {'U23'}     # S8.4 (review M7): copy the library's copper-pad mask expansion onto these placed footprints
+
+
+def refresh_pads(fps):
+    """Copy solder_mask_margin of numbered copper pads from the pinned library footprint (same number, position and
+    size required; nothing else changes). Returns {ref: [pad, old, new]} for the changed pads."""
+    from sexp import parse, nodes, one
+    changed = {}
+    for r in sorted(FP_REFRESH & set(fps)):
+        f = fps[r]
+        lib = parse((MODULE / 'hardware/USBPOWER45.pretty' / (f[1].split(':')[1] + '.kicad_mod')).read_text())
+        key = lambda pad: (str(pad[1]), tuple(map(float, one(pad, 'at')[1:3])), tuple(map(float, one(pad, 'size')[1:3])))
+        want = {key(p): one(p, 'solder_mask_margin')[1] for p in nodes(lib, 'pad') if p[1]}
+        got = [p for p in nodes(f, 'pad') if p[1]]
+        assert sorted(map(key, got)) == sorted(want), (r, 'placed pads differ from the library beyond the mask margin')
+        for p in got:
+            node = one(p, 'solder_mask_margin')
+            if float(node[1]) != float(want[key(p)]):
+                changed.setdefault(r, []).append([str(p[1]), node[1], want[key(p)]])
+                node[1] = want[key(p)]
+    return changed
+
+
 def sync_candidate(source_board, output_root):
     """S8-only native XML synchronization to a distinct candidate; retained identity/model preservation.
 
@@ -248,6 +280,7 @@ def sync_candidate(source_board, output_root):
     original_models = {r: copy.deepcopy(nodes(f, 'model')) for r, f in fps.items()}
     for r in set(fps) - set(comps):
         tree.remove(fps.pop(r))
+    refreshed = refresh_pads(fps)
     for r, comp in comps.items():
         if r not in fps:
             f = parse((MODULE / 'hardware/USBPOWER45.pretty' / (comp['footprint'].split(':')[1] + '.kicad_mod')).read_text())
@@ -285,9 +318,14 @@ def sync_candidate(source_board, output_root):
         if r in original_ids:
             assert one(f, 'uuid')[1] == original_ids[r]
             assert nodes(f, 'model') == original_models[r]
-    one(one(tree, 'title_block'), 'rev')[1] = 'S8.3-P1.3'
-    one(one(tree, 'title_block'), 'comment')[2] = 'S8.3 +5V series disconnect; VPD comparators. P1.3 DRAFT placement, UNROUTED.'
-    one(tree, 'title_block').append([atom('comment'), 5, 'S8.3: +5V series eFuse; crowbar removed; UNROUTED'])
+    one(one(tree, 'title_block'), 'rev')[1] = 'S8.4-P1.4'
+    one(one(tree, 'title_block'), 'comment')[2] = 'S8.4 +5V series disconnect, FLT off the latch. P1.4 DRAFT placement, UNROUTED.'
+    comments = {c[1]: c for c in nodes(one(tree, 'title_block'), 'comment')}
+    note5 = 'S8.4: review fixes (FLT/TP21, MAIN_OK arming, local-loop placement); UNROUTED'
+    if 5 in comments or '5' in comments:
+        (comments.get(5) or comments.get('5'))[2] = note5
+    else:
+        one(tree, 'title_block').append([atom('comment'), 5, note5])
     draft = dest.with_suffix('.sync.kicad_pcb')
     draft.write_text(dump(tree) + '\n')
     # A differently named temporary PCB otherwise loads DEFAULT design settings.
@@ -317,8 +355,8 @@ def sync_candidate(source_board, output_root):
         if r in original_ids:
             assert one(f, 'uuid')[1] == original_ids[r]
             assert nodes(f, 'model') == original_models[r]
-    rec = {'note': 'S8.3 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
-           'parts': after,
+    rec = {'note': 'S8.4 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
+           'parts': after, 'pad_mask_refreshed_from_library': refreshed,
            'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r]),
            'added_refs': sorted(set(after) - set(before)), 'removed_refs': sorted(set(before) - set(after))}
     (root / 'docs/s8-single/placement.json').write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')

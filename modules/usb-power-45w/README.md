@@ -7,21 +7,25 @@
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | **Main project = the routed BASE board** (`usb-power-45w.kicad_{pcb,sch,dru}`: USB/PD, main eFuse, negative protection, latch/RESET, LEDs, J2 output) |
 | [`hardware/usb-power-45w-top.kicad_pro`](hardware/usb-power-45w-top.kicad_pro) | The routed TOP board (`usb-power-45w-top.kicad_{pcb,sch}`: the three converters, +12/+5 eFuses, cans) |
 | [`hardware/usb-power-45w-system.kicad_pro`](hardware/usb-power-45w-system.kicad_pro) | Whole-circuit S7 schematic (`usb-power-45w-system.kicad_sch` + pages `01`..`07`, 216 refs / 145 nets); schematic only, no PCB |
-| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S8.3 single board**: +5 V TPS259470A series disconnect (crowbar removed), U18/U20 on always-on VPD, MAIN only, ceramic banks, two IDC outputs. 188 refs / 83 nets; P1.3 fit placement, all on F, 50 mm deep, **unrouted**. [Review package](docs/s8-single-board.md) |
+| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S8.4 single board**: +5 V TPS259470A series disconnect (FLT off the latch, own pad TP21), startup timer from MAIN_OK, R11/R12 0.1 %, U18/U20 on always-on VPD, MAIN only, ceramic banks, two IDC outputs. 190 refs / 84 nets; P1.4 fit placement with a local-loop contract, all on F, 50 mm deep, **unrouted**. Published prototype rating +12 V 2.5 A / +5 V 2.0 A / −12 V 0.9 A, ≤ 45 W. [Review package](docs/s8-single-board.md) |
 
-> **S8.3 development review:** replaces the S8.2 crowbar with TPS259470ARPWR / C3662799.
-> JLCPCB snapshot: $1.2943 at quantity 1–9, 2,525 in stock; Extended, Economic eligible.
-> +5 V OVLO 5.701 V nominal, current limit 3.031 A nominal; split raw/output capacitor banks,
-> upstream buck feedback, AUXOFF/FLT into the existing qualified fault latch. U20 and U18 use
-> VPD supplies with 3.3 V output pull-ups, fixing the active-operation common-mode issue.
-> ±12 V remain without output switches. The original S7/R3 designs below are unchanged.
+> **S8.4 development review** (fixes of the three S8.3 reviews, C1/C2/M1–M9; changelog in
+> [docs/s8-single-board.md](docs/s8-single-board.md)): U23 FLT now only drives TP21 (R108), so a hot plug
+> into a live +5 V bus or a held load release no longer latches the supply; `P5_OK` = AUXOFF + U18.
+> The startup timer runs from `MAIN_OK` (the converter enable), R83 200k re-centres `V20_OK`;
+> R11/R12 0.1 % keep the imposed-current load-release screen ≥ 0.109 V below the OVLO; the −12 V
+> start-up allowance follows the LMR38020 hiccup rule (0.85 mF, capped by TI's 1000 µF output-capacitance
+> guidance, vs a 0.44 mF typical rack); U23 mask webs 0.15 mm;
+> Extended accepted for the ten 0.1 % dividers only. U23 TPS259470ARPWR / C3662799: $1.2943 at
+> quantity 1–9, 2,525 in stock (live 2026-11-01); OVLO 5.701 V nominal, current limit 3.031 A nominal
+> (a threshold, not a rating). ±12 V remain without output switches. The original S7/R3 designs below are unchanged.
 >
-> **Not a safe-peak or power rating:** OVP response is typical-only; fault-delay/inductance
-> sensitivity can exceed 6 V. Critical-loop placement, routing and bench qualification remain
-> open. Short OVLO-only events may recover during startup/before status filtering completes.
-> Native ERC 0, exact pin/net parity; DRC **427 routing opens, no other findings**. Placement and
-> nominal 3D interference screens pass; 31 module tests pass. Updated BOM/PDF/renders/calculations
-> and sourcing evidence: [docs/s8-single-board.md](docs/s8-single-board.md).
+> **Not a safe-peak rating:** OVP response is typical-only; the 3 µs and 30 V / 1 Ω fault-delay cases
+> exceed 6 V for ~193 µs, so <6 V at the header is **not** guaranteed. The published rating is a
+> datasheet-minimum prototype rating, not measured. Routing and bench qualification remain open.
+> Native ERC 0, exact pin/net parity; DRC **429 routing opens, no other findings**. Placement (incl. the
+> local-loop contract) and nominal 3D interference screens pass; module tests pass
+> ([review-s84.json](docs/s8-single/review-s84.json)).
 
 Each board project has its own matching flat schematic (its share of S7 + the board-to-board
 headers XB*/XT*); `tools/check_stack.py` proves base + top joined through the headers equals the
