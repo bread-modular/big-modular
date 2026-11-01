@@ -2,10 +2,12 @@
 
 Run headless from modules/8bit:
   ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+  PANEL=lfo ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
 
 Outline and NPTH holes are read from the native panel PCB
 (../front-pcb/8bit-panel.kicad_pcb) and asserted against docs/geometry.json, so the
-print cannot drift from the PCB panel. Plain panel: no labels (3D printed, the
+print cannot drift from the PCB panel. PANEL=lfo builds the LFO variant from
+../front-pcb/8bit-lfo-panel.kicad_pcb (geometry.json lfo_panel: no J1 MIDI or RV3 hole). Plain panel: no labels (3D printed, the
 FR4 panel silk legend is not carried over).
 Thickness is panel_print_thickness_mm (2.0 mm, stiffer than the 1.6 mm FR4 panel);
 the PJ301M-12 threads still leave ~0.5 mm past a 2.0 mm nut (as modules/midi); the
@@ -17,6 +19,7 @@ to size after printing. Nominal geometry only, no physical-fit or strength claim
 """
 import json
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -29,8 +32,11 @@ MODULE = HERE.parents[1]
 sys.path.insert(0, str(MODULE / 'tools'))
 from sexp import nodes, one, parse  # noqa: E402
 
-PCB = HERE.parent / 'front-pcb/8bit-panel.kicad_pcb'
-NAME = '8bit-front-panel'
+VARIANT = os.environ.get('PANEL', 'main')
+assert VARIANT in ('main', 'lfo'), VARIANT
+STEM = {'main': '8bit', 'lfo': '8bit-lfo'}[VARIANT]
+PCB = HERE.parent / f'front-pcb/{STEM}-panel.kicad_pcb'
+NAME = f'{STEM}-front-panel'
 PRINT_THICKNESS = 2.0  # as modules/midi panel_print_thickness_mm
 
 
@@ -75,8 +81,10 @@ def check_contract(g):
     d = c['panel_hole_diameters_mm']
     want = [tuple(h) for h in c['rail_holes_mm']]
     col = c['control_column_X_mm']
-    want += [(col, j['Y'], d['jack']) for j in c['jacks']]
-    want += [(col, p['shaft_Y'], d['pot']) for p in c['pots']]
+    lfo = c['lfo_panel']
+    omit = lfo['omit_jacks'] + lfo['omit_pots'] if VARIANT == 'lfo' else []
+    want += [(col, j['Y'], d['jack']) for j in c['jacks'] if j['ref'] not in omit]
+    want += [(col, p['shaft_Y'], d['pot']) for p in c['pots'] if p['ref'] not in omit]
     want += [(led['X'], led['Y'], d['led']) for led in c['leds']]
     want.append((*c['button']['XY'], d['button']))
     got = [(x, y, w) for _, x, y, w, h, _ in g['holes'] if w == h]

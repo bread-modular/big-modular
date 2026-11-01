@@ -1,11 +1,13 @@
 """Generate the 8bit boards from docs/geometry.json and the native schematic netlist.
 
 Run from modules/8bit with KiCad's Python (pcbnew 10), after tools/build_schematic.py:
-  python3 -B tools/build_layout.py
+  python3 -B tools/build_layout.py          # full rebuild (carrier + panels)
+  python3 -B tools/build_layout.py panels   # panels only (routed carrier untouched)
 
 Writes hardware/8bit.kicad_pcb (carrier: placed footprints with schematic nets, no
-routing) and panels/front-pcb/8bit-panel.kicad_pcb (passive 4HP panel: outline, NPTH
-holes, silkscreen labels). Placement comes from the geometry contract; references,
+routing), panels/front-pcb/8bit-panel.kicad_pcb (passive 4HP panel: outline, NPTH
+holes, silkscreen labels) and panels/front-pcb/8bit-lfo-panel.kicad_pcb (the same panel
+for the LFO firmware: no MIDI jack or RV3 hole, LFO labels). Placement comes from the geometry contract; references,
 values, fields, symbol links and pad nets come from the netlist that kicad-cli
 exports from hardware/8bit.kicad_sch (what "Update PCB from Schematic" would do).
 
@@ -22,6 +24,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import uuid
 import xml.etree.ElementTree as ET
@@ -291,9 +294,19 @@ def npth(board, mech_id, x, y, d):
     fp.SetPosition(pt(x, y))
 
 
-def build_panel():
-    path = MODULE / 'panels/front-pcb/8bit-panel.kicad_pcb'
-    board = new_board(path, 'Big Modular - 8bit 4HP front panel', [
+# name -> (file stem, title, jacks/pots omitted, labels)
+PANELS = {
+    'main': ('8bit-panel', 'Big Modular - 8bit 4HP front panel', [], GEO['panel_labels']),
+    'lfo': ('8bit-lfo-panel', 'Big Modular - 8bit LFO 4HP front panel',
+            GEO['lfo_panel']['omit_jacks'] + GEO['lfo_panel']['omit_pots'],
+            GEO['lfo_panel']['labels']),
+}
+
+
+def build_panel(name='main'):
+    stem, title, omit, labels = PANELS[name]
+    path = MODULE / f'panels/front-pcb/{stem}.kicad_pcb'
+    board = new_board(path, title, [
         'S5 FIT STUDY: passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
@@ -303,19 +316,23 @@ def build_panel():
     holes = GEO['panel_hole_diameters_mm']
     cx = GEO['control_column_X_mm']
     spots = [(x, y, d) for x, y, d in GEO['rail_holes_mm']]
-    spots += [(cx, j['Y'], holes['jack']) for j in GEO['jacks']]
-    spots += [(cx, p['shaft_Y'], holes['pot']) for p in GEO['pots']]
+    spots += [(cx, j['Y'], holes['jack']) for j in GEO['jacks'] if j['ref'] not in omit]
+    spots += [(cx, p['shaft_Y'], holes['pot']) for p in GEO['pots'] if p['ref'] not in omit]
     spots += [(*GEO['button']['XY'], holes['button'])]
     spots += [(d['X'], d['Y'], holes['led']) for d in GEO['leds']]
     for x, y, d in spots:
         n += 1
         npth(board, f'H{n}', x, y, d)
-    for lab in GEO['panel_labels']:
+    for lab in labels:
         text(board, pcbnew.F_SilkS, lab['text'], *lab['XY'], lab['size'])
     save_canonical(path, board)
     return path
 
 
 if __name__ == '__main__':
-    print(build_carrier())
-    print(build_panel())
+    # `panels` rebuilds only the passive panels: the routed carrier owns its copper and
+    # must not be regenerated.
+    if sys.argv[1:] != ['panels']:
+        print(build_carrier())
+    for name in PANELS:
+        print(build_panel(name))
