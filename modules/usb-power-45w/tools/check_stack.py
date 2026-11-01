@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Independent checks for the R2 stacked boards (canonical hardware/base + hardware/top).
+"""Independent checks for the R2 stacked boards (canonical hardware/usb-power-45w = BASE, the main
+project, + hardware/usb-power-45w-top; S7 root hardware/usb-power-45w-system.kicad_sch).
 
   python3 -B tools/check_stack.py --scratch research/r2/check-<n>
 
@@ -12,7 +13,7 @@ Writes docs/stack-r2/validation.json; raw native ERC/DRC/netlists stay in --scra
 4. Header manifest: pin nets on both boards == tools/stack_r2.py, same pin positions; crossing
    nets == carried nets; per-pin current screen.
 5. Geometry: 1 mm courtyard (+stroke) / copper edge, 2 mm hand-solder, via-in-SMD-pad, In1 tracks,
-   plane pieces, fixed base interfaces vs the accepted monolithic board.
+   plane pieces, fixed base interfaces vs the accepted monolithic board (archived R1, read-only).
 6. Stack mechanics: heights vs gap/panel width with assumed tolerances, J2 box/plug/ribbon vs the
    top outline, brackets/nuts/tools vs top slab and parts, through-bolt and header-pin lengths.
 7. Converter locality metrics and thermal-terminal nets.
@@ -28,7 +29,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 MOD = Path(__file__).resolve().parents[1]
-HW = MOD / 'hardware'
 sys.path.insert(0, str(MOD / 'tools'))
 import pcbnew  # noqa: E402
 import stack_r2 as st  # noqa: E402
@@ -102,7 +102,7 @@ def erc(sch, out):
 
 
 def board(name):
-    return pcbnew.LoadBoard(str(HW / name / f'usb-power-45w-{name}.kicad_pcb'))
+    return pcbnew.LoadBoard(str(st.board_file(name)))
 
 
 def outline_segments(b):
@@ -131,8 +131,8 @@ def main():
         'manufacturing release / fabrication export', '45 W or simultaneous 54.5 W rating',
         'thermal performance or junction temperatures', 'connector/pin current rating (vendor data)',
         'can/LED/header/bolt heights beyond the assumed envelopes listed in stack_assumptions']}
-    sch = {'root': HW / 'usb-power-45w.kicad_sch', 'base': HW / 'base/usb-power-45w-base.kicad_sch',
-           'top': HW / 'top/usb-power-45w-top.kicad_sch'}
+    sch = {'root': st.system_root(), 'base': st.board_file('base', '.kicad_sch'),
+           'top': st.board_file('top', '.kicad_sch')}
     rep['erc'] = {k: erc(v, sc / f'erc-{k}.json') for k, v in sch.items()}
     if any(rep['erc'].values()):
         rep['problems'].append('ERC')
@@ -230,7 +230,7 @@ def main():
         rep['problems'].append('header manifest')
     # ---- 5. geometry -----------------------------------------------------------------------
     geo = {}
-    acc = pcbnew.LoadBoard(str(HW / 'usb-power-45w.kicad_pcb'))
+    acc = pcbnew.LoadBoard(str(st.R1_ARCHIVE))   # historical input: fixed base interfaces
     for name, b in (('base', bb), ('top', tb)):
         segs = outline_segments(b)
         edge, edge_bad, hs, hs_bad = {}, [], {}, []

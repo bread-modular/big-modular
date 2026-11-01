@@ -35,7 +35,7 @@ from mechanics45 import envelopes, fastener_solids  # noqa: E402
 G = json.loads((MODULE / 'docs/mechanical-geometry.json').read_text())
 OUT = MODULE / 'docs/mechanical-preview'
 STL = MODULE / 'research/mech-preview/stl'
-CARRIER = MODULE / 'hardware/usb-power-45w.kicad_pcb'
+CARRIER = MODULE / 'archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb'   # M1 carrier, archived R1 history
 PANEL = MODULE / 'panels/front-pcb/usb-power-45w-panel.kicad_pcb'
 PLACED = ['J1', 'SW1', 'J2', 'J3'] + [l['reference'] for l in G['LEDs']] + [c['reference'] for c in G['cans']['parts']]
 

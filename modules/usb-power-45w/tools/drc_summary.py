@@ -8,13 +8,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-HW = Path(__file__).resolve().parents[1] / 'hardware'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import stack_r2 as st  # noqa: E402
 
 
 def drc(board, out):
     rep = Path(out) / f'drc-{board}.json'
     subprocess.run(['kicad-cli', 'pcb', 'drc', '--severity-all', '--schematic-parity', '--format', 'json',
-                    '-o', str(rep), str(HW / board / f'usb-power-45w-{board}.kicad_pcb')],
+                    '-o', str(rep), str(st.board_file(board))],
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     d = json.loads(rep.read_text())
     kinds = collections.Counter(f"{v['severity']}:{v['type']}" for v in d['violations'])

@@ -125,7 +125,7 @@ class Sheet:
 
 
 def native():
-    car = pcbnew.LoadBoard(str(MODULE / 'hardware/usb-power-45w.kicad_pcb'))
+    car = pcbnew.LoadBoard(str(MODULE / 'archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb'))   # M1 carrier, archived R1 history
     pan = pcbnew.LoadBoard(str(MODULE / 'panels/front-pcb/usb-power-45w-panel.kicad_pcb'))
     ox, oy = G['native_panel_origin_mm']
     texts = [(t.GetText(), mm(t.GetPosition().x) - ox, mm(t.GetPosition().y) - oy, mm(t.GetTextHeight()))

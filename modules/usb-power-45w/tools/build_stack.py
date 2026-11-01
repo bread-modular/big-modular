@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Create the canonical R2 stacked boards hardware/{base,top}/usb-power-45w-{base,top}.kicad_pcb.
+"""Create the canonical R2 stacked boards (now hardware/usb-power-45w.kicad_pcb = BASE, the main
+project, and hardware/usb-power-45w-top.kicad_pcb = TOP; tools/stack_r2.board_file).
 
 ONE-TIME seed (refuses to overwrite a board that already carries tracks, vias or any electrical
-copper zone, filled or not: routed copper is never wiped; the current routed top is refused).
-BUILD_STACK_OUT=<dir> writes the seed there instead (isolated validation; hardware/ untouched). Input: the final study variant boards
+copper zone, filled or not: routed copper is never wiped; both R3-routed boards are refused, and
+the check runs before any project/rule file is touched).
+BUILD_STACK_OUT=<dir> writes the seed, its projects and rules there instead (isolated validation;
+hardware/ untouched). Input: the final study variant boards
 docs/stacked-fit-study/variant-base-protection/boards/ (placement only, read-only) and the native
 per-board schematics from tools/board_schematics.py. Changes, all explicit:
 
@@ -93,8 +96,29 @@ def add_support_keepout(b, centre, prefix):
     return zones
 
 
+def routed(path):
+    """Electrical copper on an existing board: tracks/vias or copper zones (filled or not)."""
+    import pcbnew
+    old = pcbnew.LoadBoard(str(path))
+    return len(old.GetTracks()), sorted({z.GetNetname() for z in old.Zones() if not z.GetIsRuleArea()})
+
+
+def refuse_routed(paths):
+    for chk in paths:      # never wipe copper, wherever the seed is written
+        if chk.exists():
+            tracks, cu = routed(chk)
+            assert not tracks and not cu, f'{chk} carries copper (tracks or zones {cu}): refusing to rebuild'
+
+
+def out_dir(board):
+    """Where the seed writes board / project / rules: hardware/, or BUILD_STACK_OUT/<board>/."""
+    if os.environ.get('BUILD_STACK_OUT'):
+        return Path(os.environ['BUILD_STACK_OUT']) / board
+    return HW
+
+
 def netlist(board):
-    sch = HW / board / f'usb-power-45w-{board}.kicad_sch'
+    sch = st.board_file(board, '.kicad_sch')
     xml = Path(f'/tmp/build_stack_{board}.xml')
     subprocess.run(['kicad-cli', 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(xml), str(sch)],
                    check=True, stdout=subprocess.DEVNULL)
@@ -113,15 +137,8 @@ def netlist(board):
 
 def one(board):
     import pcbnew
-    out = HW / board / f'usb-power-45w-{board}.kicad_pcb'
-    if os.environ.get('BUILD_STACK_OUT'):
-        out = Path(os.environ['BUILD_STACK_OUT']) / board / out.name
-    for chk in {out, HW / board / out.name}:      # never wipe copper, wherever the seed is written
-        if chk.exists():
-            old = pcbnew.LoadBoard(str(chk))
-            cu = [z.GetNetname() for z in old.Zones() if not z.GetIsRuleArea()]
-            assert not len(old.GetTracks()) and not cu, \
-                f'{chk} carries copper (tracks or zones {sorted(set(cu))}): refusing to rebuild'
+    out = out_dir(board) / st.board_file(board).name
+    refuse_routed({out, st.board_file(board)})
     io = pcbnew.PCB_IO_KICAD_SEXPR()
     nat = lambda y, z: pcbnew.VECTOR2I(pcbnew.FromMM(y + 35.75), pcbnew.FromMM(104.275 - z))  # noqa: E731
     yz = lambda v: (pcbnew.ToMM(v.x) - 35.75, 104.275 - pcbnew.ToMM(v.y))                     # noqa: E731
@@ -229,7 +246,7 @@ def one(board):
                 b.Add(n)
             nets[name] = n
         return nets[name]
-    sheetfile = f'usb-power-45w-{board}.kicad_sch'
+    sheetfile = st.board_file(board, '.kicad_sch').name
     seen = set()
     for f in b.GetFootprints():
         r = f.GetReference()
@@ -271,14 +288,16 @@ def one(board):
 
 def project(board):
     """Board project: net classes on the real rails; base keeps the J1/SW1 edge windows."""
-    pro = HW / board / f'usb-power-45w-{board}.kicad_pro'
-    d = json.loads(pro.read_text())
+    pro = out_dir(board) / st.board_file(board, '.kicad_pro').name
+    pro.parent.mkdir(parents=True, exist_ok=True)
+    d = json.loads(st.board_file(board, '.kicad_pro').read_text())
     d['net_settings']['netclass_patterns'] = [{'netclass': 'Power', 'pattern': n} for n in POWER_NETS]
     d['board']['design_settings']['rules']['min_copper_edge_clearance'] = 1.0
     d.setdefault('meta', {})['filename'] = pro.name
     pro.write_text(json.dumps(d, indent=2) + '\n')
     if board == 'base':
-        shutil.copy(HW / 'usb-power-45w.kicad_dru', HW / board / 'usb-power-45w-base.kicad_dru')
+        # historical input: the R1 rules (J1/SW1 edge windows) the base inherited at R2
+        shutil.copy(st.R1_ARCHIVE.with_suffix('.kicad_dru'), pro.with_suffix('.kicad_dru'))
 
 
 if __name__ == '__main__':
@@ -286,6 +305,7 @@ if __name__ == '__main__':
         print(json.dumps(one(sys.argv[2])))
         sys.stdout.flush()
         os._exit(0)
+    refuse_routed({p for name in ('base', 'top') for p in (st.board_file(name), out_dir(name) / st.board_file(name).name)})
     for name in ('base', 'top'):
         project(name)
         subprocess.run([sys.executable, '-B', __file__, '--side', name], check=True, stderr=subprocess.DEVNULL)

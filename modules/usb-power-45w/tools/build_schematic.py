@@ -1,4 +1,7 @@
-"""Generate the usb-power-45w S6 schematic (hardware/usb-power-45w.kicad_sch) and its pinned symbols.
+"""Generate the usb-power-45w S7 system schematic (hardware/usb-power-45w-system.kicad_sch) and its pinned symbols.
+
+The system root is the whole circuit (216 refs); hardware/usb-power-45w.kicad_sch is the routed BASE
+board's own schematic (tools/board_schematics.py) and is never written here.
 
 Run from modules/usb-power-45w:
   python3 -B tools/build_schematic.py
@@ -31,13 +34,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))  # tools/sexp.py, tools
 from sexp import parse, dump, nodes, one, walk, atom
 from circuit45 import (RAIL_SYMBOL, MIRROR_X, TEXT_LEFT, TEXT_POS, TEXTS, MULTI_UNIT,  # noqa: F401
                        circuit, drawing)
+from stack_r2 import SYSTEM_STEM, system_root  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
 HW = MODULE / 'hardware'
 STOCK = Path('/usr/share/kicad/symbols')
 UP_LIB = MODULE.parent / 'usb-power/hardware/BigModular.kicad_sym'
 LOCAL_LIB = MODULE / 'tools/USBPOWER45-src.kicad_sym'   # symbols KiCad 10 stock does not have
-PROJECT = 'usb-power-45w'
+PROJECT = SYSTEM_STEM   # symbol-instance project label = the system project's name (was 'usb-power-45w' until R3)
 LIB = 'USBPOWER45'
 STUB = 2.54
 MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and one symbol
@@ -485,7 +489,7 @@ def build(output_root=None):
         '(options "") (descr "usb-power-45w pinned symbols; see tools/build_schematic.py")))\n')
 
     sch, nets, parts = flat_sheet(circuit(), lib_syms)
-    out = HW / f'{PROJECT}.kicad_sch'
+    out = system_root(output_root)
     out.write_text(dump(sch) + '\n')
     subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
                    stdout=subprocess.DEVNULL)

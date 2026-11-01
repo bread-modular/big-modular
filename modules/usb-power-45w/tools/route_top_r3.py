@@ -21,7 +21,7 @@ MOD = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MOD / 'tools'))
 import route_r2 as r2  # noqa: E402
 
-PCB = MOD / 'hardware/top/usb-power-45w-top.kicad_pcb'
+PCB = r2.st.board_file('top')
 VP = (0.6, 0.3)     # power via (in groups)
 VS = (0.5, 0.3)     # signal via
 
@@ -90,6 +90,7 @@ def emit(batch):
 def apply(batch):
     """route_r2.apply with this module's emit; footprints listed in the batch 'moves' may change
     (position/rotation only - pads, nets and fields are asserted by the shared worker)."""
+    r2.st.refuse_replay(f'route_top_r3.py apply {batch}')
     r2.emit = lambda board, b: emit(b)
     moved = {m[0] for m in B[batch].get('moves', [])}
     deleted = {o['uuid'] for o in emit(batch)['operations'] if o['op'] == 'delete_item'}

@@ -290,7 +290,7 @@ if __name__ == '__main__':
     args = [a for a in args if a != '--refill']
     board = args[0]
     if board in ('top', 'base'):
-        board = MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'
+        board = st.board_file(board)
     r = check(board, refill)
     if out:
         out.parent.mkdir(parents=True, exist_ok=True)

@@ -7,8 +7,8 @@ See [S6 detailed design and qualification record](s6-rail-protection.md).
 
 ## Hierarchy and power flow
 
-Open `hardware/usb-power-45w.kicad_pro` / `usb-power-45w.kicad_sch`, the hierarchy
-root, not a child sheet as a standalone project. The root shows wired power flow,
+Open `hardware/usb-power-45w-system.kicad_pro` / `usb-power-45w-system.kicad_sch`, the hierarchy
+root (`hardware/usb-power-45w.kicad_pro` is the routed BASE board since 2026-11-01), not a child sheet as a standalone project. The root shows wired power flow,
 following the existing `usb-power` module's presentation.
 
 | Sheet | Contents |

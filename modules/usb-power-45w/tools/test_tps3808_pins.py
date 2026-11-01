@@ -99,14 +99,14 @@ class TPS3808PinIdentity(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp(prefix='tps3808-pins-'))
-        cls.netlist = export_netlist(HW / 'usb-power-45w.kicad_sch', cls.tmp / 'current.xml')
+        cls.netlist = export_netlist(HW / 'usb-power-45w-system.kicad_sch', cls.tmp / 'current.xml')
 
     @classmethod
     def tearDownClass(cls):
         shutil.rmtree(cls.tmp)
 
-    def verify(self, netlist, hardware=HW):
-        return verify_design.verify(netlist, hardware)
+    def verify(self, netlist, hardware=HW, root=None):
+        return verify_design.verify(netlist, hardware, hierarchy_root=root)
 
     def old_tables(self, pre_s7=False):
         crit = {**verify_design.CRIT, **OLD_CRIT}
@@ -153,12 +153,13 @@ class TPS3808PinIdentity(unittest.TestCase):
             dst.parent.mkdir(parents=True, exist_ok=True)
             dst.write_bytes(subprocess.run(['git', '-C', str(repo), 'show', f'{OLD_COMMIT}:{name}'],
                                            check=True, capture_output=True).stdout)
-        old = export_netlist(old_hw / 'usb-power-45w.kicad_sch', self.tmp / 'old.xml')
+        old_root = old_hw / 'usb-power-45w.kicad_sch'     # historical filename of the S6 root at that commit
+        old = export_netlist(old_root, self.tmp / 'old.xml')
         with self.old_tables(pre_s7=True):
             with mock.patch.object(verify_design, 'check_tps3808'):
-                self.verify(old, old_hw)
+                self.verify(old, old_hw, old_root)
             with self.assertRaisesRegex(AssertionError, 'TPS3808G01 symbol pin identity'):
-                self.verify(old, old_hw)
+                self.verify(old, old_hw, old_root)
 
 
 if __name__ == '__main__':

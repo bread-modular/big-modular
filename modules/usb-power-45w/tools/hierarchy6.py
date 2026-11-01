@@ -56,7 +56,7 @@ def layout(parts):
 
 def split(output_root, api):
     """api is the existing build_schematic module (shared symbol/pin helpers)."""
-    hw=Path(output_root)/'hardware'; out=hw/'usb-power-45w.kicad_sch'
+    hw=Path(output_root)/'hardware'; out=api.system_root(output_root)
     flat=parse(out.read_text()); rootid=one(flat,'uuid')[1]
     partlist=api.circuit(); parts={p['ref']:p for p in partlist}; plan=layout(parts)
     flatxml=hw.parent/'docs/flat-parity.xml'
@@ -293,7 +293,7 @@ def split(output_root, api):
         sh=parse(f'''(sheet (at {x} {y}) (size {w} {h}) (stroke (width 0.254) (type default)) (fill (color 0 0 0 0))
           (uuid "{sheetids[pg]}") (property "Sheetname" {json.dumps(PAGES[pg][1])} (at {x} {y-2.54} 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
           (property "Sheetfile" {json.dumps(PAGES[pg][0]+'.kicad_sch')} (at {x} {y+h+2.54} 0) (effects (font (size 1.1 1.1)) (justify left top)))
-          (instances (project "usb-power-45w" (path "/{rootid}" (page "{pg+1}")))))''')
+          (instances (project "{api.PROJECT}" (path "/{rootid}" (page "{pg+1}")))))''')
         for side,ns in [('L',left),('R',right)]:
             for k,n in enumerate(ns):
                 px=x if side=='L' else x+w;py=round(y+10.16+k*7.62,2);ang=180 if side=='L' else 0

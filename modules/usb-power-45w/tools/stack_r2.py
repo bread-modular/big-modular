@@ -2,16 +2,45 @@
 
 One source of truth for the board membership of every S7 schematic ref and for the soldered
 2.54 mm board-to-board headers. Used by tools/board_schematics.py (native per-board schematics),
-tools/build_stack.py (canonical boards) and tools/check_stack.py (independent checks).
+tools/build_stack.py (canonical boards) and tools/check_stack.py (independent checks), and the
+one place that names the native files (board_file / system_root below).
 
-BASE (hardware/base/): USB/CH224A, F1, D1, D10, U5 + local C2, always-on U9 latch/RESET, monitors,
+BASE (hardware/usb-power-45w.*, the module's main KiCad project): USB/CH224A, F1, D1, D10, U5 + local C2, always-on U9 latch/RESET, monitors,
 panel LEDs, SW1, J1, the single output J2, and the whole negative-rail protection block
 (U8/Q4/R48/R49 Kelvin, optos) that makes -12V from N12_RAW.
-TOP (hardware/top/): all three converters (U2/U3/U4) with input caps, BOOT, L, FB, RT, the four
+TOP (hardware/usb-power-45w-top.*): all three converters (U2/U3/U4) with input caps, BOOT, L, FB, RT, the four
 retained cans (C5 = converter-side VIN bulk, C34/C35/C36 raw-rail bulk), U6/U7 eFuses.
 Partition rule: schematic pages 02/03/04 plus C5 are TOP, everything else BASE.
 """
+from pathlib import Path
+
 from hierarchy6 import layout
+
+# Native file layout (main entry point, 2026-11-01). The routed boards were moved byte-identically
+# from hardware/base/usb-power-45w-base.* and hardware/top/usb-power-45w-top.*: BASE is now the
+# module's main KiCad project, TOP sits beside it, and the S7 hierarchy has its own root. The
+# superseded monolithic R1 carrier is read-only history under archive/r1-monolithic/.
+MODULE = Path(__file__).resolve().parents[1]
+STEM = {'base': 'usb-power-45w', 'top': 'usb-power-45w-top'}
+SYSTEM_STEM = 'usb-power-45w-system'
+R1_ARCHIVE = MODULE / 'archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb'
+
+
+def board_file(board, suffix='.kicad_pcb', module=MODULE):
+    """Native file of one stacked board ('base' | 'top'), e.g. hardware/usb-power-45w.kicad_pcb."""
+    return Path(module) / 'hardware' / (STEM[board] + suffix)
+
+
+def system_root(module=MODULE):
+    """S7 hierarchy root (whole circuit, 216 refs): hardware/usb-power-45w-system.kicad_sch."""
+    return Path(module) / 'hardware' / (SYSTEM_STEM + '.kicad_sch')
+
+
+def refuse_replay(what):
+    """Seed / placement / route replays wrote the boards before R3 routing was finished; the
+    routed native PCBs now own all copper and placement, so these entry points never write them."""
+    raise SystemExit(f'{what}: refused. R3 routing is finished and owned by the native boards '
+                     f'({board_file("base").name}, {board_file("top").name}); this replay is history.')
 
 TOP_PAGES = {2, 3, 4}
 TOP_EXTRA = {'C5'}   # VIN bulk can at the converter-side VIN entry (8 mm: cannot sit under the top board)

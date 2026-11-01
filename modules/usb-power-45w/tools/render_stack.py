@@ -35,7 +35,7 @@ def poly_yz(sp):
 
 
 def render(board, out, zoom=None, layers=('F.Cu', 'B.Cu'), title=''):
-    b = pcbnew.LoadBoard(str(MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'))
+    b = pcbnew.LoadBoard(str(st.board_file(board)))
     pcbnew.ZONE_FILLER(b).Fill([z for z in b.Zones() if not z.GetIsRuleArea()])   # view only, not saved
     y0, y1, z0, z1 = zoom or (12.0, 116.0, 0.0, 44.0)
     S = 2400 / (y1 - y0)
@@ -111,7 +111,7 @@ def assembly(out):
     dr.line([P(20, 10), P(20, 128)], fill=(200, 0, 0), width=2)
     dr.text(P(20.3, 11), 'X20 = 4HP width', fill=(200, 0, 0), font=f)
     for name, xb, xf, col in (('base', S['base_B'], S['base_F'], (60, 120, 60)), ('top', S['top_B'], S['top_F'], (60, 60, 160))):
-        b = pcbnew.LoadBoard(str(MOD / 'hardware' / name / f'usb-power-45w-{name}.kicad_pcb'))
+        b = pcbnew.LoadBoard(str(st.board_file(name)))
         ys = [yz(d.GetStart())[0] for d in b.GetDrawings() if d.GetLayer() == pcbnew.Edge_Cuts]
         dr.rectangle([P(xb, min(ys)), P(xf, max(ys))], fill=col + (200,))
         for fp in b.GetFootprints():
@@ -147,7 +147,7 @@ KEY = ('U', 'J', 'Q', 'L', 'F', 'SW', 'X')
 
 def face(board, page, W):
     """One board's F face, courtyards tinted by S7 schematic page (functional block), key refs only."""
-    b = pcbnew.LoadBoard(str(MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'))
+    b = pcbnew.LoadBoard(str(st.board_file(board)))
     pcbnew.ZONE_FILLER(b).Fill([z for z in b.Zones() if not z.GetIsRuleArea()])
     y0, y1, z0, z1 = 12.0, 116.0, -1.0, 44.0
     S = W / (y1 - y0)

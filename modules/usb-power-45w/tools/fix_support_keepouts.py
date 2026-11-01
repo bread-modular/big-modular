@@ -59,7 +59,7 @@ def snapshot(b):
 def main(board):
     import pcbnew
     pre = 'T' if board == 'top' else 'B'
-    path = MOD / 'hardware' / board / f'usb-power-45w-{board}.kicad_pcb'
+    path = st.board_file(board)
     sha0 = hashlib.sha256(path.read_bytes()).hexdigest()
     bak = Path(f'/tmp/usb-power-45w-{board}-pre-support-keepout-{sha0[:12]}.kicad_pcb')
     shutil.copy(path, bak)

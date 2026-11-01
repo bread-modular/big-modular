@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from circuit45 import circuit
 from build_schematic import FP
+from stack_r2 import STEM, SYSTEM_STEM
 from sexp import parse, nodes, one
 
 
@@ -73,7 +74,8 @@ def load_xml(path):
     return root,comps,nets,{pin:name for name,ps in nets.items() for pin in ps}
 
 
-def verify(netlist,hardware,previous=None):
+def verify(netlist,hardware,previous=None,hierarchy_root=None):
+    """hierarchy_root: default hardware/usb-power-45w-system.kicad_sch (pre-R3 history: usb-power-45w.kicad_sch)."""
     root,comps,nets,pins=load_xml(netlist)
     parts={p['ref']:p for p in circuit() if not p['ref'].startswith('#')}
     assert set(parts)==set(comps),'Native/table component mismatch'
@@ -126,8 +128,13 @@ def verify(netlist,hardware,previous=None):
     assert libparts['FQD13N06L']=={'1':'G','2':'D','3':'S'}
     for k,v in {'5':'1Q','8':'2Q_N','9':'2Q','13':'2CLR_N'}.items():assert libparts['HC74_DUAL'][k]==v
     for k,v in {'1':'VCC','5':'VEE','7':'SENSE','8':'GATE','9':'OUT'}.items():assert libparts['LM5067MM'][k]==v
-    files=list(hardware.glob('*.kicad_sch'));assert len(files)==8,('Hierarchy sheet count',len(files))
-    assert len(nodes(parse((hardware/'usb-power-45w.kicad_sch').read_text()),'sheet'))==7
+    rootsch=Path(hierarchy_root) if hierarchy_root else hardware/f'{SYSTEM_STEM}.kicad_sch'
+    sheets=nodes(parse(rootsch.read_text()),'sheet');assert len(sheets)==7,('Hierarchy sheet count',len(sheets))
+    files=[rootsch]+[hardware/next(p[2] for p in nodes(s,'property') if p[1]=='Sheetfile') for s in sheets]
+    assert len(set(files))==8 and all(f.exists() for f in files),('Hierarchy files',files)
+    # Only the two stacked-board schematics may sit beside the hierarchy (board projects, not sheets).
+    extra={f.name for f in hardware.glob('*.kicad_sch')}-{f.name for f in files}
+    assert extra<={f'{s}.kicad_sch' for s in STEM.values()},('Unexpected schematics',sorted(extra))
     for f in files:
         for sym in nodes(parse(f.read_text()),'symbol'):
             ref=next(p[2] for p in nodes(sym,'property') if p[1]=='Reference')
@@ -232,4 +239,5 @@ def verify(netlist,hardware,previous=None):
 if __name__=='__main__':
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--hardware',type=Path,required=True)
     ap.add_argument('--previous-netlist',type=Path,help='Committed S5 XML for preservation checks')
-    a=ap.parse_args();print(json.dumps(verify(a.netlist,a.hardware,a.previous_netlist),indent=2))
+    ap.add_argument('--root',type=Path,help='hierarchy root (default <hardware>/usb-power-45w-system.kicad_sch)')
+    a=ap.parse_args();print(json.dumps(verify(a.netlist,a.hardware,a.previous_netlist,a.root),indent=2))

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "project_dir": "../hardware/top",
-  "board": "../hardware/top/usb-power-45w-top.kicad_pcb",
-  "root_schematic": "../hardware/top/usb-power-45w-top.kicad_sch",
+  "project_dir": "../hardware",
+  "board": "../hardware/usb-power-45w-top.kicad_pcb",
+  "root_schematic": "../hardware/usb-power-45w-top.kicad_sch",
   "dependencies": [
     "../hardware/USBPOWER45.pretty",
     "../hardware/USBPOWER45.kicad_sym"
