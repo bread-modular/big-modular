@@ -7,13 +7,9 @@ the S7 system schematic (tools/build_schematic.py flat_sheet + tools/hierarchy_s
 intermediate is checked pin-for-pin against the table (check_netlist) and the hierarchy against the
 flat sheet (exact component/field/pin-membership parity). S8 UUIDs use their own namespace.
 
-Writes only under hardware/single/ (project, root, pages, the project's pinned symbol library and
-library tables) and docs/s8-single/ (wiring/parity records). Symbols: the S7 pinned symbols that S8
-uses plus one S8.1 symbol, TLV431_DBZ (tlv431_dbz() below: the stock TL431DBZ drawing with the TI
-TLV431 DBZ pin numbers; tools/verify_s8.py checks them against TI's table), and the S8.2 crowbar symbols:
-TLVH432_DBZ (the stock TL431DBZ drawing, whose numbers already are the TLVH432 DBZ pinout) and the stock
-Device:Q_SCR_KAG, Transistor_FET:AO3401A and Transistor_BJT:MMBT3904. Footprints: the shared
-hardware/USBPOWER45.pretty (no new footprint; the crowbar SCR uses the pinned TO-252-2).
+Writes a separate review candidate with --output-root. S8.3 replaces the S8.2 crowbar
+with the pinned TPS259470 symbol/land pattern in tools/s83_parts.py. Shared S7
+symbols, footprints and native projects are not rewritten.
 """
 import argparse
 import copy
@@ -34,8 +30,8 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '+5V', '-12V'}
-S8_STOCK = {'Q_SCR_KAG': ('Device', 'Q_SCR_KAG'), 'AO3401A': ('Transistor_FET', 'AO3401A'),
-            'MMBT3904': ('Transistor_BJT', 'MMBT3904')}      # S8.2 crowbar (stock, flattened as the S7 symbols)
+from s83_parts import FP_S83, symbol as efuse_symbol
+FP_S8 = {**bs.FP, **FP_S83}
 
 
 def uid(key):
@@ -68,38 +64,15 @@ def tlv431_dbz():
     return sym
 
 
-def tlvh432_dbz():
-    """U22 symbol: KiCad stock Reference_Voltage:TL431DBZ unchanged. Its numbers (K 1, REF 2, A 3) are the TI TLVH432
-    DBZ pinout (SLVS555N Pin Functions: CATHODE 1, REF 2, ANODE 3); only value, datasheet and description change."""
-    sym, _, _ = bs.stock_symbol('Reference_Voltage', 'TL431DBZ')
-    pins = {one(p, 'name')[1]: one(p, 'number')[1] for p in walk(sym, 'pin')}
-    assert pins == circuit_s8.TLVH432_DBZ_PINS, ('TL431DBZ pin numbers changed', pins)
-    props = {pp[1]: pp for pp in nodes(sym, 'property')}
-    props['Value'][2] = 'TLVH432_DBZ'
-    props['Datasheet'][2] = 'https://www.ti.com/lit/ds/symlink/tlvh431.pdf'
-    props['Description'][2] = 'Shunt regulator 1.24 V, 18 V cathode, SOT-23 TI TLVH432 DBZ pinout (CATHODE 1, REF 2, ANODE 3)'
-    return rename(sym, 'TLVH432_DBZ')
-
-
-def rename(sym, key):
-    sym[1] = key
-    for u in nodes(sym, 'symbol'):
-        u[1] = key + '_' + '_'.join(u[1].rsplit('_', 2)[-2:])
-    return sym
-
-
 def lib_symbols(parts):
     """The S7 pinned symbols (tools/build_schematic.py SYMBOLS) that S8 uses, flattened the same way, plus
-    the S8.1 TLV431_DBZ symbol and the S8.2 crowbar symbols."""
+    the S8.1 TLV431_DBZ and S8.3 TPS259470_RPW symbols."""
     used = {p['sym'] for p in parts} | POWER_SYMBOLS
     out = {k: v for k, v in bs.lib_symbols().items() if k in used}
     if 'TLV431_DBZ' in used:
         out['TLV431_DBZ'] = tlv431_dbz()
-    if 'TLVH432_DBZ' in used:
-        out['TLVH432_DBZ'] = tlvh432_dbz()
-    for key, (lib, name) in S8_STOCK.items():
-        if key in used:
-            out[key] = rename(bs.stock_symbol(lib, name)[0], key)
+    if 'TPS259470_RPW' in used:
+        out['TPS259470_RPW'] = efuse_symbol()
     assert used <= set(out), sorted(used - set(out))
     return out
 
@@ -110,11 +83,12 @@ def build(output_root=None):
     docs = root / 'docs' / 's8-single'
     hw.mkdir(parents=True, exist_ok=True)
     docs.mkdir(parents=True, exist_ok=True)
+    bs.FP = dict(FP_S8)
     bs.uid = uid                                   # S8 namespace for every generated UUID
     parts = circuit_s8.circuit()
     bs.NOT_ASSEMBLED = set(bs.NOT_ASSEMBLED) | {p['ref'] for p in parts if p['ref'].startswith('TP')}   # TP17
     bs.TEXT_POS = {**bs.TEXT_POS, **circuit_s8.TEXT_POS_S8}
-    bs.MIRROR_X = set(bs.MIRROR_X) | circuit_s8.MIRROR_S8                                    # Q12 source up
+    bs.MIRROR_X = set(bs.MIRROR_X) | circuit_s8.MIRROR_S8
     syms = lib_symbols(parts)
     lib = [atom('kicad_symbol_lib'), one(parse((bs.STOCK / 'Device.kicad_sym').read_text()), 'version'),
            [atom('generator'), 'kicad_symbol_editor'], [atom('generator_version'), '10.0']]
@@ -130,7 +104,7 @@ def build(output_root=None):
     # Project file first: kicad-cli loads it when re-saving the sheets, so every run sees the same project.
     out = root_file(root)
     pro = hw / f'{STEM}.kicad_pro'
-    meta = json.loads((root / 'hardware' / 'usb-power-45w-system.kicad_pro').read_text())
+    meta = json.loads((pro if pro.exists() else root / 'hardware' / 'usb-power-45w-system.kicad_pro').read_text())
     meta['meta']['filename'] = pro.name
     meta['schematic']['top_level_sheets'] = [{'filename': out.name, 'name': out.stem, 'uuid': uid('root')}]
     meta['sheets'] = []
@@ -138,11 +112,10 @@ def build(output_root=None):
 
     sch, nets, _ = bs.flat_sheet(
         parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 single board',
-        comments=('S8.2: single board, no per-rail eFuses, ceramic bulk, two output headers, OV guard, MAIN LED only',
-                  'S8.1 review fixes (guard reference U21, LM2901B, 0.1 % dividers, clamp D22) + S8.2 +5V crowbar Q11 - '
-                  'docs/s8-single-board.md'),
+        comments=('S8.3: single board, +5V fast series eFuse; +/-12V unswitched; two headers; MAIN only',
+                  'Crowbar removed; U18/U20 on VPD; split +5V banks; see docs/s8-single-board.md'),
         source=circuit_s8.drawing(), texts=circuit_s8.TEXTS)
-    one(one(sch, 'title_block'), 'rev')[1] = 'S8.2'
+    one(one(sch, 'title_block'), 'rev')[1] = 'S8.3'
     out.write_text(dump(sch) + '\n')
     subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True, stdout=subprocess.DEVNULL)
     nc = {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None}
@@ -152,7 +125,7 @@ def build(output_root=None):
     crossing = hierarchy_s8.split(out, docs, api)
 
     refs = sorted(p['ref'] for p in parts if not p['ref'].startswith('#'))
-    record = {'revision': 'S8.2', 'project': f'hardware/single/{pro.name}', 'components': len(refs),
+    record = {'revision': 'S8.3', 'project': f'hardware/single/{pro.name}', 'components': len(refs),
               'nets': len(nets), 'no_connect_pins': len(nc), 'removed_from_S7': sorted(circuit_s8.S8_REMOVED),
               'inter_sheet_nets': {n: sorted(p) for n, p in sorted(crossing.items())},
               'symbols': sorted(syms),

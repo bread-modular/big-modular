@@ -35,7 +35,8 @@ import mechanics_s8  # noqa: E402
 WORK = Path(os.environ['S8_ASM_WORK'])
 G = mechanics_s8.geometry()
 FP = json.loads((WORK / 'footprints.json').read_text())
-BOARD = MODULE / 'hardware/single/usb-power-45w-single.kicad_pcb'
+DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
+BOARD = DESIGN / 'hardware/single/usb-power-45w-single.kicad_pcb'
 PANEL = MODULE / 'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb'
 
 
@@ -139,6 +140,10 @@ def main():
     for r in G['inductor_body']['parts']:
         y, z = FP[r]['centre_YZ']
         proxies[r] = [box([[FCU, FCU + H], [y - L / 2, y + L / 2], [z - W / 2, z + W / 2]])]
+    # RPW0010A body envelope, TI drawing 4225183/A, 2.1 x 2.1 x 1.0 mm maximum.
+    # Not an exact lead/body STEP model; include explicitly in the interference screen.
+    y, z = FP['U23']['centre_YZ']
+    proxies['U23'] = [box([[FCU, FCU + 1.0], [y-1.05, y+1.05], [z-1.05, z+1.05]])]
     c = contract()
     brackets = []
     for y in c['Y_centres']:
@@ -170,7 +175,7 @@ def main():
         'headers': (cat_parts['headers'], 'J2/J3 2x8 box headers (THT, KiCad model)'),
         'led': (cat_parts['led'], 'D8 3 mm MAIN LED (THT)'),
         'inductors': (sum((proxies[r] for r in groups['inductors']), []), 'L1-L3 PROXY 10.3 x 10.3 x 4.0 (no model)'),
-        'ui_envelopes': (proxies['J1'] + proxies['SW1'], 'J1 USB-C / SW1 reset drawing envelopes (no model)'),
+        'ui_envelopes': (proxies['J1'] + proxies['SW1'] + proxies['U23'], 'J1 / SW1 / U23 maximum body envelopes (no model)'),
         'brackets': (brackets, 'Plain M3 L brackets x2 (tools/bracket45.py)'),
         'screws': (f['screws'], 'M3x8 pan (panel) + M3x8 90deg flat (side) PROXIES'),
         'nuts': (f['nuts'], 'M3 hex nut AF5.5 x 2.4 PROXIES'),

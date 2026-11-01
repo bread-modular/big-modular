@@ -1,7 +1,7 @@
 {
   "status": "S8_schematic_checks_not_bench_qualification",
-  "components": 182,
-  "nets_including_NC": 115,
+  "components": 188,
+  "nets_including_NC": 117,
   "sheets": 7,
   "exact_field_pin_NC_pad_parity": true,
   "removed_S7_refs": 69,
@@ -16,19 +16,24 @@
     "C66",
     "C67",
     "C68",
+    "C69",
+    "C70",
+    "C71",
+    "C72",
+    "C73",
+    "C74",
+    "C75",
+    "C76",
     "D21",
     "D22",
+    "D23",
     "J3",
-    "Q11",
-    "Q12",
-    "Q13",
     "R100",
     "R101",
     "R102",
     "R103",
     "R104",
-    "R105",
-    "R106",
+    "R107",
     "R92",
     "R93",
     "R94",
@@ -38,9 +43,10 @@
     "R98",
     "R99",
     "TP17",
+    "TP18",
     "U20",
     "U21",
-    "U22"
+    "U23"
   ],
   "ceramic_banks_22u_or_10u": {
     "+12V": [
@@ -52,12 +58,10 @@
       "C59"
     ],
     "+5V": [
-      "C20",
-      "C21",
-      "C22",
-      "C23",
       "C35",
-      "C60"
+      "C60",
+      "C73",
+      "C74"
     ],
     "-12V": [
       "C29",
@@ -74,6 +78,18 @@
       "C24",
       "C6",
       "C7"
+    ],
+    "P5_RAW": [
+      "C20",
+      "C21",
+      "C22",
+      "C23",
+      "C69",
+      "C70",
+      "C71",
+      "C72",
+      "C75",
+      "C76"
     ]
   },
   "vin_damper": {
@@ -107,12 +123,12 @@
     },
     "stacked_normal_peak_V": {
       "+12V": 13.945,
-      "+5V": 5.617,
+      "+5V": 5.52,
       "-12V": 13.108
     },
     "margin_min_to_peak_V": {
       "+12V": 0.535,
-      "+5V": 0.06,
+      "+5V": 0.157,
       "-12V": 0.157
     },
     "downstream_limit_V": {
@@ -135,34 +151,30 @@
     },
     "U21_cathode_current_min_mA": 0.711
   },
-  "crowbar": {
-    "trip_+5V_min_nom_max_V": [
-      5.703,
-      5.828,
-      5.983
+  "disconnect": {
+    "MPN": "TPS259470ARPWR",
+    "LCSC": "C3662799",
+    "trip_min_nom_max_V": [
+      5.5848,
+      5.7012,
+      5.8475
     ],
-    "model": "TLVH432BI 1.220-1.259 V, Iref <= 0.9 uA, 0.1 % + 25 ppm x 100 C (R101/R102)",
-    "margin_min_to_stacked_peak_V": 0.086,
-    "margin_max_to_6V_V": 0.017,
-    "gate_drive_at_trip_min_mA": {
-      "-40C": 1.21,
-      "25C": 1.4
-    },
-    "gate_overdrive_x_IGT_max": {
-      "-40C": 3.2,
-      "25C": 7.0
-    },
-    "CROW_DRV_at_SCR_fire_min_V": {
-      "-40C": 1.89,
-      "25C": 1.42,
-      "125C": 0.95
-    },
-    "Q13_turn_on_max_V": {
-      "-40C": 0.93,
-      "25C": 0.8,
-      "125C": 0.6
-    },
-    "self_powered": "no crowbar net touches V3V3, REF_OV, REF_GOOD or MON_OV5"
+    "current_min_nom_max_A": [
+      2.674,
+      3.031,
+      3.402
+    ],
+    "margin_min_to_stacked_peak_V": 0.0652,
+    "raw_feedback_and_banks_upstream": true,
+    "delivered_status": "AUXOFF + FLT + U18",
+    "OVLO_latched_internally": false,
+    "OVLO_response_max_specified": false
+  },
+  "comparator_supply": {
+    "supply": "VPD",
+    "output_pullups": "V3V3",
+    "full_temp_headroom_V": 11.7355,
+    "bypass_rating_V": 50
   },
   "nominal_voltage_valid_thresholds": {
     "P12_V": 9.976744186046512,
@@ -184,7 +196,8 @@
   "warnings": [
     "Arithmetic stacks every tolerance at once; it is a screen, not a rating.",
     "Digital truth checks do not model analog propagation, comparator/LED timing or MOSFET transients.",
-    "No PCB placement/routing, thermal, start-up-into-rack or overload bench result exists for S8."
+    "No routed PCB, thermal/startup/fault-injection qualification; <6V peak is not established.",
+    "OVLO-only pulses may auto-recover during startup or below status-filter duration."
   ],
   "order_ready": false
 }

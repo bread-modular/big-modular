@@ -1,59 +1,23 @@
-"""usb-power-45w S8 single-board circuit table and flat drawing (user direction, 2026-11-01). S8.1.
+"""S8.3 single-board circuit: common input protection plus a fast +5 V series eFuse.
 
-"Design new schematics for a single board which remove all these three eFuse but keep the LEDs
-for each rail. Also replace big caps with ceramic ones (only if possible, so we save space). But
-do any pre-calculations etc." + "In this board add space for two IDC sockets."
-Earlier answer in the same thread ("Yes") to: C9/C18 22n -> 100n, C49 1u -> 100n and the
-optional overvoltage guard (comparator into the spare fault-latch preset + TVS on +5V).
-Then: "Remove each rail LEDs too. [...] Make the schematic final." -> the three panel rail LEDs
-(D16/D17/D18 with R86-R88 and drivers Q7-Q9) and the local SMD rail LEDs (D5/D6/D7 with R19-R21)
-are removed; D8 MAIN (Q6 + the RUN-gated return Q10) is the only status LED. Any bad rail after
-the startup window, or any overvoltage, latches every rail off, so MAIN off = not working.
+User-authorized replacement of the S8.2 crowbar (2026-11-01): U23 TPS259470ARPWR,
+C3662799, independent adjustable OVLO, current limit and true reverse blocking.
+The A variant is deliberately selected for stock/cost; the common retained latch
+owns system restart. AUXOFF + FLT join delivered-voltage P5_OK (startup qualified).
+U20 still provides unmasked severe-OV shutdown, now sensing P5_RAW before U23.
 
-Derived from the S7 table (tools/circuit45.py + tools/protection6.py), which stays untouched:
+Q11/Q12/Q13/U22 and SCR-only resistors are gone. R101/R102 are reused as the
+precision eFuse divider, R103/R104 as ILM programming, C68 as dVdt. D21 moves
+upstream: a transient energy clamp protecting U23, NOT a 5 V rack clamp.
+C20-C23 and six new 22u capacitors remain upstream with buck feedback; C35/C60
+and C73/C74 are downstream. The extra upstream bank creates normal-release
+headroom without changing the original nominal regulator voltage/current target.
 
-- Removed: U6/U7 TPS16630 rail eFuses with their setting parts, the LM5067/Q4 negative switch with
-  its Kelvin shunt, VCC feed, optocouplers, clamps and timer, the delivered-side clamps D12-D14,
-  bleeders/output caps after the switches and the U19 Schmitt buffer (S8_REMOVED gives every ref).
-- Each converter output is now the delivered rail: P12_RAW -> +12V, P5_RAW -> +5V,
-  N12_RAW -> -12V. The voltage monitors (U18) are unchanged; P12_OK, P5_OK and N12_OK are now the
-  comparator outputs alone (R35/R44/R62 10k pull-ups) and feed only the fault logic (+ test pads).
-- Rail LEDs removed (panel D16-D18 + R86-R88 + Q7-Q9, local D5-D7 + R19-R21); D8 MAIN kept.
-- The four electrolytic cans become ceramics: C5 (47u VIN) -> C5 + C62 10u/50V behind R92 1R
-  (series-R damper, capacitor study option B_RCx2); C34/C35/C36 (100u at the rails) -> one 22u/25V
-  per rail at J2 plus C59/C60/C61 at J3 (option B_x2). Calculations: tools/s8_calcs.py.
-- Two parallel 16-pin outputs again: J3 = J2 (Wurth 61201621621, pin 1 = -12V).
-- Startup: C9/C18 100n (~14.5 ms soft start into rack capacitance), C49 100n (~0.57 s window).
-- Overvoltage guard: U20 pulls OV_N low = U12 2PRE_N, which sets FAULT at once (no startup mask)
-  -> RUN low -> U5 off; D21 SMAJ5.0A clamps +5V transients.
-  U14's second NAND (was NOT_RUN for the removed opto) has its inputs tied to GND.
-
-S8.1 (review a9d257b6, 2026-11-01, user: "try to improve the board based on its suggestion"):
-- The guard thresholds (S8: 16.6 / 6.5 / 15.1 V nominal, stacked corners up to 18.45 / 7.22 / 16.36 V)
-  came from REF_GOOD = V3V3 / 4.3 (TPS7A16 +-2 % and two 1 % resistors) and an LM2901 with 15 mV offset.
-  U20 now has its own reference REF_OV = U21 TLV431B (1.224-1.259 V, -40..85 C) fed by R100 with C67
-  10u (stable region of SLVS139Z Fig. 5-18), U18 and U20 are the drop-in LM2901B (5.5 mV), and the six
-  divider resistors are 0.1 % / 25 ppm: +12V > 14.88 V, +5V > 5.83 V, -12V < -13.64 V nominal.
-- The -12V sense no longer depends on V3V3: R98 runs from REF_OV, comparator 3 compares MON_OVN with
-  GND (trip |V| = REF_OV x R99 / R98). D22 (BAT54S, one diode used, the other shorted, as S7 D19/D20)
-  clamps MON_OVN at GND when V3V3 is gone and the rack still holds -12V (review finding 1).
-- U18 keeps REF_GOOD and its thresholds; only its part number changes (one comparator BOM line).
-
-S8.2 (user, 2026-11-01, after S8.1 left it open: "A crowbar would short +5V to ground instead, so it stays near
-1 V." -> "yeah. Do that"): +5V crowbar on page 06 beside D21.
-- Q11 TS1220-600B-TR (12 A DPAK SCR, IGT 200 uA, VT0 0.85 V + 30 mOhm) across +5V: once fired it holds the rail
-  at ~1-3.5 V until the energy behind it (VIN ceramics through a shorted high side, rail and rack capacitance) is
-  gone, then drops out below its 5 mA holding current.
-- Trigger powered by +5V itself, not by V3V3: U22 TLVH432B (1.24 V, 18 V cathode) on its own 0.1 % 37k/10k divider
-  with a 1n filter (same 5.83 V nominal and ~8 us as the U20 guard) pulls the Q12 AO3401A gate; Q12 drives the SCR
-  gate through R104 2.2k (R105 1k gate-cathode). A trigger fed from V3V3 / U20 could misfire at power-down while
-  V3V3 collapses before the rack's +5V; this one cannot fire below its threshold.
-- Latch link: Q13 MMBT3904 (base from the Q12 drain through R106) pulls OV_N low whenever the trigger drives the
-  gate, so FAULT is set and U5 opens even when the crowbar collapses +5V before the guard comparator trips. R104
-  keeps the drain >= ~1 V before the SCR can fire; Q13 conducts from ~0.5-0.8 V.
-- U20 comparator 4 stays spare. D21 stays: it clamps the first microseconds before the SCR fires.
-
-Positions are flat-sheet coordinates (page = flat - hierarchy offset, tools/hierarchy_s8.py).
+U18/U20 keep LM2901B, but their supplies and 50 V bypasses now use always-on VPD
+instead of V3V3 (before U5, after F1, clamped by D1). Outputs still pull up only to V3V3. At qualified 20 V operation
+this fixes both U20 full-temperature common-mode headroom and its >=5 V offset
+specification condition. D22 and the separate REF_OV reference are retained.
+No ±12 V rail switches/LEDs are restored. Original S7 circuit45 is untouched.
 """
 import copy
 
@@ -85,7 +49,7 @@ S8_REMOVED = {
        for r in ('D5', 'R19', 'D6', 'R20', 'D7', 'R21')},
 }
 LED_REMOVED = ('D16', 'R86', 'Q7', 'D17', 'R87', 'Q8', 'D18', 'R88', 'Q9', 'D5', 'R19', 'D6', 'R20', 'D7', 'R21')
-NET_RENAME = {'P12_RAW': '+12V', 'P5_RAW': '+5V', 'N12_RAW': '-12V', 'N12_STATUS': 'N12_OK'}
+NET_RENAME = {'P12_RAW': '+12V', 'N12_RAW': '-12V', 'N12_STATUS': 'N12_OK'}
 
 # Flat-sheet anchors of the S8 additions (page offsets: page 01 (0, 0); page 06 header group
 # (0, -86.36); page 06 monitor group (-599.44, -508)).
@@ -103,23 +67,21 @@ R0603_01 = {  # 0.1 %, 25 ppm/C thin film: (LCSC, MPN, manufacturer)
 # Symbol of U21: KiCad stock Reference_Voltage:TL431DBZ drawing, pins renumbered to the TI TLV431 DBZ
 # package (SLVS139Z Table 4-1: REF 1, CATHODE 2, ANODE 3; the TL431 DBZ order differs). See build_s8.py.
 TLV431_DBZ_PINS = {'REF': '1', 'K': '2', 'A': '3'}
-TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left'),    # U21 texts left of the REF tie (build_s8.py)
-               'U22': ((2.54, -1.27), (2.54, 1.27), 'right'),   # rot 90: KiCad shows 'right' as left-aligned
-               'Q11': ((3.81, -1.27), (3.81, 1.27), 'left'), 'R106': ((-2.54, -1.27), (-2.54, 1.27), 'right'),
-               'Q12': ((5.08, -1.27), (5.08, 1.27), 'left'), 'Q13': ((5.08, -1.27), (5.08, 1.27), 'left')}
+TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left')}
+TPS259470A = dict(LCSC='C3662799', MPN='TPS259470ARPWR', Manufacturer='Texas Instruments')
+CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
+DISCONNECT = ('U23', 'R101', 'R102', 'R103', 'R104', 'R107', 'C68',
+              'C69', 'C70', 'C71', 'C72', 'C73', 'C74', 'C75', 'C76', 'D23', 'TP18')
+HDR = (0.0, 86.36)
+MIRROR_S8 = set()
 
-# S8.2 +5V crowbar, live-checked 2026-11-01 (tools/s8_sourcing.py): TS1220 and TLVH432B Extended, AO3401A and
-# MMBT3904 Basic, the 0.1 % 37k/10k pair and the 1n/1k/2.2k/3.3k/10k parts reuse S8.1 BOM lines.
-TS1220 = dict(LCSC='C222165', MPN='TS1220-600B-TR', Manufacturer='STMicroelectronics')
-TLVH432B = dict(LCSC='C2156793', MPN='TLVH432BIDBZR', Manufacturer='Texas Instruments')
-AO3401A = dict(LCSC='C15127', MPN='AO3401A', Manufacturer='Alpha & Omega Semicon')
-MMBT3904 = dict(LCSC='C20526', MPN='MMBT3904', Manufacturer='Jiangsu Changjing Electronics Technology Co., Ltd.')
-# Symbol of U22: KiCad stock Reference_Voltage:TL431DBZ unchanged; its numbers (K 1, REF 2, A 3) are the TI TLVH432
-# DBZ pinout (SLVS555N Pin Functions: CATHODE 1, REF 2, ANODE 3). See build_s8.py.
-TLVH432_DBZ_PINS = {'K': '1', 'REF': '2', 'A': '3'}
-CROWBAR = ('Q11', 'U22', 'Q12', 'Q13', 'R101', 'R102', 'R103', 'R104', 'R105', 'R106', 'C68')
-HDR = (0.0, 86.36)               # page 06 header group offset (tools/hierarchy_s8.py)
-MIRROR_S8 = {'Q12'}              # P-MOSFET drawn source up, gate left (build_s8.py)
+
+def basic_res(ref, value, at, a, b, rot=0, **kw):
+    # New S8.3 values, exact-code live Basic+Economy evidence in docs/s8-single/s83-sourcing.json.
+    code, mpn = {'100': ('C22775', '0603WAF1000T5E'),
+                 '510': ('C23193', '0603WAF5100T5E')}[value]
+    return two(ref, 'R', value, 'R0603', at, a, b, rot, LCSC=code, MPN=mpn,
+               Manufacturer=UNIROYAL, Tolerance='1%', **kw)
 
 
 def hp(x, y):
@@ -152,14 +114,17 @@ def circuit():
                                      f'corners): charges rack capacitance on the unswitched rail. S7 had 22n'}
     by['U5']['fields']['Note'] = by['U5']['fields']['Note'].replace(
         '; S6 FLT + PGOOD wired-AND at 3.3 V; common RUN disconnect.',
-        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V. S8: the ONLY switch; RUN low turns every rail off')
+        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V. S8.3: common input switch; RUN also disables U23 on +5V')
     by['U2']['fields']['Note'] += '. S8: output is the delivered +12V (no rail eFuse); hiccup/OVP/TSD are its own'
-    by['U3']['fields']['Note'] += '. S8: output is the delivered +5V (no rail eFuse); hiccup/OVP/TSD are its own'
+    by['U3']['fields']['Note'] += '. S8.3: P5_RAW stays upstream of U23, including local output capacitors and feedback'
+    by['U18']['pins']['3'] = 'VPD'
+    by['C57']['pins']['1'] = 'VPD'
+    by['C57']['fields']['Note'] = 'U18 always-on VPD bypass, 50 V rated; logic outputs still pull up to V3V3'
     by['U4']['fields']['Note'] = by['U4']['fields']['Note'].replace(
         'Pins 1 and pad are the -12V node, not GND.', 'Pins 1 and pad are the delivered -12V node (S8: no '
         'series switch), not GND; 18 ms OCP blanking at start-up charges the rack capacitance.')
-    for ref, rail in (('D2', '+12V'), ('D3', '+5V'), ('D4', '-12V')):
-        by[ref]['fields']['Note'] = f'{rail} polarity clamp at the converter output = delivered rail (S8)'
+    for ref, rail in (('D2', '+12V'), ('D3', 'P5_RAW'), ('D4', '-12V')):
+        by[ref]['fields']['Note'] = f'{rail} polarity clamp at the converter output (P5_RAW is before U23)'
     # ---- Status LED: D8 MAIN is the only LED left (S8 final)
     by['D8']['fields']['Note'] = ('Hand-soldered 3 mm horizontal panel LED (manual part, user stock 3 mm red), the only '
                                   'status LED: MAIN = input valid AND U5 FLT/PGOOD AND RUN. Any latched fault (bad rail '
@@ -176,7 +141,7 @@ def circuit():
         if p['value'] != '10k':
             p.update(value='10k')
             p['fields'].update(LCSC=circuit45.R0603['10k'], MPN=circuit45.R_MPN['10k'])
-        p['fields']['Note'] = f'{net} pull-up: U18 open-collector output only (S8: no eFuse FLT/PGOOD, no opto)'
+        p['fields']['Note'] = f'{net} pull-up: delivered-voltage monitor; P5_OK additionally includes U23 AUXOFF and FLT (S8.3)'
     by['U18']['value'] = LM2901B['MPN']
     by['U18']['fields'] = {**LM2901B, 'Note': 'Output-valid comparators on the delivered rails. +12/+5/input use '
                                               'signal on + input; -12V uses the offset negative sense on - input. Clamp '
@@ -218,11 +183,11 @@ def circuit():
             c[c.index(by[ref])] = new
         else:
             c.append(new)
-    c.append(two('D21', 'D_Zener', 'SMAJ5.0A', 'SMA', (127.0, CAP_Y), '+5V', 'GND', rot=270,
+    c.append(two('D21', 'D_Zener', 'SMAJ5.0A', 'SMA', hp(259.08, 248.92), 'P5_RAW', 'GND', rot=270,
                  LCSC='C113952', MPN='SMAJ5.0A', Manufacturer='MDD(Microdiode Semiconductor)',
-                 Note='+5V transient clamp at the headers (5.0 V stand-off, 6.4 V min breakdown, 9.2 V at 43.5 A '
-                      '10/1000 us): holds the first microseconds until the Q11 crowbar fires (S8.2). Sustained '
-                      'overvoltage is cut by the U20 guard + U5 and shorted by Q11, not by this part'))
+                 Note='S8.3 moved BEFORE U23 to P5_RAW: 5 V stand-off, 6.4-7.0 V breakdown, 9.2 V at 43.5 A. '
+                      'Absorbs failed-buck stored energy until U20 latches U5 off; keep beside U23 IN/GND. '
+                      'Not a rack voltage limit or a sustained-fault clamp. Qualify pulse energy/ringing/temperature.'))
 
     # ---- VIN: series-R damper replaces the 47u can (capacitor study B_RCx2)
     c[c.index(by['C5'])] = cap('C5', '10u', 'C1206', (243.84, 60.96), '_VIN_DAMP', 'GND',
@@ -241,12 +206,12 @@ def circuit():
                    '6': 'MON_OV5', '7': 'REF_OV', '1': 'OV_N',         # +5V: low when MON_OV5 > REF_OV
                    '8': 'GND', '9': 'MON_OVN', '14': 'OV_N',           # -12V: low when MON_OVN < 0 V (|V| high)
                    '10': 'REF_OV', '11': 'GND', '13': None,            # spare: output held low, unconnected
-                   '3': 'V3V3', '12': 'GND'},
+                   '3': 'VPD', '12': 'GND'},
                   **LM2901B,
-                  Note='Overvoltage guard on the always-on 3.3 V: +12V, +5V or |-12V| above its threshold pulls OV_N '
-                       'low (U12 2PRE_N) -> FAULT -> RUN low -> U5 off. Last resort for a shorted high-side FET or an '
-                       'open feedback resistor. LM2901B: offset 5.5 mV max over temperature. Comparator 4 spare (+ to '
-                       'GND, - to REF_OV). Common-mode limit VCC - 1.5 V at 25 C (1.73 V at 3.23 V): REF_OV 1.24 V'))
+                  Note='S8.3: always-on VPD supply (not V3V3), V3V3 pull-up on OV_N. Full-temperature input '
+                       'ceiling VPD-2 V; qualified input is >=15 V, REF_OV <=1.259 V. U20 senses +12V, P5_RAW and -12V; '
+                       'severe OV presets FAULT even before ARMED. Opening U5 alone cannot isolate stored energy; U23 '
+                       'disconnects +5V independently. Clamp D22 retained. Cold shutdown/replug remains a bench gate.'))
     c.append(part('U21', 'TLV431_DBZ', 'TLV431BIDBZR', 'SOT23', m(210.82, 134.62), 90,
                   {TLV431_DBZ_PINS['REF']: 'REF_OV', TLV431_DBZ_PINS['K']: 'REF_OV', TLV431_DBZ_PINS['A']: 'GND'},
                   LCSC='C398375', MPN='TLV431BIDBZR', Manufacturer='Texas Instruments',
@@ -267,7 +232,7 @@ def circuit():
     c.append(res01('R94', '10k', m(281.94, 83.82), 'MON_OV12', 'GND', Note='+12V OV divider bottom'))
     c.append(cap('C63', '1n', 'C0603', m(292.1, 83.82), 'MON_OV12', 'GND',
                  Note='~9 us filter: ignores switching spikes, not a real overvoltage'))
-    c.append(res01('R95', '37k', m(304.8, 66.04), '+5V', 'MON_OV5',
+    c.append(res01('R95', '37k', m(304.8, 66.04), 'P5_RAW', 'MON_OV5',
                    Note='+5V OV divider top: 1.24 V x (1 + 37k/10k) = 5.83 V nominal (5.68-5.98 V over corners)'))
     c.append(res01('R96', '10k', m(304.8, 83.82), 'MON_OV5', 'GND', Note='+5V OV divider bottom'))
     c.append(cap('C64', '1n', 'C0603', m(314.96, 83.82), 'MON_OV5', 'GND', Note='~8 us filter'))
@@ -283,49 +248,46 @@ def circuit():
                   Note='MON_OVN clamp (review): diode 1 GND -> MON_OVN holds U20 pin 9 near -0.24 V (0.1 mA, BAT54 '
                        'VF max) when V3V3 is gone and the rack keeps -12V; diode 2 shorted. ~0 V across it at the trip'))
     c.append(res('R97', '10k', m(231.14, 67.31), 'V3V3', 'OV_N',
-                 Note='OV_N pull-up (wired-AND of the U20 outputs and the Q13 crowbar latch link)'))
-    c.append(cap('C65', '100n', 'C0603', m(241.3, 99.06), 'V3V3', 'GND', Note='U20 decoupling'))
+                 Note='OV_N pull-up (wired-AND of the U20 guard outputs)'))
+    c.append(cap('C65', '100n', 'C0603', m(241.3, 99.06), 'VPD', 'GND', Note='U20 always-on VPD decoupling, 50 V; do not reconnect to V3V3'))
 
-    # ---- S8.2 +5V crowbar: self-powered TLVH432B trigger -> AO3401A -> TS1220 SCR gate; Q13 sets FAULT (OV_N)
-    c.append(part('Q11', 'Q_SCR_KAG', TS1220['MPN'], 'DPAK', hp(231.14, 279.4), 0,
-                  {'1': 'GND', '2': '+5V', '3': 'CROW_GATE'}, **TS1220,
-                  Note='+5V crowbar SCR: shorts +5V to ~1-3.5 V (VT0 0.85 V + 30 mOhm x up to ~75 A) once U22 trips, until the energy '
-                       'behind it is gone (IH 5 mA max). 12 A DPAK, ITSM 110 A / I2t 60 A2s, IGT 200 uA. DPAK pin 1 K, '
-                       'pin 2 and tab A (+5V), pin 3 G (ST DocID027645). Shorting a second supply on the bus is not rated'))
-    c.append(part('U22', 'TLVH432_DBZ', TLVH432B['MPN'], 'SOT23', hp(175.26, 279.4), 90,
-                  {TLVH432_DBZ_PINS['K']: 'CROW_TRIP_N', TLVH432_DBZ_PINS['REF']: 'CROW_SENSE',
-                   TLVH432_DBZ_PINS['A']: 'GND'}, **TLVH432B,
-                  Note='Crowbar trigger, powered by +5V itself (no V3V3): sinks when CROW_SENSE > 1.24 V, +5V > 5.83 V '
-                       'nominal (5.70-5.98 V over corners). TLVH432B: 18 V cathode (+5V can reach ~10 V in D21 before '
-                       'the SCR fires; TLV431 is 7 V max). DBZ pins CATHODE 1, REF 2, ANODE 3 (SLVS555N)'))
-    c.append(res01('R101', '37k', hp(152.4, 271.78), '+5V', 'CROW_SENSE',
-                   Note='Crowbar divider top: 1.24 V x (1 + 37k/10k) = 5.83 V nominal, the U20 +5V guard ratio'))
-    c.append(res01('R102', '10k', hp(152.4, 287.02), 'CROW_SENSE', 'GND', Note='Crowbar divider bottom'))
-    c.append(cap('C68', '1n', 'C0603', hp(162.56, 287.02), 'CROW_SENSE', 'GND',
-                 Note='~8 us filter, as the guard: ignores switching spikes and short ringing on +5V'))
-    c.append(res('R103', '3.3k', hp(185.42, 267.97), '+5V', 'CROW_TRIP_N',
-                 Note='Q12 gate pull-up: Q12 off while U22 is off; ~1.4 mA through U22 once it trips'))
-    c.append(part('Q12', 'AO3401A', AO3401A['MPN'], 'SOT23', hp(195.58, 271.78), 0,
-                  {'1': 'CROW_TRIP_N', '2': '+5V', '3': 'CROW_DRV'}, **AO3401A,
-                  Note='Crowbar gate driver: U22 pulls the gate low, +5V drives the SCR gate through R104 (~1.5-2.5 mA, '
-                       '7-12 x IGT max) and the Q13 latch link through R106'))
-    c.append(res('R104', '2.2k', hp(213.36, 281.94), 'CROW_DRV', 'CROW_GATE', rot=90,
-                 Note='SCR gate series: limits the gate current and keeps CROW_DRV >= ~1 V before the SCR can fire, '
-                      'so Q13 has already pulled OV_N low'))
-    c.append(res('R105', '1k', hp(220.98, 288.29), 'CROW_GATE', 'GND',
-                 Note='SCR gate-cathode resistor (TS1220 IH / IL condition, dV/dt immunity)'))
-    c.append(res('R106', '10k', hp(198.12, 290.83), 'CROW_DRV', '_CROW_LATCH', Note='Q13 base resistor'))
-    c.append(part('Q13', 'MMBT3904', MMBT3904['MPN'], 'SOT23', hp(203.2, 297.18), 0,
-                  {'1': '_CROW_LATCH', '2': 'GND', '3': 'OV_N'}, **MMBT3904,
-                  Note='Crowbar -> fault latch: pulls OV_N low (wired-AND with U20) whenever Q12 drives the SCR gate, '
-                       'so FAULT is set and U5 opens even if the crowbar collapses +5V before the guard comparator trips'))
+    # ---- S8.3: self-powered series disconnect. Do NOT put buck FB after the switch.
+    c.append(part('U23', 'TPS259470_RPW', TPS259470A['MPN'], 'RPW10', hp(205.74, 269.24), 0,
+                  {'1': 'RUN', '2': 'P5_OVLO', '3': 'P5_OK', '4': 'P5_OK', '5': 'P5_RAW',
+                   '6': '+5V', '7': 'P5_DVDT', '8': 'GND', '9': 'P5_ILM', '10': None}, **TPS259470A,
+                  Note='TPS259470A: adjustable OVLO (~5.70 V nominal), 1.2 us TYP (no max specified), '
+                       '2.7-23 V operation / 28 V abs max, true reverse blocking, 28 mOhm typ. '
+                       'IN protected by D21 on P5_RAW. 1k+100 sets ~3.03 A nominal (not a guaranteed load rating). '
+                       'AUXOFF + FLT + U18 wire-AND into P5_OK: common latch after startup; U20 severe OV unmasked. '
+                       'FLT alone does NOT report OVLO. Auto-retry is suppressed once common FAULT is latched.'))
+    c.append(res01('R101', '37k', hp(154.94, 264.16), 'P5_OV_TOP', 'P5_OVLO',
+                   Note='Reused precision divider, now U23 OVLO. With R107 510R and R102 10k: 1.2*(1+37.51/10)=5.7012 V.'))
+    c.append(res01('R102', '10k', hp(154.94, 281.94), 'P5_OVLO', 'GND', Note='U23 OVLO bottom; no intentional RC delay'))
+    c.append(basic_res('R107', '510', hp(154.94, 246.38), 'P5_RAW', 'P5_OV_TOP', Note='Basic series trim in OVLO top'))
+    c.append(res('R103', '1k', hp(236.22, 264.16), 'P5_ILM', 'P5_ILM_SER', Note='ILM series with R104 100R'))
+    c.append(basic_res('R104', '100', hp(236.22, 281.94), 'P5_ILM_SER', 'GND',
+                       Note='ILM total 1.1k: 3334/1100=3.031 A nominal; +/-10% IC plus resistor/tcr screen'))
+    c.append(cap('C68', '10n', 'C0603', hp(220.98, 297.18), 'P5_DVDT', 'GND',
+                 Note='U23 dVdt ~0.2 V/ms typical, ~25 ms 5V ramp. 50 V cap exceeds IN+5 V. No ITIMER capacitor.'))
+    for ref, x in (('C69', 177.8), ('C70', 187.96), ('C71', 198.12), ('C72', 208.28), ('C75', 218.44), ('C76', 228.6)):
+        c.append(cap(ref, '22u', 'C1206', hp(x, 226.06), 'P5_RAW', 'GND',
+                     Note='S8.3 upstream 22u bank: C20-C23 + C69-C72/C75/C76 = 10. Retains load-release margin before U23; '
+                          'DC bias and converter-loop stability require validation.'))
+    for ref, x in (('C73', 274.32), ('C74', 284.48)):
+        c.append(cap(ref, '22u', 'C1206', hp(x, 279.4), '+5V', 'GND',
+                     Note='S8.3 local delivered-side capacitor, next to U23 OUT/GND. With C35/C60 gives 4 x 22u; '
+                          'minimum effective C and layout set fault peak, not nominal capacitance alone.'))
+    c.append(two('D23', 'D_Schottky', 'SS34', 'SMA', hp(297.18, 279.4), '+5V', 'GND', rot=270,
+                 LCSC='C8678', MPN='SS34', Manufacturer='MDD',
+                 Note='U23 OUT negative-transient clamp, cathode +5V / anode GND. Keep close to OUT/GND.'))
+    c.append(part('TP18', 'TestPoint', 'P5_RAW', 'TP', hp(177.8, 248.92), 0, {'1': 'P5_RAW'},
+                  Note='Raw +5V before U23; header +5V is isolated. No assembly part.'))
     return c
 
 
 def drawing():
     """S7 drawing() without the removed parts' wires/symbols/labels, RAW names restored to the
-    delivered rails, plus J3 (as J2), the VIN damper, the overvoltage guard with its S8.1 reference and the
-    S8.2 +5V crowbar."""
+    delivered rails except P5_RAW, plus J3, the VIN damper, OV guard and U23 disconnect."""
     W, P, L = circuit45.drawing()
     gone = set(S8_REMOVED) | {'R35', 'R44', 'R62'}   # moved refs: S7 lines at their old spots
 
@@ -367,14 +329,10 @@ def drawing():
           [m(210.82, 127.0), m(220.98, 127.0), 'C67.1'], [m(220.98, 127.0), 'TP17.1'],
           ['D22.3', m(297.18, 125.73), 'D22.2'], ['D22.2', m(304.8, 120.65)]]
     L += [('REF_OV', m(214.63, 127.0), 'R')]
-    # S8.2 crowbar (page 06 beside D21): divider -> U22 REF; U22 cathode, R103 and the Q12 gate on one row; Q12 drain
-    # -> R104 -> SCR gate (R105 to GND) and -> R106 -> Q13 base; Q13 collector gets an OV_N stub label.
-    W += [['R101.2', 'R102.1'], [hp(152.4, 279.4), hp(162.56, 279.4), 'C68.1'], [hp(162.56, 279.4), 'U22.2'],
-          ['U22.1', hp(175.26, 271.78), 'R103.2'], ['R103.2', 'Q12.1'],
-          ['Q12.3', hp(198.12, 281.94), 'R104.1'], [hp(198.12, 281.94), 'R106.1'],
-          ['R104.2', hp(220.98, 281.94), 'R105.1'], [hp(220.98, 281.94), 'Q11.3'], ['R106.2', 'Q13.1']]
-    L += [('CROW_SENSE', hp(167.64, 279.4), 'U'), ('CROW_TRIP_N', hp(180.34, 271.78), 'U'),
-          ('CROW_DRV', hp(198.12, 279.4), 'R'), ('CROW_GATE', hp(223.52, 281.94), 'U')]
+    # S8.3 U23 settings; power and logic pins get named stubs from the common drawing engine.
+    W += [['R107.2', 'R101.1'], ['R101.2', 'R102.1'], ['R103.2', 'R104.1'],
+          ['U23.7', hp(208.28, 289.56), hp(220.98, 289.56), 'C68.1']]
+    L += [('P5_OVLO', ('R101.2', 0, 3.81), 'R'), ('P5_ILM', ('R103.1', 0, -2.54), 'U')]
     return W, P, L
 
 

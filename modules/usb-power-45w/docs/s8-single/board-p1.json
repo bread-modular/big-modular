@@ -1,6 +1,6 @@
 {
  "board": "hardware/single/usb-power-45w-single.kicad_pcb",
- "parts_on_board": 182,
+ "parts_on_board": 188,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 0,
@@ -9,12 +9,12 @@
  "edge_rule_findings_not_approved": [],
  "closest_courtyards_to_edge_mm": [
   [
-   1.08,
-   "Q11"
+   1.049,
+   "TP18"
   ],
   [
-   1.1,
-   "R105"
+   1.08,
+   "D21"
   ],
   [
    1.329,
@@ -97,8 +97,8 @@
      "R69"
     ],
     [
-     4.234,
-     "Q11"
+     4.322,
+     "D21"
     ]
    ],
    "violations": []
@@ -200,7 +200,7 @@
     ],
     [
      3.889,
-     "D21.2"
+     "D23.2"
     ],
     [
      3.89,
@@ -213,6 +213,10 @@
   "SW1": {
    "closest_smd_pads_mm": [
     [
+     0.925,
+     "C75.1"
+    ],
+    [
      2.05,
      "R68.1"
     ],
@@ -221,19 +225,20 @@
      "R68.2"
     ],
     [
-     2.05,
-     "R91.1"
+     2.14,
+     "U12.1"
     ],
     [
      2.308,
      "TP5.1"
-    ],
-    [
-     2.339,
-     "R91.2"
     ]
    ],
-   "violations_lt_2mm": [],
+   "violations_lt_2mm": [
+    [
+     0.925,
+     "C75.1"
+    ]
+   ],
    "rule": "report only (SMD, machine-placed)"
   }
  },
@@ -267,8 +272,8 @@
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2900,
-  "fill_of_inset": 0.671
+  "courtyards_sum": 2910,
+  "fill_of_inset": 0.673
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",
  "pass": true
