@@ -1,7 +1,7 @@
 {
   "status": "S8_schematic_checks_not_bench_qualification",
-  "components": 166,
-  "nets_including_NC": 109,
+  "components": 182,
+  "nets_including_NC": 115,
   "sheets": 7,
   "exact_field_pin_NC_pad_parity": true,
   "removed_S7_refs": 69,
@@ -14,8 +14,21 @@
     "C64",
     "C65",
     "C66",
+    "C67",
+    "C68",
     "D21",
+    "D22",
     "J3",
+    "Q11",
+    "Q12",
+    "Q13",
+    "R100",
+    "R101",
+    "R102",
+    "R103",
+    "R104",
+    "R105",
+    "R106",
     "R92",
     "R93",
     "R94",
@@ -24,7 +37,10 @@
     "R97",
     "R98",
     "R99",
-    "U20"
+    "TP17",
+    "U20",
+    "U21",
+    "U22"
   ],
   "ceramic_banks_22u_or_10u": {
     "+12V": [
@@ -69,24 +85,45 @@
   },
   "overvoltage_guard_V": {
     "+12V_min_nom_max": [
-      14.86,
-      16.58,
-      18.45
+      14.48,
+      14.88,
+      15.272
     ],
     "+5V_min_nom_max": [
-      5.84,
-      6.5,
-      7.22
+      5.677,
+      5.828,
+      5.976
     ],
     "-12V_magnitude_min_nom_max": [
-      13.92,
-      15.1,
-      16.36
+      13.265,
+      13.64,
+      14.018
     ],
+    "model": "REF_OV TLV431BI 1.2204-1.259 V, LM2901B 5.5 mV / 50 nA, 0.1 % + 25 ppm x 100 C",
     "converter_setpoint_max_V": {
       "+12V": 12.912,
       "+5V": 5.259,
       "-12V": 12.624
+    },
+    "stacked_normal_peak_V": {
+      "+12V": 13.945,
+      "+5V": 5.617,
+      "-12V": 13.108
+    },
+    "margin_min_to_peak_V": {
+      "+12V": 0.535,
+      "+5V": 0.06,
+      "-12V": 0.157
+    },
+    "downstream_limit_V": {
+      "+12V": 16.0,
+      "+5V": 6.0,
+      "-12V": 16.0
+    },
+    "margin_max_to_limit_V": {
+      "+12V": 0.728,
+      "+5V": 0.024,
+      "-12V": 1.982
     },
     "converter_OVP_max_V": {
       "+12V": 15.24,
@@ -95,7 +132,37 @@
     "corner_overlap_with_converter_OVP": {
       "+12V": true,
       "+5V": true
-    }
+    },
+    "U21_cathode_current_min_mA": 0.711
+  },
+  "crowbar": {
+    "trip_+5V_min_nom_max_V": [
+      5.703,
+      5.828,
+      5.983
+    ],
+    "model": "TLVH432BI 1.220-1.259 V, Iref <= 0.9 uA, 0.1 % + 25 ppm x 100 C (R101/R102)",
+    "margin_min_to_stacked_peak_V": 0.086,
+    "margin_max_to_6V_V": 0.017,
+    "gate_drive_at_trip_min_mA": {
+      "-40C": 1.21,
+      "25C": 1.4
+    },
+    "gate_overdrive_x_IGT_max": {
+      "-40C": 3.2,
+      "25C": 7.0
+    },
+    "CROW_DRV_at_SCR_fire_min_V": {
+      "-40C": 1.89,
+      "25C": 1.42,
+      "125C": 0.95
+    },
+    "Q13_turn_on_max_V": {
+      "-40C": 0.93,
+      "25C": 0.8,
+      "125C": 0.6
+    },
+    "self_powered": "no crowbar net touches V3V3, REF_OV, REF_GOOD or MON_OV5"
   },
   "nominal_voltage_valid_thresholds": {
     "P12_V": 9.976744186046512,

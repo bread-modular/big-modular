@@ -1,4 +1,11 @@
 """S8 P1 trial placement: every part on F, group by group, NO copper (user direction, 2026-11-01).
+S8.1 / P1.1 (review fixes, same day): the guard reference U21 + C67 sits above U20 between the shifted OV
+dividers and the MON_OVN clamp D22; R100 takes the free slot of the R98/R99 column, TP17 the rear row; D15
+moved to the free spot left of its old place to make room.
+S8.2 / P1.2 (+5V crowbar, same day): the TS1220 DPAK Q11 lies along the front edge in the free front-right corner
+(left of the right bracket cutback), leads toward the trigger; the trigger (U22 + divider, Q12) sits behind it and
+the gate network, latch link Q13 and R103 left of it. The U11 start-timer group (U11, C49, C50, C52, R69-R71) moved
+right, into the space above the DPAK, to make room; nothing else moved.
 
   python3 -B tools/place_s8.py [--write] [--png <file>] [--force]
 
@@ -15,7 +22,7 @@ Floor plan (one functional group per region, see docs/s8-single-board.md):
   front-left   USB-C PD input, fuse, TVS, D10, U5 main eFuse, VIN damper, always-on LDO, MAIN LED driver
   rear strip   header caps / clamps right at the J2 and J3 rail pins
   middle-right +12V cell (U2/L1) and +5V cell (U3/L2) in front of J2, -12V cell (U4/L3) in front of J3
-  front-right  latch / reset / timer logic around SW1
+  front-right  latch / reset / timer logic around SW1, +5V crowbar (S8.2) in the corner left of the cutback
 
 --write refuses a board with copper/zones and a board whose placement was edited outside this table
 (it must equal the seed or the last placement this tool wrote, docs/s8-single/placement.json).
@@ -96,36 +103,50 @@ GROUPS = [
     ('VIN damper (R92 + C5 + C62)', 'On the VIN bus at the rear-left corner (In2 VIN plane), TP4 = VIN',
      {'C5': (52.3, 58.5, 90), 'C62': (54.8, 58.5, 90), 'R92': (57.3, 58.5, 90), 'TP4': (59.7, 56.6, 0)}),
     ('Monitors + overvoltage guard (U18, U20)',
-     'Two LM2901 side by side in the rear-left; every divider/pull-up in a 0603 column next to the pin it serves '
+     'Two LM2901B side by side in the rear-left; every divider/pull-up in a 0603 column next to the pin it serves '
      '(left of U18: +12/+5 dividers and outputs; between them: VPD/-12V dividers and the REF divider; right of '
-     'U20: OV_N pull-up, -12V OV divider); the OV dividers in front of U20; status test pads in the rear row',
+     'U20: OV_N pull-up, REF_OV bias R100, -12V OV divider); in front of U20 the OV dividers (shifted left, S8.1), the '
+     'TLV431 U21 with C67 above U20 pins 5/7/10 and the MON_OVN clamp D22 above C66/R99; D15 left of the dividers; '
+     'status test pads (TP17 = REF_OV) in the rear row',
      {'U18': (68.95, 63.0, 0), 'U20': (81.3, 63.0, 0),
       'R35': (63.6, 59.95, 90), 'C57': (63.6, 63.0, 90), 'R76': (63.6, 66.05, 90),
       'R44': (61.95, 59.95, 90), 'R79': (61.95, 63.0, 90), 'R75': (61.95, 66.05, 90),
       'R62': (73.55, 59.95, 90), 'R84': (73.55, 63.0, 90), 'R81': (73.55, 66.05, 90),
       'R85': (75.15, 59.95, 90), 'R83': (75.15, 63.0, 90), 'R82': (75.15, 66.05, 90),
       'R73': (76.75, 59.95, 90), 'R74': (76.75, 63.0, 90), 'C56': (76.75, 66.05, 90),
-      'R97': (85.9, 59.95, 90), 'C65': (85.9, 63.0, 90), 'C66': (85.9, 66.05, 90),
-      'R98': (87.5, 63.0, 90), 'R99': (87.5, 66.05, 90),
-      'R78': (63.2, 68.45, 0), 'R77': (66.4, 68.45, 0), 'R80': (69.6, 68.45, 0), 'D15': (74.5, 69.6, 0),
-      'C63': (79.0, 68.45, 0), 'C64': (82.2, 68.45, 0), 'R94': (79.0, 70.05, 0), 'R96': (82.2, 70.05, 0),
-      'R93': (79.0, 71.65, 0), 'R95': (82.2, 71.65, 0),
+      'R97': (85.9, 59.95, 90), 'C65': (85.9, 63.0, 90), 'C66': (85.9, 66.05, 270),
+      'R100': (87.5, 59.95, 270), 'R98': (87.5, 63.0, 270), 'R99': (87.5, 66.05, 270),
+      'R78': (63.2, 68.45, 0), 'R77': (66.4, 68.45, 0), 'R80': (69.6, 68.45, 0), 'D15': (71.3, 73.15, 0),
+      'C63': (75.4, 68.45, 0), 'C64': (78.6, 68.45, 0), 'R94': (75.4, 70.05, 0), 'R96': (78.6, 70.05, 0),
+      'R93': (75.4, 71.65, 0), 'R95': (78.6, 71.65, 0),
+      'U21': (82.2, 69.4, 0), 'C67': (82.2, 71.95, 0), 'D22': (86.45, 69.4, 180),
       'TP12': (63.5, 56.6, 0), 'TP13': (66.0, 56.6, 0), 'TP14': (71.5, 56.6, 0), 'TP15': (74.0, 56.6, 0),
-      'TP6': (85.0, 56.6, 0)}),
+      'TP17': (80.0, 56.6, 0), 'TP6': (85.0, 56.6, 0)}),
     ('Bad-status filter (U14 NAND, R72/C51, U15 Schmitt)',
      'Next to the monitors whose outputs it combines: U14 inputs face U18, ANY_BAD -> R72/C51 -> U15',
      {'U14': (56.5, 66.4, 180), 'U15': (55.9, 73.5, 0), 'R72': (59.3, 72.75, 90), 'C51': (60.9, 72.75, 90),
       'C54': (51.9, 72.9, 90), 'C55': (51.9, 69.4, 90), 'TP7': (64.75, 74.8, 90), 'TP3': (62.8, 86.5, 0)}),
     ('Latch / reset / timer logic (U10-U13)',
      'Front strip around SW1: U10 (POR + RESET) right behind SW1, U13 AND gates and U12 latch either side, U11 '
-     'start timer on the right; pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front',
-     {'U13': (94.2, 94.4, 90), 'U12': (113.4, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (124.0, 92.6, 0),
-      'C53': (88.8, 94.4, 90), 'C52': (120.0, 94.4, 90), 'C48': (101.4, 93.7, 90),
+     'start timer on the right (P1.2: moved right, above the crowbar SCR: R71/C52/C50 in one row under C24, '
+     'C49/R70/R69 beside its CT/SENSE pins); pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front',
+     {'U13': (94.2, 94.4, 90), 'U12': (113.4, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (128.4, 92.35, 0),
+      'C53': (88.8, 94.4, 90), 'C52': (130.85, 88.65, 0), 'C48': (101.4, 93.7, 90),
       'R68': (103.75, 94.85, 0), 'R67': (99.75, 90.6, 90), 'R91': (106.9, 94.85, 0), 'R65': (101.4, 90.6, 90),
-      'R66': (99.75, 93.7, 90), 'R71': (120.2, 91.0, 90), 'R70': (127.2, 92.6, 90), 'R69': (128.8, 92.6, 90),
-      'C49': (124.0, 95.6, 0), 'C50': (130.4, 92.6, 90), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
+      'R66': (99.75, 93.7, 90), 'R71': (127.75, 88.65, 0), 'R70': (132.95, 92.6, 90), 'R69': (134.55, 92.6, 90),
+      'C49': (131.35, 92.6, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
       'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (111.0, 99.8, 0),
       'TP16': (113.3, 99.8, 0)}),
+    ('+5V crowbar (S8.2)',
+     'Q11 TS1220 DPAK along the front edge, 1 mm from it and from the right cutback, leads (K, G) toward the trigger, '
+     'anode tab toward the cutback; divider R101/R102/C68 in one row with the CROW_SENSE pads facing U22 below it; U22 '
+     'cathode beside the Q12 gate; Q13 (latch link, OV_N) next to the U12 OV_N corner; R103 between Q13 and the SCR '
+     'cathode; R104/R105 at the SCR gate pin',
+     {'Q11': (130.95, 97.7, 0),
+      'R101': (119.7, 87.73, 270), 'R102': (121.3, 87.73, 90), 'C68': (122.9, 87.73, 90),
+      'U22': (120.1, 91.15, 180), 'Q12': (124.2, 91.15, 0),
+      'Q13': (120.05, 96.2, 0), 'R103': (123.0, 95.9, 90),
+      'R106': (119.6, 98.9, 0), 'R104': (122.75, 98.85, 0), 'R105': (122.75, 100.45, 180)}),
 ]
 
 
@@ -145,8 +166,8 @@ def table():
 def board(root=MODULE):
     b = seed.seed_board(root)
     tb = b.GetTitleBlock()
-    tb.SetRevision('S8-P1')
-    for i, t in enumerate(['S8 final schematic. P1 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
+    tb.SetRevision('S8.2-P1.2')
+    for i, t in enumerate(['S8.2 schematic (review fixes + +5V crowbar). P1.2 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
                            'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
                            'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json',
                            'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json']):

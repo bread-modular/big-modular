@@ -7,7 +7,12 @@ tools/circuit_s8.py; that every S7 eFuse / negative-switch part is gone and noth
 ceramic banks and VIN damper topology; manufacturer pin roles (TPS3808 via verify_design's TI
 table, LM2901 comparator pairing against the TI pin table kept here); bounded threshold arithmetic; and a settled
 digital model of the latch/LED logic including the overvoltage preset. S8 final: D8 MAIN is the only LED
-(rail LEDs removed). Not SPICE or bench proof.
+(rail LEDs removed). S8.1 (review fixes): the guard's own TLV431B reference REF_OV (pin roles against TI's DBZ
+table kept here), LM2901B on U18/U20, the -12V channel compared with GND, the D22 clamp on MON_OVN, 0.1 %
+dividers and the guard bands against the converter setpoints and the downstream limits. S8.2: the +5V crowbar
+(Q11 TS1220 SCR, U22 TLVH432B trigger powered by +5V only, Q12 gate driver, Q13 latch link onto OV_N): pin roles
+against the manufacturer tables kept here, net memberships, trip band over corners, gate drive and the latch-link
+ordering. Not SPICE or bench proof.
 """
 import argparse
 import itertools
@@ -26,6 +31,33 @@ FP_S8 = FP
 # TI LM2901 SOIC-14 (SLCS006Z Table 5-1): output pin -> (inverting, non-inverting) input pins of the same
 # comparator, VCC 3, GND 12. Kept apart from the symbol and the circuit table (channel names vary by vendor).
 LM2901_SO14 = {'outputs': {'2': ('4', '5'), '1': ('6', '7'), '14': ('8', '9'), '13': ('10', '11')}, 'VCC': '3', 'GND': '12'}
+# TI TLV431 DBZ (SOT-23-3), SLVS139Z Table 4-1: pin -> function; symbol pin names K / REF / A.
+TLV431_DBZ_TI = {'1': 'REF', '2': 'CATHODE', '3': 'ANODE'}
+TLV431_SYMBOL_NAME = {'REF': 'REF', 'CATHODE': 'K', 'ANODE': 'A'}
+# Guard screen inputs (S8.1). TLV431BI: 1.224-1.259 V over -40..85 C at IK 10 mA, |zKA| <= 0.4 ohm -> up to 3.6 mV
+# lower at ~1 mA (SLVS139Z 5.7). LM2901B: VIO 5.5 mV and IB 50 nA (out of the pin) over -40..125 C (SLCS006Z 6.8).
+# Divider resistors: 0.1 % + 25 ppm/C x 100 C. Converter load release, capacitor-study model, N = 16 cycles, low-C
+# corner (docs/s8-single/calcs.json rail_release): +12V 1.033 V, +5V 0.358 V, -12V 0.484 V above the setpoint.
+VREF_OV = (1.224 - 0.0036, 1.24, 1.259)
+# S8.2 crowbar. Manufacturer pin tables (kept apart from the symbols): ST TS1220 DPAK (DocID027645 Fig. 1: pin 1 K,
+# pin 2 / tab A, pin 3 G), TI TLVH432 DBZ (SLVS555N Pin Functions: CATHODE 1, REF 2, ANODE 3), AOS AO3401A SOT-23
+# (G 1, S 2, D 3), MMBT3904 SOT-23 (B 1, E 2, C 3).
+PINS_MFR = {'Q_SCR_KAG': {'1': 'K', '2': 'A', '3': 'G'}, 'TLVH432_DBZ': {'1': 'K', '2': 'REF', '3': 'A'},
+            'AO3401A': {'1': 'G', '2': 'S', '3': 'D'}, 'MMBT3904': {'1': 'B', '2': 'E', '3': 'C'}}
+# TLVH432BI VREF 1.224-1.259 V (-40..85 C, IK 10 mA), up to 4 mV lower at the ~1.3 mA trip current (|zKA| <= 0.4 ohm);
+# Iref <= 0.5 uA + 0.4 uA deviation (SLVS555N 5.7). TS1220 (DocID027645): IGT <= 200 uA, VGT <= 0.8 V at 25 C, IGT
+# x 1.9 at -40 C (Fig. 6); VGT assumed +2 mV/C below 25 C (0.93 V at -40 C) and >= 0.30 V at 125 C (screen, not
+# specified). Q13 must sink 0.25 mA (R97 10k, OV_N below 0.9 V) with hFE >= 50: VBE <= 0.75 V (25 C) / 0.88 V (-40 C).
+VREF_CB = (1.224 - 0.004, 1.24, 1.259)
+IREF_CB_MAX = 0.9e-6
+IGT_MAX = {'-40C': 380e-6, '25C': 200e-6}
+VGT_MAX = {'-40C': 0.93, '25C': 0.8}
+VGT_MIN = {'-40C': 0.60, '25C': 0.45, '125C': 0.30}
+Q13_ON_MAX_V = {'-40C': 0.93, '25C': 0.80, '125C': 0.60}   # VBE max + 5 uA x R106 (10k)
+VIO_B, IB_B = 0.0055, 50e-9
+R01_LO, R01_HI = 0.999 * 0.9975, 1.001 * 1.0025
+RELEASE_N16_V = {'+12V': 1.033, '+5V': 0.358, '-12V': 0.484}
+DOWNSTREAM_MAX_V = {'+12V': 16.0, '+5V': 6.0, '-12V': 16.0}    # 16 V module caps / 6.0 V 5 V-logic absolute maxima
 
 # Independently specified function pin -> net expectations of the critical parts (S8).
 CRIT = {
@@ -42,12 +74,20 @@ CRIT = {
             12: 'GND', 13: 'GND', 14: 'V3V3'},
     'U18': {1: 'P12_OK', 2: 'P5_OK', 3: 'V3V3', 4: 'REF_GOOD', 5: 'MON_P5', 6: 'REF_GOOD', 7: 'MON_P12', 8: 'MON_N12',
             9: 'REF_GOOD', 10: 'REF_GOOD', 11: 'MON_20', 12: 'GND', 13: 'V20_OK', 14: 'N12_OK'},
-    'U20': {2: 'OV_N', 4: 'MON_OV12', 5: 'REF_GOOD', 1: 'OV_N', 6: 'MON_OV5', 7: 'REF_GOOD', 14: 'OV_N', 8: 'REF_GOOD',
-            9: 'MON_OVN', 10: 'REF_GOOD', 11: 'GND', 3: 'V3V3', 12: 'GND'},
-    'R92': {1: 'VIN'}, 'R93': {1: '+12V', 2: 'MON_OV12'}, 'R95': {1: '+5V', 2: 'MON_OV5'},
-    'R98': {1: 'V3V3', 2: 'MON_OVN'}, 'R99': {1: 'MON_OVN', 2: '-12V'},
+    'U20': {2: 'OV_N', 4: 'MON_OV12', 5: 'REF_OV', 1: 'OV_N', 6: 'MON_OV5', 7: 'REF_OV', 14: 'OV_N', 8: 'GND',
+            9: 'MON_OVN', 10: 'REF_OV', 11: 'GND', 3: 'V3V3', 12: 'GND'},
+    'U21': {1: 'REF_OV', 2: 'REF_OV', 3: 'GND'}, 'R100': {1: 'V3V3', 2: 'REF_OV'}, 'C67': {1: 'REF_OV', 2: 'GND'},
+    'D22': {1: 'GND', 2: 'MON_OVN', 3: 'MON_OVN'}, 'TP17': {1: 'REF_OV'},
+    'R92': {1: 'VIN'}, 'R93': {1: '+12V', 2: 'MON_OV12'}, 'R94': {1: 'MON_OV12', 2: 'GND'},
+    'R95': {1: '+5V', 2: 'MON_OV5'}, 'R96': {1: 'MON_OV5', 2: 'GND'},
+    'R98': {1: 'REF_OV', 2: 'MON_OVN'}, 'R99': {1: 'MON_OVN', 2: '-12V'},
     'R35': {1: 'V3V3', 2: 'P12_OK'}, 'R44': {1: 'V3V3', 2: 'P5_OK'}, 'R62': {1: 'V3V3', 2: 'N12_OK'},
     'R97': {1: 'V3V3', 2: 'OV_N'}, 'D21': {1: '+5V', 2: 'GND'},
+    'Q11': {1: 'GND', 2: '+5V', 3: 'CROW_GATE'}, 'U22': {1: 'CROW_TRIP_N', 2: 'CROW_SENSE', 3: 'GND'},
+    'Q12': {1: 'CROW_TRIP_N', 2: '+5V', 3: 'CROW_DRV'}, 'Q13': {2: 'GND', 3: 'OV_N'},
+    'R101': {1: '+5V', 2: 'CROW_SENSE'}, 'R102': {1: 'CROW_SENSE', 2: 'GND'}, 'C68': {1: 'CROW_SENSE', 2: 'GND'},
+    'R103': {1: '+5V', 2: 'CROW_TRIP_N'}, 'R104': {1: 'CROW_DRV', 2: 'CROW_GATE'}, 'R105': {1: 'CROW_GATE', 2: 'GND'},
+    'R106': {1: 'CROW_DRV'},
     'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'D10': {1: 'EF_IN', 2: 'VPD'},
     'Q2': {1: 'PD_SENSE', 2: 'VPD_U1', 3: 'PD_BASE'}, 'Q1': {2: '+12V'}, 'Q10': {1: 'RUN', 2: 'GND', 3: 'LED_RETURN'},
     'D2': {1: '+12V', 2: 'GND'}, 'D3': {1: '+5V', 2: 'GND'}, 'D4': {1: 'GND', 2: '-12V'},
@@ -98,7 +138,8 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert removed <= s7 and not removed & set(comps), 'S8_REMOVED refs must be S7 refs and absent'
     assert s7 - set(comps) == removed, ('Only the listed S7 refs may disappear', sorted(s7 - set(comps) - removed))
     assert added == {'J3', 'C59', 'C60', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R95', 'R96', 'R97', 'R98', 'R99',
-                     'C63', 'C64', 'C65', 'C66', 'D21'}, sorted(added)
+                     'C63', 'C64', 'C65', 'C66', 'D21', 'U21', 'R100', 'C67', 'D22', 'TP17',
+                     *circuit_s8.CROWBAR}, sorted(added)
     tps1663 = sorted(r for r in comps if comps[r].findtext('fields/field[@name="MPN"]') == 'TPS16630PWPR')
     assert tps1663 == ['U5'], ('U5 must be the only TPS16630', tps1663)
     assert not any(comps[r].findtext('fields/field[@name="MPN"]') in FORBIDDEN_MPN for r in comps)
@@ -117,8 +158,37 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     for out, (inv, non) in LM2901_SO14['outputs'].items():    # same comparator: kOUT, k-, k+
         k = lm[out].removesuffix('OUT')
         assert (lm[inv], lm[non]) == (k + '-', k + '+'), ('LM2901 symbol pairing differs from TI table', out, inv, non)
-    assert comps['U20'].findtext('fields/field[@name="MPN"]') == 'LM2901DR'
+    for u in ('U18', 'U20'):
+        assert comps[u].findtext('fields/field[@name="MPN"]') == 'LM2901BIDR', (u, 'S8.1: LM2901B')
     assert 'unconnected-' in n('U20', 13), 'spare comparator output stays open'
+    tlv = libparts['TLV431_DBZ']
+    assert {k: tlv[k] for k in TLV431_DBZ_TI} == {k: TLV431_SYMBOL_NAME[v] for k, v in TLV431_DBZ_TI.items()}, \
+        ('TLV431 symbol pins differ from TI SLVS139Z Table 4-1 (DBZ)', tlv)
+    assert comps['U21'].findtext('fields/field[@name="MPN"]') == 'TLV431BIDBZR'
+    assert n('U21', 1) == n('U21', 2) == netids['REF_OV'] and n('U21', 3) == netids['GND'], 'U21: REF tied to CATHODE'
+    assert nets[netids['REF_OV']] == {('U21', '1'), ('U21', '2'), ('R100', '2'), ('C67', '1'), ('TP17', '1'),
+                                      ('U20', '5'), ('U20', '7'), ('U20', '10'), ('R98', '1')}, 'REF_OV members'
+    assert netids['V3V3'] not in {n('R98', 1), n('R99', 1)}, '-12V guard divider must not depend on V3V3'
+    assert nets[netids['MON_OVN']] == {('R98', '2'), ('R99', '1'), ('C66', '1'), ('D22', '2'), ('D22', '3'),
+                                       ('U20', '9')}, 'MON_OVN members (D22 clamp at the comparator node)'
+    for r in ('R93', 'R94', 'R95', 'R96', 'R98', 'R99', 'R101', 'R102'):
+        assert comps[r].findtext('fields/field[@name="Tolerance"]') == '0.1%', (r, '0.1 % divider')
+    # ---- S8.2 crowbar: pin roles, memberships, self-powered trigger, latch link
+    for sym, table in PINS_MFR.items():
+        assert {k: libparts[sym][k] for k in table} == table, ('crowbar symbol pins differ from the maker table', sym)
+    for ref, mpn in (('Q11', 'TS1220-600B-TR'), ('U22', 'TLVH432BIDBZR'), ('Q12', 'AO3401A'), ('Q13', 'MMBT3904')):
+        assert comps[ref].findtext('fields/field[@name="MPN"]') == mpn, (ref, mpn)
+    assert comps['Q11'].findtext('footprint') == 'USBPOWER45:TO-252-2', 'DPAK: pad 2 = tab = anode'
+    assert nets[netids['CROW_SENSE']] == {('R101', '2'), ('R102', '1'), ('C68', '1'), ('U22', '2')}, 'CROW_SENSE'
+    assert nets[netids['CROW_TRIP_N']] == {('U22', '1'), ('R103', '2'), ('Q12', '1')}, 'CROW_TRIP_N'
+    assert nets[netids['CROW_DRV']] == {('Q12', '3'), ('R104', '1'), ('R106', '1')}, 'CROW_DRV'
+    assert nets[netids['CROW_GATE']] == {('R104', '2'), ('R105', '1'), ('Q11', '3')}, 'CROW_GATE'
+    assert nets[n('R106', 2)] == {('R106', '2'), ('Q13', '1')}, 'Q13 base only through R106'
+    cb_nets = {n(r, k) for r in circuit_s8.CROWBAR for k in parts[r]['pins']}
+    assert not cb_nets & {netids['V3V3'], netids['REF_OV'], netids['REF_GOOD'], netids['MON_OV5']}, \
+        'crowbar trigger must be powered and referenced by +5V alone (no V3V3 / REF_OV / guard divider)'
+    assert cb_nets & {netids['OV_N']} == {netids['OV_N']} and ('Q13', '3') in nets[netids['OV_N']], 'latch link on OV_N'
+    assert value('R101') == value('R95') and value('R102') == value('R96'), 'crowbar ratio = U20 +5V guard ratio'
     for k, v in {'5': '1Q', '8': '2Q_N', '9': '2Q', '10': '2PRE_N', '13': '2CLR_N'}.items():
         assert libparts['HC74_DUAL'][k] == v, ('HC74 pin', k, libparts['HC74_DUAL'][k])
     for j in ('J2', 'J3'):
@@ -153,31 +223,58 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     for r in ('C9', 'C18', 'C49'):
         assert math.isclose(value(r), 100e-9), r
 
-    # ---- Bounded arithmetic: every corner of V3V3 (+-2 %, TPS7A16 SBVS171F), resistors (1 % + 1 % TCR drift,
-    # as the S6 screens) and comparator offset (LM2901 15 mV full range, SLCS006Z), brute force.
+    # ---- Bounded arithmetic, brute force over every corner. U18 monitors (unchanged): V3V3 +-2 % (TPS7A16 SBVS171F),
+    # 1 % resistors + 1 % TCR drift (as the S6 screens). S8.1 guard: REF_OV (TLV431BI), LM2901B offset and bias
+    # current, 0.1 % dividers (constants above); the converter setpoints keep the 1 % + 1 % TCR corners.
     lo, hi = .99 * .99, 1.01 * 1.01
-
-    def corners(f):
-        vals = [f(v3, a, b, c, d, e) for v3 in (3.3 * .98, 3.3 * 1.02) for a in (lo, hi) for b in (lo, hi)
-                for c in (lo, hi) for d in (lo, hi) for e in (-.015, .015)]
-        return [min(vals), f(3.3, 1, 1, 1, 1, 0), max(vals)]
 
     def ref(v3, a, b):
         return v3 * value('R74') * b / (value('R73') * a + value('R74') * b)
-    ov12 = corners(lambda v3, a, b, c, d, e: (ref(v3, a, b) + e) * (1 + value('R93') * c / (value('R94') * d)))
-    ov5 = corners(lambda v3, a, b, c, d, e: (ref(v3, a, b) + e) * (1 + value('R95') * c / (value('R96') * d)))
-    # |-12V| trip: MON_OVN = (V3V3 x R99 + V x R98) / (R98 + R99) falls to REF (+ offset)
-    ovneg = corners(lambda v3, a, b, c, d, e: (v3 * value('R99') * d - (ref(v3, a, b) + e)
-                                             * (value('R98') * c + value('R99') * d)) / (value('R98') * c))
+
+    def guard(f):
+        vals = [f(v, a, b, e, ib) for v in (VREF_OV[0], VREF_OV[2]) for a in (R01_LO, R01_HI) for b in (R01_LO, R01_HI)
+                for e in (-VIO_B, VIO_B) for ib in (0.0, IB_B)]
+        return [min(vals), f(VREF_OV[1], 1, 1, 0, 0), max(vals)]
+
+    def positive(top, bot):          # trips when the divider tap (+ bias current x Thevenin R) exceeds REF_OV + offset
+        def f(v, a, b, e, ib):
+            rt, rb = value(top) * a, value(bot) * b
+            return (v + e - ib * rt * rb / (rt + rb)) * (rt + rb) / rb
+        return guard(f)
+
+    def negative(v, a, b, e, ib):    # MON_OVN = (REF_OV x R99 + V x R98) / (R98 + R99) + ib x Rth falls to 0 V + offset
+        r98, r99 = value('R98') * a, value('R99') * b
+        return (v * r99 + (ib * r98 * r99 / (r98 + r99) - e) * (r98 + r99)) / r98
+    ov12, ov5, ovneg = positive('R93', 'R94'), positive('R95', 'R96'), guard(negative)
 
     def setpoint(top, bot, vfb):
         return vfb * (1 + value(top) * hi / (value(bot) * lo))
     p12_max, p5_max = setpoint('R8', 'R9', .816), setpoint('R11', 'R12', .816)    # SLUSEA4D VFB max
     n12_max = setpoint('R14', 'R15', 1.015)                                        # SNVSC40E FB max
     ovp12_max, ovp5_max = 1.18 * p12_max, 1.18 * p5_max                           # OVP 118 % max
-    assert 16.4 < ov12[1] < 16.8 and 6.4 < ov5[1] < 6.6 and 14.9 < ovneg[1] < 15.3, (ov12, ov5, ovneg)
-    assert ov12[2] < 19.0 and ov5[2] < 7.3 and ovneg[2] < 17.0, 'guard must still trip below a ~20 V failure'
-    assert ovneg[0] > n12_max + 1.0, ('-12V guard too close to the converter setpoint', ovneg, n12_max)
+    assert 14.7 < ov12[1] < 15.0 and 5.75 < ov5[1] < 5.9 and 13.5 < ovneg[1] < 13.8, (ov12, ov5, ovneg)
+    # Crowbar trip: VREF_CB x (1 + R101/R102) + Iref x R101, every corner (S8.2)
+    cb = [(v * (1 + value('R101') * a / (value('R102') * b)) + i * value('R101') * a)
+          for v in (VREF_CB[0], VREF_CB[2]) for a in (R01_LO, R01_HI) for b in (R01_LO, R01_HI) for i in (0, IREF_CB_MAX)]
+    crow = [min(cb), VREF_CB[1] * (1 + value('R101') / value('R102')), max(cb)]
+    peak = {'+12V': p12_max + RELEASE_N16_V['+12V'], '+5V': p5_max + RELEASE_N16_V['+5V'],
+            '-12V': n12_max + RELEASE_N16_V['-12V']}
+    bands = {'+12V': ov12, '+5V': ov5, '-12V': ovneg}
+    for rail, band in bands.items():
+        assert band[0] > peak[rail], (rail, 'guard minimum must clear the stacked setpoint + N=16 release', band, peak[rail])
+        assert band[2] <= DOWNSTREAM_MAX_V[rail], (rail, 'guard maximum above the downstream limit', band)
+    assert crow[0] > peak['+5V'] and crow[2] <= DOWNSTREAM_MAX_V['+5V'], ('crowbar band', crow, peak['+5V'])
+    # Gate drive at the lowest trip with cold IGT/VGT; latch-link ordering: Q13 pulls OV_N before the SCR can fire
+    r104, r105 = value('R104'), value('R105')
+    drive = {t: (crow[0] - VGT_MAX[t]) / (r104 * 1.01) - VGT_MAX[t] / (r105 * .99) for t in VGT_MAX}
+    assert all(drive[t] >= 2.5 * IGT_MAX[t] for t in drive), ('SCR gate overdrive below 2.5 x IGT max', drive)
+    fire_min = {t: v * (1 + r104 * .99 / (r105 * 1.01)) for t, v in VGT_MIN.items()}
+    assert all(fire_min[t] - Q13_ON_MAX_V[t] > 0.3 for t in fire_min), ('latch link must lead the SCR', fire_min)
+    # REF_OV bias: R100 must keep U21 above IK(min) 0.1 mA with the -12V divider drawing (1.26 + 20 V) / (R98 + R99)
+    ik_min = ((3.3 * .98 - VREF_OV[2]) / (value('R100') * 1.01)
+              - (VREF_OV[2] + 20.0) / ((value('R98') + value('R99')) * R01_LO) - 4 * IB_B)
+    assert ik_min > 0.5e-3, ('U21 cathode current too low', ik_min)
+    assert value('C67') >= 4.7e-6, 'C67 must stay right of the TLV431 instability region (SLVS139Z Fig. 5-18)'
     r0 = ref(3.3, 1, 1)
     mon = {'P12_V': r0 * (1 + value('R75') / value('R76')),
            'P5_V': r0 * (1 + (value('R77') + value('R78')) / value('R79')),
@@ -247,13 +344,28 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
             'nets_including_NC': len(nets), 'sheets': len(files), 'exact_field_pin_NC_pad_parity': True,
             'removed_S7_refs': len(removed), 'added_refs': sorted(added),
             'ceramic_banks_22u_or_10u': banks, 'vin_damper': {'R92_ohm': value('R92'), 'C5_C62_uF': [10, 10]},
-            'overvoltage_guard_V': {'+12V_min_nom_max': [round(v, 2) for v in ov12],
-                                    '+5V_min_nom_max': [round(v, 2) for v in ov5],
-                                    '-12V_magnitude_min_nom_max': [round(v, 2) for v in ovneg],
+            'overvoltage_guard_V': {'+12V_min_nom_max': [round(v, 3) for v in ov12],
+                                    '+5V_min_nom_max': [round(v, 3) for v in ov5],
+                                    '-12V_magnitude_min_nom_max': [round(v, 3) for v in ovneg],
+                                    'model': 'REF_OV TLV431BI 1.2204-1.259 V, LM2901B 5.5 mV / 50 nA, 0.1 % + 25 ppm x 100 C',
                                     'converter_setpoint_max_V': {'+12V': round(p12_max, 3), '+5V': round(p5_max, 3),
                                                                  '-12V': round(n12_max, 3)},
+                                    'stacked_normal_peak_V': {k: round(v, 3) for k, v in peak.items()},
+                                    'margin_min_to_peak_V': {k: round(bands[k][0] - peak[k], 3) for k in bands},
+                                    'downstream_limit_V': DOWNSTREAM_MAX_V,
+                                    'margin_max_to_limit_V': {k: round(DOWNSTREAM_MAX_V[k] - bands[k][2], 3) for k in bands},
                                     'converter_OVP_max_V': {'+12V': round(ovp12_max, 2), '+5V': round(ovp5_max, 2)},
-                                    'corner_overlap_with_converter_OVP': {'+12V': ov12[0] < ovp12_max, '+5V': ov5[0] < ovp5_max}},
+                                    'corner_overlap_with_converter_OVP': {'+12V': ov12[0] < ovp12_max, '+5V': ov5[0] < ovp5_max},
+                                    'U21_cathode_current_min_mA': round(ik_min * 1e3, 3)},
+            'crowbar': {'trip_+5V_min_nom_max_V': [round(v, 3) for v in crow],
+                        'model': 'TLVH432BI 1.220-1.259 V, Iref <= 0.9 uA, 0.1 % + 25 ppm x 100 C (R101/R102)',
+                        'margin_min_to_stacked_peak_V': round(crow[0] - peak['+5V'], 3),
+                        'margin_max_to_6V_V': round(DOWNSTREAM_MAX_V['+5V'] - crow[2], 3),
+                        'gate_drive_at_trip_min_mA': {t: round(v * 1e3, 2) for t, v in drive.items()},
+                        'gate_overdrive_x_IGT_max': {t: round(drive[t] / IGT_MAX[t], 1) for t in drive},
+                        'CROW_DRV_at_SCR_fire_min_V': {t: round(v, 2) for t, v in fire_min.items()},
+                        'Q13_turn_on_max_V': Q13_ON_MAX_V,
+                        'self_powered': 'no crowbar net touches V3V3, REF_OV, REF_GOOD or MON_OV5'},
             'nominal_voltage_valid_thresholds': mon, 'logic_POR_high_screen_V': por_max,
             'startup_qualification_typ_s': t_start, 'digital_combinations_checked': cases, 'scenarios': seq,
             'warnings': ['Arithmetic stacks every tolerance at once; it is a screen, not a rating.',

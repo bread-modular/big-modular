@@ -1,6 +1,6 @@
 {
  "board": "hardware/single/usb-power-45w-single.kicad_pcb",
- "parts_on_board": 166,
+ "parts_on_board": 182,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 0,
@@ -8,6 +8,14 @@
  "courtyard_overlaps": [],
  "edge_rule_findings_not_approved": [],
  "closest_courtyards_to_edge_mm": [
+  [
+   1.08,
+   "Q11"
+  ],
+  [
+   1.1,
+   "R105"
+  ],
   [
    1.329,
    "TP12"
@@ -23,14 +31,6 @@
   [
    1.329,
    "TP15"
-  ],
-  [
-   1.329,
-   "TP4"
-  ],
-  [
-   1.329,
-   "TP6"
   ]
  ],
  "approved_panel_overhangs": {
@@ -89,16 +89,16 @@
      "L3"
     ],
     [
-     5.324,
-     "R15"
+     2.825,
+     "C50"
     ],
     [
-     5.874,
-     "C24"
+     3.216,
+     "R69"
     ],
     [
-     6.635,
-     "U4"
+     4.234,
+     "Q11"
     ]
    ],
    "violations": []
@@ -267,8 +267,8 @@
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2733,
-  "fill_of_inset": 0.632
+  "courtyards_sum": 2900,
+  "fill_of_inset": 0.671
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",
  "pass": true
