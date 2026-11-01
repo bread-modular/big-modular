@@ -4,13 +4,15 @@
 # and the JP1 MIDI input setting from $2 (or $FIRMWARE / $JP1, or interactive
 # prompts) and exports them for the shared opt/attiny1616-tools scripts.
 #
-#   drums | supersaw | crash
+#   drums | supersaw | crash | lfo
 #   p   JP1 1-2 (protected NPN front end): RX inverted (PORT_INVEN on PB3)
 #   d   JP1 2-3 (direct, as Bread Modular): no inversion
+#   lfo has no MIDI: no JP1 setting (a p|d argument is accepted and ignored).
+# JUMPER_ARGC = how many of the arguments were consumed (flash.sh passes the rest).
 
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLS_DIR="$FW_DIR/../../../opt/attiny1616-tools"
-FIRMWARES=(drums supersaw crash)
+FIRMWARES=(drums supersaw crash lfo)
 SETTINGS=(p d)
 
 FIRMWARE="${1:-${FIRMWARE:-}}"
@@ -22,7 +24,7 @@ if [[ -z "$FIRMWARE" ]]; then
   while true; do
     printf "Enter number (1-%d): " "${#FIRMWARES[@]}"
     read -r SEL
-    if [[ "$SEL" =~ ^[1-3]$ ]]; then
+    if [[ "$SEL" =~ ^[1-4]$ ]]; then
       FIRMWARE="${FIRMWARES[$((SEL - 1))]}"
       break
     fi
@@ -36,6 +38,18 @@ case " ${FIRMWARES[*]} " in
     exit 1
     ;;
 esac
+
+JUMPER_ARGC=2
+if [[ "$FIRMWARE" == lfo ]]; then
+  case "${2:-}" in
+    p|d) ;;
+    *) JUMPER_ARGC=1 ;;
+  esac
+  echo "==> 8bit lfo firmware (no MIDI, JP1 not used)"
+  export ATTINY_SKETCH_ROOT="$FW_DIR/$FIRMWARE"
+  export ATTINY_DEFINES=""
+  return 0
+fi
 
 JP1="${2:-${JP1:-}}"
 if [[ -z "$JP1" ]]; then

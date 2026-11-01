@@ -4,6 +4,7 @@
 |---|---|
 | KiCad project | `hardware/8bit.kicad_{pro,sch,pcb}` |
 | Panel | `panels/front-pcb/8bit-panel.kicad_{pro,pcb}` (FR4, NPTH only) |
+| LFO panel | `panels/front-pcb/8bit-lfo-panel.kicad_{pro,pcb}` (no J1 MIDI / RV3 holes; J1 not fitted, RV3 replaced by a pin 3 - wiper wire bridge, `docs/mechanics.md`) |
 | Button cap | `panels/button-actuator/` (FreeCAD generator, one-piece cap STL/STEP) |
 | Generators, copper, profile | `tools/` (`build_schematic.py`, `build_layout.py`, `import_footprints.py`, `route_plan.py`, `kicad-project.json`) |
 | Placement contract | `docs/geometry.json` |
@@ -57,7 +58,8 @@
 - `tools/build_layout.py` places from `docs/geometry.json` and takes references,
   values, fields, symbol links and pad nets **only** from the native netlist. It
   vendors 3D models into `hardware/_kicad_models/<sha256>/`, writes the **unrouted**
-  carrier and the panel. pcbnew assigns new item UUIDs on every run (as `modules/midi`),
+  carrier and both panels (`build_layout.py panels` rebuilds only the panels, leaving
+  the routed carrier alone). pcbnew assigns new item UUIDs on every run (as `modules/midi`),
   so a rerun changes the files without changing placement, nets or fields.
 - `tools/import_footprints.py` rebuilds `hardware/8BIT.pretty` and `8BIT.3dshapes`.
 - `tools/sexp.py` is a copy of `modules/midi/tools/sexp.py` (module-local helper).
@@ -76,7 +78,7 @@
 - Native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`).
 - Native DRC `--severity-all --schematic-parity --refill-zones`: carrier **0
   violations, 0 unconnected, 0 parity** (`docs/fit/carrier-drc.json`); panel 0/0
-  (`docs/fit/panel-drc.json`).
+  (`docs/fit/panel-drc.json`); LFO panel 0/0 (`docs/fit/lfo-panel-drc.json`, 2026-11-01).
 - Shared `pcb apply` accepted the R4 candidate (ERC/DRC empty, parity equal, source
   unchanged); `pcb promote` re-bound every model token (0 external).
 - `kicad_tools.py check --config tools/kicad-project.json`:

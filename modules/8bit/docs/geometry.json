@@ -669,5 +669,80 @@
    ]
   },
   "travel_note": "Switch travel ~0.25 mm. Flange 1.4 mm above the switch body, 1.5 mm below the panel rear (the 0.3 mm of rev 1 let the panel press the flange and hold the switch on); tip 1.9 mm (FR4 front Z11.6) / 1.5 mm (print front Z12.0) proud of the panel."
+ },
+ "lfo_panel": {
+  "note": "LFO variant of the 4HP panel (firmware/lfo, no MIDI) for the same S5/R4 carrier: every hole of the main panel except the J1 MIDI jack and the RV3 (KNOB_3, passive LPF) shaft. J1 and RV3 are not fitted; a wire bridge from RV3 pin 3 to the wiper pad (pin 2) keeps the DAC path (as the knob fully CW, docs/mechanics.md). The MODE button (SW1) is the LFO recorder button, labelled REC. P1/P2 stay where the carrier pots are.",
+  "omit_pots": [
+   "RV3"
+  ],
+  "labels": [
+   {
+    "text": "8BIT",
+    "XY": [
+     10.0,
+     8.0
+    ],
+    "size": 2.5
+   },
+   {
+    "text": "CV",
+    "XY": [
+     10.0,
+     24.3
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "RATE",
+    "XY": [
+     10.0,
+     36.3
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "WAVE",
+    "XY": [
+     10.0,
+     51.3
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "LFO",
+    "XY": [
+     10.0,
+     72.0
+    ],
+    "size": 2.5
+   },
+   {
+    "text": "REC",
+    "XY": [
+     7.0,
+     81.6
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "OUT",
+    "XY": [
+     10.0,
+     93.6
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "BIG MODULAR",
+    "XY": [
+     10.0,
+     114.0
+    ],
+    "size": 1.2
+   }
+  ],
+  "omit_jacks": [
+   "J1"
+  ]
  }
 }

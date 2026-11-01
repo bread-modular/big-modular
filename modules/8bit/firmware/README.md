@@ -1,8 +1,8 @@
 # 8bit firmware (ATtiny1616)
 
-Ports of three Bread Modular 8bit firmwares
-(`~/data/projects/bread-modular/modules/8bit/code`, VERSION 1.2.1, commit `eeaf6dd`):
-`drums`, `supersaw` and `crash`. The 8bit carrier keeps the BM pin map
+Ports of four Bread Modular 8bit firmwares
+(`~/data/projects/bread-modular/modules/8bit/code`, VERSION 1.2.1, commit `eeaf6dd`;
+`lfo` from commit `b47ff0a`): `drums`, `supersaw`, `crash` and `lfo`. The 8bit carrier keeps the BM pin map
 (`../docs/jumpers.md`), so the sources are BM's apart from the changes below.
 
 | Pin | Use |
@@ -12,12 +12,16 @@ Ports of three Bread Modular 8bit firmwares
 | PA4 / PA5 | MODE button / LED |
 | PA6 | DAC out |
 | PA7, PB4 | BM gate / logger TX: still driven, not connected on this board |
-| PB0 | CV in: not used by these firmwares |
+| PB0 | CV in: `lfo` only (adds to the rate); not used by the others |
+
+`lfo` uses no MIDI; its MODE button is a free-time (no MIDI clock) P1/P2 recorder.
 
 ## JP1 setting (required)
 
-JP1 picks the MIDI input path, and the firmware must match it. Pass it as the
-second argument of `compile.sh` / `flash.sh` (or interactively, or `JP1=`):
+JP1 picks the MIDI input path, and the MIDI firmwares (`drums`, `supersaw`,
+`crash`) must match it. Pass it as the second argument of `compile.sh` /
+`flash.sh` (or interactively, or `JP1=`). `lfo` has no MIDI and takes no JP1
+setting (`./compile.sh lfo`, `./flash.sh lfo [port]`):
 
 | Setting | JP1 | Define | RX (PB3) |
 |---|---|---|---|
@@ -35,7 +39,7 @@ other setting receives nothing usable.
 ./flash.sh supersaw p             # build + flash, pick the UPDI port
 ./flash.sh crash d /dev/ttyUSB0   # explicit port (macOS: /dev/cu.usbserial-XXXX)
 crash/sim.sh                      # crash host self-tests (no hardware)
-../../../opt/attiny1616-tools/lib/CvRecorder/sim.sh  # supersaw recorder host self-tests
+../../../opt/attiny1616-tools/lib/CvRecorder/sim.sh  # supersaw/crash recorder host self-tests
 ```
 
 `compile.sh` / `flash.sh` call the shared `opt/attiny1616-tools` scripts
@@ -65,6 +69,26 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   their positions are the reference and turning a knob shifts its whole
   recorded curve up or down (clamped 0..1023). Needs a running MIDI clock;
   MIDI Start rewinds.
+- **lfo**: BM's 0.1-20 Hz LFO, 1 kHz sample rate, six wave tables (sine,
+  triangle, saw, complex 1, complex 2, random). P1 = RATE (curved), P2 = WAVE
+  (crossfades between neighbouring tables). **CV in modulates the rate**: its
+  bipolar value (`analogRead(PB0) - 509`, ±3 counts deadband) is added to the P1
+  reading before the rate curve, clamped 0..1023, so ±5 V moves it about ±45 % of
+  the knob travel (knob centre 5.9 Hz: +5 V -> 18.2 Hz, -5 V -> 0.43 Hz).
+  Unpatched = 0 V = knob only. **No MIDI** (BM's unused MIDI receiver is
+  removed). **MODE (REC) = free-time P1/P2 recorder**, no MIDI clock: click
+  to record, click again to stop; the take (as long as you held it open) then
+  loops with its own timing; a third click returns to the live knobs. Samples
+  start at 10 ms; each time the 640-sample buffer fills, every second sample is
+  kept and the period doubles (up to 640 ms, ~6.8 min, where a full buffer ends
+  the take and starts the loop). Playback interpolates linearly. For the first
+  loop pass the knobs are ignored, then turning a knob shifts its whole curve
+  (clamped 0..1023). CV in is never recorded; it adds to the rate live in every
+  state. LED follows the LFO level: dim (1/8) on live knobs, full while looping,
+  full and blinking while recording (BM: half brightness, no recorder). Use the
+  LFO panel (no MIDI jack, no P3 hole, MODE labelled REC), leave J1 and RV3
+  off and wire-bridge RV3 (`../docs/mechanics.md`): with RV3 off the board and
+  no bridge, the output is silent.
 - **crash**: synthesized TR-808-style crash (no samples) on MIDI note-on,
   velocity = level, note ignored. P1 = brightness, P2 = hiss/metal balance.
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED
@@ -75,7 +99,20 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 
 ## Changes from Bread Modular
 
-- All three: the `MIDI_RX_INVERT` guard and `PORTB.PIN3CTRL |= PORT_INVEN_bm`
+- lfo: CV in on PB0 added to the rate (user request, 2026-11-01; BM reads only
+  P1/P2): `rateControl()` adds the PB0 offset (`CV_IN_ZERO` 509, calibrate per unit,
+  `../docs/research.md`) to P1 in `setup()` and `loop()`. BM's operator-precedence
+  slip in `mapCvToFrequencyCurve()` (`MIN + x >> 16` parsed as `(MIN + x) >> 16`,
+  a compiler warning) is parenthesised as intended, so the curve starts at 0.1 Hz
+  instead of being clamped there. MIDI removed (user decision 2026-11-01: no MIDI
+  on the LFO build): no `SimpleMIDI.h`, no `MIDI.begin()`/`update()`, no
+  (empty) callbacks, no `MIDI_RX_INVERT` guard; built without a JP1 setting.
+  MODE/LED: own free-time recorder in `lfo.ino` (user request, 2026-11-01;
+  the shared `CvRecorder.h` is MIDI-clock based and stays unchanged), LED
+  brightness by mode. Its unused `ModeHandler.h` / `LEDToggler.h` are not copied; `WaveTables.*`
+  are the BM files, unchanged.
+
+- drums, supersaw, crash: the `MIDI_RX_INVERT` guard and `PORTB.PIN3CTRL |= PORT_INVEN_bm`
   after `MIDI.begin()` for JP1 = P.
 - supersaw: the CV1 pitch mode is removed (user decision, MIDI only):
   no `updateFrequencyFromCV()`, no `ModeHandler`. Its unused
@@ -109,6 +146,6 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
 drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
 (recorder, 2026-10-29); crash 6821 / 6811 B, 1168 B (shared recorder,
-2026-10-29). `crash/sim.sh`: 66
+2026-10-29); lfo 6679 B, 1467 B (no MIDI, no JP1 build, free-time recorder, 2026-11-01). `crash/sim.sh`: 66
 checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
 Not bench-tested on the 8bit carrier yet.

@@ -5,6 +5,7 @@
 # Usage:
 #   ./compile.sh                          # pick both interactively
 #   ./compile.sh drums|supersaw|crash p|d
+#   ./compile.sh lfo                      # no MIDI, no JP1 setting
 #
 set -euo pipefail
 

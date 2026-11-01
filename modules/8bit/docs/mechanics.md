@@ -58,6 +58,16 @@ Panel labels (1.2 mm, above each control): `MIDI`, `CV`, `P1`, `P2`, `P3`, `MODE
 `OUT`; title `8BIT` (2.5 mm) and `BIG MODULAR`. Holes: jack Ø6.2, pot Ø7.2, LED Ø3.2,
 button Ø4.2.
 
+**LFO panel** (`panels/front-pcb/8bit-lfo-panel.kicad_pcb`, `geometry.json` `lfo_panel`,
+for `firmware/lfo`, no MIDI): the same holes without the J1 MIDI jack hole (Y17.5) and the
+RV3 shaft hole (Y73.5); labels `RATE` (P1) and `WAVE` (P2) instead of `P1`/`P2`, no `MIDI`,
+`P3`, `REC` instead of `MODE` (SW1 is the LFO recorder button), and `LFO` (2.5 mm) at Y72.0 in the freed space. Build notes: **don't fit J1**
+(no panel hole; the MIDI input parts behind it can stay, the firmware never enables the
+UART). **Don't fit RV3**; solder a wire from the RV3 pin 3 pad (DAC_R) to the
+pin 2 wiper pad (FILT). That is the knob fully CW (R7 10k + C13 1n, ~15.9 kHz corner,
+no effect on a 0.1-20 Hz LFO). Without the bridge the DAC has no path to U3 and the
+output is silent. RV3 pin 1 stays open, as it is on the stock build.
+
 ## Back (B): SMD for JLC assembly, plus headers
 
 | Band | Parts |
