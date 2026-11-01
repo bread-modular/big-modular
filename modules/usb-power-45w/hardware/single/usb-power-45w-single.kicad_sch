@@ -1,0 +1,1622 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "8dfe13f1-2242-548d-8407-aa702f14997e")
+	(paper "User" 560 530)
+	(title_block
+		(title "USB power S8 single board - wired power flow overview")
+		(rev "S8 final")
+		(company "Big Modular")
+		(comment 1 "S8 final: single board, no per-rail eFuses, ceramic bulk, two output headers, OV guard, MAIN LED only")
+		(comment 2 "Design notes and pre-calculations: docs/s8-single-board.md")
+	)
+	(lib_symbols)
+	(text "Two Eurorack outputs J2 + J3\nMonitors, OV guard\nMAIN LED (only status LED)"
+		(exclude_from_sim no)
+		(at 381 294.64 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "15c43331-c33a-5c98-b232-e60538a9b3b9")
+	)
+	(text "LMR38020F inverting buck-boost\n-12 V delivered rail"
+		(exclude_from_sim no)
+		(at 187.96 335.28 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "32c8b997-2e87-5965-841e-bb64890f51de")
+	)
+	(text "FAULT POLICY\nEach rail is monitored after its converter.\nPersistent low rail (after ~0.57 s) or any overvoltage -> all OFF until RESET.\nMain LED is not merely a +5 V lamp."
+		(exclude_from_sim no)
+		(at 370.84 340.36 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "39055b42-04be-5f7b-9f1d-12f7262d7c0a")
+	)
+	(text "OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\nNo per-rail current limit below the converter limits (TPS62933F 4.2-5.8 A peak; LMR38020F 2.6-3.8 A switch).\nTargets 2.5 / 2.5 / 1.0 A; not a guaranteed 54.5 W simultaneous rating."
+		(exclude_from_sim no)
+		(at 370.84 386.08 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left top)
+		)
+		(uuid "4c5ea9e7-4759-5382-b89d-e947c36ed5a6")
+	)
+	(text "USB POWER 45W S8 / SINGLE BOARD, NO PER-RAIL EFUSES"
+		(exclude_from_sim no)
+		(at 20.32 15.24 0)
+		(effects
+			(font
+				(size 2.4 2.4)
+			)
+			(justify left top)
+		)
+		(uuid "7900f7e9-43c3-5529-a513-6dc0030b3192")
+	)
+	(text "TPS62933F\n+12 V delivered rail"
+		(exclude_from_sim no)
+		(at 187.96 111.76 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "7fafe2a6-1948-5b78-9b98-4128ac35d1be")
+	)
+	(text "S8 final: S7 converters kept; U6/U7 and the LM5067 negative switch removed; cans -> ceramics; two parallel 16-pin outputs; overvoltage guard on the fault latch; MAIN LED only (rail LEDs removed)."
+		(exclude_from_sim no)
+		(at 20.32 25.4 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left top)
+		)
+		(uuid "92fa3644-95ef-59ce-af69-3d9101434dc9")
+	)
+	(text "TPS62933F\n+5 V delivered rail"
+		(exclude_from_sim no)
+		(at 187.96 223.52 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "93210dac-ea2c-59c3-992d-4007e85e7fc3")
+	)
+	(text "CH224A: 20 V request\nTPS16630: 4.186 A, the only switch\nVIN damper 1R + 2 x 10u"
+		(exclude_from_sim no)
+		(at 50.8 152.4 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "f3a371e9-4f5d-52a0-9e70-65250097d686")
+	)
+	(text "60 V always-on LDO / retained ARMED + FAULT\nManual RESET; OV_N presets FAULT"
+		(exclude_from_sim no)
+		(at 50.8 482.6 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "fb5a6432-2c63-5cb0-a517-d9846487e8fd")
+	)
+	(junction
+		(at 137.16 180.34)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7b16336d-5406-5de8-87d6-5f31d7811566")
+	)
+	(junction
+		(at 137.16 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "fc27ce4c-f994-53a8-bdc4-49f01639ad85")
+	)
+	(wire
+		(pts
+			(xy 299.72 431.8) (xy 307.34 431.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02f5bb66-859c-539a-8d69-b2cba8a0a3a4")
+	)
+	(wire
+		(pts
+			(xy 137.16 180.34) (xy 170.18 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "07c40b1a-d3ec-557f-a54d-9597a3b02a71")
+	)
+	(wire
+		(pts
+			(xy 477.52 86.36) (xy 485.14 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "10264590-facb-5ea7-b21e-53283d191ea3")
+	)
+	(wire
+		(pts
+			(xy 279.4 294.64) (xy 287.02 294.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "103c287c-314a-53fd-a33c-3723f8e8f3e1")
+	)
+	(wire
+		(pts
+			(xy 477.52 71.12) (xy 485.14 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "184fbe70-bc68-55c5-b298-78abf17a52c9")
+	)
+	(wire
+		(pts
+			(xy 363.22 101.6) (xy 370.84 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f662a56-8811-5fb0-9161-e3d1d9e7a457")
+	)
+	(wire
+		(pts
+			(xy 363.22 93.98) (xy 370.84 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20c72a5e-6831-5693-a5f9-34b9a6bada9e")
+	)
+	(wire
+		(pts
+			(xy 33.02 424.18) (xy 40.64 424.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "274e3e76-d895-5581-88e5-bb1e8cf4a510")
+	)
+	(wire
+		(pts
+			(xy 33.02 447.04) (xy 40.64 447.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "287d19eb-2999-53c5-b0db-397a56b1e831")
+	)
+	(wire
+		(pts
+			(xy 330.2 86.36) (xy 363.22 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30cc26a7-330a-55b7-8801-dde5b85089a5")
+	)
+	(wire
+		(pts
+			(xy 33.02 439.42) (xy 40.64 439.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3573dfea-c27c-538f-9660-90ba2c58ea26")
+	)
+	(wire
+		(pts
+			(xy 279.4 60.96) (xy 287.02 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b7e4492-e06f-5c5d-9e0b-0a7c1ef736e5")
+	)
+	(wire
+		(pts
+			(xy 33.02 431.8) (xy 40.64 431.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ca90efe-7bd1-54ee-9b71-7a8da2f21ac6")
+	)
+	(wire
+		(pts
+			(xy 33.02 462.28) (xy 40.64 462.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43649df7-dee2-5be9-827d-7b618a36d4c0")
+	)
+	(wire
+		(pts
+			(xy 317.5 78.74) (xy 363.22 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "45ee833b-c40e-571d-a77e-c671d76532b9")
+	)
+	(wire
+		(pts
+			(xy 477.52 78.74) (xy 485.14 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47077724-ba68-56de-864a-862fbc1f1168")
+	)
+	(wire
+		(pts
+			(xy 170.18 172.72) (xy 177.8 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "480b3f90-4f62-589e-9ab2-6e69ecb56c8c")
+	)
+	(wire
+		(pts
+			(xy 363.22 86.36) (xy 370.84 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "58042e2a-64de-56e6-a38d-882e8a19e8f7")
+	)
+	(wire
+		(pts
+			(xy 129.54 78.74) (xy 137.16 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a7cc486-eb8f-5a8e-95a6-3cbd5a3982a5")
+	)
+	(wire
+		(pts
+			(xy 363.22 109.22) (xy 370.84 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61673474-2e59-5928-865a-637d81a9baf1")
+	)
+	(wire
+		(pts
+			(xy 304.8 71.12) (xy 363.22 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6526917e-dc71-5f44-943a-6ed12a168060")
+	)
+	(wire
+		(pts
+			(xy 477.52 101.6) (xy 485.14 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6def66b6-58dc-5071-85ed-02782efefe72")
+	)
+	(wire
+		(pts
+			(xy 121.92 86.36) (xy 129.54 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7009716a-288a-56f4-8d6d-269780c0274c")
+	)
+	(wire
+		(pts
+			(xy 170.18 68.58) (xy 177.8 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "78302ceb-99a7-5df1-8727-9976756bad4b")
+	)
+	(wire
+		(pts
+			(xy 170.18 302.26) (xy 177.8 302.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b3368f5-a955-5755-95b9-a30b22b93b4d")
+	)
+	(wire
+		(pts
+			(xy 304.8 60.96) (xy 304.8 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "827bc2b6-8247-5fdf-8ca4-be9cb3f12b4f")
+	)
+	(wire
+		(pts
+			(xy 137.16 78.74) (xy 137.16 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "839b0c27-e742-5eae-8470-25da058f624f")
+	)
+	(wire
+		(pts
+			(xy 363.22 71.12) (xy 370.84 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "86440074-0322-5a8a-920d-1c456f3c5642")
+	)
+	(wire
+		(pts
+			(xy 330.2 86.36) (xy 330.2 294.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "869401ae-8be5-591d-ae74-c60dce8be09a")
+	)
+	(wire
+		(pts
+			(xy 170.18 180.34) (xy 177.8 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f06da31-c464-5742-b280-1e7d98385b7d")
+	)
+	(wire
+		(pts
+			(xy 33.02 454.66) (xy 40.64 454.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a33109ba-e082-5035-95b5-5387197b0372")
+	)
+	(wire
+		(pts
+			(xy 137.16 68.58) (xy 137.16 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a647187a-8012-56ff-840f-fdb5e187c499")
+	)
+	(wire
+		(pts
+			(xy 170.18 294.64) (xy 177.8 294.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "af82604e-aa2a-5d41-923d-e33d5158700e")
+	)
+	(wire
+		(pts
+			(xy 299.72 424.18) (xy 307.34 424.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3c8370d-623b-5398-ae6a-977b9c3f0a40")
+	)
+	(wire
+		(pts
+			(xy 287.02 172.72) (xy 317.5 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b6b85f6d-6a9b-51f8-bd38-c6c5d2de2fe5")
+	)
+	(wire
+		(pts
+			(xy 137.16 302.26) (xy 170.18 302.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b9eb467e-3549-5c1b-a4e1-42e8fe628e43")
+	)
+	(wire
+		(pts
+			(xy 33.02 416.56) (xy 40.64 416.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c12afe20-445e-5bd8-a756-8639fa821998")
+	)
+	(wire
+		(pts
+			(xy 121.92 71.12) (xy 129.54 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c484de86-03e4-5acb-907e-f3561622291d")
+	)
+	(wire
+		(pts
+			(xy 299.72 416.56) (xy 307.34 416.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c5ae3693-8bb7-54a2-91f3-5959b9c75fad")
+	)
+	(wire
+		(pts
+			(xy 121.92 78.74) (xy 129.54 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cabbad33-7d0f-5bbd-9f06-cfd06aa93622")
+	)
+	(wire
+		(pts
+			(xy 279.4 172.72) (xy 287.02 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ccd5ae98-35a2-53e1-9d0d-b45a622b1ea8")
+	)
+	(wire
+		(pts
+			(xy 137.16 180.34) (xy 137.16 302.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d071e8d9-e8d2-5db0-ac2a-79e025c13734")
+	)
+	(wire
+		(pts
+			(xy 477.52 93.98) (xy 485.14 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d374dbef-e752-59db-9e81-58140cab16b5")
+	)
+	(wire
+		(pts
+			(xy 170.18 60.96) (xy 177.8 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dcf3764f-c67c-5c75-a24f-28e5ba42807c")
+	)
+	(wire
+		(pts
+			(xy 137.16 68.58) (xy 170.18 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e31d717d-05c8-5f7c-bcaa-d3d88d7159dc")
+	)
+	(wire
+		(pts
+			(xy 287.02 294.64) (xy 330.2 294.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e381a13a-e4d3-50be-a26d-dfd01a18f519")
+	)
+	(wire
+		(pts
+			(xy 33.02 71.12) (xy 40.64 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ec1f7ef3-866a-5702-870a-fdcfd9624aad")
+	)
+	(wire
+		(pts
+			(xy 363.22 78.74) (xy 370.84 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef4d7af6-015f-55da-93cb-f46cbb199efc")
+	)
+	(wire
+		(pts
+			(xy 363.22 116.84) (xy 370.84 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6a7e396-892f-593d-a15a-49abe45c6170")
+	)
+	(wire
+		(pts
+			(xy 287.02 60.96) (xy 304.8 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6da6088-82f9-5e63-ad6a-5ceee3dd9868")
+	)
+	(wire
+		(pts
+			(xy 317.5 78.74) (xy 317.5 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9de68bd-1982-5e2d-bf6e-da6d1cecb4de")
+	)
+	(label "MAIN_OK"
+		(at 129.54 86.36 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "01e96b1a-60fc-5a41-84b0-cc5d337c20a2")
+	)
+	(label "VIN"
+		(at 170.18 302.26 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "0f66df57-192e-5ab5-9ea0-00033293d610")
+	)
+	(label "OV_N"
+		(at 485.14 101.6 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "1d17c415-644b-52f0-a3e3-23169b1e9659")
+	)
+	(label "+5V"
+		(at 287.02 172.72 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "2197658d-0ba9-5337-b997-e9725be2ae93")
+	)
+	(label "-12V"
+		(at 363.22 86.36 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "34d494eb-d350-5afb-9777-3fbc1c68cac1")
+	)
+	(label "OV_N"
+		(at 33.02 431.8 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "36355fb5-b8a6-5ba4-b2c6-ac26571ae07d")
+	)
+	(label "MAIN_LED_OK"
+		(at 307.34 431.8 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "3aa4426a-d058-5ee8-bb22-e21e435b1a17")
+	)
+	(label "VPD"
+		(at 33.02 462.28 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "43df2f6c-1a72-513c-82a4-52c39344212d")
+	)
+	(label "RUN"
+		(at 33.02 71.12 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "48169e0a-3785-514b-a484-153f9d32a2ec")
+	)
+	(label "V3V3"
+		(at 363.22 109.22 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "4a4a939d-d8f0-5e59-b65c-a1048e6c545c")
+	)
+	(label "P12_OK"
+		(at 485.14 71.12 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "4e4094d8-ea43-50cd-84d1-5313399c992b")
+	)
+	(label "V3V3"
+		(at 307.34 424.18 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "4f1cd5fe-47ae-5536-854f-a57207610cf3")
+	)
+	(label "MAIN_OK"
+		(at 170.18 172.72 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "50e81974-f449-572d-81fb-29346232581c")
+	)
+	(label "+5V"
+		(at 363.22 78.74 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "54697440-7039-5bad-a15f-2da87449ea8a")
+	)
+	(label "+12V"
+		(at 170.18 294.64 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "56ff5ae8-af81-5db2-8de7-b8805ffb4d63")
+	)
+	(label "VPD"
+		(at 129.54 71.12 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "60a6affa-3e48-5a20-8dae-6564a8a456d1")
+	)
+	(label "MAIN_LED_OK"
+		(at 363.22 93.98 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "69656b23-0cd3-511c-8a01-e285a0719d6f")
+	)
+	(label "MAIN_OK"
+		(at 33.02 416.56 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "6fcba066-3691-5b01-964f-9ffa3ee99597")
+	)
+	(label "+12V"
+		(at 287.02 60.96 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "7383e0f4-97df-5b23-a22e-da0bcac70761")
+	)
+	(label "+12V"
+		(at 363.22 71.12 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "73c30a22-ee78-524c-8fcf-115f02c58303")
+	)
+	(label "RUN"
+		(at 363.22 101.6 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "75ecd8d8-f08c-562d-af68-3f517cd0e941")
+	)
+	(label "N12_OK"
+		(at 485.14 86.36 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "7d5748d1-7199-560d-9f33-c3c1fccd0bac")
+	)
+	(label "V20_OK"
+		(at 485.14 93.98 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "a086ba7e-fa25-570c-9404-2897dd7feacb")
+	)
+	(label "P12_OK"
+		(at 33.02 439.42 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "a408f7a2-2953-5955-87f2-e3cf8be3f457")
+	)
+	(label "VPD"
+		(at 363.22 116.84 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "aa612f40-5b2a-5076-9c01-7ff94de555c6")
+	)
+	(label "VIN"
+		(at 170.18 68.58 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "ac5fae7b-b5d9-5dc0-88b1-8f54b59cb8d3")
+	)
+	(label "RUN"
+		(at 307.34 416.56 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "c0645b48-1dde-5db1-aec9-adf655a5d942")
+	)
+	(label "VIN"
+		(at 170.18 180.34 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "c56477cf-08ab-55b1-8679-d3ea4a7836a3")
+	)
+	(label "-12V"
+		(at 287.02 294.64 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "cbf9e08d-8b77-5642-be1b-a0df5d60b812")
+	)
+	(label "MAIN_OK"
+		(at 170.18 60.96 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "d35c62b5-6fd6-51bf-9a16-e2e64721d74b")
+	)
+	(label "VIN"
+		(at 129.54 78.74 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "d593c892-d5f0-5de4-b612-6c45cc55f9fe")
+	)
+	(label "P5_OK"
+		(at 485.14 78.74 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "da03e609-7590-5cd1-aebe-4897f09c8ea4")
+	)
+	(label "V20_OK"
+		(at 33.02 454.66 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "e989d615-e04d-5713-86dc-9cc9cb4c2c5d")
+	)
+	(label "P5_OK"
+		(at 33.02 447.04 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "ea6bbc82-5a3c-531d-b876-e60014e4170d")
+	)
+	(label "N12_OK"
+		(at 33.02 424.18 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "f08f2414-2eeb-51db-93f0-62294eaef16b")
+	)
+	(sheet
+		(at 177.8 50.8)
+		(size 101.6 81.28)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "06436d8e-4ba6-573a-9a5b-20b92ac7d269")
+		(property "Sheetname" "+12 V converter"
+			(at 177.8 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "02_positive_12v.kicad_sch"
+			(at 177.8 134.62 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MAIN_OK" bidirectional
+			(at 177.8 60.96 180)
+			(uuid "4fb65230-db81-5eb4-a1b7-2d7a54c3d92a")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "VIN" bidirectional
+			(at 177.8 68.58 180)
+			(uuid "5c9a4f61-1e36-5ede-a40e-0441a1f70815")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "+12V" bidirectional
+			(at 279.4 60.96 0)
+			(uuid "23ff87b7-58b1-5f39-9d5d-b8e150735dc6")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "usb-power-45w-single"
+				(path "/8dfe13f1-2242-548d-8407-aa702f14997e"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 370.84 60.96)
+		(size 106.68 254)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "0dedd450-3e37-594d-8dcb-609bec9c601d")
+		(property "Sheetname" "Two output headers - monitors, overvoltage guard and MAIN LED"
+			(at 370.84 58.42 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "06_outputs_status.kicad_sch"
+			(at 370.84 317.5 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left top)
+			)
+		)
+		(pin "+12V" bidirectional
+			(at 370.84 71.12 180)
+			(uuid "4a87c6c5-09ca-58f2-88ed-7215f962d71e")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" bidirectional
+			(at 370.84 78.74 180)
+			(uuid "fd14cc42-ca3b-5020-b1e1-3efb77b8d5f4")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "-12V" bidirectional
+			(at 370.84 86.36 180)
+			(uuid "fb6d0a4e-1d08-51d1-8c80-353201506b1e")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "MAIN_LED_OK" bidirectional
+			(at 370.84 93.98 180)
+			(uuid "87388a54-e382-59ac-ad44-4a834ad6d42a")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "RUN" bidirectional
+			(at 370.84 101.6 180)
+			(uuid "8e55bee2-df51-51c1-8f42-030dd3125d24")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "V3V3" bidirectional
+			(at 370.84 109.22 180)
+			(uuid "95e1bdc2-372f-51ec-b0c5-93e89da7e052")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "VPD" bidirectional
+			(at 370.84 116.84 180)
+			(uuid "a65345aa-3860-5035-8b30-881e86e07867")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "P12_OK" bidirectional
+			(at 477.52 71.12 0)
+			(uuid "69735f46-e9dd-5d03-a48e-e75780645f13")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "P5_OK" bidirectional
+			(at 477.52 78.74 0)
+			(uuid "96ad9018-6a8a-5dfa-ab5c-832733f6dda4")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "N12_OK" bidirectional
+			(at 477.52 86.36 0)
+			(uuid "72220c01-800e-5ca6-b346-3fca5cd39a26")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "V20_OK" bidirectional
+			(at 477.52 93.98 0)
+			(uuid "32f7c9e7-a499-589f-b06f-24e2dbdd09e2")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "OV_N" bidirectional
+			(at 477.52 101.6 0)
+			(uuid "9cbcc0f2-458a-54f4-a596-9989fced8f2b")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "usb-power-45w-single"
+				(path "/8dfe13f1-2242-548d-8407-aa702f14997e"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 177.8 162.56)
+		(size 101.6 81.28)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "203a246e-ea3c-59c2-88ac-f6faf8f14e40")
+		(property "Sheetname" "+5 V converter"
+			(at 177.8 160.02 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "03_positive_5v.kicad_sch"
+			(at 177.8 246.38 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MAIN_OK" bidirectional
+			(at 177.8 172.72 180)
+			(uuid "410c96d4-7a06-5693-8a37-7c5cdf4e9924")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "VIN" bidirectional
+			(at 177.8 180.34 180)
+			(uuid "74002ff3-4fa2-5da2-9392-184fc2974424")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "+5V" bidirectional
+			(at 279.4 172.72 0)
+			(uuid "f0e3d324-f316-5729-abb1-4966b3da0782")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "usb-power-45w-single"
+				(path "/8dfe13f1-2242-548d-8407-aa702f14997e"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 177.8 284.48)
+		(size 101.6 71.12)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "9d3e0d8f-7526-5658-9b77-7f9b6f695142")
+		(property "Sheetname" "-12 V inverting converter"
+			(at 177.8 281.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "04_negative_converter.kicad_sch"
+			(at 177.8 358.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left top)
+			)
+		)
+		(pin "+12V" bidirectional
+			(at 177.8 294.64 180)
+			(uuid "afa6ddc4-613e-5556-a326-b19ff06b5572")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "VIN" bidirectional
+			(at 177.8 302.26 180)
+			(uuid "237c5573-1b88-54dc-a684-31ced6f17517")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "-12V" bidirectional
+			(at 279.4 294.64 0)
+			(uuid "fc681587-8b99-5966-9ea4-d94684f16cb9")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "usb-power-45w-single"
+				(path "/8dfe13f1-2242-548d-8407-aa702f14997e"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 40.64 406.4)
+		(size 259.08 96.52)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "9dce35bb-810d-5626-994e-7766b3b1dce7")
+		(property "Sheetname" "Always-on control - fault latch, overvoltage preset and RESET"
+			(at 40.64 403.86 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "05_fault_reset.kicad_sch"
+			(at 40.64 505.46 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MAIN_OK" bidirectional
+			(at 40.64 416.56 180)
+			(uuid "155b3fbe-c12e-583c-accf-a3d45b899098")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "N12_OK" bidirectional
+			(at 40.64 424.18 180)
+			(uuid "e2a3dd13-f0d4-567d-9087-287cba9b7643")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "OV_N" bidirectional
+			(at 40.64 431.8 180)
+			(uuid "bbb22b9f-65dc-5774-bae2-dd99b5c1cfe2")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "P12_OK" bidirectional
+			(at 40.64 439.42 180)
+			(uuid "2309586d-a197-5d79-bd74-cf82b5a416a2")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "P5_OK" bidirectional
+			(at 40.64 447.04 180)
+			(uuid "b46c8216-52c4-570f-82f0-c5161d5a27e3")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "V20_OK" bidirectional
+			(at 40.64 454.66 180)
+			(uuid "e3de7845-3c98-5c8f-b568-490c70bb314d")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "VPD" bidirectional
+			(at 40.64 462.28 180)
+			(uuid "93f184bd-2d82-5dac-acc5-5a9b45917c9a")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "RUN" bidirectional
+			(at 299.72 416.56 0)
+			(uuid "44abab1b-295c-5ce9-a500-5571042ac643")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "V3V3" bidirectional
+			(at 299.72 424.18 0)
+			(uuid "31e7a6d4-d045-5db0-ba79-21120dac00da")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "MAIN_LED_OK" bidirectional
+			(at 299.72 431.8 0)
+			(uuid "66b431f7-b22d-5999-ad07-fef50294c69a")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "usb-power-45w-single"
+				(path "/8dfe13f1-2242-548d-8407-aa702f14997e"
+					(page "6")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 40.64 60.96)
+		(size 81.28 111.76)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "bcf4b69c-e93d-572c-9ac6-3a75a948347b")
+		(property "Sheetname" "USB PD, main eFuse and VIN damper"
+			(at 40.64 58.42 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "01_usb_input.kicad_sch"
+			(at 40.64 175.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left top)
+			)
+		)
+		(pin "RUN" bidirectional
+			(at 40.64 71.12 180)
+			(uuid "93a78ec3-afe3-5332-8e7d-e5cef5f1a023")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify left)
+			)
+		)
+		(pin "VPD" bidirectional
+			(at 121.92 71.12 0)
+			(uuid "7e719c7a-e728-51c4-81b3-fa3712151f41")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "VIN" bidirectional
+			(at 121.92 78.74 0)
+			(uuid "c52352ae-337e-5340-93a8-61819c94be01")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(pin "MAIN_OK" bidirectional
+			(at 121.92 86.36 0)
+			(uuid "3851d68f-ab72-5a3a-81bb-75ec42a137b9")
+			(effects
+				(font
+					(size 1.1 1.1)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "usb-power-45w-single"
+				(path "/8dfe13f1-2242-548d-8407-aa702f14997e"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

@@ -1,0 +1,334 @@
+{
+ "categories": {
+  "panel": {
+   "label": "Native S8 4HP panel PCB (kicad-cli STEP): MAIN LED + RESET + USB-C",
+   "count": 1,
+   "bbox_XYZ": [
+    [
+     0.0,
+     20.0
+    ],
+    [
+     0.0,
+     128.5
+    ],
+    [
+     0.015,
+     1.6
+    ]
+   ]
+  },
+  "carrier": {
+   "label": "Native S8 board 100.5 x 48 x 1.6, unrouted, every part on F",
+   "count": 1,
+   "bbox_XYZ": [
+    [
+     2.5,
+     4.016
+    ],
+    [
+     14.0,
+     114.5
+    ],
+    [
+     2.0,
+     50.0
+    ]
+   ]
+  },
+  "ics": {
+   "label": "ICs, transistors, diodes, fuse (KiCad library models)",
+   "count": 29,
+   "bbox_XYZ": [
+    [
+     4.101,
+     6.411
+    ],
+    [
+     17.75,
+     97.75
+    ],
+    [
+     6.875,
+     45.625
+    ]
+   ]
+  },
+  "passives": {
+   "label": "R / C (KiCad library models)",
+   "count": 113,
+   "bbox_XYZ": [
+    [
+     4.101,
+     5.701
+    ],
+    [
+     15.75,
+     111.85
+    ],
+    [
+     4.275,
+     47.375
+    ]
+   ]
+  },
+  "headers": {
+   "label": "J2/J3 2x8 box headers (THT, KiCad model)",
+   "count": 2,
+   "bbox_XYZ": [
+    [
+     1.101,
+     13.201
+    ],
+    [
+     53.12,
+     112.1
+    ],
+    [
+     38.055,
+     47.155
+    ]
+   ]
+  },
+  "led": {
+   "label": "D8 3 mm MAIN LED (THT)",
+   "count": 1,
+   "bbox_XYZ": [
+    [
+     2.101,
+     8.001
+    ],
+    [
+     41.43,
+     44.9
+    ],
+    [
+     -0.2,
+     6.67
+    ]
+   ]
+  },
+  "inductors": {
+   "label": "L1-L3 PROXY 10.3 x 10.3 x 4.0 (no model)",
+   "count": 3,
+   "bbox_XYZ": [
+    [
+     4.1,
+     8.1
+    ],
+    [
+     52.99,
+     112.05
+    ],
+    [
+     20.025,
+     32.58
+    ]
+   ]
+  },
+  "ui_envelopes": {
+   "label": "J1 USB-C / SW1 reset drawing envelopes (no model)",
+   "count": 3,
+   "bbox_XYZ": [
+    [
+     4.1,
+     7.46
+    ],
+    [
+     28.68,
+     72.1
+    ],
+    [
+     0.8,
+     9.22
+    ]
+   ]
+  },
+  "brackets": {
+   "label": "Plain M3 L brackets x2 (tools/bracket45.py)",
+   "count": 2,
+   "bbox_XYZ": [
+    [
+     0.1,
+     9.3
+    ],
+    [
+     17.0,
+     111.5
+    ],
+    [
+     1.6,
+     20.0
+    ]
+   ]
+  },
+  "screws": {
+   "label": "M3x8 pan (panel) + M3x8 90deg flat (side) PROXIES",
+   "count": 8,
+   "bbox_XYZ": [
+    [
+     0.1,
+     9.4
+    ],
+    [
+     19.0,
+     109.5
+    ],
+    [
+     -2.4,
+     17.5
+    ]
+   ]
+  },
+  "nuts": {
+   "label": "M3 hex nut AF5.5 x 2.4 PROXIES",
+   "count": 4,
+   "bbox_XYZ": [
+    [
+     3.65,
+     9.15
+    ],
+    [
+     18.825,
+     109.675
+    ],
+    [
+     4.6,
+     17.75
+    ]
+   ]
+  },
+  "tools": {
+   "label": "ENVELOPE: 8 mm side-nut driver / front-nut pliers paths (out of rack)",
+   "count": 4,
+   "bbox_XYZ": [
+    [
+     6.4,
+     30.0
+    ],
+    [
+     17.0,
+     111.5
+    ],
+    [
+     4.6,
+     19.0
+    ]
+   ]
+  },
+  "plugs": {
+   "label": "ENVELOPE PROPOSAL: mated 16-pin IDC socket, <= 14.8 mm above F.Cu",
+   "count": 2,
+   "bbox_XYZ": [
+    [
+     7.1,
+     18.9
+    ],
+    [
+     54.51,
+     110.71
+    ],
+    [
+     39.63,
+     45.83
+    ]
+   ]
+  },
+  "ribbons": {
+   "label": "ENVELOPE PROPOSAL: 16-way ribbon leaving +Z toward the bus",
+   "count": 2,
+   "bbox_XYZ": [
+    [
+     15.9,
+     18.9
+    ],
+    [
+     56.71,
+     108.51
+    ],
+    [
+     45.83,
+     58.0
+    ]
+   ]
+  },
+  "rails": {
+   "label": "CONTEXT: case rail section",
+   "count": 2,
+   "bbox_XYZ": [
+    [
+     -4.0,
+     24.0
+    ],
+    [
+     -2.0,
+     130.5
+    ],
+    [
+     1.6,
+     15.1
+    ]
+   ]
+  },
+  "limits": {
+   "label": "LIMITS: 4HP edge X20.0 and the Z50 depth plane (user limit)",
+   "count": 2,
+   "bbox_XYZ": [
+    [
+     0.0,
+     20.05
+    ],
+    [
+     0.0,
+     128.5
+    ],
+    [
+     0.0,
+     50.05
+    ]
+   ]
+  }
+ },
+ "solid_interference_mm3": [],
+ "parts_with_model": 145,
+ "proxies": [
+  "J1",
+  "L1",
+  "L2",
+  "L3",
+  "SW1"
+ ],
+ "extents": {
+  "parts_X_max": 13.201,
+  "parts_X_min": 1.101,
+  "parts_Z_max": 47.375,
+  "board_Z_max": 50.0,
+  "margin_to_X20": 6.799,
+  "tallest": [
+   [
+    9.1,
+    "J3"
+   ],
+   [
+    9.1,
+    "J2"
+   ],
+   [
+    4.0,
+    "L3"
+   ],
+   [
+    4.0,
+    "L2"
+   ],
+   [
+    4.0,
+    "L1"
+   ],
+   [
+    3.9,
+    "D8"
+   ]
+  ]
+ }
+}

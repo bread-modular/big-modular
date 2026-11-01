@@ -7,6 +7,17 @@
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | **Main project = the routed BASE board** (`usb-power-45w.kicad_{pcb,sch,dru}`: USB/PD, main eFuse, negative protection, latch/RESET, LEDs, J2 output) |
 | [`hardware/usb-power-45w-top.kicad_pro`](hardware/usb-power-45w-top.kicad_pro) | The routed TOP board (`usb-power-45w-top.kicad_{pcb,sch}`: the three converters, +12/+5 eFuses, cans) |
 | [`hardware/usb-power-45w-system.kicad_pro`](hardware/usb-power-45w-system.kicad_pro) | Whole-circuit S7 schematic (`usb-power-45w-system.kicad_sch` + pages `01`..`07`, 216 refs / 145 nets); schematic only, no PCB |
+| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S8 single board** (2026-11-01): **final schematic** (no per-rail eFuses, no rail LEDs, MAIN LED only, ceramic bulk, two IDC outputs J2 + J3, overvoltage guard; 166 refs / 76 nets, ERC 0) + **P1 trial placement**, 100.5 x 48 mm (50 mm deep), every part on F, not routed (DRC 0 / parity 0). Panel `panels/front-pcb/usb-power-45w-single-panel.kicad_pcb`. Review package: [S8 record](docs/s8-single-board.md) |
+
+> **S8 (2026-11-01): single board, final schematic + P1 trial placement (review package).** The three
+> rail eFuses (U6/U7 and the LM5067 negative switch) and every rail LED are removed; U5 is the only switch
+> and the fault latch still turns every rail off until RESET, so D8 MAIN (the only LED) off = not working.
+> The four cans become ceramics (VIN: 1 ohm + 2 x 10u damper; rails: 22u at each header); two parallel
+> 16-pin outputs J2 + J3; overvoltage guard (+12/+5/-12) on the latch preset plus a TVS on +5V. The board
+> is 50 mm deep (Z2..50), all 166 parts placed on the F side, 63 % courtyard fill, not routed; brackets,
+> panel and a 3D assembly (STEP, renders, collision screen: 0 overlaps) are in
+> [docs/s8-single-board.md](docs/s8-single-board.md) with the points for the reviewer. Parts ~$18.37 vs
+> $27.11. The S7 schematic and the routed R3 stack below are unchanged.
 
 Each board project has its own matching flat schematic (its share of S7 + the board-to-board
 headers XB*/XT*); `tools/check_stack.py` proves base + top joined through the headers equals the

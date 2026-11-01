@@ -1,0 +1,1704 @@
+{
+  "note": "Public JLCPCB catalog lookups via the shared tool, --strict-live, one request per code. Stock and price are dated observations, not reservations, quotes or order acceptance. Quantity-1 unit prices only: no setup/Extended fees, attrition, manual parts, PCB or shipping. Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities and totals recomputed for the S8 final table (rail LEDs removed, no new code).",
+  "codes": {
+    "C10214": {
+      "code": "C10214",
+      "mpn": "SMBJ22A",
+      "manufacturer": "RUILON(Shenzhen Ruilongyuan Elec)",
+      "package": "DO-214AA(SMB)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 288,
+      "unit_price_q1_usd": 0.0778,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:18Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C10214"
+        },
+        "sha256": "b0f7f4d6bfe60f073eca43c8a43f55cfa40ea00d5e81a80fffe3e719c3d6f6e2",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C113952": {
+      "code": "C113952",
+      "mpn": "SMAJ5.0A",
+      "manufacturer": "MDD(Microdiode Semiconductor)",
+      "package": "DO-214AC(SMA)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 480794,
+      "unit_price_q1_usd": 0.0414,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:22Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C113952"
+        },
+        "sha256": "49678d305435e7a38e4bf69021342fdfceed1d84ddbb9e9fc992391899a072f8",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
+    "C119090": {
+      "code": "C119090",
+      "mpn": "LTV-354T",
+      "manufacturer": "Lite-On",
+      "package": "SOP-4-2.54mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 83837,
+      "unit_price_q1_usd": 0.1055,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:24Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C119090"
+        },
+        "sha256": "52767490532f5a17dcce05afa7c5bc2813237fa7505191ab739c0d40ce4a3323",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 2
+    },
+    "C12891": {
+      "code": "C12891",
+      "mpn": "CL31A226KAHNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "1206",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1732232,
+      "unit_price_q1_usd": 0.118,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:26Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C12891"
+        },
+        "sha256": "52e51ac7bcd4806a41ea0e1777c62526f9eda26eaa590ec0aea6a2bd181cf15e",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 19,
+      "qty_S7": 13
+    },
+    "C13585": {
+      "code": "C13585",
+      "mpn": "CL31A106KBHNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "1206",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3368554,
+      "unit_price_q1_usd": 0.2115,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:28Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C13585"
+        },
+        "sha256": "8fe45d90f2676b2b3efc221dd072ea3073e07b9e13b881e0c93a2c28c45fa38d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 10,
+      "qty_S7": 8
+    },
+    "C14663": {
+      "code": "C14663",
+      "mpn": "CC0603KRX7R9BB104",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 41534084,
+      "unit_price_q1_usd": 0.0067,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:30Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C14663"
+        },
+        "sha256": "fcef87b4c03ec47268ba6e1a4524c67bb586d193f520fc51f1036916f3cb94f5",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 19,
+      "qty_S7": 20
+    },
+    "C155317": {
+      "code": "C155317",
+      "mpn": "SMAZ24-13-F",
+      "manufacturer": "Diodes Incorporated",
+      "package": "SMA",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 5614,
+      "unit_price_q1_usd": 0.1615,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:32Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C155317"
+        },
+        "sha256": "8fff9171b2ab1d219b9d2880291771c1fc39512b1302e703e4d4e5ade831fc01",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C15849": {
+      "code": "C15849",
+      "mpn": "CL10A105KB8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 12246562,
+      "unit_price_q1_usd": 0.0143,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:34Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C15849"
+        },
+        "sha256": "39728a7793b924bf3262e8e3f4c78506d4d554471ae4382f84aaf937f5988983",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 9
+    },
+    "C1588": {
+      "code": "C1588",
+      "mpn": "CL10B102KB8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 5949751,
+      "unit_price_q1_usd": 0.0098,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:36Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C1588"
+        },
+        "sha256": "c4dc93b39e7936b6d0839e4404a0b1a297d0feef8d951e2d08d69535f95258c8",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 0
+    },
+    "C165527": {
+      "code": "C165527",
+      "mpn": "MVK50V47M6.3*8 6.3TP",
+      "manufacturer": "SamYoung Electronics",
+      "package": "SMD,D6.3xL8mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 4371,
+      "unit_price_q1_usd": 0.1267,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:38Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C165527"
+        },
+        "sha256": "9ad36df5520023c666ca7c134a402ccee10cb800dc4ff44b855d566c48f93e94",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 1
+    },
+    "C165948": {
+      "code": "C165948",
+      "mpn": "TYPE-C-31-M-12",
+      "manufacturer": "Korean Hroparts Elec",
+      "package": "SMD",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 378971,
+      "unit_price_q1_usd": 0.1874,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:42Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C165948"
+        },
+        "sha256": "a22d41bb3725ad67b492ee0d6171ae9e4de997e83c4afd54ccbee1c366b10ebf",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C17902": {
+      "code": "C17902",
+      "mpn": "1206W4F1002T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "1206",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 2260976,
+      "unit_price_q1_usd": 0.0078,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:48Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C17902"
+        },
+        "sha256": "a8922ddbb108aed2a1e2514bc501c83797d0621a39a476da48693797c6564f04",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 3
+    },
+    "C17928": {
+      "code": "C17928",
+      "mpn": "1206W4F100KT5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "1206",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 71069,
+      "unit_price_q1_usd": 0.0235,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:51Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C17928"
+        },
+        "sha256": "2f156417465729e917fd40e06ccd14efdbd5755b584f029334b97feba8159f04",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
+    "C181239": {
+      "code": "C181239",
+      "mpn": "TPS7A1633DGNR",
+      "manufacturer": "Texas Instruments",
+      "package": "HVSSOP-8-EP",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 471,
+      "unit_price_q1_usd": 2.6049,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:54Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C181239"
+        },
+        "sha256": "d340c75627fb8f3faa1826d52379b3b414718c462e7a88380d776acb9ebc4c23",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C181592": {
+      "code": "C181592",
+      "mpn": "LM5067MM-2/NOPB",
+      "manufacturer": "Texas Instruments",
+      "package": "VSSOP-10-0.5mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 33,
+      "unit_price_q1_usd": 2.9806,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:57:56Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C181592"
+        },
+        "sha256": "9a013f07b49746634d6cc89782aef9bffa5647df79ff607abfb0acc5d6f2c35d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 1
+    },
+    "C182184": {
+      "code": "C182184",
+      "mpn": "SLO1040H150MTT",
+      "manufacturer": "Sunltech Tech",
+      "package": "SMD,10.8x10mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 3403,
+      "unit_price_q1_usd": 0.1966,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:00Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C182184"
+        },
+        "sha256": "1f10ca92de6a0604093e601983dac3e7b5f6a626d94b48323531aedac4b00bef",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C1849461": {
+      "code": "C1849461",
+      "mpn": "TPS16630PWPR",
+      "manufacturer": "Texas Instruments",
+      "package": "HTSSOP-20",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 1089,
+      "unit_price_q1_usd": 2.6952,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:02Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C1849461"
+        },
+        "sha256": "f28cf2f694164f521b631c139c108241d3909ae41f73e361edb2b2d8b6e83abb",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 3
+    },
+    "C19653": {
+      "code": "C19653",
+      "mpn": "TPS3808G01DBVR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOT-23-6",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 4726,
+      "unit_price_q1_usd": 0.4593,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:04Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C19653"
+        },
+        "sha256": "b009c9e8609891a2ddc19fd14bb40d09e483fc11f353177b9f6b4baaaa68bbf3",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 2
+    },
+    "C19726": {
+      "code": "C19726",
+      "mpn": "BAT54SLT1G",
+      "manufacturer": "onsemi",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 314485,
+      "unit_price_q1_usd": 0.0238,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:06Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C19726"
+        },
+        "sha256": "e94815d85e6f022d5c358909a423c405f67919455f11056a8fae463730715cd7",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 3
+    },
+    "C207850": {
+      "code": "C207850",
+      "mpn": "SLO1040H3R3MTT",
+      "manufacturer": "Sunltech Tech",
+      "package": "SMD,10.8x10mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 1870,
+      "unit_price_q1_usd": 0.2166,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:08Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C207850"
+        },
+        "sha256": "08f0d07132c9cea4e2fa241c64029b06fc128e80af0836215b5f889cdd34ec96",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C207852": {
+      "code": "C207852",
+      "mpn": "SLO1040H6R8MTT",
+      "manufacturer": "Sunltech Tech",
+      "package": "SMD,10.8x10mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 955,
+      "unit_price_q1_usd": 0.1985,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:10Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C207852"
+        },
+        "sha256": "9654919dcca2ca263843e051187f1becf43d5ece615b2fe4ffb303783cd7f874",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C21122": {
+      "code": "C21122",
+      "mpn": "CL10B223KB8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 929621,
+      "unit_price_q1_usd": 0.0057,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:12Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C21122"
+        },
+        "sha256": "42f4c26394727173c189faf28fef6ee40d11cdc631842bf6327d08bfeb32e1a7",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 3
+    },
+    "C21190": {
+      "code": "C21190",
+      "mpn": "0603WAF1001T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 30964556,
+      "unit_price_q1_usd": 0.0017,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:16Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C21190"
+        },
+        "sha256": "b248366023eb5a8e39b9661e16cbe57d7219c331ab0debeaf08b9d381106e96b",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 9
+    },
+    "C22790": {
+      "code": "C22790",
+      "mpn": "0603WAF1202T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1006785,
+      "unit_price_q1_usd": 0.0031,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:19Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22790"
+        },
+        "sha256": "a8eaf50e4d02f10fe0e859c060d17d4554774a62d3e612e493642cec7b955afc",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 2
+    },
+    "C22797": {
+      "code": "C22797",
+      "mpn": "0603WAF1302T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 437163,
+      "unit_price_q1_usd": 0.0021,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:21Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22797"
+        },
+        "sha256": "941c9e09e9282d9a2958c09e94a61ef5ece88df98ee6a064d9fb19a9cd7a7eda",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 2
+    },
+    "C22809": {
+      "code": "C22809",
+      "mpn": "0603WAF1502T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3578520,
+      "unit_price_q1_usd": 0.0029,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:22Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22809"
+        },
+        "sha256": "0ce4531211c564e6228ff684094c75cc39997b6c174c2c1515941de006a4677b",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C2286": {
+      "code": "C2286",
+      "mpn": "KT-0603R",
+      "manufacturer": "Hubei KENTO Elec",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 7178751,
+      "unit_price_q1_usd": 0.0077,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:23Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C2286"
+        },
+        "sha256": "313e6964ed58f23e1754fe87fa04d60bd536770f47a4c80e268ec5b61dce4456",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 3
+    },
+    "C22961": {
+      "code": "C22961",
+      "mpn": "0603WAF2203T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1134890,
+      "unit_price_q1_usd": 0.0015,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:25Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22961"
+        },
+        "sha256": "032e245f32e00d737717c6db2b2cad81a2beae764a09bf13218f66db9788ffb9",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C22978": {
+      "code": "C22978",
+      "mpn": "0603WAF3301T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 5152649,
+      "unit_price_q1_usd": 0.0022,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:26Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22978"
+        },
+        "sha256": "882ed32f38fc9a357948b6f6a7027ddea360ebf2cd7040a36f47645ec7694599",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 4,
+      "qty_S7": 3
+    },
+    "C23140": {
+      "code": "C23140",
+      "mpn": "0603WAF330JT5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 4253317,
+      "unit_price_q1_usd": 0.0024,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:31Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23140"
+        },
+        "sha256": "faffee2220f09345b7dd49780f3e083ab9c18d28ee3627006b92afe56754ecfd",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 2
+    },
+    "C23178": {
+      "code": "C23178",
+      "mpn": "0603WAF4703T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1037149,
+      "unit_price_q1_usd": 0.003,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:33Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23178"
+        },
+        "sha256": "a7219c162513db781d45b3860d168deccc7628fd9c81f525c61a4da9e0554874",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C23212": {
+      "code": "C23212",
+      "mpn": "0603WAF6801T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1193541,
+      "unit_price_q1_usd": 0.0023,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:36Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23212"
+        },
+        "sha256": "b04540cf8140b81696100360496913dcdf1c4b381dcafcd56a3c7da090a74199",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 3
+    },
+    "C23231": {
+      "code": "C23231",
+      "mpn": "0603WAF6802T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 951112,
+      "unit_price_q1_usd": 0.0016,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:38Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23231"
+        },
+        "sha256": "5f06174bd6abb6a72f9656774bfd89db6d998e958250b51667659131abb0bf00",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 2
+    },
+    "C23234": {
+      "code": "C23234",
+      "mpn": "0603WAF7501T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1040993,
+      "unit_price_q1_usd": 0.0018,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:42Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23234"
+        },
+        "sha256": "4c7053aab847911cad0df91593a933d56fc61d3a74c9dab953377ece3f34e810",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 1
+    },
+    "C23260": {
+      "code": "C23260",
+      "mpn": "0603WAF9101T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 609844,
+      "unit_price_q1_usd": 0.0031,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:44Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23260"
+        },
+        "sha256": "a83e5622836f8706057a972da05e404a0c275b8f2278333c3739c141ebd2e771",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 2
+    },
+    "C236914": {
+      "code": "C236914",
+      "mpn": "FQD13N06LTM",
+      "manufacturer": "onsemi",
+      "package": "DPAK",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 3339,
+      "unit_price_q1_usd": 0.5168,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:47Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C236914"
+        },
+        "sha256": "a918ae6d1b33bcf54bf7cdf68600d156b084df9e383dc27b5e585ea6c1bbb4e8",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 1
+    },
+    "C25334": {
+      "code": "C25334",
+      "mpn": "1206W4F100LT5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "1206",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 682983,
+      "unit_price_q1_usd": 0.0082,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:49Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25334"
+        },
+        "sha256": "ecfbae6b8e97acb15269343c4d99f53cb8c7794efdee126d198af4f325959dcc",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 2
+    },
+    "C25803": {
+      "code": "C25803",
+      "mpn": "0603WAF1003T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 17660461,
+      "unit_price_q1_usd": 0.0029,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:50Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25803"
+        },
+        "sha256": "61c4ab415c0c054967aba6dd9a292c2445317d14239ffa922a197674c8501ac2",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 5,
+      "qty_S7": 11
+    },
+    "C25804": {
+      "code": "C25804",
+      "mpn": "0603WAF1002T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 42742099,
+      "unit_price_q1_usd": 0.0022,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:53Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25804"
+        },
+        "sha256": "f11facde1a321515bc6d6dd2bc75193cf1519ca8a0cca2cd0d68a60eb44b638d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 19,
+      "qty_S7": 27
+    },
+    "C25808": {
+      "code": "C25808",
+      "mpn": "0603WAF1203T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1299512,
+      "unit_price_q1_usd": 0.0016,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:55Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25808"
+        },
+        "sha256": "0d44b093166df1a68084efeb5a1dc61119ce40e73310854fc9f8569d6eca8108",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 3
+    },
+    "C25819": {
+      "code": "C25819",
+      "mpn": "0603WAF4702T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3080451,
+      "unit_price_q1_usd": 0.0019,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:57Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25819"
+        },
+        "sha256": "128d91002cbd963d4d4333e958071ec1f38eb160223d6943c030fc0d3059993c",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 3
+    },
+    "C2867684": {
+      "code": "C2867684",
+      "mpn": "SN74HC20DR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOIC-14",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 6836,
+      "unit_price_q1_usd": 0.3104,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:58:59Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C2867684"
+        },
+        "sha256": "8540a80636a0af9e46e1df7ce6bdcbe685937d03b2efe7ac6ac8c5ccf570cda1",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C2886925": {
+      "code": "C2886925",
+      "mpn": "TL3340AF160QG",
+      "manufacturer": "E-Switch",
+      "package": "SMD,4.2x3.3mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 1555,
+      "unit_price_q1_usd": 0.7005,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:01Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C2886925"
+        },
+        "sha256": "7229e7138516970c7663bfad2bc944a9356a12cf00c1db6ddc2d68b19ca1232a",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C2917888": {
+      "code": "C2917888",
+      "mpn": "SS1060",
+      "manufacturer": "ZHIDE",
+      "package": "SMC",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 3143,
+      "unit_price_q1_usd": 0.1953,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:07Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C2917888"
+        },
+        "sha256": "6c231442d45566c3d4cc142b2aee0161109c98a9bd7f2682b904d9df28217626",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C31850": {
+      "code": "C31850",
+      "mpn": "0603WAF2202T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 2900876,
+      "unit_price_q1_usd": 0.0042,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:09Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C31850"
+        },
+        "sha256": "6208b8169018937b7278a7b1e522aae4ca658a424fc186234b4cd8613573fc0d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 1
+    },
+    "C337768": {
+      "code": "C337768",
+      "mpn": "SN74HC08DR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOIC-14",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 29192,
+      "unit_price_q1_usd": 0.1767,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:11Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C337768"
+        },
+        "sha256": "77e97187f5b792dcf865c0208c3a2eda45c23a09892c8fa6a918d7cb0959e710",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C350012": {
+      "code": "C350012",
+      "mpn": "MVK 35V100 M 6.3*8",
+      "manufacturer": "SamYoung Electronics",
+      "package": "SMD,D6.3xL8mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 5114,
+      "unit_price_q1_usd": 0.1173,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:14Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C350012"
+        },
+        "sha256": "15d10d69ea2d39df1a2206ec11c98b3791cc4c778bda298c20e57b0eac767375",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 0,
+      "qty_S7": 3
+    },
+    "C4184": {
+      "code": "C4184",
+      "mpn": "0603WAF2002T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 6252295,
+      "unit_price_q1_usd": 0.0021,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:16Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C4184"
+        },
+        "sha256": "b83347a123272375e3fd1ecd86b638476718b6b6cb924a7ce15fdbfc374efc49",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 2
+    },
+    "C4216": {
+      "code": "C4216",
+      "mpn": "0603WAF3302T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3207749,
+      "unit_price_q1_usd": 0.0021,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:18Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C4216"
+        },
+        "sha256": "631430cae0ff25a42896dc6c120059fa7b8912e097931bcb2c06e39f3fd343d1",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 3,
+      "qty_S7": 6
+    },
+    "C42459160": {
+      "code": "C42459160",
+      "mpn": "CH224A",
+      "manufacturer": "WCH(Jiangsu Qin Heng)",
+      "package": "ESSOP-10",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 9515,
+      "unit_price_q1_usd": 0.4331,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:20Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C42459160"
+        },
+        "sha256": "9ab6c0db9214f4c76283c25bff94de24218a5ccaf7188767a3487fff5cfd500e",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C47787": {
+      "code": "C47787",
+      "mpn": "BCX53-16,115",
+      "manufacturer": "Nexperia",
+      "package": "SOT-89",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 116535,
+      "unit_price_q1_usd": 0.2023,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:22Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C47787"
+        },
+        "sha256": "4359d3fc1d44e252841d7113d9712c569dc1eb3bc6f1cc84ca9dbd88a12b0577",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C5149193": {
+      "code": "C5149193",
+      "mpn": "LMR38020FDDAR",
+      "manufacturer": "Texas Instruments",
+      "package": "SO-PowerPAD-8",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 30930,
+      "unit_price_q1_usd": 0.9104,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:23Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C5149193"
+        },
+        "sha256": "3c2d5e40077b411216603a13b9b4a5ef86a6781a025250cb90af739177a1fccd",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C5219272": {
+      "code": "C5219272",
+      "mpn": "TPS62933FDRLR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOT-583",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 4319,
+      "unit_price_q1_usd": 1.127,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:25Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C5219272"
+        },
+        "sha256": "94a72f2caaf09fefb1210689cf6bab48461d2a120e4c27edd833261279a39b1a",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 2
+    },
+    "C53444": {
+      "code": "C53444",
+      "mpn": "MMBT3906LT1G",
+      "manufacturer": "onsemi",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 901573,
+      "unit_price_q1_usd": 0.0186,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:26Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C53444"
+        },
+        "sha256": "0dbbde67b3f12676df69b5de3c98170783f094918f8beedd80ff9d9777beec41",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 2
+    },
+    "C553937": {
+      "code": "C553937",
+      "mpn": "S1206-SD-5.0A",
+      "manufacturer": "SART(Nanjing Sart Tech)",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 11180,
+      "unit_price_q1_usd": 0.1014,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:27Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C553937"
+        },
+        "sha256": "531fc6f7dff49d731b3cdbc4075a0d22c8c6e46db612e3d4984f15ab26dbe6cb",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C6762": {
+      "code": "C6762",
+      "mpn": "SN74HC74DR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOIC-14",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 12822,
+      "unit_price_q1_usd": 0.2254,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:28Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C6762"
+        },
+        "sha256": "dabbf0fe948156fbed0aae196cbae73181f7719076ef7fc697a76f65d6e46d1f",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 1
+    },
+    "C7836": {
+      "code": "C7836",
+      "mpn": "SN74LVC1G17DBVR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOT-23-5",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 32545,
+      "unit_price_q1_usd": 0.1717,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:29Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C7836"
+        },
+        "sha256": "dbd915d6706645d625a71018f52123ce69c0f0c224e6710bfc7ebe397bd20374",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 2
+    },
+    "C7932": {
+      "code": "C7932",
+      "mpn": "LM2901DR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOIC-14",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 65254,
+      "unit_price_q1_usd": 0.2171,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:31Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C7932"
+        },
+        "sha256": "cf16552c035a15e1af193ce85356e6399160cbd475fb6d26d859752bd0a91be9",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 1
+    },
+    "C8545": {
+      "code": "C8545",
+      "mpn": "2N7002",
+      "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+      "package": "SOT-23",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3347220,
+      "unit_price_q1_usd": 0.0166,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:33Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C8545"
+        },
+        "sha256": "fb1d44cfb0abb46e940f441aca5609c008ebda8295a7bb00a3ff67e53bf8f0cd",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 6
+    },
+    "C8678": {
+      "code": "C8678",
+      "mpn": "SS34",
+      "manufacturer": "MDD(Microdiode Semiconductor)",
+      "package": "SMA(DO-214AC)",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3367031,
+      "unit_price_q1_usd": 0.0352,
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-01T04:59:34Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C8678"
+        },
+        "sha256": "691c1c3e0a6be48693047f334e151127caaab47b89bd3ced90b7abac8ce4259c",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 4,
+      "qty_S7": 7
+    }
+  },
+  "summary": {
+    "S8_codes": 52,
+    "S7_codes": 57,
+    "S8_placements": 147,
+    "S7_placements": 195,
+    "S8_parts_usd_q1": 18.37,
+    "S7_parts_usd_q1": 27.11,
+    "S8_non_basic_codes": [
+      "C10214",
+      "C113952",
+      "C155317",
+      "C165948",
+      "C181239",
+      "C182184",
+      "C1849461",
+      "C19653",
+      "C19726",
+      "C207850",
+      "C207852",
+      "C2867684",
+      "C2886925",
+      "C2917888",
+      "C337768",
+      "C42459160",
+      "C47787",
+      "C5149193",
+      "C5219272",
+      "C53444",
+      "C553937",
+      "C6762",
+      "C7836",
+      "C7932"
+    ],
+    "S7_non_basic_codes": [
+      "C10214",
+      "C119090",
+      "C155317",
+      "C165527",
+      "C165948",
+      "C181239",
+      "C181592",
+      "C182184",
+      "C1849461",
+      "C19653",
+      "C19726",
+      "C207850",
+      "C207852",
+      "C236914",
+      "C2867684",
+      "C2886925",
+      "C2917888",
+      "C337768",
+      "C350012",
+      "C42459160",
+      "C47787",
+      "C5149193",
+      "C5219272",
+      "C53444",
+      "C553937",
+      "C6762",
+      "C7836",
+      "C7932"
+    ],
+    "manual_parts_no_LCSC": {
+      "S8": [
+        "D8",
+        "J2",
+        "J3"
+      ],
+      "S7": [
+        "D16",
+        "D17",
+        "D18",
+        "D8",
+        "J2"
+      ]
+    },
+    "failures": []
+  }
+}

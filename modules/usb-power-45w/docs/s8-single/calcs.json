@@ -1,0 +1,496 @@
+{
+  "status": "S8 pre-calculation screen, not a closed-loop or bench qualification",
+  "sources": {
+    "TPS62933F": "TI SLUSEA4D (https://www.ti.com/lit/ds/symlink/tps62933f.pdf): IHS_LIMIT 4.2/5/5.8 A, ILS_LIMIT 2.9/3.8/4.5 A, ISS 4.5/5.5/6.5 uA, tSS = CSS x 0.8 V / ISS, OVP 112/115/118 %, UVP 65 % + 256 us then hiccup 10.5 x tSS, VFB 784-816 mV (-40..150 C), Table 10-2 effective COUT, Eq. 21",
+    "LMR38020": "TI SNVSC40E (https://www.ti.com/lit/ds/symlink/lmr38020.pdf): IHS 2.6/3.2/3.8 A, ILS 1.8/2.3/2.8 A, tSS 4 ms, OCP blanking 18 ms typ at power-up, hiccup 76 ms, COUT <= ~10 x design value or 1000 uF",
+    "TPS1663": "TI SLVSET9G (https://www.ti.com/lit/ds/symlink/tps1663.pdf): tSD(dly) SHDN -> FET off 0.8-1.5 us, I(dVdT) 1.775/2/2.225 uA, GAIN(dVdT) 23.5/25/26",
+    "TPS3808": "TI SBVS050N (https://www.ti.com/lit/ds/symlink/tps3808.pdf): delay (s) = CT (nF) / 175 + 0.5 ms; open-CT delay 12/20/28 ms (+-40 %)",
+    "TPS7A16": "TI SBVS171F (https://www.ti.com/lit/ds/symlink/tps7a16.pdf): overall accuracy +-2 %",
+    "LM2901": "TI SLCS006Z (https://www.ti.com/lit/ds/symlink/lm2901.pdf): VIO 7 mV (25 C) / 15 mV (-40..125 C), input bias -500 nA, common mode 0..VCC-2 V (one input in range gives a proper output state)",
+    "SMAJ5.0A": "JLC/LCSC C113952 listing (MDD): VRWM 5.0 V, VBR 6.4-7.0 V class, VC 9.2 V at 43.5 A (10/1000 us), IR <= 800 uA at VRWM",
+    "cap_study": "docs/capacitor-study/README.md bounds (BIAS, tol/temp/aging, ESR, source grid)"
+  },
+  "banks": {
+    "+12V": {
+      "parts": 6,
+      "eff_uF": [
+        28.2,
+        72.6
+      ],
+      "bank_esr_mohm": 0.83,
+      "reference": "TPS62933 Table 10-2 (12 V): typ 15 / min 10 uF effective",
+      "S7_ceramic_only_eff_uF": [
+        18.8,
+        48.4
+      ],
+      "S7_can": "100u 35V can (57.8-120 uF, ESR 0.3-3 ohm, removed)"
+    },
+    "+5V": {
+      "parts": 6,
+      "eff_uF": [
+        51.7,
+        116.2
+      ],
+      "bank_esr_mohm": 0.83,
+      "reference": "TPS62933 Table 10-2 (5 V, 1.2 MHz): typ 20 / min 10 uF effective",
+      "S7_ceramic_only_eff_uF": [
+        34.4,
+        77.4
+      ],
+      "S7_can": "100u 35V can (57.8-120 uF, ESR 0.3-3 ohm, removed)"
+    },
+    "-12V": {
+      "parts": 7,
+      "eff_uF": [
+        32.9,
+        84.7
+      ],
+      "bank_esr_mohm": 0.71,
+      "reference": "LMR38020 Table 9-1 is a BUCK guide in rated C (12 V/1 MHz 2 x 10u, 12 V/400 kHz 1 x 22u); IBB: no TI table; max ~10 x design or 1000 uF incl. the rack",
+      "S7_ceramic_only_eff_uF": [
+        23.5,
+        60.5
+      ],
+      "S7_can": "100u 35V can (57.8-120 uF, ESR 0.3-3 ohm, removed)"
+    },
+    "VIN": {
+      "parts": 5,
+      "eff_uF": [
+        12.5,
+        33.0
+      ],
+      "bank_esr_mohm": 1.0,
+      "reference": "TPS62933: 10 uF + 100 nF per converter; LMR38020 CIN >= 4.7 uF effective (C25 + C26, unchanged)"
+    },
+    "damper": {
+      "parts": 2,
+      "eff_uF": [
+        5.0,
+        13.2
+      ],
+      "bank_esr_mohm": 2.5,
+      "reference": "series-R damper branch, capacitor study option B_RCx2"
+    }
+  },
+  "ripple_and_steps": {
+    "+12V": {
+      "L_uH": 6.8,
+      "fsw_kHz": 1200.0,
+      "rows": [
+        {
+          "vin": 17.2,
+          "D": 0.709,
+          "dIL_A": 0.435,
+          "ripple_C_mV": 1.61,
+          "ripple_ESR_mV": 0.36,
+          "step_1A5_dev_mV": 103
+        },
+        {
+          "vin": 20.0,
+          "D": 0.61,
+          "dIL_A": 0.583,
+          "ripple_C_mV": 2.16,
+          "ripple_ESR_mV": 0.49,
+          "step_1A5_dev_mV": 107
+        },
+        {
+          "vin": 24.1,
+          "D": 0.506,
+          "dIL_A": 0.738,
+          "ripple_C_mV": 2.73,
+          "ripple_ESR_mV": 0.62,
+          "step_1A5_dev_mV": 112
+        }
+      ],
+      "note": "Eq. 21 inverted for a 1.5 A step at the low-C corner (TI: ~8 cycles to respond)"
+    },
+    "+5V": {
+      "L_uH": 3.3000000000000003,
+      "fsw_kHz": 1977.0,
+      "rows": [
+        {
+          "vin": 17.2,
+          "D": 0.29,
+          "dIL_A": 0.543,
+          "ripple_C_mV": 0.66,
+          "ripple_ESR_mV": 0.45,
+          "step_1A5_dev_mV": 68
+        },
+        {
+          "vin": 20.0,
+          "D": 0.249,
+          "dIL_A": 0.574,
+          "ripple_C_mV": 0.7,
+          "ripple_ESR_mV": 0.48,
+          "step_1A5_dev_mV": 69
+        },
+        {
+          "vin": 24.1,
+          "D": 0.207,
+          "dIL_A": 0.606,
+          "ripple_C_mV": 0.74,
+          "ripple_ESR_mV": 0.51,
+          "step_1A5_dev_mV": 70
+        }
+      ],
+      "note": "Eq. 21 inverted for a 1.5 A step at the low-C corner (TI: ~8 cycles to respond)"
+    },
+    "-12V": {
+      "L_uH": 15,
+      "fsw_kHz": 790,
+      "io_A": 1.0,
+      "rows": [
+        {
+          "vin": 17.2,
+          "D": 0.411,
+          "IL_avg_A": 1.697,
+          "IL_pk_A": 1.995,
+          "ripple_C_mV": 15.8,
+          "ripple_ESR_mV": 1.43,
+          "step_0A5_dev_mV": 154,
+          "cout_rms_A": 0.835,
+          "rhpz_kHz": 107.5
+        },
+        {
+          "vin": 20.0,
+          "D": 0.375,
+          "IL_avg_A": 1.599,
+          "IL_pk_A": 1.916,
+          "ripple_C_mV": 14.4,
+          "ripple_ESR_mV": 1.37,
+          "step_0A5_dev_mV": 154,
+          "cout_rms_A": 0.774,
+          "rhpz_kHz": 132.7
+        },
+        {
+          "vin": 24.1,
+          "D": 0.332,
+          "IL_avg_A": 1.497,
+          "IL_pk_A": 1.835,
+          "ripple_C_mV": 12.8,
+          "ripple_ESR_mV": 1.31,
+          "step_0A5_dev_mV": 154,
+          "cout_rms_A": 0.705,
+          "rhpz_kHz": 170.8
+        }
+      ],
+      "note": "IBB: the output bank carries the full load during the on time; per-part rms <= 2 x share of cout_rms (imbalance x2) -> well below 1206 heating limits"
+    }
+  },
+  "vin_damper": {
+    "B0": {
+      "zeta": 0.025,
+      "zmax": 2.682,
+      "unstable": 0,
+      "n": 216,
+      "zeta_case": {
+        "L": 2e-06,
+        "R": 0.02,
+        "Rb": 0.02,
+        "Ron": 0.019,
+        "cer": "lo",
+        "esr_i": 0,
+        "csrc": "none",
+        "c5c": "lo"
+      },
+      "zmax_case": {
+        "L": 2e-06,
+        "R": 0.02,
+        "Rb": 0.02,
+        "Ron": 0.019,
+        "cer": "lo",
+        "esr_i": 0,
+        "csrc": "none",
+        "c5c": "lo"
+      },
+      "margin_dB": 3.7
+    },
+    "B_RCx2": {
+      "zeta": 0.101,
+      "zmax": 1.142,
+      "unstable": 0,
+      "n": 216,
+      "zeta_case": {
+        "L": 4e-07,
+        "R": 0.02,
+        "Rb": 0.02,
+        "Ron": 0.019,
+        "cer": "lo",
+        "esr_i": 0,
+        "csrc": "cer10u",
+        "c5c": "lo"
+      },
+      "zmax_case": {
+        "L": 2e-06,
+        "R": 0.02,
+        "Rb": 0.02,
+        "Ron": 0.019,
+        "cer": "lo",
+        "esr_i": 0,
+        "csrc": "none",
+        "c5c": "lo"
+      },
+      "margin_dB": 11.1
+    },
+    "S7_can_reference": {
+      "zeta": 0.074,
+      "zmax": 1.624,
+      "margin_dB": 8.1
+    },
+    "Zin_ohm": 4.109,
+    "load": "72 W constant power at 17.2 V (upper estimate, linearised)",
+    "R92_stress": {
+      "ripple_rms_mA_from_study": 26.7,
+      "ripple_P_mW": 0.71,
+      "inrush_mA": 38.6,
+      "step_energy_uJ": 14.8,
+      "note": "1.5 V VIN dip assumed for the step energy; 1206 250 mW part"
+    }
+  },
+  "rail_release": {
+    "+12V": {
+      "N=2": [
+        0.061,
+        0.153
+      ],
+      "N=8": [
+        0.21,
+        0.53
+      ],
+      "N=16": [
+        0.409,
+        1.033
+      ],
+      "rack-side release N=8": 0.149,
+      "vo_hi_V": 12.673
+    },
+    "+5V": {
+      "N=2": [
+        0.028,
+        0.062
+      ],
+      "N=8": [
+        0.085,
+        0.189
+      ],
+      "N=16": [
+        0.161,
+        0.358
+      ],
+      "rack-side release N=8": 0.045,
+      "vo_hi_V": 5.171
+    },
+    "-12V": {
+      "N=2": [
+        0.026,
+        0.066
+      ],
+      "N=8": [
+        0.097,
+        0.245
+      ],
+      "N=16": [
+        0.191,
+        0.484
+      ],
+      "rack-side release N=8": 0.072,
+      "vo_hi_V": 12.394
+    }
+  },
+  "soft_start": {
+    "tSS_ms": {
+      "min_ms": 11.08,
+      "typ_ms": 14.55,
+      "max_ms": 19.56
+    },
+    "S7_tSS_min_ms": 2.44,
+    "+12V": {
+      "avail_A": 3.83,
+      "track_ramp_max_C_mF": {
+        "full_load": 1.21,
+        "no_load": 3.48,
+        "S7_22n_full_load": 0.27
+      },
+      "reach_65pct_before_hiccup_max_C_mF": 1.9
+    },
+    "+5V": {
+      "avail_A": 3.9,
+      "track_ramp_max_C_mF": {
+        "full_load": 3.1,
+        "no_load": 8.66,
+        "S7_22n_full_load": 0.68
+      },
+      "reach_65pct_before_hiccup_max_C_mF": 4.89
+    },
+    "-12V": {
+      "io_max_A": 1.32,
+      "blank_ms": 18,
+      "max_C_mF": {
+        "full_load_1A": 0.49,
+        "no_load": 1.99
+      },
+      "ti_limit": "<= ~10 x design COUT or 1000 uF, whichever is smaller (SNVSC40E 9.2.2.5)"
+    },
+    "rack_reference": "Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. S7 isolated this through the eFuse/LM5067 dV/dt; S8 relies on the converter soft start"
+  },
+  "ov_guard": {
+    "+12V": {
+      "guard_V": [
+        14.86,
+        16.58,
+        18.45
+      ],
+      "setpoint_V": [
+        11.512,
+        12.194,
+        12.912
+      ],
+      "worst_imposed_release_peak_V": 13.71,
+      "release_margin_to_guard_min_V": 1.15,
+      "filter_us": 3.1,
+      "converter_OVP_V": [
+        12.89,
+        14.02,
+        15.24
+      ],
+      "margin_nominal_V": 2.56,
+      "margin_worst_V": -0.38
+    },
+    "+5V": {
+      "guard_V": [
+        5.84,
+        6.5,
+        7.22
+      ],
+      "setpoint_V": [
+        4.724,
+        4.985,
+        5.259
+      ],
+      "worst_imposed_release_peak_V": 5.53,
+      "release_margin_to_guard_min_V": 0.31,
+      "filter_us": 8.0,
+      "converter_OVP_V": [
+        5.29,
+        5.73,
+        6.21
+      ],
+      "margin_nominal_V": 0.77,
+      "margin_worst_V": -0.36
+    },
+    "-12V": {
+      "guard_V": [
+        13.92,
+        15.1,
+        16.36
+      ],
+      "setpoint_V": [
+        11.385,
+        11.989,
+        12.624
+      ],
+      "worst_imposed_release_peak_V": 12.88,
+      "release_margin_to_guard_min_V": 1.04,
+      "filter_us": 6.5,
+      "converter_OVP_V": "none (LMR38020 has no output OVP)",
+      "margin_to_setpoint_max_V": 1.3
+    },
+    "response_us": {
+      "filter": "3-8 (RC)",
+      "comparator": 1.3,
+      "hc74_preset": 0.05,
+      "tps1663_shdn": 1.5,
+      "total_after_crossing": "~5-15 us + RC; then U5 off, rails decay"
+    },
+    "note": "Nominal guard is ~2.5 V (+12) / ~0.8 V (+5) above the converter OVP; at the stacked worst corner the bands touch, so a false trip (safe: latched off, press RESET) is a bench item. A shorted high side or an open feedback resistor drives the rail toward VIN (~20 V) or, for the inverting stage, beyond -15 V: all three trip with margin."
+  },
+  "startup_window": {
+    "typ_s": 0.572,
+    "min_s_screen": 0.309,
+    "S7_typ_s": 5.71,
+    "rail_up_budget_ms": {
+      "U5_ramp_ms": 11.6,
+      "PGOOD_deglitch_ms": 13,
+      "TPS62933F_SS_max_ms": 19.6,
+      "LMR38020_SS_plus_blank_ms": 22
+    },
+    "rail_up_total_ms": 66.2,
+    "ratio_min_window_to_budget": 4.7
+  },
+  "input_budget": {
+    "outputs_W": 54.9,
+    "converter_input_W": 61.0,
+    "losses_W": {
+      "D10_0.75V": 2.38,
+      "U5_31mohm": 0.31,
+      "aux_logic_LEDs": 0.5
+    },
+    "input_W": 64.2,
+    "input_A_at_20V": 3.21,
+    "U5_limit_screen_A": [
+      3.693,
+      4.186,
+      4.698
+    ],
+    "margin_to_U5_min_A": 0.48,
+    "eFuse_losses_removed_W": {
+      "U6_U7_2x31mohm_at_2.5A": 0.39,
+      "LM5067_path_50mohm+Q4_at_1A": 0.15
+    },
+    "efficiency_assumption": {
+      "+12V": 0.93,
+      "+5V": 0.88,
+      "-12V": 0.85
+    },
+    "note": "planning estimate; efficiencies are assumptions, not measurements"
+  },
+  "connectors": {
+    "per_contact_A_one_header": {
+      "+12V": 1.25,
+      "+5V": 1.25,
+      "-12V": 0.5,
+      "GND (no cancellation)": 1.0
+    },
+    "per_contact_A_two_headers_equal_split": {
+      "+12V": 0.625,
+      "+5V": 0.625,
+      "-12V": 0.25,
+      "GND (no cancellation)": 0.5
+    },
+    "contacts_per_header": {
+      "+12V": 2,
+      "+5V": 2,
+      "-12V": 2,
+      "GND": 6
+    },
+    "guidance": "typical 2.54 mm IDC/ribbon contact ~1 A: use both headers above ~2 A per rail; unequal cable lengths/loads do not split equally"
+  },
+  "tvs": {
+    "part": "SMAJ5.0A",
+    "vrwm": 5.0,
+    "vbr_min_1mA": 6.4,
+    "vc_at_43A5": 9.2,
+    "ir_max_at_vrwm_uA": 800,
+    "rail_max_setpoint_V": 5.26,
+    "vin_cap_dump_mJ": 8.1,
+    "rating_J_10_1000us": 0.4,
+    "note": "Above VRWM only at the stacked worst-case setpoint; <= ~5 mW even at 1 mA. Transient clamp only; sustained overvoltage is removed by U20 -> FAULT -> U5"
+  },
+  "area": {
+    "S8_courtyard_mm2": 2733,
+    "board_inset_mm2": 4324,
+    "fill": 0.632,
+    "outline": "Y14..114.5 x Z2..50",
+    "routed_R3_fill": {
+      "base": 0.637,
+      "top": 0.645
+    },
+    "groups_mm2": {
+      "J2+J3": 573,
+      "L1-L3": 401,
+      "panel J1/SW1/D8": 168,
+      "test pads": 50
+    },
+    "note": "courtyard polygons from the pinned footprints, panel parts counted whole (they overhang the front edge by design). The placed P1 board record is docs/s8-single/board-p1.json"
+  }
+}
