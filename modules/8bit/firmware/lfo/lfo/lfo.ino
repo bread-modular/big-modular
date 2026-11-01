@@ -7,23 +7,14 @@
 #include <util/atomic.h>
 
 // No MIDI: the LFO free-runs from P1/P2 and CV in (the LFO panel has no MIDI
-// jack). MODE (PA4) runs a free-time P1/P2 recorder (no MIDI clock):
+// jack). P1 = RATE (+ CV in), P2 = WAVE. MODE (PA4) toggles the output range:
 //
-//   LIVE --press--> RECORDING --press--> LOOP --press--> LIVE
+//   * BIPOLAR (default, at power-up): full DAC 0..255 -> about -5..+5 V; LED dim.
+//   * UNIPOLAR: wave scaled into the upper half, DAC 128..255 -> about 0..+5 V;
+//     LED bright.
 //
-//   * RECORDING: P1/P2 drive the LFO live and are sampled into RAM until the
-//     next press, so the take is as long as you hold it open. Every time the
-//     buffer fills, it keeps every second sample and the sample period doubles
-//     (10 ms -> 20 -> 40 ... -> 640 ms), so long takes cost resolution, not
-//     length. At the 640 ms period (~6.8 min) a full buffer ends the take.
-//   * LOOP: the take replays with its recorded timing (linear interpolation
-//     between samples, including the wrap back to the start). For the first
-//     pass the knobs are ignored; then their positions are latched and turning
-//     a knob shifts its whole recorded curve (clamped 0..1023).
-//   * A press with less than two samples (< 20 ms) is discarded -> LIVE.
-//   * CV in is never recorded: it adds to the rate live in every state.
-//   * LED follows the LFO level: dim in LIVE, full in LOOP, full + blinking
-//     while RECORDING.
+// The LED follows the wave's position within the active range (bottom = off,
+// top = its maximum brightness); the range picks the maximum.
 
 #define GATE_PIN PIN_PA7
 #define LOGGER_PIN_TX PIN_PB4
@@ -38,12 +29,9 @@
 constexpr int16_t CV_IN_ZERO = 509;      // calibrate per unit (docs/research.md)
 constexpr int16_t CV_IN_DEADBAND = 3;    // counts around 0 V treated as 0 V
 
-constexpr uint16_t REC_SAMPLES = 640;          // per knob, 8-bit (1280 B RAM)
-constexpr uint16_t REC_FIRST_PERIOD_MS = 10;
-constexpr uint16_t REC_MAX_PERIOD_MS = 640;    // 640 x 640 ms ~ 6.8 min max take
 constexpr uint8_t BUTTON_DEBOUNCE_MS = 30;
-constexpr uint8_t REC_BLINK_MS = 150;          // LED blink half-period
-constexpr uint8_t LED_LIVE_SHIFT = 3;          // LIVE LED = level / 8
+constexpr uint8_t LED_BIPOLAR_SHIFT = 3;       // BIPOLAR LED = wave / 8 (dim)
+constexpr uint8_t UNIPOLAR_ZERO = 128;         // DAC code for ~0 V at the output
 
 #ifndef F_CPU
 #define F_CPU 20000000UL
@@ -63,7 +51,8 @@ volatile uint32_t phaseIncrement = 0;
 volatile uint8_t waveformIndexA = WaveTables::Sine;
 volatile uint8_t waveformIndexB = WaveTables::Sine;
 volatile uint8_t waveformBlend = 0;
-volatile uint8_t latestLfoSample = 0;
+volatile uint8_t latestLfoSample = 0;   // last wave sample, 0..255 (before range scaling)
+volatile bool unipolar = false;          // MODE: false = -5..+5 V, true = 0..+5 V
 
 uint32_t mapCvToFrequencyCurve(uint16_t cvValue) {
   uint32_t range = LFO_MAX_FREQ_MILLIHZ - LFO_MIN_FREQ_MILLIHZ;
@@ -142,47 +131,9 @@ void updateWaveformMix(uint16_t cvValue) {
 }
 
 
-// ---- Free-time P1/P2 recorder ------------------------------------------------
-
-enum RecState : uint8_t { REC_LIVE = 0, REC_RECORDING, REC_LOOP };
-
-RecState recState = REC_LIVE;
-uint8_t recBuf1[REC_SAMPLES];
-uint8_t recBuf2[REC_SAMPLES];
-uint16_t recCount = 0;         // samples in the buffer
-uint16_t recPeriodMs = REC_FIRST_PERIOD_MS;
-uint32_t recStartMs = 0;       // take start (RECORDING) or loop start (LOOP)
-uint32_t recLengthMs = 0;      // loop length = recCount * recPeriodMs
-bool recOffsetArmed = false;   // first loop pass done, knob offsets active
-uint16_t recRef1 = 0;          // knob positions latched after the first pass
-uint16_t recRef2 = 0;
-
-void startLoop(uint32_t now) {
-  recLengthMs = (uint32_t)recCount * recPeriodMs;
-  recStartMs = now;
-  recOffsetArmed = false;
-  recState = REC_LOOP;
-}
-
-void onModePress(uint32_t now) {
-  switch (recState) {
-    case REC_LIVE:
-      recCount = 0;
-      recPeriodMs = REC_FIRST_PERIOD_MS;
-      recStartMs = now;
-      recState = REC_RECORDING;
-      break;
-    case REC_RECORDING:
-      if (recCount < 2) {
-        recState = REC_LIVE;           // too short to loop: discard
-      } else {
-        startLoop(now);
-      }
-      break;
-    case REC_LOOP:
-      recState = REC_LIVE;
-      break;
-  }
+// MODE press toggles the output range.
+void onModePress() {
+  unipolar = !unipolar;
 }
 
 // Debounced press edge on MODE.
@@ -198,74 +149,14 @@ void updateButton(uint32_t now) {
   if ((now - lastChangeMs) >= BUTTON_DEBOUNCE_MS && reading != stable) {
     stable = reading;
     if (stable == LOW) {
-      onModePress(now);
+      onModePress();
     }
   }
 }
 
-// Store a P1/P2 pair whenever the take's clock passes the next sample slot.
-void recordSample(uint32_t now, uint16_t knob1, uint16_t knob2) {
-  if ((now - recStartMs) < (uint32_t)recCount * recPeriodMs) {
-    return;
-  }
-  if (recCount >= REC_SAMPLES) {
-    if (recPeriodMs >= REC_MAX_PERIOD_MS) {
-      startLoop(now);                  // longest take reached: loop it
-      return;
-    }
-    // Keep every second sample at twice the period: count * period, the
-    // time of the next slot, stays the same.
-    for (uint16_t i = 0; i < REC_SAMPLES / 2; i++) {
-      recBuf1[i] = recBuf1[2 * i];
-      recBuf2[i] = recBuf2[2 * i];
-    }
-    recCount = REC_SAMPLES / 2;
-    recPeriodMs *= 2;
-  }
-  recBuf1[recCount] = knob1 >> 2;      // 10-bit -> 8-bit storage
-  recBuf2[recCount] = knob2 >> 2;
-  recCount++;
-}
-
-// Recorded value at loop position `pos`, interpolated, plus the knob offset.
-uint16_t playbackValue(const uint8_t* buf, uint32_t pos, int16_t offset) {
-  uint16_t index = pos / recPeriodMs;
-  uint16_t frac = pos % recPeriodMs;
-  uint16_t next = (index + 1 < recCount) ? index + 1 : 0;
-  uint32_t a = (uint32_t)buf[index] << 2;
-  uint32_t b = (uint32_t)buf[next] << 2;
-  uint16_t value = (a * (recPeriodMs - frac) + b * frac) / recPeriodMs;
-  return clampCv((int16_t)value + offset);
-}
-
-// Replace the live knobs with the loop (plus knob offsets after the first pass).
-void playback(uint32_t now, uint16_t& knob1, uint16_t& knob2) {
-  uint32_t elapsed = now - recStartMs;
-  int16_t offset1 = 0;
-  int16_t offset2 = 0;
-  if (!recOffsetArmed && elapsed >= recLengthMs) {
-    recOffsetArmed = true;             // first pass done: latch the knobs
-    recRef1 = knob1;
-    recRef2 = knob2;
-  }
-  if (recOffsetArmed) {
-    offset1 = (int16_t)knob1 - (int16_t)recRef1;
-    offset2 = (int16_t)knob2 - (int16_t)recRef2;
-  }
-  uint32_t pos = elapsed % recLengthMs;
-  knob1 = playbackValue(recBuf1, pos, offset1);
-  knob2 = playbackValue(recBuf2, pos, offset2);
-}
-
-uint8_t ledLevel(uint32_t now, uint8_t sample) {
-  switch (recState) {
-    case REC_RECORDING:
-      return ((now / REC_BLINK_MS) & 1) ? sample : 0;
-    case REC_LOOP:
-      return sample;
-    default:
-      return sample >> LED_LIVE_SHIFT;
-  }
+// LED = wave position in the active range: dim maximum in BIPOLAR, full in UNIPOLAR.
+uint8_t ledLevel(uint8_t sample) {
+  return unipolar ? sample : (sample >> LED_BIPOLAR_SHIFT);
 }
 
 void setupTimer() {
@@ -300,7 +191,7 @@ ISR(TCB0_INT_vect) {
     uint16_t weightB = blend;
     sample = ((uint32_t)sampleA * weightA + (uint32_t)sampleB * weightB) >> 8;
   }
-  DAC0.DATA = sample;
+  DAC0.DATA = unipolar ? (UNIPOLAR_ZERO + (sample >> 1)) : sample;
   latestLfoSample = sample;
 
   // Clear the interrupt flag∫
@@ -348,25 +239,20 @@ void setup() {
 }
 
 void loop() {
-  uint32_t now = millis();
-  updateButton(now);
+  updateButton(millis());
+
+  uint8_t sample = latestLfoSample;
 
   // Update the LED
-  analogWrite(TOGGLE_LED, ledLevel(now, latestLfoSample));
+  analogWrite(TOGGLE_LED, ledLevel(sample));
 
   // Write to the GATE
-  digitalWrite(GATE_PIN, latestLfoSample > 127);
+  digitalWrite(GATE_PIN, sample > 127);
 
-  // RATE = P1 (+ CV in, never recorded), WAVE = P2
+  // RATE = P1 (+ CV in), WAVE = P2
   uint16_t rateKnob = analogRead(PIN_CV1);
   uint16_t waveKnob = analogRead(PIN_CV2);
   uint16_t cvIn = analogRead(PIN_CV_IN);
-  if (recState == REC_RECORDING) {
-    recordSample(now, rateKnob, waveKnob);
-  }
-  if (recState == REC_LOOP) {
-    playback(now, rateKnob, waveKnob);
-  }
   uint32_t freqMilliHz = mapCvToFrequencyCurve(rateControl(rateKnob, cvIn));
   updateLfoPhaseIncrement(freqMilliHz);
   updateWaveformMix(waveKnob);

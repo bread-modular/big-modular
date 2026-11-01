@@ -37,7 +37,7 @@ generated (`panels/front-cad/`), not test-printed (`docs/research.md` §6).
 | `docs/schematic-symbols.json`, `docs/sourcing-candidates.json` | Pinned-symbol provenance; dated live JLCPCB lookups |
 | `docs/jlcpcb-audit-requirements.json` | Circuit stress/manual-part policy for the assembly audit (reviews empty) |
 | `jlcpcb/` | Gerbers, BOM/CPL, source manifest; upload map and order gates in `jlcpcb/README.md` |
-| `firmware/` | BM `drums`, `supersaw` (MIDI only), `crash` and `lfo` (no MIDI, CV in modulates the rate, MODE = free-time P1/P2 recorder) firmwares, the MIDI ones built per JP1 setting (`firmware/README.md`) |
+| `firmware/` | BM `drums`, `supersaw` (MIDI only), `crash` and `lfo` (no MIDI, CV in modulates the rate, MODE = output range -5..+5 V / 0..+5 V) firmwares, the MIDI ones built per JP1 setting (`firmware/README.md`) |
 | `tools/` | Generators, `route_plan.py` (all copper) and the shared-tool profile `kicad-project.json` |
 
 Full rebuild (from `modules/8bit`). The routed `hardware/8bit.kicad_pcb` is the copper
