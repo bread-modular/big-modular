@@ -21,17 +21,27 @@ orchestrator, CAM venv, or pinned CAM dependency set.
 |---|---|---|
 | Carrier PCB | `usb-power-gerbers.zip` | JLC standard 4-layer: JLC04161H-7628, FR4 Tg155, 1.6 mm, 1 oz outer / 0.5 oz inner, HASL (with lead), tented vias |
 | Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | front side only; D10/C62/C93 DNP, J7 excluded |
-| Passive panel PCB | `usb-power-panel-gerbers.zip` | JLC standard 2-layer FR4 Tg135, 1.6 mm, black mask, no assembly |
+| Passive panel PCB | `usb-power-panel-gerbers.zip` | JLC standard 2-layer FR4 Tg135, 1.6 mm, black mask, white silk, **lead-free HASL** (silver copper art), no assembly |
 
 ## Source identity
 
 - Carrier PCB: `9af7362164024cbf7633330342c507518941e1b95ca605212c8e2e1d4dfce567`;
   project `122b817bc0e58812a027ab4e422d35e668cf1d9a47c25dfaa715918484529de9`;
   root schematic `4c3512d82c8a66903d2e7b917938ddf9b1f514697861766c53a8bb51eba13500`.
-- Panel PCB: `5e8b99ea3f9f178ea0030ab29d5c906e31b8a1ed722a0491b78efd74b32f4aab`;
+- Panel PCB: `48f6d6feac89bb8789dfbc2b95df994216fac81900c4a47fcde5023a7bba8c54`;
   project `d8211fb9ceb1112ac893d16ada5df17ab439c3295ff61ca9fb112b4154045e52`.
 - `source-sha256.json` binds the complete carrier/panel PCB, project and
   hierarchical-sheet inputs plus the assembly and ZIP identities.
+
+## Panel artwork
+
+The panel front has no captions; its art is design F ("charged"): a dot field
+with a lightning bolt left as black negative space, plus fading dot bands at
+the top and foot. It is unconnected F.Cu with matching F.Mask openings, so it
+shows as bare lead-free HASL (silver) on the black mask; `V1` is on B.Silkscreen.
+Regenerate it with
+`python3 -B panels/front-pcb/art/build_panel_art.py --only f-charged --apply`
+(idempotent), then run panel DRC and the panel export below.
 
 ## Reproduce
 
@@ -64,6 +74,7 @@ This is the complete regenerated manufacturing export, not a supplier-accepted
 release. The carrier BOM/CPL contain 112 unique fitted refs (44 BOM rows), all
 top-side with LCSC codes; D10/C62/C93 are DNP and J7 is excluded. Before upload:
 confirm BOM/CPL refs/sides/rotations and run JLCPCB DFM. All order options are
-JLC standard (no paid stack, copper, finish or via options; standard tolerances;
+JLC standard (no paid stack, copper, finish or via options, except the panel's
+lead-free HASL finish; standard tolerances;
 tented unfilled vias). Bench thermal/joint/EMI/startup/load qualification
 remains outstanding and is not claimed.
