@@ -1,0 +1,123 @@
+{
+  "status": "S8_schematic_checks_not_bench_qualification",
+  "components": 166,
+  "nets_including_NC": 109,
+  "sheets": 7,
+  "exact_field_pin_NC_pad_parity": true,
+  "removed_S7_refs": 69,
+  "added_refs": [
+    "C59",
+    "C60",
+    "C61",
+    "C62",
+    "C63",
+    "C64",
+    "C65",
+    "C66",
+    "D21",
+    "J3",
+    "R92",
+    "R93",
+    "R94",
+    "R95",
+    "R96",
+    "R97",
+    "R98",
+    "R99",
+    "U20"
+  ],
+  "ceramic_banks_22u_or_10u": {
+    "+12V": [
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C34",
+      "C59"
+    ],
+    "+5V": [
+      "C20",
+      "C21",
+      "C22",
+      "C23",
+      "C35",
+      "C60"
+    ],
+    "-12V": [
+      "C29",
+      "C30",
+      "C31",
+      "C32",
+      "C33",
+      "C36",
+      "C61"
+    ],
+    "VIN": [
+      "C15",
+      "C16",
+      "C24",
+      "C6",
+      "C7"
+    ]
+  },
+  "vin_damper": {
+    "R92_ohm": 1.0,
+    "C5_C62_uF": [
+      10,
+      10
+    ]
+  },
+  "overvoltage_guard_V": {
+    "+12V_min_nom_max": [
+      14.86,
+      16.58,
+      18.45
+    ],
+    "+5V_min_nom_max": [
+      5.84,
+      6.5,
+      7.22
+    ],
+    "-12V_magnitude_min_nom_max": [
+      13.92,
+      15.1,
+      16.36
+    ],
+    "converter_setpoint_max_V": {
+      "+12V": 12.912,
+      "+5V": 5.259,
+      "-12V": 12.624
+    },
+    "converter_OVP_max_V": {
+      "+12V": 15.24,
+      "+5V": 6.21
+    },
+    "corner_overlap_with_converter_OVP": {
+      "+12V": true,
+      "+5V": true
+    }
+  },
+  "nominal_voltage_valid_thresholds": {
+    "P12_V": 9.976744186046512,
+    "P5_V": 4.22093023255814,
+    "N12_magnitude_V": 10.053488372093023,
+    "input_V": 17.651162790697676
+  },
+  "logic_POR_high_screen_V": 3.063197551270278,
+  "startup_qualification_typ_s": 0.5719285714285715,
+  "digital_combinations_checked": 512,
+  "scenarios": [
+    "MAIN_OK",
+    "P12_OK",
+    "P5_OK",
+    "N12_OK",
+    "V20_OK",
+    "OV_N preset (unarmed) + latched after release"
+  ],
+  "warnings": [
+    "Arithmetic stacks every tolerance at once; it is a screen, not a rating.",
+    "Digital truth checks do not model analog propagation, comparator/LED timing or MOSFET transients.",
+    "No PCB placement/routing, thermal, start-up-into-rack or overload bench result exists for S8."
+  ],
+  "order_ready": false
+}
