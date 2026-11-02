@@ -1213,70 +1213,8 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 3,
+      "qty_S8": 4,
       "qty_S7": 3
-    },
-    "C25811": {
-      "code": "C25811",
-      "mpn": "0603WAF2003T5E",
-      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
-      "package": "0603",
-      "classification": "Basic",
-      "economy_eligible": true,
-      "stock": 2199238,
-      "unit_price_q1_usd": 0.0021,
-      "price_ladder_usd": [
-        [
-          1,
-          999,
-          0.0021
-        ],
-        [
-          1000,
-          4999,
-          0.0016
-        ],
-        [
-          5000,
-          9999,
-          0.0013
-        ],
-        [
-          10000,
-          49999,
-          0.0012
-        ],
-        [
-          50000,
-          50199,
-          0.001
-        ],
-        [
-          50200,
-          -1,
-          0.001
-        ]
-      ],
-      "evidence": {
-        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-01T19:52:36Z",
-        "http_status": 200,
-        "request": {
-          "currentPage": 1,
-          "pageSize": 20,
-          "keyword": "C25811"
-        },
-        "sha256": "c86acac5919c5e21433abb829ca6edf382bbb5c00dac1e09627c41963065c853",
-        "mode": "live",
-        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
-        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
-      },
-      "failures": [],
-      "refs_S8": [
-        "R83"
-      ],
-      "qty_S8": 1,
-      "qty_S7": 0
     },
     "C25819": {
       "code": "C25819",
@@ -2106,7 +2044,7 @@
     }
   },
   "summary": {
-    "S8_codes": 62,
+    "S8_codes": 61,
     "S7_codes": 57,
     "S8_placements": 168,
     "S7_placements": 195,
