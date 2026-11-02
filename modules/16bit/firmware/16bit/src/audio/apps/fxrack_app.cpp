@@ -27,6 +27,13 @@ void FXRackApp::init() {
     setFX(CONFIG_FX1_INDEX, fx1Value);
     setFX(CONFIG_FX2_INDEX, fx2Value);
     setFX(CONFIG_FX3_INDEX, fx3Value);
+
+    // Every audio start (boot, set-fx) re-creates the FX at their defaults,
+    // so earlier CC values no longer apply. The take is RAM only and is
+    // dropped too.
+    recorder.setLedCallback(&FXRackApp::setRecorderLed);
+    recorder.begin(time_us_32() / 1000);
+    recorder.clearCurrentCcs();
 }
 
 __attribute__((hot))
@@ -56,64 +63,150 @@ void FXRackApp::noteOffCallback(uint8_t channel, uint8_t note, uint8_t velocity)
 
 __attribute__((cold, noinline))
 void FXRackApp::ccChangeCallback(uint8_t channel, uint8_t cc, uint8_t value) {
-    float valueNormalized = value / 127.0f;
-    // Filter Controls
+    // During playback a recorded MCC CC is owned by the loop: keep its latest
+    // value (the recorder turns moves into an offset) but don't apply it. MCC
+    // CCs missing from the take stay live.
+    if (recorder.ownsCc(cc)) {
+        recorder.setCurrentCc(cc, value);
+        return;
+    }
+
+    // Filter Controls (the loop owns P3 / P4 during playback)
     if (cc == 71) {
         cv1UpdateCallback(value * 32);
     } else if (cc == 74) {
         cv2UpdateCallback(value * 32);
     }
 
-    // FX1 Controls
-    if (cc == 20) {
-        fx1->setParameter(0, valueNormalized);
-    } else if (cc == 21) {
-        fx1->setParameter(1, valueNormalized);
-    } else if (cc == 22) {
-        fx1->setParameter(2, valueNormalized);
-    } else if (cc == 23) {
-        fx1->setParameter(3, valueNormalized);
+    if (applyFxCc(cc, value)) {
+        recorder.setCurrentCc(cc, value);
     }
+}
 
-    // FX2 Controls
-    if (cc == 27) {
-        fx2->setParameter(0, valueNormalized);
-    } else if (cc == 28) {
-        fx2->setParameter(1, valueNormalized);
-    } else if (cc == 29) {
-        fx2->setParameter(2, valueNormalized);
-    } else if (cc == 30) {
-        fx2->setParameter(3, valueNormalized);
+// MCC CC -> FX parameter: Bank A CC20..23 -> FX1, Bank B CC27..30 -> FX2,
+// Bank C CC85..88 -> FX3. Returns false for any other CC.
+bool FXRackApp::applyFxCc(uint8_t cc, uint8_t value) {
+    int index = MotionRecorder::ccIndex(cc);
+    if (index < 0) {
+        return false;
     }
-
-    // FX3 Controls
-    if (cc == 85) {
-        fx3->setParameter(0, valueNormalized);
-    } else if (cc == 86) {
-        fx3->setParameter(1, valueNormalized);
-    } else if (cc == 87) {
-        fx3->setParameter(2, valueNormalized);
-    } else if (cc == 88) {
-        fx3->setParameter(3, valueNormalized);
-    }
+    AudioFX* bankFx[3] = {fx1, fx2, fx3};
+    bankFx[index / MotionRecorder::MCC_CCS_PER_BANK]->setParameter(
+        index % MotionRecorder::MCC_CCS_PER_BANK, value / 127.0f);
+    return true;
 }
 
 __attribute__((cold, noinline))
 void FXRackApp::cv1UpdateCallback(uint16_t cv1) {
+    if (!recorder.isPlayingBack()) {
+        applyP3(cv1);
+    }
+}
+
+__attribute__((cold, noinline))
+void FXRackApp::cv2UpdateCallback(uint16_t cv2) {
+    if (!recorder.isPlayingBack()) {
+        applyP4(cv2);
+    }
+}
+
+void FXRackApp::applyP3(uint16_t cv1) {
     float cv1Norm = 1.0 - IO::normalizeCV(cv1);
     float cutoff = 1000.0f * powf(20000.0f / 1000.0f, cv1Norm * cv1Norm);
     lowpassFilterA.setCutoff(cutoff);
 }
 
-__attribute__((cold, noinline))
-void FXRackApp::cv2UpdateCallback(uint16_t cv2) {
+void FXRackApp::applyP4(uint16_t cv2) {
     float cv2Norm = 1.0 - IO::normalizeCV(cv2);
     float cutoff = 1000.0f * powf(20000.0f / 1000.0f, cv2Norm * cv2Norm);
     lowpassFilterB.setCutoff(cutoff);
 }
 
 __attribute__((cold, noinline))
-void FXRackApp::buttonPressedCallback(bool pressed) {}
+void FXRackApp::buttonPressedCallback(bool pressed) {
+    const MotionRecorder::State before = recorder.getState();
+    recorder.buttonChanged(pressed, time_us_32() / 1000);
+
+    // Knob and MCC moves were only tracked while the loop played: hand the
+    // filters and FX back to the live controls.
+    if (pressed && before == MotionRecorder::STATE_PLAYBACK &&
+        recorder.isLive()) {
+        applyLiveControls();
+    }
+}
+
+// P3 / P4 are this app's knobs (BM CV1 / CV2); P1 / P2 are audio inputs.
+void FXRackApp::readKnobs(uint16_t knobs[MotionRecorder::KNOB_COUNT]) {
+    knobs[MotionRecorder::KNOB_P1] = 0;
+    knobs[MotionRecorder::KNOB_P2] = 0;
+    knobs[MotionRecorder::KNOB_P3] = io->getCV1();
+    knobs[MotionRecorder::KNOB_P4] = io->getCV2();
+}
+
+void FXRackApp::applyLiveControls() {
+    applyP3(io->getCV1());
+    applyP4(io->getCV2());
+    for (uint8_t i = 0; i < MotionRecorder::CC_COUNT; i++) {
+        uint8_t cc = MotionRecorder::ccNumber(i);
+        uint8_t value = recorder.getCurrentCc(cc);
+        if (value != MotionRecorder::CC_UNSET) {
+            applyFxCc(cc, value);
+        }
+    }
+}
+
+void FXRackApp::setRecorderLed(bool on) {
+    IO::getInstance()->setLED(on);
+}
+
+void FXRackApp::applyRecordedFrame(void* context,
+                                   const MotionRecorder::Frame& frame) {
+    FXRackApp* self = static_cast<FXRackApp*>(context);
+    if (self == nullptr) {
+        return;
+    }
+
+    // The first frame of a loop applies everything; later frames only what
+    // changed.
+    bool all = !self->frameApplied;
+    self->frameApplied = true;
+    MotionRecorder::Frame& last = self->appliedFrame;
+    if (all || frame.knobs[MotionRecorder::KNOB_P3] !=
+                   last.knobs[MotionRecorder::KNOB_P3]) {
+        self->applyP3(frame.knobs[MotionRecorder::KNOB_P3]);
+    }
+    if (all || frame.knobs[MotionRecorder::KNOB_P4] !=
+                   last.knobs[MotionRecorder::KNOB_P4]) {
+        self->applyP4(frame.knobs[MotionRecorder::KNOB_P4]);
+    }
+    for (uint8_t i = 0; i < MotionRecorder::CC_COUNT; i++) {
+        if (frame.ccs[i] != MotionRecorder::CC_UNSET &&
+            (all || frame.ccs[i] != last.ccs[i])) {
+            self->applyFxCc(MotionRecorder::ccNumber(i), frame.ccs[i]);
+        }
+    }
+    last = frame;
+}
+
+void FXRackApp::realtimeCallback(uint8_t realtimeType) {
+    switch (realtimeType) {
+        case MIDI_REALTIME_CLOCK: {
+            if (!recorder.isPlayingBack()) {
+                frameApplied = false;
+            }
+            uint16_t knobs[MotionRecorder::KNOB_COUNT];
+            readKnobs(knobs);
+            recorder.onClock(knobs, &FXRackApp::applyRecordedFrame, this);
+            break;
+        }
+        case MIDI_REALTIME_START:
+            recorder.onStart();
+            break;
+        default:
+            // STOP/CONTINUE keep the take; with no clock the playhead holds.
+            break;
+    }
+}
 
 void FXRackApp::bpmChangeCallback(int bpm) {
     currentBPM = bpm;
@@ -226,5 +319,7 @@ bool FXRackApp::onCommandCallback(const char* cmd) {
     return false;
 }
 
-void FXRackApp::update() {}
+void FXRackApp::update() {
+    recorder.update(time_us_32() / 1000);
+}
 
