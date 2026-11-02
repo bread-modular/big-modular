@@ -1,40 +1,148 @@
-# usb-power-45w S9.1 / P2.1: review corrections, unrouted
+# usb-power-45w S9.2 / P2.2: routing-ready, unrouted
 
-> **Development schematic and fit placement, not a manufacturing release or bench qualification.**
-> ±12 V only; **15 V / 3 A USB PD**, CH224A R1 **56k**, TPS552892-Q1 positive converter,
-> LMR38020 negative converter and S8.5 `STARTED` one-shot retained. Prototype targets:
-> **+12 V 2.4 A / −12 V 0.8 A, ≤33 W combined**, subject to the source/load qualification below.
-> **164 references / 78 functional nets**, overview plus five pages; all components on F;
+> **Routing-ready development schematic and placement. Not routed, not a manufacturing release and not
+> bench-qualified.** ±12 V only; **15 V / 3 A USB PD** (CH224A R1 **56k**), TPS552892-Q1 positive converter,
+> LMR38020 negative converter, S8.5 `STARTED` one-shot retained.
+> Prototype targets: **+12 V 2.4 A / −12 V 0.8 A, ≤33 W combined**. They are conditional on the routing contract and
+> on the post-prototype acceptance tests.
+> **175 references / 80 functional nets**; an overview sheet plus five pages; all components on F;
 > **0 tracks, 0 vias, 0 zones**. No PCB routing was performed.
 
-## S9.1 changes and S9.0 review disposition
+## S9.2 / P2.2: routing-ready
 
-S9.0/P2.0 is preserved in git `41992e8` / `d7d7219`, including `review-s90.json` and the
-previous version of this document. Independent review conversations: Astra
-`c092ee9e-4fd7-448d-9b10-b87ff022ad27`, DeepSeek
-`2c480974-701a-4e6d-8f7d-f6f1416815d2`. Their common Critical is a **hardware defect**,
-not an acceptable bench event or a procedure failure. This revision supersedes the old residuals.
+**Routing-ready. The items in `routing-notes.md` are post-prototype acceptance tests, not design blockers.**
 
-| Item | S9.1 implementation | Verification / limits |
+The owner cannot bench-build: prototypes come straight from JLCPCB. Every former "verify on the bench before layout"
+item is now one of two things:
+
+- a design change, listed below;
+- a post-prototype acceptance test in **[routing-notes.md](s8-single/routing-notes.md)**, with a dedicated test pad, a
+  procedure, a pass limit and a failure disposition (respin, or a BOM/divider change).
+
+routing-notes.md holds the test-point table, the uncertainty register and the routing constraint list the router must
+honour. Its machine-readable half is `placement.json` → `routing_contract`, generated from `tools/s92_contract.py`.
+S9.1 / P2.1 is preserved in git `5df64c7`, together with `review-s91.json` and the previous version of this document.
+The S9.2 artefacts were regenerated in `4d7ef52`.
+
+| Item | S9.2 change | Evidence |
 | --- | --- | --- |
-| 1: self-enabling U4 / backfeed | Q1 emitter moved from +12 V to own VPD upstream of D10; Q14/Q15 series sink requires RUN and MAIN_LED_OK, R112 pulls Q1 off; D24 VIN TVS, D25 low-current negative clamp, D26 local +12 V transient backstop | Native pin checks, truth table and negative-control tests; finite-energy qualification below; no unrestricted hotplug or parallel-supply claim |
-| 2: input minimum | R2/R3 precision 100k/10k plus R114 510 Ω | Loaded start guaranteed below 13.0 V under stated resistor/threshold screen; actual falling range disclosed |
-| 3: current-limit thermal | R109 18 mΩ WSLP1206R0180FEA, 1 W, manufacturer-specific Kelvin footprint | ≤125 °C test replaces the old <130 °C assertion; sourcing C-code still open |
-| 4: ground split | AGND_U2 distinct from GND/PGND; sole R113 0 Ω bridge at C82.2 | Native and board checks plus `placement.json.ground_connection` |
-| 5: compensation | R111 6.8k / C83 100nF; exact complex loop calculation rather than above-zero shortcut | 13,824 sampled corners; bounded passive-load/cable/rack-capacitance envelope; real Bode gate remains |
-| 6: startup qualification | 3 A limited source and full V3V3/POR collapse/re-arming cases; persistent faults and repeated autonomous resets retained across qualification epochs | Logic timelines plus current/energy screen and explicit bench matrix, not a guaranteed PD-source dynamic model |
-| 7: preserved architecture | +5 V absent, 15 V PDO, TPS552892-Q1, S8.5 one-shot, no crowbar/eFuse; 20 V upgrade documented | No routing, no fabrication export/upload |
+| 1: D24 → SMBJ20A + R24 9.1k OVP coordination | D24 SMBJ16A → **SMBJ20A** (Littelfuse, LCSC C151257). U5 OVP bottom resistor **R24 6.8k → 9.1k**: the OVP now trips rising at **17.30–19.44 V** (18.34 V nominal) and recovers at 16.03–18.27 V. That is below the D24 20 V stand-off and its 21.70 V breakdown minimum at 0 °C, so U5 removes a sustained overvoltage before D24 conducts. The divider variant was chosen (see the next section) | `calcs.json` → `vin_clamp` (4 TVS × 2 dividers); `validation.json` → `vin_clamp_coordination`; `test_d24_ovp_coordination` with negative controls (S9.1 divider, S9.1 TVS) |
+| 2: PGND star fix | C82.2 (the VCC decoupling ground) moves from AGND_U2 to **PGND**. R113 turns so its pin 2 (PGND) lands on C82.2 (1.95 mm) and pin 1 feeds AGND_U2. R113 is the only part on both nets | netlist; `board-p1.json` ground split; `test_pgnd_star_at_c82` (C82.2 on AGND_U2 is a negative control); rule in routing-notes 3.3 |
+| 3: Kelvin-split shunt | R109 becomes **TA-I RLM12FTCMR018, 18 mΩ, 1 %, 75 ppm, 1 W** (C393095) on a true 4-terminal split land, `R_Shunt_1206_KelvinSplit_RLM12`. Force pads 1/4 sit on P12_VOUT/+12V. Sense pads 2/3 sit on the new nets P12_ISP/P12_ISN, which go to U2 pins 12/13 only, and take the sense at the electrode next to the element. 0.2 % residual in the 2.615–2.946 A CC band | `tools/s92_parts.py`; `test_r109_true_kelvin_land`; Kelvin screen in `board-p1.json` |
+| 4: netlist-derived tests + negative controls | The U4 enable truth table and the 3 A source timelines now derive from the native netlist (`tools/s92_netlist.py`): traced EN/PNP/NMOS-chain structure, tolerance bounds, and a physical 3 A plant with the netlist UVLO/OVP, CC limit, banks and enables. Negative controls rewire a copy of the netlist and must fail: Q1 emitter on +12V or VIN, a gate bypass, R16 to GND, R115 or R112 open, R115 < 50k, Q14 shorted, U5 SHDN or U2 EN off their nets, ISP tied to ISN, R114 open | `test_enable_truth_table_from_native_netlist`, `test_enable_negative_controls`, `test_three_amp_plant_from_native_netlist`, `test_three_amp_negative_controls` |
+| 5: N_EN_RETURN default | **R115 100k** from N_EN_RETURN (Q14 drain / Q15 source) to PGND defines the off state. With RUN low and MAIN_LED_OK high, Q15 is a source follower (≤ 3.37 V) and Q1 VEB ≤ 0.18 V. Values below ~50k fail the derived check. Test pad TP30 | enable model and netlist test; EN-1 |
+| 6: thermal basis moved into the routing contract | The U2/R109/D10/U4/U5 copper and via requirements are in `placement.json` → `routing_contract.thermal`. `calcs.json` → `thermal_contract` is labelled **CONDITIONAL** on them and on TH-1…TH-3. U2 needs an effective RθJA ≤ 55.8 °C/W at the CC limit (the model's 43.4 °C/W gives 108.4 °C at 50 °C) | `test_thermal_rating_conditional_on_contract`; 13 PENDING items in `board-p1.json` |
+| Routing contract and docs | Ten 1.5 mm acceptance pads (TP20, TP22–TP30), project netclasses (Power/Switch/Sense/Quiet), D26 moved beside the R109 pad pairs, [routing-notes.md](s8-single/routing-notes.md). The docs pass also made the contract feasible: the AGND island may use one via pair and one B.Cu AGND trace, because F.Cu alone cannot join U2.17 and U2.5 across the power fan-out; the U2 PGND via and D26/TP20 wording became routable; and the sense-pair escape at U2 is defined. The contract was refreshed with `place_s8.py --refresh-contract`; the board is unchanged | `test_acceptance_pads_and_netclasses`, `test_routing_notes_cover_contract`; `routing_contract_screen` passes |
 
-Also corrected: P5 header silk → NC, precision/current-shunt sourcing exceptions, mechanical revision,
-spare-comparator descriptions and the old results placeholder. No rail fuse/crowbar was added.
+### D24 / OVP coordination (item 1)
 
-## Artifacts
+Three rules must hold together:
+
+- (a) VR ≥ 1.15 × 16.5 V = 18.975 V.
+- (b) VBR minimum at 0 °C > U5 OVP rising maximum, so the OVP acts first.
+- (c) VC at IPP ≤ 42 V / 1.15 = 36.5 V (U2 absolute maximum with a 15 % ringing margin), and VC + 14.02 V < 50 V (C25/C26
+  sit between VIN and −12V).
+
+The figures are Littelfuse SMBJ datasheet values, with a VBR temperature coefficient of 0.091 %/°C.
+
+| D24 | VR | VBR at 25 °C | VBR min at 0 °C | VC at IPP | (b) with R24 6.8k (S9.1 OVP max 25.60 V) | (b) with R24 9.1k (S9.2 OVP max 19.44 V) | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| SMBJ16A (S9.1) | 16 V, fails (a) | 17.8–19.7 V | 17.43 V | 26.0 V at 23.1 A | fails (−8.17 V) | fails (−2.02 V) | fails (a), (b) |
+| SMBJ18A | 18 V, fails (a) | 20.0–22.1 V | 19.56 V | 29.2 V at 20.6 A | fails (−6.04 V) | passes (+0.12 V) | fails (a) |
+| **SMBJ20A** | **20 V** | 22.2–24.5 V | **21.69 V** | **32.4 V at 18.6 A** | fails (−3.90 V) | **passes (+2.25 V)** | **all three pass with R24 9.1k** |
+| SMBJ24A | 24 V | 26.7–29.5 V | 26.09 V | 38.9 V at 15.5 A, fails (c) | passes (+0.49 V) | passes (+6.64 V) | fails (c): 38.9 V > 36.5 V and 52.9 V > 50 V |
+
+**The divider variant was chosen.** Lowering the OVP from the 20 V-input setting (22.76–25.60 V) to the 15 V input is
+a one-resistor change on the protection that is supposed to act first. It also coordinates D1 (SMBJ22A, VBR 23.84 V at
+0 °C) for the first time, and it keeps the TVS clamp low. No SMBJ satisfies (b) with the S9.1 divider without failing
+(c). In normal operation the 17.30 V OVP minimum sits 0.80 V above the 16.5 V input ceiling, and the 16.03 V recovery
+minimum is above the 15.75 V PD source maximum.
+
+**Pulse budget, re-derived for SMBJ20A:** 1 A × VC 32.4 V × 20 ms = **0.648 J**, i.e. 32.4 W for 20 ms (S9.1:
+0.52 J / 26 W with SMBJ16A). Capability: mapping the 600 W 10/1000 µs rating onto a 20 ms rectangle with a √t thermal
+impedance gives 87.2 W at 25 °C and **69.8 W** after the 50 °C derating, a margin of 2.15. The 1 A clamp is 24.92 V at
+25 °C and 27.71 V at Tj 150 °C. No universal joule rating and no continuous claim. Accepted on the prototype by CL-1
+(VIN ≤ 30.0 V including ringing at TP26).
+
+### S9.2 verification
+
+- Native **ERC 0**. **DRC: 0 violations, 0 warnings, 0 exclusions, 0 schematic-parity findings**; the **392 unconnected
+  items** are the routing opens of the unrouted board.
+- Exact ref/pin/net parity holds: **175 components / 80 functional nets** (121 including NC nets) and 41 explicit NC
+  pins.
+- BOM parity: 62 lines with 148 references, plus 27 copper-only test pads, makes 175.
+- Tests: **73 run, 73 passed, 0 skipped** from a clean clone (no `*.kicad_prl`, no `research/` logs). They include the netlist-derived
+  truth-table and 3 A tests, their negative controls and the routing-notes coverage test.
+- Placement:
+  - no courtyard overlaps;
+  - edge rule and 2 mm hand-solder clearance pass (closest pair D8–Q6.3, 2.01 mm);
+  - 18 local-loop rows with 0 violations;
+  - the routing-contract screen passes: 16 pad anchors, four 2.54 mm pairs, seven proximity rows, Kelvin pad nets and
+    the ground split;
+  - 13 copper/via items stay PENDING until routed.
+- Mechanics: 0 nominal 3D interferences (6 proxies), IDC strain-relief overshoot −0.4 mm, envelope margin 1.1 mm, case
+  depth 5.7 mm.
+- Logic: 0 arming/timeline violations, a 16-row enable truth table and 512 digital combinations.
+- Sourcing for JLCPCB, from a live audit on 2026-11-02:
+  - 60 codes and 145 placements; 0 missing codes, and 0 zero-stock or unpriced machine-assembled codes.
+  - The Basic/Extended policy is applied: every R/C is Basic except R2, R3, R93, R94, R98, R99 and R109.
+  - Alternates are recorded for D24, D26 and R109.
+  - Owner-fitted manual parts: J2/J3 and D8. J2/J3 are Wurth 61201621621; their JLCPCB code C5364137 showed 0 stock,
+    and the THT option C5454489 needs a footprint/height check.
+  - The partial quantity-1 parts subtotal is $23.12, excluding setup fees, PCB, assembly and shipping. This is not an
+    order approval.
+- The record [review-s92.json](s8-single/review-s92.json) hashes every tracked source and artefact, including
+  `routing-notes.md` and this document.
+
+### Open items: post-prototype acceptance tests, not design blockers
+
+routing-notes.md section 2 defines each test with its test pad, procedure, pass limit and failure disposition:
+
+- **CL-1**: D24 clamp and energy (T1-D). **T1**: bus backfeed. **T2/CL-2**: rail overvoltage and D26.
+- **TH-1…TH-3**: thermal on the real copper (U2/R109, D10/U5, U4).
+- **LS-1**: +12 V loop with the real rack capacitance. **EMI-1**: switch-node ringing, VIN/rail noise and beat tones.
+- **IN-1**: input range with cable drop. **IN-2**: UVLO/OVP spread over temperature. **IN-3**: USB-C attach transient.
+- **KS-1/CC-1**: Kelvin accuracy and the CC band. **GS-1/GS-2**: ground star. **EN-1**: N_EN_RETURN default.
+- **S1–S4**: start-up with real PD sources (a strict 3.00 A source fails safe at full load plus rack). **POR-1**: replug
+  race. **HDR-1**: header contact current.
+
+Outside the module's own acceptance tests: the OV tolerance of downstream modules, crowbar vs eFuse (a deferred owner
+decision), and the CAM/assembly review at order time (a separate authorised task). No fabrication export or order.
+
+### Artifacts
 
 - [Native project](../hardware/single/usb-power-45w-single.kicad_pro), [schematic PDF](usb-power-45w-single-schematic.pdf), [BOM](s8-single/bom.csv).
-- [Calculations](s8-single/calcs.json), [validation](s8-single/validation.json), [review-s91](s8-single/review-s91.json).
-- [Placement](s8-single/placement.json), [board checks](s8-single/board-p1.json), [mechanics](s8-single/mechanical.json).
+- [Routing notes](s8-single/routing-notes.md), [placement and routing contract](s8-single/placement.json), [board checks](s8-single/board-p1.json), [mechanics](s8-single/mechanical.json).
+- [Calculations](s8-single/calcs.json), [validation](s8-single/validation.json), [review-s92](s8-single/review-s92.json).
 - [Assembly PDF](s8-single/assembly/usb-power-45w-single-placement.pdf), [STEP](s8-single/assembly/usb-power-45w-single-assembly.step.zip), [collision screen](s8-single/assembly/assembly-report.json).
-- [S9.1 sourcing evidence/unknowns](s8-single/s91-sourcing.json), [whole-design partial snapshot](s8-single/sourcing.json); historical selected-part snapshots remain dated evidence, not current stock claims.
+- [S9.2 sourcing evidence](s8-single/s92-sourcing.json) (live rows for every S9.2 code and alternate) and the [whole-design live audit](s8-single/sourcing.json). The older s91/s90/s84/s83 snapshots remain dated evidence, not stock claims.
+
+### Reproducibility
+
+Use the existing generators; never hand-edit generated schematics, PCB or JSON:
+
+```sh
+python3 -B modules/usb-power-45w/tools/build_s8.py --output-root <candidate-module-root>
+# Netlist changes: place_s8.sync_candidate(<board>, <candidate-root>), then inspect and promote the candidate.
+# Contract wording only (board untouched):
+python3 -B modules/usb-power-45w/tools/place_s8.py --refresh-contract
+python3 -B opt/kicad-tools/kicad_tools.py check --config modules/usb-power-45w/tools/kicad-project-single.json --reports <new-check-directory>
+python3 -B modules/usb-power-45w/tools/verify_s8.py --netlist <new-check-directory>/netlist.xml > modules/usb-power-45w/docs/s8-single/validation.json
+python3 -B modules/usb-power-45w/tools/s8_calcs.py --out modules/usb-power-45w/docs/s8-single
+python3 -B modules/usb-power-45w/tools/check_s8_board.py --out modules/usb-power-45w/docs/s8-single/board-p1.json
+python3 -B modules/usb-power-45w/tools/build_s8_panel.py
+python3 -B modules/usb-power-45w/tools/mechanics_s8.py
+python3 -B modules/usb-power-45w/tools/s8_mechanical.py
+python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
+# Stage new files first: the record hashes tracked files only.
+# Move the old record aside first: its own test skips without it.
+python3 -B modules/usb-power-45w/tools/review_s8.py --check <new-check-directory> --tests-log <tests-log> --out modules/usb-power-45w/docs/s8-single/review-s92.json
+```
+
+BOM and PDF use native `kicad-cli sch export`; the board image uses `render_s8.py`. Raw reports and logs stay in the
+ignored `research/s92/`; no `*.kicad_prl` file or research log enters the review hashes. Clean-clone testing needs the
+repository's KiCad/pcbnew, ngspice, numpy and plotting dependencies. Mechanical regeneration additionally needs
+FreeCAD/OpenSCAD. No test needs an ignored local report.
 
 ## 1. Own-input enable logic and clamps
 
@@ -43,94 +151,138 @@ MAIN_LED_OK = MAIN_OK AND V20_OK
 QUALIFY     = RUN AND MAIN_LED_OK
 Q1 emitter  = VPD (own input upstream of D10, never VIN or +12 V)
 Q1 base     = R112 to VPD; R16 through Q15 and Q14 to GND
+N_EN_RETURN = Q14 drain / Q15 source; R115 100k to PGND (S9.2 default)
 
 EN_relative = EN_N - V(-12V)
 QUALIFY=1: EN_relative = (VPD - VCEsat - V(-12V)) * R18/(R17+R18)
 QUALIFY=0: EN_relative <= Ileak * R18
 ```
 
-R17/R18 remain 100k/20k. A live output bus cannot supply Q1's emitter or qualify either
-NMOS gate. `RUN=0`, invalid `MAIN_OK`, or absent own input each prevents enable.
-R112=5.1k is the default-off base pull-up; R16=33k supplies base current only through both sinks.
+R17/R18 remain 100k/20k. A live output bus can neither supply Q1's emitter nor qualify either NMOS gate. `RUN=0`, an
+invalid `MAIN_OK` or an absent own input each prevents enable. R112 = 5.1k is the default-off base pull-up. R16 = 33k
+supplies base current only through both sinks.
 
-The tolerance screen gives **1.928 V** minimum at start vs U4's 1.4 V
-maximum enable threshold, **5.014 V** at the running upper corner.
-The **5 µA off-leakage qualification bound** gives **0.102 V**, below the 0.95 V
-disable threshold; this is a test/design bound, not an invented TI leakage maximum. All 16
-own-input/RUN/status/live-bus combinations are checked. Negative controls restore the old +12 V
-emitter or bypass either qualification condition and must fail native verification.
+**S9.2 adds R115**, so the AND-gate mid-node has a defined DC default; before, it held only Q14.3 and Q15.2. With RUN
+low and MAIN_LED_OK still high (≤ 13 ms PGOOD deglitch), Q15 is a source follower: the node stays ≤ 3.37 V and the sink
+current ≤ 35 µA, so Q1 VEB ≤ 0.18 V and Q1 stays off. Below ~50k the follower current could bias Q1 on. The derived
+check fails R115 = 47k and passes 1M.
 
-**D24 SMBJ16A on VIN:** 16 V stand-off, 17.8–19.7 V breakdown, rated **26 V at 23.1 A**, **600 W
-10/1000 µs** pulse rating. Engineering qualification budget is **1 A × 26 V × 20 ms = 0.52 J**,
-26 W for that finite interval, initial temperature ≤50 °C, ≥200 s between pulses. The datasheet
-pulse-duration curve screen is approximately 100 W at 20 ms after temperature derating; 600 W
-is **not** a continuous or 20 ms rating. Protects U2 VIN/SW1 (42 V absolute / 36 V operating),
-U5 OUT and VIN capacitors; C25/C26 then see at most 26+12.6=38.6 V in the rated-clamp screen.
-The actual PCB acceptance bound is VIN≤28 V including ringing, not a claim that TVS nominal
-breakdown is its clamp voltage. [source](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e)
+The tolerance screen is now derived from the native netlist (`tools/s92_netlist.py`). It gives **1.936 V** minimum at
+start, against U4's 1.4 V maximum enable threshold, and **5.52 V** at the running upper corner (VPD up to the 19.44 V
+OVP maximum). The **5 µA off-leakage qualification bound** gives **0.102 V**, below the 0.95 V disable threshold. This
+is a test/design bound, not an invented TI leakage maximum.
 
-**D25 BAT54SLT1G:** forward clamp for the *slew-limited, 25 °C* negative VIN test only
-(≤0.24 V at 100 µA; ≤26.5 µA displacement current at 1 V/s). It does **not** guarantee
-U2's −0.3 V minimum under fast/cold hotplug. **D26 SMBJ14A** at P12_VOUT is a finite-energy
-local backstop (14 V stand-off, 15.6–17.2 V breakdown, 23.2 V rated clamp at 25.9 A,
-600 W 10/1000 µs) for the 25 V U2 output/sense pins and local MLCCs. It is not protection
-for ordinary 16 V downstream capacitors or a coordinated fuse/crowbar.
+All 16 own-input/RUN/status/live-bus combinations come from the traced netlist structure: EN pin → divider → PNP →
+base pull-ups → series NMOS sink chain → GND, with its chain-node defaults. They are not recomputed from an equation.
+The negative controls of the S9.2 changelog must fail native verification.
 
-## 2. Input range, cable drop and UVLO
+**D24 SMBJ20A on VIN (S9.2):**
 
-The published range remains **13.5–16.5 V at VPD on the module**, not at the adapter.
-13.5 V = minimum 14.25 V source minus **0.75 V cable/connector drop at 3 A** (≤0.25 Ω loop).
-Required source: fixed **15 V / 3 A PDO**, at least 45 W. U5's 3.69–4.70 A protection limit
-still does not enforce the PD 3 A contract. 5 V-only or lower-power adapters are not qualified.
+- **Ratings:** 20 V stand-off (≥ 1.15 × 16.5 V), **22.2–24.5 V breakdown** (21.70 V minimum at 0 °C), rated
+  **32.4 V at 18.6 A**, **600 W 10/1000 µs**.
+- **Coordination:** U5's OVP (R24 9.1k) trips at **17.30–19.44 V**, so U5 removes a sustained source overvoltage before
+  D24 conducts. D24 only takes finite bus-injection pulses.
+- **Engineering qualification budget:** **1 A × 32.4 V × 20 ms = 0.648 J** (32.4 W for that finite interval). Initial
+  temperature ≤ 50 °C, ≥ 200 s between pulses. Capability for a 20 ms rectangle at 50 °C is 69.8 W, a margin of 2.15.
+  The 600 W figure is **not** a continuous or a 20 ms rating.
+- **Protects:** U2 VIN/SW1 (42 V absolute / 36 V operating), U5 OUT, D25 (30 V; VIN ≤ 27.7 V at the 1 A budget, hot)
+  and the 50 V VIN capacitors. In the rated-clamp screen, C25/C26 see at most 32.4 + 14.02 = 46.4 V.
+- **Acceptance bound:** CL-1, VIN ≤ 30.0 V including ringing at TP26. That is a test limit, not a claim that the TVS
+  breakdown is its clamp voltage.
+
+[source](https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e)
+
+**D25 BAT54SLT1G:** a forward clamp for the *slew-limited, 25 °C* negative VIN test only (≤ 0.24 V at 100 µA; ≤ 26.5 µA
+displacement current at 1 V/s). It does **not** guarantee U2's −0.3 V minimum under fast or cold hotplug.
+
+**D26 SMBJ14A** at P12_VOUT is a finite-energy local backstop for the 25 V U2 output/sense pins and the local MLCCs:
+14 V stand-off, 15.6–17.2 V breakdown, 23.2 V rated clamp at 25.9 A, 600 W 10/1000 µs. It does not protect ordinary
+16 V downstream capacitors, and it is not a coordinated fuse/crowbar.
+
+## 2. Input range, cable drop, UVLO and OVP
+
+The published range remains **13.5–16.5 V at VPD on the module**, not at the adapter. 13.5 V is the 14.25 V source
+minimum less a **0.75 V cable/connector drop at 3 A** (≤ 0.25 Ω loop). The required source is a fixed **15 V / 3 A PDO**
+of at least 45 W. U5's 3.69–4.70 A protection limit still does not enforce the PD 3 A contract. 5 V-only or lower-power
+adapters are not qualified.
 
 | Divider screen | Minimum | Nominal | Maximum |
 | --- | --- | --- | --- |
-| U5 rising | 12.263 V | 12.618 V | 12.976 V |
-| U5 falling | 11.365 V | 11.798 V | 12.193 V |
+| U5 UVLO rising (on) | 12.263 V | 12.618 V | 12.976 V |
+| U5 UVLO falling (off) | 11.365 V | 11.798 V | 12.193 V |
+| U5 OVP rising (S9.2, R24 9.1k) | 17.297 V | 18.343 V | 19.443 V |
+| U5 OVP falling (recovery) | 16.031 V | 17.151 V | 18.269 V |
 
-R2/R3 are 0.1% / 25 ppm/°C; R114 is 1% / 100 ppm/°C; the calculation includes 100 °C
-TCR span and 150 nA UVLO leakage. Loaded start margin **0.524 V**,
-unloaded start margin **1.274 V**, running margin **1.307 V**.
-The recommended **falling≥11.8 V is NOT guaranteed**: even ideal divider resistors cannot
-simultaneously satisfy rising≤13.0 V and falling≥11.8 V with U5's full comparator limits
-(divider factor≤13/1.224=10.621 versus ≥11.8/1.09=10.826). We retain the honestly disclosed
-11.365 V minimum falling threshold rather than mislabel it 11.8 V. Neither voltage margin
-nor the logic model alone guarantees startup against a current-limited source.
+R2/R3 are 0.1 % / 25 ppm/°C; R114, R24 and R28/R4 are 1 % / 100 ppm/°C. The calculation includes the 100 °C TCR span
+and the 150 nA pin leakage.
+
+- **UVLO margins:** loaded start **0.524 V**, unloaded start **1.274 V**, running **1.307 V**.
+- **OVP margins:** the OVP starts 0.80 V above the 16.5 V ceiling, and the 16.03 V recovery minimum is above the 15.75 V
+  PD source maximum.
+- **The recommended falling ≥ 11.8 V is NOT guaranteed.** Even ideal divider resistors cannot meet both rising ≤ 13.0 V
+  and falling ≥ 11.8 V with U5's full comparator limits: the divider factor would have to be ≤ 13/1.224 = 10.621 and
+  ≥ 11.8/1.09 = 10.826 at once. We report the actual 11.365 V minimum falling threshold rather than mislabel it 11.8 V.
+- Neither voltage margin nor the logic model alone guarantees startup against a current-limited source (section 6).
+- IN-1/IN-2 check the bands on the prototype at TP1/TP5.
 
 ## 3. Current limit and thermal
 
-R109=18 mΩ, 1%, 75 ppm/°C. `Ilimit = VSNS/R109`, stacking VSNS=48–52 mV, resistor
-initial tolerance and 100 °C TCR span: **2.621–2.940 A**
-(nominal 2.778 A). The retained 2.4 A prototype rating has **0.221 A**
-minimum current-limit headroom; it no longer claims the previous 75% rule for +12 V.
-The separate 33 W combined ceiling is unchanged (both per-rail maxima together would be 38.6 W).
+R109 is the **18 mΩ TA-I RLM12FTCMR018**: 1 %, 75 ppm/°C, 1 W with 300 mm² of copper; LCSC C393095 (Extended), with
+alternates C50314717, C49164939 and C845266. It sits on the 4-terminal Kelvin split land.
+
+The limit is `Ilimit = VSNS/R109`. Stacking VSNS = 48–52 mV, the resistor's initial tolerance, a 100 °C TCR span and
+the 0.2 % Kelvin residual gives **2.615–2.946 A** (nominal 2.778 A). The retained 2.4 A prototype rating keeps
+**0.215 A** minimum current-limit headroom. The separate 33 W combined ceiling is unchanged; both per-rail maxima
+together would be 38.6 W.
 
 | Load | IC loss screen | Tj at 50 °C ambient, 43.4 °C/W | R109 loss |
 | --- | --- | --- | --- |
-| 2.40A | 1.017 W | 94.1 °C | 0.106 W |
-| 2.94A | 1.341 W | 108.2 °C | 0.158 W |
+| 2.40 A | 1.017 W | 94.1 °C | 0.106 W |
+| 2.95 A | 1.345 W | 108.4 °C | 0.159 W |
 
-This closes the old 125.8 °C / <130 °C false pass: the regression limit is **125 °C**.
-These are loss-model estimates with assumed switching times, not measured thermal guarantees.
-966 kHz and L1 6.8 µH remain; R109's slow output-current loop is **not** a switch-current
-limit and does not qualify transient stress. D10 may dissipate 2.25 W at 3 A and needs
-its own routed-board thermal measurement. R109's supplier C-code is unknown: BOM keeps
-the manufacturer identity and explicitly leaves procurement/PCBA approval open.
+**The thermal basis is conditional (S9.2 item 6).** The 43.4 °C/W figure is TI's JEDEC 2s2p board, while this board is
+unrouted with 0 zones. The result holds only if the routed board meets the copper/via contract
+(`placement.json` → `routing_contract.thermal`, [routing-notes 3.8](s8-single/routing-notes.md#38-thermal-copper-and-vias-the-board-behind-the-thermal-screens)):
+
+- solid In1 PGND;
+- ≥ 10 PGND vias at U2;
+- the VIN/VOUT pours with their inner and bottom areas;
+- B.Cu GND ≥ 600 mm².
+
+Tj ≤ 125 °C needs an effective RθJA ≤ **55.8 °C/W** at the CC limit (73.7 °C/W at 2.4 A). The published rating is
+therefore labelled conditional on that contract and on TH-1…TH-3, and the 125 °C regression limit stays. These are
+loss-model estimates with assumed switching times, not measured thermal guarantees.
+
+966 kHz and L1 6.8 µH remain. R109's slow output-current loop is **not** a switch-current limit and does not qualify
+transient stress. D10 may dissipate 2.25 W at 3 A and needs an effective RθJA ≤ 33.3 °C/W: ≥ 400 mm² per terminal on
+F.Cu plus B.Cu areas (TH-2). U4's exposed pad sits on −12V copper (TH-3).
 
 ## 4. AGND/PGND routing contract
 
-U2 pads **5 (DITH) and 17 (AGND)**, R9.2, R110.2, C83.2 and C82.2 are **AGND_U2**.
-U2.9 and power capacitors are **GND (PGND)**. The **only bridge is R113, populated 0 Ω,
-at the ground terminal of VCC capacitor C82**. `placement.json.ground_connection` specifies
-this point and a ≤3 mm straight-line link; `check_s8_board.py` enforces the net identities
-and proximity. Future routing must keep the quiet island separate and place 3–4 GND vias
-at the C82 power return, with no second plane/via bridge. No routing has been performed.
-This follows the manufacturer's single-point ground guidance. [source](https://www.ti.com/lit/ds/symlink/tps552892-q1.pdf)
+These nets are fixed in the netlist:
+
+- **AGND_U2:** U2 pads **5 (DITH) and 17 (AGND)**, R9.2, R110.2, C83.2, **R113.1 and TP28**.
+- **PGND:** **C82.2**, together with U2.9 and the power capacitors. This is the S9.2 fix; in S9.1, C82.2 sat on
+  AGND_U2.
+- **The only bridge is R113, populated 0 Ω.** Its pin 2 lands on the C82.2 PGND terminal (1.95 mm apart, ≤ 3 mm) and
+  pin 1 feeds the island.
+
+Routing rules:
+
+- Place 3–4 PGND vias at C82.2.
+- The island is trace-only: F.Cu, plus at most one via pair and one B.Cu AGND_U2 trace where the U2 power fan-out
+  separates U2.17 from U2.5/R110.
+- No AGND pour, no second bridge.
+
+The router cannot re-break the star unnoticed: a copper bridge is a native DRC short, and a second 0 Ω or net tie
+would break exact parity. `check_s8_board.py` checks the net identities and the C82.2/R113 proximity, and GS-1/GS-2
+measure the star on the prototype at TP28/TP29. The full rule list is in routing-notes 3.3. This follows the
+manufacturer's single-point ground guidance. [source](https://www.ti.com/lit/ds/symlink/tps552892-q1.pdf)
 
 ## 5. Compensation and restricted rack envelope
 
-R111=**6.8k**, C83=**100nF**. `s91_analysis.loop` evaluates complex gain instead of using
-an above-zero crossover shortcut outside its domain:
+R111 = **6.8k**, C83 = **100 nF**. `s91_analysis.loop` evaluates the complex gain instead of using an above-zero
+crossover shortcut outside its domain:
 
 ```text
 Ypre = s*Cpre
@@ -143,22 +295,25 @@ Comp = GEA * (1.2/Vout) * (R111 + 1/(s*C83))
 Loop = Plant*Comp / (1+s/(2*pi*fSW/10)) * exp(-s/fSW)
 ```
 
-The output bank is split 75% before / 25% after R109; cable/rack capacitance is a separate
-branch. Zero capacitor ESR gives no optimistic ESR phase lead. R/C tolerance, ±30% GEA
-sensitivity, a one-period delay and an inner-loop pole are explicit assumptions, **not
-manufacturer-guaranteed small-signal bounds**. TI boost/buck expressions are the basis.
-[source](https://www.ti.com/lit/ds/symlink/tps552892-q1.pdf)
+The output bank is split 75 % before and 25 % after R109; the cable/rack capacitance is a separate branch. Zero
+capacitor ESR gives no optimistic ESR phase lead. R/C tolerance, ±30 % GEA sensitivity, a one-period delay and an
+inner-loop pole are explicit assumptions, **not manufacturer-guaranteed small-signal bounds**. The basis is TI's boost
+and buck expressions. [source](https://www.ti.com/lit/ds/symlink/tps552892-q1.pdf)
 
-- **13,824 sampled corners**, minimum phase margin **59.73°**, minimum gain margin
-  **12.37 dB**, crossover **387–13566 Hz**, COMP zero **234 Hz**;
-  **0 screen violations**. The old 9.1k/10nF network fails the same regression envelope.
-- Published positive-rail external capacitance is restricted to **0–440 µF**, onboard effective
-  C **37.6–96.8 µF**, cable loop R **0.08–0.25 Ω**, L **0–0.5 µH**, passive resistive
-  small-signal loads **0.05–2.4 A**. VIN corners include **10.37 V sag, 12.5, 16.5 and 21 V**.
-- This sampled model does not prove all intervening corners or arbitrary active-rack negative
-  impedance/no-load FPWM stability. Those configurations are **not advertised as qualified**.
-  Release requires measured **PM>45°, GM>10 dB**, no sustained oscillation, and actual rack-impedance
-  characterization. The old ~0.9 mF startup charge allowance is not a positive-rail stability allowance.
+- **13,824 sampled corners**: minimum phase margin **59.73°**, minimum gain margin **12.37 dB**, crossover
+  **387–13566 Hz**, COMP zero **234 Hz**, **0 screen violations**. The old 9.1k/10 nF network fails the same
+  regression envelope.
+- The published envelope for the positive rail:
+  - external capacitance **0–440 µF**;
+  - onboard effective C **37.6–96.8 µF**;
+  - cable loop R **0.08–0.25 Ω**, L **0–0.5 µH**;
+  - passive resistive small-signal loads **0.05–2.4 A**;
+  - VIN corners **10.37 V sag, 12.5, 16.5 and 21 V**.
+- This sampled model does not prove every intervening corner, nor stability with arbitrary active-rack negative
+  impedance or no-load FPWM. Those configurations are **not advertised as qualified**.
+- Acceptance test LS-1 requires measured **PM > 45°, GM > 10 dB** and no sustained oscillation with the real rack.
+  Without an FRA, a load-step ring ratio ≤ 0.25 screens for the same. A failure is a BOM change (R111/C83), not a
+  respin. The old ~0.9 mF startup charge allowance is not a positive-rail stability allowance.
 
 ## 6. One-shot arming and startup qualification
 
@@ -172,73 +327,84 @@ FAULT    = U12B: CLK=ARMED AND BAD_FILTERED; PRE_N=OV_N; CLR_N=RESET_N
 RUN      = RESET_N AND NOT_FAULT
 ```
 
-The one-shot remains **0.31–0.88 s from the first qualified enable per powered epoch**, not
-a restartable mask. Faults after ARMED latch until RESET; OV_N presets FAULT even before ARMED.
-**STARTED and FAULT are volatile:** complete V3V3/POR collapse clears them. No nonvolatile
-lockout was added and automatic power-cycling is not allowed to erase a failed qualification.
+The one-shot remains **0.31–0.88 s from the first qualified enable in each powered epoch**; it is not a restartable mask.
+Faults after ARMED latch until RESET, and OV_N presets FAULT even before ARMED. **STARTED and FAULT are volatile:** a
+complete V3V3/POR collapse clears them. No nonvolatile lockout was added, and automatic power-cycling is not allowed to
+erase a failed qualification.
 
-At worst simultaneous unconstrained charging demand the source screen is **4.25 A**;
-positive charging alone can demand **3.055 A**. Thus moving R109 does not by itself
-solve 3 A source startup. At 33 W, the energy-only lower-bound charge time is **116.5 ms**,
-not a guaranteed completion time. The tests exercise a source-limited energy plant and full-reset
-logic epochs; they do not reproduce every PD adapter's internal control loop.
+S9.2 derives the 3 A plant from the netlist: UVLO/OVP dividers, CC limit, banks and enables.
+
+- **Demand:** with the published 33 W load and 0.44 mF per rail, a 14.25 V source behind 0.25 Ω must deliver
+  **4.649 A for 2.5 ms** (fastest soft start, R109 CC maximum). U5's limit caps the plant at 4.7 A.
+- **A strictly 3.00 A-limited source cannot do that.** U5 drops out 14 times and FAULT latches at ARMED. That is the
+  fail-safe outcome (RUN low, input off, RESET needed), not a single-attempt start.
+- **Without the rack capacitance and the load,** the module starts on 3 A.
+- **Real PD adapters** with brief overload headroom are expected to start it. S1 decides per source, and the result
+  restricts the qualified source list.
+- The tests exercise this source-limited plant and full-reset logic epochs. They do not reproduce every PD adapter's
+  internal control loop.
 
 | Case | Qualification condition | Pass criteria |
 | --- | --- | --- |
-| S1 | Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts | Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record |
+| S1 | Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts | Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record. A strict-3 A FAIL is recorded as the expected fail-safe (FAULT latched, input off) and restricts the qualified source list, it is not hidden |
 | S2 | Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V | A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts |
 | S3 | Persistent rail short, uninterrupted source, then manual RESET and separate full power removal/reapplication | Each power epoch with input held must fault within 0.90 s+2 ms of first enable, hold RUN low until explicit reset, and fault again with short present |
 | S4 | Ten automatic input hard resets every 200 ms while short remains, V3V3 collapsed in each off interval | Qualification result must be FAIL_REPEATED_POWER_RESET, never a pass from a final successful cycle; fixture latches power OFF on the second autonomous reset |
 
-All proposals above are **not bench-performed**. The fixture must count autonomous resets across
-power epochs and stop on the second; a final good-looking cycle must not replace failed evidence.
-The persistent-short timeline latches in both epochs after deliberate power removal/reapplication;
-regressions reject a masked fault and ten autonomous resets followed by a nominal cycle.
+These are post-prototype acceptance tests (routing-notes S1–S4, with TP1, TP26, TP19, TP10, TP9, TP5 and TP7). The
+fixture must count autonomous resets across power epochs and stop on the second; a final good-looking cycle must not
+replace failed evidence. The persistent-short timeline latches in both epochs after a deliberate power removal and
+reapplication. Regressions reject a masked fault, and ten autonomous resets followed by a nominal cycle.
 
-## Accepted architectural residuals — not acceptance of the self-enable defect
+## Accepted architectural residuals: not acceptance of the self-enable defect
 
-There is still **no series reverse blocker or rail disconnect**. The self-enable defect is fixed;
-continued claims of unrestricted live-bus survival would be false. Enabled forced PWM can still
-sink external power if a powered unit is paralleled with a higher bus. The −0.9 A LMR38020 figure
-is typical, not a worst-case bound. No finite-energy TVS can absorb an unlimited live bus.
+There is still **no series reverse blocker or rail disconnect**. The self-enable defect is fixed, but continued claims of
+unrestricted live-bus survival would be false. Enabled forced PWM can still sink external power if a powered unit is
+paralleled with a higher bus. The −0.9 A LMR38020 figure is typical, not a worst-case bound. No finite-energy TVS can
+absorb an unlimited live bus.
 
-Disabled +12 V injection still charges **2.98–7.68 mJ** into
-its capacitors and feeds approximately **0.389 mA** divider/leakage load.
-A fast −12.6 V step would produce an unclamped VIN displacement of **[-1.23, -5.43] V**;
-D24/internal diode forward conduction can still allow approximately −1.4 V. D25 is not a
-high-current/cold absolute-minimum guarantee. **Unrestricted hard hotplug remains unqualified.**
-T1 intentionally qualifies a specified slow-ramp condition, rather than an acceptance test
-that is expected to fail. Power down the bus before normal connection; never parallel running supplies.
+The existing `modules/usb-power` works in the rack and can be plugged into a live bus without damage. That is empirical
+evidence that the backfeed scenario is not occurring in practice. The S9.1 mitigations are kept exactly as they are,
+and **no further backfeed complexity is added** (owner decision). T1 below measures the residual on the prototype.
+
+The residual itself:
+
+- Disabled +12 V injection still charges **2.98–7.68 mJ** into its capacitors and feeds a divider/leakage load of about
+  **0.389 mA**.
+- A fast −12.6 V step would produce an unclamped VIN displacement of **[-1.23, -5.43] V**; D24/internal diode forward
+  conduction can still allow about −1.4 V.
+- D25 is not a high-current or cold absolute-minimum guarantee. **Unrestricted hard hotplug remains unqualified.**
+
+T1 deliberately qualifies a specified slow-ramp condition rather than defining an acceptance test that is expected to
+fail. Power down the bus before normal connection, and never parallel running supplies.
 
 ### T1: bounded bus-injection/clamp qualification
 
 - T1-A: no USB input, +/-12.0 and +/-12.6V external bus, 1A source limit, 0.44mF each rail; ramp <=1V/s at 25C, hold 10s; log EN_N relative to -12V, U4 SW, VIN and bus currents
 - T1-B: same with USB present and FAULT latched/RUN low; verify off-state once MAIN_OK deglitch expires and capture the preceding <=20ms interval
 - T1-C: only negative rail applied with same bounded slew; repeat rail order
-- T1-D: inject a positive 1A, <=20ms pulse into VIN (compliance 28V, automatic disconnect), 25/50C, >=200s between pulses. This separately tests D24 energy/clamp; never assume the now-disabled U4 will generate this pulse
+- T1-D (= CL-1): inject a positive 1A, <=20ms pulse into VIN at TP26 (compliance 33V, automatic disconnect), 25/50C, >=200s between pulses. This separately tests D24 energy/clamp; never assume the now-disabled U4 will generate this pulse
 
 **Pass criteria:**
 
 - T1-A/C: EN_N minus -12V <=0.11V settled (<=0.5V transient), zero U4 switching; VIN -0.3..1V after 100ms settled; each bus current <10mA after 100ms
-- T1-B: same EN/switching/current criteria after 20ms; VIN may retain own-input charge, must remain -0.3..28V, not climb from bus power
-- T1-D: VIN <=28V incl ringing, measured integral(V*I*dt)<=0.52J, clamp current ends by 20ms, no leakage increase >10uA after cooling; normal restart and regulation after RESET
-- All: automatic overvoltage disconnect at VIN 28V, negative excursion abort at -0.3V (fast comparator, not human reaction). An abort is a FAIL, not a pass.
+- T1-B: same EN/switching/current criteria after 20ms; VIN may retain own-input charge, must remain -0.3..30V, not climb from bus power
+- T1-D: VIN <=30V incl ringing at TP26, measured integral(V*I*dt)<=0.648J, clamp current ends by 20ms, no leakage increase >10uA after cooling; normal restart and regulation after RESET
+- All: automatic overvoltage disconnect at VIN 33V, negative excursion abort at -0.3V (fast comparator, not human reaction). An abort is a FAIL, not a pass.
 
 **Excluded:** Hard hotplug, temperatures below25C for D25 forward-drop guarantee, >1A or >20ms sustained injection, and powered parallel supplies require new protection/qualification.
 
 ### T2: rail overvoltage, source removal and stored energy
 
-U20 trips at **+14.48–15.27 V / −13.27–14.02 V** and opens U5 through the FAULT latch.
-It cannot disconnect an external source attached to a rail or instantly discharge a capacitor.
-There is **no fuse/crowbar or rail eFuse**; that architecture decision remains **deferred/open**.
-D26 is a transient backstop, not continuous shunt protection.
+U20 trips at **+14.48–15.27 V / −13.27–14.02 V** and opens U5 through the FAULT latch. It cannot disconnect an external
+source attached to a rail, nor instantly discharge a capacitor. There is **no fuse/crowbar or rail eFuse**; that
+architecture decision remains **deferred/open**. D26 is a transient backstop, not continuous shunt protection.
 
-VIN bank energy screen is **5.919 mJ**. Without D26/loads, the energy-only
-rail estimates are **+23.42 V / −23.59 V**;
-with a typical 440 µF rack **+15.98 V / −14.8 V**.
-These are **not guaranteed transient peaks**; U2's 24.5 V OVP is not modelled as an ideal clamp.
-A failed-short power stage can still expose the bus to the input, and sub-threshold guard faults
-can persist indefinitely. Ordinary 16 V downstream capacitors are not thereby qualified.
+The VIN bank energy screen is **5.919 mJ**. Without D26 or loads, the energy-only rail estimates are
+**+23.42 V / −23.59 V**; with a typical 440 µF rack they are **+15.98 V / −14.8 V**. These are **not guaranteed
+transient peaks**: U2's 24.5 V OVP is not modelled as an ideal clamp. A failed-short power stage can still expose the
+bus to the input, and sub-threshold guard faults can persist indefinitely. Ordinary 16 V downstream capacitors are not
+thereby qualified.
 
 - T2-A: input16.5V; 0.44mF +0.5A/rail; externally ramp +12V from12 to16.5V at<=1V/ms, <=1A, total injection<=10ms (including ramp), hold<=1ms at16.5V; fixture removes injection automatically after trigger; scope>=100MS/s
 - T2-B: R8 open at13.5/16.5V input, 3A source; no external C/no load, then0.44mF+0.5A; capture500ms with independent voltage/current abort
@@ -251,77 +417,78 @@ can persist indefinitely. Ordinary 16 V downstream capacitors are not thereby qu
 - With >=0.5V rail overdrive beyond each measured trip, OV_N low/FAULT set/RUN low <=20us; MAIN LED off. Keep FAULT latched10s after injection removed, reset explicitly only after fault repair
 - Externally driven rail remains externally driven until fixture removal: NEVER require it off while injection remains. After removal connect1k/1W discharge load; both rails below1V within2s at <=0.44mF external C
 - T2-B/C: observed positive rail peak<=24.0V and negative magnitude<=24.0V for the500ms capture; positive duration above16V<=100ms with specified1k discharge; D26 pulse energy<=0.10J; normal regulation after repair/RESET
-- T2-D OV_N stays high. T2-E band points may trip or not; above-band points MUST trip. Automatic abort at+24V / -24V / VIN28V, source removed in<=2us; any abort fails qualification, no human-only protection
+- T2-D OV_N stays high. T2-E band points may trip or not; above-band points MUST trip. Automatic abort at+24V / -24V / VIN33V, source removed in<=2us; any abort fails qualification, no human-only protection
 
 **Downstream qualification:** Without a separate rail protector, downstream modules must tolerate16.5V/10s and sub-threshold +15.3V/-14.1V continuously, and up to24V magnitude/100ms or their measured actual exposure if worse. Ordinary16V caps are NOT thereby qualified; incompatible modules excluded until crowbar/eFuse decision.
 
-No claim is made that a rail turns off while an external source still drives it. The 15.2 V/
-−13.9 V points lie inside the tolerance bands and **may trip**; below-band points are used for
-no-trip tests, above-band points for required-trip tests. Waveforms, peaks, discharge intervals,
-energy integrals and automatic aborts are numerical acceptance criteria, not human observation.
+No claim is made that a rail turns off while an external source still drives it. The +15.2 V / −13.9 V points lie
+inside the tolerance bands and **may trip**: below-band points serve the no-trip tests and above-band points the
+required-trip tests. Waveforms, peaks, discharge intervals, energy integrals and automatic aborts are numerical
+acceptance criteria, not human observation.
 
 ## 20 V support remains possible
 
-The buck-boost topology, 50 V VIN capacitors and LMR38020 permit future retargeting. It is **no
-longer just three resistors**: R1 56k→120k, R3 10k→7.5k precision, R114 510→0 Ω, R83
-100k→120k; **D24 SMBJ16A→SMBJ22A**, and **D25 replaced by a ≥40 V negative clamp** with
-forward-drop/footprint qualification. Recheck stand-off, clamp peaks, power, loop and source
-qualification; update label/rating/docs. `calcs.json.retarget_20v` records this delta.
-No 20 V source is authorized with the present 16 V TVS populated.
+The buck-boost topology, the 50 V VIN capacitors and the LMR38020 permit a future retarget. It takes more than
+resistors (`calcs.json` → `retarget_20v` records the delta):
 
-## Placement, sourcing and reproducibility
+- **Resistors:** R1 56k → 120k, R3 10k → 7.5k precision, R114 510 → 0 Ω, R83 100k → 120k, and **R24 9.1k → 6.8k**
+  (OVP back to 22.76–25.60 V).
+- **D24 must be re-selected.** At a 22 V maximum input the S9.2 rule needs VR ≥ 25.3 V, VBR at 0 °C above the 25.6 V OVP
+  maximum, and VC < 42 V. No SMBJ meets all three (SMBJ26A has VC 42.1 V), so a lower-clamp TVS or a new coordination is
+  required.
+- **D25** must become a ≥ 40 V negative clamp, with forward-drop and footprint requalification.
+- **Then recheck** stand-off, clamp peaks, power, loop and source qualification, and update the label, rating and docs.
 
-P2.1 adds D24–D26, Q14/Q15 and R112–R114. Only retained C33/C82 are moved; R109 gets the
-manufacturer-specific Kelvin footprint. L1 and fixed interfaces remain in place. R113/C82 are
-reserved as the sole analog/power ground junction. Placement checks find no courtyard overlaps,
-unapproved edge-rule failures, hand-solder violations or nominal 3D interferences. Header pins
-11–16 remain NC; +5 V is absent. The panel remains labelled PD 15V.
+**No 20 V source is authorized** while the 20 V TVS and the 15 V OVP are populated.
 
-Sourcing is **not an order approval**: precision R2/R3 and guard resistors, and the 18 mΩ shunt,
-are explicit exceptions to the Basic-passive target. R109 has no verified C-code. New-code
-classification, Economic eligibility and price remain unknown after failed live catalog access;
-`sourcing.json` is explicitly a **partial dated subtotal**, not a complete quotation.
+## Placement and sourcing (P2.2)
 
-Use existing generators (no hand-editing generated schematics/PCB):
+P2.2 keeps every P2.1 position except:
 
-```sh
-python3 -B modules/usb-power-45w/tools/build_s8.py --output-root <candidate-module-root>
-# Synchronize from the current unrouted board with place_s8.sync_candidate; inspect/promote candidate.
-python3 -B opt/kicad-tools/kicad_tools.py check --config modules/usb-power-45w/tools/kicad-project-single.json --reports <new-check-directory>
-python3 -B modules/usb-power-45w/tools/verify_s8.py --netlist <new-check-directory>/netlist.xml > modules/usb-power-45w/docs/s8-single/validation.json
-python3 -B modules/usb-power-45w/tools/s8_calcs.py --out modules/usb-power-45w/docs/s8-single
-python3 -B modules/usb-power-45w/tools/check_s8_board.py --out modules/usb-power-45w/docs/s8-single/board-p1.json
-python3 -B modules/usb-power-45w/tools/build_s8_panel.py
-python3 -B modules/usb-power-45w/tools/mechanics_s8.py
-python3 -B modules/usb-power-45w/tools/s8_mechanical.py
-python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
-# Stage new files before producing the tracked-files-only review record.
-python3 -B modules/usb-power-45w/tools/review_s8.py --check <new-check-directory> --tests-log <tests-log> --out modules/usb-power-45w/docs/s8-single/review-s91.json
-```
+- R109 gets the Kelvin split land (an explicit footprint replacement);
+- R113 turns so its PGND pad lands on C82.2;
+- D26 moves right into free space, so the R109 force/sense pad pairs take its old spot;
+- R115 sits at Q14;
+- the ten 1.5 mm acceptance pads sit at the nodes they measure.
 
-BOM/PDF use native `kicad-cli sch export`; board image uses `render_s8.py`. Raw reports/logs
-remain in ignored `research/s91/`; no `*.kicad_prl` or research log enters the review hashes.
-Clean-clone testing needs the repository's KiCad/pcbnew, ngspice, numpy and plotting dependencies;
-mechanical regeneration additionally needs FreeCAD/OpenSCAD. No test needs an ignored local report.
+L1 and the fixed interfaces stay put. The placement checks find no courtyard overlaps, unapproved edge-rule failures,
+hand-solder violations or nominal 3D interferences. Header pins 11–16 remain NC and +5 V is absent. The panel label
+reads **PD 15V 3A** (silk only, no geometry change).
 
-## S9.1 verification and remaining gates
+Sourcing is complete for JLCPCB assembly at the dated live audit (S9.2 verification above), but it is **not an order
+approval**. Two kinds of exception to the Basic-passive target are explicit:
 
-Native **ERC 0**, **DRC 0 geometric violations / 380 unrouted connections / 0 parity findings**;
-exact ref/pin/net parity; **164 components / 78 functional nets**, 41 explicit NC pins.
-The full test counts and clean-clone evidence are in `review-s91.json`. Logic timing checks have
-**0 timeline violations**. Geometry/logic checks do not make the board route- or manufacture-ready.
+- the precision R2/R3 and guard resistors;
+- the 18 mΩ shunt, for which no Basic part exists.
 
-Remaining gates: routing/routed loops; bench loop and thermal measurements; real 3 A source/load
-qualification; replug/POR nuisance race; hard-hotplug/cold clamp and sustained reverse-power
-protection; downstream OV qualification; R109 procurement and PCBA eligibility; connector/current
-and case fit; CAM/assembly approval; crowbar-vs-eFuse decision. No fabrication export or order.
+Extended setup fees, PCB, assembly and shipping are not included in the partial subtotal.
+
+## S9.1 changes and S9.0 review disposition (history)
+
+> The S9.1 record. Superseded in S9.2: D24 SMBJ16A in row 1 (now SMBJ20A with R24 9.1k), the WSLP1206 2-pad "Kelvin"
+> footprint in row 3 (now RLM12 on a true 4-terminal land), and the C82.2-on-AGND star side in row 4 (now PGND).
+> Independent review conversations: Astra `c092ee9e-4fd7-448d-9b10-b87ff022ad27`, DeepSeek
+> `2c480974-701a-4e6d-8f7d-f6f1416815d2`. S9.0/P2.0 is preserved in git `41992e8` / `d7d7219`.
+
+| Item | S9.1 implementation | Verification / limits |
+| --- | --- | --- |
+| 1: self-enabling U4 / backfeed | Q1 emitter moved from +12 V to own VPD upstream of D10; Q14/Q15 series sink requires RUN and MAIN_LED_OK, R112 pulls Q1 off; D24 VIN TVS, D25 low-current negative clamp, D26 local +12 V transient backstop | Native pin checks, truth table and negative-control tests; finite-energy qualification below; no unrestricted hotplug or parallel-supply claim |
+| 2: input minimum | R2/R3 precision 100k/10k plus R114 510 Ω | Loaded start guaranteed below 13.0 V under stated resistor/threshold screen; actual falling range disclosed |
+| 3: current-limit thermal | R109 18 mΩ WSLP1206R0180FEA, 1 W, manufacturer-specific Kelvin footprint | ≤125 °C test replaces the old <130 °C assertion; sourcing C-code still open |
+| 4: ground split | AGND_U2 distinct from GND/PGND; sole R113 0 Ω bridge at C82.2 | Native and board checks plus `placement.json.ground_connection` |
+| 5: compensation | R111 6.8k / C83 100nF; exact complex loop calculation rather than above-zero shortcut | 13,824 sampled corners; bounded passive-load/cable/rack-capacitance envelope; real Bode gate remains |
+| 6: startup qualification | 3 A limited source and full V3V3/POR collapse/re-arming cases; persistent faults and repeated autonomous resets retained across qualification epochs | Logic timelines plus current/energy screen and explicit bench matrix, not a guaranteed PD-source dynamic model |
+| 7: preserved architecture | +5 V absent, 15 V PDO, TPS552892-Q1, S8.5 one-shot, no crowbar/eFuse; 20 V upgrade documented | No routing, no fabrication export/upload |
+
+S9.1 also corrected: P5 header silk → NC, the precision/current-shunt sourcing exceptions, the mechanical revision, the
+spare-comparator descriptions and the old results placeholder. No rail fuse/crowbar was added.
 
 ---
 
-# History: S8.5 / P1.5 and earlier (superseded by S9.1)
+# History: S8.5 / P1.5 and earlier (superseded by S9.2)
 
 > Kept as the record of the S8.5 design (+5 V series disconnect, 20 V input, TPS62933F +12 V buck). Where
-> anything below conflicts with S9.1 above, **S9.1 wins**. The S8.5 review record is `review-s85.json`
+> anything below conflicts with S9.2 above, **S9.2 wins**. The S8.5 review record is `review-s85.json`
 > in git `5a3a686`.
 
 ## S8.5 changelog (2026-11-02, from the three S8.4 reviews)

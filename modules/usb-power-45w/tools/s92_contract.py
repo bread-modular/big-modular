@@ -6,7 +6,12 @@ proximity) and lists the copper/via items that can only be checked after routing
 The thermal items put a board behind the screens in calcs.json: the U2 Tj screen uses TI's JEDEC 2s2p RthetaJA, the
 R109 rating TA-I's 300 mm2 copper condition and the D10 screen an effective RthetaJA target. The published rating is
 conditional on these items being met by the routed board and on the post-prototype thermal tests (TH-1..TH-3).
+notes_index() reads the human half back (its test-pad table and the IDs of its uncertainty register) so that the tests
+and tools/review_s8.py can check that every pad and every acceptance-test ID used here is documented there.
 """
+import re
+
+NOTES = 'docs/s8-single/routing-notes.md'
 
 # Acceptance test pads. near = (ref, pad) the pad must sit next to, max = straight-line pad-centre limit (mm) checked on
 # the unrouted board; pair = the 2.54 mm partner (probe tip + ground spring or differential pair).
@@ -73,9 +78,12 @@ GROUND = {
     'members_AGND_U2': ['U2.5', 'U2.17', 'R9.2', 'R110.2', 'C83.2', 'R113.1', 'TP28.1'],
     'pgnd_at_star': ['C82.2', 'R113.2'], 'maximum_link_to_C82_pad_mm': 3.0,
     'rule': ('C82.2 is PGND. R113 pin 2 (PGND) lands on the C82.2 pad copper with 3-4 PGND vias to In1 at C82.2 (TI SLVSGT7 '
-             '8.4.1 items 6/7). AGND_U2 is an F.Cu trace island (U2.17/.5, R9.2, R110.2, C83.2, TP28) fed ONLY from R113 pin 1. '
-             'No AGND pour on In1/In2/B.Cu, no via from AGND_U2 to any GND layer, no second 0 ohm, no net tie. In1 stays solid '
-             'PGND under the island. The checker fails any AGND_U2 copper touching GND other than through R113.'),
+             '8.4.1 items 6/7). AGND_U2 is a trace-only island (U2.17/.5, R9.2, R110.2, C83.2, TP28) fed ONLY from R113 pin 1: '
+             'F.Cu traces, plus at most one AGND_U2 via pair and one B.Cu AGND_U2 trace (<= 0.25 mm, over solid In1, not under '
+             'L1 or the SW nodes) where the U2 power fan-out separates the north members (U2.17, R113.1, C83.2, R9.2, TP28) from '
+             'the south-east members (U2.5, R110.2). No AGND pour on any layer, no AGND_U2 via or copper touching In1/In2/B.Cu '
+             'GND, no second 0 ohm, no net tie. In1 stays solid PGND under the island. The checker fails any AGND_U2 copper '
+             'touching GND other than through R113.'),
 }
 
 KELVIN = {
@@ -83,8 +91,9 @@ KELVIN = {
     'pads': {'1': 'force P12_VOUT (converter bank)', '2': 'sense P12_ISP -> U2 ISP pin 12 only',
              '3': 'sense P12_ISN -> U2 ISN pin 13 only', '4': 'force +12V (rail)'},
     'rule': ('Sense traces leave pads 2/3 on their +y edge within 0.6 mm of the inner (element) end, run as a 0.2 mm '
-             'coupled pair (<= 0.3 mm gap) on F.Cu to U2 pins 12/13, never touch force copper, P12_VOUT or +12V pours, and '
-             'carry no current. Force current enters/leaves only through pads 1/4. Sense pads stay free of pour (keep-out 0.3 mm).'),
+             'coupled pair (<= 0.3 mm gap; only the last <= 2 mm at U2 follow the pin escape) on F.Cu to U2 pins 12/13, never '
+             'touch force copper, P12_VOUT or +12V pours, and carry no current. TP22/TP23 branch from the pair after it leaves '
+             'the pads. Force current enters/leaves only through pads 1/4. Sense pads stay free of pour (keep-out 0.3 mm).'),
     'residual_error': '0.2 % sense-point residual allowed in the CC-limit band (calcs plus12_buckboost)',
 }
 
@@ -93,12 +102,15 @@ THERMAL = {
         'model': 'TI SLVSGT7 6.4 RthetaJA 43.4 C/W (JEDEC 2s2p); EVM 27.5 C/W (4-layer 2/1/1/2 oz 91 x 66 mm)',
         'requirements': {
             'In1': 'solid PGND plane (0.5 oz), no slot or cut within 15 mm of the U2 centre (via antipads only)',
-            'PGND_vias': '>= 10 vias 0.3/0.6 mm at the two ends of the U2 PGND land (5 per end), centres <= 1.5 mm outside '
-                         'the package outline, to In1 and to the B.Cu GND pour; never in a pad',
+            'PGND_vias': '>= 10 vias 0.3/0.6 mm with centres <= 4 mm outside the package outline on the PGND copper of the '
+                         'U2 cell: at both PGND land ends where the fan-out leaves room (the bars are on a 0.5 mm pitch: '
+                         'SW1/SW2 leave west, VIN/VOUT east), at C8.2 and C81.2 and on the PGND copper joining them; to In1 '
+                         'and to the B.Cu GND pour; never in a pad',
             'VIN_area': 'F.Cu VIN pour >= 120 mm2 joining U2 pin 7, C8, C6, C7, C77, C78 and D24 K; >= 6 vias to an In2 VIN '
                         'area >= 300 mm2',
-            'VOUT_area': 'F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80, R109 pad 1, D26 K and '
-                         'TP20; >= 6 vias to a B.Cu P12_VOUT area >= 200 mm2',
+            'VOUT_area': 'F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80 and R109 pad 1; >= 6 vias '
+                         'to a B.Cu P12_VOUT area >= 200 mm2. D26 K and TP20 (no DC current) join it with >= 1.0 mm copper '
+                         'or >= 2 vias from the B.Cu area, never through +12V copper',
             'B_Cu_GND': 'B.Cu GND pour >= 600 mm2 under the U2 / L1 / bank region, stitched to In1 with >= 20 vias'},
         'acceptance': 'TH-1'},
     'R109': {
@@ -140,4 +152,34 @@ def contract():
                 {'from': f'{a}.{b}', 'to_any': [f'{r}.{p}' for r, p in to], 'limit_mm': lim, 'why': why}
                 for (a, b), to, lim, why in PROXIMITY],
             'ground': GROUND, 'kelvin': KELVIN, 'thermal': THERMAL, 'min_widths_mm': NETCLASS_WIDTHS_MM,
-            'doc': 'docs/s8-single/routing-notes.md'}
+            'doc': NOTES}
+
+
+# Acceptance-test IDs as written in this contract, tools/review_s8.py and the notes (S1..S4 share one register row).
+TEST_ID = re.compile(r'\b(?:CL|TH|LS|IN|EMI|GS|KS|CC|EN|POR|HDR)-\d\b|\bT[12]\b|\bS[1-4]\b')
+
+
+def referenced_ids(*texts):
+    """Acceptance-test IDs used in free text (S1..S4 map to the shared 'S1-S4' row)."""
+    return {'S1-S4' if i[0] == 'S' else i for t in texts for i in TEST_ID.findall(t)}
+
+
+def notes_index(text):
+    """routing-notes.md read back: {'pads': {TP: net}, 'duplicate_pads': [...], 'ids': {...}} from its test-pad table
+    rows ('| TPn | `net` |') and the bold first cells of its register rows ('| **ID** ...')."""
+    pads, dup = {}, []
+    for ref, net in re.findall(r'^\| (TP\d+) \| `([^`]+)`', text, re.M):
+        if ref in pads:
+            dup.append(ref)
+        pads[ref] = net
+    ids = set()
+    for line in re.findall(r'^\| \*\*.*$', text, re.M):
+        first = line.split(' | ')[0]
+        ids |= {i.replace('\u2013', '-') for i in re.findall(r'\*\*([^*]+)\*\*', first)}
+    return {'pads': pads, 'duplicate_pads': dup, 'ids': ids}
+
+
+def contract_ids():
+    """Every acceptance-test ID this contract refers to."""
+    return referenced_ids(*(t['measure'] + ' ' + t['limit'] for t in TEST_POINTS),
+                          *(v['acceptance'] for v in THERMAL.values()))

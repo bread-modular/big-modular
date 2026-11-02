@@ -15,7 +15,8 @@ recorded with bench-test conditions, the 20 V retarget delta, and a review recor
 (routing-ready): D24 SMBJ20A coordinated with the 15 V U5 OVP (R24 9.1k), C82.2 on PGND with R113 the only AGND_U2 bridge,
 R109 on a 4-terminal Kelvin land with its own sense nets, the R115 N_EN_RETURN default, the U4 enable truth table and the
 3 A source plant DERIVED from the native netlist (negative controls break single nets and must fail), the thermal rating
-conditional on the routing contract, and the routing-contract screen of the 1.5 mm acceptance pads.
+conditional on the routing contract, the routing-contract screen of the 1.5 mm acceptance pads, and routing-notes.md
+read back against the netlist, the contract and the review record (mutated copies must fail).
 
   python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_s8.py' -v
 """
@@ -458,8 +459,10 @@ class ReviewRecord(unittest.TestCase):
         for rel in ('tools/s90_parts.py', 'hardware/USBPOWER45.pretty/TI_RYQ0021B_VQFN-HR-21_3x5mm.kicad_mod',
                     'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb', 'tools/s92_parts.py', 'tools/s92_netlist.py',
                     'tools/s92_contract.py', 'hardware/USBPOWER45.pretty/R_Shunt_1206_KelvinSplit_RLM12.kicad_mod',
-                    'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod'):
+                    'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod', 'docs/s8-single/routing-notes.md',
+                    'docs/s8-single-board.md'):
             self.assertIn(rel, hashed, rel)
+        self.assertEqual(rec['routing_notes']['test_pad_rows'], 27)
         self.assertEqual(rec['accepted_residuals']['reverse_current']['decision'][:8], 'ACCEPTED')
         self.assertEqual(rec['accepted_residuals']['rail_overvoltage']['decision'][:8], 'ACCEPTED')
         for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256'):
@@ -936,6 +939,33 @@ class S91ReviewFixes(unittest.TestCase):
         self.assertEqual(p['revision'],'S9.2 / P2.2')
 
 
+ROUTING_READY = 'Routing-ready. The items in `routing-notes.md` are post-prototype acceptance tests, not design blockers.'
+
+
+def routing_notes_problems(notes, doc):
+    """What docs/s8-single/routing-notes.md (notes) and docs/s8-single-board.md (doc) get wrong against the design: every
+    test pad with its netlist net exactly once, a register row for every acceptance-test ID the contract and the review
+    record use, every PENDING copper item named, the key contract rules, and the routing-ready statement. Empty = OK."""
+    import review_s8
+    import s92_contract
+    idx = s92_contract.notes_index(notes)
+    want = {p['ref']: p['pins']['1'] for p in circuit_s8.circuit() if p['ref'].startswith('TP')}
+    out = [f'pad {r}: notes {idx["pads"].get(r)} != netlist {n}' for r, n in sorted(want.items()) if idx['pads'].get(r) != n]
+    out += [f'extra pad row {r}' for r in sorted(set(idx['pads']) - set(want))]
+    out += [f'duplicate pad row {r}' for r in idx['duplicate_pads']]
+    used = s92_contract.contract_ids() | s92_contract.referenced_ids(*review_s8.OPEN_GATES)
+    out += [f'undefined acceptance-test ID {i}' for i in sorted(used - idx['ids'])]
+    screen = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
+    out += [f'PENDING item {x} not listed' for x in screen['pending_after_routing'] if f'`{x}`' not in notes]
+    out += [f'rule missing: {x}' for x in ('C82.2 is PGND', 'R_Shunt_1206_KelvinSplit_RLM12', 'TestPoint_Pad_D1.5mm',
+                                           'at most one AGND_U2 via pair') if x not in notes]
+    if ROUTING_READY not in doc:
+        out.append('routing-ready statement missing from s8-single-board.md')
+    if '(s8-single/routing-notes.md)' not in doc:
+        out.append('s8-single-board.md does not link the routing notes')
+    return out
+
+
 class S92RoutingReady(unittest.TestCase):
     """S9.2 / P2.2 items 1-6, each checked on the exported native netlist / board / records, with negative controls that
     break one net or value in a copy of the netlist and must make the check fail."""
@@ -1183,6 +1213,24 @@ class S92RoutingReady(unittest.TestCase):
                              for r in row['Refs'].split(',') if r[0] in 'RC')
         self.assertEqual(set(nonbasic_rc), policy)
         self.assertEqual(set(s['alternates']), {'D24', 'D26', 'R109'})
+
+    # ---- routing notes (human half of the contract) -------------------------------------------------------------------
+    def test_routing_notes_cover_contract(self):
+        """routing-notes.md is consistent with the netlist, the contract and the review record; mutated copies (a pad row
+        dropped or on the wrong net, a register row dropped, the routing-ready statement removed) must fail."""
+        notes = (DESIGN / 'docs/s8-single/routing-notes.md').read_text()
+        doc = (MODULE / 'docs/s8-single-board.md').read_text()
+        self.assertEqual(routing_notes_problems(notes, doc), [])
+        lines = notes.splitlines()
+        tp26 = next(x for x in lines if x.startswith('| TP26 |'))
+        cl1 = next(x for x in lines if x.startswith('| **CL-1**'))
+        for why, n, d in (('TP26 row dropped', notes.replace(tp26 + '\n', ''), doc),
+                          ('TP28 on the wrong net', notes.replace('| TP28 | `AGND_U2`', '| TP28 | `GND`'), doc),
+                          ('CL-1 register row dropped', notes.replace(cl1 + '\n', ''), doc),
+                          ('PENDING item dropped', notes.replace('`kelvin.sense_routing`', ''), doc),
+                          ('statement removed', notes, doc.replace(ROUTING_READY, ''))):
+            with self.subTest(why):
+                self.assertTrue(routing_notes_problems(n, d), why)
 
 
 if __name__ == '__main__':

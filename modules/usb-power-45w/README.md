@@ -7,28 +7,29 @@
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | **Main project = the routed BASE board** (`usb-power-45w.kicad_{pcb,sch,dru}`: USB/PD, main eFuse, negative protection, latch/RESET, LEDs, J2 output) |
 | [`hardware/usb-power-45w-top.kicad_pro`](hardware/usb-power-45w-top.kicad_pro) | The routed TOP board (`usb-power-45w-top.kicad_{pcb,sch}`: the three converters, +12/+5 eFuses, cans) |
 | [`hardware/usb-power-45w-system.kicad_pro`](hardware/usb-power-45w-system.kicad_pro) | Whole-circuit S7 schematic (`usb-power-45w-system.kicad_sch` + pages `01`..`07`, 216 refs / 145 nets); schematic only, no PCB |
-| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S9.0 single board, ±12 V only**: +5 V subsystem removed; **15 V USB PD input** (13.5–16.5 V; needs a 15 V / 3 A, ≥ 45 W source); **+12 V = TPS552892-Q1 four-switch buck-boost** (the S8 TPS62933F buck cannot regulate at 15 V: 0.995–1.053 duty vs 98 %); −12 V LMR38020 unchanged; S8.5 one-shot arming kept, `ANY_BAD` without `P5_OK`; U20 guards +12 V / −12 V; **no reverse blocking and no rail fuse/crowbar (accepted residuals, bench-test conditions in the review)**. 156 refs / 74 nets; P2.0 fit placement, all on F, 50 mm deep, **unrouted**. Published prototype rating **+12 V 2.4 A / −12 V 0.8 A, ≤ 33 W together**. [Review package](docs/s8-single-board.md) |
+| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S9.2 / P2.2 single board, ±12 V only, routing-ready (unrouted)**: **15 V / 3 A USB PD input** (13.5–16.5 V at the module; needs a 15 V / 3 A, ≥ 45 W source); **+12 V = TPS552892-Q1 four-switch buck-boost** with an 18 mΩ Kelvin-sensed constant-current limit (2.615–2.946 A); −12 V LMR38020 enabled only from its own VPD AND RUN AND MAIN_LED_OK; **D24 SMBJ20A coordinated with the U5 OVP** (R24 9.1k, 17.30–19.44 V); AGND_U2 joins PGND only through R113 at C82.2; S8.5 one-shot arming; U20 guards +12 V / −12 V; **no reverse blocking and no rail fuse/crowbar (accepted residuals)**. 175 refs / 80 nets; ERC 0, DRC 0 / 392 routing opens, exact parity; P2.2 placement, all on F, 50 mm deep, 0 tracks/vias/zones. Published prototype rating **+12 V 2.4 A / −12 V 0.8 A, ≤ 33 W together**, conditional on the routing contract and the post-prototype acceptance tests. [Review package](docs/s8-single-board.md), [routing notes](docs/s8-single/routing-notes.md) |
 
-> **S9.0 development review** (major revision of the single board; changelog and accepted residuals in
-> [docs/s8-single-board.md](docs/s8-single-board.md)): the **+5 V subsystem is removed** (U3, U23 and every
-> +5 V-only part; J2/J3 pins 11/12 open), the input moves to **15 V USB PD** (R1 56k, U5 UVLO R3 10k:
-> on 12.46–13.98 V, off 11.55–13.13 V; `V20_OK` R83 100k: 7.67–9.27 V), and the +12 V stage becomes a
-> **TPS552892-Q1 four-switch buck-boost** (966 kHz, L1 6.8 µH, R109 15 mΩ constant-current limit
-> 3.14–3.53 A) because the TPS62933F buck would need 0.995–1.053 duty at the 12.5 V low-line converter
-> input (1.033 even unloaded) against its 98 % maximum; the buck-boost regulates from the 10.55 V U5 sag
-> to 21 V. The S8.5 one-shot arming (`STARTED`, `ARMED`) is kept; `ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND
-> N12_OK)`; the timelines pass at the 15 V source corners. **Owner decisions:** no reverse-current
-> blocking and no voltage-triggered rail fuse/crowbar — both are **accepted residuals** with bench-test
-> conditions and a downstream-qualification requirement; **never plug an unpowered or latched-off
-> module into a live bus** (a live bus can enable and power the −12 V converter and pump VIN; a
-> non-blocking mitigation is an open decision). Crowbar vs eFuse stays deferred/open. Published
-> prototype rating **+12 V 2.4 A, −12 V 0.8 A, ≤ 33 W together** (3 A contract at 13.5 V); moving back
-> to 20 V is a three-resistor change (R1, R3, R83). Panel label PD 15V.
+> **S9.2 / P2.2: routing-ready** (changelog, verification and the list of acceptance tests in
+> [docs/s8-single-board.md](docs/s8-single-board.md)). Routing-ready. The items in
+> [`routing-notes.md`](docs/s8-single/routing-notes.md) are post-prototype acceptance tests, not design blockers:
+> the test-point table, the uncertainty register and the routing constraint list the router must honour. S9.2 changes:
 >
-> Native ERC 0, exact ref/pin/net parity; DRC **0 violations, 365 routing opens** (unrouted); placement,
-> local-loop and nominal 3D screens pass; the module suite passes from a clean clone
-> ([review-s90.json](docs/s8-single/review-s90.json)). Routing, the buck-boost loop with the real rack,
-> thermal and every bench gate remain open. The original S7/R3 designs below are unchanged.
+> - **D24 and OVP:** D24 SMBJ16A → **SMBJ20A** with the U5 OVP divider R24 6.8k → **9.1k**. The OVP trips at
+>   17.30–19.44 V, before D24 conducts.
+> - **PGND star:** C82.2 sits on **PGND**, and R113 is the sole AGND_U2 bridge.
+> - **Kelvin shunt:** R109 is a TA-I RLM12 18 mΩ on a **true 4-terminal Kelvin land** (P12_ISP/P12_ISN).
+> - **Tests:** the U4 enable truth table and the 3 A source timelines are **derived from the native netlist**, with
+>   negative controls.
+> - **Default:** **R115 100k** defines `N_EN_RETURN`.
+> - **Thermal:** the rating is **conditional on the copper/via routing contract**.
+> - **Test pads:** ten 1.5 mm acceptance pads were added.
+>
+> S9.1 (own-input U4 enable, VIN clamps, precision UVLO, AGND_U2) and S9.0 (+5 V removed, 15 V PD, TPS552892-Q1) are
+> unchanged otherwise; their records are in git history.
+>
+> Native ERC 0 and exact ref/pin/net parity (175 refs / 80 nets). DRC: **0 violations, 392 routing opens** (unrouted).
+> The placement, local-loop, routing-contract and nominal 3D screens pass, and the module suite passes from a clean
+> clone ([review-s92.json](docs/s8-single/review-s92.json)). The original S7/R3 designs below are unchanged.
 
 Each board project has its own matching flat schematic (its share of S7 + the board-to-board
 headers XB*/XT*); `tools/check_stack.py` proves base + top joined through the headers equals the

@@ -30,6 +30,10 @@
     {
       "item": "Routing",
       "change": "Ten 1.5 mm acceptance pads (TP20, TP22-TP30), docs/s8-single/routing-notes.md (test-point table, uncertainty register, routing constraints), netclasses in the project, D26 moved, R113 turned."
+    },
+    {
+      "item": "Routing notes",
+      "change": "docs/s8-single/routing-notes.md written: 27 test pads with location, pad, keep-out, measurement and limit; 19 uncertainty-register rows with assumption, risk, pad, procedure, pass limit and respin/BOM disposition; routing constraint list. Contract made routable (place_s8.py --refresh-contract, board unchanged): one AGND_U2 via pair + B.Cu trace allowed (F.Cu cannot join U2.17 and U2.5 across the power fan-out), U2 PGND vias within 4 mm, D26/TP20 branch, sense escape."
     }
   ],
   "native_findings": {
@@ -67,7 +71,7 @@
     "equal": true
   },
   "native_sources_unchanged_by_check": true,
-  "raw_reports": "research/s92/check-final",
+  "raw_reports": "research/s92/check-docs",
   "raw_reports_committed": false,
   "counts": {
     "components": 175,
@@ -85,11 +89,11 @@
     "equal": true
   },
   "tests": {
-    "ran": 72,
+    "ran": 73,
     "ok": true,
     "skipped": 1,
-    "s8_tests": 63,
-    "log": "research/s92/tests-final.log",
+    "s8_tests": 64,
+    "log": "research/s92/tests-docs.log",
     "log_committed": false,
     "note": "local evidence; the tests log lives in git-ignored research/ and is not hashed"
   },
@@ -532,6 +536,33 @@
     ],
     "removed_refs": [],
     "courtyard_fill": 0.623
+  },
+  "routing_notes": {
+    "doc": "docs/s8-single/routing-notes.md",
+    "test_pad_rows": 27,
+    "register_ids": [
+      "CC-1",
+      "CL-1",
+      "CL-2",
+      "EMI-1",
+      "EN-1",
+      "GS-1",
+      "GS-2",
+      "HDR-1",
+      "IN-1",
+      "IN-2",
+      "IN-3",
+      "KS-1",
+      "LS-1",
+      "POR-1",
+      "S1-S4",
+      "T1",
+      "T2",
+      "TH-1",
+      "TH-2",
+      "TH-3"
+    ],
+    "status": "routing-ready; the register items are post-prototype acceptance tests, not design blockers"
   },
   "mechanical": {
     "overlaps": 0,
@@ -1048,9 +1079,9 @@
       },
       "contract": {
         "In1": "solid PGND plane (0.5 oz), no slot or cut within 15 mm of the U2 centre (via antipads only)",
-        "PGND_vias": ">= 10 vias 0.3/0.6 mm at the two ends of the U2 PGND land (5 per end), centres <= 1.5 mm outside the package outline, to In1 and to the B.Cu GND pour; never in a pad",
+        "PGND_vias": ">= 10 vias 0.3/0.6 mm with centres <= 4 mm outside the package outline on the PGND copper of the U2 cell: at both PGND land ends where the fan-out leaves room (the bars are on a 0.5 mm pitch: SW1/SW2 leave west, VIN/VOUT east), at C8.2 and C81.2 and on the PGND copper joining them; to In1 and to the B.Cu GND pour; never in a pad",
         "VIN_area": "F.Cu VIN pour >= 120 mm2 joining U2 pin 7, C8, C6, C7, C77, C78 and D24 K; >= 6 vias to an In2 VIN area >= 300 mm2",
-        "VOUT_area": "F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80, R109 pad 1, D26 K and TP20; >= 6 vias to a B.Cu P12_VOUT area >= 200 mm2",
+        "VOUT_area": "F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80 and R109 pad 1; >= 6 vias to a B.Cu P12_VOUT area >= 200 mm2. D26 K and TP20 (no DC current) join it with >= 1.0 mm copper or >= 2 vias from the B.Cu area, never through +12V copper",
         "B_Cu_GND": "B.Cu GND pour >= 600 mm2 under the U2 / L1 / bank region, stitched to In1 with >= 20 vias"
       }
     },
@@ -2749,18 +2780,18 @@
     "tools/circuit_s8.py": "3b701c221312fff62225a655afa4791fc0f1568f0b33dbf4718c20e93708891b",
     "tools/hierarchy_s8.py": "891fa60cfce575582821765052b3439fde3a86f44b3c0f7e62019779c224004d",
     "tools/mechanics_s8.py": "537365343276105fd76da632d860692ed394a596f4e1e6dd504f7505a9098876",
-    "tools/place_s8.py": "e0e0aa64b2ee0d64345510cffc5ead9bf4201bb7617f3ae3ecc1ffc5c0d9e097",
+    "tools/place_s8.py": "2f748e5d49a9ddbfce3fce925a736c3bf4a2e09d1a1d1d734c1c69dda5c8b367",
     "tools/render_s8.py": "fe1cded6993b608e989c7a5969175d90951f45888f4da88deca4cbed421abd43",
-    "tools/review_s8.py": "4a93c78463d8388c5e3c5dddba114a67efd495b428df348cc1c29375b29f6747",
+    "tools/review_s8.py": "c245bd3bdcced811bbbf77d5aba9e872083ac6bed0057be57d8fcb038aa81c68",
     "tools/s8_calcs.py": "cac5fc79583f9195fbda24c700717952c477e8e12278aa843de824de28782d90",
     "tools/s8_mechanical.py": "d3ea88c592dc361b8ea466c588faecfc1eb8bd610fcc7565dcc07a86f7b64f28",
     "tools/s8_sourcing.py": "693c5130ddd74270e1312a0dfb489fcec7f6a89b7407b612d098b00388210aa9",
     "tools/s90_parts.py": "b065d14aebb3d9e6c202422a69817ee70359af0fa2a938d25afa15c96d8e7889",
     "tools/s91_analysis.py": "6dc81f682b956779540edf7ae40c9ce94adacd9ae4b5ec6e7e2ca9241938c8a0",
-    "tools/s92_contract.py": "efd7ee883330a648e03aa9f68315fe2725f699d29f56b013786ab6b625fb8ff1",
+    "tools/s92_contract.py": "38f571178aeb2068288a8d79934ded6851640ef0475e4a2f1692f585dc2be388",
     "tools/s92_netlist.py": "86df59b598505f02378566ac70c204d990d2ec6d668b90f1aef44bf914973bb2",
     "tools/s92_parts.py": "175cdc5e13ac385fd4f5fe5479aaf9cd67bb2c4defcc2fab849cb6ff15fbfd9d",
-    "tools/test_s8.py": "fb47f7692c32e303aa1fa4d4249dc2f0fb28d1e1349d02222d2ec5506a9422b4",
+    "tools/test_s8.py": "c24a7a690a02887679b503d7a3b8d776b5b917bae7a8b564a907120be1bb0887",
     "tools/verify_s8.py": "5972596bbdf62afe569ca767ba706e077aa01e2a4719ace7d0f9da275e6b49bb",
     "hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
     "hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
@@ -2800,11 +2831,12 @@
     "docs/s8-single/board-p1.json": "0208755bd2480f9137f10b706fc50ee53ca456fbf3ec74317a2d40eeec5c1b02",
     "docs/s8-single/bom.csv": "61205049fd3263e38f5e4a371d1cf1158447c72bc6be3afc71bb54b7ad55284f",
     "docs/s8-single/build.json": "0eb33097140be5fa6f2ea1c717d955d3813ef54341c0ee068b8558869d8ff856",
-    "docs/s8-single/calcs.json": "117817ac8e765fef9704b9c1b51934b635022a37ecf07b533d7f2f4b4b4dd1ae",
+    "docs/s8-single/calcs.json": "e798dd033862de0424c1aa10ac9ce759d970a8d79fda271716715665dc912d68",
     "docs/s8-single/hierarchy-parity.json": "8e0c389e9d13d3e84ed47719f7786124967fa2d2003dfbe6974ba80a016dcb32",
     "docs/s8-single/img/board-p1.png": "3d49a2e01c2faac8e75d8b897d12e742fa8810af8ba7838673dcf2c3153d41b0",
     "docs/s8-single/mechanical.json": "eb83001da4c1860aa4313b90ee845dd8b6a4d2a874513e22840f7fa59835fc8b",
-    "docs/s8-single/placement.json": "e0251283fe03cdd1a66f85f2b3f2adef57720bea428d4c0e22a3f795a1fb9608",
+    "docs/s8-single/placement.json": "f36498e45b2171cfbfd5c9eea1a506fa18d2b1493c2dcc01c7a0711ed2ec93f9",
+    "docs/s8-single/routing-notes.md": "27048ae4d62354db9953c3f7c61a125f5e23659845a5eaa4efa0918023fedc23",
     "docs/s8-single/s83-sourcing.json": "28aa62b9599643b16aa43485d0db1a893d41df3abbaf4c1c77dec9e5d4b1a76c",
     "docs/s8-single/s84-sourcing.json": "2cba18099500dd4858f1d5adc9c8956a137fa6ac6b1b889aadcdf653c0b7d853",
     "docs/s8-single/s90-sourcing.json": "930fee411e1b8eaaab48c82898ae295d7078833df65f04bfb287f5340a25d43f",
@@ -2814,7 +2846,7 @@
     "docs/s8-single/sourcing.json": "f7de9a39eef906b641051bf99037dc9693c37197a86cc016f0416beb2ba8a0a4",
     "docs/s8-single/validation.json": "ac1a64a1dd90d3e0bf0e6c351a31d1acc3b0f430b616eef6c79da9f7387c2404",
     "docs/usb-power-45w-single-schematic.pdf": "18199394cec139f919bb701302000b7941d84a460e4baf879425b4c1053a2687",
-    "docs/s8-single-board.md": "f6d45071ae2eede3166a49b81d521b834fe6df029dc57f3feb04ea30e344a479"
+    "docs/s8-single-board.md": "9e2f892bd0784157a03989b6622b8284cbebd843340796c94df45d5f80f1d7dd"
   },
   "open_gates": [
     "Routing itself (P2.2 is routing-ready and unrouted; the contract items are checked after routing)",
@@ -2823,7 +2855,7 @@
     "LS-1 loop gain with the real rack (PM > 45 deg, GM > 10 dB), CL-1/T1 clamp energy, T2 rail overvoltage",
     "IN-1/IN-2 UVLO/OVP spread at temperature, EMI-1 switching-node ringing, GS-1/GS-2 ground star, KS-1/CC-1 Kelvin",
     "Backfeed in the field (T1) beyond the bounded injection budget; downstream OV qualification; crowbar vs eFuse deferred",
-    "Replug/POR nuisance race (calcs replug_por) remains a documented acceptance item"
+    "POR-1 replug/POR nuisance race (calcs replug_por), IN-3 USB-C attach transient, HDR-1 header contact current"
   ],
   "order_ready": false
 }

@@ -1721,9 +1721,9 @@
       },
       "contract": {
         "In1": "solid PGND plane (0.5 oz), no slot or cut within 15 mm of the U2 centre (via antipads only)",
-        "PGND_vias": ">= 10 vias 0.3/0.6 mm at the two ends of the U2 PGND land (5 per end), centres <= 1.5 mm outside the package outline, to In1 and to the B.Cu GND pour; never in a pad",
+        "PGND_vias": ">= 10 vias 0.3/0.6 mm with centres <= 4 mm outside the package outline on the PGND copper of the U2 cell: at both PGND land ends where the fan-out leaves room (the bars are on a 0.5 mm pitch: SW1/SW2 leave west, VIN/VOUT east), at C8.2 and C81.2 and on the PGND copper joining them; to In1 and to the B.Cu GND pour; never in a pad",
         "VIN_area": "F.Cu VIN pour >= 120 mm2 joining U2 pin 7, C8, C6, C7, C77, C78 and D24 K; >= 6 vias to an In2 VIN area >= 300 mm2",
-        "VOUT_area": "F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80, R109 pad 1, D26 K and TP20; >= 6 vias to a B.Cu P12_VOUT area >= 200 mm2",
+        "VOUT_area": "F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80 and R109 pad 1; >= 6 vias to a B.Cu P12_VOUT area >= 200 mm2. D26 K and TP20 (no DC current) join it with >= 1.0 mm copper or >= 2 vias from the B.Cu area, never through +12V copper",
         "B_Cu_GND": "B.Cu GND pour >= 600 mm2 under the U2 / L1 / bank region, stitched to In1 with >= 20 vias"
       }
     },

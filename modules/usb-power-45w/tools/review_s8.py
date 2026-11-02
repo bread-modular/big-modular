@@ -10,7 +10,9 @@ Read-only apart from --out. S9.0 replaces the S8.5 record (review-s85.json, kept
 git TRACKS are hashed (S8.5 item C: no git-ignored *.kicad_prl, nothing under research/; S9.0: membership is checked with
 `git ls-files`, so stage new sources before writing the record); the check directory and the tests log are local evidence
 (git-ignored research/), recorded by path and summary, never hashed. S9.0 also hashes the pinned TPS552892-Q1 part file
-(tools/s90_parts.py), every footprint the single board uses and the single-board panel.
+(tools/s90_parts.py), every footprint the single board uses and the single-board panel. S9.2 also records the routing
+notes (docs/s8-single/routing-notes.md, hashed with the other artifacts): their test-pad table must list exactly the
+board's test pads and their uncertainty register must define every acceptance-test ID the contract and OPEN_GATES use.
 """
 import argparse
 import csv
@@ -18,9 +20,12 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 MODULE = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(MODULE / 'tools'))
+import s92_contract  # noqa: E402
 REVISION = 'S9.2 / P2.2'
 TRACKED_KICAD = ('.kicad_sch', '.kicad_pcb', '.kicad_pro', '.kicad_dru', '.kicad_sym')   # *.kicad_prl is git-ignored
 S7_R3 = sorted(str(p.relative_to(MODULE)) for p in (MODULE / 'hardware').glob('*.kicad_*') if p.suffix in TRACKED_KICAD)
@@ -50,6 +55,11 @@ CHANGELOG = [
                         'labelled conditional on them and on TH-1..TH-3; allowed U2 RthetaJA 55.8 C/W at the CC limit.'),
     ('Routing', 'Ten 1.5 mm acceptance pads (TP20, TP22-TP30), docs/s8-single/routing-notes.md (test-point table, '
                 'uncertainty register, routing constraints), netclasses in the project, D26 moved, R113 turned.'),
+    ('Routing notes', 'docs/s8-single/routing-notes.md written: 27 test pads with location, pad, keep-out, measurement '
+                      'and limit; 19 uncertainty-register rows with assumption, risk, pad, procedure, pass limit and '
+                      'respin/BOM disposition; routing constraint list. Contract made routable (place_s8.py '
+                      '--refresh-contract, board unchanged): one AGND_U2 via pair + B.Cu trace allowed (F.Cu cannot join '
+                      'U2.17 and U2.5 across the power fan-out), U2 PGND vias within 4 mm, D26/TP20 branch, sense escape.'),
 ]
 OPEN_GATES = [   # S9.2: post-prototype acceptance tests (routing-notes.md), not design blockers
     'Routing itself (P2.2 is routing-ready and unrouted; the contract items are checked after routing)',
@@ -58,7 +68,7 @@ OPEN_GATES = [   # S9.2: post-prototype acceptance tests (routing-notes.md), not
     'LS-1 loop gain with the real rack (PM > 45 deg, GM > 10 dB), CL-1/T1 clamp energy, T2 rail overvoltage',
     'IN-1/IN-2 UVLO/OVP spread at temperature, EMI-1 switching-node ringing, GS-1/GS-2 ground star, KS-1/CC-1 Kelvin',
     'Backfeed in the field (T1) beyond the bounded injection budget; downstream OV qualification; crowbar vs eFuse deferred',
-    'Replug/POR nuisance race (calcs replug_por) remains a documented acceptance item',
+    'POR-1 replug/POR nuisance race (calcs replug_por), IN-3 USB-C attach transient, HDR-1 header contact current',
 ]
 
 
@@ -129,6 +139,11 @@ def main():
     assert t['ok'] and summary['ref_pin_net_parity']['equal'], (t, 'tests and exact parity must pass')
     artifacts = sorted(str(p.relative_to(MODULE)) for p in docs.rglob('*') if p.is_file() and p.name != a.out.name)
     artifacts.append('docs/usb-power-45w-single-schematic.pdf')
+    notes = s92_contract.notes_index((MODULE / s92_contract.NOTES).read_text())
+    assert s92_contract.NOTES in artifacts, 'the record must hash the routing notes'
+    assert set(notes['pads']) == set(test_pads) and not notes['duplicate_pads'], ('routing notes test-pad table', notes)
+    undefined = sorted((s92_contract.contract_ids() | s92_contract.referenced_ids(*OPEN_GATES)) - notes['ids'])
+    assert not undefined, ('acceptance-test IDs without a routing-notes register row', undefined)
     res = calcs['residuals']
     b = calcs['plus12_buckboost']
     rec = {
@@ -160,6 +175,10 @@ def main():
                       'moved_retained_refs': place['moved_retained_refs'],
                       'added_refs': place['added_refs'], 'removed_refs': place['removed_refs'],
                       'courtyard_fill': board['area_mm2']['fill_of_inset']},
+        'routing_notes': {'doc': s92_contract.NOTES, 'test_pad_rows': len(notes['pads']),
+                          'register_ids': sorted(notes['ids']),
+                          'status': 'routing-ready; the register items are post-prototype acceptance tests, not design '
+                                    'blockers'},
         'mechanical': {'overlaps': len(asm['solid_interference_mm3']), 'proxies': asm['proxies'],
                        'risks': {r['id']: r.get('value_mm') for r in mech['risks']}, 'nominal_only': True},
         'S92_vin_clamp': calcs['vin_clamp'],

@@ -20,9 +20,10 @@ the C82.2 PGND terminal, D26 moves right into free space so the R109 force/sense
 N_EN_RETURN) sits at Q14, and the 1.5 mm acceptance pads TP20/22-30 sit at the nodes they measure. placement.json carries
 the routing contract (tools/s92_contract.py); every other part keeps its P2.1 position.
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
---write is the older seed-based placement entry point, not a native edit-preservation tool.
+--write is the older seed-based placement entry point, not a native edit-preservation tool. --refresh-contract rewrites
+only the routing-contract keys of placement.json from tools/s92_contract.py (S9.2 routing-notes wording; board untouched).
 
-  python3 -B tools/place_s8.py [--write] [--png <file>] [--force]
+  python3 -B tools/place_s8.py [--write] [--png <file>] [--force] [--refresh-contract]
 
 "Use single side for now. [...] Don't route for now. But try to see the fit and etc. make them to the
 PCB, brackets and etc. So I can get a review from someone else."
@@ -378,14 +379,32 @@ def sync_candidate(source_board, output_root):
     return dest
 
 
+def refresh_contract():
+    """Rewrite only the contract keys of docs/s8-single/placement.json from tools/s92_contract.py (the routing-notes
+    wording). The board is not touched: it must be unrouted and equal the recorded placement, and every other record key
+    (parts, synchronization deltas) is kept as the last sync_candidate wrote it."""
+    b = pcbnew.LoadBoard(str(BOARD))
+    assert not list(b.GetTracks()) and not list(b.Zones()), 'refuse routed/zone-bearing board'
+    rec = json.loads(RECORD.read_text())
+    assert snapshot(b) == rec['parts'], 'native placement changed since recorded baseline'
+    rec['ground_connection'] = GROUND_CONNECTION
+    rec['routing_contract'] = s92_contract.contract()
+    RECORD.write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
+    return RECORD
+
+
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--write', action='store_true')
     ap.add_argument('--force', action='store_true')
     ap.add_argument('--png', type=Path)
+    ap.add_argument('--refresh-contract', action='store_true',
+                    help='rewrite only the routing contract keys of docs/s8-single/placement.json (no board change)')
     a = ap.parse_args()
     if a.write:
         print(write(a.force))
+    if a.refresh_contract:
+        print(refresh_contract())
     if a.png:
         import render_s8
         with tempfile.TemporaryDirectory() as tmp:
