@@ -21,7 +21,15 @@ arming logic built from the native gate wiring (arming_timelines) replays cold s
 slow PD contract, brown-out after/inside the window, input overload chatter, hot plug into a live bus, load release,
 U20 guard before ARMED and a short RESET against four required behaviours (bounded arming, no restart, no early
 arming, fail-safe after arming). The S8.4 wiring (TIMER_GO = RUN AND MAIN_OK) fails them (test_s8 regression).
-Static checks, settled logic and logic timing, not a peak-voltage guarantee: <6 V at the header is NOT established.
+S9.0 step 1: the +5V subsystem is gone - no +5V/P5_* net, none of the S9_REMOVED / S8_PLUS5_DROPPED refs, J2/J3 pins
+11/12 open, U14 gate 1 input 4 tied high (ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK)), the freed U18/U20 comparators
+spares with defined inputs and open outputs, OV_N driven only by the +12V and -12V guard channels, U5 nets MAIN_*.
+S9.0 step 2: 15 V input (R1 56k, R3 10k, R83 100k) and the TPS552892-Q1 +12V buck-boost: pin roles against TI's SLVSGT7
+table (kept in tools/s90_parts.py, independent of the symbol), the four-switch cell wiring (L1 SW1-SW2, BOOT capacitors,
+MODE/EXTVCC/VCC with C82, R110 FSW, R109 between VOUT/ISP and +12V/ISN, FB from +12V, COMP R111/C83, PG/CC/CDC open), the
+rail memberships (no series element on +/-12V other than R109 at the converter: the owner decision of no reverse
+blocking, no ideal-diode/FET part anywhere) and the arming timelines at the 15 V source corners.
+Static checks, settled logic and logic timing, not a peak-voltage guarantee.
 """
 import argparse
 import itertools
@@ -34,10 +42,10 @@ import circuit_s8
 from build_schematic import FP
 from sexp import parse, nodes, one
 from verify_design import TPS3808_DBV, load_xml
+from s90_parts import FP_S90, TPS552892_TI
 
 MODULE = Path(__file__).resolve().parents[1]
-from s83_parts import FP_S83
-FP_S8 = {**FP, **FP_S83}
+FP_S8 = {**FP, **FP_S90}                  # S9.0: + the pinned TPS552892-Q1 land pattern (tools/s90_parts.py)
 # TI LM2901 SOIC-14 (SLCS006Z Table 5-1): output pin -> (inverting, non-inverting) input pins of the same
 # comparator, VCC 3, GND 12. Kept apart from the symbol and the circuit table (channel names vary by vendor).
 LM2901_SO14 = {'outputs': {'2': ('4', '5'), '1': ('6', '7'), '14': ('8', '9'), '13': ('10', '11')}, 'VCC': '3', 'GND': '12'}
@@ -57,23 +65,36 @@ V20_MARGIN_MIN_V = 2.0
 # Divider resistors: 0.1 % + 25 ppm/C x 100 C. Converter load release, capacitor-study model, N = 16 cycles, low-C
 # corner: +12V 1.033 V, -12V 0.484 V; S8.3 +5V full-load upstream-only screen rounded up to 0.261 V.
 VREF_OV = (1.224 - 0.0036, 1.24, 1.259)
-# Independent TI SLVSFC9C Table 5-1 RPW pin table, not derived from our symbol.
-TPS259470_TI = {'1': 'EN/UVLO', '2': 'OVLO', '3': 'AUXOFF', '4': '~{FLT}', '5': 'IN',
-                '6': 'OUT', '7': 'DVDT', '8': 'GND', '9': 'ILM', '10': 'ITIMER'}
 VIO_B, IB_B = 0.0055, 50e-9
 R01_LO, R01_HI = 0.999 * 0.9975, 1.001 * 1.0025
-RELEASE_N16_V = {'+12V': 1.033, '+5V': 0.261, '-12V': 0.484}
-# S8.4 (M2): release from U23's highest current limit (3.367 A) into the upstream bank only, same model, rounded up.
-RELEASE_ILIM_MAX_V = 0.363
-# TI SLVSFC9C ILIM table (1.65k: 1.800/2.200 A, 750R: 3.960/4.840 A) against 3334/RILM: -10.9 % / +8.9 %.
-ILIM_TABLE = (0.8908, 1.0888)
-DOWNSTREAM_MAX_V = {'+12V': 16.0, '+5V': 6.0, '-12V': 16.0}    # 16 V module caps / 6.0 V 5 V-logic absolute maxima
+RELEASE_N16_V = {'+12V': 1.172, '-12V': 0.484}      # S9.0: +12V = TPS552892-Q1 cell, 2.4 A, 869.6 kHz (calcs rail_release)
+DOWNSTREAM_MAX_V = {'+12V': 16.0, '-12V': 16.0}    # 16 V module capacitors
+VPD_RUN_MIN_V = 11.5               # lowest VPD with the converters running (S9.0 U5 turn-off band minimum, 11.55 V)
+VPD_UNLOADED_MIN_V, VPD_LOADED_MIN_V = 14.25, 13.5     # S9.0: 15 V PD source -5 %; less the 0.75 V cable allowance
+VIN_BANK = ('C6', 'C7', 'C24', 'C77', 'C78')     # 10u VIN ceramics: TPS552892 x 4 + LMR38020 C24 (S9.0 step 2)
+VREF_TPS552892 = (1.188, 1.2, 1.212)             # SLVSGT7 6.5 (independent of s8_calcs)
+OVP_TPS552892_MAX = 24.5                         # SLVSGT7 VOVP maximum, absolute
+# S9.0 owner decision: no reverse-current blocking. Any ideal-diode controller / series FET on the rails is a regression.
+REVERSE_BLOCKING_MPN_PREFIXES = ('LM7470', 'LM5050', 'LM5051', 'LTC4357', 'LTC4359', 'LTC4352', 'MAX4020', 'TPS2121',
+                                 'TPS2116', 'AO4354', 'AO4406', 'AO4410', 'IRF7832', 'SI4410', 'AON7410', 'AON6354')
+RAILS_S90 = {   # exact rail memberships (S9.0 step 2): a series element on a rail changes them
+    '+12V': {('C34', '1'), ('C59', '1'), ('D2', '1'), ('J2', '9'), ('J2', '10'), ('J3', '9'), ('J3', '10'), ('Q1', '2'),
+             ('R109', '2'), ('R75', '1'), ('R8', '2'), ('R93', '1'), ('U2', '13')},
+    '-12V': {('C25', '2'), ('C26', '2'), ('C27', '2'), ('C29', '1'), ('C30', '1'), ('C31', '1'), ('C32', '1'), ('C33', '1'),
+             ('C36', '2'), ('C61', '2'), ('D4', '2'), ('J2', '1'), ('J2', '2'), ('J3', '1'), ('J3', '2'), ('R13', '1'),
+             ('R15', '2'), ('R18', '2'), ('R82', '2'), ('R99', '2'), ('U4', '1'), ('U4', '9')},
+    'P12_VOUT': {('C11', '1'), ('C12', '1'), ('C13', '1'), ('C14', '1'), ('C79', '1'), ('C80', '1'), ('C81', '1'),
+                 ('R109', '1'), ('U2', '11'), ('U2', '12')}}
 
 # Independently specified function pin -> net expectations of the critical parts (S8).
 CRIT = {
-    'U5': {1: 'EF_IN', 2: 'EF_IN', 3: 'EF_IN', 6: 'EF_IN', 7: 'EF_UV', 8: 'EF_OV', 9: 'GND', 10: 'EF_DVDT', 11: 'EF_ILM',
-           12: 'GND', 13: 'RUN', 14: 'EF_IMON', 15: 'MAIN_OK', 16: 'MAIN_OK', 18: 'VIN', 19: 'VIN', 20: 'VIN', 21: 'GND'},
-    'U2': {2: 'MAIN_OK', 3: 'VIN', 4: 'GND'}, 'U3': {2: 'MAIN_OK', 3: 'VIN', 4: 'GND'},
+    'U5': {1: 'MAIN_IN', 2: 'MAIN_IN', 3: 'MAIN_IN', 6: 'MAIN_IN', 7: 'MAIN_UV', 8: 'MAIN_OV', 9: 'GND', 10: 'MAIN_DVDT',
+           11: 'MAIN_ILM', 12: 'GND', 13: 'RUN', 14: 'MAIN_IMON', 15: 'MAIN_OK', 16: 'MAIN_OK', 18: 'VIN', 19: 'VIN', 20: 'VIN',
+           21: 'GND'},
+    # S9.0 step 2: TPS552892-Q1 (pin numbers per TI SLVSGT7 Table 5-1; local nets checked by membership below)
+    'U2': {1: 'MAIN_OK', 5: 'GND', 7: 'VIN', 9: 'GND', 11: 'P12_VOUT', 12: 'P12_VOUT', 13: '+12V', 17: 'GND'},
+    'R109': {1: 'P12_VOUT', 2: '+12V'}, 'R8': {2: '+12V'}, 'R9': {2: 'GND'}, 'R110': {2: 'GND'}, 'C83': {2: 'GND'},
+    'C82': {2: 'GND'}, 'C8': {1: 'VIN', 2: 'GND'}, 'C81': {1: 'P12_VOUT', 2: 'GND'},
     'U4': {3: 'VIN', 1: '-12V', 9: '-12V'},
     'U9': {1: 'V3V3', 4: 'GND', 5: 'VPD', 8: 'VPD', 9: 'GND'},
     'U10': {1: 'RESET_N', 2: 'GND', 3: 'RESET_BTN_N', 5: 'POR_SENSE', 6: 'V3V3'},
@@ -85,34 +106,33 @@ CRIT = {
     'U13': {1: 'RESET_N', 2: 'NOT_FAULT', 3: 'RUN', 4: 'ARMED', 5: 'BAD_FILTERED', 6: 'FAULT_CLK', 7: 'GND',
             8: 'TIMER_GO', 9: 'RUN', 10: 'STARTED', 11: 'MAIN_LED_OK', 12: 'MAIN_OK', 13: 'V20_OK', 14: 'V3V3'},
     'R69': {1: 'TIMER_GO', 2: 'START_SENSE'}, 'R71': {1: 'V3V3', 2: 'ARMED'}, 'TP19': {1: 'STARTED'},
-    # S8.5: gate 2 = START_N = NAND(MAIN_LED_OK, RUN) (spare in S8.4).
-    'U14': {1: 'MAIN_LED_OK', 2: 'P12_OK', 4: 'P5_OK', 5: 'N12_OK', 6: 'ANY_BAD', 7: 'GND', 8: 'START_N', 9: 'MAIN_LED_OK',
+    # S8.5: gate 2 = START_N = NAND(MAIN_LED_OK, RUN) (spare in S8.4). S9.0: gate 1 input 4 (was P5_OK) tied high.
+    'U14': {1: 'MAIN_LED_OK', 2: 'P12_OK', 4: 'V3V3', 5: 'N12_OK', 6: 'ANY_BAD', 7: 'GND', 8: 'START_N', 9: 'MAIN_LED_OK',
             10: 'RUN', 12: 'V3V3', 13: 'V3V3', 14: 'V3V3'},
-    'U18': {1: 'P12_OK', 2: 'P5_OK', 3: 'VPD', 4: 'REF_GOOD', 5: 'MON_P5', 6: 'REF_GOOD', 7: 'MON_P12', 8: 'MON_N12',
+    # S9.0: comparator out 2 (- 4 / + 5, the former +5V monitor) is a spare: - REF_GOOD, + GND, output open (NC_PINS).
+    'U18': {1: 'P12_OK', 3: 'VPD', 4: 'REF_GOOD', 5: 'GND', 6: 'REF_GOOD', 7: 'MON_P12', 8: 'MON_N12',
             9: 'REF_GOOD', 10: 'REF_GOOD', 11: 'MON_20', 12: 'GND', 13: 'V20_OK', 14: 'N12_OK'},
-    'U20': {2: 'OV_N', 4: 'MON_OV12', 5: 'REF_OV', 1: 'OV_N', 6: 'MON_OV5', 7: 'REF_OV', 14: 'OV_N', 8: 'GND',
+    # S9.0: comparator out 1 (- 6 / + 7, the former +5V guard) is a second spare like out 13 (- 10 / + 11).
+    'U20': {2: 'OV_N', 4: 'MON_OV12', 5: 'REF_OV', 6: 'REF_OV', 7: 'GND', 14: 'OV_N', 8: 'GND',
             9: 'MON_OVN', 10: 'REF_OV', 11: 'GND', 3: 'VPD', 12: 'GND'},
     'U21': {1: 'REF_OV', 2: 'REF_OV', 3: 'GND'}, 'R100': {1: 'V3V3', 2: 'REF_OV'}, 'C67': {1: 'REF_OV', 2: 'GND'},
     'D22': {1: 'GND', 2: 'MON_OVN', 3: 'MON_OVN'}, 'TP17': {1: 'REF_OV'},
     'R92': {1: 'VIN'}, 'R93': {1: '+12V', 2: 'MON_OV12'}, 'R94': {1: 'MON_OV12', 2: 'GND'},
-    'R95': {1: 'P5_RAW', 2: 'MON_OV5'}, 'R96': {1: 'MON_OV5', 2: 'GND'},
     'R98': {1: 'REF_OV', 2: 'MON_OVN'}, 'R99': {1: 'MON_OVN', 2: '-12V'},
-    'R35': {1: 'V3V3', 2: 'P12_OK'}, 'R44': {1: 'V3V3', 2: 'P5_OK'}, 'R62': {1: 'V3V3', 2: 'N12_OK'},
-    'R97': {1: 'V3V3', 2: 'OV_N'}, 'D21': {1: 'P5_RAW', 2: 'GND'},
-    'U23': {1: 'RUN', 2: 'P5_OVLO', 3: 'P5_OK', 4: 'P5_FLT_N', 5: 'P5_RAW',
-            6: '+5V', 7: 'P5_DVDT', 8: 'GND', 9: 'P5_ILM'},
-    'R108': {1: 'V3V3', 2: 'P5_FLT_N'}, 'TP21': {1: 'P5_FLT_N'},
-    'R101': {1: 'P5_OV_TOP', 2: 'P5_OVLO'}, 'R102': {1: 'P5_OVLO', 2: 'GND'},
-    'R107': {1: 'P5_RAW', 2: 'P5_OV_TOP'}, 'R103': {1: 'P5_ILM', 2: 'P5_ILM_SER'},
-    'R104': {1: 'P5_ILM_SER', 2: 'GND'}, 'C68': {1: 'P5_DVDT', 2: 'GND'},
+    'R35': {1: 'V3V3', 2: 'P12_OK'}, 'R62': {1: 'V3V3', 2: 'N12_OK'},
+    'R97': {1: 'V3V3', 2: 'OV_N'},
     'C57': {1: 'VPD', 2: 'GND'}, 'C65': {1: 'VPD', 2: 'GND'},
-    'D23': {1: '+5V', 2: 'GND'}, 'TP18': {1: 'P5_RAW'}, 'R11': {2: 'P5_RAW'},
-    'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'D10': {1: 'EF_IN', 2: 'VPD'},
+    'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'D10': {1: 'MAIN_IN', 2: 'VPD'},
     'Q2': {1: 'PD_SENSE', 2: 'VPD_U1', 3: 'PD_BASE'}, 'Q1': {2: '+12V'}, 'Q10': {1: 'RUN', 2: 'GND', 3: 'LED_RETURN'},
-    'D2': {1: '+12V', 2: 'GND'}, 'D3': {1: 'P5_RAW', 2: 'GND'}, 'D4': {1: 'GND', 2: '-12V'},
+    'D2': {1: '+12V', 2: 'GND'}, 'D4': {1: 'GND', 2: '-12V'},
 }
-HEADER = {**{n: 'GND' for n in range(3, 9)}, 1: '-12V', 2: '-12V', 9: '+12V', 10: '+12V', 11: '+5V', 12: '+5V'}
-FORBIDDEN_MPN = {'LM5067MM-2/NOPB', 'FQD13N06LTM', 'LTV-354T', 'MVK50V47M6.3*8 6.3TP', 'MVK 35V100 M 6.3*8'}
+# S9.0: pins that must be no-connects (spare comparator outputs, the former +5V header pins, CV/GATE).
+NC_PINS = {'U18': ('2',), 'U20': ('1', '13'), 'J2': ('11', '12', '13', '14', '15', '16'),
+           'J3': ('11', '12', '13', '14', '15', '16'), 'U2': ('3', '4', '16')}      # S9.0: TPS552892 PG, CC, CDC open
+HEADER = {**{n: 'GND' for n in range(3, 9)}, 1: '-12V', 2: '-12V', 9: '+12V', 10: '+12V'}
+FORBIDDEN_MPN = {'LM5067MM-2/NOPB', 'FQD13N06LTM', 'LTV-354T', 'MVK50V47M6.3*8 6.3TP', 'MVK 35V100 M 6.3*8',
+                 'TPS259470ARPWR', 'SMAJ5.0A', 'RT0603BRD0768KL', 'RT0603BRD0713KL', 'TNPW060337K0BEEA',   # S9.0: +5V-only parts
+                 'TPS62933FDRLR'}                                    # S9.0 step 2: the TPS62933F buck is gone (U2 and U3)
 
 
 def check_tps3808_s85(root, comps, pins):
@@ -137,22 +157,23 @@ def check_tps3808_s85(root, comps, pins):
 # Arming timeline simulation (S8.5, item B). The LOGIC is built from the native netlist: the HC08 / HC20 gates, both
 # HC74 flip-flops (asynchronous PRE/CLR, rising-edge clock), the U11 TPS3808 delay (sense from the R69 divider top, MR)
 # and the R72/C51 + U15 bad-status filter. The PLANT (VPD, U5 UVLO/PGOOD deglitch, converters + U23 ramp, rails, guard,
-# U23 FLT) is a scenario model with datasheet timings; it reads RUN and drives RESET_N, OV_N, MAIN_OK, V20_OK, the rail
-# status and P5_FLT_N (diagnostic only: if it ever reached a gate the load-release / live-bus scenarios would latch).
+# rail status) is a scenario model with datasheet timings; it reads RUN and drives RESET_N, OV_N, MAIN_OK, V20_OK and the
+# rail status (S9.0: P12_OK and N12_OK; no +5V status, no U23 FLT).
 # ---------------------------------------------------------------------------------------------------------------------
 PLANT = dict(dt_ms=0.1, t_por_ms=12.0,                 # TPS3808 open-CT RESET delay minimum (12/20/28 ms)
              t_u5_on_to_pgood_ms=12.0 + 11.5,          # U5 dVdt ramp (~12 ms) + tPGOODR 11.5 ms typ (TPS1663)
              t_pgood_fall_ms=10.0,                     # tPGOODF 10 ms typ: PGOOD stays high this long after the FET is off
-             t_rails_ms=120.0,                         # after MAIN_OK: TPS62933F soft start <= 19.6 ms, LMR38020 4 + 18 ms,
-                                                       # U23 dVdt ramp up to 75 ms (s8_calcs startup_window budget)
+             t_rails_ms=120.0,                         # after MAIN_OK, conservative: S9.0 budget 66.6 ms (U5 ramp, PGOOD,
+                                                       # TPS552892 tSS + rack at the R109 limit, LMR38020 4 + 18 ms)
              t_rail_decay_ms=1.0,                      # rails fall below their U18 thresholds after VIN is lost
              t_filter_ms=0.75,                         # R72/C51 10k/100n to the U15 Schmitt VT+ (0.6-0.9 ms)
-             u5_on_V=18.23, u5_off_V=17.12,            # U5 UVLO corners at their HIGH end (worst for starting/running)
+             u5_on_V=13.98, u5_off_V=13.14,            # S9.0 U5 UVLO corners at their HIGH end (worst for starting/running)
              u5_status_valid_V=4.95,                   # VPD below 4.5 V + D10 0.45 V: U5 FLT/PGOOD unspecified -> MAIN_OK
                                                        # floats high through R63 (S8.4 Opus review, major 1)
              vpd_5v_phase=4.75,                        # vSafe5V minimum: the PD 5 V phase at its lowest
-             vpd_unloaded=19.0, vpd_loaded=18.25)
+             vpd_unloaded=14.25, vpd_loaded=13.5)        # S9.0: 15 V PDO -5 %, less the 0.75 V cable allowance
 TD_CORNERS_S = (0.31, 0.88)                           # U11 100n: 0.57 s typ, 0.31-0.88 s screen
+SHEETS = 5                                            # S9.0: five pages (the +5V converter page is gone)
 
 
 class ArmingLogic:
@@ -222,7 +243,7 @@ class ArmingLogic:
             elif filt and t_good >= PLANT['t_filter_ms']:
                 filt = False
             trace.append((t, {k: s.get(self.id[k]) for k in ('RUN', 'ARMED', 'FAULT_LATCH', 'MAIN_OK', 'MAIN_LED_OK',
-                                                                'RESET_N', 'OV_N', 'P12_OK', 'P5_OK', 'N12_OK')},
+                                                                'RESET_N', 'OV_N', 'P12_OK', 'N12_OK')},
                           dict(pst)))
         return trace
 
@@ -239,7 +260,7 @@ def _plant(netids, scenario, v20_V):
         if not pst:
             pst.update(u5=False, t_u5=None, retry_off_until=-1.0, raw_on=0.0, raw_off=1e9, pg=False, enabled=False,
                        first_enable=None, t_en=None, t_dis=-1e9, rails=False)
-        vpd = ev['vpd'](t)
+        vpd = ev['vpd'](t, pst['enabled'])          # S9.0: the source sags to its loaded value only while loaded
         reset = t >= P['t_por_ms'] and not any(a <= t < b for a, b in ev.get('reset', ()))
         run = s.get(netids['RUN'], False)
         # U5: UVLO with hysteresis, SHDN = RUN, optional auto-retry overload chatter after the first enable
@@ -282,52 +303,57 @@ def _plant(netids, scenario, v20_V):
         s[netids['OV_N']] = not ov
         s[netids['MAIN_OK']] = main_ok
         s[netids['V20_OK']] = vpd > v20_V
-        for k in ('P12_OK', 'P5_OK', 'N12_OK'):
-            s[netids[k]] = rails
-        # U23 FLT (reverse-current blocking / current limit flag): diagnostic, must not reach the logic
-        s[netids['P5_FLT_N']] = not any(a <= t < b for a, b in ev.get('flt', ()))
+        for k in ('P12_OK', 'N12_OK'):      # a bus-side event on one rail only ('bus_lost': (rail, start, end))
+            lost = any(r == k and a <= t < b for r, a, b in ev.get('bus_lost', ()))
+            s[netids[k]] = rails and not lost
     return step
 
 
 def _vpd(phase_ms, sag=None, loaded_after=None):
+    """VPD(t, loaded): vSafe5V phase, ramp to the unloaded PD voltage, then the loaded minimum while the converters
+    draw (S9.0: at the 15 V input the loaded minimum 13.5 V is below the U5 turn-on maximum 13.98 V, so a source that is
+    unloaded again after U5 opens must return to its 14.25 V unloaded minimum; S8.5 at 20 V never needed the distinction)."""
     P = PLANT
 
-    def f(t):
+    def f(t, loaded=True):
         if sag and sag[0] <= t < sag[1]:
             return sag[2]
         if t < phase_ms:
             return P['vpd_5v_phase']
         if t < phase_ms + 30.0:
             return P['vpd_5v_phase'] + (P['vpd_unloaded'] - P['vpd_5v_phase']) * (t - phase_ms) / 30.0
-        return P['vpd_loaded'] if (loaded_after is None or t >= loaded_after) else P['vpd_unloaded']
+        if loaded_after is not None and t < loaded_after:
+            return P['vpd_unloaded']
+        return P['vpd_loaded'] if loaded else P['vpd_unloaded']
     return f
 
 
 SCENARIOS = {
-    'cold_start_worst_loaded_20V': dict(vpd=_vpd(300.0, loaded_after=380.0), t_end=1700.0,
-                                        why='20 V PD source at -5 % (19.0 V unloaded, U5 turns on at its 18.23 V maximum), '
-                                            '18.25 V loaded after the start; MAIN_OK floats high during the 5 V phase'),
+    'cold_start_worst_loaded_15V': dict(vpd=_vpd(300.0, loaded_after=380.0), t_end=1700.0,
+                                        why='15 V PD source at -5 % (14.25 V unloaded, U5 turns on at its 13.98 V maximum), '
+                                            '13.5 V loaded after the start; MAIN_OK floats high during the 5 V phase'),
     'slow_PD_contract_2s5': dict(vpd=_vpd(2500.0, loaded_after=2580.0), t_end=4000.0,
                                  why='5 V phase longer than the qualification window, U5 status floating high (S8.4 armed '
-                                     'here and latched off before 20 V arrived)'),
-    'brownout_after_ARMED': dict(vpd=_vpd(300.0, sag=(1500.0, 1550.0, 14.0)), t_end=3000.0, reset=((1900.0, 1915.0),),
-                                 why='VPD sags to 14 V for 50 ms after ARMED (U5 off), recovers; RESET pressed later'),
-    'brownout_inside_window': dict(vpd=_vpd(300.0, sag=(450.0, 500.0, 14.0)), t_end=1800.0,
-                                   why='VPD sags to 14 V for 50 ms right after the first enable; the window is NOT restarted'),
+                                     'here and latched off before the PD voltage arrived)'),
+    'brownout_after_ARMED': dict(vpd=_vpd(300.0, sag=(1500.0, 1550.0, 10.5)), t_end=3000.0, reset=((1900.0, 1915.0),),
+                                 why='VPD sags to 10.5 V (below the 11.55 V U5 turn-off minimum, above the 9.27 V V20_OK '
+                                     'maximum) for 50 ms after ARMED (U5 off), recovers; RESET pressed later'),
+    'brownout_inside_window': dict(vpd=_vpd(300.0, sag=(450.0, 500.0, 10.5)), t_end=1800.0,
+                                   why='VPD sags to 10.5 V for 50 ms right after the first enable; the window is NOT restarted'),
     'input_overload_chatter': dict(vpd=_vpd(300.0), t_end=1800.0, chatter=(30.0, 20.0),
                                    why='U5 current limit / auto-retry: on 30 ms, off 20 ms, forever (S8.4: timer restarted '
                                        'every cycle, never armed)'),
-    'hot_plug_live_bus': dict(vpd=_vpd(300.0), t_end=1700.0, bus_held=0.0, flt=((330.0, 480.0),),
-                              why='outputs plugged into a bus another supply already holds inside the monitor windows; '
-                                  'U23 blocks the reverse current and flags FLT while the bus is above its output'),
-    'load_release_after_ARMED': dict(vpd=_vpd(300.0), t_end=1700.0, flt=((1500.0, 1505.0),),
-                                     why='+5V load released after ARMED: U23 holds the overshoot downstream (reverse '
-                                         'blocking, FLT low 5 ms); release peak below the OVLO (calcs ovlo_release)'),
-    'load_release_inside_window': dict(vpd=_vpd(300.0), t_end=1700.0, flt=((520.0, 525.0),),
-                                       why='the same +5V load release during the qualification window'),
+    'hot_plug_live_bus': dict(vpd=_vpd(300.0), t_end=1700.0, bus_held=0.0,
+                              why='outputs plugged into a bus another supply already holds inside the monitor windows: '
+                                  'the rail monitors read good from 0 ms; nothing else reaches the logic'),
+    'load_release_after_ARMED': dict(vpd=_vpd(300.0), t_end=1700.0,
+                                     why='+/-12V load released after ARMED: the release peak stays below the U20 guard '
+                                         'minimum (calcs ov_guard) and the rails stay above their monitor thresholds, so no '
+                                         'logic input changes (the run must stay armed without a FAULT)'),
+    'load_release_inside_window': dict(vpd=_vpd(300.0), t_end=1700.0,
+                                       why='the same +/-12V load release during the qualification window'),
     'ov_guard_before_ARMED': dict(vpd=_vpd(300.0), t_end=1200.0, ov=((420.0, 421.0),),
-                                  why='+12V / P5_RAW / -12V above the U20 guard 60 ms after the first enable: OV_N low '
-                                      'for 1 ms'),
+                                  why='+12V or -12V beyond the U20 guard 60 ms after the first enable: OV_N low for 1 ms'),
     'short_RESET_while_running': dict(vpd=_vpd(300.0), t_end=2600.0, reset=((1500.0, 1512.0),), t_pgood_fall_ms=13.0,
                                       why='RESET pulse of the 12 ms POR minimum while PGOOD (13 ms falling-deglitch '
                                           'screen) is still high when RESET releases'),
@@ -377,7 +403,7 @@ def _check_timeline(name, trace, t_d_s):
     # R4: after ARMED any bad status longer than the filter latches FAULT; FAULT keeps RUN low until RESET
     bad_since = None
     for t, s, p in trace:
-        bad = not (s['MAIN_LED_OK'] and s['P12_OK'] and s['P5_OK'] and s['N12_OK'])
+        bad = not (s['MAIN_LED_OK'] and s['P12_OK'] and s['N12_OK'])
         if s['ARMED'] and bad and s['RESET_N']:
             bad_since = t if bad_since is None else bad_since
             if t - bad_since > PLANT['t_filter_ms'] + 3 * dt and not s['FAULT_LATCH']:
@@ -401,8 +427,8 @@ def _check_timeline(name, trace, t_d_s):
 def arming_timelines(pins, nets, v20_band_V):
     """Run every scenario at both U11 delay corners and both V20_OK band corners; returns (results, violations)."""
     netids = {}
-    for name in ('RUN', 'ARMED', 'FAULT_LATCH', 'MAIN_OK', 'MAIN_LED_OK', 'RESET_N', 'OV_N', 'P12_OK', 'P5_OK', 'N12_OK',
-                 'V20_OK', 'P5_FLT_N', 'V3V3', 'GND'):
+    for name in ('RUN', 'ARMED', 'FAULT_LATCH', 'MAIN_OK', 'MAIN_LED_OK', 'RESET_N', 'OV_N', 'P12_OK', 'N12_OK',
+                 'V20_OK', 'V3V3', 'GND'):
         match = [k for k in nets if k.split('/')[-1] == name]
         assert len(match) == 1, (name, match)
         netids[name] = match[0]
@@ -423,7 +449,7 @@ def arming_timelines(pins, nets, v20_band_V):
     for key, r in results['input_overload_chatter'].items():
         if key.startswith('t_d') and not (r['FAULT_ms'] and r['ends_faulted']):
             violations.append(f'input_overload_chatter: overload never latched ({key}: {r})')
-    for name in ('cold_start_worst_loaded_20V', 'slow_PD_contract_2s5', 'brownout_inside_window', 'hot_plug_live_bus',
+    for name in ('cold_start_worst_loaded_15V', 'slow_PD_contract_2s5', 'brownout_inside_window', 'hot_plug_live_bus',
                  'load_release_after_ARMED', 'load_release_inside_window', 'short_RESET_while_running'):
         for key, r in results[name].items():
             if key.startswith('t_d') and (r['FAULT_ms'] or not r['ends_armed']):
@@ -434,7 +460,7 @@ def arming_timelines(pins, nets, v20_band_V):
     return results, violations
 
 
-def arming_check(netlist, v20_band_V=(9.06, 9.98, 10.96)):
+def arming_check(netlist, v20_band_V=(7.67, 8.44, 9.27)):      # S9.0 V20_OK band (R83 100k)
     """Arming timelines of any native netlist (test_s8 runs it on the S8.4 wiring as the regression control)."""
     _, _, nets, pins = load_xml(netlist)
     return arming_timelines(pins, nets, v20_band_V)
@@ -499,15 +525,23 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         s = comps[ref].findtext('value')
         return float(s[:-1]) * {'k': 1e3, 'u': 1e-6, 'n': 1e-9}[s[-1]] if s[-1] in 'kun' else float(s)
 
-    # ---- What S8 removes and keeps
+    # ---- What S8/S9 removes and keeps
     s7 = {p['ref'] for p in circuit45.circuit() if not p['ref'].startswith('#')}
-    removed = {r for r in circuit_s8.S8_REMOVED if not r.startswith('#')}
+    removed = {r for r in set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) if not r.startswith('#')}
     added = set(comps) - s7
-    assert removed <= s7 and not removed & set(comps), 'S8_REMOVED refs must be S7 refs and absent'
+    assert removed <= s7 and not removed & set(comps), 'S8/S9_REMOVED refs must be S7 refs and absent'
     assert s7 - set(comps) == removed, ('Only the listed S7 refs may disappear', sorted(s7 - set(comps) - removed))
-    assert added == {'J3', 'C59', 'C60', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R95', 'R96', 'R97', 'R98', 'R99',
-                     'C63', 'C64', 'C65', 'C66', 'D21', 'U21', 'R100', 'C67', 'D22', 'TP17',
-                     *circuit_s8.DISCONNECT, *circuit_s8.ARMING_ADDED}, sorted(added)
+    assert added == {'J3', 'C59', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R97', 'R98', 'R99',
+                     'C63', 'C65', 'C66', 'U21', 'R100', 'C67', 'D22', 'TP17', *circuit_s8.ARMING_ADDED,
+                     *circuit_s8.BUCKBOOST_ADDED}, sorted(added)
+    # ---- S9.0 step 1: no +5V net, ref or part survives
+    netnames = {k.split('/')[-1] for k in nets}
+    assert not set(circuit_s8.PLUS5_NETS) & netnames, ('S9.0: +5V nets must be gone', sorted(set(circuit_s8.PLUS5_NETS) & netnames))
+    assert not {k for k in netnames if k.startswith(('P5_', 'EF_')) or k == '+5V'}, 'S9.0: no P5_*/EF_*/+5V net'
+    assert not (set(circuit_s8.S8_PLUS5_DROPPED) | set(circuit_s8.S9_REMOVED)) & set(comps), 'S9.0: +5V refs must be gone'
+    for ref, nc in NC_PINS.items():
+        for pin in nc:
+            assert 'unconnected-' in pins[(ref, pin)], (ref, pin, 'S9.0: must be a no-connect')
     tps1663 = sorted(r for r in comps if comps[r].findtext('fields/field[@name="MPN"]') == 'TPS16630PWPR')
     assert tps1663 == ['U5'], ('U5 must be the only TPS16630', tps1663)
     assert not any(comps[r].findtext('fields/field[@name="MPN"]') in FORBIDDEN_MPN for r in comps)
@@ -527,55 +561,39 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         assert (lm[inv], lm[non]) == (k + '-', k + '+'), ('LM2901 symbol pairing differs from TI table', out, inv, non)
     for u in ('U18', 'U20'):
         assert comps[u].findtext('fields/field[@name="MPN"]') == 'LM2901BIDR', (u, 'S8.1: LM2901B')
-    assert 'unconnected-' in n('U20', 13), 'spare comparator output stays open'
+    for u, out, inv, non, ref_net in (('U20', '13', '10', '11', 'REF_OV'), ('U20', '1', '6', '7', 'REF_OV'),
+                                      ('U18', '2', '4', '5', 'REF_GOOD')):
+        assert 'unconnected-' in n(u, out), (u, out, 'spare comparator output stays open')
+        assert (n(u, inv), n(u, non)) == (netids[ref_net], netids['GND']), (u, out, 'spare: - at the reference, + at GND')
     tlv = libparts['TLV431_DBZ']
     assert {k: tlv[k] for k in TLV431_DBZ_TI} == {k: TLV431_SYMBOL_NAME[v] for k, v in TLV431_DBZ_TI.items()}, \
         ('TLV431 symbol pins differ from TI SLVS139Z Table 4-1 (DBZ)', tlv)
     assert comps['U21'].findtext('fields/field[@name="MPN"]') == 'TLV431BIDBZR'
     assert n('U21', 1) == n('U21', 2) == netids['REF_OV'] and n('U21', 3) == netids['GND'], 'U21: REF tied to CATHODE'
     assert nets[netids['REF_OV']] == {('U21', '1'), ('U21', '2'), ('R100', '2'), ('C67', '1'), ('TP17', '1'),
-                                      ('U20', '5'), ('U20', '7'), ('U20', '10'), ('R98', '1')}, 'REF_OV members'
+                                      ('U20', '5'), ('U20', '6'), ('U20', '10'), ('R98', '1')}, 'REF_OV members'
     assert netids['V3V3'] not in {n('R98', 1), n('R99', 1)}, '-12V guard divider must not depend on V3V3'
     assert nets[netids['MON_OVN']] == {('R98', '2'), ('R99', '1'), ('C66', '1'), ('D22', '2'), ('D22', '3'),
                                        ('U20', '9')}, 'MON_OVN members (D22 clamp at the comparator node)'
-    for r in ('R93', 'R94', 'R95', 'R96', 'R98', 'R99', 'R101', 'R102', 'R11', 'R12'):
+    for r in ('R93', 'R94', 'R98', 'R99'):
         assert comps[r].findtext('fields/field[@name="Tolerance"]') == '0.1%', (r, '0.1 % divider')
-    # ---- S8.3 series switch: independent pin-role checks, no bypass, no old crowbar.
-    assert {k: libparts['TPS259470_RPW'][k] for k in TPS259470_TI} == TPS259470_TI
-    assert comps['U23'].findtext('fields/field[@name="MPN"]') == 'TPS259470ARPWR'
-    assert comps['U23'].findtext('fields/field[@name="LCSC"]') == 'C3662799'
-    assert 'unconnected-' in n('U23', 10), 'ITIMER deliberately open: fastest overcurrent response'
     assert not set(circuit_s8.CROWBAR_REMOVED) & set(comps)
     assert not any('CROW_' in k for k in nets), 'crowbar nets must be absent'
-    assert netids['P5_RAW'] != netids['+5V']
-    assert nets[netids['P5_OVLO']] == {('U23', '2'), ('R101', '2'), ('R102', '1')}, 'no OVLO delay capacitor'
-    assert nets[netids['P5_OV_TOP']] == {('R107', '2'), ('R101', '1')}
-    assert nets[netids['P5_DVDT']] == {('U23', '7'), ('C68', '1')}
-    assert nets[netids['P5_ILM']] == {('U23', '9'), ('R103', '1')}
-    assert nets[netids['P5_ILM_SER']] == {('R103', '2'), ('R104', '1')}
-    assert nets[netids['OV_N']] == {('U20', '1'), ('U20', '2'), ('U20', '14'), ('U12', '10'),
-                                    ('R97', '2'), ('TP6', '1')}, 'OV_N is not startup-low AUXOFF'
-    for ref in ('C20', 'C21', 'C22', 'C23', 'C69', 'C70', 'C71', 'C72', 'C75', 'C76'):
-        isnet(ref, 1, 'P5_RAW'); isnet(ref, 2, 'GND')
-    for ref in ('C35', 'C60', 'C73', 'C74'):
-        isnet(ref, 1, '+5V'); isnet(ref, 2, 'GND')
-    # No ordinary two-terminal component may bridge around the disconnect.
-    for r in comps:
-        if r != 'U23':
-            connected = {n(r, pin) for pin in parts[r]['pins']}
-            assert not {netids['P5_RAW'], netids['+5V']} <= connected, ('raw/output bypass', r)
+    # S9.0: OV_N is driven only by the +12V (out 2) and -12V (out 14) guard channels; the spares stay off it.
+    assert nets[netids['OV_N']] == {('U20', '2'), ('U20', '14'), ('U12', '10'), ('R97', '2'), ('TP6', '1')}, \
+        ('S9.0: OV_N = the +12V and -12V guard outputs only', sorted(nets[netids['OV_N']]))
     for ref in ('C57', 'C65'):
         assert comps[ref].findtext('fields/field[@name="Voltage"]') == '50V', (ref, 'VPD bypass rating')
-    # At active-system VPD >=15V the full-temperature CM ceiling is 13V, not 1.234V.
-    cm_headroom = 15.0 - 2.0 - (VREF_OV[2]+VIO_B)
-    assert cm_headroom > 10 and 15.0 >= 5.0, 'CM and offset test-supply conditions'
+    # Common-mode headroom of the VPD-powered comparators at the lowest VPD the system can run from (VPD_RUN_MIN_V).
+    cm_headroom = VPD_RUN_MIN_V - 2.0 - (VREF_OV[2]+VIO_B)
+    assert cm_headroom > 5 and VPD_RUN_MIN_V >= 5.0, 'CM and offset test-supply conditions'
     for k, v in {'5': '1Q', '8': '2Q_N', '9': '2Q', '10': '2PRE_N', '13': '2CLR_N'}.items():
         assert libparts['HC74_DUAL'][k] == v, ('HC74 pin', k, libparts['HC74_DUAL'][k])
     for j in ('J2', 'J3'):
         for pin, net in HEADER.items():
             isnet(j, pin, net)
-        for pin in range(13, 17):
-            assert 'unconnected-' in n(j, pin), (j, pin, 'CV/GATE open')
+        for pin in range(11, 17):
+            assert 'unconnected-' in n(j, pin), (j, pin, 'S9.0: +5V pins 11/12 and CV/GATE open')
     leds = sorted(r for r in comps if ':LED' in comps[r].findtext('footprint'))
     assert leds == ['D8'], ('S8 final: D8 MAIN is the only LED (rail LEDs removed)', leds)
     assert not set(circuit_s8.LED_REMOVED) & set(comps), 'rail LED parts must be gone'
@@ -583,20 +601,12 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         isnet(r, 1, 'V3V3'); assert n(r, 2) == n(d, 2) and n(d, 1) == n(q, 3)
         isnet(q, 1, gate); isnet(q, 2, 'LED_RETURN')
     assert nets[netids['LED_RETURN']] == {('Q6', '2'), ('Q10', '3')}, 'LED return: Q6 source + Q10 drain only'
-    for net, tp in (('P12_OK', 'TP12'), ('P5_OK', 'TP13'), ('N12_OK', 'TP14')):   # status: logic + pull-up + pad
-        assert {r for r, _ in nets[netids[net]]} == ({'U18', 'U14', {'P12_OK': 'R35', 'P5_OK': 'R44', 'N12_OK': 'R62'}[net], tp}
-                                                       | ({'U23'} if net == 'P5_OK' else set())), net
-    # ---- S8.4 C1: U23 FLT is diagnostic only. P5_OK = AUXOFF (pin 3) + U18 delivered-voltage comparator; FLT (pin 4:
-    # reverse current, persistent current limit, ILM fault, over-temperature) reaches only R108 and TP21.
-    assert nets[netids['P5_OK']] == {('U18', '2'), ('U23', '3'), ('R44', '2'), ('TP13', '1'), ('U14', '4')}, \
-        ('C1: P5_OK must be AUXOFF + U18 only', sorted(nets[netids['P5_OK']]))
-    assert n('U23', 4) != netids['P5_OK'] and n('U23', 4) == netids['P5_FLT_N'], 'C1: U23 FLT must stay off P5_OK'
-    assert nets[netids['P5_FLT_N']] == {('U23', '4'), ('R108', '2'), ('TP21', '1')}, \
-        ('C1: FLT must reach only its pull-up and test pad', sorted(nets[netids['P5_FLT_N']]))
-    latch_inputs = {n(u, k) for u, ks in (('U12', (1, 3, 4, 10, 11, 13)), ('U13', (1, 2, 4, 5, 9, 10, 12, 13)),
-                                         ('U14', (1, 2, 4, 5, 9, 10, 12, 13)), ('U15', (2,)), ('R69', (1,)),
-                                         ('U11', (3, 5))) for k in ks}
-    assert netids['P5_FLT_N'] not in latch_inputs, 'C1: FLT must not drive any latch/arming input'
+    for net, tp in (('P12_OK', 'TP12'), ('N12_OK', 'TP14')):   # status: logic + pull-up + pad
+        assert {r for r, _ in nets[netids[net]]} == {'U18', 'U14', {'P12_OK': 'R35', 'N12_OK': 'R62'}[net], tp}, net
+    # ---- S9.0: the fault chain without +5V. ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3) (U14 gate 1).
+    assert {n('U14', q) for q in (1, 2, 4, 5)} == {netids['MAIN_LED_OK'], netids['P12_OK'], netids['N12_OK'],
+                                                   netids['V3V3']}, 'S9.0: ANY_BAD inputs'
+    assert n('U14', 4) == netids['V3V3'], 'S9.0: the former +5V input of U14 gate 1 is tied high'
     # ---- S8.5 (B): one-shot arming. STARTED = U12 A preset by START_N = NAND(MAIN_LED_OK, RUN), cleared only by RESET_N,
     # clock tied low; TIMER_GO = RUN AND STARTED; ARMED is the U11 output. MAIN_OK/V20_OK never drive the timer directly.
     assert nets[netids['STARTED']] == {('U12', '5'), ('U13', '10'), ('TP19', '1')}, 'B: STARTED members'
@@ -610,7 +620,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert not {netids['MAIN_OK'], netids['V20_OK']} & {n('U13', 9), n('U13', 10)}, 'B: no arming from MAIN_OK/V20_OK'
     assert nets[netids['ARMED']] == {('U11', '1'), ('R71', '2'), ('U13', '4'), ('TP10', '1')}, 'B: ARMED = U11 output'
     assert nets[netids['MAIN_LED_OK']] == {('U13', '11'), ('U14', '1'), ('U14', '9'), ('Q6', '1')}, 'MAIN_LED_OK members'
-    assert {('U2', '2'), ('U3', '2'), ('U13', '12'), ('U5', '15'), ('U5', '16')} <= nets[netids['MAIN_OK']]
+    assert {('U2', '1'), ('U13', '12'), ('U5', '15'), ('U5', '16')} <= nets[netids['MAIN_OK']]   # S9.0: U2 EN/UVLO is pin 1
     assert nets[netids['V20_OK']] == {('U18', '13'), ('R85', '2'), ('TP15', '1'), ('U13', '13')}, 'V20_OK -> MAIN_LED_OK only'
     assert n('U9', 8) != n('U5', 18), 'Latch supply must survive main switch off'
 
@@ -618,17 +628,44 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     def bank(net, val):
         return sorted(r for r, p in parts.items() if p['value'] == val and p['fp'] == 'C1206'
                       and netids[net] in {n(r, 1), n(r, 2)} and netids['GND'] in {n(r, 1), n(r, 2)})
-    banks = {'+12V': bank('+12V', '22u'), '+5V': bank('+5V', '22u'), '-12V': bank('-12V', '22u'),
-             'VIN': bank('VIN', '10u'), 'P5_RAW': bank('P5_RAW', '22u')}
-    assert len(banks['+12V']) == 6 and len(banks['+5V']) == 4 and len(banks['P5_RAW']) == 10 and len(banks['-12V']) == 7, banks
+    banks = {'P12_VOUT': bank('P12_VOUT', '22u'), '+12V': bank('+12V', '22u'), '-12V': bank('-12V', '22u'),
+             'VIN': bank('VIN', '10u')}
+    assert len(banks['P12_VOUT']) == 6 and len(banks['+12V']) == 2 and len(banks['-12V']) == 7, banks
     damp = n('R92', 2)
     assert {(r, '1') for r in ('C5', 'C62')} | {('R92', '2')} == nets[damp], 'damper node = R92.2 + C5.1 + C62.1'
     for r in ('C5', 'C62'):
         isnet(r, 2, 'GND'); assert math.isclose(value(r), 10e-6)
     assert math.isclose(value('R92'), 1.0)
-    assert sorted(banks['VIN']) == ['C15', 'C16', 'C24', 'C6', 'C7'], banks['VIN']
-    for r in ('C9', 'C18', 'C49'):
-        assert math.isclose(value(r), 100e-9), r
+    assert sorted(banks['VIN']) == sorted(VIN_BANK), banks['VIN']
+    assert math.isclose(value('C49'), 100e-9), 'C49 (U11 delay)'
+    # ---- S9.0 step 2: TPS552892-Q1 four-switch cell. Pin names of the native symbol against TI's table (s90_parts),
+    # independent function checks per pin, and the cell wiring.
+    tps = libparts['TPS552892_RYQ']
+    assert tps == TPS552892_TI, ('TPS552892 symbol pins differ from TI SLVSGT7 Table 5-1', tps)
+    assert comps['U2'].findtext('fields/field[@name="MPN"]') == 'TPS552892QWRYQRQ1', 'U2 MPN'
+    role = {name: num for num, name in TPS552892_TI.items()}
+    u2 = lambda name: n('U2', role[name])        # noqa: E731
+    assert u2('VIN') == netids['VIN'] and u2('EN/UVLO') == netids['MAIN_OK'], 'U2 VIN / EN = MAIN_OK'
+    assert u2('MODE') == u2('EXTVCC') == u2('VCC') == n('C82', 1) and n('C82', 2) == netids['GND'], \
+        'U2 FPWM (MODE = VCC) and internal LDO (EXTVCC = VCC) with the VCC capacitor C82'
+    assert nets[u2('VCC')] == {('U2', role['MODE']), ('U2', role['EXTVCC']), ('U2', role['VCC']), ('C82', '1')}
+    assert u2('DITH/SYNC') == u2('PGND') == u2('AGND') == netids['GND'], 'U2 no dithering, grounds'
+    assert nets[u2('FSW')] == {('U2', role['FSW']), ('R110', '1')} and n('R110', 2) == netids['GND'], 'U2 FSW -> R110'
+    assert nets[u2('SW1')] == {('U2', role['SW1']), ('L1', '1'), ('C10', '2')}, 'SW1: L1 + BOOT1 capacitor'
+    assert nets[u2('SW2')] == {('U2', role['SW2']), ('L1', '2'), ('C9', '2')}, 'SW2: L1 + BOOT2 capacitor'
+    assert nets[u2('BOOT1')] == {('U2', role['BOOT1']), ('C10', '1')} and nets[u2('BOOT2')] == {('U2', role['BOOT2']), ('C9', '1')}
+    assert u2('VOUT') == u2('ISP') == netids['P12_VOUT'] and u2('ISN') == netids['+12V'], 'R109 sensed by ISP/ISN'
+    assert nets[u2('FB')] == {('U2', role['FB']), ('R8', '1'), ('R9', '1')}, 'FB divider R8 (from +12V) / R9'
+    assert nets[u2('COMP')] == {('U2', role['COMP']), ('R111', '1')} and n('R111', 2) == n('C83', 1), 'COMP R111 + C83'
+    for name in ('PG', 'CC', 'CDC'):
+        assert 'unconnected-' in u2(name), ('U2', name, 'open')
+    for net, members in RAILS_S90.items():
+        got = {k for k in nets[netids[net]] if not k[0].startswith('#')}
+        assert got == members, (net, 'S9.0 rail membership (no series element added)', sorted(got ^ members))
+    for ref in comps:
+        mpn = comps[ref].findtext('fields/field[@name="MPN"]') or ''
+        assert not mpn.upper().startswith(REVERSE_BLOCKING_MPN_PREFIXES), (ref, mpn, 'S9.0: no reverse-blocking part')
+    assert not {k.split('/')[-1] for k in nets} & {'P12_BLK', 'N12_BLK', 'P12_OUT_BLOCKED', 'N12_GATE'}
 
     # ---- Bounded arithmetic, brute force over every corner. U18 monitors (unchanged): V3V3 +-2 % (TPS7A16 SBVS171F),
     # 1 % resistors + 1 % TCR drift (as the S6 screens). S8.1 guard: REF_OV (TLV431BI), LM2901B offset and bias
@@ -652,7 +689,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     def negative(v, a, b, e, ib):    # MON_OVN = (REF_OV x R99 + V x R98) / (R98 + R99) + ib x Rth falls to 0 V + offset
         r98, r99 = value('R98') * a, value('R99') * b
         return (v * r99 + (ib * r98 * r99 / (r98 + r99) - e) * (r98 + r99)) / r98
-    ov12, ov5, ovneg = positive('R93', 'R94'), positive('R95', 'R96'), guard(negative)
+    ov12, ovneg = positive('R93', 'R94'), guard(negative)
 
     def fac(ref):                     # each divider resistor's own tolerance (R11/R12 are 0.1 % since S8.4)
         t = comps[ref].findtext('fields/field[@name="Tolerance"]')
@@ -660,41 +697,16 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
 
     def setpoint(top, bot, vfb):
         return vfb * (1 + value(top) * fac(top)[1] / (value(bot) * fac(bot)[0]))
-    p12_max, p5_max = setpoint('R8', 'R9', .816), setpoint('R11', 'R12', .816)    # SLUSEA4D VFB max
+    p12_max = setpoint('R8', 'R9', VREF_TPS552892[2])                              # SLVSGT7 VREF max (S9.0)
+    p12_min = VREF_TPS552892[0] * (1 + value('R8') * fac('R8')[0] / (value('R9') * fac('R9')[1]))
     n12_max = setpoint('R14', 'R15', 1.015)                                        # SNVSC40E FB max
-    ovp12_max, ovp5_max = 1.18 * p12_max, 1.18 * p5_max                           # OVP 118 % max
-    assert 14.7 < ov12[1] < 15.0 and 5.75 < ov5[1] < 5.9 and 13.5 < ovneg[1] < 13.8, (ov12, ov5, ovneg)
-    # Independent eFuse OVLO tolerance enumeration, incl. leakage sign and Basic trim tolerance/TCR.
-    trips = []
-    for v, a, b, c, leak in itertools.product((1.183, 1.223), (R01_LO, R01_HI), (lo, hi),
-                                             (R01_LO, R01_HI), (-.1e-6, .1e-6)):
-        rt, rb = value('R101')*a + value('R107')*b, value('R102')*c
-        trips.append(v*(1+rt/rb)+leak*rt)
-    ef_trip = [min(trips), 1.2*(1+(value('R101')+value('R107'))/value('R102')), max(trips)]
-    ilm_r = value('R103')+value('R104')
-    ilm = [3334*ILIM_TABLE[0]/(ilm_r*hi),3334/ilm_r,3334*ILIM_TABLE[1]/(ilm_r*lo)]
-    assert ilm[0] > 2.5 and ilm[2] < 3.5, ('+5V eFuse current screen',ilm)
-    assert ilm[0] - 2.0 > 0.6, ('S8.4 published 2.0 A +5V rating needs >= 0.6 A headroom to ILIM min (ITIMER open)', ilm)
-    # S8.4 M2: OVLO falling (release) band and the release from U23's highest current limit.
-    rel = []
-    for v, a, b, c, leak in itertools.product((1.076, 1.116), (R01_LO, R01_HI), (lo, hi),
-                                             (R01_LO, R01_HI), (-.1e-6, .1e-6)):
-        rt, rb = value('R101')*a + value('R107')*b, value('R102')*c
-        rel.append(v*(1+rt/rb)+leak*rt)
-    ef_release = [min(rel), 1.09*(1+(value('R101')+value('R107'))/value('R102')), max(rel)]
-    assert value('C68') == 10e-9
-    peak = {'+12V': p12_max + RELEASE_N16_V['+12V'], '+5V': p5_max + RELEASE_N16_V['+5V'],
-            '-12V': n12_max + RELEASE_N16_V['-12V']}
-    bands = {'+12V': ov12, '+5V': ov5, '-12V': ovneg}
+    ovp12_max = OVP_TPS552892_MAX                                                  # absolute output OVP, not 12 V-relative
+    assert 14.7 < ov12[1] < 15.0 and 13.5 < ovneg[1] < 13.8, (ov12, ovneg)
+    peak = {'+12V': p12_max + RELEASE_N16_V['+12V'], '-12V': n12_max + RELEASE_N16_V['-12V']}
+    bands = {'+12V': ov12, '-12V': ovneg}
     for rail, band in bands.items():
         assert band[0] > peak[rail], (rail, 'guard minimum must clear the stacked setpoint + N=16 release', band, peak[rail])
         assert band[2] <= DOWNSTREAM_MAX_V[rail], (rail, 'guard maximum above the downstream limit', band)
-    assert ef_trip[0] > peak['+5V']+0.05, ('OVLO release headroom <50mV in imposed screen',ef_trip,peak)
-    assert ef_trip[0] > p5_max + RELEASE_ILIM_MAX_V, ('M2 (imposed-current screen): a release from U23 ILIM max '
-                                                      'must stay below OVLO min',
-                                                      ef_trip, p5_max)
-    assert ov5[0] > p5_max + RELEASE_ILIM_MAX_V, ('M2: ... and below the unmasked U20 +5V guard', ov5, p5_max)
-    assert ef_trip[2] < 5.85, ('static OVLO upper threshold',ef_trip)
     # REF_OV bias: R100 must keep U21 above IK(min) 0.1 mA with the -12V divider drawing (1.26 + 20 V) / (R98 + R99)
     ik_min = ((3.3 * .98 - VREF_OV[2]) / (value('R100') * 1.01)
               - (VREF_OV[2] + 20.0) / ((value('R98') + value('R99')) * R01_LO) - 4 * IB_B)
@@ -702,7 +714,6 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert value('C67') >= 4.7e-6, 'C67 must stay right of the TLV431 instability region (SLVS139Z Fig. 5-18)'
     r0 = ref(3.3, 1, 1)
     mon = {'P12_V': r0 * (1 + value('R75') / value('R76')),
-           'P5_V': r0 * (1 + (value('R77') + value('R78')) / value('R79')),
            'N12_magnitude_V': 3.3 * value('R82') / (value('R80') + value('R81')) - r0 * (1 + value('R82') / (value('R80') + value('R81'))),
            'V20_OK_status_floor_V': r0 * (1 + value('R83') / value('R84'))}
     por_max = .411 * (1 + (value('R65') + value('R91')) * hi / (value('R66') * lo))
@@ -715,7 +726,8 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     v20 = v20_band(value)
     assert v20[0] >= VSAFE5V_MAX + V20_MARGIN_MIN_V, ('V20_OK minimum too close to the PD 5 V phase', v20)
     assert v20[2] <= u5_off[0] - V20_MARGIN_MIN_V, ('V20_OK maximum not below the U5 turn-off minimum', v20, u5_off)
-    assert u5_on[2] < 19.0 and u5_off[2] < 18.25, ('U5 UVLO vs the 20 V source (-5 %) / loaded 18.25 V', u5_on, u5_off)
+    assert u5_on[2] < VPD_UNLOADED_MIN_V and u5_off[2] < VPD_LOADED_MIN_V, \
+        ('U5 UVLO vs the PD source (-5 %) / loaded minimum', u5_on, u5_off)
 
     # ---- Digital model from native gate pin nets (settled; not an analog timing simulation)
     gates = [('U13', 1, 2, 3), ('U13', 4, 5, 6), ('U13', 9, 10, 8), ('U13', 12, 13, 11)]
@@ -738,8 +750,8 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
             s[n('U11', 1)] = timer_done and s[n('R69', 1)] and s[n('U11', 3)]
         return s
     cases = 0
-    for reset, ovn, mainok, p12, p5, n12, v20ok, qa, qb, done in itertools.product([False, True], repeat=10):
-        i = {'RESET_N': reset, 'OV_N': ovn, 'MAIN_OK': mainok, 'P12_OK': p12, 'P5_OK': p5, 'N12_OK': n12, 'V20_OK': v20ok}
+    for reset, ovn, mainok, p12, n12, v20ok, qa, qb, done in itertools.product([False, True], repeat=9):
+        i = {'RESET_N': reset, 'OV_N': ovn, 'MAIN_OK': mainok, 'P12_OK': p12, 'N12_OK': n12, 'V20_OK': v20ok}
         s = comb(i, qa, qb, done)
         fault = (not ovn) or (reset and qb)              # preset by OV_N wins; RESET clears
         run = reset and not fault
@@ -749,7 +761,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         assert s[netids['STARTED']] == started, ('B: STARTED latch', i, qa)
         assert s[netids['TIMER_GO']] == (run and started), ('B: TIMER_GO = RUN AND STARTED', i, qa)
         assert s[netids['ARMED']] == (done and run and started and reset), ('B: ARMED = U11 output', i)
-        assert s[netids['FAULT_CLK']] == (s[netids['ARMED']] and not (mainok and v20ok and p12 and p5 and n12))
+        assert s[netids['FAULT_CLK']] == (s[netids['ARMED']] and not (mainok and v20ok and p12 and n12))
         assert s[n('Q6', 1)] == (mainok and v20ok)
         if not ovn:
             assert not s[netids['RUN']], 'overvoltage must stop RUN in every state, also before ARMED'
@@ -757,8 +769,8 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
             assert s[netids['START_N']], 'B: no start while U5 is off or its status is not validated by V20_OK'
         cases += 1
     seq = []
-    base = {k: True for k in ['RESET_N', 'OV_N', 'MAIN_OK', 'P12_OK', 'P5_OK', 'N12_OK', 'V20_OK']}
-    for missing in ['MAIN_OK', 'P12_OK', 'P5_OK', 'N12_OK', 'V20_OK']:
+    base = {k: True for k in ['RESET_N', 'OV_N', 'MAIN_OK', 'P12_OK', 'N12_OK', 'V20_OK']}
+    for missing in ['MAIN_OK', 'P12_OK', 'N12_OK', 'V20_OK']:
         inp = dict(base); inp[missing] = False
         s = comb(inp, True, False, False); assert s[netids['RUN']] and not s[netids['FAULT_CLK']]   # window
         s = comb(inp, True, False, True); assert s[netids['FAULT_CLK']]                            # armed -> clock FAULT
@@ -786,49 +798,73 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert not tl_violations, ('B: arming timeline violations', tl_violations[:6])
 
     root = Path(root) if root else hardware / 'single' / f'{circuit_s8.PROJECT}.kicad_sch'
-    sheets = nodes(parse(root.read_text()), 'sheet'); assert len(sheets) == 6, ('Hierarchy sheet count', len(sheets))
+    sheets = nodes(parse(root.read_text()), 'sheet')
+    assert len(sheets) == SHEETS, ('Hierarchy sheet count', len(sheets))
     files = [root] + [root.parent / next(p[2] for p in nodes(s, 'property') if p[1] == 'Sheetfile') for s in sheets]
-    assert len(set(files)) == 7 and all(f.exists() for f in files), files
+    assert len(set(files)) == SHEETS + 1 and all(f.exists() for f in files), files
     for f in files:
-        for sym in nodes(parse(f.read_text()), 'symbol'):
+        tree = parse(f.read_text())
+        for sym in nodes(tree, 'symbol'):
             r = next(p[2] for p in nodes(sym, 'property') if p[1] == 'Reference')
             if r.startswith('TP'):
                 assert one(sym, 'in_bom')[1] == 'no' and one(sym, 'in_pos_files')[1] == 'no' and one(sym, 'on_board')[1] == 'yes'
-    return {'status': 'S8_schematic_checks_not_bench_qualification', 'components': len(comps),
+            assert one(sym, 'lib_id')[1] != 'USBPOWER45:+5V', (f.name, 'S9.0: no +5V power symbol')
+        for kind in ('label', 'hierarchical_label', 'global_label'):
+            for lab in nodes(tree, kind):
+                assert not (lab[1] == '+5V' or lab[1].startswith(('P5_', 'EF_'))), (f.name, lab[1], 'S9.0: +5V/EF_ label')
+    return {'status': 'S9_schematic_checks_not_bench_qualification', 'components': len(comps),
             'nets_including_NC': len(nets), 'sheets': len(files), 'exact_field_pin_NC_pad_parity': True,
             'removed_S7_refs': len(removed), 'added_refs': sorted(added),
             'ceramic_banks_22u_or_10u': banks, 'vin_damper': {'R92_ohm': value('R92'), 'C5_C62_uF': [10, 10]},
             'overvoltage_guard_V': {'+12V_min_nom_max': [round(v, 3) for v in ov12],
-                                    '+5V_min_nom_max': [round(v, 3) for v in ov5],
                                     '-12V_magnitude_min_nom_max': [round(v, 3) for v in ovneg],
                                     'model': 'REF_OV TLV431BI 1.2204-1.259 V, LM2901B 5.5 mV / 50 nA, 0.1 % + 25 ppm x 100 C',
-                                    'converter_setpoint_max_V': {'+12V': round(p12_max, 3), '+5V': round(p5_max, 3),
-                                                                 '-12V': round(n12_max, 3)},
+                                    'converter_setpoint_max_V': {'+12V': round(p12_max, 3), '-12V': round(n12_max, 3)},
                                     'stacked_normal_peak_V': {k: round(v, 3) for k, v in peak.items()},
                                     'margin_min_to_peak_V': {k: round(bands[k][0] - peak[k], 3) for k in bands},
                                     'downstream_limit_V': DOWNSTREAM_MAX_V,
                                     'margin_max_to_limit_V': {k: round(DOWNSTREAM_MAX_V[k] - bands[k][2], 3) for k in bands},
-                                    'converter_OVP_max_V': {'+12V': round(ovp12_max, 2), '+5V': round(ovp5_max, 2)},
-                                    'corner_overlap_with_converter_OVP': {'+12V': ov12[0] < ovp12_max, '+5V': ov5[0] < ovp5_max},
-                                    'U21_cathode_current_min_mA': round(ik_min * 1e3, 3)},
-            'disconnect': {'MPN': 'TPS259470ARPWR', 'LCSC': 'C3662799',
-                           'trip_min_nom_max_V': [round(v,4) for v in ef_trip],
-                           'current_min_nom_max_A': [round(v,3) for v in ilm],
-                           'release_min_nom_max_V': [round(v, 4) for v in ef_release],
-                           'margin_min_to_stacked_peak_V': round(ef_trip[0]-peak['+5V'],4),
-                           'margin_min_to_ILIM_max_release_peak_V': round(ef_trip[0]-p5_max-RELEASE_ILIM_MAX_V, 4),
-                           'reconnect_margin_worst_V': round(ef_release[0]-p5_max, 4),
-                           'raw_feedback_and_banks_upstream': True,
-                           'delivered_status': 'AUXOFF + U18 (S8.4: FLT only to R108/TP21)',
-                           'FLT_isolated_from_latch': True, 'P5_FLT_N_members': sorted(f'{r}.{q}' for r, q in nets[netids['P5_FLT_N']]),
-                           'OVLO_latched_internally': False, 'OVLO_response_max_specified': False},
-            'assembly_checks': ['S8.4 M7: U23 copper-pad mask expansion 0.025 mm, every mask web >= 0.15 mm (IN/OUT included)',
-                                'Unpowered, TP18 (P5_RAW) to J2/J3 pin 11/12 (+5V) must not read a short in either meter '
-                                'polarity: ~%.0fk / ~%.0fk plus a clamp-diode drop via GND (calcs.json bringup_tp18); near '
-                                '0 ohm = U23 IN/OUT bridge bypassing the eFuse' % (
-                                    1 / (1 / (value('R11') + value('R12')) + 1 / (value('R107') + value('R101') + value('R102'))
-                                         + 1 / (value('R95') + value('R96'))) / 1e3,
-                                    (value('R77') + value('R78') + value('R79')) / 1e3)],
+                                    'converter_OVP_max_V': {'+12V': round(ovp12_max, 2)},
+                                    'corner_overlap_with_converter_OVP': {'+12V': ov12[0] < ovp12_max},
+                                    'U21_cathode_current_min_mA': round(ik_min * 1e3, 3),
+                                    'OV_N_members': sorted(f'{r}.{q}' for r, q in nets[netids['OV_N']])},
+            'plus12_buckboost': {'U2': 'TPS552892QWRYQRQ1 (TI RYQ0021B)', 'pin_roles': 'native symbol = TI SLVSGT7 Table 5-1',
+                                 'setpoint_V': [round(p12_min, 3), round(VREF_TPS552892[1] * (1 + value('R8') / value('R9')), 3),
+                                                round(p12_max, 3)],
+                                 'fSW_kHz': round(1000 / (0.05 * value('R110') + 35) * 1e3),
+                                 'cc_limit_A': [round(0.048 / (value('R109') * 1.01 * 1.0075), 3),
+                                                round(0.052 / (value('R109') * 0.99 * 0.9925), 3)],
+                                 'wiring': 'L1 SW1-SW2; C10 BOOT1-SW1, C9 BOOT2-SW2; MODE/EXTVCC/VCC + C82 (FPWM, internal '
+                                           'LDO); DITH/PGND/AGND GND; R110 FSW; VOUT/ISP -> R109 -> +12V/ISN; FB R8 (+12V) '
+                                           '/ R9; COMP R111 + C83; PG/CC/CDC open; EN/UVLO = MAIN_OK',
+                                 'rails_exact': {k: sorted(f'{r}.{q}' for r, q in v) for k, v in RAILS_S90.items()},
+                                 'reverse_blocking': 'none (owner decision S9.0): no ideal-diode controller or series FET; '
+                                                     'R109 is the only series element (current sense, inside the converter)'},
+            'accepted_residuals': {
+                'reverse_current': {
+                    'decision': 'ACCEPTED (owner, 2026-11-02): no series reverse-blocking element on +12V or -12V',
+                    'verified_here': 'exact +12V / -12V / P12_VOUT memberships (no series element other than R109 inside '
+                                     'the converter), no ideal-diode controller or series-FET MPN; U4 EN_N is derived from '
+                                     'the rails only: ' + ', '.join(sorted(f'{r}.{q}' for r, q in nets[n('U4', 2)])),
+                    'consequence': 'a live +/-12V bus can enable and power U4 in an unpowered or latched-off module (FPWM can '
+                                   'pump energy into VIN): procedural rule, see calcs.json residuals.reverse_current',
+                    'rule': 'never connect an unpowered or latched-off module to a live bus; power the rack down first; '
+                            'never parallel J2/J3 with another supply'},
+                'rail_overvoltage': {
+                    'decision': 'ACCEPTED (owner, 2026-11-02): no voltage-triggered fuse or crowbar; the U20 guard + FAULT '
+                                'latch is the only response (crowbar vs eFuse deferred, open)',
+                    'verified_here': {'guard_+12V_V': [round(v, 3) for v in ov12], 'guard_-12V_magnitude_V':
+                                      [round(v, 3) for v in ovneg], 'OV_N_presets_FAULT': True},
+                    'consequence': 'a failed converter can put up to the input voltage (16.5 V in range) or, after a control '
+                                   'failure, the VIN bank energy onto a rail; the latch opens U5 but does not discharge the '
+                                   'rails: downstream modules must be qualified (calcs.json residuals.rail_overvoltage)'}},
+            'plus5_removed': {'S7_refs_removed': sorted(circuit_s8.S9_REMOVED),
+                              'S8_refs_dropped': sorted(circuit_s8.S8_PLUS5_DROPPED),
+                              'nets_absent': sorted(circuit_s8.PLUS5_NETS), 'header_pins_11_12': 'no-connect',
+                              'ANY_BAD': 'NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)',
+                              'spare_comparators': {'U18': 'out 2 open, - REF_GOOD, + GND',
+                                                    'U20': 'out 1 and out 13 open, - REF_OV, + GND'},
+                              'U5_nets': 'MAIN_* (EF_* in S7)'},
             'startup_arming': {'topology': 'STARTED = U12 A (PRE_N = START_N = NAND(MAIN_LED_OK, RUN), CLR_N = RESET_N, '
                                            'CLK low); TIMER_GO = RUN AND STARTED; ARMED = U11 output',
                                'TIMER_GO': 'RUN AND STARTED', 'START_N': 'NAND(MAIN_LED_OK, RUN)',
@@ -858,14 +894,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
             'warnings': ['Arithmetic stacks every tolerance at once; it is a screen, not a rating.',
                          'Digital truth checks and the arming timelines use datasheet timings; they do not model analog '
                          'propagation, comparator/LED timing or MOSFET transients.',
-                         'No routed PCB, thermal/startup/fault-injection qualification.',
-                         '<6 V at the header is NOT guaranteed (review C2): U23 OVLO response is 1.2 us typical with no '
-                         'maximum; neither D10 nor a bench-supply ceiling bounds it. The 3 us delay case reaches 6.33 V and '
-                         'stays above 6 V for ~193 us (rest of the 200 us window; with reverse blocking only R77-R79 '
-                         'or the modules discharge it); the 30 V / 1 ohm / 3 us stress case reaches 6.52 V (calcs.json).',
-                         'OVLO-only pulses may auto-recover during startup or below status-filter duration; after a genuine '
-                         'OVLO trip U23 may stay open at stacked corners (setpoint max above the release minimum) and the '
-                         'common latch then holds every rail off until RESET.'],
+                         'No routed PCB, thermal/startup/fault-injection qualification.'],
             'order_ready': False}
 
 

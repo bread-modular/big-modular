@@ -21,7 +21,7 @@ import render_stack as rs  # noqa: E402
 
 BOARD = HERE.parent / 'hardware/single/usb-power-45w-single.kicad_pcb'
 FONT = rs.FONT
-PCOL = dict(rs.PCOL, **{'-12V': (106, 61, 154), '+12V': (44, 160, 44), '+5V': (23, 190, 207)})
+PCOL = dict(rs.PCOL, **{'-12V': (106, 61, 154), '+12V': (44, 160, 44)})
 HAND = ('J1', 'D8', 'J2', 'J3')
 DRIVERS = [(22.0, 15.0), (106.5, 15.0)]       # bracket M3 Y/Z: F-side nut + 8 mm driver circle
 
@@ -96,7 +96,7 @@ def render(board_path, out, title='', zoom=None):
             dr.text((x, yy), r, fill='black', font=font, anchor='mm')
     dr.text((10, H - 40), title or 'S8 single board, F face from +X (Y right, Z depth down, panel at top)',
             fill='black', font=ImageFont.truetype(FONT, 19))
-    dr.text((10, H - 18), 'Pads by net: VIN red, GND grey, +12V green, +5V cyan, -12V purple, VPD orange, V3V3 olive. '
+    dr.text((10, H - 18), 'Pads by net: VIN red, GND grey, +12V green, -12V purple, VPD orange, V3V3 olive. '
             'Blue circles: bracket nut + 8 mm driver keep-out. Yellow: 2 mm hand-solder rings (J1, D8, J2, J3). '
             'Thin green: 1 mm edge band. Red courtyard = overlap.', fill=(60, 60, 60), font=ImageFont.truetype(FONT, 14))
     img.save(out)

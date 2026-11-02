@@ -33,6 +33,11 @@ import mechanics45 as m45  # noqa: E402
 import mechanics_s8  # noqa: E402
 
 WORK = Path(os.environ['S8_ASM_WORK'])
+# Footprints without a KiCad 3D model get a maximum-body box: {ref: (L along Y, W along Z, H above F.Cu) mm}.
+# S9.0 step 1: the U23 RPW0010A proxy left with +5V. Step 2: U2 TPS552892-Q1 (TI RYQ0021B, no 3D model): maximum body
+# 5.1 x 3.1 x 1.0 mm (drawing 4228792/A); U2 is turned 90 deg on the board, so the 5.1 mm side runs along Z.
+BODY_PROXIES = {'U2': (3.1, 5.1, 1.0)}         # (along Y, along Z, height) mm
+
 G = mechanics_s8.geometry()
 FP = json.loads((WORK / 'footprints.json').read_text())
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
@@ -140,10 +145,9 @@ def main():
     for r in G['inductor_body']['parts']:
         y, z = FP[r]['centre_YZ']
         proxies[r] = [box([[FCU, FCU + H], [y - L / 2, y + L / 2], [z - W / 2, z + W / 2]])]
-    # RPW0010A body envelope, TI drawing 4225183/A, 2.1 x 2.1 x 1.0 mm maximum.
-    # Not an exact lead/body STEP model; include explicitly in the interference screen.
-    y, z = FP['U23']['centre_YZ']
-    proxies['U23'] = [box([[FCU, FCU + 1.0], [y-1.05, y+1.05], [z-1.05, z+1.05]])]
+    for r, (bl, bw, bh) in BODY_PROXIES.items():        # parts whose footprint has no 3D model: maximum-body boxes
+        y, z = FP[r]['centre_YZ']
+        proxies[r] = [box([[FCU, FCU + bh], [y - bl / 2, y + bl / 2], [z - bw / 2, z + bw / 2]])]
     c = contract()
     brackets = []
     for y in c['Y_centres']:
@@ -160,7 +164,8 @@ def main():
     zl = G['depth_target']['limit_from_panel_front_mm']
     limits = [box([[G['panel_mm'][0], G['panel_mm'][0] + 0.05], [0, G['panel_mm'][1]], [0, zl]]),
               box([[0, G['panel_mm'][0]], [0, G['panel_mm'][1]], [zl, zl + 0.05]])]
-    groups = {'inductors': ['L1', 'L2', 'L3'], 'headers': ['J2', 'J3'], 'led': ['D8'], 'ics': [], 'passives': []}
+    groups = {'inductors': list(G['inductor_body']['parts']), 'headers': ['J2', 'J3'], 'led': ['D8'], 'ics': [],
+              'passives': []}
     cat_parts = {k: [] for k in groups}
     for ref, shapes in parts.items():
         k = next((g for g, refs in groups.items() if ref in refs), None)
@@ -174,8 +179,9 @@ def main():
         'passives': (cat_parts['passives'], 'R / C (KiCad library models)'),
         'headers': (cat_parts['headers'], 'J2/J3 2x8 box headers (THT, KiCad model)'),
         'led': (cat_parts['led'], 'D8 3 mm MAIN LED (THT)'),
-        'inductors': (sum((proxies[r] for r in groups['inductors']), []), 'L1-L3 PROXY 10.3 x 10.3 x 4.0 (no model)'),
-        'ui_envelopes': (proxies['J1'] + proxies['SW1'] + proxies['U23'], 'J1 / SW1 / U23 maximum body envelopes (no model)'),
+        'inductors': (sum((proxies[r] for r in groups['inductors']), []), 'L1/L3 PROXY 10.3 x 10.3 x 4.0 (no model)'),
+        'ui_envelopes': (proxies['J1'] + proxies['SW1'] + sum((proxies[r] for r in BODY_PROXIES), []),
+                         'J1 / SW1 maximum body envelopes' + ''.join(f' / {r}' for r in BODY_PROXIES) + ' (no model)'),
         'brackets': (brackets, 'Plain M3 L brackets x2 (tools/bracket45.py)'),
         'screws': (f['screws'], 'M3x8 pan (panel) + M3x8 90deg flat (side) PROXIES'),
         'nuts': (f['nuts'], 'M3 hex nut AF5.5 x 2.4 PROXIES'),

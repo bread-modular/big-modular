@@ -1,0 +1,198 @@
+{
+  "note": "S9.0 live exact-code rows (shared --strict-live lookup, one request per code) for the codes the 15 V / +12V buck-boost step adds: U2 TPS552892QWRYQRQ1 (C22375748), R109 HoLR1206 15 mOhm 1 W (C601098) and R1 56k (C23206, Basic); every other S9.0 part reuses a code of the dated sourcing.json snapshot (R83 100k = the R2 Basic line). No reverse-blocking part (owner decision). Raw snapshots: research/s90/catalog-current (git-ignored). Dated public-catalog observations, not reservations, quotes or order acceptance.",
+  "codes": {
+    "C22375748": {
+      "code": "C22375748",
+      "mpn": "TPS552892QWRYQRQ1",
+      "manufacturer": "Texas Instruments",
+      "package": "VQFN-HR-21(3x5)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 3274,
+      "unit_price_q1_usd": 6.359,
+      "price_ladder_usd": [
+        [
+          1,
+          9,
+          6.359
+        ],
+        [
+          10,
+          29,
+          5.437
+        ],
+        [
+          30,
+          99,
+          4.8743
+        ],
+        [
+          100,
+          101,
+          4.4018
+        ],
+        [
+          102,
+          103,
+          4.4018
+        ],
+        [
+          104,
+          -1,
+          4.4018
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T03:37:26Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C22375748"
+        },
+        "sha256": "4286efa2f152967d0bc0519b2483879af1332b630733a87f5ebda106acc5afeb",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "U2"
+      ]
+    },
+    "C601098": {
+      "code": "C601098",
+      "mpn": "HoLR1206-1W-15mR-1%-75ppm",
+      "manufacturer": "Milliohm",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 16541,
+      "unit_price_q1_usd": 0.058,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.058
+        ],
+        [
+          100,
+          299,
+          0.0488
+        ],
+        [
+          300,
+          999,
+          0.0442
+        ],
+        [
+          1000,
+          4999,
+          0.0407
+        ],
+        [
+          5000,
+          9999,
+          0.0309
+        ],
+        [
+          10000,
+          -1,
+          0.0296
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T03:37:28Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C601098"
+        },
+        "sha256": "976a09416b38a865347441287f19989187a2e3ed5b9174c2173c8402f3e2da89",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R109"
+      ]
+    },
+    "C23206": {
+      "code": "C23206",
+      "mpn": "0603WAF5602T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 811903,
+      "unit_price_q1_usd": 0.0027,
+      "price_ladder_usd": [
+        [
+          1,
+          999,
+          0.0027
+        ],
+        [
+          1000,
+          4999,
+          0.0021
+        ],
+        [
+          5000,
+          9999,
+          0.0018
+        ],
+        [
+          10000,
+          49999,
+          0.0014
+        ],
+        [
+          50000,
+          50199,
+          0.0012
+        ],
+        [
+          50200,
+          -1,
+          0.0012
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T03:37:31Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23206"
+        },
+        "sha256": "1d45925168504dbcc2ae71142c6048286f9ee6961c2d5c74a022e3a5fcdbf6b1",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R1"
+      ]
+    }
+  },
+  "basic_only_policy": {
+    "decision": "ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other passive stays Basic. Not an order approval.",
+    "refs": [
+      "R93",
+      "R94",
+      "R98",
+      "R99"
+    ],
+    "why": "They set protection thresholds: the U20 overvoltage guard bands (+12V R93/R94, -12V R98/R99). With 1 % + 1 % TCR Basic parts the -12V guard minimum falls below the stacked converter peak (calcs.json basic_only_counterfactual). The searched JLC catalog has no Basic 0.1 % 0603 resistor (S8.4 keyword snapshots; every hit Extended). S9.0: the +5V precision parts (R95/R96, R101/R102, R11/R12) left with +5V.",
+    "cost": "Extended per-unique-part fees apply to the precision codes (not included in the q1 parts totals); all selected codes were observed Economic-eligible.",
+    "not_done": "No Basic substitute was qualified; replacing them with 1 % parts would need a new threshold design."
+  },
+  "failures": []
+}
