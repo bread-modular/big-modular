@@ -42,6 +42,11 @@ SOURCES = {
                 'tSS 4 ms, OCP blanking 18 ms typ at power-up, hiccup 76 ms, COUT <= ~10 x design value or 1000 uF',
     'TPS1663': 'TI SLVSET9G (https://www.ti.com/lit/ds/symlink/tps1663.pdf): tSD(dly) SHDN -> FET off 0.8-1.5 us, '
                'I(dVdT) 1.775/2/2.225 uA, GAIN(dVdT) 23.5/25/26',
+    'TPS1663_thermal': 'TI SLVSET9G 6.4 (https://www.ti.com/lit/ds/symlink/tps1663.pdf): PWP (HTSSOP-20) RthetaJA 32.2, '
+                       'RthetaJC(top) 23.4, RthetaJB 10, psiJT 0.3, psiJB 9.9, RthetaJC(bot) 3.6 C/W (JEDEC 2s2p); RON 53 '
+                       'mOhm max (-40..125 C)',
+    'LMR38020_thermal': 'TI SNVSC40E 7.4 (https://www.ti.com/lit/ds/symlink/lmr38020.pdf): DDA RthetaJA 42.9 C/W (JEDEC), '
+                        '29 C/W (TI EVM), RthetaJC(bot) 4.3 C/W',
     'TPS3808': 'TI SBVS050N (https://www.ti.com/lit/ds/symlink/tps3808.pdf): delay (s) = CT (nF) / 175 + 0.5 ms; '
                'open-CT delay 12/20/28 ms (+-40 %)',
     'TPS7A16': 'TI SBVS171F (https://www.ti.com/lit/ds/symlink/tps7a16.pdf): overall accuracy +-2 %',
@@ -1140,9 +1145,14 @@ def vin_clamp_coordination(val):
             'tested_by': 'IN-2 (OVP trip/recovery at TP1) and CL-1/T1-D (D24 clamp at TP26/TP27)'}
 
 
+TPS1663_RTH_JA_PWP = 32.2      # C/W, SOURCES TPS1663_thermal (JEDEC 2s2p with exposed-pad vias)
+
+
 def thermal_contract(val, eff):
     """S9.2 item 6: the U2 / R109 / D10 screens with the board they assume (tools/s92_contract.THERMAL). The JEDEC
-    RthetaJA is not assumed for the unrouted board: the rating is conditional on the routing contract and TH-1..TH-3."""
+    RthetaJA is not assumed for the unrouted board: the rating is conditional on the routing contract and TH-1..TH-3.
+    S9.2b: via-in-pad is prohibited; via_change bounds the cost of the beside-pad thermal fields (U5 Tj at the rated
+    input, U2 unchanged, U4/U9 DeltaR) and asserts that the published rating still holds."""
     import s92_contract
     b = plus12_buckboost(val, eff)
     worst = max(b['losses'].values(), key=lambda x: x['P_IC_W'])
@@ -1150,10 +1160,43 @@ def thermal_contract(val, eff):
     op = p12(val)
     p_r109 = op['icc_A'][2] ** 2 * val('R109') * R109_TOL[1]
     d10_w = INPUT_PATH['D10_V'] * PD_CONTRACT['A']
+    # S9.2b: no via-in-pad. DeltaR of the beside-pad fields against the drilled pads they replace (s92_contract model,
+    # an upper bound on the RthetaJA change); U5 Tj at the rated 3 A input with and without it, U2 unchanged.
+    model = s92_contract.thermal_via_model()
+    u5_w = PD_CONTRACT['A'] ** 2 * INPUT_PATH['U5_RON_max_ohm']
+    u5_rth, u5_d = TPS1663_RTH_JA_PWP, model['U5']['delta_R_K_W']
+    u5 = {'P_W_at_3A_input': round(u5_w, 3), 'basis': '3.0 A rated input (15 V / 3 A PD contract) x RON 53 mOhm max',
+          'RthetaJA_datasheet_C_W': u5_rth, 'delta_R_beside_pad_C_W': u5_d,
+          'RthetaJA_S92b_C_W': round(u5_rth + u5_d, 1),
+          'Tj_at_50C_in_pad_vias_C': round(50 + u5_w * u5_rth, 1),
+          'Tj_at_50C_S92b_C': round(50 + u5_w * (u5_rth + u5_d), 1),
+          'thermal_penalty_C': round(u5_w * u5_d, 1), 'limit_C': 125,
+          'allowed_RthetaJA_for_125C_C_W': round((125 - 50) / u5_w, 1),
+          'holds': 50 + u5_w * (u5_rth + u5_d) <= 125,
+          'contract': s92_contract.THERMAL['U5']['requirements']}
+    u2 = {'via_change': ('none: the RYQ HotRod package has no exposed pad and its lands were never drilled; its >= 10 '
+                         'PGND vias were already standard 0.3/0.6 mm vias beside the bars (thermal.U2.PGND_vias), and the '
+                         'RA_NOVIA_U2_BARS area now also stops a router from drilling the bars'),
+          'delta_R_C_W': 0.0, 'Tj_at_50C_rating_C': round(50 + rated['P_IC_W'] * TPS552892_DS['rth_ja'][0], 1),
+          'Tj_at_50C_limit_C': worst['Tj_at_50C_ambient_JEDEC_C'], 'thermal_penalty_C': 0.0}
+    via_change = {'decision': s92_contract.VIA_IN_PAD['decision'], 'model': s92_contract.THERMAL_MODEL['basis'],
+                  'fields': model, 'U5': {k: u5[k] for k in ('Tj_at_50C_in_pad_vias_C', 'Tj_at_50C_S92b_C',
+                                                              'thermal_penalty_C', 'holds')},
+                  'U2': u2,
+                  'U4': {'delta_R_C_W': model['U4']['delta_R_K_W'],
+                         'note': 'no U4 loss model (TH-3): the beside-pad field barely changes the board path because '
+                                 'the -12V vias run the full board thickness either way'},
+                  'U9': {'delta_R_C_W': model['U9']['delta_R_K_W'],
+                         'note': 'always-on logic LDO, small load; the four 0.2 mm in-pad holes were also non-standard'},
+                  'rating': {'published_A': PUBLISHED_A, 'changed': not u5['holds'],
+                             'why': ('unchanged: U5 stays far below 125 C at the rated 3 A input and U2\'s arrangement '
+                                     'is unchanged' if u5['holds'] else 'U5 above 125 C: reduce the input rating')}}
+    assert u5['holds'], 'publish a reduced input rating'
     return {'status': 'CONDITIONAL: valid only if the routed board meets placement.json routing_contract.thermal; '
                       'confirmed by post-prototype TH-1..TH-3, not by this screen',
             'U2': {'P_IC_W_at_limit': worst['P_IC_W'], 'P_IC_W_at_rating': rated['P_IC_W'],
                    'RthetaJA_model_C_W': TPS552892_DS['rth_ja'][0], 'Tj_at_50C_limit_C': worst['Tj_at_50C_ambient_JEDEC_C'],
+                   'Tj_at_50C_rating_C': u2['Tj_at_50C_rating_C'], 'via_change': u2['via_change'],
                    'allowed_RthetaJA_for_125C_C_W': {'at_CC_limit': round((125 - 50) / worst['P_IC_W'], 1),
                                                      'at_2.4A_rating': round((125 - 50) / rated['P_IC_W'], 1)},
                    'contract': s92_contract.THERMAL['U2']['requirements']},
@@ -1163,6 +1206,8 @@ def thermal_contract(val, eff):
                      'contract': s92_contract.THERMAL['R109']['requirements']},
             'D10': {'P_W_at_3A': round(d10_w, 2), 'required_RthetaJA_C_W': round((125 - 50) / d10_w, 1),
                     'contract': s92_contract.THERMAL['D10']['requirements']},
+            'U5': u5,
+            'via_change': via_change,
             'acceptance': 'TH-1 U2/R109 case temperature at 2.95 A, TH-2 D10/U5 at 3 A input, TH-3 U4 at 0.8 A; '
                           'docs/s8-single/routing-notes.md'}
 
@@ -1177,9 +1222,9 @@ def area(parts):
              'C1206': 'C_1206_3216Metric', 'F1206': 'Fuse_1206_3216Metric', 'SMA': 'D_SMA', 'SMB': 'D_SMB',
              'SMC': 'D_SMC', 'LED0603': 'LED_0603_1608Metric', 'SOT89': 'SOT-89-3', 'SOT23': 'SOT-23',
              'USBC': 'HRO-TYPE-C-31-M-12', 'SSOP10': 'SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm', 'SOT583': 'SOT-583-8',
-             'PPAD8': 'TI_SO-PowerPAD-8_ThermalVias',
-             'PWP20': 'HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias',
-             'TP': 'TestPoint_Pad_D1.0mm', 'DGN8': 'TPS7A16_DGN0008C', 'SOT235': 'SOT-23-5', 'SOT236': 'SOT-23-6',
+             'PPAD8': 'TI_SO-PowerPAD-8_NoViaInPad',          # S9.2b hole-free copies (tools/s92_parts.py)
+             'PWP20': 'HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad',
+             'TP': 'TestPoint_Pad_D1.0mm', 'DGN8': 'TPS7A16_DGN0008C_NoViaInPad', 'SOT235': 'SOT-23-5', 'SOT236': 'SOT-23-6',
              'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm', 'KELVIN1206': 'R_Shunt_1206_KelvinSplit_RLM12', 'TP15': 'TestPoint_Pad_D1.5mm', 'SLO1040': 'L_SLO1040H6R8MTT', 'RYQ21': 'TI_RYQ0021B_VQFN-HR-21_3x5mm',
              'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621', 'TL3340': 'SW_TL3340AF160QG_HandSolder',
              'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge'}

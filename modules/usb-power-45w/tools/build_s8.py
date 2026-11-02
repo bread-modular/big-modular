@@ -34,29 +34,18 @@ STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
 REV = 'S9.2'
 from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
+import s92_contract  # noqa: E402
 import s92_parts  # noqa: E402
 FP_S8 = {**bs.FP, **FP_S90, **s92_parts.FP_S92}
-# S9.2 routing contract (docs/s8-single/routing-notes.md): netclasses by net-name pattern. Every class keeps the 0.2 mm
-# board clearance (the TPS552892 RYQ lands are 0.20-0.25 mm apart); only the default track width differs. Patterns match
-# the full hierarchical net names.
-NETCLASSES = {
-    'Power': (1.0, ['GND', '*/VPD', '*/VBUS', '*/MAIN_IN', 'VIN', '*/P12_VOUT', '+12V', '-12V']),
-    'Switch': (1.0, ['*U2-SW1*', '*U2-SW2*', '*U4-SW*']),
-    'Sense': (0.2, ['*/P12_ISP', '*/P12_ISN']),
-    'Quiet': (0.3, ['*/AGND_U2', '*U2-FB*', '*U2-COMP*', '*/FB_N', '*/EN_N', '*/N_EN_*']),
-}
+# S9.2 routing contract (docs/s8-single/routing-notes.md 3.2): netclasses by net-name pattern, owned by
+# tools/s92_contract.py NETCLASSES (also written by tools/place_s8.py --apply-rules), so a schematic rebuild writes the
+# same classes. Every class keeps the 0.2 mm board clearance; patterns match the full hierarchical net names.
+NETCLASSES = {name: (c['width'], c['patterns']) for name, c in s92_contract.NETCLASSES.items()}
 
 
 def routing_netclasses(meta):
-    """Write the S9.2 netclasses into a project dict (clearance unchanged, default widths per class)."""
-    ns = meta['net_settings']
-    base = next(c for c in ns['classes'] if c['name'] == 'Default')
-    ns['classes'] = [c for c in ns['classes'] if c['name'] == 'Default']
-    for prio, (name, (width, _)) in enumerate(NETCLASSES.items()):
-        ns['classes'].append({**base, 'name': name, 'track_width': width, 'priority': prio,
-                              'diff_pair_width': 0.2, 'diff_pair_gap': 0.2})
-    ns['netclass_patterns'] = [{'netclass': name, 'pattern': pat} for name, (_, pats) in NETCLASSES.items() for pat in pats]
-    return meta
+    """Write the S9.2 netclasses into a project dict (tools/s92_contract.py project_netclasses)."""
+    return s92_contract.project_netclasses(meta)
 
 
 def uid(key):

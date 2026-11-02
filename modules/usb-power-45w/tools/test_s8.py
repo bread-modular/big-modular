@@ -16,7 +16,10 @@ recorded with bench-test conditions, the 20 V retarget delta, and a review recor
 R109 on a 4-terminal Kelvin land with its own sense nets, the R115 N_EN_RETURN default, the U4 enable truth table and the
 3 A source plant DERIVED from the native netlist (negative controls break single nets and must fail), the thermal rating
 conditional on the routing contract, the routing-contract screen of the 1.5 mm acceptance pads, and routing-notes.md
-read back against the netlist, the contract and the review record (mutated copies must fail).
+read back against the netlist, the contract and the review record (mutated copies must fail). S9.2b: via-in-pad is
+prohibited (hole-free U4/U5/U9 lands, standard 0.3/0.6 mm tented vias only, beside-pad thermal fields, DRC rules and
+RA_NOVIA_* areas; a copy with a via in the U5 pad, a 0.2 mm via and a blind via must fail the checker and native DRC)
+and the thermal consequence is re-derived (U5 Tj at the rated input, U2 unchanged, rating unchanged only if both hold).
 
   python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_s8.py' -v
 """
@@ -387,7 +390,9 @@ class PlacedBoard(unittest.TestCase):
         r = json.loads(out[out.index('{'):])
         self.assertTrue(r['pass'], {k: r[k] for k in ('parked_parts', 'courtyard_overlaps', 'edge_rule_findings_not_approved')})
         self.assertEqual(r['parts_on_board'], COMPONENTS)
-        self.assertEqual((r['parked_parts'], r['parts_on_B'], r['tracks'], r['zones']), ([], [], 0, 0))
+        # S9.2b: the only copper is the beside-pad thermal fields (26 vias + 26 spokes, 3 B.Cu landing pours); no routing
+        self.assertEqual((r['parked_parts'], r['parts_on_B'], r['routed_items'], r['tracks'], r['zones']),
+                         ([], [], 0, 52, 3))
         self.assertEqual(set(r['headers_vs_contract']), {'J2', 'J3'})
         self.assertTrue(all(h['matches'] for h in r['headers_vs_contract'].values()))
         self.assertEqual(r['board_rear_edge_Z_from_panel_front'], 50.0)
@@ -457,6 +462,9 @@ class ReviewRecord(unittest.TestCase):
                                      text=True).stdout.split())
         self.assertEqual(sorted(set(hashed) - tracked), [], 'the review record must hash only tracked files')
         for rel in ('tools/s90_parts.py', 'hardware/USBPOWER45.pretty/TI_RYQ0021B_VQFN-HR-21_3x5mm.kicad_mod',
+                    'hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_NoViaInPad.kicad_mod',
+                    'hardware/USBPOWER45.pretty/TPS7A16_DGN0008C_NoViaInPad.kicad_mod',
+                    'hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad.kicad_mod',
                     'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb', 'tools/s92_parts.py', 'tools/s92_netlist.py',
                     'tools/s92_contract.py', 'hardware/USBPOWER45.pretty/R_Shunt_1206_KelvinSplit_RLM12.kicad_mod',
                     'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod', 'docs/s8-single/routing-notes.md',
@@ -958,7 +966,10 @@ def routing_notes_problems(notes, doc):
     screen = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
     out += [f'PENDING item {x} not listed' for x in screen['pending_after_routing'] if f'`{x}`' not in notes]
     out += [f'rule missing: {x}' for x in ('C82.2 is PGND', 'R_Shunt_1206_KelvinSplit_RLM12', 'TestPoint_Pad_D1.5mm',
-                                           'at most one AGND_U2 via pair') if x not in notes]
+                                           'at most one AGND_U2 via pair', 'No via-in-pad', '0.3 mm drill / 0.6 mm pad',
+                                           'Pre-routing checklist', 'S92_no_via_in_pad', 'RA_NOVIA_U5_EP')
+            if x not in notes]
+    out += ['S9.2b changelog missing from s8-single-board.md'] if '## S9.2b' not in doc else []
     if ROUTING_READY not in doc:
         out.append('routing-ready statement missing from s8-single-board.md')
     if '(s8-single/routing-notes.md)' not in doc:
@@ -1180,6 +1191,128 @@ class S92RoutingReady(unittest.TestCase):
         screen = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
         self.assertTrue({'thermal.U2.PGND_vias', 'thermal.R109.force_copper', 'thermal.D10.copper'}
                         <= set(screen['pending_after_routing']), 'copper/via items stay PENDING on the unrouted board')
+
+    # ---- S9.2b: no via-in-pad, standard JLCPCB vias only, beside-pad thermal fields, thermal consequence ---------------
+    def test_no_via_in_pad_footprints(self):
+        """The three drilled exposed-pad lands are replaced by hole-free copies generated from the pinned S7 files (which
+        stay drilled for the S7 boards: negative control), and every footprint the netlist uses has no hole in a pad."""
+        import s92_parts
+        from sexp import parse
+        pretty = MODULE / 'hardware/USBPOWER45.pretty'
+        root = ET.parse(self.xml).getroot()
+        fps = {c.get('ref'): c.findtext('footprint') for c in root.find('components')}
+        for (ref, key), holes in zip((('U4', 'PPAD8'), ('U5', 'PWP20'), ('U9', 'DGN8')), (8, 15, 4)):
+            src, name = s92_parts.NO_VIA_IN_PAD[key]
+            self.assertEqual(fps[ref], f'USBPOWER45:{name}', ref)
+            self.assertEqual((pretty / f'{name}.kicad_mod').read_text(), s92_parts.no_via_footprint(key), ref)
+            self.assertEqual(verify_s8.holes_in_pads(parse((pretty / f'{name}.kicad_mod').read_text())), [], ref)
+            self.assertEqual(len(verify_s8.holes_in_pads(parse((pretty / f'{src}.kicad_mod').read_text()))), holes,
+                             f'{ref}: the pinned S7 land must still be the drilled one (negative control)')
+            old, new = s92_parts.exposed_pad(key, copy=False), s92_parts.exposed_pad(key)
+            self.assertEqual((old['copper'], old['window'], new['holes']), (new['copper'], new['window'], []), ref)
+        for name in set(fps.values()):
+            f = parse((pretty / (name.split(':')[1] + '.kicad_mod')).read_text())
+            self.assertEqual(verify_s8.holes_in_pads(f), [], name)
+        val = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())['no_via_in_pad']
+        self.assertEqual((val['plated_holes_in_pads'], val['beside_pad_vias'], val['in_pad_holes_removed']),
+                         (0, {'U5': 10, 'U4': 10, 'U9': 6}, {'U5': 15, 'U4': 8, 'U9': 4}))
+
+    def test_standard_vias_and_thermal_fields_on_board(self):
+        """Board: every via 0.3/0.6 mm through, tented, unfilled, beside the pads; the thermal fields exactly as the
+        contract; the DRC rules and RA_NOVIA_* areas in place. A copy with a via in the U5 pad, a 0.2 mm via and a blind
+        via must fail both the checker and native DRC."""
+        import shutil
+        import check_s8_board
+        import s92_contract
+        rec = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['pre_routing_checklist']['items']
+        v, f = rec['via_in_pad'], rec['thermal_vias']
+        self.assertTrue(v['ok'] and f['ok'], (v, f['missing']))
+        self.assertEqual((v['footprint_holes_in_pads'], v['vias'], v['non_standard_vias'], v['via_overrides']), ({}, 26, [], []))
+        self.assertEqual(v['board_setup'], {'tenting_front': True, 'tenting_back': True, 'covering_front': False,
+                                            'covering_back': False, 'plugging_front': False, 'plugging_back': False,
+                                            'capping': False, 'filling': False})
+        self.assertEqual({r: (x['vias'], x['spokes_into_pad'], x['landing_pour']) for r, x in f['fields'].items()},
+                         {'U5': (10, 10, 'TV_U5_B'), 'U4': (10, 10, 'TV_U4_B'), 'U9': (6, 6, 'TV_U9_B')})
+        areas = {a['name']: a['ok'] for a in rec['rule_areas']['areas']}
+        self.assertTrue(all(areas[f'RA_NOVIA_{x}'] for x in ('U5_EP', 'U4_EP', 'U9_EP', 'U1_EP', 'U2_BARS')), areas)
+        dru = BOARD.with_suffix('.kicad_dru').read_text()
+        for rule in ('(rule "S92_via_standard"', '(constraint via_diameter (min 0.6mm) (opt 0.6mm) (max 0.6mm))',
+                     '(constraint hole_size (min 0.3mm) (opt 0.3mm) (max 0.3mm))', '(constraint annular_width (min 0.15mm))',
+                     '(constraint disallow micro_via blind_via buried_via)', '(constraint hole_clearance (min 0.3mm))',
+                     '(rule "S92_no_via_in_pad"', "(condition \"A.Type == 'Via' && B.Type == 'Pad'\")"):
+            self.assertIn(rule, dru)
+        self.assertNotIn('S92_no_via_in_SMD_pad', dru)
+        if DESIGN.resolve() != MODULE.resolve():
+            return
+        import pcbnew
+        with tempfile.TemporaryDirectory() as tmp:
+            for suf in ('.kicad_pcb', '.kicad_pro', '.kicad_dru'):
+                shutil.copyfile(BOARD.with_suffix(suf), Path(tmp) / ('bad' + suf))
+            (Path(tmp) / 'fp-lib-table').write_text((BOARD.parent / 'fp-lib-table').read_text().replace(
+                '${KIPRJMOD}/..', str(BOARD.parent.parent)))
+            bad = Path(tmp) / 'bad.kicad_pcb'
+            b = pcbnew.LoadBoard(str(bad))
+            gnd = b.FindNet('GND')
+            for x, y, d, h, kind in ((60.05, 80.3, 0.6, 0.3, None), (70.0, 60.0, 0.45, 0.2, None),
+                                     (100.0, 60.0, 0.6, 0.3, pcbnew.VIATYPE_BLIND)):
+                via = pcbnew.PCB_VIA(b)
+                if kind is not None:
+                    via.SetViaType(kind)
+                    via.SetLayerPair(pcbnew.F_Cu, pcbnew.In1_Cu)
+                via.SetPosition(pcbnew.VECTOR2I(pcbnew.FromMM(x), pcbnew.FromMM(y)))
+                via.SetDrill(pcbnew.FromMM(h))
+                via.SetWidth(pcbnew.FromMM(d))
+                via.SetNet(gnd)
+                b.Add(via)
+            pcbnew.SaveBoard(str(bad), b)
+            r = check_s8_board.check(bad)
+            pv = r['pre_routing_checklist']['items']['via_in_pad']
+            self.assertFalse(r['pass'] or pv['ok'])
+            self.assertEqual(len(pv['non_standard_vias']), 2)
+            self.assertIn('U5.21', {p for _, p in pv['vias_closer_than_0p1mm_to_a_pad']})
+            out = Path(tmp) / 'drc.json'
+            subprocess.run(['kicad-cli', 'pcb', 'drc', '--format', 'json', '--severity-all', '-o', str(out), str(bad)],
+                           capture_output=True, check=False)
+            found = {(x['type'], x['description'].split("'")[1] if "'" in x['description'] else '')
+                     for x in json.loads(out.read_text())['violations']}
+            for want in (('items_not_allowed', 'RA_NOVIA_U5_EP'), ('clearance', 'S92_no_via_in_pad'),
+                         ('via_diameter', 'S92_via_standard'), ('drill_out_of_range', 'S92_via_standard'),
+                         ('annular_width', 'S92_via_standard'), ('items_not_allowed', 'S92_via_standard')):
+                self.assertIn(want, found)
+
+    def test_via_change_thermal_consequence(self):
+        """S9.2b thermal re-derivation: U5 (the only drilled pad that loses vias) gets the beside-pad DeltaR on top of the
+        datasheet RthetaJA and stays below 125 C at the rated 3 A input; U2 is unchanged (never drilled); the published
+        rating is unchanged only because both hold. Mutated model inputs must move the numbers the right way."""
+        import s8_calcs
+        import s92_contract
+        calcs = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['thermal_contract']
+        u5, ch = calcs['U5'], calcs['via_change']
+        self.assertEqual(ch['fields']['U5']['in_pad_holes_before'], 15)
+        self.assertEqual(ch['fields']['U5']['beside_pad_vias_after'], 10)
+        self.assertGreater(u5['delta_R_beside_pad_C_W'], 0, 'moving the vias out of the pad costs thermal resistance')
+        self.assertAlmostEqual(u5['Tj_at_50C_S92b_C'], 50 + u5['P_W_at_3A_input'] * u5['RthetaJA_S92b_C_W'], delta=0.1)
+        self.assertLessEqual(u5['Tj_at_50C_S92b_C'], 125)
+        self.assertGreater(u5['Tj_at_50C_S92b_C'], u5['Tj_at_50C_in_pad_vias_C'])
+        self.assertEqual((ch['U2']['delta_R_C_W'], ch['U2']['thermal_penalty_C']), (0.0, 0.0))
+        self.assertLessEqual(ch['U2']['Tj_at_50C_limit_C'], 125)
+        self.assertEqual(ch['rating']['published_A'], s8_calcs.PUBLISHED_A)
+        self.assertFalse(ch['rating']['changed'])
+        m = s92_contract.thermal_via_model()
+        self.assertEqual({r: x['delta_R_K_W'] for r, x in m.items()}, {r: x['delta_R_K_W'] for r, x in ch['fields'].items()})
+        # sanity of the model: thinner plating or fewer field vias make the beside-pad path worse
+        f = s92_contract.THERMAL_VIA_FIELDS[0]
+        ep = s92_contract.exposed_pad(f['key'])
+        geo = s92_contract.field_geometry(f, ep['copper'])
+        base = s92_contract.ep_path(ep, geo['vias'], 0.3, f['land'], geo['spoke_width'])['total_K_W']
+        fewer = s92_contract.ep_path(ep, geo['vias'][::2], 0.3, f['land'], geo['spoke_width'])['total_K_W']
+        self.assertGreater(fewer, base)
+        old = dict(s92_contract.THERMAL_MODEL)
+        try:
+            s92_contract.THERMAL_MODEL['plating_um'] = 10.0
+            self.assertGreater(s92_contract.ep_path(ep, geo['vias'], 0.3, f['land'], geo['spoke_width'])['total_K_W'], base)
+        finally:
+            s92_contract.THERMAL_MODEL.update(old)
 
     def test_acceptance_pads_and_netclasses(self):
         import s92_contract

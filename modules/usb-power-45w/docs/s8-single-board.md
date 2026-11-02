@@ -5,8 +5,26 @@
 > LMR38020 negative converter, S8.5 `STARTED` one-shot retained.
 > Prototype targets: **+12 V 2.4 A / −12 V 0.8 A, ≤33 W combined**. They are conditional on the routing contract and
 > on the post-prototype acceptance tests.
-> **175 references / 80 functional nets**; an overview sheet plus five pages; all components on F;
-> **0 tracks, 0 vias, 0 zones**. No PCB routing was performed.
+> **175 references / 80 functional nets**; an overview sheet plus five pages; all components on F.
+> No PCB routing was performed: the only copper beyond the pads is the S9.2b thermal-via fields at U5, U4 and U9
+> (26 standard vias, 26 spokes, 3 B.Cu landing pours), next to 15 rule areas. **No via-in-pad anywhere.**
+
+## S9.2b changelog: enforceable DRC contract, no via-in-pad (2026-11-02)
+
+The DeepSeek audit of `main` found that the routing contract was prose: the board had no rule areas and the
+`.kicad_dru` held only the two J1/SW1 edge allowances, so a router could break the AGND/PGND split, the Kelvin separation,
+the TVS clearances or the buck-boost keep-outs and DRC would still say 0. The owner then decided **no via-in-pad anywhere,
+standard JLCPCB vias only**. Details: [routing-notes 3.12 and 3.13](s8-single/routing-notes.md#312-drc-rules-net-classes-and-rule-areas).
+
+| Item | S9.2b change | Evidence |
+| --- | --- | --- |
+| Net classes | Eight contract classes in the project: VIN 2.5 mm, PWR_12V 1.5 mm, PWR_N12V 0.8 mm, GND 0.5 mm, SWITCH 1.0 mm (floor 0.5 mm), SENSE 0.2 mm (fixed), AGND_U2 0.25 mm, QUIET 0.25 mm, plus Default (six gate-drive/supply nodes). All keep the 0.2 mm board clearance; every class uses the 0.3/0.6 mm via | `board-p1.json` → `pre_routing_checklist.netclasses`; routing-notes 3.2 |
+| `.kicad_dru` | 22 generated `S92_*` rules after the R1 edge allowances: In1 solid, width floors, SWITCH no vias, SENSE pair (F.Cu only, no via, no pour, ≥ 0.3 mm from force copper), AGND_U2 trace-only with ≥ 0.3 mm to PGND, quiet ≥ 0.5 mm from switch nodes, every D1/D24/D26 pad ≥ 0.4 mm from other nets, U2 cell/hot-loop/island net limits, solid TVS and hot-loop pad connections, and the via rules below | `pre_routing_checklist.drc_rules`; routing-notes 3.12 |
+| Rule areas | 15 `RA_*` areas on the board (the board had none): U2 cell, hot loops, B.Cu under L1/SW, In2 under L1/L3, the three TVS lands, the AGND island, the sense escape, and five no-via areas on the U5/U4/U9/U1 exposed pads and the U2 bars | `pre_routing_checklist.rule_areas` |
+| Post-routing screen | What DRC cannot express (TVS-to-bank proximity, thermal areas and via counts, Kelvin attach, AGND link, current-path widths) is a 17-item machine screen in `check_s8_board.py`, PENDING until routed | `post_routing_screen`; routing-notes 3.11 |
+| **No via-in-pad; vias relocated** | U4, U5 and U9 move to hole-free copies of their lands (`*_NoViaInPad`, the drilled S7 originals untouched). The in-pad holes (U5 15 × 0.3 mm, U4 8 × 0.3 mm, U9 4 × 0.2 mm) become **beside-pad fields of standard vias: U5 10, U4 10, U9 6**, one row beyond each short end of each exposed pad, each via with its own 0.6 mm F.Cu spoke, plus B.Cu landing pours `TV_U5_B` (GND, 83.6 mm²), `TV_U4_B` (−12V, 65.4 mm²) and `TV_U9_B` (GND, 40.3 mm²). C2 and R24/C3 moved 0.45 mm, R13–R15 0.25 mm, to make room | `validation.json` → `no_via_in_pad`; `pre_routing_checklist.via_in_pad` / `thermal_vias` |
+| Standard JLCPCB vias only | Every via is 0.3 mm drill / 0.6 mm pad, through, annular ring 0.15 mm, tented, unfilled; no POFV / resin fill, no 0.2 mm or laser microvia, no blind/buried via. DRC: `S92_via_standard`, `S92_via_hole_to_copper` (drill ≥ 0.3 mm from other-net copper), `S92_no_via_in_pad` (≥ 0.1 mm from every pad); the checker adds the board setup, per-via overrides and mask openings. The JLCPCB order is the default "Tented" option, no special order | routing-notes 3.13; `test_standard_vias_and_thermal_fields_on_board` (a via in the U5 pad, a 0.2 mm via and a blind via fail the checker and native DRC) |
+| **Thermal penalty** | Beside-pad path model (upper bound): U5 RθJA 32.2 → **43.3 °C/W**, Tj **65.4 → 70.7 °C** at 50 °C and the rated 3 A input: **+5.3 °C at rated load**, limit 125 °C. U2 unchanged (no exposed pad, never drilled): **94.1 °C at 2.4 A, 108.4 °C at the 2.946 A CC limit**. U4 +0.4 °C/W, U9 +6.9 °C/W. **Published rating unchanged**: +12 V 2.4 A / −12 V 0.8 A, ≤ 33 W | `calcs.json` → `thermal_contract.via_change`; `test_via_change_thermal_consequence` |
 
 ## S9.2 / P2.2: routing-ready
 
@@ -67,19 +85,24 @@ impedance gives 87.2 W at 25 °C and **69.8 W** after the 50 °C derating, a mar
 ### S9.2 verification
 
 - Native **ERC 0**. **DRC: 0 violations, 0 warnings, 0 exclusions, 0 schematic-parity findings**; the **392 unconnected
-  items** are the routing opens of the unrouted board.
+  items** are the routing opens of the unrouted board (S9.2b: unchanged, with the 22 `S92_*` rules, the 15 rule areas and
+  the thermal-via fields in place).
 - Exact ref/pin/net parity holds: **175 components / 80 functional nets** (121 including NC nets) and 41 explicit NC
   pins.
 - BOM parity: 62 lines with 148 references, plus 27 copper-only test pads, makes 175.
-- Tests: **73 run, 73 passed, 0 skipped** from a clean clone (no `*.kicad_prl`, no `research/` logs). They include the netlist-derived
-  truth-table and 3 A tests, their negative controls and the routing-notes coverage test.
+- Tests: **76 run, 76 passed, 0 skipped** from a clean clone (no `*.kicad_prl`, no `research/` logs). They include the netlist-derived
+  truth-table and 3 A tests, their negative controls, the routing-notes coverage test and the three S9.2b tests (hole-free
+  footprints; standard vias and thermal fields on the board, with a mutated copy that must fail the checker and native
+  DRC; the via-change thermal consequence).
 - Placement:
   - no courtyard overlaps;
   - edge rule and 2 mm hand-solder clearance pass (closest pair D8–Q6.3, 2.01 mm);
   - 18 local-loop rows with 0 violations;
   - the routing-contract screen passes: 16 pad anchors, four 2.54 mm pairs, seven proximity rows, Kelvin pad nets and
     the ground split;
-  - 13 copper/via items stay PENDING until routed.
+  - the S9.2b pre-routing checklist passes (net classes, rules, rule areas, via policy, thermal fields, stack-up, test
+    pads, placement);
+  - 17 copper/via items stay PENDING until routed.
 - Mechanics: 0 nominal 3D interferences (6 proxies), IDC strain-relief overshoot −0.4 mm, envelope margin 1.1 mm, case
   depth 5.7 mm.
 - Logic: 0 arming/timeline violations, a 16-row enable truth table and 512 digital combinations.
@@ -124,12 +147,20 @@ Use the existing generators; never hand-edit generated schematics, PCB or JSON:
 ```sh
 python3 -B modules/usb-power-45w/tools/build_s8.py --output-root <candidate-module-root>
 # Netlist changes: place_s8.sync_candidate(<board>, <candidate-root>), then inspect and promote the candidate.
+# S9.2b native contract on the promoted board: net classes, .kicad_dru rules and RA_* areas, then the thermal-via fields.
+python3 -B modules/usb-power-45w/tools/place_s8.py --apply-rules
+python3 -B modules/usb-power-45w/tools/place_s8.py --apply-thermal-vias
 # Contract wording only (board untouched):
 python3 -B modules/usb-power-45w/tools/place_s8.py --refresh-contract
 python3 -B opt/kicad-tools/kicad_tools.py check --config modules/usb-power-45w/tools/kicad-project-single.json --reports <new-check-directory>
 python3 -B modules/usb-power-45w/tools/verify_s8.py --netlist <new-check-directory>/netlist.xml > modules/usb-power-45w/docs/s8-single/validation.json
 python3 -B modules/usb-power-45w/tools/s8_calcs.py --out modules/usb-power-45w/docs/s8-single
 python3 -B modules/usb-power-45w/tools/check_s8_board.py --out modules/usb-power-45w/docs/s8-single/board-p1.json
+kicad-cli sch export bom --fields "Reference,Value,Footprint,QUANTITY,LCSC,MPN,Manufacturer" \
+  --labels "Refs,Value,Footprint,Qty,LCSC,MPN,Manufacturer" --group-by "Value,Footprint,LCSC,MPN,Manufacturer" \
+  --ref-range-delimiter "" -o modules/usb-power-45w/docs/s8-single/bom.csv modules/usb-power-45w/hardware/single/usb-power-45w-single.kicad_sch
+kicad-cli sch export pdf -o modules/usb-power-45w/docs/usb-power-45w-single-schematic.pdf modules/usb-power-45w/hardware/single/usb-power-45w-single.kicad_sch
+python3 -B modules/usb-power-45w/tools/render_s8.py modules/usb-power-45w/docs/s8-single/img/board-p1.png --title "<title>"
 python3 -B modules/usb-power-45w/tools/build_s8_panel.py
 python3 -B modules/usb-power-45w/tools/mechanics_s8.py
 python3 -B modules/usb-power-45w/tools/s8_mechanical.py
@@ -139,7 +170,9 @@ python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
 python3 -B modules/usb-power-45w/tools/review_s8.py --check <new-check-directory> --tests-log <tests-log> --out modules/usb-power-45w/docs/s8-single/review-s92.json
 ```
 
-BOM and PDF use native `kicad-cli sch export`; the board image uses `render_s8.py`. Raw reports and logs stay in the
+BOM and PDF use native `kicad-cli sch export`; the board image uses `render_s8.py`. `build_s8_panel.py` rewrites the
+panel with fresh UUIDs; S9.2b kept the committed panel, whose outline, holes and texts the regeneration reproduced
+unchanged. Raw reports and logs stay in the
 ignored `research/s92/`; no `*.kicad_prl` file or research log enters the review hashes. Clean-clone testing needs the
 repository's KiCad/pcbnew, ngspice, numpy and plotting dependencies. Mechanical regeneration additionally needs
 FreeCAD/OpenSCAD. No test needs an ignored local report.
@@ -241,7 +274,8 @@ together would be 38.6 W.
 | 2.95 A | 1.345 W | 108.4 °C | 0.159 W |
 
 **The thermal basis is conditional (S9.2 item 6).** The 43.4 °C/W figure is TI's JEDEC 2s2p board, while this board is
-unrouted with 0 zones. The result holds only if the routed board meets the copper/via contract
+unrouted. S9.2b does not change it: U2 has no exposed pad and was never drilled (no via-in-pad; its PGND vias were always
+beside the bars). The result holds only if the routed board meets the copper/via contract
 (`placement.json` → `routing_contract.thermal`, [routing-notes 3.8](s8-single/routing-notes.md#38-thermal-copper-and-vias-the-board-behind-the-thermal-screens)):
 
 - solid In1 PGND;
@@ -255,7 +289,9 @@ loss-model estimates with assumed switching times, not measured thermal guarante
 
 966 kHz and L1 6.8 µH remain. R109's slow output-current loop is **not** a switch-current limit and does not qualify
 transient stress. D10 may dissipate 2.25 W at 3 A and needs an effective RθJA ≤ 33.3 °C/W: ≥ 400 mm² per terminal on
-F.Cu plus B.Cu areas (TH-2). U4's exposed pad sits on −12V copper (TH-3).
+F.Cu plus B.Cu areas (TH-2). U4's exposed pad sits on −12V copper (TH-3). S9.2b moved the U5/U4/U9 thermal vias out of
+their pads: U5 reaches **70.7 °C** at 50 °C and the rated 3 A input (+5.3 °C, RθJA bound 43.3 °C/W), U4 +0.4 °C/W,
+U9 +6.9 °C/W (routing-notes 3.13); the rating is unchanged.
 
 ## 4. AGND/PGND routing contract
 
@@ -449,7 +485,9 @@ P2.2 keeps every P2.1 position except:
 - R113 turns so its PGND pad lands on C82.2;
 - D26 moves right into free space, so the R109 force/sense pad pairs take its old spot;
 - R115 sits at Q14;
-- the ten 1.5 mm acceptance pads sit at the nodes they measure.
+- the ten 1.5 mm acceptance pads sit at the nodes they measure;
+- S9.2b: U4, U5 and U9 take the hole-free `*_NoViaInPad` lands (footprint replacement, same positions), C2 moves
+  0.45 mm west, R24 and C3 0.45 mm east and R13–R15 0.25 mm south, clear of the beside-pad thermal-via rows.
 
 L1 and the fixed interfaces stay put. The placement checks find no courtyard overlaps, unapproved edge-rule failures,
 hand-solder violations or nominal 3D interferences. Header pins 11–16 remain NC and +5 V is absent. The panel label

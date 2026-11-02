@@ -60,6 +60,19 @@ CHANGELOG = [
                       'respin/BOM disposition; routing constraint list. Contract made routable (place_s8.py '
                       '--refresh-contract, board unchanged): one AGND_U2 via pair + B.Cu trace allowed (F.Cu cannot join '
                       'U2.17 and U2.5 across the power fan-out), U2 PGND vias within 4 mm, D26/TP20 branch, sense escape.'),
+    ('S9.2b DRC contract', 'DeepSeek audit Blocker 2: the routing contract is enforced by native DRC where DRC can express '
+                           'it: net classes VIN, PWR_12V, PWR_N12V, GND, SWITCH, SENSE, AGND_U2, QUIET (+ Default) in the '
+                           'project, the S92_* custom rules in the .kicad_dru (AGND_U2 to PGND, sense to force, quiet to '
+                           'switch, TVS pad clearance, U2 cell/hot-loop/island nets, widths, In1 solid) and the RA_* rule '
+                           'areas on the board; the rest is the pre-routing checklist and the post-routing machine screen '
+                           'of tools/check_s8_board.py (PENDING until routed, never passed).'),
+    ('S9.2b via policy', 'Owner: NO via-in-pad anywhere, standard JLCPCB vias only (0.3 mm drill / 0.6 mm pad, tented, '
+                         'unfilled; no POFV/resin fill, no 0.2 mm or laser microvia). U4/U5/U9 use hole-free copies of '
+                         'their pinned lands (*_NoViaInPad; the S7 files stay drilled for the S7 boards). Beside-pad thermal '
+                         'fields replace the in-pad holes: one via row beyond each short end of each exposed pad, a 0.6 mm '
+                         'F.Cu spoke per via and a B.Cu landing pour (TV_U5_B/TV_U4_B/TV_U9_B); C2 and R24/C3 moved '
+                         '0.45 mm, R13-R15 0.25 mm. DRC rules S92_via_standard, S92_via_hole_to_copper and '
+                         'S92_no_via_in_pad (any pad) and the RA_NOVIA_* areas stop a router from drilling a pad.'),
 ]
 OPEN_GATES = [   # S9.2: post-prototype acceptance tests (routing-notes.md), not design blockers
     'Routing itself (P2.2 is routing-ready and unrouted; the contract items are checked after routing)',
@@ -70,6 +83,23 @@ OPEN_GATES = [   # S9.2: post-prototype acceptance tests (routing-notes.md), not
     'Backfeed in the field (T1) beyond the bounded injection budget; downstream OV qualification; crowbar vs eFuse deferred',
     'POR-1 replug/POR nuisance race (calcs replug_por), IN-3 USB-C attach transient, HDR-1 header contact current',
 ]
+
+
+def thermal_entry(calcs):
+    """S9.2b changelog line for the via change, written from calcs.json (no hand-copied numbers)."""
+    tc = calcs['thermal_contract']
+    u5, ch = tc['U5'], tc['via_change']
+    f = ch['fields']
+    return (f"no via-in-pad; vias relocated: U5 {f['U5']['in_pad_holes_before']} in-pad -> {f['U5']['beside_pad_vias_after']} "
+            f"beside-pad, U4 {f['U4']['in_pad_holes_before']} -> {f['U4']['beside_pad_vias_after']}, U9 "
+            f"{f['U9']['in_pad_holes_before']} (0.2 mm) -> {f['U9']['beside_pad_vias_after']}. Thermal penalty "
+            f"{u5['thermal_penalty_C']} C at rated load: U5 RthetaJA {u5['RthetaJA_datasheet_C_W']} -> "
+            f"{u5['RthetaJA_S92b_C_W']} C/W (upper bound), Tj {u5['Tj_at_50C_in_pad_vias_C']} -> {u5['Tj_at_50C_S92b_C']} C "
+            f"at 50 C and the rated 3 A input (limit {u5['limit_C']} C); U2 unchanged (never drilled): Tj "
+            f"{ch['U2']['Tj_at_50C_rating_C']} C at 2.4 A, {ch['U2']['Tj_at_50C_limit_C']} C at the CC limit; U4 "
+            f"DeltaR +{ch['U4']['delta_R_C_W']} C/W, U9 +{ch['U9']['delta_R_C_W']} C/W. Published rating "
+            f"{'CHANGED' if ch['rating']['changed'] else 'unchanged'}: +12 V {ch['rating']['published_A']['+12V']} A / "
+            f"-12 V {ch['rating']['published_A']['-12V']} A.")
 
 
 def ignored(paths):
@@ -151,7 +181,7 @@ def main():
         'status': ('routing-ready schematic and placement, unrouted and not bench-qualified; the open items are '
                    'post-prototype acceptance tests, not design blockers'),
         'replaces': 'review-s91.json (S9.1 / P2.1 record in git 5df64c7)',
-        'changelog': [{'item': k, 'change': v} for k, v in CHANGELOG],
+        'changelog': [{'item': k, 'change': v} for k, v in CHANGELOG] + [{'item': 'S9.2b thermal', 'change': thermal_entry(calcs)}],
         'native_findings': summary['findings'],
         'exact_native_ref_pin_net_parity': summary['ref_pin_net_parity'],
         'native_sources_unchanged_by_check': summary['source_unchanged'],
@@ -168,7 +198,8 @@ def main():
                       'local_loops_violations': board['local_loops']['violations'],
                       'local_loops': {r['purpose']: [r['from'], r['to'], r['distance_mm'], r['limit_mm']]
                                       for r in board['local_loops']['rows']},
-                      'basis': 'S9.2 / P2.2 synchronized from S9.1; no routing',
+                      'basis': ('S9.2 / P2.2 synchronized from S9.1; S9.2b re-synchronized for the hole-free U4/U5/U9 '
+                                'lands (C2, R24/C3, R13-R15 moved); no routing apart from the thermal-via fields'),
                       'routing_contract_screen': board['routing_contract_screen'],
                       'ground_split': board['ground_split'],
                       'replaced_footprints': place.get('replaced_footprints', {}),
@@ -186,6 +217,24 @@ def main():
         'S92_startup_plant_from_netlist': val['startup_plant_inputs'],
         'S92_startup_qualification': calcs['startup_qualification'],
         'S92_thermal_contract': calcs['thermal_contract'],
+        'S92b_via_policy': {
+            'decision': place['routing_contract']['via_in_pad']['decision'],
+            'order': place['routing_contract']['via_in_pad']['order'],
+            'board': {k: board['pre_routing_checklist']['items']['via_in_pad'][k]
+                      for k in ('footprint_holes_in_pads', 'thermal_pad_footprints', 'board_setup', 'vias',
+                                'non_standard_vias', 'via_overrides', 'vias_closer_than_0p1mm_to_a_pad',
+                                'vias_in_a_mask_opening', 'ok')},
+            'thermal_fields': {r: [x['vias'], x['spokes_into_pad'], x['landing_pour'], x['landing_mm2']]
+                               for r, x in board['pre_routing_checklist']['items']['thermal_vias']['fields'].items()},
+            'thermal_consequence': {k: calcs['thermal_contract']['via_change'][k] for k in ('U5', 'U2', 'U4', 'U9', 'rating')},
+            'validation': val['no_via_in_pad']},
+        'S92b_drc_contract': {'pre_routing_checklist': {k: v['ok'] for k, v in
+                                                        board['pre_routing_checklist']['items'].items()},
+                              'netclasses': board['pre_routing_checklist']['items']['netclasses']['per_class'],
+                              'drc_rules': board['pre_routing_checklist']['items']['drc_rules']['rules'],
+                              'rule_areas': [a['name'] for a in board['pre_routing_checklist']['items']['rule_areas']['areas']],
+                              'post_routing_pending': board['routing_contract_screen']['pending_after_routing'],
+                              'enforced_by_drc': board['routing_contract_screen']['enforced_by_drc']},
         'S91_input_qualification': calcs['input_qualification'],
         'S91_compensation': b['compensation'],
         'S91_ground_split': val['ground_split'],
