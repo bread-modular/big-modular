@@ -9,28 +9,50 @@ Frame (all dimensions mm), the skiff assembly frame turned on its side:
   Y  depth, front (user) -> back
   Z  up, Z = 0 is the table
 
-Each side frame is a printed cheek in the Y/Z plane with a flat outer face: a 6 mm (T_WEB) web with
-12 mm (T) bosses on the inner face only where screws go (splice plate seats, stretcher ends), made of
-one piece per tier:
+Each side frame is a printed cheek in the Y/Z plane with a flat outer face: a 4 mm (T_WEB) web with
+12 mm (T) bosses on the inner face where screws go (splice plate seats, stretcher ends), at the feet
+and along each row (the guide wall, see below), made of one piece per tier:
   tier 1 = the base beside row 1, tier 2 bolts on behind it, tier 3 on top of that.
 Row 1 is not lifted: the skiff stands on the desk on its own bottom plate, as it does without the
 stand (first tilt 0). The tier 1 cheeks stand on the desk either side of it and tier 2 carries a
 stop lug behind it, so row 1 slides in from the front with no bolts and lifts out the same way.
   A 2-row stand is tier 1 + 2, a 3-row stand adds tier 3: the pieces do not change.
 Every piece is the convex outline of its row (plus the foot for tier 1) minus the rows below it,
-clipped flush with the module faces, with lightening windows. The pieces butt together and a
-6 mm splice plate on the outer face bolts across each joint with 4 M3 screws into M3 hex
-spacers superglued in the cheeks (the case's 5.7 AF x 10.2 blind socket).
-Rows 2 and 3 sit on a tongue on the cheek's inner face, under its bottom plate: the case's own four
-plate-to-side-panel bolts get longer (M3x12) and go through the tongue too, so the cases need no
-change. A stretcher on each tier that has room for one (not tier 1: row 1 fills it) ties the left and right cheeks, M3 into spacers in its ends.
+clipped RISE above each case's bottom plate underside (the cheeks only guide the case sides, they
+do not reach up to the module faces), with lightening windows (RIM rims) wherever the web is not
+needed. The pieces butt together and a 6 mm splice plate on the outer face bolts across each joint
+with 4 M3x8 screws into M3x10 hex spacers superglued in the cheeks (the case's 5.7 AF x 10.2 blind
+socket): along the butt edge where it is long, across it where it is short.
+The cases are held with no screws. Each row has a guide wall on both cheeks: a full-thickness (T)
+band beside the case up to RISE, with a ledge (TONGUE thick) under the case bottom plate along the
+whole case depth, both fused to a solid web band (no windows above TONGUE + RIM under the plate). The
+band is full thickness only in a RAIL wide rail along its bottom (on the ledge) and top, in ribs
+across it and over the step (the lip, RAIL tall); the bays between are pocketed from the inner face
+down to the web. Row 1
+stands on the desk, slides in from the front and stops on lugs on tier 2 behind it.
+Rows 2+ slide in: the case bottom plate and its outer socket wall stand 3.15 mm past the side
+panel outer face (13 mm tall), and a lip on top of each band covers that step, so the case can
+only move along its rail, not lift off it (cable pulls). The lip starts at the lower (front) end
+of the rail; a short lug there stops the step end; one lug per side, no bar across. A case drops
+onto its ledges behind the lip and slides down under it onto the lugs; the row above has to come
+out first. The top row's lip runs the whole case depth; a lower row's lip is only as long as its
+case can slide up the rail clear of the stand and still lift off there (row 2: the row 3 lugs
+and ledge are 41 mm behind its back end), sized in the build from the full stand so a 2-row
+stand uses the same pieces. A stretcher on each tier that has room for one (not tier 1: row 1
+fills it) ties the left and right cheeks. Each end sits in a U channel (box groove) on the cheek
+inner face (3 mm walls, 3 mm proud), open on the side it slides in from, so it cannot turn or shift
+once screwed: an M3x8 through a deep counterbore in the full-thickness channel floor (3 mm of cheek
+under the head) into the spacer in each stretcher end.
 The modules are held by 10 mm M3 male-female hex standoffs: the male end goes through the panel
 into the rail spacer and the hex body stands 10 mm proud of the module face on both rail hole
 lines. A row is placed so the lower row's back standoffs and the upper row's front standoffs are
 SO_GAP apart (fingers / a 5.5 mm nut driver between them) and each is SO_CASE clear of the other
-row's case + tongue.
+row's case + ledge.
+The stand stands on 12 x 12 mm self-adhesive (3M) rubber feet, each stuck on a flat full-thickness
+plate (T x PAD) on the cheek underside: one under tier 1's front end and two under tier 2 (behind
+row 1, rear foot). No screws or spacers in the feet.
 Print set (case/print/stand/, see its README.md): tier1/ tier2/ tier3/ hold each tier's two
-cheeks, common/ the shared stretcher and splice plate.
+cheeks, common/ the shared stretcher and splice plates.
 """
 
 import json
@@ -53,34 +75,80 @@ CASE_Y0, CASE_YLEN = -2.0, 132.5       # case front edge, depth
 CASE_H = 65.0                          # bottom plate underside -> module fronts
 PLATE_X0, PLATE_LEN = -15.15, 249.0    # bottom plate outer X extent
 SIDE_T = 12.0
-BOLT_Y = (25.0, 128.5 - 25.0)          # plate-to-side-panel bolts, at the side panel centre
 
 # --- fasteners (same as the case) ------------------------------------------------
 M3_CLEAR, M3_CB_D, M3_CB_DEPTH = 3.4, 6.5, 3.2
 SOCKET_AF, SOCKET_DEPTH = 5.7, 10.2
+HEAD_D, HEAD_K = 5.5, 3.0              # M3 socket head (ISO 4762)
 
 # --- stand -----------------------------------------------------------------------
-T = 12.0             # cheek thickness (X) at the screw bosses (splice pads, stretcher ends)
-T_WEB = 6.0          # cheek thickness everywhere else (rim, ribs): the bosses stand proud on the outer face
+T = 12.0             # cheek thickness (X) at the screw bosses (splice pads, stretcher ends), the feet and the rails:
+                     # the 10.2 mm spacer socket + 1.5 mm floor and the 12 mm foot set it
+T_WEB = 4.0          # cheek thickness everywhere else (rim, ribs, pocket floors): the bosses stand proud on the inner face
 BOSS_MARGIN = 2.0    # splice pad reaches this far past the splice plate outline
-BOSS_R = 10.0        # round boss behind each stretcher end
+# stretcher seat: a U channel (box groove) on the cheek inner face, STRETCH + 2 x STR_CLR wide, its
+# walls RIM_W thick and RIM_H proud of the inner face, open on one side (the first of up / back /
+# front with a clear path) so the stretcher slides into it between the built cheeks; the screw
+# then pulls it onto the boss floor and the channel walls stop it turning or moving
+STR_CLR = 0.25       # stretcher -> channel wall (each side)
+RIM_W = 3.0          # channel wall thickness
+RIM_H = 3.0          # channel walls stand this far proud of the cheek inner face
 GAP_X = 1.0          # bottom plate edge -> cheek inner face (clears the rail screw heads)
-TONGUE = 6.0         # tongue under the case bottom plate (Z in case frame)
-TONGUE_IN = 8.0      # tongue reaches this far inboard past the bolt line
-WEB = 18.0           # rim / rib width around the windows
+TONGUE = 6.0         # ledge under the case bottom plate (Z in case frame)
+TONGUE_IN = 8.0      # ledge reaches this far inboard past the side panel centre line
+WEB = 18.0           # solid web band under each ledge (and the stretcher / lug margins)
 BELOW = TONGUE + WEB  # cheek below the case bottom plate
+RIM = 12.0           # rim / rib width round the lightening windows
+WIN_MIN = 400.0      # smallest lightening window (mm2)
+# the guide wall along each row is full thickness (T) only in rails: one along the ledge (rows 2+)
+# or the desk (row 1), one along its top or the lip, ribs across between them every RIB_PITCH; the
+# bays between are pocketed from the inner face down to the T_WEB web (open side up: no bridges)
+RAIL = 6.0           # full-thickness rail width (case frame Z) along the bottom and top of the wall
+RIB = 5.0            # rib width across the wall
+RIB_PITCH = 40.0     # rib spacing (at most)
+POCKET_MIN = 10.0    # narrowest pocket worth cutting
+RISE = 40.0          # cheek top over each case's bottom plate underside: guide wall beside the case, no higher
 FOOT_H = 14.0        # rear foot height
-STOP = (10.0, 6.0, 30.0)  # row 1 stop lug behind the case: Y length, inboard of the case side panel outer face, Z height
+# feet: a flat T x PAD plate on the cheek underside for a FOOT x FOOT self-adhesive (3M) rubber
+# foot. Tier 1 has one at its front end, tier 2 one just behind row 1 and one at the rear foot.
+FOOT = 12.0          # square 3M rubber foot
+PAD = 16.0           # plate length (Y), 2 mm past the foot each end; its width is the cheek thickness T (= FOOT)
+PAD_Z = 8.0          # full-thickness block over the plate (stiff under the foot)
+PAD_END = 3.0        # plate edge to the cheek end
+STOP = (10.0, 6.0, 30.0)  # stop lug at the lower end of each row (row 1: behind it): Y length, inboard of the case side panel outer face, Z height (case frame)
+STOP_CLR = 0.5       # stop lug to the case end face in the model
+# lip over the case's side step (rows 2+): the bottom plate and its outer socket wall stand
+# PLATE_STEP past the side panel outer face up to STEP_Z; the lip covers that step so a case
+# cannot lift off its rail, only slide along it
+PLATE_STEP = -SIDE_T - PLATE_X0        # 3.15: plate edge past the side panel outer face
+STEP_Z = 13.0                          # top of the step (5 mm plate + 8 mm socket wall)
+LIP_CLR = 0.5        # step top -> lip underside (Z, case frame)
+LIP_X_CLR = 0.75     # lip edge -> side panel outer face (X)
+LIP_GAP = 1.0        # loading: case front end this far behind the lip end before it drops in
+LIP_MIN = 20.0       # shortest lip worth having
+STOP_UP = 6.0        # rows 2+ stop lug length (Y); its top is the step top (STEP_Z)
 REAR_FOOT = 20.0     # rear foot reaches this far behind row 2
-ROW_CLR = 6.0        # free space between neighbouring rows (case + tongue)
+ROW_CLR = 6.0        # free space between neighbouring rows (case + ledge)
 STANDOFF_H = 10.0    # M3 male-female hex standoff body above the module face (module fixing)
 STANDOFF_AF = 5.5
 SO_GAP = 15.0        # back standoffs of a row <-> front standoffs of the row above
-SO_CASE = 12.0       # standoffs of a row <-> case + tongue of its neighbour
+SO_CASE = 12.0       # standoffs of a row <-> case + ledge of its neighbour
 HOLE_Y = (3.0, 128.5 - 3.0)            # module rail hole lines (case Y)
 CASE_X_IN = 218.7                      # case inner width (side panel to side panel)
 SPLICE_T, SPLICE_W, SPLICE_L = 6.0, 34.0, 74.0
+SPLICE_CB = M3_CB_DEPTH  # splice plate holes counterbored like the case bottom plate: M3x8 well into the spacer
+SPLICE_MIN_EDGE = 36.0   # shorter butt edges get the splice plate across the joint instead of along it
+SPLICE_X_L = 60.0        # cross splice: length across the joint (holes at +-9 and +-(L/2 - 8))
 STRETCH = 20.0       # square stretcher section
+STR_HW = STRETCH / 2 + STR_CLR          # channel half width
+STR_BOX = STR_HW + RIM_W                # channel outer half width (= the full-thickness boss under it)
+SCREW_L = 8.0        # the only M3 screw length used (M3x8 socket head): splices and stretcher ends
+STRETCH_GRIP = 3.0   # cheek left under the stretcher screw head (the counterbore takes the rest of T)
+STRETCH_CB = T - STRETCH_GRIP                      # 9: stretcher screw counterbore depth
+STRETCH_ENGAGE = SCREW_L - STRETCH_GRIP - (SOCKET_DEPTH - 10.0)   # 4.8: thread into the spacer
+SPLICE_ENGAGE = SCREW_L - (SPLICE_T - SPLICE_CB) - (SOCKET_DEPTH - 10.0)  # 5.0: thread into the spacer
+ENGAGE_MIN = 4.0     # the case's rule: ~4 mm of thread in the spacer
+SOCKET_WALL = 1.5    # printed wall round / under each spacer socket (checked)
 
 X_IN = PLATE_X0 - GAP_X                 # left cheek inner face
 X_IN_R = PLATE_X0 + PLATE_LEN + GAP_X    # right cheek inner face
@@ -156,9 +224,12 @@ class Row:
         """case frame (Y, Z) -> profile plane"""
         return add(self.F, rot((y - CASE_Y0, z - CASE_H), self.a))
 
+    def quad(self, y0, y1, z0, z1):
+        """Case frame rectangle Y y0..y1, Z z0..z1 in the profile plane."""
+        return [self.pt(y0, z0), self.pt(y1, z0), self.pt(y1, z1), self.pt(y0, z1)]
+
     def rect(self, below=0.0):
-        y0, y1 = CASE_Y0, CASE_Y0 + CASE_YLEN
-        return [self.pt(y0, -below), self.pt(y1, -below), self.pt(y1, CASE_H), self.pt(y0, CASE_H)]
+        return self.quad(CASE_Y0, CASE_Y0 + CASE_YLEN, -below, CASE_H)
 
     def standoff(self, i):
         """Outline of the standoff row on hole line i (0 front, 1 back) over the module face."""
@@ -186,7 +257,7 @@ def layout(tilts):
     rows = []
     for k, a in enumerate(tilts):
         if k == 0:
-            # row 1 stands on the desk on its own bottom plate (no tongue, no foot under it)
+            # row 1 stands on the desk on its own bottom plate (no ledge, no foot under it)
             r = Row(a, (0.0, 0.0))
             lo = min(p[1] for p in r.rect())
             fy = min(p[0] for p in r.rect())
@@ -194,7 +265,7 @@ def layout(tilts):
         else:
             prev = rows[-1]
             # slide the row back/up along the bisector of the two face directions until the
-            # case + tongue outlines are ROW_CLR apart and the standoffs have hand room
+            # case + ledge outlines are ROW_CLR apart and the standoffs have hand room
             u = rot((1, 0), (prev.a + math.radians(a)) / 2)
             s = 0.0
             while True:
@@ -215,12 +286,22 @@ def so_gaps(lo, hi):
 
 
 def clip_faces(rows):
-    """Everything in front of / above the chain of module faces: the cheeks end flush with them."""
+    """Everything above the chain of RISE lines (RISE over each case's bottom plate underside): the
+    cheeks only reach that far up the case sides."""
     chain = []
     for r in rows:
-        chain += [r.F, r.B]
+        chain += [r.pt(CASE_Y0, RISE), r.pt(CASE_Y0 + CASE_YLEN, RISE)]
     top = chain[-1]
     return face2d([add(chain[0], (-600, 0))] + chain + [add(top, rows[-1].n, 600), (chain[0][0] - 600, top[1] + 600)])
+
+
+def union2d(faces):
+    """Union of planar faces as faces with the internal edges gone (a 2D fuse keeps them)."""
+    sol = faces[0].extrude(V(0, 0, 1))
+    if len(faces) > 1:
+        sol = sol.multiFuse([f.extrude(V(0, 0, 1)) for f in faces[1:]])
+    sol = sol.removeSplitter()
+    return Part.makeCompound([f for f in sol.Faces if abs(f.CenterOfMass.z) < 1e-6])
 
 
 def biggest(face):
@@ -228,22 +309,29 @@ def biggest(face):
     return fs[0]
 
 
-def windows(piece, row):
-    inner = piece.makeOffset2D(-WEB, 0)
-    band = face2d([row.pt(CASE_Y0 - 50, -BELOW - WEB / 2), row.pt(CASE_Y0 + CASE_YLEN + 50, -BELOW - WEB / 2),
-                   row.pt(CASE_Y0 + CASE_YLEN + 50, -BELOW + WEB / 2), row.pt(CASE_Y0 - 50, -BELOW + WEB / 2)])
-    w = inner.cut(band)
+def rounded(f, r, min_area):
+    """Faces of f with the corners rounded to r (anything thinner than 2 r goes), each >= min_area."""
     out = []
-    for f in w.Faces:
-        if f.Area < 900:
+    for g in f.Faces:
+        if g.Area < min_area:
             continue
-        try:   # a long thin window can vanish under the -6 offset: skip it
-            g = f.makeOffset2D(-6, 0).makeOffset2D(6, 2) if f.Area > 1500 else None
-        except ValueError:
-            g = None
-        if g is not None and g.Faces:
-            out += g.Faces
+        try:   # a thin face can vanish under the -r offset: skip it
+            g = g.makeOffset2D(-r, 0).makeOffset2D(r, 0)
+        except Exception:
+            continue
+        out += [h for h in g.Faces if h.Area >= min_area]
     return out
+
+
+def windows(piece, keep):
+    """Lightening windows RIM inside the piece outline, clear of the `keep` faces."""
+    try:
+        w = piece.makeOffset2D(-RIM, 0)
+    except Exception:   # a piece narrower than two rims has none
+        return []
+    for k in keep:
+        w = w.cut(k)
+    return rounded(w, 5.0, WIN_MIN)
 
 
 def hex_prism(c, depth, x0, sgn):
@@ -260,7 +348,7 @@ def cyl(r, h, base, axis):
     return Part.makeCylinder(r, h, V(*base), V(*axis))
 
 
-def svg_profile(path, faces, rows, extra=()):
+def svg_profile(path, faces, rows, extra=(), pockets=()):
     path.parent.mkdir(parents=True, exist_ok=True)
     cols = ["#c9a46a", "#7a9cc6", "#9bc67a", "#c67a9b"]
     out = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 -420 460 460" width="900">']
@@ -268,6 +356,10 @@ def svg_profile(path, faces, rows, extra=()):
         for w in f.Wires:
             pts = " ".join(f"{v.x:.1f},{-v.y:.1f}" for v in w.discretize(Deflection=0.5))
             out.append(f'<polygon points="{pts}" fill="{cols[i % 4]}" fill-opacity="0.6" stroke="black" stroke-width="0.5"/>')
+    for f in pockets:
+        for w in f.Wires:
+            pts = " ".join(f"{v.x:.1f},{-v.y:.1f}" for v in w.discretize(Deflection=0.5))
+            out.append(f'<polygon points="{pts}" fill="#555" fill-opacity="0.5" stroke="black" stroke-width="0.3"/>')
     for r in rows:
         pts = " ".join(f"{x:.1f},{-y:.1f}" for x, y in r.rect())
         out.append(f'<polygon points="{pts}" fill="none" stroke="red" stroke-width="0.8"/>')
@@ -291,6 +383,21 @@ def main():
     y_back = max(p[0] for p in rows[1].rect(BELOW)) + REAR_FOOT
     rear = [(y_back - 60, 0), (y_back, 0), (y_back, FOOT_H), (y_back - 60, FOOT_H)]
 
+    # the stop lugs (profile plane), each on the piece that carries its row: row 1 stops on tier 2
+    # behind it, rows 2+ on their own tier at the lower (front) end of the rail
+    # rows 2+: a short lug at the lower end of the lip channel stops the plate + socket wall end
+    # only (inboard to the lip edge, up to the step top), so the row below slides as far up its
+    # rail as it can under it on its way in
+    def stop2d(k):
+        if k == 0:
+            ys = max(p[0] for p in r1) + STOP_CLR
+            return [(ys, 0), (ys + STOP[0], 0), (ys + STOP[0], STOP[2]), (ys, STOP[2])]
+        y1 = CASE_Y0 - STOP_CLR
+        return rows[k].quad(y1 - STOP_UP, y1, -BELOW, STEP_Z)
+    stops = {1 if k == 0 else k: [] for k in range(len(rows))}
+    for k in range(len(rows)):
+        stops[1 if k == 0 else k].append((k, stop2d(k)))
+
     clip = clip_faces(rows)
     desk = face2d([(-600, 0), (900, 0), (900, -600), (-600, -600)])
     outlines = []
@@ -299,17 +406,26 @@ def main():
             pts = foot + r1
         else:
             pts = rows[k - 1].rect(0 if k == 1 else BELOW) + rows[k].rect(BELOW) + (rear if k == 1 else [])
-        outlines.append(face2d(hull(pts)).cut(clip).cut(desk))
+        o = face2d(hull(pts)).cut(clip)
+        outlines.append(union2d(o.Faces + [face2d(st) for _, st in stops.get(k, [])]).cut(desk))
     solid2d = []
     for k in range(len(rows)):
         p = outlines[k]
         for q in outlines[:k]:
             p = p.cut(q)
         solid2d.append(biggest(p))
+    for k, sts in stops.items():
+        for _, st in sts:
+            f = face2d(st).cut(desk)
+            assert abs(f.common(solid2d[k]).Area - f.Area) < 1e-3, \
+                f"stop lug of piece {k} is cut by another piece: {f.Area:.1f} {f.common(solid2d[k]).Area:.1f} {[round(f.common(o).Area, 1) for o in solid2d]} {st}"
     pieces2d = solid2d
     svg_profile(CASE / "research" / "stand" / "profile.svg", solid2d, rows)
 
-    # joints: longest shared edge between neighbouring pieces -> splice plate
+    # joints: longest shared edge between neighbouring pieces -> splice plate. A long edge takes the
+    # plate along it (2 + 2 holes beside the edge); a short one (tier 1 is only RISE tall) across it
+    # (2 + 2 holes in a line across the edge). The plate is given in its own frame (a along the edge,
+    # b across it) so the print set holds one part per plate size.
     joints = []
     for k in range(1, len(rows)):
         sec = pieces2d[k].section(pieces2d[k - 1])
@@ -317,30 +433,56 @@ def main():
         a, b = e.Vertexes[0].Point, e.Vertexes[-1].Point
         mid = ((a.x + b.x) / 2, (a.y + b.y) / 2)
         d = ((b.x - a.x) / e.Length, (b.y - a.y) / e.Length)
-        nrm = (-d[1], d[0])
-        joints.append({"tiers": (k, k + 1), "edge": (mid, d, nrm), "edge_mm": round(e.Length, 1)})
-    # one splice plate for every joint: as long as the shortest butt edge allows
-    L = min([SPLICE_L] + [j["edge_mm"] - 8 for j in joints])
+        joints.append({"tiers": (k, k + 1), "edge": (mid, d, (-d[1], d[0])), "edge_mm": round(e.Length, 1)})
+    long_edges = [j["edge_mm"] for j in joints if j["edge_mm"] >= SPLICE_MIN_EDGE]
+    L = min([SPLICE_L] + [m - 8 for m in long_edges])
+    W = min([SPLICE_W] + [j["edge_mm"] - 2 for j in joints if j["edge_mm"] < SPLICE_MIN_EDGE])
     for j in joints:
         mid, d, nrm = j.pop("edge")
-        holes = [add(add(mid, d, s * (L / 2 - 9)), nrm, t * (WEB / 2 - 0.5)) for s in (-1, 1) for t in (-1, 1)]
-        corners = [add(add(mid, d, s * L / 2), nrm, t * SPLICE_W / 2) for s, t in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
-        j.update(holes=holes, plate=corners, splice_l=L)
+        if j["edge_mm"] >= SPLICE_MIN_EDGE:
+            half = (L / 2, SPLICE_W / 2)
+            local = [(s * (L / 2 - 9), t * (WEB / 2 - 0.5)) for s in (-1, 1) for t in (-1, 1)]
+        else:
+            half = (W / 2, SPLICE_X_L / 2)
+            local = [(0, t * u) for t in (-1, 1) for u in (9, SPLICE_X_L / 2 - 8)]
+        to2d = lambda ab: add(add(mid, d, ab[0]), nrm, ab[1])
+        corners = [to2d((s * half[0], t * half[1])) for s, t in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
+        j.update(holes=[to2d(h) for h in local], plate=corners, half=half, local=local)
 
-    # stretchers: one per tier, as far back as the piece allows, clear of every case outline
+    # feet: plate centres (profile Y) on the desk edge of tiers 1 and 2
+    def pad2d(y):
+        return [(y - PAD / 2, 0), (y + PAD / 2, 0), (y + PAD / 2, PAD_Z), (y - PAD / 2, PAD_Z)]
+
+    assert T >= FOOT, f"cheek {T} mm narrower than the {FOOT} mm foot"
+    feet = {0: [y_front + PAD_END + PAD / 2], 1: [y_mid + PAD_END + PAD / 2, y_back - PAD_END - PAD / 2]}
+    for k, ys in feet.items():
+        for y in ys:
+            f = face2d(pad2d(y))
+            assert abs(f.common(solid2d[k]).Area - f.Area) < 1e-3, f"tier {k + 1}: foot pad at Y {y:.1f} off the piece"
+
+    # the case guide rails (row frame Y along the case, Z -TONGUE .. RISE; row 1 from the desk up)
+    def rail2d(k):
+        return face2d(rows[k].quad(CASE_Y0, CASE_Y0 + CASE_YLEN, 0 if k == 0 else -TONGUE, RISE))
+
+    # stretchers: one per tier, as far back as the piece allows, its channel clear of every case outline
+    def sq2d(c, h):
+        return [(c[0] - h, c[1] - h), (c[0] + h, c[1] - h), (c[0] + h, c[1] + h), (c[0] - h, c[1] + h)]
     stretchers = []
     for k, p in enumerate(solid2d):
         bb = p.BoundBox
-        pin = p.makeOffset2D(-WEB / 2, 0)
+        try:
+            pin = p.makeOffset2D(-WEB / 2, 0)
+        except Exception:
+            stretchers.append(None)
+            continue
         best = None
         y = bb.XMin
         while y < bb.XMax:
             z = bb.YMin
             while z < bb.YMax:
-                sq = [(y - STRETCH / 2 - 3, z - STRETCH / 2 - 3), (y + STRETCH / 2 + 3, z - STRETCH / 2 - 3),
-                      (y + STRETCH / 2 + 3, z + STRETCH / 2 + 3), (y - STRETCH / 2 - 3, z + STRETCH / 2 + 3)]
+                sq = sq2d((y, z), STR_BOX)
                 fsq = face2d(sq)
-                if abs(fsq.common(pin).Area - fsq.Area) < 1e-3 and all(sat_gap(sq, r.rect(TONGUE)) > 3 for r in rows) \
+                if abs(fsq.common(pin).Area - fsq.Area) < 1e-3 and all(sat_gap(sq, r.rect(TONGUE)) > 2 for r in rows) \
                         and all(not any(abs(h[0] - y) < 20 and abs(h[1] - z) < 20 for h in j["holes"]) for j in joints):
                     score = y + (0.3 * z if k == 0 else 0.6 * z)
                     if best is None or score > best[0]:
@@ -350,72 +492,159 @@ def main():
         # tier 3 is a thin cheek: its row ties the two sides
         stretchers.append(best[1] if best else None)
 
-    # lightening windows, keeping a boss round each stretcher end
+    # the side each stretcher channel opens to: the first of up / back / front (profile plane) along
+    # which the stretcher slides out between the cheeks clear of everything standing proud of their
+    # inner faces (ledges, lips, stop lugs: the rail quads, rows 2+ from the ledge up; the row 1
+    # lugs) and of the desk. Checked again in 3D against the built stand (checks.stretchers).
+    obst = [rows[k].quad(CASE_Y0 - STOP_UP - 1, CASE_Y0 + CASE_YLEN, -TONGUE, RISE) for k in range(1, len(rows))]
+    obst += [st for k, sts in stops.items() for _, st in sts]
+    obst.append([(-600, -600), (900, -600), (900, 0), (-600, 0)])
+    str_open = []
+    for k, c in enumerate(stretchers):
+        if not c:
+            str_open.append(None)
+            continue
+        sq = sq2d(c, STRETCH / 2)
+        for d in ((0, 1), (1, 0), (-1, 0)):
+            sweep = hull(sq + [add(p, d, 400) for p in sq])
+            if all(sat_gap(sweep, o) > 0.5 for o in obst):
+                str_open.append(d)
+                break
+        else:
+            raise AssertionError(f"tier {k + 1}: no free side to slide the stretcher in")
+
+    def channel2d(k):
+        """The U channel round stretcher k's end (profile plane), open towards str_open[k]."""
+        c, d = stretchers[k], str_open[k]
+        slot = sq2d(c, STR_HW)
+        slot = hull(slot + [add(p, d, STR_BOX + 2) for p in slot])
+        return face2d(sq2d(c, STR_BOX)).cut(face2d(slot))
+
+    # lightening windows, keeping solid: the web under each rail down to TONGUE + RIM (the ledge and the
+    # guide band sit on solid web along their whole length), the stop lugs, the splice seats and a
+    # boss round each stretcher end
     pieces2d = []
     for k, p in enumerate(solid2d):
-        for w in windows(p, rows[k]):
-            if stretchers[k]:
-                y, z = stretchers[k]
-                b = STRETCH / 2 + WEB / 2
-                w = w.cut(face2d([(y - b, z - b), (y + b, z - b), (y + b, z + b), (y - b, z + b)]))
-            for f in w.Faces:
-                if f.Area > 900:
-                    p = p.cut(f)
+        keep = [face2d(rows[k].quad(CASE_Y0 - STOP[0] - 20, CASE_Y0 + CASE_YLEN + RIM, -(TONGUE + RIM), CASE_H + 50))]
+        keep += [face2d(st).makeOffset2D(WEB / 2, 2) for _, st in stops.get(k, [])]
+        keep += [face2d(j["plate"]).makeOffset2D(BOSS_MARGIN + 2, 2) for j in joints if k + 1 in j["tiers"]]
+        keep += [face2d(pad2d(y)).makeOffset2D(WEB / 2, 2) for y in feet.get(k, [])]
+        if stretchers[k]:
+            keep.append(face2d(sq2d(stretchers[k], STR_BOX)).makeOffset2D(WEB / 2, 2))
+        for w in windows(p, keep):
+            p = p.cut(w)
         pieces2d.append(biggest(p))
 
-    def bosses(k):
-        """2D boss pads of piece k: the splice plate seat at each joint, a disc at the stretcher end."""
+    # what the guide wall pockets stay clear of: the splice seats, feet, stretcher boss, stop lugs
+    def solid_keep(k):
+        out = [face2d(j["plate"]).makeOffset2D(BOSS_MARGIN + 2, 2) for j in joints if k + 1 in j["tiers"]]
+        out += [face2d(pad2d(y)).makeOffset2D(RAIL / 2, 2) for y in feet.get(k, [])]
+        out += [face2d(st).makeOffset2D(RAIL / 2, 2) for _, st in stops.get(k, [])]
+        if stretchers[k]:
+            out.append(face2d(sq2d(stretchers[k], STR_BOX)).makeOffset2D(RAIL / 2, 2))
+        return out
+
+    def pockets(k, lip_len):
+        """Bays of row k's guide wall pocketed down to the web (profile plane faces): between the
+        bottom rail (on the ledge / the desk) and the top rail, between ribs, above the lip where
+        there is one (it is RAIL tall over the step), clear of the solid_keep parts."""
+        y_end = CASE_Y0 + CASE_YLEN - RAIL
+        z_lip = STEP_Z + LIP_CLR + RAIL
+        zones = [(CASE_Y0 + RAIL, min(CASE_Y0 + lip_len, y_end), z_lip)] if lip_len > 0 else []
+        if lip_len < CASE_YLEN:
+            zones.append((CASE_Y0 + (lip_len + RIB if lip_len > 0 else RAIL), y_end, RAIL))
+        z1 = RISE - RAIL
+        out = []
+        for y0, y1, z0 in zones:
+            if y1 - y0 < POCKET_MIN or z1 - z0 < POCKET_MIN:
+                continue
+            n = math.ceil((y1 - y0 + RIB) / RIB_PITCH)
+            b = (y1 - y0 - (n - 1) * RIB) / n
+            for i in range(n):
+                ya = y0 + i * (b + RIB)
+                f = face2d(rows[k].quad(ya, ya + b, z0, z1)).common(pieces2d[k])
+                for q in solid_keep(k):
+                    f = f.cut(q)
+                out += rounded(f, POCKET_MIN / 2 - 0.5, POCKET_MIN ** 2)
+        return out
+
+    def bosses(k, lip_len=0.0):
+        """2D full-thickness pads of piece k: the splice plate seat at each joint, the floor of the
+        stretcher channel, the case guide wall (rails and ribs round the pockets), the feet."""
         out = []
         for j in joints:
             if k + 1 in j["tiers"]:
-                f = face2d(j["plate"]).makeOffset2D(-4, 0).makeOffset2D(4 + BOSS_MARGIN, 2)
+                f = face2d(j["plate"]).makeOffset2D(-2, 0).makeOffset2D(2 + BOSS_MARGIN, 2)
                 out += f.common(pieces2d[k]).Faces
         if stretchers[k]:
-            y, z = stretchers[k]
-            out += Part.Face(Part.Wire(Part.makeCircle(BOSS_R, V(y, z, 0)))).common(pieces2d[k]).Faces
+            out += face2d(sq2d(stretchers[k], STR_BOX)).common(pieces2d[k]).Faces
+        wall = rail2d(k).common(pieces2d[k])
+        for f in pockets(k, lip_len):
+            wall = wall.cut(f)
+        out += wall.Faces
+        for y in feet.get(k, []):
+            out += face2d(pad2d(y)).common(pieces2d[k]).Faces
         return [f for f in out if f.Area > 1]
 
-    def cheek(k, left):
+    if os.environ.get("STAND_2D"):
+        # quick look at the profiles: windows, and the wall pockets with no lips
+        svg_profile(CASE / "research" / "stand" / "profile-cut.svg", pieces2d, rows,
+                    pockets=[f for k in range(len(rows)) for f in pockets(k, 0.0)])
+        return
+
+    def lip_x(left):
+        """Lip edge (and rows 2+ stop lug inner face): LIP_X_CLR off the side panel outer face."""
+        return -SIDE_T - LIP_X_CLR if left else CASE_X_IN + SIDE_T + LIP_X_CLR
+
+    def cheek(k, left, lip_len):
         sgn = 1 if left else -1      # outward is -X on the left
         x_in = X_IN if left else X_IN_R
         x_out = x_in - sgn * T
         # thin web flush with the flat outer face (the splice plates sit on it); full-thickness bosses
-        # only where screws / spacers go, standing proud on the inner face with the tongue, so the
-        # piece still prints outer face down with no supports
+        # where screws / spacers go and along the case guide rail, standing proud on the inner face
+        # with the ledge and the stop lugs, so the piece still prints outer face down with no supports
         x_web = x_out + sgn * T_WEB
         s = to_stand(pieces2d[k].extrude(V(0, 0, T_WEB)), min(x_out, x_web))
         x_b = x_web - sgn * 1.0      # bosses start 1 mm inside the web (no coplanar faces to fuse)
-        bs = [to_stand(b.extrude(V(0, 0, abs(x_in - x_b))), min(x_in, x_b)) for b in bosses(k)]
-        if bs:
-            s = s.multiFuse(bs).removeSplitter()
-        r = rows[k]
-        # tongue under the bottom plate, along the whole case depth, from the web
-        tx1 = BOLT_X[0] + TONGUE_IN if left else BOLT_X[1] - TONGUE_IN
-        tongue = Part.makeBox(abs(tx1 - x_web), CASE_YLEN, TONGUE, V(min(x_web, tx1), CASE_Y0, -TONGUE))
-        bx = BOLT_X[0] if left else BOLT_X[1]
-        for by in BOLT_Y:
-            tongue = tongue.cut(cyl(M3_CLEAR / 2, TONGUE + 2, (bx, by, -TONGUE - 1), (0, 0, 1)))
-            tongue = tongue.cut(cyl(M3_CB_D / 2, M3_CB_DEPTH + 1, (bx, by, -TONGUE - 1), (0, 0, 1)))
-        tongue.Placement = r.placement().multiply(tongue.Placement)
-        if k > 0:      # row 1 stands on the desk: no tongue under it
-            s = s.fuse(tongue)
-        if k == 1:
-            # stop lug behind row 1, against the back end of its side panel
-            ys = max(p[0] for p in rows[0].rect()) + 0.5
-            sx = (-SIDE_T + STOP[1]) if left else (CASE_X_IN + SIDE_T - STOP[1])
-            s = s.fuse(Part.makeBox(abs(sx - x_web), STOP[0], STOP[2], V(min(x_web, sx), ys, 0)))
+
+        def solid(f, x1):
+            """2D profile f (clipped to the piece) standing from the web up to X = x1."""
+            f = f.common(pieces2d[k])
+            assert f.Area > 1
+            return to_stand(f.extrude(V(0, 0, abs(x1 - x_b))), min(x1, x_b))
+        bs = [solid(b, x_in) for b in bosses(k, lip_len)]
+        if k > 0:
+            # ledge under the bottom plate along the whole case depth, inboard past the side panel centre
+            tx1 = BOLT_X[0] + TONGUE_IN if left else BOLT_X[1] - TONGUE_IN
+            bs.append(solid(face2d(rows[k].quad(CASE_Y0, CASE_Y0 + CASE_YLEN, -TONGUE, 0)), tx1))
+            # lip over the plate step from the lower (front) end of the rail, lip_len along it, RAIL
+            # tall (the guide wall above it is pocketed like the rest)
+            if lip_len > 0:
+                z = STEP_Z + LIP_CLR
+                bs.append(solid(face2d(rows[k].quad(CASE_Y0, CASE_Y0 + lip_len, z, z + RAIL)), lip_x(left)))
+        # stop lugs: row 1 against the outer part of the case side panel end (plate, socket wall,
+        # side panel); rows 2+ against the plate step end only, flush with the lip
+        if stretchers[k]:
+            # stretcher channel walls, proud of the inner face
+            bs.append(solid(channel2d(k), x_in + sgn * RIM_H))
+        sx = (-SIDE_T + STOP[1]) if left else (CASE_X_IN + SIDE_T - STOP[1])
+        bs += [solid(face2d(st).cut(desk), sx if r == 0 else lip_x(left)) for r, st in stops.get(k, [])]
+        s = s.multiFuse(bs).removeSplitter()
         cuts = []
+        socks = []
         for j in joints:
             if k + 1 in j["tiers"]:
                 for h in j["holes"]:
                     # sockets only under this piece's half of the splice
                     if face2d([add(h, (-1, -1)), add(h, (1, -1)), add(h, (1, 1)), add(h, (-1, 1))]).common(pieces2d[k]).Area > 1:
                         cuts.append(hex_prism(h, SOCKET_DEPTH, x_out, sgn))
+                        socks.append((f"splice-{j['tiers'][0]}{j['tiers'][1]}", h, x_out, sgn))
                         cuts.append(cyl(1.2, T + 2, (x_out - sgn, h[0], h[1]), (sgn, 0, 0)))  # glue vent
         if stretchers[k]:
             y, z = stretchers[k]
             cuts.append(cyl(M3_CLEAR / 2, T + 2, (x_out - sgn, y, z), (sgn, 0, 0)))
-            cuts.append(cyl(M3_CB_D / 2, M3_CB_DEPTH + 1, (x_out - sgn, y, z), (sgn, 0, 0)))
+            cuts.append(cyl(M3_CB_D / 2, STRETCH_CB + 1, (x_out - sgn, y, z), (sgn, 0, 0)))  # M3x8 reaches the spacer
+        precut[f"tier{k + 1}-{'left' if left else 'right'}"] = (s, socks)
         for c in cuts:
             s = s.cut(c)
         return s.removeSplitter()
@@ -428,34 +657,118 @@ def main():
         s = to_stand(f.extrude(V(0, 0, SPLICE_T)), x_out - SPLICE_T if left else x_out)
         for h in j["holes"]:
             s = s.cut(cyl(M3_CLEAR / 2, SPLICE_T + 2, (x_out - sgn * (SPLICE_T + 1), h[0], h[1]), (sgn, 0, 0)))
+            s = s.cut(cyl(M3_CB_D / 2, SPLICE_CB + 1, (x_out - sgn * (SPLICE_T + 1), h[0], h[1]), (sgn, 0, 0)))
         return s
 
     def stretcher(k):
         y, z = stretchers[k]
         L = X_IN_R - X_IN
         s = Part.makeBox(L, STRETCH, STRETCH, V(X_IN, y - STRETCH / 2, z - STRETCH / 2))
+        precut[f"stretcher-{k + 1}"] = (s, [("stretcher", (y, z), xe, sg) for xe, sg in ((X_IN, 1), (X_IN_R, -1))])
         for xe, sg in ((X_IN, 1), (X_IN_R, -1)):
             s = s.cut(hex_prism((y, z), SOCKET_DEPTH, xe, sg))
         return s
 
+    # every tier of the full stand is built (a 2-row stand uses the same tier 1 + 2 pieces as the
+    # 3-row one), with no lips first: they are sized below from the free loading paths
+    lip_len = {k: 0.0 for k in range(1, len(rows))}
     asm = {}
-    for k in range(tiers):
+    precut = {}   # part -> (solid before the screw cuts, its spacer sockets), for the fastener check
+    for k in range(len(rows)):
         for left in (True, False):
-            asm[f"tier{k + 1}-{'left' if left else 'right'}"] = cheek(k, left)
+            asm[f"tier{k + 1}-{'left' if left else 'right'}"] = cheek(k, left, lip_len.get(k, 0))
         if stretchers[k]:
             asm[f"stretcher-{k + 1}"] = stretcher(k)
     for j in joints:
-        if j["tiers"][1] <= tiers:
-            for left in (True, False):
-                asm[f"splice-{j['tiers'][0]}{j['tiers'][1]}-{'left' if left else 'right'}"] = splice(j, left)
+        for left in (True, False):
+            asm[f"splice-{j['tiers'][0]}{j['tiers'][1]}-{'left' if left else 'right'}"] = splice(j, left)
 
-    # the skiffs, from the case build
+    # the skiffs, from the case build, with the screw heads the stand has to clear: an M3 socket head
+    # (ISO 4762, 5.5 x 3) in each bottom plate counterbore and on each rail screw outside the side panels
     case_parts = Part.read(str(CASE / "print" / "assembly-preview.step"))
-    cases = {}
-    for k in range(tiers):
+    assert len(case_parts.Solids) == 5, "case: bottom plate, 2 side panels, 2 rails"
+    heads = []
+    for f in case_parts.Faces:
+        c, b = f.Surface, f.BoundBox
+        if not isinstance(c, Part.Cylinder):
+            continue
+        if abs(c.Radius - M3_CB_D / 2) < 1e-3 and abs(c.Axis.z) > 0.99:
+            heads.append(cyl(HEAD_D / 2, HEAD_K, (b.Center.x, b.Center.y, b.ZMax - HEAD_K), (0, 0, 1)))
+        elif abs(c.Radius - M3_CLEAR / 2) < 1e-3 and abs(c.Axis.x) > 0.99 and b.XMin < -SIDE_T + 1e-3:
+            heads.append(cyl(HEAD_D / 2, HEAD_K, (-SIDE_T, b.Center.y, b.Center.z), (-1, 0, 0)))
+        elif abs(c.Radius - M3_CLEAR / 2) < 1e-3 and abs(c.Axis.x) > 0.99 and b.XMax > CASE_X_IN + SIDE_T - 1e-3:
+            heads.append(cyl(HEAD_D / 2, HEAD_K, (CASE_X_IN + SIDE_T, b.Center.y, b.Center.z), (1, 0, 0)))
+    uniq = {}
+    for h in heads:
+        uniq.setdefault(tuple(round(v, 1) for v in h.BoundBox.Center), h)
+    heads = list(uniq.values())
+    assert len(heads) == 12, f"case screw heads: {len(heads)} (8 bottom plate + 4 rail)"
+    case_parts = Part.makeCompound(case_parts.Solids + heads)
+    case_at = []
+    for k in range(len(rows)):
         c = case_parts.copy()
         c.Placement = rows[k].placement().multiply(c.Placement)
-        cases[f"case-{k + 1}"] = c
+        case_at.append(c)
+
+    # loading rows 2+: the case drops onto its ledges behind the lip (along its face normal), then
+    # slides down the rail under the lip onto the stop lugs (lift the row above out first). The lip
+    # can only be as long as the case slides up its rail clear of the stand and still lifts off
+    # there (the row above's lugs lean over row 2's back end), less LIP_GAP; the top row's lip runs
+    # the full depth.
+    def hit_vol(shape, near):
+        return max([0.0] + [shape.common(o).Volume for o in near])
+
+    def nearby(shape, d, dist):
+        bb = shape.BoundBox
+        bb2 = shape.translated(d * dist).BoundBox
+        bb.add(bb2)
+        bb.enlarge(1)
+        return [o for o in asm.values() if o.BoundBox.intersect(bb)]
+
+    def free_slide(shape, d, dist, step=2.0):
+        """Free travel of shape along unit d (up to dist): 0.05 mm resolution."""
+        near = nearby(shape, d, dist)
+        t = 0.0
+        while t < dist:
+            t1 = min(dist, t + step)
+            if hit_vol(shape.translated(d * t1), near) > 1e-3:
+                lo, hi = t, t1
+                while hi - lo > 0.05:
+                    m = (lo + hi) / 2
+                    lo, hi = (lo, m) if hit_vol(shape.translated(d * m), near) > 1e-3 else (m, hi)
+                return lo
+            t = t1
+        return None
+
+    # lifted off: clear of its own guide walls (RISE + 2 up the face normal), then out to the front
+    # (-Y). Sized from the top row down, so a lower row sees the lips of the rows above it.
+    def lifts_out(c, nrm):
+        return free_slide(c, nrm, RISE + 2) is None and \
+            free_slide(c.translated(nrm * (RISE + 2)), V(0, -1, 0), 250) is None
+
+    slide_free = {}
+    for k in reversed(range(1, len(rows))):
+        up = rows[k].placement().Rotation.multVec(V(0, 1, 0))
+        nrm = V(0, rows[k].n[0], rows[k].n[1])
+        s = free_slide(case_at[k], up, CASE_YLEN + LIP_GAP + 2)
+        slide_free[k] = s
+        if s is not None:
+            lifts = lambda t: lifts_out(case_at[k].translated(up * t), nrm)
+            lo, hi = int(LIP_MIN + LIP_GAP), math.floor(s - 1.0)
+            assert lifts(lo), f"row {k + 1}: no loading position for a {LIP_MIN} mm lip"
+            while lo < hi:
+                m = (lo + hi + 1) // 2
+                lo, hi = (m, hi) if lifts(m) else (lo, m - 1)
+            lip_len[k] = lo - LIP_GAP
+        else:
+            lip_len[k] = CASE_YLEN
+        for left in (True, False):
+            asm[f"tier{k + 1}-{'left' if left else 'right'}"] = cheek(k, left, lip_len[k])
+    built = {f"tier{k + 1}-" for k in range(tiers)} | {f"stretcher-{k + 1}" for k in range(tiers)} | \
+        {f"splice-{j['tiers'][0]}{j['tiers'][1]}-" for j in joints if j["tiers"][1] <= tiers}
+    full_stand = dict(asm)
+    asm = {n: s for n, s in asm.items() if any(n.startswith(b) for b in built)}
+    cases = {f"case-{k + 1}": case_at[k] for k in range(tiers)}
 
     # the module standoffs (hex bodies over the face), every 4 HP along both hole lines
     rs = STANDOFF_AF / math.sqrt(3)
@@ -499,13 +812,147 @@ def main():
     # rough tipping check: every case 1.5 kg at its outline centre, the stand ~ 0
     com_y = sum(sum(p[0] for p in r.rect()) / 4 for r in rows[:tiers]) / tiers
     report["checks"]["centre_of_mass_y_mm"] = round(com_y, 1)
-    report["checks"]["foot_y_mm"] = [round(y_front, 1), round(y_back, 1)]
-    report["checks"]["com_inside_foot"] = y_front + 30 < com_y < y_back - 30
+    # on the rubber feet: the front and rear pad centres
+    report["checks"]["foot_y_mm"] = [round(feet[0][0], 1), round(feet[1][-1], 1)]
+    report["checks"]["com_inside_foot"] = feet[0][0] + 30 < com_y < feet[1][-1] - 30
     bb = Part.makeCompound(list(asm.values()) + list(cases.values())).BoundBox
     report["overall_mm"] = {"width": round(bb.XLength, 1), "depth": round(bb.YLength, 1), "height": round(bb.ZLength, 1)}
     report["rows"] = [{"tilt_deg": r.deg, "face_front_edge_yz": [round(v, 1) for v in r.F],
                        "face_back_edge_yz": [round(v, 1) for v in r.B]} for r in rows[:tiers]]
-    report["joints"] = [{"tiers": j["tiers"], "butt_edge_mm": j["edge_mm"]} for j in joints if j["tiers"][1] <= tiers]
+    report["joints"] = [{"tiers": j["tiers"], "butt_edge_mm": j["edge_mm"],
+                         "splice": "along" if j["edge_mm"] >= SPLICE_MIN_EDGE else "across"}
+                        for j in joints if j["tiers"][1] <= tiers]
+    # screwless rows, loading path (checked against the full stand, the other cases out):
+    #   row 1 lifts off the desk and slides out to the front
+    #   rows 2+ are held under the lips (lifting moves only LIP_CLR); they slide up the rail until
+    #   the case front end is LIP_GAP past the lip end, then lift straight off (face normal)
+    stand = list(full_stand.values())
+    load = {}
+    for k in range(tiers):
+        c = cases[f"case-{k + 1}"]
+        nrm = V(0, rows[k].n[0], rows[k].n[1])
+        if k == 0:
+            moves = [nrm * t for t in range(2, int(STOP[2]) + 6, 2)] + [V(0, -t, 0) for t in range(2, int(CASE_YLEN) + 4, 4)]
+            hit = max(hit_vol(c.translated(mv), stand) for mv in moves)
+            load["case-1"] = {"path": "slides out to the front", "clash_mm3": round(hit, 2)}
+            continue
+        up = rows[k].placement().Rotation.multVec(V(0, 1, 0))
+        s = lip_len[k] + LIP_GAP
+        held = free_slide(c, nrm, 5.0, step=0.25)
+        slid = c.translated(up * s)
+        lift = lifts_out(slid, nrm)
+        load[f"case-{k + 1}"] = {
+            "lip_mm": round(lip_len[k], 1), "lip_full_depth": lip_len[k] >= CASE_YLEN,
+            "free_slide_up_rail_mm": None if slide_free[k] is None else round(slide_free[k], 1),
+            "held_lift_mm": None if held is None else round(held, 2),
+            "slide_to_load_mm": round(s, 1),
+            "slide_clear": free_slide(c, up, s, step=1.0) is None,
+            "lift_clear_after_slide": lift}
+    report["checks"]["loading"] = load
+
+    # stretchers: each slides into its channels along the open side, clear of the whole stand (the
+    # cases out), and the channel walls stop it STR_CLR away in the other in-plane directions
+    frame = [s for n, s in full_stand.items() if not n.startswith("stretcher")]
+    st_rep = {}
+    for k in range(tiers):
+        if not stretchers[k]:
+            continue
+        s = asm[f"stretcher-{k + 1}"]
+        d = str_open[k]
+        side = {(0, 1): "up", (1, 0): "back", (-1, 0): "front"}[d]
+        out_d = V(0, d[0], d[1])
+        bb = s.BoundBox
+        bb.add(s.translated(out_d * 300).BoundBox)
+        near = [o for o in frame if o.BoundBox.intersect(bb)]
+        moves = [out_d * t for t in range(1, 301, 2)]
+
+        def stop_at(v, lim=3.0):
+            hit = lambda t: hit_vol(s.translated(v * t), near) > 1e-3
+            if not hit(lim):
+                return None
+            lo, hi = 0.0, lim
+            while hi - lo > 0.02:
+                lo, hi = (lo, (lo + hi) / 2) if hit((lo + hi) / 2) else ((lo + hi) / 2, hi)
+            return round(lo, 2)
+        st_rep[f"stretcher-{k + 1}"] = {
+            "centre_yz_mm": [round(v, 1) for v in stretchers[k]], "channel_open": side, "channel_mm": [round(2 * STR_HW, 2), RIM_H, RIM_W],
+            "slide_in_clash_mm3": round(max(hit_vol(s.translated(mv), near) for mv in moves), 2),
+            "held_mm": {n: stop_at(V(0, *v)) for n, v in
+                        (("down", (-d[0], -d[1])), ("side_a", (d[1], -d[0])), ("side_b", (-d[1], d[0])))}}
+        assert st_rep[f"stretcher-{k + 1}"]["slide_in_clash_mm3"] < 1e-2, st_rep
+        assert all(v is not None and v < STR_CLR + 0.1 for v in st_rep[f"stretcher-{k + 1}"]["held_mm"].values()), st_rep
+    report["checks"]["stretchers"] = st_rep
+
+    # case fit, row by row (the case as built, screw heads included): free travel from its modelled
+    # seat across the stand (X), along the rails onto the stop lugs and off the ledges, and the area
+    # each ledge carries under the bottom plate
+    def travel(shape, d, lim=8.0):
+        bb = shape.BoundBox
+        bb.enlarge(lim + 1)
+        near = [o for o in stand if o.BoundBox.intersect(bb)]
+        hit = lambda t: any(shape.translated(d * t).common(o).Volume > 1e-3 for o in near)
+        if not hit(lim):
+            return None
+        lo, hi = 0.0, lim
+        while hi - lo > 0.05:
+            lo, hi = (lo, (lo + hi) / 2) if hit((lo + hi) / 2) else ((lo + hi) / 2, hi)
+        return round(lo, 2)
+    fit = {}
+    for k in range(tiers):
+        rot_k = rows[k].placement().Rotation
+        c = cases[f"case-{k + 1}"]
+        plate = c.Solids[0]
+        down = rot_k.multVec(V(0, 0, -1))
+        f = {"seat": "desk" if k == 0 else "ledges",
+             "play_left_right_mm": [travel(c, V(-1, 0, 0)), travel(c, V(1, 0, 0))],
+             "to_stop_lugs_mm": travel(c, rot_k.multVec(V(0, 1 if k == 0 else -1, 0)))}
+        if k:
+            for side in ("left", "right"):
+                a = plate.translated(down * 0.1).common(asm[f"tier{k + 1}-{side}"]).Volume / 0.1
+                f[f"ledge_{side}_contact"] = {"area_cm2": round(a / 100, 1), "width_mm": round(a / CASE_YLEN, 1)}
+            f["lip_over_step_mm"] = round(PLATE_STEP - LIP_X_CLR, 2)
+            f["lip_section_mm"] = [round(GAP_X + PLATE_STEP - LIP_X_CLR, 2), RAIL]
+        fit[f"case-{k + 1}"] = f
+    report["checks"]["case_fit"] = fit
+
+    # fasteners: every screw is an M3x8 socket head into an M3x10 hex spacer glued in a blind
+    # socket (as in the case). Each socket must sit in solid print with SOCKET_WALL round it and
+    # under it, and the screw must reach ENGAGE_MIN into the spacer without passing its end.
+    def wall_prism(c, x0, sgn):
+        r = (SOCKET_AF + 2 * SOCKET_WALL) / math.sqrt(3)
+        pts = [V(0, c[0] + r * math.cos(math.radians(60 * i)), c[1] + r * math.sin(math.radians(60 * i))) for i in range(6)]
+        p = Part.Face(Part.makePolygon(pts + [pts[0]])).extrude(V(sgn * (SOCKET_DEPTH + SOCKET_WALL), 0, 0))
+        return p.translated(V(x0 + sgn * 0.02, 0, 0))
+    fast = {}
+    for n, (pre, socks) in precut.items():
+        if n not in asm:
+            continue
+        for kind, c, x0, sgn in socks:
+            w = wall_prism(c, x0, sgn)
+            fast.setdefault(n, {"sockets": 0, "walled": 0})
+            fast[n]["sockets"] += 1
+            fast[n]["walled"] += abs(pre.common(w).Volume - w.Volume) < 0.05
+    stacks = {"splice": {"under_head_mm": SPLICE_T - SPLICE_CB, "into_spacer_mm": round(SPLICE_ENGAGE, 2)},
+              "stretcher": {"under_head_mm": STRETCH_GRIP, "into_spacer_mm": round(STRETCH_ENGAGE, 2)}}
+    # the stretcher screw grips the full cheek boss: measure it at each stretcher end
+    for k in range(tiers):
+        if not stretchers[k]:
+            continue
+        y, z = stretchers[k]
+        for side, x_in, sgn in (("left", X_IN, 1), ("right", X_IN_R, -1)):
+            pre = precut[f"tier{k + 1}-{side}"][0]
+            ray = pre.common(Part.makeLine(V(x_in - sgn * 40, y, z), V(x_in + sgn * 5, y, z)))
+            th = sum(e.Length for e in ray.Edges)
+            assert abs(th - T) < 0.05, f"tier{k + 1}-{side}: stretcher boss {th:.2f} mm, not {T}"
+    for n, f in fast.items():
+        assert f["walled"] == f["sockets"], f"{n}: spacer socket without {SOCKET_WALL} mm walls: {f}"
+    for n, st in stacks.items():
+        assert ENGAGE_MIN <= st["into_spacer_mm"] <= 10.0 - 0.5, f"{n}: M3x{SCREW_L:g} {st}"
+    report["checks"]["fasteners"] = {"screw": f"M3x{SCREW_L:g} socket head only", "stacks": stacks,
+                                     "spacer_sockets": fast}
+    report["feet"] = {f"tier{k + 1}": [round(y, 1) for y in ys] for k, ys in feet.items() if k < tiers}
+    report["checks"]["foot_pad_mm"] = [T, PAD]
+    report["checks"]["foot_mm"] = [FOOT, FOOT]
 
     out = CASE / "print" / "stand"
     rnd = CASE / "research" / "stand"
@@ -515,7 +962,7 @@ def main():
         f.unlink()
     report["print"] = {}
     # print set: one folder per tier (its two cheeks) plus common/ for the parts every joint and
-    # stretcher share; flat cheeks with the outer face on the bed, tongue up
+    # stretcher share; flat cheeks with the outer face on the bed, ledges and lugs up
     for f in list(out.glob("*.stl")) + list(out.glob("*.3mf")) + list(out.glob("*/*.stl")) + list(out.glob("*/*.3mf")):
         if f.parent == out or f.parent.name == "common" or f.parent.name in {f"tier{k + 1}" for k in range(tiers)}:
             f.unlink()
@@ -526,19 +973,25 @@ def main():
             p = s.copy()
             p.rotate(V(0, 0, 0), V(0, 1, 0), -90 if n.endswith("left") else 90)   # outer face (-X on the left) down
             prints[f"{n.split('-')[0]}/{n}"] = (p, s.Volume)
-    # every splice plate is the same symmetric plate (left = right mirror), so one common part
-    lens = {j["splice_l"] for j in joints if j["tiers"][1] <= tiers}
-    if lens:
-        assert len(lens) == 1, f"splice plates differ: {lens}"
-        L = lens.pop()
-        f = face2d([(-L / 2, -SPLICE_W / 2), (L / 2, -SPLICE_W / 2), (L / 2, SPLICE_W / 2), (-L / 2, SPLICE_W / 2)])
-        p = f.makeOffset2D(-4, 0).makeOffset2D(4, 2).extrude(V(0, 0, SPLICE_T))
-        for sx in (-1, 1):
-            for sy in (-1, 1):
-                p = p.cut(cyl(M3_CLEAR / 2, SPLICE_T + 2, (sx * (L / 2 - 9), sy * (WEB / 2 - 0.5), -1), (0, 0, 1)))
-        vols = {round(s.Volume, 1) for n, s in asm.items() if n.startswith("splice")}
-        assert vols == {round(p.Volume, 1)}, f"splice print {p.Volume} != assembly {vols}"
-        prints["common/splice-plate"] = (p, p.Volume)
+    # splice plates are symmetric (left = right mirror): one common part per plate size, along
+    # (long butt edges) or across (short ones)
+    for j in joints:
+        if j["tiers"][1] > tiers:
+            continue
+        kind = "along" if j["edge_mm"] >= SPLICE_MIN_EDGE else "across"
+        ha, hb = j["half"]
+        p = face2d([(-ha, -hb), (ha, -hb), (ha, hb), (-ha, hb)]).makeOffset2D(-4, 0).makeOffset2D(4, 2)
+        p = p.extrude(V(0, 0, SPLICE_T))
+        for a, b in j["local"]:
+            p = p.cut(cyl(M3_CLEAR / 2, SPLICE_T + 2, (a, b, -1), (0, 0, 1)))
+            p = p.cut(cyl(M3_CB_D / 2, SPLICE_CB + 1, (a, b, SPLICE_T - SPLICE_CB), (0, 0, 1)))
+        n = f"common/splice-plate-{kind}"
+        for side in ("left", "right"):
+            v = asm[f"splice-{j['tiers'][0]}{j['tiers'][1]}-{side}"].Volume
+            assert abs(v - p.Volume) < 0.5, f"{n} print {p.Volume} != assembly {v}"
+        if n in prints:
+            assert abs(prints[n][1] - p.Volume) < 0.5, f"{n}: two sizes"
+        prints[n] = (p, p.Volume)
     strs = [s for n, s in asm.items() if n.startswith("stretcher")]
     if strs:
         assert len({round(s.Volume, 1) for s in strs}) == 1 and len({round(s.BoundBox.XLength, 2) for s in strs}) == 1
@@ -558,8 +1011,65 @@ def main():
     for n, s in asm.items():
         # assembly-pose meshes for the render
         MeshPart.meshFromShape(Shape=s, LinearDeflection=0.05, AngularDeflection=0.3).write(str(rnd / f"asm-{n}.stl"))
+    def mesh_case(n, c, d, half=None):
+        """case meshes, the screw heads apart (they render in their own colour), cut by half"""
+        sol = c.Solids
+        parts = {n: sol} if n.startswith("standoffs") else {n: sol[:5], f"screws-{n[5:]}": sol[5:]}
+        for m, p in parts.items():
+            p = Part.makeCompound([q.common(half) for q in p] if half else p)
+            if p.Volume > 1e-3:
+                MeshPart.meshFromShape(Shape=p, LinearDeflection=0.1, AngularDeflection=0.3).write(str(d / f"asm-{m}.stl"))
     for n, c in cases.items():
-        MeshPart.meshFromShape(Shape=c, LinearDeflection=0.1, AngularDeflection=0.3).write(str(rnd / f"asm-{n}.stl"))
+        mesh_case(n, c, rnd)
+    # fit views: the stand and the cases cut open, meshes + camera per view in research/stand/fit/
+    #   row<k>: across row k on its front bolt line (case Y 25), looking up the rails at the left
+    #           ledge, guide band and bottom plate screw head
+    #   stop<k>: along the left side of the case at the lower end of row k: row 1 at case X -9
+    #           (through its stop lugs), rows 2+ at X -14 (through the plate step, lip and lug)
+    #   load<k>: rows 2+ that have a short lip, at X -14: the case at its loading position (slid up
+    #           the rail, its front end LIP_GAP past the lip end), the row above out
+    views = {}
+    for k in range(tiers):
+        pl = rows[k].placement()
+        yc = 25.0
+        half = Part.makeBox(2000, 1000, 2000, V(-1000, yc, -1000))
+        half.Placement = pl.multiply(half.Placement)
+        views[f"row{k + 1}"] = (half, pl.multVec(V(-8, yc, 8)), pl.Rotation.multVec(V(0, 1, 0)), 75, cases)
+        xc = -9.0 if k == 0 else -14.0
+        half = Part.makeBox(1000, 2000, 2000, V(xc, -1000, -1000))
+        ye = CASE_YLEN + CASE_Y0 if k == 0 else CASE_Y0
+        views[f"stop{k + 1}"] = (half, pl.multVec(V(xc, ye, 12)), V(1, 0, 0), 90, cases)
+        if k and lip_len[k] < CASE_YLEN:
+            s_load = lip_len[k] + LIP_GAP
+            moved = {n: (c.translated(pl.Rotation.multVec(V(0, s_load, 0))) if n == f"case-{k + 1}" else c)
+                     for n, c in cases.items() if n not in (f"case-{k + 2}", f"standoffs-{k + 2}")}
+            views[f"load{k + 1}"] = (half, pl.multVec(V(xc, CASE_Y0 + CASE_YLEN / 2 + s_load / 2, 20)), V(1, 0, 0), 230, moved)
+    #   stretcher<k>: the left end of the stretcher in its channel, from inboard / above / behind,
+    #           the stand right of the channel walls cut away, no cases
+    for k in range(tiers):
+        if stretchers[k]:
+            y, z = stretchers[k]
+            half = Part.makeBox(1000, 2000, 2000, V(X_IN + RIM_H + 30 - 1000, -1000, -1000))
+            look = V(-1, -0.7, -0.8)
+            look.normalize()
+            views[f"stretcher{k + 1}"] = (half, V(X_IN + RIM_H, y, z), look, 90, {})
+    fitd = rnd / "fit"
+    for f in fitd.glob("*/*"):
+        f.unlink()
+    for v, (half, tgt, look, scale, view_cases) in views.items():
+        d = fitd / v
+        d.mkdir(parents=True, exist_ok=True)
+        box = Part.makeBox(scale * 3, scale * 3, scale * 3, tgt - V(1, 1, 1) * scale * 1.5).BoundBox
+        for n, s in asm.items():
+            if s.BoundBox.intersect(box):
+                cut = s.common(half)
+                if cut.Volume > 1e-3:
+                    MeshPart.meshFromShape(Shape=cut, LinearDeflection=0.05, AngularDeflection=0.3).write(str(d / f"asm-{n}.stl"))
+        for n, c in view_cases.items():
+            if c.BoundBox.intersect(box):
+                mesh_case(n, c, d, half)
+        (d / "camera.json").write_text(json.dumps({"target_mm": [round(x, 2) for x in tgt],
+                                                   "look_dir": [round(x, 4) for x in look], "ortho_mm": scale}))
     doc = App.newDocument("SkiffStand")
     for n, s in list(asm.items()) + list(cases.items()):
         doc.addObject("Part::Feature", n.replace("-", "_")).Shape = s
@@ -568,10 +1078,14 @@ def main():
     report["build_s"] = round(time.time() - t0, 1)
     n_str = sum(1 for s in stretchers[:tiers] if s)
     report["hardware"] = {
-        "case_to_tongue": f"{4 * (tiers - 1)}x M3x12 (rows 2+; row 1 stands loose on the desk) socket head, replacing the case's M3x6 plate bolts "
-                          "(same hex spacers in the side panels)",
-        "splice_plates": f"{8 * (tiers - 1)}x M3x10 + {8 * (tiers - 1)}x M3x10 hex spacer (glued in the cheeks)",
-        "stretchers": f"{2 * n_str}x M3x14 + {2 * n_str}x M3x10 hex spacer (glued in the stretcher ends)",
+        "cases": "none: row 1 slides in from the front; rows 2+ drop onto their ledges behind the lips and slide down under them onto the stop lugs",
+        "splice_plates": f"{8 * (tiers - 1)}x M3x{SCREW_L:g} + {8 * (tiers - 1)}x M3x10 hex spacer (glued in the cheeks): "
+                         f"{SPLICE_CB:g} mm counterbore, {SPLICE_T - SPLICE_CB:g} mm plate under the head, {SPLICE_ENGAGE:.1f} mm into the spacer",
+        "feet": f"{2 * sum(len(ys) for k, ys in feet.items() if k < tiers)}x {FOOT:g} x {FOOT:g} mm self-adhesive (3M) rubber foot, "
+                f"stuck on a flat {T:g} x {PAD:g} mm plate under the cheek (no screws)",
+        "stretchers": f"{2 * n_str}x M3x{SCREW_L:g} + {2 * n_str}x M3x10 hex spacer (glued in the stretcher ends), each end slid into a "
+                      f"{2 * STR_HW:g} mm U channel ({RIM_H:g} mm walls) on the cheek: "
+                      f"{STRETCH_CB:g} mm counterbore, {STRETCH_GRIP:g} mm cheek under the head, {STRETCH_ENGAGE:.1f} mm into the spacer",
     }
     (rnd / f"stand-{tiers}-report.json").write_text(json.dumps(report, indent=1) + "\n")
     print(json.dumps(report, indent=1))
