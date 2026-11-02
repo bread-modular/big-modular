@@ -2,7 +2,7 @@
 
 Based on Bread Modular `16bit`: an RP2350A plays audio through a PT8211 16-bit stereo
 DAC and reads MIDI, two CV inputs (each with its own attenuator knob) and two more knobs. Bread Modular's GPIO map is kept, so
-its firmware ports (UF2 over the USB-C on the back).
+its firmware ports (UF2 over the USB-C on the back; `firmware/README.md`).
 
 | Panel (top to bottom) | Circuit |
 |---|---|

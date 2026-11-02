@@ -25,7 +25,9 @@ Module paths are module-relative.
   TM8211-TA2302 (BM 16bit-5v), L1 = cjiang FTC201610S3R3MBCA (unmarked: check the core
   regulator at bring-up), U3 = Adafruit 4677 C17430771 (user-stocked ESP-PSRAM64H, same
   APS6404L pinout). Not supplier-accepted.
-- Open: firmware notes, 3D fit, bench (`docs/research.md` §5, §7.6).
+- **Firmware (2026-11-02)** in `firmware/` (`firmware/README.md`): BM 16bit 1.6.0, six apps,
+  JP1 `p`/`d` builds over the shared `opt/rp2350-tools`; compiled, not bench-tested.
+- Open: firmware app mapping of P1/P2, 3D fit, bench (`docs/research.md` §5, §7.6).
 
 ## Boundaries
 
