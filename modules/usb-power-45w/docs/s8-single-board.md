@@ -1,19 +1,448 @@
-# usb-power-45w S8.5: one-shot arming on the S8.4 +5 V series disconnect, P1.5 fit placement
+# usb-power-45w S9.0: ±12 V only, 15 V USB PD input, TPS552892-Q1 +12 V buck-boost, P2.0 fit placement
 
-> **Development review, not a manufacturing release.** S8.5 fixes the arming blocker that all three
-> S8.4 reviews raised (item **B**: one-shot `STARTED` latch, `TIMER_GO = RUN AND STARTED`, `V20_OK`
-> moved to a status-validity floor) and the remaining minor items (**C**), changelog below. The S8.4
-> design is otherwise **unchanged**: **U23 TPS259470ARPWR** +5 V series disconnect (R108/TP21 `P5_FLT_N`,
-> OVLO R107/R101/R102, ILM R103/R104, dVdt C68), **U18/U20 on always-on VPD**, the published rating and
-> every other S8.4 decision. 191 references / 85 circuit nets, seven schematic pages; 100.5 × 48 mm
-> four-layer board, 50 mm deep, all components on F. The board is **unrouted**. A conservative prototype
-> rating is published (**+12 V 2.5 A, +5 V 2.0 A, −12 V 0.9 A, ≤ 45 W delivered**); it is derived from
-> datasheet minimum limits, not measured. A safe +5 V fault peak is **not** established. Original S7/R3
-> two-board hardware is unchanged.
+> **Development review, not a manufacturing release.** S9.0 is a major revision of the single board
+> (S8.5 / P1.5 → **S9.0 / P2.0**): the **+5 V subsystem is gone** (the module is **±12 V only**), the
+> input is retargeted to **15 V USB PD** (stated range **13.5–16.5 V** at the module), and the +12 V
+> stage is now a **TPS552892-Q1 four-switch buck-boost**, because the S8 TPS62933F buck cannot hold
+> regulation at 15 V. **No reverse-current blocking and no voltage-triggered rail fuse/crowbar** are
+> added: both are **accepted residuals** (owner decisions, 2026-11-02) with bench-test conditions below.
+> The S8.5 one-shot arming (`STARTED`) is kept and re-derived without `P5_OK`. 156 references / 74
+> nets, five schematic pages; 100.5 × 48 mm four-layer board, 50 mm deep, all parts on F, **unrouted**.
+> Published prototype rating: **+12 V 2.4 A, −12 V 0.8 A, ≤ 33 W together** from a **15 V / 3 A
+> (≥ 45 W) PD source**, from datasheet minimum limits, not measured. Original S7/R3 two-board hardware
+> is unchanged.
 
-S8.3 authorized: remove the crowbar and related circuitry, choose a less expensive, well-stocked
-JLCPCB part, and fix U20's input-range issue. This does **not** restore the original three-rail
-protection architecture: only +5 V has an output disconnect. MAIN remains the only LED.
+## S9.0 / P2.0 changelog (2026-11-02)
+
+| Item | Change | Files |
+| --- | --- | --- |
+| **(a)** +5 V removed (step 1, `e8124c1`) | U3 (TPS62933F +5 V buck) and every part that only served +5 V: U23 TPS259470A with R108/TP21 (`P5_FLT_N`), OVLO R107/R101/R102, ILM R103/R104, dVdt C68, L2 and the U3 network (R10–R12, C15–C19), the 10 × 22 µF raw bank and the 4 × 22 µF delivered bank, D3/D21/D23, the U20 +5 V guard channel (R95/R96/C64), the U18 +5 V monitor (R77–R79), R44, TP13, TP18. J2/J3 pins 11/12 are open. No `+5V`/`P5_*`/`EF_*` net or +5 V ref survives (regression tests over table, native netlist, schematic files, PCB, BOM, placement and records) | `tools/circuit_s8.py`, `hierarchy_s8.py`, `build_s8.py`, `place_s8.py`, `verify_s8.py`, `test_s8.py`, every artifact |
+| **(b)** 15 V input (step 2) | CH224A CFG1 **R1 56k** (15 V request; Basic C23206); U5 UVLO **R3 10k** (on 12.46–13.98 V, off 11.55–13.13 V); **R83 100k** (`V20_OK` 7.67–9.27 V). U5 OVP keeps the 20 V setting (24.1 V nominal) | `circuit_s8.py`, page 01 |
+| **(b)** +12 V duty (step 2) | **U2 = TPS552892-Q1** (TI RYQ0021B, pinned symbol and land pattern in `tools/s90_parts.py`), 966 kHz (R110 20k), L1 6.8 µH kept, BOOT C10/C9, VCC C82 (MODE/EXTVCC tied: FPWM, internal LDO), **R109 15 mΩ** output current limit 3.14–3.53 A, FB R8 68k / R9 7.5k (12.08 V), COMP R111 9.1k / C83 10n, VIN 4 × 10 µF + C8, VOUT 6 × 22 µF + C81. U2's footprint is replaced (the only footprint change, explicit in `sync_candidate`); +10 parts | `circuit_s8.py`, `s90_parts.py`, `build_s8.py`, `place_s8.py`, `check_s8_board.py`, page 02, PCB |
+| **(b)** ratings | +12 V 2.4 A, −12 V 0.8 A (75 % rule at the 12.5 V converter input), **≤ 33 W total** (3 A contract at 13.5 V); calcs for duty, losses, compensation, start-up, release, damper, PD contract | `s8_calcs.py`, `calcs.json` |
+| **(c)** arming | `ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)`; S8.5 one-shot `STARTED` (U12 A, U11 → `ARMED`, TP19) unchanged; timelines re-run at the 15 V source corners with a load-aware VPD plant: **0 violations** | `verify_s8.py`, `s8_calcs.py` (`arming`), `test_s8.py` |
+| **(d)** residuals | No reverse blocking, no rail fuse/crowbar: both **accepted**, recorded with paths, worst-case numbers, stressed parts, bench-test conditions and pass criteria (`calcs.json` → `residuals`, `validation.json` → `accepted_residuals`, `review-s90.json`). The reverse-blocking attempt of the earlier run (LM74700/LM5051/AO4354 symbols, SOIC-8 footprint) is fully reverted | `s8_calcs.py`, `verify_s8.py`, `review_s8.py`, `build_s8.py` |
+| **(e)** crowbar vs eFuse | **Deferred, open.** No crowbar restored, no rail eFuse added | this page |
+| panel | Silk label **PD 15V** (was PD 20V); geometry unchanged (same holes, outline and texts otherwise) | `tools/build_s8_panel.py`, panel |
+| record | `review-s90.json` replaces `review-s85.json` (S8.5 record in git `5a3a686`); hashes only tracked files (`git ls-files`), incl. `s90_parts.py`, every footprint the board uses and the panel | `tools/review_s8.py`, `test_s8.py` |
+
+Revision: schematic **S9.0**, board **S9.0-P2.0**.
+
+## Open / review (S9.0)
+
+| Item | File |
+| --- | --- |
+| Native project | [hardware/single/usb-power-45w-single.kicad_pro](../hardware/single/usb-power-45w-single.kicad_pro) |
+| Schematic, overview + five pages | [PDF](usb-power-45w-single-schematic.pdf) |
+| Native schematic BOM | [s8-single/bom.csv](s8-single/bom.csv), test pads excluded; D8/J2/J3 manual |
+| Calculations (incl. duty proof, ratings, residuals, 20 V delta) | [calcs.json](s8-single/calcs.json) |
+| Independent native pin/field/NC verification, arming timelines, accepted residuals | [validation.json](s8-single/validation.json) |
+| Final native checks, tests and source/artifact hashes | [review-s90.json](s8-single/review-s90.json) |
+| Whole-design dated sourcing estimate + Basic-only decision | [sourcing.json](s8-single/sourcing.json) |
+| Live evidence for the S9.0 codes | [s90-sourcing.json](s8-single/s90-sourcing.json) (earlier: [s84](s8-single/s84-sourcing.json), [s83](s8-single/s83-sourcing.json)) |
+| Placement / mechanical contract | [board-p1.json](s8-single/board-p1.json), [placement.json](s8-single/placement.json), [mechanical.json](s8-single/mechanical.json) |
+| Placement drawing / 3D | [PDF](s8-single/assembly/usb-power-45w-single-placement.pdf), [STEP ZIP](s8-single/assembly/usb-power-45w-single-assembly.step.zip), [collision report](s8-single/assembly/assembly-report.json) |
+| Panel | [S9.0 panel](../panels/front-pcb/usb-power-45w-single-panel.kicad_pcb) (label PD 15V) |
+
+## (a) +5 V removed: ±12 V only
+
+Everything listed in the changelog row is gone from the generators and every artifact (`build.json` →
+`removed_in_S9_plus5`: 45 refs plus the #FLG05 flag, S7 refs and S8 additions). Consequences handled:
+
+- **Fault latch without `P5_OK`:** U14 gate 1 keeps its fourth input tied to V3V3, so
+  `ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK)` (section (c)).
+- **Guard set:** U20 keeps only the **+12 V (14.88 V nominal, 14.48–15.27 V)** and **−12 V
+  (−13.64 V nominal, 13.27–14.02 V magnitude)** channels; `OV_N` is the wire-AND of exactly those two
+  outputs (+ R97, TP6, the U12 preset). The freed comparators (U18 out 2, U20 outs 1 and 13) are spares
+  with inputs at the reference/GND and open outputs (verified, negative-controlled).
+- **Outputs:** J2/J3 carry ±12 V only; pins 11/12 and CV/GATE (13–16) are open.
+- U5's nets are named `MAIN_*` on the single board (`EF_*` in S7); they never belonged to +5 V.
+
+## (b) 15 V input retarget
+
+### USB PD contract, input range and adapter class
+
+| Item | Value | Basis |
+| --- | --- | --- |
+| Request | **15 V fixed PDO** (CH224A CFG1 = R1 56k; 120k = 20 V) | WCH CH224 datasheet; no current-contract tracking |
+| Contract ceiling | **3.0 A** = 45 W at 15 V | USB PD power rules: no standard source offers more than 3 A at 15 V |
+| Required adapter | **USB PD source with a 15 V / 3 A fixed PDO, i.e. ≥ 45 W PDP** | a 27 W source offers only 15 V / 1.8 A and will trip or cycle under load; a 5 V-only source never turns U5 on |
+| Stated input range at the module | **13.5–16.5 V** | 13.5 V = 15 V −5 % less a 0.75 V cable/connector allowance at 3 A; 16.5 V = +10 % ceiling |
+| U5 window (input qualification) | on **12.46–13.98 V**, off **11.55–13.13 V** | R2/R3 100k/10k at 1 % + 1 % TCR, TPS16630 UVLO, 150 nA leakage through R2 |
+| Start / run margins | **0.27 V** (14.25 V unloaded vs the 13.98 V turn-on maximum), **0.37 V** (13.5 V loaded vs the 13.13 V turn-off maximum) | any compliant 15 V PDO starts the board; tight, bench-check |
+| Maximum module output | **~35.9 W** at a nominal 15 V source (14.25 V at the module, 3 A, worst efficiency mix); **33.8 W** at the 13.5 V minimum | 40.5–42.75 W in, minus D10 (0.75 V × 3 A), U5 and 0.5 W logic |
+| U5 current limit | 3.69–4.70 A (unchanged) | protects the board; does **not** enforce the 3 A contract: above the published total the source decides (current limit or hard reset; a brown-out after ARMED latches FAULT) |
+
+### +12 V: the duty-cycle problem and how it was solved
+
+At the 13.5 V rated minimum the converters see **12.5 V** (VPD less the 1.0 V D10 + U5 drop screen).
+The S8 TPS62933F buck (setpoint 11.51/12.19/12.91 V over VFB and R8/R9 1 % + 1 % TCR; 76 mΩ high-side
+switch, L1 22 mΩ) needs (`calcs.json` → `plus12_buckboost.S8_TPS62933F_at_15V`):
+
+| Required duty at 12.5 V | 0 A | 2.5 A |
+| --- | --- | --- |
+| nominal setpoint 12.19 V | 0.976 | **0.995** |
+| maximum setpoint 12.91 V | **1.033** | **1.053** |
+
+against its **98 %** maximum: out of regulation, **even unloaded**. Holding regulation at 2.5 A and the
+setpoint maximum would need **VPD ≥ 14.42 V**, above the 14.25 V *unloaded* minimum of a compliant
+15 V source. So neither a lower published +12 V current nor a higher minimum input (inside the USB PD
+tolerance) fixes it; a different controller does. **Chosen: TPS552892-Q1 four-switch buck-boost**
+(36 V, 8 A average inductor limit, external feedback; JLCPCB C22375748, Extended, Economic-eligible,
+3,274 in stock, $6.359 at 1–9, live 2026-11-02 03:37 UTC). It regulates in buck mode above VOUT,
+alternates buck/boost cycles near it and boosts below it (TI SLVSGT7):
+
+| Converter input | Mode | Duty (buck at setpoint min / boost at setpoint max) | IL avg at 2.4 A / 3.53 A | Margin to 7 A ILIM_AVG min |
+| --- | --- | --- | --- | --- |
+| 10.55 V (U5 turn-off sag) | boost | 0.177 / 0.182 (max 0.846 from tOFF_min) | 3.20 / 4.70 A | 3.66 / 2.15 A |
+| 12.5 V (rated minimum) | buck-boost (alternating) | 0.935 buck, 0.023 boost | 2.70 / 3.97 A | 4.29 / 3.02 A |
+| 14.0 V (nominal 15 V) | buck | 0.834 | 2.40 / 3.53 A | 4.50 / 3.37 A |
+| 16.5 V (range maximum) | buck | 0.708 (min 0.138 from tON_min) | 2.40 / 3.53 A, ripple 0.50 A | 4.35 / 3.22 A |
+| 21 V (later 20 V retarget) | buck | 0.556 | 2.40 / 3.53 A, ripple 0.85 A | 4.18 / 3.05 A |
+
+**Regulates at every corner** (setpoint 11.54/12.08/12.65 V from VREF 1.188–1.212 V and R8/R9).
+Design screens (`calcs.json` → `plus12_buckboost`):
+
+- **Current limit and rating basis:** R109 15 mΩ (1 W, 1 %, 75 ppm) against VSNS 48–52 mV = **3.14–3.53 A**
+  constant current; the inductor stays ≥ 2.15 A below the 7 A average-limit minimum at every corner, so
+  R109, not the IC, sets the +12 V capability. FB senses +12 V after R109 (CDC open: ≤ 20 mV shift).
+- **Frequency 966 kHz** (R110 20k, 870–1,063 kHz screen), kept from the earlier S9.0 step: TI advises
+  < 500 kHz at high power *or* a lower switch current above it; R109 keeps the average inductor current
+  at ≤ 4.7 A (boost corner, ≤ 4.0 A in the range) against the 7 A limit, the switching-loss penalty is ~0.18 W (0.31 W vs 0.13 W at 400 kHz), and it halves
+  the N = 16 release screen. L1 6.8 µH (> 1.2/fSW = 1.38 µH), ripple 0.50 A p-p at 16.5 V, peak 3.8 A at
+  the limit (Isat 10 A).
+- **Losses / thermal (screen, assumptions stated in `loss_model`):** at 2.4 A the IC dissipates ~1.0 W
+  (η ≈ 96 %), **ΔTj 44 °C** on a JEDEC board (28 °C on an EVM-class 4-layer board): ~94 °C at 50 °C
+  ambient. A sustained overload at the 3.53 A limit: ~1.75 W, **~126 °C** (JEDEC) / ~98 °C (EVM). L1
+  0.18 W, R109 0.09 W. Bench thermal gate.
+- **Compensation (TI Eq. 19–26, boost corner):** R111 9.1k / C83 10 nF (Eq. 25 asks 10.4 nF), zero
+  1.75 kHz; crossover **11.6 kHz** (bank low C) / 4.5 kHz (high C), under the 18 kHz limit (RHPZ / 5).
+  With the 0.44 mF rack behind the cables it falls to ~0.8 kHz, below the zero: **loop stability with
+  the real rack is a bench Bode gate**, not established here.
+- **VIN:** 4 × 10 µF/50 V + 100 nF at U2 (TI ~20 µF effective) + C24; damper screen (B_RCx2, 5 × 10 µF,
+  45 W at 12.5 V, Zin 3.47 Ω): **9.7 dB** margin (S7 can reference 8.1 dB).
+- **Output:** 6 × 22 µF before R109 + 2 at the headers: 37.6–96.8 µF effective (TI 10–1000 µF).
+- **Its own OVP (22.5–24.5 V) is absolute**, not a 12 V protection; the U20 guard is.
+
+### −12 V at 15 V
+
+The LMR38020 inverting stage is unchanged. At 15 V (14.0 V converter input) D = 0.46 (0.44 at 15 V
+exactly); at the 12.5 V rated minimum D = 0.49 and its minimum current-limited capability
+((ILS min 1.8 A + ripple/2)(1 − D), SNVSC40E Eq. 7) is **1.051 A** (S8.5 at 17.25 V: 1.238 A), so the
+published −12 V figure is **derated to 0.8 A**. Start-up into rack capacitance: published allowance
+**0.846 mF** (TI's 1000 µF total-COUT guidance minus the onboard bank; the hiccup-rule model allows
+1.32 mF at the 11.46 V converter input of the U5 turn-on minimum with 0.8 A from 0 V and half the
+typical blanking), covering a typical 0.44 mF rack.
+
+### Published rating (S9.0)
+
+| Rail | Published continuous | Minimum current-limited capability at the 12.5 V converter input | Fraction | Below the rated range (10.55 V) |
+| --- | --- | --- | --- | --- |
+| +12 V | **2.4 A** | 3.145 A (R109 constant-current minimum) | 76.3 % | 76.3 % |
+| −12 V | **0.8 A** | 1.051 A (LMR38020 Eq. 7) | 76.1 % | 83.9 % (0.953 A) |
+| Together | **≤ 33 W delivered** | 3.0 A × 13.5 V = 40.5 W in; 37.3 W after D10/U5/logic; worst efficiency mix (−12 V at its rating first, 93 % / 85 %) 33.8 W | rounded down | — |
+
+Rule (S8.4 M5, unchanged): 75 % of the minimum current-limited capability, to the nearest 0.1 A, capped
+at the S7 target. The two per-rail ratings at once (38.6 W) would draw **3.42 A** at 13.5 V, above the
+3 A contract, hence the separate **33 W total**. Above ~2 A per rail use both J2 and J3. Prototype
+rating from datasheet minimum limits and assumed efficiencies, not measured or thermally qualified.
+
+### Start-up, release and guard margins
+
+| Screen | S9.0 |
+| --- | --- |
+| +12 V start-up | tSS 2.5–5 ms (fixed); above 0.15 mF (full load) the rail charges at the R109 limit; hiccup needs VOUT < 0.8 V *and* the 7 A inductor limit, which R109 prevents: **rack allowance 0.903 mF** (TI 1000 µF effective ceiling − bank), full in 17 ms at full load |
+| −12 V start-up | 0.846 mF (above) |
+| One-shot window vs rail-up budget | 66.6 ms (U5 ramp 9.6, PGOOD 13, tSS 5, +12 V rack at the limit 17, LMR38020 22) vs ≥ 309 ms: **4.6×** |
+| +12 V release (N = 16, low C, 870 kHz, setpoint max) | 2.4 A: peak 13.82 V, **0.66 V** below the 14.48 V guard minimum; from the 3.53 A limit (an overload released): 14.40 V, **0.08 V** (sensitivity; a trip would be a fail-safe nuisance latch) |
+| −12 V release | unchanged: 0.157 V stacked margin |
+| Guard maximum vs 16 V downstream capacitors | +12 V 0.73 V, −12 V 1.98 V |
+
+## (c) Arming chain without `P5_OK` (S8.5 one-shot kept)
+
+```text
+MAIN_OK     = U5 FLT + PGOOD wired-AND (R63 to V3V3)        -> U2 EN/UVLO (pin 1); U4 follows +12V via Q1
+MAIN_LED_OK = MAIN_OK AND V20_OK                            U13 gate 4   ("U5 on with valid status")
+START_N     = NAND(MAIN_LED_OK, RUN, V3V3, V3V3)            U14 gate 2
+STARTED     = U12 A: PRE_N = START_N, CLR_N = RESET_N, CLK = GND, D = V3V3, Q -> TP19
+TIMER_GO    = RUN AND STARTED                               U13 gate 3 -> R69/R70 -> U11 SENSE
+ARMED       = U11 RESET output (R71)                        held: its input is latched
+ANY_BAD     = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)       U14 gate 1 (S9.0: the P5_OK input tied high)
+FAULT       = U12 B: CLK = ARMED AND BAD_FILTERED (R72/C51, U15), PRE_N = OV_N, CLR_N = RESET_N
+RUN         = RESET_N AND NOT_FAULT                         U5 SHDN, LED return Q10
+OV_N        = U20 +12V channel AND U20 -12V channel (open collector, R97)
+```
+
+The requirements R1–R4 of S8.5 are unchanged (bounded, not restartable, no early arming, fail-safe).
+`V20_OK` at the 15 V input (`calcs.json` → `arming.V20_OK`):
+
+| R83 | `V20_OK` trip (VPD) | Above vSafe5V max (5.5 V) | Below U5 turn-off min (11.55 V) | Floor rule (≥ 2 V each) |
+| --- | --- | --- | --- | --- |
+| **100k (S9.0)** | **7.67 / 8.44 / 9.27 V** | **2.17 V** | **2.28 V** | **holds** |
+| 120k (S8.5, 20 V input) | 9.06 / 9.98 / 10.96 V | 3.56 V | 0.59 V | fails at 15 V (regression) |
+| 200k (S8.4) | 14.62 / 16.12 / 17.73 V | — | inside the U5 band | fails |
+
+**Timelines** (`validation.json` → `startup_arming.timelines`, native gate wiring, both U11 delay
+corners and both `V20_OK` band corners; ms, t_d = 0.31 s / 0.88 s). The plant now loads the source only
+while the converters run: at 15 V the loaded 13.5 V minimum sits below the 13.98 V turn-on maximum, so a
+source that is unloaded again after U5 opens returns to its 14.25 V unloaded minimum (S8.5 at 20 V never
+needed the distinction). **0 violations**:
+
+| Scenario | First enable | ARMED | FAULT | End state |
+| --- | --- | --- | --- | --- |
+| Cold start at the worst loaded 15 V minimum (14.25 V unloaded, U5 on at 13.98 V, 13.5 V loaded) | 352.7 | 662.7 / 1232.7 | — | running, armed |
+| Slow PD contract (5 V phase 2.5 s, U5 status floating high) | 2552.7 | 2862.7 / 3432.7 | — | running, armed |
+| Brown-out after ARMED (VPD 10.5 V for 50 ms at 1500 ms), RESET at 1900–1915 ms | 352.7, then 1938.6 | 662.7 / 1232.7, then 2248.6 / 2818.6 | 1501.8 | latched at the sag, running again only after RESET |
+| Brown-out inside the window (10.5 V at 450–500 ms) | 352.7 | 662.7 / 1232.7 | — | running (window not restarted) |
+| Input overload chatter (U5 on 30 ms / off 20 ms) | 352.7 | — | 662.7 / 1232.7 | **latched** |
+| Hot plug into a bus held inside the monitor windows | 352.7 | 662.7 / 1232.7 | — | running, armed |
+| Load release after / inside the window | 352.7 | 662.7 / 1232.7 | — | running, armed |
+| U20 guard trip before ARMED (`OV_N` low 1 ms at 420 ms) | 352.7 | — | 420.0 | latched |
+| 12 ms RESET while running, PGOOD still high at release | 352.7, then 1512.1 | 662.7 / 1232.7, then 1822.0 / 2392.0 | — | new one-shot window |
+
+The S8.4 wiring still fails these timelines at the S9.0 band (regression), all 512 settled
+combinations of the gate logic pass, and the chain is asserted end to end from the native netlist
+(`test_s8.py` → `S90Retarget.test_arming_chain_end_to_end_without_p5`). Logic timelines with datasheet
+timings, not a bench proof.
+
+## (d) Accepted residuals (owner decisions, 2026-11-02)
+
+Both are **accepted** and treated as **bench-test events**: the conditions below are what this module
+and any module intended for the rack must survive. Proposed acceptance tests, **not performed**.
+Numbers: `calcs.json` → `residuals`; the verified circuit facts: `validation.json` →
+`accepted_residuals`.
+
+### 1. No reverse-current blocking
+
+**Decision:** no series element on +12 V or −12 V (no LM74700/LTC4357-class controller, no back-to-back
+or negative-rail FETs, no BOM lines). **Procedural rule (mandatory):** never connect an unpowered or
+latched-off module to a live bus; power the rack down before plugging or unplugging J2/J3; never
+parallel J2/J3 with another supply on the same bus.
+
+What a live ±12 V bus does to an unpowered (or latched-off) module:
+
+- **+12 V: no power-stage path.** With U2 disabled (EN = `MAIN_OK` low) the TPS552892's boost high-side
+  body diode (anode SW2, cathode VOUT) is reverse-biased by the bus, so the four-switch stage cannot
+  conduct from +12 V into VIN (the S8 buck could: output inductor + high-side body diode). The bus only
+  feeds dividers and leakage (**0.51 mA**: R8/R9, R93/R94, R75/R76, Q1 base, U2 VOUT ≤ 20 µA) and, on
+  plug-in, charges the 8 × 22 µF +12 V bank (**3.0–7.7 mJ**; the current pulse is set by the bus and
+  cable impedance, as for any capacitive module).
+- **−12 V, passive:** C25/C26 (VIN to −12 V) and the VIN-to-GND capacitors form a divider; a −12.6 V step
+  pulls VIN by **−1.2 to −5.4 V** until the TPS552892's internal PGND→SW1→VIN diodes clamp it near
+  −1.4 V: briefly below its −0.3 V absolute minimum (stress: U2 VIN/SW1, U5 OUT, the charge pulse in
+  C24–C26 and the VIN bank).
+- **−12 V, active (S9.0 finding):** Q1 derives U4's enable from the rails only, so with the +12 V bus
+  also live **EN_N = 3.97 V** (EN-high maximum 1.4 V) and U4 runs from the −12 V bus (VIN pin at the 0 V
+  VIN node, IC ground at −12 V: 12 V supply vs the 4.2 V start maximum). Pre-biased start-up prevents
+  sinking during its 4 ms soft start; afterwards, whenever |V(−12 V bus)| exceeds U4's setpoint
+  (11.39–12.62 V), FPWM regulation **sinks up to |IL-NEG| = 0.9 A** (typical, no limits) and passes that
+  power (≤ 11.3 W) into the unloaded VIN node (U5 off, D10 blocks, U2 disabled). With 22–59 µF on VIN
+  it can pass U2's **42 V absolute maximum within 1.7–4.6 ms**. Stressed: U2 VIN/SW1 (36 V operating),
+  C25/C26 (they see VIN + 12 V, 50 V parts), the VIN bank and damper (50 V), U5 OUT (60 V). The same path
+  exists for a powered module latched off on a live bus and for a running module paralleled with
+  another supply that holds −12 V above U4's setpoint. **This is an active energy path, not a leakage:
+  the rule above is mandatory.** A mitigation that is *not* reverse blocking — gate the Q1/U4 enable with
+  `RUN`/`MAIN_OK` so a bus-fed +12 V cannot enable U4 — is an **open owner decision, not implemented**.
+
+**Bench test T1 (proposed):**
+
+| Test | Condition | Pass criteria |
+| --- | --- | --- |
+| T1-A | Unpowered module (no USB-C); J2 hot-plugged onto a live bus at ±12.0 V, then ±12.6 V; 1 A limit and 0.44 mF per rail; hold 10 s; monitor VIN (TP4), both rail currents, U4 SW; **abort above 30 V on VIN** | no damage (normal start after power-up + RESET); VIN within −0.3…36 V; bus current back into the module < 10 mA after the plug transient; plug-in pulse recorded |
+| T1-B | As T1-A with the module powered and latched off (FAULT) | as T1-A |
+| T1-C | As T1-A with only the −12 V rail live | as T1-A |
+
+Expected by analysis: T1-C, and T1-A with the bus magnitude below U4's setpoint, pass apart from the
+brief VIN dip below −0.3 V; **T1-A/T1-B with the bus magnitude above U4's setpoint are expected to fail
+the VIN criterion** — which is why the procedural rule is mandatory.
+
+### 2. 15 V on a 12 V rail (rail overvoltage after a converter failure)
+
+**Decision:** no voltage-triggered fuse or crowbar; the **U20 guard + FAULT latch is the only response**.
+It trips at **+12 V > 14.48–15.27 V** or **−12 V beyond 13.27–14.02 V**, presets FAULT ~3 µs + the 8–9 µs
+RC filter + U5's 0.8–1.5 µs after the crossing (also before ARMED) and opens U5. **It does not discharge
+the rails.**
+
+Why a "blow when 15 V appears" fuse is not implementable here:
+
+1. A fuse or PTC opens on current, not voltage: in series with +12 V it must carry 2.4 A continuously and
+   the 3.53 A R109 limit without nuisance, so a rail at 15–24 V with a normal load never blows it.
+2. Making overvoltage create overcurrent needs a crowbar (SCR/TVS across the rail plus a fuse sized below
+   the source limit): that is the **excluded crowbar architecture**.
+3. A TVS alone (13 V stand-off: 14.4–15.9 V breakdown) sits inside the guard band and would have to absorb
+   the converter limit (~53 W) continuously: it fails, usually short — a crowbar by failure.
+4. A series eFuse with OVP per rail is the removed S7 rail-eFuse architecture (U6/U7/LM5067), not a fuse.
+
+Failure cases and screens (energy screen: the guard maximum plus the VIN bank energy, 16.5 V → 4 V,
+2.2–5.9 mJ, dumped into the rail; no load):
+
+| Case | What reaches the rail | Peak screen: bank only / with a typical 0.44 mF rack |
+| --- | --- | --- |
+| U2 switches fail short (pass-through) | VIN: ≤ 16.5 V in the stated range (up to the U5 OVP, ~24–26 V, if the source itself fails high); the rail keeps its charge after U5 opens | 16.5 V (decay set by the load) |
+| +12 V control failure (FB open) | the R109 limit drives the rail through the guard; after U5 opens U2 keeps converting the VIN bank | **23.4 V** (capped by the 24.5 V OVP) / **16.0 V** |
+| −12 V control failure (FB open; LMR38020 has no OVP) | the rail goes beyond the guard and takes the VIN bank energy | **23.6 V** / **14.8 V** magnitude |
+| Sub-threshold failure | settles inside the guard band: never trips | +15.27 V / −14.02 V indefinitely |
+
+**Bench test T2 (proposed):**
+
+| Test | Condition | Pass criteria (this module) |
+| --- | --- | --- |
+| T2-A | Running at 16.5 V input into 0.44 mF + 0.5 A per rail; +12 V driven to 16.5 V from a 3.5 A-limited supply through a diode; 10 s | `OV_N` low and FAULT latched within 20 µs of the guard crossing; MAIN off; rails off until RESET; no damage |
+| T2-B | R8 lifted (FB open); start at 13.5 V and at 16.5 V, once with no rack and no load, once with 0.44 mF + 0.5 A | as T2-A; record peak and decay against the screen |
+| T2-C | R14 lifted (FB open); same loads | as T2-B |
+| T2-D | +12 V held at 15.2 V and −12 V at −13.9 V from external supplies, 10 min | no trip (inside the band), no damage |
+
+### Downstream qualification
+
+**Any module intended for this rack must be qualified against these events instead of relying on this
+supply to prevent them:** unpowered and powered, survive **+12 V at 16.5 V and −12 V at −16.5 V for
+10 s**, **+15.3 V / −14.1 V continuously**, and the measured T2-B/T2-C peaks (screens up to ~24 V with no
+rack, ~16 V with a typical rack) for 100 ms; and survive being on a bus when another module is
+(un)plugged under the T1 conditions.
+
+## (e) Crowbar vs eFuse: deferred, open
+
+S8.3 removed the +5 V crowbar and S9.0 removed +5 V entirely; the rails keep no output switch and no
+crowbar. Whether ±12 V should get a crowbar-plus-fuse or series eFuses with OVP is an **open owner
+decision, deferred**: S9.0 neither restores the crowbar nor adds a rail eFuse, and the residual above is
+accepted on that basis.
+
+## Fault matrix (S9.0)
+
+`MAIN_LED_OK` = U5 on with valid status; "inside the window" = the 0.31–0.88 s after the **first**
+converter enable since RESET.
+
+| Event | Converter / U5 response | Status | Common latch |
+| --- | --- | --- | --- |
+| Normal operation | — | all good | — |
+| Start-up ramp | rails rising (budget 66.6 ms) | `P12_OK`/`N12_OK` low | masked only inside the one-shot window |
+| +12 V overload above the R109 limit / short | U2 holds 3.14–3.53 A (no hiccup with R109) | `P12_OK` low once +12 V sags below its monitor | latched if > ~1 ms after ARMED; a short from start-up latches at the window end |
+| −12 V overload / short | LMR38020 current limit, hiccup after the 18 ms blanking | `N12_OK` low | latched (as above) |
+| +12 V above the guard (14.48–15.27 V) | — | `OV_N` low | **FAULT preset at once, also before ARMED**; U5 off; rail not discharged (residual 2) |
+| −12 V beyond the guard (13.27–14.02 V) | — | `OV_N` low | as above |
+| Input brown-out below the U5 turn-off (11.55–13.13 V) after ARMED | U5 off | `MAIN_LED_OK` low | latched; RESET to restart |
+| Brown-out inside the window that recovers | U5 back on | — | runs (no restart of the window) |
+| U5 overload / auto-retry chatter | U5 cycles | `MAIN_LED_OK` toggles | **latched at the window end** |
+| PD 5 V phase, U5 status floating high | U5 in UVLO | `V20_OK` low | no start |
+| Source smaller than 45 W (e.g. 15 V / 1.8 A) | source trips above ~20 W | brown-out | latched after ARMED |
+| Load above the 33 W total | U5 passes up to 3.69–4.70 A; the source decides | brown-out if it trips | latched after ARMED |
+| RESET pulse | RUN low | — | cleared; new one-shot window |
+| Unpowered / latched-off module on a live bus | no logic response; U4 can be enabled by the bus | — | **residual 1, procedural rule** |
+| Powered module plugged into a bus held inside the monitor windows | — | good from 0 ms | no latch (timeline); never parallel with another supply (residual 1) |
+
+## What changes at 20 V
+
+S9.0 is not a corner: every part behind U5 is already rated for the 20 V input (U5 OVP keeps its 20 V
+setting, TPS552892 36 V, LMR38020 sees VIN + 12 V = 33 V of 80 V, VIN/C25/C26 50 V parts, D1 SMBJ22A).
+The retarget (`calcs.json` → `retarget_20v`) is **three resistors and the documentation**:
+
+| Change | 15 V (S9.0) | 20 V |
+| --- | --- | --- |
+| R1 (CH224A CFG1) | 56k | 120k |
+| R3 (U5 UVLO) | 10k: on 12.46–13.98, off 11.55–13.13 V | 7.5k: on 16.23–18.23, off 15.04–17.12 V |
+| R83 (`V20_OK`) | 100k: 7.67–9.27 V | 120k: 9.06–10.96 V (floor rule holds) |
+| Rated minimum VPD | 13.5 V | 18.25 V |
+| +12 V | buck-boost across the range, 2.4 A | buck only (D 0.55–0.73), 2.4 A (R109 unchanged) |
+| −12 V capability / rating | 1.051 A / 0.8 A | 1.238 A / 0.9 A |
+| Total | ≤ 33 W (15 V / 3 A) | ~34.9 W from a 45 W (20 V / 2.25 A) adapter; 39.8 W (the per-rail sum at 2.4 A / 0.9 A) from 20 V / 3 A |
+
+D10 and U5 dissipation fall at 20 V (2.25 A instead of 3 A at 45 W); the guard, arming chain and the
+rest of the BOM are unchanged; the panel label returns to PD 20V.
+
+## P2.0 fit placement
+
+![S9.0 P2.0 fit placement](s8-single/img/board-p1.png)
+
+P2.0 starts from the S9.0 step-1 board (P1.5 minus the +5 V parts). **L1 keeps its spot**; U2 (RYQ,
+turned 90°) sits right of it so the SW1/SW2 ends of its long lands face the two L1 pads and the
+VIN/PGND/VOUT ends face right: BOOT capacitors C10/C9 between L1 and U2, C82 at the VCC/AGND corner,
+R111/C83 and R9/R8 in the strip behind U2 (R8 senses +12 V after R109), C8/C81 at the long-land ends, the
+22 µF VOUT bank (C11–C14, C79, C80) and the 10 µF VIN bank (C6, C7, C77, C78) right of the IC, R110 at the
+FSW corner. `placement.json`: **replaced footprint U2** (SOT-583-8 → TI RYQ0021B, new UUID; the only
+footprint change, an explicit U2-only path in `place_s8.sync_candidate`), moved C6–C14/R8/R9, added
+C77–C83/R109–R111, every other part unchanged.
+
+| Local loop (pad centres, same net) | Limit | P2.0 |
+| --- | --- | --- |
+| U2 VIN (7) → C8 100 nF | 4.5 mm | **3.08 mm** |
+| U2 VOUT (11) → C81 100 nF | 4.5 mm | **3.07 mm** |
+| U2 VCC (18) → C82 | 4.5 mm | **3.12 mm** |
+| U4, U5, U9, U1, U18, U20, U21, logic | 4.5 / 6.0 mm | pass (unchanged) |
+
+All 156 parts on F, no parked parts, no courtyard overlaps; 1 mm edge rule holds apart from the approved
+panel overhangs (closest TP19 1.28 mm); bracket circles clear (closest TP3 0.77 mm, L3 0.83 mm);
+2 mm hand-solder clearance holds (closest D8 → Q6 2.01 mm; SW1 report-only 2.05 mm). Courtyard fill
+58.5 %. The nominal 3D interference screen has **zero overlaps**; U2 uses a **5.1 × 3.1 × 1.0 mm
+maximum-body proxy** (no manufacturer model), J1/SW1/L1/L3 proxies as before. The RYQ land pattern
+follows TI drawing 4228792/A with one deviation (corner lands 0.625 mm for a 0.20 mm copper gap); every
+copper gap ≥ 0.20 mm, mask webs ≥ 0.15 mm (tested). Straight-line screens, not routed loops; use copper
+pours for VIN/VOUT/PGND and keep FB/COMP away from SW1/SW2 when routing.
+
+## Sourcing (S9.0)
+
+New codes, live 2026-11-02 03:37 UTC (`s90-sourcing.json`): **U2 TPS552892QWRYQRQ1 C22375748**
+(Extended, Economic-eligible, 3,274 stock, $6.359 at 1–9), **R109 HoLR1206-1W-15mR C601098** (Extended,
+16,541, $0.058), **R1 56k C23206** (Basic, 811,903, $0.0027). Every other S9.0 part reuses a code of the
+dated snapshot (R83 100k = the Basic line of R2). Whole-design estimate **$22.64** at quantity 1 (55 LCSC
+codes, 136 placements, BOM 57 lines; S8.5 $21.96 with +5 V), a mix of dated and live rows, **not** an
+all-parts fresh quotation; Extended fees, attrition, PCB, manual parts and shipping excluded. Basic-only
+policy unchanged (Extended only for the precision guard dividers R93/R94/R98/R99). **No reverse-blocking
+part** (owner decision).
+
+## Reproducibility and verification (S9.0)
+
+```sh
+python3 -B modules/usb-power-45w/tools/build_s8.py --output-root <candidate-module-root>
+python3 -B -c "import sys; sys.path.insert(0, 'modules/usb-power-45w/tools'); import place_s8; \
+  place_s8.sync_candidate('modules/usb-power-45w/hardware/single/usb-power-45w-single.kicad_pcb', '<candidate-module-root>')"
+# copy the candidate's hardware/single/* and docs/s8-single/{build,hierarchy-parity,schematic-wiring,placement}.json
+python3 -B opt/kicad-tools/kicad_tools.py check --config modules/usb-power-45w/tools/kicad-project-single.json \
+  --reports modules/usb-power-45w/research/<new-check-directory>
+python3 -B modules/usb-power-45w/tools/verify_s8.py --netlist <check-directory>/netlist.xml > modules/usb-power-45w/docs/s8-single/validation.json
+python3 -B modules/usb-power-45w/tools/check_s8_board.py --out modules/usb-power-45w/docs/s8-single/board-p1.json
+python3 -B modules/usb-power-45w/tools/s8_calcs.py --out modules/usb-power-45w/docs/s8-single
+kicad-cli sch export bom --fields 'Reference,Value,Footprint,${QUANTITY},LCSC,MPN,Manufacturer' \
+  --labels 'Refs,Value,Footprint,Qty,LCSC,MPN,Manufacturer' --group-by 'Value,Footprint,LCSC,MPN,Manufacturer' \
+  --ref-range-delimiter '' -o modules/usb-power-45w/docs/s8-single/bom.csv modules/usb-power-45w/hardware/single/usb-power-45w-single.kicad_sch
+kicad-cli sch export pdf -o modules/usb-power-45w/docs/usb-power-45w-single-schematic.pdf modules/usb-power-45w/hardware/single/usb-power-45w-single.kicad_sch
+python3 -B modules/usb-power-45w/tools/render_s8.py modules/usb-power-45w/docs/s8-single/img/board-p1.png --title '<title>'
+python3 -B modules/usb-power-45w/tools/mechanics_s8.py && python3 -B modules/usb-power-45w/tools/s8_mechanical.py
+python3 -B modules/usb-power-45w/tools/build_s8_panel.py
+python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
+git add <new sources>      # the record hashes only tracked files
+python3 -B modules/usb-power-45w/tools/review_s8.py --check <check-directory> --tests-log <log> \
+  --out modules/usb-power-45w/docs/s8-single/review-s90.json
+python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
+```
+
+The review record hashes the test sources, so after any source change the old record is stale: delete
+it, run the suite (the hash test skips), write the new record, then run the suite again. For candidate
+tests set `S8_DESIGN_ROOT`; mechanical generation accepts the same variable and `S8_ASM_WORK`. Raw
+reports and logs stay in the git-ignored `research/s90/` and are not hashed.
+
+## S9.0 results
+
+RESULTS_PLACEHOLDER
+
+## Still open after S9.0 (release gates)
+
+Routing and routed loop areas; the TPS552892-Q1 loop with the real rack capacitance (crossover below the
+COMP zero), its thermal at the R109 limit and the 966 kHz choice; the reverse-current residual (rule
+mandatory; the Q1/U4 enable mitigation is an open owner decision); downstream qualification against the
+rail-overvoltage events; the crowbar-vs-eFuse decision (deferred); the replug/POR race (C3, nuisance
+latch-off); bench confirmation of the one-shot arming at the 15 V corners (0.27 V turn-on and 0.37 V
+running margins); measured capacitor behaviour, fault-voltage and restart tests; −12 V start-up into the
+real rack at 13.5 V; the published rating's measurement; connector/cable current and fit; VPD ringing and
+cold clamp; fabrication/CAM and manual assembly review (RYQ land pattern with the fab). No fabrication
+files, vendor upload or order are part of this change.
+
+---
+
+# History: S8.5 / P1.5 and earlier (superseded by S9.0)
+
+> Kept as the record of the S8.5 design (+5 V series disconnect, 20 V input, TPS62933F +12 V buck). Where
+> anything below conflicts with S9.0 above, **S9.0 wins**. The S8.5 review record is `review-s85.json`
+> in git `5a3a686`.
 
 ## S8.5 changelog (2026-11-02, from the three S8.4 reviews)
 
@@ -54,23 +483,6 @@ every release gate listed at the end of this page.
 
 S8.4 revision: schematic S8.4, board S8.4-P1.4; `review-s84.json` replaced `review-s83.json`
 (the S8.3 record stays in git history, commit `a12edd3`).
-
-## Open / review
-
-| Item | File |
-| --- | --- |
-| Native project | [hardware/single/usb-power-45w-single.kicad_pro](../hardware/single/usb-power-45w-single.kicad_pro) |
-| Schematic, overview + six pages | [PDF](usb-power-45w-single-schematic.pdf) |
-| Native schematic BOM | [s8-single/bom.csv](s8-single/bom.csv), test pads excluded; D8/J2/J3 manual |
-| Calculations | [calcs.json](s8-single/calcs.json) |
-| Independent native pin/field/NC verification | [validation.json](s8-single/validation.json) |
-| Final native checks, tests and source/artifact hashes | [review-s85.json](s8-single/review-s85.json) |
-| Whole-design dated sourcing estimate + Basic-only decision | [sourcing.json](s8-single/sourcing.json) |
-| Live selected/changed-part evidence | [s84-sourcing.json](s8-single/s84-sourcing.json) (S8.4; S8.5 adds no new code), [s83-sourcing.json](s8-single/s83-sourcing.json) (S8.3) |
-| Placement / mechanical contract | [board-p1.json](s8-single/board-p1.json), [placement.json](s8-single/placement.json), [mechanical.json](s8-single/mechanical.json) |
-| Placement drawing | [PDF](s8-single/assembly/usb-power-45w-single-placement.pdf) |
-| 3D assembly | [STEP ZIP](s8-single/assembly/usb-power-45w-single-assembly.step.zip), [collision report](s8-single/assembly/assembly-report.json) |
-| Unchanged panel | [S8 panel](../panels/front-pcb/usb-power-45w-single-panel.kicad_pcb) |
 
 ## +5 V: disconnect rather than discharge the rack
 
@@ -438,7 +850,7 @@ ramp. Measure actual module load current versus voltage. D10's existing thermal 
 
 ## P1.5 fit placement, mask webs and mechanics
 
-![S8.5 P1.5 fit placement](s8-single/img/board-p1.png)
+(The S8.5 P1.5 placement image is in git `5a3a686`; the current one is in the S9.0 section.)
 
 The PCB is a **fit draft**, not a final power-loop layout. It keeps the mechanical anchors, outline,
 stackup, rules and retained footprint UUIDs/models. **P1.5 moves no part**: it only adds the copper-only
@@ -495,7 +907,7 @@ intentional routing opens separately; it does not qualify current-path geometry.
 | Case depth | the board reaches 5.7 mm deeper than the bus header tops in the 60 mm case | open: it cannot sit directly over a busboard header |
 | 3D proxies | U23, J1, SW1, L1–L3 | open: nominal screen, not an assembly approval |
 
-![S8.5 assembly](s8-single/assembly/iso-front.png)
+(The S8.5 assembly render is in git `5a3a686`.)
 
 ## Reproducibility and verification
 

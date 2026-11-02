@@ -7,7 +7,11 @@ C2 (<6 V not guaranteed, stays exposed). S8.5: B (one-shot arming: STARTED latch
 V20_OK status floor; the S8.4 wiring and the S8.4 V20_OK divider must fail - regressions), C (MAIN_LED_OK / ANY_BAD
 semantics, replug/POR race stays an explicit OPEN item, review record hashes only tracked files). S9.0 step 1: the +5V
 subsystem is gone - no +5V/P5_*/EF_* net or +5V ref survives anywhere (table, native netlist, schematic, BOM, placement,
-PCB), J2/J3 pins 11/12 open, ANY_BAD without P5_OK, spare comparators defined.
+PCB), J2/J3 pins 11/12 open, ANY_BAD without P5_OK, spare comparators defined. S9.0 step 2: 15 V input (R1/R3/R83), the
+TPS552892-Q1 buck-boost (duty proof: the S8 buck cannot regulate at 15 V, the buck-boost does everywhere; pinned symbol and
+land pattern; cell wiring; ratings and the 3 A total), NO reverse blocking (owner decision: exact rail memberships, no
+ideal-diode/FET part, a series element is rejected), the arming chain end to end without P5_OK, the two accepted residuals
+recorded with bench-test conditions, the 20 V retarget delta, and a review record that hashes only tracked files.
 
   python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_s8.py' -v
 """
@@ -29,7 +33,7 @@ import verify_s8  # noqa: E402
 
 MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-COMPONENTS = 146                       # S9.0 step 1: 191 - 45 (+5V subsystem)
+COMPONENTS = 156                       # S9.0: 191 - 45 (+5V subsystem) + 10 (TPS552892-Q1 cell, step 2)
 ROOT = DESIGN / 'hardware/single/usb-power-45w-single.kicad_sch'
 
 def verify_native(path):
@@ -96,7 +100,7 @@ class TableDerivation(unittest.TestCase):
         self.assertTrue({'U3', 'L2', 'R11', 'R12', 'D3', 'C35', 'R44', 'TP13'} <= set(circuit_s8.S9_REMOVED))
         self.assertEqual(s8 - s7, {'J3', 'C59', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R97', 'R98', 'R99',
                                    'C63', 'C65', 'C66', 'U21', 'R100', 'C67', 'D22', 'TP17',
-                                   *circuit_s8.ARMING_ADDED})
+                                   *circuit_s8.ARMING_ADDED, *circuit_s8.BUCKBOOST_ADDED})
         self.assertFalse(set(circuit_s8.S8_PLUS5_DROPPED) & s8)
 
     def test_no_raw_or_plus5_nets_no_cans(self):
@@ -140,8 +144,12 @@ class NativeS8(unittest.TestCase):
         self.assertEqual(a['STARTED_members'], ['TP19.1', 'U12.5', 'U13.10'])
         self.assertEqual(a['ARMED_members'], ['R71.2', 'TP10.1', 'U11.1', 'U13.4'])
         self.assertEqual(a['violations'], [])
-        self.assertTrue({'cold_start_worst_loaded_20V', 'brownout_after_ARMED', 'hot_plug_live_bus',
+        self.assertTrue({'cold_start_worst_loaded_15V', 'brownout_after_ARMED', 'hot_plug_live_bus',
                          'load_release_after_ARMED'} <= set(a['timelines']))
+        b = r['plus12_buckboost']
+        self.assertEqual(b['pin_roles'], 'native symbol = TI SLVSGT7 Table 5-1')
+        self.assertEqual(b['fSW_kHz'], 966)
+        self.assertTrue(b['reverse_blocking'].startswith('none'))
         self.assertGreater(a['V20_OK_margin_below_U5_off_min_V'], 2.0)
         self.assertGreater(a['V20_OK_margin_above_vSafe5V_max_V'], 2.0)
 
@@ -166,7 +174,7 @@ class NativeS8(unittest.TestCase):
         latched - and the verifier. This is the test that would have caught the S8.4 bug."""
         bad = Path(self.tmp.name) / 'b-s84.xml'
         rewire(self.xml, bad, S84_ARMING)
-        for band in ((9.06, 9.98, 10.96), (14.62, 16.12, 17.73)):     # S8.5 and S8.4 V20_OK bands
+        for band in ((7.67, 8.44, 9.27), (14.62, 16.12, 17.73)):      # S9.0 and S8.4 V20_OK bands
             with self.subTest(v20=band):
                 _, violations = verify_s8.arming_check(bad, band)
                 for scenario, rule in (('slow_PD_contract_2s5', 'R3'), ('input_overload_chatter', 'R1/R2'),
@@ -208,7 +216,7 @@ class NativeS8(unittest.TestCase):
         self.assertEqual(nets['START_N'], {('U14', '8'), ('U12', '4')})
         self.assertEqual(nets['ARMED'], {('U11', '1'), ('R71', '2'), ('U13', '4'), ('TP10', '1')})
         self.assertIn(('U12', '3'), nets['GND'])
-        self.assertTrue({('U2', '2')} <= nets['MAIN_OK'])
+        self.assertTrue({('U2', '1')} <= nets['MAIN_OK'])          # S9.0: TPS552892 EN/UVLO (pin 1)
         for pin in ('9', '10'):
             self.assertNotIn(('U13', pin), nets['MAIN_OK'] | nets['V20_OK'])
         self.assertNotIn('START_READY', nets)
@@ -314,9 +322,9 @@ class FinalSchematic(unittest.TestCase):
         self.assertEqual((u13['12'], u13['13'], u13['11']), ('MAIN_OK', 'V20_OK', 'MAIN_LED_OK'))
         self.assertEqual((by['U11']['pins']['1'], by['R71']['pins']['2'], u13['4']), ('ARMED', 'ARMED', 'ARMED'))
         self.assertEqual(by['TP19']['pins'], {'1': 'STARTED'})
-        self.assertEqual(by['U2']['pins']['2'], 'MAIN_OK')
-        self.assertEqual(by['R83']['value'], '120k')
-        self.assertEqual(by['R83']['fields']['LCSC'], by['R75']['fields']['LCSC'], 'R83 reuses the R75 120k Basic line')
+        self.assertEqual(by['U2']['pins']['1'], 'MAIN_OK')
+        self.assertEqual(by['R83']['value'], '100k')                                     # S9.0 (S8.5: 120k at 20 V)
+        self.assertEqual(by['R83']['fields']['LCSC'], by['R2']['fields']['LCSC'], 'R83 reuses the 100k Basic line')
 
     def test_c_main_led_ok_and_any_bad_semantics(self):
         """S8.5 C: MAIN_LED_OK = MAIN_OK AND V20_OK where V20_OK is a U5 status-validity floor (above vSafe5V, below the
@@ -330,12 +338,13 @@ class FinalSchematic(unittest.TestCase):
         val = c.table()[1]
         a = c.arming(val)
         self.assertTrue(a['V20_OK']['rule_holds'])
-        self.assertEqual([round(v, 2) for v in a['V20_OK']['band_V']], [9.06, 9.98, 10.96])
+        self.assertEqual([round(v, 2) for v in a['V20_OK']['band_V']], [7.67, 8.44, 9.27])
         self.assertFalse(a['V20_OK']['S8.4_200k_rule_holds'])
-        self.assertFalse(c.v20_floor_ok(c.v20_band(val, 200e3), c.u5_window(val)[1]))
-        self.assertFalse(c.v20_floor_ok(c.v20_band(val, 220e3), c.u5_window(val)[1]))
-        self.assertGreater(a['U5_turn_on_margin_unloaded_V'], 0.5)
-        self.assertGreater(a['U5_running_margin_loaded_V'], 1.0)
+        self.assertFalse(a['V20_OK']['S8.5_120k_rule_holds_at_15V'], 'the S8.5 120k must not survive the 15 V retarget')
+        for r83 in (120e3, 200e3, 220e3):
+            self.assertFalse(c.v20_floor_ok(c.v20_band(val, r83), c.u5_window(val)[1]), r83)
+        self.assertGreater(a['U5_turn_on_margin_unloaded_V'], 0.2)      # 14.25 V unloaded vs the 13.98 V turn-on maximum
+        self.assertGreater(a['U5_running_margin_loaded_V'], 0.3)        # 13.5 V loaded vs the 13.14 V turn-off maximum
         self.assertIn('Not an input-good threshold', by['R83']['fields']['Note'])
 
     def test_tlv431_symbol_pin_numbers(self):
@@ -373,6 +382,9 @@ class PlacedBoard(unittest.TestCase):
         for (ic, why), x in rows.items():
             self.assertLessEqual(x['distance_mm'], x['limit_mm'], (ic, why))
         self.assertFalse({ic for ic, _ in rows} & {'U23', 'U3'}, 'S9.0: no +5V loop rows')
+        u2 = {x['purpose']: x for x in loops['rows'] if x['from'].startswith('U2.')}
+        self.assertEqual({x['from'] for x in u2.values()}, {'U2.7', 'U2.11', 'U2.18'}, 'S9.0: TPS552892 VIN/VOUT/VCC rows')
+        self.assertEqual({x['to'].split('.')[0] for x in u2.values()}, {'C8', 'C81', 'C82'})
 
     def test_table_covers_every_part_once(self):
         import build_s8_board
@@ -401,7 +413,7 @@ class PlacedBoard(unittest.TestCase):
 
 class ReviewRecord(unittest.TestCase):
     """S9.0: docs/s8-single/review-s90.json (tools/review_s8.py) hashes match the files in the tree, and it hashes only
-    files a clean clone has (S8.4 hashed the git-ignored *.kicad_prl files: the suite failed from a fresh checkout)."""
+    files git tracks (S8.4 hashed the git-ignored *.kicad_prl files: the suite failed from a fresh checkout)."""
 
     def test_review_hashes_match(self):
         import hashlib
@@ -417,6 +429,14 @@ class ReviewRecord(unittest.TestCase):
         ignored = subprocess.run(['git', 'check-ignore', '--no-index', *hashed], cwd=MODULE, capture_output=True,
                                  text=True).stdout.split()
         self.assertEqual(ignored, [], 'the review record must hash only files that are not git-ignored')
+        tracked = set(subprocess.run(['git', 'ls-files', '--', '.'], cwd=MODULE, capture_output=True,
+                                     text=True).stdout.split())
+        self.assertEqual(sorted(set(hashed) - tracked), [], 'the review record must hash only tracked files')
+        for rel in ('tools/s90_parts.py', 'hardware/USBPOWER45.pretty/TI_RYQ0021B_VQFN-HR-21_3x5mm.kicad_mod',
+                    'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb'):
+            self.assertIn(rel, hashed, rel)
+        self.assertEqual(rec['accepted_residuals']['reverse_current']['decision'][:8], 'ACCEPTED')
+        self.assertEqual(rec['accepted_residuals']['rail_overvoltage']['decision'][:8], 'ACCEPTED')
         for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256'):
             for rel, digest in rec[group].items():
                 self.assertEqual(hashlib.sha256((MODULE / rel).read_bytes()).hexdigest(), digest, rel)
@@ -450,7 +470,7 @@ class Plus5Removed(unittest.TestCase):
                 for lab in nodes(tree, kind):
                     self.assertFalse(self.bad_net(lab[1]), (f.name, lab[1]))
         lib = parse((DESIGN / 'hardware/single/USBPOWER45.kicad_sym').read_text())
-        self.assertFalse({s[1] for s in nodes(lib, 'symbol')} & {'+5V', 'TPS259470_RPW'})
+        self.assertFalse({s[1] for s in nodes(lib, 'symbol')} & {'+5V', 'TPS259470_RPW', 'TPS62933F'})
 
     def test_no_plus5_on_the_pcb(self):
         from sexp import parse, nodes, one
@@ -485,7 +505,8 @@ class Calcs(unittest.TestCase):
         self.assertGreater(banks['+12V']['eff_uF'][0], 10)      # TI minimum effective COUT
         self.assertNotIn('+5V', banks)
         ss = c.soft_start(val, eff)
-        self.assertGreater(ss['+12V']['track_ramp_max_C_mF']['full_load'], 1.0)
+        self.assertGreater(ss['+12V']['rack_allowance_mF'], c.TYPICAL_RACK_MF + 0.3)     # TI 1000 uF ceiling - bank
+        self.assertLess(ss['+12V']['time_to_full_at_allowance_full_load_ms'], 309 * 0.5)
         self.assertGreater(c.startup_window(val)['ratio_min_window_to_budget'], 2)
         rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
         ov = c.ov_guard(val, rel)
@@ -529,16 +550,16 @@ class Calcs(unittest.TestCase):
         self.assertTrue(all(f < 0.86 for f in r['below_rated_range']['fraction_of_capability'].values()))
 
     def test_u5_window_arithmetic(self):
-        """U5 UVLO thresholds referred to VPD: TI 1.176/1.2/1.224 V rising, 1.09/1.122/1.15 V falling, R2 100k / R3 7.5k
-        at 1 % + 1 % TCR, and the 150 nA pin leakage through R2 (I x R2 = ~15 mV at VPD, not I x R2||R3)."""
+        """U5 UVLO thresholds referred to VPD: TI 1.176/1.2/1.224 V rising, 1.09/1.122/1.15 V falling, R2 100k / R3 10k
+        (S9.0, 15 V input; 7.5k at 20 V) at 1 % + 1 % TCR, and the 150 nA pin leakage through R2 (I x R2, not I x R2||R3)."""
         import s8_calcs as c
         on, off = c.u5_window(c.table()[1])
         lo, hi, leak = .99 * .99, 1.01 * 1.01, 150e-9 * 100e3 * 1.01 * 1.01
-        self.assertAlmostEqual(on[0], 1.176 * (1 + 100 * lo / (7.5 * hi)) - leak, places=9)
-        self.assertAlmostEqual(on[2], 1.224 * (1 + 100 * hi / (7.5 * lo)) + leak, places=9)
-        self.assertAlmostEqual(off[0], 1.09 * (1 + 100 * lo / (7.5 * hi)) - leak, places=9)
-        self.assertEqual([round(v, 2) for v in on], [16.23, 17.2, 18.23])
-        self.assertEqual([round(v, 2) for v in off], [15.04, 16.08, 17.12])
+        self.assertAlmostEqual(on[0], 1.176 * (1 + 100 * lo / (10 * hi)) - leak, places=9)
+        self.assertAlmostEqual(on[2], 1.224 * (1 + 100 * hi / (10 * lo)) + leak, places=9)
+        self.assertAlmostEqual(off[0], 1.09 * (1 + 100 * lo / (10 * hi)) - leak, places=9)
+        self.assertEqual([round(v, 2) for v in on], [12.46, 13.2, 13.98])
+        self.assertEqual([round(v, 2) for v in off], [11.55, 12.34, 13.13])
         self.assertAlmostEqual(c.INPUT_DROP_V, 0.75 + 0.053 * 4.698, places=9)      # U5 high-corner limit
         self.assertEqual(c.INPUT_PATH['I_A'], c.input_budget()['U5_limit_screen_A'][2])
 
@@ -587,7 +608,176 @@ class Calcs(unittest.TestCase):
     def test_comparator_headroom_and_legacy_failure(self):
         import s8_calcs as c
         self.assertLess(3.3*.98-2.0-1.259,0)
-        self.assertGreater(c.comparator_supply(c.table()[1])['input_headroom_V'],10)
+        self.assertGreater(c.comparator_supply(c.table()[1])['input_headroom_V'], 8)     # S9.0: VPD down to 11.55 V
+
+
+class S90Retarget(unittest.TestCase):
+    """S9.0 step 2: 15 V input, the TPS552892-Q1 buck-boost (duty resolution), no reverse blocking (owner decision), the
+    arming chain without P5_OK end to end, the accepted residuals and the 20 V retarget delta."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.by = {p['ref']: p for p in circuit_s8.circuit()}
+        cls.tmp = tempfile.TemporaryDirectory()
+        cls.xml = Path(cls.tmp.name) / 's90.xml'
+        export_netlist(cls.xml)
+        root = ET.parse(cls.xml).getroot()
+        cls.nets = {n.get('name').split('/')[-1]: {(d.get('ref'), d.get('pin')) for d in n.findall('node')}
+                    for n in root.find('nets')}
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_15v_input_in_table(self):
+        by = self.by
+        self.assertEqual((by['R1']['value'], by['R1']['fields']['LCSC'], by['R1']['fields']['MPN']),
+                         ('56k', 'C23206', '0603WAF5602T5E'))                   # CH224A CFG1: 15 V request (Basic)
+        self.assertEqual((by['R2']['value'], by['R3']['value'], by['R83']['value']), ('100k', '10k', '100k'))
+        self.assertEqual((by['R28']['value'], by['R4']['value'], by['R24']['value']), ('10k', '120k', '6.8k'),
+                         'U5 OVP keeps the 20 V-input setting (24.1 V nominal)')
+        self.assertIn('15 V / 3 A fixed PDO', by['U1']['fields']['Note'])
+
+    def test_plus12_duty_resolution(self):
+        """The S8 TPS62933F buck cannot regulate +12V at the 15 V input (fails even unloaded at the setpoint maximum and
+        needs more than a compliant source can give); the TPS552892-Q1 regulates at every corner from the U5 sag to 21 V."""
+        import s8_calcs as c
+        parts, val = c.table(); _, eff = c.banks(parts)
+        b = c.plus12_buckboost(val, eff)
+        s8 = b['S8_TPS62933F_at_15V']
+        self.assertFalse(s8['regulates_at_rated_min'] or s8['regulates_unloaded_at_rated_min'])
+        self.assertGreater(s8['required_duty']['VIN12.5_I0A_max'], s8['D_max'])
+        self.assertGreater(s8['min_VPD_for_regulation_V'], c.VPD_UNLOADED_MIN)
+        self.assertTrue(b['regulates_everywhere'])
+        rows = b['TPS552892_operation']
+        self.assertEqual(len(rows), 10)
+        self.assertTrue(all(r['margin_to_ILIM_AVG_min_A'] > 2.0 for r in rows.values()), rows)
+        self.assertEqual({r['mode'] for r in rows.values()}, {'boost', 'buck-boost (alternating cycles)', 'buck'})
+        self.assertLess(b['limits']['L_min_from_inner_loop_uH'], b['limits']['L1_uH'])
+        self.assertTrue(all(x['Tj_at_50C_ambient_JEDEC_C'] < 130 for x in b['losses'].values()))
+        self.assertLessEqual(b['compensation']['crossover_Hz']['bank_low_C'], b['compensation']['fc_limit_Hz'])
+
+    def test_buckboost_cell_in_table(self):
+        by = self.by
+        u2 = by['U2']
+        self.assertEqual((u2['value'], u2['fp'], u2['fields']['LCSC']), ('TPS552892QWRYQRQ1', 'RYQ21', 'C22375748'))
+        self.assertEqual({k: u2['pins'][k] for k in ('1', '7', '11', '12', '13', '2', '21', '18', '5', '9', '17')},
+                         {'1': 'MAIN_OK', '7': 'VIN', '11': 'P12_VOUT', '12': 'P12_VOUT', '13': '+12V', '2': '_VCC_U2',
+                          '21': '_VCC_U2', '18': '_VCC_U2', '5': 'GND', '9': 'GND', '17': 'GND'})
+        self.assertEqual((u2['pins']['3'], u2['pins']['4'], u2['pins']['16']), (None, None, None))
+        self.assertEqual((by['R109']['value'], by['R109']['fields']['LCSC'], by['R109']['pins']),
+                         ('0.015', 'C601098', {'1': 'P12_VOUT', '2': '+12V'}))
+        self.assertEqual((by['L1']['pins'], by['C10']['pins'], by['C9']['pins']),
+                         ({'1': '_SW1_U2', '2': '_SW2_U2'}, {'1': '_BST1_U2', '2': '_SW1_U2'}, {'1': '_BST2_U2', '2': '_SW2_U2'}))
+        self.assertEqual((by['R8']['value'], by['R9']['value'], by['R110']['value']), ('68k', '7.5k', '20k'))
+
+    def test_pinned_symbol_and_land_pattern(self):
+        """U2 symbol pins = TI SLVSGT7 Table 5-1; the committed footprint is exactly tools/s90_parts.footprint(); every
+        copper gap between differently numbered lands >= 0.20 mm and every mask web >= 0.15 mm; 21 numbered pads."""
+        import s90_parts
+        from sexp import parse, nodes, one, walk
+        pins = {one(q, 'number')[1]: one(q, 'name')[1] for q in walk(s90_parts.symbol(), 'pin')}
+        self.assertEqual(pins, s90_parts.TPS552892_TI)
+        self.assertEqual((MODULE / 'hardware/USBPOWER45.pretty' / (s90_parts.FP_S90['RYQ21'] + '.kicad_mod')).read_text(),
+                         s90_parts.footprint())
+        pads = [(str(q[1]), *map(float, one(q, 'at')[1:3]), *map(float, one(q, 'size')[1:3]),
+                 float(one(q, 'solder_mask_margin')[1])) for q in nodes(parse(s90_parts.footprint()), 'pad') if q[1]]
+        self.assertEqual({q[0] for q in pads}, set(s90_parts.TPS552892_TI))
+        gaps = []
+        for a in pads:
+            for b in pads:
+                if a[0] < b[0]:
+                    dx = abs(a[1] - b[1]) - (a[3] + b[3]) / 2
+                    dy = abs(a[2] - b[2]) - (a[4] + b[4]) / 2
+                    gaps.append(math.hypot(max(dx, 0), max(dy, 0)) if (dx > 0 and dy > 0) else max(dx, dy))
+        self.assertGreaterEqual(round(min(gaps), 6), s90_parts.COPPER_GAP_MIN)
+        self.assertGreaterEqual(round(min(gaps) - 2 * s90_parts.MASK_MARGIN, 6), 0.15)
+
+    def test_no_reverse_blocking(self):
+        """Owner decision (S9.0): no reverse-current blocking hardware. No ideal-diode controller / series FET part, the
+        rail memberships are exact (R109 is the only series element, inside the converter), and inserting a series
+        element on a rail fails the verifier. The accepted residual is recorded (calcs, validation)."""
+        import s8_calcs as c
+        mpns = {p['fields'].get('MPN', '') for p in self.by.values()}
+        self.assertFalse({m for m in mpns if m.upper().startswith(verify_s8.REVERSE_BLOCKING_MPN_PREFIXES)})
+        for net, members in verify_s8.RAILS_S90.items():
+            self.assertEqual({k for k in self.nets[net] if not k[0].startswith('#')}, members, net)
+        lib = (DESIGN / 'hardware/single/USBPOWER45.kicad_sym').read_text()
+        self.assertFalse(any(s in lib for s in ('LM74700', 'LM5051', 'LTC4357', 'FDS6630A')))
+        self.assertFalse((MODULE / 'hardware/USBPOWER45.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod').exists())
+        for moves in ([('J2', '9', 'P12_BLK'), ('J3', '9', 'P12_BLK'), ('J2', '10', 'P12_BLK'), ('J3', '10', 'P12_BLK')],
+                      [('U4', '1', 'N12_BLK'), ('U4', '9', 'N12_BLK')]):
+            with self.subTest(moves=moves):
+                bad = Path(self.tmp.name) / f'rb-{moves[0][2]}.xml'
+                rewire(self.xml, bad, moves)
+                with self.assertRaises(AssertionError):
+                    verify_native(bad)
+        rec = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['residuals']['reverse_current']
+        self.assertTrue(rec['decision'].startswith('ACCEPTED'))
+        self.assertIn('Never connect an unpowered', rec['rule'])
+        self.assertGreater(rec['minus12_active']['EN_N_V'], rec['minus12_active']['EN_high_max_V'])
+        val = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())
+        self.assertTrue(val['accepted_residuals']['reverse_current']['decision'].startswith('ACCEPTED'))
+        self.assertTrue(val['accepted_residuals']['rail_overvoltage']['decision'].startswith('ACCEPTED'))
+        self.assertEqual(c.PUBLISHED_A, {'+12V': 2.4, '-12V': 0.8})
+
+    def test_arming_chain_end_to_end_without_p5(self):
+        """The fault/arming chain from the native netlist: MAIN_OK (U5 FLT + PGOOD) enables U2 and, with V20_OK, makes
+        MAIN_LED_OK; START_N = NAND(MAIN_LED_OK, RUN) presets STARTED; TIMER_GO = RUN AND STARTED -> U11 -> ARMED; FAULT is
+        clocked by ARMED AND BAD_FILTERED (ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)) and preset by OV_N; RUN = U5
+        SHDN. No +5V status anywhere."""
+        n = self.nets
+        self.assertFalse({k for k in n if k.startswith('P5_') or k in ('+5V', 'FIVE_V')})
+        self.assertTrue({('U5', '15'), ('U5', '16'), ('U2', '1'), ('U13', '12'), ('R63', '2')} <= n['MAIN_OK'])
+        self.assertTrue({('U13', '11'), ('U14', '1'), ('U14', '9')} <= n['MAIN_LED_OK'])
+        self.assertTrue({('U13', '13'), ('U18', '13')} <= n['V20_OK'])
+        self.assertEqual(n['START_N'], {('U14', '8'), ('U12', '4')})
+        self.assertEqual(n['STARTED'], {('U12', '5'), ('U13', '10'), ('TP19', '1')})
+        self.assertEqual(n['TIMER_GO'], {('U13', '8'), ('R69', '1')})
+        self.assertTrue({('U11', '1'), ('U13', '4')} <= n['ARMED'])
+        self.assertTrue({('U14', '2'), ('U18', '1')} <= n['P12_OK'] and {('U14', '5'), ('U18', '14')} <= n['N12_OK'])
+        self.assertIn(('U14', '4'), n['V3V3'])
+        self.assertTrue({('U14', '6'), ('R72', '1')} <= n['ANY_BAD'])
+        self.assertTrue({('U13', '6'), ('U12', '11')} <= n['FAULT_CLK'])
+        self.assertTrue({('U12', '10'), ('U20', '2'), ('U20', '14')} <= n['OV_N'])
+        self.assertTrue({('U13', '3'), ('U5', '13')} <= n['RUN'])
+        import s8_calcs as c
+        a = c.arming(c.table()[1])
+        self.assertIn('ANY_BAD', a['topology'])
+        self.assertIn('P5_OK input high', a['topology']['ANY_BAD'])
+
+    def test_ratings_and_contract(self):
+        import s8_calcs as c
+        parts, val = c.table(); _, eff = c.banks(parts)
+        r = c.rating(val, eff)
+        self.assertEqual(r['published_A'], {'+12V': 2.4, '-12V': 0.8})
+        self.assertEqual(r['published_total_W'], 33)
+        self.assertTrue(r['per_rail_ratings_at_once']['exceeds_3A_contract'], 'hence the simultaneous total')
+        pd = c.pd_contract(val)
+        self.assertEqual((pd['contract_A'], pd['stated_input_range_V']), (3.0, [13.5, 16.5]))
+        self.assertIn('>= 45 W', pd['required_adapter'])
+        self.assertGreater(pd['max_module_output_W']['nominal_15V_source_worst_mix'], r['published_total_W'])
+
+    def test_residuals_recorded_as_bench_events(self):
+        rec = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['residuals']
+        for key in ('reverse_current', 'rail_overvoltage'):
+            self.assertTrue(rec[key]['decision'].startswith('ACCEPTED'), key)
+            bt = rec[key]['bench_test']
+            self.assertTrue(bt['conditions'] and bt['status'].startswith('proposed'), key)
+        ov = rec['rail_overvoltage']
+        self.assertEqual(len(ov['why_no_fuse']), 4)
+        self.assertTrue(ov['bench_test']['downstream_qualification'])
+        self.assertLessEqual(ov['peak_screens_V']['+12V_bank_only_no_load'], 24.5)
+        self.assertIn('deferred', ov['decision'])
+
+    def test_retarget_20v_is_three_resistors(self):
+        import s8_calcs as c
+        r = c.retarget_20v(c.table()[1])
+        self.assertEqual(set(r['changes']), {'R1', 'R3', 'R83', 'docs'})
+        self.assertEqual([round(v, 2) for v in r['U5_window_V']['on']], [16.23, 17.2, 18.23])
+        self.assertTrue(r['V20_OK_rule_holds'])
+        self.assertEqual((r['plus12']['rating_A'], r['minus12']['rating_A']), (2.4, 0.9))
+        self.assertGreater(r['plus12']['D'][0], r['plus12']['D_min_tON'])
 
 
 if __name__ == '__main__':

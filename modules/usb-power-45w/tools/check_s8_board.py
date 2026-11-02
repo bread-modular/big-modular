@@ -37,7 +37,8 @@ REPORT_ONLY = ('SW1',)
 mm = pcbnew.ToMM
 # S8.4 local decoupling / protection-loop contract: (IC, pins, net, qualifying refs or prefix, value, limit mm, why).
 # A qualifying part is any listed ref, or any ref with the prefix (and value, if given), with a pad on `net`.
-# IC bypass at the supply pin (S8.4). S9.0: the U23 (+5V eFuse) and U3 (+5V converter) rows left with +5V.
+# IC bypass at the supply pin (S8.4). S9.0: the U23 (+5V eFuse) and U3 (+5V converter) rows left with +5V; the U2
+# rows follow the TPS552892-Q1 lands (VIN 7, VOUT 11, VCC 18).
 LOCAL_LOOPS = [
     ('U20', ('3',), 'VPD', ('C65',), None, 4.5, 'U20 VCC (VPD) bypass'),
     ('U18', ('3',), 'VPD', ('C57',), None, 4.5, 'U18 VCC (VPD) bypass'),
@@ -45,7 +46,9 @@ LOCAL_LOOPS = [
     ('U9', ('1',), 'V3V3', ('C47',), None, 4.5, 'LDO output'),
     ('U5', ('1', '2', '3', '6'), 'MAIN_IN', ('C2',), None, 4.5, 'main eFuse IN'),
     ('U1', ('1', '8'), 'VPD_U1', ('C1',), None, 4.5, 'CH224A VHV (R3 BASE block)'),
-    ('U2', ('3',), 'VIN', 'C', '100n', 4.5, '+12V converter HF input cap'),
+    ('U2', ('7',), 'VIN', ('C8',), None, 4.5, '+12V converter HF input cap'),          # S9.0: TPS552892 VIN land
+    ('U2', ('11',), 'P12_VOUT', ('C81',), None, 4.5, '+12V converter HF output cap'),  # S9.0: VOUT land (TI 0.1 uF)
+    ('U2', ('18',), None, ('C82',), None, 4.5, '+12V converter VCC (LDO) cap'),       # S9.0: net = the VCC pin's own
     ('U4', ('3',), 'VIN', 'C', '100n', 4.5, '-12V converter HF input cap'),
     ('U21', ('1',), 'REF_OV', ('C67',), None, 4.5, 'TLV431 stabilising cap'),
     *[(u, (p,), 'V3V3', 'C', '100n', 6.0, f'{u} logic bypass')
@@ -60,6 +63,7 @@ def local_loops(fps):
     rows = []
     for ic, pins, netname, who, value, limit, why in LOCAL_LOOPS:
         src = [p for p in fps[ic].Pads() if p.GetNumber() in pins]
+        netname = netname or net(src[0])                    # None: the (local) net of the listed IC pin itself
         assert src and all(net(p) == netname for p in src), (ic, pins, netname)
         best = None
         for ref, fp in fps.items():

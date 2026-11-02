@@ -18,6 +18,9 @@ ladder and the references that use each code) plus the Basic-only passive-policy
       --cache-dir research/s84/catalog-current
   python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json --from-snapshot docs/s8-single/sourcing.json \
       --extra-snapshot docs/s8-single/s84-sourcing.json
+
+S9.0: the same --selected evidence for the codes the 15 V / buck-boost step adds (s90-sourcing.json, --note), merged with a
+second --extra-snapshot. No code is added for reverse blocking (owner decision: none).
 """
 import argparse
 import json
@@ -76,6 +79,7 @@ def main():
     ap.add_argument('--extra-snapshot', type=Path, action='append', default=[],
                     help='with --from-snapshot: also reuse the rows of a selected-part evidence file')
     ap.add_argument('--selected', nargs='+', help='S8.4: live exact-code rows for these codes only (evidence file)')
+    ap.add_argument('--note', help='S9.0: evidence-file note (default: the S8.4 text)')
     a = ap.parse_args()
     if a.selected:
         return selected(a)
@@ -146,10 +150,11 @@ def selected(a):
         rows[code]['refs_S8'] = sorted(refs.get(code, []), key=lambda r: (r[0], int(r[1:])))
         print(code, rows[code].get('classification'), rows[code].get('stock'), rows[code].get('unit_price_q1_usd'),
               file=sys.stderr)
-    out = {'note': 'S8.4 live exact-code rows (shared --strict-live lookup, one request per code) for the parts the S8.4 '
-                   'review fixes add or change (R11/R12 0.1 %, R83 200k, R108) and re-checks of U23, D21, D23, U18/U20 '
-                   'and the existing 0.1 % codes, with full price ladders. Raw snapshots: research/s84/catalog-current. '
-                   'Dated public-catalog observations, not reservations, quotes or order acceptance.',
+    note = a.note or ('S8.4 live exact-code rows (shared --strict-live lookup, one request per code) for the parts the S8.4 '
+                      'review fixes add or change (R11/R12 0.1 %, R83 200k, R108) and re-checks of U23, D21, D23, U18/U20 '
+                      'and the existing 0.1 % codes, with full price ladders. Raw snapshots: research/s84/catalog-current. '
+                      'Dated public-catalog observations, not reservations, quotes or order acceptance.')
+    out = {'note': note,
            'codes': rows, 'basic_only_policy': PRECISION_POLICY,
            'failures': sorted(c for c, r in rows.items() if r.get('error') or r.get('failures'))}
     a.out.parent.mkdir(parents=True, exist_ok=True)

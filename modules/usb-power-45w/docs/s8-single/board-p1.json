@@ -1,6 +1,6 @@
 {
  "board": "hardware/single/usb-power-45w-single.kicad_pcb",
- "parts_on_board": 146,
+ "parts_on_board": 156,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 0,
@@ -321,12 +321,30 @@
     "ok": true
    },
    {
-    "from": "U2.3",
+    "from": "U2.7",
     "to": "C8.1",
     "net": "VIN",
-    "distance_mm": 1.93,
+    "distance_mm": 3.08,
     "limit_mm": 4.5,
     "purpose": "+12V converter HF input cap",
+    "ok": true
+   },
+   {
+    "from": "U2.11",
+    "to": "C81.1",
+    "net": "P12_VOUT",
+    "distance_mm": 3.07,
+    "limit_mm": 4.5,
+    "purpose": "+12V converter HF output cap",
+    "ok": true
+   },
+   {
+    "from": "U2.18",
+    "to": "C82.1",
+    "net": "Net-(U2-EXTVCC)",
+    "distance_mm": 3.12,
+    "limit_mm": 4.5,
+    "purpose": "+12V converter VCC (LDO) cap",
     "ok": true
    },
    {
@@ -408,8 +426,8 @@
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2435,
-  "fill_of_inset": 0.563
+  "courtyards_sum": 2531,
+  "fill_of_inset": 0.585
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",
  "pass": true

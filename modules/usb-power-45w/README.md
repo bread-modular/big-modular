@@ -7,31 +7,28 @@
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | **Main project = the routed BASE board** (`usb-power-45w.kicad_{pcb,sch,dru}`: USB/PD, main eFuse, negative protection, latch/RESET, LEDs, J2 output) |
 | [`hardware/usb-power-45w-top.kicad_pro`](hardware/usb-power-45w-top.kicad_pro) | The routed TOP board (`usb-power-45w-top.kicad_{pcb,sch}`: the three converters, +12/+5 eFuses, cans) |
 | [`hardware/usb-power-45w-system.kicad_pro`](hardware/usb-power-45w-system.kicad_pro) | Whole-circuit S7 schematic (`usb-power-45w-system.kicad_sch` + pages `01`..`07`, 216 refs / 145 nets); schematic only, no PCB |
-| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S8.5 single board**: one-shot arming latch (`STARTED`; `TIMER_GO = RUN AND STARTED`; `V20_OK` a 9.06–10.96 V status floor) on the unchanged S8.4 design: +5 V TPS259470A series disconnect (FLT off the latch, own pad TP21), R11/R12 0.1 %, U18/U20 on always-on VPD, MAIN only, ceramic banks, two IDC outputs. 191 refs / 85 nets; P1.5 fit placement (P1.4 + TP19) with a local-loop contract, all on F, 50 mm deep, **unrouted**. Published prototype rating +12 V 2.5 A / +5 V 2.0 A / −12 V 0.9 A, ≤ 45 W. [Review package](docs/s8-single-board.md) |
+| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S9.0 single board, ±12 V only**: +5 V subsystem removed; **15 V USB PD input** (13.5–16.5 V; needs a 15 V / 3 A, ≥ 45 W source); **+12 V = TPS552892-Q1 four-switch buck-boost** (the S8 TPS62933F buck cannot regulate at 15 V: 0.995–1.053 duty vs 98 %); −12 V LMR38020 unchanged; S8.5 one-shot arming kept, `ANY_BAD` without `P5_OK`; U20 guards +12 V / −12 V; **no reverse blocking and no rail fuse/crowbar (accepted residuals, bench-test conditions in the review)**. 156 refs / 74 nets; P2.0 fit placement, all on F, 50 mm deep, **unrouted**. Published prototype rating **+12 V 2.4 A / −12 V 0.8 A, ≤ 33 W together**. [Review package](docs/s8-single-board.md) |
 
-> **S8.5 development review** (the arming blocker of all three S8.4 reviews + minor items; changelog in
-> [docs/s8-single-board.md](docs/s8-single-board.md)): a one-shot `STARTED` latch (U12 flip-flop A, set
-> by the first converter enable after RESET through the spare U14 gate, cleared only by RESET) now drives
-> the qualification timer (`TIMER_GO = RUN AND STARTED`, the U11 output is `ARMED`), so no fault can
-> restart or extend the 0.31–0.88 s window and the PD 5 V phase cannot arm the board. R83 120k turns
-> `V20_OK` into a 9.06–10.96 V U5 status-validity floor; the input qualification is U5's own UVLO, and
-> `MAIN_LED_OK` / `ANY_BAD` now mean "U5 on with valid status" / "that, or a rail monitor, is bad".
-> Enabled/armed/fault timelines (cold start at the worst loaded 20 V input, brown-out and recovery, hot
-> plug into a live bus, load release, overload chatter) are checked against the native gate wiring; the
-> S8.4 wiring fails them (regression test). The review record hashes only tracked files, so the suite
-> passes from a clean clone. **Open:** the replug / power-on-reset race of the −12 V guard (worst
-> 13.75 ms vs the 12 ms POR: nuisance latch-off) and the crowbar-vs-eFuse decision. U23 TPS259470ARPWR
-> and every other S8.4 decision are unchanged (OVLO 5.701 V nominal, current limit 3.031 A nominal, a
-> threshold, not a rating; R11/R12 0.1 %; −12 V start-up allowance 0.85 mF; U23 mask webs 0.15 mm;
-> Extended accepted for the ten 0.1 % dividers only). Parts estimate $21.96, unchanged (R83 reuses the
-> R75 Basic line). ±12 V remain without output switches. The original S7/R3 designs below are unchanged.
+> **S9.0 development review** (major revision of the single board; changelog and accepted residuals in
+> [docs/s8-single-board.md](docs/s8-single-board.md)): the **+5 V subsystem is removed** (U3, U23 and every
+> +5 V-only part; J2/J3 pins 11/12 open), the input moves to **15 V USB PD** (R1 56k, U5 UVLO R3 10k:
+> on 12.46–13.98 V, off 11.55–13.13 V; `V20_OK` R83 100k: 7.67–9.27 V), and the +12 V stage becomes a
+> **TPS552892-Q1 four-switch buck-boost** (966 kHz, L1 6.8 µH, R109 15 mΩ constant-current limit
+> 3.14–3.53 A) because the TPS62933F buck would need 0.995–1.053 duty at the 12.5 V low-line converter
+> input (1.033 even unloaded) against its 98 % maximum; the buck-boost regulates from the 10.55 V U5 sag
+> to 21 V. The S8.5 one-shot arming (`STARTED`, `ARMED`) is kept; `ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND
+> N12_OK)`; the timelines pass at the 15 V source corners. **Owner decisions:** no reverse-current
+> blocking and no voltage-triggered rail fuse/crowbar — both are **accepted residuals** with bench-test
+> conditions and a downstream-qualification requirement; **never plug an unpowered or latched-off
+> module into a live bus** (a live bus can enable and power the −12 V converter and pump VIN; a
+> non-blocking mitigation is an open decision). Crowbar vs eFuse stays deferred/open. Published
+> prototype rating **+12 V 2.4 A, −12 V 0.8 A, ≤ 33 W together** (3 A contract at 13.5 V); moving back
+> to 20 V is a three-resistor change (R1, R3, R83). Panel label PD 15V.
 >
-> **Not a safe-peak rating:** OVP response is typical-only; the 3 µs and 30 V / 1 Ω fault-delay cases
-> exceed 6 V for ~193 µs, so <6 V at the header is **not** guaranteed. The published rating is a
-> datasheet-minimum prototype rating, not measured. Routing and bench qualification remain open.
-> Native ERC 0, exact pin/net parity; DRC **430 routing opens, no other findings**. Placement (incl. the
-> local-loop contract) and nominal 3D interference screens pass; module tests pass
-> ([review-s85.json](docs/s8-single/review-s85.json)).
+> Native ERC 0, exact ref/pin/net parity; DRC **0 violations, 365 routing opens** (unrouted); placement,
+> local-loop and nominal 3D screens pass; the module suite passes from a clean clone
+> ([review-s90.json](docs/s8-single/review-s90.json)). Routing, the buck-boost loop with the real rack,
+> thermal and every bench gate remain open. The original S7/R3 designs below are unchanged.
 
 Each board project has its own matching flat schematic (its share of S7 + the board-to-board
 headers XB*/XT*); `tools/check_stack.py` proves base + top joined through the headers equals the

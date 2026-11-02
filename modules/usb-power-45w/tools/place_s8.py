@@ -12,7 +12,9 @@ U20 pin 3 (R73 to the rear test-pad row), C57 turns, C52 moves to U12 pin 14; R1
 S8.5 / P1.5: the only placement change is the new copper-only pad TP19 (STARTED, one-shot arming latch) in the front
 logic test-pad row left of R64; every P1.4 part stays where it is (the arming nets change pads, not positions).
 S9.0 / P2.0: +5V removed: the U3/L2 cell, the U23 cell, the +5V header-strip parts and the +5V monitor/guard parts leave
-the board; every remaining part keeps its P1.5 position unless a later S9 step lists it below.
+the board. The +12V cell becomes the TPS552892-Q1 buck-boost (U2 changes footprint SOT-583-8 -> TI RYQ0021B, an explicit
+U2-only replacement in sync_candidate, FP_REPLACE): L1 keeps its spot, U2 and its network are re-placed right of L1 in
+the old cell and the space the +5V cell left; every other part keeps its P1.5 position.
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
 --write is the older seed-based placement entry point, not a native edit-preservation tool.
 
@@ -53,25 +55,21 @@ BOARD = build_s8.single_dir() / f'{build_s8.STEM}.kicad_pcb'
 RECORD = MODULE / 'docs/s8-single/placement.json'
 
 
-def shifted(table, dx, dy):
-    return {r: (round(x + dx, 3), round(y + dy, 3), a) for r, (x, y, a) in table.items()}
-
-
-# ---- Converter cell template: the routed R3 TOP +12V group (U2/L1, hardware/usb-power-45w-top.kicad_pcb),
-# reused for both TPS62933F rails. L vertical with its SW pad toward the IC, the output column beside L,
-# input caps C(in) under the column, BOOT/SS/FB on the far side of the IC from the SW copper.
-TOP_12V = {'L1': (66.05, 69.875, 90), 'U2': (66.75, 78.275, 180), 'C6': (74.25, 78.575, 90),
-           'C7': (71.75, 78.575, 90), 'C8': (69.35, 77.775, 90), 'C9': (66.75, 80.975, 0),
-           'C10': (64.15, 77.775, 90), 'R8': (63.35, 81.775, 180), 'R9': (63.35, 80.175, 180),
-           'C11': (73.85, 64.675, 0), 'C12': (73.85, 67.075, 0), 'C13': (73.85, 69.475, 0), 'C14': (73.85, 71.875, 0)}
-CELL_DY = 6.97                     # column top courtyard (TOP y 63.48) -> y 70.45, below the header strip
-P12 = shifted(TOP_12V, 27.84, CELL_DY)                                  # x 88.5 .. 104.04
-
 GROUPS = [
-    ('+12V converter (U2/L1)',
-     'R3 TOP +12V group moved as one block (dx 27.84, dy 6.97): output column C11-C14 right under the J2 '
-     '+12V pins (x 101.6), SW pad of L1 above the U2 SW pin, C8 at VIN/GND, FB divider away from SW',
-     P12),
+    ('+12V buck-boost converter (U2 TPS552892-Q1 / L1), S9.0',
+     'L1 keeps its P1.5 spot; U2 (RYQ, turned 90 deg) sits right of it so the SW1/SW2 ends of its long lands face the two '
+     'L1 pads and the VIN/PGND/VOUT ends face right: BOOT capacitors C10/C9 between L1 and U2, the VCC capacitor C82 at '
+     'the VCC/AGND corner, COMP R111/C83 and the FB divider R9/R8 in the strip behind U2 (FB senses +12V at R8, after the '
+     'R109 sense resistor), VIN/VOUT HF capacitors C8/C81 at the long-land ends, the 22u VOUT bank (C11-C14, C79, C80) '
+     'and the 10u VIN bank (C6, C7, C77, C78) right of the IC, R110 at the FSW corner. Occupies the old +12V cell and the '
+     'space the +5V cell left (P2.0)',
+     {'L1': (93.89, 76.845, 90), 'U2': (104.0, 76.84, 90),
+      'C10': (100.65, 79.6, 270), 'C9': (100.65, 75.0, 90), 'C82': (102.7, 72.0, 0),
+      'R111': (105.95, 71.95, 90), 'C83': (107.55, 71.95, 270), 'R9': (109.15, 71.95, 90), 'R8': (110.75, 71.95, 90),
+      'R109': (114.6, 72.0, 0), 'C81': (107.6, 74.6, 0), 'C8': (107.6, 79.1, 0),
+      'C11': (110.4, 76.9, 270), 'C12': (112.8, 76.9, 270), 'C13': (115.2, 76.9, 270), 'C14': (117.6, 76.9, 270),
+      'C79': (118.4, 82.4, 270), 'C80': (118.4, 87.2, 270), 'R110': (104.6, 81.3, 180),
+      'C6': (108.6, 82.9, 90), 'C7': (111.0, 82.9, 90), 'C77': (113.4, 82.9, 90), 'C78': (115.8, 82.9, 90)}),
     ('Header strip (J2/J3 rail pins)',
      'Header ceramics and the +12V polarity clamp in one row 3.9 mm in front of the J2/J3 pins they serve '
      '(where a backfeed or transient from the rack enters). S9.0: the +5V parts of the strip are gone',
@@ -218,6 +216,9 @@ def write(force=False):
 
 
 FP_REFRESH = set()       # S8.4 refreshed the U23 mask expansion here; S9.0 has no such part (U23 removed)
+# S9.0: the only footprint change - U2 TPS62933F (SOT-583-8) -> TPS552892-Q1 (TI RYQ0021B, tools/s90_parts.py). The
+# old footprint is removed and the pinned one inserted with a new UUID; any other footprint change still refuses.
+FP_REPLACE = {'U2': ('USBPOWER45:SOT-583-8', 'USBPOWER45:TI_RYQ0021B_VQFN-HR-21_3x5mm')}
 
 
 def refresh_pads(fps):
@@ -267,16 +268,24 @@ def sync_candidate(source_board, output_root):
     original_models = {r: copy.deepcopy(nodes(f, 'model')) for r, f in fps.items()}
     for r in set(fps) - set(comps):
         tree.remove(fps.pop(r))
+    replaced = {}
+    for r, (old_fp, new_fp) in FP_REPLACE.items():
+        if r in fps and fps[r][1] != comps[r]['footprint']:
+            assert (fps[r][1], comps[r]['footprint']) == (old_fp, new_fp), (r, 'unexpected footprint replacement')
+            tree.remove(fps.pop(r))
+            original_ids.pop(r); original_models.pop(r)
+            replaced[r] = [old_fp, new_fp]
     refreshed = refresh_pads(fps)
     for r, comp in comps.items():
         if r not in fps:
             f = parse((MODULE / 'hardware/USBPOWER45.pretty' / (comp['footprint'].split(':')[1] + '.kicad_mod')).read_text())
             f[1] = comp['footprint']
             f[:] = [v for v in f if not isinstance(v, list) or v[0] not in ('version', 'generator', 'uuid')]
-            f.append([atom('uuid'), build_s8.uid('pcb/footprint/' + r)])
+            ident = r if r not in replaced else f"{r}/{comp['footprint'].split(':')[1]}"   # new identity, new footprint
+            f.append([atom('uuid'), build_s8.uid('pcb/footprint/' + ident)])
             f.append([atom('at'), 0, 0, 0])
             for i, node in enumerate(walk(f, 'uuid')):
-                node[1] = build_s8.uid(f'pcb/{r}/item/{i}')
+                node[1] = build_s8.uid(f'pcb/{ident}/item/{i}')
             tree.append(f); fps[r] = f
         f = fps[r]
         assert f[1] == comp['footprint'], (r, 'footprint replacement needs review')
@@ -344,7 +353,8 @@ def sync_candidate(source_board, output_root):
             assert nodes(f, 'model') == original_models[r]
     rec = {'note': 'S9.0 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
            'parts': after, 'pad_mask_refreshed_from_library': refreshed,
-           'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r]),
+           'replaced_footprints': replaced,
+           'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r] and r not in replaced),
            'added_refs': sorted(set(after) - set(before)), 'removed_refs': sorted(set(before) - set(after))}
     (root / 'docs/s8-single/placement.json').write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
     return dest

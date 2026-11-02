@@ -34,8 +34,9 @@ import mechanics_s8  # noqa: E402
 
 WORK = Path(os.environ['S8_ASM_WORK'])
 # Footprints without a KiCad 3D model get a maximum-body box: {ref: (L along Y, W along Z, H above F.Cu) mm}.
-# S9.0 step 1: the U23 RPW0010A proxy left with +5V.
-BODY_PROXIES = {}
+# S9.0 step 1: the U23 RPW0010A proxy left with +5V. Step 2: U2 TPS552892-Q1 (TI RYQ0021B, no 3D model): maximum body
+# 5.1 x 3.1 x 1.0 mm (drawing 4228792/A); U2 is turned 90 deg on the board, so the 5.1 mm side runs along Z.
+BODY_PROXIES = {'U2': (3.1, 5.1, 1.0)}         # (along Y, along Z, height) mm
 
 G = mechanics_s8.geometry()
 FP = json.loads((WORK / 'footprints.json').read_text())

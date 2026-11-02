@@ -44,6 +44,18 @@ S9.0 (2026-11-02, major revision; docs/s8-single-board.md S9.0 / P2.0 section):
   (ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK)); the freed U18/U20 comparators are spares with defined inputs
   and open outputs. The main eFuse (U5) nets keep their function and are renamed EF_* -> MAIN_* on the single board
   (they never belonged to +5V); S7 is untouched.
+- Step 2, 15 V input: CH224A CFG1 R1 56k (15 V request), U5 UVLO R3 10k (on 12.46-13.98 V, off 11.55-13.14 V), V20_OK
+  R83 100k (7.67-9.27 V status floor). The +12V stage becomes a four-switch buck-boost, U2 TPS552892-Q1 (RYQ, tools/
+  s90_parts.py): at the 12.5 V low-line converter input the TPS62933F buck needed 0.995-1.053 duty (1.033 unloaded) against
+  its 98 % maximum (s8_calcs plus12_buckboost).
+  966 kHz (R110 20k), L1 6.8u (unchanged part), 4 x 10u at VIN (C6, C7, C77, C78), 6 x 22u + 100n at VOUT (C11-C14, C79,
+  C80, C81), output current limit R109 15 mR (ISP/ISN, 3.14-3.53 A), FB R8 68k / R9 7.5k (12.08 V, VREF 1.2 V),
+  COMP R111 9.1k + C83 10n, VCC C82 10u, BOOT C10/C9, FPWM (MODE = VCC), internal LDO (EXTVCC = VCC), no dithering, CDC
+  open (no droop compensation), PG/CC open. U5's OVP stays at the 20 V-input setting: every part behind it is rated
+  for the later 20 V retarget (R1 120k, R3 7.5k, R83 120k).
+- Owner decisions (2026-11-02): NO reverse-current blocking and NO voltage-triggered rail fuse/crowbar; both are accepted
+  residuals (s8_calcs residuals, docs S9.0 (d)). The reverse-blocking attempt of the earlier run is reverted: no ideal-diode
+  controller, FET or SOIC-8 footprint. Crowbar vs eFuse stays deferred/open.
 """
 import copy
 
@@ -112,12 +124,24 @@ R0603_01 = {  # 0.1 %, 25 ppm/C thin film: (LCSC, MPN, manufacturer)
 # Symbol of U21: KiCad stock Reference_Voltage:TL431DBZ drawing, pins renumbered to the TI TLV431 DBZ
 # package (SLVS139Z Table 4-1: REF 1, CATHODE 2, ANODE 3; the TL431 DBZ order differs). See build_s8.py.
 TLV431_DBZ_PINS = {'REF': '1', 'K': '2', 'A': '3'}
-TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left')}
+TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left'),
+               # S9.0 page 02: texts clear of the BOOT/SW wires, the VCC node and the FB/COMP network
+               'U2': ((0, 27.94), (0, 30.48)), 'L1': ((0, -5.08), (0, -2.54)),
+               'C10': ((-5.08, -1.27), (-5.08, 1.27), 'left'), 'C9': ((5.08, -1.27), (5.08, 1.27), 'right'),
+               'C82': ((-2.54, -1.27), (-2.54, 1.27), 'right'), 'R8': ((0, -5.08), (0, -2.54)),
+               'R111': ((-2.54, 1.27), (-2.54, 3.81), 'right')}
 CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
-# S8.5 arming (item B): the one-shot latch STARTED (U12 flip-flop A, set by START_N from the spare U14 gate), its pad
-# TP19, and R83 120k (V20_OK status floor; same Basic line as R75, no new code).
+# S9.0 step 2: +12V buck-boost U2 and the parts it adds (S7 refs U2, L1, R8, R9, C6-C14 keep their roles; C9 is BOOT2).
+TPS552892 = dict(LCSC='C22375748', MPN='TPS552892QWRYQRQ1', Manufacturer='Texas Instruments')
+R_SENSE = dict(LCSC='C601098', MPN='HoLR1206-1W-15mR-1%-75ppm', Manufacturer='Milliohm', Tolerance='1%', TCR='75ppm',
+               Power='1W')
+BUCKBOOST_ADDED = ('C77', 'C78', 'C79', 'C80', 'C81', 'C82', 'C83', 'R109', 'R110', 'R111')
+U2_AT = (381.0, 78.74)            # flat sheet (page 02 offset -276.86, 0); S7 U2 sat at (368.3, 71.12)
+U2_BLOCK = ((320.0, 435.0), (50.0, 98.0))     # flat-sheet box of the removed S7 +12V buck drawing (coordinate wires)
+R0603_S9 = {'56k': ('C23206', '0603WAF5602T5E')}      # S9.0 Basic code not in the S7 table (live evidence s90-sourcing)
+# S8.5 arming (item B): the one-shot latch STARTED (U12 flip-flop A, set by START_N from the spare U14 gate) and its pad
+# TP19. S8.5 set R83 120k (20 V input); S9.0 uses 100k at 15 V (the Basic 100k line of R2, no new code).
 ARMING_ADDED = ('TP19',)
-R83_S85 = dict(LCSC=circuit45.R0603['120k'], MPN=circuit45.R_MPN['120k'])
 MIRROR_S8 = set()
 
 
@@ -132,6 +156,85 @@ def m(x, y):
     return (round(x + MON[0], 2), round(y + MON[1], 2))
 
 
+def _plus12_buckboost(c, by):
+    """S9.0 step 2: replace the TPS62933F buck (U2) by the TPS552892-Q1 four-switch buck-boost, re-using the S7 refs of
+    the +12V cell where the role survives (L1, C6/C7 VIN, C8 VIN HF, C10 BOOT1, C9 BOOT2, R8/R9 FB, C11-C14 output).
+    Page-02 drawing (flat sheet, page offset -276.86): VIN bank on a rail top-left, L1 above the IC between SW1 and SW2
+    with the BOOT capacitors on BOOT1/BOOT2, MODE/EXTVCC/VCC one node with C82, FSW/R110 bottom-left, the VOUT/ISP node
+    feeding the output bank rail and R109 top-right, FB divider and COMP network bottom-right (circuit_s8.drawing)."""
+    u2 = by['U2']
+    u2.update(sym='TPS552892_RYQ', value=TPS552892['MPN'], fp='RYQ21', at=U2_AT, rot=0, unit=1)
+    u2['pins'] = {'7': 'VIN', '1': 'MAIN_OK', '2': '_VCC_U2', '21': '_VCC_U2', '18': '_VCC_U2', '5': 'GND',
+                  '6': '_FSW_U2', '11': 'P12_VOUT', '12': 'P12_VOUT', '13': '+12V', '3': None, '4': None, '16': None,
+                  '14': '_FB_U2', '15': '_COMP_U2', '8': '_SW1_U2', '20': '_BST1_U2', '19': '_BST2_U2', '10': '_SW2_U2',
+                  '9': 'GND', '17': 'GND'}
+    u2['fields'] = {**TPS552892, 'Note': (
+        '+12V four-switch buck-boost (S9.0, SLVSGT7): 3-36 V in, average inductor limit 7-9 A, VREF 1.188-1.212 V, '
+        '966 kHz (R110 20k), FPWM (MODE = VCC), internal LDO (EXTVCC = VCC), no dithering (DITH = GND), CDC open (no '
+        'droop compensation), PG/CC open. Regulates 12.08 V from the whole 12.5-16.5 V converter input (buck, buck-boost '
+        'and boost modes; the S8 TPS62933F buck needed 0.995-1.053 duty at low line against its 98 % maximum). EN/UVLO = '
+        'MAIN_OK. Its output OVP (22.5-24.5 V) is not a 12 V protection: the U20 guard watches the rail')}
+    cells = (('C6', 304.8, 1), ('C7', 314.96, 2), ('C77', 325.12, 3), ('C78', 335.28, 4))
+    for ref, x, k in cells:
+        note = f'U2 VIN ceramic {k} of 4 (TI: ~20 uF effective; 10u/50V 1206 at the 12.5-16.5 V input)'
+        if ref in by:
+            by[ref].update(at=(x, 52.07), rot=0)
+            by[ref]['fields']['Note'] = note
+        else:
+            c.append(cap(ref, '10u', 'C1206', (x, 52.07), 'VIN', 'GND', Note=note))
+    by['C8'].update(at=(345.44, 52.07), rot=0)
+    by['C8']['fields']['Note'] = 'U2 VIN HF bypass at the VIN/PGND lands (TI 0.1 uF; contract <= 4.5 mm)'
+    by['L1'].update(at=(381.0, 40.64), rot=90)
+    by['L1']['pins'] = {'1': '_SW1_U2', '2': '_SW2_U2'}
+    by['L1']['fields']['Note'] = ('Molded 10.8 x 10 mm, Isat 10 A, Irms 7 A, DCR 22 mOhm. S9.0: buck-boost inductor SW1-SW2, '
+                                  '6.8 uH (TI 1-10 uH effective, inner loop needs > 1.2/fSW = 1.24 uH); ripple 0.49 A '
+                                  'p-p at 16.5 V / 966 kHz, peak at the R109 limit 3.8 A')
+    by['C10'].update(at=(375.92, 57.15), rot=180)
+    by['C10']['pins'] = {'1': '_BST1_U2', '2': '_SW1_U2'}
+    by['C10']['fields']['Note'] = 'U2 BOOT1 bootstrap (BOOT1-SW1), 0.1 uF (TI)'
+    by['C9'].update(value='100n', at=(386.08, 57.15), rot=180)
+    by['C9']['pins'] = {'1': '_BST2_U2', '2': '_SW2_U2'}
+    by['C9']['fields'] = {**circuit45.CAPS[('100n', 'C0603')],
+                          'Note': 'U2 BOOT2 bootstrap (BOOT2-SW2), 0.1 uF (TI). S8: the TPS62933F soft-start capacitor'}
+    c.append(two('C82', 'C', '10u', 'C1206', (350.52, 85.09), '_VCC_U2', 'GND', **circuit45.CAPS[('10u', 'C1206')],
+                 Note='U2 VCC LDO output, TI > 4.7 uF: 10u/50V 1206 keeps ~8 uF at 5.2 V bias. MODE and EXTVCC tie here '
+                      '(FPWM, internal LDO)'))
+    c.append(res('R110', '20k', (358.14, 92.71), '_FSW_U2', 'GND',
+                 Note='U2 FSW: fSW = 1000 / (0.05 x 20000 + 35) MHz = 0.966 MHz (TI Eq. 3; 0.87-1.06 MHz screen); above '
+                      'TI\'s < 500 kHz high-power advice: the R109 limit keeps the switch current low (calcs plus12_buckboost)'))
+    for i, ref in enumerate(('C81', 'C11', 'C12', 'C13', 'C14', 'C79', 'C80')):
+        at = (round(403.86 + 10.16 * i, 2), 52.07)
+        if ref == 'C81':
+            c.append(cap(ref, '100n', 'C0603', at, 'P12_VOUT', 'GND',
+                         Note='U2 VOUT HF bypass at the VOUT/PGND lands (TI 0.1 uF; contract <= 4.5 mm)'))
+        elif ref in by:
+            by[ref].update(at=at, rot=0)
+            by[ref]['pins'] = {'1': 'P12_VOUT', '2': 'GND'}
+            by[ref]['fields']['Note'] = 'U2 VOUT bank, 6 x 22u before the R109 sense resistor'
+        else:
+            c.append(cap(ref, '22u', 'C1206', at, 'P12_VOUT', 'GND',
+                         Note='U2 VOUT bank, 6 x 22u before the R109 sense resistor'))
+    c.append(two('R109', 'R', '0.015', 'R1206', (474.98, 48.26), 'P12_VOUT', '+12V', rot=90, **R_SENSE,
+                 Note='U2 output current limit ISP/ISN: VSNS 48-52 mV / 15 mR (1 % + 75 ppm) = 3.14-3.53 A constant-current '
+                      'loop. Sets the +12V capability (rating basis) and charges rack capacitance without hiccup; FB '
+                      'senses after it. 1 W part: <= 0.19 W at the limit'))
+    by['R9'].update(value='7.5k', at=(408.94, 90.17), rot=0)
+    by['R9']['pins'] = {'1': '_FB_U2', '2': 'GND'}
+    by['R9']['fields'].update(LCSC=circuit45.R0603['7.5k'], MPN=circuit45.R_MPN['7.5k'],
+                              Note='FB bottom: 1.2 V x (1 + 68k/7.5k) = 12.08 V nominal (11.54-12.65 V over VREF and 1 % '
+                                   '+ 1 % TCR)')
+    by['R8'].update(value='68k', at=(416.56, 86.36), rot=90)
+    by['R8']['pins'] = {'1': '_FB_U2', '2': '+12V'}
+    by['R8']['fields'].update(LCSC=circuit45.R0603['68k'], MPN=circuit45.R_MPN['68k'],
+                              Note='FB top from the regulated side of R109 (CDC open: <= 0.3 uA x 68k = 20 mV)')
+    c.append(res('R111', '9.1k', (398.78, 92.71), '_COMP_U2', '_COMPRC_U2',
+                 Note='U2 COMP RC: crossover 11.6 kHz at the low-C bank corner, 4.5 kHz high C (TI Eq. 24-26, boost corner, '
+                      'RSENSE 55 mOhm, GEA 190 uA/V); with the rack behind the cables it falls below the zero: bench Bode open'))
+    c.append(cap('C83', '10n', 'C0603', (398.78, 100.33), '_COMPRC_U2', 'GND',
+                 Note='U2 COMP CC: zero ~1.7 kHz with R111; CP not fitted (TI: open below 10 pF)'))
+    by['#FLG04'].update(at=(482.6, 48.26))
+
+
 def circuit():
     gone = set(S8_REMOVED) | set(S9_REMOVED)
     c = [p for p in circuit45.circuit() if p['ref'] not in gone]
@@ -144,23 +247,34 @@ def circuit():
             for old, new in MAIN_RENAME.items():
                 p['fields']['Note'] = p['fields']['Note'].replace(old, new)
 
-    # ---- Converters: soft start 22n -> 100n (TPS62933F tSS = CSS x 0.8 V / 5.5 uA)
-    by['C9'].update(value='100n')
-    by['C9']['fields'] = {**circuit45.CAPS[('100n', 'C0603')],
-                          'Note': 'U2 soft start ~14.5 ms (100n x 0.8 V / 5.5 uA; 11-20 ms over CSS/ISS corners): charges '
-                                  'rack capacitance on the unswitched rail. S7 had 22n'}
+    # ---- S9.0 step 2: 15 V input (CH224A request, U5 UVLO) and the +12V four-switch buck-boost
+    by['R1'].update(value='56k')
+    by['R1']['fields'].update(LCSC=R0603_S9['56k'][0], MPN=R0603_S9['56k'][1],
+                              Note='CFG1: 56k = 15 V request (WCH CH224 V2.0 Table 5-1; 120k = 20 V for the later retarget)')
+    by['U1']['fields']['Note'] = ('Fixed 15 V request (S9.0), independently current-limited/zener-protected supply. Needs a '
+                                  'source with a 15 V / 3 A fixed PDO (>= 45 W PD class). No current-contract tracking; PG is '
+                                  'not a current guarantee')
+    by['R3'].update(value='10k')
+    by['R3']['fields'].update(LCSC=circuit45.R0603['10k'], MPN=circuit45.R_MPN['10k'],
+                              Note='UVLO bottom (S9.0, 15 V input): on 12.46/13.20/13.98 V, off 11.55/12.34/13.14 V over '
+                                   'corners incl. leakage (S8: 7.5k for 20 V; 7.5k again at the 20 V retarget)')
+    _plus12_buckboost(c, by)
     by['U5']['fields']['Note'] = by['U5']['fields']['Note'].replace(
         '; S6 FLT + PGOOD wired-AND at 3.3 V; common RUN disconnect.',
-        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V; common input switch for both rails (RUN). S8.5: its UVLO (16.23-18.23 V '
-        'on, 15.04-17.12 V off) is the input qualification of the one-shot arming latch').replace(
+        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V; common input switch for both rails (RUN). S9.0: its UVLO (R2/R3 '
+        '100k/10k: on 12.46-13.98 V, off 11.55-13.14 V) is the input qualification of the one-shot arming latch; OVP keeps '
+        'the 20 V-input setting (24.1 V nominal)').replace(
         'PGOOD gates U2/U3', 'PGOOD gates U2 (U4 follows +12V via Q1)')
-    by['U2']['fields']['Note'] += '. S8: output is the delivered +12V (no rail eFuse); hiccup/OVP/TSD are its own'
     by['U18']['pins']['3'] = 'VPD'
     by['C57']['pins']['1'] = 'VPD'
     by['C57']['fields']['Note'] = 'U18 always-on VPD bypass, 50 V rated; logic outputs still pull up to V3V3'
     by['U4']['fields']['Note'] = by['U4']['fields']['Note'].replace(
         'Pins 1 and pad are the -12V node, not GND.', 'Pins 1 and pad are the delivered -12V node (S8: no '
         'series switch), not GND; 18 ms OCP blanking at start-up charges the rack capacitance.')
+    by['Q1']['fields']['Note'] = ('-12V enable from +12V: -12V follows +12V up and down. S9.0 accepted residual: EN_N comes '
+                                  'from the rails only, so a live +/-12V bus can enable (and power) U4 in an unpowered or '
+                                  'latched-off module (docs/s8-single-board.md S9.0 (d)); never plug such a module into a '
+                                  'live bus')
     for ref, rail in (('D2', '+12V'), ('D4', '-12V')):
         by[ref]['fields']['Note'] = f'{rail} polarity clamp at the header strip (rack-side reversal enters here)'
     # ---- Status LED: D8 MAIN is the only LED left (S8 final)
@@ -179,13 +293,13 @@ def circuit():
             p.update(value='10k')
             p['fields'].update(LCSC=circuit45.R0603['10k'], MPN=circuit45.R_MPN['10k'])
         p['fields']['Note'] = f'{net} pull-up: delivered-voltage monitor'
-    # ---- S8.5 (B): V20_OK is a U5 status-validity floor, not an input-good threshold (the U5 UVLO is).
-    by['R83'].update(value='120k')
-    by['R83']['fields'].update(**R83_S85, Note='MON_20 top. S8.5: 120k (S8.4 200k): V20_OK = VPD > 9.06-10.96 V '
-                                               '(9.98 V nominal), above the PD 5 V phase where U5 FLT/PGOOD may be '
-                                               'undefined and below the U5 turn-off minimum (15.04 V), so it validates '
-                                               'MAIN_OK and never drops first while U5 is on. Not an input-good '
-                                               'threshold: the input qualification is the U5 UVLO')
+    # ---- S8.5 (B): V20_OK is a U5 status-validity floor, not an input-good threshold (the U5 UVLO is). S9.0: 100k.
+    by['R83'].update(value='100k')
+    by['R83']['fields'].update(LCSC=circuit45.R0603['100k'], MPN=circuit45.R_MPN['100k'],
+                               Note='MON_20 top. S9.0: 100k (S8.5 120k at 20 V): V20_OK = VPD > 7.67-9.27 V (8.44 V nominal), '
+                                    'above the PD 5 V phase where U5 FLT/PGOOD may be undefined and below the U5 turn-off '
+                                    'minimum (11.55 V), so it validates MAIN_OK and never drops first while U5 is on. Not an '
+                                    'input-good threshold: the input qualification is the U5 UVLO. Net name kept from S7')
     by['U18']['value'] = LM2901B['MPN']
     # S9.0: comparator B (out 2, -4 / +5) was the +5V monitor; it is a spare with defined inputs and an open output.
     by['U18']['pins'].update({'2': None, '4': 'REF_GOOD', '5': 'GND'})
@@ -315,8 +429,8 @@ def drawing():
     """S7 drawing() without the removed parts' wires/symbols/labels, RAW names restored to the delivered rails, plus
     J3, the VIN damper and the OV guard. S9.0: the +5V converter block, the J2/J3 +5V pins and the U23 cell are gone."""
     W, P, L = circuit45.drawing()
-    gone = set(S8_REMOVED) | set(S9_REMOVED) | {'R35', 'R62'}   # moved refs: S7 lines at their old spots
-    (bx0, bx1), (by0, by1) = U3_BLOCK
+    redrawn = {'U2', 'L1', 'R8', 'R9', *(f'C{i}' for i in range(6, 15))}      # S9.0 step 2: +12V cell redrawn below
+    gone = set(S8_REMOVED) | set(S9_REMOVED) | {'R35', 'R62'} | redrawn   # moved refs: S7 lines at their old spots
 
     def ref_of(pt):
         if isinstance(pt, str):
@@ -325,12 +439,16 @@ def drawing():
             return pt[0].split('.')[0]
         return None
 
-    def in_u3(pt):
+    def in_box(pt, box):
+        (bx0, bx1), (by0, by1) = box
         return not isinstance(pt, str) and not isinstance(pt[0], str) and bx0 <= pt[0] <= bx1 and by0 <= pt[1] <= by1
-    W = [w for w in W if not any(ref_of(pt) in gone for pt in w) and not all(in_u3(pt) for pt in w)
+
+    def removed_block(pt):
+        return in_box(pt, U3_BLOCK) or in_box(pt, U2_BLOCK)
+    W = [w for w in W if not any(ref_of(pt) in gone for pt in w) and not all(removed_block(pt) for pt in w)
          and not any(pt in ('J2.11', 'J2.12') for pt in w)]
     P = [(NET_RENAME.get(n, n), pt, rot) for n, pt, rot in P
-         if ref_of(pt) not in gone and not in_u3(pt) and n != '+5V']
+         if ref_of(pt) not in gone and not removed_block(pt) and n != '+5V']
     L = [(NET_RENAME.get(n, n), pt, side) for n, pt, side in L if ref_of(pt) not in gone]
 
     # J3: same wiring as J2 in circuit45.drawing() (S9.0: pins 11/12 open, no +5V symbols)
@@ -360,6 +478,19 @@ def drawing():
           [m(210.82, 127.0), m(220.98, 127.0), 'C67.1'], [m(220.98, 127.0), 'TP17.1'],
           ['D22.3', m(297.18, 125.73), 'D22.2'], ['D22.2', m(304.8, 120.65)]]
     L += [('REF_OV', m(214.63, 127.0), 'R')]
+    # S9.0 step 2: +12V buck-boost cell (U2 TPS552892-Q1, circuit_s8._plus12_buckboost). VIN rail with the four 10u + 100n;
+    # L1 above the IC between SW1 and SW2 with the BOOT capacitors on BOOT1/BOOT2; MODE/EXTVCC/VCC one node with C82; FSW
+    # to R110; the VOUT/ISP node rises to the output bank rail ending in the R109 sense resistor; FB divider and COMP
+    # network bottom-right. ISN (Kelvin to +12V) and DITH (GND) use the automatic rail stubs.
+    W += [[(297.18, 48.26), (355.6, 48.26), (355.6, 66.04), 'U2.7'],
+          ['U2.8', (373.38, 40.64), 'L1.1'], ['U2.10', (388.62, 40.64), 'L1.2'], ['C10.2', (373.38, 53.34)], ['C9.2', (388.62, 53.34)],
+          ['U2.2', (363.22, 76.2), (363.22, 81.28), 'U2.18'], ['U2.21', (363.22, 78.74)], [(363.22, 81.28), 'C82.1'],
+          ['U2.6', 'R110.1'],
+          ['U2.11', (398.78, 66.04)], ['U2.12', (398.78, 68.58), (398.78, 66.04), (398.78, 48.26), 'R109.1'],
+          ['R109.2', (487.68, 48.26)],
+          ['U2.14', 'R9.1'], ['R9.1', 'R8.1'], ['U2.15', 'R111.1']]
+    P += [('VIN', (297.18, 48.26), 90), ('+12V', (487.68, 48.26), 270)]
+    L += [('P12_VOUT', (467.36, 48.26), 'U')]
     return W, P, L
 
 

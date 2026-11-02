@@ -38,7 +38,7 @@
   },
   "ics": {
    "label": "ICs, transistors, diodes, fuse (KiCad library models)",
-   "count": 32,
+   "count": 27,
    "bbox_XYZ": [
     [
      4.101,
@@ -46,17 +46,17 @@
     ],
     [
      17.75,
-     98.15
+     97.75
     ],
     [
-     4.045,
+     6.875,
      45.625
     ]
    ]
   },
   "passives": {
    "label": "R / C (KiCad library models)",
-   "count": 130,
+   "count": 104,
    "bbox_XYZ": [
     [
      4.101,
@@ -67,7 +67,7 @@
      111.85
     ],
     [
-     3.405,
+     4.275,
      47.675
     ]
    ]
@@ -109,8 +109,8 @@
    ]
   },
   "inductors": {
-   "label": "L1-L3 PROXY 10.3 x 10.3 x 4.0 (no model)",
-   "count": 3,
+   "label": "L1/L3 PROXY 10.3 x 10.3 x 4.0 (no model)",
+   "count": 2,
    "bbox_XYZ": [
     [
      4.1,
@@ -127,7 +127,7 @@
    ]
   },
   "ui_envelopes": {
-   "label": "J1 / SW1 / U23 maximum body envelopes (no model)",
+   "label": "J1 / SW1 maximum body envelopes / U2 (no model)",
    "count": 4,
    "bbox_XYZ": [
     [
@@ -136,11 +136,11 @@
     ],
     [
      28.68,
-     92.1
+     72.1
     ],
     [
      0.8,
-     9.22
+     29.985
     ]
    ]
   },
@@ -290,14 +290,13 @@
   }
  },
  "solid_interference_mm3": [],
- "parts_with_model": 165,
+ "parts_with_model": 134,
  "proxies": [
   "J1",
   "L1",
-  "L2",
   "L3",
   "SW1",
-  "U23"
+  "U2"
  ],
  "extents": {
   "parts_X_max": 13.201,
@@ -320,15 +319,15 @@
    ],
    [
     4.0,
-    "L2"
-   ],
-   [
-    4.0,
     "L1"
    ],
    [
     3.9,
     "D8"
+   ],
+   [
+    3.36,
+    "J1"
    ]
   ]
  }

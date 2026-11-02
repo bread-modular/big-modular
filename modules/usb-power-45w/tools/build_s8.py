@@ -33,7 +33,8 @@ MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
 REV = 'S9.0'
-FP_S8 = dict(bs.FP)
+from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
+FP_S8 = {**bs.FP, **FP_S90}
 
 
 def uid(key):
@@ -68,11 +69,13 @@ def tlv431_dbz():
 
 def lib_symbols(parts):
     """The S7 pinned symbols (tools/build_schematic.py SYMBOLS) that S8 uses, flattened the same way, plus
-    the S8.1 TLV431_DBZ symbol."""
+    the S8.1 TLV431_DBZ symbol and the S9.0 TPS552892_RYQ symbol (tools/s90_parts.py)."""
     used = {p['sym'] for p in parts} | POWER_SYMBOLS
     out = {k: v for k, v in bs.lib_symbols().items() if k in used}
     if 'TLV431_DBZ' in used:
         out['TLV431_DBZ'] = tlv431_dbz()
+    if 'TPS552892_RYQ' in used:
+        out['TPS552892_RYQ'] = buckboost_symbol()
     assert used <= set(out), sorted(used - set(out))
     return out
 
