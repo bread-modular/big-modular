@@ -15,6 +15,10 @@ S9.0 / P2.0: +5V removed: the U3/L2 cell, the U23 cell, the +5V header-strip par
 the board. The +12V cell becomes the TPS552892-Q1 buck-boost (U2 changes footprint SOT-583-8 -> TI RYQ0021B, an explicit
 U2-only replacement in sync_candidate, FP_REPLACE): L1 keeps its spot, U2 and its network are re-placed right of L1 in
 the old cell and the space the +5V cell left; every other part keeps its P1.5 position.
+S9.2 / P2.2 (routing-ready): R109 gets the 4-terminal Kelvin split land (FP_REPLACE), R113 turns so its PGND pad lands on
+the C82.2 PGND terminal, D26 moves right into free space so the R109 force/sense pad pairs take its old spot, R115 (100k,
+N_EN_RETURN) sits at Q14, and the 1.5 mm acceptance pads TP20/22-30 sit at the nodes they measure. placement.json carries
+the routing contract (tools/s92_contract.py); every other part keeps its P2.1 position.
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
 --write is the older seed-based placement entry point, not a native edit-preservation tool.
 
@@ -66,10 +70,14 @@ GROUPS = [
      {'L1': (93.89, 76.845, 90), 'U2': (104.0, 76.84, 90),
       'C10': (100.65, 79.6, 270), 'C9': (100.65, 75.0, 90), 'C82': (102.7, 72.3, 0),
       'R111': (105.95, 71.95, 90), 'C83': (107.55, 71.95, 270), 'R9': (109.15, 71.95, 90), 'R8': (110.75, 71.95, 90),
-      'R113': (103.4, 70.35, 180), 'D26': (120.4, 70.8, 90), 'R109': (114.6, 72.0, 0), 'C81': (107.6, 74.6, 0), 'C8': (107.6, 79.1, 0),
+      'R113': (103.4, 70.35, 0), 'D26': (127.4, 69.0, 0), 'R109': (114.6, 72.0, 0), 'C81': (107.6, 74.6, 0), 'C8': (107.6, 79.1, 0),
       'C11': (110.4, 76.9, 270), 'C12': (112.8, 76.9, 270), 'C13': (115.2, 76.9, 270), 'C14': (117.6, 76.9, 270),
       'C79': (118.4, 82.4, 270), 'C80': (118.4, 87.2, 270), 'R110': (104.6, 81.3, 180),
-      'C6': (108.6, 82.9, 90), 'C7': (111.0, 82.9, 90), 'C77': (113.4, 82.9, 90), 'C78': (115.8, 82.9, 90)}),
+      'C6': (108.6, 82.9, 90), 'C7': (111.0, 82.9, 90), 'C77': (113.4, 82.9, 90), 'C78': (115.8, 82.9, 90),
+      # S9.2: acceptance pads on 2.54 mm pairs in the old D26 spot (D26 moved right): sense pair TP23/TP22 next to the
+      # R109 sense pads, force pair TP24/TP20; AGND/PGND star pair TP28/TP29 above L1 next to R113; -12V TP25 at U4
+      'TP24': (119.45, 69.85, 0), 'TP20': (121.99, 69.85, 0), 'TP23': (119.45, 72.39, 0), 'TP22': (121.99, 72.39, 0),
+      'TP28': (99.0, 68.4, 0), 'TP29': (96.46, 68.4, 0), 'TP25': (124.9, 74.5, 0)}),
     ('Header strip (J2/J3 rail pins)',
      'Header ceramics and the +12V polarity clamp in one row 3.9 mm in front of the J2/J3 pins they serve '
      '(where a backfeed or transient from the rack enters). S9.0: the +5V parts of the strip are gone',
@@ -81,7 +89,8 @@ GROUPS = [
      {'U4': (130.8, 79.2, 0), 'C28': (135.4, 77.9, 270), 'L3': (142.65, 79.1, 0),
       'C27': (125.9, 78.55, 90), 'C25': (123.5, 78.55, 90), 'C26': (121.1, 78.55, 90), 'C24': (130.2, 86.6, 0),
       'R13': (127.6, 83.6, 90), 'R14': (131.55, 83.6, 270), 'R15': (133.2, 83.6, 270),
-      'Q14': (129.2, 97.0, 0), 'Q15': (124.5, 97.0, 0), 'R112': (122.6, 87.4, 0), 'Q1': (122.6, 84.4, 0), 'R17': (125.35, 84.4, 90), 'R18': (125.35, 87.5, 90), 'R16': (121.5, 81.7, 0),
+      'Q14': (129.2, 97.0, 0), 'Q15': (124.5, 97.0, 0), 'R115': (133.4, 97.0, 90), 'TP30': (120.25, 97.6, 0),
+      'R112': (122.6, 87.4, 0), 'Q1': (122.6, 84.4, 0), 'R17': (125.35, 84.4, 90), 'R18': (125.35, 87.5, 90), 'R16': (121.5, 81.7, 0),
       'D4': (130.0, 74.4, 0), 'C33': (122.3, 91.5, 90),
       'C29': (137.2, 70.0, 270), 'C30': (139.6, 70.0, 270), 'C61': (142.0, 70.0, 90), 'C31': (144.4, 70.0, 270),
       'C32': (146.8, 70.0, 270)}),
@@ -100,7 +109,8 @@ GROUPS = [
     ('Always-on LDO U9', 'VPD in from the rear (D1/U1 side), V3V3 out toward the front strip; C46 VPD, C47/C48 V3V3',
      {'U9': (85.0, 92.2, 90), 'C46': (85.0, 88.1, 0), 'C47': (85.1, 97.3, 0)}),
     ('VIN damper (R92 + C5 + C62)', 'On the VIN bus at the rear-left corner (In2 VIN plane), TP4 = VIN',
-     {'C5': (52.3, 58.5, 90), 'C62': (54.8, 58.5, 90), 'R92': (57.3, 58.5, 90), 'TP4': (59.7, 56.6, 0), 'D24': (102.8, 85.5, 0), 'D25': (96.9, 85.5, 0)}),
+     {'C5': (52.3, 58.5, 90), 'C62': (54.8, 58.5, 90), 'R92': (57.3, 58.5, 90), 'TP4': (59.7, 56.6, 0), 'D24': (102.8, 85.5, 0), 'D25': (96.9, 85.5, 0),
+      'TP26': (92.1, 85.5, 0), 'TP27': (92.1, 88.04, 0)}),
     ('Monitors + overvoltage guard (U18, U20)',
      'Two LM2901B side by side in the rear-left; every divider/pull-up in a 0603 column next to the pin it serves '
      '(left of U18: +12/+5 dividers and outputs; between them: VPD/-12V dividers and the REF divider; right of '
@@ -142,12 +152,12 @@ GROUPS = [
 ]
 
 
-BOARD_REV = 'S9.1-P2.1'
-BOARD_NOTE = 'S9.1 own-input enable, pulse clamps, split U2 grounds. P2.1 DRAFT, UNROUTED.'
-BOARD_NOTE5 = 'S9.1 / P2.1: AGND_U2 joins GND ONLY via R113 at C82. No routed copper.'
-GROUND_CONNECTION = {'analog_net': 'AGND_U2', 'power_net': 'GND', 'sole_link': 'R113',
-    'at': 'C82.2', 'link_pad_1': 'AGND_U2', 'link_pad_2': 'GND', 'maximum_link_to_C82_pad_mm': 3.0,
-    'routing': 'Quiet AGND island: U2.17/.5, R9.2, R110.2, C83.2, C82.2. No plane/via bridge except R113 at C82; 3-4 GND vias there.'}
+BOARD_REV = 'S9.2-P2.2'
+BOARD_NOTE = 'S9.2 routing-ready placement (Kelvin R109, PGND star at C82.2, acceptance pads). P2.2, UNROUTED.'
+BOARD_NOTE5 = 'S9.2 / P2.2: AGND_U2 joins PGND ONLY via R113 at C82.2 (PGND). Contract: docs/s8-single/routing-notes.md.'
+import s92_contract  # noqa: E402
+GROUND_CONNECTION = {**s92_contract.GROUND, 'at': 'C82.2', 'link_pad_1': 'AGND_U2', 'link_pad_2': 'GND',
+                     'routing': s92_contract.GROUND['rule']}
 
 
 def fixed_groups():
@@ -222,7 +232,8 @@ FP_REFRESH = set()       # S8.4 refreshed the U23 mask expansion here; S9.0 has 
 # S9.0: the only footprint change - U2 TPS62933F (SOT-583-8) -> TPS552892-Q1 (TI RYQ0021B, tools/s90_parts.py). The
 # old footprint is removed and the pinned one inserted with a new UUID; any other footprint change still refuses.
 FP_REPLACE = {'U2': ('USBPOWER45:SOT-583-8', 'USBPOWER45:TI_RYQ0021B_VQFN-HR-21_3x5mm'),
-              'R109': ('USBPOWER45:R_1206_3216Metric', 'USBPOWER45:R_WSLP1206_18m_Kelvin')}
+              # S9.2: the S9.1 2-pad WSLP land (not Kelvin) -> 4-terminal Kelvin split land (tools/s92_parts.py)
+              'R109': ('USBPOWER45:R_WSLP1206_18m_Kelvin', 'USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12')}
 
 
 def refresh_pads(fps):
@@ -357,7 +368,8 @@ def sync_candidate(source_board, output_root):
         if r in original_ids:
             assert one(f, 'uuid')[1] == original_ids[r]
             assert nodes(f, 'model') == original_models[r]
-    rec = {'ground_connection': GROUND_CONNECTION, 'revision': 'S9.1 / P2.1', 'note': 'S9.1 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
+    rec = {'ground_connection': GROUND_CONNECTION, 'routing_contract': s92_contract.contract(),
+           'revision': 'S9.2 / P2.2', 'note': 'S9.2 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
            'parts': after, 'pad_mask_refreshed_from_library': refreshed,
            'replaced_footprints': replaced,
            'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r] and r not in replaced),

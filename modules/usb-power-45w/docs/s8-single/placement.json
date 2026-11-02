@@ -1,13 +1,16 @@
 {
  "added_refs": [
-  "D24",
-  "D25",
-  "D26",
-  "Q14",
-  "Q15",
-  "R112",
-  "R113",
-  "R114"
+  "R115",
+  "TP20",
+  "TP22",
+  "TP23",
+  "TP24",
+  "TP25",
+  "TP26",
+  "TP27",
+  "TP28",
+  "TP29",
+  "TP30"
  ],
  "ground_connection": {
   "analog_net": "AGND_U2",
@@ -15,15 +18,30 @@
   "link_pad_1": "AGND_U2",
   "link_pad_2": "GND",
   "maximum_link_to_C82_pad_mm": 3.0,
+  "members_AGND_U2": [
+   "U2.5",
+   "U2.17",
+   "R9.2",
+   "R110.2",
+   "C83.2",
+   "R113.1",
+   "TP28.1"
+  ],
+  "pgnd_at_star": [
+   "C82.2",
+   "R113.2"
+  ],
   "power_net": "GND",
-  "routing": "Quiet AGND island: U2.17/.5, R9.2, R110.2, C83.2, C82.2. No plane/via bridge except R113 at C82; 3-4 GND vias there.",
-  "sole_link": "R113"
+  "routing": "C82.2 is PGND. R113 pin 2 (PGND) lands on the C82.2 pad copper with 3-4 PGND vias to In1 at C82.2 (TI SLVSGT7 8.4.1 items 6/7). AGND_U2 is an F.Cu trace island (U2.17/.5, R9.2, R110.2, C83.2, TP28) fed ONLY from R113 pin 1. No AGND pour on In1/In2/B.Cu, no via from AGND_U2 to any GND layer, no second 0 ohm, no net tie. In1 stays solid PGND under the island. The checker fails any AGND_U2 copper touching GND other than through R113.",
+  "rule": "C82.2 is PGND. R113 pin 2 (PGND) lands on the C82.2 pad copper with 3-4 PGND vias to In1 at C82.2 (TI SLVSGT7 8.4.1 items 6/7). AGND_U2 is an F.Cu trace island (U2.17/.5, R9.2, R110.2, C83.2, TP28) fed ONLY from R113 pin 1. No AGND pour on In1/In2/B.Cu, no via from AGND_U2 to any GND layer, no second 0 ohm, no net tie. In1 stays solid PGND under the island. The checker fails any AGND_U2 copper touching GND other than through R113.",
+  "sole_link": "R113",
+  "star": "C82.2 (PGND terminal of the VCC capacitor)"
  },
  "moved_retained_refs": [
-  "C33",
-  "C82"
+  "D26",
+  "R113"
  ],
- "note": "S9.1 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
+ "note": "S9.2 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
  "pad_mask_refreshed_from_library": {},
  "parts": {
   "C1": [
@@ -381,9 +399,9 @@
    "F.Cu"
   ],
   "D26": [
-   120.4,
-   70.8,
-   90.0,
+   127.4,
+   69.0,
+   0.0,
    "F.Cu"
   ],
   "D4": [
@@ -521,12 +539,18 @@
   "R113": [
    103.4,
    70.35,
-   180.0,
+   0.0,
    "F.Cu"
   ],
   "R114": [
    63.0,
    90.3,
+   90.0,
+   "F.Cu"
+  ],
+  "R115": [
+   133.4,
+   97.0,
    90.0,
    "F.Cu"
   ],
@@ -884,9 +908,69 @@
    0.0,
    "F.Cu"
   ],
+  "TP20": [
+   121.99,
+   69.85,
+   0.0,
+   "F.Cu"
+  ],
+  "TP22": [
+   121.99,
+   72.39,
+   0.0,
+   "F.Cu"
+  ],
+  "TP23": [
+   119.45,
+   72.39,
+   0.0,
+   "F.Cu"
+  ],
+  "TP24": [
+   119.45,
+   69.85,
+   0.0,
+   "F.Cu"
+  ],
+  "TP25": [
+   124.9,
+   74.5,
+   0.0,
+   "F.Cu"
+  ],
+  "TP26": [
+   92.1,
+   85.5,
+   0.0,
+   "F.Cu"
+  ],
+  "TP27": [
+   92.1,
+   88.04,
+   0.0,
+   "F.Cu"
+  ],
+  "TP28": [
+   99.0,
+   68.4,
+   0.0,
+   "F.Cu"
+  ],
+  "TP29": [
+   96.46,
+   68.4,
+   0.0,
+   "F.Cu"
+  ],
   "TP3": [
    62.8,
    86.5,
+   0.0,
+   "F.Cu"
+  ],
+  "TP30": [
+   120.25,
+   97.6,
    0.0,
    "F.Cu"
   ],
@@ -1014,9 +1098,377 @@
  "removed_refs": [],
  "replaced_footprints": {
   "R109": [
-   "USBPOWER45:R_1206_3216Metric",
-   "USBPOWER45:R_WSLP1206_18m_Kelvin"
+   "USBPOWER45:R_WSLP1206_18m_Kelvin",
+   "USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12"
   ]
  },
- "revision": "S9.1 / P2.1"
+ "revision": "S9.2 / P2.2",
+ "routing_contract": {
+  "doc": "docs/s8-single/routing-notes.md",
+  "ground": {
+   "analog_net": "AGND_U2",
+   "maximum_link_to_C82_pad_mm": 3.0,
+   "members_AGND_U2": [
+    "U2.5",
+    "U2.17",
+    "R9.2",
+    "R110.2",
+    "C83.2",
+    "R113.1",
+    "TP28.1"
+   ],
+   "pgnd_at_star": [
+    "C82.2",
+    "R113.2"
+   ],
+   "power_net": "GND",
+   "rule": "C82.2 is PGND. R113 pin 2 (PGND) lands on the C82.2 pad copper with 3-4 PGND vias to In1 at C82.2 (TI SLVSGT7 8.4.1 items 6/7). AGND_U2 is an F.Cu trace island (U2.17/.5, R9.2, R110.2, C83.2, TP28) fed ONLY from R113 pin 1. No AGND pour on In1/In2/B.Cu, no via from AGND_U2 to any GND layer, no second 0 ohm, no net tie. In1 stays solid PGND under the island. The checker fails any AGND_U2 copper touching GND other than through R113.",
+   "sole_link": "R113",
+   "star": "C82.2 (PGND terminal of the VCC capacitor)"
+  },
+  "kelvin": {
+   "pads": {
+    "1": "force P12_VOUT (converter bank)",
+    "2": "sense P12_ISP -> U2 ISP pin 12 only",
+    "3": "sense P12_ISN -> U2 ISN pin 13 only",
+    "4": "force +12V (rail)"
+   },
+   "part": "R109 TA-I RLM12FTCMR018 18 mOhm 1 % 75 ppm 1 W on R_Shunt_1206_KelvinSplit_RLM12",
+   "residual_error": "0.2 % sense-point residual allowed in the CC-limit band (calcs plus12_buckboost)",
+   "rule": "Sense traces leave pads 2/3 on their +y edge within 0.6 mm of the inner (element) end, run as a 0.2 mm coupled pair (<= 0.3 mm gap) on F.Cu to U2 pins 12/13, never touch force copper, P12_VOUT or +12V pours, and carry no current. Force current enters/leaves only through pads 1/4. Sense pads stay free of pour (keep-out 0.3 mm)."
+  },
+  "kept_diagnostic_pads": {
+   "TP11": "FAULT_LATCH",
+   "TP12": "P12_OK",
+   "TP14": "N12_OK",
+   "TP15": "V20_OK",
+   "TP16": "V3V3",
+   "TP17": "REF_OV",
+   "TP2": "VPD_U1",
+   "TP3": "MAIN_IN",
+   "TP4": "VIN",
+   "TP7": "MAIN_IMON",
+   "TP8": "GND"
+  },
+  "min_widths_mm": {
+   "-12V (LMR38020 limit ~1.5 A)": 0.8,
+   "AGND_U2 island, FB/COMP, EN_N, N_EN_*": 0.25,
+   "P12_ISP / P12_ISN (Kelvin sense pair)": 0.2,
+   "P12_VOUT / +12V (2.95 A CC limit)": 1.5,
+   "VBUS / VPD / MAIN_IN / VIN (3 A, U5 limit 4.7 A)": 2.5,
+   "logic / status": 0.2,
+   "switch nodes SW1/SW2 (U2), SW (U4)": "short pours, no thin tracks"
+  },
+  "proximity": [
+   {
+    "from": "D24.1",
+    "limit_mm": 10.0,
+    "to_any": [
+     "C8.1",
+     "C6.1",
+     "C7.1",
+     "C77.1",
+     "C78.1"
+    ],
+    "why": "D24 cathode at the U2 VIN bank"
+   },
+   {
+    "from": "D25.2",
+    "limit_mm": 6.0,
+    "to_any": [
+     "D24.1"
+    ],
+    "why": "D25 VIN clamp beside D24"
+   },
+   {
+    "from": "D26.1",
+    "limit_mm": 10.0,
+    "to_any": [
+     "C80.1",
+     "C79.1",
+     "C14.1"
+    ],
+    "why": "D26 cathode on the P12_VOUT bank pour"
+   },
+   {
+    "from": "C82.2",
+    "limit_mm": 3.0,
+    "to_any": [
+     "R113.2"
+    ],
+    "why": "R113 PGND pad on the C82.2 PGND terminal (sole star)"
+   },
+   {
+    "from": "R115.1",
+    "limit_mm": 5.0,
+    "to_any": [
+     "Q14.3",
+     "Q15.2"
+    ],
+    "why": "R115 at the AND-gate mid-node"
+   },
+   {
+    "from": "R109.2",
+    "limit_mm": 12.0,
+    "to_any": [
+     "U2.12"
+    ],
+    "why": "ISP sense run R109 pad 2 -> U2 pin 12"
+   },
+   {
+    "from": "R109.3",
+    "limit_mm": 13.0,
+    "to_any": [
+     "U2.13"
+    ],
+    "why": "ISN sense run R109 pad 3 -> U2 pin 13"
+   }
+  ],
+  "revision": "S9.2 / P2.2",
+  "status": "routing contract for the unrouted P2.2 board; pre-routing items checked by tools/check_s8_board.py, copper/via items PENDING until routed",
+  "test_points": [
+   {
+    "limit": "13.5-16.5 V operating; OVP trip 17.30-19.44 V; UVLO on <= 12.98 V",
+    "max": 5.0,
+    "measure": "VPD at the module: UVLO / OVP / input-range tests (IN-1, IN-2), DC",
+    "near": [
+     "Q3",
+     "2"
+    ],
+    "net": "VPD",
+    "ref": "TP1",
+    "size": "1.0 mm round (S7 pad, DC only)"
+   },
+   {
+    "limit": "CL-1: <= 30.0 V incl. ringing at 1 A / 20 ms, integral(V*I) <= 0.648 J; EMI-1: <= 1.5 V p-p at 20 MHz BW",
+    "max": 9.0,
+    "measure": "D24 cathode / U2+U4 input: clamp voltage and energy under injection (CL-1), VIN ripple and ringing (EMI-1)",
+    "near": [
+     "D24",
+     "1"
+    ],
+    "net": "VIN",
+    "pair": "TP27",
+    "ref": "TP26",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "-",
+    "max": 6.0,
+    "measure": "ground-spring reference for TP26 (via to In1 at the pad)",
+    "near": [
+     "D25",
+     "1"
+    ],
+    "net": "GND",
+    "pair": "TP26",
+    "ref": "TP27",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "KS-1: V(TP20-TP24) >= V(TP22-TP23); CL-2: P12_VOUT <= 24.0 V",
+    "max": 11.0,
+    "measure": "R109 force node (converter side): force drop V(TP20-TP24) vs sense V(TP22-TP23) (KS-1); D26 clamp (CL-2)",
+    "near": [
+     "R109",
+     "1"
+    ],
+    "net": "P12_VOUT",
+    "pair": "TP24",
+    "ref": "TP20",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "11.54-12.65 V DC; <= 60 mV p-p ripple; PM > 45 deg, GM > 10 dB",
+    "max": 5.0,
+    "measure": "+12V output after R109: regulation, ripple, load-step, Bode injection point (LS-1)",
+    "near": [
+     "R109",
+     "4"
+    ],
+    "net": "+12V",
+    "pair": "TP20",
+    "ref": "TP24",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "VSNS 48-52 mV at the limit; I = V/18 mOhm within 2.62-2.95 A",
+    "max": 10.0,
+    "measure": "Kelvin sense + (U2 ISP): V(TP22-TP23) at the CC limit (KS-1, CC-1)",
+    "near": [
+     "R109",
+     "2"
+    ],
+    "net": "P12_ISP",
+    "pair": "TP23",
+    "ref": "TP22",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "see TP22",
+    "max": 5.0,
+    "measure": "Kelvin sense - (U2 ISN)",
+    "near": [
+     "R109",
+     "3"
+    ],
+    "net": "P12_ISN",
+    "pair": "TP22",
+    "ref": "TP23",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "-11.38..-12.62 V DC; <= 60 mV p-p",
+    "max": 6.0,
+    "measure": "-12V at the converter output: regulation, ripple (ground spring on D4 pin 1)",
+    "near": [
+     "U4",
+     "1"
+    ],
+    "net": "-12V",
+    "ref": "TP25",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "GS-1: |V| <= 5 mV DC, <= 50 mV p-p (20 MHz); GS-2: AGND-PGND > 10 ohm with R113 removed",
+    "max": 5.0,
+    "measure": "AGND island vs PGND star: DC offset and switching noise (GS-1); sole-bridge check with R113 lifted (GS-2)",
+    "near": [
+     "R113",
+     "1"
+    ],
+    "net": "AGND_U2",
+    "pair": "TP29",
+    "ref": "TP28",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "-",
+    "max": 9.0,
+    "measure": "PGND reference near the C82.2 star (via to In1 at the pad)",
+    "near": [
+     "C82",
+     "2"
+    ],
+    "net": "GND",
+    "pair": "TP28",
+    "ref": "TP29",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "MAIN_LED_OK low: <= 0.1 V (R115 100k to PGND, <= 1 uA switch leakage); RUN high: <= 0.1 V (Q14 on); RUN low with MAIN_LED_OK high: <= 3.37 V (Q15 source follower) and U4 EN off",
+    "max": 5.0,
+    "measure": "U4 enable AND gate mid-node: defined default (EN-1)",
+    "near": [
+     "Q15",
+     "2"
+    ],
+    "net": "N_EN_RETURN",
+    "ref": "TP30",
+    "size": "1.5 mm round"
+   },
+   {
+    "limit": "high at first enable; cleared only by RESET/POR",
+    "max": 25.0,
+    "measure": "one-shot latch: startup sequence S1-S4 (logic analyser, 1 kHz+)",
+    "near": [
+     "U12",
+     "5"
+    ],
+    "net": "STARTED",
+    "ref": "TP19",
+    "size": "1.0 mm round (S8.5 logic pad)"
+   },
+   {
+    "limit": "ARMED 0.31-0.88 s after first enable; <= 0.90 s",
+    "max": 33.0,
+    "measure": "arming delay S1-S4",
+    "near": [
+     "U11",
+     "1"
+    ],
+    "net": "ARMED",
+    "ref": "TP10",
+    "size": "1.0 mm round (S8.5 logic pad)"
+   },
+   {
+    "limit": "low within 20 us of OV_N low",
+    "max": 12.0,
+    "measure": "RUN / U5 SHDN: fault latch tests S3/S4, T2",
+    "near": [
+     "U13",
+     "3"
+    ],
+    "net": "RUN",
+    "ref": "TP9",
+    "size": "1.0 mm round (S7 logic pad)"
+   },
+   {
+    "limit": "low within 14 us + PGOOD deglitch of an OVP trip",
+    "max": 12.0,
+    "measure": "U5 PGOOD/FLT: OVP/UVLO response (IN-2), source tests S1/S2",
+    "near": [
+     "R63",
+     "2"
+    ],
+    "net": "MAIN_OK",
+    "ref": "TP5",
+    "size": "1.0 mm round (S7 logic pad)"
+   },
+   {
+    "limit": "low <= 20 us at >= 0.5 V overdrive",
+    "max": 10.0,
+    "measure": "rail overvoltage guard T2",
+    "near": [
+     "U20",
+     "2"
+    ],
+    "net": "OV_N",
+    "ref": "TP6",
+    "size": "1.0 mm round (S8 logic pad)"
+   }
+  ],
+  "thermal": {
+   "D10": {
+    "acceptance": "TH-2",
+    "model": "SS1060 at 0.75 V x 3 A = 2.25 W; needs effective RthetaJA <= 33 C/W for Tj <= 125 C at 50 C ambient",
+    "requirements": {
+     "copper": "VPD (anode) and MAIN_IN (cathode) F.Cu pours >= 400 mm2 each, each with >= 8 vias to a same-net B.Cu area >= 300 mm2"
+    }
+   },
+   "R109": {
+    "acceptance": "TH-1 (R109 body), KS-1, CC-1",
+    "model": "TA-I RLM12: 1 W at 70 C with 300 mm2 of pad + trace copper; derates to 0 at 155 C",
+    "requirements": {
+     "force_copper": "P12_VOUT (pad 1) and +12V (pad 4) F.Cu copper >= 150 mm2 each within 10 mm (>= 300 mm2 together), each with >= 3 vias to a same-net B.Cu or In2 area",
+     "sense_copper": "pads 2/3: 0.2 mm traces only (no pour)"
+    }
+   },
+   "U2": {
+    "acceptance": "TH-1",
+    "model": "TI SLVSGT7 6.4 RthetaJA 43.4 C/W (JEDEC 2s2p); EVM 27.5 C/W (4-layer 2/1/1/2 oz 91 x 66 mm)",
+    "requirements": {
+     "B_Cu_GND": "B.Cu GND pour >= 600 mm2 under the U2 / L1 / bank region, stitched to In1 with >= 20 vias",
+     "In1": "solid PGND plane (0.5 oz), no slot or cut within 15 mm of the U2 centre (via antipads only)",
+     "PGND_vias": ">= 10 vias 0.3/0.6 mm at the two ends of the U2 PGND land (5 per end), centres <= 1.5 mm outside the package outline, to In1 and to the B.Cu GND pour; never in a pad",
+     "VIN_area": "F.Cu VIN pour >= 120 mm2 joining U2 pin 7, C8, C6, C7, C77, C78 and D24 K; >= 6 vias to an In2 VIN area >= 300 mm2",
+     "VOUT_area": "F.Cu P12_VOUT pour >= 150 mm2 joining U2 pin 11, C81, C11-C14, C79, C80, R109 pad 1, D26 K and TP20; >= 6 vias to a B.Cu P12_VOUT area >= 200 mm2"
+    }
+   },
+   "U4": {
+    "acceptance": "TH-3",
+    "model": "LMR38020 DDA exposed pad = -12V (IC ground), not GND",
+    "requirements": {
+     "copper": "footprint thermal vias to a -12V area >= 300 mm2 on In2 or B.Cu; no GND on the EP"
+    }
+   },
+   "U5": {
+    "acceptance": "TH-2 (with D10)",
+    "model": "TPS16630 PWP exposed pad = GND; <= 0.48 W at 3 A (53 mOhm max)",
+    "requirements": {
+     "copper": "footprint thermal vias to In1 GND"
+    }
+   }
+  }
+ }
 }

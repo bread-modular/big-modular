@@ -1,5 +1,7 @@
 """S8 4HP front panel: the M1/R3 panel with only the MAIN LED hole (rail LEDs removed, user 2026-11-01). S9.1: the input
-label reads PD 15V (15 V PD input; PD 20V again at the 20 V retarget), silk only, no geometry change.
+label reads PD 15V (15 V PD input; PD 20V again at the 20 V retarget), silk only, no geometry change. S9.2: the label
+names the required contract, PD 15V 3A (a >= 45 W source; the start into a full rack needs ~4.65 A for ~2.5 ms, test S1),
+silk only, no geometry change.
 
   python3 -B tools/build_s8_panel.py
 
@@ -21,15 +23,15 @@ from build_layout import PV, line, npth, rect, shape, text  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
 PANEL = MODULE / 'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb'
-PD_LABEL = 'PD 15V'           # S9.1: the requested PD voltage (R1 56k)
+PD_LABEL = 'PD 15V 3A'        # S9.2: the requested PD contract (R1 56k, 15 V fixed PDO at 3 A)
 
 
 def build():
     G = mechanics_s8.geometry()
-    board = bl.new_board('Big Modular - usb-power-45w S9.1 single board 4HP front panel', [
+    board = bl.new_board('Big Modular - usb-power-45w S9.2 single board 4HP front panel', [
         'Passive panel, NPTH only, no copper. 4HP 20.0 x 128.5 x 1.6',
-        'S8: one panel LED (MAIN); rail LEDs removed. S9.1: PD 15V label. Otherwise = the R3 panel',
-        'Geometry: ../../docs/s8-single/mechanical.json'], 'S9.1')
+        'S8: one panel LED (MAIN); rail LEDs removed. S9.2: PD 15V 3A label. Otherwise = the R3 panel',
+        'Geometry: ../../docs/s8-single/mechanical.json'], 'S9.2')
     pw, ph, _ = G['panel_mm']
     E = pcbnew.Edge_Cuts
     rect(board, E, PV(0, 0), PV(pw, ph))
@@ -65,7 +67,7 @@ def build():
             '4HP 20.0 x 128.5 x 1.6; rail holes X12.58 Y3/125.5 (blank 4HP precedent)',
             'M3 bracket holes X6.4 Y22/106.5; USB aperture/LED X6.1/SW1 X5.8 copied from usb-power',
             'S8: D8 MAIN LED only (THT, hand-soldered); SW1 TL3340 SMT side reset; rail LEDs removed',
-            'S9.1: +/-12V only, 15 V PD input (label PD 15V; PD 20V at the later 20 V retarget)',
+            'S9.2: +/-12V only, 15 V / 3 A PD input (label PD 15V 3A; PD 20V at the later 20 V retarget)',
             'S8 single board: not supplier-accepted, not a release']):
         text(board, D, note, PV(pw + 40, 6 + 3 * i), 0.9)
     src_pro = MODULE / 'panels/front-pcb/usb-power-45w-panel.kicad_pro'

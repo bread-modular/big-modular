@@ -4,9 +4,302 @@
   "pass": true,
   "analog": "AGND_U2",
   "power": "GND",
-  "sole_link": "R113 at C82.2"
+  "sole_link": "R113 PGND pad at C82.2 (PGND)",
+  "AGND_U2_pads": [
+   "C83.2",
+   "R110.2",
+   "R113.1",
+   "R9.2",
+   "TP28.1",
+   "U2.17",
+   "U2.5"
+  ],
+  "parts_on_both_nets": [
+   "R113"
+  ]
  },
- "parts_on_board": 164,
+ "routing_contract_screen": {
+  "test_points": [
+   {
+    "ref": "TP1",
+    "net": "VPD",
+    "want_net": "VPD",
+    "pad_mm": 1.0,
+    "anchor": "Q3.2",
+    "distance_mm": 4.05,
+    "limit_mm": 5.0,
+    "ok": true
+   },
+   {
+    "ref": "TP26",
+    "net": "VIN",
+    "want_net": "VIN",
+    "pad_mm": 1.5,
+    "anchor": "D24.1",
+    "distance_mm": 8.55,
+    "limit_mm": 9.0,
+    "ok": true
+   },
+   {
+    "ref": "TP27",
+    "net": "GND",
+    "want_net": "GND",
+    "pad_mm": 1.5,
+    "anchor": "D25.1",
+    "distance_mm": 5.21,
+    "limit_mm": 6.0,
+    "ok": true
+   },
+   {
+    "ref": "TP20",
+    "net": "P12_VOUT",
+    "want_net": "P12_VOUT",
+    "pad_mm": 1.5,
+    "anchor": "R109.1",
+    "distance_mm": 9.22,
+    "limit_mm": 11.0,
+    "ok": true
+   },
+   {
+    "ref": "TP24",
+    "net": "+12V",
+    "want_net": "+12V",
+    "pad_mm": 1.5,
+    "anchor": "R109.4",
+    "distance_mm": 3.67,
+    "limit_mm": 5.0,
+    "ok": true
+   },
+   {
+    "ref": "TP22",
+    "net": "P12_ISP",
+    "want_net": "P12_ISP",
+    "pad_mm": 1.5,
+    "anchor": "R109.2",
+    "distance_mm": 8.84,
+    "limit_mm": 10.0,
+    "ok": true
+   },
+   {
+    "ref": "TP23",
+    "net": "P12_ISN",
+    "want_net": "P12_ISN",
+    "pad_mm": 1.5,
+    "anchor": "R109.3",
+    "distance_mm": 3.41,
+    "limit_mm": 5.0,
+    "ok": true
+   },
+   {
+    "ref": "TP25",
+    "net": "-12V",
+    "want_net": "-12V",
+    "pad_mm": 1.5,
+    "anchor": "U4.1",
+    "distance_mm": 4.25,
+    "limit_mm": 6.0,
+    "ok": true
+   },
+   {
+    "ref": "TP28",
+    "net": "AGND_U2",
+    "want_net": "AGND_U2",
+    "pad_mm": 1.5,
+    "anchor": "R113.1",
+    "distance_mm": 4.07,
+    "limit_mm": 5.0,
+    "ok": true
+   },
+   {
+    "ref": "TP29",
+    "net": "GND",
+    "want_net": "GND",
+    "pad_mm": 1.5,
+    "anchor": "C82.2",
+    "distance_mm": 8.64,
+    "limit_mm": 9.0,
+    "ok": true
+   },
+   {
+    "ref": "TP30",
+    "net": "N_EN_RETURN",
+    "want_net": "N_EN_RETURN",
+    "pad_mm": 1.5,
+    "anchor": "Q15.2",
+    "distance_mm": 3.33,
+    "limit_mm": 5.0,
+    "ok": true
+   },
+   {
+    "ref": "TP19",
+    "net": "STARTED",
+    "want_net": "STARTED",
+    "pad_mm": 1.0,
+    "anchor": "U12.5",
+    "distance_mm": 24.72,
+    "limit_mm": 25.0,
+    "ok": true
+   },
+   {
+    "ref": "TP10",
+    "net": "ARMED",
+    "want_net": "ARMED",
+    "pad_mm": 1.0,
+    "anchor": "U11.1",
+    "distance_mm": 31.81,
+    "limit_mm": 33.0,
+    "ok": true
+   },
+   {
+    "ref": "TP9",
+    "net": "RUN",
+    "want_net": "RUN",
+    "pad_mm": 1.0,
+    "anchor": "U13.3",
+    "distance_mm": 3.37,
+    "limit_mm": 12.0,
+    "ok": true
+   },
+   {
+    "ref": "TP5",
+    "net": "MAIN_OK",
+    "want_net": "MAIN_OK",
+    "pad_mm": 1.0,
+    "anchor": "R63.2",
+    "distance_mm": 10.33,
+    "limit_mm": 12.0,
+    "ok": true
+   },
+   {
+    "ref": "TP6",
+    "net": "OV_N",
+    "want_net": "OV_N",
+    "pad_mm": 1.0,
+    "anchor": "U20.2",
+    "distance_mm": 7.28,
+    "limit_mm": 10.0,
+    "ok": true
+   }
+  ],
+  "pairs_2p54": [
+   {
+    "pair": [
+     "TP26",
+     "TP27"
+    ],
+    "pitch_mm": 2.54,
+    "ok": true
+   },
+   {
+    "pair": [
+     "TP20",
+     "TP24"
+    ],
+    "pitch_mm": 2.54,
+    "ok": true
+   },
+   {
+    "pair": [
+     "TP22",
+     "TP23"
+    ],
+    "pitch_mm": 2.54,
+    "ok": true
+   },
+   {
+    "pair": [
+     "TP28",
+     "TP29"
+    ],
+    "pitch_mm": 2.54,
+    "ok": true
+   }
+  ],
+  "proximity": [
+   {
+    "from": "D24.1",
+    "to": "C6.1",
+    "distance_mm": 8.03,
+    "limit_mm": 10.0,
+    "why": "D24 cathode at the U2 VIN bank",
+    "ok": true
+   },
+   {
+    "from": "D25.2",
+    "to": "D24.1",
+    "distance_mm": 4.78,
+    "limit_mm": 6.0,
+    "why": "D25 VIN clamp beside D24",
+    "ok": true
+   },
+   {
+    "from": "D26.1",
+    "to": "C14.1",
+    "distance_mm": 9.99,
+    "limit_mm": 10.0,
+    "why": "D26 cathode on the P12_VOUT bank pour",
+    "ok": true
+   },
+   {
+    "from": "C82.2",
+    "to": "R113.2",
+    "distance_mm": 1.95,
+    "limit_mm": 3.0,
+    "why": "R113 PGND pad on the C82.2 PGND terminal (sole star)",
+    "ok": true
+   },
+   {
+    "from": "R115.1",
+    "to": "Q14.3",
+    "distance_mm": 3.37,
+    "limit_mm": 5.0,
+    "why": "R115 at the AND-gate mid-node",
+    "ok": true
+   },
+   {
+    "from": "R109.2",
+    "to": "U2.12",
+    "distance_mm": 8.19,
+    "limit_mm": 12.0,
+    "why": "ISP sense run R109 pad 2 -> U2 pin 12",
+    "ok": true
+   },
+   {
+    "from": "R109.3",
+    "to": "U2.13",
+    "distance_mm": 10.88,
+    "limit_mm": 13.0,
+    "why": "ISN sense run R109 pad 3 -> U2 pin 13",
+    "ok": true
+   }
+  ],
+  "kelvin": {
+   "pad_nets": {
+    "1": "P12_VOUT",
+    "2": "P12_ISP",
+    "3": "P12_ISN",
+    "4": "+12V"
+   },
+   "pass": true
+  },
+  "pending_after_routing": [
+   "thermal.D10.copper",
+   "thermal.R109.force_copper",
+   "thermal.R109.sense_copper",
+   "thermal.U2.B_Cu_GND",
+   "thermal.U2.In1",
+   "thermal.U2.PGND_vias",
+   "thermal.U2.VIN_area",
+   "thermal.U2.VOUT_area",
+   "thermal.U4.copper",
+   "thermal.U5.copper",
+   "kelvin.sense_routing",
+   "ground.no_second_bridge_copper",
+   "min_widths"
+  ],
+  "pass": true
+ },
+ "parts_on_board": 175,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 0,
@@ -183,8 +476,8 @@
      "D2.2"
     ],
     [
-     4.003,
-     "C36.2"
+     3.993,
+     "TP28.1"
     ]
    ],
    "violations_lt_2mm": [],
@@ -201,16 +494,16 @@
      "C59.1"
     ],
     [
+     4.189,
+     "D26.1"
+    ],
+    [
+     4.189,
+     "D26.2"
+    ],
+    [
      4.289,
      "C29.1"
-    ],
-    [
-     4.289,
-     "C30.1"
-    ],
-    [
-     4.289,
-     "C61.2"
     ]
    ],
    "violations_lt_2mm": [],
@@ -355,11 +648,11 @@
    },
    {
     "from": "C82.2",
-    "to": "R113.1",
-    "net": "AGND_U2",
+    "to": "R113.2",
+    "net": "GND",
     "distance_mm": 1.95,
     "limit_mm": 3.0,
-    "purpose": "sole AGND/PGND link at VCC capacitor",
+    "purpose": "sole AGND/PGND link: R113 PGND pad at the C82.2 PGND terminal",
     "ok": true
    },
    {
@@ -441,8 +734,8 @@
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2641,
-  "fill_of_inset": 0.611
+  "courtyards_sum": 2693,
+  "fill_of_inset": 0.623
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",
  "pass": true

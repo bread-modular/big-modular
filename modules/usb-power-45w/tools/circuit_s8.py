@@ -1,6 +1,8 @@
-"""S9.1 / P2.1: own-input U4 enable, VIN pulse clamps, precision UVLO, 18mR R109,
-separate AGND_U2 with sole C82 star link, 175-Hz compensation zero. S7 untouched.
-Historical revision notes follow (superseded by implementation below).
+"""S9.2 / P2.2 (routing-ready): D24 SMBJ20A coordinated with a 15 V U5 OVP (R24 9.1k: OVP acts before the TVS
+conducts), C82 VCC capacitor on PGND with R113 the only AGND_U2 bridge, R109 a true 4-terminal Kelvin land (U2 ISP/ISN
+on their own sense nets), N_EN_RETURN defined by R115 100k to PGND, and dedicated 1.5 mm acceptance test pads.
+S9.1 / P2.1: own-input U4 enable, VIN pulse clamps, precision UVLO, 18mR R109, separate AGND_U2, 234 Hz compensation
+zero. S7 untouched. Historical revision notes follow (superseded by implementation below).
 """
 import copy
 
@@ -74,13 +76,30 @@ TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left'),
                'U2': ((0, 27.94), (0, 30.48)), 'L1': ((0, -5.08), (0, -2.54)),
                'C10': ((-5.08, -1.27), (-5.08, 1.27), 'left'), 'C9': ((5.08, -1.27), (5.08, 1.27), 'right'),
                'C82': ((-2.54, -1.27), (-2.54, 1.27), 'right'), 'R8': ((0, -5.08), (0, -2.54)),
-               'R111': ((-2.54, 1.27), (-2.54, 3.81), 'right')}
+               'R111': ((-2.54, 1.27), (-2.54, 3.81), 'right'),
+               'R109': ((0, 3.81), (0, 6.35))}         # S9.2: R_Shunt texts below the rail
 CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
 # S9.0 step 2: +12V buck-boost U2 and the parts it adds (S7 refs U2, L1, R8, R9, C6-C14 keep their roles; C9 is BOOT2).
 TPS552892 = dict(LCSC='C22375748', MPN='TPS552892QWRYQRQ1', Manufacturer='Texas Instruments')
-R_SENSE = dict(LCSC='', MPN='WSLP1206R0180FEA', Manufacturer='Vishay Dale', Tolerance='1%', TCR='75ppm',
-               Power='1W')
+# S9.2 (item 3): R109 is a 2-terminal 1206 metal-alloy shunt on a 4-terminal Kelvin split land (tools/s92_parts.py);
+# TA-I RLM12 18 mOhm 1 % 75 ppm 1 W (the 1 W rating needs 300 mm2 of pad + trace copper: placement routing_contract).
+R_SENSE = dict(LCSC='C393095', MPN='RLM12FTCMR018', Manufacturer='TA-I Tech', Tolerance='1%', TCR='75ppm', Power='1W',
+               Alternates='C50314717 NCT LRAM12CFTR018; C49164939 jieerrui JER1206F1R018; C845266 SART SMF12M1FR018T '
+                          '(18 mOhm 1 % <=75 ppm 1 W 1206; check W >= 1.4 mm and the split-land overlap before use)')
+# S9.2 (item 1): VIN TVS reselected; OVP divider bottom R24 6.8k -> 9.1k so U5 opens before D24 can conduct.
+D24_PART = dict(LCSC='C151257', MPN='SMBJ20A', Manufacturer='Littelfuse',
+                Alternates='C364296 MDD SMBJ20A; C151922 BORN SMBJ20A (VBR >= 22.2 V and VC <= 32.4 V at >= 18.5 A)')
+D26_PART = dict(LCSC='C315990', MPN='SMBJ14A', Manufacturer='Littelfuse',
+                Alternates='C152106 BORN SMBJ14A; C840775 MDD SMBJ14A (VBR >= 15.6 V and VC <= 23.2 V at >= 25.8 A)')
 S91_ADDED = ('Q14', 'Q15', 'R112', 'R113', 'R114', 'D24', 'D25', 'D26')
+# S9.2: N_EN_RETURN default (item 5) and the dedicated acceptance test pads (1.5 mm, docs/s8-single/routing-notes.md).
+S92_TP = {'TP20': 'P12_VOUT', 'TP22': 'P12_ISP', 'TP23': 'P12_ISN', 'TP24': '+12V', 'TP25': '-12V', 'TP26': 'VIN',
+          'TP27': 'GND', 'TP28': 'AGND_U2', 'TP29': 'GND', 'TP30': 'N_EN_RETURN'}
+S92_ADDED = ('R115', *S92_TP)
+TP92_AT = {'TP20': (449.58, 40.64), 'TP24': (495.3, 40.64), 'TP22': (462.28, 38.1), 'TP23': (487.68, 38.1),
+           'TP28': (335.28, 96.52), 'TP29': (327.66, 96.52),
+           'TP25': (215.9, 242.57), 'TP30': (25.4, 256.54),
+           'TP26': (317.5, 116.84), 'TP27': (309.88, 116.84)}
 BUCKBOOST_ADDED = ('C77', 'C78', 'C79', 'C80', 'C81', 'C82', 'C83', 'R109', 'R110', 'R111')
 U2_AT = (381.0, 78.74)            # flat sheet (page 02 offset -276.86, 0); S7 U2 sat at (368.3, 71.12)
 U2_BLOCK = ((320.0, 435.0), (50.0, 98.0))     # flat-sheet box of the removed S7 +12V buck drawing (coordinate wires)
@@ -111,7 +130,7 @@ def _plus12_buckboost(c, by):
     u2 = by['U2']
     u2.update(sym='TPS552892_RYQ', value=TPS552892['MPN'], fp='RYQ21', at=U2_AT, rot=0, unit=1)
     u2['pins'] = {'7': 'VIN', '1': 'MAIN_OK', '2': '_VCC_U2', '21': '_VCC_U2', '18': '_VCC_U2', '5': 'AGND_U2',
-                  '6': '_FSW_U2', '11': 'P12_VOUT', '12': 'P12_VOUT', '13': '+12V', '3': None, '4': None, '16': None,
+                  '6': '_FSW_U2', '11': 'P12_VOUT', '12': 'P12_ISP', '13': 'P12_ISN', '3': None, '4': None, '16': None,
                   '14': '_FB_U2', '15': '_COMP_U2', '8': '_SW1_U2', '20': '_BST1_U2', '19': '_BST2_U2', '10': '_SW2_U2',
                   '9': 'GND', '17': 'AGND_U2'}
     u2['fields'] = {**TPS552892, 'Note': (
@@ -142,9 +161,10 @@ def _plus12_buckboost(c, by):
     by['C9']['pins'] = {'1': '_BST2_U2', '2': '_SW2_U2'}
     by['C9']['fields'] = {**circuit45.CAPS[('100n', 'C0603')],
                           'Note': 'U2 BOOT2 bootstrap (BOOT2-SW2), 0.1 uF (TI). S8: the TPS62933F soft-start capacitor'}
-    c.append(two('C82', 'C', '10u', 'C1206', (350.52, 85.09), '_VCC_U2', 'AGND_U2', **circuit45.CAPS[('10u', 'C1206')],
+    c.append(two('C82', 'C', '10u', 'C1206', (350.52, 85.09), '_VCC_U2', 'GND', **circuit45.CAPS[('10u', 'C1206')],
                  Note='U2 VCC LDO output, TI > 4.7 uF: 10u/50V 1206 keeps ~8 uF at 5.2 V bias. MODE and EXTVCC tie here '
-                      '(FPWM, internal LDO)'))
+                      '(FPWM, internal LDO). S9.2: ground terminal on PGND (TI SLVSGT7 8.4.1 items 6/7: 3-4 vias to the '
+                      'PGND plane; AGND joins PGND only here, through R113)'))
     c.append(res('R110', '20k', (358.14, 92.71), '_FSW_U2', 'AGND_U2',
                  Note='U2 FSW: fSW = 1000 / (0.05 x 20000 + 35) MHz = 0.966 MHz (TI Eq. 3; 0.87-1.06 MHz screen); above '
                       'TI\'s <500 kHz high-power advice: thermal bench gate. R109 is a SLOW output CC loop, NOT a switch-current limit'))
@@ -160,10 +180,12 @@ def _plus12_buckboost(c, by):
         else:
             c.append(cap(ref, '22u', 'C1206', at, 'P12_VOUT', 'GND',
                          Note='U2 VOUT bank, 6 x 22u before the R109 sense resistor'))
-    c.append(two('R109', 'R', '0.018', 'WSLP1206', (474.98, 48.26), 'P12_VOUT', '+12V', rot=90, **R_SENSE,
-                 Note='U2 output current limit ISP/ISN: VSNS 48-52 mV / 18 mR (1 % + 75 ppm) = 2.62-2.94 A constant-current '
-                      'loop. Sets the +12V capability (rating basis) and charges rack capacitance without hiccup; FB '
-                      'senses after it. 1 W part: <= 0.16 W at the limit; procurement/PCBA qualification OPEN (no invented C-code)'))
+    c.append(part('R109', 'R_Shunt', '0.018', 'KELVIN1206', (474.98, 48.26), 90,
+                  {'1': 'P12_VOUT', '2': 'P12_ISP', '3': 'P12_ISN', '4': '+12V'}, **R_SENSE,
+                  Note='S9.2 4-terminal Kelvin land: force 1 (P12_VOUT) / 4 (+12V), sense 2 -> U2 ISP, 3 -> U2 ISN only '
+                       '(separate nets, sense pads at the inner land edge). VSNS 48-52 mV / 18 mR (1 % + 75 ppm, 0.2 % '
+                       'Kelvin residual) = 2.62-2.95 A constant-current loop; FB senses +12V after it. <= 0.16 W of 1 W '
+                       '(1 W needs 300 mm2 pad+trace copper: routing contract)'))
     by['R9'].update(value='7.5k', at=(408.94, 90.17), rot=0)
     by['R9']['pins'] = {'1': '_FB_U2', '2': 'AGND_U2'}
     by['R9']['fields'].update(LCSC=circuit45.R0603['7.5k'], MPN=circuit45.R_MPN['7.5k'],
@@ -178,11 +200,9 @@ def _plus12_buckboost(c, by):
                       'Published +12V rack envelope 0..0.44 mF; no arbitrary-impedance rack stability guarantee'))
     c.append(cap('C83', '100n', 'C0603', (398.78, 100.33), '_COMPRC_U2', 'AGND_U2',
                  Note='S9.1: 100n lowers the COMP zero to 234 Hz. Ground is the quiet AGND_U2 island, joined only at C82 via R113'))
-    c.append(two('D26', 'D_Zener', 'SMBJ14A', 'SMB', (474.98, 69.85), 'P12_VOUT', 'GND', rot=270,
-                 LCSC='', MPN='SMBJ14A', Manufacturer='Littelfuse',
+    c.append(two('D26', 'D_Zener', 'SMBJ14A', 'SMB', (474.98, 77.47), 'P12_VOUT', 'GND', rot=270, **D26_PART,
                  Note='S9.1 U2 VOUT transient backstop: 14 V stand-off, breakdown 15.6-17.2 V, 23.2 V at 25.9 A, '
-                      '600 W 10/1000 us. Absorbs VIN-bank energy after U20 opens U5; NOT a continuous rail crowbar. '
-                      'Procurement/PCBA qualification OPEN.'))
+                      '600 W 10/1000 us. Absorbs VIN-bank energy after U20 opens U5; NOT a continuous rail crowbar.'))
     by['#FLG04'].update(at=(482.6, 48.26))
 
 
@@ -218,9 +238,19 @@ def circuit():
                  LCSC='C23193', MPN='0603WAF5100T5E', Manufacturer=UNIROYAL, Tolerance='1%', TCR='100ppm',
                  Note='S9.1 UVLO trim; do not bypass. Worst-case turn-on <13.0 V; calcs includes all three resistor corners'))
     _plus12_buckboost(c, by)
-    by['U5']['fields']['Note'] = ('S9.1 common input switch, SHDN = RUN. UVLO R2 100k precision / '
-        '(R3 10k precision + R114 510R): <13.0 V worst-case start. OVP unchanged (24.1 V nominal). '
+    by['U5']['fields']['Note'] = ('S9.2 common input switch, SHDN = RUN. UVLO R2 100k precision / '
+        '(R3 10k precision + R114 510R): <13.0 V worst-case start. OVP (R28+R4 130k / R24 9.1k) rises at 17.30-19.44 V, '
+        'recovers at 16.03-18.27 V: opens before D24 (VR 20 V, VBR >= 22.2 V) can conduct. '
         'FLT/PGOOD = MAIN_OK. U4 independently requires RUN AND MAIN_LED_OK and derives EN drive from own VPD.')
+    # S9.2 item 1: OVP retuned from the 20 V-input setting (24.14 V nominal, 22.76-25.60 V) to the 15 V input, so that the
+    # whole OVP band lies below the D24 stand-off: a sustained source overvoltage is removed by U5, never absorbed by D24.
+    by['R24'].update(value='9.1k')
+    by['R24']['fields'].update(LCSC=circuit45.R0603['9.1k'], MPN=circuit45.R_MPN['9.1k'],
+                               Note='S9.2 OVP bottom: 1.2 V x (1 + 130k/9.1k) = 18.34 V nominal; rising 17.30-19.44 V, '
+                                    'falling 16.03-18.27 V over TI 1.176-1.224 / 1.09-1.15 V, 1 % + 1 % TCR and 150 nA. '
+                                    'Below D24 VR 20 V and D1 VBR 24.4 V; above the 16.5 V input ceiling (S9.1: 6.8k, 24.1 V)')
+    by['R28']['fields']['Note'] = 'OVP top with R4 (130k total); S9.2 OVP 17.30-19.44 V rising with R24 9.1k'
+    by['R4']['fields']['Note'] = 'OVP top with R28; independent of UVLO and RESET. S9.2: band set by R24 9.1k'
     by['U18']['pins']['3'] = 'VPD'
     by['C57']['pins']['1'] = 'VPD'
     by['C57']['fields']['Note'] = 'U18 always-on VPD bypass, 50 V rated; logic outputs still pull up to V3V3'
@@ -246,19 +276,33 @@ def circuit():
         c.append(part(ref, '2N7002', '2N7002', 'SOT23', at, 0,
                       {'1': gate, '2': source, '3': drain}, **{k:v for k,v in by['Q10']['fields'].items() if k != 'Note'},
                       Note='S9.1 U4 enable qualification, series NMOS sink; no output-rail gate or supply'))
-    c.append(two('R113', 'R', '0', 'R0603', (350.52, 105.41), 'AGND_U2', 'GND',
+    c.append(two('R113', 'R', '0', 'R0603', (350.52, 97.79), 'AGND_U2', 'GND', rot=180,
                  LCSC='C21189', MPN='0603WAF0000T5E', Manufacturer=UNIROYAL,
-                 Note='ONLY AGND_U2/PGND connection, at C82 ground terminal. Route no other bridge; 3-4 GND vias at C82'))
+                 Note='S9.2: ONLY AGND_U2/PGND connection. Pin 2 (PGND) lands on the C82.2 PGND terminal (<= 3 mm), pin 1 '
+                      'feeds the quiet AGND island. Route no other AGND/PGND bridge (no plane, via or pour); 3-4 PGND vias at C82.2'))
     c.append(part('#FLG10', 'PWR_FLAG', 'PWR_FLAG', None, (340.36, 105.41), 0, {'1':'AGND_U2'},
                   Note='Ground supplied through populated R113 0R; not an independent supply'))
-    c.append(two('D24', 'D_Zener', 'SMBJ16A', 'SMB', (330.2, 119.38), 'VIN', 'GND', rot=270,
-                 LCSC='C151254', MPN='SMBJ16A', Manufacturer='Littelfuse',
-                 Note='S9.1 VIN TVS: 16 V stand-off, 17.8-19.7 V breakdown, 26 V at 23.1 A (600 W 10/1000 us). '
-                      'Finite bus-injection pulses ONLY, not continuous reverse-power absorption. 20 V retarget must change D24.'))
+    c.append(two('D24', 'D_Zener', 'SMBJ20A', 'SMB', (330.2, 119.38), 'VIN', 'GND', rot=270, **D24_PART,
+                 Note='S9.2 VIN TVS: 20 V stand-off (>= 1.15 x 16.5 V), 22.2-24.5 V breakdown (21.7 V at 0 C) above the '
+                      '19.44 V U5 OVP maximum, 32.4 V at 18.6 A (600 W 10/1000 us) below U2 42 V and the 50 V VIN '
+                      'capacitors. Finite bus-injection pulses ONLY (1 A x 32.4 V x 20 ms = 0.65 J budget); 20 V retarget re-selects D24.'))
     c.append(part('D25', 'BAT54S', 'BAT54SLT1G', 'SOT23', (355.6, 119.38), 0,
                   {'1':'GND', '2':'VIN', '3':'VIN'}, LCSC='C19726', MPN='BAT54SLT1G', Manufacturer='onsemi',
                   Note='S9.1 low-current VIN negative clamp for slew-limited bus tests: VF <=0.24 V at <=0.1 mA, 25 C. '
-                       'Not a hard-hotplug/cold absolute-minimum guarantee; 30 V reverse rating. 20 V retarget changes D25.'))
+                       'Not a hard-hotplug/cold absolute-minimum guarantee; 30 V reverse rating (S9.2: VIN <= 27.7 V at the '
+                       'D24 1 A budget, hot). 20 V retarget changes D25.'))
+    # S9.2 item 5: N_EN_RETURN (Q14 drain / Q15 source) gets a defined DC default, 100k to PGND. With RUN low and
+    # MAIN_LED_OK high (<= 13 ms PGOOD falling deglitch) Q15 (gate <= 3.37 V) is a source follower, so the node stays
+    # <= 3.37 V and the R16/R112 sink current <= 3.37 V / 99k + 1 uA = 35 uA: Q1 VEB <= 0.18 V, off. Below ~50k the
+    # follower current could bias Q1 on with RUN low (tools/s92_netlist.enable_model bounds it from the netlist).
+    c.append(two('R115', 'R', '100k', 'R0603', (55.88, 257.81), 'N_EN_RETURN', 'GND', rot=90,
+                 LCSC=circuit45.R0603['100k'], MPN=circuit45.R_MPN['100k'], Manufacturer=UNIROYAL, Tolerance='1%',
+                 Note='S9.2 N_EN_RETURN default to PGND (AND-gate off state defined, 10x above 1 uA switch leakage); '
+                      'Q1 VEB <= 0.18 V when Q14 is off and Q15 on. Keep >= 50k (s92_netlist enable_model)'))
+    for ref, net in S92_TP.items():
+        c.append(part(ref, 'TestPoint', net, 'TP15', TP92_AT[ref], 0, {'1': net},
+                      Note=f'S9.2 acceptance test pad {net}: copper only, 1.5 mm round, no assembly component. '
+                           'See docs/s8-single/routing-notes.md'))
     for ref, rail in (('D2', '+12V'), ('D4', '-12V')):
         by[ref]['fields']['Note'] = f'{rail} polarity clamp at the header strip (rack-side reversal enters here)'
     # ---- Status LED: D8 MAIN is the only LED left (S8 final)
@@ -470,11 +514,22 @@ def drawing():
           ['U2.8', (373.38, 40.64), 'L1.1'], ['U2.10', (388.62, 40.64), 'L1.2'], ['C10.2', (373.38, 53.34)], ['C9.2', (388.62, 53.34)],
           ['U2.2', (363.22, 76.2), (363.22, 81.28), 'U2.18'], ['U2.21', (363.22, 78.74)], [(363.22, 81.28), 'C82.1'],
           ['U2.6', 'R110.1'],
-          ['U2.11', (398.78, 66.04)], ['U2.12', (398.78, 68.58), (398.78, 66.04), (398.78, 48.26), 'R109.1'],
-          ['R109.2', (487.68, 48.26)],
+          ['U2.11', (398.78, 66.04), (398.78, 48.26), 'R109.1'],
+          ['R109.4', (497.84, 48.26)],
           ['U2.14', 'R9.1'], ['R9.1', 'R8.1'], ['U2.15', 'R111.1']]
-    P += [('VIN', (297.18, 48.26), 90), ('+12V', (487.68, 48.26), 270)]
-    L += [('P12_VOUT', (467.36, 48.26), 'U')]
+    P += [('VIN', (297.18, 48.26), 90), ('+12V', (497.84, 48.26), 270)]
+    L += [('P12_VOUT', (441.96, 48.26), 'U')]
+    # S9.2: R109 4-terminal Kelvin shunt (R_Shunt): force 1/4 on the rail, sense 2/3 to their own nets and pads (U2 ISP/ISN
+    # reach them by label); the acceptance pads TP20/TP24 sit on the force rail. C82 ground terminal on PGND, wired to the
+    # R113 PGND pin: the drawn star (R113 pin 1 feeds AGND_U2 by label). Page 03: Q15 source wired to Q14 drain with the
+    # R115 100k default to PGND (N_EN_RETURN).
+    W += [['TP20.1', (449.58, 48.26)], ['TP24.1', (495.3, 48.26)],
+          ['TP22.1', (462.28, 43.18), (472.44, 43.18), 'R109.2'], ['TP23.1', (487.68, 43.18), (477.52, 43.18), 'R109.3'],
+          ['C82.2', 'R113.2'], [('C82.2', 0, 2.54), ('C82.2', -5.08, 2.54)],
+          ['Q15.2', 'Q14.3'], [('Q15.2', 0, 6.35), 'R115.1']]
+    P += [('GND', ('C82.2', -5.08, 2.54), 0)]
+    L += [('P12_ISP', (467.36, 43.18), 'U'), ('P12_ISN', (482.6, 43.18), 'U'),
+          ('N_EN_RETURN', ('Q15.2', 0, 2.54), 'L')]
     return W, P, L
 
 

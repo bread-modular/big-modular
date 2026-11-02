@@ -45,8 +45,10 @@ def layout(parts):
             assert ref in parts and ref not in plan, ref
             plan[ref] = (page, dx, dy)
     rr = lambda prefix, a, b: [prefix + str(i) for i in range(a, b + 1)]
-    put(['U2', 'L1', 'R8', 'R9', *rr('C', 6, 14), '#FLG04', *BUCKBOOST_ADDED, 'R113', '#FLG10', 'D26'], 2, -276.86, 0)
-    put(['U4', 'L3', 'Q1', 'Q14', 'Q15', 'R112', *rr('R', 13, 18), *rr('C', 24, 33), '#FLG03'], 3, 0, -147.32)
+    put(['U2', 'L1', 'R8', 'R9', *rr('C', 6, 14), '#FLG04', *BUCKBOOST_ADDED, 'R113', '#FLG10', 'D26',
+         'TP20', 'TP22', 'TP23', 'TP24', 'TP28', 'TP29'], 2, -276.86, 0)
+    put(['U4', 'L3', 'Q1', 'Q14', 'Q15', 'R112', 'R115', 'TP25', 'TP30', *rr('R', 13, 18), *rr('C', 24, 33), '#FLG03'],
+        3, 0, -147.32)
     put(['D2'], 2, -25.4, -203.2)
     put(['D4'], 3, -50.8, -241.3)
     put(['J2', 'J3', 'C34', 'C36', 'C59', 'C61'], 5, 0, -86.36)
@@ -61,41 +63,41 @@ def layout(parts):
 
 
 NOTES = {
- 1: 'S9.1: 15 V / 3 A PD, R1 56k. U5 UVLO: R2 100k 0.1% / (R3 10k 0.1% + R114 510R 1%).\n'
-    'Worst start <13.0 V; range 13.5-16.5 V at module incl. <=0.75 V cable drop. OVP unchanged.\n'
-    'D24 SMBJ16A VIN pulse clamp (600 W 10/1000 us, 26 V rated clamp); not a continuous shunt.\n'
-    'D25: low-current negative clamp, slew-limited room-temperature test only. See calcs residuals.',
- 2: 'S9.1: TPS552892-Q1, 966 kHz, L1 6.8u; R109 18mR 1W (2.62-2.94 A). Rating +12V 2.4 A, total <=33 W.\n'
-    'AGND_U2: U2.5/.17, R9, R110, C83, C82. ONLY join to PGND (GND) through R113 at C82 ground terminal.\n'
-    'COMP R111 6.8k / C83 100n (zero 234 Hz). Rack <=0.44 mF with bounded cable impedance; see full loop sweep.\n'
-    'R109 is a slow OUTPUT current limit, not a switch limit. Thermal / Bode measurements remain release gates.',
- 3: 'S9.1: U4 enable is powered from own VPD upstream of D10, NEVER from +12V or pumped VIN.\n'
+ 1: 'S9.2: 15 V / 3 A PD, R1 56k. U5 UVLO: R2 100k 0.1% / (R3 10k 0.1% + R114 510R 1%), worst start <13.0 V.\n'
+    'U5 OVP R28+R4 130k / R24 9.1k: rises 17.30-19.44 V, recovers 16.03-18.27 V (S9.1: 6.8k, 24.1 V).\n'
+    'D24 SMBJ20A: VR 20 V > OVP max, VBR 22.2 V (21.7 V at 0 C), 32.4 V at 18.6 A < U2 42 V: OVP acts first.\n'
+    'D25: low-current negative clamp, slew-limited room-temperature test only. TP26/TP27 = D24 clamp probe pair.',
+ 2: 'S9.2: TPS552892-Q1, 966 kHz, L1 6.8u; R109 18mR 1W on a 4-terminal Kelvin land (2.62-2.95 A).\n'
+    'U2 ISP/ISN on their own sense nets P12_ISP/P12_ISN (R109 pads 2/3 only). C82 ground terminal on PGND.\n'
+    'AGND_U2: U2.5/.17, R9, R110, C83, TP28. ONLY join to PGND through R113 at C82.2 (3-4 PGND vias there).\n'
+    'COMP R111 6.8k / C83 100n (zero 234 Hz). Rack <=0.44 mF. Acceptance pads TP20/22/23/24/28/29.',
+ 3: 'S9.1/S9.2: U4 enable is powered from own VPD upstream of D10, NEVER from +12V or pumped VIN.\n'
     'Q14 RUN and Q15 MAIN_LED_OK form an AND sink for Q1 base; R112 returns base to emitter when either is off.\n'
-    'EN_N relative to -12V = (VPD - VCEsat - V(-12V))/6 only when qualified; otherwise R18 holds it at 0 V.\n'
-    'Unpowered or latched-off live +/-12V bus cannot self-enable U4. No reverse-power blocking is claimed.\n'
+    'S9.2: R115 100k defines N_EN_RETURN (Q15 then only a source follower: Q1 VEB <= 0.18 V). TP30 probes it.\n'
+    'Unpowered or latched-off live +/-12V bus cannot self-enable U4 (truth table derived from this netlist).\n'
     'LMR38020F power stage unchanged. Powered parallel supplies and unrestricted hotplug remain prohibited.',
  4: 'S9.1 retains S8.5 STARTED one-shot: START_N = NAND(MAIN_LED_OK,RUN); TIMER_GO = RUN AND STARTED.\n'
     'U11 -> ARMED after 0.31-0.88 s. RESET clears STARTED/FAULT; U20 OV_N presets FAULT even before ARMED.\n'
     'A full V3V3/POR reset DOES re-arm: qualification rejects repetitive hard-reset sources; no masking by retries.\n'
     'ANY_BAD = NAND(MAIN_LED_OK,P12_OK,N12_OK,V3V3). R83 100k validity floor unchanged.',
- 5: 'S9.1: +/-12V only, J2/J3 pins 11-16 NC. MAIN LED only. U18/U20 on VPD, own REF_OV unchanged.\n'
+ 5: 'S9.2: +/-12V only, J2/J3 pins 11-16 NC. MAIN LED only. U18/U20 on VPD, own REF_OV unchanged.\n'
     'Guard +12V 14.48-15.27 V, -12V magnitude 13.27-14.02 V. Guard disconnects INPUT, not an external bus.\n'
     'No rail crowbar or eFuse. Uninjected rails decay with load; injected rail remains at the external voltage.\n'
-    'See docs/s8-single-board.md for separate latch, clamp, discharge and survival acceptance criteria.'}
-REV = 'S9.1'
-PAGE_COMMENT = 'S9.1 review fixes; P2.1 UNROUTED; docs/s8-single-board.md'
-ROOT_TITLE = ('USB POWER S9.1 / SINGLE BOARD, +/-12V ONLY, 15 V PD INPUT',
-              'Own-input enable; VIN pulse clamp; split U2 grounds; STARTED one-shot; no output crowbar.')
-DESCRIPTIONS = {1:'15 V PD / TPS16630 / VIN clamp', 2:'TPS552892-Q1 buck-boost / split AGND',
+    'See docs/s8-single-board.md and docs/s8-single/routing-notes.md for acceptance tests and routing rules.'}
+REV = 'S9.2'
+PAGE_COMMENT = 'S9.2 routing-ready; P2.2 UNROUTED; docs/s8-single-board.md'
+ROOT_TITLE = ('USB POWER S9.2 / SINGLE BOARD, +/-12V ONLY, 15 V PD INPUT (ROUTING-READY, NOT ROUTED)',
+              'Own-input enable; OVP-coordinated VIN clamp; PGND star at C82; Kelvin R109; STARTED one-shot; no crowbar.')
+DESCRIPTIONS = {1:'15 V PD / TPS16630 / OVP + VIN clamp', 2:'TPS552892-Q1 buck-boost / Kelvin R109 / AGND star',
                 3:'LMR38020F / own-input enable', 4:'Always-on logic / STARTED + FAULT / RESET',
                 5:'Parallel +/-12V headers / monitors / MAIN LED'}
 ROOT_RAIL_LINKS = (((2, '+12V'), (5, '+12V'), 304.8), ((3, '-12V'), (5, '-12V'), 330.2))
 ROOT_FAULT_POLICY = ('ONE-SHOT FAULT POLICY\nSTARTED retains the first start within each power epoch.\n'
                      'Faults cannot restart it; full power reset CAN. Repeated source resets FAIL qualification.\n'
                      'OV_N presets FAULT asynchronously. Crowbar vs eFuse deferred/open.')
-ROOT_OUTPUTS = ('+12V 2.4 A / -12V 0.8 A, <=33 W together (prototype, not measured).\n'
-                '13.5-16.5 V at module; 15 V / 3 A PD. Rack +12V <=0.44 mF, impedance bounds in calcs.\n'
-                'No reverse-current blocking; no powered parallel supply or unrestricted hotplug qualification.')
+ROOT_OUTPUTS = ('+12V 2.4 A / -12V 0.8 A, <=33 W together (prototype, not measured; thermal rating conditional on the\n'
+                'routing contract). 13.5-16.5 V at module; 15 V / 3 A PD (start into the full rack needs ~4.65 A for ~2.5 ms:\n'
+                'acceptance test S1). Rack <=0.44 mF. No reverse-current blocking; no powered parallel supply or hotplug.')
 
 
 def split(root_path, docs_dir, api):

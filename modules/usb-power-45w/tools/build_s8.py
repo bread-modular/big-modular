@@ -32,9 +32,31 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
-REV = 'S9.1'
+REV = 'S9.2'
 from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
-FP_S8 = {**bs.FP, **FP_S90}
+import s92_parts  # noqa: E402
+FP_S8 = {**bs.FP, **FP_S90, **s92_parts.FP_S92}
+# S9.2 routing contract (docs/s8-single/routing-notes.md): netclasses by net-name pattern. Every class keeps the 0.2 mm
+# board clearance (the TPS552892 RYQ lands are 0.20-0.25 mm apart); only the default track width differs. Patterns match
+# the full hierarchical net names.
+NETCLASSES = {
+    'Power': (1.0, ['GND', '*/VPD', '*/VBUS', '*/MAIN_IN', 'VIN', '*/P12_VOUT', '+12V', '-12V']),
+    'Switch': (1.0, ['*U2-SW1*', '*U2-SW2*', '*U4-SW*']),
+    'Sense': (0.2, ['*/P12_ISP', '*/P12_ISN']),
+    'Quiet': (0.3, ['*/AGND_U2', '*U2-FB*', '*U2-COMP*', '*/FB_N', '*/EN_N', '*/N_EN_*']),
+}
+
+
+def routing_netclasses(meta):
+    """Write the S9.2 netclasses into a project dict (clearance unchanged, default widths per class)."""
+    ns = meta['net_settings']
+    base = next(c for c in ns['classes'] if c['name'] == 'Default')
+    ns['classes'] = [c for c in ns['classes'] if c['name'] == 'Default']
+    for prio, (name, (width, _)) in enumerate(NETCLASSES.items()):
+        ns['classes'].append({**base, 'name': name, 'track_width': width, 'priority': prio,
+                              'diff_pair_width': 0.2, 'diff_pair_gap': 0.2})
+    ns['netclass_patterns'] = [{'netclass': name, 'pattern': pat} for name, (_, pats) in NETCLASSES.items() for pat in pats]
+    return meta
 
 
 def uid(key):
@@ -76,6 +98,12 @@ def lib_symbols(parts):
         out['TLV431_DBZ'] = tlv431_dbz()
     if 'TPS552892_RYQ' in used:
         out['TPS552892_RYQ'] = buckboost_symbol()
+    if 'R_Shunt' in used:                          # S9.2 R109: KiCad stock Device:R_Shunt (1/4 force, 2/3 sense)
+        sym, _, _ = bs.stock_symbol('Device', 'R_Shunt')
+        sym[1] = 'R_Shunt'
+        for u in nodes(sym, 'symbol'):
+            u[1] = 'R_Shunt_' + '_'.join(u[1].rsplit('_', 2)[-2:])
+        out['R_Shunt'] = sym
     assert used <= set(out), sorted(used - set(out))
     return out
 
@@ -111,11 +139,13 @@ def build(output_root=None):
     meta['meta']['filename'] = pro.name
     meta['schematic']['top_level_sheets'] = [{'filename': out.name, 'name': out.stem, 'uuid': uid('root')}]
     meta['sheets'] = []
-    pro.write_text(json.dumps(meta, indent=2) + '\n')
+    pro.write_text(json.dumps(routing_netclasses(meta), indent=2) + '\n')
+    if (root / 'hardware' / 'USBPOWER45.pretty').is_dir():
+        s92_parts.write(root / 'hardware' / 'USBPOWER45.pretty')      # S9.2 pinned footprints (Kelvin land, 1.5 mm pad)
 
     sch, nets, _ = bs.flat_sheet(
         parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 single board',
-        comments=('S9.0 single board: +/-12V only (+5V subsystem removed); MAIN LED only',
+        comments=('S9.2 single board: +/-12V only, 15 V PD; MAIN LED only; routing-ready, not routed',
                   'One-shot arming latch (STARTED); U18/U20 on VPD; see docs/s8-single-board.md'),
         source=circuit_s8.drawing(), texts=circuit_s8.TEXTS)
     one(one(sch, 'title_block'), 'rev')[1] = REV

@@ -19,6 +19,12 @@ ladder and the references that use each code) plus the Basic-only passive-policy
   python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json --from-snapshot docs/s8-single/sourcing.json \
       --extra-snapshot docs/s8-single/s84-sourcing.json
 
+S9.2: a full live audit of every code (no --from-snapshot) writes sourcing.json, and --selected writes s92-sourcing.json for the
+codes S9.2 adds or changes plus the recorded alternates:
+
+  python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json --cache-dir research/s92/sourcing
+  python3 -B tools/s8_sourcing.py --selected C151257 C315990 C393095 ... --out docs/s8-single/s92-sourcing.json --note ...
+
 S9.0: the same --selected evidence for the codes the 15 V / buck-boost step adds (s90-sourcing.json, --note), merged with a
 second --extra-snapshot. No code is added for reverse blocking (owner decision: none).
 """
@@ -59,11 +65,21 @@ def lookup(code, cache):
 # S8.4 (review M8): Basic-only passive policy decision for the 0.1 % thin-film dividers. Numbers: calcs.json
 # basic_only_counterfactual (what the threshold screens become with 1 % Basic parts).
 PRECISION_POLICY = {
-    'decision':'S9.1 electrical exceptions: precision UVLO R2/R3 and guard R93/R94/R98/R99; R109 18mR power shunt explicitly NOT assumed Basic. Other R/C target Basic. New live PCBA eligibility is UNKNOWN; not an order approval.',
-    'refs':['R2','R3','R93','R94','R98','R99','R109'],
-    'why':'Precision UVLO gives worst start <13V; precision guard preserves margins; 18mR shunt corrects overload thermal. Manufacturer-verified R109 has no verified C-code, procurement gate OPEN.',
-    'cost':'Partial dated subtotal only. Missing prices, Extended fees, manual parts and new-code eligibility are excluded, never assumed zero cost.',
-    'not_done':'Public live catalog access failed (DNS); no fabricated stock, price, Basic or Economic claims for new codes.'}
+    'decision': ('S9.2 Basic/Extended policy: every resistor and capacitor is a Basic part except the documented electrical '
+                 'exceptions R2/R3 (0.1 % UVLO), R93/R94/R98/R99 (0.1 % guard dividers) and R109 (18 mOhm 1 W metal-alloy '
+                 'shunt, no Basic part exists). ICs, transistors, TVS/Schottky diodes, the inductors and connectors are '
+                 'Extended where JLCPCB has no Basic equivalent. Every machine-assembled part has a C-code with live stock '
+                 'at the dated audit; alternates are recorded in the Alternates field. J2/J3 (box headers) and D8 (panel '
+                 'LED) stay owner-fitted manual parts by the S7/S8 module policy; JLCPCB THT codes are noted for them.'),
+    'refs': ['R2', 'R3', 'R93', 'R94', 'R98', 'R99', 'R109'],
+    'why': ('Precision UVLO gives the worst-case start < 13 V; precision guard dividers keep the overvoltage margins; '
+            'the 18 mOhm shunt sets the 2.62-2.95 A CC limit (Kelvin land).'),
+    'manual_parts': {'J2': 'Wurth 61201621621 (LCSC C5364137, see s92-sourcing.json); THT option CJT A2541WV-2x8P C5454489 '
+                           'needs a footprint/height check against the IDC plug envelope',
+                     'J3': 'as J2',
+                     'D8': '3 mm red LED, horizontal panel mount (bent leads, Z 2.0 mm): owner stock; THT option Everlight '
+                           '204-10SURD/S530-A3-L C99771'},
+    'cost': 'Quantity-1 part prices only; Extended setup fees, attrition, PCB, assembly and shipping are excluded.'}
 
 
 def main():
@@ -127,7 +143,12 @@ def main():
                        'S8_parts_usd_q1': total('S8'), 'S7_parts_usd_q1': total('S7'),
                        'S8_non_basic_codes': ext('S8'), 'S7_non_basic_codes': ext('S7'),
                        'manual_parts_no_LCSC': manual,
-                       'failures': sorted(c for c, r in rows.items() if r.get('error') or r.get('failures'))},
+                       'failures': sorted(c for c, r in rows.items() if r.get('error') or r.get('failures')),
+                       'live_audit': not snap and not any(r.get('error') for r in rows.values()),
+                       'missing_codes': sorted(set(manual['S8']) - set(PRECISION_POLICY['manual_parts'])),
+                       'S8_zero_stock_codes': sorted(c for c, r in rows.items() if r.get('qty_S8') and not r.get('stock')),
+                       'S8_basic_codes': sorted(c for c, r in rows.items() if r.get('qty_S8') and r.get('classification') == 'Basic'),
+                       'alternates': {p['ref']: p['fields']['Alternates'] for p in s8 if p['fields'].get('Alternates')}},
            'basic_only_policy': PRECISION_POLICY}
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(out, indent=2) + '\n')
