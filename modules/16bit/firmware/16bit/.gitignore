@@ -1,0 +1,16 @@
+# Generated build output
+build/
+.build/
+
+# Packaged per-app firmware (../package.sh)
+dist/
+
+# Local app selection (see .config.example). Not committed.
+.config
+
+# macOS
+.DS_Store
+
+# Host DSP simulator (tools/sim_monosynth) + generated demo audio
+tools/sim_monosynth
+tools/monosynth_sim.wav
