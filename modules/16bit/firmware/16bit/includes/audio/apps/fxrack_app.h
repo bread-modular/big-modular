@@ -14,6 +14,7 @@
 #include "audio/apps/fx/delay_fx.h"
 #include "audio/apps/fx/noop_fx.h"
 #include "audio/apps/fx/metalverb_fx.h"
+#include "audio/apps/motion_recorder.h"
 
 #define TOTAL_SAMPLE_PLAYERS 12
 
@@ -26,6 +27,11 @@
 #define CONFIG_FX_DELAY 1
 #define CONFIG_FX_METALVERB 2
 
+// MODE = 4-bar motion recorder (big-modular, not BM: BM's fxrack left MODE
+// unused). Each MIDI clock frame holds P3 / P4 (the two lowpass cutoffs) and
+// the twelve MCC CCs (FX1 CC20..23, FX2 CC27..30, FX3 CC85..88); see
+// motion_recorder.h. P1 / P2 are this app's audio inputs and are not recorded;
+// CC71 / CC74 (P3 / P4 over MIDI) are not recorded either.
 class FXRackApp : public AudioApp {
 private:
     static FXRackApp* instance;
@@ -44,6 +50,18 @@ private:
     uint16_t currentBPM = 120;
 
     Config config{4, "/fxrack_config.dat"};
+    MotionRecorder recorder;
+    bool frameApplied = false;  // false: next playback frame applies everything
+    MotionRecorder::Frame appliedFrame = {};
+
+    void applyP3(uint16_t cv1);
+    void applyP4(uint16_t cv2);
+    bool applyFxCc(uint8_t cc, uint8_t value);
+    void readKnobs(uint16_t knobs[MotionRecorder::KNOB_COUNT]);
+    void applyLiveControls();
+    static void setRecorderLed(bool on);
+    static void applyRecordedFrame(void* context,
+                                   const MotionRecorder::Frame& frame);
 
 public:
     FXRackApp() {}
@@ -59,6 +77,7 @@ public:
     void cv2UpdateCallback(uint16_t cv2) override;
     void buttonPressedCallback(bool pressed) override;
     void bpmChangeCallback(int bpm) override;
+    void realtimeCallback(uint8_t realtimeType) override;
     void update() override;
     bool onCommandCallback(const char* cmd) override;
 

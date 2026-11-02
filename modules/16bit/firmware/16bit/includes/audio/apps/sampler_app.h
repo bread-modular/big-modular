@@ -243,44 +243,16 @@ class SamplerApp : public AudioApp {
             }
         }
 
-        // MCC CC -> FX parameter. Returns false for any other CC.
+        // MCC CC -> FX parameter: Bank A CC20..23 -> FX1, Bank B CC27..30 ->
+        // FX2, Bank C CC85..88 -> FX3. Returns false for any other CC.
         bool applyFxCc(uint8_t cc, uint8_t value) {
-            float valueNormalized = value / 127.0f;
-
-            // FX1 Controls
-            if (cc == 20) {
-                fx1->setParameter(0, valueNormalized);
-            } else if (cc == 21) {
-                fx1->setParameter(1, valueNormalized);
-            } else if (cc == 22) {  
-                fx1->setParameter(2, valueNormalized);
-            } else if (cc == 23) {
-                fx1->setParameter(3, valueNormalized);
-            }
-
-            // FX2 Controls
-            if (cc == 27) {
-                fx2->setParameter(0, valueNormalized);
-            } else if (cc == 28) {
-                fx2->setParameter(1, valueNormalized);
-            } else if (cc == 29) {
-                fx2->setParameter(2, valueNormalized);
-            } else if (cc == 30) {
-                fx2->setParameter(3, valueNormalized);
-            }
-
-            // FX3 Controls
-            if (cc == 85) {
-                fx3->setParameter(0, valueNormalized);
-            } else if (cc == 86) {
-                fx3->setParameter(1, valueNormalized);
-            } else if (cc == 87) {
-                fx3->setParameter(2, valueNormalized);
-            } else if (cc == 88) {  
-                fx3->setParameter(3, valueNormalized);
-            } else {
+            int index = MotionRecorder::ccIndex(cc);
+            if (index < 0) {
                 return false;
             }
+            AudioFX* bankFx[3] = {fx1, fx2, fx3};
+            bankFx[index / MotionRecorder::MCC_CCS_PER_BANK]->setParameter(
+                index % MotionRecorder::MCC_CCS_PER_BANK, value / 127.0f);
             return true;
         }
 

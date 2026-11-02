@@ -20,7 +20,7 @@ separate firmware per app.
 | `elab`      | Envelope lab (A1/A2 CV/audio scoping)        |
 | `monosynth` | Pulsar-23-inspired mono bass synth (percussion mode) |
 
-### Motion recorder (sampler, monosynth & polysynth)
+### Motion recorder (sampler, fxrack, monosynth & polysynth)
 
 These apps share the same MODE/LED workflow as the 8bit CV recorder
 (`opt/attiny1616-tools/lib/CvRecorder`), loop offset included. The state machine lives in the shared pico-free header
@@ -50,6 +50,7 @@ Each app owns what a frame means:
 | app        | P1 / P2                          | P3 / P4 (BM CV1 / CV2)                                  | MCC                                                          |
 |------------|----------------------------------|---------------------------------------------------------|--------------------------------------------------------------|
 | sampler    | group B lowpass / highpass       | group A lowpass / highpass                              | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
+| fxrack     | not recorded (audio inputs)      | group A / group B lowpass                               | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | monosynth  | not used                         | attack / decay times                                    | Bank A: BODY, CHORUS, CUTOFF, RESONANCE                      |
 | polysynth  | not used                         | amp-envelope attack (1..500 ms) / release (10..1000 ms) | Bank A: env attack-release time, filter-env depth, resonance, cutoff |
 
@@ -62,6 +63,11 @@ replayed the kick on release; here it runs the recorder. The sampler applies a
 frame's parameters only when they change. CC71 / CC74 (P3 / P4 over MIDI) are
 not recorded and are ignored during playback. Any audio restart (`set-fx`,
 sample upload) re-creates the FX at their defaults and drops the take.
+
+FXRack (big-modular, not BM: BM left MODE unused) works the same way: frames
+apply only what changed, CC71 / CC74 aren't recorded, and `set-fx` drops the
+take. Monosynth and polysynth only have Bank A parameters, so Bank B / C CCs
+do nothing there and aren't recorded.
 
 The selected app is fixed at **compile time** and reported over serial via
 `get-app`. Each app owns its own baked-in assets and config file, so each

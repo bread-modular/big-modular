@@ -35,7 +35,8 @@ down = both filters open. Patched, P1 / P2 scale the CV, and negative CV
 clamps to open. The other apps don't read P1 / P2 as knobs (`../docs/research.md` §5).
 
 **MODE = 4-bar motion recorder** in the sampler (new; BM's sampler MODE
-stopped/restarted the audio), polysynth and monosynth (BM). Click MODE to
+stopped/restarted the audio), fxrack (new; BM left MODE unused), polysynth and
+monosynth (BM). Click MODE to
 record (LED blinks), after 4 bars on MIDI clock it loops (LED solid), click
 again for live. Each frame holds P1..P4 and all twelve MCC CCs (banks A / B / C).
 As on the 8bit recorder, the knobs and MCC are ignored for the first loop
@@ -139,6 +140,8 @@ flashed as is (no rebuild needed).
   MCC CCs (BM: CV1 / CV2 and Bank A); 8bit-style loop offset after one guard
   pass; unrecorded CCs stay live. Polysynth / monosynth adapted to the new
   frame (`readKnobs`, `ownsCc`); `tools/sim_motion_recorder.cpp` extended.
+- `src/audio/apps/fxrack_app.cpp`: MODE runs the motion recorder (P3 / P4 and
+  all three MCC banks; BM: MODE unused).
 - Everything else (apps, DSP, drivers, assets, host tools) is the BM file,
   unchanged.
 
