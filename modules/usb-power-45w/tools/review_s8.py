@@ -22,12 +22,11 @@ MODULE = Path(__file__).resolve().parents[1]
 REVISION = 'S8.5 / P1.5'
 TRACKED_KICAD = ('.kicad_sch', '.kicad_pcb', '.kicad_pro', '.kicad_dru', '.kicad_sym')   # *.kicad_prl is git-ignored
 S7_R3 = sorted(str(p.relative_to(MODULE)) for p in (MODULE / 'hardware').glob('*.kicad_*') if p.suffix in TRACKED_KICAD)
-SOURCES = (['hardware/USBPOWER45.pretty/TI_RPW0010A_VQFN-HR-10_2x2mm.kicad_mod']
-           + sorted(f'hardware/single/{p.name}' for p in (MODULE / 'hardware/single').glob('*.kicad_*')
-                    if p.suffix in TRACKED_KICAD)
+SOURCES = (sorted(f'hardware/single/{p.name}' for p in (MODULE / 'hardware/single').glob('*.kicad_*')
+                  if p.suffix in TRACKED_KICAD)
            + [f'tools/{n}.py' for n in ('build_s8', 'build_s8_assembly', 'build_s8_board', 'build_s8_panel',
                                         'check_s8_board', 'circuit_s8', 'hierarchy_s8', 'mechanics_s8', 'place_s8',
-                                        'render_s8', 'review_s8', 's83_parts', 's8_calcs', 's8_mechanical',
+                                        'render_s8', 'review_s8', 's8_calcs', 's8_mechanical',
                                         's8_sourcing', 'test_s8', 'verify_s8')])
 CHANGELOG = [
     ('B', 'One-shot arming (the blocker of all three S8.4 reviews): U12 flip-flop A = STARTED latch (PRE_N = START_N = '

@@ -1,55 +1,31 @@
 {
-  "status": "S8_schematic_checks_not_bench_qualification",
-  "components": 191,
-  "nets_including_NC": 118,
-  "sheets": 7,
+  "status": "S9_schematic_checks_not_bench_qualification",
+  "components": 146,
+  "nets_including_NC": 106,
+  "sheets": 6,
   "exact_field_pin_NC_pad_parity": true,
-  "removed_S7_refs": 69,
+  "removed_S7_refs": 90,
   "added_refs": [
     "C59",
-    "C60",
     "C61",
     "C62",
     "C63",
-    "C64",
     "C65",
     "C66",
     "C67",
-    "C68",
-    "C69",
-    "C70",
-    "C71",
-    "C72",
-    "C73",
-    "C74",
-    "C75",
-    "C76",
-    "D21",
     "D22",
-    "D23",
     "J3",
     "R100",
-    "R101",
-    "R102",
-    "R103",
-    "R104",
-    "R107",
-    "R108",
     "R92",
     "R93",
     "R94",
-    "R95",
-    "R96",
     "R97",
     "R98",
     "R99",
     "TP17",
-    "TP18",
     "TP19",
-    "TP21",
     "U20",
-    "U21",
-    "U23"
+    "U21"
   ],
   "ceramic_banks_22u_or_10u": {
     "+12V": [
@@ -59,12 +35,6 @@
       "C14",
       "C34",
       "C59"
-    ],
-    "+5V": [
-      "C35",
-      "C60",
-      "C73",
-      "C74"
     ],
     "-12V": [
       "C29",
@@ -76,23 +46,9 @@
       "C61"
     ],
     "VIN": [
-      "C15",
-      "C16",
       "C24",
       "C6",
       "C7"
-    ],
-    "P5_RAW": [
-      "C20",
-      "C21",
-      "C22",
-      "C23",
-      "C69",
-      "C70",
-      "C71",
-      "C72",
-      "C75",
-      "C76"
     ]
   },
   "vin_damper": {
@@ -108,11 +64,6 @@
       14.88,
       15.272
     ],
-    "+5V_min_nom_max": [
-      5.677,
-      5.828,
-      5.976
-    ],
     "-12V_magnitude_min_nom_max": [
       13.265,
       13.64,
@@ -121,75 +72,112 @@
     "model": "REF_OV TLV431BI 1.2204-1.259 V, LM2901B 5.5 mV / 50 nA, 0.1 % + 25 ppm x 100 C",
     "converter_setpoint_max_V": {
       "+12V": 12.912,
-      "+5V": 5.114,
       "-12V": 12.624
     },
     "stacked_normal_peak_V": {
       "+12V": 13.945,
-      "+5V": 5.375,
       "-12V": 13.108
     },
     "margin_min_to_peak_V": {
       "+12V": 0.535,
-      "+5V": 0.302,
       "-12V": 0.157
     },
     "downstream_limit_V": {
       "+12V": 16.0,
-      "+5V": 6.0,
       "-12V": 16.0
     },
     "margin_max_to_limit_V": {
       "+12V": 0.728,
-      "+5V": 0.024,
       "-12V": 1.982
     },
     "converter_OVP_max_V": {
-      "+12V": 15.24,
-      "+5V": 6.03
+      "+12V": 15.24
     },
     "corner_overlap_with_converter_OVP": {
-      "+12V": true,
-      "+5V": true
+      "+12V": true
     },
-    "U21_cathode_current_min_mA": 0.711
+    "U21_cathode_current_min_mA": 0.711,
+    "OV_N_members": [
+      "R97.2",
+      "TP6.1",
+      "U12.10",
+      "U20.14",
+      "U20.2"
+    ]
   },
-  "disconnect": {
-    "MPN": "TPS259470ARPWR",
-    "LCSC": "C3662799",
-    "trip_min_nom_max_V": [
-      5.5848,
-      5.7012,
-      5.8475
+  "plus5_removed": {
+    "S7_refs_removed": [
+      "#FLG05",
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C20",
+      "C21",
+      "C22",
+      "C23",
+      "C35",
+      "D3",
+      "L2",
+      "R10",
+      "R11",
+      "R12",
+      "R44",
+      "R77",
+      "R78",
+      "R79",
+      "TP13",
+      "U3"
     ],
-    "current_min_nom_max_A": [
-      2.647,
-      3.031,
-      3.367
+    "S8_refs_dropped": [
+      "C60",
+      "C64",
+      "C68",
+      "C69",
+      "C70",
+      "C71",
+      "C72",
+      "C73",
+      "C74",
+      "C75",
+      "C76",
+      "D21",
+      "D23",
+      "R101",
+      "R102",
+      "R103",
+      "R104",
+      "R107",
+      "R108",
+      "R95",
+      "R96",
+      "TP18",
+      "TP21",
+      "U23"
     ],
-    "release_min_nom_max_V": [
-      5.0793,
-      5.1786,
-      5.3362
+    "nets_absent": [
+      "+5V",
+      "MON_OV5",
+      "MON_P5",
+      "MON_P5_SER",
+      "P5_DVDT",
+      "P5_FLT_N",
+      "P5_ILM",
+      "P5_ILM_SER",
+      "P5_OK",
+      "P5_OVLO",
+      "P5_OV_TOP",
+      "P5_RAW"
     ],
-    "margin_min_to_stacked_peak_V": 0.2095,
-    "margin_min_to_ILIM_max_release_peak_V": 0.1075,
-    "reconnect_margin_worst_V": -0.035,
-    "raw_feedback_and_banks_upstream": true,
-    "delivered_status": "AUXOFF + U18 (S8.4: FLT only to R108/TP21)",
-    "FLT_isolated_from_latch": true,
-    "P5_FLT_N_members": [
-      "R108.2",
-      "TP21.1",
-      "U23.4"
-    ],
-    "OVLO_latched_internally": false,
-    "OVLO_response_max_specified": false
+    "header_pins_11_12": "no-connect",
+    "ANY_BAD": "NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)",
+    "spare_comparators": {
+      "U18": "out 2 open, - REF_GOOD, + GND",
+      "U20": "out 1 and out 13 open, - REF_OV, + GND"
+    },
+    "U5_nets": "MAIN_* (EF_* in S7)"
   },
-  "assembly_checks": [
-    "S8.4 M7: U23 copper-pad mask expansion 0.025 mm, every mask web >= 0.15 mm (IN/OUT included)",
-    "Unpowered, TP18 (P5_RAW) to J2/J3 pin 11/12 (+5V) must not read a short in either meter polarity: ~18k / ~55k plus a clamp-diode drop via GND (calcs.json bringup_tp18); near 0 ohm = U23 IN/OUT bridge bypassing the eFuse"
-  ],
   "startup_arming": {
     "topology": "STARTED = U12 A (PRE_N = START_N = NAND(MAIN_LED_OK, RUN), CLR_N = RESET_N, CLK low); TIMER_GO = RUN AND STARTED; ARMED = U11 output",
     "TIMER_GO": "RUN AND STARTED",
@@ -591,7 +579,7 @@
         }
       },
       "hot_plug_live_bus": {
-        "why": "outputs plugged into a bus another supply already holds inside the monitor windows; U23 blocks the reverse current and flags FLT while the bus is above its output",
+        "why": "outputs plugged into a bus another supply already holds inside the monitor windows: the rail monitors read good from 0 ms; nothing else reaches the logic",
         "t_d_0.31s_V20_9.06V": {
           "first_enable_ms": [
             351.9
@@ -654,7 +642,7 @@
         }
       },
       "load_release_after_ARMED": {
-        "why": "+5V load released after ARMED: U23 holds the overshoot downstream (reverse blocking, FLT low 5 ms); release peak below the OVLO (calcs ovlo_release)",
+        "why": "+/-12V load released after ARMED: the release peak stays below the U20 guard minimum (calcs ov_guard) and the rails stay above their monitor thresholds, so no logic input changes (the run must stay armed without a FAULT)",
         "t_d_0.31s_V20_9.06V": {
           "first_enable_ms": [
             351.9
@@ -717,7 +705,7 @@
         }
       },
       "load_release_inside_window": {
-        "why": "the same +5V load release during the qualification window",
+        "why": "the same +/-12V load release during the qualification window",
         "t_d_0.31s_V20_9.06V": {
           "first_enable_ms": [
             351.9
@@ -932,17 +920,15 @@
   },
   "nominal_voltage_valid_thresholds": {
     "P12_V": 9.976744186046512,
-    "P5_V": 4.22093023255814,
     "N12_magnitude_V": 10.053488372093023,
     "V20_OK_status_floor_V": 9.976744186046512
   },
   "logic_POR_high_screen_V": 3.063197551270278,
   "startup_qualification_typ_s": 0.5719285714285715,
-  "digital_combinations_checked": 1024,
+  "digital_combinations_checked": 512,
   "scenarios": [
     "MAIN_OK",
     "P12_OK",
-    "P5_OK",
     "N12_OK",
     "V20_OK",
     "STARTED survives MAIN_OK drops (no restart); armed + MAIN_OK low -> FAULT clock",
@@ -952,9 +938,7 @@
   "warnings": [
     "Arithmetic stacks every tolerance at once; it is a screen, not a rating.",
     "Digital truth checks and the arming timelines use datasheet timings; they do not model analog propagation, comparator/LED timing or MOSFET transients.",
-    "No routed PCB, thermal/startup/fault-injection qualification.",
-    "<6 V at the header is NOT guaranteed (review C2): U23 OVLO response is 1.2 us typical with no maximum; neither D10 nor a bench-supply ceiling bounds it. The 3 us delay case reaches 6.33 V and stays above 6 V for ~193 us (rest of the 200 us window; with reverse blocking only R77-R79 or the modules discharge it); the 30 V / 1 ohm / 3 us stress case reaches 6.52 V (calcs.json).",
-    "OVLO-only pulses may auto-recover during startup or below status-filter duration; after a genuine OVLO trip U23 may stay open at stacked corners (setpoint max above the release minimum) and the common latch then holds every rail off until RESET."
+    "No routed PCB, thermal/startup/fault-injection qualification."
   ],
   "order_ready": false
 }

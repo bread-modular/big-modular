@@ -10,7 +10,8 @@ flat sheet (exact component/field/pin-membership parity). S8 UUIDs use their own
 Writes a separate review candidate with --output-root. S8.3 replaced the S8.2 crowbar
 with the pinned TPS259470 symbol/land pattern in tools/s83_parts.py; S8.4 applies the review
 fixes listed in tools/circuit_s8.py; S8.5 wires the one-shot arming latch (circuit_s8.py docstring,
-item B). Shared S7 symbols, footprints and native projects are not rewritten.
+item B). S9.0 removes the +5V subsystem (the S8.3 TPS259470 symbol/land pattern, tools/s83_parts.py, is gone with
+U23) and the +5V power symbol. Shared S7 symbols, footprints and native projects are not rewritten.
 """
 import argparse
 import copy
@@ -30,9 +31,9 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
-POWER_SYMBOLS = {'GND', 'VCC', '+12V', '+5V', '-12V'}
-from s83_parts import FP_S83, symbol as efuse_symbol
-FP_S8 = {**bs.FP, **FP_S83}
+POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
+REV = 'S9.0'
+FP_S8 = dict(bs.FP)
 
 
 def uid(key):
@@ -67,13 +68,11 @@ def tlv431_dbz():
 
 def lib_symbols(parts):
     """The S7 pinned symbols (tools/build_schematic.py SYMBOLS) that S8 uses, flattened the same way, plus
-    the S8.1 TLV431_DBZ and S8.3 TPS259470_RPW symbols."""
+    the S8.1 TLV431_DBZ symbol."""
     used = {p['sym'] for p in parts} | POWER_SYMBOLS
     out = {k: v for k, v in bs.lib_symbols().items() if k in used}
     if 'TLV431_DBZ' in used:
         out['TLV431_DBZ'] = tlv431_dbz()
-    if 'TPS259470_RPW' in used:
-        out['TPS259470_RPW'] = efuse_symbol()
     assert used <= set(out), sorted(used - set(out))
     return out
 
@@ -113,10 +112,10 @@ def build(output_root=None):
 
     sch, nets, _ = bs.flat_sheet(
         parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 single board',
-        comments=('S8.5 single board: +5V eFuse as S8.4; +/-12V unswitched; MAIN LED only',
+        comments=('S9.0 single board: +/-12V only (+5V subsystem removed); MAIN LED only',
                   'One-shot arming latch (STARTED); U18/U20 on VPD; see docs/s8-single-board.md'),
         source=circuit_s8.drawing(), texts=circuit_s8.TEXTS)
-    one(one(sch, 'title_block'), 'rev')[1] = 'S8.5'
+    one(one(sch, 'title_block'), 'rev')[1] = REV
     out.write_text(dump(sch) + '\n')
     subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True, stdout=subprocess.DEVNULL)
     nc = {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None}
@@ -126,8 +125,10 @@ def build(output_root=None):
     crossing = hierarchy_s8.split(out, docs, api)
 
     refs = sorted(p['ref'] for p in parts if not p['ref'].startswith('#'))
-    record = {'revision': 'S8.5', 'project': f'hardware/single/{pro.name}', 'components': len(refs),
-              'nets': len(nets), 'no_connect_pins': len(nc), 'removed_from_S7': sorted(circuit_s8.S8_REMOVED),
+    record = {'revision': REV, 'project': f'hardware/single/{pro.name}', 'components': len(refs),
+              'nets': len(nets), 'no_connect_pins': len(nc),
+              'removed_from_S7': sorted(set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED)),
+              'removed_in_S9_plus5': sorted(set(circuit_s8.S9_REMOVED) | set(circuit_s8.S8_PLUS5_DROPPED)),
               'inter_sheet_nets': {n: sorted(p) for n, p in sorted(crossing.items())},
               'symbols': sorted(syms),
               'library_sha256': hashlib.sha256((hw / f'{bs.LIB}.kicad_sym').read_bytes()).hexdigest()}

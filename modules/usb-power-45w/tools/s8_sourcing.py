@@ -58,11 +58,11 @@ def lookup(code, cache):
 PRECISION_POLICY = {
     'decision': 'ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other '
                 'passive stays Basic. Not an order approval.',
-    'refs': ['R93', 'R94', 'R95', 'R96', 'R98', 'R99', 'R101', 'R102', 'R11', 'R12'],
-    'why': 'They set protection thresholds: the U20 overvoltage guard bands (R93-R96, R98/R99), the U23 OVLO divider '
-           '(R101/R102) and, since S8.4, the U3 +5V setpoint (R11/R12) that the OVLO release proof depends on. With '
-           '1 % + 1 % TCR Basic parts the screens fail (calcs.json basic_only_counterfactual). The searched JLC catalog '
-           'has no Basic 0.1 % 0603 resistor (keyword snapshots in research/s84/catalog; every hit Extended).',
+    'refs': ['R93', 'R94', 'R98', 'R99'],
+    'why': 'They set protection thresholds: the U20 overvoltage guard bands (+12V R93/R94, -12V R98/R99). With 1 % + 1 % '
+           'TCR Basic parts the -12V guard minimum falls below the stacked converter peak (calcs.json '
+           'basic_only_counterfactual). The searched JLC catalog has no Basic 0.1 % 0603 resistor (S8.4 keyword '
+           'snapshots; every hit Extended). S9.0: the +5V precision parts (R95/R96, R101/R102, R11/R12) left with +5V.',
     'cost': 'Extended per-unique-part fees apply to the precision codes (not included in the q1 parts totals); all '
             'selected codes were observed Economic-eligible.',
     'not_done': 'No Basic substitute was qualified; replacing them with 1 % parts would need a new threshold design.'}

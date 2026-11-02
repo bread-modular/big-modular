@@ -5,7 +5,9 @@ not V20_OK), M2 (load release vs OVLO, falling threshold), M3 (V3V3 loss), M4 (l
 M6 (-12V start-up into a typical rack), M7 (U23 mask webs), M8 (Basic-only counterfactual), M9 (mechanical risks),
 C2 (<6 V not guaranteed, stays exposed). S8.5: B (one-shot arming: STARTED latch, TIMER_GO = RUN AND STARTED,
 V20_OK status floor; the S8.4 wiring and the S8.4 V20_OK divider must fail - regressions), C (MAIN_LED_OK / ANY_BAD
-semantics, replug/POR race stays an explicit OPEN item, review record hashes only tracked files).
+semantics, replug/POR race stays an explicit OPEN item, review record hashes only tracked files). S9.0 step 1: the +5V
+subsystem is gone - no +5V/P5_*/EF_* net or +5V ref survives anywhere (table, native netlist, schematic, BOM, placement,
+PCB), J2/J3 pins 11/12 open, ANY_BAD without P5_OK, spare comparators defined.
 
   python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_s8.py' -v
 """
@@ -27,6 +29,7 @@ import verify_s8  # noqa: E402
 
 MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
+COMPONENTS = 146                       # S9.0 step 1: 191 - 45 (+5V subsystem)
 ROOT = DESIGN / 'hardware/single/usb-power-45w-single.kicad_sch'
 
 def verify_native(path):
@@ -86,18 +89,22 @@ class TableDerivation(unittest.TestCase):
     def test_removed_and_added(self):
         s7 = {p['ref'] for p in circuit45.circuit()}
         s8 = {p['ref'] for p in circuit_s8.circuit()}
-        self.assertFalse(set(circuit_s8.S8_REMOVED) & s8)
-        self.assertEqual(s7 - s8, set(circuit_s8.S8_REMOVED))
+        removed = set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED)
+        self.assertFalse(removed & s8)
+        self.assertEqual(s7 - s8, removed)
         self.assertTrue({'U6', 'U7', 'U8', 'Q4', 'U16', 'U17'} <= set(circuit_s8.S8_REMOVED))
-        self.assertEqual(s8 - s7, {'J3', 'C59', 'C60', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R95', 'R96',
-                                   'R97', 'R98', 'R99', 'C63', 'C64', 'C65', 'C66', 'D21',
-                                   'U21', 'R100', 'C67', 'D22', 'TP17', *circuit_s8.DISCONNECT,
+        self.assertTrue({'U3', 'L2', 'R11', 'R12', 'D3', 'C35', 'R44', 'TP13'} <= set(circuit_s8.S9_REMOVED))
+        self.assertEqual(s8 - s7, {'J3', 'C59', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R97', 'R98', 'R99',
+                                   'C63', 'C65', 'C66', 'U21', 'R100', 'C67', 'D22', 'TP17',
                                    *circuit_s8.ARMING_ADDED})
+        self.assertFalse(set(circuit_s8.S8_PLUS5_DROPPED) & s8)
 
-    def test_only_5v_retains_raw_net_no_cans(self):
+    def test_no_raw_or_plus5_nets_no_cans(self):
         parts = circuit_s8.circuit()
         nets = {n for p in parts for n in p['pins'].values() if n}
         self.assertFalse({'P12_RAW', 'N12_RAW', 'N12_STATUS', 'NOT_RUN', 'START_READY'} & nets)
+        self.assertFalse(set(circuit_s8.PLUS5_NETS) & nets)
+        self.assertFalse({n for n in nets if n.startswith(('P5_', 'EF_')) or n in ('+5V', 'FIVE_V')})
         self.assertFalse([p['ref'] for p in parts if p['fp'] == 'CP63' or p['sym'] == 'C_Polarized'])
         by = {p['ref']: p for p in parts}
         self.assertEqual(by['U12']['pins']['10'], 'OV_N')
@@ -117,20 +124,15 @@ class NativeS8(unittest.TestCase):
 
     def test_verifier_passes(self):
         r = verify_native(self.xml)
-        self.assertEqual(r['components'], 191)
-        self.assertEqual(r['digital_combinations_checked'], 1024)
+        self.assertEqual(r['components'], COMPONENTS)
+        self.assertEqual(r['digital_combinations_checked'], 512)
         g = r['overvoltage_guard_V']
+        self.assertEqual(set(g['margin_min_to_peak_V']), {'+12V', '-12V'})
         self.assertTrue(all(v > 0 for v in g['margin_min_to_peak_V'].values()), g)
         self.assertTrue(all(v >= 0 for v in g['margin_max_to_limit_V'].values()), g)
-        ef = r['disconnect']
-        self.assertGreater(ef['margin_min_to_stacked_peak_V'], 0.05)
-        self.assertFalse(ef['OVLO_latched_internally'])
-        self.assertFalse(ef['OVLO_response_max_specified'])
-        self.assertGreater(r['comparator_supply']['full_temp_headroom_V'], 10)
-        # S8.4 C1 / M1 / M2 records
-        self.assertTrue(ef['FLT_isolated_from_latch'])
-        self.assertEqual(ef['P5_FLT_N_members'], ['R108.2', 'TP21.1', 'U23.4'])
-        self.assertGreater(ef['margin_min_to_ILIM_max_release_peak_V'], 0.05)
+        self.assertEqual(g['OV_N_members'], ['R97.2', 'TP6.1', 'U12.10', 'U20.14', 'U20.2'])
+        self.assertGreater(r['comparator_supply']['full_temp_headroom_V'], 5)
+        self.assertEqual(r['plus5_removed']['ANY_BAD'], 'NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)')
         # S8.5 B: one-shot arming record, every timeline against R1-R4 without a violation
         a = r['startup_arming']
         self.assertEqual((a['TIMER_GO'], a['START_N']), ('RUN AND STARTED', 'NAND(MAIN_LED_OK, RUN)'))
@@ -142,21 +144,6 @@ class NativeS8(unittest.TestCase):
                          'load_release_after_ARMED'} <= set(a['timelines']))
         self.assertGreater(a['V20_OK_margin_below_U5_off_min_V'], 2.0)
         self.assertGreater(a['V20_OK_margin_above_vSafe5V_max_V'], 2.0)
-        self.assertTrue(any('NOT guaranteed' in w for w in r['warnings']), 'C2 wording must stay in the record')
-
-    def test_c1_flt_on_p5_ok_rejected(self):
-        """Regression (review C1): U23 FLT (pin 4) wired back onto P5_OK must fail the verifier."""
-        bad = Path(self.tmp.name) / 'c1.xml'
-        move_node(self.xml, bad, 'U23', '4', 'P5_OK')
-        with self.assertRaisesRegex(AssertionError, 'C1|P5_OK|P5_FLT_N'):
-            verify_native(bad)
-        for ref, pin, net in [('R108', '2', 'P5_OK'), ('TP21', '1', 'P5_OK'), ('U23', '4', 'FAULT_CLK'),
-                              ('U23', '4', 'BAD_FILTERED'), ('U14', '4', 'P5_FLT_N')]:
-            with self.subTest(ref=ref, pin=pin, net=net):
-                bad = Path(self.tmp.name) / f'c1-{ref}-{pin}-{net}.xml'
-                move_node(self.xml, bad, ref, pin, net)
-                with self.assertRaises(AssertionError):
-                    verify_native(bad)
 
     def test_m1_timer_from_v20_ok_rejected(self):
         """Regression (S8.3 review M1): the startup timer gated by V20_OK must fail the verifier."""
@@ -207,20 +194,21 @@ class NativeS8(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     verify_native(bad)
 
-    def test_native_c1_b_nets(self):
-        """C1 / B straight from the exported native netlist (independent of the verifier)."""
+    def test_native_b_nets(self):
+        """B and the S9.0 fault chain straight from the exported native netlist (independent of the verifier)."""
         root = ET.parse(self.xml).getroot()
         nets = {n.get('name').split('/')[-1]: {(d.get('ref'), d.get('pin')) for d in n.findall('node')}
                 for n in root.find('nets')}
-        self.assertEqual(nets['P5_FLT_N'], {('U23', '4'), ('R108', '2'), ('TP21', '1')})
-        self.assertNotIn(('U23', '4'), nets['P5_OK'])
-        self.assertEqual(nets['P5_OK'], {('U23', '3'), ('U18', '2'), ('R44', '2'), ('TP13', '1'), ('U14', '4')})
+        self.assertNotIn('P5_OK', nets)
+        self.assertNotIn('P5_FLT_N', nets)
+        self.assertIn(('U14', '4'), nets['V3V3'])
+        self.assertEqual(nets['OV_N'], {('U20', '2'), ('U20', '14'), ('U12', '10'), ('R97', '2'), ('TP6', '1')})
         self.assertEqual(nets['TIMER_GO'], {('U13', '8'), ('R69', '1')})
         self.assertEqual(nets['STARTED'], {('U12', '5'), ('U13', '10'), ('TP19', '1')})
         self.assertEqual(nets['START_N'], {('U14', '8'), ('U12', '4')})
         self.assertEqual(nets['ARMED'], {('U11', '1'), ('R71', '2'), ('U13', '4'), ('TP10', '1')})
         self.assertIn(('U12', '3'), nets['GND'])
-        self.assertTrue({('U2', '2'), ('U3', '2')} <= nets['MAIN_OK'])
+        self.assertTrue({('U2', '2')} <= nets['MAIN_OK'])
         for pin in ('9', '10'):
             self.assertNotIn(('U13', pin), nets['MAIN_OK'] | nets['V20_OK'])
         self.assertNotIn('START_READY', nets)
@@ -249,23 +237,26 @@ class NativeS8(unittest.TestCase):
         with self.assertRaises(AssertionError):
             verify_native(bad)
 
-    def test_disconnect_negative_controls(self):
-        for ref,pin,net in [('U23','5','+5V'), ('U23','6','P5_RAW'), ('U23','1','V3V3'),
-                            ('U23','3','OV_N'), ('U23','4','GND'), ('R95','1','+5V'),
-                            ('R11','2','+5V'), ('C69','1','+5V'), ('C73','1','P5_RAW'),
-                            ('D21','1','+5V'), ('D23','1','P5_RAW'), ('C68','1','P5_OVLO'),
-                            ('U20','3','V3V3'), ('U18','3','V3V3')]:
-            with self.subTest(ref=ref,pin=pin,net=net):
-                bad=Path(self.tmp.name)/f'{ref}-{pin}.xml'
-                move_node(self.xml,bad,ref,pin,net)
-                with self.assertRaises(AssertionError): verify_native(bad)
+    def test_plus5_removal_negative_controls(self):
+        """S9.0: re-attaching any former +5V function must fail the verifier (a +5V net, P5_OK into the fault chain, a
+        spare comparator output back on OV_N, a header +5V pin, a former +5V ref)."""
+        for ref, pin, net in [('J2', '11', '+12V'), ('J3', '12', 'GND'), ('U14', '4', 'P12_OK'), ('U20', '1', 'OV_N'),
+                              ('U18', '2', 'ANY_BAD'), ('U18', '5', 'REF_GOOD'), ('U20', '7', 'REF_OV'),
+                              ('U14', '4', 'P5_OK'), ('R94', '2', '+5V')]:
+            with self.subTest(ref=ref, pin=pin, net=net):
+                bad = Path(self.tmp.name) / f'p5-{ref}-{pin}-{net}.xml'
+                rewire(self.xml, bad, [(ref, pin, net)])
+                with self.assertRaises(AssertionError):
+                    verify_native(bad)
 
     def test_wrong_pin_role_rejected(self):
-        tree=ET.parse(self.xml)
-        pin=tree.find('./libparts/libpart[@part="TPS259470_RPW"]/pins/pin[@num="5"]')
-        pin.set('name','OUT')
-        bad=Path(self.tmp.name)/'pinrole.xml';tree.write(bad)
-        with self.assertRaises(AssertionError): verify_native(bad)
+        tree = ET.parse(self.xml)
+        pin = tree.find('./libparts/libpart[@part="TLV431_DBZ"]/pins/pin[@num="1"]')
+        pin.set('name', 'K')
+        bad = Path(self.tmp.name) / 'pinrole.xml'
+        tree.write(bad)
+        with self.assertRaises(AssertionError):
+            verify_native(bad)
 
 
 class FinalSchematic(unittest.TestCase):
@@ -281,35 +272,34 @@ class FinalSchematic(unittest.TestCase):
         """S8.1: U20 runs from REF_OV (U21), the -12V channel compares with GND, D22 clamps MON_OVN."""
         parts = {p['ref']: p for p in circuit_s8.circuit()}
         u20 = parts['U20']['pins']
-        self.assertEqual({u20[k] for k in ('5', '7', '10')}, {'REF_OV'})
+        self.assertEqual({u20[k] for k in ('5', '6', '10')}, {'REF_OV'})
         self.assertEqual((u20['8'], u20['9']), ('GND', 'MON_OVN'))
+        self.assertEqual((u20['1'], u20['7'], u20['13'], u20['11']), (None, 'GND', None, 'GND'))   # S9.0: two spares
         self.assertNotIn('REF_GOOD', u20.values())
         self.assertEqual(parts['D22']['pins'], {'1': 'GND', '2': 'MON_OVN', '3': 'MON_OVN'})
         self.assertEqual(parts['R98']['pins'], {'1': 'REF_OV', '2': 'MON_OVN'})
-        for r in ('R93', 'R94', 'R95', 'R96', 'R98', 'R99'):
+        for r in ('R93', 'R94', 'R98', 'R99'):
             self.assertEqual(parts[r]['fields']['Tolerance'], '0.1%', r)
         self.assertEqual({parts[u]['fields']['MPN'] for u in ('U18', 'U20')}, {'LM2901BIDR'})
 
-    def test_disconnect_topology(self):
-        parts={p['ref']:p for p in circuit_s8.circuit()}
-        self.assertFalse(set(circuit_s8.CROWBAR_REMOVED)&set(parts))
-        self.assertFalse(any(n and n.startswith('CROW_') for p in parts.values() for n in p['pins'].values()))
-        self.assertEqual(parts['U23']['pins'], {'1':'RUN','2':'P5_OVLO','3':'P5_OK','4':'P5_FLT_N',
-                         '5':'P5_RAW','6':'+5V','7':'P5_DVDT','8':'GND','9':'P5_ILM','10':None})
-        self.assertEqual(parts['R108']['pins'], {'1': 'V3V3', '2': 'P5_FLT_N'})
-        self.assertEqual(parts['TP21']['pins'], {'1': 'P5_FLT_N'})
-        self.assertEqual(parts['R11']['pins']['2'],'P5_RAW')
-        for r in ('U18','U20'): self.assertEqual(parts[r]['pins']['3'],'VPD')
-        for r in ('C57','C65'):
-            self.assertEqual(parts[r]['pins']['1'],'VPD')
-            self.assertEqual(parts[r]['fields']['Voltage'],'50V')
-
-    def test_c1_flt_off_the_latch_in_table(self):
-        """S8.4 C1 at the circuit table: FLT only on R108/TP21; P5_OK = AUXOFF + U18 + pull-up/pad + U14."""
-        parts = circuit_s8.circuit()
-        on = lambda net: sorted((p['ref'], k) for p in parts for k, v in p['pins'].items() if v == net)
-        self.assertEqual(on('P5_FLT_N'), [('R108', '2'), ('TP21', '1'), ('U23', '4')])
-        self.assertEqual(on('P5_OK'), [('R44', '2'), ('TP13', '1'), ('U14', '4'), ('U18', '2'), ('U23', '3')])
+    def test_plus5_removed_in_table(self):
+        """S9.0 step 1 at the circuit table: U14 gate 1 input 4 high, spare comparators defined, header pins 11/12 open,
+        U5 nets MAIN_*, U18/U20 still on always-on VPD with 50 V bypass capacitors."""
+        parts = {p['ref']: p for p in circuit_s8.circuit()}
+        self.assertEqual(parts['U14']['pins']['4'], 'V3V3')
+        self.assertEqual({parts['U14']['pins'][k] for k in ('1', '2', '4', '5')}, {'MAIN_LED_OK', 'P12_OK', 'V3V3', 'N12_OK'})
+        self.assertEqual((parts['U18']['pins']['2'], parts['U18']['pins']['4'], parts['U18']['pins']['5']),
+                         (None, 'REF_GOOD', 'GND'))
+        for j in ('J2', 'J3'):
+            self.assertEqual([parts[j]['pins'][str(k)] for k in range(11, 17)], [None] * 6)
+        self.assertEqual({v for k, v in parts['U5']['pins'].items() if k in ('1', '7', '8', '10', '11', '14')},
+                         {'MAIN_IN', 'MAIN_UV', 'MAIN_OV', 'MAIN_DVDT', 'MAIN_ILM', 'MAIN_IMON'})
+        for r in ('U18', 'U20'):
+            self.assertEqual(parts[r]['pins']['3'], 'VPD')
+        for r in ('C57', 'C65'):
+            self.assertEqual(parts[r]['pins']['1'], 'VPD')
+            self.assertEqual(parts[r]['fields']['Voltage'], '50V')
+        self.assertFalse(any('+5V' in (p['value'] or '') for p in parts.values()))
 
     def test_b_one_shot_arming_in_table(self):
         """S8.5 B at the circuit table: STARTED = U12 A (PRE_N = START_N, CLR_N = RESET_N, CLK = GND), START_N =
@@ -324,7 +314,7 @@ class FinalSchematic(unittest.TestCase):
         self.assertEqual((u13['12'], u13['13'], u13['11']), ('MAIN_OK', 'V20_OK', 'MAIN_LED_OK'))
         self.assertEqual((by['U11']['pins']['1'], by['R71']['pins']['2'], u13['4']), ('ARMED', 'ARMED', 'ARMED'))
         self.assertEqual(by['TP19']['pins'], {'1': 'STARTED'})
-        self.assertEqual((by['U2']['pins']['2'], by['U3']['pins']['2']), ('MAIN_OK', 'MAIN_OK'))
+        self.assertEqual(by['U2']['pins']['2'], 'MAIN_OK')
         self.assertEqual(by['R83']['value'], '120k')
         self.assertEqual(by['R83']['fields']['LCSC'], by['R75']['fields']['LCSC'], 'R83 reuses the R75 120k Basic line')
 
@@ -335,7 +325,7 @@ class FinalSchematic(unittest.TestCase):
         import s8_calcs as c
         by = {p['ref']: p for p in circuit_s8.circuit()}
         u14 = by['U14']['pins']
-        self.assertEqual({u14[k] for k in ('1', '2', '4', '5')}, {'MAIN_LED_OK', 'P12_OK', 'P5_OK', 'N12_OK'})
+        self.assertEqual({u14[k] for k in ('1', '2', '4', '5')}, {'MAIN_LED_OK', 'P12_OK', 'V3V3', 'N12_OK'})
         self.assertEqual(u14['6'], 'ANY_BAD')
         val = c.table()[1]
         a = c.arming(val)
@@ -347,58 +337,6 @@ class FinalSchematic(unittest.TestCase):
         self.assertGreater(a['U5_turn_on_margin_unloaded_V'], 0.5)
         self.assertGreater(a['U5_running_margin_loaded_V'], 1.0)
         self.assertIn('Not an input-good threshold', by['R83']['fields']['Note'])
-
-    def test_r11_r12_precision(self):
-        by = {p['ref']: p for p in circuit_s8.circuit()}
-        for r in ('R11', 'R12'):
-            self.assertEqual((by[r]['fields']['Tolerance'], by[r]['fields']['TCR']), ('0.1%', '25ppm'), r)
-        self.assertEqual((by['R11']['value'], by['R12']['value']), ('68k', '13k'))
-
-    def test_u23_mask_webs(self):
-        """S8.4 M7: every solder-mask web between differently numbered U23 copper pads >= 0.15 mm (was 0.10 mm)."""
-        import s83_parts
-        from sexp import one, nodes, parse
-        pads = []
-        for q in nodes(parse(s83_parts.footprint()), 'pad'):
-            if q[1] and 'F.Cu' in one(q, 'layers')[1:]:
-                (x, y), (w, h) = map(float, one(q, 'at')[1:3]), map(float, one(q, 'size')[1:3])
-                pads.append((q[1], x - w / 2, x + w / 2, y - h / 2, y + h / 2, float(one(q, 'solder_mask_margin')[1])))
-        webs = []
-        for i, a in enumerate(pads):
-            for b in pads[i + 1:]:
-                if a[0] == b[0]:
-                    continue
-                dx, dy = max(0, b[1] - a[2], a[1] - b[2]), max(0, b[3] - a[4], a[3] - b[4])
-                webs.append((math.hypot(dx, dy) - a[5] - b[5], a[0], b[0]))
-        self.assertAlmostEqual(min(w for w, *_ in webs), s83_parts.MASK_WEB_MIN, places=6)
-        in_out = min(w for w, a, b in webs if {a, b} == {'5', '6'})
-        self.assertGreaterEqual(in_out + 1e-9, 0.15)
-        self.assertTrue(all(m == s83_parts.MASK_MARGIN for *_, m in pads))
-        placed = [q for f in nodes(parse(BOARD.read_text()), 'footprint')
-                  if any(pp[1] == 'Reference' and pp[2] == 'U23' for pp in nodes(f, 'property'))
-                  for q in nodes(f, 'pad') if q[1]]
-        self.assertEqual({float(one(q, 'solder_mask_margin')[1]) for q in placed}, {s83_parts.MASK_MARGIN})
-
-    def test_tps259470_symbol_and_land_pattern(self):
-        import s83_parts
-        from sexp import one,walk,nodes,parse
-        sym=s83_parts.symbol()
-        pins={one(p,'number')[1]:one(p,'name')[1] for p in walk(sym,'pin')}
-        self.assertEqual(pins,verify_s8.TPS259470_TI)
-        fp=parse(s83_parts.footprint())
-        pads=[p for p in nodes(fp,'pad') if p[1]]
-        self.assertEqual({p[1] for p in pads},set(map(str,range(1,11))))
-        self.assertEqual(len(pads),14)  # four L-shaped pads represented by two pieces
-        for n,x in [('5',-.25),('6',.25)]:
-            p=next(p for p in pads if p[1]==n)
-            self.assertEqual(list(map(float,one(p,'at')[1:])),[x,0])
-            self.assertEqual(list(map(float,one(p,'size')[1:])),[.3,2.4])
-        paste=[p for p in nodes(fp,'pad') if not p[1]]
-        self.assertEqual(len(paste),16)
-        self.assertTrue(all(one(p,'layers')[1:]==['F.Paste'] for p in paste))
-        self.assertFalse(any('via'==v[0] for v in fp if isinstance(v,list)))
-        self.assertEqual((MODULE/'hardware/USBPOWER45.pretty'/
-                         (s83_parts.FP_S83['RPW10']+'.kicad_mod')).read_text(), s83_parts.footprint())
 
     def test_tlv431_symbol_pin_numbers(self):
         """U21 symbol = stock TL431DBZ drawing renumbered to TI TLV431 DBZ (SLVS139Z Table 4-1)."""
@@ -421,7 +359,7 @@ class PlacedBoard(unittest.TestCase):
                              capture_output=True, text=True, check=True).stdout
         r = json.loads(out[out.index('{'):])
         self.assertTrue(r['pass'], {k: r[k] for k in ('parked_parts', 'courtyard_overlaps', 'edge_rule_findings_not_approved')})
-        self.assertEqual(r['parts_on_board'], 191)
+        self.assertEqual(r['parts_on_board'], COMPONENTS)
         self.assertEqual((r['parked_parts'], r['parts_on_B'], r['tracks'], r['zones']), ([], [], 0, 0))
         self.assertEqual(set(r['headers_vs_contract']), {'J2', 'J3'})
         self.assertTrue(all(h['matches'] for h in r['headers_vs_contract'].values()))
@@ -434,9 +372,7 @@ class PlacedBoard(unittest.TestCase):
         rows = {(x['from'].split('.')[0], x['purpose']): x for x in loops['rows']}
         for (ic, why), x in rows.items():
             self.assertLessEqual(x['distance_mm'], x['limit_mm'], (ic, why))
-        u23 = [x for (ic, _), x in rows.items() if ic == 'U23']
-        self.assertEqual(len(u23), 4)
-        self.assertTrue(all(x['distance_mm'] <= 6.0 for x in u23), u23)
+        self.assertFalse({ic for ic, _ in rows} & {'U23', 'U3'}, 'S9.0: no +5V loop rows')
 
     def test_table_covers_every_part_once(self):
         import build_s8_board
@@ -464,16 +400,17 @@ class PlacedBoard(unittest.TestCase):
 
 
 class ReviewRecord(unittest.TestCase):
-    """S8.5: docs/s8-single/review-s85.json (tools/review_s8.py) hashes match the files in the tree, and it hashes only
+    """S9.0: docs/s8-single/review-s90.json (tools/review_s8.py) hashes match the files in the tree, and it hashes only
     files a clean clone has (S8.4 hashed the git-ignored *.kicad_prl files: the suite failed from a fresh checkout)."""
 
     def test_review_hashes_match(self):
         import hashlib
-        rec_path = MODULE / 'docs/s8-single/review-s85.json'
+        self.assertFalse((MODULE / 'docs/s8-single/review-s85.json').exists(), 'S8.5 record replaced (git history)')
+        rec_path = MODULE / 'docs/s8-single/review-s90.json'
         if DESIGN.resolve() != MODULE.resolve() or not rec_path.exists():
             self.skipTest('review record applies to the module tree once generated (tools/review_s8.py)')
         rec = json.loads(rec_path.read_text())
-        self.assertEqual(rec['revision'], 'S8.5 / P1.5')
+        self.assertEqual(rec['revision'], 'S9.0 / P2.0')
         hashed = [rel for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256')
                   for rel in rec[group]]
         self.assertFalse([rel for rel in hashed if rel.endswith('.kicad_prl') or rel.startswith('research/')])
@@ -487,19 +424,73 @@ class ReviewRecord(unittest.TestCase):
         self.assertFalse(rec['tests']['log_committed'])
 
 
+class Plus5Removed(unittest.TestCase):
+    """S9.0 regression: no +5V net, ref or part survives anywhere - schematic files, PCB, BOM, placement and board records
+    (the verifier separately checks the native netlist). U5's nets are MAIN_* on the single board (EF_* only in S7)."""
+
+    GONE_REFS = set(circuit_s8.S9_REMOVED) | set(circuit_s8.S8_PLUS5_DROPPED)
+
+    @staticmethod
+    def bad_net(name):
+        name = name.split('/')[-1]
+        return name in ('+5V', 'FIVE_V') or name.startswith(('P5_', 'EF_')) or name in circuit_s8.PLUS5_NETS
+
+    def test_no_plus5_in_schematic_files(self):
+        from sexp import parse, nodes, one
+        files = sorted((DESIGN / 'hardware/single').glob('*.kicad_sch'))
+        self.assertEqual(len(files), 6)
+        self.assertFalse((DESIGN / 'hardware/single/03_positive_5v.kicad_sch').exists())
+        for f in files:
+            tree = parse(f.read_text())
+            for sym in nodes(tree, 'symbol'):
+                ref = next(p[2] for p in nodes(sym, 'property') if p[1] == 'Reference')
+                self.assertNotIn(ref, self.GONE_REFS, f.name)
+                self.assertNotEqual(one(sym, 'lib_id')[1], 'USBPOWER45:+5V', f.name)
+            for kind in ('label', 'hierarchical_label', 'global_label'):
+                for lab in nodes(tree, kind):
+                    self.assertFalse(self.bad_net(lab[1]), (f.name, lab[1]))
+        lib = parse((DESIGN / 'hardware/single/USBPOWER45.kicad_sym').read_text())
+        self.assertFalse({s[1] for s in nodes(lib, 'symbol')} & {'+5V', 'TPS259470_RPW'})
+
+    def test_no_plus5_on_the_pcb(self):
+        from sexp import parse, nodes, one
+        tree = parse(BOARD.read_text())
+        nets = {n[2] for n in nodes(tree, 'net') if len(n) > 2} | {n[1] for n in nodes(tree, 'net') if len(n) == 2}
+        self.assertFalse({n for n in nets if isinstance(n, str) and self.bad_net(n)})
+        refs = {next(p[2] for p in nodes(f, 'property') if p[1] == 'Reference') for f in nodes(tree, 'footprint')}
+        self.assertFalse(refs & self.GONE_REFS)
+        self.assertFalse(any('RPW0010A' in f[1] for f in nodes(tree, 'footprint')))
+
+    def test_no_plus5_in_records(self):
+        import csv
+        with (DESIGN / 'docs/s8-single/bom.csv').open() as fh:
+            rows = list(csv.DictReader(fh))
+        bom_refs = {r for row in rows for r in row['Refs'].split(',')}
+        self.assertFalse(bom_refs & self.GONE_REFS)
+        self.assertFalse({row['MPN'] for row in rows} & verify_s8.FORBIDDEN_MPN)
+        placed = set(json.loads((DESIGN / 'docs/s8-single/placement.json').read_text())['parts'])
+        self.assertFalse(placed & self.GONE_REFS)
+        build = json.loads((DESIGN / 'docs/s8-single/build.json').read_text())
+        self.assertEqual(set(build['removed_in_S9_plus5']), {r for r in self.GONE_REFS})
+        self.assertFalse({n for n in build['inter_sheet_nets'] if self.bad_net(n)})
+        board = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())
+        self.assertFalse({row['from'].split('.')[0] for row in board['local_loops']['rows']} & self.GONE_REFS)
+
+
 class Calcs(unittest.TestCase):
     def test_closed_form_screens(self):
         import s8_calcs as c
         parts, val = c.table()
         banks, eff = c.banks(parts)
         self.assertGreater(banks['+12V']['eff_uF'][0], 10)      # TI minimum effective COUT
-        self.assertGreater(banks['+5V']['eff_uF'][0], 10)
+        self.assertNotIn('+5V', banks)
         ss = c.soft_start(val, eff)
         self.assertGreater(ss['+12V']['track_ramp_max_C_mF']['full_load'], 1.0)
         self.assertGreater(c.startup_window(val)['ratio_min_window_to_budget'], 2)
         rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
         ov = c.ov_guard(val, rel)
-        for rail in ('+12V', '+5V', '-12V'):
+        self.assertEqual({k for k in ov if k.startswith(('+', '-'))}, {'+12V', '-12V'})
+        for rail in ('+12V', '-12V'):
             self.assertGreater(ov[rail]['release_margin_to_guard_min_V'], 0, rail)
             self.assertGreater(ov[rail]['stacked_margin_to_guard_min_V'], 0, rail)
             self.assertGreaterEqual(ov[rail]['margin_guard_max_to_limit_V'], 0, rail)
@@ -527,41 +518,15 @@ class Calcs(unittest.TestCase):
             self.assertGreater(case['rack_allowance_mF'], pub)
             self.assertLess(case['time_to_full_12V_at_that_C_ms'], 309 * 0.5)
 
-    def test_m2_load_release_cannot_reach_ovlo(self):
-        """S8.4 M2: every release from within U23's current limit stays below the OVLO and U20 +5V minima; the OVLO
-        falling threshold is computed for the 0.1 % R11/R12 setpoint."""
-        import s8_calcs as c
-        parts, val = c.table(); _, eff = c.banks(parts)
-        rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
-        ov = c.ov_guard(val, rel)
-        st = c.disconnect_settings(val)
-        r = c.ovlo_release(val, eff, st, ov)
-        self.assertTrue(r['imposed_model_release_below_trips'])
-        self.assertGreater(r['release_cases']['U23_ILIM_max']['margin_to_OVLO_min_V'], 0.05)
-        self.assertGreater(r['max_release_current_clearing_OVLO_min_A'], st['current_min_nom_max_A'][2])
-        self.assertEqual([round(v, 3) for v in r['setpoint_V']], [4.856, 4.985, 5.114])
-        self.assertLess(r['OVLO_falling_V'][2], r['OVLO_rising_V'][0])
-        self.assertGreater(r['reconnect_margin_nominal_V'], 0.15)
-        self.assertGreater(r['reconnect_margin_worst_V'], r['S83_reconnect_margin_worst_V'])
-        # Still OPEN (documented): at stacked corners the setpoint max sits above the OVLO release minimum. If this
-        # ever turns positive, update docs/s8-single-board.md and the review open gates.
-        self.assertTrue(r['reconnect_corner_open'])
-        self.assertAlmostEqual(r['reconnect_margin_worst_V'], -0.035, places=3)
-
     def test_m5_published_rating(self):
-        """S8.4 M5: published +5V 2.0 A keeps >= 0.6 A to U23's minimum ILIM (ITIMER open) and stays cool."""
+        """Published rating: 75 % of the minimum current-limited capability, nearest 0.1 A, +/-12V only."""
         import s8_calcs as c
         parts, val = c.table(); _, eff = c.banks(parts)
-        r = c.rating(val, eff, c.disconnect_settings(val))
-        self.assertEqual(r['published_A'], {'+12V': 2.5, '+5V': 2.0, '-12V': 0.9})
-        self.assertGreaterEqual(r['headroom_to_capability_A']['+5V'], 0.6)
-        self.assertTrue(all(f <= 0.76 for f in r['fraction_of_capability'].values()), r['fraction_of_capability'])
+        r = c.rating(val, eff)
+        self.assertEqual(set(r['published_A']), {'+12V', '-12V'})
+        self.assertTrue(all(f <= 0.77 for f in r['fraction_of_capability'].values()), r['fraction_of_capability'])
         self.assertEqual(r['vin_floor_V'], c.converter_vin(c.VPD_RATED_MIN))
-        # below the rated range (source sagging to the U5 turn-off minimum) the rating is reported, not margined
-        self.assertTrue(all(f < 0.85 for f in r['below_rated_range']['fraction_of_capability'].values()))
-        self.assertLess(r['plus5_thermal']['dT_C_no_vias_74C5W'], 20)
-        self.assertLess(r['simultaneous']['input_A_at_20V_45W_worst_mix'], r['simultaneous']['U5_limit_min_A'])
-        self.assertLessEqual(r['simultaneous']['delivered_total_limit_W'], 45.0)
+        self.assertTrue(all(f < 0.86 for f in r['below_rated_range']['fraction_of_capability'].values()))
 
     def test_u5_window_arithmetic(self):
         """U5 UVLO thresholds referred to VPD: TI 1.176/1.2/1.224 V rising, 1.09/1.122/1.15 V falling, R2 100k / R3 7.5k
@@ -615,39 +580,9 @@ class Calcs(unittest.TestCase):
         rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
         cf = c.basic_only_counterfactual(val, eff, rel)
         self.assertTrue(cf['failing'], 'with 1 % parts some precision screen must fail (else revisit the policy)')
-        self.assertEqual(c.ov_guard(val, rel)['+5V']['guard_V'], [5.677, 5.828, 5.976], 'globals restored')
-
-    def test_disconnect_screen_and_delay_sensitivity(self):
-        import s8_calcs as c
-        parts,val=c.table(); _,eff=c.banks(parts)
-        rel=json.loads((DESIGN/'docs/s8-single/calcs.json').read_text())['rail_release']
-        ef=c.disconnect(val,eff,c.ov_guard(val,rel))
-        self.assertGreater(ef['normal_margin_to_OVLO_min_V'],.05)
-        self.assertGreater(ef['current_min_nom_max_A'][0],2.5)
-        self.assertLess(ef['current_min_nom_max_A'][2],3.5)
-        self.assertIsNone(ef['OVLO_response_max_us'])
-        self.assertFalse(ef['FLT_reports_OVLO']);self.assertTrue(ef['AUXOFF_reports_OVLO'])
-        self.assertFalse(ef['fault_delay_sensitivity']['guaranteed_bound'])
-        cases=ef['fault_delay_sensitivity']['cases']
-        for case in cases.values():
-            self.assertIsNotNone(case['t_disconnect_us'])
-            self.assertIsNotNone(case['t_U5_off_us'])
-            self.assertLess(case['header_peak_V'],case['raw_peak_V'])
-        self.assertGreater(cases['L1uH_delay5us']['header_peak_V'], cases['L1uH_delay1.2us']['header_peak_V'])
-        # Do not encode "always <6V": the sensitivity sweep intentionally exposes the unqualified cases.
-        self.assertTrue(any(v['header_peak_V']>6 for v in cases.values()))
-        # S8.4 C2: the 3 us case and the 30 V / 1 ohm stress case stay above 6 V for most of the window.
-        for k in ('L3.3uH_delay3us', 'VIN30_src1ohm_L3.3uH_3us'):
-            self.assertGreater(cases[k]['header_peak_V'], 6.0, k)
-            self.assertGreater(cases[k]['header_time_above_6V_us'], 150, k)
-        self.assertIn('NOT GUARANTEED', ef['qualification'])
-
-    def test_fault_screen_timestep_convergence(self):
-        import s8_calcs as c
-        _,eff=c.banks(c.table()[0]);cin=eff['VIN'][1]+eff['damper'][1]
-        kw=dict(c_in=cin,c_raw=eff['P5_RAW'][0],c_out=eff['+5V'][0],trip=5.848,delay=1.2e-6)
-        a,b=c._disconnect_run(**kw),c._disconnect_run(**kw,dt=2.5e-9)
-        self.assertLess(abs(a['header_peak_V']-b['header_peak_V']),.005)
+        self.assertEqual(cf['precision_refs'], ['R93', 'R94', 'R98', 'R99'])
+        self.assertEqual(c.ov_guard(val, rel)['+12V']['guard_V'], c.ov_guard(val, rel)['+12V']['guard_V'])
+        self.assertEqual(c.corners('R93'), c.R01, 'globals restored')
 
     def test_comparator_headroom_and_legacy_failure(self):
         import s8_calcs as c

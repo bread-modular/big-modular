@@ -56,7 +56,7 @@ def geometry():
     g['mating_plug']['ribbon_shown_to_Z_mm'] = DEPTH_Z + 8.0
     g['cans'] = {'status': 'none: S8 is all-ceramic', 'parts': []}
     g['single_side'] = 'every part on F (user 2026-11-01: "Use single side for now"); B face: copper only'
-    g['inductor_body'] = {'parts': ['L1', 'L2', 'L3'], 'body_LWH_max_mm': [10.3, 10.3, 4.0],
+    g['inductor_body'] = {'parts': ['L1', 'L3'], 'body_LWH_max_mm': [10.3, 10.3, 4.0],     # S9.0: L2 (+5V) removed
                           'basis': 'SLO1040 class 10 x 10 x 4.0 mm (footprint L_SLO1040H6R8MTT has no 3D model; '
                                    'renders use a 10 x 10 x 4 proxy)'}
     return g
@@ -149,7 +149,7 @@ def risks(g, rep):
          'measure': 'board rear edge below the bus header tops in the 60 mm case',
          'detail': 'The 48.4 mm deep board cannot sit directly over a busboard header in the 60 mm case.'},
         {'id': 'nominal_proxies', 'severity': 'open',
-         'detail': 'U23 (2.1 x 2.1 x 1.0 max-body proxy), J1, SW1 and L1-L3 are proxies, not manufacturer models; '
+         'detail': 'J1, SW1, L1 and L3 are proxies, not manufacturer models; '
                    'the 3D screen is nominal, not an assembly approval.'}]
 
 

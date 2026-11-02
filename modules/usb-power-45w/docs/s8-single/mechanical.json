@@ -320,7 +320,6 @@
  "inductor_body": {
   "parts": [
    "L1",
-   "L2",
    "L3"
   ],
   "body_LWH_max_mm": [
@@ -566,7 +565,7 @@
   {
    "id": "nominal_proxies",
    "severity": "open",
-   "detail": "U23 (2.1 x 2.1 x 1.0 max-body proxy), J1, SW1 and L1-L3 are proxies, not manufacturer models; the 3D screen is nominal, not an assembly approval."
+   "detail": "J1, SW1, L1 and L3 are proxies, not manufacturer models; the 3D screen is nominal, not an assembly approval."
   }
  ]
 }

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """S8 single-board pre-calculations: ceramic banks, VIN damper, soft start into rack capacitance,
-overvoltage guard and VPD-powered comparators, +5V series disconnect (OVLO rising/falling and current
-corners, load-release vs OVLO proof, shorted-high-side delay sensitivity, split banks and thermal screens),
-V3V3-loss comparator state, -12V start-up per the LMR38020 hiccup rule, the published conservative
+overvoltage guard and VPD-powered comparators, V3V3-loss comparator state, -12V start-up per the LMR38020 hiccup rule, the published conservative
 continuous rating, input and connector budgets, board area (S8.4); S8.5: the one-shot arming (required
 behaviour, STARTED latch topology, V20_OK status floor over tolerance/temperature, U5 window, startup budget)
-and the replug / power-on-reset race of the U20 -12V channel (an explicit OPEN item).
+and the replug / power-on-reset race of the U20 -12V channel (an explicit OPEN item). S9.0 step 1: the +5V subsystem is gone,
+so every +5V section (U23 disconnect, OVLO release, failed-high-side screen, TP18 bring-up, D21 TVS) left with it.
 
   python3 -B tools/s8_calcs.py --out docs/s8-single     (numpy; pcbnew for the area section)
 
@@ -51,20 +50,7 @@ SOURCES = {
                'CATHODE 2, ANODE 3 (Table 4-1)',
     'BAT54SL': 'onsemi BAT54SLT1/D rev 17: VF 0.24 V max at 0.1 mA, 0.32 V at 1 mA; IR 2 uA max at 25 V (25 C); '
                'pin 1 anode, 2 cathode, 3 cathode-anode',
-    'SMAJ5.0A': 'JLC/LCSC C113952 listing (MDD): VRWM 5.0 V, VBR 6.4-7.0 V class, VC 9.2 V at 43.5 A (10/1000 us), '
-                'IR <= 800 uA at VRWM',
     'cap_study': 'docs/capacitor-study/README.md bounds (BIAS, tol/temp/aging, ESR, source grid)',
-    'TPS25947': 'TI SLVSFC9C (https://www.ti.com/lit/ds/symlink/tps25947.pdf): TPS259470A adjustable OVLO, '
-                 'VOV(R) 1.183/1.20/1.223 V; IOVLKG +/-0.1 uA; tOVLO 1.2 us TYP only; RON 28.2 typ / 45 max mOhm; '
-                 'RILM = 3334/ILIM; +/-10% ILIM above 1 A; CdVdt(pF)=2000/SR(V/ms), IdVdt 0.81/2.21/3.82 uA. '
-                 'IN 2.7-23 V operating / 28 V absolute; SRIN rising/falling 100/10 V/us; OUT >= -0.3 V '
-                 '(-0.8 V <1us). AUXOFF deasserts on OVLO, FLT does NOT. See tables 7-3/7-4. S8.4 additions: '
-                 'VOV(F) 1.076/1.09/1.116 V; tSWOV 90 us typ (OVLO fast recovery, current-limited, dVdt bypassed); '
-                 'ILIM table 1.80/2.028/2.20 A at 1.65k and 3.96/4.452/4.84 A at 750R (-10.9/+8.9 % vs 3334/RILM); '
-                 'ITIMER open = minimum blanking, no transient above ILIM; Table 7-3 FLT low on OT, persistent current '
-                 'limit, ILM open/short and reverse current (VOUT-VIN > 22.3-36.45 mV, exit at VIN-VOUT > 83-125 mV); '
-                 'Table 7-4 AUXOFF low only on UVP/UVLO, input reverse polarity, OVLO and inrush (H for every load-side '
-                 'event incl. reverse current and OT); RthJA 74.5 C/W JEDEC 4L without vias, 41.7 C/W with 8 vias',
     'LMR38020_hiccup': 'TI SNVSC40E 8.3.8/8.3.9: hiccup only if FB < 40 % of VREF while ILS limits for 256 consecutive '
                        'cycles; disabled for TOCP_BLK 18 ms typ (no min) from power-up; IOUTMAX = ILS + ripple/2 (Eq. 7)',
     'TPS62933F_IOMAX': 'TI SLUSEA4D 9.3.12 Eq. 11/12: IOMAX ~ (IHS + ILS)/2, or IHS - ripple/2 if ripple is large; '
@@ -95,7 +81,6 @@ def table():
 
 R01 = (.999 * .9975, 1.001 * 1.0025)     # 0.1 % + 25 ppm/C x 100 C
 R1 = (.99 * .99, 1.01 * 1.01)            # 1 % + 1 % TCR drift (S6 screens)
-ILIM_TABLE = (1.800 / (3334 / 1650), 2.200 / (3334 / 1650))   # SLVSFC9C ILIM table vs 3334/RILM: -10.9 % / +8.9 %
 
 
 def corners(ref):
@@ -116,26 +101,26 @@ def setpoint(val, top, bot, vfb):
             vfb[2] * (1 + val(top) * th / (val(bot) * bl))]
 
 
+BANK_COUNTS = {'+12V': 6, '-12V': 7, 'VIN': 3, 'damper': 2}
+
+
 def banks(parts):
     """Effective capacitance bounds (uF) per bank under the capacitor-study bias bands."""
     def count(net, value):
         return sum(1 for p in parts.values() if p['value'] == value and p['fp'] == 'C1206'
                    and net in p['pins'].values() and 'GND' in p['pins'].values())
-    n = {'+12V': count('+12V', '22u'), '+5V': count('+5V', '22u'), 'P5_RAW': count('P5_RAW', '22u'), '-12V': count('-12V', '22u'),
+    n = {'+12V': count('+12V', '22u'), '-12V': count('-12V', '22u'),
          'VIN': count('VIN', '10u'), 'damper': count('_VIN_DAMP', '10u')}
-    assert n == {'+12V': 6, '+5V': 4, 'P5_RAW': 10, '-12V': 7, 'VIN': 5, 'damper': 2}, n
-    eff = {'+12V': cs.mlcc(n['+12V'], 22, '22u25V_1206', 12.2), '+5V': cs.mlcc(n['+5V'], 22, '22u25V_1206', 5.0),
-           'P5_RAW': cs.mlcc(n['P5_RAW'], 22, '22u25V_1206', 5.0),
+    assert n == BANK_COUNTS, n
+    eff = {'+12V': cs.mlcc(n['+12V'], 22, '22u25V_1206', 12.2),
            '-12V': cs.mlcc(n['-12V'], 22, '22u25V_1206', 12.2), 'VIN': cs.mlcc(n['VIN'], 10, '10u50V_1206', 20.0),
            'damper': cs.mlcc(n['damper'], 10, '10u50V_1206', 20.0)}
-    s7 = {'+12V': cs.mlcc(4, 22, '22u25V_1206', 12.2), '+5V': cs.mlcc(4, 22, '22u25V_1206', 5.0),
-          '-12V': cs.mlcc(5, 22, '22u25V_1206', 12.2)}
+    s7 = {'+12V': cs.mlcc(4, 22, '22u25V_1206', 12.2), '-12V': cs.mlcc(5, 22, '22u25V_1206', 12.2)}
     ti = {'+12V': 'TPS62933 Table 10-2 (12 V): typ 15 / min 10 uF effective',
-          '+5V': 'U23 delivered bank only: C35/C60/C73/C74, no buck feedback here',
-          'P5_RAW': 'U3 feedback/local bank BEFORE U23: TPS62933 Table 10-2 typ 20 / min 10 uF',
           '-12V': 'LMR38020 Table 9-1 is a BUCK guide in rated C (12 V/1 MHz 2 x 10u, 12 V/400 kHz 1 x 22u); '
                   'IBB: no TI table; max ~10 x design or 1000 uF incl. the rack',
-          'VIN': 'TPS62933: 10 uF + 100 nF per converter; LMR38020 CIN >= 4.7 uF effective (C25 + C26, unchanged)',
+          'VIN': 'TPS62933: 10 uF + 100 nF per converter; LMR38020 CIN >= 4.7 uF effective (C25 + C26, unchanged). '
+                 'S9.0 step 1: U3 C15/C16 left with +5V',
           'damper': 'series-R damper branch, capacitor study option B_RCx2'}
     out = {k: dict(parts=n[k], eff_uF=[round(v[0] * 1e6, 1), round(v[1] * 1e6, 1)], bank_esr_mohm=round(v[2] * 1e3, 2),
                    reference=ti[k]) for k, v in eff.items()}
@@ -148,8 +133,8 @@ def banks(parts):
 def ripple_and_steps(eff):
     """Switching ripple (CCM, ideal waveforms) and load-step deviation estimates at the LOW C corner."""
     res = {}
-    for rail, vo, L, fsw in (('+12V', 12.194, 6.8e-6, 1.2e6), ('+5V', 4.985, 3.3e-6, 1.977e6)):
-        c_lo, _, esr = eff['P5_RAW' if rail == '+5V' else rail]
+    for rail, vo, L, fsw in (('+12V', 12.194, 6.8e-6, 1.2e6),):
+        c_lo, _, esr = eff[rail]
         rows = []
         for vin in (17.2, 20.0, 24.1):
             D = vo / vin
@@ -182,10 +167,14 @@ def ripple_and_steps(eff):
     return res
 
 
-def vin_damper(rd):
-    """Middlebrook screen of the all-ceramic VIN bus with the series-R damper (study option B_RCx2)."""
+def vin_damper(rd, n_vin, v_min=None, p_max=None):
+    """Middlebrook screen of the all-ceramic VIN bus with the series-R damper (study option B_RCx2). S9.0: the VIN ceramic
+    count (n_vin x 10u) and the constant-power load (p_max at v_min) are this design's, not the study's 5 x 10u / 72 W."""
     import numpy as np
-    zin = cs.V_MIN ** 2 / cs.P_MAX
+    v_min = cs.V_MIN if v_min is None else v_min
+    p_max = cs.P_MAX if p_max is None else p_max
+    zin = v_min ** 2 / p_max
+    cer_lo, cer_hi, _ = cs.mlcc(n_vin, 10, '10u50V_1206', 20.0)
     freqs = np.logspace(3, 6, 240)
     out = {}
     for opt in ('B0', 'B_RCx2'):
@@ -193,9 +182,9 @@ def vin_damper(rd):
         for c in cs.vin_grid():
             if c['esr_i'] != 0 or c['c5c'] != 'lo':
                 continue
-            cer = cs.VIN_CER_LO if c['cer'] == 'lo' else cs.VIN_CER_HI
+            cer = cer_lo if c['cer'] == 'lo' else cer_hi
             lad, k = cs.vin_ladder(opt, c['L'], c['R'], c['Rb'], c['Ron'], cer, 0.0, cs.CSRC[c['csrc']], rd, c['c5c'])
-            g = np.zeros(len(lad.nodes)); g[k] = -cs.P_MAX / cs.V_MIN ** 2
+            g = np.zeros(len(lad.nodes)); g[k] = -p_max / v_min ** 2
             z, uns = cs.min_damping(lad.linear(g))
             worst['n'] += 1; worst['unstable'] += int(uns)
             if z < worst['zeta']:
@@ -210,7 +199,8 @@ def vin_damper(rd):
     study = json.loads((MODULE / 'docs/capacitor-study/generated/results.json').read_text())['vin_stability']['A']
     out['S7_can_reference'] = dict(zeta=round(study['zeta'], 3), zmax=round(study['zmax'], 3), margin_dB=study['margin_dB'])
     out['Zin_ohm'] = round(zin, 3)
-    out['load'] = f'{cs.P_MAX:.0f} W constant power at {cs.V_MIN} V (upper estimate, linearised)'
+    out['VIN_ceramics'] = f'{n_vin} x 10u/50V 1206 ({cer_lo * 1e6:.1f}-{cer_hi * 1e6:.1f} uF effective at the 20 V bias band)'
+    out['load'] = f'{p_max:.0f} W constant power at {v_min} V (upper estimate, linearised)'
     c_d_hi = cs.mlcc(2, 10, '10u50V_1206', 20.0)[1]
     sr = 2.225e-6 * 26 / (22e-9 * 0.9)                       # U5 dVdt fastest corner (cap study inrush())
     out['R92_stress'] = dict(ripple_rms_mA_from_study=26.7, ripple_P_mW=round(0.0267 ** 2 * rd * 1e3, 2),
@@ -225,7 +215,7 @@ def rail_release():
     rack directly on the rail, against the new overvoltage-guard minimum."""
     rack = dict(R=0.08, L=0.5e-6, C=470e-6, esr=0.1)
     res = {}
-    for rail in ('P12_RAW', 'P5_RAW', 'N12_RAW'):
+    for rail in ('P12_RAW', 'N12_RAW'):
         p = cs.RAILS[rail]
         rr = {}
         for nd in (2, 8, 16):
@@ -237,22 +227,7 @@ def rail_release():
         t, v = cs.raw_release(rail, 'B_x2', 'lo', cs.CAN['C34_36']['esr'][0], 8, rack=rack, at_rack=True)
         rr['rack-side release N=8'] = round(float(v.max()) - p['vo_hi'], 3)
         rr['vo_hi_V'] = p['vo_hi']
-        res[{'P12_RAW': '+12V', 'P5_RAW': '+5V', 'N12_RAW': '-12V'}[rail]] = rr
-    # S8.3 +5V: full 2.5 A load release into ONLY the upstream bank. No help from
-    # the downstream bank/rack and no 0.5us load-fall credit. Same imposed 2/8/16
-    # cycle delay + -Vo/L current slew as the study, integrated analytically.
-    _, eff = banks(table()[0])
-    c_lo, c_hi, esr = eff['P5_RAW']
-    vo, current, inductance, fsw = 4.985, 2.5, 3.3e-6, 1.977e6
-    row = {}
-    for nd in (2, 8, 16):
-        charge = current * nd / fsw + 0.5 * inductance * current**2 / vo
-        row[f'N={nd}'] = [round(charge / c_hi + current * esr, 3),
-                          round(charge / c_lo + current * esr, 3)]
-    row.update(vo_hi_V=cs.RAILS['P5_RAW']['vo_hi'],
-               model='2.5A release into upstream bank only; Q=I*N/fsw+L*I^2/(2*Vo); includes I*ESR; no loop model',
-               upstream_parts=10, rack_credit=False)
-    res['+5V'] = row
+        res[{'P12_RAW': '+12V', 'N12_RAW': '-12V'}[rail]] = rr
     return res
 
 
@@ -260,16 +235,15 @@ def soft_start(val, eff):
     """Largest TOTAL rail capacitance (onboard bank + rack) the soft start can charge at full load before the
     current limit; rack_allowance = that total minus the onboard bank at its high corner (review finding 4)."""
     css = val('C9')
-    assert css == val('C18')
     tss = {'min_ms': css * 0.9 * 0.8 / 6.5e-6 * 1e3, 'typ_ms': css * 0.8 / 5.5e-6 * 1e3,
            'max_ms': css * 1.1 * 0.8 / 4.5e-6 * 1e3}
     s7 = 22e-9 * 0.9 * 0.8 / 6.5e-6
     out = {'tSS_ms': {k: round(v, 2) for k, v in tss.items()}, 'S7_tSS_min_ms': round(s7 * 1e3, 2)}
-    for rail, vo, L, fsw, iload in (('+12V', 12.194, 6.8e-6, 1.2e6, 2.5), ('+5V', 4.985, 3.3e-6, 1.977e6, 2.5)):
+    for rail, vo, L, fsw, iload in (('+12V', 12.194, 6.8e-6, 1.2e6, 2.5),):
         dil = (24.1 - vo) * (vo / 24.1) / (L * fsw)
         avail = 4.2 - dil / 2                                  # IHS_LIMIT min minus half ripple
         t = tss['min_ms'] / 1e3
-        bank = eff['P5_RAW' if rail == '+5V' else rail]
+        bank = eff[rail]
         full = (avail - iload) * t / vo
         out[rail] = dict(avail_A=round(avail, 2),
                          track_ramp_max_C_mF={'full_load': round(full * 1e3, 2),
@@ -296,10 +270,8 @@ def soft_start(val, eff):
                        allowance_basis=m12['published_basis'],
                        ti_limit='<= ~10 x design COUT or 1000 uF, whichever is smaller (SNVSC40E 9.2.2.5)')
     out['rack_reference'] = ('Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. '
-                             '+/-12V rely on converter soft start; +5V also has U23 inrush control. S8.4: -12V '
-                             'allowance per the LMR38020 hiccup rule, see minus12_startup')
-    out['+5V']['scope'] = 'Upstream converter-only screen, NOT rack allowance; U23 sets delivered inrush (see disconnect)'
-    out['+5V'].pop('rack_allowance_full_load_mF')
+                             '+/-12V rely on converter soft start. S8.4: -12V allowance per the LMR38020 hiccup rule, see '
+                             'minus12_startup')
     out['note'] = ('track_ramp_max_C / max_C are TOTAL capacitance (onboard + rack); rack_allowance subtracts the '
                    'onboard bank at its high corner. Loads that draw less than the full target during start-up leave '
                    'more room (no_load column). Bench item: -12V start-up into the real rack.')
@@ -311,11 +283,11 @@ def ov_guard(val, release):
     3.6 mV lower at ~1 mA (|zKA| <= 0.4 ohm), LM2901B offset 5.5 mV and bias 50 nA out of the pin (-40..125 C),
     divider resistors 0.1 % + 25 ppm/C x 100 C. The converter setpoints keep the S8 1 % + 1 % TCR corners. Each
     band is checked against the capacitor-study release peak (study vo_hi + N=16 release), the stricter stacked
-    peak (setpoint corner + N=16 release) and the downstream limit (16 V module capacitors, 6.0 V 5 V logic).
-    S8.4: each converter setpoint uses its own feedback-resistor tolerance (R11/R12 0.1 %, review M2)."""
+    peak (setpoint corner + N=16 release) and the downstream limit (16 V module capacitors). S9.0: two channels
+    (+12V, -12V); each converter setpoint uses its own feedback-resistor tolerance."""
     vref, vio, ib_max = (1.224 - 0.0036, 1.24, 1.259), 0.0055, 50e-9
     rlo, rhi = R01
-    limit = {'+12V': 16.0, '+5V': 6.0, '-12V': 16.0}
+    limit = {'+12V': 16.0, '-12V': 16.0}
 
     def band(f):
         vals = [f(v, a, b, e, ib) for v in (vref[0], vref[2]) for a in (rlo, rhi) for b in (rlo, rhi)
@@ -333,13 +305,12 @@ def ov_guard(val, release):
         return (v * r99 + (ib * r98 * r99 / (r98 + r99) - e) * (r98 + r99)) / r98
     out = {}
     for rail, top, bot, fbt, fbb, vfb, ovp in (('+12V', 'R93', 'R94', 'R8', 'R9', (.784, .8, .816), True),
-                                                ('+5V', 'R95', 'R96', 'R11', 'R12', (.784, .8, .816), True),
                                                 ('-12V', 'R99', 'R98', 'R14', 'R15', (.985, 1.0, 1.015), False)):
         g = band(negative) if rail == '-12V' else positive(top, bot)
-        sp = setpoint(val, fbt, fbb, vfb)          # S8.4: R11/R12 0.1 % (review M2), R8/R9/R14/R15 1 %
+        sp = setpoint(val, fbt, fbb, vfb)          # R8/R9/R14/R15 1 % + 1 % TCR
         study_peak = release[rail]['N=16'][1] + release[rail]['vo_hi_V']
         stacked_peak = sp[2] + release[rail]['N=16'][1]
-        tau = (val(top) * val(bot) / (val(top) + val(bot))) * val({'+12V': 'C63', '+5V': 'C64', '-12V': 'C66'}[rail])
+        tau = (val(top) * val(bot) / (val(top) + val(bot))) * val({'+12V': 'C63', '-12V': 'C66'}[rail])
         row = dict(guard_V=[round(x, 3) for x in g], setpoint_V=[round(x, 3) for x in sp],
                    worst_imposed_release_peak_V=round(study_peak, 2),
                    release_margin_to_guard_min_V=round(g[0] - study_peak, 3),
@@ -353,16 +324,15 @@ def ov_guard(val, release):
         else:
             row.update(converter_OVP_V='none (LMR38020 has no output OVP)')
         out[rail] = row
-    out['previous'] = {'S8_nominal_V': {'+12V': 16.58, '+5V': 6.5, '-12V': 15.1},
-                       'S8_corners_V': {'+12V': [14.86, 18.45], '+5V': [5.84, 7.22], '-12V': [13.92, 16.36]},
-                       'S7_eFuse_OV_nominal_V': {'+12V': 14.4, '+5V': 5.55, '-12V': 14.25}}
+    out['previous'] = {'S8_nominal_V': {'+12V': 16.58, '-12V': 15.1},
+                       'S8_corners_V': {'+12V': [14.86, 18.45], '-12V': [13.92, 16.36]},
+                       'S7_eFuse_OV_nominal_V': {'+12V': 14.4, '-12V': 14.25}}
     out['response_us'] = dict(filter='8-9 (RC)', comparator=1.0, hc74_preset=0.05, tps1663_shdn=1.5,
                               total_after_crossing='~3 us + RC; then U5 off, rails decay')
     out['note'] = ('The bands are threshold screens, not a peak-voltage guarantee: opening U5 does not stop the energy '
-                   'already stored behind it (hs_short). The +5V band overlaps the TPS62933F OVP band (non-latching, '
-                   'stops the high side); either may act first on a slow excursion. A false trip latches every rail '
-                   'off (MAIN off, press RESET). Common-mode: both comparator inputs sit at ~1.24 V at a positive trip, '
-                   'inside VPD-2 V at full temperature (S8.3, >=15V qualified supply); -12V compares near 0 V.')
+                   'already stored behind it. A false trip latches every rail off (MAIN off, press RESET). Common-mode: '
+                   'both comparator inputs sit at ~1.24 V at a positive trip, inside VPD-2 V at full temperature; -12V '
+                   'compares near 0 V.')
     return out
 
 
@@ -407,8 +377,8 @@ def v3v3_loss(val):
         states={'U20 powered (VPD up, V3V3 lost or not yet up)': 'positive channels: REF_OV ~0 V, taps >= 0 V, output '
                 'state undefined/low; -12V channel: MON_OVN negative if the rack holds -12V, D22 clamps',
                 'U20 unpowered (VPD gone)': 'inputs see the same divider; only the bounded input current matters',
-                'logic': 'U10-U15 unpowered, all pull-ups (R97 OV_N, R44/R35/R62 status, R63 MAIN_OK) go to the dead '
-                         'V3V3; R64 holds RUN low -> U5 SHDN and U23 EN low, U2/U3 EN (MAIN_OK) low: nothing can be '
+                'logic': 'U10-U15 unpowered, all pull-ups (R97 OV_N, R35/R62 status, R63 MAIN_OK) go to the dead '
+                         'V3V3; R64 holds RUN low -> U5 SHDN low, U2 EN (MAIN_OK) low, U4 follows +12V: nothing can be '
                          'enabled by any comparator output'},
         minus12_held=rows, LM2901B_input_abs_max='-0.3 V; input current -50 mA max (SLCS006Z 6.1); footnote: '
         'current through the parasitic input diode can make the output incorrect, normal operation resumes after',
@@ -451,238 +421,31 @@ def comparator_supply(val):
                      'negative-input clamp and replug remain bench gates.')
 
 
-def disconnect_settings(val):
-    """Independent eFuse divider and programming tolerance screen, SLVSFC9C. S8.4: OVLO falling (release) band
-    from VOV(F) 1.076/1.09/1.116 V (review M2); ILIM band from TI's tabulated limits (-10.9 / +8.9 % against
-    3334/RILM at 1.65k and 750R, review m2 of S8.3) instead of a flat +/-10 %."""
-    import itertools
-    (rlo, rhi), (slo, shi) = R01, R1
-    top, trim, bot = val('R101'), val('R107'), val('R102')
-
-    def band(vmin, vtyp, vmax):
-        out = []
-        for ref, a, b, c, leak in itertools.product((vmin, vmax), (rlo, rhi), (slo, shi), (rlo, rhi), (-.1e-6, .1e-6)):
-            rt, rb = top*a + trim*b, bot*c
-            out.append(ref*(1+rt/rb) + leak*rt)
-        return [min(out), vtyp*(1+(top+trim)/bot), max(out)]
-    resistance = val('R103') + val('R104')
-    ilim = [3334*ILIM_TABLE[0]/(resistance*shi), 3334/resistance, 3334*ILIM_TABLE[1]/(resistance*slo)]
-    return dict(trip_min_nom_max_V=band(1.183, 1.20, 1.223), release_min_nom_max_V=band(1.076, 1.09, 1.116),
-                current_min_nom_max_A=ilim, ILIM_table_ratio=[round(v, 4) for v in ILIM_TABLE],
-                divider_ohm=[top, trim, bot], ILM_ohm=resistance,
-                OVLO_response_typ_us=1.2, OVLO_response_max_us=None, OVLO_recovery_tSWOV_typ_us=90,
-                OVLO_fault_latched_internally=False, FLT_reports_OVLO=False, AUXOFF_reports_OVLO=True,
-                FLT_reports=['over-temperature', 'persistent current limit', 'ILM pin open/short',
-                             'reverse current (VOUT - VIN > 22.3-36.45 mV)'],
-                AUXOFF_low_only_on=['UVP/UVLO', 'input reverse polarity', 'OVLO', 'inrush'],
-                FLT_on_P5_OK=False)
-
-
-def bringup_tp18(val):
-    """S8.4 (review M7): unpowered meter check across U23 (TP18 = P5_RAW to J2/J3 pin 11/12 = +5V). With U23 off
-    (back-to-back FETs) the only paths run through GND: P5_RAW -> R11+R12 || R107+R101+R102 || R95+R96 -> GND, and
-    +5V -> R77+R78+R79 -> GND, each crossed by a forward clamp diode (D23 GND->+5V, D3/D21 GND->P5_RAW)."""
-    raw = 1 / (1 / (val('R11') + val('R12')) + 1 / (val('R107') + val('R101') + val('R102'))
-               + 1 / (val('R95') + val('R96')))
-    out = val('R77') + val('R78') + val('R79')
-    return dict(P5_RAW_to_GND_ohm=round(raw), plus5_to_GND_ohm=round(out),
-                meter_TP18_positive_ohm=f'~{raw / 1e3:.0f}k + D23 forward drop',
-                meter_plus5_positive_ohm=f'~{out / 1e3:.0f}k + D3/D21 forward drop',
-                pass_rule='must not read a short (< 100 ohm) in either polarity; readings rise while the banks charge',
-                fail_meaning='near 0 ohm = a solder bridge between U23 IN (pad 5) and OUT (pad 6) bypasses the eFuse',
-                mask_web_min_mm=0.15)
-
-
-def ovlo_release(val, eff, settings, ov):
-    """S8.4 (review M2): can a legitimate +5V load release reach the U23 OVLO (and so the common latch)?
-    Setpoint from the 0.1 % R11/R12 divider; release from up to U23's highest current limit (the largest current
-    any +5V load can draw through U23) into ONLY the upstream bank at its low-C corner, 16 cycles of unchanged
-    converter current then -Vo/L (the S8.3 imposed model, no loop model, no downstream/rack credit). Also the OVLO
-    falling (release) threshold against the setpoint: after a genuine OVLO trip U23 reconnects only once P5_RAW
-    falls below it."""
-    sp = setpoint(val, 'R11', 'R12', (.784, .8, .816))
-    trip, release = settings['trip_min_nom_max_V'], settings['release_min_nom_max_V']
-    c_lo, _, esr = eff['P5_RAW']
-    vo, inductance, fsw, n = 4.985, 3.3e-6, 1.977e6, 16
-
-    def rise(i):
-        return (i * n / fsw + 0.5 * inductance * i * i / vo) / c_lo + i * esr
-    guard_min = ov['+5V']['guard_V'][0]
-    cases = {}
-    for name, i in (('rated_2A0', 2.0), ('S7_target_2A5', 2.5), ('U23_ILIM_max', settings['current_min_nom_max_A'][2])):
-        pk = sp[2] + rise(i)
-        cases[name] = dict(I_A=round(i, 3), rise_V=round(rise(i), 3), peak_V=round(pk, 3),
-                           margin_to_OVLO_min_V=round(trip[0] - pk, 3), margin_to_U20_guard_min_V=round(guard_min - pk, 3))
-    lo_i, hi_i = 0.0, 20.0
-    for _ in range(60):                                       # largest release current that still clears OVLO min
-        mid = (lo_i + hi_i) / 2
-        lo_i, hi_i = (mid, hi_i) if sp[2] + rise(mid) < trip[0] else (lo_i, mid)
-    sp_s83 = [0.784 * (1 + val('R11') * R1[0] / (val('R12') * R1[1])), sp[1],
-              0.816 * (1 + val('R11') * R1[1] / (val('R12') * R1[0]))]
-    return dict(setpoint_V=[round(v, 4) for v in sp], S83_1pct_setpoint_V=[round(v, 4) for v in sp_s83],
-                OVLO_rising_V=[round(v, 4) for v in trip], OVLO_falling_V=[round(v, 4) for v in release],
-                U20_guard_min_V=round(guard_min, 3), release_cases=cases,
-                max_release_current_clearing_OVLO_min_A=round(lo_i, 2),
-                imposed_model_release_below_trips=all(c['margin_to_OVLO_min_V'] > 0 and c['margin_to_U20_guard_min_V'] > 0
-                                                      for c in cases.values()),
-                reconnect_margin_nominal_V=round(release[1] - sp[1], 3),
-                reconnect_margin_worst_V=round(release[0] - sp[2], 3),
-                S83_reconnect_margin_worst_V=round(release[0] - sp_s83[2], 3),
-                reconnect_corner_open=release[0] - sp[2] < 0,
-                model='rise = (I*N/fsw + L*I^2/(2*Vo))/C_low + I*ESR, N=16, upstream bank only, setpoint max; '
-                      'no TPS62933F loop model, no downstream or rack credit',
-                note='In this imposed-current model every release from within U23\'s current limit (<= ILIM max) '
-                     'stays below the OVLO minimum and the U20 +5V guard minimum; a loop-level load-release test is '
-                     'still required before claiming that no legitimate release opens U23 or presets FAULT. '
-                     'A +5V short (U23 fast trip, up to the U3 5.8 A peak limit in L2) is a fault and may trip either '
-                     'one -> latched off (fail-safe). After a genuine OVLO trip U23 reconnects once P5_RAW < release: '
-                     'nominal margin positive, but at stacked corners the setpoint max can sit above the release minimum, '
-                     'so U23 may stay open and the common latch then holds every rail off until RESET (fail-safe).')
-
-
-def _disconnect_run(c_in, c_raw, c_out, trip, delay, *, inductance=3.3e-6, vin0=20.0,
-                    ron=.0282, i0=2.5, v0=5.259, guard_trip=5.976, dt=5e-9, t_end=200e-6, r_src=None):
-    """Screen, not an IC macromodel. Shorted U3 high side -> L2 -> raw bank/TVS ->
-    U23 Ron -> delivered bank (no load). U5 supplies its high current-limit corner
-    until U20 RC + assumed 2.6us logic/SHDN delay. No credit for U23 current limit
-    or short-circuit trip. Ideal reverse block. U23 opens after a chosen delay,
-    no intentional OVLO filter. Capacitance held constant, no wiring inductance,
-    TVS is 7V+0.05ohm, low-side body diode -0.7V, raw negative clamp -0.3V.
-    The separate post-interruption LC estimate covers selected local output-L.
-    r_src: optional source resistance (ohm) holding VIN at vin0 instead of the U5 limit feed (S8.4 C2 stress
-    case, bounded by the same U5 current limit; vin0 above the U5 OVP window is a stress, not an operating point).
-    v0 = 5.259 V deliberately keeps the S8.3 1 % setpoint corner as the starting voltage (S8.4 R11/R12 0.1 %
-    give 5.114 V): the C2 exposure is not softened by the tighter divider.
-    This is NOT a maximum peak prediction or a guaranteed protection envelope.
-    """
-    vin, raw, out, il, fg = vin0, v0, v0, i0, v0
-    t_trip = t_guard = t_off = t_u5 = None
-    res = dict(header_peak_V=v0, raw_peak_V=v0, switch_peak_A=0., switch_current_at_open_A=0.,
-               tvs_peak_A=0., tvs_energy_mJ=0., header_time_above_6V_us=0., raw_slew_rise_V_us=0.,
-               raw_slew_fall_V_us=0., VIN_min_V=vin0)
-    for k in range(int(t_end/dt)):
-        t = k*dt
-        if t_trip is None and raw >= trip:
-            t_trip, t_off = t, t+delay
-        if t_guard is None and fg >= guard_trip:
-            t_guard, t_u5 = t, t+2.6e-6
-        on = t_off is None or t < t_off
-        isw = max(0., (raw-out)/ron) if on else 0.
-        if on:
-            res['switch_current_at_open_A'] = isw
-        itvs = max(0., (raw-7.)/.05)
-        v_sw, ifet = vin-il*.02, il
-        if v_sw < -.7:
-            v_sw, ifet = -.7, (vin+.7)/.02
-        id3 = max(0., (-raw-.3)/.05)
-        feed = 4.698 if t_u5 is None or t < t_u5 else 0.
-        if r_src and feed:
-            feed = min(feed, max(0., (vin0-vin)/r_src))
-        dvin = (feed-ifet)/c_in
-        if vin >= vin0 and dvin > 0: dvin = 0.
-        dr = (il-isw-itvs+id3)/c_raw
-        vin, raw, out, il = (vin+dvin*dt, raw+dr*dt, out+isw/c_out*dt,
-                              il+(v_sw-il*.012-raw)/inductance*dt)
-        fg += (raw-fg)*dt/7.87e-6
-        res['header_peak_V'] = max(res['header_peak_V'], out)
-        res['raw_peak_V'] = max(res['raw_peak_V'], raw)
-        res['switch_peak_A'] = max(res['switch_peak_A'], isw)
-        res['tvs_peak_A'] = max(res['tvs_peak_A'], itvs)
-        res['tvs_energy_mJ'] += raw*itvs*dt*1e3
-        res['header_time_above_6V_us'] += dt*1e6 if out > 6 else 0.
-        res['raw_slew_rise_V_us'] = max(res['raw_slew_rise_V_us'], dr*1e-6)
-        res['raw_slew_fall_V_us'] = max(res['raw_slew_fall_V_us'], -dr*1e-6)
-        res['VIN_min_V'] = min(res['VIN_min_V'], vin)
-    res.update(t_trip_us=t_trip*1e6 if t_trip is not None else None,
-               t_disconnect_us=t_off*1e6 if t_off is not None else None,
-               t_U5_off_us=t_u5*1e6 if t_u5 is not None else None)
-    res['local_L_energy_peak_100nH_V'] = math.sqrt(res['header_peak_V']**2+
-                                                   100e-9*res['switch_current_at_open_A']**2/c_out)
-    return {k: round(v, 4) if v is not None else None for k, v in res.items()}
-
-
-def disconnect(val, eff, ov, simulate=True):
-    settings = disconnect_settings(val)
-    trip = settings['trip_min_nom_max_V']
-    c_up, c_down = eff['P5_RAW'], eff['+5V']
-    # Eq.4 is typical; scale by tabulated IdVdt extremes for sensitivity, NOT a
-    # guaranteed complete slew-rate spec. Include cap +/-10%.
-    slope = 2000/(val('C68')*1e12)
-    slopes = [slope*.81/2.21/1.1, slope, slope*3.82/2.21/.9]
-    ilim = settings['current_min_nom_max_A']
-    allowed = (ilim[0]-2.5)/(slopes[2]*1000)-c_down[1]
-    allowed_rated = (ilim[0]-2.0)/(slopes[2]*1000)-c_down[1]
-    out = dict(**settings,
-               C_raw_low_high_uF=[v*1e6 for v in c_up[:2]], C_out_low_high_uF=[v*1e6 for v in c_down[:2]],
-               normal_raw_peak_screen_V=ov['+5V']['stacked_setpoint_plus_release_V'],
-               normal_margin_to_OVLO_min_V=trip[0]-ov['+5V']['stacked_setpoint_plus_release_V'],
-               threshold_margin_to_6V_V=6-trip[2],
-               ramp_V_ms_sensitivity=slopes, ramp_5V_ms_sensitivity=[5/slopes[2],5/slope,5/slopes[0]],
-               rack_C_allowance_full_load_mF_sensitivity=allowed*1e3,
-               rack_C_allowance_at_2A0_rating_mF_sensitivity=allowed_rated*1e3,
-               conduction_W_at_2A5_typ_max=[2.5**2*.0282,2.5**2*.045],
-               drop_V_at_2A5_typ_max=[2.5*.0282,2.5*.045],
-               thermal_no_vias_dT_C_screen=2.5**2*.045*74.5,
-               conduction_W_at_2A0_rating_typ_max=[2.0**2*.0282, 2.0**2*.045],
-               thermal_no_vias_dT_C_at_2A0_rating=2.0**2*.045*74.5,
-               startup_thermal_note='Full constant 2.5 A from 0 V dissipates ~6.25 W average during a 25 ms ramp; '
-                                    'startup foldback below 1.9 V (limit not specified) and thermal shutdown may prevent '
-                                    'start. The capacitance figures assume constant current; qualify actual module load '
-                                    'current vs voltage.',
-               latch='S8.4 (review C1): P5_OK = AUXOFF wire-AND U18 only. AUXOFF is low only for input UVP/UVLO, '
-                     'reverse polarity, OVLO and inrush (Table 7-4), never for load-side events; FLT (reverse current, '
-                     'persistent current limit, ILM fault, over-temperature, Table 7-3) goes to R108/TP21 only. A '
-                     'sustained overload/thermal shutdown still pulls +5V below the U18 threshold, so P5_OK latches it '
-                     'after ARMED. Reverse-current blocking (hot plug into a live +5V bus, load release held downstream) '
-                     'keeps +5V up and no longer latches. U20 watches raw OV even during startup. Brief OVLO-only '
-                     'events before ARMED or shorter than the bad-status filter can auto-recover.',
-               qualification='NOT GUARANTEED <6V at the header (review C2): tOVLO 1.2 us is typical only and no '
-                             'maximum is specified; parasitics, loop and DC bias are uncertain. Neither D10 nor the '
-                             'U5 limit nor a bench-supply ceiling bounds the header: the 3 us delay case reaches '
-                             '6.33 V and stays above 6 V for the rest of the 200 us window (~193 us; with U23 '
-                             'blocking reverse current only R77-R79 or the modules discharge it), and the 30 V / 1 ohm '
-                             'source stress case is higher. 6 V is a screen, not a module rating. Do not connect '
-                             'valuable modules before fault tests.')
-    if simulate:
-        cin = eff['VIN'][1]+eff['damper'][1]
-        cases = {}
-        for l in (3.3e-6, 1e-6):
-            for delay in (1.2e-6, 3e-6, 5e-6):
-                key = f'L{l*1e6:g}uH_delay{delay*1e6:g}us'
-                cases[key] = _disconnect_run(cin,c_up[0],c_down[0],trip[2],delay,inductance=l)
-        cases['half_C_VIN26_L1uH_3us'] = _disconnect_run(cin,c_up[0]/2,c_down[0]/2,trip[2],3e-6,
-                                                         inductance=1e-6,vin0=26.)
-        # S8.4 (review C2): 30 V source behind 1 ohm (bench-supply ceiling stress) with the 3 us delay.
-        cases['VIN30_src1ohm_L3.3uH_3us'] = _disconnect_run(cin,c_up[0],c_down[0],trip[2],3e-6,vin0=30.,r_src=1.)
-        out['fault_delay_sensitivity'] = dict(cases=cases, model=_disconnect_run.__doc__, guaranteed_bound=False)
-    return out
-
-
 def basic_only_counterfactual(val, eff, release):
-    """S8.4 (review M8): the same threshold screens with every 0.1 % / 25 ppm divider (R93-R96, R98/R99, R101/R102,
-    R11/R12) replaced by a 1 % + 1 % TCR Basic part. Shows why the Extended precision parts are kept."""
+    """S8.4 (review M8): the same threshold screens with every 0.1 % / 25 ppm divider replaced by a 1 % + 1 % TCR Basic
+    part. S9.0: the precision dividers left are the U20 guard pairs R93/R94 (+12V) and R98/R99 (-12V). Shows why the
+    Extended precision parts are kept."""
     global R01, _PARTS
     saved = R01, _PARTS
     try:
         R01 = R1
         _PARTS = {r: {**q, 'fields': {**q['fields'], 'Tolerance': '1%'}} for r, q in table()[0].items()}
         ov = ov_guard(val, release)
-        st = disconnect_settings(val)
-        rel = ovlo_release(val, eff, st, ov)
     finally:
         R01, _PARTS = saved
     checks = {}
-    for rail in ('+12V', '+5V', '-12V'):
+    for rail in ('+12V', '-12V'):
         checks[f'{rail}_guard_min_above_stacked_peak_V'] = ov[rail]['stacked_margin_to_guard_min_V']
         checks[f'{rail}_guard_max_below_limit_V'] = ov[rail]['margin_guard_max_to_limit_V']
-    checks['OVLO_min_above_ILIM_max_release_V'] = rel['release_cases']['U23_ILIM_max']['margin_to_OVLO_min_V']
-    checks['OVLO_max_below_6V_V'] = round(6 - st['trip_min_nom_max_V'][2], 3)
-    return dict(guard_V={k: ov[k]['guard_V'] for k in ('+12V', '+5V', '-12V')},
-                OVLO_trip_V=[round(v, 3) for v in st['trip_min_nom_max_V']], setpoint_5V=rel['setpoint_V'],
+    return dict(guard_V={k: ov[k]['guard_V'] for k in ('+12V', '-12V')},
                 margins_V={k: round(v, 3) for k, v in checks.items()},
                 failing=sorted(k for k, v in checks.items() if v <= 0),
+                precision_refs=PRECISION_REFS,
                 note='Every precision divider at 1 % + 1 % TCR (Basic). Any failing entry is a screen the design '
                      'no longer passes; hence the documented Extended exception (sourcing.json basic_only_policy).')
+
+
+PRECISION_REFS = ['R93', 'R94', 'R98', 'R99']     # S9.0: the 0.1 % / 25 ppm guard dividers (Extended exception)
 
 
 TYPICAL_RACK_MF = 0.44          # 20 modules x 22 uF per rail (soft_start rack_reference)
@@ -790,58 +553,40 @@ def minus12_startup(val, eff):
                      'is applied anyway. Bench gate: start into the real rack at the lowest input.')
 
 
-def rating(val, eff, settings):
+def rating(val, eff):
     """S8.4 (review M5): published conservative continuous rating (prototype, unqualified), valid for the rated source
-    range VPD >= 18.25 V (converter VIN >= ~17.25 V after D10 + U5). Per rail: 75 % of the minimum current-limited
+    range VPD >= VPD_RATED_MIN (converter VIN after D10 + U5). Per rail: 75 % of the minimum current-limited
     capability there, to the nearest 0.1 A (so up to ~76 %), capped at the S7 target. Between the U5 turn-off
-    minimum and 18.25 V the module keeps running without the 25 % margin (below_rated_range).
-    +5V is set by U23's minimum ILIM (ITIMER open: NO transient allowance above ILIM, so the headroom also has to
-    absorb load steps and module hot-plug inrush). Simultaneous use is bounded by the input budget."""
-    vin_floor = converter_vin(VPD_RATED_MIN)         # rated range: VPD >= 18.25 V -> converter VIN >= ~17.25 V
+    minimum and the rated minimum the module keeps running without the 25 % margin (below_rated_range). S9.0 step 1:
+    +/-12V only (the +5V rail and its U23 basis are gone). Simultaneous use is bounded by the input budget."""
+    vin_floor = converter_vin(VPD_RATED_MIN)
     vin_run = converter_vin(u5_window(val)[1][0])     # sensitivity: U5 keeps running down to its turn-off minimum
 
     def n12_cap(vin):
         d = 11.989 / (vin + 11.989)
         return (1.8 + vin * d / (15e-6 * 0.79e6) / 2) * (1 - d)
 
-    # +12V / +5V converters: TPS62933F IOMAX ~ min((IHS + ILS)/2, IHS - ripple/2) with min limits (SLUSEA4D Eq. 11/12)
+    # +12V converter: TPS62933F IOMAX ~ min((IHS + ILS)/2, IHS - ripple/2) with min limits (SLUSEA4D Eq. 11/12)
     def tps62933(vo, inductance, fsw, vins=(vin_floor, 24.1)):
         caps = []
         for vin in vins:
             ripple = (vin - vo) * (vo / vin) / (inductance * fsw)
             caps.append(min((4.2 + 2.9) / 2, 4.2 - ripple / 2))
         return min(caps)
-    n12 = n12_cap(vin_floor)
-    cap = {'+12V': tps62933(12.194, 6.8e-6, 1.2e6),
-           '+5V': min(tps62933(4.985, 3.3e-6, 1.977e6), settings['current_min_nom_max_A'][0]),
-           '-12V': n12}
-    target = {'+12V': 2.5, '+5V': 2.5, '-12V': 1.0}
-    published = {'+12V': 2.5, '+5V': 2.0, '-12V': 0.9}
+    cap = {'+12V': tps62933(12.194, 6.8e-6, 1.2e6), '-12V': n12_cap(vin_floor)}
+    target = {'+12V': 2.5, '-12V': 1.0}
+    published = {'+12V': 2.5, '-12V': 0.9}
     rule = {k: min(target[k], round(0.75 * cap[k], 1)) for k in cap}
     assert published == rule, (published, rule)
-    vo = {'+12V': 12.194, '+5V': 4.985, '-12V': 11.989}
-    eta = {'+12V': .93, '+5V': .88, '-12V': .85}
+    vo = {'+12V': 12.194, '-12V': 11.989}
+    eta = {'+12V': .93, '-12V': .85}
 
     def input_w(amps):
         conv = sum(vo[k] * amps[k] / eta[k] for k in amps)
         i = conv / 19.2
-        return conv + 0.75 * i + 0.031 * i * i + 0.5 + 0.0282 * amps['+5V'] ** 2
+        return conv + 0.75 * i + 0.031 * i * i + 0.5
     full = input_w(published)
-    # Worst-efficiency mix inside a 45 W delivered total: fill -12V, then +5V, then +12V
-    left, mix = 45.0, {}
-    for k in ('-12V', '+5V', '+12V'):
-        mix[k] = min(published[k], left / vo[k]); left -= mix[k] * vo[k]
-    at45 = input_w(mix)
-    lo_i, hi_i = 0.0, 1.0                                     # delivered fraction a 20 V / 2.25 A (45 W) source carries
-    for _ in range(50):
-        mid = (lo_i + hi_i) / 2
-        trial, left = {}, 45.0 * mid
-        for k in ('-12V', '+5V', '+12V'):
-            trial[k] = min(published[k], left / vo[k]); left -= trial[k] * vo[k]
-        lo_i, hi_i = (mid, hi_i) if input_w(trial) <= 45.0 else (lo_i, mid)
-    run = {'+12V': tps62933(12.194, 6.8e-6, 1.2e6, (vin_run, 24.1)),
-           '+5V': min(tps62933(4.985, 3.3e-6, 1.977e6, (vin_run, 24.1)), settings['current_min_nom_max_A'][0]),
-           '-12V': n12_cap(vin_run)}
+    run = {'+12V': tps62933(12.194, 6.8e-6, 1.2e6, (vin_run, 24.1)), '-12V': n12_cap(vin_run)}
     return dict(
         published_A=published, rule=f'75 % of the minimum current-limited capability at the {vin_floor:g} V converter '
         f'input (rated source range VPD >= {VPD_RATED_MIN:g} V minus the {INPUT_DROP_V:.2f} V D10 + U5 drop), to the '
@@ -854,30 +599,19 @@ def rating(val, eff, settings):
                            'minimum (sagging source); the rating is NOT specified there',
                            'capability_min_A': {k: round(v, 3) for k, v in run.items()},
                            'fraction_of_capability': {k: round(published[k] / run[k], 3) for k in run}},
-        plus5_basis='U23 ILIM min %.3f A (TI table band, resistor corners); ITIMER open = fastest response, no transient '
-                    'above ILIM; 2.0 A (%.1f %% of it, nearest-0.1 A rounding) leaves %.2f A for load steps / hot-plug '
-                    'inrush' % (settings['current_min_nom_max_A'][0], 200 / settings['current_min_nom_max_A'][0],
-                                settings['current_min_nom_max_A'][0] - 2.0),
-        plus5_thermal={'RON_max_mOhm': 45, 'P_W': round(2.0 ** 2 * .045, 3), 'dT_C_no_vias_74C5W': round(2.0 ** 2 * .045 * 74.5, 1)},
         simultaneous={'delivered_W_at_all_ratings': round(sum(vo[k] * published[k] for k in vo), 1),
                       'input_W_at_all_ratings': round(full, 1), 'input_A_at_20V': round(full / 20, 2),
-                      'S7_targets_budget': '64.4 W / 3.22 A at 20 V (input_budget, 2.5/2.5/1.0 A): NOT a rating',
-                      'delivered_total_limit_W': 45.0, 'input_W_at_45W_worst_mix': round(at45, 1),
-                      'input_A_at_20V_45W_worst_mix': round(at45 / 20, 2),
-                      'delivered_W_on_a_45W_PD_source': round(45.0 * lo_i, 1),
                       'U5_limit_min_A': 3.693},
         headers='above ~2 A per rail use both J2 and J3 (2 contacts per rail per header, ~1 A IDC contact screen)',
         note='Prototype rating from datasheet minimum limits and assumed efficiencies, not a measured or thermal-qualified '
-             'rating. Full simultaneous use needs a verified 20 V >= 3 A source; total delivered power stays <= 45 W. '
-             'U23 ILIM 3.03 A nominal is a protection threshold, never a load rating.')
+             'rating.')
 
 
 def startup_window(val):
-    """Qualification window (U11, C49) against the rail-up budget (S8.4 budget, U23 dVdt ramp included)."""
+    """Qualification window (U11, C49) against the rail-up budget (S9.0: no U23 ramp)."""
     t = val('C49') * 1e9 / 175 + .0005
     budget = dict(U5_ramp_ms=round(20 / (1.775e-6 * 23.5 / (22e-9 * 1.1)) * 1e3, 1), PGOOD_deglitch_ms=13,
-                  TPS62933F_SS_max_ms=round(val('C9') * 1.1 * 0.8 / 4.5e-6 * 1e3, 1), LMR38020_SS_plus_blank_ms=18 + 4,
-                  U23_ramp_5V_sensitivity_ms=round(5/(2000/(val("C68")*1e12)*.81/2.21/1.1),1))
+                  TPS62933F_SS_max_ms=round(val('C9') * 1.1 * 0.8 / 4.5e-6 * 1e3, 1), LMR38020_SS_plus_blank_ms=18 + 4)
     total = sum(budget.values())
     return dict(typ_s=round(t, 3), min_s_screen=round(t * .6 * .9, 3), max_s_screen=round(t * 1.4 * 1.1, 3),
                 S7_typ_s=round(1e-6 * 1e9 / 175 + .0005, 2),
@@ -934,7 +668,7 @@ def arming(val):
                   'TIMER_GO': 'U13 gate 3 = RUN AND STARTED -> R69/R70 -> U11 SENSE (unchanged divider)',
                   'ARMED': 'U11 RESET output (R71 pull-up) = ARMED directly; it stays high because its input is latched',
                   'parts': 'no new IC: the spare U14 gate and U12 flip-flop A re-used, R83 200k -> 120k (Basic, same '
-                           'line as R75), TP19 (copper); U23 and the rest of S8.4 unchanged'},
+                           'line as R75), TP19 (copper)'},
         V20_OK={'role': 'U5 status-validity floor: masks U5 FLT/PGOOD (MAIN_OK, R63 pull-up) where U5 is below its '
                         '4.5 V operating minimum (PD 5 V phase); NOT an input-good threshold',
                 'band_V': [round(v, 3) for v in v20], 'R83': val('R83'),
@@ -945,7 +679,7 @@ def arming(val):
                 'margin_below_U5_off_min_V': round(off[0] - v20[2], 3),
                 'consequence': 'whenever U5 can be on (VPD >= its 15.04 V turn-off minimum) V20_OK is high, so MAIN_LED_OK '
                                '= MAIN_OK there and V20_OK can never be the first status to drop; ANY_BAD = NOT(MAIN_LED_OK '
-                               'AND P12_OK AND P5_OK AND N12_OK) means "U5 not on with valid status, or a rail below its '
+                               'AND P12_OK AND N12_OK) means "U5 not on with valid status, or a rail below its '
                                'monitor threshold"',
                 'S8.4_200k_band_V': [round(v, 3) for v in v20_s84], 'S8.4_200k_rule_holds': v20_floor_ok(v20_s84, off),
                 'S8.3_220k_band_V': [round(v, 3) for v in v20_s83],
@@ -961,14 +695,14 @@ def arming(val):
                             'unloaded turn-on maximum with the loaded minimum (20 mV); that comparison was wrong',
         window=win,
         sequence=['USB-C attach: VPD = vSafe5V; U9 makes V3V3; U10 holds RESET_N low >= 12 ms (clears STARTED, FAULT)',
-                  'RESET_N high: RUN high (U5 SHDN released, U23 EN); U5 in UVLO, START_N high (V20_OK low in the 5 V '
+                  'RESET_N high: RUN high (U5 SHDN released); U5 in UVLO, START_N high (V20_OK low in the 5 V '
                   'phase)',
                   'PD contract: VPD -> 20 V; V20_OK high at 9.06-10.96 V (U5 status valid, PGOOD low)',
                   'VPD >= U5 turn-on (16.23-18.23 V): U5 ramps (~12 ms), PGOOD 11.5 ms typ -> MAIN_OK enables U2/U3 (U4 '
                   'via Q1) -> MAIN_LED_OK -> START_N low -> STARTED (latched)',
                   'TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~%.0f ms' % (
                       win['rail_up_total_ms']),
-                  'ARMED: any bad status (MAIN_LED_OK, P12_OK, P5_OK, N12_OK) > ~1 ms -> FAULT -> RUN low -> all off until '
+                  'ARMED: any bad status (MAIN_LED_OK, P12_OK, N12_OK) > ~1 ms -> FAULT -> RUN low -> all off until '
                   'RESET; OV_N presets FAULT at any time'],
         timelines='validation.json startup_arming.timelines (verify_s8 arming_timelines: cold start at the worst loaded '
                   '20 V minimum, slow PD contract, brown-out after/inside the window, input overload chatter, hot plug '
@@ -1013,11 +747,11 @@ def replug_por(val):
 
 
 def input_budget():
-    out_w = {'+12V': 12.194 * 2.5, '+5V': 4.985 * 2.5, '-12V': 11.989 * 1.0}
-    eff = {'+12V': .93, '+5V': .88, '-12V': .85}            # assumed from datasheet efficiency curves
+    out_w = {'+12V': 12.194 * 2.5, '-12V': 11.989 * 1.0}
+    eff = {'+12V': .93, '-12V': .85}            # assumed from datasheet efficiency curves
     conv_in = sum(out_w[k] / eff[k] for k in out_w)
     i = conv_in / 19.2
-    losses = {'D10_0.75V': 0.75 * i, 'U5_31mohm': 0.031 * i * i, 'aux_logic_LEDs': 0.5, 'U23_28m2_at_2A5': .0282*2.5**2}
+    losses = {'D10_0.75V': 0.75 * i, 'U5_31mohm': 0.031 * i * i, 'aux_logic_LEDs': 0.5}
     p_in = conv_in + sum(losses.values())
     removed = {'U6_U7_2x31mohm_at_2.5A': 2 * 0.031 * 2.5 ** 2, 'LM5067_path_50mohm+Q4_at_1A': 1.0 * (0.05 + 0.1)}
     return dict(outputs_W=round(sum(out_w.values()), 1), converter_input_W=round(conv_in, 1),
@@ -1029,26 +763,14 @@ def input_budget():
 
 
 def connectors():
-    targets = {'+12V': 2.5, '+5V': 2.5, '-12V': 1.0}
+    targets = {'+12V': 2.5, '-12V': 1.0}
     gnd = sum(targets.values())
     one = {k: round(v / 2, 3) for k, v in targets.items()}; one['GND (no cancellation)'] = round(gnd / 6, 3)
     two = {k: round(v / 4, 3) for k, v in targets.items()}; two['GND (no cancellation)'] = round(gnd / 12, 3)
     return dict(per_contact_A_one_header=one, per_contact_A_two_headers_equal_split=two,
-                contacts_per_header={'+12V': 2, '+5V': 2, '-12V': 2, 'GND': 6},
+                contacts_per_header={'+12V': 2, '-12V': 2, 'GND': 6, 'pins 11/12': 'open (S9.0, no +5V)'},
                 guidance='typical 2.54 mm IDC/ribbon contact ~1 A: use both headers above ~2 A per rail; '
                          'unequal cable lengths/loads do not split equally')
-
-
-def tvs(val, eff):
-    c_hi = eff['VIN'][1] + eff['damper'][1]
-    e = 0.5 * c_hi * (20 ** 2 - 7 ** 2)
-    sp_max = setpoint(val, 'R11', 'R12', (.784, .8, .816))[2]           # S8.4: 0.1 % R11/R12 (was 5.26 V at 1 %)
-    return dict(part='SMAJ5.0A', vrwm=5.0, vbr_min_1mA=6.4, vc_at_43A5=9.2, ir_max_at_vrwm_uA=800,
-                rail_max_setpoint_V=round(sp_max, 3), vin_cap_dump_mJ=round(e * 1e3, 1), rated_peak_W_10_1000us=400,
-                note='Above VRWM only at the stacked worst-case setpoint; <= ~5 mW even at 1 mA. Transient clamp '
-                     'only (not a 5 V limit): upstream overvoltage drives U20 -> FAULT -> U5 off; '
-                     'U23 isolates delivered +5V. D21 is on P5_RAW, not the headers. TVS transient rating depends on '
-                     'pulse duration and temperature; never infer a universal joule rating from peak watts.')
 
 
 def area(parts):
@@ -1066,7 +788,7 @@ def area(parts):
              'TP': 'TestPoint_Pad_D1.0mm', 'DGN8': 'TPS7A16_DGN0008C', 'SOT235': 'SOT-23-5', 'SOT236': 'SOT-23-6',
              'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm', 'SLO1040': 'L_SLO1040H6R8MTT',
              'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621', 'TL3340': 'SW_TL3340AF160QG_HandSolder',
-             'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge', 'RPW10': 'TI_RPW0010A_VQFN-HR-10_2x2mm'}
+             'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge'}
     cache = {}
 
     def cy(fp):
@@ -1100,11 +822,11 @@ def main():
     ap.add_argument('--skip-sim', action='store_true', help='skip the VIN grid and rail-release simulations')
     a = ap.parse_args()
     parts, val = table()
-    R = {'status': 'S8.5 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
+    R = {'status': 'S9.0 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
     R['banks'], eff = banks(parts)
     R['ripple_and_steps'] = ripple_and_steps(eff)
     if not a.skip_sim:
-        R['vin_damper'] = vin_damper(val('R92'))
+        R['vin_damper'] = vin_damper(val('R92'), BANK_COUNTS['VIN'])
         R['rail_release'] = rail_release()
     else:
         R['rail_release'] = json.loads((a.out / 'calcs.json').read_text())['rail_release']
@@ -1113,19 +835,15 @@ def main():
     R['ov_reference'] = reference(val)
     R['ov_clamp'] = clamp(val)
     R['comparator_supply'] = comparator_supply(val)
-    R['disconnect'] = disconnect(val, eff, R['ov_guard'])
-    R['ovlo_release'] = ovlo_release(val, eff, disconnect_settings(val), R['ov_guard'])
     R['v3v3_loss'] = v3v3_loss(val)
-    R['bringup_tp18'] = bringup_tp18(val)
     R['minus12_startup'] = minus12_startup(val, eff)
-    R['rating'] = rating(val, eff, disconnect_settings(val))
+    R['rating'] = rating(val, eff)
     R['basic_only_counterfactual'] = basic_only_counterfactual(val, eff, R['rail_release'])
     R['startup_window'] = startup_window(val)
     R['arming'] = arming(val)
     R['replug_por'] = replug_por(val)
     R['input_budget'] = input_budget()
     R['connectors'] = connectors()
-    R['tvs'] = tvs(val, eff)
     R['area'] = area(parts)
     a.out.mkdir(parents=True, exist_ok=True)
     (a.out / 'calcs.json').write_text(json.dumps(R, indent=2) + '\n')

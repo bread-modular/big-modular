@@ -37,20 +37,15 @@ REPORT_ONLY = ('SW1',)
 mm = pcbnew.ToMM
 # S8.4 local decoupling / protection-loop contract: (IC, pins, net, qualifying refs or prefix, value, limit mm, why).
 # A qualifying part is any listed ref, or any ref with the prefix (and value, if given), with a pad on `net`.
-# TI SLVSFC9C 8.4.1: U23 IN/OUT bypass and the TVS/Schottky "physically close"; IC bypass at the supply pin.
+# IC bypass at the supply pin (S8.4). S9.0: the U23 (+5V eFuse) and U3 (+5V converter) rows left with +5V.
 LOCAL_LOOPS = [
-    ('U23', ('5',), 'P5_RAW', 'C', '22u', 3.5, 'U23 IN local 22u bypass'),
-    ('U23', ('6',), '+5V', 'C', '22u', 3.5, 'U23 OUT local 22u bypass'),
-    ('U23', ('5',), 'P5_RAW', ('D21',), None, 6.0, 'D21 IN transient clamp beside U23 IN/GND'),
-    ('U23', ('6',), '+5V', ('D23',), None, 6.0, 'D23 OUT negative clamp beside U23 OUT/GND'),
     ('U20', ('3',), 'VPD', ('C65',), None, 4.5, 'U20 VCC (VPD) bypass'),
     ('U18', ('3',), 'VPD', ('C57',), None, 4.5, 'U18 VCC (VPD) bypass'),
     ('U9', ('8',), 'VPD', ('C46',), None, 4.5, 'LDO input'),
     ('U9', ('1',), 'V3V3', ('C47',), None, 4.5, 'LDO output'),
-    ('U5', ('1', '2', '3', '6'), 'EF_IN', ('C2',), None, 4.5, 'main eFuse IN'),
+    ('U5', ('1', '2', '3', '6'), 'MAIN_IN', ('C2',), None, 4.5, 'main eFuse IN'),
     ('U1', ('1', '8'), 'VPD_U1', ('C1',), None, 4.5, 'CH224A VHV (R3 BASE block)'),
     ('U2', ('3',), 'VIN', 'C', '100n', 4.5, '+12V converter HF input cap'),
-    ('U3', ('3',), 'VIN', 'C', '100n', 4.5, '+5V converter HF input cap'),
     ('U4', ('3',), 'VIN', 'C', '100n', 4.5, '-12V converter HF input cap'),
     ('U21', ('1',), 'REF_OV', ('C67',), None, 4.5, 'TLV431 stabilising cap'),
     *[(u, (p,), 'V3V3', 'C', '100n', 6.0, f'{u} logic bypass')
