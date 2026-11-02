@@ -1,8 +1,8 @@
 {
-  "revision": "S9.1",
+  "revision": "S9.2",
   "project": "hardware/single/usb-power-45w-single.kicad_pro",
-  "components": 164,
-  "nets": 78,
+  "components": 175,
+  "nets": 80,
   "no_connect_pins": 41,
   "removed_from_S7": [
     "#FLG05",
@@ -229,6 +229,7 @@
     "MMBT3906",
     "PWR_FLAG",
     "R",
+    "R_Shunt",
     "TL3340AF160QG",
     "TLV431_DBZ",
     "TPS16630PWP",
@@ -238,5 +239,5 @@
     "TestPoint",
     "VCC"
   ],
-  "library_sha256": "d98929742b2738e50b4175d93fb1cea26c32a4976d6603dffa14f611ebd56d56"
+  "library_sha256": "eb79e23f2e57e2a4efc9d111c2421bcef96943e5de205b14c11f9afdafb48c6e"
 }

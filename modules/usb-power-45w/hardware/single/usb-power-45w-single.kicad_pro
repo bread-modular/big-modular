@@ -529,7 +529,7 @@
       {
         "bus_width": 12,
         "clearance": 0.2,
-        "diff_pair_gap": 0.25,
+        "diff_pair_gap": 0.2,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
         "line_style": 0,
@@ -539,7 +539,64 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.4,
+        "track_width": 1.0,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Switch",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 1,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 1.0,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Sense",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 2,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.2,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "Quiet",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 3,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.3,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
@@ -558,11 +615,15 @@
       },
       {
         "netclass": "Power",
-        "pattern": "VPD"
+        "pattern": "*/VPD"
       },
       {
         "netclass": "Power",
-        "pattern": "EF_IN"
+        "pattern": "*/VBUS"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "*/MAIN_IN"
       },
       {
         "netclass": "Power",
@@ -570,15 +631,7 @@
       },
       {
         "netclass": "Power",
-        "pattern": "P12_RAW"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "P5_RAW"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "N12_RAW"
+        "pattern": "*/P12_VOUT"
       },
       {
         "netclass": "Power",
@@ -586,11 +639,51 @@
       },
       {
         "netclass": "Power",
-        "pattern": "+5V"
+        "pattern": "-12V"
       },
       {
-        "netclass": "Power",
-        "pattern": "-12V"
+        "netclass": "Switch",
+        "pattern": "*U2-SW1*"
+      },
+      {
+        "netclass": "Switch",
+        "pattern": "*U2-SW2*"
+      },
+      {
+        "netclass": "Switch",
+        "pattern": "*U4-SW*"
+      },
+      {
+        "netclass": "Sense",
+        "pattern": "*/P12_ISP"
+      },
+      {
+        "netclass": "Sense",
+        "pattern": "*/P12_ISN"
+      },
+      {
+        "netclass": "Quiet",
+        "pattern": "*/AGND_U2"
+      },
+      {
+        "netclass": "Quiet",
+        "pattern": "*U2-FB*"
+      },
+      {
+        "netclass": "Quiet",
+        "pattern": "*U2-COMP*"
+      },
+      {
+        "netclass": "Quiet",
+        "pattern": "*/FB_N"
+      },
+      {
+        "netclass": "Quiet",
+        "pattern": "*/EN_N"
+      },
+      {
+        "netclass": "Quiet",
+        "pattern": "*/N_EN_*"
       }
     ]
   },

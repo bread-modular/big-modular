@@ -28,6 +28,7 @@ import pcbnew
 MODULE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE / 'tools'))
 import mechanics_s8  # noqa: E402
+import s92_contract  # noqa: E402
 from mechanics45 import carrier_xy  # noqa: E402
 
 GEO = mechanics_s8.geometry()
@@ -49,7 +50,7 @@ LOCAL_LOOPS = [
     ('U2', ('7',), 'VIN', ('C8',), None, 4.5, '+12V converter HF input cap'),          # S9.0: TPS552892 VIN land
     ('U2', ('11',), 'P12_VOUT', ('C81',), None, 4.5, '+12V converter HF output cap'),  # S9.0: VOUT land (TI 0.1 uF)
     ('U2', ('18',), None, ('C82',), None, 4.5, '+12V converter VCC (LDO) cap'),       # S9.0: net = the VCC pin's own
-    ('C82', ('2',), 'AGND_U2', ('R113',), None, 3.0, 'sole AGND/PGND link at VCC capacitor'),
+    ('C82', ('2',), 'GND', ('R113',), None, 3.0, 'sole AGND/PGND link: R113 PGND pad at the C82.2 PGND terminal'),
     ('U4', ('3',), 'VIN', 'C', '100n', 4.5, '-12V converter HF input cap'),
     ('U21', ('1',), 'REF_OV', ('C67',), None, 4.5, 'TLV431 stabilising cap'),
     *[(u, (p,), 'V3V3', 'C', '100n', 6.0, f'{u} logic bypass')
@@ -218,8 +219,15 @@ def check(board_path):
                                        matches=abs(mm(p1.x) - want[0]) < 1e-3 and abs(mm(p1.y) - want[1]) < 1e-3)
     loops = local_loops(fps)
     net=lambda r,p: next(q.GetNetname().split('/')[-1] for q in fps[r].Pads() if q.GetNumber()==p)
-    ground_ok=(net('U2','17')==net('U2','5')==net('C82','2')==net('R113','1')=='AGND_U2'
-               and net('U2','9')==net('R113','2')=='GND' and fps['R113'].GetValue()=='0')
+    # S9.2 item 2: C82.2 is PGND, R113 the only AGND_U2 <-> PGND part, AGND_U2 exactly the contract members.
+    agnd = sorted(f'{r}.{q.GetNumber()}' for r, fp in fps.items() for q in fp.Pads()
+                  if q.GetNumber() and q.GetNetname().split('/')[-1] == 'AGND_U2')
+    bridges = sorted(r for r, fp in fps.items() if r != 'U2'      # U2 itself has separate AGND (17) and PGND (9) pins
+                     and {q.GetNetname().split('/')[-1] for q in fp.Pads() if q.GetNumber()} >= {'AGND_U2', 'GND'})
+    ground_ok=(net('U2','17')==net('U2','5')==net('R113','1')=='AGND_U2'
+               and net('U2','9')==net('C82','2')==net('R113','2')=='GND' and fps['R113'].GetValue()=='0'
+               and agnd == sorted(s92_contract.GROUND['members_AGND_U2']) and bridges == ['R113'])
+    contract = contract_screen(fps)
 
     inset = pcbnew.SHAPE_POLY_SET(outline)
     inset.Deflate(pcbnew.FromMM(1.0), pcbnew.CORNER_STRATEGY_ROUND_ALL_CORNERS, pcbnew.FromMM(0.01))
@@ -228,7 +236,9 @@ def check(board_path):
         del v['polys']
     z_rear = round(104.275 - mm(bb.GetTop()), 3)
     res = {'board': str(Path(board_path).relative_to(MODULE)) if Path(board_path).is_relative_to(MODULE) else str(board_path),
-           'ground_split': {'pass':ground_ok,'analog':'AGND_U2','power':'GND','sole_link':'R113 at C82.2'},
+           'ground_split': {'pass': ground_ok, 'analog': 'AGND_U2', 'power': 'GND', 'sole_link': 'R113 PGND pad at C82.2 (PGND)',
+                            'AGND_U2_pads': agnd, 'parts_on_both_nets': bridges},
+           'routing_contract_screen': contract,
            'parts_on_board': len(placed), 'parked_parts': sorted(parked), 'parts_on_B': sorted(on_back),
            'tracks': len(list(b.GetTracks())), 'zones': len(list(b.Zones())),
            'courtyard_overlaps': overlaps,
@@ -244,8 +254,55 @@ def check(board_path):
                    and not any(v['violations'] for v in driver.values())
                    and not any(v['violations_lt_2mm'] for r, v in hand.items() if r not in REPORT_ONLY)
                    and all(h['matches'] for h in headers.values()) and z_rear <= GEO['carrier_Z_mm'][1] + 1e-6
-                   and not loops['violations'] and ground_ok)
+                   and not loops['violations'] and ground_ok and contract['pass'])
     return res
+
+
+def contract_screen(fps):
+    """S9.2 routing contract items that can be checked on the unrouted board (tools/s92_contract.py). Copper/via items
+    (thermal areas, via counts, sense routing) are reported PENDING, never as passed."""
+    def pad(ref, num):
+        return next(q for q in fps[ref].Pads() if q.GetNumber() == num)
+
+    def xy(q):
+        return mm(q.GetPosition().x), mm(q.GetPosition().y)
+
+    def netof(q):
+        return q.GetNetname().split('/')[-1]
+    tps = []
+    for t in s92_contract.TEST_POINTS:
+        q = pad(t['ref'], '1')
+        a = pad(*t['near'])
+        d = math.dist(xy(q), xy(a))
+        size = mm(q.GetSize().x)
+        want = 1.5 if t['size'].startswith('1.5') else 1.0
+        tps.append({'ref': t['ref'], 'net': netof(q), 'want_net': t['net'], 'pad_mm': round(size, 3),
+                    'anchor': f"{t['near'][0]}.{t['near'][1]}", 'distance_mm': round(d, 2), 'limit_mm': t['max'],
+                    'ok': netof(q) == t['net'] and d <= t['max'] and abs(size - want) < 1e-6})
+    pairs = []
+    for t in s92_contract.TEST_POINTS:
+        if t.get('pair') and t['ref'] < t['pair']:
+            d = math.dist(xy(pad(t['ref'], '1')), xy(pad(t['pair'], '1')))
+            pairs.append({'pair': [t['ref'], t['pair']], 'pitch_mm': round(d, 3), 'ok': abs(d - 2.54) < 0.02})
+    prox = []
+    for (r, n), to, lim, why in s92_contract.PROXIMITY:
+        a = pad(r, n)
+        best = min((math.dist(xy(a), xy(pad(rr, nn))), f'{rr}.{nn}') for rr, nn in to)
+        prox.append({'from': f'{r}.{n}', 'to': best[1], 'distance_mm': round(best[0], 2), 'limit_mm': lim, 'why': why,
+                     'ok': best[0] <= lim})
+    kel = {num: netof(pad('R109', num)) for num in ('1', '2', '3', '4')}
+    kelvin_ok = (kel == {'1': 'P12_VOUT', '2': 'P12_ISP', '3': 'P12_ISN', '4': '+12V'}
+                 and netof(pad('U2', '12')) == 'P12_ISP' and netof(pad('U2', '13')) == 'P12_ISN'
+                 and netof(pad('U2', '11')) == 'P12_VOUT'
+                 and sorted(f'{r}.{q.GetNumber()}' for r, fp in fps.items() for q in fp.Pads()
+                            if q.GetNumber() and netof(q) in ('P12_ISP', 'P12_ISN'))
+                 == ['R109.2', 'R109.3', 'TP22.1', 'TP23.1', 'U2.12', 'U2.13'])
+    pending = sorted(f'thermal.{k}.{x}' for k, v in s92_contract.THERMAL.items() for x in v['requirements'])
+    ok = all(x['ok'] for x in tps + pairs + prox) and kelvin_ok
+    return {'test_points': tps, 'pairs_2p54': pairs, 'proximity': prox,
+            'kelvin': {'pad_nets': kel, 'pass': kelvin_ok},
+            'pending_after_routing': pending + ['kelvin.sense_routing', 'ground.no_second_bridge_copper', 'min_widths'],
+            'pass': ok}
 
 
 if __name__ == '__main__':

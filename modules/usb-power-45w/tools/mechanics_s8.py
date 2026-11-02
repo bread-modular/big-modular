@@ -36,7 +36,7 @@ CASE = {'source': 'modules/busboard/README.md + tools/mechanics45.py depth basis
 
 def geometry():
     g = m45.geometry()
-    g['revision'] = 'S9.1 single board P2.1: one carrier, every part on F, trial placement, UNROUTED'
+    g['revision'] = 'S9.2 single board P2.2: one carrier, every part on F, routing-ready placement, UNROUTED'
     g['status'] = 'Trial placement for review. No tracks, vias or zones. Not a release.'
     g['carrier_Z_mm'] = [2.0, DEPTH_Z]
     g['depth_target'] = {

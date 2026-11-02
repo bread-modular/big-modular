@@ -89,6 +89,17 @@ SOURCES = {
                           'PDOs never exceed 3 A; a 27 W source offers 15 V at 1.8 A; vSrcNew +-5 %',
     'CH224A_CFG': 'WCH CH224 datasheet V2.x: CFG1 resistor to GND selects the request: 6.8k 9 V, 24k 12 V, 56k 15 V, '
                   '120k 20 V (no current-contract tracking)',
+    'SMBJ': 'Littelfuse SMBJ series datasheet (https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid='
+            'ba555e99-a12d-4f72-a0b6-86b06c67171e; 2011 table https://datasheet.octopart.com/SMBJ33CA-Littelfuse-datasheet-'
+            '10854588.pdf): 600 W 10/1000 us at 25 C (Fig. 1), Fig. 2 linear pulse derating, 5 W on an infinite heat sink '
+            'at 50 C, RthetaJL 20 / RthetaJA 100 C/W; SMBJ16A 16/17.8-19.7/26.0 V at 23.1 A, SMBJ18A 18/20.0-22.1/29.2 V at '
+            '20.6 A, SMBJ20A 20/22.2-24.5/32.4 V at 18.6 A, SMBJ22A 22/24.4-26.9/35.5 V at 16.9 A, SMBJ24A 24/26.7-29.5/38.9 V '
+            'at 15.5 A; alphaVBR 0.084/0.088/0.091/0.092 %/C (16A/18A/20A/22A)',
+    'TPS1663_OVP': 'TI SLVSET9G 6.5/6.6: OVP rising 1.176/1.2/1.224 V, falling 1.09/1.122/1.15 V, leakage 150 nA; OVP '
+                   'turn-off 8.5-14 us to FLT',
+    'RLM12': 'TA-I TRLM-XX0S001A (https://www.tai.com.tw/files/uploads/Prod_spec/RLM.pdf): RLM12 3.2 x 1.6 mm, electrode '
+             '0.5 +/- 0.3 mm (2-50 mOhm), land a 1.8 b 1.7 L 1.6 mm, 1 W with 300 mm2 pad + trace copper; LCSC C393095 '
+             'RLM12FTCMR018 1 % 75 ppm',
 }
 
 
@@ -97,7 +108,7 @@ def table():
 
     def val(ref):
         s = parts[ref]['value']
-        return float(s[:-1]) * {'k': 1e3, 'u': 1e-6, 'n': 1e-9}[s[-1]] if s[-1] in 'kun' else float(s)
+        return float(s[:-1]) * {'k': 1e3, 'M': 1e6, 'u': 1e-6, 'n': 1e-9}[s[-1]] if s[-1] in 'kMun' else float(s)
     return parts, val
 
 
@@ -129,7 +140,9 @@ TPS552892_DS = dict(vref=(1.188, 1.2, 1.212), ilim_avg=(7.0, 8.0, 9.0), vsns=(0.
                     ton_min=130e-9, toff_min=145e-9, rth_ja=(43.4, 27.5), vin_abs=42.0, vin_max=36.0, fsw_tol=0.10,
                     rsense_int=0.055, gea=190e-6, ifb_lkg=100e-9, ivout_lkg=20e-6, cout_eff_max_uF=1000.0,
                     ieff_vcc_A=0.010, l_min_x_fsw=1.2)
-R109_TOL = (0.99 * (1 - 75e-6 * 100), 1.01 * (1 + 75e-6 * 100))      # 1 % + 75 ppm/C x 100 C (HoLR1206)
+KELVIN_RESIDUAL = 0.002          # S9.2: sense-point residual of the 4-terminal split land (s92_parts, ADI split-pad data)
+R109_TOL = (0.99 * (1 - 75e-6 * 100) * (1 - KELVIN_RESIDUAL),     # TA-I RLM12: 1 % + 75 ppm/C x 100 C, Kelvin residual
+            1.01 * (1 + 75e-6 * 100) * (1 + KELVIN_RESIDUAL))
 ETA_ASSUMED = {'+12V': .93, '-12V': .85}      # planning efficiencies (datasheet curves), not measurements
 FC_SCREEN_HZ = 10e3                           # +12V crossover screen (COMP R111/C83)
 
@@ -699,7 +712,7 @@ def rating(val, eff):
         vin_floor_V=vin_floor, vpd_rated_min_V=VPD_RATED_MIN,
         input_path=INPUT_PATH,
         capability_min_A={k: round(v, 3) for k, v in cap.items()},
-        capability_basis={'+12V': 'R109 constant-current minimum 48 mV / (18 mOhm x 1.01 x 1.0075)',
+        capability_basis={'+12V': 'R109 constant-current minimum 48 mV / (18 mOhm x 1.01 x 1.0075 x 1.002 Kelvin residual)',
                           '-12V': 'LMR38020 (ILS min + ripple/2)(1 - D), SNVSC40E Eq. 7'},
         fraction_of_capability={k: round(PUBLISHED_A[k] / cap[k], 3) for k in cap},
         headroom_to_capability_A={k: round(cap[k] - PUBLISHED_A[k], 3) for k in cap},
@@ -1013,7 +1026,7 @@ def pd_contract(val):
         contract_note='45 W at 15 V is 3.0 A, the fixed-PDO ceiling: no standard source offers more than 3 A at 15 V',
         stated_input_range_V=list(VPD_RANGE),
         range_basis=f'{VPD_RANGE[0]} V = 15 V -5 % less the {CABLE_DROP_V} V cable/connector allowance at 3 A; '
-                    f'{VPD_RANGE[1]} V = +10 % ceiling (converters and guards rated far above it; U5 OVP 24.1 V nominal)',
+                    f'{VPD_RANGE[1]} V = +10 % ceiling (converters and guards rated far above it; S9.2 U5 OVP 17.30-19.44 V)',
         U5_window_V={'on': [round(v, 2) for v in on], 'off': [round(v, 2) for v in off]},
         required_adapter='USB PD source with a 15 V / 3 A fixed PDO, i.e. a >= 45 W PDP adapter (a 27 W source offers '
                          'only 15 V / 1.8 A and will trip or cycle under load); a non-PD or 5 V-only source never turns U5 '
@@ -1038,7 +1051,7 @@ def ds_leak_mA():
 def retarget_20v(val):
     """What changes when the input moves back to 20 V (not done in S9.0): three resistors and the rated minimum; every
     part behind U5 is already rated for it (U5 OVP keeps the 20 V setting)."""
-    swap = {'R1': 120e3, 'R3': 7.5e3, 'R114': 0., 'R83': 120e3}
+    swap = {'R1': 120e3, 'R3': 7.5e3, 'R114': 0., 'R83': 120e3, 'R24': 6.8e3}
 
     def val20(ref):
         return swap.get(ref, val(ref))
@@ -1053,7 +1066,10 @@ def retarget_20v(val):
     return dict(
         changes={'R1': '56k -> 120k (CH224A 20 V request)', 'R3': '10k -> 7.5k precision (U5 UVLO)', 'R114': '510 -> 0 ohm (20V UVLO)' ,
                  'R83': '100k -> 120k (V20_OK status floor)',
-                 'D24': 'SMBJ16A -> SMBJ22A (same SMB footprint); requalify cold stand-off and clamp',
+                 'R24': '9.1k -> 6.8k (U5 OVP back to 22.76-25.60 V for the 20 V input)',
+                 'D24': ('SMBJ20A must be re-selected: at 22 V maximum input the S9.2 rule needs VR >= 25.3 V, VBR(0 C) '
+                         'above the 25.6 V OVP maximum and VC < 42 V; no SMBJ meets all three (SMBJ26A VC 42.1 V), so a '
+                         'lower-clamp TVS or a new coordination is required'),
                  'D25': 'replace 30V BAT54 with >=40V negative clamp; requalify forward drop / footprint',
                  'docs': 'rated minimum VPD 18.25 V (20 V -5 % less 0.75 V), input budget at 20 V'},
         U5_window_V={'on': [round(v, 2) for v in on], 'off': [round(v, 2) for v in off]},
@@ -1068,8 +1084,87 @@ def retarget_20v(val):
                'delivered_W_60W_20V_3A_worst_mix': delivered_at_input_limit(vpd_min20, 3.0, ratings=r20)['worst_mix_delivered_W'],
                'per_rail_sum_W': round(12.08 * r20['+12V'] + 11.989 * r20['-12V'], 2)},
         unchanged=['TPS552892-Q1 cell, R109 limit and compensation (buck mode only)', 'LMR38020 (VIN + 12 V = 33 V, 80 V part)',
-                   'U5 OVP 24.1 V nominal, D1 SMBJ22A, 50 V VIN/C25/C26 parts', 'guard thresholds and the arming chain'],
-        note='20V remains supported by the converter architecture but is NOT plug-compatible with the fitted16V VIN TVS. Change D24/D25 and the input divider/request parts, then requalify; no assertion that only three resistors suffice')
+                   'D1 SMBJ22A, 50 V VIN/C25/C26 parts', 'guard thresholds and the arming chain'],
+        note='20V remains supported by the converter architecture but is NOT plug-compatible with the fitted 20 V VIN TVS and the 15 V OVP. Change R24, D24/D25 and the input divider/request parts, then requalify; no assertion that only three resistors suffice')
+
+
+def vin_clamp_coordination(val):
+    """S9.2 item 1: D24 re-selection against the three rules, for each candidate with the S9.1 OVP divider (R24 6.8k)
+    and the S9.2 one (9.1k): (a) VR >= 1.15 x the 16.5 V maximum continuous input; (b) VBR minimum at 0 C (alphaVBR)
+    above the worst-case U5 OVP rising threshold, so U5 removes a sustained overvoltage before the TVS conducts; (c) VC at
+    the rated 10/1000 us IPP below the U2 42 V absolute maximum with ringing margin, and VC plus the -12V guard maximum
+    (14.02 V) below the 50 V rating of C25/C26 (VIN to -12V). VIN <= VPD (D10), so the VPD-referred OVP bounds VIN."""
+    lo, hi = R1
+    rt = val('R28') + val('R4')
+
+    def ovp(rb):
+        leak = 150e-9 * rt * hi
+        k_lo, k_hi = 1 + rt * lo / (rb * hi), 1 + rt * hi / (rb * lo)
+        return {'rise_V': [round(1.176 * k_lo - leak, 3), round(1.2 * (1 + rt / rb), 3), round(1.224 * k_hi + leak, 3)],
+                'fall_V': [round(1.09 * k_lo - leak, 3), round(1.122 * (1 + rt / rb), 3), round(1.15 * k_hi + leak, 3)]}
+    dividers = {'S9.1 R24 6.8k': ovp(6.8e3), 'S9.2 R24 9.1k': ovp(val('R24'))}
+    rows = {}
+    for part, (vr, vbr_lo, vbr_hi, vc, ipp, alpha) in s91_analysis.SMBJ.items():
+        if part not in ('SMBJ18A', 'SMBJ20A', 'SMBJ24A', 'SMBJ16A'):
+            continue
+        vbr_cold = vbr_lo * (1 - alpha / 100 * 25)
+        for dname, o in dividers.items():
+            checks = {'a_standoff_ge_18.975V': vr >= 1.15 * VPD_RANGE[1],
+                      'b_VBR_0C_above_OVP_max': vbr_cold > o['rise_V'][2],
+                      'c_VC_below_42V_with_15pct': vc <= 42.0 / 1.15,
+                      'c_VC_plus_14.02_below_50V': vc + 14.02 < 50.0}
+            rows[f'{part} + {dname}'] = {'VR_V': vr, 'VBR_V': [vbr_lo, vbr_hi], 'VBR_min_0C_V': round(vbr_cold, 2),
+                                         'VC_V': vc, 'IPP_A': ipp, 'OVP_rise_max_V': o['rise_V'][2],
+                                         'margin_VBR_0C_minus_OVP_max_V': round(vbr_cold - o['rise_V'][2], 2),
+                                         'margin_42V_minus_VC_V': round(42.0 - vc, 1), 'checks': checks,
+                                         'pass': all(checks.values())}
+    chosen = rows['SMBJ20A + S9.2 R24 9.1k']
+    assert chosen['pass'] and not rows['SMBJ20A + S9.1 R24 6.8k']['pass'] and not rows['SMBJ16A + S9.1 R24 6.8k']['pass']
+    assert not any(r['pass'] for k, r in rows.items() if k.startswith(('SMBJ18A', 'SMBJ24A')))
+    new = dividers['S9.2 R24 9.1k']
+    return {'rules': {'a': 'VR >= 1.15 x 16.5 V = 18.975 V', 'b': 'VBR min at 0 C > U5 OVP rising maximum (OVP acts first)',
+                      'c': 'VC(IPP) <= 42 V / 1.15 (U2 abs max with 15 % ringing margin) and VC + 14.02 V < 50 V (C25/C26)'},
+            'OVP_dividers': dividers, 'candidates': rows,
+            'choice': {'D24': 'SMBJ20A (Littelfuse C151257)', 'R24': '9.1k (6.8k in S9.1)',
+                       'why_divider': ('Lowering the OVP from the 20 V-input setting (22.76-25.60 V) to the 15 V input is the '
+                                       'cleaner fix: it is a one-resistor change on the protection that is supposed to act '
+                                       'first, it also coordinates D1 (SMBJ22A, VBR 24.4 V) for the first time, and it keeps '
+                                       'the TVS clamp low. No SMBJ satisfies (b) with the S9.1 divider without failing (c).'),
+                       'normal_operation': {'OVP_rise_min_V': new['rise_V'][0], 'margin_over_16.5V': round(new['rise_V'][0] - 16.5, 2),
+                                            'OVP_fall_min_V': new['fall_V'][0], 'recovers_above_vSrcNew_max_15.75V':
+                                                new['fall_V'][0] > 15.75,
+                                            'U5_on_max_V': round(u5_window(val)[0][2], 3)},
+                       'D1_coordination': {'D1_VBR_min_0C_V': round(24.4 * (1 - .092 / 100 * 25), 2),
+                                           'OVP_rise_max_V': new['rise_V'][2]}},
+            'pulse_budget': s91_analysis.vin_tvs(),
+            'tested_by': 'IN-2 (OVP trip/recovery at TP1) and CL-1/T1-D (D24 clamp at TP26/TP27)'}
+
+
+def thermal_contract(val, eff):
+    """S9.2 item 6: the U2 / R109 / D10 screens with the board they assume (tools/s92_contract.THERMAL). The JEDEC
+    RthetaJA is not assumed for the unrouted board: the rating is conditional on the routing contract and TH-1..TH-3."""
+    import s92_contract
+    b = plus12_buckboost(val, eff)
+    worst = max(b['losses'].values(), key=lambda x: x['P_IC_W'])
+    rated = b['losses'][f"I{PUBLISHED_A['+12V']:.2f}A"]
+    op = p12(val)
+    p_r109 = op['icc_A'][2] ** 2 * val('R109') * R109_TOL[1]
+    d10_w = INPUT_PATH['D10_V'] * PD_CONTRACT['A']
+    return {'status': 'CONDITIONAL: valid only if the routed board meets placement.json routing_contract.thermal; '
+                      'confirmed by post-prototype TH-1..TH-3, not by this screen',
+            'U2': {'P_IC_W_at_limit': worst['P_IC_W'], 'P_IC_W_at_rating': rated['P_IC_W'],
+                   'RthetaJA_model_C_W': TPS552892_DS['rth_ja'][0], 'Tj_at_50C_limit_C': worst['Tj_at_50C_ambient_JEDEC_C'],
+                   'allowed_RthetaJA_for_125C_C_W': {'at_CC_limit': round((125 - 50) / worst['P_IC_W'], 1),
+                                                     'at_2.4A_rating': round((125 - 50) / rated['P_IC_W'], 1)},
+                   'contract': s92_contract.THERMAL['U2']['requirements']},
+            'R109': {'P_W_at_limit': round(p_r109, 3), 'rating_W': 1.0,
+                     'rise_C_at_limit': round(p_r109 * (155 - 70) / 1.0, 1),
+                     'basis': 'TA-I RLM12 derating: 1 W at 70 C to 0 at 155 C (85 C/W) with the 300 mm2 copper of the contract',
+                     'contract': s92_contract.THERMAL['R109']['requirements']},
+            'D10': {'P_W_at_3A': round(d10_w, 2), 'required_RthetaJA_C_W': round((125 - 50) / d10_w, 1),
+                    'contract': s92_contract.THERMAL['D10']['requirements']},
+            'acceptance': 'TH-1 U2/R109 case temperature at 2.95 A, TH-2 D10/U5 at 3 A input, TH-3 U4 at 0.8 A; '
+                          'docs/s8-single/routing-notes.md'}
 
 
 def area(parts):
@@ -1085,7 +1180,7 @@ def area(parts):
              'PPAD8': 'TI_SO-PowerPAD-8_ThermalVias',
              'PWP20': 'HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias',
              'TP': 'TestPoint_Pad_D1.0mm', 'DGN8': 'TPS7A16_DGN0008C', 'SOT235': 'SOT-23-5', 'SOT236': 'SOT-23-6',
-             'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm', 'WSLP1206':'R_WSLP1206_18m_Kelvin', 'SLO1040': 'L_SLO1040H6R8MTT', 'RYQ21': 'TI_RYQ0021B_VQFN-HR-21_3x5mm',
+             'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm', 'KELVIN1206': 'R_Shunt_1206_KelvinSplit_RLM12', 'TP15': 'TestPoint_Pad_D1.5mm', 'SLO1040': 'L_SLO1040H6R8MTT', 'RYQ21': 'TI_RYQ0021B_VQFN-HR-21_3x5mm',
              'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621', 'TL3340': 'SW_TL3340AF160QG_HandSolder',
              'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge'}
     cache = {}
@@ -1121,7 +1216,7 @@ def main():
     ap.add_argument('--skip-sim', action='store_true', help='skip the VIN grid and rail-release simulations')
     a = ap.parse_args()
     parts, val = table()
-    R = {'status': 'S9.1 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
+    R = {'status': 'S9.2 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
     R['banks'], eff = banks(parts)
     R['ripple_and_steps'] = ripple_and_steps(val, eff)
     op = p12(val)
@@ -1144,8 +1239,10 @@ def main():
     R['rating'] = rating(val, eff)
     R['pd_contract'] = pd_contract(val)
     R['input_qualification'] = s91_analysis.input_qualification(val)
-    R['enable_logic'] = s91_analysis.enable(val)
+    R['enable_logic'] = s91_analysis.enable()
     R['startup_qualification'] = s91_analysis.qualification(val, eff, op)
+    R['vin_clamp'] = vin_clamp_coordination(val)
+    R['thermal_contract'] = thermal_contract(val, eff)
     R['basic_only_counterfactual'] = basic_only_counterfactual(val, eff, R['rail_release'])
     R['startup_window'] = startup_window(val)
     R['arming'] = arming(val)

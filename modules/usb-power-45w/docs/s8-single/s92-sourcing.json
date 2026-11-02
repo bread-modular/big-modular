@@ -1,0 +1,914 @@
+{
+  "note": "S9.2 live exact-code rows (shared --strict-live lookup, one request per code, full price ladders) for the codes S9.2 adds or changes: D24 SMBJ20A C151257 (TVS/OVP coordination), D26 SMBJ14A C315990 (code added), R109 TA-I RLM12FTCMR018 C393095 (Kelvin shunt), R24 9.1k C23260 (OVP divider), R115 100k C25803 (N_EN_RETURN default); the recorded alternates (D24 C364296/C151922, D26 C152106/C840775, R109 C50314717/C49164939/C845266); and the JLCPCB codes noted for the owner-fitted manual parts (J2/J3 Wurth 61201621621 C5364137, THT option CJT C5454489; D8 option Everlight C99771). Raw snapshots: research/s92/catalog. Dated public-catalog observations, not reservations, quotes or order acceptance.",
+  "codes": {
+    "C151257": {
+      "code": "C151257",
+      "mpn": "SMBJ20A",
+      "manufacturer": "Littelfuse",
+      "package": "DO-214AA",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 7368,
+      "unit_price_q1_usd": 0.1858,
+      "price_ladder_usd": [
+        [
+          1,
+          49,
+          0.1858
+        ],
+        [
+          50,
+          149,
+          0.1457
+        ],
+        [
+          150,
+          499,
+          0.1257
+        ],
+        [
+          500,
+          2999,
+          0.1106
+        ],
+        [
+          3000,
+          5999,
+          0.0945
+        ],
+        [
+          6000,
+          -1,
+          0.0885
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:04Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C151257"
+        },
+        "sha256": "8b55d67c0677200384806274d8fdf91d5b83792b471d24d7db96719b1b2b87c7",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "D24"
+      ]
+    },
+    "C315990": {
+      "code": "C315990",
+      "mpn": "SMBJ14A",
+      "manufacturer": "Littelfuse",
+      "package": "DO-214AA",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 2639,
+      "unit_price_q1_usd": 0.1689,
+      "price_ladder_usd": [
+        [
+          1,
+          49,
+          0.1689
+        ],
+        [
+          50,
+          149,
+          0.1454
+        ],
+        [
+          150,
+          499,
+          0.1338
+        ],
+        [
+          500,
+          2999,
+          0.1249
+        ],
+        [
+          3000,
+          5999,
+          0.118
+        ],
+        [
+          6000,
+          -1,
+          0.1144
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:06Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C315990"
+        },
+        "sha256": "7d5808fe6ae891c10e970a3b96c257b84be812098e71d919fb98ccd5db6e24e0",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "D26"
+      ]
+    },
+    "C393095": {
+      "code": "C393095",
+      "mpn": "RLM12FTCMR018",
+      "manufacturer": "TA-I Tech",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 2855,
+      "unit_price_q1_usd": 0.0406,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.0406
+        ],
+        [
+          100,
+          299,
+          0.0322
+        ],
+        [
+          300,
+          999,
+          0.0281
+        ],
+        [
+          1000,
+          4999,
+          0.025
+        ],
+        [
+          5000,
+          9999,
+          0.0215
+        ],
+        [
+          10000,
+          -1,
+          0.0204
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:08Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C393095"
+        },
+        "sha256": "d3499a55b4dffa91f39dd19dc00e115eb6303b8268d7bdb25db0a93621366ded",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R109"
+      ]
+    },
+    "C23260": {
+      "code": "C23260",
+      "mpn": "0603WAF9101T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 603928,
+      "unit_price_q1_usd": 0.0031,
+      "price_ladder_usd": [
+        [
+          1,
+          999,
+          0.0031
+        ],
+        [
+          1000,
+          4999,
+          0.0023
+        ],
+        [
+          5000,
+          9999,
+          0.0019
+        ],
+        [
+          10000,
+          49999,
+          0.0018
+        ],
+        [
+          50000,
+          50199,
+          0.0015
+        ],
+        [
+          50200,
+          -1,
+          0.0015
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:10Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C23260"
+        },
+        "sha256": "753d9b179cb6eee3f4bf0e4a1cf2a1f56f225230c7c9bcd8800f827ae370a93a",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R15",
+        "R24"
+      ]
+    },
+    "C25803": {
+      "code": "C25803",
+      "mpn": "0603WAF1003T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 17346751,
+      "unit_price_q1_usd": 0.0029,
+      "price_ladder_usd": [
+        [
+          1,
+          999,
+          0.0029
+        ],
+        [
+          1000,
+          4999,
+          0.0023
+        ],
+        [
+          5000,
+          9999,
+          0.002
+        ],
+        [
+          10000,
+          49999,
+          0.0016
+        ],
+        [
+          50000,
+          50199,
+          0.0015
+        ],
+        [
+          50200,
+          -1,
+          0.0015
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:11Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C25803"
+        },
+        "sha256": "4a2a2500076b3f453b8e1232008603c467ffb84c4298a59aa10d2cc3b6568e5a",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "R14",
+        "R17",
+        "R80",
+        "R83",
+        "R115"
+      ]
+    },
+    "C364296": {
+      "code": "C364296",
+      "mpn": "SMBJ20A",
+      "manufacturer": "MDD(Microdiode Semiconductor)",
+      "package": "DO-214AA(SMB)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 184443,
+      "unit_price_q1_usd": 0.0567,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.0567
+        ],
+        [
+          100,
+          299,
+          0.0468
+        ],
+        [
+          300,
+          2999,
+          0.0419
+        ],
+        [
+          3000,
+          5999,
+          0.0312
+        ],
+        [
+          6000,
+          8999,
+          0.0283
+        ],
+        [
+          9000,
+          -1,
+          0.0268
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:12Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C364296"
+        },
+        "sha256": "697f807d8eae512341cbf0e4b6af5f0ac63c8c314ec31a975886c60fc5220fe6",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C151922": {
+      "code": "C151922",
+      "mpn": "SMBJ20A",
+      "manufacturer": "BORN",
+      "package": "DO-214AA(SMB)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 80814,
+      "unit_price_q1_usd": 0.0694,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.0694
+        ],
+        [
+          100,
+          299,
+          0.0565
+        ],
+        [
+          300,
+          2999,
+          0.0499
+        ],
+        [
+          3000,
+          5999,
+          0.0398
+        ],
+        [
+          6000,
+          8999,
+          0.036
+        ],
+        [
+          9000,
+          -1,
+          0.034
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:13Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C151922"
+        },
+        "sha256": "b1b02227861f8c880af76b14cce926a93720092f50d52d78b9f484585769243d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C152106": {
+      "code": "C152106",
+      "mpn": "SMBJ14A",
+      "manufacturer": "BORN",
+      "package": "DO-214AA(SMB)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 16380,
+      "unit_price_q1_usd": 0.0663,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.0663
+        ],
+        [
+          100,
+          299,
+          0.0529
+        ],
+        [
+          300,
+          2999,
+          0.0462
+        ],
+        [
+          3000,
+          5999,
+          0.0373
+        ],
+        [
+          6000,
+          8999,
+          0.0334
+        ],
+        [
+          9000,
+          -1,
+          0.0312
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:14Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C152106"
+        },
+        "sha256": "a4a0bf836ea0f0e3dcc0daa3ee554b39458e23daedbd06d0b55ddb2b7d15ade3",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C840775": {
+      "code": "C840775",
+      "mpn": "SMBJ14A",
+      "manufacturer": "MDD(Microdiode Semiconductor)",
+      "package": "SMB(DO-214AA)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 2112,
+      "unit_price_q1_usd": 0.0484,
+      "price_ladder_usd": [
+        [
+          1,
+          9,
+          0.0484
+        ],
+        [
+          10,
+          29,
+          0.0386
+        ],
+        [
+          30,
+          99,
+          0.0337
+        ],
+        [
+          100,
+          499,
+          0.0301
+        ],
+        [
+          500,
+          999,
+          0.0271
+        ],
+        [
+          1000,
+          -1,
+          0.0256
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:14Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C840775"
+        },
+        "sha256": "42f0361b2075be989d614d336ffc80d1b1d8bd5b22836eff6a6d1093f2e3a284",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C50314717": {
+      "code": "C50314717",
+      "mpn": "LRAM12CFTR018",
+      "manufacturer": "NCT",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 2526,
+      "unit_price_q1_usd": 0.0289,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.0289
+        ],
+        [
+          200,
+          599,
+          0.0229
+        ],
+        [
+          600,
+          4999,
+          0.0194
+        ],
+        [
+          5000,
+          9999,
+          0.0174
+        ],
+        [
+          10000,
+          19999,
+          0.0156
+        ],
+        [
+          20000,
+          -1,
+          0.0147
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:15Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C50314717"
+        },
+        "sha256": "2e274b9aa0ec88e3c6cd6bc9a749925c7aea70887757824edc99d2ec1f3b2e20",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C49164939": {
+      "code": "C49164939",
+      "mpn": "JER1206F1R018",
+      "manufacturer": "jieerrui",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 6158,
+      "unit_price_q1_usd": 0.0522,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.0522
+        ],
+        [
+          100,
+          299,
+          0.0412
+        ],
+        [
+          300,
+          999,
+          0.0358
+        ],
+        [
+          1000,
+          4999,
+          0.0317
+        ],
+        [
+          5000,
+          9999,
+          0.0284
+        ],
+        [
+          10000,
+          -1,
+          0.0268
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:16Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C49164939"
+        },
+        "sha256": "33591909e9b51de8e9a935035f7dc97c9035841ea27546aa7ca20d41d56d3456",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C845266": {
+      "code": "C845266",
+      "mpn": "SMF12M1FR018T",
+      "manufacturer": "SART(Nanjing Sart Tech)",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 3249,
+      "unit_price_q1_usd": 0.0627,
+      "price_ladder_usd": [
+        [
+          1,
+          99,
+          0.0627
+        ],
+        [
+          100,
+          299,
+          0.0493
+        ],
+        [
+          300,
+          999,
+          0.0425
+        ],
+        [
+          1000,
+          4999,
+          0.0376
+        ],
+        [
+          5000,
+          9999,
+          0.0324
+        ],
+        [
+          10000,
+          -1,
+          0.0304
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:17Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C845266"
+        },
+        "sha256": "74e9f47f837150a1a3bf993fd2df78a767bee7f56840fcb5db7100dd720debc6",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C5364137": {
+      "code": "C5364137",
+      "mpn": "61201621621",
+      "manufacturer": "Wurth Elektronik",
+      "package": "Plugin,P=2.54mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 0,
+      "unit_price_q1_usd": 0.8204,
+      "price_ladder_usd": [
+        [
+          1,
+          9,
+          0.8204
+        ],
+        [
+          10,
+          29,
+          0.8204
+        ],
+        [
+          30,
+          199,
+          0.8204
+        ],
+        [
+          200,
+          499,
+          0.3282
+        ],
+        [
+          500,
+          999,
+          0.3167
+        ],
+        [
+          1000,
+          -1,
+          0.3118
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:17Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C5364137"
+        },
+        "sha256": "883261e5c96f88eb9c20983cb83ab1ac2eef6ffe817ee2ffebf586ac17e3836b",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [
+        "missing:attributes"
+      ],
+      "refs_S8": []
+    },
+    "C5454489": {
+      "code": "C5454489",
+      "mpn": "A2541WV-2x8P",
+      "manufacturer": "CJT(Changjiang Connectors)",
+      "package": "Plugin,P=2.54mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 3865,
+      "unit_price_q1_usd": 0.3236,
+      "price_ladder_usd": [
+        [
+          1,
+          49,
+          0.3236
+        ],
+        [
+          50,
+          149,
+          0.2589
+        ],
+        [
+          150,
+          499,
+          0.2312
+        ],
+        [
+          500,
+          1999,
+          0.189
+        ],
+        [
+          2000,
+          4999,
+          0.1736
+        ],
+        [
+          5000,
+          -1,
+          0.1644
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:18Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C5454489"
+        },
+        "sha256": "fd2b339598d466b65a06d1870b388367c093cdc7584b99d1f1d24a4e8fdb2c20",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C99771": {
+      "code": "C99771",
+      "mpn": "204-10SURD/S530-A3-L",
+      "manufacturer": "Everlight Elec",
+      "package": "Plugin,D=3mm",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 109541,
+      "unit_price_q1_usd": 0.0334,
+      "price_ladder_usd": [
+        [
+          1,
+          499,
+          0.0334
+        ],
+        [
+          500,
+          1999,
+          0.0253
+        ],
+        [
+          2000,
+          4999,
+          0.0212
+        ],
+        [
+          5000,
+          24999,
+          0.0184
+        ],
+        [
+          25000,
+          49999,
+          0.0174
+        ],
+        [
+          50000,
+          -1,
+          0.0166
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-02T07:24:19Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C99771"
+        },
+        "sha256": "3a9b5b2a547c15024a1e1c28a7be23e5956ac39e0dd694f1ebcbf3e49a4367ec",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    }
+  },
+  "basic_only_policy": {
+    "decision": "S9.2 Basic/Extended policy: every resistor and capacitor is a Basic part except the documented electrical exceptions R2/R3 (0.1 % UVLO), R93/R94/R98/R99 (0.1 % guard dividers) and R109 (18 mOhm 1 W metal-alloy shunt, no Basic part exists). ICs, transistors, TVS/Schottky diodes, the inductors and connectors are Extended where JLCPCB has no Basic equivalent. Every machine-assembled part has a C-code with live stock at the dated audit; alternates are recorded in the Alternates field. J2/J3 (box headers) and D8 (panel LED) stay owner-fitted manual parts by the S7/S8 module policy; JLCPCB THT codes are noted for them.",
+    "refs": [
+      "R2",
+      "R3",
+      "R93",
+      "R94",
+      "R98",
+      "R99",
+      "R109"
+    ],
+    "why": "Precision UVLO gives the worst-case start < 13 V; precision guard dividers keep the overvoltage margins; the 18 mOhm shunt sets the 2.62-2.95 A CC limit (Kelvin land).",
+    "manual_parts": {
+      "J2": "Wurth 61201621621 (LCSC C5364137, see s92-sourcing.json); THT option CJT A2541WV-2x8P C5454489 needs a footprint/height check against the IDC plug envelope",
+      "J3": "as J2",
+      "D8": "3 mm red LED, horizontal panel mount (bent leads, Z 2.0 mm): owner stock; THT option Everlight 204-10SURD/S530-A3-L C99771"
+    },
+    "cost": "Quantity-1 part prices only; Extended setup fees, attrition, PCB, assembly and shipping are excluded."
+  },
+  "failures": [
+    "C5364137"
+  ]
+}

@@ -9,13 +9,13 @@
 	(paper "A4")
 	(title_block
 		(title "Big Modular - usb-power-45w S8 single board")
-		(rev "S9.1-P2.1")
+		(rev "S9.2-P2.2")
 		(company "Big Modular")
-		(comment 1 "S9.1 own-input enable, pulse clamps, split U2 grounds. P2.1 DRAFT, UNROUTED.")
+		(comment 1 "S9.2 routing-ready placement (Kelvin R109, PGND star at C82.2, acceptance pads). P2.2, UNROUTED.")
 		(comment 2 "Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)")
 		(comment 3 "Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json")
 		(comment 4 "Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json")
-		(comment 5 "S9.1 / P2.1: AGND_U2 joins GND ONLY via R113 at C82. No routed copper.")
+		(comment 5 "S9.2 / P2.2: AGND_U2 joins PGND ONLY via R113 at C82.2 (PGND). Contract: docs/s8-single/routing-notes.md.")
 	)
 	(layers
 		(0 "F.Cu" signal)
@@ -2341,7 +2341,7 @@
 				)
 			)
 		)
-		(property "Note" "In series with R4: 130k OVP top; enough falling-threshold margin to recover at 21 V"
+		(property "Note" "OVP top with R4 (130k total); S9.2 OVP 17.30-19.44 V rising with R24 9.1k"
 			(at 0 0 180)
 			(layer "F.SilkS")
 			(hide yes)
@@ -4185,7 +4185,7 @@
 			(size 0.25 0.6)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.08333333)
-			(net "/+12 V buck-boost converter/P12_VOUT")
+			(net "/+12 V buck-boost converter/P12_ISP")
 			(solder_mask_margin 0.025)
 			(uuid "73c08da7-cf30-56d5-a77b-0107ac74b803")
 		)
@@ -4194,7 +4194,7 @@
 			(size 0.25 0.625)
 			(layers "F.Cu" "F.Mask")
 			(roundrect_rratio 0.08)
-			(net "+12V")
+			(net "/+12 V buck-boost converter/P12_ISN")
 			(solder_mask_margin 0.025)
 			(uuid "b9789cf4-ee81-52b2-b3cb-b5ab13d83330")
 		)
@@ -5722,7 +5722,7 @@
 				)
 			)
 		)
-		(property "Note" "OVP top with R28; independent of UVLO and RESET"
+		(property "Note" "OVP top with R28; independent of UVLO and RESET. S9.2: band set by R24 9.1k"
 			(at 0 0 180)
 			(layer "F.SilkS")
 			(hide yes)
@@ -8228,6 +8228,119 @@
 		)
 		(embedded_fonts no)
 	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "2de32fcf-ff5c-5f6c-ae8d-08f23cdfda67")
+		(at 121.99 72.39)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP22"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "c4898689-5116-545b-b8c6-b8d55f8ae8ab")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "P12_ISP"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "f3819efd-a0b1-5c5b-9234-9a0b6c674307")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0a206e60-b4ec-5729-a100-27723cc01444")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3527217a-1566-5be1-9229-f605e4c2d13e")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad P12_ISP: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6d03a1cb-4435-4651-88d9-b17873f17271")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/07a6eae3-613f-5993-bef3-5baea0dd579d")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "c01618cc-1ef7-5ee2-8ee5-d6eb879a000c")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "e7ca39d6-e8e7-52e5-912c-22281959219f")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "611bffed-8617-5a3c-aa47-88000bcc6b25")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "/+12 V buck-boost converter/P12_ISP")
+			(uuid "e9b0769e-2f50-5907-8d6a-e931ab51fd37")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "USBPOWER45:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2e5e70bb-fb75-4abf-84aa-5370ea4615d1")
@@ -9027,50 +9140,65 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "USBPOWER45:R_WSLP1206_18m_Kelvin"
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
 		(layer "F.Cu")
-		(uuid "32d9946c-970b-57d4-b1ee-9f090bcbfd43")
-		(at 114.6 72)
-		(descr "Vishay WSLP1206 doc 30122: pads 1.65x1.93 gap 1.80; Kelvin sense from terminal inner edges")
-		(property "Reference" "R109"
-			(at 0 -1.65 0)
+		(uuid "361bc566-0c04-5e83-a389-477d521de43a")
+		(at 92.1 88.04)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP27"
+			(at 0 -1.648 0)
 			(layer "F.Fab")
-			(uuid "eeb1d9fd-3cb0-49de-91ea-0e088ea8bd36")
+			(uuid "0c54b239-b3fc-5495-a9ad-576540e5972a")
 			(effects
 				(font
-					(size 0.7 0.7)
-					(thickness 0.1)
+					(size 1 1)
+					(thickness 0.15)
 				)
 			)
 		)
-		(property "Value" "0.018"
-			(at 0 1.65 0)
+		(property "Value" "GND"
+			(at 0 1.75 0)
 			(layer "F.Fab")
-			(uuid "aba7c05d-ee0d-411c-87ca-3e1915dcd4ab")
+			(uuid "36fcb468-b27f-5980-96f1-5775e8382b80")
 			(effects
 				(font
-					(size 0.7 0.7)
-					(thickness 0.1)
+					(size 1 1)
+					(thickness 0.15)
 				)
 			)
 		)
 		(property "Datasheet" ""
 			(at 0 0 0)
+			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "25b5cc02-4a0a-41da-9d91-a9593bce8e34")
+			(uuid "db1ad44f-2d59-56ba-b049-cc9224fc910f")
 			(effects
 				(font
-					(size 1 1)
+					(size 1.27 1.27)
 					(thickness 0.15)
 				)
 			)
 		)
-		(property "Description" "Resistor"
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ed0ae399-afbf-5626-888b-444b0252b170")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad GND: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "4a203a8e-30b1-4682-b880-a254083b70fb")
+			(uuid "b36ff26a-90f2-4815-8403-81888797b2d9")
 			(effects
 				(font
 					(size 1 1)
@@ -9078,132 +9206,50 @@
 				)
 			)
 		)
-		(property "LCSC" ""
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8dae5b9c-5877-4ec6-98f9-de60b81943a6")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "MPN" "WSLP1206R0180FEA"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "29b23bfe-5dbb-4bae-9491-0dee9a05f5e8")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Manufacturer" "Vishay Dale"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "b2e89242-dabf-42cd-b3c4-6e8d0b98ea03")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Tolerance" "1%"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d3db8eeb-6192-4f0c-af96-415d07d96991")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "TCR" "75ppm"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "50a36a22-8a49-4efd-a8e3-7e43468a77dc")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Power" "1W"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "00693383-e06f-49ac-9f34-398dfd90e570")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Note" "U2 output current limit ISP/ISN: VSNS 48-52 mV / 18 mR (1 % + 75 ppm) = 2.62-2.94 A constant-current loop. Sets the +12V capability (rating basis) and charges rack capacitance without hiccup; FB senses after it. 1 W part: <= 0.16 W at the limit; procurement/PCBA qualification OPEN (no invented C-code)"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "c23b2da1-ae3c-4001-af7c-0cfec25368f3")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/7e9d9c19-1fd4-533f-b652-dd8eeccac6d5")
-		(sheetname "/+12 V buck-boost converter/")
-		(sheetfile "02_positive_12v.kicad_sch")
-		(attr smd)
+		(path "/bcf4b69c-e93d-572c-9ac6-3a75a948347b/96d962b5-a8fd-5a2e-a4c1-a11a525e425e")
+		(sheetname "/USB PD, main eFuse and VIN damper/")
+		(sheetfile "01_usb_input.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
-		(fp_rect
-			(start -2.8 -1.22)
-			(end 2.8 1.22)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "369ac5d3-6bfe-5f17-8e85-8794aefe91c4")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
 			(stroke
 				(width 0.05)
-				(type default)
+				(type solid)
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "651eff57-b78d-4b4c-b09a-8fd23cd0b2ab")
+			(uuid "63b15b78-b832-5adf-878d-e0b235135197")
 		)
-		(fp_rect
-			(start -1.73 -0.93)
-			(end 1.73 0.93)
-			(stroke
-				(width 0.1)
-				(type default)
-			)
-			(fill no)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
 			(layer "F.Fab")
-			(uuid "c3e68d3d-f639-4499-9db5-93497ee91c73")
+			(uuid "d91066b9-1af4-5086-acd9-7309414b8e83")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
 		)
-		(pad "1" smd roundrect
-			(at -1.725 0)
-			(size 1.65 1.93)
-			(layers "F.Cu" "F.Mask" "F.Paste")
-			(roundrect_rratio 0.1)
-			(net "/+12 V buck-boost converter/P12_VOUT")
-			(uuid "240eae0b-0a97-531b-a838-936eda43431b")
-		)
-		(pad "2" smd roundrect
-			(at 1.725 0)
-			(size 1.65 1.93)
-			(layers "F.Cu" "F.Mask" "F.Paste")
-			(roundrect_rratio 0.1)
-			(net "+12V")
-			(uuid "a3ff8a90-a6f7-5c37-8d46-35236047b268")
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "GND")
+			(uuid "f0f7639e-6a18-584b-85f5-c6be9fb759ad")
 		)
 		(embedded_fonts no)
 	)
@@ -12282,7 +12328,7 @@
 				)
 			)
 		)
-		(property "Note" "S9.1 common input switch, SHDN = RUN. UVLO R2 100k precision / (R3 10k precision + R114 510R): <13.0 V worst-case start. OVP unchanged (24.1 V nominal). FLT/PGOOD = MAIN_OK. U4 independently requires RUN AND MAIN_LED_OK and derives EN drive from own VPD."
+		(property "Note" "S9.2 common input switch, SHDN = RUN. UVLO R2 100k precision / (R3 10k precision + R114 510R): <13.0 V worst-case start. OVP (R28+R4 130k / R24 9.1k) rises at 17.30-19.44 V, recovers at 16.03-18.27 V: opens before D24 (VR 20 V, VBR >= 22.2 V) can conduct. FLT/PGOOD = MAIN_OK. U4 independently requires RUN AND MAIN_LED_OK and derives EN drive from own VPD."
 			(at 0 0 90)
 			(layer "F.SilkS")
 			(hide yes)
@@ -15428,7 +15474,7 @@
 				)
 			)
 		)
-		(property "Note" "S9.1 low-current VIN negative clamp for slew-limited bus tests: VF <=0.24 V at <=0.1 mA, 25 C. Not a hard-hotplug/cold absolute-minimum guarantee; 30 V reverse rating. 20 V retarget changes D25."
+		(property "Note" "S9.1 low-current VIN negative clamp for slew-limited bus tests: VF <=0.24 V at <=0.1 mA, 25 C. Not a hard-hotplug/cold absolute-minimum guarantee; 30 V reverse rating (S9.2: VIN <= 27.7 V at the D24 1 A budget, hot). 20 V retarget changes D25."
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -17816,6 +17862,119 @@
 			)
 		)
 	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "69c8b008-f323-54d0-98cb-67bf8a711ef5")
+		(at 99 68.4)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP28"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "b679344a-2118-5003-b95d-35902b705982")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "AGND_U2"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "3a9f5a1a-173a-56f7-95ec-49ce4b0d3f56")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "f2cd4138-c5ab-53c9-a218-e3cc259dc3ae")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0f12d0fc-15d5-5e29-b073-2aa6b5842b2d")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad AGND_U2: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1c89221b-59f6-496a-942d-154ebb1fc47b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/065a8fff-b2e5-59ae-a78d-013457177db1")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "b1813887-55dc-51f8-9ee4-a70024c3b842")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "ec77b810-8c58-5eee-b6c0-cf9049e4b610")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "0246e965-3ffa-5aa4-961b-94530413e4d6")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "/+12 V buck-boost converter/AGND_U2")
+			(uuid "371a3b29-d5b3-5756-a583-3f5d243311dc")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "USBPOWER45:SOT-23"
 		(layer "F.Cu")
 		(uuid "6ba9c427-53f4-4bb6-ba0a-32d4e199a1a1")
@@ -18954,14 +19113,127 @@
 		)
 		(embedded_fonts no)
 	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "7161d6ea-5db8-54ea-8eec-0db9adde6871")
+		(at 124.9 74.5)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP25"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "ee3fb91f-3fa0-56a3-91eb-822f33455ad3")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "-12V"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "adccb281-9d80-5fe2-b87e-c29fa5170119")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2ee4cb89-6df7-5704-b8d6-a8e49a20f323")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5c834c6f-d8b3-5032-a03a-47f5f7b3284f")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad -12V: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "51c94eae-5ffe-4782-80c6-9c2db0f46081")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/eebcfe51-649d-5e91-8091-f1ac65ea33f7/dbcbdfce-a041-581c-9503-3de55e399811")
+		(sheetname "/-12 V inverting converter/")
+		(sheetfile "03_negative_converter.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "6e8cce48-757c-5dc0-91a4-e4c8588a8982")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "45d2892b-e5c2-5f4d-9082-94d160634cec")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "764c9762-eaf6-510a-9d80-aa382ecc5064")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "-12V")
+			(uuid "7ae63d2e-7f0b-5037-8d78-91dbd80a651a")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "USBPOWER45:D_SMB"
 		(layer "F.Cu")
 		(uuid "71818e7b-05c6-5d8b-9b5b-dbd15430bfa1")
-		(at 120.4 70.8 90)
+		(at 127.4 69)
 		(descr "Diode SMB (DO-214AA)")
 		(tags "Diode SMB (DO-214AA)")
 		(property "Reference" "D26"
-			(at 0 -3 90)
+			(at 0 -3 0)
 			(layer "F.Fab")
 			(uuid "dac710da-8916-5a6c-aaa6-c9efd0709ee5")
 			(effects
@@ -18972,7 +19244,7 @@
 			)
 		)
 		(property "Value" "SMBJ14A"
-			(at 0 3.1 90)
+			(at 0 3.1 0)
 			(layer "F.Fab")
 			(uuid "92e13640-428d-51bb-9a4d-4fbdca505c2a")
 			(effects
@@ -18983,7 +19255,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 90)
+			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -18996,7 +19268,7 @@
 			)
 		)
 		(property "Description" "Zener diode"
-			(at 0 0 90)
+			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
@@ -19008,8 +19280,8 @@
 				)
 			)
 		)
-		(property "LCSC" ""
-			(at 0 0 90)
+		(property "LCSC" "C315990"
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "3b4effab-35fa-4684-81ab-c082adae593d")
@@ -19021,7 +19293,7 @@
 			)
 		)
 		(property "MPN" "SMBJ14A"
-			(at 0 0 90)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "ff41148c-910b-4256-91be-9f04bbbea872")
@@ -19033,7 +19305,7 @@
 			)
 		)
 		(property "Manufacturer" "Littelfuse"
-			(at 0 0 90)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "657fdf78-a29c-40b9-990f-ae394cfb0237")
@@ -19044,11 +19316,23 @@
 				)
 			)
 		)
-		(property "Note" "S9.1 U2 VOUT transient backstop: 14 V stand-off, breakdown 15.6-17.2 V, 23.2 V at 25.9 A, 600 W 10/1000 us. Absorbs VIN-bank energy after U20 opens U5; NOT a continuous rail crowbar. Procurement/PCBA qualification OPEN."
-			(at 0 0 90)
+		(property "Note" "S9.1 U2 VOUT transient backstop: 14 V stand-off, breakdown 15.6-17.2 V, 23.2 V at 25.9 A, 600 W 10/1000 us. Absorbs VIN-bank energy after U20 opens U5; NOT a continuous rail crowbar."
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "32b2a1aa-038d-44ea-8621-14cbdd1bcb56")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Alternates" "C152106 BORN SMBJ14A; C840775 MDD SMBJ14A (VBR >= 15.6 V and VC <= 23.2 V at >= 25.8 A)"
+			(at 0 0 270)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5250e6d4-c1b8-4a7d-899b-431f377992e4")
 			(effects
 				(font
 					(size 1 1)
@@ -19063,16 +19347,6 @@
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start -3.66 -2.15)
-			(end 2.15 -2.15)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "c447821a-7ac4-5c0d-95ac-1c0aff13d68c")
-		)
-		(fp_line
-			(start -3.66 -2.15)
 			(end -3.66 2.15)
 			(stroke
 				(width 0.12)
@@ -19080,6 +19354,16 @@
 			)
 			(layer "F.SilkS")
 			(uuid "1bc01cc8-4aa4-554c-aeb4-1e56f7c04387")
+		)
+		(fp_line
+			(start -3.66 -2.15)
+			(end 2.15 -2.15)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "c447821a-7ac4-5c0d-95ac-1c0aff13d68c")
 		)
 		(fp_line
 			(start -3.66 2.15)
@@ -19092,16 +19376,6 @@
 			(uuid "ee8d76ae-74e8-57f8-969d-48673e97f26c")
 		)
 		(fp_line
-			(start 3.65 -2.25)
-			(end 3.65 2.25)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "F.CrtYd")
-			(uuid "9ae0efaf-686c-5e6d-9cb4-bd6966f8246a")
-		)
-		(fp_line
 			(start -3.65 -2.25)
 			(end 3.65 -2.25)
 			(stroke
@@ -19110,6 +19384,26 @@
 			)
 			(layer "F.CrtYd")
 			(uuid "cdf31f42-e7ec-59bd-8aba-74376f7d6444")
+		)
+		(fp_line
+			(start -3.65 2.25)
+			(end -3.65 -2.25)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "df9b73e7-88e1-5c8b-9529-546f8f1f08f4")
+		)
+		(fp_line
+			(start 3.65 -2.25)
+			(end 3.65 2.25)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "9ae0efaf-686c-5e6d-9cb4-bd6966f8246a")
 		)
 		(fp_line
 			(start 3.65 2.25)
@@ -19122,14 +19416,74 @@
 			(uuid "0ceb3c97-24bf-5953-9cc4-ed859e70831e")
 		)
 		(fp_line
-			(start -3.65 2.25)
-			(end -3.65 -2.25)
+			(start -2.3 2)
+			(end -2.3 -2)
 			(stroke
-				(width 0.05)
+				(width 0.1)
 				(type solid)
 			)
-			(layer "F.CrtYd")
-			(uuid "df9b73e7-88e1-5c8b-9529-546f8f1f08f4")
+			(layer "F.Fab")
+			(uuid "19fb0d60-fc3d-5df7-8b24-66a4536d0584")
+		)
+		(fp_line
+			(start -0.64944 -0.79908)
+			(end -0.64944 0.80112)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "d0e56761-e128-5a4c-bc35-00302b55e61e")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end -1.55114 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "539df461-863b-5293-92b0-ce063bd29de8")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end 0.50118 -0.79908)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "60576689-8c49-58c5-bad0-313a9d666fff")
+		)
+		(fp_line
+			(start -0.64944 0.00102)
+			(end 0.50118 0.75032)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a9d7b22b-068c-558b-a650-7ef4993553f4")
+		)
+		(fp_line
+			(start 0.50118 0.00102)
+			(end 1.4994 0.00102)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "586e0268-746d-5e53-9d15-cfcb24f146f1")
+		)
+		(fp_line
+			(start 0.50118 0.75032)
+			(end 0.50118 -0.79908)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "3087adb1-1f5c-519f-9ec2-10313058591d")
 		)
 		(fp_line
 			(start 2.3 -2)
@@ -19152,66 +19506,6 @@
 			(uuid "8d2a418b-92df-518d-b8b2-206dfb144ada")
 		)
 		(fp_line
-			(start -0.64944 -0.79908)
-			(end -0.64944 0.80112)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "d0e56761-e128-5a4c-bc35-00302b55e61e")
-		)
-		(fp_line
-			(start 0.50118 0.00102)
-			(end 1.4994 0.00102)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "586e0268-746d-5e53-9d15-cfcb24f146f1")
-		)
-		(fp_line
-			(start -0.64944 0.00102)
-			(end 0.50118 -0.79908)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "60576689-8c49-58c5-bad0-313a9d666fff")
-		)
-		(fp_line
-			(start -0.64944 0.00102)
-			(end -1.55114 0.00102)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "539df461-863b-5293-92b0-ce063bd29de8")
-		)
-		(fp_line
-			(start -0.64944 0.00102)
-			(end 0.50118 0.75032)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "a9d7b22b-068c-558b-a650-7ef4993553f4")
-		)
-		(fp_line
-			(start 0.50118 0.75032)
-			(end 0.50118 -0.79908)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "3087adb1-1f5c-519f-9ec2-10313058591d")
-		)
-		(fp_line
 			(start 2.3 2)
 			(end -2.3 2)
 			(stroke
@@ -19221,18 +19515,8 @@
 			(layer "F.Fab")
 			(uuid "6ce578b1-2a62-56ce-b08c-c371a35a4364")
 		)
-		(fp_line
-			(start -2.3 2)
-			(end -2.3 -2)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "F.Fab")
-			(uuid "19fb0d60-fc3d-5df7-8b24-66a4536d0584")
-		)
 		(fp_text user "${REFERENCE}"
-			(at 0 -3 90)
+			(at 0 -3 0)
 			(layer "F.Fab")
 			(uuid "01e95a16-b40b-52b1-8959-6a56f1c7777f")
 			(effects
@@ -19243,7 +19527,7 @@
 			)
 		)
 		(pad "1" smd roundrect
-			(at -2.15 0 90)
+			(at -2.15 0)
 			(size 2.5 2.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1086956522)
@@ -19251,7 +19535,7 @@
 			(uuid "43b64383-8407-5372-8292-12d4930b639f")
 		)
 		(pad "2" smd roundrect
-			(at 2.15 0 90)
+			(at 2.15 0)
 			(size 2.5 2.3)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.1086956522)
@@ -19270,6 +19554,119 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "71ae17a6-2317-53de-a479-c1061eafcd6c")
+		(at 119.45 72.39)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP23"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "3cf4be1f-1221-5fe1-bfd0-c827b514225a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "P12_ISN"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "7e327bcf-0c6b-5979-a97b-8b7cc18c3a7b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "97e6ff3d-4923-5cc0-8982-fe7d2fdea192")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5a9ac5d0-fd8f-54b8-843f-db9df799bab1")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad P12_ISN: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "64e39a86-722c-487d-9943-384e51defd39")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/c2a78203-7b81-594e-ba99-ab81b7e0ce7c")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "21259251-3e62-5562-b1d0-eb587bbec2a9")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "75501f3d-c546-5b8b-8823-cf4b31e70f9e")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "bfad5f0f-8eac-594a-9f50-e7e3b4d46be5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "/+12 V buck-boost converter/P12_ISN")
+			(uuid "565bf771-9027-5890-a104-54c62a6bb317")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "USBPOWER45:R_1206_3216Metric"
 		(layer "F.Cu")
@@ -22120,11 +22517,11 @@
 	(footprint "USBPOWER45:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "806b383a-d605-5f54-b5ec-b47e45f271db")
-		(at 103.4 70.35 180)
+		(at 103.4 70.35)
 		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
 		(tags "resistor")
 		(property "Reference" "R113"
-			(at 0 -1.43 180)
+			(at 0 -1.43 0)
 			(layer "F.Fab")
 			(uuid "0d03342b-3485-495b-8a15-883ca170a194")
 			(effects
@@ -22135,7 +22532,7 @@
 			)
 		)
 		(property "Value" "0"
-			(at 0 1.43 180)
+			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "6d8aa43d-810d-4b97-ac99-e6eb89308a73")
 			(effects
@@ -22146,7 +22543,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "1ddba423-059f-4835-97ce-6e27c73aa1de")
@@ -22158,7 +22555,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "24bc2eda-de07-4ca9-89f3-6ef6556e31ee")
@@ -22170,7 +22567,7 @@
 			)
 		)
 		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
 			(uuid "8f233333-6c07-4d38-91ce-1a19c85a4a92")
@@ -22182,7 +22579,7 @@
 			)
 		)
 		(property "LCSC" "C21189"
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "baa7148d-995d-4465-a712-87cd595b0975")
@@ -22194,7 +22591,7 @@
 			)
 		)
 		(property "MPN" "0603WAF0000T5E"
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "513468d0-393f-4f46-9c44-67b7cd404af4")
@@ -22206,7 +22603,7 @@
 			)
 		)
 		(property "Manufacturer" "UNI-ROYAL"
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "39bbf401-f467-41c7-8aa0-3858ef6bf2da")
@@ -22217,8 +22614,8 @@
 				)
 			)
 		)
-		(property "Note" "ONLY AGND_U2/PGND connection, at C82 ground terminal. Route no other bridge; 3-4 GND vias at C82"
-			(at 0 0 180)
+		(property "Note" "S9.2: ONLY AGND_U2/PGND connection. Pin 2 (PGND) lands on the C82.2 PGND terminal (<= 3 mm), pin 1 feeds the quiet AGND island. Route no other AGND/PGND bridge (no plane, via or pour); 3-4 PGND vias at C82.2"
+			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "181d14ed-3910-4357-8a00-7db1a459b464")
@@ -22235,16 +22632,6 @@
 		(attr smd)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
-			(start -0.237258 0.5225)
-			(end 0.237258 0.5225)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "F.SilkS")
-			(uuid "40bd8414-436d-4027-aee4-46bf3af4c9a4")
-		)
-		(fp_line
 			(start -0.237258 -0.5225)
 			(end 0.237258 -0.5225)
 			(stroke
@@ -22253,6 +22640,16 @@
 			)
 			(layer "F.SilkS")
 			(uuid "37866e93-dd31-4881-9b01-9788760f9c09")
+		)
+		(fp_line
+			(start -0.237258 0.5225)
+			(end 0.237258 0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "40bd8414-436d-4027-aee4-46bf3af4c9a4")
 		)
 		(fp_rect
 			(start -1.48 -0.73)
@@ -22277,7 +22674,7 @@
 			(uuid "6948007d-9177-48dd-bb5d-0d82e6431ce7")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 0 0 180)
+			(at 0 0 0)
 			(layer "F.Fab")
 			(uuid "bbe79648-1cff-460d-bbb1-7be8a9d97945")
 			(effects
@@ -22288,7 +22685,7 @@
 			)
 		)
 		(pad "1" smd roundrect
-			(at -0.825 0 180)
+			(at -0.825 0)
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
@@ -22296,7 +22693,7 @@
 			(uuid "3b45d8eb-2495-5fea-a5cc-c2fca02a231d")
 		)
 		(pad "2" smd roundrect
-			(at 0.825 0 180)
+			(at 0.825 0)
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
@@ -22524,6 +22921,119 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "85ce6f25-ad15-51b6-8d5b-a4f1b8504f15")
+		(at 119.45 69.85)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP24"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "8056379c-c0e5-512e-9be5-7b3d7665b83f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "+12V"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "37f52fba-4d6e-59b7-9f06-930aa07c1b20")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "551e081c-ea6d-55ec-b2c6-3e9976fad60b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "329ea520-413e-5da3-9a73-3c174451de71")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad +12V: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9c261373-38b1-4c34-ac7c-def99b5f4bdc")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/d56a0ef9-4864-5348-bda9-625f311b2676")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "ce478cdd-d223-5ac0-8478-6ed4170d73d3")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "e91464f2-c239-5637-b6da-da60bda3ead0")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "f247a6b3-2fef-5f74-864b-15ea7c4aef8d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "+12V")
+			(uuid "9e29ded8-059b-51be-8af4-b965ed308330")
+		)
+		(embedded_fonts no)
 	)
 	(footprint ""
 		(layer "F.Cu")
@@ -23900,6 +24410,119 @@
 			)
 		)
 	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "8e126107-3a10-5a8d-9677-fbd3312cd7de")
+		(at 92.1 85.5)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP26"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "692bcb1c-d24b-5a08-a593-85f2c51c2e31")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "VIN"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "29c5449a-8d17-5cdd-840c-20f224f13c42")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4d8faba0-bc18-531e-86a1-f0485f3712e3")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9caa321c-5345-5f4b-af9b-b9cf1caea982")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad VIN: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c19ff977-791a-4acc-b525-c19fdc3ba0cd")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/bcf4b69c-e93d-572c-9ac6-3a75a948347b/3db729d6-a063-5295-abdc-32756be6ffcb")
+		(sheetname "/USB PD, main eFuse and VIN damper/")
+		(sheetfile "01_usb_input.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "6e8f7f84-5440-5a7d-bc9f-bbcde96ee842")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "53c1b1cd-7116-582c-a961-1df29891ebb1")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "fc56b214-d753-5cf3-ac29-5c8572f77c64")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "VIN")
+			(uuid "ab0351c7-aa3a-5ee7-82e7-153c1ba9e11f")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "USBPOWER45:C_1206_3216Metric"
 		(layer "F.Cu")
 		(uuid "8efa3b9b-babe-58a3-8763-47894875b525")
@@ -24012,7 +24635,7 @@
 				)
 			)
 		)
-		(property "Note" "U2 VCC LDO output, TI > 4.7 uF: 10u/50V 1206 keeps ~8 uF at 5.2 V bias. MODE and EXTVCC tie here (FPWM, internal LDO)"
+		(property "Note" "U2 VCC LDO output, TI > 4.7 uF: 10u/50V 1206 keeps ~8 uF at 5.2 V bias. MODE and EXTVCC tie here (FPWM, internal LDO). S9.2: ground terminal on PGND (TI SLVSGT7 8.4.1 items 6/7: 3-4 vias to the PGND plane; AGND joins PGND only here, through R113)"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -24095,7 +24718,7 @@
 			(size 1.15 1.8)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.217391)
-			(net "/+12 V buck-boost converter/AGND_U2")
+			(net "GND")
 			(uuid "e37ca69f-b8d9-5235-967c-8f9284612079")
 		)
 		(embedded_fonts no)
@@ -24491,6 +25114,229 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12"
+		(layer "F.Cu")
+		(uuid "92a62e39-36bd-54ac-999a-c9796a9da2a5")
+		(at 114.6 72)
+		(descr "4-terminal Kelvin split land for a 2-terminal 1206 metal-alloy shunt (TA-I RLM12 2..50 mOhm land a 1.8 b 1.7 L 1.6): force pads 1/4, sense pads 2/3 from the inner land edge; S9.2 R109")
+		(tags "shunt Kelvin 4-terminal split pad R109")
+		(property "Reference" "R109"
+			(at 0 -1.75 0)
+			(layer "F.Fab")
+			(uuid "7325630e-08f2-4eb6-a715-1362acfc53b4")
+			(effects
+				(font
+					(size 0.7 0.7)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "0.018"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "3d90e609-1bd9-4ac8-968e-db539560acdf")
+			(effects
+				(font
+					(size 0.7 0.7)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0eaa207d-9b2a-427d-8b2b-9d1ee758be81")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Shunt resistor with Kelvin connections"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "723f6162-aea0-4206-b4f9-7a7940ce13dd")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C393095"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bcfa63ae-1fc6-45e8-a5c5-a5e8578af4c8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "RLM12FTCMR018"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b3424e84-d202-46bc-9d12-159f156ea92e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer" "TA-I Tech"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a91d0640-70e4-4402-b91d-8bf2169219f4")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a3ec7ca8-b025-4a99-ad37-ba475159629a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "TCR" "75ppm"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "61900956-14f9-423d-b901-abbf86cef09a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Power" "1W"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0c3b838b-0f93-4324-b772-d5328b85f5b8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Alternates" "C50314717 NCT LRAM12CFTR018; C49164939 jieerrui JER1206F1R018; C845266 SART SMF12M1FR018T (18 mOhm 1 % <=75 ppm 1 W 1206; check W >= 1.4 mm and the split-land overlap before use)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6f31b39b-b194-4c18-80bf-f89042797e4e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 4-terminal Kelvin land: force 1 (P12_VOUT) / 4 (+12V), sense 2 -> U2 ISP, 3 -> U2 ISN only (separate nets, sense pads at the inner land edge). VSNS 48-52 mV / 18 mR (1 % + 75 ppm, 0.2 % Kelvin residual) = 2.62-2.95 A constant-current loop; FB senses +12V after it. <= 0.16 W of 1 W (1 W needs 300 mm2 pad+trace copper: routing contract)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "251a396d-3b81-479e-8f5e-98d7df92a79d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/7e9d9c19-1fd4-533f-b652-dd8eeccac6d5")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_rect
+			(start -2.75 -1.15)
+			(end 2.75 1.15)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "415f28f0-2bf9-41c5-8a3e-e64037ad5c85")
+		)
+		(fp_line
+			(start -0.6 0.8)
+			(end 0.6 0.8)
+			(stroke
+				(width 0.1)
+				(type default)
+			)
+			(layer "F.Fab")
+			(uuid "37ac87aa-3620-4e28-8bc7-1efa138394b2")
+		)
+		(fp_rect
+			(start -1.6 -0.8)
+			(end 1.6 0.8)
+			(stroke
+				(width 0.1)
+				(type default)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "5176ea5c-c0b1-4ce0-9c98-832abe70c5ba")
+		)
+		(pad "1" smd roundrect
+			(at -1.65 -0.35)
+			(size 1.7 1.1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.02941176)
+			(net "/+12 V buck-boost converter/P12_VOUT")
+			(solder_mask_margin 0.025)
+			(uuid "240eae0b-0a97-531b-a838-936eda43431b")
+		)
+		(pad "2" smd roundrect
+			(at -1.45 0.65)
+			(size 1.3 0.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.03846154)
+			(net "/+12 V buck-boost converter/P12_ISP")
+			(solder_mask_margin 0.025)
+			(uuid "a3ff8a90-a6f7-5c37-8d46-35236047b268")
+		)
+		(pad "3" smd roundrect
+			(at 1.45 0.65)
+			(size 1.3 0.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.03846154)
+			(net "/+12 V buck-boost converter/P12_ISN")
+			(solder_mask_margin 0.025)
+			(uuid "adf4f78a-f1a6-5d9a-b853-4406397afb16")
+		)
+		(pad "4" smd roundrect
+			(at 1.65 -0.35)
+			(size 1.7 1.1)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.02941176)
+			(net "+12V")
+			(solder_mask_margin 0.025)
+			(uuid "cfda2a96-b5ec-58b2-99d6-a822412ccf93")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "USBPOWER45:C_0603_1608Metric"
 		(layer "F.Cu")
@@ -26167,7 +27013,7 @@
 				)
 			)
 		)
-		(property "Value" "SMBJ16A"
+		(property "Value" "SMBJ20A"
 			(at 0 3.1 0)
 			(layer "F.Fab")
 			(uuid "0b6e4018-e500-5f47-ac2f-fa0c2dc5a894")
@@ -26204,7 +27050,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C151254"
+		(property "LCSC" "C151257"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -26216,7 +27062,7 @@
 				)
 			)
 		)
-		(property "MPN" "SMBJ16A"
+		(property "MPN" "SMBJ20A"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -26240,11 +27086,23 @@
 				)
 			)
 		)
-		(property "Note" "S9.1 VIN TVS: 16 V stand-off, 17.8-19.7 V breakdown, 26 V at 23.1 A (600 W 10/1000 us). Finite bus-injection pulses ONLY, not continuous reverse-power absorption. 20 V retarget must change D24."
+		(property "Note" "S9.2 VIN TVS: 20 V stand-off (>= 1.15 x 16.5 V), 22.2-24.5 V breakdown (21.7 V at 0 C) above the 19.44 V U5 OVP maximum, 32.4 V at 18.6 A (600 W 10/1000 us) below U2 42 V and the 50 V VIN capacitors. Finite bus-injection pulses ONLY (1 A x 32.4 V x 20 ms = 0.65 J budget); 20 V retarget re-selects D24."
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
 			(uuid "3c446df0-681f-4eea-82af-a576796a2b49")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Alternates" "C364296 MDD SMBJ20A; C151922 BORN SMBJ20A (VBR >= 22.2 V and VC <= 32.4 V at >= 18.5 A)"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "a3622730-aa97-41bf-83b4-a12a46763ca2")
 			(effects
 				(font
 					(size 1 1)
@@ -28815,6 +29673,119 @@
 			)
 		)
 	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "a468c13a-a8fb-575d-a9e4-c88ea890585e")
+		(at 96.46 68.4)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP29"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "6d03117f-a330-5c1a-a183-c74a376bcdea")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "4be66f4a-fd87-5aca-af42-564d8c80f7ae")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7f695aea-daa8-5d41-8157-4ef4585d1988")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "40dfe347-99a3-5e1d-84d7-e3a0a7ead1e4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad GND: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bb0b70ac-fd21-4914-9e61-3c5c487bfc5d")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/db9d2a82-95d7-56ab-bba5-1f999f92b3cc")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "049a80f1-8a20-5cd0-9634-c1868ffd6243")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "606b0913-834d-59df-af7a-6a3699c08b44")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "94a3f1fa-679c-5a13-95a1-aa3a8e6c31b5")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "GND")
+			(uuid "29fab179-ecb5-50b5-b44a-7ada2176aa6b")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "USBPOWER45:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a7206ba1-2047-4522-8942-1c2855154049")
@@ -30288,7 +31259,7 @@
 				)
 			)
 		)
-		(property "Value" "6.8k"
+		(property "Value" "9.1k"
 			(at 0 1.43 90)
 			(layer "F.Fab")
 			(uuid "8e28c93b-49f1-41b3-89db-6f17c60d7d04")
@@ -30333,7 +31304,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C23212"
+		(property "LCSC" "C23260"
 			(at 0 0 90)
 			(layer "F.SilkS")
 			(hide yes)
@@ -30345,7 +31316,7 @@
 				)
 			)
 		)
-		(property "MPN" "0603WAF6801T5E"
+		(property "MPN" "0603WAF9101T5E"
 			(at 0 0 90)
 			(layer "F.SilkS")
 			(hide yes)
@@ -30381,7 +31352,7 @@
 				)
 			)
 		)
-		(property "Note" "OVP off 24.14 V nominal; worst-case trip below 26 V, falling threshold above 21 V"
+		(property "Note" "S9.2 OVP bottom: 1.2 V x (1 + 130k/9.1k) = 18.34 V nominal; rising 17.30-19.44 V, falling 16.03-18.27 V over TI 1.176-1.224 / 1.09-1.15 V, 1 % + 1 % TCR and 150 nA. Below D24 VR 20 V and D1 VBR 24.4 V; above the 16.5 V input ceiling (S9.1: 6.8k, 24.1 V)"
 			(at 0 0 90)
 			(layer "F.SilkS")
 			(hide yes)
@@ -33709,6 +34680,217 @@
 			(uuid "de0021b4-78ab-5b45-b79e-f9541e1b57dd")
 		)
 		(embedded_fonts no)
+	)
+	(footprint "USBPOWER45:R_0603_1608Metric"
+		(layer "F.Cu")
+		(uuid "cf47f275-bfba-5a86-814c-27542720de7d")
+		(at 133.4 97 90)
+		(descr "Resistor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC-7351 nominal, (Body size source: IPC-SM-782 page 72, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf)")
+		(tags "resistor")
+		(property "Reference" "R115"
+			(at 0 -1.43 90)
+			(layer "F.Fab")
+			(uuid "f7725611-8a0b-4d49-bae7-31468cab2098")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 0 1.43 90)
+			(layer "F.Fab")
+			(uuid "1443e82c-700a-4aa4-bd24-2d03284824cf")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "0609d6ad-4672-4d22-8872-bb598043a3bb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e3c890f6-7d6b-43ab-a44d-1fda7502cdfc")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "KiLib_Generator" "SMD_2terminal_chip_molded"
+			(at 0 0 90)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "1e4e5af5-c709-4fb4-9a2a-035ee01749e1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C25803"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2a1aa18e-0fb0-4cf8-9943-1b3e1eb41cac")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "MPN" "0603WAF1003T5E"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9092c36d-71d4-4b7f-96fc-269ef1765549")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "e663dfb2-ab69-42c1-aee1-ee35b45e7de0")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Tolerance" "1%"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "cdb85b96-ebfb-46bb-90cd-f4486eb08710")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 N_EN_RETURN default to PGND (AND-gate off state defined, 10x above 1 uA switch leakage); Q1 VEB <= 0.18 V when Q14 is off and Q15 on. Keep >= 50k (s92_netlist enable_model)"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3fc7e1da-fe65-401b-90e4-9fd89d4734ca")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/eebcfe51-649d-5e91-8091-f1ac65ea33f7/9ebe678d-c105-520e-9732-27051f48b5c9")
+		(sheetname "/-12 V inverting converter/")
+		(sheetfile "03_negative_converter.kicad_sch")
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start -0.237258 -0.5225)
+			(end 0.237258 -0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "e9e7553f-0327-4f7d-8391-51e6fc70ce5b")
+		)
+		(fp_line
+			(start -0.237258 0.5225)
+			(end 0.237258 0.5225)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "bf8982b4-8590-469a-ae46-27a48d53079a")
+		)
+		(fp_rect
+			(start -1.48 -0.73)
+			(end 1.48 0.73)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "9cdf0e5e-a735-453e-857a-f76b4333f207")
+		)
+		(fp_rect
+			(start -0.8 -0.4125)
+			(end 0.8 0.4125)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "f95f70b9-2427-440c-82d4-34f91970ad7c")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 90)
+			(layer "F.Fab")
+			(uuid "f5774aab-74b2-4f60-ad83-6341e89eca43")
+			(effects
+				(font
+					(size 0.4 0.4)
+					(thickness 0.06)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -0.825 0 90)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "/-12 V inverting converter/N_EN_RETURN")
+			(uuid "cfadf110-6895-597d-ae28-093e33d07ea2")
+		)
+		(pad "2" smd roundrect
+			(at 0.825 0 90)
+			(size 0.8 0.95)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.25)
+			(net "GND")
+			(uuid "3c82cf1c-3e0c-5a28-bcbf-6d5bdf9e1ba0")
+		)
+		(embedded_fonts no)
+		(model "${KICAD10_3DMODEL_DIR}/Resistor_SMD.3dshapes/R_0603_1608Metric.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "USBPOWER45:R_0603_1608Metric"
 		(layer "F.Cu")
@@ -37973,6 +39155,119 @@
 			)
 		)
 	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "f12a113c-72eb-5f3a-b0f7-7cb303b8bb98")
+		(at 120.25 97.6)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP30"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "f91ab995-4b8e-5c7f-8f24-c065a96f59af")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "N_EN_RETURN"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "3336c861-a4f4-5b4c-b56a-3917611dcc0b")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "fedaa4b4-ce4c-556d-9672-0177798657cf")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "499ba103-7899-5030-b272-3957796fe6ca")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad N_EN_RETURN: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5dca4418-62d2-4a9f-bfbd-7b2a7cafd250")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/eebcfe51-649d-5e91-8091-f1ac65ea33f7/b915ce88-9ffa-5d62-bb6d-f4169e290aba")
+		(sheetname "/-12 V inverting converter/")
+		(sheetfile "03_negative_converter.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "9db8b19e-b244-56ca-965e-c5b5894abda4")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "e13904d6-69d9-514c-90ae-818c7acdf7b4")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "45ad6c60-ddab-5464-87a9-d680273e1649")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "/-12 V inverting converter/N_EN_RETURN")
+			(uuid "fe777a21-4de5-58a7-90dd-e5b65b2e87cf")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "USBPOWER45:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f154d5a9-bedd-4ef2-bf5d-ae6cca020792")
@@ -38575,6 +39870,119 @@
 				(xyz 0 0 0)
 			)
 		)
+	)
+	(footprint "USBPOWER45:TestPoint_Pad_D1.5mm"
+		(layer "F.Cu")
+		(uuid "f601a972-0457-53f0-815b-0ccdb5310f33")
+		(at 121.99 69.85)
+		(descr "SMD pad as test Point, diameter 1.5mm")
+		(tags "test point SMD pad")
+		(property "Reference" "TP20"
+			(at 0 -1.648 0)
+			(layer "F.Fab")
+			(uuid "e7c370f0-db03-5929-9f05-4fae02049dcb")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "P12_VOUT"
+			(at 0 1.75 0)
+			(layer "F.Fab")
+			(uuid "42783084-1c4a-53d7-84dc-88dab0b8fe51")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "46002fb3-e7cb-5002-832e-f4c0140725d7")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "da325b33-d7ab-5804-b1c9-4722f0340cd0")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Note" "S9.2 acceptance test pad P12_VOUT: copper only, 1.5 mm round, no assembly component. See docs/s8-single/routing-notes.md"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "db61f642-f555-486d-9a1f-dcb5659bb8ab")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(path "/06436d8e-4ba6-573a-9a5b-20b92ac7d269/2d0029f5-c290-59c8-bebd-4c7ce1178a7d")
+		(sheetname "/+12 V buck-boost converter/")
+		(sheetfile "02_positive_12v.kicad_sch")
+		(attr exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 0 0.95)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.SilkS")
+			(uuid "8cf575c9-9ae6-5b2f-bb6f-6e6937645fe5")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 1.25 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "d5737ea9-5380-526e-a830-80aa63065b31")
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 -1.65 0)
+			(layer "F.Fab")
+			(uuid "cad45991-5c87-58ae-9bb0-bfc7bd9a7dd8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd circle
+			(at 0 0)
+			(size 1.5 1.5)
+			(layers "F.Cu" "F.Mask")
+			(net "/+12 V buck-boost converter/P12_VOUT")
+			(uuid "5a30055c-2303-5373-9866-5ce554140697")
+		)
+		(embedded_fonts no)
 	)
 	(footprint "USBPOWER45:SOIC-14_3.9x8.7mm_P1.27mm"
 		(layer "F.Cu")
