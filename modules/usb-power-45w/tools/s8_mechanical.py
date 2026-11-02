@@ -27,7 +27,7 @@ from PIL import Image, ImageDraw, ImageFont
 MODULE = Path(__file__).resolve().parents[1]
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
 BOARD = DESIGN / 'hardware/single/usb-power-45w-single.kicad_pcb'
-WORK = Path(os.environ.get('S8_ASM_WORK', str(MODULE / 'research/s90/assembly')))
+WORK = Path(os.environ.get('S8_ASM_WORK', str(MODULE / 'research/s91/assembly')))
 OUT = DESIGN / 'docs/s8-single/assembly'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 FONTB = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
@@ -50,7 +50,7 @@ LEGEND = [([0.91, 0.84, 0.66], 'S8 4HP panel (USB-C, MAIN LED, RESET)'),
           ([0.62, 0.66, 0.74], 'PROPOSAL: ribbon leaving +Z to the bus'),
           ([0.23, 0.65, 0.79], 'Tool paths: M3 nut driver / pliers'),
           ([0.75, 0.75, 0.75], 'Case rail section (context)')]
-STAMP = 'S9.0 SINGLE BOARD P2.0 - TRIAL PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
+STAMP = 'S9.1 SINGLE BOARD P2.1 - TRIAL PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
 
 
 def footprints():
@@ -163,7 +163,7 @@ def main():
     (OUT / 'assembly-report.json').write_text(json.dumps(rep, indent=1) + '\n')
     raw = scad_render('iso-front', [230, -120, 90], [10, 25, -64], size=(1700, 1400))
     compose(raw, OUT / 'iso-front.png', 'usb-power-45w S8 single board - 3D assembly, front-right (F side)',
-            ['Native S9.0 / P2.0 board + S9 panel, brackets, M3, inductor/J1/SW1/U2 body proxies and envelopes.',
+            ['Native S9.1 / P2.1 board + S9 panel, brackets, M3, inductor/J1/SW1/U2 body proxies and envelopes.',
              'X across 4HP (20.0), Y down, Z into the case (50 mm deep board). Every part on F; unrouted.',
              f'Collision screen: {len(rep["solid_interference_mm3"])} part-to-part / part-to-hardware overlaps.'])
     raw = scad_render('iso-rear', [-230, 110, 90], [10, 25, -64], size=(1700, 1400))

@@ -1,7 +1,7 @@
 {
   "status": "S9_schematic_checks_not_bench_qualification",
-  "components": 156,
-  "nets_including_NC": 115,
+  "components": 164,
+  "nets_including_NC": 119,
   "sheets": 6,
   "exact_field_pin_NC_pad_parity": true,
   "removed_S7_refs": 90,
@@ -21,11 +21,19 @@
     "C82",
     "C83",
     "D22",
+    "D24",
+    "D25",
+    "D26",
     "J3",
+    "Q14",
+    "Q15",
     "R100",
     "R109",
     "R110",
     "R111",
+    "R112",
+    "R113",
+    "R114",
     "R92",
     "R93",
     "R94",
@@ -131,10 +139,10 @@
     ],
     "fSW_kHz": 966,
     "cc_limit_A": [
-      3.145,
-      3.528
+      2.621,
+      2.94
     ],
-    "wiring": "L1 SW1-SW2; C10 BOOT1-SW1, C9 BOOT2-SW2; MODE/EXTVCC/VCC + C82 (FPWM, internal LDO); DITH/PGND/AGND GND; R110 FSW; VOUT/ISP -> R109 -> +12V/ISN; FB R8 (+12V) / R9; COMP R111 + C83; PG/CC/CDC open; EN/UVLO = MAIN_OK",
+    "wiring": "L1 SW1-SW2; C10 BOOT1-SW1, C9 BOOT2-SW2; MODE/EXTVCC/VCC + C82 (FPWM, internal LDO); DITH/AGND AGND_U2, PGND GND; R113 sole join at C82; R110 FSW; VOUT/ISP -> R109 -> +12V/ISN; FB R8 (+12V) / R9; COMP R111 + C83; PG/CC/CDC open; EN/UVLO = MAIN_OK",
     "rails_exact": {
       "+12V": [
         "C34.1",
@@ -144,7 +152,6 @@
         "J2.9",
         "J3.10",
         "J3.9",
-        "Q1.2",
         "R109.2",
         "R75.1",
         "R8.2",
@@ -183,6 +190,7 @@
         "C79.1",
         "C80.1",
         "C81.1",
+        "D26.1",
         "R109.1",
         "U2.11",
         "U2.12"
@@ -192,28 +200,471 @@
   },
   "accepted_residuals": {
     "reverse_current": {
-      "decision": "ACCEPTED (owner, 2026-11-02): no series reverse-blocking element on +12V or -12V",
-      "verified_here": "exact +12V / -12V / P12_VOUT memberships (no series element other than R109 inside the converter), no ideal-diode controller or series-FET MPN; U4 EN_N is derived from the rails only: R17.2, R18.1, U4.2",
-      "consequence": "a live +/-12V bus can enable and power U4 in an unpowered or latched-off module (FPWM can pump energy into VIN): procedural rule, see calcs.json residuals.reverse_current",
-      "rule": "never connect an unpowered or latched-off module to a live bus; power the rack down first; never parallel J2/J3 with another supply"
+      "decision": "ACCEPTED architecture: no series reverse blocking (owner). S9.1 removes the self-enable defect in hardware; that defect is NOT an accepted event.",
+      "rule": "No powered parallel supplies or unrestricted hotplug. Unpowered/latched-off injection is qualified ONLY under T1 conditions, not a procedural excuse for self-enabling.",
+      "plus12_path": {
+        "dc_total_mA": 0.389,
+        "hot_plug_bank_charge_mJ": [
+          2.98,
+          7.68
+        ],
+        "power_stage": "Disabled four-switch boost HS blocks bus-to-VIN power transfer; divider current/leakage and capacitor charging remain."
+      },
+      "minus12_passive": {
+        "unclamped_VIN_step_V": [
+          -1.23,
+          -5.43
+        ],
+        "fast_step_residual": "D24 forward/internal diodes can clamp around -1.4V, outside U2 -0.3V minimum. D25 reduces it but is NOT guaranteed below 0.3V at high current/cold. Unrestricted hard hotplug remains UNQUALIFIED and is not a passing acceptance test.",
+        "qualified_slew_V_per_s": 1,
+        "qualified_temperature_C": 25,
+        "qualified_negative_floor_V": -0.3
+      },
+      "minus12_active": {
+        "finding": "FIXED: Q1 emitter is own VPD; base sink requires RUN AND MAIN_LED_OK through Q14/Q15. R112 defaults off. Bus voltage alone cannot enable U4.",
+        "enabled_parallel_risk": "FPWM still sinks if enabled against a higher external rail. -0.9A is TYPICAL only, not a worst-case bound; no finite-energy TVS can absorb an unlimited live bus.",
+        "enable_logic": {
+          "logic": "QUALIFY = RUN AND MAIN_LED_OK = RUN AND MAIN_OK AND V20_OK; Q14 and Q15 series sink",
+          "drive_source": "Q1 emitter VPD upstream of D10; never +12V or VIN",
+          "equation": "EN_N - V(-12V) = QUALIFY ? (VPD - VCEsat - V(-12V))*R18/(R17+R18) : Ileak*R18",
+          "off_pullup": "R112 ties Q1 base to VPD if either sink is off; R18 pulls EN to U4 ground",
+          "enable_high_max_V": 1.4,
+          "disable_low_min_V": 0.95,
+          "startup_min_relative_V": 1.928,
+          "running_max_relative_V": 5.014,
+          "off_leakage_test_bound_uA": 5,
+          "off_relative_max_V": 0.102,
+          "truth_table": [
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": true
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": true
+            }
+          ],
+          "does_not_block_reverse_power_while_enabled": true,
+          "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
+        }
+      },
+      "clamps": {
+        "D24": {
+          "net": "VIN",
+          "MPN": "SMBJ16A",
+          "stand_off_V": 16,
+          "breakdown_V": [
+            17.8,
+            19.7
+          ],
+          "rated_clamp_V": 26.0,
+          "rated_peak_A": 23.1,
+          "peak_pulse_W": 600,
+          "waveform_us": "10/1000",
+          "pulse_budget": {
+            "max_injection_A": 1.0,
+            "max_duration_ms": 20.0,
+            "worst_power_W": 26.0,
+            "max_energy_J": 0.52,
+            "initial_temperature_max_C": 50,
+            "minimum_repeat_interval_s": 200,
+            "basis": "Finite 1A x 26V x 20ms engineering budget. Datasheet pulse curve screen ~100W at 20ms after 50C derating; 600W rating applies ONLY to 10/1000us. No universal joule rating or continuous 26W claim."
+          },
+          "protects": "U2 VIN/SW1 42V abs /36V operating; 50V VIN bank and C25/C26 (26+12.6=38.6V); U5 OUT 60V",
+          "limitations": "Rated clamp is at 25C and specified waveform, not a measured PCB spike bound. Qualified fixture requires VIN<28V incl ringing at 25/50C. Sustained enabled reverse power is NOT safe."
+        },
+        "D25": {
+          "net": "VIN negative",
+          "MPN": "BAT54SLT1G",
+          "reverse_max_V": 30,
+          "forward_bound_V_25C": 0.24,
+          "current_for_bound_uA": 100,
+          "scope": "Bus slew <=1 V/s at 25C (<=26.5uA displacement current from 2x10u+100n rated high C). Not a cold/fast-hotplug clamp."
+        },
+        "D26": {
+          "net": "P12_VOUT",
+          "MPN": "SMBJ14A",
+          "stand_off_V": 14,
+          "breakdown_V": [
+            15.6,
+            17.2
+          ],
+          "rated_clamp_V": 23.2,
+          "rated_peak_A": 25.9,
+          "peak_pulse_W": 600,
+          "waveform_us": "10/1000",
+          "VIN_bank_energy_J": 0.00592,
+          "guard_delay_energy_screen_J": 0.00155,
+          "protects": "U2 VOUT/SW2/ISP/ISN 25V abs and local 25V MLCCs; not a 16V downstream guarantee",
+          "limitations": "Finite pulse backstop only; external rail source must be removed by fixture. No fuse coordination / crowbar or sustained shunt claim."
+        }
+      },
+      "bench_test": {
+        "status": "proposed bench acceptance, NOT PERFORMED",
+        "conditions": [
+          "T1-A: no USB input, +/-12.0 and +/-12.6V external bus, 1A source limit, 0.44mF each rail; ramp <=1V/s at 25C, hold 10s; log EN_N relative to -12V, U4 SW, VIN and bus currents",
+          "T1-B: same with USB present and FAULT latched/RUN low; verify off-state once MAIN_OK deglitch expires and capture the preceding <=20ms interval",
+          "T1-C: only negative rail applied with same bounded slew; repeat rail order",
+          "T1-D: inject a positive 1A, <=20ms pulse into VIN (compliance 28V, automatic disconnect), 25/50C, >=200s between pulses. This separately tests D24 energy/clamp; never assume the now-disabled U4 will generate this pulse"
+        ],
+        "pass_criteria": [
+          "T1-A/C: EN_N minus -12V <=0.11V settled (<=0.5V transient), zero U4 switching; VIN -0.3..1V after 100ms settled; each bus current <10mA after 100ms",
+          "T1-B: same EN/switching/current criteria after 20ms; VIN may retain own-input charge, must remain -0.3..28V, not climb from bus power",
+          "T1-D: VIN <=28V incl ringing, measured integral(V*I*dt)<=0.52J, clamp current ends by 20ms, no leakage increase >10uA after cooling; normal restart and regulation after RESET",
+          "All: automatic overvoltage disconnect at VIN 28V, negative excursion abort at -0.3V (fast comparator, not human reaction). An abort is a FAIL, not a pass."
+        ],
+        "excluded": "Hard hotplug, temperatures below25C for D25 forward-drop guarantee, >1A or >20ms sustained injection, and powered parallel supplies require new protection/qualification."
+      }
     },
     "rail_overvoltage": {
-      "decision": "ACCEPTED (owner, 2026-11-02): no voltage-triggered fuse or crowbar; the U20 guard + FAULT latch is the only response (crowbar vs eFuse deferred, open)",
-      "verified_here": {
-        "guard_+12V_V": [
+      "decision": "ACCEPTED architecture: no voltage-triggered fuse/crowbar; crowbar vs eFuse deferred/open. S9.1 D26 is a finite-energy transient backstop, not continuous shunt protection.",
+      "guard_V": {
+        "+12V": [
           14.48,
           14.88,
           15.272
         ],
-        "guard_-12V_magnitude_V": [
+        "-12V_magnitude": [
           13.265,
           13.64,
           14.018
-        ],
-        "OV_N_presets_FAULT": true
+        ]
       },
-      "consequence": "a failed converter can put up to the input voltage (16.5 V in range) or, after a control failure, the VIN bank energy onto a rail; the latch opens U5 but does not discharge the rails: downstream modules must be qualified (calcs.json residuals.rail_overvoltage)"
+      "response": "U20 presets FAULT and opens U5; it does NOT disconnect an external rail source or immediately discharge stored energy.",
+      "why_no_fuse": [
+        "A fuse responds to current, not voltage.",
+        "No SCR/fuse crowbar is fitted.",
+        "D24/D26 TVS pulse ratings do not authorize sustained reverse power.",
+        "No per-rail eFuse/disconnect is fitted."
+      ],
+      "VIN_bank_energy_mJ": 5.919,
+      "peak_screens_V": {
+        "+12V_bank_only_no_load_before_D26": 23.42,
+        "+12V_D26_rated_clamp_25C": 23.2,
+        "-12V_bank_only_no_load": 23.59,
+        "+12V_with_typical_rack": 15.98,
+        "-12V_with_typical_rack": 14.8
+      },
+      "limitations": "Energy screens are NOT guaranteed peaks. Internal U2 OVP 24.5V is never used as an ideal clamp. No-load output can exceed16V; -12V has no positive-magnitude clamp. Unrelated failed-short components and unlimited external supplies are excluded.",
+      "bench_test": {
+        "status": "proposed bench acceptance, NOT PERFORMED",
+        "conditions": [
+          "T2-A: input16.5V; 0.44mF +0.5A/rail; externally ramp +12V from12 to16.5V at<=1V/ms, <=1A, total injection<=10ms (including ramp), hold<=1ms at16.5V; fixture removes injection automatically after trigger; scope>=100MS/s",
+          "T2-B: R8 open at13.5/16.5V input, 3A source; no external C/no load, then0.44mF+0.5A; capture500ms with independent voltage/current abort",
+          "T2-C: R14 open, same conditions; no assumed LMR38020 output OVP",
+          "T2-D: RUN held low/logic powered, +14.0V and -13.0V external for10min; safely BELOW the minimum guard thresholds; no-trip only refers to OV_N, not RUN",
+          "T2-E: at+15.2V / -13.9V a trip is ALLOWED (inside tolerance bands); repeat guaranteed trip at+15.8V / -14.5V with <=1V/ms slew, <=1A source and >=50us hold (record actual waveform)"
+        ],
+        "pass_criteria_this_module": [
+          "With >=0.5V rail overdrive beyond each measured trip, OV_N low/FAULT set/RUN low <=20us; MAIN LED off. Keep FAULT latched10s after injection removed, reset explicitly only after fault repair",
+          "Externally driven rail remains externally driven until fixture removal: NEVER require it off while injection remains. After removal connect1k/1W discharge load; both rails below1V within2s at <=0.44mF external C",
+          "T2-B/C: observed positive rail peak<=24.0V and negative magnitude<=24.0V for the500ms capture; positive duration above16V<=100ms with specified1k discharge; D26 pulse energy<=0.10J; normal regulation after repair/RESET",
+          "T2-D OV_N stays high. T2-E band points may trip or not; above-band points MUST trip. Automatic abort at+24V / -24V / VIN28V, source removed in<=2us; any abort fails qualification, no human-only protection"
+        ],
+        "downstream_qualification": [
+          "Without a separate rail protector, downstream modules must tolerate16.5V/10s and sub-threshold +15.3V/-14.1V continuously, and up to24V magnitude/100ms or their measured actual exposure if worse. Ordinary16V caps are NOT thereby qualified; incompatible modules excluded until crowbar/eFuse decision."
+        ]
+      }
     }
+  },
+  "enable_logic": {
+    "logic": "QUALIFY = RUN AND MAIN_LED_OK = RUN AND MAIN_OK AND V20_OK; Q14 and Q15 series sink",
+    "drive_source": "Q1 emitter VPD upstream of D10; never +12V or VIN",
+    "equation": "EN_N - V(-12V) = QUALIFY ? (VPD - VCEsat - V(-12V))*R18/(R17+R18) : Ileak*R18",
+    "off_pullup": "R112 ties Q1 base to VPD if either sink is off; R18 pulls EN to U4 ground",
+    "enable_high_max_V": 1.4,
+    "disable_low_min_V": 0.95,
+    "startup_min_relative_V": 1.928,
+    "running_max_relative_V": 5.014,
+    "off_leakage_test_bound_uA": 5,
+    "off_relative_max_V": 0.102,
+    "truth_table": [
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": true
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": true
+      }
+    ],
+    "does_not_block_reverse_power_while_enabled": true,
+    "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
+  },
+  "startup_qualification": {
+    "source_limit_A": 3.0,
+    "source_min_V": 14.25,
+    "cable_loop_R_ohm": 0.25,
+    "unconstrained_peak_input_A": 4.25,
+    "unconstrained_positive_alone_A": 3.055,
+    "meaning": "3 A source limiting MUST be tested; output CC does not enforce the PD input contract. Energy times are lower bounds, not startup guarantees.",
+    "resource_rows": [
+      {
+        "delivered_W": 0.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 0.0,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 2.6
+      },
+      {
+        "delivered_W": 15.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 17.1,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 4.7
+      },
+      {
+        "delivered_W": 25.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 27.852,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 10.1
+      },
+      {
+        "delivered_W": 33.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 36.455,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 116.5
+      }
+    ],
+    "matrix": [
+      {
+        "id": "S1",
+        "condition": "Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts",
+        "pass": "Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record"
+      },
+      {
+        "id": "S2",
+        "condition": "Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V",
+        "pass": "A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts"
+      },
+      {
+        "id": "S3",
+        "condition": "Persistent rail short, uninterrupted source, then manual RESET and separate full power removal/reapplication",
+        "pass": "Each power epoch with input held must fault within 0.90 s+2 ms of first enable, hold RUN low until explicit reset, and fault again with short present"
+      },
+      {
+        "id": "S4",
+        "condition": "Ten automatic input hard resets every 200 ms while short remains, V3V3 collapsed in each off interval",
+        "pass": "Qualification result must be FAIL_REPEATED_POWER_RESET, never a pass from a final successful cycle; fixture latches power OFF on the second autonomous reset"
+      }
+    ],
+    "power_reset_policy": "STARTED and FAULT are volatile. Full V3V3/POR loss legitimately clears both; S8.5 one-shot preserved, not falsely advertised as nonvolatile. Automatic retrying sources are outside qualified envelope. Fixture counts epochs and must stop retries; hardware nonvolatile lockout remains absent.",
+    "bench_status": "NOT PERFORMED; source/load qualification is open"
+  },
+  "ground_split": {
+    "analog": "AGND_U2",
+    "power": "GND",
+    "only_link": "R113 at C82.2"
   },
   "plus5_removed": {
     "S7_refs_removed": [
@@ -284,7 +735,7 @@
     "ANY_BAD": "NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3)",
     "spare_comparators": {
       "U18": "out 2 open, - REF_GOOD, + GND",
-      "U20": "out 1 and out 13 open, - REF_OV, + GND"
+      "U20": "out 1 open: - REF_OV, + MON_OVN; out 13 open: - REF_OV, + GND"
     },
     "U5_nets": "MAIN_* (EF_* in S7)"
   },
@@ -315,16 +766,16 @@
       9.27
     ],
     "U5_on_V": [
-      12.46,
-      13.2,
-      13.979
+      12.263,
+      12.618,
+      12.976
     ],
     "U5_off_V": [
-      11.547,
-      12.342,
-      13.135
+      11.365,
+      11.798,
+      12.193
     ],
-    "V20_OK_margin_below_U5_off_min_V": 2.277,
+    "V20_OK_margin_below_U5_off_min_V": 2.095,
     "V20_OK_margin_above_vSafe5V_max_V": 2.172,
     "U11_delay_s": [
       0.31,
@@ -339,8 +790,8 @@
       "t_rails_ms": 120.0,
       "t_rail_decay_ms": 1.0,
       "t_filter_ms": 0.75,
-      "u5_on_V": 13.98,
-      "u5_off_V": 13.14,
+      "u5_on_V": 12.977,
+      "u5_off_V": 12.193,
       "u5_status_valid_V": 4.95,
       "vpd_5v_phase": 4.75,
       "vpd_unloaded": 14.25,
@@ -357,10 +808,10 @@
         "why": "15 V PD source at -5 % (14.25 V unloaded, U5 turns on at its 13.98 V maximum), 13.5 V loaded after the start; MAIN_OK floats high during the 5 V phase",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -368,14 +819,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -383,14 +837,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -398,14 +855,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -413,17 +873,20 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "slow_PD_contract_2s5": {
         "why": "5 V phase longer than the qualification window, U5 status floating high (S8.4 armed here and latched off before the PD voltage arrived)",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            2552.7
+            2549.5
           ],
           "ARMED_ms": [
-            2862.7
+            2859.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -431,14 +894,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            2552.7
+            2549.5
           ],
           "ARMED_ms": [
-            2862.7
+            2859.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -446,14 +912,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            2552.7
+            2549.5
           ],
           "ARMED_ms": [
-            3432.7
+            3429.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -461,14 +930,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            2552.7
+            2549.5
           ],
           "ARMED_ms": [
-            3432.7
+            3429.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -476,18 +948,21 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "brownout_after_ARMED": {
         "why": "VPD sags to 10.5 V (below the 11.55 V U5 turn-off minimum, above the 9.27 V V20_OK maximum) for 50 ms after ARMED (U5 off), recovers; RESET pressed later",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1938.6
           ],
           "ARMED_ms": [
-            662.7,
+            659.5,
             2248.6
           ],
           "FAULT_ms": [
@@ -499,15 +974,18 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1938.6
           ],
           "ARMED_ms": [
-            662.7,
+            659.5,
             2248.6
           ],
           "FAULT_ms": [
@@ -519,15 +997,18 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1938.6
           ],
           "ARMED_ms": [
-            1232.7,
+            1229.5,
             2818.6
           ],
           "FAULT_ms": [
@@ -539,15 +1020,18 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1938.6
           ],
           "ARMED_ms": [
-            1232.7,
+            1229.5,
             2818.6
           ],
           "FAULT_ms": [
@@ -559,17 +1043,20 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "brownout_inside_window": {
         "why": "VPD sags to 10.5 V for 50 ms right after the first enable; the window is NOT restarted",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -577,14 +1064,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -592,14 +1082,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -607,14 +1100,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -622,80 +1118,95 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "input_overload_chatter": {
         "why": "U5 current limit / auto-retry: on 30 ms, off 20 ms, forever (S8.4: timer restarted every cycle, never armed)",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
-            662.7
+            659.5
           ],
           "RESET_release_ms": [
             12.0
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
-            662.7
+            659.5
           ],
           "RESET_release_ms": [
             12.0
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
-            1232.7
+            1229.5
           ],
           "RESET_release_ms": [
             12.0
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
-            1232.7
+            1229.5
           ],
           "RESET_release_ms": [
             12.0
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "hot_plug_live_bus": {
         "why": "outputs plugged into a bus another supply already holds inside the monitor windows: the rail monitors read good from 0 ms; nothing else reaches the logic",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -703,14 +1214,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -718,14 +1232,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -733,14 +1250,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -748,17 +1268,20 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "load_release_after_ARMED": {
         "why": "+/-12V load released after ARMED: the release peak stays below the U20 guard minimum (calcs ov_guard) and the rails stay above their monitor thresholds, so no logic input changes (the run must stay armed without a FAULT)",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -766,14 +1289,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -781,14 +1307,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -796,14 +1325,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -811,17 +1343,20 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "load_release_inside_window": {
         "why": "the same +/-12V load release during the qualification window",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -829,14 +1364,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            662.7
+            659.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -844,14 +1382,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -859,14 +1400,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [
-            1232.7
+            1229.5
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -874,14 +1418,17 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "ov_guard_before_ARMED": {
         "why": "+12V or -12V beyond the U20 guard 60 ms after the first enable: OV_N low for 1 ms",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
@@ -892,11 +1439,14 @@
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
@@ -907,11 +1457,14 @@
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
@@ -922,11 +1475,14 @@
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7
+            349.5
           ],
           "ARMED_ms": [],
           "FAULT_ms": [
@@ -937,19 +1493,22 @@
           ],
           "ends_running": false,
           "ends_armed": false,
-          "ends_faulted": true
+          "ends_faulted": true,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       },
       "short_RESET_while_running": {
         "why": "RESET pulse of the 12 ms POR minimum while PGOOD (13 ms falling-deglitch screen) is still high when RESET releases",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1500.0,
             1512.1
           ],
           "ARMED_ms": [
-            662.7,
+            659.5,
             1822.0
           ],
           "FAULT_ms": [],
@@ -959,16 +1518,19 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1500.0,
             1512.1
           ],
           "ARMED_ms": [
-            662.7,
+            659.5,
             1822.0
           ],
           "FAULT_ms": [],
@@ -978,16 +1540,19 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1500.0,
             1512.1
           ],
           "ARMED_ms": [
-            1232.7,
+            1229.5,
             2392.0
           ],
           "FAULT_ms": [],
@@ -997,16 +1562,19 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            352.7,
+            349.5,
             1500.0,
             1512.1
           ],
           "ARMED_ms": [
-            1232.7,
+            1229.5,
             2392.0
           ],
           "FAULT_ms": [],
@@ -1016,7 +1584,319 @@
           ],
           "ends_running": true,
           "ends_armed": true,
-          "ends_faulted": false
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        }
+      },
+      "source_limit_3A": {
+        "why": "Ideal 3A budget allocation, 0.0954J bank/rack charging with0.818W remaining at33W load. Not proof of actual CC arbitration; bench S1 required",
+        "t_d_0.31s_V20_7.67V": {
+          "first_enable_ms": [
+            349.5
+          ],
+          "ARMED_ms": [
+            659.5
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 3.0,
+          "source_limit_observed": true
+        },
+        "t_d_0.31s_V20_9.27V": {
+          "first_enable_ms": [
+            349.5
+          ],
+          "ARMED_ms": [
+            659.5
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 3.0,
+          "source_limit_observed": true
+        },
+        "t_d_0.88s_V20_7.67V": {
+          "first_enable_ms": [
+            349.5
+          ],
+          "ARMED_ms": [
+            1229.5
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 3.0,
+          "source_limit_observed": true
+        },
+        "t_d_0.88s_V20_9.27V": {
+          "first_enable_ms": [
+            349.5
+          ],
+          "ARMED_ms": [
+            1229.5
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 3.0,
+          "source_limit_observed": true
+        }
+      },
+      "power_reset_rearm_persistent_short": {
+        "why": "Persistent short; fault must latch in EACH of two power epochs. V3V3 fully lost, POR re-arms legitimately; original failed epoch is retained",
+        "t_d_0.31s_V20_7.67V": {
+          "first_enable_ms": [
+            349.5,
+            1785.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [
+            659.5,
+            2095.6
+          ],
+          "RESET_release_ms": [
+            12.0,
+            1762.0
+          ],
+          "ends_running": false,
+          "ends_armed": false,
+          "ends_faulted": true,
+          "power_epochs": 2,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        },
+        "t_d_0.31s_V20_9.27V": {
+          "first_enable_ms": [
+            349.5,
+            1785.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [
+            659.5,
+            2095.6
+          ],
+          "RESET_release_ms": [
+            12.0,
+            1762.0
+          ],
+          "ends_running": false,
+          "ends_armed": false,
+          "ends_faulted": true,
+          "power_epochs": 2,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        },
+        "t_d_0.88s_V20_7.67V": {
+          "first_enable_ms": [
+            349.5,
+            1785.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [
+            1229.5,
+            2665.6
+          ],
+          "RESET_release_ms": [
+            12.0,
+            1762.0
+          ],
+          "ends_running": false,
+          "ends_armed": false,
+          "ends_faulted": true,
+          "power_epochs": 2,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        },
+        "t_d_0.88s_V20_9.27V": {
+          "first_enable_ms": [
+            349.5,
+            1785.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [
+            1229.5,
+            2665.6
+          ],
+          "RESET_release_ms": [
+            12.0,
+            1762.0
+          ],
+          "ends_running": false,
+          "ends_armed": false,
+          "ends_faulted": true,
+          "power_epochs": 2,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        }
+      },
+      "repeated_power_reset_rejected": {
+        "why": "Adversarial source resets before ARMED; volatile STARTED clears. Logic semantics expected, but external qualification MUST reject repeated resets, never report success",
+        "t_d_0.31s_V20_7.67V": {
+          "first_enable_ms": [
+            349.5,
+            535.6,
+            735.6,
+            935.6,
+            1135.6,
+            1335.6,
+            1535.6,
+            1735.6,
+            1935.6,
+            2135.6,
+            2335.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0,
+            512.0,
+            712.0,
+            912.0,
+            1112.0,
+            1312.0,
+            1512.0,
+            1712.0,
+            1912.0,
+            2112.0,
+            2312.0
+          ],
+          "ends_running": true,
+          "ends_armed": false,
+          "ends_faulted": false,
+          "power_epochs": 11,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        },
+        "t_d_0.31s_V20_9.27V": {
+          "first_enable_ms": [
+            349.5,
+            535.6,
+            735.6,
+            935.6,
+            1135.6,
+            1335.6,
+            1535.6,
+            1735.6,
+            1935.6,
+            2135.6,
+            2335.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0,
+            512.0,
+            712.0,
+            912.0,
+            1112.0,
+            1312.0,
+            1512.0,
+            1712.0,
+            1912.0,
+            2112.0,
+            2312.0
+          ],
+          "ends_running": true,
+          "ends_armed": false,
+          "ends_faulted": false,
+          "power_epochs": 11,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        },
+        "t_d_0.88s_V20_7.67V": {
+          "first_enable_ms": [
+            349.5,
+            535.6,
+            735.6,
+            935.6,
+            1135.6,
+            1335.6,
+            1535.6,
+            1735.6,
+            1935.6,
+            2135.6,
+            2335.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0,
+            512.0,
+            712.0,
+            912.0,
+            1112.0,
+            1312.0,
+            1512.0,
+            1712.0,
+            1912.0,
+            2112.0,
+            2312.0
+          ],
+          "ends_running": true,
+          "ends_armed": false,
+          "ends_faulted": false,
+          "power_epochs": 11,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
+        },
+        "t_d_0.88s_V20_9.27V": {
+          "first_enable_ms": [
+            349.5,
+            535.6,
+            735.6,
+            935.6,
+            1135.6,
+            1335.6,
+            1535.6,
+            1735.6,
+            1935.6,
+            2135.6,
+            2335.6
+          ],
+          "ARMED_ms": [],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0,
+            512.0,
+            712.0,
+            912.0,
+            1112.0,
+            1312.0,
+            1512.0,
+            1712.0,
+            1912.0,
+            2112.0,
+            2312.0
+          ],
+          "ends_running": true,
+          "ends_armed": false,
+          "ends_faulted": false,
+          "power_epochs": 11,
+          "max_input_A": 0.0,
+          "source_limit_observed": false
         }
       }
     },
@@ -1025,7 +1905,7 @@
   "comparator_supply": {
     "supply": "VPD",
     "output_pullups": "V3V3",
-    "full_temp_headroom_V": 8.2355,
+    "full_temp_headroom_V": 8.0955,
     "bypass_rating_V": 50
   },
   "nominal_voltage_valid_thresholds": {

@@ -31,6 +31,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE / 'capacitor-study'))
 import cap_study as cs  # noqa: E402
 import circuit_s8  # noqa: E402
+import s91_analysis
 
 MODULE = HERE.parent
 SOURCES = {
@@ -328,15 +329,14 @@ def soft_start(val, eff):
     icc_min, vmax = op['icc_A'][0], op['setpoint_V'][2]
     ss_ramp = vmax / (ds['tss_ms'][0] * 1e-3)                       # fastest reference ramp, V/s
     c_track_full = (icc_min - op['i_pub']) / ss_ramp                # largest C that still follows the reference at full load
-    rack_ti = ds['cout_eff_max_uF'] * 1e-6 - bank_hi
-    t_charge = (ds['cout_eff_max_uF'] * 1e-6) * vmax / (icc_min - op['i_pub'])
+    rack_ti = min(s91_analysis.RACK_MAX_F, ds['cout_eff_max_uF'] * 1e-6 - bank_hi)
+    t_charge = (bank_hi + rack_ti) * vmax / (icc_min - op['i_pub'])
     out = {'+12V': dict(tSS_ms=list(ds['tss_ms']), cc_limit_A=[round(x, 3) for x in op['icc_A']],
                         tracks_reference_up_to_mF={'full_load': round(c_track_full * 1e3, 3),
                                                    'no_load': round(icc_min / ss_ramp * 1e3, 3)},
                         onboard_bank_high_mF=round(bank_hi * 1e3, 3),
                         rack_allowance_mF=round(rack_ti * 1e3, 3),
-                        allowance_basis='TI effective COUT ceiling 1000 uF (SLVSGT7 6.3) minus the onboard bank high corner; '
-                                        'above the tracking limit the rail charges at the R109 limit (no hiccup)',
+                        allowance_basis='S9.1 restricted to 0.44mF external, within the complex-loop impedance envelope; startup on 3A source remains a qualification test, not proven by CC alone',
                         time_to_full_at_allowance_full_load_ms=round(t_charge * 1e3, 1),
                         hiccup='only if VOUT < 0.8 V with the average inductor limit for 2 ms after tSS: a short circuit, '
                                'not a capacitive start (R109 holds IL near IOUT)')}
@@ -548,17 +548,8 @@ CABLE_DROP_V = 0.75              # cable/connector allowance at 3 A (as S8: 0.75
 
 
 def u5_window(val):
-    """U5 TPS16630 UVLO on/off thresholds referred to VPD (R2/R3 1 % + 1 % TCR, UVLO 1.176/1.2/1.224 V rising,
-    1.09/1.122/1.15 V falling). The +/-150 nA pin leakage flows through the top resistor, so it shifts the VPD
-    threshold by I x R2 (S8.4 review fix; S8.3-era screens used R2 || R3). The converters can only start above
-    the rising band and keep running down to the falling one."""
-    lo, hi = R1
-    leak = 150e-9 * val('R2') * hi
-
-    def band(vmin, vtyp, vmax):
-        return [vmin * (1 + val('R2') * lo / (val('R3') * hi)) - leak, vtyp * (1 + val('R2') / val('R3')),
-                vmax * (1 + val('R2') * hi / (val('R3') * lo)) + leak]
-    return band(1.176, 1.2, 1.224), band(1.09, 1.122, 1.15)
+    q = s91_analysis.input_qualification(val)
+    return q['on_V'], q['off_V']
 
 
 def converter_vin(vpd):
@@ -693,7 +684,8 @@ def rating(val, eff):
     vin_run = converter_vin(u5_window(val)[1][0])     # sensitivity: U5 keeps running down to its turn-off minimum
     cap = {'+12V': p12_capability(val, vin_floor), '-12V': n12_capability(vin_floor)}
     target = {'+12V': 2.5, '-12V': 1.0}
-    rule = {k: min(target[k], round(0.75 * cap[k], 1)) for k in cap}
+    rule = {'+12V': 2.4, '-12V': min(target['-12V'], round(0.75 * cap['-12V'], 1))}
+    assert cap['+12V'] - rule['+12V'] >= .20, 'S9.1 positive current-limit headroom'
     assert PUBLISHED_A == rule, (PUBLISHED_A, rule)
     run = {'+12V': p12_capability(val, vin_run), '-12V': n12_capability(vin_run)}
     vo = {'+12V': 12.08, '-12V': 11.989}
@@ -703,12 +695,11 @@ def rating(val, eff):
     total = math.floor(w_min['worst_mix_delivered_W'])
     p_all, i_all = input_power(PUBLISHED_A, VPD_RATED_MIN)
     return dict(
-        published_A=PUBLISHED_A, rule=f'75 % of the minimum current-limited capability at the {vin_floor:g} V converter '
-        f'input (rated minimum VPD {VPD_RATED_MIN:g} V minus the {INPUT_DROP_V:.2f} V D10 + U5 drop), to the NEAREST 0.1 A, '
-        'capped at the S7 target', vin_floor_V=vin_floor, vpd_rated_min_V=VPD_RATED_MIN,
+        published_A=PUBLISHED_A, rule='S9.1: +12V retained 2.4 A with >=0.20 A headroom below the 18mR CC minimum; NOT the superseded 75% rule. -12V retains 75% rounded to nearest0.1A. Thermal qualification still required.',
+        vin_floor_V=vin_floor, vpd_rated_min_V=VPD_RATED_MIN,
         input_path=INPUT_PATH,
         capability_min_A={k: round(v, 3) for k, v in cap.items()},
-        capability_basis={'+12V': 'R109 constant-current minimum 48 mV / (15 mOhm x 1.01 x 1.0075)',
+        capability_basis={'+12V': 'R109 constant-current minimum 48 mV / (18 mOhm x 1.01 x 1.0075)',
                           '-12V': 'LMR38020 (ILS min + ripple/2)(1 - D), SNVSC40E Eq. 7'},
         fraction_of_capability={k: round(PUBLISHED_A[k] / cap[k], 3) for k in cap},
         headroom_to_capability_A={k: round(cap[k] - PUBLISHED_A[k], 3) for k in cap},
@@ -742,7 +733,7 @@ def startup_window(val):
     op = p12(val)
     budget = dict(U5_ramp_ms=round(VPD_RANGE[1] / (1.775e-6 * 23.5 / (val('C3') * 1.1)) * 1e3, 1), PGOOD_deglitch_ms=13,
                   TPS552892_SS_max_ms=TPS552892_DS['tss_ms'][2],
-                  P12_rack_charge_at_R109_limit_ms=round(1e-3 * op['setpoint_V'][2] / (op['icc_A'][0] - op['i_pub']) * 1e3, 1),
+                  P12_rack_charge_at_R109_limit_ms=round((96.8e-6+s91_analysis.RACK_MAX_F) * op['setpoint_V'][2] / (op['icc_A'][0] - op['i_pub']) * 1e3, 1),
                   LMR38020_SS_plus_blank_ms=18 + 4)
     total = sum(budget.values())
     return dict(typ_s=round(t, 3), min_s_screen=round(t * .6 * .9, 3), max_s_screen=round(t * 1.4 * 1.1, 3),
@@ -983,22 +974,7 @@ def plus12_buckboost(val, eff):
                                   Tj_rise_C_JEDEC=round(p_ic * ds['rth_ja'][0], 1), Tj_rise_C_EVM=round(p_ic * ds['rth_ja'][1], 1),
                                   Tj_at_50C_ambient_JEDEC_C=round(50 + p_ic * ds['rth_ja'][0], 1))
     sw_400 = 2 * 0.5 * vin_lo * (op['i_pub'] / 0.95) * 10e-9 * 400e3
-    # compensation (TI Eq. 19-26), boost corner (most restrictive), R111/C83 as fitted
-    rload = op['vo_nom'] / op['i_pub']
-    d_b = max(0.0, 1 - vin_sag / op['vo_nom'])
-
-    def fc(cout):
-        return val('R111') * (1 - d_b) * ds['vref'][1] * ds['gea'] / (2 * math.pi * op['vo_nom'] * ds['rsense_int'] * cout)
-    c_lo, c_hi = eff['+12V'][0], eff['+12V'][1]
-    comp = dict(R111_ohm=val('R111'), C83_F=val('C83'), zero_Hz=round(1 / (2 * math.pi * val('R111') * val('C83'))),
-                crossover_Hz={'bank_low_C': round(fc(c_lo)), 'bank_high_C': round(fc(c_hi)),
-                              'bank_high_plus_typical_rack': round(fc(c_hi + TYPICAL_RACK_MF * 1e-3))},
-                RHPZ_boost_corner_Hz=round(rload * (1 - d_b) ** 2 / (2 * math.pi * op['L'])),
-                fc_limit_Hz=round(min(op['fsw_Hz'][0] / 10, rload * (1 - d_b) ** 2 / (2 * math.pi * op['L']) / 5)),
-                CC_from_Eq25_nF=round(rload * c_lo / (2 * val('R111')) * 1e9, 1),
-                note='TI Eq. 24-26 with the internal 55 mOhm current-sense equivalent and GEA 190 uA/V. With the rack '
-                     'capacitance behind the cables the crossover falls below the 1.7 kHz zero: loop stability with the '
-                     'real rack is a bench Bode gate, not established here')
+    comp = s91_analysis.loop(val, eff, vin_sag, op)
     return dict(
         S8_TPS62933F_at_15V=s8,
         TPS552892_operation=rows,
@@ -1016,11 +992,9 @@ def plus12_buckboost(val, eff):
                               'limit above it (SLVSGT7 8.1)',
                               switching_loss_W={'966kHz': round(2 * 0.5 * vin_lo * (op['i_pub'] / 0.95) * 10e-9 * f_nom, 3),
                                                 '400kHz': round(sw_400, 3)},
-                              why='kept from the prior S9.0 step: the R109 limit (<= 3.53 A) keeps the inductor and switch '
-                                  'currents at ~half the 7 A average limit, the switching penalty is ~0.3 W, the N=16 '
-                                  'release screen halves against 400 kHz, and the fundamental stays clear of the '
-                                  '790 kHz -12V converter at nominal (beat tones with the wide RT tolerance are a bench '
-                                  'item, as in S8)'),
+                              why='966kHz retained; R109 is a slow output CC loop, NOT a programmable switch-current limit. '
+                                  'Thermal screening now uses 18mR; all transient/beat-tone/thermal gates remain open. '
+                                  'Frequency tolerance bands can touch; nominal separation is not a no-beat guarantee'),
         compensation=comp,
         resolution='TPS552892-Q1 four-switch buck-boost (pin-compatible role, new footprint, +10 parts): regulates 12.08 V '
                    'from 10.55 V (U5 sag) to 21 V (20 V retarget) at the published 2.4 A and at the R109 limit')
@@ -1054,133 +1028,7 @@ def pd_contract(val):
 
 
 def residuals(val, eff, ov):
-    """S9.0 owner decisions (2026-11-02): NO reverse-current blocking and NO voltage-triggered rail fuse/crowbar. Both
-    are ACCEPTED residuals, each framed as a bench-test event with exact conditions and pass criteria; downstream modules
-    must be qualified against them. Screens only: paths, worst-case current/energy, stressed parts."""
-    op = p12(val)
-    lo, hi = R1
-    c_p12 = eff['+12V']
-    c_vg = [a + b for a, b in zip(cs.mlcc(BANK_COUNTS['VIN'], 10, '10u50V_1206', 20.0)[:2],
-                                  cs.mlcc(2, 10, '10u50V_1206', 20.0)[:2])]          # VIN to GND incl. the damper branch
-    c_vn = cs.mlcc(2, 10, '10u50V_1206', 20.0)[:2]                                  # C25/C26: VIN to -12V
-    dv_neg = [-12.6 * c_vn[0] / (c_vn[0] + c_vg[1]), -12.6 * c_vn[1] / (c_vn[1] + c_vg[0])]
-    sp4 = [0.985 * (1 + val('R14') * lo / (val('R15') * hi)), 1.0 * (1 + val('R14') / val('R15')),
-           1.015 * (1 + val('R14') * hi / (val('R15') * lo))]
-    en4 = (12.0 - 0.2 + 12.0) * val('R18') / (val('R17') + val('R18'))
-    p_pump = 12.6 * 0.9
-    c_vin = [c_vg[0] + c_vn[0], c_vg[1] + c_vn[1]]
-    t_42 = [0.5 * c * 42.0 ** 2 / p_pump * 1e3 for c in c_vin]
-    dc_load_mA = {'R8+R9 (FB)': 12.6 / (val('R8') + val('R9')) * 1e3, 'R93+R94 (guard)': 12.6 / (val('R93') + val('R94')) * 1e3,
-                  'R75+R76 (monitor)': 12.6 / (val('R75') + val('R76')) * 1e3, 'Q1 base R16': (12.6 - 0.7) / val('R16') * 1e3,
-                  'U2 VOUT leakage (disabled)': ds_leak_mA()}
-    e_p12 = [0.5 * c * 12.6 ** 2 * 1e3 for c in c_p12[:2]]
-    backfeed = dict(
-        decision='ACCEPTED (owner, 2026-11-02): no series reverse-blocking element on +12V or -12V',
-        rule='Never connect an unpowered or latched-off module to a live bus; power the rack down before plugging or '
-             'unplugging; never parallel J2/J3 with another supply on the same bus',
-        plus12_path=dict(
-            power_stage='blocked: with U2 disabled (EN = MAIN_OK low) the boost high-side FET body diode (anode SW2, cathode '
-                        'VOUT) is reverse biased by the bus, so the four-switch stage has no conduction path from +12V to '
-                        'VIN (the S8 TPS62933F buck did: output inductor + high-side body diode)',
-            dc_load_from_bus_mA={k: round(v, 3) for k, v in dc_load_mA.items()},
-            dc_total_mA=round(sum(dc_load_mA.values()), 3),
-            hot_plug_bank_charge_mJ=[round(x, 2) for x in e_p12],
-            hot_plug_note='the 8 x 22u +12V bank (+ C81) charges from the bus; the peak current is set by the bus/cable '
-                          'impedance (tens of A for microseconds, as for any capacitive module), R109 sees part of it'),
-        minus12_passive=dict(
-            path='C25/C26 (VIN to -12V) form a divider with the VIN-to-GND caps: a -12.6 V step pulls VIN negative',
-            VIN_step_V=[round(x, 2) for x in dv_neg],
-            clamp='TPS552892 internal body diodes PGND -> SW1 -> VIN (~ -1.4 V) and the TPS16630 output structure: VIN '
-                  'briefly below the TPS552892 -0.3 V absolute minimum',
-            stresses=['U2 VIN/SW1 (-0.3 V abs min)', 'U5 OUT', 'C25/C26/C24 and the VIN bank (charge pulse)']),
-        minus12_active=dict(
-            path='with the +12 V bus also live, Q1 (emitter on +12V) enables U4 from the bus: EN_N = (V+12 - V-12) x R18 / '
-                 '(R17 + R18); U4 itself runs from the -12 V bus (VIN pin at the 0 V VIN node, IC ground at -12 V)',
-            EN_N_V=round(en4, 2), EN_high_max_V=1.4, U4_supply_V=12.0, U4_start_max_V=4.2,
-            setpoint_band_V=[round(v, 3) for v in sp4],
-            mechanism='pre-biased start-up: no sinking during the 4 ms soft start; afterwards, whenever |V(-12 V bus)| '
-                      'exceeds U4\'s setpoint, FPWM regulation sinks up to |IL-NEG| = 0.9 A (typical, no limits) and passes '
-                      'that power from the bus into the unloaded VIN node (U5 off, D10 blocks, U2 disabled)',
-            pumped_power_upper_W=round(p_pump, 1),
-            VIN_capacitance_uF=[round(c * 1e6, 1) for c in c_vin],
-            time_to_42V_ms=[round(x, 1) for x in t_42],
-            stresses=['U2 VIN/SW1 42 V absolute maximum (36 V operating)', 'C25/C26 see VIN + 12 V (50 V parts)',
-                      'VIN bank C6/C7/C77/C78/C24/C8 and the damper C5/C62 (50 V)', 'U5 OUT (60 V)'],
-            also_applies='a powered module that is latched off (RUN low) on a live bus, and a running module paralleled with '
-                         'another supply that holds -12 V above U4\'s setpoint',
-            finding='S9.0 analysis: this is an ACTIVE energy path, not a leakage: the procedural rule is mandatory. A '
-                    'candidate hardware mitigation that is not reverse blocking (gate the Q1 / U4 enable with RUN or '
-                    'MAIN_OK so a bus-fed +12V cannot enable U4) is listed as an open owner decision; NOT implemented'),
-        bench_test=dict(
-            conditions=['T1-A: module unpowered (no USB-C), J2 hot-plugged onto a live bus: +12.0 V and -12.0 V, then '
-                        '+/-12.6 V, 1 A current limit per rail, 0.44 mF per rail; hold 10 s; monitor VIN (TP4), both rail '
-                        'currents and U4 SW',
-                        'T1-B: as T1-A with the module powered and latched off (FAULT, RUN low)',
-                        'T1-C: as T1-A with only the -12 V rail live',
-                        'abort and power down if VIN exceeds 30 V'],
-            pass_criteria=['no damage (module restarts normally after power-up + RESET)',
-                           'VIN stays within -0.3 V .. 36 V; bus current back into the module < 10 mA after the plug '
-                           'transient (DC dividers ~0.6 mA)',
-                           'record the plug-in charge pulse on both rails'],
-            expected_by_analysis='T1-C and T1-A at a bus magnitude below U4\'s setpoint: pass apart from the brief VIN dip '
-                                 'below -0.3 V. T1-A/T1-B with |V(-12 V bus)| above U4\'s setpoint: VIN can exceed 36-42 V '
-                                 'within milliseconds - expected to FAIL; hence the procedural rule',
-            status='proposed bench acceptance, not performed'))
-    g12, gn = ov['+12V']['guard_V'], ov['-12V']['guard_V']
-    e_vin = [0.5 * c * (VPD_RANGE[1] ** 2 - 4.0 ** 2) for c in c_vg]
-    c_n12 = eff['-12V']
-    p12_peak_bank = min(math.sqrt(g12[2] ** 2 + 2 * e_vin[1] / c_p12[0]), TPS552892_DS['ovp'][2])
-    p12_peak_rack = math.sqrt(g12[2] ** 2 + 2 * e_vin[1] / (c_p12[1] + TYPICAL_RACK_MF * 1e-3))
-    n12_peak_bank = math.sqrt(gn[2] ** 2 + 2 * e_vin[1] / c_n12[0])
-    n12_peak_rack = math.sqrt(gn[2] ** 2 + 2 * e_vin[1] / (c_n12[1] + TYPICAL_RACK_MF * 1e-3))
-    overvoltage = dict(
-        decision='ACCEPTED (owner, 2026-11-02): no voltage-triggered fuse or crowbar on +/-12V (the crowbar stays excluded; '
-                 'crowbar vs eFuse is a deferred, open decision); the U20 guard + FAULT latch is the only response',
-        guard_V={'+12V': g12, '-12V_magnitude': gn},
-        response_us='~3 (comparator, HC74 preset) + 8-9 (RC filter) + 0.8-1.5 (U5 tSD) after the crossing; it opens U5, '
-                    'it does NOT discharge the rails',
-        why_no_fuse=['a fuse/PTC opens on current, not voltage: in series with +12V it must carry 2.4 A continuously and '
-                     'the 3.53 A R109 limit without nuisance, so a rail at 15-24 V with a normal load never blows it',
-                     'making overvoltage create overcurrent needs a crowbar (SCR/TVS) across the rail plus a fuse sized '
-                     'below the source limit: that is the excluded crowbar architecture',
-                     'a TVS alone (e.g. 13 V stand-off: 14.4-15.9 V breakdown) sits inside the 14.48-15.27 V guard band and '
-                     'would have to absorb the converter limit (3.5 A x ~15 V = ~53 W) continuously: it fails, usually '
-                     'short, which is a crowbar by failure',
-                     'a series eFuse with OVP per rail is the removed S7 rail-eFuse architecture (U6/U7/LM5067), not a fuse'],
-        cases={'P12_pass_through': 'failed U2 switches pass VIN to +12V: the rail follows VIN, <= 16.5 V in the stated '
-                                   'range (up to the U5 OVP ~24-26 V if the source itself fails high); the guard opens U5 '
-                                   'but the rail keeps its charge (load-dependent decay)',
-               'P12_control_failure': 'FB open (R8 open): the buck-boost drives the R109 limit into the rail; after the '
-                                      'guard opens U5 it keeps converting the VIN bank energy until VIN collapses',
-               'N12_control_failure': 'FB open (R14 open): the LMR38020 (no output OVP) drives the rail beyond the -12V '
-                                      'guard and dumps the VIN bank energy into it after U5 opens',
-               'sub_threshold': 'a failure that settles just inside the guard band never trips: +12V up to 15.27 V and '
-                                '-12V down to -14.02 V indefinitely'},
-        VIN_bank_energy_mJ=[round(e * 1e3, 2) for e in e_vin],
-        peak_screens_V={'+12V_bank_only_no_load': round(p12_peak_bank, 1), '+12V_with_typical_rack': round(p12_peak_rack, 1),
-                        '-12V_bank_only_no_load': round(n12_peak_bank, 1), '-12V_with_typical_rack': round(n12_peak_rack, 1)},
-        peak_model='guard maximum plus the VIN bank energy (16.5 V -> 4 V, high-C corner) dumped into the rail bank (low C) '
-                   'or bank + 0.44 mF rack, no load; +12V capped by the TPS552892 absolute OVP 24.5 V. Energy screen, not a '
-                   'transient simulation',
-        bench_test=dict(
-            conditions=['T2-A pass-through: module running at 16.5 V input into 0.44 mF + 0.5 A per rail; +12V driven to '
-                        '16.5 V from a current-limited (3.5 A) supply through a diode; hold 10 s',
-                        'T2-B +12V control failure: R8 lifted (FB open), start at 13.5 V and 16.5 V input, once with no '
-                        'rack and no load, once with 0.44 mF + 0.5 A',
-                        'T2-C -12V control failure: R14 lifted (FB open), same two loads',
-                        'T2-D sub-threshold: +12V held at 15.2 V and -12V at -13.9 V from external supplies for 10 min'],
-            pass_criteria_this_module=['OV_N low and FAULT latched within 20 us of the guard crossing (T2-A..C); MAIN LED '
-                                       'off; rails stay off until RESET; no damage to the module',
-                                       'T2-D: no trip (inside the guard band), no damage',
-                                       'record the peak and decay of both rails; compare with peak_screens_V'],
-            downstream_qualification=['every module intended for this rack must survive, unpowered and powered: +12V at '
-                                      '16.5 V and -12V at -16.5 V for 10 s; +12V at 15.3 V and -12V at -14.1 V '
-                                      'continuously; the measured T2-B/T2-C peaks (screens up to ~24.5 V / ~26 V with no '
-                                      'rack, ~16 V with a typical rack) for 100 ms',
-                                      'qualify the modules against these conditions; do not rely on this supply to '
-                                      'prevent them'],
-            status='proposed bench acceptance, not performed'))
-    return dict(reverse_current=backfeed, rail_overvoltage=overvoltage)
+    return s91_analysis.residuals(val, eff, ov, cs)
 
 
 def ds_leak_mA():
@@ -1190,7 +1038,7 @@ def ds_leak_mA():
 def retarget_20v(val):
     """What changes when the input moves back to 20 V (not done in S9.0): three resistors and the rated minimum; every
     part behind U5 is already rated for it (U5 OVP keeps the 20 V setting)."""
-    swap = {'R1': 120e3, 'R3': 7.5e3, 'R83': 120e3}
+    swap = {'R1': 120e3, 'R3': 7.5e3, 'R114': 0., 'R83': 120e3}
 
     def val20(ref):
         return swap.get(ref, val(ref))
@@ -1201,17 +1049,19 @@ def retarget_20v(val):
     n12 = n12_capability(vin20)
     p12c = p12_capability(val, vin20)
     op = p12(val)
-    r20 = {'+12V': min(2.5, round(0.75 * p12c, 1)), '-12V': min(1.0, round(0.75 * n12, 1))}
+    r20 = {'+12V': PUBLISHED_A['+12V'], '-12V': min(1.0, round(0.75 * n12, 1))}
     return dict(
-        changes={'R1': '56k -> 120k (CH224A 20 V request)', 'R3': '10k -> 7.5k (U5 UVLO)',
+        changes={'R1': '56k -> 120k (CH224A 20 V request)', 'R3': '10k -> 7.5k precision (U5 UVLO)', 'R114': '510 -> 0 ohm (20V UVLO)' ,
                  'R83': '100k -> 120k (V20_OK status floor)',
+                 'D24': 'SMBJ16A -> SMBJ22A (same SMB footprint); requalify cold stand-off and clamp',
+                 'D25': 'replace 30V BAT54 with >=40V negative clamp; requalify forward drop / footprint',
                  'docs': 'rated minimum VPD 18.25 V (20 V -5 % less 0.75 V), input budget at 20 V'},
         U5_window_V={'on': [round(v, 2) for v in on], 'off': [round(v, 2) for v in off]},
         V20_OK_band_V=[round(v, 3) for v in v20], V20_OK_rule_holds=v20_floor_ok(v20, off),
         converter_VIN_V=[vin20, 21.0],
         plus12={'mode': 'buck only', 'D': [round(op['setpoint_V'][0] / 21.0, 3), round(op['setpoint_V'][2] / vin20, 3)],
                 'D_min_tON': round(TPS552892_DS['ton_min'] * op['fsw_Hz'][2], 3),
-                'capability_A': round(p12c, 3), 'rating_A': min(2.5, round(0.75 * p12c, 1))},
+                'capability_A': round(p12c, 3), 'rating_A': PUBLISHED_A['+12V']},
         minus12={'capability_A': round(n12, 3), 'rating_A': min(1.0, round(0.75 * n12, 1)), 'D_at_20V': round(11.989 / 31.989, 3)},
         input={'45W_adapter_20V_A': 2.25, 'ratings_A': r20,
                'delivered_W_45W_20V_worst_mix': delivered_at_input_limit(vpd_min20, 2.25, ratings=r20)['worst_mix_delivered_W'],
@@ -1219,8 +1069,7 @@ def retarget_20v(val):
                'per_rail_sum_W': round(12.08 * r20['+12V'] + 11.989 * r20['-12V'], 2)},
         unchanged=['TPS552892-Q1 cell, R109 limit and compensation (buck mode only)', 'LMR38020 (VIN + 12 V = 33 V, 80 V part)',
                    'U5 OVP 24.1 V nominal, D1 SMBJ22A, 50 V VIN/C25/C26 parts', 'guard thresholds and the arming chain'],
-        note='not a corner: S9.0 already carries every part rated for 20 V; the retarget is a three-resistor change plus '
-             'the doc/rating update. D10/U5 dissipation fall (2.25 A instead of 3 A at 45 W)')
+        note='20V remains supported by the converter architecture but is NOT plug-compatible with the fitted16V VIN TVS. Change D24/D25 and the input divider/request parts, then requalify; no assertion that only three resistors suffice')
 
 
 def area(parts):
@@ -1236,7 +1085,7 @@ def area(parts):
              'PPAD8': 'TI_SO-PowerPAD-8_ThermalVias',
              'PWP20': 'HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias',
              'TP': 'TestPoint_Pad_D1.0mm', 'DGN8': 'TPS7A16_DGN0008C', 'SOT235': 'SOT-23-5', 'SOT236': 'SOT-23-6',
-             'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm', 'SLO1040': 'L_SLO1040H6R8MTT', 'RYQ21': 'TI_RYQ0021B_VQFN-HR-21_3x5mm',
+             'SO14': 'SOIC-14_3.9x8.7mm_P1.27mm', 'WSLP1206':'R_WSLP1206_18m_Kelvin', 'SLO1040': 'L_SLO1040H6R8MTT', 'RYQ21': 'TI_RYQ0021B_VQFN-HR-21_3x5mm',
              'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621', 'TL3340': 'SW_TL3340AF160QG_HandSolder',
              'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge'}
     cache = {}
@@ -1272,7 +1121,7 @@ def main():
     ap.add_argument('--skip-sim', action='store_true', help='skip the VIN grid and rail-release simulations')
     a = ap.parse_args()
     parts, val = table()
-    R = {'status': 'S9.0 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
+    R = {'status': 'S9.1 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
     R['banks'], eff = banks(parts)
     R['ripple_and_steps'] = ripple_and_steps(val, eff)
     op = p12(val)
@@ -1294,6 +1143,9 @@ def main():
     R['plus12_buckboost'] = plus12_buckboost(val, eff)
     R['rating'] = rating(val, eff)
     R['pd_contract'] = pd_contract(val)
+    R['input_qualification'] = s91_analysis.input_qualification(val)
+    R['enable_logic'] = s91_analysis.enable(val)
+    R['startup_qualification'] = s91_analysis.qualification(val, eff, op)
     R['basic_only_counterfactual'] = basic_only_counterfactual(val, eff, R['rail_release'])
     R['startup_window'] = startup_window(val)
     R['arming'] = arming(val)

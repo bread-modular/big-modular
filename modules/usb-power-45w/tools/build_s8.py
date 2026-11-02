@@ -32,7 +32,7 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
-REV = 'S9.0'
+REV = 'S9.1'
 from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
 FP_S8 = {**bs.FP, **FP_S90}
 

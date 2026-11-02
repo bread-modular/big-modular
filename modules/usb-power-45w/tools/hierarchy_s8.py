@@ -45,8 +45,8 @@ def layout(parts):
             assert ref in parts and ref not in plan, ref
             plan[ref] = (page, dx, dy)
     rr = lambda prefix, a, b: [prefix + str(i) for i in range(a, b + 1)]
-    put(['U2', 'L1', 'R8', 'R9', *rr('C', 6, 14), '#FLG04', *BUCKBOOST_ADDED], 2, -276.86, 0)
-    put(['U4', 'L3', 'Q1', *rr('R', 13, 18), *rr('C', 24, 33), '#FLG03'], 3, 0, -147.32)
+    put(['U2', 'L1', 'R8', 'R9', *rr('C', 6, 14), '#FLG04', *BUCKBOOST_ADDED, 'R113', '#FLG10', 'D26'], 2, -276.86, 0)
+    put(['U4', 'L3', 'Q1', 'Q14', 'Q15', 'R112', *rr('R', 13, 18), *rr('C', 24, 33), '#FLG03'], 3, 0, -147.32)
     put(['D2'], 2, -25.4, -203.2)
     put(['D4'], 3, -50.8, -241.3)
     put(['J2', 'J3', 'C34', 'C36', 'C59', 'C61'], 5, 0, -86.36)
@@ -61,58 +61,41 @@ def layout(parts):
 
 
 NOTES = {
-    1: 'S9.0: 15 V PD request (R1 56k; 120k = 20 V); U5 TPS16630 (60 V, 4.186 A nominal) is the common input switch: RUN low\n'
-       'turns every rail off. UVLO R2/R3 100k/10k: on 12.46-13.98 V, off 11.55-13.14 V (input qualification). OVP keeps the\n'
-       '20 V-input setting (24.1 V nominal). MAIN_OK = FLT + PGOOD at 3.3 V. R92 1R + C5/C62 2 x 10u damp the VIN bus.\n'
-       'The U5 nets are named MAIN_* on the single board (EF_* in S7). Needs a 15 V / 3 A fixed PDO (>= 45 W PD source).',
-    2: 'S9.0: TPS552892-Q1 four-switch buck-boost: regulates 12.08 V from the whole converter input (10.55 V U5 sag ..\n'
-       '16.5 V, and 21 V for the later 20 V retarget). The S8 TPS62933F buck needed 0.995-1.053 duty at the 12.5 V low line\n'
-       '(1.033 even unloaded), above its 98 % maximum. 966 kHz (R110), L1 6.8 uH, FPWM, internal LDO (MODE/EXTVCC = VCC).\n'
-       'R109 15 mR: constant-current limit 3.14-3.53 A = the +12V capability (published 2.4 A); large rack C charges at it.\n'
-       'FB R8/R9 after R109; COMP R111/C83 (~10 kHz screen, bench Bode open). C11-C14, C79, C80 + C81 at VOUT;\n'
-       'C34 (J2) and C59 (J3) at the headers on page 05. Its VOUT OVP (22.5-24.5 V) is not a 12 V protection (U20 is).',
-    3: 'LMR38020F inverting buck-boost; IC ground / exposed pad = the delivered -12V (no series switch).\n'
-       '4 ms soft start, 18 ms OCP blanking at start-up. Q1 follows +12V. C29-C33 here + C36 (J2) and C61 (J3).\n'
-       'S8.4: hiccup needs |Vout| < 40 % after the blanking. Rack allowance 0.85 mF (TI 1000 uF COUT guidance; hiccup model\n'
-       'at the U5 turn-on minimum, 0.8 A) covers a typical 0.44 mF rack. S9.0 at 15 V: D 0.44, published 0.8 A.\n'
-       'S9.0 residual: Q1 derives EN_N from the rails only, so a live +/-12V bus can enable U4 in an unpowered module.',
-    4: 'RESET clears STARTED and FAULT; RUN is forced low while reset is asserted.\n'
-       'S8.5 one-shot arming: START_N = NAND(MAIN_LED_OK, RUN) (U14 gate 2) presets STARTED (U12 A) at the first converter enable;\n'
-       'only RESET clears it. TIMER_GO = RUN AND STARTED -> U11 -> ARMED 0.31-0.88 s later, held until RESET/FAULT: no fault can\n'
-       'restart or extend the window. Then any persistent bad status latches every rail OFF. OV_N presets FAULT at any time.\n'
-       'S9.0: ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3): the former +5V input of U14 gate 1 is tied high.\n'
-       'V20_OK (S9.0: R83 100k, 7.67-9.27 V) only validates U5 FLT/PGOOD (MAIN_OK); the input qualification is the U5 UVLO\n'
-       '(on 12.46-13.98 V, off 11.55-13.13 V at the 15 V input).',
-    5: 'J2 + J3: two parallel 16-pin outputs, pin 1 = -12V. C34/C36 at J2, C59/C61 at J3 (22u each, replace the 100u cans).\n'
-       'S9.0: +/-12V only; J2/J3 pins 11/12 (+5V) and CV/GATE (13-16) are open.\n'
-       'D8 MAIN is the only status LED (rail LEDs removed): MAIN_LED_OK (U5 on, FLT/PGOOD valid) AND RUN. Any bad status after\n'
-       'ARMED or a U20 guard trip latches every rail off. P12_OK / N12_OK: logic + test pads.\n'
-       'U20 overvoltage guard (S8.1): +12V > 14.88 V or -12V < -13.64 V nominal (corners 14.48-15.27 / 13.27-14.02 V) pulls OV_N\n'
-       '-> FAULT -> U5 off. Own reference REF_OV = U21 TLV431B (R100, C67, TP17); U18/U20 LM2901B; R93, R94, R98, R99 are\n'
-       '0.1 % / 25 ppm. The -12V channel compares MON_OVN with GND (no V3V3 term); D22 holds MON_OVN near -0.24 V (25 C only,\n'
-       '<=0.15 mA) if V3V3 is lost while the rack holds -12V. S9.0: the former +5V comparators of U18/U20 are spares.\n'
-       'S8.3: U18/U20 supplies are always-on VPD; outputs remain 3.3 V logic. No prototype qualification is claimed.',
-}
-
-
-REV = 'S9.0'
-PAGE_COMMENT = 'S9.0: +/-12V only (+5V removed), one-shot arming latch - docs/s8-single-board.md'
-ROOT_TITLE = ('USB POWER S9.0 / SINGLE BOARD, +/-12V ONLY, 15 V PD INPUT',
-              'S9.0: +5V subsystem removed; 15 V / 3 A PD input; +12V buck-boost; ceramic banks; two parallel outputs; '
-              'VPD-powered OV guard (+12V / -12V); one-shot arming latch; MAIN LED only.')
-DESCRIPTIONS = {1: 'CH224A: 15 V request\nTPS16630: 4.186 A common input switch\nVIN damper 1R + 2 x 10u',
-                2: 'TPS552892-Q1 buck-boost\n+12 V, 3.14-3.53 A CC limit',
-                3: 'LMR38020F inverting buck-boost\n-12 V delivered rail',
-                4: '60 V always-on LDO / one-shot STARTED + FAULT latches\nManual RESET; OV_N presets FAULT',
-                5: 'Two Eurorack outputs J2 + J3 (+/-12V)\nMonitors, OV guard\nMAIN LED (only status LED)'}
+ 1: 'S9.1: 15 V / 3 A PD, R1 56k. U5 UVLO: R2 100k 0.1% / (R3 10k 0.1% + R114 510R 1%).\n'
+    'Worst start <13.0 V; range 13.5-16.5 V at module incl. <=0.75 V cable drop. OVP unchanged.\n'
+    'D24 SMBJ16A VIN pulse clamp (600 W 10/1000 us, 26 V rated clamp); not a continuous shunt.\n'
+    'D25: low-current negative clamp, slew-limited room-temperature test only. See calcs residuals.',
+ 2: 'S9.1: TPS552892-Q1, 966 kHz, L1 6.8u; R109 18mR 1W (2.62-2.94 A). Rating +12V 2.4 A, total <=33 W.\n'
+    'AGND_U2: U2.5/.17, R9, R110, C83, C82. ONLY join to PGND (GND) through R113 at C82 ground terminal.\n'
+    'COMP R111 6.8k / C83 100n (zero 234 Hz). Rack <=0.44 mF with bounded cable impedance; see full loop sweep.\n'
+    'R109 is a slow OUTPUT current limit, not a switch limit. Thermal / Bode measurements remain release gates.',
+ 3: 'S9.1: U4 enable is powered from own VPD upstream of D10, NEVER from +12V or pumped VIN.\n'
+    'Q14 RUN and Q15 MAIN_LED_OK form an AND sink for Q1 base; R112 returns base to emitter when either is off.\n'
+    'EN_N relative to -12V = (VPD - VCEsat - V(-12V))/6 only when qualified; otherwise R18 holds it at 0 V.\n'
+    'Unpowered or latched-off live +/-12V bus cannot self-enable U4. No reverse-power blocking is claimed.\n'
+    'LMR38020F power stage unchanged. Powered parallel supplies and unrestricted hotplug remain prohibited.',
+ 4: 'S9.1 retains S8.5 STARTED one-shot: START_N = NAND(MAIN_LED_OK,RUN); TIMER_GO = RUN AND STARTED.\n'
+    'U11 -> ARMED after 0.31-0.88 s. RESET clears STARTED/FAULT; U20 OV_N presets FAULT even before ARMED.\n'
+    'A full V3V3/POR reset DOES re-arm: qualification rejects repetitive hard-reset sources; no masking by retries.\n'
+    'ANY_BAD = NAND(MAIN_LED_OK,P12_OK,N12_OK,V3V3). R83 100k validity floor unchanged.',
+ 5: 'S9.1: +/-12V only, J2/J3 pins 11-16 NC. MAIN LED only. U18/U20 on VPD, own REF_OV unchanged.\n'
+    'Guard +12V 14.48-15.27 V, -12V magnitude 13.27-14.02 V. Guard disconnects INPUT, not an external bus.\n'
+    'No rail crowbar or eFuse. Uninjected rails decay with load; injected rail remains at the external voltage.\n'
+    'See docs/s8-single-board.md for separate latch, clamp, discharge and survival acceptance criteria.'}
+REV = 'S9.1'
+PAGE_COMMENT = 'S9.1 review fixes; P2.1 UNROUTED; docs/s8-single-board.md'
+ROOT_TITLE = ('USB POWER S9.1 / SINGLE BOARD, +/-12V ONLY, 15 V PD INPUT',
+              'Own-input enable; VIN pulse clamp; split U2 grounds; STARTED one-shot; no output crowbar.')
+DESCRIPTIONS = {1:'15 V PD / TPS16630 / VIN clamp', 2:'TPS552892-Q1 buck-boost / split AGND',
+                3:'LMR38020F / own-input enable', 4:'Always-on logic / STARTED + FAULT / RESET',
+                5:'Parallel +/-12V headers / monitors / MAIN LED'}
 ROOT_RAIL_LINKS = (((2, '+12V'), (5, '+12V'), 304.8), ((3, '-12V'), (5, '-12V'), 330.2))
-ROOT_FAULT_POLICY = ('FAULT POLICY\nOne-shot qualification from the first converter enable (STARTED latch); after\n'
-                     '0.31-0.88 s any persistent bad status -> all OFF until RESET. Severe OV via U20 acts even before ARMED.\n'
-                     'S9.0: ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK); no +5V rail.\n'
-                     'MAIN indicates enabled/status, not precision regulation.')
-ROOT_OUTPUTS = ('OUTPUTS: +12 / -12 on J2 and J3 in parallel (pins 11/12 open)\nPublished prototype rating (S9.0): +12V 2.4 A, '
-                '-12V 0.8 A, <= 33 W together,\nfrom a 15 V / 3 A (>= 45 W) USB PD source; above 2 A per rail use both '
-                'headers.\nNo reverse blocking: never plug an unpowered module into a live bus.')
+ROOT_FAULT_POLICY = ('ONE-SHOT FAULT POLICY\nSTARTED retains the first start within each power epoch.\n'
+                     'Faults cannot restart it; full power reset CAN. Repeated source resets FAIL qualification.\n'
+                     'OV_N presets FAULT asynchronously. Crowbar vs eFuse deferred/open.')
+ROOT_OUTPUTS = ('+12V 2.4 A / -12V 0.8 A, <=33 W together (prototype, not measured).\n'
+                '13.5-16.5 V at module; 15 V / 3 A PD. Rack +12V <=0.44 mF, impedance bounds in calcs.\n'
+                'No reverse-current blocking; no powered parallel supply or unrestricted hotplug qualification.')
 
 
 def split(root_path, docs_dir, api):

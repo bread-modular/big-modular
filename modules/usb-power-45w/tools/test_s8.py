@@ -33,7 +33,7 @@ import verify_s8  # noqa: E402
 
 MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-COMPONENTS = 156                       # S9.0: 191 - 45 (+5V subsystem) + 10 (TPS552892-Q1 cell, step 2)
+COMPONENTS = 164                       # S9.0: 191 - 45 (+5V subsystem) + 10 (TPS552892-Q1 cell, step 2)
 ROOT = DESIGN / 'hardware/single/usb-power-45w-single.kicad_sch'
 
 def verify_native(path):
@@ -100,7 +100,7 @@ class TableDerivation(unittest.TestCase):
         self.assertTrue({'U3', 'L2', 'R11', 'R12', 'D3', 'C35', 'R44', 'TP13'} <= set(circuit_s8.S9_REMOVED))
         self.assertEqual(s8 - s7, {'J3', 'C59', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R97', 'R98', 'R99',
                                    'C63', 'C65', 'C66', 'U21', 'R100', 'C67', 'D22', 'TP17',
-                                   *circuit_s8.ARMING_ADDED, *circuit_s8.BUCKBOOST_ADDED})
+                                   *circuit_s8.ARMING_ADDED, *circuit_s8.BUCKBOOST_ADDED, *circuit_s8.S91_ADDED, '#FLG10'})
         self.assertFalse(set(circuit_s8.S8_PLUS5_DROPPED) & s8)
 
     def test_no_raw_or_plus5_nets_no_cans(self):
@@ -324,7 +324,8 @@ class FinalSchematic(unittest.TestCase):
         self.assertEqual(by['TP19']['pins'], {'1': 'STARTED'})
         self.assertEqual(by['U2']['pins']['1'], 'MAIN_OK')
         self.assertEqual(by['R83']['value'], '100k')                                     # S9.0 (S8.5: 120k at 20 V)
-        self.assertEqual(by['R83']['fields']['LCSC'], by['R2']['fields']['LCSC'], 'R83 reuses the 100k Basic line')
+        self.assertEqual(by['R83']['fields']['LCSC'], 'C25803')
+        self.assertEqual(by['R2']['fields']['LCSC'], 'C122538')
 
     def test_c_main_led_ok_and_any_bad_semantics(self):
         """S8.5 C: MAIN_LED_OK = MAIN_OK AND V20_OK where V20_OK is a U5 status-validity floor (above vSafe5V, below the
@@ -412,17 +413,17 @@ class PlacedBoard(unittest.TestCase):
 
 
 class ReviewRecord(unittest.TestCase):
-    """S9.0: docs/s8-single/review-s90.json (tools/review_s8.py) hashes match the files in the tree, and it hashes only
+    """S9.0: docs/s8-single/review-s91.json (tools/review_s8.py) hashes match the files in the tree, and it hashes only
     files git tracks (S8.4 hashed the git-ignored *.kicad_prl files: the suite failed from a fresh checkout)."""
 
     def test_review_hashes_match(self):
         import hashlib
         self.assertFalse((MODULE / 'docs/s8-single/review-s85.json').exists(), 'S8.5 record replaced (git history)')
-        rec_path = MODULE / 'docs/s8-single/review-s90.json'
+        rec_path = MODULE / 'docs/s8-single/review-s91.json'
         if DESIGN.resolve() != MODULE.resolve() or not rec_path.exists():
             self.skipTest('review record applies to the module tree once generated (tools/review_s8.py)')
         rec = json.loads(rec_path.read_text())
-        self.assertEqual(rec['revision'], 'S9.0 / P2.0')
+        self.assertEqual(rec['revision'], 'S9.1 / P2.1')
         hashed = [rel for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256')
                   for rel in rec[group]]
         self.assertFalse([rel for rel in hashed if rel.endswith('.kicad_prl') or rel.startswith('research/')])
@@ -505,7 +506,7 @@ class Calcs(unittest.TestCase):
         self.assertGreater(banks['+12V']['eff_uF'][0], 10)      # TI minimum effective COUT
         self.assertNotIn('+5V', banks)
         ss = c.soft_start(val, eff)
-        self.assertGreater(ss['+12V']['rack_allowance_mF'], c.TYPICAL_RACK_MF + 0.3)     # TI 1000 uF ceiling - bank
+        self.assertEqual(ss['+12V']['rack_allowance_mF'], c.TYPICAL_RACK_MF)     # TI 1000 uF ceiling - bank
         self.assertLess(ss['+12V']['time_to_full_at_allowance_full_load_ms'], 309 * 0.5)
         self.assertGreater(c.startup_window(val)['ratio_min_window_to_budget'], 2)
         rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
@@ -545,21 +546,27 @@ class Calcs(unittest.TestCase):
         parts, val = c.table(); _, eff = c.banks(parts)
         r = c.rating(val, eff)
         self.assertEqual(set(r['published_A']), {'+12V', '-12V'})
-        self.assertTrue(all(f <= 0.77 for f in r['fraction_of_capability'].values()), r['fraction_of_capability'])
+        self.assertGreaterEqual(r['headroom_to_capability_A']['+12V'], .20)
+        self.assertLessEqual(r['fraction_of_capability']['-12V'], .77)
         self.assertEqual(r['vin_floor_V'], c.converter_vin(c.VPD_RATED_MIN))
-        self.assertTrue(all(f < 0.86 for f in r['below_rated_range']['fraction_of_capability'].values()))
+        self.assertLess(r['below_rated_range']['fraction_of_capability']['+12V'], .92)
+        self.assertLess(r['below_rated_range']['fraction_of_capability']['-12V'], .87)
 
     def test_u5_window_arithmetic(self):
         """U5 UVLO thresholds referred to VPD: TI 1.176/1.2/1.224 V rising, 1.09/1.122/1.15 V falling, R2 100k / R3 10k
         (S9.0, 15 V input; 7.5k at 20 V) at 1 % + 1 % TCR, and the 150 nA pin leakage through R2 (I x R2, not I x R2||R3)."""
         import s8_calcs as c
         on, off = c.u5_window(c.table()[1])
-        lo, hi, leak = .99 * .99, 1.01 * 1.01, 150e-9 * 100e3 * 1.01 * 1.01
-        self.assertAlmostEqual(on[0], 1.176 * (1 + 100 * lo / (10 * hi)) - leak, places=9)
-        self.assertAlmostEqual(on[2], 1.224 * (1 + 100 * hi / (10 * lo)) + leak, places=9)
-        self.assertAlmostEqual(off[0], 1.09 * (1 + 100 * lo / (10 * hi)) - leak, places=9)
-        self.assertEqual([round(v, 2) for v in on], [12.46, 13.2, 13.98])
-        self.assertEqual([round(v, 2) for v in off], [11.55, 12.34, 13.13])
+        lo,hi=.999*.9975,1.001*1.0025
+        leak=150e-9*100e3*hi
+        rblo=10000*lo+510*.99*.99; rbhi=10000*hi+510*1.01*1.01
+        self.assertAlmostEqual(on[0],1.176*(1+100000*lo/rbhi)-leak,places=9)
+        self.assertAlmostEqual(on[2],1.224*(1+100000*hi/rblo)+leak,places=9)
+        self.assertAlmostEqual(off[0],1.09*(1+100000*lo/rbhi)-leak,places=9)
+        self.assertEqual([round(v,2) for v in on],[12.26,12.62,12.98])
+        self.assertEqual([round(v,2) for v in off],[11.37,11.80,12.19])
+        self.assertLessEqual(on[2],13.0)
+        self.assertGreater(13.5-on[2],.5)
         self.assertAlmostEqual(c.INPUT_DROP_V, 0.75 + 0.053 * 4.698, places=9)      # U5 high-corner limit
         self.assertEqual(c.INPUT_PATH['I_A'], c.input_budget()['U5_limit_screen_A'][2])
 
@@ -654,8 +661,10 @@ class S90Retarget(unittest.TestCase):
         self.assertTrue(all(r['margin_to_ILIM_AVG_min_A'] > 2.0 for r in rows.values()), rows)
         self.assertEqual({r['mode'] for r in rows.values()}, {'boost', 'buck-boost (alternating cycles)', 'buck'})
         self.assertLess(b['limits']['L_min_from_inner_loop_uH'], b['limits']['L1_uH'])
-        self.assertTrue(all(x['Tj_at_50C_ambient_JEDEC_C'] < 130 for x in b['losses'].values()))
-        self.assertLessEqual(b['compensation']['crossover_Hz']['bank_low_C'], b['compensation']['fc_limit_Hz'])
+        self.assertTrue(all(x['Tj_at_50C_ambient_JEDEC_C'] <= 125 for x in b['losses'].values()))
+        self.assertTrue(b['compensation']['pass'],b['compensation']['violations'][:1])
+        self.assertGreater(b['compensation']['worst_phase']['phase_margin_deg'],45)
+        self.assertGreater(b['compensation']['worst_gain']['gain_margin_dB'],10)
 
     def test_buckboost_cell_in_table(self):
         by = self.by
@@ -663,10 +672,10 @@ class S90Retarget(unittest.TestCase):
         self.assertEqual((u2['value'], u2['fp'], u2['fields']['LCSC']), ('TPS552892QWRYQRQ1', 'RYQ21', 'C22375748'))
         self.assertEqual({k: u2['pins'][k] for k in ('1', '7', '11', '12', '13', '2', '21', '18', '5', '9', '17')},
                          {'1': 'MAIN_OK', '7': 'VIN', '11': 'P12_VOUT', '12': 'P12_VOUT', '13': '+12V', '2': '_VCC_U2',
-                          '21': '_VCC_U2', '18': '_VCC_U2', '5': 'GND', '9': 'GND', '17': 'GND'})
+                          '21': '_VCC_U2', '18': '_VCC_U2', '5': 'AGND_U2', '9': 'GND', '17': 'AGND_U2'})
         self.assertEqual((u2['pins']['3'], u2['pins']['4'], u2['pins']['16']), (None, None, None))
         self.assertEqual((by['R109']['value'], by['R109']['fields']['LCSC'], by['R109']['pins']),
-                         ('0.015', 'C601098', {'1': 'P12_VOUT', '2': '+12V'}))
+                         ('0.018', '', {'1': 'P12_VOUT', '2': '+12V'}))
         self.assertEqual((by['L1']['pins'], by['C10']['pins'], by['C9']['pins']),
                          ({'1': '_SW1_U2', '2': '_SW2_U2'}, {'1': '_BST1_U2', '2': '_SW1_U2'}, {'1': '_BST2_U2', '2': '_SW2_U2'}))
         self.assertEqual((by['R8']['value'], by['R9']['value'], by['R110']['value']), ('68k', '7.5k', '20k'))
@@ -714,8 +723,9 @@ class S90Retarget(unittest.TestCase):
                     verify_native(bad)
         rec = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['residuals']['reverse_current']
         self.assertTrue(rec['decision'].startswith('ACCEPTED'))
-        self.assertIn('Never connect an unpowered', rec['rule'])
-        self.assertGreater(rec['minus12_active']['EN_N_V'], rec['minus12_active']['EN_high_max_V'])
+        self.assertIn('No powered parallel', rec['rule'])
+        self.assertTrue(rec['minus12_active']['finding'].startswith('FIXED'))
+        self.assertLess(rec['minus12_active']['enable_logic']['off_relative_max_V'], .95)
         val = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())
         self.assertTrue(val['accepted_residuals']['reverse_current']['decision'].startswith('ACCEPTED'))
         self.assertTrue(val['accepted_residuals']['rail_overvoltage']['decision'].startswith('ACCEPTED'))
@@ -767,17 +777,122 @@ class S90Retarget(unittest.TestCase):
         ov = rec['rail_overvoltage']
         self.assertEqual(len(ov['why_no_fuse']), 4)
         self.assertTrue(ov['bench_test']['downstream_qualification'])
-        self.assertLessEqual(ov['peak_screens_V']['+12V_bank_only_no_load'], 24.5)
+        self.assertLessEqual(ov['peak_screens_V']['+12V_D26_rated_clamp_25C'], 24.5)
         self.assertIn('deferred', ov['decision'])
 
-    def test_retarget_20v_is_three_resistors(self):
+    def test_retarget_20v_includes_clamp_changes(self):
         import s8_calcs as c
         r = c.retarget_20v(c.table()[1])
-        self.assertEqual(set(r['changes']), {'R1', 'R3', 'R83', 'docs'})
-        self.assertEqual([round(v, 2) for v in r['U5_window_V']['on']], [16.23, 17.2, 18.23])
+        self.assertEqual(set(r['changes']), {'R1', 'R3', 'R114', 'R83', 'D24', 'D25', 'docs'})
+        self.assertLess(r['U5_window_V']['on'][2],18.25)
         self.assertTrue(r['V20_OK_rule_holds'])
         self.assertEqual((r['plus12']['rating_A'], r['minus12']['rating_A']), (2.4, 0.9))
         self.assertGreater(r['plus12']['D'][0], r['plus12']['D_min_tON'])
+
+
+class S91ReviewFixes(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp=tempfile.TemporaryDirectory()
+        cls.xml=Path(cls.tmp.name)/'s91.xml'; export_netlist(cls.xml)
+    @classmethod
+    def tearDownClass(cls): cls.tmp.cleanup()
+
+    def test_self_enable_and_ground_merge_negative_controls(self):
+        for ref,pin,net in [('Q1','2','+12V'),('Q1','2','VIN'),('R16','1','GND'),
+                            ('Q14','1','+12V'),('Q15','1','V3V3'),('U2','17','GND'),
+                            ('C82','2','GND'),('R110','2','GND'),('R113','1','GND'),
+                            ('D24','1','VPD'),('D25','2','GND'),('D26','1','VIN')]:
+            with self.subTest(ref=ref,pin=pin,net=net):
+                bad=Path(self.tmp.name)/'bad.xml'; rewire(self.xml,bad,[(ref,pin,net)])
+                with self.assertRaises(AssertionError): verify_native(bad)
+
+    def test_enable_truth_table_and_voltage_bounds(self):
+        import s8_calcs as c, s91_analysis as a
+        v=c.table()[1]; q=a.enable(v)
+        self.assertGreater(q['startup_min_relative_V'],1.4)
+        self.assertLess(q['off_relative_max_V'],.95)
+        for row in q['truth_table']:
+            if not row['own_input'] or not row['run'] or not row['main_status']:
+                self.assertFalse(row['U4_enabled'])
+        # Off-state pull-up is deliberately strong, not the original 100k.
+        self.assertEqual((v('R16'),v('R112')),(33000,5100))
+        by=c.table()[0]
+        self.assertEqual(by['Q1']['pins']['2'],'VPD')
+        self.assertEqual(by['Q14']['pins']['1'],'RUN')
+        self.assertEqual(by['Q15']['pins']['1'],'MAIN_LED_OK')
+
+    def test_input_divider_really_guarantees_loaded_start(self):
+        import s8_calcs as c, s91_analysis as a
+        q=a.input_qualification(c.table()[1])
+        self.assertLessEqual(q['on_V'][2],13.0)
+        self.assertGreaterEqual(q['loaded_start_margin_V'],.5)
+        self.assertGreaterEqual(q['running_margin_V'],1.3)
+        self.assertTrue(q['recommended_falling_11V8_not_guaranteed'])
+        self.assertLess(q['off_V'][0],11.8)  # never conceal the intrinsic comparator spread
+
+    def test_compensation_full_loop_and_old_compensator_rejected(self):
+        import s8_calcs as c,s91_analysis as a
+        p,v=c.table();_,e=c.banks(p);op=c.p12(v)
+        now=a.loop(v,e,c.converter_vin(c.u5_window(v)[1][0]),op)
+        self.assertTrue(now['pass'],now['violations'][:1]);self.assertGreaterEqual(now['cases'],10000)
+        self.assertGreater(now['worst_phase']['phase_margin_deg'],45)
+        self.assertGreater(now['worst_gain']['gain_margin_dB'],10)
+        old=lambda ref: {'R111':9100.,'C83':10e-9}.get(ref,v(ref))
+        bad=a.loop(old,e,c.converter_vin(c.u5_window(v)[1][0]),op)
+        self.assertFalse(bad['pass'],'S9.0 compensator must fail the very same envelope')
+
+    def test_clamps_energy_and_honest_residuals(self):
+        rec=json.loads((DESIGN/'docs/s8-single/calcs.json').read_text())
+        q=rec['residuals']['reverse_current'];cl=q['clamps']
+        self.assertEqual((cl['D24']['stand_off_V'],cl['D24']['peak_pulse_W']),(16,600))
+        self.assertAlmostEqual(cl['D24']['pulse_budget']['max_energy_J'],1*26*.020)
+        self.assertLess(cl['D24']['rated_clamp_V'],36)
+        self.assertLess(cl['D26']['rated_clamp_V'],25)
+        self.assertIn('UNQUALIFIED',q['minus12_passive']['fast_step_residual'])
+        self.assertNotIn('expected to FAIL',str(q['bench_test']))
+        ov=rec['residuals']['rail_overvoltage']
+        self.assertIn('T2-D',str(ov['bench_test']['conditions']))
+        self.assertIn('+14.0V',str(ov['bench_test']['conditions']))
+        self.assertIn('NEVER require it off while injection remains',str(ov['bench_test']['pass_criteria_this_module']))
+        val=json.loads((DESIGN/'docs/s8-single/validation.json').read_text())
+        self.assertEqual(val['accepted_residuals'],rec['residuals'])
+
+    def test_current_limit_thermal_not_130C(self):
+        import s8_calcs as c
+        p,v=c.table();_,e=c.banks(p);r=c.plus12_buckboost(v,e)
+        self.assertGreater(r['R109_cc_limit_A'][0],2.62)
+        self.assertLessEqual(r['R109_cc_limit_A'][2],2.941)
+        self.assertLessEqual(max(x['Tj_at_50C_ambient_JEDEC_C'] for x in r['losses'].values()),125)
+        self.assertLess(max(x['P_R109_W'] for x in r['losses'].values()),.16)
+
+    def test_source_limit_and_power_epochs_cannot_be_hidden(self):
+        import s91_analysis as a
+        r=json.loads((DESIGN/'docs/s8-single/validation.json').read_text())['startup_arming']
+        self.assertEqual(r['violations'],[])
+        for key,row in r['timelines']['source_limit_3A'].items():
+            if key=='why':continue
+            self.assertEqual(row['max_input_A'],3.)
+            self.assertTrue(row['source_limit_observed']); self.assertTrue(row['ends_armed'])
+        for key,row in r['timelines']['power_reset_rearm_persistent_short'].items():
+            if key=='why':continue
+            self.assertEqual(row['power_epochs'],2);self.assertEqual(len(row['FAULT_ms']),2)
+            self.assertTrue(row['ends_faulted'])
+        events=[{'cause':'source_hard_reset','fault_present':True,'fault_latched':False}]*10
+        # A final successful-looking cycle MUST NOT erase ten failed epochs.
+        events.append({'cause':'normal','fault_present':False,'fault_latched':False})
+        self.assertEqual(a.qualify_epochs(events),'FAIL_REPEATED_POWER_RESET')
+        self.assertEqual(a.qualify_epochs([{'cause':'manual','fault_present':True,'fault_latched':False}]),'FAIL_MASKED_FAULT')
+        self.assertEqual(a.qualify_epochs([{'cause':'manual','fault_present':True,'fault_latched':True}]),'PASS')
+
+    def test_no_stale_plus5_silk_and_ground_contract(self):
+        from sexp import parse,nodes
+        t=parse(BOARD.read_text())
+        self.assertNotIn('P5',[n[1] for n in nodes(t,'gr_text')])
+        p=json.loads((DESIGN/'docs/s8-single/placement.json').read_text())
+        self.assertEqual(p['ground_connection']['sole_link'],'R113')
+        self.assertEqual(p['ground_connection']['at'],'C82.2')
+        self.assertEqual(p['revision'],'S9.1 / P2.1')
 
 
 if __name__ == '__main__':

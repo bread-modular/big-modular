@@ -133,7 +133,7 @@ def seed_board(root=MODULE):
         x1, y1, y2 = pcbnew.ToMM(hp['1'].x), pcbnew.ToMM(hp['1'].y), pcbnew.ToMM(hp['2'].y)
         # pin-1 / red-stripe marking on the rear side of the box (the header strip parts sit in front of it)
         text(board, pcbnew.F_SilkS, '1 / -12V / RED', V(x1 - 0.9, y1 - 4.8), 0.8, justify=pcbnew.GR_TEXT_H_ALIGN_RIGHT)
-        for i, lab in enumerate(['N12', 'GND', 'GND', 'GND', 'P12', 'P5', 'NC', 'NC']):
+        for i, lab in enumerate(['N12', 'GND', 'GND', 'GND', 'P12', 'NC', 'NC', 'NC']):
             text(board, pcbnew.B_SilkS, lab, V(x1 - 2.54 * i, y2 + 2.16), 0.8, mirror=True)
     y0, y1 = G['carrier_Y_mm']
     z = G['depth_target']['limit_from_panel_front_mm']

@@ -1,30 +1,29 @@
 {
  "added_refs": [
-  "C77",
-  "C78",
-  "C79",
-  "C80",
-  "C81",
-  "C82",
-  "C83",
-  "R109",
-  "R110",
-  "R111"
+  "D24",
+  "D25",
+  "D26",
+  "Q14",
+  "Q15",
+  "R112",
+  "R113",
+  "R114"
  ],
+ "ground_connection": {
+  "analog_net": "AGND_U2",
+  "at": "C82.2",
+  "link_pad_1": "AGND_U2",
+  "link_pad_2": "GND",
+  "maximum_link_to_C82_pad_mm": 3.0,
+  "power_net": "GND",
+  "routing": "Quiet AGND island: U2.17/.5, R9.2, R110.2, C83.2, C82.2. No plane/via bridge except R113 at C82; 3-4 GND vias there.",
+  "sole_link": "R113"
+ },
  "moved_retained_refs": [
-  "C10",
-  "C11",
-  "C12",
-  "C13",
-  "C14",
-  "C6",
-  "C7",
-  "C8",
-  "C9",
-  "R8",
-  "R9"
+  "C33",
+  "C82"
  ],
- "note": "S9.0 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
+ "note": "S9.1 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
  "pad_mask_refreshed_from_library": {},
  "parts": {
   "C1": [
@@ -131,8 +130,8 @@
   ],
   "C33": [
    122.3,
-   72.1,
-   0.0,
+   91.5,
+   90.0,
    "F.Cu"
   ],
   "C34": [
@@ -317,7 +316,7 @@
   ],
   "C82": [
    102.7,
-   72.0,
+   72.3,
    0.0,
    "F.Cu"
   ],
@@ -367,6 +366,24 @@
    86.45,
    69.4,
    180.0,
+   "F.Cu"
+  ],
+  "D24": [
+   102.8,
+   85.5,
+   0.0,
+   "F.Cu"
+  ],
+  "D25": [
+   96.9,
+   85.5,
+   0.0,
+   "F.Cu"
+  ],
+  "D26": [
+   120.4,
+   70.8,
+   90.0,
    "F.Cu"
   ],
   "D4": [
@@ -435,6 +452,18 @@
    0.0,
    "F.Cu"
   ],
+  "Q14": [
+   129.2,
+   97.0,
+   0.0,
+   "F.Cu"
+  ],
+  "Q15": [
+   124.5,
+   97.0,
+   0.0,
+   "F.Cu"
+  ],
   "Q2": [
    76.2,
    80.65,
@@ -480,6 +509,24 @@
   "R111": [
    105.95,
    71.95,
+   90.0,
+   "F.Cu"
+  ],
+  "R112": [
+   122.6,
+   87.4,
+   0.0,
+   "F.Cu"
+  ],
+  "R113": [
+   103.4,
+   70.35,
+   180.0,
+   "F.Cu"
+  ],
+  "R114": [
+   63.0,
+   90.3,
    90.0,
    "F.Cu"
   ],
@@ -966,9 +1013,10 @@
  },
  "removed_refs": [],
  "replaced_footprints": {
-  "U2": [
-   "USBPOWER45:SOT-583-8",
-   "USBPOWER45:TI_RYQ0021B_VQFN-HR-21_3x5mm"
+  "R109": [
+   "USBPOWER45:R_1206_3216Metric",
+   "USBPOWER45:R_WSLP1206_18m_Kelvin"
   ]
- }
+ },
+ "revision": "S9.1 / P2.1"
 }

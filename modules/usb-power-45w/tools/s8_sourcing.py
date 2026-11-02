@@ -59,16 +59,11 @@ def lookup(code, cache):
 # S8.4 (review M8): Basic-only passive policy decision for the 0.1 % thin-film dividers. Numbers: calcs.json
 # basic_only_counterfactual (what the threshold screens become with 1 % Basic parts).
 PRECISION_POLICY = {
-    'decision': 'ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other '
-                'passive stays Basic. Not an order approval.',
-    'refs': ['R93', 'R94', 'R98', 'R99'],
-    'why': 'They set protection thresholds: the U20 overvoltage guard bands (+12V R93/R94, -12V R98/R99). With 1 % + 1 % '
-           'TCR Basic parts the -12V guard minimum falls below the stacked converter peak (calcs.json '
-           'basic_only_counterfactual). The searched JLC catalog has no Basic 0.1 % 0603 resistor (S8.4 keyword '
-           'snapshots; every hit Extended). S9.0: the +5V precision parts (R95/R96, R101/R102, R11/R12) left with +5V.',
-    'cost': 'Extended per-unique-part fees apply to the precision codes (not included in the q1 parts totals); all '
-            'selected codes were observed Economic-eligible.',
-    'not_done': 'No Basic substitute was qualified; replacing them with 1 % parts would need a new threshold design.'}
+    'decision':'S9.1 electrical exceptions: precision UVLO R2/R3 and guard R93/R94/R98/R99; R109 18mR power shunt explicitly NOT assumed Basic. Other R/C target Basic. New live PCBA eligibility is UNKNOWN; not an order approval.',
+    'refs':['R2','R3','R93','R94','R98','R99','R109'],
+    'why':'Precision UVLO gives worst start <13V; precision guard preserves margins; 18mR shunt corrects overload thermal. Manufacturer-verified R109 has no verified C-code, procurement gate OPEN.',
+    'cost':'Partial dated subtotal only. Missing prices, Extended fees, manual parts and new-code eligibility are excluded, never assumed zero cost.',
+    'not_done':'Public live catalog access failed (DNS); no fabricated stock, price, Basic or Economic claims for new codes.'}
 
 
 def main():
@@ -121,12 +116,14 @@ def main():
         note += (' Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities '
                  'and totals recomputed for the current S8 table. This is not a full live re-audit.')
     if a.extra_snapshot:
-        note += (' S8.4: rows of new codes come from the live selected-part evidence ' +
+        note += (' New-code rows are from selected-part evidence (inspect mode and failures; not all live) ' +
                  ', '.join(str(x.name) for x in a.extra_snapshot) + '.')
     out = {'note': note,
            'codes': rows,
            'summary': {'S8_codes': len(use8), 'S7_codes': len(use7),
                        'S8_placements': sum(use8.values()), 'S7_placements': sum(use7.values()),
+                       'S8_price_is_partial': True,
+                       'S8_unpriced_codes': sorted(c for c,r in rows.items() if r.get('qty_S8') and r.get('unit_price_q1_usd') is None),
                        'S8_parts_usd_q1': total('S8'), 'S7_parts_usd_q1': total('S7'),
                        'S8_non_basic_codes': ext('S8'), 'S7_non_basic_codes': ext('S7'),
                        'manual_parts_no_LCSC': manual,

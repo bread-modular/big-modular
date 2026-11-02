@@ -1,0 +1,139 @@
+{
+  "note": "S9.1 selected parts: web identity/manufacturer data only. Shared strict-live catalog attempt failed DNS; classification, Economic eligibility, stock and prices UNKNOWN for new codes. No invented evidence or clean sourcing pass.",
+  "codes": {
+    "C122538": {
+      "code": "C122538",
+      "mpn": "RT0603BRD07100KL",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brd07100kl_C122538.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "R2"
+      ]
+    },
+    "C23193": {
+      "code": "C23193",
+      "mpn": "0603WAF5100T5E",
+      "manufacturer": "UNI-ROYAL",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount-UniOhm_510R-5100-1_C23193.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "R114"
+      ]
+    },
+    "C21189": {
+      "code": "C21189",
+      "mpn": "0603WAF0000T5E",
+      "manufacturer": "UNI-ROYAL",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_Uniroyal-Elec-0603WAF0000T5E_C21189.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "R113"
+      ]
+    },
+    "C151254": {
+      "code": "C151254",
+      "mpn": "SMBJ16A",
+      "manufacturer": "Littelfuse",
+      "package": "SMB",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/TVS_Littelfuse_SMBJ16A_SMBJ16A_C151254.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "D24"
+      ]
+    },
+    "C23186": {
+      "code": "C23186",
+      "mpn": "0603WAF6801T5E",
+      "manufacturer": "UNI-ROYAL",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "existing circuit library identity only; no live sourcing verification"
+      },
+      "failures": [
+        "Fresh classification, eligibility, stock and price unknown"
+      ],
+      "refs_S8": [
+        "R111"
+      ]
+    }
+  },
+  "basic_only_policy": {
+    "decision": "S9.1 electrical exceptions: precision UVLO R2/R3 and guard R93/R94/R98/R99; R109 18mR power shunt explicitly NOT assumed Basic. Other R/C target Basic. New live PCBA eligibility is UNKNOWN; not an order approval.",
+    "refs": [
+      "R2",
+      "R3",
+      "R93",
+      "R94",
+      "R98",
+      "R99",
+      "R109"
+    ],
+    "why": "Precision UVLO gives worst start <13V; precision guard preserves margins; 18mR shunt corrects overload thermal. Manufacturer-verified R109 has no verified C-code, procurement gate OPEN.",
+    "cost": "Partial dated subtotal only. Missing prices, Extended fees, manual parts and new-code eligibility are excluded, never assumed zero cost.",
+    "not_done": "Public live catalog access failed (DNS); no fabricated stock, price, Basic or Economic claims for new codes."
+  },
+  "failures": [
+    "Live JLC catalog unavailable: DNS failure; new-code service/stock/price audit open",
+    "R109/D26 C-code procurement unverified"
+  ],
+  "non_catalog_parts": {
+    "R109": {
+      "mpn": "WSLP1206R0180FEA",
+      "source": "https://www.vishay.com/docs/30122/wslp.pdf",
+      "rating": "18mR 1% 75ppm 1W at70C; manufacturer recommended pads pinned in s90_parts.py",
+      "classification": null,
+      "economy_eligible": null
+    },
+    "D26": {
+      "mpn": "SMBJ14A",
+      "source": "https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e",
+      "rating": "14V stand-off,15.6-17.2V breakdown,23.2V at25.9A,600W10/1000us",
+      "classification": null,
+      "economy_eligible": null
+    }
+  }
+}

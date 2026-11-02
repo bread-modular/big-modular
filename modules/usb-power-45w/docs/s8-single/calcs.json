@@ -1,5 +1,5 @@
 {
-  "status": "S9.0 pre-calculation screen, not a closed-loop or bench qualification",
+  "status": "S9.1 pre-calculation screen, not a closed-loop or bench qualification",
   "sources": {
     "TPS62933F": "TI SLUSEA4D (https://www.ti.com/lit/ds/symlink/tps62933f.pdf): IHS_LIMIT 4.2/5/5.8 A, ILS_LIMIT 2.9/3.8/4.5 A, ISS 4.5/5.5/6.5 uA, tSS = CSS x 0.8 V / ISS, OVP 112/115/118 %, UVP 65 % + 256 us then hiccup 10.5 x tSS, VFB 784-816 mV (-40..150 C), Table 10-2 effective COUT, Eq. 21",
     "LMR38020": "TI SNVSC40E (https://www.ti.com/lit/ds/symlink/lmr38020.pdf): IHS 2.6/3.2/3.8 A, ILS 1.8/2.3/2.8 A, tSS 4 ms, OCP blanking 18 ms typ at power-up, hiccup 76 ms, COUT <= ~10 x design value or 1000 uF",
@@ -264,20 +264,20 @@
     },
     "+12V_from_R109_limit_max": {
       "N=2": [
-        0.11,
-        0.278
+        0.087,
+        0.219
       ],
       "N=8": [
-        0.359,
-        0.91
+        0.294,
+        0.745
       ],
       "N=16": [
-        0.691,
-        1.751
+        0.571,
+        1.447
       ],
-      "rack-side release N=8": 0.272,
+      "rack-side release N=8": 0.226,
       "vo_hi_V": 12.649,
-      "i_release_A": 3.528,
+      "i_release_A": 2.94,
       "fsw_kHz": 869.6
     },
     "-12V": {
@@ -308,18 +308,18 @@
         5.0
       ],
       "cc_limit_A": [
-        3.145,
-        3.333,
-        3.528
+        2.621,
+        2.778,
+        2.94
       ],
       "tracks_reference_up_to_mF": {
-        "full_load": 0.147,
-        "no_load": 0.622
+        "full_load": 0.044,
+        "no_load": 0.518
       },
       "onboard_bank_high_mF": 0.097,
-      "rack_allowance_mF": 0.903,
-      "allowance_basis": "TI effective COUT ceiling 1000 uF (SLVSGT7 6.3) minus the onboard bank high corner; above the tracking limit the rail charges at the R109 limit (no hiccup)",
-      "time_to_full_at_allowance_full_load_ms": 17.0,
+      "rack_allowance_mF": 0.44,
+      "allowance_basis": "S9.1 restricted to 0.44mF external, within the complex-loop impedance envelope; startup on 3A source remains a qualification test, not proven by CC alone",
+      "time_to_full_at_allowance_full_load_ms": 30.8,
       "hiccup": "only if VOUT < 0.8 V with the average inductor limit for 2 ms after tSS: a short circuit, not a capacitive start (R109 holds IL near IOUT)"
     },
     "-12V": {
@@ -358,8 +358,8 @@
       ],
       "converter_OVP_note": "TPS552892-Q1 VOVP is absolute (22.5-24.5 V), not relative to the 12 V setpoint: it is not a 12 V protection; the U20 guard is",
       "sensitivity_release_from_R109_limit_max": {
-        "peak_V": 14.4,
-        "margin_to_guard_min_V": 0.08,
+        "peak_V": 14.096,
+        "margin_to_guard_min_V": 0.384,
         "note": "an overload at the R109 limit being released (N=16, low C): a negative margin means a possible nuisance latch-off (fail-safe), not a hazard"
       }
     },
@@ -457,10 +457,10 @@
   "comparator_supply": {
     "supply": "VPD before U5, after F1; D1 transient clamp",
     "logic_pullups": "V3V3 only",
-    "qualified_VPD_min_screen_V": 11.55,
-    "common_mode_full_temp_upper_V": 9.55,
+    "qualified_VPD_min_screen_V": 11.37,
+    "common_mode_full_temp_upper_V": 9.37,
     "REF_OV_plus_offset_max_V": 1.2645,
-    "input_headroom_V": 8.286,
+    "input_headroom_V": 8.105,
     "offset_spec_supply_min_V": 5,
     "operating_max_V": 36,
     "absolute_max_V": 38,
@@ -508,53 +508,53 @@
     "v40_V": 4.796,
     "onboard_bank_high_mF": 0.085,
     "cases": {
-      "VIN10.55_I0.8A_blank18ms": {
-        "total_C_max_mF": 2.705,
-        "rack_allowance_mF": 2.621,
-        "time_to_full_12V_at_that_C_ms": 86.2,
-        "io_at_12V_A": 0.953
+      "VIN10.37_I0.8A_blank18ms": {
+        "total_C_max_mF": 2.684,
+        "rack_allowance_mF": 2.599,
+        "time_to_full_12V_at_that_C_ms": 88.4,
+        "io_at_12V_A": 0.944
       },
-      "VIN10.55_I0.8A_blank9ms": {
-        "total_C_max_mF": 1.353,
-        "rack_allowance_mF": 1.268,
-        "time_to_full_12V_at_that_C_ms": 43.1,
-        "io_at_12V_A": 0.953
+      "VIN10.37_I0.8A_blank9ms": {
+        "total_C_max_mF": 1.342,
+        "rack_allowance_mF": 1.257,
+        "time_to_full_12V_at_that_C_ms": 44.2,
+        "io_at_12V_A": 0.944
       },
-      "VIN10.55_I0.9A_blank18ms": {
-        "total_C_max_mF": 2.316,
-        "rack_allowance_mF": 2.231,
-        "time_to_full_12V_at_that_C_ms": 120.3,
-        "io_at_12V_A": 0.953
+      "VIN10.37_I0.9A_blank18ms": {
+        "total_C_max_mF": 2.294,
+        "rack_allowance_mF": 2.209,
+        "time_to_full_12V_at_that_C_ms": 128.7,
+        "io_at_12V_A": 0.944
       },
-      "VIN10.55_I0.9A_blank9ms": {
-        "total_C_max_mF": 1.158,
-        "rack_allowance_mF": 1.073,
-        "time_to_full_12V_at_that_C_ms": 60.1,
-        "io_at_12V_A": 0.953
+      "VIN10.37_I0.9A_blank9ms": {
+        "total_C_max_mF": 1.147,
+        "rack_allowance_mF": 1.062,
+        "time_to_full_12V_at_that_C_ms": 64.3,
+        "io_at_12V_A": 0.944
       },
-      "VIN11.46_I0.8A_blank18ms": {
-        "total_C_max_mF": 2.803,
-        "rack_allowance_mF": 2.719,
-        "time_to_full_12V_at_that_C_ms": 78.1,
-        "io_at_12V_A": 1.001
+      "VIN11.26_I0.8A_blank18ms": {
+        "total_C_max_mF": 2.783,
+        "rack_allowance_mF": 2.698,
+        "time_to_full_12V_at_that_C_ms": 79.6,
+        "io_at_12V_A": 0.99
       },
-      "VIN11.46_I0.8A_blank9ms": {
-        "total_C_max_mF": 1.402,
-        "rack_allowance_mF": 1.317,
-        "time_to_full_12V_at_that_C_ms": 39.1,
-        "io_at_12V_A": 1.001
+      "VIN11.26_I0.8A_blank9ms": {
+        "total_C_max_mF": 1.391,
+        "rack_allowance_mF": 1.307,
+        "time_to_full_12V_at_that_C_ms": 39.8,
+        "io_at_12V_A": 0.99
       },
-      "VIN11.46_I0.9A_blank18ms": {
-        "total_C_max_mF": 2.417,
-        "rack_allowance_mF": 2.332,
-        "time_to_full_12V_at_that_C_ms": 96.3,
-        "io_at_12V_A": 1.001
+      "VIN11.26_I0.9A_blank18ms": {
+        "total_C_max_mF": 2.396,
+        "rack_allowance_mF": 2.311,
+        "time_to_full_12V_at_that_C_ms": 100.1,
+        "io_at_12V_A": 0.99
       },
-      "VIN11.46_I0.9A_blank9ms": {
-        "total_C_max_mF": 1.208,
-        "rack_allowance_mF": 1.124,
-        "time_to_full_12V_at_that_C_ms": 48.2,
-        "io_at_12V_A": 1.001
+      "VIN11.26_I0.9A_blank9ms": {
+        "total_C_max_mF": 1.198,
+        "rack_allowance_mF": 1.113,
+        "time_to_full_12V_at_that_C_ms": 50.0,
+        "io_at_12V_A": 0.99
       },
       "VIN12.5_I0.8A_blank18ms": {
         "total_C_max_mF": 2.9,
@@ -605,18 +605,18 @@
         "io_at_12V_A": 1.116
       }
     },
-    "vin_floor_V": 11.46,
-    "vin_floor_basis": "converter VIN at the U5 turn-on minimum (VPD 12.46 V) minus the 1.00 V D10 + U5 drop: the converters cannot start below it",
-    "vin_sag_sensitivity_V": 10.55,
-    "vin_sag_basis": "converter VIN at the U5 turn-off minimum (VPD 11.55 V): a source sagging during start-up can hold the converters this low",
+    "vin_floor_V": 11.26,
+    "vin_floor_basis": "converter VIN at the U5 turn-on minimum (VPD 12.26 V) minus the 1.00 V D10 + U5 drop: the converters cannot start below it",
+    "vin_sag_sensitivity_V": 10.37,
+    "vin_sag_basis": "converter VIN at the U5 turn-off minimum (VPD 11.37 V): a source sagging during start-up can hold the converters this low",
     "input_path": {
       "D10_V": 0.75,
       "U5_RON_max_ohm": 0.053,
       "I_A": 4.698,
       "basis": "R2 senses VPD before D10; converter VIN = VPD - D10 (0.75 V S5 screen at 5 A) - U5 RON max (53 mOhm, S5) x its 4.698 A high-corner current limit (input_budget U5_limit_screen_A): no steady input current can exceed the actual U5 limit, so this is a conservative drop, not a typical one. S9.0: unchanged (12.5 V converter input at the 13.5 V rated minimum)"
     },
-    "hiccup_model_allowance_mF": 1.317,
-    "hiccup_model_basis": "VIN11.46_I0.8A_blank9ms: converter VIN at the U5 turn-on minimum, the published 0.8 A from 0 V, half the typical-only 18 ms blanking (TI gives no minimum)",
+    "hiccup_model_allowance_mF": 1.307,
+    "hiccup_model_basis": "VIN11.26_I0.8A_blank9ms: converter VIN at the U5 turn-on minimum, the published 0.8 A from 0 V, half the typical-only 18 ms blanking (TI gives no minimum)",
     "TI_COUT_guidance": {
       "design_value_mF": 0.154,
       "total_limit_mF": 1.0,
@@ -653,49 +653,49 @@
       "verdict": "out of regulation: needs VPD >= 14.42 V at 2.5 A and the setpoint maximum, above the 14.25 V unloaded minimum of a compliant 15 V source; it fails even at 0 A (1.033 > 0.98), so neither a lower +12V current nor a higher minimum input inside the USB PD tolerance can fix it"
     },
     "TPS552892_operation": {
-      "VIN10.55_I2.40A": {
+      "VIN10.37_I2.40A": {
         "mode": "boost",
         "buck_duty_at_setpoint_min": 1.0,
-        "boost_duty_at_setpoint_max": 0.177,
-        "IL_avg_A": 3.197,
-        "ripple_pp_A": 0.296,
-        "IL_peak_A": 3.345,
-        "margin_to_ILIM_AVG_min_A": 3.655,
+        "boost_duty_at_setpoint_max": 0.191,
+        "IL_avg_A": 3.253,
+        "ripple_pp_A": 0.316,
+        "IL_peak_A": 3.411,
+        "margin_to_ILIM_AVG_min_A": 3.589,
         "regulates": true
       },
-      "VIN10.55_I3.53A": {
+      "VIN10.37_I2.94A": {
         "mode": "boost",
         "buck_duty_at_setpoint_min": 1.0,
-        "boost_duty_at_setpoint_max": 0.182,
-        "IL_avg_A": 4.7,
-        "ripple_pp_A": 0.296,
-        "IL_peak_A": 4.848,
-        "margin_to_ILIM_AVG_min_A": 2.152,
+        "boost_duty_at_setpoint_max": 0.194,
+        "IL_avg_A": 3.985,
+        "ripple_pp_A": 0.316,
+        "IL_peak_A": 4.143,
+        "margin_to_ILIM_AVG_min_A": 2.857,
         "regulates": true
       },
       "VIN12.5_I2.40A": {
         "mode": "buck-boost (alternating cycles)",
         "buck_duty_at_setpoint_min": 0.935,
-        "boost_duty_at_setpoint_max": 0.023,
+        "boost_duty_at_setpoint_max": 0.024,
         "IL_avg_A": 2.699,
         "ripple_pp_A": 0.025,
         "IL_peak_A": 2.711,
         "margin_to_ILIM_AVG_min_A": 4.289,
         "regulates": true
       },
-      "VIN12.5_I3.53A": {
+      "VIN12.5_I2.94A": {
         "mode": "buck-boost (alternating cycles)",
-        "buck_duty_at_setpoint_min": 0.94,
-        "boost_duty_at_setpoint_max": 0.029,
-        "IL_avg_A": 3.967,
+        "buck_duty_at_setpoint_min": 0.938,
+        "boost_duty_at_setpoint_max": 0.027,
+        "IL_avg_A": 3.306,
         "ripple_pp_A": 0.025,
-        "IL_peak_A": 3.979,
-        "margin_to_ILIM_AVG_min_A": 3.021,
+        "IL_peak_A": 3.318,
+        "margin_to_ILIM_AVG_min_A": 3.682,
         "regulates": true
       },
       "VIN14_I2.40A": {
         "mode": "buck",
-        "buck_duty_at_setpoint_min": 0.834,
+        "buck_duty_at_setpoint_min": 0.835,
         "boost_duty_at_setpoint_max": 0.0,
         "IL_avg_A": 2.4,
         "ripple_pp_A": 0.206,
@@ -703,14 +703,14 @@
         "margin_to_ILIM_AVG_min_A": 4.497,
         "regulates": true
       },
-      "VIN14_I3.53A": {
+      "VIN14_I2.94A": {
         "mode": "buck",
-        "buck_duty_at_setpoint_min": 0.839,
+        "buck_duty_at_setpoint_min": 0.837,
         "boost_duty_at_setpoint_max": 0.0,
-        "IL_avg_A": 3.528,
+        "IL_avg_A": 2.94,
         "ripple_pp_A": 0.206,
-        "IL_peak_A": 3.631,
-        "margin_to_ILIM_AVG_min_A": 3.369,
+        "IL_peak_A": 3.043,
+        "margin_to_ILIM_AVG_min_A": 3.957,
         "regulates": true
       },
       "VIN16.5_I2.40A": {
@@ -723,14 +723,14 @@
         "margin_to_ILIM_AVG_min_A": 4.35,
         "regulates": true
       },
-      "VIN16.5_I3.53A": {
+      "VIN16.5_I2.94A": {
         "mode": "buck",
-        "buck_duty_at_setpoint_min": 0.712,
+        "buck_duty_at_setpoint_min": 0.71,
         "boost_duty_at_setpoint_max": 0.0,
-        "IL_avg_A": 3.528,
+        "IL_avg_A": 2.94,
         "ripple_pp_A": 0.499,
-        "IL_peak_A": 3.778,
-        "margin_to_ILIM_AVG_min_A": 3.222,
+        "IL_peak_A": 3.19,
+        "margin_to_ILIM_AVG_min_A": 3.81,
         "regulates": true
       },
       "VIN21_I2.40A": {
@@ -743,14 +743,14 @@
         "margin_to_ILIM_AVG_min_A": 4.175,
         "regulates": true
       },
-      "VIN21_I3.53A": {
+      "VIN21_I2.94A": {
         "mode": "buck",
-        "buck_duty_at_setpoint_min": 0.559,
+        "buck_duty_at_setpoint_min": 0.558,
         "boost_duty_at_setpoint_max": 0.0,
-        "IL_avg_A": 3.528,
+        "IL_avg_A": 2.94,
         "ripple_pp_A": 0.851,
-        "IL_peak_A": 3.953,
-        "margin_to_ILIM_AVG_min_A": 3.047,
+        "IL_peak_A": 3.365,
+        "margin_to_ILIM_AVG_min_A": 3.635,
         "regulates": true
       }
     },
@@ -778,28 +778,28 @@
       1063
     ],
     "R109_cc_limit_A": [
-      3.145,
-      3.333,
-      3.528
+      2.621,
+      2.778,
+      2.94
     ],
     "losses": {
       "I2.40A": {
         "P_IC_W": 1.017,
         "P_L1_DCR_W": 0.183,
-        "P_R109_W": 0.088,
+        "P_R109_W": 0.106,
         "efficiency_screen": 0.957,
         "Tj_rise_C_JEDEC": 44.1,
         "Tj_rise_C_EVM": 28.0,
         "Tj_at_50C_ambient_JEDEC_C": 94.1
       },
-      "I3.53A": {
-        "P_IC_W": 1.747,
-        "P_L1_DCR_W": 0.394,
-        "P_R109_W": 0.19,
-        "efficiency_screen": 0.948,
-        "Tj_rise_C_JEDEC": 75.8,
-        "Tj_rise_C_EVM": 48.0,
-        "Tj_at_50C_ambient_JEDEC_C": 125.8
+      "I2.94A": {
+        "P_IC_W": 1.341,
+        "P_L1_DCR_W": 0.274,
+        "P_R109_W": 0.158,
+        "efficiency_screen": 0.952,
+        "Tj_rise_C_JEDEC": 58.2,
+        "Tj_rise_C_EVM": 36.9,
+        "Tj_at_50C_ambient_JEDEC_C": 108.2
       }
     },
     "loss_model": "conduction = IL^2 x (RDS HS1 + HS2 + max LS) x 1.5 (hot), switching 2 legs x 0.5 V I x 10 ns x fSW, dead time 2 legs x 2 x 0.7 V x I x 20 ns x fSW, VCC LDO VIN x 10 mA; L1 DCR x 1.3 (hot); assumptions, not TI data: bench thermal gate",
@@ -810,21 +810,75 @@
         "966kHz": 0.305,
         "400kHz": 0.126
       },
-      "why": "kept from the prior S9.0 step: the R109 limit (<= 3.53 A) keeps the inductor and switch currents at ~half the 7 A average limit, the switching penalty is ~0.3 W, the N=16 release screen halves against 400 kHz, and the fundamental stays clear of the 790 kHz -12V converter at nominal (beat tones with the wide RT tolerance are a bench item, as in S8)"
+      "why": "966kHz retained; R109 is a slow output CC loop, NOT a programmable switch-current limit. Thermal screening now uses 18mR; all transient/beat-tone/thermal gates remain open. Frequency tolerance bands can touch; nominal separation is not a no-beat guarantee"
     },
     "compensation": {
-      "R111_ohm": 9100.0,
-      "C83_F": 1e-08,
-      "zero_Hz": 1749,
-      "crossover_Hz": {
-        "bank_low_C": 11555,
-        "bank_high_C": 4484,
-        "bank_high_plus_typical_rack": 809
+      "R111_ohm": 6800.0,
+      "C83_F": 1.0000000000000001e-07,
+      "zero_Hz": 234,
+      "cases": 13824,
+      "worst_phase": {
+        "phase_margin_deg": 59.73,
+        "fc_Hz": 453,
+        "corner": {
+          "vin": 10.37,
+          "vo": 12.649,
+          "io": 0.05,
+          "bank_uF": 96.8,
+          "rack_uF": 440.0,
+          "cable_R": 0.08,
+          "cable_L_uH": 0.5,
+          "R111_factor": 0.9801,
+          "C83_factor": 0.765,
+          "GEA_factor": 0.7
+        }
       },
-      "RHPZ_boost_corner_Hz": 89854,
-      "fc_limit_Hz": 17971,
-      "CC_from_Eq25_nF": 10.4,
-      "note": "TI Eq. 24-26 with the internal 55 mOhm current-sense equivalent and GEA 190 uA/V. With the rack capacitance behind the cables the crossover falls below the 1.7 kHz zero: loop stability with the real rack is a bench Bode gate, not established here"
+      "worst_gain": {
+        "gain_margin_dB": 12.37,
+        "corner": {
+          "vin": 10.37,
+          "vo": 11.537,
+          "io": 2.4,
+          "bank_uF": 37.56,
+          "rack_uF": 440.0,
+          "cable_R": 0.08,
+          "cable_L_uH": 0.5,
+          "R111_factor": 1.0201,
+          "C83_factor": 0.765,
+          "GEA_factor": 1.3
+        }
+      },
+      "crossover_Hz": {
+        "minimum": 387,
+        "maximum": 13566
+      },
+      "violations": [],
+      "pass": true,
+      "published_envelope": {
+        "external_C_uF": [
+          0,
+          440
+        ],
+        "bank_effective_uF": [
+          37.6,
+          96.8
+        ],
+        "cable_loop_R_ohm": [
+          0.08,
+          0.25
+        ],
+        "cable_loop_L_uH": [
+          0,
+          0.5
+        ],
+        "load_A": [
+          0.05,
+          2.4
+        ],
+        "load_type": "passive resistive small-signal load; no arbitrary negative-impedance active rack guarantee"
+      },
+      "method": "TI Eq19-23; exact PI (no crossover shortcut), split bank/R109/cable branch, all listed corner products; one-period delay + fsw/10 pole. GEA +/-30% is sensitivity, not a datasheet limit.",
+      "release_test": "Bode at VIN corners, bank/rack corners and 0.05A/rating: PM>45 deg, GM>10 dB, no sustained ringing; no-load FPWM and active rack impedances measured separately. Not performed."
     },
     "resolution": "TPS552892-Q1 four-switch buck-boost (pin-compatible role, new footprint, +10 parts): regulates 12.08 V from 10.55 V (U5 sag) to 21 V (20 V retarget) at the published 2.4 A and at the R109 limit"
   },
@@ -833,7 +887,7 @@
       "+12V": 2.4,
       "-12V": 0.8
     },
-    "rule": "75 % of the minimum current-limited capability at the 12.5 V converter input (rated minimum VPD 13.5 V minus the 1.00 V D10 + U5 drop), to the NEAREST 0.1 A, capped at the S7 target",
+    "rule": "S9.1: +12V retained 2.4 A with >=0.20 A headroom below the 18mR CC minimum; NOT the superseded 75% rule. -12V retains 75% rounded to nearest0.1A. Thermal qualification still required.",
     "vin_floor_V": 12.5,
     "vpd_rated_min_V": 13.5,
     "input_path": {
@@ -843,19 +897,19 @@
       "basis": "R2 senses VPD before D10; converter VIN = VPD - D10 (0.75 V S5 screen at 5 A) - U5 RON max (53 mOhm, S5) x its 4.698 A high-corner current limit (input_budget U5_limit_screen_A): no steady input current can exceed the actual U5 limit, so this is a conservative drop, not a typical one. S9.0: unchanged (12.5 V converter input at the 13.5 V rated minimum)"
     },
     "capability_min_A": {
-      "+12V": 3.145,
+      "+12V": 2.621,
       "-12V": 1.051
     },
     "capability_basis": {
-      "+12V": "R109 constant-current minimum 48 mV / (15 mOhm x 1.01 x 1.0075)",
+      "+12V": "R109 constant-current minimum 48 mV / (18 mOhm x 1.01 x 1.0075)",
       "-12V": "LMR38020 (ILS min + ripple/2)(1 - D), SNVSC40E Eq. 7"
     },
     "fraction_of_capability": {
-      "+12V": 0.763,
+      "+12V": 0.916,
       "-12V": 0.761
     },
     "headroom_to_capability_A": {
-      "+12V": 0.745,
+      "+12V": 0.221,
       "-12V": 0.251
     },
     "published_total_W": 33,
@@ -874,15 +928,15 @@
       "best_mix_delivered_W": 36.09
     },
     "below_rated_range": {
-      "converter_VIN_V": 10.55,
+      "converter_VIN_V": 10.37,
       "basis": "U5 keeps the converters running down to its turn-off minimum (sagging source); the rating is NOT specified there",
       "capability_min_A": {
-        "+12V": 3.145,
-        "-12V": 0.953
+        "+12V": 2.621,
+        "-12V": 0.944
       },
       "fraction_of_capability": {
-        "+12V": 0.763,
-        "-12V": 0.839
+        "+12V": 0.916,
+        "-12V": 0.848
       }
     },
     "simultaneous": {
@@ -917,14 +971,14 @@
     "range_basis": "13.5 V = 15 V -5 % less the 0.75 V cable/connector allowance at 3 A; 16.5 V = +10 % ceiling (converters and guards rated far above it; U5 OVP 24.1 V nominal)",
     "U5_window_V": {
       "on": [
-        12.46,
-        13.2,
-        13.98
+        12.26,
+        12.62,
+        12.98
       ],
       "off": [
-        11.55,
-        12.34,
-        13.13
+        11.37,
+        11.8,
+        12.19
       ]
     },
     "required_adapter": "USB PD source with a 15 V / 3 A fixed PDO, i.e. a >= 45 W PDP adapter (a 27 W source offers only 15 V / 1.8 A and will trip or cycle under load); a non-PD or 5 V-only source never turns U5 on",
@@ -939,6 +993,215 @@
       "13.5V": 40.5,
       "14.25V": 42.75
     }
+  },
+  "input_qualification": {
+    "on_V": [
+      12.263328300291452,
+      12.617697431018078,
+      12.976287264409324
+    ],
+    "off_V": [
+      11.365419497527792,
+      11.797547098001905,
+      12.192683204122321
+    ],
+    "loaded_start_margin_V": 0.5237127355906761,
+    "unloaded_start_margin_V": 1.273712735590676,
+    "running_margin_V": 1.3073167958776786,
+    "resistors": "R2=100k 0.1%/25ppm; R3=10k 0.1%/25ppm + R114=510R 1%/100ppm",
+    "cable": "13.5 V at module = 14.25 V source minimum minus 0.75 V cable at 3 A (0.25 ohm loop)",
+    "recommended_falling_11V8_not_guaranteed": true,
+    "why": "Even perfect resistors cannot meet both recommendations: rising<=13 requires divider factor<=13/1.224=10.621; falling>=11.8 requires >=11.8/1.09=10.826. Actual falling minimum is reported, never relabelled 11.8 V."
+  },
+  "enable_logic": {
+    "logic": "QUALIFY = RUN AND MAIN_LED_OK = RUN AND MAIN_OK AND V20_OK; Q14 and Q15 series sink",
+    "drive_source": "Q1 emitter VPD upstream of D10; never +12V or VIN",
+    "equation": "EN_N - V(-12V) = QUALIFY ? (VPD - VCEsat - V(-12V))*R18/(R17+R18) : Ileak*R18",
+    "off_pullup": "R112 ties Q1 base to VPD if either sink is off; R18 pulls EN to U4 ground",
+    "enable_high_max_V": 1.4,
+    "disable_low_min_V": 0.95,
+    "startup_min_relative_V": 1.928,
+    "running_max_relative_V": 5.014,
+    "off_leakage_test_bound_uA": 5,
+    "off_relative_max_V": 0.102,
+    "truth_table": [
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "bus_live": false,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "bus_live": true,
+        "U4_enabled": false
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "bus_live": false,
+        "U4_enabled": true
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "bus_live": true,
+        "U4_enabled": true
+      }
+    ],
+    "does_not_block_reverse_power_while_enabled": true,
+    "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
+  },
+  "startup_qualification": {
+    "source_limit_A": 3.0,
+    "source_min_V": 14.25,
+    "cable_loop_R_ohm": 0.25,
+    "unconstrained_peak_input_A": 4.25,
+    "unconstrained_positive_alone_A": 3.055,
+    "meaning": "3 A source limiting MUST be tested; output CC does not enforce the PD input contract. Energy times are lower bounds, not startup guarantees.",
+    "resource_rows": [
+      {
+        "delivered_W": 0.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 0.0,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 2.6
+      },
+      {
+        "delivered_W": 15.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 17.1,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 4.7
+      },
+      {
+        "delivered_W": 25.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 27.852,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 10.1
+      },
+      {
+        "delivered_W": 33.0,
+        "converter_budget_W": 37.273,
+        "steady_converter_W": 36.455,
+        "charging_energy_J": 0.0954,
+        "energy_limited_minimum_charge_ms": 116.5
+      }
+    ],
+    "matrix": [
+      {
+        "id": "S1",
+        "condition": "Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts",
+        "pass": "Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record"
+      },
+      {
+        "id": "S2",
+        "condition": "Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V",
+        "pass": "A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts"
+      },
+      {
+        "id": "S3",
+        "condition": "Persistent rail short, uninterrupted source, then manual RESET and separate full power removal/reapplication",
+        "pass": "Each power epoch with input held must fault within 0.90 s+2 ms of first enable, hold RUN low until explicit reset, and fault again with short present"
+      },
+      {
+        "id": "S4",
+        "condition": "Ten automatic input hard resets every 200 ms while short remains, V3V3 collapsed in each off interval",
+        "pass": "Qualification result must be FAIL_REPEATED_POWER_RESET, never a pass from a final successful cycle; fixture latches power OFF on the second autonomous reset"
+      }
+    ],
+    "power_reset_policy": "STARTED and FAULT are volatile. Full V3V3/POR loss legitimately clears both; S8.5 one-shot preserved, not falsely advertised as nonvolatile. Automatic retrying sources are outside qualified envelope. Fixture counts epochs and must stop retries; hardware nonvolatile lockout remains absent.",
+    "bench_status": "NOT PERFORMED; source/load qualification is open"
   },
   "basic_only_counterfactual": {
     "guard_V": {
@@ -979,11 +1242,11 @@
       "U5_ramp_ms": 9.6,
       "PGOOD_deglitch_ms": 13,
       "TPS552892_SS_max_ms": 5.0,
-      "P12_rack_charge_at_R109_limit_ms": 17.0,
+      "P12_rack_charge_at_R109_limit_ms": 30.8,
       "LMR38020_SS_plus_blank_ms": 22
     },
-    "rail_up_total_ms": 66.6,
-    "ratio_min_window_to_budget": 4.6,
+    "rail_up_total_ms": 80.4,
+    "ratio_min_window_to_budget": 3.8,
     "arming": "S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable)"
   },
   "arming": {
@@ -1013,8 +1276,8 @@
       "rule": "band minimum >= vSafe5V max 5.5 V + 2.0 V and band maximum <= U5 turn-off minimum - 2.0 V",
       "rule_holds": true,
       "margin_above_vSafe5V_max_V": 2.172,
-      "margin_below_U5_off_min_V": 2.277,
-      "consequence": "whenever U5 can be on (VPD >= its 11.55 V turn-off minimum) V20_OK is high, so MAIN_LED_OK = MAIN_OK there and V20_OK can never be the first status to drop; ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK) means \"U5 not on with valid status, or a rail below its monitor threshold\"",
+      "margin_below_U5_off_min_V": 2.095,
+      "consequence": "whenever U5 can be on (VPD >= its 11.37 V turn-off minimum) V20_OK is high, so MAIN_LED_OK = MAIN_OK there and V20_OK can never be the first status to drop; ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK) means \"U5 not on with valid status, or a rail below its monitor threshold\"",
       "S8.5_120k_band_V": [
         9.062,
         9.977,
@@ -1035,18 +1298,18 @@
       "history": "S8.5 (20 V input): R83 120k, 9.06-10.96 V. At the 15 V input its maximum sits above the U5 turn-off minimum less 2 V, so S9.0 uses 100k. S8.4 200k / S8.3 220k tripped inside the U5 band (they meant neither \"input good\" nor \"status valid\")"
     },
     "U5_on_V": [
-      12.46,
-      13.2,
-      13.979
+      12.263,
+      12.618,
+      12.976
     ],
     "U5_off_V": [
-      11.547,
-      12.342,
-      13.135
+      11.365,
+      11.798,
+      12.193
     ],
-    "U5_turn_on_margin_unloaded_V": 0.271,
-    "U5_running_margin_loaded_V": 0.365,
-    "input_qualification": "U5 UVLO through MAIN_OK (R2/R3 100k/10k): on 12.46-13.98 V (unloaded source: 15 V -5 % = 14.25 V, 0.27 V margin), off 11.55-13.13 V (loaded minimum 13.5 V, 0.37 V margin). Start-up needs an unloaded source >= the turn-on maximum: any compliant 15 V PDO",
+    "U5_turn_on_margin_unloaded_V": 1.274,
+    "U5_running_margin_loaded_V": 1.307,
+    "input_qualification": "U5 UVLO through MAIN_OK (R2/R3 100k/10k): on 12.26-12.98 V (unloaded source: 15 V -5 % = 14.25 V, 1.27 V margin), off 11.37-12.19 V (loaded minimum 13.5 V, 1.31 V margin). Start-up needs an unloaded source >= the turn-on maximum: any compliant 15 V PDO",
     "window": {
       "typ_s": 0.572,
       "min_s_screen": 0.309,
@@ -1056,19 +1319,19 @@
         "U5_ramp_ms": 9.6,
         "PGOOD_deglitch_ms": 13,
         "TPS552892_SS_max_ms": 5.0,
-        "P12_rack_charge_at_R109_limit_ms": 17.0,
+        "P12_rack_charge_at_R109_limit_ms": 30.8,
         "LMR38020_SS_plus_blank_ms": 22
       },
-      "rail_up_total_ms": 66.6,
-      "ratio_min_window_to_budget": 4.6,
+      "rail_up_total_ms": 80.4,
+      "ratio_min_window_to_budget": 3.8,
       "arming": "S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable)"
     },
     "sequence": [
       "USB-C attach: VPD = vSafe5V; U9 makes V3V3; U10 holds RESET_N low >= 12 ms (clears STARTED, FAULT)",
       "RESET_N high: RUN high (U5 SHDN released); U5 in UVLO, START_N high (V20_OK low in the 5 V phase)",
       "PD contract: VPD -> 15 V; V20_OK high at 7.67-9.27 V (U5 status valid, PGOOD low)",
-      "VPD >= U5 turn-on (12.46-13.98 V): U5 ramps (dVdt, <= ~10 ms to 16.5 V), PGOOD 11.5 ms typ -> MAIN_OK enables U2 (EN/UVLO) (U4 follows +12V via Q1) -> MAIN_LED_OK -> START_N low -> STARTED (latched)",
-      "TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~67 ms",
+      "VPD >= U5 turn-on (12.26-12.98 V): U5 ramps (dVdt, <= ~10 ms to 16.5 V), PGOOD 11.5 ms typ -> MAIN_OK enables U2 (EN/UVLO) (U4 follows +12V via Q1) -> MAIN_LED_OK -> START_N low -> STARTED (latched)",
+      "TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~80 ms",
       "ARMED: any bad status (MAIN_LED_OK, P12_OK, N12_OK) > ~1 ms -> FAULT -> RUN low -> all off until RESET; OV_N (+12V > 14.48-15.27 V, -12V beyond 13.27-14.02 V) presets FAULT at any time"
     ],
     "timelines": "validation.json startup_arming.timelines (verify_s8 arming_timelines: cold start at the worst loaded 15 V minimum, slow PD contract, brown-out after/inside the window, input overload chatter, hot plug into a live bus, load release, U20 guard before ARMED, short RESET), checked against R1-R4 from the native gate wiring; the S8.4 wiring fails them (test_s8 regression)"
@@ -1170,85 +1433,228 @@
   },
   "residuals": {
     "reverse_current": {
-      "decision": "ACCEPTED (owner, 2026-11-02): no series reverse-blocking element on +12V or -12V",
-      "rule": "Never connect an unpowered or latched-off module to a live bus; power the rack down before plugging or unplugging; never parallel J2/J3 with another supply on the same bus",
+      "decision": "ACCEPTED architecture: no series reverse blocking (owner). S9.1 removes the self-enable defect in hardware; that defect is NOT an accepted event.",
+      "rule": "No powered parallel supplies or unrestricted hotplug. Unpowered/latched-off injection is qualified ONLY under T1 conditions, not a procedural excuse for self-enabling.",
       "plus12_path": {
-        "power_stage": "blocked: with U2 disabled (EN = MAIN_OK low) the boost high-side FET body diode (anode SW2, cathode VOUT) is reverse biased by the bus, so the four-switch stage has no conduction path from +12V to VIN (the S8 TPS62933F buck did: output inductor + high-side body diode)",
-        "dc_load_from_bus_mA": {
-          "R8+R9 (FB)": 0.167,
-          "R93+R94 (guard)": 0.105,
-          "R75+R76 (monitor)": 0.097,
-          "Q1 base R16": 0.119,
-          "U2 VOUT leakage (disabled)": 0.02
-        },
-        "dc_total_mA": 0.508,
+        "dc_total_mA": 0.389,
         "hot_plug_bank_charge_mJ": [
           2.98,
           7.68
         ],
-        "hot_plug_note": "the 8 x 22u +12V bank (+ C81) charges from the bus; the peak current is set by the bus/cable impedance (tens of A for microseconds, as for any capacitive module), R109 sees part of it"
+        "power_stage": "Disabled four-switch boost HS blocks bus-to-VIN power transfer; divider current/leakage and capacitor charging remain."
       },
       "minus12_passive": {
-        "path": "C25/C26 (VIN to -12V) form a divider with the VIN-to-GND caps: a -12.6 V step pulls VIN negative",
-        "VIN_step_V": [
+        "unclamped_VIN_step_V": [
           -1.23,
           -5.43
         ],
-        "clamp": "TPS552892 internal body diodes PGND -> SW1 -> VIN (~ -1.4 V) and the TPS16630 output structure: VIN briefly below the TPS552892 -0.3 V absolute minimum",
-        "stresses": [
-          "U2 VIN/SW1 (-0.3 V abs min)",
-          "U5 OUT",
-          "C25/C26/C24 and the VIN bank (charge pulse)"
-        ]
+        "fast_step_residual": "D24 forward/internal diodes can clamp around -1.4V, outside U2 -0.3V minimum. D25 reduces it but is NOT guaranteed below 0.3V at high current/cold. Unrestricted hard hotplug remains UNQUALIFIED and is not a passing acceptance test.",
+        "qualified_slew_V_per_s": 1,
+        "qualified_temperature_C": 25,
+        "qualified_negative_floor_V": -0.3
       },
       "minus12_active": {
-        "path": "with the +12 V bus also live, Q1 (emitter on +12V) enables U4 from the bus: EN_N = (V+12 - V-12) x R18 / (R17 + R18); U4 itself runs from the -12 V bus (VIN pin at the 0 V VIN node, IC ground at -12 V)",
-        "EN_N_V": 3.97,
-        "EN_high_max_V": 1.4,
-        "U4_supply_V": 12.0,
-        "U4_start_max_V": 4.2,
-        "setpoint_band_V": [
-          11.385,
-          11.989,
-          12.624
-        ],
-        "mechanism": "pre-biased start-up: no sinking during the 4 ms soft start; afterwards, whenever |V(-12 V bus)| exceeds U4's setpoint, FPWM regulation sinks up to |IL-NEG| = 0.9 A (typical, no limits) and passes that power from the bus into the unloaded VIN node (U5 off, D10 blocks, U2 disabled)",
-        "pumped_power_upper_W": 11.3,
-        "VIN_capacitance_uF": [
-          22.4,
-          59.4
-        ],
-        "time_to_42V_ms": [
-          1.7,
-          4.6
-        ],
-        "stresses": [
-          "U2 VIN/SW1 42 V absolute maximum (36 V operating)",
-          "C25/C26 see VIN + 12 V (50 V parts)",
-          "VIN bank C6/C7/C77/C78/C24/C8 and the damper C5/C62 (50 V)",
-          "U5 OUT (60 V)"
-        ],
-        "also_applies": "a powered module that is latched off (RUN low) on a live bus, and a running module paralleled with another supply that holds -12 V above U4's setpoint",
-        "finding": "S9.0 analysis: this is an ACTIVE energy path, not a leakage: the procedural rule is mandatory. A candidate hardware mitigation that is not reverse blocking (gate the Q1 / U4 enable with RUN or MAIN_OK so a bus-fed +12V cannot enable U4) is listed as an open owner decision; NOT implemented"
+        "finding": "FIXED: Q1 emitter is own VPD; base sink requires RUN AND MAIN_LED_OK through Q14/Q15. R112 defaults off. Bus voltage alone cannot enable U4.",
+        "enabled_parallel_risk": "FPWM still sinks if enabled against a higher external rail. -0.9A is TYPICAL only, not a worst-case bound; no finite-energy TVS can absorb an unlimited live bus.",
+        "enable_logic": {
+          "logic": "QUALIFY = RUN AND MAIN_LED_OK = RUN AND MAIN_OK AND V20_OK; Q14 and Q15 series sink",
+          "drive_source": "Q1 emitter VPD upstream of D10; never +12V or VIN",
+          "equation": "EN_N - V(-12V) = QUALIFY ? (VPD - VCEsat - V(-12V))*R18/(R17+R18) : Ileak*R18",
+          "off_pullup": "R112 ties Q1 base to VPD if either sink is off; R18 pulls EN to U4 ground",
+          "enable_high_max_V": 1.4,
+          "disable_low_min_V": 0.95,
+          "startup_min_relative_V": 1.928,
+          "running_max_relative_V": 5.014,
+          "off_leakage_test_bound_uA": 5,
+          "off_relative_max_V": 0.102,
+          "truth_table": [
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "bus_live": false,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "bus_live": true,
+              "U4_enabled": false
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "bus_live": false,
+              "U4_enabled": true
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "bus_live": true,
+              "U4_enabled": true
+            }
+          ],
+          "does_not_block_reverse_power_while_enabled": true,
+          "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
+        }
+      },
+      "clamps": {
+        "D24": {
+          "net": "VIN",
+          "MPN": "SMBJ16A",
+          "stand_off_V": 16,
+          "breakdown_V": [
+            17.8,
+            19.7
+          ],
+          "rated_clamp_V": 26.0,
+          "rated_peak_A": 23.1,
+          "peak_pulse_W": 600,
+          "waveform_us": "10/1000",
+          "pulse_budget": {
+            "max_injection_A": 1.0,
+            "max_duration_ms": 20.0,
+            "worst_power_W": 26.0,
+            "max_energy_J": 0.52,
+            "initial_temperature_max_C": 50,
+            "minimum_repeat_interval_s": 200,
+            "basis": "Finite 1A x 26V x 20ms engineering budget. Datasheet pulse curve screen ~100W at 20ms after 50C derating; 600W rating applies ONLY to 10/1000us. No universal joule rating or continuous 26W claim."
+          },
+          "protects": "U2 VIN/SW1 42V abs /36V operating; 50V VIN bank and C25/C26 (26+12.6=38.6V); U5 OUT 60V",
+          "limitations": "Rated clamp is at 25C and specified waveform, not a measured PCB spike bound. Qualified fixture requires VIN<28V incl ringing at 25/50C. Sustained enabled reverse power is NOT safe."
+        },
+        "D25": {
+          "net": "VIN negative",
+          "MPN": "BAT54SLT1G",
+          "reverse_max_V": 30,
+          "forward_bound_V_25C": 0.24,
+          "current_for_bound_uA": 100,
+          "scope": "Bus slew <=1 V/s at 25C (<=26.5uA displacement current from 2x10u+100n rated high C). Not a cold/fast-hotplug clamp."
+        },
+        "D26": {
+          "net": "P12_VOUT",
+          "MPN": "SMBJ14A",
+          "stand_off_V": 14,
+          "breakdown_V": [
+            15.6,
+            17.2
+          ],
+          "rated_clamp_V": 23.2,
+          "rated_peak_A": 25.9,
+          "peak_pulse_W": 600,
+          "waveform_us": "10/1000",
+          "VIN_bank_energy_J": 0.00592,
+          "guard_delay_energy_screen_J": 0.00155,
+          "protects": "U2 VOUT/SW2/ISP/ISN 25V abs and local 25V MLCCs; not a 16V downstream guarantee",
+          "limitations": "Finite pulse backstop only; external rail source must be removed by fixture. No fuse coordination / crowbar or sustained shunt claim."
+        }
       },
       "bench_test": {
+        "status": "proposed bench acceptance, NOT PERFORMED",
         "conditions": [
-          "T1-A: module unpowered (no USB-C), J2 hot-plugged onto a live bus: +12.0 V and -12.0 V, then +/-12.6 V, 1 A current limit per rail, 0.44 mF per rail; hold 10 s; monitor VIN (TP4), both rail currents and U4 SW",
-          "T1-B: as T1-A with the module powered and latched off (FAULT, RUN low)",
-          "T1-C: as T1-A with only the -12 V rail live",
-          "abort and power down if VIN exceeds 30 V"
+          "T1-A: no USB input, +/-12.0 and +/-12.6V external bus, 1A source limit, 0.44mF each rail; ramp <=1V/s at 25C, hold 10s; log EN_N relative to -12V, U4 SW, VIN and bus currents",
+          "T1-B: same with USB present and FAULT latched/RUN low; verify off-state once MAIN_OK deglitch expires and capture the preceding <=20ms interval",
+          "T1-C: only negative rail applied with same bounded slew; repeat rail order",
+          "T1-D: inject a positive 1A, <=20ms pulse into VIN (compliance 28V, automatic disconnect), 25/50C, >=200s between pulses. This separately tests D24 energy/clamp; never assume the now-disabled U4 will generate this pulse"
         ],
         "pass_criteria": [
-          "no damage (module restarts normally after power-up + RESET)",
-          "VIN stays within -0.3 V .. 36 V; bus current back into the module < 10 mA after the plug transient (DC dividers ~0.6 mA)",
-          "record the plug-in charge pulse on both rails"
+          "T1-A/C: EN_N minus -12V <=0.11V settled (<=0.5V transient), zero U4 switching; VIN -0.3..1V after 100ms settled; each bus current <10mA after 100ms",
+          "T1-B: same EN/switching/current criteria after 20ms; VIN may retain own-input charge, must remain -0.3..28V, not climb from bus power",
+          "T1-D: VIN <=28V incl ringing, measured integral(V*I*dt)<=0.52J, clamp current ends by 20ms, no leakage increase >10uA after cooling; normal restart and regulation after RESET",
+          "All: automatic overvoltage disconnect at VIN 28V, negative excursion abort at -0.3V (fast comparator, not human reaction). An abort is a FAIL, not a pass."
         ],
-        "expected_by_analysis": "T1-C and T1-A at a bus magnitude below U4's setpoint: pass apart from the brief VIN dip below -0.3 V. T1-A/T1-B with |V(-12 V bus)| above U4's setpoint: VIN can exceed 36-42 V within milliseconds - expected to FAIL; hence the procedural rule",
-        "status": "proposed bench acceptance, not performed"
+        "excluded": "Hard hotplug, temperatures below25C for D25 forward-drop guarantee, >1A or >20ms sustained injection, and powered parallel supplies require new protection/qualification."
       }
     },
     "rail_overvoltage": {
-      "decision": "ACCEPTED (owner, 2026-11-02): no voltage-triggered fuse or crowbar on +/-12V (the crowbar stays excluded; crowbar vs eFuse is a deferred, open decision); the U20 guard + FAULT latch is the only response",
+      "decision": "ACCEPTED architecture: no voltage-triggered fuse/crowbar; crowbar vs eFuse deferred/open. S9.1 D26 is a finite-energy transient backstop, not continuous shunt protection.",
       "guard_V": {
         "+12V": [
           14.48,
@@ -1261,67 +1667,63 @@
           14.018
         ]
       },
-      "response_us": "~3 (comparator, HC74 preset) + 8-9 (RC filter) + 0.8-1.5 (U5 tSD) after the crossing; it opens U5, it does NOT discharge the rails",
+      "response": "U20 presets FAULT and opens U5; it does NOT disconnect an external rail source or immediately discharge stored energy.",
       "why_no_fuse": [
-        "a fuse/PTC opens on current, not voltage: in series with +12V it must carry 2.4 A continuously and the 3.53 A R109 limit without nuisance, so a rail at 15-24 V with a normal load never blows it",
-        "making overvoltage create overcurrent needs a crowbar (SCR/TVS) across the rail plus a fuse sized below the source limit: that is the excluded crowbar architecture",
-        "a TVS alone (e.g. 13 V stand-off: 14.4-15.9 V breakdown) sits inside the 14.48-15.27 V guard band and would have to absorb the converter limit (3.5 A x ~15 V = ~53 W) continuously: it fails, usually short, which is a crowbar by failure",
-        "a series eFuse with OVP per rail is the removed S7 rail-eFuse architecture (U6/U7/LM5067), not a fuse"
+        "A fuse responds to current, not voltage.",
+        "No SCR/fuse crowbar is fitted.",
+        "D24/D26 TVS pulse ratings do not authorize sustained reverse power.",
+        "No per-rail eFuse/disconnect is fitted."
       ],
-      "cases": {
-        "P12_pass_through": "failed U2 switches pass VIN to +12V: the rail follows VIN, <= 16.5 V in the stated range (up to the U5 OVP ~24-26 V if the source itself fails high); the guard opens U5 but the rail keeps its charge (load-dependent decay)",
-        "P12_control_failure": "FB open (R8 open): the buck-boost drives the R109 limit into the rail; after the guard opens U5 it keeps converting the VIN bank energy until VIN collapses",
-        "N12_control_failure": "FB open (R14 open): the LMR38020 (no output OVP) drives the rail beyond the -12V guard and dumps the VIN bank energy into it after U5 opens",
-        "sub_threshold": "a failure that settles just inside the guard band never trips: +12V up to 15.27 V and -12V down to -14.02 V indefinitely"
-      },
-      "VIN_bank_energy_mJ": [
-        2.23,
-        5.92
-      ],
+      "VIN_bank_energy_mJ": 5.919,
       "peak_screens_V": {
-        "+12V_bank_only_no_load": 23.4,
-        "+12V_with_typical_rack": 16.0,
-        "-12V_bank_only_no_load": 23.6,
+        "+12V_bank_only_no_load_before_D26": 23.42,
+        "+12V_D26_rated_clamp_25C": 23.2,
+        "-12V_bank_only_no_load": 23.59,
+        "+12V_with_typical_rack": 15.98,
         "-12V_with_typical_rack": 14.8
       },
-      "peak_model": "guard maximum plus the VIN bank energy (16.5 V -> 4 V, high-C corner) dumped into the rail bank (low C) or bank + 0.44 mF rack, no load; +12V capped by the TPS552892 absolute OVP 24.5 V. Energy screen, not a transient simulation",
+      "limitations": "Energy screens are NOT guaranteed peaks. Internal U2 OVP 24.5V is never used as an ideal clamp. No-load output can exceed16V; -12V has no positive-magnitude clamp. Unrelated failed-short components and unlimited external supplies are excluded.",
       "bench_test": {
+        "status": "proposed bench acceptance, NOT PERFORMED",
         "conditions": [
-          "T2-A pass-through: module running at 16.5 V input into 0.44 mF + 0.5 A per rail; +12V driven to 16.5 V from a current-limited (3.5 A) supply through a diode; hold 10 s",
-          "T2-B +12V control failure: R8 lifted (FB open), start at 13.5 V and 16.5 V input, once with no rack and no load, once with 0.44 mF + 0.5 A",
-          "T2-C -12V control failure: R14 lifted (FB open), same two loads",
-          "T2-D sub-threshold: +12V held at 15.2 V and -12V at -13.9 V from external supplies for 10 min"
+          "T2-A: input16.5V; 0.44mF +0.5A/rail; externally ramp +12V from12 to16.5V at<=1V/ms, <=1A, total injection<=10ms (including ramp), hold<=1ms at16.5V; fixture removes injection automatically after trigger; scope>=100MS/s",
+          "T2-B: R8 open at13.5/16.5V input, 3A source; no external C/no load, then0.44mF+0.5A; capture500ms with independent voltage/current abort",
+          "T2-C: R14 open, same conditions; no assumed LMR38020 output OVP",
+          "T2-D: RUN held low/logic powered, +14.0V and -13.0V external for10min; safely BELOW the minimum guard thresholds; no-trip only refers to OV_N, not RUN",
+          "T2-E: at+15.2V / -13.9V a trip is ALLOWED (inside tolerance bands); repeat guaranteed trip at+15.8V / -14.5V with <=1V/ms slew, <=1A source and >=50us hold (record actual waveform)"
         ],
         "pass_criteria_this_module": [
-          "OV_N low and FAULT latched within 20 us of the guard crossing (T2-A..C); MAIN LED off; rails stay off until RESET; no damage to the module",
-          "T2-D: no trip (inside the guard band), no damage",
-          "record the peak and decay of both rails; compare with peak_screens_V"
+          "With >=0.5V rail overdrive beyond each measured trip, OV_N low/FAULT set/RUN low <=20us; MAIN LED off. Keep FAULT latched10s after injection removed, reset explicitly only after fault repair",
+          "Externally driven rail remains externally driven until fixture removal: NEVER require it off while injection remains. After removal connect1k/1W discharge load; both rails below1V within2s at <=0.44mF external C",
+          "T2-B/C: observed positive rail peak<=24.0V and negative magnitude<=24.0V for the500ms capture; positive duration above16V<=100ms with specified1k discharge; D26 pulse energy<=0.10J; normal regulation after repair/RESET",
+          "T2-D OV_N stays high. T2-E band points may trip or not; above-band points MUST trip. Automatic abort at+24V / -24V / VIN28V, source removed in<=2us; any abort fails qualification, no human-only protection"
         ],
         "downstream_qualification": [
-          "every module intended for this rack must survive, unpowered and powered: +12V at 16.5 V and -12V at -16.5 V for 10 s; +12V at 15.3 V and -12V at -14.1 V continuously; the measured T2-B/T2-C peaks (screens up to ~24.5 V / ~26 V with no rack, ~16 V with a typical rack) for 100 ms",
-          "qualify the modules against these conditions; do not rely on this supply to prevent them"
-        ],
-        "status": "proposed bench acceptance, not performed"
+          "Without a separate rail protector, downstream modules must tolerate16.5V/10s and sub-threshold +15.3V/-14.1V continuously, and up to24V magnitude/100ms or their measured actual exposure if worse. Ordinary16V caps are NOT thereby qualified; incompatible modules excluded until crowbar/eFuse decision."
+        ]
       }
     }
   },
   "retarget_20v": {
     "changes": {
       "R1": "56k -> 120k (CH224A 20 V request)",
-      "R3": "10k -> 7.5k (U5 UVLO)",
+      "R3": "10k -> 7.5k precision (U5 UVLO)",
+      "R114": "510 -> 0 ohm (20V UVLO)",
       "R83": "100k -> 120k (V20_OK status floor)",
+      "D24": "SMBJ16A -> SMBJ22A (same SMB footprint); requalify cold stand-off and clamp",
+      "D25": "replace 30V BAT54 with >=40V negative clamp; requalify forward drop / footprint",
       "docs": "rated minimum VPD 18.25 V (20 V -5 % less 0.75 V), input budget at 20 V"
     },
     "U5_window_V": {
       "on": [
-        16.23,
+        16.73,
         17.2,
-        18.23
+        17.67
       ],
       "off": [
-        15.04,
+        15.51,
         16.08,
-        17.12
+        16.61
       ]
     },
     "V20_OK_band_V": [
@@ -1341,7 +1743,7 @@
         0.733
       ],
       "D_min_tON": 0.138,
-      "capability_A": 3.145,
+      "capability_A": 2.621,
       "rating_A": 2.4
     },
     "minus12": {
@@ -1365,12 +1767,12 @@
       "U5 OVP 24.1 V nominal, D1 SMBJ22A, 50 V VIN/C25/C26 parts",
       "guard thresholds and the arming chain"
     ],
-    "note": "not a corner: S9.0 already carries every part rated for 20 V; the retarget is a three-resistor change plus the doc/rating update. D10/U5 dissipation fall (2.25 A instead of 3 A at 45 W)"
+    "note": "20V remains supported by the converter architecture but is NOT plug-compatible with the fitted16V VIN TVS. Change D24/D25 and the input divider/request parts, then requalify; no assertion that only three resistors suffice"
   },
   "area": {
-    "S8_courtyard_mm2": 2531,
+    "S8_courtyard_mm2": 2641,
     "board_inset_mm2": 4324,
-    "fill": 0.585,
+    "fill": 0.611,
     "outline": "Y14..114.5 x Z2..50",
     "routed_R3_fill": {
       "base": 0.637,

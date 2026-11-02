@@ -1,8 +1,8 @@
 """S8 review record: native findings, exact parity, test results, placement/mechanics/sourcing summaries and the
 SHA-256 of every source and artifact, assembled from fresh reports (no hand-copied numbers).
 
-  python3 -B tools/review_s8.py --check research/s90/check-final --tests-log research/s90/tests-final.log \
-      --out docs/s8-single/review-s90.json
+  python3 -B tools/review_s8.py --check research/s91/check-final --tests-log research/s91/tests-final.log \
+      --out docs/s8-single/review-s91.json
 
 --check is a NEW native check directory of the shared tool (opt/kicad-tools/kicad_tools.py check, summary.json),
 --tests-log the verbose unittest output of `python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v`.
@@ -21,7 +21,7 @@ import subprocess
 from pathlib import Path
 
 MODULE = Path(__file__).resolve().parents[1]
-REVISION = 'S9.0 / P2.0'
+REVISION = 'S9.1 / P2.1'
 TRACKED_KICAD = ('.kicad_sch', '.kicad_pcb', '.kicad_pro', '.kicad_dru', '.kicad_sym')   # *.kicad_prl is git-ignored
 S7_R3 = sorted(str(p.relative_to(MODULE)) for p in (MODULE / 'hardware').glob('*.kicad_*') if p.suffix in TRACKED_KICAD)
 PANEL = ['panels/front-pcb/usb-power-45w-single-panel.kicad_pcb', 'panels/front-pcb/usb-power-45w-single-panel.kicad_pro']
@@ -31,51 +31,25 @@ SOURCES = (sorted(f'hardware/single/{p.name}' for p in (MODULE / 'hardware/singl
            + [f'tools/{n}.py' for n in ('build_s8', 'build_s8_assembly', 'build_s8_board', 'build_s8_panel',
                                         'check_s8_board', 'circuit_s8', 'hierarchy_s8', 'mechanics_s8', 'place_s8',
                                         'render_s8', 'review_s8', 's8_calcs', 's8_mechanical', 's8_sourcing', 's90_parts',
-                                        'test_s8', 'verify_s8')])
+                                        's91_analysis', 'test_s8', 'verify_s8')])
 CHANGELOG = [
-    ('S9.0-1 +5V removed', 'The module is +/-12V only: U3 (TPS62933F +5V buck) and every part that only served +5V are gone '
-                           '(U23 eFuse with R108/TP21, OVLO R107/R101/R102, ILM R103/R104, dVdt C68, L2 and the U3 network, '
-                           'the raw and delivered +5V banks, D3/D21/D23, the U20 +5V guard channel, the U18 +5V monitor, R44, '
-                           'TP13/TP18, J2/J3 pins 11/12 open). No +5V/P5_*/EF_* net or ref survives (regression tests).'),
-    ('S9.0-2 15 V input', 'CH224A requests 15 V (R1 56k); U5 UVLO R3 10k (on 12.46-13.98 V, off 11.55-13.13 V); V20_OK '
-                          'R83 100k (7.67-9.27 V status floor); stated input range 13.5-16.5 V at the module; needs a 15 V / '
-                          '3 A (>= 45 W) PD source; U5 OVP keeps the 20 V setting.'),
-    ('S9.0-2 +12V duty', 'The S8 TPS62933F buck needed 0.995-1.053 duty at the 12.5 V low-line converter input (1.033 even '
-                         'unloaded at the setpoint maximum) against its 98 % maximum and would need VPD >= 14.42 V: replaced '
-                         'by the TPS552892-Q1 four-switch buck-boost (TI RYQ0021B; 966 kHz, L1 6.8 uH kept, R109 15 mR CC '
-                         'limit 3.14-3.53 A, FB R8/R9, COMP R111/C83, VCC C82, FPWM, internal LDO) that regulates from the '
-                         '10.55 V U5 sag to 21 V. U2 footprint replaced (U2 only), +10 parts placed right of L1.'),
-    ('S9.0 ratings', 'Published prototype rating +12V 2.4 A, -12V 0.8 A (75 % of the minimum current-limited capability at '
-                     'the 12.5 V converter input), <= 33 W together (3 A contract at the 13.5 V minimum, worst efficiency '
-                     'mix); ~36 W is the most a nominal 15 V / 3 A source supports.'),
-    ('S9.0 arming', 'Re-derived without P5_OK: ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3); S8.5 one-shot STARTED '
-                    '(U12 A, U11 -> ARMED, TP19) kept; timelines re-run at the 15 V source corners with a load-aware VPD '
-                    'plant (the loaded 13.5 V minimum sits below the 13.98 V turn-on maximum): 0 violations.'),
-    ('S9.0 residuals', 'Owner decisions 2026-11-02: no reverse-current blocking (no LM74700/LTC4357-class part, no FETs) and '
-                       'no voltage-triggered fuse/crowbar; both recorded as accepted residuals with bench-test conditions '
-                       'and pass criteria (calcs residuals, validation accepted_residuals, docs S9.0). Finding: a live +/-12V '
-                       'bus can enable U4 through Q1 in an unpowered module and its FPWM can pump VIN: the procedural rule '
-                       'is mandatory; a non-blocking mitigation is an open owner decision, not implemented.'),
-    ('kept / open', 'Crowbar vs eFuse stays deferred/open (no crowbar restored); replug/POR race (C3) open; U18/U20 on VPD, '
-                    'guard thresholds, precision-divider policy, mechanics and the panel geometry unchanged (panel label PD '
-                    '15V).'),
+    ('1 Critical', 'Q1 now takes its emitter supply from own VPD, with RUN AND MAIN_LED_OK series base sinks Q14/Q15 and R112 off pullup. D24 SMBJ16A finite-energy VIN clamp; D25 slew-limited negative clamp; D26 local output backstop. No self-enable from output bus. Hard hotplug and powered paralleling remain unqualified.'),
+    ('2 Input minimum', 'R2/R3 precision 100k/10k plus R114 510 ohm: on 12.263-12.976V, off 11.365-12.193V. 13.5V at module includes 0.75V cable drop at 3A. Falling >=11.8V is not guaranteed and is explicitly not claimed.'),
+    ('3 Thermal', 'R109 18mOhm WSLP1206R0180FEA: 2.621-2.940A. Screen Tj at 50C ambient 108.2C maximum vs 125C recommendation. Procurement remains open.'),
+    ('4 Ground', 'AGND_U2 contains U2.5/.17 and analog returns, joined to GND/PGND only through R113 at C82.2; explicit placement and native regression.'),
+    ('5 Loop', 'R111 6.8k / C83 100nF; full complex PI/boost/buck plant across 13824 sampled corners. External positive capacitance restricted to 0-440uF with documented cable/passive-load bounds; no arbitrary active-rack stability claim.'),
+    ('6 Startup', '3A source resource/qualification matrix and full power-reset/epoch tests; repeated autonomous resets FAIL qualification rather than restarting a passing record. STARTED remains volatile and one-shot per powered epoch.'),
+    ('7 Preserved', '+5V absent; 15V PD R1=56k; TPS552892-Q1 retained; S8.5 STARTED retained; crowbar deferred/open; 20V retarget includes clamp replacements. No tracks, vias or zones added.'),
 ]
 OPEN_GATES = [
-    '365 routing opens (unrouted fit placement); the local-loop screens are straight-line distances, not routed loops',
-    'TPS552892-Q1 loop with the real rack capacitance (crossover falls below the 1.7 kHz COMP zero), thermal at the R109 '
-    'limit, and the 966 kHz choice against TI\'s < 500 kHz high-power advice: bench Bode / thermal gates',
-    'Reverse current (accepted residual): a live bus can enable and power U4 in an unpowered or latched-off module and pump '
-    'VIN beyond U2\'s 42 V maximum; procedural rule mandatory; Q1/U4 enable mitigation = open owner decision',
-    'Rail overvoltage (accepted residual): the guard + latch opens U5 but does not discharge the rails; downstream modules '
-    'must be qualified against the T2 conditions (up to 16.5 V, ~24 V without a rack after a control failure)',
-    'Replug / POR race of the U20 -12V channel (calcs replug_por, worst 13.75 ms vs the 12 ms POR minimum): nuisance latch-off',
-    'Arming timelines are a logic model with datasheet timings; bench-verify the one-shot window, brown-out and overload '
-    'latching at the 15 V corners (U5 turn-on margin 0.27 V unloaded, running margin 0.37 V loaded)',
-    'VPD ringing at U18/U20, cold MON_OVN clamp, power-down sequences, -12V start-up into the real rack at 13.5 V',
-    'Published rating is a datasheet-minimum prototype rating, not measured; connector/cable current and fit; source '
-    'behaviour above the 33 W total (U5 does not enforce the 3 A contract)',
-    'Manual fabrication/CAM and assembly review; RYQ land pattern (0.2 mm gaps, 0.15 mm mask webs) with the fab',
-    'Crowbar vs eFuse (rail overvoltage protection architecture) remains a deferred, open owner decision',
+    'Unrouted placement; all connectivity opens are intentional at P2.1, not a fabrication release',
+    'Bench Bode and thermal validation; sampled model is not measured arbitrary-rack stability',
+    'Hard/fast live-bus hotplug, cold negative VIN clamp and sustained enabled reverse power remain unqualified',
+    'TVS clamps are finite-energy backstops, not a sustained bus shunt or downstream 16V protection',
+    '3A source/startup and full power-reset qualification not performed on hardware; no nonvolatile lockout',
+    'R109 lacks verified supplier C-code; new-code prices and Economic eligibility unknown; sourcing gate open',
+    'Replug/POR nuisance race remains open; downstream OV qualification and crowbar vs eFuse deferred',
+    'Routed loops, connector/cable thermal and mechanical fit, CAM/assembly signoff remain open',
 ]
 
 
@@ -151,7 +125,7 @@ def main():
     rec = {
         'revision': REVISION,
         'status': 'verified schematic / fit draft, unrouted and not bench-qualified',
-        'replaces': 'review-s85.json (S8.5 / P1.5 record, git 5a3a686)',
+        'replaces': 'review-s90.json (S9.0 / P2.0 record in git d7d7219)',
         'changelog': [{'item': k, 'change': v} for k, v in CHANGELOG],
         'native_findings': summary['findings'],
         'exact_native_ref_pin_net_parity': summary['ref_pin_net_parity'],
@@ -169,13 +143,18 @@ def main():
                       'local_loops_violations': board['local_loops']['violations'],
                       'local_loops': {r['purpose']: [r['from'], r['to'], r['distance_mm'], r['limit_mm']]
                                       for r in board['local_loops']['rows']},
-                      'basis': 'synchronized from the S9.0 step-1 board (P1.5 minus the +5V parts)',
+                      'basis': 'S9.1 / P2.1 synchronized from S9.0; no routing',
                       'replaced_footprints': place.get('replaced_footprints', {}),
                       'moved_retained_refs': place['moved_retained_refs'],
                       'added_refs': place['added_refs'], 'removed_refs': place['removed_refs'],
                       'courtyard_fill': board['area_mm2']['fill_of_inset']},
         'mechanical': {'overlaps': len(asm['solid_interference_mm3']), 'proxies': asm['proxies'],
                        'risks': {r['id']: r.get('value_mm') for r in mech['risks']}, 'nominal_only': True},
+        'S91_input_qualification': calcs['input_qualification'],
+        'S91_enable_logic': calcs['enable_logic'],
+        'S91_compensation': b['compensation'],
+        'S91_startup_qualification': calcs['startup_qualification'],
+        'S91_ground_split': val['ground_split'],
         'electrical_screens': {
             'plus12_duty': {'S8_TPS62933F_required_duty': b['S8_TPS62933F_at_15V']['required_duty'],
                             'S8_min_VPD_for_regulation_V': b['S8_TPS62933F_at_15V']['min_VPD_for_regulation_V'],
@@ -207,10 +186,12 @@ def main():
                                  'peak_screens_V': res['rail_overvoltage']['peak_screens_V'],
                                  'bench_test': res['rail_overvoltage']['bench_test']},
             'validation': val['accepted_residuals']},
-        'sourcing': {'selected_part_evidence': 's90-sourcing.json (TPS552892 C22375748, R109 C601098, R1 C23206); every '
-                                               'other code from the dated sourcing.json snapshot',
+        'sourcing': {'selected_part_evidence': 's91-sourcing.json for new parts (unknown live eligibility/prices); s90/s84/s83 and sourcing.json for dated retained parts',
                      'earlier_evidence': ['s84-sourcing.json', 's83-sourcing.json'],
-                     'parts_total_q1_snapshot_usd': src['summary']['S8_parts_usd_q1'],
+                     'parts_partial_subtotal_q1_usd': src['summary']['S8_parts_usd_q1'],
+                     'unpriced_codes': src['summary']['S8_unpriced_codes'],
+                     'manual_parts_no_LCSC': src['summary']['manual_parts_no_LCSC']['S8'],
+                     'failures': src['summary']['failures'],
                      'codes': src['summary']['S8_codes'], 'placements': src['summary']['S8_placements'],
                      'all_parts_fresh_live_audit': False,
                      'basic_only_policy': src['basic_only_policy']['decision'],
@@ -219,7 +200,7 @@ def main():
                      'reverse_blocking_parts': 'none (owner decision)'},
         'original_S7_R3_hardware_unchanged_sha256': {p: sha(p) for p in S7_R3},
         'sources_sha256': {p: sha(p) for p in SOURCES + footprints_used()},
-        'artifacts_sha256': {p: sha(p) for p in artifacts},
+        'artifacts_sha256': {p: sha(p) for p in artifacts + ['docs/s8-single-board.md']},
         'open_gates': OPEN_GATES,
         'order_ready': False,
     }
