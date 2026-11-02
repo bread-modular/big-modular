@@ -2,8 +2,10 @@
 """S8 single-board pre-calculations: ceramic banks, VIN damper, soft start into rack capacitance,
 overvoltage guard and VPD-powered comparators, +5V series disconnect (OVLO rising/falling and current
 corners, load-release vs OVLO proof, shorted-high-side delay sensitivity, split banks and thermal screens),
-V3V3-loss comparator state, startup window from MAIN_OK, -12V start-up per the LMR38020 hiccup rule,
-the published conservative continuous rating, input and connector budgets, board area (S8.4).
+V3V3-loss comparator state, -12V start-up per the LMR38020 hiccup rule, the published conservative
+continuous rating, input and connector budgets, board area (S8.4); S8.5: the one-shot arming (required
+behaviour, STARTED latch topology, V20_OK status floor over tolerance/temperature, U5 window, startup budget)
+and the replug / power-on-reset race of the U20 -12V channel (an explicit OPEN item).
 
   python3 -B tools/s8_calcs.py --out docs/s8-single     (numpy; pcbnew for the area section)
 
@@ -74,6 +76,11 @@ SOURCES = {
     'SN74LVC1G17': 'TI SCES351Y Table 5-1: VT+ 1.48-1.92 V at VCC 3 V (2.19-2.74 V at 4.5 V)',
     'USB_PD_input': 'assumption: 20 V PD source -5 % (19.0 V) minus <=0.75 V cable/connector drop = 18.25 V minimum '
                     'loaded VPD; not a measured cable',
+    'TPS1663_PGOOD': 'TI SLVSET9G (https://www.ti.com/lit/ds/symlink/tps1663.pdf): PGOOD high when the FET is enhanced, low '
+                     'when the FET turns off on a fault or SHDN low; deglitch tPGOODR 11.5 ms typ rising, tPGOODF 10 ms typ '
+                     'falling; operating IN 4.5-60 V (status outputs unspecified below)',
+    'USB_PD_vSafe5V': 'USB PD 3.x vSafe5V 4.75-5.5 V: the source starts at 5 V and moves to the negotiated PDO only after the '
+                      'contract (the 5 V phase can last from ~100 ms to seconds, e.g. after a hard reset)',
 }
 
 
@@ -394,12 +401,8 @@ def v3v3_loss(val):
         rows[f'-{vneg:g}V'] = dict(MON_OVN_open_circuit_V=round(voc, 3), node_current_bound_uA=round(node_bound * 1e6, 1),
                                    D22_current_25C_uA=round(clamp_i * 1e6, 1), pin_V_25C=-0.24,
                                    pin_V_cold_minus40C_screen=round(-0.24 - 0.002 * 65, 2))
-    # Replug into a rack that already holds -12V: U20 is powered from VPD at once, REF_OV charges through R100
-    # into C67; the -12V channel reads OV until REF_OV > |V| R98 / R99. It must clear before U10 releases RESET.
-    need = {f'-{v:g}V': round(v * r98 / r99, 3) for v in (12.0, 12.624)}
-    t = []
-    for k1, k2, v3 in ((.99, .9, 3.366), (1.01, 1.1, 3.234)):
-        t.append(r100 * k1 * c67 * k2 * math.log(v3 / (v3 - 12.624 * r98 / r99)))
+    # Replug into a rack that already holds -12V: S8.5 moved this screen to replug_por() (R98 loads REF_OV while D22
+    # clamps MON_OVN; the S8.4 estimate here ignored that load and claimed ~1 ms margin).
     return dict(
         states={'U20 powered (VPD up, V3V3 lost or not yet up)': 'positive channels: REF_OV ~0 V, taps >= 0 V, output '
                 'state undefined/low; -12V channel: MON_OVN negative if the rack holds -12V, D22 clamps',
@@ -412,11 +415,10 @@ def v3v3_loss(val):
         common_mode='inputs 0..VPD-2 V while VPD >= 15 V except MON_OVN (-0.24 V at 25 C, ~-0.37 V cold screen)',
         D1='SMBJ22A on VPD does not conduct in these states (stand-off 22 V); its 35.5 V rated clamp leaves 0.5 V to '
            'the LM2901B 36 V recommended maximum (38 V abs max): VPD ringing at U18/U20 is a bench gate',
-        replug_REF_OV_needed_V=need, replug_REF_OV_settle_ms=[round(x * 1e3, 1) for x in t],
-        replug_RESET_release_min_ms=12.0,
+        replug='see replug_por (S8.5): the S8.4 ~1 ms replug margin ignored the R98 load on REF_OV and is withdrawn',
         verdict='No enable path exists while V3V3 is gone; the input current is bounded far below the abs-max. The '
-                'D22 clamp is NOT a guaranteed -0.3 V clamp when cold. Replug into a rack holding -12V clears the '
-                '-12V channel ~1 ms before the minimum RESET release (screen, not a guarantee): bench gate.')
+                'D22 clamp is NOT a guaranteed -0.3 V clamp when cold. Replug into a rack holding -12V: OPEN item '
+                '(replug_por), not a margin.')
 
 
 def reference(val):
@@ -871,44 +873,143 @@ def rating(val, eff, settings):
 
 
 def startup_window(val):
+    """Qualification window (U11, C49) against the rail-up budget (S8.4 budget, U23 dVdt ramp included)."""
     t = val('C49') * 1e9 / 175 + .0005
     budget = dict(U5_ramp_ms=round(20 / (1.775e-6 * 23.5 / (22e-9 * 1.1)) * 1e3, 1), PGOOD_deglitch_ms=13,
                   TPS62933F_SS_max_ms=round(val('C9') * 1.1 * 0.8 / 4.5e-6 * 1e3, 1), LMR38020_SS_plus_blank_ms=18 + 4,
                   U23_ramp_5V_sensitivity_ms=round(5/(2000/(val("C68")*1e12)*.81/2.21/1.1),1))
     total = sum(budget.values())
-    lo, hi = R1
-    u5_on, u5_off = u5_window(val)
-
-    def ref_good(v3, a, b, e):
-        return v3 * val('R74') * b / (val('R73') * a + val('R74') * b) + e
-    v20 = [ref_good(3.3 * .98, hi, lo, -0.0055) * (1 + val('R83') * lo / (val('R84') * hi)) - 50e-9 * val('R83'),
-           ref_good(3.3, 1, 1, 0) * (1 + val('R83') / val('R84')),
-           ref_good(3.3 * 1.02, lo, hi, 0.0055) * (1 + val('R83') * hi / (val('R84') * lo))]
-    v20_s83 = ref_good(3.3, 1, 1, 0) * (1 + 220e3 / val('R84'))       # S8.3 R83 = 220k
     return dict(typ_s=round(t, 3), min_s_screen=round(t * .6 * .9, 3), max_s_screen=round(t * 1.4 * 1.1, 3),
                 S7_typ_s=round(1e-6 * 1e9 / 175 + .0005, 2),
                 rail_up_budget_ms=budget, rail_up_total_ms=round(total, 1),
                 ratio_min_window_to_budget=round(t * .6 * .9 / (total / 1e3), 1),
-                arming='S8.4 (review M1): TIMER_GO = RUN AND MAIN_OK (U13 pins 9/10 -> 8). MAIN_OK (U5 FLT + PGOOD) is '
-                       'the U2/U3 enable, so the qualification window starts with the converters; ARMED follows within '
-                       'the window whenever the converters stay enabled. S8.3 used V20_OK, which could stay low above '
-                       'U5 turn-on and mask the latch indefinitely.',
-                U5_on_V=[round(v, 2) for v in u5_on], U5_off_V=[round(v, 2) for v in u5_off],
-                V20_OK_V=[round(v, 2) for v in v20], V20_OK_S83_220k_nominal_V=round(v20_s83, 2),
-                min_loaded_PD_input_V=18.25,
-                V20_OK_max_below_min_PD_input=v20[2] < 18.25,
-                sequence=['USB-C attach: CH224A requests 20 V; VPD rises; U9 makes V3V3; U10 holds RESET_N low '
-                          '(>= 12 ms); RESET clears ARMED and FAULT, RUN low',
-                          'RESET_N high: RUN = RESET_N AND NOT_FAULT; U5 SHDN released (U23 EN = RUN too)',
-                          'VPD above the U5 UVLO (%.1f-%.1f V): U5 ramps (~12 ms), PGOOD after 8-13 ms -> MAIN_OK '
-                          'enables U2/U3 (U4 follows +12V via Q1)' % (u5_on[0], u5_on[2]),
-                          'TIMER_GO = RUN AND MAIN_OK starts U11: ARMED after %.2f-%.2f s; rails are up within '
-                          '~%.0f ms' % (t * .6 * .9, t * 1.4 * 1.1, total),
-                          'ARMED: any bad status (MAIN_LED_OK = MAIN_OK AND V20_OK, P12_OK, P5_OK, N12_OK) for > ~1 ms '
-                          'latches FAULT -> RUN low -> all off until RESET; OV_N presets FAULT at any time',
-                          'Marginal input between U5 turn-on and V20_OK: converters run, ARMED asserts, V20_OK bad -> '
-                          'latched off (fail-safe), never masked. MAIN_OK chatter faster than the window restarts '
-                          'the timer while the converters are cycled off by U5 (bench test)'])
+                arming='S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable)')
+
+
+VSAFE5V_MAX = 5.5                # USB PD vSafe5V maximum (SOURCES USB_PD_vSafe5V)
+V20_MARGIN_MIN_V = 2.0           # required V20_OK band clearance to vSafe5V max and to the U5 turn-off minimum
+
+
+def v20_band(val, r83=None):
+    """V20_OK trip (VPD) over V3V3 +-2 %, R73/R74 and R83/R84 at 1 % + 1 % TCR, LM2901B VIO 5.5 mV and IB 0-50 nA out
+    of the pin (it lowers the trip by up to IB x R83, so it only widens the minimum; same model as S8.4)."""
+    lo, hi = R1
+    r83 = val('R83') if r83 is None else r83
+
+    def ref_good(v3, a, b, e):
+        return v3 * val('R74') * b / (val('R73') * a + val('R74') * b) + e
+    return [ref_good(3.3 * .98, hi, lo, -0.0055) * (1 + r83 * lo / (val('R84') * hi)) - 50e-9 * r83,
+            ref_good(3.3, 1, 1, 0) * (1 + r83 / val('R84')),
+            ref_good(3.3 * 1.02, lo, hi, 0.0055) * (1 + r83 * hi / (val('R84') * lo))]
+
+
+def v20_floor_ok(band, off):
+    """S8.5 rule for V20_OK as a U5 status-validity floor: clear of the PD 5 V phase and below the U5 turn-off minimum."""
+    return band[0] >= VSAFE5V_MAX + V20_MARGIN_MIN_V and band[2] <= off[0] - V20_MARGIN_MIN_V
+
+
+def arming(val):
+    """S8.5 (item B): one-shot arming. Required behaviour, the topology that delivers it, the V20_OK divider with
+    tolerance/temperature, and the S8.4 window it replaces. Timelines: validation.json startup_arming (verify_s8)."""
+    win = startup_window(val)
+    on, off = u5_window(val)
+    v20 = v20_band(val)
+    v20_s84, v20_s83 = v20_band(val, 200e3), v20_band(val, 220e3)
+    return dict(
+        required=['R1 bounded: ARMED within the U11 delay (0.31-0.88 s) of the first converter enable after RESET, and '
+                  'held until RESET/FAULT: the converters can never run unarmed for longer',
+                  'R2 no restart: nothing a fault can toggle (MAIN_OK, PGOOD, VPD, V20_OK, the rails) restarts or extends '
+                  'the window; only RESET (or a power-on reset) does',
+                  'R3 no early arming: the window starts only at a genuine converter enable, i.e. U5 on through its own '
+                  'UVLO with valid status; the PD 5 V phase or an intermediate PDO cannot start it, so no threshold below '
+                  'the converter enable point can arm',
+                  'R4 fail-safe: after ARMED any bad status > ~1 ms latches FAULT; FAULT holds RUN low until RESET; OV_N '
+                  '(U20 guard) presets FAULT at any time'],
+        topology={'STARTED': 'U12 flip-flop A used as a set/reset latch: PRE_N = START_N, CLR_N = RESET_N, CLK = GND '
+                             '(no clock edges), D = V3V3, Q = STARTED (TP19)',
+                  'START_N': 'U14 gate 2 (spare in S8.4): NAND(MAIN_LED_OK, RUN, V3V3, V3V3); low once U5 is on with '
+                             'PGOOD and FLT good, its status validated by V20_OK, while RUN. Level-sensitive, so a '
+                             'MAIN_OK that is already high at RESET release (PGOOD deglitch) still starts it; RUN in the '
+                             'gate keeps PRE_N high while RESET clears the latch',
+                  'TIMER_GO': 'U13 gate 3 = RUN AND STARTED -> R69/R70 -> U11 SENSE (unchanged divider)',
+                  'ARMED': 'U11 RESET output (R71 pull-up) = ARMED directly; it stays high because its input is latched',
+                  'parts': 'no new IC: the spare U14 gate and U12 flip-flop A re-used, R83 200k -> 120k (Basic, same '
+                           'line as R75), TP19 (copper); U23 and the rest of S8.4 unchanged'},
+        V20_OK={'role': 'U5 status-validity floor: masks U5 FLT/PGOOD (MAIN_OK, R63 pull-up) where U5 is below its '
+                        '4.5 V operating minimum (PD 5 V phase); NOT an input-good threshold',
+                'band_V': [round(v, 3) for v in v20], 'R83': val('R83'),
+                'rule': f'band minimum >= vSafe5V max {VSAFE5V_MAX} V + {V20_MARGIN_MIN_V} V and band maximum <= U5 '
+                        f'turn-off minimum - {V20_MARGIN_MIN_V} V',
+                'rule_holds': v20_floor_ok(v20, off),
+                'margin_above_vSafe5V_max_V': round(v20[0] - VSAFE5V_MAX, 3),
+                'margin_below_U5_off_min_V': round(off[0] - v20[2], 3),
+                'consequence': 'whenever U5 can be on (VPD >= its 15.04 V turn-off minimum) V20_OK is high, so MAIN_LED_OK '
+                               '= MAIN_OK there and V20_OK can never be the first status to drop; ANY_BAD = NOT(MAIN_LED_OK '
+                               'AND P12_OK AND P5_OK AND N12_OK) means "U5 not on with valid status, or a rail below its '
+                               'monitor threshold"',
+                'S8.4_200k_band_V': [round(v, 3) for v in v20_s84], 'S8.4_200k_rule_holds': v20_floor_ok(v20_s84, off),
+                'S8.3_220k_band_V': [round(v, 3) for v in v20_s83],
+                'S8.4_problem': 'S8.4 V20_OK 14.62-17.73 V tripped below the U5 turn-on band (16.23-18.23 V) and above '
+                                'its turn-off minimum, so it meant neither "input good" nor "status valid"; S8.3 (220k, up '
+                                'to ~19.4 V) could mask arming indefinitely. With TIMER_GO = RUN AND MAIN_OK a fault '
+                                'cycling U5 (overload auto-retry, sagging source) restarted the window forever, and MAIN_OK '
+                                'floating high in the PD 5 V phase armed the board before 20 V arrived'},
+        U5_on_V=[round(v, 3) for v in on], U5_off_V=[round(v, 3) for v in off],
+        U5_turn_on_margin_unloaded_V=round(19.0 - on[2], 3), U5_running_margin_loaded_V=round(VPD_RATED_MIN - off[2], 3),
+        input_qualification='U5 UVLO through MAIN_OK: on 16.23-18.23 V (unloaded source: 20 V -5 % = 19.0 V, 0.77 V '
+                            'margin), off 15.04-17.12 V (loaded minimum 18.25 V, 1.13 V margin). S8.4 compared the '
+                            'unloaded turn-on maximum with the loaded minimum (20 mV); that comparison was wrong',
+        window=win,
+        sequence=['USB-C attach: VPD = vSafe5V; U9 makes V3V3; U10 holds RESET_N low >= 12 ms (clears STARTED, FAULT)',
+                  'RESET_N high: RUN high (U5 SHDN released, U23 EN); U5 in UVLO, START_N high (V20_OK low in the 5 V '
+                  'phase)',
+                  'PD contract: VPD -> 20 V; V20_OK high at 9.06-10.96 V (U5 status valid, PGOOD low)',
+                  'VPD >= U5 turn-on (16.23-18.23 V): U5 ramps (~12 ms), PGOOD 11.5 ms typ -> MAIN_OK enables U2/U3 (U4 '
+                  'via Q1) -> MAIN_LED_OK -> START_N low -> STARTED (latched)',
+                  'TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~%.0f ms' % (
+                      win['rail_up_total_ms']),
+                  'ARMED: any bad status (MAIN_LED_OK, P12_OK, P5_OK, N12_OK) > ~1 ms -> FAULT -> RUN low -> all off until '
+                  'RESET; OV_N presets FAULT at any time'],
+        timelines='validation.json startup_arming.timelines (verify_s8 arming_timelines: cold start at the worst loaded '
+                  '20 V minimum, slow PD contract, brown-out after/inside the window, input overload chatter, hot plug '
+                  'into a live bus, load release, U20 guard before ARMED, short RESET), checked against R1-R4 from the '
+                  'native gate wiring; the S8.4 wiring fails them (test_s8 regression)')
+
+
+def replug_por(val):
+    """S8.4 Astra MAJOR-1: replug into a rack that holds -12V. The U20 -12V channel reads OV until REF_OV exceeds
+    |V| x R98/R99 (+ offset/bias); REF_OV charges through R100 into C67 while R98 already draws current toward the
+    clamped MON_OVN node (D22 ~ -0.24 V), so the Thevenin source is V3V3 x R98 / (R98 + R100) behind R100 || R98. If
+    REF_OV is still below the clear level when U10 releases RESET (>= 12 ms), OV_N presets FAULT: nuisance latch-off."""
+    r98n, r99n, r100n, c67n = val('R98'), val('R99'), val('R100'), val('C67')
+    rows = {}
+    for vneg in (12.0, 12.624):
+        for name, (k100, k67, v3, k98, k99, e) in {'nominal': (1, 1, 3.3, 1, 1, 0.0),
+                                                   'worst': (R1[1], 1.10 * 1.15, 3.3 * .98, R01[1], R01[0], 0.0055)}.items():
+            r98, r99, r100, c67 = r98n * k98, r99n * k99, r100n * k100, c67n * k67
+            need = (vneg * r98 + (e + 50e-9 * r98 * r99 / (r98 + r99)) * (r98 + r99)) / r99 if name == 'worst' \
+                else vneg * r98 / r99
+            vth = (v3 * r98 + (-0.24) * r100) / (r98 + r100)
+            rth = r98 * r100 / (r98 + r100)
+            t = rth * c67 * math.log(vth / (vth - need)) if vth > need else float('inf')
+            rows[f'-{vneg:g}V_{name}'] = dict(REF_OV_needed_V=round(need, 4), thevenin_V=round(vth, 3),
+                                              thevenin_kohm=round(rth / 1e3, 3), C67_uF=round(c67 * 1e6, 2),
+                                              settle_ms=round(t * 1e3, 2))
+    por_min_ms = 12.0
+    worst = max(r['settle_ms'] for r in rows.values())
+    return dict(cases=rows, POR_RESET_release_min_ms=por_min_ms, worst_settle_ms=worst,
+                margin_ms=round(por_min_ms - worst, 2), established=worst < por_min_ms,
+                corners='worst: R100 +2 % (1 % + 1 % TCR), C67 +10 % tolerance x +15 % X5R temperature (12.65 uF), V3V3 -2 %, '
+                        'R98/R99 0.1 % corners, LM2901B 5.5 mV offset and 50 nA bias; V3V3 rise time ignored (it only '
+                        'helps: REF_OV starts charging before the POR delay starts)',
+                S84_screen='S8.4 v3v3_loss: 8.2-10.7 ms, ~1 ms margin; it charged C67 from V3V3 through R100 alone and '
+                           'ignored the R98 current into the D22-clamped MON_OVN node. Withdrawn',
+                consequence='OV_N low at RESET release presets FAULT: MAIN stays off until RESET is pressed (fail-safe '
+                            'nuisance latch, no damage). Only when the -12V bus is held by something else at power-up '
+                            '(second supply, or a quick replug while the rack capacitance still holds -12V).',
+                status='OPEN: the margin is not established; candidate fixes (not implemented in S8.5): C67 4.7 uF '
+                       '(still right of the TLV431 instability region) roughly halves the settle time, or a CT capacitor '
+                       'on U10 lengthens the POR delay (both also change the RESET timing).')
 
 
 def input_budget():
@@ -999,7 +1100,7 @@ def main():
     ap.add_argument('--skip-sim', action='store_true', help='skip the VIN grid and rail-release simulations')
     a = ap.parse_args()
     parts, val = table()
-    R = {'status': 'S8 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
+    R = {'status': 'S8.5 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
     R['banks'], eff = banks(parts)
     R['ripple_and_steps'] = ripple_and_steps(eff)
     if not a.skip_sim:
@@ -1020,6 +1121,8 @@ def main():
     R['rating'] = rating(val, eff, disconnect_settings(val))
     R['basic_only_counterfactual'] = basic_only_counterfactual(val, eff, R['rail_release'])
     R['startup_window'] = startup_window(val)
+    R['arming'] = arming(val)
+    R['replug_por'] = replug_por(val)
     R['input_budget'] = input_budget()
     R['connectors'] = connectors()
     R['tvs'] = tvs(val, eff)

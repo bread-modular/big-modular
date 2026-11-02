@@ -6,10 +6,10 @@
 	(paper "User" 560 530)
 	(title_block
 		(title "USB power S8 single board - wired power flow overview")
-		(rev "S8.4")
+		(rev "S8.5")
 		(company "Big Modular")
-		(comment 1 "S8.4: single board, +5V series eFuse (FLT off the latch); +/-12V unswitched; MAIN only")
-		(comment 2 "Arming from MAIN_OK; U18/U20 on VPD; split +5V banks; see docs/s8-single-board.md")
+		(comment 1 "S8.5 single board: +5V eFuse as S8.4; +/-12V unswitched; MAIN LED only")
+		(comment 2 "One-shot arming latch (STARTED); U18/U20 on VPD; see docs/s8-single-board.md")
 	)
 	(lib_symbols)
 	(text "Two Eurorack outputs J2 + J3\nMonitors, OV guard, +5V eFuse\nMAIN LED (only status LED)"
@@ -21,84 +21,7 @@
 			)
 			(justify left top)
 		)
-		(uuid "15c43331-c33a-5c98-b232-e60538a9b3b9")
-	)
-	(text "LMR38020F inverting buck-boost\n-12 V delivered rail"
-		(exclude_from_sim no)
-		(at 187.96 335.28 0)
-		(effects
-			(font
-				(size 1.4 1.4)
-			)
-			(justify left top)
-		)
-		(uuid "32c8b997-2e87-5965-841e-bb64890f51de")
-	)
-	(text "FAULT POLICY\nQualification starts at MAIN_OK (converters enabled); persistent bad status after\n~0.57 s -> all OFF until RESET. Severe OV via U20 acts even before ARMED.\nU23 independently cuts +5V; OVLO alone is auto-recovering. U23 FLT is not latched.\nMAIN indicates enabled/status, not precision regulation."
-		(exclude_from_sim no)
-		(at 370.84 340.36 0)
-		(effects
-			(font
-				(size 1.4 1.4)
-			)
-			(justify left top)
-		)
-		(uuid "39055b42-04be-5f7b-9f1d-12f7262d7c0a")
-	)
-	(text "OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\nPublished conservative rating (S8.4, prototype): 2.5 / 2.0 / 0.9 A,\n<=45 W total; above 2 A per rail use both headers. U23 ILIM 3.03 A nominal is a threshold, not a rating."
-		(exclude_from_sim no)
-		(at 370.84 386.08 0)
-		(effects
-			(font
-				(size 1.2 1.2)
-			)
-			(justify left top)
-		)
-		(uuid "4c5ea9e7-4759-5382-b89d-e947c36ed5a6")
-	)
-	(text "USB POWER 45W S8.4 / SINGLE BOARD, +5V SERIES PROTECTION"
-		(exclude_from_sim no)
-		(at 20.32 15.24 0)
-		(effects
-			(font
-				(size 2.4 2.4)
-			)
-			(justify left top)
-		)
-		(uuid "7900f7e9-43c3-5529-a513-6dc0030b3192")
-	)
-	(text "TPS62933F\n+12 V delivered rail"
-		(exclude_from_sim no)
-		(at 187.96 111.76 0)
-		(effects
-			(font
-				(size 1.4 1.4)
-			)
-			(justify left top)
-		)
-		(uuid "7fafe2a6-1948-5b78-9b98-4128ac35d1be")
-	)
-	(text "S8.4: +5V fast series disconnect (FLT off the latch); +/-12V directly from converters; ceramic banks; two parallel outputs; VPD-powered OV guard; arming from MAIN_OK; MAIN LED only."
-		(exclude_from_sim no)
-		(at 20.32 25.4 0)
-		(effects
-			(font
-				(size 1.2 1.2)
-			)
-			(justify left top)
-		)
-		(uuid "92fa3644-95ef-59ce-af69-3d9101434dc9")
-	)
-	(text "TPS62933F\nP5_RAW before disconnect"
-		(exclude_from_sim no)
-		(at 187.96 223.52 0)
-		(effects
-			(font
-				(size 1.4 1.4)
-			)
-			(justify left top)
-		)
-		(uuid "93210dac-ea2c-59c3-992d-4007e85e7fc3")
+		(uuid "011a5c72-948b-58c9-98f2-d5a4f6b93067")
 	)
 	(text "CH224A: 20 V request\nTPS16630: 4.186 A common input switch\nVIN damper 1R + 2 x 10u"
 		(exclude_from_sim no)
@@ -109,14 +32,91 @@
 			)
 			(justify left top)
 		)
-		(uuid "f3a371e9-4f5d-52a0-9e70-65250097d686")
+		(uuid "15c43331-c33a-5c98-b232-e60538a9b3b9")
 	)
-	(text "60 V always-on LDO / retained ARMED + FAULT\nManual RESET; OV_N presets FAULT"
+	(text "USB POWER 45W S8.5 / SINGLE BOARD, +5V SERIES PROTECTION"
+		(exclude_from_sim no)
+		(at 20.32 15.24 0)
+		(effects
+			(font
+				(size 2.4 2.4)
+			)
+			(justify left top)
+		)
+		(uuid "32c8b997-2e87-5965-841e-bb64890f51de")
+	)
+	(text "LMR38020F inverting buck-boost\n-12 V delivered rail"
+		(exclude_from_sim no)
+		(at 187.96 335.28 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "3b6fc73e-225a-59c7-8d53-ccff83dc43e0")
+	)
+	(text "60 V always-on LDO / one-shot STARTED + FAULT latches\nManual RESET; OV_N presets FAULT"
 		(exclude_from_sim no)
 		(at 50.8 482.6 0)
 		(effects
 			(font
 				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "547234b6-b892-5c0a-bbe1-d0eff89a0258")
+	)
+	(text "FAULT POLICY\nOne-shot qualification from the first converter enable (STARTED latch); after\n0.31-0.88 s any persistent bad status -> all OFF until RESET. Severe OV via U20 acts even before ARMED.\nU23 independently cuts +5V; OVLO alone is auto-recovering. U23 FLT is not latched.\nMAIN indicates enabled/status, not precision regulation."
+		(exclude_from_sim no)
+		(at 370.84 340.36 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "6e5e6cb8-95b4-564e-ac0e-291647799a21")
+	)
+	(text "TPS62933F\n+12 V delivered rail"
+		(exclude_from_sim no)
+		(at 187.96 111.76 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "7d3c67eb-94b1-5179-9d68-5c352f9fb86c")
+	)
+	(text "OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\nPublished conservative rating (S8.4, prototype): 2.5 / 2.0 / 0.9 A,\n<=45 W total; above 2 A per rail use both headers. U23 ILIM 3.03 A nominal is a threshold, not a rating."
+		(exclude_from_sim no)
+		(at 370.84 386.08 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left top)
+		)
+		(uuid "9b268910-9bc0-5d13-a15e-4fec20380940")
+	)
+	(text "TPS62933F\nP5_RAW before disconnect"
+		(exclude_from_sim no)
+		(at 187.96 223.52 0)
+		(effects
+			(font
+				(size 1.4 1.4)
+			)
+			(justify left top)
+		)
+		(uuid "9b9e3961-cb38-5545-be1e-821d2ba98b3c")
+	)
+	(text "S8.5: +5V fast series disconnect (S8.4, FLT off the latch); +/-12V directly from converters; ceramic banks; two parallel outputs; VPD-powered OV guard; one-shot arming latch; MAIN LED only."
+		(exclude_from_sim no)
+		(at 20.32 25.4 0)
+		(effects
+			(font
+				(size 1.2 1.2)
 			)
 			(justify left top)
 		)
@@ -126,103 +126,13 @@
 		(at 137.16 180.34)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5d880ea6-8ea0-56ca-9e88-cf9d060f3cf4")
+		(uuid "05b86349-959b-563d-bae3-60ce60c599fd")
 	)
 	(junction
 		(at 137.16 78.74)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "cae7efe8-7bd2-5e99-8684-7fae0854cb8c")
-	)
-	(wire
-		(pts
-			(xy 304.8 60.96) (xy 304.8 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0942a25f-892d-5633-9204-d8045cdf30d4")
-	)
-	(wire
-		(pts
-			(xy 170.18 180.34) (xy 177.8 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0bcbf503-fc9d-5e54-bd3f-e3ae72e3112c")
-	)
-	(wire
-		(pts
-			(xy 137.16 78.74) (xy 137.16 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1543bb10-d0ad-5122-9b4b-b45dc507796f")
-	)
-	(wire
-		(pts
-			(xy 363.22 93.98) (xy 370.84 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1766d75b-2995-5e81-a25c-86ce55074b66")
-	)
-	(wire
-		(pts
-			(xy 363.22 78.74) (xy 370.84 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1c443f6d-e4e6-56c9-8006-c1982bd06f78")
-	)
-	(wire
-		(pts
-			(xy 137.16 180.34) (xy 170.18 180.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1e8d05cb-581c-59ff-9dca-a0806ec93ca7")
-	)
-	(wire
-		(pts
-			(xy 279.4 294.64) (xy 287.02 294.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "212e7094-d0fe-5cdb-80a7-ab4abe578ed6")
-	)
-	(wire
-		(pts
-			(xy 170.18 172.72) (xy 177.8 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2210e48d-2ce9-5c32-bb26-aa720ac16a3e")
-	)
-	(wire
-		(pts
-			(xy 279.4 60.96) (xy 287.02 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2b889d09-4a3f-59d5-9276-cbe3e81e60e1")
+		(uuid "642acff0-ced6-51c5-b7d0-5a0c426ec7f0")
 	)
 	(wire
 		(pts
@@ -232,67 +142,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "2bb939a2-70dd-5573-be0a-f23e2d7a5da5")
-	)
-	(wire
-		(pts
-			(xy 299.72 424.18) (xy 307.34 424.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "332f72f4-8729-56c4-9706-f5a779030e64")
-	)
-	(wire
-		(pts
-			(xy 363.22 86.36) (xy 370.84 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "344ea660-12f4-52d7-9488-8fa287ad6f45")
-	)
-	(wire
-		(pts
-			(xy 137.16 302.26) (xy 170.18 302.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3c0b0071-ea69-5d48-879e-0b16a306205f")
-	)
-	(wire
-		(pts
-			(xy 477.52 78.74) (xy 485.14 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d4101b4-1444-52f8-924b-98df0ea337b5")
-	)
-	(wire
-		(pts
-			(xy 317.5 93.98) (xy 363.22 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4805a4f1-6099-5f3b-93f7-f381dcda4bc8")
-	)
-	(wire
-		(pts
-			(xy 137.16 68.58) (xy 137.16 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4ddbdf8a-8815-5fd4-9ff8-6295fa706e5d")
+		(uuid "0942a25f-892d-5633-9204-d8045cdf30d4")
 	)
 	(wire
 		(pts
@@ -302,107 +152,7 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "4eca8fde-1c76-56c9-945a-83f96e84d959")
-	)
-	(wire
-		(pts
-			(xy 33.02 416.56) (xy 40.64 416.56)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "50b514ff-5c30-5fea-944d-db7d58dd7f32")
-	)
-	(wire
-		(pts
-			(xy 170.18 294.64) (xy 177.8 294.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5b0a7a2a-568b-5091-b4bd-7af0199bfdb1")
-	)
-	(wire
-		(pts
-			(xy 304.8 71.12) (xy 363.22 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "61542209-bdd7-5bfc-80a3-bda8e40edffa")
-	)
-	(wire
-		(pts
-			(xy 170.18 60.96) (xy 177.8 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "61dd978f-2774-51cd-b42d-58894c536c3b")
-	)
-	(wire
-		(pts
-			(xy 33.02 71.12) (xy 40.64 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "653582be-dab8-5efb-a4d2-68fec535048f")
-	)
-	(wire
-		(pts
-			(xy 33.02 462.28) (xy 40.64 462.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6ae9720a-d822-5c48-a2cc-e32534857774")
-	)
-	(wire
-		(pts
-			(xy 363.22 109.22) (xy 370.84 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6f5d2544-98d7-5f00-83ab-8e17c627e168")
-	)
-	(wire
-		(pts
-			(xy 299.72 431.8) (xy 307.34 431.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6f767c5c-cd87-5541-9b16-fcfe86f5146c")
-	)
-	(wire
-		(pts
-			(xy 477.52 86.36) (xy 485.14 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7b7c5d2c-f7b3-52c4-a117-cba4fec3587d")
-	)
-	(wire
-		(pts
-			(xy 330.2 78.74) (xy 363.22 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7cd3a6ca-9fb9-5e3c-b50e-8ad397c3a1e9")
+		(uuid "0bcbf503-fc9d-5e54-bd3f-e3ae72e3112c")
 	)
 	(wire
 		(pts
@@ -412,117 +162,27 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "802085c2-81f2-5282-816e-b86029a16fe5")
+		(uuid "1543bb10-d0ad-5122-9b4b-b45dc507796f")
 	)
 	(wire
 		(pts
-			(xy 363.22 116.84) (xy 370.84 116.84)
+			(xy 304.8 71.12) (xy 363.22 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8238d58b-e592-54c8-aeb6-b5118b034f23")
+		(uuid "1766d75b-2995-5e81-a25c-86ce55074b66")
 	)
 	(wire
 		(pts
-			(xy 299.72 416.56) (xy 307.34 416.56)
+			(xy 299.72 431.8) (xy 307.34 431.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "92af36e5-dfe2-58a1-b0db-a062db4cb1d2")
-	)
-	(wire
-		(pts
-			(xy 121.92 78.74) (xy 129.54 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9460a5fe-cb5f-55ca-acc4-935337ec9c17")
-	)
-	(wire
-		(pts
-			(xy 477.52 71.12) (xy 485.14 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9862a5dd-2a70-55ff-82d4-7692678bad2f")
-	)
-	(wire
-		(pts
-			(xy 33.02 447.04) (xy 40.64 447.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a8c40390-1f08-58bb-985c-7d50b4ac1d4a")
-	)
-	(wire
-		(pts
-			(xy 287.02 294.64) (xy 330.2 294.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a9ed1333-f853-5ffd-b402-29bdf678ce8a")
-	)
-	(wire
-		(pts
-			(xy 477.52 101.6) (xy 485.14 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa7c5398-e62a-55c5-bfca-42c59d2b8d5f")
-	)
-	(wire
-		(pts
-			(xy 363.22 101.6) (xy 370.84 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "acdb1afe-f91d-57e2-8cca-f858d78c823d")
-	)
-	(wire
-		(pts
-			(xy 137.16 180.34) (xy 137.16 302.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b49b02b2-4bd4-5c78-9b62-762f2c5ea720")
-	)
-	(wire
-		(pts
-			(xy 170.18 68.58) (xy 177.8 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b99fe5ae-f5ba-57f2-8583-6101c0c0d7c1")
-	)
-	(wire
-		(pts
-			(xy 287.02 172.72) (xy 317.5 172.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bcffb930-87a3-54c1-a982-e45940d709b8")
+		(uuid "1c443f6d-e4e6-56c9-8006-c1982bd06f78")
 	)
 	(wire
 		(pts
@@ -532,77 +192,37 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "c091ea09-fd3b-57ad-9f2d-9dd5cd5bf1b5")
+		(uuid "1e8d05cb-581c-59ff-9dca-a0806ec93ca7")
 	)
 	(wire
 		(pts
-			(xy 33.02 439.42) (xy 40.64 439.42)
+			(xy 170.18 60.96) (xy 177.8 60.96)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cd33c4fc-4926-5cd3-b83d-d927f470d62b")
+		(uuid "212e7094-d0fe-5cdb-80a7-ab4abe578ed6")
 	)
 	(wire
 		(pts
-			(xy 33.02 431.8) (xy 40.64 431.8)
+			(xy 137.16 68.58) (xy 137.16 78.74)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d14cb9a6-8942-59d9-bd96-3272205dc635")
+		(uuid "2210e48d-2ce9-5c32-bb26-aa720ac16a3e")
 	)
 	(wire
 		(pts
-			(xy 287.02 60.96) (xy 304.8 60.96)
+			(xy 477.52 86.36) (xy 485.14 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d7e49f8b-cebe-566c-aa93-af754ac299db")
-	)
-	(wire
-		(pts
-			(xy 170.18 302.26) (xy 177.8 302.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "db35342b-c456-50c1-b9e7-8917e6a4e800")
-	)
-	(wire
-		(pts
-			(xy 363.22 71.12) (xy 370.84 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e71d5bf0-0171-5966-af22-a8405711e752")
-	)
-	(wire
-		(pts
-			(xy 129.54 78.74) (xy 137.16 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e772f821-a8cc-5eb4-ab4f-c6f619bead5d")
-	)
-	(wire
-		(pts
-			(xy 121.92 86.36) (xy 129.54 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ea873573-40f8-5013-9dc5-10f96fc89fe8")
+		(uuid "23836fc5-3702-5d09-9c8f-241322984502")
 	)
 	(wire
 		(pts
@@ -612,7 +232,197 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "ecedd3ed-89ac-52ab-9d42-12001843e341")
+		(uuid "2a6b9a57-4a03-5761-8dbc-b0773cc39fb0")
+	)
+	(wire
+		(pts
+			(xy 137.16 180.34) (xy 170.18 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2b889d09-4a3f-59d5-9276-cbe3e81e60e1")
+	)
+	(wire
+		(pts
+			(xy 137.16 302.26) (xy 170.18 302.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2bb939a2-70dd-5573-be0a-f23e2d7a5da5")
+	)
+	(wire
+		(pts
+			(xy 477.52 101.6) (xy 485.14 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2f35feab-c4e2-5c01-a6c9-719a3ecd9b67")
+	)
+	(wire
+		(pts
+			(xy 170.18 302.26) (xy 177.8 302.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "332f72f4-8729-56c4-9706-f5a779030e64")
+	)
+	(wire
+		(pts
+			(xy 304.8 60.96) (xy 304.8 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "344ea660-12f4-52d7-9488-8fa287ad6f45")
+	)
+	(wire
+		(pts
+			(xy 121.92 78.74) (xy 129.54 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3c0b0071-ea69-5d48-879e-0b16a306205f")
+	)
+	(wire
+		(pts
+			(xy 363.22 71.12) (xy 370.84 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d4101b4-1444-52f8-924b-98df0ea337b5")
+	)
+	(wire
+		(pts
+			(xy 287.02 172.72) (xy 317.5 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4805a4f1-6099-5f3b-93f7-f381dcda4bc8")
+	)
+	(wire
+		(pts
+			(xy 33.02 439.42) (xy 40.64 439.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ddbdf8a-8815-5fd4-9ff8-6295fa706e5d")
+	)
+	(wire
+		(pts
+			(xy 33.02 447.04) (xy 40.64 447.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4eca8fde-1c76-56c9-945a-83f96e84d959")
+	)
+	(wire
+		(pts
+			(xy 363.22 109.22) (xy 370.84 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "539a6460-8306-548f-92a6-32b555131030")
+	)
+	(wire
+		(pts
+			(xy 137.16 78.74) (xy 137.16 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5b0a7a2a-568b-5091-b4bd-7af0199bfdb1")
+	)
+	(wire
+		(pts
+			(xy 279.4 294.64) (xy 287.02 294.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61542209-bdd7-5bfc-80a3-bda8e40edffa")
+	)
+	(wire
+		(pts
+			(xy 121.92 86.36) (xy 129.54 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61dd978f-2774-51cd-b42d-58894c536c3b")
+	)
+	(wire
+		(pts
+			(xy 317.5 93.98) (xy 363.22 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6f5d2544-98d7-5f00-83ab-8e17c627e168")
+	)
+	(wire
+		(pts
+			(xy 279.4 60.96) (xy 287.02 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6f767c5c-cd87-5541-9b16-fcfe86f5146c")
+	)
+	(wire
+		(pts
+			(xy 363.22 78.74) (xy 370.84 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b7c5d2c-f7b3-52c4-a117-cba4fec3587d")
+	)
+	(wire
+		(pts
+			(xy 299.72 416.56) (xy 307.34 416.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7cd3a6ca-9fb9-5e3c-b50e-8ad397c3a1e9")
+	)
+	(wire
+		(pts
+			(xy 363.22 101.6) (xy 370.84 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7f0a99ac-dd7b-5cfd-9516-9752170dbfcf")
 	)
 	(wire
 		(pts
@@ -622,7 +432,67 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f22a6649-7daa-54d3-adb0-1a6e7fdaa015")
+		(uuid "8238d58b-e592-54c8-aeb6-b5118b034f23")
+	)
+	(wire
+		(pts
+			(xy 170.18 294.64) (xy 177.8 294.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92af36e5-dfe2-58a1-b0db-a062db4cb1d2")
+	)
+	(wire
+		(pts
+			(xy 33.02 416.56) (xy 40.64 416.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9460a5fe-cb5f-55ca-acc4-935337ec9c17")
+	)
+	(wire
+		(pts
+			(xy 330.2 78.74) (xy 363.22 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9862a5dd-2a70-55ff-82d4-7692678bad2f")
+	)
+	(wire
+		(pts
+			(xy 363.22 116.84) (xy 370.84 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a297e4c6-6337-58b4-8901-082b36b43f8f")
+	)
+	(wire
+		(pts
+			(xy 170.18 180.34) (xy 177.8 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9ed1333-f853-5ffd-b402-29bdf678ce8a")
+	)
+	(wire
+		(pts
+			(xy 363.22 93.98) (xy 370.84 93.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa7c5398-e62a-55c5-bfca-42c59d2b8d5f")
 	)
 	(wire
 		(pts
@@ -632,7 +502,107 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "f9ccaa44-5b99-533b-919e-e89535701c99")
+		(uuid "acdb1afe-f91d-57e2-8cca-f858d78c823d")
+	)
+	(wire
+		(pts
+			(xy 33.02 462.28) (xy 40.64 462.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b49b02b2-4bd4-5c78-9b62-762f2c5ea720")
+	)
+	(wire
+		(pts
+			(xy 129.54 78.74) (xy 137.16 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b99fe5ae-f5ba-57f2-8583-6101c0c0d7c1")
+	)
+	(wire
+		(pts
+			(xy 170.18 172.72) (xy 177.8 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bcffb930-87a3-54c1-a982-e45940d709b8")
+	)
+	(wire
+		(pts
+			(xy 33.02 71.12) (xy 40.64 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c091ea09-fd3b-57ad-9f2d-9dd5cd5bf1b5")
+	)
+	(wire
+		(pts
+			(xy 477.52 78.74) (xy 485.14 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cfb219fa-34a0-5a25-baa9-98a01f32b6c2")
+	)
+	(wire
+		(pts
+			(xy 170.18 68.58) (xy 177.8 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7e49f8b-cebe-566c-aa93-af754ac299db")
+	)
+	(wire
+		(pts
+			(xy 137.16 180.34) (xy 137.16 302.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "db35342b-c456-50c1-b9e7-8917e6a4e800")
+	)
+	(wire
+		(pts
+			(xy 477.52 71.12) (xy 485.14 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "de137d3b-d49e-5828-aa48-6487a5aab96a")
+	)
+	(wire
+		(pts
+			(xy 299.72 424.18) (xy 307.34 424.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e71d5bf0-0171-5966-af22-a8405711e752")
+	)
+	(wire
+		(pts
+			(xy 33.02 431.8) (xy 40.64 431.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e772f821-a8cc-5eb4-ab4f-c6f619bead5d")
 	)
 	(wire
 		(pts
@@ -642,167 +612,37 @@
 			(width 0)
 			(type default)
 		)
-		(uuid "faa25314-8ef4-5913-a7d1-b4105e897554")
+		(uuid "ea873573-40f8-5013-9dc5-10f96fc89fe8")
 	)
-	(label "MAIN_OK"
-		(at 129.54 86.36 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
+	(wire
+		(pts
+			(xy 363.22 86.36) (xy 370.84 86.36)
 		)
-		(uuid "01e96b1a-60fc-5a41-84b0-cc5d337c20a2")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ecedd3ed-89ac-52ab-9d42-12001843e341")
 	)
-	(label "VIN"
-		(at 170.18 302.26 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
+	(wire
+		(pts
+			(xy 287.02 294.64) (xy 330.2 294.64)
 		)
-		(uuid "0f66df57-192e-5ab5-9ea0-00033293d610")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f22a6649-7daa-54d3-adb0-1a6e7fdaa015")
 	)
-	(label "OV_N"
-		(at 485.14 101.6 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
+	(wire
+		(pts
+			(xy 287.02 60.96) (xy 304.8 60.96)
 		)
-		(uuid "1d17c415-644b-52f0-a3e3-23169b1e9659")
-	)
-	(label "P5_RAW"
-		(at 287.02 172.72 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
+		(stroke
+			(width 0)
+			(type default)
 		)
-		(uuid "2197658d-0ba9-5337-b997-e9725be2ae93")
-	)
-	(label "MAIN_LED_OK"
-		(at 363.22 86.36 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "34d494eb-d350-5afb-9777-3fbc1c68cac1")
-	)
-	(label "OV_N"
-		(at 33.02 431.8 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "36355fb5-b8a6-5ba4-b2c6-ac26571ae07d")
-	)
-	(label "MAIN_LED_OK"
-		(at 307.34 431.8 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "3aa4426a-d058-5ee8-bb22-e21e435b1a17")
-	)
-	(label "VPD"
-		(at 33.02 462.28 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "43df2f6c-1a72-513c-82a4-52c39344212d")
-	)
-	(label "RUN"
-		(at 33.02 71.12 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "48169e0a-3785-514b-a484-153f9d32a2ec")
-	)
-	(label "V3V3"
-		(at 363.22 109.22 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "4a4a939d-d8f0-5e59-b65c-a1048e6c545c")
-	)
-	(label "P12_OK"
-		(at 485.14 71.12 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "4e4094d8-ea43-50cd-84d1-5313399c992b")
-	)
-	(label "V3V3"
-		(at 307.34 424.18 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "4f1cd5fe-47ae-5536-854f-a57207610cf3")
-	)
-	(label "MAIN_OK"
-		(at 170.18 172.72 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "50e81974-f449-572d-81fb-29346232581c")
-	)
-	(label "-12V"
-		(at 363.22 78.74 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "54697440-7039-5bad-a15f-2da87449ea8a")
-	)
-	(label "+12V"
-		(at 170.18 294.64 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "56ff5ae8-af81-5db2-8de7-b8805ffb4d63")
-	)
-	(label "VPD"
-		(at 129.54 71.12 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "60a6affa-3e48-5a20-8dae-6564a8a456d1")
+		(uuid "f9ccaa44-5b99-533b-919e-e89535701c99")
 	)
 	(label "P5_RAW"
 		(at 363.22 93.98 180)
@@ -812,37 +652,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "69656b23-0cd3-511c-8a01-e285a0719d6f")
-	)
-	(label "MAIN_OK"
-		(at 33.02 416.56 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "6fcba066-3691-5b01-964f-9ffa3ee99597")
-	)
-	(label "+12V"
-		(at 287.02 60.96 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "7383e0f4-97df-5b23-a22e-da0bcac70761")
-	)
-	(label "+12V"
-		(at 363.22 71.12 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "73c30a22-ee78-524c-8fcf-115f02c58303")
+		(uuid "13b492b0-ddca-5e00-a305-f54b151e4233")
 	)
 	(label "RUN"
 		(at 363.22 101.6 180)
@@ -852,37 +662,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "75ecd8d8-f08c-562d-af68-3f517cd0e941")
-	)
-	(label "N12_OK"
-		(at 485.14 86.36 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "7d5748d1-7199-560d-9f33-c3c1fccd0bac")
-	)
-	(label "V20_OK"
-		(at 485.14 93.98 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "a086ba7e-fa25-570c-9404-2897dd7feacb")
-	)
-	(label "P12_OK"
-		(at 33.02 439.42 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "a408f7a2-2953-5955-87f2-e3cf8be3f457")
+		(uuid "1beab1c0-55c1-56b1-9614-aced001a3d44")
 	)
 	(label "VPD"
 		(at 363.22 116.84 180)
@@ -892,57 +672,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "aa612f40-5b2a-5076-9c01-7ff94de555c6")
-	)
-	(label "VIN"
-		(at 170.18 68.58 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "ac5fae7b-b5d9-5dc0-88b1-8f54b59cb8d3")
-	)
-	(label "RUN"
-		(at 307.34 416.56 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "c0645b48-1dde-5db1-aec9-adf655a5d942")
-	)
-	(label "VIN"
-		(at 170.18 180.34 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "c56477cf-08ab-55b1-8679-d3ea4a7836a3")
-	)
-	(label "-12V"
-		(at 287.02 294.64 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "cbf9e08d-8b77-5642-be1b-a0df5d60b812")
-	)
-	(label "MAIN_OK"
-		(at 170.18 60.96 180)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "d35c62b5-6fd6-51bf-9a16-e2e64721d74b")
+		(uuid "246a2dd4-bff9-58af-a3f1-cef6adafb3b3")
 	)
 	(label "VIN"
 		(at 129.54 78.74 0)
@@ -952,37 +682,137 @@
 			)
 			(justify left bottom)
 		)
-		(uuid "d593c892-d5f0-5de4-b612-6c45cc55f9fe")
+		(uuid "2b44bff6-9469-5f79-80da-2b7edf3f2734")
 	)
-	(label "P5_OK"
-		(at 485.14 78.74 0)
+	(label "MAIN_OK"
+		(at 170.18 60.96 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "2e350f9b-bd83-5b3e-bd8b-cc9c3e82d152")
+	)
+	(label "MAIN_OK"
+		(at 33.02 416.56 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "2e8fd48d-3c71-5098-bf87-5a728c719964")
+	)
+	(label "RUN"
+		(at 307.34 416.56 0)
 		(effects
 			(font
 				(size 1 1)
 			)
 			(justify left bottom)
 		)
-		(uuid "da03e609-7590-5cd1-aebe-4897f09c8ea4")
+		(uuid "3d6c6d89-0491-5a01-b209-2912a0a50bc4")
+	)
+	(label "V3V3"
+		(at 307.34 424.18 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "3e69dc28-f482-5d81-a951-d0e8cfa538b8")
+	)
+	(label "N12_OK"
+		(at 485.14 86.36 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a2e2532-0ea8-501b-abc7-234ab7e09ea8")
+	)
+	(label "V3V3"
+		(at 363.22 109.22 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "52d60391-dcab-5549-940d-2fe39d91f4cb")
+	)
+	(label "VPD"
+		(at 129.54 71.12 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "5a301721-81ea-5e1b-bdae-6f335537b189")
+	)
+	(label "VPD"
+		(at 33.02 462.28 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "5add1005-5ae0-57fe-9f81-c8255845a484")
+	)
+	(label "RUN"
+		(at 33.02 71.12 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "5c2f7bf9-6f42-5105-94d4-00cb037fe952")
 	)
 	(label "V20_OK"
-		(at 33.02 454.66 180)
+		(at 485.14 93.98 0)
 		(effects
 			(font
 				(size 1 1)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
-		(uuid "e989d615-e04d-5713-86dc-9cc9cb4c2c5d")
+		(uuid "5c329e57-ecd5-55ad-b181-180308f3f9aa")
 	)
-	(label "P5_OK"
-		(at 33.02 447.04 180)
+	(label "VIN"
+		(at 170.18 180.34 180)
 		(effects
 			(font
 				(size 1 1)
 			)
 			(justify right bottom)
 		)
-		(uuid "ea6bbc82-5a3c-531d-b876-e60014e4170d")
+		(uuid "5cef0ed1-8bcc-5900-9643-eb7c9cd66f4a")
+	)
+	(label "+12V"
+		(at 287.02 60.96 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "608cf08c-82ad-5b18-a3a2-86b4612f158e")
+	)
+	(label "P5_RAW"
+		(at 287.02 172.72 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "62215d65-3fd3-5681-8686-539ffb209ac0")
 	)
 	(label "N12_OK"
 		(at 33.02 424.18 180)
@@ -992,7 +822,177 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "f08f2414-2eeb-51db-93f0-62294eaef16b")
+		(uuid "63b7e9b2-4fcc-5f91-bd28-8f0e44868d98")
+	)
+	(label "MAIN_LED_OK"
+		(at 363.22 86.36 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "6a9d8e28-0c47-5d24-9954-4ff13ecb5fd9")
+	)
+	(label "-12V"
+		(at 363.22 78.74 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "83e919aa-5693-5821-8751-07350d83eb32")
+	)
+	(label "P12_OK"
+		(at 33.02 439.42 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "8508aaaf-667d-5ddb-88bd-b8a3d7bc0229")
+	)
+	(label "P5_OK"
+		(at 33.02 447.04 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "894ae20c-9a01-5890-b90b-1876c3cd18fb")
+	)
+	(label "MAIN_LED_OK"
+		(at 307.34 431.8 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "960b03e4-55da-5f09-baf3-d6f2ad98a39d")
+	)
+	(label "OV_N"
+		(at 33.02 431.8 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "966f0d58-9e2f-5a21-86a3-7fff4dc2c886")
+	)
+	(label "+12V"
+		(at 363.22 71.12 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "9d5954e5-1e94-58d7-96e5-f5b36fdd6634")
+	)
+	(label "OV_N"
+		(at 485.14 101.6 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "ac6413cc-09a1-5a6e-8eba-4fa04468fd37")
+	)
+	(label "V20_OK"
+		(at 33.02 454.66 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "ad29b360-d8ed-5650-968a-9cb1093ee981")
+	)
+	(label "P5_OK"
+		(at 485.14 78.74 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "b5996c52-1498-5423-b498-cfd5e33f6a8e")
+	)
+	(label "VIN"
+		(at 170.18 302.26 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "c57338d7-4599-5dfa-832f-2223ba67a6af")
+	)
+	(label "MAIN_OK"
+		(at 129.54 86.36 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "c64e3a4a-b6bf-52a2-a149-e70ae6057635")
+	)
+	(label "P12_OK"
+		(at 485.14 71.12 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "cf62d3b3-b81e-56b1-89c9-772be19aff12")
+	)
+	(label "-12V"
+		(at 287.02 294.64 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "da8dfaa6-cc02-51f2-8408-f3c4c74ba1e2")
+	)
+	(label "VIN"
+		(at 170.18 68.58 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "df03b0b2-f799-5c03-9a09-4aa4ba8ff1ff")
+	)
+	(label "+12V"
+		(at 170.18 294.64 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "f1ff82b9-3bb7-5580-bf9f-bffccfd8059e")
+	)
+	(label "MAIN_OK"
+		(at 170.18 172.72 180)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "fa142d0b-86ae-5c7f-a54e-52b197aa4bd7")
 	)
 	(sheet
 		(at 177.8 50.8)

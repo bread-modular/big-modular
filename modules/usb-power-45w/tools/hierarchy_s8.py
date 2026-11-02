@@ -8,7 +8,8 @@ S7 pages 06/07 become 05/06. No component field or connection is changed here. S
 LEDs are gone, page 06 keeps the MAIN LED only. S8.1: the guard reference (U21, R100, C67, TP17) and
 the MON_OVN clamp D22 join the page-06 monitor group. S8.3: the +5V disconnect and split banks replace the crowbar on page 06.
 U18/U20 now run from always-on VPD with 3.3 V logic pull-ups. S8.4: U23 FLT gets its own R108/TP21 on page 06 (off P5_OK);
-TIMER_GO = RUN AND MAIN_OK on page 05.
+TIMER_GO = RUN AND MAIN_OK on page 05. S8.5 wires the one-shot arming latch on page 05 (U14 gate 2 -> START_N -> U12 A
+preset; STARTED -> U13 pin 10; U11 output = ARMED -> U13 pin 4; TP19 = STARTED); page 06 is unchanged apart from notes.
 """
 import copy
 import json
@@ -31,7 +32,7 @@ PAGES = {
 
 
 # Page notes clear of the inter-sheet interface text (height - 71.12) and of the S8 parts.
-NOTE_AT = {1: (20.32, 180.34), 2: (20.32, 190.5), 3: (20.32, 190.5), 4: (20.32, 180.34), 5: (345.44, 320.04),
+NOTE_AT = {1: (20.32, 180.34), 2: (20.32, 190.5), 3: (20.32, 190.5), 4: (20.32, 180.34), 5: (381.0, 320.04),
            6: (20.32, 30.48)}
 
 
@@ -53,7 +54,7 @@ def layout(parts):
     put(['J2', 'J3', 'C34', 'C35', 'C36', 'C59', 'C60', 'C61', 'D21', *DISCONNECT], 6, 0, -86.36)
     put(['SW1'], 5, -38.1, -254)
     put(['U9', 'U10', 'U11', 'U12', 'U13', 'U14', 'U15', *rr('R', 63, 72), 'R91', *rr('C', 46, 55),
-         *rr('TP', 9, 16), 'TP6'], 5, 0, -393.7)
+         *rr('TP', 9, 16), 'TP6', 'TP19'], 5, 0, -393.7)
     put(['U18', 'U20', 'D15', *rr('R', 73, 85), 'R35', 'R44', 'R62', *rr('R', 93, 99), 'C56', 'C57',
          *rr('C', 63, 66), 'U21', 'R100', 'C67', 'TP17', 'D22'], 6, -599.44, -508)
     put(['D8', 'R22', 'Q6', 'Q10'], 6, -599.44, -508)
@@ -74,13 +75,14 @@ NOTES = {
        '4 ms soft start, 18 ms OCP blanking at start-up. Q1 follows +12V. C29-C33 here + C36 (J2) and C61 (J3).\n'
        'S8.4: hiccup needs |Vout| < 40 % after the blanking. Rack allowance 0.85 mF (TI 1000 uF COUT guidance; hiccup model\n'
        '1.08 mF at 15.2 V converter input, 1 A) covers a typical 0.44 mF rack. Bench start-up test still required.',
-    5: 'RESET clears ARMED and FAULT; RUN is forced low while reset is asserted.\n'
-       'S8.4: TIMER_GO = RUN AND MAIN_OK, the U2/U3 enable: qualification (~0.57 s, 0.31-0.88 s) starts with the converters,\n'
-       'so ARMED cannot stay masked while they run. Then any persistent bad status latches every rail OFF until RESET.\n'
-       'OV_N (U20, page 06) presets FAULT at once, also inside the startup window. U14 gate 2 unused (inputs to GND).',
+    5: 'RESET clears STARTED and FAULT; RUN is forced low while reset is asserted.\n'
+       'S8.5 one-shot arming: START_N = NAND(MAIN_LED_OK, RUN) (U14 gate 2) presets STARTED (U12 A) at the first converter enable;\n'
+       'only RESET clears it. TIMER_GO = RUN AND STARTED -> U11 -> ARMED 0.31-0.88 s later, held until RESET/FAULT: no fault can\n'
+       'restart or extend the window. Then any persistent bad status latches every rail OFF. OV_N presets FAULT at any time.\n'
+       'V20_OK (R83 120k, 9.06-10.96 V) only validates U5 FLT/PGOOD (MAIN_OK); the input qualification is the U5 UVLO.',
     6: 'J2 + J3: two parallel 16-pin outputs, pin 1 = -12V. C34-C36 at J2, C59-C61 at J3 (22u each, replace the 100u cans).\n'
-       'D8 MAIN is the only status LED (rail LEDs removed): input-valid AND main-eFuse status AND RUN. Any bad rail after the\n'
-       'startup window or a U20 guard trip latches every rail off. Short OVLO-only pulses may recover. P12/P5/N12_OK: logic + test pads.\n'
+       'D8 MAIN is the only status LED (rail LEDs removed): MAIN_LED_OK (U5 on, FLT/PGOOD valid) AND RUN. Any bad status after\n'
+       'ARMED or a U20 guard trip latches every rail off. Short OVLO-only pulses may recover. P12/P5/N12_OK: logic + test pads.\n'
        'U20 overvoltage guard (S8.1): +12V > 14.88 V, +5V > 5.83 V or -12V < -13.64 V nominal (corners 14.48-15.27 / 5.68-5.98 /\n'
        '13.27-14.02 V) pulls OV_N -> FAULT -> U5 off. Own reference REF_OV = U21 TLV431B (R100, C67, TP17); U18/U20 LM2901B;\n'
        'R93-R96, R98, R99 are 0.1 % / 25 ppm. The -12V channel compares MON_OVN with GND (no V3V3 term); D22 holds MON_OVN near\n'
@@ -141,8 +143,8 @@ def split(root_path, docs_dir, api):
     for i, (name, title, size) in PAGES.items():
         trees[i] = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
           (uuid "{api.uid('S8/file/' + name)}") (paper "User" {size[0]} {size[1]})
-          (title_block (title {json.dumps(title)}) (rev "S8.4") (company "Big Modular")
-          (comment 1 "S8.4 single board: +5V series eFuse, FLT off the latch, MAIN_OK arming - docs/s8-single-board.md"))
+          (title_block (title {json.dumps(title)}) (rev "S8.5") (company "Big Modular")
+          (comment 1 "S8.5: S8.4 +5V eFuse kept, one-shot arming latch - docs/s8-single-board.md"))
           (lib_symbols) (embedded_fonts no))''')
         one(trees[i], 'lib_symbols').extend(copy.deepcopy(nodes(one(flat, 'lib_symbols'), 'symbol')))
 
@@ -257,13 +259,15 @@ def split(root_path, docs_dir, api):
 
     # Logic chain (S7 page 06 -> S8 page 05): stored-state feedback and clocks are wired.
     link(5, 'U10.1', 'U12.1', ('y', 152.4)); link(5, 'U12.1', 'U12.13', ('x', 27.94))
-    link(5, 'U11.1', 'U12.3', ('y', 162.56))
-    link(5, 'U12.5', 'U13.4', ('y', 180.34))
     link(5, 'U12.8', 'U13.2', ('y', 271.78))
     link(5, 'U13.6', 'U12.11', ('y', 281.94))
     link(5, 'U14.6', 'R72.1', ('x', 396.24))
     link(5, 'R72.2', 'C51.1'); link(5, 'C51.1', 'U15.2', ('x', 485.14))
     link(5, 'U15.4', 'U13.5', ('y', 297.18))
+    # S8.5 one-shot arming: ARMED is the U11 output (level), STARTED the U12 A latch, START_N its preset.
+    link(5, 'U11.1', 'U13.4', ('y', 162.56))
+    link(5, 'U14.8', 'U12.4', ('y', 246.38))
+    link(5, 'U12.5', 'U13.10', ('y', 187.96))
     # Monitors and the MAIN LED gate (S7 page 07 -> S8 page 06). Rail LEDs removed (S8 final).
     for pin, ref in [('7', 'R76'), ('5', 'R79'), ('8', 'R82'), ('11', 'R84')]:
         link(6, 'U18.' + pin, ref + '.1', ('x', 20.32 + int(pin) * 5.08))
@@ -304,9 +308,9 @@ def split(root_path, docs_dir, api):
                ['version', 'generator', 'generator_version', 'uuid', 'paper', 'title_block', 'lib_symbols', 'embedded_fonts']]
     one(root, 'paper')[1:] = ['User', 560, 530]; one(root, 'lib_symbols')[1:] = []
     one(one(root, 'title_block'), 'title')[1] = 'USB power S8 single board - wired power flow overview'
-    text(root, 'USB POWER 45W S8.4 / SINGLE BOARD, +5V SERIES PROTECTION', 20.32, 15.24, 2.4)
-    text(root, 'S8.4: +5V fast series disconnect (FLT off the latch); +/-12V directly from converters; ceramic banks; two '
-               'parallel outputs; VPD-powered OV guard; arming from MAIN_OK; MAIN LED only.', 20.32, 25.4, 1.2)
+    text(root, 'USB POWER 45W S8.5 / SINGLE BOARD, +5V SERIES PROTECTION', 20.32, 15.24, 2.4)
+    text(root, 'S8.5: +5V fast series disconnect (S8.4, FLT off the latch); +/-12V directly from converters; ceramic banks; two '
+               'parallel outputs; VPD-powered OV guard; one-shot arming latch; MAIN LED only.', 20.32, 25.4, 1.2)
     boxes = {1: (40.64, 60.96, 81.28, 111.76), 2: (177.8, 50.8, 101.6, 81.28), 3: (177.8, 162.56, 101.6, 81.28),
              4: (177.8, 284.48, 101.6, 71.12), 5: (40.64, 406.4, 259.08, 96.52), 6: (370.84, 60.96, 106.68, 254.0)}
     outputs = {1: ['VPD', 'VIN', 'MAIN_OK'], 2: ['+12V'], 3: ['P5_RAW'], 4: ['-12V'],
@@ -314,7 +318,7 @@ def split(root_path, docs_dir, api):
     descriptions = {1: 'CH224A: 20 V request\nTPS16630: 4.186 A common input switch\nVIN damper 1R + 2 x 10u',
                     2: 'TPS62933F\n+12 V delivered rail', 3: 'TPS62933F\nP5_RAW before disconnect',
                     4: 'LMR38020F inverting buck-boost\n-12 V delivered rail',
-                    5: '60 V always-on LDO / retained ARMED + FAULT\nManual RESET; OV_N presets FAULT',
+                    5: '60 V always-on LDO / one-shot STARTED + FAULT latches\nManual RESET; OV_N presets FAULT',
                     6: 'Two Eurorack outputs J2 + J3\nMonitors, OV guard, +5V eFuse\nMAIN LED (only status LED)'}
     rootpins = {}
     for pg, (x, y, w, h) in boxes.items():
@@ -347,9 +351,10 @@ def split(root_path, docs_dir, api):
         root.append(parse(f'(label {json.dumps(n)} (at {target[0]} {target[1]} {0 if side == "R" else 180}) '
                           f'(effects (font (size 1 1)) (justify {"left" if side == "R" else "right"} bottom)) '
                           f'(uuid "{api.uid("S8/rootlabel/" + str(count))}"))'))
-    text(root, 'FAULT POLICY\nQualification starts at MAIN_OK (converters enabled); persistent bad status after\n'
-               '~0.57 s -> all OFF until RESET. Severe OV via U20 acts even before ARMED.\nU23 independently cuts +5V; '
-               'OVLO alone is auto-recovering. U23 FLT is not latched.\nMAIN indicates enabled/status, not precision regulation.',
+    text(root, 'FAULT POLICY\nOne-shot qualification from the first converter enable (STARTED latch); after\n'
+               '0.31-0.88 s any persistent bad status -> all OFF until RESET. Severe OV via U20 acts even before ARMED.\n'
+               'U23 independently cuts +5V; OVLO alone is auto-recovering. U23 FLT is not latched.\n'
+               'MAIN indicates enabled/status, not precision regulation.',
          370.84, 340.36, 1.4)
     text(root, 'OUTPUTS: +12 / +5 / -12 on J2 and J3 in parallel\nPublished conservative rating (S8.4, prototype): 2.5 / 2.0 / 0.9 A,\n'
                '<=45 W total; above 2 A per rail use both headers. U23 ILIM 3.03 A nominal is a threshold, not a rating.',

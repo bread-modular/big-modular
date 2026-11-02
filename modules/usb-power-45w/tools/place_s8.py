@@ -9,6 +9,8 @@ S8.4 / P1.4 (review M4): the U23 cell is re-placed so its IN/OUT 22u bypasses, D
 local-loop contract in tools/check_s8_board.py (LOCAL_LOOPS); D23 leaves the header strip (C74 and TP18 take
 the slot), C70 continues the P5_RAW column under C23, the U11 timer group shifts 1.1 mm toward C24, C65 sits at
 U20 pin 3 (R73 to the rear test-pad row), C57 turns, C52 moves to U12 pin 14; R108/TP21 (U23 FLT) are new.
+S8.5 / P1.5: the only placement change is the new copper-only pad TP19 (STARTED, one-shot arming latch) in the front
+logic test-pad row left of R64; every P1.4 part stays where it is (the arming nets change pads, not positions).
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
 --write is the older seed-based placement entry point, not a native edit-preservation tool.
 
@@ -137,14 +139,15 @@ GROUPS = [
      'Front strip around SW1: U10 (POR + RESET) right behind SW1, U13 AND gates and U12 latch either side, U11 '
      'start timer on the right (P1.2: moved right, above the crowbar SCR: R71/C50 in one row under C24, '
      'C49/R70/R69 beside its CT/SENSE pins; P1.4: U11 group 1.1 mm toward C24, C52 to U12 pin 14 (review M4), '
-     'C50 stays the U11 bypass); pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front',
+     'C50 stays the U11 bypass); pull-ups/dividers at their pins; RUN/ARMED/FAULT/V3V3 test pads at the front, P1.5: '
+     'TP19 (STARTED) left of R64',
      {'U13': (94.2, 94.4, 90), 'U12': (112.6, 94.4, 90), 'U10': (104.75, 92.3, 0), 'U11': (128.4, 91.25, 0),
       'C53': (88.8, 94.4, 90), 'C52': (110.0, 89.7, 0), 'C48': (101.4, 93.7, 90),
       'R68': (103.75, 94.85, 0), 'R67': (99.75, 90.6, 90), 'R91': (99.8, 96.8, 90), 'R65': (101.4, 90.6, 90),
       'R66': (99.75, 93.7, 90), 'R71': (127.75, 88.65, 0), 'R70': (132.95, 91.5, 90), 'R69': (134.55, 91.5, 90),
       'C49': (131.35, 91.5, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
       'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (65.0, 71.4, 0),
-      'TP16': (67.3, 71.4, 0)}),
+      'TP16': (67.3, 71.4, 0), 'TP19': (89.35, 100.0, 0)}),
     ('+5V series disconnect (S8.3, P1.4 local-loop cell)',
      'P1.4 (review M4): U23 turned 90 deg so its IN strip (pad 5) faces C69 + D21 and its OUT strip (pad 6) faces '
      'C73 + D23, each across one courtyard gap (LOCAL_LOOPS in tools/check_s8_board.py: 22u <= 3.5 mm, clamp <= 6 mm '
@@ -178,8 +181,8 @@ def table():
 def board(root=MODULE):
     b = seed.seed_board(root)
     tb = b.GetTitleBlock()
-    tb.SetRevision('S8.4-P1.4')
-    for i, t in enumerate(['S8.4 schematic (+5V series disconnect, FLT off the latch, arming from MAIN_OK). P1.4 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
+    tb.SetRevision('S8.5-P1.5')
+    for i, t in enumerate(['S8.5 schematic (+5V series disconnect, FLT off the latch, one-shot arming latch). P1.5 TRIAL PLACEMENT, UNROUTED: no tracks/vias/zones. Not a release.',
                            'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
                            'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json',
                            'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json']):
@@ -318,10 +321,10 @@ def sync_candidate(source_board, output_root):
         if r in original_ids:
             assert one(f, 'uuid')[1] == original_ids[r]
             assert nodes(f, 'model') == original_models[r]
-    one(one(tree, 'title_block'), 'rev')[1] = 'S8.4-P1.4'
-    one(one(tree, 'title_block'), 'comment')[2] = 'S8.4 +5V series disconnect, FLT off the latch. P1.4 DRAFT placement, UNROUTED.'
+    one(one(tree, 'title_block'), 'rev')[1] = 'S8.5-P1.5'
+    one(one(tree, 'title_block'), 'comment')[2] = 'S8.5 +5V series disconnect (S8.4), one-shot arming. P1.5 DRAFT placement, UNROUTED.'
     comments = {c[1]: c for c in nodes(one(tree, 'title_block'), 'comment')}
-    note5 = 'S8.4: review fixes (FLT/TP21, MAIN_OK arming, local-loop placement); UNROUTED'
+    note5 = 'S8.5: one-shot arming latch STARTED (TP19), V20_OK status floor (docs/s8-single-board.md); UNROUTED'
     if 5 in comments or '5' in comments:
         (comments.get(5) or comments.get('5'))[2] = note5
     else:
@@ -355,7 +358,7 @@ def sync_candidate(source_board, output_root):
         if r in original_ids:
             assert one(f, 'uuid')[1] == original_ids[r]
             assert nodes(f, 'model') == original_models[r]
-    rec = {'note': 'S8.4 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
+    rec = {'note': 'S8.5 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
            'parts': after, 'pad_mask_refreshed_from_library': refreshed,
            'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r]),
            'added_refs': sorted(set(after) - set(before)), 'removed_refs': sorted(set(before) - set(after))}

@@ -1,6 +1,6 @@
 {
  "board": "hardware/single/usb-power-45w-single.kicad_pcb",
- "parts_on_board": 190,
+ "parts_on_board": 191,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 0,
@@ -29,8 +29,8 @@
    "R108"
   ],
   [
-   1.329,
-   "TP12"
+   1.279,
+   "TP19"
   ]
  ],
  "approved_panel_overhangs": {
@@ -458,7 +458,7 @@
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2917,
+  "courtyards_sum": 2920,
   "fill_of_inset": 0.675
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",

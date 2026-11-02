@@ -1,4 +1,4 @@
-"""S8.4 single-board circuit: common input protection plus a fast +5 V series eFuse.
+"""S8.5 single-board circuit: common input protection plus a fast +5 V series eFuse, one-shot arming latch.
 
 User-authorized replacement of the S8.2 crowbar (2026-11-01): U23 TPS259470ARPWR,
 C3662799, independent adjustable OVLO, current limit and true reverse blocking.
@@ -22,6 +22,18 @@ S8.4 (2026-11-02, fixes of the three S8.3 reviews, docs/s8-single-board.md chang
   a loop-level load-release test is still open, as is the -35 mV OVLO reconnect corner.
 U18/U20 keep LM2901B on always-on VPD (before U5, after F1, clamped by D1) with V3V3 output
 pull-ups. No +/-12V rail switches/LEDs are restored. Original S7 circuit45 is untouched.
+
+S8.5 (2026-11-02, the arming blocker of all three S8.4 reviews; U23 and every other S8.4 decision unchanged):
+- B: TIMER_GO = RUN AND MAIN_OK (S8.4) restarted the qualification window whenever a fault cycled MAIN_OK
+  and armed during the PD 5 V phase when U5's status floated high. S8.5: U12 flip-flop A becomes the one-shot latch
+  STARTED (PRE_N = START_N = NAND(MAIN_LED_OK, RUN) on the spare U14 gate, CLR_N = RESET_N, CLK tied low), so the
+  first converter enable after RESET sets it and only RESET clears it. TIMER_GO = RUN AND STARTED feeds U11, whose
+  output IS ARMED (held because its input is latched). R83 120k moves V20_OK to a 9.06-10.96 V status floor: above
+  the PD 5 V phase (U5 FLT/PGOOD valid) and below the U5 turn-off minimum, so V20_OK can never be the first status
+  to drop while U5 is on; the input qualification is U5's own UVLO (MAIN_OK). TP19 = STARTED.
+- C: MAIN_LED_OK / ANY_BAD now mean "U5 on with valid FLT/PGOOD" (V20_OK only validates U5's status); the replug /
+  power-on-reset race of the U20 -12V channel (REF_OV via R100/C67 against the TPS3808 POR) is an explicit OPEN
+  item (s8_calcs replug_por), not a margin.
 """
 import copy
 
@@ -78,8 +90,10 @@ TPS259470A = dict(LCSC='C3662799', MPN='TPS259470ARPWR', Manufacturer='Texas Ins
 CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
 DISCONNECT = ('U23', 'R101', 'R102', 'R103', 'R104', 'R107', 'C68',
               'C69', 'C70', 'C71', 'C72', 'C73', 'C74', 'C75', 'C76', 'D23', 'TP18', 'R108', 'TP21')
-# S8.4 V20_OK re-centre (review M1 consequence): JLC Basic, live evidence docs/s8-single/s84-sourcing.json.
-R83_S84 = dict(LCSC='C25811', MPN='0603WAF2003T5E')
+# S8.5 arming (item B): the one-shot latch STARTED (U12 flip-flop A, set by START_N from the spare U14 gate), its pad
+# TP19, and R83 120k (V20_OK status floor; same Basic line as R75, no new code).
+ARMING_ADDED = ('TP19',)
+R83_S85 = dict(LCSC=circuit45.R0603['120k'], MPN=circuit45.R_MPN['120k'])
 HDR = (0.0, 86.36)
 MIRROR_S8 = set()
 
@@ -122,7 +136,8 @@ def circuit():
                                      f'corners): charges rack capacitance on the unswitched rail. S7 had 22n'}
     by['U5']['fields']['Note'] = by['U5']['fields']['Note'].replace(
         '; S6 FLT + PGOOD wired-AND at 3.3 V; common RUN disconnect.',
-        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V. S8.3: common input switch; RUN also disables U23 on +5V')
+        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V. S8.3: common input switch; RUN also disables U23 on +5V. '
+        'S8.5: its UVLO (16.23-18.23 V on, 15.04-17.12 V off) is the input qualification of the one-shot arming latch')
     by['U2']['fields']['Note'] += '. S8: output is the delivered +12V (no rail eFuse); hiccup/OVP/TSD are its own'
     by['U3']['fields']['Note'] += '. S8.3: P5_RAW stays upstream of U23, including local output capacitors and feedback'
     for ref, role in (('R11', 'top (P5_RAW)'), ('R12', 'bottom (GND)')):
@@ -141,8 +156,8 @@ def circuit():
         by[ref]['fields']['Note'] = f'{rail} polarity clamp at the converter output (P5_RAW is before U23)'
     # ---- Status LED: D8 MAIN is the only LED left (S8 final)
     by['D8']['fields']['Note'] = ('Hand-soldered 3 mm horizontal panel LED (manual part, user stock 3 mm red), the only '
-                                  'status LED: MAIN = input valid AND U5 FLT/PGOOD AND RUN. Any latched fault (bad rail '
-                                  'after the startup window, or overvoltage) turns it off')
+                                  'status LED: MAIN = MAIN_LED_OK (U5 on: FLT/PGOOD good, validated by the V20_OK status '
+                                  'floor) AND RUN. Any latched fault (bad status after ARMED, or overvoltage) turns it off')
     by['Q6']['fields']['Note'] = 'MAIN LED switch: gate = MAIN_LED_OK (U13), source to the RUN-gated return Q10'
     by['Q10']['fields']['Note'] = 'MAIN LED enable: D8 off whenever RESET/FAULT has turned the rails off (RUN low)'
 
@@ -158,35 +173,48 @@ def circuit():
         p['fields']['Note'] = (f'{net} pull-up: delivered-voltage monitor' + ('; P5_OK also has U23 AUXOFF (input valid + inrush '
                                'done). S8.4: U23 FLT is NOT on P5_OK (reverse-current/overload flags, see TP21)'
                                if net == 'P5_OK' else ''))
-    by['R83'].update(value='200k')
-    by['R83']['fields'].update(**R83_S84, Note='MON_20 top. S8.4: 200k (was 220k): V20_OK 16.1 V nominal, 14.6-17.7 V corners, '
-                                               'below the 18.25 V minimum loaded 20 V PD input; V20_OK no longer gates arming')
+    # ---- S8.5 (B): V20_OK is a U5 status-validity floor, not an input-good threshold (the U5 UVLO is).
+    by['R83'].update(value='120k')
+    by['R83']['fields'].update(**R83_S85, Note='MON_20 top. S8.5: 120k (S8.4 200k): V20_OK = VPD > 9.06-10.96 V '
+                                               '(9.98 V nominal), above the PD 5 V phase where U5 FLT/PGOOD may be '
+                                               'undefined and below the U5 turn-off minimum (15.04 V), so it validates '
+                                               'MAIN_OK and never drops first while U5 is on. Not an input-good '
+                                               'threshold: the input qualification is the U5 UVLO')
     by['U18']['value'] = LM2901B['MPN']
     by['U18']['fields'] = {**LM2901B, 'Note': 'Output-valid comparators on the delivered rails. +12/+5/input use '
                                               'signal on + input; -12V uses the offset negative sense on - input. Clamp '
                                               'negative sense. S8.1: LM2901B (drop-in for LM2901, same part as U20)'}
 
-    # ---- Fault latch: OV guard on the spare preset; unused NAND inputs to GND
-    by['U12']['pins']['10'] = 'OV_N'
-    by['U12']['fields']['Note'] += (' S8: 2PRE_N = OV_N, so the overvoltage guard sets FAULT at once, '
-                                    'also during the startup window.')
-    by['U14']['pins'].update({'8': None, '9': 'GND', '10': 'GND', '12': 'GND', '13': 'GND'})
-    by['U13']['pins']['10'] = 'MAIN_OK'
-    by['U13']['fields']['Note'] = ('RUN=RESET_N & NOT_FAULT; fault clock=ARMED & filtered bad; S8.4 timer=RUN & MAIN_OK '
-                                   '(the U2/U3 enable net, so ARMED cannot stay masked while the converters run); '
-                                   'main LED=main status & input voltage.')
-    by['U14']['fields']['Note'] = ('Four-input NAND combines the four good signals (ANY_BAD). Second NAND unused '
-                                   '(S8 has no negative-switch opto): inputs tied to GND, output open.')
+    # ---- Fault latch: OV guard on the spare preset. S8.5 (B): flip-flop A = one-shot STARTED latch.
+    by['U12']['pins'].update({'10': 'OV_N', '3': 'GND', '4': 'START_N', '5': 'STARTED'})
+    by['U12']['fields']['Note'] = ('A = STARTED (S8.5): asynchronous set by START_N (first converter enable after RESET), '
+                                   'cleared only by RESET_N, clock tied low, so no fault can restart arming. B = FAULT: '
+                                   'clocked by ARMED & filtered bad, preset by OV_N (U20 guard) at any time, also before '
+                                   'ARMED, cleared by RESET_N. No firmware.')
+    by['U14']['pins'].update({'8': 'START_N', '9': 'MAIN_LED_OK', '10': 'RUN', '12': 'V3V3', '13': 'V3V3'})
+    by['U14']['fields']['Note'] = ('Gate 1: four-input NAND of the four good signals (ANY_BAD). Gate 2 (S8.5): START_N = '
+                                   'NAND(MAIN_LED_OK, RUN): low once U5 is on with valid status while RUN, presets the '
+                                   'STARTED latch (U12 A); RUN in the gate keeps PRE_N high while RESET clears it.')
+    by['U13']['pins']['10'] = 'STARTED'
+    by['U13']['fields']['Note'] = ('RUN=RESET_N & NOT_FAULT; fault clock=ARMED & filtered bad; S8.5 timer=RUN & STARTED '
+                                   '(the latched first converter enable: only RESET or a latched FAULT stops it); '
+                                   'MAIN_LED_OK=MAIN_OK & V20_OK (U5 on with validated status).')
     by['C49'].update(value='100n')
     by['C49']['fields'] = {**circuit45.CAPS[('100n', 'C0603')],
                            'Note': 'Startup qualification ~0.57 s typical (TPS3808: CT nF / 175 + 0.5 ms). '
                                    'S7 had 1u (5.7 s) for the removed LM5067 insertion delay'}
-    by['U11']['fields']['Note'] = ('S8.4: timer starts at RUN and MAIN_OK (U5 on in its 17.2-24.1 V window and PGOOD, the '
-                                   'same net that enables U2/U3). 100n gives ~0.57 s (0.31-0.88 s) qualification; '
-                                   'a MAIN_OK drop restarts it. Not reset by individual bad rails.')
+    by['U11']['pins']['1'] = 'ARMED'
+    by['U11']['fields']['Note'] = ('S8.5 one-shot qualification timer: SENSE = TIMER_GO = RUN AND STARTED (latched), MR = '
+                                   'RESET_N; its RESET output IS ARMED, high 0.31-0.88 s (100n, ~0.57 s) after the first '
+                                   'converter enable and held until RESET/FAULT because its input cannot drop otherwise.')
+    by['R71']['pins']['2'] = 'ARMED'
+    by['R71']['fields']['Note'] = 'ARMED pull-up (U11 open-drain RESET output, S8.5)'
     tp6 = by['TP6']
     tp6.update(value='OV_N', at=(309.88, 721.36))   # end of the page-05 test-pad row (was FAULT_LATCH twice)
     tp6['pins'] = {'1': 'OV_N'}
+    c.append(part('TP19', 'TestPoint', 'STARTED', 'TP', (345.44, 721.36), 0, {'1': 'STARTED'},
+                  Note='S8.5 STARTED (U12 Q1): low until the first converter enable after RESET, then high until RESET. '
+                       'Copper-only diagnostic; no assembly component'))
 
     # ---- Outputs: J2 + J3 in parallel (Doepfer pinout), header-side ceramics
     j2 = by['J2']
@@ -247,8 +275,8 @@ def circuit():
     c.append(two('C67', 'C', '10u', 'C0603', m(220.98, 134.62), 'REF_OV', 'GND',
                  LCSC='C19702', MPN='CL10A106KP8NNNC', Manufacturer='Samsung', Voltage='10V',
                  Note='REF_OV hold capacitor at U21: >= ~1 uF is right of the TLV431 instability region at ~1 mA '
-                      '(SLVS139Z Fig. 5-18). With R100 REF_OV settles in 9-12 ms, before any rail can rise (POR >= 12 ms, '
-                      'then the U5 ramp and the soft starts)'))
+                      '(SLVS139Z Fig. 5-18). REF_OV settles in ~9-14 ms; replug into a rack holding -12V can race the '
+                      '>=12 ms POR (S8.5 OPEN item, calcs replug_por)'))
     c.append(part('TP17', 'TestPoint', 'REF_OV', 'TP', m(231.14, 127.0), 0, {'1': 'REF_OV'},
                   Note='Copper-only diagnostic; no assembly component. Bench: REF_OV 1.22-1.26 V'))
     c.append(res01('R93', '110k', m(281.94, 66.04), '+12V', 'MON_OV12',
