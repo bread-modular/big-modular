@@ -1,5 +1,5 @@
 {
-  "note": "Public JLCPCB catalog lookups via the shared tool, --strict-live, one request per code. Stock and price are dated observations, not reservations, quotes or order acceptance. Quantity-1 unit prices only: no setup/Extended fees, attrition, manual parts, PCB or shipping. Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities and totals recomputed for the current S8 table. This is not a full live re-audit. S8.4: rows of new codes come from the live selected-part evidence s84-sourcing.json, s90-sourcing.json.",
+  "note": "Public JLCPCB catalog lookups via the shared tool, --strict-live, one request per code. Stock and price are dated observations, not reservations, quotes or order acceptance. Quantity-1 unit prices only: no setup/Extended fees, attrition, manual parts, PCB or shipping. Rows reused offline from the earlier snapshot (see each evidence.retrieved_at_utc); quantities and totals recomputed for the current S8 table. This is not a full live re-audit. New-code rows are from selected-part evidence (inspect mode and failures; not all live) s91-sourcing.json.",
   "codes": {
     "C10214": {
       "code": "C10214",
@@ -54,6 +54,28 @@
       "failures": [],
       "qty_S8": 0,
       "qty_S7": 2
+    },
+    "C122538": {
+      "code": "C122538",
+      "mpn": "RT0603BRD07100KL",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rt0603brd07100kl_C122538.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "R2"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
     },
     "C12891": {
       "code": "C12891",
@@ -133,8 +155,30 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 17,
+      "qty_S8": 18,
       "qty_S7": 20
+    },
+    "C151254": {
+      "code": "C151254",
+      "mpn": "SMBJ16A",
+      "manufacturer": "Littelfuse",
+      "package": "SMB",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/TVS_Littelfuse_SMBJ16A_SMBJ16A_C151254.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "D24"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
     },
     "C155317": {
       "code": "C155317",
@@ -511,7 +555,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 2,
+      "qty_S8": 3,
       "qty_S7": 3
     },
     "C207850": {
@@ -594,6 +638,28 @@
       "failures": [],
       "qty_S8": 1,
       "qty_S7": 3
+    },
+    "C21189": {
+      "code": "C21189",
+      "mpn": "0603WAF0000T5E",
+      "manufacturer": "UNI-ROYAL",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount_Uniroyal-Elec-0603WAF0000T5E_C21189.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "R113"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
     },
     "C21190": {
       "code": "C21190",
@@ -927,6 +993,49 @@
       "qty_S8": 1,
       "qty_S7": 1
     },
+    "C23186": {
+      "code": "C23186",
+      "mpn": "0603WAF6801T5E",
+      "manufacturer": "UNI-ROYAL",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "existing circuit library identity only; no live sourcing verification"
+      },
+      "failures": [
+        "Fresh classification, eligibility, stock and price unknown"
+      ],
+      "refs_S8": [
+        "R111"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
+    "C23193": {
+      "code": "C23193",
+      "mpn": "0603WAF5100T5E",
+      "manufacturer": "UNI-ROYAL",
+      "package": "0603",
+      "classification": null,
+      "economy_eligible": null,
+      "stock": null,
+      "unit_price_q1_usd": null,
+      "evidence": {
+        "mode": "web identity only, NOT strict-live catalog",
+        "source_url": "https://www.lcsc.com/product-detail/Chip-Resistor-Surface-Mount-UniOhm_510R-5100-1_C23193.html"
+      },
+      "failures": [
+        "Fresh JLC classification/eligibility/stock/price unknown"
+      ],
+      "refs_S8": [
+        "R114"
+      ],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
     "C23206": {
       "code": "C23206",
       "mpn": "0603WAF5602T5E",
@@ -1013,7 +1122,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 1,
+      "qty_S8": 2,
       "qty_S7": 3
     },
     "C23231": {
@@ -1094,7 +1203,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 2,
+      "qty_S8": 1,
       "qty_S7": 2
     },
     "C236914": {
@@ -1175,7 +1284,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 6,
+      "qty_S8": 4,
       "qty_S7": 11
     },
     "C25804": {
@@ -1202,7 +1311,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 17,
+      "qty_S8": 16,
       "qty_S7": 27
     },
     "C25808": {
@@ -1553,7 +1662,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 2,
+      "qty_S8": 3,
       "qty_S7": 6
     },
     "C42459160": {
@@ -1718,95 +1827,6 @@
       "qty_S8": 1,
       "qty_S7": 1
     },
-    "C57112": {
-      "code": "C57112",
-      "mpn": "0603B103K500NT",
-      "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
-      "package": "0603",
-      "classification": "Basic",
-      "economy_eligible": true,
-      "stock": 5555547,
-      "unit_price_q1_usd": 0.0097,
-      "evidence": {
-        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-01T15:42:54Z",
-        "http_status": 200,
-        "request": {
-          "currentPage": 1,
-          "pageSize": 20,
-          "keyword": "C57112"
-        },
-        "sha256": "4ee6be27ebe5601300e4f683cc5d84341640648eb2e9cf56ef0d25d795bc4d5d",
-        "mode": "live",
-        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
-        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
-      },
-      "failures": [],
-      "qty_S8": 1,
-      "qty_S7": 0
-    },
-    "C601098": {
-      "code": "C601098",
-      "mpn": "HoLR1206-1W-15mR-1%-75ppm",
-      "manufacturer": "Milliohm",
-      "package": "1206",
-      "classification": "Extended",
-      "economy_eligible": true,
-      "stock": 16541,
-      "unit_price_q1_usd": 0.058,
-      "price_ladder_usd": [
-        [
-          1,
-          99,
-          0.058
-        ],
-        [
-          100,
-          299,
-          0.0488
-        ],
-        [
-          300,
-          999,
-          0.0442
-        ],
-        [
-          1000,
-          4999,
-          0.0407
-        ],
-        [
-          5000,
-          9999,
-          0.0309
-        ],
-        [
-          10000,
-          -1,
-          0.0296
-        ]
-      ],
-      "evidence": {
-        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T03:37:28Z",
-        "http_status": 200,
-        "request": {
-          "currentPage": 1,
-          "pageSize": 20,
-          "keyword": "C601098"
-        },
-        "sha256": "976a09416b38a865347441287f19989187a2e3ed5b9174c2173c8402f3e2da89",
-        "mode": "live",
-        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
-        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
-      },
-      "failures": [],
-      "refs_S8": [
-        "R109"
-      ],
-      "qty_S8": 1,
-      "qty_S7": 0
-    },
     "C6762": {
       "code": "C6762",
       "mpn": "SN74HC74DR",
@@ -1912,7 +1932,7 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 2,
+      "qty_S8": 4,
       "qty_S7": 6
     },
     "C8678": {
@@ -1966,19 +1986,29 @@
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 2,
+      "qty_S8": 3,
       "qty_S7": 0
     }
   },
   "summary": {
-    "S8_codes": 55,
+    "S8_codes": 58,
     "S7_codes": 57,
-    "S8_placements": 136,
+    "S8_placements": 142,
     "S7_placements": 195,
-    "S8_parts_usd_q1": 22.64,
+    "S8_price_is_partial": true,
+    "S8_unpriced_codes": [
+      "C122538",
+      "C151254",
+      "C21189",
+      "C23186",
+      "C23193"
+    ],
+    "S8_parts_usd_q1": 22.66,
     "S7_parts_usd_q1": 27.12,
     "S8_non_basic_codes": [
       "C10214",
+      "C122538",
+      "C151254",
       "C155317",
       "C165948",
       "C181239",
@@ -1987,8 +2017,11 @@
       "C19653",
       "C19726",
       "C207852",
+      "C21189",
       "C22375748",
       "C22427890",
+      "C23186",
+      "C23193",
       "C2867684",
       "C2886925",
       "C2917888",
@@ -2000,7 +2033,6 @@
       "C5149193",
       "C53444",
       "C553937",
-      "C601098",
       "C6762",
       "C7836",
       "C95204"
@@ -2037,9 +2069,11 @@
     ],
     "manual_parts_no_LCSC": {
       "S8": [
+        "D26",
         "D8",
         "J2",
-        "J3"
+        "J3",
+        "R109"
       ],
       "S7": [
         "D16",
@@ -2049,18 +2083,27 @@
         "J2"
       ]
     },
-    "failures": []
+    "failures": [
+      "C122538",
+      "C151254",
+      "C21189",
+      "C23186",
+      "C23193"
+    ]
   },
   "basic_only_policy": {
-    "decision": "ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other passive stays Basic. Not an order approval.",
+    "decision": "S9.1 electrical exceptions: precision UVLO R2/R3 and guard R93/R94/R98/R99; R109 18mR power shunt explicitly NOT assumed Basic. Other R/C target Basic. New live PCBA eligibility is UNKNOWN; not an order approval.",
     "refs": [
+      "R2",
+      "R3",
       "R93",
       "R94",
       "R98",
-      "R99"
+      "R99",
+      "R109"
     ],
-    "why": "They set protection thresholds: the U20 overvoltage guard bands (+12V R93/R94, -12V R98/R99). With 1 % + 1 % TCR Basic parts the -12V guard minimum falls below the stacked converter peak (calcs.json basic_only_counterfactual). The searched JLC catalog has no Basic 0.1 % 0603 resistor (S8.4 keyword snapshots; every hit Extended). S9.0: the +5V precision parts (R95/R96, R101/R102, R11/R12) left with +5V.",
-    "cost": "Extended per-unique-part fees apply to the precision codes (not included in the q1 parts totals); all selected codes were observed Economic-eligible.",
-    "not_done": "No Basic substitute was qualified; replacing them with 1 % parts would need a new threshold design."
+    "why": "Precision UVLO gives worst start <13V; precision guard preserves margins; 18mR shunt corrects overload thermal. Manufacturer-verified R109 has no verified C-code, procurement gate OPEN.",
+    "cost": "Partial dated subtotal only. Missing prices, Extended fees, manual parts and new-code eligibility are excluded, never assumed zero cost.",
+    "not_done": "Public live catalog access failed (DNS); no fabricated stock, price, Basic or Economic claims for new codes."
   }
 }

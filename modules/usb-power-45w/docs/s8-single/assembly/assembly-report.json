@@ -38,7 +38,7 @@
   },
   "ics": {
    "label": "ICs, transistors, diodes, fuse (KiCad library models)",
-   "count": 27,
+   "count": 32,
    "bbox_XYZ": [
     [
      4.101,
@@ -49,14 +49,14 @@
      97.75
     ],
     [
-     6.875,
+     5.775,
      45.625
     ]
    ]
   },
   "passives": {
    "label": "R / C (KiCad library models)",
-   "count": 104,
+   "count": 106,
    "bbox_XYZ": [
     [
      4.101,
@@ -127,8 +127,8 @@
    ]
   },
   "ui_envelopes": {
-   "label": "J1 / SW1 maximum body envelopes / U2 (no model)",
-   "count": 4,
+   "label": "J1 / SW1 maximum body envelopes / U2 / R109 (no model)",
+   "count": 5,
    "bbox_XYZ": [
     [
      4.1,
@@ -136,11 +136,11 @@
     ],
     [
      28.68,
-     72.1
+     80.577
     ],
     [
      0.8,
-     29.985
+     33.202
     ]
    ]
   },
@@ -290,11 +290,12 @@
   }
  },
  "solid_interference_mm3": [],
- "parts_with_model": 134,
+ "parts_with_model": 141,
  "proxies": [
   "J1",
   "L1",
   "L3",
+  "R109",
   "SW1",
   "U2"
  ],

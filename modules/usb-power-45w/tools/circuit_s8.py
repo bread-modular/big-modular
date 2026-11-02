@@ -1,61 +1,6 @@
-"""S8.5 single-board circuit: common input protection plus a fast +5 V series eFuse, one-shot arming latch.
-
-User-authorized replacement of the S8.2 crowbar (2026-11-01): U23 TPS259470ARPWR,
-C3662799, independent adjustable OVLO, current limit and true reverse blocking.
-The A variant is deliberately selected for stock/cost; the common retained latch
-owns system restart. U20 still provides unmasked severe-OV shutdown, sensing P5_RAW before U23.
-
-S8.4 (2026-11-02, fixes of the three S8.3 reviews, docs/s8-single-board.md changelog):
-- C1: U23 FLT (pin 4) is OFF P5_OK. TI SLVSFC9C Table 7-3 asserts FLT on reverse-current
-  blocking, persistent current limit, ILM faults and over-temperature, so a hot plug into a
-  live +5V bus or a large +5V load release (U23 holding the overshoot downstream) latched
-  every rail off. FLT now has its own pull-up R108 and test pad TP21 (diagnostic only).
-  P5_OK = U23 AUXOFF (input valid + inrush done; Table 7-4: NOT asserted by load-side events)
-  wire-AND U18 delivered-voltage comparator, unchanged.
-- M1: TIMER_GO = RUN AND MAIN_OK (U13 pin 10 was V20_OK). MAIN_OK is the net that enables
-  U2/U3, so the startup qualification window starts with the converters and ARMED cannot be
-  masked while they run. V20_OK stays in MAIN_LED_OK / ANY_BAD; R83 220k -> 200k re-centres it
-  (16.1 V nominal, 17.7 V high corner) below the 18.25 V minimum loaded PD input so the new
-  arming path cannot latch off a legitimate 20 V source.
-- M2: R11/R12 (U3 feedback) are 0.1 % / 25 ppm: setpoint 4.856-5.114 V. In the imposed-current release
-  screen (s8_calcs ovlo_release) any release from within U23's current limit stays below the OVLO minimum;
-  a loop-level load-release test is still open, as is the -35 mV OVLO reconnect corner.
-U18/U20 keep LM2901B on always-on VPD (before U5, after F1, clamped by D1) with V3V3 output
-pull-ups. No +/-12V rail switches/LEDs are restored. Original S7 circuit45 is untouched.
-
-S8.5 (2026-11-02, the arming blocker of all three S8.4 reviews; U23 and every other S8.4 decision unchanged):
-- B: TIMER_GO = RUN AND MAIN_OK (S8.4) restarted the qualification window whenever a fault cycled MAIN_OK
-  and armed during the PD 5 V phase when U5's status floated high. S8.5: U12 flip-flop A becomes the one-shot latch
-  STARTED (PRE_N = START_N = NAND(MAIN_LED_OK, RUN) on the spare U14 gate, CLR_N = RESET_N, CLK tied low), so the
-  first converter enable after RESET sets it and only RESET clears it. TIMER_GO = RUN AND STARTED feeds U11, whose
-  output IS ARMED (held because its input is latched). R83 120k moves V20_OK to a 9.06-10.96 V status floor: above
-  the PD 5 V phase (U5 FLT/PGOOD valid) and below the U5 turn-off minimum, so V20_OK can never be the first status
-  to drop while U5 is on; the input qualification is U5's own UVLO (MAIN_OK). TP19 = STARTED.
-- C: MAIN_LED_OK / ANY_BAD now mean "U5 on with valid FLT/PGOOD" (V20_OK only validates U5's status); the replug /
-  power-on-reset race of the U20 -12V channel (REF_OV via R100/C67 against the TPS3808 POR) is an explicit OPEN
-  item (s8_calcs replug_por), not a margin.
-
-S9.0 (2026-11-02, major revision; docs/s8-single-board.md S9.0 / P2.0 section):
-- Step 1, +5V removed: the module is +/-12V only. U3 (TPS62933F +5V buck) and everything that only served +5V
-  is gone: U23 TPS259470A with R108/TP21 (P5_FLT_N), OVLO R107/R101/R102, ILM R103/R104, dVdt C68, L2 and the U3
-  network (R10-R12, C15-C19), the 10 x 22u raw bank (C20-C23, C69-C72, C75, C76) and the 4 x 22u delivered bank
-  (C35, C60, C73, C74), D3/D21/D23, the U20 +5V guard channel (R95, R96, C64), the U18 +5V monitor (R77-R79,
-  R44) with TP13 (P5_OK), TP18 (P5_RAW) and J2/J3 pins 11/12 (now open). U14 gate 1 keeps its fourth input high
-  (ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK)); the freed U18/U20 comparators are spares with defined inputs
-  and open outputs. The main eFuse (U5) nets keep their function and are renamed EF_* -> MAIN_* on the single board
-  (they never belonged to +5V); S7 is untouched.
-- Step 2, 15 V input: CH224A CFG1 R1 56k (15 V request), U5 UVLO R3 10k (on 12.46-13.98 V, off 11.55-13.14 V), V20_OK
-  R83 100k (7.67-9.27 V status floor). The +12V stage becomes a four-switch buck-boost, U2 TPS552892-Q1 (RYQ, tools/
-  s90_parts.py): at the 12.5 V low-line converter input the TPS62933F buck needed 0.995-1.053 duty (1.033 unloaded) against
-  its 98 % maximum (s8_calcs plus12_buckboost).
-  966 kHz (R110 20k), L1 6.8u (unchanged part), 4 x 10u at VIN (C6, C7, C77, C78), 6 x 22u + 100n at VOUT (C11-C14, C79,
-  C80, C81), output current limit R109 15 mR (ISP/ISN, 3.14-3.53 A), FB R8 68k / R9 7.5k (12.08 V, VREF 1.2 V),
-  COMP R111 9.1k + C83 10n, VCC C82 10u, BOOT C10/C9, FPWM (MODE = VCC), internal LDO (EXTVCC = VCC), no dithering, CDC
-  open (no droop compensation), PG/CC open. U5's OVP stays at the 20 V-input setting: every part behind it is rated
-  for the later 20 V retarget (R1 120k, R3 7.5k, R83 120k).
-- Owner decisions (2026-11-02): NO reverse-current blocking and NO voltage-triggered rail fuse/crowbar; both are accepted
-  residuals (s8_calcs residuals, docs S9.0 (d)). The reverse-blocking attempt of the earlier run is reverted: no ideal-diode
-  controller, FET or SOIC-8 footprint. Crowbar vs eFuse stays deferred/open.
+"""S9.1 / P2.1: own-input U4 enable, VIN pulse clamps, precision UVLO, 18mR R109,
+separate AGND_U2 with sole C82 star link, 175-Hz compensation zero. S7 untouched.
+Historical revision notes follow (superseded by implementation below).
 """
 import copy
 
@@ -133,8 +78,9 @@ TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left'),
 CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
 # S9.0 step 2: +12V buck-boost U2 and the parts it adds (S7 refs U2, L1, R8, R9, C6-C14 keep their roles; C9 is BOOT2).
 TPS552892 = dict(LCSC='C22375748', MPN='TPS552892QWRYQRQ1', Manufacturer='Texas Instruments')
-R_SENSE = dict(LCSC='C601098', MPN='HoLR1206-1W-15mR-1%-75ppm', Manufacturer='Milliohm', Tolerance='1%', TCR='75ppm',
+R_SENSE = dict(LCSC='', MPN='WSLP1206R0180FEA', Manufacturer='Vishay Dale', Tolerance='1%', TCR='75ppm',
                Power='1W')
+S91_ADDED = ('Q14', 'Q15', 'R112', 'R113', 'R114', 'D24', 'D25', 'D26')
 BUCKBOOST_ADDED = ('C77', 'C78', 'C79', 'C80', 'C81', 'C82', 'C83', 'R109', 'R110', 'R111')
 U2_AT = (381.0, 78.74)            # flat sheet (page 02 offset -276.86, 0); S7 U2 sat at (368.3, 71.12)
 U2_BLOCK = ((320.0, 435.0), (50.0, 98.0))     # flat-sheet box of the removed S7 +12V buck drawing (coordinate wires)
@@ -164,10 +110,10 @@ def _plus12_buckboost(c, by):
     feeding the output bank rail and R109 top-right, FB divider and COMP network bottom-right (circuit_s8.drawing)."""
     u2 = by['U2']
     u2.update(sym='TPS552892_RYQ', value=TPS552892['MPN'], fp='RYQ21', at=U2_AT, rot=0, unit=1)
-    u2['pins'] = {'7': 'VIN', '1': 'MAIN_OK', '2': '_VCC_U2', '21': '_VCC_U2', '18': '_VCC_U2', '5': 'GND',
+    u2['pins'] = {'7': 'VIN', '1': 'MAIN_OK', '2': '_VCC_U2', '21': '_VCC_U2', '18': '_VCC_U2', '5': 'AGND_U2',
                   '6': '_FSW_U2', '11': 'P12_VOUT', '12': 'P12_VOUT', '13': '+12V', '3': None, '4': None, '16': None,
                   '14': '_FB_U2', '15': '_COMP_U2', '8': '_SW1_U2', '20': '_BST1_U2', '19': '_BST2_U2', '10': '_SW2_U2',
-                  '9': 'GND', '17': 'GND'}
+                  '9': 'GND', '17': 'AGND_U2'}
     u2['fields'] = {**TPS552892, 'Note': (
         '+12V four-switch buck-boost (S9.0, SLVSGT7): 3-36 V in, average inductor limit 7-9 A, VREF 1.188-1.212 V, '
         '966 kHz (R110 20k), FPWM (MODE = VCC), internal LDO (EXTVCC = VCC), no dithering (DITH = GND), CDC open (no '
@@ -196,12 +142,12 @@ def _plus12_buckboost(c, by):
     by['C9']['pins'] = {'1': '_BST2_U2', '2': '_SW2_U2'}
     by['C9']['fields'] = {**circuit45.CAPS[('100n', 'C0603')],
                           'Note': 'U2 BOOT2 bootstrap (BOOT2-SW2), 0.1 uF (TI). S8: the TPS62933F soft-start capacitor'}
-    c.append(two('C82', 'C', '10u', 'C1206', (350.52, 85.09), '_VCC_U2', 'GND', **circuit45.CAPS[('10u', 'C1206')],
+    c.append(two('C82', 'C', '10u', 'C1206', (350.52, 85.09), '_VCC_U2', 'AGND_U2', **circuit45.CAPS[('10u', 'C1206')],
                  Note='U2 VCC LDO output, TI > 4.7 uF: 10u/50V 1206 keeps ~8 uF at 5.2 V bias. MODE and EXTVCC tie here '
                       '(FPWM, internal LDO)'))
-    c.append(res('R110', '20k', (358.14, 92.71), '_FSW_U2', 'GND',
+    c.append(res('R110', '20k', (358.14, 92.71), '_FSW_U2', 'AGND_U2',
                  Note='U2 FSW: fSW = 1000 / (0.05 x 20000 + 35) MHz = 0.966 MHz (TI Eq. 3; 0.87-1.06 MHz screen); above '
-                      'TI\'s < 500 kHz high-power advice: the R109 limit keeps the switch current low (calcs plus12_buckboost)'))
+                      'TI\'s <500 kHz high-power advice: thermal bench gate. R109 is a SLOW output CC loop, NOT a switch-current limit'))
     for i, ref in enumerate(('C81', 'C11', 'C12', 'C13', 'C14', 'C79', 'C80')):
         at = (round(403.86 + 10.16 * i, 2), 52.07)
         if ref == 'C81':
@@ -214,12 +160,12 @@ def _plus12_buckboost(c, by):
         else:
             c.append(cap(ref, '22u', 'C1206', at, 'P12_VOUT', 'GND',
                          Note='U2 VOUT bank, 6 x 22u before the R109 sense resistor'))
-    c.append(two('R109', 'R', '0.015', 'R1206', (474.98, 48.26), 'P12_VOUT', '+12V', rot=90, **R_SENSE,
-                 Note='U2 output current limit ISP/ISN: VSNS 48-52 mV / 15 mR (1 % + 75 ppm) = 3.14-3.53 A constant-current '
+    c.append(two('R109', 'R', '0.018', 'WSLP1206', (474.98, 48.26), 'P12_VOUT', '+12V', rot=90, **R_SENSE,
+                 Note='U2 output current limit ISP/ISN: VSNS 48-52 mV / 18 mR (1 % + 75 ppm) = 2.62-2.94 A constant-current '
                       'loop. Sets the +12V capability (rating basis) and charges rack capacitance without hiccup; FB '
-                      'senses after it. 1 W part: <= 0.19 W at the limit'))
+                      'senses after it. 1 W part: <= 0.16 W at the limit; procurement/PCBA qualification OPEN (no invented C-code)'))
     by['R9'].update(value='7.5k', at=(408.94, 90.17), rot=0)
-    by['R9']['pins'] = {'1': '_FB_U2', '2': 'GND'}
+    by['R9']['pins'] = {'1': '_FB_U2', '2': 'AGND_U2'}
     by['R9']['fields'].update(LCSC=circuit45.R0603['7.5k'], MPN=circuit45.R_MPN['7.5k'],
                               Note='FB bottom: 1.2 V x (1 + 68k/7.5k) = 12.08 V nominal (11.54-12.65 V over VREF and 1 % '
                                    '+ 1 % TCR)')
@@ -227,11 +173,16 @@ def _plus12_buckboost(c, by):
     by['R8']['pins'] = {'1': '_FB_U2', '2': '+12V'}
     by['R8']['fields'].update(LCSC=circuit45.R0603['68k'], MPN=circuit45.R_MPN['68k'],
                               Note='FB top from the regulated side of R109 (CDC open: <= 0.3 uA x 68k = 20 mV)')
-    c.append(res('R111', '9.1k', (398.78, 92.71), '_COMP_U2', '_COMPRC_U2',
-                 Note='U2 COMP RC: crossover 11.6 kHz at the low-C bank corner, 4.5 kHz high C (TI Eq. 24-26, boost corner, '
-                      'RSENSE 55 mOhm, GEA 190 uA/V); with the rack behind the cables it falls below the zero: bench Bode open'))
-    c.append(cap('C83', '10n', 'C0603', (398.78, 100.33), '_COMPRC_U2', 'GND',
-                 Note='U2 COMP CC: zero ~1.7 kHz with R111; CP not fitted (TI: open below 10 pF)'))
+    c.append(res('R111', '6.8k', (398.78, 92.71), '_COMP_U2', '_COMPRC_U2',
+                 Note='S9.1 COMP: R111 6.8k / C83 100n; full complex loop sweep incl. R109 and rack branch in calcs.json. '
+                      'Published +12V rack envelope 0..0.44 mF; no arbitrary-impedance rack stability guarantee'))
+    c.append(cap('C83', '100n', 'C0603', (398.78, 100.33), '_COMPRC_U2', 'AGND_U2',
+                 Note='S9.1: 100n lowers the COMP zero to 234 Hz. Ground is the quiet AGND_U2 island, joined only at C82 via R113'))
+    c.append(two('D26', 'D_Zener', 'SMBJ14A', 'SMB', (474.98, 69.85), 'P12_VOUT', 'GND', rot=270,
+                 LCSC='', MPN='SMBJ14A', Manufacturer='Littelfuse',
+                 Note='S9.1 U2 VOUT transient backstop: 14 V stand-off, breakdown 15.6-17.2 V, 23.2 V at 25.9 A, '
+                      '600 W 10/1000 us. Absorbs VIN-bank energy after U20 opens U5; NOT a continuous rail crowbar. '
+                      'Procurement/PCBA qualification OPEN.'))
     by['#FLG04'].update(at=(482.6, 48.26))
 
 
@@ -254,27 +205,60 @@ def circuit():
     by['U1']['fields']['Note'] = ('Fixed 15 V request (S9.0), independently current-limited/zener-protected supply. Needs a '
                                   'source with a 15 V / 3 A fixed PDO (>= 45 W PD class). No current-contract tracking; PG is '
                                   'not a current guarantee')
+    # S9.1: precision upper / principal lower, Basic 510R trim in series with R3.
+    # Wider TPS16630 internal threshold tolerances prevent simultaneously guaranteeing <=13.0 V rising
+    # and >=11.8 V falling with ANY passive divider (see calcs input_qualification).
+    by['R2']['fields'].update(LCSC='C122538', MPN='RT0603BRD07100KL', Manufacturer='YAGEO',
+                              Tolerance='0.1%', TCR='25ppm', Note='S9.1 UVLO top, precision 100k; senses own VPD before D10')
     by['R3'].update(value='10k')
-    by['R3']['fields'].update(LCSC=circuit45.R0603['10k'], MPN=circuit45.R_MPN['10k'],
-                              Note='UVLO bottom (S9.0, 15 V input): on 12.46/13.20/13.98 V, off 11.55/12.34/13.14 V over '
-                                   'corners incl. leakage (S8: 7.5k for 20 V; 7.5k again at the 20 V retarget)')
+    by['R3']['pins']['2'] = 'UV_TRIM'
+    by['R3']['fields'].update(LCSC='C95204', MPN='RT0603BRD0710KL', Manufacturer='YAGEO',
+                              Tolerance='0.1%', TCR='25ppm', Note='S9.1 UVLO bottom: 10k precision + R114 510R Basic in series')
+    c.append(two('R114', 'R', '510', 'R0603', (154.94, 134.62), 'UV_TRIM', 'GND',
+                 LCSC='C23193', MPN='0603WAF5100T5E', Manufacturer=UNIROYAL, Tolerance='1%', TCR='100ppm',
+                 Note='S9.1 UVLO trim; do not bypass. Worst-case turn-on <13.0 V; calcs includes all three resistor corners'))
     _plus12_buckboost(c, by)
-    by['U5']['fields']['Note'] = by['U5']['fields']['Note'].replace(
-        '; S6 FLT + PGOOD wired-AND at 3.3 V; common RUN disconnect.',
-        '. FLT + PGOOD wired-AND (MAIN_OK) at 3.3 V; common input switch for both rails (RUN). S9.0: its UVLO (R2/R3 '
-        '100k/10k: on 12.46-13.98 V, off 11.55-13.14 V) is the input qualification of the one-shot arming latch; OVP keeps '
-        'the 20 V-input setting (24.1 V nominal)').replace(
-        'PGOOD gates U2/U3', 'PGOOD gates U2 (U4 follows +12V via Q1)')
+    by['U5']['fields']['Note'] = ('S9.1 common input switch, SHDN = RUN. UVLO R2 100k precision / '
+        '(R3 10k precision + R114 510R): <13.0 V worst-case start. OVP unchanged (24.1 V nominal). '
+        'FLT/PGOOD = MAIN_OK. U4 independently requires RUN AND MAIN_LED_OK and derives EN drive from own VPD.')
     by['U18']['pins']['3'] = 'VPD'
     by['C57']['pins']['1'] = 'VPD'
     by['C57']['fields']['Note'] = 'U18 always-on VPD bypass, 50 V rated; logic outputs still pull up to V3V3'
     by['U4']['fields']['Note'] = by['U4']['fields']['Note'].replace(
         'Pins 1 and pad are the -12V node, not GND.', 'Pins 1 and pad are the delivered -12V node (S8: no '
         'series switch), not GND; 18 ms OCP blanking at start-up charges the rack capacitance.')
-    by['Q1']['fields']['Note'] = ('-12V enable from +12V: -12V follows +12V up and down. S9.0 accepted residual: EN_N comes '
-                                  'from the rails only, so a live +/-12V bus can enable (and power) U4 in an unpowered or '
-                                  'latched-off module (docs/s8-single-board.md S9.0 (d)); never plug such a module into a '
-                                  'live bus')
+    # S9.1 C1: NO output-derived enable supply. VPD is upstream of reverse-blocking D10.
+    # Q14/Q15 form a series AND sink: RUN AND MAIN_LED_OK. R112 holds Q1 off if either is off.
+    by['Q1']['pins']['2'] = 'VPD'
+    by['Q1']['pins']['1'] = 'N_EN_BASE'
+    by['R16']['pins']['2'] = 'N_EN_BASE'
+    by['Q1']['fields']['Note'] = ('S9.1: emitter = own VPD, NOT +12V or VIN. Q14/Q15 qualify base sink with RUN AND '
+        'MAIN_LED_OK (MAIN_OK AND V20_OK); R112 pulls base to emitter when disabled. Bus alone cannot enable U4.')
+    by['R16'].update(value='33k')
+    by['R16']['fields'].update(LCSC=circuit45.R0603['33k'], MPN=circuit45.R_MPN['33k'])
+    by['R16']['pins']['1'] = 'N_EN_SINK'
+    by['R16']['fields']['Note'] = 'Q1 base sink through BOTH Q14 (RUN) and Q15 (MAIN_LED_OK); never direct to GND'
+    c.append(res('R112', '5.1k', (66.04, 269.24), 'VPD', 'N_EN_BASE',
+                 Note='S9.1 Q1 base-emitter pull-up; off-state leakage cannot turn on Q1'))
+    for ref, gate, source, drain, at in (
+            ('Q14', 'RUN', 'GND', 'N_EN_RETURN', (45.72, 269.24)),
+            ('Q15', 'MAIN_LED_OK', 'N_EN_RETURN', 'N_EN_SINK', (45.72, 246.38))):
+        c.append(part(ref, '2N7002', '2N7002', 'SOT23', at, 0,
+                      {'1': gate, '2': source, '3': drain}, **{k:v for k,v in by['Q10']['fields'].items() if k != 'Note'},
+                      Note='S9.1 U4 enable qualification, series NMOS sink; no output-rail gate or supply'))
+    c.append(two('R113', 'R', '0', 'R0603', (350.52, 105.41), 'AGND_U2', 'GND',
+                 LCSC='C21189', MPN='0603WAF0000T5E', Manufacturer=UNIROYAL,
+                 Note='ONLY AGND_U2/PGND connection, at C82 ground terminal. Route no other bridge; 3-4 GND vias at C82'))
+    c.append(part('#FLG10', 'PWR_FLAG', 'PWR_FLAG', None, (340.36, 105.41), 0, {'1':'AGND_U2'},
+                  Note='Ground supplied through populated R113 0R; not an independent supply'))
+    c.append(two('D24', 'D_Zener', 'SMBJ16A', 'SMB', (330.2, 119.38), 'VIN', 'GND', rot=270,
+                 LCSC='C151254', MPN='SMBJ16A', Manufacturer='Littelfuse',
+                 Note='S9.1 VIN TVS: 16 V stand-off, 17.8-19.7 V breakdown, 26 V at 23.1 A (600 W 10/1000 us). '
+                      'Finite bus-injection pulses ONLY, not continuous reverse-power absorption. 20 V retarget must change D24.'))
+    c.append(part('D25', 'BAT54S', 'BAT54SLT1G', 'SOT23', (355.6, 119.38), 0,
+                  {'1':'GND', '2':'VIN', '3':'VIN'}, LCSC='C19726', MPN='BAT54SLT1G', Manufacturer='onsemi',
+                  Note='S9.1 low-current VIN negative clamp for slew-limited bus tests: VF <=0.24 V at <=0.1 mA, 25 C. '
+                       'Not a hard-hotplug/cold absolute-minimum guarantee; 30 V reverse rating. 20 V retarget changes D25.'))
     for ref, rail in (('D2', '+12V'), ('D4', '-12V')):
         by[ref]['fields']['Note'] = f'{rail} polarity clamp at the header strip (rack-side reversal enters here)'
     # ---- Status LED: D8 MAIN is the only LED left (S8 final)

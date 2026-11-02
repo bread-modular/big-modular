@@ -95,3 +95,19 @@ def footprint():
         else:
             text += pad('', x, y, w, h, '"F.Paste"')
     return text + ')\n'
+
+
+# S9.1: Vishay WSLP1206, doc 30122, 0.006..0.050 ohm row.
+# Pads a=1.65, b=1.93, inner gap l=1.80 mm; Kelvin routes must leave inner terminal edges.
+FP_S90['WSLP1206'] = 'R_WSLP1206_18m_Kelvin'
+
+def sense_footprint():
+    return """(footprint "R_WSLP1206_18m_Kelvin" (version 20241229) (generator pcbnew) (layer "F.Cu")
+      (descr "Vishay WSLP1206 doc 30122: pads 1.65x1.93 gap 1.80; Kelvin sense from terminal inner edges") (attr smd)
+      (property "Reference" "REF**" (at 0 -1.65) (layer "F.Fab") (effects (font (size 0.7 0.7) (thickness 0.1))))
+      (property "Value" "0.018" (at 0 1.65) (layer "F.Fab") (effects (font (size 0.7 0.7) (thickness 0.1))))
+      (fp_rect (start -1.73 -0.93) (end 1.73 0.93) (stroke (width 0.1) (type default)) (fill none) (layer "F.Fab"))
+      (fp_rect (start -2.8 -1.22) (end 2.8 1.22) (stroke (width 0.05) (type default)) (fill none) (layer "F.CrtYd"))
+      (pad "1" smd roundrect (at -1.725 0) (size 1.65 1.93) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1))
+      (pad "2" smd roundrect (at 1.725 0) (size 1.65 1.93) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.1)))
+"""

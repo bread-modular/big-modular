@@ -49,6 +49,7 @@ LOCAL_LOOPS = [
     ('U2', ('7',), 'VIN', ('C8',), None, 4.5, '+12V converter HF input cap'),          # S9.0: TPS552892 VIN land
     ('U2', ('11',), 'P12_VOUT', ('C81',), None, 4.5, '+12V converter HF output cap'),  # S9.0: VOUT land (TI 0.1 uF)
     ('U2', ('18',), None, ('C82',), None, 4.5, '+12V converter VCC (LDO) cap'),       # S9.0: net = the VCC pin's own
+    ('C82', ('2',), 'AGND_U2', ('R113',), None, 3.0, 'sole AGND/PGND link at VCC capacitor'),
     ('U4', ('3',), 'VIN', 'C', '100n', 4.5, '-12V converter HF input cap'),
     ('U21', ('1',), 'REF_OV', ('C67',), None, 4.5, 'TLV431 stabilising cap'),
     *[(u, (p,), 'V3V3', 'C', '100n', 6.0, f'{u} logic bypass')
@@ -216,6 +217,10 @@ def check(board_path):
                                        rot=fps[h['reference']].GetOrientationDegrees(),
                                        matches=abs(mm(p1.x) - want[0]) < 1e-3 and abs(mm(p1.y) - want[1]) < 1e-3)
     loops = local_loops(fps)
+    net=lambda r,p: next(q.GetNetname().split('/')[-1] for q in fps[r].Pads() if q.GetNumber()==p)
+    ground_ok=(net('U2','17')==net('U2','5')==net('C82','2')==net('R113','1')=='AGND_U2'
+               and net('U2','9')==net('R113','2')=='GND' and fps['R113'].GetValue()=='0')
+
     inset = pcbnew.SHAPE_POLY_SET(outline)
     inset.Deflate(pcbnew.FromMM(1.0), pcbnew.CORNER_STRATEGY_ROUND_ALL_CORNERS, pcbnew.FromMM(0.01))
     occ = sum(v['polys'].Area() for v in placed.values()) / 1e12
@@ -223,6 +228,7 @@ def check(board_path):
         del v['polys']
     z_rear = round(104.275 - mm(bb.GetTop()), 3)
     res = {'board': str(Path(board_path).relative_to(MODULE)) if Path(board_path).is_relative_to(MODULE) else str(board_path),
+           'ground_split': {'pass':ground_ok,'analog':'AGND_U2','power':'GND','sole_link':'R113 at C82.2'},
            'parts_on_board': len(placed), 'parked_parts': sorted(parked), 'parts_on_B': sorted(on_back),
            'tracks': len(list(b.GetTracks())), 'zones': len(list(b.Zones())),
            'courtyard_overlaps': overlaps,
@@ -238,7 +244,7 @@ def check(board_path):
                    and not any(v['violations'] for v in driver.values())
                    and not any(v['violations_lt_2mm'] for r, v in hand.items() if r not in REPORT_ONLY)
                    and all(h['matches'] for h in headers.values()) and z_rear <= GEO['carrier_Z_mm'][1] + 1e-6
-                   and not loops['violations'])
+                   and not loops['violations'] and ground_ok)
     return res
 
 

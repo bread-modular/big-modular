@@ -183,16 +183,19 @@
     }
   },
   "basic_only_policy": {
-    "decision": "ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other passive stays Basic. Not an order approval.",
+    "decision": "Historical S9.0 policy was incomplete: R109 C601098 is Extended, not Basic. S9.1 replaces it with18mR; active policy is in s91-sourcing.json.",
     "refs": [
       "R93",
       "R94",
       "R98",
-      "R99"
+      "R99",
+      "R109"
     ],
     "why": "They set protection thresholds: the U20 overvoltage guard bands (+12V R93/R94, -12V R98/R99). With 1 % + 1 % TCR Basic parts the -12V guard minimum falls below the stacked converter peak (calcs.json basic_only_counterfactual). The searched JLC catalog has no Basic 0.1 % 0603 resistor (S8.4 keyword snapshots; every hit Extended). S9.0: the +5V precision parts (R95/R96, R101/R102, R11/R12) left with +5V.",
     "cost": "Extended per-unique-part fees apply to the precision codes (not included in the q1 parts totals); all selected codes were observed Economic-eligible.",
     "not_done": "No Basic substitute was qualified; replacing them with 1 % parts would need a new threshold design."
   },
-  "failures": []
+  "failures": [
+    "Historical passive policy omitted the Extended R109 exception; corrected explicitly in S9.1"
+  ]
 }
