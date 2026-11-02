@@ -1,0 +1,1177 @@
+{
+  "revision": "S9.0 / P2.0",
+  "status": "verified schematic / fit draft, unrouted and not bench-qualified",
+  "replaces": "review-s85.json (S8.5 / P1.5 record, git 5a3a686)",
+  "changelog": [
+    {
+      "item": "S9.0-1 +5V removed",
+      "change": "The module is +/-12V only: U3 (TPS62933F +5V buck) and every part that only served +5V are gone (U23 eFuse with R108/TP21, OVLO R107/R101/R102, ILM R103/R104, dVdt C68, L2 and the U3 network, the raw and delivered +5V banks, D3/D21/D23, the U20 +5V guard channel, the U18 +5V monitor, R44, TP13/TP18, J2/J3 pins 11/12 open). No +5V/P5_*/EF_* net or ref survives (regression tests)."
+    },
+    {
+      "item": "S9.0-2 15 V input",
+      "change": "CH224A requests 15 V (R1 56k); U5 UVLO R3 10k (on 12.46-13.98 V, off 11.55-13.13 V); V20_OK R83 100k (7.67-9.27 V status floor); stated input range 13.5-16.5 V at the module; needs a 15 V / 3 A (>= 45 W) PD source; U5 OVP keeps the 20 V setting."
+    },
+    {
+      "item": "S9.0-2 +12V duty",
+      "change": "The S8 TPS62933F buck needed 0.995-1.053 duty at the 12.5 V low-line converter input (1.033 even unloaded at the setpoint maximum) against its 98 % maximum and would need VPD >= 14.42 V: replaced by the TPS552892-Q1 four-switch buck-boost (TI RYQ0021B; 966 kHz, L1 6.8 uH kept, R109 15 mR CC limit 3.14-3.53 A, FB R8/R9, COMP R111/C83, VCC C82, FPWM, internal LDO) that regulates from the 10.55 V U5 sag to 21 V. U2 footprint replaced (U2 only), +10 parts placed right of L1."
+    },
+    {
+      "item": "S9.0 ratings",
+      "change": "Published prototype rating +12V 2.4 A, -12V 0.8 A (75 % of the minimum current-limited capability at the 12.5 V converter input), <= 33 W together (3 A contract at the 13.5 V minimum, worst efficiency mix); ~36 W is the most a nominal 15 V / 3 A source supports."
+    },
+    {
+      "item": "S9.0 arming",
+      "change": "Re-derived without P5_OK: ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3); S8.5 one-shot STARTED (U12 A, U11 -> ARMED, TP19) kept; timelines re-run at the 15 V source corners with a load-aware VPD plant (the loaded 13.5 V minimum sits below the 13.98 V turn-on maximum): 0 violations."
+    },
+    {
+      "item": "S9.0 residuals",
+      "change": "Owner decisions 2026-11-02: no reverse-current blocking (no LM74700/LTC4357-class part, no FETs) and no voltage-triggered fuse/crowbar; both recorded as accepted residuals with bench-test conditions and pass criteria (calcs residuals, validation accepted_residuals, docs S9.0). Finding: a live +/-12V bus can enable U4 through Q1 in an unpowered module and its FPWM can pump VIN: the procedural rule is mandatory; a non-blocking mitigation is an open owner decision, not implemented."
+    },
+    {
+      "item": "kept / open",
+      "change": "Crowbar vs eFuse stays deferred/open (no crowbar restored); replug/POR race (C3) open; U18/U20 on VPD, guard thresholds, precision-divider policy, mechanics and the panel geometry unchanged (panel label PD 15V)."
+    }
+  ],
+  "native_findings": {
+    "erc": {
+      "categories": {
+        "violations": 0
+      },
+      "severity": {},
+      "total_including_exclusions": 0
+    },
+    "drc": {
+      "categories": {
+        "violations": 0,
+        "unconnected_items": 365,
+        "schematic_parity": 0
+      },
+      "severity": {
+        "error": 365
+      },
+      "total_including_exclusions": 365
+    }
+  },
+  "exact_native_ref_pin_net_parity": {
+    "missing_refs": [],
+    "extra_refs": [],
+    "missing_pins": [],
+    "net_mismatches": [],
+    "extra_connected_pads": [],
+    "pads_without_net": [],
+    "mechanical_without_reference": [
+      "",
+      ""
+    ],
+    "duplicate_nc_pad_aliases": [],
+    "equal": true
+  },
+  "native_sources_unchanged_by_check": true,
+  "raw_reports": "research/s90/check-final",
+  "raw_reports_committed": false,
+  "counts": {
+    "components": 156,
+    "nets": 74,
+    "nets_including_NC": 115,
+    "no_connect_pins": 41,
+    "drc_unconnected_items": 365
+  },
+  "bom_parity": {
+    "bom_lines": 57,
+    "bom_refs": 139,
+    "unique": 139,
+    "test_pads_not_in_bom": 17,
+    "components": 156,
+    "equal": true
+  },
+  "tests": {
+    "ran": 54,
+    "ok": true,
+    "skipped": 0,
+    "s8_tests": 45,
+    "log": "research/s90/tests-final.log",
+    "log_committed": false,
+    "note": "local evidence; the tests log lives in git-ignored research/ and is not hashed"
+  },
+  "placement": {
+    "parts": 156,
+    "pass": true,
+    "local_loops_violations": [],
+    "local_loops": {
+      "U20 VCC (VPD) bypass": [
+        "U20.3",
+        "C65.1",
+        2.31,
+        4.5
+      ],
+      "U18 VCC (VPD) bypass": [
+        "U18.3",
+        "C57.1",
+        2.92,
+        4.5
+      ],
+      "LDO input": [
+        "U9.8",
+        "C46.1",
+        1.91,
+        4.5
+      ],
+      "LDO output": [
+        "U9.1",
+        "C47.1",
+        2.93,
+        4.5
+      ],
+      "main eFuse IN": [
+        "U5.1",
+        "C2.1",
+        2.56,
+        4.5
+      ],
+      "CH224A VHV (R3 BASE block)": [
+        "U1.1",
+        "C1.1",
+        4.02,
+        4.5
+      ],
+      "+12V converter HF input cap": [
+        "U2.7",
+        "C8.1",
+        3.08,
+        4.5
+      ],
+      "+12V converter HF output cap": [
+        "U2.11",
+        "C81.1",
+        3.07,
+        4.5
+      ],
+      "+12V converter VCC (LDO) cap": [
+        "U2.18",
+        "C82.1",
+        3.12,
+        4.5
+      ],
+      "-12V converter HF input cap": [
+        "U4.3",
+        "C27.1",
+        2.26,
+        4.5
+      ],
+      "TLV431 stabilising cap": [
+        "U21.1",
+        "C67.1",
+        3.5,
+        4.5
+      ],
+      "U10 logic bypass": [
+        "U10.6",
+        "C52.1",
+        3.72,
+        6.0
+      ],
+      "U11 logic bypass": [
+        "U11.6",
+        "C50.1",
+        3.99,
+        6.0
+      ],
+      "U12 logic bypass": [
+        "U12.14",
+        "C52.1",
+        2.27,
+        6.0
+      ],
+      "U13 logic bypass": [
+        "U13.14",
+        "C53.1",
+        3.62,
+        6.0
+      ],
+      "U14 logic bypass": [
+        "U14.14",
+        "C55.1",
+        2.13,
+        6.0
+      ],
+      "U15 logic bypass": [
+        "U15.5",
+        "C54.1",
+        5.26,
+        6.0
+      ]
+    },
+    "basis": "synchronized from the S9.0 step-1 board (P1.5 minus the +5V parts)",
+    "replaced_footprints": {
+      "U2": [
+        "USBPOWER45:SOT-583-8",
+        "USBPOWER45:TI_RYQ0021B_VQFN-HR-21_3x5mm"
+      ]
+    },
+    "moved_retained_refs": [
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C6",
+      "C7",
+      "C8",
+      "C9",
+      "R8",
+      "R9"
+    ],
+    "added_refs": [
+      "C77",
+      "C78",
+      "C79",
+      "C80",
+      "C81",
+      "C82",
+      "C83",
+      "R109",
+      "R110",
+      "R111"
+    ],
+    "removed_refs": [],
+    "courtyard_fill": 0.585
+  },
+  "mechanical": {
+    "overlaps": 0,
+    "proxies": [
+      "J1",
+      "L1",
+      "L3",
+      "SW1",
+      "U2"
+    ],
+    "risks": {
+      "IDC_strain_relief_overshoot": -0.4,
+      "IDC_envelope_margin": 1.1,
+      "case_depth": 5.7,
+      "nominal_proxies": null
+    },
+    "nominal_only": true
+  },
+  "electrical_screens": {
+    "plus12_duty": {
+      "S8_TPS62933F_required_duty": {
+        "VIN12.5_I0A_nom": 0.976,
+        "VIN12.5_I0A_max": 1.033,
+        "VIN12.5_I2.5A_nom": 0.995,
+        "VIN12.5_I2.5A_max": 1.053
+      },
+      "S8_min_VPD_for_regulation_V": 14.42,
+      "TPS552892_regulates_everywhere": true,
+      "R109_cc_limit_A": [
+        3.145,
+        3.333,
+        3.528
+      ],
+      "setpoint_V": [
+        11.537,
+        12.08,
+        12.649
+      ],
+      "fsw_kHz": [
+        870,
+        966,
+        1063
+      ],
+      "losses": {
+        "I2.40A": {
+          "P_IC_W": 1.017,
+          "P_L1_DCR_W": 0.183,
+          "P_R109_W": 0.088,
+          "efficiency_screen": 0.957,
+          "Tj_rise_C_JEDEC": 44.1,
+          "Tj_rise_C_EVM": 28.0,
+          "Tj_at_50C_ambient_JEDEC_C": 94.1
+        },
+        "I3.53A": {
+          "P_IC_W": 1.747,
+          "P_L1_DCR_W": 0.394,
+          "P_R109_W": 0.19,
+          "efficiency_screen": 0.948,
+          "Tj_rise_C_JEDEC": 75.8,
+          "Tj_rise_C_EVM": 48.0,
+          "Tj_at_50C_ambient_JEDEC_C": 125.8
+        }
+      },
+      "compensation": {
+        "bank_low_C": 11555,
+        "bank_high_C": 4484,
+        "bank_high_plus_typical_rack": 809
+      }
+    },
+    "published_rating_A": {
+      "+12V": 2.4,
+      "-12V": 0.8
+    },
+    "published_total_W": 33,
+    "pd_contract": {
+      "stated_input_range_V": [
+        13.5,
+        16.5
+      ],
+      "contract_A": 3.0,
+      "required_adapter": "USB PD source with a 15 V / 3 A fixed PDO, i.e. a >= 45 W PDP adapter (a 27 W source offers only 15 V / 1.8 A and will trip or cycle under load); a non-PD or 5 V-only source never turns U5 on",
+      "max_module_output_W": {
+        "nominal_15V_source_worst_mix": 35.85,
+        "nominal_15V_source_best_mix": 36.09,
+        "rated_min_13V5_worst_mix": 33.76
+      }
+    },
+    "startup_arming": {
+      "topology": "STARTED = U12 A (PRE_N = START_N = NAND(MAIN_LED_OK, RUN), CLR_N = RESET_N, CLK low); TIMER_GO = RUN AND STARTED; ARMED = U11 output",
+      "TIMER_GO": "RUN AND STARTED",
+      "START_N": "NAND(MAIN_LED_OK, RUN)",
+      "MAIN_OK_in_timer_path": false,
+      "V20_OK_in_timer_path": false,
+      "TIMER_GO_members": [
+        "R69.1",
+        "U13.8"
+      ],
+      "STARTED_members": [
+        "TP19.1",
+        "U12.5",
+        "U13.10"
+      ],
+      "ARMED_members": [
+        "R71.2",
+        "TP10.1",
+        "U11.1",
+        "U13.4"
+      ],
+      "V20_OK_band_V": [
+        7.672,
+        8.442,
+        9.27
+      ],
+      "U5_on_V": [
+        12.46,
+        13.2,
+        13.979
+      ],
+      "U5_off_V": [
+        11.547,
+        12.342,
+        13.135
+      ],
+      "V20_OK_margin_below_U5_off_min_V": 2.277,
+      "V20_OK_margin_above_vSafe5V_max_V": 2.172,
+      "U11_delay_s": [
+        0.31,
+        0.572,
+        0.88
+      ],
+      "plant_model": {
+        "dt_ms": 0.1,
+        "t_por_ms": 12.0,
+        "t_u5_on_to_pgood_ms": 23.5,
+        "t_pgood_fall_ms": 10.0,
+        "t_rails_ms": 120.0,
+        "t_rail_decay_ms": 1.0,
+        "t_filter_ms": 0.75,
+        "u5_on_V": 13.98,
+        "u5_off_V": 13.14,
+        "u5_status_valid_V": 4.95,
+        "vpd_5v_phase": 4.75,
+        "vpd_unloaded": 14.25,
+        "vpd_loaded": 13.5
+      },
+      "requirements": {
+        "R1": "bounded arming: converters enabled and unarmed only within the U11 delay after the first enable since RESET",
+        "R2": "no restart: ARMED rises once per RESET, t_d after the first enable, whatever MAIN_OK/VPD/rails do",
+        "R3": "no early arming: never before a genuine converter enable (U5 on with valid status); the PD 5 V phase cannot start it",
+        "R4": "fail-safe: after ARMED any bad status > ~1 ms latches FAULT; FAULT keeps RUN low until RESET; OV_N presets FAULT at any time"
+      },
+      "violations": []
+    },
+    "arming_timelines_summary": {
+      "cold_start_worst_loaded_15V": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ]
+      },
+      "slow_PD_contract_2s5": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            2552.7
+          ],
+          [
+            2862.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            2552.7
+          ],
+          [
+            2862.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            2552.7
+          ],
+          [
+            3432.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            2552.7
+          ],
+          [
+            3432.7
+          ],
+          [],
+          true
+        ]
+      },
+      "brownout_after_ARMED": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7,
+            1938.6
+          ],
+          [
+            662.7,
+            2248.6
+          ],
+          [
+            1501.8
+          ],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7,
+            1938.6
+          ],
+          [
+            662.7,
+            2248.6
+          ],
+          [
+            1501.8
+          ],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7,
+            1938.6
+          ],
+          [
+            1232.7,
+            2818.6
+          ],
+          [
+            1501.8
+          ],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7,
+            1938.6
+          ],
+          [
+            1232.7,
+            2818.6
+          ],
+          [
+            1501.8
+          ],
+          true
+        ]
+      },
+      "brownout_inside_window": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ]
+      },
+      "input_overload_chatter": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            662.7
+          ],
+          false
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            662.7
+          ],
+          false
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            1232.7
+          ],
+          false
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            1232.7
+          ],
+          false
+        ]
+      },
+      "hot_plug_live_bus": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ]
+      },
+      "load_release_after_ARMED": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ]
+      },
+      "load_release_inside_window": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            662.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [
+            1232.7
+          ],
+          [],
+          true
+        ]
+      },
+      "ov_guard_before_ARMED": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            420.0
+          ],
+          false
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            420.0
+          ],
+          false
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            420.0
+          ],
+          false
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7
+          ],
+          [],
+          [
+            420.0
+          ],
+          false
+        ]
+      },
+      "short_RESET_while_running": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            352.7,
+            1500.0,
+            1512.1
+          ],
+          [
+            662.7,
+            1822.0
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            352.7,
+            1500.0,
+            1512.1
+          ],
+          [
+            662.7,
+            1822.0
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            352.7,
+            1500.0,
+            1512.1
+          ],
+          [
+            1232.7,
+            2392.0
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            352.7,
+            1500.0,
+            1512.1
+          ],
+          [
+            1232.7,
+            2392.0
+          ],
+          [],
+          true
+        ]
+      }
+    },
+    "arming_calcs": {
+      "required": [
+        "R1 bounded: ARMED within the U11 delay (0.31-0.88 s) of the first converter enable after RESET, and held until RESET/FAULT: the converters can never run unarmed for longer",
+        "R2 no restart: nothing a fault can toggle (MAIN_OK, PGOOD, VPD, V20_OK, the rails) restarts or extends the window; only RESET (or a power-on reset) does",
+        "R3 no early arming: the window starts only at a genuine converter enable, i.e. U5 on through its own UVLO with valid status; the PD 5 V phase or an intermediate PDO cannot start it, so no threshold below the converter enable point can arm",
+        "R4 fail-safe: after ARMED any bad status > ~1 ms latches FAULT; FAULT holds RUN low until RESET; OV_N (U20 guard: +12V and -12V channels) presets FAULT at any time"
+      ],
+      "topology": {
+        "STARTED": "U12 flip-flop A used as a set/reset latch: PRE_N = START_N, CLR_N = RESET_N, CLK = GND (no clock edges), D = V3V3, Q = STARTED (TP19)",
+        "START_N": "U14 gate 2: NAND(MAIN_LED_OK, RUN, V3V3, V3V3); low once U5 is on with PGOOD and FLT good, its status validated by V20_OK, while RUN. Level-sensitive, so a MAIN_OK that is already high at RESET release (PGOOD deglitch) still starts it; RUN in the gate keeps PRE_N high while RESET clears the latch",
+        "TIMER_GO": "U13 gate 3 = RUN AND STARTED -> R69/R70 -> U11 SENSE (unchanged divider)",
+        "ARMED": "U11 RESET output (R71 pull-up) = ARMED directly; it stays high because its input is latched",
+        "ANY_BAD": "U14 gate 1 = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3): S9.0 ties the former P5_OK input high",
+        "FAULT": "U12 flip-flop B: CLK = ARMED AND BAD_FILTERED (U13 gate 2, R72/C51 + U15), PRE_N = OV_N, CLR_N = RESET_N; RUN = RESET_N AND NOT_FAULT (U5 SHDN; U2 EN = MAIN_OK; U4 via Q1)",
+        "parts": "no new IC: the spare U14 gate and U12 flip-flop A re-used; S9.0 R83 120k -> 100k (Basic, the 100k line of R2/R6/R14/R16/R17, no new code), TP19 (copper)"
+      },
+      "V20_OK": {
+        "role": "U5 status-validity floor: masks U5 FLT/PGOOD (MAIN_OK, R63 pull-up) where U5 is below its 4.5 V operating minimum (PD 5 V phase); NOT an input-good threshold",
+        "band_V": [
+          7.672,
+          8.442,
+          9.27
+        ],
+        "R83": 100000.0,
+        "rule": "band minimum >= vSafe5V max 5.5 V + 2.0 V and band maximum <= U5 turn-off minimum - 2.0 V",
+        "rule_holds": true,
+        "margin_above_vSafe5V_max_V": 2.172,
+        "margin_below_U5_off_min_V": 2.277,
+        "consequence": "whenever U5 can be on (VPD >= its 11.55 V turn-off minimum) V20_OK is high, so MAIN_LED_OK = MAIN_OK there and V20_OK can never be the first status to drop; ANY_BAD = NOT(MAIN_LED_OK AND P12_OK AND N12_OK) means \"U5 not on with valid status, or a rail below its monitor threshold\"",
+        "S8.5_120k_band_V": [
+          9.062,
+          9.977,
+          10.961
+        ],
+        "S8.5_120k_rule_holds_at_15V": false,
+        "S8.4_200k_band_V": [
+          14.621,
+          16.116,
+          17.727
+        ],
+        "S8.4_200k_rule_holds": false,
+        "S8.3_220k_band_V": [
+          16.011,
+          17.651,
+          19.419
+        ],
+        "history": "S8.5 (20 V input): R83 120k, 9.06-10.96 V. At the 15 V input its maximum sits above the U5 turn-off minimum less 2 V, so S9.0 uses 100k. S8.4 200k / S8.3 220k tripped inside the U5 band (they meant neither \"input good\" nor \"status valid\")"
+      },
+      "U5_on_V": [
+        12.46,
+        13.2,
+        13.979
+      ],
+      "U5_off_V": [
+        11.547,
+        12.342,
+        13.135
+      ]
+    },
+    "guard_margins_V": {
+      "+12V": {
+        "guard_V": [
+          14.48,
+          14.88,
+          15.272
+        ],
+        "stacked_margin_to_guard_min_V": 0.659,
+        "margin_guard_max_to_limit_V": 0.728
+      },
+      "-12V": {
+        "guard_V": [
+          13.265,
+          13.64,
+          14.018
+        ],
+        "stacked_margin_to_guard_min_V": 0.157,
+        "margin_guard_max_to_limit_V": 1.982
+      }
+    },
+    "replug_por": {
+      "worst_settle_ms": 13.75,
+      "POR_RESET_release_min_ms": 12.0,
+      "margin_ms": -1.75,
+      "established": false,
+      "status": "OPEN: the margin is not established; candidate fixes (not implemented in S8.5): C67 4.7 uF (still right of the TLV431 instability region) roughly halves the settle time, or a CT capacitor on U10 lengthens the POR delay (both also change the RESET timing)."
+    },
+    "rack_allowance_mF": {
+      "+12V": 0.903,
+      "-12V": 0.846
+    },
+    "retarget_20v": {
+      "changes": {
+        "R1": "56k -> 120k (CH224A 20 V request)",
+        "R3": "10k -> 7.5k (U5 UVLO)",
+        "R83": "100k -> 120k (V20_OK status floor)",
+        "docs": "rated minimum VPD 18.25 V (20 V -5 % less 0.75 V), input budget at 20 V"
+      },
+      "U5_window_V": {
+        "on": [
+          16.23,
+          17.2,
+          18.23
+        ],
+        "off": [
+          15.04,
+          16.08,
+          17.12
+        ]
+      },
+      "V20_OK_band_V": [
+        9.062,
+        9.977,
+        10.961
+      ]
+    }
+  },
+  "accepted_residuals": {
+    "reverse_current": {
+      "decision": "ACCEPTED (owner, 2026-11-02): no series reverse-blocking element on +12V or -12V",
+      "rule": "Never connect an unpowered or latched-off module to a live bus; power the rack down before plugging or unplugging; never parallel J2/J3 with another supply on the same bus",
+      "finding": "S9.0 analysis: this is an ACTIVE energy path, not a leakage: the procedural rule is mandatory. A candidate hardware mitigation that is not reverse blocking (gate the Q1 / U4 enable with RUN or MAIN_OK so a bus-fed +12V cannot enable U4) is listed as an open owner decision; NOT implemented",
+      "bench_test": {
+        "conditions": [
+          "T1-A: module unpowered (no USB-C), J2 hot-plugged onto a live bus: +12.0 V and -12.0 V, then +/-12.6 V, 1 A current limit per rail, 0.44 mF per rail; hold 10 s; monitor VIN (TP4), both rail currents and U4 SW",
+          "T1-B: as T1-A with the module powered and latched off (FAULT, RUN low)",
+          "T1-C: as T1-A with only the -12 V rail live",
+          "abort and power down if VIN exceeds 30 V"
+        ],
+        "pass_criteria": [
+          "no damage (module restarts normally after power-up + RESET)",
+          "VIN stays within -0.3 V .. 36 V; bus current back into the module < 10 mA after the plug transient (DC dividers ~0.6 mA)",
+          "record the plug-in charge pulse on both rails"
+        ],
+        "expected_by_analysis": "T1-C and T1-A at a bus magnitude below U4's setpoint: pass apart from the brief VIN dip below -0.3 V. T1-A/T1-B with |V(-12 V bus)| above U4's setpoint: VIN can exceed 36-42 V within milliseconds - expected to FAIL; hence the procedural rule",
+        "status": "proposed bench acceptance, not performed"
+      }
+    },
+    "rail_overvoltage": {
+      "decision": "ACCEPTED (owner, 2026-11-02): no voltage-triggered fuse or crowbar on +/-12V (the crowbar stays excluded; crowbar vs eFuse is a deferred, open decision); the U20 guard + FAULT latch is the only response",
+      "peak_screens_V": {
+        "+12V_bank_only_no_load": 23.4,
+        "+12V_with_typical_rack": 16.0,
+        "-12V_bank_only_no_load": 23.6,
+        "-12V_with_typical_rack": 14.8
+      },
+      "bench_test": {
+        "conditions": [
+          "T2-A pass-through: module running at 16.5 V input into 0.44 mF + 0.5 A per rail; +12V driven to 16.5 V from a current-limited (3.5 A) supply through a diode; hold 10 s",
+          "T2-B +12V control failure: R8 lifted (FB open), start at 13.5 V and 16.5 V input, once with no rack and no load, once with 0.44 mF + 0.5 A",
+          "T2-C -12V control failure: R14 lifted (FB open), same two loads",
+          "T2-D sub-threshold: +12V held at 15.2 V and -12V at -13.9 V from external supplies for 10 min"
+        ],
+        "pass_criteria_this_module": [
+          "OV_N low and FAULT latched within 20 us of the guard crossing (T2-A..C); MAIN LED off; rails stay off until RESET; no damage to the module",
+          "T2-D: no trip (inside the guard band), no damage",
+          "record the peak and decay of both rails; compare with peak_screens_V"
+        ],
+        "downstream_qualification": [
+          "every module intended for this rack must survive, unpowered and powered: +12V at 16.5 V and -12V at -16.5 V for 10 s; +12V at 15.3 V and -12V at -14.1 V continuously; the measured T2-B/T2-C peaks (screens up to ~24.5 V / ~26 V with no rack, ~16 V with a typical rack) for 100 ms",
+          "qualify the modules against these conditions; do not rely on this supply to prevent them"
+        ],
+        "status": "proposed bench acceptance, not performed"
+      }
+    },
+    "validation": {
+      "reverse_current": {
+        "decision": "ACCEPTED (owner, 2026-11-02): no series reverse-blocking element on +12V or -12V",
+        "verified_here": "exact +12V / -12V / P12_VOUT memberships (no series element other than R109 inside the converter), no ideal-diode controller or series-FET MPN; U4 EN_N is derived from the rails only: R17.2, R18.1, U4.2",
+        "consequence": "a live +/-12V bus can enable and power U4 in an unpowered or latched-off module (FPWM can pump energy into VIN): procedural rule, see calcs.json residuals.reverse_current",
+        "rule": "never connect an unpowered or latched-off module to a live bus; power the rack down first; never parallel J2/J3 with another supply"
+      },
+      "rail_overvoltage": {
+        "decision": "ACCEPTED (owner, 2026-11-02): no voltage-triggered fuse or crowbar; the U20 guard + FAULT latch is the only response (crowbar vs eFuse deferred, open)",
+        "verified_here": {
+          "guard_+12V_V": [
+            14.48,
+            14.88,
+            15.272
+          ],
+          "guard_-12V_magnitude_V": [
+            13.265,
+            13.64,
+            14.018
+          ],
+          "OV_N_presets_FAULT": true
+        },
+        "consequence": "a failed converter can put up to the input voltage (16.5 V in range) or, after a control failure, the VIN bank energy onto a rail; the latch opens U5 but does not discharge the rails: downstream modules must be qualified (calcs.json residuals.rail_overvoltage)"
+      }
+    }
+  },
+  "sourcing": {
+    "selected_part_evidence": "s90-sourcing.json (TPS552892 C22375748, R109 C601098, R1 C23206); every other code from the dated sourcing.json snapshot",
+    "earlier_evidence": [
+      "s84-sourcing.json",
+      "s83-sourcing.json"
+    ],
+    "parts_total_q1_snapshot_usd": 22.64,
+    "codes": 55,
+    "placements": 136,
+    "all_parts_fresh_live_audit": false,
+    "basic_only_policy": "ACCEPT Extended for the 0.1 % / 25 ppm thin-film dividers only (documented exception); every other passive stays Basic. Not an order approval.",
+    "live_rows": {
+      "C22375748": [
+        "Extended",
+        3274,
+        6.359,
+        "2026-11-02T03:37:26Z"
+      ],
+      "C601098": [
+        "Extended",
+        16541,
+        0.058,
+        "2026-11-02T03:37:28Z"
+      ],
+      "C23206": [
+        "Basic",
+        811903,
+        0.0027,
+        "2026-11-02T03:37:31Z"
+      ]
+    },
+    "reverse_blocking_parts": "none (owner decision)"
+  },
+  "original_S7_R3_hardware_unchanged_sha256": {
+    "hardware/01_usb_input.kicad_sch": "ed34381547e4f3987c2410259db461ad1085f9a4090a71ddc3207ba44a32e143",
+    "hardware/02_positive_12v.kicad_sch": "ed4a77bbfbf57976fb2fbcbe28ea701edbfc9224aada883addcdcee5ab9c71b5",
+    "hardware/03_positive_5v.kicad_sch": "1c520ab59dc04b0179faeb7c0eb08c805b3fb7daee23c221a8fb4b4d45ce00f8",
+    "hardware/04_negative_converter.kicad_sch": "33d8ab60aa29efb0efe0b1cefaf5cc44e8034514a8d04929f449a1e3a0b90686",
+    "hardware/05_negative_protection.kicad_sch": "9a37594765d115c5e810cc50aa73ffddbcd927f1615813c7d4fb1ab5eb20764f",
+    "hardware/06_fault_reset.kicad_sch": "b1347532b5f809ecf1e9e2c32ec756be76807c65fef395216b736dba12800f60",
+    "hardware/07_outputs_status.kicad_sch": "7dc1c8161a22e99b8fd75606b481c0613fc31afc097b9dc09d5a7acf02b1d834",
+    "hardware/USBPOWER45.kicad_sym": "67b657419e56977a2f2a9fbe27fffeac18c3b4d9d4c992c9886862ec6818c32b",
+    "hardware/usb-power-45w-system.kicad_pro": "4cc0979505f55f32e177692e497da344fbfbe769c867442cd0999b5905a500bc",
+    "hardware/usb-power-45w-system.kicad_sch": "a464e411ab87baa7c05ac4e62544323b6f85f522576aba049f5959484ca42601",
+    "hardware/usb-power-45w-top.kicad_pcb": "922d34ab36596f123d9b7b7c67e7a22c116e14a0e083846d21c92b0f8b1a91eb",
+    "hardware/usb-power-45w-top.kicad_pro": "3b601dedcf6d821254f8f3d7b0a14f43b40b97ee4da51b0451feb12ccbc5e496",
+    "hardware/usb-power-45w-top.kicad_sch": "a28543097cec622d82a1c8229ae543f4dd873c1205a939ea7383722e0c5d0525",
+    "hardware/usb-power-45w.kicad_dru": "1f9ab0b4651170bee49442912ce96fdd5f165028e6ade0c4b6c29efbd404a4fa",
+    "hardware/usb-power-45w.kicad_pcb": "b5f4e6b2bd6284f04f5ae32746b1a0550be3e449fd93dcb3f144de9ab3d82281",
+    "hardware/usb-power-45w.kicad_pro": "d076e132c4bd5b393aca89700c8320dad1568cf4f5cd615e67c48a8cad59d458",
+    "hardware/usb-power-45w.kicad_sch": "9f22aa3a82f9a39b301a884a58407ab39883ebc6098dc4a66d095feaca324b0d"
+  },
+  "sources_sha256": {
+    "hardware/single/01_usb_input.kicad_sch": "85acc2151e734da146b702c1c1530647e734f47563ab6fe93baf5244b4552568",
+    "hardware/single/02_positive_12v.kicad_sch": "deba86c4ad95adc92d6142d42a00e57b954e0c39802ec170d68b0eaa1728d913",
+    "hardware/single/03_negative_converter.kicad_sch": "b60b93b6ee6a10c9dd6de60a8cd705649dc04cafee22c9d50d8a6bdd36413dc9",
+    "hardware/single/04_fault_reset.kicad_sch": "54c263db7ad4007b3d189682d82bf07db2c5079fa612ddc6dfccafdabd7c3b9a",
+    "hardware/single/05_outputs_status.kicad_sch": "8ede17804bd683e690890b5b6d553aeb0da5ecfa37eb7b6af226517e4bbb89cf",
+    "hardware/single/USBPOWER45.kicad_sym": "d98929742b2738e50b4175d93fb1cea26c32a4976d6603dffa14f611ebd56d56",
+    "hardware/single/usb-power-45w-single.kicad_dru": "1f9ab0b4651170bee49442912ce96fdd5f165028e6ade0c4b6c29efbd404a4fa",
+    "hardware/single/usb-power-45w-single.kicad_pcb": "081230a8774e3a33a578b946e1861bb101f136d8642677c197fb7e2d73554f2f",
+    "hardware/single/usb-power-45w-single.kicad_pro": "058982d75f4f0a6bb7918e8c28c6b6a6112a98c2124cdd7b452e697c7524173c",
+    "hardware/single/usb-power-45w-single.kicad_sch": "f77a0e565112137de0866ada3118cbc7e1e22477cab34f4241950eba8f5d9230",
+    "hardware/single/fp-lib-table": "601d6fbd37ab69fc7d916c461d0807ffa17a98b4b85991ac9bb727625ff99590",
+    "hardware/single/sym-lib-table": "23c007ed7a5fbdfdb875fadc8130b067bda56e476121040a79e6b256dab53989",
+    "panels/front-pcb/usb-power-45w-single-panel.kicad_pcb": "8a16ee249db051e8f64ddb9271b5e788cae6105f8bf521cf95181da7d20d6c87",
+    "panels/front-pcb/usb-power-45w-single-panel.kicad_pro": "216a69a24b9ad4d7f9b49503738bf8d9b2b4ded408577398cc223b6291c095ac",
+    "tools/build_s8.py": "dfc58a9dc34ee3c1fbfa99019ab0c5ec39838cb2516cf01db25885170cc46528",
+    "tools/build_s8_assembly.py": "28f0d5fdcaaccb5139d2cce71edf9328c3a3ae9aafe5d61ba072a6f4e1b552cc",
+    "tools/build_s8_board.py": "a2ff5d67bbdb446e1bda981fec8268f514e0b705d650e36004466bbf77d9e621",
+    "tools/build_s8_panel.py": "31d88f8c31e72416a3c44f38aaa2e97bce8a4daab385ee47fdd336c262264450",
+    "tools/check_s8_board.py": "b16a4ca743dc049d184fdcfdf0dd96c430606958acdbf809f91293f7fa42ccdb",
+    "tools/circuit_s8.py": "0cbdf1d77518bd87ef7f55459996d3a9486b52e11282d35e5177cd314ff3d085",
+    "tools/hierarchy_s8.py": "7186fcb8bfc5e700e4feb54cfcc059b385039725254dad850d3cdee56ec29cc0",
+    "tools/mechanics_s8.py": "2d4d95da0b9caeadeb4ccf9ee127a1f16d1c3ce1750b6b15cf39bf6d612499b7",
+    "tools/place_s8.py": "9a68aade339c08bf66bf6504e27f6c461e299ef0ec97c70c35bba842ccd5b190",
+    "tools/render_s8.py": "fe1cded6993b608e989c7a5969175d90951f45888f4da88deca4cbed421abd43",
+    "tools/review_s8.py": "9af8c854d85ecb223cd89fe658dd06fbcc34c3799f5c7478a0a9663d060dc165",
+    "tools/s8_calcs.py": "9d7fb365088e9bc2d53269fd44fd50c0a2cad4091cf862723c1c6016cddc8967",
+    "tools/s8_mechanical.py": "b80b78f6a182c3493f3abcc6b26a57c3560476ef0a920b3b993395b656864b6d",
+    "tools/s8_sourcing.py": "1a1ded2b1ce0f56716159cb49b433533e862f7424f7f4f419926158c85479af4",
+    "tools/s90_parts.py": "c43d5894c307096feea04b6e20a6b52c1b181d25a556f919ab04b99a9b23619a",
+    "tools/test_s8.py": "6067b29b05b805e68a19679e1d7e2fea3463990ab80ec6b03c9c72e9255ccb62",
+    "tools/verify_s8.py": "37822ec5da0b79c2efcf2824c359ce31656ebb71812d0999161081c29aa6d927",
+    "hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+    "hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+    "hardware/USBPOWER45.pretty/D_SMA.kicad_mod": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+    "hardware/USBPOWER45.pretty/D_SMB.kicad_mod": "e25e9f4acef5b55585afebc48c685e151fd0d2f33a5c3c61f9fdf0389e19ae67",
+    "hardware/USBPOWER45.pretty/D_SMC.kicad_mod": "f17a366cbe28020fc5f12a4a5cecd11590af4d96b61ad8d82c33dc2393a3b64b",
+    "hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+    "hardware/USBPOWER45.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+    "hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias.kicad_mod": "8aee9fef17fb3bbdd66f38b4d7b0ba7e39975a92d877184d4d2edfd14104fd6c",
+    "hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod": "2d0fac128f41253ed8a38dcb8b7361edde17d3ad544016591842909cf1dd1b54",
+    "hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+    "hardware/USBPOWER45.pretty/L_SLO1040H6R8MTT.kicad_mod": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
+    "hardware/USBPOWER45.pretty/R_0603_1608Metric.kicad_mod": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+    "hardware/USBPOWER45.pretty/R_1206_3216Metric.kicad_mod": "c7320668dc81bbb954cb4f15e4e7a766c120059343d43551468c8f7ccc8fde37",
+    "hardware/USBPOWER45.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "a885b619b22880c9559522d2bf865b059d80453b95a98defc9e6ceef284da1fc",
+    "hardware/USBPOWER45.pretty/SOT-23.kicad_mod": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15",
+    "hardware/USBPOWER45.pretty/SOT-23-5.kicad_mod": "455a3f7c3e5eb5b8847eaa5df23e18651e78ab9f75afd09a0883758a0d901761",
+    "hardware/USBPOWER45.pretty/SOT-23-6.kicad_mod": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+    "hardware/USBPOWER45.pretty/SOT-89-3.kicad_mod": "0b8db9f4a8f2547a53e80e3d400798979e84b4e0b2972160ddaca99c1f659b93",
+    "hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+    "hardware/USBPOWER45.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+    "hardware/USBPOWER45.pretty/TI_RYQ0021B_VQFN-HR-21_3x5mm.kicad_mod": "0459055fe91fc845c9d67e1c3f3de374c83ce8926aace02844b427f112e78ec4",
+    "hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_ThermalVias.kicad_mod": "a028811923d20ff700426296c0a38e36b893572aa8d4f59115124034772a5d6b",
+    "hardware/USBPOWER45.pretty/TPS7A16_DGN0008C.kicad_mod": "26bb32544efc33247e28fa65976f4012f718c8671aa8efc9a3591e1e87623efa",
+    "hardware/USBPOWER45.pretty/TestPoint_Pad_D1.0mm.kicad_mod": "6d602c576b4ab0de29fa4cc096f419a62e828ba45ceee30c1263d86b420b2b12"
+  },
+  "artifacts_sha256": {
+    "docs/s8-single/assembly/assembly-report.json": "97f578a84c4eb9f150510c5641d76cc6d051fb26de799e06239bb49793914dd4",
+    "docs/s8-single/assembly/board-iso.jpg": "68b130328ccad24ad2bd200a68e09d452a0a5f700984a1c39725486302c2d6dc",
+    "docs/s8-single/assembly/board-top.jpg": "1d9d8e2bb1be8f618adf315976165fd4c2c3792eca30ddfa9a0cc839a8561d26",
+    "docs/s8-single/assembly/iso-front.png": "68c5b3971b728811c8994168a6da1e4a9c944c1f6f902019b4d70e06b81288ff",
+    "docs/s8-single/assembly/iso-rear.png": "899c1ec0918f69d18c6e6a2de09679791e51016614f57c4ca2dd75041e0a275f",
+    "docs/s8-single/assembly/usb-power-45w-single-assembly.step.zip": "893f472eb90e395e9faca49484037603b4d2dfbd63d31bd375b1f217e76e3665",
+    "docs/s8-single/assembly/usb-power-45w-single-placement.pdf": "77ebe1f6f518e388c4bab44624975c2ae331174fe48bdfcc037405b6360cba3a",
+    "docs/s8-single/board-p1.json": "b33d8ab104d7ef91709626014e1362cc18683fcb4b8dec48eba17ce70e8f4049",
+    "docs/s8-single/bom.csv": "4aaa48b89e52c98fa7d83257c082058f19f2fe8fdfe97ba7b319152915f10995",
+    "docs/s8-single/build.json": "3b1fab61715fb84a49ac29dd54595aca0041f61b72ce10c64ad4981f0e9f4d31",
+    "docs/s8-single/calcs.json": "74305c0e2254982833d99be1379438fb0ad1451d72ca9048ab89bf9f87a45a10",
+    "docs/s8-single/hierarchy-parity.json": "eac2b685d64e6cdbb8fb2a7b79b26f28772f427ba774df3c39632d6906e515ee",
+    "docs/s8-single/img/board-p1.png": "fc390d75d29aded666bff2827e4aaa0a565133c3d608cfe9f9425de4a3ac7202",
+    "docs/s8-single/mechanical.json": "edf954685bcb36a69faba40c46962f2d33d490703cce6d23d3bbed1cb69e9888",
+    "docs/s8-single/placement.json": "0459d3e3325561dc53b8599c143843043445404b73af0e5944e9ffee8f0880e6",
+    "docs/s8-single/s83-sourcing.json": "28aa62b9599643b16aa43485d0db1a893d41df3abbaf4c1c77dec9e5d4b1a76c",
+    "docs/s8-single/s84-sourcing.json": "2cba18099500dd4858f1d5adc9c8956a137fa6ac6b1b889aadcdf653c0b7d853",
+    "docs/s8-single/s90-sourcing.json": "db84355d57041a935b8e5cd1a408f05c854ea160ca69c1024d622fc91c340ebf",
+    "docs/s8-single/schematic-wiring.json": "c043d2e5258c761a2ead11dc951215233436f3b4a598d14271e7e63b3cdf4d65",
+    "docs/s8-single/sourcing.json": "88dea69ce0d790d43c8de1dbe4ef676d4d9cc82e8e468c62d489822546748edc",
+    "docs/s8-single/validation.json": "7a18017dbcfcff41b477b9515fd261059817ecda40e43a7978f28d2b06e38c08",
+    "docs/usb-power-45w-single-schematic.pdf": "f81da9c35b80347e86f9b2eec3e523c680a62fad2895dafe98c28ac432d2ffb3"
+  },
+  "open_gates": [
+    "365 routing opens (unrouted fit placement); the local-loop screens are straight-line distances, not routed loops",
+    "TPS552892-Q1 loop with the real rack capacitance (crossover falls below the 1.7 kHz COMP zero), thermal at the R109 limit, and the 966 kHz choice against TI's < 500 kHz high-power advice: bench Bode / thermal gates",
+    "Reverse current (accepted residual): a live bus can enable and power U4 in an unpowered or latched-off module and pump VIN beyond U2's 42 V maximum; procedural rule mandatory; Q1/U4 enable mitigation = open owner decision",
+    "Rail overvoltage (accepted residual): the guard + latch opens U5 but does not discharge the rails; downstream modules must be qualified against the T2 conditions (up to 16.5 V, ~24 V without a rack after a control failure)",
+    "Replug / POR race of the U20 -12V channel (calcs replug_por, worst 13.75 ms vs the 12 ms POR minimum): nuisance latch-off",
+    "Arming timelines are a logic model with datasheet timings; bench-verify the one-shot window, brown-out and overload latching at the 15 V corners (U5 turn-on margin 0.27 V unloaded, running margin 0.37 V loaded)",
+    "VPD ringing at U18/U20, cold MON_OVN clamp, power-down sequences, -12V start-up into the real rack at 13.5 V",
+    "Published rating is a datasheet-minimum prototype rating, not measured; connector/cable current and fit; source behaviour above the 33 W total (U5 does not enforce the 3 A contract)",
+    "Manual fabrication/CAM and assembly review; RYQ land pattern (0.2 mm gaps, 0.15 mm mask webs) with the fab",
+    "Crowbar vs eFuse (rail overvoltage protection architecture) remains a deferred, open owner decision"
+  ],
+  "order_ready": false
+}

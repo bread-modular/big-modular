@@ -107,8 +107,11 @@ def footprints_used():
     return [f'hardware/USBPOWER45.pretty/{n}.kicad_mod' for n in names]
 
 
+ANSI = re.compile(r'\x1b\[[0-9;]*[A-Za-z]')      # Python 3.14 unittest colours its own output
+
+
 def tests(log):
-    text = Path(log).read_text(errors='replace')
+    text = ANSI.sub('', Path(log).read_text(errors='replace'))
     m = re.search(r'^Ran (\d+) tests? in', text, re.M)
     ok = re.search(r'^OK\b', text, re.M) is not None
     skipped = re.search(r'^OK \(skipped=(\d+)\)', text, re.M)
