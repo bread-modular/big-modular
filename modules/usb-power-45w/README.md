@@ -7,7 +7,7 @@
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | **Main project = the routed BASE board** (`usb-power-45w.kicad_{pcb,sch,dru}`: USB/PD, main eFuse, negative protection, latch/RESET, LEDs, J2 output) |
 | [`hardware/usb-power-45w-top.kicad_pro`](hardware/usb-power-45w-top.kicad_pro) | The routed TOP board (`usb-power-45w-top.kicad_{pcb,sch}`: the three converters, +12/+5 eFuses, cans) |
 | [`hardware/usb-power-45w-system.kicad_pro`](hardware/usb-power-45w-system.kicad_pro) | Whole-circuit S7 schematic (`usb-power-45w-system.kicad_sch` + pages `01`..`07`, 216 refs / 145 nets); schematic only, no PCB |
-| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S9.2 / P2.2 single board, ±12 V only, routing-ready (unrouted)**: **15 V / 3 A USB PD input** (13.5–16.5 V at the module; needs a 15 V / 3 A, ≥ 45 W source); **+12 V = TPS552892-Q1 four-switch buck-boost** with an 18 mΩ Kelvin-sensed constant-current limit (2.615–2.946 A); −12 V LMR38020 enabled only from its own VPD AND RUN AND MAIN_LED_OK; **D24 SMBJ20A coordinated with the U5 OVP** (R24 9.1k, 17.30–19.44 V); AGND_U2 joins PGND only through R113 at C82.2; S8.5 one-shot arming; U20 guards +12 V / −12 V; **no reverse blocking and no rail fuse/crowbar (accepted residuals)**. 175 refs / 80 nets; ERC 0, DRC 0 / 392 routing opens, exact parity; P2.2 placement, all on F, 50 mm deep, 0 tracks/vias/zones. Published prototype rating **+12 V 2.4 A / −12 V 0.8 A, ≤ 33 W together**, conditional on the routing contract and the post-prototype acceptance tests. [Review package](docs/s8-single-board.md), [routing notes](docs/s8-single/routing-notes.md) |
+| [`hardware/single/usb-power-45w-single.kicad_pro`](hardware/single/usb-power-45w-single.kicad_pro) | **S9.2b / P2.2 single board, ±12 V only, routing-ready (unrouted)**: **enforceable DRC contract** (8 net classes, 22 `S92_*` rules in the `.kicad_dru`, 15 rule areas, 17-item post-routing screen) and **no via-in-pad, standard JLCPCB vias only** (0.3/0.6 mm, tented, unfilled): U4/U5/U9 on hole-free lands with beside-pad thermal-via fields of **10 / 10 / 6** vias (were 8 / 15 / 4 in the pads), spokes and B.Cu landing pours; thermal penalty **+5.3 °C** at rated load (U5 Tj 70.7 °C at 50 °C and 3 A, U2 unchanged at 94.1 °C / 108.4 °C), rating unchanged; **15 V / 3 A USB PD input** (13.5–16.5 V at the module; needs a 15 V / 3 A, ≥ 45 W source); **+12 V = TPS552892-Q1 four-switch buck-boost** with an 18 mΩ Kelvin-sensed constant-current limit (2.615–2.946 A); −12 V LMR38020 enabled only from its own VPD AND RUN AND MAIN_LED_OK; **D24 SMBJ20A coordinated with the U5 OVP** (R24 9.1k, 17.30–19.44 V); AGND_U2 joins PGND only through R113 at C82.2; S8.5 one-shot arming; U20 guards +12 V / −12 V; **no reverse blocking and no rail fuse/crowbar (accepted residuals)**. 175 refs / 80 nets; ERC 0, DRC 0 violations / 0 warnings / 392 routing opens, exact parity; P2.2 placement, all on F, 50 mm deep, no routing (copper beyond the pads: only the 26 thermal vias, 26 spokes and 3 landing pours). Published prototype rating **+12 V 2.4 A / −12 V 0.8 A, ≤ 33 W together**, conditional on the routing contract and the post-prototype acceptance tests. [Review package](docs/s8-single-board.md), [routing notes](docs/s8-single/routing-notes.md) |
 
 > **S9.2 / P2.2: routing-ready** (changelog, verification and the list of acceptance tests in
 > [docs/s8-single-board.md](docs/s8-single-board.md)). Routing-ready. The items in
@@ -23,11 +23,15 @@
 > - **Default:** **R115 100k** defines `N_EN_RETURN`.
 > - **Thermal:** the rating is **conditional on the copper/via routing contract**.
 > - **Test pads:** ten 1.5 mm acceptance pads were added.
+> - **S9.2b:** the routing contract is now native DRC (net classes, `S92_*` rules, `RA_*` rule areas), and via-in-pad is
+>   prohibited: U4/U5/U9 thermal vias moved beside their pads (standard 0.3/0.6 mm tented vias only), thermal penalty
+>   +5.3 °C at rated load, rating unchanged ([routing-notes 3.12/3.13](docs/s8-single/routing-notes.md)).
 >
 > S9.1 (own-input U4 enable, VIN clamps, precision UVLO, AGND_U2) and S9.0 (+5 V removed, 15 V PD, TPS552892-Q1) are
 > unchanged otherwise; their records are in git history.
 >
-> Native ERC 0 and exact ref/pin/net parity (175 refs / 80 nets). DRC: **0 violations, 392 routing opens** (unrouted).
+> Native ERC 0 and exact ref/pin/net parity (175 refs / 80 nets). DRC: **0 violations, 0 warnings, 392 routing opens**
+> (unrouted).
 > The placement, local-loop, routing-contract and nominal 3D screens pass, and the module suite passes from a clean
 > clone ([review-s92.json](docs/s8-single/review-s92.json)). The original S7/R3 designs below are unchanged.
 

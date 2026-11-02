@@ -2,7 +2,8 @@
 
 > **Routing-ready. The items in this file are post-prototype acceptance tests, not design blockers.**
 > Board: [`hardware/single/usb-power-45w-single.kicad_pcb`](../../hardware/single/usb-power-45w-single.kicad_pcb),
-> P2.2, 175 references / 80 functional nets, every part on F.Cu, **unrouted** (0 tracks, 0 vias, 0 zones).
+> P2.2 (S9.2b), 175 references / 80 functional nets, every part on F.Cu, **unrouted** apart from the fixed S9.2b
+> thermal-via fields (26 standard vias, 26 spokes, 3 B.Cu landing pours) and the 15 rule areas.
 > Review document: [s8-single-board.md](../s8-single-board.md).
 
 The owner cannot bench-build: prototypes come assembled from JLCPCB. So everything the analysis cannot prove is
@@ -13,15 +14,38 @@ limit and the cost of a failure (respin, or a BOM/divider change on the existing
 
 **Machine-readable half.** `placement.json` → `routing_contract` and `ground_connection` are generated from
 [`tools/s92_contract.py`](../../tools/s92_contract.py). After a wording change, run
-`python3 -B tools/place_s8.py --refresh-contract`; the board is not touched. `tools/check_s8_board.py` checks what the
-unrouted board can show (`board-p1.json` → `routing_contract_screen`: pad nets, 16 pad anchors, four 2.54 mm pairs,
-seven proximity rows, Kelvin pad nets and the ground split). All of these pass. It lists the 13 copper/via items it
-cannot check yet as PENDING ([3.11](#311-post-routing-gate-before-any-cam-or-export)). If this file and the generated
-contract disagree, fix the generator. Never hand-edit the JSON.
+`python3 -B tools/place_s8.py --refresh-contract`; the board is not touched. The DRC-enforceable half lives in the native
+files: `place_s8.py --apply-rules` writes the net classes (`.kicad_pro`), the `S92_*` rules (`.kicad_dru`) and the `RA_*`
+rule areas (board), and `--apply-thermal-vias` writes the S9.2b thermal-via fields ([3.12](#312-drc-rules-net-classes-and-rule-areas), [3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)).
+`tools/check_s8_board.py` checks what the unrouted board can show (`board-p1.json` → `routing_contract_screen`: pad nets,
+16 pad anchors, four 2.54 mm pairs, seven proximity rows, Kelvin pad nets and the ground split; `pre_routing_checklist`:
+the eight items below). All of these pass. It lists the 17 copper/via items it cannot check yet as PENDING
+([3.11](#311-post-routing-gate-before-any-cam-or-export)). If this file and the generated contract disagree, fix the
+generator. Never hand-edit the JSON.
 
 **Coordinates** are the native KiCad board frame in mm, with y pointing down. The outline spans x 49.73–150.28 and
 y 54.25–102.30. The panel (front) edge is at y 102.3, the bottom of the KiCad view; J2/J3 sit at the rear edge,
 y 54.25. Distances are pad centre to pad centre unless stated. Net `-12V` is the N12_VOUT node and `GND` is PGND.
+
+## Pre-routing checklist
+
+What must be true before routing starts. Each line is machine-checked by `tools/check_s8_board.py` (`board-p1.json` →
+`pre_routing_checklist`, item ids in brackets); all eight pass on P2.2.
+
+| Item | Must hold before routing | P2.2 |
+| --- | --- | --- |
+| Net classes (`netclasses`) | The eight contract classes VIN, PWR_12V, PWR_N12V, GND, SWITCH, SENSE, AGND_U2 and QUIET are in the project, and every functional net is in exactly one of them; six gate-drive/supply nodes stay in Default on purpose ([3.2](#32-net-classes-and-widths)) | present |
+| DRC rules (`drc_rules`) | The `.kicad_dru` holds the two R1 J1/SW1 edge allowances plus the 22 generated `S92_*` rules ([3.12](#312-drc-rules-net-classes-and-rule-areas)) | present |
+| Rule areas (`rule_areas`) | The 15 `RA_*` rule areas are on the board, each holding its listed parts and no other part's pad ([3.12](#312-drc-rules-net-classes-and-rule-areas)) | present |
+| Via-in-pad decision (`via_in_pad`) | **Prohibited** (owner, 2026-11-02): no plated hole in any footprint pad, no via touching a pad or its mask opening, every via the standard 0.3/0.6 mm tented, unfilled through via ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | decided, holds |
+| Thermal-via fields (`thermal_vias`) | U5 10, U4 10 and U9 6 standard vias beside the exposed pads, one spoke each into the pad copper, one B.Cu landing pour per part, at the parts' actual positions ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | placed |
+| Stack-up and copper weight (`stackup`) | 4 layers, 1.6 mm, JLC04161H-7628: 35 / 15.2 / 15.2 / 35 µm copper (1 oz outer, 0.5 oz inner), 0.2104 / 1.065 / 0.2104 mm dielectric ([3.1](#31-process-layers-and-planes)) | chosen |
+| Test pads (`test_pads`) | All 27 test pads are bare F.Cu with a mask opening and no paste ([section 1](#1-test-point-table)) | exposed |
+| Placement (`placement`) | Placement, local-loop, ground-split and routing-contract screens pass | pass |
+
+**Checked after routing**, never before: the 17 PENDING copper/via items of
+[3.11](#311-post-routing-gate-before-any-cam-or-export) (thermal areas and via counts, TVS proximity, Kelvin routing, the
+AGND link, current-path widths), plus native DRC 0 / unconnected 0 / parity 0, which keeps enforcing everything above.
 
 ## 1. Test-point table
 
@@ -116,8 +140,8 @@ summary with the test pads.
 | **CL-1** (T1-D) | D24 SMBJ20A clamp voltage and energy under the real surge, i.e. a finite bus-injection pulse into VIN | The rated clamp (VC 32.4 V at 18.6 A, 10/1000 µs) bounds the 1 A clamp: 24.92 V at 25 °C, 27.71 V at Tj 150 °C. The 600 W rating, mapped to a 20 ms rectangle (√t), gives 69.8 W at 50 °C against the 32.4 W budget (margin 2.15). A source overvoltage never reaches D24: U5 OVP (≤ 19.44 V) opens first | VIN above D25 (30 V) or U2 (42 V abs); D24 degraded (leakage) or shorted | TP26 tip + TP27 spring; current probe on the injection lead | No USB input (repeat with USB present and RUN low). Inject 1 A for ≤ 20 ms into TP26/TP27 from a current-limited pulse source, 33 V compliance with automatic disconnect. Start at 25 °C and at 50 °C, ≥ 200 s between pulses. Log V(TP26) and I, integrate V·I. Afterwards check VIN leakage at 16.5 V and a normal restart | VIN ≤ 30.0 V including ringing; ∫V·I dt ≤ 0.648 J; clamp current ends by 20 ms; leakage up by ≤ 10 µA after cooling; normal start after RESET; any abort = FAIL | **BOM**: D24 alternate (C364296 / C151922, same SMB land) if the clamp level is out. **Respin** only if layout ringing dominates (D24-to-bank loop) |
 | **T1** (A–C) | Backfeed current in the field: module unpowered or latched off on a live ±12 V bus | The existing `modules/usb-power` works in the rack and survives being plugged into a live bus, so backfeed is not occurring in practice. The S9.1 mitigations stay exactly as they are (own-VPD Q1 emitter, Q14/Q15 AND sink, R112, R115 default, D24/D25/D26), and no further backfeed hardware is added. Analysis: U4 cannot enable without own VPD AND RUN AND MAIN_LED_OK (netlist-derived 16-row truth table); 0.389 mA DC bus load; 2.98–7.68 mJ capacitor charge | U4 enabled from the bus or VIN pumped; U2 VIN below −0.3 V on a fast or cold hot-plug | TP30, TP25, TP26, TP24; U4 pin 2 against TP25; fixture bus currents | T1-A: no USB, ±12.0/±12.6 V bus, 1 A limit, 0.44 mF per rail, ramp ≤ 1 V/s at 25 °C, hold 10 s. T1-B: same with USB present and FAULT latched (RUN low). T1-C: negative rail only, both rail orders | EN_N − V(−12V) ≤ 0.11 V settled (≤ 0.5 V transient); zero U4 switching; VIN −0.3…1 V after 100 ms (T1-B: −0.3…30 V, not climbing); each bus current < 10 mA after 100 ms | **Respin** only if U4 switches or EN rises while own input is absent (logic defect). Otherwise this is an accepted residual with a usage rule: power the bus down before plugging, never parallel running supplies. Hard hot-plug stays unqualified, and no backfeed hardware is added (owner). A D25 forward-drop miss is **BOM** (lower-VF SOT-23 pair) |
 | **TH-1** | U2 junction and R109 temperature on the real copper | U2: TI JEDEC 2s2p RθJA 43.4 °C/W gives 108.4 °C at 50 °C ambient and the CC limit (1.345 W). That holds only if the [3.8](#38-thermal-copper-and-vias-the-board-behind-the-thermal-screens) copper is built; the effective RθJA allowed for 125 °C is 55.8 °C/W at the CC limit and 73.7 °C/W at 2.4 A. The loss model assumes the switching times and 1.5× hot RDS(on). R109: 0.159 W with the 300 mm² copper gives +13.5 °C | Thermal fold-back or Tj > 125 °C at 50 °C ambient; R109 drift | thermocouples on U2 top and the R109 body; TP24, TP20 | Bench supply with TP1 at 13.5 V and at 16.5 V. +12 V at the CC limit (raise the load until CC engages) and at 2.4 A; −12 V at 0.35 A. Still air, ambient recorded, 30 min to steady state | U2 case rise ≤ 70 °C over ambient at the CC limit (Tj ≤ 125 °C at 50 °C with a 5 °C case-to-junction allowance); R109 rise ≤ 30 °C | **Respin** (copper) if 3.8 was not met. If it was met: a rating change (+12 V current or ambient, documented) or **BOM** (R110 to a lower fSW, with the ripple and loop rechecked) |
-| **TH-2** | D10 and U5 temperature at 3 A input | D10 SS1060: 0.75 V × 3 A = 2.25 W needs an effective RθJA ≤ 33.3 °C/W (Tj ≤ 125 °C at 50 °C) with the 3.8 D10 copper. U5 dissipates ≤ 0.48 W (53 mΩ max) | D10 overheating; U5 thermal shutdown | thermocouples on the D10 cathode tab and U5 top; TP1/TP3; TP7 | TP1 at 13.5 V; raise the loads until the input is 3.0 A; 30 min | D10 tab rise ≤ 70 °C; V(TP1−TP3) ≤ 0.75 V; U5 rise ≤ 50 °C (screen) | **BOM** (lower-VF Schottky on the same SMC land) or a documented input-rating change; **respin** if the copper was not met |
-| **TH-3** | U4 LMR38020 temperature | EP on the −12 V copper (≥ 300 mm² on In2/B.Cu with the footprint thermal vias). S9.2 has no separate U4 loss model | U4 thermal shutdown at −12 V 0.8 A | thermocouple on U4 top; TP25 | VIN 13.5 V and 16.5 V, −12 V at 0.8 A, 30 min | U4 case rise ≤ 60 °C (screen) | rating change (−12 V current, documented) or **respin** (copper) |
+| **TH-2** | D10 and U5 temperature at 3 A input | D10 SS1060: 0.75 V × 3 A = 2.25 W needs an effective RθJA ≤ 33.3 °C/W (Tj ≤ 125 °C at 50 °C) with the 3.8 D10 copper. U5 dissipates ≤ 0.48 W (53 mΩ max); with the S9.2b beside-pad field its RθJA bound is 43.3 °C/W, Tj ≤ 70.7 °C at 50 °C ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | D10 overheating; U5 thermal shutdown | thermocouples on the D10 cathode tab and U5 top; TP1/TP3; TP7 | TP1 at 13.5 V; raise the loads until the input is 3.0 A; 30 min | D10 tab rise ≤ 70 °C; V(TP1−TP3) ≤ 0.75 V; U5 rise ≤ 50 °C (screen) | **BOM** (lower-VF Schottky on the same SMC land) or a documented input-rating change; **respin** if the copper was not met |
+| **TH-3** | U4 LMR38020 temperature | EP on the −12 V copper (≥ 300 mm² on In2/B.Cu) through the S9.2b beside-pad field: 10 vias, no via in the pad, ΔR +0.4 °C/W against the old in-pad holes. S9.2 has no separate U4 loss model | U4 thermal shutdown at −12 V 0.8 A | thermocouple on U4 top; TP25 | VIN 13.5 V and 16.5 V, −12 V at 0.8 A, 30 min | U4 case rise ≤ 60 °C (screen) | rating change (−12 V current, documented) or **respin** (copper) |
 | **LS-1** | +12 V loop stability with the real rack capacitance | Sampled complex-loop model: 13,824 corners, PM ≥ 59.73°, GM ≥ 12.37 dB, crossover 387–13,566 Hz. Covers passive rack C 0–440 µF, cable 0.08–0.25 Ω / 0–0.5 µH and loads 0.05–2.4 A. GEA ±30 % and the one-period delay are assumptions; active rack loads are not modelled | Oscillation or ringing on +12 V; audible artefacts; nuisance guard trips | TP24; J2 pin 9 / pin 7 (B side); Bode injection point by rework | (a) Load step 0.5↔2.0 A at ≥ 1 A/µs at J2, with 0 / 220 / 440 µF electrolytic at J2, VIN 13.5 V and 16.5 V. (b) Bode with an FRA: lift R8 pin 2 (+12V end) and fit a 10–20 Ω injection resistor (rework on one unit). (c) The owner's rack, at no load and at full load | Bode PM > 45°, GM > 10 dB. Load step: second excursion ≤ 25 % of the first (≈ PM ≥ 45°), settled ≤ 1 ms. No sustained oscillation at any corner, including no-load FPWM. Ripple ≤ 60 mV p-p | **BOM** (R111/C83 compensation, 0603) or a narrower published rack-capacitance envelope (documented). No respin |
 | **IN-1** | Input range at the module with the real cable and connector drop | 13.5 V at VPD = 14.25 V source minimum − 0.75 V at 3 A (≤ 0.25 Ω loop). Converter VIN ≥ 12.5 V after D10 (0.75 V) and U5 (53 mΩ × 4.7 A) | Rails out of regulation at low line | TP1, TP26, TP24, TP25 | Bench supply set so TP1 reads 13.5 V, then 16.5 V, under 33 W (+12 V 2.4 A, −12 V 0.35 A), 10 min each. Repeat with the owner's 15 V / 3 A PD adapter and cable | TP24 11.54–12.65 V; TP25 −11.38…−12.62 V; no FAULT; input ≤ 3.0 A at 13.5 V | documented adapter/cable list; no BOM or respin expected |
 | **IN-2** | UVLO and OVP threshold spread over temperature | TI full-temperature threshold limits, plus R2/R3 0.1 %/25 ppm and R114/R24/R28/R4 1 %/100 ppm stacked over a 100 °C TCR span with 150 nA pin leakage. Bands: on 12.26–12.98 V, off 11.37–12.19 V, OVP rise 17.30–19.44 V, OVP fall 16.03–18.27 V | No start at 13.5 V with cable drop (loaded start margin 0.52 V); nuisance OVP at 16.5 V (0.80 V margin) | TP1, TP5, TP26 | Bench supply through the USB-C power breakout, 0.5 A limit, no rail load. Ramp ≤ 0.1 V/s from 10 to 20 V and back, recording VPD at each MAIN_OK edge. Test at 25 °C and, where available, at 0 °C and 50 °C | inside all four bands at every temperature tested | **BOM/divider**: R3/R114 (UVLO), R24 (OVP). No respin |
@@ -153,27 +177,36 @@ summary with the test pads.
   - a GND pour ≥ 600 mm² under U2/L1/the banks, stitched to In1 with ≥ 20 vias;
   - a P12_VOUT area ≥ 200 mm²;
   - D10 VPD and MAIN_IN areas ≥ 300 mm² each;
-  - inside the U2 GND pour, the only other copper allowed is the single AGND_U2 link trace (3.3).
+  - inside the U2 GND pour, the only other copper allowed is the single AGND_U2 link trace (3.3);
+  - the S9.2b landing pours `TV_U5_B` (GND), `TV_U4_B` (−12V) and `TV_U9_B` (GND) under U5/U4/U9 stay: grow or merge
+    them with same-net copper, never cut them.
 - **Board rules**:
   - copper to edge 1.0 mm (`min_copper_edge_clearance`, enforced by DRC);
   - courtyards ≥ 1.0 mm from Edge.Cuts, measured (closest now TP19, 1.28 mm);
   - every SMD pad ≥ 2.0 mm from the hand-soldered J1/D8/J2/J3 pads (closest now D8–Q6.3, 2.01 mm);
-  - no via in an SMD pad (the only exception is the U4/U5 footprint exposed-pad thermal vias);
+  - **no via in or touching any pad** (any net, SMD or THT) and no plated hole in any footprint pad, with no exception
+    (S9.2b); every via is the standard 0.3 mm drill / 0.6 mm pad tented through via ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b));
   - no zero-length, duplicate or dangling segments; track ends centred on pads and vias; 0.05/0.1 mm grid.
 
 ### 3.2 Net classes and widths
 
-The project (`usb-power-45w-single.kicad_pro`) defines the classes below, all with 0.2 mm clearance and 0.6/0.3 mm
-vias. The class width is KiCad's default for new tracks, not a DRC minimum. The contract minimums are measured after
-routing (`min_widths`, PENDING).
+The project (`usb-power-45w-single.kicad_pro`) defines the classes below, generated from `s92_contract.NETCLASSES` by
+`place_s8.py --apply-rules`. Every class keeps the 0.2 mm board clearance, because the TPS552892 RYQ and TPS16630 PWP
+lands are 0.20–0.25 mm apart; the separations between classes are custom rules ([3.12](#312-drc-rules-net-classes-and-rule-areas)). Every class uses the
+one standard via, 0.3 mm drill / 0.6 mm pad ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)). The class width is KiCad's default for new tracks; the
+DRC floor is an `S92_*` rule; the current-path minimums are measured after routing (`min_widths`, PENDING).
 
-| Class | Nets (project patterns) | Default width | Contract minimum (1 oz outer, ≤ 10 °C rise) | Notes |
-| --- | --- | --- | --- | --- |
-| Power | `GND`, `VPD`, `VBUS`, `MAIN_IN`, `VIN`, `P12_VOUT`, `+12V`, `-12V` | 1.0 mm | VBUS/VPD/MAIN_IN/VIN 2.5 mm (3 A, U5 limit 4.7 A); P12_VOUT/+12V 1.5 mm (2.95 A CC limit); −12V 0.8 mm (~1.5 A LMR38020 limit); pours preferred | ≤ 1 A per 0.3 mm via at layer changes: ≥ 4 vias on the input path and on P12_VOUT/+12V, ≥ 2 on −12V |
-| Switch | U2 `SW1`, `SW2`; U4 `SW` | 1.0 mm | short F.Cu pours, no thin tracks, no vias | 3.4 / 3.5 |
-| Sense | `P12_ISP`, `P12_ISN` | 0.2 mm (pair 0.2 / 0.2) | 0.2 mm coupled pair | 3.7 |
-| Quiet | `AGND_U2`, U2 `FB`/`COMP`, `FB_N`, `EN_N`, `N_EN_*` | 0.3 mm | ≥ 0.25 mm | short, over solid In1, away from the switch nodes |
-| Default | logic and status | 0.2 mm | 0.2 mm | never use it on a Power net |
+| Class | Nets (project patterns) | Default width | DRC floor / max | Contract minimum (1 oz outer, ≤ 10 °C rise) | Notes |
+| --- | --- | --- | --- | --- | --- |
+| VIN | `VBUS`, `VPD`, `MAIN_IN`, `VIN` | 2.5 mm | 0.25 mm | 2.5 mm on the 3 A path (U5 limit 4.7 A); pours preferred | ≤ 1 A per 0.3 mm via at layer changes: ≥ 4 vias on the input path |
+| PWR_12V | `P12_VOUT`, `+12V` | 1.5 mm | 0.25 mm | 1.5 mm (2.95 A CC limit); pours preferred | ≥ 4 vias at layer changes |
+| PWR_N12V | `-12V` | 0.8 mm | 0.25 mm | 0.8 mm (~1.5 A LMR38020 limit) | ≥ 2 vias at layer changes |
+| GND | `GND` (PGND) | 0.5 mm | 0.25 mm | – | In1 plane, star at C82.2 |
+| SWITCH | U2 `SW1`, `SW2`; U4 `SW` | 1.0 mm | 0.5 mm | short F.Cu pours, no thin tracks | no vias (DRC); 3.4 / 3.5 |
+| SENSE | `P12_ISP`, `P12_ISN` | 0.2 mm | 0.2 / 0.2 mm | 0.2 mm coupled pair, gap 0.2–0.3 mm | F.Cu only, no via, no pour (DRC); 3.7 |
+| AGND_U2 | `AGND_U2` | 0.25 mm | 0.25 mm | – | trace-only island, ≤ 2 vias, no pour (DRC); 3.3 |
+| QUIET | U2 `FB`/`COMP`/`FSW` and the C83 node, `FB_N`, `EN_N`, `RT_U4`, `N_EN_*`, the Q1 collector, and every 3.3 V logic, monitor, eFuse-control and status net (60 nets) | 0.25 mm | 0.25 mm | ≥ 0.25 mm | ≥ 0.5 mm from switch-node copper (DRC); short, over solid In1 |
+| Default | `EXTVCC`, `BOOT1`, `BOOT2`, U4 `BOOT`, `VPD_U1`, the R92/C5 damper node | 0.2 mm | board 0.2 mm | 0.2 mm | gate-drive and supply nodes; never a power path |
 
 ### 3.3 AGND/PGND contract (C82.2 star, R113 the sole bridge)
 
@@ -221,8 +254,10 @@ routing (`min_widths`, PENDING).
 
 ### 3.5 U4 inverting buck-boost cell (LMR38020, −12 V)
 
-- U4's ground pin and exposed pad are **`-12V`, not GND**. The footprint thermal vias land on the −12V area (In2 or
-  B.Cu, ≥ 300 mm²); never put GND on the EP.
+- U4's ground pin and exposed pad are **`-12V`, not GND**. The exposed pad has **no via in it** (S9.2b): its 10
+  thermal vias sit in two rows of five beyond the short ends of the pad copper, each with a 0.6 mm F.Cu spoke, and land on
+  the `TV_U4_B` −12V pour. Grow that pour into the −12V area (In2 or B.Cu, ≥ 300 mm²); never put GND on the EP. R13–R15
+  sit 0.25 mm further south to clear the south row ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)).
 - The HF input capacitor C27 (100 nF, VIN to −12V) sits at U4 pins 3/1 (2.26 mm). C25/C26 (VIN to −12V, 50 V parts,
   they see VIN + 12 V) follow, and C24 (VIN to GND).
 - SW (U4 pin 8) goes to L3 pad 1 as a compact F.Cu pour. L3 pad 2 is GND, with ≥ 3 vias. The output bank (−12V to GND)
@@ -265,8 +300,9 @@ on TH-1…TH-3 (`calcs.json` → `thermal_contract`, status CONDITIONAL).
 | U2 | TI SLVSGT7 RθJA 43.4 °C/W (JEDEC 2s2p; EVM 27.5 °C/W); allowed effective 55.8 °C/W at the CC limit | In1 solid PGND (no slot within 15 mm). **≥ 10 PGND vias** 0.3/0.6 mm, centres ≤ 4 mm outside the package outline on the cell's PGND copper: at both PGND land ends where the fan-out leaves room, at C8.2 and C81.2 and on the PGND copper joining them; to In1 and the B.Cu GND pour; never in a pad. **VIN**: F.Cu pour ≥ 120 mm² joining U2.7, C8, C6, C7, C77, C78 and D24 K, with ≥ 6 vias to an In2 VIN area ≥ 300 mm². **VOUT**: F.Cu P12_VOUT pour ≥ 150 mm² joining U2.11, C81, C11–C14, C79, C80 and R109 pad 1, with ≥ 6 vias to a B.Cu P12_VOUT area ≥ 200 mm²; D26 K and TP20 join as in 3.6. **B.Cu GND** ≥ 600 mm² under U2/L1/banks, ≥ 20 stitching vias |
 | R109 | TA-I RLM12: 1 W at 70 °C with 300 mm² of copper, derated to 0 at 155 °C | 3.7 copper/via budget |
 | D10 | 2.25 W at 3 A needs RθJA ≤ 33.3 °C/W | VPD (anode) and MAIN_IN (cathode) F.Cu pours ≥ 400 mm² each, each with ≥ 8 vias to a same-net B.Cu area ≥ 300 mm² |
-| U4 | LMR38020 EP = −12V | footprint thermal vias to a −12V area ≥ 300 mm² on In2 or B.Cu; no GND on the EP |
-| U5 | TPS16630 EP = GND, ≤ 0.48 W | footprint thermal vias to In1 GND |
+| U4 | LMR38020 EP = −12V; beside-pad field ΔR +0.4 °C/W (3.13) | the 10 field vias (no via in the pad) land in one −12V area ≥ 300 mm² on In2 or B.Cu, grown from `TV_U4_B`; no GND on the EP |
+| U5 | TPS16630 EP = GND, 0.477 W at 3 A; RθJA 32.2 → 43.3 °C/W with the beside-pad field, Tj 70.7 °C at 50 °C (3.13) | the 10 field vias (no via in the pad) land in the In1 GND plane and the `TV_U5_B` B.Cu pour |
+| U9 | TPS7A16 EP = GND (always-on logic LDO, small load); ΔR +6.9 °C/W (3.13) | the 6 field vias land in the In1 GND plane and the `TV_U9_B` B.Cu pour |
 
 ### 3.9 Test pads
 
@@ -282,27 +318,172 @@ a pad's courtyard circle. Make the 2.54 mm pairs reachable from the top side wit
 5. Monitors and guard (U18, U20, U21), then the logic (U10–U15).
 6. Cross-board links last: VIN, VPD, and ±12 V to the headers and monitors.
 
-After every batch, check: DRC + parity, no via in an SMD pad, no track on In1, plane and area pieces, and a render of
-the area.
+The S9.2b thermal-via fields at U5, U4 and U9 are fixed pre-routing copper: route to them, never move, resize or delete
+them (`place_s8.py --apply-thermal-vias` rewrites them from the contract). After every batch, check: DRC + parity, no via
+in any pad, no track on In1, plane and area pieces, and a render of the area.
 
 ### 3.11 Post-routing gate (before any CAM or export)
 
-Measure and report the 13 PENDING items from `board-p1.json`:
+Measure and report the 17 PENDING items from `board-p1.json` (`tools/check_s8_board.py` measures each one once
+the board carries copper beyond the thermal fields):
 
+- `ground.agnd_link`
+- `kelvin.sense_routing`
+- `min_widths`
+- `thermal.D10.copper`
+- `thermal.R109.force_copper`
+- `thermal.U2.B_Cu_GND`
 - `thermal.U2.In1`
 - `thermal.U2.PGND_vias`
 - `thermal.U2.VIN_area`
 - `thermal.U2.VOUT_area`
-- `thermal.U2.B_Cu_GND`
-- `thermal.R109.force_copper`
-- `thermal.R109.sense_copper`
-- `thermal.D10.copper`
 - `thermal.U4.copper`
 - `thermal.U5.copper`
-- `kelvin.sense_routing`
-- `ground.no_second_bridge_copper`
-- `min_widths`
+- `thermal.U9.copper`
+- `tvs.D1`
+- `tvs.D24`
+- `tvs.D25`
+- `tvs.D26`
 
-Also required: native DRC 0 / unconnected 0 / parity 0; no via in an SMD pad; In1 one piece with no tracks; every
-In2/B.Cu area one piece; the 1 mm edge and 2 mm hand-solder distances measured. An item that is not met gets a routing
-fix. If it cannot be fixed, report it as a rating change. It is never a silent pass.
+Two former items are now native DRC rules ([3.12](#312-drc-rules-net-classes-and-rule-areas)):
+`ground.no_second_bridge_copper` (`S92_AGND_U2_to_PGND`, `S92_AGND_U2_island`, `S92_AGND_U2_no_inner_copper`, plus the
+short check and exact parity) and `thermal.R109.sense_copper` (`S92_SENSE_pair`, `S92_SENSE_F_Cu_only`,
+`S92_SENSE_to_force`).
+
+Also required: native DRC 0 / unconnected 0 / parity 0; no via in any pad and only standard 0.3/0.6 mm vias
+(`pre_routing_checklist` keeps checking it); In1 one piece with no tracks; every In2/B.Cu area one piece; the 1 mm edge and
+2 mm hand-solder distances measured. An item that is not met gets a routing fix. If it cannot be fixed, report it as a
+rating change. It is never a silent pass.
+
+### 3.12 DRC rules, net classes and rule areas
+
+This is the DRC-enforceable half of the contract (DeepSeek audit Blocker 2): with it, native DRC fails a board that breaks
+the AGND/PGND split, the Kelvin separation, the TVS clearances, the U2 cell keep-outs or the via policy. All three parts
+are generated from `tools/s92_contract.py` by `tools/place_s8.py --apply-rules` (never edited in KiCad):
+
+- **Net classes** in the project ([3.2](#32-net-classes-and-widths)).
+- **Custom rules** in `usb-power-45w-single.kicad_dru`, after the two R1 J1/SW1 copper-edge allowances. KiCad evaluates
+  the file last rule first and stops at the first rule that matches a pair for a constraint type, so of two overlapping
+  clearance rules the stricter comes later; the via rules come first so that a later, more specific `disallow` still
+  applies.
+- **Rule areas** (`RA_*` zones with keepout flags) on the board. The flags stop every net, in DRC and in the interactive
+  router; the net-scoped limits are rules that name the area.
+
+| Rule | Layer | What it enforces |
+| --- | --- | --- |
+| `S92_via_standard` | all | S9.2b: every via is the plain JLCPCB 0.3/0.6 mm through via (annular ring 0.15 mm); no other size, no microvia, no blind or buried via |
+| `S92_via_hole_to_copper` | all | S9.2b: via drill >= 0.3 mm from copper of any other net (JLCPCB standard DFM, no special order) |
+| `S92_In1_solid_PGND` | In1.Cu | In1 is the solid PGND plane: no track of any net (3.1) |
+| `S92_power_width_floor` | all | no logic-width track on a power net; the current-path minimums are POST_ROUTING min_widths |
+| `S92_QUIET` | all | control and logic tracks >= 0.25 mm |
+| `S92_SWITCH` | all | switch nodes: F.Cu pours, no vias, no thin tracks (3.4/3.5) |
+| `S92_SENSE_pair` | all | Kelvin pair: 0.2 mm, coupled gap 0.2-0.3 mm, no via, no pour (3.7) |
+| `S92_SENSE_F_Cu_only` | all | the sense pair runs on F.Cu only |
+| `S92_AGND_U2_island` | all | AGND_U2: trace-only, at most one via pair, no pour on any layer (3.3) |
+| `S92_AGND_U2_no_inner_copper` | inner | no AGND_U2 track on In1/In2 |
+| `S92_AGND_U2_B_Cu_link` | B.Cu | the single B.Cu AGND_U2 link is 0.25 mm |
+| `S92_AGND_U2_to_PGND` | all | AGND_U2 copper keeps 0.3 mm from every PGND item; the only bridge is the R113 body (pads 0.85 mm apart) |
+| `S92_SENSE_to_force` | all | sense pair >= 0.3 mm from P12_VOUT/+12V force copper; exempt: the R109/U2 land gaps and the U2 pin escape |
+| `S92_QUIET_to_SWITCH` | all | quiet nets >= 0.5 mm from switch-node copper (3.4/3.5) |
+| `S92_TVS_pad_stress` | all | every D1/D24/D26 pad >= 0.4 mm from copper of any other net (the clamp voltage appears across these gaps) |
+| `S92_U2_cell_own_nets` | all | no foreign-net track or via inside the U2/L1 cell (3.4) |
+| `S92_U2_cell_B_Cu` | B.Cu | on B.Cu inside the cell only the PGND pour and the AGND_U2 link (3.1) |
+| `S92_U2_hot_loop_vias` | all | only PGND vias inside the hot loops; C8/C81 connect on F.Cu (3.4) |
+| `S92_AGND_island_nets` | all | only the island's own nets inside RA_AGND_ISLAND |
+| `S92_no_via_in_pad` | all | S9.2b: no via in or touching any pad, any net, SMD or THT (owner: no via-in-pad anywhere); no footprint carries a plated hole in a pad either (tools/check_s8_board.py) |
+| `S92_TVS_pads_solid` | all | TVS pads join their pours solid, no thermal spokes |
+| `S92_hot_loop_pads_solid` | all | U2 VIN/SW/PGND/VOUT bars, C8, C81 and L1 join their pours solid |
+
+| Rule area | Layers | Blocks | Why |
+| --- | --- | --- | --- |
+| `RA_U2_CELL` | F.Cu, B.Cu | nothing (named by rules) | U2/L1 buck-boost cell (3.4 keep-out): only the cell's own nets route or drop vias here; on B.Cu only PGND and the AGND_U2 link |
+| `RA_U2_HOT_LOOP` | F.Cu | tracks | input (C8 - VIN bar - PGND bar) and output (C81 - VOUT bar - PGND bar) hot loops east of U2: pour-only copper, no track of any net, only PGND vias; the DITH/FSW and ISP/ISN side-pin channels stay outside |
+| `RA_U2_SW_B` | B.Cu | tracks | B.Cu under L1, the SW1/SW2 pours and the U2 SW bars: the GND pour only, no signal or AGND track |
+| `RA_L1_IN2` | In2.Cu | tracks, pours | no In2 copper directly under the L1 body (3.1) |
+| `RA_L3_IN2` | In2.Cu | tracks, pours | no In2 copper directly under the L3 body (3.1) |
+| `RA_TVS_D24` | F.Cu | tracks, vias | D24 land (VIN TVS): pads join the VIN pour and the PGND anode copper as solid pours; no track, no via in or under the land |
+| `RA_TVS_D26` | F.Cu | tracks, vias | D26 land (P12_VOUT TVS): pour-only pad connections, no via in or under the land |
+| `RA_TVS_D1` | F.Cu | tracks, vias | D1 land (VPD TVS): pour-only pad connections, no via in or under the land |
+| `RA_AGND_ISLAND` | F.Cu | pours | AGND_U2 north island and corridor TP28 - R113.1 - C82 gap - U2.17 - C83.2/R9.2: no pour of any net (the island stays trace-only, PGND/P12_VOUT/+12V pours stop at its edge); only the island's own nets route here |
+| `RA_U2_SENSE_ESCAPE` | F.Cu | nothing (named by rules) | the <= 2 mm pin escape of U2.12/U2.13 into the 0.68 mm channel west of C81.1: sense copper wholly inside keeps the 0.2 mm board clearance to force copper instead of 0.3 mm |
+| `RA_NOVIA_U5_EP` | F.Cu | vias | U5 exposed pad: no via in the pad (its 10 thermal vias sit beside both short ends) |
+| `RA_NOVIA_U4_EP` | F.Cu | vias | U4 exposed pad (-12V): no via in the pad (its 10 thermal vias sit beside both short ends) |
+| `RA_NOVIA_U9_EP` | F.Cu | vias | U9 exposed pad: no via in the pad (its 6 thermal vias sit beside both short ends) |
+| `RA_NOVIA_U1_EP` | F.Cu | vias | U1 (CH224A) exposed pad: no via in the pad; ground it beside the pad |
+| `RA_NOVIA_U2_BARS` | F.Cu | vias | U2 VIN/SW1/PGND/SW2/VOUT bars: no via in a bar; the PGND vias sit beside the bar ends (thermal.U2.PGND_vias) |
+
+DRC cannot express "this pad sits on that pour island" or "this many vias near that pad". Those items are the
+post-routing screen of [3.11](#311-post-routing-gate-before-any-cam-or-export), measured by `tools/check_s8_board.py`
+after routing: `tvs.D24`, `tvs.D26`, `tvs.D1`, `tvs.D25` (TVS proximity to the conductors they protect), the thermal
+areas and via counts, the Kelvin attach and coupling, the AGND link and the current-path widths.
+
+### 3.13 No via-in-pad, standard JLCPCB vias only (S9.2b)
+
+**Rule: No via-in-pad anywhere on this board, standard JLCPCB vias only** (owner decisions, 2026-11-02). This replaces
+the S9.2 audit round's proposal to keep the in-pad holes and order "Epoxy Filled & Capped" (POFV).
+
+**Via spec** (`s92_contract.VIA_SPEC`; DRC rules `S92_via_standard`, `S92_via_hole_to_copper`, `S92_no_via_in_pad`;
+`check_s8_board.py` checks the rest):
+
+- every via is a **0.3 mm drill / 0.6 mm pad** through via (F.Cu–B.Cu), annular ring 0.15 mm; no other size, no 0.2 mm or
+  laser microvia, no blind or buried via;
+- tented on both sides by the board setup, not covered, plugged, filled or capped, and no via overrides that;
+- via drill ≥ 0.3 mm from copper of any other net; via copper ≥ 0.1 mm from every pad (any net) and outside every
+  solder-mask opening;
+- thermal fields on a 0.6 mm pitch: 0.3 mm drill edge to drill edge (JLCPCB minimum 0.2 mm).
+
+**Footprints.** U4, U5 and U9 use hole-free copies of their pinned land patterns, generated by
+[`tools/s92_parts.py`](../../tools/s92_parts.py): `TI_SO-PowerPAD-8_NoViaInPad`,
+`HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad` and `TPS7A16_DGN0008C_NoViaInPad`. Each is the
+pinned file with every plated hole and the B.Cu-only copy of the exposed pad removed; the lands, solder-mask window,
+paste, courtyard and 3D model are unchanged. The drilled originals stay in the library, unchanged, for the routed S7
+boards. No footprint on this board has a plated hole in a pad (`verify_s8.py` and `check_s8_board.py`).
+
+**Thermal-via fields** (`s92_contract.THERMAL_VIA_FIELDS`, written by `place_s8.py --apply-thermal-vias`). Each exposed
+pad gets one row of vias beyond each short end of its copper, ring 0.15 mm from the pad copper (DRC floor 0.1 mm), each
+via with its own 0.6 mm F.Cu spoke that runs 0.3 mm into the pad copper, and a B.Cu landing pour of the pad net under the
+part. The long sides have no room: the pin rows are 0.375 mm (U5), 0.45 mm (U4) and 0.5 mm (U9) from the pad copper.
+
+| Part (exposed pad) | Before: in the pad | After: beside the pad (usable vias) | B.Cu landing pour | Moved to make room |
+| --- | --- | --- | --- | --- |
+| U5 TPS16630 PWP (pin 21, GND) | 15 × 0.3 mm | **10**: two rows of 5 at x 56.35 and 63.75, y 79.1–81.5 | `TV_U5_B`, GND, 83.6 mm² | C2 0.45 mm west, R24 and C3 0.45 mm east |
+| U4 LMR38020 DDA (pin 9, −12V) | 8 × 0.3 mm | **10**: two rows of 5 at y 76.5 and 81.9, x 129.6–132.0 | `TV_U4_B`, −12V, 65.4 mm² | R13, R14, R15 0.25 mm south |
+| U9 TPS7A16 DGN (pin 9, GND) | 4 × 0.2 mm (non-standard drill) | **6**: two rows of 3 at x 83.05 and 86.95, y 91.6–92.8 | `TV_U9_B`, GND, 40.3 mm² | – |
+
+**Thermal penalty.** The model (`s92_contract.thermal_via_model`, `calcs.json` → `thermal_contract.via_change`) puts the
+exposed-pad heat into the outer copper over the solder window and carries it to the landing plane through the vias (the
+lateral 35 µm copper path to each row plus 18 µm-plated 0.3 mm barrels) in parallel with the prepreg under the pad copper.
+It assumes all of the exposed-pad heat takes this path, so the ΔR it gives is an upper bound on the change of RθJA.
+
+| | U5 (PWP, to In1) | U4 (DDA, to B.Cu) | U9 (DGN, to In1) |
+| --- | --- | --- | --- |
+| Pad → plane, holes in the pad | 3.14 K/W | 20.39 K/W | 13.21 K/W |
+| Pad → plane, beside-pad field | 14.25 K/W | 20.83 K/W | 20.08 K/W |
+| ΔRθJA (upper bound) | **+11.1 °C/W** | +0.4 °C/W | +6.9 °C/W |
+
+- **U5** at the rated 3 A input dissipates 3.0² × 53 mΩ = 0.477 W. RθJA goes from TI's 32.2 °C/W (JEDEC, vias in the
+  pad) to **43.3 °C/W**, so Tj at 50 °C ambient goes from 65.4 °C to **70.7 °C: a thermal penalty of +5.3 °C at rated
+  load**, against the 125 °C limit (125 °C would need 157 °C/W).
+- **U2** has no exposed pad and its lands were never drilled, so nothing moves: its ≥ 10 PGND vias were already standard
+  0.3/0.6 mm vias beside the bar ends (`thermal.U2.PGND_vias`), and `RA_NOVIA_U2_BARS` now also keeps a router out of the
+  bars. RθJA stays at the JEDEC 43.4 °C/W: Tj **94.1 °C at the 2.4 A rating** (1.017 W) and **108.4 °C at the 2.946 A CC
+  limit** (1.345 W) at 50 °C, against 125 °C. Penalty 0 °C.
+- **U4**: +0.4 °C/W. Its −12V vias run the full board thickness either way, so the barrels dominate, and the field has 10
+  vias against 8. There is still no U4 loss model; TH-3 measures it.
+- **U9**: +6.9 °C/W on a small always-on logic load.
+
+**Rating: unchanged**, +12 V 2.4 A / −12 V 0.8 A, ≤ 33 W together: U5 and U2 stay below 125 °C at their rated currents.
+`calcs.json` → `thermal_contract.via_change` and `validation.json` → `no_via_in_pad` carry the numbers. `s8_calcs.py`
+asserts the U5 limit, so a change that pushed it over 125 °C would stop the build until a reduced rating is published.
+TH-2 and TH-3 confirm U5 and U4 on the prototype.
+
+**JLCPCB order.** A standard order, nothing exotic: Via Covering **"Tented"** (the default); no "Epoxy Filled & Capped" /
+POFV option and no via-in-pad remark; every hole ≥ 0.3 mm, so no small-via surcharge; 4 layers, JLC04161H-7628, 1 oz outer
+/ 0.5 oz inner. Pre-order checklist for the via-in-pad footprints:
+
+1. U4, U5 and U9 are the `*_NoViaInPad` footprints and no footprint has a plated hole in a pad (`verify_s8.py`,
+   `check_s8_board.py`).
+2. The drill file has only 0.3 mm vias and no hole below 0.3 mm.
+3. The board setup tents both sides and covers, plugs, fills and caps nothing, and no via overrides it.
+4. Native DRC is 0 with `S92_via_standard`, `S92_via_hole_to_copper` and `S92_no_via_in_pad` in the rules file.
+5. The order form says Via Covering "Tented" and carries no via-in-pad remark.

@@ -78,6 +78,10 @@ def render(board_path, out, title='', zoom=None):
                     (cx, cz) = P(*yz(p.GetPosition()))
                     r = (pcbnew.ToMM(max(p.GetSize(pcbnew.F_Cu).x, p.GetSize(pcbnew.F_Cu).y)) / 2 + 2.0) * S
                     dr.ellipse([cx - r, cz - r, cx + r, cz + r], fill=(255, 196, 0, 40))
+    for t in b.GetTracks():       # S9.2b: the F.Cu spokes of the beside-pad thermal-via fields (and any later F.Cu track)
+        if t.GetClass() == 'PCB_TRACK' and t.GetLayer() == pcbnew.F_Cu:
+            dr.line([P(*yz(t.GetStart())), P(*yz(t.GetEnd()))], fill=PCOL.get(t.GetNetname(), (200, 160, 80)) + (230,),
+                    width=max(1, int(pcbnew.ToMM(t.GetWidth()) * S)))
     labels = []
     for f in fps:
         r = f.GetReference()
@@ -88,6 +92,12 @@ def render(board_path, out, title='', zoom=None):
             for q in polys(p.GetEffectivePolygon(pcbnew.F_Cu, pcbnew.ERROR_INSIDE)):
                 dr.polygon([P(*v) for v in q], fill=c + (230,), outline=(0, 0, 0))
         labels.append((yz(f.GetPosition()), r))
+    for v in b.GetTracks():       # vias on top: copper ring in the net colour, white drill
+        if v.GetClass() == 'PCB_VIA':
+            (cx, cz) = P(*yz(v.GetPosition()))
+            for rr, col in ((pcbnew.ToMM(v.GetWidth(pcbnew.F_Cu)) / 2 * S, PCOL.get(v.GetNetname(), (200, 160, 80))),
+                            (pcbnew.ToMM(v.GetDrillValue()) / 2 * S, (255, 255, 255))):
+                dr.ellipse([cx - rr, cz - rr, cx + rr, cz + rr], fill=col, outline=(0, 0, 0))
     for (y, z), r in labels:
         if y0 <= y <= y1 and z0 <= z <= z1:
             x, yy = P(y, z)
@@ -98,7 +108,8 @@ def render(board_path, out, title='', zoom=None):
             fill='black', font=ImageFont.truetype(FONT, 19))
     dr.text((10, H - 18), 'Pads by net: VIN red, GND grey, +12V green, -12V purple, VPD orange, V3V3 olive. '
             'Blue circles: bracket nut + 8 mm driver keep-out. Yellow: 2 mm hand-solder rings (J1, D8, J2, J3). '
-            'Thin green: 1 mm edge band. Red courtyard = overlap.', fill=(60, 60, 60), font=ImageFont.truetype(FONT, 14))
+            'Thin green: 1 mm edge band. Red courtyard = overlap. Rings: 0.3/0.6 mm vias (F.Cu tracks drawn, B.Cu not).',
+            fill=(60, 60, 60), font=ImageFont.truetype(FONT, 14))
     img.save(out)
     return sorted(bad)
 

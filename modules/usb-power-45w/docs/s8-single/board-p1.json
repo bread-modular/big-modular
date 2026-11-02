@@ -283,9 +283,11 @@
    "pass": true
   },
   "pending_after_routing": [
+   "ground.agnd_link",
+   "kelvin.sense_routing",
+   "min_widths",
    "thermal.D10.copper",
    "thermal.R109.force_copper",
-   "thermal.R109.sense_copper",
    "thermal.U2.B_Cu_GND",
    "thermal.U2.In1",
    "thermal.U2.PGND_vias",
@@ -293,17 +295,493 @@
    "thermal.U2.VOUT_area",
    "thermal.U4.copper",
    "thermal.U5.copper",
-   "kelvin.sense_routing",
-   "ground.no_second_bridge_copper",
-   "min_widths"
+   "thermal.U9.copper",
+   "tvs.D1",
+   "tvs.D24",
+   "tvs.D25",
+   "tvs.D26"
   ],
+  "enforced_by_drc": {
+   "ground.no_second_bridge_copper": [
+    "S92_AGND_U2_to_PGND",
+    "S92_AGND_U2_island",
+    "S92_AGND_U2_no_inner_copper",
+    "native short/clearance check",
+    "exact ref/pin/net parity (no second 0 ohm)"
+   ],
+   "thermal.R109.sense_copper": [
+    "S92_SENSE_pair (0.2 mm, no pour, no via)",
+    "S92_SENSE_F_Cu_only",
+    "S92_SENSE_to_force"
+   ]
+  },
   "pass": true
+ },
+ "pre_routing_checklist": {
+  "items": {
+   "netclasses": {
+    "project_matches_contract": true,
+    "nets": 80,
+    "per_class": {
+     "Default": 6,
+     "VIN": 4,
+     "PWR_12V": 2,
+     "PWR_N12V": 1,
+     "GND": 1,
+     "SWITCH": 3,
+     "SENSE": 2,
+     "AGND_U2": 1,
+     "QUIET": 60
+    },
+    "board_class_mismatch": [],
+    "nets_in_two_classes": [],
+    "default_nets": [
+     "/USB PD, main eFuse and VIN damper/VPD_U1",
+     "Net-(C5-Pad1)",
+     "Net-(U2-BOOT1)",
+     "Net-(U2-BOOT2)",
+     "Net-(U2-EXTVCC)",
+     "Net-(U4-BOOT)"
+    ],
+    "ok": true
+   },
+   "drc_rules": {
+    "file": "usb-power-45w-single.kicad_dru",
+    "rules": [
+     "S92_via_standard",
+     "S92_via_hole_to_copper",
+     "S92_In1_solid_PGND",
+     "S92_power_width_floor",
+     "S92_QUIET",
+     "S92_SWITCH",
+     "S92_SENSE_pair",
+     "S92_SENSE_F_Cu_only",
+     "S92_AGND_U2_island",
+     "S92_AGND_U2_no_inner_copper",
+     "S92_AGND_U2_B_Cu_link",
+     "S92_AGND_U2_to_PGND",
+     "S92_SENSE_to_force",
+     "S92_QUIET_to_SWITCH",
+     "S92_TVS_pad_stress",
+     "S92_U2_cell_own_nets",
+     "S92_U2_cell_B_Cu",
+     "S92_U2_hot_loop_vias",
+     "S92_AGND_island_nets",
+     "S92_no_via_in_pad",
+     "S92_TVS_pads_solid",
+     "S92_hot_loop_pads_solid"
+    ],
+    "ok": true
+   },
+   "rule_areas": {
+    "areas": [
+     {
+      "name": "RA_U2_CELL",
+      "present": true,
+      "layers": [
+       "B.Cu",
+       "F.Cu"
+      ],
+      "blocks": [],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_U2_HOT_LOOP",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "tracks"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_U2_SW_B",
+      "present": true,
+      "layers": [
+       "B.Cu"
+      ],
+      "blocks": [
+       "tracks"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_L1_IN2",
+      "present": true,
+      "layers": [
+       "In2.Cu"
+      ],
+      "blocks": [
+       "pours",
+       "tracks"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_L3_IN2",
+      "present": true,
+      "layers": [
+       "In2.Cu"
+      ],
+      "blocks": [
+       "pours",
+       "tracks"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_TVS_D24",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "tracks",
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_TVS_D26",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "tracks",
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_TVS_D1",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "tracks",
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_AGND_ISLAND",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "pours"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_U2_SENSE_ESCAPE",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_NOVIA_U5_EP",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_NOVIA_U4_EP",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_NOVIA_U9_EP",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_NOVIA_U1_EP",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     },
+     {
+      "name": "RA_NOVIA_U2_BARS",
+      "present": true,
+      "layers": [
+       "F.Cu"
+      ],
+      "blocks": [
+       "vias"
+      ],
+      "polygon_matches": true,
+      "net": "",
+      "not_inside": [],
+      "foreign_pads": [],
+      "ok": true
+     }
+    ],
+    "unexpected": [],
+    "ok": true
+   },
+   "via_in_pad": {
+    "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+    "footprint_holes_in_pads": {},
+    "thermal_pad_footprints": {
+     "U5": "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad",
+     "U4": "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad",
+     "U9": "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad"
+    },
+    "board_setup": {
+     "tenting_front": true,
+     "tenting_back": true,
+     "covering_front": false,
+     "covering_back": false,
+     "plugging_front": false,
+     "plugging_back": false,
+     "capping": false,
+     "filling": false
+    },
+    "board_setup_ok": true,
+    "vias": 26,
+    "non_standard_vias": [],
+    "via_overrides": [],
+    "vias_closer_than_0p1mm_to_a_pad": [],
+    "vias_in_a_mask_opening": [],
+    "ok": true
+   },
+   "thermal_vias": {
+    "fields": {
+     "U5": {
+      "pad": "U5.21",
+      "net": "GND",
+      "vias": 10,
+      "spokes": 10,
+      "spokes_into_pad": 10,
+      "landing_pour": "TV_U5_B",
+      "landing_mm2": 83.6,
+      "landing_filled": true,
+      "ok": true
+     },
+     "U4": {
+      "pad": "U4.9",
+      "net": "-12V",
+      "vias": 10,
+      "spokes": 10,
+      "spokes_into_pad": 10,
+      "landing_pour": "TV_U4_B",
+      "landing_mm2": 65.4,
+      "landing_filled": true,
+      "ok": true
+     },
+     "U9": {
+      "pad": "U9.9",
+      "net": "GND",
+      "vias": 6,
+      "spokes": 6,
+      "spokes_into_pad": 6,
+      "landing_pour": "TV_U9_B",
+      "landing_mm2": 40.3,
+      "landing_filled": true,
+      "ok": true
+     }
+    },
+    "missing": [],
+    "vias_total": 26,
+    "ok": true
+   },
+   "stackup": {
+    "layers": 4,
+    "thickness_mm": 1.6,
+    "copper_um": {
+     "F.Cu": 35.0,
+     "In1.Cu": 15.2,
+     "In2.Cu": 15.2,
+     "B.Cu": 35.0
+    },
+    "dielectric_mm": [
+     0.2104,
+     1.065,
+     0.2104
+    ],
+    "contract": "JLC04161H-7628, FR4 Tg155, 1 oz outer / 0.5 oz inner, HASL (SnPb)",
+    "ok": true
+   },
+   "test_pads": {
+    "pads": 27,
+    "not_bare_exposed_copper": [],
+    "ok": true
+   },
+   "placement": {
+    "ok": true
+   }
+  },
+  "failed": [],
+  "pass": true
+ },
+ "post_routing_screen": {
+  "status": "PENDING",
+  "reason": "unrouted: no track, via or copper zone beyond the S9.2b thermal fields",
+  "items": {
+   "tvs.D24": {
+    "status": "PENDING",
+    "requirement": "D24.1 sits in the F.Cu VIN pour island that holds C8.1 and the C6/C7/C77/C78 bank; >= 3 GND vias within 1.5 mm of the D24.2 pad edge"
+   },
+   "tvs.D26": {
+    "status": "PENDING",
+    "requirement": "D26.1 in an F.Cu P12_VOUT pour island with the C14/C79/C80 bank, or >= 2 vias from it to the B.Cu P12_VOUT area; >= 3 GND vias within 1.5 mm of D26.2"
+   },
+   "tvs.D1": {
+    "status": "PENDING",
+    "requirement": "D1.1 in the F.Cu VPD pour island with D10.2; >= 3 GND vias within 1.5 mm of D1.2"
+   },
+   "tvs.D25": {
+    "status": "PENDING",
+    "requirement": "one GND via within 1.5 mm of D25.1 (pins 2/3 join VIN: native unconnected check)"
+   },
+   "ground.agnd_link": {
+    "status": "PENDING",
+    "requirement": "AGND_U2 has <= 1 track run on B.Cu (the link) and its copper joins only the 7 member pads (via count and width: DRC)"
+   },
+   "kelvin.sense_routing": {
+    "status": "PENDING",
+    "requirement": "each sense track leaves R109 pads 2/3 on the +y edge within 0.6 mm of the inner end; the pair is coupled (<= 0.3 mm gap) except <= 2 mm at U2 and the TP22/TP23 branches"
+   },
+   "thermal.U2.In1": {
+    "status": "PENDING",
+    "requirement": "In1 is one GND piece; within 15 mm of the U2 centre its only holes are via antipads"
+   },
+   "thermal.U2.PGND_vias": {
+    "status": "PENDING",
+    "requirement": ">= 10 GND vias 0.3/0.6 mm with centres <= 4 mm outside the U2 outline, none in a pad"
+   },
+   "thermal.U2.VIN_area": {
+    "status": "PENDING",
+    "requirement": "one F.Cu VIN island >= 120 mm2 holding U2.7, C8.1, C6/C7/C77/C78 and D24.1 with >= 6 vias to an In2 VIN island >= 300 mm2"
+   },
+   "thermal.U2.VOUT_area": {
+    "status": "PENDING",
+    "requirement": "one F.Cu P12_VOUT island >= 150 mm2 holding U2.11, C81.1, C11-C14, C79, C80 and R109.1 with >= 6 vias to a B.Cu P12_VOUT island >= 200 mm2"
+   },
+   "thermal.U2.B_Cu_GND": {
+    "status": "PENDING",
+    "requirement": "the B.Cu GND island under U2 is >= 600 mm2 with >= 20 GND vias"
+   },
+   "thermal.R109.force_copper": {
+    "status": "PENDING",
+    "requirement": "P12_VOUT and +12V F.Cu copper >= 150 mm2 each within 10 mm of R109 pads 1/4, each with >= 3 same-net vias"
+   },
+   "thermal.D10.copper": {
+    "status": "PENDING",
+    "requirement": "VPD and MAIN_IN F.Cu islands at D10 >= 400 mm2 each with >= 8 vias to a same-net B.Cu island >= 300 mm2"
+   },
+   "thermal.U4.copper": {
+    "status": "PENDING",
+    "requirement": "the 10 U4 field vias land in one -12V island >= 300 mm2 on In2 or B.Cu (the TV_U4_B landing pour may be grown into it)"
+   },
+   "thermal.U5.copper": {
+    "status": "PENDING",
+    "requirement": "every U5 field via lands in the In1 GND fill"
+   },
+   "thermal.U9.copper": {
+    "status": "PENDING",
+    "requirement": "every U9 field via lands in the In1 GND fill"
+   },
+   "min_widths": {
+    "status": "PENDING",
+    "requirement": "current-path tracks meet the class minimum (VIN 2.5, PWR_12V 1.5, PWR_N12V 0.8 mm); a track whose chain reaches only tap pads (dividers, test pads, monitors, clamps) needs only the 0.25 mm floor"
+   }
+  }
  },
  "parts_on_board": 175,
  "parked_parts": [],
  "parts_on_B": [],
- "tracks": 0,
- "zones": 0,
+ "tracks": 52,
+ "zones": 3,
+ "routed_items": 0,
+ "rule_areas": 15,
  "courtyard_overlaps": [],
  "edge_rule_findings_not_approved": [],
  "closest_courtyards_to_edge_mm": [
@@ -605,7 +1083,7 @@
     "from": "U5.1",
     "to": "C2.1",
     "net": "MAIN_IN",
-    "distance_mm": 2.56,
+    "distance_mm": 2.84,
     "limit_mm": 4.5,
     "purpose": "main eFuse IN",
     "ok": true

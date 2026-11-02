@@ -683,6 +683,55 @@
       }
     }
   },
+  "no_via_in_pad": {
+    "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+    "footprints_checked": 26,
+    "plated_holes_in_pads": 0,
+    "thermal_pad_footprints": {
+      "U5": "HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad",
+      "U4": "TI_SO-PowerPAD-8_NoViaInPad",
+      "U9": "TPS7A16_DGN0008C_NoViaInPad"
+    },
+    "via_spec": {
+      "drill_mm": 0.3,
+      "diameter_mm": 0.6,
+      "annular_ring_min_mm": 0.15,
+      "type": "through, F.Cu-B.Cu",
+      "tenting": {
+        "front": true,
+        "back": true
+      },
+      "filling": false,
+      "hole_to_copper_min_mm": 0.3
+    },
+    "beside_pad_vias": {
+      "U5": 10,
+      "U4": 10,
+      "U9": 6
+    },
+    "in_pad_holes_removed": {
+      "U5": 15,
+      "U4": 8,
+      "U9": 4
+    },
+    "U5": {
+      "Tj_at_50C_in_pad_vias_C": 65.4,
+      "Tj_at_50C_S92b_C": 70.7,
+      "thermal_penalty_C": 5.3,
+      "holds": true
+    },
+    "U2": {
+      "Tj_at_50C_rating_C": 94.1,
+      "Tj_at_50C_limit_C": 108.4,
+      "thermal_penalty_C": 0.0
+    },
+    "published_rating_A": {
+      "+12V": 2.4,
+      "-12V": 0.8
+    },
+    "rating_changed": false,
+    "rating_note": "unchanged: U5 stays far below 125 C at the rated 3 A input and U2's arrangement is unchanged"
+  },
   "enable_logic": {
     "structure": {
       "U4": "U4",

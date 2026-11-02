@@ -22,8 +22,17 @@ the routing contract (tools/s92_contract.py); every other part keeps its P2.1 po
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
 --write is the older seed-based placement entry point, not a native edit-preservation tool. --refresh-contract rewrites
 only the routing-contract keys of placement.json from tools/s92_contract.py (S9.2 routing-notes wording; board untouched).
+S9.2 routing readiness (DeepSeek audit): --apply-rules writes the DRC-enforceable half of the contract from
+tools/s92_contract.py and nothing else: the net classes into the .kicad_pro, the generated rules into the .kicad_dru (R1
+J1/SW1 edge allowances first) and the RA_* rule areas onto the board (deterministic UUIDs; earlier RA_* areas replaced;
+footprints, tracks, vias and copper zones untouched, so it is safe on a routed board too).
+S9.2b (owner: no via-in-pad, standard JLCPCB vias only): U4/U5/U9 take the hole-free land patterns (FP_REPLACE), C2 and
+R24/C3 move 0.45 mm and R13-R15 0.25 mm clear of the new via rows, and --apply-thermal-vias writes the beside-pad thermal
+fields of tools/s92_contract.py THERMAL_VIA_FIELDS (vias, one F.Cu spoke per via, one B.Cu landing pour per field,
+deterministic UUIDs; earlier field items replaced, everything else untouched). The guards treat these fields as fixed
+pre-routing copper: only other tracks/vias/copper zones count as routing.
 
-  python3 -B tools/place_s8.py [--write] [--png <file>] [--force] [--refresh-contract]
+  python3 -B tools/place_s8.py [--write] [--png <file>] [--force] [--refresh-contract] [--apply-rules] [--apply-thermal-vias]
 
 "Use single side for now. [...] Don't route for now. But try to see the fit and etc. make them to the
 PCB, brackets and etc. So I can get a review from someone else."
@@ -89,7 +98,8 @@ GROUPS = [
      '-12V pour area behind U4 (D4, C33), FB/RT/EN network on the side away from SW',
      {'U4': (130.8, 79.2, 0), 'C28': (135.4, 77.9, 270), 'L3': (142.65, 79.1, 0),
       'C27': (125.9, 78.55, 90), 'C25': (123.5, 78.55, 90), 'C26': (121.1, 78.55, 90), 'C24': (130.2, 86.6, 0),
-      'R13': (127.6, 83.6, 90), 'R14': (131.55, 83.6, 270), 'R15': (133.2, 83.6, 270),
+      # S9.2b: R13-R15 0.25 mm south, clear of the U4 south thermal-via row (R14.1 FB_N >= 0.4 mm from the vias)
+      'R13': (127.6, 83.85, 90), 'R14': (131.55, 83.85, 270), 'R15': (133.2, 83.85, 270),
       'Q14': (129.2, 97.0, 0), 'Q15': (124.5, 97.0, 0), 'R115': (133.4, 97.0, 90), 'TP30': (120.25, 97.6, 0),
       'R112': (122.6, 87.4, 0), 'Q1': (122.6, 84.4, 0), 'R17': (125.35, 84.4, 90), 'R18': (125.35, 87.5, 90), 'R16': (121.5, 81.7, 0),
       'D4': (130.0, 74.4, 0), 'C33': (122.3, 91.5, 90),
@@ -101,8 +111,9 @@ GROUPS = [
      {'F1': (69.25, 92.7, 0), 'D10': (69.25, 88.05, 0), 'D1': (78.0, 85.55, 0), 'Q2': (76.2, 80.65, 0),
       'Q3': (80.35, 81.2, 90), 'U1': (84.95, 83.35, 270), 'D11': (76.85, 76.25, 0), 'D9': (84.05, 74.55, 0),
       'R27': (70.95, 76.9, 0), 'R23': (71.5, 80.5, 90), 'R2': (75.05, 89.45, 90), 'R3': (65.35, 92.3, 0),
-      'C1': (83.45, 77.95, 90), 'C3': (64.45, 83.05, 90), 'R24': (64.45, 79.9, 90), 'U5': (60.05, 80.3, 90),
-      'C2': (55.65, 80.3, 90), 'R5': (55.65, 77.15, 270), 'R29': (54.05, 77.15, 90), 'R26': (60.05, 75.5, 180),
+      # S9.2b: C2 0.45 mm west and R24/C3 0.45 mm east, clear of the U5 beside-pad thermal-via rows (s92_contract)
+      'C1': (83.45, 77.95, 90), 'C3': (64.9, 83.05, 90), 'R24': (64.9, 79.9, 90), 'U5': (60.05, 80.3, 90),
+      'C2': (55.2, 80.3, 90), 'R5': (55.65, 77.15, 270), 'R29': (54.05, 77.15, 90), 'R26': (60.05, 75.5, 180),
       'R4': (67.0, 76.65, 180), 'R28': (78.6, 73.2, 180), 'R114': (63.0, 90.3, 90), 'R1': (88.55, 85.85, 90),
       'TP1': (81.55, 78.1, 90), 'TP2': (85.35, 78.45, 0), 'TP8': (68.2, 74.1, 90)}),
     ('MAIN LED driver (BASE R3)', 'Q6/R22 behind D8, Q10 (RUN-gated return) as on BASE',
@@ -154,9 +165,11 @@ GROUPS = [
 
 
 BOARD_REV = 'S9.2-P2.2'
-BOARD_NOTE = 'S9.2 routing-ready placement (Kelvin R109, PGND star at C82.2, acceptance pads). P2.2, UNROUTED.'
+BOARD_NOTE = ('S9.2b routing-ready placement (no via-in-pad: beside-pad thermal fields; Kelvin R109, PGND star at C82.2, '
+              'acceptance pads). P2.2, unrouted apart from the thermal fields.')
 BOARD_NOTE5 = 'S9.2 / P2.2: AGND_U2 joins PGND ONLY via R113 at C82.2 (PGND). Contract: docs/s8-single/routing-notes.md.'
 import s92_contract  # noqa: E402
+import s92_parts  # noqa: E402
 GROUND_CONNECTION = {**s92_contract.GROUND, 'at': 'C82.2', 'link_pad_1': 'AGND_U2', 'link_pad_2': 'GND',
                      'routing': s92_contract.GROUND['rule']}
 
@@ -178,7 +191,7 @@ def board(root=MODULE):
     b = seed.seed_board(root)
     tb = b.GetTitleBlock()
     tb.SetRevision(BOARD_REV)
-    for i, t in enumerate([BOARD_NOTE + ' No tracks/vias/zones. Not a release.',
+    for i, t in enumerate([BOARD_NOTE + ' Not a release.',
                            'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
                            'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json',
                            'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json']):
@@ -205,12 +218,159 @@ def snapshot(b):
             for fp in b.GetFootprints() if fp.GetReference()}
 
 
+def copper_zones(b):
+    """Zones that are copper (fills), not the S9.2 rule areas."""
+    return [z for z in b.Zones() if not z.GetIsRuleArea()]
+
+
+def r1_rules_text():
+    """The R1 rules file the seed copies (two user-authorised J1/SW1 copper-edge allowances)."""
+    assert seed.R1_ARCHIVE.with_suffix('.kicad_dru') == MODULE / s92_contract.R1_RULES
+    return (MODULE / s92_contract.R1_RULES).read_text()
+
+
+BLOCK_SETTERS = {'tracks': 'SetDoNotAllowTracks', 'vias': 'SetDoNotAllowVias', 'pours': 'SetDoNotAllowZoneFills',
+                 'pads': 'SetDoNotAllowPads', 'footprints': 'SetDoNotAllowFootprints'}
+
+
+def rule_area(b, spec):
+    """One s92_contract.RULE_AREAS entry as a native rule area (deterministic UUID, no net)."""
+    z = pcbnew.ZONE(b)
+    z.SetIsRuleArea(True)
+    z.SetZoneName(spec['name'])
+    ls = pcbnew.LSET()
+    for name in spec['layers']:
+        ls.AddLayer(b.GetLayerID(name))
+    z.SetLayerSet(ls)
+    for key, setter in BLOCK_SETTERS.items():
+        getattr(z, setter)(key in spec['blocks'])
+    outline = z.Outline()
+    outline.NewOutline()
+    for x, y in spec['polygon']:
+        outline.Append(pcbnew.FromMM(x), pcbnew.FromMM(y))
+    z.SetHatchStyle(pcbnew.ZONE_BORDER_DISPLAY_STYLE_DIAGONAL_EDGE)
+    z.SetUuidDirect(pcbnew.KIID(build_s8.uid('pcb/rule-area/' + spec['name'])))
+    return z
+
+
+def apply_rules(board=BOARD):
+    """Write the DRC-enforceable half of the S9.2 routing contract (s92_contract NETCLASSES, dru_text(), RULE_AREAS) into
+    the board's project, rules file and board. Returns the three paths. Footprints, tracks, vias and copper zones are
+    untouched; earlier RA_* rule areas are replaced. pcbnew rewrites the project on save, so the classes are written in
+    pcbnew's own order and the project bytes are checked to be unchanged by the native save."""
+    board = Path(board)
+    project, dru = board.with_suffix('.kicad_pro'), board.with_suffix('.kicad_dru')
+    meta = s92_contract.project_netclasses(json.loads(project.read_text()))
+    project.write_text(json.dumps(meta, indent=2) + '\n')
+    dru.write_text(s92_contract.dru_text(r1_rules_text()))
+    pro_bytes = project.read_bytes()
+    b = pcbnew.LoadBoard(str(board))
+    before = (snapshot(b), len(list(b.GetTracks())), len(copper_zones(b)))
+    # build the new areas BEFORE removing the old ones: after BOARD.Remove() of a zone, pcbnew 10's SWIG hands out
+    # untyped std::shared_ptr<SHAPE_POLY_SET> proxies from ZONE.Outline() (no NewOutline/Append)
+    new = [rule_area(b, spec) for spec in s92_contract.RULE_AREAS]
+    for z in list(b.Zones()):
+        if z.GetIsRuleArea() and z.GetZoneName().startswith('RA_'):
+            b.Remove(z)
+    for z in new:
+        b.Add(z)
+    pcbnew.SaveBoard(str(board), b)
+    assert project.read_bytes() == pro_bytes, 'the native save reordered the project; fix project_netclasses()'
+    after = pcbnew.LoadBoard(str(board))
+    assert (snapshot(after), len(list(after.GetTracks())), len(copper_zones(after))) == before, 'only rule areas change'
+    return board, project, dru
+
+
+# ---- S9.2b thermal-via fields (no via-in-pad): fixed pre-routing copper owned by s92_contract.THERMAL_VIA_FIELDS -------
+def field_at(b):
+    """{ref: (x, y, orientation)} of the thermal-field parts on board b (native mm, degrees)."""
+    fps = {fp.GetReference(): fp for fp in b.GetFootprints() if fp.GetReference()}
+    return {f['ref']: (round(pcbnew.ToMM(fps[f['ref']].GetPosition().x), 4),
+                       round(pcbnew.ToMM(fps[f['ref']].GetPosition().y), 4),
+                       round(fps[f['ref']].GetOrientationDegrees(), 3)) for f in s92_contract.THERMAL_VIA_FIELDS}
+
+
+def thermal_uid(item):
+    return build_s8.uid(f"pcb/thermal/{item['ref']}/{item['kind']}" + (f"/{item['i']}" if 'i' in item else ''))
+
+
+def thermal_ids():
+    """UUIDs of every thermal-field item (they depend on ref/kind/index only, so a moved part's old field is found too)."""
+    return {thermal_uid(it) for it in s92_contract.field_items({f['ref']: (0, 0, 0) for f in s92_contract.THERMAL_VIA_FIELDS})}
+
+
+def routed_copper(b):
+    """Tracks, vias and copper zones that are NOT the generated thermal fields, i.e. routing work."""
+    ids = thermal_ids()
+    return ([t for t in b.GetTracks() if t.m_Uuid.AsString() not in ids]
+            + [z for z in copper_zones(b) if z.m_Uuid.AsString() not in ids])
+
+
+def apply_thermal_vias(board=BOARD):
+    """Write the s92_contract.THERMAL_VIA_FIELDS onto the board at the parts' actual positions: standard 0.3/0.6 mm
+    through vias beside the U5/U4/U9 exposed pads (no per-via tenting/fill override: the board setup tents them), one
+    F.Cu spoke per via into the pad copper and one filled B.Cu landing pour per field. Earlier field items (same
+    deterministic UUIDs) are replaced; footprints, rule areas and every other track/via/zone are untouched."""
+    board = Path(board)
+    project = board.with_suffix('.kicad_pro')
+    pro_bytes = project.read_bytes()
+    b = pcbnew.LoadBoard(str(board))
+    others = lambda bb: sorted((x.GetClass(), x.m_Uuid.AsString()) for x in routed_copper(bb))
+    areas = lambda bb: sorted((z.GetZoneName(), z.m_Uuid.AsString()) for z in bb.Zones() if z.GetIsRuleArea())
+    before = (snapshot(b), others(b), areas(b))
+    ids = thermal_ids()
+    old = [t for t in b.GetTracks() if t.m_Uuid.AsString() in ids] + [z for z in copper_zones(b)
+                                                                       if z.m_Uuid.AsString() in ids]
+    F = pcbnew.FromMM
+    V = lambda p: pcbnew.VECTOR2I(F(p[0]), F(p[1]))
+    new = []                                   # built before the old items are removed (see apply_rules)
+    for it in s92_contract.field_items(field_at(b)):
+        net = b.FindNet(it['net'])
+        assert net is not None, it['net']
+        if it['kind'] == 'via':
+            x = pcbnew.PCB_VIA(b)
+            x.SetViaType(pcbnew.VIATYPE_THROUGH)
+            x.SetLayerPair(pcbnew.F_Cu, pcbnew.B_Cu)
+            x.SetPosition(V(it['at']))
+            x.SetDrill(F(it['drill']))
+            x.SetWidth(F(it['diameter']))
+        elif it['kind'] == 'spoke':
+            x = pcbnew.PCB_TRACK(b)
+            x.SetLayer(b.GetLayerID(it['layer']))
+            x.SetStart(V(it['start']))
+            x.SetEnd(V(it['end']))
+            x.SetWidth(F(it['width']))
+        else:
+            x = pcbnew.ZONE(b)
+            x.SetLayer(b.GetLayerID(it['layer']))
+            x.SetZoneName(it['name'])
+            x.SetPadConnection(pcbnew.ZONE_CONNECTION_FULL)
+            outline = x.Outline()
+            outline.NewOutline()
+            for p in it['polygon']:
+                outline.Append(F(p[0]), F(p[1]))
+            x.SetHatchStyle(pcbnew.ZONE_BORDER_DISPLAY_STYLE_DIAGONAL_EDGE)
+        x.SetNet(net)
+        x.SetUuidDirect(pcbnew.KIID(thermal_uid(it)))
+        new.append(x)
+    for x in old:
+        b.Remove(x)
+    for x in new:
+        b.Add(x)
+    pcbnew.ZONE_FILLER(b).Fill(copper_zones(b))
+    pcbnew.SaveBoard(str(board), b)
+    assert project.read_bytes() == pro_bytes, 'the native save changed the project'
+    after = pcbnew.LoadBoard(str(board))
+    assert (snapshot(after), others(after), areas(after)) == before, 'only the thermal fields change'
+    return board
+
+
 def write(force=False):
     dest = BOARD
     if dest.exists() and not force:
         old = pcbnew.LoadBoard(str(dest))
-        if list(old.GetTracks()) or list(old.Zones()):
-            raise SystemExit(f'{dest}: has copper/zones; placement is owned by the native board now.')
+        if routed_copper(old):
+            raise SystemExit(f'{dest}: has routed copper/zones; placement is owned by the native board now.')
         cur = snapshot(old)
         prev = json.loads(RECORD.read_text())['parts'] if RECORD.exists() else None
         if prev is None:
@@ -223,6 +383,8 @@ def write(force=False):
                              'edited in KiCad? Not overwritten (use --force only to discard those edits).')
     b = board()
     seed.save(b, dest)
+    apply_rules(dest)          # the seed writes the bare R1 rules file and no rule areas
+    apply_thermal_vias(dest)   # S9.2b beside-pad thermal fields (no via-in-pad)
     rec = {'note': 'Last placement written by tools/place_s8.py (guard against overwriting KiCad edits).',
            'parts': snapshot(pcbnew.LoadBoard(str(dest)))}
     RECORD.write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
@@ -234,7 +396,10 @@ FP_REFRESH = set()       # S8.4 refreshed the U23 mask expansion here; S9.0 has 
 # old footprint is removed and the pinned one inserted with a new UUID; any other footprint change still refuses.
 FP_REPLACE = {'U2': ('USBPOWER45:SOT-583-8', 'USBPOWER45:TI_RYQ0021B_VQFN-HR-21_3x5mm'),
               # S9.2: the S9.1 2-pad WSLP land (not Kelvin) -> 4-terminal Kelvin split land (tools/s92_parts.py)
-              'R109': ('USBPOWER45:R_WSLP1206_18m_Kelvin', 'USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12')}
+              'R109': ('USBPOWER45:R_WSLP1206_18m_Kelvin', 'USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12'),
+              # S9.2b: no via-in-pad -> the hole-free copies of the drilled exposed-pad lands (tools/s92_parts.py)
+              **{r: (f'USBPOWER45:{s92_parts.NO_VIA_IN_PAD[k][0]}', f'USBPOWER45:{s92_parts.NO_VIA_IN_PAD[k][1]}')
+                 for r, k in (('U4', 'PPAD8'), ('U5', 'PWP20'), ('U9', 'DGN8'))}}
 
 
 def refresh_pads(fps):
@@ -271,7 +436,7 @@ def sync_candidate(source_board, output_root):
     dest = root / 'hardware/single' / BOARD.name
     assert dest.resolve() != src, 'candidate must not overwrite source'
     old = pcbnew.LoadBoard(str(src))
-    assert not list(old.GetTracks()) and not list(old.Zones()), 'refuse routed/zone-bearing board'
+    assert not routed_copper(old), 'refuse a routed board (rule areas and the generated thermal fields are allowed)'
     before = snapshot(old)
     assert before == json.loads(RECORD.read_text())['parts'], 'native placement changed since recorded baseline'
     comps, nets = seed.netlist(build_s8.root_file(root))
@@ -281,6 +446,10 @@ def sync_candidate(source_board, output_root):
         return next((p[2] for p in nodes(f, 'property') if p[1] == 'Reference'), '')
     fps = {ref(f): f for f in nodes(tree, 'footprint') if ref(f)}
     original_ids = {r: one(f, 'uuid')[1] for r, f in fps.items()}
+    # S9.2b: the generated thermal fields follow their footprints; drop them here, apply_thermal_vias() rewrites them
+    own = thermal_ids()
+    tree[:] = [x for x in tree if not (isinstance(x, list) and x and x[0] in ('via', 'segment', 'zone')
+                                       and one(x, 'uuid') is not None and one(x, 'uuid')[1] in own)]
     original_models = {r: copy.deepcopy(nodes(f, 'model')) for r, f in fps.items()}
     for r in set(fps) - set(comps):
         tree.remove(fps.pop(r))
@@ -384,7 +553,7 @@ def refresh_contract():
     wording). The board is not touched: it must be unrouted and equal the recorded placement, and every other record key
     (parts, synchronization deltas) is kept as the last sync_candidate wrote it."""
     b = pcbnew.LoadBoard(str(BOARD))
-    assert not list(b.GetTracks()) and not list(b.Zones()), 'refuse routed/zone-bearing board'
+    assert not routed_copper(b), 'refuse a routed board (the generated thermal fields are allowed)'
     rec = json.loads(RECORD.read_text())
     assert snapshot(b) == rec['parts'], 'native placement changed since recorded baseline'
     rec['ground_connection'] = GROUND_CONNECTION
@@ -400,9 +569,18 @@ if __name__ == '__main__':
     ap.add_argument('--png', type=Path)
     ap.add_argument('--refresh-contract', action='store_true',
                     help='rewrite only the routing contract keys of docs/s8-single/placement.json (no board change)')
+    ap.add_argument('--apply-rules', action='store_true',
+                    help='write the S9.2 net classes, .kicad_dru rules and RA_* rule areas from tools/s92_contract.py')
+    ap.add_argument('--apply-thermal-vias', action='store_true',
+                    help='write the S9.2b beside-pad thermal-via fields (vias, spokes, B.Cu landing pours) from '
+                         'tools/s92_contract.py THERMAL_VIA_FIELDS')
     a = ap.parse_args()
     if a.write:
         print(write(a.force))
+    if a.apply_rules:
+        print(*apply_rules(), sep='\n')
+    if a.apply_thermal_vias:
+        print(apply_thermal_vias())
     if a.refresh_contract:
         print(refresh_contract())
     if a.png:

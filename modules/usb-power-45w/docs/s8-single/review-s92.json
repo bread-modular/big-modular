@@ -34,6 +34,18 @@
     {
       "item": "Routing notes",
       "change": "docs/s8-single/routing-notes.md written: 27 test pads with location, pad, keep-out, measurement and limit; 19 uncertainty-register rows with assumption, risk, pad, procedure, pass limit and respin/BOM disposition; routing constraint list. Contract made routable (place_s8.py --refresh-contract, board unchanged): one AGND_U2 via pair + B.Cu trace allowed (F.Cu cannot join U2.17 and U2.5 across the power fan-out), U2 PGND vias within 4 mm, D26/TP20 branch, sense escape."
+    },
+    {
+      "item": "S9.2b DRC contract",
+      "change": "DeepSeek audit Blocker 2: the routing contract is enforced by native DRC where DRC can express it: net classes VIN, PWR_12V, PWR_N12V, GND, SWITCH, SENSE, AGND_U2, QUIET (+ Default) in the project, the S92_* custom rules in the .kicad_dru (AGND_U2 to PGND, sense to force, quiet to switch, TVS pad clearance, U2 cell/hot-loop/island nets, widths, In1 solid) and the RA_* rule areas on the board; the rest is the pre-routing checklist and the post-routing machine screen of tools/check_s8_board.py (PENDING until routed, never passed)."
+    },
+    {
+      "item": "S9.2b via policy",
+      "change": "Owner: NO via-in-pad anywhere, standard JLCPCB vias only (0.3 mm drill / 0.6 mm pad, tented, unfilled; no POFV/resin fill, no 0.2 mm or laser microvia). U4/U5/U9 use hole-free copies of their pinned lands (*_NoViaInPad; the S7 files stay drilled for the S7 boards). Beside-pad thermal fields replace the in-pad holes: one via row beyond each short end of each exposed pad, a 0.6 mm F.Cu spoke per via and a B.Cu landing pour (TV_U5_B/TV_U4_B/TV_U9_B); C2 and R24/C3 moved 0.45 mm, R13-R15 0.25 mm. DRC rules S92_via_standard, S92_via_hole_to_copper and S92_no_via_in_pad (any pad) and the RA_NOVIA_* areas stop a router from drilling a pad."
+    },
+    {
+      "item": "S9.2b thermal",
+      "change": "no via-in-pad; vias relocated: U5 15 in-pad -> 10 beside-pad, U4 8 -> 10, U9 4 (0.2 mm) -> 6. Thermal penalty 5.3 C at rated load: U5 RthetaJA 32.2 -> 43.3 C/W (upper bound), Tj 65.4 -> 70.7 C at 50 C and the rated 3 A input (limit 125 C); U2 unchanged (never drilled): Tj 94.1 C at 2.4 A, 108.4 C at the CC limit; U4 DeltaR +0.44 C/W, U9 +6.87 C/W. Published rating unchanged: +12 V 2.4 A / -12 V 0.8 A."
     }
   ],
   "native_findings": {
@@ -71,7 +83,7 @@
     "equal": true
   },
   "native_sources_unchanged_by_check": true,
-  "raw_reports": "research/s92/check-docs",
+  "raw_reports": "research/s92b/check-final",
   "raw_reports_committed": false,
   "counts": {
     "components": 175,
@@ -89,11 +101,11 @@
     "equal": true
   },
   "tests": {
-    "ran": 73,
+    "ran": 76,
     "ok": true,
     "skipped": 1,
-    "s8_tests": 64,
-    "log": "research/s92/tests-docs.log",
+    "s8_tests": 67,
+    "log": "research/s92b/tests-3.log",
     "log_committed": false,
     "note": "local evidence; the tests log lives in git-ignored research/ and is not hashed"
   },
@@ -129,7 +141,7 @@
       "main eFuse IN": [
         "U5.1",
         "C2.1",
-        2.56,
+        2.84,
         4.5
       ],
       "CH224A VHV (R3 BASE block)": [
@@ -211,7 +223,7 @@
         6.0
       ]
     },
-    "basis": "S9.2 / P2.2 synchronized from S9.1; no routing",
+    "basis": "S9.2 / P2.2 synchronized from S9.1; S9.2b re-synchronized for the hole-free U4/U5/U9 lands (C2, R24/C3, R13-R15 moved); no routing apart from the thermal-via fields",
     "routing_contract_screen": {
       "test_points": [
         {
@@ -477,9 +489,11 @@
         "pass": true
       },
       "pending_after_routing": [
+        "ground.agnd_link",
+        "kelvin.sense_routing",
+        "min_widths",
         "thermal.D10.copper",
         "thermal.R109.force_copper",
-        "thermal.R109.sense_copper",
         "thermal.U2.B_Cu_GND",
         "thermal.U2.In1",
         "thermal.U2.PGND_vias",
@@ -487,10 +501,26 @@
         "thermal.U2.VOUT_area",
         "thermal.U4.copper",
         "thermal.U5.copper",
-        "kelvin.sense_routing",
-        "ground.no_second_bridge_copper",
-        "min_widths"
+        "thermal.U9.copper",
+        "tvs.D1",
+        "tvs.D24",
+        "tvs.D25",
+        "tvs.D26"
       ],
+      "enforced_by_drc": {
+        "ground.no_second_bridge_copper": [
+          "S92_AGND_U2_to_PGND",
+          "S92_AGND_U2_island",
+          "S92_AGND_U2_no_inner_copper",
+          "native short/clearance check",
+          "exact ref/pin/net parity (no second 0 ohm)"
+        ],
+        "thermal.R109.sense_copper": [
+          "S92_SENSE_pair (0.2 mm, no pour, no via)",
+          "S92_SENSE_F_Cu_only",
+          "S92_SENSE_to_force"
+        ]
+      },
       "pass": true
     },
     "ground_split": {
@@ -512,28 +542,28 @@
       ]
     },
     "replaced_footprints": {
-      "R109": [
-        "USBPOWER45:R_WSLP1206_18m_Kelvin",
-        "USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12"
+      "U4": [
+        "USBPOWER45:TI_SO-PowerPAD-8_ThermalVias",
+        "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad"
+      ],
+      "U5": [
+        "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias",
+        "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad"
+      ],
+      "U9": [
+        "USBPOWER45:TPS7A16_DGN0008C",
+        "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad"
       ]
     },
     "moved_retained_refs": [
-      "D26",
-      "R113"
+      "C2",
+      "C3",
+      "R13",
+      "R14",
+      "R15",
+      "R24"
     ],
-    "added_refs": [
-      "R115",
-      "TP20",
-      "TP22",
-      "TP23",
-      "TP24",
-      "TP25",
-      "TP26",
-      "TP27",
-      "TP28",
-      "TP29",
-      "TP30"
-    ],
+    "added_refs": [],
     "removed_refs": [],
     "courtyard_fill": 0.623
   },
@@ -1073,6 +1103,8 @@
       "P_IC_W_at_rating": 1.017,
       "RthetaJA_model_C_W": 43.4,
       "Tj_at_50C_limit_C": 108.4,
+      "Tj_at_50C_rating_C": 94.1,
+      "via_change": "none: the RYQ HotRod package has no exposed pad and its lands were never drilled; its >= 10 PGND vias were already standard 0.3/0.6 mm vias beside the bars (thermal.U2.PGND_vias), and the RA_NOVIA_U2_BARS area now also stops a router from drilling the bars",
       "allowed_RthetaJA_for_125C_C_W": {
         "at_CC_limit": 55.8,
         "at_2.4A_rating": 73.7
@@ -1102,7 +1134,440 @@
         "copper": "VPD (anode) and MAIN_IN (cathode) F.Cu pours >= 400 mm2 each, each with >= 8 vias to a same-net B.Cu area >= 300 mm2"
       }
     },
+    "U5": {
+      "P_W_at_3A_input": 0.477,
+      "basis": "3.0 A rated input (15 V / 3 A PD contract) x RON 53 mOhm max",
+      "RthetaJA_datasheet_C_W": 32.2,
+      "delta_R_beside_pad_C_W": 11.11,
+      "RthetaJA_S92b_C_W": 43.3,
+      "Tj_at_50C_in_pad_vias_C": 65.4,
+      "Tj_at_50C_S92b_C": 70.7,
+      "thermal_penalty_C": 5.3,
+      "limit_C": 125,
+      "allowed_RthetaJA_for_125C_C_W": 157.2,
+      "holds": true,
+      "contract": {
+        "copper": "S9.2b beside-pad field (10 vias, spokes, TV_U5_B landing pour) to the In1 GND plane; no via in the pad"
+      }
+    },
+    "via_change": {
+      "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+      "model": "copper 385 W/m K (electro-deposited), FR4 7628 through-plane 0.30 W/m K, JLCPCB average hole plating 18 um, board STACKUP thicknesses; upper bound (all exposed-pad heat through this path)",
+      "fields": {
+        "U5": {
+          "pad": "U5.21",
+          "net": "GND",
+          "land": "In1.Cu",
+          "in_pad_holes_before": 15,
+          "beside_pad_vias_after": 10,
+          "before": {
+            "rows": [
+              {
+                "row": "y -2.6 mm",
+                "vias": 3,
+                "lateral_K_W": 24.45,
+                "barrels_K_W": 12.79,
+                "row_K_W": 37.23
+              },
+              {
+                "row": "in the solder window",
+                "vias": 9,
+                "lateral_K_W": 0.0,
+                "barrels_K_W": 4.26,
+                "row_K_W": 4.26
+              },
+              {
+                "row": "y +2.6 mm",
+                "vias": 3,
+                "lateral_K_W": 24.45,
+                "barrels_K_W": 12.79,
+                "row_K_W": 37.23
+              }
+            ],
+            "barrel_K_W_per_via": 38.36,
+            "dielectric_K_W": 33.33,
+            "total_K_W": 3.14
+          },
+          "after": {
+            "rows": [
+              {
+                "row": "y -3.7 mm",
+                "vias": 5,
+                "lateral_K_W": 49.77,
+                "barrels_K_W": 7.67,
+                "row_K_W": 57.44
+              },
+              {
+                "row": "y +3.7 mm",
+                "vias": 5,
+                "lateral_K_W": 49.77,
+                "barrels_K_W": 7.67,
+                "row_K_W": 57.44
+              }
+            ],
+            "barrel_K_W_per_via": 38.36,
+            "dielectric_K_W": 28.28,
+            "total_K_W": 14.25
+          },
+          "delta_R_K_W": 11.11
+        },
+        "U4": {
+          "pad": "U4.9",
+          "net": "-12V",
+          "land": "B.Cu",
+          "in_pad_holes_before": 8,
+          "beside_pad_vias_after": 10,
+          "before": {
+            "rows": [
+              {
+                "row": "y -1.8 mm",
+                "vias": 2,
+                "lateral_K_W": 6.29,
+                "barrels_K_W": 126.33,
+                "row_K_W": 132.62
+              },
+              {
+                "row": "in the solder window",
+                "vias": 4,
+                "lateral_K_W": 0.0,
+                "barrels_K_W": 63.16,
+                "row_K_W": 63.16
+              },
+              {
+                "row": "y +1.8 mm",
+                "vias": 2,
+                "lateral_K_W": 6.29,
+                "barrels_K_W": 126.33,
+                "row_K_W": 132.62
+              }
+            ],
+            "barrel_K_W_per_via": 252.66,
+            "dielectric_K_W": 55.18,
+            "total_K_W": 20.39
+          },
+          "after": {
+            "rows": [
+              {
+                "row": "y -2.7 mm",
+                "vias": 5,
+                "lateral_K_W": 28.74,
+                "barrels_K_W": 50.53,
+                "row_K_W": 79.27
+              },
+              {
+                "row": "y +2.7 mm",
+                "vias": 5,
+                "lateral_K_W": 28.74,
+                "barrels_K_W": 50.53,
+                "row_K_W": 79.27
+              }
+            ],
+            "barrel_K_W_per_via": 252.66,
+            "dielectric_K_W": 43.9,
+            "total_K_W": 20.83
+          },
+          "delta_R_K_W": 0.44
+        },
+        "U9": {
+          "pad": "U9.9",
+          "net": "GND",
+          "land": "In1.Cu",
+          "in_pad_holes_before": 4,
+          "beside_pad_vias_after": 6,
+          "before": {
+            "rows": [
+              {
+                "row": "in the solder window",
+                "vias": 4,
+                "lateral_K_W": 0.0,
+                "barrels_K_W": 14.86,
+                "row_K_W": 14.86
+              }
+            ],
+            "barrel_K_W_per_via": 59.43,
+            "dielectric_K_W": 119.39,
+            "total_K_W": 13.21
+          },
+          "after": {
+            "rows": [
+              {
+                "row": "y -1.95 mm",
+                "vias": 3,
+                "lateral_K_W": 38.59,
+                "barrels_K_W": 12.79,
+                "row_K_W": 51.38
+              },
+              {
+                "row": "y +1.95 mm",
+                "vias": 3,
+                "lateral_K_W": 38.59,
+                "barrels_K_W": 12.79,
+                "row_K_W": 51.38
+              }
+            ],
+            "barrel_K_W_per_via": 38.36,
+            "dielectric_K_W": 92.04,
+            "total_K_W": 20.08
+          },
+          "delta_R_K_W": 6.87
+        }
+      },
+      "U5": {
+        "Tj_at_50C_in_pad_vias_C": 65.4,
+        "Tj_at_50C_S92b_C": 70.7,
+        "thermal_penalty_C": 5.3,
+        "holds": true
+      },
+      "U2": {
+        "via_change": "none: the RYQ HotRod package has no exposed pad and its lands were never drilled; its >= 10 PGND vias were already standard 0.3/0.6 mm vias beside the bars (thermal.U2.PGND_vias), and the RA_NOVIA_U2_BARS area now also stops a router from drilling the bars",
+        "delta_R_C_W": 0.0,
+        "Tj_at_50C_rating_C": 94.1,
+        "Tj_at_50C_limit_C": 108.4,
+        "thermal_penalty_C": 0.0
+      },
+      "U4": {
+        "delta_R_C_W": 0.44,
+        "note": "no U4 loss model (TH-3): the beside-pad field barely changes the board path because the -12V vias run the full board thickness either way"
+      },
+      "U9": {
+        "delta_R_C_W": 6.87,
+        "note": "always-on logic LDO, small load; the four 0.2 mm in-pad holes were also non-standard"
+      },
+      "rating": {
+        "published_A": {
+          "+12V": 2.4,
+          "-12V": 0.8
+        },
+        "changed": false,
+        "why": "unchanged: U5 stays far below 125 C at the rated 3 A input and U2's arrangement is unchanged"
+      }
+    },
     "acceptance": "TH-1 U2/R109 case temperature at 2.95 A, TH-2 D10/U5 at 3 A input, TH-3 U4 at 0.8 A; docs/s8-single/routing-notes.md"
+  },
+  "S92b_via_policy": {
+    "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+    "order": "Standard JLCPCB order, nothing exotic: Via Covering = \"Tented\" (the default); no \"Epoxy Filled & Capped\" / POFV option and no via-in-pad remark; minimum via 0.3/0.6 mm (no small-hole surcharge); 4 layers, JLC04161H-7628, 1 oz outer / 0.5 oz inner. Pre-order checklist: confirm U4, U5 and U9 are the *_NoViaInPad footprints with no plated hole in their pads, that every via in the drill file is 0.3 mm and that no hole is below 0.3 mm",
+    "board": {
+      "footprint_holes_in_pads": {},
+      "thermal_pad_footprints": {
+        "U5": "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad",
+        "U4": "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad",
+        "U9": "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad"
+      },
+      "board_setup": {
+        "tenting_front": true,
+        "tenting_back": true,
+        "covering_front": false,
+        "covering_back": false,
+        "plugging_front": false,
+        "plugging_back": false,
+        "capping": false,
+        "filling": false
+      },
+      "vias": 26,
+      "non_standard_vias": [],
+      "via_overrides": [],
+      "vias_closer_than_0p1mm_to_a_pad": [],
+      "vias_in_a_mask_opening": [],
+      "ok": true
+    },
+    "thermal_fields": {
+      "U5": [
+        10,
+        10,
+        "TV_U5_B",
+        83.6
+      ],
+      "U4": [
+        10,
+        10,
+        "TV_U4_B",
+        65.4
+      ],
+      "U9": [
+        6,
+        6,
+        "TV_U9_B",
+        40.3
+      ]
+    },
+    "thermal_consequence": {
+      "U5": {
+        "Tj_at_50C_in_pad_vias_C": 65.4,
+        "Tj_at_50C_S92b_C": 70.7,
+        "thermal_penalty_C": 5.3,
+        "holds": true
+      },
+      "U2": {
+        "via_change": "none: the RYQ HotRod package has no exposed pad and its lands were never drilled; its >= 10 PGND vias were already standard 0.3/0.6 mm vias beside the bars (thermal.U2.PGND_vias), and the RA_NOVIA_U2_BARS area now also stops a router from drilling the bars",
+        "delta_R_C_W": 0.0,
+        "Tj_at_50C_rating_C": 94.1,
+        "Tj_at_50C_limit_C": 108.4,
+        "thermal_penalty_C": 0.0
+      },
+      "U4": {
+        "delta_R_C_W": 0.44,
+        "note": "no U4 loss model (TH-3): the beside-pad field barely changes the board path because the -12V vias run the full board thickness either way"
+      },
+      "U9": {
+        "delta_R_C_W": 6.87,
+        "note": "always-on logic LDO, small load; the four 0.2 mm in-pad holes were also non-standard"
+      },
+      "rating": {
+        "published_A": {
+          "+12V": 2.4,
+          "-12V": 0.8
+        },
+        "changed": false,
+        "why": "unchanged: U5 stays far below 125 C at the rated 3 A input and U2's arrangement is unchanged"
+      }
+    },
+    "validation": {
+      "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+      "footprints_checked": 26,
+      "plated_holes_in_pads": 0,
+      "thermal_pad_footprints": {
+        "U5": "HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad",
+        "U4": "TI_SO-PowerPAD-8_NoViaInPad",
+        "U9": "TPS7A16_DGN0008C_NoViaInPad"
+      },
+      "via_spec": {
+        "drill_mm": 0.3,
+        "diameter_mm": 0.6,
+        "annular_ring_min_mm": 0.15,
+        "type": "through, F.Cu-B.Cu",
+        "tenting": {
+          "front": true,
+          "back": true
+        },
+        "filling": false,
+        "hole_to_copper_min_mm": 0.3
+      },
+      "beside_pad_vias": {
+        "U5": 10,
+        "U4": 10,
+        "U9": 6
+      },
+      "in_pad_holes_removed": {
+        "U5": 15,
+        "U4": 8,
+        "U9": 4
+      },
+      "U5": {
+        "Tj_at_50C_in_pad_vias_C": 65.4,
+        "Tj_at_50C_S92b_C": 70.7,
+        "thermal_penalty_C": 5.3,
+        "holds": true
+      },
+      "U2": {
+        "Tj_at_50C_rating_C": 94.1,
+        "Tj_at_50C_limit_C": 108.4,
+        "thermal_penalty_C": 0.0
+      },
+      "published_rating_A": {
+        "+12V": 2.4,
+        "-12V": 0.8
+      },
+      "rating_changed": false,
+      "rating_note": "unchanged: U5 stays far below 125 C at the rated 3 A input and U2's arrangement is unchanged"
+    }
+  },
+  "S92b_drc_contract": {
+    "pre_routing_checklist": {
+      "netclasses": true,
+      "drc_rules": true,
+      "rule_areas": true,
+      "via_in_pad": true,
+      "thermal_vias": true,
+      "stackup": true,
+      "test_pads": true,
+      "placement": true
+    },
+    "netclasses": {
+      "Default": 6,
+      "VIN": 4,
+      "PWR_12V": 2,
+      "PWR_N12V": 1,
+      "GND": 1,
+      "SWITCH": 3,
+      "SENSE": 2,
+      "AGND_U2": 1,
+      "QUIET": 60
+    },
+    "drc_rules": [
+      "S92_via_standard",
+      "S92_via_hole_to_copper",
+      "S92_In1_solid_PGND",
+      "S92_power_width_floor",
+      "S92_QUIET",
+      "S92_SWITCH",
+      "S92_SENSE_pair",
+      "S92_SENSE_F_Cu_only",
+      "S92_AGND_U2_island",
+      "S92_AGND_U2_no_inner_copper",
+      "S92_AGND_U2_B_Cu_link",
+      "S92_AGND_U2_to_PGND",
+      "S92_SENSE_to_force",
+      "S92_QUIET_to_SWITCH",
+      "S92_TVS_pad_stress",
+      "S92_U2_cell_own_nets",
+      "S92_U2_cell_B_Cu",
+      "S92_U2_hot_loop_vias",
+      "S92_AGND_island_nets",
+      "S92_no_via_in_pad",
+      "S92_TVS_pads_solid",
+      "S92_hot_loop_pads_solid"
+    ],
+    "rule_areas": [
+      "RA_U2_CELL",
+      "RA_U2_HOT_LOOP",
+      "RA_U2_SW_B",
+      "RA_L1_IN2",
+      "RA_L3_IN2",
+      "RA_TVS_D24",
+      "RA_TVS_D26",
+      "RA_TVS_D1",
+      "RA_AGND_ISLAND",
+      "RA_U2_SENSE_ESCAPE",
+      "RA_NOVIA_U5_EP",
+      "RA_NOVIA_U4_EP",
+      "RA_NOVIA_U9_EP",
+      "RA_NOVIA_U1_EP",
+      "RA_NOVIA_U2_BARS"
+    ],
+    "post_routing_pending": [
+      "ground.agnd_link",
+      "kelvin.sense_routing",
+      "min_widths",
+      "thermal.D10.copper",
+      "thermal.R109.force_copper",
+      "thermal.U2.B_Cu_GND",
+      "thermal.U2.In1",
+      "thermal.U2.PGND_vias",
+      "thermal.U2.VIN_area",
+      "thermal.U2.VOUT_area",
+      "thermal.U4.copper",
+      "thermal.U5.copper",
+      "thermal.U9.copper",
+      "tvs.D1",
+      "tvs.D24",
+      "tvs.D25",
+      "tvs.D26"
+    ],
+    "enforced_by_drc": {
+      "ground.no_second_bridge_copper": [
+        "S92_AGND_U2_to_PGND",
+        "S92_AGND_U2_island",
+        "S92_AGND_U2_no_inner_copper",
+        "native short/clearance check",
+        "exact ref/pin/net parity (no second 0 ohm)"
+      ],
+      "thermal.R109.sense_copper": [
+        "S92_SENSE_pair (0.2 mm, no pour, no via)",
+        "S92_SENSE_F_Cu_only",
+        "S92_SENSE_to_force"
+      ]
+    }
   },
   "S91_input_qualification": {
     "on_V": [
@@ -2758,41 +3223,41 @@
     "hardware/usb-power-45w.kicad_sch": "9f22aa3a82f9a39b301a884a58407ab39883ebc6098dc4a66d095feaca324b0d"
   },
   "sources_sha256": {
-    "hardware/single/01_usb_input.kicad_sch": "4d957a6a9cc53e5b25381782d755aaf1bf9a274b3a11dc633d75d5874ad29433",
+    "hardware/single/01_usb_input.kicad_sch": "117cd52df47a23bad6028f9100d8888845b044e03333e16edd7caf863ba6e03e",
     "hardware/single/02_positive_12v.kicad_sch": "d3eb3fd2691e93fc0e153a7f2d1283722c378afd76097a47677d7a9d0936964c",
-    "hardware/single/03_negative_converter.kicad_sch": "13e80a3ce1a52763c6c3a64f2fa03a2dcee1e03bb1fa2a0b8b45494039ebc20f",
-    "hardware/single/04_fault_reset.kicad_sch": "d947b21c153df40dea931af93c08ed1f0287a96a08ce3c61720a660e487a7ffb",
+    "hardware/single/03_negative_converter.kicad_sch": "eaeb7062d825acf591492008e158fc53dfec91ea0c115d30bb12e741eba38148",
+    "hardware/single/04_fault_reset.kicad_sch": "b2ba9179152d2c62468767901f8766423d0f7061353504223be8040b9517d137",
     "hardware/single/05_outputs_status.kicad_sch": "2f53238d5537859acf35e65e2fcbe498ab14bf9c683f336f552506b11695648d",
     "hardware/single/USBPOWER45.kicad_sym": "eb79e23f2e57e2a4efc9d111c2421bcef96943e5de205b14c11f9afdafb48c6e",
-    "hardware/single/usb-power-45w-single.kicad_dru": "1f9ab0b4651170bee49442912ce96fdd5f165028e6ade0c4b6c29efbd404a4fa",
-    "hardware/single/usb-power-45w-single.kicad_pcb": "028983238d22a0d863450bdc7b30878e6ad7871c28ff2bc589733a8011dc569c",
-    "hardware/single/usb-power-45w-single.kicad_pro": "133f4cfebdbc1d7c72685a741a4e9456953bc55ca1dffe894329d3755b4b78ab",
+    "hardware/single/usb-power-45w-single.kicad_dru": "d920ff092e7707cc737b19a7e8179645d3af14be0f4d5f0d8da18eecfccf87de",
+    "hardware/single/usb-power-45w-single.kicad_pcb": "64aa8d002e29f37c45088f759900f1f92e765659977ba46f44315b1a93d0a96e",
+    "hardware/single/usb-power-45w-single.kicad_pro": "dd3df9fe773f17f899d5107759bf7be7d1cbed43fd6868c4e0eb16bc6e5735bc",
     "hardware/single/usb-power-45w-single.kicad_sch": "98965f1b487096b3624116c1d2c75dffe623634ae85102f7586a98da8a1e9062",
     "hardware/single/fp-lib-table": "601d6fbd37ab69fc7d916c461d0807ffa17a98b4b85991ac9bb727625ff99590",
     "hardware/single/sym-lib-table": "23c007ed7a5fbdfdb875fadc8130b067bda56e476121040a79e6b256dab53989",
     "panels/front-pcb/usb-power-45w-single-panel.kicad_pcb": "71f1a565e1812a3088a0cf3c67102dc262408a7875c57bcd93712107ec599c77",
     "panels/front-pcb/usb-power-45w-single-panel.kicad_pro": "216a69a24b9ad4d7f9b49503738bf8d9b2b4ded408577398cc223b6291c095ac",
-    "tools/build_s8.py": "c6deeafbae01652700c5a42c8829875c6051765c8534c3024e0e91c5762dacb7",
+    "tools/build_s8.py": "7bb392c5435acad54661238431b238f0552776a7cf095ed207515ce1aeeb2691",
     "tools/build_s8_assembly.py": "e674508c7da2f5b69cb4f206227619bed2e2da27cf0018cff2d1116c7df8c503",
     "tools/build_s8_board.py": "3ace3757c1e91949352b648d5852394bb0651c07a2759e8e55c6fcf9bfd547c5",
     "tools/build_s8_panel.py": "5f728717802a39cc6e53667ec6e2fa85e312983b1c22f0a2abba2aca7d555d60",
-    "tools/check_s8_board.py": "753ff8759fd1754445f950234635a386d9d3dc73864252d64688409918494b51",
+    "tools/check_s8_board.py": "34812773353cb811d0efd2a23e98453009d5ae0fc3f8626b8fac72cae8b0ab4e",
     "tools/circuit_s8.py": "3b701c221312fff62225a655afa4791fc0f1568f0b33dbf4718c20e93708891b",
     "tools/hierarchy_s8.py": "891fa60cfce575582821765052b3439fde3a86f44b3c0f7e62019779c224004d",
     "tools/mechanics_s8.py": "537365343276105fd76da632d860692ed394a596f4e1e6dd504f7505a9098876",
-    "tools/place_s8.py": "2f748e5d49a9ddbfce3fce925a736c3bf4a2e09d1a1d1d734c1c69dda5c8b367",
-    "tools/render_s8.py": "fe1cded6993b608e989c7a5969175d90951f45888f4da88deca4cbed421abd43",
-    "tools/review_s8.py": "c245bd3bdcced811bbbf77d5aba9e872083ac6bed0057be57d8fcb038aa81c68",
-    "tools/s8_calcs.py": "cac5fc79583f9195fbda24c700717952c477e8e12278aa843de824de28782d90",
+    "tools/place_s8.py": "12d9c03407fd8810aff55703fcd74c0a0a287700daa07fcba49c9583c606a47b",
+    "tools/render_s8.py": "5dcd121dd35e88734693d866fe1c2842751a22121434428f3674b23e76e7d9a2",
+    "tools/review_s8.py": "30f058caedc634e79e7146e98d3b5d4e8c644c214ee084962c249746d0b99659",
+    "tools/s8_calcs.py": "852199db6f848f6bc4fba0e80665272f01320ade18cf402b52f0257a3a9bfee1",
     "tools/s8_mechanical.py": "d3ea88c592dc361b8ea466c588faecfc1eb8bd610fcc7565dcc07a86f7b64f28",
     "tools/s8_sourcing.py": "693c5130ddd74270e1312a0dfb489fcec7f6a89b7407b612d098b00388210aa9",
     "tools/s90_parts.py": "b065d14aebb3d9e6c202422a69817ee70359af0fa2a938d25afa15c96d8e7889",
     "tools/s91_analysis.py": "6dc81f682b956779540edf7ae40c9ce94adacd9ae4b5ec6e7e2ca9241938c8a0",
-    "tools/s92_contract.py": "38f571178aeb2068288a8d79934ded6851640ef0475e4a2f1692f585dc2be388",
+    "tools/s92_contract.py": "cf0960b2be369819b12921e5ab49b86ea802883f18be3fa1e57ad8d20b557036",
     "tools/s92_netlist.py": "86df59b598505f02378566ac70c204d990d2ec6d668b90f1aef44bf914973bb2",
-    "tools/s92_parts.py": "175cdc5e13ac385fd4f5fe5479aaf9cd67bb2c4defcc2fab849cb6ff15fbfd9d",
-    "tools/test_s8.py": "c24a7a690a02887679b503d7a3b8d776b5b917bae7a8b564a907120be1bb0887",
-    "tools/verify_s8.py": "5972596bbdf62afe569ca767ba706e077aa01e2a4719ace7d0f9da275e6b49bb",
+    "tools/s92_parts.py": "1b7b95a41812cfb21f36ee7fa4d7138cdfada364b2ed933c1191dd0f7b541fac",
+    "tools/test_s8.py": "a71d42293114716610a213839e5e1d9e89fb86e8f545c14add0cca96f2a33b04",
+    "tools/verify_s8.py": "d8fe153b2ce6bab8ddadb69af6bf54ddb65385e336891aacc84ab11f93fd76a7",
     "hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
     "hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
     "hardware/USBPOWER45.pretty/D_SMA.kicad_mod": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
@@ -2800,7 +3265,7 @@
     "hardware/USBPOWER45.pretty/D_SMC.kicad_mod": "f17a366cbe28020fc5f12a4a5cecd11590af4d96b61ad8d82c33dc2393a3b64b",
     "hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
     "hardware/USBPOWER45.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
-    "hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias.kicad_mod": "8aee9fef17fb3bbdd66f38b4d7b0ba7e39975a92d877184d4d2edfd14104fd6c",
+    "hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad.kicad_mod": "193ac772ea2c5e380e99fb8c4a374a2e6e5f8c96f57b84adce416d5af5a6a955",
     "hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod": "2d0fac128f41253ed8a38dcb8b7361edde17d3ad544016591842909cf1dd1b54",
     "hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
     "hardware/USBPOWER45.pretty/L_SLO1040H6R8MTT.kicad_mod": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
@@ -2815,28 +3280,28 @@
     "hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
     "hardware/USBPOWER45.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
     "hardware/USBPOWER45.pretty/TI_RYQ0021B_VQFN-HR-21_3x5mm.kicad_mod": "0459055fe91fc845c9d67e1c3f3de374c83ce8926aace02844b427f112e78ec4",
-    "hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_ThermalVias.kicad_mod": "a028811923d20ff700426296c0a38e36b893572aa8d4f59115124034772a5d6b",
-    "hardware/USBPOWER45.pretty/TPS7A16_DGN0008C.kicad_mod": "26bb32544efc33247e28fa65976f4012f718c8671aa8efc9a3591e1e87623efa",
+    "hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_NoViaInPad.kicad_mod": "7d9987199928e40625fe953d61a32a12e1efaad12a49f0d95588555f365f749e",
+    "hardware/USBPOWER45.pretty/TPS7A16_DGN0008C_NoViaInPad.kicad_mod": "12429f8b54fe073d895cdaafba4aaba68fe604e07435f7bfa4ff2d4ea74deca7",
     "hardware/USBPOWER45.pretty/TestPoint_Pad_D1.0mm.kicad_mod": "6d602c576b4ab0de29fa4cc096f419a62e828ba45ceee30c1263d86b420b2b12",
     "hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod": "d7ae230b69d8c3dad5082515a51aac9e4840360c8f4324a00673353676d43042"
   },
   "artifacts_sha256": {
     "docs/s8-single/assembly/assembly-report.json": "2685689452ee60ccfa1bc244019437cf7bc65c0d04afcb7c773b91817fb9f1cc",
-    "docs/s8-single/assembly/board-iso.jpg": "bbb3bd8ca5f17fe044459ae7cb57c2312747528232f6fa3fa75f8dec4dd82328",
-    "docs/s8-single/assembly/board-top.jpg": "d6986fb89cfd6b9d43c8ded21502bf20a356be7a09bf186799479a96b3a91b46",
-    "docs/s8-single/assembly/iso-front.png": "900129fef87072e566d9c19ab07a81902b097f2ede5dca4d15cf549a015d19e1",
-    "docs/s8-single/assembly/iso-rear.png": "ac50913aff159664cd1952c98364bc0e5babe89918cc60c0fe728635edd8f030",
-    "docs/s8-single/assembly/usb-power-45w-single-assembly.step.zip": "3c002eff5a2dc0ba69d72cd74582d7d7a01ba73498bc5746b70b29a1af31f4bf",
-    "docs/s8-single/assembly/usb-power-45w-single-placement.pdf": "7e46b9c55877faead28549a8ddeaf61bf798066f1b7442bfdc073c8dd07d0f69",
-    "docs/s8-single/board-p1.json": "0208755bd2480f9137f10b706fc50ee53ca456fbf3ec74317a2d40eeec5c1b02",
-    "docs/s8-single/bom.csv": "61205049fd3263e38f5e4a371d1cf1158447c72bc6be3afc71bb54b7ad55284f",
+    "docs/s8-single/assembly/board-iso.jpg": "532353dcad2c6e1b4ddbda5276099866ce50c030d4d8e881e37a3ca4971e1658",
+    "docs/s8-single/assembly/board-top.jpg": "276b50ae4c3cd8f8df83788e5199f8a25efb3527edb6ce68362ce31e5c4baba5",
+    "docs/s8-single/assembly/iso-front.png": "38f5beb690afe9ae37763aec5374fc01d89b2480d2a5676185c1094d680947bb",
+    "docs/s8-single/assembly/iso-rear.png": "5f482146fd363912794ca47ebeeb818888f8ca228eb1c49eb43e7d7592f85992",
+    "docs/s8-single/assembly/usb-power-45w-single-assembly.step.zip": "d2070aeee0706c59c2a6335c590d51259cfaa97b5d25b11db19f6ff9fe603892",
+    "docs/s8-single/assembly/usb-power-45w-single-placement.pdf": "98a1c470ef25930be3d4bab64009d497b845321f039fb4533e471ea85ece2661",
+    "docs/s8-single/board-p1.json": "68ea6e368f4568ac1c167dd808176f3f420323c9089be454ce7a24be4724ebed",
+    "docs/s8-single/bom.csv": "e887388f65149447835171e7982fbd59986dd9b7dd0a7d0089642072b180cb82",
     "docs/s8-single/build.json": "0eb33097140be5fa6f2ea1c717d955d3813ef54341c0ee068b8558869d8ff856",
-    "docs/s8-single/calcs.json": "e798dd033862de0424c1aa10ac9ce759d970a8d79fda271716715665dc912d68",
+    "docs/s8-single/calcs.json": "79c41729ca2e3b3c39d523ed99acbea01c153ea0e956d11d9e118790aca5fefc",
     "docs/s8-single/hierarchy-parity.json": "8e0c389e9d13d3e84ed47719f7786124967fa2d2003dfbe6974ba80a016dcb32",
-    "docs/s8-single/img/board-p1.png": "3d49a2e01c2faac8e75d8b897d12e742fa8810af8ba7838673dcf2c3153d41b0",
+    "docs/s8-single/img/board-p1.png": "4dc2d4b4dda6fdb2e286c0a0bc386b4d36347d9c05dd97ed760666a747d56b4f",
     "docs/s8-single/mechanical.json": "eb83001da4c1860aa4313b90ee845dd8b6a4d2a874513e22840f7fa59835fc8b",
-    "docs/s8-single/placement.json": "f36498e45b2171cfbfd5c9eea1a506fa18d2b1493c2dcc01c7a0711ed2ec93f9",
-    "docs/s8-single/routing-notes.md": "27048ae4d62354db9953c3f7c61a125f5e23659845a5eaa4efa0918023fedc23",
+    "docs/s8-single/placement.json": "8b43a10785ec91867243804fcb4084e57d792f55cb176a2cdff1e65e89a3da5f",
+    "docs/s8-single/routing-notes.md": "c8307005ad1a35ca2f6c547779687626e6f1e48093ca69a301933cebf042b303",
     "docs/s8-single/s83-sourcing.json": "28aa62b9599643b16aa43485d0db1a893d41df3abbaf4c1c77dec9e5d4b1a76c",
     "docs/s8-single/s84-sourcing.json": "2cba18099500dd4858f1d5adc9c8956a137fa6ac6b1b889aadcdf653c0b7d853",
     "docs/s8-single/s90-sourcing.json": "930fee411e1b8eaaab48c82898ae295d7078833df65f04bfb287f5340a25d43f",
@@ -2844,9 +3309,9 @@
     "docs/s8-single/s92-sourcing.json": "2d953f4dfe02fe44ab76baca8a108e236c82996c1a5140e8a1268af790ff737a",
     "docs/s8-single/schematic-wiring.json": "c043d2e5258c761a2ead11dc951215233436f3b4a598d14271e7e63b3cdf4d65",
     "docs/s8-single/sourcing.json": "f7de9a39eef906b641051bf99037dc9693c37197a86cc016f0416beb2ba8a0a4",
-    "docs/s8-single/validation.json": "ac1a64a1dd90d3e0bf0e6c351a31d1acc3b0f430b616eef6c79da9f7387c2404",
-    "docs/usb-power-45w-single-schematic.pdf": "18199394cec139f919bb701302000b7941d84a460e4baf879425b4c1053a2687",
-    "docs/s8-single-board.md": "9e2f892bd0784157a03989b6622b8284cbebd843340796c94df45d5f80f1d7dd"
+    "docs/s8-single/validation.json": "889824ff70be9c5c3cbb7c1bd6f7e40375c2d713733bbd6682e369e2ab295960",
+    "docs/usb-power-45w-single-schematic.pdf": "6ecdb9164d3e56b8955112d3d60cf5b696e8a4614dbc096c9b350a720812e6d3",
+    "docs/s8-single-board.md": "2c92f1d627d13b46980b241236de327142a7908d0b9f5f6ffbc93e3f7e36c121"
   },
   "open_gates": [
     "Routing itself (P2.2 is routing-ready and unrouted; the contract items are checked after routing)",

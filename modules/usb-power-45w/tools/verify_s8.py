@@ -667,11 +667,52 @@ def residual_record():
     return s8_calcs.residuals(v,eff,s8_calcs.ov_guard(v,release))
 
 
+def holes_in_pads(f):
+    """Plated holes of a parsed footprint whose centre lies inside the copper of another pad of the same footprint
+    (exposed-pad thermal holes); a THT pin's own hole in its own pad does not count. Axis-aligned pad rectangles."""
+    pads = nodes(f, 'pad')
+    out = []
+    for h in pads:
+        if h[2] not in ('thru_hole', 'np_thru_hole'):
+            continue
+        hx, hy = map(float, one(h, 'at')[1:3])
+        for q in pads:
+            if q is h or not any(str(l).endswith('Cu') for l in one(q, 'layers')[1:]):
+                continue
+            (qx, qy), (qw, qh) = map(float, one(q, 'at')[1:3]), map(float, one(q, 'size')[1:3])
+            if abs(hx - qx) <= qw / 2 and abs(hy - qy) <= qh / 2:
+                out.append(f'{h[1]}@({hx:g},{hy:g}) in pad {q[1]}')
+                break
+    return out
+
+
+def via_policy_record(footprints_checked):
+    """S9.2b record: via-in-pad prohibited (every footprint the board uses checked above), the via spec, the hole-free
+    thermal-pad footprints, and the thermal consequence from s8_calcs (U5/U2 Tj at the rated load; rating unchanged or
+    reduced)."""
+    import s8_calcs
+    import s92_contract
+    p, v = s8_calcs.table()
+    _, eff = s8_calcs.banks(p)
+    change = s8_calcs.thermal_contract(v, eff)['via_change']
+    return {'decision': s92_contract.VIA_IN_PAD['decision'], 'footprints_checked': len(footprints_checked),
+            'plated_holes_in_pads': 0,
+            'thermal_pad_footprints': {f['ref']: FP_S8[f['key']] for f in s92_contract.THERMAL_VIA_FIELDS},
+            'via_spec': {k: s92_contract.VIA_SPEC[k] for k in ('drill_mm', 'diameter_mm', 'annular_ring_min_mm', 'type',
+                                                               'tenting', 'filling', 'hole_to_copper_min_mm')},
+            'beside_pad_vias': {r: x['beside_pad_vias_after'] for r, x in change['fields'].items()},
+            'in_pad_holes_removed': {r: x['in_pad_holes_before'] for r, x in change['fields'].items()},
+            'U5': change['U5'], 'U2': {k: change['U2'][k] for k in ('Tj_at_50C_rating_C', 'Tj_at_50C_limit_C',
+                                                                      'thermal_penalty_C')},
+            'published_rating_A': change['rating']['published_A'], 'rating_changed': change['rating']['changed'],
+            'rating_note': change['rating']['why']}
+
+
 def verify(netlist, hardware=MODULE / 'hardware', root=None):
     xml_root, comps, nets, pins = load_xml(netlist)
     parts = {p['ref']: p for p in circuit_s8.circuit() if not p['ref'].startswith('#')}
     assert set(parts) == set(comps), ('Native/table component mismatch', sorted(set(parts) ^ set(comps)))
-    expected = {}; netids = {}
+    expected = {}; netids = {}; footprints_checked = set()
     for ref, p in parts.items():
         assert comps[ref].findtext('value') == p['value'], (ref, 'value')
         assert comps[ref].findtext('footprint') == 'USBPOWER45:' + FP_S8[p['fp']], (ref, 'footprint')
@@ -679,6 +720,9 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
             assert comps[ref].findtext(f'fields/field[@name="{field}"]') == val, (ref, field)
         f = parse((hardware / 'USBPOWER45.pretty' / (FP_S8[p['fp']] + '.kicad_mod')).read_text())
         assert {str(x[1]) for x in nodes(f, 'pad') if x[1]} == set(p['pins']), (ref, 'pad set')
+        drilled = holes_in_pads(f)              # S9.2b: no via-in-pad, footprint level
+        assert not drilled, (ref, FP_S8[p['fp']], 'plated hole inside a pad (via-in-pad is prohibited)', drilled)
+        footprints_checked.add(FP_S8[p['fp']])
         for num, net in p['pins'].items():
             key = (ref, num)
             if net is None:
@@ -1044,6 +1088,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
                                  'reverse_blocking': 'none (owner decision S9.0): no ideal-diode controller or series FET; '
                                                      'R109 is the only series element (current sense, inside the converter)'},
             'accepted_residuals': residual_record(),
+            'no_via_in_pad': via_policy_record(footprints_checked),
             'enable_logic': enable,
             'vin_clamp_coordination': {'D24': comps['D24'].findtext('fields/field[@name="MPN"]'), **tvs,
                                        'VBR_min_at_0C_V': round(vbr_cold, 3),

@@ -4,6 +4,8 @@
     "TPS62933F": "TI SLUSEA4D (https://www.ti.com/lit/ds/symlink/tps62933f.pdf): IHS_LIMIT 4.2/5/5.8 A, ILS_LIMIT 2.9/3.8/4.5 A, ISS 4.5/5.5/6.5 uA, tSS = CSS x 0.8 V / ISS, OVP 112/115/118 %, UVP 65 % + 256 us then hiccup 10.5 x tSS, VFB 784-816 mV (-40..150 C), Table 10-2 effective COUT, Eq. 21",
     "LMR38020": "TI SNVSC40E (https://www.ti.com/lit/ds/symlink/lmr38020.pdf): IHS 2.6/3.2/3.8 A, ILS 1.8/2.3/2.8 A, tSS 4 ms, OCP blanking 18 ms typ at power-up, hiccup 76 ms, COUT <= ~10 x design value or 1000 uF",
     "TPS1663": "TI SLVSET9G (https://www.ti.com/lit/ds/symlink/tps1663.pdf): tSD(dly) SHDN -> FET off 0.8-1.5 us, I(dVdT) 1.775/2/2.225 uA, GAIN(dVdT) 23.5/25/26",
+    "TPS1663_thermal": "TI SLVSET9G 6.4 (https://www.ti.com/lit/ds/symlink/tps1663.pdf): PWP (HTSSOP-20) RthetaJA 32.2, RthetaJC(top) 23.4, RthetaJB 10, psiJT 0.3, psiJB 9.9, RthetaJC(bot) 3.6 C/W (JEDEC 2s2p); RON 53 mOhm max (-40..125 C)",
+    "LMR38020_thermal": "TI SNVSC40E 7.4 (https://www.ti.com/lit/ds/symlink/lmr38020.pdf): DDA RthetaJA 42.9 C/W (JEDEC), 29 C/W (TI EVM), RthetaJC(bot) 4.3 C/W",
     "TPS3808": "TI SBVS050N (https://www.ti.com/lit/ds/symlink/tps3808.pdf): delay (s) = CT (nF) / 175 + 0.5 ms; open-CT delay 12/20/28 ms (+-40 %)",
     "TPS7A16": "TI SBVS171F (https://www.ti.com/lit/ds/symlink/tps7a16.pdf): overall accuracy +-2 %",
     "LM2901": "TI SLCS006Z (https://www.ti.com/lit/ds/symlink/lm2901.pdf): VIO 7 mV (25 C) / 15 mV (-40..125 C), input bias -500 nA, common mode 0..VCC-2 V (one input in range gives a proper output state)",
@@ -1715,6 +1717,8 @@
       "P_IC_W_at_rating": 1.017,
       "RthetaJA_model_C_W": 43.4,
       "Tj_at_50C_limit_C": 108.4,
+      "Tj_at_50C_rating_C": 94.1,
+      "via_change": "none: the RYQ HotRod package has no exposed pad and its lands were never drilled; its >= 10 PGND vias were already standard 0.3/0.6 mm vias beside the bars (thermal.U2.PGND_vias), and the RA_NOVIA_U2_BARS area now also stops a router from drilling the bars",
       "allowed_RthetaJA_for_125C_C_W": {
         "at_CC_limit": 55.8,
         "at_2.4A_rating": 73.7
@@ -1742,6 +1746,214 @@
       "required_RthetaJA_C_W": 33.3,
       "contract": {
         "copper": "VPD (anode) and MAIN_IN (cathode) F.Cu pours >= 400 mm2 each, each with >= 8 vias to a same-net B.Cu area >= 300 mm2"
+      }
+    },
+    "U5": {
+      "P_W_at_3A_input": 0.477,
+      "basis": "3.0 A rated input (15 V / 3 A PD contract) x RON 53 mOhm max",
+      "RthetaJA_datasheet_C_W": 32.2,
+      "delta_R_beside_pad_C_W": 11.11,
+      "RthetaJA_S92b_C_W": 43.3,
+      "Tj_at_50C_in_pad_vias_C": 65.4,
+      "Tj_at_50C_S92b_C": 70.7,
+      "thermal_penalty_C": 5.3,
+      "limit_C": 125,
+      "allowed_RthetaJA_for_125C_C_W": 157.2,
+      "holds": true,
+      "contract": {
+        "copper": "S9.2b beside-pad field (10 vias, spokes, TV_U5_B landing pour) to the In1 GND plane; no via in the pad"
+      }
+    },
+    "via_change": {
+      "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+      "model": "copper 385 W/m K (electro-deposited), FR4 7628 through-plane 0.30 W/m K, JLCPCB average hole plating 18 um, board STACKUP thicknesses; upper bound (all exposed-pad heat through this path)",
+      "fields": {
+        "U5": {
+          "pad": "U5.21",
+          "net": "GND",
+          "land": "In1.Cu",
+          "in_pad_holes_before": 15,
+          "beside_pad_vias_after": 10,
+          "before": {
+            "rows": [
+              {
+                "row": "y -2.6 mm",
+                "vias": 3,
+                "lateral_K_W": 24.45,
+                "barrels_K_W": 12.79,
+                "row_K_W": 37.23
+              },
+              {
+                "row": "in the solder window",
+                "vias": 9,
+                "lateral_K_W": 0.0,
+                "barrels_K_W": 4.26,
+                "row_K_W": 4.26
+              },
+              {
+                "row": "y +2.6 mm",
+                "vias": 3,
+                "lateral_K_W": 24.45,
+                "barrels_K_W": 12.79,
+                "row_K_W": 37.23
+              }
+            ],
+            "barrel_K_W_per_via": 38.36,
+            "dielectric_K_W": 33.33,
+            "total_K_W": 3.14
+          },
+          "after": {
+            "rows": [
+              {
+                "row": "y -3.7 mm",
+                "vias": 5,
+                "lateral_K_W": 49.77,
+                "barrels_K_W": 7.67,
+                "row_K_W": 57.44
+              },
+              {
+                "row": "y +3.7 mm",
+                "vias": 5,
+                "lateral_K_W": 49.77,
+                "barrels_K_W": 7.67,
+                "row_K_W": 57.44
+              }
+            ],
+            "barrel_K_W_per_via": 38.36,
+            "dielectric_K_W": 28.28,
+            "total_K_W": 14.25
+          },
+          "delta_R_K_W": 11.11
+        },
+        "U4": {
+          "pad": "U4.9",
+          "net": "-12V",
+          "land": "B.Cu",
+          "in_pad_holes_before": 8,
+          "beside_pad_vias_after": 10,
+          "before": {
+            "rows": [
+              {
+                "row": "y -1.8 mm",
+                "vias": 2,
+                "lateral_K_W": 6.29,
+                "barrels_K_W": 126.33,
+                "row_K_W": 132.62
+              },
+              {
+                "row": "in the solder window",
+                "vias": 4,
+                "lateral_K_W": 0.0,
+                "barrels_K_W": 63.16,
+                "row_K_W": 63.16
+              },
+              {
+                "row": "y +1.8 mm",
+                "vias": 2,
+                "lateral_K_W": 6.29,
+                "barrels_K_W": 126.33,
+                "row_K_W": 132.62
+              }
+            ],
+            "barrel_K_W_per_via": 252.66,
+            "dielectric_K_W": 55.18,
+            "total_K_W": 20.39
+          },
+          "after": {
+            "rows": [
+              {
+                "row": "y -2.7 mm",
+                "vias": 5,
+                "lateral_K_W": 28.74,
+                "barrels_K_W": 50.53,
+                "row_K_W": 79.27
+              },
+              {
+                "row": "y +2.7 mm",
+                "vias": 5,
+                "lateral_K_W": 28.74,
+                "barrels_K_W": 50.53,
+                "row_K_W": 79.27
+              }
+            ],
+            "barrel_K_W_per_via": 252.66,
+            "dielectric_K_W": 43.9,
+            "total_K_W": 20.83
+          },
+          "delta_R_K_W": 0.44
+        },
+        "U9": {
+          "pad": "U9.9",
+          "net": "GND",
+          "land": "In1.Cu",
+          "in_pad_holes_before": 4,
+          "beside_pad_vias_after": 6,
+          "before": {
+            "rows": [
+              {
+                "row": "in the solder window",
+                "vias": 4,
+                "lateral_K_W": 0.0,
+                "barrels_K_W": 14.86,
+                "row_K_W": 14.86
+              }
+            ],
+            "barrel_K_W_per_via": 59.43,
+            "dielectric_K_W": 119.39,
+            "total_K_W": 13.21
+          },
+          "after": {
+            "rows": [
+              {
+                "row": "y -1.95 mm",
+                "vias": 3,
+                "lateral_K_W": 38.59,
+                "barrels_K_W": 12.79,
+                "row_K_W": 51.38
+              },
+              {
+                "row": "y +1.95 mm",
+                "vias": 3,
+                "lateral_K_W": 38.59,
+                "barrels_K_W": 12.79,
+                "row_K_W": 51.38
+              }
+            ],
+            "barrel_K_W_per_via": 38.36,
+            "dielectric_K_W": 92.04,
+            "total_K_W": 20.08
+          },
+          "delta_R_K_W": 6.87
+        }
+      },
+      "U5": {
+        "Tj_at_50C_in_pad_vias_C": 65.4,
+        "Tj_at_50C_S92b_C": 70.7,
+        "thermal_penalty_C": 5.3,
+        "holds": true
+      },
+      "U2": {
+        "via_change": "none: the RYQ HotRod package has no exposed pad and its lands were never drilled; its >= 10 PGND vias were already standard 0.3/0.6 mm vias beside the bars (thermal.U2.PGND_vias), and the RA_NOVIA_U2_BARS area now also stops a router from drilling the bars",
+        "delta_R_C_W": 0.0,
+        "Tj_at_50C_rating_C": 94.1,
+        "Tj_at_50C_limit_C": 108.4,
+        "thermal_penalty_C": 0.0
+      },
+      "U4": {
+        "delta_R_C_W": 0.44,
+        "note": "no U4 loss model (TH-3): the beside-pad field barely changes the board path because the -12V vias run the full board thickness either way"
+      },
+      "U9": {
+        "delta_R_C_W": 6.87,
+        "note": "always-on logic LDO, small load; the four 0.2 mm in-pad holes were also non-standard"
+      },
+      "rating": {
+        "published_A": {
+          "+12V": 2.4,
+          "-12V": 0.8
+        },
+        "changed": false,
+        "why": "unchanged: U5 stays far below 125 C at the rated 3 A input and U2's arrangement is unchanged"
       }
     },
     "acceptance": "TH-1 U2/R109 case temperature at 2.95 A, TH-2 D10/U5 at 3 A input, TH-3 U4 at 0.8 A; docs/s8-single/routing-notes.md"

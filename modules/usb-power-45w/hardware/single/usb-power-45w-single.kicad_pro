@@ -535,11 +535,11 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "Power",
+        "name": "AGND_U2",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 0,
+        "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.0,
+        "track_width": 0.25,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
@@ -554,11 +554,30 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "Switch",
+        "name": "GND",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 3,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.5,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "PWR_12V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 1,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 1.0,
+        "track_width": 1.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
@@ -573,9 +592,47 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "Sense",
+        "name": "PWR_N12V",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.8,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "QUIET",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 7,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.25,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "SENSE",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 5,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.2,
         "tuning_profile": "",
@@ -592,11 +649,30 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "Quiet",
+        "name": "SWITCH",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 3,
+        "priority": 4,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3,
+        "track_width": 1.0,
+        "tuning_profile": "",
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
+        "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "VIN",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 2.5,
         "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
@@ -610,80 +686,200 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "Power",
-        "pattern": "GND"
-      },
-      {
-        "netclass": "Power",
-        "pattern": "*/VPD"
-      },
-      {
-        "netclass": "Power",
+        "netclass": "VIN",
         "pattern": "*/VBUS"
       },
       {
-        "netclass": "Power",
+        "netclass": "VIN",
+        "pattern": "*/VPD"
+      },
+      {
+        "netclass": "VIN",
         "pattern": "*/MAIN_IN"
       },
       {
-        "netclass": "Power",
+        "netclass": "VIN",
         "pattern": "VIN"
       },
       {
-        "netclass": "Power",
+        "netclass": "PWR_12V",
         "pattern": "*/P12_VOUT"
       },
       {
-        "netclass": "Power",
+        "netclass": "PWR_12V",
         "pattern": "+12V"
       },
       {
-        "netclass": "Power",
+        "netclass": "PWR_N12V",
         "pattern": "-12V"
       },
       {
-        "netclass": "Switch",
+        "netclass": "GND",
+        "pattern": "GND"
+      },
+      {
+        "netclass": "SWITCH",
         "pattern": "*U2-SW1*"
       },
       {
-        "netclass": "Switch",
+        "netclass": "SWITCH",
         "pattern": "*U2-SW2*"
       },
       {
-        "netclass": "Switch",
+        "netclass": "SWITCH",
         "pattern": "*U4-SW*"
       },
       {
-        "netclass": "Sense",
+        "netclass": "SENSE",
         "pattern": "*/P12_ISP"
       },
       {
-        "netclass": "Sense",
+        "netclass": "SENSE",
         "pattern": "*/P12_ISN"
       },
       {
-        "netclass": "Quiet",
+        "netclass": "AGND_U2",
         "pattern": "*/AGND_U2"
       },
       {
-        "netclass": "Quiet",
+        "netclass": "QUIET",
         "pattern": "*U2-FB*"
       },
       {
-        "netclass": "Quiet",
+        "netclass": "QUIET",
         "pattern": "*U2-COMP*"
       },
       {
-        "netclass": "Quiet",
+        "netclass": "QUIET",
+        "pattern": "*C83-Pad1*"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*U2-FSW*"
+      },
+      {
+        "netclass": "QUIET",
         "pattern": "*/FB_N"
       },
       {
-        "netclass": "Quiet",
+        "netclass": "QUIET",
         "pattern": "*/EN_N"
       },
       {
-        "netclass": "Quiet",
+        "netclass": "QUIET",
+        "pattern": "*/RT_U4"
+      },
+      {
+        "netclass": "QUIET",
         "pattern": "*/N_EN_*"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(Q1-C)"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/Always-on control*"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/Two output headers*"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/MAIN_LED_OK"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/MAIN_OK"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/N12_OK"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/OV_N"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/P12_OK"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/RUN"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "/V20_OK"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "V3V3"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/CC1"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/CC2"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/MAIN_DVDT"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/MAIN_ILM"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/MAIN_IMON"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/MAIN_OV"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/MAIN_UV"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/PD_BASE"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/PD_SENSE"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/UV_TRIM"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(R28-Pad2)"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(R29-Pad1)"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(U1-CFG1)"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(U1-DM)"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(D8-A)"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "Net-(D8-K)"
       }
     ]
   },

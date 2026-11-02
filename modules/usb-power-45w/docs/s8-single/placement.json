@@ -1,17 +1,5 @@
 {
- "added_refs": [
-  "R115",
-  "TP20",
-  "TP22",
-  "TP23",
-  "TP24",
-  "TP25",
-  "TP26",
-  "TP27",
-  "TP28",
-  "TP29",
-  "TP30"
- ],
+ "added_refs": [],
  "ground_connection": {
   "analog_net": "AGND_U2",
   "at": "C82.2",
@@ -38,8 +26,12 @@
   "star": "C82.2 (PGND terminal of the VCC capacitor)"
  },
  "moved_retained_refs": [
-  "D26",
-  "R113"
+  "C2",
+  "C3",
+  "R13",
+  "R14",
+  "R15",
+  "R24"
  ],
  "note": "S9.2 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
  "pad_mask_refreshed_from_library": {},
@@ -81,7 +73,7 @@
    "F.Cu"
   ],
   "C2": [
-   55.65,
+   55.2,
    80.3,
    90.0,
    "F.Cu"
@@ -123,7 +115,7 @@
    "F.Cu"
   ],
   "C3": [
-   64.45,
+   64.9,
    83.05,
    90.0,
    "F.Cu"
@@ -556,19 +548,19 @@
   ],
   "R13": [
    127.6,
-   83.6,
+   83.85,
    90.0,
    "F.Cu"
   ],
   "R14": [
    131.55,
-   83.6,
+   83.85,
    -90.0,
    "F.Cu"
   ],
   "R15": [
    133.2,
-   83.6,
+   83.85,
    -90.0,
    "F.Cu"
   ],
@@ -609,7 +601,7 @@
    "F.Cu"
   ],
   "R24": [
-   64.45,
+   64.9,
    79.9,
    90.0,
    "F.Cu"
@@ -1097,14 +1089,134 @@
  },
  "removed_refs": [],
  "replaced_footprints": {
-  "R109": [
-   "USBPOWER45:R_WSLP1206_18m_Kelvin",
-   "USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12"
+  "U4": [
+   "USBPOWER45:TI_SO-PowerPAD-8_ThermalVias",
+   "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad"
+  ],
+  "U5": [
+   "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias",
+   "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad"
+  ],
+  "U9": [
+   "USBPOWER45:TPS7A16_DGN0008C",
+   "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad"
   ]
  },
  "revision": "S9.2 / P2.2",
  "routing_contract": {
   "doc": "docs/s8-single/routing-notes.md",
+  "drc_rules": [
+   {
+    "layer": null,
+    "name": "S92_via_standard",
+    "why": "S9.2b: every via is the plain JLCPCB 0.3/0.6 mm through via (annular ring 0.15 mm); no other size, no microvia, no blind or buried via"
+   },
+   {
+    "layer": null,
+    "name": "S92_via_hole_to_copper",
+    "why": "S9.2b: via drill >= 0.3 mm from copper of any other net (JLCPCB standard DFM, no special order)"
+   },
+   {
+    "layer": "In1.Cu",
+    "name": "S92_In1_solid_PGND",
+    "why": "In1 is the solid PGND plane: no track of any net (3.1)"
+   },
+   {
+    "layer": null,
+    "name": "S92_power_width_floor",
+    "why": "no logic-width track on a power net; the current-path minimums are POST_ROUTING min_widths"
+   },
+   {
+    "layer": null,
+    "name": "S92_QUIET",
+    "why": "control and logic tracks >= 0.25 mm"
+   },
+   {
+    "layer": null,
+    "name": "S92_SWITCH",
+    "why": "switch nodes: F.Cu pours, no vias, no thin tracks (3.4/3.5)"
+   },
+   {
+    "layer": null,
+    "name": "S92_SENSE_pair",
+    "why": "Kelvin pair: 0.2 mm, coupled gap 0.2-0.3 mm, no via, no pour (3.7)"
+   },
+   {
+    "layer": null,
+    "name": "S92_SENSE_F_Cu_only",
+    "why": "the sense pair runs on F.Cu only"
+   },
+   {
+    "layer": null,
+    "name": "S92_AGND_U2_island",
+    "why": "AGND_U2: trace-only, at most one via pair, no pour on any layer (3.3)"
+   },
+   {
+    "layer": "inner",
+    "name": "S92_AGND_U2_no_inner_copper",
+    "why": "no AGND_U2 track on In1/In2"
+   },
+   {
+    "layer": "B.Cu",
+    "name": "S92_AGND_U2_B_Cu_link",
+    "why": "the single B.Cu AGND_U2 link is 0.25 mm"
+   },
+   {
+    "layer": null,
+    "name": "S92_AGND_U2_to_PGND",
+    "why": "AGND_U2 copper keeps 0.3 mm from every PGND item; the only bridge is the R113 body (pads 0.85 mm apart)"
+   },
+   {
+    "layer": null,
+    "name": "S92_SENSE_to_force",
+    "why": "sense pair >= 0.3 mm from P12_VOUT/+12V force copper; exempt: the R109/U2 land gaps and the U2 pin escape"
+   },
+   {
+    "layer": null,
+    "name": "S92_QUIET_to_SWITCH",
+    "why": "quiet nets >= 0.5 mm from switch-node copper (3.4/3.5)"
+   },
+   {
+    "layer": null,
+    "name": "S92_TVS_pad_stress",
+    "why": "every D1/D24/D26 pad >= 0.4 mm from copper of any other net (the clamp voltage appears across these gaps)"
+   },
+   {
+    "layer": null,
+    "name": "S92_U2_cell_own_nets",
+    "why": "no foreign-net track or via inside the U2/L1 cell (3.4)"
+   },
+   {
+    "layer": "B.Cu",
+    "name": "S92_U2_cell_B_Cu",
+    "why": "on B.Cu inside the cell only the PGND pour and the AGND_U2 link (3.1)"
+   },
+   {
+    "layer": null,
+    "name": "S92_U2_hot_loop_vias",
+    "why": "only PGND vias inside the hot loops; C8/C81 connect on F.Cu (3.4)"
+   },
+   {
+    "layer": null,
+    "name": "S92_AGND_island_nets",
+    "why": "only the island's own nets inside RA_AGND_ISLAND"
+   },
+   {
+    "layer": null,
+    "name": "S92_no_via_in_pad",
+    "why": "S9.2b: no via in or touching any pad, any net, SMD or THT (owner: no via-in-pad anywhere); no footprint carries a plated hole in a pad either (tools/check_s8_board.py)"
+   },
+   {
+    "layer": null,
+    "name": "S92_TVS_pads_solid",
+    "why": "TVS pads join their pours solid, no thermal spokes"
+   },
+   {
+    "layer": null,
+    "name": "S92_hot_loop_pads_solid",
+    "why": "U2 VIN/SW/PGND/VOUT bars, C8, C81 and L1 join their pours solid"
+   }
+  ],
   "ground": {
    "analog_net": "AGND_U2",
    "maximum_link_to_C82_pad_mm": 3.0,
@@ -1156,9 +1268,183 @@
    "P12_ISP / P12_ISN (Kelvin sense pair)": 0.2,
    "P12_VOUT / +12V (2.95 A CC limit)": 1.5,
    "VBUS / VPD / MAIN_IN / VIN (3 A, U5 limit 4.7 A)": 2.5,
-   "logic / status": 0.2,
+   "logic / status (QUIET class)": 0.25,
    "switch nodes SW1/SW2 (U2), SW (U4)": "short pours, no thin tracks"
   },
+  "netclasses": {
+   "AGND_U2": {
+    "floor": 0.25,
+    "patterns": [
+     "*/AGND_U2"
+    ],
+    "what": "isolated U2 analog ground island, fed only from R113 pin 1 (one via pair, one B.Cu link)",
+    "width": 0.25
+   },
+   "Default": {
+    "nets": [
+     "Net-(U2-EXTVCC)",
+     "Net-(U2-BOOT1)",
+     "Net-(U2-BOOT2)",
+     "Net-(U4-BOOT)",
+     "/USB PD, main eFuse and VIN damper/VPD_U1",
+     "Net-(C5-Pad1)"
+    ],
+    "what": "Default (DEFAULT): EXTVCC, BOOT1/BOOT2/U4 BOOT, VPD_U1, the R92/C5 damper node",
+    "width": 0.2
+   },
+   "GND": {
+    "floor": 0.25,
+    "patterns": [
+     "GND"
+    ],
+    "what": "PGND: In1 plane, star at C82.2, TVS/clamp returns",
+    "width": 0.5
+   },
+   "PWR_12V": {
+    "floor": 0.25,
+    "patterns": [
+     "*/P12_VOUT",
+     "+12V"
+    ],
+    "what": "+12 V force path U2 VOUT -> P12_VOUT bank -> R109 -> +12V headers (2.95 A CC limit)",
+    "width": 1.5
+   },
+   "PWR_N12V": {
+    "floor": 0.25,
+    "patterns": [
+     "-12V"
+    ],
+    "what": "-12 V rail and the U4 IC ground (LMR38020 ~1.5 A limit)",
+    "width": 0.8
+   },
+   "QUIET": {
+    "floor": 0.25,
+    "patterns": [
+     "*U2-FB*",
+     "*U2-COMP*",
+     "*C83-Pad1*",
+     "*U2-FSW*",
+     "*/FB_N",
+     "*/EN_N",
+     "*/RT_U4",
+     "*/N_EN_*",
+     "Net-(Q1-C)",
+     "/Always-on control*",
+     "/Two output headers*",
+     "/MAIN_LED_OK",
+     "/MAIN_OK",
+     "/N12_OK",
+     "/OV_N",
+     "/P12_OK",
+     "/RUN",
+     "/V20_OK",
+     "V3V3",
+     "*/CC1",
+     "*/CC2",
+     "*/MAIN_DVDT",
+     "*/MAIN_ILM",
+     "*/MAIN_IMON",
+     "*/MAIN_OV",
+     "*/MAIN_UV",
+     "*/PD_BASE",
+     "*/PD_SENSE",
+     "*/UV_TRIM",
+     "Net-(R28-Pad2)",
+     "Net-(R29-Pad1)",
+     "Net-(U1-CFG1)",
+     "Net-(U1-DM)",
+     "Net-(D8-A)",
+     "Net-(D8-K)"
+    ],
+    "what": "converter control (U2 FB/COMP/FSW, U4 FB_N/EN_N/RT, enable chain) and every 3.3 V logic, monitor, eFuse-control and status net: >= 0.5 mm from switch-node copper",
+    "width": 0.25
+   },
+   "SENSE": {
+    "floor": 0.2,
+    "max": 0.2,
+    "patterns": [
+     "*/P12_ISP",
+     "*/P12_ISN"
+    ],
+    "what": "R109 Kelvin pair to U2 ISP/ISN: 0.2 mm coupled pair on F.Cu, no vias, no pour",
+    "width": 0.2
+   },
+   "SWITCH": {
+    "floor": 0.5,
+    "patterns": [
+     "*U2-SW1*",
+     "*U2-SW2*",
+     "*U4-SW*"
+    ],
+    "what": "U2 SW1/SW2 and U4 SW: short F.Cu pours, no vias, no thin tracks",
+    "width": 1.0
+   },
+   "VIN": {
+    "floor": 0.25,
+    "patterns": [
+     "*/VBUS",
+     "*/VPD",
+     "*/MAIN_IN",
+     "VIN"
+    ],
+    "what": "3 A input power path VBUS -> F1 -> VPD -> D10 -> MAIN_IN -> U5 -> VIN (U5 limit 4.7 A)",
+    "width": 2.5
+   },
+   "clearance_mm": 0.2
+  },
+  "post_routing": {
+   "ground.agnd_link": "AGND_U2 has <= 1 track run on B.Cu (the link) and its copper joins only the 7 member pads (via count and width: DRC)",
+   "kelvin.sense_routing": "each sense track leaves R109 pads 2/3 on the +y edge within 0.6 mm of the inner end; the pair is coupled (<= 0.3 mm gap) except <= 2 mm at U2 and the TP22/TP23 branches",
+   "min_widths": "current-path tracks meet the class minimum (VIN 2.5, PWR_12V 1.5, PWR_N12V 0.8 mm); a track whose chain reaches only tap pads (dividers, test pads, monitors, clamps) needs only the 0.25 mm floor",
+   "thermal.D10.copper": "VPD and MAIN_IN F.Cu islands at D10 >= 400 mm2 each with >= 8 vias to a same-net B.Cu island >= 300 mm2",
+   "thermal.R109.force_copper": "P12_VOUT and +12V F.Cu copper >= 150 mm2 each within 10 mm of R109 pads 1/4, each with >= 3 same-net vias",
+   "thermal.U2.B_Cu_GND": "the B.Cu GND island under U2 is >= 600 mm2 with >= 20 GND vias",
+   "thermal.U2.In1": "In1 is one GND piece; within 15 mm of the U2 centre its only holes are via antipads",
+   "thermal.U2.PGND_vias": ">= 10 GND vias 0.3/0.6 mm with centres <= 4 mm outside the U2 outline, none in a pad",
+   "thermal.U2.VIN_area": "one F.Cu VIN island >= 120 mm2 holding U2.7, C8.1, C6/C7/C77/C78 and D24.1 with >= 6 vias to an In2 VIN island >= 300 mm2",
+   "thermal.U2.VOUT_area": "one F.Cu P12_VOUT island >= 150 mm2 holding U2.11, C81.1, C11-C14, C79, C80 and R109.1 with >= 6 vias to a B.Cu P12_VOUT island >= 200 mm2",
+   "thermal.U4.copper": "the 10 U4 field vias land in one -12V island >= 300 mm2 on In2 or B.Cu (the TV_U4_B landing pour may be grown into it)",
+   "thermal.U5.copper": "every U5 field via lands in the In1 GND fill",
+   "thermal.U9.copper": "every U9 field via lands in the In1 GND fill",
+   "tvs.D1": "D1.1 in the F.Cu VPD pour island with D10.2; >= 3 GND vias within 1.5 mm of D1.2",
+   "tvs.D24": "D24.1 sits in the F.Cu VIN pour island that holds C8.1 and the C6/C7/C77/C78 bank; >= 3 GND vias within 1.5 mm of the D24.2 pad edge",
+   "tvs.D25": "one GND via within 1.5 mm of D25.1 (pins 2/3 join VIN: native unconnected check)",
+   "tvs.D26": "D26.1 in an F.Cu P12_VOUT pour island with the C14/C79/C80 bank, or >= 2 vias from it to the B.Cu P12_VOUT area; >= 3 GND vias within 1.5 mm of D26.2"
+  },
+  "pre_routing_checklist": [
+   {
+    "id": "netclasses",
+    "must_hold": "the 8 contract net classes are in the project and every functional net is in exactly one of them (DEFAULT_NETS on purpose in Default)"
+   },
+   {
+    "id": "drc_rules",
+    "must_hold": "the board .kicad_dru equals dru_text(): the R1 edge allowances plus every S92_* rule"
+   },
+   {
+    "id": "rule_areas",
+    "must_hold": "the board carries exactly the RULE_AREAS (names, layers, keepout flags, polygons), each holding its listed parts and no other part's pad"
+   },
+   {
+    "id": "via_in_pad",
+    "must_hold": "via-in-pad PROHIBITED (S9.2b): no footprint has a plated hole inside a pad (U4/U5/U9 are the hole-free *_NoViaInPad copies), no via touches a pad or its mask opening, every via is the standard 0.3/0.6 mm through via without per-via tenting/fill overrides and the board setup is tented and unfilled"
+   },
+   {
+    "id": "thermal_vias",
+    "must_hold": "the board carries exactly the THERMAL_VIA_FIELDS (U5 10, U4 10, U9 6 vias beside the exposed pads, one F.Cu spoke each into the pad copper, one B.Cu landing pour each) on the parts' actual positions"
+   },
+   {
+    "id": "stackup",
+    "must_hold": "stack-up and copper weights are the contract STACKUP (4 layers, 1.6 mm, 35/15.2/15.2/35 um copper, 0.2104/1.065/0.2104 mm dielectric)"
+   },
+   {
+    "id": "test_pads",
+    "must_hold": "all 27 test pads are bare F.Cu with a mask opening and no paste"
+   },
+   {
+    "id": "placement",
+    "must_hold": "placement, local-loop, ground-split and routing-contract screens pass (P2.2 with the S9.2b moves of C2, R24/C3 and R13-R15)"
+   }
+  ],
   "proximity": [
    {
     "from": "D24.1",
@@ -1225,7 +1511,639 @@
    }
   ],
   "revision": "S9.2 / P2.2",
-  "status": "routing contract for the unrouted P2.2 board; pre-routing items checked by tools/check_s8_board.py, copper/via items PENDING until routed",
+  "rule_areas": [
+   {
+    "blocks": [],
+    "courtyard_in": [
+     "U2",
+     "L1",
+     "C8",
+     "C9",
+     "C10",
+     "C81",
+     "C82",
+     "R110",
+     "R113",
+     "R9",
+     "R111",
+     "C83",
+     "R8"
+    ],
+    "layers": [
+     "F.Cu",
+     "B.Cu"
+    ],
+    "name": "RA_U2_CELL",
+    "polygon": [
+     [
+      88.45,
+      70.5
+     ],
+     [
+      101.85,
+      70.5
+     ],
+     [
+      101.85,
+      69.55
+     ],
+     [
+      104.95,
+      69.55
+     ],
+     [
+      104.95,
+      70.4
+     ],
+     [
+      111.55,
+      70.4
+     ],
+     [
+      111.55,
+      73.5
+     ],
+     [
+      109.15,
+      73.5
+     ],
+     [
+      109.15,
+      80.0
+     ],
+     [
+      106.15,
+      80.0
+     ],
+     [
+      106.15,
+      82.1
+     ],
+     [
+      99.3,
+      82.1
+     ],
+     [
+      99.3,
+      83.15
+     ],
+     [
+      88.45,
+      83.15
+     ]
+    ],
+    "why": "U2/L1 buck-boost cell (3.4 keep-out): only the cell's own nets route or drop vias here; on B.Cu only PGND and the AGND_U2 link"
+   },
+   {
+    "blocks": [
+     "tracks"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_U2_HOT_LOOP",
+    "pads_in": [
+     "C8",
+     "C81"
+    ],
+    "polygon": [
+     [
+      106.35,
+      74.1
+     ],
+     [
+      108.85,
+      74.1
+     ],
+     [
+      108.85,
+      79.6
+     ],
+     [
+      106.35,
+      79.6
+     ],
+     [
+      106.35,
+      78.06
+     ],
+     [
+      105.75,
+      78.06
+     ],
+     [
+      105.75,
+      75.62
+     ],
+     [
+      106.35,
+      75.62
+     ]
+    ],
+    "why": "input (C8 - VIN bar - PGND bar) and output (C81 - VOUT bar - PGND bar) hot loops east of U2: pour-only copper, no track of any net, only PGND vias; the DITH/FSW and ISP/ISN side-pin channels stay outside"
+   },
+   {
+    "blocks": [
+     "tracks"
+    ],
+    "courtyard_in": [
+     "L1"
+    ],
+    "layers": [
+     "B.Cu"
+    ],
+    "name": "RA_U2_SW_B",
+    "pads_in": [
+     "C9",
+     "C10"
+    ],
+    "polygon": [
+     [
+      88.45,
+      70.5
+     ],
+     [
+      99.3,
+      70.5
+     ],
+     [
+      99.3,
+      73.7
+     ],
+     [
+      102.3,
+      73.7
+     ],
+     [
+      102.3,
+      76.1
+     ],
+     [
+      105.75,
+      76.1
+     ],
+     [
+      105.75,
+      77.6
+     ],
+     [
+      102.3,
+      77.6
+     ],
+     [
+      102.3,
+      81.2
+     ],
+     [
+      99.3,
+      81.2
+     ],
+     [
+      99.3,
+      83.15
+     ],
+     [
+      88.45,
+      83.15
+     ]
+    ],
+    "why": "B.Cu under L1, the SW1/SW2 pours and the U2 SW bars: the GND pour only, no signal or AGND track"
+   },
+   {
+    "blocks": [
+     "tracks",
+     "pours"
+    ],
+    "courtyard_in": [
+     "L1"
+    ],
+    "layers": [
+     "In2.Cu"
+    ],
+    "name": "RA_L1_IN2",
+    "polygon": [
+     [
+      88.45,
+      70.5
+     ],
+     [
+      99.3,
+      70.5
+     ],
+     [
+      99.3,
+      83.15
+     ],
+     [
+      88.45,
+      83.15
+     ]
+    ],
+    "why": "no In2 copper directly under the L1 body (3.1)"
+   },
+   {
+    "blocks": [
+     "tracks",
+     "pours"
+    ],
+    "courtyard_in": [
+     "L3"
+    ],
+    "layers": [
+     "In2.Cu"
+    ],
+    "name": "RA_L3_IN2",
+    "polygon": [
+     [
+      136.3,
+      73.65
+     ],
+     [
+      149.0,
+      73.65
+     ],
+     [
+      149.0,
+      84.55
+     ],
+     [
+      136.3,
+      84.55
+     ]
+    ],
+    "why": "no In2 copper directly under the L3 body (3.1)"
+   },
+   {
+    "blocks": [
+     "tracks",
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_TVS_D24",
+    "pads_in": [
+     "D24"
+    ],
+    "polygon": [
+     [
+      99.3,
+      84.25
+     ],
+     [
+      106.3,
+      84.25
+     ],
+     [
+      106.3,
+      86.75
+     ],
+     [
+      99.3,
+      86.75
+     ]
+    ],
+    "why": "D24 land (VIN TVS): pads join the VIN pour and the PGND anode copper as solid pours; no track, no via in or under the land"
+   },
+   {
+    "blocks": [
+     "tracks",
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_TVS_D26",
+    "pads_in": [
+     "D26"
+    ],
+    "polygon": [
+     [
+      123.9,
+      67.75
+     ],
+     [
+      130.9,
+      67.75
+     ],
+     [
+      130.9,
+      70.25
+     ],
+     [
+      123.9,
+      70.25
+     ]
+    ],
+    "why": "D26 land (P12_VOUT TVS): pour-only pad connections, no via in or under the land"
+   },
+   {
+    "blocks": [
+     "tracks",
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_TVS_D1",
+    "pads_in": [
+     "D1"
+    ],
+    "polygon": [
+     [
+      74.5,
+      84.3
+     ],
+     [
+      81.5,
+      84.3
+     ],
+     [
+      81.5,
+      86.8
+     ],
+     [
+      74.5,
+      86.8
+     ]
+    ],
+    "why": "D1 land (VPD TVS): pour-only pad connections, no via in or under the land"
+   },
+   {
+    "blocks": [
+     "pours"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_AGND_ISLAND",
+    "pads_in": [
+     "TP28",
+     "R113",
+     "R111",
+     "C83",
+     "R9"
+    ],
+    "polygon": [
+     [
+      97.6,
+      67.0
+     ],
+     [
+      100.3,
+      67.0
+     ],
+     [
+      100.3,
+      69.7
+     ],
+     [
+      109.95,
+      69.7
+     ],
+     [
+      109.95,
+      73.95
+     ],
+     [
+      101.95,
+      73.95
+     ],
+     [
+      101.95,
+      71.3
+     ],
+     [
+      97.6,
+      71.3
+     ]
+    ],
+    "touch": [
+     "C82"
+    ],
+    "why": "AGND_U2 north island and corridor TP28 - R113.1 - C82 gap - U2.17 - C83.2/R9.2: no pour of any net (the island stays trace-only, PGND/P12_VOUT/+12V pours stop at its edge); only the island's own nets route here"
+   },
+   {
+    "blocks": [],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_U2_SENSE_ESCAPE",
+    "polygon": [
+     [
+      105.05,
+      73.9
+     ],
+     [
+      106.35,
+      73.9
+     ],
+     [
+      106.35,
+      75.6
+     ],
+     [
+      105.05,
+      75.6
+     ]
+    ],
+    "touch": [
+     "U2"
+    ],
+    "why": "the <= 2 mm pin escape of U2.12/U2.13 into the 0.68 mm channel west of C81.1: sense copper wholly inside keeps the 0.2 mm board clearance to force copper instead of 0.3 mm"
+   },
+   {
+    "blocks": [
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_NOVIA_U5_EP",
+    "pad_cover": [
+     "U5.21"
+    ],
+    "polygon": [
+     [
+      56.8,
+      78.6
+     ],
+     [
+      63.3,
+      78.6
+     ],
+     [
+      63.3,
+      82.0
+     ],
+     [
+      56.8,
+      82.0
+     ]
+    ],
+    "touch": [
+     "U5"
+    ],
+    "why": "U5 exposed pad: no via in the pad (its 10 thermal vias sit beside both short ends)"
+   },
+   {
+    "blocks": [
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_NOVIA_U4_EP",
+    "pad_cover": [
+     "U4.9"
+    ],
+    "polygon": [
+     [
+      129.325,
+      76.95
+     ],
+     [
+      132.275,
+      76.95
+     ],
+     [
+      132.275,
+      81.45
+     ],
+     [
+      129.325,
+      81.45
+     ]
+    ],
+    "touch": [
+     "U4"
+    ],
+    "why": "U4 exposed pad (-12V): no via in the pad (its 10 thermal vias sit beside both short ends)"
+   },
+   {
+    "blocks": [
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_NOVIA_U9_EP",
+    "pad_cover": [
+     "U9.9"
+    ],
+    "polygon": [
+     [
+      83.5,
+      91.2
+     ],
+     [
+      86.5,
+      91.2
+     ],
+     [
+      86.5,
+      93.2
+     ],
+     [
+      83.5,
+      93.2
+     ]
+    ],
+    "touch": [
+     "U9"
+    ],
+    "why": "U9 exposed pad: no via in the pad (its 6 thermal vias sit beside both short ends)"
+   },
+   {
+    "blocks": [
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_NOVIA_U1_EP",
+    "pad_cover": [
+     "U1.11"
+    ],
+    "polygon": [
+     [
+      83.3,
+      82.3
+     ],
+     [
+      86.6,
+      82.3
+     ],
+     [
+      86.6,
+      84.4
+     ],
+     [
+      83.3,
+      84.4
+     ]
+    ],
+    "touch": [
+     "U1"
+    ],
+    "why": "U1 (CH224A) exposed pad: no via in the pad; ground it beside the pad"
+   },
+   {
+    "blocks": [
+     "vias"
+    ],
+    "layers": [
+     "F.Cu"
+    ],
+    "name": "RA_NOVIA_U2_BARS",
+    "pad_cover": [
+     "U2.7",
+     "U2.8",
+     "U2.9",
+     "U2.10",
+     "U2.11"
+    ],
+    "polygon": [
+     [
+      102.3,
+      75.675
+     ],
+     [
+      105.7,
+      75.675
+     ],
+     [
+      105.7,
+      78.005
+     ],
+     [
+      102.3,
+      78.005
+     ]
+    ],
+    "touch": [
+     "U2"
+    ],
+    "why": "U2 VIN/SW1/PGND/SW2/VOUT bars: no via in a bar; the PGND vias sit beside the bar ends (thermal.U2.PGND_vias)"
+   }
+  ],
+  "stackup": {
+   "copper_um": {
+    "B.Cu": 35,
+    "F.Cu": 35,
+    "In1.Cu": 15.2,
+    "In2.Cu": 15.2
+   },
+   "dielectric_mm": [
+    0.2104,
+    1.065,
+    0.2104
+   ],
+   "jlc": "JLC04161H-7628, FR4 Tg155, 1 oz outer / 0.5 oz inner, HASL (SnPb)",
+   "layers": 4,
+   "thickness_mm": 1.6
+  },
+  "status": "routing contract for the unrouted P2.2 board (S9.2b: no via-in-pad, standard JLCPCB vias, beside-pad thermal fields placed); DRC-enforced items (netclasses, drc_rules, rule_areas) are in the native project, rules file and board; pre-routing items checked by tools/check_s8_board.py; post_routing items PENDING until routed",
   "test_points": [
    {
     "limit": "13.5-16.5 V operating; OVP trip 17.30-19.44 V; UVLO on <= 12.98 V",
@@ -1459,16 +2377,721 @@
     "acceptance": "TH-3",
     "model": "LMR38020 DDA exposed pad = -12V (IC ground), not GND",
     "requirements": {
-     "copper": "footprint thermal vias to a -12V area >= 300 mm2 on In2 or B.Cu; no GND on the EP"
+     "copper": "S9.2b beside-pad field (10 vias, spokes, TV_U4_B landing pour) to a -12V area >= 300 mm2 on In2 or B.Cu; no GND on the EP; no via in the pad"
     }
    },
    "U5": {
     "acceptance": "TH-2 (with D10)",
     "model": "TPS16630 PWP exposed pad = GND; <= 0.48 W at 3 A (53 mOhm max)",
     "requirements": {
-     "copper": "footprint thermal vias to In1 GND"
+     "copper": "S9.2b beside-pad field (10 vias, spokes, TV_U5_B landing pour) to the In1 GND plane; no via in the pad"
     }
    }
+  },
+  "thermal_via_fields": [
+   {
+    "b_cu_half": [
+     4.4,
+     4.75
+    ],
+    "frame": {
+     "b_cu": [
+      [
+       -4.4,
+       -4.75
+      ],
+      [
+       4.4,
+       -4.75
+      ],
+      [
+       4.4,
+       4.75
+      ],
+      [
+       -4.4,
+       4.75
+      ]
+     ],
+     "spoke_width": 0.6,
+     "spokes": [
+      [
+       [
+        -1.2,
+        -3.7
+       ],
+       [
+        -1.2,
+        -2.95
+       ]
+      ],
+      [
+       [
+        -0.6,
+        -3.7
+       ],
+       [
+        -0.6,
+        -2.95
+       ]
+      ],
+      [
+       [
+        0.0,
+        -3.7
+       ],
+       [
+        0.0,
+        -2.95
+       ]
+      ],
+      [
+       [
+        0.6,
+        -3.7
+       ],
+       [
+        0.6,
+        -2.95
+       ]
+      ],
+      [
+       [
+        1.2,
+        -3.7
+       ],
+       [
+        1.2,
+        -2.95
+       ]
+      ],
+      [
+       [
+        -1.2,
+        3.7
+       ],
+       [
+        -1.2,
+        2.95
+       ]
+      ],
+      [
+       [
+        -0.6,
+        3.7
+       ],
+       [
+        -0.6,
+        2.95
+       ]
+      ],
+      [
+       [
+        0.0,
+        3.7
+       ],
+       [
+        0.0,
+        2.95
+       ]
+      ],
+      [
+       [
+        0.6,
+        3.7
+       ],
+       [
+        0.6,
+        2.95
+       ]
+      ],
+      [
+       [
+        1.2,
+        3.7
+       ],
+       [
+        1.2,
+        2.95
+       ]
+      ]
+     ],
+     "vias": [
+      [
+       -1.2,
+       -3.7
+      ],
+      [
+       -0.6,
+       -3.7
+      ],
+      [
+       0.0,
+       -3.7
+      ],
+      [
+       0.6,
+       -3.7
+      ],
+      [
+       1.2,
+       -3.7
+      ],
+      [
+       -1.2,
+       3.7
+      ],
+      [
+       -0.6,
+       3.7
+      ],
+      [
+       0.0,
+       3.7
+      ],
+      [
+       0.6,
+       3.7
+      ],
+      [
+       1.2,
+       3.7
+      ]
+     ]
+    },
+    "key": "PWP20",
+    "land": "In1.Cu",
+    "net": "GND",
+    "old": "15 x 0.3 mm in the pad",
+    "per_end": 5,
+    "ref": "U5",
+    "ring_gap_mm": 0.15,
+    "spoke_into_pad_mm": 0.3,
+    "spoke_width_mm": 0.6,
+    "what": "TPS16630 main eFuse PWP exposed pad (pin 21, GND)"
+   },
+   {
+    "b_cu_half": [
+     4.3,
+     3.8
+    ],
+    "frame": {
+     "b_cu": [
+      [
+       -4.3,
+       -3.8
+      ],
+      [
+       4.3,
+       -3.8
+      ],
+      [
+       4.3,
+       3.8
+      ],
+      [
+       -4.3,
+       3.8
+      ]
+     ],
+     "spoke_width": 0.6,
+     "spokes": [
+      [
+       [
+        -1.2,
+        -2.7
+       ],
+       [
+        -1.2,
+        -1.95
+       ]
+      ],
+      [
+       [
+        -0.6,
+        -2.7
+       ],
+       [
+        -0.6,
+        -1.95
+       ]
+      ],
+      [
+       [
+        0.0,
+        -2.7
+       ],
+       [
+        0.0,
+        -1.95
+       ]
+      ],
+      [
+       [
+        0.6,
+        -2.7
+       ],
+       [
+        0.6,
+        -1.95
+       ]
+      ],
+      [
+       [
+        1.2,
+        -2.7
+       ],
+       [
+        1.2,
+        -1.95
+       ]
+      ],
+      [
+       [
+        -1.2,
+        2.7
+       ],
+       [
+        -1.2,
+        1.95
+       ]
+      ],
+      [
+       [
+        -0.6,
+        2.7
+       ],
+       [
+        -0.6,
+        1.95
+       ]
+      ],
+      [
+       [
+        0.0,
+        2.7
+       ],
+       [
+        0.0,
+        1.95
+       ]
+      ],
+      [
+       [
+        0.6,
+        2.7
+       ],
+       [
+        0.6,
+        1.95
+       ]
+      ],
+      [
+       [
+        1.2,
+        2.7
+       ],
+       [
+        1.2,
+        1.95
+       ]
+      ]
+     ],
+     "vias": [
+      [
+       -1.2,
+       -2.7
+      ],
+      [
+       -0.6,
+       -2.7
+      ],
+      [
+       0.0,
+       -2.7
+      ],
+      [
+       0.6,
+       -2.7
+      ],
+      [
+       1.2,
+       -2.7
+      ],
+      [
+       -1.2,
+       2.7
+      ],
+      [
+       -0.6,
+       2.7
+      ],
+      [
+       0.0,
+       2.7
+      ],
+      [
+       0.6,
+       2.7
+      ],
+      [
+       1.2,
+       2.7
+      ]
+     ]
+    },
+    "key": "PPAD8",
+    "land": "B.Cu",
+    "net": "-12V",
+    "old": "8 x 0.3 mm in the pad",
+    "per_end": 5,
+    "ref": "U4",
+    "ring_gap_mm": 0.15,
+    "spoke_into_pad_mm": 0.3,
+    "spoke_width_mm": 0.6,
+    "what": "LMR38020 DDA exposed pad (pin 9, -12V = IC ground)"
+   },
+   {
+    "b_cu_half": [
+     3.6,
+     2.8
+    ],
+    "frame": {
+     "b_cu": [
+      [
+       -3.6,
+       -2.8
+      ],
+      [
+       3.6,
+       -2.8
+      ],
+      [
+       3.6,
+       2.8
+      ],
+      [
+       -3.6,
+       2.8
+      ]
+     ],
+     "spoke_width": 0.6,
+     "spokes": [
+      [
+       [
+        -0.6,
+        -1.95
+       ],
+       [
+        -0.6,
+        -1.2
+       ]
+      ],
+      [
+       [
+        0.0,
+        -1.95
+       ],
+       [
+        0.0,
+        -1.2
+       ]
+      ],
+      [
+       [
+        0.6,
+        -1.95
+       ],
+       [
+        0.6,
+        -1.2
+       ]
+      ],
+      [
+       [
+        -0.6,
+        1.95
+       ],
+       [
+        -0.6,
+        1.2
+       ]
+      ],
+      [
+       [
+        0.0,
+        1.95
+       ],
+       [
+        0.0,
+        1.2
+       ]
+      ],
+      [
+       [
+        0.6,
+        1.95
+       ],
+       [
+        0.6,
+        1.2
+       ]
+      ]
+     ],
+     "vias": [
+      [
+       -0.6,
+       -1.95
+      ],
+      [
+       0.0,
+       -1.95
+      ],
+      [
+       0.6,
+       -1.95
+      ],
+      [
+       -0.6,
+       1.95
+      ],
+      [
+       0.0,
+       1.95
+      ],
+      [
+       0.6,
+       1.95
+      ]
+     ]
+    },
+    "key": "DGN8",
+    "land": "In1.Cu",
+    "net": "GND",
+    "old": "4 x 0.2 mm in the pad (non-standard drill)",
+    "per_end": 3,
+    "ref": "U9",
+    "ring_gap_mm": 0.15,
+    "spoke_into_pad_mm": 0.3,
+    "spoke_width_mm": 0.6,
+    "what": "TPS7A16 DGN exposed pad (pin 9, GND)"
+   }
+  ],
+  "thermal_via_model": {
+   "basis": "copper 385 W/m K (electro-deposited), FR4 7628 through-plane 0.30 W/m K, JLCPCB average hole plating 18 um, board STACKUP thicknesses; upper bound (all exposed-pad heat through this path)",
+   "fields": {
+    "U4": {
+     "after": {
+      "barrel_K_W_per_via": 252.66,
+      "dielectric_K_W": 43.9,
+      "rows": [
+       {
+        "barrels_K_W": 50.53,
+        "lateral_K_W": 28.74,
+        "row": "y -2.7 mm",
+        "row_K_W": 79.27,
+        "vias": 5
+       },
+       {
+        "barrels_K_W": 50.53,
+        "lateral_K_W": 28.74,
+        "row": "y +2.7 mm",
+        "row_K_W": 79.27,
+        "vias": 5
+       }
+      ],
+      "total_K_W": 20.83
+     },
+     "before": {
+      "barrel_K_W_per_via": 252.66,
+      "dielectric_K_W": 55.18,
+      "rows": [
+       {
+        "barrels_K_W": 126.33,
+        "lateral_K_W": 6.29,
+        "row": "y -1.8 mm",
+        "row_K_W": 132.62,
+        "vias": 2
+       },
+       {
+        "barrels_K_W": 63.16,
+        "lateral_K_W": 0.0,
+        "row": "in the solder window",
+        "row_K_W": 63.16,
+        "vias": 4
+       },
+       {
+        "barrels_K_W": 126.33,
+        "lateral_K_W": 6.29,
+        "row": "y +1.8 mm",
+        "row_K_W": 132.62,
+        "vias": 2
+       }
+      ],
+      "total_K_W": 20.39
+     },
+     "beside_pad_vias_after": 10,
+     "delta_R_K_W": 0.44,
+     "in_pad_holes_before": 8,
+     "land": "B.Cu",
+     "net": "-12V",
+     "pad": "U4.9"
+    },
+    "U5": {
+     "after": {
+      "barrel_K_W_per_via": 38.36,
+      "dielectric_K_W": 28.28,
+      "rows": [
+       {
+        "barrels_K_W": 7.67,
+        "lateral_K_W": 49.77,
+        "row": "y -3.7 mm",
+        "row_K_W": 57.44,
+        "vias": 5
+       },
+       {
+        "barrels_K_W": 7.67,
+        "lateral_K_W": 49.77,
+        "row": "y +3.7 mm",
+        "row_K_W": 57.44,
+        "vias": 5
+       }
+      ],
+      "total_K_W": 14.25
+     },
+     "before": {
+      "barrel_K_W_per_via": 38.36,
+      "dielectric_K_W": 33.33,
+      "rows": [
+       {
+        "barrels_K_W": 12.79,
+        "lateral_K_W": 24.45,
+        "row": "y -2.6 mm",
+        "row_K_W": 37.23,
+        "vias": 3
+       },
+       {
+        "barrels_K_W": 4.26,
+        "lateral_K_W": 0.0,
+        "row": "in the solder window",
+        "row_K_W": 4.26,
+        "vias": 9
+       },
+       {
+        "barrels_K_W": 12.79,
+        "lateral_K_W": 24.45,
+        "row": "y +2.6 mm",
+        "row_K_W": 37.23,
+        "vias": 3
+       }
+      ],
+      "total_K_W": 3.14
+     },
+     "beside_pad_vias_after": 10,
+     "delta_R_K_W": 11.11,
+     "in_pad_holes_before": 15,
+     "land": "In1.Cu",
+     "net": "GND",
+     "pad": "U5.21"
+    },
+    "U9": {
+     "after": {
+      "barrel_K_W_per_via": 38.36,
+      "dielectric_K_W": 92.04,
+      "rows": [
+       {
+        "barrels_K_W": 12.79,
+        "lateral_K_W": 38.59,
+        "row": "y -1.95 mm",
+        "row_K_W": 51.38,
+        "vias": 3
+       },
+       {
+        "barrels_K_W": 12.79,
+        "lateral_K_W": 38.59,
+        "row": "y +1.95 mm",
+        "row_K_W": 51.38,
+        "vias": 3
+       }
+      ],
+      "total_K_W": 20.08
+     },
+     "before": {
+      "barrel_K_W_per_via": 59.43,
+      "dielectric_K_W": 119.39,
+      "rows": [
+       {
+        "barrels_K_W": 14.86,
+        "lateral_K_W": 0.0,
+        "row": "in the solder window",
+        "row_K_W": 14.86,
+        "vias": 4
+       }
+      ],
+      "total_K_W": 13.21
+     },
+     "beside_pad_vias_after": 6,
+     "delta_R_K_W": 6.87,
+     "in_pad_holes_before": 4,
+     "land": "In1.Cu",
+     "net": "GND",
+     "pad": "U9.9"
+    }
+   },
+   "k_cu_W_mK": 385.0,
+   "k_fr4_W_mK": 0.3,
+   "plating_um": 18.0
+  },
+  "via_in_pad": {
+   "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
+   "footprints": {
+    "U4": {
+     "after": "no hole in any pad",
+     "before": "8 x 0.3 mm in the pad",
+     "footprint": "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad",
+     "part": "LMR38020 DDA exposed pad (pin 9, -12V = IC ground)",
+     "pinned_S7_source_unchanged": "USBPOWER45:TI_SO-PowerPAD-8_ThermalVias"
+    },
+    "U5": {
+     "after": "no hole in any pad",
+     "before": "15 x 0.3 mm in the pad",
+     "footprint": "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad",
+     "part": "TPS16630 main eFuse PWP exposed pad (pin 21, GND)",
+     "pinned_S7_source_unchanged": "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias"
+    },
+    "U9": {
+     "after": "no hole in any pad",
+     "before": "4 x 0.2 mm in the pad (non-standard drill)",
+     "footprint": "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad",
+     "part": "TPS7A16 DGN exposed pad (pin 9, GND)",
+     "pinned_S7_source_unchanged": "USBPOWER45:TPS7A16_DGN0008C"
+    }
+   },
+   "not_chosen": "Keeping the in-pad holes with JLCPCB \"Epoxy Filled & Capped\" (POFV): rejected by the owner (an order option with its own surcharge on 4-layer boards). Ordering the in-pad holes open: rejected (solder wicking). Copper-only pad extensions with holes outside the paste but inside pad copper: rejected, a hole would still sit in pad copper",
+   "order": "Standard JLCPCB order, nothing exotic: Via Covering = \"Tented\" (the default); no \"Epoxy Filled & Capped\" / POFV option and no via-in-pad remark; minimum via 0.3/0.6 mm (no small-hole surcharge); 4 layers, JLC04161H-7628, 1 oz outer / 0.5 oz inner. Pre-order checklist: confirm U4, U5 and U9 are the *_NoViaInPad footprints with no plated hole in their pads, that every via in the drill file is 0.3 mm and that no hole is below 0.3 mm",
+   "replacement": "beside-pad thermal fields (THERMAL_VIA_FIELDS): one row of standard vias beyond each short end of the exposed pad (ring 0.15 mm from the pad copper, 0.6 mm pitch), each via with its own 0.6 mm F.Cu spoke into the pad copper, and a B.Cu landing pour of the pad net under the part; U5 10 vias (was 15 in the pad), U4 10 (was 8), U9 6 (was 4 x 0.2 mm). C2, R24/C3 and R13/R14/R15 moved 0.45 / 0.45 / 0.25 mm to make room. The long sides have no room (pin rows 0.375-0.5 mm from the pad copper)",
+   "sources": [
+    "https://jlcpcb.com/capabilities/pcb-capabilities"
+   ],
+   "why": "Owner decision: a via in a pad needs a fill/cap order option or wicks solder down the barrel (exposed-pad voids, lifted parts); standard tented vias beside the pad need neither and pass JLCPCB standard DFM. The cost is a longer heat path: the heat now crosses the outer copper from the solder window to the via rows (calcs.json thermal_contract.via_change: U5 +DeltaR and Tj at the rated 3 A input against 125 C, U2 unchanged because its pads were never drilled, U4/U9 DeltaR recorded)"
+  },
+  "via_spec": {
+   "annular_ring_min_mm": 0.15,
+   "capping": false,
+   "covering": false,
+   "diameter_mm": 0.6,
+   "drill_mm": 0.3,
+   "filling": false,
+   "hole_to_copper_min_mm": 0.3,
+   "jlc": "JLCPCB standard multilayer process: 0.3/0.6 mm is above the 0.2 mm preferred minimum hole and carries no small-via surcharge (0.2-0.25 mm holes with < 0.45 mm pads, and 0.1-0.15 mm holes, cost more); via hole-to-hole >= 0.2 mm; average hole plating 18 um; Via Covering \"Tented\" is the default order option. Source: https://jlcpcb.com/capabilities/pcb-capabilities (read 2026-11-02)",
+   "pitch_min_mm": 0.6,
+   "plugging": false,
+   "tenting": {
+    "back": true,
+    "front": true
+   },
+   "type": "through, F.Cu-B.Cu",
+   "via_to_pad_min_mm": 0.1
   }
  }
 }
