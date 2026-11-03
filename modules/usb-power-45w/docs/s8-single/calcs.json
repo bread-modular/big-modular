@@ -1,5 +1,5 @@
 {
-  "status": "S9.2 pre-calculation screen, not a closed-loop or bench qualification",
+  "status": "S9.3 pre-calculation screen, not a closed-loop or bench qualification",
   "sources": {
     "TPS62933F": "TI SLUSEA4D (https://www.ti.com/lit/ds/symlink/tps62933f.pdf): IHS_LIMIT 4.2/5/5.8 A, ILS_LIMIT 2.9/3.8/4.5 A, ISS 4.5/5.5/6.5 uA, tSS = CSS x 0.8 V / ISS, OVP 112/115/118 %, UVP 65 % + 256 us then hiccup 10.5 x tSS, VFB 784-816 mV (-40..150 C), Table 10-2 effective COUT, Eq. 21",
     "LMR38020": "TI SNVSC40E (https://www.ti.com/lit/ds/symlink/lmr38020.pdf): IHS 2.6/3.2/3.8 A, ILS 1.8/2.3/2.8 A, tSS 4 ms, OCP blanking 18 ms typ at power-up, hiccup 76 ms, COUT <= ~10 x design value or 1000 uF",
@@ -28,6 +28,10 @@
     "CH224A_CFG": "WCH CH224 datasheet V2.x: CFG1 resistor to GND selects the request: 6.8k 9 V, 24k 12 V, 56k 15 V, 120k 20 V (no current-contract tracking)",
     "SMBJ": "Littelfuse SMBJ series datasheet (https://www.littelfuse.com/assetdocs/tvs-diodes-smbj-series-datasheet?assetguid=ba555e99-a12d-4f72-a0b6-86b06c67171e; 2011 table https://datasheet.octopart.com/SMBJ33CA-Littelfuse-datasheet-10854588.pdf): 600 W 10/1000 us at 25 C (Fig. 1), Fig. 2 linear pulse derating, 5 W on an infinite heat sink at 50 C, RthetaJL 20 / RthetaJA 100 C/W; SMBJ16A 16/17.8-19.7/26.0 V at 23.1 A, SMBJ18A 18/20.0-22.1/29.2 V at 20.6 A, SMBJ20A 20/22.2-24.5/32.4 V at 18.6 A, SMBJ22A 22/24.4-26.9/35.5 V at 16.9 A, SMBJ24A 24/26.7-29.5/38.9 V at 15.5 A; alphaVBR 0.084/0.088/0.091/0.092 %/C (16A/18A/20A/22A)",
     "TPS1663_OVP": "TI SLVSET9G 6.5/6.6: OVP rising 1.176/1.2/1.224 V, falling 1.09/1.122/1.15 V, leakage 150 nA; OVP turn-off 8.5-14 us to FLT",
+    "BAV199": "onsemi BAV199LT1/D (https://www.onsemi.com/download/data-sheet/pdf/bav199lt1-d.pdf): series pair, pin 1 anode, 2 cathode, 3 common; IR <= 5 nA at 70 V (25 C), <= 80 nA at 70 V / 150 C; VF <= 0.9 V at 1 mA",
+    "TPS552892_PG_SS": "TI SLVSGT7 7.3.5/7.3.16: soft start ramps an internal reference 0 -> 1.2 V in 3.6 ms typ (no SS pin); PG goes high at 95 % of the target output voltage (the IC sees the target only through FB)",
+    "LMR38020_SS_PG": "TI SNVSC40E 8.3.9 / 7.5: internal soft start 4.0 ms typical (no SS pin); PG thresholds are % of the FB voltage",
+    "CL10B_X7R": "Samsung CL10B224KA8NNNC / CL10B474KA8NNNC: 0.22 / 0.47 uF X7R 25 V 0603 +-10 % (LCSC C21120 / C1623, Basic); DC-bias retention at <= 12 V taken as 0.45-1.0 (engineering screen, not a manufacturer curve)",
     "RLM12": "TA-I TRLM-XX0S001A (https://www.tai.com.tw/files/uploads/Prod_spec/RLM.pdf): RLM12 3.2 x 1.6 mm, electrode 0.5 +/- 0.3 mm (2-50 mOhm), land a 1.8 b 1.7 L 1.6 mm, 1 W with 300 mm2 pad + trace copper; LCSC C393095 RLM12FTCMR018 1 % 75 ppm"
   },
   "banks": {
@@ -307,35 +311,119 @@
   },
   "soft_start": {
     "+12V": {
-      "tSS_ms": [
+      "IC": "U2",
+      "FB": "FB_P12",
+      "diode": "D27",
+      "X": "SS_P12",
+      "Css": "C84",
+      "bleed": "R116",
+      "R_top": "R8",
+      "R_bot": "R9",
+      "out_net": "+12V",
+      "Css_effective_uF": [
+        0.0704,
+        0.22,
+        0.2783
+      ],
+      "tau_ms": [
+        4.79,
+        14.96,
+        18.92
+      ],
+      "internal_tSS_ms": [
         2.5,
         3.6,
         5.0
       ],
+      "rail_C_with_rack_mF": 0.537,
+      "initial_capacitor_current_A": [
+        1.354,
+        0.433,
+        0.343
+      ],
+      "to_95pct_ms": [
+        14.4,
+        44.9,
+        56.8
+      ],
+      "charge_current_note": "C x Vset / tau into the onboard bank (high corner) + 0.44 mF rack, at 0 V and decaying as exp(-t/tau); [fast, nominal, slow] corner",
       "cc_limit_A": [
         2.615,
         2.778,
         2.946
       ],
-      "tracks_reference_up_to_mF": {
-        "full_load": 0.043,
-        "no_load": 0.517
-      },
-      "onboard_bank_high_mF": 0.097,
+      "cc_engages_for_constant_current_load_mF": 0.082,
       "rack_allowance_mF": 0.44,
-      "allowance_basis": "S9.1 restricted to 0.44mF external, within the complex-loop impedance envelope; startup on 3A source remains a qualification test, not proven by CC alone",
-      "time_to_full_at_allowance_full_load_ms": 31.5,
-      "hiccup": "only if VOUT < 0.8 V with the average inductor limit for 2 ms after tSS: a short circuit, not a capacitive start (R109 holds IL near IOUT)"
+      "allowance_basis": "0.44 mF external: the complex-loop impedance envelope (compensation); the strict 3 A start is qualified at it (startup_qualification)",
+      "hiccup": "only if VOUT < 0.8 V with the average inductor limit for 2 ms after tSS: a short circuit, not a capacitive start"
     },
     "-12V": {
+      "IC": "U4",
+      "FB": "FB_N",
+      "diode": "D28",
+      "X": "SS_N12",
+      "Css": "C85",
+      "bleed": "R117",
+      "R_top": "R14",
+      "R_bot": "R15",
+      "out_net": "GND",
+      "Css_effective_uF": [
+        0.1505,
+        0.47,
+        0.5946
+      ],
+      "tau_ms": [
+        15.05,
+        47.0,
+        59.46
+      ],
+      "internal_tSS_ms": [
+        2.0,
+        4.0,
+        6.0
+      ],
+      "rail_C_with_rack_mF": 0.525,
+      "initial_capacitor_current_A": [
+        0.418,
+        0.134,
+        0.106
+      ],
+      "to_95pct_ms": [
+        45.1,
+        141.0,
+        178.4
+      ],
+      "charge_current_note": "C x Vset / tau into the onboard bank (high corner) + 0.44 mF rack, at 0 V and decaying as exp(-t/tau); [fast, nominal, slow] corner",
       "blank_ms": 18,
-      "onboard_bank_high_mF": 0.085,
       "rack_allowance_full_load_mF": 0.846,
       "allowance_basis": "min(hiccup model, TI output-capacitance guidance minus the rated onboard bank)",
       "ti_limit": "<= ~10 x design COUT or 1000 uF, whichever is smaller (SNVSC40E 9.2.2.5)"
     },
-    "rack_reference": "Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. S9.0: +12V charges through the R109 constant-current loop; -12V per the LMR38020 hiccup rule",
-    "note": "Allowances are rack capacitance on top of the onboard bank (high corner). Loads that draw less than the full rating during start-up leave more room. Bench item: start-up into the real rack at 13.5 V."
+    "sequencing": {
+      "Q": "Q16",
+      "gate": "N_EN_SEQ",
+      "source": "P12_OK",
+      "R": "R118",
+      "C": "C86",
+      "pullup": "R35",
+      "tau_on_ms": [
+        9.7,
+        11.0,
+        12.34
+      ],
+      "U4_enable_after_P12_OK_ms": [
+        3.4,
+        18.3
+      ],
+      "P12_OK_threshold_V": [
+        9.068,
+        9.977,
+        10.961
+      ],
+      "why_not_U2_PG": "TPS552892-Q1 PG compares FB with the reference; the injection holds FB at the reference for the whole ramp, so PG would read good at ~1 V. P12_OK is the independent delivered-rail monitor."
+    },
+    "rack_reference": "Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. S9.3: both rails ramp through their FB-injection RC; -12V after +12V",
+    "note": "Css corners: +-10 % tolerance, 0.45-1.0 DC-bias retention at up to 12 V on the 25 V X7R 0603 parts (engineering screen), X7R +-15 % temperature, 7 % ageing; diode drop 0.45-0.9 V; tSS per TI (LMR38020 typical only: 2-6 ms screen). Bench items: S1 (start from a strict 3 A source) and the ramp times."
   },
   "ov_guard": {
     "+12V": {
@@ -1039,6 +1127,10 @@
           "R": "R16",
           "series_nmos": [
             [
+              "Q16",
+              "N_EN_SEQ"
+            ],
+            [
               "Q15",
               "MAIN_LED_OK"
             ],
@@ -1049,12 +1141,23 @@
           ],
           "end": "GND",
           "node_defaults": {
+            "N_EN_MID": [
+              "R119"
+            ],
             "N_EN_RETURN": [
               "R115"
             ]
           }
         }
-      ]
+      ],
+      "sequencing": {
+        "Q": "Q16",
+        "gate": "N_EN_SEQ",
+        "source": "P12_OK",
+        "R": "R118",
+        "C": "C86",
+        "pullup": "R35"
+      }
     },
     "off_pullup": "R112 ties Q1 base to VPD; R115 100k defines N_EN_RETURN; R18 pulls EN to the U4 ground",
     "enable_high_max_V": 1.4,
@@ -1063,12 +1166,13 @@
     "running_max_relative_V": 5.52,
     "off_leakage_test_bound_uA": 5,
     "off_relative_max_V": 0.102,
-    "off_Q1_VEB_max_V": 0.1839,
+    "off_Q1_VEB_max_V": 0.2651,
     "truth_table": [
       {
         "own_input": false,
         "run": false,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1085,6 +1189,41 @@
         "own_input": false,
         "run": false,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1101,6 +1240,7 @@
         "own_input": false,
         "run": false,
         "main_status": true,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1117,6 +1257,41 @@
         "own_input": false,
         "run": false,
         "main_status": true,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1133,6 +1308,7 @@
         "own_input": false,
         "run": true,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1149,6 +1325,41 @@
         "own_input": false,
         "run": true,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1165,6 +1376,7 @@
         "own_input": false,
         "run": true,
         "main_status": true,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1181,6 +1393,41 @@
         "own_input": false,
         "run": true,
         "main_status": true,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1197,6 +1444,7 @@
         "own_input": true,
         "run": false,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1213,6 +1461,75 @@
         "own_input": true,
         "run": false,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "p12_good": false,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "p12_good": false,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1229,6 +1546,7 @@
         "own_input": true,
         "run": false,
         "main_status": true,
+        "p12_good": true,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1238,13 +1556,14 @@
           0.0,
           0.102
         ],
-        "Q1_VEB_off_bound_V": 0.1839,
+        "Q1_VEB_off_bound_V": 0.2651,
         "undefined_nodes": []
       },
       {
         "own_input": true,
         "run": false,
         "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1254,13 +1573,14 @@
           0.0,
           0.102
         ],
-        "Q1_VEB_off_bound_V": 0.1839,
+        "Q1_VEB_off_bound_V": 0.2651,
         "undefined_nodes": []
       },
       {
         "own_input": true,
         "run": true,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -1277,6 +1597,75 @@
         "own_input": true,
         "run": true,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "p12_good": false,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "p12_good": false,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -1293,6 +1682,7 @@
         "own_input": true,
         "run": true,
         "main_status": true,
+        "p12_good": true,
         "bus_live": false,
         "U4_enabled": true,
         "Q1": [
@@ -1309,6 +1699,7 @@
         "own_input": true,
         "run": true,
         "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": true,
         "Q1": [
@@ -1324,7 +1715,7 @@
     ],
     "violations": [],
     "pass": true,
-    "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined.",
+    "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK).",
     "does_not_block_reverse_power_while_enabled": true,
     "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
   },
@@ -1332,25 +1723,167 @@
     "source_limit_A": 3.0,
     "source_min_V": 14.25,
     "cable_loop_R_ohm": 0.25,
+    "design": "S9.3: FB-injection soft starts on both converters (C84/D27/R116 on U2 FB, C85/D28/R117 on U4 FB_N) and the U4 enable sequenced after +12V (Q16, R118/C86 from P12_OK, R119)",
+    "soft_start": {
+      "+12V": {
+        "IC": "U2",
+        "FB": "FB_P12",
+        "diode": "D27",
+        "X": "SS_P12",
+        "Css": "C84",
+        "bleed": "R116",
+        "R_top": "R8",
+        "R_bot": "R9",
+        "out_net": "+12V",
+        "Css_effective_uF": [
+          0.0704,
+          0.22,
+          0.2783
+        ],
+        "tau_ms": [
+          4.79,
+          14.96,
+          18.92
+        ],
+        "internal_tSS_ms": [
+          2.5,
+          3.6,
+          5.0
+        ],
+        "rail_C_with_rack_mF": 0.537,
+        "initial_capacitor_current_A": [
+          1.354,
+          0.433,
+          0.343
+        ],
+        "to_95pct_ms": [
+          14.4,
+          44.9,
+          56.8
+        ]
+      },
+      "-12V": {
+        "IC": "U4",
+        "FB": "FB_N",
+        "diode": "D28",
+        "X": "SS_N12",
+        "Css": "C85",
+        "bleed": "R117",
+        "R_top": "R14",
+        "R_bot": "R15",
+        "out_net": "GND",
+        "Css_effective_uF": [
+          0.1505,
+          0.47,
+          0.5946
+        ],
+        "tau_ms": [
+          15.05,
+          47.0,
+          59.46
+        ],
+        "internal_tSS_ms": [
+          2.0,
+          4.0,
+          6.0
+        ],
+        "rail_C_with_rack_mF": 0.525,
+        "initial_capacitor_current_A": [
+          0.418,
+          0.134,
+          0.106
+        ],
+        "to_95pct_ms": [
+          45.1,
+          141.0,
+          178.4
+        ]
+      },
+      "sequencing": {
+        "Q": "Q16",
+        "gate": "N_EN_SEQ",
+        "source": "P12_OK",
+        "R": "R118",
+        "C": "C86",
+        "pullup": "R35",
+        "tau_on_ms": [
+          9.7,
+          11.0,
+          12.34
+        ],
+        "U4_enable_after_P12_OK_ms": [
+          3.4,
+          18.3
+        ],
+        "P12_OK_threshold_V": [
+          9.068,
+          9.977,
+          10.961
+        ],
+        "why_not_U2_PG": "TPS552892-Q1 PG compares FB with the reference; the injection holds FB at the reference for the whole ramp, so PG would read good at ~1 V. P12_OK is the independent delivered-rail monitor."
+      }
+    },
     "demand_rows": {
       "published_33W_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.888,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 14,
-          "single_attempt_start": false,
-          "rails_good_ms": null,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.706,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
-            2.65,
-            3.77
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 4.649,
-          "time_above_3A_ms": 2.5,
+          "peak_input_A": 2.888,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.706,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.875,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.694,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.892,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.709,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1378,
           "final_rails_V": [
             12.08,
             11.99
@@ -1359,22 +1892,64 @@
       },
       "published_split_-12V_0.8A_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.955,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 14,
-          "single_attempt_start": false,
-          "rails_good_ms": null,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.763,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
-            0.39,
-            0.69
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 4.556,
-          "time_above_3A_ms": 3.0,
+          "peak_input_A": 2.955,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 23.2,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.763,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.941,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.752,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.955,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.764,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
@@ -1383,22 +1958,64 @@
       },
       "published_33W_no_rack": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.874,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 13,
-          "single_attempt_start": false,
-          "rails_good_ms": 22.9,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
-            0.0,
-            0.05
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 3.044,
-          "time_above_3A_ms": 0.2,
+          "peak_input_A": 2.874,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.872,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.691,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0026,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.874,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
@@ -1407,22 +2024,64 @@
       },
       "no_load_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 0.206,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 1,
-          "single_attempt_start": false,
-          "rails_good_ms": 29.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 3.456,
-          "time_above_3A_ms": 0.3,
+          "peak_input_A": 0.206,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 0.117,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 0.119,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 0.206,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
@@ -1431,22 +2090,64 @@
       },
       "no_load_no_rack": {
         "strict_3A": {
-          "peak_input_A": 0.565,
+          "peak_input_A": 0.075,
           "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 0.565,
+          "peak_input_A": 0.075,
           "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 0.075,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 0.052,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0026,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 0.075,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
@@ -1454,23 +2155,25 @@
         }
       }
     },
+    "all_strict_cases_single_attempt": true,
+    "worst_strict_peak_A": 2.955,
     "required_source_capability": {
-      "peak_A": 4.649,
-      "above_3A_ms": 2.5,
-      "basis": "published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source + 0.25 ohm, fastest 2.5 ms soft start, R109 icc max; U5 current limit caps the plant at 4.7 A"
+      "peak_A": 2.888,
+      "above_3A_ms": 0.0,
+      "basis": "published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source + 0.25 ohm, fast corner (shortest soft starts, earliest U4 enable), R109 icc max, D10 0.75 V, 0.5 W logic on the source"
     },
-    "strict_3A_outcome": "FAULT latched at ARMED after repeated U5 UVLO dropouts (fail-safe, RUN low, input off); NOT a single-attempt start",
-    "meaning": "A strictly 3.00 A-limited 15 V source cannot supply the simultaneous soft-start charge of both rails at the published load and rack; the module then fails safe and needs RESET. Real PD sources with overload headroom (peak-current capability, OCP above ~4.7 A for a few ms) are expected to start it: post-prototype acceptance test S1 decides, per source.",
+    "strict_3A_outcome": "single-attempt start, zero U5 drop-outs, input never above 3.00 A, in every case at both corners and with both load models",
+    "meaning": "A strictly 3.00 A-limited 15 V source starts the module at the published rating with 0.44 mF per rail: the input current approaches its steady-state value from below (the RC soft starts keep the capacitor charge power small) and the -12V charge never overlaps the +12V ramp beyond its tail. Model limits: resistive or constant-current loads; a constant-POWER downstream load that draws full power from low voltage is not covered (it would also stall the +12V CC limit).",
     "matrix": [
       {
         "id": "S1",
         "condition": "Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts",
-        "pass": "Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record. A strict-3 A FAIL is recorded as the expected fail-safe (FAULT latched, input off) and restricts the qualified source list, it is not hidden"
+        "pass": "Single attempt, ZERO U5 drop-outs and no source current-limit event: input <= 3.00 A throughout (current probe), both rail monitors good within 250 ms of first enable, U4 EN rises only after P12_OK (3-18 ms later), ARMED by 0.90 s, no V3V3/POR reset, no FAULT. Any drop-out or FAULT is a FAIL (BOM: C84/C85/C86), never an accepted fail-safe"
       },
       {
         "id": "S2",
         "condition": "Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V",
-        "pass": "A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts"
+        "pass": "No hard reset at the published load + 0.44 mF; a single hard reset is counted and fails that source/load combination; no success by discarding earlier failed attempts"
       },
       {
         "id": "S3",
@@ -1484,7 +2187,7 @@
       }
     ],
     "power_reset_policy": "STARTED and FAULT are volatile. Full V3V3/POR loss legitimately clears both; S8.5 one-shot preserved, not falsely advertised as nonvolatile. Automatic retrying sources are outside qualified envelope. Fixture counts epochs and must stop retries; hardware nonvolatile lockout remains absent.",
-    "bench_status": "NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP19 STARTED, TP10 ARMED, TP9 RUN)"
+    "bench_status": "NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP12 P12_OK, TP19 STARTED, TP10 ARMED, TP9 RUN, U4 pin 2 against TP25)"
   },
   "vin_clamp": {
     "rules": {
@@ -1993,16 +2696,21 @@
     "min_s_screen": 0.309,
     "max_s_screen": 0.881,
     "S7_typ_s": 5.71,
-    "rail_up_budget_ms": {
+    "before_first_enable_ms": {
       "U5_ramp_ms": 9.6,
-      "PGOOD_deglitch_ms": 13,
-      "TPS552892_SS_max_ms": 5.0,
-      "P12_rack_charge_at_R109_limit_ms": 31.5,
-      "LMR38020_SS_plus_blank_ms": 22
+      "PGOOD_deglitch_ms": 13
     },
-    "rail_up_total_ms": 81.1,
-    "ratio_min_window_to_budget": 3.8,
-    "arming": "S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable)"
+    "rail_up_after_first_enable_ms": {
+      "fast_corner": 61.1,
+      "slow_corner": 196.2,
+      "P12_OK_slow_ms": 51.5,
+      "U4_enable_slow_ms": 69.8
+    },
+    "rail_up_total_ms": 196.2,
+    "margin_to_window_min_ms": 112.6,
+    "ratio_min_window_to_budget": 1.57,
+    "S92_rail_up_total_ms": 81.1,
+    "arming": "S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable). S9.3: the soft starts use more of the window (S9.2 budget 81 ms); a brown-out inside the window must end >= ~210 ms before ARMED or FAULT latches at ARMED (fail-safe, RESET restarts)"
   },
   "arming": {
     "required": [
@@ -2070,23 +2778,28 @@
       "min_s_screen": 0.309,
       "max_s_screen": 0.881,
       "S7_typ_s": 5.71,
-      "rail_up_budget_ms": {
+      "before_first_enable_ms": {
         "U5_ramp_ms": 9.6,
-        "PGOOD_deglitch_ms": 13,
-        "TPS552892_SS_max_ms": 5.0,
-        "P12_rack_charge_at_R109_limit_ms": 31.5,
-        "LMR38020_SS_plus_blank_ms": 22
+        "PGOOD_deglitch_ms": 13
       },
-      "rail_up_total_ms": 81.1,
-      "ratio_min_window_to_budget": 3.8,
-      "arming": "S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable)"
+      "rail_up_after_first_enable_ms": {
+        "fast_corner": 61.1,
+        "slow_corner": 196.2,
+        "P12_OK_slow_ms": 51.5,
+        "U4_enable_slow_ms": 69.8
+      },
+      "rail_up_total_ms": 196.2,
+      "margin_to_window_min_ms": 112.6,
+      "ratio_min_window_to_budget": 1.57,
+      "S92_rail_up_total_ms": 81.1,
+      "arming": "S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable). S9.3: the soft starts use more of the window (S9.2 budget 81 ms); a brown-out inside the window must end >= ~210 ms before ARMED or FAULT latches at ARMED (fail-safe, RESET restarts)"
     },
     "sequence": [
       "USB-C attach: VPD = vSafe5V; U9 makes V3V3; U10 holds RESET_N low >= 12 ms (clears STARTED, FAULT)",
       "RESET_N high: RUN high (U5 SHDN released); U5 in UVLO, START_N high (V20_OK low in the 5 V phase)",
       "PD contract: VPD -> 15 V; V20_OK high at 7.67-9.27 V (U5 status valid, PGOOD low)",
-      "VPD >= U5 turn-on (12.26-12.98 V): U5 ramps (dVdt, <= ~10 ms to 16.5 V), PGOOD 11.5 ms typ -> MAIN_OK enables U2 (EN/UVLO) (U4 follows +12V via Q1) -> MAIN_LED_OK -> START_N low -> STARTED (latched)",
-      "TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~81 ms",
+      "VPD >= U5 turn-on (12.26-12.98 V): U5 ramps (dVdt, <= ~10 ms to 16.5 V), PGOOD 11.5 ms typ -> MAIN_OK enables U2 (EN/UVLO); U4 waits for P12_OK (Q16) -> MAIN_LED_OK -> START_N low -> STARTED (latched)",
+      "TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~196 ms (S9.3 slow corner: +12V soft start, P12_OK -> Q16 delay, -12V soft start)",
       "ARMED: any bad status (MAIN_LED_OK, P12_OK, N12_OK) > ~1 ms -> FAULT -> RUN low -> all off until RESET; OV_N (+12V > 14.48-15.27 V, -12V beyond 13.27-14.02 V) presets FAULT at any time"
     ],
     "timelines": "validation.json startup_arming.timelines (verify_s8 arming_timelines: cold start at the worst loaded 15 V minimum, slow PD contract, brown-out after/inside the window, input overload chatter, hot plug into a live bus, load release, U20 guard before ARMED, short RESET), checked against R1-R4 from the native gate wiring; the S8.4 wiring fails them (test_s8 regression)"
@@ -2232,6 +2945,10 @@
                 "R": "R16",
                 "series_nmos": [
                   [
+                    "Q16",
+                    "N_EN_SEQ"
+                  ],
+                  [
                     "Q15",
                     "MAIN_LED_OK"
                   ],
@@ -2242,12 +2959,23 @@
                 ],
                 "end": "GND",
                 "node_defaults": {
+                  "N_EN_MID": [
+                    "R119"
+                  ],
                   "N_EN_RETURN": [
                     "R115"
                   ]
                 }
               }
-            ]
+            ],
+            "sequencing": {
+              "Q": "Q16",
+              "gate": "N_EN_SEQ",
+              "source": "P12_OK",
+              "R": "R118",
+              "C": "C86",
+              "pullup": "R35"
+            }
           },
           "off_pullup": "R112 ties Q1 base to VPD; R115 100k defines N_EN_RETURN; R18 pulls EN to the U4 ground",
           "enable_high_max_V": 1.4,
@@ -2256,12 +2984,13 @@
           "running_max_relative_V": 5.52,
           "off_leakage_test_bound_uA": 5,
           "off_relative_max_V": 0.102,
-          "off_Q1_VEB_max_V": 0.1839,
+          "off_Q1_VEB_max_V": 0.2651,
           "truth_table": [
             {
               "own_input": false,
               "run": false,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2278,6 +3007,41 @@
               "own_input": false,
               "run": false,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2294,6 +3058,7 @@
               "own_input": false,
               "run": false,
               "main_status": true,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2310,6 +3075,41 @@
               "own_input": false,
               "run": false,
               "main_status": true,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2326,6 +3126,7 @@
               "own_input": false,
               "run": true,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2342,6 +3143,41 @@
               "own_input": false,
               "run": true,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2358,6 +3194,7 @@
               "own_input": false,
               "run": true,
               "main_status": true,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2374,6 +3211,41 @@
               "own_input": false,
               "run": true,
               "main_status": true,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2390,6 +3262,7 @@
               "own_input": true,
               "run": false,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2406,6 +3279,75 @@
               "own_input": true,
               "run": false,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "p12_good": false,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "p12_good": false,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2422,6 +3364,7 @@
               "own_input": true,
               "run": false,
               "main_status": true,
+              "p12_good": true,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2431,13 +3374,14 @@
                 0.0,
                 0.102
               ],
-              "Q1_VEB_off_bound_V": 0.1839,
+              "Q1_VEB_off_bound_V": 0.2651,
               "undefined_nodes": []
             },
             {
               "own_input": true,
               "run": false,
               "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2447,13 +3391,14 @@
                 0.0,
                 0.102
               ],
-              "Q1_VEB_off_bound_V": 0.1839,
+              "Q1_VEB_off_bound_V": 0.2651,
               "undefined_nodes": []
             },
             {
               "own_input": true,
               "run": true,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -2470,6 +3415,75 @@
               "own_input": true,
               "run": true,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "p12_good": false,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "p12_good": false,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -2486,6 +3500,7 @@
               "own_input": true,
               "run": true,
               "main_status": true,
+              "p12_good": true,
               "bus_live": false,
               "U4_enabled": true,
               "Q1": [
@@ -2502,6 +3517,7 @@
               "own_input": true,
               "run": true,
               "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": true,
               "Q1": [
@@ -2517,7 +3533,7 @@
           ],
           "violations": [],
           "pass": true,
-          "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined.",
+          "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK).",
           "does_not_block_reverse_power_while_enabled": true,
           "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
         }
@@ -2716,9 +3732,9 @@
     "note": "20V remains supported by the converter architecture but is NOT plug-compatible with the fitted 20 V VIN TVS and the 15 V OVP. Change R24, D24/D25 and the input divider/request parts, then requalify; no assertion that only three resistors suffice"
   },
   "area": {
-    "S8_courtyard_mm2": 2693,
+    "S8_courtyard_mm2": 2751,
     "board_inset_mm2": 4324,
-    "fill": 0.623,
+    "fill": 0.636,
     "outline": "Y14..114.5 x Z2..50",
     "routed_R3_fill": {
       "base": 0.637,

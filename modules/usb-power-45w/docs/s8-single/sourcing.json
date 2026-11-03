@@ -8,7 +8,7 @@
       "package": "DO-214AA(SMB)",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 281,
+      "stock": 59,
       "unit_price_q1_usd": 0.0778,
       "price_ladder_usd": [
         [
@@ -44,14 +44,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:18Z",
+        "retrieved_at_utc": "2026-11-03T08:59:59Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C10214"
         },
-        "sha256": "0705054dc57921ac10fea74085895d96a1e9478b6f42c386679028d0100dc56d",
+        "sha256": "431d4c901b5bdb20456d018a7ab026319991145344c6b48f19203f54fddb9d5c",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -67,7 +67,7 @@
       "package": "SOP-4-2.54mm",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 83733,
+      "stock": 84696,
       "unit_price_q1_usd": 0.1055,
       "price_ladder_usd": [
         [
@@ -78,7 +78,7 @@
         [
           50,
           149,
-          0.0849
+          0.0848
         ],
         [
           150,
@@ -103,14 +103,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:19Z",
+        "retrieved_at_utc": "2026-11-03T09:00:01Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C119090"
         },
-        "sha256": "ac1e50979b5d609a828aef3a1ad9263169dafc2bdf3cb3b04169043a3eac243c",
+        "sha256": "6dd6261acb9c41dd86bf3e5d59038d5de171046aef63f8f09e6d8e28db7a2b71",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -126,7 +126,7 @@
       "package": "0603",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 2015449,
+      "stock": 1994542,
       "unit_price_q1_usd": 0.0274,
       "price_ladder_usd": [
         [
@@ -162,14 +162,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:21Z",
+        "retrieved_at_utc": "2026-11-03T09:00:03Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C122538"
         },
-        "sha256": "07bf0ef84ba619ebd22e4c7b99635b179fd50ebbbceadc0da480f4548fce113b",
+        "sha256": "2f1313ce373653683b44efc067dfa2506a988eaf9e5ab3634398865dc29f6e7e",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -185,50 +185,50 @@
       "package": "1206",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1610456,
-      "unit_price_q1_usd": 0.118,
+      "stock": 1675064,
+      "unit_price_q1_usd": 0.1198,
       "price_ladder_usd": [
         [
           1,
           199,
-          0.118
+          0.1198
         ],
         [
           200,
           599,
-          0.0964
+          0.0976
         ],
         [
           600,
           1999,
-          0.0852
+          0.0863
         ],
         [
           2000,
           9999,
-          0.076
+          0.0771
         ],
         [
           10000,
           19999,
-          0.0727
+          0.0739
         ],
         [
           20000,
           -1,
-          0.0706
+          0.0716
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:22Z",
+        "retrieved_at_utc": "2026-11-03T09:00:05Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C12891"
         },
-        "sha256": "ae7c2f26c5b72f172cd103afefb3024d7db2575215c4ac37a3d3513f32394c2e",
+        "sha256": "779211e7b32698e0553d1c438e1ce09c8d8c8b95e8c90f086c0153ffdb1c7af6",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -244,50 +244,50 @@
       "package": "1206",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3297950,
-      "unit_price_q1_usd": 0.2115,
+      "stock": 3144997,
+      "unit_price_q1_usd": 0.1413,
       "price_ladder_usd": [
         [
           1,
           99,
-          0.2115
+          0.1413
         ],
         [
           100,
           299,
-          0.1654
+          0.1142
         ],
         [
           300,
           1999,
-          0.1429
+          0.1003
         ],
         [
           2000,
           3999,
-          0.1229
+          0.0888
         ],
         [
           4000,
           9999,
-          0.1174
+          0.0848
         ],
         [
           10000,
           -1,
-          0.1141
+          0.0821
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:23Z",
+        "retrieved_at_utc": "2026-11-03T09:00:07Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C13585"
         },
-        "sha256": "6dd6acd2b1dd9c940ea6c41c0f45aa12c7d81d355d2c4d6a0708623723678be1",
+        "sha256": "3011d9edc0fb13b5018a6a52d182f17c06a76fcd4177f7fa93b980c8f644bc1c",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -296,6 +296,65 @@
       "qty_S8": 11,
       "qty_S7": 8
     },
+    "C145516": {
+      "code": "C145516",
+      "mpn": "BAV199LT1G",
+      "manufacturer": "onsemi",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 384696,
+      "unit_price_q1_usd": 0.0322,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.0322
+        ],
+        [
+          200,
+          599,
+          0.0256
+        ],
+        [
+          600,
+          2999,
+          0.0219
+        ],
+        [
+          3000,
+          8999,
+          0.0197
+        ],
+        [
+          9000,
+          20999,
+          0.0178
+        ],
+        [
+          21000,
+          -1,
+          0.0168
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T09:00:08Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C145516"
+        },
+        "sha256": "16fbb1e5d295964edb7864cb814eabcf9ee57c5682d1c51a6b70bdc0c21faf86",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 2,
+      "qty_S7": 0
+    },
     "C14663": {
       "code": "C14663",
       "mpn": "CC0603KRX7R9BB104",
@@ -303,56 +362,56 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 40647272,
-      "unit_price_q1_usd": 0.0081,
+      "stock": 38829092,
+      "unit_price_q1_usd": 0.0095,
       "price_ladder_usd": [
         [
           1,
           499,
-          0.0081
+          0.0095
         ],
         [
           500,
           1499,
-          0.0063
+          0.0074
         ],
         [
           1500,
           3999,
-          0.0053
+          0.0062
         ],
         [
           4000,
           23999,
-          0.0047
+          0.0055
         ],
         [
           24000,
           47999,
-          0.0042
+          0.0049
         ],
         [
           48000,
           -1,
-          0.0039
+          0.0046
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:24Z",
+        "retrieved_at_utc": "2026-11-03T09:00:10Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C14663"
         },
-        "sha256": "4f15a180f7013bd022fb47e603744bc0301e9a2537465699b0a539bd90592217",
+        "sha256": "b71d5e2bdb327510e1dd40e63e5e02ef27a8a0d414518796aedfac4335c0a3fe",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 18,
+      "qty_S8": 19,
       "qty_S7": 20
     },
     "C151257": {
@@ -362,13 +421,13 @@
       "package": "DO-214AA",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 7368,
-      "unit_price_q1_usd": 0.1858,
+      "stock": 7289,
+      "unit_price_q1_usd": 0.1857,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1858
+          0.1857
         ],
         [
           50,
@@ -393,19 +452,19 @@
         [
           6000,
           -1,
-          0.0885
+          0.0884
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:25Z",
+        "retrieved_at_utc": "2026-11-03T09:00:12Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C151257"
         },
-        "sha256": "72878a26b2ef74a5d8c18dd8227361342e20d192d02625bd5243ae09c2f5dfd6",
+        "sha256": "77ae553fec164b26f15f8b819fd26d03f756e0d6eb40444ab4261d291be51ec8",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -421,18 +480,18 @@
       "package": "SMA",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 5594,
-      "unit_price_q1_usd": 0.1615,
+      "stock": 5582,
+      "unit_price_q1_usd": 0.1614,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1615
+          0.1614
         ],
         [
           50,
           149,
-          0.1259
+          0.1258
         ],
         [
           150,
@@ -457,14 +516,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:26Z",
+        "retrieved_at_utc": "2026-11-03T09:00:14Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C155317"
         },
-        "sha256": "843c7b48261999ef56b15af28df2fa7c80a30fb230f34159c72c196279d8918b",
+        "sha256": "f1e17e08521aabfd62fda72e15556857e9fa93392ac4c6a9aeb93d73a0b1c334",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -480,33 +539,33 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 12250955,
-      "unit_price_q1_usd": 0.0134,
+      "stock": 11786928,
+      "unit_price_q1_usd": 0.0135,
       "price_ladder_usd": [
         [
           1,
           499,
-          0.0134
+          0.0135
         ],
         [
           500,
           1499,
-          0.0103
+          0.0104
         ],
         [
           1500,
           3999,
-          0.009
+          0.0091
         ],
         [
           4000,
           23999,
-          0.0079
+          0.008
         ],
         [
           24000,
           47999,
-          0.0075
+          0.0076
         ],
         [
           48000,
@@ -516,14 +575,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:27Z",
+        "retrieved_at_utc": "2026-11-03T09:00:16Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C15849"
         },
-        "sha256": "2804772b8d0ed9b970eb539f3f4360c0f88f44ce3b45a5e806fa6a0152df7982",
+        "sha256": "dd293331e463e716355790247ad9506672ec4689c509b410029ecea65b6c1d3f",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -539,7 +598,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 5810913,
+      "stock": 5681522,
       "unit_price_q1_usd": 0.0098,
       "price_ladder_usd": [
         [
@@ -575,20 +634,80 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:28Z",
+        "retrieved_at_utc": "2026-11-03T09:00:18Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C1588"
         },
-        "sha256": "9909943358852607146edfc730d48a8fa553a01d1f0685d8c7664b47d9e3ffb0",
+        "sha256": "5de1dc87b3d1acbfe191230c0028b50dd815cc1a8afa961e7a718d5f531aee40",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
       "qty_S8": 2,
+      "qty_S7": 0
+    },
+    "C1623": {
+      "code": "C1623",
+      "mpn": "CL10B474KA8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 637193,
+      "unit_price_q1_usd": 0.013,
+      "price_ladder_usd": [
+        [
+          1,
+          499,
+          0.013
+        ],
+        [
+          500,
+          1499,
+          0.0101
+        ],
+        [
+          1500,
+          3999,
+          0.0088
+        ],
+        [
+          4000,
+          23999,
+          0.0064
+        ],
+        [
+          24000,
+          47999,
+          0.006
+        ],
+        [
+          48000,
+          -1,
+          0.0057
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T09:00:22Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "CL10B474KA8NNNC"
+        },
+        "sha256": "718a7a55976937675d9f71cf8832f2e2d33a3daab2b63415dab72a5f049d8c76",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z",
+        "lookup": "MPN search CL10B474KA8NNNC (exact code lookup ambiguous: short code prefix)"
+      },
+      "failures": [],
+      "qty_S8": 1,
       "qty_S7": 0
     },
     "C165527": {
@@ -614,12 +733,12 @@
         [
           150,
           899,
-          0.0936
+          0.0935
         ],
         [
           900,
           2699,
-          0.0826
+          0.0825
         ],
         [
           2700,
@@ -629,19 +748,19 @@
         [
           5400,
           -1,
-          0.0726
+          0.0725
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:29Z",
+        "retrieved_at_utc": "2026-11-03T09:00:24Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C165527"
         },
-        "sha256": "a1353f81970886da0062161c808a567b41e6bd803b7455ba6ac780ead6e8c3c9",
+        "sha256": "ee92c324707a045d02c671deed4b49f101845b14724613c4c11ce87130680ef4",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -657,13 +776,13 @@
       "package": "SMD",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 196436,
-      "unit_price_q1_usd": 0.1874,
+      "stock": 172608,
+      "unit_price_q1_usd": 0.1873,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1874
+          0.1873
         ],
         [
           50,
@@ -673,7 +792,7 @@
         [
           150,
           999,
-          0.1287
+          0.1286
         ],
         [
           1000,
@@ -693,14 +812,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:30Z",
+        "retrieved_at_utc": "2026-11-03T09:00:26Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C165948"
         },
-        "sha256": "3ec140ed7b48f8e594995e0196f83283f3f2163addb5fa7071ae5d158509eaae",
+        "sha256": "5dca8dafacde9dfdfcdddbc7489a31e541bcb7432023b7dd31ee3b23b2527e13",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -716,7 +835,7 @@
       "package": "1206",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 2242428,
+      "stock": 2177046,
       "unit_price_q1_usd": 0.0078,
       "price_ladder_usd": [
         [
@@ -752,14 +871,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:32Z",
+        "retrieved_at_utc": "2026-11-03T09:00:30Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C17902"
         },
-        "sha256": "d78378291c4ef6de53d1ca6a0a65206e978e59341bbc5cc77c73d45d3be87623",
+        "sha256": "c766621d6c36626bf1ae52fabfce14d10e215af04a586b671ed66112187b01d1",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -775,7 +894,7 @@
       "package": "1206",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 158961,
+      "stock": 144216,
       "unit_price_q1_usd": 0.0237,
       "price_ladder_usd": [
         [
@@ -811,14 +930,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:33Z",
+        "retrieved_at_utc": "2026-11-03T09:00:32Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C17928"
         },
-        "sha256": "30781ed8457c8ea713eb78acabadb512c9f90257c8bffddc6a6c8d2b52e067eb",
+        "sha256": "7058c8317dd1106dabea730b7f68d1d01e3145b2f0601cfe241263e5af5062f1",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -834,50 +953,50 @@
       "package": "HVSSOP-8-EP",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 464,
-      "unit_price_q1_usd": 2.6053,
+      "stock": 445,
+      "unit_price_q1_usd": 3.0144,
       "price_ladder_usd": [
         [
           1,
           9,
-          2.6053
+          3.0144
         ],
         [
           10,
           29,
-          2.3051
+          2.7159
         ],
         [
           30,
           99,
-          2.1181
+          2.5273
         ],
         [
           100,
           499,
-          1.8474
+          2.2567
         ],
         [
           500,
           999,
-          1.7604
+          2.1698
         ],
         [
           1000,
           -1,
-          1.7227
+          2.1321
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:34Z",
+        "retrieved_at_utc": "2026-11-03T09:00:34Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C181239"
         },
-        "sha256": "d034fb9f8761c89f9fa6169d05f87b9fa6d3fa320f5540706dc551246c6e5d6f",
+        "sha256": "0d65ceb78fcbfd3352422c37e6ddacca2e72a1fb239e9d883f9b229fe4200134",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -893,50 +1012,50 @@
       "package": "VSSOP-10-0.5mm",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 30,
-      "unit_price_q1_usd": 2.981,
+      "stock": 29,
+      "unit_price_q1_usd": 2.9799,
       "price_ladder_usd": [
         [
           1,
           9,
-          2.981
+          2.9799
         ],
         [
           10,
           29,
-          2.5528
+          2.5519
         ],
         [
           30,
           99,
-          2.141
+          2.1403
         ],
         [
           100,
           499,
-          1.8654
+          1.8647
         ],
         [
           500,
           999,
-          1.7407
+          1.7401
         ],
         [
           1000,
           -1,
-          1.6866
+          1.686
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:35Z",
+        "retrieved_at_utc": "2026-11-03T09:00:35Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C181592"
         },
-        "sha256": "81059b8e6ad604df05301701cd5f094fd3fbd031adabde39d9d5fdc0a12f2cd3",
+        "sha256": "d1142c125031b50ae6874f7dc11515b0ae001ed960f1ddc482d647746f18cec2",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -952,13 +1071,13 @@
       "package": "SMD,10.8x10mm",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 3393,
-      "unit_price_q1_usd": 0.1966,
+      "stock": 3733,
+      "unit_price_q1_usd": 0.1965,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1966
+          0.1965
         ],
         [
           50,
@@ -968,7 +1087,7 @@
         [
           150,
           999,
-          0.1474
+          0.1473
         ],
         [
           1000,
@@ -978,24 +1097,24 @@
         [
           2000,
           4999,
-          0.1228
+          0.1227
         ],
         [
           5000,
           -1,
-          0.1169
+          0.1168
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:36Z",
+        "retrieved_at_utc": "2026-11-03T09:00:37Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C182184"
         },
-        "sha256": "7a46f143f217507d386eeb15eee7e811bab5f28b65281daaad0c95656aac94e1",
+        "sha256": "7d240adfc0c6e65f2c574886ba4f957ea158e5e41eab7dfd3865cc4257c65564",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1011,50 +1130,50 @@
       "package": "HTSSOP-20",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 1084,
-      "unit_price_q1_usd": 2.6956,
+      "stock": 1032,
+      "unit_price_q1_usd": 2.6946,
       "price_ladder_usd": [
         [
           1,
           9,
-          2.6956
+          2.6946
         ],
         [
           10,
           29,
-          2.2428
+          2.2419
         ],
         [
           30,
           99,
-          1.9589
+          1.9582
         ],
         [
           100,
           499,
-          1.6669
+          1.6663
         ],
         [
           500,
           999,
-          1.5357
+          1.5351
         ],
         [
           1000,
           -1,
-          1.4799
+          1.4793
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:37Z",
+        "retrieved_at_utc": "2026-11-03T09:00:39Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C1849461"
         },
-        "sha256": "669c47f13ee567ffa0eeebdd892011562a2cc68db64f064038840758e3564d81",
+        "sha256": "33246c51a088fe26c505d95c346ba0120f93d9005700a5c26048a25ca6e0a501",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1070,50 +1189,50 @@
       "package": "SOT-23-6",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 4362,
-      "unit_price_q1_usd": 0.4594,
+      "stock": 1328,
+      "unit_price_q1_usd": 0.4593,
       "price_ladder_usd": [
         [
           1,
           9,
-          0.4594
+          0.4593
         ],
         [
           10,
           29,
-          0.3757
+          0.3756
         ],
         [
           30,
           99,
-          0.3413
+          0.3412
         ],
         [
           100,
           499,
-          0.297
+          0.2969
         ],
         [
           500,
           999,
-          0.2773
+          0.2772
         ],
         [
           1000,
           -1,
-          0.2658
+          0.2657
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:38Z",
+        "retrieved_at_utc": "2026-11-03T09:00:41Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C19653"
         },
-        "sha256": "406815346a0eddd2dc3323002c310b9a5020e06e0aa45b5f8d80e699adca1e79",
+        "sha256": "012a954a58ae0c1a231818cdd87ab1d5eecfb424fcb63eca3efbd27e0105d504",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1129,50 +1248,50 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 11605445,
-      "unit_price_q1_usd": 0.0212,
+      "stock": 11339096,
+      "unit_price_q1_usd": 0.0204,
       "price_ladder_usd": [
         [
           1,
           199,
-          0.0212
+          0.0204
         ],
         [
           200,
           599,
-          0.0164
+          0.0156
         ],
         [
           600,
           3999,
-          0.0142
+          0.0134
         ],
         [
           4000,
           7999,
-          0.0126
+          0.0118
         ],
         [
           8000,
           19999,
-          0.012
+          0.0112
         ],
         [
           20000,
           -1,
-          0.0115
+          0.0107
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:39Z",
+        "retrieved_at_utc": "2026-11-03T09:00:43Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C19702"
         },
-        "sha256": "ad7b67e8123867a4f8f48627805f44e0b330b136d24d573e0425d34f5a2bb3fe",
+        "sha256": "fcebf7e975d3e0a46c8ac3539508f4662c1fc01735df13bf42fd739a02fbf870",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1188,7 +1307,7 @@
       "package": "SOT-23",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 298156,
+      "stock": 156306,
       "unit_price_q1_usd": 0.0238,
       "price_ladder_usd": [
         [
@@ -1224,14 +1343,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:40Z",
+        "retrieved_at_utc": "2026-11-03T09:00:45Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C19726"
         },
-        "sha256": "b8cbf927cc78605a82c9981e6e5b8a0d2fa464abe56f1474deca8c6467cdbf44",
+        "sha256": "6d5bf070e8e77c12d17450ec8008216dfbef96cd4e991b9fb0566ba59ccdf2a6",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1248,27 +1367,27 @@
       "classification": "Extended",
       "economy_eligible": true,
       "stock": 1870,
-      "unit_price_q1_usd": 0.2166,
+      "unit_price_q1_usd": 0.2165,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.2166
+          0.2165
         ],
         [
           50,
           149,
-          0.1822
+          0.1821
         ],
         [
           150,
           999,
-          0.1674
+          0.1673
         ],
         [
           1000,
           1999,
-          0.1402
+          0.1401
         ],
         [
           2000,
@@ -1283,14 +1402,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:41Z",
+        "retrieved_at_utc": "2026-11-03T09:00:46Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C207850"
         },
-        "sha256": "0487895dc092972a9fc2d04fda90ddc2cc541e04c7583bc503396247f047871c",
+        "sha256": "5b38036062816ef785c22a4cf2ecc009c10673ec00e5de315f974d735e64d57d",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1306,13 +1425,13 @@
       "package": "SMD,10.8x10mm",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 945,
-      "unit_price_q1_usd": 0.1986,
+      "stock": 746,
+      "unit_price_q1_usd": 0.1985,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1986
+          0.1985
         ],
         [
           50,
@@ -1327,7 +1446,7 @@
         [
           1000,
           1999,
-          0.1346
+          0.1345
         ],
         [
           2000,
@@ -1342,14 +1461,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:42Z",
+        "retrieved_at_utc": "2026-11-03T09:00:48Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C207852"
         },
-        "sha256": "6d95ab4ed03137d8ba5f76de0e9bc5c66d5393a84c6a8f07690dcab0fee7da4f",
+        "sha256": "f19083737f4dfd2c9d4466b6a62015b49d5d6487aae97d57100438e98b795310",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1358,6 +1477,65 @@
       "qty_S8": 1,
       "qty_S7": 1
     },
+    "C21120": {
+      "code": "C21120",
+      "mpn": "CL10B224KA8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 925210,
+      "unit_price_q1_usd": 0.0093,
+      "price_ladder_usd": [
+        [
+          1,
+          499,
+          0.0093
+        ],
+        [
+          500,
+          1499,
+          0.0074
+        ],
+        [
+          1500,
+          3999,
+          0.0064
+        ],
+        [
+          4000,
+          23999,
+          0.0051
+        ],
+        [
+          24000,
+          47999,
+          0.0045
+        ],
+        [
+          48000,
+          -1,
+          0.0042
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T09:00:50Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C21120"
+        },
+        "sha256": "f85af0469b7249e207441586027541d5ceabfcf2dc8316f9613c9d23e7e2349d",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "qty_S8": 1,
+      "qty_S7": 0
+    },
     "C21122": {
       "code": "C21122",
       "mpn": "CL10B223KB8NNNC",
@@ -1365,7 +1543,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 906994,
+      "stock": 879190,
       "unit_price_q1_usd": 0.0057,
       "price_ladder_usd": [
         [
@@ -1401,14 +1579,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:43Z",
+        "retrieved_at_utc": "2026-11-03T09:00:52Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C21122"
         },
-        "sha256": "fe27905af159a286df4746f4b09097b909f479113426f166fe21f0217ecb1edf",
+        "sha256": "47423505bd5d26e70cb29ef57f2c0eb56fc2f5e0288a6eb052c546a79480d24c",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1424,7 +1602,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 20512402,
+      "stock": 20203881,
       "unit_price_q1_usd": 0.0022,
       "price_ladder_usd": [
         [
@@ -1460,14 +1638,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:44Z",
+        "retrieved_at_utc": "2026-11-03T09:00:54Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C21189"
         },
-        "sha256": "ecb55dc981924bbf7694ece545a9c108da12cfe60235ebadd67ebc8cce6ad143",
+        "sha256": "92326cf62f7debca2e283804b792d53b13de18918ef3a8f3ca995eed9e44d051",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1483,7 +1661,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 30313051,
+      "stock": 29242752,
       "unit_price_q1_usd": 0.0017,
       "price_ladder_usd": [
         [
@@ -1519,14 +1697,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:45Z",
+        "retrieved_at_utc": "2026-11-03T09:00:56Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C21190"
         },
-        "sha256": "957d753adb2037d093762d9d7ad321e9dde31eb7e715a6b28f3e602c2e5f86c9",
+        "sha256": "9e79b6b5cb493aa6c6be876ad550f63cd962ec4787ae54681db6c08fc1ec13de",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1542,50 +1720,50 @@
       "package": "VQFN-HR-21(3x5)",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 3274,
-      "unit_price_q1_usd": 6.359,
+      "stock": 2947,
+      "unit_price_q1_usd": 6.3567,
       "price_ladder_usd": [
         [
           1,
           9,
-          6.359
+          6.3567
         ],
         [
           10,
           29,
-          5.437
+          5.435
         ],
         [
           30,
           99,
-          4.8743
+          4.8725
         ],
         [
           100,
           101,
-          4.4018
+          4.4002
         ],
         [
           102,
           103,
-          4.4018
+          4.4002
         ],
         [
           104,
           -1,
-          4.4018
+          4.4002
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:47Z",
+        "retrieved_at_utc": "2026-11-03T09:00:58Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22375748"
         },
-        "sha256": "0f40a13cbcae166504536812d88019448c371e130d79e16ad09da3d6204e387e",
+        "sha256": "56a529d0ddeca646c72e7e0b5469ec4100112c50ec5b4f01cc4b95e957596ab1",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1601,13 +1779,13 @@
       "package": "SOIC-14",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 1750,
-      "unit_price_q1_usd": 0.256,
+      "stock": 1745,
+      "unit_price_q1_usd": 0.2559,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.256
+          0.2559
         ],
         [
           50,
@@ -1617,7 +1795,7 @@
         [
           150,
           499,
-          0.1912
+          0.1911
         ],
         [
           500,
@@ -1627,7 +1805,7 @@
         [
           3000,
           5999,
-          0.1561
+          0.156
         ],
         [
           6000,
@@ -1637,14 +1815,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:48Z",
+        "retrieved_at_utc": "2026-11-03T09:01:00Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22427890"
         },
-        "sha256": "b94f01263bb613a722618132ad1a4f103cbc2c1dd0c90e49fb4b1145eed101f6",
+        "sha256": "c7b412bd1182b9f3dc69bc179fab7320743fcd4962e14fe3815d118fe4e7616f",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1660,7 +1838,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 970390,
+      "stock": 948721,
       "unit_price_q1_usd": 0.0031,
       "price_ladder_usd": [
         [
@@ -1696,14 +1874,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:49Z",
+        "retrieved_at_utc": "2026-11-03T09:01:02Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22790"
         },
-        "sha256": "2e906f757e09c094a167dff5d5306e41a564600f074bdd848bcd4ab08937bad9",
+        "sha256": "6f1542a374bfc7bfd729c7ef7f92c097a9f480db11447c9226365b31f66cdff4",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1719,7 +1897,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 432086,
+      "stock": 420350,
       "unit_price_q1_usd": 0.0021,
       "price_ladder_usd": [
         [
@@ -1755,14 +1933,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:50Z",
+        "retrieved_at_utc": "2026-11-03T09:01:04Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22797"
         },
-        "sha256": "d42a4baaf0ddbc0f55359cd45c8f02d96f40b85cc0263fd7eacca817f4f63472",
+        "sha256": "45725f1d4c0a93508b25387ca2546751cd1ba0a9bc0f702506c37858eb32df2f",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1778,7 +1956,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3544042,
+      "stock": 3481589,
       "unit_price_q1_usd": 0.0029,
       "price_ladder_usd": [
         [
@@ -1814,14 +1992,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:51Z",
+        "retrieved_at_utc": "2026-11-03T09:01:05Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22809"
         },
-        "sha256": "cd9825e6d05b3905580036fd8fcaee90c5734eca4e5cf101b4ecfc4ddc6e2481",
+        "sha256": "62e179479eaa4cdd281788f000a1ed63f953b2b1ba159f85f5c3e732a9f978ec",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1837,7 +2015,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 7000235,
+      "stock": 6869830,
       "unit_price_q1_usd": 0.0077,
       "price_ladder_usd": [
         [
@@ -1873,14 +2051,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:52Z",
+        "retrieved_at_utc": "2026-11-03T09:01:08Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C2286"
         },
-        "sha256": "45a0026a7e6b40d29f907fa15c59ed9e132f4bc0a19ea11a65f6952b684bdea0",
+        "sha256": "697377f5a32cd6a7619821419535dca03318f14b7684a304f49a088ed1cf12bf",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -1896,7 +2074,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1114528,
+      "stock": 1093270,
       "unit_price_q1_usd": 0.0015,
       "price_ladder_usd": [
         [
@@ -1932,20 +2110,20 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:53Z",
+        "retrieved_at_utc": "2026-11-03T09:01:09Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22961"
         },
-        "sha256": "3b4eb606d4bfeded6e5c2b18fc77b7b95330f25af1505a907cc6e9ff6b67271e",
+        "sha256": "eb01129a521e4440a0bf3a3826bbcccd352d9c1503d9cfb151737c486ba3e487",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 0,
+      "qty_S8": 1,
       "qty_S7": 1
     },
     "C22978": {
@@ -1955,7 +2133,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 5118547,
+      "stock": 5002943,
       "unit_price_q1_usd": 0.0022,
       "price_ladder_usd": [
         [
@@ -1991,14 +2169,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:54Z",
+        "retrieved_at_utc": "2026-11-03T09:01:11Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C22978"
         },
-        "sha256": "ce8223e154ef1a11be839d8751a8b98171f23090f2b3903bafcac847e708787e",
+        "sha256": "c17aa6480343eca88d0e8066ae36c4a5c2fd5235436fc29e292102150873ff6a",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2014,7 +2192,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 4203923,
+      "stock": 4006342,
       "unit_price_q1_usd": 0.0024,
       "price_ladder_usd": [
         [
@@ -2050,14 +2228,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:55Z",
+        "retrieved_at_utc": "2026-11-03T09:01:13Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23140"
         },
-        "sha256": "6c245b7445568d2ceb1e1d383c291d087f74f67a98e19eb78e2f0cfcaef978fb",
+        "sha256": "4e03ee54c6be1f8247dd59b1bd93cce6241f72c83337bac0b6141d8b261e7a5b",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2073,7 +2251,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1020445,
+      "stock": 993609,
       "unit_price_q1_usd": 0.003,
       "price_ladder_usd": [
         [
@@ -2109,20 +2287,20 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:56Z",
+        "retrieved_at_utc": "2026-11-03T09:01:15Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23178"
         },
-        "sha256": "3f30d35961e8edc779886ab2cea713a44f1d4aad88e9360acb0d85a10543576c",
+        "sha256": "bfa153975fe5089708681b2f1f341802c3f1ae6d7b19f6e56f15e25dff029481",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 1,
+      "qty_S8": 3,
       "qty_S7": 1
     },
     "C23186": {
@@ -2132,7 +2310,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 21092952,
+      "stock": 20859118,
       "unit_price_q1_usd": 0.0015,
       "price_ladder_usd": [
         [
@@ -2168,14 +2346,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:57Z",
+        "retrieved_at_utc": "2026-11-03T09:01:17Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23186"
         },
-        "sha256": "11835460a738b274f6db910d1f3959dad95c25175ebb15e0ae46a1fd3d164cb6",
+        "sha256": "3e5f883f5a17453a46fa1606ea602b5e865c13c6d9e82ecc6b0268deb60e5e58",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2191,7 +2369,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 4486161,
+      "stock": 4443782,
       "unit_price_q1_usd": 0.0021,
       "price_ladder_usd": [
         [
@@ -2227,14 +2405,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:22:58Z",
+        "retrieved_at_utc": "2026-11-03T09:01:19Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23193"
         },
-        "sha256": "b4a8be36f774c172fdd28f49495c4ac56188ef86e82836c7537bbfe9c7557dd5",
+        "sha256": "36ca44ff90914d923653e34b221301160878c879c41269955f22d156816e5072",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2250,7 +2428,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 810261,
+      "stock": 795904,
       "unit_price_q1_usd": 0.0027,
       "price_ladder_usd": [
         [
@@ -2286,14 +2464,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:00Z",
+        "retrieved_at_utc": "2026-11-03T09:01:21Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23206"
         },
-        "sha256": "80a2e5d8ccb37e316a2215b51a12ea93b1256c1fd41b9db2aaebd658cc809b5f",
+        "sha256": "9b71cdfc8020dc206a91fe7abee77f5f7e00b48383de1dbeeecdcf4b44cdf318",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2309,7 +2487,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1174640,
+      "stock": 1148030,
       "unit_price_q1_usd": 0.0023,
       "price_ladder_usd": [
         [
@@ -2345,14 +2523,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:01Z",
+        "retrieved_at_utc": "2026-11-03T09:01:23Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23212"
         },
-        "sha256": "6e3693884c146c4f1429d89613ba6c103df4731b271d29bddcd7a72796183404",
+        "sha256": "c21fd1b9ad980ecb3f8e8560dcf254f1d0f57ccc898f8b5cf34c45ce1a2293bf",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2368,7 +2546,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 950218,
+      "stock": 931002,
       "unit_price_q1_usd": 0.0016,
       "price_ladder_usd": [
         [
@@ -2404,14 +2582,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:02Z",
+        "retrieved_at_utc": "2026-11-03T09:01:25Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23231"
         },
-        "sha256": "7a63bc3aac630a4d44559a7832866203a5059f3d92b89575583abaf7eec2aefc",
+        "sha256": "bfb8c5578182654b61d226f82285894fe4abb5c0b3ccbc1d0548ddf0e260e0c6",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2427,7 +2605,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1035300,
+      "stock": 1011579,
       "unit_price_q1_usd": 0.0018,
       "price_ladder_usd": [
         [
@@ -2463,14 +2641,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:03Z",
+        "retrieved_at_utc": "2026-11-03T09:01:27Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23234"
         },
-        "sha256": "8c0726d91464a2377c1f135b440e8470d9f4aa109d5fd1bc97e4a4cf4e6e3836",
+        "sha256": "a94bc3fcf3c2003b33e263be0bf1f1a7715c22d2ef33e822282773e0f6bb37a5",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2486,7 +2664,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 603928,
+      "stock": 594915,
       "unit_price_q1_usd": 0.0031,
       "price_ladder_usd": [
         [
@@ -2522,14 +2700,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:04Z",
+        "retrieved_at_utc": "2026-11-03T09:01:28Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C23260"
         },
-        "sha256": "3bf4aa688f931f7ff1f0fd9db9be615ee021d80840e2620fecc3e4b3f9094437",
+        "sha256": "0c96b3f733e49b2a7c1f7f469c83a0e965629368c6508f69fc8f243fc6682661",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2546,49 +2724,49 @@
       "classification": "Extended",
       "economy_eligible": true,
       "stock": 3339,
-      "unit_price_q1_usd": 0.5168,
+      "unit_price_q1_usd": 0.5167,
       "price_ladder_usd": [
         [
           1,
           9,
-          0.5168
+          0.5167
         ],
         [
           10,
           29,
-          0.4086
+          0.4084
         ],
         [
           30,
           99,
-          0.3626
+          0.3625
         ],
         [
           100,
           499,
-          0.3052
+          0.3051
         ],
         [
           500,
           999,
-          0.2429
+          0.2428
         ],
         [
           1000,
           -1,
-          0.2281
+          0.228
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:05Z",
+        "retrieved_at_utc": "2026-11-03T09:01:30Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C236914"
         },
-        "sha256": "6ddb5642e17c02a95d960ed2850cbd76cc3a96682bc20d44699f50a639fcda45",
+        "sha256": "92a11cfee5633d628f66569a85dbea4371b809ba6da289df68d6551ffb3a8621",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2604,7 +2782,7 @@
       "package": "1206",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 651496,
+      "stock": 647602,
       "unit_price_q1_usd": 0.0082,
       "price_ladder_usd": [
         [
@@ -2615,17 +2793,17 @@
         [
           500,
           1499,
-          0.0067
+          0.0068
         ],
         [
           1500,
           4999,
-          0.0059
+          0.006
         ],
         [
           5000,
           24999,
-          0.0047
+          0.0048
         ],
         [
           25000,
@@ -2640,14 +2818,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:06Z",
+        "retrieved_at_utc": "2026-11-03T09:01:33Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C25334"
         },
-        "sha256": "3248b0e459a3cff641bbdd5ee2920e58e77e1f032e0601b28d8b6b6e24cdc28c",
+        "sha256": "c767839b1432129ebd415fb37c195c251993332d86859160bd6d3b01fcc053e7",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2663,7 +2841,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 17346751,
+      "stock": 17058787,
       "unit_price_q1_usd": 0.0029,
       "price_ladder_usd": [
         [
@@ -2699,20 +2877,20 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:07Z",
+        "retrieved_at_utc": "2026-11-03T09:01:35Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C25803"
         },
-        "sha256": "cd5d7d757784f0c49af1f415b4e5edb4817b806d9ef643294a058e8f9d659480",
+        "sha256": "1dffda7c2b342196422cfe8faf77dd870f536f4c6feabdb4ac96623c736e8e66",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 5,
+      "qty_S8": 6,
       "qty_S7": 11
     },
     "C25804": {
@@ -2722,7 +2900,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 47800474,
+      "stock": 45709988,
       "unit_price_q1_usd": 0.0024,
       "price_ladder_usd": [
         [
@@ -2758,14 +2936,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:08Z",
+        "retrieved_at_utc": "2026-11-03T09:01:36Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C25804"
         },
-        "sha256": "812c208bb6d392ca87c8ddb4135b42da9999fdb8de3dac6b623802f07b47e8ce",
+        "sha256": "47b2b44ea4dd778db32c03d4cacc3fb74fbcee9a73cafc85f51c426d88e62c88",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2781,7 +2959,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 1276801,
+      "stock": 1256809,
       "unit_price_q1_usd": 0.0016,
       "price_ladder_usd": [
         [
@@ -2817,14 +2995,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:10Z",
+        "retrieved_at_utc": "2026-11-03T09:01:38Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C25808"
         },
-        "sha256": "2666384d13bceb2fb73b1ef1d1226899c4e8763cb12e96eec119ef2a65e9d30d",
+        "sha256": "17cbdf1ee61ed3811d586a79eefb518aacf4b09fee57a40942dc3a994aee0d1b",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2840,7 +3018,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3021350,
+      "stock": 2936456,
       "unit_price_q1_usd": 0.0019,
       "price_ladder_usd": [
         [
@@ -2876,14 +3054,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:11Z",
+        "retrieved_at_utc": "2026-11-03T09:01:40Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C25819"
         },
-        "sha256": "5cb3b6422c5442ccda1b813c45caa2388abe88db77f187abdc11fc9dbd7cd6ab",
+        "sha256": "a37edf8d24c9f8e834c4516b9c1a14dfc0d39ae6d8b4ff7c55cd8d7f593dbb0e",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2900,27 +3078,27 @@
       "classification": "Extended",
       "economy_eligible": true,
       "stock": 6636,
-      "unit_price_q1_usd": 0.3105,
+      "unit_price_q1_usd": 0.3103,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.3105
+          0.3103
         ],
         [
           50,
           149,
-          0.2437
+          0.2436
         ],
         [
           150,
           499,
-          0.2112
+          0.2111
         ],
         [
           500,
           2499,
-          0.1822
+          0.1821
         ],
         [
           2500,
@@ -2935,14 +3113,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:12Z",
+        "retrieved_at_utc": "2026-11-03T09:01:42Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C2867684"
         },
-        "sha256": "1550e9f7ed651cc5a7ae7f26b95f988043bec302c7d05bf9f45e8a83801edf01",
+        "sha256": "45341017292c8e0431705221f8c7943ed5a1b38263306a17f6109452b2f35219",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -2958,50 +3136,50 @@
       "package": "SMD,4.2x3.3mm",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 1510,
-      "unit_price_q1_usd": 0.7006,
+      "stock": 1525,
+      "unit_price_q1_usd": 0.7003,
       "price_ladder_usd": [
         [
           1,
           9,
-          0.7006
+          0.7003
         ],
         [
           10,
           29,
-          0.5611
+          0.5609
         ],
         [
           30,
           99,
-          0.4906
+          0.4904
         ],
         [
           100,
           499,
-          0.42
+          0.4199
         ],
         [
           500,
           999,
-          0.379
+          0.3789
         ],
         [
           1000,
           -1,
-          0.3577
+          0.3576
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:13Z",
+        "retrieved_at_utc": "2026-11-03T09:01:44Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C2886925"
         },
-        "sha256": "bd97fcb39327890232181861e9b55629e91ead20f70fa75592820b9235774f91",
+        "sha256": "5b17fef357c821c1a8b7b9404adf895bf9dc734a8ba52849505442113726a0c1",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3018,12 +3196,12 @@
       "classification": "Extended",
       "economy_eligible": true,
       "stock": 3133,
-      "unit_price_q1_usd": 0.1953,
+      "unit_price_q1_usd": 0.1952,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1953
+          0.1952
         ],
         [
           50,
@@ -3033,34 +3211,34 @@
         [
           150,
           499,
-          0.1246
+          0.1245
         ],
         [
           500,
           2999,
-          0.0982
+          0.0981
         ],
         [
           3000,
           5999,
-          0.0982
+          0.0981
         ],
         [
           6000,
           -1,
-          0.0982
+          0.0981
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:14Z",
+        "retrieved_at_utc": "2026-11-03T09:01:46Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C2917888"
         },
-        "sha256": "5d50d830688a29d51131dc47092fd66ccca246dbba82605a976942d8a83fed94",
+        "sha256": "105b520174be3766cc043c3b25408fb6640672411c836af9e5880ee6fd91592a",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3076,13 +3254,13 @@
       "package": "DO-214AA",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 2639,
-      "unit_price_q1_usd": 0.1689,
+      "stock": 2624,
+      "unit_price_q1_usd": 0.1688,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1689
+          0.1688
         ],
         [
           50,
@@ -3092,7 +3270,7 @@
         [
           150,
           499,
-          0.1338
+          0.1337
         ],
         [
           500,
@@ -3112,14 +3290,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:15Z",
+        "retrieved_at_utc": "2026-11-03T09:01:48Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C315990"
         },
-        "sha256": "7ec5898595fd74da891943dd52f8dfe9d52d344aa8c244f59e673c8f2ece2b42",
+        "sha256": "dfe039507caed419e5a5acf5af778cc87340cef42332f7073ccc3f28b4a57628",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3135,7 +3313,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 2873642,
+      "stock": 2819068,
       "unit_price_q1_usd": 0.0042,
       "price_ladder_usd": [
         [
@@ -3171,14 +3349,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:16Z",
+        "retrieved_at_utc": "2026-11-03T09:01:50Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C31850"
         },
-        "sha256": "4429a52e80a8a0bd8a30fc0e0365c539900e62e5c2d59e999d2719b5f829b141",
+        "sha256": "fa4f1155070ee7e8b0b8b34a7edb660bcd76f177d44edbdf5f406af7e850c4e8",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3194,7 +3372,7 @@
       "package": "0603",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 36159,
+      "stock": 35790,
       "unit_price_q1_usd": 0.0366,
       "price_ladder_usd": [
         [
@@ -3230,14 +3408,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:17Z",
+        "retrieved_at_utc": "2026-11-03T09:01:52Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C326736"
         },
-        "sha256": "67063f78402e5a6706a05852ca58505b28405d1cb6118f0eee5280b41dbbce56",
+        "sha256": "e738052a0836deb92c658de193c33b049a12e943d23eb52711bce2c51d4df9dd",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3253,18 +3431,18 @@
       "package": "SOIC-14",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 36662,
-      "unit_price_q1_usd": 0.1807,
+      "stock": 34094,
+      "unit_price_q1_usd": 0.1806,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1807
+          0.1806
         ],
         [
           50,
           149,
-          0.141
+          0.1409
         ],
         [
           150,
@@ -3289,14 +3467,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:18Z",
+        "retrieved_at_utc": "2026-11-03T09:01:54Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C337768"
         },
-        "sha256": "faf5f77a1b590d2a9d84371961a33c3260d930a25eb69ffbc9d6c43801257ec0",
+        "sha256": "21ac917994fc1e076ba14bc07fceada15ab65d1fef32fe583d964613525ee034",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3313,12 +3491,12 @@
       "classification": "Extended",
       "economy_eligible": true,
       "stock": 5108,
-      "unit_price_q1_usd": 0.1174,
+      "unit_price_q1_usd": 0.1173,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1174
+          0.1173
         ],
         [
           50,
@@ -3328,7 +3506,7 @@
         [
           150,
           899,
-          0.0867
+          0.0866
         ],
         [
           900,
@@ -3338,24 +3516,24 @@
         [
           2700,
           5399,
-          0.0703
+          0.0702
         ],
         [
           5400,
           -1,
-          0.0672
+          0.0671
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:19Z",
+        "retrieved_at_utc": "2026-11-03T09:01:56Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C350012"
         },
-        "sha256": "287e94a77f75c64f77c2d16fdb8583e5b9e3ca1ee45bbdd605e16ca31c4e314d",
+        "sha256": "fc4a79b6bd9abaca51da83d57040cdff3fcb7a9cd719f2d77a061fdc87c5cb37",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3407,14 +3585,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:20Z",
+        "retrieved_at_utc": "2026-11-03T09:01:58Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C393095"
         },
-        "sha256": "6fef238026df295f4e4ad75a49d12e646a4a4ab87339258f8efc24279d033b67",
+        "sha256": "72882dac3fb94f88fc0346a56edcad4081ff43b5b6d45e5d95aa36f3aac3a18a",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3430,33 +3608,33 @@
       "package": "SOT-23-3",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 14494,
-      "unit_price_q1_usd": 0.4315,
+      "stock": 14454,
+      "unit_price_q1_usd": 0.4314,
       "price_ladder_usd": [
         [
           1,
           9,
-          0.4315
+          0.4314
         ],
         [
           10,
           29,
-          0.3347
+          0.3346
         ],
         [
           30,
           99,
-          0.2937
+          0.2936
         ],
         [
           100,
           499,
-          0.2412
+          0.2411
         ],
         [
           500,
           999,
-          0.2183
+          0.2182
         ],
         [
           1000,
@@ -3466,14 +3644,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:21Z",
+        "retrieved_at_utc": "2026-11-03T09:02:00Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C398375"
         },
-        "sha256": "ceab19cdfa78c28b6f8e894f0eb56be1be1327694e1e855d155f17217989bf0e",
+        "sha256": "7d257eaefa20abefdecd7e838aeabe1bf1a1dba289152700209f254fd49c02fe",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3489,7 +3667,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 6183984,
+      "stock": 6030344,
       "unit_price_q1_usd": 0.0021,
       "price_ladder_usd": [
         [
@@ -3525,14 +3703,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:23Z",
+        "retrieved_at_utc": "2026-11-03T09:02:03Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C4184"
         },
-        "sha256": "5910f9212b675c8e5e54e5f6bdf23cd9e6f24d4222a2da0756dc59c9f9f571ba",
+        "sha256": "846093e979a87bfba7a97eed3f617bacb78f2011ef81399fc2e443685abd6e43",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3548,7 +3726,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 5329087,
+      "stock": 5337551,
       "unit_price_q1_usd": 0.0018,
       "price_ladder_usd": [
         [
@@ -3584,14 +3762,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:25Z",
+        "retrieved_at_utc": "2026-11-03T09:02:05Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C4190"
         },
-        "sha256": "e2f74b08c7648618156d872ed284c062ab13e9e8c5742f2d0554b82fb1d77702",
+        "sha256": "64e2c81b14f536d401b3da5eae28e7146f1507d7e11c4f6a3186f126b74eaf17",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3607,7 +3785,7 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3143890,
+      "stock": 3127003,
       "unit_price_q1_usd": 0.0021,
       "price_ladder_usd": [
         [
@@ -3643,14 +3821,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:27Z",
+        "retrieved_at_utc": "2026-11-03T09:02:08Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C4216"
         },
-        "sha256": "c8b56ba823d0636e51454341c66ff6d149bf8e0ef10969125ca6cd46f319aa20",
+        "sha256": "af9b0198ae400272a2061b8e042be93fa252303530976e386e9fecb6c642593f",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3666,50 +3844,50 @@
       "package": "ESSOP-10",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 9208,
-      "unit_price_q1_usd": 0.4332,
+      "stock": 8343,
+      "unit_price_q1_usd": 0.433,
       "price_ladder_usd": [
         [
           1,
           9,
-          0.4332
+          0.433
         ],
         [
           10,
           29,
-          0.3397
+          0.3395
         ],
         [
           30,
           99,
-          0.3003
+          0.3002
         ],
         [
           100,
           499,
-          0.2494
+          0.2493
         ],
         [
           500,
           999,
-          0.2281
+          0.228
         ],
         [
           1000,
           -1,
-          0.215
+          0.2149
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:29Z",
+        "retrieved_at_utc": "2026-11-03T09:02:10Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C42459160"
         },
-        "sha256": "9d41aaa0cff0d8491bcd2354a8b53b781ec72387a39302cf9c83cadfdc37b88d",
+        "sha256": "b8d7e850f5625759b40963e0006eaccbe19ffe840bb5fc24e92f931f4fb0db26",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3725,7 +3903,7 @@
       "package": "SOT-89",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 116535,
+      "stock": 114974,
       "unit_price_q1_usd": 0.2023,
       "price_ladder_usd": [
         [
@@ -3746,12 +3924,12 @@
         [
           1000,
           1999,
-          0.111
+          0.1109
         ],
         [
           2000,
           4999,
-          0.1054
+          0.1053
         ],
         [
           5000,
@@ -3761,14 +3939,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:30Z",
+        "retrieved_at_utc": "2026-11-03T09:02:12Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C47787"
         },
-        "sha256": "677dc4d6bfa327a689c5840f6eb65984c095d1383a63a608f49436d8f3e51c77",
+        "sha256": "255b4df4357eacb7201281a754d34aad7063847a5997010f268a701331c2f908",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3784,50 +3962,50 @@
       "package": "SO-PowerPAD-8",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 18164,
-      "unit_price_q1_usd": 0.9106,
+      "stock": 18079,
+      "unit_price_q1_usd": 0.948,
       "price_ladder_usd": [
         [
           1,
           9,
-          0.9106
+          0.948
         ],
         [
           10,
           29,
-          0.7613
+          0.8299
         ],
         [
           30,
           99,
-          0.6547
+          0.7184
         ],
         [
           100,
           499,
-          0.5726
+          0.6413
         ],
         [
           500,
           999,
-          0.5447
+          0.6069
         ],
         [
           1000,
           -1,
-          0.5283
+          0.5905
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:32Z",
+        "retrieved_at_utc": "2026-11-03T09:02:14Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C5149193"
         },
-        "sha256": "f971319a37f5ac6aaa471da2626b892fd242d512647eca3fa92cfb858200b67e",
+        "sha256": "8bdcf4a35696198747725c972121761a887b7df6b293e9cbdadc4325aecfae2a",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3843,50 +4021,50 @@
       "package": "SOT-583",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 4307,
-      "unit_price_q1_usd": 1.1271,
+      "stock": 3506,
+      "unit_price_q1_usd": 1.1267,
       "price_ladder_usd": [
         [
           1,
           9,
-          1.1271
+          1.1267
         ],
         [
           10,
           29,
-          0.927
+          0.9267
         ],
         [
           30,
           99,
-          0.8171
+          0.8168
         ],
         [
           100,
           499,
-          0.6924
+          0.6921
         ],
         [
           500,
           999,
-          0.6366
+          0.6364
         ],
         [
           1000,
           -1,
-          0.612
+          0.6118
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:34Z",
+        "retrieved_at_utc": "2026-11-03T09:02:15Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C5219272"
         },
-        "sha256": "ab6fd55c9158b889fb9b2cb40d714f09a753179d7088dccdc721b8f0bb741dfd",
+        "sha256": "97c27dfae9b5cc0cef0ea6b442ba654f75deffba94ccf87ac1a955b1be36f7be",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3902,7 +4080,7 @@
       "package": "SOT-23",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 896925,
+      "stock": 884054,
       "unit_price_q1_usd": 0.0186,
       "price_ladder_usd": [
         [
@@ -3938,14 +4116,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:35Z",
+        "retrieved_at_utc": "2026-11-03T09:02:17Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C53444"
         },
-        "sha256": "a1ae334d1e6ddd42b09798b54a8e991bb2acc35926c4825cb7a5b718b2ffbc84",
+        "sha256": "d72173579c3212cc2c9c7add1a81688c6fb7395005dc3ea4a05c98fc4cc88a8f",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -3961,13 +4139,13 @@
       "package": "1206",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 11180,
-      "unit_price_q1_usd": 0.1036,
+      "stock": 11171,
+      "unit_price_q1_usd": 0.1035,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.1036
+          0.1035
         ],
         [
           50,
@@ -3997,14 +4175,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:37Z",
+        "retrieved_at_utc": "2026-11-03T09:02:19Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C553937"
         },
-        "sha256": "0c103fba97f96e38f893aa8891ead8b62b3f386217f44019d89ffc7e96723386",
+        "sha256": "07195b88d1534a87b7fae49a07d65a1c5c099910320266272b6dccc7c7867acf",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -4020,50 +4198,50 @@
       "package": "SOIC-14",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 12812,
-      "unit_price_q1_usd": 0.2255,
+      "stock": 12390,
+      "unit_price_q1_usd": 0.2254,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.2255
+          0.2254
         ],
         [
           50,
           149,
-          0.1778
+          0.1777
         ],
         [
           150,
           499,
-          0.1574
+          0.1573
         ],
         [
           500,
           2499,
-          0.132
+          0.1319
         ],
         [
           2500,
           4999,
-          0.109
+          0.1089
         ],
         [
           5000,
           -1,
-          0.1023
+          0.1022
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:39Z",
+        "retrieved_at_utc": "2026-11-03T09:02:21Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C6762"
         },
-        "sha256": "a3a11777da3b3c01ab9bd7edeeecc71553366be3cc895c060a1fb1108de6b40d",
+        "sha256": "b31ed31287549153c69a784c54b65cce7a8f31911d462ce4f3fcd99453e93079",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -4079,7 +4257,7 @@
       "package": "SOT-23-5",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 32167,
+      "stock": 29038,
       "unit_price_q1_usd": 0.1718,
       "price_ladder_usd": [
         [
@@ -4095,34 +4273,34 @@
         [
           150,
           499,
-          0.121
+          0.1211
         ],
         [
           500,
           2999,
-          0.1019
+          0.1021
         ],
         [
           3000,
           5999,
-          0.0936
+          0.0935
         ],
         [
           6000,
           -1,
-          0.0885
+          0.0884
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:41Z",
+        "retrieved_at_utc": "2026-11-03T09:02:23Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C7836"
         },
-        "sha256": "be4f1988acfbbdca1478595976b01681d2dba2aa2cbff24dddcaaf14e154d917",
+        "sha256": "bd4f5f48e514ecd8d2703ecd8459d40afc4d2e0053cd01801608beb0a26e0223",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -4138,13 +4316,13 @@
       "package": "SOIC-14",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 65054,
-      "unit_price_q1_usd": 0.2171,
+      "stock": 64839,
+      "unit_price_q1_usd": 0.217,
       "price_ladder_usd": [
         [
           1,
           49,
-          0.2171
+          0.217
         ],
         [
           50,
@@ -4154,17 +4332,17 @@
         [
           150,
           499,
-          0.1479
+          0.1478
         ],
         [
           500,
           2499,
-          0.1305
+          0.1304
         ],
         [
           2500,
           4999,
-          0.109
+          0.1089
         ],
         [
           5000,
@@ -4174,14 +4352,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:42Z",
+        "retrieved_at_utc": "2026-11-03T09:02:25Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C7932"
         },
-        "sha256": "071002d060c0e45629a5f7d91846c72b77d97ccf77e05c000cd26af2e5c914bf",
+        "sha256": "7bf1409a010d8920d568960f3cb4fd7a71c003e336e9dfa6ed215931fd8d79ee",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -4197,56 +4375,56 @@
       "package": "SOT-23",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3327716,
-      "unit_price_q1_usd": 0.0166,
+      "stock": 4171124,
+      "unit_price_q1_usd": 0.0173,
       "price_ladder_usd": [
         [
           1,
           499,
-          0.0166
+          0.0173
         ],
         [
           500,
           2999,
-          0.0129
+          0.0134
         ],
         [
           3000,
           5999,
-          0.0113
+          0.0117
         ],
         [
           6000,
           23999,
-          0.0101
+          0.0105
         ],
         [
           24000,
           50999,
-          0.0096
+          0.01
         ],
         [
           51000,
           -1,
-          0.0092
+          0.0096
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:44Z",
+        "retrieved_at_utc": "2026-11-03T09:02:27Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C8545"
         },
-        "sha256": "31f82c73fc36ef96bfad2a5ccdbb9ac884ed08d3af7d85983454232ca1bd0130",
+        "sha256": "90bf6a3fa53d1ea280fc194886189fce6576d67a46301e98674080555c57176c",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
       },
       "failures": [],
-      "qty_S8": 4,
+      "qty_S8": 5,
       "qty_S7": 6
     },
     "C8678": {
@@ -4256,13 +4434,13 @@
       "package": "SMA(DO-214AC)",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3272340,
-      "unit_price_q1_usd": 0.0352,
+      "stock": 3187120,
+      "unit_price_q1_usd": 0.0351,
       "price_ladder_usd": [
         [
           1,
           199,
-          0.0352
+          0.0351
         ],
         [
           200,
@@ -4272,7 +4450,7 @@
         [
           600,
           4999,
-          0.0252
+          0.0251
         ],
         [
           5000,
@@ -4287,19 +4465,19 @@
         [
           20000,
           -1,
-          0.0156
+          0.0155
         ]
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:46Z",
+        "retrieved_at_utc": "2026-11-03T09:02:29Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C8678"
         },
-        "sha256": "038070c19aa680adb41cc94e1944d8e3972b8637fc33cbd017aa727b8a3caaf4",
+        "sha256": "6e2239be15b55435f6323fc62312519c175e1a8df39af2ac3c6f01d8dc4a8281",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -4315,7 +4493,7 @@
       "package": "0603",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 3067501,
+      "stock": 1740265,
       "unit_price_q1_usd": 0.0302,
       "price_ladder_usd": [
         [
@@ -4351,14 +4529,14 @@
       ],
       "evidence": {
         "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-        "retrieved_at_utc": "2026-11-02T07:23:47Z",
+        "retrieved_at_utc": "2026-11-03T09:02:31Z",
         "http_status": 200,
         "request": {
           "currentPage": 1,
           "pageSize": 20,
           "keyword": "C95204"
         },
-        "sha256": "f08168513da4cfabab1a99a198a199a8f0d5094f94b5e50fa6b3b4ecd9949baa",
+        "sha256": "53db3cc91346932ec7354a6a064e19e5fb186801029be4248cf181dcf9ce38f6",
         "mode": "live",
         "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
         "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
@@ -4369,17 +4547,18 @@
     }
   },
   "summary": {
-    "S8_codes": 60,
+    "S8_codes": 64,
     "S7_codes": 57,
-    "S8_placements": 145,
+    "S8_placements": 155,
     "S7_placements": 195,
     "S8_price_is_partial": true,
     "S8_unpriced_codes": [],
-    "S8_parts_usd_q1": 23.12,
-    "S7_parts_usd_q1": 27.15,
+    "S8_parts_usd_q1": 22.96,
+    "S7_parts_usd_q1": 27.08,
     "S8_non_basic_codes": [
       "C10214",
       "C122538",
+      "C145516",
       "C151257",
       "C155317",
       "C165948",
@@ -4462,13 +4641,16 @@
       "C14663",
       "C15849",
       "C1588",
+      "C1623",
       "C17902",
       "C17928",
       "C19702",
+      "C21120",
       "C21122",
       "C21189",
       "C21190",
       "C22809",
+      "C22961",
       "C22978",
       "C23140",
       "C23178",
@@ -4492,7 +4674,9 @@
     "alternates": {
       "R109": "C50314717 NCT LRAM12CFTR018; C49164939 jieerrui JER1206F1R018; C845266 SART SMF12M1FR018T (18 mOhm 1 % <=75 ppm 1 W 1206; check W >= 1.4 mm and the split-land overlap before use)",
       "D26": "C152106 BORN SMBJ14A; C840775 MDD SMBJ14A (VBR >= 15.6 V and VC <= 23.2 V at >= 25.8 A)",
-      "D24": "C364296 MDD SMBJ20A; C151922 BORN SMBJ20A (VBR >= 22.2 V and VC <= 32.4 V at >= 18.5 A)"
+      "D24": "C364296 MDD SMBJ20A; C151922 BORN SMBJ20A (VBR >= 22.2 V and VC <= 32.4 V at >= 18.5 A)",
+      "D27": "C40919 Nexperia BAV199,215; C68971 CJ BAV199 (IR <= 5 nA at 75 V / 25 C, <= 80 nA at 150 C)",
+      "D28": "C40919 Nexperia BAV199,215; C68971 CJ BAV199 (IR <= 5 nA at 75 V / 25 C, <= 80 nA at 150 C)"
     }
   },
   "basic_only_policy": {

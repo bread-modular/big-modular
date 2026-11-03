@@ -1,13 +1,56 @@
-# usb-power-45w S9.2 / P2.2: routing-ready, unrouted
+# usb-power-45w S9.3 / P2.3: strict 3 A start, unrouted
 
-> **Routing-ready development schematic and placement. Not routed, not a manufacturing release and not
-> bench-qualified.** ±12 V only; **15 V / 3 A USB PD** (CH224A R1 **56k**), TPS552892-Q1 positive converter,
-> LMR38020 negative converter, S8.5 `STARTED` one-shot retained.
+> **Development schematic and placement. Not routed, not a manufacturing release and not bench-qualified.**
+> ±12 V only; **15 V / 3 A USB PD** (CH224A R1 **56k**), TPS552892-Q1 positive converter, LMR38020 negative converter,
+> S8.5 `STARTED` one-shot retained. **S9.3 adds FB-injection soft starts on both converters and sequences U4 after
+> +12 V**, so a strict 3.00 A source starts the module in one attempt.
 > Prototype targets: **+12 V 2.4 A / −12 V 0.8 A, ≤33 W combined**. They are conditional on the routing contract and
 > on the post-prototype acceptance tests.
-> **175 references / 80 functional nets**; an overview sheet plus five pages; all components on F.
+> **185 references / 84 functional nets**; an overview sheet plus five pages; all components on F.
 > No PCB routing was performed: the only copper beyond the pads is the S9.2b thermal-via fields at U5, U4 and U9
 > (26 standard vias, 26 spokes, 3 B.Cu landing pours), next to 15 rule areas. **No via-in-pad anywhere.**
+
+## S9.3 / P2.3: strict 3 A start (2026-11-03)
+
+All three reviews of S9.2b found that the module could not start from a strict 3.00 A PDO: at the published 33 W with
+0.44 mF per rail the demand was **4.649 A for 2.5 ms**, U5 dropped out **14 times** and FAULT latched. U5's ILIM
+(3.69–4.70 A) does not enforce a 3 A contract. S9.3 fixes it in hardware:
+
+| Item | S9.3 change | Evidence |
+| --- | --- | --- |
+| +12 V soft start | Neither converter has a soft-start pin (TPS552892-Q1 tSS 2.5–5 ms internal), so U2 gets an **FB injection**: C84 220n X7R from +12V to SS_P12, D27 BAV199 (SS_P12 → FB_P12 injection diode and the PGND clamp that empties C84 when +12V collapses), R116 470k bleed. While D27 conducts the error amplifier holds FB at its reference, so +12V rises as an RC approach with **τ = R8 × C84 = 15 ms nominal (4.8–18.9 ms over tolerance, X7R bias and temperature)**; C84 current at 0 V is 0.43 A nominal (1.35 A at the fast corner), decaying | `calcs.json` → `startup_qualification.soft_start["+12V"]` |
+| −12 V soft start | Same network on U4: C85 470n, D28 BAV199, R117 470k to the U4 IC ground: **τ = R14 × C85 = 47 ms nominal (15–59 ms)** instead of the 4 ms internal ramp | `soft_start["-12V"]` |
+| U4 sequenced after +12 V | **Q16** (2N7002) tops the U4 enable sink chain; its gate is driven from the U18 delivered-rail monitor **P12_OK through R118 100k / C86 100n**, so U4 enables **3.4–18.3 ms after P12_OK** and drops out with it; **R119 220k** defines N_EN_MID. The TPS552892 PG pin cannot be used: the injection holds FB at the reference for the whole ramp, so PG reads good at ~1 V | `soft_start.sequencing`; `validation.json` → `enable_logic` (Q16/Q15/Q14 chain, R119 ≥ 150k rule) |
+| Placement P2.3 | The ten new parts go into free pockets of the P2.2 floor plan; **no P2.2 part moved**: D27/C84/R116 and Q16/R118/C86 between the U2 VIN bank and U10/U12, D28/C85/R117 by C33, R119 under U11. **Interim:** the FB_P12 / FB_N injection links are 13–15 mm long from these pockets; the U2 sense-escape re-placement (open) pulls them to their dividers | `placement.json`, `board-p1.json` (placement pass, no courtyard overlap) |
+| Net classes | FB_P12 is a labelled net now (it was `Net-(U2-FB)`); FB_P12, SS_P12 and SS_N12 join the QUIET class, and FB_P12 replaces `Net-(U2-FB)` in the U2 cell and AGND-island net lists | `s92_contract.py`, project, `.kicad_dru` |
+
+**Start-up from a strict 3.00 A source** (netlist-derived plant, 14.25 V source + 0.25 Ω cable, fast corner unless
+noted; `calcs.json` → `startup_qualification.demand_rows`):
+
+| Case | Peak input | Time above 3 A | U5 drop-outs | `single_attempt_start` |
+| --- | --- | --- | --- | --- |
+| Published 33 W (2.4 A / 0.33 A), 0.44 mF per rail | 2.888 A | 0 ms | 0 | true |
+| Split load (−12 V 0.8 A), 0.44 mF per rail | 2.955 A | 0 ms | 0 | true |
+| Published 33 W, no rack capacitance | 2.874 A | 0 ms | 0 | true |
+| No load, 0.44 mF per rail | 0.206 A | 0 ms | 0 | true |
+| No load, no rack capacitance | 0.075 A | 0 ms | 0 | true |
+
+The slow corner and a constant-current load model also start in one attempt (peak ≤ 2.941 A; rails good within
+196 ms). Negative controls on a rewired netlist fail as they must: D27 open (+12 V start drives the source into its
+3 A limit), D28 open (14 U5 drop-outs, FAULT), Q16 gate on V3V3 (−12 V enabled before +12 V is good). The
+`verify_s8.py` strict-start check now also fails on any source current-limit event, as test S1 does.
+
+Test S1 passes only with a single attempt, zero U5 drop-outs and no source current-limit event (input ≤ 3.00 A on a
+current probe), both rail monitors good within 250 ms, U4 EN rising 3–18 ms after P12_OK, ARMED by 0.90 s, no FAULT.
+
+Native checks: ERC 0; DRC **0 violations, 0 warnings, 0 exclusions, 411 routing opens** (unrouted); exact
+ref/pin/net parity (185 refs). Sourcing: a fresh live audit (64 codes, 155 placements, 0 failures, 0 zero-stock or
+unpriced codes); S9.3 codes in [s93-sourcing.json](s8-single/s93-sourcing.json) (C21120 and C1623 Basic, C145516
+BAV199 Extended, alternates C40919/C68971); partial quantity-1 parts subtotal $22.96. Record:
+[review-s93.json](s8-single/review-s93.json).
+
+**Not done in S9.3** (open from the three reviews): per-class `track_width` rules and pour-neck screening, the U2
+sense-escape re-placement, and the thermal/connector/no-via/OVP/input-range wording fixes.
 
 ## S9.2b changelog: enforceable DRC contract, no via-in-pad (2026-11-02)
 
@@ -114,7 +157,7 @@ impedance gives 87.2 W at 25 °C and **69.8 W** after the 50 °C derating, a mar
     and the THT option C5454489 needs a footprint/height check.
   - The partial quantity-1 parts subtotal is $23.12, excluding setup fees, PCB, assembly and shipping. This is not an
     order approval.
-- The record [review-s92.json](s8-single/review-s92.json) hashes every tracked source and artefact, including
+- The S9.2 record review-s92.json (git `9cdb9bd`) hashed every tracked source and artefact, including
   `routing-notes.md` and this document.
 
 ### Open items: post-prototype acceptance tests, not design blockers
@@ -136,7 +179,7 @@ decision), and the CAM/assembly review at order time (a separate authorised task
 
 - [Native project](../hardware/single/usb-power-45w-single.kicad_pro), [schematic PDF](usb-power-45w-single-schematic.pdf), [BOM](s8-single/bom.csv).
 - [Routing notes](s8-single/routing-notes.md), [placement and routing contract](s8-single/placement.json), [board checks](s8-single/board-p1.json), [mechanics](s8-single/mechanical.json).
-- [Calculations](s8-single/calcs.json), [validation](s8-single/validation.json), [review-s92](s8-single/review-s92.json).
+- [Calculations](s8-single/calcs.json), [validation](s8-single/validation.json), [review-s93](s8-single/review-s93.json).
 - [Assembly PDF](s8-single/assembly/usb-power-45w-single-placement.pdf), [STEP](s8-single/assembly/usb-power-45w-single-assembly.step.zip), [collision screen](s8-single/assembly/assembly-report.json).
 - [S9.2 sourcing evidence](s8-single/s92-sourcing.json) (live rows for every S9.2 code and alternate) and the [whole-design live audit](s8-single/sourcing.json). The older s91/s90/s84/s83 snapshots remain dated evidence, not stock claims.
 
@@ -167,7 +210,7 @@ python3 -B modules/usb-power-45w/tools/s8_mechanical.py
 python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v
 # Stage new files first: the record hashes tracked files only.
 # Move the old record aside first: its own test skips without it.
-python3 -B modules/usb-power-45w/tools/review_s8.py --check <new-check-directory> --tests-log <tests-log> --out modules/usb-power-45w/docs/s8-single/review-s92.json
+python3 -B modules/usb-power-45w/tools/review_s8.py --check <new-check-directory> --tests-log <tests-log> --out modules/usb-power-45w/docs/s8-single/review-s93.json
 ```
 
 BOM and PDF use native `kicad-cli sch export`; the board image uses `render_s8.py`. `build_s8_panel.py` rewrites the

@@ -1,8 +1,8 @@
 """S8 review record: native findings, exact parity, test results, placement/mechanics/sourcing summaries and the
 SHA-256 of every source and artifact, assembled from fresh reports (no hand-copied numbers).
 
-  python3 -B tools/review_s8.py --check research/s92/check-final --tests-log research/s92/tests-final.log \
-      --out docs/s8-single/review-s92.json
+  python3 -B tools/review_s8.py --check research/s93/check --tests-log research/s93/tests.log \
+      --out docs/s8-single/review-s93.json
 
 --check is a NEW native check directory of the shared tool (opt/kicad-tools/kicad_tools.py check, summary.json),
 --tests-log the verbose unittest output of `python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v`.
@@ -26,7 +26,7 @@ from pathlib import Path
 MODULE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(MODULE / 'tools'))
 import s92_contract  # noqa: E402
-REVISION = 'S9.2 / P2.2'
+REVISION = 'S9.3 / P2.3'
 TRACKED_KICAD = ('.kicad_sch', '.kicad_pcb', '.kicad_pro', '.kicad_dru', '.kicad_sym')   # *.kicad_prl is git-ignored
 S7_R3 = sorted(str(p.relative_to(MODULE)) for p in (MODULE / 'hardware').glob('*.kicad_*') if p.suffix in TRACKED_KICAD)
 PANEL = ['panels/front-pcb/usb-power-45w-single-panel.kicad_pcb', 'panels/front-pcb/usb-power-45w-single-panel.kicad_pro']
@@ -73,10 +73,23 @@ CHANGELOG = [
                          'F.Cu spoke per via and a B.Cu landing pour (TV_U5_B/TV_U4_B/TV_U9_B); C2 and R24/C3 moved '
                          '0.45 mm, R13-R15 0.25 mm. DRC rules S92_via_standard, S92_via_hole_to_copper and '
                          'S92_no_via_in_pad (any pad) and the RA_NOVIA_* areas stop a router from drilling a pad.'),
+    ('S9.3 strict 3 A start', 'Neither converter has a soft-start pin, so each gets an FB-injection soft start: C84 220n / '
+                              'D27 BAV199 / R116 470k on U2 FB_P12 (tau = R8 x C84 = 15 ms nominal, 4.8-18.9 ms) and C85 '
+                              '470n / D28 / R117 470k on U4 FB_N (47 ms nominal, 15-59 ms). U4 is enabled only after +12V '
+                              'is good: Q16 tops the U4 enable sink chain, its gate driven from P12_OK through R118 100k / '
+                              'C86 100n (U4 EN 3.4-18.3 ms after P12_OK), R119 220k defines N_EN_MID. Strict 3.00 A '
+                              'source, published 33 W, 0.44 mF per rail: one attempt, zero U5 drop-outs, input <= 2.955 A '
+                              'in every case (startup_qualification); negative controls (D27 open, D28 open, Q16 gate on '
+                              'V3V3) fail. FB_P12 is a labelled net now (QUIET class, U2 cell/island net lists).'),
+    ('S9.3 placement P2.3', 'The ten S9.3 parts sit in free pockets of the P2.2 floor plan (no P2.2 part moved): D27/C84/'
+                            'R116 and Q16/R118/C86 between the U2 VIN bank and U10/U12, D28/C85/R117 by C33, R119 under U11. '
+                            'Interim: the FB_P12 / FB_N injection links are 13-15 mm until the U2 sense-escape re-placement.'),
 ]
 OPEN_GATES = [   # S9.2: post-prototype acceptance tests (routing-notes.md), not design blockers
-    'Routing itself (P2.2 is routing-ready and unrouted; the contract items are checked after routing)',
-    'S1-S4 source/startup qualification: strict 3.00 A sources fail safe at full load + rack (needs ~4.65 A for ~2.5 ms)',
+    'Routing itself (P2.3 is unrouted; the contract items are checked after routing; the S9.3 FB-injection parts are in '
+    'interim pockets)',
+    'S1-S4 source/startup qualification on the bench: the netlist-derived plant starts from a strict 3.00 A source in one '
+    'attempt (S9.3 soft starts + U4 sequencing, peak 2.955 A); S1 confirms it with a current probe',
     'TH-1..TH-3 thermal on real copper (U2 Tj <= 125 C needs effective RthetaJA <= 55.8 C/W at the CC limit)',
     'LS-1 loop gain with the real rack (PM > 45 deg, GM > 10 dB), CL-1/T1 clamp energy, T2 rail overvoltage',
     'IN-1/IN-2 UVLO/OVP spread at temperature, EMI-1 switching-node ringing, GS-1/GS-2 ground star, KS-1/CC-1 Kelvin',
@@ -162,6 +175,7 @@ def main():
     calcs = json.loads((docs / 'calcs.json').read_text())
     src = json.loads((docs / 'sourcing.json').read_text())
     s92 = json.loads((docs / 's92-sourcing.json').read_text())
+    s93 = json.loads((docs / 's93-sourcing.json').read_text())
     rows = list(csv.DictReader((docs / 'bom.csv').open()))
     bom_refs = [r for row in rows for r in row['Refs'].split(',')]
     test_pads = sorted(r for r in place['parts'] if r.startswith('TP'))
@@ -180,7 +194,7 @@ def main():
         'revision': REVISION,
         'status': ('routing-ready schematic and placement, unrouted and not bench-qualified; the open items are '
                    'post-prototype acceptance tests, not design blockers'),
-        'replaces': 'review-s91.json (S9.1 / P2.1 record in git 5df64c7)',
+        'replaces': 'review-s92.json (S9.2 / P2.2 record in git 9cdb9bd)',
         'changelog': [{'item': k, 'change': v} for k, v in CHANGELOG] + [{'item': 'S9.2b thermal', 'change': thermal_entry(calcs)}],
         'native_findings': summary['findings'],
         'exact_native_ref_pin_net_parity': summary['ref_pin_net_parity'],
@@ -198,8 +212,8 @@ def main():
                       'local_loops_violations': board['local_loops']['violations'],
                       'local_loops': {r['purpose']: [r['from'], r['to'], r['distance_mm'], r['limit_mm']]
                                       for r in board['local_loops']['rows']},
-                      'basis': ('S9.2 / P2.2 synchronized from S9.1; S9.2b re-synchronized for the hole-free U4/U5/U9 '
-                                'lands (C2, R24/C3, R13-R15 moved); no routing apart from the thermal-via fields'),
+                      'basis': ('S9.3 / P2.3 synchronized from S9.2b / P2.2: the ten S9.3 parts added in free pockets, '
+                                'every P2.2 part unmoved; no routing apart from the thermal-via fields'),
                       'routing_contract_screen': board['routing_contract_screen'],
                       'ground_split': board['ground_split'],
                       'replaced_footprints': place.get('replaced_footprints', {}),
@@ -269,8 +283,10 @@ def main():
                                  'peak_screens_V': res['rail_overvoltage']['peak_screens_V'],
                                  'bench_test': res['rail_overvoltage']['bench_test']},
             'validation': val['accepted_residuals']},
-        'sourcing': {'selected_part_evidence': 's92-sourcing.json (live, every S9.2 code incl. alternates); sourcing.json full live audit',
-                     'earlier_evidence': ['s91-sourcing.json', 's90-sourcing.json', 's84-sourcing.json', 's83-sourcing.json'],
+        'sourcing': {'selected_part_evidence': ('s93-sourcing.json (live, every S9.3 code incl. alternates); s92-sourcing.json '
+                                                '(S9.2 codes); sourcing.json full live audit'),
+                     'earlier_evidence': ['s92-sourcing.json', 's91-sourcing.json', 's90-sourcing.json', 's84-sourcing.json',
+                                          's83-sourcing.json'],
                      'parts_partial_subtotal_q1_usd': src['summary']['S8_parts_usd_q1'],
                      'unpriced_codes': src['summary']['S8_unpriced_codes'],
                      'manual_parts_no_LCSC': src['summary']['manual_parts_no_LCSC']['S8'],
@@ -280,7 +296,8 @@ def main():
                      'missing_codes_for_assembled_parts': src['summary'].get('missing_codes', []),
                      'basic_only_policy': src['basic_only_policy']['decision'],
                      'live_rows': {c: [r['classification'], r['stock'], r['unit_price_q1_usd'],
-                                       (r.get('evidence') or {}).get('retrieved_at_utc')] for c, r in s92['codes'].items()},
+                                       (r.get('evidence') or {}).get('retrieved_at_utc')]
+                                   for c, r in {**s92['codes'], **s93['codes']}.items()},
                      'reverse_blocking_parts': 'none (owner decision)'},
         'original_S7_R3_hardware_unchanged_sha256': {p: sha(p) for p in S7_R3},
         'sources_sha256': {p: sha(p) for p in SOURCES + footprints_used()},

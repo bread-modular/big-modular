@@ -77,7 +77,9 @@ TEXT_POS_S8 = {'U21': ((-6.35, -1.27), (-6.35, 1.27), 'left'),
                'C10': ((-5.08, -1.27), (-5.08, 1.27), 'left'), 'C9': ((5.08, -1.27), (5.08, 1.27), 'right'),
                'C82': ((-2.54, -1.27), (-2.54, 1.27), 'right'), 'R8': ((0, -5.08), (0, -2.54)),
                'R111': ((-2.54, 1.27), (-2.54, 3.81), 'right'),
-               'R109': ((0, 3.81), (0, 6.35))}         # S9.2: R_Shunt texts below the rail
+               'R109': ((0, 3.81), (0, 6.35)),         # S9.2: R_Shunt texts below the rail
+               # S9.3 soft-start pairs (rot 90: KiCad mirrors the justification, so 'right' extends to the right)
+               'D27': ((2.54, -1.27), (2.54, 6.35), 'right'), 'D28': ((-2.54, -1.27), (-2.54, 1.27), 'left')}
 CROWBAR_REMOVED = ('Q11', 'U22', 'Q12', 'Q13', 'R105', 'R106')
 # S9.0 step 2: +12V buck-boost U2 and the parts it adds (S7 refs U2, L1, R8, R9, C6-C14 keep their roles; C9 is BOOT2).
 TPS552892 = dict(LCSC='C22375748', MPN='TPS552892QWRYQRQ1', Manufacturer='Texas Instruments')
@@ -101,6 +103,20 @@ TP92_AT = {'TP20': (449.58, 40.64), 'TP24': (495.3, 40.64), 'TP22': (462.28, 38.
            'TP25': (215.9, 242.57), 'TP30': (25.4, 256.54),
            'TP26': (317.5, 116.84), 'TP27': (309.88, 116.84)}
 BUCKBOOST_ADDED = ('C77', 'C78', 'C79', 'C80', 'C81', 'C82', 'C83', 'R109', 'R110', 'R111')
+# S9.3 (strict 3 A start, three-review finding): neither converter has a soft-start pin (TPS552892-Q1 tSS 2.5-5 ms and
+# LMR38020 tSS 4 ms are internal), so each gets an FB-injection soft start: Css from its output to a node X, a low-leakage
+# BAV199 pair (X -> FB injection diode, ground -> X clamp that empties Css when the rail collapses) and a bleed resistor
+# that parks X at the ground of its divider after the ramp (injection diode then reverse biased, loop untouched). While
+# the diode conducts the error amplifier keeps FB at its reference, so the rail rises as Css*dV/dt = (Vset - V)/Rtop:
+# an RC approach with tau = Rtop x Css (R8 68k x 220n / R14 100k x 470n) instead of the 2.5 / 4 ms internal ramps. The -12 V
+# converter is sequenced after +12 V: a third series switch Q16 in the U4 enable sink chain, gated by the U18 delivered-
+# +12V monitor P12_OK through R118/C86 (the TPS552892 PG pin is NOT usable for this: it compares FB with the reference,
+# which the injection holds there for the whole ramp). R119 defines the new chain node N_EN_MID.
+SS_CAP = {'220n': dict(LCSC='C21120', MPN='CL10B224KA8NNNC', Manufacturer='Samsung', Voltage='25V'),   # X7R 0603, Basic
+          '470n': dict(LCSC='C1623', MPN='CL10B474KA8NNNC', Manufacturer='Samsung', Voltage='25V')}
+BAV199 = dict(LCSC='C145516', MPN='BAV199LT1G', Manufacturer='onsemi',
+              Alternates='C40919 Nexperia BAV199,215; C68971 CJ BAV199 (IR <= 5 nA at 75 V / 25 C, <= 80 nA at 150 C)')
+S93_ADDED = ('C84', 'C85', 'C86', 'D27', 'D28', 'Q16', 'R116', 'R117', 'R118', 'R119')
 U2_AT = (381.0, 78.74)            # flat sheet (page 02 offset -276.86, 0); S7 U2 sat at (368.3, 71.12)
 U2_BLOCK = ((320.0, 435.0), (50.0, 98.0))     # flat-sheet box of the removed S7 +12V buck drawing (coordinate wires)
 R0603_S9 = {'56k': ('C23206', '0603WAF5602T5E')}      # S9.0 Basic code not in the S7 table (live evidence s90-sourcing)
@@ -131,7 +147,7 @@ def _plus12_buckboost(c, by):
     u2.update(sym='TPS552892_RYQ', value=TPS552892['MPN'], fp='RYQ21', at=U2_AT, rot=0, unit=1)
     u2['pins'] = {'7': 'VIN', '1': 'MAIN_OK', '2': '_VCC_U2', '21': '_VCC_U2', '18': '_VCC_U2', '5': 'AGND_U2',
                   '6': '_FSW_U2', '11': 'P12_VOUT', '12': 'P12_ISP', '13': 'P12_ISN', '3': None, '4': None, '16': None,
-                  '14': '_FB_U2', '15': '_COMP_U2', '8': '_SW1_U2', '20': '_BST1_U2', '19': '_BST2_U2', '10': '_SW2_U2',
+                  '14': 'FB_P12', '15': '_COMP_U2', '8': '_SW1_U2', '20': '_BST1_U2', '19': '_BST2_U2', '10': '_SW2_U2',
                   '9': 'GND', '17': 'AGND_U2'}
     u2['fields'] = {**TPS552892, 'Note': (
         '+12V four-switch buck-boost (S9.0, SLVSGT7): 3-36 V in, average inductor limit 7-9 A, VREF 1.188-1.212 V, '
@@ -187,12 +203,12 @@ def _plus12_buckboost(c, by):
                        'Kelvin residual) = 2.62-2.95 A constant-current loop; FB senses +12V after it. <= 0.16 W of 1 W '
                        '(1 W needs 300 mm2 pad+trace copper: routing contract)'))
     by['R9'].update(value='7.5k', at=(408.94, 90.17), rot=0)
-    by['R9']['pins'] = {'1': '_FB_U2', '2': 'AGND_U2'}
+    by['R9']['pins'] = {'1': 'FB_P12', '2': 'AGND_U2'}
     by['R9']['fields'].update(LCSC=circuit45.R0603['7.5k'], MPN=circuit45.R_MPN['7.5k'],
                               Note='FB bottom: 1.2 V x (1 + 68k/7.5k) = 12.08 V nominal (11.54-12.65 V over VREF and 1 % '
                                    '+ 1 % TCR)')
     by['R8'].update(value='68k', at=(416.56, 86.36), rot=90)
-    by['R8']['pins'] = {'1': '_FB_U2', '2': '+12V'}
+    by['R8']['pins'] = {'1': 'FB_P12', '2': '+12V'}
     by['R8']['fields'].update(LCSC=circuit45.R0603['68k'], MPN=circuit45.R_MPN['68k'],
                               Note='FB top from the regulated side of R109 (CDC open: <= 0.3 uA x 68k = 20 mV)')
     c.append(res('R111', '6.8k', (398.78, 92.71), '_COMP_U2', '_COMPRC_U2',
@@ -204,6 +220,47 @@ def _plus12_buckboost(c, by):
                  Note='S9.1 U2 VOUT transient backstop: 14 V stand-off, breakdown 15.6-17.2 V, 23.2 V at 25.9 A, '
                       '600 W 10/1000 us. Absorbs VIN-bank energy after U20 opens U5; NOT a continuous rail crowbar.'))
     by['#FLG04'].update(at=(482.6, 48.26))
+
+
+def _soft_start_and_sequencing(c):
+    """S9.3: FB-injection soft starts (U2: C84/D27/R116 on FB_P12; U4: C85/D28/R117 on FB_N) and the P12_OK-delayed U4
+    enable (Q16 above Q15 in the sink chain, R118/C86 gate delay, R119 node default). Flat-sheet positions: page 02 offset
+    (-276.86, 0), page 03 offset (0, -147.32) (tools/hierarchy_s8.layout)."""
+    q15 = next(p for p in c if p['ref'] == 'Q15')
+    q15['pins']['3'] = 'N_EN_MID'
+    q15['fields']['Note'] = ('S9.1 U4 enable qualification, series NMOS sink (MAIN_LED_OK); S9.3: drain on N_EN_MID below '
+                             'the Q16 sequencing switch')
+    c.append(two('C84', 'C', '220n', 'C0603', (420.37, 97.79), '+12V', 'SS_P12', **SS_CAP['220n'],
+                 Note='S9.3 +12V soft-start capacitor: FB injection through D27, tau = R8 x C84 = 68k x 220n = 15 ms '
+                      'nominal (4.8-18.9 ms over tolerance, X7R bias and temperature) instead of the 2.5-5 ms internal tSS'))
+    c.append(part('D27', 'BAV199', 'BAV199', 'SOT23', (412.75, 101.6), 90,
+                  {'1': 'GND', '2': 'FB_P12', '3': 'SS_P12'}, **BAV199,
+                  Note='S9.3 +12V soft-start diodes: SS_P12 -> FB injection (reverse biased 1.2 V once R116 parks SS_P12 '
+                       'at 0 V; <= 80 nA x 68k = 5 mV setpoint error at 150 C) and the PGND clamp that empties C84 when '
+                       '+12V collapses, so every restart is soft'))
+    c.append(res('R116', '470k', (433.07, 105.41), 'SS_P12', 'GND',
+                 Note='S9.3 SS_P12 bleed: parks the injection node at 0 V after the ramp (470k x 220n = 0.1 s)'))
+    c.append(two('C85', 'C', '470n', 'C0603', (144.78, 265.43), 'SS_N12', 'GND', **SS_CAP['470n'],
+                 Note='S9.3 -12V soft-start capacitor from GND (the inverting converter output seen from its IC ground): '
+                      'tau = R14 x C85 = 100k x 470n = 47 ms nominal (15-59 ms) instead of the 4 ms internal tSS'))
+    c.append(part('D28', 'BAV199', 'BAV199', 'SOT23', (134.62, 261.62), 90,
+                  {'1': '-12V', '2': 'FB_N', '3': 'SS_N12'}, **BAV199,
+                  Note='S9.3 -12V soft-start diodes: SS_N12 -> FB_N injection and the -12V (IC ground) clamp of C85'))
+    c.append(res('R117', '470k', (152.4, 265.43), 'SS_N12', '-12V',
+                 Note='S9.3 SS_N12 bleed to the U4 IC ground (-12V)'))
+    q16 = part('Q16', '2N7002', '2N7002', 'SOT23', (45.72, 223.52), 0,
+               {'1': 'N_EN_SEQ', '2': 'N_EN_MID', '3': 'N_EN_SINK'}, **{k: v for k, v in q15['fields'].items() if k != 'Note'},
+               Note='S9.3 U4 sequencing switch: top of the series sink chain, gated by P12_OK through R118/C86, so U4 '
+                    'cannot enable before +12V is above its U18 monitor threshold (and stays off when P12_OK drops)')
+    c.append(q16)
+    c.append(res('R118', '100k', (30.48, 223.52), 'P12_OK', 'N_EN_SEQ', rot=90,
+                 Note='S9.3 sequencing delay: (R35 10k + R118 100k) x C86 100n = 11 ms; Q16 conducts 3-18 ms after '
+                      'P12_OK rises (VGS(th) 1.0-2.5 V); also filters P12_OK chatter while +12V ramps through the threshold'))
+    c.append(cap('C86', '100n', 'C0603', (36.83, 227.33), 'N_EN_SEQ', 'GND',
+                 Note='S9.3 sequencing delay capacitor (Q16 gate)'))
+    c.append(res('R119', '220k', (55.88, 234.95), 'N_EN_MID', 'GND', rot=90,
+                 Note='S9.3 N_EN_MID default to PGND (Q16 source / Q15 drain). Q16 follower with RUN low: R115 || R119 '
+                      '68.8k keeps Q1 VEB <= 0.27 V; keep R119 >= 150k (s92_netlist enable_model)'))
 
 
 def circuit():
@@ -303,6 +360,7 @@ def circuit():
         c.append(part(ref, 'TestPoint', net, 'TP15', TP92_AT[ref], 0, {'1': net},
                       Note=f'S9.2 acceptance test pad {net}: copper only, 1.5 mm round, no assembly component. '
                            'See docs/s8-single/routing-notes.md'))
+    _soft_start_and_sequencing(c)
     for ref, rail in (('D2', '+12V'), ('D4', '-12V')):
         by[ref]['fields']['Note'] = f'{rail} polarity clamp at the header strip (rack-side reversal enters here)'
     # ---- Status LED: D8 MAIN is the only LED left (S8 final)
@@ -530,6 +588,21 @@ def drawing():
     P += [('GND', ('C82.2', -5.08, 2.54), 0)]
     L += [('P12_ISP', (467.36, 43.18), 'U'), ('P12_ISN', (482.6, 43.18), 'U'),
           ('N_EN_RETURN', ('Q15.2', 0, 2.54), 'L')]
+    # S9.3: FB-injection soft starts and the P12_OK-delayed U4 enable (circuit_s8._soft_start_and_sequencing). Page 02: D27
+    # from the R8/R9 FB node down to SS_P12 with C84 from +12V (wired to R8.2) and R116; page 03: D28 from the R15/R14 FB_N
+    # node, C85 and R117 on SS_N12; Q16 above Q15 with the R118/C86 gate delay and the R119 default on N_EN_MID.
+    W += [['D27.2', 'R8.1'], ['R8.2', 'C84.1'], ['R8.2', ('R8.2', 2.54, 0)], ['D27.3', 'C84.2'], ['C84.2', 'R116.1'],
+          ['D28.2', ('D28.2', 0, -15.24), 'R15.1'], ['D28.3', 'C85.1'], ['C85.1', 'R117.1'],
+          ['R118.2', 'Q16.1'], ['Q16.2', 'Q15.3'], [('Q16.2', 0, 6.35), 'R119.1'],
+          ['Q16.3', (66.04, 218.44), (66.04, 241.3), 'R16.1']]
+    P += [('+12V', ('R8.2', 2.54, 0), 270)]
+    L = [x for x in L if x != ('FB_N', 'R15.1', 'L')]          # the FB_N label moves onto the R15/R14 wire
+    # the U2 FB node carries a label since S9.3: with D27 on it KiCad's automatic name would follow the diode
+    # (Net-(D27-K)); FB_P12 keeps one stable, descriptive name for the netclass patterns and the routing contract
+    L += [('FB_P12', ('R9.1', 1.27, 0), 'U'),
+          ('FB_N', ('R15.1', 1.27, 0), 'U'), ('SS_P12', ('C84.2', 8.89, 0), 'U'), ('SS_N12', ('C85.1', 2.54, 0), 'U'),
+          ('N_EN_SINK', (57.15, 218.44), 'U'),
+          ('N_EN_SEQ', ('Q16.1', -1.27, 0), 'U'), ('N_EN_MID', ('Q16.2', 0, 2.54), 'L')]
     return W, P, L
 
 

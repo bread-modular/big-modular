@@ -102,6 +102,14 @@ SOURCES = {
             'at 15.5 A; alphaVBR 0.084/0.088/0.091/0.092 %/C (16A/18A/20A/22A)',
     'TPS1663_OVP': 'TI SLVSET9G 6.5/6.6: OVP rising 1.176/1.2/1.224 V, falling 1.09/1.122/1.15 V, leakage 150 nA; OVP '
                    'turn-off 8.5-14 us to FLT',
+    'BAV199': 'onsemi BAV199LT1/D (https://www.onsemi.com/download/data-sheet/pdf/bav199lt1-d.pdf): series pair, pin 1 '
+              'anode, 2 cathode, 3 common; IR <= 5 nA at 70 V (25 C), <= 80 nA at 70 V / 150 C; VF <= 0.9 V at 1 mA',
+    'TPS552892_PG_SS': 'TI SLVSGT7 7.3.5/7.3.16: soft start ramps an internal reference 0 -> 1.2 V in 3.6 ms typ (no SS '
+                       'pin); PG goes high at 95 % of the target output voltage (the IC sees the target only through FB)',
+    'LMR38020_SS_PG': 'TI SNVSC40E 8.3.9 / 7.5: internal soft start 4.0 ms typical (no SS pin); PG thresholds are % of '
+                      'the FB voltage',
+    'CL10B_X7R': 'Samsung CL10B224KA8NNNC / CL10B474KA8NNNC: 0.22 / 0.47 uF X7R 25 V 0603 +-10 % (LCSC C21120 / C1623, '
+                 'Basic); DC-bias retention at <= 12 V taken as 0.45-1.0 (engineering screen, not a manufacturer curve)',
     'RLM12': 'TA-I TRLM-XX0S001A (https://www.tai.com.tw/files/uploads/Prod_spec/RLM.pdf): RLM12 3.2 x 1.6 mm, electrode '
              '0.5 +/- 0.3 mm (2-50 mOhm), land a 1.8 b 1.7 L 1.6 mm, 1 W with 300 mm2 pad + trace copper; LCSC C393095 '
              'RLM12FTCMR018 1 % 75 ppm',
@@ -335,38 +343,38 @@ def rail_release(val=None):
 
 
 def soft_start(val, eff):
-    """Start-up into rack capacitance. S9.0 +12V: the TPS552892-Q1 ramps its reference in tSS 2.5-5 ms (fixed); with a large
-    rail capacitance the R109 constant-current loop takes over and charges it at the limit (3.14 A minimum) minus the
-    load. Hiccup needs VOUT < 0.8 V AND the 7-9 A average inductor limit for 2 ms, which the R109 limit keeps the inductor
-    far below (buck mode IL = IOUT; boost corner in plus12_buckboost), so a large rack does not hiccup: the allowance is
-    TI's 1000 uF effective COUT ceiling minus the onboard bank, and the start-up time is checked against the window.
-    -12V: the LMR38020 hiccup rule (minus12_startup)."""
+    """Start-up into rack capacitance. S9.3: neither converter has a soft-start pin, so both get an FB-injection soft
+    start (circuit_s8._soft_start_and_sequencing, traced from the netlist by s92_netlist.soft_start_network): the rail
+    rises as an RC approach, tau = Rtop x Css (R8 x C84 for +12V, R14 x C85 for -12V), and the capacitor current is
+    C x Vset / tau at most (at 0 V, decaying). -12V starts only after +12V is good (Q16 / P12_OK). The R109 CC limit
+    still caps +12V, the LMR38020 hiccup rule cannot trigger during the ramp because the injection holds FB at its
+    reference (hiccup needs FB < 40 %), so the -12V rack allowance stays the TI total-COUT guidance (minus12_startup)."""
     op = p12(val)
-    ds = TPS552892_DS
-    bank_hi = eff['+12V'][1]
-    icc_min, vmax = op['icc_A'][0], op['setpoint_V'][2]
-    ss_ramp = vmax / (ds['tss_ms'][0] * 1e-3)                       # fastest reference ramp, V/s
-    c_track_full = (icc_min - op['i_pub']) / ss_ramp                # largest C that still follows the reference at full load
-    rack_ti = min(s91_analysis.RACK_MAX_F, ds['cout_eff_max_uF'] * 1e-6 - bank_hi)
-    t_charge = (bank_hi + rack_ti) * vmax / (icc_min - op['i_pub'])
-    out = {'+12V': dict(tSS_ms=list(ds['tss_ms']), cc_limit_A=[round(x, 3) for x in op['icc_A']],
-                        tracks_reference_up_to_mF={'full_load': round(c_track_full * 1e3, 3),
-                                                   'no_load': round(icc_min / ss_ramp * 1e3, 3)},
-                        onboard_bank_high_mF=round(bank_hi * 1e3, 3),
-                        rack_allowance_mF=round(rack_ti * 1e3, 3),
-                        allowance_basis='S9.1 restricted to 0.44mF external, within the complex-loop impedance envelope; startup on 3A source remains a qualification test, not proven by CC alone',
-                        time_to_full_at_allowance_full_load_ms=round(t_charge * 1e3, 1),
-                        hiccup='only if VOUT < 0.8 V with the average inductor limit for 2 ms after tSS: a short circuit, '
-                               'not a capacitive start (R109 holds IL near IOUT)')}
+    rec = s91_analysis.soft_start_record()
+    out = {}
+    for rail in ('+12V', '-12V'):
+        r = rec[rail]
+        out[rail] = {**r, 'charge_current_note': 'C x Vset / tau into the onboard bank (high corner) + 0.44 mF rack, at '
+                                                  '0 V and decaying as exp(-t/tau); [fast, nominal, slow] corner'}
+    out['+12V'].update(cc_limit_A=[round(x, 3) for x in op['icc_A']],
+                       cc_engages_for_constant_current_load_mF=round(max(0.0, (op['icc_A'][0] - op['i_pub'])
+                                                                         * rec['+12V']['tau_ms'][0] * 1e-3
+                                                                         / op['setpoint_V'][2]) * 1e3, 3),
+                       rack_allowance_mF=s91_analysis.RACK_MAX_F * 1e3,
+                       allowance_basis='0.44 mF external: the complex-loop impedance envelope (compensation); the strict '
+                                       '3 A start is qualified at it (startup_qualification)',
+                       hiccup='only if VOUT < 0.8 V with the average inductor limit for 2 ms after tSS: a short circuit, '
+                              'not a capacitive start')
     m12 = minus12_startup(val, eff)
-    out['-12V'] = dict(blank_ms=18, onboard_bank_high_mF=round(eff['-12V'][1] * 1e3, 3),
-                       rack_allowance_full_load_mF=m12['published_allowance_mF'],
+    out['-12V'].update(blank_ms=18, rack_allowance_full_load_mF=m12['published_allowance_mF'],
                        allowance_basis=m12['published_basis'],
                        ti_limit='<= ~10 x design COUT or 1000 uF, whichever is smaller (SNVSC40E 9.2.2.5)')
-    out['rack_reference'] = ('Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. '
-                             'S9.0: +12V charges through the R109 constant-current loop; -12V per the LMR38020 hiccup rule')
-    out['note'] = ('Allowances are rack capacitance on top of the onboard bank (high corner). Loads that draw less than the '
-                   'full rating during start-up leave more room. Bench item: start-up into the real rack at 13.5 V.')
+    out['sequencing'] = rec['sequencing']
+    out['rack_reference'] = ('Typical Eurorack module: 10-47 uF per rail; 20 modules x 22 uF = 0.44 mF per rail. S9.3: '
+                             'both rails ramp through their FB-injection RC; -12V after +12V')
+    out['note'] = ('Css corners: +-10 % tolerance, 0.45-1.0 DC-bias retention at up to 12 V on the 25 V X7R 0603 parts '
+                   '(engineering screen), X7R +-15 % temperature, 7 % ageing; diode drop 0.45-0.9 V; tSS per TI (LMR38020 '
+                   'typical only: 2-6 ms screen). Bench items: S1 (start from a strict 3 A source) and the ramp times.')
     return out
 
 
@@ -744,21 +752,30 @@ def rating(val, eff):
 
 
 def startup_window(val):
-    """Qualification window (U11, C49) against the rail-up budget. S9.0: U5 dVdt ramp to the 16.5 V input maximum, PGOOD
-    deglitch, the TPS552892-Q1 fixed soft start (max) plus charging TI's 1000 uF effective COUT ceiling at the R109 limit
-    minimum less the full published load, the LMR38020 soft start + OCP blanking (no U23 ramp, no TPS62933F CSS)."""
+    """Qualification window (U11, C49) against the rail-up budget after the first converter enable. S9.3: the
+    netlist plant at its slow corner (longest soft starts, latest U4 enable, highest monitor thresholds) gives the time to
+    both U18 monitors good (s91_analysis.start_run, published 33 W + 0.44 mF); U5's dVdt ramp and PGOOD deglitch happen
+    before the first enable and are listed for reference only."""
     t = val('C49') * 1e9 / 175 + .0005
-    op = p12(val)
-    budget = dict(U5_ramp_ms=round(VPD_RANGE[1] / (1.775e-6 * 23.5 / (val('C3') * 1.1)) * 1e3, 1), PGOOD_deglitch_ms=13,
-                  TPS552892_SS_max_ms=TPS552892_DS['tss_ms'][2],
-                  P12_rack_charge_at_R109_limit_ms=round((96.8e-6+s91_analysis.RACK_MAX_F) * op['setpoint_V'][2] / (op['icc_A'][0] - op['i_pub']) * 1e3, 1),
-                  LMR38020_SS_plus_blank_ms=18 + 4)
-    total = sum(budget.values())
+    import s92_netlist
+    import circuit_s8
+    pin = s92_netlist.plant_inputs(s92_netlist.Design.from_table(circuit_s8.circuit()))
+    slow = s91_analysis.start_run(pin, s91_analysis.CASES_3A['published_33W_0.44mF'], 3.0, 'slow')
+    fast = s91_analysis.start_run(pin, s91_analysis.CASES_3A['published_33W_0.44mF'], 3.0, 'fast')
+    total = slow['rails_good_ms']
     return dict(typ_s=round(t, 3), min_s_screen=round(t * .6 * .9, 3), max_s_screen=round(t * 1.4 * 1.1, 3),
                 S7_typ_s=round(1e-6 * 1e9 / 175 + .0005, 2),
-                rail_up_budget_ms=budget, rail_up_total_ms=round(total, 1),
-                ratio_min_window_to_budget=round(t * .6 * .9 / (total / 1e3), 1),
-                arming='S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable)')
+                before_first_enable_ms=dict(U5_ramp_ms=round(VPD_RANGE[1] / (1.775e-6 * 23.5 / (val('C3') * 1.1)) * 1e3, 1),
+                                            PGOOD_deglitch_ms=13),
+                rail_up_after_first_enable_ms={'fast_corner': fast['rails_good_ms'], 'slow_corner': slow['rails_good_ms'],
+                                               'P12_OK_slow_ms': slow['P12_OK_ms'], 'U4_enable_slow_ms': slow['U4_enable_ms']},
+                rail_up_total_ms=total,
+                margin_to_window_min_ms=round(t * .6 * .9 * 1e3 - total, 1),
+                ratio_min_window_to_budget=round(t * .6 * .9 / (total / 1e3), 2),
+                S92_rail_up_total_ms=81.1,
+                arming='S8.5: one-shot, see arming (TIMER_GO = RUN AND STARTED; S8.4 RUN AND MAIN_OK was restartable). S9.3: '
+                       'the soft starts use more of the window (S9.2 budget 81 ms); a brown-out inside the window must '
+                       'end >= ~210 ms before ARMED or FAULT latches at ARMED (fail-safe, RESET restarts)')
 
 
 VSAFE5V_MAX = 5.5                # USB PD vSafe5V maximum (SOURCES USB_PD_vSafe5V)
@@ -844,10 +861,10 @@ def arming(val):
                   'RESET_N high: RUN high (U5 SHDN released); U5 in UVLO, START_N high (V20_OK low in the 5 V phase)',
                   f'PD contract: VPD -> 15 V; V20_OK high at {v20[0]:.2f}-{v20[2]:.2f} V (U5 status valid, PGOOD low)',
                   f'VPD >= U5 turn-on ({on[0]:.2f}-{on[2]:.2f} V): U5 ramps (dVdt, <= ~10 ms to 16.5 V), PGOOD 11.5 ms typ '
-                  '-> MAIN_OK enables U2 (EN/UVLO) (U4 follows +12V via Q1) -> MAIN_LED_OK -> START_N low -> STARTED '
+                  '-> MAIN_OK enables U2 (EN/UVLO); U4 waits for P12_OK (Q16) -> MAIN_LED_OK -> START_N low -> STARTED '
                   '(latched)',
-                  'TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~%.0f ms' % (
-                      win['rail_up_total_ms']),
+                  'TIMER_GO = RUN AND STARTED -> U11 -> ARMED after 0.31-0.88 s; rails are up within ~%.0f ms (S9.3 '
+                  'slow corner: +12V soft start, P12_OK -> Q16 delay, -12V soft start)' % (win['rail_up_total_ms']),
                   'ARMED: any bad status (MAIN_LED_OK, P12_OK, N12_OK) > ~1 ms -> FAULT -> RUN low -> all off until '
                   'RESET; OV_N (+12V > 14.48-15.27 V, -12V beyond 13.27-14.02 V) presets FAULT at any time'],
         timelines='validation.json startup_arming.timelines (verify_s8 arming_timelines: cold start at the worst loaded '
@@ -1261,7 +1278,7 @@ def main():
     ap.add_argument('--skip-sim', action='store_true', help='skip the VIN grid and rail-release simulations')
     a = ap.parse_args()
     parts, val = table()
-    R = {'status': 'S9.2 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
+    R = {'status': 'S9.3 pre-calculation screen, not a closed-loop or bench qualification', 'sources': SOURCES}
     R['banks'], eff = banks(parts)
     R['ripple_and_steps'] = ripple_and_steps(val, eff)
     op = p12(val)

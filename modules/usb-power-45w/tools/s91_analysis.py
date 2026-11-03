@@ -111,77 +111,133 @@ def loop(val, eff, vin_floor, op):
             'release_test':'Bode at VIN corners, bank/rack corners and 0.05A/rating: PM>45 deg, GM>10 dB, no sustained ringing; no-load FPWM and active rack impedances measured separately. Not performed.'}
 
 
+CASES_3A = {'published_33W_0.44mF': (2.4, 0.33, RACK_MAX_F), 'published_split_-12V_0.8A_0.44mF': (1.95, 0.8, RACK_MAX_F),
+            'published_33W_no_rack': (2.4, 0.33, 0.0), 'no_load_0.44mF': (0.0, 0.0, RACK_MAX_F),
+            'no_load_no_rack': (0.0, 0.0, 0.0)}
+
+
+def start_run(pin, case, source_A=3.0, corner='fast', load='resistive', t_end=600.0, v_cv=14.25):
+    """One cold start on the netlist plant: U5 PGOOD (11.5 ms rising / 10 ms falling deglitch) gates both converter
+    enables (U2 EN = MAIN_OK, U4 logic gates follow it); the plant adds the S9.3 soft starts and the P12_OK sequencing.
+    Rails good = both U18 monitors above their thresholds at the corner (fast: band minimum, slow: band maximum)."""
+    import s92_netlist
+    i12, in12, rack = case
+    band = pin['monitor_bands']
+    k = 0 if corner == 'fast' else 2
+    ps = s92_netlist.PhysicalStartup(pin['params'], pin['eff'], i12, in12, source_A=source_A, rack_F=rack,
+                                     corner=corner, load=load, p12_ok_V=band['P12_OK_V'][k])
+    pg_t, off_t, main_ok, t_en, good, imax, over, imax_after = None, None, False, None, None, 0.0, 0.0, 0.0
+    for kk in range(int(t_end / 0.1)):
+        t = kk * 0.1
+        r = ps.step(t, 0.1, True, v_cv, True, main_ok, main_ok)
+        imax = max(imax, r['i_src'])
+        over += 0.1 if r['i_src'] > 3.0 + 1e-9 else 0.0
+        if r['fet_full'] and r['u5']:
+            pg_t, off_t = (pg_t if pg_t is not None else t), None
+        else:
+            pg_t, off_t = None, (off_t if off_t is not None else t)
+        if not main_ok and pg_t is not None and t - pg_t >= 11.5:
+            main_ok, t_en = True, t
+        if main_ok and off_t is not None and t - off_t >= 10:
+            main_ok = False
+        if good is None and main_ok and r['v12'] >= band['P12_OK_V'][k] and r['vn12'] >= band['N12_OK_V'][k]:
+            good = round(t - t_en, 1)
+    rel = lambda x: round(x - t_en, 1) if x is not None and t_en is not None else None      # noqa: E731
+    return {'peak_input_A': round(imax, 3), 'time_above_3A_ms': round(over, 1), 'U5_dropouts': ps.dropouts,
+            'single_attempt_start': ps.dropouts == 0 and good is not None, 'rails_good_ms': good,
+            'peak_demand_A': round(ps.peak_demand_A, 3), 'demand_above_3A_ms': round(ps.t_over_A, 2),
+            'P12_OK_ms': rel(ps.t_p12), 'U4_enable_ms': rel(ps.t_u4),
+            'plus12_charge_at_U4_enable_A': ps.p12_charge_at_u4_A, 'final_rails_V': [round(ps.v12, 2), round(ps.vn, 2)]}
+
+
 def startup_demand(design=None):
-    """Netlist-derived 3 A plant (tools/s92_netlist.PhysicalStartup) without the source limit: the input current the
-    module asks for during a cold start at the published load and rack, and the outcome with a strict 3.00 A source.
-    Same plant as the verify_s8 timelines; worst corners (14.25 V source, 0.25 ohm, 2.5 ms soft start, icc max)."""
+    """Netlist-derived 3 A plant (tools/s92_netlist.PhysicalStartup): the five source/capacitance cases with a STRICT
+    3.00 A source and an unconstrained one, at the fast corner (shortest soft starts, earliest U4 enable: largest input
+    current) with resistive loads; plus the slow corner (latest rails) and a constant-current-load sensitivity. Worst
+    source corner: 14.25 V + 0.25 ohm, D10 0.75 V, 0.5 W logic on the same source, R109 icc max."""
     import circuit_s8
     import s92_netlist
     d = design or s92_netlist.Design.from_table(circuit_s8.circuit())
     pin = s92_netlist.plant_inputs(d)
     rows = {}
-    for name, (i12, in12, rack) in {'published_33W_0.44mF': (2.4, 0.33, RACK_MAX_F),
-                                     'published_split_-12V_0.8A_0.44mF': (1.95, 0.8, RACK_MAX_F),
-                                     'published_33W_no_rack': (2.4, 0.33, 0.0),
-                                     'no_load_0.44mF': (0.0, 0.0, RACK_MAX_F), 'no_load_no_rack': (0.0, 0.0, 0.0)}.items():
-        out = {}
-        for src in (3.0, 10.0):
-            ps = s92_netlist.PhysicalStartup(pin['params'], pin['eff'], i12, in12, source_A=src, rack_F=rack)
-            pg_t, off_t, main_ok, good, imax, over = None, None, False, None, 0.0, 0.0
-            for k in range(int(400 / 0.1)):
-                t = k * 0.1
-                r = ps.step(t, 0.1, True, 14.25, True, main_ok, main_ok)
-                imax = max(imax, r['i_src'])
-                over += 0.1 if r['i_src'] > 3.0 else 0.0
-                if r['fet_full'] and r['u5']:
-                    pg_t, off_t = (pg_t if pg_t is not None else t), None
-                else:
-                    pg_t, off_t = None, (off_t if off_t is not None else t)
-                if not main_ok and pg_t is not None and t - pg_t >= 11.5:
-                    main_ok = True
-                if main_ok and off_t is not None and t - off_t >= 10:
-                    main_ok = False
-                if good is None and r['v12'] > pin['P12_OK_V'] and r['vn12'] > pin['N12_OK_V'] and main_ok:
-                    good = round(t, 1)
-            out['strict_3A' if src == 3.0 else 'unconstrained'] = {
-                'peak_input_A': round(imax, 3), 'time_above_3A_ms': round(over, 1), 'U5_dropouts': ps.dropouts,
-                'single_attempt_start': ps.dropouts == 0 and good is not None, 'rails_good_ms': good,
-                'final_rails_V': [round(ps.v12, 2), round(ps.vn, 2)]}
-        rows[name] = out
+    for name, case in CASES_3A.items():
+        rows[name] = {'strict_3A': start_run(pin, case, 3.0, 'fast'),
+                      'unconstrained': start_run(pin, case, 10.0, 'fast'),
+                      'strict_3A_slow_corner': start_run(pin, case, 3.0, 'slow'),
+                      'strict_3A_constant_current_load': start_run(pin, case, 3.0, 'fast', 'constant_current')}
     return rows
 
 
+def soft_start_record(design=None):
+    """S9.3 soft-start and sequencing values from the netlist (tools/s92_netlist): tau = Rtop x Css corners, the initial
+    capacitor current into the onboard bank + 0.44 mF rack, and the U4 enable delay after P12_OK."""
+    import circuit_s8
+    import s92_netlist
+    d = design or s92_netlist.Design.from_table(circuit_s8.circuit())
+    pin = s92_netlist.plant_inputs(d)
+    out = {}
+    for rail, net in pin['params']['soft_start'].items():
+        c_rail = pin['eff'][rail][1] + RACK_MAX_F
+        out[rail] = {k: net[k] for k in ('IC', 'FB', 'diode', 'X', 'Css', 'bleed', 'R_top', 'R_bot', 'out_net')} | {
+            'Css_effective_uF': [round(x * 1e6, 4) for x in net['Css_F']],
+            'tau_ms': [round(x, 2) for x in net['tau_ms']], 'internal_tSS_ms': net['tss_ms'],
+            'rail_C_with_rack_mF': round(c_rail * 1e3, 3),
+            'initial_capacitor_current_A': [round(c_rail * net['setpoint_V'] / (t * 1e-3), 3) for t in net['tau_ms']],
+            'to_95pct_ms': [round(3.0 * t, 1) for t in net['tau_ms']]}
+    seq = pin['U4_seq']
+    v3 = (3.3 * 1.02, 3.3 * 0.98)
+    vth = s92_netlist.NMOS['vth']
+    out['sequencing'] = {k: seq[k] for k in ('Q', 'gate', 'source', 'R', 'C', 'pullup')} | {
+        'tau_on_ms': [round(x * 1e3, 2) for x in seq['tau_on_s']],
+        'U4_enable_after_P12_OK_ms': [round(seq['tau_on_s'][0] * 1e3 * math.log(1 / (1 - vth[0] / v3[0])), 1),
+                                      round(seq['tau_on_s'][2] * 1e3 * math.log(1 / (1 - vth[1] / v3[1])), 1)],
+        'P12_OK_threshold_V': [round(x, 3) for x in pin['monitor_bands']['P12_OK_V']],
+        'why_not_U2_PG': ('TPS552892-Q1 PG compares FB with the reference; the injection holds FB at the reference for the '
+                          'whole ramp, so PG would read good at ~1 V. P12_OK is the independent delivered-rail monitor.')}
+    return out
+
+
 def qualification(val, eff, op, design=None):
-    """Resource/current checks of the 3 A source contract. S9.2: the numbers come from the netlist-derived plant
-    (startup_demand); the S9.1 'ideal allocation' energy budget, which could not fail, is withdrawn."""
+    """Resource/current checks of the 3 A source contract. S9.3: the S9.2 failure (4.649 A for 2.5 ms, 14 U5 drop-outs,
+    FAULT latched at ARMED) is fixed in hardware (FB-injection soft starts, -12V sequenced after +12V); every case must
+    start from a strict 3.00 A source in one attempt with zero drop-outs, at both corners and with both load models."""
     dem = startup_demand(design)
     pub = dem['published_33W_0.44mF']
+    every = [r for rows in dem.values() for k, r in rows.items() if k.startswith('strict')]
+    ok = all(r['single_attempt_start'] and r['U5_dropouts'] == 0 and r['peak_input_A'] <= 3.0 for r in every)
+    worst = max(every, key=lambda r: r['peak_input_A'])
     return {'source_limit_A': 3., 'source_min_V': 14.25, 'cable_loop_R_ohm': .25,
+            'design': ('S9.3: FB-injection soft starts on both converters (C84/D27/R116 on U2 FB, C85/D28/R117 on U4 FB_N) '
+                       'and the U4 enable sequenced after +12V (Q16, R118/C86 from P12_OK, R119)'),
+            'soft_start': soft_start_record(design),
             'demand_rows': dem,
+            'all_strict_cases_single_attempt': ok,
+            'worst_strict_peak_A': worst['peak_input_A'],
             'required_source_capability': {'peak_A': pub['unconstrained']['peak_input_A'],
                                            'above_3A_ms': pub['unconstrained']['time_above_3A_ms'],
                                            'basis': 'published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source '
-                                                    '+ 0.25 ohm, fastest 2.5 ms soft start, R109 icc max; U5 current limit '
-                                                    'caps the plant at 4.7 A'},
-            'strict_3A_outcome': ('FAULT latched at ARMED after repeated U5 UVLO dropouts (fail-safe, RUN low, input off); '
-                                  'NOT a single-attempt start' if not pub['strict_3A']['single_attempt_start']
-                                  else 'single-attempt start'),
-            'meaning': ('A strictly 3.00 A-limited 15 V source cannot supply the simultaneous soft-start charge of both rails '
-                        'at the published load and rack; the module then fails safe and needs RESET. Real PD sources '
-                        'with overload headroom (peak-current capability, OCP above ~4.7 A for a few ms) are expected '
-                        'to start it: post-prototype acceptance test S1 decides, per source.'),
+                                                    '+ 0.25 ohm, fast corner (shortest soft starts, earliest U4 enable), '
+                                                    'R109 icc max, D10 0.75 V, 0.5 W logic on the source'},
+            'strict_3A_outcome': ('single-attempt start, zero U5 drop-outs, input never above 3.00 A, in every case at '
+                                  'both corners and with both load models' if ok else
+                                  'FAIL: at least one strict 3 A case does not start in one attempt'),
+            'meaning': ('A strictly 3.00 A-limited 15 V source starts the module at the published rating with 0.44 mF per '
+                        'rail: the input current approaches its steady-state value from below (the RC soft starts keep '
+                        'the capacitor charge power small) and the -12V charge never overlaps the +12V ramp beyond its '
+                        'tail. Model limits: resistive or constant-current loads; a constant-POWER downstream load that '
+                        'draws full power from low voltage is not covered (it would also stall the +12V CC limit).'),
             'matrix':[
                 {'id':'S1','condition':'Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts',
-                 'pass':'Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record. A strict-3 A FAIL is recorded as the expected fail-safe (FAULT latched, input off) and restricts the qualified source list, it is not hidden'},
+                 'pass':'Single attempt, ZERO U5 drop-outs and no source current-limit event: input <= 3.00 A throughout (current probe), both rail monitors good within 250 ms of first enable, U4 EN rises only after P12_OK (3-18 ms later), ARMED by 0.90 s, no V3V3/POR reset, no FAULT. Any drop-out or FAULT is a FAIL (BOM: C84/C85/C86), never an accepted fail-safe'},
                 {'id':'S2','condition':'Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V',
-                 'pass':'A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts'},
+                 'pass':'No hard reset at the published load + 0.44 mF; a single hard reset is counted and fails that source/load combination; no success by discarding earlier failed attempts'},
                 {'id':'S3','condition':'Persistent rail short, uninterrupted source, then manual RESET and separate full power removal/reapplication',
                  'pass':'Each power epoch with input held must fault within 0.90 s+2 ms of first enable, hold RUN low until explicit reset, and fault again with short present'},
                 {'id':'S4','condition':'Ten automatic input hard resets every 200 ms while short remains, V3V3 collapsed in each off interval',
                  'pass':'Qualification result must be FAIL_REPEATED_POWER_RESET, never a pass from a final successful cycle; fixture latches power OFF on the second autonomous reset'},
             ],
             'power_reset_policy':'STARTED and FAULT are volatile. Full V3V3/POR loss legitimately clears both; S8.5 one-shot preserved, not falsely advertised as nonvolatile. Automatic retrying sources are outside qualified envelope. Fixture counts epochs and must stop retries; hardware nonvolatile lockout remains absent.',
-            'bench_status':'NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP19 STARTED, TP10 ARMED, TP9 RUN)'}
+            'bench_status':'NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP12 P12_OK, TP19 STARTED, TP10 ARMED, TP9 RUN, U4 pin 2 against TP25)'}
 
 
 def qualify_epochs(events):

@@ -1,7 +1,7 @@
 {
-  "revision": "S9.2 / P2.2",
+  "revision": "S9.3 / P2.3",
   "status": "routing-ready schematic and placement, unrouted and not bench-qualified; the open items are post-prototype acceptance tests, not design blockers",
-  "replaces": "review-s91.json (S9.1 / P2.1 record in git 5df64c7)",
+  "replaces": "review-s92.json (S9.2 / P2.2 record in git 9cdb9bd)",
   "changelog": [
     {
       "item": "1 D24 / OVP",
@@ -44,6 +44,14 @@
       "change": "Owner: NO via-in-pad anywhere, standard JLCPCB vias only (0.3 mm drill / 0.6 mm pad, tented, unfilled; no POFV/resin fill, no 0.2 mm or laser microvia). U4/U5/U9 use hole-free copies of their pinned lands (*_NoViaInPad; the S7 files stay drilled for the S7 boards). Beside-pad thermal fields replace the in-pad holes: one via row beyond each short end of each exposed pad, a 0.6 mm F.Cu spoke per via and a B.Cu landing pour (TV_U5_B/TV_U4_B/TV_U9_B); C2 and R24/C3 moved 0.45 mm, R13-R15 0.25 mm. DRC rules S92_via_standard, S92_via_hole_to_copper and S92_no_via_in_pad (any pad) and the RA_NOVIA_* areas stop a router from drilling a pad."
     },
     {
+      "item": "S9.3 strict 3 A start",
+      "change": "Neither converter has a soft-start pin, so each gets an FB-injection soft start: C84 220n / D27 BAV199 / R116 470k on U2 FB_P12 (tau = R8 x C84 = 15 ms nominal, 4.8-18.9 ms) and C85 470n / D28 / R117 470k on U4 FB_N (47 ms nominal, 15-59 ms). U4 is enabled only after +12V is good: Q16 tops the U4 enable sink chain, its gate driven from P12_OK through R118 100k / C86 100n (U4 EN 3.4-18.3 ms after P12_OK), R119 220k defines N_EN_MID. Strict 3.00 A source, published 33 W, 0.44 mF per rail: one attempt, zero U5 drop-outs, input <= 2.955 A in every case (startup_qualification); negative controls (D27 open, D28 open, Q16 gate on V3V3) fail. FB_P12 is a labelled net now (QUIET class, U2 cell/island net lists)."
+    },
+    {
+      "item": "S9.3 placement P2.3",
+      "change": "The ten S9.3 parts sit in free pockets of the P2.2 floor plan (no P2.2 part moved): D27/C84/R116 and Q16/R118/C86 between the U2 VIN bank and U10/U12, D28/C85/R117 by C33, R119 under U11. Interim: the FB_P12 / FB_N injection links are 13-15 mm until the U2 sense-escape re-placement."
+    },
+    {
       "item": "S9.2b thermal",
       "change": "no via-in-pad; vias relocated: U5 15 in-pad -> 10 beside-pad, U4 8 -> 10, U9 4 (0.2 mm) -> 6. Thermal penalty 5.3 C at rated load: U5 RthetaJA 32.2 -> 43.3 C/W (upper bound), Tj 65.4 -> 70.7 C at 50 C and the rated 3 A input (limit 125 C); U2 unchanged (never drilled): Tj 94.1 C at 2.4 A, 108.4 C at the CC limit; U4 DeltaR +0.44 C/W, U9 +6.87 C/W. Published rating unchanged: +12 V 2.4 A / -12 V 0.8 A."
     }
@@ -59,13 +67,13 @@
     "drc": {
       "categories": {
         "violations": 0,
-        "unconnected_items": 392,
+        "unconnected_items": 411,
         "schematic_parity": 0
       },
       "severity": {
-        "error": 392
+        "error": 411
       },
-      "total_including_exclusions": 392
+      "total_including_exclusions": 411
     }
   },
   "exact_native_ref_pin_net_parity": {
@@ -83,21 +91,21 @@
     "equal": true
   },
   "native_sources_unchanged_by_check": true,
-  "raw_reports": "research/s92b/check-final",
+  "raw_reports": "research/s93/check",
   "raw_reports_committed": false,
   "counts": {
-    "components": 175,
-    "nets": 80,
-    "nets_including_NC": 121,
+    "components": 185,
+    "nets": 84,
+    "nets_including_NC": 125,
     "no_connect_pins": 41,
-    "drc_unconnected_items": 392
+    "drc_unconnected_items": 411
   },
   "bom_parity": {
-    "bom_lines": 62,
-    "bom_refs": 148,
-    "unique": 148,
+    "bom_lines": 66,
+    "bom_refs": 158,
+    "unique": 158,
     "test_pads_not_in_bom": 27,
-    "components": 175,
+    "components": 185,
     "equal": true
   },
   "tests": {
@@ -105,12 +113,12 @@
     "ok": true,
     "skipped": 1,
     "s8_tests": 67,
-    "log": "research/s92b/tests-3.log",
+    "log": "research/s93/tests.log",
     "log_committed": false,
     "note": "local evidence; the tests log lives in git-ignored research/ and is not hashed"
   },
   "placement": {
-    "parts": 175,
+    "parts": 185,
     "pass": true,
     "local_loops_violations": [],
     "local_loops": {
@@ -223,7 +231,7 @@
         6.0
       ]
     },
-    "basis": "S9.2 / P2.2 synchronized from S9.1; S9.2b re-synchronized for the hole-free U4/U5/U9 lands (C2, R24/C3, R13-R15 moved); no routing apart from the thermal-via fields",
+    "basis": "S9.3 / P2.3 synchronized from S9.2b / P2.2: the ten S9.3 parts added in free pockets, every P2.2 part unmoved; no routing apart from the thermal-via fields",
     "routing_contract_screen": {
       "test_points": [
         {
@@ -541,31 +549,22 @@
         "R113"
       ]
     },
-    "replaced_footprints": {
-      "U4": [
-        "USBPOWER45:TI_SO-PowerPAD-8_ThermalVias",
-        "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad"
-      ],
-      "U5": [
-        "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias",
-        "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad"
-      ],
-      "U9": [
-        "USBPOWER45:TPS7A16_DGN0008C",
-        "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad"
-      ]
-    },
-    "moved_retained_refs": [
-      "C2",
-      "C3",
-      "R13",
-      "R14",
-      "R15",
-      "R24"
+    "replaced_footprints": {},
+    "moved_retained_refs": [],
+    "added_refs": [
+      "C84",
+      "C85",
+      "C86",
+      "D27",
+      "D28",
+      "Q16",
+      "R116",
+      "R117",
+      "R118",
+      "R119"
     ],
-    "added_refs": [],
     "removed_refs": [],
-    "courtyard_fill": 0.623
+    "courtyard_fill": 0.636
   },
   "routing_notes": {
     "doc": "docs/s8-single/routing-notes.md",
@@ -854,6 +853,10 @@
           "R": "R16",
           "series_nmos": [
             [
+              "Q16",
+              "N_EN_SEQ"
+            ],
+            [
               "Q15",
               "MAIN_LED_OK"
             ],
@@ -864,16 +867,27 @@
           ],
           "end": "GND",
           "node_defaults": {
+            "N_EN_MID": [
+              "R119"
+            ],
             "N_EN_RETURN": [
               "R115"
             ]
           }
         }
-      ]
+      ],
+      "sequencing": {
+        "Q": "Q16",
+        "gate": "N_EN_SEQ",
+        "source": "P12_OK",
+        "R": "R118",
+        "C": "C86",
+        "pullup": "R35"
+      }
     },
     "violations": [],
     "pass": true,
-    "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined."
+    "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK)."
   },
   "S92_startup_plant_from_netlist": {
     "U5_on_V": [
@@ -942,25 +956,167 @@
     "source_limit_A": 3.0,
     "source_min_V": 14.25,
     "cable_loop_R_ohm": 0.25,
+    "design": "S9.3: FB-injection soft starts on both converters (C84/D27/R116 on U2 FB, C85/D28/R117 on U4 FB_N) and the U4 enable sequenced after +12V (Q16, R118/C86 from P12_OK, R119)",
+    "soft_start": {
+      "+12V": {
+        "IC": "U2",
+        "FB": "FB_P12",
+        "diode": "D27",
+        "X": "SS_P12",
+        "Css": "C84",
+        "bleed": "R116",
+        "R_top": "R8",
+        "R_bot": "R9",
+        "out_net": "+12V",
+        "Css_effective_uF": [
+          0.0704,
+          0.22,
+          0.2783
+        ],
+        "tau_ms": [
+          4.79,
+          14.96,
+          18.92
+        ],
+        "internal_tSS_ms": [
+          2.5,
+          3.6,
+          5.0
+        ],
+        "rail_C_with_rack_mF": 0.537,
+        "initial_capacitor_current_A": [
+          1.354,
+          0.433,
+          0.343
+        ],
+        "to_95pct_ms": [
+          14.4,
+          44.9,
+          56.8
+        ]
+      },
+      "-12V": {
+        "IC": "U4",
+        "FB": "FB_N",
+        "diode": "D28",
+        "X": "SS_N12",
+        "Css": "C85",
+        "bleed": "R117",
+        "R_top": "R14",
+        "R_bot": "R15",
+        "out_net": "GND",
+        "Css_effective_uF": [
+          0.1505,
+          0.47,
+          0.5946
+        ],
+        "tau_ms": [
+          15.05,
+          47.0,
+          59.46
+        ],
+        "internal_tSS_ms": [
+          2.0,
+          4.0,
+          6.0
+        ],
+        "rail_C_with_rack_mF": 0.525,
+        "initial_capacitor_current_A": [
+          0.418,
+          0.134,
+          0.106
+        ],
+        "to_95pct_ms": [
+          45.1,
+          141.0,
+          178.4
+        ]
+      },
+      "sequencing": {
+        "Q": "Q16",
+        "gate": "N_EN_SEQ",
+        "source": "P12_OK",
+        "R": "R118",
+        "C": "C86",
+        "pullup": "R35",
+        "tau_on_ms": [
+          9.7,
+          11.0,
+          12.34
+        ],
+        "U4_enable_after_P12_OK_ms": [
+          3.4,
+          18.3
+        ],
+        "P12_OK_threshold_V": [
+          9.068,
+          9.977,
+          10.961
+        ],
+        "why_not_U2_PG": "TPS552892-Q1 PG compares FB with the reference; the injection holds FB at the reference for the whole ramp, so PG would read good at ~1 V. P12_OK is the independent delivered-rail monitor."
+      }
+    },
     "demand_rows": {
       "published_33W_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.888,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 14,
-          "single_attempt_start": false,
-          "rails_good_ms": null,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.706,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
-            2.65,
-            3.77
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 4.649,
-          "time_above_3A_ms": 2.5,
+          "peak_input_A": 2.888,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.706,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.875,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.694,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.892,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.709,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1378,
           "final_rails_V": [
             12.08,
             11.99
@@ -969,22 +1125,64 @@
       },
       "published_split_-12V_0.8A_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.955,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 14,
-          "single_attempt_start": false,
-          "rails_good_ms": null,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.763,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
-            0.39,
-            0.69
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 4.556,
-          "time_above_3A_ms": 3.0,
+          "peak_input_A": 2.955,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 23.2,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.763,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.941,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.752,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.955,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.764,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
@@ -993,22 +1191,64 @@
       },
       "published_33W_no_rack": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.874,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 13,
-          "single_attempt_start": false,
-          "rails_good_ms": 22.9,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
-            0.0,
-            0.05
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 3.044,
-          "time_above_3A_ms": 0.2,
+          "peak_input_A": 2.874,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.872,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.691,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0026,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.874,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
@@ -1017,22 +1257,64 @@
       },
       "no_load_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 0.206,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 1,
-          "single_attempt_start": false,
-          "rails_good_ms": 29.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 3.456,
-          "time_above_3A_ms": 0.3,
+          "peak_input_A": 0.206,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 0.117,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 0.119,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 0.206,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
@@ -1041,22 +1323,64 @@
       },
       "no_load_no_rack": {
         "strict_3A": {
-          "peak_input_A": 0.565,
+          "peak_input_A": 0.075,
           "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 0.565,
+          "peak_input_A": 0.075,
           "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 0.075,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 0.052,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0026,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 0.075,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
@@ -1064,23 +1388,25 @@
         }
       }
     },
+    "all_strict_cases_single_attempt": true,
+    "worst_strict_peak_A": 2.955,
     "required_source_capability": {
-      "peak_A": 4.649,
-      "above_3A_ms": 2.5,
-      "basis": "published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source + 0.25 ohm, fastest 2.5 ms soft start, R109 icc max; U5 current limit caps the plant at 4.7 A"
+      "peak_A": 2.888,
+      "above_3A_ms": 0.0,
+      "basis": "published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source + 0.25 ohm, fast corner (shortest soft starts, earliest U4 enable), R109 icc max, D10 0.75 V, 0.5 W logic on the source"
     },
-    "strict_3A_outcome": "FAULT latched at ARMED after repeated U5 UVLO dropouts (fail-safe, RUN low, input off); NOT a single-attempt start",
-    "meaning": "A strictly 3.00 A-limited 15 V source cannot supply the simultaneous soft-start charge of both rails at the published load and rack; the module then fails safe and needs RESET. Real PD sources with overload headroom (peak-current capability, OCP above ~4.7 A for a few ms) are expected to start it: post-prototype acceptance test S1 decides, per source.",
+    "strict_3A_outcome": "single-attempt start, zero U5 drop-outs, input never above 3.00 A, in every case at both corners and with both load models",
+    "meaning": "A strictly 3.00 A-limited 15 V source starts the module at the published rating with 0.44 mF per rail: the input current approaches its steady-state value from below (the RC soft starts keep the capacitor charge power small) and the -12V charge never overlaps the +12V ramp beyond its tail. Model limits: resistive or constant-current loads; a constant-POWER downstream load that draws full power from low voltage is not covered (it would also stall the +12V CC limit).",
     "matrix": [
       {
         "id": "S1",
         "condition": "Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts",
-        "pass": "Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record. A strict-3 A FAIL is recorded as the expected fail-safe (FAULT latched, input off) and restricts the qualified source list, it is not hidden"
+        "pass": "Single attempt, ZERO U5 drop-outs and no source current-limit event: input <= 3.00 A throughout (current probe), both rail monitors good within 250 ms of first enable, U4 EN rises only after P12_OK (3-18 ms later), ARMED by 0.90 s, no V3V3/POR reset, no FAULT. Any drop-out or FAULT is a FAIL (BOM: C84/C85/C86), never an accepted fail-safe"
       },
       {
         "id": "S2",
         "condition": "Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V",
-        "pass": "A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts"
+        "pass": "No hard reset at the published load + 0.44 mF; a single hard reset is counted and fails that source/load combination; no success by discarding earlier failed attempts"
       },
       {
         "id": "S3",
@@ -1094,7 +1420,7 @@
       }
     ],
     "power_reset_policy": "STARTED and FAULT are volatile. Full V3V3/POR loss legitimately clears both; S8.5 one-shot preserved, not falsely advertised as nonvolatile. Automatic retrying sources are outside qualified envelope. Fixture counts epochs and must stop retries; hardware nonvolatile lockout remains absent.",
-    "bench_status": "NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP19 STARTED, TP10 ARMED, TP9 RUN)"
+    "bench_status": "NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP12 P12_OK, TP19 STARTED, TP10 ARMED, TP9 RUN, U4 pin 2 against TP25)"
   },
   "S92_thermal_contract": {
     "status": "CONDITIONAL: valid only if the routed board meets placement.json routing_contract.thermal; confirmed by post-prototype TH-1..TH-3, not by this screen",
@@ -1492,7 +1818,7 @@
       "SWITCH": 3,
       "SENSE": 2,
       "AGND_U2": 1,
-      "QUIET": 60
+      "QUIET": 64
     },
     "drc_rules": [
       "S92_via_standard",
@@ -1777,7 +2103,7 @@
         "t_por_ms": 12.0,
         "t_u5_on_to_pgood_ms": 23.5,
         "t_pgood_fall_ms": 10.0,
-        "t_rails_ms": 120.0,
+        "t_rails_ms": 200.0,
         "t_rail_decay_ms": 1.0,
         "t_filter_ms": 0.75,
         "u5_on_V": 12.977,
@@ -2247,82 +2573,166 @@
       "source_limit_3A": {
         "t_d_0.31s_V20_7.67V": [
           [
-            345.4
+            345.3
+          ],
+          [
+            655.3
           ],
           [],
-          [
-            655.4
-          ],
-          false
+          true
         ],
         "t_d_0.31s_V20_9.27V": [
           [
-            345.4
+            345.3
+          ],
+          [
+            655.3
           ],
           [],
-          [
-            655.4
-          ],
-          false
+          true
         ],
         "t_d_0.88s_V20_7.67V": [
           [
-            345.4
+            345.3
+          ],
+          [
+            1225.3
           ],
           [],
-          [
-            1225.4
-          ],
-          false
+          true
         ],
         "t_d_0.88s_V20_9.27V": [
           [
-            345.4
+            345.3
+          ],
+          [
+            1225.3
           ],
           [],
+          true
+        ]
+      },
+      "source_limit_3A_split": {
+        "t_d_0.31s_V20_7.67V": [
           [
-            1225.4
+            345.3
           ],
-          false
+          [
+            655.3
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            345.3
+          ],
+          [
+            655.3
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            345.3
+          ],
+          [
+            1225.3
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            345.3
+          ],
+          [
+            1225.3
+          ],
+          [],
+          true
+        ]
+      },
+      "source_limit_3A_slow": {
+        "t_d_0.31s_V20_7.67V": [
+          [
+            345.3
+          ],
+          [
+            655.3
+          ],
+          [],
+          true
+        ],
+        "t_d_0.31s_V20_9.27V": [
+          [
+            345.3
+          ],
+          [
+            655.3
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_7.67V": [
+          [
+            345.3
+          ],
+          [
+            1225.3
+          ],
+          [],
+          true
+        ],
+        "t_d_0.88s_V20_9.27V": [
+          [
+            345.3
+          ],
+          [
+            1225.3
+          ],
+          [],
+          true
         ]
       },
       "source_3A_no_load_no_rack": {
         "t_d_0.31s_V20_7.67V": [
           [
-            345.4
+            345.3
           ],
           [
-            655.4
+            655.3
           ],
           [],
           true
         ],
         "t_d_0.31s_V20_9.27V": [
           [
-            345.4
+            345.3
           ],
           [
-            655.4
+            655.3
           ],
           [],
           true
         ],
         "t_d_0.88s_V20_7.67V": [
           [
-            345.4
+            345.3
           ],
           [
-            1225.4
+            1225.3
           ],
           [],
           true
         ],
         "t_d_0.88s_V20_9.27V": [
           [
-            345.4
+            345.3
           ],
           [
-            1225.4
+            1225.3
           ],
           [],
           true
@@ -2670,6 +3080,10 @@
                   "R": "R16",
                   "series_nmos": [
                     [
+                      "Q16",
+                      "N_EN_SEQ"
+                    ],
+                    [
                       "Q15",
                       "MAIN_LED_OK"
                     ],
@@ -2680,12 +3094,23 @@
                   ],
                   "end": "GND",
                   "node_defaults": {
+                    "N_EN_MID": [
+                      "R119"
+                    ],
                     "N_EN_RETURN": [
                       "R115"
                     ]
                   }
                 }
-              ]
+              ],
+              "sequencing": {
+                "Q": "Q16",
+                "gate": "N_EN_SEQ",
+                "source": "P12_OK",
+                "R": "R118",
+                "C": "C86",
+                "pullup": "R35"
+              }
             },
             "off_pullup": "R112 ties Q1 base to VPD; R115 100k defines N_EN_RETURN; R18 pulls EN to the U4 ground",
             "enable_high_max_V": 1.4,
@@ -2694,12 +3119,13 @@
             "running_max_relative_V": 5.52,
             "off_leakage_test_bound_uA": 5,
             "off_relative_max_V": 0.102,
-            "off_Q1_VEB_max_V": 0.1839,
+            "off_Q1_VEB_max_V": 0.2651,
             "truth_table": [
               {
                 "own_input": false,
                 "run": false,
                 "main_status": false,
+                "p12_good": false,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2716,6 +3142,41 @@
                 "own_input": false,
                 "run": false,
                 "main_status": false,
+                "p12_good": false,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": false,
+                "main_status": false,
+                "p12_good": true,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": false,
+                "main_status": false,
+                "p12_good": true,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2732,6 +3193,7 @@
                 "own_input": false,
                 "run": false,
                 "main_status": true,
+                "p12_good": false,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2748,6 +3210,41 @@
                 "own_input": false,
                 "run": false,
                 "main_status": true,
+                "p12_good": false,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": false,
+                "main_status": true,
+                "p12_good": true,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": false,
+                "main_status": true,
+                "p12_good": true,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2764,6 +3261,7 @@
                 "own_input": false,
                 "run": true,
                 "main_status": false,
+                "p12_good": false,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2780,6 +3278,41 @@
                 "own_input": false,
                 "run": true,
                 "main_status": false,
+                "p12_good": false,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": true,
+                "main_status": false,
+                "p12_good": true,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": true,
+                "main_status": false,
+                "p12_good": true,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2796,6 +3329,7 @@
                 "own_input": false,
                 "run": true,
                 "main_status": true,
+                "p12_good": false,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2812,6 +3346,41 @@
                 "own_input": false,
                 "run": true,
                 "main_status": true,
+                "p12_good": false,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": true,
+                "main_status": true,
+                "p12_good": true,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": false,
+                "run": true,
+                "main_status": true,
+                "p12_good": true,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2828,6 +3397,7 @@
                 "own_input": true,
                 "run": false,
                 "main_status": false,
+                "p12_good": false,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2844,6 +3414,75 @@
                 "own_input": true,
                 "run": false,
                 "main_status": false,
+                "p12_good": false,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0052,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": false,
+                "main_status": false,
+                "p12_good": true,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0864,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": false,
+                "main_status": false,
+                "p12_good": true,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0864,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": false,
+                "main_status": true,
+                "p12_good": false,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0052,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": false,
+                "main_status": true,
+                "p12_good": false,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2860,6 +3499,7 @@
                 "own_input": true,
                 "run": false,
                 "main_status": true,
+                "p12_good": true,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2869,13 +3509,14 @@
                   0.0,
                   0.102
                 ],
-                "Q1_VEB_off_bound_V": 0.1839,
+                "Q1_VEB_off_bound_V": 0.2651,
                 "undefined_nodes": []
               },
               {
                 "own_input": true,
                 "run": false,
                 "main_status": true,
+                "p12_good": true,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2885,13 +3526,14 @@
                   0.0,
                   0.102
                 ],
-                "Q1_VEB_off_bound_V": 0.1839,
+                "Q1_VEB_off_bound_V": 0.2651,
                 "undefined_nodes": []
               },
               {
                 "own_input": true,
                 "run": true,
                 "main_status": false,
+                "p12_good": false,
                 "bus_live": false,
                 "U4_enabled": false,
                 "Q1": [
@@ -2908,6 +3550,75 @@
                 "own_input": true,
                 "run": true,
                 "main_status": false,
+                "p12_good": false,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0052,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": true,
+                "main_status": false,
+                "p12_good": true,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0864,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": true,
+                "main_status": false,
+                "p12_good": true,
+                "bus_live": true,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0864,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": true,
+                "main_status": true,
+                "p12_good": false,
+                "bus_live": false,
+                "U4_enabled": false,
+                "Q1": [
+                  "off"
+                ],
+                "EN_relative_V": [
+                  0.0,
+                  0.102
+                ],
+                "Q1_VEB_off_bound_V": 0.0052,
+                "undefined_nodes": []
+              },
+              {
+                "own_input": true,
+                "run": true,
+                "main_status": true,
+                "p12_good": false,
                 "bus_live": true,
                 "U4_enabled": false,
                 "Q1": [
@@ -2924,6 +3635,7 @@
                 "own_input": true,
                 "run": true,
                 "main_status": true,
+                "p12_good": true,
                 "bus_live": false,
                 "U4_enabled": true,
                 "Q1": [
@@ -2940,6 +3652,7 @@
                 "own_input": true,
                 "run": true,
                 "main_status": true,
+                "p12_good": true,
                 "bus_live": true,
                 "U4_enabled": true,
                 "Q1": [
@@ -2955,7 +3668,7 @@
             ],
             "violations": [],
             "pass": true,
-            "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined.",
+            "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK).",
             "does_not_block_reverse_power_while_enabled": true,
             "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
           }
@@ -3089,14 +3802,15 @@
     }
   },
   "sourcing": {
-    "selected_part_evidence": "s92-sourcing.json (live, every S9.2 code incl. alternates); sourcing.json full live audit",
+    "selected_part_evidence": "s93-sourcing.json (live, every S9.3 code incl. alternates); s92-sourcing.json (S9.2 codes); sourcing.json full live audit",
     "earlier_evidence": [
+      "s92-sourcing.json",
       "s91-sourcing.json",
       "s90-sourcing.json",
       "s84-sourcing.json",
       "s83-sourcing.json"
     ],
-    "parts_partial_subtotal_q1_usd": 23.12,
+    "parts_partial_subtotal_q1_usd": 22.96,
     "unpriced_codes": [],
     "manual_parts_no_LCSC": [
       "D8",
@@ -3104,8 +3818,8 @@
       "J3"
     ],
     "failures": [],
-    "codes": 60,
-    "placements": 145,
+    "codes": 64,
+    "placements": 155,
     "all_parts_fresh_live_audit": true,
     "missing_codes_for_assembled_parts": [],
     "basic_only_policy": "S9.2 Basic/Extended policy: every resistor and capacitor is a Basic part except the documented electrical exceptions R2/R3 (0.1 % UVLO), R93/R94/R98/R99 (0.1 % guard dividers) and R109 (18 mOhm 1 W metal-alloy shunt, no Basic part exists). ICs, transistors, TVS/Schottky diodes, the inductors and connectors are Extended where JLCPCB has no Basic equivalent. Every machine-assembled part has a C-code with live stock at the dated audit; alternates are recorded in the Alternates field. J2/J3 (box headers) and D8 (panel LED) stay owner-fitted manual parts by the S7/S8 module policy; JLCPCB THT codes are noted for them.",
@@ -3199,6 +3913,36 @@
         109541,
         0.0334,
         "2026-11-02T07:24:19Z"
+      ],
+      "C21120": [
+        "Basic",
+        925212,
+        0.0093,
+        "2026-11-03T08:59:47Z"
+      ],
+      "C1623": [
+        "Basic",
+        637199,
+        0.013,
+        "2026-11-03T08:59:51Z"
+      ],
+      "C145516": [
+        "Extended",
+        384820,
+        0.0322,
+        "2026-11-03T08:59:53Z"
+      ],
+      "C40919": [
+        "Extended",
+        79714,
+        0.0348,
+        "2026-11-03T08:59:55Z"
+      ],
+      "C68971": [
+        "Extended",
+        33645,
+        0.0268,
+        "2026-11-03T08:59:57Z"
       ]
     },
     "reverse_blocking_parts": "none (owner decision)"
@@ -3223,41 +3967,41 @@
     "hardware/usb-power-45w.kicad_sch": "9f22aa3a82f9a39b301a884a58407ab39883ebc6098dc4a66d095feaca324b0d"
   },
   "sources_sha256": {
-    "hardware/single/01_usb_input.kicad_sch": "117cd52df47a23bad6028f9100d8888845b044e03333e16edd7caf863ba6e03e",
-    "hardware/single/02_positive_12v.kicad_sch": "d3eb3fd2691e93fc0e153a7f2d1283722c378afd76097a47677d7a9d0936964c",
-    "hardware/single/03_negative_converter.kicad_sch": "eaeb7062d825acf591492008e158fc53dfec91ea0c115d30bb12e741eba38148",
-    "hardware/single/04_fault_reset.kicad_sch": "b2ba9179152d2c62468767901f8766423d0f7061353504223be8040b9517d137",
-    "hardware/single/05_outputs_status.kicad_sch": "2f53238d5537859acf35e65e2fcbe498ab14bf9c683f336f552506b11695648d",
-    "hardware/single/USBPOWER45.kicad_sym": "eb79e23f2e57e2a4efc9d111c2421bcef96943e5de205b14c11f9afdafb48c6e",
-    "hardware/single/usb-power-45w-single.kicad_dru": "d920ff092e7707cc737b19a7e8179645d3af14be0f4d5f0d8da18eecfccf87de",
-    "hardware/single/usb-power-45w-single.kicad_pcb": "64aa8d002e29f37c45088f759900f1f92e765659977ba46f44315b1a93d0a96e",
-    "hardware/single/usb-power-45w-single.kicad_pro": "dd3df9fe773f17f899d5107759bf7be7d1cbed43fd6868c4e0eb16bc6e5735bc",
-    "hardware/single/usb-power-45w-single.kicad_sch": "98965f1b487096b3624116c1d2c75dffe623634ae85102f7586a98da8a1e9062",
+    "hardware/single/01_usb_input.kicad_sch": "0c6663b5b8082b729231cbf86038aeeff53b7e0ed843386629807ebe2f9931e7",
+    "hardware/single/02_positive_12v.kicad_sch": "b92e61fc25fde239a4dc268169f571985d666b1e2971fc923bba7e1b499d0de0",
+    "hardware/single/03_negative_converter.kicad_sch": "da0f66541435016d0d59f226b763145682f73818b7f1a986e73d3db97f36c2b3",
+    "hardware/single/04_fault_reset.kicad_sch": "c2f589c26fb21b6db6d5d3e48afdd4d4e858aaa1c511bd6d0239825c083270fc",
+    "hardware/single/05_outputs_status.kicad_sch": "316b04896a7e0eb84bd4753a48b9369dfcd3d1cd2f5876e067d1cd331e42785f",
+    "hardware/single/USBPOWER45.kicad_sym": "8441cff883bc75d379f4a8b200201099d3e9d07f98c84e6b262d7e9348d8682d",
+    "hardware/single/usb-power-45w-single.kicad_dru": "78c74bbdeeb3fe41ce78298299a3d1ec62fcea472e05f15223d8c3bb3a1fea25",
+    "hardware/single/usb-power-45w-single.kicad_pcb": "096e9bb0c8fb9abdf7976892cf06bbbce78f1761c9133a2396a80c1421f4ae39",
+    "hardware/single/usb-power-45w-single.kicad_pro": "7a0fcc78db293b6d0ba8934702f984d8cb713c7f21ac6b7e64b2aea46554be6c",
+    "hardware/single/usb-power-45w-single.kicad_sch": "03ff69d33930ebb8b8a3cff8639fb1730c14ff213a2254f658f04c3a03c86174",
     "hardware/single/fp-lib-table": "601d6fbd37ab69fc7d916c461d0807ffa17a98b4b85991ac9bb727625ff99590",
     "hardware/single/sym-lib-table": "23c007ed7a5fbdfdb875fadc8130b067bda56e476121040a79e6b256dab53989",
     "panels/front-pcb/usb-power-45w-single-panel.kicad_pcb": "71f1a565e1812a3088a0cf3c67102dc262408a7875c57bcd93712107ec599c77",
     "panels/front-pcb/usb-power-45w-single-panel.kicad_pro": "216a69a24b9ad4d7f9b49503738bf8d9b2b4ded408577398cc223b6291c095ac",
-    "tools/build_s8.py": "7bb392c5435acad54661238431b238f0552776a7cf095ed207515ce1aeeb2691",
+    "tools/build_s8.py": "b0787939fcf2884e2808c0fe9a02fcdb9a52bd88ae1f667513db765f7d1ae52e",
     "tools/build_s8_assembly.py": "e674508c7da2f5b69cb4f206227619bed2e2da27cf0018cff2d1116c7df8c503",
     "tools/build_s8_board.py": "3ace3757c1e91949352b648d5852394bb0651c07a2759e8e55c6fcf9bfd547c5",
     "tools/build_s8_panel.py": "5f728717802a39cc6e53667ec6e2fa85e312983b1c22f0a2abba2aca7d555d60",
     "tools/check_s8_board.py": "34812773353cb811d0efd2a23e98453009d5ae0fc3f8626b8fac72cae8b0ab4e",
-    "tools/circuit_s8.py": "3b701c221312fff62225a655afa4791fc0f1568f0b33dbf4718c20e93708891b",
-    "tools/hierarchy_s8.py": "891fa60cfce575582821765052b3439fde3a86f44b3c0f7e62019779c224004d",
+    "tools/circuit_s8.py": "aaf34618a619f8ab1826b3b41a413860f3c863f5e49ab4bf7a11ad9cd07c3940",
+    "tools/hierarchy_s8.py": "5019fc45c4d78e0d482dbeaef6c518eea0014e497c7a7c58d55122350ac42253",
     "tools/mechanics_s8.py": "537365343276105fd76da632d860692ed394a596f4e1e6dd504f7505a9098876",
-    "tools/place_s8.py": "12d9c03407fd8810aff55703fcd74c0a0a287700daa07fcba49c9583c606a47b",
+    "tools/place_s8.py": "40c9641ae9c532d8dd7c8321237b0536fd783bd9b4e3bf44c4ae70dd09d1828b",
     "tools/render_s8.py": "5dcd121dd35e88734693d866fe1c2842751a22121434428f3674b23e76e7d9a2",
-    "tools/review_s8.py": "30f058caedc634e79e7146e98d3b5d4e8c644c214ee084962c249746d0b99659",
-    "tools/s8_calcs.py": "852199db6f848f6bc4fba0e80665272f01320ade18cf402b52f0257a3a9bfee1",
-    "tools/s8_mechanical.py": "d3ea88c592dc361b8ea466c588faecfc1eb8bd610fcc7565dcc07a86f7b64f28",
-    "tools/s8_sourcing.py": "693c5130ddd74270e1312a0dfb489fcec7f6a89b7407b612d098b00388210aa9",
+    "tools/review_s8.py": "3a92b5a79a9d368459d5dd13512288424312454477542b54a68f5eb5a0f2b634",
+    "tools/s8_calcs.py": "99bec671182203946dc046d8d741a608f0477296279c5bec2473d9a6c64a4fd2",
+    "tools/s8_mechanical.py": "dd5b8d26089464f9cd43c01f873db9ddd276340379b471f3b045a05a3f8cecc4",
+    "tools/s8_sourcing.py": "184e00dc60e5d1ab0f77f55570104f513fcfd90c3015384645473356111fba47",
     "tools/s90_parts.py": "b065d14aebb3d9e6c202422a69817ee70359af0fa2a938d25afa15c96d8e7889",
-    "tools/s91_analysis.py": "6dc81f682b956779540edf7ae40c9ce94adacd9ae4b5ec6e7e2ca9241938c8a0",
-    "tools/s92_contract.py": "cf0960b2be369819b12921e5ab49b86ea802883f18be3fa1e57ad8d20b557036",
-    "tools/s92_netlist.py": "86df59b598505f02378566ac70c204d990d2ec6d668b90f1aef44bf914973bb2",
+    "tools/s91_analysis.py": "90b5593774815023ce8cdf697a24174304649343dacf54448b7e32a19b035642",
+    "tools/s92_contract.py": "be3c2854700a9c8b247597db0fd5e23c4cc12986c517461ab188de225daaf460",
+    "tools/s92_netlist.py": "593b1d7e08b244cc96a814b087a146bd88fd3ab67f8c2c90ef55a4260e219720",
     "tools/s92_parts.py": "1b7b95a41812cfb21f36ee7fa4d7138cdfada364b2ed933c1191dd0f7b541fac",
-    "tools/test_s8.py": "a71d42293114716610a213839e5e1d9e89fb86e8f545c14add0cca96f2a33b04",
-    "tools/verify_s8.py": "d8fe153b2ce6bab8ddadb69af6bf54ddb65385e336891aacc84ab11f93fd76a7",
+    "tools/test_s8.py": "714add26b85283ac780e9b79ced7d482f8be7360a85c0fdcb3aec068a704bf6c",
+    "tools/verify_s8.py": "698a1147f97bc08ebd27201f268648d86fd7f868aad7162b8a8953a54ce38990",
     "hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
     "hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
     "hardware/USBPOWER45.pretty/D_SMA.kicad_mod": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
@@ -3286,36 +4030,37 @@
     "hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod": "d7ae230b69d8c3dad5082515a51aac9e4840360c8f4324a00673353676d43042"
   },
   "artifacts_sha256": {
-    "docs/s8-single/assembly/assembly-report.json": "2685689452ee60ccfa1bc244019437cf7bc65c0d04afcb7c773b91817fb9f1cc",
-    "docs/s8-single/assembly/board-iso.jpg": "532353dcad2c6e1b4ddbda5276099866ce50c030d4d8e881e37a3ca4971e1658",
-    "docs/s8-single/assembly/board-top.jpg": "276b50ae4c3cd8f8df83788e5199f8a25efb3527edb6ce68362ce31e5c4baba5",
-    "docs/s8-single/assembly/iso-front.png": "38f5beb690afe9ae37763aec5374fc01d89b2480d2a5676185c1094d680947bb",
-    "docs/s8-single/assembly/iso-rear.png": "5f482146fd363912794ca47ebeeb818888f8ca228eb1c49eb43e7d7592f85992",
-    "docs/s8-single/assembly/usb-power-45w-single-assembly.step.zip": "d2070aeee0706c59c2a6335c590d51259cfaa97b5d25b11db19f6ff9fe603892",
-    "docs/s8-single/assembly/usb-power-45w-single-placement.pdf": "98a1c470ef25930be3d4bab64009d497b845321f039fb4533e471ea85ece2661",
-    "docs/s8-single/board-p1.json": "68ea6e368f4568ac1c167dd808176f3f420323c9089be454ce7a24be4724ebed",
-    "docs/s8-single/bom.csv": "e887388f65149447835171e7982fbd59986dd9b7dd0a7d0089642072b180cb82",
-    "docs/s8-single/build.json": "0eb33097140be5fa6f2ea1c717d955d3813ef54341c0ee068b8558869d8ff856",
-    "docs/s8-single/calcs.json": "79c41729ca2e3b3c39d523ed99acbea01c153ea0e956d11d9e118790aca5fefc",
-    "docs/s8-single/hierarchy-parity.json": "8e0c389e9d13d3e84ed47719f7786124967fa2d2003dfbe6974ba80a016dcb32",
-    "docs/s8-single/img/board-p1.png": "4dc2d4b4dda6fdb2e286c0a0bc386b4d36347d9c05dd97ed760666a747d56b4f",
+    "docs/s8-single/assembly/assembly-report.json": "e8b79e8dacbbb02312f90f7e6531e39f088e939adb5a07eb2c5bb1a16f844f49",
+    "docs/s8-single/assembly/board-iso.jpg": "f73a3f74c9f8ddde07c8f5294c3ed852e11c8a5513b7aafd0270e9b5d745375d",
+    "docs/s8-single/assembly/board-top.jpg": "cc191a80dad69e2a5d47237f13831ae5baf84c1fd9227eb9b067b5f8a1748bf6",
+    "docs/s8-single/assembly/iso-front.png": "0644610f21607e2ce64d3c9d699223fe39a4b51ecbee7a53168e9d7c550c2fae",
+    "docs/s8-single/assembly/iso-rear.png": "c1777fe64f632189a7c8704e1c93ada196b289cd906f6cef2d317fbdcb242c07",
+    "docs/s8-single/assembly/usb-power-45w-single-assembly.step.zip": "41d1194910c30a5b022062dc0db7040ddbd673457243b9e4df31f8ba86630e73",
+    "docs/s8-single/assembly/usb-power-45w-single-placement.pdf": "741992b3994c35d6e38c6d30b7bfd074300e698bf136521c806af282443931e2",
+    "docs/s8-single/board-p1.json": "68d0d384f0423aca44a6d9496357ccbcda43272485045c32689a1f285760ffa2",
+    "docs/s8-single/bom.csv": "4fbd880189ce21cb9c17df1bee0472f90b27d3e2c3a4712fa43d1fb22157ca97",
+    "docs/s8-single/build.json": "c3a7d5690cc3e8968c028f9eacb5464d1e8843c7dd1345d8d27045bcd74a926c",
+    "docs/s8-single/calcs.json": "4486c24f25cb8c8cd0486e58f2a010039204bf89c1829ce937f0d6b68fb178b9",
+    "docs/s8-single/hierarchy-parity.json": "fc903b333e8350c91b4e7f6534da284397e7bcbc8b2e2bae7a102debbff80c1c",
+    "docs/s8-single/img/board-p1.png": "52a46a81d1732ec7eafbfe91efbf00ab47c030f2d7559d9502f3e43a9810852d",
     "docs/s8-single/mechanical.json": "eb83001da4c1860aa4313b90ee845dd8b6a4d2a874513e22840f7fa59835fc8b",
-    "docs/s8-single/placement.json": "8b43a10785ec91867243804fcb4084e57d792f55cb176a2cdff1e65e89a3da5f",
-    "docs/s8-single/routing-notes.md": "c8307005ad1a35ca2f6c547779687626e6f1e48093ca69a301933cebf042b303",
+    "docs/s8-single/placement.json": "8ef327aab78bc946011bef7ce8da374dcc83d86630c2812e20a201cbac40342d",
+    "docs/s8-single/routing-notes.md": "017df5b0f7eb127ccacad3136ba8ff3c9d4bba67767946883ec559394f1ea083",
     "docs/s8-single/s83-sourcing.json": "28aa62b9599643b16aa43485d0db1a893d41df3abbaf4c1c77dec9e5d4b1a76c",
     "docs/s8-single/s84-sourcing.json": "2cba18099500dd4858f1d5adc9c8956a137fa6ac6b1b889aadcdf653c0b7d853",
     "docs/s8-single/s90-sourcing.json": "930fee411e1b8eaaab48c82898ae295d7078833df65f04bfb287f5340a25d43f",
     "docs/s8-single/s91-sourcing.json": "638a9c2ce4c972f2095bd1c1421fcfe1d0cdcbf4d0dd4c898642a46ee1187830",
     "docs/s8-single/s92-sourcing.json": "2d953f4dfe02fe44ab76baca8a108e236c82996c1a5140e8a1268af790ff737a",
+    "docs/s8-single/s93-sourcing.json": "f73fd2247a2c851e9f2185915a6883e2bedca70a902ba0a3ecf5604402b4ea50",
     "docs/s8-single/schematic-wiring.json": "c043d2e5258c761a2ead11dc951215233436f3b4a598d14271e7e63b3cdf4d65",
-    "docs/s8-single/sourcing.json": "f7de9a39eef906b641051bf99037dc9693c37197a86cc016f0416beb2ba8a0a4",
-    "docs/s8-single/validation.json": "889824ff70be9c5c3cbb7c1bd6f7e40375c2d713733bbd6682e369e2ab295960",
-    "docs/usb-power-45w-single-schematic.pdf": "6ecdb9164d3e56b8955112d3d60cf5b696e8a4614dbc096c9b350a720812e6d3",
-    "docs/s8-single-board.md": "2c92f1d627d13b46980b241236de327142a7908d0b9f5f6ffbc93e3f7e36c121"
+    "docs/s8-single/sourcing.json": "ce01fa6c49b0a8a50440b0e3cba78902e5ba839f05c9eec5ea0d863a1a773b95",
+    "docs/s8-single/validation.json": "115d5c04b73aaa7a93474172e1a4284b30e62d1c95d8d57b44a82bce6a7e5abd",
+    "docs/usb-power-45w-single-schematic.pdf": "3442111f6da96621e49417f961d0a5267e86732f7b8748590e8d8e06b3a9f887",
+    "docs/s8-single-board.md": "e7d5a998f51fed260db79cde1140b65c39a915ce948ef89a0316ab95b7d24132"
   },
   "open_gates": [
-    "Routing itself (P2.2 is routing-ready and unrouted; the contract items are checked after routing)",
-    "S1-S4 source/startup qualification: strict 3.00 A sources fail safe at full load + rack (needs ~4.65 A for ~2.5 ms)",
+    "Routing itself (P2.3 is unrouted; the contract items are checked after routing; the S9.3 FB-injection parts are in interim pockets)",
+    "S1-S4 source/startup qualification on the bench: the netlist-derived plant starts from a strict 3.00 A source in one attempt (S9.3 soft starts + U4 sequencing, peak 2.955 A); S1 confirms it with a current probe",
     "TH-1..TH-3 thermal on real copper (U2 Tj <= 125 C needs effective RthetaJA <= 55.8 C/W at the CC limit)",
     "LS-1 loop gain with the real rack (PM > 45 deg, GM > 10 dB), CL-1/T1 clamp energy, T2 rail overvoltage",
     "IN-1/IN-2 UVLO/OVP spread at temperature, EMI-1 switching-node ringing, GS-1/GS-2 ground star, KS-1/CC-1 Kelvin",
