@@ -62,8 +62,22 @@ void outputToDAC(uint8_t value) {
   DAC0.DATA = value;
 }
 
+// HATS: TONE level compensation. A higher TONE holds each sample longer,
+// so the blue (high-pass) stage sees fewer, and with uniform noise, small
+// steps: the output gets quieter. Push each sample towards the rail on its
+// side of mid-scale as TONE rises (mix 0 = BM uniform noise, 255 = random
+// full-swing binary noise). Mean-square step size, and with it the level
+// after the high-pass, rises up to 3x (+4.8 dB); the peak stays the same.
+uint8_t boostSwing(uint8_t value, uint8_t mix) {
+  int16_t s = (int16_t)value - 128;
+  int16_t target = (s >= 0) ? 127 : -128;
+  s += ((target - s) * mix) >> 8;
+  return (uint8_t)(s + 128);
+}
+
 int ccValue = 0;
 double timeToDelay = 0;
+uint8_t swingMix = 0;
 
 void loop() {
 
@@ -87,10 +101,11 @@ void loop() {
     _delay_us(1);
   } else {
     uint8_t noise = generateWhiteNoise(); // Generate noise
-    outputToDAC(noise); // Output noise to DAC
+    outputToDAC(boostSwing(noise, swingMix)); // Output noise to DAC
 
     // Read the potentiometer value (0-1023)
     int toneValue = ccValue + analogRead(NOISE_TONE_PIN);
+    swingMix = (toneValue > 1023 ? 1023 : toneValue) >> 2;
 
     // Implement the noise value as liner for the first half
     // and exponential for the next half

@@ -15,6 +15,9 @@ Both listen on every MIDI channel (as BM).
 
 - **noise**: three 16-bit LFSRs XOR-mixed to the DAC. NOISE TONE (PA7) plus
   MIDI CC 74 (x8) set the sample delay: linear below half, exponential above.
+  HATS addition: as TONE rises, each sample is pushed towards full swing
+  (uniform noise at 0 -> random full-swing binary noise at full), so the blue
+  output loses less level as TONE darkens it (up to +4.8 dB, same peak).
 - **hihat**: note-on sets the gate and DAC = velocity x 2; notes <= 60 (middle C)
   are closed hat, above 60 open hat. Note-off drops the gate. As BM, a note-on
   with velocity 0 is not treated as a note-off.
@@ -55,6 +58,9 @@ from the ±12 V header.
 - `noise.ino`, `hihat.ino`: the `MIDI_RX_INVERT` guard and
   `PORTB.PIN3CTRL |= PORT_INVEN_bm` after `MIDI.begin(31250)` for JP1 = P
   (as the 8bit / LOW firmwares).
+- `noise.ino`: TONE level compensation (`boostSwing()`, user request
+  2026-11-03): the blue high-pass sees fewer steps as TONE lengthens the
+  sample hold, so the level dropped; larger steps make up part of it.
 - Build scripts: module wrappers (`compile.sh`, `flash.sh`, `jumper.sh`) over the
   shared `opt/attiny1616-tools` instead of BM's symlinks; BM's READMEs are folded
   into this one.
@@ -63,5 +69,5 @@ from the ±12 V header.
   unchanged, per the HATS scope (no clock/reference changes).
 
 Built with arduino-cli 2026-11-03 (megaTinyCore), `p` / `d`:
-noise 3947 / 3937 B flash (BM: 3937 B), 175 B RAM; hihat 2002 / 1992 B
+noise 4007 / 3997 B flash with TONE compensation (BM: 3937 B), 176 B RAM; hihat 2002 / 1992 B
 (BM: 1992 B), 163 B RAM. Not bench-tested on the HATS carrier yet.
