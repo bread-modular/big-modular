@@ -1,6 +1,7 @@
-# HATS manufacturing export — S3 / R2 / P4
+# HATS manufacturing export — S3 / R3 / P4
 
-Generated from the current S3 schematic, R2 routed carrier and P4 panel using the unchanged
+Re-exported 2026-11-03 from the S3 schematic, the R3 routed carrier (all pots upright, vactrol
+U7 under CUTOFF, ENV LED between AUDIO OUT and HAT CV) and the P4 panel (LED hole X15 Y102, on the jack centre line) using the unchanged
 shared `opt/kicad-tools/jlcpcb/export.py`. Recording hardware is removed, pot row pitch is
 34 mm, NOISE IN detection has R49/D7 protection, and all copper has >=1 mm edge setback.
 **Complete matched export, not supplier-accepted or bench-validated.**
@@ -27,10 +28,10 @@ that supplier option explicitly. No supplier quote or order settings were submit
 | Refs | Part / instruction |
 |---|---|
 | J1-J4 | PJ301M-12 TS jacks, F side; align to panel before soldering |
-| RV1, RV3, RV4 | RV09 50k linear pots, F side; RV3/RV4 rotated 180 degrees, solder pins above shafts |
+| RV1, RV3, RV4 | RV09 50k linear pots, F side; all upright, solder pins below the shafts |
 | RV2 | RV09 1M linear pot, F side |
-| D5 | 3 mm ENV LED only, F side; cathode to square pad, dome flush with panel |
-| U7 | VTL5C-type vactrol, B side; no switch underneath |
+| D5 | 3 mm ENV LED only, F side, midway between J3 and J4 on their centre line; cathode to square (lower) pad, dome flush with panel |
+| U7 | VTL5C-type vactrol, B side, under RV3: solder U7 first, trim its leads flush, then fit RV3 |
 | J10 | Unshrouded 2x5 power header on B, horizontal at bottom; red stripe / pin 1 to -12V |
 | J11, J12 | Optional 1x2 UPDI headers on B; square pin UPDI, other pin GND |
 | JP1 | Copper-only jumper, shipped open. Bridge 1-2 for protected/inverted RX or 2-3 for direct/unprotected 3.3 V RX; never both |
@@ -39,6 +40,13 @@ Exactly 13 THT refs plus JP1 are excluded. SW1, D6 and R48 are **absent**, not D
 assembly options. The panel has no REC button/LED apertures or legend.
 
 ## Verification
+
+R3 re-export (2026-11-03): shared check ERC 0, DRC unconnected 0, schematic parity 0, exact
+ref/pin/net parity equal, source manifest equal. DRC lists only the 18 user-approved U7/RV3/RV4
+stacking items (10 `pth_inside_courtyard`, 8 `silk_over_copper`), all excluded via
+`tools/vactrol_exclusions.py` and still counted by the shared gate. 498 tracks / 94 vias, no
+vias in SMD pads, no inner tracks, inner planes one piece, closest SMD-to-pot/jack pad 2.045 mm.
+BOM unchanged (33 rows); CPL updated. Panel DRC 0. The R2 notes below are historical.
 
 Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 

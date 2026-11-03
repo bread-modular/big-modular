@@ -1,5 +1,5 @@
 {
-    "revision": "S3/R2: recording hardware removed. Upper pot shafts Y41; lower pot shafts Y75 (34 mm row pitch), lower pots rotated 180 degrees to keep their solder pins above the bodies. Vactrol moved down 3.3 mm to Y88 to clear the lower pots. Native PCB owns routing.",
+    "revision": "S3/R3: recording hardware removed. Upper pot shafts Y41; lower pot shafts Y75 (34 mm row pitch). R3 (2026-11-03, user direction): all four pots upright (pins below the bodies); vactrol U7 lies on B under CUTOFF, as on modules/low and modules/acid. Native PCB owns routing.",
     "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
     "kicad_origin_mm": [
         100.0,
@@ -40,8 +40,8 @@
         "note": "29 x 110 mm; four layers F/In1 GND/In2 +3V3/B. All assembled SMD on B. 1 mm copper-edge keep-out."
     },
     "jack_part": "QingPu WQP-PJ301M-12",
-    "panel_order": "MIDI + NOISE IN; NOISE TONE + BLUE TONE; CUTOFF + DECAY; AUDIO OUT + HAT CV OUT with the ENV LED beside HAT CV. No recording controls.",
-    "row_note": "Pot shaft rows Y41 and Y75, 34 mm pitch (was 24). Lower pots face 180 degrees with solder pins at Y67.5. ENV LED at X26 Y93 beside HAT CV. Vactrol centre X7/Y88; input/output jacks unchanged.",
+    "panel_order": "MIDI + NOISE IN; NOISE TONE + BLUE TONE; CUTOFF + DECAY; AUDIO OUT + HAT CV OUT with the ENV LED between them. No recording controls.",
+    "row_note": "Pot shaft rows Y41 and Y75, 34 mm pitch (was 24). All pots upright, lower pin rows at Y82.5. ENV LED at X15 Y105 between AUDIO OUT and HAT CV. Vactrol U7 under CUTOFF on B, centre X9.5/Y79.4; input/output jacks unchanged.",
     "jacks": [
         {
             "ref": "J1",
@@ -111,7 +111,7 @@
                 7.75,
                 75
             ],
-            "rot": 180
+            "rot": 0
         },
         {
             "ref": "RV4",
@@ -120,7 +120,7 @@
                 22.25,
                 75
             ],
-            "rot": 180
+            "rot": 0
         }
     ],
     "leds": [
@@ -128,12 +128,12 @@
             "ref": "D5",
             "role": "ENV (HAT CV)",
             "XY": [
-                26.0,
-                93.0
+                15.0,
+                102.0
             ]
         }
     ],
-    "led_note": "D5 ENV only: 3 mm THT on F, body centre X26 Y93 (beside the HAT CV jack J4, user direction 2026-10-24; was X15 Y54.8), rot 180: anode (pad 2) on the left; dome flush with panel front. R47 sits beside it on B.",
+    "led_note": "D5 ENV only: 3 mm THT on F, body centre X15 Y102, on the AUDIO OUT (J3) / HAT CV OUT (J4) jack centre line, midway between them (user direction 2026-11-03; before that X15 Y105 3 mm below that line, X22.25 Y112.2 below J4, X26 Y93 beside J4, X15 Y54.8), rot 90: anode (pad 2) up at Y100.73, K/GND (pad 1) Y103.27. U10 moved below the LED on B (KiCad 115/157.1) so the LED leads clear it; R42/R41 stand left of the LED, C22 below U10. Dome flush with panel front. R47 stays by the CVO_AMP source on B; LED_A runs on F from R47 into the anode from above.",
     "buttons": [],
     "panel_hole_diameters_mm": {
         "jack": 6.2,
@@ -151,11 +151,11 @@
             "ref": "U7",
             "side": "B",
             "XY": [
-                7.0,
-                88
+                9.5,
+                79.4
             ],
-            "rot": 0,
-            "note": "VCA on B; centre Y88 (3.3 mm lower than R1), lead rows Y81.65/94.35. Clears the rotated lower pots and output-jack holes; no overlapping button."
+            "rot": 90,
+            "note": "VCA on B under the CUTOFF pot RV3 (modules/low / modules/acid pattern), lying across the board: LDR leads X3.15 (VCA_IN Y78.13, FILTERED Y80.67), LED leads X15.85 (VAC_K Y78.13, HAT_CV Y80.67), between the RV3 bracket row (Y75) and pin row (Y82.5). Native board orientation 90 degrees after the left-right flip. Stacking findings: 10 pth_inside_courtyard + 8 silk_over_copper, user-approved DRC exclusions (2026-11-03, tools/vactrol_exclusions.py)."
         }
     ],
     "power_header": {
@@ -280,8 +280,8 @@
         {
             "text": "ENV",
             "XY": [
-                26.0,
-                89.6
+                15.0,
+                105.8
             ],
             "size": 1.2
         },
