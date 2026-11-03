@@ -23,6 +23,9 @@ Read root `AGENTS.md`, then `Code.md`, `README.md`, `docs/research.md` and
   U7 moved from Y84.7 to Y88 to clear the lower pots; nearby SMD/local traces adjusted.
   ENV LED D5 + R47 moved beside the HAT CV jack (LED body X26 Y93, 2026-10-24); the long
   F.Cu CVO_AMP run to the old LED spot is gone.
+- `firmware/`: BM NOISE (U2, J11) and HIHAT (U3, J12) ports, JP1 p/d builds
+  (`MIDI_RX_INVERT`, both MCUs on one RX); otherwise BM unchanged (clock/DAC reference
+  kept). Compiled, not bench-tested. See `firmware/README.md`.
 - JLCPCB export in `jlcpcb/`: bottom Economic target, 89 placements / 33 BOM rows.
   Not supplier-accepted, not built. Supplier preview and formal component review gates
   remain open; R43/R46 are the existing Extended passive exception.
