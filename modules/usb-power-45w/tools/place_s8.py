@@ -31,6 +31,10 @@ R24/C3 move 0.45 mm and R13-R15 0.25 mm clear of the new via rows, and --apply-t
 fields of tools/s92_contract.py THERMAL_VIA_FIELDS (vias, one F.Cu spoke per via, one B.Cu landing pour per field,
 deterministic UUIDs; earlier field items replaced, everything else untouched). The guards treat these fields as fixed
 pre-routing copper: only other tracks/vias/copper zones count as routing.
+S9.3 / P2.3: the ten soft-start/sequencing parts (C84/D27/R116 on U2 FB, C85/D28/R117 on U4 FB_N, Q16/R118/C86/R119 in the
+U4 enable chain) go into the free pockets the dense P2.2 floor plan has left (between the U2 VIN bank and U10/U12, between
+U12 and C33, under U11); every P2.2 part keeps its position. INTERIM: the FB_P12 / FB_N injection links are 13-15 mm long
+from these pockets; pull D27/C84/R116 and D28/C85/R117 to their dividers with the U2 sense-escape re-placement.
 
   python3 -B tools/place_s8.py [--write] [--png <file>] [--force] [--refresh-contract] [--apply-rules] [--apply-thermal-vias]
 
@@ -161,12 +165,21 @@ GROUPS = [
       'C49': (131.35, 91.5, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
       'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (65.0, 71.4, 0),
       'TP16': (67.3, 71.4, 0), 'TP19': (89.35, 100.0, 0)}),
+    ('S9.3 soft starts and U4 sequencing (interim pockets)',
+     'Only free pockets of the P2.2 floor plan are used, no P2.2 part moves: D27 (+12V FB injection) with C84/R116 in the '
+     'strip between the U2 VIN bank and U10/C52, Q16 (U4 enable sequencing) beside it with R118/C86 at its gate; D28 '
+     '(-12V FB injection) between U12 and C33 next to the -12V pad of C33, C85 below it, R117 beside C33; R119 '
+     '(N_EN_MID default) under U11 at Q15. Interim: FB_P12 / FB_N reach D27 / D28 over 13-15 mm',
+     {'D27': (108.65, 87.1, 0), 'C84': (106.9, 89.7, 0), 'R116': (103.8, 89.7, 0),
+      'Q16': (112.75, 87.1, 0), 'R118': (113.15, 89.7, 0), 'C86': (115.95, 87.95, 90),
+      'D28': (119.3, 91.6, 90), 'C85': (119.25, 95.1, 0), 'R117': (124.7, 90.6, 90), 'R119': (125.1, 93.85, 0)}),
 ]
 
 
-BOARD_REV = 'S9.2-P2.2'
-BOARD_NOTE = ('S9.2b routing-ready placement (no via-in-pad: beside-pad thermal fields; Kelvin R109, PGND star at C82.2, '
-              'acceptance pads). P2.2, unrouted apart from the thermal fields.')
+BOARD_REV = 'S9.3-P2.3'
+BOARD_NOTE = ('S9.3 placement: P2.2 (no via-in-pad: beside-pad thermal fields; Kelvin R109, PGND star at C82.2, '
+              'acceptance pads) + the S9.3 soft-start/sequencing parts in free pockets. P2.3, unrouted apart from the '
+              'thermal fields.')
 BOARD_NOTE5 = 'S9.2 / P2.2: AGND_U2 joins PGND ONLY via R113 at C82.2 (PGND). Contract: docs/s8-single/routing-notes.md.'
 import s92_contract  # noqa: E402
 import s92_parts  # noqa: E402
@@ -539,7 +552,7 @@ def sync_candidate(source_board, output_root):
             assert one(f, 'uuid')[1] == original_ids[r]
             assert nodes(f, 'model') == original_models[r]
     rec = {'ground_connection': GROUND_CONNECTION, 'routing_contract': s92_contract.contract(),
-           'revision': 'S9.2 / P2.2', 'note': 'S9.2 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
+           'revision': 'S9.3 / P2.3', 'note': 'S9.3 native synchronization; retained UUIDs/models, outline and fixed parts preserved.',
            'parts': after, 'pad_mask_refreshed_from_library': refreshed,
            'replaced_footprints': replaced,
            'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r] and r not in replaced),

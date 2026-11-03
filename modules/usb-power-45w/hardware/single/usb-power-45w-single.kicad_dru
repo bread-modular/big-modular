@@ -109,7 +109,7 @@
 
 # no foreign-net track or via inside the U2/L1 cell (3.4)
 (rule "S92_U2_cell_own_nets"
-	(condition "A.intersectsArea('RA_U2_CELL') && A.NetName != 'VIN' && A.NetName != 'GND' && A.NetName != '/+12 V buck-boost converter/P12_VOUT' && A.NetName != '+12V' && A.NetName != 'Net-(U2-SW1)' && A.NetName != 'Net-(U2-SW2)' && A.NetName != 'Net-(U2-BOOT1)' && A.NetName != 'Net-(U2-BOOT2)' && A.NetName != 'Net-(U2-EXTVCC)' && A.NetName != '/MAIN_OK' && A.NetName != 'Net-(U2-FSW)' && A.NetName != '/+12 V buck-boost converter/AGND_U2' && A.NetName != 'Net-(U2-FB)' && A.NetName != 'Net-(U2-COMP)' && A.NetName != 'Net-(C83-Pad1)' && A.NetName != '/+12 V buck-boost converter/P12_ISP' && A.NetName != '/+12 V buck-boost converter/P12_ISN'")
+	(condition "A.intersectsArea('RA_U2_CELL') && A.NetName != 'VIN' && A.NetName != 'GND' && A.NetName != '/+12 V buck-boost converter/P12_VOUT' && A.NetName != '+12V' && A.NetName != 'Net-(U2-SW1)' && A.NetName != 'Net-(U2-SW2)' && A.NetName != 'Net-(U2-BOOT1)' && A.NetName != 'Net-(U2-BOOT2)' && A.NetName != 'Net-(U2-EXTVCC)' && A.NetName != '/MAIN_OK' && A.NetName != 'Net-(U2-FSW)' && A.NetName != '/+12 V buck-boost converter/AGND_U2' && A.NetName != '/+12 V buck-boost converter/FB_P12' && A.NetName != 'Net-(U2-COMP)' && A.NetName != 'Net-(C83-Pad1)' && A.NetName != '/+12 V buck-boost converter/P12_ISP' && A.NetName != '/+12 V buck-boost converter/P12_ISN'")
 	(constraint disallow track via))
 
 # on B.Cu inside the cell only the PGND pour and the AGND_U2 link (3.1)
@@ -125,7 +125,7 @@
 
 # only the island's own nets inside RA_AGND_ISLAND
 (rule "S92_AGND_island_nets"
-	(condition "A.intersectsArea('RA_AGND_ISLAND') && A.NetName != '/+12 V buck-boost converter/AGND_U2' && A.NetName != 'GND' && A.NetName != 'Net-(U2-EXTVCC)' && A.NetName != 'Net-(U2-FB)' && A.NetName != 'Net-(U2-COMP)' && A.NetName != 'Net-(C83-Pad1)' && A.NetName != '/+12 V buck-boost converter/P12_ISP' && A.NetName != '/+12 V buck-boost converter/P12_ISN' && A.NetName != '+12V'")
+	(condition "A.intersectsArea('RA_AGND_ISLAND') && A.NetName != '/+12 V buck-boost converter/AGND_U2' && A.NetName != 'GND' && A.NetName != 'Net-(U2-EXTVCC)' && A.NetName != '/+12 V buck-boost converter/FB_P12' && A.NetName != 'Net-(U2-COMP)' && A.NetName != 'Net-(C83-Pad1)' && A.NetName != '/+12 V buck-boost converter/P12_ISP' && A.NetName != '/+12 V buck-boost converter/P12_ISN' && A.NetName != '+12V'")
 	(constraint disallow track via))
 
 # S9.2b: no via in or touching any pad, any net, SMD or THT (owner: no via-in-pad anywhere); no footprint carries a plated hole in a pad either (tools/check_s8_board.py)

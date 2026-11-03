@@ -1,7 +1,7 @@
 {
   "status": "S9_schematic_checks_not_bench_qualification",
-  "components": 175,
-  "nets_including_NC": 121,
+  "components": 185,
+  "nets_including_NC": 125,
   "sheets": 6,
   "exact_field_pin_NC_pad_parity": true,
   "removed_S7_refs": 90,
@@ -20,13 +20,19 @@
     "C81",
     "C82",
     "C83",
+    "C84",
+    "C85",
+    "C86",
     "D22",
     "D24",
     "D25",
     "D26",
+    "D27",
+    "D28",
     "J3",
     "Q14",
     "Q15",
+    "Q16",
     "R100",
     "R109",
     "R110",
@@ -35,6 +41,10 @@
     "R113",
     "R114",
     "R115",
+    "R116",
+    "R117",
+    "R118",
+    "R119",
     "R92",
     "R93",
     "R94",
@@ -158,6 +168,7 @@
       "+12V": [
         "C34.1",
         "C59.1",
+        "C84.1",
         "D2.1",
         "J2.10",
         "J2.9",
@@ -180,11 +191,13 @@
         "C33.1",
         "C36.2",
         "C61.2",
+        "D28.1",
         "D4.2",
         "J2.1",
         "J2.2",
         "J3.1",
         "J3.2",
+        "R117.2",
         "R13.1",
         "R15.2",
         "R18.2",
@@ -266,6 +279,10 @@
                 "R": "R16",
                 "series_nmos": [
                   [
+                    "Q16",
+                    "N_EN_SEQ"
+                  ],
+                  [
                     "Q15",
                     "MAIN_LED_OK"
                   ],
@@ -276,12 +293,23 @@
                 ],
                 "end": "GND",
                 "node_defaults": {
+                  "N_EN_MID": [
+                    "R119"
+                  ],
                   "N_EN_RETURN": [
                     "R115"
                   ]
                 }
               }
-            ]
+            ],
+            "sequencing": {
+              "Q": "Q16",
+              "gate": "N_EN_SEQ",
+              "source": "P12_OK",
+              "R": "R118",
+              "C": "C86",
+              "pullup": "R35"
+            }
           },
           "off_pullup": "R112 ties Q1 base to VPD; R115 100k defines N_EN_RETURN; R18 pulls EN to the U4 ground",
           "enable_high_max_V": 1.4,
@@ -290,12 +318,13 @@
           "running_max_relative_V": 5.52,
           "off_leakage_test_bound_uA": 5,
           "off_relative_max_V": 0.102,
-          "off_Q1_VEB_max_V": 0.1839,
+          "off_Q1_VEB_max_V": 0.2651,
           "truth_table": [
             {
               "own_input": false,
               "run": false,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -312,6 +341,41 @@
               "own_input": false,
               "run": false,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -328,6 +392,7 @@
               "own_input": false,
               "run": false,
               "main_status": true,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -344,6 +409,41 @@
               "own_input": false,
               "run": false,
               "main_status": true,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": false,
+              "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -360,6 +460,7 @@
               "own_input": false,
               "run": true,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -376,6 +477,41 @@
               "own_input": false,
               "run": true,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -392,6 +528,7 @@
               "own_input": false,
               "run": true,
               "main_status": true,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -408,6 +545,41 @@
               "own_input": false,
               "run": true,
               "main_status": true,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": false,
+              "run": true,
+              "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -424,6 +596,7 @@
               "own_input": true,
               "run": false,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -440,6 +613,75 @@
               "own_input": true,
               "run": false,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "p12_good": false,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": false,
+              "main_status": true,
+              "p12_good": false,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -456,6 +698,7 @@
               "own_input": true,
               "run": false,
               "main_status": true,
+              "p12_good": true,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -465,13 +708,14 @@
                 0.0,
                 0.102
               ],
-              "Q1_VEB_off_bound_V": 0.1839,
+              "Q1_VEB_off_bound_V": 0.2651,
               "undefined_nodes": []
             },
             {
               "own_input": true,
               "run": false,
               "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -481,13 +725,14 @@
                 0.0,
                 0.102
               ],
-              "Q1_VEB_off_bound_V": 0.1839,
+              "Q1_VEB_off_bound_V": 0.2651,
               "undefined_nodes": []
             },
             {
               "own_input": true,
               "run": true,
               "main_status": false,
+              "p12_good": false,
               "bus_live": false,
               "U4_enabled": false,
               "Q1": [
@@ -504,6 +749,75 @@
               "own_input": true,
               "run": true,
               "main_status": false,
+              "p12_good": false,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": false,
+              "p12_good": true,
+              "bus_live": true,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0864,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "p12_good": false,
+              "bus_live": false,
+              "U4_enabled": false,
+              "Q1": [
+                "off"
+              ],
+              "EN_relative_V": [
+                0.0,
+                0.102
+              ],
+              "Q1_VEB_off_bound_V": 0.0052,
+              "undefined_nodes": []
+            },
+            {
+              "own_input": true,
+              "run": true,
+              "main_status": true,
+              "p12_good": false,
               "bus_live": true,
               "U4_enabled": false,
               "Q1": [
@@ -520,6 +834,7 @@
               "own_input": true,
               "run": true,
               "main_status": true,
+              "p12_good": true,
               "bus_live": false,
               "U4_enabled": true,
               "Q1": [
@@ -536,6 +851,7 @@
               "own_input": true,
               "run": true,
               "main_status": true,
+              "p12_good": true,
               "bus_live": true,
               "U4_enabled": true,
               "Q1": [
@@ -551,7 +867,7 @@
           ],
           "violations": [],
           "pass": true,
-          "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined.",
+          "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK).",
           "does_not_block_reverse_power_while_enabled": true,
           "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module."
         }
@@ -750,6 +1066,10 @@
           "R": "R16",
           "series_nmos": [
             [
+              "Q16",
+              "N_EN_SEQ"
+            ],
+            [
               "Q15",
               "MAIN_LED_OK"
             ],
@@ -760,18 +1080,30 @@
           ],
           "end": "GND",
           "node_defaults": {
+            "N_EN_MID": [
+              "R119"
+            ],
             "N_EN_RETURN": [
               "R115"
             ]
           }
         }
-      ]
+      ],
+      "sequencing": {
+        "Q": "Q16",
+        "gate": "N_EN_SEQ",
+        "source": "P12_OK",
+        "R": "R118",
+        "C": "C86",
+        "pullup": "R35"
+      }
     },
     "truth_table": [
       {
         "own_input": false,
         "run": false,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -788,6 +1120,41 @@
         "own_input": false,
         "run": false,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -804,6 +1171,7 @@
         "own_input": false,
         "run": false,
         "main_status": true,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -820,6 +1188,41 @@
         "own_input": false,
         "run": false,
         "main_status": true,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": false,
+        "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -836,6 +1239,7 @@
         "own_input": false,
         "run": true,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -852,6 +1256,41 @@
         "own_input": false,
         "run": true,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -868,6 +1307,7 @@
         "own_input": false,
         "run": true,
         "main_status": true,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -884,6 +1324,41 @@
         "own_input": false,
         "run": true,
         "main_status": true,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": false,
+        "run": true,
+        "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -900,6 +1375,7 @@
         "own_input": true,
         "run": false,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -916,6 +1392,75 @@
         "own_input": true,
         "run": false,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "p12_good": false,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": false,
+        "main_status": true,
+        "p12_good": false,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -932,6 +1477,7 @@
         "own_input": true,
         "run": false,
         "main_status": true,
+        "p12_good": true,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -941,13 +1487,14 @@
           0.0,
           0.102
         ],
-        "Q1_VEB_off_bound_V": 0.1839,
+        "Q1_VEB_off_bound_V": 0.2651,
         "undefined_nodes": []
       },
       {
         "own_input": true,
         "run": false,
         "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -957,13 +1504,14 @@
           0.0,
           0.102
         ],
-        "Q1_VEB_off_bound_V": 0.1839,
+        "Q1_VEB_off_bound_V": 0.2651,
         "undefined_nodes": []
       },
       {
         "own_input": true,
         "run": true,
         "main_status": false,
+        "p12_good": false,
         "bus_live": false,
         "U4_enabled": false,
         "Q1": [
@@ -980,6 +1528,75 @@
         "own_input": true,
         "run": true,
         "main_status": false,
+        "p12_good": false,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": false,
+        "p12_good": true,
+        "bus_live": true,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "p12_good": false,
+        "bus_live": false,
+        "U4_enabled": false,
+        "Q1": [
+          "off"
+        ],
+        "EN_relative_V": [
+          0.0,
+          0.102
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "undefined_nodes": []
+      },
+      {
+        "own_input": true,
+        "run": true,
+        "main_status": true,
+        "p12_good": false,
         "bus_live": true,
         "U4_enabled": false,
         "Q1": [
@@ -996,6 +1613,7 @@
         "own_input": true,
         "run": true,
         "main_status": true,
+        "p12_good": true,
         "bus_live": false,
         "U4_enabled": true,
         "Q1": [
@@ -1012,6 +1630,7 @@
         "own_input": true,
         "run": true,
         "main_status": true,
+        "p12_good": true,
         "bus_live": true,
         "U4_enabled": true,
         "Q1": [
@@ -1027,8 +1646,8 @@
     ],
     "violations": [],
     "pass": true,
-    "off_VEB_max_V": 0.1839,
-    "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined."
+    "off_VEB_max_V": 0.2651,
+    "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK)."
   },
   "vin_clamp_coordination": {
     "D24": "SMBJ20A",
@@ -1126,25 +1745,167 @@
     "source_limit_A": 3.0,
     "source_min_V": 14.25,
     "cable_loop_R_ohm": 0.25,
+    "design": "S9.3: FB-injection soft starts on both converters (C84/D27/R116 on U2 FB, C85/D28/R117 on U4 FB_N) and the U4 enable sequenced after +12V (Q16, R118/C86 from P12_OK, R119)",
+    "soft_start": {
+      "+12V": {
+        "IC": "U2",
+        "FB": "FB_P12",
+        "diode": "D27",
+        "X": "SS_P12",
+        "Css": "C84",
+        "bleed": "R116",
+        "R_top": "R8",
+        "R_bot": "R9",
+        "out_net": "+12V",
+        "Css_effective_uF": [
+          0.0704,
+          0.22,
+          0.2783
+        ],
+        "tau_ms": [
+          4.79,
+          14.96,
+          18.92
+        ],
+        "internal_tSS_ms": [
+          2.5,
+          3.6,
+          5.0
+        ],
+        "rail_C_with_rack_mF": 0.537,
+        "initial_capacitor_current_A": [
+          1.354,
+          0.433,
+          0.343
+        ],
+        "to_95pct_ms": [
+          14.4,
+          44.9,
+          56.8
+        ]
+      },
+      "-12V": {
+        "IC": "U4",
+        "FB": "FB_N",
+        "diode": "D28",
+        "X": "SS_N12",
+        "Css": "C85",
+        "bleed": "R117",
+        "R_top": "R14",
+        "R_bot": "R15",
+        "out_net": "GND",
+        "Css_effective_uF": [
+          0.1505,
+          0.47,
+          0.5946
+        ],
+        "tau_ms": [
+          15.05,
+          47.0,
+          59.46
+        ],
+        "internal_tSS_ms": [
+          2.0,
+          4.0,
+          6.0
+        ],
+        "rail_C_with_rack_mF": 0.525,
+        "initial_capacitor_current_A": [
+          0.418,
+          0.134,
+          0.106
+        ],
+        "to_95pct_ms": [
+          45.1,
+          141.0,
+          178.4
+        ]
+      },
+      "sequencing": {
+        "Q": "Q16",
+        "gate": "N_EN_SEQ",
+        "source": "P12_OK",
+        "R": "R118",
+        "C": "C86",
+        "pullup": "R35",
+        "tau_on_ms": [
+          9.7,
+          11.0,
+          12.34
+        ],
+        "U4_enable_after_P12_OK_ms": [
+          3.4,
+          18.3
+        ],
+        "P12_OK_threshold_V": [
+          9.068,
+          9.977,
+          10.961
+        ],
+        "why_not_U2_PG": "TPS552892-Q1 PG compares FB with the reference; the injection holds FB at the reference for the whole ramp, so PG would read good at ~1 V. P12_OK is the independent delivered-rail monitor."
+      }
+    },
     "demand_rows": {
       "published_33W_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.888,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 14,
-          "single_attempt_start": false,
-          "rails_good_ms": null,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.706,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
-            2.65,
-            3.77
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 4.649,
-          "time_above_3A_ms": 2.5,
+          "peak_input_A": 2.888,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.706,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.875,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.694,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.892,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.709,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1378,
           "final_rails_V": [
             12.08,
             11.99
@@ -1153,22 +1914,64 @@
       },
       "published_split_-12V_0.8A_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.955,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 14,
-          "single_attempt_start": false,
-          "rails_good_ms": null,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.763,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
-            0.39,
-            0.69
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 4.556,
-          "time_above_3A_ms": 3.0,
+          "peak_input_A": 2.955,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 23.2,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.763,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.941,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.752,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.955,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.764,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
@@ -1177,22 +1980,64 @@
       },
       "published_33W_no_rack": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 2.874,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 13,
-          "single_attempt_start": false,
-          "rails_good_ms": 22.9,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
-            0.0,
-            0.05
+            12.08,
+            11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 3.044,
-          "time_above_3A_ms": 0.2,
+          "peak_input_A": 2.874,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 2.872,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 2.691,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0026,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 2.874,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 2.693,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
@@ -1201,22 +2046,64 @@
       },
       "no_load_0.44mF": {
         "strict_3A": {
-          "peak_input_A": 3.0,
+          "peak_input_A": 0.206,
           "time_above_3A_ms": 0.0,
-          "U5_dropouts": 1,
-          "single_attempt_start": false,
-          "rails_good_ms": 29.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 3.456,
-          "time_above_3A_ms": 0.3,
+          "peak_input_A": 0.206,
+          "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 0.117,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 0.119,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0146,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 0.206,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.212,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.1372,
           "final_rails_V": [
             12.08,
             11.99
@@ -1225,22 +2112,64 @@
       },
       "no_load_no_rack": {
         "strict_3A": {
-          "peak_input_A": 0.565,
+          "peak_input_A": 0.075,
           "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
           ]
         },
         "unconstrained": {
-          "peak_input_A": 0.565,
+          "peak_input_A": 0.075,
           "time_above_3A_ms": 0.0,
           "U5_dropouts": 0,
           "single_attempt_start": true,
-          "rails_good_ms": 22.9,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_slow_corner": {
+          "peak_input_A": 0.075,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 196.2,
+          "peak_demand_A": 0.052,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 51.5,
+          "U4_enable_ms": 69.8,
+          "plus12_charge_at_U4_enable_A": 0.0026,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ]
+        },
+        "strict_3A_constant_current_load": {
+          "peak_input_A": 0.075,
+          "time_above_3A_ms": 0.0,
+          "U5_dropouts": 0,
+          "single_attempt_start": true,
+          "rails_good_ms": 61.1,
+          "peak_demand_A": 0.067,
+          "demand_above_3A_ms": 0.0,
+          "P12_OK_ms": 27.0,
+          "U4_enable_ms": 30.4,
+          "plus12_charge_at_U4_enable_A": 0.0247,
           "final_rails_V": [
             12.08,
             11.99
@@ -1248,23 +2177,25 @@
         }
       }
     },
+    "all_strict_cases_single_attempt": true,
+    "worst_strict_peak_A": 2.955,
     "required_source_capability": {
-      "peak_A": 4.649,
-      "above_3A_ms": 2.5,
-      "basis": "published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source + 0.25 ohm, fastest 2.5 ms soft start, R109 icc max; U5 current limit caps the plant at 4.7 A"
+      "peak_A": 2.888,
+      "above_3A_ms": 0.0,
+      "basis": "published 33 W load (2.4 A / 0.33 A) + 0.44 mF per rail, 14.25 V source + 0.25 ohm, fast corner (shortest soft starts, earliest U4 enable), R109 icc max, D10 0.75 V, 0.5 W logic on the source"
     },
-    "strict_3A_outcome": "FAULT latched at ARMED after repeated U5 UVLO dropouts (fail-safe, RUN low, input off); NOT a single-attempt start",
-    "meaning": "A strictly 3.00 A-limited 15 V source cannot supply the simultaneous soft-start charge of both rails at the published load and rack; the module then fails safe and needs RESET. Real PD sources with overload headroom (peak-current capability, OCP above ~4.7 A for a few ms) are expected to start it: post-prototype acceptance test S1 decides, per source.",
+    "strict_3A_outcome": "single-attempt start, zero U5 drop-outs, input never above 3.00 A, in every case at both corners and with both load models",
+    "meaning": "A strictly 3.00 A-limited 15 V source starts the module at the published rating with 0.44 mF per rail: the input current approaches its steady-state value from below (the RC soft starts keep the capacitor charge power small) and the -12V charge never overlaps the +12V ramp beyond its tail. Model limits: resistive or constant-current loads; a constant-POWER downstream load that draws full power from low voltage is not covered (it would also stall the +12V CC limit).",
     "matrix": [
       {
         "id": "S1",
         "condition": "Cold start, 14.25 V source +0.25 ohm cable, exact 3.00 A constant-current limit; 0/0.44 mF external each rail; 0/15/25/33 W load; both delay corners; log all attempts",
-        "pass": "Single attempt: both rail monitors good within 250 ms of first enable; ARMED by 0.90 s; no V3V3/POR reset, no source restart, <=3.00 A steady input; no retry hidden from record. A strict-3 A FAIL is recorded as the expected fail-safe (FAULT latched, input off) and restricts the qualified source list, it is not hidden"
+        "pass": "Single attempt, ZERO U5 drop-outs and no source current-limit event: input <= 3.00 A throughout (current probe), both rail monitors good within 250 ms of first enable, U4 EN rises only after P12_OK (3-18 ms later), ARMED by 0.90 s, no V3V3/POR reset, no FAULT. Any drop-out or FAULT is a FAIL (BOM: C84/C85/C86), never an accepted fail-safe"
       },
       {
         "id": "S2",
         "condition": "Same loads with a PD source hard-resetting on >3 A; include 5 V phase and V3V3 fully collapsed to 0 V",
-        "pass": "A single hard reset is counted and disqualifies that source/load combination for guaranteed start; no success by discarding earlier failed attempts"
+        "pass": "No hard reset at the published load + 0.44 mF; a single hard reset is counted and fails that source/load combination; no success by discarding earlier failed attempts"
       },
       {
         "id": "S3",
@@ -1278,7 +2209,7 @@
       }
     ],
     "power_reset_policy": "STARTED and FAULT are volatile. Full V3V3/POR loss legitimately clears both; S8.5 one-shot preserved, not falsely advertised as nonvolatile. Automatic retrying sources are outside qualified envelope. Fixture counts epochs and must stop retries; hardware nonvolatile lockout remains absent.",
-    "bench_status": "NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP19 STARTED, TP10 ARMED, TP9 RUN)"
+    "bench_status": "NOT PERFORMED; post-prototype acceptance tests S1-S4 (TP1 VPD, TP26 VIN, TP12 P12_OK, TP19 STARTED, TP10 ARMED, TP9 RUN, U4 pin 2 against TP25)"
   },
   "ground_split": {
     "analog": "AGND_U2",
@@ -1406,7 +2337,7 @@
       "t_por_ms": 12.0,
       "t_u5_on_to_pgood_ms": 23.5,
       "t_pgood_fall_ms": 10.0,
-      "t_rails_ms": 120.0,
+      "t_rails_ms": 200.0,
       "t_rail_decay_ms": 1.0,
       "t_filter_ms": 0.75,
       "u5_on_V": 12.977,
@@ -1669,7 +2600,7 @@
         }
       },
       "brownout_inside_window": {
-        "why": "VPD sags to 10.5 V for 50 ms right after the first enable; the window is NOT restarted",
+        "why": "VPD sags to 10.5 V for 30 ms right after the first enable; the window is NOT restarted (S9.3: the rails need up to 200 ms to come back, so a sag must end >= ~210 ms before ARMED; a later one latches FAULT, fail-safe)",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
             349.5
@@ -2210,124 +3141,382 @@
         }
       },
       "source_limit_3A": {
-        "why": "S1 condition on the netlist-derived plant: strict 3.00 A source at 14.25 V + 0.25 ohm, published 33 W load (2.4 A / 0.33 A), 0.44 mF per rail; must end fail-safe (single-attempt armed start, or FAULT latched with RUN low), never armed with a bad rail",
+        "why": "S1 condition on the netlist-derived plant: strict 3.00 A source at 14.25 V + 0.25 ohm, published 33 W load (2.4 A / 0.33 A), 0.44 mF per rail, fast corner (shortest soft starts, earliest U4 enable); S9.3: must start in ONE attempt, zero U5 drop-outs, input <= 3 A, -12V only after P12_OK",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
-          "ARMED_ms": [],
-          "FAULT_ms": [
-            655.4
+          "ARMED_ms": [
+            655.3
           ],
+          "FAULT_ms": [],
           "RESET_release_ms": [
             12.0
           ],
-          "ends_running": false,
-          "ends_armed": false,
-          "ends_faulted": true,
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 3.0,
-          "source_limit_observed": true,
-          "u5_dropouts": 12,
-          "u5_dropouts_after_first_enable": 12,
-          "peak_demand_A": 2.987,
+          "max_input_A": 2.8882,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.706,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
-            0.0,
-            0.0
+            12.08,
+            11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
-          "ARMED_ms": [],
-          "FAULT_ms": [
-            655.4
+          "ARMED_ms": [
+            655.3
           ],
+          "FAULT_ms": [],
           "RESET_release_ms": [
             12.0
           ],
-          "ends_running": false,
-          "ends_armed": false,
-          "ends_faulted": true,
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 3.0,
-          "source_limit_observed": true,
-          "u5_dropouts": 12,
-          "u5_dropouts_after_first_enable": 12,
-          "peak_demand_A": 2.987,
+          "max_input_A": 2.8882,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.706,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
-            0.0,
-            0.0
+            12.08,
+            11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
-          "ARMED_ms": [],
-          "FAULT_ms": [
-            1225.4
+          "ARMED_ms": [
+            1225.3
           ],
+          "FAULT_ms": [],
           "RESET_release_ms": [
             12.0
           ],
-          "ends_running": false,
-          "ends_armed": false,
-          "ends_faulted": true,
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 3.0,
-          "source_limit_observed": true,
-          "u5_dropouts": 32,
-          "u5_dropouts_after_first_enable": 32,
-          "peak_demand_A": 2.987,
+          "max_input_A": 2.8882,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.706,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
-            0.0,
-            0.0
+            12.08,
+            11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
-          "ARMED_ms": [],
-          "FAULT_ms": [
-            1225.4
+          "ARMED_ms": [
+            1225.3
           ],
+          "FAULT_ms": [],
           "RESET_release_ms": [
             12.0
           ],
-          "ends_running": false,
-          "ends_armed": false,
-          "ends_faulted": true,
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 3.0,
-          "source_limit_observed": true,
-          "u5_dropouts": 32,
-          "u5_dropouts_after_first_enable": 32,
-          "peak_demand_A": 2.987,
+          "max_input_A": 2.8882,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.706,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
-            0.0,
-            0.0
+            12.08,
+            11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
+        }
+      },
+      "source_limit_3A_split": {
+        "why": "S1 at the published split (+12V 1.95 A / -12V 0.8 A = 33 W, the highest input current), 0.44 mF per rail, fast corner: single attempt required",
+        "t_d_0.31s_V20_7.67V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            655.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.9545,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.763,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
+        },
+        "t_d_0.31s_V20_9.27V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            655.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.9545,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.763,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
+        },
+        "t_d_0.88s_V20_7.67V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            1225.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.9545,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.763,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
+        },
+        "t_d_0.88s_V20_9.27V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            1225.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.9545,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.763,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
+        }
+      },
+      "source_limit_3A_slow": {
+        "why": "S1 at the slow corner (longest soft starts, latest U4 enable, highest monitor thresholds): rails good before ARMED at the 0.31 s delay minimum, single attempt required",
+        "t_d_0.31s_V20_7.67V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            655.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.8747,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.694,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 396.8,
+          "U4_enable_ms": 415.1,
+          "U4_before_P12_OK": false
+        },
+        "t_d_0.31s_V20_9.27V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            655.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.8747,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.694,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 396.8,
+          "U4_enable_ms": 415.1,
+          "U4_before_P12_OK": false
+        },
+        "t_d_0.88s_V20_7.67V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            1225.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.8747,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.694,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 396.8,
+          "U4_enable_ms": 415.1,
+          "U4_before_P12_OK": false
+        },
+        "t_d_0.88s_V20_9.27V": {
+          "first_enable_ms": [
+            345.3
+          ],
+          "ARMED_ms": [
+            1225.3
+          ],
+          "FAULT_ms": [],
+          "RESET_release_ms": [
+            12.0
+          ],
+          "ends_running": true,
+          "ends_armed": true,
+          "ends_faulted": false,
+          "power_epochs": 1,
+          "max_input_A": 2.8747,
+          "source_limit_observed": false,
+          "u5_dropouts": 0,
+          "u5_dropouts_after_first_enable": 0,
+          "peak_demand_A": 2.694,
+          "demand_over_3A_ms": 0.0,
+          "final_rails_V": [
+            12.08,
+            11.99
+          ],
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 396.8,
+          "U4_enable_ms": 415.1,
+          "U4_before_P12_OK": false
         }
       },
       "source_3A_no_load_no_rack": {
         "why": "Minimal start on the same plant: strict 3.00 A source, no load, no rack: must start in ONE attempt, no U5 dropout, input <= 3 A",
         "t_d_0.31s_V20_7.67V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
           "ARMED_ms": [
-            655.4
+            655.3
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -2337,24 +3526,27 @@
           "ends_armed": true,
           "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 0.565,
+          "max_input_A": 0.1053,
           "source_limit_observed": false,
           "u5_dropouts": 0,
           "u5_dropouts_after_first_enable": 0,
-          "peak_demand_A": 0.597,
+          "peak_demand_A": 0.067,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
             12.08,
             11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         },
         "t_d_0.31s_V20_9.27V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
           "ARMED_ms": [
-            655.4
+            655.3
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -2364,24 +3556,27 @@
           "ends_armed": true,
           "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 0.565,
+          "max_input_A": 0.1053,
           "source_limit_observed": false,
           "u5_dropouts": 0,
           "u5_dropouts_after_first_enable": 0,
-          "peak_demand_A": 0.597,
+          "peak_demand_A": 0.067,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
             12.08,
             11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         },
         "t_d_0.88s_V20_7.67V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
           "ARMED_ms": [
-            1225.4
+            1225.3
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -2391,24 +3586,27 @@
           "ends_armed": true,
           "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 0.565,
+          "max_input_A": 0.1053,
           "source_limit_observed": false,
           "u5_dropouts": 0,
           "u5_dropouts_after_first_enable": 0,
-          "peak_demand_A": 0.597,
+          "peak_demand_A": 0.067,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
             12.08,
             11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         },
         "t_d_0.88s_V20_9.27V": {
           "first_enable_ms": [
-            345.4
+            345.3
           ],
           "ARMED_ms": [
-            1225.4
+            1225.3
           ],
           "FAULT_ms": [],
           "RESET_release_ms": [
@@ -2418,17 +3616,20 @@
           "ends_armed": true,
           "ends_faulted": false,
           "power_epochs": 1,
-          "max_input_A": 0.565,
+          "max_input_A": 0.1053,
           "source_limit_observed": false,
           "u5_dropouts": 0,
           "u5_dropouts_after_first_enable": 0,
-          "peak_demand_A": 0.597,
+          "peak_demand_A": 0.067,
           "demand_over_3A_ms": 0.0,
           "final_rails_V": [
             12.08,
             11.99
           ],
-          "input_after_fault_A": 0.0
+          "input_after_fault_A": 0.0,
+          "P12_OK_ms": 372.2,
+          "U4_enable_ms": 375.7,
+          "U4_before_P12_OK": false
         }
       },
       "power_reset_rearm_persistent_short": {

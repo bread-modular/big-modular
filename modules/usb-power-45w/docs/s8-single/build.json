@@ -1,8 +1,8 @@
 {
-  "revision": "S9.2",
+  "revision": "S9.3",
   "project": "hardware/single/usb-power-45w-single.kicad_pro",
-  "components": 175,
-  "nets": 80,
+  "components": 185,
+  "nets": 84,
   "no_connect_pins": 41,
   "removed_from_S7": [
     "#FLG05",
@@ -175,6 +175,7 @@
       5
     ],
     "P12_OK": [
+      3,
       4,
       5
     ],
@@ -209,6 +210,7 @@
     "-12V",
     "2N7002",
     "BAT54S",
+    "BAV199",
     "BCX53_NXP",
     "C",
     "CH224A",
@@ -239,5 +241,5 @@
     "TestPoint",
     "VCC"
   ],
-  "library_sha256": "eb79e23f2e57e2a4efc9d111c2421bcef96943e5de205b14c11f9afdafb48c6e"
+  "library_sha256": "8441cff883bc75d379f4a8b200201099d3e9d07f98c84e6b262d7e9348d8682d"
 }

@@ -32,7 +32,7 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
-REV = 'S9.2'
+REV = 'S9.3'
 from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
 import s92_contract  # noqa: E402
 import s92_parts  # noqa: E402
@@ -78,6 +78,41 @@ def tlv431_dbz():
     return sym
 
 
+BAV199_HOOKS = {((-3.175, -1.27), (-3.175, -1.016)), ((-2.54, 1.27), (-1.905, 1.27)), ((-2.54, -1.27), (-3.175, -1.27)),
+                 ((-1.905, 1.27), (-1.905, 1.016)), ((3.175, -1.27), (3.175, -1.016)), ((3.81, 1.27), (4.445, 1.27)),
+                 ((3.81, -1.27), (3.175, -1.27)), ((4.445, 1.27), (4.445, 1.016))}
+
+
+def bav199():
+    """S9.3 D27/D28 symbol: the KiCad stock Diode:BAT54S drawing (series pair, pin 1 A, pin 2 K, pin 3 COM = the BAV199
+    SOT-23 pinout: onsemi BAV199LT1G / Nexperia BAV199 pin 1 anode, 2 cathode, 3 common) with the Schottky hooks removed
+    (plain silicon diode bars), renamed and described as the low-leakage silicon pair it is."""
+    sym, _, _ = bs.stock_symbol('Diode', 'BAT54S')
+    pins = {one(p, 'number')[1]: one(p, 'name')[1] for p in walk(sym, 'pin')}
+    assert pins == {'1': 'A', '2': 'K', '3': 'COM'}, ('BAT54S pinout changed', pins)
+    for body in nodes(sym, 'symbol'):
+        keep = []
+        for item in body:
+            if isinstance(item, list) and item and item[0] == 'polyline':
+                pts = tuple((float(p[1]), float(p[2])) for p in one(item, 'pts')[1:])
+                if len(pts) == 2 and pts in BAV199_HOOKS:
+                    continue
+            keep.append(item)
+        body[:] = keep
+    names = one(sym, 'pin_names')
+    if names is not None and not any(isinstance(x, list) and x[0] == 'hide' for x in names):
+        names.append([atom('hide'), atom('yes')])               # pin names off (as the stock BAV99), numbers stay
+    props = {pp[1]: pp for pp in nodes(sym, 'property')}
+    props['Value'][2] = 'BAV199'
+    props['Datasheet'][2] = 'https://www.onsemi.com/download/data-sheet/pdf/bav199lt1-d.pdf'
+    props['Description'][2] = 'Low-leakage silicon double diode in series (IR <= 5 nA at 70 V), SOT-23: 1 A, 2 K, 3 common'
+    props['ki_keywords'][2] = 'diode low leakage'
+    sym[1] = 'BAV199'
+    for u in nodes(sym, 'symbol'):
+        u[1] = 'BAV199_' + '_'.join(u[1].rsplit('_', 2)[-2:])
+    return sym
+
+
 def lib_symbols(parts):
     """The S7 pinned symbols (tools/build_schematic.py SYMBOLS) that S8 uses, flattened the same way, plus
     the S8.1 TLV431_DBZ symbol and the S9.0 TPS552892_RYQ symbol (tools/s90_parts.py)."""
@@ -93,6 +128,8 @@ def lib_symbols(parts):
         for u in nodes(sym, 'symbol'):
             u[1] = 'R_Shunt_' + '_'.join(u[1].rsplit('_', 2)[-2:])
         out['R_Shunt'] = sym
+    if 'BAV199' in used:                           # S9.3 D27/D28 soft-start diode pairs
+        out['BAV199'] = bav199()
     assert used <= set(out), sorted(used - set(out))
     return out
 

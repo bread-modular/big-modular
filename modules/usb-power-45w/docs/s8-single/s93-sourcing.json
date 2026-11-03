@@ -1,0 +1,323 @@
+{
+  "note": "S9.3 live exact-code rows (shared --strict-live lookup, one request per code; C1623 by a live search of its MPN because the short code is a prefix of many others) for the codes S9.3 adds: C84 220n X7R 0603 (C21120), C85 470n X7R 0603 (C1623), D27/D28 BAV199 (C145516 onsemi BAV199LT1G) and the recorded alternates C40919 (Nexperia BAV199,215) and C68971 (CJ BAV199); R116/R117 470k, R118 100k, R119 220k, C86 100n and Q16 2N7002 reuse codes already in the design. Raw snapshots: research/s93/sourcing-selected. Dated public-catalog observations, not reservations, quotes or order acceptance.",
+  "codes": {
+    "C21120": {
+      "code": "C21120",
+      "mpn": "CL10B224KA8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 925212,
+      "unit_price_q1_usd": 0.0093,
+      "price_ladder_usd": [
+        [
+          1,
+          499,
+          0.0093
+        ],
+        [
+          500,
+          1499,
+          0.0074
+        ],
+        [
+          1500,
+          3999,
+          0.0064
+        ],
+        [
+          4000,
+          23999,
+          0.0051
+        ],
+        [
+          24000,
+          47999,
+          0.0045
+        ],
+        [
+          48000,
+          -1,
+          0.0042
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T08:59:47Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C21120"
+        },
+        "sha256": "42e66c5a7a79b1ee2ef2b4cbb6ab854ad28b704b08171239d7d555a3996caf15",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "C84"
+      ]
+    },
+    "C1623": {
+      "code": "C1623",
+      "mpn": "CL10B474KA8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 637199,
+      "unit_price_q1_usd": 0.013,
+      "price_ladder_usd": [
+        [
+          1,
+          499,
+          0.013
+        ],
+        [
+          500,
+          1499,
+          0.0101
+        ],
+        [
+          1500,
+          3999,
+          0.0088
+        ],
+        [
+          4000,
+          23999,
+          0.0064
+        ],
+        [
+          24000,
+          47999,
+          0.006
+        ],
+        [
+          48000,
+          -1,
+          0.0057
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T08:59:51Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "CL10B474KA8NNNC"
+        },
+        "sha256": "cde9c366efabd9dc2fe7d9dd068685d0e2554f5b461214a9c8583656d779279b",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z",
+        "lookup": "MPN search CL10B474KA8NNNC (exact code lookup ambiguous: short code prefix)"
+      },
+      "failures": [],
+      "refs_S8": [
+        "C85"
+      ]
+    },
+    "C145516": {
+      "code": "C145516",
+      "mpn": "BAV199LT1G",
+      "manufacturer": "onsemi",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 384820,
+      "unit_price_q1_usd": 0.0322,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.0322
+        ],
+        [
+          200,
+          599,
+          0.0256
+        ],
+        [
+          600,
+          2999,
+          0.0219
+        ],
+        [
+          3000,
+          8999,
+          0.0197
+        ],
+        [
+          9000,
+          20999,
+          0.0178
+        ],
+        [
+          21000,
+          -1,
+          0.0168
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T08:59:53Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C145516"
+        },
+        "sha256": "0dbf39d5ba4ba7e3c6c8ffe8356cdc114291c4e5d6aad7c716a1e7bea1ef50ab",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": [
+        "D27",
+        "D28"
+      ]
+    },
+    "C40919": {
+      "code": "C40919",
+      "mpn": "BAV199,215",
+      "manufacturer": "Nexperia",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 79714,
+      "unit_price_q1_usd": 0.0348,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.0348
+        ],
+        [
+          200,
+          599,
+          0.0271
+        ],
+        [
+          600,
+          2999,
+          0.0228
+        ],
+        [
+          3000,
+          8999,
+          0.0199
+        ],
+        [
+          9000,
+          20999,
+          0.0178
+        ],
+        [
+          21000,
+          -1,
+          0.0166
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T08:59:55Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C40919"
+        },
+        "sha256": "1e91160eb7fd85657c76b5e963567239b93c1bd74cecb19e7483561ffb20a380",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    },
+    "C68971": {
+      "code": "C68971",
+      "mpn": "BAV199",
+      "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 33645,
+      "unit_price_q1_usd": 0.0268,
+      "price_ladder_usd": [
+        [
+          1,
+          199,
+          0.0268
+        ],
+        [
+          200,
+          599,
+          0.0214
+        ],
+        [
+          600,
+          2999,
+          0.0184
+        ],
+        [
+          3000,
+          8999,
+          0.0162
+        ],
+        [
+          9000,
+          20999,
+          0.0146
+        ],
+        [
+          21000,
+          -1,
+          0.0137
+        ]
+      ],
+      "evidence": {
+        "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+        "retrieved_at_utc": "2026-11-03T08:59:57Z",
+        "http_status": 200,
+        "request": {
+          "currentPage": 1,
+          "pageSize": 20,
+          "keyword": "C68971"
+        },
+        "sha256": "6844b3061dd398221610404e5261f1b37b74a2142ce152a7af94d4c72b32ffc5",
+        "mode": "live",
+        "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+        "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+      },
+      "failures": [],
+      "refs_S8": []
+    }
+  },
+  "basic_only_policy": {
+    "decision": "S9.2 Basic/Extended policy: every resistor and capacitor is a Basic part except the documented electrical exceptions R2/R3 (0.1 % UVLO), R93/R94/R98/R99 (0.1 % guard dividers) and R109 (18 mOhm 1 W metal-alloy shunt, no Basic part exists). ICs, transistors, TVS/Schottky diodes, the inductors and connectors are Extended where JLCPCB has no Basic equivalent. Every machine-assembled part has a C-code with live stock at the dated audit; alternates are recorded in the Alternates field. J2/J3 (box headers) and D8 (panel LED) stay owner-fitted manual parts by the S7/S8 module policy; JLCPCB THT codes are noted for them.",
+    "refs": [
+      "R2",
+      "R3",
+      "R93",
+      "R94",
+      "R98",
+      "R99",
+      "R109"
+    ],
+    "why": "Precision UVLO gives the worst-case start < 13 V; precision guard dividers keep the overvoltage margins; the 18 mOhm shunt sets the 2.62-2.95 A CC limit (Kelvin land).",
+    "manual_parts": {
+      "J2": "Wurth 61201621621 (LCSC C5364137, see s92-sourcing.json); THT option CJT A2541WV-2x8P C5454489 needs a footprint/height check against the IDC plug envelope",
+      "J3": "as J2",
+      "D8": "3 mm red LED, horizontal panel mount (bent leads, Z 2.0 mm): owner stock; THT option Everlight 204-10SURD/S530-A3-L C99771"
+    },
+    "cost": "Quantity-1 part prices only; Extended setup fees, attrition, PCB, assembly and shipping are excluded."
+  },
+  "failures": []
+}

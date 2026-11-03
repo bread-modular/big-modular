@@ -41,7 +41,8 @@ import verify_s8  # noqa: E402
 
 MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-COMPONENTS = 175                       # S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads
+COMPONENTS = 185                       # S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads;
+                                       # S9.3 + 10 (soft starts C84/D27/R116, C85/D28/R117; sequencing Q16/R118/C86/R119)
 ROOT = DESIGN / 'hardware/single/usb-power-45w-single.kicad_sch'
 
 def verify_native(path):
@@ -120,7 +121,7 @@ class TableDerivation(unittest.TestCase):
         self.assertEqual(s8 - s7, {'J3', 'C59', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R97', 'R98', 'R99',
                                    'C63', 'C65', 'C66', 'U21', 'R100', 'C67', 'D22', 'TP17',
                                    *circuit_s8.ARMING_ADDED, *circuit_s8.BUCKBOOST_ADDED, *circuit_s8.S91_ADDED,
-                                   *circuit_s8.S92_ADDED, '#FLG10'})
+                                   *circuit_s8.S92_ADDED, *circuit_s8.S93_ADDED, '#FLG10'})
         self.assertFalse(set(circuit_s8.S8_PLUS5_DROPPED) & s8)
 
     def test_no_raw_or_plus5_nets_no_cans(self):
@@ -447,11 +448,12 @@ class ReviewRecord(unittest.TestCase):
         import hashlib
         self.assertFalse((MODULE / 'docs/s8-single/review-s85.json').exists(), 'S8.5 record replaced (git history)')
         self.assertFalse((MODULE / 'docs/s8-single/review-s91.json').exists(), 'S9.1 record replaced (git history)')
-        rec_path = MODULE / 'docs/s8-single/review-s92.json'
+        self.assertFalse((MODULE / 'docs/s8-single/review-s92.json').exists(), 'S9.2 record replaced (git history)')
+        rec_path = MODULE / 'docs/s8-single/review-s93.json'
         if DESIGN.resolve() != MODULE.resolve() or not rec_path.exists():
             self.skipTest('review record applies to the module tree once generated (tools/review_s8.py)')
         rec = json.loads(rec_path.read_text())
-        self.assertEqual(rec['revision'], 'S9.2 / P2.2')
+        self.assertEqual(rec['revision'], 'S9.3 / P2.3')
         hashed = [rel for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256')
                   for rel in rec[group]]
         self.assertFalse([rel for rel in hashed if rel.endswith('.kicad_prl') or rel.startswith('research/')])
@@ -541,9 +543,14 @@ class Calcs(unittest.TestCase):
         self.assertGreater(banks['+12V']['eff_uF'][0], 10)      # TI minimum effective COUT
         self.assertNotIn('+5V', banks)
         ss = c.soft_start(val, eff)
-        self.assertEqual(ss['+12V']['rack_allowance_mF'], c.TYPICAL_RACK_MF)     # TI 1000 uF ceiling - bank
-        self.assertLess(ss['+12V']['time_to_full_at_allowance_full_load_ms'], 309 * 0.5)
-        self.assertGreater(c.startup_window(val)['ratio_min_window_to_budget'], 2)
+        self.assertEqual(ss['+12V']['rack_allowance_mF'], c.TYPICAL_RACK_MF)     # the compensation envelope
+        # S9.3: RC soft starts, -12V slower than +12V (it starts last, against the full +12V load)
+        self.assertLess(ss['+12V']['tau_ms'][2], ss['-12V']['tau_ms'][2])
+        self.assertGreater(ss['+12V']['tau_ms'][0], 4.0)
+        self.assertGreater(ss['-12V']['tau_ms'][0], 12.0)
+        w = c.startup_window(val)
+        self.assertGreaterEqual(w['margin_to_window_min_ms'], 100.0)
+        self.assertGreaterEqual(w['ratio_min_window_to_budget'], 1.5)
         rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
         ov = c.ov_guard(val, rel)
         self.assertEqual({k for k in ov if k.startswith(('+', '-'))}, {'+12V', '-12V'})
@@ -631,7 +638,8 @@ class Calcs(unittest.TestCase):
         import s8_calcs as c
         val = c.table()[1]
         w = c.startup_window(val)
-        self.assertGreater(w['ratio_min_window_to_budget'], 2)
+        self.assertGreaterEqual(w['ratio_min_window_to_budget'], 1.5)      # S9.3 slow-corner soft starts (S9.2: > 2)
+        self.assertGreaterEqual(w['margin_to_window_min_ms'], 100.0)
         a = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['arming']
         self.assertTrue(a['V20_OK']['rule_holds'])
         self.assertEqual(len(a['required']), 4)
@@ -916,10 +924,20 @@ class S91ReviewFixes(unittest.TestCase):
         for key,row in r['timelines']['source_limit_3A'].items():
             if key=='why':continue
             self.assertLessEqual(row['max_input_A'],3.)
-            self.assertTrue(row['source_limit_observed'])
-            self.assertTrue(row['ends_faulted'] and not row['ends_running'] and not row['ends_armed'], row)
-            self.assertLessEqual(row['input_after_fault_A'],.05)
-            self.assertGreater(row['u5_dropouts_after_first_enable'],0,'the strict 3 A start is NOT a single attempt')
+            self.assertFalse(row['source_limit_observed'], 'S9.3: the strict 3 A source never limits')
+            self.assertTrue(row['ends_running'] and row['ends_armed'] and not row['ends_faulted'], row)
+            self.assertEqual(row['u5_dropouts_after_first_enable'],0,'S9.3: the strict 3 A start IS a single attempt')
+        q=json.loads((DESIGN/'docs/s8-single/calcs.json').read_text())['startup_qualification']
+        self.assertTrue(q['all_strict_cases_single_attempt'])
+        self.assertEqual(set(q['demand_rows']), {'published_33W_0.44mF','published_split_-12V_0.8A_0.44mF',
+                                                  'published_33W_no_rack','no_load_0.44mF','no_load_no_rack'})
+        for case,rows in q['demand_rows'].items():
+            for k,row in rows.items():
+                if k.startswith('strict'):
+                    self.assertTrue(row['single_attempt_start'] and row['U5_dropouts']==0, (case,k,row))
+                    self.assertLessEqual(row['peak_input_A'],3.0)
+                    self.assertEqual(row['time_above_3A_ms'],0.0)
+                    self.assertLessEqual(row['rails_good_ms'],250.0,(case,k))
         for key,row in r['timelines']['source_3A_no_load_no_rack'].items():
             if key=='why':continue
             self.assertTrue(row['ends_armed'] and row['ends_running'] and not row['FAULT_ms'], row)
@@ -944,7 +962,7 @@ class S91ReviewFixes(unittest.TestCase):
         self.assertEqual(p['ground_connection']['sole_link'],'R113')
         self.assertEqual(p['ground_connection']['at'],'C82.2')
         self.assertEqual(p['ground_connection']['pgnd_at_star'],['C82.2','R113.2'])
-        self.assertEqual(p['revision'],'S9.2 / P2.2')
+        self.assertEqual(p['revision'],'S9.3 / P2.3')
 
 
 ROUTING_READY = 'Routing-ready. The items in `routing-notes.md` are post-prototype acceptance tests, not design blockers.'
@@ -1010,11 +1028,14 @@ class S92RoutingReady(unittest.TestCase):
         s = m['structure']
         self.assertEqual((s['U4'], s['EN'], s['U4_GND'], s['R_top'], s['R_bot'], s['PNP'], s['emitter'], s['pullups']),
                          ('U4', 'EN_N', '-12V', 'R17', 'R18', 'Q1', 'VPD', ['R112']))
-        self.assertEqual(s['sink_chains'], [{'R': 'R16', 'series_nmos': [['Q15', 'MAIN_LED_OK'], ['Q14', 'RUN']],
-                                             'end': 'GND', 'node_defaults': {'N_EN_RETURN': ['R115']}}])
-        self.assertEqual(len(m['truth_table']), 16)
+        self.assertEqual(s['sink_chains'], [{'R': 'R16', 'series_nmos': [['Q16', 'N_EN_SEQ'], ['Q15', 'MAIN_LED_OK'],
+                                                                         ['Q14', 'RUN']],
+                                             'end': 'GND', 'node_defaults': {'N_EN_MID': ['R119'], 'N_EN_RETURN': ['R115']}}])
+        self.assertEqual(s['sequencing'], {'Q': 'Q16', 'gate': 'N_EN_SEQ', 'source': 'P12_OK', 'R': 'R118', 'C': 'C86',
+                                           'pullup': 'R35'})
+        self.assertEqual(len(m['truth_table']), 32)
         for row in m['truth_table']:
-            self.assertIs(row['U4_enabled'], row['own_input'] and row['run'] and row['main_status'], row)
+            self.assertIs(row['U4_enabled'], row['own_input'] and row['run'] and row['main_status'] and row['p12_good'], row)
             self.assertEqual(row['undefined_nodes'], [], row)
         on = [r for r in m['truth_table'] if r['U4_enabled']]
         self.assertGreater(min(r['EN_relative_V'][0] for r in on), self.n.EN_U4['on_max'])
@@ -1035,7 +1056,10 @@ class S92RoutingReady(unittest.TestCase):
                  'R16 sink straight to GND': [('R16', '1', 'GND')],
                  'R115 open (N_EN_RETURN floating)': [('R115', '1', 'R115_OPEN')],
                  'R112 open (no base pull-up)': [('R112', '1', 'R112_OPEN')],
-                 'Q14 drain on GND (switch shorted)': [('Q14', '3', 'GND')]}
+                 'Q14 drain on GND (switch shorted)': [('Q14', '3', 'GND')],
+                 'Q16 gate on V3V3 (S9.3 sequencing bypassed)': [('Q16', '1', 'V3V3')],
+                 'Q16 gate on RUN (S9.3 not delayed by +12V)': [('Q16', '1', 'RUN')],
+                 'R119 open (N_EN_MID floating)': [('R119', '1', 'R119_OPEN')]}
         for why, moves in cases.items():
             with self.subTest(why):
                 d = self.n.Design.from_xml(self.bad(why.split()[0] + moves[0][2], moves))
@@ -1047,6 +1071,8 @@ class S92RoutingReady(unittest.TestCase):
                 self.assertTrue(m['violations'])
         m = self.n.enable_model(self.n.Design.from_xml(self.bad('R115_47k', ref='R115', value='47k')))
         self.assertFalse(m['pass'], 'R115 below ~50k lets the Q15 source follower bias Q1 on with RUN low')
+        m = self.n.enable_model(self.n.Design.from_xml(self.bad('R119_100k', ref='R119', value='100k')))
+        self.assertFalse(m['pass'], 'S9.3: R119 || R115 below ~50k lets the Q16 follower bias Q1 on with RUN low')
         self.assertTrue(self.n.enable_model(self.n.Design.from_xml(self.bad('R115_1M', ref='R115', value='1M')))['pass'])
         for name, moves in (('verify-Q1', [('Q1', '2', '+12V')]), ('verify-R115', [('R115', '1', 'R115_OPEN')])):
             with self.subTest(name), self.assertRaises(AssertionError):
@@ -1075,23 +1101,33 @@ class S92RoutingReady(unittest.TestCase):
         self.assertEqual(len(prm['banks']['P12_VOUT']), 6)
         rec = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())['startup_plant_inputs']
         self.assertEqual(rec['U5_on_V'], [round(x, 3) for x in prm['U5_on_V']])
+        ss = prm['soft_start']
+        self.assertEqual((ss['+12V']['diode'], ss['+12V']['Css'], ss['+12V']['R_top'], ss['+12V']['bleed']),
+                         ('D27', 'C84', 'R8', 'R116'))
+        self.assertEqual((ss['-12V']['diode'], ss['-12V']['Css'], ss['-12V']['R_top'], ss['-12V']['bleed']),
+                         ('D28', 'C85', 'R14', 'R117'))
         results, violations = verify_s8.arming_check(self.xml)
         self.assertEqual(violations, [])
-        for key, row in results['source_limit_3A'].items():
-            if key != 'why':
-                self.assertTrue(row['ends_faulted'] and not row['ends_running'], row)
-                self.assertLessEqual(row['max_input_A'], 3.0)
-        for key, row in results['source_3A_no_load_no_rack'].items():
-            if key != 'why':
-                self.assertTrue(row['ends_armed'] and row['u5_dropouts_after_first_enable'] == 0, row)
+        # S9.3: every strict 3 A start is a single clean attempt with -12V after +12V (S9.2 latched FAULT here)
+        for name in ('source_limit_3A', 'source_limit_3A_split', 'source_limit_3A_slow', 'source_3A_no_load_no_rack'):
+            for key, row in results[name].items():
+                if key != 'why':
+                    self.assertTrue(row['ends_armed'] and row['ends_running'] and not row['FAULT_ms'], (name, row))
+                    self.assertEqual(row['u5_dropouts_after_first_enable'], 0, (name, row))
+                    self.assertLessEqual(row['max_input_A'], 3.0)
+                    self.assertGreaterEqual(row['U4_enable_ms'], row['P12_OK_ms'], (name, row))
 
     def test_three_amp_negative_controls(self):
         """The plant reads its enables, limits and thresholds from the netlist: breaking them changes the result."""
-        for name, moves in (('U5 SHDN on V3V3 (input never removed)', [('U5', '13', 'V3V3')]),
-                            ('U2 EN on V3V3 (converter not gated by MAIN_OK)', [('U2', '1', 'V3V3')])):
+        # S9.3: without either injection network the strict 3 A start fails again; without the sequencing gate -12V starts
+        # before +12V is good
+        for name, moves, expect in (
+                ('no +12V soft-start injection', [('D27', '2', 'D27_OPEN')], 'source_limit_3A: no clean single-attempt'),
+                ('no -12V soft-start injection', [('D28', '2', 'D28_OPEN')], 'source_limit_3A_split: no clean single-attempt'),
+                ('sequencing bypassed (Q16 gate on V3V3)', [('Q16', '1', 'V3V3')], 'source_limit_3A: -12V enabled before')):
             with self.subTest(name):
-                _, violations = verify_s8.arming_check(self.bad(name.split()[0] + moves[0][1], moves))
-                self.assertTrue(any(v.startswith('source_limit_3A: not fail-safe') for v in violations), violations[:2])
+                _, violations = verify_s8.arming_check(self.bad(name.split()[0] + moves[0][0], moves))
+                self.assertTrue(any(v.startswith(expect) for v in violations), violations[:2])
         tied = self.bad('isp_isn_tied', [('U2', '12', '+12V'), ('U2', '13', '+12V')])
         cl = self.n.current_limit(self.n.Design.from_xml(tied))
         self.assertFalse(cl['limited'], 'ISP tied to ISN disables the CC limit (TI Table 5-1)')
@@ -1345,7 +1381,7 @@ class S92RoutingReady(unittest.TestCase):
         nonbasic_rc = sorted(r for row in rows if row['LCSC'] and src['codes'][row['LCSC']]['classification'] != 'Basic'
                              for r in row['Refs'].split(',') if r[0] in 'RC')
         self.assertEqual(set(nonbasic_rc), policy)
-        self.assertEqual(set(s['alternates']), {'D24', 'D26', 'R109'})
+        self.assertEqual(set(s['alternates']), {'D24', 'D26', 'R109', 'D27', 'D28'})     # S9.3: BAV199 alternates
 
     # ---- routing notes (human half of the contract) -------------------------------------------------------------------
     def test_routing_notes_cover_contract(self):

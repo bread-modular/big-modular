@@ -80,10 +80,12 @@ REVERSE_BLOCKING_MPN_PREFIXES = ('LM7470', 'LM5050', 'LM5051', 'LTC4357', 'LTC43
                                  'TPS2116', 'AO4354', 'AO4406', 'AO4410', 'IRF7832', 'SI4410', 'AON7410', 'AON6354')
 RAILS_S90 = {   # exact rail memberships (S9.0 step 2): a series element on a rail changes them
     '+12V': {('C34', '1'), ('C59', '1'), ('D2', '1'), ('J2', '9'), ('J2', '10'), ('J3', '9'), ('J3', '10'),
-             ('R109', '4'), ('R75', '1'), ('R8', '2'), ('R93', '1'), ('TP24', '1')},       # S9.2: ISN on its own sense net
+             ('R109', '4'), ('R75', '1'), ('R8', '2'), ('R93', '1'), ('TP24', '1'),       # S9.2: ISN on its own sense net
+             ('C84', '1')},                                                                # S9.3: +12V soft-start capacitor
     '-12V': {('C25', '2'), ('C26', '2'), ('C27', '2'), ('C29', '1'), ('C30', '1'), ('C31', '1'), ('C32', '1'), ('C33', '1'),
              ('C36', '2'), ('C61', '2'), ('D4', '2'), ('J2', '1'), ('J2', '2'), ('J3', '1'), ('J3', '2'), ('R13', '1'),
-             ('R15', '2'), ('R18', '2'), ('R82', '2'), ('R99', '2'), ('U4', '1'), ('U4', '9'), ('TP25', '1')},
+             ('R15', '2'), ('R18', '2'), ('R82', '2'), ('R99', '2'), ('U4', '1'), ('U4', '9'), ('TP25', '1'),
+             ('D28', '1'), ('R117', '2')},                                                 # S9.3: -12V soft-start clamp/bleed
     'P12_VOUT': {('C11', '1'), ('C12', '1'), ('C13', '1'), ('C14', '1'), ('C79', '1'), ('C80', '1'), ('C81', '1'),
                  ('R109', '1'), ('U2', '11'), ('D26', '1'), ('TP20', '1')},
     # S9.2 item 3: the Kelvin sense nets hold only the U2 sense pin, the R109 sense pad and the acceptance pad
@@ -129,7 +131,12 @@ CRIT = {
     'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'D10': {1: 'MAIN_IN', 2: 'VPD'},
     'Q2': {1: 'PD_SENSE', 2: 'VPD_U1', 3: 'PD_BASE'}, 'Q1': {1: 'N_EN_BASE', 2: 'VPD'}, 'Q10': {1: 'RUN', 2: 'GND', 3: 'LED_RETURN'},
     'Q14': {1: 'RUN', 2: 'GND', 3: 'N_EN_RETURN'},
-    'Q15': {1: 'MAIN_LED_OK', 2: 'N_EN_RETURN', 3: 'N_EN_SINK'},
+    'Q15': {1: 'MAIN_LED_OK', 2: 'N_EN_RETURN', 3: 'N_EN_MID'},
+    # S9.3: P12_OK-delayed sequencing switch above Q15 and the FB-injection soft starts (BAV199: 1 A, 2 K, 3 COM)
+    'Q16': {1: 'N_EN_SEQ', 2: 'N_EN_MID', 3: 'N_EN_SINK'}, 'R118': {1: 'P12_OK', 2: 'N_EN_SEQ'},
+    'C86': {1: 'N_EN_SEQ', 2: 'GND'}, 'R119': {1: 'N_EN_MID', 2: 'GND'},
+    'D27': {1: 'GND', 3: 'SS_P12'}, 'C84': {1: '+12V', 2: 'SS_P12'}, 'R116': {1: 'SS_P12', 2: 'GND'},
+    'D28': {1: '-12V', 2: 'FB_N', 3: 'SS_N12'}, 'C85': {1: 'SS_N12', 2: 'GND'}, 'R117': {1: 'SS_N12', 2: '-12V'},
     'R16': {1: 'N_EN_SINK', 2: 'N_EN_BASE'}, 'R112': {1: 'VPD', 2: 'N_EN_BASE'},
     'R113': {1: 'AGND_U2', 2: 'GND'}, 'R114': {1: 'UV_TRIM', 2: 'GND'}, 'R115': {1: 'N_EN_RETURN', 2: 'GND'},
     'R24': {1: 'MAIN_OV', 2: 'GND'},
@@ -179,8 +186,9 @@ def check_tps3808_s85(root, comps, pins):
 PLANT = dict(dt_ms=0.1, t_por_ms=12.0,                 # TPS3808 open-CT RESET delay minimum (12/20/28 ms)
              t_u5_on_to_pgood_ms=12.0 + 11.5,          # U5 dVdt ramp (~12 ms) + tPGOODR 11.5 ms typ (TPS1663)
              t_pgood_fall_ms=10.0,                     # tPGOODF 10 ms typ: PGOOD stays high this long after the FET is off
-             t_rails_ms=120.0,                         # after MAIN_OK, conservative: S9.0 budget 66.6 ms (U5 ramp, PGOOD,
-                                                       # TPS552892 tSS + rack at the R109 limit, LMR38020 4 + 18 ms)
+             t_rails_ms=200.0,                         # after MAIN_OK: S9.3 slow corner 196 ms (+12V FB-injection soft
+                                                       # start, P12_OK -> R118/C86 -> Q16 delay, -12V soft start; calcs
+                                                       # startup_qualification strict_3A_slow_corner), rounded up
              t_rail_decay_ms=1.0,                      # rails fall below their U18 thresholds after VIN is lost
              t_filter_ms=0.75,                         # R72/C51 10k/100n to the U15 Schmitt VT+ (0.6-0.9 ms)
              u5_on_V=12.977, u5_off_V=12.193,            # S9.0 U5 UVLO corners at their HIGH end (worst for starting/running)
@@ -350,9 +358,13 @@ def _plant_physical(netids, ev, v20_V, phys, byname):
 
     def step(t, s, pst):
         if not pst:
-            pst.update(sim=s92_netlist.PhysicalStartup(phys['params'], phys['eff'], **ev['physical']),
+            kw = dict(ev['physical'])
+            corner = kw.get('corner', 'fast')
+            kw.setdefault('p12_ok_V', phys['monitor_bands']['P12_OK_V'][0 if corner == 'fast' else 2])
+            pst.update(sim=s92_netlist.PhysicalStartup(phys['params'], phys['eff'], **kw),
                        pg=False, raw_on=0.0, raw_off=1e9, enabled=False, first_enable=None, t_en=None, powered=True,
-                       power_since=0.0, epochs=1, dropouts_after_enable=0, max_input_A=0.0)
+                       power_since=0.0, epochs=1, dropouts_after_enable=0, max_input_A=0.0, t_p12=None, t_u4=None,
+                       u4_before_p12=False)
         powered = not any(a <= t < b for a, b in ev.get('power_loss', ()))
         if powered and not pst['powered']:
             pst['power_since'] = t
@@ -395,9 +407,16 @@ def _plant_physical(netids, ev, v20_V, phys, byname):
         s[netids['OV_N']] = True
         s[netids['MAIN_OK']] = main_ok
         s[netids['V20_OK']] = r['vpd'] > v20_V
-        rails12 = r['v12'] >= phys['P12_OK_V'] and not any(a <= t < b for a, b in ev.get('rail_fault', ()))
+        rails12 = r['p12_ok'] and not any(a <= t < b for a, b in ev.get('rail_fault', ()))
         s[netids['P12_OK']] = rails12
-        s[netids['N12_OK']] = r['vn12'] >= phys['N12_OK_V']
+        s[netids['N12_OK']] = r['vn12'] >= phys['monitor_bands']['N12_OK_V'][0 if ev['physical'].get('corner', 'fast')
+                                                                               == 'fast' else 2]
+        # S9.3 rail order: U4 (-12V) may only run once +12V has crossed its P12_OK threshold
+        if r['p12_ok'] and pst['t_p12'] is None:
+            pst['t_p12'] = t
+        if r['u4_on'] and pst['t_u4'] is None:
+            pst['t_u4'] = t
+            pst['u4_before_p12'] = pst['t_p12'] is None
     return step
 
 
@@ -430,8 +449,10 @@ SCENARIOS = {
     'brownout_after_ARMED': dict(vpd=_vpd(300.0, sag=(1500.0, 1550.0, 10.5)), t_end=3000.0, reset=((1900.0, 1915.0),),
                                  why='VPD sags to 10.5 V (below the 11.55 V U5 turn-off minimum, above the 9.27 V V20_OK '
                                      'maximum) for 50 ms after ARMED (U5 off), recovers; RESET pressed later'),
-    'brownout_inside_window': dict(vpd=_vpd(300.0, sag=(450.0, 500.0, 10.5)), t_end=1800.0,
-                                   why='VPD sags to 10.5 V for 50 ms right after the first enable; the window is NOT restarted'),
+    'brownout_inside_window': dict(vpd=_vpd(300.0, sag=(400.0, 430.0, 10.5)), t_end=1800.0,
+                                   why='VPD sags to 10.5 V for 30 ms right after the first enable; the window is NOT restarted '
+                                       '(S9.3: the rails need up to 200 ms to come back, so a sag must end >= ~210 ms before '
+                                       'ARMED; a later one latches FAULT, fail-safe)'),
     'input_overload_chatter': dict(vpd=_vpd(300.0), t_end=1800.0, chatter=(30.0, 20.0),
                                    why='U5 current limit / auto-retry: on 30 ms, off 20 ms, forever (S8.4: timer restarted '
                                        'every cycle, never armed)'),
@@ -452,8 +473,12 @@ SCENARIOS = {
 }
 
 SCENARIOS.update({
- 'source_limit_3A':dict(vpd=_vpd(300.),t_end=1500.,physical=dict(i12=2.4,in12=0.33,source_A=3.0,r_cable=0.25,rack_F=0.44e-3),
-    why='S1 condition on the netlist-derived plant: strict 3.00 A source at 14.25 V + 0.25 ohm, published 33 W load (2.4 A / 0.33 A), 0.44 mF per rail; must end fail-safe (single-attempt armed start, or FAULT latched with RUN low), never armed with a bad rail'),
+ 'source_limit_3A':dict(vpd=_vpd(300.),t_end=1500.,physical=dict(i12=2.4,in12=0.33,source_A=3.0,r_cable=0.25,rack_F=0.44e-3,corner='fast'),
+    why='S1 condition on the netlist-derived plant: strict 3.00 A source at 14.25 V + 0.25 ohm, published 33 W load (2.4 A / 0.33 A), 0.44 mF per rail, fast corner (shortest soft starts, earliest U4 enable); S9.3: must start in ONE attempt, zero U5 drop-outs, input <= 3 A, -12V only after P12_OK'),
+ 'source_limit_3A_split':dict(vpd=_vpd(300.),t_end=1500.,physical=dict(i12=1.95,in12=0.8,source_A=3.0,r_cable=0.25,rack_F=0.44e-3,corner='fast'),
+    why='S1 at the published split (+12V 1.95 A / -12V 0.8 A = 33 W, the highest input current), 0.44 mF per rail, fast corner: single attempt required'),
+ 'source_limit_3A_slow':dict(vpd=_vpd(300.),t_end=1500.,physical=dict(i12=2.4,in12=0.33,source_A=3.0,r_cable=0.25,rack_F=0.44e-3,corner='slow'),
+    why='S1 at the slow corner (longest soft starts, latest U4 enable, highest monitor thresholds): rails good before ARMED at the 0.31 s delay minimum, single attempt required'),
  'source_3A_no_load_no_rack':dict(vpd=_vpd(300.),t_end=1500.,physical=dict(i12=0.0,in12=0.0,source_A=3.0,r_cable=0.25,rack_F=0.0),
     why='Minimal start on the same plant: strict 3.00 A source, no load, no rack: must start in ONE attempt, no U5 dropout, input <= 3 A'),
  'power_reset_rearm_persistent_short':dict(vpd=_vpd(300.),t_end=3600.,power_loss=((1600.,1750.),),rail_fault=((0.,4000.),),
@@ -531,7 +556,10 @@ def _check_timeline(name, trace, t_d_s):
         summary.update(u5_dropouts=last['u5_dropouts'], u5_dropouts_after_first_enable=last['dropouts_after_enable'],
                        peak_demand_A=round(last['peak_demand_A'], 3), demand_over_3A_ms=round(last['over_3A_ms'], 2),
                        final_rails_V=[round(last['v12'], 2), round(last['vn12'], 2)],
-                       input_after_fault_A=round(last.get('input_after_fault_A', 0.0), 3))
+                       input_after_fault_A=round(last.get('input_after_fault_A', 0.0), 3),
+                       P12_OK_ms=None if last['t_p12'] is None else round(last['t_p12'], 1),
+                       U4_enable_ms=None if last['t_u4'] is None else round(last['t_u4'], 1),
+                       U4_before_P12_OK=last['u4_before_p12'])
     return summary, v
 
 
@@ -574,21 +602,22 @@ def arming_timelines(pins, nets, v20_band_V, phys=None):
     for key, r in results['ov_guard_before_ARMED'].items():
         if key.startswith('t_d') and not (r['FAULT_ms'] and r['FAULT_ms'][0] < 430.0 and not r['ends_running']):
             violations.append(f'ov_guard_before_ARMED: OV_N must latch FAULT before ARMED ({key}: {r})')
-    # S9.2 item 4: the 3 A source cases on the netlist-derived plant. Strict 3 A at the published load + rack: the outcome
-    # must be fail-safe - a clean single-attempt start (armed, running, no U5 dropout after the first enable) OR FAULT
-    # latched with RUN low at the end; armed-and-running after hidden U5 retries is a FAIL (the S1 rule). Minimal case:
-    # a clean single attempt is REQUIRED (the design must start from a strict 3 A source with nothing connected).
-    for key, r in results['source_limit_3A'].items():
-        if key == 'why':
-            continue
-        clean = r['ends_armed'] and r['ends_running'] and not r['FAULT_ms'] and r['u5_dropouts_after_first_enable'] == 0
-        safe_fault = r['ends_faulted'] and not r['ends_running'] and r['input_after_fault_A'] <= 0.05
-        if r['max_input_A'] > 3.0 + 1e-9 or not (clean or safe_fault):
-            violations.append(f'source_limit_3A: not fail-safe ({key}: {r})')
-    for key, r in results['source_3A_no_load_no_rack'].items():
-        if key != 'why' and not (r['ends_armed'] and r['ends_running'] and not r['FAULT_ms']
-                                 and r['u5_dropouts_after_first_enable'] == 0 and r['max_input_A'] <= 3.0 + 1e-9):
-            violations.append(f'source_3A_no_load_no_rack: no clean single-attempt start ({key}: {r})')
+    # S9.3: the strict 3 A source cases on the netlist-derived plant must ALL start in one attempt: armed, running, no
+    # FAULT, zero U5 drop-outs after the first enable, input <= 3.00 A, and -12V (U4) enabled only after +12V crossed its
+    # P12_OK threshold (the S9.2 'fail-safe FAULT' outcome is no longer accepted: it was the defect).
+    for name in ('source_limit_3A', 'source_limit_3A_split', 'source_limit_3A_slow', 'source_3A_no_load_no_rack'):
+        for key, r in results[name].items():
+            if key == 'why':
+                continue
+            # the source clamps at 3.00 A, so max_input_A alone cannot show a limit event: S1 also fails on any source
+            # current-limit event (source_limit_observed), as test S1 counts it
+            clean = (r['ends_armed'] and r['ends_running'] and not r['FAULT_ms'] and r['u5_dropouts_after_first_enable'] == 0
+                     and r['max_input_A'] <= 3.0 + 1e-9 and not r['source_limit_observed'])
+            if not clean:
+                violations.append(f'{name}: no clean single-attempt start ({key}: {r})')
+            if r.get('U4_before_P12_OK') or r.get('U4_enable_ms') is None or r.get('P12_OK_ms') is None \
+                    or r['U4_enable_ms'] < r['P12_OK_ms']:
+                violations.append(f'{name}: -12V enabled before +12V was good ({key}: {r})')
     for key,r in results['power_reset_rearm_persistent_short'].items():
         if key!='why' and not (r['power_epochs']==2 and len(r['FAULT_ms'])==2 and r['ends_faulted']):
             violations.append(f'power_reset_rearm_persistent_short: {key}: {r}')
@@ -754,7 +783,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert s7 - set(comps) == removed, ('Only the listed S7 refs may disappear', sorted(s7 - set(comps) - removed))
     assert added == {'J3', 'C59', 'C61', 'C62', 'R92', 'U20', 'R93', 'R94', 'R97', 'R98', 'R99',
                      'C63', 'C65', 'C66', 'U21', 'R100', 'C67', 'D22', 'TP17', *circuit_s8.ARMING_ADDED,
-                     *circuit_s8.BUCKBOOST_ADDED, *circuit_s8.S91_ADDED, *circuit_s8.S92_ADDED}, sorted(added)
+                     *circuit_s8.BUCKBOOST_ADDED, *circuit_s8.S91_ADDED, *circuit_s8.S92_ADDED, *circuit_s8.S93_ADDED}, sorted(added)
     # ---- S9.0 step 1: no +5V net, ref or part survives
     netnames = {k.split('/')[-1] for k in nets}
     assert not set(circuit_s8.PLUS5_NETS) & netnames, ('S9.0: +5V nets must be gone', sorted(set(circuit_s8.PLUS5_NETS) & netnames))
@@ -833,8 +862,9 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
         isnet(r, 1, 'V3V3'); assert n(r, 2) == n(d, 2) and n(d, 1) == n(q, 3)
         isnet(q, 1, gate); isnet(q, 2, 'LED_RETURN')
     assert nets[netids['LED_RETURN']] == {('Q6', '2'), ('Q10', '3')}, 'LED return: Q6 source + Q10 drain only'
-    for net, tp in (('P12_OK', 'TP12'), ('N12_OK', 'TP14')):   # status: logic + pull-up + pad
-        assert {r for r, _ in nets[netids[net]]} == {'U18', 'U14', {'P12_OK': 'R35', 'N12_OK': 'R62'}[net], tp}, net
+    for net, tp in (('P12_OK', 'TP12'), ('N12_OK', 'TP14')):   # status: logic + pull-up + pad (+ S9.3 sequencing R118)
+        assert {r for r, _ in nets[netids[net]]} == {'U18', 'U14', {'P12_OK': 'R35', 'N12_OK': 'R62'}[net], tp,
+                                                     *(['R118'] if net == 'P12_OK' else [])}, net
     # ---- S9.0: the fault chain without +5V. ANY_BAD = NAND(MAIN_LED_OK, P12_OK, N12_OK, V3V3) (U14 gate 1).
     assert {n('U14', q) for q in (1, 2, 4, 5)} == {netids['MAIN_LED_OK'], netids['P12_OK'], netids['N12_OK'],
                                                    netids['V3V3']}, 'S9.0: ANY_BAD inputs'
@@ -902,7 +932,18 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     assert (n('R109', 1), n('R109', 2), n('R109', 3), n('R109', 4)) == (
         netids['P12_VOUT'], netids['P12_ISP'], netids['P12_ISN'], netids['+12V']), 'S9.2: R109 force 1/4, sense 2/3'
     assert comps['R109'].findtext('footprint') == 'USBPOWER45:R_Shunt_1206_KelvinSplit_RLM12', 'S9.2 Kelvin land'
-    assert nets[u2('FB')] == {('U2', role['FB']), ('R8', '1'), ('R9', '1')}, 'FB divider R8 (from +12V) / R9'
+    assert nets[u2('FB')] == {('U2', role['FB']), ('R8', '1'), ('R9', '1'), ('D27', '2')}, \
+        'FB divider R8 (from +12V) / R9 + the S9.3 D27 injection cathode'
+    # ---- S9.3: FB-injection soft starts and the P12_OK sequencing, traced independently of s92_netlist
+    assert nets[netids['SS_P12']] == {('C84', '2'), ('D27', '3'), ('R116', '1')}, 'S9.3 SS_P12 members'
+    assert nets[netids['SS_N12']] == {('C85', '1'), ('D28', '3'), ('R117', '1')}, 'S9.3 SS_N12 members'
+    assert n('U4', 5) == netids['FB_N'] and ('D28', '2') in nets[netids['FB_N']], 'S9.3 D28 cathode on U4 FB'
+    for d_ref in ('D27', 'D28'):
+        assert comps[d_ref].findtext('fields/field[@name="MPN"]') == 'BAV199LT1G', (d_ref, 'S9.3 low-leakage pair')
+    assert nets[netids['N_EN_SEQ']] == {('Q16', '1'), ('R118', '2'), ('C86', '1')}, 'S9.3 Q16 gate = R118/C86 only'
+    assert nets[netids['N_EN_MID']] == {('Q16', '2'), ('Q15', '3'), ('R119', '1')}, 'S9.3 N_EN_MID default R119'
+    assert nets[netids['N_EN_SINK']] == {('Q16', '3'), ('R16', '1')}, 'S9.3 Q16 tops the sink chain'
+    assert value('R119') >= 150e3, 'S9.3: R119 below ~150k lets the Q16 follower bias Q1 on with RUN low'
     assert nets[u2('COMP')] == {('U2', role['COMP']), ('R111', '1')} and n('R111', 2) == n('C83', 1), 'COMP R111 + C83'
     for name in ('PG', 'CC', 'CDC'):
         assert 'unconnected-' in u2(name), ('U2', name, 'open')

@@ -321,7 +321,7 @@
   "items": {
    "netclasses": {
     "project_matches_contract": true,
-    "nets": 80,
+    "nets": 84,
     "per_class": {
      "Default": 6,
      "VIN": 4,
@@ -331,7 +331,7 @@
      "SWITCH": 3,
      "SENSE": 2,
      "AGND_U2": 1,
-     "QUIET": 60
+     "QUIET": 64
     },
     "board_class_mismatch": [],
     "nets_in_two_classes": [],
@@ -775,7 +775,7 @@
    }
   }
  },
- "parts_on_board": 175,
+ "parts_on_board": 185,
  "parked_parts": [],
  "parts_on_B": [],
  "tracks": 52,
@@ -1212,8 +1212,8 @@
  "area_mm2": {
   "outline": 4648,
   "inset_1mm": 4324,
-  "courtyards_sum": 2693,
-  "fill_of_inset": 0.623
+  "courtyards_sum": 2751,
+  "fill_of_inset": 0.636
  },
  "note": "Placement record; courtyard fill is a density screen, not a routing proof.",
  "pass": true

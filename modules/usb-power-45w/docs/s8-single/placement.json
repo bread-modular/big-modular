@@ -1,5 +1,16 @@
 {
- "added_refs": [],
+ "added_refs": [
+  "C84",
+  "C85",
+  "C86",
+  "D27",
+  "D28",
+  "Q16",
+  "R116",
+  "R117",
+  "R118",
+  "R119"
+ ],
  "ground_connection": {
   "analog_net": "AGND_U2",
   "at": "C82.2",
@@ -25,15 +36,8 @@
   "sole_link": "R113",
   "star": "C82.2 (PGND terminal of the VCC capacitor)"
  },
- "moved_retained_refs": [
-  "C2",
-  "C3",
-  "R13",
-  "R14",
-  "R15",
-  "R24"
- ],
- "note": "S9.2 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
+ "moved_retained_refs": [],
+ "note": "S9.3 native synchronization; retained UUIDs/models, outline and fixed parts preserved.",
  "pad_mask_refreshed_from_library": {},
  "parts": {
   "C1": [
@@ -336,6 +340,24 @@
    -90.0,
    "F.Cu"
   ],
+  "C84": [
+   106.9,
+   89.7,
+   0.0,
+   "F.Cu"
+  ],
+  "C85": [
+   119.25,
+   95.1,
+   0.0,
+   "F.Cu"
+  ],
+  "C86": [
+   115.95,
+   87.95,
+   90.0,
+   "F.Cu"
+  ],
   "C9": [
    100.65,
    75.0,
@@ -394,6 +416,18 @@
    127.4,
    69.0,
    0.0,
+   "F.Cu"
+  ],
+  "D27": [
+   108.65,
+   87.1,
+   0.0,
+   "F.Cu"
+  ],
+  "D28": [
+   119.3,
+   91.6,
+   90.0,
    "F.Cu"
   ],
   "D4": [
@@ -474,6 +508,12 @@
    0.0,
    "F.Cu"
   ],
+  "Q16": [
+   112.75,
+   87.1,
+   0.0,
+   "F.Cu"
+  ],
   "Q2": [
    76.2,
    80.65,
@@ -544,6 +584,30 @@
    133.4,
    97.0,
    90.0,
+   "F.Cu"
+  ],
+  "R116": [
+   103.8,
+   89.7,
+   0.0,
+   "F.Cu"
+  ],
+  "R117": [
+   124.7,
+   90.6,
+   90.0,
+   "F.Cu"
+  ],
+  "R118": [
+   113.15,
+   89.7,
+   0.0,
+   "F.Cu"
+  ],
+  "R119": [
+   125.1,
+   93.85,
+   0.0,
    "F.Cu"
   ],
   "R13": [
@@ -1088,21 +1152,8 @@
   ]
  },
  "removed_refs": [],
- "replaced_footprints": {
-  "U4": [
-   "USBPOWER45:TI_SO-PowerPAD-8_ThermalVias",
-   "USBPOWER45:TI_SO-PowerPAD-8_NoViaInPad"
-  ],
-  "U5": [
-   "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_ThermalVias",
-   "USBPOWER45:HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad"
-  ],
-  "U9": [
-   "USBPOWER45:TPS7A16_DGN0008C",
-   "USBPOWER45:TPS7A16_DGN0008C_NoViaInPad"
-  ]
- },
- "revision": "S9.2 / P2.2",
+ "replaced_footprints": {},
+ "revision": "S9.3 / P2.3",
  "routing_contract": {
   "doc": "docs/s8-single/routing-notes.md",
   "drc_rules": [
@@ -1320,11 +1371,13 @@
    "QUIET": {
     "floor": 0.25,
     "patterns": [
-     "*U2-FB*",
+     "*/FB_P12",
+     "*/SS_P12",
      "*U2-COMP*",
      "*C83-Pad1*",
      "*U2-FSW*",
      "*/FB_N",
+     "*/SS_N12",
      "*/EN_N",
      "*/RT_U4",
      "*/N_EN_*",
@@ -1356,7 +1409,7 @@
      "Net-(D8-A)",
      "Net-(D8-K)"
     ],
-    "what": "converter control (U2 FB/COMP/FSW, U4 FB_N/EN_N/RT, enable chain) and every 3.3 V logic, monitor, eFuse-control and status net: >= 0.5 mm from switch-node copper",
+    "what": "converter control (U2 FB/COMP/FSW, U4 FB_N/EN_N/RT, S9.3 soft-start nodes SS_P12/SS_N12, enable chain) and every 3.3 V logic, monitor, eFuse-control and status net: >= 0.5 mm from switch-node copper",
     "width": 0.25
    },
    "SENSE": {
@@ -1510,7 +1563,7 @@
     "why": "ISN sense run R109 pad 3 -> U2 pin 13"
    }
   ],
-  "revision": "S9.2 / P2.2",
+  "revision": "S9.3 / P2.3",
   "rule_areas": [
    {
     "blocks": [],
@@ -2143,7 +2196,7 @@
    "layers": 4,
    "thickness_mm": 1.6
   },
-  "status": "routing contract for the unrouted P2.2 board (S9.2b: no via-in-pad, standard JLCPCB vias, beside-pad thermal fields placed); DRC-enforced items (netclasses, drc_rules, rule_areas) are in the native project, rules file and board; pre-routing items checked by tools/check_s8_board.py; post_routing items PENDING until routed",
+  "status": "routing contract for the unrouted P2.3 board (S9.2b: no via-in-pad, standard JLCPCB vias, beside-pad thermal fields placed); DRC-enforced items (netclasses, drc_rules, rule_areas) are in the native project, rules file and board; pre-routing items checked by tools/check_s8_board.py; post_routing items PENDING until routed",
   "test_points": [
    {
     "limit": "13.5-16.5 V operating; OVP trip 17.30-19.44 V; UVLO on <= 12.98 V",

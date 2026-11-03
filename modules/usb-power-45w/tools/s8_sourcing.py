@@ -44,6 +44,14 @@ REPO = HERE.parents[2]
 TOOL = REPO / 'opt/kicad-tools/jlcpcb/assembly.py'
 
 
+def mpn_of(code):
+    """MPN the S8 (else S7) table records for an LCSC code (the search key of the lookup fallback)."""
+    for p in [*circuit_s8.circuit(), *circuit45.circuit()]:
+        if p['fields'].get('LCSC') == code and p['fields'].get('MPN'):
+            return p['fields']['MPN']
+    return None
+
+
 def lookup(code, cache):
     cmd = [sys.executable, '-B', str(TOOL), 'lookup', code, '--strict-live', '--max-requests', '1', '--timeout', '20']
     if cache:
@@ -53,6 +61,22 @@ def lookup(code, cache):
         d = json.loads(r.stdout)
     except json.JSONDecodeError:
         return {'code': code, 'error': (r.stderr or r.stdout)[-400:]}
+    if not d.get('part') and 'Exact lookup missing/ambiguous/truncated' in (d.get('error') or '') and mpn_of(code):
+        # S9.3: a short code (C1623) is a prefix of many others, so the keyword page never holds the exact row and the
+        # shared exact lookup refuses. Search the recorded MPN live instead and accept only the row with this exact code.
+        cmd = [sys.executable, '-B', str(TOOL), 'search', mpn_of(code), '--strict-live', '--max-requests', '1',
+               '--timeout', '20', '--limit', '20'] + (['--cache-dir', str(cache)] if cache else [])
+        r = subprocess.run(cmd, capture_output=True, text=True, cwd=REPO)
+        try:
+            s = json.loads(r.stdout)
+        except json.JSONDecodeError:
+            return {'code': code, 'error': (r.stderr or r.stdout)[-400:]}
+        hit = [q for q in s.get('parts') or [] if q.get('code') == code]
+        if len(hit) != 1 or s.get('truncated'):
+            return {'code': code, 'error': f'exact lookup ambiguous and MPN search gave {len(hit)} exact rows'}
+        d = {'part': {**hit[0], 'evidence': {**s['evidence'], 'lookup': f'MPN search {mpn_of(code)} (exact code '
+                                                                       'lookup ambiguous: short code prefix)'}},
+             'failures': [f for f in s.get('failures') or [] if f.startswith(code + ':')]}
     p = d.get('part') or {}
     prices = p.get('prices') or [{}]
     return {'code': code, 'mpn': p.get('mpn'), 'manufacturer': p.get('manufacturer'), 'package': p.get('package'),

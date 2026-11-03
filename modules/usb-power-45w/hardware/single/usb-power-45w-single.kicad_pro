@@ -743,7 +743,11 @@
       },
       {
         "netclass": "QUIET",
-        "pattern": "*U2-FB*"
+        "pattern": "*/FB_P12"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/SS_P12"
       },
       {
         "netclass": "QUIET",
@@ -760,6 +764,10 @@
       {
         "netclass": "QUIET",
         "pattern": "*/FB_N"
+      },
+      {
+        "netclass": "QUIET",
+        "pattern": "*/SS_N12"
       },
       {
         "netclass": "QUIET",
