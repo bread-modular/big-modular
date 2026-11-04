@@ -11,7 +11,7 @@ four CV inputs on spare ADC pins (`../tools/build_schematic.py`,
 | PA4-PA7 | knobs 1-4 (RV1-RV4, 0..5 V) |
 | PB0 / PB1 / PA2 / PA3 | CV 1-4 in (8bit CV stage: -5.5..+5.5 V -> 0..5 V, 0 V ~ 509 counts) |
 | PC0 | BANK button (to GND): bank A / B / C = CC base 20 / 27 / 85, saved in EEPROM |
-| PC1-PC3 | bank A / B / C LEDs |
+| PC1-PC3 | bank A / B / C LEDs (5 % brightness, software PWM) |
 | PB3 / PB2 | MIDI RX (through JP1) / MIDI TX (through JP2) |
 
 Channel n sends CC (base + n - 1) on MIDI channel 1 with
@@ -55,12 +55,13 @@ the module powered from the ±12 V header.
 - `mcc.ino`: the `MIDI_RX_INVERT` guard and `PORTB.PIN3CTRL |= PORT_INVEN_bm`
   after `midi.begin()` for JP1 = P; the four CV inputs added to the knobs
   (`readCc`, the `modules/8bit` lfo knob + CV offset with the same zero and
-  dead band).
+  dead band); the bank LEDs at 1 % brightness (`LED_ON_STEPS`): software
+  PWM on PC1-PC3 from a 20 kHz TCB0 interrupt, 200 Hz, 1 of 100 steps on.
 - Build scripts: module wrappers (`compile.sh`, `flash.sh`, `jumper.sh`) over the
   shared `opt/attiny1616-tools` instead of BM's copies; BM's README is folded
   into this one.
 - `SimpleMIDI.h`, `ModeHandler.h`, `LEDToggler.h` are the BM files, unchanged.
 
-Built with arduino-cli 2026-11-02 (megaTinyCore 2.6.11), `p` / `d`: 3890 / 3880 B
-flash (BM: 3824 B), 197 B RAM. Not bench-tested on the MCC carrier yet;
+Built with arduino-cli 2026-11-04 (megaTinyCore 2.6.11), `p` / `d`: 3970 / 3960 B
+flash (BM: 3824 B), 199 B RAM. Not bench-tested on the MCC carrier yet;
 `CV_IN_ZERO` (509) is the nominal 0 V reading, calibrate per unit.
