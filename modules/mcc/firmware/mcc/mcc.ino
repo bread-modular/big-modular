@@ -25,6 +25,14 @@ constexpr int16_t CV_IN_DEADBAND = 3;    // counts around 0 V treated as 0 V
 #define BANK_B_CC_BASE 27
 #define BANK_C_CC_BASE 85
 
+// Bank LED brightness: software PWM on PC1-PC3 (no hardware PWM there).
+// TCB0 ticks at 20 kHz; LED_PWM_STEPS ticks = 200 Hz PWM, LED_ON_STEPS of them on.
+#define LED_PWM_STEPS 100
+#define LED_ON_STEPS 1      // 1 % brightness
+#define LED_PORT_MASK (PIN1_bm | PIN2_bm | PIN3_bm)
+constexpr uint16_t LED_TCB_COMPARE = (F_CPU / 2) / 20000 - 1;
+volatile uint8_t ledMask = 0;   // PORTC bit of the lit bank LED
+
 SimpleMIDI midi;
 ModeHandler modeHandler(BANK_SELECTOR_PIN, 3);
 uint8_t baseCcValue = 20;
@@ -61,10 +69,30 @@ void realtimeCallback(uint8_t realtimeType) {
   midi.sendRealtime(realtimeType);
 }
 
+void setupLedPwm() {
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV2_gc;  // 10 MHz
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc;     // periodic interrupt
+  TCB0.CCMP = LED_TCB_COMPARE;
+  TCB0.INTCTRL = TCB_CAPT_bm;
+  TCB0.CTRLA |= TCB_ENABLE_bm;
+}
+
+ISR(TCB0_INT_vect) {
+  static uint8_t step = 0;
+  if (++step >= LED_PWM_STEPS) {
+    step = 0;
+  }
+  if (step < LED_ON_STEPS) {
+    PORTC.OUTSET = ledMask;
+  } else {
+    PORTC.OUTCLR = LED_PORT_MASK;
+  }
+  TCB0.INTFLAGS = TCB_CAPT_bm;
+}
+
 void handleBankSelection(uint8_t mode) {
-  digitalWrite(BANK_A_LED_PIN, mode == 0 ? HIGH : LOW);
-  digitalWrite(BANK_B_LED_PIN, mode == 1 ? HIGH : LOW);
-  digitalWrite(BANK_C_LED_PIN, mode == 2 ? HIGH : LOW);
+  PORTC.OUTCLR = LED_PORT_MASK;
+  ledMask = mode == 0 ? PIN1_bm : mode == 1 ? PIN2_bm : mode == 2 ? PIN3_bm : 0;
 
   if (mode == 0) {
     baseCcValue = BANK_A_CC_BASE;
@@ -82,7 +110,8 @@ void setup() {
   digitalWrite(BANK_A_LED_PIN, LOW);
   digitalWrite(BANK_B_LED_PIN, LOW);
   digitalWrite(BANK_C_LED_PIN, LOW);
-  
+  setupLedPwm();
+
   pinMode(AI_PIN, INPUT);
   pinMode(AI_PIN + 1, INPUT);
   pinMode(AI_PIN + 2, INPUT);
