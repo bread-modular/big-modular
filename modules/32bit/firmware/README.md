@@ -1,5 +1,9 @@
 # 32bit firmware (ESP32-S3)
 
+Two firmwares, one ESP-IDF project each: `polysynth` (default) and `fxrack`
+(the Bread Modular 32bit fxrack, see [fxrack](#fxrack)). Pick one with the
+first argument of `compile.sh` / `flash.sh`.
+
 ## polysynth
 
 9-voice MIDI poly synth after the Bread Modular 16bit polysynth
@@ -96,11 +100,18 @@ A build without the setting stops at CMake (and `bm_midi.c` has an `#error`).
 
 ```sh
 ./setup.sh                    # once: checks / reuses ESP-IDF v5.5.1 (~/esp/esp-idf, ~/.espressif)
-./compile.sh p                # build only
-./flash.sh p                  # build + flash over the module's USB-C, pick the port
-./flash.sh p /dev/ttyACM0     # explicit port (macOS: /dev/cu.usbmodemXXXX)
-MONITOR=1 ./flash.sh p        # flash, then show the log (Ctrl-] quits)
+./compile.sh p                # build only (polysynth = the default)
+./compile.sh p fxrack         # build the fxrack firmware (also: fxrack p)
+./flash.sh                    # pick JP1, the firmware and the port from menus
+./flash.sh p                  # pick the firmware (Enter = polysynth) and the port
+./flash.sh p fxrack           # build + flash fxrack over the module's USB-C, no firmware menu
+./flash.sh p fxrack /dev/ttyACM0   # explicit port (macOS: /dev/cu.usbmodemXXXX)
+MONITOR=1 ./flash.sh p fxrack # flash, then show the log (Ctrl-] quits)
 ```
+
+`flash.sh` asks which firmware to flash (as the 16bit `flash.sh` asks for the
+app) unless it is on the command line or in `FIRMWARE=`; `compile.sh` never
+asks and builds polysynth by default.
 
 The scripts are wrappers (`jumper.sh`) over the shared `opt/esp32-tools`, like
 the ATtiny1616 firmwares over `opt/attiny1616-tools`. `setup.sh` downloads
@@ -116,6 +127,7 @@ worst audio block time against the 1451 us budget, and the CV1 / CV2 voltages.
 
 ```sh
 cd polysynth/tests && make
+cd fxrack/tests && make
 ```
 
 Builds `main/src/ps_dsp.c` on the host and checks the knob 2 map (bypass at 0, no
@@ -160,3 +172,75 @@ level and mip level (no aliasing), the waveform crossfade (no click), and
 Built with ESP-IDF v5.5.1 (2026-10-31), `p` and `d`: 414 KB app, no warnings;
 host tests pass. Not bench-tested on the 32bit carrier yet (no hardware): audio
 level, CV scaling and CPU load are still to be checked on the module.
+
+## fxrack
+
+The Bread Modular 32bit-5v `fxrack` app
+(`~/data/projects/bread-modular/modules/32bit-5v/code/32bit`, VERSION 1.1.3,
+`main/src/apps/bm_app_fxrack.c` and its `audio/` + `lib/` code) on the 32bit
+drivers above (R1 pins, JP1, CV scaling, 64-frame audio blocks). The left and
+right channels are two separate effects.
+
+| Control | Function |
+|---|---|
+| IN L -> OUT L | delay -> reverb (the reverb gets the input only). OUT L = (1 - mix) x delay + mix x reverb. The delay output is the delayed signal only (BM comb, no dry): with CV2 at 0 it is the input delayed by the CV1 time |
+| CV1 (knob 1) | left delay time, 10 samples .. half a beat (250 ms at 120 BPM) |
+| CV2 (knob 2) | left delay feedback 0 .. 1 (1 = endless repeats) |
+| MIDI CC 20 | reverb RT60 0.1 .. 3 s (default ~0.74 comb feedback until a CC arrives) |
+| MIDI CC 21 | reverb mix 0 .. 1 (default 0: no reverb) |
+| IN R -> OUT R | short comb delay, wet only (default 1 sample: a pass-through) |
+| MIDI CC 22 | right delay time 1 .. 50 ms |
+| MIDI CC 23 | right delay feedback 0.5 .. 1 |
+| MIDI clock | sets the BPM, so the CV1 range (half a beat); 120 BPM until a clock arrives |
+| MODE press | 4-bar **motion recorder** on MIDI clock (as the 8bit/16bit recorders): press to record CV1, CV2 and CC 20..23; after 4 bars (384 clocks) it loops; press again for live controls (a press while recording aborts the take). See below |
+| LED | blinking = recording, solid = looping, off = live |
+
+Motion recorder (`main/src/lib/bm_motion_recorder.c`, RAM only, lost at power
+off). Needs a running MIDI clock; MIDI Start rewinds the take or loop.
+
+- Recording: every clock stores CV1, CV2 (knob x CV) and the latest CC 20..23
+  values; the live controls keep driving the sound.
+- Looping: every clock replays the stored frame. For the first 4-bar pass the
+  knobs, CVs and CCs are ignored; at its end their positions are the reference,
+  and from then on moving one shifts its whole recorded curve (clamped).
+- A CC that never arrived before or during the take is not recorded and stays
+  live; one first sent part-way through is held at its first value before that.
+- Press back to live: the current knob / CV / CC values are applied again.
+
+CCs are read on any MIDI channel (BM MCC bank A numbers, `bm_midi.h`).
+
+Changes from BM:
+
+- Drivers: the 32bit ones (polysynth above). CV1 / CV2 arrive as the 0..1 knob
+  position (0..+5 V at the jack), not the raw 0..3.3 V ADC value.
+- A MIDI clock BPM change re-applies the CV1 delay time: the 32bit CV driver
+  only reports changes (BM re-sent every value every 5 s).
+- Below 15 BPM half a beat is longer than the 2 s left buffer: the range is
+  clamped to the buffer (BM wrapped around it).
+- `bm_all_pass_filter.c`: the buffer is allocated with all `max_delay_length`
+  samples; BM allocated one fewer and wrote one float past the end (ASan finds
+  it in the host test with the BM file).
+- Not ported: the BM web-installer USB serial commands (`bm_usb_serial.c`, the
+  USB port carries the log here) and the `pipe` app. The log prints every 5 s the
+  worst audio block time (1451 us budget), the BPM and the CV1 / CV2 voltages.
+- **PSRAM on**: the delay and reverb buffers are in the module's 8 MB octal PSRAM,
+  as BM (`CONFIG_SPIRAM`, octal, 80 MHz; ~0.39 MB used). The polysynth does not
+  use PSRAM. The extra supply current on U8 (the 5 V linear regulator) is part
+  of the bench check.
+- Pipe delay removed (user request, 2026-11-04): BM's MODE hold that also fed
+  the delay into the reverb, saved in NVS. The reverb always gets the input only
+  (BM's default), and nothing is saved in NVS.
+- MODE runs the motion recorder instead (user request, 2026-11-04), on the
+  press; the button is debounced (30 ms) in the app.
+
+Host tests (`fxrack/tests`, ASan + UBSan): comb echo times and gains, all-pass
+unity energy, reverb RT60 1 s = 58.8 dB drop over 1 s, the dry path through the
+app at CC defaults, the slow-BPM clamp (echo at 1.999 s), the wet reverb output,
+the LED, button debounce, and the motion recorder
+(record, loop, guard pass, offsets and clamps, CC back-fill and unrecorded CCs,
+MIDI Start, abort; in the app, a recorded CV1 overrides the live knob).
+
+Built with ESP-IDF v5.5.1 (2026-11-04), `p` and `d`: 300 KB app (with the motion recorder), no warnings;
+host tests pass. Not bench-tested: input -> output level (ES8388 ADC at 0 dB
+PGA on the x0.18 input divider, DAC at 0 dB into the x3.55 stage), PSRAM load
+and CPU time are still to be checked on the module.

@@ -29,6 +29,11 @@ Module paths are module-relative.
   filter (0 = bypass), MODE = saw + 7 build-time wavetables (saved in NVS, LED brightness shows it).
   `firmware/setup.sh|compile.sh|flash.sh p|d` over the shared `opt/esp32-tools`.
   Builds and host DSP tests pass; not bench-tested. See `firmware/README.md`.
+- **fxrack firmware (2026-11-04)**: `firmware/fxrack`, the BM 32bit-5v fxrack app (L: delay CV1 time /
+  CV2 feedback -> reverb on MIDI CC 20/21; R: short comb on CC 22/23; no pipe delay; MODE press = 4-bar CV1/CV2 + CC 20..23 motion
+  recorder on MIDI clock, as 8bit/16bit) on the
+  32bit drivers; PSRAM on for the delay buffers; BM all-pass buffer overrun fixed. `./compile.sh p|d fxrack`; `./flash.sh [p|d] [fxrack|polysynth] [port]` asks for the firmware (Enter = polysynth) when none is given, as the 16bit `flash.sh`.
+  Builds (p, d) and host tests (ASan) pass; not bench-tested. See `firmware/README.md` section fxrack.
 - Open: bench (U8 thermal, codec levels, firmware). Radio never used.
 
 ## Boundaries
