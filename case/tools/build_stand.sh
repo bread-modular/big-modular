@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build the stand. Env: STAND_TILTS (deg, e.g. 0,40,70; the first must be 0, row 1 stands on the desk), STAND_TIERS (2 or 3),
+# Build the stand. Env: STAND_TILTS (deg, e.g. 0,40,70; the first must be 0, row 1 lies flat on the tier 1 ledges), STAND_TIERS (2 or 3),
 # FREECAD (path to FreeCAD AppImage or freecadcmd).
 set -e
 here=$(cd "$(dirname "$0")" && pwd)

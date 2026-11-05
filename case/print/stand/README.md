@@ -6,9 +6,9 @@ a 3-row stand adds tier 3. Every part fits the 256 mm bed, and the cheeks print 
 with no supports.
 
 The cheeks reach 40 mm (`RISE`) up each case's sides: enough to guide the case, well below
-the module faces. Each row has a guide wall on both cheeks beside the case, with a 6 mm ledge
-under its bottom plate along the whole case depth, on a solid web band (no windows next to the
-ledge). Rows 2 and 3 also have a lip over the case's plate step (see below). The guide wall is
+the module faces. Each row has a guide wall on both cheeks beside the case, with a ledge under
+its bottom plate along the whole case depth (rows 2 and 3: 6 mm; row 1: 3 mm), on a solid web band
+(no windows next to the ledge). Rows 2 and 3 also have a lip over the case's plate step (see below). The guide wall is
 12 mm thick only in a 6 mm rail along its bottom (on the ledge) and top, in 5 mm ribs across it
 (at most 40 mm apart) and in the lip; the bays between are pockets open to the inside, down to
 the web. The rest of the cheek is a 4 mm web with lightening windows (12 mm rims); it is 12 mm
@@ -32,8 +32,13 @@ and cable pulls cannot pull it out.
   row 2's lip only covers the front 35 mm of the case:
   set the case on the ledges 36 mm up the rails (its front end just behind the lip ends), then
   slide it down under the lips onto the stop lugs. Out: slide it 36 mm up, lift it off.
-- **Row 1:** stands on the desk on its own bottom plate between the tier 1 cheeks and slides in
-  from the front until it touches the stop lugs on tier 2 behind it. No lip (it sits on the desk).
+- **Row 1:** sits on a thin 3 mm ledge at the foot of each tier 1 cheek (the same 18 mm inboard
+  reach as the upper ledges), so its weight goes into the stand and loads the front feet against
+  the rows above instead of resting on the desk. It sits between the stop lugs on tier 2 behind it
+  and a low front lug on each tier 1 cheek (8 mm long, 10 mm above the plate underside, against the
+  bottom plate and the outer half of the side panel end), so it cannot slide out to the front. No
+  lip: lift it 11 mm over the front lugs and slide it in or out (the rows above can
+  stay in).
 - The rows 2 and 3 stop lugs are short (6 mm) and reach only under the lip, against the end of the
   plate step, so the row below can slide up past them when it goes in.
 - The cases keep their own M3x6 bottom-plate bolts; nothing changes on the case.
@@ -43,7 +48,7 @@ and cable pulls cannot pull it out.
 
 | Tier | Print | Hardware |
 | --- | --- | --- |
-| `tier1/` (low side rails beside row 1, on the desk) | `tier1-left`, `tier1-right` | 2 rubber feet |
+| `tier1/` (low side rails beside row 1, carrying it on 3 mm ledges, with its front lugs) | `tier1-left`, `tier1-right` | 2 rubber feet |
 | `tier2/` (row 2 + rear leg) | `tier2-left`, `tier2-right`, 1x `common/stretcher`, 2x `common/splice-plate-along` (joint 1-2) | 2x M3x8 + 2 spacers (stretcher), 8x M3x8 + 8 spacers (splices), 4 rubber feet |
 | `tier3/` (row 3) | `tier3-left`, `tier3-right`, 2x `common/splice-plate-along` (joint 2-3) | 8x M3x8 + 8 spacers (splices) |
 
@@ -58,8 +63,8 @@ feet either way.
     4.8 mm into the spacer in the stretcher end.
   The build checks every stack (>= 4 mm into the spacer, not past its end) and that each spacer
   socket has >= 1.5 mm of print round it and under it.
-- Both joints take the same splice plate along the butt edge (32 x 34 mm, 2 + 2 holes): the 1-2
-  joint is now 40 mm tall. (A joint under 36 mm would get a plate across it instead.)
+- Both joints take the same splice plate along the butt edge (35 x 34 mm, 2 + 2 holes): the 1-2
+  joint is 43 mm tall (40 mm rise + the 3 mm row 1 ledge). (A joint under 36 mm would get a plate across it instead.)
 - Screws are only for building the stand (splices, stretcher), never for the cases.
 
 ## Stretcher
@@ -81,8 +86,8 @@ past the foot at each end): tier 1 at its front end, tier 2 just behind row 1 an
 the rear leg. No screws or spacers in the feet. The cheek is back to 12 mm thick (the 15 mm cheek
 was only needed for the M3 pads).
 
-- Row 1 still stands on the desk, so the feet lift the stand, not row 1: the 40 mm rail band and
-  the 30 mm stop lugs still cover the row 1 case sides and back end for any foot under ~20 mm.
+- Row 1 sits on the tier 1 ledges, so the feet lift it with the stand (its bottom plate clears the
+  desk by the foot height + 3 mm) and its weight bears on the tier 1 front feet.
 - The stand's centre of mass (cases 1.5 kg each) sits between the front and rear feet.
 - The splice plates are symmetric, so the same part fits the left and right sides.
 
@@ -92,15 +97,16 @@ The build places the real case (`case/print/assembly-preview.step`: bottom plate
 rails) in every row, plus an M3 socket head (ISO 4762, 5.5 x 3) in each bottom plate counterbore
 and on each rail screw outside the side panels, and reports `checks.case_fit`:
 
-- Every row: no clash with any case, screw head or standoff; 0.5 mm to the stop lugs.
+- Every row: no clash with any case, screw head or standoff; 0.5 mm to the stop lugs (row 1: front
+  and back).
 - Side play: row 1 1.0 mm each side; rows 2 and 3 0.75 mm (lip edge to side panel, the bottom
   plate edge stays 1.0 mm from the band).
-- Rows 2 and 3: each ledge carries 16.6 mm of the bottom plate width over the full depth
-  (22 cm² a side); the case lifts 0.5 mm before the lips hold it. The bottom plate screw heads sit
-  0.2 mm up in their 3.2 mm counterbores above the ledge: socket heads only (a button or pan head
+- Every row: each ledge carries 16.6 mm of the bottom plate width over the full depth
+  (22 cm² a side). Rows 2 and 3: the case lifts 0.5 mm before the lips hold it. The bottom plate
+  screw heads sit 0.2 mm up in their 3.2 mm counterbores above the ledge: socket heads only (a button or pan head
   stands proud and lifts the case off the ledge).
-- Loading path (`checks.loading`, against the whole stand with the other cases out): row 1 slides
-  out to the front; row 2 slides 36 mm up and lifts off, row 3 slides out of the top, all clear.
+- Loading path (`checks.loading`, against the whole stand with the other cases out): row 1 lifts
+  11 mm over its front lugs (also with rows 2 and 3 in) and slides out to the front; row 2 slides 36 mm up and lifts off, row 3 slides out of the top, all clear.
 - Cutaway meshes per row (`row<k>`: across the front bolt line; `stop<k>`: through the stop lugs,
-  rows 2+ along the lip; `load2`: row 2 at its loading position; `stretcher2`: the stretcher end in its channel) go to `case/research/stand/fit/`; render them with
+  rows 2+ along the lip; `front1`: row 1's front lug; `load2`: row 2 at its loading position; `stretcher2`: the stretcher end in its channel) go to `case/research/stand/fit/`; render them with
   `blender -b --python case/tools/render_stand.py -- case/research/stand out.png row2` (`feet` / `bottom`: the pads from below; `inside`: the left cheeks from inboard, pockets and windows).
