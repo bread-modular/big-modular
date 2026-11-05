@@ -49,6 +49,13 @@ into the rail spacer and the hex body stands 10 mm proud of the module face on b
 lines. A row is placed so the lower row's back standoffs and the upper row's front standoffs are
 SO_GAP apart (fingers / a 5.5 mm nut driver between them) and each is SO_CASE clear of the other
 row's case + ledge.
+The tier 3 cheeks only join the stand at their lower end (splice plates to tier 2), so their top ends
+spring sideways. A top bar across the top ends ties them, pushed straight down the rails onto both
+cheek ends with no change to the cheeks: each end is a cap over the cheek end (outer leg on the
+outer face, a shoulder in the recess under the ledge against the web, a lip over the cheek top), and
+a thin snap finger slides down between the cheek inner face and the case side panel, where a barb on
+it clicks into the last guide wall pocket under the end rail. Its beam runs under the bottom plate
+level, so row 3 slides in and out past it with the bar on. It comes off straight up (firm pull).
 The stand stands on 12 x 12 mm self-adhesive (3M) rubber feet, each stuck on a flat full-thickness
 plate (T x PAD) on the cheek underside: one under tier 1's front end and two under tier 2 (behind
 row 1, rear foot). No screws or spacers in the feet.
@@ -119,6 +126,32 @@ PAD_END = 3.0        # plate edge to the cheek end
 STOP = (10.0, 6.0, 30.0)  # stop lug at the lower end of each row (row 1: behind it): Y length, inboard of the case side panel outer face, Z height (case frame)
 STOP_CLR = 0.5       # stop lug to the case end face in the model
 FRONT_STOP = (8.0, 10.0)  # row 1 front lug on tier 1: Y length, top (case frame Z); the case lifts over it to go in / out
+# tier 3 top bar (case frame of row 3; the tier 3 cheeks are not changed for it): the cheeks only join
+# the stand at their lower end, so their top ends spring sideways. The bar is pushed down the rails
+# onto the cheek top ends (case Y = CASE_Y0 + CASE_YLEN). Each end is a cap over the cheek end: the
+# plate on the end face (down), the outer leg on the flat outer face (out), the shoulder in the
+# recess under the ledge against the T_WEB web (in, and up the case Z under the ledge) and a lip over
+# the cheek top (RISE, down the case Z). A snap finger hangs from that lip between the cheek inner
+# face and the case side panel (over the lip); a barb on it rides over the end rail and clicks into
+# the last guide wall pocket (up). The beam joins the two caps under the bottom plate level
+# (BAR_BEAM_Z), so the cases slide along their rails past it.
+BAR_W = 10.0         # bar thickness over the cheek top ends (case Y)
+BAR_DOWN = 12.0      # outer leg, shoulder and top lip reach down the cheek from its top end (case Y)
+BAR_LEG = 3.5        # outer leg thickness (X), outside the cheek outer face
+BAR_CLR = 0.25       # bar to cheek, each side (X: outer leg, shoulder; Z: shoulder under the ledge)
+BAR_TOP = 4.0        # bar top over the cheek top (RISE)
+BAR_LIP_CLR = 0.3    # top lip over the cheek top (Z)
+BAR_SH = 8.0         # shoulder reach inboard of the cheek inner face, under the ledge
+BAR_BEAM_Z = -0.5    # beam top (case Z): under the bottom plate, the cases slide over it
+BAR_SLIT = 0.8       # slit between the snap finger and the cap plate
+FINGER_T = 2.0       # snap finger thickness (X); it bends along the case Z from its root in the top lip
+FINGER_CLR = 0.3     # finger to the cheek inner face
+FINGER_DOWN = 9.5    # finger reach down the cheek inner face from its top end: the end rail (RAIL) and the barb
+BARB = 0.9           # barb past the finger face: BARB - FINGER_CLR overlap with the end rail
+BARB_Z = (23.0, 30.5)    # barb span (case Z), inside the pocket's straight end wall (its corners are rounded)
+BARB_IN, BARB_OUT = 30.0, 45.0   # lead-in (lower) / retention (upper) face angle from the case Y axis
+BARB_LAND = 0.4      # flat barb tip (case Y)
+BAR_UP = 0.35        # lift before the barb catches the end rail
 # lip over the case's side step (rows 2+): the bottom plate and its outer socket wall stand
 # PLATE_STEP past the side panel outer face up to STEP_Z; the lip covers that step so a case
 # cannot lift off its rail, only slide along it
@@ -785,8 +818,52 @@ def main():
             lip_len[k] = CASE_YLEN
         for left in (True, False):
             asm[f"tier{k + 1}-{'left' if left else 'right'}"] = cheek(k, left, lip_len[k])
+
+    def top_bar(barbs=True):
+        """Top bar over the top tier's cheek ends (row case frame): the left half as boxes (cap plate, outer
+        leg, top lip, shoulder, beam, snap finger + barb), mirrored to the right end."""
+        def box(x0, x1, y0, y1, z0, z1):
+            return Part.makeBox(x1 - x0, y1 - y0, z1 - z0, V(x0, y0, z0))
+        cx = CASE_X_IN / 2
+        y_top, z_bot = CASE_Y0 + CASE_YLEN, -BELOW
+        yb, y_low, z_top = y_top + BAR_W, y_top - BAR_DOWN, RISE + BAR_TOP
+        xo = X_IN - T
+        xl = xo - BAR_CLR - BAR_LEG
+        xf = X_IN + FINGER_CLR
+        z_f = STEP_Z + LIP_CLR + RAIL + FINGER_CLR   # finger bottom: over the lip
+        half = [box(xl, xf - BAR_SLIT, y_top, yb, z_bot, z_top),                                   # cap plate
+                box(xl, xo - BAR_CLR, y_low, yb, z_bot, z_top),                                     # outer leg
+                box(xl, xf + FINGER_T, y_low, yb, RISE + BAR_LIP_CLR, z_top),                       # top lip
+                box(xo + T_WEB + BAR_CLR, X_IN + BAR_SH, y_low, yb, z_bot, -TONGUE - BAR_CLR),      # shoulder
+                box(xf - BAR_SLIT - 0.01, cx + 1, y_top, yb, z_bot, BAR_BEAM_Z),                   # beam
+                box(xf, xf + FINGER_T, y_top - FINGER_DOWN, yb, z_f, RISE + BAR_LIP_CLR + 0.01)]  # finger
+        if barbs:
+            b = face2d(barb_pts(xf)).extrude(V(0, 0, BARB_Z[1] - BARB_Z[0]))
+            half.append(b.translated(V(0, 0, BARB_Z[0])))
+        h = half[0].multiFuse(half[1:]).removeSplitter()
+        return h.fuse(h.mirror(V(cx, 0, 0), V(1, 0, 0))).removeSplitter()
+
+    def barb_pts(xf):
+        """Barb on the finger (X, case Y): retention face up, BAR_UP under the end rail's pocket edge."""
+        y_end = CASE_Y0 + CASE_YLEN - RAIL
+        y1 = y_end - BAR_UP + FINGER_CLR / math.tan(math.radians(BARB_OUT))
+        y2 = y1 - BARB / math.tan(math.radians(BARB_OUT))
+        y3 = y2 - BARB_LAND
+        y4 = y3 - BARB / math.tan(math.radians(BARB_IN))
+        return [(xf + 0.01, y1), (xf - BARB, y2), (xf - BARB, y3), (xf + 0.01, y4)]
+
+    # the bar goes in after the lips are sized, so the cheeks do not change for it
+    kb = len(rows) - 1
+    bar_name = f"topbar-{kb + 1}"
+    bar_case = top_bar()
+    bar_nb = top_bar(barbs=False)
+    for b in (bar_case, bar_nb):
+        assert b.isValid() and len(b.Solids) == 1
+    asm[bar_name] = bar_case.copy()
+    asm[bar_name].Placement = rows[kb].placement().multiply(asm[bar_name].Placement)
     built = {f"tier{k + 1}-" for k in range(tiers)} | {f"stretcher-{k + 1}" for k in range(tiers)} | \
-        {f"splice-{j['tiers'][0]}{j['tiers'][1]}-" for j in joints if j["tiers"][1] <= tiers}
+        {f"splice-{j['tiers'][0]}{j['tiers'][1]}-" for j in joints if j["tiers"][1] <= tiers} | \
+        ({bar_name} if kb < tiers else set())
     full_stand = dict(asm)
     asm = {n: s for n, s in asm.items() if any(n.startswith(b) for b in built)}
     cases = {f"case-{k + 1}": case_at[k] for k in range(tiers)}
@@ -864,7 +941,8 @@ def main():
                               "clash_mm3": round(hit, 2), "lift_clash_rows_above_in_mm3": round(hit_in, 2)}
             continue
         up = rows[k].placement().Rotation.multVec(V(0, 1, 0))
-        s = lip_len[k] + LIP_GAP
+        # the top row slides on past the top bar (it stays on): front end LIP_GAP past the bar's back face
+        s = lip_len[k] + LIP_GAP + (BAR_W if k == kb else 0.0)
         held = free_slide(c, nrm, 5.0, step=0.25)
         slid = c.translated(up * s)
         lift = lifts_out(slid, nrm)
@@ -872,10 +950,58 @@ def main():
             "lip_mm": round(lip_len[k], 1), "lip_full_depth": lip_len[k] >= CASE_YLEN,
             "free_slide_up_rail_mm": None if slide_free[k] is None else round(slide_free[k], 1),
             "held_lift_mm": None if held is None else round(held, 2),
-            "slide_to_load_mm": round(s, 1),
+            "slide_to_load_mm": round(s, 1), "past_top_bar": k == kb,
             "slide_clear": free_slide(c, up, s, step=1.0) is None,
             "lift_clear_after_slide": lift}
     report["checks"]["loading"] = load
+
+    # top bar: free play on the cheek ends (X: outer legs / shoulders, case Y: the end faces down and
+    # the barbs up, case Z: shoulder under the ledge / top lip on the cheek top), the lift off the ends
+    # clear of everything but the barbs with all the cases in, and room for the finger to flex
+    if bar_name in asm:
+        bar = asm[bar_name]
+        rot_b = rows[kb].placement().Rotation
+        cheeks_b = [asm[f"tier{kb + 1}-left"], asm[f"tier{kb + 1}-right"]]
+        rest = [o for n, o in full_stand.items() if n != bar_name] + list(cases.values())
+
+        def bar_travel(d, lim=3.0):
+            hit = lambda t: hit_vol(bar.translated(d * t), cheeks_b) > 1e-3
+            if not hit(lim):
+                return None
+            lo, hi = 0.0, lim
+            while hi - lo > 0.02:
+                lo, hi = (lo, (lo + hi) / 2) if hit((lo + hi) / 2) else ((lo + hi) / 2, hi)
+            return round(lo, 2)
+        nb = bar_nb.copy()
+        nb.Placement = rows[kb].placement().multiply(nb.Placement)
+        up = rot_b.multVec(V(0, 1, 0))
+        bb = nb.BoundBox
+        bb.add(nb.translated(up * (BAR_DOWN + 5)).BoundBox)
+        near = [o for o in rest if o.BoundBox.intersect(bb)]
+        z_barb = (BARB_Z[0] + BARB_Z[1]) / 2
+        finger_l = RISE + BAR_LIP_CLR - z_barb
+        flex = BARB - FINGER_CLR
+        room = -SIDE_T - (X_IN + FINGER_CLR + FINGER_T)
+        b = bar.BoundBox
+        report["checks"]["top_bar"] = {
+            "tier": kb + 1, "length_mm": round(bar_case.BoundBox.XLength, 1),
+            "beam_mm": [BAR_W, round(BAR_BEAM_Z + BELOW, 1)], "beam_top_under_plate_mm": -BAR_BEAM_Z,
+            "play_mm": {n: bar_travel(rot_b.multVec(V(*d))) for n, d in
+                        (("out_left", (-1, 0, 0)), ("out_right", (1, 0, 0)), ("down_rail", (0, -1, 0)),
+                         ("up_to_barb", (0, 1, 0)), ("case_z_up", (0, 0, 1)), ("case_z_down", (0, 0, -1)))},
+            "lift_off_clear_cases_in": all(hit_vol(nb.translated(up * (0.5 * t)), near) < 1e-3
+                                           for t in range(0, int(2 * (BAR_DOWN + 5)) + 1)),
+            "snap": {"barb_overlap_mm": round(flex, 2), "lead_in_deg": BARB_IN, "retention_deg": BARB_OUT,
+                     "finger_mm": [FINGER_T, round(FINGER_DOWN + BAR_W, 1), round(finger_l, 1)],
+                     "finger_strain_pct": round(100 * 1.5 * FINGER_T * flex / finger_l ** 2, 2),
+                     "finger_to_side_panel_mm": {"nominal": round(room, 2), "flexed": round(room - flex, 2),
+                                                 "flexed_case_against_lip": round(room - flex - LIP_X_CLR, 2)}}}
+        tb = report["checks"]["top_bar"]
+        assert tb["lift_off_clear_cases_in"], tb
+        assert all(v is not None and v <= 0.6 for n, v in tb["play_mm"].items() if n != "down_rail"), tb
+        assert tb["play_mm"]["down_rail"] is not None and tb["play_mm"]["down_rail"] < 0.05, tb
+        assert tb["snap"]["finger_to_side_panel_mm"]["flexed_case_against_lip"] >= 0.3, tb
+        assert load[f"case-{kb + 1}"]["slide_clear"] and load[f"case-{kb + 1}"]["lift_clear_after_slide"], load
 
     # stretchers: each slides into its channels along the open side, clear of the whole stand (the
     # cases out), and the channel walls stop it STR_CLR away in the other in-plane directions
@@ -1002,6 +1128,12 @@ def main():
             p = s.copy()
             p.rotate(V(0, 0, 0), V(0, 1, 0), -90 if n.endswith("left") else 90)   # outer face (-X on the left) down
             prints[f"{n.split('-')[0]}/{n}"] = (p, s.Volume)
+    # the top bar prints back face down (legs and finger up), diagonal: longer than the bed
+    if bar_name in asm:
+        p = bar_case.copy()
+        p.rotate(V(0, 0, 0), V(1, 0, 0), -90)
+        p.rotate(V(0, 0, 0), V(0, 0, 1), 45)
+        prints[f"tier{kb + 1}/top-bar"] = (p, bar_case.Volume)
     # splice plates are symmetric (left = right mirror): one common part per plate size, along
     # (long butt edges) or across (short ones)
     for j in joints:
@@ -1075,6 +1207,20 @@ def main():
             moved = {n: (c.translated(pl.Rotation.multVec(V(0, s_load, 0))) if n == f"case-{k + 1}" else c)
                      for n, c in cases.items() if n not in (f"case-{k + 2}", f"standoffs-{k + 2}")}
             views[f"load{k + 1}"] = (half, pl.multVec(V(xc, CASE_Y0 + CASE_YLEN / 2 + s_load / 2, 20)), V(1, 0, 0), 230, moved)
+    #   bar<k>: the top bar on the left cheek end, cut along the case Z through the barb (finger and
+    #           barb in the last pocket under the end rail); bar<k>x: across it through the barb
+    #           (outer leg, shoulder under the ledge, top lip, finger over the case side panel)
+    if bar_name in asm:
+        pl = rows[kb].placement()
+        zc = (BARB_Z[0] + BARB_Z[1]) / 2
+        y_end = CASE_Y0 + CASE_YLEN - RAIL
+        half = Part.makeBox(2000, 2000, 1000, V(-1000, -1000, zc - 1000))
+        half.Placement = pl.multiply(half.Placement)
+        views[f"bar{kb + 1}"] = (half, pl.multVec(V(X_IN, y_end + 2, zc)), pl.Rotation.multVec(V(0, 0, -1)), 36, cases)
+        yc = y_end - 1.2
+        half = Part.makeBox(2000, 1000, 2000, V(-1000, yc - 1000, -1000))
+        half.Placement = pl.multiply(half.Placement)
+        views[f"bar{kb + 1}x"] = (half, pl.multVec(V(X_IN - 2, yc, 10)), pl.Rotation.multVec(V(0, -1, 0)), 85, cases)
     #   stretcher<k>: the left end of the stretcher in its channel, from inboard / above / behind,
     #           the stand right of the channel walls cut away, no cases
     for k in range(tiers):
@@ -1110,6 +1256,7 @@ def main():
     n_str = sum(1 for s in stretchers[:tiers] if s)
     report["hardware"] = {
         "cases": "none: row 1 is lifted over its front lugs onto its ledges; rows 2+ drop onto their ledges behind the lips and slide down under them onto the stop lugs",
+        "top_bar": "none: pushed down onto the tier 3 cheek top ends until both fingers click; pull it straight up to take it off",
         "splice_plates": f"{8 * (tiers - 1)}x M3x{SCREW_L:g} + {8 * (tiers - 1)}x M3x10 hex spacer (glued in the cheeks): "
                          f"{SPLICE_CB:g} mm counterbore, {SPLICE_T - SPLICE_CB:g} mm plate under the head, {SPLICE_ENGAGE:.1f} mm into the spacer",
         "feet": f"{2 * sum(len(ys) for k, ys in feet.items() if k < tiers)}x {FOOT:g} x {FOOT:g} mm self-adhesive (3M) rubber foot, "
