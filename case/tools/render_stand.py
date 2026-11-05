@@ -3,7 +3,7 @@
   blender -b --python case/tools/render_stand.py -- <case/research/stand> <out.png> <view>
 view: front | side | back | detail (row joints from the front-left) | bottom (the stand without the
       cases, straight up from under the desk: the feet) | feet (left cheek from below and inboard, no cases: tier 1 and 2 front pads)
-      | inside (left cheeks from inboard, ortho, no cases or right side) | row1..3 / stop1..3 / load2 / stretcher2: case fit cutaways (meshes + camera.json in <src>/fit/<view>/)
+      | inside (left cheeks from inboard, ortho, no cases or right side) | row1..3 / stop1..3 / load2 / stretcher2 / bar3 / bar3x: case fit cutaways (meshes + camera.json in <src>/fit/<view>/)
 """
 import json
 import math
@@ -27,7 +27,7 @@ scene.world = bpy.data.worlds.new("w")
 scene.world.color = (0.93, 0.93, 0.93)
 
 COL = {"tier1": (0.75, 0.55, 0.32), "tier2": (0.20, 0.20, 0.22), "tier3": (0.75, 0.55, 0.32),
-       "splice": (0.85, 0.25, 0.15), "stretcher": (0.35, 0.35, 0.38), "case": (0.30, 0.47, 0.72), "screws": (0.12, 0.12, 0.12),
+       "splice": (0.85, 0.25, 0.15), "stretcher": (0.35, 0.35, 0.38), "topbar": (0.85, 0.25, 0.15), "case": (0.30, 0.47, 0.72), "screws": (0.12, 0.12, 0.12),
        "standoffs": (0.85, 0.7, 0.2)}
 
 fit = Path(src) / "fit" / view
