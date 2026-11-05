@@ -23,7 +23,9 @@ clipped RISE above each case's bottom plate underside (the cheeks only guide the
 do not reach up to the module faces), with lightening windows (RIM rims) wherever the web is not
 needed. The pieces butt together and a 6 mm splice plate on the outer face bolts across each joint
 with 4 M3x8 screws into M3x10 hex spacers superglued in the cheeks (the case's 5.7 AF x 10.2 blind
-socket): along the butt edge where it is long, across it where it is short.
+socket): along the butt edge where it is long, across it where it is short. Every joint takes the
+same plate: the 1-2 plate keeps its pre-ledge place on the 43 mm edge, and an adapter plate (round
+holes + slots) joins a tier 1 printed with the grown 1-2 plate to any tier 2.
 The cases are held with no screws. Each row has a guide wall on both cheeks: a full-thickness (T)
 band beside the case up to RISE, with a ledge (TONGUE thick, row 1 TONGUE_1) under the case bottom
 plate along the whole case depth, both fused to a solid web band (no windows above TONGUE + RIM
@@ -60,7 +62,7 @@ The stand stands on 12 x 12 mm self-adhesive (3M) rubber feet, each stuck on a f
 plate (T x PAD) on the cheek underside: one under tier 1's front end and two under tier 2 (behind
 row 1, rear foot). No screws or spacers in the feet.
 Print set (case/print/stand/, see its README.md): tier1/ tier2/ tier3/ hold each tier's two
-cheeks, common/ the shared stretcher and splice plates.
+cheeks, common/ the shared stretcher, splice plates and the 1-2 adapter plate.
 """
 
 import json
@@ -174,6 +176,10 @@ SPLICE_T, SPLICE_W, SPLICE_L = 6.0, 34.0, 74.0
 SPLICE_CB = M3_CB_DEPTH  # splice plate holes counterbored like the case bottom plate: M3x8 well into the spacer
 SPLICE_MIN_EDGE = 36.0   # shorter butt edges get the splice plate across the joint instead of along it
 SPLICE_X_L = 60.0        # cross splice: length across the joint (holes at +-9 and +-(L/2 - 8))
+# 1-2 adapter plate: a tier 1 printed while the 1-2 plate grew with the 43 mm edge (TONGUE_1 longer)
+# has its upper pair of spacers TONGUE_1 higher; the adapter has a round hole for each lower spacer and
+# a TONGUE_1 slot for each upper one, so it joins any tier 1 to any tier 2 (left and right, one part)
+SPLICE_ADAPTER = TONGUE_1
 STRETCH = 20.0       # square stretcher section
 STR_HW = STRETCH / 2 + STR_CLR          # channel half width
 STR_BOX = STR_HW + RIM_W                # channel outer half width (= the full-thickness boss under it)
@@ -479,10 +485,18 @@ def main():
         sec = pieces2d[k].section(pieces2d[k - 1])
         e = max(sec.Edges, key=lambda e: e.Length)
         a, b = e.Vertexes[0].Point, e.Vertexes[-1].Point
-        mid = ((a.x + b.x) / 2, (a.y + b.y) / 2)
+        if a.y > b.y:
+            a, b = b, a
         d = ((b.x - a.x) / e.Length, (b.y - a.y) / e.Length)
-        joints.append({"tiers": (k, k + 1), "edge": (mid, d, (-d[1], d[0])), "edge_mm": round(e.Length, 1)})
-    long_edges = [j["edge_mm"] for j in joints if j["edge_mm"] >= SPLICE_MIN_EDGE]
+        # the 1-2 edge grew TONGUE_1 at its top with the row 1 ledge; its plate keeps the size and
+        # holes it had before (TONGUE_1 / 2 below the edge middle), so every joint takes the one
+        # splice plate and tier 2 printed before the ledge still fits (SPLICE_ADAPTER: a tier 1
+        # printed with the plate grown to the 43 mm edge)
+        seat = e.Length - (TONGUE_1 if k == 1 else 0)
+        mid = add(((a.x + b.x) / 2, (a.y + b.y) / 2), d, -(e.Length - seat) / 2)
+        joints.append({"tiers": (k, k + 1), "edge": (mid, d, (-d[1], d[0])), "edge_mm": round(e.Length, 1),
+                       "seat_mm": round(seat, 1)})
+    long_edges = [j["seat_mm"] for j in joints if j["edge_mm"] >= SPLICE_MIN_EDGE]
     L = min([SPLICE_L] + [m - 8 for m in long_edges])
     W = min([SPLICE_W] + [j["edge_mm"] - 2 for j in joints if j["edge_mm"] < SPLICE_MIN_EDGE])
     for j in joints:
@@ -495,7 +509,28 @@ def main():
             local = [(0, t * u) for t in (-1, 1) for u in (9, SPLICE_X_L / 2 - 8)]
         to2d = lambda ab: add(add(mid, d, ab[0]), nrm, ab[1])
         corners = [to2d((s * half[0], t * half[1])) for s, t in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
-        j.update(holes=[to2d(h) for h in local], plate=corners, half=half, local=local)
+        j.update(holes=[to2d(h) for h in local], plate=corners, half=half, local=local, frame=(mid, d, nrm))
+
+    # the 1-2 adapter plate (plate frame of the 1-2 joint, a along the edge, up): round holes on the
+    # lower pair, SPLICE_ADAPTER slots from the upper pair up, the plate SPLICE_ADAPTER longer at the top
+    j12 = joints[0]
+    assert j12["edge_mm"] >= SPLICE_MIN_EDGE, "1-2 adapter: the 1-2 joint takes a plate along its edge"
+    ha, hb = j12["half"]
+    a_lo, a_hi = -(ha - 9), ha - 9
+    adapter = {"span": (-ha, ha + SPLICE_ADAPTER), "hb": hb,
+               "holes": [(a_lo, b) for b in (-(WEB / 2 - 0.5), WEB / 2 - 0.5)],
+               "slots": [((a_hi, b), (a_hi + SPLICE_ADAPTER, b)) for b in (-(WEB / 2 - 0.5), WEB / 2 - 0.5)]}
+    assert sorted(adapter["holes"] + [sl[0] for sl in adapter["slots"]]) == sorted(j12["local"]), \
+        "1-2 adapter: round holes + slot ends != the splice plate holes"
+    # it stays on the outer face of the pieces and under the pre-ledge 40 mm edge top (tier 2 printed then)
+    mid12, d12, nrm12 = j12["frame"]
+    f_ad = face2d([add(add(mid12, d12, a), nrm12, b) for a, b in
+                   ((adapter["span"][0], -hb), (adapter["span"][1], -hb), (adapter["span"][1], hb), (adapter["span"][0], hb))])
+    both = pieces2d[0].fuse(pieces2d[1])
+    assert abs(f_ad.common(both).Area - f_ad.Area) < 1e-3, "1-2 adapter off the tier 1 + 2 outer faces"
+    top_gap = j12["seat_mm"] / 2 - adapter["span"][1]
+    assert top_gap >= 1.0 - 1e-6, f"1-2 adapter top {top_gap:.2f} mm under the pre-ledge edge top"
+    adapter["top_gap_mm"] = round(top_gap, 2)
 
     # feet: plate centres (profile Y) on the desk edge of tiers 1 and 2
     def pad2d(y):
@@ -917,9 +952,15 @@ def main():
     report["overall_mm"] = {"width": round(bb.XLength, 1), "depth": round(bb.YLength, 1), "height": round(bb.ZLength, 1)}
     report["rows"] = [{"tilt_deg": r.deg, "face_front_edge_yz": [round(v, 1) for v in r.F],
                        "face_back_edge_yz": [round(v, 1) for v in r.B]} for r in rows[:tiers]]
-    report["joints"] = [{"tiers": j["tiers"], "butt_edge_mm": j["edge_mm"],
-                         "splice": "along" if j["edge_mm"] >= SPLICE_MIN_EDGE else "across"}
+    report["joints"] = [{"tiers": j["tiers"], "butt_edge_mm": j["edge_mm"], "plate_seat_mm": j["seat_mm"],
+                         "splice": "along" if j["edge_mm"] >= SPLICE_MIN_EDGE else "across",
+                         "holes": [[round(v, 2) for v in h] for h in j["holes"]]}
                         for j in joints if j["tiers"][1] <= tiers]
+    report["splice_adapter_12"] = {
+        "plate_mm": [round(adapter["span"][1] - adapter["span"][0], 1), round(2 * adapter["hb"], 1)],
+        "round_holes_along_mm": sorted({round(h[0] - adapter["span"][0], 2) for h in adapter["holes"]}),
+        "slots_along_mm": sorted({tuple(round(c[0] - adapter["span"][0], 2) for c in sl) for sl in adapter["slots"]}),
+        "top_under_pre_ledge_edge_mm": adapter["top_gap_mm"]}
     # screwless rows, loading path (checked against the full stand, the other cases out):
     #   row 1 lifts off its ledges (also with the rows above in), and lifted over its front lugs it
     #   slides out to the front
@@ -1153,6 +1194,20 @@ def main():
         if n in prints:
             assert abs(prints[n][1] - p.Volume) < 0.5, f"{n}: two sizes"
         prints[n] = (p, p.Volume)
+    # the 1-2 adapter plate (same section and counterbores, counterbores up)
+    a0, a1 = adapter["span"]
+    hb = adapter["hb"]
+    p = face2d([(a0, -hb), (a1, -hb), (a1, hb), (a0, hb)]).makeOffset2D(-4, 0).makeOffset2D(4, 2).extrude(V(0, 0, SPLICE_T))
+
+    def slot(r, h, z, c0, c1):
+        s = cyl(r, h, (c0[0], c0[1], z), (0, 0, 1))
+        if c1 == c0:
+            return s
+        return s.fuse(cyl(r, h, (c1[0], c1[1], z), (0, 0, 1))).fuse(Part.makeBox(c1[0] - c0[0], 2 * r, h, V(c0[0], c0[1] - r, z)))
+    for c0, c1 in [(h, h) for h in adapter["holes"]] + adapter["slots"]:
+        p = p.cut(slot(M3_CLEAR / 2, SPLICE_T + 2, -1, c0, c1))
+        p = p.cut(slot(M3_CB_D / 2, SPLICE_CB + 1, SPLICE_T - SPLICE_CB, c0, c1))
+    prints["common/splice-plate-adapter"] = (p, p.Volume)
     strs = [s for n, s in asm.items() if n.startswith("stretcher")]
     if strs:
         assert len({round(s.Volume, 1) for s in strs}) == 1 and len({round(s.BoundBox.XLength, 2) for s in strs}) == 1

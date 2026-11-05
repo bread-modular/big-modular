@@ -51,7 +51,7 @@ and cable pulls cannot pull it out.
 | Tier | Print | Hardware |
 | --- | --- | --- |
 | `tier1/` (low side rails beside row 1, carrying it on 3 mm ledges, with its front lugs) | `tier1-left`, `tier1-right` | 2 rubber feet |
-| `tier2/` (row 2 + rear leg) | `tier2-left`, `tier2-right`, 1x `common/stretcher`, 2x `common/splice-plate-along` (joint 1-2) | 2x M3x8 + 2 spacers (stretcher), 8x M3x8 + 8 spacers (splices), 4 rubber feet |
+| `tier2/` (row 2 + rear leg) | `tier2-left`, `tier2-right`, 1x `common/stretcher`, 2x `common/splice-plate-along` (joint 1-2; 2x `common/splice-plate-adapter` instead with an older tier 1, see below) | 2x M3x8 + 2 spacers (stretcher), 8x M3x8 + 8 spacers (splices), 4 rubber feet |
 | `tier3/` (row 3) | `tier3-left`, `tier3-right`, `top-bar`, 2x `common/splice-plate-along` (joint 2-3) | 8x M3x8 + 8 spacers (splices) |
 
 Totals: 2 rows = 1 stretcher + 2 splice plates, 3 rows = 1 stretcher + 4 splice plates; 6 rubber
@@ -65,8 +65,15 @@ feet either way.
     4.8 mm into the spacer in the stretcher end.
   The build checks every stack (>= 4 mm into the spacer, not past its end) and that each spacer
   socket has >= 1.5 mm of print round it and under it.
-- Both joints take the same splice plate along the butt edge (35 x 34 mm, 2 + 2 holes): the 1-2
-  joint is 43 mm tall (40 mm rise + the 3 mm row 1 ledge). (A joint under 36 mm would get a plate across it instead.)
+- Both joints take the same splice plate along the butt edge (32 x 34 mm, 2 + 2 holes, 14 x 17 mm
+  hole pattern): the 1-2 joint is 43 mm tall (40 mm rise + the 3 mm row 1 ledge), but its plate keeps
+  the lower 40 mm it had before the ledge (holes 13 and 27 mm over the desk), so tier 1 and tier 2
+  printed before or after the ledge take it. (A joint under 36 mm would get a plate across it instead.)
+- `common/splice-plate-adapter` (35 x 34 mm) is only for a tier 1 printed while the 1-2 plate had grown
+  with the ledge (35 mm plate, its upper spacers at 30 mm instead of 27 mm): round holes on the lower
+  pair (13 mm) and 3 mm slots on the upper pair (27-30 mm), so it joins that tier 1 to any tier 2. One
+  part fits both sides (print 2, use them on joint 1-2 in place of the splice plates); its top stays
+  1 mm under the 40 mm butt edge of a tier 2 printed before the ledge. Joint 2-3 keeps the splice plate.
 - Screws are only for building the stand (splices, stretcher), never for the cases.
 
 ## Tier 3 top bar
