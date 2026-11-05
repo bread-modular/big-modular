@@ -13,9 +13,10 @@ Each side frame is a printed cheek in the Y/Z plane with a flat outer face: a 4 
 12 mm (T) bosses on the inner face where screws go (splice plate seats, stretcher ends), at the feet
 and along each row (the guide wall, see below), made of one piece per tier:
   tier 1 = the base beside row 1, tier 2 bolts on behind it, tier 3 on top of that.
-Row 1 is not lifted: the skiff stands on the desk on its own bottom plate, as it does without the
-stand (first tilt 0). The tier 1 cheeks stand on the desk either side of it and tier 2 carries a
-stop lug behind it, so row 1 slides in from the front with no bolts and lifts out the same way.
+Row 1 lies flat (first tilt 0) on a thin ledge (TONGUE_1) at the foot of each tier 1 cheek, so its
+weight goes into the stand (it loads the front feet against the rows above) instead of the desk.
+Tier 2 carries a stop lug behind it and tier 1 a low one (FRONT_STOP) in front of it, so row 1
+stays put with no bolts: it is lifted over the front lugs onto the ledges and out the same way.
   A 2-row stand is tier 1 + 2, a 3-row stand adds tier 3: the pieces do not change.
 Every piece is the convex outline of its row (plus the foot for tier 1) minus the rows below it,
 clipped RISE above each case's bottom plate underside (the cheeks only guide the case sides, they
@@ -24,12 +25,12 @@ needed. The pieces butt together and a 6 mm splice plate on the outer face bolts
 with 4 M3x8 screws into M3x10 hex spacers superglued in the cheeks (the case's 5.7 AF x 10.2 blind
 socket): along the butt edge where it is long, across it where it is short.
 The cases are held with no screws. Each row has a guide wall on both cheeks: a full-thickness (T)
-band beside the case up to RISE, with a ledge (TONGUE thick) under the case bottom plate along the
-whole case depth, both fused to a solid web band (no windows above TONGUE + RIM under the plate). The
-band is full thickness only in a RAIL wide rail along its bottom (on the ledge) and top, in ribs
+band beside the case up to RISE, with a ledge (TONGUE thick, row 1 TONGUE_1) under the case bottom
+plate along the whole case depth, both fused to a solid web band (no windows above TONGUE + RIM
+under the plate). The band is full thickness only in a RAIL wide rail along its bottom (on the ledge) and top, in ribs
 across it and over the step (the lip, RAIL tall); the bays between are pocketed from the inner face
 down to the web. Row 1
-stands on the desk, slides in from the front and stops on lugs on tier 2 behind it.
+sits on its thin ledges between low lugs on tier 1 in front of it and lugs on tier 2 behind it.
 Rows 2+ slide in: the case bottom plate and its outer socket wall stand 3.15 mm past the side
 panel outer face (13 mm tall), and a lip on top of each band covers that step, so the case can
 only move along its rail, not lift off it (cable pulls). The lip starts at the lower (front) end
@@ -94,15 +95,15 @@ STR_CLR = 0.25       # stretcher -> channel wall (each side)
 RIM_W = 3.0          # channel wall thickness
 RIM_H = 3.0          # channel walls stand this far proud of the cheek inner face
 GAP_X = 1.0          # bottom plate edge -> cheek inner face (clears the rail screw heads)
-TONGUE = 6.0         # ledge under the case bottom plate (Z in case frame)
+TONGUE = 6.0         # ledge under the case bottom plate (Z in case frame), rows 2+
+TONGUE_1 = 3.0       # row 1 ledge: at the foot of the tier 1 cheek, just thick enough to carry the case
 TONGUE_IN = 8.0      # ledge reaches this far inboard past the side panel centre line
 WEB = 18.0           # solid web band under each ledge (and the stretcher / lug margins)
 BELOW = TONGUE + WEB  # cheek below the case bottom plate
 RIM = 12.0           # rim / rib width round the lightening windows
 WIN_MIN = 400.0      # smallest lightening window (mm2)
-# the guide wall along each row is full thickness (T) only in rails: one along the ledge (rows 2+)
-# or the desk (row 1), one along its top or the lip, ribs across between them every RIB_PITCH; the
-# bays between are pocketed from the inner face down to the T_WEB web (open side up: no bridges)
+# the guide wall along each row is full thickness (T) only in rails: one along the ledge, one along
+# its top or the lip, ribs across between them every RIB_PITCH; the bays between are pocketed from the inner face down to the T_WEB web (open side up: no bridges)
 RAIL = 6.0           # full-thickness rail width (case frame Z) along the bottom and top of the wall
 RIB = 5.0            # rib width across the wall
 RIB_PITCH = 40.0     # rib spacing (at most)
@@ -117,6 +118,7 @@ PAD_Z = 8.0          # full-thickness block over the plate (stiff under the foot
 PAD_END = 3.0        # plate edge to the cheek end
 STOP = (10.0, 6.0, 30.0)  # stop lug at the lower end of each row (row 1: behind it): Y length, inboard of the case side panel outer face, Z height (case frame)
 STOP_CLR = 0.5       # stop lug to the case end face in the model
+FRONT_STOP = (8.0, 10.0)  # row 1 front lug on tier 1: Y length, top (case frame Z); the case lifts over it to go in / out
 # lip over the case's side step (rows 2+): the bottom plate and its outer socket wall stand
 # PLATE_STEP past the side panel outer face up to STEP_Z; the lip covers that step so a case
 # cannot lift off its rail, only slide along it
@@ -257,10 +259,10 @@ def layout(tilts):
     rows = []
     for k, a in enumerate(tilts):
         if k == 0:
-            # row 1 stands on the desk on its own bottom plate (no ledge, no foot under it)
+            # row 1 sits on its TONGUE_1 ledges at the foot of the tier 1 cheeks
             r = Row(a, (0.0, 0.0))
-            lo = min(p[1] for p in r.rect())
-            fy = min(p[0] for p in r.rect())
+            lo = min(p[1] for p in r.rect(TONGUE_1))
+            fy = min(p[0] for p in r.rect(TONGUE_1))
             r = Row(a, (-fy, -lo))
         else:
             prev = rows[-1]
@@ -275,6 +277,11 @@ def layout(tilts):
                 s += 0.25
         rows.append(r)
     return rows
+
+
+def tongue(k):
+    """Ledge thickness under row k's bottom plate."""
+    return TONGUE_1 if k == 0 else TONGUE
 
 
 def so_gaps(lo, hi):
@@ -375,16 +382,17 @@ def main():
     t0 = time.time()
     rows = layout(tilts)
 
-    # tier 1 stands on the desk beside row 1; tier 2 has a rear foot under row 2 (it carries the
-    # rows above, so the stand cannot tip back); tier 3 sits on tier 2 only
-    r1 = rows[0].rect()
+    # tier 1 stands on the desk beside row 1 and carries it on its ledges; tier 2 has a rear foot under
+    # row 2 (it carries the rows above, so the stand cannot tip back); tier 3 sits on tier 2 only
+    r1 = rows[0].rect(TONGUE_1)
     y_front, y_mid = min(p[0] for p in r1), max(p[0] for p in r1)
     foot = [(y_front, 0), (y_mid, 0), (y_mid, FOOT_H), (y_front, FOOT_H)]
     y_back = max(p[0] for p in rows[1].rect(BELOW)) + REAR_FOOT
     rear = [(y_back - 60, 0), (y_back, 0), (y_back, FOOT_H), (y_back - 60, FOOT_H)]
 
     # the stop lugs (profile plane), each on the piece that carries its row: row 1 stops on tier 2
-    # behind it, rows 2+ on their own tier at the lower (front) end of the rail
+    # behind it and on a low lug on tier 1 in front of it, rows 2+ on their own tier at the lower
+    # (front) end of the rail
     # rows 2+: a short lug at the lower end of the lip channel stops the plate + socket wall end
     # only (inboard to the lip edge, up to the step top), so the row below slides as far up its
     # rail as it can under it on its way in
@@ -397,6 +405,12 @@ def main():
     stops = {1 if k == 0 else k: [] for k in range(len(rows))}
     for k in range(len(rows)):
         stops[1 if k == 0 else k].append((k, stop2d(k)))
+    # row 1 front lug: on tier 1 in front of the case, as far inboard as the back lugs; the case
+    # front end is lifted over it. front_root ties it to the cheek front end (the guide wall up to
+    # the cheek inner face, the ledge under the plate) across the STOP_CLR gap
+    yf = CASE_Y0 - STOP_CLR
+    stops[0] = [(0, rows[0].quad(yf - FRONT_STOP[0], yf, -TONGUE_1, FRONT_STOP[1]))]
+    front_root = rows[0].quad(yf - FRONT_STOP[0], CASE_Y0 + 1, -TONGUE_1, FRONT_STOP[1])
 
     clip = clip_faces(rows)
     desk = face2d([(-600, 0), (900, 0), (900, -600), (-600, -600)])
@@ -405,9 +419,10 @@ def main():
         if k == 0:
             pts = foot + r1
         else:
-            pts = rows[k - 1].rect(0 if k == 1 else BELOW) + rows[k].rect(BELOW) + (rear if k == 1 else [])
+            pts = rows[k - 1].rect(TONGUE_1 if k == 1 else BELOW) + rows[k].rect(BELOW) + (rear if k == 1 else [])
         o = face2d(hull(pts)).cut(clip)
-        outlines.append(union2d(o.Faces + [face2d(st) for _, st in stops.get(k, [])]).cut(desk))
+        extra = [face2d(front_root)] if k == 0 else []
+        outlines.append(union2d(o.Faces + extra + [face2d(st) for _, st in stops.get(k, [])]).cut(desk))
     solid2d = []
     for k in range(len(rows)):
         p = outlines[k]
@@ -460,9 +475,9 @@ def main():
             f = face2d(pad2d(y))
             assert abs(f.common(solid2d[k]).Area - f.Area) < 1e-3, f"tier {k + 1}: foot pad at Y {y:.1f} off the piece"
 
-    # the case guide rails (row frame Y along the case, Z -TONGUE .. RISE; row 1 from the desk up)
+    # the case guide rails (row frame Y along the case, Z -ledge .. RISE)
     def rail2d(k):
-        return face2d(rows[k].quad(CASE_Y0, CASE_Y0 + CASE_YLEN, 0 if k == 0 else -TONGUE, RISE))
+        return face2d(rows[k].quad(CASE_Y0, CASE_Y0 + CASE_YLEN, -tongue(k), RISE))
 
     # stretchers: one per tier, as far back as the piece allows, its channel clear of every case outline
     def sq2d(c, h):
@@ -546,7 +561,7 @@ def main():
 
     def pockets(k, lip_len):
         """Bays of row k's guide wall pocketed down to the web (profile plane faces): between the
-        bottom rail (on the ledge / the desk) and the top rail, between ribs, above the lip where
+        bottom rail (on the ledge) and the top rail, between ribs, above the lip where
         there is one (it is RAIL tall over the step), clear of the solid_keep parts."""
         y_end = CASE_Y0 + CASE_YLEN - RAIL
         z_lip = STEP_Z + LIP_CLR + RAIL
@@ -613,10 +628,11 @@ def main():
             assert f.Area > 1
             return to_stand(f.extrude(V(0, 0, abs(x1 - x_b))), min(x1, x_b))
         bs = [solid(b, x_in) for b in bosses(k, lip_len)]
+        # ledge under the bottom plate along the whole case depth, inboard past the side panel centre
+        # (row 1: the thin TONGUE_1 ledge at the foot of the cheek)
+        tx1 = BOLT_X[0] + TONGUE_IN if left else BOLT_X[1] - TONGUE_IN
+        bs.append(solid(face2d(rows[k].quad(CASE_Y0, CASE_Y0 + CASE_YLEN, -tongue(k), 0)), tx1))
         if k > 0:
-            # ledge under the bottom plate along the whole case depth, inboard past the side panel centre
-            tx1 = BOLT_X[0] + TONGUE_IN if left else BOLT_X[1] - TONGUE_IN
-            bs.append(solid(face2d(rows[k].quad(CASE_Y0, CASE_Y0 + CASE_YLEN, -TONGUE, 0)), tx1))
             # lip over the plate step from the lower (front) end of the rail, lip_len along it, RAIL
             # tall (the guide wall above it is pocketed like the rest)
             if lip_len > 0:
@@ -629,6 +645,11 @@ def main():
             bs.append(solid(channel2d(k), x_in + sgn * RIM_H))
         sx = (-SIDE_T + STOP[1]) if left else (CASE_X_IN + SIDE_T - STOP[1])
         bs += [solid(face2d(st).cut(desk), sx if r == 0 else lip_x(left)) for r, st in stops.get(k, [])]
+        if k == 0:
+            # row 1 front lug root: full thickness to the cheek inner face, and to the lug under the plate
+            bs.append(solid(face2d(front_root), x_in))
+            y0 = front_root[0][0]
+            bs.append(solid(face2d(rows[0].quad(y0, CASE_Y0 + 1, -TONGUE_1, 0)), sx))
         s = s.multiFuse(bs).removeSplitter()
         cuts = []
         socks = []
@@ -823,7 +844,8 @@ def main():
                          "splice": "along" if j["edge_mm"] >= SPLICE_MIN_EDGE else "across"}
                         for j in joints if j["tiers"][1] <= tiers]
     # screwless rows, loading path (checked against the full stand, the other cases out):
-    #   row 1 lifts off the desk and slides out to the front
+    #   row 1 lifts off its ledges (also with the rows above in), and lifted over its front lugs it
+    #   slides out to the front
     #   rows 2+ are held under the lips (lifting moves only LIP_CLR); they slide up the rail until
     #   the case front end is LIP_GAP past the lip end, then lift straight off (face normal)
     stand = list(full_stand.values())
@@ -832,9 +854,14 @@ def main():
         c = cases[f"case-{k + 1}"]
         nrm = V(0, rows[k].n[0], rows[k].n[1])
         if k == 0:
-            moves = [nrm * t for t in range(2, int(STOP[2]) + 6, 2)] + [V(0, -t, 0) for t in range(2, int(CASE_YLEN) + 4, 4)]
+            over = FRONT_STOP[1] + 1.0
+            others = [o for n, o in cases.items() if n not in ("case-1", "standoffs-1")]
+            moves = [nrm * t for t in range(1, int(over) + 1)] + \
+                [nrm * over + V(0, -t, 0) for t in range(2, int(CASE_YLEN) + 4, 4)]
             hit = max(hit_vol(c.translated(mv), stand) for mv in moves)
-            load["case-1"] = {"path": "slides out to the front", "clash_mm3": round(hit, 2)}
+            hit_in = max(hit_vol(c.translated(nrm * t), stand + others) for t in range(1, int(over) + 1))
+            load["case-1"] = {"path": f"lifts {over:g} mm over the front lugs, slides out to the front",
+                              "clash_mm3": round(hit, 2), "lift_clash_rows_above_in_mm3": round(hit_in, 2)}
             continue
         up = rows[k].placement().Rotation.multVec(V(0, 1, 0))
         s = lip_len[k] + LIP_GAP
@@ -903,13 +930,15 @@ def main():
         c = cases[f"case-{k + 1}"]
         plate = c.Solids[0]
         down = rot_k.multVec(V(0, 0, -1))
-        f = {"seat": "desk" if k == 0 else "ledges",
+        f = {"seat": "ledges", "ledge_mm": tongue(k),
              "play_left_right_mm": [travel(c, V(-1, 0, 0)), travel(c, V(1, 0, 0))],
              "to_stop_lugs_mm": travel(c, rot_k.multVec(V(0, 1 if k == 0 else -1, 0)))}
+        for side in ("left", "right"):
+            a = plate.translated(down * 0.1).common(asm[f"tier{k + 1}-{side}"]).Volume / 0.1
+            f[f"ledge_{side}_contact"] = {"area_cm2": round(a / 100, 1), "width_mm": round(a / CASE_YLEN, 1)}
+        if k == 0:
+            f["to_front_lugs_mm"] = travel(c, V(0, -1, 0))
         if k:
-            for side in ("left", "right"):
-                a = plate.translated(down * 0.1).common(asm[f"tier{k + 1}-{side}"]).Volume / 0.1
-                f[f"ledge_{side}_contact"] = {"area_cm2": round(a / 100, 1), "width_mm": round(a / CASE_YLEN, 1)}
             f["lip_over_step_mm"] = round(PLATE_STEP - LIP_X_CLR, 2)
             f["lip_section_mm"] = [round(GAP_X + PLATE_STEP - LIP_X_CLR, 2), RAIL]
         fit[f"case-{k + 1}"] = f
@@ -1039,6 +1068,8 @@ def main():
         half = Part.makeBox(1000, 2000, 2000, V(xc, -1000, -1000))
         ye = CASE_YLEN + CASE_Y0 if k == 0 else CASE_Y0
         views[f"stop{k + 1}"] = (half, pl.multVec(V(xc, ye, 12)), V(1, 0, 0), 90, cases)
+        if k == 0:
+            views["front1"] = (half, pl.multVec(V(xc, CASE_Y0, 12)), V(1, 0, 0), 90, cases)
         if k and lip_len[k] < CASE_YLEN:
             s_load = lip_len[k] + LIP_GAP
             moved = {n: (c.translated(pl.Rotation.multVec(V(0, s_load, 0))) if n == f"case-{k + 1}" else c)
@@ -1078,7 +1109,7 @@ def main():
     report["build_s"] = round(time.time() - t0, 1)
     n_str = sum(1 for s in stretchers[:tiers] if s)
     report["hardware"] = {
-        "cases": "none: row 1 slides in from the front; rows 2+ drop onto their ledges behind the lips and slide down under them onto the stop lugs",
+        "cases": "none: row 1 is lifted over its front lugs onto its ledges; rows 2+ drop onto their ledges behind the lips and slide down under them onto the stop lugs",
         "splice_plates": f"{8 * (tiers - 1)}x M3x{SCREW_L:g} + {8 * (tiers - 1)}x M3x10 hex spacer (glued in the cheeks): "
                          f"{SPLICE_CB:g} mm counterbore, {SPLICE_T - SPLICE_CB:g} mm plate under the head, {SPLICE_ENGAGE:.1f} mm into the spacer",
         "feet": f"{2 * sum(len(ys) for k, ys in feet.items() if k < tiers)}x {FOOT:g} x {FOOT:g} mm self-adhesive (3M) rubber foot, "
