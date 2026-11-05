@@ -23,4 +23,4 @@ module-relative.
 ## Boundaries
 
 Shared tools stay in `../../opt/`. Use `tools/kicad-project.json` for doctor/check. Raw reports
-go in the ignored `research/`. Firmware (MCO + ENV merge, REC) is not written yet.
+go in the ignored `research/`. Firmware (MCO + ENV merge, REC recorder) in `firmware/` (compiled, not bench-tested; `firmware/README.md`).

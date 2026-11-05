@@ -14,7 +14,7 @@
 - **Envelope CV out**: the DAC envelope mapped to 0..5 V, protected.
 - Panel top to bottom: MIDI; MCO two knobs; ENV two knobs; envelope model selector with three
   LEDs; REC button + LED (records the envelope knob positions, as the 8bit crash firmware;
-  no firmware now); AUDIO + CV bypass; SVF three knobs; audio OUT at the bottom.
+  `firmware/`); AUDIO + CV bypass; SVF three knobs; audio OUT at the bottom.
 - Vactrols on B as modules/low / modules/vca-mix. This stage: schematic with every net wired,
   THT parts placed, **no routing**.
 
@@ -67,7 +67,7 @@
 | CV out | U11B x1.51 (R55 51k / R56 100k), R57 1k 0.5 W, J5 | 3.2, 3.3 |
 | Supplies | C18-C21 100n | U10 / U11 +/-12 V decoupling |
 
-Firmware pin map (one ATtiny1616, for the later MCO+ENV firmware):
+Firmware pin map (one ATtiny1616, MCO+ENV firmware in `firmware/`):
 
 | Pin | Use | Origin |
 | --- | --- | --- |
@@ -88,7 +88,7 @@ Firmware pin map (one ATtiny1616, for the later MCO+ENV firmware):
 BM ENV and MCO select the 4.34 V DAC reference with a 3.3 V supply; the output cannot exceed
 VDD, so codes above ~194 (3.3 / 4.34 x 256) sit at the rail. ACID follows modules/low and treats
 the envelope as **0..3.3 V** (firmware: scale the envelope to codes 0..194 so the top is not
-flat; not written yet):
+flat; done in `firmware/`):
 - CV bypass: R21 47k / (R22 100k || RV6 1M) maps 5.0 V to 3.30 V, the same vactrol range as the
   internal envelope; D8 clamps above ~3.6 V. 47k / 100k are the modules/low S3 values.
 - ENV OUT: U11B x(1 + 51k / 100k) = x1.51 maps 3.30 V to 4.98 V.
