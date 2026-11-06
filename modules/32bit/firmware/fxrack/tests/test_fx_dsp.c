@@ -1,5 +1,5 @@
-// Host tests for the 32bit fxrack: BM comb / all-pass / classic reverb and the
-// fxrack app's audio path, with the board drivers stubbed.
+// Host tests for the 32bit fxrack: BM comb / all-pass / classic reverb, the hall
+// reverb and the fxrack app's audio path, with the board drivers stubbed.
 
 #include <math.h>
 #include <stdbool.h>
@@ -11,6 +11,7 @@
 #include "audio/bm_all_pass_filter.h"
 #include "audio/bm_classic_reverb.h"
 #include "audio/bm_comb_filter.h"
+#include "audio/bm_hall_reverb.h"
 #include "bm_audio.h"
 #include "bm_midi.h"
 #include "lib/bm_motion_recorder.h"
@@ -83,6 +84,107 @@ static void test_reverb_rt60(void) {
     CHECK(drop_db > 50.0 && drop_db < 70.0, "rt60 1 s drop %.1f dB", drop_db);
     free(y);
     bm_classic_reverb_destroy(&r);
+}
+
+// T30 (RT60 from the -5..-35 dB part of the Schroeder curve), seconds.
+static double t30(const float *h, int n) {
+    double *e = malloc(sizeof(double) * n);
+    double acc = 0.0;
+    for (int i = n - 1; i >= 0; i--) {
+        acc += (double)h[i] * h[i];
+        e[i] = acc;
+    }
+    int i5 = -1, i35 = -1;
+    for (int i = 0; i < n; i++) {
+        double db = 10.0 * log10(e[i] / e[0] + 1e-30);
+        if (i5 < 0 && db <= -5.0) i5 = i;
+        if (db <= -35.0) {
+            i35 = i;
+            break;
+        }
+    }
+    free(e);
+    if (i5 < 0 || i35 <= i5) return -1.0;
+    return 60.0 / 30.0 * (i35 - i5) / (double)bm_SAMPLE_RATE;
+}
+
+static float *hall_ir(bm_hall_reverb_t *r, float rt60, int n) {
+    bm_hall_reverb_set_rt60(r, rt60);
+    for (int i = 0; i < 2 * bm_SAMPLE_RATE; i++) bm_hall_reverb_process(r, 0.0f);  // glide, flush
+    float *y = malloc(sizeof(float) * n);
+    for (int i = 0; i < n; i++) y[i] = bm_hall_reverb_process(r, i == 0 ? 1.0f : 0.0f);
+    return y;
+}
+
+static void test_hall_reverb(void) {
+    static bm_hall_reverb_t r;
+    bm_hall_reverb_init(&r);
+
+    // Decay at low/mid frequencies follows the setting; the treble decays faster.
+    const float settings[] = {0.3f, 1.0f, 4.0f, 20.0f};
+    for (int k = 0; k < 4; k++) {
+        float rt = settings[k];
+        int n = (int)(bm_SAMPLE_RATE * (rt * 1.2f + 0.5f));
+        float *y = hall_ir(&r, rt, n);
+        // Low/mid: two one-pole low passes at ~800 Hz.
+        float *lo = malloc(sizeof(float) * n);
+        float a = 0.0f, b = 0.0f;
+        for (int i = 0; i < n; i++) {
+            a += (y[i] - a) * 0.107f;
+            b += (a - b) * 0.107f;
+            lo[i] = b;
+        }
+        double t = t30(lo, n);
+        free(lo);
+        // Treble: first difference (+6 dB/oct) weights the 5..20 kHz band.
+        float *d = malloc(sizeof(float) * n);
+        d[0] = y[0];
+        for (int i = 1; i < n; i++) d[i] = y[i] - y[i - 1];
+        double t_hf = t30(d, n);
+        printf("hall rt60 %.1f s: T30 < 800 Hz %.2f s, treble %.2f s\n", rt, t, t_hf);
+        CHECK(t > rt * 0.85 && t < rt * 1.15, "hall T30 %.2f for %.1f", t, rt);
+        CHECK(t_hf > 0.0 && t_hf < t * 0.8, "hall treble T30 %.2f vs %.2f", t_hf, t);
+        free(d);
+        free(y);
+    }
+
+    // Echo density: a dense tail has ~0.32 of its samples beyond one sigma
+    // (Gaussian); the BM classic reverb stays near 0.2. 20 ms windows, 0.1..0.5 s.
+    float *y = hall_ir(&r, 4.0f, bm_SAMPLE_RATE / 2);
+    double ned_sum = 0.0;
+    int windows = 0;
+    for (int w0 = bm_SAMPLE_RATE / 10; w0 + 882 <= bm_SAMPLE_RATE / 2; w0 += 882, windows++) {
+        double var = 0.0;
+        for (int i = 0; i < 882; i++) var += (double)y[w0 + i] * y[w0 + i];
+        double sd = sqrt(var / 882);
+        int outside = 0;
+        for (int i = 0; i < 882; i++) outside += fabs(y[w0 + i]) > sd;
+        ned_sum += outside / 882.0 / 0.3173;
+    }
+    printf("hall echo density 0.1..0.5 s: %.2f\n", ned_sum / windows);
+    CHECK(ned_sum / windows > 0.85, "hall echo density %.2f", ned_sum / windows);
+    free(y);
+
+    // Clamped settings; loud noise at the longest decay stays bounded and finite.
+    bm_hall_reverb_set_rt60(&r, 100.0f);
+    CHECK(r.rt60 == BM_HALL_REVERB_RT60_MAX, "rt60 clamp high");
+    bm_hall_reverb_set_rt60(&r, 0.0f);
+    CHECK(r.rt60 == BM_HALL_REVERB_RT60_MIN, "rt60 clamp low");
+    bm_hall_reverb_set_rt60(&r, 20.0f);
+    uint32_t seed = 1;
+    float peak = 0.0f;
+    bool finite = true;
+    for (int i = 0; i < bm_SAMPLE_RATE * 30; i++) {
+        seed = seed * 1664525u + 1013904223u;
+        float in = i < bm_SAMPLE_RATE * 20 ? ((float)(seed >> 8) / 8388608.0f - 1.0f) : 0.0f;
+        float out = bm_hall_reverb_process(&r, in);
+        finite &= isfinite(out);
+        if (fabsf(out) > peak) peak = fabsf(out);
+    }
+    // The wet soft limit keeps even this inside full scale.
+    printf("hall 20 s, 20 s of full-scale noise: peak %.3f\n", peak);
+    CHECK(finite && peak <= 1.0f, "hall noise peak %.3f", peak);
+    bm_hall_reverb_destroy(&r);
 }
 
 #define REC_TEST_BLINK_MS 150
@@ -194,12 +296,32 @@ static void test_app(void) {
     printf("slow BPM echo after %.3f s\n", first_echo / 44100.0);
     CHECK(first_echo > 88000 && first_echo < 88300, "slow BPM echo at %d samples", first_echo);
 
-    // Reverb fully wet: the left output is the reverb, a constant input settles.
+    // Reverb fully wet: the left output is the hall reverb. It blocks DC (90 Hz
+    // high pass), so a constant input dies away; a 1 s burst of a 441 Hz square
+    // rings on after the input stops (CC 20 = 64: ~2.5 s decay).
     app.on_midi_bpm(120);
     app.on_midi_cc(0, BM_MCC_BANK_A_CV2, 127);
     app.on_midi_cc(0, BM_MCC_BANK_A_CV1, 64);
     run_app(&app, 44100 * 4, 4000, 0, &l, &r);
-    CHECK(l != 0 && abs(l) < 32767, "wet reverb output %d", l);
+    CHECK(abs(l) < 20, "wet reverb blocks DC: %d", l);
+    for (int block = 0; block < 44100 / 64; block++) {
+        int16_t in[128], out[128];
+        for (int i = 0; i < 128; i += 2) {
+            in[i] = ((block * 64 + i / 2) / 50) % 2 ? 8000 : -8000;
+            in[i + 1] = 0;
+        }
+        app.process_audio(128, in, out);
+    }
+    int wet_peak = 0;
+    for (int block = 0; block < 44100 / 2 / 64; block++) {  // 0..0.5 s after the burst
+        int16_t in[128] = {0}, out[128];
+        app.process_audio(128, in, out);
+        for (int i = 0; i < 128; i += 2) {
+            if (abs(out[i]) > wet_peak) wet_peak = abs(out[i]);
+        }
+    }
+    printf("wet reverb tail peak after a 1 s burst: %d\n", wet_peak);
+    CHECK(wet_peak > 1000 && wet_peak < 32767, "wet reverb tail peak %d", wet_peak);
 
     app.on_midi_cc(0, BM_MCC_BANK_A_CV2, 0);  // dry delay on the left again
     bm_app_fxrack_update(0);
@@ -253,6 +375,7 @@ int main(void) {
     test_comb();
     test_all_pass();
     test_reverb_rt60();
+    test_hall_reverb();
     test_recorder();
     test_app();
     if (failures) {

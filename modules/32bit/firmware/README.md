@@ -183,10 +183,10 @@ right channels are two separate effects.
 
 | Control | Function |
 |---|---|
-| IN L -> OUT L | delay -> reverb (the reverb gets the input only). OUT L = (1 - mix) x delay + mix x reverb. The delay output is the delayed signal only (BM comb, no dry): with CV2 at 0 it is the input delayed by the CV1 time |
+| IN L -> OUT L | delay -> hall reverb (the reverb gets the input only, see [Hall reverb](#hall-reverb)). OUT L = (1 - mix) x delay + mix x reverb. The delay output is the delayed signal only (BM comb, no dry): with CV2 at 0 it is the input delayed by the CV1 time |
 | CV1 (knob 1) | left delay time, 10 samples .. half a beat (250 ms at 120 BPM) |
 | CV2 (knob 2) | left delay feedback 0 .. 1 (1 = endless repeats) |
-| MIDI CC 20 | reverb RT60 0.1 .. 3 s (default ~0.74 comb feedback until a CC arrives) |
+| MIDI CC 20 | reverb decay (RT60 below ~1 kHz), exponential: 0 = 0.3 s, 64 = 2.5 s, 127 = 20 s (3 s until a CC arrives) |
 | MIDI CC 21 | reverb mix 0 .. 1 (default 0: no reverb) |
 | IN R -> OUT R | short comb delay, wet only (default 1 sample: a pass-through) |
 | MIDI CC 22 | right delay time 1 .. 50 ms |
@@ -223,10 +223,14 @@ Changes from BM:
 - Not ported: the BM web-installer USB serial commands (`bm_usb_serial.c`, the
   USB port carries the log here) and the `pipe` app. The log prints every 5 s the
   worst audio block time (1451 us budget), the BPM and the CV1 / CV2 voltages.
-- **PSRAM on**: the delay and reverb buffers are in the module's 8 MB octal PSRAM,
-  as BM (`CONFIG_SPIRAM`, octal, 80 MHz; ~0.39 MB used). The polysynth does not
+- **PSRAM on**: the delay buffers are in the module's 8 MB octal PSRAM,
+  as BM (`CONFIG_SPIRAM`, octal, 80 MHz; ~0.36 MB used). The hall reverb's
+  150 KB of delay lines go to internal SRAM (`allocate_fast`, PSRAM only if
+  less than 64 KB would be left). The polysynth does not
   use PSRAM. The extra supply current on U8 (the 5 V linear regulator) is part
   of the bench check.
+- Hall reverb instead of BM's classic reverb (user request, 2026-11-06), see
+  below; CC 20 is its 0.3 .. 20 s decay (BM: RT60 0.1 .. 3 s).
 - Pipe delay removed (user request, 2026-11-04): BM's MODE hold that also fed
   the delay into the reverb, saved in NVS. The reverb always gets the input only
   (BM's default), and nothing is saved in NVS.
@@ -234,13 +238,54 @@ Changes from BM:
   press; the button is debounced (30 ms) in the app.
 
 Host tests (`fxrack/tests`, ASan + UBSan): comb echo times and gains, all-pass
-unity energy, reverb RT60 1 s = 58.8 dB drop over 1 s, the dry path through the
-app at CC defaults, the slow-BPM clamp (echo at 1.999 s), the wet reverb output,
+unity energy, BM classic reverb RT60 1 s = 58.8 dB drop over 1 s, hall reverb
+decay (T30 below 800 Hz 0.26 / 0.97 / 3.96 / 19.4 s at 0.3 / 1 / 4 / 20 s, the
+treble shorter), echo density (0.99 of a Gaussian tail), 20 s of full-scale noise
+at 20 s decay (finite, peak 0.999 under the soft limit), the dry path through the
+app at CC defaults, the slow-BPM clamp (echo at 1.999 s), the wet reverb (blocks
+DC, rings on after a burst),
 the LED, button debounce, and the motion recorder
 (record, loop, guard pass, offsets and clamps, CC back-fill and unrecorded CCs,
 MIDI Start, abort; in the app, a recorded CV1 overrides the live knob).
 
-Built with ESP-IDF v5.5.1 (2026-11-04), `p` and `d`: 300 KB app (with the motion recorder), no warnings;
+Built with ESP-IDF v5.5.1 (2026-11-06), `p` and `d`: 284 KB app (hall reverb, motion recorder), no warnings;
 host tests pass. Not bench-tested: input -> output level (ES8388 ADC at 0 dB
 PGA on the x0.18 input divider, DAC at 0 dB into the x3.55 stage), PSRAM load
 and CPU time are still to be checked on the module.
+
+### Hall reverb
+
+`main/src/audio/bm_hall_reverb.c` replaces BM's classic reverb (4 parallel
+combs of 32..37 ms + 4 series all-passes, `bm_classic_reverb.c`, kept for the A/B
+render). Those few short combs give a sparse, ringing, plate-like tail. The hall:
+
+```
+IN L -> high pass 90 Hz -> low pass 9 kHz -> pre-delay 22 ms -> 8 channels
+     -> diffuser: 4 x (8 delays spread over 4 / 9 / 18 / 36 ms, polarity flips, 8x8 Hadamard)
+     -> 8-line feedback delay network: 50..92 ms prime-length lines,
+        Householder feedback, +-10 samples slow sine modulation (0.31..0.89 Hz),
+        per-line one-pole damping (Jot): RT60 at Nyquist = 1/4 of the set RT60
+     -> out = late tail x 0.5 / sqrt(1 + RT60) + 0.25 x diffused early sound
+     -> soft limit above 0.7 of full scale
+```
+
+Simulation (host render of the firmware C, `fxrack/tools`: `make render` writes
+WAVs, plots and `metrics.md` to the ignored `../research/fxrack-reverb/`; models only,
+not listened to on the module):
+
+| | BM classic, 3 s (its max) | hall 4 s | hall 20 s |
+|---|---|---|---|
+| T30 125 Hz / 1 kHz / 4 kHz / 8 kHz | 3.0 / 3.0 / 3.0 / 3.0 s | 4.1 / 3.8 / 2.7 / 1.6 s | 19.6 / 18.3 / 9.9 / 4.5 s |
+| echo density reaches 0.9 of Gaussian | never (~0.6) | 20 ms after the first echo | same |
+| late-tail spectrum, deviation from its 1/3-octave trend (std) | 23.7 dB (comb teeth) | 6.1 dB | 6.0 dB |
+| wet RMS vs dry, drums / plucks | +1.1 / +11.9 dB | -2.5 / -0.9 dB | -2.1 / -0.4 dB |
+
+A noise-like, uncoloured tail has ~5.6 dB deviation; the classic's 23.7 dB is the
+comb resonances heard as ringing. The hall's treble decays faster than its bass
+(air absorption), the decay curves are straight lines (r^2 >= 0.999), and the
+full-scale pad peaks at 0.96 fully wet.
+
+CPU: ~1530 instructions per sample (ESP-IDF QEMU esp32s3, `-icount`; BM classic
+reverb not measured), so roughly 0.55 of the 1451 us block budget at 160 MHz if
+the LX7 needs ~1.3 cycles per instruction. Check the `worst block` log line on
+the module; 240 MHz is the margin if it is short (more U8 current).

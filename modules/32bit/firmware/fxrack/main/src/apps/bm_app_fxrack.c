@@ -4,7 +4,9 @@
 // changes), the BPM range is clamped to the left delay buffer, the pipe-delay
 // option is removed (the reverb gets the input only, BM's default), and MODE runs
 // the 4-bar CV1/CV2 + CC 20..23 motion recorder (lib/bm_motion_recorder.h, as the
-// 8bit/16bit recorders).
+// 8bit/16bit recorders). The BM classic reverb (4 combs + 4 all-passes, a
+// metallic plate-like sound) is replaced by the big hall reverb in
+// audio/bm_hall_reverb.c, CC 20 = decay 0.3 .. 20 s.
 #include "apps/bm_app_fxrack.h"
 #include "lib/bm_utils.h"
 #include "lib/bm_param.h"
@@ -13,9 +15,10 @@
 #include "bm_midi.h"
 #include "bm_audio.h"
 #include "audio/bm_comb_filter.h"
-#include "audio/bm_classic_reverb.h"
+#include "audio/bm_hall_reverb.h"
 #include "lib/bm_motion_recorder.h"
 #include "esp_timer.h"
+#include <math.h>
 #include <stddef.h>
 
 #ifdef ESP_PLATFORM
@@ -35,7 +38,7 @@ static portMUX_TYPE rec_mux = portMUX_INITIALIZER_UNLOCKED;
 #define REC_BLINK_MS 150
 
 static bm_comb_filter_t delay_left;
-static bm_classic_reverb_t reverb_left;
+static bm_hall_reverb_t reverb_left;
 static float delay_mix;
 static float reverb_mix;
 static bm_comb_filter_t delay_right;
@@ -88,8 +91,10 @@ static void on_button_event(bool pressed) {
 static void apply_cc(uint8_t control, uint8_t value) {
     // for left channel
     if (control == BM_MCC_BANK_A_CV1) {
-        float rt60 = bm_utils_map_range(value, 0.0, 127.0, 0.1, 3.0);
-        bm_classic_reverb_set_rt60(&reverb_left, rt60);
+        // Exponential: 0.3 s at 0, ~2.5 s at 64, 20 s at 127.
+        float rt60 = BM_HALL_REVERB_RT60_MIN *
+                     powf(BM_HALL_REVERB_RT60_MAX / BM_HALL_REVERB_RT60_MIN, (float)value / 127.0f);
+        bm_hall_reverb_set_rt60(&reverb_left, rt60);
         return;
     }
 
@@ -208,7 +213,7 @@ inline static void process_audio(size_t n_samples, const int16_t* input, int16_t
         float curr = bm_audio_norm(input[lc]);
         float delayed = bm_comb_filter_process(&delay_left, curr);
 
-        float left_output = bm_classic_reverb_process(&reverb_left, curr);
+        float left_output = bm_hall_reverb_process(&reverb_left, curr);
         output[lc] = bm_audio_denorm((1 - reverb_mix) * delayed + reverb_mix * left_output);
 
         // 2. for the right channel
@@ -235,8 +240,8 @@ static void init(bm_app_host_t host) {
     delay_mix = 0.0;
     reverb_mix = 0.0;
 
-    // 2. setup reverb for the left channel
-    bm_classic_reverb_init(&reverb_left);
+    // 2. setup reverb for the left channel (3 s decay until CC 20 arrives)
+    bm_hall_reverb_init(&reverb_left);
     
     // 3. setup state for the right channel
     bm_comb_filter_init(&delay_right, MAX_BUFFER_LEN_RIGHT, 0.0f);
@@ -260,7 +265,7 @@ static void on_usb_serial_message(const char* message, size_t len) {
 static void destroy() {
     bm_comb_filter_destroy(&delay_left);
     bm_comb_filter_destroy(&delay_right);
-    bm_classic_reverb_destroy(&reverb_left);
+    bm_hall_reverb_destroy(&reverb_left);
 }
 
 bm_app_t bm_load_app_fxrack() {

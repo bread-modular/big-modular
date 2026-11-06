@@ -1,7 +1,7 @@
 // 32bit fxrack: the Bread Modular 32bit-5v fxrack app (main/src/apps/bm_app_fxrack.c)
 // on the 32bit module drivers (R1 pins, docs/firmware-pins.md).
 //
-//   IN L -> delay (CV1 time, CV2 feedback) -> reverb (MIDI CC 20 size, CC 21 mix) -> OUT L
+//   IN L -> delay (CV1 time, CV2 feedback) -> hall reverb (MIDI CC 20 decay, CC 21 mix) -> OUT L
 //   IN R -> short comb delay (MIDI CC 22 time 1..50 ms, CC 23 feedback) -> OUT R
 //   MODE press                   4-bar motion recorder on MIDI clock: CV1, CV2 and
 //                                CC 20..23 (LED blinks, then solid while looping)
