@@ -4,14 +4,15 @@
 PolySynthApp* PolySynthApp::instance = nullptr;
 
 namespace {
-// FilterFX power-on equivalents used to seed the recorder's MCC snapshot, so a
-// take recorded without touching a knob plays back the startup sound:
-//   CC20 -> env attack/release time: attack = 0.005 + v*0.1 (ctor 10 ms  -> 6)
-//   CC21 -> filter envelope depth:   amount = v * 10000 Hz (ctor 10 kHz -> 127)
-//   CC22 -> ladder resonance:        q = 0.1 + v * 2.9     (Ladder ctor Q -> 27)
-//   CC23 -> cutoff (inverted taper): the ctor's 20 kHz is beyond the knob's
-//          widest position (14920 Hz), so the closest value is fully open.
-constexpr uint8_t SEED_CC_ENV_TIME = 6;
+// Filter power-on values (poly_filter.h), also used to seed the recorder's
+// MCC snapshot, so a take recorded without touching a knob plays back the
+// startup sound:
+//   CC20 -> env attack = release, 5 ms * 400^v: CC 15 = 10 ms (BM 10 ms)
+//   CC21 -> env depth, v * 8.3 octaves: CC 127 = wide open while held (BM
+//          +10 kHz)
+//   CC22 -> resonance k = 4.1 v: CC 27 = 0.87
+//   CC23 -> cutoff, inverted: CC 0 = 17.6 kHz (open)
+constexpr uint8_t SEED_CC_ENV_TIME = 15;
 constexpr uint8_t SEED_CC_MOD_DEPTH = 127;
 constexpr uint8_t SEED_CC_RESONANCE = 27;
 constexpr uint8_t SEED_CC_CUTOFF = 0;
@@ -51,7 +52,11 @@ void PolySynthApp::init() {
         }
     }
 
-    fx1->init(audioManager);
+    applyCc(0, SEED_CC_ENV_TIME);
+    applyCc(1, SEED_CC_MOD_DEPTH);
+    applyCc(2, SEED_CC_RESONANCE);
+    applyCc(3, SEED_CC_CUTOFF);
+    filter.init(audioManager->getDac()->getSampleRate());
     outputLevel.init(audioManager->getDac()->getSampleRate());
 
     // The voices start on Classic; the first readTopKnobs() picks the P1
@@ -88,7 +93,7 @@ void PolySynthApp::audioCallback(AudioInput *input, AudioOutput *output) {
     // Auto level (poly_level.h) instead of BM's fixed sum / 4: one voice at
     // 0.8, chords turned down by the number of sounding notes, then a limiter.
     float dry = sumVoice * outputLevel.gain(level);
-    float voiceWithFx = fx1->process(dry * PolyLevel::LADDER_DRIVE) / PolyLevel::LADDER_DRIVE;
+    float voiceWithFx = filter.process(dry * PolyLevel::LADDER_DRIVE) / PolyLevel::LADDER_DRIVE;
     outputLevel.limit(voiceWithFx, dry);
 
     output->left = voiceWithFx;
@@ -106,7 +111,7 @@ void PolySynthApp::noteOnCallback(uint8_t channel, uint8_t note, uint8_t velocit
     float realVelocity = powf(velocityNorm, 2.0f);
 
     if (++totalNotesOn == 1) {
-        fx1->setGate(true);
+        filter.setGate(true);
         io->setGate1(true);
     }
 
@@ -123,7 +128,7 @@ __attribute__((cold, noinline))
 void PolySynthApp::noteOffCallback(uint8_t channel, uint8_t note, uint8_t velocity) {
     if (totalNotesOn > 0) --totalNotesOn;
     if (totalNotesOn == 0) {
-        fx1->setGate(false);
+        filter.setGate(false);
         io->setGate1(false);
     }
 
@@ -136,32 +141,27 @@ void PolySynthApp::noteOffCallback(uint8_t channel, uint8_t note, uint8_t veloci
 
 __attribute__((cold, noinline))
 void PolySynthApp::ccChangeCallback(uint8_t channel, uint8_t cc, uint8_t value) {
+    // One set of filter parameters: Banks B (CC27..30) and C (CC85..88) are
+    // folded onto Bank A (CC20..23), so any MCC bank page drives the filter,
+    // and the recorder sees them as Bank A.
+    int parameter = PolyFilter::bankAParameter(cc);
+    if (parameter < 0) {
+        return;
+    }
+    cc = MotionRecorder::MCC_BANK_A_FIRST_CC + parameter;
+
     // During playback a recorded CC is owned by the loop: keep its latest
     // value (the recorder turns moves into an offset) but don't apply it. In
     // live and recording modes apply the CC immediately and retain its latest
     // value so every clock frame gets a complete Bank A snapshot.
-    if (recorder.ownsCc(cc)) {
-        recorder.setCurrentCc(cc, value);
-        return;
+    if (!recorder.ownsCc(cc)) {
+        applyCc(parameter, value);
     }
-
-    float normalizedValue = value / 127.0f;
-    if (cc == 20) {
-        fx1->setParameter(0, normalizedValue);
-    }
-    else if (cc == 21) {
-        fx1->setParameter(1, normalizedValue);
-    }
-    else if (cc == 22) {
-        fx1->setParameter(2, normalizedValue);
-    }
-    else if (cc == 23) {
-        fx1->setParameter(3, normalizedValue);
-    } else {
-        return;
-    }
-
     recorder.setCurrentCc(cc, value);
+}
+
+void PolySynthApp::applyCc(uint8_t parameter, uint8_t value) {
+    filter.setParameter(parameter, value / 127.0f);
 }
 
 void PolySynthApp::bpmChangeCallback(int bpm) {}
@@ -214,8 +214,7 @@ void PolySynthApp::buttonPressedCallback(bool pressed) {
         applyP1(p1Value);
         applyP2(p2Value);
         for (uint8_t i = 0; i < MotionRecorder::MCC_BANK_A_COUNT; i++) {
-            fx1->setParameter(i, recorder.getCurrentCc(
-                MotionRecorder::MCC_BANK_A_FIRST_CC + i) / 127.0f);
+            applyCc(i, recorder.getCurrentCc(MotionRecorder::MCC_BANK_A_FIRST_CC + i));
         }
     }
 }
@@ -327,7 +326,7 @@ void PolySynthApp::applyRecordedFrame(void* context,
     self->applyP2(frame.knobs[MotionRecorder::KNOB_P2]);
     for (uint8_t i = 0; i < MotionRecorder::MCC_BANK_A_COUNT; i++) {
         if (frame.ccs[i] != MotionRecorder::CC_UNSET) {
-            self->fx1->setParameter(i, frame.ccs[i] / 127.0f);
+            self->applyCc(i, frame.ccs[i]);
         }
     }
 }

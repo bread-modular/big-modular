@@ -110,6 +110,36 @@ by the notes sounding; a linked look-ahead limiter (0.7 ms, 60 ms hold,
 still sees BM's input level (one voice 0.25). `includes/audio/apps/polysynth/
 poly_level.h`, tested by `tools/sim_poly_level.cpp`.
 
+**Polysynth filter (new, not BM, after Vital's ladder):** BM's FilterFX /
+`Ladder.h` lost level as the cutoff came down: its feedback grows 4x toward low
+cutoffs and a ladder's passband falls as 1 / (1 + feedback), so at the
+power-on resonance a C3 saw came out 3-7 dB under the dry level anywhere from
+fully open down to 434 Hz (only 0.6-2.6 dB with no resonance); its Euler stages sat about an octave below the
+set cutoff and the top 60 % of the resonance CC was clamped. The polysynth now
+uses `includes/audio/apps/polysynth/poly_filter.h`: four zero-delay-feedback
+(TPT) stages with the loop solved exactly (cutoff where it is set, resonance
+independent of it), tanh on the stage input (bounded at full resonance), and
+the output lifted by 1 + resonance, so the passband stays at 0 dB at every
+resonance (Vital lifts the input by 1 + resonance %). A C3 saw at the power-on
+resonance now stays within 0.4 dB from open down to 225 Hz and then falls like
+any 24 dB lowpass; with no resonance it loses only what the cutoff removes.
+MCC (any channel; Banks B `CC27..30` and C `CC85..88` fold onto Bank A, so
+every MCC bank page drives the same four parameters and the recorder stores
+them as Bank A):
+
+| CC | Parameter | 0 -> 127 | Power-on |
+|---|---|---|---|
+| CC20 | filter-env attack = release | 5 ms -> 2 s, exponential (BM 5-105 ms linear) | 10 ms (CC 15) |
+| CC21 | filter-env depth | 0 -> +8.3 octaves (BM 0 -> +10 kHz) | full (CC 127) |
+| CC22 | resonance k | 0 -> 4.1, self-oscillates from ~CC 124 (BM Q clamped from CC 49) | 0.87 (CC 27) |
+| CC23 | cutoff (inverted) | 17.6 kHz -> 55 Hz, exponential (BM 14.9 kHz -> 220 Hz, cubic) | open (CC 0) |
+
+The envelope is BM's: one follower for all voices, up while any note is held.
+On the board (2026-11-06, idle) the audio core load went from 30.1 % to
+25.6 %. Tested by `tools/sim_poly_filter.cpp` (tuning -12 dB at the cutoff,
+flat passband to resonance CC 120, level vs cutoff, stability, envelope).
+`filter_fx.h` / `Ladder.h` stay as BM files, unused.
+
 **MODE = 4-bar motion recorder** in the sampler (new; BM's sampler MODE
 stopped/restarted the audio), fxrack (new; BM left MODE unused), polysynth and
 monosynth (BM). Click MODE to
@@ -224,6 +254,9 @@ flashed as is (no rebuild needed).
   morphing square -> saw -> tri -> sine (BM: saw / tri / square picked by
   `set-waveform` / `get-waveform`, saved to `/polysynth_config.dat`; both
   commands and the config file are dropped).
+- Polysynth filter (above): `includes/audio/apps/polysynth/poly_filter.h`
+  replaces FilterFX in `polysynth_app.{h,cpp}`; MCC Banks B / C fold onto
+  Bank A; `tools/sim_poly_filter.cpp`.
 - `src/audio/apps/fxrack_app.cpp`: MODE runs the motion recorder (P3 / P4 and
   all three MCC banks; BM: MODE unused).
 - Everything else (apps, DSP, drivers, assets, host tools) is the BM file,

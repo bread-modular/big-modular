@@ -26,8 +26,8 @@ class PolyLevel {
         static constexpr float LIMIT_HOLD_MS = 60.0f;
         static constexpr float LIMIT_RELEASE_MS = 250.0f;
         static constexpr uint32_t CONTROL_BLOCK = 16;
-        // The ladder keeps BM's input level (one voice peaks at 0.25), so its
-        // tanh stages saturate as in BM; the FX output is scaled back up.
+        // The ladder keeps BM's input level (one voice peaks at 0.25) at its
+        // input tanh (poly_filter.h); its output is scaled back up.
         static constexpr float LADDER_DRIVE = 0.25f / VOICE_GAIN;
 
     private:

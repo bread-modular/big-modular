@@ -567,7 +567,7 @@ static void testUnison() {
     CHECK(peakS < peakD * 2.0f, "unison does not blow up the level (gain comp)");
 }
 
-// Test 9: Bank A CC routing matches the polysynth's FilterFX placement —
+// Test 9: Bank A CC routing matches the polysynth's filter placement —
 // the muscle-memory contract locked in monosynth/bank_a_map.h (shared with
 // src/audio/apps/monosynth_app.cpp, so this tests the exact firmware routing).
 static void testBankAMapping() {
@@ -589,7 +589,7 @@ static void testBankAMapping() {
     CHECK_NEAR(dsp.unison(), 50.0f / 127.0f, 1e-4f, "CC21 -> unison norm");
     CHECK(dsp.unisonVoiceCount() == 3, "CC21 mid -> 3 voices (count ramp)");
 
-    // CV3/CC22 -> RESONANCE (polysynth FilterFX param-2 slot).
+    // CV3/CC22 -> RESONANCE (polysynth filter param-2 slot).
     CHECK(monosynth_bank_a::apply(dsp, monosynth_bank_a::kResonanceCc, 90),
           "CC22 consumed by bank A");
     CHECK_NEAR(dsp.resonance(), 90.0f / 127.0f, 1e-4f,

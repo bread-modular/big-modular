@@ -19,7 +19,7 @@
 //   MCC bank A      -> CC20 BODY (SHAPE + WARP combined), CC21 UNISON
 //                      (lower half knob: 1 -> 4 voices; upper half: detune),
 //                      CC22 RESONANCE, CC23 CUTOFF — same placement as the
-//                      polysynth's FilterFX, with the same inverted cutoff
+//                      polysynth's filter, with the same inverted cutoff
 //                      taper (CW = closed). See monosynth/bank_a_map.h.
 //   MIDI velocity   -> amplitude (no volume knob)
 class MonosynthApp : public AudioApp {

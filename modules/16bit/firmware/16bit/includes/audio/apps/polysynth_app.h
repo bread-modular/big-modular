@@ -9,9 +9,9 @@
 #include "audio/env/AttackHoldRelease.h"
 #include "audio/env/Envelope.h"
 #include "audio/tools/Voice.h"
-#include "audio/apps/fx/filter_fx.h"
 #include "audio/apps/motion_recorder.h"
 #include "audio/apps/polysynth/poly_level.h"
+#include "audio/apps/polysynth/poly_filter.h"
 
 #define TOTAL_VOICES 6  // BM: 9; 6 leaves the audio core headroom with wavetables
 
@@ -37,7 +37,7 @@ private:
     AudioManager *audioManager = AudioManager::getInstance();
     Wavetable wavetableGenerators[TOTAL_VOICES];
     WavetableControl wavetableControl;
-    AudioFX* fx1 = new FilterFX();
+    PolyFilter filter;  // BM: FilterFX (Ladder.h); see poly_filter.h
     MotionRecorder recorder;
     PolyLevel outputLevel;
 
@@ -61,6 +61,7 @@ private:
     }
 
     void applyLiveCv(uint16_t cv1, uint16_t cv2);
+    void applyCc(uint8_t parameter, uint8_t value);
     static float topKnobNormalize(uint16_t value);
     void readTopKnobs();
     void applyP1(uint16_t p1);
