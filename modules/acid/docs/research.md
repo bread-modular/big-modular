@@ -1,4 +1,4 @@
-# ACID research and circuit intent (S2/P3)
+# ACID research and circuit intent (S3/R2)
 
 ## 1. Brief (user, 2026-10-22)
 
@@ -63,7 +63,7 @@
 | Normals | U4 TS5A23157, C9 | As modules/low 3.1 (jack TN = detector, 1M pull-ups) |
 | SVF | R24 51k, R25 22k, U5, U6, U7/U8 VTL5C, C10/C11 10n, R26-R28 10k, RV5 RES 500k, R32/R33 51k, R30/R31, C12/C13 | BM SVF 1.0.0 values; LP / HP / BP out via the BM 1k resistors R29 / R38 / R39 |
 | SVF driver | RV6 FREQ 1M, U9, R34 1k, R35/R36 1M, RV7 CURVE 50k, R37 5.1k, C14 | BM SVF; R13 pull-up omitted: U4 always drives SVF_CV |
-| LP / HP / BP out | C15-C17 1u, R40/R45/R50 100k, U10A / U10B / U11A TL072 x22.3 (100k / 4.7k), 1k 0.5 W series + 1k shunt each (R43/R44, R48/R49, R53/R54), J4 / J6 / J7 | 3.4 |
+| LP / HP / BP out | C15-C17 1u, R40/R45/R50 100k, U10A / U10B / U11A TL072 (Rf 100k; Rg = 4.7k R42/R47/R52 + 10k R58/R60/R62 + 5.1k R59/R61/R63, gain jumper JP2 / JP3 / JP4), 1k 0.5 W series + 1k shunt each (R43/R44, R48/R49, R53/R54), J4 / J6 / J7 | 3.4, 3.6 |
 | CV out | U11B x1.51 (R55 51k / R56 100k), R57 1k 0.5 W, J5 | 3.2, 3.3 |
 | Supplies | C18-C21 100n | U10 / U11 +/-12 V decoupling |
 
@@ -98,7 +98,7 @@ flat; done in `firmware/`):
 U11B is DC coupled on +/-12 V; R57 1k 0.5 W (1206) limits the current into any mis-patch to
 ~12 mA (TL072 outputs are short-circuit protected), as the modules/low audio output.
 
-### 3.4 Output gain (no DRIVE), simulation
+### 3.4 Output gain (no DRIVE), simulation (S2; S3 makes it the 1-2 jumper setting, 3.6)
 
 The BM SVF passes its input at 10k / 51k = 0.2, so an MCO mix gives only ~0.6 Vpp at LP with no
 resonance. The user's SVF -> DRIVE at 75 % added x3.9 (51k / (12.5k + 1k)) with clipping at the
@@ -132,6 +132,30 @@ rolled off; acceptable for audio).
   output/CV-out series resistors (R57 and the LP/HP/BP 1k) are now ROHM ESR18EZPF1001 (C2074262,
   0.5 W, Extended: no Basic 0.5 W 1206 1k exists); modules/low's C4410 is a 250 mW part. R37 5.1k
   0603 got UNI-ROYAL 0603WAF5101T5E (C23186). Stock is a dated observation, not a guarantee.
+
+### 3.6 S3: output gain jumpers (user, 2026-11-05)
+
+The user found the x11.1 outputs too loud and the LP too heavy in the low end against the Bread
+Modular SVF: x11.1 puts the passband at ~7 Vpp and flattens the resonance peak at the ~10 Vpp
+ceiling (peak only ~1.4x the bass, BM ~3-5x). Target: the modules/low level (x3). The user
+asked for all three settings on solder jumpers, one 3-pad jumper per output.
+
+- Rg is now a chain **4.7k (R42 / R47 / R52, unchanged) + 10k (R58 / R60 / R62) + 5.1k
+  (R59 / R61 / R63)** to GND. The jumper's centre pad is GND, pad 1 sits after the 4.7k
+  (`*_RG1`), pad 3 after the 10k (`*_RG2`):
+
+| JP2 / JP3 / JP4 | Rg | TL072 stage | At the jack | RES 0 / RES 500k low cutoff (two tones, LP) |
+| --- | --- | --- | --- | --- |
+| **open (shipped)** | 19.8k | x6.05 | **x3.0** (LOW level) | 2.0 / 9.6 Vpp, clean |
+| 2-3 bridged (silk `M`) | 14.7k | x7.8 | x3.9 | 2.6 / 10.3 Vpp (only the extreme peak touches the ceiling) |
+| 1-2 bridged (silk `H`) | 4.7k | x22.3 | x11.1 (S2) | 7.3 / 10.3 Vpp, clipped |
+
+- All three bridged = 1-2 (4.7k). The chain uses only values already in the BOM (Basic
+  4.7k C23162, 10k C25804, 5.1k C23186): no new part type, BOM rows stay 27.
+- Bridging carries the Rg current through the centre pad, so every centre pad and the 5.1k GND
+  end has a GND track + via (R2, 5.2).
+- `tools/sim_level.py` prints all three settings (`research/s3/sim.txt`); the 1-2 column equals
+  the S2 table in 3.4. Not bench-measured.
 
 ## 4. Placement (P3, `docs/geometry.json`)
 
@@ -223,8 +247,40 @@ direct, X117.4 Y62.7), `P` below JP1 pad 1 (RX_Q, protected, X115.6 Y66.85) and 
 `ACID P3` -> `ACID R1`. Silk only, no copper or placement change; DRC 0 active / 22 excluded /
 0 unconnected / parity 0 with the silk checks on. Export: `jlcpcb/README.md`.
 
+### 5.2 R2: gain-jumper clusters (2026-11-05)
+
+Straight on `hardware/acid.kicad_pcb`, backup before every batch (`/tmp/acid.kicad_pcb.jp-*`);
+batch scripts, the one-connection path helper and DRC reports in the ignored `research/jp/`.
+No B space is left at the output stages (every pocket between the jack T / TN pads is full and
+walled in by the +/-12V_F rails on F), so each Rg chain leaves its 4.7k by one `*_RG1` link to a
+cluster in the nearest free B area:
+
+- **LP** (JP2, R58, R59): left edge strip under AUDIO, column X103, Y129.5-139 (R59 / JP2 / R58).
+  LP_RG1: R42.2's old GND via (105.225, 160.55) becomes the link via, F up the left edge
+  (X102.2), via (104.15, 137.4) to R58.1. 25 mm.
+- **HP** (JP3, R60, R61): same strip below it, JP3 at (103, 145.3), R61 above, R60 beside.
+  HP_RG1: R47.2's old GND via (117.375, 160.55), F under the -12V_F drop (Y162.35), up beside
+  the LP link (X103.15), via (103.85, 147.45). 30 mm.
+- **BP** (JP4, R62, R63): under the RES / CURVE / FREQ gap (RV7 top), JP4 at (126.5, 132.5).
+  BP_RG1: R52.2 north on B (X134.5), F hop over SVF_BPO (vias (133.5, 152.1) / (132.0, 151.3)),
+  B up X132 / X129.2 past the RV7 lug. 31 mm. R52.2's old GND stub is gone; its via stays GND
+  for C2.
+- The links are feedback-network nodes behind the 4.7k; their ~3-4 pF only raises the gain
+  towards x22 above ~2 MHz (stable, the S2 gain). AIN_SENSE (J2.TN -> R20) moved 1.85 mm up
+  out of the LP cluster (same layer).
+- B silk (JP1 style): `M` (2-3, x3.9) and `H` (1-2, x11) at the pads, `LP` / `HP` / `BP`, and
+  `GAIN: OPEN=x3` / `M=x3.9 H=x11` under RES; board text `ACID R2`.
+
+Checks: KiCad DRC **0 active / 22 excluded (unchanged vactrol set) / 0 unconnected / 0
+parity**; shared gate ERC 0, DRC 22, 0 unconnected, parity 0, ref/pin/net equal. 176 vias
+(+8), none in or touching an SMD pad; no tracks on In1; In1 GND and In2 +3V3 one piece each
+(F/B pour piece counts unchanged; the F pour loses the left edge strip to the two links).
+Closest SMD pad to a pot/jack pad still 2.08 mm (R7-J1.S); new parts >= 2.14 mm (R61-RV5).
+Courtyards >= 1.0 mm from the edge (new parts >= 1.2 mm, JP2 / JP3). 8 new free vertices are off the
+0.05 grid (45-degree jogs onto off-grid pads, as R1).
+
 ## 6. Not done
 
-A cleanup pass (fewer vias on the long links, off-grid jogs), firmware (MCO + ENV
+Bench check of the three gain settings; a cleanup pass (fewer vias on the long links, off-grid jogs), firmware (MCO + ENV
 merge, REC knob recording, PORT_INVEN for the protected MIDI path), panel fit / 3D check, bench
 (DAC range, vactrol range, output level).

@@ -2,7 +2,8 @@
 
 Bread Modular **MCO** + **ENV** (one ATtiny1616) and **SVF** (two-vactrol state-variable
 filter, LP / HP / BP outs) on one Eurorack module, at Bread Modular's 3.3 V signal level. Each
-output gets the gain of the user's BM DRIVE at 75 % in one TL072 stage.
+output is one TL072 stage with a gain solder jumper on the back: x3 (shipped, the LOW level),
+x3.9, or x11.1 (the user's BM DRIVE at 75 %).
 
 | Panel (top to bottom) | Circuit |
 |---|---|
@@ -14,9 +15,9 @@ output gets the gain of the user's BM DRIVE at 75 % in one TL072 stage.
 | **ENV OUT** | Envelope 0..3.3 V -> 0..5 V (protected) |
 | **AUDIO** in, **FREQ**, **CV** in | Bypasses: AUDIO 10 Vpp -> 0..3.3 V (clips), unpatched = MCO; CV 0..5 V -> 0..3.3 V, unpatched = envelope. FREQ = BM SVF cutoff/CV amount |
 | **RES**, **CURVE** | BM SVF resonance (500k), freq curve |
-| **LP**, **HP**, **BP** out | x11.1, ~10 Vpp ceiling (TL072 clip), 500R |
+| **LP**, **HP**, **BP** out | Gain jumper JP2 / JP3 / JP4 on the back: open x3.0 (shipped), `M` x3.9, `H` x11.1; ~10 Vpp ceiling (TL072 clip), 500R |
 
-**Status: S2 schematic (every net wired, ERC 0) + R1 manual routing, 4-layer (every net
+**Status: S3 schematic (gain jumpers; every net wired, ERC 0) + R2 manual routing, 4-layer (every net
 routed; DRC 0 + 22 user-approved vactrol-under-pot exclusions, 0 unconnected, parity 0);
 8HP panel. JLCPCB export in [`jlcpcb/`](jlcpcb/README.md) (bottom Economic), not supplier-accepted, not built.**
 

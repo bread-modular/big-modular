@@ -1,4 +1,4 @@
-"""Generate the ACID S2 schematic (hardware/acid.kicad_sch) and its pinned symbols.
+"""Generate the ACID S3 schematic (hardware/acid.kicad_sch) and its pinned symbols.
 
 Run from modules/acid:
   python3 -B tools/build_schematic.py
@@ -81,7 +81,7 @@ FP = {
 }
 
 # Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
-NOT_ASSEMBLED = {'JP1'}
+NOT_ASSEMBLED = {'JP1', 'JP2', 'JP3', 'JP4'}
 
 # Supply nets are drawn with power symbols (net name = symbol value).
 RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+12V': '+12V', '-12V': '-12V',
@@ -156,15 +156,20 @@ LAYOUT = {
     'R36': (142, 111, 0), 'U9.2': (152, 106, 0), 'RV7': (158, 116, 0), 'R37': (162, 120, 0),
     # SVF output resistors
     'R38': (172, 46, 90), 'R39': (172, 52, 90),
-    # Outputs: LP / HP / BP stages, then the envelope CV output
+    # Outputs: LP / HP / BP stages (26 grid units apart: each Rg chain + gain jumper sits under
+    # its stage), then the envelope CV output
     'C15': (180, 61, 90), 'R40': (186, 65, 0), 'U10': (194, 62, 0), 'R41': (193.5, 67, 90),
     'R42': (190, 71.5, 0), 'R43': (204, 62, 90), 'R44': (209, 66, 0), 'J4': (216, 62, 0, 'mirror'),
-    'C16': (180, 79, 90), 'R45': (186, 83, 0), 'U10.2': (194, 80, 0), 'R46': (193.5, 85, 90),
-    'R47': (190, 89.5, 0), 'R48': (204, 80, 90), 'R49': (209, 84, 0), 'J6': (216, 80, 0, 'mirror'),
-    'C17': (180, 97, 90), 'R50': (186, 101, 0), 'U11': (194, 98, 0), 'R51': (193.5, 103, 90),
-    'R52': (190, 107.5, 0), 'R53': (204, 98, 90), 'R54': (209, 102, 0), 'J7': (216, 98, 0, 'mirror'),
-    'U11.2': (194, 118, 0), 'R55': (193.5, 123, 90), 'R56': (190, 127.5, 0), 'R57': (204, 118, 90),
-    'J5': (216, 118, 0, 'mirror'),
+    'R58': (195, 74, 90), 'R59': (200, 75.5, 0), 'JP2': (194, 78.5, 0),
+    'C16': (180, 87, 90), 'R45': (186, 91, 0), 'U10.2': (194, 88, 0), 'R46': (193.5, 93, 90),
+    'R47': (190, 97.5, 0), 'R48': (204, 88, 90), 'R49': (209, 92, 0), 'J6': (216, 88, 0, 'mirror'),
+    'R60': (195, 100, 90), 'R61': (200, 101.5, 0), 'JP3': (194, 104.5, 0),
+    'C17': (180, 113, 90), 'R50': (186, 117, 0), 'U11': (194, 114, 0), 'R51': (193.5, 119, 90),
+    'R52': (190, 123.5, 0), 'R53': (204, 114, 90), 'R54': (209, 118, 0), 'J7': (216, 114, 0, 'mirror'),
+    'R62': (195, 126, 90), 'R63': (200, 127.5, 0), 'JP4': (194, 130.5, 0),
+    # envelope CV output, top centre (between the MIDI input and the SVF)
+    'U11.2': (92, 15.5, 0), 'R55': (91.5, 20.5, 90), 'R56': (88, 25, 0), 'R57': (102, 15.5, 90),
+    'J5': (114, 15.5, 0, 'mirror'),
     # Power entry
     'J10': (9, 137, 0), 'D1': (21, 134, 180), 'D2': (21, 142, 0), 'C1': (28, 136.5, 0), 'C2': (32, 136.5, 0),
     'U1': (40, 135, 0), 'C3': (47, 136.5, 0), 'C4': (51, 136.5, 0), 'C5': (55, 136.5, 0),
@@ -434,19 +439,24 @@ def circuit():
                   Note='U9 decoupling (Bread Modular SVF C5)'))
 
     # ---- Outputs (research.md 3.4): no DRIVE. Each SVF output (LP, HP, BP) leaves through its
-    # Bread Modular 1k, is AC coupled and gets one TL072 stage: x22.3 (1 + 100k / 4.7k), clipping
-    # at the TL072 rails (the DRIVE's rail clipping, now on +/-12 V), then the 1k series + 1k shunt
-    # halve it: x11.1 small signal (DRIVE at 75 % x OUT x3 = x11.7) and a ~10 Vpp ceiling.
-    stages = (('LP', 'SVF_LPO', 'U10', ('3', '2', '1'), 'J4', 'C15', 'R40', 'R41', 'R42', 'R43', 'R44'),
-              ('HP', 'SVF_HPO', 'U10', ('5', '6', '7'), 'J6', 'C16', 'R45', 'R46', 'R47', 'R48', 'R49'),
-              ('BP', 'SVF_BPO', 'U11', ('3', '2', '1'), 'J7', 'C17', 'R50', 'R51', 'R52', 'R53', 'R54'))
+    # Bread Modular 1k, is AC coupled and gets one TL072 stage whose Rg is a 4.7k + 10k + 5.1k chain
+    # with a 3-pad gain jumper (centre pad GND): open = 19.8k, x6.05 (x3.0 at the jack, LOW's level,
+    # shipped); 2-3 shorts the 5.1k: 14.7k, x7.8 (x3.9); 1-2 shorts 10k + 5.1k: 4.7k, x22.3 (x11.1,
+    # the S2 DRIVE-at-75 % gain). Clipping at the TL072 rails (~+/-10 V), then the 1k series + 1k
+    # shunt halve it: ~10 Vpp ceiling.
+    stages = (('LP', 'SVF_LPO', 'U10', ('3', '2', '1'), 'J4', 'C15', 'R40', 'R41', 'R42', 'R43', 'R44',
+               'R58', 'R59', 'JP2'),
+              ('HP', 'SVF_HPO', 'U10', ('5', '6', '7'), 'J6', 'C16', 'R45', 'R46', 'R47', 'R48', 'R49',
+               'R60', 'R61', 'JP3'),
+              ('BP', 'SVF_BPO', 'U11', ('3', '2', '1'), 'J7', 'C17', 'R50', 'R51', 'R52', 'R53', 'R54',
+               'R62', 'R63', 'JP4'))
     c.append(part('R38', 'R', '1k', 'R0603', {'1': 'SVF_HP', '2': 'SVF_HPO'},
                   Note='HP output resistor (Bread Modular SVF R3, HF out)'))
     c.append(part('R39', 'R', '1k', 'R0603', {'1': 'SVF_BP', '2': 'SVF_BPO'},
                   Note='BP output resistor (Bread Modular SVF R4, BF out)'))
-    uout = {'U10': '+/-12 V. A: LP output x22.3; B: HP output x22.3',
-            'U11': '+/-12 V. A: BP output x22.3; B: envelope CV output x1.51'}
-    for name, src, u, (pin, pinv, pout), jack, cc, rb, rf, rg, rs, rsh in stages:
+    uout = {'U10': '+/-12 V. A: LP output x6.05 / x7.8 / x22.3 (JP2); B: HP output (JP3)',
+            'U11': '+/-12 V. A: BP output x6.05 / x7.8 / x22.3 (JP4); B: envelope CV output x1.51'}
+    for name, src, u, (pin, pinv, pout), jack, cc, rb, rf, rg, rs, rsh, rx, ry, jp in stages:
         unit = 1 if pin == '3' else 2
         c.append(part(cc, 'C', '1u', 'C0805', {'1': src, '2': name + '_IN'},
                       Voltage='25V', Note=f'{name} AC coupling (removes V_MID 1.65 V)'))
@@ -455,16 +465,26 @@ def circuit():
         c.append(part(u, 'TL072', 'TL072', 'SOIC8',
                       {pin: name + '_IN', pinv: name + '_FB', pout: name + '_AMP'}, unit=unit, Note=uout[u]))
         c.append(part(rf, 'R', '100k', 'R0603', {'1': name + '_FB', '2': name + '_AMP'},
-                      Note='Rf: gain 1 + 100k / 4.7k = 22.3; hot signals clip at the TL072 rails (~+/-10 V)'))
-        c.append(part(rg, 'R', '4.7k', 'R0603', {'1': name + '_FB', '2': 'GND'}, Note='Rg to GND'))
+                      Note='Rf: gain 1 + 100k / Rg (Rg 19.8k / 14.7k / 4.7k by ' + jp + '); hot signals clip '
+                           'at the TL072 rails (~+/-10 V)'))
+        c.append(part(rg, 'R', '4.7k', 'R0603', {'1': name + '_FB', '2': name + '_RG1'},
+                      Note=f'Rg chain, first 4.7k (alone with {jp} 1-2 bridged: x22.3)'))
+        c.append(part(rx, 'R', '10k', 'R0603', {'1': name + '_RG1', '2': name + '_RG2'},
+                      Note=f'Rg chain, 10k (4.7k + 10k = 14.7k with {jp} 2-3 bridged: x7.8)'))
+        c.append(part(ry, 'R', '5.1k', 'R0603', {'1': name + '_RG2', '2': 'GND'},
+                      Note=f'Rg chain, 5.1k to GND (19.8k with {jp} open: x6.05)'))
+        c.append(part(jp, 'SolderJumper_3_Open', f'{name}_GAIN', 'SJ3',
+                      {'1': name + '_RG1', '2': 'GND', '3': name + '_RG2'},
+                      Note=f'{name} gain solder jumper, copper only, shipped open = x3.0 at the jack (LOW level). '
+                           'Solder 2-3 = x3.9; solder 1-2 = x11.1 (S2 gain, ~10 Vpp ceiling)'))
         c.append(part(rs, 'R', '1k', 'R1206', {'1': name + '_AMP', '2': name + '_OUT'},
-                      Power='0.5W', Note='Output series: with the 1k shunt halves the stage (x11.1, ~10 Vpp '
-                                         'ceiling); short / +/-12 V mis-patch current limit (as modules/low R30)'))
+                      Power='0.5W', Note='Output series: with the 1k shunt halves the stage (x3.0 / x3.9 / x11.1, '
+                                         '~10 Vpp ceiling); short / +/-12 V mis-patch current limit (as modules/low R30)'))
         c.append(part(rsh, 'R', '1k', 'R1206', {'1': name + '_OUT', '2': 'GND'},
                       Power='0.5W', Note='Output shunt: 500R output impedance; 1206 for a +12 V mis-patch'))
         c.append(part(jack, 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
                       {'T': name + '_OUT', 'S': 'GND', 'TN': None},
-                      Note=f'SVF {name} out, Eurorack level (~10 Vpp ceiling)'))
+                      Note=f'SVF {name} out, Eurorack level (x3.0 default; ~10 Vpp ceiling)'))
 
     # ---- Envelope CV output: DAC envelope 0..3.3 V -> 0..5.0 V, DC coupled, protected
     c.append(part('U11', 'TL072', 'TL072', 'SOIC8',
@@ -533,7 +553,7 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 4), 'BIG MODULAR ACID - S2 schematic: Bread Modular MCO + ENV (one ATtiny1616) -> SVF (LP / HP / BP outs) on one 8HP '
+    (T(4, 4), 'BIG MODULAR ACID - S3 schematic: Bread Modular MCO + ENV (one ATtiny1616) -> SVF (LP / HP / BP outs) on one 8HP '
               'module, 3.3 V internal signals as Bread Modular. Circuit intent: docs/research.md', 2.0),
     (T(4, 6.5), 'Signal nets are wired; supplies use power symbols. ENV_CV (R12 -> U4B NC2, U11B +) is joined by '
                 'its net labels.', 1.27),
@@ -551,9 +571,10 @@ TEXTS = [
                  '(RESONANCE 500k, R32/R33 51k: Q 1..11). LP / HP / BP outs via R29 / R38 / R39.', 1.27),
     (T(110, 96), 'SVF VACTROL DRIVER: FREQ attenuates the CV, U9A follower, R35/R36 halve it,\n'
                  'U9B holds the LED cathodes at CV/2: I = (CV/2) / (CURVE + 5.1k). BM R13 pull-up omitted.', 1.27),
-    (T(176, 50), 'OUTPUTS LP (J4) / HP (J6) / BP (J7), no DRIVE: AC coupled (1.6 Hz), TL072 x22.3 clips at\n'
-                 'its rails, 1k series + 1k shunt: x11.1, ~10 Vpp ceiling, 500R out.', 1.27),
-    (T(176, 112), 'CV OUT: U11B x1.51: envelope 0..3.3 V -> 0..5.0 V, DC coupled, 1k to J5.', 1.27),
+    (T(176, 50), 'OUTPUTS LP (J4) / HP (J6) / BP (J7), no DRIVE: AC coupled (1.6 Hz), TL072 non-inverting, clips at\n'
+                 'its rails; 1k series + 1k shunt halve it, 500R out. GAIN JUMPERS JP2 / JP3 / JP4 (shipped open):\n'
+                 'open = x3.0 (LOW level), 2-3 = x3.9, 1-2 = x11.1 (S2 gain, ~10 Vpp ceiling).', 1.27),
+    (T(84, 31), 'CV OUT: U11B x1.51: envelope 0..3.3 V -> 0..5.0 V, DC coupled, 1k to J5.', 1.27),
     (T(4, 128), 'POWER: +12V -> D1 -> +12V_F (U10, U11, U1 HT7533-1 -> +3V3); -12V -> D2 -> -12V_F (U10, U11).', 1.27),
     (T(68, 128), 'SUPPLY PINS + DECOUPLING', 1.27),
 ]
@@ -1075,8 +1096,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - ACID") (rev "S2") (company "Big Modular")
-        (comment 1 "SCHEMATIC S2 - Bread Modular MCO + ENV + SVF (LP/HP/BP outs), 3.3 V signals, wired nets")
+      (title_block (title "Big Modular - ACID") (rev "S3") (company "Big Modular")
+        (comment 1 "SCHEMATIC S3 - Bread Modular MCO + ENV + SVF (LP/HP/BP outs, gain jumpers), 3.3 V signals, wired nets")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')

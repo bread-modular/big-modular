@@ -7,8 +7,9 @@ Time-domain model (forward Euler, 192 kHz x 4 oversampled) of the circuit in doc
   around V_MID) or a 10 Vpp square on the AUDIO bypass (x0.33, clipped at the rails).
 - BM SVF: summer U5A (R24 51k in, R26-R28 10k), integrators U5B / U6A (vactrol LDR R + 10n),
   damping U6B gain 51k / (51k + RES), RES 0..500k. Each MCP6002 output clips at 0.02..3.28 V.
-- Each output stage: AC coupled, TL072 x22.3 clipping at ~+/-10.3 V, then 1k / 1k: x11.1.
-  For comparison 'x3' is the modules/low stage (no extra gain).
+- Each output stage (S3): AC coupled, TL072 non-inverting with Rg = 4.7k + 10k + 5.1k and a
+  3-pad gain jumper, clipping at ~+/-10.3 V, then 1k / 1k. GAINS: open (shipped) Rg 19.8k, x6.05
+  -> x3.0 at the jack; 2-3 Rg 14.7k, x7.8 -> x3.9; 1-2 Rg 4.7k, x22.3 -> x11.1 (the S2 gain).
 Prints the SVF and OUT peak-to-peak voltages for LP / BP / HP over cutoff and RES.
 """
 import numpy as np
@@ -16,7 +17,7 @@ import numpy as np
 VDD, VMID = 3.3, 1.65
 FS = 192000 * 4
 DUR = 0.2
-G_OUT = 1 + 100 / 4.7
+GAINS = {'open': 1 + 100 / 19.8, '2-3': 1 + 100 / 14.7, '1-2': 1 + 100 / 4.7}  # TL072 stage, before 1k / 1k
 CLIP = 10.3
 
 
@@ -56,12 +57,12 @@ def out_pp(v, gain, div):
 if __name__ == '__main__':
     t = np.arange(int(DUR * FS)) / FS
     for kind in ('two tones', 'one tone', '10 Vpp AUDIO'):
-        print(f'== {kind}: LDR R, fc, RES | SVF LP/BP/HP Vpp | OUT x11.1 LP/BP/HP | x3 LP/BP/HP')
+        print(f'== {kind}: LDR R, fc, RES | SVF LP/BP/HP Vpp | OUT LP/BP/HP: '
+              + ' | '.join(f'{k} x{g / 2:.1f}' for k, g in GAINS.items()))
         for r_ldr in (100e3, 10e3, 3e3):
             for res in (0, 100e3, 250e3, 500e3):
                 outs = svf(source(t, kind), r_ldr, res)
                 svf_pp = '/'.join(f'{np.ptp(v[len(v) // 2:]):.2f}' for v in outs)
-                acid = '/'.join(f'{out_pp(v, G_OUT, 0.5):.1f}' for v in outs)
-                low = '/'.join(f'{out_pp(v, 3, 1):.1f}' for v in outs)
+                acid = ' | '.join('/'.join(f'{out_pp(v, g, 0.5):.1f}' for v in outs) for g in GAINS.values())
                 print(f'{r_ldr / 1e3:4.0f}k {1 / (2 * np.pi * r_ldr * 10e-9):5.0f} Hz {res / 1e3:4.0f}k | '
-                      f'{svf_pp} | {acid} | {low}')
+                      f'{svf_pp} | {acid}')
