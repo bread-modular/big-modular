@@ -2,7 +2,7 @@
 	(version 20260206)
 	(generator "kicad-footprint-generator")
 	(layer "F.Cu")
-	(descr "HVSSOP, 8 Pin (https://www.ti.com/lit/ds/symlink/tpa6110a2.pdf); S9.2b single-board copy of TPS7A16_DGN0008C: no plated hole in any pad (owner decision, no via-in-pad), no B.Cu pad copy; thermal vias are standard 0.3/0.6 mm board vias beside the pad")
+	(descr "HVSSOP, 8 Pin (https://www.ti.com/lit/ds/symlink/tpa6110a2.pdf); S9.2b copy of TPS7A16_DGN0008C: no plated hole in any pad (owner decision, no via-in-pad), no B.Cu pad copy; thermal vias are standard 0.3/0.6 mm board vias beside the pad")
 	(tags "HVSSOP SO NoViaInPad")
 	(property "Reference" "REF**" (at 0 -2.45 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))
 	(property "Value" "TPS7A16_DGN0008C_NoViaInPad" (at 0 2.45 0) (layer "F.Fab") (effects (font (size 1 1) (thickness 0.15))))

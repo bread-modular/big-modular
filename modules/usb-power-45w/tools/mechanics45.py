@@ -148,7 +148,7 @@ def carrier_outline(g=None):
 def header_frame(h):
     """Centre of the 2x8 pin field (Y, Z) for the rotated header (local +x -> -Z, +y -> -Y)."""
     y1, z1 = h['pin1_YZ_mm']
-    return y1 - 8.89, z1 - 1.27
+    return y1 - (h.get('rows', 8) - 1) * 2.54 / 2, z1 - 1.27
 
 
 def envelopes(g):
@@ -166,7 +166,7 @@ def envelopes(g):
     for h in g['headers']:
         yc, zc = header_frame(h)
         r = h['reference']
-        env[r] = ('Wurth 61201621621 body max', [[fcu, fcu + H], [yc - L / 2, yc + L / 2], [zc - W / 2, zc + W / 2]])
+        env[r] = (g['header'].get('envelope_label', 'Wurth 61201621621 body max'), [[fcu, fcu + H], [yc - L / 2, yc + L / 2], [zc - W / 2, zc + W / 2]])
         pl, pw = mp['proposal_body_LW_mm']
         env[r + '_plug'] = ('PROPOSAL mated IDC socket envelope', [mp['proposal_X_mm'], [yc - pl / 2, yc + pl / 2],
                                                                    [zc - pw / 2, zc + pw / 2]])

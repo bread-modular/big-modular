@@ -1,4 +1,4 @@
-"""Generate the S8 single-board schematic (hardware/single/usb-power-45w-single.kicad_{pro,sch} + 6 pages).
+"""Generate the schematic (hardware/usb-power-45w.kicad_{pro,sch} + 6 pages).
 
   python3 -B tools/build_s8.py [--output-root <candidate-module-root>]
 
@@ -32,12 +32,13 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
-REV = 'S9.3'
+REV = 'S9.3-10P'
 from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
 import s92_contract  # noqa: E402
 import s92_parts  # noqa: E402
-FP_S8 = {**bs.FP, **FP_S90, **s92_parts.FP_S92}
-# S9.2 routing contract (docs/s8-single/routing-notes.md 3.2): netclasses by net-name pattern, owned by
+FP_S8 = {**bs.FP, **FP_S90, **s92_parts.FP_S92,
+         'IDC10': 'IDC-Header_2x05_P2.54mm_Vertical_Wurth_61201021621'}
+# S9.2 routing contract (docs/design/routing-notes.md 3.2): netclasses by net-name pattern, owned by
 # tools/s92_contract.py NETCLASSES (also written by tools/place_s8.py --apply-rules), so a schematic rebuild writes the
 # same classes. Every class keeps the 0.2 mm board clearance; patterns match the full hierarchical net names.
 NETCLASSES = {name: (c['width'], c['patterns']) for name, c in s92_contract.NETCLASSES.items()}
@@ -52,12 +53,12 @@ def uid(key):
     return str(uuid.uuid5(uuid.NAMESPACE_URL, 'big-modular/usb-power-45w/s8-single/schematic/' + key))
 
 
-def single_dir(root=MODULE):
-    return Path(root) / 'hardware' / 'single'
+def hw_dir(root=MODULE):
+    return Path(root) / 'hardware'
 
 
 def root_file(root=MODULE):
-    return single_dir(root) / f'{STEM}.kicad_sch'
+    return hw_dir(root) / f'{STEM}.kicad_sch'
 
 
 def tlv431_dbz():
@@ -118,6 +119,11 @@ def lib_symbols(parts):
     the S8.1 TLV431_DBZ symbol and the S9.0 TPS552892_RYQ symbol (tools/s90_parts.py)."""
     used = {p['sym'] for p in parts} | POWER_SYMBOLS
     out = {k: v for k, v in bs.lib_symbols().items() if k in used}
+    if 'Conn_02x05_Odd_Even' in used:
+        out['Conn_02x05_Odd_Even'], _, _ = bs.stock_symbol('Connector_Generic', 'Conn_02x05_Odd_Even')
+        for prop in nodes(out['Conn_02x05_Odd_Even'], 'property'):
+            if prop[1] == 'ki_fp_filters':
+                prop[2] = 'USBPOWER45:IDC-Header_2x05_P2.54mm_Vertical_Wurth_61201021621'
     if 'TLV431_DBZ' in used:
         out['TLV431_DBZ'] = tlv431_dbz()
     if 'TPS552892_RYQ' in used:
@@ -136,8 +142,8 @@ def lib_symbols(parts):
 
 def build(output_root=None):
     root = Path(output_root).resolve() if output_root else MODULE
-    hw = single_dir(root)
-    docs = root / 'docs' / 's8-single'
+    hw = hw_dir(root)
+    docs = root / 'docs' / 'design'
     hw.mkdir(parents=True, exist_ok=True)
     docs.mkdir(parents=True, exist_ok=True)
     bs.FP = dict(FP_S8)
@@ -155,7 +161,7 @@ def build(output_root=None):
         f'(sym_lib_table (version 7) (lib (name "{bs.LIB}") (type "KiCad") (uri "${{KIPRJMOD}}/{bs.LIB}.kicad_sym") '
         '(options "") (descr "usb-power-45w S8 pinned symbols; see tools/build_s8.py")))\n')
     (hw / 'fp-lib-table').write_text(
-        f'(fp_lib_table (version 7) (lib (name "{bs.LIB}") (type "KiCad") (uri "${{KIPRJMOD}}/../{bs.LIB}.pretty") '
+        f'(fp_lib_table (version 7) (lib (name "{bs.LIB}") (type "KiCad") (uri "${{KIPRJMOD}}/{bs.LIB}.pretty") '
         '(options "") (descr "usb-power-45w pinned footprints, shared with the S7 projects")))\n')
 
     # Project file first: kicad-cli loads it when re-saving the sheets, so every run sees the same project.
@@ -170,9 +176,9 @@ def build(output_root=None):
         s92_parts.write(root / 'hardware' / 'USBPOWER45.pretty')      # S9.2 pinned footprints (Kelvin land, 1.5 mm pad)
 
     sch, nets, _ = bs.flat_sheet(
-        parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 single board',
-        comments=('S9.2 single board: +/-12V only, 15 V PD; MAIN LED only; routing-ready, not routed',
-                  'One-shot arming latch (STARTED); U18/U20 on VPD; see docs/s8-single-board.md'),
+        parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 board',
+        comments=('S9.3-10P: +/-12V, 15 V PD; MAIN LED only; two 10-pin outputs, routing in progress',
+                  'One-shot arming latch (STARTED); U18/U20 on VPD; see docs/design.md'),
         source=circuit_s8.drawing(), texts=circuit_s8.TEXTS)
     one(one(sch, 'title_block'), 'rev')[1] = REV
     out.write_text(dump(sch) + '\n')
@@ -184,7 +190,7 @@ def build(output_root=None):
     crossing = hierarchy_s8.split(out, docs, api)
 
     refs = sorted(p['ref'] for p in parts if not p['ref'].startswith('#'))
-    record = {'revision': REV, 'project': f'hardware/single/{pro.name}', 'components': len(refs),
+    record = {'revision': REV, 'project': f'hardware/{pro.name}', 'components': len(refs),
               'nets': len(nets), 'no_connect_pins': len(nc),
               'removed_from_S7': sorted(set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED)),
               'removed_in_S9_plus5': sorted(set(circuit_s8.S9_REMOVED) | set(circuit_s8.S8_PLUS5_DROPPED)),

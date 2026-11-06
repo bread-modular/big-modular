@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Face view of the S8 single board (same frame and drawing style as tools/render_stack.py).
+"""Face view of the S8 board .
 
   python3 -B tools/render_s8.py <out.png> [--board <kicad_pcb>] [--title <text>]
 
@@ -17,11 +17,12 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import pcbnew  # noqa: E402
-import render_stack as rs  # noqa: E402
 
-BOARD = HERE.parent / 'hardware/single/usb-power-45w-single.kicad_pcb'
-FONT = rs.FONT
-PCOL = dict(rs.PCOL, **{'-12V': (106, 61, 154), '+12V': (44, 160, 44)})
+BOARD = HERE.parent / 'hardware/usb-power-45w.kicad_pcb'
+FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+PCOL = {'GND': (122, 122, 122), 'VIN': (214, 39, 40), 'VPD': (255, 127, 14), 'EF_IN': (255, 160, 80),
+        'N12_RAW': (148, 103, 189), '-12V': (106, 61, 154), '+12V': (44, 160, 44), '+5V': (23, 190, 207),
+        'P12_RAW': (152, 223, 138), 'P5_RAW': (158, 218, 229), 'V3V3': (188, 189, 34)}
 HAND = ('J1', 'D8', 'J2', 'J3')
 DRIVERS = [(22.0, 15.0), (106.5, 15.0)]       # bracket M3 Y/Z: F-side nut + 8 mm driver circle
 
@@ -104,7 +105,7 @@ def render(board_path, out, title='', zoom=None):
             bb = dr.textbbox((x, yy), r, font=font, anchor='mm')
             dr.rectangle(bb, fill=(255, 255, 255, 170))
             dr.text((x, yy), r, fill='black', font=font, anchor='mm')
-    dr.text((10, H - 40), title or 'S8 single board, F face from +X (Y right, Z depth down, panel at top)',
+    dr.text((10, H - 40), title or 'S8 board, F face from +X (Y right, Z depth down, panel at top)',
             fill='black', font=ImageFont.truetype(FONT, 19))
     dr.text((10, H - 18), 'Pads by net: VIN red, GND grey, +12V green, -12V purple, VPD orange, V3V3 olive. '
             'Blue circles: bracket nut + 8 mm driver keep-out. Yellow: 2 mm hand-solder rings (J1, D8, J2, J3). '

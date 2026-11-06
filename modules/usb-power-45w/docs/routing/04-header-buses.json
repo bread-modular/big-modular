@@ -1,0 +1,81 @@
+{
+  "batch": "04-header-buses",
+  "operations": [
+    {
+      "op": "track",
+      "net": "-12V",
+      "layer": "B.Cu",
+      "width": 0.8,
+      "points": [
+        "J2.1",
+        "J2.2"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "+12V",
+      "layer": "B.Cu",
+      "width": 1.5,
+      "points": [
+        "J2.9",
+        "J2.10"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "-12V",
+      "layer": "B.Cu",
+      "width": 0.8,
+      "points": [
+        "J3.1",
+        "J3.2"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "+12V",
+      "layer": "B.Cu",
+      "width": 1.5,
+      "points": [
+        "J3.9",
+        "J3.10"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "+12V",
+      "layer": "B.Cu",
+      "width": 1.5,
+      "points": [
+        "J2.10",
+        [
+          101.59,
+          65.5
+        ],
+        [
+          132.59,
+          65.5
+        ],
+        "J3.10"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "-12V",
+      "layer": "B.Cu",
+      "width": 0.8,
+      "points": [
+        "J2.1",
+        [
+          111.75,
+          56.4
+        ],
+        [
+          142.75,
+          56.4
+        ],
+        "J3.1"
+      ]
+    }
+  ]
+}

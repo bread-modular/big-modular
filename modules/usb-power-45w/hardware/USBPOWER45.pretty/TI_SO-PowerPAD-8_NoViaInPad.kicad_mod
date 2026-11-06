@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "8-pin HTSOP package with 1.27mm pin pitch, compatible with SOIC-8, 3.9x4.9mm² body, exposed pad, thermal vias with large copper area, as proposed in http://www.ti.com/lit/ds/symlink/tps5430.pdf; S9.2b single-board copy of TI_SO-PowerPAD-8_ThermalVias: no plated hole in any pad (owner decision, no via-in-pad), no B.Cu pad copy; thermal vias are standard 0.3/0.6 mm board vias beside the pad")
+	(descr "8-pin HTSOP package with 1.27mm pin pitch, compatible with SOIC-8, 3.9x4.9mm² body, exposed pad, thermal vias with large copper area, as proposed in http://www.ti.com/lit/ds/symlink/tps5430.pdf; S9.2b copy of TI_SO-PowerPAD-8_ThermalVias: no plated hole in any pad (owner decision, no via-in-pad), no B.Cu pad copy; thermal vias are standard 0.3/0.6 mm board vias beside the pad")
 	(tags "HTSOP 1.27 NoViaInPad")
 	(property "Reference" "REF**" (at 0 -3.5 0) (layer "F.SilkS") (uuid "377378f0-7c1a-45aa-b353-dc4f0f32abc9") (effects (font (size 1 1) (thickness 0.15))))
 	(property "Value" "TI_SO-PowerPAD-8_NoViaInPad" (at 0 3.5 0) (layer "F.Fab") (uuid "c924561c-5e62-4154-93ed-2bd7fadf520c") (effects (font (size 1 1) (thickness 0.15))))

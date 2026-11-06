@@ -1,4 +1,4 @@
-"""S8 single board: 3D assembly, collision screen and review images (system Python + FreeCAD + OpenSCAD).
+"""S8 board: 3D assembly, collision screen and review images (system Python + FreeCAD + OpenSCAD).
 
   python3 -B tools/s8_mechanical.py [--freecad ~/Applications/FreeCAD_1.1.3.AppImage]
 
@@ -9,7 +9,7 @@
 4. KiCad raytraced board views (kicad-cli pcb render) from a render-only copy whose L1-L3 get a 10 x 10 mm
    KiCad proxy model (L_TechFuse_SL1040; the pinned SLO1040 footprint has none); the native board is untouched
 5. placement drawing PDF of the native board (F.Fab references + pad sketches, courtyards, outline, notes)
-Outputs: docs/s8-single/assembly/ (zipped STEP, report, images, PDF). Nominal geometry; not a fit approval.
+Outputs: docs/design/assembly/ (zipped STEP, report, images, PDF). Nominal geometry; not a fit approval.
 """
 import argparse
 import json
@@ -26,9 +26,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 MODULE = Path(__file__).resolve().parents[1]
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-BOARD = DESIGN / 'hardware/single/usb-power-45w-single.kicad_pcb'
+BOARD = DESIGN / 'hardware/usb-power-45w.kicad_pcb'
 WORK = Path(os.environ.get('S8_ASM_WORK', str(MODULE / 'research/s93/assembly')))
-OUT = DESIGN / 'docs/s8-single/assembly'
+OUT = DESIGN / 'docs/design/assembly'
 FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 FONTB = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 COLORS = [('panel', [0.91, 0.84, 0.66, 1]), ('carrier', [0.30, 0.58, 0.36, 1]), ('brackets', [0.90, 0.55, 0.23, 1]),
@@ -41,7 +41,7 @@ LEGEND = [([0.91, 0.84, 0.66], 'S8 4HP panel (USB-C, MAIN LED, RESET)'),
           ([0.22, 0.22, 0.25], 'ICs / diodes / transistors (KiCad models)'),
           ([0.72, 0.60, 0.42], 'R / C (KiCad models)'),
           ([0.35, 0.36, 0.40], 'L1 / L3 proxy 10.3 x 10.3 x 4.0 (no model)'),
-          ([0.15, 0.15, 0.17], 'J2 / J3 16-pin box headers (THT)'),
+          ([0.15, 0.15, 0.17], 'J2 / J3 10-pin box headers (THT)'),
           ([0.85, 0.15, 0.15], 'D8 MAIN LED (THT)'),
           ([0.55, 0.58, 0.63], 'J1 / SW1 body envelopes (no model)'),
           ([0.90, 0.55, 0.23], 'Two plain M3 L brackets'),
@@ -50,7 +50,7 @@ LEGEND = [([0.91, 0.84, 0.66], 'S8 4HP panel (USB-C, MAIN LED, RESET)'),
           ([0.62, 0.66, 0.74], 'PROPOSAL: ribbon leaving +Z to the bus'),
           ([0.23, 0.65, 0.79], 'Tool paths: M3 nut driver / pliers'),
           ([0.75, 0.75, 0.75], 'Case rail section (context)')]
-STAMP = 'S9.3 SINGLE BOARD P2.3 - PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
+STAMP = 'S9.3 P2.3 - PLACEMENT, UNROUTED - NOT A RELEASE - nominal mm'
 
 
 def footprints():
@@ -135,7 +135,7 @@ def kicad_renders():
 
 def placement_pdf():
     """Fab drawing of the native board (references, pad sketches, courtyards, outline, keep-out notes)."""
-    pdf = OUT / 'usb-power-45w-single-placement.pdf'
+    pdf = OUT / 'usb-power-45w-placement.pdf'
     subprocess.run(['kicad-cli', 'pcb', 'export', 'pdf', '--mode-single', '-o', str(pdf),
                     '-l', 'F.Fab,F.Courtyard,F.Silkscreen,Edge.Cuts,User.Drawings,User.Comments', '--sp', '--ev',
                     '--ibt', '--scale', '0', str(BOARD)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -158,16 +158,16 @@ def main():
         if r.returncode != 0 or not (WORK / 'report.json').exists():
             raise SystemExit(f'FreeCAD failed, see {WORK / "freecad.log"}')
     rep = json.loads((WORK / 'report.json').read_text())
-    with zipfile.ZipFile(OUT / 'usb-power-45w-single-assembly.step.zip', 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        z.write(WORK / 'assembly.step', 'usb-power-45w-single-assembly.step')     # 10 MB STEP -> ~1.7 MB
+    with zipfile.ZipFile(OUT / 'usb-power-45w-assembly.step.zip', 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+        z.write(WORK / 'assembly.step', 'usb-power-45w-assembly.step')     # 10 MB STEP -> ~1.7 MB
     (OUT / 'assembly-report.json').write_text(json.dumps(rep, indent=1) + '\n')
     raw = scad_render('iso-front', [230, -120, 90], [10, 25, -64], size=(1700, 1400))
-    compose(raw, OUT / 'iso-front.png', 'usb-power-45w S8 single board - 3D assembly, front-right (F side)',
+    compose(raw, OUT / 'iso-front.png', 'usb-power-45w S8 board - 3D assembly, front-right (F side)',
             ['Native S9.3 / P2.3 board + S9 panel, brackets, M3, inductor/J1/SW1/U2/R109 body proxies and envelopes.',
              'X across 4HP (20.0), Y down, Z into the case (50 mm deep board). Every part on F; unrouted.',
              f'Collision screen: {len(rep["solid_interference_mm3"])} part-to-part / part-to-hardware overlaps.'])
     raw = scad_render('iso-rear', [-230, 110, 90], [10, 25, -64], size=(1700, 1400))
-    compose(raw, OUT / 'iso-rear.png', 'usb-power-45w S8 single board - 3D assembly, rear-left (B side, brackets)',
+    compose(raw, OUT / 'iso-rear.png', 'usb-power-45w S8 board - 3D assembly, rear-left (B side, brackets)',
             ['Both L brackets on the board B face; M3 side screws from -X (flush heads), nuts on F.',
              'Panel M3 screws from the front, nuts on the bracket foot. Ribbons leave the plugs toward +Z.',
              'B face carries no parts (single-sided assembly); THT tails trimmed <= 1.8 mm.'])

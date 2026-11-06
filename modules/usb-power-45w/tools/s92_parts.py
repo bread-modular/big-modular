@@ -12,7 +12,7 @@ Kelvin footprint for 2-pad shunts). Pads 1/4 = force, 2/3 = sense, matching the 
 current, 2 sense on the pin-1 side, 3 sense on the pin-4 side). Copper-pad solder-mask expansion 0.025 mm: the
 force/sense mask web is 0.15 mm. Paste 1:1. No vias.
 
-S9.2b (owner decision 2026-11-02: NO via-in-pad anywhere on the single board): the pinned S7 land patterns of U4
+S9.2b (owner decision 2026-11-02: NO via-in-pad anywhere on the board): the pinned S7 land patterns of U4
 (LMR38020 DDA), U5 (TPS16630 PWP) and U9 (TPS7A16 DGN) drill 8 / 15 / 4 plated holes into their exposed pads. The single
 board gets hole-free copies (NO_VIA_IN_PAD): each is the pinned file with every plated hole and the B.Cu-only copy of
 the exposed pad removed, and nothing else changed (lands, solder-mask window, paste apertures, courtyard, 3D model). The
@@ -44,11 +44,13 @@ _x_in = RLM12_LAND['inner_gap_L'] / 2                       # 0.8
 _x_out = _x_in + RLM12_LAND['pad_length_b']                  # 2.5
 _y_lo, _y_hi = -RLM12_LAND['pad_width_a'] / 2, RLM12_LAND['pad_width_a'] / 2     # -0.9, +0.9
 _force_h = RLM12_LAND['pad_width_a'] - SENSE_WIDTH - SPLIT_GAP                   # 1.1
+# R1 (2026-11-04): numbering mirrored left/right (1/2 on +x, 3/4 on -x); the land itself is symmetric, so only the pad
+# numbers move. The P12_ISP/P12_ISN pair then reaches U2.12/U2.13 without crossing; force/sense pairing is unchanged.
 KELVIN_PADS = [
-    ('1', 'force', -(_x_in + _x_out) / 2, _y_lo + _force_h / 2, RLM12_LAND['pad_length_b'], _force_h),
-    ('2', 'sense', -(_x_in + SENSE_LENGTH / 2), _y_hi - SENSE_WIDTH / 2, SENSE_LENGTH, SENSE_WIDTH),
-    ('3', 'sense', _x_in + SENSE_LENGTH / 2, _y_hi - SENSE_WIDTH / 2, SENSE_LENGTH, SENSE_WIDTH),
-    ('4', 'force', (_x_in + _x_out) / 2, _y_lo + _force_h / 2, RLM12_LAND['pad_length_b'], _force_h),
+    ('1', 'force', (_x_in + _x_out) / 2, _y_lo + _force_h / 2, RLM12_LAND['pad_length_b'], _force_h),
+    ('2', 'sense', _x_in + SENSE_LENGTH / 2, _y_hi - SENSE_WIDTH / 2, SENSE_LENGTH, SENSE_WIDTH),
+    ('3', 'sense', -(_x_in + SENSE_LENGTH / 2), _y_hi - SENSE_WIDTH / 2, SENSE_LENGTH, SENSE_WIDTH),
+    ('4', 'force', -(_x_in + _x_out) / 2, _y_lo + _force_h / 2, RLM12_LAND['pad_length_b'], _force_h),
 ]
 COURTYARD = (_x_out + 0.25, _y_hi + 0.25)                    # half sizes: 2.75 x 1.15
 
@@ -56,7 +58,7 @@ COURTYARD = (_x_out + 0.25, _y_hi + 0.25)                    # half sizes: 2.75 
 def kelvin_footprint():
     cx, cy = COURTYARD
     text = f'''(footprint "{FP_S92['KELVIN1206']}" (version 20241229) (generator pcbnew) (layer "F.Cu")
-      (descr "4-terminal Kelvin split land for a 2-terminal 1206 metal-alloy shunt (TA-I RLM12 2..50 mOhm land a 1.8 b 1.7 L 1.6): force pads 1/4, sense pads 2/3 from the inner land edge; S9.2 R109")
+      (descr "4-terminal Kelvin split land for a 2-terminal 1206 metal-alloy shunt (TA-I RLM12 2..50 mOhm land a 1.8 b 1.7 L 1.6): force pads 1/4, sense pads 2/3 from the inner land edge; S9.2 R109; R1 (2026-11-04): numbering mirrored (1/2 east, 3/4 west, same symmetric geometry) so the Kelvin pair reaches U2 ISP/ISN without a crossing")
       (tags "shunt Kelvin 4-terminal split pad R109") (attr smd)
       (property "Reference" "REF**" (at 0 -1.75) (layer "F.Fab") (effects (font (size 0.7 0.7) (thickness 0.1))))
       (property "Value" "0.018" (at 0 1.75) (layer "F.Fab") (effects (font (size 0.7 0.7) (thickness 0.1))))
@@ -82,7 +84,7 @@ def is_plated_hole(pad):
 
 
 def no_via_footprint(key, pretty=PRETTY):
-    """Hole-free single-board copy of a pinned S7 exposed-pad land pattern (NO_VIA_IN_PAD[key]) as library text: the
+    """Hole-free copy of a pinned S7 exposed-pad land pattern (NO_VIA_IN_PAD[key]) as library text: the
     plated holes and the B.Cu-only exposed-pad copy are dropped, the name/value/description say so, all else is kept.
     One top-level item per line (the pinned TPS7A16 file is a single line)."""
     src, name = NO_VIA_IN_PAD[key]
@@ -91,7 +93,7 @@ def no_via_footprint(key, pretty=PRETTY):
     assert drop and all(c[1] for c in drop), (key, 'expected numbered exposed-pad holes and a B.Cu pad copy')
     tree[:] = [c for c in tree if not any(c is d for d in drop)]
     tree[1] = name
-    one(tree, 'descr')[1] += (f'; S9.2b single-board copy of {src}: no plated hole in any pad (owner decision, no via-in-pad), '
+    one(tree, 'descr')[1] += (f'; S9.2b copy of {src}: no plated hole in any pad (owner decision, no via-in-pad), '
                               'no B.Cu pad copy; thermal vias are standard 0.3/0.6 mm board vias beside the pad')
     one(tree, 'tags')[1] += ' NoViaInPad'
     next(p for p in nodes(tree, 'property') if p[1] == 'Value')[2] = name
@@ -139,11 +141,15 @@ def kelvin_geometry():
     out = {}
     for n, role, x, y, w, h in KELVIN_PADS:
         out[n] = dict(role=role, x=(round(x - w / 2, 4), round(x + w / 2, 4)), y=(round(y - h / 2, 4), round(y + h / 2, 4)))
-    sense = out['3']
     worst_body_end = RLM12_BODY['L'][0] / 2                      # shortest body: electrode ends nearest the centre
     electrode_inner = worst_body_end - RLM12_BODY['C'][0]        # shortest electrode
-    overlap_x = min(sense['x'][1], worst_body_end) - max(sense['x'][0], electrode_inner)
-    overlap_y = min(sense['y'][1], RLM12_BODY['W'][0] / 2) - sense['y'][0]
+    # both sense pads, each folded onto its own body end (|x|): the screen holds whichever side carries which number
+    ov = []
+    for sense in (out[n] for n, role, *_ in KELVIN_PADS if role == 'sense'):
+        x0, x1 = sorted(abs(v) for v in sense['x'])
+        ov.append((min(x1, worst_body_end) - max(x0, electrode_inner),
+                   min(sense['y'][1], RLM12_BODY['W'][0] / 2) - sense['y'][0]))
+    overlap_x, overlap_y = min(o[0] for o in ov), min(o[1] for o in ov)
     gaps = []
     for a in KELVIN_PADS:
         for b in KELVIN_PADS:

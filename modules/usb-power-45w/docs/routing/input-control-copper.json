@@ -1,0 +1,1485 @@
+{
+  "status": "PARTIAL_ROUTING_NOT_RELEASED",
+  "baseline_board_sha256": "a0513a8ebf93c9d3f24f4d66bdea6994dde02b56bcef155d5b79a41214cc22f2",
+  "board_sha256": "adc54506df21a051ca5b9d5e0dcf44ffe11af859882f625f1be881629e98e0ea",
+  "footprints_unchanged": true,
+  "previous_copper_unchanged": true,
+  "zone_outlines_unchanged": true,
+  "protected_files_sha256": {
+    "tools/s92_parts.py": "1b7b95a41812cfb21f36ee7fa4d7138cdfada364b2ed933c1191dd0f7b541fac",
+    "tools/s92_contract.py": "be3c2854700a9c8b247597db0fd5e23c4cc12986c517461ab188de225daaf460",
+    "hardware/USBPOWER45.pretty/R_Shunt_1206_KelvinSplit_RLM12.kicad_mod": "2ab7b37950661debb292054dd15fafeb2a2957119d66a1942e96d771a7ca0344",
+    "hardware/usb-power-45w.kicad_pro": "7a0fcc78db293b6d0ba8934702f984d8cb713c7f21ac6b7e64b2aea46554be6c",
+    "hardware/usb-power-45w.kicad_dru": "78c74bbdeeb3fe41ce78298299a3d1ec62fcea472e05f15223d8c3bb3a1fea25"
+  },
+  "segments_added": 86,
+  "vias_added": 16,
+  "items": [
+    {
+      "uuid": "00d7d9e4-d180-5a74-a1c7-d42aead73663",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "at": [
+        69.6,
+        90.6
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "03e6fe6d-b3d3-5dda-a98f-dcfd5ba9eb1c",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_OV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        65.724999,
+        77.3
+      ],
+      "end": [
+        65.724999,
+        80.725
+      ]
+    },
+    {
+      "uuid": "04cd3ca7-e7de-50b0-b390-e432fccedce1",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        55.65,
+        76.95
+      ],
+      "end": [
+        55.65,
+        75.25
+      ]
+    },
+    {
+      "uuid": "1040c785-4431-501d-b871-cb511621bc83",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_DVDT",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        62.975,
+        83.1625
+      ],
+      "end": [
+        62.975,
+        83.6
+      ]
+    },
+    {
+      "uuid": "12f113ba-abc4-53d0-a445-d18244fa6b8b",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        59.725,
+        77.4375
+      ],
+      "end": [
+        60.375,
+        77.4375
+      ]
+    },
+    {
+      "uuid": "1363ca0c-5eae-553a-807e-33f789fc84f6",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        62.325,
+        81.8
+      ],
+      "end": [
+        60.05,
+        80.3
+      ]
+    },
+    {
+      "uuid": "14f3ef2b-8d75-5550-a5d8-38ddc3ed5172",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        63.2,
+        92.3
+      ],
+      "end": [
+        63.2,
+        90.55
+      ]
+    },
+    {
+      "uuid": "157f51b1-29b3-5cea-9040-f7f489311d14",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "at": [
+        76.3,
+        88.7
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "159a827e-f02f-5c32-8f24-f9561df93bcf",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        82.95,
+        85.9875
+      ],
+      "end": [
+        82.95,
+        86.3
+      ]
+    },
+    {
+      "uuid": "17d7a83c-2a5f-5c57-b993-4197ed2de7c9",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.025,
+        85.25
+      ],
+      "end": [
+        61.8,
+        86.025
+      ]
+    },
+    {
+      "uuid": "1b1204b8-45aa-5f0e-a637-7f68dd74bde6",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        55.2,
+        79.525
+      ],
+      "end": [
+        57.0,
+        79.525
+      ]
+    },
+    {
+      "uuid": "1e24b128-e4c5-5017-8790-775294b4b392",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_OV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        66.175,
+        76.65
+      ],
+      "end": [
+        65.724999,
+        77.3
+      ]
+    },
+    {
+      "uuid": "1f40bcbc-1cf5-572a-acd5-b330cb3b351d",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        63.0,
+        89.475
+      ],
+      "end": [
+        63.0,
+        88.2
+      ]
+    },
+    {
+      "uuid": "211b2d0a-c45b-58b8-bbaa-fab8222c2a8e",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        62.325,
+        83.1625
+      ],
+      "end": [
+        62.325,
+        81.8
+      ]
+    },
+    {
+      "uuid": "299e4dcd-38c9-57ab-a16e-0840b8756727",
+      "kind": "PCB_TRACK",
+      "net": "Net-(R29-Pad1)",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        55.65,
+        77.975
+      ],
+      "end": [
+        54.05,
+        77.975
+      ]
+    },
+    {
+      "uuid": "2ef2b7f8-99ef-52db-a6b8-2334cbdff867",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        76.3,
+        88.7
+      ],
+      "end": [
+        75.05,
+        88.625
+      ]
+    },
+    {
+      "uuid": "3405ca6b-3af2-52be-874f-5cb5c68e517f",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_IMON",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.2,
+        75.05
+      ],
+      "end": [
+        61.2,
+        74.35
+      ]
+    },
+    {
+      "uuid": "3424c947-de84-5459-9bfb-2ddcd8212d51",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        78.3,
+        91.4
+      ],
+      "end": [
+        81.2,
+        88.5
+      ]
+    },
+    {
+      "uuid": "37dd7b12-fcb6-5347-a769-f7c8d2eecc8b",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_OV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.675,
+        83.1625
+      ],
+      "end": [
+        61.675,
+        84.65
+      ]
+    },
+    {
+      "uuid": "3b739b1c-94db-5c16-82b4-0d35517db11e",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/UV_TRIM",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        63.0,
+        91.1
+      ],
+      "end": [
+        63.0,
+        91.125
+      ]
+    },
+    {
+      "uuid": "3c39b2d2-8a8d-5463-aa3a-9e175ddc9035",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        62.975,
+        76.5
+      ],
+      "end": [
+        63.6,
+        76.3
+      ]
+    },
+    {
+      "uuid": "41ed4a4e-d8e5-5de4-9656-14c10edb0420",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        82.0,
+        87.25
+      ],
+      "end": [
+        82.0,
+        87.4
+      ]
+    },
+    {
+      "uuid": "480bf5cb-3a9c-5479-b7dd-9a5f40c923ec",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        63.2,
+        92.3
+      ],
+      "end": [
+        64.524999,
+        92.3
+      ]
+    },
+    {
+      "uuid": "4a4b4cdb-82e2-5af8-bc3a-58690062fee0",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        55.65,
+        75.25
+      ],
+      "end": [
+        55.65,
+        76.325
+      ]
+    },
+    {
+      "uuid": "4da53240-0cc3-523d-88c5-7fdf888cd090",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_DVDT",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        62.975,
+        83.6
+      ],
+      "end": [
+        64.9,
+        83.825
+      ]
+    },
+    {
+      "uuid": "4f55a6de-2785-57e1-b535-d3f03c9a90d4",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.3,
+      "start": [
+        63.9,
+        81.95
+      ],
+      "end": [
+        63.1,
+        81.95
+      ]
+    },
+    {
+      "uuid": "4f64a5d6-5168-5804-9d75-6a114566ac16",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        77.9,
+        90.6
+      ],
+      "end": [
+        81.1,
+        87.4
+      ]
+    },
+    {
+      "uuid": "4f9308a6-2f32-591e-af97-f5c1510292e9",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        81.2,
+        88.5
+      ],
+      "end": [
+        82.8,
+        88.5
+      ]
+    },
+    {
+      "uuid": "52de24db-2f74-5544-b005-e2b56f452ead",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "at": [
+        63.6,
+        76.3
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "5429f20a-5ca8-54f8-96f7-78b0aa89020f",
+      "kind": "PCB_VIA",
+      "net": "GND",
+      "at": [
+        52.7,
+        76.6
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "5703d495-f6de-525b-859a-041a36878fc1",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        62.975,
+        77.4375
+      ],
+      "end": [
+        62.975,
+        76.5
+      ]
+    },
+    {
+      "uuid": "571eb6b3-4758-5fb5-972f-3cf3f0612263",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        57.0,
+        79.525
+      ],
+      "end": [
+        60.05,
+        80.3
+      ]
+    },
+    {
+      "uuid": "59c32296-1472-549a-bc13-78d685fc0cd0",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_OV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        65.724999,
+        84.65
+      ],
+      "end": [
+        65.724999,
+        80.725
+      ]
+    },
+    {
+      "uuid": "5b45bcc8-0556-5191-813e-bc7c226a5d1c",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        60.375,
+        76.4
+      ],
+      "end": [
+        60.05,
+        76.075
+      ]
+    },
+    {
+      "uuid": "5b48013b-ee50-5387-9fbe-1bc881df4c2b",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        88.1,
+        89.85
+      ],
+      "end": [
+        97.25,
+        89.85
+      ]
+    },
+    {
+      "uuid": "5c4ab1d7-5d28-5b9f-9efc-c6cf3f880248",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.8,
+        91.2
+      ],
+      "end": [
+        62.9,
+        92.3
+      ]
+    },
+    {
+      "uuid": "5d764bfd-deda-5f21-b456-ce23392ef32f",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        87.0,
+        75.5
+      ],
+      "end": [
+        87.0,
+        88.75
+      ]
+    },
+    {
+      "uuid": "5f014bbf-aa97-5840-a341-fc1b81ba13a1",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        86.0,
+        74.5
+      ],
+      "end": [
+        87.0,
+        75.5
+      ]
+    },
+    {
+      "uuid": "5f78ee47-f208-55f6-93e0-555d97e38ef3",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "at": [
+        68.9,
+        91.4
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "68252ea3-2464-5d3d-b149-21d409afc71f",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        87.0,
+        88.75
+      ],
+      "end": [
+        88.1,
+        89.85
+      ]
+    },
+    {
+      "uuid": "711deead-c3e2-5034-acfa-fe29f65f43f1",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "at": [
+        82.0,
+        87.4
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "72ed56ae-1d15-567f-9646-9d3cdabcfc13",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        69.6,
+        90.6
+      ],
+      "end": [
+        77.9,
+        90.6
+      ]
+    },
+    {
+      "uuid": "7c35469f-6ef6-5148-b1ec-261cba6b894f",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "at": [
+        63.2,
+        92.3
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "7e08cb84-297a-5a82-9cf2-5c87d5f70161",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.3,
+      "start": [
+        64.9,
+        79.075
+      ],
+      "end": [
+        63.1,
+        79.075
+      ]
+    },
+    {
+      "uuid": "7fc3b1b9-6268-52d4-b2ae-9e515768b6ac",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        65.2,
+        75.2
+      ],
+      "end": [
+        66.8,
+        76.8
+      ]
+    },
+    {
+      "uuid": "80996f93-9d49-55c6-b657-252b643d06ce",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        82.8,
+        87.5
+      ],
+      "end": [
+        82.8,
+        88.5
+      ]
+    },
+    {
+      "uuid": "80a526cc-5c5c-5678-8d3a-c482e8c6bfb9",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        71.0,
+        94.55
+      ],
+      "end": [
+        69.6,
+        94.55
+      ]
+    },
+    {
+      "uuid": "84bd57ed-b532-5fd2-8118-d4e2232dbf75",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        97.25,
+        89.85
+      ],
+      "end": [
+        96.325,
+        89.85
+      ]
+    },
+    {
+      "uuid": "8576337b-74a0-5434-aaee-9ceccf7a223a",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "at": [
+        82.8,
+        88.5
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "8d8e84d4-d2c9-5cef-96f8-161e9f33019d",
+      "kind": "PCB_VIA",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "at": [
+        55.65,
+        75.25
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "90800020-133f-5fe9-989b-4b26ffdf4735",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        83.95,
+        87.2
+      ],
+      "end": [
+        83.1,
+        87.2
+      ]
+    },
+    {
+      "uuid": "92f76d61-415f-5f41-b0e0-1d077f9e7536",
+      "kind": "PCB_VIA",
+      "net": "/MAIN_OK",
+      "at": [
+        60.05,
+        74.5
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "95f0150a-f76a-5955-8b15-c505f8756c97",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/UV_TRIM",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        66.174999,
+        92.3
+      ],
+      "end": [
+        66.175,
+        91.1
+      ]
+    },
+    {
+      "uuid": "96c37a47-312c-5cb5-a8dd-e37c02c6fb45",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        69.6,
+        94.55
+      ],
+      "end": [
+        69.6,
+        90.6
+      ]
+    },
+    {
+      "uuid": "96fccfd3-7ddf-5bf5-8d04-7f4b119bf498",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_IMON",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        60.875,
+        75.5
+      ],
+      "end": [
+        61.2,
+        75.05
+      ]
+    },
+    {
+      "uuid": "9c31a35f-f45c-5620-9ac1-3111e5b4f69e",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        83.95,
+        85.9875
+      ],
+      "end": [
+        83.95,
+        87.2
+      ]
+    },
+    {
+      "uuid": "9c4c38f7-5dad-56cb-858f-1fcdde023bbb",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_IMON",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.2,
+        74.35
+      ],
+      "end": [
+        64.0,
+        74.35
+      ]
+    },
+    {
+      "uuid": "9eeb1ce7-ffc1-52d1-91bd-29cb6cf3a753",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.675,
+        76.5
+      ],
+      "end": [
+        62.4,
+        75.8
+      ]
+    },
+    {
+      "uuid": "9f184b89-c9fc-59bc-8c77-3bea3c503e31",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        71.0,
+        95.78
+      ],
+      "end": [
+        71.0,
+        94.55
+      ]
+    },
+    {
+      "uuid": "9f85f0aa-6b8b-5fc2-9ef2-d828a1b15c75",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        62.325,
+        77.4375
+      ],
+      "end": [
+        62.325,
+        78.8
+      ]
+    },
+    {
+      "uuid": "a1622985-e48c-5333-8ccd-732e6677dbfc",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        59.225,
+        75.5
+      ],
+      "end": [
+        58.3,
+        75.15
+      ]
+    },
+    {
+      "uuid": "a29baca0-de16-5af7-9096-d3ea0f3c8db1",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        68.9,
+        93.65
+      ],
+      "end": [
+        68.9,
+        91.4
+      ]
+    },
+    {
+      "uuid": "a4683087-9f27-594a-baa3-c105040fd7e1",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.3,
+      "start": [
+        63.1,
+        79.075
+      ],
+      "end": [
+        60.05,
+        80.3
+      ]
+    },
+    {
+      "uuid": "a5bbde49-74e1-5ddc-8097-6129e792dc45",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        62.4,
+        75.8
+      ],
+      "end": [
+        62.4,
+        75.2
+      ]
+    },
+    {
+      "uuid": "a76096e5-b917-55f0-810a-da6043d3f715",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        68.9,
+        91.4
+      ],
+      "end": [
+        78.3,
+        91.4
+      ]
+    },
+    {
+      "uuid": "aeb7f69a-7fbb-53de-acc5-c08902131d9b",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_IMON",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.025,
+        77.4375
+      ],
+      "end": [
+        60.875,
+        75.5
+      ]
+    },
+    {
+      "uuid": "b2ffb109-6b4b-5d6b-a36d-cee65ca83fb3",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        68.0,
+        94.55
+      ],
+      "end": [
+        68.9,
+        93.65
+      ]
+    },
+    {
+      "uuid": "b91d6515-ce64-552c-adc4-8f3ee27691d7",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/UV_TRIM",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        66.175,
+        91.1
+      ],
+      "end": [
+        63.0,
+        91.1
+      ]
+    },
+    {
+      "uuid": "b9ffa8b9-a313-537e-8857-263dbb41b43a",
+      "kind": "PCB_VIA",
+      "net": "GND",
+      "at": [
+        66.8,
+        83.8
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "bf4ca582-b14e-52e4-8bbb-452d088e1912",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_OV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        65.724999,
+        80.725
+      ],
+      "end": [
+        64.9,
+        80.725
+      ]
+    },
+    {
+      "uuid": "bfb57bf8-dc67-5a0a-a8bd-fda26cf94d34",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        60.05,
+        76.075
+      ],
+      "end": [
+        60.05,
+        74.5
+      ]
+    },
+    {
+      "uuid": "ca47094d-29f7-5aa7-91e3-f832fbb52632",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        60.05,
+        74.5
+      ],
+      "end": [
+        86.0,
+        74.5
+      ]
+    },
+    {
+      "uuid": "ca498bc9-5c3b-5d6b-8780-308b8eec2a98",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_OV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.675,
+        84.65
+      ],
+      "end": [
+        65.724999,
+        84.65
+      ]
+    },
+    {
+      "uuid": "cba384b5-11cf-5d27-8ca3-ead069b5e93f",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.025,
+        83.1625
+      ],
+      "end": [
+        61.025,
+        85.25
+      ]
+    },
+    {
+      "uuid": "cdce2ed7-3f3b-5c13-aa28-6390aeaab05b",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.8,
+        86.025
+      ],
+      "end": [
+        61.8,
+        91.2
+      ]
+    },
+    {
+      "uuid": "cdd080c7-7c99-51e6-9817-9b8031c76880",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        63.6,
+        76.3
+      ],
+      "end": [
+        63.6,
+        77.6
+      ]
+    },
+    {
+      "uuid": "d1a45fca-fee3-56e7-8346-eeb0d2f11e93",
+      "kind": "PCB_TRACK",
+      "net": "/MAIN_OK",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        60.375,
+        77.4375
+      ],
+      "end": [
+        60.375,
+        76.4
+      ]
+    },
+    {
+      "uuid": "d4a9f026-69bf-57d7-9e91-bcd9302640da",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        62.325,
+        78.8
+      ],
+      "end": [
+        60.05,
+        80.3
+      ]
+    },
+    {
+      "uuid": "d4d533a2-36f4-5489-8bcc-97ee3fae81bf",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        62.9,
+        92.3
+      ],
+      "end": [
+        63.2,
+        92.3
+      ]
+    },
+    {
+      "uuid": "d5c0c33a-6546-5964-a814-d714fc4bbb87",
+      "kind": "PCB_VIA",
+      "net": "GND",
+      "at": [
+        63.0,
+        88.2
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "d65b4fd5-9281-5a27-b670-7067e1a5f3f5",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        64.0,
+        89.75
+      ],
+      "end": [
+        75.25,
+        89.75
+      ]
+    },
+    {
+      "uuid": "d84e7fe2-cdee-593a-a866-23f2c217f3c6",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        54.05,
+        76.325
+      ],
+      "end": [
+        52.7,
+        76.6
+      ]
+    },
+    {
+      "uuid": "d87e8f64-811c-530f-843c-36ff2352534c",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        66.8,
+        78.9
+      ],
+      "end": [
+        66.8125,
+        80.3
+      ]
+    },
+    {
+      "uuid": "dc3febdf-bc92-516c-ba23-eae15f517f7c",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        83.1,
+        87.2
+      ],
+      "end": [
+        82.8,
+        87.5
+      ]
+    },
+    {
+      "uuid": "df3b89b7-ea2f-5130-b0ec-53166c318f8f",
+      "kind": "PCB_VIA",
+      "net": "/MAIN_OK",
+      "at": [
+        97.25,
+        89.85
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "df7e6922-2f41-5260-a904-30df17005004",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.3,
+      "start": [
+        63.1,
+        81.95
+      ],
+      "end": [
+        60.05,
+        80.3
+      ]
+    },
+    {
+      "uuid": "e4f1dde8-a49f-55eb-a33a-48352bd267ec",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.3,
+      "start": [
+        64.9,
+        82.275
+      ],
+      "end": [
+        63.9,
+        81.95
+      ]
+    },
+    {
+      "uuid": "e546d48e-b8b4-5d82-9654-906dd0ec2e45",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        66.8,
+        76.8
+      ],
+      "end": [
+        66.8,
+        78.9
+      ]
+    },
+    {
+      "uuid": "e66fadc3-baad-5d9f-aa53-20c71ca5b150",
+      "kind": "PCB_VIA",
+      "net": "GND",
+      "at": [
+        58.3,
+        75.15
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "e808ac91-bb1f-514f-b3c9-5b9bccf208b3",
+      "kind": "PCB_VIA",
+      "net": "/RUN",
+      "at": [
+        62.4,
+        75.8
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "e8b30be4-3f57-5c36-b877-48d01f0774eb",
+      "kind": "PCB_VIA",
+      "net": "/RUN",
+      "at": [
+        66.8,
+        78.9
+      ],
+      "diameter": 0.6,
+      "drill": 0.3
+    },
+    {
+      "uuid": "e8c22a90-44ff-5059-8ecd-3dadcfc33308",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        62.4,
+        75.2
+      ],
+      "end": [
+        65.2,
+        75.2
+      ]
+    },
+    {
+      "uuid": "e93b7dbe-089d-5d95-80d7-fc48fb2a2d63",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_IMON",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        64.0,
+        74.35
+      ],
+      "end": [
+        64.75,
+        74.8
+      ]
+    },
+    {
+      "uuid": "ede7a09e-3d62-5b99-8e5b-b4689c4cb8c2",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        75.25,
+        89.75
+      ],
+      "end": [
+        76.3,
+        88.7
+      ]
+    },
+    {
+      "uuid": "edf9f699-2134-566a-a8a3-886cff5db63d",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        81.1,
+        87.4
+      ],
+      "end": [
+        82.0,
+        87.4
+      ]
+    },
+    {
+      "uuid": "f25b6845-4102-5cd8-9ab2-24ad6450f5f9",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_UV",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        63.2,
+        90.55
+      ],
+      "end": [
+        64.0,
+        89.75
+      ]
+    },
+    {
+      "uuid": "f7133533-9cc4-5032-9a62-d273f341f55e",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        56.3,
+        77.6
+      ],
+      "end": [
+        55.65,
+        76.95
+      ]
+    },
+    {
+      "uuid": "f92a027e-9eaf-5741-9bfe-7e06767c02d3",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC1",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        68.0,
+        95.78
+      ],
+      "end": [
+        68.0,
+        94.55
+      ]
+    },
+    {
+      "uuid": "fae91d8b-2ed1-5c6b-b009-99254fa3fef2",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/CC2",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        82.95,
+        86.3
+      ],
+      "end": [
+        82.0,
+        87.25
+      ]
+    },
+    {
+      "uuid": "fc91d941-d0ec-568e-bcbf-ccecb51c5cf0",
+      "kind": "PCB_TRACK",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.4,
+      "start": [
+        66.8125,
+        82.2
+      ],
+      "end": [
+        66.8,
+        83.8
+      ]
+    },
+    {
+      "uuid": "fd78c672-168d-5648-8e55-fd42a84eefae",
+      "kind": "PCB_TRACK",
+      "net": "/RUN",
+      "layer": "F.Cu",
+      "width": 0.25,
+      "start": [
+        61.675,
+        77.4375
+      ],
+      "end": [
+        61.675,
+        76.5
+      ]
+    },
+    {
+      "uuid": "fdb5a589-defa-5c99-b11e-a18859e0b7db",
+      "kind": "PCB_TRACK",
+      "net": "/USB PD, main eFuse and VIN damper/MAIN_ILM",
+      "layer": "B.Cu",
+      "width": 0.25,
+      "start": [
+        63.6,
+        77.6
+      ],
+      "end": [
+        56.3,
+        77.6
+      ]
+    }
+  ]
+}

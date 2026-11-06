@@ -1,6 +1,6 @@
-"""S8 single-board mechanical contract (P1 trial placement, unrouted). mm, stdlib only.
+"""mechanical contract (P1 trial placement, unrouted). mm, stdlib only.
 
-  python3 -B tools/mechanics_s8.py            # write docs/s8-single/mechanical.json (+ checks)
+  python3 -B tools/mechanics_s8.py            # write docs/design/mechanical.json (+ checks)
 
 The M1 contract (tools/mechanics45.py: frame, panel, carrier plane X2.5..4.1, Y14..114.5, bracket
 holes/cutbacks, brackets, fasteners, J1/SW1/LED registration, IDC plug envelope) with the S8
@@ -27,7 +27,7 @@ from pathlib import Path
 import mechanics45 as m45
 
 MODULE = Path(__file__).resolve().parents[1]
-OUT = MODULE / 'docs/s8-single/mechanical.json'
+OUT = MODULE / 'docs/design/mechanical.json'
 DEPTH_Z = 50.0           # board rear edge, from the panel FRONT (user: "up to 50mm depth")
 HEADER_PIN1_Z = 44.0     # J2/J3 pin 1 row moves 8 mm with the rear edge (M1: Z36 at a Z42 edge)
 CASE = {'source': 'modules/busboard/README.md + tools/mechanics45.py depth basis (60 mm case)',
@@ -36,8 +36,8 @@ CASE = {'source': 'modules/busboard/README.md + tools/mechanics45.py depth basis
 
 def geometry():
     g = m45.geometry()
-    g['revision'] = 'S9.2 single board P2.2: one carrier, every part on F, routing-ready placement, UNROUTED'
-    g['status'] = 'Trial placement for review. No tracks, vias or zones. Not a release.'
+    g['revision'] = 'S9.3-10P / R1: two 10-pin outputs, all parts on F, partial manual routing'
+    g['status'] = 'Partial manual routing. Nominal mechanical envelopes only; not a release or cable-fit qualification.'
     g['carrier_Z_mm'] = [2.0, DEPTH_Z]
     g['depth_target'] = {
         'limit_from_panel_front_mm': DEPTH_Z,
@@ -50,9 +50,19 @@ def geometry():
     g['LEDs'] = [l for l in g['LEDs'] if l['reference'] == 'D8']
     g['LED']['note'] = ('S8: one panel LED (D8 MAIN). No LED MPN selected (manual part, user stock 3 mm red). '
                         'Form leads in a jig with the panel.')
-    g['headers'] = [{'reference': 'J2', 'pin1_YZ_mm': [76.0, HEADER_PIN1_Z], 'rotation_deg': 270},
-                    {'reference': 'J3', 'pin1_YZ_mm': [107.0, HEADER_PIN1_Z], 'rotation_deg': 270}]
-    g['header']['note'] = 'J2/J3 = Wurth 61201621621 (selected in the S8 table), hand-soldered THT.'
+    g['headers'] = [{'reference': 'J2', 'pin1_YZ_mm': [76.0, HEADER_PIN1_Z], 'rotation_deg': 270, 'rows': 5},
+                    {'reference': 'J3', 'pin1_YZ_mm': [107.0, HEADER_PIN1_Z], 'rotation_deg': 270, 'rows': 5}]
+    g['header'].update(
+        footprint='USBPOWER45:IDC-Header_2x05_P2.54mm_Vertical_Wurth_61201021621',
+        reference_body='Wurth 61201021621: L 20.36 +/-0.20, W 8.85 +/-0.15, H 9.1 +/-0.15 mm',
+        reference_url='https://www.we-online.com/components/products/datasheet/61201021621.pdf',
+        body_LWH_max_mm=[20.56, 9.0, 9.25], kicad_courtyard_local_mm=[-3.68, -5.6, 6.22, 15.76],
+        envelope_label='Wurth 61201021621 10-pin body max',
+        note='R1: J2/J3 10-pin, 1.1 mm drills, original pin-1 position/orientation retained.')
+    g['mating_plug'].update(
+        reference='3M D89110 10-way dimensional reference only: body 17.3 x 6.1 mm, without tall strain relief; cable not selected',
+        proposal_body_LW_mm=[17.6, 6.2], ribbon_width_Y_mm=13.2,
+        requirement='10-pin keyed IDC + 1.27 mm ribbon; mated height <=14.8 mm above F.Cu. No tall strain relief unless measured to fit. Cable/contact qualification remains open.')
     g['mating_plug']['ribbon_shown_to_Z_mm'] = DEPTH_Z + 8.0
     g['cans'] = {'status': 'none: S8 is all-ceramic', 'parts': []}
     g['single_side'] = 'every part on F (user 2026-11-01: "Use single side for now"); B face: copper only'

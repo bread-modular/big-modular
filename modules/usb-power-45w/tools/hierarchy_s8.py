@@ -1,6 +1,6 @@
-"""Readable S8 single-board hierarchy (wired power-flow overview + six pages).
+"""Readable hierarchy (wired power-flow overview + six pages).
 
-Same method as tools/hierarchy6.py (S7): consumes the exact, native-verified flat S8 sheet,
+Consumes the exact, native-verified flat S8 sheet,
 moves whole wired islands onto their page, adds the explicitly listed readability links and
 real hierarchical pins for every net that crosses pages, then checks native flat/hierarchy
 parity (components, fields, pin memberships). Page 05 of S7 (negative protection) is gone; the
@@ -80,13 +80,13 @@ NOTES = {
     'U11 -> ARMED after 0.31-0.88 s. RESET clears STARTED/FAULT; U20 OV_N presets FAULT even before ARMED.\n'
     'A full V3V3/POR reset DOES re-arm: qualification rejects repetitive hard-reset sources; no masking by retries.\n'
     'ANY_BAD = NAND(MAIN_LED_OK,P12_OK,N12_OK,V3V3). R83 100k validity floor unchanged.',
- 5: 'S9.2: +/-12V only, J2/J3 pins 11-16 NC. MAIN LED only. U18/U20 on VPD, own REF_OV unchanged.\n'
+ 5: 'S9.3-10P: +/-12V only, J2/J3 10-pin IDC (1/2 -12V, 3-8 GND, 9/10 +12V). MAIN LED only. U18/U20 on VPD, own REF_OV unchanged.\n'
     'Guard +12V 14.48-15.27 V, -12V magnitude 13.27-14.02 V. Guard disconnects INPUT, not an external bus.\n'
     'No rail crowbar or eFuse. Uninjected rails decay with load; injected rail remains at the external voltage.\n'
-    'See docs/s8-single-board.md and docs/s8-single/routing-notes.md for acceptance tests and routing rules.'}
+    'See docs/design.md and docs/design/routing-notes.md for acceptance tests and routing rules.'}
 REV = 'S9.2'
-PAGE_COMMENT = 'S9.2 routing-ready; P2.2 UNROUTED; docs/s8-single-board.md'
-ROOT_TITLE = ('USB POWER S9.2 / SINGLE BOARD, +/-12V ONLY, 15 V PD INPUT (ROUTING-READY, NOT ROUTED)',
+PAGE_COMMENT = 'S9.2 routing-ready; P2.2 UNROUTED; docs/design.md'
+ROOT_TITLE = ('USB POWER S9.2, +/-12V ONLY, 15 V PD INPUT (ROUTING-READY, NOT ROUTED)',
               'Own-input enable; OVP-coordinated VIN clamp; PGND star at C82; Kelvin R109; STARTED one-shot; no crowbar.')
 DESCRIPTIONS = {1:'15 V PD / TPS16630 / OVP + VIN clamp', 2:'TPS552892-Q1 buck-boost / Kelvin R109 / AGND star',
                 3:'LMR38020F / own-input enable', 4:'Always-on logic / STARTED + FAULT / RESET',
@@ -213,7 +213,7 @@ def split(root_path, docs_dir, api):
                            f'(uuid "{api.uid("S8/wire/" + str(count))}"))'))
 
     def link(pg, a, b, lane=None):
-        """Explicit schematic-only lane for one listed connection (see hierarchy6.link)."""
+        """Explicit schematic-only lane for one listed connection."""
         aa, bb = ends[a], ends[b]; net = pin_nets[a]; assert net == pin_nets[b], (a, b, net, pin_nets[b])
 
         def on(p, x, y):
@@ -313,7 +313,7 @@ def split(root_path, docs_dir, api):
     root[:] = [n for n in root if not isinstance(n, list) or n[0] in
                ['version', 'generator', 'generator_version', 'uuid', 'paper', 'title_block', 'lib_symbols', 'embedded_fonts']]
     one(root, 'paper')[1:] = ['User', 560, 530]; one(root, 'lib_symbols')[1:] = []
-    one(one(root, 'title_block'), 'title')[1] = 'USB power S9 single board - wired power flow overview'
+    one(one(root, 'title_block'), 'title')[1] = 'USB power S9 board - wired power flow overview'
     for t, (x, y, size) in zip(ROOT_TITLE, ((20.32, 15.24, 2.4), (20.32, 25.4, 1.2))):
         text(root, t, x, y, size)
     boxes = {1: (40.64, 60.96, 81.28, 111.76), 2: (177.8, 50.8, 101.6, 81.28),

@@ -1,5 +1,5 @@
 """S9.2 item 4: design-derived models. Everything here is read from a connectivity view of the DESIGN - the exported
-native netlist (kicad-cli XML of hardware/single/*.kicad_sch) or the generator table (tools/circuit_s8.py) - so the
+native netlist (kicad-cli XML of hardware/*.kicad_sch) or the generator table (tools/circuit_s8.py) - so the
 U4-enable truth table and the 3 A startup plant change when a pin, a net or a value changes. Negative controls in
 tools/test_s8.py move single pins in a copy of the netlist and must make these checks fail.
 

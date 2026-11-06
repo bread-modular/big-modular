@@ -1,34 +1,15 @@
-"""Generate the usb-power-45w M1 mechanical-preview boards (UNROUTED) with KiCad's pcbnew 10.
+"""Shared pcbnew 10 board helpers for tools/build_s8_board.py and tools/build_s8_panel.py.
 
-Run from the repository root, after tools/mechanics45.py:
-  python3 -B modules/usb-power-45w/tools/build_layout.py [--panel-only]
-
-Writes
-- (history, now refused) the perpendicular 4-layer M1 carrier, archived read-only at
-  archive/r1-monolithic/usb-power-45w-r1-monolithic.kicad_pcb (hardware/usb-power-45w.kicad_pcb
-  is the routed BASE board now and is never written here). Was: Outline, M3 holes and
-  bracket cutbacks copied from modules/usb-power (rear edge moved to Z42). References,
-  values, fields, hierarchical symbol links and pad nets come from the native root
-  schematic netlist (what "Update PCB from Schematic" does), so every schematic footprint
-  is present with exact pads/nets. PLACED: the panel-interface parts J1, SW1, D8, D16-D18,
-  the output headers J2/J3, and the four retained cans C5/C34/C35/C36 at PROVISIONAL
-  height-context positions. Every other SMD part is PARKED OFF-BOARD (not placed).
-  No tracks, vias or zones.
-- panels/front-pcb/usb-power-45w-panel.kicad_pcb: passive 4HP panel (outline, USB aperture,
-  NPTH holes, silkscreen labels).
-
-Geometry comes from docs/mechanical-geometry.json. The board is built and saved in a
-private temporary project copy; only the .kicad_pcb is copied back, so the schematic
-project file is never rewritten. Refuses to overwrite a carrier that already has copper.
+Coordinate frames (V carrier, CV carrier Y/Z, PV panel), board creation, drawing primitives,
+footprint placement from hardware/USBPOWER45.pretty, NPTH holes and save_canonical() (saves in a
+private temporary project copy so the project file is never rewritten). Geometry comes from
+docs/mechanical-geometry.json.
 """
-import argparse
 import json
 import shutil
-import subprocess
 import sys
 import tempfile
 import uuid
-import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pcbnew
@@ -37,16 +18,11 @@ MODULE = Path(__file__).resolve().parents[1]
 HW = MODULE / 'hardware'
 sys.path.insert(0, str(MODULE / 'tools'))
 from mechanics45 import carrier_outline, carrier_xy, panel_xy  # noqa: E402
-from stack_r2 import R1_ARCHIVE, system_root  # noqa: E402
 
 GEO = json.loads((MODULE / 'docs/mechanical-geometry.json').read_text())
 LIBNAME = 'USBPOWER45'
 LIB = HW / f'{LIBNAME}.pretty'
 IO = pcbnew.PCB_IO_MGR.FindPlugin(pcbnew.PCB_IO_MGR.KICAD_SEXP)
-CARRIER = R1_ARCHIVE   # archived R1 history: build_carrier() refuses to write it
-PANEL_DIR = MODULE / 'panels/front-pcb'
-PANEL = PANEL_DIR / 'usb-power-45w-panel.kicad_pcb'
-OLD_PANEL_PRO = MODULE.parent / 'usb-power/panels/front-pcb/usb-power-panel.kicad_pro'
 
 # JLC04161H-7628 4-layer 1.6 mm stack, same block as modules/4mix and modules/usb-power.
 STACKUP_4L = """\t\t(stackup
@@ -79,27 +55,6 @@ def CV(y, z):
 
 def PV(x, y):
     return V(*panel_xy(x, y))
-
-
-def schematic_netlist():
-    with tempfile.TemporaryDirectory() as tmp:
-        out = Path(tmp) / 'n.xml'
-        subprocess.run(['kicad-cli', 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', str(out),
-                        str(system_root())], check=True, stdout=subprocess.DEVNULL)
-        root = ET.parse(out).getroot()
-    comps = {}
-    for c in root.find('components'):
-        fields = {f.get('name'): f.text or '' for f in c.find('fields') if f.get('name') != 'Footprint'}
-        props = {p.get('name'): p.get('value') for p in c.findall('property')}
-        sp = c.find('sheetpath')
-        comps[c.get('ref')] = {'value': c.findtext('value'), 'footprint': c.findtext('footprint'),
-                               'path': sp.get('tstamps') + c.findtext('tstamps').split()[0],
-                               'sheetname': sp.get('names'), 'sheetfile': props.get('Sheetfile', ''),
-                               'fields': fields, 'no_bom': 'exclude_from_bom' in props,
-                               'no_pos': 'exclude_from_pos_files' in props, 'dnp': 'dnp' in props}
-    nets = {net_name(n.get('name')): [(d.get('ref'), d.get('pin')) for d in n.findall('node')]
-            for n in root.find('nets')}
-    return comps, nets
 
 
 def net_name(name):
@@ -258,156 +213,3 @@ def save_canonical(board, dest, pro_src, stackup=None):
         pcbnew.SaveBoard(str(path), pcbnew.LoadBoard(str(path)))
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, dest)
-
-
-def build_carrier():
-    raise SystemExit(f'build_layout.py carrier: refused. {CARRIER.relative_to(MODULE)} is archived R1 history '
-                     'and the stacked boards own the copper; use --panel-only.')
-    if CARRIER.exists():
-        old = pcbnew.LoadBoard(str(CARRIER))
-        if list(old.GetTracks()) or list(old.Zones()):
-            raise RuntimeError('Refusing to overwrite a carrier with copper/zones; edit it explicitly.')
-    comps, nets = schematic_netlist()
-    board = new_board('Big Modular - usb-power-45w carrier (M1 mechanical preview)', [
-        'M1 PREVIEW, UNROUTED: no tracks/vias/zones. Not a placement or release.',
-        'Placed: J1 SW1 D8 D16 D17 D18 J2 J3; C5 C34 C35 C36 PROVISIONAL height context only',
-        'All other SMD PARKED OFF-BOARD (native x >= 160): NOT placed',
-        'Geometry: docs/mechanical-geometry.json; nets: hardware/usb-power-45w-system.kicad_sch'], 'M1')
-    board.SetCopperLayerCount(GEO['carrier_layers'])
-    board.GetDesignSettings().SetBoardThickness(pcbnew.FromMM(GEO['carrier_thickness_mm']))
-    pts = carrier_outline(GEO)
-    for a, b in zip(pts, pts[1:] + pts[:1]):
-        line(board, pcbnew.Edge_Cuts, CV(*a), CV(*b))
-    for y, z in GEO['carrier_holes_YZ_mm']:
-        npth(board, '', f'M3_Y{y:g}', CV(y, z), GEO['carrier_hole_mm'], 'M3 bracket hole')
-    placed = {}
-    j1 = GEO['USB']
-    placed['J1'] = place(board, 'J1', comps['J1'], V(*j1['native_origin_xy_mm']), j1['orientation_deg'])
-    for led in GEO['LEDs']:
-        placed[led['reference']] = place(board, led['reference'], comps[led['reference']], CV(*led['pad1_YZ_mm']))
-    placed['SW1'] = place(board, 'SW1', comps['SW1'], CV(*GEO['switch']['peg_row_YZ_mm']))
-    for h in GEO['headers']:
-        placed[h['reference']] = place(board, h['reference'], comps[h['reference']], CV(*h['pin1_YZ_mm']),
-                                       h['rotation_deg'])
-    for c in GEO['cans']['parts']:
-        placed[c['reference']] = place(board, c['reference'], comps[c['reference']], CV(*c['YZ_mm']),
-                                       c['rotation_deg'], anchor='centre')
-    # Park every other part off-board on F (shelf packing by courtyard, 0.6 mm gaps).
-    key = lambda r: (''.join(ch for ch in r if ch.isalpha()), int(''.join(ch for ch in r if ch.isdigit())))
-    px, py = GEO['smd_parking']['origin_native_mm']
-    x, y, row_h, xmax = px, py, 0.0, px + 95
-    for ref in sorted(set(comps) - set(placed), key=key):
-        fp = place(board, ref, comps[ref], V(0, 0))
-        l, t, r, b = (pcbnew.ToMM(v) for v in courtyard(fp))
-        w, h = r - l, b - t
-        if x + w > xmax:
-            x, y, row_h = px, y + row_h + 0.6, 0.0
-        fp.Move(V(x - l, y - t))
-        x += w + 0.6
-        row_h = max(row_h, h)
-    fps = {fp.GetReference(): fp for fp in board.GetFootprints() if fp.GetReference()}
-    assert set(fps) == set(comps), set(fps) ^ set(comps)
-    for name, members in nets.items():
-        net = pcbnew.NETINFO_ITEM(board, name)
-        board.Add(net)
-        net.thisown = 0
-        for ref, pin in members:
-            pads = [p for p in fps[ref].Pads() if p.GetNumber() == pin]
-            assert pads, f'{ref} has no pad {pin}'
-            for p in pads:
-                p.SetNet(net)
-    for fp in fps.values():
-        for p in fp.Pads():
-            assert p.GetNumber() == '' or p.GetNetname(), f'{fp.GetReference()} pad {p.GetNumber()} has no net'
-    # Non-fabricated planning graphics (User.Drawings / User.Comments).
-    D, C = pcbnew.Dwgs_User, pcbnew.Cmts_User
-    b = GEO['brackets']
-    for yc in b['Y_centres_mm']:
-        rect(board, D, CV(yc - 5, b['front_foot_Z_mm'][1]), CV(yc + 5, b['outer_Z_mm'][1]), 0.1)
-        text(board, D, 'BRACKET WEB on B face', CV(yc, 21.2), 0.8)
-        r = b['side_nut_driver_diameter_max_mm'] / 2
-        shape(board, D, pcbnew.SHAPE_T_CIRCLE, 0.1, center=CV(yc, b['side_hole_Z_mm']),
-              end=CV(yc + r, b['side_hole_Z_mm']))
-        text(board, C, 'F-side M3 nut + 8 mm driver keep-out', CV(yc + 10, b['side_hole_Z_mm'] + 5.6), 0.8)
-    for h in GEO['headers']:
-        e = GEO['envelopes_XYZ_mm'][h['reference'] + '_plug']['XYZ']
-        rect(board, D, CV(e[1][0], e[2][0]), CV(e[1][1], e[2][1]), 0.1)
-        text(board, D, f'{h["reference"]} IDC plug PROPOSAL envelope; ribbon exits +Z (rear)', CV(sum(e[1]) / 2, 42.8), 0.8)
-        # Old usb-power J7 marking: horizontal "1 / -12V / RED" outside the box body (front side,
-        # visible with the plug mated) and B silk per-pin labels (R1 step 0, tools/r1_prep.py).
-        hp = {p.GetNumber(): p.GetPosition() for p in placed[h['reference']].Pads()}
-        x1, y2 = pcbnew.ToMM(hp['1'].x), pcbnew.ToMM(hp['2'].y)
-        text(board, pcbnew.F_SilkS, '1 / -12V / RED', V(x1 + 5.25, y2 + 4.3), 0.8,
-             justify=pcbnew.GR_TEXT_H_ALIGN_RIGHT)
-        for i, lab in enumerate(['N12', 'GND', 'GND', 'GND', 'P12', 'P5', 'NC', 'NC']):
-            text(board, pcbnew.B_SilkS, lab, V(x1 - 2.54 * i, y2 + 2.16), 0.8, mirror=True)
-    z = GEO['depth_target']['limit_behind_panel_rear_mm'] + GEO['panel_mm'][2]
-    y0, y1 = GEO['carrier_Y_mm']
-    line(board, C, CV(y0, z), CV(y1, z), 0.1)
-    text(board, C, f'42 mm behind panel rear (Z{z:g}) target', CV((y0 + y1) / 2, z + 0.9), 0.8)
-    line(board, C, CV(y0, GEO['panel_mm'][2]), CV(y1, GEO['panel_mm'][2]), 0.1)
-    text(board, C, 'panel REAR face Z1.6 (carrier front edge Z2)', CV(70, 0.6), 0.8)
-    for c in GEO['cans']['parts']:
-        text(board, D, 'PROVISIONAL', CV(c['YZ_mm'][0], c['YZ_mm'][1] - 4.6), 0.8)
-    text(board, C, 'PARKED OFF-BOARD SMD: NOT PLACED (M1 mechanical preview)', V(px + 40, py - 3), 1.2)
-    text(board, C, 'M1 PREVIEW - UNROUTED - SMD PARKED - NOT FOR FABRICATION', CV(64, 39.5), 1.2)
-    save_canonical(board, CARRIER, CARRIER.with_suffix('.kicad_pro'), STACKUP_4L)
-    return CARRIER
-
-
-def build_panel():
-    board = new_board('Big Modular - usb-power-45w 4HP front panel (M1 preview)', [
-        'Passive panel, NPTH only, no copper. 4HP 20.0 x 128.5 x 1.6',
-        'Rail holes from modules/blank 4HP; bracket holes/USB aperture copied from usb-power',
-        'Geometry: ../../docs/mechanical-geometry.json'], 'M1')
-    pw, ph, _ = GEO['panel_mm']
-    E = pcbnew.Edge_Cuts
-    rect(board, E, PV(0, 0), PV(pw, ph))
-    x, y, w, h, r = GEO['aperture_XYWHR_mm']
-    line(board, E, PV(x + r, y), PV(x + w - r, y))
-    line(board, E, PV(x + w, y + r), PV(x + w, y + h - r))
-    line(board, E, PV(x + w - r, y + h), PV(x + r, y + h))
-    line(board, E, PV(x, y + h - r), PV(x, y + r))
-    k = r * (1 - 2 ** -0.5)
-    for (sx, sy), (mx, my), (ex, ey) in [
-            ((x, y + r), (x + k, y + k), (x + r, y)),
-            ((x + w - r, y), (x + w - k, y + k), (x + w, y + r)),
-            ((x + w, y + h - r), (x + w - k, y + h - k), (x + w - r, y + h)),
-            ((x + r, y + h), (x + k, y + h - k), (x, y + h - r))]:
-        shape(board, E, pcbnew.SHAPE_T_ARC, 0.05, start=PV(sx, sy), mid=PV(mx, my), end=PV(ex, ey))
-    holes = ([('rail', *hh) for hh in GEO['rail_holes_mm']] + [('bracket', *hh) for hh in GEO['panel_bracket_holes_mm']]
-             + [(l['reference'], *l['panel_XY_diameter_mm']) for l in GEO['LEDs']]
-             + [('SW1', *GEO['reset_XY_diameter_mm'])])
-    for i, (role, hx, hy, d) in enumerate(holes, 1):
-        npth(board, f'H{i}', f'H{i}', PV(hx, hy), d, f'NPTH {role}')
-    S = pcbnew.F_SilkS
-    lx = 13.6
-    text(board, S, 'USB', PV(10.0, 10.6), 1.6)
-    text(board, S, 'POWER', PV(10.0, 13.4), 1.6)
-    text(board, S, 'USB-C', PV(lx, 32.4), 1.2)
-    text(board, S, 'PD 20V', PV(lx, 34.8), 1.2)
-    for l in GEO['LEDs']:
-        text(board, S, l['label'], PV(lx, l['panel_XY_diameter_mm'][1]), 1.2)
-    text(board, S, 'RESET', PV(lx, GEO['reset_XY_diameter_mm'][1]), 1.2)
-    text(board, S, 'BIG MOD', PV(10.0, 116.0), 1.0)
-    D = pcbnew.Dwgs_User
-    for i, note in enumerate([
-            '4HP 20.0 x 128.5 x 1.6; rail holes X12.58 Y3/125.5 (blank 4HP precedent)',
-            'M3 bracket holes X6.4 Y22/106.5; USB aperture/LED X6.1/SW1 X5.8 copied from usb-power',
-            'LEDs D8 MAIN, D16 +12V, D17 +5V, D18 -12V (THT, hand-soldered); SW1 TL3340 SMT side reset',
-            'M1 preview: not supplier-accepted, not a release']):
-        text(board, D, note, PV(pw + 40, 6 + 3 * i), 0.9)
-    save_canonical(board, PANEL, OLD_PANEL_PRO)
-    pro = json.loads(OLD_PANEL_PRO.read_text())
-    pro['meta']['filename'] = PANEL.with_suffix('.kicad_pro').name
-    PANEL.with_suffix('.kicad_pro').write_text(json.dumps(pro, indent=2) + '\n')
-    return PANEL
-
-
-if __name__ == '__main__':
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--panel-only', action='store_true')
-    args = ap.parse_args()
-    if not args.panel_only:
-        print(build_carrier())
-    print(build_panel())

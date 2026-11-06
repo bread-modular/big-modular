@@ -1,4 +1,4 @@
-"""S8 single-board regressions: table derivation, final schematic (rail LEDs removed), S8.1 guard (reference,
+"""regressions: table derivation, final schematic (rail LEDs removed), S8.1 guard (reference,
 clamp, pin map), S8.3 +5V series disconnect, native verifier (negative controls), P1.4 board and mechanics
 contract, calcs. S8.4 review fixes: C1 (U23 FLT never reaches P5_OK / the latch), M1 (TIMER_GO follows MAIN_OK,
 not V20_OK), M2 (load release vs OVLO, falling threshold), M3 (V3V3 loss), M4 (local loops), M5 (rating),
@@ -43,7 +43,7 @@ MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
 COMPONENTS = 185                       # S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads;
                                        # S9.3 + 10 (soft starts C84/D27/R116, C85/D28/R117; sequencing Q16/R118/C86/R119)
-ROOT = DESIGN / 'hardware/single/usb-power-45w-single.kicad_sch'
+ROOT = DESIGN / 'hardware/usb-power-45w.kicad_sch'
 
 def verify_native(path):
     return verify_s8.verify(path, hardware=DESIGN / 'hardware', root=ROOT)
@@ -269,7 +269,7 @@ class NativeS8(unittest.TestCase):
     def test_plus5_removal_negative_controls(self):
         """S9.0: re-attaching any former +5V function must fail the verifier (a +5V net, P5_OK into the fault chain, a
         spare comparator output back on OV_N, a header +5V pin, a former +5V ref)."""
-        for ref, pin, net in [('J2', '11', '+12V'), ('J3', '12', 'GND'), ('U14', '4', 'P12_OK'), ('U20', '1', 'OV_N'),
+        for ref, pin, net in [('U14', '4', 'P12_OK'), ('U20', '1', 'OV_N'),
                               ('U18', '2', 'ANY_BAD'), ('U18', '5', 'REF_GOOD'), ('U20', '7', 'REF_OV'),
                               ('U14', '4', 'P5_OK'), ('R94', '2', '+5V')]:
             with self.subTest(ref=ref, pin=pin, net=net):
@@ -277,6 +277,17 @@ class NativeS8(unittest.TestCase):
                 rewire(self.xml, bad, [(ref, pin, net)])
                 with self.assertRaises(AssertionError):
                     verify_native(bad)
+
+    def test_removed_header_contacts_rejected(self):
+        """R1: reinserting even one of the deleted 16-pin contacts is an error, not an ignored NC."""
+        for ref, pin, net in [('J2', '11', '+12V'), ('J3', '12', 'GND')]:
+            tree = ET.parse(self.xml)
+            target = tree.find(f'./nets/net[@name="{net}"]')
+            ET.SubElement(target, 'node', ref=ref, pin=pin, pinfunction='Pin_' + pin, pintype='passive')
+            bad = Path(self.tmp.name) / f'extra-{ref}-{pin}.xml'
+            tree.write(bad)
+            with self.assertRaises(AssertionError):
+                verify_native(bad)
 
     def test_wrong_pin_role_rejected(self):
         tree = ET.parse(self.xml)
@@ -320,7 +331,8 @@ class FinalSchematic(unittest.TestCase):
         self.assertEqual((parts['U18']['pins']['2'], parts['U18']['pins']['4'], parts['U18']['pins']['5']),
                          (None, 'REF_GOOD', 'GND'))
         for j in ('J2', 'J3'):
-            self.assertEqual([parts[j]['pins'][str(k)] for k in range(11, 17)], [None] * 6)
+            self.assertEqual(set(parts[j]['pins']), set(map(str, range(1, 11))))
+            self.assertEqual(parts[j]['fields']['MPN'], '61201021621')
         self.assertEqual({v for k, v in parts['U5']['pins'].items() if k in ('1', '7', '8', '10', '11', '14')},
                          {'MAIN_IN', 'MAIN_UV', 'MAIN_OV', 'MAIN_DVDT', 'MAIN_ILM', 'MAIN_IMON'})
         for r in ('U18', 'U20'):
@@ -383,17 +395,25 @@ class FinalSchematic(unittest.TestCase):
 
 
 class PlacedBoard(unittest.TestCase):
-    """P1 trial placement (tools/place_s8.py) on the Z50 single carrier: every part on F, rules checked."""
+    """P1 trial placement (tools/place_s8.py) on the Z50 carrier: every part on F, rules checked."""
 
     def test_placement_rules(self):
         out = subprocess.run([sys.executable, '-B', str(HERE / 'check_s8_board.py'), '--board', str(BOARD)],
                              capture_output=True, text=True, check=True).stdout
         r = json.loads(out[out.index('{'):])
-        self.assertTrue(r['pass'], {k: r[k] for k in ('parked_parts', 'courtyard_overlaps', 'edge_rule_findings_not_approved')})
+        self.assertTrue(r['pre_routing_checklist']['pass'], r['pre_routing_checklist'])
+        self.assertFalse(r['pass'], 'R1 partial routing must NOT pass the final copper/thermal gate')
+        self.assertEqual(r['post_routing_screen']['status'], 'FAIL')
         self.assertEqual(r['parts_on_board'], COMPONENTS)
-        # S9.2b: the only copper is the beside-pad thermal fields (26 vias + 26 spokes, 3 B.Cu landing pours); no routing
-        self.assertEqual((r['parked_parts'], r['parts_on_B'], r['routed_items'], r['tracks'], r['zones']),
-                         ([], [], 0, 52, 3))
+        # R1 (routing closed, B222): every part on F except the user-approved B-side copper-only test points, each with
+        # its own B courtyard >= 1 mm from the edge; 28 copper zones (In1 PGND, In2 V3V3/VIN, F/B pours, thermal fields).
+        self.assertEqual((r['parked_parts'], r['parts_on_B']), ([], []))
+        self.assertEqual(sorted(r['test_points_on_B']), sorted(f'TP{n}' for n in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14,
+                                                                                  15, 16, 17, 19, 20, 24, 25, 26, 27, 30)))
+        self.assertTrue(all(x['courtyard_to_edge_mm'] >= 1.0 for x in r['test_points_on_B'].values()), r['test_points_on_B'])
+        self.assertGreater(r['routed_items'], 0)
+        self.assertGreater(r['tracks'], 52)
+        self.assertEqual(r['zones'], 28)
         self.assertEqual(set(r['headers_vs_contract']), {'J2', 'J3'})
         self.assertTrue(all(h['matches'] for h in r['headers_vs_contract'].values()))
         self.assertEqual(r['board_rear_edge_Z_from_panel_front'], 50.0)
@@ -436,25 +456,27 @@ class PlacedBoard(unittest.TestCase):
         risks = {x['id']: x for x in mechanics_s8.risks(g, rep)}
         self.assertEqual(risks['IDC_strain_relief_overshoot']['value_mm'], -0.4)
         self.assertEqual(risks['IDC_envelope_margin']['value_mm'], 1.1)
-        rec = json.loads((DESIGN / 'docs/s8-single/mechanical.json').read_text())
+        rec = json.loads((DESIGN / 'docs/design/mechanical.json').read_text())
         self.assertEqual({x['id'] for x in rec['risks']} >= {'IDC_strain_relief_overshoot', 'IDC_envelope_margin'}, True)
 
 
 class ReviewRecord(unittest.TestCase):
-    """S9.2: docs/s8-single/review-s92.json (tools/review_s8.py) hashes match the files in the tree, and it hashes only
+    """R1-start checkpoint hashes match the current partial-routing tree; S9.3 review remains historical. It hashes only
     files git tracks (S8.4 hashed the git-ignored *.kicad_prl files: the suite failed from a fresh checkout)."""
 
     def test_review_hashes_match(self):
         import hashlib
-        self.assertFalse((MODULE / 'docs/s8-single/review-s85.json').exists(), 'S8.5 record replaced (git history)')
-        self.assertFalse((MODULE / 'docs/s8-single/review-s91.json').exists(), 'S9.1 record replaced (git history)')
-        self.assertFalse((MODULE / 'docs/s8-single/review-s92.json').exists(), 'S9.2 record replaced (git history)')
-        rec_path = MODULE / 'docs/s8-single/review-s93.json'
+        self.assertFalse((MODULE / 'docs/design/review-s85.json').exists(), 'S8.5 record replaced (git history)')
+        self.assertFalse((MODULE / 'docs/design/review-s91.json').exists(), 'S9.1 record replaced (git history)')
+        self.assertFalse((MODULE / 'docs/design/review-s92.json').exists(), 'S9.2 record replaced (git history)')
+        rec_path = MODULE / 'docs/routing/checkpoint.json'
         if DESIGN.resolve() != MODULE.resolve() or not rec_path.exists():
             self.skipTest('review record applies to the module tree once generated (tools/review_s8.py)')
         rec = json.loads(rec_path.read_text())
-        self.assertEqual(rec['revision'], 'S9.3 / P2.3')
-        hashed = [rel for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256')
+        self.assertEqual(rec['revision'], 'S9.3-10P / R1-start')
+        self.assertEqual(rec['status'], 'PARTIAL_ROUTING_NOT_RELEASED')
+        self.assertFalse(rec['routing_complete'])
+        hashed = [rel for group in ('sources_sha256', 'artifacts_sha256')
                   for rel in rec[group]]
         self.assertFalse([rel for rel in hashed if rel.endswith('.kicad_prl') or rel.startswith('research/')])
         ignored = subprocess.run(['git', 'check-ignore', '--no-index', *hashed], cwd=MODULE, capture_output=True,
@@ -467,24 +489,24 @@ class ReviewRecord(unittest.TestCase):
                     'hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_NoViaInPad.kicad_mod',
                     'hardware/USBPOWER45.pretty/TPS7A16_DGN0008C_NoViaInPad.kicad_mod',
                     'hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad.kicad_mod',
-                    'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb', 'tools/s92_parts.py', 'tools/s92_netlist.py',
+                    'panels/front-pcb/usb-power-45w-panel.kicad_pcb', 'tools/s92_parts.py', 'tools/s92_netlist.py',
                     'tools/s92_contract.py', 'hardware/USBPOWER45.pretty/R_Shunt_1206_KelvinSplit_RLM12.kicad_mod',
-                    'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod', 'docs/s8-single/routing-notes.md',
-                    'docs/s8-single-board.md'):
+                    'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod', 'docs/design/routing-notes.md',
+                    'docs/design.md'):
             self.assertIn(rel, hashed, rel)
         self.assertEqual(rec['routing_notes']['test_pad_rows'], 27)
         self.assertEqual(rec['accepted_residuals']['reverse_current']['decision'][:8], 'ACCEPTED')
         self.assertEqual(rec['accepted_residuals']['rail_overvoltage']['decision'][:8], 'ACCEPTED')
-        for group in ('sources_sha256', 'artifacts_sha256', 'original_S7_R3_hardware_unchanged_sha256'):
+        for group in ('sources_sha256', 'artifacts_sha256'):
             for rel, digest in rec[group].items():
                 self.assertEqual(hashlib.sha256((MODULE / rel).read_bytes()).hexdigest(), digest, rel)
-        self.assertFalse((MODULE / 'docs/s8-single/review-s84.json').exists(), 'S8.4 record replaced (git history)')
+        self.assertFalse((MODULE / 'docs/design/review-s84.json').exists(), 'S8.4 record replaced (git history)')
         self.assertFalse(rec['tests']['log_committed'])
 
 
 class Plus5Removed(unittest.TestCase):
     """S9.0 regression: no +5V net, ref or part survives anywhere - schematic files, PCB, BOM, placement and board records
-    (the verifier separately checks the native netlist). U5's nets are MAIN_* on the single board (EF_* only in S7)."""
+    (the verifier separately checks the native netlist). U5's nets are MAIN_* on the board (EF_* only in S7)."""
 
     GONE_REFS = set(circuit_s8.S9_REMOVED) | set(circuit_s8.S8_PLUS5_DROPPED)
 
@@ -495,9 +517,9 @@ class Plus5Removed(unittest.TestCase):
 
     def test_no_plus5_in_schematic_files(self):
         from sexp import parse, nodes, one
-        files = sorted((DESIGN / 'hardware/single').glob('*.kicad_sch'))
+        files = sorted((DESIGN / 'hardware').glob('*.kicad_sch'))
         self.assertEqual(len(files), 6)
-        self.assertFalse((DESIGN / 'hardware/single/03_positive_5v.kicad_sch').exists())
+        self.assertFalse((DESIGN / 'hardware/03_positive_5v.kicad_sch').exists())
         for f in files:
             tree = parse(f.read_text())
             for sym in nodes(tree, 'symbol'):
@@ -507,7 +529,7 @@ class Plus5Removed(unittest.TestCase):
             for kind in ('label', 'hierarchical_label', 'global_label'):
                 for lab in nodes(tree, kind):
                     self.assertFalse(self.bad_net(lab[1]), (f.name, lab[1]))
-        lib = parse((DESIGN / 'hardware/single/USBPOWER45.kicad_sym').read_text())
+        lib = parse((DESIGN / 'hardware/USBPOWER45.kicad_sym').read_text())
         self.assertFalse({s[1] for s in nodes(lib, 'symbol')} & {'+5V', 'TPS259470_RPW', 'TPS62933F'})
 
     def test_no_plus5_on_the_pcb(self):
@@ -521,17 +543,17 @@ class Plus5Removed(unittest.TestCase):
 
     def test_no_plus5_in_records(self):
         import csv
-        with (DESIGN / 'docs/s8-single/bom.csv').open() as fh:
+        with (DESIGN / 'docs/design/bom.csv').open() as fh:
             rows = list(csv.DictReader(fh))
         bom_refs = {r for row in rows for r in row['Refs'].split(',')}
         self.assertFalse(bom_refs & self.GONE_REFS)
         self.assertFalse({row['MPN'] for row in rows} & verify_s8.FORBIDDEN_MPN)
-        placed = set(json.loads((DESIGN / 'docs/s8-single/placement.json').read_text())['parts'])
+        placed = set(json.loads((DESIGN / 'docs/design/placement.json').read_text())['parts'])
         self.assertFalse(placed & self.GONE_REFS)
-        build = json.loads((DESIGN / 'docs/s8-single/build.json').read_text())
+        build = json.loads((DESIGN / 'docs/design/build.json').read_text())
         self.assertEqual(set(build['removed_in_S9_plus5']), {r for r in self.GONE_REFS})
         self.assertFalse({n for n in build['inter_sheet_nets'] if self.bad_net(n)})
-        board = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())
+        board = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())
         self.assertFalse({row['from'].split('.')[0] for row in board['local_loops']['rows']} & self.GONE_REFS)
 
 
@@ -551,7 +573,7 @@ class Calcs(unittest.TestCase):
         w = c.startup_window(val)
         self.assertGreaterEqual(w['margin_to_window_min_ms'], 100.0)
         self.assertGreaterEqual(w['ratio_min_window_to_budget'], 1.5)
-        rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
+        rel = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['rail_release']
         ov = c.ov_guard(val, rel)
         self.assertEqual({k for k in ov if k.startswith(('+', '-'))}, {'+12V', '-12V'})
         for rail in ('+12V', '-12V'):
@@ -629,7 +651,7 @@ class Calcs(unittest.TestCase):
         self.assertTrue(r['status'].startswith('OPEN'))
         self.assertLess(r['cases']['-12V_nominal']['settle_ms'], r['POR_RESET_release_min_ms'])
         self.assertGreater(r['worst_settle_ms'], r['POR_RESET_release_min_ms'])
-        rec = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())
+        rec = json.loads((DESIGN / 'docs/design/calcs.json').read_text())
         self.assertEqual(rec['replug_por']['established'], False)
 
     def test_b_arming_window_budget(self):
@@ -640,7 +662,7 @@ class Calcs(unittest.TestCase):
         w = c.startup_window(val)
         self.assertGreaterEqual(w['ratio_min_window_to_budget'], 1.5)      # S9.3 slow-corner soft starts (S9.2: > 2)
         self.assertGreaterEqual(w['margin_to_window_min_ms'], 100.0)
-        a = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['arming']
+        a = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['arming']
         self.assertTrue(a['V20_OK']['rule_holds'])
         self.assertEqual(len(a['required']), 4)
         self.assertEqual(a['topology']['TIMER_GO'][:24], 'U13 gate 3 = RUN AND STA')
@@ -648,7 +670,7 @@ class Calcs(unittest.TestCase):
     def test_m8_basic_only_counterfactual_fails(self):
         import s8_calcs as c
         parts, val = c.table(); _, eff = c.banks(parts)
-        rel = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['rail_release']
+        rel = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['rail_release']
         cf = c.basic_only_counterfactual(val, eff, rel)
         self.assertTrue(cf['failing'], 'with 1 % parts some precision screen must fail (else revisit the policy)')
         self.assertEqual(cf['precision_refs'], ['R93', 'R94', 'R98', 'R99'])
@@ -754,7 +776,7 @@ class S90Retarget(unittest.TestCase):
         self.assertFalse({m for m in mpns if m.upper().startswith(verify_s8.REVERSE_BLOCKING_MPN_PREFIXES)})
         for net, members in verify_s8.RAILS_S90.items():
             self.assertEqual({k for k in self.nets[net] if not k[0].startswith('#')}, members, net)
-        lib = (DESIGN / 'hardware/single/USBPOWER45.kicad_sym').read_text()
+        lib = (DESIGN / 'hardware/USBPOWER45.kicad_sym').read_text()
         self.assertFalse(any(s in lib for s in ('LM74700', 'LM5051', 'LTC4357', 'FDS6630A')))
         self.assertFalse((MODULE / 'hardware/USBPOWER45.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod').exists())
         for moves in ([('J2', '9', 'P12_BLK'), ('J3', '9', 'P12_BLK'), ('J2', '10', 'P12_BLK'), ('J3', '10', 'P12_BLK')],
@@ -764,12 +786,12 @@ class S90Retarget(unittest.TestCase):
                 rewire(self.xml, bad, moves)
                 with self.assertRaises(AssertionError):
                     verify_native(bad)
-        rec = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['residuals']['reverse_current']
+        rec = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['residuals']['reverse_current']
         self.assertTrue(rec['decision'].startswith('ACCEPTED'))
         self.assertIn('No powered parallel', rec['rule'])
         self.assertTrue(rec['minus12_active']['finding'].startswith('FIXED'))
         self.assertLess(rec['minus12_active']['enable_logic']['off_relative_max_V'], .95)
-        val = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())
+        val = json.loads((DESIGN / 'docs/design/validation.json').read_text())
         self.assertTrue(val['accepted_residuals']['reverse_current']['decision'].startswith('ACCEPTED'))
         self.assertTrue(val['accepted_residuals']['rail_overvoltage']['decision'].startswith('ACCEPTED'))
         self.assertEqual(c.PUBLISHED_A, {'+12V': 2.4, '-12V': 0.8})
@@ -812,7 +834,7 @@ class S90Retarget(unittest.TestCase):
         self.assertGreater(pd['max_module_output_W']['nominal_15V_source_worst_mix'], r['published_total_W'])
 
     def test_residuals_recorded_as_bench_events(self):
-        rec = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['residuals']
+        rec = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['residuals']
         for key in ('reverse_current', 'rail_overvoltage'):
             self.assertTrue(rec[key]['decision'].startswith('ACCEPTED'), key)
             bt = rec[key]['bench_test']
@@ -890,7 +912,7 @@ class S91ReviewFixes(unittest.TestCase):
         self.assertFalse(bad['pass'],'S9.0 compensator must fail the very same envelope')
 
     def test_clamps_energy_and_honest_residuals(self):
-        rec=json.loads((DESIGN/'docs/s8-single/calcs.json').read_text())
+        rec=json.loads((DESIGN/'docs/design/calcs.json').read_text())
         q=rec['residuals']['reverse_current'];cl=q['clamps']
         self.assertEqual((cl['D24']['MPN'],cl['D24']['stand_off_V'],cl['D24']['peak_pulse_W']),('SMBJ20A',20,600))
         self.assertAlmostEqual(cl['D24']['pulse_budget']['max_energy_J'],1*32.4*.020)
@@ -903,7 +925,7 @@ class S91ReviewFixes(unittest.TestCase):
         self.assertIn('T2-D',str(ov['bench_test']['conditions']))
         self.assertIn('+14.0V',str(ov['bench_test']['conditions']))
         self.assertIn('NEVER require it off while injection remains',str(ov['bench_test']['pass_criteria_this_module']))
-        val=json.loads((DESIGN/'docs/s8-single/validation.json').read_text())
+        val=json.loads((DESIGN/'docs/design/validation.json').read_text())
         self.assertEqual(val['accepted_residuals'],rec['residuals'])
 
     def test_current_limit_thermal_not_130C(self):
@@ -919,7 +941,7 @@ class S91ReviewFixes(unittest.TestCase):
         negative controls). Strict 3 A at the published load + rack must END FAIL-SAFE (FAULT latched, RUN low, input
         off), never armed after hidden U5 retries; the minimal no-load case must start in one attempt."""
         import s91_analysis as a
-        r=json.loads((DESIGN/'docs/s8-single/validation.json').read_text())['startup_arming']
+        r=json.loads((DESIGN/'docs/design/validation.json').read_text())['startup_arming']
         self.assertEqual(r['violations'],[])
         for key,row in r['timelines']['source_limit_3A'].items():
             if key=='why':continue
@@ -927,7 +949,7 @@ class S91ReviewFixes(unittest.TestCase):
             self.assertFalse(row['source_limit_observed'], 'S9.3: the strict 3 A source never limits')
             self.assertTrue(row['ends_running'] and row['ends_armed'] and not row['ends_faulted'], row)
             self.assertEqual(row['u5_dropouts_after_first_enable'],0,'S9.3: the strict 3 A start IS a single attempt')
-        q=json.loads((DESIGN/'docs/s8-single/calcs.json').read_text())['startup_qualification']
+        q=json.loads((DESIGN/'docs/design/calcs.json').read_text())['startup_qualification']
         self.assertTrue(q['all_strict_cases_single_attempt'])
         self.assertEqual(set(q['demand_rows']), {'published_33W_0.44mF','published_split_-12V_0.8A_0.44mF',
                                                   'published_33W_no_rack','no_load_0.44mF','no_load_no_rack'})
@@ -958,18 +980,19 @@ class S91ReviewFixes(unittest.TestCase):
         from sexp import parse,nodes
         t=parse(BOARD.read_text())
         self.assertNotIn('P5',[n[1] for n in nodes(t,'gr_text')])
-        p=json.loads((DESIGN/'docs/s8-single/placement.json').read_text())
+        p=json.loads((DESIGN/'docs/design/placement.json').read_text())
         self.assertEqual(p['ground_connection']['sole_link'],'R113')
         self.assertEqual(p['ground_connection']['at'],'C82.2')
         self.assertEqual(p['ground_connection']['pgnd_at_star'],['C82.2','R113.2'])
-        self.assertEqual(p['revision'],'S9.3 / P2.3')
+        self.assertEqual(p['revision'],'S9.3-10P / R1-start')
+        self.assertNotIn('NC', [n[1] for n in nodes(t, 'gr_text')], 'no labels for deleted contacts')
 
 
 ROUTING_READY = 'Routing-ready. The items in `routing-notes.md` are post-prototype acceptance tests, not design blockers.'
 
 
 def routing_notes_problems(notes, doc):
-    """What docs/s8-single/routing-notes.md (notes) and docs/s8-single-board.md (doc) get wrong against the design: every
+    """What docs/design/routing-notes.md (notes) and docs/design.md (doc) get wrong against the design: every
     test pad with its netlist net exactly once, a register row for every acceptance-test ID the contract and the review
     record use, every PENDING copper item named, the key contract rules, and the routing-ready statement. Empty = OK."""
     import review_s8
@@ -981,17 +1004,17 @@ def routing_notes_problems(notes, doc):
     out += [f'duplicate pad row {r}' for r in idx['duplicate_pads']]
     used = s92_contract.contract_ids() | s92_contract.referenced_ids(*review_s8.OPEN_GATES)
     out += [f'undefined acceptance-test ID {i}' for i in sorted(used - idx['ids'])]
-    screen = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
+    screen = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['routing_contract_screen']
     out += [f'PENDING item {x} not listed' for x in screen['pending_after_routing'] if f'`{x}`' not in notes]
     out += [f'rule missing: {x}' for x in ('C82.2 is PGND', 'R_Shunt_1206_KelvinSplit_RLM12', 'TestPoint_Pad_D1.5mm',
                                            'at most one AGND_U2 via pair', 'No via-in-pad', '0.3 mm drill / 0.6 mm pad',
                                            'Pre-routing checklist', 'S92_no_via_in_pad', 'RA_NOVIA_U5_EP')
             if x not in notes]
-    out += ['S9.2b changelog missing from s8-single-board.md'] if '## S9.2b' not in doc else []
+    out += ['S9.2b changelog missing from design.md'] if '## S9.2b' not in doc else []
     if ROUTING_READY not in doc:
-        out.append('routing-ready statement missing from s8-single-board.md')
-    if '(s8-single/routing-notes.md)' not in doc:
-        out.append('s8-single-board.md does not link the routing notes')
+        out.append('routing-ready statement missing from design.md')
+    if '(design/routing-notes.md)' not in doc:
+        out.append('design.md does not link the routing notes')
     return out
 
 
@@ -1044,7 +1067,7 @@ class S92RoutingReady(unittest.TestCase):
         # the generator table and the native schematic give the same table, and the records carry it
         import s91_analysis
         self.assertEqual(s91_analysis.enable()['truth_table'], m['truth_table'])
-        self.assertEqual(json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())['enable_logic']['truth_table'],
+        self.assertEqual(json.loads((DESIGN / 'docs/design/validation.json').read_text())['enable_logic']['truth_table'],
                          m['truth_table'])
 
     def test_enable_negative_controls(self):
@@ -1099,7 +1122,7 @@ class S92RoutingReady(unittest.TestCase):
         self.assertEqual((cl['shunt'], cl['force_nets']), ('R109', ['+12V', 'P12_VOUT']))
         self.assertEqual([round(x, 3) for x in cl['icc_A']], [round(x, 3) for x in c.p12(c.table()[1])['icc_A']])
         self.assertEqual(len(prm['banks']['P12_VOUT']), 6)
-        rec = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())['startup_plant_inputs']
+        rec = json.loads((DESIGN / 'docs/design/validation.json').read_text())['startup_plant_inputs']
         self.assertEqual(rec['U5_on_V'], [round(x, 3) for x in prm['U5_on_V']])
         ss = prm['soft_start']
         self.assertEqual((ss['+12V']['diode'], ss['+12V']['Css'], ss['+12V']['R_top'], ss['+12V']['bleed']),
@@ -1152,7 +1175,7 @@ class S92RoutingReady(unittest.TestCase):
         self.assertGreater(v['choice']['normal_operation']['OVP_rise_min_V'], 16.5)
         self.assertTrue(v['choice']['normal_operation']['recovers_above_vSrcNew_max_15.75V'])
         self.assertAlmostEqual(v['pulse_budget']['budget_J'], 0.648)
-        rec = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())['vin_clamp_coordination']
+        rec = json.loads((DESIGN / 'docs/design/validation.json').read_text())['vin_clamp_coordination']
         self.assertTrue(all(rec['checks'].values()), rec)
         self.assertLess(rec['U5_OVP_rise_V'][2], rec['VR'])
         self.assertTrue(all(verify_s8.d24_coordination(self.design)[2].values()))
@@ -1178,12 +1201,12 @@ class S92RoutingReady(unittest.TestCase):
                                            ('R113', '1'), ('TP28', '1')})
         both = sorted({r for r, _ in nets['AGND_U2']} & {r for r, _ in nets['GND']} - {'U2'})
         self.assertEqual(both, ['R113'])
-        board = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())
+        board = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())
         self.assertTrue(board['ground_split']['pass'])
         self.assertEqual(board['ground_split']['parts_on_both_nets'], ['R113'])
         star = next(x for x in board['routing_contract_screen']['proximity'] if x['from'] == 'C82.2')
         self.assertTrue(star['ok'] and star['to'] == 'R113.2' and star['distance_mm'] <= 3.0, star)
-        rule = json.loads((DESIGN / 'docs/s8-single/placement.json').read_text())['routing_contract']['ground']['rule']
+        rule = json.loads((DESIGN / 'docs/design/placement.json').read_text())['routing_contract']['ground']['rule']
         self.assertIn('C82.2 is PGND', rule)
         for moves in ([('C82', '2', 'AGND_U2')], [('C83', '2', 'GND')], [('TP28', '1', 'GND')]):
             with self.subTest(moves=moves), self.assertRaises(AssertionError):
@@ -1209,22 +1232,25 @@ class S92RoutingReady(unittest.TestCase):
         root = ET.parse(self.xml).getroot()
         fp = next(c for c in root.find('components') if c.get('ref') == 'R109').findtext('footprint')
         self.assertEqual(fp, 'USBPOWER45:' + s92_parts.FP_S92['KELVIN1206'])
-        board = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
+        board = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['routing_contract_screen']
         self.assertTrue(board['kelvin']['pass'])
 
     # ---- item 6 + routing contract ----------------------------------------------------------------------------------------
     def test_thermal_rating_conditional_on_contract(self):
-        calcs = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['thermal_contract']
+        calcs = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['thermal_contract']
         self.assertTrue(calcs['status'].startswith('CONDITIONAL'))
         self.assertLessEqual(calcs['U2']['Tj_at_50C_limit_C'], 125)
         self.assertGreater(calcs['U2']['allowed_RthetaJA_for_125C_C_W']['at_CC_limit'], calcs['U2']['RthetaJA_model_C_W'])
         self.assertLess(calcs['R109']['P_W_at_limit'], calcs['R109']['rating_W'])
-        place = json.loads((DESIGN / 'docs/s8-single/placement.json').read_text())
+        place = json.loads((DESIGN / 'docs/design/placement.json').read_text())
         rc = place['routing_contract']
-        self.assertEqual(place['revision'], rc['revision'])
+        import s92_contract
+        self.assertEqual(place['revision'], 'S9.3-10P / R1-start')
+        self.assertEqual(rc, json.loads(json.dumps(s92_contract.contract())),
+                         'R1 inherits the complete S9.3 copper/thermal contract without waivers')
         self.assertEqual(set(rc['thermal']), {'U2', 'R109', 'D10', 'U4', 'U5'})
         self.assertIn('PGND_vias', rc['thermal']['U2']['requirements'])
-        screen = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
+        screen = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['routing_contract_screen']
         self.assertTrue({'thermal.U2.PGND_vias', 'thermal.R109.force_copper', 'thermal.D10.copper'}
                         <= set(screen['pending_after_routing']), 'copper/via items stay PENDING on the unrouted board')
 
@@ -1249,7 +1275,7 @@ class S92RoutingReady(unittest.TestCase):
         for name in set(fps.values()):
             f = parse((pretty / (name.split(':')[1] + '.kicad_mod')).read_text())
             self.assertEqual(verify_s8.holes_in_pads(f), [], name)
-        val = json.loads((DESIGN / 'docs/s8-single/validation.json').read_text())['no_via_in_pad']
+        val = json.loads((DESIGN / 'docs/design/validation.json').read_text())['no_via_in_pad']
         self.assertEqual((val['plated_holes_in_pads'], val['beside_pad_vias'], val['in_pad_holes_removed']),
                          (0, {'U5': 10, 'U4': 10, 'U9': 6}, {'U5': 15, 'U4': 8, 'U9': 4}))
 
@@ -1260,10 +1286,11 @@ class S92RoutingReady(unittest.TestCase):
         import shutil
         import check_s8_board
         import s92_contract
-        rec = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['pre_routing_checklist']['items']
+        rec = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['pre_routing_checklist']['items']
         v, f = rec['via_in_pad'], rec['thermal_vias']
         self.assertTrue(v['ok'] and f['ok'], (v, f['missing']))
-        self.assertEqual((v['footprint_holes_in_pads'], v['vias'], v['non_standard_vias'], v['via_overrides']), ({}, 26, [], []))
+        # 26 preserved thermal vias + 6 output vias + 16 independently checked USB/U5 continuation vias.
+        self.assertEqual((v['footprint_holes_in_pads'], v['vias'], v['non_standard_vias'], v['via_overrides']), ({}, 48, [], []))
         self.assertEqual(v['board_setup'], {'tenting_front': True, 'tenting_back': True, 'covering_front': False,
                                             'covering_back': False, 'plugging_front': False, 'plugging_back': False,
                                             'capping': False, 'filling': False})
@@ -1322,7 +1349,7 @@ class S92RoutingReady(unittest.TestCase):
         rating is unchanged only because both hold. Mutated model inputs must move the numbers the right way."""
         import s8_calcs
         import s92_contract
-        calcs = json.loads((DESIGN / 'docs/s8-single/calcs.json').read_text())['thermal_contract']
+        calcs = json.loads((DESIGN / 'docs/design/calcs.json').read_text())['thermal_contract']
         u5, ch = calcs['U5'], calcs['via_change']
         self.assertEqual(ch['fields']['U5']['in_pad_holes_before'], 15)
         self.assertEqual(ch['fields']['U5']['beside_pad_vias_after'], 10)
@@ -1357,11 +1384,11 @@ class S92RoutingReady(unittest.TestCase):
             self.assertEqual((self.by[ref]['fp'], self.by[ref]['pins']), ('TP15', {'1': net}), ref)
         for t in s92_contract.TEST_POINTS:
             self.assertEqual(self.design.net(t['ref'], '1'), t['net'], t['ref'])
-        screen = json.loads((DESIGN / 'docs/s8-single/board-p1.json').read_text())['routing_contract_screen']
+        screen = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['routing_contract_screen']
         self.assertTrue(screen['pass'])
         self.assertEqual({x['ref'] for x in screen['test_points']}, {t['ref'] for t in s92_contract.TEST_POINTS})
         self.assertTrue(all(x['ok'] for x in screen['pairs_2p54']) and len(screen['pairs_2p54']) == 4)
-        pro = json.loads((DESIGN / 'hardware/single/usb-power-45w-single.kicad_pro').read_text())['net_settings']
+        pro = json.loads((DESIGN / 'hardware/usb-power-45w.kicad_pro').read_text())['net_settings']
         classes = {c['name']: c for c in pro['classes']}
         self.assertEqual(set(classes), {'Default', *build_s8.NETCLASSES})
         self.assertEqual({c['clearance'] for c in classes.values()}, {classes['Default']['clearance']})
@@ -1370,11 +1397,11 @@ class S92RoutingReady(unittest.TestCase):
 
     def test_sourcing_complete_for_jlcpcb(self):
         import csv
-        src = json.loads((DESIGN / 'docs/s8-single/sourcing.json').read_text())
+        src = json.loads((DESIGN / 'docs/design/sourcing.json').read_text())
         s = src['summary']
         self.assertTrue(s['live_audit'])
         self.assertEqual((s['failures'], s['missing_codes'], s['S8_zero_stock_codes'], s['S8_unpriced_codes']), ([], [], [], []))
-        with (DESIGN / 'docs/s8-single/bom.csv').open() as fh:
+        with (DESIGN / 'docs/design/bom.csv').open() as fh:
             rows = list(csv.DictReader(fh))
         self.assertEqual(sorted(r for row in rows if not row['LCSC'] for r in row['Refs'].split(',')), ['D8', 'J2', 'J3'])
         policy = set(src['basic_only_policy']['refs'])
@@ -1387,8 +1414,8 @@ class S92RoutingReady(unittest.TestCase):
     def test_routing_notes_cover_contract(self):
         """routing-notes.md is consistent with the netlist, the contract and the review record; mutated copies (a pad row
         dropped or on the wrong net, a register row dropped, the routing-ready statement removed) must fail."""
-        notes = (DESIGN / 'docs/s8-single/routing-notes.md').read_text()
-        doc = (MODULE / 'docs/s8-single-board.md').read_text()
+        notes = (DESIGN / 'docs/design/routing-notes.md').read_text()
+        doc = (MODULE / 'docs/design.md').read_text()
         self.assertEqual(routing_notes_problems(notes, doc), [])
         lines = notes.splitlines()
         tp26 = next(x for x in lines if x.startswith('| TP26 |'))
