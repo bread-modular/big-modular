@@ -30,7 +30,8 @@ Module paths are module-relative.
   `firmware/setup.sh|compile.sh|flash.sh p|d` over the shared `opt/esp32-tools`.
   Builds and host DSP tests pass; not bench-tested. See `firmware/README.md`.
 - **fxrack firmware (2026-11-04)**: `firmware/fxrack`, the BM 32bit-5v fxrack app (L: delay CV1 time /
-  CV2 feedback -> reverb on MIDI CC 20/21; R: short comb on CC 22/23; no pipe delay; MODE press = 4-bar CV1/CV2 + CC 20..23 motion
+  CV2 feedback -> hall reverb on MIDI CC 20 decay 0.3..20 s / CC 21 mix (2026-11-06: diffuser + 8-line modulated FDN replaces BM's
+  classic comb reverb; host render/analysis in `firmware/fxrack/tools`, outputs in `research/fxrack-reverb/`); R: short comb on CC 22/23; no pipe delay; MODE press = 4-bar CV1/CV2 + CC 20..23 motion
   recorder on MIDI clock, as 8bit/16bit) on the
   32bit drivers; PSRAM on for the delay buffers; BM all-pass buffer overrun fixed. `./compile.sh p|d fxrack`; `./flash.sh [p|d] [fxrack|polysynth] [port]` asks for the firmware (Enter = polysynth) when none is given, as the 16bit `flash.sh`.
   Builds (p, d) and host tests (ASan) pass; not bench-tested. See `firmware/README.md` section fxrack.

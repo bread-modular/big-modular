@@ -16,8 +16,7 @@ idf_component_register(
         "src/lib/bm_motion_recorder.c"
         "src/lib/bm_utils.c"
         "src/audio/bm_comb_filter.c"
-        "src/audio/bm_all_pass_filter.c"
-        "src/audio/bm_classic_reverb.c"
+        "src/audio/bm_hall_reverb.c"
         "src/apps/bm_app_fxrack.c"
     REQUIRES
         esp_driver_gpio

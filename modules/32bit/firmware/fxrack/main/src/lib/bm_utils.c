@@ -25,6 +25,18 @@ void* allocate_psram(size_t size) {
     return heap_caps_calloc(1, size, MALLOC_CAP_SPIRAM);
 }
 
+// Internal SRAM first (no PSRAM cache misses in the reverb's many delay taps),
+// PSRAM once less than 64 KB would be left for the drivers and tasks started
+// after the app's init. free_psram() frees either.
+#define FAST_RESERVE_BYTES (64 * 1024)
+void* allocate_fast(size_t size) {
+    void* ptr = NULL;
+    if (heap_caps_get_free_size(MALLOC_CAP_INTERNAL) > size + FAST_RESERVE_BYTES) {
+        ptr = heap_caps_calloc(1, size, MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+    }
+    return ptr != NULL ? ptr : allocate_psram(size);
+}
+
 void free_psram(void *ptr) {
     heap_caps_free(ptr);
 }

@@ -12,6 +12,7 @@ SRCS := test_fx_dsp.c \
 	../main/src/audio/bm_comb_filter.c \
 	../main/src/audio/bm_all_pass_filter.c \
 	../main/src/audio/bm_classic_reverb.c \
+	../main/src/audio/bm_hall_reverb.c \
 	../main/src/apps/bm_app_fxrack.c \
 	stubs/esp_heap_caps.c
 
