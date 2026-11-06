@@ -15,7 +15,7 @@ separate firmware per app.
 |-------------|----------------------------------------------|
 | `noop`      | Minimal app (no audio processing)            |
 | `sampler`   | 12-voice sample player with per-sample FX    |
-| `polysynth` | 9-voice poly-synth (Saw / Tri / Square / Sine) |
+| `polysynth` | 6-voice poly-synth (17 wavetables on P1 / P2; P1 down: P2 morphs square -> saw -> tri -> sine) |
 | `fxrack`    | Multi-FX rack over sample players            |
 | `elab`      | Envelope lab (A1/A2 CV/audio scoping)        |
 | `monosynth` | Pulsar-23-inspired mono bass synth (percussion mode) |
@@ -52,11 +52,11 @@ Each app owns what a frame means:
 | sampler    | group B lowpass / highpass       | group A lowpass / highpass                              | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | fxrack     | not recorded (audio inputs)      | group A / group B lowpass                               | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | monosynth  | not used                         | attack / decay times                                    | Bank A: BODY, CHORUS, CUTOFF, RESONANCE                      |
-| polysynth  | not used                         | amp-envelope attack (1..500 ms) / release (10..1000 ms) | Bank A: env attack-release time, filter-env depth, resonance, cutoff |
+| polysynth  | wavetable select / position (P1 down: P2 = square -> saw -> tri -> sine) | amp-envelope attack (1..500 ms) / release (10..1000 ms) | Bank A: env attack-release time, filter-env depth, resonance, cutoff |
 
-While a polysynth take plays back, each frame updates all nine voices'
-amp-envelope times plus the FilterFX parameters, so automation sweeps envelopes
-and the filter together.
+While a polysynth take plays back, each frame updates all six voices'
+amp-envelope times, the wavetable and its position plus the FilterFX
+parameters, so automation sweeps envelopes, wavetable and filter together.
 
 Sampler (big-modular, not BM): BM's MODE stopped the audio while held and
 replayed the kick on release; here it runs the recorder. The sampler applies a

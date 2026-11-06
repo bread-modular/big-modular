@@ -50,21 +50,30 @@ public:
         // Moog Ladder params (can tune these)
         float p = f * (1.8f - 0.8f * f);
         float k = smoothedQ;
-        float scale = expf((1.0f - p) * 1.386249f);
+        float scale = fast_exp((1.0f - p) * 1.386249f);
         float r = k * scale;
         // Limit feedback to avoid runaway
         r = std::min(r, 3.99f);
 
         // Four cascaded one-pole filters: first two use tanh, last two use soft clipping
+        // (tz[i] = fast_tanh(z[i]) kept from the last sample: 5 tanh a
+        // sample instead of 8, same result)
         float x = input - r * z[3];
-        z[0] += p * (fast_tanh(x) - fast_tanh(z[0]));
-        z[1] += p * (fast_tanh(z[0]) - fast_tanh(z[1]));
-        z[2] += p * (fast_tanh(z[1]) - fast_tanh(z[2]));
-        z[3] += p * (fast_tanh(z[2]) - fast_tanh(z[3]));
+        z[0] += p * (fast_tanh(x) - tz[0]);
+        tz[0] = fast_tanh(z[0]);
+        z[1] += p * (tz[0] - tz[1]);
+        tz[1] = fast_tanh(z[1]);
+        z[2] += p * (tz[1] - tz[2]);
+        tz[2] = fast_tanh(z[2]);
+        z[3] += p * (tz[2] - tz[3]);
+        tz[3] = fast_tanh(z[3]);
 
         // Denormal protection (flush subnormals to zero)
         for (int i = 0; i < 4; ++i) {
-            if (fabsf(z[i]) < 1e-15f) z[i] = 0.0f;
+            if (fabsf(z[i]) < 1e-15f) {
+                z[i] = 0.0f;
+                tz[i] = 0.0f;
+            }
         }
 
         // Resonance compensation to preserve low frequencies
@@ -82,10 +91,22 @@ public:
     }
 
     void reset() {
-        for (int i = 0; i < 4; ++i) z[i] = 0.0f;
+        for (int i = 0; i < 4; ++i) {
+            z[i] = 0.0f;
+            tz[i] = 0.0f;
+        }
     }
 
 private:
+    // expf for 0 <= x <= 1.39 (here), within 2e-6: (Taylor exp(x / 2))^2.
+    // A libm expf every sample cost the polysynth's audio core ~5 %.
+    static inline float fast_exp(float x) {
+        float h = 0.5f * x;
+        float e = 1.0f + h * (1.0f + h * (1.0f / 2.0f + h * (1.0f / 6.0f + h * (1.0f / 24.0f
+            + h * (1.0f / 120.0f + h * (1.0f / 720.0f + h * (1.0f / 5040.0f)))))));
+        return e * e;
+    }
+
     static inline float fast_tanh(float x) {
         // Clamp input for stability
         if (x < -3.0f) return -1.0f;
@@ -99,6 +120,7 @@ private:
     float q;
     FilterType type;
     float z[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    float tz[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     float smoothedCutoff;
     float smoothedQ;
 }; 

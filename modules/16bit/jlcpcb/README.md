@@ -129,6 +129,8 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/16bit-symbols.xml hardwar
 
 Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 
+Panel re-exported on 2026-11-06 for the OUT jack fix: holes H6/H7 (OUT L / OUT R) moved from X 7.5 / 22.5, Y 99.0 to the routed carrier jacks J4 X 6.1 Y 99.22 and J5 X 24.1 Y 99.12, labels re-centred (`docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill has the new OUT holes; panel DRC: no findings, 0 unconnected; shared `check` manifest equal.
+
 - **Shared `check`** (after the export): ERC 0, DRC 0 (all severities), 0 unconnected,
   parity 0, 0 exclusions; manifest equal (5 sources, exports byte-identical).
   `order_ready: false`, as always for this tool.

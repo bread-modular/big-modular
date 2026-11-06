@@ -24,6 +24,11 @@ public:
 
     virtual bool isActive() = 0;
 
+    // Current envelope level 0..1 (the polysynth's polyphony gain).
+    virtual float getLevel() {
+        return isActive() ? 1.0f : 0.0f;
+    }
+
     // Set the callback function to be called when the envelope is complete
     void setOnCompleteCallback(std::function<void()> callback) {
         this->onCompleteCallback = callback;

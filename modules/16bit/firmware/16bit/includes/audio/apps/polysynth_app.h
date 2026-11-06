@@ -5,23 +5,27 @@
 #include "api/web_serial.h"
 #include "audio/manager.h"
 #include "audio/apps/interfaces/audio_app.h"
-#include "audio/gen/Sine.h"
-#include "audio/gen/Saw.h"
-#include "audio/gen/Tri.h"
-#include "audio/gen/Square.h"
+#include "audio/gen/Wavetable.h"
 #include "audio/env/AttackHoldRelease.h"
 #include "audio/env/Envelope.h"
 #include "audio/tools/Voice.h"
-#include "fs/config.h"
 #include "audio/apps/fx/filter_fx.h"
 #include "audio/apps/motion_recorder.h"
+#include "audio/apps/polysynth/poly_level.h"
 
-#define TOTAL_VOICES 9
+#define TOTAL_VOICES 6  // BM: 9; 6 leaves the audio core headroom with wavetables
 
-#define CONFIG_WAVEFORM_INDEX 0
-#define CONFIG_WAVEFORM_SAW 0
-#define CONFIG_WAVEFORM_SQUARE 1
-#define CONFIG_WAVEFORM_TRI 2
+// Wavetables on the top knobs (this module, not BM): P1 picks the table, P2
+// moves the position (both with their CV jacks). P1 has one zone per table;
+// fully down is Classic, P2 morphing square -> saw -> tri -> sine. P1 / P2
+// arrive on ADC0 / ADC1: unpatched a knob gives 0..+5 V = ADC ~2020..3735 (as in the sampler); patched, the knob
+// scales the CV and negative CV clamps to the bottom.
+#define TOP_KNOB_ADC_ZERO 2020
+#define TOP_KNOB_ADC_FULL 3735
+#define TOP_KNOB_ADC_DIFF_THRESHOLD 12
+#define TOP_KNOB_READ_INTERVAL_MS 2
+#define WAVETABLE_ZONES WAVETABLE_COUNT
+#define WAVETABLE_ZONE_HYSTERESIS 0.15f
 
 class PolySynthApp : public AudioApp {
 private:
@@ -29,17 +33,21 @@ private:
     IO *io = IO::getInstance();
     WebSerial *webSerial = WebSerial::getInstance();
     AudioManager *audioManager = AudioManager::getInstance();
-    uint8_t generatorIndex = 0;
-    Saw sawGenerators[TOTAL_VOICES];
-    Tri triGenerators[TOTAL_VOICES];
-    Square squareGenerators[TOTAL_VOICES];
+    Wavetable wavetableGenerators[TOTAL_VOICES];
+    WavetableControl wavetableControl;
     AudioFX* fx1 = new FilterFX();
-    Config config{1, "/polysynth_config.dat"};
     MotionRecorder recorder;
+    PolyLevel outputLevel;
 
     Voice* voices[TOTAL_VOICES];
 
     int8_t totalNotesOn = 0;
+
+    uint8_t wavetableZone = 0;  // wavetable index (0 = Classic)
+    uint16_t p1Value = 0;
+    uint16_t p2Value = 0;
+    bool topKnobsFirstRead = true;
+    uint32_t lastTopKnobsReadMs = 0;
 
     Voice* findFreeVoice() {
         for (int i = 0; i < TOTAL_VOICES; i++) {
@@ -51,6 +59,11 @@ private:
     }
 
     void applyLiveCv(uint16_t cv1, uint16_t cv2);
+    static float topKnobNormalize(uint16_t value);
+    void readTopKnobs();
+    void applyP1(uint16_t p1);
+    void applyP2(uint16_t p2);
+    void loadWavetable(uint8_t table);
     static void setRecorderLed(bool on);
     void readKnobs(uint16_t knobs[MotionRecorder::KNOB_COUNT]);
     static void applyRecordedFrame(void* context,
@@ -70,6 +83,4 @@ public:
     void buttonPressedCallback(bool pressed) override;
     bool onCommandCallback(const char* cmd) override;
     static PolySynthApp* getInstance();
-
-    void setWaveform(int8_t waveformIndex);
 }; 

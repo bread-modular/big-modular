@@ -11,12 +11,15 @@ class AttackHoldReleaseEnvelope : public Envelope {
         
         int32_t attackSamples;
         int32_t releaseSamples;
+        float attackStep;   // 1 / attackSamples (no divide per sample)
+        float releaseStep;  // 1 / releaseSamples
 
         int32_t currentTime;   // In sample count
         bool triggerAtZero = false;
         bool isTriggered = false;
         int8_t currentState = IDLE;
         int16_t previousSample = 0; // Store the previous sample to detect zero-crossing
+        float lastLevel = 0.0f;
     public:
         const static int8_t IDLE = -1;
         const static int8_t ATTACK = 0;
@@ -36,6 +39,8 @@ class AttackHoldReleaseEnvelope : public Envelope {
             // Ensure we don't divide by zero
             if (attackSamples <= 0) attackSamples = 1;
             if (releaseSamples <= 0) releaseSamples = 1;
+            attackStep = 1.0f / attackSamples;
+            releaseStep = 1.0f / releaseSamples;
         }
 
         
@@ -98,7 +103,7 @@ class AttackHoldReleaseEnvelope : public Envelope {
                 case ATTACK:
                     if (currentTime <= attackSamples) {
                         // Linear ramp from 0 to 1024 (full scale in our fixed point)
-                        currentLevel = currentTime / (float)attackSamples;
+                        currentLevel = currentTime * attackStep;
                     } else {
                         // Move to decay phase
                         currentState = HOLD;
@@ -121,7 +126,7 @@ class AttackHoldReleaseEnvelope : public Envelope {
                 case RELEASE:
                     if (currentTime <= releaseSamples) {
                         // Linear ramp from releaseStartLevel to 0
-                        currentLevel = 1.0 - (currentTime / (float)releaseSamples);
+                        currentLevel = 1.0f - currentTime * releaseStep;
                     } else {
                         // End of release
                         currentLevel = 0;
@@ -134,10 +139,15 @@ class AttackHoldReleaseEnvelope : public Envelope {
             }
             
             
+            lastLevel = currentLevel;
             return sample * currentLevel;
         }
 
         bool isActive() override {
             return currentState != IDLE;
+        }
+
+        float getLevel() override {
+            return lastLevel;
         }
 };

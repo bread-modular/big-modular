@@ -14,6 +14,15 @@ class FilterFX : public AudioFX {
         float release = 0.1f;  // seconds (default)
         float sampleRate = 48000.0f;
         float modAmount = 10000.0f; // Fixed modulation amount in Hz
+        // Per-sample envelope coefficients, set with the times (not per sample:
+        // two expf a sample cost the polysynth's audio core ~8 %).
+        float attackRate = 0.0f;
+        float releaseRate = 0.0f;
+
+        void updateRates() {
+            attackRate = 1.0f - expf(-1.0f / (attack * sampleRate + 1e-6f));
+            releaseRate = 1.0f - expf(-1.0f / (release * sampleRate + 1e-6f));
+        }
 
 public:
     FilterFX() {
@@ -41,18 +50,12 @@ public:
     virtual void init(AudioManager* audioManager) override {
         filter.init(audioManager);
         sampleRate = audioManager->getDac()->getSampleRate();
+        updateRates();
     }
 
     virtual float process(float input) override {
         // Envelope update
-        float rate;
-        if (envTarget > envelope) {
-            // Attack phase
-            rate = 1.0f - expf(-1.0f / (attack * sampleRate + 1e-6f));
-        } else {
-            // Release phase
-            rate = 1.0f - expf(-1.0f / (release * sampleRate + 1e-6f));
-        }
+        float rate = envTarget > envelope ? attackRate : releaseRate;
         envelope += (envTarget - envelope) * rate;
 
         // Modulate cutoff
@@ -76,6 +79,7 @@ public:
                 // attack & release (value is 0.0 to 1.0)
                 attack = 0.005f + value * 0.1f; // 5ms to 2s
                 release = attack;
+                updateRates();
                 break;
             case 1:
                 // modulation amount (value is 0.0 to 1.0)
