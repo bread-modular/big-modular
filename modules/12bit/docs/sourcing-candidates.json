@@ -1,0 +1,207 @@
+{
+  "note": "Live strict JLCPCB catalog lookups (opt/kicad-tools/jlcpcb/assembly.py lookup --strict-live), 2026-11-06. Stock and class are dated observations, not an order guarantee. C1002 (FB1) failed the exact lookup (\"missing/ambiguous/truncated\") and is recorded from a strict-live search result.",
+  "parts": {
+    "C12594": {
+      "mpn": "TL074CDR",
+      "manufacturer": "Texas Instruments",
+      "package": "SOIC-14",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 102851
+    },
+    "C14289": {
+      "mpn": "HT7533-1",
+      "manufacturer": "Holtek Semicon",
+      "package": "SOT-89-3",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 244692
+    },
+    "C14663": {
+      "mpn": "CC0603KRX7R9BB104",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 35274269
+    },
+    "C15850": {
+      "mpn": "CL21A106KAYNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0805",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 8281745
+    },
+    "C1588": {
+      "mpn": "CL10B102KB8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 5435132
+    },
+    "C19666": {
+      "mpn": "CL10A475KO8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3891204
+    },
+    "C20526": {
+      "mpn": "MMBT3904(RANGE:100-300)",
+      "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+      "package": "SOT-23",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 2915365
+    },
+    "C2074262": {
+      "mpn": "ESR18EZPF1001",
+      "manufacturer": "ROHM Semicon",
+      "package": "1206",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 99734
+    },
+    "C21190": {
+      "mpn": "0603WAF1001T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 27600131
+    },
+    "C23206": {
+      "mpn": "0603WAF5602T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 752652
+    },
+    "C25803": {
+      "mpn": "0603WAF1003T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 16263772
+    },
+    "C25804": {
+      "mpn": "0603WAF1002T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 43011333
+    },
+    "C25808": {
+      "mpn": "0603WAF1203T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1198398
+    },
+    "C28323": {
+      "mpn": "CL21B105KBFNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0805",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3476836
+    },
+    "C29429": {
+      "mpn": "MCP6001T-E/OT",
+      "manufacturer": "Microchip Tech",
+      "package": "SOT-23-5",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 35872
+    },
+    "C31850": {
+      "mpn": "0603WAF2202T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 2714130
+    },
+    "C4184": {
+      "mpn": "0603WAF2002T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 5752892
+    },
+    "C529341": {
+      "mpn": "STM32G071C8T6",
+      "manufacturer": "STMicroelectronics",
+      "package": "LQFP-48(7x7)",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 4969
+    },
+    "C53987": {
+      "mpn": "0603B472K500NT",
+      "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 805858
+    },
+    "C57112": {
+      "mpn": "0603B103K500NT",
+      "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 5073346
+    },
+    "C78260": {
+      "mpn": "BAT54SWT1G",
+      "manufacturer": "onsemi",
+      "package": "SOT-323",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 45452
+    },
+    "C81598": {
+      "mpn": "1N4148W",
+      "manufacturer": "ST(Semtech)",
+      "package": "SOD-123",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 3586922
+    },
+    "C8598": {
+      "mpn": "B5819W SL",
+      "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+      "package": "SOD-123",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 777900
+    },
+    "C1002": {
+      "mpn": "GZ1608D601TF",
+      "manufacturer": "Sunlord",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 483695,
+      "source": "search \"ferrite bead 0603\" --basic-only --strict-live"
+    },
+    "C23352": {
+      "mpn": "0603WAF2402T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 602274,
+      "source": "search \"24k 0603\" --basic-only --strict-live"
+    }
+  }
+}

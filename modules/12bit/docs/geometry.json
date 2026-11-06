@@ -1,0 +1,309 @@
+{
+ "revision": "S2 schematic, P3 placement (THT only, SMD parked, unrouted): modules/8bit on an STM32G071C8T6 for Eurorack, 6HP",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 6,
+ "panel_mm": [
+  30.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "rail_holes_mm": [
+  [
+   12.58,
+   3.0,
+   3.2
+  ],
+  [
+   12.58,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "Single hole pair at X12.58 (Doepfer X7.5 moved 1HP right), as modules/hats and modules/16bit. Skiff rails as the MIDI module: clear Y8.0..120.5.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   29.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "29 x 110 mm (as modules/hats / 16bit); four layers planned F / In1 GND / In2 +3V3 / B. All assembled SMD on B. 1 mm copper-edge keep-out (min_copper_edge_clearance 1.0). Held by the five jack bushings/nuts; pots are soldered only."
+ },
+ "jack_part": "QingPu WQP-PJ301M-12",
+ "panel_order": "MIDI + CV; P1 + P2; MODE button, its LED and P3 on one row; OUT 1 + OUT 2 at the bottom. No gate output (removed in S2).",
+ "row_note": "Two columns X7.95 / X22.05: modules/hats X7.75 / X22.25 moved 0.2 mm inward so the RV09 courtyards keep the 1 mm board-edge keep-out (1.02 mm). P2 (user, 2026-11-06): jacks Y21; pot rows Y45 and Y69 (24 mm pitch, 5 mm more clearance to the MIDI/CV jacks than P1); row 3 = MODE switch X6.5 (rot 90), LED X12.85, P3 X22.05; OUT 1 / OUT 2 as low as the 1 mm keep-out allows (Y110.4, courtyard 1.01 mm above the bottom edge); power header upright on B at the right edge between P3 and OUT 2. P3 (user, 2026-11-06): row 3 moved 3 mm further from P1/P2 (pitch 27 mm) and the pot block centred between the jack rows on the panel: jack centres Y21 / Y110.4 (mid Y65.7), pot rows Y52.2 / Y79.2 (mid Y65.7), 31.2 mm from either jack row. Courtyard gaps: MIDI/CV to P1/P2 18.2 mm, P1/P2 to row 3 13.2 mm, row 3 (RV3) to OUT 1/2 16.2 mm. J6 SWD moved to Y93 to clear the MODE switch legs.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "MIDI IN (TS)",
+   "XY": [
+    7.95,
+    21.0
+   ],
+   "rot": 0.0
+  },
+  {
+   "ref": "J2",
+   "role": "CV IN",
+   "XY": [
+    22.05,
+    21.0
+   ],
+   "rot": 0.0
+  },
+  {
+   "ref": "J3",
+   "role": "OUT 1 (DAC1_OUT1)",
+   "XY": [
+    7.95,
+    110.4
+   ],
+   "rot": 0.0
+  },
+  {
+   "ref": "J4",
+   "role": "OUT 2 (DAC1_OUT2)",
+   "XY": [
+    22.05,
+    110.4
+   ],
+   "rot": 0.0
+  }
+ ],
+ "pot_part": "Song Huei R0904N 50k linear (user stock), vertical snap-in, tall shaft (L = 25 mm, knurled, no threaded bushing, no nut): the pot Bread Modular uses, on the Bread Modular Potentiometer_RV09 footprint",
+ "pot_shaft_offset_from_footprint_origin_mm": [
+  -0.127,
+  -0.508
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "P1 (50k, PA1)",
+   "shaft_XY": [
+    7.95,
+    52.2
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "RV2",
+   "role": "P2 (50k, PA6)",
+   "shaft_XY": [
+    22.05,
+    52.2
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "RV3",
+   "role": "P3 (50k, PA7; was the 8bit passive low-pass), right of MODE/LED",
+   "shaft_XY": [
+    22.05,
+    79.2
+   ],
+   "rot": 0
+  }
+ ],
+ "buttons": [
+  {
+   "ref": "SW1",
+   "role": "MODE (PB4)",
+   "footprint": "SW_PUSH_6mm_H7.3mm",
+   "XY": [
+    6.5,
+    79.2
+   ],
+   "rot": 90.0,
+   "note": "modules/8bit SW1: generic 6 x 6 x 7 mm THT tact on the carrier F side, placed by the pad-pattern centre = stem centre. rot 90 (square body, symmetric; the 8bit round printed cap fits unchanged) so the courtyard is 7.6 mm wide and MODE, LED and P3 fit on one row; legs X4.25 / X8.75, Y75.95 / Y82.45. Same Z stack as 8bit/16bit."
+  }
+ ],
+ "leds": [
+  {
+   "ref": "D1",
+   "role": "MODE LED (PB5)",
+   "XY": [
+    12.85,
+    79.2
+   ],
+   "note": "3 mm red THT on F (as 8bit D1), rot 90: pads along Y centred on XY, between the MODE switch and P3 on their row; dome flush with the panel front.",
+   "rot": 90.0
+  }
+ ],
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2,
+  "led": 3.2,
+  "button": 4.2
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = carrier F.Cu, +Z toward the panel",
+  "panel_rear_seat": 10.0,
+  "note": "As modules/8bit and modules/16bit (PJ301M-12 boss top = panel rear; 3 mm LED dome flush with the 1.6 mm FR4 front; the switch stem top is 3.0 mm below the panel rear, bridged by the 8bit printed cap).",
+  "switch_body_top": 3.1,
+  "switch_stem_top": 7.0,
+  "switch_stem_D": 3.3,
+  "led_body_bottom": 6.3,
+  "led_body_height": 5.3,
+  "led_model_body_bottom": 3.0
+ },
+ "power_header": {
+  "ref": "J5",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   23.8,
+   99.5
+  ],
+  "pin_columns_X_mm": [
+   23.8,
+   26.34
+  ],
+  "pin_rows_Y_mm": [
+   99.5,
+   96.96,
+   94.42,
+   91.88,
+   89.34
+  ],
+  "orientation": "Upright at the right edge (user P2: off the bottom edge, to the right), rot 180 on B: odd pins on the inner column X23.8, even pins on X26.34; pins 1/2 (-12 V) at the bottom Y99.5, pins 9/10 (+12 V) at the top Y89.34. Courtyard X21.99..28.15 (1.35 mm from the right edge).",
+  "idc16_socket_envelope_mm": {
+   "X": [
+    20.67,
+    29.47
+   ],
+   "Y": [
+    77.91,
+    103.31
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the board, never past an edge. Envelope = 2x8 socket (25.4 x 6.4 mm body, 3.81 mm beyond the end pin centres) plus a 1.2 mm key bump on either side. P3: the centred pot block puts the RV3 lugs (Y79.2, X26.85) and pins 2/3 (Y86.7) under the overhang (a 10-pin socket, Y85.53..103.31, still covers RV3 pins 2/3). The socket underside sits 2.5 mm above B on the header plastic, so the THT leads under it must be trimmed to <= 2 mm. No pad under it otherwise (OUT 2 pads start at Y104.18). B-side SMD placed under it later must stay <= 2 mm tall."
+ },
+ "back_side_tht": [
+  {
+   "ref": "J5",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    25.07,
+    94.42
+   ],
+   "rot": 180,
+   "note": "right edge, upright, rot 180 on B: pins 1/2 (-12 V) at the bottom"
+  },
+  {
+   "ref": "J6",
+   "footprint": "PinHeader_1x05_P2.54mm_Vertical",
+   "XY": [
+    3.4,
+    93.0
+   ],
+   "rot": 0,
+   "note": "SWD (1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST), vertical at the left edge between the MODE row and OUT 1, pins Y87.92..98.08 (centred on Y93, P3: 3 mm down to clear the MODE switch legs), hand-soldered on B"
+  }
+ ],
+ "smd_parking": {
+  "side": "B",
+  "origin_XY": [
+   37.0,
+   12.0
+  ],
+  "pitch_XY": [
+   11.0,
+   11.0
+  ],
+  "columns": 7,
+  "note": "Every SMD part waits here, off the board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer). No routing in S1/P1."
+ },
+ "panel_labels": [
+  {
+   "text": "12BIT",
+   "XY": [
+    15.0,
+    7.0
+   ],
+   "size": 2.5
+  },
+  {
+   "text": "MIDI",
+   "XY": [
+    7.95,
+    13.5
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "CV",
+   "XY": [
+    22.05,
+    13.5
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P1",
+   "XY": [
+    7.95,
+    44.7
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P2",
+   "XY": [
+    22.05,
+    44.7
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "MODE",
+   "XY": [
+    6.5,
+    71.7
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "P3",
+   "XY": [
+    22.05,
+    71.7
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 1",
+   "XY": [
+    7.95,
+    102.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 2",
+   "XY": [
+    22.05,
+    102.9
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    15.0,
+    117.6
+   ],
+   "size": 1.2
+  }
+ ]
+}
