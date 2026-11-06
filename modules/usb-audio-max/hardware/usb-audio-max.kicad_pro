@@ -583,6 +583,30 @@
       {
         "netclass": "Power",
         "pattern": "-12V_F"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "/V5_IN"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "Net-(Q1-E)"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "Net-(FB2-Pad2)"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "/V3_IN"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "Net-(U2-SW)"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "+3V3_OSC"
       }
     ]
   },

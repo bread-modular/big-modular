@@ -1,8 +1,8 @@
-"""Write the USB-AUDIO-MAX KiCad project files (hardware/usb-audio-max{,-mcu}.kicad_pro).
+"""Write the USB-AUDIO-MAX KiCad project files (hardware/usb-audio-max{,-mcu}.kicad_pro, panel .kicad_pro).
 
 Run from modules/usb-audio-max:  python3 -B tools/build_project.py
 
-As modules/usb-audio/tools/build_project.py (no panel project yet: the panel waits for the HP decision).
+As modules/usb-audio/tools/build_project.py.
 
 Settings start from the accepted modules/32bit project (same KiCad 10 defaults, ERC/DRC
 severities, Default + Power net classes) with this module's names, its rail net classes and the
@@ -15,8 +15,12 @@ from pathlib import Path
 
 MODULE = Path(__file__).resolve().parents[1]
 TEMPLATE = MODULE.parents[0] / '32bit/hardware/32bit.kicad_pro'
+PANEL_TEMPLATE = MODULE.parents[0] / '32bit/panels/front-pcb/32bit-panel.kicad_pro'
 
-RAILS = {'usb-audio-max': ['GND', '+3V3', '+3V3_C', '+5VA', '+12V', '-12V', '+12V_F', '-12V_F'],
+# Power class: the rails plus the power-path nets between them (+5VA pre-drop / pass transistor, buck
+# input filter and switch node) and the oscillator's filtered supply.
+RAILS = {'usb-audio-max': ['GND', '+3V3', '+3V3_C', '+5VA', '+12V', '-12V', '+12V_F', '-12V_F',
+                           '/V5_IN', 'Net-(Q1-E)', 'Net-(FB2-Pad2)', '/V3_IN', 'Net-(U2-SW)', '+3V3_OSC'],
          'usb-audio-max-mcu': ['GND', '+3V3', 'VBUS']}
 
 
@@ -48,6 +52,11 @@ def main():
         sch = (hw / f'{name}.kicad_sch').read_text()
         sheet['uuid'] = sch.split('(uuid "', 1)[1].split('"', 1)[0]
         (hw / f'{name}.kicad_pro').write_text(json.dumps(d, indent=2) + '\n')
+    p = json.loads(PANEL_TEMPLATE.read_text())
+    p['meta']['filename'] = 'usb-audio-max-panel.kicad_pro'
+    panel = MODULE / 'panels/front-pcb/usb-audio-max-panel.kicad_pro'
+    panel.parent.mkdir(parents=True, exist_ok=True)
+    panel.write_text(json.dumps(p, indent=2) + '\n')
     print('project files written')
 
 

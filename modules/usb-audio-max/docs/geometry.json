@@ -1,0 +1,509 @@
+{
+ "revision": "S1 placement (10HP; THT + the vertical USB-C, the board-to-board strips, the power and SWD headers and BOOT/RESET only). Two boards: carrier (jack board, 4 layers) and MCU board (4 layers) stacked on the carrier F side on 2.54 mm strips, as modules/usb-audio. Every other SMD part parked off-board for group-by-group placement. Not routed.",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY, for the carrier, the MCU board and the panel. The carrier F side faces the panel; the MCU board sits on the carrier F side with its own F side facing the panel, so both KiCad top views equal the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 10,
+ "panel_mm": [
+  50.5,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "rail_holes_mm": [
+  [
+   12.58,
+   3.0,
+   3.2
+  ],
+  [
+   43.06,
+   3.0,
+   3.2
+  ],
+  [
+   12.58,
+   125.5,
+   3.2
+  ],
+  [
+   43.06,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_note": "Doepfer A-100 10HP: 50.5 mm wide; holes X7.5 and X7.5 + 7 x 5.08 (Doepfer (HP - 3) x 5.08 spacing, as modules/acid 8HP and modules/4mix 18HP), the left one moved 1HP right to X12.58 so both land on the 2HP case spacer grid (case/tools/build_case.py). Skiff rails: clear Y8.0..120.5.",
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "hp_decision": "10HP (user 2026-11-06: 8HP preferred, 10HP if needed; no schematic changes). Fit study in docs/research.md section 5: at 8HP the jack columns leave 5.55 mm strips, so no SOIC-14 / SOT-223 / codec fits in the jack area and all of them crowd the 31 mm band under the MCU board; SMD courtyard / free area 65 % against 45 % (usb-audio) .. 53 % (16bit) .. 63 % (32bit, needed hand-solder exceptions) on the routed boards. At 10HP the strips are 11.15 mm (a SOIC-14 plus a 0603 column) and the density is 45 %. Moving parts to the MCU board would need new strip pins, i.e. a schematic change on both boards.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   50.0,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "49.5 x 110.0 mm, 0.5 mm inside the 50.5 mm panel each side and 1.25 mm inside the rail gap at each end (as modules/acid). Held by the 14 jack nuts; the MCU board hangs on it. All SMD on B (single-sided assembly)."
+ },
+ "mcu_pcb": {
+  "outline_mm": [
+   10.75,
+   10.0,
+   39.75,
+   39.55
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 4,
+  "note": "29.0 x 29.55 mm: the modules/usb-audio MCU board outline (R1/R2) and strip/USB-C positions, centred on the panel (X + 10.25), so its proven USB 2.0 HS layout can be carried over. All SMD on F (one assembly side), facing the panel."
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = carrier F.Cu, +Z toward the panel",
+  "panel_rear_seat": 10.0,
+  "note": "PJ301M-12 boss top = panel rear (as modules/usb-audio).",
+  "header_plastic": 2.5,
+  "mcu_board_bottom": 2.5,
+  "mcu_board_top": 4.1,
+  "usbc_height_above_mcu_board": 8.8,
+  "usbc_top": 12.9,
+  "panel_front": 11.6,
+  "usbc_proud_of_panel_front": 1.3,
+  "usbc_note": "As modules/usb-audio: the USB-C mouth must be no more than ~0.3 mm behind the panel front or the plug cannot seat; HRO TYPE-C-31-D-15 (8.8 mm) on a 1.6 mm MCU board on 2.5 mm header plastic puts it 1.3 mm proud of the 1.6 mm FR4 panel."
+ },
+ "jack_rotation_deg": 0,
+ "jack_columns_X_mm": [
+  7.0,
+  25.25,
+  43.5
+ ],
+ "jack_rows_Y_mm": [
+  46.3,
+  62.25,
+  78.2,
+  94.15,
+  110.1
+ ],
+ "jacks": [
+  {
+   "ref": "J11",
+   "role": "IN1",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.0,
+    46.3
+   ]
+  },
+  {
+   "ref": "J12",
+   "role": "IN2",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    25.25,
+    46.3
+   ]
+  },
+  {
+   "ref": "J13",
+   "role": "IN3",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    43.5,
+    46.3
+   ]
+  },
+  {
+   "ref": "J14",
+   "role": "IN4",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.0,
+    62.25
+   ]
+  },
+  {
+   "ref": "J15",
+   "role": "IN5",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    25.25,
+    62.25
+   ]
+  },
+  {
+   "ref": "J16",
+   "role": "IN6",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    43.5,
+    62.25
+   ]
+  },
+  {
+   "ref": "J21",
+   "role": "OUT1",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.0,
+    78.2
+   ]
+  },
+  {
+   "ref": "J22",
+   "role": "OUT2",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    25.25,
+    78.2
+   ]
+  },
+  {
+   "ref": "J23",
+   "role": "OUT3",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    43.5,
+    78.2
+   ]
+  },
+  {
+   "ref": "J24",
+   "role": "OUT4",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.0,
+    94.15
+   ]
+  },
+  {
+   "ref": "J25",
+   "role": "OUT5",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    25.25,
+    94.15
+   ]
+  },
+  {
+   "ref": "J26",
+   "role": "OUT6",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    43.5,
+    94.15
+   ]
+  },
+  {
+   "ref": "J27",
+   "role": "OUT7",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    7.0,
+    110.1
+   ]
+  },
+  {
+   "ref": "J28",
+   "role": "OUT8",
+   "part": "QingPu WQP-PJ301M-12",
+   "XY": [
+    25.25,
+    110.1
+   ]
+  }
+ ],
+ "layout_note": "User brief 2026-11-06: USB-C at the top (as modules/usb-audio); three columns, IN 1-6 in two rows of three, OUT 1-8 in three rows below, reading order (left to right, top to bottom); the ninth spot (bottom right) is empty on the panel and holds the power header on the back. Columns X7.0 / X25.25 / X43.5 (7.0 mm from both panel edges, 18.25 mm pitch): jack courtyards 1.72 mm from the carrier edges; with the 2 mm hand-solder keep-out (pads + 2 mm, X +/-3.55) the strips between the columns are 11.15 mm wide (X10.55..21.7, X28.8..39.95). Rows Y46.3 / 62.25 / 78.2 / 94.15 / 110.1 (15.95 mm pitch): the top row courtyard (Y40.02) clears the MCU board (Y39.55); the bottom row courtyard (Y117.93) is 1.3 mm from the carrier edge.",
+ "panel_hole_diameters_mm": {
+  "jack": 6.2
+ },
+ "usb_slot": {
+  "XY": [
+   25.25,
+   16.0
+  ],
+  "size_mm": [
+   9.5,
+   3.7
+  ],
+  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm) with ~0.27 mm clearance a side, as modules/usb-audio; the shell passes through and stands 1.3 mm proud."
+ },
+ "carrier_headers": [
+  {
+   "ref": "J2",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    13.65,
+    13.0
+   ],
+   "side": "F"
+  },
+  {
+   "ref": "J3",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    36.85,
+    13.0
+   ],
+   "side": "F"
+  }
+ ],
+ "mcu_parts": [
+  {
+   "ref": "J102",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    13.65,
+    13.0
+   ],
+   "side": "F",
+   "note": "same holes as carrier J2"
+  },
+  {
+   "ref": "J103",
+   "footprint": "PinHeader_1x10_P2.54mm_Vertical",
+   "pin1_XY": [
+    36.85,
+    13.0
+   ],
+   "side": "F",
+   "note": "same holes as carrier J3"
+  },
+  {
+   "ref": "J101",
+   "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical",
+   "XY": [
+    25.25,
+    16.0
+   ],
+   "rot": 90,
+   "side": "F"
+  }
+ ],
+ "reserved_zones_mcu": [
+  {
+   "what": "U101 LQFP-64 (modules/usb-audio R2 spot: centre X25.25 Y31.75)",
+   "X": [
+    18.5,
+    32.0
+   ],
+   "Y": [
+    25.0,
+    38.5
+   ]
+  }
+ ],
+ "back_side_parts": [
+  {
+   "ref": "J1",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    45.0,
+    110.1
+   ],
+   "rot": 180,
+   "band": "Eurorack power in the empty ninth jack spot (bottom right), vertical, pin 1 (-12 V) at the bottom row. THT, B side"
+  },
+  {
+   "ref": "J4",
+   "footprint": "PinHeader_1x04_P2.54mm_Vertical",
+   "XY": [
+    5.0,
+    14.0
+   ],
+   "rot": 0,
+   "band": "SWD (WCH-LinkE): pin 1 +3V3 at the top, B side, top-left beside J2 (SWDIO/SWCLK on J2.3/J2.4); tails on F clear of the MCU board"
+  },
+  {
+   "ref": "SW1",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    5.5,
+    28.0
+   ],
+   "rot": 0,
+   "band": "RESET, B side, below J4 (NRST on J2.5)"
+  },
+  {
+   "ref": "SW2",
+   "footprint": "K2-1808SN-A4SW-01",
+   "XY": [
+    5.5,
+    33.5
+   ],
+   "rot": 0,
+   "band": "BOOT, B side, below RESET (BOOT0 on J2.6)"
+  }
+ ],
+ "power_header": {
+  "ref": "J1",
+  "pin1_XY_mm": [
+   43.73,
+   115.18
+  ],
+  "column_X_mm": [
+   43.73,
+   46.27
+  ],
+  "idc16_socket_envelope_mm": {
+   "X": [
+    41.2,
+    48.8
+   ],
+   "Y": [
+    93.59,
+    118.99
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the OUT6 jack tails, 2.5 mm above B (SMD under it must stay below 2.5 mm)."
+ },
+ "panel_labels": [
+  {
+   "text": "USB AUDIO MAX",
+   "XY": [
+    25.25,
+    9.4
+   ],
+   "size": 2.0
+  },
+  {
+   "text": "USB",
+   "XY": [
+    25.25,
+    20.8
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 1",
+   "XY": [
+    7.0,
+    40.2
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 2",
+   "XY": [
+    25.25,
+    40.2
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 3",
+   "XY": [
+    43.5,
+    40.2
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 4",
+   "XY": [
+    7.0,
+    56.15
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 5",
+   "XY": [
+    25.25,
+    56.15
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "IN 6",
+   "XY": [
+    43.5,
+    56.15
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 1",
+   "XY": [
+    7.0,
+    72.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 2",
+   "XY": [
+    25.25,
+    72.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 3",
+   "XY": [
+    43.5,
+    72.1
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 4",
+   "XY": [
+    7.0,
+    88.05
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 5",
+   "XY": [
+    25.25,
+    88.05
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 6",
+   "XY": [
+    43.5,
+    88.05
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 7",
+   "XY": [
+    7.0,
+    104.0
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 8",
+   "XY": [
+    25.25,
+    104.0
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG\nMODULAR",
+   "XY": [
+    43.5,
+    110.1
+   ],
+   "size": 1.2
+  }
+ ],
+ "parking": {
+  "origin_XY": [
+   58.0,
+   10.0
+  ],
+  "gap_mm": 1.5,
+  "column_height_mm": 110.0
+ }
+}
