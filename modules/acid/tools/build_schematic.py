@@ -245,7 +245,7 @@ def circuit():
                        '(MIDI_IN to PB3, PORT_INVEN off; 3.3 V senders only). Never both'))
 
     # ---- MCU: one ATtiny1616 at 3.3 V runs the MCO and the ENV firmware
-    c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', MCU,
+    c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MF', 'QFN20', MCU,
                   Note='3.3 V, as Bread Modular MCO/ENV. Firmware: MCO (two tones, DETUNE) + ENV '
                        '(3 envelope models, record), envelope on the PA6 DAC'))
     c.append(part('C6', 'C', '100n', 'C0603',
@@ -540,7 +540,7 @@ SOURCING = {
     ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
                                             Manufacturer='CJ (Jiangsu Changjing)'),
     ('HT75xx-1-SOT89', 'HT7533-1', 'SOT89'): dict(LCSC='C14289', MPN='HT7533-1', Manufacturer='Holtek'),
-    ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR', Manufacturer='Microchip'),
+    ('ATtiny1616-M', 'ATtiny1616-MF', 'QFN20'): dict(LCSC='C5227638', MPN='ATTINY1616-MF', Manufacturer='Microchip'),
     ('MCP6002-xSN', 'MCP6002', 'SOIC8'): dict(LCSC='C7377', MPN='MCP6002T-I/SN', Manufacturer='Microchip'),
     ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
     ('TS5A23157DGS', 'TS5A23157', 'TSSOP10'): dict(LCSC='C11133', MPN='TS5A23157DGSR', Manufacturer='Texas Instruments'),

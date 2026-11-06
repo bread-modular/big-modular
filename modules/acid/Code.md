@@ -1,9 +1,9 @@
-# ACID contract (S3 schematic, R2 routing, JLCPCB export)
+# ACID contract (S3 schematic, P4/R3 10HP routing, S3/R3 JLCPCB export)
 
 | | |
 |---|---|
 | KiCad project | `hardware/acid.kicad_{pro,sch,pcb}` |
-| Panel | `panels/front-pcb/acid-panel.kicad_{pro,pcb}` (FR4, NPTH only, 8HP) |
+| Panel | `panels/front-pcb/acid-panel.kicad_{pro,pcb}` (FR4, NPTH only, 10HP) |
 | Generators, profile | `tools/` (`import_footprints.py`, `build_schematic.py`, `build_layout.py`, `sim_level.py`, `kicad-project.json`) |
 | Placement contract | `docs/geometry.json` |
 | Circuit intent and decisions | `docs/research.md` |
@@ -11,7 +11,7 @@
 
 ## Fixed by the brief
 
-- Bread Modular MCO + ENV + SVF, 8HP, **3.3 V internal signals** (BM values and topology kept;
+- Bread Modular MCO + ENV + SVF, 10HP (P4, user 2026-11-06; was 8HP), **3.3 V internal signals** (BM values and topology kept;
   deviations listed in research.md 3.5). No DRIVE circuit.
 - MIDI in like 8bit; AUDIO bypass mapped to 0..3.3 V (clipping accepted); CV bypass 0..5 V ->
   0..3.3 V (as modules/low); unpatched they carry the MCO square mix and the DAC envelope.
@@ -19,8 +19,10 @@
   3-pad gain jumper (S3, research.md 3.6): open (shipped) x3.0 (the modules/low level), 2-3 x3.9,
   1-2 x11.1 (the S2 DRIVE-at-75 % gain); ~10 Vpp ceiling. The Rg chain 4.7k + 10k + 5.1k uses
   BOM values only.
-- Panel (user P2 layout, P3 edge fixes + alignment): MIDI, DETUNE + MIX, ATTACK + RELEASE with the HR/AR/ASR LED column,
-  REC LED + button, MODE button, ENV OUT, AUDIO + FREQ + CV, RES + CURVE, LP + HP + BP OUT.
+- Panel (user P4, 2026-11-06): MIDI + AUDIO + CV jacks on top; DETUNE + MIX; ATTACK + RELEASE (4 mm
+  lower) with the HR/AR/ASR LED column; REC button + REC LED (LED right of the button), MODE button;
+  FREQ; RES + CURVE on the DETUNE/ATTACK and MIX/RELEASE columns; LP + HP + BP + ENV OUT on the bottom row.
+  J10 power header on B at the right edge between RELEASE and CURVE.
 - Vactrols on B, hand-soldered (modules/low / vca-mix). R1: under ATTACK / RELEASE between the lug
   and pin rows (research.md 5); the stacking findings are user-approved.
 - 4 layers (R1): F signal + GND pour, In1 solid GND (no tracks), In2 +3V3 plane, B signal + GND pour;
