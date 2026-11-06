@@ -16,7 +16,9 @@ LT3045 + REF5050 for the DC outputs; +3V3 TPS562208 buck); S1.1 +5VA from REF505
 (cost); S1.2 +3V3 from 3 x 68R + AMS1117-3.3; **S2 (final schematics)**: +3V3 back on the TPS562208
 FCCM buck behind an input filter, checked against the audio in ngspice (section 2a), every LCSC code
 re-checked live, drawings tidied (no overlapping texts). The MCU board circuit is unchanged since S1
-(S2 is a drawing tidy).
+(S2 is a drawing tidy). **S1 placement** (2026-11-06, user brief: jack rows below the USB-C, no
+schematic changes, 10HP if 8HP is too tight): **10HP** panel, THT/mechanical parts placed, SMD parked
+(section 5); schematics unchanged.
 
 ## 1. Architecture
 
@@ -140,12 +142,61 @@ none): unit A analog, unit B interface/control/supplies, pin 65 = PowerPAD.
 - Firmware FIFOs (2026-11-05 sizing, modules/usb-audio): 8 ch x 96 kHz fits the 64 KiB RAM with
   12 KiB FIFOs and static block buffers; 6/8 channels need slightly less.
 
-## 5. Panel
+## 5. Panel and S1 placement (10HP)
 
-14 jacks and the USB-C slot, no pots. **8HP** (user decision, 2026-11-05), three jack columns (IN 1-6 in two rows of
-three, OUT 1-8 below in three rows), MCU board and USB-C at the top as modules/usb-audio. 6HP would
-need 7-8 rows of two jacks (~8.5 mm pitch): too tight with the MCU board under the top 40 mm.
-Not decided: jack order, labels. Placement, panel and routing follow the root `AGENTS.md` rules.
+User brief (2026-11-06): USB-C at the top as modules/usb-audio; IN 1-6 in two rows of three, OUT 1-8
+in three rows of three below them (the ninth spot stays empty); no schematic changes; 8HP preferred,
+parts may move onto the stacked MCU board, 10HP if needed. 14 jacks, no pots.
+
+**Decision: 10HP (50.5 mm).** Fit study, `tools/fit_density.py` (SMD courtyard area over the free
+area: board inside the 1 mm edge keep-out, minus jack/pot pads + 2 mm, other THT pads + 0.5 mm and
+B-side THT courtyards; it ignores routing, so the routed carriers set the scale):
+
+| Carrier | Size (mm) | SMD courtyard (mm2) | Free area (mm2) | Density |
+|---|---|---|---|---|
+| acid (routed) | 39.3 x 110 | 809 | 2004 | 40 % |
+| hats (routed) | 29 x 110 | 708 | 1794 | 39 % |
+| usb-audio (routed) | 29 x 110 | 787 | 1730 | 45 % |
+| 16bit (routed) | 29 x 110 | 935 | 1762 | 53 % |
+| 32bit (routed; needed user-accepted exceptions to the 2 mm rule) | 29 x 110 | 1169 | 1861 | 63 % |
+| **usb-audio-max 8HP** (what-if, acid columns X7.5 / 20.15 / 32.8) | 39.3 x 110 | 1603 | 2487 | **64 %** |
+| **usb-audio-max 10HP** (as placed) | 49.5 x 110 | 1603 | 3580 | **45 %** |
+
+- 8HP: the jack keep-outs (pads + 2 mm, X +/-3.55 around each column) leave 5.55 mm strips between
+  the columns, which take passives only. The four SOIC-14 (7.49 mm courtyard), the SOT-223 and the
+  codec (13.5 mm) would all have to share the ~31 x 28 mm band under the MCU board (~856 mm2), and
+  those packages alone fill 57 % of it before decoupling, feedback networks and the codec fan-out.
+  Density 64 %, as 32bit with half the jacks.
+- Moving parts onto the stacked MCU board does not rescue 8HP without a schematic change: only
+  R17-R19 sit purely on strip nets (BOOT/RESET/SWD do too, but stay on the carrier back to be
+  reachable); any real block (buck, op-amps, codec) needs new interface nets and strip pins on both
+  schematics. The MCU board keeps modules/usb-audio's 29 x 29.55 mm outline, USB-C
+  and strip positions instead (centred, X + 10.25), so its routed USB 2.0 HS layout can be carried over.
+- 10HP: 11.15 mm strips (a SOIC-14 plus a column of 0603s) and 45 % density, as modules/usb-audio.
+
+Geometry (`docs/geometry.json`, built by `tools/build_layout.py`; panel frame, mm):
+
+- Panel 50.5 x 128.5 x 1.6 FR4, rail holes X12.58 / X43.06 (Doepfer (HP - 3) x 5.08 spacing, on the
+  2HP case grid). USB-C slot 9.5 x 3.7 at X25.25 Y16. Labels: USB AUDIO MAX, USB, IN n / OUT n 6.1 mm
+  above each jack, BIG MODULAR in the empty ninth spot.
+- Carrier 49.5 x 110 (X0.5-50.0, Y9.25-119.25), 4 layers, all SMD on B. MCU board X10.75-39.75,
+  Y10-39.55 on J2/J3 (= J102/J103) at X13.65 / X36.85 from Y13; stack Z as modules/usb-audio (USB-C
+  1.3 mm proud of the panel).
+- Jacks (PJ301M-12, rot 0) in reading order: columns X7.0 / 25.25 / 43.5 (7.0 mm from both panel
+  edges), rows Y46.3 / 62.25 / 78.2 / 94.15 / 110.1: IN1 IN2 IN3 / IN4 IN5 IN6 / OUT1 OUT2 OUT3 /
+  OUT4 OUT5 OUT6 / OUT7 OUT8. Top-row courtyards clear the MCU board outline by 0.4 mm; bottom row 1.28 mm
+  from the carrier edge.
+- Back (B): J1 power in the ninth spot (X45.0 Y110.1, vertical, pin 1 = -12 V at the bottom; a 16-pin
+  socket overhangs up over the OUT6 tails, 2.5 mm above B); J4 SWD, SW1 RESET and SW2 BOOT top left,
+  beside the J2 pins they use (SWDIO/SWCLK, NRST, BOOT0).
+
+Floorplan proposal for the group-by-group placement (not placed yet): codec U3 between J2 and J3 under
+the MCU board, Y1/U4 and the I2S resistors on its digital sides towards J3; input drivers U5 (IN1-4)
+in the strip between columns 1 and 2 and U6 (IN5-6 + VCOM/VB references) between columns 2 and 3 by
+rows 1-2 (IN3 crosses column 2 to U5: the schematic fixes the sections); output amplifiers U7
+(OUT1-4) / U8 (OUT5-8) in the strips by rows 3-5 with each 1206 pair by its jack; the power corner
+(J1, D1/D2, the buck U2/L1/C4-C10) in the ninth spot, away from the inputs, the codec and Y1
+(section 7).
 
 ## 6. Sourcing (JLCPCB live lookups, 2026-11-05; stock is not reserved)
 
@@ -177,8 +228,9 @@ the B5819W and the 8 MHz crystal are Basic. Not an order or a stock reservation.
 
 ## 7. Open
 
-- Jack layout on the 8HP panel (section 5), then placement and manual divide-and-conquer routing of both
-  boards (root `AGENTS.md`). Codec: PowerPAD to the GND plane with the footprint's 36 thermal vias
+- S1 placement done (10HP, section 5). Next: group-by-group SMD placement and manual divide-and-conquer
+  routing of both boards (root `AGENTS.md`); the MCU board from modules/usb-audio's routed R2 board
+  plus SPI1 (PA4-PA7), R109 and CODEC_RST on J102.9. Codec: PowerPAD to the GND plane with the footprint's 36 thermal vias
   (~1.2 W); TI PAP land pattern to check against the KiCad Texas PAP0064 footprint (mask 5 x 5 mm).
   Q1 BCP56 (<= 0.70 W: >= 1 cm2 tab copper on V5_IN) and R1/R2 need copper; Q2 away from Q1;
   R7 (+5VA sense) and C19's ground side Kelvin-routed to the codec VCC/AGND.
