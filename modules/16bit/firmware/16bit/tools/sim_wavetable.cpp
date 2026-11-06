@@ -1,6 +1,7 @@
 // Host test of the polysynth wavetables (includes/audio/gen/wavetable_osc.h +
 // wavetable_data.h): table data, mip level choice, aliasing, morph
-// continuity and the P1 zone hysteresis. Run through ../test.sh.
+// continuity, the Noise step and the P1 zone hysteresis. Run through
+// ../test.sh.
 
 #include <cmath>
 #include <complex>
@@ -24,7 +25,7 @@ static int failures = 0;
     } while (0)
 
 static const float SR = 44100.0f;
-static const int ZONES = WAVETABLE_COUNT + 1;
+static const int ZONES = WAVETABLE_ZONE_COUNT;  // tables + Noise
 
 // MIDI::midiNoteToHz (exact, as Voice passes it to the Wavetable).
 static float noteHz(int note) {
@@ -196,7 +197,7 @@ static void checkPitch() {
     control.init(SR);
     osc.init(&control, SR);
     osc.setFrequency(440);
-    // Count rising zero crossings of the sine level region of Basic frame 0.
+    // Count rising zero crossings of Classic frame 0 (square).
     int crossings = 0;
     float prev = tickSample(osc, control);
     for (int i = 0; i < (int)SR; i++) {
@@ -274,12 +275,165 @@ static void checkZones() {
     CHECK(wavetableZoneFor(12.5f / ZONES, 2, ZONES, hyst) == 12, "jump to 12");
 }
 
+// Band power (dB) of a Hann-windowed FFT between lo and hi Hz, averaged.
+static double bandDb(const std::vector<std::complex<double>>& a, double lo, double hi) {
+    const double binHz = SR / a.size();
+    double p = 0;
+    int n = 0;
+    for (size_t k = (size_t)(lo / binHz); k <= (size_t)(hi / binHz); k++) {
+        p += std::norm(a[k]);
+        n++;
+    }
+    return 10 * log10(p / n + 1e-30);
+}
+
+static std::vector<std::complex<double>> noiseSpectrum(WavetableOsc& osc, WavetableControl& control,
+                                                       int frames, double* rms, float* peak) {
+    const int n = 4096;
+    std::vector<std::complex<double>> sum(n);
+    double e = 0;
+    *peak = 0;
+    for (int f = 0; f < frames; f++) {
+        std::vector<std::complex<double>> a(n);
+        for (int i = 0; i < n; i++) {
+            float s = tickSample(osc, control);
+            CHECK(std::isfinite(s), "noise not finite");
+            e += s * s;
+            *peak = std::max(*peak, fabsf(s));
+            a[i] = s * (0.5 - 0.5 * cos(2 * M_PI * i / n));
+        }
+        fft(a);
+        for (int k = 0; k < n; k++) sum[k] += std::norm(a[k]);
+    }
+    for (auto& v : sum) v = sqrt(v.real());  // so bandDb's norm() is the power
+    *rms = sqrt(e / ((double)frames * n));
+    return sum;
+}
+
+// P1 on Noise: each P2 type at its level, with its spectral slope; the
+// digital hold and the crackle follow the note; voices are uncorrelated.
+static void checkNoise() {
+    const char* names[] = {"brown", "pink", "white", "blue", "digital", "crackle"};
+    const int types = WavetableControl::NOISE_TYPES;
+    for (int t = 0; t < types; t++) {
+        WavetableControl control;
+        control.noise = true;
+        control.position = t * (WAVETABLE_FRAMES - 1) / (float)(types - 1);
+        control.init(SR);
+        CHECK(control.noiseType + control.noiseMorph == t || (t == types - 1 && control.noiseType == types - 2
+              && control.noiseMorph == 1.0f), "%s position -> type %d + %.3f", names[t],
+              control.noiseType, control.noiseMorph);
+        WavetableOsc osc;
+        osc.init(&control, SR);
+        osc.setFrequency(noteHz(60));
+        double rms;
+        float peak;
+        auto a = noiseSpectrum(osc, control, 64, &rms, &peak);
+        double low = bandDb(a, 200, 400), high = bandDb(a, 3200, 6400);
+        printf("noise %-7s rms %.3f peak %.2f  3.2-6.4 kHz vs 200-400 Hz %+.1f dB\n",
+               names[t], rms, peak, high - low);
+        CHECK(peak <= 1.0f, "%s peak %.3f", names[t], peak);
+        if (t < 5) {
+            CHECK(rms > 0.2 && rms < 0.42, "%s rms %.3f", names[t], rms);
+        } else {
+            CHECK(rms > 0.05 && rms < 0.42, "%s rms %.3f", names[t], rms);
+        }
+        // 4 octaves: brown -6 dB / oct, pink -3, white 0, blue up.
+        if (t == 0) CHECK(high - low < -18, "brown slope %.1f", high - low);
+        if (t == 1) CHECK(high - low < -9 && high - low > -15, "pink slope %.1f", high - low);
+        if (t == 2) CHECK(fabs(high - low) < 1.5, "white slope %.1f", high - low);
+        if (t == 3) CHECK(high - low > 12, "blue slope %.1f", high - low);
+    }
+
+    // Digital: a held level every 1 / (8 f), so its first spectral null
+    // moves with the note.
+    for (int note : {48, 60}) {
+        WavetableControl control;
+        control.noise = true;
+        control.position = 4 * (WAVETABLE_FRAMES - 1) / (float)(types - 1);
+        control.init(SR);
+        WavetableOsc osc;
+        osc.init(&control, SR);
+        const double hold = 8 * noteHz(note);
+        osc.setFrequency(noteHz(note));
+        double rms;
+        float peak;
+        auto a = noiseSpectrum(osc, control, 64, &rms, &peak);
+        double nul = bandDb(a, hold * 0.97, hold * 1.03), lobe = bandDb(a, hold * 0.2, hold * 0.4);
+        CHECK(nul < lobe - 15, "digital note %d: null at %.0f Hz only %.1f dB down", note, hold, lobe - nul);
+    }
+
+    // Crackle: about f / 2 clicks a second.
+    for (int note : {48, 72}) {
+        WavetableControl control;
+        control.noise = true;
+        control.position = WAVETABLE_FRAMES - 1;
+        control.init(SR);
+        WavetableOsc osc;
+        osc.init(&control, SR);
+        osc.setFrequency(noteHz(note));
+        int clicks = 0;
+        float prev = 0;
+        for (int i = 0; i < 10 * (int)SR; i++) {
+            float s = tickSample(osc, control);
+            if (fabsf(s) > fabsf(prev) * 1.5f + 0.05f) clicks++;
+            prev = s;
+        }
+        double expect = 10 * 0.5 * noteHz(note);
+        CHECK(fabs(clicks - expect) < expect * 0.15, "crackle note %d: %d clicks, expected ~%.0f",
+              note, clicks, expect);
+    }
+
+    // Two voices on one note don't play the same noise.
+    {
+        WavetableControl control;
+        control.noise = true;
+        control.position = 2 * (WAVETABLE_FRAMES - 1) / (float)(types - 1);
+        control.init(SR);
+        WavetableOsc a, b;
+        a.init(&control, SR);
+        b.init(&control, SR);
+        a.setFrequency(220);
+        b.setFrequency(220);
+        double ab = 0, aa = 0, bb = 0;
+        for (int i = 0; i < 44100; i++) {
+            control.tick();
+            float x = a.getSample(), y = b.getSample();
+            ab += x * y;
+            aa += x * x;
+            bb += y * y;
+        }
+        double corr = ab / sqrt(aa * bb);
+        CHECK(fabs(corr) < 0.05, "two voices' noise correlate %.3f", corr);
+    }
+
+    // A one-second P2 sweep across all types stays continuous (no jumps
+    // beyond what the noise itself does).
+    {
+        WavetableControl control;
+        control.noise = true;
+        control.init(SR);
+        WavetableOsc osc;
+        osc.init(&control, SR);
+        osc.setFrequency(220);
+        float worst = 0;
+        for (int i = 0; i < (int)SR; i++) {
+            control.position = (WAVETABLE_FRAMES - 1) * (float)i / SR;
+            float s = tickSample(osc, control);
+            CHECK(std::isfinite(s) && fabsf(s) <= 1.0f, "sweep sample %f", s);
+            worst = std::max(worst, fabsf(s));
+        }
+        CHECK(worst > 0.3f, "sweep silent (%f)", worst);
+    }
+}
+
 int main() {
     checkData();
     checkLevels();
     checkPitch();
     checkMorph();
     checkZones();
+    checkNoise();
     checkAliasing();
     printf("sim_wavetable: %d checks, %d failures\n", checks, failures);
     return failures ? 1 : 0;

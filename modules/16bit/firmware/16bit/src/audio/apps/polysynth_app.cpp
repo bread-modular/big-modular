@@ -58,6 +58,7 @@ void PolySynthApp::init() {
     // table and the P2 position.
     wavetableZone = 0;
     loadWavetable(0);
+    wavetableControl.noise = false;
     wavetableControl.tick();
     topKnobsFirstRead = true;
 
@@ -270,7 +271,8 @@ void PolySynthApp::readTopKnobs() {
     topKnobsFirstRead = false;
 }
 
-// P1 -> wavetable, 0 = Classic (hysteresis: wavetableZoneFor).
+// P1 -> wavetable, 0 = Classic, the top step Noise (hysteresis:
+// wavetableZoneFor).
 void PolySynthApp::applyP1(uint16_t p1) {
     uint8_t candidate = wavetableZoneFor(topKnobNormalize(p1), wavetableZone,
                                          WAVETABLE_ZONES, WAVETABLE_ZONE_HYSTERESIS);
@@ -279,7 +281,12 @@ void PolySynthApp::applyP1(uint16_t p1) {
     }
 
     wavetableZone = candidate;
+    if (wavetableZone == WAVETABLE_NOISE_ZONE) {
+        wavetableControl.noise = true;
+        return;
+    }
     loadWavetable(wavetableZone);
+    wavetableControl.noise = false;
 }
 
 // Copy a table from flash to the idle RAM buffer (~2 ms), then point the
@@ -294,7 +301,8 @@ void PolySynthApp::loadWavetable(uint8_t table) {
 }
 
 // P2 -> position across the table's frames, morphed and smoothed
-// (WavetableControl): on Classic a continuous square -> saw -> tri -> sine.
+// (WavetableControl): on Classic a continuous square -> saw -> tri -> sine,
+// on Noise brown -> pink -> white -> blue -> digital -> crackle.
 void PolySynthApp::applyP2(uint16_t p2) {
     wavetableControl.position = topKnobNormalize(p2) * (WAVETABLE_FRAMES - 1);
 }

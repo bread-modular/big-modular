@@ -1,35 +1,43 @@
 #!/usr/bin/env python3
 """Build the polysynth wavetables (includes/audio/gen/wavetable_data.h).
 
-The 17 tables come from two places:
+P1 has 17 steps: 16 wavetables here, then Noise (no table: the oscillator
+makes it, wavetable_osc.h). The tables come from two places:
 
-  * generated shapes (Classic: square -> saw -> triangle -> sine, Basic: sine ->
-    triangle -> saw -> square -> pulse, and a PWM sweep), computed here;
-  * the Adventure Kid single-cycle waveforms (AKWF-FREE, CC0 1.0,
-    https://github.com/KristofferKarlAxelEkstrand/AKWF-FREE, commit 8de90bf),
-    16 waves picked evenly from one or more AKWF folders and sorted dark ->
-    bright (spectral centroid), so the position knob sweeps the brightness.
+  * generated shapes (Classic: square -> saw -> triangle -> sine, and a PWM
+    sweep), computed here;
+  * Kimura Taro's free wavetables (CC0 1.0 Universal, 2021 release, made by
+    programming and resampling for Serum / Vital), in the Vital `.vitaltable`
+    conversion of atsushieno/open-vital-resources (commit 8c31ac1, the
+    `KimuraTaroFreeWavetables/` folder, CC0 too): classic synths, FM and
+    complex waves. No brightness-sorted or filter-sweep tables: the
+    polysynth has its own filter.
 
-A table can also be a Serum-format wavetable WAV (frames of 2048 samples, or
-the size in its `clm ` chunk): `--serum NAME=path.wav` replaces the table of
-that name (16 frames are picked evenly across the file, in order). Serum's own
-factory tables are Xfer's and not redistributable, so none are shipped.
+A Kimura table holds 32..258 frames of 2048 samples; 16 are picked evenly
+across it, in order, keeping their phase. A table can also be a Serum-format
+wavetable WAV (frames of 2048 samples, or the size in its `clm ` chunk):
+`--serum NAME=path.wav` replaces the table of that name the same way. Serum's
+and Vital's own factory tables are not redistributable, so none are shipped.
 
-Every frame is phase-aligned on its fundamental (AKWF only; Serum frames keep
-their phase), DC-free, and band-limited into one mip level per octave: level l
-keeps harmonics 1..H[l] (128 down to 1) and holds N[l] = max(64, 8 * H[l])
-samples, so the oscillator's cubic interpolation has at least eight points
-per period of the top harmonic (tools/sim_wavetable.cpp: aliases and images
-<= -40 dB). The firmware picks the level whose H[l] * f stays under 20 kHz.
+Every frame is DC-free, normalised to the same peak and band-limited into one
+mip level per octave: level l keeps harmonics 1..H[l] (128 down to 1) and
+holds N[l] = max(64, 8 * H[l]) samples, so the oscillator's cubic
+interpolation has at least eight points per period of the top harmonic
+(tools/sim_wavetable.cpp: aliases and images <= -40 dB). The firmware picks
+the level whose H[l] * f stays under 20 kHz.
 
-Usage (the AKWF checkout is untrusted data: run with -I):
-  git clone --depth 1 --filter=blob:none --sparse \\
-      https://github.com/KristofferKarlAxelEkstrand/AKWF-FREE /tmp/wt-src/akwf
-  git -C /tmp/wt-src/akwf sparse-checkout set AKWF
-  python3 -I tools/build_wavetables.py --akwf /tmp/wt-src/akwf/AKWF
+Usage (the checkout is untrusted data: run with -I):
+  git clone --filter=blob:none --no-checkout \\
+      https://github.com/atsushieno/open-vital-resources /tmp/wt-src/ovr
+  git -C /tmp/wt-src/ovr sparse-checkout set '/KimuraTaroFreeWavetables/'
+  git -C /tmp/wt-src/ovr checkout 8c31ac1940173bb89ea342293236a6a96f8c97d0
+  python3 -I tools/build_wavetables.py \\
+      --kimura /tmp/wt-src/ovr/KimuraTaroFreeWavetables/Wavetables
 """
 
 import argparse
+import base64
+import json
 import os
 import struct
 import sys
@@ -42,26 +50,28 @@ SIZES = [max(64, 8 * h) for h in HARMONICS]
 PEAK = 0.95
 RENDER = 8192  # naive render size for the generated shapes
 
-# (name, kind, source): kind "gen" = generated here, "akwf" = AKWF folders.
+# (name, kind, source): kind "gen" = generated here, "kimura" = a Kimura Taro
+# table (folder/name under --kimura, without .vitaltable).
 TABLES = [
     ("Classic", "gen", "classic"),
-    ("Basic", "gen", "basic"),
     ("PWM", "gen", "pwm"),
-    ("Harmonics", "akwf", ["AKWF_sinharm"]),
-    ("Overtone", "akwf", ["AKWF_overtone"]),
-    ("FM", "akwf", ["AKWF_fmsynth"]),
-    ("Blended", "akwf", ["AKWF_bw_blended"]),
-    ("Vocal", "akwf", ["AKWF_hvoice"]),
-    ("Organ", "akwf", ["AKWF_eorgan"]),
-    ("E-Piano", "akwf", ["AKWF_epiano"]),
-    ("Strings", "akwf", ["AKWF_cello", "AKWF_violin"]),
-    ("Reed", "akwf", ["AKWF_clarinett", "AKWF_oboe", "AKWF_altosax"]),
-    ("Chip", "akwf", ["AKWF_oscchip"]),
-    ("Game", "akwf", ["AKWF_vgame"]),
-    ("Bitcrush", "akwf", ["AKWF_bitreduced"]),
-    ("Distorted", "akwf", ["AKWF_distorted"]),
-    ("Raw", "akwf", ["AKWF_raw"]),
+    ("Sync", "kimura", "OSC Sync+PWM/SawSync4"),
+    ("MS-20", "kimura", "Korg Analog  Synth PhaseShift2/MS 20 Square-PS2"),
+    ("Analog", "kimura", "AnalogFour/A4TriSawPWM"),
+    ("PPG", "kimura", "PPG Wave/PPG05"),
+    ("VS", "kimura", "Prophet VS Wave/VS VMorph3"),
+    ("CZ", "kimura", "Phase Distortion/PD1"),
+    ("FM", "kimura", "PM[Simple]/PMSimple4"),
+    ("FM Bright", "kimura", "PM[Simple]/PMSimple3"),
+    ("FM Feedback", "kimura", "FM Feedback/FM FB2"),
+    ("Hard FM", "kimura", "Hardcore FM/Hardcore FM1"),
+    ("Fold", "kimura", "Folding/Folding6"),
+    ("Walsh", "kimura", "Walsh Function/WHTHad Dy-"),
+    ("Modulo", "kimura", "Modulo/Modulo10"),
+    ("Digital", "kimura", "TE OP-1/OP1 Digital06"),
 ]
+# The P1 step after the tables: noise made by the oscillator.
+EXTRA_ZONES = ["Noise"]
 
 
 def read_wav(path):
@@ -157,37 +167,27 @@ def generated(kind):
             t = p - a
             frames.append((1 - t) * keys[a] + t * keys[a + 1])
         return frames
-    if kind == "basic":
-        keys = [naive("sine"), naive("tri"), naive("saw"),
-                naive("pulse", 0.5), naive("pulse", 0.25), naive("pulse", 0.1)]
-        keys = [align(spectrum(k)) for k in keys]
-        frames = []
-        for i in range(FRAMES):
-            p = i * (len(keys) - 1) / (FRAMES - 1)
-            a = min(int(p), len(keys) - 2)
-            t = p - a
-            frames.append((1 - t) * keys[a] + t * keys[a + 1])
-        return frames
     if kind == "pwm":
         widths = np.linspace(0.5, 0.03, FRAMES)
         return [align(spectrum(naive("pulse", w))) for w in widths]
     raise ValueError(kind)
 
 
-def akwf(root, folders):
-    files = []
-    for folder in folders:
-        d = os.path.join(root, folder)
-        files += [os.path.join(d, n) for n in sorted(os.listdir(d)) if n.lower().endswith(".wav")]
-    if len(files) < FRAMES:
-        raise ValueError(f"{folders}: {len(files)} waves, need {FRAMES}")
-    picks = [files[round(i * (len(files) - 1) / (FRAMES - 1))] for i in range(FRAMES)]
-    specs = []
-    for path in picks:
-        x, _ = read_wav(path)
-        specs.append(align(spectrum(x)))
-    order = sorted(range(FRAMES), key=lambda i: centroid(specs[i]))
-    return [specs[i] for i in order], [os.path.basename(picks[i]) for i in order]
+def kimura(root, name):
+    """16 frames of a Vital `.vitaltable` holding one Audio File Source."""
+    path = os.path.join(root, name + ".vitaltable")
+    with open(path) as f:
+        table = json.load(f)
+    comps = [c for g in table["groups"] for c in g["components"]]
+    if len(comps) != 1 or comps[0].get("type") != "Audio File Source":
+        raise ValueError(f"{path}: not a single Audio File Source")
+    size = int(comps[0]["window_size"])
+    x = np.frombuffer(base64.b64decode(comps[0]["audio_file"]), "<i2") / 32768.0
+    count = len(x) // size
+    if count < FRAMES:
+        raise ValueError(f"{path}: {count} frames, need {FRAMES}")
+    idx = [round(i * (count - 1) / (FRAMES - 1)) for i in range(FRAMES)]
+    return [spectrum(x[i * size:(i + 1) * size]) for i in idx]
 
 
 def serum(path):
@@ -209,7 +209,8 @@ def levels(spec):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--akwf", required=True, help="AKWF folder of an AKWF-FREE checkout")
+    ap.add_argument("--kimura", required=True,
+                    help="KimuraTaroFreeWavetables/Wavetables of an open-vital-resources checkout")
     ap.add_argument("--serum", action="append", default=[], metavar="NAME=WAV",
                     help="replace table NAME with a Serum-format wavetable WAV")
     here = os.path.dirname(os.path.abspath(__file__))
@@ -230,9 +231,8 @@ def main():
             tables.append(generated(source))
             notes.append(f"{name}: generated ({source})")
         else:
-            specs, names = akwf(args.akwf, source)
-            tables.append(specs)
-            notes.append(f"{name}: AKWF {', '.join(source)}: " + " ".join(n[:-4] for n in names))
+            tables.append(kimura(args.kimura, source))
+            notes.append(f"{name}: Kimura Taro {source}")
 
     stride = sum(SIZES)
     offsets = np.cumsum([0] + SIZES[:-1]).tolist()
@@ -245,8 +245,9 @@ def main():
 
     with open(args.out, "w") as f:
         f.write("// Generated by tools/build_wavetables.py: do not edit.\n")
-        f.write("// Polysynth wavetables: AKWF-FREE single cycles (CC0 1.0, Adventure Kid,\n")
-        f.write("// github.com/KristofferKarlAxelEkstrand/AKWF-FREE @ 8de90bf) and generated shapes.\n")
+        f.write("// Polysynth wavetables: Kimura Taro free wavetables (CC0 1.0, 2021 release;\n")
+        f.write("// Vital conversion github.com/atsushieno/open-vital-resources @ 8c31ac1)\n")
+        f.write("// and generated shapes. P1's last step, Noise, has no table.\n")
         f.write("// Layout: [table][frame][level][sample], level l = harmonics 1..H[l], N[l] samples.\n//\n")
         for n in notes:
             f.write(f"// {n}\n")
@@ -261,8 +262,9 @@ def main():
         f.write("#if defined(PICO_ON_DEVICE) && PICO_ON_DEVICE\n")
         f.write('#define WAVETABLE_FLASH __attribute__((section(".flashdata.wavetables")))\n')
         f.write("#else\n#define WAVETABLE_FLASH\n#endif\n\n")
-        f.write("static const char* const WAVETABLE_NAMES[WAVETABLE_COUNT] = {\n")
-        f.write("".join(f'    "{t[0]}",\n' for t in TABLES) + "};\n\n")
+        f.write(f"#define WAVETABLE_ZONE_COUNT {len(TABLES) + len(EXTRA_ZONES)}  // P1 steps: tables + Noise\n\n")
+        f.write("static const char* const WAVETABLE_NAMES[WAVETABLE_ZONE_COUNT] = {\n")
+        f.write("".join(f'    "{n}",\n' for n in [t[0] for t in TABLES] + EXTRA_ZONES) + "};\n\n")
         f.write("// Top harmonic, size and offset in the frame of each mip level.\n")
         f.write("static const uint16_t WAVETABLE_LEVEL_HARMONICS[WAVETABLE_LEVELS] = {"
                 + ", ".join(map(str, HARMONICS)) + "};\n")

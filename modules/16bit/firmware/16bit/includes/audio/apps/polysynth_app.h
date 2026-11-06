@@ -16,15 +16,17 @@
 #define TOTAL_VOICES 6  // BM: 9; 6 leaves the audio core headroom with wavetables
 
 // Wavetables on the top knobs (this module, not BM): P1 picks the table, P2
-// moves the position (both with their CV jacks). P1 has one zone per table;
-// fully down is Classic, P2 morphing square -> saw -> tri -> sine. P1 / P2
+// moves the position (both with their CV jacks). P1 has one zone per table
+// plus Noise at the top; fully down is Classic, P2 morphing square -> saw ->
+// tri -> sine. On Noise P2 sweeps the noise types. P1 / P2
 // arrive on ADC0 / ADC1: unpatched a knob gives 0..+5 V = ADC ~2020..3735 (as in the sampler); patched, the knob
 // scales the CV and negative CV clamps to the bottom.
 #define TOP_KNOB_ADC_ZERO 2020
 #define TOP_KNOB_ADC_FULL 3735
 #define TOP_KNOB_ADC_DIFF_THRESHOLD 12
 #define TOP_KNOB_READ_INTERVAL_MS 2
-#define WAVETABLE_ZONES WAVETABLE_COUNT
+#define WAVETABLE_ZONES WAVETABLE_ZONE_COUNT  // tables + Noise
+#define WAVETABLE_NOISE_ZONE WAVETABLE_COUNT
 #define WAVETABLE_ZONE_HYSTERESIS 0.15f
 
 class PolySynthApp : public AudioApp {
@@ -43,7 +45,7 @@ private:
 
     int8_t totalNotesOn = 0;
 
-    uint8_t wavetableZone = 0;  // wavetable index (0 = Classic)
+    uint8_t wavetableZone = 0;  // wavetable index (0 = Classic, last = Noise)
     uint16_t p1Value = 0;
     uint16_t p2Value = 0;
     bool topKnobsFirstRead = true;
