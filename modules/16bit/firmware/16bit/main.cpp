@@ -153,6 +153,15 @@ bool onCommandCallback(const char* cmd) {
         return true;
     }
 
+    // Audio core load since the last query, e.g. "avg 41.2% peak 63.0% underruns 0".
+    if (strncmp(cmd, "audio-load", 10) == 0) {
+        float average, peak;
+        uint32_t underruns;
+        audioManager->getLoad(&average, &peak, &underruns);
+        printf("avg %.1f%% peak %.1f%% underruns %lu\n", average, peak, (unsigned long)underruns);
+        return true;
+    }
+
     // This is the API version as we increase when we make new changes to the API
     if (strncmp(cmd, "version", 7) == 0) {
         webSerial->sendValue(PICO_PROGRAM_VERSION_STRING);

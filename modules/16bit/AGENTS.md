@@ -27,6 +27,17 @@ Module paths are module-relative.
   APS6404L pinout). Not supplier-accepted.
 - **Firmware (2026-11-02)** in `firmware/` (`firmware/README.md`): BM 16bit 1.6.0, six apps,
   JP1 `p`/`d` builds over the shared `opt/rp2350-tools`; compiled, not bench-tested.
+  Polysynth (2026-11-06): P1 selects one of 16 wavetables or Noise (Kimura Taro CC0 tables
+  via the open-vital-resources Vital conversion + generated Classic / PWM; classic synths, FM,
+  complex; no filter-sweep tables; fully down = Classic, P2 morphs square -> saw -> tri -> sine;
+  set-waveform removed; top = Noise, P2 brown -> pink -> white -> blue -> digital -> crackle,
+  made per voice), P2 moves the position; tables from `16bit/tools/build_wavetables.py`.
+  Wavetables play at exact pitch (BM whole-hertz notes beat in chords); output auto level
+  (polyphony gain + limiter, as the 32bit polysynth) replaces BM's fixed sum / 4.
+  Filter (2026-11-06): Vital-style TPT ladder (`polysynth/poly_filter.h`) replaces BM
+  FilterFX: exact cutoff, passband held at 0 dB at every resonance (BM lost 3-7 dB at the
+  power-on resonance from open down to ~430 Hz), exponential cutoff / env depth, full
+  resonance range; MCC Banks B / C fold onto Bank A.
 - Open: firmware app mapping of P1/P2, 3D fit, bench (`docs/research.md` §5, §7.6).
 
 ## Boundaries

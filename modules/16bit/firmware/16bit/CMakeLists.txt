@@ -112,4 +112,11 @@ target_include_directories(16bit PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/lib/lfs
 )
 
+# The polysynth runs from RAM: its voices + the ladder executing from flash
+# overrun the audio core (XIP cache misses). Its wavetables stay in flash
+# (.flashdata, wavetable_data.h) and are copied to RAM one table at a time.
+if(APP_NAME STREQUAL "polysynth")
+    pico_set_binary_type(16bit copy_to_ram)
+endif()
+
 pico_add_extra_outputs(16bit)

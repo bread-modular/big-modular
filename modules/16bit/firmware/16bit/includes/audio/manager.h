@@ -9,6 +9,7 @@
 #include "audio/dac.h"
 #include "hardware/clocks.h"
 #include "hardware/adc.h"
+#include "hardware/structs/m33.h"
 #include <functional>
 
 #define BCK_PIN 1
@@ -50,6 +51,28 @@ private:
     bool initialized;
     bool running = false;
     bool adcEnabled = false;
+
+    // Load meter, written by core 1: cycles per audioCallback (sum / max over
+    // the current window) and DAC FIFO underruns since boot.
+    volatile uint32_t loadSamples = 0;
+    volatile uint64_t loadSumCycles = 0;
+    volatile uint32_t loadMaxCycles = 0;
+    volatile uint32_t loadUnderruns = 0;
+    volatile bool loadResetRequest = false;
+
+    void recordLoad(uint32_t cycles) {
+        if (loadResetRequest) {
+            loadResetRequest = false;
+            loadSamples = 0;
+            loadSumCycles = 0;
+            loadMaxCycles = 0;
+        }
+        loadSamples = loadSamples + 1;
+        loadSumCycles = loadSumCycles + cycles;
+        if (cycles > loadMaxCycles) {
+            loadMaxCycles = cycles;
+        }
+    }
     
     // Private constructor for singleton pattern
     AudioManager() : 
@@ -73,6 +96,10 @@ private:
         uint32_t delay_us = 1000000 / audio_mgr->dac.getSampleRate(); // Microseconds between samples
         absolute_time_t next_sample_time = get_absolute_time();
 
+        // Load meter (this module, not BM): core 1's cycle counter.
+        m33_hw->demcr |= M33_DEMCR_TRCENA_BITS;
+        m33_hw->dwt_ctrl |= M33_DWT_CTRL_CYCCNTENA_BITS;
+
         while (true) {
             // Calculate next sample time
             // next_sample_time = delayed_by_us(next_sample_time, delay_us);
@@ -95,11 +122,17 @@ private:
             }
 
             AudioOutput output;
+            const uint32_t startCycles = m33_hw->dwt_cyccnt;
             audio_mgr->audioCallback(&input, &output);
+            audio_mgr->recordLoad(m33_hw->dwt_cyccnt - startCycles);
 
             int16_t left = std::clamp(output.left * 32768.0f, -32768.0f, 32767.0f);
             int16_t right = std::clamp(output.right * 32768.0f, -32768.0f, 32767.0f);
 
+            // An empty FIFO here means the DAC ran dry: the sample is late.
+            if (pio_sm_is_tx_fifo_empty(audio_mgr->dac.getPio(), audio_mgr->dac.getSm())) {
+                audio_mgr->loadUnderruns++;
+            }
             audio_mgr->dac.writeMono(left, right);
                                                   
             if (!audio_mgr->running) {
@@ -166,6 +199,17 @@ public:
     // Get the DAC instance
     DAC* getDac() {
         return &dac;
+    }
+
+    // Load meter: average and peak audioCallback time in percent of one
+    // sample period, DAC underruns since boot; starts a new window.
+    void getLoad(float* averagePercent, float* peakPercent, uint32_t* underruns) {
+        const float budget = clock_get_hz(clk_sys) / (float)dac.getSampleRate();
+        const uint32_t samples = loadSamples;
+        *averagePercent = samples ? 100.0f * (float)loadSumCycles / samples / budget : 0.0f;
+        *peakPercent = 100.0f * loadMaxCycles / budget;
+        *underruns = loadUnderruns;
+        loadResetRequest = true;
     }
 
     void startAudioLock() {

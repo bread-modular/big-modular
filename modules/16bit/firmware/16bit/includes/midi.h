@@ -230,6 +230,12 @@ public:
         // Convert MIDI note number to frequency
         return 440 * pow(2, (note - 69) / 12.0);
     }
+
+    // Exact (unrounded) note frequency; midiNoteToFrequency() truncates to
+    // whole hertz, up to 18 cents flat below C4.
+    static float midiNoteToHz(uint8_t note) {
+        return 440 * pow(2, (note - 69) / 12.0);
+    }
     
     // Enable BPM calculation and set callback
     void calculateBPM(BpmChangeCallback callback = nullptr) {

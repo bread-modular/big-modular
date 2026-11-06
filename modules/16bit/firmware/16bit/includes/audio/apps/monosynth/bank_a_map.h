@@ -4,7 +4,7 @@
 // (src/audio/apps/monosynth_app.cpp) and the host sim/tests (tools/sim_monosynth.cpp)
 // share ONE source of truth for the routing.
 //
-// Placement contract: it mirrors the 16bit polysynth's FilterFX Bank A layout
+// Placement contract: it mirrors the 16bit polysynth's filter Bank A layout
 // (see src/audio/apps/polysynth_app.cpp) so MCC knob muscle memory carries
 // over between the two apps:
 //
@@ -14,7 +14,7 @@
 //                                                (polysynth: Mod Depth)
 //   CV3 / CC22 -> RESONANCE                          (polysynth: param 2)
 //   CV4 / CC23 -> CUTOFF, INVERTED taper             (polysynth: param 3)
-//                 clockwise = more closed, like the polysynth's FilterFX.
+//                 clockwise = more closed, like the polysynth's filter.
 //                 Full turn sweeps only the usable range: fully CW parks at
 //                 ~norm 0.25 (~140 Hz) because lower settings sound identical.
 //

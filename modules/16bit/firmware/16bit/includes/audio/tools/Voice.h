@@ -8,6 +8,7 @@ class Voice {
     private:
         AudioGenerator** generators;
         uint8_t totalGenerators;
+        float generatorScale;  // 1 / totalGenerators (no divide per sample)
         Envelope* ampEnvelope;
         Envelope* filterEnvelope;
         uint8_t currentNote;
@@ -20,7 +21,8 @@ class Voice {
         
     public:
         Voice(uint8_t totalGenerators, AudioGenerator* generators[], Envelope* ampEnvelope, Envelope* filterEnvelope)
-            : totalGenerators(totalGenerators), ampEnvelope(ampEnvelope), filterEnvelope(filterEnvelope) {
+            : totalGenerators(totalGenerators), generatorScale(1.0f / totalGenerators),
+              ampEnvelope(ampEnvelope), filterEnvelope(filterEnvelope) {
                 this->generators = new AudioGenerator*[totalGenerators];
                 for (uint8_t i = 0; i < totalGenerators; ++i) {
                     this->generators[i] = generators[i];
@@ -34,11 +36,11 @@ class Voice {
 
         void init(AudioManager* audioManager) {
             currentNote = 48;
-            uint16_t freq = MIDI::midiNoteToFrequency(currentNote);
+            float freq = MIDI::midiNoteToHz(currentNote);
 
             for (uint8_t i = 0; i < totalGenerators; ++i) {
                 generators[i]->init(audioManager);
-                generators[i]->setFrequency(freq);
+                generators[i]->setFrequencyHz(freq);
             }
             ampEnvelope->init(audioManager);
             ampEnvelope->setOnCompleteCallback([this]() { this->onEnvelopeComplete(); });
@@ -46,12 +48,12 @@ class Voice {
 
 
         void changeGenerators(AudioGenerator* generators[]) {
-            uint16_t freq = MIDI::midiNoteToFrequency(currentNote);
+            float freq = MIDI::midiNoteToHz(currentNote);
             // Configure the incoming generator *before* publishing the pointer
             // so the audio core never observes an uninitialized generator.
             for (uint8_t i = 0; i < totalGenerators; ++i) {
                 generators[i]->reset();
-                generators[i]->setFrequency(freq);
+                generators[i]->setFrequencyHz(freq);
                 this->generators[i] = generators[i];
             }
         }
@@ -64,13 +66,15 @@ class Voice {
             this->velocity = velocity;
             currentNote = note;
             for (uint8_t i = 0; i < totalGenerators; ++i) {
-                uint16_t freq;
+                // Exact pitch: whole-hertz notes put chords out of tune
+                // (the BM generators still round inside setFrequencyHz()).
+                float freq;
                 if (generatorNotes) {
-                    freq = MIDI::midiNoteToFrequency(generatorNotes[i]);
+                    freq = MIDI::midiNoteToHz(generatorNotes[i]);
                 } else {
-                    freq = MIDI::midiNoteToFrequency(note);
+                    freq = MIDI::midiNoteToHz(note);
                 }
-                generators[i]->setFrequency(freq);
+                generators[i]->setFrequencyHz(freq);
             }
             ampEnvelope->setTrigger(true);
             filterEnvelope->setTrigger(true);
@@ -84,17 +88,29 @@ class Voice {
         }
 
         float process() {
+            // An idle voice is silent: skip its generators (9 wavetable
+            // voices are most of the audio core's time).
+            if (!ampEnvelope->isActive()) {
+                waveform = 0;
+                return 0.0f;
+            }
+
             float sum = 0;
             for (uint8_t i = 0; i < totalGenerators; ++i) {
                 sum += generators[i]->getSample();
             }
              
-            waveform = sum / totalGenerators;
+            waveform = sum * generatorScale;
             return ampEnvelope->process(waveform) * velocity;
         }
 
         int16_t getWaveformOnly() {
             return waveform;
+        }
+
+        // Envelope level x velocity of the last process() sample.
+        float getLevel() {
+            return ampEnvelope->getLevel() * velocity;
         }
 
         Envelope* getAmpEnvelope() {

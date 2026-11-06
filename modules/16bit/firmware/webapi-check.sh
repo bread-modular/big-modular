@@ -24,7 +24,7 @@ ELF="${2:-$FW_DIR/16bit/.build/16bit.elf}"
 NEED=(get-app "::val::%s::val::" "$APP" "Bread Modular" 16bit)
 case "$APP" in
   sampler)   NEED+=(get-fx set-fx play-sample "write-sample-base64 ") ;;
-  polysynth) NEED+=(get-waveform set-waveform) ;;
+  polysynth) ;;  # set-/get-waveform dropped: P2 picks the BM waveform
   fxrack)    NEED+=(get-fx set-fx) ;;
   elab)      NEED+=(get-scope-channels start-send start-send-2 stop-send) ;;
   monosynth|noop) ;;  # UI only shows the app; no serial state
