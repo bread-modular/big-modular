@@ -41,8 +41,8 @@ BODY_PROXIES = {'U2': (3.1, 5.1, 1.0), 'R109': (3.4, 1.8, .8)}     # (along Y, a
 G = mechanics_s8.geometry()
 FP = json.loads((WORK / 'footprints.json').read_text())
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-BOARD = DESIGN / 'hardware/single/usb-power-45w-single.kicad_pcb'
-PANEL = MODULE / 'panels/front-pcb/usb-power-45w-single-panel.kicad_pcb'
+BOARD = DESIGN / 'hardware/usb-power-45w.kicad_pcb'
+PANEL = MODULE / 'panels/front-pcb/usb-power-45w-panel.kicad_pcb'
 
 
 def matrix(rows):
@@ -193,7 +193,7 @@ def main():
     }
     stl = WORK / 'stl'
     stl.mkdir(parents=True, exist_ok=True)
-    doc = App.newDocument('usb_power_45w_single_assembly')
+    doc = App.newDocument('usb_power_45w_assembly')
     report = {'categories': {}}
     for name, (shapes, label) in cats.items():
         comp = Part.makeCompound(shapes)

@@ -2,7 +2,7 @@
 SHA-256 of every source and artifact, assembled from fresh reports (no hand-copied numbers).
 
   python3 -B tools/review_s8.py --check research/s93/check --tests-log research/s93/tests.log \
-      --out docs/s8-single/review-s93.json
+      --out docs/design/review-s93.json
 
 --check is a NEW native check directory of the shared tool (opt/kicad-tools/kicad_tools.py check, summary.json),
 --tests-log the verbose unittest output of `python3 -B -m unittest discover -s modules/usb-power-45w/tools -p 'test_*.py' -v`.
@@ -10,8 +10,8 @@ Read-only apart from --out. S9.0 replaces the S8.5 record (review-s85.json, kept
 git TRACKS are hashed (S8.5 item C: no git-ignored *.kicad_prl, nothing under research/; S9.0: membership is checked with
 `git ls-files`, so stage new sources before writing the record); the check directory and the tests log are local evidence
 (git-ignored research/), recorded by path and summary, never hashed. S9.0 also hashes the pinned TPS552892-Q1 part file
-(tools/s90_parts.py), every footprint the single board uses and the single-board panel. S9.2 also records the routing
-notes (docs/s8-single/routing-notes.md, hashed with the other artifacts): their test-pad table must list exactly the
+(tools/s90_parts.py), every footprint the board uses and the panel. S9.2 also records the routing
+notes (docs/design/routing-notes.md, hashed with the other artifacts): their test-pad table must list exactly the
 board's test pads and their uncertainty register must define every acceptance-test ID the contract and OPEN_GATES use.
 """
 import argparse
@@ -28,15 +28,17 @@ sys.path.insert(0, str(MODULE / 'tools'))
 import s92_contract  # noqa: E402
 REVISION = 'S9.3 / P2.3'
 TRACKED_KICAD = ('.kicad_sch', '.kicad_pcb', '.kicad_pro', '.kicad_dru', '.kicad_sym')   # *.kicad_prl is git-ignored
-S7_R3 = sorted(str(p.relative_to(MODULE)) for p in (MODULE / 'hardware').glob('*.kicad_*') if p.suffix in TRACKED_KICAD)
-PANEL = ['panels/front-pcb/usb-power-45w-single-panel.kicad_pcb', 'panels/front-pcb/usb-power-45w-single-panel.kicad_pro']
-SOURCES = (sorted(f'hardware/single/{p.name}' for p in (MODULE / 'hardware/single').glob('*.kicad_*')
+PANEL = ['panels/front-pcb/usb-power-45w-panel.kicad_pcb', 'panels/front-pcb/usb-power-45w-panel.kicad_pro']
+SOURCES = (sorted(f'hardware/{p.name}' for p in (MODULE / 'hardware').glob('*.kicad_*')
                   if p.suffix in TRACKED_KICAD)
-           + ['hardware/single/fp-lib-table', 'hardware/single/sym-lib-table'] + PANEL
+           + ['hardware/fp-lib-table', 'hardware/sym-lib-table'] + PANEL
            + [f'tools/{n}.py' for n in ('build_s8', 'build_s8_assembly', 'build_s8_board', 'build_s8_panel',
                                         'check_s8_board', 'circuit_s8', 'hierarchy_s8', 'mechanics_s8', 'place_s8',
                                         'render_s8', 'review_s8', 's8_calcs', 's8_mechanical', 's8_sourcing', 's90_parts',
-                                        's91_analysis', 's92_contract', 's92_netlist', 's92_parts', 'test_s8', 'verify_s8')])
+                                        's91_analysis', 's92_contract', 's92_netlist', 's92_parts', 'test_s8', 'verify_s8',
+                                        'build_schematic', 'build_layout', 'circuit45', 'protection6', 'mechanics45',
+                                        'bracket45', 'sexp')]
+           + ['tools/edge-allowances.kicad_dru'])
 CHANGELOG = [
     ('1 D24 / OVP', 'D24 SMBJ16A -> SMBJ20A (Littelfuse C151257) and U5 OVP R24 6.8k -> 9.1k: OVP rises at 17.30-19.44 V, '
                     'below D24 VR 20 V and VBR 22.2 V (21.70 V at 0 C), so U5 removes a sustained overvoltage before D24 '
@@ -53,9 +55,9 @@ CHANGELOG = [
     ('5 N_EN_RETURN', 'R115 100k to PGND: defined default, Q1 VEB <= 0.18 V with Q15 as a source follower; TP30.'),
     ('6 Thermal basis', 'Copper/via requirements for U2, R109, D10, U4, U5 in placement.json routing_contract; rating '
                         'labelled conditional on them and on TH-1..TH-3; allowed U2 RthetaJA 55.8 C/W at the CC limit.'),
-    ('Routing', 'Ten 1.5 mm acceptance pads (TP20, TP22-TP30), docs/s8-single/routing-notes.md (test-point table, '
+    ('Routing', 'Ten 1.5 mm acceptance pads (TP20, TP22-TP30), docs/design/routing-notes.md (test-point table, '
                 'uncertainty register, routing constraints), netclasses in the project, D26 moved, R113 turned.'),
-    ('Routing notes', 'docs/s8-single/routing-notes.md written: 27 test pads with location, pad, keep-out, measurement '
+    ('Routing notes', 'docs/design/routing-notes.md written: 27 test pads with location, pad, keep-out, measurement '
                       'and limit; 19 uncertainty-register rows with assumption, risk, pad, procedure, pass limit and '
                       'respin/BOM disposition; routing constraint list. Contract made routable (place_s8.py '
                       '--refresh-contract, board unchanged): one AGND_U2 via pair + B.Cu trace allowed (F.Cu cannot join '
@@ -137,8 +139,8 @@ def sha(rel):
 
 
 def footprints_used():
-    """Every pinned footprint file the single board references (USBPOWER45 library)."""
-    text = (MODULE / 'hardware/single/usb-power-45w-single.kicad_pcb').read_text()
+    """Every pinned footprint file the board references (USBPOWER45 library)."""
+    text = (MODULE / 'hardware/usb-power-45w.kicad_pcb').read_text()
     names = sorted(set(re.findall(r'\(footprint "USBPOWER45:([^"]+)"', text)))
     return [f'hardware/USBPOWER45.pretty/{n}.kicad_mod' for n in names]
 
@@ -165,7 +167,7 @@ def main():
     ap.add_argument('--out', type=Path, required=True)
     a = ap.parse_args()
     summary = json.loads((a.check / 'summary.json').read_text())
-    docs = MODULE / 'docs/s8-single'
+    docs = MODULE / 'docs/design'
     build = json.loads((docs / 'build.json').read_text())
     val = json.loads((docs / 'validation.json').read_text())
     board = json.loads((docs / 'board-p1.json').read_text())
@@ -182,7 +184,7 @@ def main():
     t = tests(a.tests_log)
     assert t['ok'] and summary['ref_pin_net_parity']['equal'], (t, 'tests and exact parity must pass')
     artifacts = sorted(str(p.relative_to(MODULE)) for p in docs.rglob('*') if p.is_file() and p.name != a.out.name)
-    artifacts.append('docs/usb-power-45w-single-schematic.pdf')
+    artifacts.append('docs/usb-power-45w-schematic.pdf')
     notes = s92_contract.notes_index((MODULE / s92_contract.NOTES).read_text())
     assert s92_contract.NOTES in artifacts, 'the record must hash the routing notes'
     assert set(notes['pads']) == set(test_pads) and not notes['duplicate_pads'], ('routing notes test-pad table', notes)
@@ -299,14 +301,13 @@ def main():
                                        (r.get('evidence') or {}).get('retrieved_at_utc')]
                                    for c, r in {**s92['codes'], **s93['codes']}.items()},
                      'reverse_blocking_parts': 'none (owner decision)'},
-        'original_S7_R3_hardware_unchanged_sha256': {p: sha(p) for p in S7_R3},
         'sources_sha256': {p: sha(p) for p in SOURCES + footprints_used()},
-        'artifacts_sha256': {p: sha(p) for p in artifacts + ['docs/s8-single-board.md']},
+        'artifacts_sha256': {p: sha(p) for p in artifacts + ['docs/design.md']},
         'open_gates': OPEN_GATES,
         'order_ready': False,
     }
     assert rec['bom_parity']['equal'], rec['bom_parity']
-    hashed = [p for g in ('original_S7_R3_hardware_unchanged_sha256', 'sources_sha256', 'artifacts_sha256') for p in rec[g]]
+    hashed = [p for g in ('sources_sha256', 'artifacts_sha256') for p in rec[g]]
     assert not ignored(hashed), ('hashed files must exist in a clean clone', sorted(ignored(hashed)))
     missing = sorted(set(hashed) - tracked())
     assert not missing, ('hash only tracked files: stage them first (git add)', missing)

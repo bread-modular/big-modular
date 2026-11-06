@@ -1,0 +1,1066 @@
+{
+ "accepted_residuals": {
+  "rail_overvoltage": {
+   "bench_test": {
+    "conditions": [
+     "T2-A: input16.5V; 0.44mF +0.5A/rail; externally ramp +12V from12 to16.5V at<=1V/ms, <=1A, total injection<=10ms (including ramp), hold<=1ms at16.5V; fixture removes injection automatically after trigger; scope>=100MS/s",
+     "T2-B: R8 open at13.5/16.5V input, 3A source; no external C/no load, then0.44mF+0.5A; capture500ms with independent voltage/current abort",
+     "T2-C: R14 open, same conditions; no assumed LMR38020 output OVP",
+     "T2-D: RUN held low/logic powered, +14.0V and -13.0V external for10min; safely BELOW the minimum guard thresholds; no-trip only refers to OV_N, not RUN",
+     "T2-E: at+15.2V / -13.9V a trip is ALLOWED (inside tolerance bands); repeat guaranteed trip at+15.8V / -14.5V with <=1V/ms slew, <=1A source and >=50us hold (record actual waveform)"
+    ],
+    "downstream_qualification": [
+     "Without a separate rail protector, downstream modules must tolerate16.5V/10s and sub-threshold +15.3V/-14.1V continuously, and up to24V magnitude/100ms or their measured actual exposure if worse. Ordinary16V caps are NOT thereby qualified; incompatible modules excluded until crowbar/eFuse decision."
+    ],
+    "pass_criteria_this_module": [
+     "With >=0.5V rail overdrive beyond each measured trip, OV_N low/FAULT set/RUN low <=20us; MAIN LED off. Keep FAULT latched10s after injection removed, reset explicitly only after fault repair",
+     "Externally driven rail remains externally driven until fixture removal: NEVER require it off while injection remains. After removal connect1k/1W discharge load; both rails below1V within2s at <=0.44mF external C",
+     "T2-B/C: observed positive rail peak<=24.0V and negative magnitude<=24.0V for the500ms capture; positive duration above16V<=100ms with specified1k discharge; D26 pulse energy<=0.10J; normal regulation after repair/RESET",
+     "T2-D OV_N stays high. T2-E band points may trip or not; above-band points MUST trip. Automatic abort at+24V / -24V / VIN33V, source removed in<=2us; any abort fails qualification, no human-only protection"
+    ],
+    "status": "proposed bench acceptance, NOT PERFORMED"
+   },
+   "decision": "ACCEPTED architecture: no voltage-triggered fuse/crowbar; crowbar vs eFuse deferred/open. S9.1 D26 is a finite-energy transient backstop, not continuous shunt protection.",
+   "peak_screens_V": {
+    "+12V_D26_rated_clamp_25C": 23.2,
+    "+12V_bank_only_no_load_before_D26": 23.42,
+    "+12V_with_typical_rack": 15.98,
+    "-12V_bank_only_no_load": 23.59,
+    "-12V_with_typical_rack": 14.8
+   }
+  },
+  "reverse_current": {
+   "bench_test": {
+    "conditions": [
+     "T1-A: no USB input, +/-12.0 and +/-12.6V external bus, 1A source limit, 0.44mF each rail; ramp <=1V/s at 25C, hold 10s; log EN_N relative to -12V, U4 SW, VIN and bus currents",
+     "T1-B: same with USB present and FAULT latched/RUN low; verify off-state once MAIN_OK deglitch expires and capture the preceding <=20ms interval",
+     "T1-C: only negative rail applied with same bounded slew; repeat rail order",
+     "T1-D: inject a positive 1A, <=20ms pulse into VIN at TP26 (compliance 33V, automatic disconnect), 25/50C, >=200s between pulses. This separately tests D24 energy/clamp; never assume the now-disabled U4 will generate this pulse"
+    ],
+    "excluded": "Hard hotplug, temperatures below25C for D25 forward-drop guarantee, >1A or >20ms sustained injection, and powered parallel supplies require new protection/qualification.",
+    "pass_criteria": [
+     "T1-A/C: EN_N minus -12V <=0.11V settled (<=0.5V transient), zero U4 switching; VIN -0.3..1V after 100ms settled; each bus current <10mA after 100ms",
+     "T1-B: same EN/switching/current criteria after 20ms; VIN may retain own-input charge, must remain -0.3..30V, not climb from bus power",
+     "T1-D: VIN <=30V incl ringing at TP26, measured integral(V*I*dt)<=0.648J, clamp current ends by 20ms, no leakage increase >10uA after cooling; normal restart and regulation after RESET",
+     "All: automatic overvoltage disconnect at VIN 33V, negative excursion abort at -0.3V (fast comparator, not human reaction). An abort is a FAIL, not a pass."
+    ],
+    "status": "proposed bench acceptance, NOT PERFORMED"
+   },
+   "decision": "ACCEPTED architecture: no series reverse blocking (owner). S9.1 removes the self-enable defect in hardware; that defect is NOT an accepted event.",
+   "finding": "FIXED: Q1 emitter is own VPD; base sink requires RUN AND MAIN_LED_OK through Q14/Q15. R112 defaults off. Bus voltage alone cannot enable U4.",
+   "rule": "No powered parallel supplies or unrestricted hotplug. Unpowered/latched-off injection is qualified ONLY under T1 conditions, not a procedural excuse for self-enabling."
+  },
+  "validation": {
+   "rail_overvoltage": {
+    "VIN_bank_energy_mJ": 5.919,
+    "bench_test": {
+     "conditions": [
+      "T2-A: input16.5V; 0.44mF +0.5A/rail; externally ramp +12V from12 to16.5V at<=1V/ms, <=1A, total injection<=10ms (including ramp), hold<=1ms at16.5V; fixture removes injection automatically after trigger; scope>=100MS/s",
+      "T2-B: R8 open at13.5/16.5V input, 3A source; no external C/no load, then0.44mF+0.5A; capture500ms with independent voltage/current abort",
+      "T2-C: R14 open, same conditions; no assumed LMR38020 output OVP",
+      "T2-D: RUN held low/logic powered, +14.0V and -13.0V external for10min; safely BELOW the minimum guard thresholds; no-trip only refers to OV_N, not RUN",
+      "T2-E: at+15.2V / -13.9V a trip is ALLOWED (inside tolerance bands); repeat guaranteed trip at+15.8V / -14.5V with <=1V/ms slew, <=1A source and >=50us hold (record actual waveform)"
+     ],
+     "downstream_qualification": [
+      "Without a separate rail protector, downstream modules must tolerate16.5V/10s and sub-threshold +15.3V/-14.1V continuously, and up to24V magnitude/100ms or their measured actual exposure if worse. Ordinary16V caps are NOT thereby qualified; incompatible modules excluded until crowbar/eFuse decision."
+     ],
+     "pass_criteria_this_module": [
+      "With >=0.5V rail overdrive beyond each measured trip, OV_N low/FAULT set/RUN low <=20us; MAIN LED off. Keep FAULT latched10s after injection removed, reset explicitly only after fault repair",
+      "Externally driven rail remains externally driven until fixture removal: NEVER require it off while injection remains. After removal connect1k/1W discharge load; both rails below1V within2s at <=0.44mF external C",
+      "T2-B/C: observed positive rail peak<=24.0V and negative magnitude<=24.0V for the500ms capture; positive duration above16V<=100ms with specified1k discharge; D26 pulse energy<=0.10J; normal regulation after repair/RESET",
+      "T2-D OV_N stays high. T2-E band points may trip or not; above-band points MUST trip. Automatic abort at+24V / -24V / VIN33V, source removed in<=2us; any abort fails qualification, no human-only protection"
+     ],
+     "status": "proposed bench acceptance, NOT PERFORMED"
+    },
+    "decision": "ACCEPTED architecture: no voltage-triggered fuse/crowbar; crowbar vs eFuse deferred/open. S9.1 D26 is a finite-energy transient backstop, not continuous shunt protection.",
+    "guard_V": {
+     "+12V": [
+      14.48,
+      14.88,
+      15.272
+     ],
+     "-12V_magnitude": [
+      13.265,
+      13.64,
+      14.018
+     ]
+    },
+    "limitations": "Energy screens are NOT guaranteed peaks. Internal U2 OVP 24.5V is never used as an ideal clamp. No-load output can exceed16V; -12V has no positive-magnitude clamp. Unrelated failed-short components and unlimited external supplies are excluded.",
+    "peak_screens_V": {
+     "+12V_D26_rated_clamp_25C": 23.2,
+     "+12V_bank_only_no_load_before_D26": 23.42,
+     "+12V_with_typical_rack": 15.98,
+     "-12V_bank_only_no_load": 23.59,
+     "-12V_with_typical_rack": 14.8
+    },
+    "response": "U20 presets FAULT and opens U5; it does NOT disconnect an external rail source or immediately discharge stored energy.",
+    "why_no_fuse": [
+     "A fuse responds to current, not voltage.",
+     "No SCR/fuse crowbar is fitted.",
+     "D24/D26 TVS pulse ratings do not authorize sustained reverse power.",
+     "No per-rail eFuse/disconnect is fitted."
+    ]
+   },
+   "reverse_current": {
+    "bench_test": {
+     "conditions": [
+      "T1-A: no USB input, +/-12.0 and +/-12.6V external bus, 1A source limit, 0.44mF each rail; ramp <=1V/s at 25C, hold 10s; log EN_N relative to -12V, U4 SW, VIN and bus currents",
+      "T1-B: same with USB present and FAULT latched/RUN low; verify off-state once MAIN_OK deglitch expires and capture the preceding <=20ms interval",
+      "T1-C: only negative rail applied with same bounded slew; repeat rail order",
+      "T1-D: inject a positive 1A, <=20ms pulse into VIN at TP26 (compliance 33V, automatic disconnect), 25/50C, >=200s between pulses. This separately tests D24 energy/clamp; never assume the now-disabled U4 will generate this pulse"
+     ],
+     "excluded": "Hard hotplug, temperatures below25C for D25 forward-drop guarantee, >1A or >20ms sustained injection, and powered parallel supplies require new protection/qualification.",
+     "pass_criteria": [
+      "T1-A/C: EN_N minus -12V <=0.11V settled (<=0.5V transient), zero U4 switching; VIN -0.3..1V after 100ms settled; each bus current <10mA after 100ms",
+      "T1-B: same EN/switching/current criteria after 20ms; VIN may retain own-input charge, must remain -0.3..30V, not climb from bus power",
+      "T1-D: VIN <=30V incl ringing at TP26, measured integral(V*I*dt)<=0.648J, clamp current ends by 20ms, no leakage increase >10uA after cooling; normal restart and regulation after RESET",
+      "All: automatic overvoltage disconnect at VIN 33V, negative excursion abort at -0.3V (fast comparator, not human reaction). An abort is a FAIL, not a pass."
+     ],
+     "status": "proposed bench acceptance, NOT PERFORMED"
+    },
+    "clamps": {
+     "D24": {
+      "MPN": "SMBJ20A",
+      "breakdown_V": [
+       22.2,
+       24.5
+      ],
+      "coordination": "U5 OVP 17.30-19.44 V opens the input before D24 conducts: OVP max < VR 20 V < VBR(0 C) 21.70 V",
+      "limitations": "Rated clamp is at 25C and specified waveform, not a measured PCB spike bound. Qualified fixture requires VIN<=30V incl ringing at 25/50C. Sustained enabled reverse power is NOT safe.",
+      "manufacturer": "Littelfuse (C151257)",
+      "net": "VIN",
+      "peak_pulse_W": 600,
+      "protects": "U2 VIN/SW1 42V abs /36V operating; 50V VIN bank and C25/C26 (32.4+14.02=46.4V); U5 OUT 67V; D25 30V at the 1 A budget (<=27.7V hot)",
+      "pulse_budget": {
+       "basis": "1 A x VC 32.4 V (rated clamp bounds the 1 A clamp: 24.92 V at 25 C, 27.71 V at Tj 150 C via alphaVBR) x 20 ms = 0.648 J. Capability: 600 W 10/1000 us rating mapped to a 20 ms rectangle with a sqrt(t) thermal impedance (Dawson peak 0.541044) = 87.2 W at 25 C, x0.8 Fig. 2 derating at 50 C = 69.8 W. No universal joule rating or continuous claim; 5 W steady-state rating applies only on an infinite heat sink.",
+       "capability_20ms_rect_W": 69.8,
+       "clamp_at_1A_V": [
+        24.92,
+        27.71
+       ],
+       "initial_temperature_max_C": 50,
+       "margin": 2.15,
+       "max_duration_ms": 20.0,
+       "max_energy_J": 0.648,
+       "max_injection_A": 1.0,
+       "minimum_repeat_interval_s": 200,
+       "worst_power_W": 32.4
+      },
+      "rated_clamp_V": 32.4,
+      "rated_peak_A": 18.6,
+      "stand_off_V": 20,
+      "waveform_us": "10/1000"
+     },
+     "D25": {
+      "MPN": "BAT54SLT1G",
+      "current_for_bound_uA": 100,
+      "forward_bound_V_25C": 0.24,
+      "net": "VIN negative",
+      "reverse_max_V": 30,
+      "scope": "Bus slew <=1 V/s at 25C (<=26.5uA displacement current from 2x10u+100n rated high C). Not a cold/fast-hotplug clamp."
+     },
+     "D26": {
+      "MPN": "SMBJ14A",
+      "VIN_bank_energy_J": 0.00592,
+      "breakdown_V": [
+       15.6,
+       17.2
+      ],
+      "guard_delay_energy_screen_J": 0.00155,
+      "limitations": "Finite pulse backstop only; external rail source must be removed by fixture. No fuse coordination / crowbar or sustained shunt claim.",
+      "net": "P12_VOUT",
+      "peak_pulse_W": 600,
+      "protects": "U2 VOUT/SW2/ISP/ISN 25V abs and local 25V MLCCs; not a 16V downstream guarantee",
+      "rated_clamp_V": 23.2,
+      "rated_peak_A": 25.9,
+      "stand_off_V": 14,
+      "waveform_us": "10/1000"
+     }
+    },
+    "decision": "ACCEPTED architecture: no series reverse blocking (owner). S9.1 removes the self-enable defect in hardware; that defect is NOT an accepted event.",
+    "minus12_active": {
+     "enable_logic": {
+      "disable_low_min_V": 0.95,
+      "does_not_block_reverse_power_while_enabled": true,
+      "drive_source": "Q1 emitter net VPD (own input upstream of D10); never +12V or VIN",
+      "enable_high_max_V": 1.4,
+      "equation": "EN_N - V(-12V) = Q1 on ? (VPD - VCEsat - V(-12V))*R18/(R17+R18) : Ileak*R18",
+      "logic": "U4 enabled iff own VPD AND RUN AND MAIN_LED_OK (derived from the netlist, not assumed)",
+      "method": "Structure traced from the design connectivity (LMR38020 EN pin -> divider -> PNP collector -> base pull-ups and series NMOS sink chain -> GND; S9.3: the RC-delayed P12_OK gate of the top switch, evaluated settled); bounds over VPD 12.26/16.5/19.44 V, resistor tolerance + TCR, NMOS VGS(th) 1.0-2.5 V with 1 uA leakage, PNP hFE >= 60, VEB <= 0.35 V off and 5 uA leakage. With a switch open the switches above it are source followers (node <= gate), so the chain current is bounded by the node defaults; a chain node with no DC default is undefined. Required: U4 enabled iff own input AND RUN AND MAIN_LED_OK AND +12V good (P12_OK).",
+      "off_Q1_VEB_max_V": 0.2651,
+      "off_leakage_test_bound_uA": 5,
+      "off_pullup": "R112 ties Q1 base to VPD; R115 100k defines N_EN_RETURN; R18 pulls EN to the U4 ground",
+      "off_relative_max_V": 0.102,
+      "pass": true,
+      "running_max_relative_V": 5.52,
+      "startup_min_relative_V": 1.936,
+      "structure": {
+       "EN": "EN_N",
+       "PNP": "Q1",
+       "R_bot": "R18",
+       "R_top": "R17",
+       "U4": "U4",
+       "U4_GND": "-12V",
+       "base": "N_EN_BASE",
+       "emitter": "VPD",
+       "pullups": [
+        "R112"
+       ],
+       "sequencing": {
+        "C": "C86",
+        "Q": "Q16",
+        "R": "R118",
+        "gate": "N_EN_SEQ",
+        "pullup": "R35",
+        "source": "P12_OK"
+       },
+       "sink_chains": [
+        {
+         "R": "R16",
+         "end": "GND",
+         "node_defaults": {
+          "N_EN_MID": [
+           "R119"
+          ],
+          "N_EN_RETURN": [
+           "R115"
+          ]
+         },
+         "series_nmos": [
+          [
+           "Q16",
+           "N_EN_SEQ"
+          ],
+          [
+           "Q15",
+           "MAIN_LED_OK"
+          ],
+          [
+           "Q14",
+           "RUN"
+          ]
+         ]
+        }
+       ]
+      },
+      "supply_loss_response": "MAIN_OK has falling deglitch; until it drops a powered converter can sink a bus. Clamp test bounds that finite interval; never parallel a running module.",
+      "truth_table": [
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": false,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": false,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": false,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.2651,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.2651,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": true,
+        "run": false,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0864,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": false,
+        "own_input": true,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         0.0,
+         0.102
+        ],
+        "Q1": [
+         "off"
+        ],
+        "Q1_VEB_off_bound_V": 0.0052,
+        "U4_enabled": false,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": false,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         1.936,
+         3.349
+        ],
+        "Q1": [
+         "on"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": true,
+        "bus_live": false,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       },
+       {
+        "EN_relative_V": [
+         3.967,
+         5.52
+        ],
+        "Q1": [
+         "on"
+        ],
+        "Q1_VEB_off_bound_V": 0.0,
+        "U4_enabled": true,
+        "bus_live": true,
+        "main_status": true,
+        "own_input": true,
+        "p12_good": true,
+        "run": true,
+        "undefined_nodes": []
+       }
+      ],
+      "violations": []
+     },
+     "enabled_parallel_risk": "FPWM still sinks if enabled against a higher external rail. -0.9A is TYPICAL only, not a worst-case bound; no finite-energy TVS can absorb an unlimited live bus.",
+     "finding": "FIXED: Q1 emitter is own VPD; base sink requires RUN AND MAIN_LED_OK through Q14/Q15. R112 defaults off. Bus voltage alone cannot enable U4."
+    },
+    "minus12_passive": {
+     "fast_step_residual": "D24 forward/internal diodes can clamp around -1.4V, outside U2 -0.3V minimum. D25 reduces it but is NOT guaranteed below 0.3V at high current/cold. Unrestricted hard hotplug remains UNQUALIFIED and is not a passing acceptance test.",
+     "qualified_negative_floor_V": -0.3,
+     "qualified_slew_V_per_s": 1,
+     "qualified_temperature_C": 25,
+     "unclamped_VIN_step_V": [
+      -1.23,
+      -5.43
+     ]
+    },
+    "plus12_path": {
+     "dc_total_mA": 0.389,
+     "hot_plug_bank_charge_mJ": [
+      2.98,
+      7.68
+     ],
+     "power_stage": "Disabled four-switch boost HS blocks bus-to-VIN power transfer; divider current/leakage and capacitor charging remain."
+    },
+    "rule": "No powered parallel supplies or unrestricted hotplug. Unpowered/latched-off injection is qualified ONLY under T1 conditions, not a procedural excuse for self-enabling."
+   }
+  }
+ },
+ "added_copper": {
+  "planes": 1,
+  "segments": 111,
+  "vias": 22
+ },
+ "artifacts_sha256": {
+  "docs/design.md": "1b317dc5e4f3dac5519578bfc6e7bdde2fa82bef67c3d9b75b8ec5a134a70d1f",
+  "docs/design/assembly/assembly-report.json": "e8b79e8dacbbb02312f90f7e6531e39f088e939adb5a07eb2c5bb1a16f844f49",
+  "docs/design/assembly/board-iso.jpg": "76b5e9aa815636fc70cc09c6537169d3a2bec692866a52fc736d7e36f255e176",
+  "docs/design/assembly/board-top.jpg": "897fe8534124648ad99669a4fa73dde859e2a943f787fbf3f491f6bc23290337",
+  "docs/design/assembly/iso-front.png": "6bc6a3def6b83cae50488bf0e5b5adfcd3e6e2a8bd10cb2f419a94d0cbe0c9c7",
+  "docs/design/assembly/iso-rear.png": "b0e3f67ed3230ad7cdcd78370e2c232d28e374ef8c99f18541ec4987a975dd07",
+  "docs/design/assembly/usb-power-45w-assembly.step.zip": "460c3db02a07e65eb293cdbc3700cf8b00e9fafbf153872c34b54700e7ba93b3",
+  "docs/design/assembly/usb-power-45w-placement.pdf": "1ffc1fdcac39996ae5f28911ff07bcfd52e37bb31b0b26db7a3e0637ace713a5",
+  "docs/design/board-p1.json": "708e8b35c5aa8cf2cb5ef732dfc3f60296981b98835fdc5aa165e6187cabbac8",
+  "docs/design/bom.csv": "117c28c4289515ce890d1459525c3c158e1c49e03203c5182f56ca3934fbd61c",
+  "docs/design/build.json": "6645921b8039421c517ea155f8a0b1fd7aeddcbde584c7dca5d9d7f70c104cc4",
+  "docs/design/calcs.json": "eb49094d5fac7545bdb2ff8800aebe59105090c004ce8cca2d8ffefcc8ba2ba9",
+  "docs/design/hierarchy-parity.json": "fc903b333e8350c91b4e7f6534da284397e7bcbc8b2e2bae7a102debbff80c1c",
+  "docs/design/img/board-p1.png": "d9afa95f604055f7bc6b1f9fe076d58de7ea5f9fa976e4271c42c1f1367004dc",
+  "docs/design/mechanical.json": "dbbd5b0c9f72603d9d7402a0d023ad1a7237966daa041e999e0686dd315bf702",
+  "docs/design/placement.json": "dd58b839028264a3a55100c6bc7c656ae658ce4db1eac22c6b98677f1e289906",
+  "docs/design/routing-notes.md": "beaa1cb6ff022f6562d68c8d41a1134079ca93f1f129b92328082bdb711ceda7",
+  "docs/design/s83-sourcing.json": "28aa62b9599643b16aa43485d0db1a893d41df3abbaf4c1c77dec9e5d4b1a76c",
+  "docs/design/s84-sourcing.json": "2cba18099500dd4858f1d5adc9c8956a137fa6ac6b1b889aadcdf653c0b7d853",
+  "docs/design/s90-sourcing.json": "930fee411e1b8eaaab48c82898ae295d7078833df65f04bfb287f5340a25d43f",
+  "docs/design/s91-sourcing.json": "638a9c2ce4c972f2095bd1c1421fcfe1d0cdcbf4d0dd4c898642a46ee1187830",
+  "docs/design/s92-sourcing.json": "2d953f4dfe02fe44ab76baca8a108e236c82996c1a5140e8a1268af790ff737a",
+  "docs/design/s93-sourcing.json": "f73fd2247a2c851e9f2185915a6883e2bedca70a902ba0a3ecf5604402b4ea50",
+  "docs/design/schematic-wiring.json": "c043d2e5258c761a2ead11dc951215233436f3b4a598d14271e7e63b3cdf4d65",
+  "docs/design/sourcing.json": "ce01fa6c49b0a8a50440b0e3cba78902e5ba839f05c9eec5ea0d863a1a773b95",
+  "docs/design/validation.json": "4b4e95096abf05fbc7222d168ec61a2aab06849a1ccb4c3cb3be6048e69874ae",
+  "docs/routing/03-ground-plane.json": "4ce3a8ba3dceffdaa31819562f07aa467829dd873357c0c8f139bcc1731a8e20",
+  "docs/routing/04-header-buses.json": "2c88c7704f48a07d76a7e16c8a038df688cabe1d09f7ee1047fbae1d40742aaa",
+  "docs/routing/05-header-local.json": "41e1897a0e988ba0bb727015f31290b56adbfb702368ef4e3199c475d9cc3c1a",
+  "docs/routing/README.md": "8ae56042f35ea0ada176e0bc0ea1f1b75db04fc90d756f0b079843708f1deef2",
+  "docs/routing/continuation.md": "d1245b615b643b3cfe23f4b58e39dace29d1929a5f6fa40f672f13e0e455074e",
+  "docs/routing/face-front.png": "dfdc69d68bd788709862f8c9f41d516537eccd990423c8de2090727de4dbfce1",
+  "docs/routing/input-control-FB.png": "3e6b27d7e75b6c13ef9f873cc9218e8a7750619aa80b5aa4170903b3c717ed33",
+  "docs/routing/input-control-copper.json": "82a052db6773f211b2a9658117f45775aaf89f7544e87efa9490b51d9b8468b7",
+  "docs/routing/outputs-FB.png": "0d4698333c301b5b6001651bab42c5480e42b53a51ed5e797ed07ca1b23d2605",
+  "docs/usb-power-45w-schematic.pdf": "76ad16151739a5f15a09e8d829c3c147be6303308d7468b02b42fe91e48c7fea"
+ },
+ "base_git_revision": "a5e54ceba506c3f9f73d279d3c0a829d18d3c2d4",
+ "component_count": 185,
+ "connectivity": {
+  "board_at_batch": "B223",
+  "closed_at_batch": "B217",
+  "drc_unconnected_items": 0,
+  "note": "electrical connectivity closed; the copper/thermal routing contract is not, so routing_complete stays false"
+ },
+ "continuation": {
+  "cleanup_batches": "B219-B223",
+  "completion_request_achieved": true,
+  "document": "docs/routing/continuation-238.md (workspace notes, not git-tracked yet, so not hashed)",
+  "footprint_contract_note": "R109 Kelvin land numbering mirrored (s92_parts.KELVIN_PADS, same geometry)",
+  "footprint_contract_revision_applied": true,
+  "opens_after": 0,
+  "opens_before": 356,
+  "previous_document": "docs/routing/continuation.md"
+ },
+ "final_copper_gate": {
+  "failed": [
+   "min_widths",
+   "thermal.D10.copper",
+   "thermal.R109.force_copper",
+   "thermal.U2.B_Cu_GND",
+   "thermal.U2.In1",
+   "thermal.U2.PGND_vias",
+   "thermal.U2.VIN_area",
+   "thermal.U2.VOUT_area",
+   "tvs.D1"
+  ],
+  "pass": false,
+  "placement_failed": {
+   "local_loops": [
+    [
+     "U12.14",
+     "C52.1",
+     7.63
+    ]
+   ],
+   "pairs_2p54": [
+    [
+     "TP22",
+     "TP23"
+    ]
+   ],
+   "proximity": [
+    [
+     "D25.2",
+     "D24.1",
+     9.04
+    ]
+   ]
+  },
+  "report": "research/routing/final-b223/check_s8.json",
+  "status": "FAIL"
+ },
+ "functional_net_count": 84,
+ "historical_review": {
+  "file": "docs/design/review-s93.json",
+  "scope": "pre-routing S9.3/P2.3 only; not a current release certificate",
+  "sha256": "2d7d5b2cd530419b675802b40f00484eb8756bf94d80679c115953750f71a5ba"
+ },
+ "manufacturing_ready": false,
+ "native_findings": {
+  "drc": {
+   "categories": {
+    "schematic_parity": 0,
+    "unconnected_items": 0,
+    "violations": 0
+   },
+   "severity": {},
+   "total_including_exclusions": 0
+  },
+  "erc": {
+   "categories": {
+    "violations": 0
+   },
+   "severity": {},
+   "total_including_exclusions": 0
+  }
+ },
+ "native_reports": "research/routing/final-b223/native",
+ "pcb_totals": {
+  "copper_zones": 28,
+  "rule_areas": 15,
+  "segments": 1151,
+  "vias": 314
+ },
+ "placement_and_pre_routing_invariants": true,
+ "ref_pin_net_parity": {
+  "duplicate_nc_pad_aliases": [],
+  "equal": true,
+  "extra_connected_pads": [],
+  "extra_refs": [],
+  "mechanical_without_reference": [
+   "",
+   ""
+  ],
+  "missing_pins": [],
+  "missing_refs": [],
+  "net_mismatches": [],
+  "pads_without_net": []
+ },
+ "refreshed": {
+  "changed_hashes": {
+   "artifacts_sha256": [
+    "docs/routing/README.md",
+    "docs/design/placement.json"
+   ],
+   "sources_sha256": [
+    "hardware/usb-power-45w.kicad_pcb",
+    "tools/check_s8_board.py",
+    "tools/s92_contract.py",
+    "tools/test_routing.py"
+   ]
+  },
+  "date": "2026-11-04"
+ },
+ "revision": "S9.3-10P / R1-start",
+ "routing_complete": false,
+ "routing_notes": {
+  "test_pad_rows": 27
+ },
+ "schema_version": 1,
+ "sources_sha256": {
+  "hardware/01_usb_input.kicad_sch": "fc042594f24c84740ac5a54fff270282aa926cef582620ed3122db1075e69693",
+  "hardware/02_positive_12v.kicad_sch": "1a480f82ac8d72ecc6b0f0eca941660b0fe776be1ec23fd3ceb0f4c76410c710",
+  "hardware/03_negative_converter.kicad_sch": "2638107895730738b31ebb4d628c67ccde3227cf8bacdc4b6dba2985c2cd47ae",
+  "hardware/04_fault_reset.kicad_sch": "b9b62d41f8d8b7255e38273eff84a56fc1123eefab29fb614a72d3654f685edf",
+  "hardware/05_outputs_status.kicad_sch": "b1e966d2bf7b19d946605a06103856abbca70121e6bf45fa8ba1580724bb54b6",
+  "hardware/USBPOWER45.kicad_sym": "ed12b027908fc3eeb89598511157f7e66e16e19e6a65c9a6bc0899018a0b93e3",
+  "hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+  "hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+  "hardware/USBPOWER45.pretty/D_SMA.kicad_mod": "f7cba3b52ed8b34dce89170722de58324eac04e9e61a095e0eab37b9ca93cb7f",
+  "hardware/USBPOWER45.pretty/D_SMB.kicad_mod": "e25e9f4acef5b55585afebc48c685e151fd0d2f33a5c3c61f9fdf0389e19ae67",
+  "hardware/USBPOWER45.pretty/D_SMC.kicad_mod": "f17a366cbe28020fc5f12a4a5cecd11590af4d96b61ad8d82c33dc2393a3b64b",
+  "hardware/USBPOWER45.pretty/Fuse_1206_3216Metric.kicad_mod": "8f4307d8c771db71526ed8ccf7c762824636660adec3635905932cc5e1d02280",
+  "hardware/USBPOWER45.pretty/HRO-TYPE-C-31-M-12.kicad_mod": "7a9c63993489e39550d3037c46d5edb94afa3aa86d8e10fbebffcf6864800453",
+  "hardware/USBPOWER45.pretty/HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad.kicad_mod": "7fac863ef6884312160643946003bbb60e62fa49d8c72e1d79b90681d598b3a8",
+  "hardware/USBPOWER45.pretty/IDC-Header_2x05_P2.54mm_Vertical_Wurth_61201021621.kicad_mod": "129f03ae7e45ead766ba86215d1661376cafa7da5e0011a393a230b4caff4f2d",
+  "hardware/USBPOWER45.pretty/IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621.kicad_mod": "2d0fac128f41253ed8a38dcb8b7361edde17d3ad544016591842909cf1dd1b54",
+  "hardware/USBPOWER45.pretty/LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge.kicad_mod": "6386e227253dea5dd1b7f509341de22382586488330a7f1ec2eadafd01ae05d0",
+  "hardware/USBPOWER45.pretty/L_SLO1040H6R8MTT.kicad_mod": "29b4184e622e3b4b0bdf006f2347ff059738395192d86924c5a499d0ab01d63e",
+  "hardware/USBPOWER45.pretty/R_0603_1608Metric.kicad_mod": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+  "hardware/USBPOWER45.pretty/R_1206_3216Metric.kicad_mod": "c7320668dc81bbb954cb4f15e4e7a766c120059343d43551468c8f7ccc8fde37",
+  "hardware/USBPOWER45.pretty/R_Shunt_1206_KelvinSplit_RLM12.kicad_mod": "6132aa08b06b107087112926e803a0cac35ba66b42b88fd9bcba3cf940343717",
+  "hardware/USBPOWER45.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod": "a885b619b22880c9559522d2bf865b059d80453b95a98defc9e6ceef284da1fc",
+  "hardware/USBPOWER45.pretty/SOT-23-5.kicad_mod": "455a3f7c3e5eb5b8847eaa5df23e18651e78ab9f75afd09a0883758a0d901761",
+  "hardware/USBPOWER45.pretty/SOT-23-6.kicad_mod": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+  "hardware/USBPOWER45.pretty/SOT-23.kicad_mod": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15",
+  "hardware/USBPOWER45.pretty/SOT-89-3.kicad_mod": "0b8db9f4a8f2547a53e80e3d400798979e84b4e0b2972160ddaca99c1f659b93",
+  "hardware/USBPOWER45.pretty/SSOP-10-1EP_3.9x4.9mm_P1mm_EP2.1x3.3mm.kicad_mod": "91c269bc24db2786e936714caf7715fad912fd2190e2de6814878fb37bb249ac",
+  "hardware/USBPOWER45.pretty/SW_TL3340AF160QG_HandSolder.kicad_mod": "ba12ea0f278b85327e5774291bcc9eaddf85dbd02fabbf741c0535ac71fece3d",
+  "hardware/USBPOWER45.pretty/TI_RYQ0021B_VQFN-HR-21_3x5mm.kicad_mod": "0459055fe91fc845c9d67e1c3f3de374c83ce8926aace02844b427f112e78ec4",
+  "hardware/USBPOWER45.pretty/TI_SO-PowerPAD-8_NoViaInPad.kicad_mod": "ceffc33fc0d74c02eca8420356075c76986a17d8627afa67bb3a5668b6d63f5a",
+  "hardware/USBPOWER45.pretty/TPS7A16_DGN0008C_NoViaInPad.kicad_mod": "f193bcf071ec62e2a55b6ef796c9d549af8097be3032b97859c7f6f375975877",
+  "hardware/USBPOWER45.pretty/TestPoint_Pad_D1.0mm.kicad_mod": "6d602c576b4ab0de29fa4cc096f419a62e828ba45ceee30c1263d86b420b2b12",
+  "hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod": "d7ae230b69d8c3dad5082515a51aac9e4840360c8f4324a00673353676d43042",
+  "hardware/fp-lib-table": "50a4b397011d6e9d0317ad90dc26b46f95b40bcf401793c98bf0e66a21ba65cd",
+  "hardware/sym-lib-table": "23c007ed7a5fbdfdb875fadc8130b067bda56e476121040a79e6b256dab53989",
+  "hardware/usb-power-45w.kicad_dru": "b9b70d1fe8d30634cfb631f6de9f5cf2bb77719c3b1633f35bf6f15d7e4ca5c1",
+  "hardware/usb-power-45w.kicad_pcb": "cb3da1882d11dc871ee81433407228f9be7ba04babb3d7a0b1cd42dd27a6612d",
+  "hardware/usb-power-45w.kicad_pro": "0df9139fc4d633b2912ad7477b94dbc31ec982494b4d7d4082437a020422a973",
+  "hardware/usb-power-45w.kicad_sch": "d740924cf985b48c63f32dc9fca074d5a48c266f0da8552468df94214add80fb",
+  "panels/front-pcb/usb-power-45w-panel.kicad_pcb": "ce77533392472726fd9ddf08db1a1aab53a8648c25dd9a7890b3a8b45fd9820f",
+  "panels/front-pcb/usb-power-45w-panel.kicad_pro": "6fb70c36157f4e827990f7ca0fea610b02d36e1849cad032b590d9ed15ddea90",
+  "tools/build_s8.py": "8565ac0fa809363067078a54a57b2da6439cdb1c18bd6d3d254e950d03df6d98",
+  "tools/build_s8_assembly.py": "bbca50087aa33ab40caa7618bfb5118dd909691a2a351dc1feb50cfa9d5cba7e",
+  "tools/build_s8_board.py": "dd3440f0e79b4ca43a20fa360bcaf70fe89777171e7507148823a0829050d689",
+  "tools/build_s8_panel.py": "aaf4cfd42c68f27f2a92a823115d68e94b3cf6b30e9eff5e7dc7d03dc64649a7",
+  "tools/check_s8_board.py": "609bdae08d968517c157116e5ce90261d308c4bca06f3129bb29e4762e2d9c8a",
+  "tools/circuit_s8.py": "ccb98bbe865f0cf8a1032faaba5f70a7f2b45526cfcd81b731b92b417c7992d5",
+  "tools/hierarchy_s8.py": "95bac8943333aa096427758bfcdb5cb8671809f1f0cf0bbdcddd6246462ca787",
+  "tools/mechanics45.py": "28c25ae9b583c4757621c9cae1718cd3775959367253111f27ddea5566776ddc",
+  "tools/mechanics_s8.py": "273f6d7084fdef311cf680d621a613761bf68cb11729babbe57f9ad03b400213",
+  "tools/place_s8.py": "b34e25980c43cd7c3bfd03892d679be230eaa4a1733f2c9887501f76ed1fdc1c",
+  "tools/render_s8.py": "0f57511c07a469ced099751190657c2bd941f8ad52edaad31a0ec4aa5a9f091b",
+  "tools/review_s8.py": "6bad51c5adf7b49472eb6b41e67cc019f0da1e41a45f27b966d3b2b2d90fad26",
+  "tools/s8_calcs.py": "76bdd8daafcac3d7204487717fe15e6b2c2f2a39277f2458241d550d3795ba59",
+  "tools/s8_mechanical.py": "fcdc5c3b1b1e216c739729b0be0843935bb2c23f190c0742af3317e2af62c405",
+  "tools/s8_sourcing.py": "e03747cd4fac4d5b43ad023dcbbe285d53b3ef165f6a593fe646a92e6d2e60b5",
+  "tools/s90_parts.py": "b065d14aebb3d9e6c202422a69817ee70359af0fa2a938d25afa15c96d8e7889",
+  "tools/s91_analysis.py": "90b5593774815023ce8cdf697a24174304649343dacf54448b7e32a19b035642",
+  "tools/s92_contract.py": "6c36beae9b8b0df22a99fa777f3c5120923bef859c2fdf54c919c9d01829cb69",
+  "tools/s92_netlist.py": "62ac94f9fd8bfdcd29153702854c70de448301d414b61051302a1c0a85d34e55",
+  "tools/s92_parts.py": "6fae2c65ad8cbbeffb33f0ca861bc773aab8a04cd5a70a75379be354a1ac6b9a",
+  "tools/test_routing.py": "e9d5b95171e96ccbb59ebe6c4dcf3a7c86aa797594ee9268cedd8e1e446126f4",
+  "tools/test_s8.py": "9f026655774722650209262682679944d6501bd75b3ce1d123060ae4dc358c22",
+  "tools/verify_s8.py": "2a57fb4e4d0fb03377ad9bfe9d8fb456bcc8e766bfe3dd8b3fbd8627e8eec76d"
+ },
+ "status": "PARTIAL_ROUTING_NOT_RELEASED",
+ "tests": {
+  "failed": 2,
+  "failures": {
+   "test_s8.PlacedBoard.test_placement_rules": "pre-routing gate: rule_areas (R116.1 inside RA_AGND_ISLAND) and placement (TP22/TP23 pair 8.25 mm, D25.2-D24.1 9.04 mm, U12.14-C52.1 7.63 mm); open, user decisions",
+   "test_routing.RoutingR1.test_plane_vias_widths_and_cleanup": "+12V/-12V tracks below 1.5 / 0.8 mm (divider/monitor taps and neck-downs); open"
+  },
+  "log": "research/routing/final-b223/tests.log",
+  "log_committed": false,
+  "note": "python3 -B -m unittest discover -s modules/usb-power-45w/tools -p test_*.py -v after B223 and the record refresh; no test weakened",
+  "status": "FAIL",
+  "tests_run": 86
+ }
+}

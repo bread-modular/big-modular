@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""S8 single-board pre-calculations: ceramic banks, VIN damper, soft start into rack capacitance,
+"""pre-calculations: ceramic banks, VIN damper, soft start into rack capacitance,
 overvoltage guard and VPD-powered comparators, V3V3-loss comparator state, -12V start-up per the LMR38020 hiccup rule, the published conservative
 continuous rating, input and connector budgets, board area (S8.4); S8.5: the one-shot arming (required
 behaviour, STARTED latch topology, V20_OK status floor over tolerance/temperature, U5 window, startup budget)
@@ -11,7 +11,7 @@ limit, thermal and compensation screens, the PD contract and the 3 A input budge
 accepted residuals with their bench-test conditions (residuals) and what changes for the later 20 V retarget
 (retarget_20v).
 
-  python3 -B tools/s8_calcs.py --out docs/s8-single     (numpy; pcbnew for the area section)
+  python3 -B tools/s8_calcs.py --out docs/design     (numpy; pcbnew for the area section)
 
 SCREENING ONLY. Every value comes from the S8 circuit table (tools/circuit_s8.py) and the cited
 datasheet figures; MLCC DC-bias retention, ESR and the VIN source corners reuse the bounded
@@ -1226,7 +1226,7 @@ def thermal_contract(val, eff):
             'U5': u5,
             'via_change': via_change,
             'acceptance': 'TH-1 U2/R109 case temperature at 2.95 A, TH-2 D10/U5 at 3 A input, TH-3 U4 at 0.8 A; '
-                          'docs/s8-single/routing-notes.md'}
+                          'docs/design/routing-notes.md'}
 
 
 def area(parts):
@@ -1269,7 +1269,7 @@ def area(parts):
                 outline=f'Y{g["carrier_Y_mm"][0]:g}..{g["carrier_Y_mm"][1]:g} x Z{g["carrier_Z_mm"][0]:g}..{g["carrier_Z_mm"][1]:g}',
                 routed_R3_fill={'base': 0.637, 'top': 0.645}, groups_mm2={k: round(v) for k, v in big.items()},
                 note='courtyard polygons from the pinned footprints, panel parts counted whole (they overhang the '
-                     'front edge by design). The placed P1 board record is docs/s8-single/board-p1.json')
+                     'front edge by design). The placed P1 board record is docs/design/board-p1.json')
 
 
 def main():

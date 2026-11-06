@@ -1,10 +1,10 @@
-"""S8 single-board native hierarchy/circuit verifier. Read-only; run native ERC separately.
+"""native hierarchy/circuit verifier. Read-only; run native ERC separately.
 
-  python3 -B tools/verify_s8.py --netlist <native kicadxml of hardware/single/usb-power-45w-single.kicad_sch>
+  python3 -B tools/verify_s8.py --netlist <native kicadxml of hardware/usb-power-45w.kicad_sch>
 
 Checks exact components, physical pad sets, pin memberships, NCs and fields against
 tools/circuit_s8.py; that every S7 eFuse / negative-switch part is gone and nothing else; the
-ceramic banks and VIN damper topology; manufacturer pin roles (TPS3808 via verify_design's TI
+ceramic banks and VIN damper topology; manufacturer pin roles (TPS3808 via the TI
 table, LM2901 comparator pairing against the TI pin table kept here); bounded threshold arithmetic; and a settled
 digital model of the latch/LED logic including the overvoltage preset. S8 final: D8 MAIN is the only LED
 (rail LEDs removed). S8.1 (review fixes): the guard's own TLV431B reference REF_OV (pin roles against TI's DBZ
@@ -35,25 +35,38 @@ import argparse
 import itertools
 import json
 import math
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import circuit45
 import circuit_s8
 from build_schematic import FP
 from sexp import parse, nodes, one
-from verify_design import TPS3808_DBV, load_xml
 from s90_parts import FP_S90, TPS552892_TI
 from s92_parts import FP_S92
 
+# TPS3808G01DBVR manufacturer pin identity, transcribed from TI SBVS050N
+# (https://www.ti.com/lit/ds/symlink/tps3808.pdf) Figure 5-1 / Table 5-1, DBV 6-pin SOT-23.
+# Kept apart from the circuit table and the local symbol so a self-consistent wrong map cannot pass.
+TPS3808_DBV = {'1': 'RESET', '2': 'GND', '3': 'MR', '4': 'CT', '5': 'SENSE', '6': 'VDD'}
+
+
+def load_xml(path):
+    root = ET.parse(path).getroot()
+    comps = {c.get('ref'): c for c in root.findall('components/comp')}
+    nets = {n.get('name'): {(p.get('ref'), p.get('pin')) for p in n.findall('node')} for n in root.findall('nets/net')}
+    return root, comps, nets, {pin: name for name, ps in nets.items() for pin in ps}
+
 MODULE = Path(__file__).resolve().parents[1]
-FP_S8 = {**FP, **FP_S90, **FP_S92}       # S9.0 TPS552892-Q1 land (s90_parts); S9.2 Kelvin land + 1.5 mm pad (s92_parts)
+FP_S8 = {**FP, **FP_S90, **FP_S92,
+         'IDC10': 'IDC-Header_2x05_P2.54mm_Vertical_Wurth_61201021621'}  # R1 10-pin outputs
 # TI LM2901 SOIC-14 (SLCS006Z Table 5-1): output pin -> (inverting, non-inverting) input pins of the same
 # comparator, VCC 3, GND 12. Kept apart from the symbol and the circuit table (channel names vary by vendor).
 LM2901_SO14 = {'outputs': {'2': ('4', '5'), '1': ('6', '7'), '14': ('8', '9'), '13': ('10', '11')}, 'VCC': '3', 'GND': '12'}
 # TI TLV431 DBZ (SOT-23-3), SLVS139Z Table 4-1: pin -> function; symbol pin names K / REF / A.
 TLV431_DBZ_TI = {'1': 'REF', '2': 'CATHODE', '3': 'ANODE'}
 TLV431_SYMBOL_NAME = {'REF': 'REF', 'CATHODE': 'K', 'ANODE': 'A'}
-# S8.5 TPS3808 roles (TI DBV pins from verify_design.TPS3808_DBV): U11 RESET is ARMED itself (U13 pin 4), no longer the
+# S8.5 TPS3808 roles (TI DBV pins from TPS3808_DBV): U11 RESET is ARMED itself (U13 pin 4), no longer the
 # clock of a flip-flop; U10 unchanged.
 TPS3808_ROLES_S85 = {'U10': {'SENSE': ('R66', '1'), 'MR': ('SW1', '1'), 'RESET': ('U12', '1')},
                      'U11': {'SENSE': ('R70', '1'), 'MR': ('U10', 'RESET'), 'RESET': ('U13', '4'), 'CT': ('C49', '1')}}
@@ -150,8 +163,7 @@ CRIT = {
 D24_TABLE = {'SMBJ20A': {'VR': 20.0, 'VBR': (22.2, 24.5), 'VC': 32.4, 'IPP': 18.6, 'alpha_pct_C': 0.091},
              'SMBJ16A': {'VR': 16.0, 'VBR': (17.8, 19.7), 'VC': 26.0, 'IPP': 23.1, 'alpha_pct_C': 0.084}}
 # S9.0: pins that must be no-connects (spare comparator outputs, the former +5V header pins, CV/GATE).
-NC_PINS = {'U18': ('2',), 'U20': ('1', '13'), 'J2': ('11', '12', '13', '14', '15', '16'),
-           'J3': ('11', '12', '13', '14', '15', '16'), 'U2': ('3', '4', '16')}      # S9.0: TPS552892 PG, CC, CDC open
+NC_PINS = {'U18': ('2',), 'U20': ('1', '13'), 'U2': ('3', '4', '16')}      # S9.0: TPS552892 PG, CC, CDC open
 HEADER = {**{n: 'GND' for n in range(3, 9)}, 1: '-12V', 2: '-12V', 9: '+12V', 10: '+12V'}
 FORBIDDEN_MPN = {'LM5067MM-2/NOPB', 'FQD13N06LTM', 'LTV-354T', 'MVK50V47M6.3*8 6.3TP', 'MVK 35V100 M 6.3*8',
                  'TPS259470ARPWR', 'SMAJ5.0A', 'RT0603BRD0768KL', 'RT0603BRD0713KL', 'TNPW060337K0BEEA',   # S9.0: +5V-only parts
@@ -159,7 +171,7 @@ FORBIDDEN_MPN = {'LM5067MM-2/NOPB', 'FQD13N06LTM', 'LTV-354T', 'MVK50V47M6.3*8 6
 
 
 def check_tps3808_s85(root, comps, pins):
-    """Native symbol pin names, instance pin functions and S8.5 roles against TI's DBV table (verify_design)."""
+    """Native symbol pin names, instance pin functions and S8.5 roles against TI's DBV table (TPS3808_DBV)."""
     plain = lambda name: name[:-2] if name.endswith('_N') else name   # noqa: E731
     lib = {p.get('part'): {x.get('num'): plain(x.get('name')) for x in p.findall('pins/pin')}
            for p in root.findall('libparts/libpart')}
@@ -853,8 +865,10 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     for j in ('J2', 'J3'):
         for pin, net in HEADER.items():
             isnet(j, pin, net)
-        for pin in range(11, 17):
-            assert 'unconnected-' in n(j, pin), (j, pin, 'S9.0: +5V pins 11/12 and CV/GATE open')
+        assert set(libparts['Conn_02x05_Odd_Even']) == set(map(str, range(1, 11))), '10-pin header symbol'
+        assert comps[j].findtext('footprint') == 'USBPOWER45:IDC-Header_2x05_P2.54mm_Vertical_Wurth_61201021621'
+        assert comps[j].findtext('fields/field[@name="MPN"]') == '61201021621'
+        assert not any(ref == j and int(pin) > 10 for members in nets.values() for ref, pin in members), (j, 'extra pin')
     leds = sorted(r for r in comps if ':LED' in comps[r].findtext('footprint'))
     assert leds == ['D8'], ('S8 final: D8 MAIN is the only LED (rail LEDs removed)', leds)
     assert not set(circuit_s8.LED_REMOVED) & set(comps), 'rail LED parts must be gone'
@@ -1085,7 +1099,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     timelines, tl_violations = arming_timelines(pins, nets, v20, phys)
     assert not tl_violations, ('B: arming timeline violations', tl_violations[:6])
 
-    root = Path(root) if root else hardware / 'single' / f'{circuit_s8.PROJECT}.kicad_sch'
+    root = Path(root) if root else hardware / f'{circuit_s8.PROJECT}.kicad_sch'
     sheets = nodes(parse(root.read_text()), 'sheet')
     assert len(sheets) == SHEETS, ('Hierarchy sheet count', len(sheets))
     files = [root] + [root.parent / next(p[2] for p in nodes(s, 'property') if p[1] == 'Sheetfile') for s in sheets]
@@ -1188,6 +1202,6 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--netlist', type=Path, required=True)
     ap.add_argument('--hardware', type=Path, default=MODULE / 'hardware')
-    ap.add_argument('--root', type=Path, help='S8 root (default <hardware>/single/usb-power-45w-single.kicad_sch)')
+    ap.add_argument('--root', type=Path, help='S8 root (default <hardware>/usb-power-45w.kicad_sch)')
     a = ap.parse_args()
     print(json.dumps(verify(a.netlist, a.hardware, a.root), indent=2))

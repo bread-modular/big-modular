@@ -1,7 +1,7 @@
 """S8 sourcing snapshot through the shared read-only JLCPCB lookup (opt/kicad-tools/jlcpcb/assembly.py).
 
-  python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json [--cache-dir research/s8/sourcing]
-  python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json --from-snapshot docs/s8-single/sourcing.json
+  python3 -B tools/s8_sourcing.py --out docs/design/sourcing.json [--cache-dir research/s8/sourcing]
+  python3 -B tools/s8_sourcing.py --out docs/design/sourcing.json --from-snapshot docs/design/sourcing.json
 
 Looks up every LCSC code of the S8 table (and of the S7 parts S8 removes, for the delta) with
 --strict-live, one request per code, and records classification, Economic eligibility, stock and
@@ -14,16 +14,16 @@ S8.4: --selected writes a live exact-code evidence file for selected/changed par
 ladder and the references that use each code) plus the Basic-only passive-policy decision (review M8);
 --extra-snapshot merges such a file's rows into a --from-snapshot run, so new codes need no full re-audit.
 
-  python3 -B tools/s8_sourcing.py --selected C705793 C861121 ... --out docs/s8-single/s84-sourcing.json \
+  python3 -B tools/s8_sourcing.py --selected C705793 C861121 ... --out docs/design/s84-sourcing.json \
       --cache-dir research/s84/catalog-current
-  python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json --from-snapshot docs/s8-single/sourcing.json \
-      --extra-snapshot docs/s8-single/s84-sourcing.json
+  python3 -B tools/s8_sourcing.py --out docs/design/sourcing.json --from-snapshot docs/design/sourcing.json \
+      --extra-snapshot docs/design/s84-sourcing.json
 
 S9.2: a full live audit of every code (no --from-snapshot) writes sourcing.json, and --selected writes s92-sourcing.json for the
 codes S9.2 adds or changes plus the recorded alternates:
 
-  python3 -B tools/s8_sourcing.py --out docs/s8-single/sourcing.json --cache-dir research/s92/sourcing
-  python3 -B tools/s8_sourcing.py --selected C151257 C315990 C393095 ... --out docs/s8-single/s92-sourcing.json --note ...
+  python3 -B tools/s8_sourcing.py --out docs/design/sourcing.json --cache-dir research/s92/sourcing
+  python3 -B tools/s8_sourcing.py --selected C151257 C315990 C393095 ... --out docs/design/s92-sourcing.json --note ...
 
 S9.0: the same --selected evidence for the codes the 15 V / buck-boost step adds (s90-sourcing.json, --note), merged with a
 second --extra-snapshot. No code is added for reverse blocking (owner decision: none).

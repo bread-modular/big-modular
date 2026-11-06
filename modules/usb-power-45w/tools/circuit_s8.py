@@ -9,9 +9,9 @@ import copy
 import circuit45
 from circuit45 import UNIROYAL, cap, part, res, two
 
-PROJECT = 'usb-power-45w-single'
+PROJECT = 'usb-power-45w'
 
-# Every S7 ref the single board drops, with the reason (checked by tools/verify_s8.py).
+# Every S7 ref the board drops, with the reason (checked by tools/verify_s8.py).
 S8_REMOVED = {
     **{r: '+12V rail eFuse U6 and its setting network' for r in
        ('U6', 'R30', 'R31', 'R32', 'R33', 'R34', 'R36', 'R37', 'R38', 'C37', 'C38', 'C39', 'D12')},
@@ -50,14 +50,14 @@ S8_PLUS5_DROPPED = ('U23', 'R101', 'R102', 'R103', 'R104', 'R107', 'R108', 'C68'
                     'C74', 'C75', 'C76', 'D21', 'D23', 'TP18', 'TP21', 'C60', 'R95', 'R96', 'C64')
 PLUS5_NETS = ('+5V', 'P5_RAW', 'P5_OK', 'P5_FLT_N', 'P5_OVLO', 'P5_OV_TOP', 'P5_DVDT', 'P5_ILM', 'P5_ILM_SER',
               'MON_P5', 'MON_P5_SER', 'MON_OV5')
-# S9.0: the main eFuse U5 nets are not +5V nets; on the single board they are renamed EF_* -> MAIN_* (S7 untouched).
+# S9.0: the main eFuse U5 nets are not +5V nets; on the board they are renamed EF_* -> MAIN_* (S7 untouched).
 MAIN_RENAME = {'EF_IN': 'MAIN_IN', 'EF_UV': 'MAIN_UV', 'EF_OV': 'MAIN_OV', 'EF_DVDT': 'MAIN_DVDT',
                'EF_ILM': 'MAIN_ILM', 'EF_IMON': 'MAIN_IMON'}
 NET_RENAME = {'P12_RAW': '+12V', 'N12_RAW': '-12V', 'N12_STATUS': 'N12_OK', **MAIN_RENAME}
 
 # Flat-sheet anchors of the S8 additions (page offsets: page 01 (0, 0); page 05 header group
 # (0, -86.36); page 05 monitor group (-599.44, -508)).
-J3_AT = (101.6, 335.28)          # S6 position of the second header (page 05: 101.6, 248.92)
+J3_AT = (101.6, 332.74)          # S6 position of the second header (page 05: 101.6, 248.92)
 CAP_Y = 365.76                   # header-side ceramics row under J2 / J3 (page 05: y 279.4)
 MON = (599.44, 508.0)            # page 05 monitor group offset
 U3_BLOCK = ((320.0, 435.0), (178.0, 225.0))   # flat-sheet box of the removed S7 +5V buck drawing (coordinate wires)
@@ -94,7 +94,7 @@ D24_PART = dict(LCSC='C151257', MPN='SMBJ20A', Manufacturer='Littelfuse',
 D26_PART = dict(LCSC='C315990', MPN='SMBJ14A', Manufacturer='Littelfuse',
                 Alternates='C152106 BORN SMBJ14A; C840775 MDD SMBJ14A (VBR >= 15.6 V and VC <= 23.2 V at >= 25.8 A)')
 S91_ADDED = ('Q14', 'Q15', 'R112', 'R113', 'R114', 'D24', 'D25', 'D26')
-# S9.2: N_EN_RETURN default (item 5) and the dedicated acceptance test pads (1.5 mm, docs/s8-single/routing-notes.md).
+# S9.2: N_EN_RETURN default (item 5) and the dedicated acceptance test pads (1.5 mm, docs/design/routing-notes.md).
 S92_TP = {'TP20': 'P12_VOUT', 'TP22': 'P12_ISP', 'TP23': 'P12_ISN', 'TP24': '+12V', 'TP25': '-12V', 'TP26': 'VIN',
           'TP27': 'GND', 'TP28': 'AGND_U2', 'TP29': 'GND', 'TP30': 'N_EN_RETURN'}
 S92_ADDED = ('R115', *S92_TP)
@@ -359,7 +359,7 @@ def circuit():
     for ref, net in S92_TP.items():
         c.append(part(ref, 'TestPoint', net, 'TP15', TP92_AT[ref], 0, {'1': net},
                       Note=f'S9.2 acceptance test pad {net}: copper only, 1.5 mm round, no assembly component. '
-                           'See docs/s8-single/routing-notes.md'))
+                           'See docs/design/routing-notes.md'))
     _soft_start_and_sequencing(c)
     for ref, rail in (('D2', '+12V'), ('D4', '-12V')):
         by[ref]['fields']['Note'] = f'{rail} polarity clamp at the header strip (rack-side reversal enters here)'
@@ -427,12 +427,15 @@ def circuit():
                   Note='S8.5 STARTED (U12 Q1): low until the first converter enable after RESET, then high until RESET. '
                        'Copper-only diagnostic; no assembly component'))
 
-    # ---- Outputs: J2 + J3 in parallel (Doepfer pinout), header-side ceramics. S9.0: pins 11/12 (+5V) are open.
+    # R1: owner-selected 10-pin outputs. Keep every existing pin 1-10 connection and wire endpoint.
     j2 = by['J2']
-    j2['pins'].update({'11': None, '12': None})
-    j2['fields']['Note'] = ('Hand-soldered shrouded 16-pin box header, pin 1 = -12V (red stripe). One of two '
-                            'parallel outputs (J2/J3, S8). Each cable carries 2 contacts per rail: above ~2 A '
-                            'per rail use both headers. S9.0: +/-12V only, pins 11/12 (+5V) and CV/GATE (13-16) open')
+    j2.update(sym='Conn_02x05_Odd_Even', value='IDC 2x5 box header', fp='IDC10',
+              at=(j2['at'][0], round(j2['at'][1] - 2.54, 2)))
+    j2['pins'] = {p: n for p, n in j2['pins'].items() if int(p) <= 10}
+    j2['fields']['MPN'] = '61201021621'
+    j2['fields']['Note'] = ('Hand-soldered shrouded 10-pin box header, pin 1 = -12V (red stripe). One of two '
+                            'parallel outputs (J2/J3). Pins 1/2 -12V, 3-8 GND, 9/10 +12V; no +5V/CV/GATE. '
+                            'Use both headers for the 2.4 A +12V prototype load; cable/contact heating remains a bench gate')
     j3 = copy.deepcopy(j2)
     j3.update(ref='J3', at=J3_AT)
     c.append(j3)
@@ -442,7 +445,7 @@ def circuit():
         a, b = ('GND', '-12V') if rail == '-12V' else (rail, 'GND')
         new = cap(ref, '22u', 'C1206', (x, CAP_Y), a, b,
                   Note=f'{rail} ceramic at the {hdr} {rail} pins: with its twin at the other header it replaces '
-                       f'the S7 100u can (rail bank 4/5 x 22u at the converter + 2). See docs/s8-single-board.md')
+                       f'the S7 100u can (rail bank 4/5 x 22u at the converter + 2). See docs/design.md')
         if ref in by:
             c[c.index(by[ref])] = new
         else:
@@ -456,7 +459,7 @@ def circuit():
     c.append(two('R92', 'R', '1', 'R1206', (243.84, 49.53), 'VIN', '_VIN_DAMP',
                  LCSC='C17928', MPN='1206W4F100KT5E', Manufacturer=UNIROYAL, Tolerance='1%',
                  Note='VIN damper: 1 ohm in series with C5 + C62 (2 x 10u/50V). Damps cable inductance against '
-                      'the all-ceramic VIN bank (Middlebrook margin, docs/s8-single-board.md)'))
+                      'the all-ceramic VIN bank (Middlebrook margin, docs/design.md)'))
 
     # ---- Overvoltage guard: open-collector comparators wired-AND onto OV_N. S8.1: own precision reference REF_OV,
     # LM2901B, 0.1 % dividers; the -12V channel compares a REF_OV-offset divider with GND (no V3V3 term). S9.0: two
@@ -539,6 +542,7 @@ def drawing():
 
     # J3: same wiring as J2 in circuit45.drawing() (S9.0: pins 11/12 open, no +5V symbols)
     hx, hy = J3_AT
+    hy = round(hy + 2.54, 2)  # 2x5 symbol is shorter; pin 1-10 drawing endpoints remain unchanged
     lx, rx = hx - 5.08 - 5.08, hx + 7.62 + 5.08
     j = 'J3'
     W += [[f'{j}.1', (lx, hy - 7.62)], [f'{j}.2', (rx, hy - 7.62)],

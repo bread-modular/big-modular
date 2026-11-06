@@ -1,0 +1,191 @@
+{
+  "batch": "05-header-local",
+  "operations": [
+    {
+      "op": "track",
+      "net": "+12V",
+      "layer": "F.Cu",
+      "width": 1.5,
+      "points": [
+        "C34.1",
+        [
+          90.9,
+          63.3
+        ],
+        "D2.1"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "+12V",
+      "layer": "F.Cu",
+      "width": 1.5,
+      "points": [
+        "D2.1",
+        [
+          101.105,
+          63.3
+        ],
+        "J2.10"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "+12V",
+      "layer": "F.Cu",
+      "width": 1.5,
+      "points": [
+        "C59.1",
+        [
+          132.25,
+          62.475
+        ],
+        "J3.10"
+      ]
+    },
+    {
+      "op": "track",
+      "net": "-12V",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "C36.2",
+        [
+          113.125,
+          66.2
+        ],
+        [
+          111.75,
+          64.825
+        ],
+        "J2.2"
+      ]
+    },
+    {
+      "op": "via",
+      "net": "GND",
+      "at": [
+        93.2,
+        57.3
+      ]
+    },
+    {
+      "op": "track",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "D2.2",
+        [
+          93.2,
+          57.3
+        ]
+      ]
+    },
+    {
+      "op": "via",
+      "net": "GND",
+      "at": [
+        94.0,
+        57.3
+      ]
+    },
+    {
+      "op": "track",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "D2.2",
+        [
+          94.0,
+          57.3
+        ]
+      ]
+    },
+    {
+      "op": "via",
+      "net": "GND",
+      "at": [
+        94.8,
+        57.3
+      ]
+    },
+    {
+      "op": "track",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "D2.2",
+        [
+          94.8,
+          57.3
+        ]
+      ]
+    },
+    {
+      "op": "via",
+      "net": "GND",
+      "at": [
+        90.9,
+        57.85
+      ]
+    },
+    {
+      "op": "track",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "C34.2",
+        [
+          90.9,
+          57.85
+        ]
+      ]
+    },
+    {
+      "op": "via",
+      "net": "GND",
+      "at": [
+        124.0,
+        58.1
+      ]
+    },
+    {
+      "op": "track",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "C59.2",
+        [
+          124.0,
+          58.1
+        ]
+      ]
+    },
+    {
+      "op": "via",
+      "net": "GND",
+      "at": [
+        117.8,
+        68.45
+      ]
+    },
+    {
+      "op": "track",
+      "net": "GND",
+      "layer": "F.Cu",
+      "width": 0.8,
+      "points": [
+        "C36.1",
+        [
+          117.8,
+          68.45
+        ]
+      ]
+    }
+  ]
+}

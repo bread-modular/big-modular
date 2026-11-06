@@ -1,8 +1,8 @@
-"""Seed the S8 single board (P0, UNROUTED) from the S8 schematic with KiCad's pcbnew 10.
+"""Seed the S8 board (P0, UNROUTED) from the S8 schematic with KiCad's pcbnew 10.
 
   python3 -B tools/build_s8_board.py [--output-root <candidate-module-root>]
 
-Writes hardware/single/usb-power-45w-single.kicad_pcb (+ .kicad_dru): the single-carrier outline from
+Writes hardware/usb-power-45w.kicad_pcb (+ .kicad_dru): the carrier outline from
 tools/mechanics_s8.py (Y14..114.5 x Z2..50, both bracket cutbacks, M3 holes), the panel parts J1,
 SW1 and D8 at their panel-registered positions and the TWO output headers J2 (pin 1 Y76) and J3
 (pin 1 Y107) at the rear edge (pin 1 Z44), with their IDC plug envelopes drawn on User.Drawings.
@@ -28,7 +28,6 @@ import build_s8  # noqa: E402
 import mechanics_s8  # noqa: E402
 from build_layout import CV, V, line, place, rect, shape, text  # noqa: E402
 from mechanics45 import envelopes  # noqa: E402
-from stack_r2 import R1_ARCHIVE  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
 FIXED = ['J1', 'SW1', 'D8', 'J2', 'J3']
@@ -69,11 +68,11 @@ def seed_board(root=MODULE):
     """The P0 seed as an in-memory pcbnew BOARD (also the starting point of tools/place_s8.py)."""
     comps, nets = netlist(build_s8.root_file(root))
     G = GEO
-    board = bl.new_board('Big Modular - usb-power-45w S8 single board', [
+    board = bl.new_board('Big Modular - usb-power-45w S8 board', [
         'S8 final schematic. UNROUTED: no tracks/vias/zones. Not a release.',
-        'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F',
+        'Carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F',
         'J1 SW1 D8 at the panel; J2 + J3 (two IDC outputs) at the rear edge',
-        'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json'], 'S8-P0')
+        'Nets: hardware/usb-power-45w.kicad_sch; geometry: docs/design/mechanical.json'], 'S8-P0')
     board.SetCopperLayerCount(G['carrier_layers'])
     board.GetDesignSettings().SetBoardThickness(pcbnew.FromMM(G['carrier_thickness_mm']))
     pts = bl.carrier_outline(G)
@@ -133,7 +132,7 @@ def seed_board(root=MODULE):
         x1, y1, y2 = pcbnew.ToMM(hp['1'].x), pcbnew.ToMM(hp['1'].y), pcbnew.ToMM(hp['2'].y)
         # pin-1 / red-stripe marking on the rear side of the box (the header strip parts sit in front of it)
         text(board, pcbnew.F_SilkS, '1 / -12V / RED', V(x1 - 0.9, y1 - 4.8), 0.8, justify=pcbnew.GR_TEXT_H_ALIGN_RIGHT)
-        for i, lab in enumerate(['N12', 'GND', 'GND', 'GND', 'P12', 'NC', 'NC', 'NC']):
+        for i, lab in enumerate(['N12', 'GND', 'GND', 'GND', 'P12']):
             text(board, pcbnew.B_SilkS, lab, V(x1 - 2.54 * i, y2 + 2.16), 0.8, mirror=True)
     y0, y1 = G['carrier_Y_mm']
     z = G['depth_target']['limit_from_panel_front_mm']
@@ -160,13 +159,13 @@ def seed_refusal(dest):
 def save(board, dest):
     hw = dest.parent
     bl.save_canonical(board, dest, hw / f'{build_s8.STEM}.kicad_pro', bl.STACKUP_4L)
-    shutil.copyfile(R1_ARCHIVE.with_suffix('.kicad_dru'), dest.with_suffix('.kicad_dru'))
+    shutil.copyfile(MODULE / s92_contract.R1_RULES, dest.with_suffix('.kicad_dru'))
     return dest
 
 
 def build(output_root=None):
     root = Path(output_root).resolve() if output_root else MODULE
-    dest = build_s8.single_dir(root) / f'{build_s8.STEM}.kicad_pcb'
+    dest = build_s8.hw_dir(root) / f'{build_s8.STEM}.kicad_pcb'
     why = seed_refusal(dest)
     if why:
         raise SystemExit(why)

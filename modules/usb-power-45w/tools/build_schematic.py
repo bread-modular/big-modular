@@ -1,24 +1,16 @@
-"""Generate the usb-power-45w S7 system schematic (hardware/usb-power-45w-system.kicad_sch) and its pinned symbols.
+"""Schematic drawing engine and pinned symbols for the usb-power-45w schematic (used by tools/build_s8.py).
 
-The system root is the whole circuit (216 refs); hardware/usb-power-45w.kicad_sch is the routed BASE
-board's own schematic (tools/board_schematics.py) and is never written here.
-
-Run from modules/usb-power-45w:
-  python3 -B tools/build_schematic.py
-
-Writes hardware/USBPOWER45.kicad_sym (stock KiCad 10 symbols, derived symbols flattened, the CH224A,
-HRO TYPE-C-31-M-12 and TL3340AF160QG symbols of modules/usb-power, and the hand-drawn LMR38020F / TPS16630 symbols of
-tools/USBPOWER45-src.kicad_sym), hardware/sym-lib-table and a verified flat intermediate; hierarchy6 splits this into the wired overview and seven pages, then lets
-`kicad-cli sch upgrade --force` re-save it natively.
-
-The circuit table, drawing and sourcing live in tools/circuit45.py (design notes: docs/design.md).
+Symbols: stock KiCad 10 symbols (derived symbols flattened), the CH224A, HRO TYPE-C-31-M-12 and
+TL3340AF160QG symbols of modules/usb-power, and the hand-drawn symbols of tools/USBPOWER45-src.kicad_sym.
+The base circuit table, drawing and sourcing live in tools/circuit45.py; tools/circuit_s8.py derives
+the board circuit from it.
 The drawing engine is modules/32bit's: each block is wired (drawing(): polylines whose points are
 (x, y), 'REF.PIN' or ('REF.PIN', dx, dy)), with power symbols and net labels naming every net.
 Pins not reached by a drawn wire get a short stub closed by a power symbol (rails; neighbouring
 stubs of one rail are joined into a bar with one symbol) or a net label. Wires are split at every
-connection point and junction dots are added; the build asserts nothing dangles and that the
-exported native netlist equals the circuit table. Nets named with a leading '_' are short local
-links drawn without a label (compared by pins only).
+connection point and junction dots are added; check_netlist() asserts that the exported native
+netlist equals the circuit table. Nets named with a leading '_' are short local links drawn without
+a label (compared by pins only).
 """
 import argparse
 import copy
@@ -34,14 +26,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))  # tools/sexp.py, tools
 from sexp import parse, dump, nodes, one, walk, atom
 from circuit45 import (RAIL_SYMBOL, MIRROR_X, TEXT_LEFT, TEXT_POS, TEXTS, MULTI_UNIT,  # noqa: F401
                        circuit, drawing)
-from stack_r2 import SYSTEM_STEM, system_root  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
 HW = MODULE / 'hardware'
 STOCK = Path('/usr/share/kicad/symbols')
 UP_LIB = MODULE.parent / 'usb-power/hardware/BigModular.kicad_sym'
 LOCAL_LIB = MODULE / 'tools/USBPOWER45-src.kicad_sym'   # symbols KiCad 10 stock does not have
-PROJECT = SYSTEM_STEM   # symbol-instance project label = the system project's name (was 'usb-power-45w' until R3)
+PROJECT = 'usb-power-45w'   # symbol-instance project label
 LIB = 'USBPOWER45'
 STUB = 2.54
 MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and one symbol
@@ -75,7 +66,7 @@ SYMBOLS = {
     'CH224A': ('UP', 'CH224A'), 'HRO_TYPE_C_31_M_12': ('UP', 'HRO_TYPE_C_31_M_12'),
     'TL3340AF160QG': ('UP', 'TL3340AF160QG'),
     'Conn_02x08_Odd_Even': ('Connector_Generic', 'Conn_02x08_Odd_Even'),
-    # R2 stacked boards only (tools/board_schematics.py): board-to-board headers, not in the S7 root.
+    # Board-to-board header symbols of the base circuit table; unused here.
     'Conn_02x10_Odd_Even': ('Connector_Generic', 'Conn_02x10_Odd_Even'),
     'Conn_02x03_Odd_Even': ('Connector_Generic', 'Conn_02x03_Odd_Even'),
     'PWR_FLAG': ('power', 'PWR_FLAG'), 'GND': ('power', 'GND'), 'VCC': ('power', 'VCC'),
@@ -95,7 +86,6 @@ FP = {
     'OPTO4': 'SO-4_4.4x3.6mm_P2.54mm', 'DPAK': 'TO-252-2',
     'SLO1040': 'L_SLO1040H6R8MTT', 'IDC16': 'IDC-Header_2x08_P2.54mm_Vertical_Wurth_61201621621',
     'TL3340': 'SW_TL3340AF160QG_HandSolder', 'LED3EDGE': 'LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm_Edge',
-    'HDR2x10': 'PinHeader_2x10_P2.54mm_Vertical', 'HDR2x03': 'PinHeader_2x03_P2.54mm_Vertical',
 }
 BOARD_ONLY_SYMBOLS = {'Conn_02x10_Odd_Even', 'Conn_02x03_Odd_Even'}   # embedded only where used
 
@@ -454,54 +444,6 @@ def text_at(p, sym):
     return out
 
 
-def build(output_root=None):
-    output_root = Path(output_root).resolve() if output_root else MODULE
-    HW = output_root / 'hardware'
-    HW.mkdir(parents=True, exist_ok=True)
-    (output_root / 'docs').mkdir(parents=True, exist_ok=True)
-    lib_syms, sources = {}, {}
-    for key, (lib, name) in SYMBOLS.items():
-        sym, src, parent = stock_symbol(lib, name)
-        edit = None
-        if key in FILTER_EDITS:
-            prop = next(pp for pp in nodes(sym, 'property') if pp[1] == 'ki_fp_filters')
-            edit = f'ki_fp_filters {prop[2]!r} -> {FILTER_EDITS[key]!r}'
-            prop[2] = FILTER_EDITS[key]
-        if lib == 'UP':
-            edit = 'symbol of modules/usb-power (KiCad 10 stock has no CH224A / HRO TYPE-C-31-M-12 / TL3340AF160QG)'
-        if lib == 'LOCAL':
-            edit = ('Nexperia BCX53 E=1 C=2 B=3; adapted stock drawing, exact manufacturer pin map'
-                    if key == 'BCX53_NXP' else 'manufacturer pin-table functional symbol; see S6 design/source provenance')
-        sym[1] = key
-        for u in nodes(sym, 'symbol'):
-            u[1] = key + '_' + '_'.join(u[1].rsplit('_', 2)[-2:])
-        lib_syms[key] = sym
-        sources[key] = {'library': f'{lib}:{name}', 'source': str(src).replace(str(Path.home()), '~', 1),
-                        'source_sha256': hashlib.sha256(src.read_bytes()).hexdigest(),
-                        'flattened_from': parent, 'edits': edit}
-    stock_header = parse((STOCK / 'Device.kicad_sym').read_text())
-    lib = [atom('kicad_symbol_lib'), one(stock_header, 'version'),
-           [atom('generator'), 'kicad_symbol_editor'], [atom('generator_version'), '10.0']]
-    lib += [copy.deepcopy(lib_syms[k]) for k in sorted(lib_syms)]
-    (HW / f'{LIB}.kicad_sym').write_text(dump(lib) + '\n')
-    (HW / 'sym-lib-table').write_text(
-        f'(sym_lib_table (version 7) (lib (name "{LIB}") (type "KiCad") (uri "${{KIPRJMOD}}/{LIB}.kicad_sym") '
-        '(options "") (descr "usb-power-45w pinned symbols; see tools/build_schematic.py")))\n')
-
-    sch, nets, parts = flat_sheet(circuit(), lib_syms)
-    out = system_root(output_root)
-    out.write_text(dump(sch) + '\n')
-    subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
-                   stdout=subprocess.DEVNULL)
-    check_netlist(out, nets, {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None})
-    (output_root / 'docs/schematic-symbols.json').write_text(json.dumps(
-        {'note': f'Pinned symbols in hardware/{LIB}.kicad_sym (generated by tools/build_schematic.py)',
-         'symbols': sources}, indent=2) + '\n')
-    print(out, f'{len(nets)} nets, {len({p["ref"] for p in parts if not p["ref"].startswith("#")})} parts')
-    from hierarchy6 import split
-    split(output_root, sys.modules[__name__])
-
-
 def lib_symbols():
     """{lib symbol key: flattened symbol} as written to hardware/USBPOWER45.kicad_sym."""
     out = {}
@@ -520,7 +462,7 @@ def lib_symbols():
 def flat_sheet(parts, lib_syms, project=PROJECT, key='root', title='Big Modular - usb-power-45w',
                comments=('S7: S6 per-rail protection, fault latch/reset, four LEDs; one output header (J3 removed)',
                          'Design notes and budget: docs/design.md'), source=None, texts=None):
-    """One wired flat sheet of `parts` (the whole circuit, or one stacked board's share of it)."""
+    """One wired flat sheet of `parts` ."""
     root = uid(key)
     q = json.dumps
     com = ' '.join(f'(comment {i} {q(c)})' for i, c in enumerate(comments, 1))
@@ -607,10 +549,3 @@ def flat_sheet(parts, lib_syms, project=PROJECT, key='root', title='Big Modular 
     sch.append([atom('sheet_instances'), [atom('path'), '/', [atom('page'), '1']]])
     sch.append([atom('embedded_fonts'), atom('no')])
     return sch, nets, parts
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output-root', type=Path, help='Explicit candidate module root; default is this module')
-    args = parser.parse_args()
-    build(args.output_root)

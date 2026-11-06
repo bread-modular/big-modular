@@ -1,10 +1,11 @@
-"""Independent placement record of the S8 single board (read-only, pcbnew).
+"""Independent placement record of the S8 board (read-only, pcbnew).
 
-  python3 -B tools/check_s8_board.py [--board hardware/single/usb-power-45w-single.kicad_pcb] [--out <json>]
+  python3 -B tools/check_s8_board.py [--board hardware/usb-power-45w.kicad_pcb] [--out <json>]
 
-DRC does not check these, so this does (root AGENTS.md placement rules + docs/s8-single/mechanical.json):
+DRC does not check these, so this does (root AGENTS.md placement rules + docs/design/mechanical.json):
 
-- every part placed on the board, on F (user: "Use single side"), nothing parked;
+- every part placed on the board, on F (user: "Use single side"), nothing parked; R1 (user, 2026-11-04): copper-only
+  test points may sit on B (listed in test_points_on_B, with their own B courtyard-to-edge and overlap screen);
 - courtyard overlaps between parts;
 - courtyard to Edge.Cuts >= 1.0 mm (cutbacks included); the R1-approved panel overhangs J1/SW1/D8 are
   listed, not hidden;
@@ -50,7 +51,7 @@ LOCAL_LOOPS = [
     ('U9', ('8',), 'VPD', ('C46',), None, 4.5, 'LDO input'),
     ('U9', ('1',), 'V3V3', ('C47',), None, 4.5, 'LDO output'),
     ('U5', ('1', '2', '3', '6'), 'MAIN_IN', ('C2',), None, 4.5, 'main eFuse IN'),
-    ('U1', ('1', '8'), 'VPD_U1', ('C1',), None, 4.5, 'CH224A VHV (R3 BASE block)'),
+    ('U1', ('1', '8'), 'VPD_U1', ('C1',), None, 4.5, 'CH224A VHV'),
     ('U2', ('7',), 'VIN', ('C8',), None, 4.5, '+12V converter HF input cap'),          # S9.0: TPS552892 VIN land
     ('U2', ('11',), 'P12_VOUT', ('C81',), None, 4.5, '+12V converter HF output cap'),  # S9.0: VOUT land (TI 0.1 uF)
     ('U2', ('18',), None, ('C82',), None, 4.5, '+12V converter VCC (LDO) cap'),       # S9.0: net = the VCC pin's own
@@ -129,6 +130,42 @@ def pad_poly(p):
     return sp
 
 
+def xy_mm(v):
+    return mm(v.x), mm(v.y)
+
+
+def is_test_pad(fp):
+    """copper-only acceptance/test pad: TP reference, one SMD pad, no paste, not populated (no BOM/position file)"""
+    pads = list(fp.Pads())
+    return (fp.GetReference().startswith('TP') and len(pads) == 1 and pads[0].GetAttribute() == pcbnew.PAD_ATTRIB_SMD
+            and not pads[0].IsOnLayer(pcbnew.F_Paste) and not pads[0].IsOnLayer(pcbnew.B_Paste))
+
+
+def back_test_points(fps, tp_back, outline, segs):
+    """B-side test points: signed courtyard-to-edge distance (negative when any courtyard area lies off the board) and
+    B courtyard overlaps; only a contract 2.54 mm probe pair (s92_contract.TEST_POINTS 'pair') at 2.54 +- 0.02 mm may
+    touch."""
+    edge = {}
+    for r, cy in tp_back.items():
+        off = pcbnew.SHAPE_POLY_SET(cy)
+        off.BooleanSubtract(outline)
+        d = min(seg_dist(p, *sg) for p in poly_pts(cy) for sg in segs)
+        edge[r] = round(-d if off.Area() / 1e12 > 1e-4 else d, 3)
+    pairs = {frozenset((t['ref'], t['pair'])) for t in s92_contract.TEST_POINTS if t.get('pair')}
+    over = []
+    refs = sorted(tp_back)
+    for i, a in enumerate(refs):
+        for c in refs[i + 1:]:
+            x = pcbnew.SHAPE_POLY_SET(tp_back[a])
+            x.BooleanIntersection(tp_back[c])
+            if x.Area() <= 1e6:
+                continue
+            pitch = math.dist(*(xy_mm(fps[r].GetPosition()) for r in (a, c)))
+            if not (frozenset((a, c)) in pairs and abs(pitch - 2.54) < 0.02):
+                over.append([a, c, round(x.Area() / 1e12, 3)])
+    return edge, over
+
+
 def check(board_path):
     b = pcbnew.LoadBoard(str(board_path))
     outline = pcbnew.SHAPE_POLY_SET()
@@ -136,10 +173,16 @@ def check(board_path):
     segs = poly_segs(outline)
     bb = outline.BBox()
     fps = {fp.GetReference(): fp for fp in b.GetFootprints() if fp.GetReference()}
-    placed, parked, on_back = {}, [], []
+    placed, parked, on_back, tp_back = {}, [], [], {}
     for ref, fp in fps.items():
         if fp.GetLayer() != pcbnew.F_Cu:
-            on_back.append(ref)
+            # R1 (user, 2026-11-04): copper-only test points may sit on B.Cu (silk labels there); every other part on F.
+            # They get the same courtyard-to-edge and same-side overlap screen on B below, not a free pass.
+            if is_test_pad(fp):
+                tp_back[ref] = fp.GetCourtyard(pcbnew.B_CrtYd)
+            else:
+                on_back.append(ref)
+            continue
         cy = fp.GetCourtyard(pcbnew.F_CrtYd)
         if cy.OutlineCount() == 0:
             continue
@@ -163,6 +206,9 @@ def check(board_path):
             if x.Area() > 1e6:      # > 0.001 mm2
                 overlaps.append([a, c, round(x.Area() / 1e12, 3)])
     edge_bad = sorted(r for r, v in placed.items() if v['courtyard_to_edge_mm'] < 1.0 and not v['approved_overhang'])
+    back_edge, back_overlaps = back_test_points(fps, tp_back, outline, segs)
+    overlaps += back_overlaps
+    edge_bad += sorted(r for r, d in back_edge.items() if d < 1.0)
     closest_edge = sorted(((v['courtyard_to_edge_mm'], r) for r, v in placed.items() if not v['approved_overhang']))[:6]
     # Bracket M3: F-side nut + driver circle, B-side web footprint
     br = GEO['brackets']
@@ -252,7 +298,8 @@ def check(board_path):
                             'AGND_U2_pads': agnd, 'parts_on_both_nets': bridges},
            'routing_contract_screen': contract,
            'pre_routing_checklist': pre, 'post_routing_screen': post,
-           'parts_on_board': len(placed), 'parked_parts': sorted(parked), 'parts_on_B': sorted(on_back),
+           'parts_on_board': len(placed) + len(tp_back), 'parked_parts': sorted(parked), 'parts_on_B': sorted(on_back),
+           'test_points_on_B': {r: {'courtyard_to_edge_mm': d} for r, d in sorted(back_edge.items())},
            'tracks': len(list(b.GetTracks())), 'zones': len(copper_zones(b)),
            'routed_items': len(routed_items(b, fps)),
            'rule_areas': len([z for z in b.Zones() if z.GetIsRuleArea()]),
@@ -572,8 +619,11 @@ def test_pad_rows(fps):
             continue
         pads = list(fp.Pads())
         p = pads[0]
-        if not (len(pads) == 1 and p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD and p.IsOnLayer(pcbnew.F_Cu)
-                and p.IsOnLayer(pcbnew.F_Mask) and not p.IsOnLayer(pcbnew.F_Paste)):
+        # bare exposed copper on the pad's own side (R1, 2026-11-04: test points may sit on B.Cu by user direction)
+        cu, mask, paste = ((pcbnew.B_Cu, pcbnew.B_Mask, pcbnew.B_Paste) if fp.IsFlipped()
+                           else (pcbnew.F_Cu, pcbnew.F_Mask, pcbnew.F_Paste))
+        if not (len(pads) == 1 and p.GetAttribute() == pcbnew.PAD_ATTRIB_SMD and p.IsOnLayer(cu)
+                and p.IsOnLayer(mask) and not p.IsOnLayer(paste)):
             bad.append(r)
     return {'pads': sum(1 for r in fps if r.startswith('TP')), 'not_bare_exposed_copper': bad, 'ok': not bad}
 
@@ -679,10 +729,15 @@ class Copper:
         return out
 
     def chains(self, net):
-        """Connected track chains of a net: [{'tracks': [...], 'pads': {ref.num}}] (vias join chains on any layer)."""
+        """Connected track chains of a net: [{'tracks': [...], 'pads': {ref.num}}]. Tracks join on the same layer where
+        an end point lies on the other track's copper (shared ends and T-junctions, as native connectivity sees them),
+        through a via an end point hits or a track runs over, and through a pad that end points of both tracks land on (an SMD pad on its own
+        layer, a THT pad on any layer). Zone fills do not join chains."""
         items = [t for t in self.tracks if t.GetNetname() == net]
         vias = [v for v in self.vias if v.GetNetname() == net]
-        parent = list(range(len(items) + len(vias)))
+        pads = [(f'{r}.{p.GetNumber()}', p) for r, fp in self.fps.items() for p in fp.Pads()
+                if p.GetNetname() == net and p.GetNumber()]
+        parent = list(range(len(items) + len(vias) + len(pads)))
         def find(i):
             while parent[i] != i:
                 parent[i] = parent[parent[i]]
@@ -690,24 +745,29 @@ class Copper:
             return i
         def join(i, j):
             parent[find(i)] = find(j)
-        ends = [(t.GetStart(), t.GetEnd(), t.GetLayer()) for t in items]
-        for i, (a, c, la) in enumerate(ends):
-            for j in range(i + 1, len(ends)):
-                a2, c2, lb = ends[j]
-                if la == lb and {(p.x, p.y) for p in (a, c)} & {(p.x, p.y) for p in (a2, c2)}:
+        boxes = [t.GetBoundingBox() for t in items]
+        for i, t in enumerate(items):
+            for j in range(i + 1, len(items)):
+                u = items[j]
+                if t.GetLayer() != u.GetLayer() or not boxes[i].Intersects(boxes[j]):
+                    continue
+                if any(u.HitTest(p, 0) for p in (t.GetStart(), t.GetEnd())) or \
+                        any(t.HitTest(p, 0) for p in (u.GetStart(), u.GetEnd())):
                     join(i, j)
             for k, v in enumerate(vias):
-                if any(v.HitTest(p) for p in (a, c)):
+                if any(v.HitTest(p) for p in (t.GetStart(), t.GetEnd())) or t.HitTest(v.GetPosition(), 0):
                     join(i, len(items) + k)
-        pads = [(f'{r}.{p.GetNumber()}', p) for r, fp in self.fps.items() for p in fp.Pads()
-                if p.GetNetname() == net and p.GetNumber()]
+            for k, (_, p) in enumerate(pads):
+                if p.IsOnLayer(t.GetLayer()) and (p.HitTest(t.GetStart()) or p.HitTest(t.GetEnd())):
+                    join(i, len(items) + len(vias) + k)
         groups = {}
         for i, t in enumerate(items):
             g = groups.setdefault(find(i), {'tracks': [], 'pads': set()})
             g['tracks'].append(t)
-            for rp, p in pads:
-                if p.IsOnLayer(t.GetLayer()) and (p.HitTest(t.GetStart()) or p.HitTest(t.GetEnd())):
-                    g['pads'].add(rp)
+        for k, (rp, _) in enumerate(pads):
+            g = groups.get(find(len(items) + len(vias) + k))
+            if g is not None:
+                g['pads'].add(rp)
         return list(groups.values())
 
 
@@ -853,7 +913,8 @@ def kelvin_routing(cu):
     for net, rpad, upad in ((P12 + 'P12_ISP', ('R109', '2'), ('U2', '12')), (P12 + 'P12_ISN', ('R109', '3'), ('U2', '13'))):
         pad = cu.pad(*rpad)
         bb = pad.GetBoundingBox()
-        inner = bb.GetRight() if rpad[1] == '2' else bb.GetLeft()
+        cx = cu.fps[rpad[0]].GetPosition().x          # inner end = the land edge nearer the element centre
+        inner = bb.GetRight() if abs(bb.GetRight() - cx) < abs(bb.GetLeft() - cx) else bb.GetLeft()
         bad = []
         segs = [t for t in cu.tracks if t.GetNetname() == net and t.GetLayer() == pcbnew.F_Cu]
         for t in segs:
@@ -939,12 +1000,16 @@ def min_widths(cu, skip=()):
                 if not neck:
                     bad.append({'net': net, 'width_mm': round(w, 3), 'required_mm': req,
                                 'at': [round(mm(t.GetStart().x), 2), round(mm(t.GetStart().y), 2)]})
-    return {'violations': bad[:20], 'count': len(bad), 'ok': not bad}
+    by_net = {}
+    for v in bad:
+        k = f"{v['net'].split('/')[-1]} {v['width_mm']}<{v['required_mm']}"
+        by_net[k] = by_net.get(k, 0) + 1
+    return {'violations': bad[:20], 'count': len(bad), 'by_net_width': dict(sorted(by_net.items())), 'ok': not bad}
 
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument('--board', type=Path, default=MODULE / 'hardware/single/usb-power-45w-single.kicad_pcb')
+    ap.add_argument('--board', type=Path, default=MODULE / 'hardware/usb-power-45w.kicad_pcb')
     ap.add_argument('--out', type=Path)
     a = ap.parse_args()
     res = check(a.board.resolve())

@@ -22,6 +22,7 @@ the routing contract (tools/s92_contract.py); every other part keeps its P2.1 po
 Use sync_candidate(source_board, output_root) for a separate native-preserving synchronization;
 --write is the older seed-based placement entry point, not a native edit-preservation tool. --refresh-contract rewrites
 only the routing-contract keys of placement.json from tools/s92_contract.py (S9.2 routing-notes wording; board untouched).
+--refresh-r1-record (R1, routed board) re-records placement.json parts and contract keys from the native board.
 S9.2 routing readiness (DeepSeek audit): --apply-rules writes the DRC-enforceable half of the contract from
 tools/s92_contract.py and nothing else: the net classes into the .kicad_pro, the generated rules into the .kicad_dru (R1
 J1/SW1 edge allowances first) and the RA_* rule areas onto the board (deterministic UUIDs; earlier RA_* areas replaced;
@@ -46,7 +47,7 @@ rear edge, everything else parked) and moves every other part to the native posi
 frame: x = Y + 35.75, y = 104.275 - Z (panel/front edge at the bottom of the KiCad view, rear edge
 with J2/J3 at the top, module top Y14 on the left). Positions are footprint origins (x, y, rotation).
 
-Floor plan (one functional group per region, see docs/s8-single-board.md):
+Floor plan (one functional group per region, see docs/design.md):
   rear-left    monitors + overvoltage guard (U18, U20, references, dividers) and the bad-status filter
   front-left   USB-C PD input, fuse, TVS, D10, U5 main eFuse, VIN damper, always-on LDO, MAIN LED driver
   rear strip   header caps / clamps right at the J2 and J3 rail pins
@@ -54,7 +55,7 @@ Floor plan (one functional group per region, see docs/s8-single-board.md):
   front-right  latch / reset / timer logic around SW1, +5V series disconnect and split capacitor bank
 
 --write refuses a board with copper/zones and a board whose placement was edited outside this table
-(it must equal the seed or the last placement this tool wrote, docs/s8-single/placement.json).
+(it must equal the seed or the last placement this tool wrote, docs/design/placement.json).
 """
 import argparse
 import json
@@ -69,8 +70,8 @@ import build_s8  # noqa: E402
 import build_s8_board as seed  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
-BOARD = build_s8.single_dir() / f'{build_s8.STEM}.kicad_pcb'
-RECORD = MODULE / 'docs/s8-single/placement.json'
+BOARD = build_s8.hw_dir() / f'{build_s8.STEM}.kicad_pcb'
+RECORD = MODULE / 'docs/design/placement.json'
 
 
 GROUPS = [
@@ -92,10 +93,10 @@ GROUPS = [
       # R109 sense pads, force pair TP24/TP20; AGND/PGND star pair TP28/TP29 above L1 next to R113; -12V TP25 at U4
       'TP24': (119.45, 69.85, 0), 'TP20': (121.99, 69.85, 0), 'TP23': (119.45, 72.39, 0), 'TP22': (121.99, 72.39, 0),
       'TP28': (99.0, 68.4, 0), 'TP29': (96.46, 68.4, 0), 'TP25': (124.9, 74.5, 0)}),
-    ('Header strip (J2/J3 rail pins)',
-     'Header ceramics and the +12V polarity clamp in one row 3.9 mm in front of the J2/J3 pins they serve '
-     '(where a backfeed or transient from the rack enters). S9.0: the +5V parts of the strip are gone',
-     {'C34': (102.7, 68.45, 0), 'D2': (108.65, 68.45, 0), 'C36': (114.6, 68.45, 180), 'C59': (133.6, 68.45, 0)}),
+    ('10-pin output area (R1)',
+     'C34/D2 occupy the pins-11..16 space freed beside J2; C59 occupies the freed J3 space. '
+     'C36 stays at J2. All header pin-1 positions and test pads remain fixed.',
+     {'C34': (90.9, 60.8, 90), 'D2': (94.0, 61.3, 90), 'C36': (114.6, 68.45, 180), 'C59': (124.0, 61.0, 90)}),
     ('-12V converter (U4/L3)',
      'Compact inverting cell in front of J3: C27/C25/C26 (VIN to the IC ground -12V) at pins 3/1, BOOT C28 '
      'between U4 and L3, SW pin 2.5 mm from L3, output row (C29-C32 + C61) behind L3 at the J3 -12V pins, '
@@ -109,8 +110,8 @@ GROUPS = [
       'D4': (130.0, 74.4, 0), 'C33': (122.3, 91.5, 90),
       'C29': (137.2, 70.0, 270), 'C30': (139.6, 70.0, 270), 'C61': (142.0, 70.0, 90), 'C31': (144.4, 70.0, 270),
       'C32': (146.8, 70.0, 270)}),
-    ('USB-C PD input, fuse, TVS, D10, U5 main eFuse (BASE R3 block)',
-     'Routed R3 BASE input group kept at the same native coordinates: F1 right behind J1, D10/D1 behind it, '
+    ('USB-C PD input, fuse, TVS, D10, U5 main eFuse',
+     'Input group by J1: F1 right behind J1, D10/D1 behind it, '
      'CH224A with Q2/Q3/D9/D11 beside it, U5 and its UV/OV/ILIM/IMON/dVdT parts on the left',
      {'F1': (69.25, 92.7, 0), 'D10': (69.25, 88.05, 0), 'D1': (78.0, 85.55, 0), 'Q2': (76.2, 80.65, 0),
       'Q3': (80.35, 81.2, 90), 'U1': (84.95, 83.35, 270), 'D11': (76.85, 76.25, 0), 'D9': (84.05, 74.55, 0),
@@ -120,7 +121,7 @@ GROUPS = [
       'C2': (55.2, 80.3, 90), 'R5': (55.65, 77.15, 270), 'R29': (54.05, 77.15, 90), 'R26': (60.05, 75.5, 180),
       'R4': (67.0, 76.65, 180), 'R28': (78.6, 73.2, 180), 'R114': (63.0, 90.3, 90), 'R1': (88.55, 85.85, 90),
       'TP1': (81.55, 78.1, 90), 'TP2': (85.35, 78.45, 0), 'TP8': (68.2, 74.1, 90)}),
-    ('MAIN LED driver (BASE R3)', 'Q6/R22 behind D8, Q10 (RUN-gated return) as on BASE',
+    ('MAIN LED driver', 'Q6/R22 behind D8, Q10 (RUN-gated return)',
      {'Q6': (77.48, 93.32, 270), 'R22': (80.02, 93.4, 270), 'Q10': (67.75, 81.25, 0)}),
     ('Always-on LDO U9', 'VPD in from the rear (D1/U1 side), V3V3 out toward the front strip; C46 VPD, C47/C48 V3V3',
      {'U9': (85.0, 92.2, 90), 'C46': (85.0, 88.1, 0), 'C47': (85.1, 97.3, 0)}),
@@ -165,22 +166,22 @@ GROUPS = [
       'C49': (131.35, 91.5, 90), 'C50': (133.95, 88.65, 0), 'R63': (95.5, 89.85, 0), 'R64': (92.0, 99.6, 0),
       'TP9': (94.6, 99.8, 0), 'TP10': (96.9, 99.8, 0), 'TP5': (99.1, 99.8, 0), 'TP11': (65.0, 71.4, 0),
       'TP16': (67.3, 71.4, 0), 'TP19': (89.35, 100.0, 0)}),
-    ('S9.3 soft starts and U4 sequencing (interim pockets)',
-     'Only free pockets of the P2.2 floor plan are used, no P2.2 part moves: D27 (+12V FB injection) with C84/R116 in the '
-     'strip between the U2 VIN bank and U10/C52, Q16 (U4 enable sequencing) beside it with R118/C86 at its gate; D28 '
+    ('S9.3 soft starts and U4 sequencing (R1: U2 injection moved beside its divider)',
+     'R1: D27/C84/R116 occupy the strip released by C34/D2; D27.2 is 3.99 mm from R9.1 (was 15.34 mm; 3.73 mm before the R1 routing nudge). '
+     'Q16 (U4 enable sequencing) and R118/C86 stay in their S9.3 pocket; D28 '
      '(-12V FB injection) between U12 and C33 next to the -12V pad of C33, C85 below it, R117 beside C33; R119 '
-     '(N_EN_MID default) under U11 at Q15. Interim: FB_P12 / FB_N reach D27 / D28 over 13-15 mm',
-     {'D27': (108.65, 87.1, 0), 'C84': (106.9, 89.7, 0), 'R116': (103.8, 89.7, 0),
+     '(N_EN_MID default) under U11 at Q15. U4 soft-start pocket and U2 sense escape still need a routing pass.',
+     # R1 routing (2026-11-04): D27 -0.55 mm, C84/R116 -0.6 mm west in the same strip (native board positions)
+     {'D27': (108.05, 68.4, 0), 'C84': (104.4, 67.5, 0), 'R116': (101.3, 67.5, 0),
       'Q16': (112.75, 87.1, 0), 'R118': (113.15, 89.7, 0), 'C86': (115.95, 87.95, 90),
       'D28': (119.3, 91.6, 90), 'C85': (119.25, 95.1, 0), 'R117': (124.7, 90.6, 90), 'R119': (125.1, 93.85, 0)}),
 ]
 
 
-BOARD_REV = 'S9.3-P2.3'
-BOARD_NOTE = ('S9.3 placement: P2.2 (no via-in-pad: beside-pad thermal fields; Kelvin R109, PGND star at C82.2, '
-              'acceptance pads) + the S9.3 soft-start/sequencing parts in free pockets. P2.3, unrouted apart from the '
-              'thermal fields.')
-BOARD_NOTE5 = 'S9.2 / P2.2: AGND_U2 joins PGND ONLY via R113 at C82.2 (PGND). Contract: docs/s8-single/routing-notes.md.'
+BOARD_REV = 'S9.3-10P-R1'
+BOARD_NOTE = ('R1: 10-pin outputs and reclaimed-space placement; native board owns partial manual routing. '
+              'No release; converter routing and the full copper/thermal gate remain open.')
+BOARD_NOTE5 = 'S9.2 / P2.2: AGND_U2 joins PGND ONLY via R113 at C82.2 (PGND). Contract: docs/design/routing-notes.md.'
 import s92_contract  # noqa: E402
 import s92_parts  # noqa: E402
 GROUND_CONNECTION = {**s92_contract.GROUND, 'at': 'C82.2', 'link_pad_1': 'AGND_U2', 'link_pad_2': 'GND',
@@ -205,9 +206,9 @@ def board(root=MODULE):
     tb = b.GetTitleBlock()
     tb.SetRevision(BOARD_REV)
     for i, t in enumerate([BOARD_NOTE + ' Not a release.',
-                           'Single carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
-                           'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/s8-single/board-p1.json',
-                           'Nets: hardware/single/usb-power-45w-single.kicad_sch; geometry: docs/s8-single/mechanical.json']):
+                           'Carrier Y14..114.5 x Z2..50 (50 mm deep), every part on F (single-sided)',
+                           'Placement: tools/place_s8.py groups; checks: tools/check_s8_board.py, docs/design/board-p1.json',
+                           'Nets: hardware/usb-power-45w.kicad_sch; geometry: docs/design/mechanical.json']):
         tb.SetComment(i, t)
     for d in list(b.GetDrawings()):
         if d.GetClass() == 'PCB_TEXT' and d.GetText().startswith('PARKED OFF-BOARD'):
@@ -238,7 +239,6 @@ def copper_zones(b):
 
 def r1_rules_text():
     """The R1 rules file the seed copies (two user-authorised J1/SW1 copper-edge allowances)."""
-    assert seed.R1_ARCHIVE.with_suffix('.kicad_dru') == MODULE / s92_contract.R1_RULES
     return (MODULE / s92_contract.R1_RULES).read_text()
 
 
@@ -446,7 +446,7 @@ def sync_candidate(source_board, output_root):
     import copy
     from sexp import parse, dump, nodes, one, atom, walk
     src, root = Path(source_board).resolve(), Path(output_root).resolve()
-    dest = root / 'hardware/single' / BOARD.name
+    dest = root / 'hardware' / BOARD.name
     assert dest.resolve() != src, 'candidate must not overwrite source'
     old = pcbnew.LoadBoard(str(src))
     assert not routed_copper(old), 'refuse a routed board (rule areas and the generated thermal fields are allowed)'
@@ -557,12 +557,12 @@ def sync_candidate(source_board, output_root):
            'replaced_footprints': replaced,
            'moved_retained_refs': sorted(r for r in set(before) & set(after) if before[r] != after[r] and r not in replaced),
            'added_refs': sorted(set(after) - set(before)), 'removed_refs': sorted(set(before) - set(after))}
-    (root / 'docs/s8-single/placement.json').write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
+    (root / 'docs/design/placement.json').write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
     return dest
 
 
 def refresh_contract():
-    """Rewrite only the contract keys of docs/s8-single/placement.json from tools/s92_contract.py (the routing-notes
+    """Rewrite only the contract keys of docs/design/placement.json from tools/s92_contract.py (the routing-notes
     wording). The board is not touched: it must be unrouted and equal the recorded placement, and every other record key
     (parts, synchronization deltas) is kept as the last sync_candidate wrote it."""
     b = pcbnew.LoadBoard(str(BOARD))
@@ -575,13 +575,37 @@ def refresh_contract():
     return RECORD
 
 
+def refresh_r1_record():
+    """R1 (manual routing, native board owns placement): re-record docs/design/placement.json from the native board.
+    parts = the native snapshot (TP side in the layer column), the contract keys from tools/s92_contract.py, and
+    r1_moved_refs = every ref whose position/rotation/side differs from the R1-start record (kept as r1_start_parts).
+    The S9.3 synchronization keys (added/removed/replaced/moved_retained_refs) are kept as history. Board untouched."""
+    b = pcbnew.LoadBoard(str(BOARD))
+    rec = json.loads(RECORD.read_text())
+    base = rec.get('r1_start_parts', rec['parts'])
+    now = snapshot(b)
+    assert set(now) == set(base), ('ref set changed', sorted(set(now) ^ set(base)))
+    rec['r1_start_parts'] = base
+    rec['parts'] = now
+    rec['r1_moved_refs'] = sorted(r for r in now if now[r] != base[r])
+    rec['ground_connection'] = GROUND_CONNECTION
+    rec['routing_contract'] = s92_contract.contract()
+    rec['note'] = ('Native PCB owns manual placement/routing (R1). parts = the native board as routed; r1_start_parts = '
+                   'the R1-start record it replaces; r1_moved_refs lists every R1 move (docs/routing/README.md, '
+                   'continuation-238.md). Do not replay seed placement.')
+    RECORD.write_text(json.dumps(rec, indent=1, sort_keys=True) + '\n')
+    return RECORD, len(rec['r1_moved_refs'])
+
+
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--write', action='store_true')
     ap.add_argument('--force', action='store_true')
     ap.add_argument('--png', type=Path)
     ap.add_argument('--refresh-contract', action='store_true',
-                    help='rewrite only the routing contract keys of docs/s8-single/placement.json (no board change)')
+                    help='rewrite only the routing contract keys of docs/design/placement.json (no board change)')
+    ap.add_argument('--refresh-r1-record', action='store_true',
+                    help='R1: re-record docs/design/placement.json parts + contract keys from the native routed board')
     ap.add_argument('--apply-rules', action='store_true',
                     help='write the S9.2 net classes, .kicad_dru rules and RA_* rule areas from tools/s92_contract.py')
     ap.add_argument('--apply-thermal-vias', action='store_true',
@@ -596,6 +620,8 @@ if __name__ == '__main__':
         print(apply_thermal_vias())
     if a.refresh_contract:
         print(refresh_contract())
+    if a.refresh_r1_record:
+        print(*refresh_r1_record())
     if a.png:
         import render_s8
         with tempfile.TemporaryDirectory() as tmp:
