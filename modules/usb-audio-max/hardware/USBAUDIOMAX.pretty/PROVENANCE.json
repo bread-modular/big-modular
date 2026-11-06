@@ -1,0 +1,197 @@
+{
+  "footprints": {
+    "SOIC-14_3.9x8.7mm_P1.27mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod",
+      "source_sha256": "a885b619b22880c9559522d2bf865b059d80453b95a98defc9e6ceef284da1fc",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "07170138a330ef0cc1190f50e3aad387ac2b2ac06cd4d96f0916027112411414"
+    },
+    "SOIC-8_3.9x4.9mm_P1.27mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "source_sha256": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "83b3aab2b9430a49aae58f480ef6f97f23ce43aae32b5b0f17e9bbe6d2f1a923"
+    },
+    "Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm_ThermalVias": {
+      "source": "/usr/share/kicad/footprints/Package_QFP.pretty/Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm_ThermalVias.kicad_mod",
+      "source_sha256": "dc4b3fa39227b177bad99f4ac05fe23628cdddb5060696bd16ca9cc7bacb1d06",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "3D model ${KICAD10_3DMODEL_DIR}/Package_QFP.3dshapes/Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm.step is not shipped by KiCad 10; visual proxy ${KICAD10_3DMODEL_DIR}/Package_QFP.3dshapes/HTQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm.step; fabrication property \"heatsink\" on the 36 plated thermal-via pads (metadata)",
+      "output_sha256": "6fdbe198bf3ea65d96367b4be1f102120eb558342408433fe67e7e858be50613"
+    },
+    "LQFP-64_10x10mm_P0.5mm": {
+      "source": "/usr/share/kicad/footprints/Package_QFP.pretty/LQFP-64_10x10mm_P0.5mm.kicad_mod",
+      "source_sha256": "f5a3abeefd7fdfa39fb685c0d80538f6fed111d00da42bf82decb0b6d2293101",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "ab1cc2dde300a18577ceb31f384411d3883295162fc41982b9afc648bbcca12a"
+    },
+    "SOT-223": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-223.kicad_mod",
+      "source_sha256": "49f22605ecc1fc70661654e09eb86ebe3545a2a8a8c98dd6039bf2bc4b9f4839",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "69a860ee0bae6798481a8da42a30d87bf16eee27dd831bbc01e052f82cb84172"
+    },
+    "SOT-23": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-23.kicad_mod",
+      "source_sha256": "0d88c86c1b6d8c1aae4aa8c09386264c089d4451a128b6ccd63ed253f4300b15",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "8b59ab780120324dee0d8359d9728775e7b57358bfd089154cc691faca039843"
+    },
+    "SOT-23-6": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-23-6.kicad_mod",
+      "source_sha256": "f341c73aac9dcb553456f68bf3fee3d26eb14acf6d8a1cae82b50418fe1d71ca",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "0d966c20d36695f1ebac332a91d21626d4bb82e423d1f96a1e9e6d1decc17425"
+    },
+    "SOT-363_SC-70-6": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-363_SC-70-6.kicad_mod",
+      "source_sha256": "0659d885e00b786968c3ba29152b808777240a91c1fb49ab8d814eb03530115c",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "ab44d55c72619820a7c5e673d608d1ab25f2c02c123ec7c29f31aa07cefa0522"
+    },
+    "D_SOD-123": {
+      "source": "/usr/share/kicad/footprints/Diode_SMD.pretty/D_SOD-123.kicad_mod",
+      "source_sha256": "fd16785935b01254e1076f490e12f0f096da73cf087adefce51225585c62557a",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "b0449355e4fd295eee6b870b5d14a0fe220cac1a28fd80cca1d079a062ce9475"
+    },
+    "Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm": {
+      "source": "/usr/share/kicad/footprints/Oscillator.pretty/Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm.kicad_mod",
+      "source_sha256": "a7da23f9e2a289bc195be220f531fd340d95c851b6015507e4ca973816290e10",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "3D model ${KICAD10_3DMODEL_DIR}/Oscillator.3dshapes/Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm.step is not shipped by KiCad 10; visual proxy ${KICAD10_3DMODEL_DIR}/Crystal.3dshapes/Crystal_SMD_3225-4Pin_3.2x2.5mm.step",
+      "output_sha256": "b70f8953c8f93bbf4ee8a9305c3db2f9dcfdd83d0012ed5a1a6ca85a4f827b52"
+    },
+    "Crystal_SMD_5032-2Pin_5.0x3.2mm": {
+      "source": "/usr/share/kicad/footprints/Crystal.pretty/Crystal_SMD_5032-2Pin_5.0x3.2mm.kicad_mod",
+      "source_sha256": "1a2bd6c5c541d392bc0ba9434c2154ce7868f65006ab5fb37a6b61e8881040e9",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "1697938875e6b8a6608df14047f0ee8fdb1d7618a8900302dd5bad1c5535571c"
+    },
+    "R_0402_1005Metric": {
+      "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_0402_1005Metric.kicad_mod",
+      "source_sha256": "e05c7605248c220836f642ed1f526133edf0374acdfd5bb2631e58b4e377acfb",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "4e6f18caf6dc2bf267cd2a04201f749ae211f5fe6b5417a682fbcf1e3cc2628f"
+    },
+    "R_0603_1608Metric": {
+      "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_0603_1608Metric.kicad_mod",
+      "source_sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "a214106ee97946231e3f8ea1006a59dea76fb14507cccfde7071931bbc0e79c3"
+    },
+    "R_1206_3216Metric": {
+      "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_1206_3216Metric.kicad_mod",
+      "source_sha256": "c7320668dc81bbb954cb4f15e4e7a766c120059343d43551468c8f7ccc8fde37",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "eb30a988d29e18a5834db00667983dde6424a8a967bbe69536808f8a0e89d4c7"
+    },
+    "R_2512_6332Metric": {
+      "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_2512_6332Metric.kicad_mod",
+      "source_sha256": "abab4bf8eeb3ed03061d8eeb56b542cdac074ce8a0ace0f9b06e933c0b48f297",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "afe746c727291057e7c1ec2963c5d871246204f42fba97d8b81bab00c765e874"
+    },
+    "C_0402_1005Metric": {
+      "source": "/usr/share/kicad/footprints/Capacitor_SMD.pretty/C_0402_1005Metric.kicad_mod",
+      "source_sha256": "0403382fc4583ed510b461b1fa4a36dfaec6f4c0d9b1a67e6b0027837a54e1b5",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "d15b1343de3b5de1a4a1c9a41ee30a24a10ec7d925be4e302d52b76e5f1dbf42"
+    },
+    "C_0603_1608Metric": {
+      "source": "/usr/share/kicad/footprints/Capacitor_SMD.pretty/C_0603_1608Metric.kicad_mod",
+      "source_sha256": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "e0d14c2db42a7e3ad31cc9a0c408776f15553c2a4100cd05bba20f15c8f267ed"
+    },
+    "C_0805_2012Metric": {
+      "source": "/usr/share/kicad/footprints/Capacitor_SMD.pretty/C_0805_2012Metric.kicad_mod",
+      "source_sha256": "62775a51fe74ba7f1b572de327bdbd3fc92582721b2abcaa47787865590d89cb",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "136d07a06507adcf1de22f587a8bee35728d1606b15470e48c38315bbbfefb47"
+    },
+    "C_1206_3216Metric": {
+      "source": "/usr/share/kicad/footprints/Capacitor_SMD.pretty/C_1206_3216Metric.kicad_mod",
+      "source_sha256": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "9bd5f0d11b6dab9c56e164ea1b0f95b39090f26358829fc3a6dedd34c4c92d69"
+    },
+    "L_Sunlord_MWSA0402S": {
+      "source": "/usr/share/kicad/footprints/Inductor_SMD.pretty/L_Sunlord_MWSA0402S.kicad_mod",
+      "source_sha256": "dc5b4de1db3b2148c23b8a01d7899d99646a4e8d949b2ba0cd28cb607edcaf08",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "bfffaf0fae56d7393c60cdd82f7d2998ac2aa7a12c4b8d59ae1214a4d581107e"
+    },
+    "PinHeader_2x05_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_2x05_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "e92fcd01a2df9c567dbd6e2c8c05c4e021cb1b96ca035b85d568d1710f9d48b1",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "4879c560d6fb15803c8cab7bef049f50cdfbcc14a99ad6efe4790ae0af970c41"
+    },
+    "PinHeader_1x10_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x10_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "d4cb0ccd4489d257fb4c8656c7534f4295ee8a304d6e323a7b8ff77d6155ad23",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "ee1dd1c7b56dbaa6a1f32510323ccd654d87903d332f4409ab463da321f380c1"
+    },
+    "PinHeader_1x04_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x04_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "571d2d16b49795f8f9a91f96cc83fd2adf49890cd66c377189c44204ebd03c29",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "4c03fb07c4bb3d521db292bcb4fb4ae95c173f158fd109f92416cda5ebc1830b"
+    },
+    "K2-1808SN-A4SW-01": {
+      "source": "~/data/projects/bread-modular/modules/16bit/footprints/BreadModular_MISC.pretty/K2-1808SN-A4SW-01.kicad_mod",
+      "source_sha256": "6517628558ea62fd0d8fc2e413ff1badc13d4fc7aa4cbd408e493cdb19be3295",
+      "license": "MIT (c) 2024 Arunoda Susiripala (Bread Modular LICENSE)",
+      "edits": "copper unedited; added F.CrtYd X +/-2.95, Y +/-1.9 (upstream has none); removed the 4 F.SilkS body lines that overlap its pads",
+      "output_sha256": "64c0cad8083b1eeca9d5b7c7d349eef48d29324b078033d6c90d8184a307153e"
+    },
+    "Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical": {
+      "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.pretty/Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical.kicad_mod",
+      "source_sha256": "bdc2ff9278a4d5d0bb204cae32275020bea42d878dfa5c2f0055653642d0bbcd",
+      "license": "MIT (c) 2021 Barwise",
+      "edits": "removed two decorative F.SilkS arcs crossing the TN/R pad; F.CrtYd -> X +/-4.75, Y -6.25..7.8 (model envelope +0.25); 3D model -> ${KIPRJMOD}/USBAUDIOMAX.3dshapes/PJ301M-12.step",
+      "output_sha256": "df937bcbb737960cddec6749ae36a24c4da491282e8605ee74d2325febe081bc"
+    },
+    "USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical": {
+      "source": "drawn by tools/import_footprints.py from the HRO TYPE-C-31-D-15 drawing (recommended PCB layout)",
+      "source_sha256": null,
+      "license": "module-local",
+      "edits": "plated slot width 0.45 -> 0.50 (JLCPCB minimum); peg holes merged with the adjacent leg slots (0.95 x 2.24 plated)",
+      "output_sha256": "9a62cc2b0150ffdab60e546f0bc9829ba4083f537e9e04bf1e5bb188cc428548"
+    }
+  },
+  "models": {
+    "PJ301M-12.step": {
+      "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.3dshapes/PJ301M-12.step",
+      "sha256": "3ae3e409ef498c9f111f1d10e737c7df1e36df8bfff62e1f66482a8388211620",
+      "license": "MIT (c) 2021 Barwise"
+    },
+    "USB_C_HRO_TYPE-C-31-D-15_proxy.step": {
+      "source": "modules/usb-audio/hardware/USBAUDIO.3dshapes (its tools/make_usbc_model.py envelope proxy)",
+      "sha256": "c6519deb4e82c7f0c0ccb6475e6db4c50519c958fca32c5d62949e44b6def26a"
+    }
+  }
+}
