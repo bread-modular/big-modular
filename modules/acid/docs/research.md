@@ -1,4 +1,4 @@
-# ACID research and circuit intent (S3/R2)
+# ACID research and circuit intent (S3/R3)
 
 ## 1. Brief (user, 2026-10-22)
 
@@ -279,8 +279,37 @@ Closest SMD pad to a pot/jack pad still 2.08 mm (R7-J1.S); new parts >= 2.14 mm 
 Courtyards >= 1.0 mm from the edge (new parts >= 1.2 mm, JP2 / JP3). 8 new free vertices are off the
 0.05 grid (45-degree jogs onto off-grid pads, as R1).
 
+### 5.3 P4/R3: 10HP re-layout (user, 2026-11-06)
+
+User brief: 10HP; ENV OUT to the bottom row next to BP; AUDIO and CV in to the top row after MIDI;
+buttons and LEDs kept; ATTACK / RELEASE a bit lower so DETUNE / MIX are easy to reach; pots spread
+sideways. Follow-ups: swap the REC LED and the REC button; RES / CURVE on the ATTACK / RELEASE X
+positions, J10 moved up as needed.
+
+- Placement (`docs/geometry.json`): jacks MIDI / AUDIO / CV at X10.25 / 25.25 / 40.25, Y17; pot columns
+  X10.25 / X40.25 (DETUNE / MIX Y30.45, ATTACK / RELEASE Y50.5, RES / CURVE Y91.3), FREQ X25.25 Y76.5;
+  LED column X25.4; REC button X7.1, REC LED X14.6, MODE X24.8 (Y64.4); bottom row LP / HP / BP / ENV OUT
+  X6.5 / 19 / 31.5 / 44, Y110.1. Vactrols follow ATTACK / RELEASE (Y54.6). J10 pin 1 at (44.61, 82.0):
+  courtyard Y70.0..83.8 between U7 and CURVE, IDC16 envelope Y60.4..85.8 clears U7.
+- Routing (R3): board stripped, SMD parked and placed group by group (power at J10, MIDI between
+  J1 / J2, U4 + AUDIO / CV between J2 / J3, U3 MCO mixer and U2 MCU centre, U5 / U6 SVF beside their
+  vactrols, U9 under MODE, U10 / U11 output amps between RES and CURVE with the 1206 output resistors
+  in the jack gaps, LP / HP gain clusters left of FREQ, BP right of FREQ). Each connection routed and
+  checked one at a time with the helper in `research/r3/` (no bulk router), native DRC + parity after
+  every batch. 156 vias after routing; R2 had 176.
+- Via cleanup (R3, 2026-11-06): one net (or one small group) at a time ripped and reconnected island by
+  island with a high via cost on a 0.05 mm grid (`research/r3/improve3.py`), kept only if the via count
+  dropped, the length stayed within budget and native DRC stayed clean (otherwise restored): ENV_CV
+  8 -> 2 (DAC branch on B down the right edge to U11), MODE_SW 5 -> 1 and VAC_NEG / VAC_POS leave U8 on
+  B so MODE_SW / LED_REC run straight on F, SVF_BP 3 -> 2, AIN_BUF and HP_RG1 2 -> 0. **140 vias**
+  (61 GND / +3V3). Tried, not better: SVF_DMP (6; zero-via route is 73 mm), TONE1 (4), ENV_A / ENV_R
+  (3), REC_SW (3), SVF_IN (0-via route starves a GND thermal), the other 2-via nets.
+- Checks: DRC 0 active / 22 vactrol exclusions / 0 unconnected / parity 0; courtyards >= 1.0 mm from
+  the edge; closest SMD pad to a pot / jack pad 2.07 mm (C15-RV5, U11-J7); no vias in SMD pads; no
+  tracks on In1 / In2; In1 and In2 one piece; F / B GND pours split into stitched pieces.
+
 ## 6. Not done
 
-Bench check of the three gain settings; a cleanup pass (fewer vias on the long links, off-grid jogs), firmware (MCO + ENV
+Bench check of the three gain settings; supplier acceptance of the S3/R3 export (ATtiny1616 stock), firmware (MCO + ENV
 merge, REC knob recording, PORT_INVEN for the protected MIDI path), panel fit / 3D check, bench
 (DAC range, vactrol range, output level).

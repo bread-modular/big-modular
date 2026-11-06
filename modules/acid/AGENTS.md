@@ -11,17 +11,23 @@ module-relative.
   envelope; no DRIVE: LP / HP / BP outs, each one TL072 stage + 1k/1k with a 3-pad gain jumper
   JP2 / JP3 / JP4 (Rg 4.7k + 10k + 5.1k): open (shipped) x3.0, 2-3 x3.9, 1-2 x11.1 (S2 gain,
   ~10 Vpp ceiling), research.md 3.6; 0..5 V envelope CV out.
-- **R2 = R1 manual routing + the gain-jumper clusters** (`hardware/acid.kicad_pcb`, 4 layers,
-  research.md 5, 5.2): every net routed; LP / HP clusters on the left edge strip, BP under the
-  RES / CURVE gap, one `*_RG1` link each; vactrols under ATTACK / RELEASE, their 22 stacking findings user-approved and excluded
-  by `tools/vactrol_exclusions.py`. KiCad DRC 0 active / 22 excluded / 0 unconnected / parity 0;
-  shared gate ERC 0, DRC 22 (counts exclusions), 0 unconnected; no vias in SMD pads.
-  The native PCB owns placement and copper: do not rerun `build_layout.py`.
-- B silk `GND UPDI` (J11) and MIDI JP1 `D` / `P` + `JP1 D=DIRECT P=PROT` labels (research.md 5.1);
-  gain jumpers `M` / `H` at the pads, `LP` / `HP` / `BP`, legend `GAIN: OPEN=x3` / `M=x3.9 H=x11` (5.2).
-- 8HP panel `panels/front-pcb/acid-panel.kicad_pcb`, DRC 0.
-- **JLCPCB export** in `jlcpcb/` (S3/R2 carrier 2026-11-05, bottom Economic, 98 parts / 27 rows; read
-  `jlcpcb/README.md`). Not supplier-accepted, not built. Any board edit needs a re-export.
+- **P4/R3 10HP re-layout** (`hardware/acid.kicad_pcb`, 4 layers, research.md 5.3, user 2026-11-06):
+  MIDI / AUDIO / CV jacks on top, ENV OUT on the bottom row beside BP, ATTACK / RELEASE 4 mm lower,
+  REC LED right of the REC button, RES / CURVE on the outer pot columns, J10 moved up beside FREQ.
+  Board stripped and re-routed by hand group by group (one-connection helper in `research/r3/`).
+  Every net routed; vactrols under ATTACK / RELEASE, their 22 stacking findings user-approved and
+  excluded by `tools/vactrol_exclusions.py`. KiCad DRC 0 active / 22 excluded / 0 unconnected / parity 0;
+  shared gate ERC 0, DRC 22 (counts exclusions), 0 unconnected, ref/pin/net parity equal; no vias in
+  SMD pads, no In1 tracks, In1 / In2 one piece each. The native PCB owns placement and copper:
+  run `build_layout.py --panel-only` only.
+- B silk `UPDI` / `GND` (J11) and MIDI JP1 `D` / `P` + `JP1 D=DIRECT P=PROT` labels;
+  gain jumpers `M` / `H` at the pads, `LP` / `HP` / `BP`, legend `GAIN: OPEN=x3` / `M=x3.9 H=x11`.
+- 10HP panel `panels/front-pcb/acid-panel.kicad_pcb` (50.5 mm, rail holes X12.58 / X43.06), DRC 0.
+- R3 via cleanup (2026-11-06): one net at a time ripped and re-routed with a high via cost, kept
+  only when DRC stayed clean: 156 -> 140 vias (ENV_CV 8 -> 2, MODE_SW 5 -> 1, AIN_BUF / HP_RG1 2 -> 0).
+- **JLCPCB export** in `jlcpcb/` is the S3/R3 10HP set (2026-11-06, `jlcpcb/README.md`): bottom
+  Economic, 98 parts / 27 rows. U2 switched to ATTINY1616-MF C5227638 (same die/package, 125 C grade, 240 in stock; C507118 had 3), fields only.
+  Not supplier-accepted, not built.
 
 ## Boundaries
 

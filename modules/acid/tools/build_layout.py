@@ -4,7 +4,7 @@ Run from modules/acid with KiCad's Python (pcbnew 10), after tools/build_schemat
   python3 -B tools/build_layout.py
 
 Writes hardware/acid.kicad_pcb (carrier: P2 placement with schematic nets, no
-routing) and panels/front-pcb/acid-panel.kicad_pcb (passive 8HP panel: outline, NPTH
+routing) and panels/front-pcb/acid-panel.kicad_pcb (passive panel: outline, NPTH
 holes, silkscreen labels). Placement comes from the geometry contract; references,
 values, fields, symbol links and pad nets come from the netlist that kicad-cli exports
 from hardware/acid.kicad_sch (what "Update PCB from Schematic" would do).
@@ -186,7 +186,7 @@ def build_carrier():
     rect(board, pcbnew.Dwgs_User, 0, 0, pw, ph)
     rect(board, pcbnew.Dwgs_User, 0, 0, pw, ry0)
     rect(board, pcbnew.Dwgs_User, 0, ry1, pw, ph)
-    text(board, pcbnew.Dwgs_User, '8HP PANEL 40.3 x 128.5', pw / 2, -2.0, 1.0)
+    text(board, pcbnew.Dwgs_User, '%dHP PANEL %g x %g' % (GEO['hp'], pw, ph), pw / 2, -2.0, 1.0)
     text(board, pcbnew.Dwgs_User, 'RAIL', pw / 2, ry0 / 2 + 1.0, 1.0)
     text(board, pcbnew.Dwgs_User, 'RAIL', pw / 2, (ry1 + ph) / 2 + 1.0, 1.0)
     for j in GEO['jacks']:
@@ -286,8 +286,8 @@ def npth(board, mech_id, x, y, d):
 
 def build_panel():
     path = MODULE / 'panels/front-pcb/acid-panel.kicad_pcb'
-    board = new_board(path, 'Big Modular - ACID 8HP front panel', [
-        'P2: passive panel, NPTH only, no copper',
+    board = new_board(path, 'Big Modular - ACID %dHP front panel' % GEO['hp'], [
+        'P4: passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -316,5 +316,8 @@ def build_panel():
 
 
 if __name__ == '__main__':
-    print(build_carrier())
+    import sys
+    # --panel-only: regenerate just the passive panel (the routed carrier is the native source).
+    if '--panel-only' not in sys.argv[1:]:
+        print(build_carrier())
     print(build_panel())
