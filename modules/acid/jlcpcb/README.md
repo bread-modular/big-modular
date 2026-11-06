@@ -1,8 +1,9 @@
-# ACID — manufacturing export (S2/R1)
+# ACID — manufacturing export (S3/R2)
 
-Generated on 2026-10-23 from the S2 schematic and the R1 hand-routed 4-layer board (plus the
-B silk UPDI / MIDI JP1 labels, `docs/research.md` 5.1) with the shared
-`opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. Never hand-edit these files:
+Carrier re-generated on 2026-11-05 from the S3 schematic (LP / HP / BP gain jumpers,
+`docs/research.md` 3.6) and the R2 board (R1 hand routing + the jumper clusters, 5.2) with the
+shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. The panel export is the
+2026-10-27 one, unchanged. Never hand-edit these files:
 change the sources, then re-export with the commands below.
 
 ## Contents
@@ -23,8 +24,8 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `acid-gerbers.zip` | 4 layers, FR4, 1.6 mm, 39.35 x 110.05 mm, JLC standard stack-up, 1 oz outer, HASL, tented vias (all 168 are 0.3/0.6 mm, none in SMD pads; no copper or courtyard within 1 mm of the edge). The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 92 parts in 27 BOM rows, all on the back |
+| Carrier PCB | `acid-gerbers.zip` | 4 layers, FR4, 1.6 mm, 39.35 x 110.05 mm, JLC standard stack-up, 1 oz outer, HASL, tented vias (all 176 are 0.3/0.6 mm, none in SMD pads; no copper or courtyard within 1 mm of the edge). The board has no `JLCJLCJLCJLC` marker, so pick the order-number option deliberately |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 98 parts in 27 BOM rows, all on the back |
 | Front panel PCB | `acid-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 40.3 x 128.5 mm (8HP), no assembly |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -39,13 +40,16 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | J10 | 2x5 2.54 mm pin header | Eurorack power, back side; pin 1 (-12 V) at the `-12V` silk. **No key**: red stripe to `-12V` |
 | J11 | 1x2 2.54 mm pin header (`GND UPDI` silk) | Optional, for programming; pin 1 (square) UPDI, pin 2 GND |
 | JP1 | 3-pad solder jumper (`JP1 D=DIRECT P=PROT` silk, `D` / `P` at the pads) | Copper only, **shipped open**: bridge P (1-2, protected, PORT_INVEN on) or D (2-3, direct, 3.3 V senders only), never both |
+| JP2 / JP3 / JP4 | 3-pad solder jumpers `LP` / `HP` / `BP` (legend `GAIN: OPEN=x3` / `M=x3.9 H=x11` under RES) | Copper only, **shipped open = x3.0** at the jack. Bridge `M` (2-3) for x3.9 or `H` (1-2) for x11.1 (the S2 gain, ~10 Vpp ceiling) |
 
-The exporter excluded exactly these 24 THT refs plus JP1 (`carrier/export-report.json`).
+The exporter excluded exactly these 24 THT refs plus JP1-JP4 (`carrier/export-report.json`).
 
 ## Parts (live catalog, 2026-10-23 04:21 UTC, 5 boards)
 
 Every C-code resolves to its MPN and package and is Economy-eligible
-(`research/export-1/audit.json`, ignored).
+(`research/export-1/audit.json`, ignored). S3 adds no new C-code: R58 / R60 / R62 join the
+10k row (C25804), R59 / R61 / R63 the 5.1k row (C23186), R42 / R47 / R52 stay 4.7k (C23162).
+The live audit was not re-run for the S3 export.
 
 - **Resistors and capacitors: all JLCPCB Basic**, except the 1206 1k 0.5 W output/CV-out
   resistors (R43, R44, R48, R49, R53, R54, R57): ROHM ESR18EZPF1001 C2074262, Extended
@@ -65,9 +69,9 @@ failure.
 
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
 
-- Carrier PCB `5e4936209eaec51eb97aabb4da7d49c098d39b8d879c9cc364e165cc39e96f6e`.
+- Carrier PCB `1a77795000b5593daeb491ab7cb9e97fc84078cf04f83105871dc40a06b66217`.
 - Carrier project `2b16ebe4e117a70e29f7aaa705259fc66d700a8de8574ae69aab4d548a704068`.
-- Carrier schematic `776bf1537405e5ed5ab01e169faae8ede8ccfaa5d55dad4685bed0bae50bccd7`.
+- Carrier schematic `f5e771dbcfbd692cf9094c6249017de3a9fb5cf0ce2aa0bd975c2ccd321d051a`.
 - Panel PCB `b4edabbce221cef9634cd3ccf8275a3d49ff5cb3a1c006195c0c334f93e7b533`.
 - Panel project `f305bcc9525db9aaaf0c2e09ff9b4a45e533191f56bed62385825f31da0950cd`.
 
@@ -105,6 +109,12 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/acid-symbols.xml hardware
 ```
 
 ## Checks done for this export
+
+S3/R2 carrier export, 2026-11-05: shared `check` after export ERC 0, DRC 22 (the vactrol
+exclusions, KiCad 0 active), 0 unconnected, parity 0, ref/pin/net equal, manifest equal (5
+sources, exports byte-identical). 98 parts / 27 rows, all CPL rows `bottom`; JP2-JP4 excluded as
+copper-only. PTH drill: 233 round hits (176 vias + 57 round pads) plus 35 slots. Zones refilled
+before save. The notes below are the S2/R1 export's.
 
 Panel re-exported on 2026-10-27 for the rail-hole move: the left rail holes H1/H3 went 1HP (5.08 mm) right, X 7.5 to X 12.58, so both pairs (with X 32.9) sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 
