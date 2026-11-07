@@ -16,7 +16,7 @@ module (TinyUSB UAC2 + WCH peripheral library, bare metal). Sources in
 
 | Interface | |
 |---|---|
-| USB Audio Class 2 (driverless: Linux, macOS, Windows 10 1703+) | "USB-AUDIO": **2 out** (OUT 1/2 jacks) + **2 in** (IN 1/2 jacks), 24-bit in 32-bit slots, **48 / 96 / 192 kHz** (host picks), asynchronous: the codec oscillator is the clock, the host follows it through the feedback endpoint |
+| USB Audio Class 2 (driverless: Linux, macOS, Windows 10 1703+) | "Bread Modular 2X2": **2 out** (OUT 1/2 jacks) + **2 in** (IN 1/2 jacks), 24-bit in 32-bit slots, **48 / 96 / 192 kHz** (host picks), asynchronous: the codec oscillator is the clock, the host follows it through the feedback endpoint |
 | CDC serial ("USB-AUDIO console", any baud) | `status`, `meter`, `cal`, `tone`, `regs`, `restart`, `reboot` (below) |
 
 USB IDs `1209:0001` are the pid.codes **test** PID (development only). High

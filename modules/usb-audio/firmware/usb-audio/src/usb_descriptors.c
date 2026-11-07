@@ -129,10 +129,10 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
 
 static char const *const string_desc_arr[] = {
   NULL,                      // 0: language (handled below)
-  "big-modular",             // 1: manufacturer
-  "USB-AUDIO",               // 2: product
+  "Bread Modular",           // 1: manufacturer
+  "Bread Modular 2X2",       // 2: product
   NULL,                      // 3: serial, from the chip unique ID
-  "USB-AUDIO console",       // 4: CDC
+  "Bread Modular 2X2 console", // 4: CDC
   "OUT 1-2",                 // 5
   "IN 1-2",                  // 6
 };

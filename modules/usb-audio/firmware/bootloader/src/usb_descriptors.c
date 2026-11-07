@@ -59,8 +59,8 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index) {
 
 static char const *const string_desc_arr[] = {
   NULL,                      // 0: language
-  "big-modular",             // 1: manufacturer
-  "USB-AUDIO DFU bootloader",// 2: product
+  "Bread Modular",           // 1: manufacturer
+  "Bread Modular 2X2 DFU bootloader", // 2: product
   NULL,                      // 3: serial, from the chip unique ID
   "application flash",       // 4: DFU alt 0
 };
