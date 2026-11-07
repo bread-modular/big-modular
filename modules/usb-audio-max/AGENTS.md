@@ -26,7 +26,14 @@ Module paths are module-relative.
   J102/J103 placed, rest parked) and the panel `panels/front-pcb/usb-audio-max-panel.kicad_pcb`.
   Native DRC 0 violations / parity 0 on both boards (432 / 88 unconnected: nothing routed), panel DRC 0;
   courtyards >= 1.06 mm from the edges. Nothing routed, no export, no firmware.
-- Open: group-by-group SMD placement and manual routing of both boards (floorplan proposal and buck layout
+- **R1 routing done, both boards** (2026-11-07, manual divide and conquer, batches `research/route/c_b*.py` +
+  `mcu_b*.py`, `research/route/build.sh` rebuilds the carrier, notes in `research/route/PLAN-codec.md`):
+  native DRC 0 / unconnected 0 / parity 0 on both; no vias in SMD pads, no In1 tracks, courtyards >= 1 mm
+  from the edge, SMD >= 2 mm from jack pads (closest 2.03 mm). Carrier In2: +12V_F plane, +5VA island over
+  the codec/input stage with a finger to the regulator (R7 Kelvin trace), two small +3V3_C islands (codec, U4).
+  The shared check's independent ref/pin/net parity flags 4 pins on `Net-(U9-Trim/NR)` /
+  `Net-(U3B-MDO/ADR1/MD1)` ("/" vs "{slash}" escaping, same nets).
+- Open (pre-routing note kept for history): group-by-group SMD placement and manual routing of both boards (floorplan proposal and buck layout
   rules in `docs/research.md` sections 5 and 7); firmware (96 kHz SPI1 path is untested on the CH32V307).
 
 ## Boundaries
