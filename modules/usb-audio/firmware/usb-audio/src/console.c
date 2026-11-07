@@ -54,7 +54,7 @@ static void print_mv(const char *label, int32_t mv) {
 static void cmd_status(void) {
   audio_status_t st;
   audio_get_status(&st);
-  out("\r\nUSB-AUDIO firmware %s (%s)\r\n", FW_VERSION, FW_GIT);
+  out("\r\nBread Modular 2X2 firmware %s (%s)\r\n", FW_VERSION, FW_GIT);
   out("USB:   %s, %s speed\r\n", tud_mounted() ? "configured" : "not configured",
       tud_speed_get() == TUSB_SPEED_HIGH ? "high" : "full");
   out("Codec: %s", codec_state_name(codec_state()));
@@ -268,7 +268,7 @@ void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
   (void) rts;
   if (dtr) {
     line_len = 0;
-    out("\r\nUSB-AUDIO console. Type help.\r\n> ");
+    out("\r\nBread Modular 2X2 console. Type help.\r\n> ");
   } else {
     // 1200 baud touch (as Arduino / Pico): ../flash.sh opens the port at
     // 1200 baud and closes it to restart into the DFU bootloader.
