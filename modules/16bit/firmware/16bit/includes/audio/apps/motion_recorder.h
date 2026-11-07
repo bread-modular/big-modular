@@ -16,7 +16,15 @@
 //   * RECORDING: LED blinks; every clock pulse stores the live frame. Live
 //     controls keep driving the sound. MODE aborts the take.
 //   * PLAYBACK (automatic after 384 clocks): LED solid; every clock pulse
-//     replays the frame at the playhead. MODE returns to LIVE.
+//     replays the frame at the playhead. A MODE click (press and release
+//     without moving anything) returns to LIVE on the release.
+//   * OVERDUB (big-modular): hold MODE in PLAYBACK and move any knob or MCC
+//     control. From its first move until MODE is released, that parameter's
+//     live value replaces the recorded one at the playhead (other parameters
+//     keep playing back) and the LED blinks. Releasing MODE keeps the loop
+//     playing; its new curve plays back with no offset until the control
+//     moves again. A CC that wasn't in the take joins it: the frames outside
+//     the overdubbed span carry its value from before the hold.
 //   * OFFSET (big-modular, as the 8bit recorder): for the first 4-bar pass of
 //     PLAYBACK the knobs and MCC are ignored, so the hand that just finished
 //     the take can't nudge it. At the end of that pass their positions are
@@ -44,6 +52,9 @@ public:
     static constexpr uint16_t LOOP_TICKS = MIDI_PPQN * BEATS_PER_BAR * BARS;
     static constexpr uint16_t GUARD_TICKS = LOOP_TICKS;  // knobs ignored 1 pass
     static constexpr uint32_t LED_BLINK_HALF_PERIOD_MS = 150;
+    // A knob counts as moved during an overdub hold once it leaves its
+    // position at the start of the hold by more than this (ADC noise guard).
+    static constexpr uint16_t OVERDUB_KNOB_THRESHOLD = 48;
 
     static constexpr uint8_t KNOB_P1 = 0;
     static constexpr uint8_t KNOB_P2 = 1;
@@ -95,12 +106,13 @@ public:
         lastBlinkMs_ = nowMs;
         buttonDown_ = false;
         haveLastPress_ = false;
+        holding_ = false;
         setLed(false);
     }
 
     // Call from the firmware's main loop. LED animation is non-blocking.
     void update(uint32_t nowMs) {
-        if (state_ != STATE_RECORDING) {
+        if (state_ != STATE_RECORDING && !isOverdubbing()) {
             return;
         }
 
@@ -112,10 +124,15 @@ public:
     }
 
     // IO already reports button edges, but this small guard prevents a noisy
-    // button from starting multiple takes. Only the press edge cycles modes.
+    // button from starting multiple takes. The press edge cycles LIVE and
+    // RECORDING; in PLAYBACK the press starts an overdub hold and the release
+    // either keeps the overdub or, if nothing moved, returns to LIVE.
     void buttonChanged(bool pressed, uint32_t nowMs) {
         if (!pressed) {
             buttonDown_ = false;
+            if (holding_) {
+                releaseHold(nowMs);
+            }
             return;
         }
         if (buttonDown_) {
@@ -129,6 +146,10 @@ public:
         }
         haveLastPress_ = true;
         lastPressMs_ = nowMs;
+        if (state_ == STATE_PLAYBACK) {
+            startHold();
+            return;
+        }
         cycleState(nowMs);
     }
 
@@ -137,6 +158,10 @@ public:
     bool isLive() const { return state_ == STATE_LIVE; }
     bool isOffsetArmed() const {
         return state_ == STATE_PLAYBACK && guardTicks_ >= GUARD_TICKS;
+    }
+    // MODE held in PLAYBACK and at least one parameter moved.
+    bool isOverdubbing() const {
+        return holding_ && (overdubKnobs_ != 0 || overdubCcs_ != 0);
     }
     State getState() const { return state_; }
     uint16_t getTick() const { return tick_; }
@@ -175,7 +200,8 @@ public:
     // Feed one MIDI timing-clock pulse with the live knob values (P1..P4).
     // During recording the live knobs and MCC values are copied into RAM.
     // During playback the frame at the old playhead (plus the knob/MCC offset
-    // once armed) is delivered to the app before the playhead advances.
+    // once armed) is delivered to the app before the playhead advances; while
+    // MODE is held, moved parameters are overdubbed into that frame first.
     void onClock(const uint16_t liveKnobs[KNOB_COUNT],
                  PlaybackCallback apply = nullptr,
                  void* context = nullptr) {
@@ -198,6 +224,10 @@ public:
             return;  // LIVE: keep the playhead idle
         }
 
+        if (holding_) {
+            overdub(liveKnobs);
+        }
+
         const Frame& stored = frames_[tick_];
         Frame out;
         if (guardTicks_ < GUARD_TICKS) {
@@ -213,13 +243,16 @@ public:
             out = stored;
         } else {
             for (uint8_t i = 0; i < KNOB_COUNT; ++i) {
-                out.knobs[i] = shifted(stored.knobs[i],
-                                       (int32_t)liveKnobs[i] - knobRef_[i],
-                                       KNOB_MAX);
+                out.knobs[i] = (overdubKnobs_ & (1u << i))
+                    ? stored.knobs[i]
+                    : shifted(stored.knobs[i],
+                              (int32_t)liveKnobs[i] - knobRef_[i],
+                              KNOB_MAX);
             }
             for (uint8_t i = 0; i < CC_COUNT; ++i) {
-                out.ccs[i] = stored.ccs[i] == CC_UNSET
-                    ? CC_UNSET
+                out.ccs[i] = stored.ccs[i] == CC_UNSET ||
+                                     (overdubCcs_ & (1u << i))
+                    ? stored.ccs[i]
                     : (uint8_t)shifted(stored.ccs[i],
                                        (int32_t)currentCc_[i] - ccRef_[i],
                                        CC_MAX);
@@ -294,6 +327,91 @@ private:
         setLed(true);
     }
 
+    // MODE pressed in PLAYBACK: snapshot the controls; a parameter is
+    // overdubbed once it leaves its snapshot. The knob snapshot is taken on
+    // the first clock of the hold (the button edge carries no knob values).
+    void startHold() {
+        holding_ = true;
+        holdKnobsLatched_ = false;
+        overdubKnobs_ = 0;
+        overdubCcs_ = 0;
+        for (uint8_t i = 0; i < CC_COUNT; ++i) {
+            holdCc_[i] = currentCc_[i];
+        }
+    }
+
+    // Write the moved parameters' live values into the frame at the playhead.
+    void overdub(const uint16_t liveKnobs[KNOB_COUNT]) {
+        if (!holdKnobsLatched_) {
+            holdKnobsLatched_ = true;
+            for (uint8_t i = 0; i < KNOB_COUNT; ++i) {
+                holdKnobs_[i] = liveKnobs[i];
+            }
+        }
+        Frame& frame = frames_[tick_];
+        for (uint8_t i = 0; i < KNOB_COUNT; ++i) {
+            const uint16_t bit = (uint16_t)(1u << i);
+            if (!(overdubKnobs_ & bit)) {
+                const int32_t moved = (int32_t)liveKnobs[i] - holdKnobs_[i];
+                if (moved <= OVERDUB_KNOB_THRESHOLD &&
+                    moved >= -(int32_t)OVERDUB_KNOB_THRESHOLD) {
+                    continue;
+                }
+                overdubKnobs_ |= bit;
+            }
+            frame.knobs[i] = liveKnobs[i];
+            lastLiveKnobs_[i] = liveKnobs[i];
+        }
+        for (uint8_t i = 0; i < CC_COUNT; ++i) {
+            const uint16_t bit = (uint16_t)(1u << i);
+            if (currentCc_[i] == CC_UNSET) {
+                continue;
+            }
+            if (!(overdubCcs_ & bit)) {
+                if (currentCc_[i] == holdCc_[i]) {
+                    continue;
+                }
+                overdubCcs_ |= bit;
+                if (!(recordedCcs_ & bit)) {
+                    // New to the take: the rest of the loop keeps the value
+                    // it had before the hold (or the first move's value).
+                    const uint8_t fill = holdCc_[i] != CC_UNSET
+                        ? holdCc_[i] : currentCc_[i];
+                    for (uint16_t t = 0; t < LOOP_TICKS; ++t) {
+                        frames_[t].ccs[i] = fill;
+                    }
+                    recordedCcs_ |= bit;
+                }
+            }
+            frame.ccs[i] = currentCc_[i];
+        }
+    }
+
+    // MODE released in PLAYBACK. Nothing moved: a click, back to LIVE.
+    // Otherwise keep looping; the overdubbed curves restart with no offset
+    // (reference = control position at the release).
+    void releaseHold(uint32_t nowMs) {
+        holding_ = false;
+        if (overdubKnobs_ == 0 && overdubCcs_ == 0) {
+            cycleState(nowMs);
+            return;
+        }
+        for (uint8_t i = 0; i < KNOB_COUNT; ++i) {
+            if (overdubKnobs_ & (1u << i)) {
+                knobRef_[i] = lastLiveKnobs_[i];
+            }
+        }
+        for (uint8_t i = 0; i < CC_COUNT; ++i) {
+            if (overdubCcs_ & (1u << i)) {
+                ccRef_[i] = currentCc_[i];
+            }
+        }
+        overdubKnobs_ = 0;
+        overdubCcs_ = 0;
+        ledOn_ = true;
+        setLed(true);
+    }
+
     void cycleState(uint32_t nowMs) {
         switch (state_) {
             case STATE_LIVE:
@@ -343,6 +461,15 @@ private:
     uint8_t currentCc_[CC_COUNT];        // latest live MCC values
     uint16_t knobRef_[KNOB_COUNT] = {};  // positions latched after the guard
     uint8_t ccRef_[CC_COUNT] = {};
+
+    // Overdub hold (MODE held in PLAYBACK).
+    bool holding_ = false;
+    bool holdKnobsLatched_ = false;
+    uint8_t overdubKnobs_ = 0;                // bit i: knob i overdubbed
+    uint16_t overdubCcs_ = 0;                 // bit i: ccs[i] overdubbed
+    uint16_t holdKnobs_[KNOB_COUNT] = {};     // knobs at the start of the hold
+    uint8_t holdCc_[CC_COUNT] = {};           // MCC values at the press
+    uint16_t lastLiveKnobs_[KNOB_COUNT] = {};
 
     bool ledOn_ = false;
     uint32_t lastBlinkMs_ = 0;

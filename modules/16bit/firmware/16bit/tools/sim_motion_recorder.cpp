@@ -1,5 +1,5 @@
 // Host self-tests for the 16bit RAM-only P1..P4 / MCC motion recorder shared
-// by the sampler, polysynth and monosynth apps. This exercises the same clocked state machine
+// by the sampler, fxrack, polysynth and monosynth apps. This exercises the same clocked state machine
 // used by the firmware without requiring Pico SDK or hardware.
 
 #include "audio/apps/motion_recorder.h"
@@ -270,6 +270,85 @@ static void testCcMap() {
           "neighbours of the banks are not MCC CCs");
 }
 
+static void testOverdub() {
+    std::printf("\n[Test 7] hold MODE in PLAYBACK and move a parameter to overdub\n");
+    LedProbe led;
+    activeLedProbe = &led;
+    MotionRecorder recorder(&ledCallback);
+    recorder.begin(0);
+    press(recorder, 100);
+    recorder.setCurrentCc(21, 60);
+    for (uint16_t i = 0; i < MotionRecorder::LOOP_TICKS; ++i) {
+        clock(recorder, 1000, 2000, 3000, 4000);
+    }
+    // Guard pass with the knobs at the recorded positions.
+    for (uint16_t i = 0; i < MotionRecorder::LOOP_TICKS; ++i) {
+        clock(recorder, 1000, 2000, 3000, 4000);
+    }
+    CHECK(recorder.isOffsetArmed(), "loop armed before the overdub");
+
+    // Hold MODE; P1 jitters within the noise guard, then moves at tick 10.
+    recorder.buttonChanged(true, 1000);
+    CHECK(recorder.isPlayingBack() && !recorder.isOverdubbing(),
+          "pressing MODE in PLAYBACK keeps looping, no overdub yet");
+    FrameProbe hold;
+    for (uint16_t i = 0; i < 10; ++i) {
+        clock(recorder, 1000 + 20, 2000, 3000, 4000, &hold);
+    }
+    CHECK(!recorder.isOverdubbing(), "knob noise below the threshold doesn't overdub");
+    for (uint16_t i = 10; i < 20; ++i) {
+        clock(recorder, 3000, 2000, 3000, 4000, &hold);
+    }
+    CHECK(recorder.isOverdubbing(), "moving P1 while MODE is held starts the overdub");
+    CHECK(hold.frames[10].knobs[0] == 3000, "overdubbed P1 plays its live value");
+    recorder.update(1200);
+    recorder.update(1400);
+    CHECK(led.history.size() >= 2, "LED blinks while overdubbing");
+
+    // MCC CC21 (recorded) and CC27 (not in the take) moved during the hold.
+    recorder.setCurrentCc(27, 5);   // first value
+    clock(recorder, 3000, 2000, 3000, 4000, &hold);  // tick 20: CC27 first seen
+    recorder.setCurrentCc(21, 99);
+    recorder.setCurrentCc(27, 77);
+    for (uint16_t i = 21; i < 30; ++i) {
+        clock(recorder, 3000, 2000, 3000, 4000, &hold);
+    }
+    CHECK(recorder.ownsCc(27), "a CC overdubbed into the take joins the loop");
+    recorder.buttonChanged(false, 1500);
+    CHECK(recorder.isPlayingBack(), "releasing MODE after an overdub keeps PLAYBACK");
+    CHECK(!recorder.isOverdubbing(), "the overdub ends on release");
+    CHECK(led.state, "LED solid again after the overdub");
+
+    // Next pass from tick 0, controls left where they were released.
+    for (uint16_t i = 30; i < MotionRecorder::LOOP_TICKS; ++i) {
+        clock(recorder, 3000, 2000, 3000, 4000);
+    }
+    FrameProbe next;
+    for (uint16_t i = 0; i < MotionRecorder::LOOP_TICKS; ++i) {
+        clock(recorder, 3000, 2000, 3000, 4000, &next);
+    }
+    const int i21 = MotionRecorder::ccIndex(21);
+    const int i27 = MotionRecorder::ccIndex(27);
+    CHECK(next.frames[5].knobs[0] == 1000 && next.frames[15].knobs[0] == 3000 &&
+          next.frames[29].knobs[0] == 3000 && next.frames[30].knobs[0] == 1000,
+          "P1 replays the overdubbed span with no offset, the rest as recorded");
+    CHECK(next.frames[15].knobs[1] == 2000, "P2 (not moved) keeps its recording");
+    CHECK(next.frames[20].ccs[i21] == 60 && next.frames[25].ccs[i21] == 99 &&
+          next.frames[30].ccs[i21] == 60, "MCC CC21 overdubbed only while held");
+    CHECK(next.frames[0].ccs[i27] == 5 && next.frames[20].ccs[i27] == 5 &&
+          next.frames[25].ccs[i27] == 77 && next.frames[100].ccs[i27] == 5,
+          "new CC27 replays its overdub, its pre-hold value elsewhere");
+
+    // A plain click (nothing moved) still returns to LIVE on release.
+    recorder.buttonChanged(true, 3000);
+    clock(recorder, 3000, 2000, 3000, 4000);
+    CHECK(recorder.isPlayingBack(), "still looping while MODE is held");
+    recorder.buttonChanged(false, 3100);
+    CHECK(recorder.isLive(), "MODE click without moves returns to LIVE");
+    CHECK(!led.state, "LED off in LIVE");
+    activeLedProbe = nullptr;
+}
+
 int main() {
     testLifecycleAndLed();
     testExactFrames();
@@ -277,6 +356,7 @@ int main() {
     testKnobAndCcOffset();
     testUnrecordedAndBackfill();
     testCcMap();
+    testOverdub();
 
     std::printf("\n=== %d checks, %d failures ===\n", checks, failures);
     return failures == 0 ? 0 : 1;

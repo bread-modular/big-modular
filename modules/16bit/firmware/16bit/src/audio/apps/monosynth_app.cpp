@@ -181,7 +181,7 @@ void MonosynthApp::buttonPressedCallback(bool pressed) {
     // IO can continue sampling knobs while a loop is playing, but their
     // callbacks are intentionally ignored. Restore the current live controls
     // when MODE leaves playback so LIVE really is live again.
-    if (pressed && before == MotionRecorder::STATE_PLAYBACK &&
+    if (!pressed && before == MotionRecorder::STATE_PLAYBACK &&
         recorder.isLive()) {
         applyLiveCv(io->getCV1(), io->getCV2());
         monosynth_bank_a::apply(monosynthDsp, monosynth_bank_a::kBodyCc,

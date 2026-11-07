@@ -337,7 +337,7 @@ class SamplerApp : public AudioApp {
 
             // Knob moves were only tracked while the loop played: hand the
             // filters and FX back to the live controls.
-            if (pressed && before == MotionRecorder::STATE_PLAYBACK && recorder.isLive()) {
+            if (!pressed && before == MotionRecorder::STATE_PLAYBACK && recorder.isLive()) {
                 applyLiveControls();
             }
         }
