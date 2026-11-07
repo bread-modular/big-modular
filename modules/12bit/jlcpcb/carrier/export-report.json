@@ -1,16 +1,14 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/256/modules/12bit/hardware/12bit.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/256/modules/12bit/hardware/12bit.kicad_sch",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/259/modules/12bit/hardware/12bit.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/259/modules/12bit/hardware/12bit.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/256/modules/12bit/hardware/12bit.kicad_pcb": "f1d30fef20159f2533b7fb2f7ed0b6a47b97d43240a08e0473019a8fced3ca17",
-    "/home/azero/.okbrain/workspaces/big-modular/256/modules/12bit/hardware/12bit.kicad_sch": "053d6a2b2d480f22a542331c63ba000919efbabaf25364ae43da2e5cde8365b7"
+    "/home/azero/.okbrain/workspaces/big-modular/259/modules/12bit/hardware/12bit.kicad_pcb": "e0d6a5433e1bf08dabc10590ca0a0ebd5a832f2edec8b62e27f94dc9a2560e6c",
+    "/home/azero/.okbrain/workspaces/big-modular/259/modules/12bit/hardware/12bit.kicad_sch": "053d6a2b2d480f22a542331c63ba000919efbabaf25364ae43da2e5cde8365b7"
   },
   "layers": [
     "F.Cu",
-    "In1.Cu",
-    "In2.Cu",
     "B.Cu",
     "F.Mask",
     "B.Mask",
@@ -20,7 +18,7 @@
     "B.Paste",
     "Edge.Cuts"
   ],
-  "copper_layer_count": 4,
+  "copper_layer_count": 2,
   "origin": "KiCad drill/place origin",
   "units": "mm",
   "side": "bottom",

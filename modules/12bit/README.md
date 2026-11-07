@@ -14,12 +14,12 @@ Power: Eurorack 10-pin (16-pin IDC fits) on B, upright at the right edge above O
 Schottkys, +3V3 from an HT7533-1. SWD on a 1x5 header on B (1 3V3 sense, 2 SWDIO, 3 SWCLK,
 4 GND, 5 NRST).
 
-**Status: S2 schematic (ERC 0) + P3 placement + R1 hand routing (DRC 0, unconnected 0,
+**Status: S2 schematic (ERC 0) + P3 placement + R2 2-layer hand routing (DRC 0, unconnected 0,
 parity 0) + JLCPCB export in `jlcpcb/` (not supplier-accepted).** No firmware. See `docs/research.md` for decisions and open items.
 
 | Path | Contents |
 |---|---|
-| `hardware/` | KiCad project `12bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 4 layers, routed R1), pinned symbols/footprints/models |
+| `hardware/` | KiCad project `12bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 2 layers, routed R2), pinned symbols/footprints/models |
 | `panels/front-pcb/12bit-panel.kicad_{pro,pcb}` | 6HP FR4 front panel: NPTH only, silkscreen labels |
 | `docs/research.md` | Brief, decisions, circuit, placement, open items |
 | `docs/geometry.json` | Placement contract (panel frame) |
