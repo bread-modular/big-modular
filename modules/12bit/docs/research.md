@@ -1,4 +1,4 @@
-# 12bit research and circuit intent (S2 schematic, P3 placement, R1 routing)
+# 12bit research and circuit intent (S2 schematic, P3 placement, R2 routing)
 
 modules/8bit (an ATtiny1616 DAC voice) moved to an STM32G071C8T6, whose two 12-bit DAC
 channels give two outputs, on a 6HP module. Brief (user, 2026-11-06):
@@ -53,6 +53,7 @@ B5819W Schottkys), the 0.5 W 1206 output resistors and a TL07x output stage on ย
 | T13 | 6HP, two columns X7.95 / X22.05 (ยง4) | modules/hats grid, moved 0.2 mm inward so the RV09 courtyards meet the 1 mm edge rule |
 | T15 | P3 rows: P1/P2 Y52.2, MODE + LED + P3 Y79.2 (P2: Y45 / Y69), OUT 1/2 Y110.4; power header upright at the right edge (rot 180 on B, pin 1 bottom) between P3 and OUT 2 | User. The MODE switch turns 90 deg (square body; courtyard 7.6 mm wide) and the LED turns 90 deg (pads along Y) so switch (X6.5), LED (X12.85) and P3 (X22.05) fit one row: courtyard gaps 0.33 / 0.53 mm. P3 (user): row pitch 27 mm and the pot block centred on the panel between the jack centres (Y21 / Y110.4, mid Y65.7). The 16-pin IDC envelope (Y77.91..103.31) now covers the RV3 lugs and pins 2/3 (a 10-pin socket still covers pins 2/3); the socket sits 2.5 mm above B, so those leads are trimmed to <= 2 mm |
 | T14 | **R1 routing** (user, 2026-11-06), manual divide and conquer, four batches; JLC export | Superseded the P1-P3 "no routing". See `Code.md` R1 for the group layout. DAC1/DAC2 leave the mirrored LQFP in the opposite order to U4 pins 3/5, so DAC2 takes one F hop; no schematic change |
+| T15 | **R2: 2 layers** (user, 2026-11-07: the 4-layer price was the cost driver; every 110 mm carrier misses JLCPCB's 102 mm special price anyway) | R1 tracks were all on F/B, so their copper stays; the In1 GND / In2 +3V3 planes are gone. GND: F and B pours tied by the R1 GND vias. +3V3: tracks (0.4 mm) from U1 over F to R5/D5/R1/R3/C6, B to RV2.3, an F column RV2.3-FB1-C13-RV3.3, MCU VDD over F/B to RV2.3, RV1.3 on F, J6.1 and R14 over B/F. Slightly less quiet than 4 layers (as modules/8bit); bench item: +3V3 ripple at VREF+ and the outputs |
 
 ## 3. Circuit (`hardware/12bit.kicad_sch`, ERC 0)
 
@@ -84,8 +85,8 @@ MODE   SW1 PB4 to GND; PB5 -> R7 1k -> D1 3 mm red -> GND
 
 ## 4. Placement P3 (`docs/geometry.json`, renders `docs/fit/`)
 
-6HP panel 30.0 x 128.5 mm; carrier 29 x 110 mm (X 0.5..29.5, Y 9.25..119.25), 4 copper
-layers (planned F / In1 GND / In2 +3V3 / B), `min_copper_edge_clearance` 1.0 mm.
+6HP panel 30.0 x 128.5 mm; carrier 29 x 110 mm (X 0.5..29.5, Y 9.25..119.25), 2 copper
+layers since R2 (R1 was F / In1 GND / In2 +3V3 / B), `min_copper_edge_clearance` 1.0 mm.
 
 | Panel Y | Left | Right |
 |---|---|---|
@@ -118,7 +119,7 @@ violations, parity 0, 130 unconnected (nothing routed); panel DRC 0/0.
   FT_fa (T4), so JP1 direct mode with a 5 V sender is allowed by the datasheet. PA14 is also
   BOOT0: leave the factory option bytes (nBOOT_SEL) so the SWCLK line does not select the boot
   mode. Still open: DAC buffered range and VREF+ current (T7/T8).
-- **Routing**: done (R1). Bench items: +3V3 ripple at the DAC reference, output offset
+- **Routing**: done (R1 4-layer, R2 2-layer for cost, user 2026-11-07). Bench items: +3V3 ripple at the DAC reference, output offset
   (VOFF) and DAC step smoothing, MIDI in both JP1 positions.
 - **Firmware**: none yet. Needs a toolchain under `opt/` (no STM32 tools exist in the repo)
   and ports of the 8bit apps to two DAC channels and three knobs.

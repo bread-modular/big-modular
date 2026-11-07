@@ -1,4 +1,4 @@
-# 12bit contract (S2 schematic, P3 placement, R1 routing)
+# 12bit contract (S2 schematic, P3 placement, R2 2-layer routing)
 
 | | |
 |---|---|
@@ -7,8 +7,8 @@
 | Generators, profile | `tools/` (`build_schematic.py`, `build_layout.py`, `import_footprints.py`, `kicad-project.json`) |
 | Placement contract | `docs/geometry.json` |
 | Circuit intent and decisions | `docs/research.md` |
-| Fabrication | `jlcpcb/` (R1 export, see `jlcpcb/README.md`) |
-| Routing batches | `research/route/` (ignored: `lib.py` helpers, `b1`-`b4` batch scripts, DRC JSON, renders) |
+| Fabrication | `jlcpcb/` (R2 export, see `jlcpcb/README.md`) |
+| Routing batches | `research/route/` (R1, ignored: `b1`-`b4`), `research/route2l/` (R2, ignored: `lib.py` one-connection finder + checks, `b1_top.py`, `b2_islands.py`, `drc.sh`, DRC JSON) |
 | Evidence | `docs/fit/` (native ERC/DRC JSON, renders), `docs/12bit-schematic.pdf`, `docs/schematic-symbols.json`, `docs/sourcing-candidates.json` |
 
 ## Fixed by the brief (user, 2026-11-06)
@@ -53,9 +53,28 @@ Manual divide-and-conquer routing, written to `hardware/12bit.kicad_pcb` batch b
 4. **Inputs + regulator** between the jack row and P1/P2: MIDI front end left, CV front end
    right, HT7533 (U1, C3, C4) at the right edge fed by a +12V_F F run up the right side.
 
-Layers: F signal + GND pour, In1 solid GND, In2 solid +3V3, B parts + signal + GND pour.
+R1 layers: F signal + GND pour, In1 solid GND, In2 solid +3V3, B parts + signal + GND pour (superseded by R2).
 Net class Power (0.4 mm) for GND, +3V3, ±12V, ±12V_F; signals 0.25 mm (0.2 mm MCU fan-out);
 vias 0.3/0.6 mm. Zones thermal-relief, 0.25 mm clearance, 1 mm copper-edge rule.
+
+## R2: 2 layers (user, 2026-11-07: "Start a 2 layer board")
+
+Cost: the 4-layer price drove the 12bit board cost (every 110 mm carrier misses JLCPCB's 102 mm
+special price). R1 had no tracks on In1/In2, so its F/B copper and placement stay; the In1 GND
+and In2 +3V3 zones were deleted and the stack-up set to F / B. Board backed up to `/tmp/` before
+each batch; `research/route2l/` (one-connection finder, every path checked before writing):
+
+1. **+3V3 top + right**: U1 out via -> F to R5, D5, R1, R3 vias (0.4 mm); F to the C6 via, then
+   B down the right of C8 to RV2.3; F column RV2.3 - FB1 via - C13 via - RV3.3 (x 124.55..125.1,
+   between +12V_F and the RV3 lug).
+2. **+3V3 islands**: MCU VDD via -> F -> new via (119.45, 113.1) -> B -> RV2.3; RV1.3 -> F
+   past the RV1 lug -> R3 via; J6.1 -> B -> via -> F (Y137.92) -> via -> B -> RV3.3; R14 (VOFF
+   divider) -> F -> via -> B up the left past J6 -> J6.1. Four new vias, all clear of SMD pads.
+
+Layers: F signal + GND pour, B parts + signal + GND pour, tied by the R1 GND vias (26). 271
+tracks (F 83, B 188), 63 vias (0.3/0.6 mm). Pours: B one piece; F one piece plus a 25 mm²
+strip between the +12V_F run and the +3V3 column (Y113.6..135.8), tied to B by four GND vias
+(not an island). Net classes, widths and zone settings as R1.
 
 ## Design rules kept from the repo
 
@@ -85,19 +104,19 @@ vias 0.3/0.6 mm. Zones thermal-relief, 0.25 mm clearance, 1 mm copper-edge rule.
   refuses to overwrite a carrier that has tracks (`--panel-only` rebuilds the panel).
 - `tools/import_footprints.py` rebuilds `hardware/12BIT.pretty` and `12BIT.3dshapes`.
 
-## Verification (S2/R1, 2026-11-06)
+## Verification (S2/R2, 2026-11-07; R1 figures 2026-11-06)
 
 - Native ERC `--severity-all`: 0 (`docs/fit/schematic-erc.json`).
 - `kicad_tools.py check --config tools/kicad-project.json`: ERC 0; DRC **0 violations (warnings
   included), 0 unconnected, parity 0**, no exclusions (`docs/fit/carrier-drc.json`,
-  `research/check-r1/`).
-- Measured after every batch (`research/route/lib.py`): no vias in SMD pads; no tracks on In1/In2;
-  no zero-length/duplicate segments; each pour one piece (F, B, In1 GND, In2 +3V3); closest SMD
+  `research/check-r1/`; R2 `research/check-r2b/`, manifest equal).
+- Measured after every batch (`research/route/lib.py`): no vias in SMD pads; no zero-length/duplicate
+  segments; R1 pours one piece each (F, B, In1, In2); R2 B pour one piece, F one + a stitched strip; closest SMD
   pad to a pot/jack pad 2.025 mm (C7.1-RV1.2), then FB1-RV2 2.09, D3-J4 2.09; every courtyard
   >= 1.015 mm from the edge (RV1-RV3; earlier P3 figure 1.02 measured the same way rounded).
 - Panel DRC 0 / 0 (`docs/fit/panel-drc.json`).
 - MCU pin table checked against ST DS12232 Table 12 (LQFP48 column): 4 VBAT, 5 VREF+, 6 VDD/VDDA,
   7 VSS/VSSA, 10 PF2-NRST, 11/12 PA0/PA1, 15/16 PA4/PA5 (TT_a, DAC), 17/18 PA6/PA7, 35 PA13,
   36 PA14-BOOT0, 43/44 PB4/PB5, 46 PB7 (**FT_fa**, 5 V tolerant, USART1_RX) — matches the symbol.
-- JLC export in `jlcpcb/` (not supplier-accepted).
+- R2 JLC export in `jlcpcb/` (2 layers; not supplier-accepted).
 - Not done: firmware, 3D fit, bench.

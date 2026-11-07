@@ -1,6 +1,6 @@
-# 12bit — manufacturing export (S2/R1)
+# 12bit — manufacturing export (S2/R2)
 
-Generated on 2026-11-06 from the S2 schematic and the R1 hand-routed carrier with the shared
+Generated on 2026-11-07 from the S2 schematic and the R2 2-layer hand-routed carrier with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. Never hand-edit these files:
 change the sources, then re-export with the commands below.
 
@@ -11,7 +11,7 @@ change the sources, then re-export with the commands below.
 | `12bit-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
 | `12bit-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
 | `assembly/bom.csv`, `assembly/positions.csv` | Carrier BOM and CPL (upload these) |
-| `carrier/` | Carrier export: ZIP unpacked (F / In1 GND / In2 +3V3 / B copper, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
+| `carrier/` | Carrier export: ZIP unpacked (F / B copper, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
 | `panel/` | Panel export: ZIP unpacked, empty BOM/CPL, export report |
 | `source-sha256.json` | PCB/project/schematic inputs and export SHA-256 |
 
@@ -22,7 +22,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `12bit-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz outer, HASL (or ENIG). **Via covering: tented**, no via-in-pad / POFV (no vias in SMD pads). Every via is 0.3 / 0.6 mm |
+| Carrier PCB | `12bit-gerbers.zip` | **2 layers**, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz copper, HASL, **tented vias**, no via-in-pad / POFV / resin fill (no vias in SMD pads). Every via is 0.3 / 0.6 mm. Leave the other options at JLCPCB's defaults. The 110 mm length is over JLCPCB's 102 x 102 mm special price (as every 110 mm carrier); R2 went from 4 to 2 layers to cut the cost |
 | Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 46 parts in 24 BOM rows, all on the back |
 | Front panel PCB | `12bit-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
 
