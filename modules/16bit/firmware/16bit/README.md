@@ -33,7 +33,16 @@ runs its self-tests on the host.
   `CC27..30`, Bank C `CC85..88`).
 - A take is four bars of 4/4 (`24 PPQN`, 384 clock frames). On completion the
   LED becomes solid and the frame loop drives the recorded parameters; MODE
-  aborts an incomplete take or stops playback.
+  aborts an incomplete take, and a MODE click (press and release, nothing
+  moved) stops playback on the release.
+- Overdub (big-modular): in playback, hold **MODE** and move any knob P1..P4
+  or MCC control. From its first move until MODE is released, that parameter's
+  live value replaces the recording at the playhead (the others keep playing)
+  and the LED blinks. Release MODE to keep looping with the new curve (no
+  offset until the control moves again). Hold again for another pass or
+  another parameter; a CC that wasn't in the take joins it, keeping its
+  pre-hold value outside the overdubbed span. Knobs must move more than 48 ADC
+  steps from their position at the press to count.
 - Loop offset (as the 8bit recorder): during the first loop pass the knobs and
   MCC are ignored. Their positions at the end of that pass become the
   reference; after that, moving a knob or MCC control shifts its whole recorded

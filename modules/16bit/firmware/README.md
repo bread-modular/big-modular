@@ -146,7 +146,10 @@ monosynth (BM). Click MODE to
 record (LED blinks), after 4 bars on MIDI clock it loops (LED solid), click
 again for live. Each frame holds P1..P4 and all twelve MCC CCs (banks A / B / C).
 As on the 8bit recorder, the knobs and MCC are ignored for the first loop
-pass; after that, moving one shifts its whole recorded curve. Needs a running
+pass; after that, moving one shifts its whole recorded curve. Overdub
+(big-modular): hold MODE while the loop plays and move any knob or MCC control
+to re-record that parameter for as long as MODE is held (LED blinks); release
+keeps the loop, a click without moves returns to live. Needs a running
 MIDI clock; RAM only. Details: `16bit/README.md`.
 
 ## JP1 setting (required)
@@ -245,7 +248,8 @@ flashed as is (no rebuild needed).
   the motion recorder (BM: stop audio while held, kick on release).
 - `includes/audio/apps/motion_recorder.h`: frames carry P1..P4 and the twelve
   MCC CCs (BM: CV1 / CV2 and Bank A); 8bit-style loop offset after one guard
-  pass; unrecorded CCs stay live. Polysynth / monosynth adapted to the new
+  pass; unrecorded CCs stay live; hold MODE in playback to overdub moved
+  parameters (playback exits on the MODE release, not the press). Polysynth / monosynth adapted to the new
   frame (`readKnobs`, `ownsCc`); `tools/sim_motion_recorder.cpp` extended.
 - Polysynth: P1 / P2 wavetables (above): `includes/audio/gen/Wavetable.h`,
   `wavetable_osc.h`, `wavetable_data.h`, `tools/build_wavetables.py`,
