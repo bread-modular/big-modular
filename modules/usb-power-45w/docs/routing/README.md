@@ -1,6 +1,54 @@
 # R1 routing — 10-pin outputs and manual routing
 
-**ROUTING CLOSED, NOT FABRICATION-READY.** **0 unconnected** (ERC 0 / DRC 0 / warnings 0 / parity 0) after the 2026-11-04 continuation
+## Fab review for the first prototype (2026-11-06)
+
+**Prototype fabrication export ready: [`jlcpcb/`](../../jlcpcb/README.md)** (carrier Gerbers, BOM, CPL; panel Gerbers).
+Not supplier-accepted, not bench-qualified. Shared native check after the export (re-run after F3,
+`research/fab254-05-d1/native/`): ERC 0; DRC 0 violations, 0 warnings, 0 exclusions, **0 unconnected**, parity 0; exact
+ref/pin/net parity; export manifest equal.
+
+The incoming board had **two DRC errors** (`shorting_items` + `solder_mask_bridge`): a KiCad 10 *Update PCB from
+Schematic* gives each no-connect SW1 case pad its own `unconnected-(SW1-CASE-PadMP)[_1]` net, so the 2.7 mm F.Cu link
+that joined the two MP pads shorted two nets. Scripts: ignored `research/fab254/tools/`; native reports
+`research/fab254-0*/`; backups `/tmp/fab254/` (F3: `/tmp/fab254-05/`).
+
+| Batch | Change | Why |
+| --- | --- | --- |
+| F1 | SW1 MP case-pad link deleted | the two DRC errors; the case pads are mechanical (CASE no-connect) |
+| F1 | +12V via (114.5, 69.0) R109.4 F pour → B pour; `R1_P12_RAIL_F` grown north between the C36 pads | the 2.4 A output went through 2 vias; now 3, 1.41 mm apart so the In1 antipads stay separate (a 4-via cluster merged them into a 3.3 mm In1 slot) |
+| F1 | GND via (81.95, 85.95) at the D1 anode; `R1_PGND_D1_U1_F` grown 0.95 mm south (x 81.6–82.6) | `tvs.D1`: 3 GND vias within 1.5 mm of D1.2 (was 2) — **now PASS** |
+| F1 | PGND via (108.0, 78.05) between C8.2 and C81.2 (hot loop, GND only) | U2 PGND vias 8 → 9 |
+| F2 | J2/J3/D8: schematic `in_pos_files no` (`tools/build_s8.py` `NOT_PLACED`, regenerated: exactly those three flags change) and `exclude_from_pos_files` on the board | hand-fitted THT parts with no C-code stay in the BOM but leave the CPL, so the export can include J1 (USB-C, through-hole type because of its shell lugs) with `--include-through-hole --require-part-numbers` |
+| F3 | D1 SMBJ22A: LCSC C10214 → **C224015**, Manufacturer RUILON → **Littelfuse** (`tools/circuit_s8.py` `D1_PART`, regenerated: exactly those two D1 fields change; same two fields on the board footprint); `docs/design/bom.csv`, the whole-design live audit `docs/design/sourcing.json` and the carrier export redone | user: "update the part to the one with more stocks". C10214 had 59 in stock, C224015 1,947 (live, 06:49 UTC). Same MPN and DO-214AA package, on the same `D_SMB` land as the Littelfuse D24/D26. The Littelfuse SMBJ rows are what the calculations already used. No copper change: DRC, the zone refill and `check_s8_board.py` are identical |
+
+Board after F2 (unchanged by F3): 1150 segments, 317 vias (all 0.3/0.6 mm, none in a pad), 28 zones, 15 rule areas; In1 GND one piece
+(4026.6 mm²), In2 VIN (682.2 mm²) and +3V3 one piece each, no track on In1; the B.Cu PGND pour keeps its 0.75 mm²
+via-tied fragment at (104.1–105.5, 89.9–90.5).
+
+### Remaining `check_s8_board.py` items: reviewed, accepted for the first prototype (not waived)
+
+`tools/check_s8_board.py` still reports FAIL, and the two tests that encode these items still fail
+(`test_s8 test_placement_rules`, `test_routing test_plane_vias_widths_and_cleanup`); no rule or test was changed.
+
+| Item | Board | Contract | Prototype verdict |
+| --- | --- | --- | --- |
+| `min_widths` (59) | +12V/−12V divider, monitor and soft-start feeds 0.25–0.5 mm; C79/C80 0.8 mm × 1.2–1.5 mm stubs; C24 0.4 mm × 1 mm stub; VPD → R23 0.4 mm; D25/TP26 0.5 mm; J1.A9 VBUS link 0.5 mm F (2.3 mm) + 0.8 mm B + 2+2 vias | class width on any chain that reaches a load pad | **OK.** No load current flows in a flagged segment except the J1.A9 link (≤ 1.5 A of the input, ≈ 5 mW). The main paths are pours, the 1.5 mm +12V and 0.8 mm −12V header buses and the In2 VIN plane; the chain model cannot tell a tap hanging on a bus from the bus |
+| `thermal.D10.copper` | MAIN_IN 57.5 / VPD 43.2 mm² on F, 1 via each, no B.Cu | 400 mm² + 8 vias + 300 mm² B.Cu each | **OK for the prototype, watch it.** ≈ 1.0–1.3 W at 2.5 A input; on this 4-layer board (solid In1 0.21 mm under the pours) roughly 45–60 °C/W, so ≈ 95–110 °C junction at 50 °C ambient. B.Cu islands would add little and perforate the In2 VIN band that carries the input current under D10. TH-2 measures it; disposition: lower-VF Schottky on the same SMC land |
+| `thermal.U2.*` (VIN 45.7, VOUT 78.1, B GND 493 mm²; 9 PGND vias; In1 hole 2.99 mm = the J2.6 GND relief merged with a −12V via antipad, 14 mm from U2) | — | 120 / 150 / 600 mm², ≥ 10 vias, holes ≤ 1.6 mm | **OK.** ≈ 1.0 W at 2.4 A; the allowance is 73.7 °C/W at 2.4 A (55.8 °C/W at the CC limit), TI's 2s2p figure is 43.4 °C/W. TH-1 measures it |
+| `thermal.R109.force_copper` | pad 4: 11.1 mm² F, 3 vias | 150 mm² + 3 vias | **OK.** 0.10 W (0.16 W at the CC limit) in a 1 W part |
+| U12.14 → C52.1 | 7.63 mm | 6 mm | **OK.** 74HC74 at 3.3 V over the In2 +3V3 / In1 GND plane pair |
+| D25.2 ↔ D24.1 | 9.04 mm | 6 mm | **OK.** Same VIN pour; a few nH; D24 itself conducts in the reverse direction too |
+| TP22/TP23 pair | 8.25 mm | 2.54 mm | **OK.** Probing convenience only (CC-1/KS-1 use two probes) |
+| R116.1 in `RA_AGND_ISLAND` | pad edge 0.225 mm inside | no foreign pad | **OK.** Pad only; no SS_P12 track/via/pour in the island (native DRC enforces that) |
+
+Not in the screen: silkscreen labels are 0.8 mm / 0.12–0.15 mm (JLCPCB recommends ≥ 1.0 mm / 0.15 mm), legible but
+small; J2/J3 are keyed, so the `1 / -12V / RED` label is a reminder, not the only guard.
+
+![Board after the fab review: F red, B blue](fab254-FB.png)
+
+## Routing record (2026-11-04)
+
+**ROUTING CLOSED.** **0 unconnected** (ERC 0 / DRC 0 / warnings 0 / parity 0) after the 2026-11-04 continuation
 ([continuation-238.md](continuation-238.md): input power path, USB-PD group, U2/U4 cells, logic blocks, test points on B
 with silkscreen labels, north monitor matrix re-placed, BAD filter group U15/R72/C51 moved; B210 hand-built ordered corridor lanes closed P12_OK and V20_OK, B211–B213
 closed RUN Q10→U13, −12V R99→rail and TIMER_GO; B214 −12V R82→rail by the one approved In2 hop; B215 RUN→Q14 on the approved bottom lane

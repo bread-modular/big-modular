@@ -823,7 +823,7 @@
   "vias": 22
  },
  "artifacts_sha256": {
-  "docs/design.md": "1b317dc5e4f3dac5519578bfc6e7bdde2fa82bef67c3d9b75b8ec5a134a70d1f",
+  "docs/design.md": "e2cd0ffb0aee246135d2dc0cc7bd70614488cff6e4b386e17a30481bf3268975",
   "docs/design/assembly/assembly-report.json": "e8b79e8dacbbb02312f90f7e6531e39f088e939adb5a07eb2c5bb1a16f844f49",
   "docs/design/assembly/board-iso.jpg": "76b5e9aa815636fc70cc09c6537169d3a2bec692866a52fc736d7e36f255e176",
   "docs/design/assembly/board-top.jpg": "897fe8534124648ad99669a4fa73dde859e2a943f787fbf3f491f6bc23290337",
@@ -832,7 +832,7 @@
   "docs/design/assembly/usb-power-45w-assembly.step.zip": "460c3db02a07e65eb293cdbc3700cf8b00e9fafbf153872c34b54700e7ba93b3",
   "docs/design/assembly/usb-power-45w-placement.pdf": "1ffc1fdcac39996ae5f28911ff07bcfd52e37bb31b0b26db7a3e0637ace713a5",
   "docs/design/board-p1.json": "708e8b35c5aa8cf2cb5ef732dfc3f60296981b98835fdc5aa165e6187cabbac8",
-  "docs/design/bom.csv": "117c28c4289515ce890d1459525c3c158e1c49e03203c5182f56ca3934fbd61c",
+  "docs/design/bom.csv": "cfce280d547b39c80aef0b9f2e0c95caaba5aa333c56c14941673c7de96c8b8b",
   "docs/design/build.json": "6645921b8039421c517ea155f8a0b1fd7aeddcbde584c7dca5d9d7f70c104cc4",
   "docs/design/calcs.json": "eb49094d5fac7545bdb2ff8800aebe59105090c004ce8cca2d8ffefcc8ba2ba9",
   "docs/design/hierarchy-parity.json": "fc903b333e8350c91b4e7f6534da284397e7bcbc8b2e2bae7a102debbff80c1c",
@@ -847,12 +847,12 @@
   "docs/design/s92-sourcing.json": "2d953f4dfe02fe44ab76baca8a108e236c82996c1a5140e8a1268af790ff737a",
   "docs/design/s93-sourcing.json": "f73fd2247a2c851e9f2185915a6883e2bedca70a902ba0a3ecf5604402b4ea50",
   "docs/design/schematic-wiring.json": "c043d2e5258c761a2ead11dc951215233436f3b4a598d14271e7e63b3cdf4d65",
-  "docs/design/sourcing.json": "ce01fa6c49b0a8a50440b0e3cba78902e5ba839f05c9eec5ea0d863a1a773b95",
+  "docs/design/sourcing.json": "fbf558b05f456c8a211a22300923520018d5cc521eab6edd09d1331df8ba0679",
   "docs/design/validation.json": "4b4e95096abf05fbc7222d168ec61a2aab06849a1ccb4c3cb3be6048e69874ae",
   "docs/routing/03-ground-plane.json": "4ce3a8ba3dceffdaa31819562f07aa467829dd873357c0c8f139bcc1731a8e20",
   "docs/routing/04-header-buses.json": "2c88c7704f48a07d76a7e16c8a038df688cabe1d09f7ee1047fbae1d40742aaa",
   "docs/routing/05-header-local.json": "41e1897a0e988ba0bb727015f31290b56adbfb702368ef4e3199c475d9cc3c1a",
-  "docs/routing/README.md": "8ae56042f35ea0ada176e0bc0ea1f1b75db04fc90d756f0b079843708f1deef2",
+  "docs/routing/README.md": "c285dfaf049b9d5358e948cd5fa3be504fdc2654bbc0f193fcf8f8f2cddbe761",
   "docs/routing/continuation.md": "d1245b615b643b3cfe23f4b58e39dace29d1929a5f6fa40f672f13e0e455074e",
   "docs/routing/face-front.png": "dfdc69d68bd788709862f8c9f41d516537eccd990423c8de2090727de4dbfce1",
   "docs/routing/input-control-FB.png": "3e6b27d7e75b6c13ef9f873cc9218e8a7750619aa80b5aa4170903b3c717ed33",
@@ -863,7 +863,7 @@
  "base_git_revision": "a5e54ceba506c3f9f73d279d3c0a829d18d3c2d4",
  "component_count": 185,
  "connectivity": {
-  "board_at_batch": "B223",
+  "board_at_batch": "fab254-F3",
   "closed_at_batch": "B217",
   "drc_unconnected_items": 0,
   "note": "electrical connectivity closed; the copper/thermal routing contract is not, so routing_complete stays false"
@@ -878,6 +878,41 @@
   "opens_before": 356,
   "previous_document": "docs/routing/continuation.md"
  },
+ "fab_review_254": {
+  "batches": {
+   "F1": [
+    "SW1 case-pad link deleted",
+    "+12V via (114.5, 69.0) at R109.4, R1_P12_RAIL_F grown north",
+    "D1 anode GND via (81.95, 85.95), R1_PGND_D1_U1_F grown south (tvs.D1 PASS)",
+    "U2 hot-loop PGND via (108.0, 78.05)"
+   ],
+   "F2": [
+    "J2/J3/D8 in_pos_files no (tools/build_s8.py NOT_PLACED, regenerated) + exclude_from_pos_files on the board; J1 exported with --include-through-hole"
+   ],
+   "F3": [
+    "D1 SMBJ22A LCSC C10214 -> C224015, Manufacturer RUILON -> Littelfuse (tools/circuit_s8.py D1_PART, regenerated: exactly those two D1 fields change; same two footprint fields on the board); user: \"update the part to the one with more stocks\" (C10214 59, C224015 1,947 in stock, live 2026-11-06 06:49 UTC)",
+    "docs/design/bom.csv (native kicad-cli), docs/design/sourcing.json (whole-design live audit 06:48-06:51 UTC) and the carrier JLCPCB export redone: only the D1 BOM row changed, CPL identical, Gerbers/drills differ only in the date line",
+    "no copper change: DRC 0 with zone refill, refill byte-identical, check_s8_board.py screen identical to F2"
+   ]
+  },
+  "date": "2026-11-06",
+  "export": {
+   "bom_rows": 64,
+   "d1": "C224015 Littelfuse SMBJ22A (was C10214 RUILON)",
+   "dir": "jlcpcb/",
+   "hand_fitted": [
+    "J2",
+    "J3",
+    "D8"
+   ],
+   "manifest": "jlcpcb/source-sha256.json",
+   "placements": 155,
+   "re_exported": "after F3, 2026-11-06",
+   "status": "prototype export, not supplier-accepted, not built"
+  },
+  "incoming": "user KiCad 10 Update PCB from Schematic + save: SW1 MP case pads on unconnected-(SW1-CASE-PadMP) and ..._1, so the old F.Cu link shorted two nets (DRC shorting_items + solder_mask_bridge)",
+  "notes": "docs/routing/README.md (Fab review for the first prototype)"
+ },
  "final_copper_gate": {
   "failed": [
    "min_widths",
@@ -887,8 +922,7 @@
    "thermal.U2.In1",
    "thermal.U2.PGND_vias",
    "thermal.U2.VIN_area",
-   "thermal.U2.VOUT_area",
-   "tvs.D1"
+   "thermal.U2.VOUT_area"
   ],
   "pass": false,
   "placement_failed": {
@@ -913,7 +947,12 @@
     ]
    ]
   },
-  "report": "research/routing/final-b223/check_s8.json",
+  "pre_routing_failed": [
+   "rule_areas",
+   "placement"
+  ],
+  "prototype_review": "2026-11-06 fab review: every listed item reviewed and accepted for the first prototype, not waived; reasons in docs/routing/README.md (Fab review)",
+  "report": "research/fab254-05-d1/check_s8.json",
   "status": "FAIL"
  },
  "functional_net_count": 84,
@@ -941,16 +980,24 @@
    "total_including_exclusions": 0
   }
  },
- "native_reports": "research/routing/final-b223/native",
+ "native_reports": "research/fab254-05-d1/native",
  "pcb_totals": {
   "copper_zones": 28,
   "rule_areas": 15,
-  "segments": 1151,
-  "vias": 314
+  "segments": 1150,
+  "vias": 317
  },
  "placement_and_pre_routing_invariants": true,
  "ref_pin_net_parity": {
-  "duplicate_nc_pad_aliases": [],
+  "duplicate_nc_pad_aliases": [
+   {
+    "alias": "unconnected-(SW1-CASE-PadMP)",
+    "pad": "MP",
+    "pcb_net": "unconnected-(SW1-CASE-PadMP)_1",
+    "ref": "SW1",
+    "schematic_net": "unconnected-(SW1-CASE-PadMP)"
+   }
+  ],
   "equal": true,
   "extra_connected_pads": [],
   "extra_refs": [],
@@ -964,19 +1011,12 @@
   "pads_without_net": []
  },
  "refreshed": {
+  "by": "fab254 F3 (D1 SMBJ22A re-sourced to Littelfuse C224015, carrier re-export)",
   "changed_hashes": {
-   "artifacts_sha256": [
-    "docs/routing/README.md",
-    "docs/design/placement.json"
-   ],
-   "sources_sha256": [
-    "hardware/usb-power-45w.kicad_pcb",
-    "tools/check_s8_board.py",
-    "tools/s92_contract.py",
-    "tools/test_routing.py"
-   ]
+   "artifacts_sha256": [],
+   "sources_sha256": []
   },
-  "date": "2026-11-04"
+  "date": "2026-11-06"
  },
  "revision": "S9.3-10P / R1-start",
  "routing_complete": false,
@@ -985,11 +1025,11 @@
  },
  "schema_version": 1,
  "sources_sha256": {
-  "hardware/01_usb_input.kicad_sch": "fc042594f24c84740ac5a54fff270282aa926cef582620ed3122db1075e69693",
+  "hardware/01_usb_input.kicad_sch": "808e13dc6f174aca2fa0bb6763eaf6aad6d1427cbdebf8b3e92bd2defd52d9ca",
   "hardware/02_positive_12v.kicad_sch": "1a480f82ac8d72ecc6b0f0eca941660b0fe776be1ec23fd3ceb0f4c76410c710",
   "hardware/03_negative_converter.kicad_sch": "2638107895730738b31ebb4d628c67ccde3227cf8bacdc4b6dba2985c2cd47ae",
   "hardware/04_fault_reset.kicad_sch": "b9b62d41f8d8b7255e38273eff84a56fc1123eefab29fb614a72d3654f685edf",
-  "hardware/05_outputs_status.kicad_sch": "b1e966d2bf7b19d946605a06103856abbca70121e6bf45fa8ba1580724bb54b6",
+  "hardware/05_outputs_status.kicad_sch": "cc922e821ad01b267a08d60125b5a3b05a61557754a099879000b316707199f6",
   "hardware/USBPOWER45.kicad_sym": "ed12b027908fc3eeb89598511157f7e66e16e19e6a65c9a6bc0899018a0b93e3",
   "hardware/USBPOWER45.pretty/C_0603_1608Metric.kicad_mod": "fe0dbfefbb181a0466f93a8de52d84ba7b00fcd9acdbb69575f4128a0af4e405",
   "hardware/USBPOWER45.pretty/C_1206_3216Metric.kicad_mod": "b2e4a08e3aaf40bc587090190c0e3969e962d7ae962c172cce0581ae8327651c",
@@ -1021,17 +1061,18 @@
   "hardware/fp-lib-table": "50a4b397011d6e9d0317ad90dc26b46f95b40bcf401793c98bf0e66a21ba65cd",
   "hardware/sym-lib-table": "23c007ed7a5fbdfdb875fadc8130b067bda56e476121040a79e6b256dab53989",
   "hardware/usb-power-45w.kicad_dru": "b9b70d1fe8d30634cfb631f6de9f5cf2bb77719c3b1633f35bf6f15d7e4ca5c1",
-  "hardware/usb-power-45w.kicad_pcb": "cb3da1882d11dc871ee81433407228f9be7ba04babb3d7a0b1cd42dd27a6612d",
+  "hardware/usb-power-45w.kicad_pcb": "ade2f6bb44c8f0932d626b8e00086bcfd87bcef56730038fe764dfa17b751f76",
   "hardware/usb-power-45w.kicad_pro": "0df9139fc4d633b2912ad7477b94dbc31ec982494b4d7d4082437a020422a973",
   "hardware/usb-power-45w.kicad_sch": "d740924cf985b48c63f32dc9fca074d5a48c266f0da8552468df94214add80fb",
   "panels/front-pcb/usb-power-45w-panel.kicad_pcb": "ce77533392472726fd9ddf08db1a1aab53a8648c25dd9a7890b3a8b45fd9820f",
   "panels/front-pcb/usb-power-45w-panel.kicad_pro": "6fb70c36157f4e827990f7ca0fea610b02d36e1849cad032b590d9ed15ddea90",
-  "tools/build_s8.py": "8565ac0fa809363067078a54a57b2da6439cdb1c18bd6d3d254e950d03df6d98",
+  "tools/build_s8.py": "5826e337ae7d10322299c6be3c63cf6a8d79887baf8a328578d3aca811ed8027",
   "tools/build_s8_assembly.py": "bbca50087aa33ab40caa7618bfb5118dd909691a2a351dc1feb50cfa9d5cba7e",
   "tools/build_s8_board.py": "dd3440f0e79b4ca43a20fa360bcaf70fe89777171e7507148823a0829050d689",
   "tools/build_s8_panel.py": "aaf4cfd42c68f27f2a92a823115d68e94b3cf6b30e9eff5e7dc7d03dc64649a7",
+  "tools/build_schematic.py": "2f815201a3891b7abcd673e8262b298d4058e5bb59a65081e8ff382c43bf718b",
   "tools/check_s8_board.py": "609bdae08d968517c157116e5ce90261d308c4bca06f3129bb29e4762e2d9c8a",
-  "tools/circuit_s8.py": "ccb98bbe865f0cf8a1032faaba5f70a7f2b45526cfcd81b731b92b417c7992d5",
+  "tools/circuit_s8.py": "9a876d030a2a780bc6fff036db2eabb48891dfd5e68a7b3ea6de626d7eb4a84f",
   "tools/hierarchy_s8.py": "95bac8943333aa096427758bfcdb5cb8671809f1f0cf0bbdcddd6246462ca787",
   "tools/mechanics45.py": "28c25ae9b583c4757621c9cae1718cd3775959367253111f27ddea5566776ddc",
   "tools/mechanics_s8.py": "273f6d7084fdef311cf680d621a613761bf68cb11729babbe57f9ad03b400213",
@@ -1054,13 +1095,13 @@
  "tests": {
   "failed": 2,
   "failures": {
-   "test_s8.PlacedBoard.test_placement_rules": "pre-routing gate: rule_areas (R116.1 inside RA_AGND_ISLAND) and placement (TP22/TP23 pair 8.25 mm, D25.2-D24.1 9.04 mm, U12.14-C52.1 7.63 mm); open, user decisions",
-   "test_routing.RoutingR1.test_plane_vias_widths_and_cleanup": "+12V/-12V tracks below 1.5 / 0.8 mm (divider/monitor taps and neck-downs); open"
+   "test_routing.RoutingR1.test_plane_vias_widths_and_cleanup": "+12V/-12V divider/monitor/soft-start taps below 1.5 / 0.8 mm; no load-current neck-down; accepted for the first prototype",
+   "test_s8.PlacedBoard.test_placement_rules": "pre-routing gate: rule_areas (R116.1 pad edge inside RA_AGND_ISLAND) and placement (TP22/TP23 pair 8.25 mm, D25.2-D24.1 9.04 mm, U12.14-C52.1 7.63 mm); accepted for the first prototype"
   },
-  "log": "research/routing/final-b223/tests.log",
+  "log": "research/fab254-05-d1/tests-final.log",
   "log_committed": false,
-  "note": "python3 -B -m unittest discover -s modules/usb-power-45w/tools -p test_*.py -v after B223 and the record refresh; no test weakened",
+  "note": "python3 -B -m unittest discover -s modules/usb-power-45w/tools -p test_*.py -v after fab254 F3 (D1 re-sourced, carrier re-export); no test weakened",
   "status": "FAIL",
-  "tests_run": 86
+  "tests_run": 77
  }
 }

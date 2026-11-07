@@ -150,6 +150,7 @@ def build(output_root=None):
     bs.uid = uid                                   # S8 namespace for every generated UUID
     parts = circuit_s8.circuit()
     bs.NOT_ASSEMBLED = set(bs.NOT_ASSEMBLED) | {p['ref'] for p in parts if p['ref'].startswith('TP')}   # TP17
+    bs.NOT_PLACED = {'J2', 'J3', 'D8'}   # owner-fitted THT, no C-code: in the BOM, not in the JLCPCB CPL
     bs.TEXT_POS = {**bs.TEXT_POS, **circuit_s8.TEXT_POS_S8}
     bs.MIRROR_X = set(bs.MIRROR_X) | circuit_s8.MIRROR_S8
     syms = lib_symbols(parts)
