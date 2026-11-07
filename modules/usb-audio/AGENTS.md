@@ -14,6 +14,22 @@ Module paths are module-relative.
   Other review findings are deferred by the user, not proven resolved. Current
   exports: carrier 74 bottom placements / MCU 23 top placements; no supplier acceptance.
 
+- **USB brace v5** (printed bracket only, no PCB change): same **two-hole v4 panel**
+  and M3x6 screw positions. User hex nut measured 5.5 mm AF x 2.7 mm high. New top-edge
+  loading channels (6.0 mm AF terminal / 3.1 mm height / flared mouth) replace v4's
+  obstructed rear-loading route; load nuts before fitting the bracket. Positively
+  captive only after screws installed. Rear tongue extends **3 mm** into the gap,
+  X6–24 / end Y13, relieved 0.35 mm beyond the unchanged 0.8 mm bare-edge bearing strip.
+  No increase in PCB separation. Retains 5.6/5.8/6.0 mm front-stop options, rear jaw
+  7.75 mm from panel back. Use `usb-brace-v5-stop*.stl`; **no panel reprint needed**
+  if already using `usb-audio-front-panel-v4-print.stl` (STL hash unchanged).
+  Checks include measured nuts and allowance gauges through 41 loading positions,
+  81 bracket insertion positions, 13 board-travel positions, header plastic and
+  underside solder/surface envelopes. Native mechanical checks pass, not physical
+  fit/strength. 6.0 mm does NOT fit nominal 5.9 mm gap; start with 5.6 as fit test.
+  Only 0.2 mm rail margin; actual solder protrusions and cable boot need checking.
+  See `panels/README.md`. No longer screws: M3x8 can hit the PCB. No print started.
+
 ### Prior placement/routing baselines
 
 - **Schematics** (ERC 0 both): carrier S2 `hardware/usb-audio.kicad_sch` (±12 V power, CS4270 codec
