@@ -1,6 +1,11 @@
 # R1 board — routing continuation (workspace 238, 2026-11-04)
 
-**ROUTING CLOSED — NOT FABRICATION-READY.** Native ERC 0; DRC **0 violations / 0 warnings / 0 exclusions / 0 parity /
+> **Superseded status (2026-11-06):** the fab review fixed the two DRC errors a KiCad 10 *Update PCB from Schematic*
+> left at the SW1 case pads, added three vias (+12V at R109, D1 TVS ground, U2 PGND), moved J2/J3/D8 out of the CPL and
+> produced the first-prototype JLCPCB export. See [README.md](README.md) (Fab review) and
+> [`jlcpcb/`](../../jlcpcb/README.md). The log below is the 2026-11-04 routing record.
+
+**ROUTING CLOSED — NOT FABRICATION-READY (as of 2026-11-04).** Native ERC 0; DRC **0 violations / 0 warnings / 0 exclusions / 0 parity /
 0 unconnected** (after B218, unchanged through the B219–B223 clean-up; 40 at the first stop of this session, 356 at the
 last record). `tools/check_s8_board.py` is still **FAIL** (three placement items left for the user and the copper/thermal
 contract items, see Checks). No autorouter, no rule waivers, no exclusions, no clearance changes.

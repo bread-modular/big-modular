@@ -1,9 +1,11 @@
 # usb-power-45w — S9.3-10P / R1 routed
 
-> **Current:** J2/J3 are 10-pin IDC; manual routing closed (2026-11-04, B223), In1 GND poured.
-> ERC 0, DRC 0 violations / warnings / parity errors, **0 unconnected**. `tools/check_s8_board.py` copper/thermal
-> screen still FAIL. Not fabrication-ready.
-> [R1 checkpoint, native views and remaining layout work](routing/README.md).
+> **Current:** J2/J3 are 10-pin IDC; manual routing closed (2026-11-04, B223), In1 GND poured; fab review and
+> first-prototype JLCPCB export on 2026-11-06 ([`jlcpcb/`](../jlcpcb/README.md)): ERC 0, DRC 0 violations / warnings /
+> parity errors, **0 unconnected**. `tools/check_s8_board.py` still lists copper/thermal contract items; each was
+> reviewed and accepted for the first prototype, the bench tests below measure them. Not a supplier-accepted release.
+> D1 SMBJ22A is sourced from Littelfuse (C224015, for stock), the datasheet the D1 numbers below already use.
+> [Fab review, R1 checkpoint and native views](routing/README.md).
 > All S9.3/P2.3 analyses and review claims below are historical; no new startup/thermal qualification is implied.
 
 # usb-power-45w S9.3 / P2.3: strict 3 A start, unrouted

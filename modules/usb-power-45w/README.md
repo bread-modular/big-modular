@@ -2,8 +2,9 @@
 
 USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel.
 
-> **S9.3-10P / R1 (2026-11-04): manually routed, 0 unconnected.** Not a manufacturing release and not
-> bench-qualified: the copper/thermal screen (`tools/check_s8_board.py`) still fails. No fab export.
+> **S9.3-10P / R1: routed, first-prototype fab export in [`jlcpcb/`](jlcpcb/README.md) (2026-11-06).** Not a
+> supplier-accepted release and not bench-qualified. The copper/thermal screen (`tools/check_s8_board.py`) still lists
+> contract items; each was reviewed and accepted for the first prototype ([fab review](docs/routing/README.md)).
 
 ## Open
 
@@ -34,16 +35,22 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
   (185 refs / 84 nets). Manual divide-and-conquer routing, In1 one-piece GND plane, two approved In2 hops.
 - Routing contract enforced by native DRC: 8 net classes, 22 `S92_*` rules, 15 rule areas. **No via-in-pad**:
   U4/U5/U9 sit on hole-free lands with thermal-via fields beside the pads (standard 0.3/0.6 mm tented vias).
-- All parts on F; test points on B with silkscreen labels.
-- **Open:** `check_s8_board.py` FAIL items (U12.14→C52.1 7.63 mm, D25↔D24 9.04 mm, TP22/TP23 pair 8.25 mm,
-  R116.1 inside RA_AGND_ISLAND, minimum widths, U2/R109/D10 thermal copper, D1 GND vias) and width/pour-neck
-  enforcement; see the [routing checkpoint](docs/routing/README.md). The items in [routing-notes.md](docs/design/routing-notes.md) (test points, uncertainty register,
-  routing constraints) are post-prototype acceptance tests, not design blockers.
+- All parts on F; test points on B with silkscreen labels. JLCPCB places 155 parts on the top (J1 included);
+  J2/J3 (Wurth 61201021621) and D8 (3 mm LED) are hand-fitted.
+- **Fab review (2026-11-06):** fixed the two DRC errors left by a KiCad 10 *Update PCB from Schematic* (the SW1
+  case-pad link), added a third +12V output via at R109, a third D1 TVS ground via and a U2 PGND via, and moved
+  J2/J3/D8 out of the CPL so J1 is machine-placed. D1 SMBJ22A was re-sourced to Littelfuse C224015 (1,947 in stock;
+  RUILON C10214 had 59). Export: [`jlcpcb/`](jlcpcb/README.md).
+- **Accepted for the first prototype, still listed by `check_s8_board.py`:** minimum widths (taps and short stubs
+  only), U2/R109/D10 thermal copper (TH-1/TH-2 measure it), U12.14→C52.1 7.63 mm, D25↔D24 9.04 mm, TP22/TP23 pair
+  8.25 mm, R116.1 pad edge inside RA_AGND_ISLAND; see the [fab review](docs/routing/README.md). The items in
+  [routing-notes.md](docs/design/routing-notes.md) (test points, uncertainty register, routing constraints) are
+  post-prototype acceptance tests, not design blockers.
 
 ## Read
 
 - [Design and changelog](docs/design.md)
-- [Routing checkpoint](docs/routing/README.md) · [Routing log](docs/routing/continuation-238.md) · [Routing notes](docs/design/routing-notes.md)
+- [Manufacturing export](jlcpcb/README.md) · [Fab review and routing checkpoint](docs/routing/README.md) · [Routing log](docs/routing/continuation-238.md) · [Routing notes](docs/design/routing-notes.md)
 - [Schematic PDF](docs/usb-power-45w-schematic.pdf) · [BOM](docs/design/bom.csv) · [Sourcing](docs/design/sourcing.json)
 - [Calculations](docs/design/calcs.json) · [Validation](docs/design/validation.json) · [Review record](docs/design/review-s93.json)
 - [Assembly PDF](docs/design/assembly/usb-power-45w-placement.pdf) · [STEP](docs/design/assembly/usb-power-45w-assembly.step.zip)

@@ -1,0 +1,22 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/usb-power-45w.kicad_pcb": "ade2f6bb44c8f0932d626b8e00086bcfd87bcef56730038fe764dfa17b751f76",
+    "hardware/usb-power-45w.kicad_pro": "0df9139fc4d633b2912ad7477b94dbc31ec982494b4d7d4082437a020422a973",
+    "hardware/usb-power-45w.kicad_sch": "d740924cf985b48c63f32dc9fca074d5a48c266f0da8552468df94214add80fb",
+    "hardware/02_positive_12v.kicad_sch": "1a480f82ac8d72ecc6b0f0eca941660b0fe776be1ec23fd3ceb0f4c76410c710",
+    "hardware/04_fault_reset.kicad_sch": "b9b62d41f8d8b7255e38273eff84a56fc1123eefab29fb614a72d3654f685edf",
+    "hardware/01_usb_input.kicad_sch": "808e13dc6f174aca2fa0bb6763eaf6aad6d1427cbdebf8b3e92bd2defd52d9ca",
+    "hardware/05_outputs_status.kicad_sch": "cc922e821ad01b267a08d60125b5a3b05a61557754a099879000b316707199f6",
+    "hardware/03_negative_converter.kicad_sch": "2638107895730738b31ebb4d628c67ccde3227cf8bacdc4b6dba2985c2cd47ae",
+    "panels/front-pcb/usb-power-45w-panel.kicad_pcb": "ce77533392472726fd9ddf08db1a1aab53a8648c25dd9a7890b3a8b45fd9820f",
+    "panels/front-pcb/usb-power-45w-panel.kicad_pro": "6fb70c36157f4e827990f7ca0fea610b02d36e1849cad032b590d9ed15ddea90"
+  },
+  "exports": {
+    "jlcpcb/carrier/usb-power-45w-gerbers.zip": "b396c21f6cf77cb7e000ba9d8b4adf400d38df12761f9866156769b6b438b0b3",
+    "jlcpcb/carrier/bom.csv": "b2171d804ab5d0d9090e01209560af47727878c349f7cae8e172ee8b73e76ffa",
+    "jlcpcb/carrier/positions.csv": "263929f31fbdc5b781b941eb04a1b06c02bc705f4adf89b0fe814dbeb65eb54f",
+    "jlcpcb/panel/usb-power-45w-panel-gerbers.zip": "1c9131f8942e04498a58faef15f1879d6e9c55f2d7ac6a3923fa592ce56f4b79"
+  }
+}

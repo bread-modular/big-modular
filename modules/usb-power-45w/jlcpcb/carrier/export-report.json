@@ -1,0 +1,71 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/254/modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/254/modules/usb-power-45w/hardware/usb-power-45w.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/254/modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb": "ade2f6bb44c8f0932d626b8e00086bcfd87bcef56730038fe764dfa17b751f76",
+    "/home/azero/.okbrain/workspaces/big-modular/254/modules/usb-power-45w/hardware/usb-power-45w.kicad_sch": "d740924cf985b48c63f32dc9fca074d5a48c266f0da8552468df94214add80fb"
+  },
+  "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 4,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "both",
+  "include_through_hole": true,
+  "component_count": 155,
+  "bom_row_count": 64,
+  "excluded": {
+    "D8": "Excluded from position files",
+    "J2": "Excluded from position files",
+    "J3": "Excluded from position files",
+    "TP1": "Excluded from BOM",
+    "TP2": "Excluded from BOM",
+    "TP3": "Excluded from BOM",
+    "TP4": "Excluded from BOM",
+    "TP5": "Excluded from BOM",
+    "TP6": "Excluded from BOM",
+    "TP7": "Excluded from BOM",
+    "TP8": "Excluded from BOM",
+    "TP9": "Excluded from BOM",
+    "TP10": "Excluded from BOM",
+    "TP11": "Excluded from BOM",
+    "TP12": "Excluded from BOM",
+    "TP14": "Excluded from BOM",
+    "TP15": "Excluded from BOM",
+    "TP16": "Excluded from BOM",
+    "TP17": "Excluded from BOM",
+    "TP19": "Excluded from BOM",
+    "TP20": "Excluded from BOM",
+    "TP22": "Excluded from BOM",
+    "TP23": "Excluded from BOM",
+    "TP24": "Excluded from BOM",
+    "TP25": "Excluded from BOM",
+    "TP26": "Excluded from BOM",
+    "TP27": "Excluded from BOM",
+    "TP28": "Excluded from BOM",
+    "TP29": "Excluded from BOM",
+    "TP30": "Excluded from BOM"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "usb-power-45w-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}

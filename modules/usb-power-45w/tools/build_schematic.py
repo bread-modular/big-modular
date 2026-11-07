@@ -91,6 +91,8 @@ BOARD_ONLY_SYMBOLS = {'Conn_02x10_Odd_Even', 'Conn_02x03_Odd_Even'}   # embedded
 
 # Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
 NOT_ASSEMBLED = {f'TP{i}' for i in range(1, 17)}
+# Hand-fitted parts: a BOM row (the owner buys them) but no CPL row (not machine-placed).
+NOT_PLACED = set()
 
 
 def uid(key):
@@ -489,6 +491,7 @@ def flat_sheet(parts, lib_syms, project=PROJECT, key='root', title='Big Modular 
         x, y = p['at']
         is_flag = p['ref'].startswith('#')
         assembled = not is_flag and p['ref'] not in NOT_ASSEMBLED
+        placed = assembled and p['ref'] not in NOT_PLACED
         (rn, rxy, ra, rj), (vn, vxy, va, vj) = text_at(p, sym)
         props = [('Reference', p['ref'], rxy, is_flag, ra, rj), ('Value', p['value'], vxy, is_flag, va, vj),
                  ('Footprint', f"{LIB}:{FP[p['fp']]}" if p['fp'] else '', (x, y), True, 0, None),
@@ -504,7 +507,7 @@ def flat_sheet(parts, lib_syms, project=PROJECT, key='root', title='Big Modular 
                 [atom('unit'), p['unit']], [atom('exclude_from_sim'), atom('no')],
                 [atom('in_bom'), atom('yes' if assembled else 'no')],
                 [atom('on_board'), atom('no' if is_flag else 'yes')],
-                [atom('in_pos_files'), atom('yes' if assembled else 'no')], [atom('dnp'), atom('no')],
+                [atom('in_pos_files'), atom('yes' if placed else 'no')], [atom('dnp'), atom('no')],
                 [atom('uuid'), uid('sym/' + ukey)]]
         for name, value, (px, py), hide, ang, just in props:
             prop = [atom('property'), name, value, [atom('at'), r(px), r(py), ang],

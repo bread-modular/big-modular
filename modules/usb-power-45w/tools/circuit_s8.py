@@ -93,6 +93,9 @@ D24_PART = dict(LCSC='C151257', MPN='SMBJ20A', Manufacturer='Littelfuse',
                 Alternates='C364296 MDD SMBJ20A; C151922 BORN SMBJ20A (VBR >= 22.2 V and VC <= 32.4 V at >= 18.5 A)')
 D26_PART = dict(LCSC='C315990', MPN='SMBJ14A', Manufacturer='Littelfuse',
                 Alternates='C152106 BORN SMBJ14A; C840775 MDD SMBJ14A (VBR >= 15.6 V and VC <= 23.2 V at >= 25.8 A)')
+# fab254 (2026-11-06, stock): VPD TVS D1 SMBJ22A from Littelfuse, the maker of D24/D26 on the same D_SMB land, instead
+# of the S7 RUILON C10214 (59 in stock). Same MPN; the Littelfuse SMBJ rows are the calcs basis (VBR 24.4-26.9 V, VC 35.5 V).
+D1_PART = dict(LCSC='C224015', MPN='SMBJ22A', Manufacturer='Littelfuse')
 S91_ADDED = ('Q14', 'Q15', 'R112', 'R113', 'R114', 'D24', 'D25', 'D26')
 # S9.2: N_EN_RETURN default (item 5) and the dedicated acceptance test pads (1.5 mm, docs/design/routing-notes.md).
 S92_TP = {'TP20': 'P12_VOUT', 'TP22': 'P12_ISP', 'TP23': 'P12_ISN', 'TP24': '+12V', 'TP25': '-12V', 'TP26': 'VIN',
@@ -274,6 +277,8 @@ def circuit():
         if 'Note' in p['fields']:
             for old, new in MAIN_RENAME.items():
                 p['fields']['Note'] = p['fields']['Note'].replace(old, new)
+
+    by['D1']['fields'].update(D1_PART)
 
     # ---- S9.0 step 2: 15 V input (CH224A request, U5 UVLO) and the +12V four-switch buck-boost
     by['R1'].update(value='56k')
