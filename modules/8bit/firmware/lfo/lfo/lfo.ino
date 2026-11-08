@@ -3,11 +3,13 @@
 #include <avr/interrupt.h>
 #include "SoftwareSerial.h"
 #include "WaveTables.h"
+#include "LfoMath.h"
 #include <avr/pgmspace.h>
 #include <util/atomic.h>
 
 // No MIDI: the LFO free-runs from P1/P2 and CV in (the LFO panel has no MIDI
-// jack). P1 = RATE (+ CV in), P2 = WAVE. MODE (PA4) toggles the output range:
+// jack). P1 = RATE (+ CV in, exponential FM), P2 = WAVE. MODE (PA4) toggles the
+// output range:
 //
 //   * BIPOLAR (default, at power-up): full DAC 0..255 -> about -5..+5 V; LED dim.
 //   * UNIPOLAR: wave scaled into the upper half, DAC 128..255 -> about 0..+5 V;
@@ -15,6 +17,9 @@
 //
 // The LED follows the wave's position within the active range (bottom = off,
 // top = its maximum brightness); the range picks the maximum.
+//
+// Rate and shape maths: LfoMath.h (0.01 Hz .. 40.6 Hz on the knob, ~1 V/oct CV
+// up to 2 kHz; sine, triangle, saw, square, complex 1, complex 2, random S&H).
 
 #define GATE_PIN PIN_PA7
 #define LOGGER_PIN_TX PIN_PB4
@@ -24,11 +29,6 @@
 #define TOGGLE_LED PIN_PA5
 #define PIN_CV_IN PIN_PB0   // 8bit CV in: -5.5..+5.5 V -> 0..1023, 0 V ~ 509
 
-// CV in adds to the P1 rate knob before the rate curve (ADC counts, ~10.8 mV each):
-// +5 V ~ +463 counts, close to half the knob travel. Unpatched (tip grounded) = 0 V.
-constexpr int16_t CV_IN_ZERO = 509;      // calibrate per unit (docs/research.md)
-constexpr int16_t CV_IN_DEADBAND = 3;    // counts around 0 V treated as 0 V
-
 constexpr uint8_t BUTTON_DEBOUNCE_MS = 30;
 constexpr uint8_t LED_BIPOLAR_SHIFT = 3;       // BIPOLAR LED = wave / 8 (dim)
 constexpr uint8_t UNIPOLAR_ZERO = 128;         // DAC code for ~0 V at the output
@@ -37,47 +37,27 @@ constexpr uint8_t UNIPOLAR_ZERO = 128;         // DAC code for ~0 V at the outpu
 #define F_CPU 20000000UL
 #endif
 
-constexpr uint16_t LFO_SAMPLE_RATE_HZ = 1000;
-constexpr uint32_t LFO_MIN_FREQ_MILLIHZ = 100;   // 0.1 Hz
-constexpr uint32_t LFO_MAX_FREQ_MILLIHZ = 20000; // 20 Hz
+// 40 kHz sample rate (BM: 1 kHz) so FM can push the LFO to audio rate.
+// TCB periodic interrupt: CCMP + 1 clocks per period.
 constexpr uint32_t TCB_CLOCK_HZ = F_CPU / 2;
-constexpr uint16_t TCB_COMPARE_VALUE = TCB_CLOCK_HZ / LFO_SAMPLE_RATE_HZ;
+constexpr uint16_t TCB_COMPARE_VALUE = TCB_CLOCK_HZ / LfoMath::kSampleRateHz - 1;
 
 // TODO: Change this to real serial port. (We need to update the schematic for that)
 SoftwareSerial logger(-1, LOGGER_PIN_TX);
 
-volatile uint32_t phaseAccumulator = 0;
+uint32_t phaseAccumulator = 0;          // ISR only
 volatile uint32_t phaseIncrement = 0;
-volatile uint8_t waveformIndexA = WaveTables::Sine;
-volatile uint8_t waveformIndexB = WaveTables::Sine;
-volatile uint8_t waveformBlend = 0;
+volatile uint8_t shapeA = LfoMath::Sine;
+volatile uint8_t shapeB = LfoMath::Sine;
+volatile uint8_t shapeBlend = 0;
 volatile uint8_t latestLfoSample = 0;   // last wave sample, 0..255 (before range scaling)
 volatile bool unipolar = false;          // MODE: false = -5..+5 V, true = 0..+5 V
+uint16_t randomState = 0xACE1;          // ISR only after setup()
+uint8_t randomHeld = 128;               // ISR only: the S&H value of this cycle
+uint16_t rateKnob = 0;                  // last P1 reading
 
-uint32_t mapCvToFrequencyCurve(uint16_t cvValue) {
-  uint32_t range = LFO_MAX_FREQ_MILLIHZ - LFO_MIN_FREQ_MILLIHZ;
-  uint32_t normalized = ((uint32_t)cvValue << 16) / 1023UL; // Q16 0-1
-  uint32_t normalizedSq = ((uint64_t)normalized * normalized) >> 16; // Q16
-  uint32_t normalizedCube = ((uint64_t)normalizedSq * normalized) >> 16; // Q16
-  uint32_t curve = (normalized + normalizedSq + normalizedCube) / 3;
-  uint32_t freqMilliHz = LFO_MIN_FREQ_MILLIHZ + (((uint64_t)range * curve) >> 16);
-  if (freqMilliHz > LFO_MAX_FREQ_MILLIHZ) {
-    freqMilliHz = LFO_MAX_FREQ_MILLIHZ;
-  }
-  return freqMilliHz;
-}
-
-uint32_t calculatePhaseIncrement(uint32_t freqMilliHz) {
-  if (freqMilliHz < LFO_MIN_FREQ_MILLIHZ) {
-    freqMilliHz = LFO_MIN_FREQ_MILLIHZ;
-  }
-  uint64_t numerator = (uint64_t)freqMilliHz << 32;
-  return numerator / (1000ULL * LFO_SAMPLE_RATE_HZ);
-}
-
-void updateLfoPhaseIncrement(uint32_t freqMilliHz) {
+void updateLfoPhaseIncrement(uint32_t newIncrement) {
   static uint32_t lastIncrement = 0;
-  uint32_t newIncrement = calculatePhaseIncrement(freqMilliHz);
   if (newIncrement == lastIncrement) {
     return;
   }
@@ -87,47 +67,38 @@ void updateLfoPhaseIncrement(uint32_t freqMilliHz) {
   }
 }
 
-uint16_t clampCv(int16_t v) {
-  if (v < 0) {
-    return 0;
-  }
-  if (v > 1023) {
-    return 1023;
-  }
-  return (uint16_t)v;
-}
-
-// P1 knob + CV in offset, clamped to the 0..1023 range of the rate curve.
-uint16_t rateControl(uint16_t knob, uint16_t cvIn) {
-  int16_t offset = (int16_t)cvIn - CV_IN_ZERO;
-  if (offset >= -CV_IN_DEADBAND && offset <= CV_IN_DEADBAND) {
-    offset = 0;
-  }
-  return clampCv((int16_t)knob + offset);
+void updateRate(uint16_t cvIn) {
+  updateLfoPhaseIncrement(LfoMath::phaseIncrement(LfoMath::ratePitch(rateKnob, cvIn)));
 }
 
 void updateWaveformMix(uint16_t cvValue) {
-  const uint8_t maxIndex = WaveTables::kWaveformCount - 1;
-  const uint32_t scale = (uint32_t)maxIndex << 8;
-  uint32_t scaled = ((uint32_t)cvValue * scale) / 1023UL;
-  uint8_t segment = scaled >> 8;
-  uint8_t blend = scaled & 0xFF;
-
-  uint8_t wfA = segment;
-  uint8_t wfB;
-  if (segment >= maxIndex) {
-    wfA = maxIndex;
-    wfB = maxIndex;
-    blend = 0;
-  } else {
-    wfB = segment + 1;
-  }
-
+  LfoMath::ShapeMix mix = LfoMath::shapeMix(cvValue);
   ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-    waveformIndexA = wfA;
-    waveformIndexB = wfB;
-    waveformBlend = blend;
+    shapeA = mix.a;
+    shapeB = mix.b;
+    shapeBlend = mix.blend;
   }
+}
+
+// One shape at a phase. Tables are read with linear interpolation between
+// entries (phase bits 23..16), so slow rates move in single DAC steps instead
+// of the 256-entry staircase.
+static inline uint8_t readShape(uint8_t shape, uint32_t phase) {
+  uint8_t index = phase >> 24;
+  uint8_t frac = phase >> 16;
+  WaveTables::Waveform table;
+  switch (shape) {
+    case LfoMath::Sine: table = WaveTables::Sine; break;
+    case LfoMath::Triangle: table = WaveTables::Triangle; break;
+    case LfoMath::Saw: table = WaveTables::Saw; break;
+    case LfoMath::Square: return (index < 128) ? 255 : 0;
+    case LfoMath::Complex1: table = WaveTables::Complex1; break;
+    case LfoMath::Complex2: table = WaveTables::Complex2; break;
+    default: return randomHeld;
+  }
+  uint8_t a = WaveTables::readSample(table, index);
+  uint8_t b = WaveTables::readSample(table, (uint8_t)(index + 1));
+  return LfoMath::lerp8(a, b, frac);
 }
 
 
@@ -164,7 +135,7 @@ void setupTimer() {
     // So, 1 tick is 0.1us
     TCB0.CTRLA = TCB_CLKSEL_CLKDIV2_gc; // clock div by 2
 
-    // Configure compare value for the desired sample rate (1 kHz for the LFO)
+    // Configure compare value for the sample rate (40 kHz)
     TCB0.CCMP = TCB_COMPARE_VALUE;
   
     // Enabling inturrupts
@@ -177,24 +148,26 @@ void setupTimer() {
 
 // TCB0 Interrupt Service Routine
 ISR(TCB0_INT_vect) {
-  phaseAccumulator += phaseIncrement;
-  uint8_t tableIndex = phaseAccumulator >> 24; // use the top 8 bits as the table index
-  uint8_t wfA = waveformIndexA;
-  uint8_t wfB = waveformIndexB;
-  uint8_t blend = waveformBlend;
+  uint32_t previous = phaseAccumulator;
+  uint32_t phase = previous + phaseIncrement;
+  phaseAccumulator = phase;
+  if (phase < previous) {
+    // New cycle: next sample & hold value.
+    randomState = LfoMath::nextRandom(randomState);
+    randomHeld = randomState >> 8;
+  }
+  uint8_t wfA = shapeA;
+  uint8_t wfB = shapeB;
+  uint8_t blend = shapeBlend;
 
-  uint8_t sampleA = WaveTables::readSample(static_cast<WaveTables::Waveform>(wfA), tableIndex);
-  uint8_t sample = sampleA;
-  if (blend != 0 && wfA != wfB) {
-    uint8_t sampleB = WaveTables::readSample(static_cast<WaveTables::Waveform>(wfB), tableIndex);
-    uint16_t weightA = 256 - blend;
-    uint16_t weightB = blend;
-    sample = ((uint32_t)sampleA * weightA + (uint32_t)sampleB * weightB) >> 8;
+  uint8_t sample = readShape(wfA, phase);
+  if (wfA != wfB) {
+    sample = LfoMath::lerp8(sample, readShape(wfB, phase), blend);
   }
   DAC0.DATA = unipolar ? (UNIPOLAR_ZERO + (sample >> 1)) : sample;
   latestLfoSample = sample;
 
-  // Clear the interrupt flag∫
+  // Clear the interrupt flag
   TCB0.INTFLAGS = TCB_CAPT_bm;
 }
 
@@ -221,12 +194,16 @@ void setup() {
   DAC0.DATA = 0;
 
   // Prime the phase increment and waveform so the LFO starts immediately
-  // (first ADC read discarded).
+  // (first ADC read discarded). The knob noise seeds the S&H shape.
   (void)analogRead(PIN_CV1);
-  uint16_t initialRate = analogRead(PIN_CV1);
-  uint16_t initialCvIn = analogRead(PIN_CV_IN);
-  updateLfoPhaseIncrement(mapCvToFrequencyCurve(rateControl(initialRate, initialCvIn)));
-  updateWaveformMix(analogRead(PIN_CV2));
+  rateKnob = analogRead(PIN_CV1);
+  uint16_t waveKnob = analogRead(PIN_CV2);
+  updateRate(analogRead(PIN_CV_IN));
+  updateWaveformMix(waveKnob);
+  randomState ^= (rateKnob << 6) ^ waveKnob;
+  if (randomState == 0) {
+    randomState = 0xACE1;
+  }
 
   // Timer related
   setupTimer();
@@ -249,11 +226,14 @@ void loop() {
   // Write to the GATE
   digitalWrite(GATE_PIN, sample > 127);
 
-  // RATE = P1 (+ CV in), WAVE = P2
-  uint16_t rateKnob = analogRead(PIN_CV1);
-  uint16_t waveKnob = analogRead(PIN_CV2);
-  uint16_t cvIn = analogRead(PIN_CV_IN);
-  uint32_t freqMilliHz = mapCvToFrequencyCurve(rateControl(rateKnob, cvIn));
-  updateLfoPhaseIncrement(freqMilliHz);
-  updateWaveformMix(waveKnob);
+  // CV in every pass, so FM follows it at the loop rate (several kHz); the
+  // knobs take turns. RATE = P1 (+ CV in), WAVE = P2.
+  static bool readRateKnob = true;
+  if (readRateKnob) {
+    rateKnob = analogRead(PIN_CV1);
+  } else {
+    updateWaveformMix(analogRead(PIN_CV2));
+  }
+  readRateKnob = !readRateKnob;
+  updateRate(analogRead(PIN_CV_IN));
 }

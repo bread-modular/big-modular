@@ -65,7 +65,7 @@ RV3 shaft hole (Y73.5); labels `RATE` (P1) and `WAVE` (P2) instead of `P1`/`P2`,
 (no panel hole; the MIDI input parts behind it can stay, the firmware never enables the
 UART). **Don't fit RV3**; solder a wire from the RV3 pin 3 pad (DAC_R) to the
 pin 2 wiper pad (FILT). That is the knob fully CW (R7 10k + C13 1n, ~15.9 kHz corner,
-no effect on a 0.1-20 Hz LFO). Without the bridge the DAC has no path to U3 and the
+no effect on the LFO, ~8x above its 2 kHz FM ceiling). Without the bridge the DAC has no path to U3 and the
 output is silent. RV3 pin 1 stays open, as it is on the stock build.
 
 ## Back (B): SMD for JLC assembly, plus headers
