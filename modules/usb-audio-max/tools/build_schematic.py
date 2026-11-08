@@ -103,7 +103,7 @@ FP = {
     'SWK2': 'K2-1808SN-A4SW-01', 'USBC_V': 'USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical',
     'H2x5': 'PinHeader_2x05_P2.54mm_Vertical', 'H1x10': 'PinHeader_1x10_P2.54mm_Vertical',
     'H1x4': 'PinHeader_1x04_P2.54mm_Vertical',
-    'TQFP64EP': 'Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm_ThermalVias',
+    'TQFP64EP': 'PCM3168A_HTQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask7.4x7.4mm_ThermalVias',
     'SC70-6': 'SOT-363_SC-70-6',
 }
 

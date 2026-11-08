@@ -45,6 +45,21 @@ Module paths are module-relative.
   VCOM_REF jog and V3_IN hop re-routed. Carrier DRC 0 / unconnected 0 / parity 0, shared check ERC/DRC 0,
   courtyards >= 1.0 mm from the edge (`tools/check_edges.py`), SMD >= 2.03 mm from jack pads, no vias in
   SMD pads, no In1 tracks, In2 planes one piece; panel DRC 0.
+- **Fab-review fixes + JLCPCB export** (2026-11-08, user: fix the review findings and export; review in
+  `research/fab-review-2026-11-08/REVIEW.md`, fix scripts and reports in `research/fab-fix/`):
+  F1 MCU board pours refilled and saved (the saved fills had 48 clearance errors; the exporter plots the
+  saved fills) and the JLC04161H-7628 stackup block recorded (copied from modules/usb-audio's MCU board);
+  F2 Q1 BCP56 collector copper: `/V5_IN` pours `Q1_HEATSINK` on B (around the tab, 33.3 mm2 filled) and F
+  (under J27/Q1, 131.4 mm2 filled), solid pad connection, 8 new 0.6/0.3 thermal vias beside (not in) the
+  tab, tied to it by short 0.6 mm B tracks (KiCad re-nets track-less vias inside the In1 GND plane to GND);
+  F3 U3 footprint renamed `PCM3168A_HTQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask7.4x7.4mm_ThermalVias`
+  (`tools/import_footprints.py` `pcm3168a_land`, applied to the pinned library + the placed U3, schematic
+  footprint fields and `tools/build_schematic.py` updated): mask 5 x 5 -> 7.4 x 7.4 mm over the 7.25 x
+  7.00 mm PowerPAD, 25 round 1.15 mm paste apertures between the thermal holes (51 % of the PowerPAD),
+  thermal holes solid to the planes. Shared check: ERC 0, DRC 0 (incl. warnings), unconnected 0, native
+  parity 0 on both; saved-fill DRC (no refill) 0 on both; only the known 4-pin `{slash}` escape in the
+  XML ref/pin/net comparison (carrier). JLCPCB sets in `jlcpcb/main/` (carrier + panel) and `jlcpcb/mcu/`
+  (`jlcpcb/README.md`), not supplier-accepted, not built.
 - Open (pre-routing note kept for history): group-by-group SMD placement and manual routing of both boards (floorplan proposal and buck layout
   rules in `docs/research.md` sections 5 and 7); firmware (96 kHz SPI1 path is untested on the CH32V307).
 

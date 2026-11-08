@@ -15,7 +15,8 @@ Sources are read-only:
 - Bread Modular footprints, copper unedited (preferred: the user's builds prove them): the
   K2-1808SN-A4SW-01 BOOT/RESET switches (courtyard added, pad-overlapping silk removed), as
   modules/32bit;
-- the installed KiCad stock library for everything else, unedited;
+- the installed KiCad stock library for everything else, unedited except the PCM3168A PowerPAD land
+  (`pcm3168a_land`: mask, paste and solid thermal holes, saved under `PCM3168A_LAND`);
 - one footprint drawn here from the manufacturer drawing: the HRO TYPE-C-31-D-15 vertical USB-C
   (recommended PCB layout, modules/usb-audio docs/research.md section 5), with the proxy model
   copied from modules/usb-audio (made there by its tools/make_usbc_model.py).
@@ -75,6 +76,16 @@ BM_COURTYARD = {'K2-1808SN-A4SW-01': (2.95, 1.9)}
 # Footprints whose plated thermal vias get the 'heatsink' fabrication property (metadata only):
 # KiCad then counts the SMD part as SMD (no footprint_type_mismatch); copper is unchanged.
 HEATSINK_VIAS = {'Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm_ThermalVias': 36}
+
+# Stock footprint -> device-specific land saved under a new name (fab review F3, 2026-11-08).
+# PCM3168A PowerPAD 7.25 x 7.00 mm (TI SBAS452A section 12.1.11); the stock PAP land exposes only
+# 5 x 5 mm (49 % of it). Edits: solder-mask opening 5 x 5 -> 7.4 x 7.4 (covers the pad in either
+# orientation, 1.2 mm mask web to the signal pads); paste 9 x 1.34 mm squares (16.2 mm2, some over the
+# thermal holes) -> 25 round 1.15 mm apertures centred between the thermal holes on a 1.3 mm grid
+# (26.0 mm2 = 51 % of the PowerPAD, >= 0.09 mm from every hole's 0.5 mm annulus, so the paste does not
+# sit on a hole); the 36 thermal holes connect solid to every plane (TI SLMA002: no thermal reliefs).
+PCM3168A_LAND = 'PCM3168A_HTQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask7.4x7.4mm_ThermalVias'
+RENAME = {'Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm_ThermalVias': PCM3168A_LAND}
 
 # BM footprint -> 3D model (in USBAUDIO.3dshapes) and its recorded source.
 BM_MODEL = {}
@@ -148,6 +159,39 @@ def heatsink(fp, name):
     for p in vias:
         p.SetProperty(pcbnew.PAD_PROP_HEATSINK)
     return f'fabrication property "heatsink" on the {len(vias)} plated thermal-via pads (metadata)'
+
+
+def pcm3168a_land(fp):
+    """PCM3168A PowerPAD mask/paste and solid thermal holes (see PCM3168A_LAND). Works on the library
+    footprint and on a placed (rotated by n x 90 deg, flipped) copy: the edited geometry is symmetric
+    about the footprint origin."""
+    ctr = fp.GetPosition()
+    bare = [p for p in fp.Pads() if not p.GetNumber()]
+    mask = [p for p in bare if p.IsOnLayer(pcbnew.F_Mask) or p.IsOnLayer(pcbnew.B_Mask)]
+    paste = [p for p in bare if p not in mask]
+    assert len(mask) == 1 and len(paste) == 9, (len(mask), len(paste))
+    mask[0].SetSize(pcbnew.PADSTACK.ALL_LAYERS, pcbnew.VECTOR2I(mm(7.4), mm(7.4)))
+    layers = paste[0].GetLayerSet()
+    for p in paste:
+        fp.Remove(p)
+    grid = (-2.6, -1.3, 0.0, 1.3, 2.6)
+    for x in grid:
+        for y in grid:
+            pad = add_pad(fp, '', pcbnew.PAD_ATTRIB_SMD, pcbnew.PAD_SHAPE_CIRCLE, (0, 0), (1.15, 1.15),
+                          layers=layers)
+            pad.SetPosition(pcbnew.VECTOR2I(ctr.x + mm(x), ctr.y + mm(y)))
+            pad.SetOrientation(fp.GetOrientation())
+    holes = [p for p in fp.Pads() if p.GetAttribute() == pcbnew.PAD_ATTRIB_PTH]
+    assert len(holes) == 36, len(holes)
+    for p in holes:
+        p.SetLocalZoneConnection(pcbnew.ZONE_CONNECTION_FULL)
+    fp.SetLibDescription('TI PAP (HTQFP-64 PowerPAD) land for the PCM3168A: KiCad Texas_TQFP-64-1EP_10x10mm_P0.5mm_'
+                         'EP8x8mm_Mask5x5mm_ThermalVias with the solder mask opened to 7.4 x 7.4 mm (PowerPAD 7.25 x '
+                         '7.00 mm, TI SBAS452A 12.1.11), 25 round 1.15 mm paste apertures between the thermal holes '
+                         'and solid thermal-hole plane connections (TI SLMA002)')
+    return ('PCM3168A land: F.Mask EP opening 5 x 5 -> 7.4 x 7.4 mm; F.Paste 9 x 1.34 mm squares -> 25 x 1.15 mm '
+            'round apertures on a 1.3 mm grid between the thermal holes (26.0 mm2); 36 thermal holes zone '
+            f'connection solid; saved as {PCM3168A_LAND}')
 
 
 # HRO TYPE-C-31-D-15 recommended PCB layout (drawing 2023-10-27; frame: pad columns along Y, A row at -X).
@@ -244,7 +288,8 @@ def main():
     for lib, name in STOCK_FOOTPRINTS:
         src = STOCK / f'{lib}.pretty' / f'{name}.kicad_mod'
         fp = io.FootprintLoad(str(src.parent), name)
-        fp.SetFPID(pcbnew.LIB_ID(LIBNAME, name))
+        out = RENAME.get(name, name)
+        fp.SetFPID(pcbnew.LIB_ID(LIBNAME, out))
         edit = proxy_model(fp, name)
         if name in MODEL_NONE:
             missing = [m.m_Filename for m in fp.Models()]
@@ -252,6 +297,8 @@ def main():
             edit = f'3D model {missing} is not shipped by KiCad 10; removed (no proxy)'
         if name in HEATSINK_VIAS:
             edit = '; '.join(filter(None, [edit, heatsink(fp, name)]))
+        if out == PCM3168A_LAND:
+            edit = '; '.join(filter(None, [edit, pcm3168a_land(fp)]))
         if name in SILK_OFF_PADS:
             # F.SilkS outline items that cross the pads (the LED sits under the panel, no silk visible)
             pads = [p.GetBoundingBox() for p in fp.Pads()]
@@ -261,9 +308,9 @@ def main():
                 fp.Delete(item)
             edit = f'removed {len(gone)} F.SilkS outline item(s) crossing the pads'
         io.FootprintSave(str(LIB), fp)
-        record['footprints'][name] = {'source': rel(src), 'source_sha256': sha(src),
-                                      'license': 'KiCad library CC-BY-SA-4.0-with-exception',
-                                      'edits': edit or 'none (native load/save only)'}
+        record['footprints'][out] = {'source': rel(src), 'source_sha256': sha(src),
+                                     'license': 'KiCad library CC-BY-SA-4.0-with-exception',
+                                     'edits': edit or 'none (native load/save only)'}
     for libdir, name in BM_FOOTPRINTS:
         src = bm / libdir / f'{name}.kicad_mod'
         fp = io.FootprintLoad(str(src.parent), name)

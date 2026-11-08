@@ -79,3 +79,22 @@
 - Panel: 50.5 x 128.5 x 1.6 mm, rail holes X12.58 / X43.06 (2HP case grid phase as
   `case/tools/build_case.py` asserts).
 - Not done: SMD placement, routing, JLCPCB export / assembly audit, printed panel, firmware, bench.
+
+## Verification (fab-review fixes + export, 2026-11-08)
+
+- Review `research/fab-review-2026-11-08/REVIEW.md` (F1-F3); fixes and raw reports in `research/fab-fix/`.
+- Shared `kicad_tools.py check`, both profiles: ERC 0, DRC 0 including warnings (no
+  `lib_footprint_mismatch` on the edited U3), unconnected 0, native parity 0. Carrier exits 1 only for
+  the known `{slash}` escape on 4 pins (C17.1, U9.5, R15.1, U3.44); MCU board passes.
+- Native DRC on the **saved** fills (`kicad-cli pcb drc --schematic-parity --severity-all`, no
+  refill): 0 / 0 / 0 on both boards (MCU was 48 errors before the refill + save). Panel DRC 0.
+- `research/fab-fix/verify.py`: no vias in SMD pads or their mask openings, no In1/In2 tracks, no
+  zero-length segments; carrier In1 GND one main piece + the same 8 small pad pieces as before, In2
+  islands one piece each; MCU planes one piece each. Q1 tab-connected `/V5_IN` fill 164.7 mm2 (F 131.4 +
+  B 33.3, one piece each) with 10 vias beside the tab. U3: mask 7.4 x 7.4, 25 x 1.15 mm paste
+  (26.0 mm2), >= 0.094 mm from every thermal-hole annulus, 36 holes solid.
+- `tools/check_edges.py`: courtyards >= 1.0 mm (carrier) / 1.03 mm (MCU) from the edges; closest SMD
+  pad to a jack pad 2.03 mm (R8-J28).
+- JLCPCB export + strict-live audit: `jlcpcb/README.md`.
+- Not done: Q1 / U3 temperature and +5VA loop on the bench, firmware, 96 kHz SPI1 path.
+

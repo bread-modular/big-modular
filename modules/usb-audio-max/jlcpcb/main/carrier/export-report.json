@@ -1,0 +1,59 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/264/modules/usb-audio-max/hardware/usb-audio-max.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/264/modules/usb-audio-max/hardware/usb-audio-max.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/264/modules/usb-audio-max/hardware/usb-audio-max.kicad_pcb": "4538e0b1b4649f96c434d498842432fb94430f2f93db0ba591875b57d74f3bd5",
+    "/home/azero/.okbrain/workspaces/big-modular/264/modules/usb-audio-max/hardware/usb-audio-max.kicad_sch": "60bb328ce1726b16eba69fa9a2ec453bc43e84a83ee524abe2dd6aca30c5e4fb"
+  },
+  "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 4,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "bottom",
+  "include_through_hole": false,
+  "component_count": 179,
+  "bom_row_count": 38,
+  "excluded": {
+    "J1": "Not an SMD footprint (use --include-through-hole)",
+    "J2": "Not an SMD footprint (use --include-through-hole)",
+    "J3": "Not an SMD footprint (use --include-through-hole)",
+    "J4": "Not an SMD footprint (use --include-through-hole)",
+    "J11": "Not an SMD footprint (use --include-through-hole)",
+    "J12": "Not an SMD footprint (use --include-through-hole)",
+    "J13": "Not an SMD footprint (use --include-through-hole)",
+    "J14": "Not an SMD footprint (use --include-through-hole)",
+    "J15": "Not an SMD footprint (use --include-through-hole)",
+    "J16": "Not an SMD footprint (use --include-through-hole)",
+    "J21": "Not an SMD footprint (use --include-through-hole)",
+    "J22": "Not an SMD footprint (use --include-through-hole)",
+    "J23": "Not an SMD footprint (use --include-through-hole)",
+    "J24": "Not an SMD footprint (use --include-through-hole)",
+    "J25": "Not an SMD footprint (use --include-through-hole)",
+    "J26": "Not an SMD footprint (use --include-through-hole)",
+    "J27": "Not an SMD footprint (use --include-through-hole)",
+    "J28": "Not an SMD footprint (use --include-through-hole)"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "usb-audio-max-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}
