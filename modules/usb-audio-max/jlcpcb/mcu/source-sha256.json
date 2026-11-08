@@ -1,0 +1,14 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/usb-audio-max-mcu.kicad_pcb": "39ae92f71854281a70d053b2086155c5a0e12fdfd4d78d21b53fb239a9b95503",
+    "hardware/usb-audio-max-mcu.kicad_pro": "4ef0e47ef1a29ea21a5cf080105c3aeec870b59cbe2f3328fda52dfd571db9be",
+    "hardware/usb-audio-max-mcu.kicad_sch": "709e97d1852fd5b5e4364237aac0331792039be90fd46f37d0b2980506e2f365"
+  },
+  "exports": {
+    "jlcpcb/mcu/board/usb-audio-max-mcu-gerbers.zip": "da8b1cd2cde5e27ff2f30e806f41ebeb453e1216222e9254655cae8d96c652b5",
+    "jlcpcb/mcu/board/bom.csv": "ba36a1982227e5e9a52ad74dab5681c070d2f0aa58257aa56aa71a7198a326fb",
+    "jlcpcb/mcu/board/positions.csv": "0282a32ab9528f12c61c20ca09fba9964564464d34324b1e4946748e354d524c"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/usb-audio-max.kicad_pcb": "4538e0b1b4649f96c434d498842432fb94430f2f93db0ba591875b57d74f3bd5",
+    "hardware/usb-audio-max.kicad_pro": "039ab4888ad0436b37edbd5b15cbc0795c00942068be1f9fa2e6b9ed8d0be175",
+    "hardware/usb-audio-max.kicad_sch": "60bb328ce1726b16eba69fa9a2ec453bc43e84a83ee524abe2dd6aca30c5e4fb",
+    "panels/front-pcb/usb-audio-max-panel.kicad_pcb": "219521b6296812f41c4cd89ab4b180f1c3947340c2f68aef552defe036a3456a",
+    "panels/front-pcb/usb-audio-max-panel.kicad_pro": "5a6fd1595e5d801277a5d1d3dc2d0cbda4f82c685530cccda285ff7337d3e8ba"
+  },
+  "exports": {
+    "jlcpcb/main/carrier/usb-audio-max-gerbers.zip": "e4dcf6295199a80b190b5667c4243fec4e70c5605f8adf593f51b3ea6e355690",
+    "jlcpcb/main/carrier/bom.csv": "1e488476760394c7eb02bc5a20b9cd7857f264a8a0ae14d236d2a6ab5ef68a70",
+    "jlcpcb/main/carrier/positions.csv": "7d5b921d04fc181576753707592943949a2259cc000a9b476a01ad02640c7b65",
+    "jlcpcb/main/panel/usb-audio-max-panel-gerbers.zip": "c851b28385634ab7b72ba10e157dbcea2dc322d704898eaed5449120e5ea7315"
+  }
+}
