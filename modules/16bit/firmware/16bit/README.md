@@ -58,7 +58,7 @@ Each app owns what a frame means:
 
 | app        | P1 / P2                          | P3 / P4 (BM CV1 / CV2)                                  | MCC                                                          |
 |------------|----------------------------------|---------------------------------------------------------|--------------------------------------------------------------|
-| sampler    | group B lowpass / highpass       | group A lowpass / highpass                              | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
+| sampler    | group A drive / highpass resonance | group A lowpass / highpass                            | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | fxrack     | not recorded (audio inputs)      | group A / group B lowpass                               | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | monosynth  | not used                         | attack / decay times                                    | Bank A: BODY, CHORUS, CUTOFF, RESONANCE                      |
 | polysynth  | wavetable select / position (P1 down: P2 = square -> saw -> tri -> sine; P1 up: Noise, P2 = brown -> pink -> white -> blue -> digital -> crackle) | amp-envelope attack (1..500 ms) / release (10..1000 ms) | Bank A: filter-env attack-release time, filter-env depth, resonance, cutoff; Banks B / C fold onto Bank A |
