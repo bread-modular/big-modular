@@ -19,7 +19,7 @@ runs — nothing is re-implemented in the simulator.
 | `monosynth_dsp.h`            | shared DSP core (in `includes/audio/apps/monosynth/`) — used by firmware AND the sim |
 | `sim_monosynth.cpp`          | host simulator: renders a WAV, analyses it, runs self-tests   |
 | `sim_motion_recorder.cpp`    | host self-tests for the shared MIDI-clock motion recorder (sampler, monosynth & polysynth MODE button) |
-| `sim_sampler.cpp`            | sampler P1 drive / P2 highpass resonance (`includes/audio/apps/sampler/sampler_dsp.h`) on the baked-in kick and a kick + hats + clap groove: bit-exact with the earlier chain at P1 = P2 = 0, drive level / harmonics / smoothing, DJ highpass response / knob curve / squelch, no ring or boom on the kick at low cutoffs, ring share of the groove in the high mids and highs, guard; `--wav <dir>` writes listening WAVs |
+| `sim_sampler.cpp`            | sampler P1 drive / P2 highpass resonance (`includes/audio/apps/sampler/sampler_dsp.h`) on the baked-in kick and a kick + hats + clap groove: bit-exact with the earlier chain at P1 = P2 = 0, drive level held at the dry kick's / harmonics / smoothing / rumble tail decays, DJ highpass response / knob curve / squelch, no ring or boom on the kick at low cutoffs, ring share of the groove in the high mids and highs, guard; `--wav <dir>` writes listening WAVs |
 | `sim_elab_scope.cpp`         | production ELab scope helper: command selection, legacy/dual payloads, boundaries, encoding, and cross-core ownership |
 | `analyze_monosynth_wav.py`   | Python analysis of the rendered WAV (FFT, envelope, freq)     |
 | `run_monosynth_sim.sh`       | one-shot build + run                                          |

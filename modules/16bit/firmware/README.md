@@ -33,9 +33,14 @@ group A, mainly the kick (`16bit/includes/audio/apps/sampler/sampler_dsp.h`):
 
 - **P1 = drive**, ahead of the P3 lowpass (so P3 tames the fizz): 0..+36 dB
   into a soft clip with makeup, so the kick's body squares up and its tail
-  comes up (+16 dB at full) instead of just getting louder; asymmetric (even
-  harmonics) around the middle of the knob, symmetric and hard at the top;
-  DC-blocked, smoothed (10 ms). While P1 is up, group A ends in a soft clip
+  comes up instead of just getting louder; asymmetric (even harmonics) around
+  the middle of the knob, symmetric and hard at the top; DC-blocked, smoothed
+  (10 ms). The makeup drops by up to 8 dB with the knob, so a whole kick hit
+  stays within about +1 dB of the dry kick at every P1 position. A techno
+  rumble tail rises with the knob (squared): the driven kick, lowpassed at
+  160 Hz, feeds two short feedback delays (37 / 53 ms, damped at 120 Hz and
+  saturated in the loop) that smear into a low wash, with more feedback (a
+  longer, grittier tail) toward the top (about +3 dB late in the hit at full). While P1 is up, group A ends in a soft clip
   (knee 0.7, ceiling 0.95), since the squared kick overshoots ~2x through the
   P4 highpass even at 20 Hz.
 - **P2 = resonance of the P4 highpass, as a DJ filter** (end of chain).

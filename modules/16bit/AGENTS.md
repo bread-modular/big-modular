@@ -38,7 +38,7 @@ Module paths are module-relative.
   FilterFX: exact cutoff, passband held at 0 dB at every resonance (BM lost 3-7 dB at the
   power-on resonance from open down to ~430 Hz), exponential cutoff / env depth, full
   resonance range; MCC Banks B / C fold onto Bank A.
-  Sampler (2026-11-08): P1 = group A kick drive (techno soft clip, before P3), P2 = resonance
+  Sampler (2026-11-08): P1 = group A kick drive (techno soft clip, before P3; level held at the dry kick's, a low FDN rumble tail rising with the knob), P2 = resonance
   of the group A P4 highpass as a DJ filter (2026-11-08, Pioneer DJM style: 24 dB/oct,
   +11.5 / +17.5 / +26 dB at the cutoff at 1/4 / 1/2 / full, no peak up to 500 Hz (no mud), fading
   in steeply to full at 1.2 kHz and up; P4 20 Hz..20 kHz on a two-part exponential curve that

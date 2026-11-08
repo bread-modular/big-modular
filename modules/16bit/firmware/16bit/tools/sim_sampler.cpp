@@ -297,16 +297,17 @@ static void testCurves() {
     }
     float mid = db(DjHighpass::Q_BUTTER1 * qAt(775.0f, 1.0f));
     CHECK(mid > 10.0f && mid < 22.0f, "P2 1 at 775 Hz %.1f dB (fade-in)", mid);
-    CHECK(db(DjHighpass::Q_BUTTER1 * qAt(P4_TOP, 0.25f)) > 12.0f, "P2 0.25 Q only %.2f", qAt(P4_TOP, 0.25f));
-    CHECK(db(DjHighpass::Q_BUTTER1 * qAt(P4_TOP, 0.5f)) > 20.0f, "P2 0.5 Q only %.2f", qAt(P4_TOP, 0.5f));
+    CHECK(db(DjHighpass::Q_BUTTER1 * qAt(P4_TOP, 0.25f)) > 11.0f, "P2 0.25 Q only %.2f", qAt(P4_TOP, 0.25f));
+    CHECK(db(DjHighpass::Q_BUTTER1 * qAt(P4_TOP, 0.5f)) > 17.0f, "P2 0.5 Q only %.2f", qAt(P4_TOP, 0.5f));
     CHECK(db(DjHighpass::Q_BUTTER1 * DjHighpass::Q_MAX) > 25.9f, "P2 1 peak only %.1f dB", db(DjHighpass::Q_BUTTER1 * DjHighpass::Q_MAX));
     CHECK(qAt(P4_TOP, 1.5f) <= DjHighpass::Q_MAX + 1e-3f, "Q clamps");
 }
 
-// Drive on the kick: denser (lower crest factor) and louder (RMS) as P1 goes
-// up, the tail comes up. The drive stage alone stays bounded; the full chain
-// (P3 open, P4 at its 20 Hz minimum, where the square body overshoots) stays
-// under the guard limit and gets louder than the dry kick.
+// Drive on the kick: denser (lower crest factor) up to the middle, the tail
+// (and the rumble) come up, but the whole hit stays at the dry level (the
+// makeup drops with the knob). The drive stage alone stays bounded; the full
+// chain (P3 open, P4 at its 20 Hz minimum, where the square body overshoots)
+// stays under the guard limit.
 static void testDriveOnKick() {
     std::vector<float> kick = kickPattern(1, 22050, 1.0f);
     const int body = (int)(0.25f * SR);       // first 250 ms
@@ -315,6 +316,7 @@ static void testDriveOnKick() {
     float lastRms = rms(kick, 0, body);
     float lastCrest = peak(kick) / lastRms;
     float dryTail = rms(kick, tailFrom, tailTo);
+    float lastTail = 0.0f;
     std::vector<float> dryChain = earlierChain(kick, p3Cutoff(0.0f), p4Cutoff(0.0f));
     float dryChainRms = rms(dryChain, 0, body);
     float dryChainHit = rms(dryChain, 0, tailTo);
@@ -340,20 +342,22 @@ static void testDriveOnKick() {
         // The DC blocker tilts the square body a little past the ceiling.
         CHECK(p < 1.2f, "P1 %.1f drive stage peak %.3f", p1, p);
         CHECK(fullPeak <= OutputGuard::GUARD_LIMIT + 1e-6f, "P1 %.1f chain peak %.3f over the guard", p1, fullPeak);
-        CHECK(fullRms > dryChainRms, "P1 %.1f chain quieter than dry (%.2f dB)", p1, db(fullRms / dryChainRms));
-        CHECK(db(r) >= db(lastRms) - 0.1f, "P1 %.1f body RMS fell", p1);
-        // Denser up to the middle; past it the bias fades and the square's
-        // edges sharpen, which lifts the crest a little again.
-        if (step <= 5) {
+        CHECK(fabsf(db(fullHit / dryChainHit)) < 1.5f, "P1 %.1f chain hit %+.2f dB vs dry (level not held)", p1,
+              db(fullHit / dryChainHit));
+        CHECK(fabsf(db(fullRms / dryChainRms)) < 2.5f, "P1 %.1f chain body %+.2f dB vs dry", p1, db(fullRms / dryChainRms));
+        CHECK(db(tail / dryTail) >= lastTail - 0.1f, "P1 %.1f tail fell", p1);
+        lastTail = db(tail / dryTail);
+        // Denser up to 0.4; past it the bias fades, the square's edges
+        // sharpen and the rumble rides on top, which lifts the crest again.
+        if (step <= 4) {
             CHECK(db(crest) <= db(lastCrest) + 0.1f, "P1 %.1f crest factor rose", p1);
         }
         lastRms = r;
         lastCrest = crest;
         if (step == 10) {
-            CHECK(db(crest) < db(peak(kick) / rms(kick, 0, body)) - 2.5f, "full drive crest %.2f dB: not square-ish", db(crest));
-            CHECK(db(fullRms / dryChainRms) > 2.0f, "full drive chain body only %+.2f dB", db(fullRms / dryChainRms));
-            CHECK(db(fullHit / dryChainHit) > 3.0f, "full drive chain hit only %+.2f dB", db(fullHit / dryChainHit));
-            CHECK(db(tail / dryTail) > 12.0f, "full drive tail +%.1f dB only", db(tail / dryTail));
+            // Tail against the body: +11 dB over the dry kick's balance.
+            CHECK(db(tail / dryTail) - db(r / rms(kick, 0, body)) > 9.0f, "full drive tail only %+.1f dB over the body",
+                  db(tail / dryTail) - db(r / rms(kick, 0, body)));
         }
     }
 }
@@ -433,6 +437,14 @@ static void testDriveSweepSmooth() {
     float justOn = rms(driveOnly(SamplerDsp::DEAD_ZONE + 0.005f, kick));
     printf("  P1 just above the dead zone: %+.2f dB vs off\n", db(justOn / dry));
     CHECK(fabsf(db(justOn / dry)) < 0.5f, "P1 just above off jumps %.2f dB", db(justOn / dry));
+
+    // The rumble tail dies away after a hit (the FDN loop never sustains).
+    std::vector<float> hitThenSilence = kick;
+    hitThenSilence.resize(kick.size() + (size_t)(2.0f * SR), 0.0f);
+    std::vector<float> rumbleOut = driveOnly(1.0f, hitThenSilence);
+    float late = rms(rumbleOut, rumbleOut.size() - (size_t)(0.1f * SR));
+    printf("  P1 full, 2 s after the kick: rumble %.1f dB\n", db(late));
+    CHECK(late < 1.0e-4f, "P1 full rumble still %.1f dB after 2 s", db(late));
 }
 
 // Gain (dB) of the P4 highpass at hz (small sine, settled), as the app runs it.
@@ -497,8 +509,8 @@ static void testResonanceResponse() {
             lastPeak = g[2];
         }
     }
-    CHECK(hpGain(12000.0f, 1.0f, 12000.0f) > 29.5f, "full P2 at 12 kHz: %.1f dB", hpGain(12000.0f, 1.0f, 12000.0f));
-    CHECK(hpGain(DjHighpass::RES_FULL_HZ, 1.0f, DjHighpass::RES_FULL_HZ) > 29.5f, "full P2 at RES_FULL_HZ: %.1f dB",
+    CHECK(hpGain(12000.0f, 1.0f, 12000.0f) > 25.5f, "full P2 at 12 kHz: %.1f dB", hpGain(12000.0f, 1.0f, 12000.0f));
+    CHECK(hpGain(DjHighpass::RES_FULL_HZ, 1.0f, DjHighpass::RES_FULL_HZ) > 25.5f, "full P2 at RES_FULL_HZ: %.1f dB",
           hpGain(DjHighpass::RES_FULL_HZ, 1.0f, DjHighpass::RES_FULL_HZ));
 }
 

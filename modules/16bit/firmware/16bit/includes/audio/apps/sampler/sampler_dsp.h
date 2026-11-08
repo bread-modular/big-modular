@@ -13,6 +13,15 @@
 //     clip is symmetric and hard; it is DC-blocked at DC_HZ;
 //   - makeup so a full-scale input swings +-CEILING, so the knob trades
 //     dynamics for density and loudness instead of just level;
+//   - loudness compensation: the makeup drops by up to LEVEL_DROP_DB over the
+//     knob (linear in dB), so turning P1 up thickens the kick instead of making it
+//     louder (user, 2026-11-08);
+//   - a techno rumble tail rises with the knob (squared, up to RUMBLE_MIX): the
+//     driven kick, lowpassed at RUMBLE_LP_HZ, feeds two short feedback delay
+//     lines (RUMBLE_MS_A / _B, a tiny FDN that smears it into a low wash, not
+//     an echo) with a lowpass (RUMBLE_DAMP_HZ) and fastTanh in the loop, and
+//     the feedback grows with the knob up to RUMBLE_FB, so the tail gets
+//     longer and grittier toward the top;
 //   - the wet path fades in over the first FADE_IN of the knob; fully down
 //     (under DEAD_ZONE) the drive is bypassed exactly (BM / earlier builds).
 // P2 = resonance of the group A end-of-chain highpass (P4 cutoff), a DJ
@@ -112,6 +121,16 @@ class KickDrive {
         static constexpr float CEILING = 0.9f;
         static constexpr float SMOOTH_MS = 10.0f;
         static constexpr float DC_HZ = 5.0f;
+        static constexpr float LEVEL_DROP_DB = 8.0f;
+        static constexpr float RUMBLE_MIX = 0.5f;
+        static constexpr float RUMBLE_FB = 0.62f;
+        static constexpr float RUMBLE_LP_HZ = 160.0f;
+        static constexpr float RUMBLE_DAMP_HZ = 120.0f;
+        static constexpr float RUMBLE_MS_A = 37.0f;
+        static constexpr float RUMBLE_MS_B = 53.0f;
+        static constexpr int MAX_SAMPLE_RATE = 48000;
+        static constexpr int LEN_A = (int)(RUMBLE_MS_A * MAX_SAMPLE_RATE / 1000.0f) + 1;
+        static constexpr int LEN_B = (int)(RUMBLE_MS_B * MAX_SAMPLE_RATE / 1000.0f) + 1;
 
     private:
         float smoothRate = 0.0f;
@@ -121,6 +140,22 @@ class KickDrive {
         float gainT = 1.0f, biasT = 0.0f, offsetT = 0.0f, makeupT = 1.0f, wetT = 0.0f;
         float gain = 1.0f, bias = 0.0f, offset = 0.0f, makeup = 1.0f, wet = 0.0f;
         float dcX = 0.0f, dcY = 0.0f;
+
+        // Rumble tail: send lowpass, two delay lines, their loop lowpasses.
+        float rumbleT = 0.0f, rumble = 0.0f, fbT = 0.0f, fb = 0.0f;
+        float lpCoef = 0.0f, dampCoef = 0.0f;
+        float sendLp = 0.0f, dampA = 0.0f, dampB = 0.0f;
+        float lineA[LEN_A] = {};
+        float lineB[LEN_B] = {};
+        int lenA = LEN_A, lenB = LEN_B, posA = 0, posB = 0;
+        bool rumbleClear = true;
+
+        void clearRumble() {
+            for (int i = 0; i < LEN_A; i++) lineA[i] = 0.0f;
+            for (int i = 0; i < LEN_B; i++) lineB[i] = 0.0f;
+            sendLp = dampA = dampB = 0.0f;
+            rumbleClear = true;
+        }
 
         static float shape(float x, float b, float off) {
             return SamplerDsp::fastTanh(x + b) - off;
@@ -135,7 +170,17 @@ class KickDrive {
             offset = offsetT;
             makeup = makeupT;
             wet = wetT;
+            rumble = rumbleT;
+            fb = fbT;
             dcX = dcY = 0.0f;
+            lpCoef = 1.0f - expf(-2.0f * (float)M_PI * RUMBLE_LP_HZ / sampleRate);
+            dampCoef = 1.0f - expf(-2.0f * (float)M_PI * RUMBLE_DAMP_HZ / sampleRate);
+            lenA = (int)(RUMBLE_MS_A * sampleRate / 1000.0f);
+            lenB = (int)(RUMBLE_MS_B * sampleRate / 1000.0f);
+            if (lenA > LEN_A) lenA = LEN_A;
+            if (lenB > LEN_B) lenB = LEN_B;
+            posA = posB = 0;
+            clearRumble();
         }
 
         // P1 knob 0..1 (main loop). Returns whether the drive is on.
@@ -149,8 +194,10 @@ class KickDrive {
             gainT = g;
             biasT = b;
             offsetT = off;
-            makeupT = CEILING / swing;
+            makeupT = CEILING / swing * powf(10.0f, -LEVEL_DROP_DB * amount / 20.0f);
             wetT = fminf(1.0f, amount / FADE_IN);
+            rumbleT = RUMBLE_MIX * amount * amount;
+            fbT = RUMBLE_FB * amount;
             return amount > 0.0f;
         }
 
@@ -159,20 +206,39 @@ class KickDrive {
                 // Fully down: exact bypass, the DC blocker restarts clean.
                 wet = 0.0f;
                 dcX = dcY = 0.0f;
+                if (!rumbleClear) {
+                    clearRumble();
+                }
                 return x;
             }
+            rumbleClear = false;
             gain += (gainT - gain) * smoothRate;
             bias += (biasT - bias) * smoothRate;
             offset += (offsetT - offset) * smoothRate;
             makeup += (makeupT - makeup) * smoothRate;
             wet += (wetT - wet) * smoothRate;
+            rumble += (rumbleT - rumble) * smoothRate;
+            fb += (fbT - fb) * smoothRate;
 
             float driven = shape(gain * x, bias, offset) * makeup;
             // One-pole DC blocker for the asymmetric clip.
             float blocked = driven - dcX + dcPole * dcY;
             dcX = driven;
             dcY = blocked;
-            return x + (blocked - x) * wet;
+
+            // Rumble: lowpassed send into a 2-line FDN (orthogonal +-1 mix),
+            // damped and saturated in the loop.
+            sendLp += (blocked - sendLp) * lpCoef;
+            float a = lineA[posA];
+            float b = lineB[posB];
+            dampA += (a - dampA) * dampCoef;
+            dampB += (b - dampB) * dampCoef;
+            lineA[posA] = SamplerDsp::fastTanh(sendLp + fb * (dampA - dampB));
+            lineB[posB] = SamplerDsp::fastTanh(sendLp + fb * (-dampA - dampB));
+            if (++posA >= lenA) posA = 0;
+            if (++posB >= lenB) posB = 0;
+            float tail = blocked + rumble * (dampA + dampB);
+            return x + (tail - x) * wet;
         }
 };
 
