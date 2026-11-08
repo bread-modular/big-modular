@@ -12,7 +12,7 @@ Ports of four Bread Modular 8bit firmwares
 | PA4 / PA5 | MODE button / LED |
 | PA6 | DAC out |
 | PA7, PB4 | BM gate / logger TX: still driven, not connected on this board |
-| PB0 | CV in: `lfo` only (adds to the rate); not used by the others |
+| PB0 | CV in: `lfo` only (exponential rate FM); not used by the others |
 
 `lfo` uses no MIDI; its MODE button toggles the output range (-5..+5 V /
 0..+5 V).
@@ -41,6 +41,7 @@ other setting receives nothing usable.
 ./flash.sh crash d /dev/ttyUSB0   # explicit port (macOS: /dev/cu.usbserial-XXXX)
 crash/sim.sh                      # crash host self-tests (no hardware)
 ../../../opt/attiny1616-tools/lib/CvRecorder/sim.sh  # supersaw/crash recorder host self-tests
+lfo/sim.sh                        # lfo rate/FM/shape host self-tests
 ```
 
 `compile.sh` / `flash.sh` call the shared `opt/attiny1616-tools` scripts
@@ -70,23 +71,37 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   their positions are the reference and turning a knob shifts its whole
   recorded curve up or down (clamped 0..1023). Needs a running MIDI clock;
   MIDI Start rewinds.
-- **lfo**: BM's 0.1-20 Hz LFO, 1 kHz sample rate, six wave tables (sine,
-  triangle, saw, complex 1, complex 2, random). P1 = RATE (curved), P2 = WAVE
-  (crossfades between neighbouring tables). **CV in modulates the rate**: its
-  bipolar value (`analogRead(PB0) - 509`, ±3 counts deadband) is added to the P1
-  reading before the rate curve, clamped 0..1023, so ±5 V moves it about ±45 % of
-  the knob travel (knob centre 5.9 Hz: +5 V -> 18.2 Hz, -5 V -> 0.43 Hz).
-  Unpatched = 0 V = knob only. **No MIDI** (BM's unused MIDI receiver is
-  removed). **MODE = output range**, toggled per click, BIPOLAR at power-up
-  (not stored): BIPOLAR uses the full DAC (about -4.8..+4.8 V); UNIPOLAR
-  scales the wave into the upper half of the DAC (`128 + sample / 2`, about
-  0..+4.8 V, 7-bit steps). No recorder. The LED follows the wave's position in
-  the active range: dim (1/8) in BIPOLAR, full brightness in UNIPOLAR (BM: half
-  brightness, no range switch). Gate (PA7, not connected) stays on the wave
-  sample > 127. Use the
-  LFO panel (no MIDI jack, no P3 hole, MODE labelled REC), leave J1 and RV3
-  off and wire-bridge RV3 (`../docs/mechanics.md`): with RV3 off the board and
-  no bridge, the output is silent.
+- **lfo**: BM's LFO reworked for a wider exponential rate, audio-rate FM and
+  more shapes (user request, 2026-11-08), 40 kHz sample rate. Maths in
+  `lfo/lfo/LfoMath.h`, host-tested by `lfo/sim.sh`.
+  - **P1 = RATE, exponential** (equal turns = equal ratios, as Doepfer
+    A-147-2, Tides, Batumi): 12 octaves, **0.01 Hz (100 s) fully CCW** ..
+    1 Hz at ~55 % .. 40.6 Hz fully CW.
+  - **CV in = exponential FM, ~1 V/oct** (not trimmed; resistor tolerance sets
+    the exact scale), added to the knob: ±5.5 V = ±5.5 octaves. Knob CW + 5 V
+    is ~1.3 kHz, full +5.5 V ~1.9 kHz (cap 2 kHz); knob CCW - 5.5 V is ~78 min
+    per cycle. ±3 counts (±32 mV) around 0 V (`kCvInZero` 509, calibrate per
+    unit) are treated as 0 V, so unpatched = knob only. CV is read on every
+    `loop()` pass (the two knobs take turns), several kHz, below the 6.3 kHz
+    CV input filter.
+  - **P2 = WAVE**: sine, triangle, saw, **square**, complex 1, complex 2,
+    **random** (sample & hold: a new value at each cycle start, xorshift).
+    Neighbours crossfade, and each shape holds pure for ~64 counts around its
+    spot (~17° of the travel). Tables are interpolated between entries, so a
+    slow wave moves in single DAC steps instead of 256 coarse steps per
+    cycle. At audio rate the waves alias (no band-limiting, 8-bit DAC;
+    the R7/C13 15.9 kHz corner smooths the steps).
+  - **No MIDI** (BM's unused MIDI receiver is removed). **MODE = output
+    range**, toggled per click, BIPOLAR at power-up (not stored): BIPOLAR uses
+    the full DAC (about -4.8..+4.8 V); UNIPOLAR scales the wave into the upper
+    half of the DAC (`128 + sample / 2`, about 0..+4.8 V, 7-bit steps). No
+    recorder. The LED follows the wave's position in the active range: dim
+    (1/8) in BIPOLAR, full brightness in UNIPOLAR (BM: half brightness, no
+    range switch); at audio rate it just glows. Gate (PA7, not connected)
+    stays on the wave sample > 127.
+  - Use the LFO panel (no MIDI jack, no P3 hole, MODE labelled REC), leave J1
+    and RV3 off and wire-bridge RV3 (`../docs/mechanics.md`): with RV3 off the
+    board and no bridge, the output is silent.
 - **crash**: synthesized TR-808-style crash (no samples) on MIDI note-on,
   velocity = level, note ignored. P1 = brightness, P2 = hiss/metal balance.
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED
@@ -97,18 +112,20 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 
 ## Changes from Bread Modular
 
-- lfo: CV in on PB0 added to the rate (user request, 2026-11-01; BM reads only
-  P1/P2): `rateControl()` adds the PB0 offset (`CV_IN_ZERO` 509, calibrate per unit,
-  `../docs/research.md`) to P1 in `setup()` and `loop()`. BM's operator-precedence
-  slip in `mapCvToFrequencyCurve()` (`MIN + x >> 16` parsed as `(MIN + x) >> 16`,
-  a compiler warning) is parenthesised as intended, so the curve starts at 0.1 Hz
-  instead of being clamped there. MIDI removed (user decision 2026-11-01: no MIDI
+- lfo: rate, FM and shapes reworked (user request, 2026-11-08; replaces the
+  2026-11-01 linear CV add and BM's 0.1-20 Hz cubic curve, whose
+  operator-precedence slip is gone with it): sample rate 1 kHz -> 40 kHz
+  (TCB0 `CCMP` = clocks - 1), exponential knob 0.01-40.6 Hz, CV in on PB0 as
+  ~1 V/oct exponential FM up to 2 kHz, integer 2^x (`LfoMath.h`, no 64-bit
+  division in the loop), CV read every pass. Shapes: square added after saw,
+  BM's looping `RANDOM_TABLE` replaced by a per-cycle sample & hold, hold zones
+  on the WAVE knob, interpolated table reads. MIDI removed (user decision 2026-11-01: no MIDI
   on the LFO build): no `SimpleMIDI.h`, no `MIDI.begin()`/`update()`, no
   (empty) callbacks, no `MIDI_RX_INVERT` guard; built without a JP1 setting.
   MODE/LED: own output-range toggle in `lfo.ino` (user request, 2026-11-01;
   replaces the earlier free-time recorder, removed), LED brightness by range.
   Its unused `ModeHandler.h` / `LEDToggler.h` are not copied; `WaveTables.*`
-  are the BM files, unchanged.
+  are the BM files, unchanged (`RANDOM_TABLE` no longer played).
 
 - drums, supersaw, crash: the `MIDI_RX_INVERT` guard and `PORTB.PIN3CTRL |= PORT_INVEN_bm`
   after `MIDI.begin()` for JP1 = P.
@@ -144,6 +161,6 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
 drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
 (recorder, 2026-10-29); crash 6821 / 6811 B, 1168 B (shared recorder,
-2026-10-29); lfo 5737 B, 170 B (no MIDI, no JP1 build, MODE range toggle, 2026-11-01). `crash/sim.sh`: 66
-checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
+2026-10-29); lfo 5215 B, 176 B (exponential rate / FM, 40 kHz, 2026-11-08). `crash/sim.sh`: 66
+checks, 0 failures; `lfo/sim.sh`: 3114 checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
 Not bench-tested on the 8bit carrier yet.
