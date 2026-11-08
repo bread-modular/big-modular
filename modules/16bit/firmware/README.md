@@ -45,16 +45,16 @@ group A, mainly the kick (`16bit/includes/audio/apps/sampler/sampler_dsp.h`):
   resonance arrives at the 25 % mark (2026-11-08 rev 6, for P2 off too; rev 5
   squeezed P4 to 20 Hz..1.26 kHz and was reverted). Fully down it is the earlier 12 dB/oct
   highpass (Q 0.707). Turned up it crossfades (first 5 % of the knob) to a
-  24 dB/oct highpass whose resonance comes in fast: +14 dB at the cutoff at
-  a quarter, +20 dB (the 2026-11-08 first version's top) half way, +30 dB at
-  the top (resonant stage Q 1.3..60, exponential in sqrt(knob)). The
+  24 dB/oct highpass whose resonance comes in fast: +11.5 dB at the cutoff at
+  a quarter, +17.5 dB half way, +26 dB at the top (2026-11-08 rev 7, was
+  +30 dB) (resonant stage Q 1.3..37, exponential in sqrt(knob)). The
   resonance only lives in the high mids and highs, as on a Pioneer DJM
   filter (2026-11-08 rev 6; rev 2 rang from the sub up and got muddy,
   rev 3 started at 800 Hz and faded in up to 3 kHz, rev 5 300..720 Hz):
   up to 500 Hz P4 (knob ~0.20) there is no peak at all (a flat 24 dB/oct
   Butterworth, -3 dB at the cutoff), so the kick, the bass and the low
-  mids stay clean; the peak fades in steeply over 500 Hz..1.2 kHz (+8 dB at
-  700 Hz, +14 dB at 775 Hz, +22 dB at 900 Hz at full P2) and is full from
+  mids stay clean; the peak fades in steeply over 500 Hz..1.2 kHz (about +7 dB at
+  700 Hz, +12 dB at 775 Hz, +19 dB at 900 Hz at full P2) and is full from
   1.2 kHz (knob 0.25) to the top of P4, where vocals, hats, claps and the
   Rumble burst zing. The
   resonant stage squelches: past a bandpass level of 1.5 its damping

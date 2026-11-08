@@ -230,7 +230,7 @@ static void testZeroIsEarlier() {
 }
 
 // P2 knob curve: Q rises monotonically and fast (an aggressive DJ-filter
-// curve: +20 dB by half way, +30 dB at the top). Over cutoff (Pioneer DJM
+// curve: +17.5 dB by half way, +26 dB at the top). Over cutoff (Pioneer DJM
 // style): no peak (flat Butterworth) up to RES_START_HZ, so no mud, rising
 // through the high mids, full from RES_FULL_HZ to the top of the sweep. The
 // P4 knob reaches RES_FULL_HZ at its 25 % mark.
@@ -299,7 +299,7 @@ static void testCurves() {
     CHECK(mid > 10.0f && mid < 22.0f, "P2 1 at 775 Hz %.1f dB (fade-in)", mid);
     CHECK(db(DjHighpass::Q_BUTTER1 * qAt(P4_TOP, 0.25f)) > 12.0f, "P2 0.25 Q only %.2f", qAt(P4_TOP, 0.25f));
     CHECK(db(DjHighpass::Q_BUTTER1 * qAt(P4_TOP, 0.5f)) > 20.0f, "P2 0.5 Q only %.2f", qAt(P4_TOP, 0.5f));
-    CHECK(db(DjHighpass::Q_BUTTER1 * DjHighpass::Q_MAX) > 30.0f, "P2 1 peak only %.1f dB", db(DjHighpass::Q_BUTTER1 * DjHighpass::Q_MAX));
+    CHECK(db(DjHighpass::Q_BUTTER1 * DjHighpass::Q_MAX) > 25.9f, "P2 1 peak only %.1f dB", db(DjHighpass::Q_BUTTER1 * DjHighpass::Q_MAX));
     CHECK(qAt(P4_TOP, 1.5f) <= DjHighpass::Q_MAX + 1e-3f, "Q clamps");
 }
 
@@ -526,7 +526,7 @@ static void testSquelch() {
             float settled = 0.0f;
             for (int i = n / 2; i < n; i++) settled = fmaxf(settled, fabsf(out[i]));
             // Decaying ring after the tone stops (no self-oscillation),
-            // counted in periods (the Q_MAX 60 stage decays by e^-pi every
+            // counted in periods (the Q_MAX 37 stage decays by e^-pi every
             // Q periods, linear x0.21 over 30): under 0.3 from 10 to 40
             // periods (sample peaks read a few % off at 6 kHz, ~7 samples a
             // period), gone after 300.

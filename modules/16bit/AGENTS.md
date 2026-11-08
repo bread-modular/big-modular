@@ -40,7 +40,7 @@ Module paths are module-relative.
   resonance range; MCC Banks B / C fold onto Bank A.
   Sampler (2026-11-08): P1 = group A kick drive (techno soft clip, before P3), P2 = resonance
   of the group A P4 highpass as a DJ filter (2026-11-08, Pioneer DJM style: 24 dB/oct,
-  +14 / +20 / +30 dB at the cutoff at 1/4 / 1/2 / full, no peak up to 500 Hz (no mud), fading
+  +11.5 / +17.5 / +26 dB at the cutoff at 1/4 / 1/2 / full, no peak up to 500 Hz (no mud), fading
   in steeply to full at 1.2 kHz and up; P4 20 Hz..20 kHz on a two-part exponential curve that
   reaches 1.2 kHz (full resonance) at the 25 % mark (rev 6), squelching, peak guard); group B unfiltered again; P1 / P2
   fully down = the earlier output bit for bit (`sampler/sampler_dsp.h`, `tools/sim_sampler.cpp`).

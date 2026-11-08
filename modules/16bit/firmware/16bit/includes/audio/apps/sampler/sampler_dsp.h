@@ -23,8 +23,7 @@
 //     24 dB/oct highpass: a Butterworth stage, then a resonant TPT SVF stage
 //     whose Q rises fast, Q_BASE .. Q_MAX on an exponential of sqrt(knob):
 //     the peak at the cutoff (Q x Q_BUTTER1, the first stage's gain there)
-//     is +14 dB at a quarter, +20 dB (the previous P2's top) half way and
-//     +30 dB at the top;
+//     is +11.5 dB at a quarter, +17.5 dB half way and +26 dB at the top;
 //   - the resonance only lives in the high mids and highs, as on a Pioneer
 //     DJM filter: under RES_START_HZ the second stage stays a flat
 //     Butterworth (no peak, so the kick, the bass and the low mids stay
@@ -183,7 +182,7 @@ class DjHighpass {
     public:
         static constexpr float Q_BUTTER1 = 0.5412f; // 4th-order Butterworth stages
         static constexpr float Q_BASE = 1.3066f;
-        static constexpr float Q_MAX = 60.0f;       // x Q_BUTTER1: +30 dB at the cutoff
+        static constexpr float Q_MAX = 37.0f;       // x Q_BUTTER1: +26 dB at the cutoff
         static constexpr float RES_START_HZ = 500.0f; // no peak below
         static constexpr float RES_FULL_HZ = SamplerDsp::P4_KNEE_HZ;  // full peak above (P4 25 %)
         static constexpr float KNEE = 1.5f;        // bandpass level the squelch starts at
