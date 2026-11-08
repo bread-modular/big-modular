@@ -402,6 +402,9 @@ def build_panel():
         npth(board, f'H{n}', x, y, d)
     slot = GEO['usb_slot']
     npth(board, f'H{n + 1}', *slot['XY'], min(slot['size_mm']), slot=slot['size_mm'])
+    ms = GEO['mount_standoffs']  # coaxial with the carrier MS1/MS2 holes (10 mm standoff = carrier F to panel rear)
+    for ref, (x, y) in zip(ms['panel_hole_refs'], ms['XY_mm']):
+        npth(board, ref, x, y, ms['panel_hole_d_mm'])
     for lab in GEO['panel_labels']:
         t = text(board, pcbnew.F_SilkS, lab['text'], *lab['XY'], lab['size'])
         bb = t.GetBoundingBox()

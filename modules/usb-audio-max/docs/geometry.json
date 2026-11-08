@@ -1,5 +1,5 @@
 {
- "revision": "S1 placement (10HP; THT + the vertical USB-C, the board-to-board strips, the power and SWD headers and BOOT/RESET only). Two boards: carrier (jack board, 4 layers) and MCU board (4 layers) stacked on the carrier F side on 2.54 mm strips, as modules/usb-audio. Every other SMD part parked off-board for group-by-group placement. Not routed.",
+ "revision": "S1 placement (10HP; THT + the vertical USB-C, the board-to-board strips, the power and SWD headers and BOOT/RESET only). Two boards: carrier (jack board, 4 layers) and MCU board (4 layers) stacked on the carrier F side on 2.54 mm strips, as modules/usb-audio. Every other SMD part parked off-board for group-by-group placement. Not routed. 2026-11-08: + two M3x10 F-F hex standoffs MS1/MS2 beside the MCU board (mount_standoffs), coaxial panel holes H20/H21.",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY, for the carrier, the MCU board and the panel. The carrier F side faces the panel; the MCU board sits on the carrier F side with its own F side facing the panel, so both KiCad top views equal the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -505,5 +505,35 @@
   ],
   "gap_mm": 1.5,
   "column_height_mm": 110.0
+ },
+ "mount_standoffs": {
+  "refs": [
+   "MS1",
+   "MS2"
+  ],
+  "XY_mm": [
+   [
+    5.0,
+    13.75
+   ],
+   [
+    45.5,
+    13.75
+   ]
+  ],
+  "panel_hole_refs": [
+   "H20",
+   "H21"
+  ],
+  "length_mm": 10.0,
+  "hex_af_mm": 5.5,
+  "thread": "M3 female both ends",
+  "carrier_hole_d_mm": 3.2,
+  "panel_hole_d_mm": 3.2,
+  "F_courtyard_R_mm": 3.3,
+  "carrier_B_keepout_R_mm": 3.4,
+  "panel_bolt_head_R_mm": 2.75,
+  "hardware": "per standoff: 1 x M3 F-F hex standoff 10 mm, 2 x M3x6 pan/button head (ISO 7380), as modules/4mix. Not M3x8: two M3x8 would meet inside a through-tapped 10 mm standoff.",
+  "note": "User 2026-11-08: two M3 hex standoffs at the top beside the USB-C port so pushing the plug does not move the carrier (modules/usb-audio needed a printed brace); the first try beside the strips at Y35.4 was rejected (user: on the top, around the USB port). Carrier F to panel rear is 10 mm (stack_Z_mm), so each standoff is coaxial: carrier hole = panel hole. Mirror images about the panel centre X25.25 at the top corners, level with the USB-C (Y16) and as high / far out as the 1 mm edge keep-out allows (courtyards 1.00 mm from the edge): the hex (corners R3.18) clears the MCU board outline (X10.75..39.75) by >= 2.5 mm, the panel bolt heads (R2.75) sit between the rail band and the IN labels. No F copper inside R3.3 and no B copper inside R3.5; In1/In2 planes are cut by the NPTH only. Carrier footprints: board-only, empty Reference + MechanicalID MS1/MS2 (shared parity: mechanical), NPTH 3.2, F courtyard R3.3, B courtyard R3.4 (M3 head R2.85), 3D model standoff-m3x10.step from modules/4mix. Placed on the routed carrier by research/route/c_b30_standoffs_top.py: J4 SWD down 5.1, SW1/SW2 down, Y1 right 1.0 with C29 upright, C28 to the +3V3_C via by J2; buck core (L1 U2 C6 C7 C8 R3 R4 R5 R20) down 2.3 with its copper, C9/C10 left 0.5, C5 under C10, C4 left of L1, R13 upright by J3, FB2 below the core."
  }
 }

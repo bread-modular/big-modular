@@ -33,6 +33,18 @@ Module paths are module-relative.
   the codec/input stage with a finger to the regulator (R7 Kelvin trace), two small +3V3_C islands (codec, U4).
   The shared check's independent ref/pin/net parity flags 4 pins on `Net-(U9-Trim/NR)` /
   `Net-(U3B-MDO/ADR1/MD1)` ("/" vs "{slash}" escaping, same nets).
+- **Standoffs** (2026-11-08, user: USB-C push support, modules/usb-audio needed a printed brace; user: at the
+  top around the USB port): two M3x10 F-F hex standoffs MS1/MS2 at the top corners, X5.0 / X45.5, Y13.75,
+  level with the USB-C (`docs/geometry.json` `mount_standoffs`; board-only, NPTH 3.2, F courtyard R3.3,
+  B courtyard R3.4, no F copper inside R3.3 / no B copper inside R3.5), coaxial panel holes H20/H21.
+  Batch `research/route/c_b30_standoffs_top.py` (checks `check_b30.py`, `check_b30_mech.py`, panel
+  `panel_b30_holes.py`): left J4 SWD down 5.1, SW1/SW2 down 2.56/1.06 (RESET/BOOT/SWD B silk vertical), Y1 right
+  1.0, C29 upright beside R21, C28 (codec VDD 10u) next to the +3V3_C via by J2 (the left-edge +3V3_C feed is
+  gone); right the buck core L1/U2/C6/C7/C8/R3/R4/R5/R20 rigidly down 2.3 with its copper, C9/C10 left 0.5,
+  C5 under C10, C4 left of L1, R13 upright by J3, FB2 below the core (FB2-R3 link on F at X48.5), +3V3 sense,
+  VCOM_REF jog and V3_IN hop re-routed. Carrier DRC 0 / unconnected 0 / parity 0, shared check ERC/DRC 0,
+  courtyards >= 1.0 mm from the edge (`tools/check_edges.py`), SMD >= 2.03 mm from jack pads, no vias in
+  SMD pads, no In1 tracks, In2 planes one piece; panel DRC 0.
 - Open (pre-routing note kept for history): group-by-group SMD placement and manual routing of both boards (floorplan proposal and buck layout
   rules in `docs/research.md` sections 5 and 7); firmware (96 kHz SPI1 path is untested on the CH32V307).
 

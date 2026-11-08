@@ -34,6 +34,9 @@
   PB14 codec RST, PA9 VBUS sense. Log any change in `docs/research.md`.
 - Codec: ADC = TDM clock master, DAC slave on the tied BCK/LRCK; SCKI 24.576 MHz. Firmware must set
   SEAD (single-ended), BYP (HPF off) and REVAD (inverting drivers) for the analog chain to be right.
+- Two M3x10 F-F hex standoffs MS1/MS2 (carrier F to panel rear = 10 mm) at the top corners beside the USB-C
+  (X5.0 / X45.5, Y13.75) hold the carrier against USB-C plug forces; carrier and panel holes coaxial (`mount_standoffs`), M3x6 screws.
+  Keep F copper out of R3.3 and B copper / SMD out of R3.5 around them (B courtyard R3.4).
 - Courtyards >= 1.0 mm from `Edge.Cuts`, SMD pads >= 2.0 mm from jack pads, manual
   divide-and-conquer routing, no vias in SMD pads (the codec footprint's own PowerPAD thermal vias
   are the allowed exception) (root `AGENTS.md`).
