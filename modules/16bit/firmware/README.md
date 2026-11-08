@@ -27,12 +27,51 @@ the BM CV1 / CV2 knobs do (native netlist: RV3 wiper `POT3` -> U1 GPIO28 =
 CV jacks reach apps that read the audio inputs (fxrack, elab) and the sampler.
 
 **Sampler (change from BM):** BM filters only group A (notes 0-5: P3
-lowpass, P4 highpass). Here group B (notes 6-11) gets the same pair: **P1
-lowpass** (before FX3) and **P2 highpass** (after FX3), with the P3 / P4
-curves. The app reads ADC0 / ADC1 from the main loop every 2 ms and rescales
-the unpatched knob range (ADC ~2020..3735 = 0..+5 V) to 0..1; knobs fully
-down = both filters open. Patched, P1 / P2 scale the CV, and negative CV
-clamps to open. The other apps don't read P1 / P2 as knobs (`../docs/research.md` §5).
+lowpass, P4 highpass); group B (notes 6-11) is unfiltered, as in BM (2026-11-08:
+the earlier group B P1 lowpass / P2 highpass is removed). P1 / P2 now shape
+group A, mainly the kick (`16bit/includes/audio/apps/sampler/sampler_dsp.h`):
+
+- **P1 = drive**, ahead of the P3 lowpass (so P3 tames the fizz): 0..+36 dB
+  into a soft clip with makeup, so the kick's body squares up and its tail
+  comes up instead of just getting louder; asymmetric (even harmonics) around
+  the middle of the knob, symmetric and hard at the top; DC-blocked, smoothed
+  (10 ms). The makeup drops by up to 8 dB with the knob, so a whole kick hit
+  stays within about +1 dB of the dry kick at every P1 position. A techno
+  rumble tail rises with the knob (squared): the driven kick, lowpassed at
+  160 Hz, feeds two short feedback delays (37 / 53 ms, damped at 120 Hz and
+  saturated in the loop) that smear into a low wash, with more feedback (a
+  longer, grittier tail) toward the top (about +3 dB late in the hit at full). While P1 is up, group A ends in a soft clip
+  (knee 0.7, ceiling 0.95), since the squared kick overshoots ~2x through the
+  P4 highpass even at 20 Hz.
+- **P2 = resonance of the P4 highpass, as a DJ filter** (end of chain).
+  **P4** sweeps BM's 20 Hz..20 kHz on a two-part exponential curve: the
+  first quarter of the knob climbs 20 Hz..1.2 kHz (100 Hz at 0.10, 530 Hz
+  at 0.20), the other three quarters 1.2..20 kHz (3.1 kHz half way), so full
+  resonance arrives at the 25 % mark (2026-11-08 rev 6, for P2 off too; rev 5
+  squeezed P4 to 20 Hz..1.26 kHz and was reverted). Fully down it is the earlier 12 dB/oct
+  highpass (Q 0.707). Turned up it crossfades (first 5 % of the knob) to a
+  24 dB/oct highpass whose resonance comes in fast: +11.5 dB at the cutoff at
+  a quarter, +17.5 dB half way, +26 dB at the top (2026-11-08 rev 7, was
+  +30 dB) (resonant stage Q 1.3..37, exponential in sqrt(knob)). The
+  resonance only lives in the high mids and highs, as on a Pioneer DJM
+  filter (2026-11-08 rev 6; rev 2 rang from the sub up and got muddy,
+  rev 3 started at 800 Hz and faded in up to 3 kHz, rev 5 300..720 Hz):
+  up to 500 Hz P4 (knob ~0.20) there is no peak at all (a flat 24 dB/oct
+  Butterworth, -3 dB at the cutoff), so the kick, the bass and the low
+  mids stay clean; the peak fades in steeply over 500 Hz..1.2 kHz (about +7 dB at
+  700 Hz, +12 dB at 775 Hz, +19 dB at 900 Hz at full P2) and is full from
+  1.2 kHz (knob 0.25) to the top of P4, where vocals, hats, claps and the
+  Rumble burst zing. The
+  resonant stage squelches: past a bandpass level of 1.5 its damping
+  grows, so a loud tone on the cutoff rings at ~2-3x instead of ~30x,
+  while quiet hits ring clean. Passband 0 dB. A peak guard (instant
+  attack, 25 ms hold, 60 ms release) keeps the output under 0.95.
+
+The app reads ADC0 / ADC1 from the main loop every 2 ms and rescales the
+unpatched knob range (ADC ~2020..3735 = 0..+5 V) to 0..1. Fully down (bottom
+2 %) = off: the group A output is bit-exact with the earlier one (host test
+`16bit/tools/sim_sampler.cpp`). Patched, P1 / P2 scale the CV, and negative CV
+clamps to off. The other apps don't read P1 / P2 as knobs (`../docs/research.md` §5).
 
 **Polysynth wavetables (new, not BM):** the top knobs, with their CV jacks,
 drive a wavetable oscillator. **P1 selects the table** in 17 zones: fully
@@ -242,7 +281,8 @@ flashed as is (no rebuild needed).
   the folder name.
 - `lib/lfs`: BM's littlefs submodule (v2.10.2, `8ed63b27`) vendored with only
   `lfs.c`, `lfs.h`, `lfs_util.c`, `lfs_util.h`, `LICENSE.md`, `README.md`.
-- `includes/audio/apps/sampler_app.h`: group B filter pair on P1 / P2 (above);
+- `includes/audio/apps/sampler_app.h`: P1 drive / P2 DJ highpass on group A,
+  group B unfiltered (above);
   FX1 defaults to `noop` instead of Rumble (BM started Rumble while `get-fx1`
   reported `noop`); `set-fx1 rumble` still selects it and is saved; MODE runs
   the motion recorder (BM: stop audio while held, kick on release).

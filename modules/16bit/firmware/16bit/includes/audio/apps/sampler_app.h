@@ -8,6 +8,7 @@
 #include "audio/manager.h"
 #include "audio/samples/s01.h"
 #include "audio/mod/Biquad.h"
+#include "audio/apps/sampler/sampler_dsp.h"
 #include "audio/tools/sample_player.h"
 #include "api/web_serial.h"
 #include "audio/apps/interfaces/audio_app.h"
@@ -30,14 +31,15 @@
 #define CONFIG_FX_METALVERB 2
 #define CONFIG_FX_RUMBLE 3
 
-// Group B filter knobs (this module, not BM): P1 / P2 arrive on ADC0 / ADC1
-// through the CV1 / CV2 jacks. Unpatched, a knob gives 0..+5 V, which the
-// level shift puts at 1.63..3.01 V = ADC ~2020..3735 (patched, the knob scales
-// the CV; negative CV clamps to the open end).
-#define GROUP_B_ADC_ZERO 2020
-#define GROUP_B_ADC_FULL 3735
-#define GROUP_B_ADC_DIFF_THRESHOLD 20
-#define GROUP_B_READ_INTERVAL_MS 2
+// P1 / P2 (this module, not BM): P1 = group A drive, P2 = resonance of the
+// group A highpass (P4); see audio/apps/sampler/sampler_dsp.h. They arrive on
+// ADC0 / ADC1 through the CV1 / CV2 jacks. Unpatched, a knob gives 0..+5 V,
+// which the level shift puts at 1.63..3.01 V = ADC ~2020..3735 (patched, the
+// knob scales the CV; negative CV clamps to off).
+#define KNOB_P12_ADC_ZERO 2020
+#define KNOB_P12_ADC_FULL 3735
+#define KNOB_P12_ADC_DIFF_THRESHOLD 20
+#define KNOB_P12_READ_INTERVAL_MS 2
 
 // MODE = 4-bar motion recorder (this module, not BM: BM's MODE stopped the
 // audio while held and replayed the kick on release). It records P1..P4 and
@@ -55,8 +57,11 @@ class SamplerApp : public AudioApp {
         WebSerial* webSerial = WebSerial::getInstance();
         Biquad lowpassFilter{Biquad::FilterType::LOWPASS};
         Biquad highpassFilter{Biquad::FilterType::HIGHPASS};
-        Biquad lowpassFilterB{Biquad::FilterType::LOWPASS};
-        Biquad highpassFilterB{Biquad::FilterType::HIGHPASS};
+        DjHighpass djHighpass;
+        KickDrive drive;
+        OutputGuard outputGuard;
+        volatile bool driveOn = false;
+        volatile bool resonanceOn = false;
         uint16_t p1Value = 0;
         uint16_t p2Value = 0;
         MotionRecorder recorder;
@@ -64,8 +69,8 @@ class SamplerApp : public AudioApp {
         // parameter when its recorded (or offset) value changes.
         MotionRecorder::Frame appliedFrame = {};
         bool frameApplied = false;
-        bool groupBFirstRead = true;
-        uint32_t lastGroupBReadMs = 0;
+        bool knobsFirstRead = true;
+        uint32_t lastKnobsReadMs = 0;
         // FX1 starts empty (BM 1.6.0 started Rumble, while get-fx1 reported
         // noop); Rumble runs only when picked with set-fx1 rumble.
         AudioFX* fx1 = new NoopFX;
@@ -107,9 +112,10 @@ class SamplerApp : public AudioApp {
             psram->freeall();
             lowpassFilter.init(audioManager);
             highpassFilter.init(audioManager);
-            lowpassFilterB.init(audioManager);
-            highpassFilterB.init(audioManager);
-            groupBFirstRead = true;
+            djHighpass.init((float)audioManager->getDac()->getSampleRate());
+            drive.init((float)audioManager->getDac()->getSampleRate());
+            outputGuard.init((float)audioManager->getDac()->getSampleRate());
+            knobsFirstRead = true;
             fx1->init(audioManager);
             fx2->init(audioManager);
             fx3->init(audioManager);
@@ -175,6 +181,8 @@ class SamplerApp : public AudioApp {
 
             audioManager->endAudioLock();
 
+            // P1 drive first, so the P3 lowpass after it shapes its tone.
+            sumGroupA = drive.process(sumGroupA);
             sumGroupA = lowpassFilter.process(sumGroupA);
 
             // Apply FX to group A
@@ -184,15 +192,18 @@ class SamplerApp : public AudioApp {
             // End-of-chain highpass (CV2). Runs AFTER the FX so it also shapes
             // the rumble noise burst generated inside FX1 — previously the
             // highpass ran pre-FX and the rumble bypassed it completely.
-            sumGroupA = highpassFilter.process(sumGroupA);
+            // P2 turns it into the resonant 24 dB/oct DJ highpass (fully
+            // down: this Biquad alone); the guard holds the ring under full
+            // scale, then (P1 up) the clip catches the driven kick's
+            // overshoot. Both are out of the path with P1 / P2 fully down.
+            sumGroupA = djHighpass.process(sumGroupA, highpassFilter.process(sumGroupA));
+            sumGroupA = outputGuard.process(sumGroupA, resonanceOn);
+            if (driveOn) {
+                sumGroupA = SamplerDsp::outputClip(sumGroupA);
+            }
 
-            // Group B gets the same filter pair from P1 (lowpass) / P2 (highpass)
-            sumGroupB = lowpassFilterB.process(sumGroupB);
-
-            // Apply FX to group B
+            // Apply FX to group B (no filters, as in BM)
             sumGroupB = fx3->process(sumGroupB);
-
-            sumGroupB = highpassFilterB.process(sumGroupB);
 
             float sampleSum = sumGroupB + sumGroupA;
 
@@ -276,36 +287,33 @@ class SamplerApp : public AudioApp {
 
         void applyP4(uint16_t cv2) {
             float cv2Norm = IO::normalizeCV(cv2);
-            float cutoff = 20.0f * powf(20000.0f / 20.0f, cv2Norm);
+            float cutoff = SamplerDsp::p4Cutoff(cv2Norm);
             highpassFilter.setCutoff(cutoff);
+            djHighpass.setCutoff(cutoff);
         }
 
-        // Same curves as P3 / P4 above, on the rescaled P1 / P2 range.
-        static float groupBNormalize(uint16_t value) {
-            float norm = (value - (float)GROUP_B_ADC_ZERO) / (float)(GROUP_B_ADC_FULL - GROUP_B_ADC_ZERO);
+        // P1 / P2 knob range rescaled to 0..1 (fully down = 0 = off).
+        static float knobNormalize(uint16_t value) {
+            float norm = (value - (float)KNOB_P12_ADC_ZERO) / (float)(KNOB_P12_ADC_FULL - KNOB_P12_ADC_ZERO);
             return std::clamp(norm, 0.0f, 1.0f);
         }
 
         void applyP1(uint16_t p1) {
-            float p1Norm = 1.0f - groupBNormalize(p1);
-            float cutoff = 50.0f * powf(20000.0f / 50.0f, p1Norm * p1Norm);
-            lowpassFilterB.setCutoff(cutoff);
+            driveOn = drive.setDrive(knobNormalize(p1));
         }
 
         void applyP2(uint16_t p2) {
-            float p2Norm = groupBNormalize(p2);
-            float cutoff = 20.0f * powf(20000.0f / 20.0f, p2Norm);
-            highpassFilterB.setCutoff(cutoff);
+            resonanceOn = djHighpass.setResonance(knobNormalize(p2));
         }
 
         // The audio core leaves ADC0 / ADC1 alone here (setAdcEnabled(false)),
         // so read P1 / P2 from the main loop, under the same lock IO uses.
-        void readGroupBKnobs() {
+        void readP1P2Knobs() {
             uint32_t now = time_us_32() / 1000;
-            if (!groupBFirstRead && (now - lastGroupBReadMs) < GROUP_B_READ_INTERVAL_MS) {
+            if (!knobsFirstRead && (now - lastKnobsReadMs) < KNOB_P12_READ_INTERVAL_MS) {
                 return;
             }
-            lastGroupBReadMs = now;
+            lastKnobsReadMs = now;
 
             audioManager->startAdcLock();
             adc_select_input(A0);
@@ -316,19 +324,19 @@ class SamplerApp : public AudioApp {
 
             // The loop owns P1 / P2 during playback; keep tracking them for
             // the knob offset.
-            if (groupBFirstRead || abs(p1Value - newP1) > GROUP_B_ADC_DIFF_THRESHOLD) {
+            if (knobsFirstRead || abs(p1Value - newP1) > KNOB_P12_ADC_DIFF_THRESHOLD) {
                 p1Value = newP1;
                 if (!recorder.isPlayingBack()) {
                     applyP1(p1Value);
                 }
             }
-            if (groupBFirstRead || abs(p2Value - newP2) > GROUP_B_ADC_DIFF_THRESHOLD) {
+            if (knobsFirstRead || abs(p2Value - newP2) > KNOB_P12_ADC_DIFF_THRESHOLD) {
                 p2Value = newP2;
                 if (!recorder.isPlayingBack()) {
                     applyP2(p2Value);
                 }
             }
-            groupBFirstRead = false;
+            knobsFirstRead = false;
         }
 
         __attribute__((cold, noinline)) void buttonPressedCallback(bool pressed) override {
@@ -595,7 +603,7 @@ class SamplerApp : public AudioApp {
         }
 
         void update() override {
-            readGroupBKnobs();
+            readP1P2Knobs();
             recorder.update(time_us_32() / 1000);
         }
 };

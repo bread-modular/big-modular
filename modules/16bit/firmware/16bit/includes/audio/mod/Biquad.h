@@ -1,7 +1,6 @@
 #pragma once
 #include <math.h>
 #include <stdint.h>
-#include "audio/manager.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -19,8 +18,15 @@ public:
         updateCoeffs();
     }
 
-    void init(AudioManager* audioManager) {
-        sampleRate = audioManager->getDac()->getSampleRate();
+    // Any manager with getDac()->getSampleRate() (the AudioManager), so this
+    // header stays pico-free for the host tests (tools/sim_sampler.cpp).
+    template <typename Manager>
+    void init(Manager* audioManager) {
+        init((float)audioManager->getDac()->getSampleRate());
+    }
+
+    void init(float sampleRate_) {
+        sampleRate = sampleRate_;
         updateCoeffs();
     }
 
