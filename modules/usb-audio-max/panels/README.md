@@ -6,5 +6,6 @@
 
 Holes: 14 jacks Ø6.2 (three columns X7.0 / 25.25 / 43.5, rows Y46.3 / 62.25 / 78.2 / 94.15 / 110.1;
 IN 1-6 in the top two rows, OUT 1-8 below, the ninth spot empty), USB-C slot 9.5 x 3.7 mm at X25.25
-Y16 (the shell stands 1.3 mm proud), rail holes Ø3.2 at X12.58 / X43.06. It mounts on the jack
-bushings with the PJ301M-12 nuts plus the rail screws. No printed (FreeCAD) panel yet.
+Y16 (the shell stands 1.3 mm proud), rail holes Ø3.2 at X12.58 / X43.06, standoff holes H20/H21 Ø3.2 at X5.0 / X45.5 Y13.75 (top corners, level with the USB-C) (coaxial with the
+carrier MS1/MS2 M3x10 hex standoffs, `mount_standoffs`). It mounts on the jack
+bushings with the PJ301M-12 nuts plus the rail screws; two M3x6 screws from the front into the standoffs. No printed (FreeCAD) panel yet.
