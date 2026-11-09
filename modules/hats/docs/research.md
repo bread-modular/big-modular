@@ -10,7 +10,58 @@ noise and PA7 for TONE; HIHAT needs the PA6 DAC for velocity, PA5 gate and PA7 o
 selection. Both receive one RX net and have separate UPDI headers (J11 NOISE, J12 HIHAT).
 The MIDI split is <=60 closed / >60 open, with velocity as accent, as in the baseline.
 
-## Current circuit
+## S4 (2026-11-08, user direction): one STM32, recordable CUTOFF and NOISE TONE
+
+The user asked to record CUTOFF as well as TONE and to move to one STM32 (the modules/12bit
+STM32G071C8T6 with two DAC channels) with PWM on a vactrol for the cutoff.
+
+| Function | S3 | S4 |
+|---|---|---|
+| White noise DAC | U2 ATtiny PA6 | U2 STM32 PA4 DAC1_OUT1 |
+| Velocity DAC | U3 ATtiny PA6 | PA5 DAC1_OUT2 |
+| Gate / open hat | U3 PA5 / PA7 | PA2 / PA3 GPIO |
+| NOISE TONE | U2 PA7 ADC | PA1 ADC (C27 10n) |
+| CUTOFF | RV3 50k rheostat in the bridged-T | RV3 50k divider on PA6 ADC (C28 10n); PB0 TIM3_CH3 PWM -> R51 330R -> U11 VTL5C LED; U11 LDR with R50 51k across it is the rheostat (CUT_R to VMID_H) |
+| MIDI RX | PB3 on both MCUs, PORT_INVEN | PB7 USART1_RX, RXINV for JP1 = P |
+| Programming | J11/J12 UPDI | J11 SWD 1x5 (+3V3, SWDIO, SWCLK, GND, NRST) |
+| Recording | none | SW1 REC (PB4, pull-up), D6 + R48 1k REC LED (PB5 TIM3_CH2) |
+
+Support parts are modules/12bit's: C6 100n + C7 4.7u on VDD, FB1 600R + C24 1u + C25 100n on
+VREF+ (ratiometric with the knobs), C26 100n on NRST, HSI16 with no crystal. VBAT tied to +3V3.
+
+Cutoff vactrol: R51 330R gives the same ~4 mA peak LED drive as R23 on the VCA vactrol. The PWM
+runs at ~31 kHz (64 MHz / 2048, 11 bit); the LDR's millisecond response averages it, so no DAC
+or filter is needed. R50 caps the dark resistance at 51k (the old pot maximum); fully lit the
+LDR is a few hundred ohms, plus R17 1k, so the range stays close to the 1k..51k of the pot. The
+LDR curve is not linear: firmware maps knob or take -> PWM through a table. LDR release (opening
+up) takes tens to 100+ ms, so fast recorded sweeps glide a little. Not measured.
+
+BLUE TONE and DECAY stay analog and are not recordable. The vactrol U11 needs its own spot on B
+(LOW/ACID pattern under a pot); SW1 and D6 need panel holes. 6HP fit: the band between the pot
+rows (courtyards Y49.7..Y69.9) is free on F and holds a 6 mm tact switch + 3 mm LED.
+
+S4 board (R4, 2026-11-09, manual divide and conquer, `research/s4/route/b00..b36`): REC moved to
+the bottom as on modules/16bit (user), SW1 X6.3 Y114.45 and D6 X23.7 Y114.45 on F, everything else
+on B. U2 LQFP-48 sits right of centre between the pot rows; every U2 signal fans out with a short B
+stub to a via clear of the pads (top row above the pins or under the body, bottom row and SWD under
+the body) and runs on F. Lanes: MIDI_GATE/MIDI_OPEN/CUTOFF_POT/REC_BTN drop straight down
+(x20.0/21.25/22.5/23.3), REC_LED down the right side to R48, RX and SWCLK up the right side (SWCLK
+crosses the N_DAC/RX diagonals on B between the R7 pads), SWDIO and CUT_PWM on B under U11, NRST
+through the RV1/RV2 gap on B to C26/J11. C28 (CUTOFF wiper 10n) sits on that run at X22.5 Y77; C7
+(+3V3 bulk) went to X3.75 Y69.25 with plane vias. GATE_OPEN now drops straight down x24.1 on F.
+U11 (cutoff vactrol) lies on B under RV1/RV2 like U7: 10 `pth_inside_courtyard` + 10
+`silk_over_copper`, not excluded (user approval pending).
+
+S4 firmware (2026-11-09, `firmware/`, shared `opt/stm32g0-tools`): BM NOISE on a 100 kHz timer
+(one tick per BM delay unit, ~10 us estimated on the 20 MHz ATtiny), BM HIHAT, CUTOFF knob ->
+U11 PWM through an LDR model (300 R at 100 %, gamma 1.0, generic, not measured) with 5-bit
+dither below the 11-bit step, shared CvRecorder on CUTOFF + NOISE TONE. Compiled, host-tested,
+not run on hardware.
+
+Open for S4: bench check of the firmware (vactrol fit, noise timing); U11 stacking approval;
+supplier preview.
+
+## Current circuit (S3)
 
 | Block | Parts / behavior |
 |---|---|

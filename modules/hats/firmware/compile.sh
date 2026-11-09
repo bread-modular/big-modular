@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# compile.sh — build one HATS firmware for one JP1 setting.
+# compile.sh — build the HATS firmware for one JP1 setting.
 #
 # Usage:
-#   ./compile.sh                          # pick both interactively
-#   ./compile.sh noise|hihat p|d
+#   ./compile.sh          # pick JP1 interactively
+#   ./compile.sh p|d
 #
 set -euo pipefail
 
-source "$(dirname "${BASH_SOURCE[0]}")/jumper.sh" "${1:-}" "${2:-}"
+source "$(dirname "${BASH_SOURCE[0]}")/jumper.sh" "${1:-}"
 exec "$TOOLS_DIR/compile.sh"

@@ -20,7 +20,8 @@ ln -s "$(realpath --relative-to=. "$(git rev-parse --show-toplevel)/opt/attiny16
 Then `#include "CvRecorder.h"`. Edit the file here, never through a copy.
 
 Users: `modules/8bit/firmware/supersaw`, `modules/8bit/firmware/crash`,
-`modules/acid/firmware/acid`.
+`modules/acid/firmware/acid`, and on an STM32G071 `modules/hats/firmware/hats`
+(symlinked into `src/`, with a small `Arduino.h` GPIO/millis shim there).
 
 ## Tests
 

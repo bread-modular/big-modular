@@ -36,12 +36,19 @@
       "flattened_from": null,
       "edits": null
     },
-    "ATtiny1616-M": {
-      "library": "MCU_Microchip_ATtiny:ATtiny1616-M",
-      "source": "/usr/share/kicad/symbols/MCU_Microchip_ATtiny.kicad_sym",
-      "source_sha256": "9a698b86cbde1e42353ca3c121e8e74aa7b9bbcab6977fa8984130c9d6f85a4e",
-      "flattened_from": "ATtiny406-M",
+    "FerriteBead": {
+      "library": "Device:FerriteBead",
+      "source": "/usr/share/kicad/symbols/Device.kicad_sym",
+      "source_sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24",
+      "flattened_from": null,
       "edits": null
+    },
+    "STM32G071C8Tx": {
+      "library": "MCU_ST_STM32G0:STM32G081CBTx",
+      "source": "/usr/share/kicad/symbols/MCU_ST_STM32G0.kicad_sym",
+      "source_sha256": "ff51214b7082380d3a4b6b9567382c5ae5d77cd2bf643947c09ba92edebdaf55",
+      "flattened_from": null,
+      "edits": "renamed STM32G081CBTx -> STM32G071C8Tx; Value -> 'STM32G071C8Tx', Datasheet -> 'https://www.st.com/resource/en/datasheet/stm32g071c8.pdf', Description -> 'STMicroelectronics Arm Cortex-M0+ MCU, 64KB flash, 36KB RAM, 64 MHz, 1.7-3.6V, 44 GPIO, 2 x 12-bit DAC, LQFP48 (stock STM32G081CBTx body/pins: same STM32G0x1 LQFP-48 pinout)'"
     },
     "HT75xx-1-SOT89": {
       "library": "Regulator_Linear:HT75xx-1-SOT89",
@@ -85,12 +92,19 @@
       "flattened_from": null,
       "edits": null
     },
-    "Conn_01x02": {
-      "library": "Connector_Generic:Conn_01x02",
+    "Conn_01x05": {
+      "library": "Connector_Generic:Conn_01x05",
       "source": "/usr/share/kicad/symbols/Connector_Generic.kicad_sym",
       "source_sha256": "b40057d620867e58e8c3d1be9ab822bba6955e76ccfc566fd0945eedcf527fd3",
       "flattened_from": null,
       "edits": "ki_fp_filters 'Connector*:*_1x??_*' -> '*_1x??_*'"
+    },
+    "SW_Push": {
+      "library": "Switch:SW_Push",
+      "source": "/usr/share/kicad/symbols/Switch.kicad_sym",
+      "source_sha256": "aa97588ceed2c3f1be89c98ec16b3e8ee491e4354e0416c12706fc868df68bc9",
+      "flattened_from": null,
+      "edits": null
     },
     "Conn_02x05_Odd_Even": {
       "library": "Connector_Generic:Conn_02x05_Odd_Even",

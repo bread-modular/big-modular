@@ -295,7 +295,7 @@ def npth(board, mech_id, x, y, d):
 def build_panel():
     path = MODULE / 'panels/front-pcb/hats-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - HATS 6HP front panel', [
-        'P4: no recording controls; 34 mm pot rows; passive panel, NPTH only, no copper',
+        'P5: REC button + REC LED at the bottom; 34 mm pot rows; passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']

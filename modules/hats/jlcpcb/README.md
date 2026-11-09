@@ -1,4 +1,50 @@
-# HATS manufacturing export — S3 / R3 / P4
+# HATS manufacturing export — S4 / R4 / P5
+
+Re-exported 2026-11-09 from the S4 schematic (one STM32G071C8T6, PWM cutoff vactrol U11, REC
+button + LED), the R4 hand-routed carrier and the P5 panel, using the unchanged shared
+`opt/kicad-tools/jlcpcb/export.py` (commands at the end). **Complete matched export, not
+supplier-accepted or bench-validated; the STM32 firmware in `../firmware/` is compiled, not run on hardware.**
+
+| Order | Files | Configuration |
+|---|---|---|
+| Carrier PCB | `hats-gerbers.zip` | 4 layers, FR4, 1.6 mm, 29 x 110 mm; F/In1 GND/In2 +3V3/B; ordinary tented vias, no POFV |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | Bottom-side Economic target; **95 placements / 33 BOM rows** |
+| Front panel | `hats-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30 x 128.5 mm, no assembly; **13 NPTH holes** (REC button 4.2 mm, REC LED 3.2 mm added) |
+
+BOM changes from R3: U2/U3 ATtiny1616 -> one U2 STM32G071C8T6 (C529341, Extended); new FB1
+600R ferrite (C1002), C24 1u, C25/C26 100n, C7 4.7u (+3V3 bulk), C27/C28 10n wiper caps, R48 1k
+(REC LED), R50 51k (across the U11 LDR), R51 330R (U11 LED); R4/R5 4.7k removed.
+
+Manual assembly (excluded from both CSVs; exporter list = these 15 THT refs + JP1):
+
+| Refs | Part / instruction |
+|---|---|
+| J1-J4 | PJ301M-12 TS jacks, F side |
+| RV1, RV3, RV4 / RV2 | RV09 50k / 1M linear pots, F side, upright |
+| D5 / D6 | 3 mm ENV LED / 3 mm REC LED, F side, dome flush with the panel; cathode = square pad 1 |
+| SW1 | 6 x 6 x 7 mm THT tact (REC), F side, bottom left; 8bit/16bit printed cap |
+| U7 | VTL5C vactrol, B side, under RV3: solder first, trim flush, then fit RV3 |
+| U11 | VTL5C vactrol (cutoff), B side, under RV1/RV2: solder first, trim flush, then fit RV1/RV2 |
+| J10 | Unshrouded 2x5 power header on B; red stripe / pin 1 to -12V |
+| J11 | Optional 1x5 SWD header on B: +3V3, SWDIO, SWCLK, GND, NRST (pin 1 square) |
+| JP1 | Copper-only MIDI jumper, shipped open (1-2 protected/inverted RX, 2-3 direct RX) |
+
+Verification (2026-11-09): shared check ERC 0, DRC unconnected 0, schematic parity 0, source
+manifest equal, exports byte-identical. DRC still lists 38 items, all vactrol stacking: the 18
+U7/RV3/RV4 items (17 matched by the user-approved exclusions, one U7 silk/RV4-lug key no longer
+matches) and 20 new U11/RV1/RV2 items (10 `pth_inside_courtyard`, 10 `silk_over_copper`) that are
+**not excluded pending user approval**. Ref/pin/net parity differs only in KiCad's `{slash}`
+escape of three unconnected STM32 pin names (as on modules/12bit). 636 tracks / 120 vias, no vias
+in SMD pads, no inner tracks, inner planes one piece, closest SMD-to-pot/jack pad 2.05 mm, RV1-RV4
+courtyards 0.795 mm from the edge (existing pot-column exception). Raw reports:
+`../research/s4/` (ignored). Sourcing: STM32G071C8T6 and the ferrite were live-checked for
+modules/12bit on 2026-11-06; not re-checked here, no stock claim.
+
+The S3/R3 notes below are history.
+
+---
+
+## History: S3 / R3 / P4 export
 
 Re-exported 2026-11-03 from the S3 schematic, the R3 routed carrier (all pots upright, vactrol
 U7 under CUTOFF, ENV LED between AUDIO OUT and HAT CV) and the P4 panel (LED hole X15 Y102, on the jack centre line) using the unchanged

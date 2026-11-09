@@ -6,7 +6,8 @@ Run from modules/hats with KiCad's Python (pcbnew 10):
 Sources are read-only, as modules/vca-mix: the Bread Modular AudioJacks library (MIT,
 Barwise) for the jack, the benjiaomodular library that Bread Modular uses for its RV09
 pots (CC-BY-SA 4.0), the Bread Modular MISC library (MIT) for the VTL5C vactrol and the
-installed KiCad stock library for everything else. Footprints are loaded and saved
+installed KiCad stock library for everything else (S4: LQFP-48 STM32, ferrite, SWD header and
+the modules/12bit REC switch SW_PUSH_6mm_H7.3mm). Footprints are loaded and saved
 natively by pcbnew, so the copies are KiCad 10 format. The only intentional edits:
 
 - PJ301M-12 jack: exactly the MIDI / VCA-MIX edits (3D model -> ${KIPRJMOD}/HATS.3dshapes,
@@ -15,8 +16,7 @@ natively by pcbnew, so the copies are KiCad 10 format. The only intentional edit
 - VTL5C: the Bread Modular footprint as is, plus the VCA-MIX F.CrtYd (silk box + 0.25 mm)
   and two build-note silk lines inside the box (SOLDER FIRST / TRIM FLUSH);
 - RV09: copper unedited; 3D model -> the user-sample RV09 proxy of modules/8bit
-  (HATS.3dshapes/RV09_proxy.step);
-- VQFN-20: the recorded 3D-model proxy of modules/8bit (KiCad ships no VQFN-20 3x3 model).
+  (HATS.3dshapes/RV09_proxy.step).
 
 The STEP files are copied byte-exactly. hardware/HATS.pretty/PROVENANCE.json records
 source paths and SHA-256 of every input and output.
@@ -36,7 +36,7 @@ MODELS = HW / 'HATS.3dshapes'
 STOCK = Path('/usr/share/kicad/footprints')
 
 STOCK_FOOTPRINTS = [
-    ('Package_DFN_QFN', 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm'),
+    ('Package_QFP', 'LQFP-48_7x7mm_P0.5mm'),          # STM32G071C8T6 (S4)
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Package_SO', 'TSSOP-10_3x3mm_P0.5mm'),
     ('Package_TO_SOT_SMD', 'SOT-89-3'),
@@ -47,18 +47,15 @@ STOCK_FOOTPRINTS = [
     ('Capacitor_SMD', 'C_0603_1608Metric'),
     ('Capacitor_SMD', 'C_0805_2012Metric'),
     ('Capacitor_SMD', 'C_1206_3216Metric'),
+    ('Inductor_SMD', 'L_0603_1608Metric'),             # FB1 ferrite bead (S4)
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),
-    ('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical'),
+    ('Connector_PinHeader_2.54mm', 'PinHeader_1x05_P2.54mm_Vertical'),  # J11 SWD (S4)
     ('Jumper', 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm'),
-    ('LED_THT', 'LED_D3.0mm'),                   # HAT CV ENV LED, as modules/8bit
+    ('LED_THT', 'LED_D3.0mm'),                   # HAT CV ENV + REC LEDs, as modules/8bit
+    ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'),       # REC switch (S4), as modules/12bit MODE
 ]
 
-# The stock footprint references a model KiCad does not ship; the only shipped 3x3 mm
-# 20-pin P0.4 body (UQFN) is the recorded visual proxy, as modules/8bit.
-MODEL_PROXY = {
-    'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm':
-        '${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm.step',
-}
+MODEL_PROXY = {}
 REPO = MODULE.parents[1]
 POT_MODEL = ('RV09_proxy.step', REPO / 'modules/8bit/hardware/8BIT.3dshapes/RV09_proxy.step')
 
