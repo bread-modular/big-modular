@@ -1,4 +1,4 @@
-"""Generate the HATS S3 schematic (hardware/hats.kicad_sch) and its pinned symbols.
+"""Generate the HATS S4 schematic (hardware/hats.kicad_sch) and its pinned symbols.
 
 Run from modules/hats:
   python3 -B tools/build_schematic.py
@@ -6,9 +6,10 @@ Run from modules/hats:
 Writes hardware/HATS.kicad_sym (stock KiCad 10 symbols, derived symbols flattened,
 renamed into the HATS library), hardware/sym-lib-table and the flat root schematic,
 then lets `kicad-cli sch upgrade --force` re-save it natively. circuit() is the circuit
-of docs/research.md section 3: Bread Modular NOISE (blue noise only, its own ATtiny1616)
--> Bread Modular HIHAT (its own ATtiny1616) on one 6HP Eurorack module, all on Bread
-Modular's 3.3 V signal level, with the 8bit MIDI input feeding both MCUs, a level-mapped
+of docs/research.md: Bread Modular NOISE (blue noise only) -> Bread Modular HIHAT on one 6HP
+Eurorack module, both on one STM32G071C8T6 (S4: DAC1 = noise, DAC2 = velocity, the CUTOFF
+knob read by the ADC and played on a second vactrol by PWM, REC button + LED for the shared
+recorder), all on Bread Modular's 3.3 V signal level, with the 8bit MIDI input, a level-mapped
 NOISE input normalled (TS5A23157, as modules/low) to the internal blue noise, a +/-12 V
 audio output and a protected 0..5 V hi-hat CV output with a panel LED.
 
@@ -40,9 +41,19 @@ LIB = 'HATS'
 STUB = 2.54
 
 FILTER_EDITS = {
-    'Conn_01x02': '*_1x??_*',
+    'Conn_01x05': '*_1x??_*',
     'Conn_02x05_Odd_Even': '*_2x??_*',
     'VTL5C': 'PerkinElmer*VTL5C* VTL5C',
+}
+
+# Library key != stock name: the copy gets the key as its name and these properties.
+RENAME = {
+    'STM32G071C8Tx': {
+        'Value': 'STM32G071C8Tx',
+        'Datasheet': 'https://www.st.com/resource/en/datasheet/stm32g071c8.pdf',
+        'Description': 'STMicroelectronics Arm Cortex-M0+ MCU, 64KB flash, 36KB RAM, 64 MHz, 1.7-3.6V, '
+                       '44 GPIO, 2 x 12-bit DAC, LQFP48 (stock STM32G081CBTx body/pins: same STM32G0x1 LQFP-48 pinout)',
+    },
 }
 
 # lib symbol -> (stock library, stock name)
@@ -50,14 +61,19 @@ SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'LED': ('Device', 'LED'),
     'D_Schottky': ('Device', 'D_Schottky'),
     'R_Potentiometer': ('Device', 'R_Potentiometer'),
-    'ATtiny1616-M': ('MCU_Microchip_ATtiny', 'ATtiny1616-M'),
+    'FerriteBead': ('Device', 'FerriteBead'),
+    # KiCad 10 ships no STM32G071CxT (LQFP-48) symbol. STM32G081CBTx is the same STM32G0x1
+    # LQFP-48 die and pinout (G081 = G071 + AES); it is copied and renamed (RENAME below),
+    # as modules/12bit.
+    'STM32G071C8Tx': ('MCU_ST_STM32G0', 'STM32G081CBTx'),
     'HT75xx-1-SOT89': ('Regulator_Linear', 'HT75xx-1-SOT89'),
     'TL072': ('Amplifier_Operational', 'TL072'),
     'MCP6002-xSN': ('Amplifier_Operational', 'MCP6002-xSN'),
     'TS5A23157DGS': ('Analog_Switch', 'TS5A23157DGS'),
     'VTL5C': ('Isolator', 'VTL5C'),
     'AudioJack2_SwitchT': ('Connector_Audio', 'AudioJack2_SwitchT'),
-    'Conn_01x02': ('Connector_Generic', 'Conn_01x02'),
+    'Conn_01x05': ('Connector_Generic', 'Conn_01x05'),
+    'SW_Push': ('Switch', 'SW_Push'),
     'Conn_02x05_Odd_Even': ('Connector_Generic', 'Conn_02x05_Odd_Even'),
     'PWR_FLAG': ('power', 'PWR_FLAG'),
     'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
@@ -70,15 +86,15 @@ SYMBOLS = {
 }
 
 FP = {
-    'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
+    'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric', 'L0603': 'L_0603_1608Metric',
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric', 'C1206': 'C_1206_3216Metric',
     'SOD123': 'D_SOD-123', 'SOT23': 'SOT-23', 'SOT89': 'SOT-89-3',
-    'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
+    'LQFP48': 'LQFP-48_7x7mm_P0.5mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
     'TSSOP10': 'TSSOP-10_3x3mm_P0.5mm',
     'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09', 'VTL5C': 'VTL5C',
-    'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
+    'H1x5': 'PinHeader_1x05_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
     'SJ3': 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm',
-    'LED3': 'LED_D3.0mm',
+    'LED3': 'LED_D3.0mm', 'SW6': 'SW_PUSH_6mm_H7.3mm',
 }
 
 # Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
@@ -92,20 +108,23 @@ RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+12V': '+12V', '-12V': '-12V',
 # V_MID reference reaches the NOISE IN stage, the comparator, the filter and the VCA (a local rail).
 LABEL_NETS = {'VMID_H'}
 
-# ATtiny1616-M (VQFN-20) pin numbers. Two MCUs, each running its Bread Modular firmware
-# unchanged. U2 = Bread Modular NOISE 1.0.1 (PB3 MIDI RX, PA6 DAC = white noise, PA7 TONE knob).
-# U3 = Bread Modular HIHAT 1.0.0 (PB3 MIDI RX, PA5 gate, PA7 open-hat select, PA6 DAC = velocity).
-# PA0 = UPDI on both. PB2 (BM TX / MIDI THRU) is not used: both MCUs listen to one RX net.
-# S3: no recording controls. PC2/PC3 are explicitly no-connects.
-MCU_NOISE = {'11': 'RX', '7': 'N_DAC', '8': 'NOISE_TONE', '19': 'N_UPDI_PA0', '17': None,
-             '4': '+3V3', '3': 'GND', '21': 'GND',
-             '1': None, '2': None, '5': None, '6': None, '9': None, '10': None, '12': None, '13': None,
-             '14': None, '15': None, '16': None, '18': None, '20': None}
-MCU_HIHAT = {'11': 'RX', '6': 'MIDI_GATE', '7': 'H_DAC', '8': 'MIDI_OPEN', '19': 'H_UPDI_PA0',
-             '17': None, '18': None,
-             '4': '+3V3', '3': 'GND', '21': 'GND',
-             '1': None, '2': None, '5': None, '9': None, '10': None, '12': None, '13': None,
-             '14': None, '15': None, '16': None, '20': None}
+# STM32G071C8T6 LQFP-48 pin numbers (DS12232 / stock STM32G0x1 LQFP-48 symbol), as modules/12bit.
+# S4: one MCU runs both Bread Modular firmwares (NOISE + HIHAT ports) and the shared recorder.
+#  DAC1_OUT1 PA4 -> white noise (BM NOISE PA6 DAC); DAC1_OUT2 PA5 -> velocity (BM HIHAT PA6 DAC)
+#  ADC: PA1 (IN1) NOISE TONE knob (BM NOISE PA7), PA6 (IN6) CUTOFF knob (S4: read, not in the audio path)
+#  PA2 MIDI gate (BM HIHAT PA5), PA3 open hat (BM HIHAT PA7): plain GPIO outputs
+#  PB0 TIM3_CH3 PWM -> R51 -> cutoff vactrol U11 LED (the LDR is the bridged-T rheostat)
+#  USART1_RX PB7 (AF0) MIDI in: not PA10, whose UCPD1 dead-battery pull-down (DBCC2) is on
+#  at reset. RX polarity is a USART setting (CR2.RXINV) for JP1 = protected.
+#  PB4 REC button (internal pull-up), PB5 REC LED (TIM3_CH2 PWM), as the modules/12bit MODE pair
+#  PA13 SWDIO / PA14 SWCLK (J11), PF2 NRST. VBAT tied to +3V3 (no battery). VREF+ from
+#  +3V3 through FB1 (DAC/ADC reference = VDDA rail, ratiometric with the knobs).
+#  No crystal: HSI16 (+/-1 %) clocks the 31.25 kbaud MIDI UART and the sample timers.
+MCU_PINS = {'4': '+3V3', '5': 'VREFP', '6': '+3V3', '7': 'GND', '10': 'NRST',
+            '12': 'NOISE_TONE', '13': 'MIDI_GATE', '14': 'MIDI_OPEN', '15': 'N_DAC', '16': 'H_DAC',
+            '17': 'CUTOFF_POT', '19': 'CUT_PWM', '35': 'SWDIO', '36': 'SWCLK',
+            '43': 'REC_BTN', '44': 'REC_LED', '46': 'RX'}
+MCU = {str(n): MCU_PINS.get(str(n)) for n in range(1, 49)}
 
 GRID = 2.54
 OFFSET = (4, 4)  # LAYOUT / TEXTS origin inside the A2 frame, grid units
@@ -121,35 +140,39 @@ def part(ref, sym, value, fp, pins, unit=1, **fields):
 
 
 # Symbol placement in 2.54 mm grid units: ref (unit 1) or ref.unit -> (x, y, rotation[, 'mirror']).
-# Top band: MIDI -> noise MCU U2 -> white / blue noise -> NOISE IN bypass -> U5 normal ->
-# hi-hat filter -> vactrol VCA. Middle band: hi-hat MCU U3 -> trigger / accent / envelope ->
-# vactrol LED drive. Right: AUDIO and CV outputs. Bottom: power and supply pins.
+# Top band: MIDI -> white / blue noise -> NOISE IN bypass -> U5 normal -> hi-hat filter (cutoff
+# vactrol U11) -> vactrol VCA. Left middle: the MCU U2 with VREF+ / NRST, SWD, knobs and REC.
+# Middle band: trigger / accent / envelope -> vactrol LED drive. Right: AUDIO and CV outputs.
+# Bottom: power and supply pins.
 LAYOUT = {
     # MIDI input (as modules/low / modules/acid)
     'J1': (6, 22, 0), 'R1': (12, 20.5, 180), 'R2': (16.5, 22, 90), 'D3': (20, 24.5, 270),
     'Q1': (23, 22, 0), 'R3': (24, 16.5, 180), 'JP1': (33, 18, 0),
-    # Noise MCU + UPDI
-    'U2': (44, 42, 0), 'C6': (34, 30, 0), 'R4': (56, 35, 90), 'J11': (62, 35, 0),
+    # MCU (S4) with decoupling, VREF+ filter, NRST, SWD, the two recordable knobs and REC
+    'U2': (40, 66, 0), 'C6': (36, 38, 0), 'C7': (32, 38, 0), 'FB1': (20, 44, 0), 'C24': (16, 50, 0),
+    'C25': (22, 50, 0), 'C26': (22, 58, 0), 'J11': (62, 64, 0),
+    'C27': (55, 49, 0), 'RV3': (60, 56, 0, 'mirror'), 'C28': (55, 60, 0),
+    'SW1': (46, 92, 0), 'R48': (46, 97, 90), 'D6': (52, 97, 180),
     # Noise: white buffer, blue high-pass, blue buffer, V_MID
-    'RV1': (60, 44, 0, 'mirror'), 'R6': (60, 40, 90),
+    'RV1': (60, 46, 0, 'mirror'), 'R6': (60, 39, 90),
     'U4': (70, 39, 0), 'C8': (77, 39, 90), 'RV2': (81, 45, 0), 'R7': (86, 47, 90),
     'U4.2': (90, 40, 0), 'R8': (97, 40, 90), 'R9': (92, 51, 0), 'R10': (92, 56, 0),
     # NOISE IN bypass (U9B), as modules/low AUDIO
-    'J2': (100, 20, 0), 'R11': (107, 25, 0), 'C10': (110, 20, 90), 'R12': (115, 20, 90),
+    'J2': (100, 20, 0), 'R11': (108, 25, 0), 'C10': (110, 20, 90), 'R12': (115, 20, 90),
     'U9.2': (124, 21, 0), 'R13': (123, 15, 90), 'R14': (106, 12, 0),
     'R49': (104, 25, 90), 'D7': (117, 32, 270),
     # Normal: U5 TS5A23157 (channel 2 unused)
     'U5': (136, 40, 0, 'mirror'), 'U5.2': (136, 56, 0, 'mirror'),
     # Hi-hat filter (Bread Modular HIHAT U2A)
     'C12': (146, 40, 90), 'R15': (151, 40, 90), 'U6': (162, 40, 0, 'mirror'), 'R16': (162, 34, 90),
-    'C13': (158, 48, 90), 'C14': (166, 48, 90), 'R17': (162, 52, 0), 'RV3': (162, 58, 0),
+    'C13': (158, 48, 90), 'C14': (166, 48, 90), 'R17': (162, 52, 0),
+    # Cutoff vactrol (S4): LDR || R50 in place of the CUTOFF rheostat, LED from the MCU PWM via R51
+    'U11': (172, 60, 0), 'R50': (181, 60, 0), 'R51': (164, 61, 90),
     # Vactrol VCA (U7 LDR, U6B), HIHAT_OUT
     'U7': (178, 44, 0), 'R18': (184, 50, 0), 'R19': (188, 50, 0), 'R23': (170, 52, 0),
     'U6.2': (196, 44, 0), 'R20': (196, 38, 90), 'R21': (192, 52, 0), 'R22': (203, 44, 90),
     # Hi-hat V_MID
-    'R24': (150, 60, 0), 'R25': (150, 65, 0), 'C15': (154, 63, 0),
-    # Hi-hat MCU + UPDI
-    'U3': (44, 90, 0), 'C7': (34, 78, 0), 'R5': (56, 83, 90), 'J12': (62, 83, 0),
+    'R24': (150, 60, 0), 'R25': (150, 72, 0), 'C15': (154, 63, 0),
     # Trigger: MIDI gate -> 10n differentiator -> U8A comparator -> Q2 switch
     'R26': (60, 88, 90), 'C17': (66, 88, 90), 'R27': (70, 92, 0), 'U8': (78, 89, 0), 'R28': (85, 89, 90),
     'Q2': (92, 89, 0),
@@ -203,8 +226,8 @@ def circuit():
                   {'1': 'GND', '2': '-12V_F'}, Voltage='25V', Note='-12V_F bulk'))
     c.append(part('U1', 'HT75xx-1-SOT89', 'HT7533-1', 'SOT89',
                   {'1': 'GND', '2': '+12V_F', '3': '+3V3'},
-                  Note='3.3 V LDO, 30 V max input, 100 mA. Load ~35 mA (2 MCUs, 4 x MCP6002, vactrol LED, '
-                       '2 V_MID dividers): ~0.3 W at 11.6 V in'))
+                  Note='3.3 V LDO, 30 V max input, 100 mA. Load ~40 mA (STM32 ~10 mA, 4 x MCP6002, two '
+                       'vactrol LEDs, REC LED, 2 V_MID dividers): ~0.35 W at 11.6 V in'))
     c.append(part('C3', 'C', '1u', 'C0805',
                   {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='LDO input'))
     c.append(part('C4', 'C', '10u', 'C0805',
@@ -231,35 +254,56 @@ def circuit():
                   Note='Clamps Q1 B-E to -0.7 V for a negative input (VEBO 6 V)'))
     c.append(part('Q1', 'MMBT3904', 'MMBT3904', 'SOT23',
                   {'1': 'Q1_B', '2': 'GND', '3': 'RX_Q'},
-                  Note='Inverting input buffer: input high = RX low. Firmware: PORT_INVEN on PB3 (both MCUs)'))
+                  Note='Inverting input buffer: input high = RX low. Firmware: USART1 RXINV on PB7'))
     c.append(part('R3', 'R', '22k', 'R0603',
                   {'1': 'RX_Q', '2': '+3V3'},
-                  Note='Q1 collector pull-up, on RX_Q so the JP1 direct path leaves PB3 unloaded'))
+                  Note='Q1 collector pull-up, on RX_Q so the JP1 direct path leaves PB7 unloaded'))
     c.append(part('JP1', 'SolderJumper_3_Open', 'RX_PROT/DIRECT', 'SJ3',
                   {'1': 'RX_Q', '2': 'RX', '3': 'MIDI_IN'},
                   Note='Solder jumper, copper only, shipped open. Solder 1-2 = protected '
-                       '(Q1 drives PB3 of U2 and U3, PORT_INVEN on in both firmwares). Solder 2-3 = '
-                       'direct/unprotected (stock Bread Modular firmware; 3.3 V senders only). Never both'))
+                       '(Q1 drives PB7, firmware RXINV = 1). Solder 2-3 = direct/unprotected '
+                       '(MIDI_IN to PB7, RXINV = 0; 3.3 V senders only). Never both'))
 
-    # ---- Noise MCU: Bread Modular NOISE 1.0.1 firmware unchanged
-    c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', MCU_NOISE,
-                  Note='NOISE MCU, 3.3 V, Bread Modular NOISE firmware: LFSR white noise on the PA6 DAC, '
-                       'TONE knob on PA7 (+ MIDI CC74)'))
-    c.append(part('C6', 'C', '100n', 'C0603',
-                  {'1': '+3V3', '2': 'GND'}, Voltage='50V', Note='U2 decoupling (Bread Modular NOISE C3)'))
-    c.append(part('R4', 'R', '4.7k', 'R0603',
-                  {'1': 'N_UPDI_PA0', '2': 'N_UPDI'}, Note='UPDI series resistor (Bread Modular NOISE R1)'))
-    c.append(part('J11', 'Conn_01x02', 'UPDI_NOISE', 'H1x2',
-                  {'1': 'N_UPDI', '2': 'GND'},
-                  Note='NOISE MCU (U2) UPDI: pin 1 UPDI, pin 2 GND. Program on Eurorack power (3.3 V target)'))
+    # ---- MCU (S4): one STM32G071C8T6 replaces the two ATtiny1616 (as modules/12bit U3)
+    c.append(part('U2', 'STM32G071C8Tx', 'STM32G071C8T6', 'LQFP48', MCU,
+                  Note='3.3 V, HSI16 (no crystal). Bread Modular NOISE + HIHAT ports: DAC1_OUT1 PA4 white noise, '
+                       'DAC1_OUT2 PA5 velocity; PA2 gate, PA3 open hat; ADC PA1 NOISE TONE, PA6 CUTOFF; '
+                       'PB0 TIM3_CH3 cutoff vactrol PWM; USART1_RX PB7 MIDI; PB4 REC button, PB5 REC LED; SWD'))
+    c.append(part('C6', 'C', '100n', 'C0603', {'1': '+3V3', '2': 'GND'}, Voltage='50V',
+                  Note='U2 VDD/VDDA decoupling (pin 6)'))
+    c.append(part('C7', 'C', '4.7u', 'C0603', {'1': '+3V3', '2': 'GND'}, Voltage='16V',
+                  Note='U2 VDD bulk (ST: 4.7 uF + 100 nF per VDD pin)'))
+    c.append(part('FB1', 'FerriteBead', '600R@100MHz', 'L0603', {'1': '+3V3', '2': 'VREFP'},
+                  Note='VREF+ filter from +3V3 (DCR ~0.45 R: <0.5 mV at the DAC reference current)'))
+    c.append(part('C24', 'C', '1u', 'C0805', {'1': 'VREFP', '2': 'GND'}, Voltage='50V',
+                  Note='VREF+ decoupling (ST: 1 uF + 100 nF)'))
+    c.append(part('C25', 'C', '100n', 'C0603', {'1': 'VREFP', '2': 'GND'}, Voltage='50V',
+                  Note='VREF+ decoupling at pin 5'))
+    c.append(part('C26', 'C', '100n', 'C0603', {'1': 'NRST', '2': 'GND'}, Voltage='50V',
+                  Note='NRST filter (ST recommendation)'))
+    c.append(part('J11', 'Conn_01x05', 'SWD', 'H1x5',
+                  {'1': '+3V3', '2': 'SWDIO', '3': 'SWCLK', '4': 'GND', '5': 'NRST'},
+                  Note='SWD for an ST-Link: 1 +3V3 (VTref sense: program with the module on Eurorack power), '
+                       '2 SWDIO, 3 SWCLK, 4 GND, 5 NRST (as modules/12bit J6). Hand-soldered, B side'))
+
+    # ---- REC button and LED (modules/12bit MODE pair): the shared recorder, two lanes (CUTOFF, NOISE TONE)
+    c.append(part('SW1', 'SW_Push', 'REC', 'SW6', {'1': 'REC_BTN', '2': 'GND'},
+                  MPN='6x6x7 mm THT tact switch, 4 pins (generic)',
+                  Note='REC button on PB4 (internal pull-up): generic 6 x 6 mm THT tact, 7 mm tall, as modules/12bit '
+                       'MODE, pressed through the panel by the 8bit printed cap'))
+    c.append(part('R48', 'R', '1k', 'R0603', {'1': 'REC_LED', '2': 'REC_LED_A'}, Note='REC LED current (~1.4 mA)'))
+    c.append(part('D6', 'LED', 'LED_3mm_red', 'LED3', {'2': 'REC_LED_A', '1': 'GND'},
+                  Note='REC LED on PB5 (TIM3_CH2 PWM). Hand-soldered 3 mm THT, dome flush with the panel (as D5)'))
 
     # ---- Noise: Bread Modular NOISE white buffer + blue high-pass (pink section not built)
     c.append(part('R6', 'R', '1k', 'R0603', {'1': 'N_DAC', '2': 'WHITE'},
                   Note='DAC series R (Bread Modular NOISE R2)'))
     c.append(part('RV1', 'R_Potentiometer', '50k', 'RV09',
                   {'1': 'GND', '2': 'NOISE_TONE', '3': '+3V3'},
-                  Note='NOISE TONE (Bread Modular NOISE RV1, PA7): noise sample rate. RV09 9 mm vertical, '
-                       'linear (user stock). Hand-soldered'))
+                  Note='NOISE TONE (Bread Modular NOISE RV1; S4 on PA1 ADC): noise sample rate, recordable. '
+                       'RV09 9 mm vertical, linear (user stock). Hand-soldered'))
+    c.append(part('C27', 'C', '10n', 'C0603', {'1': 'NOISE_TONE', '2': 'GND'}, Voltage='50V',
+                  Note='ADC hold / noise filter (as modules/12bit)'))
     un = 'MCP6002, 3.3 V. A: white noise follower (Bread Modular NOISE U2A); B: blue noise follower (U2B)'
     c.append(part('U4', 'MCP6002-xSN', 'MCP6002', 'SOIC8',
                   {'3': 'WHITE', '2': 'WHITE_BUF', '1': 'WHITE_BUF'}, unit=1, Note=un))
@@ -334,10 +378,24 @@ def circuit():
                   Voltage='50V', Note='Bridged-T C (Bread Modular HIHAT C3)'))
     c.append(part('R17', 'R', '1k', 'R0603', {'1': 'HPF_T', '2': 'CUT_R'},
                   Note='Bridged-T minimum R (Bread Modular HIHAT R11)'))
+    # S4: the CUTOFF rheostat (BM HIHAT RV1 50k) is the LDR of a second vactrol with 51k across it
+    # (dark = 51k, as the knob fully up; lit = a few hundred ohms, as the knob down). The knob is an
+    # ADC input; the MCU plays it (or a recorded take) on the vactrol LED by PWM. The LDR averages
+    # the ~31 kHz PWM: no DAC or filter needed.
+    c.append(part('U11', 'VTL5C', 'VTL5C', 'VTL5C',
+                  {'1': 'GND', '2': 'CUT_LED', '3': 'CUT_R', '4': 'VMID_H'},
+                  Note='CUTOFF vactrol (S4, same Chinese VTL5C type as U7): LDR = the bridged-T rheostat to V_MID, '
+                       'LED from the PB0 PWM. Hand-soldered THT on B'))
+    c.append(part('R50', 'R', '51k', 'R0603', {'1': 'CUT_R', '2': 'VMID_H'},
+                  Note='Across the LDR: caps the dark resistance at the 50k CUTOFF pot maximum'))
+    c.append(part('R51', 'R', '330', 'R0603', {'1': 'CUT_PWM', '2': 'CUT_LED'},
+                  Note='Cutoff vactrol LED current: ~4 mA peak from PB0 (as R23 on the VCA vactrol)'))
     c.append(part('RV3', 'R_Potentiometer', '50k', 'RV09',
-                  {'1': 'CUT_R', '2': 'VMID_H', '3': None},
-                  Note='CUTOFF (Bread Modular HIHAT RV1 50k): bridged-T rheostat to V_MID, pin 3 open. '
-                       'RV09 9 mm vertical, linear (user stock). Hand-soldered'))
+                  {'1': 'GND', '2': 'CUTOFF_POT', '3': '+3V3'},
+                  Note='CUTOFF knob (S4: PA6 ADC, recordable; was the BM HIHAT RV1 rheostat). RV09 9 mm vertical, '
+                       'linear (user stock). Hand-soldered'))
+    c.append(part('C28', 'C', '10n', 'C0603', {'1': 'CUTOFF_POT', '2': 'GND'}, Voltage='50V',
+                  Note='ADC hold / noise filter (as modules/12bit)'))
 
     # ---- Vactrol VCA: Bread Modular HIHAT U1 (LDR in series, 2 x 330R to V_MID) + U2B x3.2
     c.append(part('U7', 'VTL5C', 'VTL5C', 'VTL5C',
@@ -363,18 +421,6 @@ def circuit():
                   Note='Hi-hat V_MID reservoir (Bread Modular HIHAT C6 47uF 0805)'))
     c.append(part('C16', 'C', '100n', 'C0603', {'1': '+3V3', '2': 'GND'}, Voltage='50V',
                   Note='U6 decoupling (Bread Modular HIHAT C4)'))
-
-    # ---- Hi-hat MCU: Bread Modular HIHAT 1.0.0 firmware unchanged
-    c.append(part('U3', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', MCU_HIHAT,
-                  Note='HIHAT MCU, 3.3 V, Bread Modular HIHAT firmware: note on -> PA5 gate, note > 60 -> '
-                       'PA7 open hat, velocity on the PA6 DAC (accent)'))
-    c.append(part('C7', 'C', '100n', 'C0603',
-                  {'1': '+3V3', '2': 'GND'}, Voltage='50V', Note='U3 decoupling (Bread Modular HIHAT C5)'))
-    c.append(part('R5', 'R', '4.7k', 'R0603',
-                  {'1': 'H_UPDI_PA0', '2': 'H_UPDI'}, Note='UPDI series resistor (Bread Modular HIHAT R26)'))
-    c.append(part('J12', 'Conn_01x02', 'UPDI_HIHAT', 'H1x2',
-                  {'1': 'H_UPDI', '2': 'GND'},
-                  Note='HIHAT MCU (U3) UPDI: pin 1 UPDI, pin 2 GND. Program on Eurorack power (3.3 V target)'))
 
     # ---- Trigger (Bread Modular HIHAT): gate edge -> 10n / 100k differentiator -> U8A comparator
     # against V_MID -> Q2 passes the accent level (U8B) to the envelope capacitor through D4.
@@ -407,7 +453,7 @@ def circuit():
                   Note='Accent mix (Bread Modular HIHAT R23)'))
 
     # ---- Envelope (Bread Modular HIHAT): C18 holds the hit; R34 22k always discharges it (open hat);
-    # with PA7 low (closed hat) Q3 adds R35 + DECAY. Q4 buffers it, U9A x2 -> HAT_CV drives the vactrol LED.
+    # with PA3 low (closed hat) Q3 adds R35 + DECAY. Q4 buffers it, U9A x2 -> HAT_CV drives the vactrol LED.
     c.append(part('D4', 'D_Schottky', 'B5819W', 'SOD123', {'1': 'ENV_CAP', '2': 'PULSE'},
                   Note='Envelope charge diode (Bread Modular HIHAT D2 SS14; B5819W is the same 1 A / 40 V '
                        'Schottky class, already in this BOM)'))
@@ -422,7 +468,7 @@ def circuit():
                   Note='DECAY (Bread Modular HIHAT RV2 50k): closed-hat decay rheostat, pin 3 open. RV09 9 mm '
                        'vertical, linear (user stock). Hand-soldered'))
     c.append(part('Q3', 'Q_PNP_BEC', 'SS8550', 'SOT23', {'1': 'GATE_OPEN', '2': 'DECAY_W', '3': 'GND'},
-                  Note='Closed-hat switch (Bread Modular HIHAT D4 SS8550): on while PA7 is low. SOT-23 1 B, 2 E, 3 C'))
+                  Note='Closed-hat switch (Bread Modular HIHAT D4 SS8550): on while PA3 is low. SOT-23 1 B, 2 E, 3 C'))
     c.append(part('R36', 'R', '200k', 'R0603', {'1': 'MIDI_OPEN', '2': 'GATE_OPEN'},
                   Note='Q3 base R (Bread Modular HIHAT R20; the BM open-gate input is not built)'))
     c.append(part('Q4', 'SS8050', 'SS8050', 'SOT23', {'1': 'ENV_CAP', '2': 'ENV_BUF', '3': '+3V3'},
@@ -479,7 +525,8 @@ def circuit():
 
 
 # JLCPCB parts. Codes reused from modules/acid (checked live 2026-10-22) plus the new HATS parts
-# (100p, 1n, 4.7u, 47u, SS8050, SS8550; assembly search 2026-10-23). Stock is a dated observation,
+# (100p, 1n, 4.7u, 47u, SS8050, SS8550; assembly search 2026-10-23); S4 STM32G071C8T6 and the
+# ferrite from modules/12bit (live-checked 2026-11-06). Stock is a dated observation,
 # not a guarantee. THT parts carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
@@ -512,7 +559,9 @@ SOURCING = {
     ('SS8050', 'SS8050', 'SOT23'): dict(LCSC='C431710', MPN='SS8050', Manufacturer='MDD(Microdiode Semiconductor)'),
     ('Q_PNP_BEC', 'SS8550', 'SOT23'): dict(LCSC='C364314', MPN='SS8550', Manufacturer='MDD(Microdiode Semiconductor)'),
     ('HT75xx-1-SOT89', 'HT7533-1', 'SOT89'): dict(LCSC='C14289', MPN='HT7533-1', Manufacturer='Holtek'),
-    ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR', Manufacturer='Microchip'),
+    ('STM32G071C8Tx', 'STM32G071C8T6', 'LQFP48'): dict(LCSC='C529341', MPN='STM32G071C8T6',
+                                                       Manufacturer='STMicroelectronics'),
+    ('FerriteBead', '600R@100MHz', 'L0603'): dict(LCSC='C1002', MPN='GZ1608D601TF', Manufacturer='Sunlord'),
     ('MCP6002-xSN', 'MCP6002', 'SOIC8'): dict(LCSC='C7377', MPN='MCP6002T-I/SN', Manufacturer='Microchip'),
     ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
     ('TS5A23157DGS', 'TS5A23157', 'TSSOP10'): dict(LCSC='C11133', MPN='TS5A23157DGSR', Manufacturer='Texas Instruments'),
@@ -525,19 +574,23 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 2), 'BIG MODULAR HATS - S3 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, two ATtiny1616 '
-              '(each runs its Bread Modular firmware), 3.3 V internal signals. Circuit intent: docs/research.md', 2.0),
+    (T(4, 2), 'BIG MODULAR HATS - S4 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, one STM32G071C8T6 '
+              '(both Bread Modular firmwares + recorder), 3.3 V internal signals. Circuit intent: docs/research.md', 2.0),
     (T(4, 5), 'Signal nets are wired; supplies use power symbols. VMID_H (hi-hat V_MID, R24/R25/C15) is joined by its net labels.', 1.27),
     (T(4, 9), 'MIDI IN (TS): 8bit / LOW NPN front end, pull-ups on +3V3; RX feeds both MCUs. '
-              'JP1 shipped OPEN: 1-2 = protected (PORT_INVEN on PB3), 2-3 = direct.', 1.27),
-    (T(36, 58), 'NOISE MCU U2 (Bread Modular NOISE): PA6 DAC white noise, PA7 TONE.', 1.27),
+              'JP1 shipped OPEN: 1-2 = protected (USART1 RXINV on PB7), 2-3 = direct.', 1.27),
+    (T(4, 104), 'MCU U2 STM32G071C8T6 at 3.3 V, HSI16, no crystal (S4: replaces the two ATtiny1616).\n'
+                'PA4 DAC1 white noise, PA5 DAC2 velocity; PA2 gate, PA3 open hat (note > 60);\n'
+                'ADC PA1 NOISE TONE, PA6 CUTOFF knob -> PB0 PWM -> U11 cutoff vactrol;\n'
+                'PB4 REC button, PB5 REC LED (recorder lanes: CUTOFF, NOISE TONE).\n'
+                'VREF+ = +3V3 through FB1. J11 SWD: 1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST.', 1.27),
     (T(66, 30), 'NOISE (Bread Modular NOISE, pink not built): U4A white follower, C8 + BLUE TONE high-pass, U4B blue follower.', 1.27),
     (T(98, 6), 'NOISE IN: AC coupled, x -0.33 around VMID_H (10 Vpp -> 3.3 Vpp, hotter clips), as modules/low AUDIO.', 1.27),
     (T(112, 74), 'NORMAL (U5 TS5A23157): jack empty -> TN = T pulls IN1 low -> COM1 = NC1 = BLUE_NOISE;\n'
                  'patched -> TN open, R14 pulls IN1 high -> COM1 = NO1 = NIN_BUF.', 1.27),
-    (T(142, 28), 'HI-HAT FILTER + VCA (Bread Modular HIHAT): U6A bridged-T filter (CUTOFF), U7 vactrol VCA, U6B x3.2.', 1.27),
-    (T(36, 106), 'HIHAT MCU U3 (Bread Modular HIHAT): PA5 gate, PA7 open hat (note > 60), PA6 velocity DAC.', 1.27),
-    (T(58, 66), 'TRIGGER + ACCENT: gate edge (C17/R27) -> U8A comparator -> Q2 passes the U8B accent level.', 1.27),
+    (T(142, 28), 'HI-HAT FILTER + VCA (Bread Modular HIHAT): U6A bridged-T filter (CUTOFF = U11 LDR || R50), '
+                 'U7 vactrol VCA, U6B x3.2.', 1.27),
+    (T(58, 98), 'TRIGGER + ACCENT: gate edge (C17/R27) -> U8A comparator -> Q2 passes the U8B accent level.', 1.27),
     (T(96, 86), 'ENVELOPE: D4 charges C18; R34 decays (open hat), Q3 adds R35 + DECAY (closed hat); Q4 + U9A x2 -> HAT_CV.', 1.27),
     (T(186, 58), 'AUDIO OUT: AC coupled, U10A x3 (3.3 Vpp -> ~10 Vpp), 1k to J3 (as modules/low).', 1.27),
     (T(186, 84), 'HAT CV OUT: U10B x1.51: 0..3.3 V -> 0..5 V, 1k to J4; D5 LED shows it.', 1.27),
@@ -658,14 +711,16 @@ def text_at(p):
         return ((-3.81, -0.635), (-3.81, 1.27), 'right') if unit == 3 else ((0, -7.62), (0, -5.715), None)
     if sym == 'TS5A23157DGS':
         return ((-6.35, -0.635), (-6.35, 1.27), 'right') if unit == 3 else ((0, -10.16), (0, -8.255), None)
-    if sym == 'ATtiny1616-M':
-        return (10.16, -25.4), (10.16, 25.4), None
+    if sym == 'STM32G071C8Tx':
+        return (10.16, 51.435), (10.16, 53.34), 'left'
+    if sym == 'FerriteBead':
+        return right
+    if sym == 'Conn_01x05':
+        return (0, -8.89), (0, 8.89), None
     if sym == 'VTL5C':
         return ((0, -6.35), (0, 6.35), None) if rot in (0, 180) else ((-3.81, -0.635), (-3.81, 1.27), 'right')
     if sym in ('AudioJack2_SwitchT', 'Conn_02x05_Odd_Even'):
         return (0, -8.89), (0, 8.89), None
-    if sym == 'Conn_01x02':
-        return ((5.08, -0.635), (5.08, 1.27), 'left')
     if sym in ('MMBT3904', 'SS8050', 'Q_PNP_BEC'):
         return ((-2.54, -6.35), (-2.54, -4.7), 'right')
     if sym == 'SolderJumper_3_Open':
@@ -827,7 +882,7 @@ def route_wires(parts, ends, lib_syms):
         blocked.discard(c)
 
     DEBUG["blocked"] = blocked
-    occ = {}      # node -> {net: set of axes ('h', 'v')}
+    occ = DEBUG["occ"] = {}  # node -> {net: set of axes ('h', 'v')}
     points = {}   # node -> net (wire ends / bends / pins: nothing of another net may touch them)
     for c, (net, d) in pin_nodes.items():
         points[c] = net
@@ -1045,6 +1100,16 @@ def build():
             prop = next(pp for pp in nodes(sym, 'property') if pp[1] == 'ki_fp_filters')
             edit = f'ki_fp_filters {prop[2]!r} -> {FILTER_EDITS[key]!r}'
             prop[2] = FILTER_EDITS[key]
+        if key in RENAME:  # stock body/pins under this module's name (recorded as an edit)
+            old = sym[1]
+            sym[1] = key
+            for u in nodes(sym, 'symbol'):
+                u[1] = u[1].replace(old, key, 1)
+            for pp in nodes(sym, 'property'):
+                if pp[1] in RENAME[key]:
+                    pp[2] = RENAME[key][pp[1]]
+            edit = (edit + '; ' if edit else '') + f'renamed {old} -> {key}; ' + ', '.join(
+                f'{k} -> {v!r}' for k, v in RENAME[key].items())
         lib_syms[key] = sym
         sources[key] = {'library': f'{lib}:{name}', 'source': str(src).replace(str(Path.home()), '~', 1),
                         'source_sha256': hashlib.sha256(src.read_bytes()).hexdigest(),
@@ -1062,8 +1127,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - HATS") (rev "S3") (company "Big Modular")
-        (comment 1 "SCHEMATIC S3 - Bread Modular NOISE (blue) + HIHAT, two ATtiny1616, 3.3 V signals, wired nets")
+      (title_block (title "Big Modular - HATS") (rev "S4") (company "Big Modular")
+        (comment 1 "SCHEMATIC S4 - Bread Modular NOISE (blue) + HIHAT on one STM32G071, CUTOFF + TONE recordable, wired nets")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
@@ -1148,7 +1213,7 @@ def build():
             sx, sy = r(ex + d[0] * STUB), r(ey + d[1] * STUB)
             stacked = taken.get((ex, ey))
             if stacked and stacked[0].split('/')[0] == p['ref'] and stacked[1] == net:
-                continue  # stacked pins of one symbol (U2 GND 3 / EP 21): one stub serves both
+                continue  # stacked pins of one symbol: one stub serves both
             for pt in ((ex, ey), (sx, sy)):
                 assert taken.setdefault(pt, (key, net))[1] == net, f'{key} touches {taken[pt]} at {pt}'
             items.append([atom('wire'), [atom('pts'), [atom('xy'), ex, ey], [atom('xy'), sx, sy]],

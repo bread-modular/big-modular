@@ -1,11 +1,11 @@
 {
   "footprints": {
-    "VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm": {
-      "source": "/usr/share/kicad/footprints/Package_DFN_QFN.pretty/VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.kicad_mod",
-      "source_sha256": "c922a27f6abb2d9c05e72e12ca4a1f008498f64a810fd4897af0848e45dd20dc",
+    "LQFP-48_7x7mm_P0.5mm": {
+      "source": "/usr/share/kicad/footprints/Package_QFP.pretty/LQFP-48_7x7mm_P0.5mm.kicad_mod",
+      "source_sha256": "1ccc5ad4d95398a4c6eb4b4cd1c429865368d06b8373613c6fcb332b53106ee0",
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
-      "edits": "3D model ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.step is not shipped by KiCad; visual proxy ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm.step",
-      "output_sha256": "a8ceb09dd3f7eb658d90cdf4535ea66db1ae76bb3a0e069874cae61841351e8a"
+      "edits": "none (native load/save only)",
+      "output_sha256": "075236de12883629f7db00cfb81fa77f0d2649e429b9000a69ccbff56705e39f"
     },
     "SOIC-8_3.9x4.9mm_P1.27mm": {
       "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
@@ -77,6 +77,13 @@
       "edits": "none (native load/save only)",
       "output_sha256": "02f678c8e9e2e33cdf7f58846241671ccc477cbe88fa9ab585bb4fce2c935636"
     },
+    "L_0603_1608Metric": {
+      "source": "/usr/share/kicad/footprints/Inductor_SMD.pretty/L_0603_1608Metric.kicad_mod",
+      "source_sha256": "a2a9c562208496756e22f3ab19e0bd6db2341d14da92e7c767d5eafd1bb45d38",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "2f8df6c24430d0a647f6b9e5d3d69b3130d53265936ac12e3d85978f8cbd7790"
+    },
     "PinHeader_2x05_P2.54mm_Vertical": {
       "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_2x05_P2.54mm_Vertical.kicad_mod",
       "source_sha256": "e92fcd01a2df9c567dbd6e2c8c05c4e021cb1b96ca035b85d568d1710f9d48b1",
@@ -84,12 +91,12 @@
       "edits": "none (native load/save only)",
       "output_sha256": "620158661fa11acc27c9a001ec2a0433e2b96e6e87e1eef13c8f643f6fa2d71b"
     },
-    "PinHeader_1x02_P2.54mm_Vertical": {
-      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x02_P2.54mm_Vertical.kicad_mod",
-      "source_sha256": "5301303268f72ba9cc94b7fdbac355951933e6854272ce8d300b679b86b5d45d",
+    "PinHeader_1x05_P2.54mm_Vertical": {
+      "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x05_P2.54mm_Vertical.kicad_mod",
+      "source_sha256": "4b62e226ec163657a79acde1229c1fca2b2453ff75fddcbc038fc7484bbc2711",
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
       "edits": "none (native load/save only)",
-      "output_sha256": "55bd5e61bcbb3e3bd8216b5a3b3c89b6f4dbc767dacd9d884fed1a02ce26c51d"
+      "output_sha256": "dc6e67da65485026aa96c2e1c632062c6bbea1dfcdd324629c0b53540706ebe3"
     },
     "SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm": {
       "source": "/usr/share/kicad/footprints/Jumper.pretty/SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm.kicad_mod",
@@ -104,6 +111,13 @@
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
       "edits": "none (native load/save only)",
       "output_sha256": "5b09af01ea55c4bcbe162f0852e191f9a7d27bb90ddfc593276d2098560c391f"
+    },
+    "SW_PUSH_6mm_H7.3mm": {
+      "source": "/usr/share/kicad/footprints/Button_Switch_THT.pretty/SW_PUSH_6mm_H7.3mm.kicad_mod",
+      "source_sha256": "b51985d31cee4d0f5c5da9e92b593dcd386c279994d5460b0f6a044688d98bfa",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "5ca4e58ed5134fb015cff224c229d597a15e7cbdf2f0dbf96f06f7ec0304f9bd"
     },
     "Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical": {
       "source": "~/data/projects/bread-modular/opt/AudioJacks/AudioJacks.pretty/Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical.kicad_mod",

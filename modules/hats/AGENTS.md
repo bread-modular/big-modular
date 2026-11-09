@@ -5,6 +5,15 @@ Read root `AGENTS.md`, then `Code.md`, `README.md`, `docs/research.md` and
 
 ## Current state
 
+- **S4 schematic (2026-11-08, user direction):** one STM32G071C8T6 U2 (modules/12bit support:
+  C6/C7, FB1 + C24/C25 VREF+, C26 NRST, J11 1x5 SWD) replaces U2/U3 ATtiny1616 (R4/R5/J12 gone).
+  DAC1 PA4 white noise, DAC2 PA5 velocity, PA2 gate, PA3 open hat, ADC PA1 NOISE TONE (C27) and
+  PA6 CUTOFF (RV3 now a +3V3 divider, C28), PB0 TIM3_CH3 PWM -> R51 330R -> U11 VTL5C LED; U11 LDR
+  with R50 51k across it replaces the RV3 rheostat (CUT_R to VMID_H). SW1 REC (PB4), R48/D6 REC LED
+  (PB5). ERC 0, native netlist = `circuit()`.
+- **R4 (2026-11-09)**: 4-layer carrier re-placed and re-routed by hand for S4 (In1 GND / In2 +3V3, all assembled SMD on B; SW1 REC + D6 REC LED on F at the bottom as modules/16bit). 636 tracks / 120 tented 0.3/0.6 mm vias, no vias in SMD pads, no inner tracks, inner planes one piece. ERC 0, unconnected 0, parity 0. DRC: the 18 U7 stacking items (17 still excluded, one U7 silk/RV4-lug exclusion no longer matches) + the new U11-under-RV1/RV2 stacking (10 `pth_inside_courtyard`, 10 `silk_over_copper`), **not excluded: awaiting user approval**. SMD-to-pot/jack >= 2.05 mm. P5 panel: 13 NPTH (REC button 4.2 mm at X6.3 Y114.45, REC LED X23.7 Y114.45, REC legend). JLCPCB export re-done (95 placements / 33 BOM rows), not supplier-accepted. STM32 firmware in `firmware/` (2026-11-09): BM NOISE + HIHAT ports, PWM cutoff vactrol, shared REC recorder (CUTOFF + NOISE TONE), JP1 p/d builds with `opt/stm32g0-tools`; compiled and host-tested, not run on hardware.
+  Batch scripts and DRC reports: `research/s4/route/`. The S3/R3 bullets below are history.
+
 - **S3 schematic:** Bread Modular NOISE + HIHAT, two ATtiny1616 sharing MIDI RX;
   protected NOISE IN normalling; AUDIO and HAT CV outputs with ENV LED.
 - No recording controls: SW1, D6 and R48 removed; U2 PC2 and U3 PC2/PC3 are NC.
@@ -29,9 +38,11 @@ Read root `AGENTS.md`, then `Code.md`, `README.md`, `docs/research.md` and
   below the LED on B (KiCad 115/157.1); R42/R41 stand left of the LED, C22 below U10; U10 pins 2-6
   escape to vias under its body and run on F beside the LED; LED_A runs on F from R47.
   U1/D1/C3/C5 kept from the below-J4 step.
-- `firmware/`: BM NOISE (U2, J11) and HIHAT (U3, J12) ports, JP1 p/d builds
-  (`MIDI_RX_INVERT`, both MCUs on one RX); otherwise BM unchanged (clock/DAC reference
-  kept). Compiled, not bench-tested. See `firmware/README.md`.
+- `firmware/` (S4): one STM32 firmware, BM NOISE + HIHAT ports + CUTOFF vactrol PWM + shared
+  CvRecorder (lanes CUTOFF, NOISE TONE), JP1 p/d builds (`MIDI_RX_INVERT`, USART1 RXINV), shared
+  `opt/stm32g0-tools`. The vactrol LDR model and the BM delay-unit timing are estimates to re-fit
+  on the bench. Compiled + host-tested, not run on hardware. See `firmware/README.md`. (The S3
+  ATtiny ports were removed; they are in git history.)
 - JLCPCB export in `jlcpcb/`: bottom Economic target, 89 placements / 33 BOM rows,
   re-exported from R3 + the LED move (2026-11-03); shared source manifest equal.
   Not supplier-accepted, not built. Supplier preview and formal component review gates

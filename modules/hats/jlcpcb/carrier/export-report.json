@@ -1,11 +1,11 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/235/modules/hats/hardware/hats.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/235/modules/hats/hardware/hats.kicad_sch",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/268/modules/hats/hardware/hats.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/268/modules/hats/hardware/hats.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/235/modules/hats/hardware/hats.kicad_pcb": "2603f6699ce7a7d5734464ceb19e89556109c11cbd4275f73d8c81e0cfa2858e",
-    "/home/azero/.okbrain/workspaces/big-modular/235/modules/hats/hardware/hats.kicad_sch": "bd83dbcf398c0f6067677e016b26810e6354e9acaa02d2aa91a010a9be2d1315"
+    "/home/azero/.okbrain/workspaces/big-modular/268/modules/hats/hardware/hats.kicad_pcb": "48da77ac04587ebc022b464dd7c1588e3b8baae42a40fe2d620c20d30d19bef4",
+    "/home/azero/.okbrain/workspaces/big-modular/268/modules/hats/hardware/hats.kicad_sch": "039093e4dbfe7b49b69b8acbf75a15c083370841e61a09331532e5056cd0281a"
   },
   "layers": [
     "F.Cu",
@@ -25,23 +25,25 @@
   "units": "mm",
   "side": "bottom",
   "include_through_hole": false,
-  "component_count": 89,
+  "component_count": 95,
   "bom_row_count": 33,
   "excluded": {
     "D5": "Not an SMD footprint (use --include-through-hole)",
+    "D6": "Not an SMD footprint (use --include-through-hole)",
     "J1": "Not an SMD footprint (use --include-through-hole)",
     "J2": "Not an SMD footprint (use --include-through-hole)",
     "J3": "Not an SMD footprint (use --include-through-hole)",
     "J4": "Not an SMD footprint (use --include-through-hole)",
     "J10": "Not an SMD footprint (use --include-through-hole)",
     "J11": "Not an SMD footprint (use --include-through-hole)",
-    "J12": "Not an SMD footprint (use --include-through-hole)",
     "JP1": "Excluded from BOM",
     "RV1": "Not an SMD footprint (use --include-through-hole)",
     "RV2": "Not an SMD footprint (use --include-through-hole)",
     "RV3": "Not an SMD footprint (use --include-through-hole)",
     "RV4": "Not an SMD footprint (use --include-through-hole)",
-    "U7": "Not an SMD footprint (use --include-through-hole)"
+    "SW1": "Not an SMD footprint (use --include-through-hole)",
+    "U7": "Not an SMD footprint (use --include-through-hole)",
+    "U11": "Not an SMD footprint (use --include-through-hole)"
   },
   "missing_part_numbers": [],
   "warnings": [
