@@ -73,6 +73,17 @@
 #define IMIDI_PIN_06 8 // PB1
 #define IMIDI_PIN_07 9 // PB0
 
+// Channel LED brightness, as the MCC bank LEDs: software PWM on the LED pins
+// (no hardware PWM on all of them). TCB0 ticks at 20 kHz; LED_PWM_STEPS ticks
+// = 200 Hz PWM, LED_ON_STEPS of them on.
+#define LED_PWM_STEPS 100
+#define LED_ON_STEPS 3      // 3 % brightness
+#define LED_PORTC_MASK (PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm)  // CH1-CH4
+#define LED_PORTA_MASK (PIN1_bm | PIN2_bm | PIN3_bm | PIN4_bm)  // CH5-CH8
+constexpr uint16_t LED_TCB_COMPARE = (F_CPU / 2) / 20000 - 1;
+volatile uint8_t ledMaskC = 0;  // PORTC bits of the lit channel LEDs
+volatile uint8_t ledMaskA = 0;  // PORTA bits of the lit channel LEDs
+
 // Create a MIDI object
 SimpleMIDI MIDI;
 
@@ -119,6 +130,52 @@ int getOutputIndex(byte channel) {
   return idx;
 }
 
+// Port bit of channel LED `id` (0-7): CH1-CH4 on PC0-PC3, CH5-CH8 on PA1-PA4.
+uint8_t getLedBit(int id) {
+  return id < 4 ? (1 << id) : (1 << (id - 3));
+}
+
+void setLed(int id, bool on) {
+  const uint8_t bit = getLedBit(id);
+  volatile uint8_t &mask = id < 4 ? ledMaskC : ledMaskA;
+  uint8_t sreg = SREG;
+  cli();
+  if (on) {
+    mask |= bit;
+  } else {
+    mask &= ~bit;
+    if (id < 4) {
+      PORTC.OUTCLR = bit;
+    } else {
+      PORTA.OUTCLR = bit;
+    }
+  }
+  SREG = sreg;
+}
+
+void setupLedPwm() {
+  TCB0.CTRLA = TCB_CLKSEL_CLKDIV2_gc;  // 10 MHz
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc;     // periodic interrupt
+  TCB0.CCMP = LED_TCB_COMPARE;
+  TCB0.INTCTRL = TCB_CAPT_bm;
+  TCB0.CTRLA |= TCB_ENABLE_bm;
+}
+
+ISR(TCB0_INT_vect) {
+  static uint8_t step = 0;
+  if (++step >= LED_PWM_STEPS) {
+    step = 0;
+  }
+  if (step < LED_ON_STEPS) {
+    PORTC.OUTSET = ledMaskC;
+    PORTA.OUTSET = ledMaskA;
+  } else {
+    PORTC.OUTCLR = LED_PORTC_MASK;
+    PORTA.OUTCLR = LED_PORTA_MASK;
+  }
+  TCB0.INTFLAGS = TCB_CAPT_bm;
+}
+
 void sendMIDI(byte channel, byte status, byte data1, byte data2) {
   if (channel == 7) {
     Serial.write(status); // Send the status byte
@@ -151,6 +208,7 @@ void setupGates() {
     pinMode(gatePin, OUTPUT);
     digitalWrite(gatePin, LOW);
   }
+  setupLedPwm();
 }
 
 void setupIMIDI() {
@@ -173,11 +231,8 @@ void handleNoteOn(byte channel, byte note, byte velocity) {
     return;
   }
 
-  int gatePin = getGatePin(idx);
-  if (gatePin != -1) {
-    digitalWrite(gatePin, HIGH);
-  }
-  
+  setLed(idx, true);
+
   sendMIDI(idx, 0x90, note, velocity);
 }
 
@@ -188,10 +243,7 @@ void handleNoteOff(byte channel, byte note, byte velocity) {
     return;
   }
 
-  int gatePin = getGatePin(idx);
-  if (gatePin != -1) {
-    digitalWrite(gatePin, LOW);
-  }
+  setLed(idx, false);
 
   sendMIDI(idx, 0x80, note, velocity);
 }
