@@ -15,7 +15,9 @@ RX is PB3 (USART RX), UPDI is PA0 (J11).
 - Receives MIDI on the hardware UART, forwards note on/off and CC of an
   8-channel window to CH1-CH8 (CH1-CH7 `SoftwareSerial`, CH8 the USART TX), and
   broadcasts realtime (clock, start/stop) to all eight.
-- Drives each channel LED high on note on, low on note off.
+- Lights each channel LED on note on, off on note off, at 3 % brightness (the
+  MCC bank LEDs run at 1 %; `LED_ON_STEPS`): software PWM, TCB0 interrupt at 20 kHz,
+  200 Hz period.
 
 ## Hardware version (required)
 
@@ -55,7 +57,8 @@ channels 9-16 (default 1-8).
 - `setupGates()` looped `1..8`, so CH1's LED pin (PC0) was never set as an output
   (only its pull-up toggled). It now loops `0..7`.
 - `sendMIDI()` takes the `SoftwareSerial` by reference instead of copying it.
+- The channel LEDs are PWM-dimmed to 3 % (Bread Modular drives them fully on).
 - `SimpleMIDI.h` is the Bread Modular file, unchanged.
 
-Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11): `v1` 3741 B, `v2` 3751 B
-flash, 471 B RAM. Not bench-tested on either board yet.
+Built with arduino-cli 2026-11-10 (megaTinyCore 2.6.11): `v1` 3905 B, `v2` 3915 B
+flash, 474 B RAM. Not bench-tested on either board yet.
