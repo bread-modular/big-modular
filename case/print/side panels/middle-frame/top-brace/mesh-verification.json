@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "output_hashes_verified": 9,
+  "meshes": {
+    "middle-brace-6hp": {
+      "closed_oriented_connected": true,
+      "vertices": 27484,
+      "triangles": 55020,
+      "volume_mm3": 7063.693,
+      "mesh_bounds_mm": [
+        96.9,
+        132.5,
+        5.8
+      ],
+      "bed_z_min_mm": -0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 0.0005025
+    },
+    "front-fit-coupon": {
+      "closed_oriented_connected": true,
+      "vertices": 9693,
+      "triangles": 19410,
+      "volume_mm3": 2045.09,
+      "mesh_bounds_mm": [
+        96.9,
+        10.0,
+        5.8
+      ],
+      "bed_z_min_mm": -0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 5.02e-05
+    }
+  }
+}

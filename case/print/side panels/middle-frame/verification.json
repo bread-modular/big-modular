@@ -1,0 +1,111 @@
+{
+  "source": "case/cad/assembly.FCStd",
+  "source_geometry_difference_mm3": {
+    "bottom_plate": 0.0,
+    "side_panel_left": 0.0,
+    "side_panel_right": 0.0,
+    "rail_front": 0.0,
+    "rail_back": 0.0
+  },
+  "dimensions": {
+    "case_hp_each": 42,
+    "case_depth_mm": 60.0,
+    "frame_width_without_lip_mm": 30.6,
+    "frame_width_with_lip_mm": 35.68,
+    "case_origin_offset_mm": 249.3,
+    "two_case_overall_width_mm": 498.3,
+    "rail_socket_y_z_mm": [
+      10.5,
+      14.0
+    ],
+    "rail_engagement_mm": 8.0,
+    "rail_socket_depth_mm": 8.3,
+    "rail_clearance_per_face_mm": 0.25,
+    "collar_overhang_front_back_mm": 3.4,
+    "collar_rise_above_modules_mm": 2.4,
+    "outline_fillet_mm": 2.0,
+    "window_fillet_mm": 6.0,
+    "entry_chamfer_mm": 0.6,
+    "open_window_y_z_mm": [
+      98.5,
+      38.0
+    ],
+    "bridge_over_base_wall_clearance_mm": 0.4,
+    "bottom_tongue_thickness_mm": 12.0,
+    "bottom_channel_width_mm": 6.6
+  },
+  "checks": {
+    "native_valid_single_solid": true,
+    "assembly_pairs_checked": 36,
+    "max_pair_interference_mm3": 0.0,
+    "plate_edge_gap_mm": 0.3,
+    "rail_sockets": {
+      "left_0": "blind; enclosed; gauge and continuous X insertion clear",
+      "left_1": "blind; enclosed; gauge and continuous X insertion clear",
+      "right_0": "blind; enclosed; gauge and continuous X insertion clear",
+      "right_1": "blind; enclosed; gauge and continuous X insertion clear"
+    },
+    "cover_fit_and_insertion": {
+      "left_0": "fits; continuous bottom-entry sweep clear",
+      "left_1": "fits; continuous bottom-entry sweep clear",
+      "right_0": "fits; continuous bottom-entry sweep clear",
+      "right_1": "fits; continuous bottom-entry sweep clear"
+    },
+    "base_fasteners": {
+      "6.00,25.00": "open bottom, closed roof, original base screw axis",
+      "6.00,103.50": "open bottom, closed roof, original base screw axis",
+      "24.60,25.00": "open bottom, closed roof, original base screw axis",
+      "24.60,103.50": "open bottom, closed roof, original base screw axis"
+    },
+    "base_wall_insertion_sweeps": "clear",
+    "module_panel_envelopes_checked": 912,
+    "through_window": true
+  },
+  "print": {
+    "middle-frame": {
+      "bbox_mm": [
+        62.4,
+        139.3,
+        35.68
+      ],
+      "native_volume_cm3": 123.388,
+      "reload_STEP_STL_3MF": "pass",
+      "stl_facets": 2198,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 123.39
+    },
+    "rail-fit-coupon": {
+      "bbox_mm": [
+        20.5,
+        16.4,
+        35.68
+      ],
+      "native_volume_cm3": 7.862,
+      "reload_STEP_STL_3MF": "pass",
+      "stl_facets": 768,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 7.86
+    }
+  },
+  "native_documents_reopened": true,
+  "hardware": {
+    "middle_rail_screws": 0,
+    "base_screws": "4 existing M3x6 through the two bases",
+    "frame_spacers": "4 M3x10 female hex spacers glued into the bottom sockets",
+    "outer_rail_screws": "4 existing M3x10, retain the two outer side panels"
+  },
+  "prototype_status": "CAD and mesh checks only; print fit and load capacity not tested",
+  "print_notes": "Supplied pose: left-facing side down, right lip up. Supports required for the down-facing blind rail pockets and underside-channel overhang; inspect slicer. Keep supports out of the upward-facing rail and glue sockets.",
+  "status": "PASS",
+  "export_sha256": {
+    "cad/middle-frame.FCStd": "1d6cf9decbb5fe8a98943c81cbf59bc7cd74a60ceb97e090cd094de4b5738a18",
+    "cad/double-case-assembly.FCStd": "b1a17ff21453704829b026b0a367894fbb02e0c5113de7c8cedf9ac7fa24d2ac",
+    "print/side panels/middle-frame/double-case-assembly-preview.step": "3c4e9b170ab481bf2b6a5a8792034fe02cb55c047cb04c9626b65db4c08a27a4",
+    "print/side panels/middle-frame/middle-frame.3mf": "fb57a0a9c3fbb68dec82ecb02973191a308be95f7cd9b39636b98c43e3c51714",
+    "print/side panels/middle-frame/middle-frame.step": "71f4436c286180bb1b2a7e11e0b5bb0b4d302360ce31af8e58fe79441556f8f8",
+    "print/side panels/middle-frame/middle-frame.stl": "3f08dea7e4552dcb8dab274b06cf538b1686490c95ffc41cfc5e570ae038a171",
+    "print/side panels/middle-frame/rail-fit-coupon.3mf": "0938f2e83b654ff78a7c0be7704477caf15de057b047d2947e506711a855a325",
+    "print/side panels/middle-frame/rail-fit-coupon.step": "504d6fa28a1015e0bf717e52dff73acad870fecf875ef4b44c5e7fedb79b86f8",
+    "print/side panels/middle-frame/rail-fit-coupon.stl": "5431a69e7c1125ca9ccd286359e8d7ee22adbd2612067cafa4b4e844925331a1"
+  }
+}

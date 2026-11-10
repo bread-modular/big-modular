@@ -721,8 +721,9 @@ def main():
     report["checks"] = checks(d, asm)
 
     cad, out = CASE / "cad", CASE / "print"
-    for p in (cad, out, CASE / "research"):
-        p.mkdir(exist_ok=True)
+    panel_out = out / "side panels" / "standard"
+    for p in (cad, out, panel_out, CASE / "research"):
+        p.mkdir(parents=True, exist_ok=True)
     doc = App.newDocument("EurorackSkiff")
     for name, s in asm.items():
         doc.addObject("Part::Feature", name.replace("-", "_")).Shape = s
@@ -737,8 +738,10 @@ def main():
     for name, s in parts.items():
         p = print_pose(name, s, d)
         bb = p.BoundBox
-        mesh_info = export(p, out / name)
+        destination = (panel_out if name.startswith("side-panel-") else out) / name
+        mesh_info = export(p, destination)
         report["print"][name] = {
+            "path_without_extension": str(destination.relative_to(CASE)),
             "qty": 2 if name == "rail" else 1,
             "bbox_mm": [round(bb.XLength, 2), round(bb.YLength, 2), round(bb.ZLength, 2)],
             "fits_p2s_bed": max(bb.XLength, bb.YLength, bb.ZLength) <= BED,
@@ -774,4 +777,7 @@ def main():
     print(json.dumps(report, indent=1))
 
 
-main()
+# FreeCADCmd imports a script under its file stem, not as __main__. Allow reuse
+# by other generators without rebuilding this case, while retaining CLI builds.
+if __name__ == "__main__" or any(Path(a).resolve() == Path(__file__).resolve() for a in sys.argv[1:]):
+    main()

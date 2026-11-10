@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "output_hashes_verified": 21,
+  "meshes": {
+    "side-panel-left": {
+      "closed_oriented_connected": true,
+      "vertices": 1760,
+      "triangles": 3540,
+      "volume_mm3": 92037.919,
+      "mesh_bounds_mm": [
+        60.0,
+        132.5,
+        17.08
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 0.0004909
+    },
+    "side-panel-right": {
+      "closed_oriented_connected": true,
+      "vertices": 1624,
+      "triangles": 3268,
+      "volume_mm3": 90605.393,
+      "mesh_bounds_mm": [
+        60.0,
+        132.5,
+        12.0
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 0.0004909
+    },
+    "joiner-left": {
+      "closed_oriented_connected": true,
+      "vertices": 6498,
+      "triangles": 13044,
+      "volume_mm3": 117339.667,
+      "mesh_bounds_mm": [
+        246.23106,
+        246.32079,
+        16.0
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 0.0007001
+    },
+    "joiner-right": {
+      "closed_oriented_connected": true,
+      "vertices": 6498,
+      "triangles": 13044,
+      "volume_mm3": 117339.661,
+      "mesh_bounds_mm": [
+        246.32079,
+        246.23107,
+        16.0
+      ],
+      "bed_z_min_mm": -0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 0.0007071
+    },
+    "fit-socket": {
+      "closed_oriented_connected": true,
+      "vertices": 272,
+      "triangles": 544,
+      "volume_mm3": 4496.665,
+      "mesh_bounds_mm": [
+        20.0,
+        20.0,
+        12.0
+      ],
+      "bed_z_min_mm": -0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 6.4e-05
+    },
+    "fit-plate": {
+      "closed_oriented_connected": true,
+      "vertices": 512,
+      "triangles": 1024,
+      "volume_mm3": 2982.833,
+      "mesh_bounds_mm": [
+        20.0,
+        20.0,
+        8.0
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 6.4e-05
+    }
+  }
+}

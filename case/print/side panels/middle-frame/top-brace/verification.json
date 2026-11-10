@@ -1,0 +1,449 @@
+{
+  "status": "PASS",
+  "dimensions": {
+    "reach_hp_per_case": 6,
+    "nominal_reach_mm": 30.48,
+    "rail_pad_thickness_mm": 1.6,
+    "source_faceplate_thickness_mm": 1.6,
+    "rail_pad_width_mm": 10.0,
+    "source_rail_width_mm": 10.0,
+    "bridge_skin_thickness_mm": 1.6,
+    "screw_tabs_above_module_faces_mm": 0.0,
+    "spine_width_mm": 16.0,
+    "crossbar_span_over_frame_mm": 36.28,
+    "cap_edge_round_mm": 0.6,
+    "outline_radius_mm": 2.0,
+    "inside_corner_radius_mm": 8.0,
+    "frame_clearance_mm": 0.3,
+    "cap_clearance_over_frame_top_mm": 0.2,
+    "spine_above_module_faces_mm": 1.8,
+    "shoulder_end_from_frame_face_mm": 13.0,
+    "shoulder_base_fillet_mm": 1.5,
+    "shoulder_top_round_mm": 1.0,
+    "minimum_cap_thickness_over_collars_mm": 1.6,
+    "raised_bridge_above_module_faces_mm": 4.2,
+    "head_clearance_pocket_diameter_mm": 6.4,
+    "hole_diameter_mm": 3.4,
+    "hole_pitch_mm": 10.16,
+    "screw_length_mm": 6.0,
+    "bounds_assembly_xyz_mm": [
+      188.21,
+      285.11,
+      -2.0,
+      130.5,
+      63.4,
+      69.2
+    ],
+    "remaining_hp_each_case": 36
+  },
+  "source_geometry_differences_mm3": {
+    "bottom_plate": 0.0,
+    "side_panel_left": 0.0,
+    "side_panel_right": 0.0,
+    "rail_front": 0.0,
+    "rail_back": 0.0,
+    "middle_frame": 0.0,
+    "assembly/middle_frame": 0.0,
+    "assembly/left_bottom_plate": 0.0,
+    "assembly/left_rail_front": 0.0,
+    "assembly/left_rail_back": 0.0,
+    "assembly/left_side_panel_left": 0.0,
+    "assembly/right_bottom_plate": 0.0,
+    "assembly/right_rail_front": 0.0,
+    "assembly/right_rail_back": 0.0,
+    "assembly/right_side_panel_right": 0.0
+  },
+  "source_sha256": {
+    "cad/assembly.FCStd": "82a7e5b662e9fc0408698d04e58047b63c370446f87316d30f842cdfc8899f22",
+    "cad/middle-frame.FCStd": "1d6cf9decbb5fe8a98943c81cbf59bc7cd74a60ceb97e090cd094de4b5738a18",
+    "cad/double-case-assembly.FCStd": "b1a17ff21453704829b026b0a367894fbb02e0c5113de7c8cedf9ac7fa24d2ac"
+  },
+  "faceplate_source_sha256": {
+    "modules/12bit/panels/front-pcb/12bit-panel.kicad_pcb": "bbbad732ff9c2ddb42fbdb67af6b1a402e332a4973ce48dad6df4a7a4d393ec9",
+    "modules/16bit/panels/front-pcb/16bit-panel.kicad_pcb": "0bead3c36821ea37a6585dab54dc784c2ad3c6d1988ef39cb1ca54e77d9cb761",
+    "modules/32bit/panels/front-pcb/32bit-panel.kicad_pcb": "317c9b1565a780354facc4ccf5f879a523bc9d4118e2ca8345bb0341d93fb370",
+    "modules/4mix/panels/front-pcb/4mix-panel.kicad_pcb": "8b005d76c20b94c89dee478d71c40cc5ff47ec1c56ddce4888b5ea24d67d8262",
+    "modules/8bit/panels/front-pcb/8bit-lfo-panel.kicad_pcb": "eef7806ba5f5bdada941d067c5eedd407f1792f528e74df5711f75380a5cc20d",
+    "modules/8bit/panels/front-pcb/8bit-panel.kicad_pcb": "f011721f73e7da6a7895a1b6e3885d3e43a4c55f6c3d3c17b92d19362073179c",
+    "modules/acid/panels/front-pcb/acid-panel.kicad_pcb": "4758b32d24a5a035ce823f28e206793feba212951e1f0daea6fec98fa95b7217",
+    "modules/audio-out/panels/front-pcb/audio-out-panel.kicad_pcb": "df654e9796ce6fd00ad8aee88ebafa08f60f1c9dce7084144927a4fef12e929b",
+    "modules/blank/panels/front-pcb/blank-2hp.kicad_pcb": "134395b2ec95c47fbe4b9aa977ea4b9841d0d34a616bfd5119ed7ce289a3e169",
+    "modules/blank/panels/front-pcb/blank-4hp.kicad_pcb": "5364bd4a2f491daa76f498d0fd5035b754f5912f4b064863ce991cd6f31ee38a",
+    "modules/blank/panels/front-pcb/blank-6hp.kicad_pcb": "892be96656a55b654a07a81197134f020a681b920a0b801df0303f09bd805355",
+    "modules/blank/panels/front-pcb/blank-8hp.kicad_pcb": "6ad6ae4a746ebaa42a1b0a11a9b99d61de40d51f01a8990616ea3fe6954be929",
+    "modules/env/panels/front-pcb/env-panel.kicad_pcb": "b4fe51e87cda4470639b13283c55074fc8afb5f667741ba2e21b7f9c18e0ad52",
+    "modules/hats/panels/front-pcb/hats-panel.kicad_pcb": "702e99fbd0a017f3c4ad28926fbada3e13336d775277315a3fb0d2df55bd2b86",
+    "modules/imix/panels/front-pcb/imix-panel.kicad_pcb": "6d701f890885edde86a63548b755741adc3cc375954287992c864fdcccb7ec33",
+    "modules/line-in/panels/front-pcb/line-in-panel.kicad_pcb": "3177a65783898872f1e9ef40b08d03ff0147b26ce7b3645f717cbbf6f87061e2",
+    "modules/low/panels/front-pcb/low-panel.kicad_pcb": "c7cd173b359867675152d2ba582aab87a6b30e521c5736066f567c488679b29b",
+    "modules/mcc/panels/front-pcb/mcc-panel.kicad_pcb": "ff255ba28c202edead43e7418eac53112d2715e334c515b6129c25ed599dbfc3",
+    "modules/midi/panels/front-pcb/midi-panel.kicad_pcb": "49cfeed81f05879b6126808b0bf4a03ef9f6609973c3de5993d1a7367b6f35e0",
+    "modules/usb-audio/panels/front-pcb/usb-audio-panel.kicad_pcb": "8f438113d7c205553e69991f26a00d4808e77872ad9b9a4215ff3aebd4fb874e",
+    "modules/usb-audio-max/panels/front-pcb/usb-audio-max-panel.kicad_pcb": "219521b6296812f41c4cd89ab4b180f1c3947340c2f68aef552defe036a3456a",
+    "modules/usb-power/panels/front-pcb/usb-power-panel.kicad_pcb": "48f6d6feac89bb8789dfbc2b95df994216fac81900c4a47fcde5023a7bba8c54",
+    "modules/usb-power-45w/panels/front-pcb/usb-power-45w-panel.kicad_pcb": "ce77533392472726fd9ddf08db1a1aab53a8648c25dd9a7890b3a8b45fd9820f",
+    "modules/vca-mix/panels/front-pcb/vca-mix-panel.kicad_pcb": "d625398bec31045501ebb3c6826d7874f126f42466971db3cb8a37914b7cc5f0"
+  },
+  "checks": {
+    "native_valid_single_solid": true,
+    "brace_interference_mm3": {
+      "middle_frame": 0.0,
+      "left_bottom_plate": 0.0,
+      "left_rail_front": 0.0,
+      "left_rail_back": 0.0,
+      "left_side_panel_left": 0.0,
+      "right_bottom_plate": 0.0,
+      "right_rail_front": 0.0,
+      "right_rail_back": 0.0,
+      "right_side_panel_right": 0.0
+    },
+    "closest_frame_clearance_mm": 0.2,
+    "cap_underside_follows_saved_frame_top": {
+      "points_checked": 888,
+      "gap_mm": 0.2,
+      "underside_above_module_faces_mm": [
+        0.2,
+        2.6
+      ]
+    },
+    "four_coplanar_rail_contact_areas_mm2": {
+      "left_rail_front": 217.0854,
+      "left_rail_back": 217.0854,
+      "right_rail_front": 218.3269,
+      "right_rail_back": 218.3269
+    },
+    "screw_arms_within_saved_rail_footprints": {
+      "left_rail_front": {
+        "rail_y_bounds_mm": [
+          -2.0,
+          8.0
+        ],
+        "screw_arm_y_bounds_mm": [
+          -2.0,
+          8.0
+        ],
+        "rail_width_mm": 10.0,
+        "screw_arm_width_mm": 10.0,
+        "outside_rail_footprint_mm3": 0.0
+      },
+      "left_rail_back": {
+        "rail_y_bounds_mm": [
+          120.5,
+          130.5
+        ],
+        "screw_arm_y_bounds_mm": [
+          120.5,
+          130.5
+        ],
+        "rail_width_mm": 10.0,
+        "screw_arm_width_mm": 10.0,
+        "outside_rail_footprint_mm3": 0.0
+      },
+      "right_rail_front": {
+        "rail_y_bounds_mm": [
+          -2.0,
+          8.0
+        ],
+        "screw_arm_y_bounds_mm": [
+          -2.0,
+          8.0
+        ],
+        "rail_width_mm": 10.0,
+        "screw_arm_width_mm": 10.0,
+        "outside_rail_footprint_mm3": 0.0
+      },
+      "right_rail_back": {
+        "rail_y_bounds_mm": [
+          120.5,
+          130.5
+        ],
+        "screw_arm_y_bounds_mm": [
+          120.5,
+          130.5
+        ],
+        "rail_width_mm": 10.0,
+        "screw_arm_width_mm": 10.0,
+        "outside_rail_footprint_mm3": 0.0
+      }
+    },
+    "hole_count": 12,
+    "holes_per_rail": 3,
+    "hole_pitch_mm": 10.16,
+    "faceplate_flush_screw_tabs": [
+      {
+        "case": "left",
+        "rail": "front",
+        "x_mm": 190.63,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.0971
+      },
+      {
+        "case": "left",
+        "rail": "front",
+        "x_mm": 200.79,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "left",
+        "rail": "front",
+        "x_mm": 210.95,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "left",
+        "rail": "back",
+        "x_mm": 190.63,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.0971
+      },
+      {
+        "case": "left",
+        "rail": "back",
+        "x_mm": 200.79,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "left",
+        "rail": "back",
+        "x_mm": 210.95,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "right",
+        "rail": "front",
+        "x_mm": 257.05,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 13.962
+      },
+      {
+        "case": "right",
+        "rail": "front",
+        "x_mm": 267.21,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "right",
+        "rail": "front",
+        "x_mm": 277.37,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "right",
+        "rail": "back",
+        "x_mm": 257.05,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 13.962
+      },
+      {
+        "case": "right",
+        "rail": "back",
+        "x_mm": 267.21,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      },
+      {
+        "case": "right",
+        "rail": "back",
+        "x_mm": 277.37,
+        "thickness_mm": 1.6,
+        "top_above_module_face_mm": 0.0,
+        "head_bearing_area_mm2": 14.6791
+      }
+    ],
+    "bridge_roof_thickness_mm": 1.6,
+    "spine": {
+      "width_mm": 16.0,
+      "section_mm2": 25.445,
+      "two_screw_arms_net_section_at_holes_mm2": 21.12,
+      "flare_radius_mm": 8.0,
+      "length_between_crossbars_mm": 112.5
+    },
+    "shoulder_section_above_tab_mm2": {
+      "left_front": 94.83,
+      "left_back": 94.83,
+      "right_front": 46.479,
+      "right_back": 46.479
+    },
+    "screw_pocket_side_wall_mm": 1.8,
+    "screw_pocket_rim_at_shoulder_top_mm": 1.05,
+    "nominal_thread_engagement_mm": 4.2,
+    "screw_tip_clearance_to_spacer_bottom_mm": 5.8,
+    "fastener_envelopes_and_top_tool_access": "PASS; threads are not modelled",
+    "vertical_installation_lift_samples_mm": [
+      0,
+      0.1,
+      0.5,
+      2,
+      4,
+      8,
+      20
+    ],
+    "stock_covers_clear": 4,
+    "remaining_slot_module_panel_envelopes_checked": 768,
+    "remaining_hp_each_case": 36,
+    "minimum_hole_edge_ligament_mm": 0.67,
+    "print_bed_contact_mm2": 1096.6,
+    "print_supports_required": true,
+    "print_support_footprint_mm2": 2575.6,
+    "print_support_height_mm": [
+      1.8,
+      4.2
+    ],
+    "print_material_starting_over_air_outside_cap_channel_mm2": 0.0,
+    "print_orientation": "screw tabs down on the bed; supports under the cap only"
+  },
+  "holes_assembly_coordinates_mm": [
+    {
+      "case": "left",
+      "rail": "front",
+      "rail_socket_index": 18,
+      "x": 190.63,
+      "y": 3.0,
+      "case_local_x": 190.63
+    },
+    {
+      "case": "left",
+      "rail": "front",
+      "rail_socket_index": 19,
+      "x": 200.79,
+      "y": 3.0,
+      "case_local_x": 200.79
+    },
+    {
+      "case": "left",
+      "rail": "front",
+      "rail_socket_index": 20,
+      "x": 210.95,
+      "y": 3.0,
+      "case_local_x": 210.95
+    },
+    {
+      "case": "left",
+      "rail": "back",
+      "rail_socket_index": 18,
+      "x": 190.63,
+      "y": 125.5,
+      "case_local_x": 190.63
+    },
+    {
+      "case": "left",
+      "rail": "back",
+      "rail_socket_index": 19,
+      "x": 200.79,
+      "y": 125.5,
+      "case_local_x": 200.79
+    },
+    {
+      "case": "left",
+      "rail": "back",
+      "rail_socket_index": 20,
+      "x": 210.95,
+      "y": 125.5,
+      "case_local_x": 210.95
+    },
+    {
+      "case": "right",
+      "rail": "front",
+      "rail_socket_index": 0,
+      "x": 257.04999999999995,
+      "y": 3.0,
+      "case_local_x": 7.75
+    },
+    {
+      "case": "right",
+      "rail": "front",
+      "rail_socket_index": 1,
+      "x": 267.21,
+      "y": 3.0,
+      "case_local_x": 17.91
+    },
+    {
+      "case": "right",
+      "rail": "front",
+      "rail_socket_index": 2,
+      "x": 277.37,
+      "y": 3.0,
+      "case_local_x": 28.07
+    },
+    {
+      "case": "right",
+      "rail": "back",
+      "rail_socket_index": 0,
+      "x": 257.04999999999995,
+      "y": 125.5,
+      "case_local_x": 7.75
+    },
+    {
+      "case": "right",
+      "rail": "back",
+      "rail_socket_index": 1,
+      "x": 267.21,
+      "y": 125.5,
+      "case_local_x": 17.91
+    },
+    {
+      "case": "right",
+      "rail": "back",
+      "rail_socket_index": 2,
+      "x": 277.37,
+      "y": 125.5,
+      "case_local_x": 28.07
+    }
+  ],
+  "print": {
+    "middle-brace-6hp": {
+      "print_bounds_mm": [
+        96.9,
+        132.5,
+        5.8
+      ],
+      "native_volume_cm3": 7.063,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 55020,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 7.06
+    },
+    "front-fit-coupon": {
+      "print_bounds_mm": [
+        96.9,
+        10.0,
+        5.8
+      ],
+      "native_volume_cm3": 2.045,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 19410,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 2.05
+    }
+  },
+  "hardware": "12 M3x6 socket-head screws, no washers; 12 installed M3x10 female hex spacers in rail top sockets",
+  "prototype_status": "Geometry and mesh checked only; print fit, stiffness and load capacity untested",
+  "export_sha256": {
+    "cad/middle-brace.FCStd": "ebf41f3953c095cd73e2be5774c7160f8864b8ac8abe0ec5984c7145dd0b49f9",
+    "cad/middle-braced-assembly.FCStd": "01bb626011035933e89dab048815d9a51f99b41e993c7352e07ba6a44b674b0b",
+    "print/side panels/middle-frame/top-brace/assembly-preview.step": "65e2942e9364826d0c461aaf3c20f70fd9e7f1beaa9e12451e420ffac0fa9b36",
+    "print/side panels/middle-frame/top-brace/front-fit-coupon.3mf": "cff808bc448ae50bc291a2771962707f39de30155b1c5ff2293202b3190b6fcf",
+    "print/side panels/middle-frame/top-brace/front-fit-coupon.step": "ec98eb7a58d111a6c5ef49560e51f0286a5c8779fa8ebd682443a6ce52ffd7bf",
+    "print/side panels/middle-frame/top-brace/front-fit-coupon.stl": "d3cc6bf49a77cda7f48d374acf84300de13752ec158ffacc041f80f71d170a0a",
+    "print/side panels/middle-frame/top-brace/middle-brace-6hp.3mf": "96bbdee3726a128b8498cdd86592f86317ff1f452d9fc148e6a64854df130d2f",
+    "print/side panels/middle-frame/top-brace/middle-brace-6hp.step": "486e41dce2061c8ea43c991674e465c3126251c0613cfe94cbfe9c219762b47b",
+    "print/side panels/middle-frame/top-brace/middle-brace-6hp.stl": "fa03951e035ca0af5274a65bc233505b31dec4d641ea370df75c163c006c96fb"
+  }
+}
