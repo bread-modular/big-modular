@@ -47,10 +47,12 @@ stub to a via clear of the pads (top row above the pins or under the body, botto
 the body) and runs on F. Lanes: MIDI_GATE/MIDI_OPEN/CUTOFF_POT/REC_BTN drop straight down
 (x20.0/21.25/22.5/23.3), REC_LED down the right side to R48, RX and SWCLK up the right side (SWCLK
 crosses the N_DAC/RX diagonals on B between the R7 pads), SWDIO and CUT_PWM on B under U11, NRST
-through the RV1/RV2 gap on B to C26/J11. C28 (CUTOFF wiper 10n) sits on that run at X22.5 Y77; C7
+through the RV1/RV2 gap on B to J11 (R6: C26 moved to the pin-10 escape by U2). C28 (CUTOFF wiper 10n) sits on that run at X22.5 Y77; C7
 (+3V3 bulk) went to X3.75 Y69.25 with plane vias. GATE_OPEN now drops straight down x24.1 on F.
 U11 (cutoff vactrol) lies on B under RV1/RV2 like U7: 10 `pth_inside_courtyard` + 10
-`silk_over_copper`, not excluded (user approval pending).
+`silk_over_copper` (R5: 8 after the silk fix), user-approved and excluded in R6 (2026-11-09).
+
+**R6 (2026-11-09, fab fixes, user-approved re-route around U2, no THT moved):** U2 support caps at their pins on B (routed length pin-pad centre to cap-pad centre): C6 (VDD 100n) GND 2.1 mm from pin 7 (pad edge gap 0.6 mm), +3V3 4.2 mm along the pin-6 track with a plane via, plus an under-chip GND via on pin 7 (was 100n reached only through the planes, ~7.3 mm away); C25 (VREF+ 100n) 2.3 mm from pin 5 (edge gap 0.6 mm), on to C24 and FB1 (now below C26) by B tracks; C26 (NRST 100n) on the pin-10 escape, 5.6 mm (was by J11, ~22.7 mm); NRST via to the F run to J11 kept. C19 (U8 decoupling) took C6's old spot and copper; C20 (U9 decoupling, plane vias as before) moved below U9 (native X103.5 Y114.2). U1 HT7533 tab: +12V_F patches U1_TAB_B (27.5 mm2 filled) and U1_TAB_F (78.8 mm2) tied by 8 tented free vias beside the tab (not in it); prototype temperature check stays. The 18 U11/RV1/RV2 stacking items are now user-approved exclusions (2026-11-09, `tools/vactrol_exclusions.py ... U11`): DRC 36 = 36 excluded, 0 active. ERC 0, unconnected 0, native schematic parity 0 (the shared literal ref/pin/net comparison still shows only the four pre-existing `{slash}` NC-name escapes, U2 29/32/33/34), 639 tracks / 131 vias, no vias in SMD pads, no inner tracks, In1/In2 one piece, SMD-to-pot/jack 2.05 mm. `HATS R6`. JLCPCB re-exported (BOM unchanged; CPL: only the 6 moved parts C6/C19/C20/C25/C26/FB1). R43/R46 stay Extended: Basic 1k is 0.25 W (1206) / 0.125 W (0805); 0.5 W would need 2 x 2k Basic in parallel per output, a schematic change with no room in the edge columns. Scripts/reports: `research/fab-fix2/`.
 
 S4 firmware (2026-11-09, `firmware/`, shared `opt/stm32g0-tools`): BM NOISE on a 100 kHz timer
 (one tick per BM delay unit, ~10 us estimated on the 20 MHz ATtiny), BM HIHAT, CUTOFF knob ->
@@ -58,8 +60,8 @@ U11 PWM through an LDR model (300 R at 100 %, gamma 1.0, generic, not measured) 
 dither below the 11-bit step, shared CvRecorder on CUTOFF + NOISE TONE. Compiled, host-tested,
 not run on hardware.
 
-Open for S4: bench check of the firmware (vactrol fit, noise timing); U11 stacking approval;
-supplier preview.
+Open for S4: bench check of the firmware (vactrol fit, noise timing); U1 tab temperature on the
+prototype; supplier preview; R43/R46 Extended.
 
 ## Current circuit (S3)
 

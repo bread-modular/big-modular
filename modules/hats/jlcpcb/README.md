@@ -1,9 +1,22 @@
-# HATS manufacturing export — S4 / R4 / P5
+# HATS manufacturing export — S4 / R6 / P5
 
 Re-exported 2026-11-09 from the S4 schematic (one STM32G071C8T6, PWM cutoff vactrol U11, REC
-button + LED), the R4 hand-routed carrier and the P5 panel, using the unchanged shared
+button + LED), the R6 carrier and the P5 panel, using the unchanged shared
 `opt/kicad-tools/jlcpcb/export.py` (commands at the end). **Complete matched export, not
 supplier-accepted or bench-validated; the STM32 firmware in `../firmware/` is compiled, not run on hardware.**
+
+**R6 = fab fixes on R5 (2026-11-09, user-approved local re-route, no THT part moved).** U2 support
+caps at their pins (routed pin-to-pad length): C6 (VDD) GND 2.1 mm from pin 7, +3V3 4.2 mm on the
+pin-6 track, under-chip GND via on pin 7; C25 (VREF+) 2.3 mm from pin 5; C26 (NRST) 5.6 mm on the
+pin-10 escape (was ~22.7 mm by J11). C19 took C6's old spot; C20 moved below U9; FB1 below C26. U1 HT7533 tab gets
++12V_F copper on B (27.5 mm2) and F (78.8 mm2) tied by 8 tented vias beside the tab. The 18
+U11/RV1/RV2 stacking items are now user-approved exclusions like U7's. Board text `HATS R6`.
+BOM unchanged; CPL changes only C6, C19, C20, C25, C26, FB1 (non-polar). Outline, NPTH and
+F mask/paste/silk Gerbers are unchanged; copper, B mask/paste/silk and PTH drill changed.
+Panel export untouched.
+
+R5 (same day) = R4 copper + B silk: J11 legend `SWD` + `3V3 DIO CLK GND RST` (pin 1 = square
+pad = 3V3/VTref), U7/U11 `SOLDER FIRST` / `TRIM FLUSH` at 1.0 mm / 0.15 mm, `-12V` beside J10.
 
 | Order | Files | Configuration |
 |---|---|---|
@@ -25,20 +38,23 @@ Manual assembly (excluded from both CSVs; exporter list = these 15 THT refs + JP
 | SW1 | 6 x 6 x 7 mm THT tact (REC), F side, bottom left; 8bit/16bit printed cap |
 | U7 | VTL5C vactrol, B side, under RV3: solder first, trim flush, then fit RV3 |
 | U11 | VTL5C vactrol (cutoff), B side, under RV1/RV2: solder first, trim flush, then fit RV1/RV2 |
-| J10 | Unshrouded 2x5 power header on B; red stripe / pin 1 to -12V |
-| J11 | Optional 1x5 SWD header on B: +3V3, SWDIO, SWCLK, GND, NRST (pin 1 square) |
+| J10 | Unshrouded 2x5 power header on B; red stripe / pin 1 to -12V (silk `-12V` beside pins 1/2) |
+| J11 | Optional 1x5 SWD header on B: +3V3, SWDIO, SWCLK, GND, NRST (pin 1 square; silk `SWD`, `3V3 DIO CLK GND RST`) |
 | JP1 | Copper-only MIDI jumper, shipped open (1-2 protected/inverted RX, 2-3 direct RX) |
 
-Verification (2026-11-09): shared check ERC 0, DRC unconnected 0, schematic parity 0, source
-manifest equal, exports byte-identical. DRC still lists 38 items, all vactrol stacking: the 18
-U7/RV3/RV4 items (17 matched by the user-approved exclusions, one U7 silk/RV4-lug key no longer
-matches) and 20 new U11/RV1/RV2 items (10 `pth_inside_courtyard`, 10 `silk_over_copper`) that are
-**not excluded pending user approval**. Ref/pin/net parity differs only in KiCad's `{slash}`
-escape of three unconnected STM32 pin names (as on modules/12bit). 636 tracks / 120 vias, no vias
-in SMD pads, no inner tracks, inner planes one piece, closest SMD-to-pot/jack pad 2.05 mm, RV1-RV4
-courtyards 0.795 mm from the edge (existing pot-column exception). Raw reports:
-`../research/s4/` (ignored). Sourcing: STM32G071C8T6 and the ferrite were live-checked for
-modules/12bit on 2026-11-06; not re-checked here, no stock claim.
+Verification (R6, 2026-11-09): shared check ERC 0, DRC unconnected 0, native schematic parity 0
+(the literal ref/pin/net comparison differs only in the four pre-existing `{slash}` NC-name
+escapes, U2 29/32/33/34), source manifest equal, exports byte-identical, upload mirrors identical. DRC lists 36 items, all vactrol
+stacking and all excluded (user-approved): 18 U7/RV3/RV4 (2026-11-03) and 18 U11/RV1/RV2
+(2026-11-09; 10 `pth_inside_courtyard`, 8 `silk_over_copper`); the shared gate still counts them.
+639 tracks / 131 vias, no vias in SMD pads, no inner tracks, In1 GND and In2 +3V3 one piece each,
+closest SMD-to-pot/jack pad 2.05 mm, RV1-RV4 courtyards unchanged (existing pot-column
+exception). Raw reports: `../research/fab-fix2/` (ignored). Open before ordering: supplier
+preview/placement review; R43/R46 Extended (Basic 1k is 0.25 W 1206 C4410 / 0.125 W 0805; 0.5 W
+needs two Basic 2k C17944 in parallel per output, a schematic change with no room in the edge
+columns, so kept); U1 tab temperature on the prototype (~0.33 W estimated). Sourcing: the
+STM32G071C8T6 and the ferrite were live-checked for modules/12bit on 2026-11-06; not re-checked
+here, no stock claim.
 
 The S3/R3 notes below are history.
 
