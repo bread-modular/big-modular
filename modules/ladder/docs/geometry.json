@@ -1,0 +1,413 @@
+{
+    "revision": "S3/P2 (user 2026-11-09): P1 + power header J10 moved upright to the right edge (between DEPTH and CURVE), bottom jacks down to Y110.3, knob grid down 5 mm (rows Y37 / Y64 / Y91) so CUTOFF/RES clear the top jacks. P1 (user 2026-11-09): THT parts placed, SMD parked off the board, unrouted. 10HP so the five knobs get room (modules/hats: wide knob spacing; modules/acid: 10HP, REC button + LED). Knob grid: outer columns X10.25 / X40.25 (30 mm apart), 27 mm row pitch. Native PCB owns placement once SMD groups move onto the board.",
+    "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+    "kicad_origin_mm": [
+        100.0,
+        50.0
+    ],
+    "hp": 10,
+    "panel_mm": [
+        50.5,
+        128.5
+    ],
+    "panel_pcb_thickness_mm": 1.6,
+    "rail_holes_mm": [
+        [
+            12.58,
+            3.0,
+            3.2
+        ],
+        [
+            43.06,
+            3.0,
+            3.2
+        ],
+        [
+            12.58,
+            125.5,
+            3.2
+        ],
+        [
+            43.06,
+            125.5,
+            3.2
+        ]
+    ],
+    "rail_clear_gap_Y_mm": [
+        8.0,
+        120.5
+    ],
+    "rail_note": "As modules/acid (10HP): 50.5 mm wide, holes at X12.58 and X43.06 (Doepfer X7.5 + 1 HP and + 7 HP). Skiff rails as modules/low: clear Y8.0..120.5.",
+    "main_pcb": {
+        "outline_mm": [
+            0.5,
+            9.25,
+            50.0,
+            119.25
+        ],
+        "thickness_mm": 1.6,
+        "copper_layers": 4,
+        "note": "49.5 x 110.0 mm, as modules/acid; held by the seven jack nuts (RV09 pots take no nut). 4 layers: F signal / In1 GND / In2 power / B signal (planes are drawn with the routing). All assembled SMD on B. 1 mm board-edge keep-out (copper-edge rule 1.0 mm in the .kicad_pro)."
+    },
+    "panel_order": "Top: MIDI, GATE, CV, RES CV (control inputs). Knobs: CUTOFF + RES; ENV TIME + DEPTH; REC button + REC LED (left) + CURVE (right). Bottom: AUDIO IN, FILTER OUT, VCA OUT. J10 upright on B at the right edge between DEPTH and CURVE (P2, as modules/12bit).",
+    "layout_note": "10HP leaves 47.5 mm between the 1 mm edge keep-outs. The two knob columns sit at the panel centre +/-15 mm (modules/acid) and the knob rows 27 mm apart, so knobs up to ~25 mm across fit. The middle column between the knobs carries the two vactrols on B, clear of every pot pad (no stacking DRC findings, unlike modules/low/acid/hats).",
+    "jack_part": "QingPu WQP-PJ301M-12",
+    "jack_note": "Placed by the footprint origin = barrel = panel hole, all at rot 0. Top row at the four-jack pitch of the modules/acid bottom row (X6.5 / 19.0 / 31.5 / 44.0); bottom row on the knob columns + centre (X10.25 / 25.25 / 40.25) at Y110.3 (P2: J10 no longer below them; courtyard bottom Y118.15, 1.1 mm from the board edge).",
+    "jacks": [
+        {
+            "ref": "J1",
+            "role": "MIDI",
+            "XY": [
+                6.5,
+                17.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J2",
+            "role": "GATE",
+            "XY": [
+                19.0,
+                17.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J3",
+            "role": "CV (envelope bypass)",
+            "XY": [
+                31.5,
+                17.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J5",
+            "role": "RES CV",
+            "XY": [
+                44.0,
+                17.0
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J4",
+            "role": "AUDIO IN",
+            "XY": [
+                10.25,
+                110.3
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J6",
+            "role": "FILTER OUT",
+            "XY": [
+                25.25,
+                110.3
+            ],
+            "rot": 0.0
+        },
+        {
+            "ref": "J7",
+            "role": "VCA OUT",
+            "XY": [
+                40.25,
+                110.3
+            ],
+            "rot": 0.0
+        }
+    ],
+    "pot_part": "Song Huei R0904N 50k linear (user stock), vertical snap-in, tall knurled shaft, no bushing, no nut, on the Bread Modular Potentiometer_RV09 footprint (as modules/hats / modules/acid)",
+    "pot_shaft_offset_from_footprint_origin_mm": [
+        -0.127,
+        -0.508
+    ],
+    "pots": [
+        {
+            "ref": "RV3",
+            "role": "CUTOFF (50k)",
+            "shaft_XY": [
+                10.25,
+                37.0
+            ],
+            "rot": 0
+        },
+        {
+            "ref": "RV4",
+            "role": "RESONANCE (50k)",
+            "shaft_XY": [
+                40.25,
+                37.0
+            ],
+            "rot": 0
+        },
+        {
+            "ref": "RV1",
+            "role": "ENV TIME (50k)",
+            "shaft_XY": [
+                10.25,
+                64.0
+            ],
+            "rot": 0
+        },
+        {
+            "ref": "RV2",
+            "role": "DEPTH (50k)",
+            "shaft_XY": [
+                40.25,
+                64.0
+            ],
+            "rot": 0
+        },
+        {
+            "ref": "RV5",
+            "role": "CURVE (50k)",
+            "shaft_XY": [
+                40.25,
+                91.0
+            ],
+            "rot": 0
+        }
+    ],
+    "pot_note": "All pots upright (pins 7.5 mm below the shaft). P2 rows Y37 / Y64 / Y91: CUTOFF/RES sit 20 mm below the top jacks (P1: 15 mm). Courtyards: row 1 top Y31.86 (top jacks end Y24.85, 7.0 mm gap), row 3 bottom Y99.70 (bottom jacks start Y104.0); outer edges X3.80 / X46.71 (>= 1 mm from the board edge). Row gaps (courtyard to courtyard) Y45.70..58.86 and Y72.70..85.86: J11 sits in the first on the left, J10 in the second on the right.",
+    "leds": [
+        {
+            "ref": "D11",
+            "role": "REC",
+            "XY": [
+                15.5,
+                91.0
+            ]
+        }
+    ],
+    "led_note": "3 mm THT on F at rotation 0 (pads side by side, anode pad 2 on the right), placed by the pad centre = body centre; right of the REC button as modules/acid; dome flush with the panel front as modules/8bit.",
+    "buttons": [
+        {
+            "ref": "SW1",
+            "role": "REC",
+            "XY": [
+                8.0,
+                91.0
+            ],
+            "rot": 180.0
+        }
+    ],
+    "button_note": "Generic 6 x 6 mm THT tact (7 mm), stock SW_PUSH_6mm_H7.3mm on F, placed by the pad-pattern centre = stem centre, rot 180 (pad 1 signal on the bottom row) as modules/acid; under ENV TIME, in the knob grid's free slot; pressed through the panel by the modules/8bit printed cap (panels/button-actuator).",
+    "panel_hole_diameters_mm": {
+        "jack": 6.2,
+        "pot": 7.2,
+        "led": 3.2,
+        "button": 4.2
+    },
+    "stack_Z_mm": {
+        "led_body_bottom": 6.3,
+        "led_model_body_bottom": 3.0,
+        "note": "As modules/8bit / modules/acid (LED dome flush with the 1.6 mm FR4 panel front)."
+    },
+    "vactrol_part": "Chinese VTL5C-type vactrol, Bread Modular VTL5C footprint + modules/low courtyard, hand-soldered on B (leads soldered on F), as modules/low / acid / hats.",
+    "vactrols": [
+        {
+            "ref": "U12",
+            "side": "B",
+            "XY": [
+                25.25,
+                41.0
+            ],
+            "rot": 0,
+            "note": "Resonance vactrol, middle column between CUTOFF and RES, upright (LED/LDR lead pairs at Y34.65 / Y47.35). Courtyard X19.83..30.68, Y33.03..48.97: clear of the top jacks (Y24.85) and every pot pad."
+        },
+        {
+            "ref": "U10",
+            "side": "B",
+            "XY": [
+                25.25,
+                85.0
+            ],
+            "rot": 0,
+            "note": "VCA vactrol, middle column above FILTER OUT, upright (lead pairs at Y78.65 / Y91.35). Courtyard X19.83..30.68, Y77.03..92.97: clear of the bottom jacks (Y104.0), the REC LED (X17.97) and every pot pad."
+        }
+    ],
+    "power_header": {
+        "ref": "J10",
+        "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+        "side": "B",
+        "pin1_XY_mm": [
+            44.3,
+            84.38
+        ],
+        "pin_columns_X_mm": [
+            44.3,
+            46.84
+        ],
+        "pin_rows_Y_mm": [
+            84.38,
+            81.84,
+            79.3,
+            76.76,
+            74.22
+        ],
+        "orientation": "Upright at the right edge (user P2: power header to the side; as modules/12bit), rot 180 on B, in the gap between DEPTH and CURVE: odd pins on the inner column X44.3, even pins on X46.84; pins 1/2 (-12 V) at the bottom Y84.38, pins 9/10 (+12 V) at the top Y74.22. Courtyard X42.49..48.65 (1.35 mm from the right edge). Pads Y73.37..85.23 sit between the RV2 and RV5 courtyards (Y72.70 / Y85.86), so the header's F-side solder joints stay out from under the pot bodies.",
+        "idc16_socket_envelope_mm": {
+            "X": [
+                41.17,
+                49.97
+            ],
+            "Y": [
+                62.79,
+                88.19
+            ],
+            "bottom_above_B_mm": 2.5
+        },
+        "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the board, never past an edge. Envelope = 2x8 socket (25.4 x 6.4 mm body, 3.81 mm beyond the end pin centres) plus a 1.2 mm key bump on either side. As on modules/12bit, the overhang covers the RV2 (DEPTH) right lug (Y64) and pin 3 (Y71.5); a 10-pin socket (Y72.81..88.19) covers no pot pad. The socket underside sits 2.5 mm above B on the header plastic, so the THT leads under it must be trimmed to <= 2 mm. B-side SMD placed under it later must stay <= 2 mm tall."
+    },
+    "back_side_tht": [
+        {
+            "ref": "J10",
+            "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+            "XY": [
+                45.57,
+                79.3
+            ],
+            "rot": 180,
+            "note": "right edge, upright, rot 180 on B: pins 1/2 (-12 V) at the bottom (P2, as modules/12bit)"
+        },
+        {
+            "ref": "J11",
+            "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+            "XY": [
+                3.5,
+                52.17
+            ],
+            "rot": 0,
+            "note": "UPDI: pin 1 UPDI Y50.9, pin 2 GND Y53.44, left edge between CUTOFF and ENV TIME (courtyard X1.69, >= 1 mm from the edge)"
+        }
+    ],
+    "smd_parking": {
+        "side": "B",
+        "origin_XY": [
+            56.0,
+            12.0
+        ],
+        "pitch_XY": [
+            8.0,
+            7.0
+        ],
+        "columns": 8,
+        "note": "Every SMD part waits here, off the board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer)."
+    },
+    "panel_labels": [
+        {
+            "text": "LADDER",
+            "XY": [
+                25.25,
+                5.5
+            ],
+            "size": 2.5
+        },
+        {
+            "text": "MIDI",
+            "XY": [
+                6.5,
+                10.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "GATE",
+            "XY": [
+                19.0,
+                10.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CV",
+            "XY": [
+                31.5,
+                10.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "RES CV",
+            "XY": [
+                44.0,
+                10.5
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CUTOFF",
+            "XY": [
+                10.25,
+                30.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "RES",
+            "XY": [
+                40.25,
+                30.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "ENV TIME",
+            "XY": [
+                10.25,
+                57.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "DEPTH",
+            "XY": [
+                40.25,
+                57.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "REC",
+            "XY": [
+                11.75,
+                86.6
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "CURVE",
+            "XY": [
+                40.25,
+                84.0
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "IN",
+            "XY": [
+                10.25,
+                103.8
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "FILTER",
+            "XY": [
+                25.25,
+                103.8
+            ],
+            "size": 1.2
+        },
+        {
+            "text": "VCA",
+            "XY": [
+                40.25,
+                103.8
+            ],
+            "size": 1.2
+        }
+    ]
+}
