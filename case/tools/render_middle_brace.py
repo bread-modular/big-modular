@@ -93,19 +93,22 @@ def render(name,target,direction,scale,assembly=False,sheets=False,only=None):
 cx,cy,cz=meta['cx'],meta['cy'],meta['cz']
 render('brace',(cx,cy,cz),(-0.55,-0.7,1.0),205)
 render('underside',(cx,cy,cz),(0.6,-0.7,-1.0),205)
-render('installed-detail',(cx,cy,47),(-0.6,-0.85,0.95),245,True)
-render('two-cases',(234,cy,35),(-0.4,-1,0.9),560,True)
-render('module-space',(234,cy,40),(-0.4,-1,1.1),560,True,True)
+# The brace lies on the installed modules: the grey sheets stand in for them.
+render('installed-detail',(cx,cy,47),(-0.6,-0.85,0.95),245,True,True)
+render('two-cases',(234,cy,35),(-0.4,-1,0.9),560,True,True)
 render('top',(cx,cy,cz),(0,0,1),205)
-# Top-down installed view exposes both rail edges beside each same-width tab.
+# Top-down installed view: each tab is exactly as wide as the rail under it.
 render('installed-top',(cx,cy,cz),(0,0,1),225,True)
-# Low view shows the panel-thick tabs and the cap's dip between the collars
-# without hiding their actual height behind the case body.
+# Low view: one flat underside, panel-thick tabs and spine, raised crossbars.
 render('thin-profile',(cx,cy,cz),(0,-1,0.24),165)
 # Close view of one filleted shoulder and its walled first-screw pocket.
 render('shoulder-detail',(meta['left_x']+18,meta['front_y'],cz),(-0.75,-0.9,0.8),62)
-render('shoulder-installed',(cx,meta['front_y'],cz),(-0.5,-1,0.75),130,True)
-# Brace on the frame alone: the cap follows the collar, slope and flat top.
+render('shoulder-installed',(cx,meta['front_y'],cz),(-0.5,-1,0.75),130,True,True)
+# From below: the filleted collar pocket between the shoulders, the stepped
+# roof behind it and the 45 degree web down to the flat spine.
+render('pocket-underside',(meta['frame_x'],meta['front_y']+6,cz),(0.35,-0.75,-1.0),78)
+# Brace on the frame alone: flat on its top and lip, pockets over the collars.
 PAIR=('top_brace','middle_frame')
-render('cap-on-frame',(cx,cy,52),(-0.85,-0.75,0.55),190,True,only=PAIR)
-render('cap-profile',(cx,meta['front_y']+12,62),(-1,-0.12,0.16),52,True,only=PAIR)
+render('on-frame',(cx,cy,52),(-0.85,-0.75,0.55),190,True,only=PAIR)
+render('pocket-on-collar',(meta['frame_x'],meta['front_y']-3,66),(-0.12,-1,0.16),60,True,only=PAIR)
+render('web-profile',(cx,meta['front_y']+12,62),(-1,-0.12,0.16),52,True,only=PAIR)

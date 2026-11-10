@@ -1,17 +1,17 @@
-"""One-piece top cap tying all four rails across the existing middle frame.
+"""One-piece top brace tying all four rails across the existing middle frame.
 
-Six HP of the LEFT case's right end and RIGHT case's left end are reserved.
+It goes on AFTER the modules: its whole underside is one flat plane on the
+module faces, which is also the level of the frame's top and 1HP lip. The four
+screw tabs lie on the module panels, match the rail width with no overhang and
+are one source-panel thickness; their screws pass through the panel holes.
 Three M3 holes per rail use the ACTUAL saved rail's 2 HP phase, not a new grid.
-The four screw tabs match the rail width with no overhang, match the source
-faceplate thickness, and sit flush with its front surface.
-The bridge is a thin cap shaped on the frame's own top: over each proud
-collar, down its slope and flat along the frame between the rails, one layer
-above it. Between the rails it is a narrow spine, not the full frame width,
-flared into the two crossbars. It is NOT a solid block.
-Each tab meets the roof through a solid filleted shoulder that wraps the first
-screw head, instead of the earlier 1.6 mm return wall that snapped off.
-Print screw tabs DOWN on the bed, supports only under the cap: no support
-touches the thin tabs or their holes.
+Only the frame's four proud socket collars rise above that plane: each crossbar
+bridges its collar between two solid shoulders, with filleted pocket corners
+and room around the collar. The spine between the rails lies flat on the frame
+and climbs to each crossbar over a 45 degree web.
+Each tab meets its crossbar through a solid filleted shoulder that wraps the
+first screw head, instead of the earlier 1.6 mm return wall that snapped off.
+Print it as it sits, flat on the bed: no supports, only bridges.
 Only the new top-brace print set/native documents are written. Not load-rated.
 """
 import hashlib
@@ -35,23 +35,32 @@ OUT = CASE/'print'/'side panels'/'middle-frame'/'top-brace'
 RESEARCH = CASE/'research'/'middle-brace'
 TOL = 1e-3
 REACH_HP = 6
-OUTER_R = 2.0
+OUTER_R = 3.0
 INNER_R = 8.0        # flare where the spine runs into each crossbar
-FRAME_GAP = 0.30     # beside the frame and its lip
-ROOF_GAP = 0.20      # cap underside above the frame top, all along its profile
+END_MARGIN = 5.0     # tab end past its last hole centre: half the rail width
+# Room around each proud collar. The pocket roof is a bridge, so it gets space
+# to sag; the side gap leaves the collar's square corner clear of POCKET_R.
+SIDE_GAP = 1.2
+ROOF_GAP = 0.6
+POCKET_R = 2.0       # concave fillet, shoulder wall to pocket roof
+# The roof past the rail starts this much higher than the crossbar's own, so
+# the crossbar bridge is already there for it to bridge from.
+BRIDGE_STEP = 0.4
+WEB_GAP = 1.0        # web foot past the nominal end of the frame's slope
+WEB_R = 2.0          # rounds where the 45 degree web meets roof and spine
 # Spine between the rails. Its 1.6 mm section only has to carry what the 10 mm
 # screw arms can feed it: 16 mm is 25.6 mm2, above the two arms' net section at
 # their holes (2 x 10.6 mm2). An estimate, not a tested rating.
 SPINE_W = 16.0
 EDGE_R = 0.6         # round on the spine's long top edges
-# Frame top silhouette, as build_middle_frame.frame() draws it. The built cap
+# Frame top silhouette, as build_middle_frame.frame() draws it. The built brace
 # is measured against the SAVED frame, so a changed frame fails the build.
 COLLAR_INNER = 3.0   # collar flat past the rail's inner edge
 COLLAR_BLEND = 6.0   # slope from the collar down to the module-face plane
 SHOULDER = 13.0      # solid shoulder end, measured from the frame's own face
 SHOULDER_BASE_R = 1.5  # concave fillet, shoulder to tab top
 SHOULDER_TOP_R = 1.0   # round on the shoulder's top edge
-SCREW_L = 6.0
+SCREW_L = 8.0        # through the tab and a module panel
 HEAD_D = 5.5
 HEAD_H = 3.0
 SPACER_AF = 5.5
@@ -74,81 +83,92 @@ def difference(a, b):
 
 class Layout:
     def __init__(self, d, j):
-        # These boundaries reserve actual module slots, including the right lip.
-        self.x0 = d.row_x0 + (d.hp-REACH_HP)*base.HP
-        self.x1 = j.offset + d.row_x0 + REACH_HP*base.HP
-        self.frame_cx = d.L + j.width/2
         self.t = d.panel_t  # exact source-panel thickness, not a new guessed value
-        self.z0 = d.top
-        self.mount_z = d.top + self.t
-        self.roof_z = j.collar_top + ROOF_GAP
-        self.z1 = self.roof_z + self.t
+        # One flat underside on the module faces; the frame top and its lip are
+        # on that plane too. Only the collars stand above it.
+        self.z0 = d.case_top
+        self.mount_z = self.z0 + self.t
+        self.roof_a = j.collar_top + ROOF_GAP
+        self.roof_b = self.roof_a + BRIDGE_STEP
+        self.z1 = self.roof_b + self.t
+        self.frame_cx = d.L + j.width/2
         # Screw arms follow the actual rail edges, not the wider frame collars.
-        # No added front/back margin and no extension into either module bay.
+        # No added front/back margin and no extension past the rail strip.
         self.tab_width = d.rail_w
         self.y0 = d.rail_y[0]
         self.y1 = d.rail_y[1] + self.tab_width
         self.front_inner = d.rail_y[0] + self.tab_width
         self.back_inner = d.rail_y[1]
-        # The two shoulders remain outside the middle frame and its 1HP lip.
-        # They connect low screw tabs to a 1-panel-thick raised roof, and end
-        # the same distance from the frame faces on both sides.
-        self.left_wall_x1 = d.L - FRAME_GAP
-        self.right_wall_x0 = j.offset + d.fill + FRAME_GAP
+        assert abs(self.y0-d.y0) < 1e-8 and abs(self.y1-d.y0-d.ylen) < 1e-8
+        assert self.t >= 1.2, 'source faceplate is too thin for this prototype'
+        self.holes = []
+        for side, offset, indices in (('left',0,range(d.n_sockets-REACH_HP//2,d.n_sockets)),
+                                      ('right',j.offset,range(REACH_HP//2))):
+            for rail_i, y in enumerate(d.hole_y):
+                for k in indices:
+                    self.holes.append({'case':side, 'rail':'front' if rail_i == 0 else 'back',
+                                       'rail_socket_index':k, 'x':offset+d.module_hole_x()[k], 'y':y,
+                                       'case_local_x':d.module_hole_x()[k]})
+        assert len(self.holes) == 12
+        # The tabs lie on the panels, so they need not stop at a slot boundary:
+        # every end hole gets the same plastic around it as beside it.
+        assert abs(END_MARGIN-self.tab_width/2) < 1e-8
+        self.x0 = min(h['x'] for h in self.holes) - END_MARGIN
+        self.x1 = max(h['x'] for h in self.holes) + END_MARGIN
+        assert self.x1-self.x0 < 2*(REACH_HP+1)*base.HP + j.width + d.fill
+        # The shoulders stand on the module faces either side of the collar;
+        # the right-hand ones start on the frame's 1HP lip, which has no collar.
+        self.left_wall_x1 = d.L - SIDE_GAP
+        self.lip_x0 = j.offset + SIDE_GAP
         self.shoulder_x0 = d.L - SHOULDER
         self.shoulder_x1 = j.offset + SHOULDER
-        # The crossbars cover the frame and its lip from shoulder to shoulder;
-        # the spine between them is centred over the frame body; only the
-        # right-hand flares reach over its 1HP lip.
-        self.cx = (self.left_wall_x1 + self.right_wall_x0)/2
+        assert self.lip_x0+1.0 < j.offset+d.fill
+        # The collar's square top corner stays clear of the pocket fillet.
+        self.pocket_corner = POCKET_R - math.hypot(POCKET_R-SIDE_GAP,POCKET_R-ROOF_GAP)
+        assert self.pocket_corner >= 0.3, 'pocket fillet too close to the collar corner'
+        # The spine is centred over the frame and its lip; so are its flares.
+        self.cx = (d.L + j.offset + d.fill)/2
         self.web_x0 = self.cx - SPINE_W/2
         self.web_x1 = self.cx + SPINE_W/2
-        self.spine_z1 = d.case_top + ROOF_GAP + self.t
         assert d.L < self.web_x0-INNER_R and self.web_x1+INNER_R < j.offset+d.fill
         assert self.web_x1 < j.offset
         assert SPINE_W*self.t >= 2*(self.tab_width-base.M3_CLEAR)*self.t, 'spine weaker than the arms'
-        assert abs(self.mount_z-d.case_top) < 1e-8, 'screw tabs must be flush with module fronts'
-        assert self.t >= 1.2, 'source faceplate is too thin for this prototype'
-        self.holes = []
-        for side, offset, indices in (('left',0,range(d.n_sockets-3,d.n_sockets)),
-                                      ('right',j.offset,range(3))):
-            for rail_i, y in enumerate(d.hole_y):
-                for k in indices:
-                    x = offset+d.module_hole_x()[k]
-                    assert self.x0+base.M3_CLEAR/2 < x < self.x1-base.M3_CLEAR/2
-                    self.holes.append({'case':side, 'rail':'front' if rail_i == 0 else 'back',
-                                       'rail_socket_index':k, 'x':x, 'y':y,
-                                       'case_local_x':d.module_hole_x()[k]})
-        assert len(self.holes) == 12
+        # 45 degree web from the spine up to the roof: its foot lands just past
+        # the frame's slope, its top where it reaches the roof height.
+        rise = self.roof_b - self.z0
+        reach = d.rail_w + COLLAR_INNER + COLLAR_BLEND + WEB_GAP
+        self.web_foot = (self.y0+reach, self.y1-reach)
+        self.web_top = (self.web_foot[0]-rise, self.web_foot[1]+rise)
+        self.web_shift = self.t*(math.sqrt(2)-1)  # top face one thickness off the underside
+        assert self.web_top[0]-WEB_R*math.tan(math.pi/8) > self.front_inner+1.0
+        assert (WEB_R+self.t+WEB_R)*math.tan(math.pi/8) < (self.z1-self.mount_z)*math.sqrt(2)
+        self.bridge_b = self.web_top[0]-WEB_R*math.tan(math.pi/8)-self.front_inner
         # Each shoulder holds the first screw in a walled pocket and its base
         # fillet runs out before the second screw's head.
-        for side, edge in (('left',self.shoulder_x0),('right',self.shoulder_x1)):
+        for side, edge, wall in (('left',self.shoulder_x0,self.left_wall_x1),
+                                 ('right',self.shoulder_x1,self.lip_x0)):
             xs = sorted((abs(h['x']-edge),h['x']) for h in self.holes if h['case'] == side)
             first = [x for _,x in xs if (x > edge) == (side == 'left')]
             second = [x for _,x in xs if (x > edge) != (side == 'left')]
             self.pocket_rim = min(abs(x-edge) for x in first)-HEAD_RELIEF_D/2-SHOULDER_TOP_R
             assert self.pocket_rim >= 1.0, 'pocket rim too thin at the shoulder top'
             assert min(abs(x-edge) for x in second)-HEAD_RELIEF_D/2 > SHOULDER_BASE_R
+            self.pocket_wall = min(abs(x-wall) for x in first)-HEAD_RELIEF_D/2
+            assert self.pocket_wall >= 2.0, 'screw pocket too close to the collar pocket'
         assert SHOULDER_BASE_R+SHOULDER_TOP_R < self.z1-self.mount_z
 
 
-def frame_top(d, j, grow, x0, length):
-    """Everything under the frame's top silhouette grown by `grow`, over X."""
-    y0, y1 = d.y0, d.y0+d.ylen
-    over, inner, low = middle.COLLAR_OVERHANG, d.rail_w+COLLAR_INNER, d.top-10
-    pts = [(y0-over,low), (y1+over,low), (y1+over,j.collar_top), (y1-inner,j.collar_top),
-           (y1-inner-COLLAR_BLEND,d.case_top), (y0+inner+COLLAR_BLEND,d.case_top),
-           (y0+inner,j.collar_top), (y0-over,j.collar_top)]
-    body = middle.yz_prism(pts,0,1)
-    body = body.makeFillet(middle.OUTLINE_FILLET,
-                           [e for e in middle.x_edges(body) if e.CenterOfMass.z > low+1])
-    ends = [f for f in body.Faces if f.BoundBox.XLength < 1e-6 and abs(f.BoundBox.XMin) < 1e-6]
-    assert len(ends) == 1
-    solid = ends[0].makeOffset2D(grow).extrude(V(length,0,0))
+def yz_solid(points, x0, length, rounds=()):
+    """Y/Z outline extruded along X, with the named corners rounded."""
+    solid = middle.yz_prism(points,x0,length)
     if solid.Volume < 0:
         solid.reverse()
-    solid.translate(V(x0,0,0))
-    valid(solid,'frame top profile')
+    for (y,z), radius in rounds:
+        edges = [e for e in middle.x_edges(solid)
+                 if abs(e.CenterOfMass.y-y) < 1e-6 and abs(e.CenterOfMass.z-z) < 1e-6]
+        assert len(edges) == 1, (y,z)
+        solid = solid.makeFillet(radius,edges)
+    valid(solid,'Y/Z profile')
     return solid
 
 
@@ -173,12 +193,19 @@ def silhouette(p):
     return outline.makeFillet(OUTER_R, outside)
 
 
+def rows(p, z, height):
+    """The two rail strips, front and back."""
+    front = base.box((p.x0-1,p.y0,z), (p.x1-p.x0+2,p.front_inner-p.y0,height))
+    return front.fuse(base.box((p.x0-1,p.back_inner,z), (p.x1-p.x0+2,p.y1-p.back_inner,height)))
+
+
 def brace(d, j, p):
     height = p.z1-p.z0
     outline = silhouette(p)
 
-    # Panel-thick tabs + solid shoulders + panel-thick cap. Each tab and its
-    # shoulder is one stepped X/Z profile: concave fillet at the tab, round on top.
+    # Crossbars: panel-thick tabs, solid shoulders and the roof over the collar.
+    # Each tab and its shoulder is one stepped X/Z profile: concave fillet at
+    # the tab, round on top.
     def arm(tab_x, step_x, inner_x):
         pts = [V(tab_x,p.y0,p.z0), V(inner_x,p.y0,p.z0), V(inner_x,p.y0,p.z1),
                V(step_x,p.y0,p.z1), V(step_x,p.y0,p.mount_z), V(tab_x,p.y0,p.mount_z)]
@@ -195,33 +222,58 @@ def brace(d, j, p):
             solid = solid.makeFillet(radius,edges)
         valid(solid,'screw arm profile')
         return solid
-    skin = [arm(p.x0,p.shoulder_x0,p.left_wall_x1),
-            arm(p.x1,p.shoulder_x1,p.right_wall_x0),
-            base.box((p.left_wall_x1-1,p.y0,p.z0),
-                     (p.right_wall_x0-p.left_wall_x1+2,p.y1-p.y0,height))]
-    # The cap takes the frame's own top profile: its top face is that profile
-    # one gap plus one panel thickness up, its underside one gap up.
-    top = frame_top(d,j,ROOF_GAP+p.t,p.x0-1,p.x1-p.x0+2)
-    room = frame_top(d,j,ROOF_GAP,p.left_wall_x1,p.right_wall_x0-p.left_wall_x1)
-    shape = skin[0].multiFuse(skin[1:]).common(outline).common(top).cut(room).removeSplitter()
-    valid(shape,'cap before rounding')
-    # Round the long top edges of the spine between the rails. Its sides are
-    # bare skin edges, so tell the top edge from the underside one.
-    def cap_top_edge(e):
+    bars = [arm(p.x0,p.shoulder_x0,p.left_wall_x1+1),
+            arm(p.x1,p.shoulder_x1,p.lip_x0-1),
+            base.box((p.left_wall_x1,p.y0,p.z0), (p.lip_x0-p.left_wall_x1,p.y1-p.y0,height))]
+    # The collar pocket is open to the bed and at both ends; its two upper
+    # corners are filleted, so the roof springs from the shoulders as an arch.
+    pocket = base.box((p.left_wall_x1,p.y0-1,p.z0-5), (p.lip_x0-p.left_wall_x1,p.y1-p.y0+2,p.roof_a-p.z0+5))
+    crown = [e for e in pocket.Edges if e.BoundBox.YLength > 1 and e.BoundBox.XLength < 1e-6
+             and abs(e.BoundBox.ZMin-p.roof_a) < 1e-6]
+    assert len(crown) == 2
+    pocket = pocket.makeFillet(POCKET_R,crown)
+    crossbars = bars[0].multiFuse(bars[1:]).cut(pocket).common(rows(p,p.z0,height))
+
+    # Spine: flat on the frame between the rails, up a 45 degree web at each
+    # end to a roof over the rest of the collar and its slope. `under` is the
+    # room below it, `over` everything below its top face.
+    ya, yb, low = p.y0-1, p.y1+1, p.z0-5
+    (foot_f,foot_b), (top_f,top_b), a = p.web_foot, p.web_top, p.web_shift
+    under = yz_solid([(ya,low),(yb,low),(yb,p.roof_b),(top_b,p.roof_b),(foot_b,p.z0),
+                      (foot_f,p.z0),(top_f,p.roof_b),(ya,p.roof_b)], p.x0-1, p.x1-p.x0+2,
+                     [((y,p.roof_b),WEB_R) for y in (top_f,top_b)])
+    over = yz_solid([(ya,low),(yb,low),(yb,p.z1),(top_b-a,p.z1),(foot_b-a,p.mount_z),
+                     (foot_f+a,p.mount_z),(top_f+a,p.z1),(ya,p.z1)], p.x0-1, p.x1-p.x0+2,
+                    [((y,p.z1),WEB_R+p.t) for y in (top_f+a,top_b-a)]
+                    + [((y,p.mount_z),WEB_R) for y in (foot_f+a,foot_b-a)])
+    spine = over.cut(under).common(base.box((p.x0-1,p.front_inner,p.z0),
+                                            (p.x1-p.x0+2,p.back_inner-p.front_inner,height)))
+    shape = crossbars.fuse(spine).common(outline).removeSplitter()
+    valid(shape,'brace before rounding')
+
+    # Round the spine's long top edges. The fillet runs on along the tangent
+    # top edges of the flares, crossbars and shoulders; the tab slab is put
+    # back square, so every screw tab stays exactly panel-thick.
+    def spine_top_edge(e):
         b = e.BoundBox
-        if not (b.XLength < 1e-6 and min(abs(b.XMin-p.web_x0),abs(b.XMin-p.web_x1)) < 1e-6
-                and b.YLength > 1e-3
+        if not (b.XLength < 1e-6 and b.YLength > 1e-3
+                and min(abs(b.XMin-p.web_x0),abs(b.XMin-p.web_x1)) < 1e-6
                 and p.front_inner+INNER_R-1e-6 < b.YMin and b.YMax < p.back_inner-INNER_R+1e-6):
             return False
         m = e.valueAt((e.FirstParameter+e.LastParameter)/2)
         inward = 0.05 if abs(b.XMin-p.web_x0) < 1e-6 else -0.05
         return not shape.isInside(V(m.x+inward,m.y,m.z+0.05),1e-6,True)
-    square = shape.common(base.box((p.x0-1,p.y0-1,p.z0),(p.x1-p.x0+2,p.y1-p.y0+2,p.t)))
-    shape = shape.makeFillet(EDGE_R,[e for e in shape.Edges if cap_top_edge(e)])
-    # The round runs on along the tangent edges; keep the screw tabs square and
-    # full panel thickness, so it fades out on the tab tops at the shoulders.
-    shape = shape.fuse(square).removeSplitter()
-    valid(shape,'cap')
+    edges = [e for e in shape.Edges if spine_top_edge(e)]
+    assert len(edges) >= 10 and len(edges) % 2 == 0, len(edges)
+    square = shape.common(rows(p,p.z0,p.t))
+    rounded = shape.makeFillet(EDGE_R,edges).fuse(square).removeSplitter()
+    valid(rounded,'brace')
+    assert 0 < shape.Volume-rounded.Volume < 60
+    return rounded
+
+
+def finish(p, shape):
+    height = p.z1-p.z0
     cuts = []
     for hole in p.holes:
         x,y = hole['x'],hole['y']
@@ -229,7 +281,6 @@ def brace(d, j, p):
         # The first screw on each side sits inside the shoulder: pocket only
         # the elevated material so the head/tool is clear and its mounting tab
         # remains exactly panel-thick. This is NOT a countersink in the thin tab.
-        # The right-hand pocket is open towards the roof, beside the 1HP lip.
         cuts.append(base.cyl(HEAD_RELIEF_D/2,height+2,(x,y,p.mount_z)))
     return base.cut_all(shape,cuts)
 
@@ -278,52 +329,38 @@ def verify(d,j,p,s,asm,fasteners,engagement):
     for name,part in asm.items():
         collisions[name] = middle.no_collision(s,part,'brace/'+name)
     checks['brace_interference_mm3'] = collisions
-    frame_distance = s.distToShape(asm['middle_frame'])[0]
-    assert abs(frame_distance-min(FRAME_GAP,ROOF_GAP)) < 1e-5, frame_distance
-    checks['closest_frame_clearance_mm'] = round(frame_distance,6)
-    # A clearance gauge around the whole raised collar cannot overlap the brace.
-    for y in d.hole_y:
-        gauge = base.box((d.L-FRAME_GAP+1e-4,y-2,j.collar_top),
-                         (j.width+d.fill+2*FRAME_GAP-2e-4,4,ROOF_GAP-1e-4))
-        middle.no_collision(s,gauge,'collar roof clearance gauge')
-    # The cap follows the SAVED frame's top: walk its underside from one rail
-    # to the other, over collar, round, slope and flat, along the spine's
-    # centre line and both edges, and both crossbars across the frame's own
-    # width. Every point is one gap off the frame.
-    lines = [(x,p.y0+1,p.y1-1) for x in (p.web_x0+0.5,p.cx,p.web_x1-0.5)]
-    for x in (d.L+1.0,p.frame_cx,j.offset-1.0):  # the 1HP lip has no collar
-        lines += [(x,p.y0+1,p.front_inner-1),(x,p.back_inner+1,p.y1-1)]
-    profile = []
-    for x,ya,yb in lines:
-        for k in range(int((yb-ya)/0.5+1e-6)+1):
-            y = ya+0.5*k
-            column = s.common(base.box((x-0.005,y-0.005,p.z0-1),(0.01,0.01,p.z1-p.z0+2)))
-            assert column.Volume > 0, ('cap missing over the frame',x,y)
-            under = bbox(column)[4]
-            gap = Part.Vertex(V(x,y,under)).distToShape(asm['middle_frame'])[0]
-            assert abs(gap-ROOF_GAP) < 2e-3, ('cap does not follow the frame',x,y,gap)
-            profile.append((y,under))
-    lows = [z for _,z in profile]
-    assert abs(min(lows)-(d.case_top+ROOF_GAP)) < 1e-6 and abs(max(lows)-p.roof_z) < 1e-6
-    checks['cap_underside_follows_saved_frame_top'] = {
-        'points_checked':len(profile),'gap_mm':ROOF_GAP,
-        'underside_above_module_faces_mm':[round(min(lows)-d.case_top,3),round(max(lows)-d.case_top,3)]}
-    # Horizontal rail-bearing area, using the ACTUAL perforated rail top faces.
-    bottom = [f for f in s.Faces if abs(f.BoundBox.ZMin-d.top)<1e-6 and abs(f.BoundBox.ZMax-d.top)<1e-6]
-    contacts = {}
-    for side in ('left','right'):
-        for rail in ('front','back'):
-            name = f'{side}_rail_{rail}'
-            top_faces = [f for f in asm[name].Faces if abs(f.BoundBox.ZMin-d.top)<1e-6 and abs(f.BoundBox.ZMax-d.top)<1e-6]
-            area = sum(a.common(b).Area for a in bottom for b in top_faces)
-            assert area > 170, (name,'insufficient rail contact',area)
-            contacts[name] = round(area,4)
-            xs = sorted(h['x'] for h in p.holes if h['case']==side and h['rail']==rail)
-            assert len(xs) == 3 and all(abs(b-a-2*base.HP)<1e-6 for a,b in zip(xs,xs[1:]))
-    checks['four_coplanar_rail_contact_areas_mm2'] = contacts
-    # Measure each screw arm, from its tip to the cap's corner fillet, against
-    # the saved rail's XY envelope. Hex socket openings are intentionally excluded
-    # from this footprint check; the actual solid rail contact is checked above.
+    height = p.z1-p.z0
+    # One flat underside: every downward face on the bed lies in the
+    # module-face plane, and nothing reaches below it.
+    sb = bbox(s)
+    assert abs(sb[4]-d.case_top) < 1e-6 and abs(sb[5]-p.z1) < 1e-6, sb
+    bottom = [f for f in s.Faces if abs(f.BoundBox.ZMin-p.z0) < 1e-6 and abs(f.BoundBox.ZMax-p.z0) < 1e-6]
+    assert len(bottom) == 5, ('four rail seats and the spine expected',len(bottom))
+    flat = sum(f.Area for f in bottom)
+    checks['flat_underside'] = {'plane_above_rail_top_mm':round(p.z0-d.top,6),
+                                'plane_above_module_faces_mm':round(p.z0-d.case_top,6),
+                                'faces':len(bottom),'area_mm2':round(flat,1)}
+    # It rests on the SAVED frame's flat top and lip, and keeps clear of the
+    # only thing above that plane: the four socket collars and their slopes.
+    frame = asm['middle_frame']
+    assert s.distToShape(frame)[0] < 1e-6, 'brace does not rest on the frame'
+    tops = [f for f in frame.Faces if abs(f.BoundBox.ZMin-d.case_top) < 1e-6 and abs(f.BoundBox.ZMax-d.case_top) < 1e-6]
+    seat = sum(a.common(b).Area for a in bottom for b in tops)
+    assert seat > 1400, ('too little bearing on the frame',seat)
+    checks['bearing_area_on_frame_top_and_lip_mm2'] = round(seat,1)
+    proud = frame.common(base.box((d.L-10,p.y0-20,d.case_top+0.01),(j.width+d.fill+20,p.y1-p.y0+40,20)))
+    assert len(proud.Solids) == 2 and abs(bbox(proud)[5]-j.collar_top) < 1e-6
+    gap = s.distToShape(proud)[0]
+    assert 0.35 <= gap <= ROOF_GAP+1e-6, gap
+    checks['collar_pockets'] = {'closest_clearance_to_collar_mm':round(gap,3),
+                                'clearance_above_collar_top_mm':ROOF_GAP,
+                                'clearance_beside_collar_mm':SIDE_GAP,
+                                'corner_fillet_mm':POCKET_R,
+                                'span_between_shoulders_mm':round(p.lip_x0-p.left_wall_x1,3),
+                                'web_foot_past_collar_slope_mm':WEB_GAP}
+    # Measure each screw arm, from its tip to the spine's corner flare, against
+    # the saved rail's XY envelope. Hex socket openings are intentionally
+    # excluded from this footprint check.
     footprints = {}
     for side, x0, x1 in (('left',p.x0,p.web_x0-INNER_R),
                         ('right',p.web_x1+INNER_R,p.x1)):
@@ -331,15 +368,17 @@ def verify(d,j,p,s,asm,fasteners,engagement):
             name = f'{side}_rail_{rail}'
             rb = bbox(asm[name])
             y0,y1 = (p.y0-1,base.PANEL_H/2) if rail=='front' else (base.PANEL_H/2,p.y1+1)
-            wing = s.common(base.box((x0,y0,p.z0-1), (x1-x0,y1-y0,p.z1-p.z0+2)))
+            wing = s.common(base.box((x0,y0,p.z0-1), (x1-x0,y1-y0,height+2)))
             valid(wing,name+' screw arm')
             wb = bbox(wing)
             rail_envelope = base.box((rb[0],rb[2],p.z0-1),
-                                     (rb[1]-rb[0],rb[3]-rb[2],p.z1-p.z0+2))
+                                     (rb[1]-rb[0],rb[3]-rb[2],height+2))
             overhang = wing.cut(rail_envelope).Volume
             assert overhang < TOL, (name,'screw arm overhangs rail',overhang)
             assert abs(wb[2]-rb[2]) < 1e-6 and abs(wb[3]-rb[3]) < 1e-6, (name,wb,rb)
             assert abs(wb[3]-wb[2]-d.rail_w) < 1e-6, name+' screw arm width'
+            xs = sorted(h['x'] for h in p.holes if h['case']==side and h['rail']==rail)
+            assert len(xs) == 3 and all(abs(b-a-2*base.HP)<1e-6 for a,b in zip(xs,xs[1:]))
             footprints[name] = {'rail_y_bounds_mm':rb[2:4], 'screw_arm_y_bounds_mm':wb[2:4],
                                 'rail_width_mm':round(rb[3]-rb[2],6),
                                 'screw_arm_width_mm':round(wb[3]-wb[2],6),
@@ -349,49 +388,64 @@ def verify(d,j,p,s,asm,fasteners,engagement):
     checks['holes_per_rail'] = 3
     checks['hole_pitch_mm'] = 2*base.HP
     # Read actual screw-head bearing solids: every mounting zone must be exactly
-    # the source faceplate thickness and have its upper face at the module plane.
+    # the source faceplate thickness, lying on the module-face plane.
     tab_checks = []
     for h in p.holes:
-        region = base.cyl(HEAD_D/2,p.z1-p.z0+2,(h['x'],h['y'],p.z0-1))
+        region = base.cyl(HEAD_D/2,height+2,(h['x'],h['y'],p.z0-1))
         bearing = s.common(region)
         bb = bbox(bearing)
-        assert abs(bb[4]-d.top) < 1e-6 and abs(bb[5]-d.case_top) < 1e-6, ('tab not flush',h,bb)
+        assert abs(bb[4]-d.case_top) < 1e-6 and abs(bb[5]-p.mount_z) < 1e-6, ('tab not on the faces',h,bb)
         assert abs(bb[5]-bb[4]-d.panel_t) < 1e-6, ('tab thickness mismatch',h,bb)
         bearing_area = bearing.Volume/p.t
         assert bearing_area > 12, ('insufficient screw-head bearing area',h,bearing_area)
+        # Same plastic all round every hole, the end ones included.
+        ring = base.cyl(base.M3_CLEAR/2+END_MARGIN-base.M3_CLEAR/2-1e-3,p.t,(h['x'],h['y'],p.z0))
+        ring = ring.cut(base.cyl(base.M3_CLEAR/2,p.t+2,(h['x'],h['y'],p.z0-1)))
+        assert abs(s.common(ring).Volume-ring.Volume) < TOL, ('thin ligament',h)
         tab_checks.append({'case':h['case'],'rail':h['rail'],'x_mm':round(h['x'],3),
                            'thickness_mm':round(bb[5]-bb[4],6),
-                           'top_above_module_face_mm':round(bb[5]-d.case_top,6),
+                           'underside_above_module_face_mm':round(bb[4]-d.case_top,6),
                            'head_bearing_area_mm2':round(bearing_area,4)})
-    checks['faceplate_flush_screw_tabs'] = tab_checks
-    for y,top in ((d.hole_y[0],p.z1),(base.PANEL_H/2,p.spine_z1),(d.hole_y[1],p.z1)):
-        roof = s.common(base.box((p.cx-2,y-1,p.z0-1),(4,2,p.z1-p.z0+2)))
-        assert abs(roof.Volume-4*2*p.t) < TOL, 'cap is not panel-thick'
-        assert abs(bbox(roof)[5]-bbox(roof)[4]-p.t) < 1e-6 and abs(bbox(roof)[5]-top) < 1e-6
-    checks['bridge_roof_thickness_mm'] = p.t
+    checks['panel_thick_screw_tabs_on_module_faces'] = tab_checks
+    checks['minimum_hole_edge_ligament_mm'] = round(END_MARGIN-base.M3_CLEAR/2,3)
+    # Skin thickness, read from the solid: collar roof, stepped roof, spine.
+    skins = {}
+    for name,(x,y),low,top in (('roof_over_collar',(p.frame_cx,d.hole_y[0]),p.roof_a,p.z1),
+                               ('roof_over_collar_back',(p.frame_cx,d.hole_y[1]),p.roof_a,p.z1),
+                               ('stepped_roof',(p.cx,p.front_inner+2.5),p.roof_b,p.z1),
+                               ('stepped_roof_back',(p.cx,p.back_inner-2.5),p.roof_b,p.z1),
+                               ('spine',(p.cx,base.PANEL_H/2),p.z0,p.mount_z)):
+        column = s.common(base.box((x-2,y-1,p.z0-1),(4,2,height+2)))
+        cb = bbox(column)
+        assert abs(cb[4]-low) < 1e-6 and abs(cb[5]-top) < 1e-6, (name,cb)
+        assert abs(column.Volume-4*2*(top-low)) < TOL, name+' is not solid'
+        assert top-low >= p.t-1e-9
+        skins[name] = round(top-low,6)
+    checks['skin_thickness_mm'] = skins
     # The spine between the flares: its real width and section, and nothing
     # else between the two crossbars.
-    spine = s.common(base.box((p.x0-1,base.PANEL_H/2-0.5,p.z0-1),(p.x1-p.x0+2,1,p.z1-p.z0+2)))
+    spine = s.common(base.box((p.x0-1,base.PANEL_H/2-0.5,p.z0-1),(p.x1-p.x0+2,1,height+2)))
     sb = bbox(spine)
     assert abs(sb[0]-p.web_x0) < 1e-6 and abs(sb[1]-p.web_x1) < 1e-6, sb
-    assert abs(sb[4]-(d.case_top+ROOF_GAP)) < 1e-6 and abs(sb[5]-p.spine_z1) < 1e-6, sb
+    assert abs(sb[4]-p.z0) < 1e-6 and abs(sb[5]-p.mount_z) < 1e-6, sb
     arms_net = 2*(p.tab_width-base.M3_CLEAR)*p.t
     assert SPINE_W*p.t-0.5 < spine.Volume <= SPINE_W*p.t+1e-6 and spine.Volume > arms_net
     between = s.common(base.box((p.x0-1,p.front_inner+INNER_R,p.z0-1),
-                                (p.x1-p.x0+2,p.back_inner-p.front_inner-2*INNER_R,p.z1-p.z0+2)))
+                                (p.x1-p.x0+2,p.back_inner-p.front_inner-2*INNER_R,height+2)))
     bb = bbox(between)
     assert abs(bb[0]-p.web_x0) < 1e-6 and abs(bb[1]-p.web_x1) < 1e-6, bb
     checks['spine'] = {'width_mm':round(sb[1]-sb[0],6),'section_mm2':round(spine.Volume,3),
                        'two_screw_arms_net_section_at_holes_mm2':round(arms_net,3),
-                       'flare_radius_mm':INNER_R,
+                       'flare_radius_mm':INNER_R,'top_edge_round_mm':EDGE_R,
+                       'flat_on_frame_between_y_mm':[round(v,3) for v in p.web_foot],
+                       'web_angle_deg':45,
                        'length_between_crossbars_mm':round(p.back_inner-p.front_inner,3)}
     # Shoulders: the plastic joining each tab to the raised roof, cut just above
-    # the tab top. The return walls they replace were 16 mm2 on the left and
-    # two small pillars beside the screw-head scallop on the right.
+    # the tab top.
     shoulders = {}
     side_wall = (d.rail_w-HEAD_RELIEF_D)/2
     for side, x0, x1 in (('left',p.shoulder_x0,p.left_wall_x1),
-                        ('right',p.right_wall_x0,p.shoulder_x1)):
+                        ('right',p.lip_x0,p.shoulder_x1)):
         first = (max if side == 'left' else min)(h['x'] for h in p.holes if h['case'] == side)
         for rail, ry in zip(('front','back'),d.rail_y):
             cut = s.common(base.box((x0,ry,p.mount_z+0.05),(x1-x0,d.rail_w,0.001)))
@@ -405,10 +459,11 @@ def verify(d,j,p,s,asm,fasteners,engagement):
     checks['shoulder_section_above_tab_mm2'] = shoulders
     checks['screw_pocket_side_wall_mm'] = round(side_wall,3)
     checks['screw_pocket_rim_at_shoulder_top_mm'] = round(p.pocket_rim,3)
+    checks['screw_pocket_to_collar_pocket_wall_mm'] = round(p.pocket_wall,3)
     # Full circular gauges through all mounting holes, plus actual insert fit.
     for i,h in enumerate(p.holes,1):
         x,y = h['x'],h['y']
-        gauge = base.cyl(base.M3_CLEAR/2-1e-4,p.z1-p.z0+2,(x,y,p.z0-1))
+        gauge = base.cyl(base.M3_CLEAR/2-1e-4,height+2,(x,y,p.z0-1))
         middle.no_collision(s,gauge,'through-hole gauge')
         nominal = h['case_local_x']
         assert abs(x-(nominal+(j.offset if h['case']=='right' else 0))) < 1e-6
@@ -424,11 +479,13 @@ def verify(d,j,p,s,asm,fasteners,engagement):
         for name,part in {**asm,'brace':s}.items():
             middle.no_collision(access,part,'tool access/'+name)
     assert 3.5 <= engagement <= base.SPACER_L-2, engagement
+    assert HEAD_H <= p.z1-p.mount_z, 'screw heads stand above the brace'
     checks['nominal_thread_engagement_mm'] = round(engagement,3)
     checks['screw_tip_clearance_to_spacer_bottom_mm'] = round(base.SPACER_L-engagement,3)
+    checks['screw_head_below_brace_top_mm'] = round(p.z1-p.mount_z-HEAD_H,3)
     checks['fastener_envelopes_and_top_tool_access'] = 'PASS; threads are not modelled'
-    # Open-bottom steps cannot undercut on a vertical installation path. Also
-    # sample the lowering path against the saved frame, rails and all bases.
+    # Nothing undercuts on a vertical installation path: sample the lowering
+    # path against the saved frame, rails and all bases.
     for lift in (0.1,0.5,2,4,8,20):
         raised = middle.moved(s,dz=lift)
         for name,part in asm.items():
@@ -440,6 +497,8 @@ def verify(d,j,p,s,asm,fasteners,engagement):
             middle.no_collision(s,middle.moved(base.cover_blank(d,rail),dx=offset),'stock cover')
             covers += 1
     checks['stock_covers_clear'] = covers
+    # The brace goes on top of the installed modules: every real panel, at
+    # every slot it can take, lies under the flat underside. No HP is reserved.
     panels = 0
     for side,offset in (('left',0),('right',j.offset)):
         for name,info in d.panels.items():
@@ -447,35 +506,50 @@ def verify(d,j,p,s,asm,fasteners,engagement):
                 x = d.row_x0+slot*base.HP
                 if x+info['width'] > d.L+1e-6:
                     continue
-                # Reserve an entire 6HP slot group even though the H leaves the
-                # interior open. No claim of installing a module beside the cap.
-                if side=='left' and x+info['width'] > p.x0+1e-6:
-                    continue
-                if side=='right' and x < d.row_x0+REACH_HP*base.HP-1e-6:
+                if offset+x > p.x1 or offset+x+info['width'] < p.x0:
                     continue
                 panel = base.box((offset+x,0,d.top),(info['width'],info['height'],info['thickness']))
-                middle.no_collision(panel,s,'remaining module envelope/'+name)
-                for tag,part in fasteners.items():
-                    if tag.startswith('screw_'):
-                        middle.no_collision(panel,part,'module/screw '+tag)
+                assert abs(d.top+info['thickness']-p.z0) < 1e-6, name+' face is off the underside plane'
+                middle.no_collision(panel,s,'module under the brace/'+name)
                 panels += 1
     assert panels > 0
-    checks['remaining_slot_module_panel_envelopes_checked'] = panels
-    checks['remaining_hp_each_case'] = d.hp-REACH_HP
-    # Include the exposed inner edge of the right screw tabs at the lip relief,
-    # not only the two outside slot boundaries.
-    ligaments = [min(h['x']-(p.x0 if h['case']=='left' else p.right_wall_x0),
-                     (p.left_wall_x1 if h['case']=='left' else p.x1)-h['x'])-base.M3_CLEAR/2
-                 for h in p.holes]
-    checks['minimum_hole_edge_ligament_mm'] = round(min(ligaments),3)
+    checks['module_panel_envelopes_under_brace_checked'] = panels
+    checks['reserved_hp_each_case'] = 0
+    # A brace screw can only go where the panel under it has a rail hole. For
+    # the module that sits against the frame, list the brace holes its own
+    # holes land on: every source panel gives at least one per rail.
+    def on_brace(side, xs):
+        return sorted({round(h['x'],3) for h in p.holes for x in xs
+                       if h['case'] == side and abs(h['x']-x) < 0.05})
+    aligned = {}
+    for name,info in d.panels.items():
+        width_hp = round(info['width']/base.HP)
+        left = on_brace('left',[d.row_x0+(d.hp-width_hp)*base.HP+x for x in info['holes_x']])
+        right = on_brace('right',[j.offset+d.row_x0+x for x in info['holes_x']])
+        assert left and right, (name,'no brace hole over this panel')
+        aligned[name] = {'width_hp':width_hp,'last_module_of_left_case_x_mm':left,
+                         'first_module_of_right_case_x_mm':right}
+    checks['brace_holes_over_the_module_next_to_the_frame'] = aligned
+    checks['all_twelve_holes_usable_with'] = 'three 2HP panels next to the frame on each case'
+    two_hp = [info for info in d.panels.values() if round(info['width']/base.HP) == 2]
+    assert two_hp
+    for info in two_hp:
+        assert len(info['holes_x']) == 1
+        xs = [d.row_x0+(d.hp-2*k)*base.HP+info['hole_x'] for k in (1,2,3)]
+        assert len(on_brace('left',xs)) == 3
+        xs = [j.offset+d.row_x0+2*k*base.HP+info['hole_x'] for k in (0,1,2)]
+        assert len(on_brace('right',xs)) == 3
     # Measure actual layer sections rather than claiming what needs support.
-    # Tabs and shoulders stand on the bed; the only material that starts over
-    # air is the cap's underside, in the channel the frame fills.
+    # Printed as installed, flat underside on the bed. Material that starts
+    # over air may only be: the collar-pocket fillets and roof, bridged
+    # between the two shoulders; and the 45 degree web with the stepped roof,
+    # bridged from the already printed crossbar roof to the web.
     posed = print_pose(s)
     origin = bbox(s)
-    channel = base.box((p.left_wall_x1-origin[0]-1e-4,-1,-1),
-                       (p.right_wall_x0-p.left_wall_x1+2e-4,250,50))
-    layers = int(math.ceil((p.z1-p.z0)/LAYER-1e-6))
+    def to_bed(shape):
+        return middle.moved(shape,dx=-origin[0],dy=-origin[2],dz=-origin[4])
+    layers = int(round(height/LAYER))
+    assert abs(layers*LAYER-height) < 1e-9
     def layer(i):
         # Unit-thick prism of one layer section: sturdier than paper-thin cuts.
         z = (i+0.5)*LAYER
@@ -483,35 +557,77 @@ def verify(d,j,p,s,asm,fasteners,engagement):
         prism.translate(V(0,0,-z))
         return prism
     sections = [layer(i) for i in range(layers)]
-    supported, stray = 0.0, 0.0
-    for a,b in zip(sections,sections[1:]):
+    strips = to_bed(rows(p,p.z0-1,height+2))
+    pocket = to_bed(base.box((p.left_wall_x1-1e-4,p.y0-1,p.z0-1),
+                             (p.lip_x0-p.left_wall_x1+2e-4,p.y1-p.y0+2,height+2))).common(strips)
+    webs = [to_bed(base.box((p.x0-1,ya,p.z0-1),(p.x1-p.x0+2,yb-ya,height+2)))
+            for ya,yb in ((p.front_inner,p.web_foot[0]+1e-4),(p.web_foot[1]-1e-4,p.back_inner))]
+    web_zone = webs[0].fuse(webs[1])
+    stray, pocket_area, web_area = 0.0, 0.0, 0.0
+    pocket_span, web_reach = {}, {}
+    for i,(a,b) in enumerate(zip(sections,sections[1:]),1):
         over = b.cut(a)
         if not over.Solids:
             continue
-        supported += over.Volume
-        stray += over.cut(channel).Volume
-    assert stray < 0.01, ('material outside the cap channel starts over air',stray)
-    # Both crossbars, the flares and the spine, as far as they lie in the
-    # channel, less the two right-hand screw pockets that open into it.
-    footprint = silhouette(p).common(base.box((p.left_wall_x1,p.y0-1,p.z0),
-                                              (p.right_wall_x0-p.left_wall_x1,p.y1-p.y0+2,1))).Volume
-    assert footprint-10 < supported < footprint+0.5, (supported,footprint)
-    # Tabs and shoulders all start on the bed itself.
+        in_pocket, in_web = over.common(pocket), over.common(web_zone)
+        pocket_area += in_pocket.Volume
+        web_area += in_web.Volume
+        stray += over.Volume-in_pocket.Volume-in_web.Volume
+        if in_pocket.Volume > 1e-6:
+            # widest unsupported step in X of this layer, front crossbar
+            pocket_span[i] = max(bbox(solid)[1]-bbox(solid)[0] for solid in in_pocket.Solids)
+        front = over.common(webs[0])
+        if front.Volume > 1e-6:
+            web_reach[i] = bbox(front)[3]-bbox(front)[2]
+    assert stray < 0.01, ('material outside the pockets and webs starts over air',stray)
+    # Layer indices: first layer wholly above each roof.
+    roof_a_layer = int(round((p.roof_a-p.z0)/LAYER))
+    roof_b_layer = int(round((p.roof_b-p.z0)/LAYER))
+    assert abs(roof_a_layer*LAYER-(p.roof_a-p.z0)) < 1e-9 and abs(roof_b_layer*LAYER-(p.roof_b-p.z0)) < 1e-9
+    assert max(pocket_span) == roof_a_layer and max(web_reach) == roof_b_layer
+    bridge_a, bridge_b = pocket_span[roof_a_layer], web_reach[roof_b_layer]
+    assert bridge_a < p.lip_x0-p.left_wall_x1 and bridge_b < 7.0, (bridge_a,bridge_b)
+    # Both ends of each bridge already stand on plastic one layer below.
+    below_a, below_b = (roof_a_layer-0.5)*LAYER, (roof_b_layer-0.5)*LAYER
+    for y in d.hole_y:
+        for x in (p.left_wall_x1-0.5,p.lip_x0+0.5):
+            assert posed.isInside(V(x-origin[0],y-origin[2],below_a),1e-6,True), 'pocket bridge has no shoulder under its end'
+    for ya,yb in ((p.front_inner-0.5,p.front_inner+bridge_b+0.3),(p.back_inner+0.5,p.back_inner-bridge_b-0.3)):
+        for x in (p.cx-SPINE_W/2+1,p.cx,p.cx+SPINE_W/2-1):
+            assert posed.isInside(V(x-origin[0],ya-origin[2],below_b),1e-6,True), 'stepped roof has no crossbar roof under its edge'
+            assert posed.isInside(V(x-origin[0],yb-origin[2],below_b),1e-6,True), 'stepped roof has no web under its edge'
+    # Below its top fillet the web advances one layer height per layer: 45 deg.
+    fillet_h = WEB_R*(1-math.cos(math.pi/4))
+    straight = [v for i,v in web_reach.items() if (i+1)*LAYER < p.roof_b-p.z0-fillet_h-1e-9]
+    assert straight and max(straight) < LAYER+0.02, max(straight)
+    # First section is cut at half a layer: the two webs have advanced that far.
     bed = sections[0].Volume
-    assert bed > 1000, ('bed contact',bed)
-    tab_slab = posed.common(base.box((-1,-1,0),(250,250,p.t)))
-    assert abs(tab_slab.Volume-bed*p.t) < TOL, 'screw tabs must rise straight from the bed'
-    checks['print_bed_contact_mm2'] = round(bed,1)
-    checks['print_supports_required'] = True
-    checks['print_support_footprint_mm2'] = round(supported,1)
-    checks['print_support_height_mm'] = [round(d.case_top+ROOF_GAP-p.z0,3),round(p.roof_z-p.z0,3)]
-    checks['print_material_starting_over_air_outside_cap_channel_mm2'] = round(stray,4)
-    checks['print_orientation'] = 'screw tabs down on the bed; supports under the cap only'
+    assert abs(bed-flat-SPINE_W*LAYER) < 0.5, (bed,flat)
+    # Outside the collar pockets the rail strips rise straight from the bed.
+    seats = strips.cut(pocket)
+    tab_slab = posed.common(seats.common(to_bed(rows(p,p.z0,p.t))))
+    assert abs(tab_slab.Volume-sections[0].common(seats).Volume*p.t) < 10*TOL, 'screw tabs must rise straight from the bed'
+    checks['print'] = {'orientation':'as installed: flat underside on the bed',
+                       'supports_required':False,
+                       'layer_height_assumed_mm':LAYER,
+                       'bed_contact_mm2':round(flat,1),
+                       'material_starting_over_air_elsewhere_mm2':round(stray,4),
+                       'collar_pocket_bridge':{'count':2,'span_mm':round(bridge_a,2),'width_mm':p.tab_width,
+                                               'height_above_bed_mm':round(p.roof_a-p.z0,3),
+                                               'anchored_on':'both shoulders'},
+                       'stepped_roof_bridge':{'count':2,'span_mm':round(bridge_b,2),
+                                              'height_above_bed_mm':round(p.roof_b-p.z0,3),
+                                              'anchored_on':'crossbar roof (two layers earlier) and web'},
+                       'web_overhang_deg_from_vertical':45,
+                       'web_advance_per_layer_mm':round(max(straight),3),
+                       'overhang_area_in_pockets_mm2':round(pocket_area,1),
+                       'overhang_area_in_webs_mm2':round(web_area,1),
+                       'status':'geometry only; not printed'}
     return checks
 
 
 def print_pose(shape):
-    # As installed: rail seats on the bed, raised roof up.
+    # As installed: flat underside on the bed, raised roof up.
     s = shape.copy()
     b=bbox(s)
     s.translate(V(-b[0],-b[2],-b[4]))
@@ -545,12 +661,14 @@ def native_document(name,path,shapes,p):
         obj.Label=key.replace('_',' ').title()
         obj.Shape=shape
         if key=='top_brace':
-            for prop,value in (('ReachPerCaseHP',REACH_HP),('RailPadThickness',p.t),('RailPadWidth',p.tab_width),
-                               ('BridgeSkinThickness',p.t),('ShoulderBaseFillet',SHOULDER_BASE_R),
-                               ('ShoulderTopRound',SHOULDER_TOP_R),('RoofClearance',ROOF_GAP),
-                               ('SpineWidth',SPINE_W),('SpineFlareRadius',INNER_R),('CapEdgeRound',EDGE_R),
+            for prop,value in (('ReachPerCaseHP',REACH_HP),('ScrewTabThickness',p.t),('ScrewTabWidth',p.tab_width),
+                               ('SkinThickness',p.t),('ShoulderBaseFillet',SHOULDER_BASE_R),
+                               ('ShoulderTopRound',SHOULDER_TOP_R),('CollarRoofClearance',ROOF_GAP),
+                               ('CollarSideClearance',SIDE_GAP),('CollarPocketFillet',POCKET_R),
+                               ('BridgeStep',BRIDGE_STEP),('WebFillet',WEB_R),
+                               ('SpineWidth',SPINE_W),('SpineFlareRadius',INNER_R),('SpineEdgeRound',EDGE_R),
                                ('HoleDiameter',base.M3_CLEAR),('HolePitch',2*base.HP),
-                               ('FrameClearance',FRAME_GAP),('ScrewLength',SCREW_L)):
+                               ('ScrewLength',SCREW_L)):
                 obj.addProperty('App::PropertyFloat',prop,'Build dimensions')
                 setattr(obj,prop,value)
                 obj.setEditorMode(prop,1)
@@ -574,7 +692,7 @@ def main():
     j=middle.Join(d)
     p=Layout(d,j)
     asm,diffs=sources(d,j)
-    s=brace(d,j,p)
+    s=finish(p,brace(d,j,p))
     fasteners,engagement=hardware(d,p)
     checks=verify(d,j,p,s,asm,fasteners,engagement)
     for folder in (OUT,RESEARCH,CASE/'cad'):
@@ -583,16 +701,18 @@ def main():
     full={**asm,'top_brace':s,**fasteners}
     native_document('BracedDoubleCase',CASE/'cad'/'middle-braced-assembly.FCStd',full,p)
     prints={'middle-brace-6hp':export_part(s,OUT/'middle-brace-6hp')}
+    # Short test print of everything that bridges: the front crossbar with its
+    # collar pocket, the stepped roof, the web and a stub of the spine.
     coupon=s.common(base.box((p.x0-1,p.y0-1,p.z0-1),
-                             (p.x1-p.x0+2,p.front_inner-p.y0+1,p.z1-p.z0+2))).removeSplitter()
+                             (p.x1-p.x0+2,p.web_foot[0]+6-p.y0+1,p.z1-p.z0+2))).removeSplitter()
     valid(coupon,'front fitting coupon')
     prints['front-fit-coupon']=export_part(coupon,OUT/'front-fit-coupon')
     Part.makeCompound(list(full.values())).exportStep(str(OUT/'assembly-preview.step'))
     reopened=Part.Shape()
     reopened.read(str(OUT/'assembly-preview.step'))
     assert reopened.isValid() and len(reopened.Solids)==len(full)
-    # Solid by solid. The brace's flares cross the cap's curved profile, and
-    # those edges round-trip as splines: about 2e-3 mm3 off in 8 cm3. Its own
+    # Solid by solid. The brace's flares cross the web's curved profile, and
+    # those edges round-trip as splines: a few 1e-3 mm3 off in 7 cm3. Its own
     # print STEP is still compared shape against shape in export_part.
     for (name,part),solid in zip(full.items(),reopened.Solids):
         limit = 5*TOL if name == 'top_brace' else TOL
@@ -600,27 +720,34 @@ def main():
     for name,part in full.items():
         MeshPart.meshFromShape(Shape=part,LinearDeflection=0.02,AngularDeflection=0.12).write(str(RESEARCH/f'asm-{name}.stl'))
     MeshPart.meshFromShape(Shape=s,LinearDeflection=0.01,AngularDeflection=0.10).write(str(RESEARCH/'brace.stl'))
-    # Show remaining module area without inventing electronics or knob geometry.
-    for side,offset,x0,width in (('left',0,d.row_x0,(d.hp-REACH_HP)*base.HP-0.5),
-                                ('right',j.offset,d.row_x0+REACH_HP*base.HP,(d.hp-REACH_HP)*base.HP-0.5)):
-        panel=base.box((offset+x0,0,d.top),(width,base.PANEL_H,d.panel_t))
+    # Stand-in for the installed modules the brace lies on: one plain sheet per
+    # case over the whole module row, without inventing electronics or knobs.
+    for side,offset in (('left',0),('right',j.offset)):
+        panel=base.box((offset+d.row_x0,0,d.top),(d.hp*base.HP,base.PANEL_H,d.panel_t))
         MeshPart.meshFromShape(Shape=panel,LinearDeflection=0.02,AngularDeflection=0.12).write(str(RESEARCH/f'display-{side}.stl'))
     dimensions={'reach_hp_per_case':REACH_HP,'nominal_reach_mm':REACH_HP*base.HP,
-                'rail_pad_thickness_mm':p.t,'source_faceplate_thickness_mm':d.panel_t,
-                'rail_pad_width_mm':p.tab_width,'source_rail_width_mm':d.rail_w,
-                'bridge_skin_thickness_mm':p.t,'screw_tabs_above_module_faces_mm':round(p.mount_z-d.case_top,3),'spine_width_mm':round(p.web_x1-p.web_x0,3),'crossbar_span_over_frame_mm':round(p.right_wall_x0-p.left_wall_x1,3),'cap_edge_round_mm':EDGE_R,'outline_radius_mm':OUTER_R,
-                'inside_corner_radius_mm':INNER_R,'frame_clearance_mm':FRAME_GAP,
-                'cap_clearance_over_frame_top_mm':ROOF_GAP,
-                'spine_above_module_faces_mm':round(p.spine_z1-d.case_top,3),
+                'underside':'one flat plane on the module faces = frame top and lip',
+                'underside_above_module_faces_mm':round(p.z0-d.case_top,3),
+                'screw_tab_thickness_mm':p.t,'source_faceplate_thickness_mm':d.panel_t,
+                'screw_tab_width_mm':p.tab_width,'source_rail_width_mm':d.rail_w,
+                'screw_tabs_top_above_module_faces_mm':round(p.mount_z-d.case_top,3),
+                'tab_end_past_last_hole_centre_mm':END_MARGIN,
+                'skin_thickness_mm':p.t,'spine_width_mm':round(p.web_x1-p.web_x0,3),
+                'spine_edge_round_mm':EDGE_R,'outline_radius_mm':OUTER_R,'inside_corner_radius_mm':INNER_R,
+                'collar_pocket_span_mm':round(p.lip_x0-p.left_wall_x1,3),
+                'collar_pocket_fillet_mm':POCKET_R,
+                'clearance_beside_collar_mm':SIDE_GAP,'clearance_above_collar_mm':ROOF_GAP,
+                'bridge_step_mm':BRIDGE_STEP,'web_fillet_mm':WEB_R,
+                'web_foot_past_collar_slope_mm':WEB_GAP,
                 'shoulder_end_from_frame_face_mm':SHOULDER,
                 'shoulder_base_fillet_mm':SHOULDER_BASE_R,'shoulder_top_round_mm':SHOULDER_TOP_R,
-                'minimum_cap_thickness_over_collars_mm':p.t,
-                'raised_bridge_above_module_faces_mm':round(p.z1-d.case_top,3),
+                'height_above_module_faces_mm':round(p.z1-d.case_top,3),
                 'head_clearance_pocket_diameter_mm':HEAD_RELIEF_D,'hole_diameter_mm':base.M3_CLEAR,'hole_pitch_mm':2*base.HP,
                 'screw_length_mm':SCREW_L,'bounds_assembly_xyz_mm':bbox(s),
-                'remaining_hp_each_case':d.hp-REACH_HP}
+                'reserved_hp_each_case':0}
     (RESEARCH/'camera.json').write_text(json.dumps({'cx':p.cx,'cy':base.PANEL_H/2,'cz':(p.z0+p.z1)/2,
-                                                       'front_y':d.hole_y[0],'left_x':p.x0,'right_x':p.x1},indent=2)+'\n')
+                                                       'front_y':d.hole_y[0],'left_x':p.x0,'right_x':p.x1,
+                                                       'frame_x':p.frame_cx,'web_y':p.web_foot[0]},indent=2)+'\n')
     exports=[CASE/'cad'/'middle-brace.FCStd',CASE/'cad'/'middle-braced-assembly.FCStd']
     exports+=sorted(f for f in OUT.iterdir() if f.suffix in ('.step','.stl','.3mf'))
     source_paths=[CASE/'cad'/name for name in ('assembly.FCStd','middle-frame.FCStd','double-case-assembly.FCStd')]
@@ -630,8 +757,9 @@ def main():
             'faceplate_source_sha256':{str(f.relative_to(CASE.parent)):hashlib.sha256(f.read_bytes()).hexdigest()
                                       for f in panel_sources},
             'checks':checks,'holes_assembly_coordinates_mm':p.holes,'print':prints,
-            'hardware':'12 M3x6 socket-head screws, no washers; 12 installed M3x10 female hex spacers in rail top sockets',
-            'prototype_status':'Geometry and mesh checked only; print fit, stiffness and load capacity untested',
+            'hardware':'up to 12 M3x8 socket-head screws, no washers, through the module panels\' own rail holes '
+                       'into the installed M3x10 female hex spacers in the rail top sockets',
+            'prototype_status':'Geometry and mesh checked only; print without supports, fit, stiffness and load capacity untested',
             'export_sha256':{str(f.relative_to(CASE)):hashlib.sha256(f.read_bytes()).hexdigest() for f in exports}}
     text=json.dumps(report,indent=2)+'\n'
     (OUT/'verification.json').write_text(text)

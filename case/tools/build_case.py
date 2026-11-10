@@ -86,7 +86,8 @@ BUS_RIB_W = 4.0
 
 def module_panels():
     """Front panel boards of every module (modules/*/panels/front-pcb/*.kicad_pcb): board
-    thickness, Edge.Cuts width/height and the rail hole X from the panel's left edge."""
+    thickness, Edge.Cuts width/height and the rail hole X from the panel's left edge (the left
+    hole, and all of them: wide panels also have right-hand holes)."""
     out = {}
     for f in sorted(MODULES.glob("*/panels/front-pcb/*.kicad_pcb")):
         s = f.read_text()
@@ -111,7 +112,8 @@ def module_panels():
         # one panel per module is named after the module; modules with several (blank) by file
         name = f.parts[-4] if len(list(f.parent.glob("*.kicad_pcb"))) == 1 else f.stem
         out[name] = {"thickness": thick, "width": round(max(xs) - x0, 3),
-                            "height": round(max(ys) - y0, 3), "hole_x": min(holes)}
+                            "height": round(max(ys) - y0, 3), "hole_x": min(holes),
+                            "holes_x": sorted(set(holes))}
     assert out, "no module panels found"
     return out
 

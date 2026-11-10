@@ -8,10 +8,11 @@ The current source is `case/cad/assembly.FCStd`: two identical 42 HP cases with
 are unchanged.
 
 **Optional top brace:** a one-piece [6HP-per-case brace](top-brace/README.md)
-caps this frame, following its top shape 0.2 mm above it, and bolts into the
-rail-top spacer sockets of all four rails at 2HP intervals, without reprinting
-this frame. It reserves 6HP in each case; the original frame files below remain
-unchanged. Physical stiffness still needs testing.
+goes on after the modules: flat underside on the module panels and on this
+frame's top, with pockets over the four socket collars. It bolts through the
+module panels' rail holes into the rail-top spacers of all four rails (2HP
+grid), without reprinting this frame and without reserving HP; the original
+frame files below remain unchanged. Physical stiffness still needs testing.
 
 ![Shared open frame](../../../renders/middle-frame/frame-left.png)
 
