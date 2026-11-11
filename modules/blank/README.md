@@ -11,7 +11,7 @@ Geometry contract: `docs/geometry.json`.
 | 8HP | 40.3 x 128.5 | 12.58, 32.9 |
 
 The rail holes sit 1HP off the Doepfer 7.5 mm phase, the same as every module
-(2.42 mm on 2HP, see `case/tools/build_case.py`), so they land on the case's 2HP
+(2.42 mm on 2HP, see `mechanical/case/tools/build_case.py`), so they land on the case's 2HP
 spacer grid. The case build checks every panel against that grid.
 
 | Path | Contents |

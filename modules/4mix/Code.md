@@ -33,10 +33,42 @@
   J8 pin 1, the 1 mm courtyard edge keep-out of every placed part and no panel label, jack nut or
   small knob or standoff screw head under a big VOL knob, no two big knobs overlapping, standoff
   screw heads inside the rail gap, standoff length = the 10 mm carrier-to-panel stack.
-- `tools/build_standoff.sh` (FreeCAD headless, as `case/tools/build.sh`) runs `tools/build_standoff.py`
+- `tools/build_standoff.sh` (FreeCAD headless, as `mechanical/case/tools/build.sh`) runs `tools/build_standoff.py`
   -> `mechanical/standoff-m3x10.step` (carrier footprint 3D model only). Standoff footprints are
   board-only mechanical parts built in `build_layout.py`: empty Reference + `MechanicalID` MS1/MS2
   (as usb-power H1-H4), so the shared parity reports them as mechanical, not as extra refs.
+- Repo-root `mechanical/knobs/tools/build_knobs.sh` (FreeCAD headless) runs `build_knobs.py`
+  there -> `mechanical/knobs/` (self-contained since 2026-11-12: it reads a snapshot of this module's `docs/geometry.json` and a copy of
+  the RV09 3D model in `mechanical/knobs/tools/reference/`, not this module)
+  (printable channel VOL knobs, STEP + STL in print orientation: four widths from `SIZES`, whose key
+  is the output folder and file tag (`wide` Ø16, `slim` Ø13, `slimmer` Ø11.5, `slimmest` Ø10), each
+  in the eight fits of `FITS` (`t1` deepest teeth), + a fit gauge per width (`gauge()`: that
+  width's eight knobs in print orientation, joined by break-off links, `fit_notches()` cuts 1 .. 8
+  notches into base-rim ridges; asserts no link reaches into a bore or pointer pocket) for
+  the shared grip 4: a solid knob keyed to the shaft knurl: round blind bore `BORE_D`, the same in
+  every fit, with `SPLINES` (20)
+  triangular teeth in its top `SPLINE_L`, one for every second groove of the `KNURL_TEETH` (40)
+  knurl, tooth tips closing in by `TIP_TAPER` toward the roof so they wedge into the grooves; a
+  fit is the tooth tip diameter at the roof, `FIT_STEP` apart, so it sets the tooth depth only).
+  Reads `docs/geometry.json` and `hardware/4MIX.3dshapes/RV09_proxy.step` (shaft stretched in the
+  script to the user-measured `SHAFT_L` 18 mm above the body; the model file is not edited);
+  asserts the shaft tip within 0.3 mm of the measured 13 mm above either panel front, each knob
+  inside the Ø18 big-knob reserve, >= 1 mm to every neighbour and above the panel, solid wall
+  >= 1.35 mm (`SHELL_WALL_MIN`, three printed lines) between the bore and a flute, a groove for every tooth and the teeth ending on the
+  knurl, nothing but the shaft of the pot model touching a knob, and (geometry-only seat model,
+  `KNURL_DEPTH` assumed) that `REF_FIT` printed to size seats on a 6.0 mm shaft with its
+  teeth at least half a groove deep, the plain shaft free in every fit, the ladder evenly spaced
+  and >= `TOOTH_GAP_MIN` of bore wall between two teeth of the deepest fit. `REF_FIT` (`t4`) is the
+  first grip 4 gauge's `fit8`, the tile that locked in the user's print; the ladder runs three
+  steps deeper and four shallower (comment at `FITS`). Same script: `puller/knob-puller`
+  (spring tongs, `PULL_*`; bending-only beam model of the half tongs gives the closed leg position per
+  knob width, `PULL_TIP_R` needs an entry per width); asserts the closed hooks clear every knob
+  width, the pot and the panel (hook top >= 0.2 mm
+  under the knob base on the FR4 and the 2.0 mm printed panel), >= 8 mm² of knob base over the hooks,
+  free tongs >= 1.5 mm from every panel neighbour, strain <= 1.5 % with the tips squeezed together.
+  The script does not delete outputs of a removed width or fit. Independent check of the gauges
+  against the knob files (STEP sections): `mechanical/knobs/research/check/gauge_vs_knob.py` (ignored).
+  Touches no KiCad source.
 - `hardware/4mix.kicad_pro`: imix settings + `min_copper_edge_clearance` 1.0 mm + Power
   netclass (GND, ±12V, ±12V_IN). No exclusions, no ignored rules.
 

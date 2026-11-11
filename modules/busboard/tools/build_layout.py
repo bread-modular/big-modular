@@ -33,7 +33,7 @@ PITCH = 22.5                    # header to header
 PIN1 = (22.5, 7.1)              # J1 pin 1 (courtyard 5.6 above it); J8 pin 1 at x = 180.0
 ROW = 2.54
 # 196 x 21 mm hole pitch: over the case bottom plate's solid frame at each side panel
-# (case/tools/build_case.py BUS_*), beyond the centre pocket
+# (mechanical/case/tools/build_case.py BUS_*), beyond the centre pocket
 HOLES = [(x, y) for x in (4.5, 200.5) for y in (5.5, 26.5)]   # beside J1 / J8, not above them
 # bus row (0 = pins 1/2) -> net, width, layers
 ROWS = {0: ('-12V', 1.5, 'FB'), 1: ('GND', 1.5, 'FB'), 2: ('GND', 1.5, 'FB'), 3: ('GND', 1.5, 'FB'),

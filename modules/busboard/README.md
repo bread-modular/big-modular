@@ -1,7 +1,7 @@
 # busboard — 8 x 16-pin Eurorack bus for the case floor
 
 Passive power bus board that lies on the case bottom plate under the modules
-(`case/tools/build_case.py`, 42 HP default). Eight shrouded 16-pin IDC box
+(`mechanical/case/tools/build_case.py`, 42 HP default). Eight shrouded 16-pin IDC box
 headers, every pin in parallel, Doepfer A-100 pinout:
 
 | Pins | Net | Copper |
@@ -34,7 +34,7 @@ the shroud key and the board silk mark pin 1 / -12V at the top edge.
   on 7 printed ribs (4 mm, under the gaps between the headers), so the header pin
   tails hang into the 3.8 mm pocket.
 - 4 x M3x8 socket head bolts from under the plate (counterbored holes, 196 x 21 mm,
-  8.65 mm from the hole centres to the pocket edge, in `case/tools/build_case.py`
+  8.65 mm from the hole centres to the pocket edge, in `mechanical/case/tools/build_case.py`
   `BUS_*`) into 4 x M3 nuts on the board top.
 - Box header tops about 15.7 mm above the plate top; the clear height up to the rails is
   58.4 mm. Module depth and cable bend are not checked against this.

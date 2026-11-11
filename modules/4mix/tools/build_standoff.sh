@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build the 4MIX standoff 3D model with FreeCAD's headless interpreter (as case/tools/build.sh).
+# Build the 4MIX standoff 3D model with FreeCAD's headless interpreter (as mechanical/case/tools/build.sh).
 # Env: FREECAD (path to FreeCAD AppImage or freecadcmd).
 set -e
 here=$(cd "$(dirname "$0")" && pwd)

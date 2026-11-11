@@ -17,6 +17,7 @@ parity 0) + 18HP panel fit study + JLCPCB export (`jlcpcb/`, bottom Economic PCB
 | `panels/front-pcb/4mix-panel.kicad_{pro,pcb}` | 18HP (91.3 mm) FR4 panel: NPTH + silkscreen |
 | `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `mechanical/standoff-m3x10.step` | 10 mm M3 F-F hex standoff (x2, user stock): carrier 3D model |
+| `../../mechanical/knobs/` | Repo root, not in this module: 3D-printable push-on knobs for the four channel VOL pots in four widths, one folder each (`wide/` Ø16 mm, `slim/` Ø13, `slimmer/` Ø11.5, `slimmest/` Ø10), pointer pocket for a paint pen; eight tooth depths `t1` .. `t8` and a fit gauge per width (the eight knobs in one print, numbered by rim notches) + knob puller (spring tongs, `puller/`) (`README.md` there). Grip 4: solid knob, round bore with 20 teeth that key into the shaft's 40-tooth knurl (the user's prints of the two spring-finger grips were loose; grip 3, a plain tapered press fit, held but slipped at the end stop; the first grip 4 gauge's loosest tile `fit8` locked into the knurl, so the bore is now fixed at that tile's Ø6.2 and only the tooth depth varies, `t4` = old `fit8`; the tile gauge did not match the printed knobs, so the gauge is now made of the knobs themselves); slimmer / slimmest widths and the new gauges not test-printed |
 | `jlcpcb/` | Carrier and panel Gerber ZIPs, BOM/CPL, source manifest (`jlcpcb/README.md`) |
 | `docs/geometry.json` | Placement, panel, labels, big-knob reserve, headers, parking |
 | `docs/research.md` | Brief, Bread Modular baseline, circuit, decisions, open items |
@@ -32,5 +33,6 @@ Rebuild (from `modules/4mix`). The routed board is now the source of truth: do *
 python3 -B tools/import_footprints.py
 python3 -B tools/build_schematic.py
 tools/build_standoff.sh  # FreeCAD headless; before build_layout.py (3D model)
+../../mechanical/knobs/tools/build_knobs.sh  # FreeCAD headless; printable VOL knobs (independent of the boards)
 python3 -B tools/build_layout.py
 ```
