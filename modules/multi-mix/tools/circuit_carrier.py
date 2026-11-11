@@ -1,4 +1,4 @@
-"""MULTI-MIX carrier (jack board) S3 circuit table, drawing and sourcing (tools/build_schematic.py).
+"""MULTI-MIX carrier (jack board) S5 circuit table, drawing and sourcing (tools/build_schematic.py).
 
 CIRCUIT is docs/research.md section 3. A digital 4-channel mixer on modules/usb-audio-max's codec,
 power and MCU board, in modules/4mix's panel layout widened to 20HP (same jack and pot references;
@@ -32,8 +32,9 @@ the MCU board takes the MAIN/OUT spot, OUT and MAIN stack beside it: docs/geomet
 - Pots (x15, modules/4mix references; RV1 MAIN now below OUT): RV09 50k B as DC dividers +3V3_POT (R62 47R / C48 10u from
   +3V3) to GND, wiper 100n -> U10 74HC4067 (S0-S3 from the MCU) -> R61 1k -> POT_ADC (MCU PC1).
   I15 = GND (ADC zero check). Nothing on the knobs carries audio.
-- Clock link (2x5 keyed IDC, docs/research.md section 4): CLK OUT (J6, left edge) / CLK IN (J7,
-  right edge), same pinout, daisy chain: straight ribbon from a unit's CLK OUT to the next unit's
+- Clock link (2x5, docs/research.md section 4): CLK OUT (J6, left edge, keyed IDC box header) / CLK IN
+  (J7, right edge; S5: an unshrouded 2x5 pin header moved up beside the MCU strip, so the MIDI IN jack
+  fits above USB 1), same pinout, daisy chain: straight ribbon from a unit's CLK OUT to the next unit's
   CLK IN (slaves to the left of the master). Clock only: no audio and no control crosses the link;
   each unit keeps its own USB and its own outputs. The master is the unit with CLK IN open. Pinout
   survives a Eurorack power cable: pins 1-2 (-12 V) carry only the 4.7k/10k-protected DET line or
@@ -44,11 +45,16 @@ the MCU board takes the MAIN/OUT spot, OUT and MAIN stack beside it: docs/geomet
   74LVC2G125 drives the link BCK/LRCK onto the codec clock nets (codec in slave mode). U12/U14A
   74LVC2G34 repeat SCKI/BCK/LRCK out of CLK OUT to the next unit (U14B spare).
 - MCU board: J12/J13 1x12 2.54 mm strips (= J112/J113 on the MCU board). BOOT/RESET (SW2/SW1) and
-  SWD (J15) on the carrier B side. S3 strip map (2026-11-10, user: single-sided MCU board extended to the
+  SWD (J15) on the carrier B side. S5: J13.11 = MIDI_RX (was a third GND). S3 strip map (2026-11-10, user: single-sided MCU board extended to the
   carrier top, strips moved up; the third strip J14 between the MCU and the codec is gone): J12 (west)
   boot/reset, DOUT1, codec reset, POT_ADC, MUX_S0-S3 and LINK_N; J13 (east) SWD, DIN1, I2C, BCK/LRCK and
   NORM_PROBE. Each strip pin faces its codec pin or its carrier part. The I2C pull-ups are on the MCU
   board (R108/R109).
+- MIDI IN (S5, 2026-11-11, docs/research.md section 11): J11 TS jack above USB 1 (tip = MIDI, the
+  modules' "modular MIDI": a 3.3/5 V UART at 31250 baud, idle high, behind 1k). R85 100k idle pull-up
+  at the jack, R86 10k + D4 BAT54S clamp to +3V3/GND (a +/-12 V patch puts ~1 mA into the clamp) ->
+  MIDI_RX -> J13.11 -> MCU PA10 (USART1_RX). Not inverted: the CH32V307 USART cannot invert RX, so
+  the NPN stage of modules/hats is not used. The firmware forwards the stream as USB-MIDI.
 """
 
 PAPER = 'A1'
@@ -84,7 +90,7 @@ MUX_IN = ['9', '8', '7', '6', '5', '4', '3', '2', '23', '22', '21', '20', '19', 
 
 # Symbols drawn mirrored about X: input jacks (sleeve down), the output difference amplifiers
 # (- input on top for the feedback, + input below with its divider to GND), Q2 and the pots (CW end up).
-MIRROR_X = ({IN_JACK[n][0] for n in IN_CH} | {f'{u}/{k}' for u, k in OUT_AMP.values()} | {'Q2'}
+MIRROR_X = ({IN_JACK[n][0] for n in IN_CH} | {f'{u}/{k}' for u, k in OUT_AMP.values()} | {'Q2', 'J11'}
             | {ref for ref, _, _ in POTS})
 
 NOT_ASSEMBLED = set()
@@ -102,6 +108,7 @@ PU_Y = 525.78                 # op-amp / logic supply units row
 BUCK = (170.18, 127.0)        # U2 VIN/EN side x + 10.16, V3_IN rail y
 LX, LY = 480.06, 241.3        # J7 CLK IN; J6 CLK OUT at LY + 50.8
 DX = LX + 101.6               # link drivers / receivers column
+MIDI = (680.72, 228.6)        # J11 MIDI IN
 MX, MY = 401.32, 495.3        # U10 mux
 POT_X, POT_Y = [462.28 + 55.88 * c for c in range(5)], [452.12, 497.84, 543.56]
 
@@ -136,11 +143,10 @@ def opamp(ref, unit, at, plus, minus, out, **fields):
     return part(ref, 'OPA1679', 'OPA1679', 'SOIC14', at, 0, {p: plus, m: minus, o: out}, unit=unit, **fields)
 
 
-def clamp(ref, at, net):
+def clamp(ref, at, net, why):
     """BAT54S at rot 180: COM on top (on the signal wire), K left (+3V3), A right (GND)."""
     return part(ref, 'BAT54S', 'BAT54S', 'SOT23', at, 180, {'1': 'GND', '2': '+3V3', '3': net},
-                Note='Clamp to +3V3/GND behind the 10k series resistor: a Eurorack power cable plugged into the '
-                     'CLK header puts -12 V on pin 1 (1.5 mA into the clamp)')
+                Note=f'Clamp to +3V3/GND behind the 10k series resistor: {why}')
 
 
 def circuit():
@@ -425,19 +431,21 @@ def circuit():
                  Note='U10 supply decoupling'))
 
     # ---- Clock link: J7 CLK IN (from the upstream unit), J6 CLK OUT (to the next unit). Clock only.
-    hdr_note = ('Keyed (shrouded) 2x5 IDC box header on B, silk "CLK - NOT POWER". Daisy chain: straight 10-way '
-                'ribbon from a unit\'s CLK OUT to the next unit\'s CLK IN. Power-cable safe pinout '
-                '(docs/research.md D10)')
-    c.append(part('J7', 'Conn_02x05_Odd_Even', 'CLK_IN', 'IDC2x5', (LX, LY), 0,
+    hdr_note = ('Daisy chain: straight 10-way ribbon from a unit\'s CLK OUT to the next unit\'s CLK IN. '
+                'Power-cable safe pinout (docs/research.md D10), silk "CLK - NOT POWER"')
+    c.append(part('J7', 'Conn_02x05_Odd_Even', 'CLK_IN', 'H2x5', (LX, LY), 0,
                   {'1': '_CLKI_DET', '2': None, '3': 'GND', '4': 'CLKI_SCKI', '5': 'GND', '6': 'CLKI_BCK',
                    '7': 'CLKI_LRCK', '8': 'GND', '9': None, '10': None},
                   Note='CLK IN (right edge, B side): from the upstream unit; connected = this unit '
-                       'is a clock slave. ' + hdr_note))
+                       'is a clock slave. S5: unshrouded 2x5 pin header (as J8) just below the MCU strip, pin 1 '
+                       'at the top: the box header did not fit between the strip and the MIDI IN jack. Not keyed: '
+                       'plug the ribbon with its red wire on pin 1 (silk); reversed, it is harmless but the unit '
+                       'stays a clock master. ' + hdr_note))
     c.append(part('J6', 'Conn_02x05_Odd_Even', 'CLK_OUT', 'IDC2x5', (LX, LY + 50.8), 0,
                   {'1': '_CLKO_DET', '2': None, '3': 'GND', '4': 'CLKO_SCKI', '5': 'GND', '6': 'CLKO_BCK',
                    '7': 'CLKO_LRCK', '8': 'GND', '9': None, '10': None},
                   Note='CLK OUT (left edge, B side): the clocks this unit runs on, repeated to the '
-                       'next unit in the chain. ' + hdr_note))
+                       'next unit in the chain. Keyed (shrouded) 2x5 IDC box header. ' + hdr_note))
     # link detect / clock-slave select
     c.append(two('R82', 'R', '4.7k', 'R0603', (LX - 15.24, LY + 45.72), 'GND', '_CLKO_DET',
                  Note='Presents GND (4.7k) to the next unit\'s DET: that unit becomes a clock slave. '
@@ -446,7 +454,8 @@ def circuit():
                  Note='DET input protection (power cable on CLK IN: -12 V -> 1.5 mA into D3)'))
     c.append(two('R84', 'R', '100k', 'R0603', (LX - 22.86, LY - 8.89), '+3V3', 'LINK_N', rot=0,
                  Note='LINK_N pull-up: CLK IN open = high = clock master; linked = 3.3 V x 14.7k/114.7k = 0.42 V'))
-    c.append(clamp('D3', (LX - 35.56, LY), 'LINK_N'))
+    c.append(clamp('D3', (LX - 35.56, LY), 'LINK_N', 'a Eurorack power cable plugged into the CLK header puts '
+                   '-12 V on pin 1 (1.5 mA into the clamp)'))
     # pull-downs on the CLK IN clock inputs (open on the master)
     for i, (ref, net) in enumerate((('R76', 'CLKI_SCKI'), ('R77', 'CLKI_BCK'), ('R78', 'CLKI_LRCK'))):
         c.append(two(ref, 'R', '100k', 'R0603', (LX + 30.48 + 10.16 * i, LY + 25.4), net, 'GND', rot=0,
@@ -482,6 +491,20 @@ def circuit():
     c.append(part('U14', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (DX, LY + 81.28), 0, {'3': 'GND', '4': None}, unit=2,
                   Note='Spare buffer (was the bus-data driver): input to GND, output open'))
 
+    # ---- MIDI IN: TS jack -> pull-up, series resistor, clamp -> MCU USART1 RX (not inverted)
+    mx, my = MIDI
+    c.append(part('J11', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', MIDI, 0,
+                  {'T': 'MIDI_IN', 'S': 'GND', 'TN': None},
+                  Note='MIDI IN (above USB 1): TS "modular MIDI" from the MIDI module, tip = 31250 baud UART, idle '
+                       'high, 3.3 or 5 V behind 1k; sleeve GND. The firmware forwards it as USB-MIDI'))
+    c.append(two('R85', 'R', '100k', 'R0603', (mx + 17.78, my - 3.81), '+3V3', 'MIDI_IN', rot=0,
+                 Note='Idle pull-up at the jack: unpatched = high = no MIDI data (as modules/midi V2 R22)'))
+    c.append(two('R86', 'R', '10k', 'R0603', (mx + 30.48, my), 'MIDI_IN', 'MIDI_RX',
+                 Note='Input protection with D4: +/-12 V patched into MIDI IN -> ~1 mA into the clamp. '
+                      '10k x ~30 pF = 0.3 us against the 32 us MIDI bit'))
+    c.append(clamp('D4', (mx + 45.72, my + 5.08), 'MIDI_RX', 'the MCU pin (PA10) stays within -0.35..+3.65 V '
+                   'with +/-12 V or a 5 V MIDI level on the jack'))
+
     # ---- Op-amp / logic supply units and decoupling
     c.append(part('U5', 'OPA1679', 'OPA1679', 'SOIC14', (40.64, PU_Y), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
     c.append(part('U6', 'OPA1679', 'OPA1679', 'SOIC14', (76.2, PU_Y), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
@@ -509,9 +532,9 @@ def circuit():
                   Note=f'J112 on the MCU board (boot/reset, DOUT1, codec reset, pot mux, clock-link detect). {strip}'))
     c.append(part('J13', 'Conn_01x12', 'MCU_R', 'H1x12', (hx + 30.48, hy), 0,
                   {'1': 'SWCLK', '2': 'SWDIO', '3': '+3V3', '4': 'GND', '5': 'I2S_DAC1', '6': 'I2C_SCL',
-                   '7': 'I2C_SDA', '8': 'GND', '9': 'I2S_SCLK', '10': 'I2S_LRCK', '11': 'GND', '12': 'NORM_PROBE'},
+                   '7': 'I2C_SDA', '8': 'GND', '9': 'I2S_SCLK', '10': 'I2S_LRCK', '11': 'MIDI_RX', '12': 'NORM_PROBE'},
                   MPN='2.54 mm 1x12 male pin header (2.5 mm plastic)',
-                  Note=f'J113 on the MCU board, east of the codec (SWD, DIN1, I2C, BCK/LRCK, probe). {strip}'))
+                  Note=f'J113 on the MCU board, east of the codec (SWD, DIN1, I2C, BCK/LRCK, MIDI RX, probe). {strip}'))
     # I2C pull-ups: R108/R109 on the MCU board (S2, were R18/R19 here).
     c.append(part('SW1', 'SW_Push', 'RESET', 'SWK2', (hx, hy + 55.88), 0, {'1': 'NRST', '2': 'GND'},
                   MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec',
@@ -662,6 +685,13 @@ def drawing():
                                   ('U12', '4', 'R71', LY + 60.96)):
         W += [[f'{ref}.{pin_out}', f'{rser}.1']]
 
+    # MIDI IN
+    mx, my = MIDI
+    W += [['J11.T', 'R86.1'], ['R86.2', (mx + 53.34, my)],
+          ['J11.S', (mx + 7.62, my + 2.54), (mx + 7.62, my + 5.08)]]
+    P += [('GND', (mx + 7.62, my + 5.08), 0)]
+    L += [('MIDI_IN', (mx + 10.16, my), 'U'), ('MIDI_RX', (mx + 53.34, my), 'R')]
+
     # MCU strips: supply pins with their rails drawn by the stubs
     return W, P, L
 
@@ -720,8 +750,8 @@ SOURCING = {
 }
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR MULTI-MIX - carrier (jack board), S3. Digital 4-channel mixer: 4 IN + 2 RETURN, SEND A / SEND B / '
-                     'MAIN OUT, 15 knobs read by the MCU (MIDI CC), USB audio + MIDI, PCM3168A at 48 kHz, clock link. '
+    ((20.32, 20.32), 'BIG MODULAR MULTI-MIX - carrier (jack board), S5. Digital 4-channel mixer: 4 IN + 2 RETURN, SEND A / SEND B / '
+                     'MAIN OUT, 15 knobs read by the MCU (MIDI CC), USB audio + MIDI, MIDI IN jack, PCM3168A at 48 kHz, clock link. '
                      'Circuit intent: docs/research.md', 2.0),
     ((20.32, 33.02), 'POWER (as modules/usb-audio-max): +12V -> D2 -> +12V_F (output op-amps; R1||R2 16.5R -> Q1 BCP56 (U1A LM358 loop, '
                      'ref U9 REF5050) -> +5VA; FB2 + R3 -> U2 TPS562208 FCCM buck -> L1 -> +3V3 -> FB1 -> +3V3_C -> R21 -> '
@@ -753,7 +783,7 @@ TEXTS = [
     ((360.68, 424.18), 'KNOBS: 15 x RV09 50k B (modules/4mix references) as DC dividers on +3V3_POT; nothing on them carries audio.\n'
                        'Wiper 100n -> U10 74HC4067 (I0-I14, I15 = GND) -> R61 1k -> POT_ADC (MCU PC1 = ADC_IN11); S0-S3 = PC2, PC3, PA0, PA1.\n'
                        'The firmware scans them, smooths with hysteresis and sends MIDI CC (VOL as CC7 per channel).', 1.1),
-    ((459.74, 185.42), 'CLOCK LINK (keyed 2x5 IDC daisy chain, straight ribbon CLK OUT -> next unit CLK IN; master = the unit with CLK IN open):\n'
+    ((459.74, 185.42), 'CLOCK LINK (2x5 daisy chain, straight ribbon CLK OUT (J6, keyed box header) -> next unit CLK IN (J7, plain pin header: red wire on pin 1); master = the unit with CLK IN open):\n'
                        '1 DET | 2 NC | 3 GND | 4 SCKI | 5 GND | 6 BCK | 7 LRCK | 8 GND | 9 NC | 10 NC  (Eurorack power cable safe)\n'
                        'Clock only (sample-locked USB multitrack): each unit keeps its own USB and outputs. Up to 4 units until bench-tested.\n'
                        'LINK_N low (CLK IN connected) = clock slave: U11 takes SCKI and U13 BCK/LRCK from the link, by hardware;\n'
@@ -761,9 +791,13 @@ TEXTS = [
     ((579.12, 50.8), 'MCU BOARD LINK: J12/J13 1x12 2.54 mm male strips (plastic on the carrier F side);\n'
                      'the MCU board (multi-mix-mcu, J112/J113) solders on top. BOOT/RESET and SWD on the carrier (B side):\n'
                      'hold BOOT, press RESET = CH32V307 ROM bootloader on the USB-C. I2C pull-ups are on the MCU board.', 1.1),
+    ((668.02, 198.12), 'MIDI IN (S5): TS jack above USB 1, "modular MIDI" from the MIDI module (tip = UART 31250 baud,\n'
+                       'idle high, 3.3/5 V behind 1k). R85 idle pull-up, R86 + D4 clamp the pin against +/-12 V patches.\n'
+                       'Not inverted (the CH32V307 USART has no RX inversion) -> MIDI_RX -> J13.11 -> PA10 = USART1_RX.\n'
+                       'The firmware merges it into the USB-MIDI stream (controller modules -> DAW).', 1.1),
 ]
 
-TEXT_LEFT = {'C3', 'C17', 'C19', 'R20', 'R84'}
+TEXT_LEFT = {'C3', 'C17', 'C19', 'R20', 'R84', 'R85'}
 TEXT_POS = {'U1': ((3.81, -6.35), (3.81, -3.81), 'left'), 'U1/2': ((3.81, -6.35), (3.81, -3.81), 'left'),
             'U1/3': ((1.27, -1.27), (1.27, 1.27), 'left'),
             'Q1': ((-7.62, 12.7), (-7.62, 15.24)), 'Q2': ((2.54, 6.35), (2.54, 8.89), 'left'),
@@ -784,7 +818,7 @@ TEXT_POS = {'U1': ((3.81, -6.35), (3.81, -3.81), 'left'), 'U1/2': ((3.81, -6.35)
             'U12': ((-1.27, -6.35), (-1.27, 6.35)), 'U12/2': ((-1.27, -6.35), (-1.27, 6.35)),
             'U14': ((-1.27, -6.35), (-1.27, 6.35)), 'U14/2': ((-1.27, -6.35), (-1.27, 6.35)),
             'R82': ((0, -5.08), (0, -2.54)), 'R83': ((0, -5.08), (0, -2.54)),
-            'D3': ((0, 3.81), (0, 6.35)),
+            'D3': ((0, 3.81), (0, 6.35)), 'D4': ((0, 3.81), (0, 6.35)),
             'U7/4': ((0, 7.62), (0, 10.16)), 'U6/4': ((3.81, -6.35), (3.81, -3.81), 'left')}
 # Op-amp unit texts: input drivers / references above-right of the triangle, output stages below it.
 TEXT_POS.update({f'{u}/{k}' if k > 1 else u: ((3.81, -6.35), (3.81, -3.81), 'left')

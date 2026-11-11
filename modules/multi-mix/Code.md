@@ -1,11 +1,12 @@
-# MULTI-MIX contract (carrier S4 / MCU S3 schematics, R2 routing)
+# MULTI-MIX contract (carrier S5 / MCU S4 schematics, R3 routing)
 
 | | |
 |---|---|
 | KiCad projects | `hardware/multi-mix.kicad_{pro,sch,pcb}` (carrier), `hardware/multi-mix-mcu.kicad_{pro,sch,pcb}` (MCU board), `panels/front-pcb/multi-mix-panel.kicad_{pro,pcb}` (20HP panel); one shared `MULTIMIX` symbol/footprint library |
 | Generators, profiles, checks | `tools/` (`build_schematic.py`, `circuit_carrier.py`, `circuit_mcu.py`, `build_project.py`, `build_layout.py`, `import_footprints.py`, `sexp.py`, `kicad-project.json`, `kicad-project-mcu.json`; `check_usb.py` = modules/usb-audio's USB routing check) |
-| Geometry contract | `docs/geometry.json` (panel frame, 20HP; S3, hand-edited since routing) |
-| Circuit intent and decisions | `docs/research.md` (MCU pins and strip maps: section 5; datasheet review: 6a; placement: 8; S2/S3 changes and R1 routing: 9; fab-review fixes S4/R2: 10) |
+| Geometry contract | `docs/geometry.json` (panel frame, 20HP; S5/R3, hand-edited since routing) |
+| Circuit intent and decisions | `docs/research.md` (MCU pins and strip maps: section 5; datasheet review: 6a; placement: 8; S2/S3 changes and R1 routing: 9; fab-review fixes S4/R2: 10; MIDI IN S5/R3: 11) |
+| Fabrication outputs | `jlcpcb/` (`main/` carrier + panel, `mcu/` MCU board; `jlcpcb/README.md`), one manifest per board set, declared as `source_manifest` in the two profiles |
 | Evidence | `docs/erc/` (native ERC JSON), `docs/*-schematic.pdf`, `docs/schematic-symbols.json`, `hardware/MULTIMIX.pretty/PROVENANCE.json` |
 
 ## Fixed by the brief (user, 2026-11-09)
@@ -19,6 +20,8 @@
 - Units daisy-chain on an internal 2x5 IDC clock link (CLK OUT -> next unit's CLK IN) that shares the codec
   clocks only, for sample-locked USB multitrack recording; each unit keeps its own USB and its own outputs
   (no audio or control on the link, user 2026-11-09).
+- TS MIDI input above the two USB outs (user, 2026-11-11): the rack's internal MIDI (controller modules) goes
+  to the DAW as USB-MIDI. One-way, jack -> USB.
 
 ## Design rules
 
@@ -27,7 +30,7 @@
 - J12/J13 (carrier) and J112/J113 (MCU board), 2 x 1x12, share XY and pin nets: change them together.
 - Interface nets (same names on both schematics): `+3V3`, `GND`, `SWDIO`, `SWCLK`, `NRST`, `BOOT0`, `I2C_SCL`,
   `I2C_SDA`, `CODEC_RST`, `I2S_SCLK`, `I2S_LRCK`, `I2S_ADC1`, `I2S_DAC1`, `POT_ADC`, `MUX_S0`-`MUX_S3`,
-  `NORM_PROBE`, `LINK_N`. No spare strip pins.
+  `NORM_PROBE`, `LINK_N`, `MIDI_RX` (J13.11 / J113.11, S5). No spare strip pins.
 - Firmware-visible pins: `docs/research.md` section 5. 48 kHz only (DOUT1/DIN1). LINK_N low = clock slave: the
   codec ADC must stay in slave mode then (its reset default). PB14 and PB15 share the DAC1 source node (I2S or
   SPI-slave TX, `docs/research.md` 6a F1): only one may drive. PA15/PB3 are tied to PB12/PB13 (LRCK/BCK) on the
@@ -38,6 +41,11 @@
 - Routed boards: the through-hole parts are fixed (user); SMD parts and copper may move with a reason. Carrier
   In1 is GND with no tracks; In2 is +3V3 with a +5VA island and two +3V3_C islands: a +3V3 via inside the +5VA
   island has no plane and needs a track. F carries the E-W analog fan and CLK OUT bus, B the N-S mux lanes.
+- MIDI IN (J11, `docs/research.md` section 11): tip -> R85 100k pull-up to +3V3 -> R86 10k + D4 BAT54S clamp ->
+  `MIDI_RX` -> PA10 = USART1_RX, **not inverted** (the CH32V307 USART cannot invert RX; do not copy the NPN
+  stage of the 8-bit modules here). Keep the 10k + clamp: the jack must survive a +/-12 V patch.
+- J7 CLK IN is an unshrouded 2x5 pin header since S5 (the box header does not fit above the MIDI IN jack); its
+  safety is the pinout, not keying. J6 CLK OUT stays a keyed box header.
 - CLK OUT (J6) / CLK IN (J7) pinout (`docs/research.md` section 4) must stay Eurorack-power-cable safe:
   only the 4.7k/10k-protected DET on pins 1-2, GND or buffered + 150R clocks on 3-8, nothing on 9-10.
 - Root `AGENTS.md` placement/routing rules (1 mm edge keep-out, 2 mm hand-solder clearance, no vias in SMD
@@ -89,3 +97,11 @@
   thermal vias; 56 corners chamfered; service silk 1.0 mm + J15 legend. ERC 0 both; native DRC 0 / unconnected
   0 / parity 0 both; shared `check` ref/pin/net equal on both. Open: J101 courtyard 0.53 mm to the MS3 notch and MS3
   courtyard 0.98 mm to the edge (user decision), JLCPCB export, firmware, bench.
+- **Carrier S5 / MCU S4, R3 + panel P4: MIDI IN jack (2026-11-11, `docs/research.md` section 11):** J11 above
+  USB 1 with R85/R86/D4, J13.11 = `MIDI_RX` -> PA10; J7 an unshrouded 2x5 header 4.42 mm higher; local re-route
+  on both boards; panel hole H35 + `MIDI IN` label. ERC 0 both (carrier 236 parts / 182 nets, MCU board 27 / 60);
+  native DRC 0 / unconnected 0 / parity 0 both, no exclusions; shared `check` ref/pin/net equal and source
+  manifests equal on both; `check_usb.py` pass; no vias in SMD pads, no In1 tracks, new SMD >= 2.20 mm from
+  pot/jack pads, courtyards >= 1.025 mm from the edge apart from the two open items; panel DRC 0, jack holes
+  coaxial. JLCPCB export + strict-live audit in `jlcpcb/` (audit exits 1 by design; gates in its README).
+  Open: J101 / MS3 courtyard decision, the 10 Extended R/C placements, C1562 lookup, firmware, bench.

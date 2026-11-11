@@ -1,0 +1,14 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/multi-mix-mcu.kicad_pcb": "d407a6b9969528fc794cb0a215634d37a8480d32f5b752a6eaaf9418348a1c14",
+    "hardware/multi-mix-mcu.kicad_pro": "17b65b01655365de590162d86507d6f15a3184fe5ea9ef486420e190bbb96057",
+    "hardware/multi-mix-mcu.kicad_sch": "751af264da7fb73b279428f216ba2bff4968cba403355c29b9f719788cae5c23"
+  },
+  "exports": {
+    "jlcpcb/mcu/board/multi-mix-mcu-gerbers.zip": "fd1a4fabb55e738f79b8c6eb117ef3b2832d115a0bf4ed0c10be5ee1bcedc9fe",
+    "jlcpcb/mcu/board/bom.csv": "45748e72ef45c148ec52405b43ee4183c17ceb771a55b272247aff9c020b4e7f",
+    "jlcpcb/mcu/board/positions.csv": "1856fa5fc81a65ae0bd350cc1132bfc7734c1585dd683d5253325d1c7b9d6165"
+  }
+}

@@ -1,4 +1,4 @@
-# MULTI-MIX research and circuit intent (S3 schematics, R1 routing)
+# MULTI-MIX research and circuit intent (carrier S5 / MCU S4 schematics, R3 routing)
 
 A digital 4-channel Eurorack mixer in modules/4mix's panel layout widened to 20HP, built on modules/usb-audio-max's
 PCM3168A codec, power stage and CH32V307 MCU board. Every knob is read by the MCU, so the mixer can send
@@ -23,7 +23,8 @@ Brief (user, 2026-11-09, from the design discussion):
   Read the datasheets and check everything needed; bench tests later.
 
 Nothing here is built, simulated or bench-tested. No firmware exists. Sections 1-8 keep the S1/P3 history;
-where S2/S3 changed something the text says so, and section 9 holds the S2/S3 changes and the R1 routing.
+where S2/S3 changed something the text says so, and section 9 holds the S2/S3 changes and the R1 routing,
+section 10 the fab-review fixes (S4/R2) and section 11 the MIDI IN jack (carrier S5 / MCU S4, R3).
 
 ## 1. Architecture
 
@@ -96,7 +97,8 @@ strips).
 Purpose: sample-locked USB multitrack recording with several units. Each unit keeps its own USB, its own
 MAIN OUT / SEND A / SEND B (mixed on an external analog mixer) and its own knobs/CCs; only the codec clocks
 cross the link. Daisy chain: a short 10-way ribbon from a unit's CLK OUT (J6, left edge, B side) to the next unit's
-CLK IN (J7, right edge, B side; both at Y58, pin 1 at the top, section 8), so the slaves sit to the
+CLK IN (J7, right edge, B side; pin 1 at the top; J6 at Y58, J7 at Y53.58 and an unshrouded header since S5,
+section 11), so the slaves sit to the
 left of the master. The master is the unit whose CLK IN is open; it runs on its own Y1. Every unit drives
 the clocks it runs on out of its CLK OUT, so the chain can be any length.
 
@@ -149,18 +151,19 @@ PB6/PB7, HSE PD0/PD1 (Y101 8 MHz, 3225 since S3), I2C2 PB10/PB11, SWD, BOOT0/BOO
 | PC2 (10), PC3 (11), PA0 (14), PA1 (15) | GPIO out | MUX_S0-S3 (S2; S1 PC6-PC9) | J112.8-11 |
 | PA8 (41) | GPIO / TIM1_CH1 (timer-driven PRBS) | NORM_PROBE (S2; S1 PB0) | J113.12 |
 | PA2 (16) | GPIO in | LINK_N, low = clock slave (S3; S1 PB1) | J112.12 |
+| PA10 (43) | USART1_RX, 31250 baud, not inverted (S4, section 11) | MIDI_RX (carrier MIDI IN jack J11 behind R86 10k + D4) | J113.11 |
 | PC11 (52) | GPIO in | VBUS_DET (R103/R104 divider) | - |
 | PA13 (46), PA14 (49) | SWD | SWDIO / SWCLK -> carrier J15 | J113.2 / J113.1 |
 | NRST (7), BOOT0 (60) | | carrier SW1 RESET / SW2 BOOT | J112.2 / J112.1 |
 
-Free: PC6-PC9, PB0, PB1, PA3, PA9-PA12, PB4, PC13 and PA4-PA7.
+Free: PC6-PC9, PB0, PB1, PA3, PA9 (USART1_TX), PA11, PA12, PB4, PC13 and PA4-PA7.
 
 SPI-slave fallback (datasheet review F1): the CH32V307 rates I2S CK at 8 MHz max but SPI slave at 72 MHz, and
 I2S2/I2S3 share their pins with SPI2/SPI3. RX already lands on PB5 = SPI3_MOSI (slave in); a slave transmits
 on MISO, so PB14 = SPI2_MISO is tied to PB15 before R110 (only one of the two may drive; the other stays an
 input). S1 had the mirror image (RX on PB15, PB4 tied to PB5).
 
-Strips, S3 (carrier J12/J13 = MCU J112/J113, 1x12, pin 1 at the top, panel X73.5 / X96.7, Y14.92-42.86):
+Strips, S3 + the S5 MIDI pin (carrier J12/J13 = MCU J112/J113, 1x12, pin 1 at the top, panel X73.5 / X96.7, Y14.92-42.86):
 
 | Pin | J12 / J112 (west) | J13 / J113 (east) |
 |---|---|---|
@@ -174,7 +177,7 @@ Strips, S3 (carrier J12/J13 = MCU J112/J113, 1x12, pin 1 at the top, panel X73.5
 | 8 | MUX_S0 | GND |
 | 9 | MUX_S1 | I2S_SCLK |
 | 10 | MUX_S2 | I2S_LRCK |
-| 11 | MUX_S3 | GND |
+| 11 | MUX_S3 | MIDI_RX (S5; was a third GND) |
 | 12 | LINK_N | NORM_PROBE |
 
 Each strip pin faces its codec pin or its carrier part: the west strip carries what goes west and south (pot
@@ -225,10 +228,11 @@ Findings that change something or must be carried:
 
 ## 7. Open
 
-- Placement and routing are done (section 9, R1); fab-review fixes done (section 10, S4/R2). Not done: JLCPCB
-  export (separate task), J101 courtyard 0.53 mm from the MS3 notch (user decision, section 10), panel re-check
-  against the built boards.
-- Firmware: everything (UAC2 + USB-MIDI composite, codec init per F4/F7, I2S or SPI-slave TDM (F1), mixer,
+- Placement and routing are done (section 9, R1); fab-review fixes done (section 10, S4/R2); MIDI IN jack added
+  and JLCPCB export made (section 11, S5/R3, `jlcpcb/README.md`). Not done: J101 courtyard 0.53 mm from the MS3
+  notch and MS3 0.98 mm from the edge (user decision, section 10), the order gates in `jlcpcb/README.md`, panel
+  re-check against the built boards.
+- Firmware: everything (UAC2 + USB-MIDI composite, MIDI IN on USART1 RX -> USB-MIDI (section 11), codec init per F4/F7, I2S or SPI-slave TDM (F1), mixer,
   knob scan, NORM probe correlation, unique USB serial per unit).
 - Bench: I2S slave at 12.288 MHz (F1, else SPI slaves), BCK duty at the last of 4 units (F2), codec slave mode on
   the link clocks, sample lock in a macOS aggregate device, SCKI through U11 (jitter), patch-detect threshold,
@@ -477,3 +481,70 @@ In1 GND, In2 +3V3 and the USB GND island one piece each.
 both, or move the notch / standoff. JLCPCB export, sourcing re-check
 (C52923 x2 more on the carrier), firmware and bench as section 7.
 
+## 11. MIDI IN jack: carrier S5 / R3, MCU board S4 / R3, panel P4 (2026-11-11)
+
+User: a TS MIDI input socket above the two USB outs; it sends the rack's internal MIDI (controller modules) to
+the DAW over USB; the power-side sockets may move. Batches are scripts in the ignored `research/midi/`
+(`b0`-`b3` boards, `b4_panel`), each written to the board and checked with native DRC + parity; no autorouter.
+Coordinates are panel frame.
+
+**Circuit (carrier S5).** J11 (QingPu WQP-PJ301M-12, tip = MIDI, sleeve GND, switch contact open) takes the
+modules' "modular MIDI": a 31250 baud UART, idle high, 3.3 V or 5 V behind 1 k (modules/midi outputs).
+R85 100 k pulls the tip to +3V3 (unpatched = idle, no data), R86 10 k + D4 BAT54S clamp to +3V3/GND feed
+`MIDI_RX` -> strip pin J13.11 (was a third GND; pins 4 and 8 keep the strip's GND) -> MCU **PA10 = USART1_RX**
+(MCU board S4). The signal is **not inverted**: the CH32V307 USART has no RX inversion, so the NPN stage of
+modules/hats / 12bit (which inverts and needs it) is not used. Numbers (calculated, not measured): a 5 V source
+ends at 3.3 V + the diode drop behind 11 k (~0.15 mA into the clamp); a +/-12 V patch puts ~0.8-1.2 mA into D4
+(BAT54S 200 mA) and the pin stays within about -0.35..+3.65 V; logic low is 3.3 V x 1 k/101 k = 33 mV;
+10 k x ~30 pF = 0.3 us against the 32 us bit. The clamp current into +3V3 (<= 1 mA) is far below the rail's
+load, so it cannot lift the rail. R85/R86/D4 reuse references freed by D11 (section 4); codes C25803, C25804,
+C47546 are already on the board.
+
+**Firmware (not written).** USART1 RX at 31250 8N1 on PA10 (APB2 clock), parse the byte stream (running status,
+real-time bytes, SysEx) into USB-MIDI event packets and merge them with the mixer's own knob CCs on the
+USB-MIDI IN endpoint. One-way: nothing is sent to the jack (PA9 USART1_TX stays free).
+
+**Placement.** J11 sits one 14.2 mm jack pitch above USB 1 in the right side margin, X94.85 Y67.9 (panel hole
+H35 6.2 mm, label `MIDI IN` at Y61.6; courtyard 1.025 mm from the edge). That spot on B held the CLK IN box
+header J7 (pads centre Y58): its pads and shroud covered the jack's tip pad. J7 stays on the right edge (the
+clock chain needs CLK IN on the right, CLK OUT on the left) but moved up 4.42 mm and became an **unshrouded 2x5
+pin header** (the J8 power-header footprint), pin 1 X95.82 Y48.5: the 20.3 mm shroud does not fit between the
+J13 strip (last pin Y42.86) and the jack, the 12.7 mm pin header does (J7 - J11 pad gap 2.19 mm, J7 courtyard
+0.20 mm below R75's). The power header J8 did not need to move. Not keyed any more: silk `CLK IN - NOT POWER`
+beside it and the pin-1 marker; the ribbon's red wire goes on pin 1. The D10 pinout keeps every mistake
+harmless: a turned clock ribbon leaves the unit a master (DET open), a Eurorack power cable either way round
+puts +/-12 V only on the 10 k + D3 protected DET pin and on unconnected pins, and a clock ribbon on the power
+header J8 meets -12 V only through R82 4.7 k. R85/R86/D4 are on B left of the jack (X88.4-91.6, Y69-76.5),
+>= 2.20 mm from every J11 / RV402 pad. Trim the J11 tip lead to <= 2 mm: the J7 ribbon socket ends 0.2-0.5 mm
+above it in plan.
+
+**Routing (carrier R3).** Removed and re-laid around the new pads: `LRCK_B` / `BCK_B` turn west 0.7 / 1.5 mm
+earlier (north of J7 pin 2); `NORM_PROBE` leaves strip pin 12 on F and drops to B at a via (91.7, 48.8) west of
+J7; the J7 DET, SCKI, BCK (F tee at Y53.58 off its existing F trunk) and LRCK links enter between the pin rows;
+the four DAC4/DAC5 F tracks' east-west rows moved 0.4 mm south (Y64.75-65.95), clear of the J11 tip pad. New:
+`MIDI_IN` tip -> R86/R85 on B (10 mm), `MIDI_RX` R86 -> D4 and up the right edge on B at X97.9 to J13.11
+(38 mm, under the F DAC tracks with both planes between), +3V3 for R85/D4 from a via at (88.95, 73.6), D4 GND
+via at (91.9, 75.5). **MCU board R3:** `MIDI_RX` from J113.11 on B to a via (93.0, 31.25) and 1.45 mm of F into
+pad 43; the I2C SDA pull-up R109 moved 1.65 mm south with its +3V3 via to make room for that via (SDA re-laid). USB copper untouched (`tools/check_usb.py` passes, mismatch 0.27 / 0.02 mm as R2).
+
+Checks (2026-11-11, `research/midi/final-carrier`, `research/midi/final-mcu`, `research/midi/drc-*.json`):
+
+| Check | Carrier S5/R3 | MCU board S4/R3 |
+|---|---|---|
+| Native ERC `--severity-all` | 0 (236 parts, 182 nets) | 0 (27 parts, 60 nets) |
+| Native DRC `--severity-all`, zones refilled | 0 violations, 0 exclusions | 0 violations, 0 exclusions |
+| Unconnected / schematic parity | 0 / 0 | 0 / 0 |
+| Shared `check` ref/pin/net, source manifest | equal (3 mechanical without reference), manifest equal | equal, manifest equal |
+| Vias in SMD pads / tracks on In1 | 0 / 0 | 0 / 0 |
+| Courtyards to the edge | >= 1.025 mm (MS3 0.98 mm incl. stroke, open, section 10) | J101 0.53 mm to the MS3 notch (open, section 10) |
+| SMD pads to pot/jack pads | closest 2.014 mm (D3.2 - J401.T, unchanged); new parts >= 2.197 mm (D4.1 - J11.S) | - |
+| Strips J12/J13 = J112/J113 | coaxial, same nets on all 24 pins | |
+| Copper | 1936 segments, 304 vias | 284 segments, 59 vias |
+
+Plane pieces as R2: In1 GND one plane + the four spoke-tied J6/J7/J8 header-pin fragments (the J7 one moved
+with it), In2 +3V3 one plane + the two track-fed via pads in the +5VA island, the other islands and pours one
+piece each; MCU board In1, In2 and the USB GND island one piece each. Panel P4: native DRC 0, 34 round NPTH + the
+USB-C slot, every carrier jack coaxial with a 6.2 mm hole.
+
+**JLCPCB export** in `jlcpcb/` (`jlcpcb/README.md`: upload map, hand-soldered parts, strict-live audit of
+2026-11-11, open order gates). Not supplier-accepted, not built, no firmware.

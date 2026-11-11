@@ -29,9 +29,20 @@ are relative to the module.
 - **Datasheet review** (`docs/research.md` 6a): CH32V307 I2S rated 8 MHz < 12.288 MHz BCK -> SPI-slave fallback
   pins tied on the MCU board (PB14 on PB15, PA15/PB3 on PB12/PB13); PCM3168A slave BCK duty margin 5.7 ns
   (4-unit limit), no SCKI phase rule, ADC/DAC reset to slave, SEAD resets to differential.
-- Open: J101 courtyard 0.53 mm to the MS3 notch, MS3 courtyard 0.98 mm to the edge (user decision); next panel re-check, JLCPCB export, firmware,
-  bench. Do not rerun `tools/build_layout.py` (it
-  would park the SMD parts again).
+- **MIDI IN: carrier S5 / R3, MCU board S4 / R3, panel P4** (2026-11-11, user, `docs/research.md` section 11,
+  batches in the ignored `research/midi/`): TS jack J11 above USB 1 (X94.85 Y67.9, panel hole H35), R85 100k
+  pull-up, R86 10k + D4 BAT54S clamp -> `MIDI_RX` -> J13.11 / J113.11 (was a third GND) -> PA10 = USART1_RX,
+  not inverted; the firmware is to forward it as USB-MIDI. CLK IN J7 is now an unshrouded 2x5 pin header
+  4.42 mm higher on the same edge (pin 1 X95.82 Y48.5); J8 power did not move. Carrier 236 parts, MCU board 27.
+  Both boards ERC 0 / DRC 0 / unconnected 0 / parity 0, shared `check` ref/pin/net and source manifests equal,
+  `tools/check_usb.py` passes, new SMD >= 2.20 mm from pot/jack pads.
+- **JLCPCB export** (2026-11-11, `jlcpcb/README.md`): `jlcpcb/main/` (carrier bottom Economic, 203 parts / 46
+  rows, + panel) and `jlcpcb/mcu/` (top Economic, 25 parts / 13 rows); strict-live audit 34 Basic / 22
+  Extended / C1562 unresolved. Not supplier-accepted, not built. Re-export after any source change (the shared
+  `check` fails on manifest drift).
+- Open: J101 courtyard 0.53 mm to the MS3 notch, MS3 courtyard 0.98 mm to the edge and the 10 Extended R/C
+  placements (user decisions); firmware (incl. USART1 MIDI -> USB-MIDI), bench. Do not rerun
+  `tools/build_layout.py` (it would park the SMD parts again).
 
 ## Boundaries
 

@@ -1,4 +1,4 @@
-"""MULTI-MIX MCU board S3 circuit table, drawing and sourcing (imported by tools/build_schematic.py).
+"""MULTI-MIX MCU board S4 circuit table, drawing and sourcing (imported by tools/build_schematic.py).
 
 modules/usb-audio-max's MCU board (itself modules/usb-audio's S1/R2: same CH32V307RCT6, USB-C, crystal,
 boot and supply parts) with this module's pins. It sits on the carrier's F side, between the carrier
@@ -24,7 +24,10 @@ A vertical USB-C (HRO TYPE-C-31-D-15) on its top side comes out through the pane
   normals: the firmware finds unpatched inputs).
 - Clock link (docs/research.md section 4): clock only, no data. PA2 <- LINK_N (S3, was PA9; low = CLK IN connected:
   clock slave; the carrier switches SCKI/BCK/LRCK by hardware, the firmware keeps the codec in slave mode).
-  PC6-PC9, PB0, PB1, PA3, PA9-PA12, PB4 and PC13 are free.
+- MIDI IN (S4, 2026-11-11, docs/research.md section 11): PA10 = USART1_RX <- MIDI_RX (J113.11, was a third
+  GND): the carrier's TS MIDI IN jack behind 10k + BAT54S, not inverted (31250 baud, idle high). The firmware
+  forwards it as USB-MIDI. PA9 (USART1_TX) stays free.
+  PC6-PC9, PB0, PB1, PA3, PA9, PA11, PA12, PB4 and PC13 are free.
 - Clock: Y101 8 MHz (HSE; USBHS PHY PLL reference as the WCH EVT).
 - Boot: BOOT0 10k pull-down (BOOT button on the carrier pulls it to +3V3), BOOT1/PB2 10k pull-down;
   NRST 10k / 100n (RESET button on the carrier). SWDIO/SWCLK go to the carrier's J15.
@@ -47,12 +50,13 @@ MCU_PINS = {
     '9': 'POT_ADC',                                                # PC1 = ADC_IN11 (S2, was PC0)
     '10': 'MUX_S0', '11': 'MUX_S1', '14': 'MUX_S2', '15': 'MUX_S3',  # PC2, PC3, PA0, PA1 (S2, were PA12-PA9)
     '41': 'NORM_PROBE', '16': 'LINK_N',                            # PA8 TIM1_CH1, PA2 (S3, was PA9)
+    '43': 'MIDI_RX',                                               # PA10 = USART1_RX (S4), 5 V tolerant
     '5': '_OSC_IN', '6': '_OSC_OUT',
     '1': '+3V3', '19': '+3V3', '48': '+3V3', '32': '+3V3', '64': '+3V3', '13': '+3V3',
     '18': 'GND', '31': 'GND', '47': 'GND', '63': 'GND', '12': 'GND',
 }
 UNUSED = ['2', '3', '4', '17', '20', '21', '22', '23', '24', '25', '26', '27',
-          '37', '38', '39', '40', '42', '43', '44', '45', '51', '53', '54', '56', '61', '62']
+          '37', '38', '39', '40', '42', '44', '45', '51', '53', '54', '56', '61', '62']
 
 
 def part(ref, sym, value, fp, at, rot, pins, unit=1, **fields):
@@ -130,10 +134,10 @@ def circuit():
                        'the pot mux and the clock-link detect, towards the carrier west side'))
     c.append(part('J113', 'Conn_01x12', 'MCU_R', 'H1x12', (hx + 30.48, hy), 0,
                   {'1': 'SWCLK', '2': 'SWDIO', '3': '+3V3', '4': 'GND', '5': 'I2S_DAC1', '6': 'I2C_SCL',
-                   '7': 'I2C_SDA', '8': 'GND', '9': 'I2S_SCLK', '10': 'I2S_LRCK', '11': 'GND', '12': 'NORM_PROBE'},
-                  Note='Carrier J13 strip, east of the codec: SWD, DIN1, I2C, BCK/LRCK, jack-normal probe'))
+                   '7': 'I2C_SDA', '8': 'GND', '9': 'I2S_SCLK', '10': 'I2S_LRCK', '11': 'MIDI_RX', '12': 'NORM_PROBE'},
+                  Note='Carrier J13 strip, east of the codec: SWD, DIN1, I2C, BCK/LRCK, MIDI RX, jack-normal probe'))
     for ref, net, at, rot in (('#FLG101', '+3V3', (hx - 7.62, hy - 7.62), 0),
-                              ('#FLG102', 'GND', (hx + 22.86, hy + 12.7), 180),
+                              ('#FLG102', 'GND', (hx + 15.24, hy + 5.08), 180),
                               ('#FLG103', 'VBUS', (58.42, 149.86), 180)):
         c.append(part(ref, 'PWR_FLAG', 'PWR_FLAG', None, at, rot, {'1': net}))
     for p in c:
@@ -157,8 +161,8 @@ def drawing():
     L += [('VBUS_DET', (104.14, 138.43), 'R')]
     # Header supply pins with the PWR_FLAGs
     hx, hy = HDR
-    W += [['J112.3', (hx - 10.16, hy - 7.62)], ['J113.11', (hx + 20.32, hy + 12.7)]]
-    P += [('+3V3', (hx - 10.16, hy - 7.62), 90), ('GND', (hx + 20.32, hy + 12.7), 270)]
+    W += [['J112.3', (hx - 10.16, hy - 7.62)], ['J113.8', (hx + 12.7, hy + 5.08)]]
+    P += [('+3V3', (hx - 10.16, hy - 7.62), 90), ('GND', (hx + 12.7, hy + 5.08), 270)]
     return W, P, L
 
 
@@ -182,7 +186,7 @@ SOURCING = {
 }
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR MULTI-MIX - MCU board, S3. CH32V307RCT6, USB 2.0 High-Speed (UAC2 48 kHz / 24-bit, '
+    ((20.32, 20.32), 'BIG MODULAR MULTI-MIX - MCU board, S4. CH32V307RCT6, USB 2.0 High-Speed (UAC2 48 kHz / 24-bit, '
                      '6 in / 8 out, + USB-MIDI). Circuit intent: docs/research.md', 2.0),
     ((20.32, 129.54), 'USB-C (vertical, through the panel): data only, VBUS sensed on PC11 (no power drawn).\n'
                       'D+/D- -> USBLC6-2SC6 -> PB7/PB6 = USBHS_DP/DM (also the ROM bootloader port).', 1.1),
@@ -196,7 +200,7 @@ TEXTS = [
                       'I2S is rated 8 MHz max (DS V3.9): SPI-slave fallback RX PB5 (SPI3_MOSI), TX PB14 (SPI2_MISO, tied to PB15).\n'
                       'I2C2: PB10/PB11 (codec 0x44, pull-ups R108/R109). PC0 codec RST. Pots: PC1 = ADC_IN11 (74HC4067 COM), PC2/PC3/PA0/PA1 = S0-S3.\n'
                       'Clock link: PA2 LINK_N (low = CLK IN connected = clock slave, clocks switched on the carrier).\n'
-                      'PA8 NORM_PROBE (jack-normal probe).', 1.1),
+                      'PA8 NORM_PROBE (jack-normal probe). PA10 = USART1_RX <- MIDI_RX (carrier MIDI IN jack, 31250 baud, not inverted) -> USB-MIDI.', 1.1),
 ]
 
 TEXT_LEFT = {'R105', 'R103', 'R104'}
