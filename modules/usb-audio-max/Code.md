@@ -77,7 +77,7 @@
 - `tools/check_edges.py`: courtyards >= 1.28 mm (carrier) / 1.06 mm (MCU board) from the edges;
   closest SMD pad to a jack pad 5.14 mm (SW2 to J11).
 - Panel: 50.5 x 128.5 x 1.6 mm, rail holes X12.58 / X43.06 (2HP case grid phase as
-  `case/tools/build_case.py` asserts).
+  `mechanical/case/tools/build_case.py` asserts).
 - Not done: SMD placement, routing, JLCPCB export / assembly audit, printed panel, firmware, bench.
 
 ## Verification (fab-review fixes + export, 2026-11-08)

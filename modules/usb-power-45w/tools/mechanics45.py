@@ -34,7 +34,7 @@ GEOMETRY = {
     'panel_source': 'modules/blank/docs/geometry.json blank-4hp: 20.0 x 128.5, rail hole X12.58, Y3/Y125.5, dia 3.2',
     'rail_holes_mm': [[12.58, 3.0, 3.2], [12.58, 125.5, 3.2]],
     'rail_head_diameter_mm': 6.0,
-    'rail_profile_YZ_mm': {'note': 'case/tools/build_case.py: rail 10.0 wide centred on the hole line, '
+    'rail_profile_YZ_mm': {'note': 'mechanical/case/tools/build_case.py: rail 10.0 wide centred on the hole line, '
                                    '13.5 deep behind the panel rear; clear gap >= 112.5',
                            'top_Y': [-2.0, 8.0], 'bottom_Y': [120.5, 130.5], 'depth_behind_rear': 13.5},
     'panel_bracket_holes_mm': [[6.4, 22.0, 3.2], [6.4, 106.5, 3.2]],

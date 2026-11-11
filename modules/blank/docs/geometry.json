@@ -6,7 +6,7 @@
   "panel_print_thickness_mm": 2.0,
   "rail_hole_diameter_mm": 3.2,
   "rail_hole_Y_mm": [3.0, 125.5],
-  "rail_note": "Rail holes sit 1 HP off the Doepfer 7.5 mm phase, as every module (12.58 mm; 2.42 mm on 2 HP, case/tools/build_case.py), so they land on the 2 HP case spacer grid. 8 HP has a second hole pair 4 HP right (32.9), as modules/acid.",
+  "rail_note": "Rail holes sit 1 HP off the Doepfer 7.5 mm phase, as every module (12.58 mm; 2.42 mm on 2 HP, mechanical/case/tools/build_case.py), so they land on the 2 HP case spacer grid. 8 HP has a second hole pair 4 HP right (32.9), as modules/acid.",
   "panels": [
     {"name": "blank-2hp", "hp": 2, "width_mm": 9.8, "rail_hole_X_mm": [2.42]},
     {"name": "blank-4hp", "hp": 4, "width_mm": 20.0, "rail_hole_X_mm": [12.58]},

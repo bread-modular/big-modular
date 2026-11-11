@@ -1,0 +1,231 @@
+{
+  "note": "Reference panel for the knob fit checks in build_knobs.py: an 18HP panel with four big knobs in a row. Panel frame, mm. Snapshot; the knob shapes do not depend on it.",
+  "panel_mm": [
+    91.3,
+    128.5
+  ],
+  "panel_pcb_thickness_mm": 1.6,
+  "panel_rear_seat_Z_mm": 10.0,
+  "rail_holes_mm": [
+    [
+      12.58,
+      3.0,
+      3.2
+    ],
+    [
+      83.7,
+      3.0,
+      3.2
+    ],
+    [
+      12.58,
+      125.5,
+      3.2
+    ],
+    [
+      83.7,
+      125.5,
+      3.2
+    ]
+  ],
+  "big_knob": {
+    "refs": [
+      "RV101",
+      "RV201",
+      "RV301",
+      "RV401"
+    ],
+    "reserve_D_mm": 18.0,
+    "jack_nut_R_mm": 4.6,
+    "small_knob_R_mm": 5.5
+  },
+  "pots": [
+    {
+      "ref": "RV2",
+      "shaft_XY": [
+        35.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "RV3",
+      "shaft_XY": [
+        52.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "RV1",
+      "shaft_XY": [
+        69.0,
+        16.6
+      ]
+    },
+    {
+      "ref": "RV102",
+      "shaft_XY": [
+        15.17,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV103",
+      "shaft_XY": [
+        15.17,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV101",
+      "shaft_XY": [
+        15.17,
+        106.0
+      ]
+    },
+    {
+      "ref": "RV202",
+      "shaft_XY": [
+        35.49,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV203",
+      "shaft_XY": [
+        35.49,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV201",
+      "shaft_XY": [
+        35.49,
+        106.0
+      ]
+    },
+    {
+      "ref": "RV302",
+      "shaft_XY": [
+        55.81,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV303",
+      "shaft_XY": [
+        55.81,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV301",
+      "shaft_XY": [
+        55.81,
+        106.0
+      ]
+    },
+    {
+      "ref": "RV402",
+      "shaft_XY": [
+        76.13,
+        65.5
+      ]
+    },
+    {
+      "ref": "RV403",
+      "shaft_XY": [
+        76.13,
+        84.0
+      ]
+    },
+    {
+      "ref": "RV401",
+      "shaft_XY": [
+        76.13,
+        106.0
+      ]
+    }
+  ],
+  "pot_shaft_offset_mm": [
+    -0.127,
+    -0.508
+  ],
+  "jacks": [
+    {
+      "ref": "J1",
+      "XY": [
+        6.6,
+        16.6
+      ]
+    },
+    {
+      "ref": "J3",
+      "XY": [
+        35.0,
+        16.6
+      ]
+    },
+    {
+      "ref": "J2",
+      "XY": [
+        20.0,
+        16.6
+      ]
+    },
+    {
+      "ref": "J4",
+      "XY": [
+        52.0,
+        16.6
+      ]
+    },
+    {
+      "ref": "J5",
+      "XY": [
+        84.5,
+        16.6
+      ]
+    },
+    {
+      "ref": "J101",
+      "XY": [
+        15.17,
+        47.0
+      ]
+    },
+    {
+      "ref": "J201",
+      "XY": [
+        35.49,
+        47.0
+      ]
+    },
+    {
+      "ref": "J301",
+      "XY": [
+        55.81,
+        47.0
+      ]
+    },
+    {
+      "ref": "J401",
+      "XY": [
+        76.13,
+        47.0
+      ]
+    }
+  ],
+  "mount_standoffs": {
+    "XY_mm": [
+      [
+        25.33,
+        114.0
+      ],
+      [
+        65.97,
+        114.0
+      ]
+    ],
+    "panel_bolt_head_R_mm": 2.75
+  }
+}
