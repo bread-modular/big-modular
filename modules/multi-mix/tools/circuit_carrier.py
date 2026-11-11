@@ -195,11 +195,11 @@ def circuit():
     c.append(two('C16', 'C', '1u', 'C0603', (187.96, 67.31), '+12V_F', 'GND', rot=0, Voltage='50V',
                  Note='U9 input'))
     c.append(part('U9', 'REF5050AD', 'REF5050A', 'SOIC8', (205.74, 71.12), 0,
-                  {'1': None, '2': '+12V_F', '3': None, '4': 'GND', '5': '_REF_NR', '6': '_REF_OUT', '7': None,
+                  {'1': None, '2': '+12V_F', '3': None, '4': 'GND', '5': 'REF_NR', '6': '_REF_OUT', '7': None,
                    '8': None},
                   Note='+5VA reference (as modules/usb-audio-max: +5VA sets the codec gain; kept so the two '
                        'modules share one power design)'))
-    c.append(two('C17', 'C', '1u', 'C0603', (218.44, 82.55), '_REF_NR', 'GND', rot=0, Voltage='50V',
+    c.append(two('C17', 'C', '1u', 'C0603', (218.44, 82.55), 'REF_NR', 'GND', rot=0, Voltage='50V',
                  Note='U9 TRIM/NR noise reduction'))
     c.append(two('C18', 'C', '10u', 'C0805', (226.06, 72.39), '_REF_OUT', 'GND', rot=0, Voltage='25V',
                  Note='U9 output (datasheet 1-50 uF, ESR <= 1.5R)'))
@@ -270,7 +270,7 @@ def circuit():
                   {'7': 'BCK_C', '36': 'BCK_C', '6': 'LRCK_C', '35': 'LRCK_C',
                    '8': '_DOUT1_C', '9': None, '10': None,
                    '37': 'I2S_DAC1', '38': 'GND', '39': 'GND', '40': 'GND',
-                   '41': '_SCKI', '48': 'GND', '45': 'GND', '44': '_ADR1',
+                   '41': '_SCKI', '48': 'GND', '45': 'GND', '44': 'CODEC_ADR1',
                    '43': 'I2C_SDA', '42': 'I2C_SCL', '4': 'CODEC_RST', '5': None, '13': None,
                    '49': '+5VA', '3': '+5VA', '14': '+5VA', '34': '+5VA', '46': '+3V3_C', '12': '+3V3_C',
                    '50': 'GND', '2': 'GND', '16': 'GND', '33': 'GND', '47': 'GND', '11': 'GND', '65': 'GND'},
@@ -296,17 +296,17 @@ def circuit():
         c.append(two(ref, 'R', '33', 'R0603', (xd - 66.04, row), a_, b_, Note=f'Series termination: {note}'))
     c.append(two('R13', 'R', '33', 'R0603', (xd - 27.94, yd + 10.16), 'I2S_ADC1', '_DOUT1_C',
                  Note='Series termination: DOUT1 (ADC 1-6 at 48 kHz) to PB5 (I2S3 SD / SPI3 MOSI)'))
-    c.append(two('R15', 'R', '10k', 'R0603', (xd + 35.56, yd - 12.7), '_ADR1', 'GND',
+    c.append(two('R15', 'R', '10k', 'R0603', (xd + 35.56, yd - 12.7), 'CODEC_ADR1', 'GND',
                  Note='ADR1 strap (I2C address bit 1 = 0) through a resistor: the pin is the MDO output in '
                       'SPI mode and has no internal pull-down'))
     c.append(two('R17', 'R', '10k', 'R0603', (xd + 25.4, yd + 11.43), 'CODEC_RST', 'GND', rot=0,
                  Note='Holds the codec in reset until the MCU (PC0) releases it with SCKI running'))
     for i, (ref, val, fp, net, volt, note) in enumerate((
-            ('C20', '1u', 'C0603', '+5VA', '50V', 'VCCAD1 pin 49'), ('C21', '1u', 'C0603', '+5VA', '50V', 'VCCAD2 pin 3'),
+            ('C20', '1u', 'C0603', '+5VA', '50V', 'VCCAD1 pin 49'), ('C21', '1u', 'C0402', '+5VA', '25V', 'VCCAD2 pin 3'),
             ('C22', '1u', 'C0603', '+5VA', '50V', 'VCCDA1 pin 14'), ('C23', '1u', 'C0603', '+5VA', '50V', 'VCCDA2 pin 34'),
             ('C24', '10u', 'C0805', '+5VA', '25V', 'VCC (ADC side) bulk'),
             ('C25', '10u', 'C0805', '+5VA', '25V', 'VCC (DAC side) bulk'),
-            ('C26', '1u', 'C0603', '+3V3_C', '50V', 'VDD1 pin 46'), ('C27', '1u', 'C0603', '+3V3_C', '50V', 'VDD2 pin 12'),
+            ('C26', '1u', 'C0603', '+3V3_C', '50V', 'VDD1 pin 46'), ('C27', '1u', 'C0402', '+3V3_C', '25V', 'VDD2 pin 12'),
             ('C28', '10u', 'C0805', '+3V3_C', '25V', 'VDD bulk'),
             ('C29', '100n', 'C0603', '+3V3_OSC', '50V', 'Y1 supply'), ('C30', '100n', 'C0603', '+3V3_C', '50V', 'U4 supply'))):
         c.append(two(ref, 'C', val, fp, (370.84 + 10.16 * i, 160.02), net, 'GND', rot=0, Voltage=volt,
@@ -549,6 +549,7 @@ def drawing():
           ['U1.6', (152.4, 106.68), (152.4, 111.76), (172.72, 111.76), (172.72, 104.14), 'U1.7']]
     P += [('+5VA', (175.26, 76.2), 0)]
     W += [['U9.6', 'R6.1'], ['U9.5', (218.44, 73.66), 'C17.1'], ['R6.2', (260.35, 68.58)]]
+    L += [('REF_NR', 'C17.1', 'L')]  # named (fab review): no escaped '/' in the auto net name
     L += [('V5_SET', (260.35, 68.58), 'R'), ('V5_SET', (88.9, 99.06), 'L'), ('V5_IN', (116.84, 76.2), 'U')]
     xu, yr = BUCK
     ys = yr - 5.08
@@ -584,7 +585,8 @@ def drawing():
     L += [('I2S_SCLK', (xd - 73.66, yd - 20.32), 'L'), ('I2S_LRCK', (xd - 73.66, yd - 5.08), 'L'),
           ('BCK_C', (xd - 27.94, yd - 20.32), 'U'), ('LRCK_C', (xd - 27.94, yd - 5.08), 'U'),
           ('BCK_B', (xd - 60.96, yd - 20.32), 'U'), ('LRCK_B', (xd - 60.96, yd - 5.08), 'U'),
-          ('I2S_ADC1', (xd - 40.64, yd + 10.16), 'L'), ('CODEC_RST', (xd + 30.48, yd + 7.62), 'R')]
+          ('I2S_ADC1', (xd - 40.64, yd + 10.16), 'L'), ('CODEC_RST', (xd + 30.48, yd + 7.62), 'R'),
+          ('CODEC_ADR1', 'R15.1', 'L')]  # named (fab review): no escaped '/' in the auto net name
     P += [('GND', (xd + 41.91, yd - 10.16), 0)]
 
     # Inputs
@@ -690,6 +692,7 @@ SOURCING = {
     ('C', '22n', 'C0603'): dict(LCSC='C21122', MPN='CL10B223KB8NNNC', Manufacturer='Samsung'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0603'): dict(LCSC='C15849', MPN='CL10A105KB8NNNC', Manufacturer='Samsung'),
+    ('C', '1u', 'C0402'): dict(LCSC='C52923', MPN='CL05A105KA5NQNC', Manufacturer='Samsung'),
     ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
     ('C', '10u', 'C1206'): dict(LCSC='C13585', MPN='CL31A106KBHNNNE', Manufacturer='Samsung'),
     ('C', '22u', 'C0805'): dict(LCSC='C45783', MPN='CL21A226MAQNNNE', Manufacturer='Samsung'),

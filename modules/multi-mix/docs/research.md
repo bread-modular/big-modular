@@ -225,8 +225,9 @@ Findings that change something or must be carried:
 
 ## 7. Open
 
-- Placement and routing are done (section 9, R1). Not done: fab review, JLCPCB export, panel re-check against
-  the built boards.
+- Placement and routing are done (section 9, R1); fab-review fixes done (section 10, S4/R2). Not done: JLCPCB
+  export (separate task), J101 courtyard 0.53 mm from the MS3 notch (user decision, section 10), panel re-check
+  against the built boards.
 - Firmware: everything (UAC2 + USB-MIDI composite, codec init per F4/F7, I2S or SPI-slave TDM (F1), mixer,
   knob scan, NORM probe correlation, unique USB serial per unit).
 - Bench: I2S slave at 12.288 MHz (F1, else SPI slaves), BCK duty at the last of 4 units (F2), codec slave mode on
@@ -376,3 +377,103 @@ board; native parity is 0), plus the three reference-less standoffs. Both were t
 fixed only by naming those two nets in the schematic.
 
 Open after R1: fab review, JLCPCB export, firmware, bench.
+
+## 10. Fab-review fixes: carrier S4 / R2, MCU board S3 / R2 (2026-11-11)
+
+The fab review (`research/fab-review/REVIEW.md`, ignored) found no DRC/ERC errors but a list of layout issues.
+User: fix them, working with the advisor. Batches are scripts in the ignored `research/fab-fix/` (`s1`-`s8`,
+`m1`), each written to the board and checked with native DRC + parity; single links were found with a
+one-connection grid search (`astar.py`, one net at a time, every path inspected), no autorouter. Coordinates
+below are panel frame (board XY - (100, 50)).
+
+**Schematic (carrier S4, `tools/circuit_carrier.py`):** C21 (VCCAD2 pin 3) and C27 (VDD2 pin 12) are 1 uF 0402
+(Samsung CL05A105KA5NQNC, LCSC C52923, 25 V X5R, the code the MCU board already uses): the strip between the J12
+pads and the codec's west pins is 2.0 mm wide and only a 0603 fits for one pin. DC bias (Samsung's
+characteristic sheet for this exact part, 1 kHz): about -58 % at 5 V (C21: ~0.42 uF) and -40 % at 3.3 V (C27:
+~0.6 uF), against roughly -25 % for the 0603 50 V part they replace. The trade is less capacitance for a 2 mm
+pin-cap-GND loop instead of 9-15 mm through the In2 island; the bulk C24/C25/C28 (10 uF) stay. A bench check of
+codec supply noise is the qualification, not this estimate. The two pin-named nets got labels,
+`REF_NR` (U9 TRIM/NR - C17) and `CODEC_ADR1` (U3 pin 44 - R15), so no auto name carries an escaped `/`.
+The MCU board schematic is unchanged (S3).
+
+**Codec decoupling (carrier B).** Each supply cap now sits at its pin with a direct track and its own GND via
+or GND-pin link; VREF 10 uF caps moved into the filter-cap row under the reference pins (C216/C215 shifted west
+into the space C22 left). Pad-centre to pin-pad-centre:
+
+| Cap | Pin | Before | After |
+|---|---|---:|---:|
+| C22 1u 0603 | 14 VCCDA1 | 13.41 mm | 2.07 mm |
+| C27 1u 0402 | 12 VDD2 | 9.27 mm | 1.93 mm |
+| C21 1u 0402 | 3 VCCAD2 | 15.09 mm | 1.94 mm |
+| C15 10u 0805 | 60 VREFAD2 | 8.93 mm | 4.39 mm |
+| C13 10u 0805 | 59 VREFAD1 | 11.16 mm | 4.03 mm |
+| C14 100n 0603 | 59 VREFAD1 (extra HF cap) | 4.21 mm | 8.43 mm |
+
+Routed lengths: VREFAD2 pin 60 -> C15 4.75 mm of track, C15 GND by a 1.8 mm stub to its own via; VREFAD1 pin
+59 -> C13 3.35 mm, C13 GND 1.0 mm to its via, then on to C14 (7.1 mm). C22 / C27 / C21: pin -> cap pad
+0.6-1.0 mm of track; GND by a via beside the pad (C22, C21) or straight to the GND pin 11 that joins the
+exposed pad (C27). C14 is the one that got farther: the 10 uF caps the datasheet asks for (12.1.5) took the places next to the
+pins; C14 sits below the row (the IN4 jack's 2 mm hand-solder halo blocks anything closer). To make room on the
+west strip: the +5VA In2 island's west edge moved from X74.9 to X74.3 (pin-14 feed via (74.6, 23.75) on the
+island; the two 0.95 mm2 +3V3 slivers on J12.3 are gone); +3V3_C reaches C27 by an F track through the J12 gap
+at Y26.3; DOUT1 (pin 8 -> R13) leaves by a via at (76.2, 26.4), runs on F and returns at (72.2, 22.15)
+(7.9 -> 12.0 mm, 2 vias); the BCK_C/LRCK_C pin vias moved to X76.2; ADC_IN6 re-routed on F.
+
+**USB (MCU board),** as modules/usb-audio's fix (`docs/usb-output-fix.md` there): JLC04161H-7628 stackup now
+recorded in both PCBs; USB_HS widths only (0.40 single-ended verticals/fan-outs, 0.30 + 0.20 gap coupled), two
+through-vias on every connector-to-ESD path and none from U102 to U101; an In2 GND island
+`USB_HS_GND_REFERENCE` under every B USB segment, stitched by three GND vias at the transitions (In2 +3V3 stays
+one piece; no stitching via fits within 3 mm of the B6 bridge via, the nearest is 3.3 mm away); D+ length
+bumps (one on B west of the J101 shell pad, sides and top 0.40 mm; one on F, 0.30 mm because it passes 0.2 mm
+from the J101 pads, ~55 ohm estimated over ~1.2 mm) match the pair:
+**orientation A 0.27 mm, B 0.02 mm** (was 5.2 mm D- longer). `tools/check_usb.py` (modules/usb-audio's check,
+unchanged rules) passes: transitions, widths, classes, stackup, ground under all USB copper (outside the
+signal-via antipads). IPC-2141 estimates 88.6 ohm differential / 45.7 ohm single, not a field solution: ask
+JLCPCB for 90/45 ohm on this stack before calling it controlled impedance; eye/functional test in both plug
+orientations stays a bench item.
+
+**SCKI** (R60 -> U3.41) re-routed: 68.3 -> 52.4 mm, still 2 vias (B R60 -> via (75.35, 59.7) -> F along Y59.7
+and up X88.65/88.9 -> via (90.15, 26.65) -> B into pin 41 straight). A 42 mm path needed 4 vias and passed the
+IN4 jack's tip pad, so it was not used. 33R source termination unchanged.
+
+**Q1 heat:** new B pour `Q1_TAB_B` (/V5_IN, solid pad connection, 68.5 mm2) on the tab, tied to the F heatsink
+pour (188 mm2) by 11 thermal vias beside the tab, clear of every pad and mask opening. Net-(Q1-B), which crossed
+the tab area, now runs west of Q1 on B, on F along Y93.2 and back to B at Q2 (2 vias). Bench: Q1/R1 temperature
+at full load.
+
+**Corners:** every two-segment right angle chamfered at 45 degrees (carrier 49, MCU board 7; the DAC4/DAC5
+bus corners at the top right with 0.2 mm cuts so the nested tracks keep their spacing). 0 left.
+
+**Silk / misc:** board service labels 1.0 mm high, 0.15 mm stroke (BOOT, RESET, -12V, CLK OUT/IN, NOT POWER);
+`MULTI-MIX S4/R2`; J15 legend `SWD 1:3V3 2:DIO` / `3:CLK 4:GND` above the header (pin 1 = square pad, bottom);
+title blocks S4/R2 (carrier) and S3/R2 (MCU board). Glyph-level check (`research/fab-fix/silkmask.py`):
+every board text >= 0.70 mm from a solder-mask opening and >= 0.445 mm from the edge. C8 0.1 mm east (courtyard 1.1 mm from the edge). The
+standoffs keep blank references with their `MechanicalID` field (MS1-MS3), as modules/usb-audio-max: a
+reference not in the schematic would make the shared ref/pin/net comparison unequal.
+
+Checks (2026-11-11, `research/fab-fix/reports/`, `research/fab-fix/check-carrier-final`,
+`research/fab-fix/check-kicad-project-mcu`):
+
+| Check | Carrier | MCU board |
+|---|---|---|
+| Native ERC `--severity-all` | 0 | 0 |
+| Native DRC `--severity-all`, zones refilled | 0 violations, 0 exclusions | 0 violations, 0 exclusions |
+| Unconnected / schematic parity | 0 / 0 | 0 / 0 |
+| Shared `check` ref/pin/net | equal (3 mechanical without reference, as usb-audio-max) | equal |
+| Vias in SMD pads | 0 (codec thermal vias only) | 0 |
+| Tracks on In1 | 0 | 0 |
+| Right-angle corners | 0 | 0 |
+| Courtyards to the edge | >= 1.03 mm (C8 now 1.1); MS3 B courtyard 0.98 mm incl. stroke (user-placed, P3; open) | J101 0.53 mm to the MS3 notch (open) |
+| SMD pads to pot/jack pads | closest 2.012 mm (D3.2 - J401.T, unchanged) | - |
+| Copper | 1917 segments, 301 vias | 277 segments, 58 vias |
+
+Plane pieces: In1 GND one plane + the four J6/J7/J8 fragments (unchanged); In2 +3V3 one plane + the two
+track-fed via pads in the +5VA island; +5VA island, both +3V3_C islands, Q1 pours one piece each. MCU board:
+In1 GND, In2 +3V3 and the USB GND island one piece each.
+
+**Open:** two 1 mm edge-rule exceptions need a user decision, both on panel-fixed parts: J101's courtyard is
+0.53 mm from the MCU board's MS3 notch edge, and MS3's own B courtyard is 0.98 mm from the carrier top edge
+(including the courtyard stroke; it was reference-less before, so the old courtyard list skipped it). Accept
+both, or move the notch / standoff. JLCPCB export, sourcing re-check
+(C52923 x2 more on the carrier), firmware and bench as section 7.
+
