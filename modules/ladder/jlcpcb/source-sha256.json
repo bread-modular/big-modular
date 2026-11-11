@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/ladder.kicad_pcb": "3294cbe3645ee21799a06d4ee2c6c258bb128e0dc06321920ea9a10cf09bfbc2",
+    "hardware/ladder.kicad_pro": "cb1b4b16ed16df6e92e2b2a3a240a65b18268a5a182aed5b7f413152517b453d",
+    "hardware/ladder.kicad_sch": "b1edb347a3ea2957f0f5654b542405774ee7fc1705f62922e386d16fb6f11c8d",
+    "panels/front-pcb/ladder-panel.kicad_pcb": "d4e6cbcc73a8b220d3a64eb866b361ca41bdde97cdf0531c599f56d1218e9750",
+    "panels/front-pcb/ladder-panel.kicad_pro": "1a43f4daba11b34e7731f57f51f220174a0d9e6e9e693da52524c01b1c3411af"
+  },
+  "exports": {
+    "jlcpcb/carrier/ladder-gerbers.zip": "56c2c9d8b26d02a46b0398cced12a7c69478afdd01490af487e34c4e3e9dcfb3",
+    "jlcpcb/carrier/bom.csv": "b8d3e4d3cb652f2e1a77114166b6295c0103c2b9b6f30bf3c670a49b1b46a3cc",
+    "jlcpcb/carrier/positions.csv": "9e0d1994c5de2078c0f6cd38d686fc51d2a1e69aaa4165370687d8b59a6dca7f",
+    "jlcpcb/panel/ladder-panel-gerbers.zip": "2ca09132e7a52f30db7feec2a744220bb972ef12a5d33715704de2d40d832cc9"
+  }
+}

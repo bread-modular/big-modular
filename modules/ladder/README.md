@@ -19,15 +19,17 @@ Bread Modular V2CA-style vactrol VCA on the filter output.
 | **RES CV** | adds to RESONANCE (slow, through the vactrol), +5 V ~ the knob's full range |
 | **FILTER OUT**, **VCA OUT** | direct ladder out; through the vactrol VCA |
 
-**Status: S3 schematic (vactrol resonance, REC; ERC 0, netlist asserted) + P2 placement: 10HP, THT parts
-placed (power header upright at the right edge), SMD parked off the board, not routed. Panel PCB + printable panel. No export or firmware.**
+**Status: S3 schematic (vactrol resonance, REC; ERC 0, netlist asserted) + R2 routed carrier: 10HP,
+4 layers, all SMD on the back (manual routing + 2026-11-10 fab-review fixes; DRC 0 / unconnected 0 /
+parity 0). Panel PCB + printable panel. JLCPCB export in [`jlcpcb/`](jlcpcb/README.md), not
+supplier-accepted, not built. No firmware.**
 
 Panel, top to bottom: MIDI, GATE, CV, RES CV; CUTOFF, RES; ENV TIME, DEPTH; REC button + LED,
 CURVE; AUDIO IN, FILTER OUT, VCA OUT.
 
 ```sh
 python3 -B tools/build_schematic.py   # schematic (placement by hand, wires by its router)
-python3 -B tools/build_layout.py      # carrier P2 placement + panel (refuses a routed carrier)
+python3 -B tools/build_layout.py      # carrier P2 placement + panel (refuses a routed carrier: do not run)
 python3 -B tools/sim_ladder.py        # ngspice check of ladder / expo / resonance
 kicad-cli sch erc --severity-all --format json -o research/erc.json hardware/ladder.kicad_sch
 ```

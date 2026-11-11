@@ -40,11 +40,27 @@ module-relative.
   +12V_F one piece, In1 GND one main piece + four small spoke-tied fragments (2.6 / 2.6 / 1.0 / 1.0
   mm², as before R1); SMD >= 2 mm from pot / jack pads (closest D9 2.01 mm), courtyards >= 1 mm
   from the edge.
-- No export or firmware.
+- **R2 fab review + JLCPCB export** (user 2026-11-10 "check it, improve as needed, make it FAB
+  ready"; edits straight on the board by `research/fab-review/fix1.py` / `fix2.py`, so
+  `research/route/build.sh` reproduces R1 only). Fixed: R32 moved 3.6 mm east (was 0.68 mm from
+  the hand-soldered SW1 GND pad; closest SMD to SW1 now R33 2.28 mm); C35 moved to U9.4 with its
+  own GND via (routed pin-to-cap 10.2 -> 2.5 mm), -12V_F bus straight down from D2; GND vias at
+  U11.3 / D3.2 pulled 0.35 / 0.30 mm off their pads; B silk `P` / `D` at JP1 and `LADDER R2`;
+  JLC04161H-7628 stackup recorded; zone fills saved. Judged and kept for the first prototype (not
+  waived): U3 +5V 11.3 mm to C7 (static uA switch); SMD 1.28-1.92 mm from the U12 / J10 / J11
+  hand-soldered pins (the 2 mm rule covers pots / jacks: closest D9 - RV2 2.01 mm). 734 tracks /
+  141 vias; shared check ERC 0 / DRC 0 (no warnings, no exclusions) / unconnected 0 / parity 0
+  (`research/fab-final/`), planes as R1, copper >= 1.2 mm and courtyards >= 1.08 mm from the edge.
+  Export in `jlcpcb/` (bottom Economic, 116 parts / 36 rows; 18 THT + JP1 by hand; panel
+  Gerbers), not supplier-accepted, not built. Open: Extended passives (47n NP0 1206, 1k 0.5 W
+  1206) are a user decision; ATtiny1616 stock 238 at lookup; supplier preview. Read
+  `jlcpcb/README.md` before release work.
+- No firmware.
 
 ## Boundaries
 
 Shared tools stay in `../../opt/`. Raw reports, renders and sim decks go in the ignored
-`research/` (P2 check: `research/p2-check/`). Routing follows the root manual divide-and-conquer
+`research/` (P2 check: `research/p2-check/`; R2 fab review: `research/fab-review/`, `research/fab-final/`). Routing follows the root manual divide-and-conquer
 rules, straight on `hardware/ladder.kicad_pcb`; `tools/build_layout.py` must not be re-run once
-routing starts (it refuses a board with tracks). No merges, pushes, orders or uploads.
+routing starts (it refuses a board with tracks). Accepted fabrication outputs live in `jlcpcb/`; never
+hand-edit them. No merges, pushes, orders or uploads.
