@@ -6,9 +6,9 @@
 	(paper "A2")
 	(title_block
 		(title "Big Modular - MULTI-MIX MCU board")
-		(rev "S3")
+		(rev "S4")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S3 - CH32V307RCT6 USB 2.0 High-Speed (UAC2 + USB-MIDI), vertical USB-C through the panel; soldered to the carrier on two 1x12 2.54 mm strips J112/J113")
+		(comment 1 "SCHEMATIC S4 - CH32V307RCT6 USB 2.0 High-Speed (UAC2 + USB-MIDI), MIDI IN on USART1, vertical USB-C through the panel; soldered to the carrier on two 1x12 2.54 mm strips J112/J113")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -4321,7 +4321,7 @@
 		)
 		(uuid "3e7794be-2723-57ee-8112-e7152b8cb947")
 	)
-	(text "PCM3168A TDM at 48 kHz (codec = clock master, or slave on the clock link; BCK 12.288 MHz).\nI2S3 slave RX: PB3 CK, PA15 WS, PB5 SD <- DOUT1 (ADC 1-6). I2S2 slave TX: PB13 CK, PB12 WS, PB15 SD -> R110 33R -> DIN1 (DAC 1-8).\nPB3/PB13 share BCK and PA15/PB12 share LRCK (tied on this board).\nI2S is rated 8 MHz max (DS V3.9): SPI-slave fallback RX PB5 (SPI3_MOSI), TX PB14 (SPI2_MISO, tied to PB15).\nI2C2: PB10/PB11 (codec 0x44, pull-ups R108/R109). PC0 codec RST. Pots: PC1 = ADC_IN11 (74HC4067 COM), PC2/PC3/PA0/PA1 = S0-S3.\nClock link: PA2 LINK_N (low = CLK IN connected = clock slave, clocks switched on the carrier).\nPA8 NORM_PROBE (jack-normal probe)."
+	(text "PCM3168A TDM at 48 kHz (codec = clock master, or slave on the clock link; BCK 12.288 MHz).\nI2S3 slave RX: PB3 CK, PA15 WS, PB5 SD <- DOUT1 (ADC 1-6). I2S2 slave TX: PB13 CK, PB12 WS, PB15 SD -> R110 33R -> DIN1 (DAC 1-8).\nPB3/PB13 share BCK and PA15/PB12 share LRCK (tied on this board).\nI2S is rated 8 MHz max (DS V3.9): SPI-slave fallback RX PB5 (SPI3_MOSI), TX PB14 (SPI2_MISO, tied to PB15).\nI2C2: PB10/PB11 (codec 0x44, pull-ups R108/R109). PC0 codec RST. Pots: PC1 = ADC_IN11 (74HC4067 COM), PC2/PC3/PA0/PA1 = S0-S3.\nClock link: PA2 LINK_N (low = CLK IN connected = clock slave, clocks switched on the carrier).\nPA8 NORM_PROBE (jack-normal probe). PA10 = USART1_RX <- MIDI_RX (carrier MIDI IN jack, 31250 baud, not inverted) -> USB-MIDI."
 		(exclude_from_sim no)
 		(at 119.38 228.6 0)
 		(effects
@@ -4354,7 +4354,7 @@
 		)
 		(uuid "cbb2bc06-229c-5f58-834e-fd15bb04c330")
 	)
-	(text "BIG MODULAR MULTI-MIX - MCU board, S3. CH32V307RCT6, USB 2.0 High-Speed (UAC2 48 kHz / 24-bit, 6 in / 8 out, + USB-MIDI). Circuit intent: docs/research.md"
+	(text "BIG MODULAR MULTI-MIX - MCU board, S4. CH32V307RCT6, USB 2.0 High-Speed (UAC2 48 kHz / 24-bit, 6 in / 8 out, + USB-MIDI). Circuit intent: docs/research.md"
 		(exclude_from_sim no)
 		(at 20.32 20.32 0)
 		(effects
@@ -4376,6 +4376,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0870bd0f-ddbe-5c46-9206-8e58b34db101")
+	)
+	(junction
+		(at 246.38 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "08916104-78fa-5df2-bc37-228d4a798928")
 	)
 	(junction
 		(at 134.62 252.73)
@@ -4504,12 +4510,6 @@
 		(uuid "ae85b350-b1bb-528e-a279-06585e605ee7")
 	)
 	(junction
-		(at 254 134.62)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "aed8d4b6-c83d-5816-95bd-2750bf1b3990")
-	)
-	(junction
 		(at 33.02 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4560,10 +4560,6 @@
 	(no_connect
 		(at 172.72 160.02)
 		(uuid "252d0a47-cb6a-5de1-ac93-78c5ffcf3c78")
-	)
-	(no_connect
-		(at 142.24 147.32)
-		(uuid "2f35e9c5-9f23-583e-8f4b-b563da11f0ce")
 	)
 	(no_connect
 		(at 142.24 180.34)
@@ -5019,16 +5015,6 @@
 	)
 	(wire
 		(pts
-			(xy 251.46 134.62) (xy 254 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41ac7e32-d73f-5934-b615-b6019338288b")
-	)
-	(wire
-		(pts
 			(xy 55.88 154.94) (xy 62.23 154.94)
 		)
 		(stroke
@@ -5299,6 +5285,16 @@
 	)
 	(wire
 		(pts
+			(xy 246.38 127) (xy 256.54 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7391264d-2008-5823-b416-b645de23b8cf")
+	)
+	(wire
+		(pts
 			(xy 99.06 128.27) (xy 99.06 130.81)
 		)
 		(stroke
@@ -5356,16 +5352,6 @@
 			(type default)
 		)
 		(uuid "7923b773-ef72-5108-b8da-b52cf13ff313")
-	)
-	(wire
-		(pts
-			(xy 254 127) (xy 256.54 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "79450aea-b127-52b4-9778-82ac4eda0dc5")
 	)
 	(wire
 		(pts
@@ -5689,6 +5675,16 @@
 	)
 	(wire
 		(pts
+			(xy 243.84 127) (xy 246.38 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ba6ddc56-3914-5442-91f5-3c9d82606e65")
+	)
+	(wire
+		(pts
 			(xy 132.08 102.87) (xy 132.08 105.41)
 		)
 		(stroke
@@ -5776,6 +5772,16 @@
 			(type default)
 		)
 		(uuid "c758f86b-09a1-54de-bc72-69775581b9b0")
+	)
+	(wire
+		(pts
+			(xy 139.7 147.32) (xy 142.24 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c80f5529-25a7-538f-96fc-ae87193030fc")
 	)
 	(wire
 		(pts
@@ -6167,8 +6173,8 @@
 		)
 		(uuid "ffe152cf-ef6d-55c8-82e2-22f1020469cb")
 	)
-	(label "BOOT1"
-		(at 139.7 175.26 180)
+	(label "I2S_LRCK"
+		(at 139.7 165.1 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6177,8 +6183,8 @@
 		)
 		(uuid "0ab4d2f0-9655-5f08-b898-32389a9a5c78")
 	)
-	(label "SWCLK"
-		(at 139.7 160.02 180)
+	(label "SWDIO"
+		(at 139.7 157.48 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6187,8 +6193,8 @@
 		)
 		(uuid "0f673899-3f4d-501c-be0d-091ecd50cb13")
 	)
-	(label "SWDIO"
-		(at 254 111.76 180)
+	(label "SWCLK"
+		(at 254 109.22 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6197,8 +6203,8 @@
 		)
 		(uuid "13688d77-8af6-56af-8eec-369dbc089b78")
 	)
-	(label "I2S_ADC1"
-		(at 223.52 119.38 180)
+	(label "NRST"
+		(at 223.52 111.76 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6217,8 +6223,8 @@
 		)
 		(uuid "1a24361f-214a-5c39-a88c-8b4bc26eb717")
 	)
-	(label "I2S_SCLK"
-		(at 139.7 177.8 180)
+	(label "BOOT1"
+		(at 139.7 175.26 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6238,17 +6244,17 @@
 		(uuid "20c4f03b-fb43-57ce-8254-96ee56818c75")
 	)
 	(label "I2S_DAC1_SRC"
-		(at 149.86 92.71 90)
+		(at 139.7 208.28 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "2244c13c-683d-59af-8a88-e89898187e54")
 	)
-	(label "POT_ADC"
-		(at 223.52 124.46 180)
+	(label "CODEC_RST"
+		(at 223.52 121.92 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6267,8 +6273,8 @@
 		)
 		(uuid "2b8ebced-5b24-52be-a9c8-c1127aa2e5b7")
 	)
-	(label "USB_DP"
-		(at 139.7 187.96 180)
+	(label "USB_DM"
+		(at 139.7 185.42 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6307,8 +6313,8 @@
 		)
 		(uuid "4080744e-d2fd-525d-9e81-c4d7c30dc01c")
 	)
-	(label "MUX_S0"
-		(at 223.52 127 180)
+	(label "POT_ADC"
+		(at 223.52 124.46 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6327,8 +6333,8 @@
 		)
 		(uuid "4ede223d-cbe2-559c-b0b6-2281f0a90c10")
 	)
-	(label "I2S_DAC1_SRC"
-		(at 139.7 205.74 180)
+	(label "I2S_SCLK"
+		(at 139.7 203.2 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6347,8 +6353,8 @@
 		)
 		(uuid "58f19fcc-9222-5ff0-be97-bba6de479bbe")
 	)
-	(label "I2S_LRCK"
-		(at 254 132.08 180)
+	(label "I2S_SCLK"
+		(at 254 129.54 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6357,8 +6363,8 @@
 		)
 		(uuid "5908e01e-6ba9-5fe7-88f2-55af36f1ba23")
 	)
-	(label "NORM_PROBE"
-		(at 254 137.16 180)
+	(label "I2S_LRCK"
+		(at 254 132.08 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6367,8 +6373,8 @@
 		)
 		(uuid "5e68221d-52f1-5124-b5cd-0c7eb411b65c")
 	)
-	(label "MUX_S1"
-		(at 223.52 129.54 180)
+	(label "MUX_S0"
+		(at 223.52 127 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6387,8 +6393,8 @@
 		)
 		(uuid "5fce6581-e6eb-5af4-9fb2-01f9da70d394")
 	)
-	(label "I2S_LRCK"
-		(at 139.7 200.66 180)
+	(label "I2C_SDA"
+		(at 139.7 198.12 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6397,8 +6403,8 @@
 		)
 		(uuid "6441d172-fbfb-5b10-85b3-56b8707ecc4e")
 	)
-	(label "MUX_S1"
-		(at 175.26 129.54 0)
+	(label "MUX_S0"
+		(at 175.26 127 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6407,8 +6413,8 @@
 		)
 		(uuid "649ccd39-aa24-5523-820f-d01c974a0c35")
 	)
-	(label "I2S_LRCK"
-		(at 139.7 165.1 180)
+	(label "SWCLK"
+		(at 139.7 160.02 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6427,8 +6433,8 @@
 		)
 		(uuid "68734456-1f93-5ebd-a914-4900f86d33a2")
 	)
-	(label "I2S_DAC1"
-		(at 254 119.38 180)
+	(label "SWDIO"
+		(at 254 111.76 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6437,18 +6443,18 @@
 		)
 		(uuid "69b55e12-950e-5963-948a-02fd6206b8a8")
 	)
-	(label "BOOT0"
-		(at 223.52 109.22 180)
+	(label "VBUS_DET"
+		(at 175.26 149.86 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "6c5f36bb-49af-59f9-a095-b0a9e1e67b3a")
 	)
-	(label "I2S_SCLK"
-		(at 254 129.54 180)
+	(label "I2C_SDA"
+		(at 254 124.46 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6457,8 +6463,8 @@
 		)
 		(uuid "6e8ecfe9-eb65-529e-a745-1fc44e76ddbd")
 	)
-	(label "MUX_S2"
-		(at 223.52 132.08 180)
+	(label "MUX_S1"
+		(at 223.52 129.54 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6467,8 +6473,8 @@
 		)
 		(uuid "6ee1884d-8a21-54c0-bc7d-a014cf5947de")
 	)
-	(label "CODEC_RST"
-		(at 223.52 121.92 180)
+	(label "I2S_ADC1"
+		(at 223.52 119.38 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6497,8 +6503,8 @@
 		)
 		(uuid "7e185803-155f-5d01-b495-007e14516c07")
 	)
-	(label "VBUS_DET"
-		(at 175.26 149.86 0)
+	(label "MUX_S1"
+		(at 175.26 129.54 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6517,8 +6523,8 @@
 		)
 		(uuid "80ae3e7d-0396-5cd2-827f-fcdb102fbe49")
 	)
-	(label "I2C_SCL"
-		(at 254 121.92 180)
+	(label "I2S_DAC1"
+		(at 254 119.38 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6527,35 +6533,15 @@
 		)
 		(uuid "85797989-7c02-5a65-bf7d-c6fb0c6af3e4")
 	)
-	(label "SWCLK"
-		(at 254 109.22 180)
+	(label "MIDI_RX"
+		(at 254 134.62 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "8a28a06e-948e-599b-a64b-3cbcaf0728fe")
-	)
-	(label "I2S_DAC1"
-		(at 149.86 105.41 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "8ab7f4e7-1c9a-5924-afc3-c05c11af16be")
-	)
-	(label "MUX_S3"
-		(at 223.52 134.62 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "8d9c1df7-ba54-5154-9845-93054df1d7f3")
+		(uuid "8755e29f-3cc3-558d-b1d3-a65082918783")
 	)
 	(label "LINK_N"
 		(at 223.52 137.16 180)
@@ -6565,10 +6551,40 @@
 			)
 			(justify right bottom)
 		)
+		(uuid "8a28a06e-948e-599b-a64b-3cbcaf0728fe")
+	)
+	(label "I2S_DAC1_SRC"
+		(at 149.86 92.71 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8ab7f4e7-1c9a-5924-afc3-c05c11af16be")
+	)
+	(label "MUX_S2"
+		(at 223.52 132.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8d9c1df7-ba54-5154-9845-93054df1d7f3")
+	)
+	(label "MUX_S3"
+		(at 223.52 134.62 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
 		(uuid "8df7e9a8-5e16-5e2f-942e-9ef09fc81f15")
 	)
-	(label "I2C_SDA"
-		(at 254 124.46 180)
+	(label "I2C_SCL"
+		(at 254 121.92 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6577,8 +6593,8 @@
 		)
 		(uuid "914628ea-0809-5a7e-a8d7-c5b5309b3bcb")
 	)
-	(label "NRST"
-		(at 223.52 111.76 180)
+	(label "BOOT0"
+		(at 223.52 109.22 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6587,8 +6603,8 @@
 		)
 		(uuid "945620c9-88ec-55b2-938f-c5a51e349314")
 	)
-	(label "POT_ADC"
-		(at 175.26 124.46 0)
+	(label "CODEC_RST"
+		(at 175.26 121.92 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6597,8 +6613,8 @@
 		)
 		(uuid "9bf8b96b-1fe1-59c6-b69c-b62638821f06")
 	)
-	(label "USB_DM"
-		(at 139.7 185.42 180)
+	(label "I2S_ADC1"
+		(at 139.7 182.88 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6606,6 +6622,16 @@
 			(justify right bottom)
 		)
 		(uuid "9c1931f1-855d-5785-9b98-4b63f9c5a382")
+	)
+	(label "NORM_PROBE"
+		(at 254 137.16 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "aaeb8105-b4ec-5152-900a-40dc3cf5562b")
 	)
 	(label "BOOT0"
 		(at 139.7 116.84 180)
@@ -6617,8 +6643,8 @@
 		)
 		(uuid "acc46cb3-170c-5ae5-bcba-c31af8d0e3d4")
 	)
-	(label "I2C_SCL"
-		(at 139.7 195.58 180)
+	(label "USB_DP"
+		(at 139.7 187.96 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6627,8 +6653,8 @@
 		)
 		(uuid "b9ee97cf-cbba-5107-94e4-41240ce70b8d")
 	)
-	(label "I2S_ADC1"
-		(at 139.7 182.88 180)
+	(label "I2S_SCLK"
+		(at 139.7 177.8 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6637,8 +6663,8 @@
 		)
 		(uuid "c9476514-7e2e-5775-ab3b-a159e4cdec8a")
 	)
-	(label "I2S_SCLK"
-		(at 139.7 203.2 180)
+	(label "I2S_LRCK"
+		(at 139.7 200.66 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6648,7 +6674,7 @@
 		(uuid "dd24d30f-5740-5ee2-b709-47a23ba20a64")
 	)
 	(label "I2S_DAC1_SRC"
-		(at 139.7 208.28 180)
+		(at 139.7 205.74 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6657,8 +6683,8 @@
 		)
 		(uuid "e14878a6-8838-58f6-9303-2c462a77580d")
 	)
-	(label "MUX_S0"
-		(at 175.26 127 0)
+	(label "POT_ADC"
+		(at 175.26 124.46 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6667,8 +6693,8 @@
 		)
 		(uuid "e2131fbe-360a-54c7-aee1-febe970f7a5c")
 	)
-	(label "I2C_SDA"
-		(at 139.7 198.12 180)
+	(label "I2C_SCL"
+		(at 139.7 195.58 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6677,13 +6703,13 @@
 		)
 		(uuid "eb575b88-c27c-52ec-b6e2-c848e81f6f24")
 	)
-	(label "CODEC_RST"
-		(at 175.26 121.92 0)
+	(label "I2S_DAC1"
+		(at 149.86 105.41 270)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "ebd8db29-a9f8-59ad-90de-23c9dd2c4996")
 	)
@@ -6697,8 +6723,8 @@
 		)
 		(uuid "f4d17750-b534-500e-9621-3b7d19c96873")
 	)
-	(label "SWDIO"
-		(at 139.7 157.48 180)
+	(label "MIDI_RX"
+		(at 139.7 147.32 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7342,7 +7368,7 @@
 	)
 	(symbol
 		(lib_id "MULTIMIX:GND")
-		(at 251.46 134.62 270)
+		(at 243.84 127 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7352,7 +7378,7 @@
 		(dnp no)
 		(uuid "362badd8-b2b9-5806-b52d-41cb4418c820")
 		(property "Reference" "#PWR003"
-			(at 251.46 134.62 0)
+			(at 243.84 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7363,7 +7389,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 246.38 134.62 90)
+			(at 238.76 127 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7374,7 +7400,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 251.46 134.62 0)
+			(at 243.84 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7385,7 +7411,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 251.46 134.62 0)
+			(at 243.84 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7396,7 +7422,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 251.46 134.62 0)
+			(at 243.84 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9075,7 +9101,7 @@
 	)
 	(symbol
 		(lib_id "MULTIMIX:PWR_FLAG")
-		(at 254 134.62 180)
+		(at 246.38 127 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9085,7 +9111,7 @@
 		(dnp no)
 		(uuid "82884e55-1422-5bac-8908-84eb891665e8")
 		(property "Reference" "#FLG102"
-			(at 254 136.53 0)
+			(at 246.38 128.91 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9096,7 +9122,7 @@
 			)
 		)
 		(property "Value" "PWR_FLAG"
-			(at 254 138.43 0)
+			(at 246.38 130.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9107,7 +9133,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 254 134.62 0)
+			(at 246.38 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9118,7 +9144,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 254 134.62 0)
+			(at 246.38 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9129,7 +9155,7 @@
 			)
 		)
 		(property "Description" "Special symbol for telling ERC where power comes from"
-			(at 254 134.62 0)
+			(at 246.38 127 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9959,84 +9985,6 @@
 			(project "multi-mix-mcu"
 				(path "/6489871b-56c1-599c-a774-472ab6f68989"
 					(reference "C101")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "MULTIMIX:GND")
-		(at 254 127 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board no)
-		(in_pos_files no)
-		(dnp no)
-		(uuid "b07c70bb-e531-5dc5-82ab-f235d9704692")
-		(property "Reference" "#PWR023"
-			(at 254 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 248.92 127 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 254 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 254 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 254 127 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "9b446e25-a119-51de-a2fa-04847c4c22a1")
-		)
-		(instances
-			(project "multi-mix-mcu"
-				(path "/6489871b-56c1-599c-a774-472ab6f68989"
-					(reference "#PWR023")
 					(unit 1)
 				)
 			)
@@ -11101,7 +11049,7 @@
 				)
 			)
 		)
-		(property "Note" "Carrier J13 strip, east of the codec: SWD, DIN1, I2C, BCK/LRCK, jack-normal probe"
+		(property "Note" "Carrier J13 strip, east of the codec: SWD, DIN1, I2C, BCK/LRCK, MIDI RX, jack-normal probe"
 			(at 261.62 121.92 0)
 			(hide yes)
 			(show_name no)

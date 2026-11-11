@@ -50,12 +50,12 @@ MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and
 
 # Projects built by this script: circuit module -> (project name, title, revision, comment)
 PROJECTS = {
-    'circuit_carrier': ('multi-mix', 'Big Modular - MULTI-MIX carrier (jack board)', 'S4',
-                        'SCHEMATIC S4 - digital 4-channel mixer: PCM3168A at 48 kHz, 4 IN + 2 RTN, SEND A/B + MAIN + USB 1/2, '
-                        '15 pots on a 16:1 mux, EXP IN/OUT clock + data link; MCU board on J12/J13 (2 x 1x12)'),
-    'circuit_mcu': ('multi-mix-mcu', 'Big Modular - MULTI-MIX MCU board', 'S3',
-                    'SCHEMATIC S3 - CH32V307RCT6 USB 2.0 High-Speed (UAC2 + USB-MIDI), vertical USB-C through the '
-                    'panel; soldered to the carrier on two 1x12 2.54 mm strips J112/J113'),
+    'circuit_carrier': ('multi-mix', 'Big Modular - MULTI-MIX carrier (jack board)', 'S5',
+                        'SCHEMATIC S5 - digital 4-channel mixer: PCM3168A at 48 kHz, 4 IN + 2 RTN, SEND A/B + MAIN + USB 1/2, '
+                        '15 pots on a 16:1 mux, TS MIDI IN, CLK IN/OUT clock link; MCU board on J12/J13 (2 x 1x12)'),
+    'circuit_mcu': ('multi-mix-mcu', 'Big Modular - MULTI-MIX MCU board', 'S4',
+                    'SCHEMATIC S4 - CH32V307RCT6 USB 2.0 High-Speed (UAC2 + USB-MIDI), MIDI IN on USART1, vertical '
+                    'USB-C through the panel; soldered to the carrier on two 1x12 2.54 mm strips J112/J113'),
 }
 
 C = None  # the circuit module being built (RAIL_SYMBOL, MIRROR_X, TEXT_*, MULTI_UNIT, circuit, drawing)

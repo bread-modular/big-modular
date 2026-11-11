@@ -2,22 +2,24 @@
 
 modules/4mix's panel (4 channels with IN, SEND A, SEND B, VOL; RETURN A/B with levels; SEND A/B outs; OUT
 jack over the MAIN knob, plus two host-assigned USB 1 / USB 2 outputs), widened to 20HP for the MCU board and its USB-C, rebuilt as a digital mixer: a PCM3168A codec and a CH32V307 MCU (both from modules/usb-audio-max)
-do the mixing. Every knob is a DC divider read through a 74HC4067 mux and sent as MIDI CC (VOL as CC7). Over
+do the mixing. Every knob is a DC divider read through a 74HC4067 mux and sent as MIDI CC (VOL as CC7). A TS MIDI IN jack
+above the USB outs takes the rack's internal MIDI (controller modules) and passes it to the DAW as USB-MIDI. Over
 USB the computer gets the 4 inputs and 2 returns (24-bit / 48 kHz) and can feed the returns. Units daisy-chain
-through keyed 2x5 CLK OUT -> CLK IN ribbons that share the codec clocks only, so stems recorded from several units
+through 2x5 CLK OUT -> CLK IN ribbons that share the codec clocks only, so stems recorded from several units
 over their own USB ports stay sample-locked; each unit keeps its own MAIN OUT and sends (up to 4 units until
 bench-tested).
 
-**Status: carrier S4 / MCU S3 schematics (ERC 0, netlists asserted) + R2 manual routing of both boards at 20HP (carrier and MCU board DRC 0 / unconnected 0 / parity 0; single-sided MCU board on two 1x12 strips, three standoffs, panel). Datasheet review done (`docs/research.md` 6a); fab review done and its fixes applied (section 10: codec decoupling, USB, SCKI, Q1 heat, corners, silk). Open: J101 courtyard 0.53 mm to the MS3 notch and MS3 courtyard 0.98 mm to the edge (user decision). No JLCPCB export, not built, no firmware.**
+**Status: carrier S5 / MCU S4 schematics (ERC 0, netlists asserted) + R3 manual routing of both boards at 20HP (carrier and MCU board DRC 0 / unconnected 0 / parity 0; single-sided MCU board on two 1x12 strips, three standoffs, panel P4). Datasheet review done (`docs/research.md` 6a); fab-review fixes applied (section 10); TS MIDI IN jack J11 above USB 1 -> PA10 USART1_RX, CLK IN J7 an unshrouded 2x5 header moved up (section 11, 2026-11-11). JLCPCB export in `jlcpcb/` (carrier bottom Economic 203 parts / 46 rows, MCU board top Economic 25 / 13, panel), not supplier-accepted. Open: J101 courtyard 0.53 mm to the MS3 notch and MS3 courtyard 0.98 mm to the edge, 10 Extended R/C placements (user decisions). Not built, no firmware.**
 
 | Path | Contents |
 |---|---|
-| `hardware/multi-mix.kicad_sch` | Carrier: power, codec, inputs, outputs, knobs + mux, clock link, MCU strips (PDF: `docs/multi-mix-schematic.pdf`) |
+| `hardware/multi-mix.kicad_sch` | Carrier: power, codec, inputs, outputs, knobs + mux, clock link, MIDI IN, MCU strips (PDF: `docs/multi-mix-schematic.pdf`) |
 | `hardware/multi-mix-mcu.kicad_sch` | MCU board: CH32V307RCT6, USB-C, strips J112/J113 (PDF: `docs/multi-mix-mcu-schematic.pdf`) |
-| `hardware/multi-mix.kicad_pcb`, `hardware/multi-mix-mcu.kicad_pcb` | R2 boards, 4 layers, placed and routed by hand (carrier: all SMD on B; MCU board: every part on F) |
-| `panels/front-pcb/multi-mix-panel.kicad_pcb` | 20HP passive FR4 panel (NPTH holes, USB-C slot, labels) |
+| `hardware/multi-mix.kicad_pcb`, `hardware/multi-mix-mcu.kicad_pcb` | R3 boards, 4 layers, placed and routed by hand (carrier: all SMD on B; MCU board: every part on F) |
+| `panels/front-pcb/multi-mix-panel.kicad_pcb` | 20HP passive FR4 panel P4 (NPTH holes, USB-C slot, labels) |
+| `jlcpcb/` | JLCPCB export: `main/` carrier + panel, `mcu/` MCU board (`jlcpcb/README.md`: upload map, hand-soldered parts, audit, order gates) |
 | `docs/geometry.json` | Placement contract (panel frame) |
-| `docs/research.md` | Brief, architecture, decisions, clock-link pinout, MCU pins and strip maps, sourcing, datasheet review, placement, S2/S3 changes and R1 routing, fab-review fixes (S4/R2), open items |
+| `docs/research.md` | Brief, architecture, decisions, clock-link pinout, MCU pins and strip maps, sourcing, datasheet review, placement, S2/S3 changes and R1 routing, fab-review fixes (S4/R2), MIDI IN (S5/R3), open items |
 | `tools/` | Schematic generator + circuit tables, footprint import, project files, shared-tool profiles, `check_usb.py` (MCU USB routing check) |
 
 Rebuild (from `modules/multi-mix`):

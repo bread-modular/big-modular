@@ -9,9 +9,9 @@
 	(paper "A4")
 	(title_block
 		(title "Big Modular - MULTI-MIX 20HP front panel")
-		(rev "S1/P3")
+		(rev "S5/P4")
 		(company "Big Modular")
-		(comment 1 "S1/P3 FIT STUDY: passive panel, NPTH only (holes + USB-C slot), no copper")
+		(comment 1 "S5/P4 FIT STUDY: P3 + MIDI IN jack hole H35 above USB 1 (2026-11-11); passive panel, NPTH only (holes + USB-C slot), no copper")
 		(comment 2 "Geometry contract: ../../docs/geometry.json")
 	)
 	(layers
@@ -1239,6 +1239,88 @@
 			(drill 6.2)
 			(layers "*.Cu" "*.Mask")
 			(uuid "4b292b4c-c81a-4ef9-9f32-110e74ec1cda")
+		)
+		(embedded_fonts no)
+	)
+	(footprint ""
+		(layer "F.Cu")
+		(uuid "6884c469-e825-470e-9df1-75015065acc3")
+		(at 194.85 117.9)
+		(property "Reference" "H35"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "5c4ce592-7473-4139-9687-0cc439664958")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MECHANICAL_NPTH"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "5d0b30f1-7523-430f-a7e4-7ec1420307bc")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8a092d45-f37e-4662-a7c4-0c080e80e4cb")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6b5c17dc-70bc-426a-b7a5-5e122ea0cbb2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MechanicalID" "H35"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "a5b3edf5-85dc-4d74-9b18-4e3fbc9bcbe4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_circle
+			(center 0 0)
+			(end 3.35 0)
+			(stroke
+				(width 0.05)
+				(type default)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "b9fd737f-b253-4a9b-945b-9cbf19aa9175")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 6.2 6.2)
+			(drill 6.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "79fec4ce-5ad5-4f5c-bb9d-c163ca82f106")
 		)
 		(embedded_fonts no)
 	)
@@ -3030,6 +3112,17 @@
 		(at 184.1 75.6 0)
 		(layer "F.SilkS")
 		(uuid "9b3168e3-bf6d-4ead-9f48-8af4b811a7c3")
+		(effects
+			(font
+				(size 1.1 1.1)
+				(thickness 0.165)
+			)
+		)
+	)
+	(gr_text "MIDI IN"
+		(at 194.85 111.6 0)
+		(layer "F.SilkS")
+		(uuid "0ee99827-30b1-41c1-b12d-dec7fecb3d9e")
 		(effects
 			(font
 				(size 1.1 1.1)

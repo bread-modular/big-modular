@@ -1,5 +1,5 @@
 {
- "revision": "S3/R1 (2026-11-10): MCU board single-sided (user), extended to the carrier top with a notch for MS3; two 1x12 strips J12/J13 = J112/J113 (J14/J114 removed), pin 1 Y14.92; J15 SWD, SW1 RESET, SW2 BOOT moved (B side); all SMD placed by hand and both boards routed (docs/research.md section 9). Hand-edited from here on: tools/build_layout.py wrote the P3 file and must not be rerun. Jacks, pots, J6/J7/J8, standoffs, USB-C and the panel are unchanged from P3. History: S1/P3 (2026-11-09): 20HP digital mixer (modules/4mix layout widened by 2HP). P1: the MCU board takes the 4MIX MAIN knob + OUT jack spot (top right); OUT and MAIN one below the other. P2 (user): channel columns spread to 21.8 mm pitch, top line regrouped (SEND A/B, gap, RTN A, RTN B, OUT/MAIN at 14 mm), J8 one pitch right, J6/J7 at Y58, J15/SW1/SW2 between IN3 and IN4. P3 (user): MS3/MS4 corner standoffs removed; the MCU board moved down 7.7 mm with a notch over the IN4 jack (strips in legs either side of it) and ONE M3x10 standoff MS3 centred above the USB-C; USB 1 / USB 2 output jacks J9/J10 (DAC4/DAC5) in the bottom-right side margin over the B-side power-socket space. Pots not moved. THT, back-side parts, three M3x10 standoffs and the MCU board outline placed; SMD parked; not routed.",
+ "revision": "S5/R3 (2026-11-11, user: TS MIDI IN above the two USB outs): MIDI IN jack J11 at X94.85 Y67.9 (panel hole H35, label 'MIDI IN'); CLK IN J7 changed from the keyed box header (pads centre Y58) to an unshrouded 2x5 pin header moved up the same edge, pin 1 X95.82 Y48.5 (pads centre X94.55 Y53.58), so the jack's solder joints are clear; R85/R86/D4 on B left of J11; both boards re-routed locally (docs/research.md section 11). History: S3/R1 (2026-11-10): MCU board single-sided (user), extended to the carrier top with a notch for MS3; two 1x12 strips J12/J13 = J112/J113 (J14/J114 removed), pin 1 Y14.92; J15 SWD, SW1 RESET, SW2 BOOT moved (B side); all SMD placed by hand and both boards routed (docs/research.md section 9). Hand-edited from here on: tools/build_layout.py wrote the P3 file and must not be rerun. Jacks, pots, J6/J7/J8, standoffs, USB-C and the panel are unchanged from P3. History: S1/P3 (2026-11-09): 20HP digital mixer (modules/4mix layout widened by 2HP). P1: the MCU board takes the 4MIX MAIN knob + OUT jack spot (top right); OUT and MAIN one below the other. P2 (user): channel columns spread to 21.8 mm pitch, top line regrouped (SEND A/B, gap, RTN A, RTN B, OUT/MAIN at 14 mm), J8 one pitch right, J6/J7 at Y58, J15/SW1/SW2 between IN3 and IN4. P3 (user): MS3/MS4 corner standoffs removed; the MCU board moved down 7.7 mm with a notch over the IN4 jack (strips in legs either side of it) and ONE M3x10 standoff MS3 centred above the USB-C; USB 1 / USB 2 output jacks J9/J10 (DAC4/DAC5) in the bottom-right side margin over the B-side power-socket space. Pots not moved. THT, back-side parts, three M3x10 standoffs and the MCU board outline placed; SMD parked; not routed.",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The carrier F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -156,6 +156,15 @@
    "XY": [
     94.85,
     96.3
+   ],
+   "part": "QingPu WQP-PJ301M-12"
+  },
+  {
+   "ref": "J11",
+   "role": "MIDI_IN (TS modular MIDI -> PA10 USART1_RX -> USB-MIDI)",
+   "XY": [
+    94.85,
+    67.9
    ],
    "part": "QingPu WQP-PJ301M-12"
   }
@@ -530,17 +539,17 @@
     58.0
    ],
    "rot": 0,
-   "band": "CLK OUT, keyed 2x5 box header, left side margin (pads centre), pin 1 at the top; courtyard 1.02 mm from the edge and 0.12 mm left of the RV102 lug pad; level with J7"
+   "band": "CLK OUT, keyed 2x5 box header, left side margin (pads centre), pin 1 at the top; courtyard 1.02 mm from the edge and 0.12 mm left of the RV102 lug pad; J7 is 4.4 mm higher since S5"
   },
   {
    "ref": "J7",
-   "footprint": "IDC-Header_2x05_P2.54mm_Vertical",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
    "XY": [
     94.55,
-    58.0
+    53.58
    ],
    "rot": 0,
-   "band": "CLK IN, keyed 2x5 box header, right side margin (pads centre), pin 1 at the top; courtyard 1.1 mm from the edge (pin-1 silk marker inside the edge) and 0.12 mm right of the RV402 lug pad"
+   "band": "CLK IN, unshrouded 2x5 pin header (S5; was a keyed box header at Y58), right side margin (pads centre), pin 1 at the top right (X95.82 Y48.5); courtyard Y46.705..60.455, 0.20 mm below the R75 courtyard and 3.04 mm from the edge. No keying: red wire on pin 1 (silk marker); a turned plug is harmless (docs/research.md section 11)"
   },
   {
    "ref": "J15",
@@ -579,7 +588,7 @@
    "J6",
    "J7"
   ],
-  "note": "Both 2x5 box headers on B at the same Y (58) with pin 1 at the top: a slave sits LEFT of its master, so its J7 CLK IN (right edge) is ~13 mm from the master's J6 CLK OUT (left edge, next module): a short 10-way ribbon with both sockets keyed the same way. Silk 'CLK - NOT POWER' at each. The pinout is power-cable safe (docs/research.md D10)."
+  "note": "J6 CLK OUT (keyed 2x5 box header, left edge, pads centre Y58) and J7 CLK IN (S5: unshrouded 2x5 pin header, right edge, pads centre Y53.58), both on B with pin 1 at the top: a slave sits LEFT of its master, so its J7 (right edge) is ~13 mm from the master's J6 (left edge, next module): a short 10-way ribbon, red wire on pin 1 at both ends. Silk 'CLK OUT / NOT POWER' at J6 and 'CLK IN - NOT POWER' beside J7. The pinout is power-cable safe either way round (docs/research.md D10 and section 11)."
  },
  "power_header": {
   "ref": "J8",
@@ -800,6 +809,14 @@
    "size": 1.3
   },
   {
+   "text": "MIDI IN",
+   "XY": [
+    94.85,
+    61.6
+   ],
+   "size": 1.1
+  },
+  {
    "text": "USB 1",
    "XY": [
     94.85,
@@ -850,20 +867,13 @@
    "size": 0.8
   },
   {
-   "text": "CLK IN",
+   "text": "CLK IN - NOT POWER",
    "XY": [
-    94.55,
-    70.4
+    98.95,
+    53.58
    ],
-   "size": 0.8
-  },
-  {
-   "text": "NOT POWER",
-   "XY": [
-    94.55,
-    71.6
-   ],
-   "size": 0.8
+   "size": 1.0,
+   "rot": 90
   },
   {
    "text": "MULTI-MIX S1/P3",
@@ -889,5 +899,15 @@
    "J10"
   ],
   "note": "P3 (user: two DAC outs from USB, assigned in the DAW, in the very corner; the IDC sockets are on the other side, so use that space): bottom-right side margin, X94.85 (courtyard 1.025 mm from the edge), 14.2 mm apart. Limits: J10 as low as the J8 power-header pads allow (S pad 1.24 mm above the J8 pin 9/10 pads; J8 and its IDC16 socket are on B), J9 above it; panel nuts 1.6 mm from the CH4 SEND B knob and 1.5 mm from the CH4 VOL big-knob circle; courtyards 0.34 mm right of the RV403/RV401 courtyards. J10's TN/S solder joints sit under the IDC16 socket envelope on B (socket bottom 2.5 mm above B): trim those leads to <= 1.5 mm."
+ },
+ "midi_in": {
+  "refs": [
+   "J11",
+   "R85",
+   "R86",
+   "D4"
+  ],
+  "panel_hole_ref": "H35",
+  "note": "S5 (user: a TS MIDI input above the two USB outs, internal MIDI -> USB): J11 one 14.2 mm jack pitch above J9 in the right side margin, X94.85 Y67.9 (courtyard 1.025 mm from the edge, 0.10 mm above the J9 courtyard, panel nut ~1.7 mm from the CH4 SEND A knob as J9 is from SEND B). The J7 CLK IN header was in that spot on B and moved up (clock_link). R85 100k pull-up, R86 10k series and the D4 BAT54S clamp sit on B left of the jack (X88.4..91.6, Y69..76.5), >= 2.2 mm from the J11 and RV402 pads; MIDI_RX runs on B up the right edge (X97.9) to strip pin J13.11. Trim the J11 T lead to <= 2 mm: the J7 ribbon socket ends about 0.2-0.5 mm above it in plan (socket body 2.5 mm above B)."
  }
 }
