@@ -29,10 +29,11 @@
 #define CFG_TUD_AUDIO_ENABLE_EP_OUT              1
 #define CFG_TUD_AUDIO_ENABLE_EP_IN               1
 #define CFG_TUD_AUDIO_ENABLE_FEEDBACK_EP         1
-#define CFG_TUD_AUDIO_EP_IN_FLOW_CONTROL         1
+// The IN packet sizes come from audio.c (one staged packet per microframe).
+#define CFG_TUD_AUDIO_EP_IN_FLOW_CONTROL         0
 #define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SZ_MAX       AUDIO_EP_SIZE
 #define CFG_TUD_AUDIO_FUNC_1_EP_IN_SZ_MAX        AUDIO_EP_SIZE
-#define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SW_BUF_SZ    AUDIO_FIFO_BYTES
-#define CFG_TUD_AUDIO_FUNC_1_EP_IN_SW_BUF_SZ     AUDIO_FIFO_BYTES
+#define CFG_TUD_AUDIO_FUNC_1_EP_OUT_SW_BUF_SZ    AUDIO_OUT_FIFO_BYTES
+#define CFG_TUD_AUDIO_FUNC_1_EP_IN_SW_BUF_SZ     (2 * AUDIO_EP_SIZE)
 
 #endif

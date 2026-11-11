@@ -19,7 +19,7 @@ panel. BOOT / RESET and an SWD header are on the carrier back: hold BOOT, press 
 **Status: carrier S3/R3 (codec-centred routing + 1k/0.5 W output networks), MCU
 board S1/R2 (USB reference/transition/impedance-geometry repair) (both 4-layer, 1x10 board-to-board strips), ERC 0.** Native DRC 0 violations / 0 unconnected / parity 0 on both boards,
 no vias in SMD pads; JLCPCB export in `jlcpcb/` (`main/` carrier + panel, `mcu/`; Economic PCBA, carrier bottom, MCU board top; 5 R/C
-still Extended and deferred by the user for now, see `jlcpcb/README.md`); not supplier-accepted, no firmware yet.
+still Extended and deferred by the user for now, see `jlcpcb/README.md`); not supplier-accepted. Firmware 1.1.0 in `firmware/` ([README](firmware/README.md)), loopback-tested on Linux.
 
 Scoped repair details and test limits: [USB / output-resistor repair](docs/usb-output-fix.md).
 

@@ -1,6 +1,7 @@
 // Flash map and backup registers shared with the application (usb-audio/src/board.c):
 //   0x00000000  this DFU bootloader (16 KiB)
-//   0x00004000  application (240 KiB), linked there
+//   0x00004000  application (240 KiB), linked there; it keeps its settings in
+//               the last 256 bytes (usb-audio/src/board.h)
 // BKP DATAR1: the application asks for DFU by writing BOOT_DFU_MAGIC and
 //   resetting (console `dfu`); the bootloader clears it.
 // BKP DATAR2: start attempts of a freshly downloaded application,

@@ -52,7 +52,10 @@ Module paths are module-relative.
 - **JLCPCB export** (2026-10-24) in `jlcpcb/main/` (carrier, bottom Economic, + panel) and
   `jlcpcb/mcu/` (top Economic), one manifest each (declared in both profiles). C20-C23 (C0G 0603)
   and R1 (2512) are Extended R/C: user decision open. See `jlcpcb/README.md`.
-  Not supplier-accepted, no firmware.
+  Not supplier-accepted.
+- **Firmware 1.1.0** (2026-11-11) in `firmware/` (read `firmware/README.md`): TinyUSB UAC2 2 in / 2 out,
+  48 / 96 / 192 kHz, CDC console, DFU bootloader. Loopback-tested on Linux on the first board
+  (OUT 1/2 -> IN 1/2); macOS / Windows not tested here.
 
 ## Boundaries
 

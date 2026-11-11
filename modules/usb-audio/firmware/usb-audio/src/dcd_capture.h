@@ -8,7 +8,13 @@
 // event being processed.
 uint16_t dcd_ch32_event_frame(void);
 
-// Events dropped on a full capture queue; iso packets whose end did not come.
-extern volatile uint32_t dcd_capture_overflows, dcd_capture_iso_timeouts;
+// Events dropped on a full capture queue; iso packets whose end did not come;
+// zero-length iso OUT packets (skipped).
+extern volatile uint32_t dcd_capture_overflows, dcd_capture_iso_timeouts, dcd_iso_out_empty;
+
+// Capture -> end of processing: the longest one (SysTick counts, cleared by the
+// reader) and the number over 100 us. An iso endpoint has to be served before
+// its next packet, 125 us later.
+extern volatile uint32_t dcd_delay_max, dcd_delay_late;
 
 #endif

@@ -25,6 +25,8 @@
  *   endpoint off until its completion is processed, so the capture sets it to
  *   NAK (EP0 included) and the processing re-arms it.
  * - Iso OUT packets are taken whatever TOG_OK says (iso has no data toggle).
+ * - A zero-length iso OUT packet does not complete the transfer: the audio
+ *   class would not arm the next receive after an empty packet.
  */
 #include "tusb_option.h"
 
@@ -69,13 +71,15 @@ typedef struct {
   uint8_t  status;    // INT_ST
   uint16_t len;       // RX_LEN
   uint16_t frame;     // FRAME_NO
+  uint32_t t;         // SysTick count
 } capture_t;
 
   #define CAPTURE_DEPTH 16 // power of two
 static capture_t capture_q[CAPTURE_DEPTH];
 static volatile uint32_t capture_wr, capture_rd;
 static uint16_t event_frame;
-volatile uint32_t dcd_capture_overflows, dcd_capture_iso_timeouts;
+volatile uint32_t dcd_capture_overflows, dcd_capture_iso_timeouts, dcd_iso_out_empty;
+volatile uint32_t dcd_delay_max, dcd_delay_late;
 
   // Bound of the wait for an iso packet's end (about 4 us at 144 MHz)
   #define ISO_WAIT_LOOPS 200
@@ -144,6 +148,11 @@ static void update_out(uint8_t rhport, uint8_t ep_num, uint16_t rx_len) {
   xfer_ctl_t* xfer = XFER_CTL_BASE(ep_num, TUSB_DIR_OUT);
   if (!xfer->valid) {
     return;
+  }
+
+  if (xfer->is_iso && rx_len == 0) {
+    dcd_iso_out_empty++;
+    return; // no samples: the receive stays armed (NYET) for the next packet
   }
 
   uint16_t remaining = xfer->total_len - xfer->queued_len;
@@ -437,6 +446,7 @@ static inline __attribute__((always_inline)) capture_t *capture_slot(uint8_t fla
   capture_t *c = &capture_q[wr & (CAPTURE_DEPTH - 1)];
   c->flags = flags;
   c->frame = USBHSD->FRAME_NO;
+  c->t = (uint32_t) SysTick->CNT;
   return c;
 }
 
@@ -602,6 +612,10 @@ void dcd_int_handler(uint8_t rhport) {
     capture_t const *c = &capture_q[capture_rd & (CAPTURE_DEPTH - 1)];
     event_frame = c->frame;
     process_capture(rhport, c);
+    uint32_t const period = (uint32_t) SysTick->CMP + 1u;
+    uint32_t const d = ((uint32_t) SysTick->CNT + period - c->t) % period;
+    if (d > dcd_delay_max) dcd_delay_max = d;
+    if (d > period / 10u) dcd_delay_late++;   // 100 us
     capture_rd++;
   }
 }

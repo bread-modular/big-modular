@@ -19,7 +19,7 @@ VERSION := $(shell cat VERSION)
 GIT_REV := $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
 
 SRC_C = \
-  src/main.c src/board.c src/codec.c src/i2s.c src/audio.c src/console.c src/usb_descriptors.c \
+  src/main.c src/board.c src/codec.c src/i2s.c src/audio.c src/console.c src/usb_descriptors.c src/mem.c \
   $(BSP)/system_ch32v30x.c \
   $(SDK)/Core/core_riscv.c \
   $(SDK)/Peripheral/src/ch32v30x_gpio.c \
@@ -46,9 +46,11 @@ DEFS = -DCH32V30x_D8C -DCFG_TUSB_MCU=OPT_MCU_CH32V307 -DCFG_TUD_WCH_USBIP_USBHS=
        -DFW_VERSION=\"$(VERSION)\" -DFW_GIT=\"$(GIT_REV)\"
 CFLAGS = $(ARCH) $(DEFS) $(INC) -Os -g -std=gnu11 -ffunction-sections -fdata-sections \
          -fsigned-char -fmessage-length=0 -Wall -Wno-strict-prototypes -Wno-unused-parameter
+# __FLASH_SIZE: the 240 KiB application area less 1 KiB, its last 256 bytes are
+# the settings page (src/board.h).
 LDFLAGS = $(ARCH) -T $(LD_FILE) -nostartfiles --specs=nano.specs --specs=nosys.specs \
           -Wl,--gc-sections -Wl,--wrap=dcd_event_handler -Wl,-Map=$(BUILD)/$(TARGET).map \
-          -Wl,--defsym=__FLASH_SIZE=240K -Wl,--defsym=__RAM_SIZE=64K -Wl,--defsym=__STACK_SIZE=2048
+          -Wl,--defsym=__FLASH_SIZE=239K -Wl,--defsym=__RAM_SIZE=64K -Wl,--defsym=__STACK_SIZE=2048
 
 OBJ = $(addprefix $(BUILD)/obj/,$(notdir $(SRC_C:.c=.o)) $(notdir $(SRC_S:.S=.o)))
 vpath %.c $(sort $(dir $(SRC_C)))
