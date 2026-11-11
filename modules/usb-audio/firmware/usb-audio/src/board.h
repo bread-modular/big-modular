@@ -26,6 +26,14 @@ void board_reset(void);
 void board_reset_to_dfu(void);
 // Rewrite + verify the DFU bootloader from RAM (console `blwrite`). Stop I2S first.
 bool board_write_bootloader(uint8_t const *img, uint32_t len);
+// Settings page: the last 256 bytes of the application area, which the linker
+// script leaves free (Makefile). The DFU bootloader erases only the pages it
+// writes, so the page survives firmware updates; ../flash.sh --full erases it.
+#define BOARD_SETTINGS_BYTES 256u
+void const *board_settings(void);
+// Erase the page and write `len` bytes (0: erase only), verified. Stop I2S first.
+bool board_settings_write(void const *data, uint32_t len);
+uint32_t board_crc32(void const *data, uint32_t len);
 // Main loop: feeds the bootloader's watchdog and confirms a newly downloaded
 // image once the host has kept it configured (../bootloader/src/boot.h).
 void board_boot_task(bool configured);

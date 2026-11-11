@@ -101,6 +101,36 @@ bool board_write_bootloader(uint8_t const *img, uint32_t len) {
   return ok;
 }
 
+#define SETTINGS_ADDR (FLASH_BASE + BOOT_APP_END - BOARD_SETTINGS_BYTES)
+
+void const *board_settings(void) {
+  return (void const *) SETTINGS_ADDR;
+}
+
+bool board_settings_write(void const *data, uint32_t len) {
+  static uint32_t page[BOARD_SETTINGS_BYTES / 4];
+  if (len > BOARD_SETTINGS_BYTES) return false;
+  for (uint32_t i = 0; i < BOARD_SETTINGS_BYTES / 4; i++) page[i] = 0xE339E339u;   // erased value
+  if (len) memcpy(page, data, len);
+  RCC->CFGR0 = (RCC->CFGR0 & ~RCC_HPRE) | RCC_HPRE_DIV2;
+  bool ok = FLASH_ROM_ERASE(SETTINGS_ADDR, BOARD_SETTINGS_BYTES) == FLASH_COMPLETE;
+  if (ok && len) ok = FLASH_ROM_WRITE(SETTINGS_ADDR, page, BOARD_SETTINGS_BYTES) == FLASH_COMPLETE;
+  ok = ok && memcmp((void const *) SETTINGS_ADDR, page, BOARD_SETTINGS_BYTES) == 0;
+  IWDG->CTLR = 0xAAAA;
+  RCC->CFGR0 = (RCC->CFGR0 & ~RCC_HPRE) | RCC_HPRE_DIV1;
+  return ok;
+}
+
+uint32_t board_crc32(void const *data, uint32_t len) {
+  uint8_t const *p = data;
+  uint32_t c = 0xFFFFFFFFu;
+  while (len--) {
+    c ^= *p++;
+    for (int k = 0; k < 8; k++) c = (c >> 1) ^ (0xEDB88320u & (0u - (c & 1u)));
+  }
+  return ~c;
+}
+
 // A new image (BKP DATAR2 = BOOT_TRIAL_TAG | attempts) is confirmed after 3 s
 // configured by the host. Without that within BOOT_TRIAL_MS of VBUS it resets,
 // so the bootloader counts a failed start; crashes and watchdog resets count too.

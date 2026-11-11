@@ -20,7 +20,7 @@
 
 static char line[64];
 static size_t line_len;
-static bool meter_on;
+static bool meter_on, cal_wait;
 static uint32_t meter_at;
 
 // `blwrite <bytes> <crc32 hex>`: the next <bytes> raw bytes are a DFU bootloader
@@ -51,6 +51,28 @@ static void print_mv(const char *label, int32_t mv) {
       (long) (mv < 0 ? -mv : mv) % 1000);
 }
 
+static void print_cal(audio_status_t const *st) {
+  print_mv("IN DC: offsets IN 1 ", to_mv(st->dc_offset[0], IN_FS_MV));
+  print_mv(", IN 2 ", to_mv(st->dc_offset[1], IN_FS_MV));
+  switch (st->cal) {
+    case AUDIO_CAL_MEASURING: out(" subtracted, measuring (IN 1/2 unpatched)\r\n"); break;
+    case AUDIO_CAL_MEASURED: out(" subtracted, measured at power-up: `cal` saves them\r\n"); break;
+    case AUDIO_CAL_SAVED: out(" subtracted (saved)\r\n"); break;
+    case AUDIO_CAL_NOT_SAVED: out(" subtracted, NOT saved: flash write failed\r\n"); break;
+    case AUDIO_CAL_UNSTEADY: out(" kept: the inputs did not hold still, unpatch IN 1/2\r\n"); break;
+    case AUDIO_CAL_RANGE: out(" kept: more than 0.1 V measured, unpatch IN 1/2\r\n"); break;
+    default: out(" subtracted\r\n"); break;
+  }
+}
+
+// Buffer level now and its range since the previous status, in frames.
+static void print_stream(const char *label, audio_stream_t const *s, const char *rate_label) {
+  out("%s %s%s, buffer %u frames (%u..%u, held at %u), %s%lu.%04lu samples/uframe", label,
+      s->streaming ? "streaming" : "idle", s->streaming && !s->primed ? " (filling)" : "", s->level, s->level_min,
+      s->level_max, s->target, rate_label, (unsigned long) (s->rate >> 16),
+      (unsigned long) (((s->rate & 0xFFFF) * 10000) >> 16));
+}
+
 static void cmd_status(void) {
   audio_status_t st;
   audio_get_status(&st);
@@ -60,23 +82,19 @@ static void cmd_status(void) {
   out("Codec: %s", codec_state_name(codec_state()));
   if (codec_state() == CODEC_RUNNING) out(", ID 0x%02X, %lu Hz", codec_chip_id(), (unsigned long) st.rate_codec);
   out(", host rate %lu Hz\r\n", (unsigned long) st.rate_host);
-  if (st.dc_calibrated) {
-    print_mv("IN DC: offsets IN 1 ", to_mv(st.dc_offset[0], IN_FS_MV));
-    print_mv(", IN 2 ", to_mv(st.dc_offset[1], IN_FS_MV));
-    out(" subtracted\r\n");
-  } else {
-    out("IN DC: measuring the offsets (IN 1/2 unpatched)\r\n");
-  }
+  print_cal(&st);
   out("I2S:   %s, %lu frames/half%s\r\n", i2s_running() ? "running" : "stopped", (unsigned long) AUDIO_BLOCK_FRAMES,
       audio_tone() ? ", test tone on" : "");
-  out("OUT:   %s%s, FIFO %u B, feedback %lu.%04lu samples/uframe\r\n",
-      st.out_streaming ? "streaming" : "idle", st.out_streaming && !st.out_primed ? " (filling)" : "",
-      st.out_fifo, (unsigned long) (st.feedback >> 16), (unsigned long) (((st.feedback & 0xFFFF) * 10000) >> 16));
-  out("IN:    %s, FIFO %u B\r\n", st.in_streaming ? "streaming" : "idle", st.in_fifo);
-  out("Count: restarts %lu, OUT underruns %lu, IN overruns %lu, I2S ovr %lu udr %lu slip %lu stall %lu late %lu\r\n",
-      (unsigned long) st.restarts, (unsigned long) st.out_underruns, (unsigned long) st.in_overruns,
-      (unsigned long) i2s_err_ovr, (unsigned long) i2s_err_udr, (unsigned long) i2s_err_slip,
-      (unsigned long) i2s_err_stall, (unsigned long) i2s_err_late);
+  print_stream("OUT:  ", &st.out, "feedback ");
+  out(", target %u ms\r\n", st.out_target_ms);
+  print_stream("IN:   ", &st.in, "packets ");
+  out("\r\n");
+  out("Count: restarts %lu, OUT underruns %lu overruns %lu, IN underruns %lu overruns %lu\r\n",
+      (unsigned long) st.restarts, (unsigned long) st.out.underruns, (unsigned long) st.out.overruns,
+      (unsigned long) st.in.underruns, (unsigned long) st.in.overruns);
+  out("       I2S ovr %lu udr %lu slip %lu stall %lu late %lu\r\n", (unsigned long) i2s_err_ovr,
+      (unsigned long) i2s_err_udr, (unsigned long) i2s_err_slip, (unsigned long) i2s_err_stall,
+      (unsigned long) i2s_err_late);
   if (st.last_error[0]) out("Last:  %s\r\n", st.last_error);
 
   static uint32_t iso_ms;
@@ -88,8 +106,14 @@ static void cmd_status(void) {
       (unsigned long) iso.packets[1], (unsigned long) iso.missed[1], (unsigned long) iso.packets[2],
       (unsigned long) iso.missed[2]);
   iso_ms = now;
-  out("DCD:   capture overflows %lu, iso waits timed out %lu\r\n", (unsigned long) dcd_capture_overflows,
-      (unsigned long) dcd_capture_iso_timeouts);
+  out("       since the reset: missed OUT %lu, IN %lu, feedback %lu\r\n", (unsigned long) iso.missed_total[0],
+      (unsigned long) iso.missed_total[1], (unsigned long) iso.missed_total[2]);
+  out("DCD:   capture overflows %lu, iso waits timed out %lu, empty OUT packets %lu\r\n",
+      (unsigned long) dcd_capture_overflows, (unsigned long) dcd_capture_iso_timeouts,
+      (unsigned long) dcd_iso_out_empty);
+  out("       processing delay: worst %lu us, over 100 us %lu\r\n",
+      (unsigned long) (dcd_delay_max / (SystemCoreClock / 1000000u)), (unsigned long) dcd_delay_late);
+  dcd_delay_max = 0;
 }
 
 static void print_meter(void) {
@@ -125,15 +149,6 @@ static void cmd_regs(void) {
   }
 }
 
-static uint32_t crc32(uint8_t const *p, uint32_t n) {
-  uint32_t c = 0xFFFFFFFFu;
-  while (n--) {
-    c ^= *p++;
-    for (int k = 0; k < 8; k++) c = (c >> 1) ^ (0xEDB88320u & (0u - (c & 1u)));
-  }
-  return ~c;
-}
-
 static void cmd_blwrite(char *args) {
   char *end;
   unsigned long const len = strtoul(args, &end, 10);
@@ -164,7 +179,7 @@ static void blwrite_task(void) {
     return;
   }
   bl_active = false;
-  uint32_t const crc = crc32(bl_buf, bl_len);
+  uint32_t const crc = board_crc32(bl_buf, bl_len);
   if (crc != bl_crc) {
     out("blwrite: FAIL CRC %08lX, expected %08lX\r\n> ", (unsigned long) crc, (unsigned long) bl_crc);
     return;
@@ -172,7 +187,7 @@ static void blwrite_task(void) {
   i2s_stop();
   codec_stop();
   bool const ok = board_write_bootloader(bl_buf, bl_len);
-  audio_restart();
+  audio_restart(0);
   out(ok ? "blwrite: OK, bootloader written and verified (%lu bytes)\r\n> "
          : "blwrite: FAIL flash write/verify (%lu bytes): retry before any reset\r\n> ",
       (unsigned long) bl_len);
@@ -182,10 +197,11 @@ static void cmd_help(void) {
   out("\r\ncommands:\r\n"
       "  status   firmware, USB, codec, I2S and stream state (also: Enter)\r\n"
       "  meter    toggle a 2 Hz line: measured LRCK, DC and peak per jack (pots up)\r\n");
-  out("  cal      measure the input DC offsets again: unpatch IN 1/2 first\r\n"
+  out("  cal      measure the input DC offsets and save them: unpatch IN 1/2 first\r\n"
+      "           (the audio stops for a moment); `cal erase` forgets the saved offsets\r\n"
       "  tone     toggle a 1 kHz test tone (half scale) on OUT 1/2 instead of the USB audio\r\n"
-      "  regs     dump CS4270 registers 01h-08h\r\n"
-      "  restart  reset and restart codec + I2S\r\n"
+      "  regs     dump CS4270 registers 01h-08h\r\n");
+  out("  restart  reset and restart codec + I2S; `restart <s>` holds the codec in reset first\r\n"
       "  reboot   reset the MCU\r\n"
       "  dfu      reset into the DFU bootloader (../flash.sh uses a 1200 baud touch)\r\n"
       "  blwrite  <bytes> <crc32>: rewrite the DFU bootloader (../flash.sh --bootloader)\r\n");
@@ -203,7 +219,10 @@ static void run(char *cmd) {
     }
   } else if (!strcmp(cmd, "cal")) {
     audio_calibrate();
-    out("measuring the input DC offsets (0.8 s)\r\n");
+    cal_wait = true;
+    out("measuring the input DC offsets\r\n");
+  } else if (!strcmp(cmd, "cal erase")) {
+    out(audio_calibration_erase() ? "saved offsets erased\r\n" : "FAIL flash erase\r\n");
   } else if (!strcmp(cmd, "regs")) {
     cmd_regs();
   } else if (!strcmp(cmd, "tone")) {
@@ -211,8 +230,9 @@ static void run(char *cmd) {
     out("test tone %s\r\n", audio_tone() ? "on" : "off");
   } else if (!strncmp(cmd, "blwrite ", 8)) {
     cmd_blwrite(cmd + 8);
-  } else if (!strcmp(cmd, "restart")) {
-    audio_restart();
+  } else if (!strcmp(cmd, "restart") || !strncmp(cmd, "restart ", 8)) {
+    unsigned long const hold = strtoul(cmd + 7, NULL, 10);
+    audio_restart((uint32_t) (hold > 60 ? 60 : hold) * 1000);
     out("codec restart\r\n");
   } else if (!strcmp(cmd, "reboot")) {
     out("rebooting\r\n");
@@ -254,6 +274,17 @@ void console_task(void) {
       line[line_len++] = c;
       tud_cdc_write_char(c);
       tud_cdc_write_flush();
+    }
+  }
+
+  if (cal_wait) {
+    audio_status_t st;
+    audio_get_status(&st);
+    if (st.cal != AUDIO_CAL_MEASURING) {
+      cal_wait = false;
+      out("\r\n");
+      print_cal(&st);
+      out("> ");
     }
   }
 
