@@ -8,17 +8,17 @@ through keyed 2x5 CLK OUT -> CLK IN ribbons that share the codec clocks only, so
 over their own USB ports stay sample-locked; each unit keeps its own MAIN OUT and sends (up to 4 units until
 bench-tested).
 
-**Status: S3 schematics (ERC 0, netlists asserted) + R1 manual routing of both boards at 20HP (carrier and MCU board DRC 0 / unconnected 0 / parity 0; single-sided MCU board on two 1x12 strips, three standoffs, panel). Datasheet review done (`docs/research.md` 6a). No fab review, no JLCPCB export, not built, no firmware.**
+**Status: carrier S4 / MCU S3 schematics (ERC 0, netlists asserted) + R2 manual routing of both boards at 20HP (carrier and MCU board DRC 0 / unconnected 0 / parity 0; single-sided MCU board on two 1x12 strips, three standoffs, panel). Datasheet review done (`docs/research.md` 6a); fab review done and its fixes applied (section 10: codec decoupling, USB, SCKI, Q1 heat, corners, silk). Open: J101 courtyard 0.53 mm to the MS3 notch and MS3 courtyard 0.98 mm to the edge (user decision). No JLCPCB export, not built, no firmware.**
 
 | Path | Contents |
 |---|---|
 | `hardware/multi-mix.kicad_sch` | Carrier: power, codec, inputs, outputs, knobs + mux, clock link, MCU strips (PDF: `docs/multi-mix-schematic.pdf`) |
 | `hardware/multi-mix-mcu.kicad_sch` | MCU board: CH32V307RCT6, USB-C, strips J112/J113 (PDF: `docs/multi-mix-mcu-schematic.pdf`) |
-| `hardware/multi-mix.kicad_pcb`, `hardware/multi-mix-mcu.kicad_pcb` | R1 boards, 4 layers, placed and routed by hand (carrier: all SMD on B; MCU board: every part on F) |
+| `hardware/multi-mix.kicad_pcb`, `hardware/multi-mix-mcu.kicad_pcb` | R2 boards, 4 layers, placed and routed by hand (carrier: all SMD on B; MCU board: every part on F) |
 | `panels/front-pcb/multi-mix-panel.kicad_pcb` | 20HP passive FR4 panel (NPTH holes, USB-C slot, labels) |
 | `docs/geometry.json` | Placement contract (panel frame) |
-| `docs/research.md` | Brief, architecture, decisions, clock-link pinout, MCU pins and strip maps, sourcing, datasheet review, placement, S2/S3 changes and R1 routing, open items |
-| `tools/` | Schematic generator + circuit tables, footprint import, project files, shared-tool profiles |
+| `docs/research.md` | Brief, architecture, decisions, clock-link pinout, MCU pins and strip maps, sourcing, datasheet review, placement, S2/S3 changes and R1 routing, fab-review fixes (S4/R2), open items |
+| `tools/` | Schematic generator + circuit tables, footprint import, project files, shared-tool profiles, `check_usb.py` (MCU USB routing check) |
 
 Rebuild (from `modules/multi-mix`):
 

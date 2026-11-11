@@ -1,11 +1,11 @@
-# MULTI-MIX contract (S3 schematics, R1 routing)
+# MULTI-MIX contract (carrier S4 / MCU S3 schematics, R2 routing)
 
 | | |
 |---|---|
 | KiCad projects | `hardware/multi-mix.kicad_{pro,sch,pcb}` (carrier), `hardware/multi-mix-mcu.kicad_{pro,sch,pcb}` (MCU board), `panels/front-pcb/multi-mix-panel.kicad_{pro,pcb}` (20HP panel); one shared `MULTIMIX` symbol/footprint library |
-| Generators, profiles | `tools/` (`build_schematic.py`, `circuit_carrier.py`, `circuit_mcu.py`, `build_project.py`, `build_layout.py`, `import_footprints.py`, `sexp.py`, `kicad-project.json`, `kicad-project-mcu.json`) |
+| Generators, profiles, checks | `tools/` (`build_schematic.py`, `circuit_carrier.py`, `circuit_mcu.py`, `build_project.py`, `build_layout.py`, `import_footprints.py`, `sexp.py`, `kicad-project.json`, `kicad-project-mcu.json`; `check_usb.py` = modules/usb-audio's USB routing check) |
 | Geometry contract | `docs/geometry.json` (panel frame, 20HP; S3, hand-edited since routing) |
-| Circuit intent and decisions | `docs/research.md` (MCU pins and strip maps: section 5; datasheet review: 6a; placement: 8; S2/S3 changes and R1 routing: 9) |
+| Circuit intent and decisions | `docs/research.md` (MCU pins and strip maps: section 5; datasheet review: 6a; placement: 8; S2/S3 changes and R1 routing: 9; fab-review fixes S4/R2: 10) |
 | Evidence | `docs/erc/` (native ERC JSON), `docs/*-schematic.pdf`, `docs/schematic-symbols.json`, `hardware/MULTIMIX.pretty/PROVENANCE.json` |
 
 ## Fixed by the brief (user, 2026-11-09)
@@ -42,6 +42,11 @@
   only the 4.7k/10k-protected DET on pins 1-2, GND or buffered + 150R clocks on 3-8, nothing on 9-10.
 - Root `AGENTS.md` placement/routing rules (1 mm edge keep-out, 2 mm hand-solder clearance, no vias in SMD
   pads except the codec's own thermal vias, manual divide-and-conquer routing).
+- R2 (fab review): codec supply caps at their pins (C21/C27 0402), VREF 10 uF caps in the filter row under
+  pins 59/60; MCU USB per modules/usb-audio (USB_HS widths, 2 vias per connector path, In2 GND island
+  `USB_HS_GND_REFERENCE`, length-matched; `python3 -B modules/multi-mix/tools/check_usb.py` from the repo root
+  must pass); both PCBs record the JLC04161H-7628 stackup; no right-angle track corners; standoffs keep blank
+  references + `MechanicalID` (a reference absent from the schematic breaks the shared ref/pin/net check).
 
 ## Sources and generators
 
@@ -78,3 +83,9 @@
   (`research/check-r1-*`): MCU board no findings; carrier ERC/DRC/parity 0 plus four name-only `/` vs `{slash}`
   differences on two pin-named nets and the three reference-less standoffs (present since P1, not waived).
 - Not done: fab review, JLCPCB export, panel re-check, firmware, bench.
+- **Carrier S4 / MCU S3, R2 fab-review fixes (2026-11-11, `docs/research.md` section 10):** C21/C27 1 uF 0402
+  (C52923), nets `REF_NR` / `CODEC_ADR1` labelled; codec caps 1.9-2.1 mm (supplies) / 4.0-4.4 mm (VREF 10 uF)
+  from their pins; USB check pass (pair mismatch 0.27 / 0.02 mm); SCKI 68.3 -> 52.4 mm; Q1 B tab pour + 11
+  thermal vias; 56 corners chamfered; service silk 1.0 mm + J15 legend. ERC 0 both; native DRC 0 / unconnected
+  0 / parity 0 both; shared `check` ref/pin/net equal on both. Open: J101 courtyard 0.53 mm to the MS3 notch and MS3
+  courtyard 0.98 mm to the edge (user decision), JLCPCB export, firmware, bench.

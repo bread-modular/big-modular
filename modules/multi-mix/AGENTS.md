@@ -20,14 +20,17 @@ are relative to the module.
   +3V3_C islands. MCU board: single-sided (every part on F, user), outline extended to the carrier top with a
   notch for MS3 and the IN4-jack notch, USB-C unchanged (X84.1 Y21), 3225 crystal. J15 SWD and SW1/SW2 moved on
   the carrier B side (`docs/geometry.json`). Through-hole positions are P3's and fixed (user).
-- Shared `check` (`research/check-r1-carrier`, `research/check-r1-mcu`): MCU board no findings; carrier ERC 0 /
-  DRC 0 / parity 0, plus four name-only `/` vs `{slash}` differences on two pin-named nets (`Net-(U9-Trim/NR)`,
-  `Net-(U3B-MDO/ADR1/MD1)`) and the three reference-less standoffs. Both were there at P1-P3; not waived, not
-  fixed.
+- **R2 fab-review fixes** (2026-11-11, `docs/research.md` section 10, batches in the ignored `research/fab-fix/`):
+  carrier schematic S4 (C21/C27 1 uF 0402 C52923; nets `REF_NR`, `CODEC_ADR1` labelled), codec supply caps at
+  their pins and VREF 10 uF caps under pins 59/60, MCU USB per modules/usb-audio (`tools/check_usb.py` passes,
+  In2 GND island, stackup recorded), SCKI 52 mm, Q1 B tab pour + thermal vias, no right-angle corners,
+  1.0 mm service silk + J15 legend. Both boards ERC 0 / DRC 0 / unconnected 0 / parity 0; shared `check`
+  ref/pin/net equal on both (standoffs: blank reference + `MechanicalID`, as usb-audio-max).
 - **Datasheet review** (`docs/research.md` 6a): CH32V307 I2S rated 8 MHz < 12.288 MHz BCK -> SPI-slave fallback
   pins tied on the MCU board (PB14 on PB15, PA15/PB3 on PB12/PB13); PCM3168A slave BCK duty margin 5.7 ns
   (4-unit limit), no SCKI phase rule, ADC/DAC reset to slave, SEAD resets to differential.
-- Next: fab review, panel re-check, JLCPCB export, firmware, bench. Do not rerun `tools/build_layout.py` (it
+- Open: J101 courtyard 0.53 mm to the MS3 notch, MS3 courtyard 0.98 mm to the edge (user decision); next panel re-check, JLCPCB export, firmware,
+  bench. Do not rerun `tools/build_layout.py` (it
   would park the SMD parts again).
 
 ## Boundaries
