@@ -40,20 +40,23 @@ BASE_RELIEF = 3.65  # stock base overhang 3.15 + 0.50 mm
 RELIEF_CLR = 0.50
 MOUNT_Y = (25.0, 103.5)
 MOUNT_Z = (25.0, 45.0)
-PAD_R = 12.0
-BRIDGE_R = 16.0
-LEG_R = 14.0
-BRACE_R = 10.0
+RIM = 7.5        # ring outline around the screw axes: 3.25 counterbore + 4.25 wall
+RAIL_W = 8.0     # ring rails between the front and rear screw pairs
+WINDOW_END = 9.0  # ring window end to the screw axes
+CHORD_R = 4.5    # the two bars between the rings
+CHORD_CLEAR = 8.0  # upper chord centre line to the two rail screw axes at the joint (head r 2.75)
+LEG_R = (8.0, 5.0)  # at the upper ring, at the foot
+STRUT_R = 5.0
+JOINT_R = 4.0    # blend where members meet
 FOOT = (272.0, 8.0)  # behind the upper case; cheek prints diagonally on the 256 mm bed
 FOOT_WIDTH = 16.0  # 2 mm margin each side of the user's 12 mm square pad
 FOOT_LENGTH = 20.0
 FOOT_HEIGHT = 8.0
-FOOT_FILLET = 2.0
+FOOT_ANCHOR = (269.5, 4.0)  # leg and strut meet here, so both blends land on the foot's flat top
 RUBBER_PAD_SIZE = 12.0
 FRONT_PAD_Y = 7.0
 ROUND = 2.0
 WINDOW_R = 6.0
-SERVICE_D = 8.5
 
 
 def bounds(shape):
@@ -99,12 +102,21 @@ def rounded_box(x, length, y0, y1, z0, z1, radius):
 
 
 def capsule(a, b, radius, x, length):
+    """Bar with round ends; `radius` may be (at a, at b) for a tapered bar."""
+    ra, rb = radius if isinstance(radius, (tuple, list)) else (radius, radius)
     dy, dz = b[0]-a[0], b[1]-a[1]
     dist = math.hypot(dy, dz)
-    ny, nz = -dz / dist * radius, dy / dist * radius
-    rect = common.yz_prism([(a[0]+ny, a[1]+nz), (b[0]+ny, b[1]+nz),
-                            (b[0]-ny, b[1]-nz), (a[0]-ny, a[1]-nz)], x, length)
-    return rect.fuse([base.cyl(radius, length, (x, *p), (1, 0, 0)) for p in (a, b)]).removeSplitter()
+    uy, uz = dy / dist, dz / dist
+    s = (ra-rb) / dist
+    c = math.sqrt(1-s*s)
+
+    def tangent(p, r, side):
+        return (p[0]+r*(s*uy-side*c*uz), p[1]+r*(s*uz+side*c*uy))
+
+    rect = common.yz_prism([tangent(a, ra, 1), tangent(b, rb, 1),
+                            tangent(b, rb, -1), tangent(a, ra, -1)], x, length)
+    return rect.fuse([base.cyl(r, length, (x, *p), (1, 0, 0))
+                      for p, r in ((a, ra), (b, rb))]).removeSplitter()
 
 
 def side_panel(d, left):
@@ -136,46 +148,88 @@ def rubber_pad_centres(d):
             'front_right': (d.plate_x0+d.plate_len-7, FRONT_PAD_Y)}
 
 
-def foot_land(x):
-    """Integral plinth with rounded top ends and a full flat adhesive face.
+def ring(x):
+    """Open frame around one case's four screws: two rails, rounded ends at the screws."""
+    y0, y1, z0, z1 = MOUNT_Y[0], MOUNT_Y[1], MOUNT_Z[0], MOUNT_Z[1]
+    frame = rounded_box(x, PLATE_T, y0-RIM, y1+RIM, z0-RIM, z1+RIM, RIM)
+    window = rounded_box(x-1, PLATE_T+2, y0+WINDOW_END, y1-WINDOW_END,
+                         z0-RIM+RAIL_W, z1+RIM-RAIL_W, WINDOW_R)
+    return frame.cut(window)
 
-    No bottom-edge fillet, holes or lettering reduce the 12 x 12 bonding patch.
-    No raised rim assumes a particular rubber-pad thickness/compression.
-    Simple cylindrical top blends also avoid tiny compound-fillet mesh slivers.
+
+def meet(a0, a1, b0, b1):
+    """Intersection of the lines a0-a1 and b0-b1 in Y/Z."""
+    ay, az, by, bz = a1[0]-a0[0], a1[1]-a0[1], b1[0]-b0[0], b1[1]-b0[1]
+    t = ((b0[0]-a0[0])*bz-(b0[1]-a0[1])*by) / (ay*bz-az*by)
+    return (a0[0]+t*ay, a0[1]+t*az)
+
+
+def upper_chord(d, layout):
+    """Ends of the upper chord on the two rings' top rails.
+
+    It runs parallel to the line through the two rail screws at the joint, CHORD_CLEAR
+    to the side away from the lower chord, so both screws stay reachable.
     """
-    foot = base.box((x, FOOT[0]-FOOT_LENGTH/2, 0), (FOOT_WIDTH, FOOT_LENGTH, FOOT_HEIGHT))
-    top = [e for e in common.x_edges(foot) if e.CenterOfMass.z > FOOT_HEIGHT-0.01]
-    return foot.makeFillet(FOOT_FILLET, top)
+    p, q = rail_axes(d, layout)[1:3]
+    dist = math.hypot(q[0]-p[0], q[1]-p[1])
+    ny, nz = -(q[1]-p[1]) / dist * CHORD_CLEAR, (q[0]-p[0]) / dist * CHORD_CLEAR
+    a, b = (p[0]+ny, p[1]+nz), (q[0]+ny, q[1]+nz)
+    rail = MOUNT_Z[1] + RIM - RAIL_W/2
+    return tuple(meet(a, b, layout.point(0, rail, upper), layout.point(100, rail, upper))
+                 for upper in (False, True))
+
+
+def blend(shape, x):
+    """Round the whole outline: JOINT_R where members meet, ROUND on outside corners.
+
+    Growing then shrinking the outline rounds its inside corners (and closes slivers
+    narrower than 2 x JOINT_R); shrinking then growing rounds the outside ones.
+    """
+    face = max((f for f in shape.Faces if f.BoundBox.XLength < TOL and abs(f.BoundBox.XMin-x) < TOL),
+               key=lambda f: f.Area)
+    for step in (JOINT_R, -JOINT_R, -ROUND, ROUND):
+        face = face.makeOffset2D(step, join=0, fill=False, openResult=False, intersection=True)
+        assert face.isValid() and len(face.Faces) == 1, ('outline blend', step)
+    short = min(face.Edges, key=lambda e: e.Length)
+    assert short.Length > 0.5, ('sliver edge in the outline', short.Length, short.CenterOfMass)
+    return face.Faces[0]
 
 
 def plate(d, layout, left):
+    """Skeletal cheek: a screw ring on each case, two chords between them, a leg and a strut.
+
+    The chords carry the bending between the cases as a push-pull pair; leg and strut stand
+    the upper ring on the rear foot. The lower chord joins the bottom-row screws, the upper
+    chord passes CHORD_CLEAR beside the two rail screws at the joint, so both stay reachable.
+    """
     # Build the LEFT cheek at its contact face, then mirror for the right cheek.
     contact = -d.T
     x = contact - PLATE_T
-    pad = rounded_box(x, PLATE_T, MOUNT_Y[0]-PAD_R, MOUNT_Y[1]+PAD_R,
-                      MOUNT_Z[0]-PAD_R, MOUNT_Z[1]+PAD_R, 10.0)
-    a = (MOUNT_Y[1], sum(MOUNT_Z)/2)
-    b = layout.point(MOUNT_Y[0], sum(MOUNT_Z)/2, True)
-    c = layout.point(MOUNT_Y[1], sum(MOUNT_Z)/2, True)
-    shape = pad.fuse([layout.place(pad, True), capsule(a, b, BRIDGE_R, x, PLATE_T),
-                      capsule(c, FOOT, LEG_R, x, PLATE_T), capsule(a, FOOT, BRACE_R, x, PLATE_T)]).removeSplitter()
-    # The two rail screws near the joint stay accessible. Reinforce their access
-    # holes rather than leaving a thin crescent at the edge of a bridge.
-    access = (rail_axes(d, layout)[1], rail_axes(d, layout)[2])
-    shape = shape.fuse([base.cyl(10, PLATE_T, (x, *p), (1, 0, 0)) for p in access]).removeSplitter()
-    shape = shape.cut(base.box((x-1, -100, -100), (PLATE_T+2, 500, 100))).removeSplitter()
-    # Round all non-tangent silhouette corners except the flat desk contact.
-    edges = [e for e in common.x_edges(shape) if e.CenterOfMass.z > 0.1]
-    shape = shape.makeFillet(ROUND, edges)
-    assert_solid(shape, 'rounded cheek outline')
-
-    # Enlarged 16 x 20 mm adhesive plinth with R2 top end blends.
-    # Keep the outside face at x (the print bed); widening is inward, behind the case.
-    shape = shape.fuse(foot_land(x)).removeSplitter()
+    low_rear = (MOUNT_Y[1], MOUNT_Z[0])
+    up_front = layout.point(MOUNT_Y[0], MOUNT_Z[0], True)
+    up_rear = layout.point(MOUNT_Y[1], MOUNT_Z[0], True)
+    # The foot block starts below the desk so its contact edges stay square after the blend.
+    foot = base.box((x, FOOT[0]-FOOT_LENGTH/2, -10), (PLATE_T, FOOT_LENGTH, FOOT_HEIGHT+10))
+    lower = ring(x)
+    members = [layout.place(lower, True), foot,
+               capsule(low_rear, up_front, CHORD_R, x, PLATE_T),
+               capsule(*upper_chord(d, layout), CHORD_R, x, PLATE_T),
+               capsule(up_rear, FOOT_ANCHOR, LEG_R, x, PLATE_T),
+               capsule(up_front, FOOT_ANCHOR, STRUT_R, x, PLATE_T)]
+    shape = lower.fuse(members).removeSplitter()
+    assert_solid(shape, 'cheek skeleton')
+    outline = blend(shape, x)
+    # Adhesive plinth: the plate's own foot profile, FOOT_WIDTH wide. The outside face stays
+    # at x (the print bed); the widening is inward, behind the case.
+    land = outline.common(base.box((x-1, FOOT[0]-FOOT_LENGTH/2, -10),
+                                   (2, FOOT_LENGTH, FOOT_HEIGHT+10)))
+    assert len(land.Faces) == 1, 'foot profile'
+    shape = outline.extrude(V(PLATE_T, 0, 0)).fuse(
+        land.Faces[0].extrude(V(FOOT_WIDTH, 0, 0))).removeSplitter()
+    shape = shape.cut(base.box((x-1, -100, -100), (FOOT_WIDTH+2, 500, 100))).removeSplitter()
+    assert_solid(shape, 'rounded cheek')
 
     cuts = []
-    window = rounded_box(x-1, PLATE_T+6, MOUNT_Y[0]+15, MOUNT_Y[1]-15, 24, 46, WINDOW_R)
-    cuts += [window, layout.place(window, True)]
     # Bases project 3.15 mm past the panel. Pockets clear their entire envelope,
     # leaving 4.35 mm of plate behind it instead of forcing a case modification.
     for upper in (False, True):
@@ -186,8 +240,6 @@ def plate(d, layout, left):
         for y, z in layout.mounts(upper):
             cuts.append(base.cyl(base.M3_CLEAR/2, PLATE_T+2, (x-1, y, z), (1, 0, 0)))
             cuts.append(base.cyl(base.M3_CB_D/2, CB_DEPTH+1, (x-1, y, z), (1, 0, 0)))
-    for y, z in rail_axes(d, layout):
-        cuts.append(base.cyl(SERVICE_D/2, PLATE_T+6, (x-1, y, z), (1, 0, 0)))
     shape = base.cut_all(shape, cuts)
     if not left:
         shape = shape.mirror(V(d.L/2, 0, 0), V(1, 0, 0))
@@ -371,7 +423,7 @@ def verify(d, layout, source, parts, asm):
                             'placement_margin_verified_mm':1.0 if rear else 0.0}
     checks['rubber_pad_lands'] = {'pad_size_mm':[RUBBER_PAD_SIZE,RUBBER_PAD_SIZE],
                                  'quantity':4, 'rear_plinth_size_mm':[FOOT_WIDTH,FOOT_LENGTH,FOOT_HEIGHT],
-                                 'rear_top_end_fillet_mm':FOOT_FILLET,
+                                 'rear_top_end_fillet_mm':ROUND,
                                  'rear_nominal_pad_edge_margin_xy_mm':[(FOOT_WIDTH-RUBBER_PAD_SIZE)/2,
                                                                       (FOOT_LENGTH-RUBBER_PAD_SIZE)/2],
                                  'recess_depth_mm':0, 'coplanar_bonding_z_mm':0,
@@ -501,7 +553,9 @@ def main():
                           'upper_origin_y_z_mm':[layout.ty,layout.tz], 'plate_thickness_mm':PLATE_T,
                           'mount_pattern_y_z_mm':[list(MOUNT_Y),list(MOUNT_Z)],
                           'mount_pattern_pitch_mm':[MOUNT_Y[1]-MOUNT_Y[0],MOUNT_Z[1]-MOUNT_Z[0]],
-                          'outside_fillet_mm':ROUND, 'window_fillet_mm':WINDOW_R,
+                          'outside_fillet_mm':ROUND, 'joint_fillet_mm':JOINT_R, 'window_fillet_mm':WINDOW_R,
+                          'ring_rail_width_mm':RAIL_W, 'chord_width_mm':2*CHORD_R,
+                          'leg_width_mm':[2*r for r in LEG_R], 'strut_width_mm':2*STRUT_R,
                           'case_width_hp':d.hp, 'case_side_panel_depth_mm':d.depth,
                           'socket_AF_mm':base.SPACER_SOCKET_AF, 'socket_depth_mm':base.SPACER_SOCKET_DEPTH},
               'checks':checks, 'print':{}, 'prototype':'not printed, load-tested or rated; do not carry by plates'}

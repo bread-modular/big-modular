@@ -36,7 +36,15 @@
       20.0
     ],
     "outside_fillet_mm": 2.0,
+    "joint_fillet_mm": 4.0,
     "window_fillet_mm": 6.0,
+    "ring_rail_width_mm": 8.0,
+    "chord_width_mm": 9.0,
+    "leg_width_mm": [
+      16.0,
+      10.0
+    ],
+    "strut_width_mm": 10.0,
     "case_width_hp": 42,
     "case_side_panel_depth_mm": 60,
     "socket_AF_mm": 5.7,
@@ -446,29 +454,29 @@
     },
     "joiner-left": {
       "print_bounds_mm": [
-        246.232,
-        246.321,
+        237.823,
+        237.724,
         16.0
       ],
-      "in_plane_print_rotation_deg": 37,
-      "solid_volume_cm3": 117.339,
+      "in_plane_print_rotation_deg": 38,
+      "solid_volume_cm3": 65.84,
       "STEP_STL_3MF_readback": "PASS",
-      "stl_facets": 13044,
+      "stl_facets": 11714,
       "mesh_closed_manifold": true,
-      "mesh_volume_cm3": 117.34
+      "mesh_volume_cm3": 65.84
     },
     "joiner-right": {
       "print_bounds_mm": [
-        246.321,
-        246.232,
+        237.724,
+        237.823,
         16.0
       ],
-      "in_plane_print_rotation_deg": 53,
-      "solid_volume_cm3": 117.339,
+      "in_plane_print_rotation_deg": 52,
+      "solid_volume_cm3": 65.84,
       "STEP_STL_3MF_readback": "PASS",
-      "stl_facets": 13044,
+      "stl_facets": 11714,
       "mesh_closed_manifold": true,
-      "mesh_volume_cm3": 117.34
+      "mesh_volume_cm3": 65.84
     },
     "fit-socket": {
       "print_bounds_mm": [
@@ -500,30 +508,30 @@
   "prototype": "not printed, load-tested or rated; do not carry by plates",
   "assembly_bounds_xyz_mm": [
     258.7,
-    288.0,
+    284.0,
     185.748
   ],
   "export_sha256": {
-    "cad/angle-joiner-assembly.FCStd": "05c509b4db7940eb4519883836ae785ad37076d2136ebb7e99c892dd4208245a",
-    "cad/angle-joiner-parts.FCStd": "3c142bb71972d5fa94e00dc60d2e94cfdcca861c651c70b7097da384e6d5a9e1",
-    "print/side panels/angle-joiner/assembly-preview.step": "268b32fadc083f11ff0090360d5ee849afef60ccf3592187ef6fa1f8cb974621",
-    "print/side panels/angle-joiner/fit-plate.3mf": "99fd4a0a0ed463d040a8b6db568c8caf6918f1c0d2b56dc36d4ea5cf175b7e40",
-    "print/side panels/angle-joiner/fit-plate.step": "340645530d33f23da9a1d0cdfcac739806ccaf59cc71e478ac1e65b8a76457b5",
+    "cad/angle-joiner-assembly.FCStd": "3b810974f741c746300151d0bac5cbff2987c8638bbf6ffc7e3be66c1ec57a28",
+    "cad/angle-joiner-parts.FCStd": "0097150ce007b30f4ee4c06a82c2859b02859c9fd47e9a6732eb36f6aecfbda2",
+    "print/side panels/angle-joiner/assembly-preview.step": "c1b37c2b58840ac674125728b407bc167987d7d223d6e916a1269f84073b905f",
+    "print/side panels/angle-joiner/fit-plate.3mf": "197c3430f886bff7275424b6a5ea7249105a95a94582be4b8b058595ca458347",
+    "print/side panels/angle-joiner/fit-plate.step": "76ea42d458a5b1efa1953d50e5bd92c3e9a62f24e7b2817b164c2fcf041754ad",
     "print/side panels/angle-joiner/fit-plate.stl": "43ca915b7a3d9da900be092d7b21391d13042913ce3a4dfce6b33734d2bffdbe",
-    "print/side panels/angle-joiner/fit-socket.3mf": "1adc1c31f0c0ed3bc85574353014b0dbbada9c8225c1158568fbd91c71334907",
-    "print/side panels/angle-joiner/fit-socket.step": "fac040419a870b372f6efecc9c16b6338f10522f186cec09aae532fa727b1fc2",
+    "print/side panels/angle-joiner/fit-socket.3mf": "d84aa618f47e1fe72572a6360358533aa57e46c2a6402215d630eafcb0bc93f1",
+    "print/side panels/angle-joiner/fit-socket.step": "46b008b9a9707660ab37a4dd474e2cffbecb1d80bddc366a59dae3cfddaf395a",
     "print/side panels/angle-joiner/fit-socket.stl": "a7e7bf05b4be59d1877c5e971e9574a3f989a9c6ce37070efbf8bd4a1586768e",
-    "print/side panels/angle-joiner/joiner-left.3mf": "42dde1576aeef940c930f70cefb146999fb1a72d44bb49fb155c02692978ff75",
-    "print/side panels/angle-joiner/joiner-left.step": "310215734b2d5f9efcf4c5368b92f3ee2ffa6665a1acbcbd8abe9e372f5b6a98",
-    "print/side panels/angle-joiner/joiner-left.stl": "80b555377ef489adee7f8add0d18581b2c9f347d6f9bca02fdbbb6a82a049527",
-    "print/side panels/angle-joiner/joiner-right.3mf": "9f6c1777765c253d23677eceb37b640e4cfccff8a2c89969002b02b6b8049b80",
-    "print/side panels/angle-joiner/joiner-right.step": "b7fd6f90727111cb412b2a1922f3705cd0c261f11f62e7327b722910d1124b1e",
-    "print/side panels/angle-joiner/joiner-right.stl": "828a2355fbf1cd4e98cfa66d026f932ee5cdf34c634d206379b0310272c87b59",
-    "print/side panels/angle-joiner/side-panel-left.3mf": "4c292da1104ab9028ba33c8bcb0f56e0c185e22262135d26daee49c0e70ebe33",
-    "print/side panels/angle-joiner/side-panel-left.step": "d7dbe1074359754ed97820b790ca4432d3dd7c28fad1fe4a2668aec2a763b385",
+    "print/side panels/angle-joiner/joiner-left.3mf": "3e6af88c9e9915263229ecd002f25eda4242e63f3cca0dd082df0250ddf906f4",
+    "print/side panels/angle-joiner/joiner-left.step": "9cfbfa484f59a710e093e40a9ec86c02b1b518e5dc5f83a127c7667407efab7b",
+    "print/side panels/angle-joiner/joiner-left.stl": "89eb5b75cfbeb0754c8a3cfb9330a6a8d909040b9e5ecf52f14f5eb7e3b09477",
+    "print/side panels/angle-joiner/joiner-right.3mf": "33831ca8568593e6f14435ed3d553d34cada8e5d9c6bfb13110c6269f1b5f9ce",
+    "print/side panels/angle-joiner/joiner-right.step": "d854ac4895b7e3225fd75bf5f1580be9d004881c0f87fe907f3d2b2c64c281fd",
+    "print/side panels/angle-joiner/joiner-right.stl": "a36bcabcaf1b7582828ca39ed3e361985145803d389af90db7d866135bc3cf70",
+    "print/side panels/angle-joiner/side-panel-left.3mf": "e75018a6e8c6ac9ee6cd57f15d8319bdf81fa97d194e83f5fea4e082f2109031",
+    "print/side panels/angle-joiner/side-panel-left.step": "8433415c7b184ff1b8735fa8ccd1302efb2b3a2c4233fbadda96290bb3431506",
     "print/side panels/angle-joiner/side-panel-left.stl": "0662057df24fcecc5e65958d98c0f821d58bfb3d875d5134a81b79a02d5988ee",
-    "print/side panels/angle-joiner/side-panel-right.3mf": "117cac66c28ec32bf72a6d1ce8465fd51ec1c277ac985a1111269d7baf5e8307",
-    "print/side panels/angle-joiner/side-panel-right.step": "55242b70643c0597dc5911508c7b830842ff1ef259003e46d42496af45087705",
+    "print/side panels/angle-joiner/side-panel-right.3mf": "4175d61bb964032ef5bbf55c38fc0ce2e5a71e22ac9a23f87b882e9723335a4a",
+    "print/side panels/angle-joiner/side-panel-right.step": "712422b56871c671f47f019a64f22ae898e8b5e24c0d12cefc4525d2be088f9d",
     "print/side panels/angle-joiner/side-panel-right.stl": "6517054c3f293719602c4e7d79c5a67c071022b8c2856584d08a3bf4c30c482a"
   }
 }

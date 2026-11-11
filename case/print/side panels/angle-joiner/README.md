@@ -22,18 +22,21 @@ fastener envelopes, not detailed threads or actual electronics.
 
 ## What changes
 
-- Print one left and one right **8 mm thick skeletal joiner plate**. Rounded
-  attachment pads, R2 outline blends and R6 small-window corners remove sharp
-  silhouette corners. The two rear legs and lower braces are part of the plates.
+- Print one left and one right **8 mm thick joiner plate**. Each plate is a
+  frame of bars, not a solid sheet: a ring around each case's four screws
+  (8 mm rails), two 9 mm bars between the rings, and a rear leg (16 mm tapering
+  to 10 mm) with a 10 mm strut down to the foot. Bars meet in R4 blends, outside
+  corners are R2 and the ring windows have R6 corners.
 - Replace both side panels on both cases: **two left panels and two right panels**.
   Each adds four M3 hex-spacer sockets. The original bottom sockets, rail notches,
   rail screw holes, lip and cover grooves remain unchanged.
 - Keep the original rails, bases, covers and their screws. No holes need to be
   drilled in the base, and no rail redesign is required.
-- The plates have two larger access openings near the joint for the original
-  rail screws. These are **not additional attachment holes**.
+- No bar covers an original rail screw. The two rail screws at the joint sit in
+  the opening between the two bars, so they stay reachable with the plates on.
 - Recesses on the inside clear the existing base's 3.15 mm side overhang by
-  0.50 mm; they leave 4.35 mm of plate material behind the base.
+  0.50 mm; they leave 4.35 mm of plate material behind the base. The leg and the
+  strut cross the upper case's base, so they are 4.35 mm thick there.
 - Each rear foot now has an enlarged **16 x 20 mm** flat adhesive platform for
   a **12 x 12 mm 3M rubber pad**. The platform is integral to the plate, 8 mm high,
   with R2 top-end fillets. Use two matching pads under the lower case's front
@@ -55,8 +58,8 @@ orientation; use the native assembly for assembled coordinates.
 
 | Part | Quantity | Purpose | Supplied print bounds, mm |
 | --- | ---: | --- | --- |
-| `joiner-left` | 1 | Left plate + rear foot | 246.232 x 246.321 x 16 |
-| `joiner-right` | 1 | Right plate + rear foot | 246.321 x 246.232 x 16 |
+| `joiner-left` | 1 | Left plate + rear foot | 237.823 x 237.724 x 16 |
+| `joiner-right` | 1 | Right plate + rear foot | 237.724 x 237.823 x 16 |
 | `side-panel-left` | 2 | Left case panel, original 1 HP lip | 60 x 132.5 x 17.08 |
 | `side-panel-right` | 2 | Right case panel | 60 x 132.5 x 12 |
 | `fit-socket` | 1 first | Small captured-spacer test block | 20 x 20 x 12 |
@@ -64,9 +67,9 @@ orientation; use the native assembly for assembled coordinates.
 
 The plates are mirrored parts, **not two copies of one file**. Their main web is
 8 mm thick; the rear adhesive-pad platform is 16 mm wide. Both are already rotated
-diagonally on the print bed (left 37 degrees, right 53 degrees). Preserve this
+diagonally on the print bed (left 38 degrees, right 52 degrees). Preserve this
 orientation: the unrotated plate is longer than the 256 mm bed. Centre it in the
-slicer. About 4.8 mm remains per side on a 256 mm square bed before adding a brim;
+slicer. About 9 mm remains per side on a 256 mm square bed before adding a brim;
 check the printer's actual exclusions, purge lines and skirt/brim, not just the
 nominal bed size. Do not scale the parts to fit.
 
@@ -179,6 +182,9 @@ instructions. Grip, adhesion, compression and long-term strength remain untested
    6 top/bottom layers, and 40–50% infill; make the screw-bearing and foot regions
    locally solid. This is a suggested starting profile, **not validated process
    data or a safe-load rating**. Use a known material/profile and inspect bonding.
+   With 6 perimeters the 8–10 mm bars are mostly wall already. OrcaSlicer 2.4.2
+   (Bambu Lab P2S 0.4, Bambu PETG HF) estimates **69 g per plate** at 45% infill
+   and 83 g at 100%; the previous solid-sheet plate was 108 g at 45%.
 4. Deburr holes and remove support residue without thinning the 1.8 mm capture
    shoulders or 2 mm screw seats. Reprint rather than hammering in tight spacers.
 
@@ -231,7 +237,34 @@ Checks include:
   measurement, lateral/torsional test, tip-force calculation, creep test, or
   structural rating. Both plates and all screws are required.
 
-The assembled bare footprint envelope is about **258.7 x 288 x 185.75 mm**
+### Load screening of the plate shape
+
+`case/tools/fea_angle_joiner.py` compares plate shapes in a linear static model
+(CalculiX, one plate alone, solid PETG with E = 2000 MPa, each case a rigid body
+on its four screws, the assembly standing on its four pads). The loads are
+**assumed**, per plate: 14.7 N weight per case (3 kg cases) in every row, plus
+one hand load. The table compares the previous sheet plate (117.3 cm3) with the
+current bar frame (65.8 cm3); a finer mesh (1.8 mm) changes the movements by
+less than 1%.
+
+| Load on one plate | Upper case top edge moves, mm (old -> new) | Highest stress, MPa (old -> new) |
+| --- | ---: | ---: |
+| Weight only | 0.06 -> 0.11 | 1.2 -> 2.0 |
+| 40 N push into the upper module face | 0.05 -> 0.11 | 2.1 -> 4.7 |
+| 30 N pull on the upper module face | 0.68 -> 1.02 | 4.7 -> 4.9 |
+| 50 N leaning down on the top edge | 0.15 -> 0.38 | 3.3 -> 7.0 |
+| 20 N sideways on the top edge | 0.38 -> 0.71 | 7.4 -> 6.8 |
+| 8 N dragging the foot sideways | 0.06 -> 0.12 | 6.2 -> 9.0 |
+| Lifted by the upper case | - | 1.8 -> 4.3 |
+| Lifted by the lower case | 0.21 -> 0.45 | 2.0 -> 2.9 |
+
+The frame moves about twice as much as the sheet did and stays near 1 mm at
+most. Its highest stress, 9 MPa, is in the leg where it thins to 4.35 mm over
+the upper case's base. PETG datasheets give roughly 40–50 MPa, which is not a
+measured value for this print. This is a **comparison of shapes, not a rating**:
+no layer adhesion, infill, creep, screw preload or printed-part test is in it.
+
+The assembled bare footprint envelope is about **258.7 x 284 x 185.75 mm**
 (width x front/back x height), excluding rubber-foot thickness, knobs and cables.
 
 ## Rebuild
@@ -239,6 +272,7 @@ The assembled bare footprint envelope is about **258.7 x 288 x 185.75 mm**
 ```sh
 case/tools/build_angle_joiner.sh
 python3 -B case/tools/check_angle_joiner.py
+case/tools/fea_angle_joiner.sh   # optional load screening, results in case/research/
 blender -b --python case/tools/render_angle_joiner.py -- \
   case/research/angle-joiner case/renders/angle-joiner
 ```
