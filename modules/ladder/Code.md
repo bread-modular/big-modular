@@ -1,4 +1,4 @@
-# ladder contract (S3 schematic, P2 placement)
+# ladder contract (S3 schematic, R2 routed carrier)
 
 | | |
 |---|---|
@@ -7,6 +7,7 @@
 | Circuit intent / source profile | `tools/build_schematic.py`, `tools/kicad-project.json` |
 | Placement contract | `docs/geometry.json`; native PCB owns SMD placement and copper once routing starts |
 | Circuit rationale, numbers, ngspice check | `docs/research.md`, `tools/sim_ladder.py` |
+| Fabrication outputs | `jlcpcb/` (shared exporter only; `jlcpcb/README.md`) |
 
 ## Fixed by the brief
 
@@ -24,8 +25,8 @@
   the undepthed envelope from the PB0 PWM (two RC poles) or the CV directly through U3.
 - **Panel** (user 2026-11-09: maximum panel space, more room for the knobs, modules/hats as the
   example): 10HP, knob grid 30 x 27 mm (CUTOFF + RES; ENV TIME + DEPTH; REC + CURVE), top jacks
-  MIDI / GATE / CV / RES CV, bottom AUDIO IN / FILTER OUT / VCA OUT. **Not routed** ("don't
-  route yet").
+  MIDI / GATE / CV / RES CV, bottom AUDIO IN / FILTER OUT / VCA OUT. **Routed** (R1 2026-11-09,
+  R2 fab-review fixes 2026-11-10); the native PCB owns placement and copper.
 
 ## Rules
 
@@ -61,3 +62,14 @@
   violations, parity 0, 294 unconnected (unrouted). Panel DRC 0.
 - `python3 -B tools/sim_ladder.py` (S2 core, unchanged): cutoff ~54 Hz .. 17.1 kHz, flat
   passband with resonance, self-oscillation from R_LDR ~2.5k (models, not measurements).
+
+## Verification (S3 / R2, 2026-11-10)
+
+- Shared `kicad_tools.py check --config modules/ladder/tools/kicad-project.json`: ERC 0, DRC 0
+  (no warnings, no exclusions), unconnected 0, parity 0; source manifest equal, exports
+  byte-identical (`research/fab-final/`). Panel DRC 0, 18 holes on the carrier part centres.
+- 734 tracks / 141 vias; no vias in SMD pads, no inner-layer tracks; In2 +12V_F one piece, In1
+  GND one main piece + four spoke-tied fragments (2.6 / 2.6 / 1.0 / 1.0 mm2).
+- Copper >= 1.2 mm and courtyards >= 1.08 mm from the edge; SMD pads >= 2.01 mm from pot / jack
+  pads (D9 - RV2).
+- Not supplier-accepted, not built, no firmware. Do not run `tools/build_layout.py` again.
