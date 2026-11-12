@@ -12,17 +12,23 @@ of the shaft knurl, so the knob is keyed to the shaft and cannot turn on it (use
 Thonk Tall Trimmer Toppers, a round tapered bore with grooves at the top that mate with the
 knurl). The tooth tips close in toward the bore roof (TIP_TAPER): the teeth drop into the knurl
 grooves and wedge tighter the further the knob is pushed on. There are no slits, pockets or thin
-walls: the solid wall around the bore is what keeps the teeth in the grooves under torque. The
-round bore is the same in every fit (BORE_D); a fit sets how deep the teeth reach into the knurl
-grooves (FITS). The fit gauge carries one break-off tile per fit for a test print. Grips 1 and 2
+walls: the solid wall around the bore is what keeps the teeth in the grooves under torque. A fit
+is the round bore and how deep the teeth reach into the knurl grooves (FITS). Grips 1 and 2
 (slit sleeve with spring fingers) were loose and wobbly in the user's test prints, grip 3 (square
 tapered bore, four thin walls, friction only) held but slipped on the shaft when the pot was
 turned hard against its end stop. Of the first grip 4 gauge, where bore and teeth shrank
 together, the loosest tile (`fit8`) dropped into the knurl and locked (all 2026-11-11): it is
-REF_FIT here, and the ladder varies the teeth around it in its bore.
+REF_FIT here. The `t1` .. `t8` ladder that followed kept that tile's Ø6.2 bore and varied only the
+teeth; its tightest knob, `t1`, was "not too tight" on the user's pots and the user asked for the
+hole to get smaller too (2026-11-12). The `h1` .. `h8` ladder has that `t1` in the middle (MID_FIT):
+toward `h1` the whole hole, bore and teeth, closes in; toward `h8` it is the old `t2` .. `t4`.
 
 The top face has a closed pointer pocket (POINTER_W x POINTER_DEPTH) to fill with a white
-paint pen. Fluted, slightly tapered side; the base diameter stays inside the panel's big-knob
+paint pen. The two-colour version of every knob has no pocket: its pointer is an inlay in a second
+filament (multi-material printer, sized for a Bambu Lab P2S with the 0.4 mm nozzle), INLAY_W wide
+from the knob centre out to INLAY_RIM short of the edge of the top face and INLAY_DEPTH = the
+first INLAY_LAYERS printed layers deep, so the print changes filament in those layers only. Its
+3MF is one object with two parts (body, pointer). Fluted, slightly tapered side; the base diameter stays inside the panel's big-knob
 reserve (tools/reference/panel.json big_knob, a reference panel with four big knobs in a row) and the script reports the clearances around it.
 
 Four widths (SIZES: wide, slim, slimmer, slimmest) share the same grip and height; the solid
@@ -43,13 +49,14 @@ the gap under it; the script checks them against every knob width, the pot and t
 
 Output frame = print orientation: Z0 = knob top face (pointer pocket) on the bed, open end
 up, no supports; pointer toward -Y. The puller lies flat on its side. Writes
-mechanical/knobs/<width>/*.step and *.stl, and mechanical/knobs/puller/.
+mechanical/knobs/<width>/*.step and *.stl, <width>/two-color/ and mechanical/knobs/puller/.
 Nominal geometry only: not test-printed, no physical-fit claim.
 """
 
 import json
 import math
 import os
+import zipfile
 from pathlib import Path
 
 import FreeCAD as App
@@ -90,21 +97,27 @@ SHAFT_L = 18.0           # shaft above the pot body top (user, measured 2026-11-
 SHAFT_PAST_PANEL = 13.0  # shaft tip above the panel front (user, "about 13 mm")
 SHAFT_PANEL_TOL = 0.3    # allowed between that and POT_BODY_H + SHAFT_L on either panel
 BORE_DEPTH = 11.5        # shaft tip stops on the bore roof: SHAFT_PAST_PANEL - 1.5 mm under the knob
-BORE_D = 6.2             # round bore where the teeth stand, every fit: the bore of REF_FIT, which goes on
+BORE_D = 6.2             # widest round bore where the teeth stand: the bore of REF_FIT, which goes on
 SPLINES = 20             # teeth in the bore: one for every second knurl groove
 SPLINE_L = 6.0           # teeth from the bore roof down; they stay on the knurl
 SPLINE_LEAD = 0.6        # below that the teeth run out to nothing
 TOOTH_ANGLE = 90.0       # included angle of a tooth
-TOOTH_GAP_MIN = 0.2      # bore wall left between two teeth: they print as separate ribs
+TOOTH_GAP_MIN = 0.18     # bore wall left between two teeth at the roof (0.19 in the Ø6.0 bore of `h1`)
 TIP_TAPER = 0.3          # tooth tip diameter, SPLINE_L below the roof minus at the roof
 GUIDE_DRAFT = 0.1        # round bore diameter, mouth minus the cylinder the teeth stand in
-# Tooth tip diameter at the bore roof = how deep the teeth reach into the knurl grooves, deepest
-# (tightest) first; the tooth height is (BORE_D - tip) / 2. REF_FIT is the tile the user picked
-# from the first grip 4 gauge (`fit8`: "goes to the groove and gets locked, workable"); the
-# ladder runs FIT_STEP at a time to both sides of it, in the same round bore.
+# A fit = (round bore diameter where the teeth stand, tooth tip diameter at the bore roof), tightest
+# first; the tooth height is (bore - tip) / 2. MID_FIT is the tightest knob of the ladder before
+# (`t1`, teeth only in the Ø6.2 bore), "not too tight" on the user's pots (2026-11-12). From it
+# toward `h1` the whole hole closes in, bore and tooth tips FIT_STEP at a time (user: "hole should
+# also get smaller"); toward `h8` only the teeth get shallower, in the BORE_D bore, which is as
+# loose as a bore needs to be: `h6` .. `h8` are the old `t2` .. `t4`. REF_FIT is the tile the user
+# picked from the first grip 4 gauge (`fit8`, later `t4`: "goes to the groove and gets locked,
+# workable").
 FIT_STEP = 0.05
-FITS = {'t1': 5.45, 't2': 5.5, 't3': 5.55, 't4': 5.6, 't5': 5.65, 't6': 5.7, 't7': 5.75, 't8': 5.8}
-REF_FIT = 't4'           # also the fit in the sections and the puller check
+FITS = {'h1': (6.0, 5.25), 'h2': (6.05, 5.3), 'h3': (6.1, 5.35), 'h4': (6.15, 5.4),
+        'h5': (6.2, 5.45), 'h6': (6.2, 5.5), 'h7': (6.2, 5.55), 'h8': (6.2, 5.6)}
+MID_FIT = 'h5'           # = old `t1`
+REF_FIT = 'h8'           # = old `t4` / `fit8`; also the fit in the sections and the puller check
 MOUTH_CHAMFER = 0.3
 LINE_W = 0.45            # printed line width, 0.4 mm nozzle: rounds the tooth tips (seat model only)
 SEAT_SHORT_MAX = 2.0     # a fit seats if the shaft tip stops within this of the bore roof
@@ -115,8 +128,21 @@ POINTER_DEPTH = 0.6
 POINTER_R0 = 1.5         # inner end (pocket centreline radius)
 POINTER_RIM = 0.8        # wall left between the pocket and the top chamfer
 
+# Two-colour knob: a pointer inlay in a second filament instead of the pocket, flush with the top face
+INLAY_W = 1.8            # user, 2026-11-12: 2.4 printed "too wide"
+INLAY_R0 = 0.0           # inner end from the knob centre
+INLAY_RIM = 1.0          # body left between the outer end and the top chamfer: two first-layer lines (user: "don't go close to the edge")
+FIRST_LAYER_H = 0.2      # Bambu Lab P2S, 0.4 mm nozzle: first layer height of every process profile
+FIRST_LAYER_LINE_W = 0.48    # and its first layer line width (120 % of the nozzle)
+LAYER_H = 0.2            # layer height the pointer depth is cut for (0.20 mm Standard)
+INLAY_LAYERS = 5         # user, 2026-11-12: five layers of the second colour (was one, then three)
+INLAY_DEPTH = round(FIRST_LAYER_H + (INLAY_LAYERS - 1) * LAYER_H, 6)
+INLAY_LINES_MIN = 3      # whole first-layer lines across the pointer
+INLAY_AREA_MIN = 4.5     # mm2 of pointer on the bed, so the small island sticks
+INLAY_ROOF_MIN = 0.8     # solid roof left between the pointer and the bore: four layers
+
 # Fit gauge: the eight knobs of one width in one print, numbered by notches in the base rim
-GAUGE_COLS = 4           # knobs in a row: t1 .. t4 behind, t5 .. t8 in front
+GAUGE_COLS = 4           # knobs in a row: h1 .. h4 behind, h5 .. h8 in front
 GAUGE_GAP = 3.0          # between two knobs at the base
 GAUGE_TURN = 45.0        # pointer pocket turned away from the links
 GAUGE_LINK = (1.2, 0.6, 0.3)   # break-off link between two knobs: width, height off the bed, end inside the top chamfer
@@ -151,25 +177,25 @@ def radius_at(size, z):
     return (size['d_base'] - (size['d_base'] - size['d_top']) * z / KNOB_H) / 2
 
 
-def tip_r(fit_d, z):
+def tip_r(fit, z):
     """Tooth tip radius at a height in the knob frame: TIP_TAPER wider SPLINE_L below the roof."""
-    return fit_d / 2 + TIP_TAPER / 2 * (BORE_DEPTH - z) / SPLINE_L
+    return fit[1] / 2 + TIP_TAPER / 2 * (BORE_DEPTH - z) / SPLINE_L
 
 
-def tooth_h(fit_d):
+def tooth_h(fit):
     """Tooth height at the bore roof: round bore radius minus tooth tip radius."""
-    return (BORE_D - fit_d) / 2
+    return (fit[0] - fit[1]) / 2
 
 
-def tooth(fit_d):
+def tooth(fit):
     """One tooth on +X: a triangular rib left standing in the round bore, flat flanks. Its tip
-    runs from the bore wall (SPLINE_LEAD below the teeth) in to fit_d / 2 at the roof."""
-    wall = BORE_D / 2
+    runs from the bore wall (SPLINE_LEAD below the teeth) in to the fit's tip radius at the roof."""
+    wall = fit[0] / 2
     back = wall + 0.2                      # root inside the knob wall
     flank = math.tan(math.radians(TOOTH_ANGLE / 2))
     z_s = BORE_DEPTH - SPLINE_L
     wires = []
-    for z, tip in ((z_s - SPLINE_LEAD, wall), (z_s, tip_r(fit_d, z_s)), (BORE_DEPTH + 0.5, tip_r(fit_d, BORE_DEPTH + 0.5))):
+    for z, tip in ((z_s - SPLINE_LEAD, wall), (z_s, tip_r(fit, z_s)), (BORE_DEPTH + 0.5, tip_r(fit, BORE_DEPTH + 0.5))):
         half = (back - tip) * flank
         wires.append(Part.makePolygon([V(tip, 0, z), V(back, half, z), V(back, -half, z), V(tip, 0, z)]))
     solid = Part.makeLoft(wires, True, True)
@@ -180,11 +206,11 @@ def tooth(fit_d):
 BORES = {}
 
 
-def bore(fit_d):
+def bore(fit):
     """Blind bore (the solid to cut): round, a cylinder where the teeth stand and GUIDE_DRAFT
     wider at the chamfered mouth, minus the SPLINES teeth, which close in toward the roof."""
-    if fit_d not in BORES:
-        wall = BORE_D / 2
+    if fit not in BORES:
+        wall = fit[0] / 2
         z0, z_g = -1.0, BORE_DEPTH - SPLINE_L - SPLINE_LEAD
 
         def guide(z):
@@ -196,24 +222,25 @@ def bore(fit_d):
                                      MOUTH_CHAMFER - z0, V(0, 0, z0))).removeSplitter()
         teeth = []
         for k in range(SPLINES):
-            teeth.append(tooth(fit_d))
+            teeth.append(tooth(fit))
             teeth[-1].rotate(V(0, 0, 0), V(0, 0, 1), k * 360 / SPLINES)
         cut = cut.cut(teeth)
         assert cut.isValid() and len(cut.Solids) == 1, 'bore must be one valid solid'
-        BORES[fit_d] = cut
-    return BORES[fit_d]
+        BORES[fit] = cut
+    return BORES[fit]
 
 
-def seat(fit_d, shaft_d):
+def seat(fit, shaft_d):
     """Where the knurled shaft stops in the bore, printed to size (geometry only, not measured).
     Model: the knurl is KNURL_TEETH symmetric V grooves KNURL_DEPTH deep; a printed tooth tip is
     rounded to half a line width and seats on both flanks of a groove."""
+    bore_d, fit_d = fit
     half = math.radians(TOOTH_ANGLE / 2)
     printed_tip = fit_d / 2 + LINE_W / 2 * (1 / math.sin(half) - 1)        # tip radius at the roof
     groove = math.atan(math.pi * shaft_d / KNURL_TEETH / 2 / KNURL_DEPTH)  # half angle
     seat_r = shaft_d / 2 - KNURL_DEPTH + LINE_W / 2 * (1 / math.sin(groove) - 1)
     short = (seat_r - printed_tip) / (TIP_TAPER / 2 / SPLINE_L)   # shaft tip to the roof when the teeth seat
-    bore_clear = (BORE_D - shaft_d) / 2                           # round bore to the shaft, radial
+    bore_clear = (bore_d - shaft_d) / 2                           # round bore to the shaft, radial
     if bore_clear < -1e-9 or short > SPLINE_L:
         state = 'does not go on'
     elif short > SEAT_SHORT_MAX:
@@ -256,11 +283,36 @@ def pointer_pocket(size):
     return slot.removeSplitter(), r1 + POINTER_W / 2
 
 
-def knob(size, fit_d):
+def knob(size, fit):
     """Knob in the knob frame (open end at Z0)."""
-    body = shell(size).cut(bore(fit_d))
+    body = shell(size).cut(bore(fit))
     pocket, _ = pointer_pocket(size)
     body = body.cut(pocket).removeSplitter()
+    assert body.isValid() and len(body.Solids) == 1, 'knob must be one valid solid'
+    return body
+
+
+def pointer_inlay(size):
+    """Second-colour pointer (knob frame): a bar with round ends in the top INLAY_DEPTH of the
+    knob, from INLAY_R0 out to INLAY_RIM short of the top chamfer, so the body closes around it
+    in every layer."""
+    z = KNOB_H - INLAY_DEPTH
+    y0 = INLAY_R0 + INLAY_W / 2
+    y1 = size['d_top'] / 2 - TOP_CHAMFER - INLAY_RIM - INLAY_W / 2
+    assert y1 > y0, 'no room for the pointer'
+    inlay = Part.makeBox(INLAY_W, y1 - y0, INLAY_DEPTH, V(-INLAY_W / 2, y0, z))
+    for y in (y0, y1):
+        inlay = inlay.fuse(Part.makeCylinder(INLAY_W / 2, INLAY_DEPTH, V(0, y, z)))
+    inlay = inlay.removeSplitter()
+    assert inlay.isValid() and len(inlay.Solids) == 1, 'pointer inlay must be one valid solid'
+    assert math.isclose(inlay.common(shell(size)).Volume, inlay.Volume, abs_tol=1e-6), 'pointer inlay must be inside the knob'
+    return inlay
+
+
+def knob_two_color(size, fit, inlay):
+    """Body of the two-colour knob (knob frame): the knob with the inlay cut out instead of the
+    pointer pocket."""
+    body = shell(size).cut(bore(fit)).cut(inlay).removeSplitter()
     assert body.isValid() and len(body.Solids) == 1, 'knob must be one valid solid'
     return body
 
@@ -300,11 +352,11 @@ def gauge(size):
     span = pitch - 2 * foot + 2 * link_in
     rows = math.ceil(len(FITS) / GAUGE_COLS)
     strip, voids = None, []
-    for i, fit_d in enumerate(FITS.values()):
+    for i, fit in enumerate(FITS.values()):
         col, row = i % GAUGE_COLS, i // GAUGE_COLS
         x, y = (col - (GAUGE_COLS - 1) / 2) * pitch, ((rows - 1) / 2 - row) * pitch
-        body = knob(size, fit_d).cut(fit_notches(size, i + 1))
-        void = bore(fit_d).fuse(pointer_pocket(size)[0])
+        body = knob(size, fit).cut(fit_notches(size, i + 1))
+        void = bore(fit).fuse(pointer_pocket(size)[0])
         for shape in (body, void):
             shape.rotate(V(0, 0, 0), V(0, 0, 1), GAUGE_TURN)
         body, void = to_print(body), to_print(void)
@@ -500,6 +552,61 @@ def export(shape, folder, name):
     return mesh.CountFacets
 
 
+TMF_TYPES = """<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+ <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+ <Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/>
+ <Default Extension="config" ContentType="text/xml"/>
+</Types>
+"""
+TMF_RELS = """<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+ <Relationship Target="/3D/3dmodel.model" Id="rel-1" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>
+</Relationships>
+"""
+
+
+def export_two_color(parts, folder, name):
+    """One 3MF with one object made of one part per colour, in the same print frame (body first,
+    then the pointer). The parts are components of the one build item, and
+    Metadata/model_settings.config (Bambu Studio / OrcaSlicer) names them and gives part N
+    filament N. Two build items load as two objects in OrcaSlicer, the pointer (2 to 5 mm3) as a
+    tiny object of its own. Returns the facet counts."""
+    model = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">',
+             ' <metadata name="Application">big-modular mechanical/knobs/tools/build_knobs.py</metadata>',
+             ' <resources>']
+    config = ['<?xml version="1.0" encoding="UTF-8"?>', '<config>', f'  <object id="{len(parts) + 1}">',
+              f'    <metadata key="name" value="{name}"/>', '    <metadata key="extruder" value="1"/>']
+    facets = {}
+    for i, (label, shape) in enumerate(parts, 1):
+        mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.01, AngularDeflection=0.1)
+        assert mesh.isSolid() and not mesh.hasNonManifolds(), (name, label)
+        points, tris = mesh.Topology
+        model += [f'  <object id="{i}" name="{label}" type="model">', '   <mesh>', '    <vertices>']
+        model += [f'     <vertex x="{p.x:.6g}" y="{p.y:.6g}" z="{p.z:.6g}"/>' for p in points]
+        model += ['    </vertices>', '    <triangles>']
+        model += [f'     <triangle v1="{a}" v2="{b}" v3="{c}"/>' for a, b, c in tris]
+        model += ['    </triangles>', '   </mesh>', '  </object>']
+        config += [f'    <part id="{i}" subtype="normal_part">', f'      <metadata key="name" value="{label}"/>',
+                   f'      <metadata key="extruder" value="{i}"/>', '    </part>']
+        facets[label] = len(tris)
+    model += [f'  <object id="{len(parts) + 1}" name="{name}" type="model">', '   <components>']
+    model += [f'    <component objectid="{i}"/>' for i in range(1, len(parts) + 1)]
+    model += ['   </components>', '  </object>', ' </resources>', ' <build>',
+              f'  <item objectid="{len(parts) + 1}"/>', ' </build>', '</model>']
+    config += ['  </object>', '</config>']
+    with zipfile.ZipFile(OUT / folder / f'{name}.3mf', 'w') as archive:
+        for path, text in (('[Content_Types].xml', TMF_TYPES), ('_rels/.rels', TMF_RELS),
+                           ('3D/3dmodel.model', '\n'.join(model) + '\n'),
+                           ('Metadata/model_settings.config', '\n'.join(config) + '\n')):
+            # fixed date: a rebuild writes the same bytes
+            info = zipfile.ZipInfo(path, (2026, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            archive.writestr(info, text)
+    return facets
+
+
 def pot_on_knob():
     """RV09 proxy in the knob frame: shaft on the Z axis, shaft tip on the bore roof. The proxy
     shaft is stretched to the measured SHAFT_L; returns the pot and its tip height above the carrier."""
@@ -563,7 +670,9 @@ def space(size, pot_top):
 
 def build(key, size, pot, pot_top):
     """Export every fit of one width and its fit gauge to its folder; returns its report."""
-    (OUT / key).mkdir(parents=True, exist_ok=True)
+    two = f'{key}/two-color'
+    (OUT / two).mkdir(parents=True, exist_ok=True)
+    inlay = pointer_inlay(size)
     shaft = Part.makeCylinder(SHAFT_D / 2, BORE_DEPTH)
     wall = {'bore_to_flute_min': round(radius_at(size, BORE_DEPTH) - size['flute_depth'] - BORE_D / 2, 3),
             'base_face': round(size['d_base'] / 2 - BASE_CHAMFER - (BORE_D + GUIDE_DRAFT) / 2 - MOUTH_CHAMFER, 3),
@@ -576,6 +685,19 @@ def build(key, size, pot, pot_top):
                                     'r': [POINTER_R0 - POINTER_W / 2, round(pointer_pocket(size)[1], 3)]},
               'wall_mm': wall, 'space_mm': space(size, pot_top), 'fits': {}}
     base = f'{NAME}-{key}'
+    # the pointer: a rim of body around it, a solid roof under it, wide enough for whole lines, a
+    # big enough island on the bed
+    on_bed = to_print(inlay).common(Part.makeBox(40, 40, 1e-3, V(-20, -20, 0))).Volume / 1e-3
+    report['two_color'] = {
+        'pointer_mm': {'w': INLAY_W, 'depth': INLAY_DEPTH, 'layers': INLAY_LAYERS, 'layer_h': LAYER_H,
+                       'r': [INLAY_R0, round(inlay.BoundBox.YMax, 3)],
+                       'to_top_face_edge': round(size['d_top'] / 2 - TOP_CHAMFER - inlay.BoundBox.YMax, 3),
+                       'first_layer_lines': round(INLAY_W / FIRST_LAYER_LINE_W, 2), 'on_bed_mm2': round(on_bed, 2),
+                       'volume_mm3': round(inlay.Volume, 2)},
+        'top_under_pointer': round(KNOB_H - BORE_DEPTH - INLAY_DEPTH, 3), 'fits': {}}
+    assert INLAY_RIM >= 2 * FIRST_LAYER_LINE_W and INLAY_W >= INLAY_LINES_MIN * FIRST_LAYER_LINE_W, report['two_color']
+    assert on_bed >= INLAY_AREA_MIN and report['two_color']['top_under_pointer'] >= INLAY_ROOF_MIN, report['two_color']
+    to_print(inlay).exportStep(str(OUT / two / f'{base}-pointer.step'))
     for fit, fit_d in FITS.items():
         body = knob(size, fit_d)
         # the pot model's shaft is a plain nominal cylinder, no knurl: the teeth reach into it.
@@ -586,9 +708,18 @@ def build(key, size, pot, pot_top):
             SHAFT_D / 2, BORE_DEPTH - KNURL_L))[0] > 0, 'the plain shaft must be free'
         name = f'{base}-{fit}'
         report['fits'][fit] = {
-            'file': name, 'tip_d_roof': fit_d, 'tooth_h_roof': round(tooth_h(fit_d), 3),
+            'file': name, 'bore_d': fit_d[0], 'tip_d_roof': fit_d[1], 'tooth_h_roof': round(tooth_h(fit_d), 3),
             'in_nominal_plain_shaft_mm3': round(in_shaft, 3), 'volume_mm3': round(body.Volume, 1),
             'facets': export(to_print(body), key, name)}
+        # two-colour version: no pocket; body + pointer inlay make up the plain knob shape exactly
+        body2 = knob_two_color(size, fit_d, inlay)
+        assert body2.common(inlay).Volume < 1e-6, 'pointer inlay overlaps the knob'
+        filled = shell(size).cut(bore(fit_d))
+        assert math.isclose(body2.Volume + inlay.Volume, filled.Volume, abs_tol=1e-4), 'pointer inlay leaves a gap'
+        assert len(body2.fuse(inlay).removeSplitter().Solids) == 1, 'pointer inlay must touch the knob'
+        report['two_color']['fits'][fit] = {
+            'file': f'{name}-two-color',
+            'facets': export_two_color([('body', to_print(body2)), ('pointer', to_print(inlay))], two, f'{name}-two-color')}
         if fit == REF_FIT:
             half = Part.makeBox(40, 40, 40, V(0, -20, -10))
             for part, shape in (('knob', body.cut(half)), ('pot', pot.cut(half))):
@@ -612,24 +743,27 @@ def main():
     # every tooth has a knurl groove to drop into, and the teeth end on the knurl with the knob on the roof
     assert KNURL_TEETH % SPLINES == 0 and SPLINE_L + SPLINE_LEAD < KNURL_L
     z_s = BORE_DEPTH - SPLINE_L
-    pitch = math.pi * BORE_D / SPLINES
     flank = 2 * math.tan(math.radians(TOOTH_ANGLE / 2))     # tooth base width per tooth height
     grip_report = {'knurl': {'teeth': KNURL_TEETH, 'length': KNURL_L, 'depth_assumed': KNURL_DEPTH,
                              'pitch': round(math.pi * SHAFT_D / KNURL_TEETH, 3)},
                    'teeth': SPLINES, 'tooth_angle_deg': TOOTH_ANGLE, 'tooth_length': SPLINE_L, 'tooth_lead': SPLINE_LEAD,
-                   'tooth_pitch': round(pitch, 3),
-                   'between_teeth_min': round(pitch - tooth_h(min(FITS.values())) * flank, 3),
+                   'tooth_pitch': [round(math.pi * min(FITS.values())[0] / SPLINES, 3), round(math.pi * BORE_D / SPLINES, 3)],
+                   'between_teeth_min': round(min(math.pi * f[0] / SPLINES - tooth_h(f) * flank for f in FITS.values()), 3),
                    'tip_taper_d': TIP_TAPER, 'tip_deg': round(math.degrees(math.atan(TIP_TAPER / 2 / SPLINE_L)), 2),
                    'fit_step_d': FIT_STEP, 'seat_per_fit_step': round(FIT_STEP / (TIP_TAPER / SPLINE_L), 2),
-                   'bore_d': [BORE_D, BORE_D + GUIDE_DRAFT], 'ref_fit': REF_FIT, 'fits': {}}
-    # every fit still has teeth at their lower end, the teeth stay separate ribs and the ladder is even
-    assert tooth_h(max(FITS.values())) > TIP_TAPER / 2 and pitch > 2 * LINE_W, grip_report
-    assert grip_report['between_teeth_min'] >= TOOTH_GAP_MIN, grip_report
-    tips = list(FITS.values())
-    assert all(math.isclose(b - a, FIT_STEP, abs_tol=1e-9) for a, b in zip(tips, tips[1:])), tips
+                   'guide_draft_d': GUIDE_DRAFT, 'mid_fit': MID_FIT, 'ref_fit': REF_FIT, 'fits': {}}
+    # every fit still has teeth at their lower end, the teeth stay separate ribs and the ladder is
+    # even: the tooth tips step all the way, the bore steps with them up to MID_FIT and stays at
+    # BORE_D from there on
+    assert min(tooth_h(f) for f in FITS.values()) > TIP_TAPER / 2, grip_report
+    assert grip_report['tooth_pitch'][0] > 2 * LINE_W and grip_report['between_teeth_min'] >= TOOTH_GAP_MIN, grip_report
+    fits, mid = list(FITS.values()), list(FITS).index(MID_FIT)
+    assert all(math.isclose(b[1] - a[1], FIT_STEP, abs_tol=1e-9) for a, b in zip(fits, fits[1:])), fits
+    assert all(math.isclose(f[0], min(BORE_D, BORE_D + (i - mid) * FIT_STEP), abs_tol=1e-9) for i, f in enumerate(fits)), fits
     for fit, fit_d in FITS.items():
         grip_report['fits'][fit] = {
-            'tip_d': [fit_d, round(2 * tip_r(fit_d, z_s), 3)],
+            'bore_d': [fit_d[0], round(fit_d[0] + GUIDE_DRAFT, 3)],
+            'tip_d': [fit_d[1], round(2 * tip_r(fit_d, z_s), 3)],
             'tooth_h': [round(tooth_h(fit_d), 3), round(tooth_h(fit_d) - TIP_TAPER / 2, 3)],
             'tooth_base_w': round(tooth_h(fit_d) * flank, 3),
             'on_shaft': {str(d): seat(fit_d, d) for d in (SHAFT_D_MIN, SHAFT_D)}}
