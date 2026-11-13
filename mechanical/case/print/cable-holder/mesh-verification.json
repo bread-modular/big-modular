@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "output_hashes_verified": 9,
+  "meshes": {
+    "cable-holder-panel": {
+      "closed_oriented_connected": true,
+      "vertices": 168,
+      "triangles": 348,
+      "volume_mm3": 25533.653,
+      "mesh_bounds_mm": [
+        224.10001,
+        47.8,
+        5.0
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 3.16e-05
+    },
+    "cable-holder-joiner-60": {
+      "closed_oriented_connected": true,
+      "vertices": 2520,
+      "triangles": 5036,
+      "volume_mm3": 22784.722,
+      "mesh_bounds_mm": [
+        100.0,
+        61.14825,
+        9.55589
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 5.83e-05
+    },
+    "cable-holder-stand-40": {
+      "closed_oriented_connected": true,
+      "vertices": 2520,
+      "triangles": 5036,
+      "volume_mm3": 30297.435,
+      "mesh_bounds_mm": [
+        100.0,
+        58.85629,
+        14.27391
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 5.83e-05
+    }
+  }
+}
