@@ -1,7 +1,7 @@
-# lyra4 MCC firmware (ATtiny1616)
+# cpx4 MCC firmware (ATtiny1616)
 
-Custom firmware for the two MCC modules that play the 16bit `lyra4` app
-(`../16bit/includes/audio/apps/lyra4_app.h`). It is
+Custom firmware for the two MCC modules that play the 16bit `cpx4` app
+(`../16bit/includes/audio/apps/cpx4_app.h`). It is
 `modules/mcc/firmware/mcc/mcc.ino` with two changes:
 
 - **The bank is fixed at build time** (`MCC_UNIT`): there is no bank switching.
@@ -25,7 +25,7 @@ CC and realtime message passed through. Chain them
 `sequencer -> MCC-1 -> MCC-2 -> 16bit`: MCC-2 passes MCC-1's CCs and the
 clock (for the 16bit motion recorder) through.
 
-`SimpleMIDI.h` and `ModeHandler.h` in `lyra4_mcc/` are symlinks to the MCC
+`SimpleMIDI.h` and `ModeHandler.h` in `cpx4_mcc/` are symlinks to the MCC
 firmware's files, so a fix there applies to both firmwares.
 
 ## Use
@@ -43,6 +43,6 @@ J4 (UPDI) with the module powered from the ±12 V header. Flashing the stock
 MCC firmware back (`modules/mcc/firmware/flash.sh`) restores the banks.
 
 Built with arduino-cli 2026-11-12 (megaTinyCore 2.6.11): units 1 / 2 for
-`p` 3927 B flash, `d` 3917 B, 197 B RAM. `../16bit/tools/sim_lyra4.cpp`
+`p` 3927 B flash, `d` 3917 B, 197 B RAM. `../16bit/tools/sim_cpx4.cpp`
 checks that the CC numbers and step values here match the 16bit control map.
 Not bench-tested.

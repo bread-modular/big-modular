@@ -1,5 +1,5 @@
 // Host self-tests for the free-running (no MIDI clock) motion recorder used by
-// the lyra4 app: loop length from two MODE presses, playback timing, overdub
+// the cpx4 app: loop length from two MODE presses, playback timing, overdub
 // hold, loop offset, LED. No Pico SDK or hardware.
 
 #include "audio/apps/free_motion_recorder.h"

@@ -62,7 +62,7 @@ the module powered from the ±12 V header.
   into this one.
 - `SimpleMIDI.h`, `ModeHandler.h`, `LEDToggler.h` are the BM files, unchanged.
   `SimpleMIDI.h` and `ModeHandler.h` are also used (symlinked) by the 16bit
-  lyra4 MCC firmware, `modules/16bit/firmware/mcc/` (bank fixed, BANK button
+  cpx4 MCC firmware, `modules/16bit/firmware/mcc/` (bank fixed, BANK button
   = a 3-step selector CC).
 
 Built with arduino-cli 2026-11-04 (megaTinyCore 2.6.11), `p` / `d`: 3970 / 3960 B

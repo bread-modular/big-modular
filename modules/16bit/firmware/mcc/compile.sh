@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# compile.sh — build the lyra4 MCC firmware for one JP1 setting and unit.
+# compile.sh — build the cpx4 MCC firmware for one JP1 setting and unit.
 #
 # Usage:
 #   ./compile.sh            # pick JP1 and the unit interactively

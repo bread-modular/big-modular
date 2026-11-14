@@ -1,9 +1,9 @@
-// Host test of the lyra4 app DSP (includes/audio/apps/lyra4/lyra4_dsp.h) and
-// its control map (lyra4_controls.h): every control is driven the way the app
+// Host test of the cpx4 app DSP (includes/audio/apps/cpx4/cpx4_dsp.h) and
+// its control map (cpx4_controls.h): every control is driven the way the app
 // drives it (knob ADC value or MCC CC) and checked for doing what it is for,
 // and only that, on the rendered output. Run through ../test.sh.
 //
-//   ./.build/host/sim_lyra4 --wav <dir>   # also write listening WAVs to <dir>
+//   ./.build/host/sim_cpx4 --wav <dir>   # also write listening WAVs to <dir>
 
 #include <cmath>
 #include <complex>
@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 
-#include "audio/apps/lyra4/lyra4_controls.h"
+#include "audio/apps/cpx4/cpx4_controls.h"
 #include "audio/apps/motion_recorder.h"
 
 static int checks = 0;
@@ -31,7 +31,7 @@ static int failures = 0;
         }                                                 \
     } while (0)
 
-namespace lc = lyra4_controls;
+namespace lc = cpx4_controls;
 using Buf = std::vector<float>;
 
 static const float SR = 44100.0f;
@@ -49,7 +49,7 @@ static double dbp(double powerRatio) { return 10.0 * log10(powerRatio + 1e-30); 
 // A DSP in a known state: every control set as the app sets it (CC values,
 // knob ADC values), then init (as app init(): controls first).
 struct Rig {
-    Lyra4Dsp dsp;
+    Cpx4Dsp dsp;
     uint8_t cc[8];
     Rig() {
         for (int i = 0; i < 8; i++) cc[i] = lc::SEED_CC[i];
@@ -289,11 +289,11 @@ static void testControlMap() {
     printf("  control map: 8 recorded CCs, 2 buttons, each moves only its parameter\n");
 }
 
-// The lyra4 MCC firmware (../mcc/lyra4_mcc/lyra4_mcc.ino) sends what this
+// The cpx4 MCC firmware (../mcc/cpx4_mcc/cpx4_mcc.ino) sends what this
 // map reads: unit 1 Bank A + CC102, unit 2 Bank B + CC103, steps 0 / 64 / 127.
 static void testMccFirmwareContract() {
-    std::ifstream f("../mcc/lyra4_mcc/lyra4_mcc.ino");
-    CHECK(f.good(), "lyra4_mcc.ino not found (run from 16bit/)");
+    std::ifstream f("../mcc/cpx4_mcc/cpx4_mcc.ino");
+    CHECK(f.good(), "cpx4_mcc.ino not found (run from 16bit/)");
     if (!f.good()) return;
     std::stringstream ss;
     ss << f.rdbuf();
@@ -314,17 +314,17 @@ static void testMccFirmwareContract() {
 }
 
 static void testTune() {
-    // Every TUNE knob covers the full A0..A7 range (as on Lyra); the
+    // Every TUNE knob covers the full A0..A7 range (as on the Lyra-8); the
     // curves differ: at each knob position voice 1 is lowest, voice 4
     // highest, and each voice spends most of its travel in its own register.
     const double centreHz[4] = {92.5, 191.5, 505.4, 1046.5};
     for (int k = 0; k < 4; k++) {
         Rig r;
-        r.tune(k, Lyra4Dsp::MUTE_ON); r.run(20000);
+        r.tune(k, Cpx4Dsp::MUTE_ON); r.run(20000);
         double f0 = r.dsp.getVoiceHz(k);
         r.tune(k, 1.0f); r.run(20000);
         double f1 = r.dsp.getVoiceHz(k);
-        r.tune(k, Lyra4Dsp::MUTE_ON + 0.5f * (1.0f - Lyra4Dsp::MUTE_ON)); r.run(20000);
+        r.tune(k, Cpx4Dsp::MUTE_ON + 0.5f * (1.0f - Cpx4Dsp::MUTE_ON)); r.run(20000);
         double fc = r.dsp.getVoiceHz(k);
         // Within the drift (4 cents = 0.23 %).
         CHECK(fabs(f0 / 27.5 - 1.0) < 0.003 && fabs(f1 / 3520.0 - 1.0) < 0.003,
@@ -338,7 +338,7 @@ static void testTune() {
         for (int i = 1; i < 100; i++) {
             float t = i / 100.0f;
             for (int v = 0; v < 3; v++) {
-                if (Lyra4Dsp::tuneOctaves(v, t) >= Lyra4Dsp::tuneOctaves(v + 1, t)) ordered = false;
+                if (Cpx4Dsp::tuneOctaves(v, t) >= Cpx4Dsp::tuneOctaves(v + 1, t)) ordered = false;
             }
         }
         CHECK(ordered, "TUNE curves ordered voice 1 < 2 < 3 < 4");
@@ -347,7 +347,7 @@ static void testTune() {
         for (int v = 0; v < 4; v++) {
             int low = 0, high = 0;
             for (int i = 0; i < 1000; i++) {
-                double hz = 27.5 * pow(2.0, Lyra4Dsp::tuneOctaves(v, (i + 0.5f) / 1000.0f));
+                double hz = 27.5 * pow(2.0, Cpx4Dsp::tuneOctaves(v, (i + 0.5f) / 1000.0f));
                 if (hz < 220.0) low++;
                 if (hz > 880.0) high++;
             }
@@ -378,7 +378,7 @@ static void testTune() {
             if (v == k) continue;
             double drift = 1200.0 * log2(fMoved[v] / fOthers[v]);
             double h = peakHz(pa, fOthers[v] * 0.97, fOthers[v] * 1.03);
-            CHECK(fabs(drift) < 2.0 * Lyra4Dsp::DRIFT_CENTS && fabs(1200.0 * log2(h / fOthers[v])) < 10.0,
+            CHECK(fabs(drift) < 2.0 * Cpx4Dsp::DRIFT_CENTS && fabs(1200.0 * log2(h / fOthers[v])) < 10.0,
                   "TUNE %d moved voice %d (%.1f cents)", k + 1, v + 1, drift);
         }
         printf("  TUNE %d: voice %d heard at %.2f Hz (set %.2f, %+.1f cents), others unchanged\n",
@@ -386,7 +386,7 @@ static void testTune() {
     }
     // Steps: cents per ADC step at the fine and the fast end of each curve
     // (P1 / P2 see only part of the ADC range).
-    const float pitchTravel = 1.0f - Lyra4Dsp::MUTE_ON;
+    const float pitchTravel = 1.0f - Cpx4Dsp::MUTE_ON;
     const float steps[4] = {(float)(lc::TOP_KNOB_ADC_FULL - lc::TOP_KNOB_ADC_ZERO),
                             (float)(lc::TOP_KNOB_ADC_FULL - lc::TOP_KNOB_ADC_ZERO),
                             (float)(4095 - 2 * lc::KNOB_ADC_END), (float)(4095 - 2 * lc::KNOB_ADC_END)};
@@ -394,7 +394,7 @@ static void testTune() {
         double fine = 1e9, fast = 0.0;
         for (int i = 0; i < 1000; i++) {
             double dt = 1.0 / 1000.0, t = i * dt;
-            double c = 1200.0 * (Lyra4Dsp::tuneOctaves(v, (float)(t + dt)) - Lyra4Dsp::tuneOctaves(v, (float)t)) / dt;
+            double c = 1200.0 * (Cpx4Dsp::tuneOctaves(v, (float)(t + dt)) - Cpx4Dsp::tuneOctaves(v, (float)t)) / dt;
             fine = std::min(fine, c);
             fast = std::max(fast, c);
         }
@@ -411,7 +411,7 @@ static void testTune() {
         r.run(44100);
         worst = std::max(worst, fabs(1200.0 * log2(r.dsp.getVoiceHz(0) / f0)));
     }
-    CHECK(worst <= Lyra4Dsp::DRIFT_CENTS + 0.01 && worst > 0.5, "drift %.2f cents", worst);
+    CHECK(worst <= Cpx4Dsp::DRIFT_CENTS + 0.01 && worst > 0.5, "drift %.2f cents", worst);
     printf("  drift: voice 1 wandered up to %.2f cents over 60 s\n", worst);
 }
 
@@ -472,20 +472,20 @@ static void testVoiceMute() {
     // Hysteresis: off below MUTE_OFF, on above MUTE_ON, in between it stays.
     {
         Rig r;
-        const float mid = 0.5f * (Lyra4Dsp::MUTE_OFF + Lyra4Dsp::MUTE_ON);
+        const float mid = 0.5f * (Cpx4Dsp::MUTE_OFF + Cpx4Dsp::MUTE_ON);
         r.tune(0, mid);
         bool a = r.dsp.isVoiceOn(0);
-        r.tune(0, Lyra4Dsp::MUTE_OFF - 0.005f);
+        r.tune(0, Cpx4Dsp::MUTE_OFF - 0.005f);
         bool b = r.dsp.isVoiceOn(0);
         r.tune(0, mid);
         bool c = r.dsp.isVoiceOn(0);
-        r.tune(0, Lyra4Dsp::MUTE_ON + 0.005f);
+        r.tune(0, Cpx4Dsp::MUTE_ON + 0.005f);
         bool d = r.dsp.isVoiceOn(0);
         r.tune(0, mid);
         bool e = r.dsp.isVoiceOn(0);
         CHECK(a && !b && !c && d && e, "mute hysteresis %d %d %d %d %d", a, b, c, d, e);
         printf("  mute zone: off below %.0f %%, on above %.0f %%, no flicker in between\n",
-               100.0f * Lyra4Dsp::MUTE_OFF, 100.0f * Lyra4Dsp::MUTE_ON);
+               100.0f * Cpx4Dsp::MUTE_OFF, 100.0f * Cpx4Dsp::MUTE_ON);
     }
 
     // No pop: a voice alone, turned on from 0 to just above the zone and off
@@ -498,14 +498,14 @@ static void testVoiceMute() {
         r.run(22050);
         Buf o;
         const int fade = (int)(0.05f * SR);
-        r.tune(k, Lyra4Dsp::MUTE_ON + 0.01f);
+        r.tune(k, Cpx4Dsp::MUTE_ON + 0.01f);
         r.run(22050, &o);
         float lvl5 = 0.0f;
         {
             Rig t;
             for (int v = 0; v < 4; v++) t.tune(v, 0.0f);
             t.run(22050);
-            t.tune(k, Lyra4Dsp::MUTE_ON + 0.01f);
+            t.tune(k, Cpx4Dsp::MUTE_ON + 0.01f);
             t.run((int)(0.005f * SR));
             lvl5 = t.dsp.getVoiceLevel(k);
         }
@@ -520,14 +520,14 @@ static void testVoiceMute() {
         // The fade itself may add at most level / fade length per sample
         // (at a slow 28 Hz wave that is about as much as the wave's own
         // slope, so where in the cycle the fade lands matters).
-        const float fadeSlope = hard / (Lyra4Dsp::VOICE_FADE_MS * 0.001f * SR);
+        const float fadeSlope = hard / (Cpx4Dsp::VOICE_FADE_MS * 0.001f * SR);
         const float limit = 1.2f * (steady + fadeSlope);
         CHECK(onStep < limit && offStep < limit && hard > 50.0f * limit,
               "TUNE %d on / off steps %.5f / %.5f, steady %.5f, hard switch %.4f", k + 1, onStep, offStep, steady, hard);
         CHECK(lvl5 > 0.2f && lvl5 < 0.5f, "TUNE %d fade at 5 ms %.2f", k + 1, lvl5);
         printf("  TUNE %d 0 -> %.0f %% -> 0: largest step %.5f / %.5f vs steady %.5f "
                "(a hard switch would jump %.4f); level %.2f after 5 ms\n",
-               k + 1, 100.0f * (Lyra4Dsp::MUTE_ON + 0.01f), onStep, offStep, steady, hard, lvl5);
+               k + 1, 100.0f * (Cpx4Dsp::MUTE_ON + 0.01f), onStep, offStep, steady, hard, lvl5);
     }
 
     // A muted voice leaves the FM: with voice 2 off, MOD doesn't touch voice 1.
@@ -701,7 +701,7 @@ static void testDelayTime() {
         r.set(lc::CC_DELAY_TIME, v);
         r.set(lc::CC_DELAY_MIX, 127);
         r.reinit();
-        double t = Lyra4Dsp::DELAY_MIN_S * pow(Lyra4Dsp::DELAY_MAX_S / Lyra4Dsp::DELAY_MIN_S, v / 127.0);
+        double t = Cpx4Dsp::DELAY_MIN_S * pow(Cpx4Dsp::DELAY_MAX_S / Cpx4Dsp::DELAY_MIN_S, v / 127.0);
         int at = 1000, n = at + (int)(t * SR) + 4000;
         Buf in = burst(n, at), l, rr;
         r.run(n, &l, &rr, &in, false);
@@ -884,10 +884,10 @@ static void testPitchAndPanic() {
     double f = r.dsp.getVoiceHz(0);
     r.dsp.setTransposeNote(72);
     r.run(8000);
-    CHECK(fabs(1200.0 * log2(r.dsp.getVoiceHz(0) / f) - 1200.0) < 2.0 * Lyra4Dsp::DRIFT_CENTS, "note 72 = +1 octave");
+    CHECK(fabs(1200.0 * log2(r.dsp.getVoiceHz(0) / f) - 1200.0) < 2.0 * Cpx4Dsp::DRIFT_CENTS, "note 72 = +1 octave");
     r.dsp.setTransposeNote(48);
     r.run(8000);
-    CHECK(fabs(1200.0 * log2(r.dsp.getVoiceHz(2) / Rig().dsp.getVoiceHz(2)) + 1200.0) < 2.0 * Lyra4Dsp::DRIFT_CENTS,
+    CHECK(fabs(1200.0 * log2(r.dsp.getVoiceHz(2) / Rig().dsp.getVoiceHz(2)) + 1200.0) < 2.0 * Cpx4Dsp::DRIFT_CENTS,
           "note 48 = -1 octave");
     printf("  PITCH: note 72 / 48 transpose all voices +1 / -1 octave\n");
 
@@ -1011,7 +1011,7 @@ int main(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--wav") == 0 && i + 1 < argc) wavDir = argv[++i];
     }
-    printf("lyra4 DSP host test\n");
+    printf("cpx4 DSP host test\n");
     testControlMap();
     testMccFirmwareContract();
     testTune();

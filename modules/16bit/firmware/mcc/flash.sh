@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# flash.sh — build and flash the lyra4 MCC firmware via UPDI.
+# flash.sh — build and flash the cpx4 MCC firmware via UPDI.
 #
 # Usage:
 #   ./flash.sh                            # pick JP1, the unit and the port

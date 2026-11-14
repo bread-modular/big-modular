@@ -4,7 +4,7 @@
 
 #include "audio/apps/motion_recorder.h"
 
-// FreeMotionRecorder — free-running, RAM-only automation recorder (lyra4).
+// FreeMotionRecorder — free-running, RAM-only automation recorder (cpx4).
 //
 // The same frames, MCC slots, overdub hold and loop offset as MotionRecorder
 // (motion_recorder.h), but no MIDI timing: the loop length is the time

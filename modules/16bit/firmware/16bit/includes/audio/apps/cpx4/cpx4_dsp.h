@@ -1,10 +1,10 @@
 #pragma once
 
-// LYRA4 drone voice (this module, not BM): four oscillators in two pairs with
+// CPX4 drone voice (this module, not BM): four oscillators in two pairs with
 // SHARP and cross-FM, two cross-fed delay lines, drive, a ladder low-pass and
-// an output limiter. Our own design after the features of the SOMA Lyra-8
+// an output limiter. Our own design inspired by the SOMA Lyra-8
 // (pairs, SHARP, MOD, FM routing, MOD DELAY, drive after the delay); none of
-// its circuits. Pico-free, shared with the host test tools/sim_lyra4.cpp.
+// its circuits. Pico-free, shared with the host test tools/sim_cpx4.cpp.
 //
 //   4 voices -> SHARP -> cross-FM -> mix (2x oversampled, half-band down)
 //     -> delay (2 lines, cross-fed, loop: damping + DC block + knee clip)
@@ -22,12 +22,12 @@
 #include "audio/apps/polysynth/poly_filter.h"
 #include "audio/apps/polysynth/poly_level.h"
 
-class Lyra4Dsp {
+class Cpx4Dsp {
     public:
         static constexpr int VOICES = 4;
         static constexpr int OVERSAMPLE = 2;
 
-        // TUNE: as on Lyra, every voice covers the full range, A0..A7
+        // TUNE: as on the Lyra-8, every voice covers the full range, A0..A7
         // (27.5..3520 Hz, seven octaves); what differs is the knob curve.
         // Each voice's curve is a loaded-pot (bilinear) taper
         //   c(t) = t / (t + k (1 - t)),  octaves = c(t) * TUNE_OCTAVES
