@@ -1,6 +1,8 @@
 """Import the pinned VCA-MIX footprints into hardware/VCA_MIX.pretty (one-time, reviewable).
 
-The library is rebuilt from scratch: footprints no longer listed are removed.
+The library is rebuilt from scratch: footprints no longer listed are removed. pcbnew
+gives every saved item a new random UUID; a footprint that is otherwise identical to the
+file already in the library keeps that file, so a re-run only changes what really changed.
 
 Run from modules/vca-mix with KiCad's Python (pcbnew 10):
   python3 -B tools/import_footprints.py [--bread-modular ~/data/projects/bread-modular]
@@ -17,7 +19,8 @@ pcbnew, so the copies are KiCad 10 format. The only intentional edits:
 - VTL5C: the Bread Modular footprint as is (pads and its 10.16 x 15.24 mm silk box,
   sized for the wider Chinese vactrols). It has no courtyard, so F.CrtYd = the silk
   box outer edge + 0.25 mm (10.76 x 15.84 mm) is added for DRC body checks, plus three
-  build-note silk lines inside the box (SOLDER FIRST / TRIM FLUSH / LED 18.5mA);
+  build-note silk lines inside the box (SOLDER FIRST / TRIM FLUSH / LED 5mA), and its
+  '+' / '-' LED marks are moved inside the box, beside the LED leads;
 - RV09: none (native load/save only). No 3D model exists upstream.
 
 The STEP file is copied byte-exactly. hardware/VCA_MIX.pretty/PROVENANCE.json records
@@ -26,6 +29,7 @@ source paths and SHA-256 of every input and output.
 import argparse
 import hashlib
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -40,6 +44,8 @@ STOCK = Path('/usr/share/kicad/footprints')
 STOCK_FOOTPRINTS = [
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Diode_SMD', 'D_SOD-123'),
+    ('Package_TO_SOT_SMD', 'SOT-323_SC-70'),
+    ('Package_TO_SOT_SMD', 'SOT-89-3'),
     ('Resistor_SMD', 'R_0603_1608Metric'),
     ('Resistor_SMD', 'R_2512_6332Metric'),
     ('Capacitor_SMD', 'C_0603_1608Metric'),
@@ -55,11 +61,18 @@ JACKS = {
 POT = 'Potentiometer_RV09'
 VACTROL = 'VTL5C'
 VACTROL_CRTYD = (5.38, 7.92)  # half-width X, half-height Y: BM silk box outer edge + 0.25
-# Build notes (user direction 2026-10-20, D4/D10): silk inside the body box, across its short
-# axis, in the strip between the pad 3/4 end and the pot bracket pad that lands mid-body
-# (board X 103.6..108.8 at rot 90). (local Y, text); 0.8 mm font = the project minimum.
-VACTROL_NOTES = [(4.4, 'SOLDER FIRST'), (3.1, 'TRIM FLUSH'), (1.8, 'LED 18.5mA')]
-VACTROL_NOTE_SIZE = 0.8
+# Build notes (user direction 2026-10-20, D4/D10): silk inside the body box.
+# P6 (8HP): the vactrol hangs under its VOL pot, whose three pin pads cross the upper part of the
+# body. R3 (fab review 2026-11-14): three horizontal lines in the pad-free block between the pot
+# pins and the LED leads, 1.0 mm high with a 0.15 mm stroke (the JLCPCB legend minimum, as
+# modules/hats R5; R2 had 0.8 mm / 0.12 mm lines along the body). (local X, local Y, text).
+# LED 5mA (S5): the 3.3 V driver cannot push more than (3.3 V - V_F) / 330R (was 18.5 mA in S4).
+VACTROL_NOTES = [(0.0, 1.5, 'SOLDER FIRST'), (0.0, -0.1, 'TRIM FLUSH'), (0.0, -1.7, 'LED 5mA')]
+# The Bread Modular '+' / '-' LED marks sit outside the body end (local Y -8.255), where the
+# MCP6002 driver is on this board: moved inside the body, next to the LED leads.
+VACTROL_POLARITY_Y = -3.8
+VACTROL_NOTE_SIZE = (0.8, 1.0)  # character width, height
+VACTROL_NOTE_STROKE = 0.15
 
 
 def sha(path):
@@ -103,13 +116,16 @@ def fix_vactrol(fp):
     hx, hy = VACTROL_CRTYD
     assert not [i for i in fp.GraphicalItems() if i.GetLayer() == pcbnew.F_CrtYd], 'upstream VTL5C gained a courtyard'
     add_rect(fp, pcbnew.F_CrtYd, hx, -hy, hy, 0.05)
-    for y, note in VACTROL_NOTES:
+    for item in fp.GraphicalItems():
+        if item.GetClass() == 'PCB_TEXT' and item.GetText() in ('+', '-'):
+            item.SetPosition(pcbnew.VECTOR2I(item.GetPosition().x, mm(VACTROL_POLARITY_Y)))
+    for x, y, note in VACTROL_NOTES:
         text = pcbnew.PCB_TEXT(fp)
         text.SetText(note)
         text.SetLayer(pcbnew.F_SilkS)
-        text.SetPosition(pcbnew.VECTOR2I(0, mm(y)))
-        text.SetTextSize(pcbnew.VECTOR2I(mm(VACTROL_NOTE_SIZE), mm(VACTROL_NOTE_SIZE)))
-        text.SetTextThickness(mm(0.12))
+        text.SetPosition(pcbnew.VECTOR2I(mm(x), mm(y)))
+        text.SetTextSize(pcbnew.VECTOR2I(mm(VACTROL_NOTE_SIZE[0]), mm(VACTROL_NOTE_SIZE[1])))
+        text.SetTextThickness(mm(VACTROL_NOTE_STROKE))
         text.SetKeepUpright(True)
         fp.Add(text)
         text.thisown = 0
@@ -122,6 +138,7 @@ def main():
     bm = Path(args.bread_modular) / 'opt'
     jacks = bm / 'AudioJacks'
     LIB.mkdir(exist_ok=True)
+    before = {old.name: old.read_text() for old in LIB.glob('*.kicad_mod')}
     for old in LIB.glob('*.kicad_mod'):
         old.unlink()
     MODELS.mkdir(exist_ok=True)
@@ -168,8 +185,17 @@ def main():
     record['footprints'][VACTROL] = {
         'source': rel(src), 'source_sha256': sha(src), 'license': 'MIT (c) 2024 Arunoda Susiripala (Bread Modular)',
         'edits': f'added F.CrtYd X +/-{hx}, Y +/-{hy} (silk box + 0.25) and F.SilkS build notes '
-                 f'{[n for _, n in VACTROL_NOTES]} inside the box; pads, original silk and text '
-                 'unchanged; no 3D model upstream'}
+                 f'{[n for _, _, n in VACTROL_NOTES]} inside the box, {VACTROL_NOTE_SIZE[1]} mm high / '
+                 f'{VACTROL_NOTE_STROKE} mm stroke, three lines in the pad-free block between the pot pins and the '
+                 'LED leads; the original '
+                 f"'+' / '-' silk marks moved from local Y -8.255 to {VACTROL_POLARITY_Y} (inside the box, "
+                 'beside the LED leads); pads and original silk outline unchanged; no 3D model upstream'}
+    no_uuid = lambda text: re.sub(r'\(uuid "[0-9a-f-]+"\)', '', text)  # noqa: E731
+    for name in record['footprints']:
+        out = LIB / f'{name}.kicad_mod'
+        old = before.get(out.name)
+        if old is not None and no_uuid(old) == no_uuid(out.read_text()):
+            out.write_text(old)
     for name in record['footprints']:
         record['footprints'][name]['output_sha256'] = sha(LIB / f'{name}.kicad_mod')
     (LIB / 'PROVENANCE.json').write_text(json.dumps(record, indent=2) + '\n')

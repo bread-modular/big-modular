@@ -1,22 +1,28 @@
 """Generate the VCA-MIX boards from docs/geometry.json and the native schematic netlist.
 
-Run from modules/vca-mix with KiCad's Python (pcbnew 10), after tools/build_schematic.py:
+modules/ladder/tools/build_layout.py with the VCA_MIX library, an 8HP panel (modules/blank
+rail holes) and a 4-layer carrier. Run from modules/vca-mix with KiCad's Python (pcbnew 10),
+after tools/build_schematic.py:
   python3 -B tools/build_layout.py
 
-Writes hardware/vca-mix.kicad_pcb (carrier: placed footprints with schematic nets, no
-routing) and panels/front-pcb/vca-mix-panel.kicad_pcb (passive 6HP panel: outline, NPTH
+Writes hardware/vca-mix.kicad_pcb (carrier: P6 placement with schematic nets, no
+routing) and panels/front-pcb/vca-mix-panel.kicad_pcb (passive 8HP panel: outline, NPTH
 holes, silkscreen labels). Placement comes from the geometry contract; references,
-values, fields, symbol links and pad nets come from the netlist that kicad-cli
-exports from hardware/vca-mix.kicad_sch (what "Update PCB from Schematic" would do).
+values, fields, symbol links and pad nets come from the netlist that kicad-cli exports
+from hardware/vca-mix.kicad_sch (what "Update PCB from Schematic" would do).
 
-This writes the R1 carrier UNROUTED (P4 placement). The R1 copper is added by
-tools/route_plan.py through the shared `pcb plan/apply/promote`, and the routed native
-PCB is then the source of truth (root AGENTS.md): rerunning this script discards the
-routing, so only do it to rebuild R1 from scratch with the README sequence.
+P6 places only the THT parts (jacks and pots on F, vactrols and the power header on B, as
+modules/hats). Every SMD part is parked on B in a grid off the right board edge
+(geometry.json smd_parking), so the ratsnest shows all nets; the parts move onto the
+board group by group with the manual routing (root AGENTS.md). Once routing starts the
+native PCB is the source of truth: this script refuses to overwrite a routed carrier
+(use --panel-only for the panel).
 
 3D models are vendored into hardware/_kicad_models/<sha256>/<name> and bound via
 ${KIPRJMOD}, the repository convention (as usb-power/midi) that `pcb promote` resolves.
 """
+import argparse
+import math
 import hashlib
 import json
 import os
@@ -48,7 +54,7 @@ def mm_xy(v):
     return pcbnew.ToMM(v.x) - OX, pcbnew.ToMM(v.y) - OY
 
 
-def new_board(path, title, comments, rev='P4'):
+def new_board(path, title, comments, rev='P6'):
     board = pcbnew.NewBoard(str(path))
     tb = board.GetTitleBlock()
     tb.SetTitle(title)
@@ -69,7 +75,7 @@ def rect(board, layer, x0, y0, x1, y1, width=0.05):
     shape.thisown = 0
 
 
-def text(board, layer, s, x, y, size, mirrored=False, thickness=None):
+def text(board, layer, s, x, y, size, mirrored=False, thickness=None, angle=0):
     t = pcbnew.PCB_TEXT(board)
     t.SetText(s)
     t.SetLayer(layer)
@@ -77,6 +83,7 @@ def text(board, layer, s, x, y, size, mirrored=False, thickness=None):
     t.SetTextThickness(pcbnew.FromMM(thickness or max(0.15, size * 0.15)))
     t.SetMirrored(mirrored)
     t.SetPosition(pt(x, y))
+    t.SetTextAngleDegrees(angle)
     board.Add(t)
     t.thisown = 0
 
@@ -133,7 +140,7 @@ def save_canonical(path, board):
     pcbnew.SaveBoard(str(path), pcbnew.LoadBoard(str(path)))
 
 
-def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre'):
+def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre', model_z=None):
     lib, fpname = comp['footprint'].split(':')
     assert (lib, fpname) == ('VCA_MIX', name), f'{ref}: schematic footprint {comp["footprint"]} != geometry {name}'
     fp = IO.FootprintLoad(str(LIB), name)
@@ -163,18 +170,23 @@ def place(board, ref, name, x, y, rot, comp, back=False, anchor='centre'):
     for i in range(len(models)):  # element proxies are copies: write them back
         model = models[i]
         model.m_Filename = vendor_model(model.m_Filename)
+        if model_z is not None:
+            model.m_Offset = pcbnew.VECTOR3D(0, 0, model_z)
         models[i] = model
     return fp
 
 
 def build_carrier():
     path = MODULE / 'hardware/vca-mix.kicad_pcb'
+    if path.exists() and list(pcbnew.LoadBoard(str(path)).GetTracks()):
+        raise RuntimeError('Refusing to overwrite routed native carrier; edit it explicitly. Use --panel-only for panel.')
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - VCA-MIX carrier', [
-        'S4/R1: P4 placement; R1 copper = tools/route_plan.py via shared pcb ops - not released, not supplier-accepted',
-        'Front (F) faces the panel; THT jacks/pots on F, vactrols on B, all hand-soldered; SMD on B',
+        'S6/P6: THT placed, SMD parked off the board, UNROUTED - not released',
+        'Front (F) faces the panel; THT jacks/pots on F, vactrols and power header on B, hand-soldered; SMD on B',
         'Geometry contract: docs/geometry.json; nets: hardware/vca-mix.kicad_sch',
-    ], rev='R1')
+    ])
+    board.SetCopperLayerCount(GEO['main_pcb']['copper_layers'])
     x0, y0, x1, y1 = GEO['main_pcb']['outline_mm']
     rect(board, pcbnew.Edge_Cuts, x0, y0, x1, y1)
     # Fit references (non-fabricated): panel outline and rail keep-out bands.
@@ -183,22 +195,30 @@ def build_carrier():
     rect(board, pcbnew.Dwgs_User, 0, 0, pw, ph)
     rect(board, pcbnew.Dwgs_User, 0, 0, pw, ry0)
     rect(board, pcbnew.Dwgs_User, 0, ry1, pw, ph)
-    text(board, pcbnew.Dwgs_User, '6HP PANEL 30.0 x 128.5', pw / 2, -2.0, 1.0)
+    text(board, pcbnew.Dwgs_User, '%dHP PANEL %g x %g' % (GEO['hp'], pw, ph), pw / 2, -2.0, 1.0)
     text(board, pcbnew.Dwgs_User, 'RAIL', pw / 2, ry0 / 2 + 1.0, 1.0)
     text(board, pcbnew.Dwgs_User, 'RAIL', pw / 2, (ry1 + ph) / 2 + 1.0, 1.0)
     for j in GEO['jacks']:
-        place(board, j['ref'], JACK_FP, *j['XY'], GEO['jack_rotation_deg'], comps[j['ref']], anchor='origin')
+        place(board, j['ref'], JACK_FP, *j['XY'], j['rot'], comps[j['ref']], anchor='origin')
     ox, oy = GEO['pot_shaft_offset_from_footprint_origin_mm']
     for p in GEO['pots']:
         sx, sy = p['shaft_XY']
-        fp = place(board, p['ref'], POT_FP, sx - ox, sy - oy, 0, comps[p['ref']], anchor='origin')
-        # The vactrol LED pads sit under the pot body (P3/P4), so its value text goes to Fab too.
+        rot = p.get('rot', 0); angle = math.radians(rot)
+        dx, dy = ox * math.cos(angle) + oy * math.sin(angle), -ox * math.sin(angle) + oy * math.cos(angle)
+        fp = place(board, p['ref'], POT_FP, sx - dx, sy - dy, rot, comps[p['ref']], anchor='origin')
         fp.Value().SetLayer(pcbnew.F_Fab)
     for v in GEO['vactrols']:
         assert v['side'] == 'B', v
         place(board, v['ref'], VACTROL_FP, *v['XY'], v['rot'], comps[v['ref']], back=True)
-    for p in GEO['back_side_parts']:
+    for p in GEO['back_side_tht']:
         place(board, p['ref'], p['footprint'], *p['XY'], p['rot'], comps[p['ref']], back=True)
+    placed = {fp.GetReference() for fp in board.GetFootprints()}
+    park = GEO['smd_parking']
+    (px, py), (dx, dy), ncol = park['origin_XY'], park['pitch_XY'], park['columns']
+    key = lambda ref: (''.join(c for c in ref if c.isalpha()), int(''.join(c for c in ref if c.isdigit())))
+    for i, ref in enumerate(sorted(set(comps) - placed, key=key)):
+        name = comps[ref]['footprint'].split(':')[1]
+        place(board, ref, name, px + (i % ncol) * dx, py + (i // ncol) * dy, 0, comps[ref], back=True)
     fps = {fp.GetReference(): fp for fp in board.GetFootprints()}
     assert set(fps) == set(comps), f'geometry/schematic refs differ: {set(fps) ^ set(comps)}'
     for name, members in nets.items():
@@ -219,19 +239,21 @@ def build_carrier():
         cx = sum(mm_xy(pad.GetPosition())[0] for pad in lugs) / 2
         cy = mm_xy(lugs[0].GetPosition())[1]
         assert abs(cx - p['shaft_XY'][0]) < 0.01 and abs(cy - p['shaft_XY'][1]) < 0.01, (p['ref'], cx, cy)
-    # Back-silkscreen aids. J10 runs across the top edge with pin 1 (-12 V) at the left,
-    # so a 16-pin IDC socket overhangs to the right over the board (geometry.json power_header).
+    # Back-silkscreen aids. J10 lies horizontal along the bottom edge with pins 1/2 (-12 V) at the
+    # left, so a 16-pin IDC socket overhangs to the right over the board (geometry.json power_header).
     ph = GEO['power_header']
     pins = {pad.GetNumber(): mm_xy(pad.GetPosition()) for pad in fps['J10'].Pads()}
-    for k, want in (('1', ph['pin1_XY_mm']), ('2', (ph['pin1_XY_mm'][0], ph['pin_rows_Y_mm'][1]))):
-        got = pins[k]
+    cols, (r0, r1) = ph['pin_columns_X_mm'], ph['pin_rows_Y_mm']
+    for k in range(1, 11):
+        want = (cols[(k - 1) // 2], r0 if k % 2 else r1)
+        got = pins[str(k)]
         assert abs(got[0] - want[0]) < 0.01 and abs(got[1] - want[1]) < 0.01, f'J10 pin {k} at {got}, want {want}'
-    assert pins['9'][0] > pins['1'][0], 'J10 pin 1 is not at the left'
-    text(board, pcbnew.B_SilkS, '-12V', 2.2, 16.0, 0.8, mirrored=True)
+    # '-12V' reads upward beside pins 1/2; the board name up the left edge beside the MIX jack.
+    text(board, pcbnew.B_SilkS, '-12V', cols[0] - 2.6, (r0 + r1) / 2, 0.8, mirrored=True, angle=90)
     sx, sy = ph['idc16_socket_envelope_mm']['X'], ph['idc16_socket_envelope_mm']['Y']
     rect(board, pcbnew.Dwgs_User, sx[0], sy[0], sx[1], sy[1])
-    text(board, pcbnew.Dwgs_User, 'IDC16', (sx[0] + sx[1]) / 2, sy[1] - 1.0, 0.8)
-    text(board, pcbnew.B_SilkS, 'VCA-MIX R1', 7.0, 118.0, 0.8, mirrored=True)
+    text(board, pcbnew.Dwgs_User, 'IDC16', (sx[0] + sx[1]) / 2, sy[0] + 1.5, 0.8)
+    text(board, pcbnew.B_SilkS, 'VCA-MIX P6', 3.0, 110.0, 0.8, mirrored=True, angle=90)
     save_canonical(path, board)
     return path
 
@@ -268,8 +290,8 @@ def npth(board, mech_id, x, y, d):
 
 def build_panel():
     path = MODULE / 'panels/front-pcb/vca-mix-panel.kicad_pcb'
-    board = new_board(path, 'Big Modular - VCA-MIX 6HP front panel', [
-        'P4 FIT STUDY: passive panel, NPTH only, no copper',
+    board = new_board(path, 'Big Modular - VCA-MIX %dHP front panel' % GEO['hp'], [
+        'P6: per channel IN, CV; OUT under CV, RANGE under IN, VOL alone on the right; MIX bottom left; passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -292,5 +314,9 @@ def build_panel():
 
 
 if __name__ == '__main__':
-    print(build_carrier())
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--panel-only', action='store_true', help='Regenerate only the passive panel; never touch carrier routing')
+    args = ap.parse_args()
+    if not args.panel_only:
+        print(build_carrier())
     print(build_panel())

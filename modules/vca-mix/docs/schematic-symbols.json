@@ -43,6 +43,27 @@
       "flattened_from": "LM2904",
       "edits": null
     },
+    "MCP6002-xSN": {
+      "library": "Amplifier_Operational:MCP6002-xSN",
+      "source": "/usr/share/kicad/symbols/Amplifier_Operational.kicad_sym",
+      "source_sha256": "70d51935f1e2563cf203a3d1b95657f166e140b357d3a8570f70f855a3dcd74e",
+      "flattened_from": "LM2904",
+      "edits": null
+    },
+    "BAT54SW": {
+      "library": "Diode:BAT54SW",
+      "source": "/usr/share/kicad/symbols/Diode.kicad_sym",
+      "source_sha256": "e6a8ac06651527e2700b3e1a7ca8b077a2c28ac1ebdbf57aae163f5777d4c65c",
+      "flattened_from": "BAT54S",
+      "edits": null
+    },
+    "HT75xx-1-SOT89": {
+      "library": "Regulator_Linear:HT75xx-1-SOT89",
+      "source": "/usr/share/kicad/symbols/Regulator_Linear.kicad_sym",
+      "source_sha256": "09d0d95dbe5040452c683015077fcdff881b87112c1610008347f5be0df1eaea",
+      "flattened_from": null,
+      "edits": null
+    },
     "VTL5C": {
       "library": "Isolator:VTL5C",
       "source": "/usr/share/kicad/symbols/Isolator.kicad_sym",
@@ -87,6 +108,13 @@
     },
     "-12V": {
       "library": "power:-12V",
+      "source": "/usr/share/kicad/symbols/power.kicad_sym",
+      "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
+      "flattened_from": null,
+      "edits": null
+    },
+    "+3V3": {
+      "library": "power:+3V3",
       "source": "/usr/share/kicad/symbols/power.kicad_sym",
       "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
       "flattened_from": null,
