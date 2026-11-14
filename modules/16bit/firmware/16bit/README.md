@@ -23,9 +23,10 @@ separate firmware per app.
 
 ### Motion recorder (sampler, fxrack, monosynth, polysynth & cpx4)
 
-cpx4 runs the free-running variant (no MIDI timing), see
-[Free-running recorder (cpx4)](#free-running-recorder-cpx4) below; the rest
-of this section is the MIDI-clocked recorder of the other apps.
+cpx4 runs its own free-running recorder (no MIDI timing, one track per
+control), see [Free-running recorder (cpx4)](#free-running-recorder-cpx4)
+below; the rest of this section is the MIDI-clocked recorder of the other
+apps.
 
 These apps share the same MODE/LED workflow as the 8bit CV recorder
 (`opt/attiny1616-tools/lib/CvRecorder`), loop offset included. The state machine lives in the shared pico-free header
@@ -62,25 +63,41 @@ runs its self-tests on the host.
 ### Free-running recorder (cpx4)
 
 `includes/audio/apps/free_motion_recorder.h`, host tests in
-`tools/sim_free_motion_recorder.cpp`. Same frames (P1..P4 + the MCC slots),
-overdub hold and loop offset as above, but **no MIDI clock**: the loop length
-comes from the MODE presses.
+`tools/sim_free_motion_recorder.cpp`. **No MIDI clock and no shared loop**:
+every control (P1..P4 and each MCC knob) is recorded on its own track, with
+its own length and start.
 
-- **Press MODE** to start a take (LED blinks). Every 20 ms the knobs and MCC
-  values are stored.
-- **Press MODE again** to close the loop. The loop is exactly the time between
-  the two presses (to the millisecond, so it doesn't drift against the tempo
-  it was tapped to) and plays from the start at that press. Max 60 s (the
-  take closes itself there); a second press within 0.2 s drops the take.
-- **Playback**: LED solid, dark for 80 ms at each loop restart so you can see
-  the loop. Click MODE (nothing moved) to go back to LIVE.
-- **Overdub**: hold MODE in playback and move knobs or MCC controls; each moved
-  control is re-recorded until you let go (LED blinks), the rest keep playing.
-- **Offset**: knobs and MCC are ignored for the first pass; after that moving
-  one shifts its recorded curve.
+- **Record**: hold MODE and move a control. It is recorded from its first
+  move until MODE is released (LED blinks, 20 ms frames). Moved = more than 48
+  ADC counts (knob) or more than one CC step (MCC) from where it was at the
+  press: an MCC knob resting between two steps flickers by one. Controls you
+  don't move aren't recorded and stay live. Several controls moved in one
+  hold each get a track, from their own first move.
+- **Loop**: at the release the take loops by itself: the take as played, then
+  a glide from its last value back to its first (a quarter of the take,
+  0.25..2 s; shorter for a small difference, none if the take ends where it
+  began). Loop = take + glide, so there is no step at the loop point and
+  nothing recorded is traded for it. Playback is interpolated between the
+  frames. LED solid while any track plays.
+- **Another control**: hold MODE again and move it: a new track with its own
+  length, started at its own time. The tracks already playing keep running
+  (they aren't synchronised to each other).
+- **Re-record**: hold MODE and move a control that has a track: the new take
+  replaces it; the control takes over with a 300 ms glide (`GLIDE_MS`).
+- **Remove**: click MODE (under 0.7 s, nothing recorded): every track is
+  removed, each control glides to its knob / MCC value over 0.6 s
+  (`RETURN_MS`, the recorder owns the control until it's there), LED off. A
+  longer hold with nothing moved changes nothing.
+- A take under 0.2 s is dropped (a bumped control during a click). Max 60 s
+  per track: the take closes itself there and loops while MODE is still held.
+- **Offset**: from 0.5 s after the release, moving a recorded control with
+  MODE up shifts its whole curve, clamped (so MCC CV modulation still works
+  on a recorded control).
+- **MODE is debounced** (30 ms, both edges): the pin is read unfiltered every
+  millisecond, and a bounce on a release would otherwise be a click.
 - MIDI clock and Start are ignored. RAM only (60 KB), never the filesystem.
 
-Each app owns what a frame means:
+Each app owns what a frame (cpx4: a track) means:
 
 | app        | P1 / P2                          | P3 / P4 (BM CV1 / CV2)                                  | MCC                                                          |
 |------------|----------------------------------|---------------------------------------------------------|--------------------------------------------------------------|

@@ -239,14 +239,18 @@ TOTAL FB: the post-drive mix back into the FM
   +-3 octaves, latched); **CC120** All Sound Off empties the delay lines
   (over one line length). Then a look-ahead limiter (`poly_level.h`) under 0.9.
 - **MODE** = the free-running motion recorder (`free_motion_recorder.h`, no
-  MIDI timing): press to start a take, press again to close the loop (its
-  length = the time between the presses, up to 60 s, 20 ms frames); hold MODE
-  and move controls to overdub them; click to stop. It records P1..P4 and the
-  eight MCC knobs (Bank A + B slots); the two button CCs aren't recorded.
-  Details in `16bit/README.md`.
+  MIDI timing, one track per control): hold MODE and move a knob or MCC knob
+  to record it until MODE is released (LED blinks); it then loops on its own
+  track (LED solid), gliding from its last value back to its first. Hold
+  again and move another control for another track with its own length and
+  start; move a recorded one to replace its track. Click MODE to remove every
+  track (the controls glide back to their knobs, LED off). It records P1..P4
+  and the eight MCC knobs (Bank A + B slots); the two button CCs aren't
+  recorded. Up to 60 s per track, 20 ms frames; MODE is debounced and an MCC
+  knob flickering by one step is not a move. Details in `16bit/README.md`.
 
 The delay lines are 2 x 88 KB of static RAM, and the app runs from RAM
-(`copy_to_ram`, as the polysynth): 100 KB code + 183 KB bss. Power-on values
+(`copy_to_ram`, as the polysynth): 106 KB code + 183 KB bss. Power-on values
 (until the MCCs send theirs, within a second): SHARP 24, MOD 0, DRIVE 0,
 DELAY TIME 64 (31 ms), FEEDBACK 40, MIX 32, CUTOFF 0 (open), PAIRS, Off.
 `get-cpx4-params` prints the live DSP state over serial.
