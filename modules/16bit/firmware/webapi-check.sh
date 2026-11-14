@@ -27,7 +27,7 @@ case "$APP" in
   polysynth) ;;  # set-/get-waveform dropped: P2 picks the BM waveform
   fxrack)    NEED+=(get-fx set-fx) ;;
   elab)      NEED+=(get-scope-channels start-send start-send-2 stop-send) ;;
-  monosynth|noop) ;;  # UI only shows the app; no serial state
+  monosynth|noop|lyra4) ;;  # UI only shows the app; no serial state
   *) echo "Unknown app '$APP'" >&2; exit 1 ;;
 esac
 

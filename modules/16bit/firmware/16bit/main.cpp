@@ -28,8 +28,10 @@
 #include "audio/apps/elab_app.h"
 #elif defined(BM_APP_MONOSYNTH)
 #include "audio/apps/monosynth_app.h"
+#elif defined(BM_APP_LYRA4)
+#include "audio/apps/lyra4_app.h"
 #else
-#error "No app selected at compile time. Set APP_NAME to one of: noop, sampler, polysynth, fxrack, elab, monosynth"
+#error "No app selected at compile time. Set APP_NAME to one of: noop, sampler, polysynth, fxrack, elab, monosynth, lyra4"
 #endif
 
 // Pull the selected app's implementation into the same translation unit to
@@ -47,6 +49,8 @@
 #include "src/audio/apps/elab_app.cpp"
 #elif defined(BM_APP_MONOSYNTH)
 #include "src/audio/apps/monosynth_app.cpp"
+#elif defined(BM_APP_LYRA4)
+#include "src/audio/apps/lyra4_app.cpp"
 #endif
 
 #define SAMPLE_RATE 44100
@@ -74,6 +78,8 @@ void loadApp() {
     app = ElabApp::getInstance();
     #elif defined(BM_APP_MONOSYNTH)
     app = MonosynthApp::getInstance();
+    #elif defined(BM_APP_LYRA4)
+    app = Lyra4App::getInstance();
     #else
     #error "No app selected at compile time."
     #endif

@@ -61,6 +61,9 @@ the module powered from the ±12 V header.
   shared `opt/attiny1616-tools` instead of BM's copies; BM's README is folded
   into this one.
 - `SimpleMIDI.h`, `ModeHandler.h`, `LEDToggler.h` are the BM files, unchanged.
+  `SimpleMIDI.h` and `ModeHandler.h` are also used (symlinked) by the 16bit
+  lyra4 MCC firmware, `modules/16bit/firmware/mcc/` (bank fixed, BANK button
+  = a 3-step selector CC).
 
 Built with arduino-cli 2026-11-04 (megaTinyCore 2.6.11), `p` / `d`: 3970 / 3960 B
 flash (BM: 3824 B), 199 B RAM. Not bench-tested on the MCC carrier yet;

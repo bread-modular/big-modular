@@ -8,7 +8,7 @@ the JP1 change below. `16bit/README.md` is the BM README (apps, motion
 recorder, serial API, ELab scope protocol).
 
 One app per firmware, picked at build time: `noop`, `sampler`, `polysynth`
-(default), `fxrack`, `elab`, `monosynth`.
+(default), `fxrack`, `elab`, `monosynth`, `lyra4` (new, below).
 
 ## What the BM firmware sees on this carrier
 
@@ -179,6 +179,95 @@ On the board (2026-11-06, idle) the audio core load went from 30.1 % to
 flat passband to resonance CC 120, level vs cutoff, stability, envelope).
 `filter_fx.h` / `Ladder.h` stay as BM files, unused.
 
+**LYRA4 (new, not BM): a four-voice drone after the SOMA Lyra-8**, played
+from the 16bit knobs and two MCCs running the lyra4 MCC firmware
+(`mcc/`, bank fixed, BANK button = a 3-step selector). Our own design after
+the Lyra's features (pairs, SHARP, cross-FM, FM routing, a cross-fed delay,
+drive after the delay), none of its circuits. DSP
+`16bit/includes/audio/apps/lyra4/lyra4_dsp.h`, control map `lyra4_controls.h`,
+app `lyra4_app.{h,cpp}`:
+
+```
+4 voices -> SHARP -> cross-FM (2x oversampled) -> delay (2 lines, cross-fed)
+  -> DRIVE -> ladder LPF -> limiter -> OUT 1 (dry + line 1) / OUT 2 (dry + line 2)
+TOTAL FB: the post-drive mix back into the FM
+```
+
+| | 1 | 2 | 3 | 4 | Button (3 LEDs) |
+|---|---|---|---|---|---|
+| 16bit knobs | P1 TUNE 1 | P2 TUNE 2 | P3 TUNE 3 | P4 TUNE 4 | MODE = motion recorder |
+| MCC-1 VOICE (CC20-23) | SHARP A | SHARP B | MOD | DRIVE | CC102 FM routing: PAIRS / LOOP / TOTAL FB |
+| MCC-2 FX (CC27-30) | DELAY TIME | FEEDBACK | DELAY MIX | CUTOFF (0 = open) | CC103 RESONANCE: Off / Peak / Sing |
+
+- **TUNE 1..4**: one voice each. As on Lyra, every voice covers the full
+  range, A0..A7 (27.5..3520 Hz); the knob curve differs. Each is a
+  loaded-pot (bilinear) taper, octaves = 7 t / (t + k (1 - t)), that spends
+  most of the travel in its own register: voice 1 (k 3) dwells in the bass
+  (69 % of the travel below 220 Hz, knob centre ~92 Hz) and reaches the treble
+  only near the end stop, voice 2 (k 1.5) centre ~192 Hz, voice 3 (k 1/1.5)
+  ~505 Hz, voice 4 (k 1/3) dwells in the treble (55 % above 880 Hz, centre
+  ~1047 Hz). At any knob position voice 1 < 2 < 3 < 4. Glide 20 ms, plus a slow random drift of up to 4 cents per voice. **Knob at 0 = voice
+  off**: below 3 % of the travel the voice is silent (and out of the FM), above
+  5 % it plays from the bottom of its range (hysteresis, no flicker); on / off
+  is a 15 ms fade, so it never pops. Read at 12 bits from the main loop
+  every 2 ms (4 conversions averaged, smoothed), not through IO's 50-count CV
+  callbacks: P1 / P2 use their unpatched 0..+5 V range (ADC 2020..3735),
+  P3 / P4 the whole range. Cents per ADC step, fine end / fast end of the
+  curve: TUNE 1 1.7 / 15.4, TUNE 2 3.4 / 7.7, TUNE 3 1.5 / 3.3, TUNE 4
+  0.7 / 6.5. Patched CV1 / CV2
+  jacks turn P1 / P2 into attenuators, as in the polysynth.
+- **SHARP A / B**: the pair's waveform, triangle -> rounded -> square
+  (tanh(g x) / tanh(g), g 0.3..40 exponential, capped so an edge stays two
+  oversampled samples wide). It shapes the FM too.
+- **MOD**: through-zero linear FM depth of both pairs (deviation = 2 x MOD^2
+  x the carrier): growl, then sidebands, chaos from about 70 %.
+- **FM routing** (MCC-1 button): PAIRS 1 <-> 2 and 3 <-> 4; LOOP adds pair A
+  <-> pair B; TOTAL FB adds the post-drive output (with the delay) instead.
+- **DELAY TIME**: line 1 1 ms..1 s exponential, line 2 at 0.97 x (they beat;
+  short times resonate), 120 ms tape-like glide. **FEEDBACK** 0..1.1 (past
+  100 %: it sustains, held by a knee clip in the loop), the loop damping
+  follows it (12 kHz -> 2.5 kHz), DC-blocked; the lines cross-feed 30 %.
+  **DELAY MIX** dry / wet equal power, echo at the dry level.
+- **DRIVE**: after the delay, 0..+30 dB into a biased tanh (even harmonics),
+  makeup gain.
+- **CUTOFF**: the polysynth ladder (`poly_filter.h`, one per output, envelope
+  off), inverted as the polysynth's: knob at 0 = open (17.6 kHz, no
+  filtering), full = 55 Hz, exponential. **RESONANCE** (MCC-2 button): Off (k 0),
+  Peak (k 3, +12 dB at the cutoff), Sing (k 4.1: self-oscillates at the
+  cutoff, -6.5 dBFS rms, the output trimmed 6 dB in this step).
+- **MIDI notes** (any channel) transpose all four voices (PITCH, C4 = none,
+  +-3 octaves, latched); **CC120** All Sound Off empties the delay lines
+  (over one line length). Then a look-ahead limiter (`poly_level.h`) under 0.9.
+- **MODE** = the free-running motion recorder (`free_motion_recorder.h`, no
+  MIDI timing): press to start a take, press again to close the loop (its
+  length = the time between the presses, up to 60 s, 20 ms frames); hold MODE
+  and move controls to overdub them; click to stop. It records P1..P4 and the
+  eight MCC knobs (Bank A + B slots); the two button CCs aren't recorded.
+  Details in `16bit/README.md`.
+
+The delay lines are 2 x 88 KB of static RAM, and the app runs from RAM
+(`copy_to_ram`, as the polysynth): 100 KB code + 183 KB bss. Power-on values
+(until the MCCs send theirs, within a second): SHARP 24, MOD 0, DRIVE 0,
+DELAY TIME 64 (31 ms), FEEDBACK 40, MIX 32, CUTOFF 0 (open), PAIRS, Off.
+`get-lyra4-params` prints the live DSP state over serial.
+
+`tools/sim_lyra4.cpp` (host, 250 checks) drives every control as the app does
+(knob ADC value or CC) and checks it on the rendered output, and that it moves
+nothing else: TUNE n moves only voice n's line (heard within 1 cent) over its
+own octave-staggered range, TUNE at 0 silences only that voice (and takes it
+out of the FM) with a fade that steps no more than the waveform itself, SHARP
+crest factor 1.71 -> 1.01 (triangle -> square, only its pair), MOD
+off-harmonic power -46 -> -1 dB, the routing couplings, DRIVE THD 0.2 -> 31 %
+(level within +5 dB), echo times 1 ms..1 s on both outputs, FEEDBACK tails
+and a bounded sustain at full, MIX levels, CUTOFF -12 dB at the cutoff (four
+poles), Peak +12 dB, Sing at the cutoff within 1 cent at 136 Hz..10 kHz,
+transpose, All Sound Off, a minute with every control up (finite, peak 0.90);
+and that `mcc/lyra4_mcc/lyra4_mcc.ino` sends the CCs and step values the map
+reads. `./.build/host/sim_lyra4 --wav <dir>` writes listening WAVs (control
+sweeps). Built 2026-11-14, `p`: UF2 206336 B, no warnings. Not
+bench-tested: the audio core load (`audio-load`) is still to be measured on
+the board.
+
 **MODE = 4-bar motion recorder** in the sampler (new; BM's sampler MODE
 stopped/restarted the audio), fxrack (new; BM left MODE unused), polysynth and
 monosynth (BM). Click MODE to
@@ -207,7 +296,7 @@ A build without the setting stops at CMake (and `midi.h` has an `#error`).
 ## Apps and the web UI
 
 All six BM 1.6.0 apps are ported: `noop`, `sampler`, `polysynth`, `fxrack`,
-`elab`, `monosynth` (BM `dist/` ships the same six).
+`elab`, `monosynth` (BM `dist/` ships the same six), plus the new `lyra4`.
 
 The firmware works with the Bread Modular web UI
 (<https://breadmodular.com/ui/16bit>, Web Serial): the serial API
@@ -224,7 +313,7 @@ polysynth waveform menu (removed here, see below):
 | polysynth | none: `get-waveform` / `set-waveform` removed (P2 picks the BM waveform); the website's waveform menu does nothing and `get-waveform` times out after 5 s on connect |
 | fxrack | `get-fx1..3`, `set-fx1..3 <fx>` |
 | elab | `get-scope-channels`, `start-send`, `start-send-2`, `stop-send` |
-| monosynth, noop | none (the UI only shows the app) |
+| monosynth, noop, lyra4 | none (the UI only shows the app) |
 
 `./webapi-check.sh <app>` looks for these strings in the built ELF;
 `package.sh` runs it after every build, so a change that drops one fails. It
@@ -303,6 +392,9 @@ flashed as is (no rebuild needed).
   Bank A; `tools/sim_poly_filter.cpp`.
 - `src/audio/apps/fxrack_app.cpp`: MODE runs the motion recorder (P3 / P4 and
   all three MCC banks; BM: MODE unused).
+- New `lyra4` app (above): `includes/audio/apps/lyra4/`, `lyra4_app.{h,cpp}`,
+  `tools/sim_lyra4.cpp`; `main.cpp`, `CMakeLists.txt` (`VALID_APPS`,
+  `copy_to_ram`), the scripts' app lists. Its MCC firmware is in `mcc/`.
 - Everything else (apps, DSP, drivers, assets, host tools) is the BM file,
   unchanged.
 

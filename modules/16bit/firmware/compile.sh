@@ -4,7 +4,7 @@
 #
 # Usage:
 #   ./compile.sh                 # pick JP1 interactively, app from .config / polysynth
-#   ./compile.sh p|d [app]       # app: noop sampler polysynth fxrack elab monosynth
+#   ./compile.sh p|d [app]       # app: noop sampler polysynth fxrack elab monosynth lyra4
 #
 set -euo pipefail
 
