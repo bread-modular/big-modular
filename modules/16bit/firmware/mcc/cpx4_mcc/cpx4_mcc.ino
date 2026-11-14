@@ -3,7 +3,7 @@
 #include "SimpleMIDI.h"
 #include "ModeHandler.h"
 
-// MCC firmware for the 16bit lyra4 app: modules/mcc/firmware/mcc/mcc.ino with
+// MCC firmware for the 16bit cpx4 app: modules/mcc/firmware/mcc/mcc.ino with
 // the bank fixed at build time and the BANK button + LEDs turned into a
 // 3-step selector that sends its own CC. SimpleMIDI.h and ModeHandler.h are
 // the MCC firmware's files (symlinks); ModeHandler keeps the step in EEPROM.

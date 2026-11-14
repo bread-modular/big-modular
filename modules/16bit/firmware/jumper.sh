@@ -14,7 +14,7 @@ FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLS_DIR="$FW_DIR/../../../opt/rp2350-tools"
 PROJECT="$FW_DIR/16bit"
 # Keep in sync with VALID_APPS in 16bit/CMakeLists.txt
-APPS=(noop sampler polysynth fxrack elab monosynth lyra4)
+APPS=(noop sampler polysynth fxrack elab monosynth cpx4)
 SETTINGS=(p d)
 
 JP1="${1:-${JP1:-}}"

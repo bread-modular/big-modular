@@ -1,7 +1,7 @@
 #pragma once
 
-// LYRA4 control map (this module, not BM). Pico-free, shared with the host
-// test tools/sim_lyra4.cpp.
+// CPX4 control map (this module, not BM). Pico-free, shared with the host
+// test tools/sim_cpx4.cpp.
 //
 //   16bit knobs          P1 TUNE 1   P2 TUNE 2   P3 TUNE 3   P4 TUNE 4
 //   MCC-1 (Bank A)       CC20 SHARP A  CC21 SHARP B  CC22 MOD  CC23 DRIVE
@@ -12,15 +12,15 @@
 //   any MIDI note        PITCH: transposes all four voices (C4 = 0)
 //   CC120 All Sound Off  clears the delay lines
 //
-// The MCCs run the lyra4 MCC firmware (modules/16bit/firmware/mcc/, bank
+// The MCCs run the cpx4 MCC firmware (modules/16bit/firmware/mcc/, bank
 // fixed at build time). Their button CCs send 0 / 64 / 127 for steps 1 / 2 / 3
 // and are not recorded (outside the recorder's twelve MCC slots).
 
 #include <stdint.h>
 
-#include "audio/apps/lyra4/lyra4_dsp.h"
+#include "audio/apps/cpx4/cpx4_dsp.h"
 
-namespace lyra4_controls {
+namespace cpx4_controls {
 
 constexpr uint8_t CC_SHARP_A = 20;
 constexpr uint8_t CC_SHARP_B = 21;
@@ -62,7 +62,7 @@ inline int buttonStep(uint8_t value) {
     return (value & 0x7F) * 3 / 128;
 }
 
-// Knob 0..3 (P1..P4) raw ADC -> knob position 0..1 (Lyra4Dsp::setTune: the
+// Knob 0..3 (P1..P4) raw ADC -> knob position 0..1 (Cpx4Dsp::setTune: the
 // bottom few percent mute the voice, the rest is its pitch).
 inline float knobToTune(int knob, float adc) {
     float v;
@@ -74,8 +74,8 @@ inline float knobToTune(int knob, float adc) {
     return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v);
 }
 
-// Apply one CC. Returns true if it is a LYRA4 control.
-inline bool apply(Lyra4Dsp& dsp, uint8_t cc, uint8_t value) {
+// Apply one CC. Returns true if it is a CPX4 control.
+inline bool apply(Cpx4Dsp& dsp, uint8_t cc, uint8_t value) {
     const float v = (value & 0x7F) / 127.0f;
     switch (cc) {
         case CC_SHARP_A: dsp.setSharp(0, v); return true;
@@ -93,4 +93,4 @@ inline bool apply(Lyra4Dsp& dsp, uint8_t cc, uint8_t value) {
     }
 }
 
-}  // namespace lyra4_controls
+}  // namespace cpx4_controls

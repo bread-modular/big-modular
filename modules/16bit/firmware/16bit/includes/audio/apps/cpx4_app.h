@@ -6,13 +6,13 @@
 #include "audio/manager.h"
 #include "audio/apps/interfaces/audio_app.h"
 #include "audio/apps/free_motion_recorder.h"
-#include "audio/apps/lyra4/lyra4_dsp.h"
-#include "audio/apps/lyra4/lyra4_controls.h"
+#include "audio/apps/cpx4/cpx4_dsp.h"
+#include "audio/apps/cpx4/cpx4_controls.h"
 
-// LYRA4 (this module, not BM): a four-voice drone after the SOMA Lyra-8's
-// features, played from the 16bit knobs and two MCCs running the lyra4 MCC
-// firmware (../mcc/). DSP: audio/apps/lyra4/lyra4_dsp.h, control map:
-// audio/apps/lyra4/lyra4_controls.h.
+// CPX4 (this module, not BM): a four-voice drone inspired by the SOMA
+// Lyra-8, played from the 16bit knobs and two MCCs running the cpx4 MCC
+// firmware (../mcc/). DSP: audio/apps/cpx4/cpx4_dsp.h, control map:
+// audio/apps/cpx4/cpx4_controls.h.
 //
 //   P1..P4      TUNE 1..4 (read here at 12 bits, smoothed; not through IO's
 //               50-count CV callbacks, too coarse for beating)
@@ -24,19 +24,19 @@
 //   MODE        free-running motion recorder (free_motion_recorder.h, no
 //               MIDI clock): press to record, press again to close the loop;
 //               hold + move to overdub. P1..P4 + the eight MCC knobs
-#define LYRA4_KNOB_READ_INTERVAL_MS 2
-#define LYRA4_KNOB_OVERSAMPLE 4
-#define LYRA4_KNOB_SMOOTH 0.3f        // one-pole per read (~6 ms)
-#define LYRA4_KNOB_APPLY_STEP 0.75f   // ADC counts before a new TUNE is set
-#define LYRA4_DELAY_LINE_SAMPLES (44100 + 64)  // 1 s at 44.1 kHz + margin
+#define CPX4_KNOB_READ_INTERVAL_MS 2
+#define CPX4_KNOB_OVERSAMPLE 4
+#define CPX4_KNOB_SMOOTH 0.3f        // one-pole per read (~6 ms)
+#define CPX4_KNOB_APPLY_STEP 0.75f   // ADC counts before a new TUNE is set
+#define CPX4_DELAY_LINE_SAMPLES (44100 + 64)  // 1 s at 44.1 kHz + margin
 
-class Lyra4App : public AudioApp {
+class Cpx4App : public AudioApp {
 private:
-    static Lyra4App* instance;
+    static Cpx4App* instance;
     IO *io = IO::getInstance();
     WebSerial *webSerial = WebSerial::getInstance();
     AudioManager *audioManager = AudioManager::getInstance();
-    Lyra4Dsp dsp;
+    Cpx4Dsp dsp;
     FreeMotionRecorder recorder;
 
     float knobSmooth[MotionRecorder::KNOB_COUNT] = {};
@@ -66,5 +66,5 @@ public:
     void cv2UpdateCallback(uint16_t cv2) override;
     void buttonPressedCallback(bool pressed) override;
     bool onCommandCallback(const char* cmd) override;
-    static Lyra4App* getInstance();
+    static Cpx4App* getInstance();
 };
