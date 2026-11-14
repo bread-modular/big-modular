@@ -2,16 +2,19 @@
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_cli": "10.0.6",
   "sources": {
-    "hardware/8bit.kicad_pcb": "c8f6993b8ef236e1c781ab7e2af8957816d3f5c7ed0471fd7007fd391eecb92b",
-    "hardware/8bit.kicad_pro": "b4337e9349fdb9270bee7f9cfc48e3ac45cecf26ea330f6865b30e4eb8c867ae",
-    "hardware/8bit.kicad_sch": "35d01fae7afce0db8058bebd11fa1eef0154198896dce0b386b83a7e24bb984f",
-    "panels/front-pcb/8bit-panel.kicad_pcb": "f011721f73e7da6a7895a1b6e3885d3e43a4c55f6c3d3c17b92d19362073179c",
-    "panels/front-pcb/8bit-panel.kicad_pro": "e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6"
+    "hardware/8bit.kicad_pcb": "62b95156135100d71411cc8a7ab41da484c289c0e6ee691c4d712b912409596c",
+    "hardware/8bit.kicad_pro": "e6c8f00aab1f27e00951e295485cea149fa1a2bec87ea6447c4eacc68dd0bc66",
+    "hardware/8bit.kicad_sch": "f9faee23f55ba83b1240a340a88149d4b3d89d90742d0dec71f0a743130ed52b",
+    "panels/front-pcb/8bit-panel.kicad_pcb": "fc3e85703d6fce821f798b49f19d1fde2297d712b3a6ae9635830c9d434a9eeb",
+    "panels/front-pcb/8bit-panel.kicad_pro": "e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6",
+    "panels/front-pcb/8bit-lfo-panel.kicad_pcb": "c161d7f45de0a4f2fb67a47211c93fbf7063337b5605373dcf9d92aceb47bc40",
+    "panels/front-pcb/8bit-lfo-panel.kicad_pro": "ca498367eec266399cf548d9ffa68c0071ffdc51700b3dc4130184ef6adc4e57"
   },
   "exports": {
-    "jlcpcb/carrier/8bit-gerbers.zip": "6cce4f8819858272fb4c4f108344f2d89f419a506b77a0c6a505cae01eebfaed",
-    "jlcpcb/carrier/bom.csv": "c94d95d23e5a7619692d8dbc7daa7b12318bb98e7a30cb389370877eaed99340",
-    "jlcpcb/carrier/positions.csv": "703a636b5b00a6ace875932cb4e1cc3abfa1f5c1cbdc92afa6ed61714a08fe9c",
-    "jlcpcb/panel/8bit-panel-gerbers.zip": "69840c14cd01d81e82c79f3f3ccaa64116d03a6d2669b2f9dd98e81eb0f04e3c"
+    "jlcpcb/carrier/8bit-gerbers.zip": "0aeecb50a2ba6b0aebdd2413970fafcefd029f88b2739a966fb7439fb97705ec",
+    "jlcpcb/carrier/bom.csv": "a00d5af3a1a97f5923a22d5fbfabe541ab9ae1744d0827d2b16009c79dc8ff87",
+    "jlcpcb/carrier/positions.csv": "eaec703e219143aee21f123bd31de1e4c1c98fbd3055e6e9662dc217e91599d2",
+    "jlcpcb/panel/8bit-panel-gerbers.zip": "01fe725c87cc1d2d1e6b243bea596ee1827df987739cf8d3ebd85c42a752cf64",
+    "jlcpcb/lfo-panel/8bit-lfo-panel-gerbers.zip": "5aceab504aacea4c11a39b786e04a94c038eb0f443dce45aa0252372581b2b49"
   }
 }

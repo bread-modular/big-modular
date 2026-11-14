@@ -1,4 +1,4 @@
-"""Generate the 8bit S5 schematic (hardware/8bit.kicad_sch) and its pinned symbols.
+"""Generate the 8bit S6 schematic (hardware/8bit.kicad_sch) and its pinned symbols.
 
 Run from modules/8bit:
   python3 -B tools/build_schematic.py
@@ -8,10 +8,11 @@ renamed into the 8BIT library), hardware/sym-lib-table and the flat root schemat
 then lets `kicad-cli sch upgrade --force` re-save it natively. CIRCUIT below is the
 circuit of docs/research.md section 3: Bread Modular 8bit (ATtiny1616, DAC on PA6,
 knobs on PA1/PA2, mode button PA4, LED PA5, MIDI RX on PB3) moved to Eurorack with
-the MIDI V2 protected input (JP1 bypass), a protected CV input, a passive
-low-pass on knob 3 (as Bread Modular) and a +/-12 V output stage.
-Every pin gets a short stub and a local net label (as modules/midi), so connectivity
-is explicit by name. Multi-unit symbols (the TL072) get one placed unit per entry.
+the MIDI V2 protected input (JP1 bypass), a protected CV input, three knobs on the
+ADC (S6: knob 3 is a plain MCU knob on PB5, the Bread Modular passive low-pass is gone),
+a +/-12 V output stage and a buffered 0 / +5 V gate output from PA7 (S6).
+Signal nets are drawn as wires (WIRES below) with one label per net; supply nets use
+power symbols. Multi-unit symbols (the TL074) get one placed unit per entry.
 
 The PCB never reads this table: tools/build_layout.py takes nets, values and
 footprints from the native netlist that kicad-cli exports from this schematic.
@@ -50,7 +51,7 @@ SYMBOLS = {
     'R_Potentiometer': ('Device', 'R_Potentiometer'),
     'ATtiny1616-M': ('MCU_Microchip_ATtiny', 'ATtiny1616-M'),
     'HT75xx-1-SOT89': ('Regulator_Linear', 'HT75xx-1-SOT89'),
-    'TL072': ('Amplifier_Operational', 'TL072'),
+    'TL074': ('Amplifier_Operational', 'TL074'),
     'MCP6001-OT': ('Amplifier_Operational', 'MCP6001-OT'),
     'AudioJack2_SwitchT': ('Connector_Audio', 'AudioJack2_SwitchT'),
     'Conn_01x02': ('Connector_Generic', 'Conn_01x02'),
@@ -68,7 +69,7 @@ FP = {
     'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
     'SOD123': 'D_SOD-123', 'LED3': 'LED_D3.0mm', 'SOT23': 'SOT-23', 'SOT23-5': 'SOT-23-5', 'SOT323': 'SOT-323_SC-70',
-    'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
+    'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC14': 'SOIC-14_3.9x8.7mm_P1.27mm',
     'SOT89': 'SOT-89-3', 'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical',
     'RV09': 'Potentiometer_RV09', 'SW6': 'SW_PUSH_6mm_H7.3mm',
     'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
@@ -81,11 +82,12 @@ NOT_ASSEMBLED = {'JP1'}
 # ATtiny1616-M (VQFN-20) pin numbers. Bread Modular 8bit pins are kept so its firmware
 # ports: PA1/PA2 knobs (BM CV1/CV2), PA4 mode button, PA5 LED, PA6 DAC, PB3 MIDI RX.
 # The new CV input uses an ADC0 pin no BM 8bit firmware touches: PB0 (AIN11), on the left side
-# of the QFN next to the CV parts. Knob 3 is the passive filter (no MCU pin), as BM.
-# PA7 (BM gate out) and PB4 (BM logger TX) are driven by BM firmware and stay unconnected; PB5 is spare.
-MCU = {'20': 'POT1', '1': 'POT2', '14': 'CV_ADC', '9': None, '5': 'BUTTON', '6': 'LED_DRV',
+# of the QFN next to the CV parts. S6: knob 3 is a third ADC knob on PB5 (AIN8, the pin no
+# BM 8bit firmware touches) and PA7, the BM gate output every firmware already drives, feeds
+# the GATE jack through U3C. PB4 (BM logger TX) is driven by BM firmware and stays unconnected.
+MCU = {'20': 'POT1', '1': 'POT2', '14': 'CV_ADC', '9': 'POT3', '5': 'BUTTON', '6': 'LED_DRV',
        '7': 'DAC', '11': 'RX', '19': 'UPDI_PA0', '4': '+5V', '3': 'GND', '21': 'GND',
-       '2': None, '8': None, '10': None, '12': None, '13': None,
+       '2': None, '8': 'GATE', '10': None, '12': None, '13': None,
        '15': None, '16': None, '17': None, '18': None}
 
 
@@ -99,7 +101,7 @@ def circuit():
     c.append(part('J4', 'Conn_02x05_Odd_Even', 'Eurorack_2x5', 'H2x5', (35.56, 55.88), 0,
                   {'1': '-12V', '2': '-12V', '3': 'GND', '4': 'GND', '5': 'GND', '6': 'GND',
                    '7': 'GND', '8': 'GND', '9': '+12V', '10': '+12V'},
-                  Note='Unshrouded vertical header, pin 1 (-12 V) at the board bottom; '
+                  Note='Unshrouded vertical header upright at the right board edge, pin 1 (-12 V) at the bottom; '
                        'also takes a 16-pin IDC socket (positions 11-16 overhang, unused)'))
     c.append(part('D4', 'D_Schottky', 'B5819W', 'SOD123', (63.5, 66.04), 180,
                   {'1': '+12V_F', '2': '+12V'}, Note='+12 V series reverse-polarity protection'))
@@ -196,38 +198,31 @@ def circuit():
     c.append(part('D1', 'LED', 'LED_3mm_red', 'LED3', (203.2, 127.0), 90,
                   {'2': 'LED_A', '1': 'GND'}, Note='Mode LED (Bread Modular D1). Hand-soldered 3 mm THT'))
 
-    # ---- Knobs 1 and 2: plain voltage dividers into ADC pins (Bread Modular CV1/CV2 pins)
-    for i, (rv, cap, x) in enumerate((('RV1', 'C10', 149.86), ('RV2', 'C11', 185.42)), 1):
-        c.append(part(rv, 'R_Potentiometer', '50k', 'RV09', (x, 170.18), 0,
+    # ---- Knobs 1-3: plain voltage dividers into ADC pins (PA1/PA2 = Bread Modular CV1/CV2; knob 3
+    # on PB5 is new in S6, where S5 had the Bread Modular passive low-pass)
+    for i, (rv, cap, at) in enumerate((('RV1', 'C10', (149.86, 170.18)), ('RV2', 'C11', (185.42, 170.18)),
+                                       ('RV3', 'C12', (256.54, 83.82))), 1):
+        x, y = at
+        c.append(part(rv, 'R_Potentiometer', '50k', 'RV09', (x, y), 0,
                       {'1': 'GND', '2': f'POT{i}', '3': '+5V'},
                       Note=f'Knob {i}: RV09 9 mm vertical, linear (user stock, as audio-out). CW = +5V. '
                            'Hand-soldered'))
-        c.append(part(cap, 'C', '10n', 'C0603', (x + 10.16, 173.99), 0,
+        c.append(part(cap, 'C', '10n', 'C0603', (x + 10.16, y + 3.81), 0,
                       {'1': f'POT{i}', '2': 'GND'}, Voltage='50V', Note='ADC hold / noise filter'))
 
-    # ---- Knob 3: passive low-pass only, as Bread Modular: DAC -> R7 -> RV3 rheostat (pin 1
-    # open) -> FILT, C13 to GND. CW (wiper to pin 3) = less R = brighter.
-    c.append(part('R7', 'R', '10k', 'R0603', (256.54, 73.66), 90,
-                  {'1': 'DAC', '2': 'DAC_R'},
-                  Note='DAC series R: >= 10k DAC load, isolates the DAC from C13, sets fc max 15.9 kHz'))
-    c.append(part('RV3', 'R_Potentiometer', '1M', 'RV09', (279.4, 83.82), 0,
-                  {'1': None, '2': 'FILT', '3': 'DAC_R'},
-                  Note='Knob 3: low-pass cutoff, rheostat (pin 1 open, as Bread Modular). RV09 9 mm '
-                       'vertical, linear (user stock, as audio-out)'))
-    c.append(part('C13', 'C', '1n', 'C0603', (304.8, 90.17), 0,
-                  {'1': 'FILT', '2': 'GND'}, Voltage='50V',
-                  Note='Filter C: fc 158 Hz (R7 + RV3 1M) .. 15.9 kHz (R7 only)'))
-
-    # ---- Output: U3A non-inverting gain 2.2 with -1.2 x VOFF offset: 0..4.34 V -> +/-4.8 V
-    c.append(part('U3', 'TL072', 'TL072', 'SOIC8', (279.4, 160.02), 0,
-                  {'3': 'FILT', '2': 'OUT_FB', '1': 'AMP_OUT'}, unit=1,
-                  Note='+/-12 V. High-Z + input keeps the passive filter unloaded'))
-    c.append(part('U3', 'TL072', 'TL072', 'SOIC8', (256.54, 187.96), 0,
-                  {'5': 'VREF_DIV', '6': 'VOFF', '7': 'VOFF'}, unit=2,
-                  Note='+/-12 V. High-Z + input keeps the passive filter unloaded'))
-    c.append(part('U3', 'TL072', 'TL072', 'SOIC8', (345.44, 185.42), 0,
-                  {'4': '-12V_F', '8': '+12V_F'}, unit=3,
-                  Note='+/-12 V. High-Z + input keeps the passive filter unloaded'))
+    # ---- Output: U3A non-inverting gain 2.2 with -1.2 x VOFF offset: 0..4.34 V -> +/-4.8 V.
+    # S6: the DAC drives the + input directly (no low-pass; the TL074 input is high-Z)
+    amp = 'TL074 on +/-12 V: A output amplifier, B offset buffer, C gate buffer, D spare (grounded follower)'
+    c.append(part('U3', 'TL074', 'TL074', 'SOIC14', (279.4, 160.02), 0,
+                  {'3': 'DAC', '2': 'OUT_FB', '1': 'AMP_OUT'}, unit=1, Note=amp))
+    c.append(part('U3', 'TL074', 'TL074', 'SOIC14', (256.54, 187.96), 0,
+                  {'5': 'VREF_DIV', '6': 'VOFF', '7': 'VOFF'}, unit=2, Note=amp))
+    c.append(part('U3', 'TL074', 'TL074', 'SOIC14', (279.4, 228.6), 0,
+                  {'10': 'GATE', '9': 'GATE_BUF', '8': 'GATE_BUF'}, unit=3, Note=amp))
+    c.append(part('U3', 'TL074', 'TL074', 'SOIC14', (383.54, 185.42), 0,
+                  {'12': 'GND', '13': 'SPARE', '14': 'SPARE'}, unit=4, Note=amp))
+    c.append(part('U3', 'TL074', 'TL074', 'SOIC14', (345.44, 185.42), 0,
+                  {'11': '-12V_F', '4': '+12V_F'}, unit=5, Note=amp))
     c.append(part('R9', 'R', '12k', 'R0603', (281.94, 170.18), 90,
                   {'1': 'OUT_FB', '2': 'AMP_OUT'}, Note='Rf: gain 1 + 12k/10k = 2.2'))
     c.append(part('R8', 'R', '10k', 'R0603', (269.24, 173.99), 0,
@@ -243,11 +238,21 @@ def circuit():
                   {'1': 'AMP_OUT', '2': 'AUDIO_OUT'}, Power='0.5W',
                   Note='Output series: short / mis-patch current limit (op-amp also current-limits); 0.5 W for a permanent +/-12 V mis-patch (0.28 W)'))
     c.append(part('J3', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (330.2, 160.02), 180,
-                  {'T': 'AUDIO_OUT', 'S': 'GND', 'TN': None}, Note='Audio out, Eurorack level (~10 Vpp)'))
+                  {'T': 'AUDIO_OUT', 'S': 'GND', 'TN': None}, Note='DAC out, Eurorack level (~10 Vpp), DC coupled'))
     c.append(part('C7', 'C', '100n', 'C0603', (355.6, 176.53), 0,
                   {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='U3 V+ decoupling'))
     c.append(part('C8', 'C', '100n', 'C0603', (355.6, 194.31), 0,
                   {'1': 'GND', '2': '-12V_F'}, Voltage='50V', Note='U3 V- decoupling'))
+
+    # ---- Gate out (S6): PA7 (Bread Modular GATE_PIN, 0 / 5 V) -> U3C follower -> 1k -> jack.
+    # R7 holds the gate low while PA7 is high-Z (reset, UPDI programming)
+    c.append(part('R7', 'R', '100k', 'R0603', (256.54, 229.87), 0,
+                  {'1': 'GATE', '2': 'GND'}, Note='Gate pull-down: output low while PA7 is high-Z (reset, UPDI)'))
+    c.append(part('R15', 'R', '1k', 'R1206', (304.8, 228.6), 90,
+                  {'1': 'GATE_BUF', '2': 'GATE_OUT'}, Power='0.5W',
+                  Note='Gate series: short / mis-patch current limit, as R12 (0.5 W for a permanent +/-12 V mis-patch)'))
+    c.append(part('J6', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (330.2, 228.6), 180,
+                  {'T': 'GATE_OUT', 'S': 'GND', 'TN': None}, Note='Gate out, 0 / +5 V (PA7 buffered by U3C)'))
     for p in c:
         p['fields'].update(SOURCING.get((p['sym'], p['value'], p['fp']), {}))
     return c
@@ -255,8 +260,8 @@ def circuit():
 
 # JLCPCB parts for every assembled (SMD, back-side) part, keyed (symbol, value, footprint).
 # Live strict lookups 2026-10-19, recorded in docs/sourcing-candidates.json. Codes shared
-# with modules/midi are the same parts. All R/C are JLCPCB Basic except R12 (0.5 W 1206, no
-# Basic exists); U1 and U2 are Extended.
+# with modules/midi are the same parts. All R/C are JLCPCB Basic except R12/R15 (0.5 W 1206, no
+# Basic exists); U1 and U2 are Extended. S6: TL074CDR as modules/12bit (code re-checked 2026-11-14).
 # The THT jacks, pots, LED, switch and headers are hand-soldered and carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
@@ -279,7 +284,7 @@ SOURCING = {
     ('HT75xx-1-SOT89', 'HT7550-1', 'SOT89'): dict(LCSC='C16106', MPN='HT7550-1', Manufacturer='Holtek'),
     ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR',
                                                        Manufacturer='Microchip'),
-    ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
+    ('TL074', 'TL074', 'SOIC14'): dict(LCSC='C12594', MPN='TL074CDR', Manufacturer='Texas Instruments'),
     ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
                                             Manufacturer='CJ (Jiangsu Changjing)'),
     ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
@@ -303,7 +308,7 @@ TEXT_AT = {
     'BAT54SW': ((0, -6.35), (0, -3.81)),
     'AudioJack2_SwitchT': ((0, -6.35), (0, 6.35)),
     'R_Potentiometer': ((-5.08, -1.27), (-5.08, 1.27)),
-    'TL072': ((2.54, -10.16), (2.54, -7.62)),
+    'TL074': ((2.54, -10.16), (2.54, -7.62)),
     'MCP6001-OT': ((5.08, -7.62), (5.08, 7.62), 'left'),
     'PWR_FLAG': ((0, -5.08), (0, -2.54)),
     '#FLG05': ((0, 5.08), (0, 2.54)),
@@ -352,20 +357,24 @@ WIRES = [
     ['C1.1', (165.1, 88.9), 'U1.4'], ['U1.19', 'R5.1'], ['R5.2', 'J5.1'],
     ['J5.2', (205.74, 99.06), (205.74, 101.6)],
     ['U1.20', (182.88, 99.06)], ['U1.1', (182.88, 101.6)], ['U1.5', 'SW1.1'], ['U1.6', 'R6.1'],
-    ['R6.2', 'D1.2'], ['U1.7', (182.88, 111.76)], ['U1.14', (182.88, 119.38)], ['U1.11', (182.88, 127.0)],
-    # Knobs 1 and 2
-    ['RV1.2', (167.64, 170.18)], ['RV2.2', (203.2, 170.18)],
-    # Knob 3 passive low-pass: DAC -> R7 -> RV3 (rheostat) -> FILT / C13
-    [(246.38, 73.66), 'R7.1'], ['R7.2', (279.4, 73.66), 'RV3.3'],
-    ['RV3.2', (304.8, 83.82), 'C13.1'], [(304.8, 83.82), (317.5, 83.82)],
+    ['R6.2', 'D1.2'], ['U1.7', (182.88, 111.76)], ['U1.8', (182.88, 114.3)], ['U1.14', (182.88, 119.38)],
+    ['U1.11', (182.88, 127.0)], ['U1.9', (182.88, 132.08)],
+    # Knobs 1-3
+    ['RV1.2', (167.64, 170.18)], ['RV2.2', (203.2, 170.18)], ['RV3.2', (274.32, 83.82)],
     # Output stage
     [(264.16, 157.48), 'U3.3'], ['U3.2', (269.24, 162.56), 'R8.1'], [(269.24, 170.18), 'R9.1'],
     ['R9.2', (289.56, 170.18), (289.56, 160.02)], ['U3.1', 'R12.1'], ['R12.2', 'J3.T'],
     ['J3.S', (322.58, 162.56), (322.58, 165.1)],
     ['U3.7', (269.24, 187.96), 'R8.2'], [(266.7, 187.96), (266.7, 198.12), (246.38, 198.12), (246.38, 190.5), 'U3.6'],
     ['R10.2', 'R11.1'], [(238.76, 185.42), 'U3.5'], [(238.76, 187.96), 'C14.1'],
-    ['U3.8', (342.9, 172.72), (355.6, 172.72)], ['U3.4', (342.9, 198.12), (355.6, 198.12)],
+    ['U3.4', (342.9, 172.72), (355.6, 172.72)], ['U3.11', (342.9, 198.12), (355.6, 198.12)],
     ['C7.2', 'C8.1'], [(355.6, 185.42), (360.68, 185.42)],
+    # U3D spare: grounded follower
+    ['U3.12', (370.84, 182.88), (370.84, 187.96)],
+    ['U3.14', (396.24, 185.42), (396.24, 198.12), (373.38, 198.12), (373.38, 187.96), 'U3.13'],
+    # Gate out
+    [(251.46, 226.06), 'U3.10'], ['U3.9', (269.24, 231.14), (269.24, 241.3), (289.56, 241.3), (289.56, 228.6)],
+    ['U3.8', 'R15.1'], ['R15.2', 'J6.T'], ['J6.S', (322.58, 231.14), (322.58, 233.68)],
 ]
 
 POWER = [
@@ -382,9 +391,10 @@ POWER = [
     ('GND', 'SW1.2', 0), ('GND', 'D1.1', 0),
     ('+5V', 'RV1.3', 0), ('GND', 'RV1.1', 0), ('GND', 'C10.2', 0),
     ('+5V', 'RV2.3', 0), ('GND', 'RV2.1', 0), ('GND', 'C11.2', 0),
-    ('GND', 'C13.2', 0),
+    ('+5V', 'RV3.3', 0), ('GND', 'RV3.1', 0), ('GND', 'C12.2', 0),
     ('+5V', 'R10.1', 0), ('GND', 'R11.2', 0), ('GND', 'C14.2', 0), ('GND', (322.58, 165.1), 0),
     ('+12V_F', (349.25, 172.72), 0), ('-12V_F', (349.25, 198.12), 180), ('GND', (360.68, 185.42), 0),
+    ('GND', (370.84, 187.96), 0), ('GND', 'R7.2', 0), ('GND', (322.58, 233.68), 0),
 ]
 
 LABELS = [
@@ -393,16 +403,18 @@ LABELS = [
     ('CV_IN', (39.37, 175.26), 'R'), ('CV_BUF', (99.06, 175.26), 'R'), ('CV_ADC', (129.54, 177.8), 'R'),
     ('UPDI_PA0', (180.34, 96.52), 'R'), ('UPDI', (200.66, 96.52), 'R'),
     ('POT1', (182.88, 99.06), 'R'), ('POT2', (182.88, 101.6), 'R'), ('BUTTON', (182.88, 106.68), 'R'),
-    ('LED_DRV', (182.88, 109.22), 'R'), ('DAC', (182.88, 111.76), 'R'), ('CV_ADC', (182.88, 119.38), 'R'),
-    ('RX', (182.88, 127.0), 'R'), ('LED_A', (203.2, 121.92), 'U'),
-    ('POT1', (167.64, 170.18), 'R'), ('POT2', (203.2, 170.18), 'R'),
-    ('DAC', (246.38, 73.66), 'L'), ('DAC_R', (266.7, 73.66), 'R'), ('FILT', (317.5, 83.82), 'R'),
-    ('FILT', (264.16, 157.48), 'L'), ('OUT_FB', (270.51, 170.18), 'R'), ('AMP_OUT', (290.83, 160.02), 'R'),
+    ('LED_DRV', (182.88, 109.22), 'R'), ('DAC', (182.88, 111.76), 'R'), ('GATE', (182.88, 114.3), 'R'),
+    ('CV_ADC', (182.88, 119.38), 'R'), ('RX', (182.88, 127.0), 'R'), ('POT3', (182.88, 132.08), 'R'),
+    ('LED_A', (203.2, 121.92), 'U'),
+    ('POT1', (167.64, 170.18), 'R'), ('POT2', (203.2, 170.18), 'R'), ('POT3', (274.32, 83.82), 'R'),
+    ('DAC', (264.16, 157.48), 'L'), ('OUT_FB', (270.51, 170.18), 'R'), ('AMP_OUT', (290.83, 160.02), 'R'),
     ('AUDIO_OUT', (309.88, 160.02), 'R'), ('VOFF', (269.24, 186.69), 'U'), ('VREF_DIV', (240.03, 185.42), 'R'),
+    ('SPARE', (378.46, 198.12), 'R'),
+    ('GATE', (251.46, 226.06), 'L'), ('GATE_BUF', (290.83, 228.6), 'R'), ('GATE_OUT', (309.88, 228.6), 'R'),
 ]
 
 TEXTS = [
-    ((20.32, 17.78), 'BIG MODULAR 8BIT - S5 schematic (Bread Modular 8bit for Eurorack, 4HP). '
+    ((20.32, 17.78), 'BIG MODULAR 8BIT - S6 schematic (Bread Modular 8bit for Eurorack, 6HP). '
                      'Circuit intent: docs/research.md', 2.0),
     ((20.32, 30.48), 'POWER: +12V -> B5819W -> +12V_F (U3 V+, HT7550-1 -> +5V); '
                      '-12V -> B5819W -> -12V_F (U3 V-).', 1.4),
@@ -416,13 +428,15 @@ TEXTS = [
     ((20.32, 156.21), 'CV IN: R4/R13/R14 level shift, D3 clamp, C9 -> U4 MCP6001 follower (+5V) -> PB0 (AIN11)', 1.4),
     ((20.32, 194.31), 'Input impedance 102k. -5.5..+5.5 V -> 0..5 V (0 V CV = mid-scale, ~509). +/-12 V tolerant (clamped).', 1.1),
     ((139.7, 72.39), 'MCU: ATtiny1616 at 5 V; Bread Modular 8bit pin map (PA1/PA2 knobs, PA4 button,\n'
-                     'PA5 LED, PA6 DAC, PB3 RX). New: PB0 CV in. PB5 spare.\n'
+                     'PA5 LED, PA6 DAC, PA7 gate, PB3 RX). New: PB0 CV in, PB5 knob 3.\n'
                      'UPDI J5: pin 1 UPDI, pin 2 GND (2.54 mm). Power the module from Eurorack while programming.', 1.1),
     ((139.7, 157.48), 'KNOBS 1/2: 50k linear dividers +5V..GND into PA1/PA2 (BM CV1/CV2).', 1.1),
-    ((241.3, 50.8), 'KNOB 3 = PASSIVE LOW-PASS (as Bread Modular): DAC -> R7 10k -> RV3 1M rheostat -> FILT, C13 1n.\n'
-                    'CW = brighter: 158 Hz .. 15.9 kHz. RV3 pin 1 open. U3A + input is high-Z, so the filter is unloaded.', 1.1),
-    ((241.3, 143.51), 'OUTPUT: U3A gain 2.2 with -1.2 x VOFF (3.98 V): DAC 0..4.34 V -> -4.8..+4.8 V,\n'
-                      '1k series to the jack. DC coupled (LFO firmware works).', 1.1),
+    ((241.3, 66.04), 'KNOB 3 (S6): 50k linear divider +5V..GND into PB5 (AIN8), as knobs 1/2.\n'
+                     'The S5 passive low-pass (R7, RV3 1M rheostat, C13) is removed.', 1.1),
+    ((241.3, 143.51), 'OUTPUT: DAC (PA6) straight into U3A, gain 2.2 with -1.2 x VOFF (3.98 V): DAC 0..4.34 V -> -4.8..+4.8 V,\n'
+                      '1k series to the jack. DC coupled (LFO firmware works). No low-pass.', 1.1),
+    ((241.3, 213.36), 'GATE OUT (S6): PA7 (Bread Modular GATE_PIN, 0 / 5 V) -> U3C follower -> 1k series -> jack.\n'
+                      'R7 pulls the gate low while PA7 is high-Z (reset, UPDI). U3D is a grounded spare.', 1.1),
 ]
 
 
@@ -630,8 +644,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - 8bit") (rev "S5") (company "Big Modular")
-        (comment 1 "SCHEMATIC S5 - Bread Modular 8bit for Eurorack: protected MIDI in, bipolar buffered CV in, knob 3 passive LPF, +/-5 V out")
+      (title_block (title "Big Modular - 8bit") (rev "S6") (company "Big Modular")
+        (comment 1 "SCHEMATIC S6 - Bread Modular 8bit for Eurorack, 6HP: protected MIDI in, bipolar buffered CV in, three knobs, +/-5 V DAC out, gate out")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
@@ -691,7 +705,7 @@ def build():
             nets.setdefault(net, []).append(key)
             ends[f"{p['ref']}.{n}"] = (ex, ey, net)
     multi = {ref: u for ref, u in units.items() if len(u) > 1}
-    assert multi == {'U3': {1, 2, 3}}, multi
+    assert multi == {'U3': {1, 2, 3, 4, 5}}, multi
     single = {n: k for n, k in nets.items() if len(k) < 2}
     assert not single, f'single-pin nets: {single}'
     items += draw(ends, lib_syms, root)

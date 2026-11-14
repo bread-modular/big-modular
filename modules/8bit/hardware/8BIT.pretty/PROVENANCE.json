@@ -14,12 +14,12 @@
       "edits": "3D model ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.step is not shipped by KiCad; visual proxy ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm.step",
       "output_sha256": "457fadb3ecd78216b5a468dda42e410bb016930212b6b69a3553bc1bb49ff485"
     },
-    "SOIC-8_3.9x4.9mm_P1.27mm": {
-      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
-      "source_sha256": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f",
+    "SOIC-14_3.9x8.7mm_P1.27mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod",
+      "source_sha256": "a885b619b22880c9559522d2bf865b059d80453b95a98defc9e6ceef284da1fc",
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
       "edits": "none (native load/save only)",
-      "output_sha256": "c7fe499cce067e5a5af28b66f4c3cdea4b2ff8d9993f95250b6fc7151371b6d8"
+      "output_sha256": "c1b276139db853dec9719577777c582bd23de8133bb02beecc2564a96513c6dc"
     },
     "SOT-89-3": {
       "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-89-3.kicad_mod",

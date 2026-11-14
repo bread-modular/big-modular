@@ -1,4 +1,4 @@
-"""Generate the 3D-printable 8BIT 4HP front panel with FreeCAD.
+"""Generate the 3D-printable 8BIT 6HP front panel with FreeCAD.
 
 Run headless from modules/8bit:
   ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
@@ -12,7 +12,7 @@ FR4 panel silk legend is not carried over).
 Thickness is panel_print_thickness_mm (2.0 mm, stiffer than the 1.6 mm FR4 panel);
 the PJ301M-12 threads still leave ~0.5 mm past a 2.0 mm nut (as modules/midi); the
 RV09 pots take no nut.
-The MODE cap tip stands 1.0 mm proud of this print (docs/mechanics.md).
+The MODE cap tip stands 1.5 mm proud of this print (docs/mechanics.md).
 CAD frame: X across, Y = 128.5 - panel Y (origin lower left seen from +Z), Z0..t with
 the +Z face as the panel FRONT. Holes are nominal, without print compensation; ream
 to size after printing. Nominal geometry only, no physical-fit or strength claim.
@@ -80,12 +80,11 @@ def check_contract(g):
     assert list(g['size']) == c['panel_mm'], g['size']
     d = c['panel_hole_diameters_mm']
     want = [tuple(h) for h in c['rail_holes_mm']]
-    col = c['control_column_X_mm']
     lfo = c['lfo_panel']
     omit = lfo['omit_jacks'] + lfo['omit_pots'] if VARIANT == 'lfo' else []
-    want += [(col, j['Y'], d['jack']) for j in c['jacks'] if j['ref'] not in omit]
-    want += [(col, p['shaft_Y'], d['pot']) for p in c['pots'] if p['ref'] not in omit]
-    want += [(led['X'], led['Y'], d['led']) for led in c['leds']]
+    want += [(*j['XY'], d['jack']) for j in c['jacks'] if j['ref'] not in omit]
+    want += [(*p['shaft_XY'], d['pot']) for p in c['pots'] if p['ref'] not in omit]
+    want += [(*led['XY'], d['led']) for led in c['leds']]
     want.append((*c['button']['XY'], d['button']))
     got = [(x, y, w) for _, x, y, w, h, _ in g['holes'] if w == h]
     assert sorted(got) == sorted(want), (sorted(got), sorted(want))

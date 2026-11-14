@@ -11,7 +11,9 @@ Ports of four Bread Modular 8bit firmwares
 | PA1 / PA2 | Knob P1 (`PIN_CV1`) / P2 (`PIN_CV2`) |
 | PA4 / PA5 | MODE button / LED |
 | PA6 | DAC out |
-| PA7, PB4 | BM gate / logger TX: still driven, not connected on this board |
+| PA7 | BM gate (`GATE_PIN`): drives the GATE jack through a follower (S6 hardware) |
+| PB4 | BM logger TX: still driven, not connected on this board |
+| PB5 | Knob P3 (S6 hardware): not read by any firmware here yet |
 | PB0 | CV in: `lfo` only (exponential rate FM); not used by the others |
 
 `lfo` uses no MIDI; its MODE button toggles the output range (-5..+5 V /
@@ -90,18 +92,19 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
     spot (~17° of the travel). Tables are interpolated between entries, so a
     slow wave moves in single DAC steps instead of 256 coarse steps per
     cycle. At audio rate the waves alias (no band-limiting, 8-bit DAC;
-    the R7/C13 15.9 kHz corner smooths the steps).
+    S5 boards smooth the steps with the R7/C13 15.9 kHz
+    corner, S6 boards have no output filter).
   - **No MIDI** (BM's unused MIDI receiver is removed). **MODE = output
     range**, toggled per click, BIPOLAR at power-up (not stored): BIPOLAR uses
     the full DAC (about -4.8..+4.8 V); UNIPOLAR scales the wave into the upper
     half of the DAC (`128 + sample / 2`, about 0..+4.8 V, 7-bit steps). No
     recorder. The LED follows the wave's position in the active range: dim
     (1/8) in BIPOLAR, full brightness in UNIPOLAR (BM: half brightness, no
-    range switch); at audio rate it just glows. Gate (PA7, not connected)
+    range switch); at audio rate it just glows. Gate (PA7, the GATE jack on S6)
     stays on the wave sample > 127.
   - Use the LFO panel (no MIDI jack, no P3 hole, MODE labelled REC), leave J1
-    and RV3 off and wire-bridge RV3 (`../docs/mechanics.md`): with RV3 off the
-    board and no bridge, the output is silent.
+    and RV3 off (`../docs/mechanics.md`). S6 boards need no wire bridge; on an
+    S5 (4HP) board RV3 must be wire-bridged or the output is silent.
 - **crash**: synthesized TR-808-style crash (no samples) on MIDI note-on,
   velocity = level, note ignored. P1 = brightness, P2 = hiss/metal balance.
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED

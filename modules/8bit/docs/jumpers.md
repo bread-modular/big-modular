@@ -2,10 +2,11 @@
 
 One solder jumper, **JP1**, **shipped open**: bridge one side with a blob of solder
 before first use. No copper needs cutting, and a bridge can be removed with solder wick.
-It sits top-left on the back, beside the MIDI parts, labelled `P` / `D`, with the legend
-`JP1 MIDI IN: P=PROTECTED D=DIRECT` at the top edge.
+It sits at the top of the back, between the MIDI and CV jacks below the MIDI parts,
+labelled `P` (top pad) / `D` (bottom pad), with the legend
+`JP1 MIDI IN: P=PROTECTED D=DIRECT` further down the board.
 
-Knob P3 has no jumpers: it is always the passive low-pass, as on Bread Modular.
+Knob P3 has no jumpers: from S6 it is a plain MCU knob on PB5 (the passive low-pass is gone).
 
 ## JP1: MIDI input (pick one)
 
@@ -21,7 +22,8 @@ Bridge exactly one side. With JP1 open the MCU's MIDI input floats.
 | Input | Pin | Note |
 |---|---|---|
 | Knob P1 / P2 | PA1 / PA2 | As Bread Modular (`PIN_CV1` / `PIN_CV2`) |
-| Knob P3 | - | Passive low-pass on the DAC output, no MCU pin (as Bread Modular) |
+| Knob P3 | PB5 | New in S6 (`analogRead(PIN_PB5)`); not read by the ported firmwares yet |
 | CV in | PB0 | New (`analogRead(PIN_PB0)`), 0-5 V, clamped |
 | MIDI in | PB3 | Invert in firmware when JP1 = P |
 | Mode button / LED | PA4 / PA5 | As Bread Modular |
+| Gate out | PA7 | As Bread Modular (`GATE_PIN`), buffered to the GATE jack, 0 / +5 V |
