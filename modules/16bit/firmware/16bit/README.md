@@ -19,8 +19,13 @@ separate firmware per app.
 | `fxrack`    | Multi-FX rack over sample players            |
 | `elab`      | Envelope lab (A1/A2 CV/audio scoping)        |
 | `monosynth` | Pulsar-23-inspired mono bass synth (percussion mode) |
+| `lyra4`     | Lyra-8-style 4-voice drone: TUNE on P1..P4, two lyra4 MCCs (SHARP, MOD, DRIVE, FM routing; delay, feedback, mix, ladder cutoff + resonance), see `../README.md` |
 
-### Motion recorder (sampler, fxrack, monosynth & polysynth)
+### Motion recorder (sampler, fxrack, monosynth, polysynth & lyra4)
+
+lyra4 runs the free-running variant (no MIDI timing), see
+[Free-running recorder (lyra4)](#free-running-recorder-lyra4) below; the rest
+of this section is the MIDI-clocked recorder of the other apps.
 
 These apps share the same MODE/LED workflow as the 8bit CV recorder
 (`opt/attiny1616-tools/lib/CvRecorder`), loop offset included. The state machine lives in the shared pico-free header
@@ -54,6 +59,27 @@ runs its self-tests on the host.
   MIDI clock and stores the take in RAM only; it never writes the filesystem or
   flash.
 
+### Free-running recorder (lyra4)
+
+`includes/audio/apps/free_motion_recorder.h`, host tests in
+`tools/sim_free_motion_recorder.cpp`. Same frames (P1..P4 + the MCC slots),
+overdub hold and loop offset as above, but **no MIDI clock**: the loop length
+comes from the MODE presses.
+
+- **Press MODE** to start a take (LED blinks). Every 20 ms the knobs and MCC
+  values are stored.
+- **Press MODE again** to close the loop. The loop is exactly the time between
+  the two presses (to the millisecond, so it doesn't drift against the tempo
+  it was tapped to) and plays from the start at that press. Max 60 s (the
+  take closes itself there); a second press within 0.2 s drops the take.
+- **Playback**: LED solid, dark for 80 ms at each loop restart so you can see
+  the loop. Click MODE (nothing moved) to go back to LIVE.
+- **Overdub**: hold MODE in playback and move knobs or MCC controls; each moved
+  control is re-recorded until you let go (LED blinks), the rest keep playing.
+- **Offset**: knobs and MCC are ignored for the first pass; after that moving
+  one shifts its recorded curve.
+- MIDI clock and Start are ignored. RAM only (60 KB), never the filesystem.
+
 Each app owns what a frame means:
 
 | app        | P1 / P2                          | P3 / P4 (BM CV1 / CV2)                                  | MCC                                                          |
@@ -61,6 +87,7 @@ Each app owns what a frame means:
 | sampler    | group A drive / highpass resonance | group A lowpass / highpass                            | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | fxrack     | not recorded (audio inputs)      | group A / group B lowpass                               | FX1 `CC20..23`, FX2 `CC27..30`, FX3 `CC85..88`               |
 | monosynth  | not used                         | attack / decay times                                    | Bank A: BODY, CHORUS, CUTOFF, RESONANCE                      |
+| lyra4      | TUNE 1 / TUNE 2                  | TUNE 3 / TUNE 4                                         | Bank A: SHARP A, SHARP B, MOD, DRIVE; Bank B: DELAY TIME, FEEDBACK, DELAY MIX, CUTOFF (button CCs 102 / 103 not recorded) |
 | polysynth  | wavetable select / position (P1 down: P2 = square -> saw -> tri -> sine; P1 up: Noise, P2 = brown -> pink -> white -> blue -> digital -> crackle) | amp-envelope attack (1..500 ms) / release (10..1000 ms) | Bank A: filter-env attack-release time, filter-env depth, resonance, cutoff; Banks B / C fold onto Bank A |
 
 While a polysynth take plays back, each frame updates all six voices'

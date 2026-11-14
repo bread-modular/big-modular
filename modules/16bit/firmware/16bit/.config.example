@@ -3,7 +3,7 @@
 # Copy this file to `.config` (in this directory) and set APP_NAME to the app
 # you're working on. `.config` is gitignored and never committed.
 #
-# Valid apps: noop, sampler, polysynth, fxrack, elab, monosynth
+# Valid apps: noop, sampler, polysynth, fxrack, elab, monosynth, lyra4
 #
 # ../compile.sh, ../flash.sh read this automatically. You can still override it
 # for a single build with: ../compile.sh p elab   (or APP=elab ../compile.sh p)

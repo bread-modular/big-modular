@@ -37,7 +37,7 @@ if(NOT DEFINED APP_NAME)
     set(APP_NAME "polysynth")
 endif()
 
-set(VALID_APPS "noop" "sampler" "polysynth" "fxrack" "elab" "monosynth")
+set(VALID_APPS "noop" "sampler" "polysynth" "fxrack" "elab" "monosynth" "lyra4")
 if(NOT APP_NAME IN_LIST VALID_APPS)
     message(FATAL_ERROR "Invalid APP_NAME: ${APP_NAME}. Valid options are: ${VALID_APPS}")
 endif()
@@ -115,7 +115,8 @@ target_include_directories(16bit PRIVATE
 # The polysynth runs from RAM: its voices + the ladder executing from flash
 # overrun the audio core (XIP cache misses). Its wavetables stay in flash
 # (.flashdata, wavetable_data.h) and are copied to RAM one table at a time.
-if(APP_NAME STREQUAL "polysynth")
+# lyra4 (oscillators, delay, two ladders every sample) runs from RAM too.
+if(APP_NAME STREQUAL "polysynth" OR APP_NAME STREQUAL "lyra4")
     pico_set_binary_type(16bit copy_to_ram)
 endif()
 
