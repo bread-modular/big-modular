@@ -52,7 +52,7 @@ SYMBOLS = {
     'ATtiny1616-M': ('MCU_Microchip_ATtiny', 'ATtiny1616-M'),
     'HT75xx-1-SOT89': ('Regulator_Linear', 'HT75xx-1-SOT89'),
     'TL074': ('Amplifier_Operational', 'TL074'),
-    'MCP6001-OT': ('Amplifier_Operational', 'MCP6001-OT'),
+    'MCP6002-xSN': ('Amplifier_Operational', 'MCP6002-xSN'),
     'AudioJack2_SwitchT': ('Connector_Audio', 'AudioJack2_SwitchT'),
     'Conn_01x02': ('Connector_Generic', 'Conn_01x02'),
     'Conn_02x05_Odd_Even': ('Connector_Generic', 'Conn_02x05_Odd_Even'),
@@ -68,8 +68,9 @@ SYMBOLS = {
 FP = {
     'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
-    'SOD123': 'D_SOD-123', 'LED3': 'LED_D3.0mm', 'SOT23': 'SOT-23', 'SOT23-5': 'SOT-23-5', 'SOT323': 'SOT-323_SC-70',
-    'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC14': 'SOIC-14_3.9x8.7mm_P1.27mm',
+    'SOD123': 'D_SOD-123', 'LED3': 'LED_D3.0mm', 'SOT23': 'SOT-23', 'SOT323': 'SOT-323_SC-70',
+    'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
+    'SOIC14': 'SOIC-14_3.9x8.7mm_P1.27mm',
     'SOT89': 'SOT-89-3', 'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical',
     'RV09': 'Potentiometer_RV09', 'SW6': 'SW_PUSH_6mm_H7.3mm',
     'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
@@ -152,7 +153,9 @@ def circuit():
 
     # ---- CV input: bipolar level shift R4 56k / R13 51k to +5V / R14 510k to GND maps
     # -5.5..+5.5 V onto 0..5 V (input impedance ~102k), Schottky clamp to +5V/GND, 1n,
-    # MCP6001 rail-to-rail follower on +5V -> ADC pin (low source impedance, output within 0..5 V)
+    # MCP6002 rail-to-rail follower (U4A) on +5V -> ADC pin (low source impedance, output within 0..5 V);
+    # U4B is a grounded spare. Dual, not the single MCP6001: C7377 is a JLCPCB Preferred Extended part
+    # (no feeder fee), as on modules/acid, modules/mcc and modules/vca-mix
     c.append(part('J2', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (25.4, 175.26), 0,
                   {'T': 'CV_IN', 'S': 'GND', 'TN': 'GND'},
                   Note='CV in, -5.5..+5.5 V. Tip normalled to GND: unpatched reads mid-scale (0 V)'))
@@ -171,10 +174,14 @@ def circuit():
                   Note='CV clamp: holds the U4 input within -0.3..+5.3 V'))
     c.append(part('C9', 'C', '1n', 'C0603', (76.2, 179.07), 0,
                   {'1': 'CV_BUF', '2': 'GND'}, Voltage='50V', Note='With R4||R13||R14 (25.4k): 6.3 kHz CV low-pass'))
-    c.append(part('U4', 'MCP6001-OT', 'MCP6001', 'SOT23-5', (114.3, 177.8), 0,
-                  {'3': 'CV_BUF', '4': 'CV_ADC', '1': 'CV_ADC', '2': 'GND', '5': '+5V'},
-                  Note='CV buffer: unity follower, rail-to-rail in/out on +5V, so PB0 only ever sees 0..5 V. '
-                       'Same family as Bread Modular 8bit MCP6002'))
+    cvbuf = ('MCP6002 on +5V (as Bread Modular 8bit): A CV buffer, unity follower, rail-to-rail in/out, '
+             'so PB0 only ever sees 0..5 V; B spare (grounded follower)')
+    c.append(part('U4', 'MCP6002-xSN', 'MCP6002', 'SOIC8', (114.3, 177.8), 0,
+                  {'3': 'CV_BUF', '2': 'CV_ADC', '1': 'CV_ADC'}, unit=1, Note=cvbuf))
+    c.append(part('U4', 'MCP6002-xSN', 'MCP6002', 'SOIC8', (114.3, 210.82), 0,
+                  {'5': 'GND', '6': 'CV_SPARE', '7': 'CV_SPARE'}, unit=2, Note=cvbuf))
+    c.append(part('U4', 'MCP6002-xSN', 'MCP6002', 'SOIC8', (142.24, 210.82), 0,
+                  {'8': '+5V', '4': 'GND'}, unit=3, Note=cvbuf))
     c.append(part('C15', 'C', '100n', 'C0603', (134.62, 190.5), 0,
                   {'1': '+5V', '2': 'GND'}, Voltage='50V', Note='U4 decoupling'))
 
@@ -262,6 +269,7 @@ def circuit():
 # Live strict lookups 2026-10-19, recorded in docs/sourcing-candidates.json. Codes shared
 # with modules/midi are the same parts. All R/C are JLCPCB Basic except R12/R15 (0.5 W 1206, no
 # Basic exists); U1 and U2 are Extended. S6: TL074CDR as modules/12bit (code re-checked 2026-11-14).
+# U4 MCP6002T-I/SN C7377 (2026-11-14, user): Preferred Extended, no feeder fee, as modules/acid.
 # The THT jacks, pots, LED, switch and headers are hand-soldered and carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
@@ -289,7 +297,7 @@ SOURCING = {
                                             Manufacturer='CJ (Jiangsu Changjing)'),
     ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
     ('BAT54SW', 'BAT54SW', 'SOT323'): dict(LCSC='C78260', MPN='BAT54SWT1G', Manufacturer='onsemi'),
-    ('MCP6001-OT', 'MCP6001', 'SOT23-5'): dict(LCSC='C29429', MPN='MCP6001T-E/OT', Manufacturer='Microchip'),
+    ('MCP6002-xSN', 'MCP6002', 'SOIC8'): dict(LCSC='C7377', MPN='MCP6002T-I/SN', Manufacturer='Microchip'),
 }
 
 
@@ -309,7 +317,7 @@ TEXT_AT = {
     'AudioJack2_SwitchT': ((0, -6.35), (0, 6.35)),
     'R_Potentiometer': ((-5.08, -1.27), (-5.08, 1.27)),
     'TL074': ((2.54, -10.16), (2.54, -7.62)),
-    'MCP6001-OT': ((5.08, -7.62), (5.08, 7.62), 'left'),
+    'MCP6002-xSN': ((2.54, -10.16), (2.54, -7.62)),
     'PWR_FLAG': ((0, -5.08), (0, -2.54)),
     '#FLG05': ((0, 5.08), (0, 2.54)),
 }
@@ -352,7 +360,10 @@ WIRES = [
     # CV in
     ['J2.S', (33.02, 172.72)], ['J2.TN', (33.02, 177.8), (33.02, 180.34)], ['J2.T', 'R4.1'],
     ['R4.2', 'U4.3'], ['R13.2', (86.36, 175.26)], ['R14.1', (93.98, 175.26)], ['U4.1', (129.54, 177.8)],
-    ['U4.4', (104.14, 180.34), (104.14, 190.5), (124.46, 190.5), (124.46, 177.8)],
+    ['U4.2', (104.14, 180.34), (104.14, 190.5), (124.46, 190.5), (124.46, 177.8)],
+    # U4B spare: grounded follower
+    ['U4.5', (101.6, 208.28), (101.6, 213.36)],
+    ['U4.7', (127.0, 210.82), (127.0, 223.52), (104.14, 223.52), (104.14, 213.36), 'U4.6'],
     # MCU, UPDI, mode button and LED
     ['C1.1', (165.1, 88.9), 'U1.4'], ['U1.19', 'R5.1'], ['R5.2', 'J5.1'],
     ['J5.2', (205.74, 99.06), (205.74, 101.6)],
@@ -386,7 +397,7 @@ POWER = [
     ('GND', (33.02, 119.38), 90), ('+5V', 'R3.2', 0), ('GND', 'D2.2', 0), ('GND', 'Q1.2', 0),
     ('+5V', 'R2.2', 0),
     ('GND', (33.02, 172.72), 90), ('GND', (33.02, 180.34), 0), ('GND', 'D3.1', 270), ('+5V', 'D3.2', 0),
-    ('GND', 'C9.2', 0), ('+5V', 'R13.1', 0), ('GND', 'R14.2', 0), ('+5V', 'U4.5', 0), ('GND', 'U4.2', 0), ('+5V', 'C15.1', 0), ('GND', 'C15.2', 0),
+    ('GND', 'C9.2', 0), ('+5V', 'R13.1', 0), ('GND', 'R14.2', 0), ('+5V', 'U4.8', 0), ('GND', 'U4.4', 0), ('GND', (101.6, 213.36), 0), ('+5V', 'C15.1', 0), ('GND', 'C15.2', 0),
     ('+5V', (154.94, 88.9), 0), ('GND', 'C1.2', 0), ('GND', 'U1.3', 0), ('GND', (205.74, 101.6), 0),
     ('GND', 'SW1.2', 0), ('GND', 'D1.1', 0),
     ('+5V', 'RV1.3', 0), ('GND', 'RV1.1', 0), ('GND', 'C10.2', 0),
@@ -409,7 +420,7 @@ LABELS = [
     ('POT1', (167.64, 170.18), 'R'), ('POT2', (203.2, 170.18), 'R'), ('POT3', (274.32, 83.82), 'R'),
     ('DAC', (264.16, 157.48), 'L'), ('OUT_FB', (270.51, 170.18), 'R'), ('AMP_OUT', (290.83, 160.02), 'R'),
     ('AUDIO_OUT', (309.88, 160.02), 'R'), ('VOFF', (269.24, 186.69), 'U'), ('VREF_DIV', (240.03, 185.42), 'R'),
-    ('SPARE', (378.46, 198.12), 'R'),
+    ('SPARE', (378.46, 198.12), 'R'), ('CV_SPARE', (109.22, 223.52), 'R'),
     ('GATE', (251.46, 226.06), 'L'), ('GATE_BUF', (290.83, 228.6), 'R'), ('GATE_OUT', (309.88, 228.6), 'R'),
 ]
 
@@ -425,7 +436,7 @@ TEXTS = [
                       'Solder 1-2 = PROTECTED (Q1 drives PB3; firmware PORT_INVEN on PB3).\n'
                       'Solder 2-3 = DIRECT (MIDI_IN to PB3, unprotected; stock BM 8bit firmware).\n'
                       'Exactly one bridge: never both, and open = PB3 floats.', 1.1),
-    ((20.32, 156.21), 'CV IN: R4/R13/R14 level shift, D3 clamp, C9 -> U4 MCP6001 follower (+5V) -> PB0 (AIN11)', 1.4),
+    ((20.32, 156.21), 'CV IN: R4/R13/R14 level shift, D3 clamp, C9 -> U4A MCP6002 follower (+5V) -> PB0 (AIN11); U4B spare', 1.4),
     ((20.32, 194.31), 'Input impedance 102k. -5.5..+5.5 V -> 0..5 V (0 V CV = mid-scale, ~509). +/-12 V tolerant (clamped).', 1.1),
     ((139.7, 72.39), 'MCU: ATtiny1616 at 5 V; Bread Modular 8bit pin map (PA1/PA2 knobs, PA4 button,\n'
                      'PA5 LED, PA6 DAC, PA7 gate, PB3 RX). New: PB0 CV in, PB5 knob 3.\n'
@@ -705,7 +716,7 @@ def build():
             nets.setdefault(net, []).append(key)
             ends[f"{p['ref']}.{n}"] = (ex, ey, net)
     multi = {ref: u for ref, u in units.items() if len(u) > 1}
-    assert multi == {'U3': {1, 2, 3, 4, 5}}, multi
+    assert multi == {'U3': {1, 2, 3, 4, 5}, 'U4': {1, 2, 3}}, multi
     single = {n: k for n, k in nets.items() if len(k) < 2}
     assert not single, f'single-pin nets: {single}'
     items += draw(ends, lib_syms, root)
