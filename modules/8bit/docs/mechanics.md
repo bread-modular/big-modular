@@ -1,9 +1,10 @@
-# 8bit mechanics and 4HP fit (S5 placement, R4 routing)
+# 8bit mechanics and 6HP fit (S6 placement, R1 routing)
 
-**Verdict: the module fits 4HP** on the nominal footprints and courtyards (native DRC 0
-at all severities on the routed carrier). It is not yet a 3D-checked fit: no
-interference run yet (`research.md` §6). The printed FreeCAD panel (`panels/front-cad/`,
-2.0 mm) is generated but not test-printed.
+**Verdict: the module fits 6HP with room to spare** on the nominal footprints and courtyards
+(native DRC 0 at all severities on the routed carrier, 1 mm edge keep-out and 2 mm
+hand-solder clearance met). It is not yet a 3D-checked fit: no interference run yet
+(`research.md` §6). The printed FreeCAD panel (`panels/front-cad/`, 2.0 mm) is generated
+but not test-printed.
 
 Frame, origin and conventions are those of `modules/midi` (`geometry.json` `frame`):
 panel origin at the upper-left corner seen from the front, X across, Y down, mm;
@@ -15,9 +16,9 @@ panel, so the KiCad top view is the front view. All numbers come from
 
 | Item | Value |
 |---|---|
-| Panel | 4HP, 20.0 x 128.5 mm, FR4 1.6 mm (`panels/front-pcb/8bit-panel.kicad_pcb`). Rail holes Ø3.2 at (12.58, 3.0) and (12.58, 125.5) (Doepfer X7.5 moved 1HP right, as midi) |
-| Carrier PCB | 19.0 x 110.0 x 1.6 mm, 2 layers, X 0.5..19.5, Y 9.25..119.25 (as `modules/midi`) |
-| Fixing | The three jack bushings and nuts (J1, J2, J3). The pots are soldered only |
+| Panel | 6HP, 30.0 x 128.5 mm, FR4 1.6 mm (`panels/front-pcb/8bit-panel.kicad_pcb`). Rail holes Ø3.2 at (12.58, 3.0) and (12.58, 125.5), as `modules/12bit` |
+| Carrier PCB | 29.0 x 110.0 x 1.6 mm, 2 layers, X 0.5..29.5, Y 9.25..119.25 (as `modules/12bit`) |
+| Fixing | The four jack bushings and nuts (J1, J2, J3, J6). The pots are soldered only |
 | Panel rear seat | Z 10.0 above carrier F.Cu (PJ301M-12 boss top, as `modules/midi`) |
 | Pots | User RV09 stock (as `modules/audio-out`): no threaded bushing, no nut, body 6.8 mm (nominal), 1 mm collar, Ø6 knurled shaft to Z 22.8 = **11.2 mm past the FR4 front** for a push-on knob. Panel hole Ø7.2. 3D proxy `hardware/8BIT.3dshapes/RV09_proxy.step` (copied from audio-out) |
 | LED | 3 mm THT, body bottom Z 6.3: dome flush with the FR4 front (as `modules/midi`) |
@@ -43,53 +44,77 @@ socket-down without supports:
   print undersize: measure the bought stem and tune `socket_D` for a firm press fit.
   Not test-printed yet.
 
-## Front (F): hand-soldered parts, one column at X 10.0
+## Front (F): hand-soldered parts, two columns X 7.95 / X 22.05
 
-| Part | Panel XY | Notes |
+User order, 2026-11-14: MIDI and CV on one line, the knobs spread over the middle, the
+MODE (record) button and its LED on the row above the outputs, the outputs as low as the
+1 mm edge keep-out allows.
+
+| Row (panel Y) | Left, X 7.95 | Right, X 22.05 |
 |---|---|---|
-| J1 MIDI IN (PJ301M-12, TS) | (10.0, 17.5) | rotated 270° as `modules/midi` (S pad toward the left edge) |
-| J2 CV IN (PJ301M-12) | (10.0, 30.0) | tip normalled to GND (TN) |
-| RV1 / RV2 (50k) / RV3 (1M) | shafts (10.0, 43.5 / 58.5 / 73.5) | 15 mm pitch; pins 7.5 mm below each shaft, pin 1 on the left. Knobs up to ~11 mm |
-| SW1 MODE (6x6 THT tact) | (7.0, 87.0) | stock `SW_PUSH_6mm_H7.3mm`, rotated 180°: pad 1 pair (BUTTON) on the lower row Y89.25, pad 2 pair (GND) Y84.75; legs X 3.75 / 10.25 |
-| D1 MODE LED (3 mm) | (15.5, 87.0) | |
-| J3 OUT (PJ301M-12) | (10.0, 100.0) | |
+| 17.5 | J1 MIDI IN (PJ301M-12, TS) | J2 CV IN (PJ301M-12, tip normalled to GND) |
+| 37.5 | RV1 P1 (50k) | |
+| 57.5 | | RV2 P2 (50k) |
+| 77.5 | RV3 P3 (50k, PB5) | (J4 power header behind, B side) |
+| 97.5 | SW1 MODE (6x6 THT tact): pad 1 pair (BUTTON) Y95.25, pad 2 pair (GND) Y99.75, legs X4.70 / X11.20 | D1 MODE LED (3 mm) |
+| 110.4 | J3 OUT (DAC) | J6 GATE |
+
+- Rows on a 20 mm pitch (the jack-to-knob spacing of `modules/mcc`); neighbouring knobs
+  are 24.5 mm apart centre to centre, so wide knobs fit. Pot pins sit 7.5 mm below each
+  shaft, pin 1 on the left.
+- The output row is as low as it goes: the J3/J6 courtyards end 1.02 mm above the bottom
+  edge. The RV09 courtyards keep 1.015 mm to the side edges (RV1, the closest courtyard).
+- Jacks at rotation 0: T pad 4.92 mm above the bushing centre, TN 3.38 mm and S 6.48 mm
+  below it.
 
 Panel labels (1.2 mm, above each control): `MIDI`, `CV`, `P1`, `P2`, `P3`, `MODE`,
-`OUT`; title `8BIT` (2.5 mm) and `BIG MODULAR`. Holes: jack Ø6.2, pot Ø7.2, LED Ø3.2,
-button Ø4.2.
+`OUT`, `GATE`; title `8BIT` (2.5 mm) and `BIG MODULAR`. Holes: jack Ø6.2, pot Ø7.2,
+LED Ø3.2, button Ø4.2.
 
 **LFO panel** (`panels/front-pcb/8bit-lfo-panel.kicad_pcb`, `geometry.json` `lfo_panel`,
-for `firmware/lfo`, no MIDI): the same holes without the J1 MIDI jack hole (Y17.5) and the
-RV3 shaft hole (Y73.5); labels `RATE` (P1) and `WAVE` (P2) instead of `P1`/`P2`, no `MIDI`,
-`P3`, `REC` instead of `MODE` (SW1 is the LFO recorder button), and `LFO` (2.5 mm) at Y72.0 in the freed space. Build notes: **don't fit J1**
-(no panel hole; the MIDI input parts behind it can stay, the firmware never enables the
-UART). **Don't fit RV3**; solder a wire from the RV3 pin 3 pad (DAC_R) to the
-pin 2 wiper pad (FILT). That is the knob fully CW (R7 10k + C13 1n, ~15.9 kHz corner,
-no effect on the LFO, ~8x above its 2 kHz FM ceiling). Without the bridge the DAC has no path to U3 and the
-output is silent. RV3 pin 1 stays open, as it is on the stock build.
+for `firmware/lfo`, no MIDI): the same holes without the J1 MIDI jack hole and the RV3
+shaft hole; labels `RATE` (P1) and `WAVE` (P2) instead of `P1`/`P2`, no `MIDI` / `P3`,
+`REC` instead of `MODE`, and `LFO` (2.5 mm) at the empty P3 spot. Build notes: **don't
+fit J1 or RV3** (no panel holes; the MIDI input parts behind J1 can stay, the firmware
+never enables the UART, and PB5 is not read). S6 needs **no wire bridge**: RV3 is only
+an ADC knob now, the DAC reaches the output amplifier directly. GATE stays (the LFO
+firmware drives PA7).
 
 ## Back (B): SMD for JLC assembly, plus headers
 
-| Band | Parts |
+Placed by hand, group by group with the routing (root `AGENTS.md`); the native PCB owns it.
+
+| Band (panel Y) | Parts |
 |---|---|
-| Top edge | B silk `8BIT S5` and the JP1 legend `JP1 MIDI IN: P=PROTECTED D=DIRECT` |
-| J1/J2 | MIDI front end: JP1 at the left edge (`P` / `D`), R2, Q1, R1, R3, D2 |
-| J2 row / J2-RV1 | R4 between the J2 TN and T pads; C9, D3 BAT54SW; U1 ATtiny1616 at (10.0, 38.3), C1 (right), GND via in the exposed pad |
-| Below the RV1 tabs (Y45.5-49.8) | CV buffer: R14 (5.6, 48.4), U4 MCP6001 (10.6, 47.6), R13 (13.4, 47.3), C15 (14.9, 47.3) |
-| RV1/RV2, RV2/RV3 | C2 (+5V bulk) and C10 under RV1; C11 above RV2 |
-| Under RV3 | Left edge below the RV3 tab: R10/R11/C14 offset divider. R7 (DAC series, to RV3 pin 3); the wiper runs between the SW1 legs to the FILT via. Right: R6 |
-| U3 (Y 91.8..97.2) | U3 TL072 at (10.0, 94.5), mirrored (pins 1-4 on the right): R9, C13 right; C7, R8 left; C8 below; R12 1206 at the right edge |
-| Bottom zone (Y 104..119) | As `modules/midi`: J4 2x5 Eurorack power (pin 1 -12 V at the bottom, B silk `-12V`), R5 + J5 UPDI on the left (B silk `UPDI`), D4 + U2 HT7550-1 + C3/C4 right of J4, C5/C6 at the right edge, D5 at the bottom edge (-12V_F pad toward C6) |
+| 10..25, between J1 and J2 | MIDI front end in one column at X~13: R3, R1, D2, Q1, R2, JP1 (vertical, `P` at the top pad, `D` at the bottom pad) |
+| 27..35, under J2 | CV input: R4, R13, D3 BAT54SW, C9, R14, U4 MCP6001, C15 |
+| 38..44, right edge | J5 UPDI header (pin 1 UPDI on top, B silk `UPDI` / `GND`) and R5 |
+| 46..52, right half | B silk `8BIT S6` and the JP1 legend `JP1 MIDI IN: P=PROTECTED D=DIRECT` |
+| 69..77 | +5 V regulator: U2 HT7550-1, C4, C3, C5; D4 above the J4 +12 V pins |
+| 79..91 | U1 ATtiny1616 at (17.8, 84.5) with C1, C2, the knob caps C10 / C11 / C12 and the gate pull-down R7; J4 2x5 power header at the right edge (pin 1 at (23.8, 90.5), -12 V at the bottom, B silk `-12V`) |
+| 93..101 | D5, C6 (-12 V entry), R6 (LED), offset divider R10 / R11 / C14 |
+| 103..117, between J3 and J6 | U3 TL074 at (15.0, 109.5), C7 / C8 at its supply pins, R9 / R8 below it; R12 (OUT, left edge strip) and R15 (GATE, right edge strip), both 1206 |
 
 References are on the Fab layers (as `modules/midi`).
 
+### Measured clearances (R1)
+
+| Check | Closest |
+|---|---|
+| Courtyard to board edge (>= 1.0) | RV1 1.015 mm |
+| SMD pad to pot/jack pad (>= 2.0) | C7.2 - J3 tip 2.245 mm |
+| SMD pad to other THT pad | D5.2 - D1.2 1.10 mm (LED) |
+| Via to SMD pad (never inside) | 0.20 mm (U3 pin 12) |
+| Copper to edge | native DRC rule, 1.0 mm |
+
 ### Power header and 16-pin IDC cables
 
-Identical to `modules/midi` (`geometry.json` `power_header`): J4 is vertical with pin 1
-at the bottom, so a 16-pin IDC socket's positions 11-16 overhang upward over the board
-(envelope X4.8..12.4, Y94.4..119.8, 2.5 mm above B, drawn on `Dwgs.User`). It covers
-the lower half of U3 (SOIC-8, 1.75 mm tall) and C8, below the 2.5 mm socket floor.
-Keep the J3 jack leads clipped to ≤1.5 mm.
+As `modules/12bit` (`geometry.json` `power_header`): J4 stands upright at the right edge
+with pins 1/2 (-12 V) at the bottom (Y90.5) and 9/10 (+12 V) at the top (Y80.34). A
+16-pin IDC socket's positions 11-16 overhang upward over the board, never past an edge
+(envelope X20.67..29.47, Y68.91..94.31, 2.5 mm above B). No THT lead sits under it: the
+RV2 pins end 3.0 mm above, the LED pads start 1.0 mm below. The SMD under it (D4, D5, C5, C1, C2 and
+the ends of C3 / C4 / C6: 0805 / 0603 capacitors and SOD-123 diodes) is at most ~1.35 mm tall.
 
 ## Not yet verified
 

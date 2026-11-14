@@ -27,6 +27,7 @@ Outputs (this directory): 8bit-button-cap.stl (print orientation) and
 8bit-button-actuator.step (the cap in the carrier frame at SW1).
 """
 import json
+import math
 from pathlib import Path
 
 import FreeCAD as App
@@ -62,15 +63,18 @@ def check(cap):
     assert cap['tip_Z'][0] == cap['body_Z'][1]
     gaps = {k: round(cap['tip_Z'][1] - z, 2) for k, z in fronts.items()}
     assert min(gaps.values()) >= TRAVEL + 0.5, gaps
-    # Neighbours (panel frame): flange vs the LED body and the RV3 / J3 bodies.
+    # Neighbours (panel frame): flange vs the LED body (same row), the RV3 body above and the
+    # J3 body below, and the panel edge.
     x, y = GEO['button']['XY']
     r = cap['body_D'] / 2
-    led = GEO['leds'][0]
-    assert led['X'] - 1.9 - (x + r) >= 1.0, 'cap vs LED flange'
+    lx, ly = GEO['leds'][0]['XY']
+    assert math.hypot(lx - x, ly - y) - 1.9 - r >= 1.0, 'cap vs LED flange'
     rv3 = next(p for p in GEO['pots'] if p['ref'] == 'RV3')
-    assert (y - r) - (rv3['shaft_Y'] + 6.5) >= 1.0, 'cap vs RV3 body'
+    assert abs(rv3['shaft_XY'][0] - x) < 9.0, 'RV3 is the pot above the button'
+    assert (y - r) - (rv3['shaft_XY'][1] + 6.5) >= 1.0, 'cap vs RV3 body'
     j3 = next(j for j in GEO['jacks'] if j['ref'] == 'J3')
-    assert (j3['Y'] - 4.5) - (y + r) >= 1.0, 'cap vs J3 body'
+    assert abs(j3['XY'][0] - x) < 9.0, 'J3 is the jack below the button'
+    assert (j3['XY'][1] - 4.5) - (y + r) >= 1.0, 'cap vs J3 body'
     assert x - r >= 1.0, 'cap inside the panel edge'
     return gaps
 

@@ -76,13 +76,13 @@
   "R7": {
    "kind": "R",
    "tolerance_fraction": 0.01,
-   "min_voltage_v": 4.3,
-   "operating_voltage_v": 4.3,
+   "min_voltage_v": 5.0,
+   "operating_voltage_v": 5.0,
    "voltage_derating": 0.8,
-   "min_power_w": 0.0019,
-   "operating_current_a": 0.00043,
+   "min_power_w": 0.00025,
+   "operating_current_a": 5e-05,
    "power_derating": 0.5,
-   "note": "DAC to P3 filter 10k: DAC 0-4.34 V into the RV3/C13 low-pass, 1.9 mW worst (wiper at 0 V)",
+   "note": "GATE pull-down 100k on PA7: 5 V, 50 uA, 0.25 mW (docs/research.md E14)",
    "reviews": {}
   },
   "R8": {
@@ -142,7 +142,7 @@
    "min_power_w": 0.2822,
    "operating_current_a": 0.0168,
    "power_derating": 1.0,
-   "note": "OUT series 1k (1206): normal output is +/-4.8 V into >=10k. Fault: a hard -12 V source on J3 tip against +4.8 V from U3 puts 16.8 V / 16.8 mA / 0.282 W in R12 continuously (below the TL072 short-circuit limit). Fitted part is 0.5 W (ROHM ESR18EZPF1001), 56 % in that fault (docs/research.md 3.3)",
+   "note": "OUT series 1k (1206): normal output is +/-4.8 V into >=10k. Fault: a hard -12 V source on J3 tip against +4.8 V from U3 puts 16.8 V / 16.8 mA / 0.282 W in R12 continuously (below the TL074 short-circuit limit). Fitted part is 0.5 W (ROHM ESR18EZPF1001), 56 % in that fault (docs/research.md 3.4)",
    "reviews": {}
   },
   "R13": {
@@ -167,6 +167,18 @@
    "operating_current_a": 1e-05,
    "power_derating": 0.5,
    "note": "CV divider 510k to GND: <=5.3 V, 0.06 mW",
+   "reviews": {}
+  },
+  "R15": {
+   "kind": "R",
+   "tolerance_fraction": 0.01,
+   "min_voltage_v": 17.0,
+   "operating_voltage_v": 17.0,
+   "voltage_derating": 0.8,
+   "min_power_w": 0.289,
+   "operating_current_a": 0.017,
+   "power_derating": 1.0,
+   "note": "GATE series 1k (1206): normal output is 0 / +5 V into >=10k. Fault: a hard -12 V source on J6 tip against +5 V from U3C puts 17.0 V / 17 mA / 0.289 W in R15 continuously (below the TL074 short-circuit limit). Fitted part is 0.5 W (ROHM ESR18EZPF1001), 58 % in that fault (docs/research.md E14)",
    "reviews": {}
   },
   "C1": {
@@ -337,18 +349,18 @@
    "role": "POT2 ADC filter",
    "reviews": {}
   },
-  "C13": {
+  "C12": {
    "kind": "C",
    "tolerance_fraction": 0.2,
    "min_voltage_v": 6.2,
-   "operating_voltage_v": 4.34,
+   "operating_voltage_v": 5.0,
    "voltage_derating": 0.8,
    "polarity": "nonpolar",
    "dielectrics": [
     "X7R",
     "X5R"
    ],
-   "role": "P3 passive low-pass capacitor on FILT (sets 160 Hz-15.9 kHz with R7+RV3); C0G preferred but X7R accepted as BM",
+   "role": "POT3 ADC filter",
    "reviews": {}
   },
   "C14": {
@@ -394,7 +406,7 @@
    "reviews": {}
   },
   "U3": {
-   "note": "TL072CDT on +/-12 V (12V_F rails after D4/D5), output +/-4.8 V into 1k+load",
+   "note": "TL074CDR on +/-12 V (12V_F rails after D4/D5): A output +/-4.8 V into 1k+load, B VOFF buffer, C gate follower 0/+5 V into 1k+load, D parked (grounded follower)",
    "reviews": {}
   },
   "U4": {
@@ -417,6 +429,10 @@
    "assembly": "manual",
    "reason": "QingPu WQP-PJ301M-12 TS jack, front THT, fitted to the panel before soldering"
   },
+  "J6": {
+   "assembly": "manual",
+   "reason": "QingPu WQP-PJ301M-12 TS jack, front THT, fitted to the panel before soldering"
+  },
   "J4": {
    "assembly": "manual",
    "reason": "2x5 2.54 mm Eurorack power header, back THT, hand-soldered"
@@ -435,7 +451,7 @@
   },
   "RV3": {
    "assembly": "manual",
-   "reason": "RV09 1M pot (user stock), front THT, hand-soldered"
+   "reason": "RV09 50k pot (user stock), front THT, hand-soldered"
   },
   "SW1": {
    "assembly": "manual",
