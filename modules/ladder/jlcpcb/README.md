@@ -1,8 +1,11 @@
 # LADDER manufacturing export — S3 / R2 / 10HP panel
 
 Exported 2026-11-10 from the S3 schematic, the R2 carrier and the 10HP panel, using the unchanged
-shared `opt/kicad-tools/jlcpcb/export.py` (commands at the end). **Complete matched export, not
-supplier-accepted, not built; no firmware yet.**
+shared `opt/kicad-tools/jlcpcb/export.py` (commands at the end). Re-exported on 2026-11-14 after U2
+changed from ATTINY1616-MF C5227638 (238 in stock) to **ATTINY1616-MNR C507118** (10,237 in stock),
+as on modules/acid: fields only (Value / LCSC / MPN), same VQFN-20 3x3 footprint and copper, Gerbers
+and drills unchanged apart from timestamps. **Complete matched export, not supplier-accepted, not
+built; no firmware yet.**
 
 **R2 = fab-review fixes on the R1 routing (2026-11-10, local re-routes, no THT part moved):**
 
@@ -73,7 +76,7 @@ Basic. Not Basic:
 | R47, R51 1k 0.5 W 1206 (ROHM ESR18) | C2074262 | Extended | 99,546 |
 | Q3-Q8 DMMT3904W | C155305 | Extended | 4,034 |
 | D5 BAT54SW | C78260 | Extended | 41,513 |
-| U2 ATtiny1616-MF | C5227638 | Extended | **238** |
+| U2 ATtiny1616-MNR | C507118 | Extended | 10,237 (2026-11-14) |
 | U3 TS5A23157DGSR (MSOP-10) | C11133 | Extended | 4,934 |
 | U1 HT7550-1 | C16106 | Preferred Extended | 181,206 |
 
@@ -81,8 +84,13 @@ The two Extended passives (47n NP0, 1k 0.5 W) are a user decision, as on modules
 modules/acid; not waived. Public stock is not reserved. The formal audit is not order-ready: the
 per-reference land-pattern / pin-mapping / rating attestations are not filled in.
 
+2026-11-14 live audit (`../research/export-mnr/audit.json`, ignored) after the U2 change: no stock
+shortage for 5 boards; C507118 10,237, C20617849 1,656, C155305 684, C11133 5,831. The audit still
+exits non-zero for the same three export reasons as modules/acid (manual / JP1 refs, exporter
+warnings), not stock.
+
 Open before ordering: supplier preview (bottom-side rotations, pin 1 of U2 / U3 / Q3-Q8, diode
-polarity), the Extended-passive decision, ATtiny1616 stock at order time. Bench: vactrol
+polarity), the Extended-passive decision, live stock at order time. Bench: vactrol
 resonance / VCA fit, cutoff scaling, MIDI jumper, firmware (not written).
 
 ## Reproduce from the repository root

@@ -53,7 +53,8 @@ module-relative.
   (`research/fab-final/`), planes as R1, copper >= 1.2 mm and courtyards >= 1.08 mm from the edge.
   Export in `jlcpcb/` (bottom Economic, 116 parts / 36 rows; 18 THT + JP1 by hand; panel
   Gerbers), not supplier-accepted, not built. Open: Extended passives (47n NP0 1206, 1k 0.5 W
-  1206) are a user decision; ATtiny1616 stock 238 at lookup; supplier preview. Read
+  1206) are a user decision; supplier preview. U2 = ATTINY1616-MNR C507118 since 2026-11-14 (was
+  -MF C5227638, 238 in stock; fields only, re-exported). Read
   `jlcpcb/README.md` before release work.
 - No firmware.
 

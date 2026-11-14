@@ -276,7 +276,7 @@ def circuit():
 
     # ---- MCU: ATtiny1616 at 5 V, the envelope (attack = release = ENV TIME) x DEPTH on the PA6 DAC,
     # the undepthed envelope on the PB0 PWM (VCA), REC records ENV TIME + DEPTH (shared CvRecorder)
-    c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MF', 'QFN20', MCU,
+    c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', MCU,
                   Note='5 V. Firmware (to be written): MIDI note on/off or GATE -> AR envelope, ENV TIME '
                        '5 ms..2 s exponential (attack = release, as the 16bit PolyFilter). DAC (VREF 4.34 V, '
                        'code dithering on slow sweeps) = envelope x DEPTH, or the PA2 CV x DEPTH when PA3 sees '
@@ -577,7 +577,7 @@ SOURCING = {
     ('DMMT3904W', 'DMMT3904W', 'SOT363'): dict(LCSC='C155305', MPN='DMMT3904W-7-F',
                                                Manufacturer='Diodes Incorporated'),
     ('HT75xx-1-SOT89', 'HT7550-1', 'SOT89'): dict(LCSC='C16106', MPN='HT7550-1', Manufacturer='Holtek'),
-    ('ATtiny1616-M', 'ATtiny1616-MF', 'QFN20'): dict(LCSC='C5227638', MPN='ATTINY1616-MF', Manufacturer='Microchip'),
+    ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR', Manufacturer='Microchip'),
     ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
     ('TS5A23157DGS', 'TS5A23157', 'TSSOP10'): dict(LCSC='C11133', MPN='TS5A23157DGSR', Manufacturer='Texas Instruments'),
 }
