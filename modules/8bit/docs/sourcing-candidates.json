@@ -1,5 +1,5 @@
 {
- "note": "Live strict JLCPCB public-catalog lookups for the S6/R1 export, taken by the shared assembly audit (opt/kicad-tools/jlcpcb/assembly.py audit --strict-live, 5 boards, 2026-11-14T05:16Z). Stock is a dated web observation, not a reservation or order acceptance. R12/R15: ROHM ESR18EZPF1001 C2074262 (0.5 W 1206, Extended; no Basic 0.5 W 1k 1206 exists) for the permanent +/-12 V mis-patch (0.28 / 0.29 W). U3 TL074CDR C12594 is Extended (the S5 TL072CDT C6961 was Basic).",
+ "note": "Live strict JLCPCB public-catalog lookups for the S6/R1 export, taken by the shared assembly audit (opt/kicad-tools/jlcpcb/assembly.py audit --strict-live, 5 boards, 2026-11-14T05:16Z). Stock is a dated web observation, not a reservation or order acceptance. R12/R15: ROHM ESR18EZPF1001 C2074262 (0.5 W 1206, Extended; no Basic 0.5 W 1k 1206 exists) for the permanent +/-12 V mis-patch (0.28 / 0.29 W). U3 TL074CDR C12594 is Extended (the S5 TL072CDT C6961 was Basic). U4 row: MCP6002T-I/SN C7377 (replaces MCP6001T-E/OT C29429 on user direction 2026-11-14: Preferred Extended, no feeder fee), re-looked-up by the same audit at 2026-11-14T15:36:18Z.",
  "parts": [
   {
    "code": "C14663",
@@ -683,23 +683,23 @@
    "issues": []
   },
   {
-   "code": "C29429",
-   "mpn": "MCP6001T-E/OT",
+   "code": "C7377",
+   "mpn": "MCP6002T-I/SN",
    "manufacturer": "Microchip Tech",
-   "package": "SOT-23-5",
-   "classification": "Extended",
+   "package": "SOIC-8",
+   "classification": "Preferred Extended",
    "economy_eligible": true,
-   "stock": 33567,
+   "stock": 67081,
    "evidence": {
     "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
-    "retrieved_at_utc": "2026-11-14T05:16:51Z",
+    "retrieved_at_utc": "2026-11-14T15:36:18Z",
     "http_status": 200,
     "request": {
      "currentPage": 1,
      "pageSize": 20,
-     "keyword": "C29429"
+     "keyword": "C7377"
     },
-    "sha256": "3bb32db43815a63f5faa22ac1771b3556a358dc86b029e5318e0ff39ad1dd8af",
+    "sha256": "6ea93ff3766893a43e822218fbdf5eba2f23dadb824b59a8d45b3678ba91eff9",
     "mode": "live",
     "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
     "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"

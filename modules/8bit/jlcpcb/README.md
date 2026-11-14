@@ -2,7 +2,9 @@
 
 Generated on 2026-11-14 from the S6 schematic and the R1 hand-routed 2-layer 6HP carrier
 with the shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. It replaces
-the S5/R4 4HP export. Never hand-edit these files: change the sources, then re-export with
+the S5/R4 4HP export. The carrier was re-exported the same day after the **U4 MCP6001 ->
+MCP6002 swap** (MCP6002T-I/SN C7377, SOIC-8, Preferred Extended: no feeder fee; U4 moved
+below the CV cluster with C15 beside its pin 8, local re-route only); the panels are unchanged. Never hand-edit these files: change the sources, then re-export with
 the commands below.
 
 ## Contents
@@ -53,11 +55,12 @@ and MPNs resolved, every part Economy-eligible.
 
 - **Basic:** every 0603/0805 resistor and capacitor, D2 1N4148W, D4/D5 B5819W, Q1 MMBT3904.
 - **Extended:** R12/R15 ROHM ESR18EZPF1001 (C2074262, 1k 0.5 W 1206; stock 99,546),
-  U1 ATTINY1616-MNR (C507118; 10,257), U3 TL074CDR (C12594; 178,280), U4 MCP6001T-E/OT
-  (C29429; 33,567), D3 BAT54SWT1G (C78260; 168,070).
-- **Preferred Extended:** U2 HT7550-1 (C16106; 174,784).
+  U1 ATTINY1616-MNR (C507118; 10,257), U3 TL074CDR (C12594; 178,280), D3 BAT54SWT1G
+  (C78260; 168,070).
+- **Preferred Extended:** U2 HT7550-1 (C16106; 174,784), U4 MCP6002T-I/SN (C7377; 67,081 at
+  2026-11-14T15:36Z, re-audit after the swap).
 
-Five Extended part types carry JLCPCB's Extended fees. Public stock is a dated web
+Four Extended part types carry JLCPCB's Extended fees. Public stock is a dated web
 observation, not a reservation.
 
 ## Source identity
@@ -65,9 +68,9 @@ observation, not a reservation.
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on
 drift (`tools/kicad-project.json` declares the manifest).
 
-- Carrier PCB `62b95156135100d71411cc8a7ab41da484c289c0e6ee691c4d712b912409596c`.
+- Carrier PCB `2d18b0d530dfc7df589f3870692ce6b6b5dea8a4289b1b8e0743889aaab2a38e`.
 - Carrier project `e6c8f00aab1f27e00951e295485cea149fa1a2bec87ea6447c4eacc68dd0bc66`.
-- Carrier schematic `f9faee23f55ba83b1240a340a88149d4b3d89d90742d0dec71f0a743130ed52b`.
+- Carrier schematic `d01a32f24e521deee881c5070b00a72b7afe7707868a1d0c0313bf5ff4406066`.
 - Panel PCB `fc3e85703d6fce821f798b49f19d1fde2297d712b3a6ae9635830c9d434a9eeb`.
 - Panel project `e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6`.
 - LFO panel PCB `c161d7f45de0a4f2fb67a47211c93fbf7063337b5605373dcf9d92aceb47bc40`.
@@ -130,7 +133,8 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/8bit-symbols.xml hardware
   two GND-pad-tied fragments under U1).
 - **Fab review of the board** (no change needed): supply and ground pins of U1-U4, D2-D5
   and Q1 checked against the datasheet pinouts; J4 pins 1/2 = -12 V at the bottom with the
-  `-12V` silk; D1 cathode to GND; decoupling 1.7-2.0 mm from the U3 / U4 / U1 supply pins,
+  `-12V` silk; D1 cathode to GND; decoupling 1.7-2.0 mm from the U3 / U1 supply pins (U4 SOIC-8 after the swap: C15
+  2.25 mm from pin 8, its GND via 0.25 mm from the U4.5 pad),
   C4 / C3 2.5 mm from U2. 32 vias, all 0.3 / 0.6 mm, tented, none in an SMD pad (closest
   0.20 mm). Tracks 0.2 (U1 fan-out) / 0.25 signal / 0.4 power. Copper >= 1.0 mm and
   courtyards >= 1.015 mm from the edge. Every SMD pad >= 2.245 mm from the pot and jack
@@ -147,6 +151,9 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/8bit-symbols.xml hardware
 - **Live assembly audit** (`--strict-live`, 2026-11-14T05:16Z, 5 boards, S6/R1):
   - Every C-code and MPN resolved and every part is Economy-eligible, with stock far
     above the 5-board demand (lowest: U1 ATtiny1616, 10,257). Classes are in "Parts".
+  - Re-run after the MCP6002 swap (2026-11-14T15:36Z, same command): U4 C7377 resolves as
+    Preferred Extended (67,081); the failure set is unchanged (R12 / R15 Basic policy,
+    exporter warning, open human reviews); U1 stock then 10,187.
   - All resistor stress checks pass, including the R12 / R15 mis-patch cases (0.28 W /
     0.29 W on a 0.5 W rating). Their one hard fail is the shared R/C Basic policy (gate 1).
   - Still `unknown` by design: the human land-pattern/pin-mapping/ratings/role reviews in
@@ -168,7 +175,7 @@ bench-tested.
 2. **Your reviews:** land pattern, pin mapping and ratings for each assembled part (and
    role for the capacitors), recorded in the requirements file.
 3. **JLCPCB placement preview** of every back-side part: U1 pin 1 and the exposed pad,
-   U3 / U4 pin 1 (mirrored on the back), U2, D3 and Q1 (SOT-89 / SOT-323 / SOT-23
+   U3 / U4 (SOIC-8) pin 1 (mirrored on the back), U2, D3 and Q1 (SOT-89 / SOT-323 / SOT-23
    orientation), and D2 / D4 / D5 cathode bars. The CPL carries the exporter's raw KiCad
    rotations, as every module here.
 4. **Live recheck** of stock, attrition and minimums just before ordering, plus JLCPCB's

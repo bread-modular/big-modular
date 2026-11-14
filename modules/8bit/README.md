@@ -6,7 +6,7 @@ reads MIDI, a CV input and three knobs. Bread Modular's firmware pin map is kept
 | Panel (top to bottom) | Circuit |
 |---|---|
 | **MIDI** in (TS), top left | MIDI V2 NPN front end (3.3 V / 5 V senders, ±12 V tolerant). Solder jumper JP1 (back, shipped open): `P` = protected (firmware `PORT_INVEN` on PB3), `D` = direct/unprotected (stock BM firmware) |
-| **CV** in, top right | Bipolar: 56k/51k/510k level shift maps **-5.5..+5.5 V to 0..5 V** (input impedance 102k), BAT54SW clamp + 1n, MCP6001 follower on +5 V into PB0 (ADC). ±12 V tolerant; unpatched = 0 V = mid-scale (~509 of 1023) |
+| **CV** in, top right | Bipolar: 56k/51k/510k level shift maps **-5.5..+5.5 V to 0..5 V** (input impedance 102k), BAT54SW clamp + 1n, MCP6002 follower on +5 V into PB0 (ADC). ±12 V tolerant; unpatched = 0 V = mid-scale (~509 of 1023) |
 | **P1**, **P2**, **P3** (zigzag left / right / left) | 50k linear dividers into PA1 / PA2 / PB5, 10n at each pin. P3 is a plain MCU knob (S6: the Bread Modular passive low-pass is gone) |
 | **MODE** button + LED (one row) | Hand-soldered 6 x 6 mm THT tact switch, 7 mm tall, on the carrier front, pressed through the panel by a one-piece printed cap (`panels/button-actuator/`); LED on PA5 |
 | **OUT**, bottom left | TL074 on ±12 V: DAC 0..4.34 V -> ±4.8 V, DC coupled, no filter, 1k series |

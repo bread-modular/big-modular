@@ -87,7 +87,7 @@ Placed by hand, group by group with the routing (root `AGENTS.md`); the native P
 | Band (panel Y) | Parts |
 |---|---|
 | 10..25, between J1 and J2 | MIDI front end in one column at X~13: R3, R1, D2, Q1, R2, JP1 (vertical, `P` at the top pad, `D` at the bottom pad) |
-| 27..35, under J2 | CV input: R4, R13, D3 BAT54SW, C9, R14, U4 MCP6001, C15 |
+| 27..35, under J2 | CV input: R4, R13, D3 BAT54SW, C9, R14, U4 MCP6002 (SOIC-8), C15 |
 | 38..44, right edge | J5 UPDI header (pin 1 UPDI on top, B silk `UPDI` / `GND`) and R5 |
 | 46..52, right half | B silk `8BIT S6` and the JP1 legend `JP1 MIDI IN: P=PROTECTED D=DIRECT` |
 | 69..77 | +5 V regulator: U2 HT7550-1, C4, C3, C5; D4 above the J4 +12 V pins |

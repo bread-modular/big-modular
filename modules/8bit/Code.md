@@ -22,7 +22,8 @@
   **OUT (DAC) and GATE out as low as the board allows**; **power header at the side**
   (upright at the right edge, as `modules/12bit`), so the middle is not reserved for it.
 - CV goes to an ADC pin with protection; user decisions S4: an op-amp buffer at Eurorack
-  input impedance (MCP6001 on +5 V, so PB0 never sees more than the rail) and the full
+  input impedance (MCP6002 on +5 V, so PB0 never sees more than the rail; the dual, not the single
+  MCP6001, because C7377 is JLCPCB Preferred Extended: no feeder fee, user 2026-11-14) and the full
   bipolar range (±5.5 V -> 0..5 V, with headroom). The MIDI protection can be bypassed,
   **like MIDI V2** (3-pad solder jumper JP1, shipped open: 1-2 = protected/`PORT_INVEN`,
   2-3 = direct/stock firmware).
@@ -48,8 +49,8 @@
 - All JLC-assembled SMD parts on the back (one assembly side); jacks, pots, LED,
   headers and SW1 are hand-soldered. All R/C are JLCPCB Basic except R12/R15 (0.5 W 1206
   for the ±12 V mis-patch, no Basic exists); ATtiny1616, TL074 (TL074CDR C12594, as
-  `modules/12bit`), BAT54SW and MCP6001 are Extended, HT7550-1 Preferred Extended (live
-  audit 2026-11-14).
+  `modules/12bit`), and BAT54SW are Extended, HT7550-1 and MCP6002 (C7377) Preferred Extended
+  (live audit 2026-11-14).
 - Power header as `modules/12bit`: J4 upright at the right board edge on B, unshrouded,
   pin 1 (-12 V) at the bottom, 16-pin IDC envelope checked (`docs/geometry.json`
   `power_header`). UPDI on a 2-pin 2.54 mm header (J5: UPDI, GND) at the right edge.
@@ -100,10 +101,11 @@
   (no refill) 0 / 0 / 0 for the carrier and both panels; carrier 38 parts / 24 BOM rows,
   drill and outline counts and the live assembly audit in `jlcpcb/README.md`. Audit
   `order_ready: false` by design (R12/R15 Extended R/C policy fail, empty human reviews).
-- Measured on the routed board: 50 footprints placed, 255 tracks, 32 vias (0.6 / 0.3);
+- Measured on the routed board: 50 footprints placed, 258 tracks, 32 vias (0.6 / 0.3);
   no via in an SMD pad (closest via to SMD pad 0.20 mm, U3.12); every SMD pad >= 2 mm
   from pot/jack pads (closest C7.2 - J3 tip 2.245 mm); courtyards >= 1.015 mm from the
-  edge (RV1); F GND pour one piece; B GND pour one piece plus two fragments tied by GND
+  edge (RV1); U4 (SOIC-8, MCP6002 swap 2026-11-14) 2.44 mm from the RV1 lug, its GND via 0.25 mm
+  from the U4.5 pad; F GND pour one piece; B GND pour one piece plus two fragments tied by GND
   pads/tracks under U1 (2.6 mm² under the exposed pad, 0.4 mm² at C1); no zero-length,
   duplicate or dangling segments.
 - Printed panel and MODE cap generators rerun for 6HP (their geometry assertions pass).

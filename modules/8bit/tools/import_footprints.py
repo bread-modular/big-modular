@@ -35,10 +35,10 @@ LIBNAME = '8BIT'
 STOCK_FOOTPRINTS = [
     ('LED_THT', 'LED_D3.0mm'),
     ('Package_DFN_QFN', 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm'),
+    ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Package_SO', 'SOIC-14_3.9x8.7mm_P1.27mm'),
     ('Package_TO_SOT_SMD', 'SOT-89-3'),
     ('Package_TO_SOT_SMD', 'SOT-23'),
-    ('Package_TO_SOT_SMD', 'SOT-23-5'),
     ('Package_TO_SOT_SMD', 'SOT-323_SC-70'),
     ('Diode_SMD', 'D_SOD-123'),
     ('Resistor_SMD', 'R_0603_1608Metric'),

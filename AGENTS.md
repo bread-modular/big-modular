@@ -188,6 +188,18 @@ User direction, 2026-10-22 (was 3 mm on LOW R2, relaxed). Applies to every carri
 - **Shared `pcb plan` caps a plan at 256 ops** if you freeze copper as plan ops: split
   into stages of whole nets; intermediate stages need `--allow-draft-opens`.
 
+## Parts: single-supply op-amp = MCP6002 (C7377)
+
+User direction, 2026-11-14.
+
+- For a single-supply (+3.3 V / +5 V) rail-to-rail op-amp use the dual **MCP6002T-I/SN
+  (LCSC C7377, SOIC-8)**, even when only one channel is needed: it is a JLCPCB **Preferred
+  Extended** part, so it carries no Extended feeder fee (~$3 per part type). Park the
+  unused half as a grounded follower (+in to GND, -in to the output).
+- Don't use the single MCP6001 (MCP6001T-E/OT, C29429, SOT-23-5): it is plain Extended.
+  `modules/8bit` U4 was swapped on 2026-11-14; `modules/12bit` U2 still uses it (swap only
+  when the user asks, it is a schematic + routing change).
+
 ## Fabrication outputs
 
 `modules/usb-power/jlcpcb/` is the sole shipping-set location; `production/` is

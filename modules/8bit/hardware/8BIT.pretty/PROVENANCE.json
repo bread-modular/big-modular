@@ -14,6 +14,13 @@
       "edits": "3D model ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm.step is not shipped by KiCad; visual proxy ${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/UQFN-20-1EP_3x3mm_P0.4mm_EP1.85x1.85mm.step",
       "output_sha256": "457fadb3ecd78216b5a468dda42e410bb016930212b6b69a3553bc1bb49ff485"
     },
+    "SOIC-8_3.9x4.9mm_P1.27mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",
+      "source_sha256": "074ecb2092b24fa4b4b9cdd7c926fc587b0d7d6d21e7341e57935fd42d36894f",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "6806793e09791806ffb240a32b4841b922bcb17b06627efff9a7ee1a437c7460"
+    },
     "SOIC-14_3.9x8.7mm_P1.27mm": {
       "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-14_3.9x8.7mm_P1.27mm.kicad_mod",
       "source_sha256": "a885b619b22880c9559522d2bf865b059d80453b95a98defc9e6ceef284da1fc",
@@ -34,13 +41,6 @@
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
       "edits": "none (native load/save only)",
       "output_sha256": "5da9aed67a0ceae2eb27ceb51fa30ba8e89bac134236840426e383443e0ea589"
-    },
-    "SOT-23-5": {
-      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-23-5.kicad_mod",
-      "source_sha256": "455a3f7c3e5eb5b8847eaa5df23e18651e78ab9f75afd09a0883758a0d901761",
-      "license": "KiCad library CC-BY-SA-4.0-with-exception",
-      "edits": "none (native load/save only)",
-      "output_sha256": "a8437d20baa35dd060562456535317376db8c82396459d4cfcc24e72cf6617be"
     },
     "SOT-323_SC-70": {
       "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-323_SC-70.kicad_mod",

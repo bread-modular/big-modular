@@ -2960,7 +2960,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "8BIT:MCP6001-OT"
+		(symbol "8BIT:MCP6002-xSN"
 			(pin_names
 				(offset 0.127)
 			)
@@ -2970,51 +2970,28 @@
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
 			(property "Reference" "U"
-				(at -1.27 6.35 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "MCP6001-OT"
-				(at -1.27 3.81 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
-				(at -2.54 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Datasheet" "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP6001-1R-1U-2-4-1-MHz-Low-Power-Op-Amp-DS20001733L.pdf"
 				(at 0 5.08 0)
 				(show_name no)
 				(do_not_autoplace no)
-				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Description" "1MHz, Low-Power Op Amp, SOT-23-5"
+			(property "Value" "MCP6002-xSN"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3025,7 +3002,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "single opamp"
+			(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3036,7 +3013,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "SOT?23*"
+			(property "Description" "1MHz, Low-Power Op Amp, SOIC-8"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3047,7 +3024,39 @@
 					)
 				)
 			)
-			(symbol "MCP6001-OT_0_1"
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "dual opamp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm* TO*99* OnSemi*Micro8* TSSOP*3x3mm*P0.65mm* TSSOP*4.4x3mm*P0.65mm* MSOP*3x3mm*P0.65mm* SSOP*3.9x4.9mm*P0.635mm* LFCSP*2x2mm*P0.5mm* *SIP* SOIC*5.3x6.2mm*P1.27mm*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "MCP6002-xSN_1_1"
 				(polyline
 					(pts
 						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
@@ -3060,44 +3069,6 @@
 						(type background)
 					)
 				)
-				(pin power_in line
-					(at -2.54 -7.62 90)
-					(length 3.81)
-					(name "V-"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -2.54 7.62 270)
-					(length 3.81)
-					(name "V+"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "MCP6001-OT_1_1"
 				(pin output line
 					(at 7.62 0 180)
 					(length 2.54)
@@ -3109,6 +3080,24 @@
 						)
 					)
 					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -7.62 -2.54 0)
+					(length 2.54)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3134,6 +3123,38 @@
 						)
 					)
 				)
+			)
+			(symbol "MCP6002-xSN_2_1"
+				(polyline
+					(pts
+						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin input line
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin input line
 					(at -7.62 -2.54 0)
 					(length 2.54)
@@ -3144,7 +3165,63 @@
 							)
 						)
 					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 7.62 0 180)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "MCP6002-xSN_3_1"
+				(pin power_in line
+					(at -2.54 -7.62 90)
+					(length 3.81)
+					(name "V-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 7.62 270)
+					(length 3.81)
+					(name "V+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4756,7 +4833,7 @@
 		)
 		(uuid "58157351-0f9a-5dfc-80fa-d842d6be1794")
 	)
-	(text "CV IN: R4/R13/R14 level shift, D3 clamp, C9 -> U4 MCP6001 follower (+5V) -> PB0 (AIN11)"
+	(text "CV IN: R4/R13/R14 level shift, D3 clamp, C9 -> U4A MCP6002 follower (+5V) -> PB0 (AIN11); U4B spare"
 		(exclude_from_sim no)
 		(at 20.32 156.21 0)
 		(effects
@@ -5187,6 +5264,26 @@
 	)
 	(wire
 		(pts
+			(xy 127 223.52) (xy 109.22 223.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b97b3d4-33be-51e0-9028-a76da59a3911")
+	)
+	(wire
+		(pts
+			(xy 109.22 223.52) (xy 104.14 223.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "135b1acb-181e-5944-9c68-042cb2c6a027")
+	)
+	(wire
+		(pts
 			(xy 27.94 66.04) (xy 45.72 66.04)
 		)
 		(stroke
@@ -5317,6 +5414,16 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 208.28) (xy 101.6 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2bbd6bb8-9122-51e7-bf50-9af96efcc8f6")
+	)
+	(wire
+		(pts
 			(xy 269.24 187.96) (xy 269.24 186.69)
 		)
 		(stroke
@@ -5324,6 +5431,16 @@
 			(type default)
 		)
 		(uuid "2bfe4028-060a-5151-8765-fcbd2b9bcc35")
+	)
+	(wire
+		(pts
+			(xy 127 210.82) (xy 127 223.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2cb3c5a9-4c8e-5f3a-ac19-1416cb426200")
 	)
 	(wire
 		(pts
@@ -5514,6 +5631,16 @@
 			(type default)
 		)
 		(uuid "451afb88-48e0-5b7f-b7e0-3063523e9bed")
+	)
+	(wire
+		(pts
+			(xy 121.92 210.82) (xy 127 210.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47a7c805-43a1-5373-b595-b84009e4c997")
 	)
 	(wire
 		(pts
@@ -5797,6 +5924,16 @@
 	)
 	(wire
 		(pts
+			(xy 106.68 208.28) (xy 101.6 208.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8114062f-8bff-5f20-a58d-3459646060a7")
+	)
+	(wire
+		(pts
 			(xy 45.72 45.72) (xy 48.26 45.72)
 		)
 		(stroke
@@ -6014,6 +6151,16 @@
 			(type default)
 		)
 		(uuid "9a41ad8b-ff70-5d5e-ad91-703973f88e60")
+	)
+	(wire
+		(pts
+			(xy 104.14 213.36) (xy 106.68 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b38f40d-6871-5bb5-b89a-2235d0efa32d")
 	)
 	(wire
 		(pts
@@ -6507,6 +6654,16 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 223.52) (xy 104.14 213.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e43d12eb-6c33-5b7d-9cc7-579b247d3974")
+	)
+	(wire
+		(pts
 			(xy 325.12 231.14) (xy 322.58 231.14)
 		)
 		(stroke
@@ -6785,13 +6942,13 @@
 		)
 		(uuid "18fe56e9-39fc-5cd3-9e03-1adc9cdb5ec0")
 	)
-	(label "GATE_BUF"
-		(at 290.83 228.6 0)
+	(label "GATE"
+		(at 251.46 226.06 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
 		(uuid "1dd1bdae-729a-5d2d-89fa-e2a383bfc397")
 	)
@@ -6885,8 +7042,8 @@
 		)
 		(uuid "67102b5e-4e26-538b-93af-fc8ac41d7bbf")
 	)
-	(label "GATE_OUT"
-		(at 309.88 228.6 0)
+	(label "GATE_BUF"
+		(at 290.83 228.6 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -6955,13 +7112,13 @@
 		)
 		(uuid "9c5d7e38-4734-55e0-b061-967cf56899d1")
 	)
-	(label "GATE"
-		(at 251.46 226.06 180)
+	(label "CV_SPARE"
+		(at 109.22 223.52 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left bottom)
 		)
 		(uuid "a292a676-25a2-5dab-b886-9b2755f7a589")
 	)
@@ -6994,6 +7151,16 @@
 			(justify left bottom)
 		)
 		(uuid "b599fe74-771c-5aaa-8260-f021e6503a95")
+	)
+	(label "GATE_OUT"
+		(at 309.88 228.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d466c0eb-c952-5801-a2cb-20d0557fff9e")
 	)
 	(label "DAC"
 		(at 182.88 111.76 0)
@@ -7458,8 +7625,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:-12V")
-		(at 349.25 198.12 180)
+		(lib_id "8BIT:+12V")
+		(at 349.25 172.72 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -7469,7 +7636,7 @@
 		(dnp no)
 		(uuid "0de4da9a-c1f4-5d54-85d8-afd76ec87f21")
 		(property "Reference" "#PWR050"
-			(at 349.25 198.12 0)
+			(at 349.25 172.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7479,8 +7646,8 @@
 				)
 			)
 		)
-		(property "Value" "-12V_F"
-			(at 349.25 201.93 0)
+		(property "Value" "+12V_F"
+			(at 349.25 168.91 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7490,7 +7657,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 349.25 198.12 0)
+			(at 349.25 172.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7501,7 +7668,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 349.25 198.12 0)
+			(at 349.25 172.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7512,7 +7679,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 349.25 198.12 0)
+			(at 349.25 172.72 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8411,8 +8578,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 360.68 185.42 0)
+		(lib_id "8BIT:-12V")
+		(at 349.25 198.12 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8422,7 +8589,7 @@
 		(dnp no)
 		(uuid "22f661e1-5437-5fe2-93dd-12c22dde152d")
 		(property "Reference" "#PWR051"
-			(at 360.68 185.42 0)
+			(at 349.25 198.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8432,8 +8599,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 360.68 189.23 0)
+		(property "Value" "-12V_F"
+			(at 349.25 201.93 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8443,7 +8610,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 360.68 185.42 0)
+			(at 349.25 198.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8454,7 +8621,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 360.68 185.42 0)
+			(at 349.25 198.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8465,7 +8632,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 360.68 185.42 0)
+			(at 349.25 198.12 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8497,8 +8664,8 @@
 		(on_board no)
 		(in_pos_files no)
 		(dnp no)
-		(uuid "28cef7c5-e07f-5864-9406-e60fadab0d3c")
-		(property "Reference" "#PWR054"
+		(uuid "23c2b318-fc6d-5cc3-a65f-c3d329c3bd5d")
+		(property "Reference" "#PWR055"
 			(at 322.58 233.68 0)
 			(hide yes)
 			(show_name no)
@@ -8543,6 +8710,83 @@
 		)
 		(property "Description" ""
 			(at 322.58 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "cbee6a26-7fac-51f0-87ee-397db86c1da8")
+		)
+		(instances
+			(project "8bit"
+				(path "/e1ab18a5-36a0-5cd5-98be-26c980e8e01b"
+					(reference "#PWR055")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "8BIT:GND")
+		(at 256.54 233.68 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "28cef7c5-e07f-5864-9406-e60fadab0d3c")
+		(property "Reference" "#PWR054"
+			(at 256.54 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 256.54 237.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 256.54 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 256.54 233.68 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 256.54 233.68 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8825,7 +9069,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:+5V")
-		(at 111.76 170.18 0)
+		(at 139.7 203.2 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8835,7 +9079,7 @@
 		(dnp no)
 		(uuid "330cd05a-73e4-5079-8a66-1e2d27bf869e")
 		(property "Reference" "#PWR026"
-			(at 111.76 170.18 0)
+			(at 139.7 203.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8846,7 +9090,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 111.76 166.37 0)
+			(at 139.7 199.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8856,7 +9100,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 170.18 0)
+			(at 139.7 203.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8867,7 +9111,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 170.18 0)
+			(at 139.7 203.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8878,7 +9122,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 111.76 170.18 0)
+			(at 139.7 203.2 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9287,8 +9531,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+5V")
-		(at 149.86 166.37 0)
+		(lib_id "8BIT:GND")
+		(at 203.2 130.81 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9298,7 +9542,7 @@
 		(dnp no)
 		(uuid "490fec15-0f6c-532d-8f77-ef10b51b563c")
 		(property "Reference" "#PWR036"
-			(at 149.86 166.37 0)
+			(at 203.2 130.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9308,8 +9552,8 @@
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 149.86 162.56 0)
+		(property "Value" "GND"
+			(at 203.2 134.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9319,7 +9563,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 149.86 166.37 0)
+			(at 203.2 130.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9330,7 +9574,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 149.86 166.37 0)
+			(at 203.2 130.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9341,7 +9585,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 149.86 166.37 0)
+			(at 203.2 130.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9812,8 +10056,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+5V")
-		(at 134.62 186.69 0)
+		(lib_id "8BIT:GND")
+		(at 101.6 213.36 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9823,7 +10067,7 @@
 		(dnp no)
 		(uuid "5458d32b-75c4-53d3-964a-d57d7e79ce01")
 		(property "Reference" "#PWR028"
-			(at 134.62 186.69 0)
+			(at 101.6 213.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9833,8 +10077,8 @@
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 134.62 182.88 0)
+		(property "Value" "GND"
+			(at 101.6 217.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9844,7 +10088,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 134.62 186.69 0)
+			(at 101.6 213.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9855,7 +10099,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 134.62 186.69 0)
+			(at 101.6 213.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9866,7 +10110,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 134.62 186.69 0)
+			(at 101.6 213.36 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10708,8 +10952,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+5V")
-		(at 154.94 88.9 0)
+		(lib_id "8BIT:GND")
+		(at 134.62 194.31 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10719,7 +10963,7 @@
 		(dnp no)
 		(uuid "65ed1202-7f16-52f8-b992-5f68ba93b781")
 		(property "Reference" "#PWR030"
-			(at 154.94 88.9 0)
+			(at 134.62 194.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10729,8 +10973,8 @@
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 154.94 85.09 0)
+		(property "Value" "GND"
+			(at 134.62 198.12 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10740,7 +10984,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 154.94 88.9 0)
+			(at 134.62 194.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10751,7 +10995,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 154.94 88.9 0)
+			(at 134.62 194.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10762,7 +11006,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 154.94 88.9 0)
+			(at 134.62 194.31 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10786,7 +11030,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 160.02 177.8 0)
+		(at 149.86 173.99 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10796,7 +11040,7 @@
 		(dnp no)
 		(uuid "6bfd1d7d-323b-54b5-b6bf-3cd791e365f8")
 		(property "Reference" "#PWR038"
-			(at 160.02 177.8 0)
+			(at 149.86 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10807,7 +11051,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 160.02 181.61 0)
+			(at 149.86 177.8 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10817,7 +11061,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 160.02 177.8 0)
+			(at 149.86 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10828,7 +11072,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 160.02 177.8 0)
+			(at 149.86 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10839,7 +11083,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 160.02 177.8 0)
+			(at 149.86 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11622,8 +11866,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 144.78 96.52 0)
+		(lib_id "8BIT:+5V")
+		(at 154.94 88.9 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11633,7 +11877,7 @@
 		(dnp no)
 		(uuid "7bfc3d26-4ec4-566c-b035-f4cfe27e4dd8")
 		(property "Reference" "#PWR031"
-			(at 144.78 96.52 0)
+			(at 154.94 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11643,8 +11887,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 144.78 100.33 0)
+		(property "Value" "+5V"
+			(at 154.94 85.09 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11654,7 +11898,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 144.78 96.52 0)
+			(at 154.94 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11665,7 +11909,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 144.78 96.52 0)
+			(at 154.94 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11676,7 +11920,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 144.78 96.52 0)
+			(at 154.94 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11853,8 +12097,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 134.62 194.31 0)
+		(lib_id "8BIT:+5V")
+		(at 134.62 186.69 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11864,7 +12108,7 @@
 		(dnp no)
 		(uuid "80e4f942-9bc4-5373-86f4-60bf05bdaaf7")
 		(property "Reference" "#PWR029"
-			(at 134.62 194.31 0)
+			(at 134.62 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11874,8 +12118,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 134.62 198.12 0)
+		(property "Value" "+5V"
+			(at 134.62 182.88 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11885,7 +12129,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 134.62 194.31 0)
+			(at 134.62 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11896,7 +12140,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 134.62 194.31 0)
+			(at 134.62 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11907,7 +12151,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 134.62 194.31 0)
+			(at 134.62 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12144,7 +12388,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 195.58 177.8 0)
+		(at 185.42 173.99 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12154,7 +12398,7 @@
 		(dnp no)
 		(uuid "873f8349-638d-57a4-839c-e14917abce8c")
 		(property "Reference" "#PWR041"
-			(at 195.58 177.8 0)
+			(at 185.42 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12165,7 +12409,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 195.58 181.61 0)
+			(at 185.42 177.8 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12175,7 +12419,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 195.58 177.8 0)
+			(at 185.42 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12186,7 +12430,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 195.58 177.8 0)
+			(at 185.42 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12197,7 +12441,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 195.58 177.8 0)
+			(at 185.42 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12345,8 +12589,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+12V")
-		(at 349.25 172.72 0)
+		(lib_id "8BIT:GND")
+		(at 322.58 165.1 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12356,7 +12600,7 @@
 		(dnp no)
 		(uuid "8832e6de-bd47-5e70-a5be-c4b6639d92c7")
 		(property "Reference" "#PWR049"
-			(at 349.25 172.72 0)
+			(at 322.58 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12366,8 +12610,8 @@
 				)
 			)
 		)
-		(property "Value" "+12V_F"
-			(at 349.25 168.91 0)
+		(property "Value" "GND"
+			(at 322.58 168.91 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12377,7 +12621,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 349.25 172.72 0)
+			(at 322.58 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12388,7 +12632,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 349.25 172.72 0)
+			(at 322.58 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12399,7 +12643,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 349.25 172.72 0)
+			(at 322.58 165.1 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12548,8 +12792,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+5V")
-		(at 238.76 175.26 0)
+		(lib_id "8BIT:GND")
+		(at 266.7 91.44 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12559,7 +12803,7 @@
 		(dnp no)
 		(uuid "8cb03b77-3851-5d7c-86ea-57bd17951475")
 		(property "Reference" "#PWR045"
-			(at 238.76 175.26 0)
+			(at 266.7 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12569,8 +12813,8 @@
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 238.76 171.45 0)
+		(property "Value" "GND"
+			(at 266.7 95.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12580,7 +12824,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 238.76 175.26 0)
+			(at 266.7 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12591,7 +12835,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 238.76 175.26 0)
+			(at 266.7 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12602,7 +12846,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 238.76 175.26 0)
+			(at 266.7 91.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13074,8 +13318,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+5V")
-		(at 256.54 80.01 0)
+		(lib_id "8BIT:GND")
+		(at 195.58 177.8 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13085,7 +13329,7 @@
 		(dnp no)
 		(uuid "9a9dd2b7-216c-5885-bbc4-d6eb269bc3dc")
 		(property "Reference" "#PWR042"
-			(at 256.54 80.01 0)
+			(at 195.58 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13095,8 +13339,8 @@
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 256.54 76.2 0)
+		(property "Value" "GND"
+			(at 195.58 181.61 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13106,7 +13350,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 256.54 80.01 0)
+			(at 195.58 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13117,7 +13361,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 80.01 0)
+			(at 195.58 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13128,7 +13372,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 256.54 80.01 0)
+			(at 195.58 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13152,7 +13396,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 322.58 165.1 0)
+		(at 231.14 195.58 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13162,7 +13406,7 @@
 		(dnp no)
 		(uuid "9ae5b4ea-c280-5de2-b0bf-646bd8725c70")
 		(property "Reference" "#PWR048"
-			(at 322.58 165.1 0)
+			(at 231.14 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13173,7 +13417,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 322.58 168.91 0)
+			(at 231.14 199.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13183,7 +13427,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 322.58 165.1 0)
+			(at 231.14 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13194,7 +13438,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 322.58 165.1 0)
+			(at 231.14 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13205,7 +13449,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 322.58 165.1 0)
+			(at 231.14 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13565,8 +13809,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 185.42 173.99 0)
+		(lib_id "8BIT:+5V")
+		(at 185.42 166.37 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -13576,7 +13820,7 @@
 		(dnp no)
 		(uuid "a053d16b-0c6e-586a-9276-e5240c82d4d8")
 		(property "Reference" "#PWR040"
-			(at 185.42 173.99 0)
+			(at 185.42 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13586,8 +13830,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 185.42 177.8 0)
+		(property "Value" "+5V"
+			(at 185.42 162.56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -13597,7 +13841,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 185.42 173.99 0)
+			(at 185.42 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13608,7 +13852,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 185.42 173.99 0)
+			(at 185.42 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13619,7 +13863,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 185.42 173.99 0)
+			(at 185.42 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14244,7 +14488,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 370.84 187.96 0)
+		(at 360.68 185.42 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14254,7 +14498,7 @@
 		(dnp no)
 		(uuid "a80c7b41-e7dc-59cf-b8ca-8cd8967e5041")
 		(property "Reference" "#PWR052"
-			(at 370.84 187.96 0)
+			(at 360.68 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14265,7 +14509,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 370.84 191.77 0)
+			(at 360.68 189.23 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14275,7 +14519,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 370.84 187.96 0)
+			(at 360.68 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14286,7 +14530,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 370.84 187.96 0)
+			(at 360.68 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14297,7 +14541,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 370.84 187.96 0)
+			(at 360.68 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14558,7 +14802,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 111.76 185.42 0)
+		(at 139.7 218.44 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14568,7 +14812,7 @@
 		(dnp no)
 		(uuid "ad99568e-9672-5091-aebb-33244cdfd30f")
 		(property "Reference" "#PWR027"
-			(at 111.76 185.42 0)
+			(at 139.7 218.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14579,7 +14823,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 111.76 189.23 0)
+			(at 139.7 222.25 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14589,7 +14833,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 185.42 0)
+			(at 139.7 218.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14600,7 +14844,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 185.42 0)
+			(at 139.7 218.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14611,7 +14855,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 111.76 185.42 0)
+			(at 139.7 218.44 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14924,8 +15168,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 149.86 173.99 0)
+		(lib_id "8BIT:+5V")
+		(at 149.86 166.37 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -14935,7 +15179,7 @@
 		(dnp no)
 		(uuid "bced1129-c0d5-5fd7-86c8-36d23430d073")
 		(property "Reference" "#PWR037"
-			(at 149.86 173.99 0)
+			(at 149.86 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14945,8 +15189,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 149.86 177.8 0)
+		(property "Value" "+5V"
+			(at 149.86 162.56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14956,7 +15200,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 149.86 173.99 0)
+			(at 149.86 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14967,7 +15211,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 149.86 173.99 0)
+			(at 149.86 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14978,7 +15222,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 149.86 173.99 0)
+			(at 149.86 166.37 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15156,7 +15400,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 231.14 195.58 0)
+		(at 238.76 195.58 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15166,7 +15410,7 @@
 		(dnp no)
 		(uuid "cb411394-3d5e-5257-8b4b-ecf0ba04c357")
 		(property "Reference" "#PWR047"
-			(at 231.14 195.58 0)
+			(at 238.76 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15177,7 +15421,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 231.14 199.39 0)
+			(at 238.76 199.39 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15187,7 +15431,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 231.14 195.58 0)
+			(at 238.76 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15198,7 +15442,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 231.14 195.58 0)
+			(at 238.76 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15209,7 +15453,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 231.14 195.58 0)
+			(at 238.76 195.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15628,7 +15872,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 266.7 91.44 0)
+		(at 256.54 87.63 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -15638,7 +15882,7 @@
 		(dnp no)
 		(uuid "d094e679-ed99-5673-9abc-136ae3940aa9")
 		(property "Reference" "#PWR044"
-			(at 266.7 91.44 0)
+			(at 256.54 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15649,7 +15893,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 266.7 95.25 0)
+			(at 256.54 91.44 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15659,7 +15903,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 266.7 91.44 0)
+			(at 256.54 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15670,7 +15914,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 266.7 91.44 0)
+			(at 256.54 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15681,7 +15925,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 266.7 91.44 0)
+			(at 256.54 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15699,6 +15943,147 @@
 				(path "/e1ab18a5-36a0-5cd5-98be-26c980e8e01b"
 					(reference "#PWR044")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "8BIT:MCP6002-xSN")
+		(at 142.24 210.82 0)
+		(unit 3)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d09b014f-91ea-5f3d-a384-6bada53042ab")
+		(property "Reference" "U4"
+			(at 144.78 200.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MCP6002"
+			(at 144.78 203.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "8BIT:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "1MHz, Low-Power Op Amp, SOIC-8"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "MCP6002 on +5V (as Bread Modular 8bit): A CV buffer, unity follower, rail-to-rail in/out, so PB0 only ever sees 0..5 V; B spare (grounded follower)"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7377"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "MCP6002T-I/SN"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Microchip"
+			(at 142.24 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6782c805-0948-53bb-83af-aea43eace1a7")
+		)
+		(pin "2"
+			(uuid "21d9a78f-653b-50d9-8f59-b129d3f96747")
+		)
+		(pin "3"
+			(uuid "d53431e8-e0bf-5e25-a6d2-c4ac669fc3d0")
+		)
+		(pin "4"
+			(uuid "39d10b6d-f026-5b74-9888-e446f93d1ad8")
+		)
+		(pin "5"
+			(uuid "a4996d7f-4cb0-543a-9604-4129565735dd")
+		)
+		(pin "6"
+			(uuid "e2ab8dad-34ff-5d6a-9bcb-343ba8f53896")
+		)
+		(pin "7"
+			(uuid "3794fa03-4bc9-51bc-ad0e-27776bd17b4b")
+		)
+		(pin "8"
+			(uuid "210fe45b-d814-5d29-adc5-30cdddb399af")
+		)
+		(instances
+			(project "8bit"
+				(path "/e1ab18a5-36a0-5cd5-98be-26c980e8e01b"
+					(reference "U4")
+					(unit 3)
 				)
 			)
 		)
@@ -16143,7 +16528,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 256.54 233.68 0)
+		(at 370.84 187.96 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16153,7 +16538,7 @@
 		(dnp no)
 		(uuid "d8fc17f7-7615-5933-b55f-7662c71bf72b")
 		(property "Reference" "#PWR053"
-			(at 256.54 233.68 0)
+			(at 370.84 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16164,7 +16549,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 256.54 237.49 0)
+			(at 370.84 191.77 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16174,7 +16559,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 256.54 233.68 0)
+			(at 370.84 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16185,7 +16570,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 233.68 0)
+			(at 370.84 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16196,7 +16581,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 256.54 233.68 0)
+			(at 370.84 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16411,7 +16796,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 213.36 116.84 0)
+		(at 205.74 101.6 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16421,7 +16806,7 @@
 		(dnp no)
 		(uuid "da9ee67e-bf77-53b6-9c6c-f4ec5b5cde1d")
 		(property "Reference" "#PWR034"
-			(at 213.36 116.84 0)
+			(at 205.74 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16432,7 +16817,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 213.36 120.65 0)
+			(at 205.74 105.41 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16442,7 +16827,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 213.36 116.84 0)
+			(at 205.74 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16453,7 +16838,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 213.36 116.84 0)
+			(at 205.74 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16464,7 +16849,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 213.36 116.84 0)
+			(at 205.74 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16780,8 +17165,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:+5V")
-		(at 185.42 166.37 0)
+		(lib_id "8BIT:GND")
+		(at 160.02 177.8 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16791,7 +17176,7 @@
 		(dnp no)
 		(uuid "def04fc0-774c-5467-aa31-81b16a3af792")
 		(property "Reference" "#PWR039"
-			(at 185.42 166.37 0)
+			(at 160.02 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16801,8 +17186,8 @@
 				)
 			)
 		)
-		(property "Value" "+5V"
-			(at 185.42 162.56 0)
+		(property "Value" "GND"
+			(at 160.02 181.61 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -16812,7 +17197,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 185.42 166.37 0)
+			(at 160.02 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16823,7 +17208,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 185.42 166.37 0)
+			(at 160.02 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16834,7 +17219,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 185.42 166.37 0)
+			(at 160.02 177.8 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -16981,7 +17366,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 165.1 137.16 0)
+		(at 144.78 96.52 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -16991,7 +17376,7 @@
 		(dnp no)
 		(uuid "e5448edf-fd77-5510-b10c-161929a94967")
 		(property "Reference" "#PWR032"
-			(at 165.1 137.16 0)
+			(at 144.78 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17002,7 +17387,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 165.1 140.97 0)
+			(at 144.78 100.33 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17012,7 +17397,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 165.1 137.16 0)
+			(at 144.78 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17023,7 +17408,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 165.1 137.16 0)
+			(at 144.78 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17034,7 +17419,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 165.1 137.16 0)
+			(at 144.78 96.52 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17057,7 +17442,7 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:MCP6001-OT")
+		(lib_id "8BIT:MCP6002-xSN")
 		(at 114.3 177.8 0)
 		(unit 1)
 		(body_style 1)
@@ -17068,28 +17453,26 @@
 		(dnp no)
 		(uuid "e769594b-1729-5398-aea2-f2641d435f2c")
 		(property "Reference" "U4"
-			(at 119.38 170.18 0)
+			(at 116.84 167.64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "MCP6001"
-			(at 119.38 185.42 0)
+		(property "Value" "MCP6002"
+			(at 116.84 170.18 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "8BIT:SOT-23-5"
+		(property "Footprint" "8BIT:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 114.3 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -17100,7 +17483,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://ww1.microchip.com/downloads/en/DeviceDoc/MCP6001-1R-1U-2-4-1-MHz-Low-Power-Op-Amp-DS20001733L.pdf"
+		(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf"
 			(at 114.3 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -17111,7 +17494,7 @@
 				)
 			)
 		)
-		(property "Description" "1MHz, Low-Power Op Amp, SOT-23-5"
+		(property "Description" "1MHz, Low-Power Op Amp, SOIC-8"
 			(at 114.3 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -17122,7 +17505,7 @@
 				)
 			)
 		)
-		(property "Note" "CV buffer: unity follower, rail-to-rail in/out on +5V, so PB0 only ever sees 0..5 V. Same family as Bread Modular 8bit MCP6002"
+		(property "Note" "MCP6002 on +5V (as Bread Modular 8bit): A CV buffer, unity follower, rail-to-rail in/out, so PB0 only ever sees 0..5 V; B spare (grounded follower)"
 			(at 114.3 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -17133,7 +17516,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C29429"
+		(property "LCSC" "C7377"
 			(at 114.3 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -17144,7 +17527,7 @@
 				)
 			)
 		)
-		(property "MPN" "MCP6001T-E/OT"
+		(property "MPN" "MCP6002T-I/SN"
 			(at 114.3 177.8 0)
 			(hide yes)
 			(show_name no)
@@ -17180,6 +17563,15 @@
 		)
 		(pin "5"
 			(uuid "0e953a33-552b-5574-87a5-39f59de6ffc2")
+		)
+		(pin "6"
+			(uuid "453ae12a-b211-525a-a5d2-debab182ec42")
+		)
+		(pin "7"
+			(uuid "5a59f69d-e117-52c8-9721-b6a4c653eb89")
+		)
+		(pin "8"
+			(uuid "003dea33-8761-52ee-a00f-529df1273b76")
 		)
 		(instances
 			(project "8bit"
@@ -17317,7 +17709,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 203.2 130.81 0)
+		(at 213.36 116.84 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17327,7 +17719,7 @@
 		(dnp no)
 		(uuid "e93c4921-f28b-5418-9773-e28b60819cdb")
 		(property "Reference" "#PWR035"
-			(at 203.2 130.81 0)
+			(at 213.36 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17338,7 +17730,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 203.2 134.62 0)
+			(at 213.36 120.65 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17348,7 +17740,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 203.2 130.81 0)
+			(at 213.36 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17359,7 +17751,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 203.2 130.81 0)
+			(at 213.36 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17370,7 +17762,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 203.2 130.81 0)
+			(at 213.36 116.84 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17486,8 +17878,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 256.54 87.63 0)
+		(lib_id "8BIT:+5V")
+		(at 256.54 80.01 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17497,7 +17889,7 @@
 		(dnp no)
 		(uuid "ee4f09cc-5c85-5973-96f4-c0a58d4a0599")
 		(property "Reference" "#PWR043"
-			(at 256.54 87.63 0)
+			(at 256.54 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17507,8 +17899,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 256.54 91.44 0)
+		(property "Value" "+5V"
+			(at 256.54 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17518,7 +17910,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 256.54 87.63 0)
+			(at 256.54 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17529,7 +17921,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 87.63 0)
+			(at 256.54 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17540,7 +17932,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 256.54 87.63 0)
+			(at 256.54 80.01 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17563,8 +17955,8 @@
 		)
 	)
 	(symbol
-		(lib_id "8BIT:GND")
-		(at 238.76 195.58 0)
+		(lib_id "8BIT:+5V")
+		(at 238.76 175.26 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -17574,7 +17966,7 @@
 		(dnp no)
 		(uuid "f00a908e-49c2-56aa-b6fd-0cc946aa1e65")
 		(property "Reference" "#PWR046"
-			(at 238.76 195.58 0)
+			(at 238.76 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17584,8 +17976,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 238.76 199.39 0)
+		(property "Value" "+5V"
+			(at 238.76 171.45 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -17595,7 +17987,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 238.76 195.58 0)
+			(at 238.76 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17606,7 +17998,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 238.76 195.58 0)
+			(at 238.76 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17617,7 +18009,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 238.76 195.58 0)
+			(at 238.76 175.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -17930,6 +18322,147 @@
 		)
 	)
 	(symbol
+		(lib_id "8BIT:MCP6002-xSN")
+		(at 114.3 210.82 0)
+		(unit 2)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f45efce9-bbe6-5bef-8299-a5df2afdd767")
+		(property "Reference" "U4"
+			(at 116.84 200.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "MCP6002"
+			(at 116.84 203.2 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "8BIT:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "1MHz, Low-Power Op Amp, SOIC-8"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "MCP6002 on +5V (as Bread Modular 8bit): A CV buffer, unity follower, rail-to-rail in/out, so PB0 only ever sees 0..5 V; B spare (grounded follower)"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C7377"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "MCP6002T-I/SN"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Microchip"
+			(at 114.3 210.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e9f00642-a8fb-5807-8825-6f23184f02ce")
+		)
+		(pin "2"
+			(uuid "02cc8e2a-567c-5980-8b28-7d0ab4687bf4")
+		)
+		(pin "3"
+			(uuid "7281c16b-85d0-557f-9578-f2d00ef86f5a")
+		)
+		(pin "4"
+			(uuid "e8612d97-3e07-56e6-9213-a96246b313b7")
+		)
+		(pin "5"
+			(uuid "ef52ccae-9b0e-580a-bfb8-e52285867f37")
+		)
+		(pin "6"
+			(uuid "80f47835-2384-5ed5-bfa7-4cb5caf7350e")
+		)
+		(pin "7"
+			(uuid "1507f283-85a8-521a-90b6-29d78cad3082")
+		)
+		(pin "8"
+			(uuid "3995579a-ec11-54f1-865d-30064c089841")
+		)
+		(instances
+			(project "8bit"
+				(path "/e1ab18a5-36a0-5cd5-98be-26c980e8e01b"
+					(reference "U4")
+					(unit 2)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "8BIT:C")
 		(at 76.2 49.53 180)
 		(unit 1)
@@ -18067,7 +18600,7 @@
 	)
 	(symbol
 		(lib_id "8BIT:GND")
-		(at 205.74 101.6 0)
+		(at 165.1 137.16 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -18077,7 +18610,7 @@
 		(dnp no)
 		(uuid "f609e3aa-a9ff-5b0b-bf86-cfba90eec612")
 		(property "Reference" "#PWR033"
-			(at 205.74 101.6 0)
+			(at 165.1 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18088,7 +18621,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 205.74 105.41 0)
+			(at 165.1 140.97 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -18098,7 +18631,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 205.74 101.6 0)
+			(at 165.1 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18109,7 +18642,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 205.74 101.6 0)
+			(at 165.1 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -18120,7 +18653,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 205.74 101.6 0)
+			(at 165.1 137.16 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

@@ -15,7 +15,7 @@ to a Eurorack module: 4HP up to S5, **6HP from S6** (the last bullet). The brief
 - S3 (user): pot 3 is the passive low-pass only (no ADC option, no jumpers); readable,
   wired schematic.
 - S4 (user): buffer the CV with an op-amp at Eurorack input impedance, keep the MCU pin
-  safe (MCP6001 on +5 V), and read the full bipolar CV range with headroom (±5.5 V).
+  safe (MCP6002 on +5 V), and read the full bipolar CV range with headroom (±5.5 V).
 - S5 (user, 2026-10-20): the MODE button is a **hand-soldered 6 x 6 mm THT tact
   switch, 7 mm tall** (AliExpress stock goes to 10 mm; 7 mm leaves room for a flange),
   with a one-piece printed cap. Footprint per the user's drawing: 4 pins, 6.5 x 4.5 mm.
@@ -51,7 +51,7 @@ natively from `8bit.kicad_sch`; firmware in `code/{helloworld,drums,lfo,supersaw
 | E1 | Keep every BM 8bit pin: PA1/PA2 knobs, PA4 button, PA5 LED, PA6 DAC, PB3 RX, PA0 UPDI | BM firmware ports unchanged (apart from the MIDI inversion, E3) |
 | E2 | New inputs on ADC0 pins no BM firmware touches: **CV in = PB0 (AIN11)**. PA7 (BM gate, driven as an output) and PB4 (BM logger TX) stay unconnected (S6: PA7 feeds the GATE jack, E14; knob 3 uses PB5, E13) | A wiper or CV source on PA7/PB4 would fight BM firmware that drives those pins. S2 moved CV from PA3 to PB0: PB0 is on the QFN side facing the CV parts, so the fan-out routes without crossing POT2 |
 | E3 | MIDI input = TS jack with the MIDI V2 NPN front end and its 3-pad solder jumper (JP1), **shipped open** | "Like MIDI v2": JP1 1-2 = protected (inverting, firmware `PORT_INVEN` on PB3), 2-3 = direct/unprotected (stock BM firmware). TS because the source is this repo's MIDI module (tip = logic-level MIDI, sleeve = GND) |
-| E4 | CV in (S4, §3.2b): level shift R4 56k / R13 51k to +5V / R14 510k to GND, BAT54SW clamp, C9 1n, **U4 MCP6001 follower on +5V** into PB0. Jack tip normalled to GND | User: bipolar Eurorack CV (±5 V) with headroom, op-amp buffer, ~100k input impedance, MCU pin safe. ±5.5 V -> 0..5 V; unpatched = 0 V = mid-scale. A +5 V-only rail-to-rail buffer can't drive PB0 outside 0..5 V, so no clamp is needed after it (a ±12 V op-amp would need its own) |
+| E4 | CV in (S4, §3.2b): level shift R4 56k / R13 51k to +5V / R14 510k to GND, BAT54SW clamp, C9 1n, **U4A MCP6002 follower on +5V** into PB0 (U4B grounded spare; was the single MCP6001 until 2026-11-14, swapped because C7377 is Preferred Extended). Jack tip normalled to GND | User: bipolar Eurorack CV (±5 V) with headroom, op-amp buffer, ~100k input impedance, MCU pin safe. ±5.5 V -> 0..5 V; unpatched = 0 V = mid-scale. A +5 V-only rail-to-rail buffer can't drive PB0 outside 0..5 V, so no clamp is needed after it (a ±12 V op-amp would need its own) |
 | E5 | Pots 1 and 2: plain +5V..GND dividers into PA1/PA2, 10n at each pin. No CV attenuator, no op-amp buffer | The CV is a separate jack now (E4); BM's buffered attenuators are not needed |
 | E6 (S5, superseded by E13) | **P1/P2 50k, P3 1M** (linear RV09, user stock, as `modules/audio-out`: no bushing, 16 mm shaft, no nut). BM `Potentiometer_RV09` footprint | Only 50k and 1M exist (user). 50k dividers are the best ADC source (≤12.5k). P3 is the filter rheostat, so it takes the 1M: with **R7 10k** and **C13 1n** the range is 158 Hz..15.9 kHz (the same 1:100 span as BM's 50k/100n) and the DAC never sees less than 10k |
 | E7 (S5, superseded by E13) | Pot 3 is **only the passive low-pass** (§3.3), no jumpers, no ADC | User decision (S3): keep it simple, as BM. S2's F/A jumper bank (JP2-JP5) and PB5 input were removed |
@@ -100,7 +100,7 @@ JP1: pin 1 = RX_Q, pin 2 = RX (PB3), pin 3 = MIDI_IN.  B silk P (pin 1) / D (pin
 ### 3.2b CV input (S4: bipolar, buffered)
 
 ```
-J2 tip CV_IN -- R4 56k --+-- CV_BUF -- U4 MCP6001 + (follower, +5V/GND) -- CV_ADC -- PB0
+J2 tip CV_IN -- R4 56k --+-- CV_BUF -- U4A MCP6002 + (follower, +5V/GND) -- CV_ADC -- PB0
                          +-- R13 51k -- +5V
                          +-- R14 510k -- GND
                          +-- D3 BAT54SW clamp to GND / +5V,  C9 1n to GND
@@ -108,7 +108,7 @@ V(CV_BUF) = 0.4529 x Vin + 2.487 V   (Thevenin 25.4k)
 ```
 
 - **Range:** -5.49 V -> 0 V, 0 V -> 2.49 V (ADC ~509), +5.55 V -> 5 V. The ±0.5 V of
-  headroom over ±5 V keeps the MCP6001 output (rail-to-rail, within ~25 mV of the rails)
+  headroom over ±5 V keeps the MCP6002 output (rail-to-rail, within ~25 mV of the rails)
   out of its clipping band. The small asymmetry (0.05 V) comes from E24 values: 56k and
   51k are Basic; 510k sets the midpoint (the ideal is 571k; 560k is only Preferred
   Extended).
@@ -200,7 +200,9 @@ resistors and capacitors are JLCPCB **Basic** except R12 / R15 (ROHM ESR18EZPF10
 0.5 W 1206, Extended by request: no Basic 0.5 W 1k 1206 was found, and the 0.25 W C4410
 fails the mis-patch case); B5819W, MMBT3904 and 1N4148W are Basic too. Extended:
 ATtiny1616-MNR (C507118, stock 10,257 at lookup), BAT54SWT1G (C78260) and HT7550-1 (C16106,
-Preferred Extended), the same parts MIDI V2 uses, the CV buffer MCP6001T-E/OT (C29429) and,
+Preferred Extended), the same parts MIDI V2 uses, the CV buffer MCP6002T-I/SN (C7377,
+**Preferred Extended**, no feeder fee; replaced MCP6001T-E/OT C29429 on 2026-11-14, as
+`modules/acid`), and,
 from S6, **TL074CDR (C12594, Extended, as `modules/12bit`; the S5 TL072CDT C6961 was
 Basic)**. The S4 level-shift resistors are Basic: 56k C23206, 51k C23196, 510k C23192. C9
 1 nF is C1588 (Basic, X7R). Stock is a dated web observation, not a reservation. THT jacks,
@@ -220,7 +222,7 @@ via in an SMD pad, 1 mm edge keep-out, SMD >= 2 mm from pot/jack pads.
 | 2 | Output stage between J3 and J6: U3 TL074, C7 / C8 at the supply pins, R9 / R8, R12 / R15 in the edge strips, offset divider R10 / R11 / C14, R6 at the LED |
 | 3 | MCU beside J4: U1, C1 / C2, knob caps, R7; P3, button, LED, DAC, GATE and the ±12V_F / +5V feeds down to U3 |
 | 4 | MIDI front end in the gap between J1 and J2 |
-| 5 | CV input under J2 (U4 feedback under its body, GND via on the free side of U4 pin 2), R5 at J5 |
+| 5 | CV input under J2 (2026-11-14: U4 SOIC-8 below the cluster, C15 beside pin 8, CV_BUF under the body to pin 3), R5 at J5 |
 | 6 | Cross-board links: +5V trunk on F from the regulator up to the MIDI / CV parts with branches to the three pot pin-3 pads; POT1 on F; RX, CV_ADC and UPDI as a three-track B bundle down the middle to U1 |
 | 7 | B silk: `8BIT S6`, JP1 legend, `P` / `D`, `UPDI` / `GND`, `-12V` |
 
@@ -231,7 +233,7 @@ via in an SMD pad, 1 mm edge keep-out, SMD >= 2 mm from pot/jack pads.
   one via each, clear of every pad.
 - GND pours on both layers with thermal reliefs; 14 GND vias (one at every decoupling
   capacitor). F pour one piece; B pour one piece plus two GND-pad-tied fragments under U1.
-- Widths: 0.2 at QFN / SOT-23-5 pins, 0.25 signal, 0.4 power (+5V, ±12V_F, ±12V, GND
+- Widths: 0.2 at QFN pins, 0.25 signal, 0.4 power (+5V, ±12V_F, ±12V, GND
   stubs). Vias 0.6 / 0.3. 255 segments, 32 vias.
 - The batch scripts and per-batch DRC reports are in the ignored `research/r1/`; the
   native PCB is the record.
