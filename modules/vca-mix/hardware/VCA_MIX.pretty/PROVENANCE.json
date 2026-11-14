@@ -14,6 +14,20 @@
       "edits": "none (native load/save only)",
       "output_sha256": "143a22d6060fee3a48395367f2fe0b43c7554c68350d0b56de947f18e96f16d9"
     },
+    "SOT-323_SC-70": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-323_SC-70.kicad_mod",
+      "source_sha256": "74e071f8714739c788536a0b053956a4f21489ee5173faf675e1a7ade4445ba8",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "9e6b96c9a01f24d119bf85448e48b015c8e80a427fc0ed058e9838dec750d000"
+    },
+    "SOT-89-3": {
+      "source": "/usr/share/kicad/footprints/Package_TO_SOT_SMD.pretty/SOT-89-3.kicad_mod",
+      "source_sha256": "0b8db9f4a8f2547a53e80e3d400798979e84b4e0b2972160ddaca99c1f659b93",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "1eea938ed5c7eb10ff63e41feae863a1c1d11f8e0c51b284429bae14ab98c5c9"
+    },
     "R_0603_1608Metric": {
       "source": "/usr/share/kicad/footprints/Resistor_SMD.pretty/R_0603_1608Metric.kicad_mod",
       "source_sha256": "7190ac4a00125b807e54129ef0d87d87f2a658eeb74d025a7028203419b09f23",
@@ -67,8 +81,8 @@
       "source": "~/data/projects/bread-modular/opt/BreadModular_MISC.pretty/VTL5C.kicad_mod",
       "source_sha256": "2f6264223b06f409a3835f8065092064b3ea88b6b4a7fb34ec78d5f94b26fc1a",
       "license": "MIT (c) 2024 Arunoda Susiripala (Bread Modular)",
-      "edits": "added F.CrtYd X +/-5.38, Y +/-7.92 (silk box + 0.25) and F.SilkS build notes ['SOLDER FIRST', 'TRIM FLUSH', 'LED 18.5mA'] inside the box; pads, original silk and text unchanged; no 3D model upstream",
-      "output_sha256": "ee78149065bc9470ef70fd3c63dcf740c6dfdc3bcb713dd7f632681ab494cebf"
+      "edits": "added F.CrtYd X +/-5.38, Y +/-7.92 (silk box + 0.25) and F.SilkS build notes ['SOLDER FIRST', 'TRIM FLUSH', 'LED 5mA'] inside the box, 1.0 mm high / 0.15 mm stroke, three lines in the pad-free block between the pot pins and the LED leads; the original '+' / '-' silk marks moved from local Y -8.255 to -3.8 (inside the box, beside the LED leads); pads and original silk outline unchanged; no 3D model upstream",
+      "output_sha256": "acbd3aff4ead6e954be969151b5d9276cbaad894a967e8cff54166ea2152d76d"
     }
   },
   "models": {
