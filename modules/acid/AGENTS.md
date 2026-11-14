@@ -26,7 +26,7 @@ module-relative.
 - R3 via cleanup (2026-11-06): one net at a time ripped and re-routed with a high via cost, kept
   only when DRC stayed clean: 156 -> 140 vias (ENV_CV 8 -> 2, MODE_SW 5 -> 1, AIN_BUF / HP_RG1 2 -> 0).
 - **JLCPCB export** in `jlcpcb/` is the S3/R3 10HP set (2026-11-06, `jlcpcb/README.md`): bottom
-  Economic, 98 parts / 27 rows. U2 switched to ATTINY1616-MF C5227638 (same die/package, 125 C grade, 240 in stock; C507118 had 3), fields only.
+  Economic, 98 parts / 27 rows. U2 is ATTINY1616-MNR C507118 again (2026-11-14, 10,237 in stock; the interim ATTINY1616-MF C5227638 from 2026-11-06 is gone), fields only.
   Not supplier-accepted, not built.
 
 ## Boundaries

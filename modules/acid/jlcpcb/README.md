@@ -4,7 +4,9 @@ Carrier and panel re-generated on 2026-11-06 from the S3 schematic (LP / HP / BP
 `docs/research.md` 3.6), the P4/R3 10HP board (re-layout, hand re-routing and the via cleanup,
 5.3) and the 10HP panel, with the shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user
 direction. It replaces the 8HP S3/R2 set. Re-exported the same day after U2 changed from
-ATTINY1616-MNR C507118 (3 in stock) to **ATTINY1616-MF C5227638** (fields only). Never hand-edit these files:
+ATTINY1616-MNR C507118 (3 in stock) to ATTINY1616-MF C5227638, and again on 2026-11-14 after U2
+changed back to **ATTINY1616-MNR C507118** (10,237 in stock; fields only, Gerbers unchanged
+apart from timestamps). Never hand-edit these files:
 change the sources, then re-export with the commands below.
 
 ## Contents
@@ -51,21 +53,20 @@ The BOM matches the S3/R2 one (same 27 rows) except the U2 row. Live audit
 `research/export-r3-mf/audit.json` (ignored): every C-code resolves to its MPN, no part is
 short of stock; stock figures below are from that run.
 
-- **U2 = ATTINY1616-MF C5227638** (240 in stock, $2.58 @1), replacing ATTINY1616-MNR C507118
-  (3 in stock < 5 boards). Same die, pinout and VQFN-20 3x3 package, so footprint, copper and
-  firmware are unchanged; only the temperature grade (-40..125 C) and the tray packing differ.
-  JLCPCB lists no attributes for this code (`missing:attributes` in the audit).
-  **Clock caveat:** the firmware runs 20 MHz at 3.3 V. The datasheet guarantees 10 MHz at that
-  voltage for the -MNR grade and less for the 125 C grade (16 MHz max, 8 MHz at 2.7 V), so both
-  parts run above spec; Bread Modular builds prove the -MNR, the -MF is not bench-tested.
+- **U2 = ATTINY1616-MNR C507118** (live audit 2026-11-14 12:51 UTC, `research/export-mnr/audit.json`:
+  10,237 in stock, $1.25 @1, Extended, Economic-eligible), back from the interim ATTINY1616-MF
+  C5227638 (picked on 2026-11-06 when C507118 had 3). Same die, pinout and VQFN-20 3x3 package,
+  so footprint, copper and firmware are unchanged.
+  **Clock caveat:** the firmware runs 20 MHz at 3.3 V, above the datasheet's 10 MHz at that
+  voltage; Bread Modular builds prove the -MNR at this clock.
 
 - **Resistors and capacitors: all JLCPCB Basic**, except the 1206 1k 0.5 W output/CV-out
   resistors (R43, R44, R48, R49, R53, R54, R57): ROHM ESR18EZPF1001 C2074262, Extended
   (no Basic 0.5 W 1206 1k exists).
 - **Basic semis/ICs:** B5819W C8598, 1N4148W C81598, MMBT3904 C20526, HT7533-1 C14289,
   TL072CDT C6961.
-- **Extended (one setup fee each):** ESR18EZPF1001 C2074262 (99,734), ATTINY1616-MF C5227638
-  (240), MCP6002T-I/SN C7377 (84,328), BAT54SWT1G C78260 (45,452), TS5A23157DGSR C11133 (5,138).
+- **Extended (one setup fee each):** ESR18EZPF1001 C2074262 (99,734), ATTINY1616-MNR C507118
+  (10,237), MCP6002T-I/SN C7377 (84,328), BAT54SWT1G C78260 (45,452), TS5A23157DGSR C11133 (5,138).
 
 The audit exits non-zero, as for LOW, vca-mix and 16bit: there is no
 `docs/jlcpcb-audit-requirements.json`, so the per-part requirement/review rows stay
@@ -76,9 +77,9 @@ failure.
 
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
 
-- Carrier PCB `67dc3b9e431e342d7606577cbe240791d18c921abe8c2b75e0ee730a2472d778`.
+- Carrier PCB `7c1c7a195cf7cb93bf40396032b975f1c6140b4f6f3e63e147050feb18767d03`.
 - Carrier project `9b192541b9b93e5a057acfd05218fb45a785de7ef7759c42e34f688fbd82771f`.
-- Carrier schematic `2a28354bcbe9840404276d1c4fa10f17276c2d8c7a25e826a0f9dcb65753e0a3`.
+- Carrier schematic `f5e771dbcfbd692cf9094c6249017de3a9fb5cf0ce2aa0bd975c2ccd321d051a`.
 - Panel PCB `4758b32d24a5a035ce823f28e206793feba212951e1f0daea6fec98fa95b7217`.
 - Panel project `f305bcc9525db9aaaf0c2e09ff9b4a45e533191f56bed62385825f31da0950cd`.
 
@@ -144,7 +145,7 @@ This is a complete export, not a supplier-accepted release. Before ordering:
 1. **Bottom-side Economic assembly** with the Extended parts above.
 2. **Placement preview** in JLCPCB's bottom-side view: pin 1 of U2 (QFN-20), U4 (MSOP-10),
    U3/U5/U6/U9/U10/U11 (SOIC-8); U1 tab; D1-D3 cathode bands; D8/Q1 orientation; every rotation.
-3. **Live recheck before ordering:** ATtiny1616 stock (3 on 2026-11-06, 5 needed), the other
+3. **Live recheck before ordering:** ATtiny1616-MNR stock (10,237 on 2026-11-14, 5 needed), the other
    Extended parts, class, attrition.
 4. **JLCPCB DFM / Gerber viewer check** of both ZIPs.
 5. **Bench:** vactrol fit under ATTACK/RELEASE, DAC/envelope range, vactrol range, output
