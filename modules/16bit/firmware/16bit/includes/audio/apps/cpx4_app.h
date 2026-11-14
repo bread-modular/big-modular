@@ -22,8 +22,10 @@
 //               button CC103 RESONANCE
 //   MIDI notes  PITCH (transpose all voices, C4 = 0)
 //   MODE        free-running motion recorder (free_motion_recorder.h, no
-//               MIDI clock): press to record, press again to close the loop;
-//               hold + move to overdub. P1..P4 + the eight MCC knobs
+//               MIDI clock): hold + move a control to record it; at the
+//               release it loops on its own track (own length), gliding
+//               from its last value back to its first. A click removes
+//               every track. P1..P4 + the eight MCC knobs
 #define CPX4_KNOB_READ_INTERVAL_MS 2
 #define CPX4_KNOB_OVERSAMPLE 4
 #define CPX4_KNOB_SMOOTH 0.3f        // one-pole per read (~6 ms)
@@ -41,17 +43,15 @@ private:
 
     float knobSmooth[MotionRecorder::KNOB_COUNT] = {};
     float knobApplied[MotionRecorder::KNOB_COUNT] = {};
+    uint16_t knobCounts[MotionRecorder::KNOB_COUNT] = {};  // recorder's view
     bool knobsFirstRead = true;
     uint32_t lastKnobReadMs = 0;
 
     void readKnobs();
     void applyKnob(uint8_t knob, float adc);
-    void applyLiveControls();
     static void setRecorderLed(bool on);
-    void recorderKnobs(uint16_t knobs[MotionRecorder::KNOB_COUNT]);
     static uint32_t nowMs();
-    static void applyRecordedFrame(void* context,
-                                   const MotionRecorder::Frame& frame);
+    static void applyRecorded(void* context, uint8_t param, uint16_t value);
 
 public:
     void init() override;

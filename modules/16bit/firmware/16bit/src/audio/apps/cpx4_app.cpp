@@ -54,9 +54,7 @@ void Cpx4App::audioCallback(AudioInput *input, AudioOutput *output) {
 
 void Cpx4App::update() {
     readKnobs();
-    uint16_t knobs[MotionRecorder::KNOB_COUNT];
-    recorderKnobs(knobs);
-    recorder.update(nowMs(), knobs, &Cpx4App::applyRecordedFrame, this);
+    recorder.update(nowMs(), knobCounts, &Cpx4App::applyRecorded, this);
 }
 
 // Milliseconds from the 64-bit timer: wraps at 2^32 ms (49 days), as the
@@ -67,8 +65,10 @@ uint32_t Cpx4App::nowMs() {
 
 // P1..P4 = ADC0..3, read every 2 ms under the ADC lock IO uses, four
 // conversions averaged, then smoothed. A TUNE is set once its knob moves by
-// CPX4_KNOB_APPLY_STEP counts. During playback the loop owns the knobs;
-// they're still tracked for the recorder's offset.
+// CPX4_KNOB_APPLY_STEP counts. A knob with a track (recording, playing or
+// gliding back) belongs to the recorder; it's still tracked for the
+// recorder, in whole counts with the same hysteresis, so a resting knob
+// can't flicker by a count in a take or its offset.
 void Cpx4App::readKnobs() {
     uint32_t now = nowMs();
     if (!knobsFirstRead && (now - lastKnobReadMs) < CPX4_KNOB_READ_INTERVAL_MS) {
@@ -93,7 +93,10 @@ void Cpx4App::readKnobs() {
         } else {
             knobSmooth[k] += CPX4_KNOB_SMOOTH * (raw - knobSmooth[k]);
         }
-        if (recorder.isPlayingBack()) {
+        if (knobsFirstRead || fabsf(knobSmooth[k] - knobCounts[k]) > CPX4_KNOB_APPLY_STEP) {
+            knobCounts[k] = (uint16_t)(knobSmooth[k] + 0.5f);
+        }
+        if (recorder.ownsKnob(k)) {
             continue;
         }
         if (knobsFirstRead || fabsf(knobSmooth[k] - knobApplied[k]) > CPX4_KNOB_APPLY_STEP) {
@@ -106,20 +109,6 @@ void Cpx4App::readKnobs() {
 void Cpx4App::applyKnob(uint8_t knob, float adc) {
     knobApplied[knob] = adc;
     dsp.setTune(knob, lc::knobToTune(knob, adc));
-}
-
-// Back to LIVE after a loop: the knobs where they are, the MCC values last
-// received.
-void Cpx4App::applyLiveControls() {
-    for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
-        applyKnob(k, knobSmooth[k]);
-    }
-    for (uint8_t i = 0; i < 8; i++) {
-        uint8_t value = recorder.getCurrentCc(lc::RECORDED_CCS[i]);
-        if (value != MotionRecorder::CC_UNSET) {
-            lc::apply(dsp, lc::RECORDED_CCS[i], value);
-        }
-    }
 }
 
 // Any channel: a note sets PITCH (velocity 0 is a note-off).
@@ -140,8 +129,8 @@ void Cpx4App::noteOffCallback(uint8_t channel, uint8_t note, uint8_t velocity) {
 __attribute__((cold, noinline))
 void Cpx4App::ccChangeCallback(uint8_t channel, uint8_t cc, uint8_t value) {
     (void)channel;
-    // During playback a recorded CC belongs to the loop: keep its latest
-    // value for the offset, don't apply it.
+    // A CC with a track belongs to the recorder: keep its latest value for
+    // it (re-record, offset), don't apply it.
     if (recorder.ownsCc(cc)) {
         recorder.setCurrentCc(cc, value);
         return;
@@ -169,37 +158,31 @@ void Cpx4App::cv2UpdateCallback(uint16_t cv2) {
     (void)cv2;
 }
 
+// Removing the tracks needs nothing here: the recorder glides each control
+// from its track to the knob or the MCC value last received
+// (applyRecorded()).
 __attribute__((cold, noinline))
 void Cpx4App::buttonPressedCallback(bool pressed) {
-    const MotionRecorder::State before = recorder.getState();
     recorder.buttonChanged(pressed, nowMs());
-    if (!pressed && before == MotionRecorder::STATE_PLAYBACK && recorder.isLive()) {
-        applyLiveControls();
-    }
 }
 
 void Cpx4App::setRecorderLed(bool on) {
     IO::getInstance()->setLED(on);
 }
 
-void Cpx4App::recorderKnobs(uint16_t knobs[MotionRecorder::KNOB_COUNT]) {
-    for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
-        knobs[k] = (uint16_t)(knobSmooth[k] + 0.5f);
-    }
-}
-
-void Cpx4App::applyRecordedFrame(void* context, const MotionRecorder::Frame& frame) {
+// One recorder-owned control: P1..P4, then the MCC slots (Bank A, Bank B).
+void Cpx4App::applyRecorded(void* context, uint8_t param, uint16_t value) {
     Cpx4App* self = static_cast<Cpx4App*>(context);
     if (self == nullptr) {
         return;
     }
-    for (uint8_t k = 0; k < MotionRecorder::KNOB_COUNT; k++) {
-        self->applyKnob(k, frame.knobs[k]);
+    if (param < MotionRecorder::KNOB_COUNT) {
+        self->applyKnob(param, value);
+        return;
     }
-    for (uint8_t i = 0; i < 8; i++) {
-        if (frame.ccs[i] != MotionRecorder::CC_UNSET) {
-            lc::apply(self->dsp, lc::RECORDED_CCS[i], frame.ccs[i]);
-        }
+    const uint8_t slot = param - MotionRecorder::KNOB_COUNT;
+    if (slot < 8) {
+        lc::apply(self->dsp, lc::RECORDED_CCS[slot], (uint8_t)value);
     }
 }
 
