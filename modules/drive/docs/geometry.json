@@ -1,0 +1,261 @@
+{
+  "revision": "S1/P2 (user direction 2026-11-15: \"move the power socket to the side and use that space to move down the pots\"): power header J10 upright at the right board edge between the MIX pot and the OUT jack (as modules/16bit P6, 8bit, 12bit); IN / OUT jacks at the bottom, Y110.3; knob rows Y45 / Y80 (4 / 5 mm down, 35 mm pitch); CV jacks stay at Y21. Columns X8.0 / X22.0 (were the hats X7.75 / X22.25) so the pot courtyards are 1.02 mm from the board edge (1 mm rule). P1 was the modules/hats grid with J10 along the bottom edge.",
+  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+  "kicad_origin_mm": [
+    100.0,
+    50.0
+  ],
+  "hp": 6,
+  "panel_mm": [
+    30.0,
+    128.5
+  ],
+  "panel_pcb_thickness_mm": 1.6,
+  "rail_holes_mm": [
+    [
+      12.58,
+      3.0,
+      3.2
+    ],
+    [
+      12.58,
+      125.5,
+      3.2
+    ]
+  ],
+  "rail_clear_gap_Y_mm": [
+    8.0,
+    120.5
+  ],
+  "rail_note": "Single hole pair at X12.58: the Doepfer X7.5 (HOLE_X0 in mechanical/case/tools/build_case.py; the Bread Modular Panel_6HP has the same pair) moved 1HP (5.08 mm) right, as modules/midi. Skiff rails as the MIDI module: clear Y8.0..120.5.",
+  "main_pcb": {
+    "outline_mm": [
+      0.5,
+      9.25,
+      29.5,
+      119.25
+    ],
+    "thickness_mm": 1.6,
+    "copper_layers": 2,
+    "note": "29 x 110 mm, as modules/hats. Two layers since R2 (F / B, GND pours on both, +12V and -12V as tracks; R1 was F / In1 GND / In2 +12V / B). All assembled SMD on B. 1 mm board-edge keep-out (copper-edge rule 1.0 mm in the .kicad_pro). Once routing starts the native PCB owns SMD placement and copper."
+  },
+  "jack_part": "QingPu WQP-PJ301M-12",
+  "panel_order": "DRIVE CV + FOLD CV; DRIVE + FOLD; TONE + MIX; IN + OUT. Power header on the back at the right edge.",
+  "jacks": [
+    {
+      "ref": "J2",
+      "role": "DRIVE CV",
+      "XY": [
+        8.0,
+        21.0
+      ],
+      "rot": 0.0
+    },
+    {
+      "ref": "J3",
+      "role": "FOLD CV",
+      "XY": [
+        22.0,
+        21.0
+      ],
+      "rot": 0.0
+    },
+    {
+      "ref": "J1",
+      "role": "IN",
+      "XY": [
+        8.0,
+        110.3
+      ],
+      "rot": 0.0
+    },
+    {
+      "ref": "J4",
+      "role": "OUT",
+      "XY": [
+        22.0,
+        110.3
+      ],
+      "rot": 0.0
+    }
+  ],
+  "pot_part": "Song Huei R0904N 50k / 1M linear (user stock), vertical snap-in, tall shaft (L = 25 mm, knurled, no threaded bushing, no nut): the pot Bread Modular uses, on the Bread Modular Potentiometer_RV09 footprint",
+  "pot_shaft_offset_from_footprint_origin_mm": [
+    -0.127,
+    -0.508
+  ],
+  "pots": [
+    {
+      "ref": "RV1",
+      "role": "DRIVE (50k)",
+      "shaft_XY": [
+        8.0,
+        45.0
+      ],
+      "rot": 0
+    },
+    {
+      "ref": "RV2",
+      "role": "FOLD (50k)",
+      "shaft_XY": [
+        22.0,
+        45.0
+      ],
+      "rot": 0
+    },
+    {
+      "ref": "RV3",
+      "role": "TONE (50k)",
+      "shaft_XY": [
+        8.0,
+        80.0
+      ],
+      "rot": 0
+    },
+    {
+      "ref": "RV4",
+      "role": "MIX (50k)",
+      "shaft_XY": [
+        22.0,
+        80.0
+      ],
+      "rot": 0
+    }
+  ],
+  "panel_hole_diameters_mm": {
+    "jack": 6.2,
+    "pot": 7.2
+  },
+  "power_header": {
+    "ref": "J10",
+    "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+    "side": "B",
+    "pin1_XY_mm": [
+      23.8,
+      101.36
+    ],
+    "pin_columns_X_mm": [
+      23.8,
+      26.34
+    ],
+    "pin_rows_Y_mm": [
+      101.36,
+      98.82,
+      96.28,
+      93.74,
+      91.2
+    ],
+    "orientation": "Upright at the right board edge (user, 2026-11-15: power socket to the side), rot 180 on B, as modules/16bit P6 / 8bit / 12bit: odd pins on the inner column X23.8, even pins on X26.34; pins 1/2 (-12 V) at the bottom Y101.36, pins 9/10 (+12 V) at the top Y91.2. Courtyard X22.01..28.13 (1.37 mm from the right edge). Pad edges 1.95 mm from the MIX pot pins above and 1.87 mm from the OUT jack tip pad below.",
+    "idc16_socket_envelope_mm": {
+      "X": [
+        20.67,
+        29.47
+      ],
+      "Y": [
+        79.77,
+        105.17
+      ],
+      "bottom_above_B_mm": 2.5
+    },
+    "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the board, never past an edge. Envelope = 2x8 socket (25.4 x 6.4 mm body, 3.81 mm beyond the end pin centres) plus a 1.2 mm key bump on either side. Under the overhang: the MIX pot RV4 pins (Y87.5) and its right lug (Y80), and the OUT jack tip pad under the pin-1 end (from Y104.08): trim those THT leads to <= 2 mm. A 10-pin socket (Y87.39..105.17) only reaches the RV4 pins. B-side SMD under it must stay <= 2 mm tall."
+  },
+  "back_side_tht": [
+    {
+      "ref": "J10",
+      "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+      "XY": [
+        25.07,
+        96.28
+      ],
+      "rot": 180,
+      "note": "Eurorack power, right edge, upright, rot 180 on B: pins 1/2 (-12 V) at the bottom"
+    }
+  ],
+  "smd_parking": {
+    "side": "B",
+    "origin_XY": [
+      36.0,
+      12.0
+    ],
+    "pitch_XY": [
+      8.0,
+      11.0
+    ],
+    "columns": 8,
+    "note": "Every SMD part waits here, off the board edge, in reference order; it moves onto the board with its functional group (root AGENTS.md divide and conquer). 11 mm row pitch for the SOIC-16 courtyards."
+  },
+  "panel_labels": [
+    {
+      "text": "DRIVE",
+      "XY": [
+        15.0,
+        7.0
+      ],
+      "size": 2.5
+    },
+    {
+      "text": "DRIVE CV",
+      "XY": [
+        8.0,
+        13.5
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "FOLD CV",
+      "XY": [
+        22.0,
+        13.5
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "DRIVE",
+      "XY": [
+        8.0,
+        37.5
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "FOLD",
+      "XY": [
+        22.0,
+        37.5
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "TONE",
+      "XY": [
+        8.0,
+        72.5
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "MIX",
+      "XY": [
+        22.0,
+        72.5
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "IN",
+      "XY": [
+        8.0,
+        102.8
+      ],
+      "size": 1.2
+    },
+    {
+      "text": "OUT",
+      "XY": [
+        22.0,
+        102.8
+      ],
+      "size": 1.2
+    }
+  ]
+}
