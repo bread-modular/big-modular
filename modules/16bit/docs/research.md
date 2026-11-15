@@ -244,3 +244,50 @@ Render (F | In2 | B): `docs/fit/routed-render.png`.
 3. Add a local input cap at U8 (F2) in the next schematic revision; until then, check U8's input
    on a scope at power-up and under load.
 4. Bench: AMS1117-5.0 temperature (F9), VREG_LX ripple on +1V1 (F3), crystal start-up (F6).
+
+
+## 8. P6 panel + R3 routing (2026-11-15, user direction 2026-11-14)
+
+User: OUT jacks to the very bottom, power socket to the side, record (MODE) button above the
+OUT jacks, CV jacks a bit up, and the freed height used to space the four knobs and leave room
+around the button. Kept as a 2 x 2 knob grid (P1 / P2 stay under their CV jacks).
+
+| Panel row (Y) | Front (F) | Was (R2) |
+|---|---|---|
+| 16.55 | J1 MIDI (X14.6) | 17.5 |
+| 30.7 | J2 CV1 (X5.5), J3 CV2 (X24.5) | 32.0 |
+| 48.5 | RV1, RV2 | 48.5 |
+| 80.0 | RV3, RV4 | 77.5 |
+| 98.0 | SW1 MODE (X7.5), D1 LED (X21.0) | 113.5, bottom corners |
+| 110.4 | J4 OUT L (X7.5), J5 OUT R (X22.5) | 99.2, X6.1 / X24.1 |
+| 91.7..101.86 (B) | J6 power header, upright at the right edge (X23.8 / X26.34) | bottom centre |
+
+- **CV jacks only 1.3 mm up.** The jack courtyards are 9.58 mm wide: J2 / J1 / J3 overlap by
+  0.5 mm in X, so the CV jacks must stay below the MIDI jack courtyard. J1 went up 0.95 mm
+  (courtyard 1.03 mm from the top edge, the limit) and the CV jacks follow. Centring J1 (X15.0)
+  to interleave the three courtyards puts the J7 shield holes inside the J1 courtyard (native
+  DRC error), so that was dropped. More needs the MIDI jack or the USB-C moved.
+- **Spacing**: CV to P1 / P2 17.8 mm (was 16.5), pot rows 31.5 mm (was 29), P3 to MODE 18 mm,
+  MODE to LED 13.5 mm, MODE to OUT L 12.4 mm (8bit S6: 12.9), P4 to OUT R 30.4 mm.
+- **Method**: board cut at Y75.75 (between the MCU zone and the RV3 / RV4 tabs) and everything
+  below moved 2.5 mm, the nine crossing tracks got a vertical jog; R2 copper above the output
+  amp is otherwise untouched. Below U5 the copper was stripped and the band re-placed and
+  re-routed by hand, no autorouter (`research/p6/s01..s03`, replayed by `build.sh`).
+- **Bottom band (B)**: U8 / U9 stacked between the OUT jacks (U8 tab right, U9 tab up); centre
+  block C2, C1, D2 (vertical), R20; R33 between D2 and the LED pads, R27 / C35 (horizontal)
+  above the LED; D3, R34, R35, C36 right of OUT R; C3, C21, C19, C4 left of OUT L; R30 between the
+  MODE legs. F carries +5V, LED and BUTTON down the right edge (X27.55 / 28.0 / 28.4) and west
+  between the OUT R tip and switch pads; -12V_F returns up X20.4, then X22.425 between the LED
+  and J6 pads; DAC_R hops on F under the RV4 pins so C31 keeps two thermal spokes.
+- **MODE LED apart from the button (user, 2026-11-15)**: the first P6 pass had D1 at X14.6,
+  7.1 mm beside the button; the user wants them apart as in R2 (20 mm there). D1 is now at
+  X21.0, Y98.0, 13.5 mm from the button. That is the limit with the header at the right edge:
+  the LED pads are 1.05 mm from the J6 pads (X23.8), and 20 mm (X27.5) would be on the header
+  and 2 mm from the board edge. Moved for it (`research/p6/s04_led.py`): R33 1.9 mm and D2
+  1.1 mm left, R27 / C35 turned horizontal; +12V from J6 runs above the LED to D2, OUT_R round
+  the anode pad, the LED anode crosses under the F +12V_F rail on B and returns on F above the
+  U8 heat patch (F patch 41 mm², was 44). Solder D1 before J6.
+- **Top**: Q1's GND via (under the new J2 tip pad) replaced by a track to the D4 GND pad; D5 /
+  D6 rail vias moved off the sleeve pads; +5V normal links re-entered from the TN pads.
+- Numbers and checks: `Code.md` (Verification, P6 + R3). JLCPCB export 2026-11-15
+  (`jlcpcb/README.md`). Open: U8 cap distances (C1 ~11 mm, C3 ~8.5 mm of track), 3D fit, bench.

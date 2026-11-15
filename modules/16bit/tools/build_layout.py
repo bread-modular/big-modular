@@ -1,7 +1,8 @@
 """Generate the 16bit boards from docs/geometry.json and the native schematic netlist.
 
 Run from modules/16bit with KiCad's Python (pcbnew 10), after tools/build_schematic.py:
-  python3 -B tools/build_layout.py
+  python3 -B tools/build_layout.py          # full rebuild (unrouted carrier + panel)
+  python3 -B tools/build_layout.py panels   # panel only (routed carrier untouched)
 
 Writes hardware/16bit.kicad_pcb (4-layer carrier: placed footprints with schematic nets,
 no routing) and panels/front-pcb/16bit-panel.kicad_pcb (passive 6HP panel: outline, NPTH
@@ -22,6 +23,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import uuid
 import xml.etree.ElementTree as ET
@@ -183,6 +185,9 @@ def pad_xy(fp, num):
 
 def build_carrier():
     path = HW / '16bit.kicad_pcb'
+    if path.exists() and list(pcbnew.LoadBoard(str(path)).GetTracks()):
+        raise RuntimeError('Refusing to overwrite the routed native carrier; edit it explicitly. '
+                           'Use `build_layout.py panels` for the panel.')
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - 16bit carrier', [
         'S3: placement only, UNROUTED - not released, not for fabrication',
@@ -305,7 +310,7 @@ def npth(board, mech_id, x, y, d):
 def build_panel():
     path = MODULE / 'panels/front-pcb/16bit-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - 16bit 6HP front panel', [
-        'S1 FIT STUDY: passive panel, NPTH only, no copper',
+        'P6, 6HP: passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -325,5 +330,8 @@ def build_panel():
 
 
 if __name__ == '__main__':
-    print(build_carrier())
+    # `panels` rebuilds only the passive panel: the routed carrier owns its copper and
+    # placement and must not be regenerated.
+    if sys.argv[1:] != ['panels']:
+        print(build_carrier())
     print(build_panel())
