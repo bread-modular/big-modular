@@ -1,8 +1,10 @@
-# 16bit — manufacturing export (S3/R2)
+# 16bit — manufacturing export (S3 / P6 panel / R3)
 
-Generated on 2026-10-21 from the current S3 schematic and R2 hand-routed board with the
-shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. Never hand-edit
-these files: change the sources, then re-export with the commands below.
+Generated on 2026-11-15 from the S3 schematic, the R3 hand-routed board (P6: OUT jacks at the
+bottom, MODE button above OUT L, MODE LED 13.5 mm to its right, power header at the side) and
+the P6 panel, with the shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction.
+It replaces the R2 export of 2026-10-21. Never hand-edit these files: change the sources,
+then re-export with the commands below.
 
 ## Contents
 
@@ -33,28 +35,40 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | J1-J5 | QingPu WQP-PJ301M-12 TS jack (MIDI, CV1, CV2, OUT L, OUT R) | Front-side THT, panel-nut fixed; fit to the panel before soldering |
 | RV1-RV4 | RV09 50k linear pot | Front-side THT, no nut |
 | SW1 | 6 x 6 mm THT tact switch (MODE) | Front-side THT |
-| D1 | 3 mm red LED (MODE) | Front-side THT; set its height to the panel hole |
-| J6 | 2x5 2.54 mm pin header | Eurorack power, back side |
+| D1 | 3 mm red LED (MODE) | Front-side THT; set its height to the panel hole. Its legs come out about 1.5 mm left of the J6 header body: **solder D1 before J6** |
+| J6 | 2x5 2.54 mm pin header | Eurorack power, back side, upright at the right board edge (-12 V at the bottom, `-12V` on the silk) |
 | JP1 | 3-pad solder jumper (MIDI RX source) | Copper only, **shipped open**: bridge P (protected) or D (direct), never both |
 
 The exporter excluded exactly the 12 THT refs plus JP1 (`carrier/export-report.json`).
 
-## Parts (live catalog, 2026-10-21 07:50 UTC, 5 boards)
+## Parts (live catalog, 2026-11-15 11:20 UTC, 5 boards)
 
-Every C-code resolves to its MPN and package and is Economy-eligible (`research/export-1/`).
+The BOM is byte-identical to the R2 export (same 86 parts, same codes). Every C-code resolves
+to its MPN and package and is Economy-eligible in the live audit (`research/export-p6/audit.json`),
+except C11702 (lookup quirk below). Classes are unchanged since 2026-10-21; stock moved:
+
+| Part | Code | Stock 2026-11-15 | Was 2026-10-21 |
+|---|---|---|---|
+| L1 FTC201610S3R3MBCA | C5832345 | **53** | 1,411 |
+| Y1 ABM8-272-T3 | C20625731 | **449** | 4,849 |
+| U1 RP2350A | C42411118 | 7,276 | 5,951 |
+| U4 TM8211-TA2302 | C22381766 | 8,166 | 9,039 |
+| U3 Adafruit 4677 | C17430771 | 0 public (user-stocked) | 0 |
+
+L1 is the thin one: 53 left for 5 per order. Recheck it right before ordering; if it runs
+out, a replacement must again meet the RP2350 inductor numbers below.
 
 - **Resistors and capacitors: all JLCPCB Basic**, except **R9/R10 27 Ω 0402 (C25100,
-  Extended, 75,329 in stock)**: LCSC has no Basic 27 Ω 0402, and 27 Ω is the RP2350 USB value.
+  Extended, 647,858 in stock)**: LCSC has no Basic 27 Ω 0402, and 27 Ω is the RP2350 USB value.
   R30/R33 (1k 1206) moved from ROHM C2074262 (Extended) to UNI-ROYAL C4410 (Basic).
   C11702 (1k 0402, R5-R7) is Basic, Economy, 20.2 M in stock by live search; the shared exact
   lookup rejects it (its keyword search is truncated), so the audit lists it as unresolved.
 - **Basic semis/ICs:** B5819W, 1N4148W, MMBT3904, W25Q128JVSIQ (C97521), TL072CDT,
   AMS1117-5.0/-3.3.
-- **Extended (one setup fee each):** RP2350A C42411118 (5,951), PSRAM Adafruit 4677 C17430771
-  (user-stocked, see below),
-  TM8211-TA2302 C22381766 (9,039), TL074CDR C12594, MCP6002T C7377 (preferred), ABM8-272-T3
-  C20625731 (4,849), FTC201610S3R3MBCA C5832345 (1,411), TYPE-C-31-M-12 C165948,
-  K2-1808SN-A4SW-01 C92589, BAT54SWT1G C78260, 27 Ω C25100.
+- **Extended (one setup fee each):** RP2350A C42411118, PSRAM Adafruit 4677 C17430771
+  (user-stocked, see below), TM8211-TA2302 C22381766, TL074CDR C12594, ABM8-272-T3
+  C20625731, FTC201610S3R3MBCA C5832345, TYPE-C-31-M-12 C165948, K2-1808SN-A4SW-01 C92589,
+  BAT54SWT1G C78260, 27 Ω C25100. **MCP6002T C7377 is Preferred Extended** (no feeder fee).
 
 Substitutions against Bread Modular 16bit, all on the same footprint with no copper change:
 
@@ -84,10 +98,10 @@ notice is triggered by L1 (the unmarked cjiang part above); accepted by the user
 
 Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
 
-- Carrier PCB `2e918ffee15b1e45b8404e306be3466a3c2cba5d1c3e22752b557fb6c2621576`.
+- Carrier PCB `6cd79181fe31e8ef086e6763ae78a85823dc5f32978989a645055c619b7f2a05`.
 - Carrier project `c900706434bc85d82a08bdb539912c25897c19516f1e8bdc43f2ca29872212a0`.
 - Carrier schematic `2501429c498721b70116b66f9d2b8eb4c65f5a72295e18f49ad33dcbaef7fe73`.
-- Panel PCB `41f041e9c1621c732efac4e21ea70396b61289a2624e0f5dc84d52ea13e1efb8`.
+- Panel PCB `fd14071ee4575fb221dce21e3572d25a77be7228c677345d8a2118defc20e30d`.
 - Panel project `da9d97ae5b440cca0097db590d1f6c90e41f6a2c02534180f7577e4164a57822`.
 
 ## Reproduce
@@ -125,7 +139,32 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/16bit-symbols.xml hardwar
   --boards 5 --side bottom --strict-live --max-requests 64)
 ```
 
-## Checks done for this export
+## Checks done for this export (2026-11-15, P6 / R3)
+
+- **Shared `check`** (after the export, `research/p6/check-export/`): ERC 0, DRC 0 (all
+  severities), 0 unconnected, parity 0, 0 exclusions; manifest equal (5 sources, exports
+  byte-identical). `order_ready: false`, as always for this tool.
+- **Panel DRC:** 0 / 0.
+- **Copper:** 748 track segments, 147 vias (0.6/0.3 mm), none in an SMD pad; no tracks on
+  In1; In2 +3V3 one piece. Board fields were already in sync (parity 0), nothing copied.
+- **Carrier drill file:** 184 round PTH hits (147 vias + 9 U1 thermal vias + 28 round THT
+  pads: 22 x 1.0 mm header / pot pins, 4 x 1.1 mm MODE switch, 2 x 0.9 mm LED at X21.0)
+  plus 27 routed slots. 2 NPTH holes (USB-C pegs).
+- **Panel drill file:** 13 NPTH holes, no copper holes: MODE button Ø4.2 at X7.5 Y98.0, LED
+  Ø3.2 at X21.0 Y98.0, OUT jacks Ø6.2 at X7.5 / X22.5 Y110.4 (panel frame).
+- **Gerber ZIPs:** carrier 13 files (4 copper layers with their pours, both masks,
+  silkscreens and pastes, the edge, PTH/NPTH drills), panel 11; the unpacked files and the
+  top-level copies are byte-identical to the ZIP members. F.Paste is empty: no front SMD parts.
+- **BOM/CPL:** 86 parts, 43 rows, every row with LCSC, MPN and manufacturer; every CPL row is
+  `bottom`. BOM byte-identical to R2; the CPL has the P6 positions. Rotations changed against
+  R2 for C1, C2, C3, C35, D2, D3, R20, R30, R33, U8, U9: **check these in the preview**.
+- **Catalog audit:** fails only on the expected items: the 12 THT refs (no code, hand
+  soldered), R9/R10 Extended, the C11702 lookup quirk, U3 public stock 0 (user-stocked), and
+  per-part requirement/review rows that stay `unknown` without
+  `docs/jlcpcb-audit-requirements.json`.
+- Not done here: a Gerber-viewer look at the plotted layers (gate 4 below).
+
+## Earlier exports (R2, replaced)
 
 Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
 
@@ -159,9 +198,9 @@ This is a complete export, not a supplier-accepted release. Before ordering:
    - D2-D4 cathode bands, D5/D6 and Q1 (SOT) orientation;
    - J7 USB-C and SW2/SW3 sitting on their pads;
    - every rotation: bottom-side CPL rotations are the usual place for errors.
-3. **Live recheck before ordering:** stock (L1 1,411 is the thinnest; U3 C17430771 must be
+3. **Live recheck before ordering:** stock (L1 is down to 53, Y1 449; U3 C17430771 must be
    in your own parts stock, public stock 0),
    Basic/Extended class, minimum quantities and attrition. The figures above are a snapshot.
 4. **JLCPCB DFM / Gerber viewer check** of both ZIPs, and the min-via-hole option above.
-5. **Bench:** core regulator with the unmarked L1, U8 temperature (F9), MIDI JP1 both ways,
-   real jack/pot panel fit.
+5. **Bench:** core regulator with the unmarked L1, U8 temperature (F9) and the +5V rail (U8's
+   caps are ~8-11 mm of track away since R3), MIDI JP1 both ways, real jack/pot panel fit.

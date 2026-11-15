@@ -1,4 +1,4 @@
-# 16bit contract (S3 schematic, R2 manual routing)
+# 16bit contract (S3 schematic, P6 panel, R3 manual routing)
 
 | | |
 |---|---|
@@ -20,6 +20,9 @@
   +5V (unpatched = plain knob); P3/P4 are plain knobs; no mux. CV jacks + P1/P2 sit as a
   group, P3/P4 lower with a gap; USB-C stays on B but moves to the top edge, opening up.
 - Schematic nets connected for readability; placement only, **no routing** in S1.
+- P6 (user, 2026-11-14): OUT jacks at the very bottom, power header at the side (right board
+  edge, upright), MODE (record) button above the OUT jacks, CV jacks a bit up, the freed
+  height spread over the knobs (pot rows 31.5 mm apart) with room around the button.
 
 ## Design rules kept from the repo
 
@@ -29,7 +32,7 @@
 - Jacks QingPu PJ301M-12 (BM AudioJacks, edited as 8bit); pots BM `Potentiometer_RV09`
   (user 50k stock, no bushing/nut); MODE = stock `SW_PUSH_6mm_H7.3mm` (6 x 6 x 7 mm THT,
   as 8bit SW1) on the F side with the 8bit one-piece printed cap; mode LED = stock
-  `LED_D3.0mm` red (as 8bit D1). RUN/BOOT stay BM `K2-1808SN-A4SW-01` on B. Power header and IDC envelope as 8bit, centred.
+  `LED_D3.0mm` red (as 8bit D1). RUN/BOOT stay BM `K2-1808SN-A4SW-01` on B. Power header and IDC envelope as 8bit S6 / 12bit: upright at the right board edge, pin 1 (-12 V) at the bottom.
 - All SMD on B (one assembly side); jacks, pots, LED, header and SW1 hand-soldered.
 - PWR_FLAGs only where ERC can't see a source: Eurorack entry (GND, +12V, -12V), behind
   D2/D3 (+12V_F, -12V_F), +1V1 (L1) and VREG_AVDD (R4).
@@ -48,6 +51,8 @@
   the footprint) are the only vias in a pad: tented on F, open inside the EP on B.
 - `tools/build_layout.py` writes tenting front/back yes, filling no, capping no; the board setup
   matches.
+- P6/R3 (2026-11-15): 147 vias (0.6/0.3 mm), none in or touching an SMD pad; B silk adds
+  `-12V` left of J6 pin 1.
 - B silk: BOOT / RESET under SW2 / SW3, `D` / `P` beside JP1's pads, and a `MIDI JP1`,
   `P=PROT`, `D=DIRECT` legend right of R1 (JP1 ships open: bridge one side).
 - The R1 POFV requirement (123 in-pad vias from the router) is retired with that copper.
@@ -69,6 +74,29 @@
   history, not a way to rebuild R2.
 - `tools/import_footprints.py` rebuilds `hardware/16BIT.pretty` / `16BIT.3dshapes`
   (provenance and every edit in `PROVENANCE.json`).
+
+## Verification (P6 panel + R3 manual routing, 2026-11-15)
+
+- Shared `kicad_tools.py check`: ERC 0, DRC 0 violations (all severities), unconnected 0,
+  parity 0, 0 exclusions; source manifest equal after the 2026-11-15 export;
+  `order_ready: false`.
+- 748 track segments, 147 vias (0.6/0.3 mm), 0 in SMD pads / mask openings; no tracks on In1;
+  the three R2 In2 hops; In2 +3V3 one piece; In1 GND one main piece + two 2.6 mm² pieces
+  between the J6 GND pins; zones refilled and saved. U8 +5V heat patches: F 41 mm², B 41 mm²,
+  seven vias around the tab.
+- MODE LED D1 at X21.0 Y98.0 (13.5 mm right of the button, user 2026-11-15): pads 1.05 mm from
+  the J6 pads, 0.525 mm from the R33 pads; -12V_F runs on F between the LED and J6 pads
+  (0.325 mm each side); the LED cathode pad has one B pour spoke plus a 0.4 mm stub into the
+  pour (the +12V lane, R33 and J6 leave room for one spoke; the In1 GND plane ties it as usual).
+- Measured (DRC does not check them): re-placed SMD pads >= 2.03 mm from pot / jack pads
+  (C36 to the OUT R sleeve pad); kept R2 parts unchanged (closest C31 0.225 mm to the RV4
+  pins); new courtyards >= 1.0 mm from the edge, new copper >= 1.0 mm (the R2 parts at the
+  top and the pots / CV jacks are as before, down to 0.2 mm).
+- Panel: native DRC 0; its 13 holes equal the carrier jack / pot / button / LED centres.
+- Evidence: `docs/fit/carrier-drc.json`, `panel-drc.json`, `routed-render.png`.
+- JLCPCB export 2026-11-15 (`jlcpcb/README.md`): 86 bottom-side parts, live catalog audit.
+- Not done: supplier acceptance, 3D fit, bench (core regulator with the
+  unmarked L1; +5V with the U8 caps now ~8-11 mm of track away).
 
 ## Verification (R2 manual routing, 2026-10-21)
 

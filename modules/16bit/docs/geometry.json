@@ -1,5 +1,5 @@
 {
- "revision": "R2 placement (manual re-route): Bread Modular 16bit for Eurorack, 6HP, 4 layers; MODE button + LED in the bottom corners near the edge; OUT jacks lowered to Y99 (22.5 mm below RV3/RV4); regulators moved up between RV3/RV4 and the OUT jacks; R2: CV jacks to the side edges and up 5 mm with RV1/RV2, RV3/RV4 down 5 mm, then up 3 mm (net down 2 mm, Y77.5)",
+ "revision": "P6 panel (user, 2026-11-14) on the R3 manual routing: Bread Modular 16bit for Eurorack, 6HP, 4 layers; OUT jacks at the very bottom (Y110.4, X7.5 / X22.5, under the pots), MODE (record) button above OUT L (X7.5, Y98.0) with the LED 13.5 mm to its right (X21.0, Y98.0), power header upright at the right board edge, MIDI jack up 0.95 mm (Y16.55) and CV jacks up 1.3 mm (Y30.7), RV3/RV4 down 2.5 mm (Y80.0, pot rows 31.5 mm apart)",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The carrier F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -48,9 +48,9 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     14.6,
-    17.5
+    16.55
    ],
-   "note": "0.4 mm left of the panel centre: keeps the J7 SH pad (right SH pad held 0.5 mm off the board edge) clear of the J1 courtyard"
+   "note": "0.4 mm left of the panel centre: keeps the J7 SH pads clear of the J1 courtyard. P6: 0.95 mm up, courtyard 1.03 mm below the top board edge (the limit); its courtyard bottom (Y24.39) sets how far the CV jacks can go up"
   },
   {
    "ref": "J2",
@@ -58,8 +58,9 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     5.5,
-    32.0
-   ]
+    30.7
+   ],
+   "note": "P6: 1.3 mm up (was Y32.0), courtyard top Y24.4 just under the J1 courtyard; X unchanged"
   },
   {
    "ref": "J3",
@@ -67,26 +68,29 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     24.5,
-    32.0
-   ]
+    30.7
+   ],
+   "note": "P6: 1.3 mm up (was Y32.0), courtyard top Y24.4 just under the J1 courtyard; X unchanged"
   },
   {
    "ref": "J4",
    "role": "OUT_L",
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
-    6.1,
-    99.22
-   ]
+    7.5,
+    110.4
+   ],
+   "note": "P6: at the bottom (was Y99.2, X6.1 / X24.1), in line with the pot columns; courtyard 1.01 mm above the bottom board edge"
   },
   {
    "ref": "J5",
    "role": "OUT_R",
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
-    24.1,
-    99.12
-   ]
+    22.5,
+    110.4
+   ],
+   "note": "P6: at the bottom (was Y99.2, X6.1 / X24.1), in line with the pot columns; courtyard 1.01 mm above the bottom board edge"
   }
  ],
  "pots": [
@@ -113,7 +117,7 @@
    "role": "Knob 3 (+3V3 divider -> ADC2, BM knob channel)",
    "shaft_XY": [
     7.5,
-    77.5
+    80.0
    ],
    "value": "50k"
   },
@@ -122,7 +126,7 @@
    "role": "Knob 4 (+3V3 divider -> ADC3, BM knob channel)",
    "shaft_XY": [
     22.5,
-    77.5
+    80.0
    ],
    "value": "50k"
   }
@@ -138,12 +142,12 @@
   "footprint": "SW_PUSH_6mm_H7.3mm",
   "side": "F",
   "XY": [
-   5.0,
-   113.5
+   7.5,
+   98.0
   ],
-  "rot": 90,
+  "rot": 180,
   "part": "Generic 6 x 6 mm THT tact switch, 4 pins, 7 mm tall (Ø3.5 round stem), pins 6.5 x 4.5 mm (as modules/8bit SW1)",
-  "note": "THT on the carrier F side, hand-soldered; legs come through to B. Stock KiCad SW_PUSH_6mm_H7.3mm placed by the pad-pattern centre = stem centre. Rotated 90 (6.5 mm pin pitch along Y); bottom-left corner, near the panel bottom edge (legs 1.5 mm above the board edge), C19 between the legs. Same Z stack as modules/8bit, so its one-piece printed cap (body D7, Y110..117, inside the rail gap) fits unchanged."
+  "note": "THT on the carrier F side, hand-soldered; legs come through to B. Stock KiCad SW_PUSH_6mm_H7.3mm placed by the pad-pattern centre = stem centre. P6: above OUT L (12.4 mm above the jack centre, 18 mm below RV3), rotation 180: GND pair on the top row Y95.75, BUTTON pair on the bottom row Y100.25, legs X4.25 / X10.75; R30 sits between the legs on B. Same Z stack as modules/8bit, so its one-piece printed cap fits unchanged."
  },
  "leds": [
   {
@@ -151,11 +155,11 @@
    "role": "MODE_LED",
    "footprint": "LED_D3.0mm",
    "XY": [
-    25.0,
-    113.5
+    21.0,
+    98.0
    ],
-   "rot": 0,
-   "note": "3 mm red THT (as 8bit D1), pads along X centred on XY. Mirrors SW1 about the panel centre line, bottom-right corner near the panel bottom edge."
+   "rot": 270,
+   "note": "3 mm red THT (as 8bit D1), pads along Y centred on XY (GND on top Y96.73, anode Y99.27). P6 (user, 2026-11-15): apart from the MODE button as in R2, 13.5 mm to its right (R2: 20 mm; the first P6 pass had it 7.1 mm beside the button). X21.0 is the limit: the pads are 1.05 mm from the J6 power header pads (X23.8); 20 mm (X27.5) is on the header and 2 mm from the board edge. Solder the LED before the header."
   }
  ],
  "panel_hole_diameters_mm": {
@@ -1062,7 +1066,7 @@
    "text": "16BIT",
    "XY": [
     15.0,
-    8.0
+    7.5
    ],
    "size": 2.5
   },
@@ -1070,7 +1074,7 @@
    "text": "MIDI",
    "XY": [
     14.6,
-    11.4
+    10.5
    ],
    "size": 1.2
   },
@@ -1078,7 +1082,7 @@
    "text": "CV1",
    "XY": [
     5.5,
-    25.9
+    24.6
    ],
    "size": 1.2
   },
@@ -1086,7 +1090,7 @@
    "text": "CV2",
    "XY": [
     24.5,
-    25.9
+    24.6
    ],
    "size": 1.2
   },
@@ -1110,7 +1114,7 @@
    "text": "P3",
    "XY": [
     7.5,
-    71.1
+    73.6
    ],
    "size": 1.2
   },
@@ -1118,31 +1122,31 @@
    "text": "P4",
    "XY": [
     22.5,
-    71.1
+    73.6
    ],
    "size": 1.2
   },
   {
    "text": "MODE",
    "XY": [
-    5.0,
-    108.4
+    7.5,
+    92.6
    ],
    "size": 1.2
   },
   {
    "text": "OUT L",
    "XY": [
-    6.1,
-    92.9
+    7.5,
+    104.4
    ],
    "size": 1.2
   },
   {
    "text": "OUT R",
    "XY": [
-    24.1,
-    92.9
+    22.5,
+    104.4
    ],
    "size": 1.2
   },
@@ -1150,7 +1154,7 @@
    "text": "BIG MODULAR",
    "XY": [
     15.0,
-    113.5
+    117.6
    ],
    "size": 1.2
   }
@@ -1160,32 +1164,34 @@
   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
   "side": "B",
   "pin1_XY_mm": [
-   13.73,
-   116.0
+   23.8,
+   101.86
   ],
   "column_X_mm": [
-   13.73,
-   16.27
+   23.8,
+   26.34
   ],
   "pin_rows_Y_mm": [
-   116.0,
-   113.46,
-   110.92,
-   108.38,
-   105.84
+   101.86,
+   99.32,
+   96.78,
+   94.24,
+   91.7
   ],
-  "orientation": "Vertical, pin 1 (-12 V) at the bottom row (as modules/8bit and modules/midi), centred on the 6HP carrier.",
+  "orientation": "Upright at the right board edge (user, 2026-11-14: power socket at the side), as modules/8bit and modules/12bit: odd pins on the inner column X23.8, even pins on X26.34; pins 1/2 (-12 V) at the bottom Y101.86, pins 9/10 (+12 V) at the top Y91.7. Courtyard X21.99..28.16 (1.37 mm from the right edge), Y89.9..103.67, between the RV4 pins (Y87.5) and the OUT R tip pad (Y105.48).",
   "idc16_socket_envelope_mm": {
    "X": [
-    11.2,
-    18.8
+    21.25,
+    28.9
    ],
    "Y": [
-    94.41,
-    119.81
+    80.25,
+    105.7
    ],
    "bottom_above_B_mm": 2.5
-  }
+  },
+  "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the RV4 pins, never past the board edge."
  },
- "pot_layout_note": "R2 (user, 2026-10-21): CV jacks moved out to X5.5/X24.5 and up to Y32 with RV1/RV2 (Y48.5, 16.5 mm under the jacks); RV3/RV4 moved down to Y80.5, then back up 3 mm to Y77.5 (user: more room for the regulators), so the B-side MCU zone between the pot rows is 15 mm tall (was 8 mm). OUT jacks Y99; MODE button (X5) and LED (X25) at Y113.5 in the bottom corners."
+ "pot_layout_note": "P6 (user, 2026-11-14): CV jacks 1.3 mm up (Y30.7, 17.8 mm above RV1/RV2 at Y48.5); RV3/RV4 2.5 mm down to Y80.0, so the pot rows are 31.5 mm apart (was 29) and the B-side MCU zone between them is 17.5 mm tall; MODE button Y98.0 (18 mm below RV3), LED on the same row 13.5 mm to its right (X21.0); OUT jacks Y110.4. R2 (user, 2026-10-21): CV jacks out to X5.5/X24.5 with RV1/RV2 at Y48.5.",
+ "back_side_parts_note": "Pre-route seed for tools/build_layout.py only. The routed board (hardware/16bit.kicad_pcb, R2 hand placement and the P6/R3 bottom band) owns every SMD position: read positions from the board, not from this list."
 }

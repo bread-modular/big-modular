@@ -9,15 +9,18 @@ its firmware ports (UF2 over the USB-C on the back; `firmware/README.md`).
 | **MIDI** in (TS) | MIDI V2 / 8bit NPN front end at 3.3 V; solder jumper JP1 (back, shipped open): `P` protected (firmware inverts GPIO5), `D` direct (stock BM firmware) |
 | **CV1**, **CV2** + **P1**, **P2** | Jack tip normalled to +5V -> P1/P2 50k attenuator -> TL072 follower -> -5.9..+6.0 V to 0..3.3 V (100k / 56k / 120k), BAT54SW clamp, MCP6002 follower -> GPIO26/27 (ADC0/1). Unpatched: P1/P2 are 0..+5 V knobs; patched: they scale the CV |
 | **P3**, **P4** | 50k linear RV09 (user stock) dividers on +3V3 -> GPIO28/29 (ADC2/3), BM's knob channels |
-| **MODE** + LED | 6 x 6 x 7 mm THT tact switch (as 8bit, GPIO12) with the 8bit printed cap; 3 mm red LED on GPIO13 through 1k (BM), PWM brightness |
-| **OUT L**, **OUT R** | TL074 on ±12 V: gain 6.1 around 1.65 V; PT8211 full scale (~1.65 Vpp at 3.3 V) -> ±5.0 V, DC coupled, 1k 0.5 W series |
+| **MODE** (above OUT L) + LED (above OUT R) | 6 x 6 x 7 mm THT tact switch (as 8bit, GPIO12) with the 8bit printed cap; 3 mm red LED on GPIO13 through 1k (BM), PWM brightness |
+| **OUT L**, **OUT R** (bottom) | TL074 on ±12 V: gain 6.1 around 1.65 V; PT8211 full scale (~1.65 Vpp at 3.3 V) -> ±5.0 V, DC coupled, 1k 0.5 W series |
 
-Power: Eurorack 10-pin (16-pin IDC fits), ±12 V through series Schottkys, AMS1117-5.0 ->
+Power: Eurorack 10-pin upright at the right board edge (back; 16-pin IDC fits, -12 V at the bottom), ±12 V through series Schottkys, AMS1117-5.0 ->
 +5V -> AMS1117-3.3 -> +3V3. USB-C (back, top edge, plug from above) is data only (as BM): flash with the module powered.
 
-**Status: S3 schematic + R2 manual routing, not released.** Shared `check`: ERC 0, DRC 0
-violations, 0 unconnected, parity 0. No vias in SMD pads, so a plain tented 4-layer order (no
-via-in-pad fill / POFV). JLCPCB export (2026-10-21) in `jlcpcb/`: bottom-side Economic
+**Status: S3 schematic + P6 panel + R3 manual routing (2026-11-15), not released.** Shared
+`check`: ERC 0, DRC 0 violations, 0 unconnected, parity 0. No vias in SMD pads, so a plain
+tented 4-layer order (no via-in-pad fill / POFV). P6: OUT jacks at the bottom, MODE button
+above OUT L with the LED 13.5 mm to its right, power header at the side, CV jacks 1.3 mm up,
+pot rows 31.5 mm apart.
+**JLCPCB export of this board and panel in `jlcpcb/` (2026-11-15):** bottom-side Economic
 assembly, 86 parts; every R/C Basic except the 27 Ω USB pair. U4 is a TM8211 (PT8211 out of
 stock), L1 a cjiang FTC201610S3R3MBCA (Abracon part out of stock, no polarity mark) and U3
 the user-stocked Adafruit 4677 PSRAM (C17430771): see
@@ -39,10 +42,8 @@ Rebuild (from `modules/16bit`):
 ```sh
 python3 -B tools/import_footprints.py   # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py     # schematic + pinned symbols, netlist asserted
-python3 -B tools/build_layout.py        # placement + netlist nets + models, UNROUTED; panel
-python3 -B tools/route_plan.py research/route/ops   # frozen R1 copper -> shared ops, 3 stages
-# then `kicad_tools.py pcb plan/apply` each stage on the previous candidate (stages 1-2 with
-# `--allow-draft-opens`), `pcb promote` the last
+python3 -B tools/build_layout.py panels # FR4 panel only; the routed carrier owns placement + copper
+                                        # (without `panels` it refuses to overwrite a routed board)
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/16bit/tools/kicad-project.json \
    --reports modules/16bit/research/check-NEW)
 ```
