@@ -291,3 +291,28 @@ around the button. Kept as a 2 x 2 knob grid (P1 / P2 stay under their CV jacks)
   D6 rail vias moved off the sleeve pads; +5V normal links re-entered from the TN pads.
 - Numbers and checks: `Code.md` (Verification, P6 + R3). JLCPCB export 2026-11-15
   (`jlcpcb/README.md`). Open: U8 cap distances (C1 ~11 mm, C3 ~8.5 mm of track), 3D fit, bench.
+
+## 9. Stock check and alternatives (2026-11-15, JLCPCB live audit, 5 boards)
+
+Shared `assembly audit` on the P6 / R3 BOM (raw output in ignored `research/stock/`). Every
+other part had >= 7,000 in stock. **Decision (user, 2026-11-15): keep the current parts**; the
+alternatives below are recorded for the next order. Stock numbers are a snapshot; re-run the
+audit before ordering.
+
+| Ref | Current part | Stock | Alternative | Stock | Fit |
+| --- | --- | --- | --- | --- | --- |
+| U3 PSRAM | Adafruit 4677 (C17430771), user-stocked | 0 | AP Memory APS6404L-3SQR-SN (C5333729), the Bread Modular chip | 2,330 | Same SOP-8 / pinout, data-only change |
+| L1 3.3 uH | cjiang FTC201610S3R3MBCA (C5832345) | 53 | FH PIM201610-3R3MTS00 (C5137211): Isat 2 A, 140 mOhm | 2,707 | Same 2016 footprint |
+| | | | TDK VLS201612HBX-3R3M-1 (C2042572): Isat 1.6 A, 174 mOhm, 1.2 mm tall | 2,347 | Same 2016 footprint |
+| Y1 12 MHz | Abracon ABM8-272-T3 (C20625731), CL 10 pF, ESR 50 Ohm | 444 | YXC X322512MMB4SI (C50430): CL 10 pF, +-10 ppm | 9,622 | Drop-in, C18/C20 stay 15p |
+| | | | YXC X322512MSB4SI (C9002), **Basic** | 482k | CL 20 pF: C18/C20 to ~33p (schematic value change) |
+
+Notes:
+
+- L1: the Raspberry Pi reference part (Abracon AOTA-B201610S3R3-101-T, C42411119) had 0 stock.
+  The alternatives are unmarked like the current part: check the RP2350 core regulator at
+  bring-up. Skip multilayer types (Sunlord MPL2016, Murata LQM2MPN): no saturation current.
+- Y1: the YXC crystals list ESR 80 Ohm (Abracon 50 Ohm); with the 1k series resistor the
+  oscillator has less start-up margin. Check that the crystal starts at bring-up.
+- A swap means: `SOURCING` in `tools/build_schematic.py`, the board fields, then re-export
+  `jlcpcb/` with the shared tools.
