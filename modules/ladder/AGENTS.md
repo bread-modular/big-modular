@@ -5,63 +5,61 @@ module-relative.
 
 ## Current state
 
-- **S3 schematic** (`hardware/ladder.kicad_sch`): an analog version of the modules/16bit
-  polysynth ladder filter. Moog transistor ladder (DMMT3904W pairs, 47n NP0), expo cutoff
-  (CUTOFF + envelope x DEPTH, clamped ~31 kHz), vactrol resonance (S2, user 2026-11-09) with the
-  16bit (1 + k) makeup (RES knob + RES CV drive the LED), ATtiny1616 envelope (ENV TIME, GATE or
-  MIDI), Bread Modular V2CA vactrol VCA with CURVE; FILTER OUT and VCA OUT.
-- **S3 (user 2026-11-09): envelope automation recording**: REC button SW1 (PC2) + LED D11 (PC3)
-  as modules/acid, recording ENV TIME + DEPTH (shared CvRecorder, firmware not written). DEPTH
-  moved into the MCU (RV2 on PA7): DAC = envelope or CV (PA2, sensed on PA3) x DEPTH -> U4A ->
-  cutoff; the VCA gets the undepthed envelope as PB0 PWM (R52/C36/R53/C37) or the CV through U3.
+- **S5 schematic** (`hardware/ladder.kicad_sch`, user 2026-11-15: "MIDI less and pure analog",
+  6HP, no VCA): Moog transistor ladder (DMMT3904W pairs, 47n NP0), expo cutoff (CUTOFF + CV x
+  DEPTH, clamped ~31 kHz), **LM13700 OTA resonance** with the 16bit (1 + k) makeup (RES knob +
+  RES CV set the OTA bias current). IN, CV, RES CV in; one OUT. No MCU, MIDI, GATE, envelope,
+  REC or VCA (all S3), no vactrol (S5).
+- **CV x DEPTH**: J3 -> R9 39k -> DEPTH pot RV2 -> U4A -> `CV_S` -> R14 47k into the cutoff
+  summer: 5 V CV at full DEPTH = +8.3 octaves, bipolar (negative closes). R9 keeps a +/-12 V
+  mis-patch inside the TL072 common-mode range.
+- **CV LEDs D11 (positive) / D12 (negative, S5)**, anti-parallel in the U4A feedback loop:
+  I_LED = |V(CV_S)| x (1 / R14 + closed steps), linear from 0 V. **Solder jumpers JP1..JP3**
+  (S5, open as shipped) add R6 47k / R7 22k / R8 10k: 0.06 mA at 5 V CV / DEPTH full with all
+  open (MCC: 3 mA, dimmed in firmware to 1 %), 8 steps up to 0.53 mA.
+- **Resonance (S5)**, user: "I don't mind using an OTA if that's a common standard design which
+  works out of the gate", read as the resonance element: U9B summer -> C20 -> R39 10k / R42 1k
+  -> U8A (LM13700 half, no linearizing diodes) -> C22 -> feedback base. k = 25 x I_ABC [mA],
+  self-oscillation at ~0.17 mA. U7B + Q9 (MMBT5401): I_ABC = 6.16 x (knob / 100k + RES CV /
+  100k); knob full or +5 V CV = 0.31 mA, capped ~1.2 mA by R50. The RES knob is on +5V.
+- Five TL072 (U4, U5, U6, U7, U9) + one LM13700 (U8). Refs keep their S3 numbers.
 - Native ERC `--severity-all` 0; the build asserts the native netlist against `circuit()`
-  (135 parts, 82 nets). ngspice check of the core: `tools/sim_ladder.py` (models only).
-- **P2 placement** (`hardware/ladder.kicad_pcb`, user 2026-11-09: THT placed, more knob room,
-  modules/hats as the example, "don't route yet"): 10HP, 4 layers, knob grid 30 x 27 mm,
-  vactrols on B between the knob columns, J11 UPDI at the left edge; P2: J10 upright on B at the
-  right edge between DEPTH and CURVE, bottom jacks down to Y110.3, knob rows down 5 mm (Y37/64/91); every SMD part parked on B off the right edge. Shared check: ERC 0, DRC 0, parity 0,
-  294 unconnected (unrouted). Panel `panels/front-pcb/` (DRC 0) + FreeCAD print `panels/front-cad/`.
-- **R1 routing done** (user 2026-11-09 "start routing" / "continue"; manual divide and conquer,
-  batch scripts `research/route/b00..b25_*.py`, replayed from `research/route/p2-base.kicad_pcb` by
-  `research/route/build.sh`; checks `chk.py` / `drcsum.py`; `astar.py` is a one-connection path
-  finder whose suggestions were checked and tidied by hand, used for REC_SW / LED_REC only).
-  b00-b17: planes, power entry, ladder core + bias, expo, input amp, front-ends, cutoff summer,
-  followers, diff amp, output amp, U11 + FB summer + VCA amp, VCA LED driver, -12V_F, audio input.
-  b18-b25: U1 HT7550 moved into the free B area above U12 (C3 / C4 beside it), C5 / C7; MCU lines
-  north (DAC through the RV4 1-2 gap, B lanes Y82.6 / 83.2 / 83.8 above U12 for GATE_N / RX / DAC,
-  CV_SENSE / CVIN_DIV left of the RV4 lug, CVIN_DIV on B up the J5 side), +5V riser + top band;
-  U2 left side re-fanned for a pin-3 GND via; R40 / R41 left of the RV4 lug; D8 / D10 / R42 in a
-  row above U7; R39 west of U12; RES_S / RES_A / RES_X / ENV_T / UPDI cross under U12 on B (the
-  "corridor") and come down the left column on F through the RV1 lug gap and pin gaps; R7 by J11;
-  +5V for U3 / C7 / RV2.3 returns along the right edge on B (Y80 to the C4 riser); REC_SW /
-  LED_REC across the south (R54 under D11). Six dangling corner vias of earlier batches removed.
-  Native DRC 0 (no warnings, no dangling vias), unconnected 0, parity 0; shared check ERC 0 / DRC 0
-  / unconnected 0 / parity 0 (`research/r1-check/`); no vias in SMD pads, no In1 tracks, In2
-  +12V_F one piece, In1 GND one main piece + four small spoke-tied fragments (2.6 / 2.6 / 1.0 / 1.0
-  mm², as before R1); SMD >= 2 mm from pot / jack pads (closest D9 2.01 mm), courtyards >= 1 mm
-  from the edge.
-- **R2 fab review + JLCPCB export** (user 2026-11-10 "check it, improve as needed, make it FAB
-  ready"; edits straight on the board by `research/fab-review/fix1.py` / `fix2.py`, so
-  `research/route/build.sh` reproduces R1 only). Fixed: R32 moved 3.6 mm east (was 0.68 mm from
-  the hand-soldered SW1 GND pad; closest SMD to SW1 now R33 2.28 mm); C35 moved to U9.4 with its
-  own GND via (routed pin-to-cap 10.2 -> 2.5 mm), -12V_F bus straight down from D2; GND vias at
-  U11.3 / D3.2 pulled 0.35 / 0.30 mm off their pads; B silk `P` / `D` at JP1 and `LADDER R2`;
-  JLC04161H-7628 stackup recorded; zone fills saved. Judged and kept for the first prototype (not
-  waived): U3 +5V 11.3 mm to C7 (static uA switch); SMD 1.28-1.92 mm from the U12 / J10 / J11
-  hand-soldered pins (the 2 mm rule covers pots / jacks: closest D9 - RV2 2.01 mm). 734 tracks /
-  141 vias; shared check ERC 0 / DRC 0 (no warnings, no exclusions) / unconnected 0 / parity 0
-  (`research/fab-final/`), planes as R1, copper >= 1.2 mm and courtyards >= 1.08 mm from the edge.
-  Export in `jlcpcb/` (bottom Economic, 116 parts / 36 rows; 18 THT + JP1 by hand; panel
-  Gerbers), not supplier-accepted, not built. Open: Extended passives (47n NP0 1206, 1k 0.5 W
-  1206) are a user decision; supplier preview. U2 = ATTINY1616-MNR C507118 since 2026-11-14 (was
-  -MF C5227638, 238 in stock; fields only, re-exported). Read
-  `jlcpcb/README.md` before release work.
-- No firmware.
+  (108 parts, 62 nets). ngspice: `tools/sim_ladder.py` (core + OTA resonance + bias converter
+  + CV / LED loop, models only).
+- **P4 placement** (`hardware/ladder.kicad_pcb`, 2026-11-15): 6HP, carrier 29 x 110 mm. IN + RES CV (Y17.5); CV jack + DEPTH (Y35.0), the two CV LEDs under
+  DEPTH (Y46.5: D12 X19.3, D11 X24.8, `-` / `+` on the panel); CUTOFF (Y64) and RES (Y90) alone
+  on the centre line as the main knobs (26 mm apart, knobs up to ~22 mm); OUT (Y110.4). J10
+  upright on B at the right edge beside OUT. THT positions unchanged by the routing.
+  Panel `panels/front-pcb/` (DRC 0, 11 holes) + FreeCAD print `panels/front-cad/`.
+- **R1 routing** (2026-11-15, user: "Go this looks good. Do the routing too."): manual divide
+  and conquer, **4 layers** (F signal, In1 GND, In2 +12V_F plane, B signal), all 95 SMD parts +
+  JP1..JP3 on B, F carries the long north-south runs, three B bridges in the empty pot / jack
+  zones (RES_CV under DEPTH, -12V_F above RES, AIN_BUF below RES). 521 tracks / 81 vias.
+  Shared check (`research/r1-check/`): ERC 0, DRC 0, **unconnected 0**, parity 0, no
+  exclusions; independent pad-net compare 0 differences; no vias in SMD pads, no tracks on
+  In1 / In2, In2 one piece, In1 one piece + 7 spoke-tied fragments between GND pads; SMD >=
+  2 mm from pot / jack pads (closest 2.015 mm), courtyards >= 1.0 mm from the edge (RV2
+  1.015 mm). B silk `LADDER R1`, `LED` `1` `2` `3` at JP1..JP3. Record: `docs/research.md`
+  section 8; stage scripts in the ignored `research/route/` (`lib.py`, `s00`..`s08`, each
+  stage re-runs from the previous snapshot in `snap/`).
+- **Fab review (2026-11-15)**, `docs/research.md` section 9: B silk texts 1.0 mm high,
+  JLC04161H-7628 stackup recorded, no copper or placement change (still R1); checks 0 after the
+  edits (`research/fab/check-post/`); scripts in the ignored `research/fab/` (`review.py`,
+  `fab_r1.py`). Judged and kept: U8 bypass caps 5.9 mm routed, U1 input cap through the In2
+  plane. Live stock 2026-11-15: DMMT3904W C155305 684 (6 per board). Plain Extended: DMMT3904W,
+  47n NP0, ESR18 1k, LM13700; HT7550-1 is Preferred Extended.
+- **Not done**: JLCPCB export (`jlcpcb/` holds none; the stale S3 / R2 set was
+  removed), bench test. Bench check item: LTAIL runs beside AIN_BUF for 12 mm (estimate only).
+- The S3 / R2 10HP design (ATtiny1616 envelope, REC, VCA; routed and exported, never built) is
+  in git history: commit `b32225b` and before. S4 (vactrol resonance, one LED) was never
+  committed; its sources are copied in the ignored `research/s4-backup/`.
+- No firmware: there is no MCU.
 
 ## Boundaries
 
 Shared tools stay in `../../opt/`. Raw reports, renders and sim decks go in the ignored
-`research/` (P2 check: `research/p2-check/`; R2 fab review: `research/fab-review/`, `research/fab-final/`). Routing follows the root manual divide-and-conquer
-rules, straight on `hardware/ladder.kicad_pcb`; `tools/build_layout.py` must not be re-run once
-routing starts (it refuses a board with tracks). Accepted fabrication outputs live in `jlcpcb/`; never
-hand-edit them. No merges, pushes, orders or uploads.
+`research/` (P4 check: `research/p4-check/`; renders: `research/render/s5/`, script
+`research/s5/render.py`; R1 renders: `research/render/r1/`). Routing follows the root manual
+divide-and-conquer rules, straight on `hardware/ladder.kicad_pcb`; `tools/build_layout.py` must
+not be re-run for the carrier (it refuses a board with tracks; `--panel-only` is fine). Accepted fabrication outputs live in `jlcpcb/`; never hand-edit
+them. No merges, pushes, orders or uploads.

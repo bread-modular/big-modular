@@ -1,7 +1,8 @@
 """Import the pinned LADDER footprints into hardware/LADDER.pretty (one-time, reviewable).
 
 modules/acid/tools/import_footprints.py with the LADDER part list (adds SOT-363 for the
-DMMT3904W pairs; S3: the REC LED and button as modules/acid; S1's SOIC-16 LM13700 is gone).
+DMMT3904W pairs; S3: the REC LED and button as modules/acid; S5: SOIC-16 for the LM13700
+resonance OTA and the 2-pad solder jumper of the CV LED brightness steps).
 
 Run from modules/ladder with KiCad's Python (pcbnew 10):
   python3 -B tools/import_footprints.py [--bread-modular ~/data/projects/bread-modular]
@@ -57,6 +58,8 @@ STOCK_FOOTPRINTS = [
     ('Package_TO_SOT_SMD', 'SOT-363_SC-70-6'),  # DMMT3904W matched pairs
     ('LED_THT', 'LED_D3.0mm'),                   # REC LED, as modules/acid
     ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'), # REC tact switch, as modules/acid
+    ('Package_SO', 'SOIC-16_3.9x9.9mm_P1.27mm'), # LM13700 resonance OTA (S5)
+    ('Jumper', 'SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm'),  # CV LED brightness (S5)
 ]
 
 # The stock footprint references a model KiCad does not ship; the only shipped 3x3 mm

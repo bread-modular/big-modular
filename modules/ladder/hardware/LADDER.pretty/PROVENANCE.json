@@ -146,6 +146,20 @@
       "license": "MIT (c) 2024 Arunoda Susiripala (Bread Modular)",
       "edits": "added F.CrtYd X +/-5.38, Y +/-7.92 (silk box + 0.25) and F.SilkS build notes ['SOLDER FIRST', 'TRIM FLUSH'] inside the box; pads, original silk and text unchanged; no 3D model upstream",
       "output_sha256": "f32b23ccc3ac05060b5d6313150450a85a6a36ef549ecd7b2591a4fefc7ebb97"
+    },
+    "SOIC-16_3.9x9.9mm_P1.27mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-16_3.9x9.9mm_P1.27mm.kicad_mod",
+      "source_sha256": "f9b5075740f7816c540ae1137f025d659beaec522ed7b86b1a5274cc9a2d8a25",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "0f71e208b480d573ab0f56ad6c0af5714a0dca9fe557bc476f5d6f09e2ac8d30"
+    },
+    "SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm": {
+      "source": "/usr/share/kicad/footprints/Jumper.pretty/SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm.kicad_mod",
+      "source_sha256": "ee61fee64af9a2c8c3f7ed04f7ffe3208cd01647fa310d5edf1f2a13e5157b35",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "e43803b15d4400ee352d1a84cbc90355767550fce8d95eb95915ce5d2bbc871c"
     }
   },
   "models": {

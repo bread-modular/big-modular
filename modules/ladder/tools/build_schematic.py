@@ -1,4 +1,4 @@
-"""Generate the LADDER S3 schematic (hardware/ladder.kicad_sch) and its pinned symbols.
+"""Generate the LADDER S5 schematic (hardware/ladder.kicad_sch) and its pinned symbols.
 
 Run from modules/ladder:
   python3 -B tools/build_schematic.py
@@ -6,20 +6,18 @@ Run from modules/ladder:
 Writes hardware/LADDER.kicad_sym (stock KiCad 10 symbols, derived symbols flattened,
 renamed into the LADDER library), hardware/sym-lib-table and the flat root schematic,
 then lets `kicad-cli sch upgrade --force` re-save it natively. circuit() is the circuit
-of docs/research.md section 3: an analog version of the modules/16bit polysynth ladder
-filter (PolyFilter) on one Eurorack module: a classic Moog 4-pole transistor ladder
+of docs/research.md section 3: a pure-analog 6HP transistor ladder filter (S4 / S5, user
+2026-11-15: no MIDI, no MCU, no envelope, no VCA). A classic Moog 4-pole ladder
 (DMMT3904W matched pairs, 47n NP0), an exponential cutoff converter summing CUTOFF and
-the envelope x DEPTH, resonance by a vactrol in the feedback path (RES knob + RES CV set its
-LED current; user 2026-11-09, replaces the S1 LM13700) with the 16bit's (1 + k) passband
-makeup, an ATtiny1616 envelope (ENV TIME, GATE or MIDI in, DAC out) with a full CV bypass
-(TS5A23157 normal, as modules/acid), and a Bread Modular V2CA-style vactrol VCA with CURVE on
-the filter output. S3 (user 2026-11-09): THT placement and envelope automation recording (REC
-button + LED, the shared CvRecorder as modules/acid): DEPTH becomes an MCU knob (DAC = envelope
-or CV x DEPTH), the VCA gets the undepthed envelope from a filtered PWM or the CV directly.
+the CV input x DEPTH (buffered, bipolar, analog all the way; the buffer carries two dim panel
+LEDs anti-parallel in its loop that show the positive and the negative CV after DEPTH, three
+solder jumpers set their brightness), resonance by an LM13700 OTA in the feedback path (S5:
+RES knob + RES CV set its bias current) with the modules/16bit PolyFilter (1 + k) passband
+makeup. AUDIO IN, CV and RES CV in, one OUT.
 
 The drawing machinery (pinned stock symbols, a 1.27 mm grid wire router, the native
 netlist assertion) is modules/acid's build_schematic.py; only the circuit, placement,
-sourcing, notes and two symbol edits are new here. Placement (LAYOUT) is by hand; signal
+sourcing, notes and one symbol edit are new here. Placement (LAYOUT) is by hand; signal
 nets are wired by route_wires(); LABEL_NETS are the only signal nets joined by name labels.
 Supply pins get a stub and a stock power symbol. The build exports the native netlist and
 fails unless it equals circuit().
@@ -45,32 +43,25 @@ LIB = 'LADDER'
 STUB = 2.54
 
 FILTER_EDITS = {
-    'Conn_01x02': '*_1x??_*',
     'Conn_02x05_Odd_Even': '*_2x??_*',
-    'VTL5C': 'PerkinElmer*VTL5C* VTL5C',
 }
 
 # lib symbol -> (stock library, stock name)
 SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'LED': ('Device', 'LED'),
-    'SW_Push': ('Switch', 'SW_Push'),
     'D_Schottky': ('Device', 'D_Schottky'),
     'R_Potentiometer': ('Device', 'R_Potentiometer'),
-    'ATtiny1616-M': ('MCU_Microchip_ATtiny', 'ATtiny1616-M'),
     'HT75xx-1-SOT89': ('Regulator_Linear', 'HT75xx-1-SOT89'),
     'TL072': ('Amplifier_Operational', 'TL072'),
-    'TS5A23157DGS': ('Analog_Switch', 'TS5A23157DGS'),
-    'VTL5C': ('Isolator', 'VTL5C'),
+    'LM13700': ('Amplifier_Operational', 'LM13700'),
+    'Q_PNP_BEC': ('Transistor_BJT', 'Q_PNP_BEC'),
+    'SolderJumper_2_Open': ('Jumper', 'SolderJumper_2_Open'),
     'AudioJack2_SwitchT': ('Connector_Audio', 'AudioJack2_SwitchT'),
-    'Conn_01x02': ('Connector_Generic', 'Conn_01x02'),
     'Conn_02x05_Odd_Even': ('Connector_Generic', 'Conn_02x05_Odd_Even'),
     'PWR_FLAG': ('power', 'PWR_FLAG'),
-    'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
     'DMMT3904W': ('Transistor_BJT', 'MMDT3904'),
     '1N4148W': ('Diode', '1N4148W'),
-    'BAT54SW': ('Diode', 'BAT54SW'),
     'GND': ('power', 'GND'), '+5V': ('power', '+5V'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
-    'SolderJumper_3_Open': ('Jumper', 'SolderJumper_3_Open'),
 }
 
 # Symbol edits beyond the footprint filters. DMMT3904W: the stock MMDT3904 body (two NPN units)
@@ -81,39 +72,27 @@ RENAME = {'DMMT3904W': {'1': {'1': '4', '2': '2', '6': '3'}, '2': {'3': '6', '4'
 FP = {
     'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
     'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric', 'C1206': 'C_1206_3216Metric',
-    'SOD123': 'D_SOD-123', 'SOT23': 'SOT-23', 'SOT323': 'SOT-323_SC-70', 'SOT363': 'SOT-363_SC-70-6',
-    'SOT89': 'SOT-89-3', 'QFN20': 'VQFN-20-1EP_3x3mm_P0.4mm_EP1.7x1.7mm', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm',
-    'TSSOP10': 'TSSOP-10_3x3mm_P0.5mm',
-    'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09', 'VTL5C': 'VTL5C',
-    'H1x2': 'PinHeader_1x02_P2.54mm_Vertical', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
-    'SJ3': 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm',
-    'LED3': 'LED_D3.0mm', 'SW6': 'SW_PUSH_6mm_H7.3mm',
+    'SOD123': 'D_SOD-123', 'SOT363': 'SOT-363_SC-70-6',
+    'SOT89': 'SOT-89-3', 'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm', 'SOIC16': 'SOIC-16_3.9x9.9mm_P1.27mm',
+    'SOT23': 'SOT-23', 'SJ2': 'SolderJumper-2_P1.3mm_Open_RoundedPad1.0x1.5mm',
+    'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09',
+    'H2x5': 'PinHeader_2x05_P2.54mm_Vertical', 'LED3': 'LED_D3.0mm',
 }
 
-# Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
-NOT_ASSEMBLED = {'JP1'}
+# Copper-only parts (no BOM row, no CPL row): the CV LED brightness solder jumpers.
+NOT_ASSEMBLED = {'JP1', 'JP2', 'JP3'}
 
 # Supply nets are drawn with power symbols (net name = symbol value).
 RAIL_SYMBOL = {'GND': 'GND', '+5V': '+5V', '+12V': '+12V', '-12V': '-12V',
                '+12V_F': '+12V', '-12V_F': '-12V'}
 
 # Signal nets joined by name labels (a stub + label on every pin) instead of wires: the ladder
-# base bias rails (each feeds both transistors of a rung from the bias-chain block), the buffered
-# envelope x DEPTH (envelope block -> cutoff summer) and the VCA envelope (CV normal -> VCA driver).
-LABEL_NETS = {'LB0', 'LB1', 'LB2', 'LB3', 'LB4', 'ENV_BUF', 'VCA_ENV'}
+# base bias rails (each feeds both transistors of a rung from the bias-chain block).
+LABEL_NETS = {'LB0', 'LB1', 'LB2', 'LB3', 'LB4'}
 
 # Multi-unit symbols and the units placed (build() asserts it).
-MULTI = {**{u: {1, 2, 3} for u in ('U3', 'U4', 'U5', 'U6', 'U7', 'U9', 'U11')},
-         **{q: {1, 2} for q in ('Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8')}}
-
-# ATtiny1616-M (VQFN-20) pin numbers: Bread Modular MCO/ENV map where it applies (PB3 MIDI RX,
-# PA6 DAC, PA0 UPDI, PA1 / PA2 envelope knobs, PB2 = Bread Modular ENV gate input, PC2 / PC3 = the
-# modules/acid REC button / LED). S3: PA7 reads DEPTH, PA2 the bypass CV (ADC), PA3 the CV jack
-# switch, PB0 (TCA0 WO0) is the VCA envelope PWM. Everything else is spare.
-MCU = {'11': 'RX', '12': 'GATE_N', '7': 'DAC', '19': 'UPDI_PA0', '20': 'ENV_T', '8': 'DEPTH_W',
-       '1': 'CVIN_DIV', '2': 'CV_SENSE', '14': 'VCA_PWM', '17': 'REC_SW', '18': 'LED_REC',
-       '4': '+5V', '3': 'GND', '21': 'GND',
-       '5': None, '6': None, '9': None, '10': None, '13': None, '15': None, '16': None}
+MULTI = {**{u: {1, 2, 3} for u in ('U4', 'U5', 'U6', 'U7', 'U9')},
+         **{q: {1, 2} for q in ('Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8')}, 'U8': {1, 2, 3, 4, 5}}
 
 GRID = 2.54
 OFFSET = (4, 4)  # LAYOUT / TEXTS origin inside the A2 frame, grid units
@@ -129,34 +108,24 @@ def part(ref, sym, value, fp, pins, unit=1, **fields):
 
 
 # Symbol placement in 2.54 mm grid units: ref (unit 1) or ref.unit -> (x, y, rotation[, 'mirror']).
-# Top row: MIDI / GATE -> MCU -> CV bypass normal -> envelope buffer; VCA on the right.
-# Middle: AUDIO IN -> ladder (B = input side on the left, A = feedback side on the right) ->
-# followers -> difference amp -> output stage -> FILTER OUT. Bottom: CUTOFF / DEPTH summer ->
-# expo under the ladder; resonance feedback summer + vactrol beside the driver pair; RES LED
-# driver; power and supply pins.
+# Top: power entry and the supply pins. Middle: AUDIO IN -> ladder (B = input side on the left,
+# A = feedback side on the right) -> followers -> difference amp -> output stage -> OUT. Below:
+# CUTOFF + CV summer -> expo under the ladder; resonance feedback summer + OTA beside the driver
+# pair; RES knob + RES CV -> OTA bias current. Bottom left: CV in -> DEPTH -> buffer with the two
+# CV LEDs in its loop and the brightness jumpers.
 LAYOUT = {
-    # MIDI input (as modules/acid)
-    'J1': (5, 16, 0), 'R1': (10, 12.5, 0), 'R2': (13, 16, 90), 'D3': (16, 19, 270), 'Q1': (19, 16, 0),
-    'R3': (20, 10.5, 0), 'JP1': (26, 12, 0),
-    # GATE input
-    'J2': (5, 30, 0), 'R4': (12.5, 30, 90), 'R5': (16, 33, 0), 'D4': (20, 33, 270), 'Q2': (24, 30, 0),
-    'R6': (25, 24.5, 0),
-    # MCU, UPDI, ENV TIME, DAC filter
-    'U2': (46, 26, 0), 'R7': (55, 15, 0), 'J11': (62, 12, 0), 'RV1': (57, 23, 180),
-    'R8': (56, 29, 90), 'C6': (60, 31, 0), 'RV2': (57, 36.5, 180),
-    # REC button + LED (PC2 / PC3)
-    'SW1': (35, 29, 180), 'R54': (36, 32, 90), 'D11': (31.5, 34.5, 0),
-    # VCA envelope PWM filter (PB0 -> U3 NC1)
-    'R52': (64, 39, 90), 'C36': (67, 41, 0), 'R53': (70, 39, 90), 'C37': (73, 41, 0),
-    # CV bypass normal
-    'J3': (66, 18, 0), 'R9': (74, 18, 90), 'R10': (78, 21, 0), 'D5': (82, 16, 0), 'R11': (71, 27, 0),
-    'U3': (90, 20, 0, 'mirror'), 'U3.2': (90, 32, 0, 'mirror'),
-    # envelope buffer
-    'U4': (102, 21, 0),
-    # VCA (Bread Modular V2CA + LOW/SVF driver)
-    'U9.2': (160, 20, 0), 'D9': (168, 26, 90), 'U10': (175, 26, 0), 'RV5': (160, 30, 0), 'R48': (165, 33, 0),
-    'R49': (186, 31, 90), 'U11': (195, 30, 0), 'R50': (195, 35, 90), 'R51': (203, 30, 90),
-    'J7': (212, 30, 0, 'mirror'),
+    # Power entry
+    'J10': (9, 20, 0), 'D1': (21, 17, 180), 'D2': (21, 25, 0), 'C1': (28, 19.5, 0), 'C2': (32, 19.5, 0),
+    'U1': (42, 18, 0), 'C3': (50, 19.5, 0), 'C4': (54, 19.5, 0),
+    '#FLG01': (6, 31, 0), '#FLG02': (12, 31, 0), '#FLG03': (18, 31, 0), '#FLG04': (24, 31, 0),
+    '#FLG05': (30, 31, 0),
+    # supply units and decoupling
+    'U4.3': (84, 19, 0), 'C24': (88, 19.5, 0), 'C25': (92, 19.5, 0),
+    'U5.3': (99, 19, 0), 'C26': (103, 19.5, 0), 'C27': (107, 19.5, 0),
+    'U6.3': (114, 19, 0), 'C28': (118, 19.5, 0), 'C29': (122, 19.5, 0),
+    'U7.3': (129, 19, 0), 'C30': (133, 19.5, 0), 'C31': (137, 19.5, 0),
+    'U9.3': (144, 19, 0), 'C32': (148, 19.5, 0), 'C33': (152, 19.5, 0),
+    'U8.5': (162, 19, 0), 'C5': (166, 19.5, 0), 'C6': (170, 19.5, 0),
     # AUDIO IN buffer
     'J4': (5, 90, 0), 'R30': (14, 90, 90), 'U5.2': (25, 91, 0), 'R31': (25, 96, 90), 'C19': (25, 100, 90),
     # bias chain (labels)
@@ -172,39 +141,33 @@ LAYOUT = {
     # followers + difference amp
     'U6': (95, 60, 0), 'U6.2': (95, 72, 0), 'R34': (104, 60, 90), 'R35': (108, 56, 0),
     'R32': (104, 72, 90), 'U7': (116, 66, 0), 'R33': (116, 72, 90),
-    # resonance feedback summer (U11B) -> C20 -> resonance vactrol U12 (LDR into LFB)
-    'R36': (104, 101, 90), 'R37': (104, 104, 90), 'U11.2': (112, 100, 0), 'R38': (112, 105, 90),
-    'C21': (112, 108, 90), 'C20': (119, 100, 90), 'U12': (128, 108, 0, 'mirror'),
-    # output stage -> FILTER OUT
+    # resonance feedback summer (U9B) -> C20 -> 10k / 1k -> OTA U8A -> C22 -> LFB
+    'R36': (104, 101, 90), 'R37': (104, 104, 90), 'U9.2': (112, 100, 0), 'R38': (112, 105, 90),
+    'C21': (112, 108, 90), 'C20': (119, 100, 90), 'R39': (125, 100, 90), 'R42': (129, 104, 0),
+    'R43': (129, 96, 180), 'U8.3': (136, 99, 0), 'R48': (142, 103, 0), 'C22': (146, 99, 90),
+    # unused LM13700 half and the two Darlington buffers
+    'U8': (170, 99, 0), 'U8.2': (170, 108, 0), 'U8.4': (170, 115, 0),
+    # output stage -> OUT
     'C23': (126, 65, 90), 'R44': (130, 62, 0), 'U9': (136, 66, 0), 'R45': (136, 72, 90), 'R46': (131, 72, 0),
     'R47': (145, 66, 90), 'J6': (153, 66, 0, 'mirror'),
-    # CUTOFF / DEPTH summer, divider
+    # CUTOFF + CV summer, divider
     'RV3': (15, 119, 180, 'mirror'), 'R13': (25, 123, 90), 'R14': (25, 127, 90), 'R15': (25, 131, 90),
     'U4.2': (35, 122, 0), 'R12': (35, 127, 90), 'C8': (35, 131, 90), 'D6': (35, 135, 180),
     'R16': (44, 122, 90), 'R17': (48, 125, 0),
     # expo converter
     'Q3': (54, 122, 0), 'Q3.2': (70, 122, 0, 'mirror'), 'R18': (55, 116, 0), 'U5': (64, 134, 0),
     'C9': (64, 139, 90), 'D7': (71, 134, 0), 'R19': (74, 130, 0),
-    # RES knob + RES CV -> vactrol LED driver
+    # RES knob + RES CV -> U7B + Q9 -> OTA bias current
     'RV4': (115, 122, 180, 'mirror'), 'R40': (121, 122, 90), 'J5': (110, 132, 0), 'R41': (121, 132, 90),
-    'D8': (126, 128, 270), 'U7.2': (136, 124, 0), 'R42': (143, 124, 90), 'D10': (138, 112, 90),
-    'R39': (141, 118, 0),
-    # Power entry
-    'J10': (9, 145, 0), 'D1': (21, 142, 180), 'D2': (21, 150, 0), 'C1': (28, 144.5, 0), 'C2': (32, 144.5, 0),
-    'U1': (42, 143, 0), 'C3': (50, 144.5, 0), 'C4': (54, 144.5, 0),
-    '#FLG01': (6, 156, 0), '#FLG02': (12, 156, 0), '#FLG03': (18, 156, 0), '#FLG04': (24, 156, 0),
-    '#FLG05': (30, 156, 0),
-    # supply units and decoupling
-    'U2.p': None,
-    'C5': (84, 144.5, 0), 'U3.3': (94, 144, 0), 'C7': (98, 144.5, 0),
-    'U4.3': (106, 144, 0), 'C24': (110, 144.5, 0), 'C25': (114, 144.5, 0),
-    'U5.3': (121, 144, 0), 'C26': (125, 144.5, 0), 'C27': (129, 144.5, 0),
-    'U6.3': (136, 144, 0), 'C28': (140, 144.5, 0), 'C29': (144, 144.5, 0),
-    'U7.3': (151, 144, 0), 'C30': (155, 144.5, 0), 'C31': (159, 144.5, 0),
-    'U9.3': (166, 144, 0), 'C32': (170, 144.5, 0), 'C33': (174, 144.5, 0),
-    'U11.3': (181, 124, 0), 'C34': (185, 124.5, 0), 'C35': (189, 124.5, 0),
+    'U7.2': (134, 123, 0), 'C7': (134, 128, 90), 'D8': (134, 132, 0), 'R49': (134, 117, 90),
+    'Q9': (144, 123, 180, 'mirror'), 'R50': (151, 119, 90),
+    # CV in -> DEPTH -> U4A (CV LEDs D11 / D12 anti-parallel in the loop) -> CV_S -> R14;
+    # brightness loads R6 / R7 / R8 behind the solder jumpers JP1..JP3
+    'J3': (6, 143, 0), 'R9': (14, 143, 90), 'RV2': (22, 146, 180, 'mirror'), 'U4': (34, 147, 0),
+    'D11': (44, 147, 180), 'D12': (44, 142, 0),
+    'R6': (53, 146, 90), 'JP1': (60, 146, 0), 'R7': (53, 150, 90), 'JP2': (60, 150, 0),
+    'R8': (53, 154, 90), 'JP3': (60, 154, 0),
 }
-del LAYOUT['U2.p']
 
 # Hand-drawn polylines for nets the router should not choose itself (same format as
 # modules/low WIRES: 'REF/pin' pin ends and (x, y) grid points). Everything else is routed.
@@ -231,8 +194,8 @@ def circuit():
     c.append(part('C2', 'C', '10u', 'C0805', {'1': 'GND', '2': '-12V_F'}, Voltage='25V', Note='-12V_F bulk'))
     c.append(part('U1', 'HT75xx-1-SOT89', 'HT7550-1', 'SOT89',
                   {'1': 'GND', '2': '+12V_F', '3': '+5V'},
-                  Note='5 V LDO, 30 V max input, 100 mA. Load ~12 mA (MCU, TS5A23157, pull-ups, CUTOFF knob, '
-                       'expo reference): ~0.08 W at 11.6 V in'))
+                  Note='5 V LDO, 30 V max input, 100 mA: the reference of the CUTOFF knob and the expo current. '
+                       'Load ~0.7 mA (CUTOFF knob 0.1 mA, expo reference 0.55 mA)'))
     c.append(part('C3', 'C', '1u', 'C0805', {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='LDO input'))
     c.append(part('C4', 'C', '10u', 'C0805', {'1': '+5V', '2': 'GND'}, Voltage='25V', Note='LDO output'))
     c.append(part('#FLG01', 'PWR_FLAG', 'PWR_FLAG', None, {'1': 'GND'}))
@@ -241,137 +204,73 @@ def circuit():
     c.append(part('#FLG04', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '-12V'}))
     c.append(part('#FLG05', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '+12V'}))
 
-    # ---- MIDI input (TS modular MIDI): the 8bit / ACID NPN front end with its JP1 bypass, at 5 V
-    c.append(part('J1', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
-                  {'T': 'MIDI_IN', 'S': 'GND', 'TN': None}, Note='MIDI in (TS: tip = logic-level MIDI)'))
-    c.append(part('R1', 'R', '100k', 'R0603', {'1': '+5V', '2': 'MIDI_IN'},
-                  Note='Idle pull-up: no cable turns Q1 on = UART idle'))
-    c.append(part('R2', 'R', '10k', 'R0603', {'1': 'MIDI_IN', '2': 'Q1_B'},
-                  Note='Base resistor: ~1.1 mA at +/-12 V; 0.43 mA from a 5 V sender'))
-    c.append(part('D3', '1N4148W', '1N4148W', 'SOD123', {'1': 'Q1_B', '2': 'GND'},
-                  Note='Clamps Q1 B-E to -0.7 V for a negative input (VEBO 6 V)'))
-    c.append(part('Q1', 'MMBT3904', 'MMBT3904', 'SOT23', {'1': 'Q1_B', '2': 'GND', '3': 'RX_Q'},
-                  Note='Inverting input buffer: input high = RX low. Firmware: PORT_INVEN on PB3'))
-    c.append(part('R3', 'R', '22k', 'R0603', {'1': '+5V', '2': 'RX_Q'},
-                  Note='Q1 collector pull-up, on RX_Q so the JP1 direct path leaves PB3 unloaded'))
-    c.append(part('JP1', 'SolderJumper_3_Open', 'RX_PROT/DIRECT', 'SJ3',
-                  {'1': 'RX_Q', '2': 'RX', '3': 'MIDI_IN'},
-                  Note='Solder jumper, copper only, shipped open. Solder 1-2 = protected '
-                       '(Q1 drives PB3, PORT_INVEN on). Solder 2-3 = direct/unprotected '
-                       '(MIDI_IN to PB3, PORT_INVEN off; 5 V / 3.3 V senders only). Never both'))
-
-    # ---- GATE input: NPN inverter, threshold ~2.2 V (100k / 47k), protected to +/-12 V
-    c.append(part('J2', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
-                  {'T': 'GATE_IN', 'S': 'GND', 'TN': None}, Note='GATE in: rising edge starts the envelope, '
-                                                                  'falling edge releases it (as a held MIDI note)'))
-    c.append(part('R4', 'R', '100k', 'R0603', {'1': 'GATE_IN', '2': 'GATE_B'},
-                  Note='Base resistor: 0.11 mA at +12 V; input impedance ~150k'))
-    c.append(part('R5', 'R', '47k', 'R0603', {'1': 'GATE_B', '2': 'GND'},
-                  Note='Base pull-down: threshold 0.7 V x 147k / 47k = 2.2 V; unpatched = gate low'))
-    c.append(part('D4', '1N4148W', '1N4148W', 'SOD123', {'1': 'GATE_B', '2': 'GND'},
-                  Note='Clamps Q2 B-E to -0.7 V for a negative input'))
-    c.append(part('Q2', 'MMBT3904', 'MMBT3904', 'SOT23', {'1': 'GATE_B', '2': 'GND', '3': 'GATE_N'},
-                  Note='Inverting gate buffer: gate high = PB2 low. Firmware: PORT_INVEN on PB2'))
-    c.append(part('R6', 'R', '22k', 'R0603', {'1': '+5V', '2': 'GATE_N'}, Note='Q2 collector pull-up'))
-
-    # ---- MCU: ATtiny1616 at 5 V, the envelope (attack = release = ENV TIME) x DEPTH on the PA6 DAC,
-    # the undepthed envelope on the PB0 PWM (VCA), REC records ENV TIME + DEPTH (shared CvRecorder)
-    c.append(part('U2', 'ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20', MCU,
-                  Note='5 V. Firmware (to be written): MIDI note on/off or GATE -> AR envelope, ENV TIME '
-                       '5 ms..2 s exponential (attack = release, as the 16bit PolyFilter). DAC (VREF 4.34 V, '
-                       'code dithering on slow sweeps) = envelope x DEPTH, or the PA2 CV x DEPTH when PA3 sees '
-                       'a CV cable; PB0 PWM = the envelope for the VCA. REC (PC2) + LED (PC3): 4-bar ENV TIME / '
-                       'DEPTH motion recorder on MIDI clock (opt/attiny1616-tools/lib/CvRecorder, as modules/acid)'))
-    c.append(part('R7', 'R', '4.7k', 'R0603', {'1': 'UPDI_PA0', '2': 'UPDI'},
-                  Note='UPDI series resistor (Bread Modular R17)'))
-    c.append(part('J11', 'Conn_01x02', 'UPDI', 'H1x2', {'1': 'UPDI', '2': 'GND'},
-                  Note='Pin 1 UPDI, pin 2 GND. Program with the module on Eurorack power (5 V target)'))
-    c.append(part('RV1', 'R_Potentiometer', '50k', 'RV09', {'1': 'GND', '2': 'ENV_T', '3': '+5V'},
-                  Note='ENV TIME (PA1): attack = release time, CW = longer. ' + R_NOTE_POT))
-    c.append(part('RV2', 'R_Potentiometer', '50k', 'RV09', {'1': 'GND', '2': 'DEPTH_W', '3': '+5V'},
-                  Note='DEPTH (PA7): 0..+8.1 octaves of envelope (or bypass CV) on top of CUTOFF, applied by the '
-                       'MCU so REC can record it. ' + R_NOTE_POT))
-    c.append(part('SW1', 'SW_Push', 'REC', 'SW6', {'1': 'REC_SW', '2': 'GND'},
-                  MPN='6x6x7 mm THT tact switch, 4 pins (generic)',
-                  Note='REC (PC2 internal pull-up): records ENV TIME + DEPTH for 4 bars on MIDI clock, then loops '
-                       '(modules/acid REC). Generic 6 x 6 mm THT tact as modules/8bit, pressed through the panel '
-                       'by the printed cap'))
-    c.append(part('R54', 'R', '1k', 'R0603', {'1': 'LED_REC', '2': 'LED_REC_A'},
-                  Note='REC LED current ~3 mA at 5 V'))
-    c.append(part('D11', 'LED', 'LED_3mm_red', 'LED3', {'2': 'LED_REC_A', '1': 'GND'},
-                  Note='REC LED (PC3): blinks while recording, solid while the take loops. Hand-soldered 3 mm THT, '
-                       'dome flush with the panel (as modules/8bit)'))
-    c.append(part('R8', 'R', '1k', 'R0603', {'1': 'DAC', '2': 'ENV_DAC'},
-                  Note='DAC series R (Bread Modular MCO R1) + C6: 1.6 kHz low-pass, smooths the dither'))
-    c.append(part('C6', 'C', '100n', 'C0603', {'1': 'ENV_DAC', '2': 'GND'}, Voltage='50V',
-                  Note='DAC low-pass with R8 (100 us; the 5 ms attack is unaffected)'))
-
-    # ---- VCA envelope: PB0 PWM (78 kHz, 8-bit) -> two RC poles (340 Hz each) -> U3 NC1
-    c.append(part('R52', 'R', '4.7k', 'R0603', {'1': 'VCA_PWM', '2': 'PWM_F'},
-                  Note='VCA envelope PWM filter, pole 1 (340 Hz)'))
-    c.append(part('C36', 'C', '100n', 'C0603', {'1': 'PWM_F', '2': 'GND'}, Voltage='50V',
-                  Note='VCA envelope PWM filter, pole 1'))
-    c.append(part('R53', 'R', '4.7k', 'R0603', {'1': 'PWM_F', '2': 'ENV_VCA'},
-                  Note='VCA envelope PWM filter, pole 2 (340 Hz): 78 kHz ripple ~0.1 mV'))
-    c.append(part('C37', 'C', '100n', 'C0603', {'1': 'ENV_VCA', '2': 'GND'}, Voltage='50V',
-                  Note='VCA envelope PWM filter, pole 2. Firmware caps the duty at 87 % = 4.35 V, the CV full scale'))
-
-    # ---- CV bypass (as modules/acid, 5 V): 0..5 V -> 0..4.35 V = the DAC full scale, clamped
+    # ---- CV in x DEPTH (S4, all analog): J3 -> R9 -> DEPTH pot -> U4A. U4A is a follower with the two
+    # panel LEDs anti-parallel in its feedback path: V(CV_S) = V(CV_W), and everything CV_S sources or
+    # sinks (R14, plus R6 / R7 / R8 behind closed jumpers) flows through one LED: D11 for a positive CV,
+    # D12 for a negative one. I_LED = |V(CV_S)| x (1 / 47k + jumpered loads): proportional to CV x DEPTH
+    # from 0 V, no dead band.
     c.append(part('J3', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
-                  {'T': 'CVIN', 'S': 'GND', 'TN': 'CV_SENSE'},
-                  Note='CV in, 0..5 V: replaces the envelope (cutoff via the MCU x DEPTH; the VCA directly '
-                       'through U3). Unpatched: the internal envelope (TN switch -> U3 and PA3)'))
-    c.append(part('R9', 'R', '15k', 'R0603', {'1': 'CVIN', '2': 'CVIN_DIV'},
-                  Note='CV divider top; input impedance 115k. Limits the clamp current to 0.8 mA at -12 V'))
-    c.append(part('R10', 'R', '100k', 'R0603', {'1': 'CVIN_DIV', '2': 'GND'},
-                  Note='CV divider bottom: 5.0 V in = 4.35 V = the DAC envelope peak'))
-    c.append(part('D5', 'BAT54SW', 'BAT54SW', 'SOT323', {'1': 'GND', '2': '+5V', '3': 'CVIN_DIV'},
-                  Note='CV clamp: holds U3 and PA2 within -0.3..+5.3 V for a +/-12 V mis-patch'))
-    c.append(part('R11', 'R', '1M', 'R0603', {'1': '+5V', '2': 'CV_SENSE'},
-                  Note='Jack-detect pull-up: unplugged 0.52 V (R9 + R10 to GND), plugged = high = external CV '
-                       '(U3 select and PA3)'))
-    u3 = ('Dual 10R SPDT on +5V: the VCA CV normal (B unused, tied to GND). Pin map TI DGS: 1 IN1, 2 NO1, '
-          '3 GND, 4 NO2, 5 IN2, 6 COM2, 7 NC2, 8 V+, 9 NC1, 10 COM1')
-    c.append(part('U3', 'TS5A23157DGS', 'TS5A23157', 'TSSOP10',
-                  {'1': 'CV_SENSE', '2': 'CVIN_DIV', '9': 'ENV_VCA', '10': 'VCA_ENV'}, unit=1, Note=u3))
-    c.append(part('U3', 'TS5A23157DGS', 'TS5A23157', 'TSSOP10',
-                  {'4': 'GND', '5': 'GND', '6': 'GND', '7': 'GND'}, unit=2, Note=u3))
-    c.append(part('U3', 'TS5A23157DGS', 'TS5A23157', 'TSSOP10', {'3': 'GND', '8': '+5V'}, unit=3, Note=u3))
-    c.append(part('C7', 'C', '100n', 'C0603', {'1': '+5V', '2': 'GND'}, Voltage='50V', Note='U3 decoupling'))
-    c.append(part('C5', 'C', '100n', 'C0603', {'1': '+5V', '2': 'GND'}, Voltage='50V', Note='U2 decoupling'))
+                  {'T': 'CVIN', 'S': 'GND', 'TN': 'GND'},
+                  Note='CV in (cutoff modulation), DC coupled, bipolar: positive opens the filter. '
+                       'Unpatched = GND. Input impedance 89k'))
+    c.append(part('R9', 'R', '39k', 'R0603', {'1': 'CVIN', '2': 'CV_TOP'},
+                  Note='CV series resistor: DEPTH full = 0.56 x CV, so a +/-12 V mis-patch stays inside the '
+                       'TL072 common-mode range (+/-6.7 V, +/-7.3 V with a +20 % pot: no phase reversal); '
+                       'limits the input current of an unpowered module to 0.3 mA'))
+    c.append(part('RV2', 'R_Potentiometer', '50k', 'RV09', {'1': 'GND', '2': 'CV_W', '3': 'CV_TOP'},
+                  Note='DEPTH: CV attenuator, 0..+8.3 octaves for a 5 V CV (0.56 x 5 V = 2.81 V at CV_S). '
+                       + R_NOTE_POT))
+    c.append(part('D11', 'LED', 'LED_3mm_red', 'LED3', {'2': 'CV_O', '1': 'CV_S'},
+                  Note='CV LED, positive CV (after DEPTH), in the U4A loop: 21 uA per volt at CV_S with JP1..JP3 '
+                       'open = 0.06 mA at 5 V CV / DEPTH full (the modules/mcc LEDs run 3 mA: too bright, user '
+                       '2026-11-15). JP1..JP3 raise it. Hand-soldered 3 mm THT, dome flush with the panel'))
+    c.append(part('D12', 'LED', 'LED_3mm', 'LED3', {'2': 'CV_S', '1': 'CV_O'},
+                  Note='CV LED, negative CV (user 2026-11-15): anti-parallel to D11 in the U4A loop, same '
+                       'current per volt. Second colour of the user\'s choice. Each LED sees the other one\'s '
+                       'forward voltage in reverse (2..3.3 V, below the 5 V rating). Hand-soldered 3 mm THT'))
+    steps = (('R6', 'JP1', '47k', 'LED_J1', 'x2 (0.12 mA at 5 V CV / DEPTH full)'),
+             ('R7', 'JP2', '22k', 'LED_J2', 'x3.1 alone; JP1 + JP2 x4.1'),
+             ('R8', 'JP3', '10k', 'LED_J3', 'x5.7 alone; JP1 + JP2 + JP3 x8.8 (0.53 mA)'))
+    for i, (r_, jp, val, net, what) in enumerate(steps, 1):
+        c.append(part(r_, 'R', val, 'R0603', {'1': 'CV_S', '2': net},
+                      Note=f'CV LED brightness step {i}: an extra load on CV_S behind {jp}; its current flows '
+                           f'through the lit LED. {jp} closed = {what}'))
+        c.append(part(jp, 'SolderJumper_2_Open', f'LED_BRIGHT_{i}', 'SJ2', {'1': net, '2': 'GND'},
+                      Note=f'CV LED brightness (user 2026-11-15), open as shipped (dimmest: R14 alone, 21 uA / V). '
+                           f'Bridge with solder: {what}. Both LEDs follow'))
 
-    tl = {'U4': 'A: DAC buffer (ENV_BUF = envelope or CV x DEPTH); B: CUTOFF + DEPTH summer, clamped at -0.6 V',
+    tl = {'U4': 'A: CV x DEPTH buffer with the CV LEDs in its loop; B: CUTOFF + CV summer, clamped at -0.6 V',
           'U5': 'A: expo reference loop (I_ref 0.55 mA); B: AUDIO IN inverting buffer',
           'U6': 'A / B: ladder top followers (JFET inputs, pA bias: the top cap nodes are 0.2..30k)',
-          'U7': 'A: ladder difference amp x10; B: resonance vactrol LED driver (RES knob + RES CV)',
-          'U9': 'A: output stage x20.6 (FILTER OUT); B: VCA vactrol LED driver (VCA_ENV)',
-          'U11': 'A: VCA stage (vactrol LDR input); B: resonance feedback summer'}
+          'U7': 'A: ladder difference amp x10; B: resonance control current (RES knob + RES CV -> I_ABC)',
+          'U9': 'A: output stage x20.6 (OUT); B: resonance feedback summer'}
 
     def opamp(u, unit, plus, minus, out):
         pins = {'3': plus, '2': minus, '1': out} if unit == 1 else {'5': plus, '6': minus, '7': out}
         return part(u, 'TL072', 'TL072', 'SOIC8', pins, unit=unit, Note='TL072, +/-12 V. ' + tl[u])
 
-    # ---- DAC buffer: ENV_DAC -> ENV_BUF, 0..4.35 V = envelope (or CV) x DEPTH, feeds the cutoff summer
-    c.append(opamp('U4', 1, 'ENV_DAC', 'ENV_BUF', 'ENV_BUF'))
+    # ---- CV buffer / LED driver (see the CV block above)
+    c.append(opamp('U4', 1, 'CV_W', 'CV_S', 'CV_O'))
 
-    # ---- CUTOFF + DEPTH summer (inverting) -> divider -> expo (docs/research.md 3.3).
-    # V_S = 12 V x 100k/200k - 100k x (V_CUT/82k + V_ENV/75k): 6.0 V (55 Hz) .. -0.10 V (17.6 kHz) by
-    # CUTOFF, the DAC (envelope x DEPTH) adds up to -5.8 V (8.1 octaves). D6 clamps V_S at -0.6 V =
-    # ~31 kHz (ladder <= 1 mA).
+    # ---- CUTOFF + CV summer (inverting) -> divider -> expo (docs/research.md 3.3).
+    # V_S = 12 V x 100k/200k - 100k x (V_CUT/82k + V_CVS/47k): 6.0 V (55 Hz) .. -0.10 V (17.6 kHz) by
+    # CUTOFF; CV x DEPTH adds up to -6.0 V (8.3 octaves) for a 5 V CV, a negative CV closes the filter.
+    # D6 clamps V_S at -0.6 V = ~31 kHz (ladder <= 1 mA).
     c.append(part('RV3', 'R_Potentiometer', '50k', 'RV09', {'1': 'GND', '2': 'CUT_W', '3': '+5V'},
                   Note='CUTOFF: 55 Hz..17.6 kHz (8.3 octaves), CW = open. ' + R_NOTE_POT))
     c.append(part('R13', 'R', '82k', 'R0603', {'1': 'CUT_W', '2': 'CUT_SUM'},
                   Note='CUTOFF input: 5 V = -6.1 V at V_S = 8.5 octaves'))
-    c.append(part('R14', 'R', '75k', 'R0603', {'1': 'ENV_BUF', '2': 'CUT_SUM'},
-                  Note='Envelope x DEPTH input: 4.35 V = -5.8 V at V_S = 8.1 octaves'))
+    c.append(part('R14', 'R', '47k', 'R0603', {'1': 'CV_S', '2': 'CUT_SUM'},
+                  Note='CV x DEPTH input: 2.81 V at CV_S (5 V CV, DEPTH full) = -6.0 V at V_S = 8.3 octaves. '
+                       'Its current also flows through the CV LEDs (the base brightness, 21 uA / V)'))
     c.append(part('R15', 'R', '200k', 'R0603', {'1': '-12V_F', '2': 'CUT_SUM'},
-                  Note='Offset: V_S = +6.0 V with both knobs at 0 (55 Hz)'))
+                  Note='Offset: V_S = +6.0 V with CUTOFF at 0 and no CV (55 Hz)'))
     c.append(opamp('U4', 2, 'GND', 'CUT_SUM', 'CUT_S'))
     c.append(part('R12', 'R', '100k', 'R0603', {'1': 'CUT_SUM', '2': 'CUT_S'}, Note='Summer feedback'))
     c.append(part('C8', 'C', '100p', 'C0603', {'1': 'CUT_SUM', '2': 'CUT_S'}, Voltage='50V',
-                  Note='Summer HF roll-off (16 kHz): stability, DAC dither residue'))
+                  Note='Summer HF roll-off (16 kHz): stability, CV noise'))
     c.append(part('D6', '1N4148W', '1N4148W', 'SOD123', {'1': 'CUT_S', '2': 'CUT_SUM'},
-                  Note='Top-end clamp: V_S >= -0.6 V, so CUTOFF + full DEPTH stays near 31 kHz (ladder <= 1 mA)'))
+                  Note='Top-end clamp: V_S >= -0.6 V, so CUTOFF + a large CV stays near 31 kHz (ladder <= 1 mA)'))
     c.append(part('R16', 'R', '3.9k', 'R0603', {'1': 'CUT_S', '2': 'EXP_B'},
                   Note='Expo divider 100R / 4.0k = 1/40: 0.717 V at V_S per octave (17.9 mV at the base)'))
     c.append(part('R17', 'R', '100', 'R0603', {'1': 'EXP_B', '2': 'GND'},
@@ -437,7 +336,7 @@ def circuit():
     c.append(part('R26', 'R', '1k', 'R0603', {'1': 'LIN', '2': 'LB0'},
                   Note='Driver base bias from LB0; low so the driver input current (r_pi) barely loads it'))
     c.append(part('R27', 'R', '1k', 'R0603', {'1': 'LFB', '2': 'LB0'},
-                  Note='Feedback base bias from LB0; the resonance LDR feeds into it (k ~ 1k / (1k + R_LDR))'))
+                  Note='Feedback base bias from LB0 and the load of the resonance OTA: V = I_out x 1k'))
     c.append(part('R29', 'R', '200k', 'R0603', {'1': 'LFB', '2': 'GND'},
                   Note='Mirrors R28 to GND: both driver bases sit 7 mV below LB0 (no DC offset)'))
 
@@ -451,47 +350,73 @@ def circuit():
                   Note='Difference amp feedback: x10, passband LAD_DIF = 0.050 x IN (in phase)'))
     c.append(opamp('U7', 1, 'DIF_P', 'DIF_N', 'LAD_DIF'))
 
-    # ---- Resonance (user 2026-11-09: a vactrol, not accurate): U11B sums -(LAD_DIF - 0.05 x IN) x 1.42,
-    # C20 AC couples it, the resonance vactrol's LDR feeds it into the feedback base (1k to LB0). In the
-    # passband the two inputs cancel, so the output keeps the dry level at any resonance: the 16bit's
-    # (1 + k) makeup, H = (1 + k) L / (1 + k L), k = 14.3 x 1k / (1k + R_LDR): k = 4 at R_LDR ~2.5k.
+    # ---- Resonance (S5, user 2026-11-15: an OTA is fine if it is the standard design): U9B sums
+    # -(LAD_DIF - 0.05 x IN) x 1.42, C20 AC couples it, R39 / R42 divide it by 11 into the + input of one
+    # LM13700 half; its output current drives the feedback base node (R27 1k to LB0) through C22. In the
+    # passband the two summer inputs cancel, so the output keeps the dry level at any resonance: the
+    # 16bit's (1 + k) makeup, H = (1 + k) L / (1 + k L). k = 10 x 1.42 / 11 x gm x 0.99k, gm = I_ABC / 2 VT
+    # = 19.3 mS per mA: k = 25 per mA, self-oscillation (k = 4) at ~0.17 mA.
     c.append(part('R36', 'R', '3.3k', 'R0603', {'1': 'LAD_DIF', '2': 'FB_SUM'},
                   Note='Feedback summer, ladder input: gain -4.7k / 3.3k = -1.42'))
     c.append(part('R37', 'R', '68k', 'R0603', {'1': 'AIN_BUF', '2': 'FB_SUM'},
                   Note='Makeup: 3.3k / 68k = 0.0485 ~ the 0.0498 passband ratio, cancels LAD_DIF in the passband'))
-    c.append(opamp('U11', 2, 'GND', 'FB_SUM', 'FB_O'))
+    c.append(opamp('U9', 2, 'GND', 'FB_SUM', 'FB_O'))
     c.append(part('R38', 'R', '4.7k', 'R0603', {'1': 'FB_SUM', '2': 'FB_O'}, Note='Feedback summer Rf'))
     c.append(part('C21', 'C', '100p', 'C0603', {'1': 'FB_SUM', '2': 'FB_O'}, Voltage='50V',
                   Note='Summer HF roll-off (340 kHz): stability'))
     c.append(part('C20', 'C', '10u', 'C0805', {'1': 'FB_O', '2': 'FB_AC'}, Voltage='25V',
-                  Note='AC coupling (<= 16 Hz into 1k + R_LDR): no ladder / summer DC into the feedback base'))
-    c.append(part('U12', 'VTL5C', 'VTL5C', 'VTL5C', {'1': 'RES_S', '2': 'RES_A', '3': 'FB_AC', '4': 'LFB'},
-                  Note='Resonance vactrol (Chinese VTL5C type), LED in the U7B loop, LDR = series element into '
-                       'the feedback base: dark = no resonance, ~2.5k = self-oscillation. Hand-soldered THT on B'))
+                  Note='AC coupling (1.4 Hz into 11k): no ladder / summer DC into the OTA input'))
+    c.append(part('R39', 'R', '10k', 'R0603', {'1': 'FB_AC', '2': 'OTA_P'},
+                  Note='OTA input divider 10k / 1k = 1/11: +/-12..20 mV at the OTA input in self-oscillation, so '
+                       'the ladder limits the amplitude before the OTA does'))
+    c.append(part('R42', 'R', '1k', 'R0603', {'1': 'OTA_P', '2': 'GND'}, Note='OTA input divider bottom / + input bias'))
+    c.append(part('R43', 'R', '1k', 'R0603', {'1': 'OTA_N', '2': 'GND'},
+                  Note='- input bias, matches R42: the input bias currents (up to 5 uA) cancel'))
+    ota = ('LM13700 dual OTA, +/-12 V. A: resonance VCA in the ladder feedback path (gm = I_ABC / 2 VT, no '
+           'linearizing diodes); B and both Darlington buffers unused')
+    c.append(part('U8', 'LM13700', 'LM13700', 'SOIC16',
+                  {'3': 'OTA_P', '4': 'OTA_N', '2': None, '1': 'RES_ABC', '5': 'OTA_O'}, unit=3, Note=ota))
+    c.append(part('U8', 'LM13700', 'LM13700', 'SOIC16',
+                  {'14': 'GND', '13': 'GND', '15': None, '16': None, '12': None}, unit=1, Note=ota))
+    c.append(part('U8', 'LM13700', 'LM13700', 'SOIC16', {'10': None, '9': None}, unit=2, Note=ota))
+    c.append(part('U8', 'LM13700', 'LM13700', 'SOIC16', {'7': None, '8': None}, unit=4, Note=ota))
+    c.append(part('U8', 'LM13700', 'LM13700', 'SOIC16', {'11': '+12V_F', '6': '-12V_F'}, unit=5, Note=ota))
+    c.append(part('C5', 'C', '100n', 'C0603', {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='U8 V+ decoupling'))
+    c.append(part('C6', 'C', '100n', 'C0603', {'1': 'GND', '2': '-12V_F'}, Voltage='50V', Note='U8 V- decoupling'))
+    c.append(part('R48', 'R', '100k', 'R0603', {'1': 'OTA_O', '2': 'GND'},
+                  Note='DC path of the OTA output: its offset current (gm x V_os, 2 uA typ at RES full) settles '
+                       'here (0.2 V typ, 2.4 V at the 4 mV limit) and not on the ladder base'))
+    c.append(part('C22', 'C', '10u', 'C0805', {'1': 'OTA_O', '2': 'LFB'}, Voltage='25V',
+                  Note='AC coupling of the OTA output current into the feedback base (0.16 Hz with R48): the '
+                       'driver pair stays balanced at any resonance'))
 
-    # ---- RES knob + RES CV -> vactrol LED current: V(RES_X) = 0.32 x knob + 0.68 x CV (passive mix),
-    # U7B holds it across R39: I_LED = V(RES_X) / 330R. Knob full 11.6 mA, +5 V CV 10.3 mA; R42 caps
-    # the LED at ~20 mA when U7B saturates.
-    c.append(part('RV4', 'R_Potentiometer', '50k', 'RV09', {'1': 'GND', '2': 'RES_W', '3': '+12V_F'},
-                  Note='RESONANCE: vactrol LED 0..11.6 mA, self-oscillation near the top (depends on the vactrol). '
-                       + R_NOTE_POT))
-    c.append(part('R40', 'R', '100k', 'R0603', {'1': 'RES_W', '2': 'RES_X'}, Note='RES knob into the mix: 3.84 V at full'))
+    # ---- RES knob + RES CV -> OTA bias current. U7B sums both into its virtual ground (I_in = V_knob /
+    # 100k + V_cv / 100k); Q9's emitter sits on the T-network node RES_E = -I_in x 47k, R50 adds
+    # V(RES_E) / 9.1k: I_ABC = I_in x (1 + 47k / 9.1k) = 6.16 x I_in. Knob full 0.31 mA (k ~ 7.7),
+    # +5 V CV alone the same; knob full + 12 V CV 1.04 mA (LM13700 limit 2 mA). D8 takes over when the
+    # sum is negative (Q9 off, k = 0). With U7B railed, R50 still limits I_ABC to ~1.2 mA.
+    c.append(part('RV4', 'R_Potentiometer', '50k', 'RV09', {'1': 'GND', '2': 'RES_W', '3': '+5V'},
+                  Note='RESONANCE: OTA bias 0..0.31 mA = k 0..7.7; self-oscillation (k = 4, ~0.17 mA) at about '
+                       '60 % of the travel, 45..90 % over the LM13700 gm limits. ' + R_NOTE_POT))
+    c.append(part('R40', 'R', '100k', 'R0603', {'1': 'RES_W', '2': 'RES_X'}, Note='RES knob into the sum: 50 uA at full'))
     c.append(part('J5', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', {'T': 'RES_CV', 'S': 'GND', 'TN': 'GND'},
-                  Note='RES CV in, adds to the knob (no attenuator): +5 V = +3.4 V at RES_X = +10.3 mA; '
-                       'negative CV subtracts'))
-    c.append(part('R41', 'R', '47k', 'R0603', {'1': 'RES_CV', '2': 'RES_X'},
-                  Note='RES CV into the mix; ~160k input impedance'))
-    c.append(part('D8', '1N4148W', '1N4148W', 'SOD123', {'1': 'RES_X', '2': 'GND'},
-                  Note='Holds RES_X >= -0.6 V when a negative CV outweighs the knob (LED off)'))
-    c.append(opamp('U7', 2, 'RES_X', 'RES_S', 'RES_O'))
-    c.append(part('R42', 'R', '100', 'R0603', {'1': 'RES_O', '2': 'RES_A'},
-                  Note='LED current cap: U7B saturated (~10.5 V) -> (10.5 - 2) / 430R ~ 20 mA'))
-    c.append(part('D10', '1N4148W', '1N4148W', 'SOD123', {'1': 'RES_A', '2': 'RES_S'},
-                  Note='Anti-parallel to the LED: keeps the driver loop closed near 0 V (as D9)'))
-    c.append(part('R39', 'R', '330', 'R0603', {'1': 'RES_S', '2': 'GND'},
-                  Note='LED current sense: I_LED = V(RES_X) / 330R'))
+                  Note='RES CV in, adds to the knob (no attenuator): +5 V = the knob\'s full range; negative CV '
+                       'subtracts. Audio rate works (OTA). Input impedance 100k'))
+    c.append(part('R41', 'R', '100k', 'R0603', {'1': 'RES_CV', '2': 'RES_X'},
+                  Note='RES CV into the sum: 10 uA per volt; 100k input impedance'))
+    c.append(opamp('U7', 2, 'GND', 'RES_X', 'RES_O'))
+    c.append(part('C7', 'C', '100p', 'C0603', {'1': 'RES_X', '2': 'RES_O'}, Voltage='50V',
+                  Note='Converter loop compensation'))
+    c.append(part('D8', '1N4148W', '1N4148W', 'SOD123', {'1': 'RES_X', '2': 'RES_O'},
+                  Note='Closes the U7B loop when knob + CV is negative: Q9 off (0.6 V reverse VBE), no resonance'))
+    c.append(part('R49', 'R', '47k', 'R0603', {'1': 'RES_X', '2': 'RES_E'},
+                  Note='T-network: V(RES_E) = -I_in x 47k (-2.35 V at knob full, -8 V at knob full + 12 V CV)'))
+    c.append(part('R50', 'R', '9.1k', 'R0603', {'1': 'RES_E', '2': 'GND'},
+                  Note='Current gain 1 + 47k / 9.1k = 6.16; limits I_ABC to ~1.2 mA whatever U7B does'))
+    c.append(part('Q9', 'Q_PNP_BEC', 'MMBT5401', 'SOT23', {'1': 'RES_O', '2': 'RES_E', '3': 'RES_ABC'},
+                  Note='PNP current source into the LM13700 bias pin (two diode drops above -12V_F)'))
 
-    # ---- Output stage: AC coupled, x20.6 -> 1k -> FILTER OUT (IN x 1.03, in phase)
+    # ---- Output stage: AC coupled, x20.6 -> 1k -> OUT (IN x 1.03, in phase)
     c.append(part('C23', 'C', '1u', 'C0805', {'1': 'LAD_DIF', '2': 'OUT_IN'}, Voltage='50V',
                   Note='AC coupling, 1.6 Hz: removes the ladder offset'))
     c.append(part('R44', 'R', '100k', 'R0603', {'1': 'GND', '2': 'OUT_IN'}, Note='Bias to 0 V'))
@@ -501,32 +426,11 @@ def circuit():
     c.append(part('R47', 'R', '1k', 'R1206', {'1': 'FILT_AMP', '2': 'FILT_OUT'}, Power='0.5W',
                   Note='Output series: short / +/-12 V mis-patch protection (as modules/acid)'))
     c.append(part('J6', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', {'T': 'FILT_OUT', 'S': 'GND', 'TN': None},
-                  Note='FILTER OUT (direct ladder out)'))
-
-    # ---- Vactrol VCA (Bread Modular V2CA with CURVE; LOW/SVF driver): I_LED = ENV / (470R + CURVE)
-    c.append(opamp('U9', 2, 'VCA_ENV', 'VAC_K', 'VAC_A'))
-    c.append(part('U10', 'VTL5C', 'VTL5C', 'VTL5C', {'1': 'VAC_K', '2': 'VAC_A', '3': 'VCA_IN', '4': 'FILT_AMP'},
-                  Note='Vactrol (Chinese VTL5C type), LED in the U9B loop, LDR = the VCA input resistor. '
-                       'Hand-soldered THT on B'))
-    c.append(part('D9', '1N4148W', '1N4148W', 'SOD123', {'1': 'VAC_A', '2': 'VAC_K'},
-                  Note='Anti-parallel to the LED: keeps the driver loop closed near 0 V (as modules/vca-mix)'))
-    c.append(part('RV5', 'R_Potentiometer', '50k', 'RV09', {'1': 'VAC_K', '2': 'CURVE_R', '3': None},
-                  Note='CURVE (Bread Modular V2CA RV1 50k): LED current rheostat, pin 3 open. CCW = punchy '
-                       '(9 mA at full envelope), CW = soft. ' + R_NOTE_POT))
-    c.append(part('R48', 'R', '470', 'R0603', {'1': 'CURVE_R', '2': 'GND'},
-                  Note='LED current sense: 4.35 V / 470R = 9.2 mA at CURVE 0 (V2CA: ~9 mA)'))
-    c.append(part('R49', 'R', '10k', 'R0603', {'1': 'VCA_IN', '2': 'VCA_SUM'}, Note='VCA input (V2CA R3)'))
-    c.append(opamp('U11', 1, 'GND', 'VCA_SUM', 'VCA_AMP'))
-    c.append(part('R50', 'R', '10k', 'R0603', {'1': 'VCA_SUM', '2': 'VCA_AMP'},
-                  Note='VCA feedback (V2CA R4): gain = -10k / (10k + R_LDR), inverted as the V2CA'))
-    c.append(part('R51', 'R', '1k', 'R1206', {'1': 'VCA_AMP', '2': 'VCA_OUT'}, Power='0.5W',
-                  Note='Output series: short / +/-12 V mis-patch protection'))
-    c.append(part('J7', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', {'T': 'VCA_OUT', 'S': 'GND', 'TN': None},
-                  Note='VCA OUT: FILTER OUT through the vactrol VCA'))
+                  Note='OUT: the ladder filter output, 10 Vpp for 10 Vpp in'))
 
     # ---- op-amp supply units and decoupling
     caps = {'U4': ('C24', 'C25'), 'U5': ('C26', 'C27'), 'U6': ('C28', 'C29'), 'U7': ('C30', 'C31'),
-            'U9': ('C32', 'C33'), 'U11': ('C34', 'C35')}
+            'U9': ('C32', 'C33')}
     for u, (cp, cn) in caps.items():
         c.append(part(u, 'TL072', 'TL072', 'SOIC8', {'4': '-12V_F', '8': '+12V_F'}, unit=3, Note='TL072, +/-12 V. ' + tl[u]))
         c.append(part(cp, 'C', '100n', 'C0603', {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note=f'{u} V+ decoupling'))
@@ -537,13 +441,12 @@ def circuit():
 
 
 # JLCPCB parts, keyed (symbol, value, footprint). Every code looked up live for LADDER 2026-11-08
-# (assembly.py lookup/search --strict-live). Basic unless noted: Extended are the 0.5 W 1206 1k,
-# the 47n NP0 1206, BAT54SW, DMMT3904W, HT7550-1, ATtiny1616 and TS5A23157. Stock is a
-# dated observation, not a guarantee. THT parts carry no LCSC field.
+# (assembly.py lookup/search --strict-live); 39k added 2026-11-15 (S4); 22k, LM13700MX/NOPB and MMBT5401
+# added 2026-11-15 (S5). Basic unless noted: Extended are the 0.5 W 1206 1k, the 47n NP0 1206, DMMT3904W,
+# HT7550-1 and the LM13700. Stock is a dated observation, not a guarantee. THT parts and the solder
+# jumpers carry no LCSC field.
 SOURCING = {
     ('R', '100', 'R0603'): dict(LCSC='C22775', MPN='0603WAF1000T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '330', 'R0603'): dict(LCSC='C23138', MPN='0603WAF3300T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '470', 'R0603'): dict(LCSC='C23179', MPN='0603WAF4700T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM'),
     ('R', '1.5k', 'R0603'): dict(LCSC='C22843', MPN='0603WAF1501T5E', Manufacturer='UNI-ROYAL'),
@@ -553,33 +456,27 @@ SOURCING = {
     ('R', '5.1k', 'R0603'): dict(LCSC='C23186', MPN='0603WAF5101T5E', Manufacturer='UNI-ROYAL'),
     ('R', '9.1k', 'R0603'): dict(LCSC='C23260', MPN='0603WAF9101T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '15k', 'R0603'): dict(LCSC='C22809', MPN='0603WAF1502T5E', Manufacturer='UNI-ROYAL'),
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '39k', 'R0603'): dict(LCSC='C23153', MPN='0603WAF3902T5E', Manufacturer='UNI-ROYAL'),
     ('R', '47k', 'R0603'): dict(LCSC='C25819', MPN='0603WAF4702T5E', Manufacturer='UNI-ROYAL'),
     ('R', '68k', 'R0603'): dict(LCSC='C23231', MPN='0603WAF6802T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '75k', 'R0603'): dict(LCSC='C23242', MPN='0603WAF7502T5E', Manufacturer='UNI-ROYAL'),
     ('R', '82k', 'R0603'): dict(LCSC='C23254', MPN='0603WAF8202T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
     ('R', '200k', 'R0603'): dict(LCSC='C25811', MPN='0603WAF2003T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '1M', 'R0603'): dict(LCSC='C22935', MPN='0603WAF1004T5E', Manufacturer='UNI-ROYAL'),
     ('C', '20p', 'C0603'): dict(LCSC='C1648', MPN='CL10C200JB8NNNC', Manufacturer='Samsung'),
     ('C', '100p', 'C0603'): dict(LCSC='C14858', MPN='CL10C101JB8NNNC', Manufacturer='Samsung'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '47n', 'C1206'): dict(LCSC='C20617849', MPN='C1206N473J101T', Manufacturer='Holy Stone (IHHEC)'),
     ('C', '1u', 'C0805'): dict(LCSC='C28323', MPN='CL21B105KBFNNNE', Manufacturer='Samsung'),
-    ('C', '4.7u', 'C0805'): dict(LCSC='C1779', MPN='CL21A475KAQNNNE', Manufacturer='Samsung'),
     ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
     ('D_Schottky', 'B5819W', 'SOD123'): dict(LCSC='C8598', MPN='B5819W SL', Manufacturer='CJ (Jiangsu Changjing)'),
     ('1N4148W', '1N4148W', 'SOD123'): dict(LCSC='C81598', MPN='1N4148W', Manufacturer='ST(Semtech)'),
-    ('BAT54SW', 'BAT54SW', 'SOT323'): dict(LCSC='C78260', MPN='BAT54SWT1G', Manufacturer='onsemi'),
-    ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
-                                            Manufacturer='CJ (Jiangsu Changjing)'),
     ('DMMT3904W', 'DMMT3904W', 'SOT363'): dict(LCSC='C155305', MPN='DMMT3904W-7-F',
                                                Manufacturer='Diodes Incorporated'),
     ('HT75xx-1-SOT89', 'HT7550-1', 'SOT89'): dict(LCSC='C16106', MPN='HT7550-1', Manufacturer='Holtek'),
-    ('ATtiny1616-M', 'ATtiny1616-MNR', 'QFN20'): dict(LCSC='C507118', MPN='ATTINY1616-MNR', Manufacturer='Microchip'),
     ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
-    ('TS5A23157DGS', 'TS5A23157', 'TSSOP10'): dict(LCSC='C11133', MPN='TS5A23157DGSR', Manufacturer='Texas Instruments'),
+    ('LM13700', 'LM13700', 'SOIC16'): dict(LCSC='C174050', MPN='LM13700MX/NOPB', Manufacturer='Texas Instruments'),
+    ('Q_PNP_BEC', 'MMBT5401', 'SOT23'): dict(LCSC='C8326', MPN='MMBT5401', Manufacturer='CJ (Jiangsu Changjing)'),
 }
 
 
@@ -589,29 +486,29 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 2), 'BIG MODULAR LADDER - S3 schematic: analog version of the modules/16bit polysynth ladder filter. '
+    (T(4, 2), 'BIG MODULAR LADDER - S5 schematic: pure-analog 6HP transistor ladder filter (no MIDI, no MCU, no VCA). '
               'Circuit intent and numbers: docs/research.md', 2.0),
-    (T(4, 4.5), 'Signal nets are wired; supplies use power symbols. LB0..LB4 (ladder base bias), ENV_BUF '
-                '(envelope x DEPTH) and VCA_ENV (VCA envelope / CV) are joined by their net labels.', 1.27),
-    (T(4, 40), 'MIDI (TS, JP1 open: 1-2 protected, 2-3 direct) and GATE (threshold 2.2 V):\n'
-               'NPN inverters on +5V; firmware sets PORT_INVEN on PB3 / PB2.', 1.27),
-    (T(4, 43.5), 'ENVELOPE: ATtiny1616 at 5 V, AR envelope (ENV TIME) x DEPTH on the PA6 DAC (0..4.35 V) -> U4A -> ENV_BUF;\n'
-                'the undepthed envelope on the PB0 PWM (2 x 340 Hz RC) -> U3 NC1 -> VCA_ENV.\n'
-                'CV BYPASS: J3 patched (PA3 high) -> DAC = CV (PA2) x DEPTH; U3 COM1 = CV 0..5 V scaled to 0..4.35 V.\n'
-                'REC (PC2) + LED (PC3): 4-bar ENV TIME / DEPTH recorder on MIDI clock (modules/acid CvRecorder).', 1.27),
-    (T(150, 10), 'VACTROL VCA (Bread Modular V2CA + LOW/SVF driver): I_LED = VCA_ENV / (470R + CURVE);\n'
-                 'LDR in series with R49 into U11A: VCA OUT = -FILTER x 10k / (10k + R_LDR).', 1.27),
+    (T(4, 4.5), 'Signal nets are wired; supplies use power symbols. LB0..LB4 (ladder base bias) are joined by their '
+                'net labels.', 1.27),
+    (T(4, 12), 'POWER: +12V -> D1 -> +12V_F (op amps, ladder, U1 HT7550-1 -> +5V reference); -12V -> D2 -> -12V_F.', 1.27),
+    (T(80, 12), 'SUPPLY PINS + DECOUPLING', 1.27),
     (T(4, 106), 'AUDIO IN: U5B x -1. LADDER: 200k / 1k into the driver (+/-25 mV); 4 rungs, 47n NP0;\n'
                 'bias chain LB0..LB4 1.5 V steps.', 1.27),
     (T(92, 48), 'OUTPUT: U6 followers on the top nodes, U7A x10 difference amp (LAD_DIF = 0.05 x IN),\n'
-                'U9A AC coupled x20.6 -> 1k -> FILTER OUT (IN x 1.03, in phase).', 1.27),
-    (T(92, 86), 'RESONANCE: U11B x -1.42 (LAD_DIF - 0.05 x IN) -> C20 -> vactrol LDR -> feedback base (1k):\n'
-                'k = 14.3 x 1k / (1k + R_LDR); dry level kept at any k = the 16bit (1 + k) makeup.\n'
-                'RES knob + RES CV -> RES_X (passive mix, no CV attenuator) -> U7B: I_LED = RES_X / 330R.', 1.27),
-    (T(4, 112), 'CUTOFF + DEPTH summer -> 1/40 divider -> expo (Q3A reference at 0.55 mA, Q3B = ladder tail).\n'
+                'U9A AC coupled x20.6 -> 1k -> OUT (IN x 1.03, in phase).', 1.27),
+    (T(92, 86), 'RESONANCE: U9B x -1.42 (LAD_DIF - 0.05 x IN) -> C20 -> 1/11 -> OTA U8A -> C22 -> feedback base (1k):\n'
+                'k = 25 x I_ABC [mA], self-oscillation (k = 4) at ~0.17 mA; dry level kept at any k = the 16bit\n'
+                '(1 + k) makeup.', 1.27),
+    (T(108, 138), 'RES knob (on +5V) + RES CV -> U7B virtual ground (10 uA / V each) -> Q9: I_ABC = 6.16 x I_in.\n'
+                  'Knob full or +5 V CV = 0.31 mA (k ~ 7.7); negative sum: D8, Q9 off. R50 caps I_ABC at ~1.2 mA.', 1.27),
+    (T(160, 90), 'Unused LM13700 half (inputs to GND, bias open = off) and buffers.', 1.27),
+    (T(4, 112), 'CUTOFF + CV summer -> 1/40 divider -> expo (Q3A reference at 0.55 mA, Q3B = ladder tail).\n'
                 'D6 clamps V_S at -0.6 V (~31 kHz).', 1.27),
-    (T(4, 137), 'POWER: +12V -> D1 -> +12V_F (op amps, ladder, U1 HT7550-1 -> +5V); -12V -> D2 -> -12V_F.', 1.27),
-    (T(80, 134), 'SUPPLY PINS + DECOUPLING', 1.27),
+    (T(68, 146), 'CV x DEPTH: J3 -> R9 -> DEPTH pot (0.56 x CV at full) -> U4A -> CV_S -> R14: 5 V = +8.3 octaves.\n'
+                 'CV LEDs anti-parallel in the U4A loop: D11 lights for a positive CV, D12 for a negative one,\n'
+                 'I_LED = |V(CV_S)| x (1 / R14 + closed steps), linear from 0 V.\n'
+                 'Brightness at 5 V CV / DEPTH full: JP1..JP3 open 0.06 mA; JP1 0.12; JP2 0.19; JP1+2 0.25;\n'
+                 'JP3 0.34; JP1+3 0.40; JP2+3 0.47; all 0.53 mA.', 1.27),
 ]
 
 
@@ -715,30 +612,22 @@ def text_at(p):
         return ((0, -2.54), (0, 2.54), None) if rot in (0, 180) else left
     if sym == 'LED':
         return ((0, -3.175), (0, 3.175), None) if rot in (0, 180) else right
-    if sym == 'SW_Push':
-        return ((0, -3.81), (0, 3.81), None) if rot in (0, 180) else left
     if sym == 'R_Potentiometer':
         if rot in (90, 270):
             return (0, -4.45), (0, -2.54), None
         return ((2.54, 2.29), (2.54, 4.19), 'left') if not mir else ((-2.54, 2.29), (-2.54, 4.19), 'right')
-    if sym == 'BAT54SW':
-        return (0, -2.54), (0, -4.45), None
     if sym == 'TL072':
         return ((-3.81, -0.635), (-3.81, 1.27), 'right') if unit == 3 else ((0, -7.62), (0, -5.715), None)
-    if sym in ('DMMT3904W', 'MMBT3904'):
+    if sym == 'DMMT3904W':
         return ((5.08, -0.635), (5.08, 1.27), 'left') if not mir else ((-5.08, -0.635), (-5.08, 1.27), 'right')
-    if sym == 'TS5A23157DGS':
-        return ((-6.35, -0.635), (-6.35, 1.27), 'right') if unit == 3 else ((0, -7.62), (0, -5.715), None)
-    if sym == 'ATtiny1616-M':
-        return (10.16, -25.4), (10.16, 25.4), None
-    if sym == 'VTL5C':
-        return ((0, -6.35), (0, 6.35), None) if rot in (0, 180) else ((-3.81, -0.635), (-3.81, 1.27), 'right')
+    if sym == 'LM13700':
+        return ((-3.81, -0.635), (-3.81, 1.27), 'right') if unit == 5 else ((0, -7.62), (0, -5.715), None)
+    if sym == 'Q_PNP_BEC':
+        return (5.08, -0.635), (5.08, 1.27), 'left'
+    if sym == 'SolderJumper_2_Open':
+        return (0, -2.54), (0, 2.54), None
     if sym in ('AudioJack2_SwitchT', 'Conn_02x05_Odd_Even'):
         return (0, -8.89), (0, 8.89), None
-    if sym == 'Conn_01x02':
-        return ((5.08, -0.635), (5.08, 1.27), 'left')
-    if sym == 'SolderJumper_3_Open':
-        return (0, -5.08), (0, -3.175), None
     if sym == 'HT75xx-1-SOT89':
         return (0, -7.62), (0, -6.35), None
     if sym == 'PWR_FLAG':
@@ -747,8 +636,7 @@ def text_at(p):
 
 
 # Per-part text placement overrides (reference offset, value offset, justify), mm.
-TEXT_SIDE = {'R7': ((-1.905, -0.635), (-1.905, 1.27), 'right'), 'R5': ((-1.905, -0.635), (-1.905, 1.27), 'right'),
-             'D4': ((1.905, -0.635), (1.905, 1.27), 'left')}
+TEXT_SIDE = {}
 
 
 def power_symbol(net, x, y, d, key, root):
@@ -895,6 +783,17 @@ def route_wires(parts, ends, lib_syms):
                     blocked.add(node(ex + d[0] * s * H, ey + d[1] * s * H))
     for c in pin_nodes:
         blocked.discard(c)
+    # a body box wider than its pins (the LED's arrows reach past the cathode pin end): free the
+    # lane straight out of a wired pin, as far as only that part's own body blocks it
+    for k, (ex, ey, d, net) in ends.items():
+        if net is None or net in RAIL_SYMBOL or net in LABEL_NETS:
+            continue
+        c = node(ex, ey)
+        for s in range(1, 4):
+            lane = (c[0] + d[0] * s, c[1] + d[1] * s)
+            if set(src.get(lane, ())) != {k.split('/')[0] + ' body'}:
+                break
+            blocked.discard(lane)
 
     DEBUG["blocked"] = blocked
     occ = {}      # node -> {net: set of axes ('h', 'v')}
@@ -1151,8 +1050,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - LADDER") (rev "S3") (company "Big Modular")
-        (comment 1 "SCHEMATIC S3 - analog 16bit ladder filter (vactrol resonance) + recordable envelope + vactrol VCA")
+      (title_block (title "Big Modular - LADDER") (rev "S5") (company "Big Modular")
+        (comment 1 "SCHEMATIC S5 - pure-analog 6HP ladder filter: OTA resonance, bipolar CV LEDs")
         (comment 2 "Circuit intent: docs/research.md; ngspice check: tools/sim_ladder.py"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
