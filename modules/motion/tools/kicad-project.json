@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_dir": "../hardware",
+  "board": "../hardware/motion.kicad_pcb",
+  "root_schematic": "../hardware/motion.kicad_sch",
+  "dependencies": [
+    "../hardware/MOTION.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  },
+  "source_manifest": "../jlcpcb/source-sha256.json"
+}

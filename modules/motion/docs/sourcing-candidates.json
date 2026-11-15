@@ -1,0 +1,506 @@
+{
+ "note": "Live strict JLCPCB public-catalog lookups (opt/kicad-tools/jlcpcb/assembly.py lookup --strict-live, 2026-11-15) of the parts that are new to the repository (MCP4728, MB85RC256V, 10R, 2.2k) and of the Extended parts. Stock is a dated web observation, not a reservation or order acceptance. The other R/C/diode/regulator codes are the modules/8bit parts (its live audit 2026-11-14, modules/8bit/docs/sourcing-candidates.json); a full assembly audit of this BOM has not been run (no board export yet).",
+ "parts": [
+  {
+   "code": "C108207",
+   "mpn": "MCP4728-E/UN",
+   "manufacturer": "Microchip Tech",
+   "package": "MSOP-10",
+   "classification": "Extended",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 5713,
+   "price_1": 2.4362,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:33Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C108207"
+    },
+    "sha256": "5330cba5205750dc54abc9d060516c404d7ece9b17abd47f4ca29f8bc0ecc978",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [],
+   "note": "alternative listing of the same DAC (cut tape MPN), not on the BOM"
+  },
+  {
+   "code": "C12594",
+   "mpn": "TL074CDR",
+   "manufacturer": "Texas Instruments",
+   "package": "SOIC-14",
+   "classification": "Extended",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 177450,
+   "price_1": 0.2442,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:39Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C12594"
+    },
+    "sha256": "c2616833cc7fe870d994067552c725e8e847c44abccf2c8d7a949329f12b9988",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "U5"
+   ]
+  },
+  {
+   "code": "C2074262",
+   "mpn": "ESR18EZPF1001",
+   "manufacturer": "ROHM Semicon",
+   "package": "1206",
+   "classification": "Extended",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 99501,
+   "price_1": 0.0176,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:41Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C2074262"
+    },
+    "sha256": "5c8344523cbfccce79c2335faf2e00d5a1d144879e8737c72f92961ee3615f65",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "R14",
+    "R18",
+    "R22",
+    "R26"
+   ]
+  },
+  {
+   "code": "C22859",
+   "mpn": "0603WAF100JT5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 5795619,
+   "price_1": 0.0018,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:35Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C22859"
+    },
+    "sha256": "ab78fbfd24a25b5163abf207a7c086b2f5b0d5ef6f73af939947a75292762cf4",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "R1"
+   ]
+  },
+  {
+   "code": "C4190",
+   "mpn": "0603WAF2201T5E",
+   "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+   "package": "0603",
+   "classification": "Basic",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 4602305,
+   "price_1": 0.0018,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:37Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C4190"
+    },
+    "sha256": "acdf1d5bdf6516cd376aefc3bd615bc411572f0970ae9e6aba37e5c65d90af3f",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "R3",
+    "R4"
+   ]
+  },
+  {
+   "code": "C45273903",
+   "mpn": "MB85RC256VPNF-G-AMERE2",
+   "manufacturer": "RAMXEED/FUJITSU",
+   "package": "SOP-8-150mil",
+   "classification": "Extended",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 16911,
+   "price_1": 2.163,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:34Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C45273903"
+    },
+    "sha256": "336c9b179d485b4fc618cfcb993a1581c371b96aabfd04be0577174b0cc1a1b9",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "U4"
+   ]
+  },
+  {
+   "code": "C478093",
+   "mpn": "MCP4728T-E/UN",
+   "manufacturer": "Microchip Tech",
+   "package": "MSOP-10",
+   "classification": "Extended",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 15946,
+   "price_1": 2.6326,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:32Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C478093"
+    },
+    "sha256": "169ae992e476b6f70ec0027b3720688255266130614c217a535804cb2e1b396f",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "U3"
+   ]
+  },
+  {
+   "code": "C507118",
+   "mpn": "ATTINY1616-MNR",
+   "manufacturer": "Microchip Tech",
+   "package": "QFN-20-EP(3x3)",
+   "classification": "Extended",
+   "preferred_extended": false,
+   "economy_eligible": true,
+   "stock": 10100,
+   "price_1": 1.2451,
+   "evidence": {
+    "source_url": "https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList",
+    "retrieved_at_utc": "2026-11-15T11:10:38Z",
+    "http_status": 200,
+    "request": {
+     "currentPage": 1,
+     "pageSize": 20,
+     "keyword": "C507118"
+    },
+    "sha256": "08050bb2a24a346462bef7d51c88ccadac221c41af368272327219c8c1b16083",
+    "mode": "live",
+    "schema_mapping_source": "https://jlcpcb.com/ssr/js/b1851ed7074a22a7e047.js",
+    "schema_mapping_observed_at_utc": "2026-10-05T04:51:32.467955Z"
+   },
+   "refs": [
+    "U2"
+   ]
+  }
+ ],
+ "bom_live_lookup": {
+  "note": "Live strict catalog lookup of every code on the exported R1 BOM (opt/kicad-tools/jlcpcb/assembly.py audit --strict-live, 5 boards, bottom side). Catalog facts only: the audit itself reports failures because no docs/jlcpcb-audit-requirements.json (circuit requirements, manual-part policy, review attestations) has been written for this module yet. Stock is a dated web observation, not a reservation.",
+  "generated_at_utc": "2026-11-15T14:49:12Z",
+  "audit_failures": [
+   "BOM/CPL reference sets differ (manual/DNP must be removed from both)",
+   "Export exclusions overlap assembled BOM",
+   "Exporter warnings require human reconciliation; not waived by audit"
+  ],
+  "raw": "research/sourcing/assembly-audit-r1.json (ignored)",
+  "parts": [
+   {
+    "code": "C15850",
+    "mpn": "CL21A106KAYNNNE",
+    "manufacturer": "Samsung Electro-Mechanics",
+    "package": "0805",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 8844975,
+    "price_1": 0.0311,
+    "needed_for_5_boards": 25,
+    "refs": [
+     "C1",
+     "C2",
+     "C4",
+     "C5",
+     "C6"
+    ]
+   },
+   {
+    "code": "C57112",
+    "mpn": "0603B103K500NT",
+    "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+    "package": "0603",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 5218115,
+    "price_1": 0.0103,
+    "needed_for_5_boards": 20,
+    "refs": [
+     "C10",
+     "C11",
+     "C12",
+     "C13"
+    ]
+   },
+   {
+    "code": "C28323",
+    "mpn": "CL21B105KBFNNNE",
+    "manufacturer": "Samsung Electro-Mechanics",
+    "package": "0805",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 4392028,
+    "price_1": 0.0285,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "C3"
+    ]
+   },
+   {
+    "code": "C14663",
+    "mpn": "CC0603KRX7R9BB104",
+    "manufacturer": "YAGEO",
+    "package": "0603",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 34350521,
+    "price_1": 0.0104,
+    "needed_for_5_boards": 45,
+    "refs": [
+     "C7",
+     "C8",
+     "C9",
+     "C14",
+     "C15",
+     "C16",
+     "C17",
+     "C18",
+     "C19"
+    ]
+   },
+   {
+    "code": "C8598",
+    "mpn": "B5819W SL",
+    "manufacturer": "Jiangsu Changjing Electronics Technology Co., Ltd.",
+    "package": "SOD-123",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 758288,
+    "price_1": 0.0256,
+    "needed_for_5_boards": 10,
+    "refs": [
+     "D7",
+     "D8"
+    ]
+   },
+   {
+    "code": "C22859",
+    "mpn": "0603WAF100JT5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 5795138,
+    "price_1": 0.0018,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "R1"
+    ]
+   },
+   {
+    "code": "C2074262",
+    "mpn": "ESR18EZPF1001",
+    "manufacturer": "ROHM Semicon",
+    "package": "1206",
+    "classification": "Extended",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 99501,
+    "price_1": 0.0176,
+    "needed_for_5_boards": 20,
+    "refs": [
+     "R14",
+     "R18",
+     "R22",
+     "R26"
+    ]
+   },
+   {
+    "code": "C23162",
+    "mpn": "0603WAF4701T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 14888643,
+    "price_1": 0.0028,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "R2"
+    ]
+   },
+   {
+    "code": "C4190",
+    "mpn": "0603WAF2201T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 4602721,
+    "price_1": 0.0018,
+    "needed_for_5_boards": 10,
+    "refs": [
+     "R3",
+     "R4"
+    ]
+   },
+   {
+    "code": "C25804",
+    "mpn": "0603WAF1002T5E",
+    "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+    "package": "0603",
+    "classification": "Basic",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 42903828,
+    "price_1": 0.002,
+    "needed_for_5_boards": 90,
+    "refs": [
+     "R5",
+     "R6",
+     "R7",
+     "R8",
+     "R9",
+     "R10",
+     "R11",
+     "R12",
+     "R13",
+     "R15",
+     "R16",
+     "R17",
+     "R19",
+     "R20",
+     "R21",
+     "R23",
+     "R24",
+     "R25"
+    ]
+   },
+   {
+    "code": "C16106",
+    "mpn": "HT7550-1",
+    "manufacturer": "Holtek Semicon",
+    "package": "SOT-89-3",
+    "classification": "Preferred Extended",
+    "preferred_extended": true,
+    "economy_eligible": true,
+    "stock": 175510,
+    "price_1": 0.1298,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "U1"
+    ]
+   },
+   {
+    "code": "C507118",
+    "mpn": "ATTINY1616-MNR",
+    "manufacturer": "Microchip Tech",
+    "package": "QFN-20-EP(3x3)",
+    "classification": "Extended",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 10045,
+    "price_1": 1.2451,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "U2"
+    ]
+   },
+   {
+    "code": "C478093",
+    "mpn": "MCP4728T-E/UN",
+    "manufacturer": "Microchip Tech",
+    "package": "MSOP-10",
+    "classification": "Extended",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 15946,
+    "price_1": 2.6326,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "U3"
+    ]
+   },
+   {
+    "code": "C45273903",
+    "mpn": "MB85RC256VPNF-G-AMERE2",
+    "manufacturer": "RAMXEED/FUJITSU",
+    "package": "SOP-8-150mil",
+    "classification": "Extended",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 16911,
+    "price_1": 2.163,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "U4"
+    ]
+   },
+   {
+    "code": "C12594",
+    "mpn": "TL074CDR",
+    "manufacturer": "Texas Instruments",
+    "package": "SOIC-14",
+    "classification": "Extended",
+    "preferred_extended": false,
+    "economy_eligible": true,
+    "stock": 177450,
+    "price_1": 0.2442,
+    "needed_for_5_boards": 5,
+    "refs": [
+     "U5"
+    ]
+   }
+  ]
+ }
+}
