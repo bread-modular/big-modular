@@ -394,7 +394,7 @@ designators (as the other modules).
 - Courtyard to edge: closest RV2 1.015 mm incl. line width (the audit prints 0.995 because
   pcbnew's courtyard box is 0.02 mm larger and it measures to the edge centre line); every
   other part further in. Copper-edge rule 1.0 mm in native DRC.
-- Fab review: section 9. Not done: JLCPCB export, bench test.
+- Fab review: section 9. JLCPCB export: section 10. Not done: bench test.
 
 ## 9. Fab review (R1, 2026-11-15)
 
@@ -457,3 +457,18 @@ ESR18 1k C2074262 99,501: these four are plain Extended. HT7550-1 C16106 is Pref
 Result (`research/fab/check-post/`, `research/fab/review-final.txt`): ERC 0, DRC 0,
 unconnected 0, parity 0; 521 tracks / 81 vias as R1. Not done: the JLCPCB export, JLCPCB's
 placement preview and DFM, any build.
+
+## 10. JLCPCB export (S5 / R1, 2026-11-15)
+
+User: "Do the JLCPCB export of the ladder module." Shared `opt/kicad-tools/jlcpcb/export.py`,
+unchanged, into `jlcpcb/carrier/` (bottom, `--require-part-numbers`) and `jlcpcb/panel/`
+(`--pcb-only`), with a new `jlcpcb/source-sha256.json`; upload mirrors in `jlcpcb/` and
+`jlcpcb/assembly/`. No source change.
+
+- Carrier: 95 placements / 30 BOM rows, all bottom, BOM refs = CPL refs; excluded D11, D12,
+  J3..J6, J10, RV2..RV4 (THT) and JP1..JP3 (out of BOM). Same as the fab-review trial export.
+- Panel: 2 layers, 11 NPTH (rail 3.2, LED 3.2, jack 6.2, pot 7.2 mm); native DRC 0 / 0.
+- Shared check after the export (`research/export-check-post/`): ERC 0, DRC 0, unconnected 0,
+  parity 0, source manifest equal, sources unchanged.
+
+Not done: JLCPCB placement preview / DFM, ordering, bench test.
