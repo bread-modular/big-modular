@@ -1,18 +1,18 @@
 """Generate the LADDER boards from docs/geometry.json and the native schematic netlist.
 
-modules/hats/tools/build_layout.py with the LADDER library, a 10HP panel (modules/acid rail
+modules/hats/tools/build_layout.py with the LADDER library, a 6HP panel (modules/hats rail
 holes) and a 4-layer carrier. Run from modules/ladder with KiCad's Python (pcbnew 10), after
 tools/build_schematic.py:
   python3 -B tools/build_layout.py
 
-Writes hardware/ladder.kicad_pcb (carrier: P2 placement with schematic nets, no
-routing) and panels/front-pcb/ladder-panel.kicad_pcb (passive 10HP panel: outline, NPTH
+Writes hardware/ladder.kicad_pcb (carrier: P4 placement with schematic nets, no
+routing) and panels/front-pcb/ladder-panel.kicad_pcb (passive 6HP panel: outline, NPTH
 holes, silkscreen labels). Placement comes from the geometry contract; references,
 values, fields, symbol links and pad nets come from the netlist that kicad-cli exports
 from hardware/ladder.kicad_sch (what "Update PCB from Schematic" would do).
 
-P2 places only the THT parts (jacks, pots, REC button and LED on F, vactrols and headers
-on B, as modules/acid and modules/hats). Every SMD part is parked on B in a grid off the right board edge
+P4 places only the THT parts (jacks, pots and the two CV LEDs on F, the power header on B,
+as modules/hats; S5 has no vactrol). Every SMD part is parked on B in a grid off the right board edge
 (geometry.json smd_parking), so the ratsnest shows all nets; the parts move onto the
 board group by group with the manual routing (root AGENTS.md). Once routing starts the
 native PCB is the source of truth: rerunning this script discards it.
@@ -53,7 +53,7 @@ def mm_xy(v):
     return pcbnew.ToMM(v.x) - OX, pcbnew.ToMM(v.y) - OY
 
 
-def new_board(path, title, comments, rev='P2'):
+def new_board(path, title, comments, rev='P4'):
     board = pcbnew.NewBoard(str(path))
     tb = board.GetTitleBlock()
     tb.SetTitle(title)
@@ -180,8 +180,8 @@ def build_carrier():
         raise RuntimeError('Refusing to overwrite routed native carrier; edit it explicitly. Use --panel-only for panel.')
     comps, nets = schematic_netlist()
     board = new_board(path, 'Big Modular - LADDER carrier', [
-        'S3/P2: THT placed, SMD parked off the board, UNROUTED - not released',
-        'Front (F) faces the panel; THT jacks/pots/REC button/LED on F, vactrols and headers on B, hand-soldered; SMD on B',
+        'S5/P4: THT placed, SMD parked off the board, UNROUTED - not released',
+        'Front (F) faces the panel; THT jacks/pots/CV LEDs on F, power header on B, hand-soldered; SMD on B',
         'Geometry contract: docs/geometry.json; nets: hardware/ladder.kicad_sch',
     ])
     board.SetCopperLayerCount(GEO['main_pcb']['copper_layers'])
@@ -208,10 +208,7 @@ def build_carrier():
     lz = GEO['stack_Z_mm']['led_body_bottom'] - GEO['stack_Z_mm']['led_model_body_bottom']
     for d in GEO['leds']:
         fp = place(board, d['ref'], 'LED_D3.0mm', *d['XY'], 0, comps[d['ref']], model_z=lz)
-        fp.Value().SetVisible(False)  # no room beside the REC button for value text
-    for b in GEO['buttons']:
-        fp = place(board, b['ref'], 'SW_PUSH_6mm_H7.3mm', *b['XY'], b['rot'], comps[b['ref']])
-        fp.Value().SetLayer(pcbnew.F_Fab)
+        fp.Value().SetVisible(False)  # no room under the DEPTH pot for value texts
     for v in GEO['vactrols']:
         assert v['side'] == 'B', v
         place(board, v['ref'], VACTROL_FP, *v['XY'], v['rot'], comps[v['ref']], back=True)
@@ -257,11 +254,7 @@ def build_carrier():
     sx, sy = ph['idc16_socket_envelope_mm']['X'], ph['idc16_socket_envelope_mm']['Y']
     rect(board, pcbnew.Dwgs_User, sx[0], sy[0], sx[1], sy[1])
     text(board, pcbnew.Dwgs_User, 'IDC16', (sx[0] + sx[1]) / 2, sy[0] + 1.5, 0.8)
-    text(board, pcbnew.B_SilkS, 'LADDER P2', 33.0, 116.5, 0.8, mirrored=True)
-    # J11 UPDI: pin 1 (UPDI) on top, pin 2 (GND) below, at the left edge.
-    j11 = {pad.GetNumber(): mm_xy(pad.GetPosition()) for pad in fps['J11'].Pads()}
-    text(board, pcbnew.B_SilkS, 'UPDI', j11['1'][0] + 3.0, j11['1'][1], 0.8, mirrored=True)
-    text(board, pcbnew.B_SilkS, 'GND', j11['2'][0] + 2.8, j11['2'][1], 0.8, mirrored=True)
+    text(board, pcbnew.B_SilkS, 'LADDER P4', 6.5, 117.0, 0.8, mirrored=True)
     save_canonical(path, board)
     return path
 
@@ -299,7 +292,7 @@ def npth(board, mech_id, x, y, d):
 def build_panel():
     path = MODULE / 'panels/front-pcb/ladder-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - LADDER %dHP front panel' % GEO['hp'], [
-        'P2: knob grid 30 x 27 mm, REC button + LED; passive panel, NPTH only, no copper',
+        'P4: CUTOFF / RES on the centre line, two CV LEDs; passive panel, NPTH only, no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -318,9 +311,6 @@ def build_panel():
     for d in GEO['leds']:
         n += 1
         npth(board, f'H{n}', *d['XY'], holes['led'])
-    for b in GEO['buttons']:
-        n += 1
-        npth(board, f'H{n}', *b['XY'], holes['button'])
     for lab in GEO['panel_labels']:
         text(board, pcbnew.F_SilkS, lab['text'], *lab['XY'], lab['size'])
     save_canonical(path, board)

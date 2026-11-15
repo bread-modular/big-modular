@@ -1,4 +1,4 @@
-"""Generate the 3D-printable LADDER 10HP front panel with FreeCAD.
+"""Generate the 3D-printable LADDER 6HP front panel with FreeCAD.
 
 Run headless from modules/ladder:
   ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
@@ -76,7 +76,6 @@ def check_contract(g):
     want += [(*j['XY'], d['jack']) for j in c['jacks']]
     want += [(*p['shaft_XY'], d['pot']) for p in c['pots']]
     want += [(*led['XY'], d['led']) for led in c['leds']]
-    want += [(*b['XY'], d['button']) for b in c['buttons']]
     got = [(x, y, w) for _, x, y, w, h, _ in g['holes'] if w == h]
     assert sorted(got) == sorted(want), (sorted(got), sorted(want))
     assert all(w == h for _, _, _, w, h, _ in g['holes']), 'no slots on this panel'

@@ -1,36 +1,47 @@
-# LADDER: analog 16bit ladder filter + envelope + vactrol VCA
+# LADDER: pure-analog 6HP transistor ladder filter
 
-An analog take on the modules/16bit polysynth ladder filter: a classic Moog 4-pole
-transistor ladder with the 16bit's controls and its resonance makeup (the dry level holds as
-resonance goes up), an ATtiny1616 envelope driven by GATE or MIDI, a full CV bypass, and a
-Bread Modular V2CA-style vactrol VCA on the filter output.
+A classic Moog 4-pole transistor ladder low-pass, analog from jack to jack: no MIDI, no MCU, no
+firmware. OTA (LM13700) resonance with the modules/16bit `PolyFilter` makeup (the dry level
+holds as resonance goes up), an attenuated CV input for the cutoff and two dim LEDs that show
+it.
 
 | Control / jack | Function |
 |---|---|
-| **CUTOFF** | ~55 Hz .. ~17 kHz, exponential, CW = open |
-| **RESONANCE** | vactrol-controlled, 0 .. self-oscillation near the top (point depends on the vactrol); dry level kept (16bit (1 + k) makeup) |
-| **ENV TIME** | attack = release, 5 ms .. 2 s (firmware) |
-| **DEPTH** | 0 .. +8 octaves of envelope (or CV) on top of CUTOFF (read by the MCU, recordable) |
-| **REC** + LED | records ENV TIME + DEPTH for 4 bars on MIDI clock, then loops (as ACID; firmware to write) |
-| **CURVE** | VCA response: CCW punchy, CW soft (V2CA CURVE) |
-| **MIDI**, **GATE** | start / release the envelope (MIDI: TS, JP1 protected / direct) |
-| **CV** | 0..5 V, replaces the envelope (cutoff via the MCU x DEPTH; the VCA directly) |
-| **AUDIO IN** | 10 Vpp |
-| **RES CV** | adds to RESONANCE (slow, through the vactrol), +5 V ~ the knob's full range |
-| **FILTER OUT**, **VCA OUT** | direct ladder out; through the vactrol VCA |
+| **IN** | Audio in, 10 Vpp |
+| **RES CV** | Adds to RES, +5 V = the knob's full range, negative subtracts; no attenuator; audio rate works |
+| **CV** | Cutoff modulation, DC coupled: positive opens the filter, negative closes it |
+| **DEPTH** | Attenuates the CV: 0 .. +8.3 octaves for a 5 V CV |
+| CV LEDs `-` / `+` | Show the CV after DEPTH, one per polarity, dim and linear from 0 V |
+| **CUTOFF** | ~55 Hz .. ~17 kHz, exponential, CW = open (main knob) |
+| **RES** | 0 .. self-oscillation from about 60 % of the travel; dry level kept (main knob) |
+| **OUT** | Filter output, 10 Vpp for 10 Vpp in |
 
-**Status: S3 schematic (vactrol resonance, REC; ERC 0, netlist asserted) + R2 routed carrier: 10HP,
-4 layers, all SMD on the back (manual routing + 2026-11-10 fab-review fixes; DRC 0 / unconnected 0 /
-parity 0). Panel PCB + printable panel. JLCPCB export in [`jlcpcb/`](jlcpcb/README.md), not
-supplier-accepted, not built. No firmware.**
+LED brightness: three solder jumpers on the back beside the CUTOFF pot (silk `LED`, `1` `2` `3`
+= JP1..JP3), open as shipped (dimmest).
 
-Panel, top to bottom: MIDI, GATE, CV, RES CV; CUTOFF, RES; ENV TIME, DEPTH; REC button + LED,
-CURVE; AUDIO IN, FILTER OUT, VCA OUT.
+| JP1 | JP2 | JP3 | LED current at +/-5 V CV, DEPTH full |
+|---|---|---|---|
+| open | open | open | 0.06 mA |
+| closed | open | open | 0.12 mA |
+| open | closed | open | 0.19 mA |
+| closed | closed | open | 0.25 mA |
+| open | open | closed | 0.34 mA |
+| closed | open | closed | 0.40 mA |
+| open | closed | closed | 0.47 mA |
+| closed | closed | closed | 0.53 mA |
+
+**Status: S5 schematic (ERC 0, netlist asserted) + P4 placement + R1 manual routing: 6HP,
+4 layers (In1 GND, In2 +12V_F), 95 SMD parts and the 3 solder jumpers on the back (ERC 0 /
+DRC 0 / unconnected 0 / parity 0). Panel PCB + printable panel. Fab-reviewed 2026-11-15 (B silk 1.0 mm, stackup
+recorded, no copper change). No fabrication export, not built.** The earlier
+10HP S3 / R2 version (ATtiny1616 envelope, REC, vactrol VCA) is in git history.
+
+Panel, top to bottom: IN, RES CV; CV, DEPTH (the two CV LEDs below it); CUTOFF; RES; OUT.
 
 ```sh
 python3 -B tools/build_schematic.py   # schematic (placement by hand, wires by its router)
-python3 -B tools/build_layout.py      # carrier P2 placement + panel (refuses a routed carrier: do not run)
-python3 -B tools/sim_ladder.py        # ngspice check of ladder / expo / resonance
+python3 -B tools/build_layout.py --panel-only   # panel only: the carrier is routed (the build refuses it)
+python3 -B tools/sim_ladder.py        # ngspice check of ladder / expo / OTA resonance / CV LED loop
 kicad-cli sch erc --severity-all --format json -o research/erc.json hardware/ladder.kicad_sch
 ```
 
