@@ -33,7 +33,7 @@ LED brightness: three solder jumpers on the back beside the CUTOFF pot (silk `LE
 **Status: S5 schematic (ERC 0, netlist asserted) + P4 placement + R1 manual routing: 6HP,
 4 layers (In1 GND, In2 +12V_F), 95 SMD parts and the 3 solder jumpers on the back (ERC 0 /
 DRC 0 / unconnected 0 / parity 0). Panel PCB + printable panel. Fab-reviewed 2026-11-15 (B silk 1.0 mm, stackup
-recorded, no copper change). No fabrication export, not built.** The earlier
+recorded, no copper change). JLCPCB export in `jlcpcb/` (2026-11-15), not supplier-accepted, not built.** The earlier
 10HP S3 / R2 version (ATtiny1616 envelope, REC, vactrol VCA) is in git history.
 
 Panel, top to bottom: IN, RES CV; CV, DEPTH (the two CV LEDs below it); CUTOFF; RES; OUT.

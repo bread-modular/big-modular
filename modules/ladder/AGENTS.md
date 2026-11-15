@@ -48,8 +48,11 @@ module-relative.
   `fab_r1.py`). Judged and kept: U8 bypass caps 5.9 mm routed, U1 input cap through the In2
   plane. Live stock 2026-11-15: DMMT3904W C155305 684 (6 per board). Plain Extended: DMMT3904W,
   47n NP0, ESR18 1k, LM13700; HT7550-1 is Preferred Extended.
-- **Not done**: JLCPCB export (`jlcpcb/` holds none; the stale S3 / R2 set was
-  removed), bench test. Bench check item: LTAIL runs beside AIN_BUF for 12 mm (estimate only).
+- **JLCPCB export (2026-11-15)** in `jlcpcb/` (see its README): carrier bottom Economic, 95
+  placements / 30 BOM rows, panel 11 NPTH; shared check ERC 0 / DRC 0 / unconnected 0 / parity 0
+  with the source manifest equal (`research/export-check-post/`), panel DRC 0. Not
+  supplier-accepted.
+- **Not done**: JLCPCB preview / DFM, bench test. Bench check item: LTAIL runs beside AIN_BUF for 12 mm (estimate only).
 - The S3 / R2 10HP design (ATtiny1616 envelope, REC, VCA; routed and exported, never built) is
   in git history: commit `b32225b` and before. S4 (vactrol resonance, one LED) was never
   committed; its sources are copied in the ignored `research/s4-backup/`.

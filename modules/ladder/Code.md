@@ -8,7 +8,7 @@
 | Placement contract | `docs/geometry.json`; native PCB owns SMD placement and copper once routing starts |
 | Circuit rationale, numbers, ngspice check | `docs/research.md`, `tools/sim_ladder.py` |
 | Routing record | `docs/research.md` section 8; batch scripts in the ignored `research/route/` |
-| Fabrication outputs | `jlcpcb/` (none for S5 / R1 yet; shared exporter only) |
+| Fabrication outputs | `jlcpcb/` (S5 / R1 export 2026-11-15; shared exporter only) |
 
 ## Fixed by the brief (user 2026-11-15)
 
@@ -83,4 +83,5 @@
   JLC04161H-7628 stackup recorded, no copper change (still R1); shared check ERC 0 / DRC 0 /
   unconnected 0 / parity 0 (`research/fab/check-post/`), saved fills equal a fresh refill,
   DMMT3904W pin-out re-read from DS30311; trial export 95 placements / 30 rows (bottom).
-- Routed and fab-reviewed; no export, not built, not bench-tested.
+- Routed, fab-reviewed and exported (`jlcpcb/`, 2026-11-15: 95 placements / 30 rows, bottom,
+  manifest equal); not supplier-accepted, not built, not bench-tested.
