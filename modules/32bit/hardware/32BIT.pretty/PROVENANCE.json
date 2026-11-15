@@ -14,12 +14,26 @@
       "edits": "none (native load/save only)",
       "output_sha256": "aad9d390ab5b0d8a787f9fa5ccf8e3923612f0508b53ee3e0f1e3864c466e5df"
     },
-    "ESP32-S3-WROOM-1U": {
-      "source": "/usr/share/kicad/footprints/RF_Module.pretty/ESP32-S3-WROOM-1U.kicad_mod",
-      "source_sha256": "df15405c34139c9da4f5e42d1f365db450ecb42e44192a38e85e1a3fba2d18d2",
+    "QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias": {
+      "source": "/usr/share/kicad/footprints/Package_DFN_QFN.pretty/QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias.kicad_mod",
+      "source_sha256": "25ae50d6aa197008150b055a3a01c9476e689681ce3a4c211af7b3d07ffd158f",
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
-      "edits": "3D model ['${KICAD10_3DMODEL_DIR}/RF_Module.3dshapes/ESP32-S3-WROOM-1U.step'] is not shipped by KiCad 10; removed (no proxy); fabrication property \"heatsink\" on the 12 plated thermal-via pads (metadata)",
-      "output_sha256": "126934c75d54546b77b87e414dab8dab42b304c18b79c6d17e7c16d401bdaf61"
+      "edits": "fabrication property \"heatsink\" on the 9 plated thermal-via pads (metadata)",
+      "output_sha256": "ecfca77ab3d4d6abcba97874d635f2dff6af0b109504532f1c40bf06d2cd4894"
+    },
+    "SOIC-8_5.3x5.3mm_P1.27mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_5.3x5.3mm_P1.27mm.kicad_mod",
+      "source_sha256": "cc86a7083c9df1c1bf808dfa469e913d446455fd7ab7a7941e18681b80e8b9b5",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "c9c44fe319386c9ef6daddb55dbe68c39d4547cb5bf0c12e7649e47a67c82872"
+    },
+    "Crystal_SMD_3225-4Pin_3.2x2.5mm": {
+      "source": "/usr/share/kicad/footprints/Crystal.pretty/Crystal_SMD_3225-4Pin_3.2x2.5mm.kicad_mod",
+      "source_sha256": "7648bca15399a8bd7856b5da6a1d2bc3a87049dc63958f8e8a3ab7409941a8e4",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "ee6d85ced89166623b85df2123c9840defc32f69794c174d503db40ebaaf7717"
     },
     "SOIC-8_3.9x4.9mm_P1.27mm": {
       "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_3.9x4.9mm_P1.27mm.kicad_mod",

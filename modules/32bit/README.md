@@ -1,6 +1,8 @@
 # 32bit — ESP32-S3 + ES8388 stereo audio (6HP)
 
-Based on Bread Modular `32bit-5v`: an ESP32-S3-WROOM-1U-N16R8 with an ES8388 stereo codec. It
+Based on Bread Modular `32bit-5v` (ESP32-S3-WROOM-1U-N16R8 + ES8388 stereo codec). Since S3 the module is
+built from its parts so JLCPCB can assemble the board with Economic PCBA: an ESP32-S3R8 (8 MB PSRAM
+inside), a W25Q128JVSIQ 16 MB flash and a 40 MHz crystal, with the same memory map and GPIOs. It
 reads MIDI, two audio inputs and two CV inputs (each with its own attenuator knob), and drives two
 audio outputs. Bread Modular's GPIO map is kept, so its ESP-IDF firmware ports (flash over the
 USB-C on the back). Pin map, change log and the code changes a port needs (CV scaling, MIDI polarity):
@@ -17,7 +19,7 @@ USB-C on the back). Pin map, change log and the code changes a port needs (CV sc
 Power: Eurorack 10-pin, ±12 V through series Schottkys, AMS1117-5.0 -> +5V -> AMS1117-3.3 -> +3V3
 (radio never used: see `docs/research.md` D2). USB-C (back, top edge) is data only, with BOOT / RESET below it.
 
-**Status: S2 schematic + R2 routed carrier (manual, 4 layers, 2 mm hand-solder clearance around jacks/pots except 4 user-accepted parts at 1.33-1.75 mm); R2 JLCPCB export in [`jlcpcb/`](jlcpcb/README.md) (U1 Standard PCBA, user choice); not supplier-accepted, not built.** Shared `check`: ERC 0,
+**Status: S3 schematic (ESP32-S3R8 + flash + crystal) + R3 routed carrier (manual, 4 layers; MCU area re-routed 2026-11-15, 2 mm hand-solder clearance around jacks/pots except 4 user-accepted parts at 1.33-1.75 mm); S3 / R3 JLCPCB export in [`jlcpcb/`](jlcpcb/README.md) (Economic PCBA, 103 parts / 43 rows); not supplier-accepted, not built.** Shared `check`: ERC 0,
 DRC 0 violations, 0 unconnected, parity 0. Firmware pin changes vs Bread Modular: `docs/firmware-pins.md`.
 
 | Path | Contents |

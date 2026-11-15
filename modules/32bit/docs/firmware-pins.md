@@ -5,7 +5,11 @@ Use this page when porting the Bread Modular `code/32bit` firmware. It lists eve
 firmware. Source of truth for the nets: `tools/circuit32.py` (`MCU` table) and
 `hardware/32bit.kicad_sch`.
 
-## GPIO map (U1 ESP32-S3-WROOM-1U-N16R8)
+## GPIO map (U1 ESP32-S3R8 since S3; the pin numbers in brackets are the S2 module pins)
+
+S3 (2026-11-15) replaced the ESP32-S3-WROOM-1U-N16R8 module with its contents (ESP32-S3R8 + W25Q128JVSIQ +
+40 MHz crystal). Every GPIO below is unchanged, so the firmware is the same build. QFN-56 pins: `MCU` in
+`tools/circuit32.py`.
 
 | Function | BM 32bit-5v GPIO | 32bit GPIO (module pin) | Status |
 |---|---|---|---|
@@ -26,7 +30,8 @@ firmware. Source of truth for the nets: `tools/circuit32.py` (`MCU` table) and
 | USB D- / D+ | IO19 / IO20 | IO19 / IO20 (13 / 14) | same (USB-Serial-JTAG / TinyUSB) |
 | BOOT | IO0 | IO0 (27) | same |
 | Reset | EN | EN (3) | same |
-| PSRAM (octal, N16R8) | IO35-IO37 | not connected | must stay unused |
+| PSRAM (octal, in the ESP32-S3R8) | IO35-IO37 | not connected (GPIO33-37, SPICS1) | must stay unused |
+| Flash (quad, U2) | inside the module | GPIO26-32 (SPICS0, CLK, D, Q, WP, HD) | same as the N16R8 module: 16 MB quad flash, 8 MB octal PSRAM |
 
 **Current state (R1 routing): CV1/CV2 and I2C moved** (bold rows), and the codec
 audio inputs moved from LIN1/RIN1 to LIN2/RIN2 (see the change log). Every other BM pin number in the
@@ -41,6 +46,7 @@ and the table above is updated in the same change.
 | R1 (2026-10-21) | ESP32 moved 4.4 mm left; U6 (MCP6002) moved into the strip beside the module's right pin row. CV1 ADC IO9 -> IO1 (pin 39), CV2 ADC IO10 -> IO2 (pin 38) | change the CV ADC pins: `ADC_CHANNEL_8` -> `ADC_CHANNEL_0` (CV1, GPIO1) and `ADC_CHANNEL_9` -> `ADC_CHANNEL_1` (CV2, GPIO2), both still ADC1 |
 | R1 (2026-10-21) | ES8388 moved beside the module's right pin row. I2C SCL IO47 -> IO38 (pin 31), SDA IO48 -> IO39 (pin 32); the 4.7k pull-ups go to +3V3 (BM: +3V3_8388, same level through the 10R) | `Wire.begin(39, 38)` / `i2c_master` SDA = 39, SCL = 38 (BM: 48, 47) |
 | R1 (2026-10-21) | Audio inputs wired to the ES8388 second input pair LIN2/RIN2 (pins 22/21; BM LIN1/RIN1) so they reach the VMID bias corner | select input 2 in the ADC input mux: ADCCONTROL2 (reg 0x0A) LINSEL/RINSEL = `01` (BM `00`); e.g. `0x50` instead of `0x00` |
+| S3 (2026-11-15) | ESP32-S3-WROOM-1U-N16R8 module -> ESP32-S3R8 + W25Q128JVSIQ (16 MB, quad) + 40 MHz crystal on the carrier; GPIO0 gets a 10k pull-up (R8). No GPIO moved | none: same flash size / mode and octal PSRAM settings as the N16R8 module (`sdkconfig` unchanged). The radio has no antenna path (LNA_IN open): never start Wi-Fi / BT |
 
 ## Behaviour differences vs BM (same pins, new code needed)
 

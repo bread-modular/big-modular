@@ -1,9 +1,9 @@
-# 32bit — manufacturing export (S2/R2)
+# 32bit — manufacturing export (S3/R3)
 
-Generated on 2026-10-22 from the S2 schematic and the R2 hand-routed board (2 mm hand-solder
-clearance pass, user edge-margin moves, B silk MIDI JP1 labels; not yet committed) with the shared
-`opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. It replaces the R1 export. Never hand-edit
-these files: change the sources, then re-export with the commands below.
+Generated on 2026-11-15 from the S3 schematic (ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal instead of the
+ESP32-S3-WROOM-1U module) and the R3 hand-routed board with the shared `opt/kicad-tools/jlcpcb/export.py`
+exporter. It replaces the S2/R2 export (2026-10-22). Only the carrier was re-exported; the panel export is
+unchanged. Never hand-edit these files: change the sources, then re-export with the commands below.
 
 ## Contents
 
@@ -23,16 +23,22 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `32bit-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz outer, HASL (or ENIG), stackup JLC04161H-7628 (the board's stackup: 0.21 mm 7628 prepreg). **Via covering: tented**, no via-in-pad fill / POFV (no vias in SMD pads). **Min via hole: 0.2 mm** (footprint thermal vias: 12 in U1's GND pad at 0.2/0.6 mm, 9 in U4's EP at 0.2/0.5 mm; every routed via, 106 of them, is 0.3/0.6 mm). This is the same drill set as Bread Modular 32bit-5v, whose shipped `32bit-5v-PTH.drl` has the same 21 x 0.2 mm thermal-via hits (same ESP32 and ES8388 footprints) and 0.3 mm routed vias, and which JLCPCB has fabricated: keep it, pick the 0.2 mm "min via hole size" option. No `JLCJLCJLCJLC` marker: choose the order-number option deliberately |
-| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Assembly side: Bottom.** 90 parts in 38 BOM rows, all on the back. **PCBA service: Standard** (U1, below) |
+| Carrier PCB | `32bit-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz outer, HASL (or ENIG), stackup JLC04161H-7628 (the board's stackup: 0.21 mm 7628 prepreg). **Via covering: tented**, no via-in-pad fill / POFV (no vias in SMD pads). **Min via hole: 0.2 mm** (footprint thermal vias only: 9 in U1's exposed pad and 9 in U4's, 0.2 mm drill; every routed via, 130 of them, is 0.3/0.6 mm). No `JLCJLCJLCJLC` marker: choose the order-number option deliberately |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Assembly side: Bottom.** 103 parts in 43 BOM rows, all on the back. **PCBA service: Economic** (no Standard-only part since S3; confirm in the quote) |
 | Front panel PCB | `32bit-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
 
-### U1 is Standard-PCBA only: Standard PCBA chosen
+### S3: no Standard-only part
 
-The ESP32-S3-WROOM-1U-N16R8 (C3013946, Extended, 25,291 in stock) is **not Economic-PCBA
-eligible** (live catalog, 2026-10-22 08:12 UTC: `componentProductType` 2, "Standard only"). It is
-the only JLCPCB listing for that MPN. Every other part is Economy-eligible. **User decision
-(2026-10-22): Standard PCBA for the whole carrier**, files as they are (U1 assembled by JLCPCB).
+Until S2 the ESP32-S3-WROOM-1U-N16R8 (C3013946) forced Standard PCBA for the whole carrier: no Espressif
+module is Economic-eligible (live catalog 2026-11-15). S3 uses the module's contents instead:
+
+| Ref | Part | LCSC | Notes (live catalog 2026-11-15, a web count, not a reservation) |
+|---|---|---|---|
+| U1 | ESP32-S3R8, QFN-56 7 x 7 mm, 0.4 mm pitch, exposed pad | C2913194 | Extended, Economic-eligible; listed stock 21,376 (the same number as the WROOM-1U listing: recheck) |
+| U2 | W25Q128JVSIQ, SOIC-8 208 mil | C97521 | Basic, 82,492 |
+| Y1 | 40 MHz 3225 crystal, 10 pF, X322540MMB4SI | C5210647 | Extended; recheck stock and eligibility in the quote |
+| C9, C10 | 12p C0G 0402 | C1547 | |
+| R6 / R7 | 0R 0402 / 0R 0603 | C17168 / C21189 | |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
 
@@ -45,32 +51,20 @@ the only JLCPCB listing for that MPN. Every other part is Economy-eligible. **Us
 | J6 | 2x5 2.54 mm pin header | Eurorack power, back side |
 | JP1 | 3-pad solder jumper (MIDI RX source) | Copper only, **shipped open**: bridge P (protected, firmware inverts RX) or D (direct), never both |
 
-The exporter excluded exactly these 12 THT refs plus JP1 (`carrier/export-report.json`).
+None of these 13 refs is in the BOM/CPL (`carrier/export-report.json` lists the excluded refs).
 
-## Parts (live catalog, 2026-10-22 08:11 UTC, 5 boards; R1 audit, BOM unchanged in R2)
+## Parts
 
-Every C-code resolves to its MPN and package (`research/export-1/audit.txt`, ignored).
-
-- **Resistors and capacitors: all JLCPCB Basic and Economy-eligible**, no exceptions.
-- **Basic semis/ICs:** B5819W (C8598), 1N4148W (C81598), MMBT3904 (C20526), TL072CDT (C6961),
-  AMS1117-5.0 (C6187), AMS1117-3.3 (C6186).
-- **Extended (one setup fee each), Economy-eligible:** ES8388 C365736 (43,301), TL074CDR C12594
-  (117,141), MCP6002T C7377 (preferred Extended, 61,765), BAT54SWT1G C78260 (32,794),
-  GZ2012D121TF ferrite C5671 (42,446), TYPE-C-31-M-12 C165948 (333,192), K2-1808SN-A4SW-01
-  C92589 (10,375).
-- **Extended, Standard PCBA only:** ESP32-S3-WROOM-1U-N16R8 C3013946 (25,291), see above.
-
-Stock is a public web count at that time, not a reservation.
+The S2 parts keep their 2026-10-22 audit (all resistors and capacitors Basic; B5819W, 1N4148W, MMBT3904,
+TL072CDT, AMS1117-5.0 / -3.3 Basic; ES8388 C365736, TL074CDR C12594, MCP6002T C7377, BAT54SWT1G C78260,
+GZ2012D121TF C5671, TYPE-C-31-M-12 C165948, K2-1808SN-A4SW-01 C92589 Extended and Economic-eligible).
+The S3 parts are in the table above. The full `assembly.py audit` was **not** rerun for S3: run it (command
+below) and recheck stock before ordering.
 
 ## Source identity
 
-Taken from `source-sha256.json`; the shared `check` re-hashes them and fails on drift.
-
-- Carrier PCB `2b56e3551c071bbe482590116e8ce5d201769e01ba36a7be5d46dfea3a3cdf11`.
-- Carrier project `ba49573f1309ebb3ec65eb62ae903295a5a3efc6a6a57185a895abab7cfe03ad`.
-- Carrier schematic `db630e9ff2f68f8567e658e9e4f2509087f7b2dea860fcf4b79c4ca978c7b775`.
-- Panel PCB `317c9b1565a780354facc4ccf5f879a523bc9d4118e2ca8345bb0341d93fb370`.
-- Panel project `72a3c93bad51d8f3a4c9a36470036ccc7511879dc53289f3a1d303f67b535dc3`.
+In `source-sha256.json` (rewritten by the 2026-11-15 export); the shared `check` re-hashes the five
+sources and fails on drift. Checked after the export: manifest equal.
 
 ## Reproduce
 
@@ -107,32 +101,23 @@ kicad-cli sch export netlist --format kicadxml -o /tmp/32bit-symbols.xml hardwar
   --boards 5 --side bottom --strict-live --max-requests 64)
 ```
 
-## Checks done for this export
+## Checks done for this export (2026-11-15)
 
-Panel re-exported on 2026-10-27 for the rail-hole move: rail holes H1/H2 went 1HP (5.08 mm) right, X 7.5 to X 12.58, as modules/midi, so they sit on the 2HP case hole grid (Y 3.0 / 125.5 kept; `docs/geometry.json`). Only `panel/`, the panel Gerber ZIP and the manifest changed; the carrier export is untouched. The panel NPTH drill now has the rail holes at X 12.58; panel DRC: no findings, 0 unconnected.
-
-- **Shared `check`** (after the R2 export): ERC 0, DRC 0 (all severities), 0 unconnected,
-  parity 0, 0 exclusions; manifest equal (5 sources, exports byte-identical).
-  `order_ready: false`, as always for this tool. Reports in `research/export-r2/` (ignored).
-- **Carrier drill file:** 149 round PTH hits (106 routed vias, 21 footprint thermal vias,
-  22 round THT pads) plus the routed slots; 2 NPTH holes (USB-C pegs).
-- **Panel drill file:** 13 NPTH holes, no copper holes.
-- **Gerber ZIP:** all 4 copper layers with their pours, both masks, silkscreens and pastes,
-  the edge, PTH/NPTH drills. F.Paste is empty: no front SMD parts.
-- **BOM/CPL:** 90 parts, 38 rows, every row with LCSC, MPN and manufacturer; every CPL row
-  is `bottom` and matches its footprint's position on the R2 board (90 / 90). The BOM is
-  byte-identical to R1; 43 CPL rows moved with the R2 parts.
-- **Panel:** re-exported from the unchanged panel source; Gerbers equal to R1 apart from dates.
-- **Catalog audit (R1, same BOM):** fails on the U1 Economy item above, on the 12 THT refs (no code, hand
-  soldered), and on per-part requirement/review rows that stay `unknown` without
-  `docs/jlcpcb-audit-requirements.json`.
+- **Shared `check`** (after the export): ERC 0, DRC 0 (all severities), 0 unconnected, parity 0,
+  0 exclusions; manifest equal (5 sources, exports byte-identical). `order_ready: false`, as always for
+  this tool. Reports in `research/s3/check-export/` (ignored).
+- Zones refilled and saved before the export; DRC on the saved fills: 0 / 0 / 0.
+- **BOM/CPL:** 103 parts, 43 rows, every row with LCSC, MPN and manufacturer; the hand-fitted refs above are left out.
+- **Panel:** not re-exported (source unchanged since the 2026-10-27 rail-hole move).
+- Not done: Gerber / drill review by eye, the live catalog audit for the whole BOM, JLCPCB preview.
 
 ## Status and order gates (not done here)
 
 This is a complete export, not a supplier-accepted release. Before ordering:
 
-- Order the carrier with Standard PCBA (U1, above).
+- Order the carrier with Economic PCBA; if the quote forces Standard, find the part that does it first.
 - Recheck stock, classification and PCBA service eligibility live; check attrition and minimums.
 - In JLCPCB's preview, check every part match, centroid, rotation, pin 1 and polarity
-  (U1 antenna connector, U4 QFN pin 1, D2-D6, U5-U9, J7).
-- Bench: U8 temperature, codec input/output levels, MIDI with JP1 in both positions.
+  (U1 QFN-56 pin 1, U2 pin 1, Y1, U4 QFN pin 1, D2-D6, U5-U9, J7).
+- Bench: first power-up of the bare-chip circuit (40 MHz start-up, flash boot, PSRAM, USB download with
+  BOOT / RESET), U8 temperature, codec input/output levels, MIDI with JP1 in both positions.

@@ -1,7 +1,10 @@
-"""32bit S1 circuit table, drawing and sourcing (imported by tools/build_schematic.py).
+"""32bit S3 circuit table, drawing and sourcing (imported by tools/build_schematic.py).
 
-CIRCUIT is docs/research.md section 3: Bread Modular 32bit-5v (ESP32-S3-WROOM-1U-N16R8,
-ES8388 stereo codec, USB-C data, BOOT/RESET) moved to a 6HP Eurorack module. Reused from
+CIRCUIT is docs/research.md section 3: Bread Modular 32bit-5v (ESP32-S3 with 16 MB flash and 8 MB
+octal PSRAM, ES8388 stereo codec, USB-C data, BOOT/RESET) moved to a 6HP Eurorack module. S3
+(2026-11-15): the ESP32-S3-WROOM-1U-N16R8 module (JLCPCB Standard PCBA only) is replaced by its
+contents, all Economic: ESP32-S3R8 (QFN-56, 8 MB octal PSRAM in the package), W25Q128JVSIQ
+16 MB quad flash on VDD_SPI and a 40 MHz crystal; same GPIO map, same firmware. Reused from
 modules/16bit: the Eurorack power entry, the TS MIDI in NPN front end (JP1 bypass), the CV1/CV2
 chain (jack normalled to +5V -> 50k attenuator -> op-amp follower -> level shift -> MCP6002 ->
 ADC), the 6 x 6 mm THT mode button, the 3 mm red mode LED and the USB-C / BOOT / RESET parts.
@@ -12,26 +15,39 @@ TL072 gain 3.5 -> 1k 0.5 W -> jack).
 
 # Supply nets drawn with power symbols (net name = symbol value); every other net is a local label.
 RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+5V': '+5V', '+12V': '+12V', '-12V': '-12V',
-               '+12V_F': '+12V', '-12V_F': '-12V', '+3V3_ESP32': '+3V3', '+3V3_8388': '+3V3'}
+               '+12V_F': '+12V', '-12V_F': '-12V', '+3V3_ESP32': '+3V3', '+3V3_8388': '+3V3',
+               'VDD_SPI': '+3V3'}
 
 # Symbols drawn mirrored about X (pots: +3V3 up, wiper right, GND down; J1: sleeve at the bottom).
 MIRROR_X = {'RV1', 'RV2', 'J1'}
 
-# ESP32-S3-WROOM-1U pin -> net. Bread Modular 32bit-5v GPIO map kept so its firmware ports:
-# IO11/12/13/14/21 = I2S DIN/WS/DOUT/BCLK/MCLK, IO8 mode button, IO18 mode LED, RXD0 (GPIO44) =
-# MIDI in (UART0). Moved in R1 (docs/firmware-pins.md): CV1/CV2 = IO1/IO2 (ADC1 CH0/CH1, BM IO9/IO10)
-# so U6 sits beside the module's right pin row; I2C SCL/SDA = IO38/IO39 (BM IO47/IO48) so the ES8388
-# beside that row reaches them directly (the band above the top row only has room for the I2S lines).
-# Dropped (left open): TXD0 (BM TX header), IO9/IO10, IO47/IO48, BM gate outs (BM IO1/IO2).
-# IO35/36/37 are the N16R8 octal PSRAM pins and must stay unconnected.
-MCU = {'1': 'GND', '40': 'GND', '41': 'GND', '2': '+3V3_ESP32', '3': 'EN', '27': 'BOOT',
-       '13': 'USB_DM', '14': 'USB_DP', '36': 'MIDI_RX', '37': None,
-       '12': 'BUTTON', '11': 'LED', '39': 'CV1_ADC', '38': 'CV2_ADC',
-       '19': 'I2S_DIN', '20': 'I2S_LRCK', '21': 'I2S_DOUT', '22': 'I2S_BCLK', '23': 'I2S_MCLK',
-       '31': 'CCLK', '32': 'CDATA',
-       '4': None, '5': None, '6': None, '7': None, '8': None, '9': None, '10': None, '15': None,
-       '16': None, '24': None, '25': None, '26': None, '28': None, '29': None, '30': None,
-       '33': None, '34': None, '35': None, '17': None, '18': None}
+# ESP32-S3R8 (QFN-56) pin -> net. Bread Modular 32bit-5v GPIO map kept so its firmware ports:
+# GPIO11/12/13/14/21 = I2S DIN/WS/DOUT/BCLK/MCLK, GPIO8 mode button, GPIO18 mode LED, U0RXD (GPIO44) =
+# MIDI in (UART0), GPIO19/20 = USB D-/D+, GPIO0 BOOT. Moved in R1 (docs/firmware-pins.md): CV1/CV2 =
+# GPIO1/GPIO2 (ADC1 CH0/CH1, BM IO9/IO10), I2C SCL/SDA = GPIO38/GPIO39 (BM IO47/IO48). S3 keeps every
+# GPIO of the S2 module build (same firmware).
+# Supply: VDD3P3 (2, 3) and VDDA (55, 56) on the ferrite-filtered +3V3_ESP32; VDD3P3_RTC (20) and
+# VDD3P3_CPU (46) straight on the +3V3 plane, one 100n each. VDD_SPI (29) is the chip's own 3.3 V
+# output (VDD3P3_RTC through the internal switch; GPIO45 open = 3.3 V) for the flash and the
+# in-package PSRAM.
+# Open: LNA_IN (radio never used: Espressif lets the RF pin float when the RF stack is never
+# started), SPICS1 and GPIO33-37 (in-package octal PSRAM), GPIO47/48, the unused GPIOs, U0TXD, and
+# the strapping pins GPIO3 / GPIO45 / GPIO46 (internal defaults: SPI boot, VDD_SPI 3.3 V).
+MCU = {'57': 'GND', '2': '+3V3_ESP32', '3': '+3V3_ESP32', '55': '+3V3_ESP32', '56': '+3V3_ESP32',
+       '20': '+3V3', '46': '+3V3', '29': 'VDD_SPI',
+       '4': 'EN', '5': 'BOOT', '6': 'CV1_ADC', '7': 'CV2_ADC', '13': 'BUTTON', '24': 'LED',
+       '16': 'I2S_DIN', '17': 'I2S_LRCK', '18': 'I2S_DOUT', '19': 'I2S_BCLK', '27': 'I2S_MCLK',
+       '25': 'USB_DM', '26': 'USB_DP', '43': 'CCLK', '44': 'CDATA', '50': 'MIDI_RX',
+       '30': 'SPIHD', '31': 'SPIWP', '32': 'SPICS0', '33': 'SPICLK', '34': 'SPIQ', '35': 'SPID',
+       '53': 'XTAL_N', '54': 'XTAL_P',
+       '1': None, '8': None, '9': None, '10': None, '11': None, '12': None, '14': None, '15': None,
+       '21': None, '22': None, '23': None, '28': None, '36': None, '37': None, '38': None, '39': None,
+       '40': None, '41': None, '42': None, '45': None, '47': None, '48': None, '49': None, '51': None,
+       '52': None}
+
+# W25Q128JVSIQ pin -> net (quad I/O; QE is set from the factory on the IQ part).
+FLASH = {'1': 'SPICS0', '2': 'SPIQ', '3': 'SPIWP', '4': 'GND', '5': 'SPID', '6': '_FLASH_CLK',
+         '7': 'SPIHD', '8': 'VDD_SPI'}
 
 # ES8388 (BM Module32 symbol) pin -> net. CE low = I2C address 0x10 (BM). R1 layout: the audio inputs
 # use the second input pair LIN2/RIN2 (pins 22/21, the corner beside the VMID caps; BM: LIN1/RIN1),
@@ -47,7 +63,9 @@ CV_Y = (223.52, 256.54)                       # CV1 / CV2 signal rows (as module
 CVX = 40.64                                   # level shift / clamp / MCP6002 right of the pot + op-amp
 OPS_Y = 287.02                                # U6 / U7 supply units and decoupling
 LED_Y = 236.22                                # mode LED row
-ESP = (279.4, 152.4)                          # U1
+ESP = (243.84, 165.1)                         # U1
+FLA = (304.8, 149.86)                         # U2 flash
+XTL = (200.66, 208.28)                        # Y1 crystal
 COD = (391.16, 101.6)                         # U4
 IN_Y = {'L': 50.8, 'R': 76.2}                 # audio input rows
 IN_PARTS = {'L': dict(j='J8', unit=3, inp='10', inn='9', out='8', rin='R40', rdn='R41', cac='C43', rs='R42',
@@ -106,32 +124,68 @@ def circuit():
     for ref, net, at, rot in (('#FLG01', 'GND', (30.48, 68.58), 0), ('#FLG02', '+12V_F', (71.12, 76.2), 180),
                               ('#FLG03', '-12V_F', (71.12, 55.88), 180), ('#FLG04', '+12V', (53.34, 76.2), 180),
                               ('#FLG05', '-12V', (53.34, 55.88), 180),
-                              ('#FLG06', '+3V3_ESP32', (284.48, 106.68), 0),
-                              ('#FLG07', '+3V3_8388', (350.52, 147.32), 0)):
+                              ('#FLG06', '+3V3_ESP32', (200.66, 104.14), 0),
+                              ('#FLG07', '+3V3_8388', (350.52, 147.32), 0),
+                              ('#FLG08', 'VDD_SPI', (261.62, 116.84), 0)):
         c.append(part(ref, 'PWR_FLAG', 'PWR_FLAG', None, at, rot, {'1': net}))
 
-    # ---- ESP32-S3-WROOM-1U-N16R8 (Bread Modular U1) with its ferrite-fed supply, EN reset RC, BOOT
+    # ---- ESP32-S3R8 (the chip of Bread Modular's ESP32-S3-WROOM-1U-N16R8) with its supply
+    # decoupling, EN reset RC, BOOT, 16 MB flash and 40 MHz crystal (Espressif reference design)
     x, y = ESP
-    c.append(part('U1', 'ESP32-S3-WROOM-1', 'ESP32-S3-WROOM-1U-N16R8', 'WROOM1U', ESP, 0, MCU,
-                  Note='Bread Modular 32bit-5v U1: 16 MB flash, 8 MB octal PSRAM (IO35-37 reserved), U.FL antenna '
-                       'connector unused (radio off: no antenna path through the panel)'))
-    c.append(two('FB1', 'FerriteBead', 'GZ2012D121TF', 'C0805', (x - 11.43, y - 45.72), '+3V3', '+3V3_ESP32',
-                 Note='Bread Modular FB1 (120R at 100 MHz), BM footprint C_0805'))
-    c.append(two('C5', 'C', '100n', 'C0402', (x + 10.16, y - 41.91), '+3V3_ESP32', 'GND', rot=0, Voltage='16V',
-                 Note='U1 decoupling (Bread Modular C1)'))
-    c.append(two('C6', 'C', '10u', 'C0603', (x + 20.32, y - 41.91), '+3V3_ESP32', 'GND', rot=0, Voltage='10V',
-                 Note='U1 bulk (Bread Modular C2)'))
-    c.append(two('R4', 'R', '10k', 'R0402', (243.84, 125.73), '+3V3', 'EN', rot=0, Note='EN pull-up (Bread Modular R3)'))
-    c.append(two('C7', 'C', '1u', 'C0402', (233.68, 133.35), 'EN', 'GND', rot=0, Voltage='25V',
+    c.append(part('U1', 'ESP32-S3', 'ESP32-S3R8', 'QFN56', ESP, 0, MCU,
+                  Note='ESP32-S3 with 8 MB octal PSRAM in the package (GPIO33-37, SPICS1 reserved); with U2 = the '
+                       'ESP32-S3-WROOM-1U-N16R8 of Bread Modular 32bit-5v. JLCPCB Economic. Radio never used: '
+                       'LNA_IN open, firmware must not start Wi-Fi / BT'))
+    c.append(two('FB1', 'FerriteBead', 'GZ2012D121TF', 'C0805', (193.04, 104.14), '+3V3', '+3V3_ESP32',
+                 Note='Bread Modular FB1 (120R at 100 MHz), BM footprint C_0805: filtered supply for VDD3P3 and VDDA'))
+    c.append(two('C6', 'C', '10u', 'C0603', (203.2, 107.95), '+3V3_ESP32', 'GND', rot=0, Voltage='10V',
+                 Note='+3V3_ESP32 bulk (Bread Modular C2)'))
+    c.append(two('C12', 'C', '1u', 'C0402', (213.36, 107.95), '+3V3_ESP32', 'GND', rot=0, Voltage='25V',
+                 Note='VDDA (pins 55, 56) decoupling, Espressif reference 1u'))
+    c.append(two('C13', 'C', '10n', 'C0402', (223.52, 107.95), '+3V3_ESP32', 'GND', rot=0, Voltage='50V',
+                 Note='VDDA (pins 55, 56) decoupling, Espressif reference 10n'))
+    c.append(two('C5', 'C', '100n', 'C0402', (231.14, 107.95), '+3V3_ESP32', 'GND', rot=0, Voltage='16V',
+                 Note='VDD3P3 (pins 2, 3) decoupling (Bread Modular C1)'))
+    c.append(two('C14', 'C', '100n', 'C0402', (256.54, 102.87), '+3V3', 'GND', rot=0, Voltage='16V',
+                 Note='VDD3P3_RTC (pin 20) decoupling'))
+    c.append(two('C15', 'C', '100n', 'C0402', (266.7, 102.87), '+3V3', 'GND', rot=0, Voltage='16V',
+                 Note='VDD3P3_CPU (pin 46) decoupling'))
+    c.append(two('C16', 'C', '1u', 'C0402', (269.24, 120.65), 'VDD_SPI', 'GND', rot=0, Voltage='25V',
+                 Note='VDD_SPI (pin 29) decoupling, Espressif reference 1u'))
+    c.append(two('R4', 'R', '10k', 'R0402', (281.94, 189.23), '+3V3', 'EN', rot=0, Note='EN pull-up (Bread Modular R3)'))
+    c.append(two('C7', 'C', '1u', 'C0402', (289.56, 196.85), 'EN', 'GND', rot=0, Voltage='25V',
                  Note='EN power-on delay (Bread Modular C3)'))
-    c.append(two('C8', 'C', '100n', 'C0402', (223.52, 133.35), 'EN', 'GND', rot=0, Voltage='16V',
+    c.append(two('C8', 'C', '100n', 'C0402', (299.72, 196.85), 'EN', 'GND', rot=0, Voltage='16V',
                  Note='EN filter (Bread Modular C4)'))
-    c.append(part('SW3', 'SW_Push', 'RESET', 'SWK2', (213.36, 134.62), 90, {'1': 'GND', '2': 'EN'},
+    c.append(part('SW3', 'SW_Push', 'RESET', 'SWK2', (312.42, 198.12), 90, {'1': 'GND', '2': 'EN'},
                   MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec',
                   Note='Reset: pulls EN low (Bread Modular SW2), B side next to the USB-C'))
-    c.append(part('SW2', 'SW_Push', 'BOOT', 'SWK2', (254.0, 139.7), 90, {'1': 'GND', '2': 'BOOT'},
+    c.append(part('SW2', 'SW_Push', 'BOOT', 'SWK2', (203.2, 139.7), 90, {'1': 'GND', '2': 'BOOT'},
                   MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec',
-                  Note='BOOT: IO0 low at reset = USB download mode (Bread Modular SW1). Hold BOOT, press RESET'))
+                  Note='BOOT: GPIO0 low at reset = USB download mode (Bread Modular SW1). Hold BOOT, press RESET'))
+    c.append(two('R8', 'R', '10k', 'R0402', (210.82, 130.81), '+3V3', 'BOOT', rot=0,
+                 Note='GPIO0 pull-up (Espressif: recommended; the BOOT trace runs the length of the board)'))
+    # 16 MB quad SPI flash on VDD_SPI (the flash inside the N16R8 module)
+    fx, fy = FLA
+    c.append(part('U2', 'W25Q128JVS', 'W25Q128JVS', 'SOIC8W', FLA, 0, FLASH,
+                  Note='16 MB quad SPI flash (W25Q128JVSIQ: QE set), SOIC-8 208 mil, on VDD_SPI (3.3 V)'))
+    c.append(two('R7', 'R', '0', 'R0603', (fx - 24.13, fy - 5.08), 'SPICLK', '_FLASH_CLK',
+                 Note='SPI clock series resistor at the chip (Espressif: 0R to start with; raise it to slow the edge). '
+                      '0603 on purpose: SPIQ runs between its pads, so the clock crosses SPIQ without a via'))
+    c.append(two('C17', 'C', '100n', 'C0402', (fx + 15.24, fy + 7.62), 'VDD_SPI', 'GND', rot=0, Voltage='16V',
+                 Note='U2 VCC decoupling (Espressif reference 100n on VDD_SPI)'))
+    # 40 MHz crystal: 10 pF load, 12p each side (6 pF + about 4 pF of pins and copper), 0R on XTAL_P
+    kx, ky = XTL
+    c.append(part('Y1', 'Crystal_GND24', '40MHz', 'XTAL3225', XTL, 0,
+                  {'1': '_XTAL_R', '2': 'GND', '3': 'XTAL_N', '4': 'GND'}, MPN='X322540MMB4SI',
+                  Note='40 MHz, 10 pF load, +/-10 ppm, ESR <= 40R, 3.2 x 2.5 mm (the only crystal frequency the '
+                       'ESP32-S3 firmware supports)'))
+    c.append(two('R6', 'R', '0', 'R0402', (205.74, 193.04), '_XTAL_R', 'XTAL_P',
+                 Note='XTAL_P series part (Espressif: 0R, or up to 24 nH to cut crystal harmonics for the radio)'))
+    c.append(two('C9', 'C', '12p', 'C0402', (kx - 10.16, ky + 3.81), '_XTAL_R', 'GND', rot=0, Voltage='50V',
+                 Note='Crystal load, C0G'))
+    c.append(two('C10', 'C', '12p', 'C0402', (kx + 10.16, ky + 3.81), 'XTAL_N', 'GND', rot=0, Voltage='50V',
+                 Note='Crystal load, C0G'))
 
     # ---- USB-C (data only, as Bread Modular: VBUS is not used, power the module from the rack).
     # The ESP32-S3 USB PHY is wired straight to the receptacle, as Bread Modular 32bit-5v (no series R).
@@ -314,13 +368,26 @@ def drawing():
     P += [('-12V', (55.88, 55.88), 0), ('GND', (27.94, 68.58), 0), ('GND', (53.34, 68.58), 90),
           ('+12V', (55.88, 76.2), 0), ('-12V_F', (86.36, 55.88), 0), ('+12V_F', (88.9, 76.2), 0),
           ('+5V', (147.32, 76.2), 0), ('+3V3', (195.58, 76.2), 0)]
-    # ESP32 supply: FB1 -> +3V3_ESP32 with C5/C6
+    # ESP32 supply: FB1 -> +3V3_ESP32 rail (C6, C12, C13, C5) -> VDDA and VDD3P3; +3V3 -> VDD3P3_RTC and
+    # VDD3P3_CPU (C14, C15); VDD_SPI out -> C16 (and U2, C17 through the VDD_SPI symbol)
     x, y = ESP
-    W += [['FB1.2', (x, y - 45.72), 'U1.2'], [(x, y - 45.72), (x + 25.4, y - 45.72)]]
-    P += [('+3V3_ESP32', (x + 25.4, y - 45.72), 0)]
-    # EN reset RC and RESET / BOOT buttons
-    W += [['U1.3', 'SW3.2'], ['U1.27', 'SW2.2']]
-    L += [('EN', (256.54, 129.54), 'R'), ('BOOT', (256.54, 134.62), 'R')]
+    W += [['FB1.2', (241.3, 104.14), 'U1.2'], [(238.76, 104.14), 'U1.55'],
+          ['U1.20', (243.84, 99.06), (274.32, 99.06)], ['U1.46', (248.92, 99.06)],
+          ['U1.29', (246.38, 116.84), (276.86, 116.84)]]
+    P += [('+3V3_ESP32', (210.82, 104.14), 0), ('+3V3', (274.32, 99.06), 0), ('VDD_SPI', (276.86, 116.84), 0)]
+    # EN reset RC and RESET; BOOT with its pull-up
+    W += [['U1.4', 'SW3.2'], ['U1.5', 'SW2.2']]
+    L += [('EN', (271.78, 193.04), 'R'), ('BOOT', (213.36, 134.62), 'R')]
+    # Flash: CS and CLK (through R7) straight across, D and Q crossed over; HD and WP by label
+    W += [['U1.32', 'U2.1'], ['U1.33', 'R7.1'], ['R7.2', 'U2.6'],
+          ['U1.35', (276.86, 149.86), (276.86, 147.32), 'U2.5'],
+          ['U1.34', (271.78, 147.32), (271.78, 151.13), (281.94, 151.13), (281.94, 149.86), 'U2.2']]
+    L += [('SPICS0', (269.24, 142.24), 'R'), ('SPICLK', (269.24, 144.78), 'R'),
+          ('SPID', (285.75, 147.32), 'R'), ('SPIQ', (285.75, 149.86), 'R')]
+    # Crystal: XTAL_P -> R6 -> Y1 pin 1 (C9), XTAL_N -> Y1 pin 3 (C10)
+    W += [['U1.54', 'R6.2'], ['R6.1', ('C9.1', 0, -15.24), 'C9.1', 'Y1.1'],
+          ['U1.53', ('C10.1', 0, -12.7), 'C10.1', 'Y1.3']]
+    L += [('XTAL_P', (210.82, 193.04), 'R'), ('XTAL_N', (212.09, 195.58), 'R')]
     # USB-C data pairs (straight to the ESP32-S3 PHY), shield
     W += [['J7.A7', (157.48, 170.18)], ['J7.B7', (144.78, 172.72), (144.78, 170.18)],
           ['J7.A6', (147.32, 175.26), (147.32, 180.34), (157.48, 180.34)], ['J7.B6', (147.32, 177.8)],
@@ -395,7 +462,8 @@ def drawing():
 
 
 # JLCPCB parts. Codes reused from modules/16bit (live-checked 2026-10-21) and from the Bread Modular
-# 32bit-5v BOM (ESP32-S3, ES8388, ferrite, 10R, 4.7k, 10u/1u 0402); NOT live-checked for 32bit yet.
+# 32bit-5v BOM (ES8388, ferrite, 10R, 4.7k, 10u/1u 0402). S3 parts (ESP32-S3R8, W25Q128JVSIQ, 40 MHz
+# crystal, 12p, 0R, and the 1u / 100n / 10n / 10k 0402 they add) live-checked 2026-11-15.
 # THT jacks, pots, LED, MODE switch and the power header are hand-soldered: no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
@@ -431,8 +499,13 @@ SOURCING = {
     ('SW_Push', 'BOOT', 'SWK2'): dict(LCSC='C92589', MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec'),
     ('USB_C_Receptacle_USB2.0_14P', 'USB-C', 'USBC'): dict(LCSC='C165948', MPN='TYPE-C-31-M-12',
                                                           Manufacturer='Korean Hroparts Elec'),
-    ('ESP32-S3-WROOM-1', 'ESP32-S3-WROOM-1U-N16R8', 'WROOM1U'): dict(LCSC='C3013946', MPN='ESP32-S3-WROOM-1U-N16R8',
-                                                                    Manufacturer='Espressif Systems'),
+    ('ESP32-S3', 'ESP32-S3R8', 'QFN56'): dict(LCSC='C2913194', MPN='ESP32-S3R8', Manufacturer='Espressif Systems'),
+    ('W25Q128JVS', 'W25Q128JVS', 'SOIC8W'): dict(LCSC='C97521', MPN='W25Q128JVSIQ', Manufacturer='Winbond'),
+    ('Crystal_GND24', '40MHz', 'XTAL3225'): dict(LCSC='C5210647', MPN='X322540MMB4SI',
+                                                Manufacturer='YXC Crystal Oscillators'),
+    ('C', '12p', 'C0402'): dict(LCSC='C1547', MPN='0402CG120J500NT', Manufacturer='FH (Guangdong Fenghua)'),
+    ('R', '0', 'R0402'): dict(LCSC='C17168', MPN='0402WGF0000TCE', Manufacturer='UNI-ROYAL'),
+    ('R', '0', 'R0603'): dict(LCSC='C21189', MPN='0603WAF0000T5E', Manufacturer='UNI-ROYAL'),
     ('ES8388', 'ES8388', 'QFN28'): dict(LCSC='C365736', MPN='ES8388', Manufacturer='Everest Semiconductor'),
     ('TL074', 'TL074', 'SOIC14'): dict(LCSC='C12594', MPN='TL074CDR', Manufacturer='Texas Instruments'),
     ('TL072', 'TL072', 'SOIC8'): dict(LCSC='C6961', MPN='TL072CDT', Manufacturer='STMicroelectronics'),
@@ -443,7 +516,7 @@ SOURCING = {
 
 # Block titles (drawn as sheet text).
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR 32BIT - S1 schematic (Bread Modular 32bit-5v for Eurorack, 6HP, 4 layers). '
+    ((20.32, 20.32), 'BIG MODULAR 32BIT - S3 schematic (Bread Modular 32bit-5v for Eurorack, 6HP, 4 layers). '
                      'Circuit intent: docs/research.md; placement: docs/geometry.json', 2.0),
     ((20.32, 33.02), 'POWER: +12V -> D2 -> +12V_F (op-amp V+, U8 AMS1117-5.0 -> +5V -> U9 AMS1117-3.3 -> +3V3); '
                      '-12V -> D3 -> -12V_F (op-amp V-)', 1.4),
@@ -457,8 +530,11 @@ TEXTS = [
                      'Unpatched: RV = 0..+5 V knob. Patched: RV scales the CV. -5.9..+6.0 V -> 0..3.3 V.', 1.1),
     ((116.84, 139.7), 'USB-C (data only, as Bread Modular): VBUS not connected,\n'
                       'D+/D- straight to the ESP32-S3 USB PHY (flash over USB).', 1.1),
-    ((205.74, 93.98), 'ESP32-S3-WROOM-1U-N16R8 (Bread Modular 32bit-5v GPIO map).\n'
-                      'RESET = EN low; BOOT = IO0 low at reset (download mode). IO35-37 = octal PSRAM, keep open.', 1.1),
+    ((198.12, 83.82), 'ESP32-S3R8 + U2 W25Q128JVSIQ + Y1 40 MHz = the ESP32-S3-WROOM-1U-N16R8 of Bread Modular 32bit-5v\n'
+                      '(same GPIO map, same firmware), all JLCPCB Economic. RESET = EN low; BOOT = GPIO0 low at reset\n'
+                      '(download mode). GPIO33-37 + SPICS1 = octal PSRAM in the package, keep open. Radio never used:\n'
+                      'LNA_IN open. VDD_SPI = 3.3 V out of U1 (flash supply; PWR_FLAG: the symbol pin is a power input).', 1.1),
+    ((180.34, 231.14), 'Y1: 10 pF load = C9 and C10 in series (6 pF) + about 4 pF of pins and copper.', 1.1),
     ((322.58, 248.92), 'MODE: SW1 (6 x 6 mm THT tact) on IO8, red LED on IO18 through 1k (Bread Modular pins).\n'
                        'IO18 LEDC PWM sets the LED brightness.', 1.1),
     ((330.2, 71.12), 'ES8388 CODEC (Bread Modular U4): I2S IO11-14/IO21 through 33R,\n'
@@ -471,15 +547,16 @@ TEXTS = [
 
 # Reference / value text: two-pin parts on the free side ('left' overrides), a few parts placed by hand
 # (offsets from the symbol origin, horizontal text; keys 'REF' or 'REF/unit', optional justify).
-TEXT_LEFT = {'R3', 'D4', 'C24', 'R15', 'R18', 'C8'}
+TEXT_LEFT = {'R3', 'D4', 'C24', 'R15', 'R18', 'R8'}
 TEXT_POS = {'D1': ((0, -5.08), (0, -2.54)),
             'U8': ((0, -6.35), (0, -3.81)), 'U9': ((0, -6.35), (0, -3.81)),
             'U5/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'), 'U6/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U7/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'JP1': ((0, -6.35), (0, -3.81)), 'D5': ((0, -6.35), (0, -3.81)), 'D6': ((0, -6.35), (0, -3.81)),
             'R20': ((0, -5.08), (0, -2.54)), 'SW2': ((-6.35, -1.27), (-6.35, 1.27)),
-            'SW3': ((-6.35, -1.27), (-6.35, 1.27)), 'FB1': ((0, -3.81), (0, 3.81)),
-            'U1': ((-10.16, -29.21), (5.08, -30.48), 'left'), 'U4': ((0, -21.59), (0, 39.37)),
+            'FB1': ((0, -3.81), (0, 3.81)),
+            'U1': ((-20.32, -36.83), (7.62, -36.83), 'left'), 'U4': ((0, -21.59), (0, 39.37)),
+            'R7': ((0, -6.35), (0, -3.81)), 'Y1': ((0, -7.62), (0, -5.08)), 'SW3': ((6.35, -1.27), (6.35, 1.27)),
             'C43': ((0, -6.35), (0, -3.81)), 'C44': ((0, -6.35), (0, -3.81)),
             'C45': ((0, -6.35), (0, -3.81)), 'C46': ((0, -6.35), (0, -3.81)),
             'J4': ((0, -11.43), (0, -8.89)), 'J5': ((0, -11.43), (0, -8.89))}

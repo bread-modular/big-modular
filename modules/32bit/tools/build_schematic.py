@@ -1,4 +1,4 @@
-"""Generate the 32bit S1 schematic (hardware/32bit.kicad_sch) and its pinned symbols.
+"""Generate the 32bit S3 schematic (hardware/32bit.kicad_sch) and its pinned symbols.
 
 Run from modules/32bit:
   python3 -B tools/build_schematic.py
@@ -55,7 +55,8 @@ SYMBOLS = {
     'LED': ('Device', 'LED'), 'R_Potentiometer': ('Device', 'R_Potentiometer'),
     'D_Schottky': ('Device', 'D_Schottky'), '1N4148W': ('Diode', '1N4148W'), 'BAT54SW': ('Diode', 'BAT54SW'),
     'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
-    'ESP32-S3-WROOM-1': ('RF_Module', 'ESP32-S3-WROOM-1'),
+    'ESP32-S3': ('MCU_Espressif', 'ESP32-S3'), 'W25Q128JVS': ('Memory_Flash', 'W25Q128JVS'),
+    'Crystal_GND24': ('Device', 'Crystal_GND24'),
     'ES8388': ('BM', 'Module32:ES8388'),
     'TL074': ('Amplifier_Operational', 'TL074'), 'TL072': ('Amplifier_Operational', 'TL072'),
     'MCP6002-xSN': ('Amplifier_Operational', 'MCP6002-xSN'),
@@ -75,7 +76,8 @@ FP = {
     'C0402': 'C_0402_1005Metric', 'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
     'C1206': 'C_1206_3216Metric',
     'SOD123': 'D_SOD-123', 'SOT23': 'SOT-23', 'SOT323': 'SOT-323_SC-70', 'SOT223': 'SOT-223-3_TabPin2',
-    'WROOM1U': 'ESP32-S3-WROOM-1U', 'QFN28': 'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias',
+    'QFN56': 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias', 'SOIC8W': 'SOIC-8_5.3x5.3mm_P1.27mm',
+    'XTAL3225': 'Crystal_SMD_3225-4Pin_3.2x2.5mm', 'QFN28': 'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias',
     'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm', 'SOIC14': 'SOIC-14_3.9x8.7mm_P1.27mm',
     'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09',
     'SWK2': 'K2-1808SN-A4SW-01', 'SW6': 'SW_PUSH_6mm_H7.3mm', 'LED3': 'LED_D3.0mm',
@@ -420,8 +422,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - 32bit") (rev "S1") (company "Big Modular")
-        (comment 1 "SCHEMATIC S1 - Bread Modular 32bit-5v (ESP32-S3 + ES8388) for Eurorack 6HP: MIDI in, 2 audio in, 2 CV in, 2 pots, mode button + LED, 2 outs")
+      (title_block (title "Big Modular - 32bit") (rev "S3") (company "Big Modular")
+        (comment 1 "SCHEMATIC S3 - Bread Modular 32bit-5v (ESP32-S3R8 + W25Q128 + ES8388) for Eurorack 6HP: MIDI in, 2 audio in, 2 CV in, 2 pots, mode button + LED, 2 outs")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
