@@ -1,0 +1,417 @@
+{
+ "revision": "S1 schematic, P1 placement: 6HP motion recorder, four knobs zigzag, four CV outs, REC + RANGE buttons",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY. The main PCB F side faces the panel, so the KiCad top view equals the front view (no mirroring).",
+ "kicad_origin_mm": [
+  100.0,
+  50.0
+ ],
+ "hp": 6,
+ "panel_mm": [
+  30.0,
+  128.5
+ ],
+ "panel_pcb_thickness_mm": 1.6,
+ "panel_print_thickness_mm": 2.0,
+ "rail_holes_mm": [
+  [
+   12.58,
+   3.0,
+   3.2
+  ],
+  [
+   12.58,
+   125.5,
+   3.2
+  ]
+ ],
+ "rail_clear_gap_Y_mm": [
+  8.0,
+  120.5
+ ],
+ "rail_note": "Single hole pair at X12.58 (Doepfer X7.5 moved 1HP right), as modules/12bit, hats and 16bit. The repository skiff rails are 10 mm wide centred on Y3.0/Y125.5, leaving the clear Y8.0..120.5 (112.5 mm) gap; the PCB keeps 1.25 mm margin at each end.",
+ "main_pcb": {
+  "outline_mm": [
+   0.5,
+   9.25,
+   29.5,
+   119.25
+  ],
+  "thickness_mm": 1.6,
+  "copper_layers": 2,
+  "note": "29.0 x 110.0 mm (as modules/8bit and modules/12bit), 2 layers, 1.25 mm inside the skiff rail gap at each end; held by the four jack bushings/nuts. The pots have no bushing or nut (user stock): soldered only. All assembled SMD on B. 1 mm copper-edge keep-out (min_copper_edge_clearance 1.0)."
+ },
+ "columns_X_mm": [
+  7.95,
+  22.05
+ ],
+ "jack_columns_X_mm": [
+  6.5,
+  23.5
+ ],
+ "panel_order": "Top to bottom: four knobs zigzag (1 left, 2 right, 3 left, 4 right), each with its motion LED in the opposite column of the same row; REC LED + REC button (left) and RANGE LED + RANGE button (right); OUT 1 / OUT 2; OUT 3 / OUT 4 at the bottom. Power header on B between the lower jacks.",
+ "row_note": "Knob columns X7.95 / X22.05 (as modules/8bit: the RV09 courtyards keep 1.02 mm to the board edges), knob rows Y18.0 / 34.5 / 51.0 / 67.5 (16.5 mm pitch: neighbouring knobs 21.7 mm apart centre to centre, same-column knobs 33 mm). Button LEDs Y79.0, buttons Y85.5, jack rows Y96.25 / Y110.4 (courtyard pitch limit 14.1 mm; bottom courtyard 1.02 mm above the board edge). Jack columns X6.5 / X23.5: 1.45 mm outside the knob columns, which leaves 8.0 mm between the jack bodies for the power header pins. F courtyard gaps down the right column: RV4 to the RANGE LED 0.38 mm, LED to SW2 0.28 mm, SW2 to J2 0.70 mm.",
+ "jack_part": "QingPu WQP-PJ301M-12",
+ "jack_footprint": "Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical",
+ "jack_rotation_note": "Rotation 0: T pad 4.92 mm above the bushing centre, TN 3.38 mm and S 6.48 mm below it.",
+ "jacks": [
+  {
+   "ref": "J1",
+   "role": "OUT 1",
+   "XY": [
+    6.5,
+    96.25
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J2",
+   "role": "OUT 2",
+   "XY": [
+    23.5,
+    96.25
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J3",
+   "role": "OUT 3",
+   "XY": [
+    6.5,
+    110.4
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "J4",
+   "role": "OUT 4",
+   "XY": [
+    23.5,
+    110.4
+   ],
+   "rot": 0
+  }
+ ],
+ "pots": [
+  {
+   "ref": "RV1",
+   "role": "Knob 1 (50k, PA1)",
+   "shaft_XY": [
+    7.95,
+    18.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "RV2",
+   "role": "Knob 2 (50k, PA2)",
+   "shaft_XY": [
+    22.05,
+    34.5
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "RV3",
+   "role": "Knob 3 (50k, PA6)",
+   "shaft_XY": [
+    7.95,
+    51.0
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "RV4",
+   "role": "Knob 4 (50k, PA7)",
+   "shaft_XY": [
+    22.05,
+    67.5
+   ],
+   "rot": 0
+  }
+ ],
+ "pot_footprint": "Potentiometer_RV09",
+ "pot_shaft_offset_mm": [
+  -0.127,
+  -0.508
+ ],
+ "pot_note": "Bread Modular RV09 footprint (pins 7.5 mm below the shaft on 2.5 mm pitch, bracket tabs 9.6 mm apart on the shaft line). User stock pots, as modules/audio-out: no threaded bushing, no nut, 16 mm knurled shaft above the body; 3D proxy hardware/MOTION.3dshapes/RV09_proxy.step (from audio-out). pot_shaft_offset_mm = shaft centre relative to the footprint origin at rotation 0. Rotation 0: pins below the shaft, pin 1 on the left (front view), so CW turns the wiper toward pin 3.",
+ "buttons": [
+  {
+   "ref": "SW1",
+   "role": "REC (PC0)",
+   "footprint": "SW_PUSH_6mm_H7.3mm",
+   "side": "F",
+   "XY": [
+    7.95,
+    85.5
+   ],
+   "rot": 0
+  },
+  {
+   "ref": "SW2",
+   "role": "RANGE (PC1)",
+   "footprint": "SW_PUSH_6mm_H7.3mm",
+   "side": "F",
+   "XY": [
+    22.05,
+    85.5
+   ],
+   "rot": 0
+  }
+ ],
+ "button_note": "modules/8bit SW1: generic 6 x 6 x 7 mm THT tact switch on the carrier F side, hand-soldered, placed by the pad-pattern centre = stem centre, rotation 0: pad 1 pair (button net) on the top row Y83.25, pad 2 pair (GND) Y87.75; legs X4.70 / X11.20 (SW1) and X18.80 / X25.30 (SW2). Same Z stack as 8bit, so its one-piece printed cap (modules/8bit/panels/button-actuator, flange D7) fits unchanged: flange 1.1 mm from the LED flange above and 1.2 mm from the jack body below (nominal).",
+ "leds": [
+  {
+   "ref": "D1",
+   "role": "MOTION 1 (PB2)",
+   "XY": [
+    22.05,
+    18.0
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "D2",
+   "role": "MOTION 2 (PA3)",
+   "XY": [
+    7.95,
+    34.5
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "D3",
+   "role": "MOTION 3 (PA4)",
+   "XY": [
+    22.05,
+    51.0
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "D4",
+   "role": "MOTION 4 (PA5)",
+   "XY": [
+    7.95,
+    67.5
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "D5",
+   "role": "REC (PB3)",
+   "XY": [
+    7.95,
+    79.0
+   ],
+   "rot": 90
+  },
+  {
+   "ref": "D6",
+   "role": "RANGE (PB4): on = -5..+5 V",
+   "XY": [
+    22.05,
+    79.0
+   ],
+   "rot": 90
+  }
+ ],
+ "led_note": "3 mm THT on F, rot 90: pads along Y centred on XY. Each motion LED sits beside its knob, in the opposite column of the same row; the REC and RANGE LEDs sit 6.5 mm above their buttons.",
+ "panel_hole_diameters_mm": {
+  "jack": 6.2,
+  "pot": 7.2,
+  "led": 3.2,
+  "button": 4.2
+ },
+ "stack_Z_mm": {
+  "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
+  "jack_body_top": 8.9,
+  "panel_rear_seat": 10.0,
+  "pj301m12_thread": [
+   10.0,
+   14.51
+  ],
+  "pj366st_thread": [
+   11.0,
+   15.96
+  ],
+  "nut_thickness": 2.0,
+  "led_body_bottom": 6.3,
+  "led_body_height": 5.3,
+  "led_model_body_bottom": 3.0,
+  "led_note": "3 mm LED body (flange to dome) is 5.3 mm; body bottom at Z6.3 puts the dome flush with the 1.6 mm FR4 panel front (Z11.6) and 0.4 mm recessed in the 2.0 mm print. The stock KiCad LED_D3.0mm model already stands its flange at Z3.0, so the board model offset is +3.3 mm.",
+  "source": "Slices of the Bread Modular AudioJacks STEP models (PJ301M-12.step, PJ366ST.step); the library marks them 'Untested', so measure real jacks before committing the LED stand-off.",
+  "pot_note": "User RV09 (as modules/audio-out): body 6.8 mm nominal, 1 mm collar, shaft to Z22.8 (11.2 mm past the FR4 front). No bushing, no nut. Measure a real pot before ordering panels.",
+  "switch_body_top": 3.1,
+  "switch_stem_top": 7.0,
+  "switch_stem_D": 3.3,
+  "switch_note": "Measured SW1: 7.0 mm tall, body 3.1 mm, tapered stem 3.9 mm (Ø3.4 at the body to Ø3.2 at the top). switch_stem_D is the mean stem diameter in the socket grip zone (Z4.5..7.0: Ø3.33..3.2)."
+ },
+ "power_header": {
+  "ref": "J5",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
+  "pin1_XY_mm": [
+   13.73,
+   116.0
+  ],
+  "pin_columns_X_mm": [
+   13.73,
+   16.27
+  ],
+  "pin_rows_Y_mm": [
+   116.0,
+   113.46,
+   110.92,
+   108.38,
+   105.84
+  ],
+  "orientation": "Vertical on the board centre line between the lower output jacks (as modules/16bit R2), rot 180 on B: odd pins on the left column X13.73, even pins on X16.27; pins 1/2 (-12 V) at the bottom Y116.0, pins 9/10 (+12 V) at the top Y105.84. Courtyard X11.94..18.07, Y104.05..117.80 (1.45 mm above the bottom edge).",
+  "idc16_socket_envelope_mm": {
+   "X": [
+    11.2,
+    18.8
+   ],
+   "Y": [
+    94.41,
+    119.81
+   ],
+   "bottom_above_B_mm": 2.5
+  },
+  "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the board. Envelope = 2x8 socket body (25.4 x 6.4 mm, 3.81 mm beyond the end pin centres) plus a ~1.2 mm key bump on either side; its lower end is 0.56 mm past the board edge, inside the rail gap (Y120.5), as modules/16bit R2. No THT lead under it: the jack pads end at X8.05 / start at X21.95, the switch pads end at Y88.75. B-side SMD placed under it later must stay <= 2 mm tall.",
+  "assembly_note": "The header pins are soldered on F between the J3 / J4 bodies (8.0 mm apart): solder J5 before the jacks."
+ },
+ "back_side_tht": [
+  {
+   "ref": "J5",
+   "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+   "XY": [
+    15.0,
+    110.92
+   ],
+   "rot": 180,
+   "note": "Eurorack power, centre line between OUT 3 and OUT 4, vertical, rot 180 on B: pins 1/2 (-12 V) at the bottom"
+  },
+  {
+   "ref": "J6",
+   "footprint": "PinHeader_1x02_P2.54mm_Vertical",
+   "XY": [
+    3.4,
+    43.0
+   ],
+   "rot": 0,
+   "note": "UPDI (pin 1 UPDI at the top Y41.73, pin 2 GND Y44.27), left edge between the motion LED 2 and knob 3, hand-soldered on B"
+  }
+ ],
+ "smd_parking": {
+  "side": "B",
+  "origin_XY": [
+   37.0,
+   12.0
+  ],
+  "pitch_XY": [
+   11.0,
+   11.0
+  ],
+  "columns": 8,
+  "note": "tools/build_layout.py parks every SMD part here, off the right board edge, in reference order. They move onto the board group by group with the manual routing (root AGENTS.md); the routed native PCB then owns placement and copper ."
+ },
+ "panel_labels": [
+  {
+   "text": "MOTION",
+   "XY": [
+    15.0,
+    8.0
+   ],
+   "size": 2.5
+  },
+  {
+   "text": "1",
+   "XY": [
+    7.95,
+    10.8
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "2",
+   "XY": [
+    22.05,
+    27.3
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "3",
+   "XY": [
+    7.95,
+    43.8
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "4",
+   "XY": [
+    22.05,
+    60.3
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "REC",
+   "XY": [
+    7.95,
+    82.0
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "±5V",
+   "XY": [
+    22.05,
+    82.0
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 1",
+   "XY": [
+    6.5,
+    90.35
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 2",
+   "XY": [
+    23.5,
+    90.35
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 3",
+   "XY": [
+    6.5,
+    104.5
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "OUT 4",
+   "XY": [
+    23.5,
+    104.5
+   ],
+   "size": 1.2
+  },
+  {
+   "text": "BIG MODULAR",
+   "XY": [
+    15.0,
+    117.6
+   ],
+   "size": 1.2
+  }
+ ]
+}
