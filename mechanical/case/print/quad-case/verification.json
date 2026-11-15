@@ -1,0 +1,216 @@
+{
+  "status": "PASS",
+  "source": [
+    "cad/assembly.FCStd",
+    "cad/middle-frame.FCStd",
+    "cad/double-case-assembly.FCStd",
+    "cad/angle-joiner-parts.FCStd",
+    "cad/middle-brace.FCStd"
+  ],
+  "source_difference_mm3": {
+    "bottom_plate": 0.0,
+    "side_panel_left": 0.0,
+    "side_panel_right": 0.0,
+    "rail_front": 0.0,
+    "rail_back": 0.0,
+    "middle_frame": 0.0
+  },
+  "geometry": {
+    "rows": 2,
+    "cases_per_row": 2,
+    "rows_in_one_plane": true,
+    "row_gap_mm": 3.0,
+    "row_pitch_mm": 135.5,
+    "side_panel_thickness_mm": 12.0,
+    "middle_frame_width_mm": 30.6,
+    "closed_notch_rail_end_clearance_mm": 0.3,
+    "case_width_hp": 42,
+    "case_side_panel_depth_mm": 60
+  },
+  "checks": {
+    "assembly_pairs_no_interference": 105,
+    "stock_geometry_outside_the_joint_diff_mm3": {
+      "fused_left/front": 0.0,
+      "fused_right/front": 0.0,
+      "fused_middle/front": 0.0,
+      "fused_left/rear": 0.0,
+      "fused_right/rear": 0.0,
+      "fused_middle/rear": 0.0
+    },
+    "joint": {
+      "row_gap_mm": 3.0,
+      "side_panel_section_mm": [
+        12.0,
+        44.9
+      ],
+      "side_panel_wall_between_closed_notches_mm": 2.4,
+      "middle_wall_between_rail_sockets_mm": 2.5,
+      "middle_joint_solid_fraction": 0.949
+    },
+    "module_faces_gap_between_rows_mm": 7.0,
+    "rails_enter_along_x_with_0.15mm_gauge": "PASS, 16 rail ends",
+    "stock_covers_seated_and_bottom_entry_clear": "PASS, 8 covers",
+    "bases_come_on_from_below": "PASS, 4 bases, 20 mm straight travel",
+    "bases_gap_between_rows_mm": 3.0,
+    "module_rows_and_10mm_above_face_clear": "PASS, 4 rows",
+    "outer_rail_screws": {
+      "count": 8,
+      "head_and_driver_access": "PASS",
+      "middle_rail_screws": 0
+    },
+    "side_plate_sockets": {
+      "count": 16,
+      "pattern_y_z_mm": [
+        [
+          25.0,
+          103.5
+        ],
+        [
+          25.0,
+          45.0
+        ]
+      ],
+      "rear_row_offset_y_mm": 135.5,
+      "outer_capture_shoulder_mm": 1.8,
+      "pocket_gauge_and_inside_loading": "PASS"
+    },
+    "existing_middle_top_brace": {
+      "front": "fits",
+      "rear": "fits"
+    },
+    "native_single_solids": true,
+    "on_the_angle_joiner": {
+      "parts_no_interference": 26,
+      "lower_row": "cad/double-case-assembly.FCStd (two cases on the stock middle frame)",
+      "plates": "cad/angle-joiner-parts.FCStd, the right one moved to the double width",
+      "set_lowest_point_above_desk_mm": 38.5,
+      "plate_hardware": {
+        "M3x8_screws": 16,
+        "M3x10_hex_spacers": 16,
+        "thread_engagement_mm": 4.2,
+        "hardware_solids_clear": true,
+        "plate_outside_approach_samples_clear_mm": [
+          0.2,
+          1,
+          3,
+          6,
+          12,
+          25
+        ],
+        "set_outer_rail_screws_reachable": 8,
+        "rear_row_sockets": "8, left empty"
+      },
+      "bounds_xyz_mm": [
+        508.0,
+        344.192,
+        306.507
+      ],
+      "tip_back": {
+        "rear_pad_centre_y_mm": 272.0,
+        "lower_row_centre_y_mm": 64.25,
+        "middle_row_centre_y_mm": 209.8,
+        "top_row_centre_y_mm": 277.5,
+        "top_row_centre_behind_rear_pad_mm": 5.5,
+        "push_height_mm": {
+          "three_rows": {
+            "at_top_row_centre": 245.7,
+            "at_top_edge": 303.1
+          },
+          "two_rows_today": {
+            "at_top_row_centre": 128.4,
+            "at_top_edge": 185.7
+          }
+        },
+        "assumption": "rigid, two cases per row, mass at each case centre, no cable pull; an estimate to compare the two arrangements, not a rating",
+        "push_to_tip_back_N": {
+          "every case loaded (1.5 / 1.5 kg per case)": {
+            "three_rows": {
+              "at_top_row_centre": 31.7,
+              "at_top_edge": 25.7
+            },
+            "two_rows_today": {
+              "at_top_row_centre": 61.9,
+              "at_top_edge": 42.8
+            }
+          },
+          "lower row empty, upper rows full (0.7 / 2.5 kg per case)": {
+            "three_rows": {
+              "at_top_row_centre": 22.9,
+              "at_top_edge": 18.6
+            },
+            "two_rows_today": {
+              "at_top_row_centre": 46.0,
+              "at_top_edge": 31.8
+            }
+          }
+        }
+      }
+    }
+  },
+  "print": {
+    "fused-side-left": {
+      "print_bounds_mm": [
+        231.931,
+        231.931,
+        17.08
+      ],
+      "in_plane_print_rotation_deg": 45,
+      "free_bed_per_side_mm": 12.03,
+      "solid_volume_cm3": 186.198,
+      "stl_facets": 7084,
+      "STEP_STL_3MF_readback": "PASS"
+    },
+    "fused-middle": {
+      "print_bounds_mm": [
+        235.204,
+        235.204,
+        35.68
+      ],
+      "in_plane_print_rotation_deg": 45,
+      "free_bed_per_side_mm": 10.4,
+      "solid_volume_cm3": 247.738,
+      "stl_facets": 3850,
+      "STEP_STL_3MF_readback": "PASS"
+    },
+    "fused-side-right": {
+      "print_bounds_mm": [
+        231.931,
+        231.931,
+        12.0
+      ],
+      "in_plane_print_rotation_deg": 45,
+      "free_bed_per_side_mm": 12.03,
+      "solid_volume_cm3": 183.303,
+      "stl_facets": 6524,
+      "STEP_STL_3MF_readback": "PASS"
+    }
+  },
+  "assembly_bounds_xyz_mm": [
+    498.3,
+    274.8,
+    67.4
+  ],
+  "hardware": {
+    "outer_rail_screws": "8 existing M3x10, through the two fused side panels",
+    "middle_rail_screws": 0,
+    "base_screws": "16 existing M3x6, four per base",
+    "base_spacers": "16 M3x10 female hex spacers glued into the bottom sockets",
+    "on_the_angle_joiner": "8 M3x8 socket head + 8 M3x10 hex spacers loaded from inside the front row (the plates' upper rings), as on a single case"
+  },
+  "prototype": "not printed, fit-tested or load-rated",
+  "export_sha256": {
+    "print/quad-case/assembly-preview.step": "9b67d3cea06efa0f86012fca29873c35d0e2afc50e86bfdec92921e42ce41a8c",
+    "print/quad-case/fused-middle.3mf": "f14cd39d1b707d807861653b9fe22674d2e5afafa0e888653a1b59d99fbc09f1",
+    "print/quad-case/fused-middle.step": "08bc4b7abf83ef91b04247cfd4592351f05ab75d9855caf59db27ef45d0a4d0f",
+    "print/quad-case/fused-middle.stl": "8b28980d262a061313a8b7214829b49dfcfa156cf3416a023a553c810ae9816f",
+    "print/quad-case/fused-side-left.3mf": "c3aaf70cc5ed6b44b1c51c7acc3dd916a665a0c46f36a08333627e8fee9cac88",
+    "print/quad-case/fused-side-left.step": "357de2daf1a81f2c96c8d97b1073eaa6846446f8592e25ecfc9901066739c749",
+    "print/quad-case/fused-side-left.stl": "efe5defab4f4f9bd3faa2dabd194cfae86f3fec06ab45322edfecac72c318ff3",
+    "print/quad-case/fused-side-right.3mf": "fcb7cafd04cc90dfb6bd8528a8e706382e7353461ca8685649dedc3832c6c3f7",
+    "print/quad-case/fused-side-right.step": "120136e0e6facdcd926893d2704f26aaa11b85108f4d2f270c1c660cfc9abdf6",
+    "print/quad-case/fused-side-right.stl": "01a3e460dee9d419fef9c9640419e646c4eacfb95b11b907f7c8e681ab5d4ab3",
+    "cad/quad-case-parts.FCStd": "6003beacedeb55679380d6ef34cab576cf6833d3882282d25cc6220e0b3f2d22",
+    "cad/quad-case-assembly.FCStd": "76dffcc8b04128d5ec79808d011fc486ddf3749f286796173f9267f80e2d15ae",
+    "cad/quad-case-on-stand.FCStd": "84a24f83004dfb29f2a9a43b453955eb433f2fc952adf06bb525262128b28af5"
+  }
+}

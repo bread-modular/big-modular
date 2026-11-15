@@ -8,7 +8,7 @@ from pathlib import Path
 from check_angle_joiner import check_mesh
 
 CASE=Path(__file__).resolve().parents[1]
-OUT=CASE/'print'/'cable-holder'
+OUT=CASE/'print'/'accessories'/'cable-holder'
 
 
 def main():

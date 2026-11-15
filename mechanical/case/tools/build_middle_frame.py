@@ -92,36 +92,57 @@ class Join:
         assert d.panel_t > RAIL_CLEARANCE + 1.0
 
 
-def frame(d, j):
-    """Perimeter only: rounded open window, two feet, four enclosed rail sockets."""
-    y0, y1 = d.y0, d.y0 + d.ylen
+def outline(d, j, pitch=0.0):
+    """Uncut silhouette between the two bays, proud collars included: no lip, window or sockets.
+
+    With `pitch`, two frames end to end as one silhouette, the second one `pitch` behind the
+    first: solid between them, their facing collars one."""
+    y0, y1 = d.y0, d.y0 + d.ylen + pitch
     shoulder_low, shoulder_high = j.rail_z - 7, j.rail_z - 3
     collar_inner = d.rail_w + 3.0
     blend = 6.0
-    outline = [
+    points = [
         (y0, d.P), (y1, d.P),
         (y1, shoulder_low), (y1 + COLLAR_OVERHANG, shoulder_high),
         (y1 + COLLAR_OVERHANG, j.collar_top),
         (y1 - collar_inner, j.collar_top),
         (y1 - collar_inner - blend, d.case_top),
+    ]
+    if pitch:
+        points += [
+            (y0 + pitch + collar_inner + blend, d.case_top),
+            (y0 + pitch + collar_inner, j.collar_top),
+            (y1 - pitch - collar_inner, j.collar_top),
+            (y1 - pitch - collar_inner - blend, d.case_top),
+        ]
+    points += [
         (y0 + collar_inner + blend, d.case_top),
         (y0 + collar_inner, j.collar_top),
         (y0 - COLLAR_OVERHANG, j.collar_top),
         (y0 - COLLAR_OVERHANG, shoulder_high), (y0, shoulder_low),
     ]
-    body = yz_prism(outline, 0, j.width)
+    body = yz_prism(points, 0, j.width)
     # Keep both bottom seating corners square. All upper silhouette corners,
     # including the sloping transitions into the proud collars, are rounded.
     edges = [e for e in x_edges(body) if e.CenterOfMass.z > j.bridge_z]
     body = body.makeFillet(OUTLINE_FILLET, edges)
     assert body.isValid() and len(body.Solids) == 1
+    return body
 
-    # Exact original left-panel lip/web, attached on the right case side only.
-    left = base.side_panel(d, left=True)
-    clip = base.box((0, y0 - 1, d.P - 1), (d.fill + 1, d.ylen + 2, d.depth + 2))
+
+def frame_body(d, j, pitch=0.0, left=None):
+    """Uncut frame: the silhouette plus the original left-panel lip/web on the right case side.
+
+    With `pitch`, two frames end to end (see outline) and `left` their one-piece left panel."""
+    left = base.side_panel(d, left=True) if left is None else left
+    clip = base.box((0, d.y0 - 1, d.P - 1), (d.fill + 1, d.ylen + pitch + 2, d.depth + 2))
     lip = moved(left.common(clip), dx=j.width)
-    body = body.fuse(lip).removeSplitter()
+    return outline(d, j, pitch).fuse(lip).removeSplitter()
 
+
+def frame_cuts(d, j):
+    """Open window, bottom channel, base spacer sockets, cover grooves and the four rail sockets."""
+    y0 = d.y0
     wy0, wy1 = j.window_y
     wz0, wz1 = j.window_z
     window = base.box((-1, wy0, wz0), (j.width + d.fill + 2, wy1 - wy0, wz1 - wz0))
@@ -163,7 +184,12 @@ def frame(d, j):
                                      hi_z + ENTRY_CHAMFER)
                 inner = yz_rectangle(x + direction * ENTRY_CHAMFER, lo_y, hi_y, lo_z, hi_z)
                 cuts.append(Part.makeLoft([outer, inner], True, True))
-    return base.cut_all(body, cuts)
+    return cuts
+
+
+def frame(d, j):
+    """Perimeter only: rounded open window, two feet, four enclosed rail sockets."""
+    return base.cut_all(frame_body(d, j), frame_cuts(d, j))
 
 
 def print_pose(shape):
@@ -392,7 +418,7 @@ def main():
                              "bottom_channel_width_mm": round(j.bottom_slot, 3)},
               "checks": check_geometry(d, j, s, asm)}
 
-    cad, out = CASE / "cad", CASE / "print" / "side panels" / "middle-frame"
+    cad, out = CASE / "cad", CASE / "print" / "double-case"
     research = CASE / "research" / "middle-frame"
     for folder in (cad, out, research):
         folder.mkdir(parents=True, exist_ok=True)

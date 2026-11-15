@@ -1,7 +1,7 @@
 """Headless Blender views of the two-skiff joiner (no desktop/GUI interaction).
 
   blender -b --python mechanical/case/tools/render_middle_frame.py -- \
-      mechanical/case/research/middle-frame mechanical/case/renders/middle-frame
+      mechanical/case/research/middle-frame mechanical/case/renders/double-case
 
 Reads only meshes produced by build_middle_frame.py. Renders the standalone
 part from both bay faces and the joined assembly; no geometry is modified.

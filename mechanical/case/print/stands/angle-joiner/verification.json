@@ -1,0 +1,230 @@
+{
+  "status": "PASS",
+  "source": "cad/assembly.FCStd",
+  "source_difference_mm3": {
+    "bottom_plate": 0.0,
+    "side_panel_left": 0.0,
+    "side_panel_right": 0.0,
+    "rail_front": 0.0,
+    "rail_back": 0.0
+  },
+  "geometry": {
+    "lower_angle_deg": 0,
+    "upper_angle_deg": 60.0,
+    "panel_included_angle_deg": 120.0,
+    "upper_front_edge_gap_y_z_mm": [
+      18.0,
+      6.0
+    ],
+    "upper_origin_y_z_mm": [
+      205.7916512459885,
+      40.23205080756887
+    ],
+    "plate_thickness_mm": 8.0,
+    "mount_pattern_y_z_mm": [
+      [
+        25.0,
+        103.5
+      ],
+      [
+        25.0,
+        45.0
+      ]
+    ],
+    "mount_pattern_pitch_mm": [
+      78.5,
+      20.0
+    ],
+    "outside_fillet_mm": 2.0,
+    "joint_fillet_mm": 4.0,
+    "window_fillet_mm": 6.0,
+    "ring_rail_width_mm": 8.0,
+    "chord_width_mm": 9.0,
+    "leg_width_mm": [
+      16.0,
+      10.0
+    ],
+    "strut_width_mm": 10.0,
+    "case_width_hp": 42,
+    "case_side_panel_depth_mm": 60,
+    "socket_AF_mm": 5.7,
+    "socket_depth_mm": 10.2
+  },
+  "checks": {
+    "assembly_pairs_no_interference": 66,
+    "side_panels": "standard panels of cad/assembly.FCStd (four spacer sockets each)",
+    "case_envelope_min_distance_mm": 18.974,
+    "above_face_10mm_envelopes_min_distance_mm": 12.639,
+    "stock_covers_and_full_module_rows_clear": true,
+    "existing_rail_head_and_driver_access": true,
+    "plate_outside_approach_samples_clear_mm": [
+      0.2,
+      1,
+      3,
+      6,
+      12,
+      25
+    ],
+    "mount_hardware": {
+      "M3x8_screws": 16,
+      "M3x10_hex_spacers": 16,
+      "thread_engagement_mm": 4.2,
+      "outer_capture_shoulder_mm": 1.8,
+      "socket_side_wall_verified_mm": 1.5,
+      "plate_under_head_mm": 2.0,
+      "plate_behind_base_relief_mm": 4.35,
+      "inside_spacer_loading": true,
+      "hardware_solids_clear": true
+    },
+    "rubber_pad_lands": {
+      "pad_size_mm": [
+        12.0,
+        12.0
+      ],
+      "quantity": 4,
+      "rear_plinth_size_mm": [
+        16.0,
+        20.0,
+        8.0
+      ],
+      "rear_top_end_fillet_mm": 2.0,
+      "rear_nominal_pad_edge_margin_xy_mm": [
+        2.0,
+        4.0
+      ],
+      "recess_depth_mm": 0,
+      "coplanar_bonding_z_mm": 0,
+      "pad_thickness": "user-supplied; use the same thickness at all four positions",
+      "positions": {
+        "rear_left": {
+          "centre_xyz_mm": [
+            -12.0,
+            272.0,
+            0.0
+          ],
+          "full_square_bonding_area_mm2": 144.0,
+          "verified_solid_depth_mm": 3.0,
+          "placement_margin_verified_mm": 1.0
+        },
+        "rear_right": {
+          "centre_xyz_mm": [
+            230.7,
+            272.0,
+            0.0
+          ],
+          "full_square_bonding_area_mm2": 144.0,
+          "verified_solid_depth_mm": 3.0,
+          "placement_margin_verified_mm": 1.0
+        },
+        "front_left": {
+          "centre_xyz_mm": [
+            -8.15,
+            7.0,
+            0.0
+          ],
+          "full_square_bonding_area_mm2": 144.0,
+          "verified_solid_depth_mm": 1.0,
+          "placement_margin_verified_mm": 0.0
+        },
+        "front_right": {
+          "centre_xyz_mm": [
+            226.85,
+            7.0,
+            0.0
+          ],
+          "full_square_bonding_area_mm2": 144.0,
+          "verified_solid_depth_mm": 1.0,
+          "placement_margin_verified_mm": 0.0
+        }
+      }
+    },
+    "support_geometry": {
+      "front_rubber_pad_centre_y_mm": 7.0,
+      "rear_rubber_pad_centre_y_mm": 272.0,
+      "central_80pct_case_pointload_y_range_mm": [
+        11.25,
+        258.787
+      ],
+      "min_pointload_margin_to_pad_centres_mm": 4.25,
+      "assumption": "points in central 80% Y and Z=6.5..65, no cable force; not a rating"
+    },
+    "native_single_solids": true
+  },
+  "print": {
+    "joiner-left": {
+      "print_bounds_mm": [
+        237.823,
+        237.724,
+        16.0
+      ],
+      "in_plane_print_rotation_deg": 38,
+      "solid_volume_cm3": 65.84,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 11714,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 65.84
+    },
+    "joiner-right": {
+      "print_bounds_mm": [
+        237.724,
+        237.823,
+        16.0
+      ],
+      "in_plane_print_rotation_deg": 52,
+      "solid_volume_cm3": 65.84,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 11714,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 65.84
+    },
+    "fit-socket": {
+      "print_bounds_mm": [
+        20.0,
+        20.0,
+        12.0
+      ],
+      "in_plane_print_rotation_deg": 0,
+      "solid_volume_cm3": 4.497,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 544,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 4.5
+    },
+    "fit-plate": {
+      "print_bounds_mm": [
+        20.0,
+        20.0,
+        8.0
+      ],
+      "in_plane_print_rotation_deg": 0,
+      "solid_volume_cm3": 2.983,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 1024,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 2.98
+    }
+  },
+  "prototype": "not printed, load-tested or rated; do not carry by plates",
+  "assembly_bounds_xyz_mm": [
+    258.7,
+    284.0,
+    185.748
+  ],
+  "export_sha256": {
+    "cad/angle-joiner-assembly.FCStd": "3b717661d8de900fd16b4d8cf3551567bf3cefb4943cec6ff163056b5b6db354",
+    "cad/angle-joiner-parts.FCStd": "73ddabb30607908df71ed433848b6eda849eba10333f290f977dde5f1a17b14b",
+    "print/stands/angle-joiner/assembly-preview.step": "f733a5796773409934198cafd3ab3fe7ab8ed9213ffeae79e0bd313cf76983cf",
+    "print/stands/angle-joiner/fit-plate.3mf": "90a9319ce16bd09fe4bba664e007a39856d19ad3e700b14c7392ed0be7b4dc5c",
+    "print/stands/angle-joiner/fit-plate.step": "8f60c2c3a81b7ccea743b439cba01a87c3c7a0afb8b13f915a2d7a501f1320ec",
+    "print/stands/angle-joiner/fit-plate.stl": "43ca915b7a3d9da900be092d7b21391d13042913ce3a4dfce6b33734d2bffdbe",
+    "print/stands/angle-joiner/fit-socket.3mf": "b0bff05e1b5897872296391e7dc5a76084f92d590b17b73a5d38251edd568f9e",
+    "print/stands/angle-joiner/fit-socket.step": "d485d3c3e01725b827d0066082989f1764c9e3f8f06a880c39cab8b513b6cbdf",
+    "print/stands/angle-joiner/fit-socket.stl": "a7e7bf05b4be59d1877c5e971e9574a3f989a9c6ce37070efbf8bd4a1586768e",
+    "print/stands/angle-joiner/joiner-left.3mf": "22e0b437450e8cd641b5343f426907aa9c819b7d7488fc71c07fc1a7d46f1a14",
+    "print/stands/angle-joiner/joiner-left.step": "dd6e6c8208e53407b2740cf6244378821bdf267a7073c3f6539933075ce0c1e1",
+    "print/stands/angle-joiner/joiner-left.stl": "89eb5b75cfbeb0754c8a3cfb9330a6a8d909040b9e5ecf52f14f5eb7e3b09477",
+    "print/stands/angle-joiner/joiner-right.3mf": "082dcb2c5a75a90021bae04126ca4f61cb9aaa50806a593000c70d73803b3098",
+    "print/stands/angle-joiner/joiner-right.step": "c500fe4185a01079e0e68bac8fe04d04348e83f2cbb9aa9f8854c5dd6c94ac09",
+    "print/stands/angle-joiner/joiner-right.stl": "a36bcabcaf1b7582828ca39ed3e361985145803d389af90db7d866135bc3cf70"
+  }
+}

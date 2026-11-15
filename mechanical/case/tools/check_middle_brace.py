@@ -8,7 +8,7 @@ from pathlib import Path
 from check_angle_joiner import check_mesh
 
 CASE=Path(__file__).resolve().parents[1]
-OUT=CASE/'print'/'side panels'/'middle-frame'/'top-brace'
+OUT=CASE/'print'/'accessories'/'top-brace'
 
 
 def main():
@@ -18,7 +18,7 @@ def main():
     for rel,sha in {**report['source_sha256'],**report['export_sha256']}.items():
         assert hashlib.sha256((CASE/rel).read_bytes()).hexdigest()==sha,rel+' changed; rebuild the brace'
     for rel,sha in report['faceplate_source_sha256'].items():
-        assert hashlib.sha256((CASE.parent/rel).read_bytes()).hexdigest()==sha,rel+' changed; rebuild the brace'
+        assert hashlib.sha256((CASE.parents[1]/rel).read_bytes()).hexdigest()==sha,rel+' changed; rebuild the brace'
     dims=report['dimensions']
     assert dims['screw_tab_thickness_mm']==dims['source_faceplate_thickness_mm']
     assert dims['screw_tab_width_mm']==dims['source_rail_width_mm']

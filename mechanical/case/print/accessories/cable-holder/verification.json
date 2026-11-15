@@ -1,0 +1,359 @@
+{
+  "status": "PASS",
+  "prototype": "CAD-checked only: not printed, fits not measured",
+  "source": "cad/assembly.FCStd",
+  "source_difference_mm3": {
+    "bottom_plate": 0.0,
+    "side_panel_left": 0.0,
+    "side_panel_right": 0.0,
+    "rail_front": 0.0,
+    "rail_back": 0.0
+  },
+  "dimensions": {
+    "panel_mm": [
+      224.1,
+      47.8,
+      2.0
+    ],
+    "panel_with_ribs_mm": [
+      224.1,
+      47.8,
+      5.0
+    ],
+    "slots": {
+      "count": 4,
+      "pitch_mm": 54.0,
+      "centres_x_mm": [
+        28.35,
+        82.35,
+        136.35,
+        190.35
+      ],
+      "width_mm": 16.6,
+      "height_mm": 10.981,
+      "lower_edge_z_mm": 13.0
+    },
+    "ribs_mm": {
+      "height": 3.0,
+      "width": 3.0
+    },
+    "holder": {
+      "width_mm": 100.0,
+      "comb_tip_from_slot_edge_mm": 50.0,
+      "cable_slots": 9,
+      "cable_slot_width_mm": 5.0,
+      "cable_slot_pitch_mm": 10.5,
+      "cable_slot_length_mm": 28.5,
+      "tongues": 2,
+      "tongue_width_mm": 16.0,
+      "tongue_pitch_mm": 54.0,
+      "positions_centre_x_mm": {
+        "left": 55.35,
+        "centre": 109.35,
+        "right": 163.35
+      }
+    }
+  },
+  "checks": {
+    "panel": {
+      "grooves": {
+        "front": {
+          "collisions": 0,
+          "outer_face_behind_frame_edge_mm": 2.2,
+          "reach_behind_inner_face_mm": 3.0
+        },
+        "back": {
+          "collisions": 0,
+          "outer_face_behind_frame_edge_mm": 2.2,
+          "reach_behind_inner_face_mm": 3.0
+        }
+      },
+      "slides_in_from_the_bottom": "PASS",
+      "symmetric_along_x": true,
+      "outer_face": "one flat plane, slots only",
+      "rib_top_below_rail_underside_mm": 3.4,
+      "rib_bottom_above_plate_top_mm": 1.5,
+      "slot_top_to_lintel_rib_mm": 2.0,
+      "slot_top_z_mm": 23.981,
+      "print": {
+        "bed_contact_mm2": 9859.8,
+        "worst_overhang_from_vertical_deg": 0.0,
+        "area_past_45_deg_mm2": 0,
+        "supports_required": false
+      }
+    },
+    "joiner-60": {
+      "case_tilt_deg": 60.0,
+      "comb_to_cover_deg": 38.0,
+      "tongue_thickness_mm": 5.0,
+      "comb_thickness_mm": 5.0,
+      "tongue_in_slot_clearance_mm": {
+        "x_each_side": 0.3,
+        "z": 0.3
+      },
+      "barb": {
+        "height_mm": 2.81,
+        "hook_face_to_tongue_deg": 45.0,
+        "below_slot_edge_mm": 1.0,
+        "behind_inner_face_mm": 0.3
+      },
+      "seated": {
+        "left": {
+          "collisions": 0,
+          "to_side_panels_mm": [
+            5.35,
+            113.35
+          ],
+          "reach_behind_inner_face_mm": 4.25,
+          "bottom_above_plate_top_mm": 0.6
+        },
+        "centre": {
+          "collisions": 0,
+          "to_side_panels_mm": [
+            59.35,
+            59.35
+          ],
+          "reach_behind_inner_face_mm": 4.25,
+          "bottom_above_plate_top_mm": 0.6
+        },
+        "right": {
+          "collisions": 0,
+          "to_side_panels_mm": [
+            113.35,
+            5.35
+          ],
+          "reach_behind_inner_face_mm": 4.25,
+          "bottom_above_plate_top_mm": 0.6
+        }
+      },
+      "profile_motion": {
+        "held_without_lifting_the_tip": true,
+        "tip_lift_to_release_deg": 18.0,
+        "insertion_path_poses": 165,
+        "insertion_path_max_tip_lift_deg": 18.0,
+        "seated_reach_behind_inner_face_mm": 4.21,
+        "insertion_reach_behind_inner_face_mm": 4.78,
+        "grid_mm_deg": [
+          0.1,
+          1.0
+        ]
+      },
+      "print": {
+        "bed_contact_mm2": 4062.0,
+        "worst_overhang_from_vertical_deg": 45.0,
+        "area_past_45_deg_mm2": 0,
+        "supports_required": false
+      },
+      "on_angle_joiner": {
+        "panel": {
+          "collisions": 0,
+          "closest": "upper_bottom_plate",
+          "closest_gap_mm": 0.2
+        },
+        "holder_left": {
+          "collisions": 0,
+          "closest": "upper_bottom_plate",
+          "closest_gap_mm": 0.6
+        },
+        "holder_right": {
+          "collisions": 0,
+          "closest": "upper_bottom_plate",
+          "closest_gap_mm": 0.6
+        },
+        "holder_centre": {
+          "collisions": 0,
+          "closest": "upper_bottom_plate",
+          "closest_gap_mm": 0.6
+        },
+        "two_holders_gap_mm": 8.0,
+        "comb_rise_above_level_deg": 8.0,
+        "cables": [
+          {
+            "holder_centre_x_mm": 55.35,
+            "free_hang_mm": 161.2,
+            "clearance_over_first_60_mm": 9.41
+          },
+          {
+            "holder_centre_x_mm": 163.35,
+            "free_hang_mm": 161.2,
+            "clearance_over_first_60_mm": 9.41
+          },
+          {
+            "holder_centre_x_mm": 109.35,
+            "free_hang_mm": 161.2,
+            "clearance_over_first_60_mm": 9.41
+          }
+        ],
+        "comb_tip_past_rear_feet_mm": 26.2
+      }
+    },
+    "stand-40": {
+      "case_tilt_deg": 40.0,
+      "comb_to_cover_deg": 58.0,
+      "tongue_thickness_mm": 7.998,
+      "comb_thickness_mm": 5.0,
+      "tongue_in_slot_clearance_mm": {
+        "x_each_side": 0.3,
+        "z": 0.3
+      },
+      "barb": {
+        "height_mm": 2.07,
+        "hook_face_to_tongue_deg": 58.0,
+        "below_slot_edge_mm": 1.0,
+        "behind_inner_face_mm": 0.3
+      },
+      "seated": {
+        "left": {
+          "collisions": 0,
+          "to_side_panels_mm": [
+            5.35,
+            113.35
+          ],
+          "reach_behind_inner_face_mm": 4.98,
+          "bottom_above_plate_top_mm": 0.6
+        },
+        "centre": {
+          "collisions": 0,
+          "to_side_panels_mm": [
+            59.35,
+            59.35
+          ],
+          "reach_behind_inner_face_mm": 4.98,
+          "bottom_above_plate_top_mm": 0.6
+        },
+        "right": {
+          "collisions": 0,
+          "to_side_panels_mm": [
+            113.35,
+            5.35
+          ],
+          "reach_behind_inner_face_mm": 4.98,
+          "bottom_above_plate_top_mm": 0.6
+        }
+      },
+      "profile_motion": {
+        "held_without_lifting_the_tip": true,
+        "tip_lift_to_release_deg": 18.0,
+        "insertion_path_poses": 161,
+        "insertion_path_max_tip_lift_deg": 18.0,
+        "seated_reach_behind_inner_face_mm": 4.94,
+        "insertion_reach_behind_inner_face_mm": 5.7,
+        "grid_mm_deg": [
+          0.1,
+          1.0
+        ]
+      },
+      "print": {
+        "bed_contact_mm2": 3988.7,
+        "worst_overhang_from_vertical_deg": 45.0,
+        "area_past_45_deg_mm2": 0,
+        "supports_required": false
+      },
+      "on_stand_row_2": {
+        "panel": {
+          "collisions": 0,
+          "closest": "case_2.0",
+          "closest_gap_mm": 0.2
+        },
+        "holder_left": {
+          "collisions": 0,
+          "closest": "case_2.0",
+          "closest_gap_mm": 0.6
+        },
+        "holder_right": {
+          "collisions": 0,
+          "closest": "case_2.0",
+          "closest_gap_mm": 0.6
+        },
+        "holder_centre": {
+          "collisions": 0,
+          "closest": "case_2.0",
+          "closest_gap_mm": 0.6
+        },
+        "two_holders_gap_mm": 8.0,
+        "comb_rise_above_level_deg": 8.0,
+        "cables": [
+          {
+            "holder_centre_x_mm": 55.35,
+            "free_hang_mm": 124.6,
+            "clearance_over_first_60_mm": 6.21
+          },
+          {
+            "holder_centre_x_mm": 163.35,
+            "free_hang_mm": 124.6,
+            "clearance_over_first_60_mm": 6.21
+          },
+          {
+            "holder_centre_x_mm": 109.35,
+            "free_hang_mm": 124.6,
+            "clearance_over_first_60_mm": 6.21
+          }
+        ]
+      }
+    }
+  },
+  "print": {
+    "cable-holder-panel": {
+      "print_bounds_mm": [
+        224.1,
+        47.8,
+        5.0
+      ],
+      "solid_volume_cm3": 25.53,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 348,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 25.53
+    },
+    "cable-holder-joiner-60": {
+      "print_bounds_mm": [
+        100.0,
+        61.148,
+        9.556
+      ],
+      "solid_volume_cm3": 22.78,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 5036,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 22.78
+    },
+    "cable-holder-stand-40": {
+      "print_bounds_mm": [
+        100.0,
+        58.856,
+        14.274
+      ],
+      "solid_volume_cm3": 30.3,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 5036,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 30.3
+    }
+  },
+  "source_sha256": {
+    "tools/build_cable_holder.py": "8ac5e1fc5c7ff0dc95ee004324c9133fe0956f8b2b2991cf82c6c47ed5318642",
+    "tools/build_cable_holder.sh": "850d10fd2d1b94dd85dcbd763059552ebf9b326e9ed29232b8fcbc43ea2d2feb",
+    "tools/build_case.py": "38c97fae551a7443899f2ffd35401a6fb831b40ad24b019a68bd995df8e4c3fa",
+    "tools/build_middle_frame.py": "5ff4d3623a7fd1f3c9e784cf58c51c95eebb01e5c95b99355ed512964e6368e9",
+    "tools/build_angle_joiner.py": "616aa44d2179c57c3747493bada36d79746b99c660c04ab1654f0e14a3e2245b",
+    "cad/assembly.FCStd": "ca79021018c3f81bf68a5f95c4d4a70948ae4dafad65b51cae8f84313e6ebadb",
+    "cad/angle-joiner-assembly.FCStd": "3b717661d8de900fd16b4d8cf3551567bf3cefb4943cec6ff163056b5b6db354",
+    "cad/stand-2.FCStd": "6f20b54594a885bb692675928645c88c778a299377dca6d90dac93cc1b8a9f48"
+  },
+  "export_sha256": {
+    "print/accessories/cable-holder/cable-holder-panel.step": "ea9128c9ea95914fb28b05f2c6fe84a28266c1a21545a59ee21e2159c94e94cd",
+    "print/accessories/cable-holder/cable-holder-panel.stl": "1fae9131b17f6f524ff3d8750f1e915fcf67f64a0dc1b551290c60da7d6b04c1",
+    "print/accessories/cable-holder/cable-holder-panel.3mf": "c76831fe16c0c9ab2fe826f7b03120df6a12895484097ce2a5596d8301ed9af2",
+    "print/accessories/cable-holder/cable-holder-joiner-60.step": "9ceb665a35805aa3c4a44a5f2813dd007b6831efe6054bd48c07e33691ffae52",
+    "print/accessories/cable-holder/cable-holder-joiner-60.stl": "3e8791c727f7bde9cbd109092667f9054a181cd2314a36c2d4ce4f0cd397f175",
+    "print/accessories/cable-holder/cable-holder-joiner-60.3mf": "901d88889348368dc780ed35f6fae1f9059db9d947a0704a9033d6978f5bb162",
+    "print/accessories/cable-holder/cable-holder-stand-40.step": "19fcf088a307f9b6ce889c9b6d8e194d9851be37394f42a11a50a88e2f50b760",
+    "print/accessories/cable-holder/cable-holder-stand-40.stl": "0e41f7922bbccb4e7f8686756f14db82879f314365c07d1ba69e265f0e9f68da",
+    "print/accessories/cable-holder/cable-holder-stand-40.3mf": "71fd35bf511976d0ebeed87f4827109613049f0f0d108de0664a161ff2b17be3"
+  },
+  "limits": [
+    "not printed or fit-tested",
+    "profile motion search is a 2D grid search, not a tolerance study",
+    "no load test; cables only"
+  ]
+}

@@ -27,7 +27,7 @@ tooling.
   `modules/16bit/firmware/`.
 - `mechanical/` — 3D-printed mechanics outside the KiCad modules, each folder with its
   own FreeCAD-headless `tools/`, ignored `research/` and print outputs: `mechanical/case/`
-  (skiff case, covers, tiered stand, angle joiner and a cable-holder cover with a clip-on patch cable comb, `print/cable-holder/`) and `mechanical/knobs/` (push-on
+  (skiff case; `print/` is grouped as `side-panels/` (standard, four spacer sockets for bolt-on stand plates), `rails/`, `bottom-plate/`, `covers/`, `double-case/` (middle frame), `quad-case/` (flat 2 x 2 set with fused panels, also the angle joiner's upper element), `stands/angle-joiner/` + `stands/tiered-stand/`, and `accessories/top-brace/` + `accessories/cable-holder/` (clip-on patch cable comb); index in `print/README.md`, renders mirror it) and `mechanical/knobs/` (push-on
   knobs for the RV09 pots + puller; self-contained: a reference panel and the RV09 model in its `tools/reference/`).
 - `modules/<name>/AGENTS.md` and `modules/<name>/Code.md` — module-specific
   circuit/release contract. Read them before touching that module.

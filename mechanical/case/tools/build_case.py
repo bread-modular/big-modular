@@ -30,6 +30,10 @@ along X, so the cover is held on all four edges. Assembly: screw the rails into 
 turn the frame upside down, slide the covers in from the open panel bottoms until their edges seat
 in the rail grooves, then set the bottom plate on: the side panels drop into its sockets and the
 cover edges into its grooves.
+Each side panel also has four M3 hex spacer sockets for bolt-on side plates (the angle joiner /
+side stand): the spacer loads from the case interior and seats on a shoulder at the outer face, so
+a screw from outside pulls it against the panel, not out of it. A case that stands alone leaves
+them empty.
 """
 
 import json
@@ -74,6 +78,11 @@ SPACER_SOCKET_DEPTH = SPACER_L + 0.2
 SPACER_WALL = (10.0 - SPACER_SOCKET_AF) / 2   # 2.15: same walls as the side panel sockets
 # rails are centred on the hole line, so they reach this far past the module panel edges
 RAIL_OH = SPACER_SOCKET_AF / 2 + SPACER_WALL - HOLE_EDGE
+
+# Side plate mount (angle joiner): four spacer sockets per side panel, Y from the module panel
+# front edge, Z from the floor under the bottom plate
+STAND_MOUNT_Y = (25.0, 103.5)
+STAND_MOUNT_Z = (25.0, 45.0)
 
 # modules/busboard (tools/build_layout.py): 205 x 32 mm, lies flat on the plate top, centred, and
 # bolts down with 4 M3 from underneath (counterbored) into nuts on the board. The holes sit in the
@@ -258,6 +267,11 @@ class Dims:
             "module_holes": f"{SPACER_SOCKET_AF} AF x {SPACER_SOCKET_DEPTH} deep hex socket for a "
                             f"M3x{SPACER_L:g} hex spacer, {self.rail_floor} mm floor with M3 vent hole",
             "side_panel_mm": [self.T, round(self.ylen, 3), self.depth],
+            "side_plate_mount": {"sockets_per_side_panel": len(STAND_MOUNT_Y) * len(STAND_MOUNT_Z),
+                                 "y_mm": list(STAND_MOUNT_Y), "z_mm": list(STAND_MOUNT_Z),
+                                 "socket": f"{SPACER_SOCKET_AF} AF x {SPACER_SOCKET_DEPTH} deep, open to the "
+                                           f"case interior, for a M3x{SPACER_L:g} hex spacer",
+                                 "outer_shoulder_mm": round(self.T - SPACER_SOCKET_DEPTH, 2)},
             "cover_groove_mm": {"width": self.groove_w, "depth": self.groove_d,
                                 "from_case_front_back_edge": self.groove_edge,
                                 "z_range": [self.P, round(self.top - self.rail_h, 3)],
@@ -345,30 +359,39 @@ def rail(d, i):
     return cut_all(s, cuts)
 
 
-def side_panel(d, left):
-    """Vertical plate, 128.5 mm long (one 3U module height). The top corners have rail notches
-    open to the inner face and the front/back edge, under a roof flush with the panel top: the rail
-    slides in from the front / back and an M3 through the outer wall goes into the spacer in the
-    rail end. The bottom edge has two blind hex sockets for
-    superglued M3 hex spacers that take the bolts coming up through the bottom plate."""
-    sgn = 1 if left else -1
+def side_panel_blank(d, left, ylen=None, webs=None):
+    """Uncut side panel plate from the case front edge over ylen (default: one case). The left one
+    carries the 1 HP lip, with the inside fillet under it over each (from, to) Y span in webs
+    (default: between the two rail notches)."""
+    ylen = d.ylen if ylen is None else ylen
     x_out = -d.T if left else d.L + d.T
     x_in = 0.0 if left else d.L
-    s = box((min(x_out, x_in), d.y0, d.P), (d.T, d.ylen, d.depth))
+    s = box((min(x_out, x_in), d.y0, d.P), (d.T, ylen, d.depth))
     if left:
         # 1 HP lip on top of the inner face, over the rails and flush with the module fronts. Its
         # top outer edge is rounded; between the rail notches an inside fillet under the lip ties
         # it to the wall (it prints as a ramp in the print pose, no supports)
         r, f = d.lip_round, d.lip_fillet
-        lip = box((0, d.y0, d.top), (d.fill, d.ylen, d.panel_t))
-        corner = box((d.fill - r, d.y0 - 1, d.case_top - r), (r + 1, d.ylen + 2, r + 1))
-        corner = corner.cut(cyl(r, d.ylen + 4, (d.fill - r, d.y0 - 2, d.case_top - r), (0, 1, 0)))
-        lip = lip.cut(corner)
-        gy0 = d.y0 + d.rail_w + d.notch_clr + d.lip_clr
-        gy1 = d.y0 + d.ylen - (d.rail_w + d.notch_clr + d.lip_clr)
-        web = box((0, gy0, d.top - f), (f, gy1 - gy0, f))
-        web = web.cut(cyl(f, gy1 - gy0 + 2, (f, gy0 - 1, d.top - f), (0, 1, 0)))
-        s = s.fuse([lip, web]).removeSplitter()
+        lip = box((0, d.y0, d.top), (d.fill, ylen, d.panel_t))
+        corner = box((d.fill - r, d.y0 - 1, d.case_top - r), (r + 1, ylen + 2, r + 1))
+        corner = corner.cut(cyl(r, ylen + 4, (d.fill - r, d.y0 - 2, d.case_top - r), (0, 1, 0)))
+        parts = [lip.cut(corner)]
+        if webs is None:
+            webs = [(d.y0 + d.rail_w + d.notch_clr + d.lip_clr,
+                     d.y0 + d.ylen - (d.rail_w + d.notch_clr + d.lip_clr))]
+        for gy0, gy1 in webs:
+            web = box((0, gy0, d.top - f), (f, gy1 - gy0, f))
+            parts.append(web.cut(cyl(f, gy1 - gy0 + 2, (f, gy0 - 1, d.top - f), (0, 1, 0))))
+        s = s.fuse(parts).removeSplitter()
+    return s
+
+
+def side_panel_cuts(d, left):
+    """Rail notches and screw holes, cover grooves, bottom spacer sockets and the four side plate
+    sockets of one case's side panel."""
+    sgn = 1 if left else -1
+    x_out = -d.T if left else d.L + d.T
+    x_in = 0.0 if left else d.L
     nd = d.tenon + d.notch_clr
     nw = d.rail_w + d.notch_clr
     nx = x_in - nd if left else x_in
@@ -388,7 +411,22 @@ def side_panel(d, left):
     bx = x_out + sgn * d.T / 2
     for by in d.bolt_y:
         cuts.append(spacer_socket((bx, by), d.P, SPACER_SOCKET_DEPTH))
-    return cut_all(s, cuts)
+    for my in STAND_MOUNT_Y:
+        for mz in STAND_MOUNT_Z:
+            cuts.append(end_spacer_socket(x_in, -sgn, my, mz))
+            cuts.append(cyl(M3_CLEAR / 2, d.T + 2, (x_out - sgn, my, mz), (sgn, 0, 0)))
+    return cuts
+
+
+def side_panel(d, left):
+    """Vertical plate, 128.5 mm long (one 3U module height). The top corners have rail notches
+    open to the inner face and the front/back edge, under a roof flush with the panel top: the rail
+    slides in from the front / back and an M3 through the outer wall goes into the spacer in the
+    rail end. The bottom edge has two blind hex sockets for
+    superglued M3 hex spacers that take the bolts coming up through the bottom plate. Four more
+    hex sockets open to the inner face take the spacers for a bolt-on side plate: a shoulder with
+    an M3 clearance hole is left at the outer face."""
+    return cut_all(side_panel_blank(d, left), side_panel_cuts(d, left))
 
 
 def bottom_plate(d):
@@ -647,6 +685,27 @@ def checks(d, asm):
             assert all(empty) and closed and wall, (name, y, empty, closed, wall)
             sockets[f"{name}@y{y:g}"] = "ok"
     out["spacer_sockets"] = sockets
+    # side plate sockets: empty from the inner face to the spacer length (axis and the hex corners
+    # above/below), then a shoulder at the outer face with only the screw hole through it
+    shoulder = d.T - SPACER_SOCKET_DEPTH
+    mounts = {}
+    for name, x_in, sg in (("side-panel-left", 0.0, -1), ("side-panel-right", d.L, 1)):
+        s = asm[name]
+        for y in STAND_MOUNT_Y:
+            for z in STAND_MOUNT_Z:
+                empty = all(not s.isInside(V(x_in + sg * x, y, z + dz), 1e-6, True)
+                            for x in (0.1, SPACER_L / 2, SPACER_SOCKET_DEPTH - 0.05) for dz in (-3.0, 0, 3.0))
+                xs = x_in + sg * (SPACER_SOCKET_DEPTH + shoulder / 2)
+                seat = all(s.isInside(V(xs, y + dy, z + dz), 1e-6, True)
+                           for dy, dz in ((2.4, 0), (-2.4, 0), (0, 2.4), (0, -2.4)))
+                hole = not s.isInside(V(xs, y, z), 1e-6, True)
+                wall = all(s.isInside(V(x_in + sg * 5, y + dy, z), 1e-6, True)
+                           for dy in (SPACER_SOCKET_AF / 2 + 1.5, -SPACER_SOCKET_AF / 2 - 1.5))
+                assert empty and seat and hole and wall, (name, y, z, empty, seat, hole, wall)
+                mounts[f"{name}@y{y:g}z{z:g}"] = "ok"
+    assert shoulder >= 1.5
+    out["side_plate_sockets"] = mounts
+    out["side_plate_socket_shoulder_mm"] = round(shoulder, 2)
     out["spacer_socket_wall_mm"] = round((d.T - SPACER_SOCKET_AF) / 2, 2)
     assert not misses, f"rail spacer sockets wrong: {misses[:3]}"
     # one rail part: front = back moved across, and a rail turned end for end is the same solid
@@ -723,8 +782,9 @@ def main():
     report["checks"] = checks(d, asm)
 
     cad, out = CASE / "cad", CASE / "print"
-    panel_out = out / "side panels" / "standard"
-    for p in (cad, out, panel_out, CASE / "research"):
+    folders = {"rail": out / "rails", "bottom-plate": out / "bottom-plate"}
+    panel_out = out / "side-panels"
+    for p in (cad, out, panel_out, *folders.values(), CASE / "research"):
         p.mkdir(parents=True, exist_ok=True)
     doc = App.newDocument("EurorackSkiff")
     for name, s in asm.items():
@@ -740,7 +800,7 @@ def main():
     for name, s in parts.items():
         p = print_pose(name, s, d)
         bb = p.BoundBox
-        destination = (panel_out if name.startswith("side-panel-") else out) / name
+        destination = (panel_out if name.startswith("side-panel-") else folders[name]) / name
         mesh_info = export(p, destination)
         report["print"][name] = {
             "path_without_extension": str(destination.relative_to(CASE)),

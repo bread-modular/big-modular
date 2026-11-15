@@ -61,7 +61,7 @@ level, so row 3 slides in and out past it with the bar on. It comes off straight
 The stand stands on 12 x 12 mm self-adhesive (3M) rubber feet, each stuck on a flat full-thickness
 plate (T x PAD) on the cheek underside: one under tier 1's front end and two under tier 2 (behind
 row 1, rear foot). No screws or spacers in the feet.
-Print set (mechanical/case/print/stand/, see its README.md): tier1/ tier2/ tier3/ hold each tier's two
+Print set (mechanical/case/print/stands/tiered-stand/, see its README.md): tier1/ tier2/ tier3/ hold each tier's two
 cheeks, common/ the shared stretcher, splice plates and the 1-2 adapter plate.
 """
 
@@ -85,6 +85,7 @@ CASE_Y0, CASE_YLEN = -2.0, 132.5       # case front edge, depth
 CASE_H = 65.0                          # bottom plate underside -> module fronts
 PLATE_X0, PLATE_LEN = -15.15, 249.0    # bottom plate outer X extent
 SIDE_T = 12.0
+SIDE_MOUNT_Z = (25.0, 45.0)            # side plate sockets in the side panels: left empty on this stand
 
 # --- fasteners (same as the case) ------------------------------------------------
 M3_CLEAR, M3_CB_D, M3_CB_DEPTH = 3.4, 6.5, 3.2
@@ -781,6 +782,8 @@ def main():
         c, b = f.Surface, f.BoundBox
         if not isinstance(c, Part.Cylinder):
             continue
+        if abs(c.Axis.x) > 0.99 and any(abs(b.Center.z - z) < 0.5 for z in SIDE_MOUNT_Z):
+            continue    # side plate socket: no screw in it here
         if abs(c.Radius - M3_CB_D / 2) < 1e-3 and abs(c.Axis.z) > 0.99:
             heads.append(cyl(HEAD_D / 2, HEAD_K, (b.Center.x, b.Center.y, b.ZMax - HEAD_K), (0, 0, 1)))
         elif abs(c.Radius - M3_CLEAR / 2) < 1e-3 and abs(c.Axis.x) > 0.99 and b.XMin < -SIDE_T + 1e-3:
@@ -1150,7 +1153,7 @@ def main():
     report["checks"]["foot_pad_mm"] = [T, PAD]
     report["checks"]["foot_mm"] = [FOOT, FOOT]
 
-    out = CASE / "print" / "stand"
+    out = CASE / "print" / "stands" / "tiered-stand"
     rnd = CASE / "research" / "stand"
     out.mkdir(parents=True, exist_ok=True)
     rnd.mkdir(parents=True, exist_ok=True)

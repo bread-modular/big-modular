@@ -1,7 +1,7 @@
 """Headless Blender previews of the angled case joiner; no GUI interaction.
 
 blender -b --python mechanical/case/tools/render_angle_joiner.py -- \
-  mechanical/case/research/angle-joiner mechanical/case/renders/angle-joiner
+  mechanical/case/research/angle-joiner mechanical/case/renders/stands/angle-joiner
 
 Assembly previews use actual exported solids plus plain display sheets to indicate
 module faces. Those sheets are not module/electronics models or printable parts.
