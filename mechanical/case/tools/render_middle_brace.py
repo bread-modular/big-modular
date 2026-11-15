@@ -1,7 +1,7 @@
 """Headless previews of the one-piece four-rail middle brace (no GUI).
 
 blender -b --python mechanical/case/tools/render_middle_brace.py -- \
-  mechanical/case/research/middle-brace mechanical/case/renders/middle-brace
+  mechanical/case/research/middle-brace mechanical/case/renders/accessories/top-brace
 """
 import json
 import sys

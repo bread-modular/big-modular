@@ -1,8 +1,8 @@
 """Headless previews of the cable-holder cover and its clip-on holder (no GUI).
 
 blender -b --python mechanical/case/tools/render_cable_holder.py -- \
-  mechanical/case/research/cable-holder mechanical/case/print/cable-holder \
-  mechanical/case/renders/cable-holder
+  mechanical/case/research/cable-holder mechanical/case/print/accessories/cable-holder \
+  mechanical/case/renders/accessories/cable-holder
 """
 import json
 import sys

@@ -1,7 +1,7 @@
 """Independent STL/3MF topology, pose and current-output hash checks (stdlib only).
 
 python3 -B mechanical/case/tools/check_angle_joiner.py
-Does not build CAD. Writes print/side panels/angle-joiner/mesh-verification.json only after PASS.
+Does not build CAD. Writes print/stands/angle-joiner/mesh-verification.json only after PASS.
 """
 from collections import Counter, defaultdict, deque
 import hashlib
@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 CASE = Path(__file__).resolve().parents[1]
-OUT = CASE/'print'/'side panels'/'angle-joiner'
+OUT = CASE/'print'/'stands'/'angle-joiner'
 
 
 def canonical(t):

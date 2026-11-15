@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "output_hashes_verified": 13,
+  "meshes": {
+    "fused-side-left": {
+      "closed_oriented_connected": true,
+      "vertices": 3520,
+      "triangles": 7084,
+      "volume_mm3": 186198.927,
+      "mesh_bounds_mm": [
+        231.93103,
+        231.93103,
+        17.08
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 7.9e-06
+    },
+    "fused-middle": {
+      "closed_oriented_connected": true,
+      "vertices": 1923,
+      "triangles": 3850,
+      "volume_mm3": 247741.646,
+      "mesh_bounds_mm": [
+        235.20381,
+        235.20381,
+        35.68
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 7.7e-06
+    },
+    "fused-side-right": {
+      "closed_oriented_connected": true,
+      "vertices": 3240,
+      "triangles": 6524,
+      "volume_mm3": 183303.406,
+      "mesh_bounds_mm": [
+        231.93103,
+        231.93103,
+        12.0
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 7e-06
+    }
+  }
+}

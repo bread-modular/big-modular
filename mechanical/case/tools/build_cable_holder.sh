@@ -7,7 +7,7 @@ fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 research="$case_dir/research/cable-holder"
 mkdir -p "$research"
-out="$case_dir/print/cable-holder"
+out="$case_dir/print/accessories/cable-holder"
 rm -f "$research/build-report.json" "$out/verification.json" "$out/mesh-verification.json"
 if ! CASE_DIR="$case_dir" "$@" "$here/build_cable_holder.py" >"$research/build.log" 2>&1; then
     cat "$research/build.log" >&2

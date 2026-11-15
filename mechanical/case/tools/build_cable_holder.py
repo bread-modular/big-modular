@@ -50,7 +50,7 @@ from shapely.geometry import Polygon, box as rect
 
 V = App.Vector
 CASE = base.CASE
-OUT = CASE/'print'/'cable-holder'
+OUT = CASE/'print'/'accessories'/'cable-holder'
 RESEARCH = CASE/'research'/'cable-holder'
 TOL = 1e-3
 
@@ -642,7 +642,7 @@ def main():
                        'positions_centre_x_mm': {k: round(v, 3) for k, v in centres.items()}}},
         'checks': checks, 'print': exports,
         'source_sha256': {rel: sha(rel) for rel in tools + sources},
-        'export_sha256': {f'print/cable-holder/{name}{ext}': sha(f'print/cable-holder/{name}{ext}')
+        'export_sha256': {f'print/accessories/cable-holder/{name}{ext}': sha(f'print/accessories/cable-holder/{name}{ext}')
                           for name in posed for ext in ('.step', '.stl', '.3mf')},
         'limits': ['not printed or fit-tested', 'profile motion search is a 2D grid search, not a tolerance study',
                    'no load test; cables only']}

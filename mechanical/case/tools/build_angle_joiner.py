@@ -3,9 +3,10 @@
 Build only this variant: mechanical/case/tools/build_angle_joiner.sh.
 Original case, stand and side-by-side middle-frame exports are never overwritten.
 Lower case is horizontal; upper case is 60 degrees above horizontal. Two mirrored
-skeletal cheeks include rear desk feet. Four captured M3x10 female hex spacers
-load from INSIDE each replacement side panel; M3x8 screws enter from OUTSIDE.
-The 1.8 mm outer shoulder retains the spacers mechanically, not by glue pull-out.
+skeletal cheeks include rear desk feet. They bolt onto the standard side panels
+(build_case.py): four captured M3x10 female hex spacers load from INSIDE each
+panel; M3x8 screws enter from OUTSIDE. The 1.8 mm outer shoulder retains the
+spacers mechanically, not by glue pull-out.
 
 All coordinates are original build_case assembly axes (X along the rails).
 This is a CAD-checked prototype, not a tested lifting bracket or rated stand.
@@ -38,8 +39,7 @@ GRIP = 2.0
 CB_DEPTH = PLATE_T - GRIP
 BASE_RELIEF = 3.65  # stock base overhang 3.15 + 0.50 mm
 RELIEF_CLR = 0.50
-MOUNT_Y = (25.0, 103.5)
-MOUNT_Z = (25.0, 45.0)
+MOUNT_Y, MOUNT_Z = base.STAND_MOUNT_Y, base.STAND_MOUNT_Z   # the side panels' spacer sockets
 RIM = 7.5        # ring outline around the screw axes: 3.25 counterbore + 4.25 wall
 RAIL_W = 8.0     # ring rails between the front and rear screw pairs
 WINDOW_END = 9.0  # ring window end to the screw axes
@@ -117,21 +117,6 @@ def capsule(a, b, radius, x, length):
                             tangent(b, rb, -1), tangent(a, ra, -1)], x, length)
     return rect.fuse([base.cyl(r, length, (x, *p), (1, 0, 0))
                       for p, r in ((a, ra), (b, rb))]).removeSplitter()
-
-
-def side_panel(d, left):
-    """Keep every existing rail/base/cover interface; add inward-loading sockets."""
-    sgn = 1 if left else -1
-    inner = 0 if left else d.L
-    outer = -d.T if left else d.L + d.T
-    cuts = []
-    for y in MOUNT_Y:
-        for z in MOUNT_Z:
-            # Pocket starts at the INBOARD face, toward the outside; the remaining
-            # 1.8 mm outside wall is a shoulder with only a 3.4 mm screw passage.
-            cuts.append(base.end_spacer_socket(inner, -sgn, y, z))
-            cuts.append(base.cyl(base.M3_CLEAR/2, d.T+2, (outer-sgn, y, z), (sgn, 0, 0)))
-    return base.cut_all(base.side_panel(d, left), cuts)
 
 
 def rail_axes(d, layout):
@@ -281,7 +266,7 @@ def assembly(d, layout, source, parts):
         for name in ('bottom_plate', 'rail_front', 'rail_back'):
             asm[f'{label}_{name}'] = layout.place(source[name], upper)
         for side in ('left', 'right'):
-            asm[f'{label}_side_panel_{side}'] = layout.place(parts[f'side-panel-{side}'], upper)
+            asm[f'{label}_side_panel_{side}'] = layout.place(source[f'side_panel_{side}'], upper)
     return asm
 
 
@@ -295,18 +280,7 @@ def verify(d, layout, source, parts, asm):
         checked += 1
     checks['assembly_pairs_no_interference'] = checked
 
-    # Reuse original full-case checks: rail notches, grooves, bottom sockets etc.
-    single = {name.replace('_', '-'): shape for name, shape in source.items()}
-    single['side-panel-left'] = parts['side-panel-left']
-    single['side-panel-right'] = parts['side-panel-right']
-    checks['original_case_interfaces'] = base.checks(d, single)
-    for side in ('left', 'right'):
-        old, new = source['side_panel_'+side], parts['side-panel-'+side]
-        assert new.cut(old).Volume < TOL, 'side panels must not grow into module bay'
-        # The bottom mounting band and rail/lip band remain byte-independent exact solids.
-        for lo, hi in ((d.P, 17), (50, d.case_top+1)):
-            band = base.box((-d.T-1, d.y0-1, lo), (d.L+2*d.T+2, d.ylen+2, hi-lo))
-            assert old.common(band).cut(new).Volume < TOL, (side, 'changed original interface')
+    checks['side_panels'] = 'standard panels of cad/assembly.FCStd (four spacer sockets each)'
 
     # Whole case envelopes, full module row and a 10 mm above-face allowance.
     envelope = base.box((d.plate_x0, d.y0, 0), (d.plate_len, d.ylen, d.case_top))
@@ -361,7 +335,7 @@ def verify(d, layout, source, parts, asm):
         sg = 1 if left else -1
         xo = -d.T if left else d.L+d.T
         xi = 0 if left else d.L
-        panel = parts['side-panel-'+side]
+        panel = source['side_panel_'+side]
         for y in MOUNT_Y:
             for z in MOUNT_Z:
                 # Same-AF pocket gauge + extra wall envelope at mid-depth.
@@ -537,11 +511,10 @@ def main():
     d = base.Dims(42, 60, 0.5, base.module_panels())
     layout = Layout(d)
     source, differences = common.source_parts(d)
-    parts = {'side-panel-left':side_panel(d, True), 'side-panel-right':side_panel(d, False),
-             'joiner-left':plate(d, layout, True), 'joiner-right':plate(d, layout, False)}
+    parts = {'joiner-left':plate(d, layout, True), 'joiner-right':plate(d, layout, False)}
     asm = assembly(d, layout, source, parts)
     checks, hardware = verify(d, layout, source, parts, asm)
-    out = CASE/'print'/'side panels'/'angle-joiner'
+    out = CASE/'print'/'stands'/'angle-joiner'
     research = CASE/'research'/'angle-joiner'
     for folder in (out, research, CASE/'cad'):
         folder.mkdir(parents=True, exist_ok=True)
@@ -571,7 +544,8 @@ def main():
     for name, shape in {**asm, **hardware}.items():
         mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.025, AngularDeflection=0.15)
         mesh.write(str(research/f'asm-{name}.stl'))
-    for name, shape in parts.items():
+    # The standard left panel too: the preview of its four sockets.
+    for name, shape in {**parts, 'side-panel-left':source['side_panel_left']}.items():
         MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.025, AngularDeflection=0.15).write(str(research/f'part-{name}.stl'))
     # Underside area guides for previews ONLY, not an assumed rubber thickness
     # or extra printable parts. Real pad dimensions beyond 12 x 12 are unknown.

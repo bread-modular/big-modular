@@ -31,7 +31,7 @@ import Part
 
 V = App.Vector
 CASE = base.CASE
-OUT = CASE/'print'/'side panels'/'middle-frame'/'top-brace'
+OUT = CASE/'print'/'accessories'/'top-brace'
 RESEARCH = CASE/'research'/'middle-brace'
 TOL = 1e-3
 REACH_HP = 6
@@ -754,7 +754,7 @@ def main():
     panel_sources=sorted(base.MODULES.glob('*/panels/front-pcb/*.kicad_pcb'))
     report={'status':'PASS','dimensions':dimensions,'source_geometry_differences_mm3':diffs,
             'source_sha256':{str(f.relative_to(CASE)):hashlib.sha256(f.read_bytes()).hexdigest() for f in source_paths},
-            'faceplate_source_sha256':{str(f.relative_to(CASE.parent)):hashlib.sha256(f.read_bytes()).hexdigest()
+            'faceplate_source_sha256':{str(f.relative_to(base.MODULES.parent)):hashlib.sha256(f.read_bytes()).hexdigest()
                                       for f in panel_sources},
             'checks':checks,'holes_assembly_coordinates_mm':p.holes,'print':prints,
             'hardware':'up to 12 M3x8 socket-head screws, no washers, through the module panels\' own rail holes '
