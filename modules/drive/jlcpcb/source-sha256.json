@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/drive.kicad_pcb": "26de1c957df5976c27f19bb67ddc247dd3879a100199718ac35ae82c07ab763e",
+    "hardware/drive.kicad_pro": "45937dcca1acdfb53c1e0e721106636510b2e105366d28807bcac30bb212ba5e",
+    "hardware/drive.kicad_sch": "b2b602ca74d829630763e5ac36a94ca05e0e6a61a236aa1b64bbd114fab61597",
+    "panels/front-pcb/drive-panel.kicad_pcb": "9fccd7b1304cfd0bf460bd952ffdfab20cde6a0e766ccf98df02c8d9df338bb6",
+    "panels/front-pcb/drive-panel.kicad_pro": "90b53ff2378bce697dd4cf319fa5ff631d50b861f4df06b1016e2b6488073412"
+  },
+  "exports": {
+    "jlcpcb/carrier/drive-gerbers.zip": "9a8e82643442e046707631ddbdd7457d8850e2fc221119f31d8b01a2fbc8a744",
+    "jlcpcb/carrier/bom.csv": "a1179ebece1700adb2552dce6ced24be45f98fb805a955ad6c1df6853769c4f5",
+    "jlcpcb/carrier/positions.csv": "e4bc04d01a2cf23c819da9c1fdb558d02d73e0ebb0cd7e7b39f8098f0fea7664",
+    "jlcpcb/panel/drive-panel-gerbers.zip": "8a72e3d4b59e9bf9b72b7b0311094222bea3c11c97f1eb7dfc5c2b88a0247861"
+  }
+}
