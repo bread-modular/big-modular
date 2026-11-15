@@ -1,4 +1,4 @@
-# 32bit contract (S2 schematic, S2 THT placement)
+# 32bit contract (S3 schematic, R3 routing)
 
 | | |
 |---|---|
@@ -12,6 +12,8 @@
 ## Fixed by the brief (user, 2026-10-21)
 
 - Bread Modular `32bit-5v` (ESP32-S3-WROOM-1U-N16R8 + ES8388) as a Eurorack module, **6HP**, 4-layer carrier.
+  **S3 (user, 2026-11-15):** the module is replaced by ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal, so the
+  whole carrier is JLCPCB Economic PCBA; same memory map (16 MB flash, 8 MB octal PSRAM), GPIOs and firmware.
 - Top: **MIDI in**, **two audio inputs**, **two CV inputs**. Bottom: **two outputs**. **Two pots**
   (CV1/CV2 attenuators, unpatched = knob, as BM). **Mode button** and **LED**.
 - USB-C and BOOT/RESET as modules/16bit (B side, top edge).
@@ -27,7 +29,11 @@
   touches firmware is logged in `docs/firmware-pins.md` (BM GPIO -> 32bit GPIO, change log,
   behaviour differences). R1: CV1 = U7B/U6B, CV2 = U7A/U6A; CV1/CV2 ADC IO9/IO10 -> IO1/IO2;
   I2C IO47/IO48 -> IO38/IO39; codec inputs LIN1/RIN1 -> LIN2/RIN2.
-  IO35-37 (octal PSRAM) stay open.
+  GPIO33-37 and SPICS1 (octal PSRAM inside the ESP32-S3R8) stay open; GPIO26-32 are the flash (U2).
+- S3 chip circuit after the Espressif hardware design guidelines: VDD3P3 / VDDA on +3V3_ESP32 (FB1, C6,
+  C5, C12, C13), VDD3P3_RTC / VDD3P3_CPU on +3V3 (C14, C15), VDD_SPI = 3.3 V out of the chip (C16, U2,
+  C17), 40 MHz crystal with 12p loads and a 0R on XTAL_P, 0R on the flash clock, 10k pull-ups on EN and
+  GPIO0. LNA_IN is left open (radio never started); strapping pins GPIO3 / 45 / 46 open (defaults).
 - modules/16bit parts for jacks (PJ301M-12), pots (BM RV09 50k), MODE switch, LED, power entry,
   MIDI front end, CV chain. BM footprints preferred (ES8388, RV09, K2, FB1 on C_0805).
 - All SMD on B (one assembly side); jacks, pots, LED, header and SW1 hand-soldered.
@@ -74,3 +80,19 @@
   the jacks. After the user's moves C6 is 0.53 mm, C27/R55 0.82 mm, R5 > 1 mm.
 - B silk MIDI JP1 labels as modules/16bit: P (pad 1 RX_Q, protected), D (pad 3 MIDI_IN, direct),
   legend P=PROT / MIDI JP1 / D=DIRECT beside it. DRC 0 / 0 / 0 after adding them.
+
+## Verification (S3 schematic + R3 routing, 2026-11-15)
+
+- Native ERC `--severity-all`: 0. Native DRC `--severity-all --schematic-parity`, saved fills and
+  `--refill-zones`: 0 violations, 0 unconnected, 0 parity, no exclusions. Shared `check`: ERC 0,
+  DRC 0 / 0 / 0, manifest equal after the export.
+- Manual (`research/s3/checks.py`): no vias in or within 0.05 mm of an SMD pad (130 vias); only the R2
+  +3V3_8388 hop on In2, nothing on In1; In1 GND and In2 +3V3 one piece each; no zero-length or duplicate
+  segments.
+- Hand-solder clearance: FB1 2.005 mm and C6 2.006 mm from J4 T; next U6 2.02 mm (R2). The four
+  user-accepted R2 parts are unchanged. No new courtyard under 1 mm from the edge.
+- Crystal: both lines on B over the In1 GND plane, 1.7 mm (XTAL_P to R6) + 3.6 mm (R6 to Y1) and 7.3 mm
+  (XTAL_N); case pads tied under the crystal to one GND via. Flash lines 4-9 mm on B; only SPIHD and
+  VDD_SPI hop on F.
+- JLCPCB export: `jlcpcb/` (carrier re-exported, 103 parts / 43 rows, all Economic-eligible by the
+  2026-11-15 live check). Not done: JLCPCB preview, supplier acceptance, bench.

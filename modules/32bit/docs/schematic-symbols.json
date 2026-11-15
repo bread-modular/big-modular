@@ -64,10 +64,24 @@
       "flattened_from": "Q_NPN_BEC",
       "edits": null
     },
-    "ESP32-S3-WROOM-1": {
-      "library": "RF_Module:ESP32-S3-WROOM-1",
-      "source": "/usr/share/kicad/symbols/RF_Module.kicad_sym",
-      "source_sha256": "5caaa848e888e9f5491edc765fef0e2eee53c4fe5aa4fe1520c01e4b0f840f2b",
+    "ESP32-S3": {
+      "library": "MCU_Espressif:ESP32-S3",
+      "source": "/usr/share/kicad/symbols/MCU_Espressif.kicad_sym",
+      "source_sha256": "2d1d0a92f834237371a21faa57a762afd43e185f183d80c35f71966499a4e27b",
+      "flattened_from": null,
+      "edits": null
+    },
+    "W25Q128JVS": {
+      "library": "Memory_Flash:W25Q128JVS",
+      "source": "/usr/share/kicad/symbols/Memory_Flash.kicad_sym",
+      "source_sha256": "9e2a7f37e52119598b34ab33b1cddad7cfa55236cfef2ac33a394f9f5bdfc29f",
+      "flattened_from": "W25Q32JVSS",
+      "edits": null
+    },
+    "Crystal_GND24": {
+      "library": "Device:Crystal_GND24",
+      "source": "/usr/share/kicad/symbols/Device.kicad_sym",
+      "source_sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24",
       "flattened_from": null,
       "edits": null
     },

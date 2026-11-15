@@ -1,6 +1,7 @@
 """Import the pinned 32bit footprints into hardware/32BIT.pretty (one-time, reviewable).
 
-The library is rebuilt from scratch: footprints no longer listed are removed.
+The library is rebuilt from scratch: footprints no longer listed are removed. KiCad writes new
+UUIDs on every save, so a footprint whose content is otherwise unchanged keeps its old file.
 
 Run from modules/32bit with KiCad's Python (pcbnew 10):
   python3 -B tools/import_footprints.py [--bread-modular ~/data/projects/bread-modular]
@@ -14,8 +15,9 @@ Sources are read-only:
   modules/16bit) the RV09 pot (audio-out RV09 proxy model) and the K2-1808SN-A4SW-01
   RESET/BOOT switches (courtyard added, pad-overlapping silk removed);
 - the installed KiCad stock library for everything else, unedited, including (as modules/8bit)
-  the MODE tact switch `SW_PUSH_6mm_H7.3mm`, the 3 mm mode LED `LED_D3.0mm` and the
-  ESP32-S3-WROOM-1U module (as Bread Modular 32bit-5v). The USB-C receptacle is
+  the MODE tact switch `SW_PUSH_6mm_H7.3mm`, the 3 mm mode LED `LED_D3.0mm` and, since S3, the
+  ESP32-S3 QFN-56 land with its nine thermal vias, the SOIC-8 208 mil flash land and the
+  3.2 x 2.5 mm crystal (the last two as modules/16bit). The USB-C receptacle is
   the stock HRO TYPE-C-31-M-12 (the Bread Modular part): Bread Modular's copy merges the
   VBUS/GND pads under A-numbers, which the stock 14P symbol can't map.
 
@@ -25,6 +27,7 @@ and output.
 import argparse
 import hashlib
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -38,7 +41,9 @@ LIBNAME = '32BIT'
 STOCK_FOOTPRINTS = [
     ('LED_THT', 'LED_D3.0mm'),
     ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'),
-    ('RF_Module', 'ESP32-S3-WROOM-1U'),
+    ('Package_DFN_QFN', 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias'),
+    ('Package_SO', 'SOIC-8_5.3x5.3mm_P1.27mm'),
+    ('Crystal', 'Crystal_SMD_3225-4Pin_3.2x2.5mm'),
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Package_SO', 'SOIC-14_3.9x8.7mm_P1.27mm'),
     ('Package_TO_SOT_SMD', 'SOT-223-3_TabPin2'),
@@ -70,7 +75,7 @@ BM_COURTYARD = {'K2-1808SN-A4SW-01': (2.95, 1.9)}
 
 # Footprints whose plated thermal vias get the 'heatsink' fabrication property (metadata only):
 # KiCad then counts the SMD part as SMD (no footprint_type_mismatch); copper is unchanged.
-HEATSINK_VIAS = {'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias': 9, 'ESP32-S3-WROOM-1U': 12}
+HEATSINK_VIAS = {'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias': 9, 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias': 9}
 
 # BM footprint -> 3D model (in 32BIT.3dshapes) and its recorded source.
 BM_MODEL = {
@@ -92,9 +97,9 @@ MODEL_PROXY = {
         '${KICAD10_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.step',
 }
 
-# Footprints whose referenced model KiCad 10 does not ship and that get no proxy (a longer
-# WROOM-1 body would misstate the fit): the model reference is removed and recorded.
-MODEL_NONE = {'ESP32-S3-WROOM-1U'}
+# Footprints whose referenced model KiCad 10 does not ship and that get no proxy: the model
+# reference is removed and recorded (none since S3 dropped the ESP32-S3-WROOM-1U module).
+MODEL_NONE = set()
 
 # name -> (step file, courtyard half-width X, courtyard Y top, courtyard Y bottom)
 JACKS = {
@@ -161,7 +166,9 @@ def main():
     LIB, MODELS = hw / f'{LIBNAME}.pretty', hw / f'{LIBNAME}.3dshapes'
     jacks = bm / 'opt/AudioJacks'
     LIB.mkdir(exist_ok=True)
+    previous = {}
     for old in LIB.glob('*.kicad_mod'):
+        previous[old.name] = old.read_text()
         old.unlink()
     MODELS.mkdir(exist_ok=True)
     record = {'footprints': {}, 'models': {}}
@@ -242,6 +249,10 @@ def main():
         record['models'][step] = {'source': rel(model_src), 'sha256': sha(model_src),
                                   'license': 'MIT (c) 2021 Barwise'}
     shutil.copyfile(jacks / 'LICENSE', MODELS / 'LICENSE-AudioJacks-MIT.txt')
+    no_uuid = lambda text: re.sub(r'\(uuid "[^"]*"\)', '', text)  # noqa: E731
+    for new in LIB.glob('*.kicad_mod'):
+        if new.name in previous and no_uuid(previous[new.name]) == no_uuid(new.read_text()):
+            new.write_text(previous[new.name])
     for name in record['footprints']:
         record['footprints'][name]['output_sha256'] = sha(LIB / f'{name}.kicad_mod')
     (LIB / 'PROVENANCE.json').write_text(json.dumps(record, indent=2) + '\n')

@@ -1,4 +1,4 @@
-# 32bit research and circuit intent (S1 schematic, S1 THT placement)
+# 32bit research and circuit intent (S3 schematic, R3 routing)
 
 Bread Modular `32bit-5v` (the updated 32bit: ESP32-S3 + ES8388) as a 6HP Eurorack module on a
 4-layer carrier. Brief (user, 2026-10-21):
@@ -145,3 +145,50 @@ CPL re-exported; BOM byte-identical to R1, 43 CPL rows moved; every CPL row matc
 position and side (90 / 90). PTH drill: 106 routed vias (all 0.3/0.6 mm), 21 x 0.2 mm footprint
 thermal vias. Panel re-exported unchanged (only Gerber dates differ). Shared `check` afterwards: ERC 0,
 DRC 0 / 0 / 0, manifest equal. Reports in `research/export-r2/`.
+
+
+## 8. S3 / R3: ESP32-S3R8 on the carrier instead of the module (2026-11-15)
+
+Why: no Espressif module is JLCPCB Economic PCBA (live catalog 2026-11-15: every WROOM-1 / 1U / 2 / MINI
+listing "Standard only"), and one Standard part makes the whole board Standard. The bare chips are
+Economic. User decision 2026-11-15: ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal, then route it well.
+
+Circuit (Espressif ESP32-S3 hardware design guidelines and the ESP32-S3-WROOM-1 reference schematic):
+
+- **U1 ESP32-S3R8** (C2913194, QFN-56 7 x 7 mm, 8 MB octal PSRAM in the package on GPIO33-37 / SPICS1,
+  3.3 V). With U2 it is the N16R8 module's memory map, so the firmware and `sdkconfig` are unchanged.
+- **U2 W25Q128JVSIQ** (C97521, Basic, SOIC-8 208 mil, QE set from the factory) on SPICS0 / SPICLK / SPID /
+  SPIQ / SPIWP / SPIHD, supplied from **VDD_SPI** (the chip's own 3.3 V output, C16 1u + C17 100n). R7 0R in
+  the clock at the chip, 0603 on purpose: SPIQ runs between its pads, so the clock crosses SPIQ on one layer.
+- **Y1 40 MHz**, 3.2 x 2.5 mm, 10 pF load (C5210647), C9 / C10 12p C0G, R6 0R in XTAL_P (place for an
+  inductor if harmonics ever matter; they don't without the radio).
+- Supply: VDD3P3 (2, 3) and VDDA (55, 56) on +3V3_ESP32 behind FB1 with C6 10u, C12 1u, C5 100n, C13 10n;
+  VDD3P3_RTC (20) and VDD3P3_CPU (46) on the +3V3 plane with C14 / C15 100n.
+- EN: R4 10k + C7 1u + C8 100n (as before). GPIO0: R8 10k pull-up (new; the BOOT trace runs the length of the board).
+- **No radio:** LNA_IN is open, no antenna, matching network or RF keep-out. Firmware must not start
+  Wi-Fi / BT. Strapping pins GPIO3 / GPIO45 / GPIO46 are open (internal defaults: SPI boot, VDD_SPI 3.3 V).
+- What is lost: the module's tested clock / RF layout and its shield. Nobody has built this circuit here.
+
+R3 routing (manual, batches `research/s3/s01..s06`, DRC after each):
+
+- U1 on B at X109.3 Y134.6, rotated so the flash pins (29-35) face up, I2C / UART / crystal / VDDA (43-56)
+  face right, EN / BOOT / CV ADC (4-7) face down and I2S / USB / LED (16-27) face left.
+- Flash above the chip: CS / Q / CLK enter the window between its pad columns, WP and D run outside, HD and
+  VDD_SPI hop over them on F. C16 at pin 29, C17 at U2 pin 8.
+- Right: C15 at pin 46 with its own +3V3 and GND vias; crystal about 3 mm from the chip, XTAL_N over the top of
+  the crystal to Y1 pad 3 + C10, XTAL_P through R6 to Y1 pad 1 + C9; the two case pads tied under the crystal.
+  VDDA caps C13 at pins 55 / 56, C5 / C12 below pins 2 / 3, fed from FB1 + C6 (left of them) over a 0.4 mm F hop.
+- The F bus above the area (USB, EN, +/-12 V, CV, MIDI, codec inputs, BOOT) only lets a via land west of
+  X114.2 or east of X118.7. EN drops through a via at Y127.2 to its RC (R4, C7, C8 between the flash and
+  the codec) and through a second via to pin 4. BOOT changes to B south of the I2C lines, back to F over
+  the crystal and to B again for pin 5 (R8 on the first B piece).
+- CV2_ADC now leaves U6 between its pads 6 and 5 so CV1 / CV2 arrive in pin order; rows EN, BOOT, CV1, CV2
+  run below the chip.
+- Left: I2S DIN / LRCK / DOUT / BCLK and USB D+ / D- take vias above the flash, run west on F above it and
+  down the left edge to a via staircase beside the pin column (fan-out lines 0.6 mm apart so every track
+  clears the neighbouring via). MCLK stays on B (over the flash and down its west side). LED comes up the
+  edge on B from a via below the BUTTON row. C14 at pin 20.
+- BUTTON and LED F lanes at the left edge now end below the chip (were at the module's pins).
+
+Result: DRC 0 / unconnected 0 / parity 0, no exclusions; checks in `Code.md`. Open: JLCPCB preview, bench
+(crystal start-up, flash boot, PSRAM test, USB download with BOOT / RESET).
