@@ -135,7 +135,7 @@ leave 0.15 mm gaps, under the 0.2 mm clearance. Compare it with the Microchip MS
 - User confirmation of D1 (RANGE as a button + LED) and of the panel layout.
 - Routing (manual, divide and conquer), then fab review and JLCPCB export.
 - Firmware; MCP4728 EEPROM default (section 3).
-- The printed button caps and a printed panel are not generated for this module (the
+- The printed panel is in `panels/front-cad/` (not test-printed); no own button caps (the
   `modules/8bit` cap fits the same switch and stack).
 - 3D interference check; measured jack / LED / switch heights (the stack is the nominal
   `modules/8bit` one).

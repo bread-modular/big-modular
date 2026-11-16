@@ -78,7 +78,7 @@
   closest SMD pad to a jack pad 5.14 mm (SW2 to J11).
 - Panel: 50.5 x 128.5 x 1.6 mm, rail holes X12.58 / X43.06 (2HP case grid phase as
   `mechanical/case/tools/build_case.py` asserts).
-- Not done: SMD placement, routing, JLCPCB export / assembly audit, printed panel, firmware, bench.
+- Not done: SMD placement, routing, JLCPCB export / assembly audit, firmware, bench.
 
 ## Verification (fab-review fixes + export, 2026-11-08)
 
