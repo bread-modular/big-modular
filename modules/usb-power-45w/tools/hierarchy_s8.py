@@ -63,7 +63,8 @@ def layout(parts):
 
 
 NOTES = {
- 1: 'S9.2: 15 V / 3 A PD, R1 56k. U5 UVLO: R2 100k 0.1% / (R3 10k 0.1% + R114 510R 1%), worst start <13.0 V.\n'
+ 1: 'S9.4: U1 CH224A VHV/VBUS straight on VPD (WCH reference circuit; VHV abs max 32 V, D1 is the clamp).\n'
+    'S9.2: 15 V / 3 A PD, R1 56k. U5 UVLO: R2 100k 0.1% / (R3 10k 0.1% + R114 510R 1%), worst start <13.0 V.\n'
     'U5 OVP R28+R4 130k / R24 9.1k: rises 17.30-19.44 V, recovers 16.03-18.27 V (S9.1: 6.8k, 24.1 V).\n'
     'D24 SMBJ20A: VR 20 V > OVP max, VBR 22.2 V (21.7 V at 0 C), 32.4 V at 18.6 A < U2 42 V: OVP acts first.\n'
     'D25: low-current negative clamp, slew-limited room-temperature test only. TP26/TP27 = D24 clamp probe pair.',

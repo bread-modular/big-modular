@@ -41,7 +41,7 @@ import verify_s8  # noqa: E402
 
 MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-COMPONENTS = 185                       # S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads;
+COMPONENTS = 178                       # S9.4: 185 - 7 (CH224A limiter Q2/Q3/R23/R27/D9/D11 + TP2); S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads;
                                        # S9.3 + 10 (soft starts C84/D27/R116, C85/D28/R117; sequencing Q16/R118/C86/R119)
 ROOT = DESIGN / 'hardware/usb-power-45w.kicad_sch'
 
@@ -113,7 +113,7 @@ class TableDerivation(unittest.TestCase):
     def test_removed_and_added(self):
         s7 = {p['ref'] for p in circuit45.circuit()}
         s8 = {p['ref'] for p in circuit_s8.circuit()}
-        removed = set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED)
+        removed = set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) | set(circuit_s8.S94_REMOVED)
         self.assertFalse(removed & s8)
         self.assertEqual(s7 - s8, removed)
         self.assertTrue({'U6', 'U7', 'U8', 'Q4', 'U16', 'U17'} <= set(circuit_s8.S8_REMOVED))
@@ -123,6 +123,26 @@ class TableDerivation(unittest.TestCase):
                                    *circuit_s8.ARMING_ADDED, *circuit_s8.BUCKBOOST_ADDED, *circuit_s8.S91_ADDED,
                                    *circuit_s8.S92_ADDED, *circuit_s8.S93_ADDED, '#FLG10'})
         self.assertFalse(set(circuit_s8.S8_PLUS5_DROPPED) & s8)
+
+    def test_s94_ch224a_straight_on_vpd(self):
+        """S9.4 (first-board bench): the CH224A supply limiter is gone from the table and from the routed board; U1
+        VHV/VBUS and C1 are on VPD. Q2's SOT89 land had emitter and base swapped (Nexperia numbers the leads 3-2-1)."""
+        by = {p['ref']: p for p in circuit_s8.circuit()}
+        self.assertEqual({r for r in circuit_s8.S94_REMOVED if not r.startswith('#')},
+                         {'Q2', 'Q3', 'R23', 'R27', 'D9', 'D11', 'TP2'})
+        self.assertFalse(set(circuit_s8.S94_REMOVED) & set(by))
+        self.assertFalse({n for p in by.values() for n in p['pins'].values()} & set(circuit_s8.S94_NETS))
+        self.assertEqual((by['U1']['pins']['1'], by['U1']['pins']['8'], by['C1']['pins']['1']), ('VPD',) * 3)
+        self.assertNotIn('BCX53_NXP', {p['sym'] for p in by.values()})
+        import pcbnew
+        board = pcbnew.LoadBoard(str(BOARD))
+        refs = {f.GetReference() for f in board.GetFootprints()}
+        self.assertFalse(set(circuit_s8.S94_REMOVED) & refs)
+        nets = {str(n).split('/')[-1] for n in board.GetNetsByName().keys()}
+        self.assertFalse(nets & set(circuit_s8.S94_NETS))
+        pads = {(f.GetReference(), p.GetNumber()): str(p.GetNetname()) for f in board.GetFootprints() for p in f.Pads()}
+        self.assertEqual({pads[k] for k in (('U1', '1'), ('U1', '8'), ('C1', '1'))}, {'/VPD'})
+        self.assertFalse([f.GetReference() for f in board.GetFootprints() if 'SOT-89' in f.GetFPIDAsString()])
 
     def test_no_raw_or_plus5_nets_no_cans(self):
         parts = circuit_s8.circuit()
@@ -473,7 +493,7 @@ class ReviewRecord(unittest.TestCase):
         if DESIGN.resolve() != MODULE.resolve() or not rec_path.exists():
             self.skipTest('review record applies to the module tree once generated (tools/review_s8.py)')
         rec = json.loads(rec_path.read_text())
-        self.assertEqual(rec['revision'], 'S9.3-10P / R1-start')
+        self.assertEqual(rec['revision'], 'S9.4 / R2')
         self.assertEqual(rec['status'], 'PARTIAL_ROUTING_NOT_RELEASED')
         self.assertFalse(rec['routing_complete'])
         hashed = [rel for group in ('sources_sha256', 'artifacts_sha256')
@@ -494,7 +514,7 @@ class ReviewRecord(unittest.TestCase):
                     'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod', 'docs/design/routing-notes.md',
                     'docs/design.md'):
             self.assertIn(rel, hashed, rel)
-        self.assertEqual(rec['routing_notes']['test_pad_rows'], 27)
+        self.assertEqual(rec['routing_notes']['test_pad_rows'], 26)
         self.assertEqual(rec['accepted_residuals']['reverse_current']['decision'][:8], 'ACCEPTED')
         self.assertEqual(rec['accepted_residuals']['rail_overvoltage']['decision'][:8], 'ACCEPTED')
         for group in ('sources_sha256', 'artifacts_sha256'):

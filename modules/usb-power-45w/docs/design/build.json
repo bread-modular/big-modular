@@ -1,11 +1,12 @@
 {
-  "revision": "S9.3-10P",
+  "revision": "S9.4",
   "project": "hardware/usb-power-45w.kicad_pro",
-  "components": 185,
-  "nets": 84,
+  "components": 178,
+  "nets": 81,
   "no_connect_pins": 29,
   "removed_from_S7": [
     "#FLG05",
+    "#FLG06",
     "#FLG08",
     "#FLG09",
     "C15",
@@ -28,6 +29,7 @@
     "C44",
     "C45",
     "C58",
+    "D11",
     "D12",
     "D13",
     "D14",
@@ -40,7 +42,10 @@
     "D5",
     "D6",
     "D7",
+    "D9",
     "L2",
+    "Q2",
+    "Q3",
     "Q4",
     "Q5",
     "Q7",
@@ -52,6 +57,8 @@
     "R19",
     "R20",
     "R21",
+    "R23",
+    "R27",
     "R30",
     "R31",
     "R32",
@@ -91,6 +98,7 @@
     "R89",
     "R90",
     "TP13",
+    "TP2",
     "U16",
     "U17",
     "U19",
@@ -98,6 +106,16 @@
     "U6",
     "U7",
     "U8"
+  ],
+  "removed_in_S94": [
+    "#FLG06",
+    "D11",
+    "D9",
+    "Q2",
+    "Q3",
+    "R23",
+    "R27",
+    "TP2"
   ],
   "removed_in_S9_plus5": [
     "#FLG05",
@@ -211,7 +229,6 @@
     "2N7002",
     "BAT54S",
     "BAV199",
-    "BCX53_NXP",
     "C",
     "CH224A",
     "Conn_02x05_Odd_Even",
@@ -241,5 +258,5 @@
     "TestPoint",
     "VCC"
   ],
-  "library_sha256": "ed12b027908fc3eeb89598511157f7e66e16e19e6a65c9a6bc0899018a0b93e3"
+  "library_sha256": "7eacd20b5caaa89d5e63ffcc7e3cd8b2d1bb1fb1114f130ece785b830bea4dc2"
 }

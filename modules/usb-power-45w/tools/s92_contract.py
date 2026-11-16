@@ -21,7 +21,7 @@ NOTES = 'docs/design/routing-notes.md'
 # Acceptance test pads. near = (ref, pad) the pad must sit next to, max = straight-line pad-centre limit (mm) checked on
 # the unrouted board; pair = the 2.54 mm partner (probe tip + ground spring or differential pair).
 TEST_POINTS = [
-    dict(ref='TP1', net='VPD', size='1.0 mm round (S7 pad, DC only)', near=('Q3', '2'), max=5.0,
+    dict(ref='TP1', net='VPD', size='1.0 mm round (S7 pad, DC only)', near=('C1', '1'), max=5.0,
          measure='VPD at the module: UVLO / OVP / input-range tests (IN-1, IN-2), DC', limit='13.5-16.5 V operating; OVP trip 17.30-19.44 V; UVLO on <= 12.98 V'),
     dict(ref='TP26', net='VIN', size='1.5 mm round', near=('D24', '1'), max=9.0, pair='TP27',
          measure='D24 cathode / U2+U4 input: clamp voltage and energy under injection (CL-1), VIN ripple and ringing (EMI-1)',
@@ -62,9 +62,10 @@ TEST_POINTS = [
     dict(ref='TP6', net='OV_N', size='1.0 mm round (S8 logic pad)', near=('U20', '2'), max=10.0,
          measure='rail overvoltage guard T2', limit='low <= 20 us at >= 0.5 V overdrive'),
 ]
-# Every other existing pad is kept unchanged (S7/S8 diagnostic pads, 1.0 mm round): TP2 VPD_U1, TP3 MAIN_IN, TP4 VIN
+# Every other existing pad is kept unchanged (S7/S8 diagnostic pads, 1.0 mm round): TP3 MAIN_IN, TP4 VIN
 # (damper), TP7 MAIN_IMON, TP8 GND, TP11 FAULT_LATCH, TP12 P12_OK, TP14 N12_OK, TP15 V20_OK, TP16 V3V3, TP17 REF_OV.
-KEPT_DIAGNOSTIC = {'TP2': 'VPD_U1', 'TP3': 'MAIN_IN', 'TP4': 'VIN', 'TP7': 'MAIN_IMON', 'TP8': 'GND', 'TP11': 'FAULT_LATCH',
+# S9.4: TP2 (VPD_U1) left with the CH224A supply limiter; TP1 probes the same net now.
+KEPT_DIAGNOSTIC = {'TP3': 'MAIN_IN', 'TP4': 'VIN', 'TP7': 'MAIN_IMON', 'TP8': 'GND', 'TP11': 'FAULT_LATCH',
                    'TP12': 'P12_OK', 'TP14': 'N12_OK', 'TP15': 'V20_OK', 'TP16': 'V3V3', 'TP17': 'REF_OV'}
 
 # Pre-routing proximity screens (pad-centre straight line, same net unless stated): (from, to-candidates, limit mm, why).
@@ -180,7 +181,7 @@ NETCLASSES = {
                             '*/RT_U4', '*/N_EN_*',
                             'Net-(Q1-C)', '/Always-on control*', '/Two output headers*', '/MAIN_LED_OK', '/MAIN_OK',
                             '/N12_OK', '/OV_N', '/P12_OK', '/RUN', '/V20_OK', 'V3V3', '*/CC1', '*/CC2', '*/MAIN_DVDT',
-                            '*/MAIN_ILM', '*/MAIN_IMON', '*/MAIN_OV', '*/MAIN_UV', '*/PD_BASE', '*/PD_SENSE', '*/UV_TRIM',
+                            '*/MAIN_ILM', '*/MAIN_IMON', '*/MAIN_OV', '*/MAIN_UV', '*/UV_TRIM',
                             'Net-(R28-Pad2)', 'Net-(R29-Pad1)', 'Net-(U1-CFG1)', 'Net-(U1-DM)', 'Net-(D8-A)', 'Net-(D8-K)'],
                   what='converter control (U2 FB/COMP/FSW, U4 FB_N/EN_N/RT, S9.3 soft-start nodes SS_P12/SS_N12, enable '
                        'chain) and every 3.3 V logic, '
@@ -188,9 +189,8 @@ NETCLASSES = {
 }
 # Nets left in KiCad's Default class on purpose (0.2 mm): gate-drive and supply nodes that are neither power-path nor
 # quiet. Every other functional net matches exactly one class pattern above (tests and the checker verify it).
-DEFAULT_NETS = ['Net-(U2-EXTVCC)', 'Net-(U2-BOOT1)', 'Net-(U2-BOOT2)', 'Net-(U4-BOOT)',
-                '/USB PD, main eFuse and VIN damper/VPD_U1', 'Net-(C5-Pad1)']
-DEFAULT_CLASS = dict(width=0.2, what='Default (DEFAULT): EXTVCC, BOOT1/BOOT2/U4 BOOT, VPD_U1, the R92/C5 damper node')
+DEFAULT_NETS = ['Net-(U2-EXTVCC)', 'Net-(U2-BOOT1)', 'Net-(U2-BOOT2)', 'Net-(U4-BOOT)', 'Net-(C5-Pad1)']
+DEFAULT_CLASS = dict(width=0.2, what='Default (DEFAULT): EXTVCC, BOOT1/BOOT2/U4 BOOT, the R92/C5 damper node')
 CLEARANCE_MM = 0.2
 
 
@@ -605,7 +605,7 @@ PRE_ROUTING = [   # (id, what must be true before routing starts); check_s8_boar
                      'one F.Cu spoke each into the pad copper, one B.Cu landing pour each) on the parts\' actual positions'),
     ('stackup', 'stack-up and copper weights are the contract STACKUP (4 layers, 1.6 mm, 35/15.2/15.2/35 um copper, '
                 '0.2104/1.065/0.2104 mm dielectric)'),
-    ('test_pads', 'all 27 test pads are bare F.Cu with a mask opening and no paste'),
+    ('test_pads', 'all 26 test pads are bare F.Cu with a mask opening and no paste'),
     ('placement', 'placement, local-loop, ground-split and routing-contract screens pass (P2.2 with the S9.2b moves of '
                   'C2, R24/C3 and R13-R15)'),
 ]
@@ -644,7 +644,7 @@ POST_ROUTING = {
 # tap minimum instead (routing-notes 1 and 3.4: power test pads >= 0.8 mm, TP20 >= 1.0 mm, R92.1 >= 0.5 mm).
 CURRENT_MIN_MM = {'VIN': 2.5, 'PWR_12V': 1.5, 'PWR_N12V': 0.8}
 TAP_MIN_MM = {'R109': None, 'R92': 0.5, 'TP20': 1.0, 'TP24': 0.8, 'TP25': 0.8, 'TP26': 0.8,
-              **{r: 0.25 for r in ('U1', 'U9', 'U18', 'U20', 'Q1', 'Q3', 'D11', 'D25', 'C46', 'C57', 'C65')}}
+              **{r: 0.25 for r in ('U1', 'U9', 'U18', 'U20', 'Q1', 'D25', 'C1', 'C46', 'C57', 'C65')}}   # S9.4: U1/C1 on VPD
 TAP_PREFIX_MIN_MM = {'R': 0.25, 'TP': 0.25}       # dividers, the other test pads
 
 

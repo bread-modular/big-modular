@@ -142,7 +142,9 @@ CRIT = {
     'R97': {1: 'V3V3', 2: 'OV_N'},
     'C57': {1: 'VPD', 2: 'GND'}, 'C65': {1: 'VPD', 2: 'GND'},
     'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'D10': {1: 'MAIN_IN', 2: 'VPD'},
-    'Q2': {1: 'PD_SENSE', 2: 'VPD_U1', 3: 'PD_BASE'}, 'Q1': {1: 'N_EN_BASE', 2: 'VPD'}, 'Q10': {1: 'RUN', 2: 'GND', 3: 'LED_RETURN'},
+    # S9.4: CH224A VHV/VBUS and its 1 uF straight on VPD (WCH reference circuit); the Q2/Q3 limiter is gone
+    'U1': {1: 'VPD', 8: 'VPD', 11: 'GND'}, 'C1': {1: 'VPD', 2: 'GND'},
+    'Q1': {1: 'N_EN_BASE', 2: 'VPD'}, 'Q10': {1: 'RUN', 2: 'GND', 3: 'LED_RETURN'},
     'Q14': {1: 'RUN', 2: 'GND', 3: 'N_EN_RETURN'},
     'Q15': {1: 'MAIN_LED_OK', 2: 'N_EN_RETURN', 3: 'N_EN_MID'},
     # S9.3: P12_OK-delayed sequencing switch above Q15 and the FB-injection soft starts (BAV199: 1 A, 2 K, 3 COM)
@@ -789,7 +791,8 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
 
     # ---- What S8/S9 removes and keeps
     s7 = {p['ref'] for p in circuit45.circuit() if not p['ref'].startswith('#')}
-    removed = {r for r in set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) if not r.startswith('#')}
+    removed = {r for r in set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) | set(circuit_s8.S94_REMOVED)
+               if not r.startswith('#')}
     added = set(comps) - s7
     assert removed <= s7 and not removed & set(comps), 'S8/S9_REMOVED refs must be S7 refs and absent'
     assert s7 - set(comps) == removed, ('Only the listed S7 refs may disappear', sorted(s7 - set(comps) - removed))
@@ -798,6 +801,8 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
                      *circuit_s8.BUCKBOOST_ADDED, *circuit_s8.S91_ADDED, *circuit_s8.S92_ADDED, *circuit_s8.S93_ADDED}, sorted(added)
     # ---- S9.0 step 1: no +5V net, ref or part survives
     netnames = {k.split('/')[-1] for k in nets}
+    assert not set(circuit_s8.S94_NETS) & netnames, ('S9.4: the CH224A limiter nets must be gone',
+                                                     sorted(set(circuit_s8.S94_NETS) & netnames))
     assert not set(circuit_s8.PLUS5_NETS) & netnames, ('S9.0: +5V nets must be gone', sorted(set(circuit_s8.PLUS5_NETS) & netnames))
     assert not {k for k in netnames if k.startswith(('P5_', 'EF_')) or k == '+5V'}, 'S9.0: no P5_*/EF_*/+5V net'
     assert not (set(circuit_s8.S8_PLUS5_DROPPED) | set(circuit_s8.S9_REMOVED)) & set(comps), 'S9.0: +5V refs must be gone'
