@@ -126,4 +126,4 @@ violations, parity 0, 130 unconnected (nothing routed); panel DRC 0/0.
 - **Sourcing**: lookups recorded in `docs/sourcing-candidates.json`; MCU and TL074 rechecked at
   export (`jlcpcb/README.md`). FB1 C1002 still unresolved by the exact lookup.
   The MCU stock (4969) is the reason for the change: watch it.
-- **Mechanics**: printed panel and 3D fit not made; the MODE cap is the 8bit part.
+- **Mechanics**: printed panel in `panels/front-cad/` (not test-printed), 3D fit not made; the MODE cap is the 8bit part.

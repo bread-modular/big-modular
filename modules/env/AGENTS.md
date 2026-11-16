@@ -24,7 +24,7 @@ module-relative.
   The native PCB now owns placement and copper: do not rerun `tools/build_layout.py`.
 - B silk labels: `JP1 D=DIRECT P=PROT` (+ `D` / `P` under the pads) and `UPDI` / `GND` at J4
   (research.md 5).
-- 6HP panel `panels/front-pcb/env-panel.kicad_pcb`, DRC 0. No printed (FreeCAD) panel yet.
+- 6HP panel `panels/front-pcb/env-panel.kicad_pcb`, DRC 0. Printed panel `panels/front-cad/` (2.0 mm, plain), not test-printed.
 - **JLCPCB export** in `jlcpcb/` (`jlcpcb/README.md`): carrier bottom Economic, 36 parts / 18 rows,
   all R/C Basic except R12 (ESR18 0.5 W, Extended) + ATtiny1616 Extended + U1 HT7550-1 Preferred Extended; panel Gerbers. The
   manifest is checked by the shared `check`: re-export after any source edit. Not

@@ -44,7 +44,7 @@ module-relative.
   assembly CSVs identical to R1; panel Gerbers).
   Read `jlcpcb/README.md`. Not supplier-accepted, not built.
 - **Open, user decisions:** LM13700 (C174050) and the 1 W 2512 1k (C54315) are Extended parts;
-  JLCPCB preview; bench test. No printed panel (`panels/front-cad/`).
+  JLCPCB preview; bench test. Printed panel `panels/front-cad/` (2.0 mm, plain), not test-printed.
 
 ## Boundaries
 

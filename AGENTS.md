@@ -227,3 +227,21 @@ retired, not an active archive. Read `modules/usb-power/jlcpcb/README.md`
 (shared-tool export/CAM commands and promotion gates) before release work. Any
 native electrical/PCB repair and new export belongs to a separate authorized
 task; never hand-edit generated files.
+
+### Printed front panel with every JLCPCB export (must)
+
+User direction, 2026-11-16. Every module with a front panel ships a FreeCAD printable
+panel next to the FR4 one.
+
+- **When you do a module's JLCPCB export, also create or regenerate
+  `modules/<name>/panels/front-cad/`** in the same task: `build_front_panel.py` plus its
+  `.FCStd`, `.step` and `.stl` (plain, no labels, 2.0 mm unless the module's contract
+  says otherwise, e.g. `modules/usb-power*` 1.6 mm for the brackets).
+- The script reads the outline and NPTH holes (slots included) from
+  `panels/front-pcb/<name>-panel.kicad_pcb` and asserts them against the module's
+  `docs/geometry.json`; it checks one valid solid, the drilled-blank volume and a closed
+  manifold STL. Copy the closest existing one (`modules/hats`, `modules/multi-mix` for a
+  USB slot + standoffs) and run it headless:
+  `~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py`.
+- Regenerate it whenever the FR4 panel holes change, list it in `panels/README.md`, and
+  never hand-edit its exports. Not test-printed unless the user says so.
