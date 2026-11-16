@@ -12,6 +12,7 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
 | --- | --- |
 | **[`hardware/usb-power-45w.kicad_pro`](hardware/usb-power-45w.kicad_pro)** | The module: schematic (`usb-power-45w.kicad_sch` + pages `01`..`05`) and the routed 4-layer PCB (`usb-power-45w.kicad_{pcb,dru}`) |
 | [`panels/front-pcb/usb-power-45w-panel.kicad_pro`](panels/front-pcb/usb-power-45w-panel.kicad_pro) | 4HP FR4 front panel (USB-C aperture, MAIN LED, RESET, rail and bracket holes) |
+| [`panels/front-cad/`](panels/front-cad/) | 3D-printable 4HP front panel, no labels (STEP/STL/FreeCAD), same holes as the FR4 panel |
 | [`panels/bracket/`](panels/bracket/) | The two M3 L brackets (STEP/STL/FreeCAD) |
 
 ## Circuit
