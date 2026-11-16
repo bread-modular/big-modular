@@ -51,7 +51,7 @@ LOCAL_LOOPS = [
     ('U9', ('8',), 'VPD', ('C46',), None, 4.5, 'LDO input'),
     ('U9', ('1',), 'V3V3', ('C47',), None, 4.5, 'LDO output'),
     ('U5', ('1', '2', '3', '6'), 'MAIN_IN', ('C2',), None, 4.5, 'main eFuse IN'),
-    ('U1', ('1', '8'), 'VPD_U1', ('C1',), None, 4.5, 'CH224A VHV'),
+    ('U1', ('1', '8'), 'VPD', ('C1',), None, 4.5, 'CH224A VHV (S9.4: straight on VPD)'),
     ('U2', ('7',), 'VIN', ('C8',), None, 4.5, '+12V converter HF input cap'),          # S9.0: TPS552892 VIN land
     ('U2', ('11',), 'P12_VOUT', ('C81',), None, 4.5, '+12V converter HF output cap'),  # S9.0: VOUT land (TI 0.1 uF)
     ('U2', ('18',), None, ('C82',), None, 4.5, '+12V converter VCC (LDO) cap'),       # S9.0: net = the VCC pin's own

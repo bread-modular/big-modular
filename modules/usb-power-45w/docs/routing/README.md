@@ -1,4 +1,28 @@
-# R1 routing — 10-pin outputs and manual routing
+# R1 / R2 routing — 10-pin outputs and manual routing
+
+## R2: CH224A supply limiter removed (2026-11-16)
+
+First-board bench: VBUS stayed at 5 V because Q2 (BCX53, SOT89) had emitter and base swapped on its land; a TP1–TP2 wire
+fixed the board. S9.4 removes the limiter and puts U1 straight on VPD
+([design.md](../design.md#s94--r2-ch224a-straight-on-vpd-2026-11-16)). One manual batch, straight on the board; backups
+`/tmp/s94/`, scripts and native reports in the ignored `research/s94/`.
+
+| Batch | Change | Check |
+| --- | --- | --- |
+| R2-1 | Footprints Q2, Q3, R23, R27, D9, D11, TP2 deleted. Copper deleted: every `PD_SENSE` / `PD_BASE` segment and via (2 vias), the `VPD_U1` runs to Q2.2 / D9.1 / D11.2, the VPD stubs D10.2 → R23.1 and R28.1 → D11.1, the R27.2 and D9.2 ground stubs and the R27.2 ground via (71.125, 76.95). U1.1, U1.8, C1.1 and their kept copper (C1 → U1.1 on F; C1 → via (82.6, 79.3) → B.Cu → via (84.95, 87.6) → U1.8) re-netted to VPD. New 0.4 mm F.Cu link (81.325, 79.15) → (82.45, 79.15) → (82.6, 79.3): VPD via at TP1 to the C1/U1 node. The doubled 0.05 mm segment at R28.1 is one segment now | ERC 0, DRC 0 / 0 unconnected / parity 0 |
+| R2-2 | VPD feed that ran through the removed Q3.2 pad straightened: (76.6, 83.7) → (81.325, 83.7) → (81.325, 79.15), 0.4 mm F.Cu (was four segments with a 0.025 mm jog) | ERC 0, DRC 0 / 0 unconnected / parity 0 |
+
+- No part moved; no rule, exclusion or test weakened. The D9.2 ground via (88.5, 74.55) stays (it ties In1 to the U2
+  B.Cu PGND pour edge).
+- Board after R2: **1106 segments, 314 vias** (all 0.3/0.6 mm, none in a pad), 28 zones, 15 rule areas; In1 GND one
+  piece (4028.5 mm²), In2 VIN and +3V3 one piece each, no track on In1.
+- `tools/check_s8_board.py`: the same eight failing items as after the fab review below; `min_widths` 59 → 57 (the two
+  VPD → R23 segments are gone). The VPD → C1/U1 feed (0.3–0.4 mm, ≤ 12 mA) counts as a tap, like the C46/C57/C65 feeds.
+- **The `jlcpcb/` export is R2** (re-exported 2026-11-16: 149 placements / 60 BOM rows, 314 vias; shared `check` manifest equal).
+
+![PD area: R1 left, R2 right; F red, B blue](r2-pd-area-FB.png)
+
+The sections below are the R1 record (2026-11-04 / 2026-11-06), unchanged.
 
 ## Fab review for the first prototype (2026-11-06)
 

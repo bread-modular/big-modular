@@ -1,6 +1,62 @@
-# usb-power-45w — S9.3-10P / R1 routed
+# usb-power-45w — S9.4 / R2 routed
 
-> **Current:** J2/J3 are 10-pin IDC; manual routing closed (2026-11-04, B223), In1 GND poured; fab review and
+> **Current:** S9.4 schematic + R2 board (2026-11-16): the CH224A supply limiter is removed after the first-board bench
+> (section below); everything else is the S9.3-10P / R1 design. ERC 0, DRC 0 violations / warnings / parity errors,
+> **0 unconnected**; 178 references / 81 functional nets. **The export in [`jlcpcb/`](../jlcpcb/README.md) is still the
+> S9.3-10P / R1 board with the Q2 fault: do not order it; re-export first.**
+> `tools/check_s8_board.py` lists the same copper/thermal contract items as R1 (reviewed and accepted for the first
+> prototype). Not a supplier-accepted release. [Fab review, R2 record and native views](routing/README.md).
+> All S9.3/P2.3 analyses and review claims below are historical; no new startup/thermal qualification is implied.
+
+## S9.4 / R2: CH224A straight on VPD (2026-11-16)
+
+**Bench, first S9.3-10P / R1 board (2026-11-16).** VBUS stayed at 5 V and the MAIN LED stayed dark with a 15 V / 4 A
+charger. Measured: TP1 (VPD) 5.1 V steady, TP2 (VPD_U1) 0.7 V, 0 V across R23. A wire from TP1 to TP2 and a re-plug
+gave the 15 V contract, ±12 V and the LED.
+
+**Cause: a design fault, not assembly.** Q2 (BCX53-16, SOT89) was drawn with the pin numbers of Nexperia's pinning
+table (1 emitter, 2 collector, 3 base). Nexperia numbers the SOT89 leads **3-2-1 from the left** in top view; the KiCad
+`SOT-89-3` land numbers them 1-2-3 from the left. On the board Q2's emitter and base were swapped, Q2 never conducted
+and U1 never got its supply, so nothing requested 15 V and U5 stayed below its UVLO. Only the pin table had been
+checked against the footprint, not the outline drawing. Q2 was the only SOT-89 on the board.
+
+**Fix: the limiter is removed** (user 2026-11-16: "fix this in the schematics and re-route as needed"). U1 `VHV`
+(pin 1) and `VBUS` (pin 8) and the 1 µF C1 sit straight on VPD. Removal was chosen over renumbering Q2 because it is the
+WCH reference circuit (CH224 datasheet V2.0, 6.1.1) and the circuit the bench wire proved on this board; a corrected
+limiter would have gone to fab untested. Renumbering (pad 1 base, pad 3 emitter) remains the alternative.
+
+| Item | S9.4 / R2 change | Evidence |
+| --- | --- | --- |
+| Removed parts | Q2 BCX53-16, Q3 MMBT3906, R23 33R, R27 10k 1206, D9 SMAZ24 (24 V zener), D11 SS34, TP2 (`VPD_U1` pad) and the `VPD_U1` power flag: **185 → 178 references** | `tools/circuit_s8.py` `S94_REMOVED`; `build.json` → `removed_in_S94` |
+| Removed nets | `VPD_U1`, `PD_SENSE`, `PD_BASE`: **84 → 81 functional nets**. U1.1, U1.8 and C1.1 are on `VPD` | `tools/verify_s8.py` (pin rows for U1/C1, the three net names must be absent); `validation.json` |
+| Schematic | Page 01 regenerated: the U1 VHV/VBUS wire rises to the VPD rail wire. No other component, field or connection changed (every remaining symbol keeps its UUID and position) | native XML; `hierarchy-parity.json` |
+| Board R2 | The seven footprints and their copper are deleted (48 segments/vias: all `PD_SENSE`/`PD_BASE` copper, the `VPD_U1` runs to Q2/D9/D11, the VPD stubs to D11.1 and R23.1, the R27.2/D9.2 ground stubs and the R27.2 ground via). The C1 → U1.1 track and the C1 → via → B.Cu → via → U1.8 path stay and carry VPD. New: 0.4 mm F.Cu link (81.325, 79.15) → (82.45, 79.15) → (82.6, 79.3) from the VPD via at TP1 to the C1/U1 node; the VPD feed that passed through the Q3.2 pad is straightened to (76.6, 83.7) → (81.325, 83.7) → (81.325, 79.15). No part moved. The D9.2 ground via (88.5, 74.55) stays: it also ties In1 to the U2 B.Cu PGND pour | [routing/README.md](routing/README.md); native DRC |
+| Contract | `PD_BASE`/`PD_SENSE` leave the QUIET class and `VPD_U1` the Default list; TP1 is anchored to C1.1 (2.00 mm) instead of Q3.2; C1 is a VPD tap (0.25 mm floor) like C46/C57/C65; 26 test pads | `tools/s92_contract.py`; [routing-notes.md](design/routing-notes.md) |
+
+**What U1 loses.** The limiter and D9 held the U1 supply at ≤ 25.2 V whatever VPD did. Now U1 sees VPD: its
+`VHV`/`VBUS`/`CC` absolute maximum is **32 V** (CH224 V2.0, 8.1.1; operating 3.3–30 V), and D1 SMBJ22A is the only
+clamp ahead of it (VBR 24.4–26.9 V; 35.5 V only at its rated 16.9 A, 10/1000 µs). A 15 V contract and a 20 V charger
+fault are inside the operating range; a hot-plug surge is bounded by D1 at a current far below 16.9 A. **IN-3** now
+measures the attach transient at TP1 against **≤ 32 V** (was ≤ 36 V at VPD and ≤ 25.2 V at TP2); its disposition is
+unchanged (D1 to SMBJ20A on the same land: 32.4 V at 18.6 A). C1 is a 50 V part.
+
+**Checks (2026-11-16).** Shared native `check` (`research/s94/check-03/`): ERC 0; DRC 0 violations, 0 warnings,
+0 exclusions, 0 unconnected, parity 0. Board: 1106 segments, 314 vias (all 0.3/0.6 mm, none in a pad), 28 zones,
+15 rule areas; In1 GND one piece (4028.5 mm²), In2 VIN and +3V3 one piece each. `check_s8_board.py`: the same eight
+failing items as R1, `min_widths` 59 → 57 (the VPD → R23 stub is gone; nothing new). Independent netlist-to-board
+comparison: 178 references, 505 pins, every net equal (the two SW1 case pads keep their known no-connect alias).
+Tests: 78 run (one added, `test_s94_ch224a_straight_on_vpd`), 2 failures, both the accepted R1 items
+(`test_plane_vias_widths_and_cleanup`, `test_placement_rules`); no test weakened. `docs/routing/checkpoint.json` is
+refreshed to this tree.
+
+**Not redone.** The JLCPCB export (stale, see above), `sourcing.json` (the 2026-11-06 live audit still lists the six
+removed placements), `calcs.json` (`tools/s8_calcs.py` already stopped at the 10-pin header footprint before this
+change; no calculation used the limiter), `board-p1.json`, the assembly renders/STEP and `review-s93.json` (historical).
+The rest of the bench plan (load, strict 3 A start, thermals) is still open; ±12 V and the LED were seen once, unloaded.
+
+# usb-power-45w — S9.3-10P / R1 routed (first board, 2026-11-06)
+
+> **Superseded by S9.4 / R2 above.** J2/J3 are 10-pin IDC; manual routing closed (2026-11-04, B223), In1 GND poured; fab review and
 > first-prototype JLCPCB export on 2026-11-06 ([`jlcpcb/`](../jlcpcb/README.md)): ERC 0, DRC 0 violations / warnings /
 > parity errors, **0 unconnected**. `tools/check_s8_board.py` still lists copper/thermal contract items; each was
 > reviewed and accepted for the first prototype, the bench tests below measure them. Not a supplier-accepted release.

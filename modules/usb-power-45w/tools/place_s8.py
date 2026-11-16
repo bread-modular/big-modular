@@ -67,6 +67,7 @@ import pcbnew
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build_s8  # noqa: E402
+import circuit_s8  # noqa: E402
 import build_s8_board as seed  # noqa: E402
 
 MODULE = Path(__file__).resolve().parents[1]
@@ -112,15 +113,14 @@ GROUPS = [
       'C32': (146.8, 70.0, 270)}),
     ('USB-C PD input, fuse, TVS, D10, U5 main eFuse',
      'Input group by J1: F1 right behind J1, D10/D1 behind it, '
-     'CH224A with Q2/Q3/D9/D11 beside it, U5 and its UV/OV/ILIM/IMON/dVdT parts on the left',
-     {'F1': (69.25, 92.7, 0), 'D10': (69.25, 88.05, 0), 'D1': (78.0, 85.55, 0), 'Q2': (76.2, 80.65, 0),
-      'Q3': (80.35, 81.2, 90), 'U1': (84.95, 83.35, 270), 'D11': (76.85, 76.25, 0), 'D9': (84.05, 74.55, 0),
-      'R27': (70.95, 76.9, 0), 'R23': (71.5, 80.5, 90), 'R2': (75.05, 89.45, 90), 'R3': (65.35, 92.3, 0),
+     'CH224A with its 1u C1 beside it (S9.4: the Q2/Q3/D9/D11 limiter is gone), U5 and its UV/OV/ILIM/IMON/dVdT parts on the left',
+     {'F1': (69.25, 92.7, 0), 'D10': (69.25, 88.05, 0), 'D1': (78.0, 85.55, 0),
+      'U1': (84.95, 83.35, 270), 'R2': (75.05, 89.45, 90), 'R3': (65.35, 92.3, 0),
       # S9.2b: C2 0.45 mm west and R24/C3 0.45 mm east, clear of the U5 beside-pad thermal-via rows (s92_contract)
       'C1': (83.45, 77.95, 90), 'C3': (64.9, 83.05, 90), 'R24': (64.9, 79.9, 90), 'U5': (60.05, 80.3, 90),
       'C2': (55.2, 80.3, 90), 'R5': (55.65, 77.15, 270), 'R29': (54.05, 77.15, 90), 'R26': (60.05, 75.5, 180),
       'R4': (67.0, 76.65, 180), 'R28': (78.6, 73.2, 180), 'R114': (63.0, 90.3, 90), 'R1': (88.55, 85.85, 90),
-      'TP1': (81.55, 78.1, 90), 'TP2': (85.35, 78.45, 0), 'TP8': (68.2, 74.1, 90)}),
+      'TP1': (81.55, 78.1, 90), 'TP8': (68.2, 74.1, 90)}),
     ('MAIN LED driver', 'Q6/R22 behind D8, Q10 (RUN-gated return)',
      {'Q6': (77.48, 93.32, 270), 'R22': (80.02, 93.4, 270), 'Q10': (67.75, 81.25, 0)}),
     ('Always-on LDO U9', 'VPD in from the rear (D1/U1 side), V3V3 out toward the front strip; C46 VPD, C47/C48 V3V3',
@@ -582,9 +582,12 @@ def refresh_r1_record():
     The S9.3 synchronization keys (added/removed/replaced/moved_retained_refs) are kept as history. Board untouched."""
     b = pcbnew.LoadBoard(str(BOARD))
     rec = json.loads(RECORD.read_text())
-    base = rec.get('r1_start_parts', rec['parts'])
+    # S9.4 / R2: the CH224A supply limiter left the board (circuit_s8.S94_REMOVED); those refs leave the baseline too
+    gone = {r for r in circuit_s8.S94_REMOVED if not r.startswith('#')}
+    base = {r: v for r, v in rec.get('r1_start_parts', rec['parts']).items() if r not in gone}
     now = snapshot(b)
     assert set(now) == set(base), ('ref set changed', sorted(set(now) ^ set(base)))
+    rec['s94_removed_refs'] = sorted(gone)
     rec['r1_start_parts'] = base
     rec['parts'] = now
     rec['r1_moved_refs'] = sorted(r for r in now if now[r] != base[r])

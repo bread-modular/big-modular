@@ -10,7 +10,7 @@ flat sheet (exact component/field/pin-membership parity). S8 UUIDs use their own
 Writes a separate review candidate with --output-root. S8.3 replaced the S8.2 crowbar
 with the pinned TPS259470 symbol/land pattern in tools/s83_parts.py; S8.4 applies the review
 fixes listed in tools/circuit_s8.py; S8.5 wires the one-shot arming latch (circuit_s8.py docstring,
-item B). S9.0 removes the +5V subsystem (the S8.3 TPS259470 symbol/land pattern, tools/s83_parts.py, is gone with
+item B). S9.4 removes the CH224A supply limiter (circuit_s8.S94_REMOVED). S9.0 removes the +5V subsystem (the S8.3 TPS259470 symbol/land pattern, tools/s83_parts.py, is gone with
 U23) and the +5V power symbol. Shared S7 symbols, footprints and native projects are not rewritten.
 """
 import argparse
@@ -32,7 +32,7 @@ from sexp import parse, dump, nodes, one, atom, walk  # noqa: E402
 MODULE = Path(__file__).resolve().parents[1]
 STEM = circuit_s8.PROJECT
 POWER_SYMBOLS = {'GND', 'VCC', '+12V', '-12V'}     # S9.0: no +5V symbol
-REV = 'S9.3-10P'
+REV = 'S9.4'
 from s90_parts import FP_S90, symbol as buckboost_symbol  # noqa: E402
 import s92_contract  # noqa: E402
 import s92_parts  # noqa: E402
@@ -178,7 +178,7 @@ def build(output_root=None):
 
     sch, nets, _ = bs.flat_sheet(
         parts, syms, project=STEM, key='root', title='Big Modular - usb-power-45w S8 board',
-        comments=('S9.3-10P: +/-12V, 15 V PD; MAIN LED only; two 10-pin outputs, routing in progress',
+        comments=('S9.4: +/-12V, 15 V PD; MAIN LED only; two 10-pin outputs; CH224A straight on VPD',
                   'One-shot arming latch (STARTED); U18/U20 on VPD; see docs/design.md'),
         source=circuit_s8.drawing(), texts=circuit_s8.TEXTS)
     one(one(sch, 'title_block'), 'rev')[1] = REV
@@ -193,7 +193,9 @@ def build(output_root=None):
     refs = sorted(p['ref'] for p in parts if not p['ref'].startswith('#'))
     record = {'revision': REV, 'project': f'hardware/{pro.name}', 'components': len(refs),
               'nets': len(nets), 'no_connect_pins': len(nc),
-              'removed_from_S7': sorted(set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED)),
+              'removed_from_S7': sorted(set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED)
+                                        | set(circuit_s8.S94_REMOVED)),
+              'removed_in_S94': sorted(circuit_s8.S94_REMOVED),
               'removed_in_S9_plus5': sorted(set(circuit_s8.S9_REMOVED) | set(circuit_s8.S8_PLUS5_DROPPED)),
               'inter_sheet_nets': {n: sorted(p) for n, p in sorted(crossing.items())},
               'symbols': sorted(syms),

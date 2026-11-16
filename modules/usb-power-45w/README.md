@@ -2,9 +2,13 @@
 
 USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel.
 
-> **S9.3-10P / R1: routed, first-prototype fab export in [`jlcpcb/`](jlcpcb/README.md) (2026-11-06).** Not a
-> supplier-accepted release and not bench-qualified. The copper/thermal screen (`tools/check_s8_board.py`) still lists
-> contract items; each was reviewed and accepted for the first prototype ([fab review](docs/routing/README.md)).
+> **S9.4 / R2 (2026-11-16): schematic and routed board fixed after the first-board bench.** The first board
+> (S9.3-10P / R1) stayed at 5 V: Q2 in the CH224A supply limiter had emitter and base swapped (SOT89 numbering). S9.4
+> removes the limiter; U1 sits straight on VPD ([design](docs/design.md#s94--r2-ch224a-straight-on-vpd-2026-11-16)).
+> **The export in [`jlcpcb/`](jlcpcb/README.md) is S9.4 / R2** (re-exported 2026-11-16, 149 top parts / 60 rows).
+> Not a supplier-accepted release and not bench-qualified. The copper/thermal screen (`tools/check_s8_board.py`) still
+> lists contract items; each was reviewed and accepted for the first prototype ([fab review](docs/routing/README.md)).
+> **A built R1 board works with a wire from TP1 to TP2** (both on the back), then a re-plug.
 
 ## Open
 
@@ -17,7 +21,8 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
 
 ## Circuit
 
-- **Input:** USB-C PD **15 V / 3 A** (CH224A, R1 56k). U5 TPS16630 main eFuse; precision UVLO (on 12.263–12.976 V,
+- **Input:** USB-C PD **15 V / 3 A** (CH224A, R1 56k; VHV/VBUS straight on VPD with 1 µF, the WCH reference circuit).
+  U5 TPS16630 main eFuse; precision UVLO (on 12.263–12.976 V,
   off 11.365–12.193 V) and OVP (R24 9.1k: 17.30–19.44 V) coordinated with the D24 SMBJ20A clamp.
 - **+12 V:** TPS552892-Q1 buck-boost (U2), R109 18 mΩ RLM12 current sense on a 4-terminal Kelvin land.
 - **−12 V:** LMR38020 inverting converter (U4) on its own input enable (Q1 on VPD, RUN and MAIN_LED_OK via Q14/Q15),
@@ -33,11 +38,13 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
 ## Status
 
 - Native ERC 0; DRC **0 violations, 0 warnings, 0 exclusions, 0 unconnected**; exact ref/pin/net parity
-  (185 refs / 84 nets). Manual divide-and-conquer routing, In1 one-piece GND plane, two approved In2 hops.
+  (178 refs / 81 nets). Manual divide-and-conquer routing, In1 one-piece GND plane, two approved In2 hops.
 - Routing contract enforced by native DRC: 8 net classes, 22 `S92_*` rules, 15 rule areas. **No via-in-pad**:
   U4/U5/U9 sit on hole-free lands with thermal-via fields beside the pads (standard 0.3/0.6 mm tented vias).
-- All parts on F; test points on B with silkscreen labels. JLCPCB places 155 parts on the top (J1 included);
-  J2/J3 (Wurth 61201021621) and D8 (3 mm LED) are hand-fitted.
+- All parts on F; test points on B with silkscreen labels. JLCPCB places 149 parts on the top (J1 included;
+  the R1 export had 155); J2/J3 (Wurth 61201021621) and D8 (3 mm LED) are hand-fitted.
+- **S9.4 / R2 (2026-11-16):** Q2, Q3, R23, R27, D9, D11 and TP2 removed with their copper; U1/C1 re-netted to VPD and
+  fed by a 0.4 mm F.Cu link from the VPD via at TP1. No part moved. Record: [docs/routing](docs/routing/README.md).
 - **Fab review (2026-11-06):** fixed the two DRC errors left by a KiCad 10 *Update PCB from Schematic* (the SW1
   case-pad link), added a third +12V output via at R109, a third D1 TVS ground via and a U2 PGND via, and moved
   J2/J3/D8 out of the CPL so J1 is machine-placed. D1 SMBJ22A was re-sourced to Littelfuse C224015 (1,947 in stock;

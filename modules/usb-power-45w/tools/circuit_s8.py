@@ -48,6 +48,20 @@ S9_REMOVED = {
 # S8-added parts that only served +5V (not S7 refs): they must not come back (tests/verify regressions).
 S8_PLUS5_DROPPED = ('U23', 'R101', 'R102', 'R103', 'R104', 'R107', 'R108', 'C68', 'C69', 'C70', 'C71', 'C72', 'C73',
                     'C74', 'C75', 'C76', 'D21', 'D23', 'TP18', 'TP21', 'C60', 'R95', 'R96', 'C64')
+# S9.4 (first-board bench, 2026-11-16): the CH224A supply limiter is gone. Q2 BCX53 was drawn with Nexperia's pin numbers
+# (1 E, 2 C, 3 B), but Nexperia numbers the SOT89 leads 3-2-1 from the left where the KiCad SOT-89-3 land numbers them
+# 1-2-3, so emitter and base were swapped on the board, Q2 never conducted and U1 never got its supply (VBUS stayed at
+# 5 V). The bench fix, a wire from TP1 (VPD) to TP2 (VPD_U1), is the WCH reference circuit (CH224 datasheet V2.0 6.1.1:
+# VHV and VBUS straight on VBUS with 1 uF); S9.4 makes it the design. VHV absolute maximum 32 V (8.1.1).
+S94_REMOVED = {
+    **{r: 'CH224A supply current limiter (Q2 pass PNP with E/B swapped on the land, Q3 sense PNP, R23 sense, R27 base '
+          'pull-down); U1 VHV/VBUS go straight to VPD as in the WCH reference circuit' for r in ('Q2', 'Q3', 'R23', 'R27')},
+    'D9': '24 V zener across the U1 supply; without the limiter it would shunt VPD ahead of D1, so it leaves with it',
+    'D11': 'reverse clamp across the limiter (VPD_U1 to VPD); no limiter, no clamp',
+    'TP2': 'VPD_U1 test pad; the net is VPD now, TP1 already probes it',
+    '#FLG06': 'power flag of the removed VPD_U1 net',
+}
+S94_NETS = ('VPD_U1', 'PD_SENSE', 'PD_BASE')
 PLUS5_NETS = ('+5V', 'P5_RAW', 'P5_OK', 'P5_FLT_N', 'P5_OVLO', 'P5_OV_TOP', 'P5_DVDT', 'P5_ILM', 'P5_ILM_SER',
               'MON_P5', 'MON_P5_SER', 'MON_OV5')
 # S9.0: the main eFuse U5 nets are not +5V nets; on the board they are renamed EF_* -> MAIN_* (S7 untouched).
@@ -267,7 +281,7 @@ def _soft_start_and_sequencing(c):
 
 
 def circuit():
-    gone = set(S8_REMOVED) | set(S9_REMOVED)
+    gone = set(S8_REMOVED) | set(S9_REMOVED) | set(S94_REMOVED)
     c = [p for p in circuit45.circuit() if p['ref'] not in gone]
     by = {p['ref']: p for p in c}
     for p in c:
@@ -284,9 +298,17 @@ def circuit():
     by['R1'].update(value='56k')
     by['R1']['fields'].update(LCSC=R0603_S9['56k'][0], MPN=R0603_S9['56k'][1],
                               Note='CFG1: 56k = 15 V request (WCH CH224 V2.0 Table 5-1; 120k = 20 V for the later retarget)')
-    by['U1']['fields']['Note'] = ('Fixed 15 V request (S9.0), independently current-limited/zener-protected supply. Needs a '
-                                  'source with a 15 V / 3 A fixed PDO (>= 45 W PD class). No current-contract tracking; PG is '
-                                  'not a current guarantee')
+    # S9.4: U1 VHV (1) and VBUS (8) and its 1 uF sit straight on VPD (S94_REMOVED; WCH CH224 V2.0 6.1.1 reference circuit)
+    for ref, pins in (('U1', ('1', '8')), ('C1', ('1',))):
+        for n in pins:
+            assert by[ref]['pins'][n] == 'VPD_U1', (ref, n, by[ref]['pins'][n])
+            by[ref]['pins'][n] = 'VPD'
+    by['C1']['fields']['Note'] = 'At U1 VHV/VBUS, straight on VPD (S9.4; WCH reference 1 uF)'
+    by['U1']['fields']['Note'] = ('Fixed 15 V request (S9.0). S9.4: VHV/VBUS straight on VPD as in the WCH reference circuit '
+                                  '(VHV absolute maximum 32 V; D1 SMBJ22A is the only clamp ahead of it). Needs a source with '
+                                  'a 15 V / 3 A fixed PDO (>= 45 W PD class). No current-contract tracking; PG is not a '
+                                  'current guarantee')
+    assert not {n for p in c for n in p['pins'].values() if n in S94_NETS}, 'S9.4: limiter nets must be gone'
     # S9.1: precision upper / principal lower, Basic 510R trim in series with R3.
     # Wider TPS16630 internal threshold tolerances prevent simultaneously guaranteeing <=13.0 V rising
     # and >=11.8 V falling with ANY passive divider (see calcs input_qualification).
@@ -524,7 +546,7 @@ def drawing():
     J3, the VIN damper and the OV guard. S9.0: the +5V converter block, the J2/J3 +5V pins and the U23 cell are gone."""
     W, P, L = circuit45.drawing()
     redrawn = {'U2', 'L1', 'R8', 'R9', *(f'C{i}' for i in range(6, 15))}      # S9.0 step 2: +12V cell redrawn below
-    gone = set(S8_REMOVED) | set(S9_REMOVED) | {'R35', 'R62'} | redrawn   # moved refs: S7 lines at their old spots
+    gone = set(S8_REMOVED) | set(S9_REMOVED) | set(S94_REMOVED) | {'R35', 'R62'} | redrawn   # moved refs: S7 lines at their old spots
 
     def ref_of(pt):
         if isinstance(pt, str):
@@ -544,6 +566,11 @@ def drawing():
     P = [(NET_RENAME.get(n, n), pt, rot) for n, pt, rot in P
          if ref_of(pt) not in gone and not removed_block(pt) and n != '+5V']
     L = [(NET_RENAME.get(n, n), pt, side) for n, pt, side in L if ref_of(pt) not in gone]
+    # S9.4: the U1 VHV/VBUS wire and C1 carry VPD; the limiter labels go with the limiter
+    L = [('VPD' if n == 'VPD_U1' else n, pt, side) for n, pt, side in L if n not in ('PD_SENSE', 'PD_BASE')]
+    L.remove(('VPD', (83.82, 50.8), 'U'))                       # the U1 VHV/VBUS wire rises to the VPD rail wire instead
+    W += [[(83.82, 50.8), (83.82, 45.72)]]
+    assert not any(n in S94_NETS for n, _, _ in L), 'S9.4: limiter labels must be gone'
 
     # J3: same wiring as J2 in circuit45.drawing() (S9.0: pins 11/12 open, no +5V symbols)
     hx, hy = J3_AT
