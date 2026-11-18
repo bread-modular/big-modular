@@ -1,0 +1,1126 @@
+{
+  "status": "PASS",
+  "build_s": 14.5,
+  "threads": {
+    "profile": "45 degree flanks, flat crest and root",
+    "joint": {
+      "r": 7.0,
+      "depth": 1.25,
+      "pitch": 3.5,
+      "crest": 0.5,
+      "gap_mm": 0.247
+    },
+    "clamp": {
+      "r": 9.0,
+      "depth": 1.8,
+      "pitch": 5.0,
+      "crest": 0.7,
+      "gap_mm": 0.282
+    },
+    "thumbscrew": {
+      "r": 5.0,
+      "depth": 1.0,
+      "pitch": 3.0,
+      "crest": 0.5,
+      "gap_mm": 0.247
+    }
+  },
+  "teeth": {
+    "count": 36,
+    "step_deg": 10.0,
+    "flank_to_plate_deg": 41.8,
+    "meshed_overlap_mm3": 0.0,
+    "half_step_overlap_mm3": 293.8,
+    "lift_to_skip_mm": 1.44,
+    "knob_turns_to_skip": 0.41
+  },
+  "boards": {
+    "grip_range_for_1.6_mm_boards_mm": [
+      16.2,
+      157.6
+    ],
+    "groove_bite_mm": {
+      "1.6": 0.8,
+      "2.0": 0.6
+    },
+    "board_thickness_range_mm": [
+      0.8,
+      2.4
+    ],
+    "scanned": 56,
+    "all_fit": true,
+    "boards": {
+      "modules/12bit/hardware/12bit.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/16bit/hardware/16bit.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/32bit/hardware/32bit.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/4mix/hardware/4mix.kicad_pcb": {
+        "size_mm": [
+          90.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          90.0,
+          110.0
+        ]
+      },
+      "modules/8bit/hardware/8bit.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/acid/hardware/acid.kicad_pcb": {
+        "size_mm": [
+          49.5,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          49.5,
+          110.0
+        ]
+      },
+      "modules/audio-out/hardware/audio-out.kicad_pcb": {
+        "size_mm": [
+          19.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          19.0,
+          110.0
+        ]
+      },
+      "modules/busboard/hardware/busboard.kicad_pcb": {
+        "size_mm": [
+          205.0,
+          32.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          32.0
+        ]
+      },
+      "modules/drive/hardware/drive.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/env/hardware/env.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/hats/hardware/hats.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/imix/hardware/imix.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/ladder/hardware/ladder.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/line-in/hardware/line-in.kicad_pcb": {
+        "size_mm": [
+          19.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          19.0,
+          110.0
+        ]
+      },
+      "modules/low/hardware/low.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/mcc/hardware/mcc.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/midi/hardware/v1/midi.kicad_pcb": {
+        "size_mm": [
+          19.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          19.0,
+          110.0
+        ]
+      },
+      "modules/midi/hardware/v2/midi.kicad_pcb": {
+        "size_mm": [
+          19.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          19.0,
+          110.0
+        ]
+      },
+      "modules/motion/hardware/motion.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/multi-mix/hardware/multi-mix-mcu.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          35.45
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          35.45
+        ]
+      },
+      "modules/multi-mix/hardware/multi-mix.kicad_pcb": {
+        "size_mm": [
+          100.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          100.0,
+          110.0
+        ]
+      },
+      "modules/usb-audio/hardware/usb-audio-mcu.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          29.55
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          29.55
+        ]
+      },
+      "modules/usb-audio/hardware/usb-audio.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          110.0
+        ]
+      },
+      "modules/usb-audio-max/hardware/usb-audio-max-mcu.kicad_pcb": {
+        "size_mm": [
+          29.0,
+          29.55
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          29.0,
+          29.55
+        ]
+      },
+      "modules/usb-audio-max/hardware/usb-audio-max.kicad_pcb": {
+        "size_mm": [
+          49.5,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          49.5,
+          110.0
+        ]
+      },
+      "modules/usb-power/hardware/usb-power.kicad_pcb": {
+        "size_mm": [
+          100.5,
+          35.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          100.5,
+          35.0
+        ]
+      },
+      "modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb": {
+        "size_mm": [
+          100.5,
+          48.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          100.5,
+          48.0
+        ]
+      },
+      "modules/vca-mix/hardware/vca-mix.kicad_pcb": {
+        "size_mm": [
+          39.3,
+          110.0
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          39.3,
+          110.0
+        ]
+      },
+      "modules/12bit/panels/front-pcb/12bit-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/16bit/panels/front-pcb/16bit-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/32bit/panels/front-pcb/32bit-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/4mix/panels/front-pcb/4mix-panel.kicad_pcb": {
+        "size_mm": [
+          91.3,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          91.3,
+          128.5
+        ]
+      },
+      "modules/8bit/panels/front-pcb/8bit-lfo-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/8bit/panels/front-pcb/8bit-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/acid/panels/front-pcb/acid-panel.kicad_pcb": {
+        "size_mm": [
+          50.5,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          50.5,
+          128.5
+        ]
+      },
+      "modules/audio-out/panels/front-pcb/audio-out-panel.kicad_pcb": {
+        "size_mm": [
+          20.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          20.0,
+          128.5
+        ]
+      },
+      "modules/blank/panels/front-pcb/blank-2hp.kicad_pcb": {
+        "size_mm": [
+          9.8,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          128.5
+        ]
+      },
+      "modules/blank/panels/front-pcb/blank-4hp.kicad_pcb": {
+        "size_mm": [
+          20.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          20.0,
+          128.5
+        ]
+      },
+      "modules/blank/panels/front-pcb/blank-6hp.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/blank/panels/front-pcb/blank-8hp.kicad_pcb": {
+        "size_mm": [
+          40.3,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          40.3,
+          128.5
+        ]
+      },
+      "modules/drive/panels/front-pcb/drive-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/env/panels/front-pcb/env-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/hats/panels/front-pcb/hats-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/imix/panels/front-pcb/imix-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/ladder/panels/front-pcb/ladder-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/line-in/panels/front-pcb/line-in-panel.kicad_pcb": {
+        "size_mm": [
+          20.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          20.0,
+          128.5
+        ]
+      },
+      "modules/low/panels/front-pcb/low-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/mcc/panels/front-pcb/mcc-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/midi/panels/front-pcb/midi-panel.kicad_pcb": {
+        "size_mm": [
+          20.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          20.0,
+          128.5
+        ]
+      },
+      "modules/motion/panels/front-pcb/motion-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/multi-mix/panels/front-pcb/multi-mix-panel.kicad_pcb": {
+        "size_mm": [
+          101.3,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          101.3,
+          128.5
+        ]
+      },
+      "modules/usb-audio/panels/front-pcb/usb-audio-panel.kicad_pcb": {
+        "size_mm": [
+          30.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          30.0,
+          128.5
+        ]
+      },
+      "modules/usb-audio-max/panels/front-pcb/usb-audio-max-panel.kicad_pcb": {
+        "size_mm": [
+          50.5,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          50.5,
+          128.5
+        ]
+      },
+      "modules/usb-power/panels/front-pcb/usb-power-panel.kicad_pcb": {
+        "size_mm": [
+          9.8,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          128.5
+        ]
+      },
+      "modules/usb-power-45w/panels/front-pcb/usb-power-45w-panel.kicad_pcb": {
+        "size_mm": [
+          20.0,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          20.0,
+          128.5
+        ]
+      },
+      "modules/vca-mix/panels/front-pcb/vca-mix-panel.kicad_pcb": {
+        "size_mm": [
+          40.3,
+          128.5
+        ],
+        "thickness_mm": 1.6,
+        "grip_across_mm": [
+          40.3,
+          128.5
+        ]
+      }
+    }
+  },
+  "poses": {
+    "work": {
+      "pairs_with_overlapping_boxes": 31,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        60,
+        330
+      ],
+      "board_mm": [
+        110.0,
+        29.0,
+        1.6
+      ],
+      "link_above_level_deg": 30.0,
+      "board_tilt_deg": 0.0,
+      "board_centre_mm": [
+        189.9,
+        -83.3,
+        135.3
+      ],
+      "board_to_jaw_mm": [
+        0.0,
+        0.0
+      ]
+    },
+    "flipped": {
+      "pairs_with_overlapping_boxes": 31,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        60,
+        150
+      ],
+      "board_mm": [
+        110.0,
+        29.0,
+        1.6
+      ],
+      "link_above_level_deg": 30.0,
+      "board_tilt_deg": 180.0,
+      "board_centre_mm": [
+        189.9,
+        -83.3,
+        153.9
+      ],
+      "board_to_jaw_mm": [
+        0.0,
+        0.0
+      ]
+    },
+    "low": {
+      "pairs_with_overlapping_boxes": 31,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        80,
+        350
+      ],
+      "board_mm": [
+        110.0,
+        29.0,
+        1.6
+      ],
+      "link_above_level_deg": 10.0,
+      "board_tilt_deg": 0.0,
+      "board_centre_mm": [
+        209.4,
+        -94.6,
+        73.3
+      ],
+      "board_to_jaw_mm": [
+        0.0,
+        0.0
+      ]
+    },
+    "mirrored": {
+      "pairs_with_overlapping_boxes": 33,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        120,
+        300,
+        210
+      ],
+      "board_mm": [
+        110.0,
+        29.0,
+        1.6
+      ],
+      "link_above_level_deg": 30.0,
+      "board_tilt_deg": 0.0,
+      "board_centre_mm": [
+        191.1,
+        -81.2,
+        135.3
+      ],
+      "board_to_jaw_mm": [
+        0.0,
+        0.0
+      ]
+    },
+    "tilted": {
+      "pairs_with_overlapping_boxes": 31,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        50,
+        290
+      ],
+      "board_mm": [
+        91.3,
+        110.0,
+        1.6
+      ],
+      "link_above_level_deg": 40.0,
+      "board_tilt_deg": 30.0,
+      "board_centre_mm": [
+        189.7,
+        -36.4,
+        163.7
+      ],
+      "board_to_jaw_mm": [
+        0.0,
+        0.0
+      ]
+    },
+    "easel": {
+      "pairs_with_overlapping_boxes": 26,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        0,
+        30,
+        0
+      ],
+      "board_mm": [
+        29.0,
+        110.0,
+        1.6
+      ],
+      "link_above_level_deg": 60.0,
+      "board_tilt_deg": 60.0,
+      "board_centre_mm": [
+        87.3,
+        -103.1,
+        209.5
+      ],
+      "board_to_jaw_mm": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "head_sweep": {
+    "pose": "work",
+    "steps": 36,
+    "smallest_gap_to_desk_clamp_bracket_mm": 24.6,
+    "smallest_gap_jaws_to_link_mm": 3.3
+  },
+  "print": {
+    "clamp-body": {
+      "print_bounds_mm": [
+        90.0,
+        113.44,
+        46.0
+      ],
+      "volume_cm3": 173.51,
+      "stl_facets": 3614,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "on its side, nut slot open upwards",
+      "bed_contact_mm2": 4322.5,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "clamp-screw": {
+      "print_bounds_mm": [
+        42.31,
+        44.0,
+        119.0
+      ],
+      "volume_cm3": 36.89,
+      "stl_facets": 36484,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "standing on its knob",
+      "bed_contact_mm2": 1274.3,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "clamp-nut": {
+      "print_bounds_mm": [
+        30.0,
+        30.0,
+        16.0
+      ],
+      "volume_cm3": 10.56,
+      "stl_facets": 4536,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "flat",
+      "bed_contact_mm2": 598.6,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "clamp-pad": {
+      "print_bounds_mm": [
+        40.0,
+        40.0,
+        13.5
+      ],
+      "volume_cm3": 4.68,
+      "stl_facets": 3006,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "disc on the bed, collar up",
+      "bed_contact_mm2": 1181.6,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "swivel-bracket": {
+      "print_bounds_mm": [
+        60.44,
+        60.44,
+        46.0
+      ],
+      "volume_cm3": 55.55,
+      "stl_facets": 5914,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "on its side (the L on the bed)",
+      "bed_contact_mm2": 1266.5,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "arm-link": {
+      "print_bounds_mm": [
+        236.0,
+        46.0,
+        13.44
+      ],
+      "volume_cm3": 122.39,
+      "stl_facets": 6508,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "flat, teeth up",
+      "bed_contact_mm2": 10061.8,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "head-rail": {
+      "print_bounds_mm": [
+        240.0,
+        46.0,
+        19.44
+      ],
+      "volume_cm3": 54.98,
+      "stl_facets": 3464,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "front face on the bed, teeth up",
+      "bed_contact_mm2": 3443.1,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "jaw-left": {
+      "print_bounds_mm": [
+        42.0,
+        98.6,
+        23.6
+      ],
+      "volume_cm3": 16.64,
+      "stl_facets": 3480,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "thick floor on the bed",
+      "bed_contact_mm2": 993.3,
+      "bridged_ceiling_mm2": 327.6,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "jaw-right": {
+      "print_bounds_mm": [
+        42.0,
+        98.6,
+        23.6
+      ],
+      "volume_cm3": 16.64,
+      "stl_facets": 3480,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 1,
+      "orientation": "thick floor on the bed",
+      "bed_contact_mm2": 993.3,
+      "bridged_ceiling_mm2": 327.6,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    },
+    "joint-bolt": {
+      "print_bounds_mm": [
+        23.0,
+        41.0,
+        9.8
+      ],
+      "volume_cm3": 5.05,
+      "stl_facets": 9616,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 3,
+      "orientation": "lying on a flat",
+      "bed_contact_mm2": 407.2,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 8.5,
+      "worst_of_it_deg": 57.1,
+      "highest_of_it_above_bed_mm": 0.61
+    },
+    "joint-knob": {
+      "print_bounds_mm": [
+        36.5,
+        38.0,
+        14.0
+      ],
+      "volume_cm3": 11.81,
+      "stl_facets": 6240,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 3,
+      "orientation": "flat",
+      "bed_contact_mm2": 751.3,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 50.8,
+      "highest_of_it_above_bed_mm": 13.33
+    },
+    "jaw-thumbscrew": {
+      "print_bounds_mm": [
+        19.46,
+        19.46,
+        18.0
+      ],
+      "volume_cm3": 2.64,
+      "stl_facets": 6672,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "copies": 2,
+      "orientation": "standing on its head",
+      "bed_contact_mm2": 256.7,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    }
+  },
+  "solid_volume_cm3": 547.7,
+  "dimensions": {
+    "joint_plate_mm": 12.0,
+    "link_joint_to_joint_mm": 190.0,
+    "joints": 3,
+    "link_pivot_above_desk_mm": 49.6,
+    "jaw_opening_mm": [
+      14.6,
+      156.0
+    ],
+    "finger_length_mm": 76.0,
+    "rail_mm": [
+      240.0,
+      12.0,
+      12.0
+    ],
+    "joint_bolt_length_mm": 41.00000000000001,
+    "desk_thickness_mm": [
+      5,
+      52.5
+    ],
+    "clamp_reach_onto_desk_mm": 74.0,
+    "thread_clearance_radial_mm": 0.35
+  },
+  "source_sha256": "2bd0c3792d4d26c984e4529d464cc102846d10f93e56cc26741561bf472d9ba5",
+  "export_sha256": {
+    "arm-link.step": "86ce442b7365611dcbe67b5dd77e8bbcdc5af71d16b9cd72795be265acd0c238",
+    "arm-link.stl": "ed0bab7d5db26286079f139df7bc5dfd25fd2628ce7be4f38a2a7eca32529f43",
+    "assembly-preview.step": "5ddb0c088fc8c1cdbf6fd467ff495d7a6dc59c421c6794fc8f26821a16317d98",
+    "clamp-body.step": "782c463b379805715540c18aafc74d42c3c296ce68d759a551e9f15ff61efddf",
+    "clamp-body.stl": "fe4dbfe6db5436bb5f88df59926750cf37fa8637d62e87afec359232bbe4b07d",
+    "clamp-nut.step": "e3f05e83c3ddcbbc93121f65e0f499a2d3ef6587e0191469834ca55f4ba14ba1",
+    "clamp-nut.stl": "a960b3849d0931ae527aede510afb48bd1c33390b191a561bfbb23358ba597dc",
+    "clamp-pad.step": "d2fb2037ef59afa2f62f374d3c7411cc3cc4f40dd716f3cf3d58ced37d01aad7",
+    "clamp-pad.stl": "342c2d93d0f8b06493f10fcd8bfd4b73e2f94042aee4579efc6077f0c4cd15b1",
+    "clamp-screw.step": "1f7d86286fa6a47d1bd3cf4320cabba6c901f3145349c81fdef8fbdeb7f7de91",
+    "clamp-screw.stl": "85124de2829c90559a60150606a27d3de76a7d290fed976486a802cedf1e2e2f",
+    "head-rail.step": "8208b4fb3a39a7c0a995110f73d811206061eb85d55a51cc3d54c62dea8c421e",
+    "head-rail.stl": "7d8d305d1ef2d973d294a76559712d1268142e319a8d72b79ae65e95c44e7c1f",
+    "jaw-left.step": "286910d574d620b8d68db87cb85235320cfbfccda604a1d998ad866d2dc466c7",
+    "jaw-left.stl": "01b8cb4d4f723b7bd0581b45eea34cba31978f393a83b8422c7f0b1436328a11",
+    "jaw-right.step": "ec21a3eb38798065f35f930d78461a5ff7ee64164a4d8ad29a9d28c1abea13d4",
+    "jaw-right.stl": "19e2df87b5f850fb1bddb49d8882c1aa760d6b1be910f02b22eaa63a46d1ad30",
+    "jaw-thumbscrew.step": "917c21819bae06e74a4af97c0b99145bdf3881f1ec49e76e0265a8a2d71e2bd8",
+    "jaw-thumbscrew.stl": "84e091ee9e38581ebc4a4ff109656d1436e2c196c995e4c9cf31a026ff8ec06d",
+    "joint-bolt.step": "8f8f9825a7139b5d4e973cc73035f20d451a676ff585b4001e5f6b7178d2dc1b",
+    "joint-bolt.stl": "98f5086b524bd14e7ec5c017e542e84ca9038a0d9014dd5cd4d70b1971f47293",
+    "joint-knob.step": "80e7d0a7ec5153357e579298b1f4a993e712eca1668ffd35cfa66cc6558833c9",
+    "joint-knob.stl": "1b3158a2b97280886c0d9eb1774ff708783535e7788f951a45b360715f744f8f",
+    "swivel-bracket.step": "98769c4a91c57c9a369a2e40dc688e08b5de4692f74784c88337cc0acc17046c",
+    "swivel-bracket.stl": "5469b720142cfbeb7d7a322055c672169e7aace371b50973940eed81ffcc180a"
+  }
+}
