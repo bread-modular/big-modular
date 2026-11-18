@@ -1,0 +1,335 @@
+{
+ "frame": "Z0 = carrier F.Cu, +Z toward the panel; mm",
+ "panel_front_Z": {
+  "FR4": 11.6,
+  "print": 12.0
+ },
+ "plunger": {
+  "socket_D": 3.4,
+  "socket_Z": [
+   4.5,
+   7.0
+  ],
+  "flange_D": 7.0,
+  "flange_Z": [
+   4.5,
+   8.5
+  ],
+  "tip_D": 3.6,
+  "tip_Z": [
+   8.5,
+   15.0
+  ],
+  "print_height": 10.5,
+  "volume_mm3": 196.9
+ },
+ "head": {
+  "Z": [
+   12.6,
+   16.0
+  ],
+  "socket_D": 4.0,
+  "rib_circle_D": 3.3,
+  "rib_grip": 2.0,
+  "gap_to_panel_front": {
+   "FR4": 1.0,
+   "print": 0.6
+  },
+  "top_above_panel_front": {
+   "FR4": 4.4,
+   "print": 4.0
+  }
+ },
+ "heads": {
+  "wide": {
+   "D": 8.0,
+   "print_height": 3.4,
+   "volume_mm3": 133.0,
+   "clearances": [
+    {
+     "module": "12bit",
+     "ref": "SW1",
+     "panel edge": 2.5,
+     "LED": 0.75,
+     "jack nut": 22.61,
+     "wide knob": 3.55,
+     "slim knob": 5.05,
+     "slimmer knob": 5.8,
+     "slimmest knob": 6.55
+    },
+    {
+     "module": "16bit",
+     "ref": "SW1",
+     "panel edge": 3.5,
+     "LED": 7.9,
+     "jack nut": 3.78,
+     "wide knob": 6.0,
+     "slim knob": 7.5,
+     "slimmer knob": 8.25,
+     "slimmest knob": 9.0
+    },
+    {
+     "module": "32bit",
+     "ref": "SW1",
+     "panel edge": 1.0,
+     "LED": 14.4,
+     "jack nut": 5.89,
+     "wide knob": 39.56,
+     "slim knob": 41.06,
+     "slimmer knob": 41.81,
+     "slimmest knob": 42.56
+    },
+    {
+     "module": "8bit",
+     "ref": "SW1",
+     "panel edge": 3.95,
+     "LED": 8.5,
+     "jack nut": 4.28,
+     "wide knob": 8.0,
+     "slim knob": 9.5,
+     "slimmer knob": 10.25,
+     "slimmest knob": 11.0
+    },
+    {
+     "module": "acid",
+     "ref": "SW1",
+     "panel edge": 20.8,
+     "LED": 0.93,
+     "jack nut": 37.45,
+     "wide knob": 0.11,
+     "slim knob": 1.61,
+     "slimmer knob": 2.36,
+     "slimmest knob": 3.11,
+     "next head": 9.7
+    },
+    {
+     "module": "acid",
+     "ref": "SW2",
+     "panel edge": 3.1,
+     "LED": 1.9,
+     "jack nut": 37.08,
+     "wide knob": 2.25,
+     "slim knob": 3.75,
+     "slimmer knob": 4.5,
+     "slimmest knob": 5.25,
+     "next head": 9.7
+    },
+    {
+     "module": "env",
+     "ref": "SW1",
+     "panel edge": 2.5,
+     "LED": 2.4,
+     "jack nut": 17.38,
+     "wide knob": 7.46,
+     "slim knob": 8.96,
+     "slimmer knob": 9.71,
+     "slimmest knob": 10.46,
+     "next head": 4.0
+    },
+    {
+     "module": "env",
+     "ref": "SW2",
+     "panel edge": 2.5,
+     "LED": 2.4,
+     "jack nut": 5.39,
+     "wide knob": 18.7,
+     "slim knob": 20.2,
+     "slimmer knob": 20.95,
+     "slimmest knob": 21.7,
+     "next head": 4.0
+    },
+    {
+     "module": "hats",
+     "ref": "SW1",
+     "panel edge": 2.3,
+     "LED": 9.59,
+     "jack nut": 3.91,
+     "wide knob": 27.48,
+     "slim knob": 28.98,
+     "slimmer knob": 29.73,
+     "slimmest knob": 30.48
+    },
+    {
+     "module": "mcc",
+     "ref": "SW1",
+     "panel edge": 4.0,
+     "LED": 2.9,
+     "jack nut": 11.02,
+     "wide knob": 1.25,
+     "slim knob": 2.75,
+     "slimmer knob": 3.5,
+     "slimmest knob": 4.25
+    },
+    {
+     "module": "motion",
+     "ref": "SW1",
+     "panel edge": 3.95,
+     "LED": 0.9,
+     "jack nut": 2.23,
+     "wide knob": 10.87,
+     "slim knob": 12.37,
+     "slimmer knob": 13.12,
+     "slimmest knob": 13.87,
+     "next head": 6.1
+    },
+    {
+     "module": "motion",
+     "ref": "SW2",
+     "panel edge": 3.95,
+     "LED": 0.9,
+     "jack nut": 2.23,
+     "wide knob": 6.0,
+     "slim knob": 7.5,
+     "slimmer knob": 8.25,
+     "slimmest knob": 9.0,
+     "next head": 6.1
+    }
+   ]
+  },
+  "slim": {
+   "D": 6.5,
+   "print_height": 3.4,
+   "volume_mm3": 76.6,
+   "clearances": [
+    {
+     "module": "12bit",
+     "ref": "SW1",
+     "panel edge": 3.25,
+     "LED": 1.5,
+     "jack nut": 23.36,
+     "wide knob": 4.3,
+     "slim knob": 5.8,
+     "slimmer knob": 6.55,
+     "slimmest knob": 7.3
+    },
+    {
+     "module": "16bit",
+     "ref": "SW1",
+     "panel edge": 4.25,
+     "LED": 8.65,
+     "jack nut": 4.53,
+     "wide knob": 6.75,
+     "slim knob": 8.25,
+     "slimmer knob": 9.0,
+     "slimmest knob": 9.75
+    },
+    {
+     "module": "32bit",
+     "ref": "SW1",
+     "panel edge": 1.75,
+     "LED": 15.15,
+     "jack nut": 6.64,
+     "wide knob": 40.31,
+     "slim knob": 41.81,
+     "slimmer knob": 42.56,
+     "slimmest knob": 43.31
+    },
+    {
+     "module": "8bit",
+     "ref": "SW1",
+     "panel edge": 4.7,
+     "LED": 9.25,
+     "jack nut": 5.03,
+     "wide knob": 8.75,
+     "slim knob": 10.25,
+     "slimmer knob": 11.0,
+     "slimmest knob": 11.75
+    },
+    {
+     "module": "acid",
+     "ref": "SW1",
+     "panel edge": 21.55,
+     "LED": 1.68,
+     "jack nut": 38.2,
+     "wide knob": 0.86,
+     "slim knob": 2.36,
+     "slimmer knob": 3.11,
+     "slimmest knob": 3.86,
+     "next head": 11.2
+    },
+    {
+     "module": "acid",
+     "ref": "SW2",
+     "panel edge": 3.85,
+     "LED": 2.65,
+     "jack nut": 37.83,
+     "wide knob": 3.0,
+     "slim knob": 4.5,
+     "slimmer knob": 5.25,
+     "slimmest knob": 6.0,
+     "next head": 11.2
+    },
+    {
+     "module": "env",
+     "ref": "SW1",
+     "panel edge": 3.25,
+     "LED": 3.15,
+     "jack nut": 18.13,
+     "wide knob": 8.21,
+     "slim knob": 9.71,
+     "slimmer knob": 10.46,
+     "slimmest knob": 11.21,
+     "next head": 5.5
+    },
+    {
+     "module": "env",
+     "ref": "SW2",
+     "panel edge": 3.25,
+     "LED": 3.15,
+     "jack nut": 6.14,
+     "wide knob": 19.45,
+     "slim knob": 20.95,
+     "slimmer knob": 21.7,
+     "slimmest knob": 22.45,
+     "next head": 5.5
+    },
+    {
+     "module": "hats",
+     "ref": "SW1",
+     "panel edge": 3.05,
+     "LED": 10.34,
+     "jack nut": 4.66,
+     "wide knob": 28.23,
+     "slim knob": 29.73,
+     "slimmer knob": 30.48,
+     "slimmest knob": 31.23
+    },
+    {
+     "module": "mcc",
+     "ref": "SW1",
+     "panel edge": 4.75,
+     "LED": 3.65,
+     "jack nut": 11.77,
+     "wide knob": 2.0,
+     "slim knob": 3.5,
+     "slimmer knob": 4.25,
+     "slimmest knob": 5.0
+    },
+    {
+     "module": "motion",
+     "ref": "SW1",
+     "panel edge": 4.7,
+     "LED": 1.65,
+     "jack nut": 2.98,
+     "wide knob": 11.62,
+     "slim knob": 13.12,
+     "slimmer knob": 13.87,
+     "slimmest knob": 14.62,
+     "next head": 7.6
+    },
+    {
+     "module": "motion",
+     "ref": "SW2",
+     "panel edge": 4.7,
+     "LED": 1.65,
+     "jack nut": 2.98,
+     "wide knob": 6.75,
+     "slim knob": 8.25,
+     "slimmer knob": 9.0,
+     "slimmest knob": 9.75,
+     "next head": 7.6
+    }
+   ]
+  }
+ }
+}
