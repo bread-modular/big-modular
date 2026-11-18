@@ -1,11 +1,11 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
   "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/168/modules/env/hardware/env.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/168/modules/env/hardware/env.kicad_sch",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/303/modules/env/hardware/env.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/303/modules/env/hardware/env.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/168/modules/env/hardware/env.kicad_pcb": "3085ff4ccd97b09c13f0451283a57246693ee982213c8ee72aef18faee9eaf19",
-    "/home/azero/.okbrain/workspaces/big-modular/168/modules/env/hardware/env.kicad_sch": "fa86c6c52459d9ed105aacdcafc8cdbd5f2a1e2355cdd9972b234f91f4246f86"
+    "/home/azero/.okbrain/workspaces/big-modular/303/modules/env/hardware/env.kicad_pcb": "52f17ccbf3eed8ac9d8f442d443a8e9ce4311f3786809310df5fede27cb3ea6b",
+    "/home/azero/.okbrain/workspaces/big-modular/303/modules/env/hardware/env.kicad_sch": "eb3fa31c7f3f6d209deac558c743ad29b7f79e2e7d762b6ab682ea261060289b"
   },
   "layers": [
     "F.Cu",
@@ -23,8 +23,8 @@
   "units": "mm",
   "side": "bottom",
   "include_through_hole": false,
-  "component_count": 36,
-  "bom_row_count": 18,
+  "component_count": 37,
+  "bom_row_count": 19,
   "excluded": {
     "D4": "Not an SMD footprint (use --include-through-hole)",
     "D5": "Not an SMD footprint (use --include-through-hole)",

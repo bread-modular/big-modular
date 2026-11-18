@@ -1,4 +1,4 @@
-# ENV research and circuit intent (S4/P7/R1, exported)
+# ENV research and circuit intent (S5 schematic; P7/R1 board and export still S4)
 
 ## 1. Brief (user, 2026-10-28)
 
@@ -21,7 +21,7 @@
   MIDI OUT at the bottom; a patched GATE IN bypasses MIDI.
 - Round 8 (user, 2026-10-28): start routing (R1, section 4).
 
-## 2. Circuit (S4, `tools/build_schematic.py`)
+## 2. Circuit (S4 + S5 R20, `tools/build_schematic.py`)
 
 Inherited ACID research.md 2-3 values, except S4: U1 HT7550-1 / +5V and R5-R8 1k
 (user-approved conversion, section 6). The ACID references are in brackets.
@@ -36,6 +36,7 @@ Inherited ACID research.md 2-3 values, except S4: U1 HT7550-1 / +5V and R5-R8 1k
 | ENV UI | RV1 ATTACK, RV2 RELEASE (50k), SW1 MODE, SW2 REC, D4-D7 + R5-R8 1k | ACID UI; S4 indicators ~3 mA at 5 V with ~2 V red LEDs |
 | Envelope | R9 1k (DAC -> ENV_CV) | ACID R12 |
 | ENV OUT | U3A TL072 x1.51 (R10 51k / R11 100k), R12 1k 0.5 W 1206, J2 | ACID U11B, R55-R57, J5: 3.30 V -> 4.98 V |
+| ENV OUT idle | R20 470k, ENV_OUT -> -12V_F | S5 (section 7): idle about -25 mV, so the TL072 offset cannot leak through a VCA |
 | ENV LED | R13 1k, D8 from U3A out (before R12) | New: ~3 mA at 5 V, lights above ~1.8 V; a patched load does not dim it |
 | Spare | U3B grounded follower | TL072 half unused |
 | Supplies | C7 / C8 100n | U3 +/-12 V decoupling |
@@ -232,7 +233,47 @@ refill proof and catalog evidence. Shipping files and remaining release gates ar
 `jlcpcb/README.md`. The earlier ignored `research/fab-review/REVIEW.md` describes the S3
 snapshot and is historical, not the current S4 verdict.
 
-## 7. Not done
+## 7. S5: ENV OUT idle pull-down R20 (user-confirmed, 2026-11-18)
 
-FreeCAD printed panel, firmware (MIDI / GATE IN gate with the PB1 bypass, three models, REC),
-supplier preview / order gates, bench.
+On the first built board a silent envelope leaked audio through modules/vca-mix, whose vactrol
+driver has no dead zone. The firmware already holds PA6 at a GPIO low at level 0, so what was
+left was the TL072 offset: the user measured **+2.8 mV** at ENV OUT (our 8bit idles at -10 mV and
+does not leak). Bodge on that board: a resistor from the J2 tip to -12 V (1M or 470k offered;
+the user reported it works).
+
+S5 adds it to the schematic: **R20 470k (0603, C23178, the modules/hats part; live-checked
+2026-11-18, Basic) from ENV_OUT to -12V_F**. With R12 1k it shifts the jack by 11.7 V x 1k / 471k = about
+-25 mV, so the idle level is about -22 mV on that board and stays below 0 V over the TL072
+offset range. The top of the envelope drops by the same 25 mV plus 0.2 % (under 40 mV): the
+firmware scaling is unchanged. ERC 0, generator netlist assert passed (36 nets).
+
+## 8. R2: R20 on the board + S5 / R2 export (2026-11-18, user request)
+
+One batch straight on the board (`research/route/r20.py`, run on a scratch copy; backup
+`/tmp/env-r1-pre-r20.kicad_pcb`):
+
+- **R20** on B at X120.925 Y121.4, rot 0, left of C8 and the -12V_F feed, below the ENV_CV F run.
+  Pad 1 (ENV_OUT) is 2.24 mm from RV2.3, 0.50 mm from the GND via at X119 Y120.5.
+- **-12V_F** (B, 0.25 mm, 25 uA): R20.2 -> X122.25 -> the vertex of the U3.4 / C8.2 feed at
+  X122.6 Y122.9.
+- **ENV_OUT**: R20.1 dogbone (B) down to a new 0.6 / 0.3 mm via at X120.1 Y123.2 (1.03 mm from the
+  pad, 1.52 mm from RV2.3), then F straight down X120.1 onto the ENV OUT run at Y131.5.
+- Rejected: R20 below R11 next to the ENV_OUT via, all on B. The -12V_F track had to pass between
+  LED_AR (X120.3) and the GND via at X121.5 Y127 and cut the left thermal spoke of C8.1 (native
+  DRC `starved_thermal`); the lane right of C8 would have isolated R11.2 from the pour. B is
+  closed by LED_AR at Y126.1, so ENV_OUT takes the F hop.
+- Title block `S5/R2`, B silk `ENV R2`.
+
+Result (`research/r2-b1`, shared check `research/check-r2`): ERC 0; KiCad DRC 0 (all severities,
+no exclusions) / unconnected 0 / parity 0. 222 tracks, 27 vias, none in or at an SMD pad. Closest
+SMD to pot / jack copper still D3-J1.TN 2.10 mm; courtyards >= 1.02 mm from the edge. Pours: the
+same pieces as R1 on both layers (F 5, B 8 filled outlines incl. the J3 inter-pin fragments).
+
+Export: `jlcpcb/README.md` (37 parts / 19 rows; BOM and CPL differ from S4 by the R20 line only;
+C23178 looked up live 2026-11-18: Basic, in stock). Printed panel regenerated, panel unchanged.
+
+## 9. Not done
+
+Supplier preview / order gates, bench (firmware in
+`firmware/`, 2026-11-18: runs on the first board, MIDI-triggered; GATE IN, REC and the 5 V top
+not reported).

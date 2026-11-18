@@ -1,4 +1,4 @@
-# ENV contract (S4 schematic, P7 THT placement, R1 routing, JLCPCB export)
+# ENV contract (S5 schematic; P7 THT placement, R2 routing, S5/R2 JLCPCB export)
 
 | | |
 |---|---|
@@ -16,6 +16,8 @@
   MIDI notes bypassed, the gate drives the envelope; PB1 jack detect), ATTACK + RELEASE, MODE button with HR / AR / ASR LEDs, REC button + LED
   (records the knob positions), ENV OUT 0..5 V protected. 5 V internal signals (U1 HT7550-1); R5-R8 1k. Keep R10/R11 = 51k/100k and firmware DAC
   INT43V codes 0..194 for nominal ~0..5 V ENV OUT; do not copy 8bit's full-scale/bipolar output stage.
+  S5: R20 470k from ENV_OUT to -12V_F keeps the idle level about 25 mV below 0 V (user-confirmed bodge,
+  2026-11-18); on the R2 board left of C8 (B).
 - 6HP panel top to bottom (user, 2026-10-28, P7): GATE IN + MIDI IN in one row; ATTACK;
   RELEASE (30 mm pitch); MODE button + HR / AR / ASR LEDs in one row; REC button + REC LED
   (buttons on the left); ENV OUT + ENV LED + MIDI OUT at the bottom. J3 power header vertical on

@@ -1,8 +1,10 @@
-# ENV — manufacturing export (S4/R1, 5 V)
+# ENV — manufacturing export (S5/R2, 5 V)
 
-Re-exported after the user-approved **U1 HT7550-1 / +5V** and **R5-R8 1k** conversion,
-using the unchanged shared `opt/kicad-tools/jlcpcb/export.py`. The schematic is S4; P7
-placement, R1 routing and panel geometry are unchanged. See `docs/research.md` section 6.
+Re-exported on 2026-11-18 after **R20 470k (ENV OUT idle pull-down to -12V_F)** was placed and
+routed (S5 schematic, R2 board: R1 copper + R20, two short B links, one via and one F run; see
+`docs/research.md` sections 7 and 8), using the unchanged shared
+`opt/kicad-tools/jlcpcb/export.py`. P7 placement of every other part and the panel geometry are
+unchanged. The S4 conversion (U1 HT7550-1 / +5V, R5-R8 1k) is in `docs/research.md` section 6.
 Never hand-edit generated fabrication or assembly files: change the sources, then export.
 
 ## Upload files
@@ -10,11 +12,11 @@ Never hand-edit generated fabrication or assembly files: change the sources, the
 | Order | Files | Options |
 |---|---|---|
 | Carrier PCB | **`env-gerbers.zip`** | 2 layers, FR4, 1.6 mm, nominal 29.0 x 110.0 mm, 1 oz, HASL, tented vias; no filled/capped via-in-pad requirement |
-| Carrier assembly | **`assembly/bom.csv`, `assembly/positions.csv`** | Bottom-side Economic PCBA target; **36 parts in 18 BOM rows**, all on B. Supplier acceptance is still pending |
+| Carrier assembly | **`assembly/bom.csv`, `assembly/positions.csv`** | Bottom-side Economic PCBA target; **37 parts in 19 BOM rows**, all on B. Supplier acceptance is still pending |
 | Front panel PCB | **`env-panel-gerbers.zip`** | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
 
 The carrier has no `JLCJLCJLCJLC` marker; choose the order-number option deliberately.
-All 26 vias are 0.3 mm drill / 0.6 mm copper and clear of SMD copper/mask openings.
+All 27 vias are 0.3 mm drill / 0.6 mm copper and clear of SMD copper/mask openings.
 The board's stroke-inclusive outline bounding box is 29.05 x 110.05 mm, not its nominal
 edge-centre dimensions above.
 
@@ -23,6 +25,14 @@ and export reports. Top-level ZIPs and `assembly/` CSVs are byte-identical mirro
 `source-sha256.json` binds the five native sources to the exported ZIPs/BOM/CPL.
 
 ### Changed assembly parts
+
+S5 / R2 adds one part and one BOM row; no other CPL line changed:
+
+| Reference | Part | Position (B) |
+|---|---|---|
+| R20 | **470k, C23178**, UNI-ROYAL 0603WAF4703T5E, 0603 | X120.925 Y121.4, rot 0, left of C8 |
+
+S3 -> S4 (history):
 
 | References | S3 | S4 |
 |---|---|---|
@@ -48,6 +58,11 @@ The complete CPL is byte-identical to S3: no part moved or rotated.
 The export excludes exactly 15 THT references plus JP1; see `carrier/export-report.json`.
 
 ## Catalog observations and unresolved assembly gates
+
+**R20 (S5):** C23178 looked up on 2026-11-18 on the public LCSC and JLCPCB endpoints:
+0603WAF4703T5E, UNI-ROYAL, 0603, **Basic**, listed stock 390,900 (LCSC) / 1,016,562 (JLCPCB).
+Not reserved inventory. The other 18 codes were **not** re-checked for S5; their audit below is
+from 2026-10-28 and covers 36 references.
 
 The final strict-live audit checked all 36 assembled references / 18 unique codes for
 **one board of placement demand** (not an order quantity), with public responses at
@@ -75,9 +90,9 @@ complete, but **`order_ready` remains false**.
 
 The shared check verifies these hashes against `source-sha256.json`:
 
-- Carrier PCB: `3085ff4ccd97b09c13f0451283a57246693ee982213c8ee72aef18faee9eaf19`
+- Carrier PCB: `52f17ccbf3eed8ac9d8f442d443a8e9ce4311f3786809310df5fede27cb3ea6b`
 - Carrier project: `e6d7ff817ec3c7e4d4445ad57061dafb8d49e9cdf08a747443d04f12220dd735`
-- Carrier schematic: `fa86c6c52459d9ed105aacdcafc8cdbd5f2a1e2355cdd9972b234f91f4246f86`
+- Carrier schematic: `eb3fa31c7f3f6d209deac558c743ad29b7f79e2e7d762b6ab682ea261060289b`
 - Panel PCB: `b4fe51e87cda4470639b13283c55074fc8afb5f667741ba2e21b7f9c18e0ad52`
 - Panel project: `6d22f07fec3e78d77b7bd951908fa575494a745a4fc166cf66ae9bb95dc45946`
 
@@ -112,7 +127,22 @@ Gerber/drill members not present in the fresh ZIP. Panel-only shared `check` cur
 requires a schematic; use full native `kicad-cli pcb drc` on a private copy with its
 project rules instead (do not invent a panel schematic or weaken the common gate).
 
-## Verification for S4
+## Verification for S5 / R2 (2026-11-18)
+
+Evidence: `research/r2-b1/`, `research/check-r2/` (ignored).
+
+- Shared `check`: **ERC 0 / DRC 0 / unconnected 0 / schematic parity 0** (all severities, no
+  exclusions), all five source hashes and the recorded exports equal the manifest.
+- BOM / CPL against the S4 export: exactly one added line each (R20); 37 references, 19 rows.
+- 222 tracks / 27 vias, none in or at an SMD pad (new via 1.03 mm from R20.1). R20.1 is 2.24 mm
+  from RV2.3; closest SMD to pot / jack copper is still D3-J1.TN 2.10 mm; courtyards >= 1.02 mm
+  from the edge. GND pours: same pieces as R1 on both layers.
+- Both ZIPs pass the CRC test. Panel sources are unchanged; its Gerbers differ only in
+  creation metadata. Printed panel `panels/front-cad/` regenerated (same STL).
+- Not done for S5: the deterministic Gerber-command comparison, the whole-BOM live audit and any
+  supplier preview. `order_ready` stays false.
+
+## Verification for S4 (history, before R20)
 
 Evidence: `research/5v-conversion/` (ignored).
 
@@ -146,6 +176,6 @@ Evidence: `research/5v-conversion/` (ignored).
   U3 pin 1, U1 tab, diode cathodes, Q1/Q2 and every placement/rotation.
 - Physical assembly/fit and prototype testing, including LDO startup/temperature,
   gate threshold/detect, MIDI/direct/thru behavior, LED current and DAC/output range.
-- **ENV firmware is not written.** It must use the 4.34 V reference setting at 5 V,
-  scale envelopes to DAC codes **0..194**, and use VDD for knob ADC conversions. The
+- ENV firmware is in `firmware/` (runs on the first S4 board with the R20 bodge). It uses the
+  4.34 V reference at 5 V, DAC codes **0..194**, and VDD for the knob ADC conversions. The
   ~0..5 V output is nominal, not a precision/clamped 5 V guarantee.
