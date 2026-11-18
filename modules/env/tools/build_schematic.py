@@ -1,4 +1,4 @@
-"""Generate the ENV S4 schematic (hardware/env.kicad_sch) and its pinned symbols.
+"""Generate the ENV S5 schematic (hardware/env.kicad_sch) and its pinned symbols.
 
 Run from modules/env:
   python3 -B tools/build_schematic.py
@@ -132,7 +132,7 @@ LAYOUT = {
     'R9': (70, 51, 90),
     # ENV OUT stage (ACID U11B), envelope LED, U3B tied off
     'U3': (82, 52, 0), 'R10': (81.5, 57, 90), 'R11': (78, 61.5, 0), 'R12': (92, 52, 90),
-    'J2': (104, 52, 0, 'mirror'), 'R13': (96, 58, 0), 'D8': (96, 63, 90),
+    'J2': (104, 52, 0, 'mirror'), 'R13': (96, 58, 0), 'D8': (96, 63, 90), 'R20': (100, 58, 0),
     'U3.2': (82, 72, 0),
     # Power entry
     'J3': (9, 92, 0), 'D1': (21, 89, 180), 'D2': (21, 97, 0), 'C1': (28, 91.5, 0), 'C2': (32, 91.5, 0),
@@ -285,6 +285,9 @@ def circuit():
                                      'current-limited, 12 mA max through 1k)'))
     c.append(part('J2', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
                   {'T': 'ENV_OUT', 'S': 'GND', 'TN': None}, Note='Envelope CV out, 0..5 V'))
+    c.append(part('R20', 'R', '470k', 'R0603', {'1': 'ENV_OUT', '2': '-12V_F'},
+                  Note='S5 idle pull-down: with R12 it shifts ENV OUT by about -25 mV, so the TL072 offset '
+                       '(+2.8 mV measured) cannot leave a silent envelope above 0 V (modules/vca-mix leaked)'))
     c.append(part('R13', 'R', '1k', 'R0603', {'1': 'CVO_AMP', '2': 'ENV_LED_A'},
                   Note='Envelope LED: ~3 mA at the 5 V peak, lights above ~1.8 V'))
     c.append(part('D8', 'LED', 'LED_3mm_red', 'LED3', {'2': 'ENV_LED_A', '1': 'GND'},
@@ -314,6 +317,7 @@ SOURCING = {
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
     ('R', '51k', 'R0603'): dict(LCSC='C23196', MPN='0603WAF5102T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '470k', 'R0603'): dict(LCSC='C23178', MPN='0603WAF4703T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1M', 'R0603'): dict(LCSC='C22935', MPN='0603WAF1004T5E', Manufacturer='UNI-ROYAL'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0805'): dict(LCSC='C28323', MPN='CL21B105KBFNNNE', Manufacturer='Samsung'),
@@ -335,7 +339,7 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 4), 'BIG MODULAR ENV - S4 schematic: the ACID envelope (Bread Modular ENV on one ATtiny1616) as its own '
+    (T(4, 4), 'BIG MODULAR ENV - S5 schematic: the ACID envelope (Bread Modular ENV on one ATtiny1616) as its own '
               '6HP MIDI + GATE module, 5 V internal signals. Circuit intent: docs/research.md', 2.0),
     (T(4, 6.5), 'Every signal net is wired; supplies use power symbols.', 1.27),
     (T(4, 10), 'MIDI IN (TS): 8bit / LOW / ACID NPN front end, pull-ups on +5V; J5 MIDI OUT = passive thru of J1. '
@@ -346,7 +350,8 @@ TEXTS = [
                'REC (PC2) + LED (PC3) records the knob positions (8bit crash style). Internal pull-ups.', 1.27),
     (T(48, 26), 'ATTACK (PA1) / RELEASE (PA2). PA6 DAC: INT43V, codes 0..194.', 1.27),
     (T(76, 40), 'ENV OUT: U3A x1.51: scaled DAC ~0..3.3 V -> ~0..5 V,\n'
-                'DC coupled, 1k 0.5 W to J2; D8 shows the level.', 1.27),
+                'DC coupled, 1k 0.5 W to J2; D8 shows the level.\n'
+                'R20 to -12V_F: idle level about -25 mV (below 0 V).', 1.27),
     (T(4, 83), 'POWER: +12V -> D1 -> +12V_F (U3, U1 HT7550-1 -> +5V); -12V -> D2 -> -12V_F (U3).', 1.27),
     (T(68, 83), 'SUPPLY PINS + DECOUPLING', 1.27),
 ]
@@ -869,8 +874,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A3")
-      (title_block (title "Big Modular - ENV") (rev "S4") (company "Big Modular")
-        (comment 1 "S4: MIDI/GATE envelope, 5 V MCU, 0..5 V output")
+      (title_block (title "Big Modular - ENV") (rev "S5") (company "Big Modular")
+        (comment 1 "S5: MIDI/GATE envelope, 5 V MCU, 0..5 V output, idle below 0 V")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
