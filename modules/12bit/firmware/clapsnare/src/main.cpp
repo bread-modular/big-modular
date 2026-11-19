@@ -12,9 +12,10 @@
 //   PA4 DAC1_OUT1  OUT 1
 //   PA5 DAC1_OUT2  OUT 2: the same signal
 //   PB4            MODE button (internal pull-up): 4-bar knob recorder on
-//                  MIDI clock (click = record, loops after 4 bars, click = live)
+//                  MIDI clock (click = record, loops after 4 bars, click = live;
+//                  hold + turn a knob while looping = overdub that knob)
 //   PB5            MODE LED (R7 -> D1): the recorder only: blinks while
-//                  recording, solid while looping, off in live mode
+//                  recording or overdubbing, solid while looping, off in live
 //
 // Clock: HSI16 -> PLL 64 MHz, no crystal. TIM6 48 kHz sample tick, SysTick
 // 1 ms.
@@ -339,7 +340,8 @@ static void handleMidi() {
 
 // ---- MODE button + LED ------------------------------------------------------------
 
-static bool modePressed() {
+// Debounced MODE edges to the recorder: press, and release (overdub hold).
+static void modeUpdate() {
     static bool stable = false;
     static bool last = false;
     static uint32_t since = 0;
@@ -350,13 +352,13 @@ static bool modePressed() {
     }
     if (now != stable && g_millis - since >= 20) {
         stable = now;
-        return stable;   // press edge only
+        if (stable) recorder.press();
+        else recorder.release();
     }
-    return false;
 }
 
-// The recorder only (no flash on a note): RECORDING blink, PLAYBACK solid,
-// LIVE off.
+// The recorder only (no flash on a note): RECORDING and overdub blink,
+// PLAYBACK solid, LIVE off.
 static void ledUpdate() {
     bool on;
     switch (recorder.state) {
@@ -364,7 +366,7 @@ static void ledUpdate() {
             on = (g_millis / REC_BLINK_MS) & 1;
             break;
         case clapsnare::MotionRecorder::PLAYBACK:
-            on = true;
+            on = !recorder.overdubbing() || ((g_millis / REC_BLINK_MS) & 1);
             break;
         default:
             on = false;
@@ -393,10 +395,12 @@ int main() {
     uint32_t lastScan = g_millis;
     for (;;) {
         handleMidi();
-        if (modePressed()) recorder.press();
+        modeUpdate();
         // The scan runs while the drum sounds (the CV and a recorded take
-        // keep moving TONE) and while a take is recorded.
-        const bool need = voice.active || trigVelocity || recorder.state == clapsnare::MotionRecorder::RECORDING;
+        // keep moving TONE), while a take is recorded and while MODE is held
+        // for an overdub.
+        const bool need = voice.active || trigVelocity || recorder.state == clapsnare::MotionRecorder::RECORDING ||
+                          recorder.holding;
         if (need && !g_scanning) {
             scanWake();
             lastScan = g_millis;

@@ -343,15 +343,23 @@ struct KnobFilter {
 // three 12-bit lanes instead of two 8-bit ones; button and LED are handled in
 // main.cpp.
 //
-//   LIVE --press--> RECORDING --(384 clocks = 4 bars)--> PLAYBACK --press--> LIVE
+//   LIVE --press--> RECORDING --(384 clocks = 4 bars)--> PLAYBACK --click--> LIVE
 //
 // RECORDING stores the three knobs on every MIDI clock (a press discards the
 // take). PLAYBACK replays them; the knobs are ignored for the first pass,
 // then latched as the reference, and from there turning a knob shifts its
 // whole recorded curve. MIDI Start rewinds to bar 1.
+//
+// OVERDUB (as the 16bit MotionRecorder): hold MODE in PLAYBACK and turn a
+// knob. From its first move (more than OVERDUB_THRESHOLD from where it was at
+// the press) until MODE is released, that knob's live value replaces the
+// recording at the playhead; the others keep playing. Releasing MODE keeps
+// the loop with the new curve, no offset until the knob moves again. A click
+// (press and release, nothing moved) returns to LIVE on the release.
 struct MotionRecorder {
     static const uint16_t LOOP_TICKS = 24 * 4 * 4;
     static const uint8_t LANES = 3;
+    static const int32_t OVERDUB_THRESHOLD = 48;    // ADC codes (noise guard)
     enum State : uint8_t { LIVE, RECORDING, PLAYBACK };
 
     State state = LIVE;
@@ -360,14 +368,44 @@ struct MotionRecorder {
     uint16_t ref[LANES] = {0, 0, 0};
     uint16_t buf[LANES][LOOP_TICKS];
 
+    // Overdub hold (MODE held in PLAYBACK).
+    bool holding = false;
+    bool holdLatched = false;
+    uint8_t overdubMask = 0;                // bit i: lane i overdubbed
+    uint16_t holdKnob[LANES] = {0, 0, 0};   // knobs at the first clock of the hold
+    uint16_t lastLive[LANES] = {0, 0, 0};
+
+    // MODE press edge: LIVE -> RECORDING, RECORDING -> LIVE (discard),
+    // PLAYBACK: starts an overdub hold (or a click).
     void press() {
-        if (state == LIVE) {
+        if (state == PLAYBACK) {
+            holding = true;
+            holdLatched = false;
+            overdubMask = 0;
+        } else if (state == LIVE) {
             state = RECORDING;
             tick = 0;
         } else {
             state = LIVE;
         }
     }
+
+    // MODE release edge. Nothing moved during the hold: back to LIVE.
+    // Otherwise keep looping; the overdubbed lanes restart with no offset.
+    void release() {
+        if (!holding) return;
+        holding = false;
+        if (overdubMask == 0) {
+            state = LIVE;
+            return;
+        }
+        for (uint8_t i = 0; i < LANES; i++) {
+            if (overdubMask & (1u << i)) ref[i] = lastLive[i];
+        }
+        overdubMask = 0;
+    }
+
+    bool overdubbing() const { return holding && overdubMask != 0; }
 
     void onStart() {
         if (state != LIVE) tick = 0;
@@ -379,17 +417,9 @@ struct MotionRecorder {
         if (state == LIVE) return false;
         if (state == RECORDING) {
             for (uint8_t i = 0; i < LANES; i++) out[i] = buf[i][tick] = live[i];
-        } else if (guardTicks < LOOP_TICKS) {
-            guardTicks++;
-            for (uint8_t i = 0; i < LANES; i++) {
-                ref[i] = live[i];
-                out[i] = buf[i][tick];
-            }
         } else {
-            for (uint8_t i = 0; i < LANES; i++) {
-                int32_t v = (int32_t)buf[i][tick] + (int32_t)live[i] - (int32_t)ref[i];
-                out[i] = (uint16_t)(v < 0 ? 0 : (v > KNOB_MAX ? KNOB_MAX : v));
-            }
+            if (holding) overdub(live);
+            play(live, out);
         }
         if (++tick >= LOOP_TICKS) {
             tick = 0;
@@ -399,6 +429,43 @@ struct MotionRecorder {
             }
         }
         return true;
+    }
+
+private:
+    // Write the moved knobs into the frame at the playhead.
+    void overdub(const uint16_t *live) {
+        if (!holdLatched) {
+            holdLatched = true;
+            for (uint8_t i = 0; i < LANES; i++) holdKnob[i] = live[i];
+        }
+        for (uint8_t i = 0; i < LANES; i++) {
+            const uint8_t bit = (uint8_t)(1u << i);
+            if (!(overdubMask & bit)) {
+                const int32_t moved = (int32_t)live[i] - (int32_t)holdKnob[i];
+                if (moved <= OVERDUB_THRESHOLD && moved >= -OVERDUB_THRESHOLD) continue;
+                overdubMask |= bit;
+            }
+            buf[i][tick] = lastLive[i] = live[i];
+        }
+    }
+
+    void play(const uint16_t *live, uint16_t *out) {
+        if (guardTicks < LOOP_TICKS) {
+            guardTicks++;
+            for (uint8_t i = 0; i < LANES; i++) {
+                ref[i] = live[i];
+                out[i] = buf[i][tick];
+            }
+        } else {
+            for (uint8_t i = 0; i < LANES; i++) {
+                if (overdubMask & (1u << i)) {   // plays what was just written
+                    out[i] = buf[i][tick];
+                    continue;
+                }
+                int32_t v = (int32_t)buf[i][tick] + (int32_t)live[i] - (int32_t)ref[i];
+                out[i] = (uint16_t)(v < 0 ? 0 : (v > KNOB_MAX ? KNOB_MAX : v));
+            }
+        }
     }
 };
 

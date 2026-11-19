@@ -240,13 +240,59 @@ static void test_recorder(void) {
     bm_rec_start(&rec);
     CHECK(rec.tick == 0, "MIDI Start rewinds");
     bm_rec_press(&rec);
-    CHECK(rec.state == BM_REC_LIVE && !bm_rec_owns_cv(&rec) && !bm_rec_owns_cc(&rec, 20), "press -> LIVE");
+    CHECK(rec.state == BM_REC_PLAYBACK, "press in PLAYBACK starts a hold");
+    bm_rec_release(&rec);
+    CHECK(rec.state == BM_REC_LIVE && !bm_rec_owns_cv(&rec) && !bm_rec_owns_cc(&rec, 20), "click -> LIVE");
 
     // Abort a take part-way.
     bm_rec_press(&rec);
     for (int t = 0; t < 100; t++) bm_rec_clock(&rec, &f);
     bm_rec_press(&rec);
     CHECK(rec.state == BM_REC_LIVE && !bm_rec_clock(&rec, &f), "abort -> LIVE");
+}
+
+static void test_recorder_overdub(void) {
+    static bm_motion_recorder_t rec;
+    bm_rec_frame_t f;
+    bm_rec_init(&rec);
+    bm_rec_set_live_cv(&rec, 0, 0.25f);
+    bm_rec_set_live_cv(&rec, 1, 0.5f);
+    bm_rec_set_live_cc(&rec, 20, 40);
+    bm_rec_press(&rec);
+    for (int t = 0; t < 2 * BM_REC_LOOP_TICKS; t++) bm_rec_clock(&rec, &f);  // take + guard
+    CHECK(rec.state == BM_REC_PLAYBACK && rec.guard_ticks == BM_REC_GUARD_TICKS, "take + guard");
+
+    // Hold: a wobble inside the threshold doesn't count.
+    bm_rec_press(&rec);
+    bm_rec_set_live_cv(&rec, 1, 0.5f + BM_REC_OVERDUB_CV_THRESHOLD * 0.5f);
+    for (int t = 0; t < 10; t++) bm_rec_clock(&rec, &f);
+    CHECK(rec.state == BM_REC_PLAYBACK && !bm_rec_overdubbing(&rec), "hold, nothing moved");
+
+    // CV2 and CC 21 (not in the take) move: ticks 10..109 overdubbed.
+    bm_rec_set_live_cv(&rec, 1, 0.9f);
+    bm_rec_set_live_cc(&rec, 21, 100);
+    bool ok = true;
+    for (int t = 10; t < 110; t++) {
+        ok &= bm_rec_clock(&rec, &f) && f.cv[1] == 0.9f && f.cc[1] == 100 &&
+              f.cv[0] == 0.25f && f.cc[0] == 40;
+    }
+    CHECK(ok && bm_rec_overdubbing(&rec) && bm_rec_owns_cc(&rec, 21), "overdub plays the live values");
+    bm_rec_release(&rec);
+    CHECK(rec.state == BM_REC_PLAYBACK && !bm_rec_overdubbing(&rec), "release keeps the loop");
+
+    // The new curves play with no offset at the release position; CC 21 has
+    // no pre-hold value, so it is filled with its first move.
+    ok = true;
+    for (int t = 110; t < 2 * BM_REC_LOOP_TICKS; t++) {
+        int k = t % BM_REC_LOOP_TICKS;
+        bool in = k >= 10 && k < 110;
+        ok &= bm_rec_clock(&rec, &f) && f.cv[1] == (in ? 0.9f : 0.5f) && f.cc[1] == 100 &&
+              f.cv[0] == 0.25f && f.cc[0] == 40;
+    }
+    CHECK(ok, "overdubbed loop");
+    bm_rec_press(&rec);
+    bm_rec_release(&rec);
+    CHECK(rec.state == BM_REC_LIVE, "click -> LIVE");
 }
 
 // Runs the app for n frames of a constant input; returns the last output frame.
@@ -362,9 +408,45 @@ static void test_app(void) {
     run_app(&app, 64, 10000, 0, &l, &r);
     CHECK(abs(l - 10000) <= 50, "playback CV1 = 0 (out %d)", l);
 
+    // Hold MODE and move CV2: the LED blinks while overdubbing, solid after.
+    app.on_button_event(true);
+    now_us += 100000;
+    app.on_cv_change(1, 0.7f);
+    bm_app_fxrack_on_midi_realtime(0xF8);
+    bm_app_fxrack_update(1000);
+    bm_app_fxrack_update(1000 + REC_TEST_BLINK_MS);
+    CHECK(led_level == 0.0f, "overdub LED blinks");
+    app.on_button_event(false);
+    now_us += 100000;
+    bm_app_fxrack_update(2000);
+    CHECK(led_level == 1.0f, "overdub released: still PLAYBACK");
+
+    // A release 10 ms after the press (inside the debounce window) is settled
+    // by the next update: the hold ends as a click, back to LIVE. (A lost
+    // release left it holding in PLAYBACK, overdubbing every CV move.)
+    app.on_button_event(true);
+    now_us += 10000;
+    app.on_button_event(false);
+    bm_app_fxrack_update(3000);
+    CHECK(led_level == 1.0f, "quick release still inside the debounce window");
+    now_us += 30000;
+    bm_app_fxrack_update(3100);
+    CHECK(led_level == 0.0f, "quick release settled: click -> LIVE");
+    app.on_cv_change(1, 0.2f);
+    bm_app_fxrack_on_midi_realtime(0xF8);
+    now_us += 100000;
+    bm_app_fxrack_update(3200);
+    CHECK(led_level == 0.0f, "stays LIVE after a quick click");
+
+    // Record again for the CC 22 check below.
+    press(&app, 50);
+    for (int t = 0; t < BM_REC_LOOP_TICKS; t++) bm_app_fxrack_on_midi_realtime(0xF8);
+    bm_app_fxrack_update(4000);
+    CHECK(led_level == 1.0f, "looping again");
+
     // CC 22 recorded from tick 10, back-filled: live CC 22 is ignored in PLAYBACK.
     app.on_midi_cc(0, BM_MCC_BANK_A_CV3, 0);
-    press(&app, 50);  // back to LIVE: live CV1 (1.0) and CC 22 (0) re-applied
+    press(&app, 50);  // a click: back to LIVE: live CV1 (1.0) and CC 22 (0) re-applied
     bm_app_fxrack_update(0);
     CHECK(led_level == 0.0f, "PLAYBACK -> LIVE");
 
@@ -377,6 +459,7 @@ int main(void) {
     test_reverb_rt60();
     test_hall_reverb();
     test_recorder();
+    test_recorder_overdub();
     test_app();
     if (failures) {
         printf("%d failure(s)\n", failures);

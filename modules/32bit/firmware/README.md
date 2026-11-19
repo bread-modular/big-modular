@@ -192,8 +192,8 @@ right channels are two separate effects.
 | MIDI CC 22 | right delay time 1 .. 50 ms |
 | MIDI CC 23 | right delay feedback 0.5 .. 1 |
 | MIDI clock | sets the BPM, so the CV1 range (half a beat); 120 BPM until a clock arrives |
-| MODE press | 4-bar **motion recorder** on MIDI clock (as the 8bit/16bit recorders): press to record CV1, CV2 and CC 20..23; after 4 bars (384 clocks) it loops; press again for live controls (a press while recording aborts the take). See below |
-| LED | blinking = recording, solid = looping, off = live |
+| MODE press | 4-bar **motion recorder** on MIDI clock (as the 8bit/16bit recorders): press to record CV1, CV2 and CC 20..23; after 4 bars (384 clocks) it loops; hold while looping and move a control to overdub it; click again for live controls (a press while recording aborts the take). See below |
+| LED | blinking = recording or overdubbing, solid = looping, off = live |
 
 Motion recorder (`main/src/lib/bm_motion_recorder.c`, RAM only, lost at power
 off). Needs a running MIDI clock; MIDI Start rewinds the take or loop.
@@ -205,7 +205,14 @@ off). Needs a running MIDI clock; MIDI Start rewinds the take or loop.
   and from then on moving one shifts its whole recorded curve (clamped).
 - A CC that never arrived before or during the take is not recorded and stays
   live; one first sent part-way through is held at its first value before that.
-- Press back to live: the current knob / CV / CC values are applied again.
+- Overdub (as the 16bit recorder): hold MODE while it loops and move CV1,
+  CV2 or a CC 20..23 control. From its first move (CVs more than ~1.2 % of the
+  travel, CCs any change) until MODE is released it re-records at the
+  playhead (the others keep playing, LED blinks). Release keeps looping with
+  the new curve, no offset until the control moves again. A CC that wasn't
+  in the take joins it, keeping its pre-hold value outside the overdub.
+- A click (press and release, nothing moved) back to live: the current knob /
+  CV / CC values are applied again.
 
 CCs are read on any MIDI channel (BM MCC bank A numbers, `bm_midi.h`).
 
@@ -246,7 +253,8 @@ app at CC defaults, the slow-BPM clamp (echo at 1.999 s), the wet reverb (blocks
 DC, rings on after a burst),
 the LED, button debounce, and the motion recorder
 (record, loop, guard pass, offsets and clamps, CC back-fill and unrecorded CCs,
-MIDI Start, abort; in the app, a recorded CV1 overrides the live knob).
+MIDI Start, abort, overdub hold / click / new CC; in the app, a recorded CV1
+overrides the live knob and the overdub LED blinks).
 
 Built with ESP-IDF v5.5.1 (2026-11-06), `p` and `d`: 284 KB app (hall reverb, motion recorder), no warnings;
 host tests pass. Not bench-tested: input -> output level (ES8388 ADC at 0 dB

@@ -71,7 +71,10 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   live knobs (LED off). While looping, the knobs are ignored for the first
   4-bar pass (so the hand that ends the take can't nudge it); after that
   their positions are the reference and turning a knob shifts its whole
-  recorded curve up or down (clamped 0..1023). Needs a running MIDI clock;
+  recorded curve up or down (clamped 0..1023). Overdub: hold MODE while it
+  loops and turn a knob; from its first move until MODE is released that
+  knob re-records at the playhead (LED blinks), release keeps looping with
+  the new curve. Needs a running MIDI clock;
   MIDI Start rewinds.
 - **lfo**: BM's LFO reworked for a wider exponential rate, audio-rate FM and
   more shapes (user request, 2026-11-08), 40 kHz sample rate. Maths in
@@ -110,7 +113,8 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED
   blinks), it then loops (LED solid); click again for live knobs. While
   looping, the knobs are ignored for the first 4-bar pass, then turning a
-  knob shifts its whole recorded curve (as supersaw). MIDI Start rewinds.
+  knob shifts its whole recorded curve (as supersaw). Hold MODE while it
+  loops and turn a knob to overdub it (as supersaw). MIDI Start rewinds.
   Tuning constants are in `crash/crash/CrashSynth.h`.
 
 ## Changes from Bread Modular
@@ -165,5 +169,6 @@ Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
 drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
 (recorder, 2026-10-29); crash 6821 / 6811 B, 1168 B (shared recorder,
 2026-10-29); lfo 5215 B, 176 B (exponential rate / FM, 40 kHz, 2026-11-08). `crash/sim.sh`: 66
-checks, 0 failures; `lfo/sim.sh`: 3114 checks, 0 failures; `lib/CvRecorder/sim.sh`: 50 checks, 0 failures.
+checks, 0 failures; `lfo/sim.sh`: 3114 checks, 0 failures; `lib/CvRecorder/sim.sh`: 68 checks, 0 failures (2026-11-19, with the
+overdub; crash 7151 B / 1179 B RAM, supersaw 7984 B / 1155 B, `p`).
 Not bench-tested on the 8bit carrier yet.

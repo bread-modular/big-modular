@@ -101,10 +101,14 @@ the level, the note number and note-off are ignored, all channels.
 - **MODE = 4-bar knob recorder on MIDI clock** (as crash, here for all three
   knobs): click to record (LED blinks), after 4 bars it loops (LED solid);
   click again for live knobs. While looping the knobs are ignored for the
-  first pass, then turning one shifts its whole recorded curve. Needs a
+  first pass, then turning one shifts its whole recorded curve. Overdub (as
+  the 16bit recorder): hold MODE while it loops and turn a knob; from its
+  first move (> 48 ADC steps) until MODE is released that knob re-records at
+  the playhead (the others keep playing, LED blinks), release keeps looping
+  with the new curve; a click without a move returns to live. Needs a
   running MIDI clock; MIDI Start rewinds. A click while recording discards
   the take.
-- **LED**: the recorder only (blinks while recording, solid while looping,
+- **LED**: the recorder only (blinks while recording or overdubbing, solid while looping,
   off in live mode). It does not flash on MIDI notes (user, 2026-11-19).
 - **CV in modulates TONE**: the P2 knob sets the centre and the CV moves it
   both ways, 5 V = the whole knob travel (knob fully left + 0 .. 5 V sweeps the

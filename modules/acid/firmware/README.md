@@ -40,8 +40,9 @@ the one ACID MCU, plus the shared `CvRecorder` on the REC button. Pin map:
 - **REC**: 4-bar ATTACK/RELEASE motion recorder on MIDI clock, the 8bit crash
   behaviour (shared `opt/attiny1616-tools/lib/CvRecorder`): click to record
   (LED blinks), after 4 bars it loops (LED solid); the knobs are ignored for
-  the first looped pass, then shift the whole recorded curve. Click again for
-  live knobs. Needs a running MIDI clock; MIDI Start rewinds. The take is in
+  the first looped pass, then shift the whole recorded curve. Hold REC while
+  it loops and turn a knob to overdub it (LED blinks; release keeps the new
+  curve). Click again for live knobs. Needs a running MIDI clock; MIDI Start rewinds. The take is in
   RAM only (lost at power-off).
 
 ## JP1 setting (required)

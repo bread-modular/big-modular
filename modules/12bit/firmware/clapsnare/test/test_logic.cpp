@@ -292,7 +292,9 @@ static void testRecorder() {
     CHECK(r.onClock(live, out) && out[0] == 0 && out[1] == 1001);
     r.onStart();
     CHECK(r.tick == 0);
-    r.press();
+    r.press();                                               // a click: LIVE on the release
+    CHECK(r.state == MotionRecorder::PLAYBACK);
+    r.release();
     CHECK(r.state == MotionRecorder::LIVE && !r.onClock(live, out));
     // A press while recording discards the take
     r.press();
@@ -301,6 +303,46 @@ static void testRecorder() {
     CHECK(r.state == MotionRecorder::LIVE);
     r.onStart();                                             // no effect in LIVE
     CHECK(!r.onClock(live, out));
+}
+
+static void testOverdub() {
+    static MotionRecorder r;
+    uint16_t live[3] = {1000, 2000, 3000}, out[3];
+    r.press();
+    for (uint16_t t = 0; t < MotionRecorder::LOOP_TICKS; t++) r.onClock(live, out);
+    for (uint16_t t = 0; t < MotionRecorder::LOOP_TICKS; t++) r.onClock(live, out);   // guard pass
+    // Hold: nothing moved yet, a wobble inside the threshold doesn't count
+    r.press();
+    live[1] = 2000 + MotionRecorder::OVERDUB_THRESHOLD;
+    r.onClock(live, out);                                    // tick 0, snapshot
+    r.onClock(live, out);                                    // tick 1
+    CHECK(!r.overdubbing() && out[1] == 2000 + MotionRecorder::OVERDUB_THRESHOLD);
+    // P2 moves: ticks 10..109 overdubbed with 500, P1 / P3 keep playing
+    for (uint16_t t = 2; t < 10; t++) r.onClock(live, out);
+    live[1] = 500;
+    for (uint16_t t = 10; t < 110; t++) {
+        r.onClock(live, out);
+        CHECK(out[0] == 1000 && out[1] == 500 && out[2] == 3000);
+    }
+    CHECK(r.overdubbing());
+    r.release();
+    CHECK(r.state == MotionRecorder::PLAYBACK && !r.overdubbing());
+    // Release at 500 = the new reference: the loop plays the new curve exactly
+    for (uint16_t t = 110; t < MotionRecorder::LOOP_TICKS; t++) {
+        r.onClock(live, out);
+        CHECK(out[1] == 2000);
+    }
+    for (uint16_t t = 0; t < MotionRecorder::LOOP_TICKS; t++) {
+        r.onClock(live, out);
+        CHECK(out[0] == 1000 && out[1] == (t >= 10 && t < 110 ? 500 : 2000) && out[2] == 3000);
+    }
+    // The overdubbed lane still takes the offset afterwards
+    live[1] = 600;
+    for (uint16_t t = 0; t < 20; t++) r.onClock(live, out);
+    CHECK(out[1] == 600);                                    // tick 19: 500 + 100
+    r.press();
+    r.release();
+    CHECK(r.state == MotionRecorder::LIVE);
 }
 
 static void testMidi() {
@@ -392,6 +434,7 @@ int main(int argc, char **argv) {
     testLevels();
     testCv();
     testRecorder();
+    testOverdub();
     testMidi();
     if (argc > 1) writePreviews(argv[1]);
     std::printf(failures ? "%d failure(s)\n" : "all tests passed\n", failures);

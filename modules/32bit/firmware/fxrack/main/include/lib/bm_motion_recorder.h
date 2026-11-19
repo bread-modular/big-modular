@@ -7,7 +7,7 @@
 //
 //   LIVE --press--> RECORDING --(384 clocks = 4 bars of 4/4)--> PLAYBACK
 //     ^                                                            |
-//     +----------------------- press (also aborts a take) ---------+
+//     +------- click in PLAYBACK / press (aborts) in RECORDING ----+
 //
 //   * RECORDING: every MIDI clock stores the live CV1/CV2 and CC values; the
 //     live controls keep driving the sound.
@@ -15,6 +15,15 @@
 //     first 4-bar pass the live controls are ignored; at the end of that pass
 //     they are latched as the reference, then moving one shifts its whole
 //     recorded curve by (live - reference), clamped.
+//   * OVERDUB (as the 16bit MotionRecorder): hold MODE in PLAYBACK and move a
+//     CV or MCC control. From its first move (CV more than
+//     BM_REC_OVERDUB_CV_THRESHOLD, a CC any change from its value at the
+//     press) until MODE is released, that value replaces the recording at the
+//     playhead; the others keep playing. Releasing MODE keeps the loop with
+//     the new curve, no offset until the control moves again. A CC that
+//     wasn't in the take joins it, keeping its pre-hold value outside the
+//     overdubbed span. A click (press and release, nothing moved) returns to
+//     LIVE on the release.
 //   * A CC that never arrived before or during the take is not recorded and
 //     stays live in PLAYBACK; one first moved part-way through is back-filled
 //     with its first value.
@@ -39,6 +48,7 @@ extern "C" {
 #define BM_REC_CC_COUNT 4                     // CC 20..23
 #define BM_REC_CC_UNSET 0xFF
 #define BM_REC_CC_MAX 127
+#define BM_REC_OVERDUB_CV_THRESHOLD 0.012f   // ~48 of 4095 ADC steps (noise)
 
 typedef enum {
     BM_REC_LIVE = 0,
@@ -60,13 +70,26 @@ typedef struct {
     uint8_t live_cc[BM_REC_CC_COUNT];
     float cv_ref[BM_REC_CV_COUNT];  // live values latched after the guard pass
     uint8_t cc_ref[BM_REC_CC_COUNT];
+    // Overdub hold (MODE held in PLAYBACK).
+    bool holding;
+    uint8_t overdub_cvs;            // bit i: cv[i] overdubbed
+    uint8_t overdub_ccs;            // bit i: cc[i] overdubbed
+    float hold_cv[BM_REC_CV_COUNT]; // live values at the press
+    uint8_t hold_cc[BM_REC_CC_COUNT];
     bm_rec_frame_t frames[BM_REC_LOOP_TICKS];  // 4.6 KB
 } bm_motion_recorder_t;
 
 void bm_rec_init(bm_motion_recorder_t *rec);
 
-// MODE short press: LIVE -> RECORDING, RECORDING (abort) / PLAYBACK -> LIVE.
+// MODE press edge: LIVE -> RECORDING, RECORDING (abort) -> LIVE; in PLAYBACK
+// it starts an overdub hold.
 void bm_rec_press(bm_motion_recorder_t *rec);
+
+// MODE release edge: ends an overdub hold; nothing moved -> LIVE.
+void bm_rec_release(bm_motion_recorder_t *rec);
+
+// MODE held in PLAYBACK and at least one value moved.
+bool bm_rec_overdubbing(const bm_motion_recorder_t *rec);
 
 // Latest live values. The CC setter returns false for CCs outside 20..23.
 void bm_rec_set_live_cv(bm_motion_recorder_t *rec, uint8_t index, float value);

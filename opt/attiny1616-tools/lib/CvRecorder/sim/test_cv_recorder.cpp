@@ -5,7 +5,8 @@
 //
 // Covers: LIVE -> RECORDING (blink) -> PLAYBACK (solid) -> LIVE, the 4-bar
 // take, knobs ignored for the first playback pass, then the knob offset
-// shifting the whole recorded curve (clamped), and the offset reset.
+// shifting the whole recorded curve (clamped), the offset reset, and the
+// MODE-hold overdub.
 // ============================================================================
 
 #include <stdio.h>
@@ -194,12 +195,105 @@ static void test_start_rewinds_keeps_offset() {
     CHECK(s_last1 == 150);
 }
 
+static void press(CvRecorder& rec) {
+    g_buttonPressed = 1;
+    advanceMs(1);  rec.update();
+    advanceMs(40); rec.update();
+}
+
+static void release(CvRecorder& rec) {
+    g_buttonPressed = 0;
+    advanceMs(1);  rec.update();
+    advanceMs(40); rec.update();
+}
+
+static void test_overdub() {
+    printf("[6] hold MODE in PLAYBACK and move a knob: overdub\n");
+    CvRecorder rec(BTN_PIN, LED_PIN);
+    rec.begin();
+    recordFlat(rec, 400, 800);
+    feedTicks(rec, REC_LOOP_TICKS, 400, 800);    // guard pass, ref (400, 800)
+    CHECK(rec.isOffsetArmed());
+
+    // Hold, nothing moved yet: plain playback, LED solid.
+    press(rec);
+    CHECK(rec.isPlayingBack() && !rec.isOverdubbing());
+    feedTicks(rec, 10, 400, 800);                // ticks 0..9
+    CHECK(s_last1 == 400 && s_last2 == 800);
+    // A wobble inside the threshold doesn't count.
+    feedTicks(rec, 10, 400 + REC_OVERDUB_THRESHOLD, 800);   // 10..19
+    CHECK(!rec.isOverdubbing());
+    CHECK(s_last1 == 400 + REC_OVERDUB_THRESHOLD);          // offset only
+
+    // P1 moves: ticks 20..119 overdubbed with 600; P2 keeps playing.
+    feedTicks(rec, 100, 600, 800);
+    CHECK(rec.isOverdubbing());
+    CHECK(s_last1 == 600 && s_last2 == 800);
+    bool sawOn = false, sawOff = false;
+    for (int i = 0; i < 10; ++i) {
+        advanceMs(REC_BLINK_MS / 2); rec.update();
+        if (ledOn()) sawOn = true; else sawOff = true;
+    }
+    CHECK(sawOn && sawOff);                      // blinks while overdubbing
+
+    // Release: keeps looping, LED solid, no offset at the release position.
+    release(rec);
+    CHECK(rec.isPlayingBack() && !rec.isOverdubbing());
+    CHECK(ledOn());
+    int wrong = 0;
+    for (int k = 120; k < (int)REC_LOOP_TICKS; ++k) {   // rest of the loop
+        rec.onClock(600, 800, applyCapture);
+        if (s_last1 != 400 || s_last2 != 800) ++wrong;
+    }
+    for (int k = 0; k < (int)REC_LOOP_TICKS; ++k) {     // next pass
+        rec.onClock(600, 800, applyCapture);
+        int e1 = (k >= 20 && k < 120) ? 600 : 400;
+        if (s_last1 != e1 || s_last2 != 800) ++wrong;
+    }
+    CHECK(wrong == 0);
+
+    // Moving P1 after the release shifts the new curve as before.
+    feedTicks(rec, 30, 650, 800);                // ticks 0..29
+    CHECK(s_last1 == 650);                       // tick 29: 600 + 50
+
+    // A click (no move) in PLAYBACK goes LIVE on the release, not the press.
+    press(rec);
+    CHECK(rec.isPlayingBack());
+    release(rec);
+    CHECK(rec.getState() == CvRecorder::STATE_LIVE);
+    CHECK(!ledOn());
+}
+
+static void test_overdub_during_guard() {
+    printf("[7] overdub in the first pass, P2 only\n");
+    CvRecorder rec(BTN_PIN, LED_PIN);
+    rec.begin();
+    recordFlat(rec, 400, 800);
+    feedTicks(rec, 50, 400, 800);                // ticks 0..49
+    press(rec);
+    feedTicks(rec, 1, 400, 800);                 // snapshot at tick 50
+    feedTicks(rec, 49, 400, 200);                // ticks 51..99 -> 200
+    CHECK(s_last2 == 200 && s_last1 == 400);
+    release(rec);
+    feedTicks(rec, REC_LOOP_TICKS - 100, 400, 200);   // rest of the guard
+    CHECK(rec.isOffsetArmed());
+    int wrong = 0;
+    for (int k = 0; k < (int)REC_LOOP_TICKS; ++k) {
+        rec.onClock(400, 200, applyCapture);
+        int e2 = (k >= 51 && k < 100) ? 200 : 800;
+        if (s_last1 != 400 || s_last2 != e2) ++wrong;
+    }
+    CHECK(wrong == 0);
+}
+
 int main() {
     test_lifecycle_and_led();
     test_guard_ignores_knobs();
     test_offset_shifts_whole_loop();
     test_offset_reset();
     test_start_rewinds_keeps_offset();
+    test_overdub();
+    test_overdub_during_guard();
     printf("%d checks, %d failures\n", g_checks, g_failures);
     return g_failures ? 1 : 0;
 }
