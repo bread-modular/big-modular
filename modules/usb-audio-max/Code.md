@@ -96,5 +96,25 @@
 - `tools/check_edges.py`: courtyards >= 1.0 mm (carrier) / 1.03 mm (MCU) from the edges; closest SMD
   pad to a jack pad 2.03 mm (R8-J28).
 - JLCPCB export + strict-live audit: `jlcpcb/README.md`.
-- Not done: Q1 / U3 temperature and +5VA loop on the bench, firmware, 96 kHz SPI1 path.
+- Not done: Q1 / U3 temperature and +5VA loop on the bench, 96 kHz SPI1 path.
 
+## Firmware (first board, 2026-11-19)
+
+- `firmware/` (README there): modules/usb-audio's DFU bootloader with USB IDs 1209:0003 / 0004;
+  `flash.sh` updates over the panel USB-C without BOOT / RESET.
+- Bring-up (no jacks, then jacks + loops OUT n -> IN n, OUT 7/8 -> IN 1/2): PCM3168A at 0x44,
+  registers read back; 48 kHz TDM, slot 1 at stream bit 129 in 5 of 5 starts; all 8 DAC slots and
+  6 ADC slots mapped right, no crosstalk; loop gain 0.946 .. 0.964 uncalibrated, linear to
+  +/-5.5 V, offsets -19 .. -38 mV.
+- **Firmware 1.0.0 "Bread Modular 6x8"**: UAC2 8 out / 6 in, 24-bit, 48 kHz, async with explicit
+  feedback (modules/usb-audio's stream / feedback / USB driver design), CDC console. Per-channel
+  calibration: `cal in` (input offsets, inputs unpatched), `cal out` (output offsets + loop gains,
+  any OUT -> IN pairing found from the data), optional `cal ref` (meter reading); full scale
+  +/-5.87 V in and out after it; saved in the settings page.
+- Bench 2026-11-19 (OUT 3-6 -> IN 3-6, OUT 7 -> IN 1, OUT 8 -> IN 2): `cal out` + `looptest` PASS
+  (gain 0.9997 .. 1.0000, +/-4 V within 1 mV). 1 hour of all 8 outputs
+  -> 6 inputs on 1.0.0: residual -96 dBFS, but 6 clicks, each a lost OUT packet behind console
+  output; **1.0.1** takes those NAK-flagged OUT packets (bytes verified fresh) and debounces
+  the VBUS sense: no console clicks since. Open: host-side USB disconnects without an MCU reset
+  or VBUS dip (13:46, 13:49, 14:25 x6 on 2026-11-19), cause not found.
+- Not done: `cal in` / `cal ref` on the board, OUT 1/2 calibration, macOS / Windows, 96 kHz SPI1 path.

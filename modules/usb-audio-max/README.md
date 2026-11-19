@@ -16,8 +16,9 @@ so CV works too. No level controls. Same two-board build as [USB-AUDIO](../usb-a
 export in `jlcpcb/` (not supplier-accepted, not built).** 10HP panel: USB-C at the top, then IN 1-6 in
 two rows of three and OUT 1-8 in three rows (the ninth spot, bottom right, is empty; the power header sits
 behind it). Both boards: native ERC 0, DRC 0 (saved fills too), unconnected 0, parity 0. Ten R/C
-placements are JLCPCB Extended (user decision open, `jlcpcb/README.md`); no firmware yet (96 kHz SPI1
-path untested). JLC stocks the PCM3168APAPR (C529289, Extended, 1517 on 2026-11-08).
+placements are JLCPCB Extended (user decision open, `jlcpcb/README.md`). First board built: bring-up
+firmware in `firmware/` (DFU flashing over the panel USB-C, codec + 48 kHz TDM link checked
+2026-11-19); no USB audio yet, 96 kHz SPI1 path untested. JLC stocks the PCM3168APAPR (C529289, Extended, 1517 on 2026-11-08).
 
 ![S1 placement: panel, assembly, MCU board](docs/fit/overview.png)
 
@@ -26,6 +27,7 @@ path untested). JLC stocks the PCM3168APAPR (C529289, Extended, 1517 on 2026-11-
 | `hardware/` | `usb-audio-max.kicad_{pro,sch,pcb}` (carrier), `usb-audio-max-mcu.kicad_{pro,sch,pcb}` (MCU board), shared `USBAUDIOMAX.kicad_sym`, `USBAUDIOMAX.pretty` (+ `PROVENANCE.json`), `USBAUDIOMAX.3dshapes`, vendored 3D models `_kicad_models/` |
 | `jlcpcb/` | JLCPCB sets: `main/` (carrier Gerbers + bottom BOM/CPL, panel Gerbers), `mcu/` (MCU board Gerbers + top BOM/CPL); upload map and parts audit in `jlcpcb/README.md` |
 | `panels/front-pcb/` | 10HP FR4 panel `usb-audio-max-panel.kicad_{pro,pcb}` (NPTH holes, USB-C slot, labels) |
+| `firmware/` | CH32V307 firmware: DFU bootloader + PCM3168A bring-up console (`firmware/README.md`) |
 | `docs/research.md` | Brief, decisions, levels, buck-vs-audio simulation, circuit, TDM/firmware notes, panel and fit study, sourcing, open items |
 | `docs/geometry.json` | Placement and stack contract (panel frame) |
 | `docs/*-schematic.pdf`, `docs/erc/`, `docs/fit/` | Schematic PDFs, native ERC JSON, native DRC JSON and placement renders |
