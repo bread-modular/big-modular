@@ -3,7 +3,8 @@
 MIDI-clock-synced 4-bar recorder for two knob/CV values, driven by one
 button + LED. Bread Modular crash `CvRecorder.h` plus the loop offset
 (knobs ignored for the first loop pass, then they shift the whole recorded
-curve). Behaviour and API: comments at the top of `CvRecorder.h`.
+curve) and the overdub (hold MODE while it loops and turn a knob, as the
+16bit `MotionRecorder`). Behaviour and API: comments at the top of `CvRecorder.h`.
 
 Needs a `SimpleMIDI` with clock/Start callbacks (8bit crash/supersaw copy).
 
@@ -20,7 +21,7 @@ ln -s "$(realpath --relative-to=. "$(git rev-parse --show-toplevel)/opt/attiny16
 Then `#include "CvRecorder.h"`. Edit the file here, never through a copy.
 
 Users: `modules/8bit/firmware/supersaw`, `modules/8bit/firmware/crash`,
-`modules/acid/firmware/acid`, and on an STM32G071 `modules/hats/firmware/hats`
+`modules/acid/firmware/acid`, `modules/env/firmware/env`, and on an STM32G071 `modules/hats/firmware/hats`
 (symlinked into `src/`, with a small `Arduino.h` GPIO/millis shim there).
 
 ## Tests

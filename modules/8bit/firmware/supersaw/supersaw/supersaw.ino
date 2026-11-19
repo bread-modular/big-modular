@@ -40,7 +40,8 @@
 #define ENV_HOLD_CV 1000      // P1 at or above this: hold
 
 SimpleMIDI MIDI;
-// MODE = 4-bar P1/P2 motion recorder on MIDI clock (crash's, plus offset)
+// MODE = 4-bar P1/P2 motion recorder on MIDI clock (crash's, plus offset and
+// overdub: hold MODE while looping + turn a knob)
 CvRecorder recorder(TOGGLE_PIN, TOGGLE_LED);
 // TODO: Change this to real serial port. (We need to update the schematic for that)
 SoftwareSerial logger(-1, LOGGER_PIN_TX);

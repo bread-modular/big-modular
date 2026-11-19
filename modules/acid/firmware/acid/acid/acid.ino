@@ -25,7 +25,8 @@
 //     at 10 % for 1 s to show the selection.
 //   * REC (PC2 / LED PC3): 4-bar ATTACK/RELEASE motion recorder on MIDI clock
 //     (shared lib/CvRecorder, as the 8bit crash): click to record (LED blinks),
-//     after 4 bars it loops (LED solid), click again for the live knobs.
+//     after 4 bars it loops (LED solid), hold REC + turn a knob to overdub
+//     it, click again for the live knobs.
 // ----------------------------------------------------------------------------
 
 // JP1 on the ACID carrier picks the MIDI input path (set by ../../jumper.sh):

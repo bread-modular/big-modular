@@ -11,7 +11,8 @@
 //   PB4 / PB5      REC button (pull-up) / REC LED (R48 -> D6)
 //   PB7 USART1_RX  MIDI 31250 baud, all channels; RXINV for JP1 = P
 //
-//   REC (shared CvRecorder): lane 1 CUTOFF, lane 2 NOISE TONE, 4 bars on
+//   REC (shared CvRecorder, hold REC while looping = overdub): lane 1
+//   CUTOFF, lane 2 NOISE TONE, 4 bars on
 //   MIDI clock. MIDI CC 74 x 8 adds to NOISE TONE (BM).
 //
 // Clock: HSI16 -> PLL 64 MHz, no crystal. Timers: TIM6 100 kHz noise tick

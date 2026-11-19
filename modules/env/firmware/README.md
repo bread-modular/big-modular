@@ -36,7 +36,8 @@ plus the shared `CvRecorder` on REC) without the MCO, plus GATE IN. Pin map:
 - **REC**: 4-bar ATTACK/RELEASE motion recorder on MIDI clock (shared
   `opt/attiny1616-tools/lib/CvRecorder`): click to record (LED blinks), after 4 bars it loops
   (LED solid); the knobs are ignored for the first looped pass, then shift the recorded curve.
-  Click again for live knobs. Needs a running MIDI clock on MIDI IN, also when GATE IN is
+  Hold REC while it loops and turn a knob to overdub it (LED blinks; release keeps the new
+  curve). Click again for live knobs. Needs a running MIDI clock on MIDI IN, also when GATE IN is
   patched; MIDI Start rewinds. The take is in RAM only.
 
 ## JP1 setting (required)

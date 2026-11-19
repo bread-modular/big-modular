@@ -22,7 +22,8 @@
 //     CV1/CV2 take is recorded on the MIDI-clock grid; after 4 bars the LED
 //     goes solid and the take loops back. The knobs are ignored for the first
 //     looped pass; after that turning a knob shifts its whole recorded curve
-//     (shared lib/CvRecorder offset). Click MODE again to return to normal
+//     (shared lib/CvRecorder offset). Hold MODE while it loops and turn a
+//     knob to overdub it (LED blinks). Click MODE again to return to normal
 //     live-CV mode.
 // ----------------------------------------------------------------------------
 

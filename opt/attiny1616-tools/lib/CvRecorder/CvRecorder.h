@@ -28,8 +28,16 @@
 //     the knob positions are latched as the reference; from then on turning a
 //     knob shifts its whole recorded curve by (knob - reference), clamped to
 //     0..1023. A new take or a press back to LIVE clears the offset.
-//   * Pressing MODE again (in PLAYBACK, or during RECORDING to abort/discard)
-//     returns to LIVE — stock behaviour, knobs drive the sound directly.
+//   * OVERDUB (big-modular, as the 16bit MotionRecorder): hold MODE in
+//     PLAYBACK and turn a knob. From its first move (more than
+//     REC_OVERDUB_THRESHOLD from where it was at the press) until MODE is
+//     released, that knob's live value replaces the recording at the playhead
+//     (the other one keeps playing) and the LED blinks. Releasing MODE keeps
+//     the loop playing with the new curve, no offset until the knob moves
+//     again. Hold again for another pass.
+//   * A MODE click in PLAYBACK (press and release, no knob moved) returns to
+//     LIVE on the release; a press during RECORDING aborts/discards the take.
+//     In LIVE the knobs drive the sound directly (stock behaviour).
 //   * MIDI Start rewinds the playhead to bar 1 while recording or looping.
 //
 // Storage: one 8-bit sample per CV per tick (10-bit ADC >> 2), shifted back
@@ -43,6 +51,7 @@
 #define REC_BLINK_MS        150UL                      // LED blink half-period
 #define REC_GUARD_TICKS     REC_LOOP_TICKS             // knobs ignored for 1 pass
 #define REC_CV_MAX          1023
+#define REC_OVERDUB_THRESHOLD 12                       // 10-bit steps (ADC noise)
 
 class CvRecorder {
 public:
@@ -65,7 +74,7 @@ public:
         ledOn = false;
     }
 
-    // Call every loop() iteration: debounced click detection + LED animation.
+    // Call every loop() iteration: debounced button edges + LED animation.
     void update() {
         bool reading = digitalRead(modePin);
         if (reading != lastButtonState) {
@@ -74,12 +83,18 @@ public:
         }
         if ((millis() - lastChangeMs) >= debounceMs && reading != stableState) {
             stableState = reading;
-            if (stableState == LOW) {              // click edge -> cycle state
-                onPress();
+            if (stableState == LOW) {              // press edge
+                if (state == STATE_PLAYBACK) {
+                    startHold();                   // overdub or a click
+                } else {
+                    onPress();
+                }
+            } else if (holding) {                  // release edge
+                releaseHold();
             }
         }
 
-        // Non-blocking LED blink while recording.
+        // Non-blocking LED blink while recording or overdubbing.
         if ((millis() - lastBlinkMs) >= REC_BLINK_MS) {
             lastBlinkMs = millis();
             ledOn = !ledOn;
@@ -90,6 +105,8 @@ public:
     bool isRecording() const { return state == STATE_RECORDING; }
     bool isPlayingBack() const { return state == STATE_PLAYBACK; }
     bool isOffsetArmed() const { return guardTicks >= REC_GUARD_TICKS; }
+    // MODE held in PLAYBACK and at least one knob moved.
+    bool isOverdubbing() const { return holding && overdubMask != 0; }
 
     State getState() const { return state; }
     uint16_t getTick() const { return tick; }      // 0..REC_LOOP_TICKS-1
@@ -105,13 +122,17 @@ public:
 
     // Advance by one clock tick. Pass the live 10-bit ADC reads; while
     // recording they are stored into RAM, while playing back the stored pair
-    // at the old playhead is replayed via `apply`. Completing 384 recorded
-    // ticks switches RECORDING -> PLAYBACK automatically.
+    // at the old playhead is replayed via `apply` (while MODE is held, moved
+    // knobs are overdubbed into it first). Completing 384 recorded ticks
+    // switches RECORDING -> PLAYBACK automatically.
     void onClock(uint16_t liveCv1, uint16_t liveCv2, ApplyCallback apply) {
         if (state == STATE_RECORDING) {
             buf1[tick] = liveCv1 >> 2;             // 10-bit -> 8-bit storage
             buf2[tick] = liveCv2 >> 2;
-        } else if (state == STATE_PLAYBACK && apply) {
+        } else if (state == STATE_PLAYBACK) {
+            if (holding) {
+                overdub(liveCv1, liveCv2);
+            }
             int16_t offset1 = 0;
             int16_t offset2 = 0;
             if (guardTicks < REC_GUARD_TICKS) {
@@ -121,11 +142,14 @@ public:
                 ref1 = liveCv1;
                 ref2 = liveCv2;
             } else {
-                offset1 = (int16_t)liveCv1 - (int16_t)ref1;
-                offset2 = (int16_t)liveCv2 - (int16_t)ref2;
+                // An overdubbed knob plays what was just written, no offset.
+                if (!(overdubMask & 1)) offset1 = (int16_t)liveCv1 - (int16_t)ref1;
+                if (!(overdubMask & 2)) offset2 = (int16_t)liveCv2 - (int16_t)ref2;
             }
-            apply(shifted(buf1[tick], offset1),    // 8-bit -> 10-bit + offset
-                  shifted(buf2[tick], offset2));
+            if (apply) {
+                apply(shifted(buf1[tick], offset1),    // 8-bit -> 10-bit + offset
+                      shifted(buf2[tick], offset2));
+            }
         } else {
             return;                                // LIVE: keep playhead idle
         }
@@ -147,6 +171,53 @@ private:
         if (v < 0) return 0;
         if (v > REC_CV_MAX) return REC_CV_MAX;
         return (uint16_t)v;
+    }
+
+    // MODE pressed in PLAYBACK. The knob snapshot is taken on the first clock
+    // of the hold (the button edge carries no knob values).
+    void startHold() {
+        holding = true;
+        holdLatched = false;
+        overdubMask = 0;
+    }
+
+    // Write the moved knobs' live values into the frame at the playhead.
+    void overdub(uint16_t liveCv1, uint16_t liveCv2) {
+        if (!holdLatched) {
+            holdLatched = true;
+            hold1 = liveCv1;
+            hold2 = liveCv2;
+        }
+        if (!(overdubMask & 1) && moved(liveCv1, hold1)) overdubMask |= 1;
+        if (!(overdubMask & 2) && moved(liveCv2, hold2)) overdubMask |= 2;
+        if (overdubMask & 1) {
+            buf1[tick] = liveCv1 >> 2;
+            last1 = liveCv1;
+        }
+        if (overdubMask & 2) {
+            buf2[tick] = liveCv2 >> 2;
+            last2 = liveCv2;
+        }
+    }
+
+    static bool moved(uint16_t now, uint16_t from) {
+        int16_t d = (int16_t)now - (int16_t)from;
+        return d > REC_OVERDUB_THRESHOLD || d < -REC_OVERDUB_THRESHOLD;
+    }
+
+    // MODE released in PLAYBACK. Nothing moved: a click, back to LIVE.
+    // Otherwise keep looping; the overdubbed curves restart with no offset
+    // (reference = knob position at the release).
+    void releaseHold() {
+        holding = false;
+        if (overdubMask == 0) {
+            onPress();
+            return;
+        }
+        if (overdubMask & 1) ref1 = last1;
+        if (overdubMask & 2) ref2 = last2;
+        overdubMask = 0;
+        refreshLed();
     }
 
     void onPress() {
@@ -171,8 +242,9 @@ private:
             case STATE_RECORDING:
                 digitalWrite(ledPin, ledOn ? HIGH : LOW);   // blink
                 break;
-            case STATE_PLAYBACK:
-                digitalWrite(ledPin, HIGH);                 // solid
+            case STATE_PLAYBACK:                            // solid, blink
+                digitalWrite(ledPin,                        // while overdubbing
+                             isOverdubbing() && !ledOn ? LOW : HIGH);
                 break;
             default:
                 digitalWrite(ledPin, LOW);                  // off (live)
@@ -195,6 +267,15 @@ private:
     uint16_t guardTicks = 0;                       // PLAYBACK ticks so far
     uint16_t ref1 = 0;                             // knob positions latched
     uint16_t ref2 = 0;                             // at the end of the guard
+
+    // Overdub hold (MODE held in PLAYBACK).
+    bool holding = false;
+    bool holdLatched = false;
+    uint8_t overdubMask = 0;                       // bit 0: CV1, bit 1: CV2
+    uint16_t hold1 = 0;                            // knobs at the hold start
+    uint16_t hold2 = 0;
+    uint16_t last1 = 0;                            // last overdubbed values
+    uint16_t last2 = 0;
 
     uint8_t buf1[REC_LOOP_TICKS];                  // CV1 motion, 384 bytes
     uint8_t buf2[REC_LOOP_TICKS];                  // CV2 motion, 384 bytes

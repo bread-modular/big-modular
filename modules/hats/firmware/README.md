@@ -47,7 +47,9 @@ and `millis()` the recorder needs), `hats/stm32g071x8.ld`.
   of the knob needs well under one step.
 - **REC** (shared CvRecorder, as modules/acid): press REC to record 4 bars on
   MIDI clock (LED blinks), then it loops the take (LED on); after the first
-  loop the knobs offset the take; press again for live. Lane 1 CUTOFF,
+  loop the knobs offset the take; hold REC while it loops and turn a knob to
+  overdub it (LED blinks; release keeps the new curve); click again for
+  live. Lane 1 CUTOFF,
   lane 2 NOISE TONE. MIDI Start rewinds. Needs MIDI clock.
 - DAC levels: BM writes 8-bit values with the ATtiny reference that its
   author notes ends up as VDD (3.3 V). On an S4 board VREF+ is +3V3, so

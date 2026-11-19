@@ -24,7 +24,8 @@
 //     10 % (the ENV LED at the jack shows the envelope level).
 //   * REC (PC2 / LED PC3): 4-bar ATTACK/RELEASE motion recorder on MIDI clock
 //     (shared lib/CvRecorder, as ACID): click to record (LED blinks), after
-//     4 bars it loops (LED solid), click again for the live knobs.
+//     4 bars it loops (LED solid), hold REC + turn a knob to overdub it,
+//     click again for the live knobs.
 //
 // The USART runs receive-only: its TX pin PB2 is GATE IN on this board.
 // ----------------------------------------------------------------------------

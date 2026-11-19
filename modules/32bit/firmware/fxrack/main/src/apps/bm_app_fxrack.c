@@ -47,7 +47,8 @@ static size_t sample_rate;
 static float delay_left_cv = 0.0f;
 
 static bm_motion_recorder_t recorder;
-static bool button_down = false;
+static bool button_down = false;   // accepted (debounced) state
+static bool button_raw = false;    // latest reported edge
 static int64_t button_edge_us = 0;
 static uint32_t rec_blink_start_ms = 0;
 static bool rec_blink_restart = false;
@@ -57,35 +58,51 @@ static float led_level = -1.0f;
 static void apply_cv(uint8_t index, float value);
 static void apply_cc(uint8_t control, uint8_t value);
 
-// MODE press: the recorder. Leaving PLAYBACK re-applies the live values.
-static void on_recorder_press(void) {
+// MODE edges: the recorder (press, and release for the overdub hold).
+// Leaving PLAYBACK re-applies the live values.
+static void on_recorder_edge(bool pressed) {
     float live_cv[BM_REC_CV_COUNT];
     uint8_t live_cc[BM_REC_CC_COUNT];
     REC_LOCK();
     bool was_playback = recorder.state == BM_REC_PLAYBACK;
-    bm_rec_press(&recorder);
+    if (pressed) {
+        bm_rec_press(&recorder);
+    } else {
+        bm_rec_release(&recorder);
+    }
+    bool left_playback = was_playback && recorder.state != BM_REC_PLAYBACK;
     for (int i = 0; i < BM_REC_CV_COUNT; i++) live_cv[i] = recorder.live_cv[i];
     for (int i = 0; i < BM_REC_CC_COUNT; i++) live_cc[i] = recorder.live_cc[i];
     REC_UNLOCK();
     rec_blink_restart = true;
 
-    if (!was_playback) return;
+    if (!left_playback) return;
     for (int i = 0; i < BM_REC_CV_COUNT; i++) apply_cv(i, live_cv[i]);
     for (int i = 0; i < BM_REC_CC_COUNT; i++) {
         if (live_cc[i] != BM_REC_CC_UNSET) apply_cc(BM_REC_FIRST_CC + i, live_cc[i]);
     }
 }
 
-// Every button edge (task context). Edges within 30 ms of the last accepted one
-// are contact bounce. A press runs the recorder.
-static void on_button_event(bool pressed) {
-    int64_t now = esp_timer_get_time();
-    if (pressed == button_down || now - button_edge_us < BUTTON_DEBOUNCE_US) {
-        return;
+// Accepts the latest reported button level once 30 ms have passed since the
+// last accepted edge; earlier edges are contact bounce. A level that changed
+// inside that window is settled later from bm_app_fxrack_update, so a quick
+// release can't leave the recorder in an overdub hold.
+static void settle_button(int64_t now) {
+    REC_LOCK();
+    bool change = button_raw != button_down && now - button_edge_us >= BUTTON_DEBOUNCE_US;
+    bool pressed = button_raw;
+    if (change) {
+        button_down = pressed;
+        button_edge_us = now;
     }
-    button_down = pressed;
-    button_edge_us = now;
-    if (pressed) on_recorder_press();
+    REC_UNLOCK();
+    if (change) on_recorder_edge(pressed);
+}
+
+// Every button edge (task context). Both accepted edges go to the recorder.
+static void on_button_event(bool pressed) {
+    button_raw = pressed;
+    settle_button(esp_timer_get_time());
 }
 
 static void apply_cc(uint8_t control, uint8_t value) {
@@ -166,15 +183,17 @@ void bm_app_fxrack_on_midi_realtime(uint8_t message) {
     }
 }
 
-// LED from one task: RECORDING blinks, PLAYBACK solid, LIVE off.
+// LED from one task: RECORDING and overdub blink, PLAYBACK solid, LIVE off.
 void bm_app_fxrack_update(uint32_t now_ms) {
+    settle_button(esp_timer_get_time());
     bm_rec_state_t state = recorder.state;
+    bool overdubbing = bm_rec_overdubbing(&recorder);
     if (rec_blink_restart) {
         rec_blink_restart = false;
         rec_blink_start_ms = now_ms;
     }
     float level;
-    if (state == BM_REC_RECORDING) {
+    if (state == BM_REC_RECORDING || (state == BM_REC_PLAYBACK && overdubbing)) {
         level = ((now_ms - rec_blink_start_ms) / REC_BLINK_MS) % 2 == 0 ? 1.0f : 0.0f;
     } else if (state == BM_REC_PLAYBACK) {
         level = 1.0f;
@@ -228,6 +247,7 @@ static void init(bm_app_host_t host) {
     sample_rate = host.sample_rate;
     bm_rec_init(&recorder);
     button_down = false;
+    button_raw = false;
     button_edge_us = 0;
     led_level = -1.0f;
     bm_app_fxrack_update(0);
