@@ -115,7 +115,7 @@ strips). Every placed footprint is in `hardware/USBAUDIOMAX.pretty`.
 The PCM3168A symbol is drawn by `tools/build_schematic.py` from the datasheet pin table (KiCad ships
 none): unit A analog, unit B interface/control/supplies, pin 65 = PowerPAD.
 
-## 4. TDM link and firmware notes (not done)
+## 4. TDM link and firmware notes (48 kHz firmware 1.0.0, `firmware/README.md`; 96 kHz not done)
 
 | Rate | Codec | Lines |
 |---|---|---|
