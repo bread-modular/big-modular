@@ -2,24 +2,27 @@
 
 modules/8bit moved from the ATtiny1616 to an **STM32G071C8T6**: its two 12-bit DAC channels
 drive two outputs and the passive low-pass is gone (knob 3 is a plain knob). 6HP. (The S1
-gate output was removed in S2.)
+gate output was removed in S2. S3 adds a 3.0 V reference rail for the DACs, the ADC and the knobs.)
 
 | Panel (top to bottom) | Circuit |
 |---|---|
-| **MIDI** in (TS) / **CV** in | 8bit MIDI V2 NPN front end, JP1 on the back (shipped open): `P` = protected (USART1 RX inverted in firmware), `D` = direct. CV: -5.9..+6.0 V -> 0..3.3 V (Zin 138k), BAT54SW clamp, MCP6001 follower into PA0; unpatched = 0 V |
-| **P1**, **P2** / **MODE**, LED, **P3** | 50k linear RV09 dividers into PA1 / PA6 / PA7. MODE: 8bit 6 x 6 x 7 mm THT switch (PB4) with the 8bit printed cap; 3 mm LED beside it on the same row (PB5, PWM) |
-| **OUT 1**, **OUT 2** | DAC1_OUT1 / DAC1_OUT2 -> 1k/4.7n step smoothing (34 kHz) -> TL074 x3.4 around a 2.33 V offset -> ±4.9 V, DC coupled (audio, CV or LFO), 1k 0.5 W |
+| **MIDI** in (TS) / **CV** in | 8bit MIDI V2 NPN front end, JP1 on the back (shipped open): `P` = protected (USART1 RX inverted in firmware), `D` = direct. CV: -5.9..+6.0 V -> 0..3.0 V (Zin 134k), BAT54SW clamp, MCP6001 follower into PA0; unpatched = 0 V |
+| **P1**, **P2** / **MODE**, LED, **P3** | 50k linear RV09 dividers (on the +3V0 reference) into PA1 / PA6 / PA7. MODE: 8bit 6 x 6 x 7 mm THT switch (PB4) with the 8bit printed cap; 3 mm LED beside it on the same row (PB5, PWM) |
+| **OUT 1**, **OUT 2** | DAC1_OUT1 / DAC1_OUT2 -> 1k/4.7n step smoothing (34 kHz) -> TL074 x3.7 around a 2.06 V offset -> ±4.8 V, DC coupled (audio, CV or LFO), 1k 0.5 W |
 
 Power: Eurorack 10-pin (16-pin IDC fits) on B, upright at the right edge above OUT 2, ±12 V through series
-Schottkys, +3V3 from an HT7533-1. SWD on a 1x5 header on B (1 3V3 sense, 2 SWDIO, 3 SWCLK,
-4 GND, 5 NRST).
+Schottkys, +3V3 from an HT7533-1 for the MCU only. **+3V0** (S3): an LM4040 3.0 V shunt reference from
++12V_F for VREF+, the knobs, the output offset, the CV input and the MIDI pull-ups, so the MCU's supply
+current no longer reaches the DAC reference (the first board buzzed with the knob ADC scan). SWD on a 1x5
+header on B (1 3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST).
 
-**Status: S2 schematic (ERC 0) + P3 placement + R2 2-layer hand routing (DRC 0, unconnected 0,
-parity 0) + JLCPCB export in `jlcpcb/` (not supplier-accepted).** No firmware. See `docs/research.md` for decisions and open items.
+**Status: S3 schematic (ERC 0) + P3 placement + R3 2-layer hand routing (DRC 0, unconnected 0,
+parity 0) + JLCPCB export in `jlcpcb/` (48 parts / 25 rows), 2026-11-19; not supplier-accepted, not built.
+The first board (S2 / R2) is built and runs.** Firmware in `firmware/` (`clapsnare` drum voice, `osc3` test mixer, `humtest`); the same builds run on both boards. See `docs/research.md` for decisions and open items.
 
 | Path | Contents |
 |---|---|
-| `hardware/` | KiCad project `12bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 2 layers, routed R2), pinned symbols/footprints/models |
+| `hardware/` | KiCad project `12bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 2 layers, routed R3), pinned symbols/footprints/models |
 | `panels/front-pcb/12bit-panel.kicad_{pro,pcb}` | 6HP FR4 front panel: NPTH only, silkscreen labels |
 | `docs/research.md` | Brief, decisions, circuit, placement, open items |
 | `docs/geometry.json` | Placement contract (panel frame) |

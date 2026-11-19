@@ -1,4 +1,4 @@
-# 12bit research and circuit intent (S2 schematic, P3 placement, R2 routing)
+# 12bit research and circuit intent (S3 schematic, P3 placement, R3 routing)
 
 modules/8bit (an ATtiny1616 DAC voice) moved to an STM32G071C8T6, whose two 12-bit DAC
 channels give two outputs, on a 6HP module. Brief (user, 2026-11-06):
@@ -41,47 +41,52 @@ B5819W Schottkys), the 0.5 W 1206 output resistors and a TL07x output stage on �
 | T1 | **STM32G071C8T6** (LQFP-48, C529341, Extended, Economy-eligible, 4969 in stock 2026-11-06) on **+3V3** | User choice. Two 12-bit DACs (PA4/PA5), 12-bit ADC, 64 MHz M0+. LQFP-48 is hand-reworkable |
 | T2 | Schematic symbol = stock KiCad `STM32G081CBTx`, renamed `STM32G071C8Tx` (Value/Datasheet/Description edited, recorded in `docs/schematic-symbols.json`) | KiCad 10 ships no STM32G071CxT symbol. The G081 is the G071 die plus AES with the same STM32G0x1 LQFP-48 pinout. **Review item:** check the pin table against ST DS12232 before export |
 | T3 | Pin map: PA4 DAC1_OUT1 = OUT 1, PA5 DAC1_OUT2 = OUT 2; ADC PA0 = CV, PA1 = P1, PA6 = P2, PA7 = P3; **PB7 USART1_RX** = MIDI; PB4 = MODE (internal pull-up); PB5 = LED (TIM3_CH2 PWM); PA13/PA14 SWD; PF2 NRST. Everything else is a no-connect | PA10 (the other USART1_RX) carries the UCPD1 dead-battery pull-down (DBCC2) at reset, which would fight the MIDI pull-up. PB5 PWM sets the LED brightness |
-| T4 | MIDI = 8bit front end at 3.3 V (R1 100k / R3 22k pull-ups to +3V3). JP1 1-2 = protected (Q1 inverts: firmware sets USART1 `CR2.RXINV`), 2-3 = direct | As 8bit/16bit. **Review item:** confirm PB7 is 5 V tolerant (FT) in DS12232 before using direct mode with a 5 V sender |
-| T5 | CV in = 8bit S4 topology with the modules/16bit D5 values: R4 100k, R5 56k to +3V3, R6 120k to GND, D5 BAT54SW, C5 1n, **U2 MCP6001** follower on +3V3 -> PA0 | ±5 V CV with headroom: -5.9..+6.0 V -> 0..3.3 V, 0 V = 1.63 V, Zin 138k. U2 on +3V3 keeps PA0 inside the rail |
-| T6 | **P1/P2/P3 = 50k linear RV09 dividers** (+3V3..GND) into PA1/PA6/PA7, 10n at each wiper | User: no low-pass, knob 3 is an MCU knob. 50k is the user's ADC pot (stock: 50k / 500k / 1M) |
-| T7 | **VREF+ = +3V3 through FB1** (600 R ferrite, 0603) with 1u + 100n at pin 5. No VREFBUF | One reference for the DACs, the ADC, the knobs and the output offset (VOFF is a +3V3 divider), so the zero and the knob range track the LDO. FB1's ~0.45 R DCR drops < 0.5 mV at the DAC reference current. VREFBUF (2.0/2.5 V) would need the knobs fed from VREF+ and firmware set-up before anything works |
-| T8 | Outputs: TL074 on ±12 V. **U4A/U4B** non-inverting x3.4 (Rf 24k / Rg 10k) with -2.4 x VOFF; **VOFF 2.33 V** from R14 10k / R15 24k + C17 10u, buffered by **U4C**. 1k + 4.7n (34 kHz) in front of each + input. 1k 0.5 W 1206 (ROHM ESR18, as 8bit R12) to each jack. DC coupled | DAC with output buffer on (firmware default for driving a load) swings 0.2..3.1 V -> -4.9..+4.9 V; buffer off 0..3.3 V -> -5.6..+5.6 V (still inside the TL074 swing). DAC mid-scale 1.64 V -> 0 V (offset error ~20 mV). The 34 kHz RC only smooths the DAC steps; it is not a tone filter (the 8bit knob LPF is gone, as asked). DC coupling keeps every option open: stereo, two voices, audio + CV/LFO/envelope |
+| T4 | MIDI = 8bit front end at 3 V (R1 100k / R3 22k pull-ups to +3V3; S3: to +3V0, PB7 idles at 3.0 V). JP1 1-2 = protected (Q1 inverts: firmware sets USART1 `CR2.RXINV`), 2-3 = direct | As 8bit/16bit. **Review item:** confirm PB7 is 5 V tolerant (FT) in DS12232 before using direct mode with a 5 V sender |
+| T5 | CV in = 8bit S4 topology: R4 100k, R5 to the reference rail, R6 to GND, D5 BAT54SW, C5 1n, **U2 MCP6001** follower -> PA0. S2: R5 56k / R6 120k on +3V3. **S3: R5 51k / R6 100k, U2 / D5 on +3V0** | ±5 V CV with headroom: -5.9..+6.0 V -> 0..VREF+ (S2 0 V = code 2021, 342.9 codes / V; S3 2028, 344.7). U2 on the reference rail keeps PA0 inside 0..VREF+ |
+| T6 | **P1/P2/P3 = 50k linear RV09 dividers** (reference rail..GND: +3V3 in S2, +3V0 in S3) into PA1/PA6/PA7, 10n at each wiper | User: no low-pass, knob 3 is an MCU knob. 50k is the user's ADC pot (stock: 50k / 500k / 1M) |
+| T7 | S2 (superseded by T16): **VREF+ = +3V3 through FB1** (600 R ferrite, 0603) with 1u + 100n at pin 5. No VREFBUF | One reference for the DACs, the ADC, the knobs and the output offset (VOFF is a +3V3 divider), so the zero and the knob range track the LDO. FB1's ~0.45 R DCR drops < 0.5 mV at the DAC reference current. VREFBUF (2.0/2.5 V) would need the knobs fed from VREF+ and firmware set-up before anything works |
+| T8 | Outputs (S2 values; S3: x3.7 = Rf 27k, VOFF 2.06 V = R15 22k from +3V0, T16): TL074 on ±12 V. **U4A/U4B** non-inverting x3.4 (Rf 24k / Rg 10k) with -2.4 x VOFF; **VOFF 2.33 V** from R14 10k / R15 24k + C17 10u, buffered by **U4C**. 1k + 4.7n (34 kHz) in front of each + input. 1k 0.5 W 1206 (ROHM ESR18, as 8bit R12) to each jack. DC coupled | DAC with output buffer on (firmware default for driving a load) swings 0.2..3.1 V -> -4.9..+4.9 V; buffer off 0..3.3 V -> -5.6..+5.6 V (still inside the TL074 swing). DAC mid-scale 1.64 V -> 0 V (offset error ~20 mV). The 34 kHz RC only smooths the DAC steps; it is not a tone filter (the 8bit knob LPF is gone, as asked). DC coupling keeps every option open: stereo, two voices, audio + CV/LFO/envelope |
 | T9 | **No gate output** (S2). U4D is a grounded follower (+ to GND, output to -); PB1 is a no-connect | User removed the S1 gate (PB1 -> U4D x1.5 -> J3). Grounding the spare section keeps it from oscillating or rail-sticking |
-| T10 | Power: ±12 V through B5819W series Schottkys; **HT7533-1** (C14289, Basic) from +12V_F -> +3V3 | As modules/hats. Load ~20 mA on +3V3 (MCU ~8 mA, DAC, LED, MCP6001, knobs): ~0.17 W in the SOT-89 |
+| T10 | Power: ±12 V through B5819W series Schottkys; **HT7533-1** (C14289, Basic) from +12V_F -> +3V3 | As modules/hats. S2: ~20 mA on +3V3 (MCU ~8 mA, DAC, LED, MCP6001, knobs): ~0.17 W in the SOT-89. S3: the MCU only, ~15 mA |
 | T11 | No crystal: HSI16 | ±1 % is inside the 31.25 kbaud UART tolerance; audio timing from a timer on HSI is fine for a synth voice. PC14/PC15/PF0/PF1 stay open, so a crystal could not be added later without a re-layout |
 | T12 | Programming: **J6 1x5 2.54 mm SWD header** on B: 1 +3V3 (sense), 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST; C14 100n on NRST | Pins 1-4 as modules/usb-audio J8; NRST added for ST-Link "connect under reset". Program with the module on Eurorack power; don't power it from the probe |
 | T13 | 6HP, two columns X7.95 / X22.05 (§4) | modules/hats grid, moved 0.2 mm inward so the RV09 courtyards meet the 1 mm edge rule |
 | T15 | P3 rows: P1/P2 Y52.2, MODE + LED + P3 Y79.2 (P2: Y45 / Y69), OUT 1/2 Y110.4; power header upright at the right edge (rot 180 on B, pin 1 bottom) between P3 and OUT 2 | User. The MODE switch turns 90 deg (square body; courtyard 7.6 mm wide) and the LED turns 90 deg (pads along Y) so switch (X6.5), LED (X12.85) and P3 (X22.05) fit one row: courtyard gaps 0.33 / 0.53 mm. P3 (user): row pitch 27 mm and the pot block centred on the panel between the jack centres (Y21 / Y110.4, mid Y65.7). The 16-pin IDC envelope (Y77.91..103.31) now covers the RV3 lugs and pins 2/3 (a 10-pin socket still covers pins 2/3); the socket sits 2.5 mm above B, so those leads are trimmed to <= 2 mm |
 | T14 | **R1 routing** (user, 2026-11-06), manual divide and conquer, four batches; JLC export | Superseded the P1-P3 "no routing". See `Code.md` R1 for the group layout. DAC1/DAC2 leave the mirrored LQFP in the opposite order to U4 pins 3/5, so DAC2 takes one F hop; no schematic change |
+| T16 | **S3: +3V0 reference rail** (user, 2026-11-19, after the output buzz of the first board, §5): **U5 LM4040B30FTA** 3.000 V ±0.2 % shunt (C460604, Extended, 13,618 in stock 2026-11-19) fed by **R18 2.2k** from +12V_F (4.0 mA). On +3V0: VREF+ (through FB1), the knobs, R14 (VOFF), R5 / U2 / C6 / D5 (CV) and the MIDI pull-ups, <= 1.6 mA. +3V3 (U1) only feeds the MCU and J6.1. Rf 27k (x3.7), R15 22k, R5 51k, R6 100k keep the S2 levels and ADC codes | The buzz was the MCU's own load steps on the rail that was also the DAC reference. A shunt from +12V_F has no path from +3V3 at all and rejects +12V_F ripple by R18 / Zr (2200 / 0.4 R, ~75 dB); Zr is as low as FB1's DCR, so the DAC / ADC reference currents drop no more than before. LM4040: stable with any capacitive load (C10 / C11 stay), 60 uA..15 mA. Not chosen: an RC on VREF+ (the DAC reference current is code-dependent: R x 0.3 mA modulates the reference, and 10 uF is 16 R at 1 kHz), REF3030 from +3V3 (its supply is the noisy rail, 0.2 V headroom), the internal VREFBUF (2.5 V, ~1.25 R output, smaller swing), a TL431 (unstable with 1 uF). VREF+ <= VDDA holds (3.006 V vs 3.2 V). **Datasheet values, not measured.** Remaining path: the DAC output buffers on VDD/VDDA (PSRR typ -80 dB, worst -28 dB): humtest step 7 |
+| T17 | **R3** (2026-11-19): R2 + four hand batches (`Code.md`): U1 / C3 / C4 moved to B right of the MCU with a +12V_F tap on the F trunk; U5 / R18 where U1 was; the old +3V3 tree (U1 site - R5/D5/R1/R3/C6 - RV2.3 - FB1 / F column - RV3.3 - R14, RV1.3) is +3V0 unchanged; J6.1 on its own 0.25 mm +3V3 sense line (two vias) | Keeps every long R2 run: only the MCU's supply pins had to leave the tree. MIDI pull-ups and U2 stay on it (0.3 mA, harmless on a 0.4 R reference) rather than re-routing them |
 | T15 | **R2: 2 layers** (user, 2026-11-07: the 4-layer price was the cost driver; every 110 mm carrier misses JLCPCB's 102 mm special price anyway) | R1 tracks were all on F/B, so their copper stays; the In1 GND / In2 +3V3 planes are gone. GND: F and B pours tied by the R1 GND vias. +3V3: tracks (0.4 mm) from U1 over F to R5/D5/R1/R3/C6, B to RV2.3, an F column RV2.3-FB1-C13-RV3.3, MCU VDD over F/B to RV2.3, RV1.3 on F, J6.1 and R14 over B/F. Slightly less quiet than 4 layers (as modules/8bit); bench item: +3V3 ripple at VREF+ and the outputs |
 
 ## 3. Circuit (`hardware/12bit.kicad_sch`, ERC 0)
 
 ```
-POWER  J5 +12V -> D2 B5819W -> +12V_F (U4 V+, C1 10u, U1 HT7533-1 via C3 1u) -> +3V3 (C4 10u)
+POWER  J5 +12V -> D2 B5819W -> +12V_F (U4 V+, C1 10u, U1 HT7533-1 via C3 1u) -> +3V3 (C4 10u): MCU only
        J5 -12V -> D3 B5819W -> -12V_F (U4 V-, C2 10u)
-MIDI   J1 T -> R1 100k to +3V3; R2 10k -> Q1 MMBT3904 (D4 1N4148W clamp) -> RX_Q (R3 22k to +3V3)
+REF    +12V_F -> R18 2.2k -> +3V0 (U5 LM4040B30 3.0 V shunt to GND)                      (S3)
+MIDI   J1 T -> R1 100k to +3V0; R2 10k -> Q1 MMBT3904 (D4 1N4148W clamp) -> RX_Q (R3 22k to +3V0)
        JP1: 1 RX_Q / 2 MIDI_RX (PB7) / 3 MIDI_IN
-CV     J2 T (TN = GND) -> R4 100k -> CV_BUF (R5 56k +3V3, R6 120k GND, D5 BAT54SW, C5 1n)
-       -> U2 MCP6001 follower -> CV_ADC (PA0)
-KNOBS  RV1/RV2/RV3 50k +3V3 dividers -> POT1 (PA1) / POT2 (PA6) / POT3 (PA7), C7/C8/C9 10n
-MCU    U3 STM32G071C8T6: VDD + VBAT = +3V3 (C12 100n, C13 4.7u); VREF+ = VREFP (FB1 from +3V3,
-       C10 1u, C11 100n); NRST (C14 100n, J6 pin 5); SWD J6
-OUT n  DACn (PA4/PA5) -> R8/R9 1k -> DACn_F (C15/C16 4.7n) -> U4A/U4B + ; Rf R10/R12 24k, Rg R11/R13 10k
+CV     J2 T (TN = GND) -> R4 100k -> CV_BUF (R5 51k +3V0, R6 100k GND, D5 BAT54SW to +3V0, C5 1n)
+       -> U2 MCP6001 follower (on +3V0, C6) -> CV_ADC (PA0)
+KNOBS  RV1/RV2/RV3 50k +3V0 dividers -> POT1 (PA1) / POT2 (PA6) / POT3 (PA7), C7/C8/C9 10n
+MCU    U3 STM32G071C8T6: VDD + VBAT = +3V3 (C12 100n, C13 4.7u); VREF+ = VREFP (FB1 from +3V0,
+       C10 1u, C11 100n); NRST (C14 100n, J6 pin 5); SWD J6 (pin 1 = +3V3)
+OUT n  DACn (PA4/PA5) -> R8/R9 1k -> DACn_F (C15/C16 4.7n) -> U4A/U4B + ; Rf R10/R12 27k, Rg R11/R13 10k
        to VOFF -> OUTn_AMP -> R16/R17 1k 0.5 W -> J3 / J4
-VOFF   +3V3 -> R14 10k -> VOFF_DIV (R15 24k, C17 10u) -> U4C follower -> VOFF (2.33 V)
+VOFF   +3V0 -> R14 10k -> VOFF_DIV (R15 22k, C17 10u) -> U4C follower -> VOFF (2.06 V)
 SPARE  U4D + = GND, - = output (U4D_OUT)
 MODE   SW1 PB4 to GND; PB5 -> R7 1k -> D1 3 mm red -> GND
 ```
 
-- Output transfer: `Vout = 3.4 x V(DAC) - 2.4 x 2.329 V`; 1.644 V -> 0 V, 0.2 V -> -4.91 V,
-  3.1 V -> +4.95 V (0 V -> -5.59 V, 3.3 V -> +5.63 V unbuffered). VOFF and the DAC reference
-  both come from +3V3, so LDO tolerance moves the zero by < 20 mV.
+- Output transfer (S3): `Vout = 3.7 x V(DAC) - 2.7 x 2.0625 V`; 1.5 V (mid-scale) -> -0.02 V,
+  0.2 V -> -4.83 V, 2.8 V -> +4.79 V (0 V -> -5.57 V, 3.0 V -> +5.53 V unbuffered). VOFF and the DAC
+  reference both come from +3V0. (S2, the first board: `3.4 x V(DAC) - 2.4 x 2.329 V`, ±4.9 V, both
+  from +3V3.)
 - Mis-patch: a ±12 V source on an output puts at most ~17 V / 0.29 W across its 1k
   (0.5 W rated). The TL074 output is short-circuit limited.
-- PWR_FLAGs: GND, +12V, -12V at J5; +12V_F, -12V_F behind D2/D3. No others.
-- 58 components / 36 named nets; 46 JLC-assembled SMD parts on B (JP1 copper only), all R/C
-  JLCPCB Basic except the two 0.5 W 1206 1k (ESR18, Extended, as 8bit).
+- PWR_FLAGs: GND, +12V, -12V at J5; +12V_F, -12V_F behind D2/D3; +3V0 at U5 (S3). No others.
+- S3: 60 components / 37 named nets; 48 JLC-assembled SMD parts on B (JP1 copper only), all R/C
+  JLCPCB Basic except the two 0.5 W 1206 1k (ESR18, Extended, as 8bit). U5 LM4040B30FTA is one more
+  Extended part type. (S2: 58 / 36 / 46.)
 
 ## 4. Placement P3 (`docs/geometry.json`, renders `docs/fit/`)
 
@@ -121,9 +126,23 @@ violations, parity 0, 130 unconnected (nothing routed); panel DRC 0/0.
   mode. Still open: DAC buffered range and VREF+ current (T7/T8).
 - **Routing**: done (R1 4-layer, R2 2-layer for cost, user 2026-11-07). Bench items: +3V3 ripple at the DAC reference, output offset
   (VOFF) and DAC step smoothing, MIDI in both JP1 positions.
-- **Firmware**: none yet. Needs a toolchain under `opt/` (no STM32 tools exist in the repo)
-  and ports of the 8bit apps to two DAC channels and three knobs.
-- **Sourcing**: lookups recorded in `docs/sourcing-candidates.json`; MCU and TL074 rechecked at
-  export (`jlcpcb/README.md`). FB1 C1002 still unresolved by the exact lookup.
-  The MCU stock (4969) is the reason for the change: watch it.
+- **Firmware**: `firmware/` (`opt/stm32g0-tools`, 2026-11-18): `osc3` test mixer and the `clapsnare` drum voice (CV in on TONE);
+  ports of the 8bit apps to two DAC channels and three knobs still open.
+- **Output buzz from the ADC (first board, 2026-11-18)**: with the DACs at mid-scale, a software knob scan every
+  millisecond (208 us of conversions) was a high-pitched hum at the outputs; about half as loud at 16 MHz, gone with
+  the scan stopped (`firmware/humtest`, heard by the user, not measured). The DAC reference and VOFF are the +3V3 rail
+  (T7), so a load step at an audio rate reaches the outputs; which path carries it (LDO load regulation, FB1, VOFF
+  divider) was not measured. Firmware fix in clapsnare: one ADC scan per 48 kHz sample, started by TIM6: almost gone,
+  a faint rest (user). 2026-11-19: the scan only runs while the drum sounds or a take is recorded (note-on starts it),
+  so the ADC is idle between hits as in humtest step 3; user 2026-11-19: "pretty good now". **Hardware fix in S3 / R3
+  (T16, T17): the reference is an LM4040 on its own +3V0 rail.** `humtest` step 7 (step 1
+  with the DAC output buffers off) on the first board, user 2026-11-19: **hum still there, a bit duller**, so it does
+  not come through the DAC buffers' supply (which S3 leaves as it is) but rides on the +3V3 that VREF+ and VOFF hang
+  on, the path S3 moves to +3V0. Heard, not measured; S3 is not built, so the fix itself is still not proven.
+- **Export**: S3 / R3 exported to `jlcpcb/` on 2026-11-19 (48 parts / 25 rows, manifest equal; whole BOM
+  live-checked, `research/jlc-audit-s3/`). Open: JLCPCB BOM match / placement preview (U5 orientation is new), DFM
+  preview, stock recheck at the order.
+- **Sourcing**: lookups recorded in `docs/sourcing-candidates.json` (all 25 codes re-checked at the S3 / R3 export,
+  2026-11-19, `jlcpcb/README.md`). FB1 C1002 still unresolved by the exact lookup (strict-live search: Basic).
+  The MCU stock is the reason for the change: watch it (4,969 on 2026-11-06, **965 on 2026-11-19**).
 - **Mechanics**: printed panel in `panels/front-cad/` (not test-printed), 3D fit not made; the MODE cap is the 8bit part.

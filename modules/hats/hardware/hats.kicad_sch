@@ -6,9 +6,9 @@
 	(paper "A2")
 	(title_block
 		(title "Big Modular - HATS")
-		(rev "S4")
+		(rev "S5")
 		(company "Big Modular")
-		(comment 1 "SCHEMATIC S4 - Bread Modular NOISE (blue) + HIHAT on one STM32G071, CUTOFF + TONE recordable, wired nets")
+		(comment 1 "SCHEMATIC S5 - Bread Modular NOISE (blue) + HIHAT on one STM32G071, CUTOFF + TONE recordable, +3V0 reference rail")
 		(comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json")
 	)
 	(lib_symbols
@@ -130,6 +130,145 @@
 				)
 			)
 			(symbol "+12V_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "HATS:+3V0"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "+3V0"
+				(at 0 3.556 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+3V0\""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "+3V0_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+3V0_1_1"
 				(pin power_in line
 					(at 0 0 90)
 					(length 0)
@@ -2611,6 +2750,190 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "HATS:LM4040DBZ-3"
+			(pin_names
+				(offset 0.0254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LM4040DBZ-3"
+				(at 0 -3.175 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4040-n.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+				)
+			)
+			(property "Description" "3.000V Precision Micropower Shunt Voltage Reference, SOT-23"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode device voltage reference shunt"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "LM4040DBZ-3_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 0 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy 0.635 0) (xy -1.27 1.27) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.2032)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.27) (xy 0.635 -1.27) (xy 0.635 1.27) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.2032)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LM4040DBZ-3_1_1"
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -1.27 0 0)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -7140,7 +7463,7 @@
 		)
 		(uuid "3f21ee17-6337-5742-80e0-3bf5ff8b57b5")
 	)
-	(text "BIG MODULAR HATS - S4 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, one STM32G071C8T6 (both Bread Modular firmwares + recorder), 3.3 V internal signals. Circuit intent: docs/research.md"
+	(text "BIG MODULAR HATS - S5 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, one STM32G071C8T6 (both Bread Modular firmwares + recorder), 3.3 V internal signals. Circuit intent: docs/research.md"
 		(exclude_from_sim no)
 		(at 20.32 15.24 0)
 		(effects
@@ -7195,7 +7518,7 @@
 		)
 		(uuid "928bf935-3d57-5bce-8c17-5bfbdfdf9e57")
 	)
-	(text "MCU U2 STM32G071C8T6 at 3.3 V, HSI16, no crystal (S4: replaces the two ATtiny1616).\nPA4 DAC1 white noise, PA5 DAC2 velocity; PA2 gate, PA3 open hat (note > 60);\nADC PA1 NOISE TONE, PA6 CUTOFF knob -> PB0 PWM -> U11 cutoff vactrol;\nPB4 REC button, PB5 REC LED (recorder lanes: CUTOFF, NOISE TONE).\nVREF+ = +3V3 through FB1. J11 SWD: 1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST."
+	(text "MCU U2 STM32G071C8T6 at 3.3 V, HSI16, no crystal (S4: replaces the two ATtiny1616).\nPA4 DAC1 white noise, PA5 DAC2 velocity; PA2 gate, PA3 open hat (note > 60);\nADC PA1 NOISE TONE, PA6 CUTOFF knob -> PB0 PWM -> U11 cutoff vactrol;\nPB4 REC button, PB5 REC LED (recorder lanes: CUTOFF, NOISE TONE).\nVREF+ = +3V0 (U12 reference) through FB1. J11 SWD: 1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST."
 		(exclude_from_sim no)
 		(at 20.32 274.32 0)
 		(effects
@@ -7249,6 +7572,17 @@
 			(justify left)
 		)
 		(uuid "c166092d-916a-59e8-a14f-7bde299efeb7")
+	)
+	(text "+3V0 REFERENCE (S5): +12V_F -> R52 -> U12 LM4040 3.0 V shunt.\nFeeds VREF+ (FB1) and the two ADC knobs (RV1 NOISE TONE, RV3 CUTOFF)."
+		(exclude_from_sim no)
+		(at 401.32 335.28 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d2a984b9-17c7-5f4e-9bb9-009dda10f103")
 	)
 	(text "MIDI IN (TS): 8bit / LOW NPN front end, pull-ups on +3V3; RX feeds both MCUs. JP1 shipped OPEN: 1-2 = protected (USART1 RXINV on PB7), 2-3 = direct."
 		(exclude_from_sim no)
@@ -7680,6 +8014,10 @@
 		(uuid "e174b341-4641-5ed3-8643-7ed032179fbf")
 	)
 	(no_connect
+		(at 426.72 358.14)
+		(uuid "e7445b7b-8703-5e46-a307-907cfaf35936")
+	)
+	(no_connect
 		(at 347.98 149.86)
 		(uuid "ebf3ccb8-9449-535c-ae88-efd83c3f4568")
 	)
@@ -7726,6 +8064,16 @@
 			(type default)
 		)
 		(uuid "03009ba8-2115-5c09-8612-b9004d64d91c")
+	)
+	(wire
+		(pts
+			(xy 411.48 353.06) (xy 411.48 350.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "033d9ce9-ebba-5886-8e24-42505fb15d8e")
 	)
 	(wire
 		(pts
@@ -8309,6 +8657,16 @@
 	)
 	(wire
 		(pts
+			(xy 411.48 363.22) (xy 419.1 363.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2b1253a3-c968-54d1-956c-901b745d4db5")
+	)
+	(wire
+		(pts
 			(xy 158.75 109.22) (xy 144.78 109.22)
 		)
 		(stroke
@@ -8406,6 +8764,16 @@
 			(type default)
 		)
 		(uuid "30c27258-b42b-52b2-a557-50ee61a6687f")
+	)
+	(wire
+		(pts
+			(xy 426.72 353.06) (xy 426.72 350.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "31dd0e07-91e7-5647-b8c4-96baeb06997a")
 	)
 	(wire
 		(pts
@@ -8936,6 +9304,16 @@
 			(type default)
 		)
 		(uuid "4cd0ad78-b59e-561b-a97e-d37f00865e03")
+	)
+	(wire
+		(pts
+			(xy 101.6 386.08) (xy 101.6 388.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ce553e9-5e73-535a-8dbc-0b4416094daf")
 	)
 	(wire
 		(pts
@@ -10269,6 +10647,16 @@
 	)
 	(wire
 		(pts
+			(xy 411.48 360.68) (xy 411.48 363.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9dc2975d-a58f-59a7-8d9e-8c0af16d66ff")
+	)
+	(wire
+		(pts
 			(xy 195.58 109.22) (xy 198.12 109.22)
 		)
 		(stroke
@@ -10519,6 +10907,16 @@
 	)
 	(wire
 		(pts
+			(xy 419.1 363.22) (xy 419.1 350.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a9ebe259-e8bd-5aff-8b9f-1ebabae7c1ff")
+	)
+	(wire
+		(pts
 			(xy 111.76 226.06) (xy 111.76 228.6)
 		)
 		(stroke
@@ -10556,6 +10954,16 @@
 			(type default)
 		)
 		(uuid "aaed9a52-f6d5-54f4-a498-cd00e811d6f1")
+	)
+	(wire
+		(pts
+			(xy 419.1 350.52) (xy 426.72 350.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab3e2bd1-b350-51d0-ad31-03049d849fcb")
 	)
 	(wire
 		(pts
@@ -11266,6 +11674,16 @@
 			(type default)
 		)
 		(uuid "d0bf0d5c-1fef-5460-84b0-c18d770a7813")
+	)
+	(wire
+		(pts
+			(xy 426.72 360.68) (xy 426.72 363.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d0c8205d-9cb4-5511-9b6d-adb0b72975b0")
 	)
 	(wire
 		(pts
@@ -14017,6 +14435,83 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:+12V")
+		(at 411.48 350.52 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "085595bf-2b4b-5de4-b17e-ef3c9fa59a89")
+		(property "Reference" "#PWRR52_1"
+			(at 411.48 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+12V_F"
+			(at 411.48 346.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 411.48 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 411.48 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 411.48 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bebd6afe-cb4a-509f-8be7-fc143f2c78ea")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#PWRR52_1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:GND")
 		(at 297.18 303.53 0)
 		(unit 1)
@@ -15796,6 +16291,83 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:+3V0")
+		(at 426.72 350.52 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "206a10c8-0eb7-532d-8017-d04c77c405c5")
+		(property "Reference" "#PWRU12_1"
+			(at 426.72 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V0"
+			(at 426.72 346.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 426.72 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 426.72 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 426.72 350.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2c864b12-5dfb-5ba8-9661-2740a649e259")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#PWRU12_1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:+3V3")
 		(at 114.3 127 0)
 		(unit 1)
@@ -17062,7 +17634,7 @@
 				)
 			)
 		)
-		(property "Note" "3.3 V LDO, 30 V max input, 100 mA. Load ~40 mA (STM32 ~10 mA, 4 x MCP6002, two vactrol LEDs, REC LED, 2 V_MID dividers): ~0.35 W at 11.6 V in"
+		(property "Note" "3.3 V LDO, 30 V max input, 100 mA. Load ~40 mA (STM32 ~10 mA, 4 x MCP6002, two vactrol LEDs, REC LED, 2 V_MID dividers): ~0.35 W at 11.6 V in. S5: the DAC/ADC reference and the two ADC knobs are on +3V0, not on this rail"
 			(at 111.76 353.06 0)
 			(hide yes)
 			(show_name no)
@@ -17403,7 +17975,7 @@
 		)
 	)
 	(symbol
-		(lib_id "HATS:+3V3")
+		(lib_id "HATS:+3V0")
 		(at 60.96 115.57 0)
 		(unit 1)
 		(body_style 1)
@@ -17424,7 +17996,7 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
+		(property "Value" "+3V0"
 			(at 60.96 111.76 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -21261,7 +21833,7 @@
 		)
 	)
 	(symbol
-		(lib_id "HATS:+3V3")
+		(lib_id "HATS:+3V0")
 		(at 162.56 133.35 180)
 		(unit 1)
 		(body_style 1)
@@ -21282,7 +21854,7 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
+		(property "Value" "+3V0"
 			(at 162.56 137.16 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22662,7 +23234,7 @@
 				)
 			)
 		)
-		(property "Note" "NOISE TONE (Bread Modular NOISE RV1; S4 on PA1 ADC): noise sample rate, recordable. RV09 9 mm vertical, linear (user stock). Hand-soldered"
+		(property "Note" "NOISE TONE (Bread Modular NOISE RV1; S4 on PA1 ADC): noise sample rate, recordable. CW = +3V0, the ADC reference (S5). RV09 9 mm vertical, linear (user stock). Hand-soldered"
 			(at 162.56 127 0)
 			(hide yes)
 			(show_name no)
@@ -26898,6 +27470,134 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:LM4040DBZ-3")
+		(at 426.72 356.87 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8dba6f49-211f-53fd-b7a2-cda2dcef1968")
+		(property "Reference" "U12"
+			(at 429.26 356.24 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "LM4040B30"
+			(at 429.26 358.14 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "HATS:SOT-23"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm4040-n.pdf"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "3.000V Precision Micropower Shunt Voltage Reference, SOT-23"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "3.000 V +/-0.2 % shunt reference (Diodes LM4040B30FTA: pin 1 cathode, 2 anode, 3 open), 60 uA..15 mA, Zr 0.4 R typ, stable with any capacitive load (as modules/12bit U5)"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C460604"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "LM4040B30FTA"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Diodes Incorporated"
+			(at 426.72 356.87 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "34c2736b-15d2-539f-815e-7e4de2037273")
+		)
+		(pin "2"
+			(uuid "e913cf54-d378-5431-b1ee-8ab76de76b85")
+		)
+		(pin "3"
+			(uuid "5cefdb63-59c3-544f-a5d4-7ad42f7e9bab")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "U12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:+3V3")
 		(at 340.36 347.98 0)
 		(unit 1)
@@ -29820,7 +30520,7 @@
 				)
 			)
 		)
-		(property "Note" "CUTOFF knob (S4: PA6 ADC, recordable; was the BM HIHAT RV1 rheostat). RV09 9 mm vertical, linear (user stock). Hand-soldered"
+		(property "Note" "CUTOFF knob (S4: PA6 ADC, recordable; was the BM HIHAT RV1 rheostat). CW = +3V0, the ADC reference (S5). RV09 9 mm vertical, linear (user stock). Hand-soldered"
 			(at 162.56 152.4 0)
 			(hide yes)
 			(show_name no)
@@ -31151,6 +31851,83 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:+3V0")
+		(at 101.6 388.62 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "bdfd3013-680c-56c6-a4fc-6bddb60f17ed")
+		(property "Reference" "#PWRFLG06_1"
+			(at 101.6 388.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3V0"
+			(at 101.6 392.43 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 388.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 388.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 101.6 388.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6cf30524-65e6-5bcd-b466-32613f529c94")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#PWRFLG06_1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:GND")
 		(at 505.46 194.31 0)
 		(unit 1)
@@ -31890,6 +32667,83 @@
 			(project "hats"
 				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
 					(reference "#PWRU9_4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "HATS:GND")
+		(at 426.72 363.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "c71ba5ad-7493-5a2d-af87-5cab30859832")
+		(property "Reference" "#PWRU12_2"
+			(at 426.72 363.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 426.72 367.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 426.72 363.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 426.72 363.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 426.72 363.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9f761234-5fc6-5e00-a111-e79775e504bd")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#PWRU12_2")
 					(unit 1)
 				)
 			)
@@ -33352,7 +34206,7 @@
 				)
 			)
 		)
-		(property "Note" "VREF+ filter from +3V3 (DCR ~0.45 R: <0.5 mV at the DAC reference current)"
+		(property "Note" "VREF+ filter from +3V0 (DCR ~0.45 R: <0.5 mV at the DAC reference current)"
 			(at 60.96 121.92 0)
 			(hide yes)
 			(show_name no)
@@ -36409,6 +37263,83 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:PWR_FLAG")
+		(at 101.6 386.08 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(in_pos_files no)
+		(dnp no)
+		(uuid "f2e43290-4591-5946-ad1a-1d4c3232acca")
+		(property "Reference" "#FLG06"
+			(at 101.6 381 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 101.6 383.54 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 386.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 386.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 101.6 386.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6d8a7241-b2bd-5dae-b3a5-e72a61a5d621")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "#FLG06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:GND")
 		(at 340.36 360.68 0)
 		(unit 1)
@@ -37286,6 +38217,131 @@
 		)
 	)
 	(symbol
+		(lib_id "HATS:R")
+		(at 411.48 356.87 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "faa1b8b5-aadb-5729-85bd-32cd4bad654e")
+		(property "Reference" "R52"
+			(at 413.38 356.24 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2.2k"
+			(at 413.38 358.14 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "HATS:R_0603_1608Metric"
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Note" "Reference feed: (11.6 - 3.0) V / 2.2k = 3.9 mA, 34 mW. +12V_F ripple is divided by R52 / Zr(U12) = 2200 / 0.4: about -75 dB"
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C4190"
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0603WAF2201T5E"
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "UNI-ROYAL"
+			(at 411.48 356.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1d3f7b09-3a7a-5528-a31d-15d4be76ed62")
+		)
+		(pin "2"
+			(uuid "021c358b-98ed-52fc-8a2d-be672d035608")
+		)
+		(instances
+			(project "hats"
+				(path "/db44f0a7-ae01-5b5c-b5a4-eb25d0263ee1"
+					(reference "R52")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "HATS:GND")
 		(at 233.68 360.68 0)
 		(unit 1)
@@ -37363,7 +38419,7 @@
 		)
 	)
 	(symbol
-		(lib_id "HATS:+3V3")
+		(lib_id "HATS:+3V0")
 		(at 162.56 158.75 180)
 		(unit 1)
 		(body_style 1)
@@ -37384,7 +38440,7 @@
 				)
 			)
 		)
-		(property "Value" "+3V3"
+		(property "Value" "+3V0"
 			(at 162.56 162.56 0)
 			(show_name no)
 			(do_not_autoplace no)

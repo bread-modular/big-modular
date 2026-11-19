@@ -1,13 +1,23 @@
 {
-  "note": "Live strict JLCPCB catalog lookups (opt/kicad-tools/jlcpcb/assembly.py lookup --strict-live), 2026-11-06. Stock and class are dated observations, not an order guarantee. C1002 (FB1) failed the exact lookup (\"missing/ambiguous/truncated\") and is recorded from a strict-live search result.",
+  "note": "Live strict JLCPCB catalog lookups (opt/kicad-tools/jlcpcb/assembly.py). All 25 codes of the S3 / R3 BOM were re-checked at the export on 2026-11-19 (audit --strict-live, research/jlc-audit-s3); earlier lookups 2026-11-06. Stock and class are dated observations, not an order guarantee. C1002 (FB1) fails the exact lookup (\"missing/ambiguous/truncated\") and is recorded from a strict-live search result. C23206 (56k), C25808 (120k), C23352 (24k) and C4184 are not in the S3 BOM (entries kept as dated).",
   "parts": {
+    "C1002": {
+      "mpn": "GZ1608D601TF",
+      "manufacturer": "Sunlord",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 1382208,
+      "source": "search \"ferrite bead 0603\" --basic-only --strict-live, 2026-11-19 (exact lookup still fails)"
+    },
     "C12594": {
       "mpn": "TL074CDR",
       "manufacturer": "Texas Instruments",
       "package": "SOIC-14",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 102851
+      "stock": 172280,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C14289": {
       "mpn": "HT7533-1",
@@ -15,7 +25,8 @@
       "package": "SOT-89-3",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 244692
+      "stock": 274688,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C14663": {
       "mpn": "CC0603KRX7R9BB104",
@@ -23,7 +34,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 35274269
+      "stock": 52945188,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C15850": {
       "mpn": "CL21A106KAYNNNE",
@@ -31,7 +43,8 @@
       "package": "0805",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 8281745
+      "stock": 8789809,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C1588": {
       "mpn": "CL10B102KB8NNNC",
@@ -39,7 +52,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 5435132
+      "stock": 5273514,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C19666": {
       "mpn": "CL10A475KO8NNNC",
@@ -47,7 +61,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3891204
+      "stock": 3306605,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C20526": {
       "mpn": "MMBT3904(RANGE:100-300)",
@@ -55,7 +70,8 @@
       "package": "SOT-23",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 2915365
+      "stock": 4227186,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C2074262": {
       "mpn": "ESR18EZPF1001",
@@ -63,7 +79,8 @@
       "package": "1206",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 99734
+      "stock": 99305,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C21190": {
       "mpn": "0603WAF1001T5E",
@@ -71,7 +88,26 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 27600131
+      "stock": 31241625,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
+    },
+    "C22967": {
+      "mpn": "0603WAF2702T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 492901,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
+    },
+    "C23196": {
+      "mpn": "0603WAF5102T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 2565318,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C23206": {
       "mpn": "0603WAF5602T5E",
@@ -81,13 +117,23 @@
       "economy_eligible": true,
       "stock": 752652
     },
+    "C23352": {
+      "mpn": "0603WAF2402T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 602274,
+      "source": "search \"24k 0603\" --basic-only --strict-live"
+    },
     "C25803": {
       "mpn": "0603WAF1003T5E",
       "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 16263772
+      "stock": 13719859,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C25804": {
       "mpn": "0603WAF1002T5E",
@@ -95,7 +141,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 43011333
+      "stock": 43936388,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C25808": {
       "mpn": "0603WAF1203T5E",
@@ -111,7 +158,8 @@
       "package": "0805",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3476836
+      "stock": 4065691,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C29429": {
       "mpn": "MCP6001T-E/OT",
@@ -119,7 +167,8 @@
       "package": "SOT-23-5",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 35872
+      "stock": 31686,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C31850": {
       "mpn": "0603WAF2202T5E",
@@ -127,7 +176,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 2714130
+      "stock": 2275547,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C4184": {
       "mpn": "0603WAF2002T5E",
@@ -137,13 +187,32 @@
       "economy_eligible": true,
       "stock": 5752892
     },
+    "C4190": {
+      "mpn": "0603WAF2201T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "classification": "Basic",
+      "economy_eligible": true,
+      "stock": 4310662,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
+    },
+    "C460604": {
+      "mpn": "LM4040B30FTA",
+      "manufacturer": "Diodes Incorporated",
+      "package": "SOT-23",
+      "classification": "Extended",
+      "economy_eligible": true,
+      "stock": 13618,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
+    },
     "C529341": {
       "mpn": "STM32G071C8T6",
       "manufacturer": "STMicroelectronics",
       "package": "LQFP-48(7x7)",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 4969
+      "stock": 965,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C53987": {
       "mpn": "0603B472K500NT",
@@ -151,7 +220,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 805858
+      "stock": 861208,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C57112": {
       "mpn": "0603B103K500NT",
@@ -159,7 +229,8 @@
       "package": "0603",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 5073346
+      "stock": 4882634,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C78260": {
       "mpn": "BAT54SWT1G",
@@ -167,7 +238,8 @@
       "package": "SOT-323",
       "classification": "Extended",
       "economy_eligible": true,
-      "stock": 45452
+      "stock": 158966,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C81598": {
       "mpn": "1N4148W",
@@ -175,7 +247,8 @@
       "package": "SOD-123",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 3586922
+      "stock": 2985881,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     },
     "C8598": {
       "mpn": "B5819W SL",
@@ -183,25 +256,8 @@
       "package": "SOD-123",
       "classification": "Basic",
       "economy_eligible": true,
-      "stock": 777900
-    },
-    "C1002": {
-      "mpn": "GZ1608D601TF",
-      "manufacturer": "Sunlord",
-      "package": "0603",
-      "classification": "Basic",
-      "economy_eligible": true,
-      "stock": 483695,
-      "source": "search \"ferrite bead 0603\" --basic-only --strict-live"
-    },
-    "C23352": {
-      "mpn": "0603WAF2402T5E",
-      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
-      "package": "0603",
-      "classification": "Basic",
-      "economy_eligible": true,
-      "stock": 602274,
-      "source": "search \"24k 0603\" --basic-only --strict-live"
+      "stock": 695442,
+      "source": "audit --strict-live at the S3 / R3 export, 2026-11-19"
     }
   }
 }

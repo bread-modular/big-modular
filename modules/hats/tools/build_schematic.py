@@ -1,4 +1,4 @@
-"""Generate the HATS S4 schematic (hardware/hats.kicad_sch) and its pinned symbols.
+"""Generate the HATS S5 schematic (hardware/hats.kicad_sch) and its pinned symbols.
 
 Run from modules/hats:
   python3 -B tools/build_schematic.py
@@ -11,7 +11,10 @@ Eurorack module, both on one STM32G071C8T6 (S4: DAC1 = noise, DAC2 = velocity, t
 knob read by the ADC and played on a second vactrol by PWM, REC button + LED for the shared
 recorder), all on Bread Modular's 3.3 V signal level, with the 8bit MIDI input, a level-mapped
 NOISE input normalled (TS5A23157, as modules/low) to the internal blue noise, a +/-12 V
-audio output and a protected 0..5 V hi-hat CV output with a panel LED.
+audio output and a protected 0..5 V hi-hat CV output with a panel LED. S5 (user, 2026-11-19,
+after the output buzz of the first modules/12bit board): VREF+ (through FB1) and the two ADC knobs
+run on +3V0, a 3.0 V LM4040 shunt reference fed from +12V_F, as modules/12bit S3; the op-amps,
+V_MID dividers, switch and MIDI pull-ups stay on the HT7533 +3V3 with the MCU.
 
 Placement (LAYOUT) is by hand. Signal wires are found by route_wires(): a small grid
 router (1.27 mm) that draws every signal net as axis-aligned wires, never touching a
@@ -81,6 +84,8 @@ SYMBOLS = {
     'Q_PNP_BEC': ('Transistor_BJT', 'Q_PNP_BEC'),
     '1N4148W': ('Diode', '1N4148W'),
     'GND': ('power', 'GND'), '+3V3': ('power', '+3V3'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
+    '+3V0': ('power', '+3V0'),
+    'LM4040DBZ-3': ('Reference_Voltage', 'LM4040DBZ-3'),
     'SolderJumper_3_Open': ('Jumper', 'SolderJumper_3_Open'),
     'D_Dual_Series_AKC': ('Device', 'D_Dual_Series_AKC'),
 }
@@ -101,7 +106,7 @@ FP = {
 NOT_ASSEMBLED = {'JP1'}
 
 # Supply nets are drawn with power symbols (net name = symbol value).
-RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+12V': '+12V', '-12V': '-12V',
+RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+3V0': '+3V0', '+12V': '+12V', '-12V': '-12V',
                '+12V_F': '+12V', '-12V_F': '-12V'}
 
 # Signal nets joined by name labels (a stub + label on every pin) instead of wires: the hi-hat
@@ -118,7 +123,9 @@ LABEL_NETS = {'VMID_H'}
 #  at reset. RX polarity is a USART setting (CR2.RXINV) for JP1 = protected.
 #  PB4 REC button (internal pull-up), PB5 REC LED (TIM3_CH2 PWM), as the modules/12bit MODE pair
 #  PA13 SWDIO / PA14 SWCLK (J11), PF2 NRST. VBAT tied to +3V3 (no battery). VREF+ from
-#  +3V3 through FB1 (DAC/ADC reference = VDDA rail, ratiometric with the knobs).
+#  +3V0 (U12 LM4040 3.0 V shunt reference) through FB1: the DAC/ADC reference, ratiometric with
+#  the two ADC knobs, and not the MCU supply (S5, as modules/12bit S3). DS12232: VREF+ must be
+#  2 V..VDDA; +3V0 max 3.006 V, +3V3 min 3.2 V.
 #  No crystal: HSI16 (+/-1 %) clocks the 31.25 kbaud MIDI UART and the sample timers.
 MCU_PINS = {'4': '+3V3', '5': 'VREFP', '6': '+3V3', '7': 'GND', '10': 'NRST',
             '12': 'NOISE_TONE', '13': 'MIDI_GATE', '14': 'MIDI_OPEN', '15': 'N_DAC', '16': 'H_DAC',
@@ -193,7 +200,9 @@ LAYOUT = {
     'J10': (9, 137, 0), 'D1': (21, 134, 180), 'D2': (21, 142, 0), 'C1': (28, 136.5, 0), 'C2': (32, 136.5, 0),
     'U1': (40, 135, 0), 'C3': (47, 136.5, 0), 'C4': (51, 136.5, 0), 'C5': (55, 136.5, 0),
     '#FLG01': (6, 148, 0), '#FLG02': (12, 148, 0), '#FLG03': (18, 148, 0), '#FLG04': (24, 148, 0),
-    '#FLG05': (30, 148, 0),
+    '#FLG05': (30, 148, 0), '#FLG06': (36, 148, 0),
+    # +3V0 reference (S5): R52 from +12V_F, U12 LM4040 shunt
+    'R52': (158, 136.5, 0), 'U12': (164, 136.5, 90),
     # Op-amp / switch supply units and their decoupling
     'U4.3': (70, 135, 0), 'C9': (74, 135.5, 0), 'U5.3': (84, 135, 0), 'C11': (88, 135.5, 0),
     'U6.3': (98, 135, 0), 'C16': (102, 135.5, 0), 'U8.3': (112, 135, 0), 'C19': (116, 135.5, 0),
@@ -203,7 +212,10 @@ LAYOUT = {
 
 # Hand-drawn polylines for nets the router should not choose itself (same format as
 # modules/low WIRES: 'REF/pin' pin ends and (x, y) grid points). Everything else is routed.
-WIRES = {}
+WIRES = {
+    # R52 feeds the reference from below: one +3V0 symbol, on the U12 cathode stub (as modules/12bit).
+    '+3V0': [['R52/2', (162, 143), (165, 143), (165, 138), (168, 138)]],
+}
 
 LABEL_AT = {}
 
@@ -227,7 +239,8 @@ def circuit():
     c.append(part('U1', 'HT75xx-1-SOT89', 'HT7533-1', 'SOT89',
                   {'1': 'GND', '2': '+12V_F', '3': '+3V3'},
                   Note='3.3 V LDO, 30 V max input, 100 mA. Load ~40 mA (STM32 ~10 mA, 4 x MCP6002, two '
-                       'vactrol LEDs, REC LED, 2 V_MID dividers): ~0.35 W at 11.6 V in'))
+                       'vactrol LEDs, REC LED, 2 V_MID dividers): ~0.35 W at 11.6 V in. S5: the DAC/ADC '
+                       'reference and the two ADC knobs are on +3V0, not on this rail'))
     c.append(part('C3', 'C', '1u', 'C0805',
                   {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='LDO input'))
     c.append(part('C4', 'C', '10u', 'C0805',
@@ -240,6 +253,17 @@ def circuit():
     c.append(part('#FLG03', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '-12V_F'}))
     c.append(part('#FLG04', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '-12V'}))
     c.append(part('#FLG05', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '+12V'}))
+    # ---- +3V0 reference rail (S5, as modules/12bit S3): LM4040 3.0 V shunt from +12V_F. It carries the
+    # DAC/ADC reference (through FB1) and the two ADC knobs: <= 1 mA (VREF+ <= ~0.8 mA with both DAC
+    # channels and the ADC, knobs 2 x 60 uA), so the shunt keeps >= 2.8 mA at +12 V -5 %. Nothing of the
+    # MCU or op-amp supply current flows in it.
+    c.append(part('R52', 'R', '2.2k', 'R0603', {'1': '+12V_F', '2': '+3V0'},
+                  Note='Reference feed: (11.6 - 3.0) V / 2.2k = 3.9 mA, 34 mW. +12V_F ripple is divided by '
+                       'R52 / Zr(U12) = 2200 / 0.4: about -75 dB'))
+    c.append(part('U12', 'LM4040DBZ-3', 'LM4040B30', 'SOT23', {'1': '+3V0', '2': 'GND', '3': None},
+                  Note='3.000 V +/-0.2 % shunt reference (Diodes LM4040B30FTA: pin 1 cathode, 2 anode, 3 open), '
+                       '60 uA..15 mA, Zr 0.4 R typ, stable with any capacitive load (as modules/12bit U5)'))
+    c.append(part('#FLG06', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '+3V0'}))
 
     # ---- MIDI input (TS modular MIDI): the 8bit / LOW NPN front end with its JP1 bypass; RX feeds both MCUs
     c.append(part('J1', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
@@ -273,8 +297,8 @@ def circuit():
                   Note='U2 VDD/VDDA decoupling (pin 6)'))
     c.append(part('C7', 'C', '4.7u', 'C0603', {'1': '+3V3', '2': 'GND'}, Voltage='16V',
                   Note='U2 VDD bulk (ST: 4.7 uF + 100 nF per VDD pin)'))
-    c.append(part('FB1', 'FerriteBead', '600R@100MHz', 'L0603', {'1': '+3V3', '2': 'VREFP'},
-                  Note='VREF+ filter from +3V3 (DCR ~0.45 R: <0.5 mV at the DAC reference current)'))
+    c.append(part('FB1', 'FerriteBead', '600R@100MHz', 'L0603', {'1': '+3V0', '2': 'VREFP'},
+                  Note='VREF+ filter from +3V0 (DCR ~0.45 R: <0.5 mV at the DAC reference current)'))
     c.append(part('C24', 'C', '1u', 'C0805', {'1': 'VREFP', '2': 'GND'}, Voltage='50V',
                   Note='VREF+ decoupling (ST: 1 uF + 100 nF)'))
     c.append(part('C25', 'C', '100n', 'C0603', {'1': 'VREFP', '2': 'GND'}, Voltage='50V',
@@ -299,9 +323,9 @@ def circuit():
     c.append(part('R6', 'R', '1k', 'R0603', {'1': 'N_DAC', '2': 'WHITE'},
                   Note='DAC series R (Bread Modular NOISE R2)'))
     c.append(part('RV1', 'R_Potentiometer', '50k', 'RV09',
-                  {'1': 'GND', '2': 'NOISE_TONE', '3': '+3V3'},
+                  {'1': 'GND', '2': 'NOISE_TONE', '3': '+3V0'},
                   Note='NOISE TONE (Bread Modular NOISE RV1; S4 on PA1 ADC): noise sample rate, recordable. '
-                       'RV09 9 mm vertical, linear (user stock). Hand-soldered'))
+                       'CW = +3V0, the ADC reference (S5). RV09 9 mm vertical, linear (user stock). Hand-soldered'))
     c.append(part('C27', 'C', '10n', 'C0603', {'1': 'NOISE_TONE', '2': 'GND'}, Voltage='50V',
                   Note='ADC hold / noise filter (as modules/12bit)'))
     un = 'MCP6002, 3.3 V. A: white noise follower (Bread Modular NOISE U2A); B: blue noise follower (U2B)'
@@ -391,9 +415,9 @@ def circuit():
     c.append(part('R51', 'R', '330', 'R0603', {'1': 'CUT_PWM', '2': 'CUT_LED'},
                   Note='Cutoff vactrol LED current: ~4 mA peak from PB0 (as R23 on the VCA vactrol)'))
     c.append(part('RV3', 'R_Potentiometer', '50k', 'RV09',
-                  {'1': 'GND', '2': 'CUTOFF_POT', '3': '+3V3'},
-                  Note='CUTOFF knob (S4: PA6 ADC, recordable; was the BM HIHAT RV1 rheostat). RV09 9 mm vertical, '
-                       'linear (user stock). Hand-soldered'))
+                  {'1': 'GND', '2': 'CUTOFF_POT', '3': '+3V0'},
+                  Note='CUTOFF knob (S4: PA6 ADC, recordable; was the BM HIHAT RV1 rheostat). CW = +3V0, the ADC '
+                       'reference (S5). RV09 9 mm vertical, linear (user stock). Hand-soldered'))
     c.append(part('C28', 'C', '10n', 'C0603', {'1': 'CUTOFF_POT', '2': 'GND'}, Voltage='50V',
                   Note='ADC hold / noise filter (as modules/12bit)'))
 
@@ -526,12 +550,14 @@ def circuit():
 
 # JLCPCB parts. Codes reused from modules/acid (checked live 2026-10-22) plus the new HATS parts
 # (100p, 1n, 4.7u, 47u, SS8050, SS8550; assembly search 2026-10-23); S4 STM32G071C8T6 and the
-# ferrite from modules/12bit (live-checked 2026-11-06). Stock is a dated observation,
+# ferrite from modules/12bit (live-checked 2026-11-06); S5 2.2k (C4190) and LM4040B30FTA (C460604) from
+# modules/12bit S3 (live-checked 2026-11-19). Stock is a dated observation,
 # not a guarantee. THT parts carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM'),
     ('R', '330', 'R0603'): dict(LCSC='C23138', MPN='0603WAF3300T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '2.2k', 'R0603'): dict(LCSC='C4190', MPN='0603WAF2201T5E', Manufacturer='UNI-ROYAL'),
     ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '20k', 'R0603'): dict(LCSC='C4184', MPN='0603WAF2002T5E', Manufacturer='UNI-ROYAL'),
@@ -559,6 +585,7 @@ SOURCING = {
     ('SS8050', 'SS8050', 'SOT23'): dict(LCSC='C431710', MPN='SS8050', Manufacturer='MDD(Microdiode Semiconductor)'),
     ('Q_PNP_BEC', 'SS8550', 'SOT23'): dict(LCSC='C364314', MPN='SS8550', Manufacturer='MDD(Microdiode Semiconductor)'),
     ('HT75xx-1-SOT89', 'HT7533-1', 'SOT89'): dict(LCSC='C14289', MPN='HT7533-1', Manufacturer='Holtek'),
+    ('LM4040DBZ-3', 'LM4040B30', 'SOT23'): dict(LCSC='C460604', MPN='LM4040B30FTA', Manufacturer='Diodes Incorporated'),
     ('STM32G071C8Tx', 'STM32G071C8T6', 'LQFP48'): dict(LCSC='C529341', MPN='STM32G071C8T6',
                                                        Manufacturer='STMicroelectronics'),
     ('FerriteBead', '600R@100MHz', 'L0603'): dict(LCSC='C1002', MPN='GZ1608D601TF', Manufacturer='Sunlord'),
@@ -574,7 +601,7 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(4, 2), 'BIG MODULAR HATS - S4 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, one STM32G071C8T6 '
+    (T(4, 2), 'BIG MODULAR HATS - S5 schematic: Bread Modular NOISE (blue) -> HIHAT on one 6HP module, one STM32G071C8T6 '
               '(both Bread Modular firmwares + recorder), 3.3 V internal signals. Circuit intent: docs/research.md', 2.0),
     (T(4, 5), 'Signal nets are wired; supplies use power symbols. VMID_H (hi-hat V_MID, R24/R25/C15) is joined by its net labels.', 1.27),
     (T(4, 9), 'MIDI IN (TS): 8bit / LOW NPN front end, pull-ups on +3V3; RX feeds both MCUs. '
@@ -583,7 +610,7 @@ TEXTS = [
                 'PA4 DAC1 white noise, PA5 DAC2 velocity; PA2 gate, PA3 open hat (note > 60);\n'
                 'ADC PA1 NOISE TONE, PA6 CUTOFF knob -> PB0 PWM -> U11 cutoff vactrol;\n'
                 'PB4 REC button, PB5 REC LED (recorder lanes: CUTOFF, NOISE TONE).\n'
-                'VREF+ = +3V3 through FB1. J11 SWD: 1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST.', 1.27),
+                'VREF+ = +3V0 (U12 reference) through FB1. J11 SWD: 1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST.', 1.27),
     (T(66, 30), 'NOISE (Bread Modular NOISE, pink not built): U4A white follower, C8 + BLUE TONE high-pass, U4B blue follower.', 1.27),
     (T(98, 6), 'NOISE IN: AC coupled, x -0.33 around VMID_H (10 Vpp -> 3.3 Vpp, hotter clips), as modules/low AUDIO.', 1.27),
     (T(112, 74), 'NORMAL (U5 TS5A23157): jack empty -> TN = T pulls IN1 low -> COM1 = NC1 = BLUE_NOISE;\n'
@@ -596,6 +623,8 @@ TEXTS = [
     (T(186, 84), 'HAT CV OUT: U10B x1.51: 0..3.3 V -> 0..5 V, 1k to J4; D5 LED shows it.', 1.27),
     (T(4, 128), 'POWER: +12V -> D1 -> +12V_F (U10, U1 HT7533-1 -> +3V3); -12V -> D2 -> -12V_F (U10).', 1.27),
     (T(68, 128), 'SUPPLY PINS + DECOUPLING', 1.27),
+    (T(154, 128), '+3V0 REFERENCE (S5): +12V_F -> R52 -> U12 LM4040 3.0 V shunt.\n'
+                  'Feeds VREF+ (FB1) and the two ADC knobs (RV1 NOISE TONE, RV3 CUTOFF).', 1.27),
 ]
 
 
@@ -733,7 +762,8 @@ def text_at(p):
 
 
 # Per-part text placement overrides (reference offset, value offset, justify), mm.
-TEXT_SIDE = {'J2': ((0, -8.89), (-3.81, 8.89), None), 'D7': ((7.62, -1.27), (7.62, 1.27), 'left')}
+TEXT_SIDE = {'J2': ((0, -8.89), (-3.81, 8.89), None), 'D7': ((7.62, -1.27), (7.62, 1.27), 'left'),
+             'U12': ((2.54, -0.635), (2.54, 1.27), 'left')}
 
 
 def power_symbol(net, x, y, d, key, root):
@@ -1127,8 +1157,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - HATS") (rev "S4") (company "Big Modular")
-        (comment 1 "SCHEMATIC S4 - Bread Modular NOISE (blue) + HIHAT on one STM32G071, CUTOFF + TONE recordable, wired nets")
+      (title_block (title "Big Modular - HATS") (rev "S5") (company "Big Modular")
+        (comment 1 "SCHEMATIC S5 - Bread Modular NOISE (blue) + HIHAT on one STM32G071, CUTOFF + TONE recordable, +3V0 reference rail")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')
@@ -1234,11 +1264,15 @@ def build():
     for net, segs in segments.items():
         for (a, b) in segs:
             for pt, (key, other) in stub_pts.items():
+                if other == net:  # a drawn rail wire may end on its own rail's stub (WIRES '+3V0')
+                    continue
                 assert not on_segment(pt, a, b, ends=True), f'{net} wire {a}-{b} touches {key} ({other}) at {pt}'
         for i, (a, b) in enumerate(segs):
             items.append([atom('wire'), [atom('pts'), [atom('xy'), *a], [atom('xy'), *b]],
                           [atom('stroke'), [atom('width'), 0], [atom('type'), atom('default')]],
                           [atom('uuid'), uid(f'net/{net}/{i}')]])
+        if net in RAIL_SYMBOL:  # rails are named by their power symbols
+            continue
         # one name label per wired net, on its longest horizontal run (vertical if none)
         lx, ly, lang = name_spot(net, segs)
         items.append([atom('label'), net, [atom('at'), lx, ly, lang],

@@ -1,4 +1,4 @@
-"""Generate the 12bit S2 schematic (hardware/12bit.kicad_sch) and its pinned symbols.
+"""Generate the 12bit S3 schematic (hardware/12bit.kicad_sch) and its pinned symbols.
 
 Run from modules/12bit:
   python3 -B tools/build_schematic.py
@@ -11,7 +11,10 @@ STM32G071C8T6 with its two 12-bit DAC channels, on a 6HP module: the 8bit MIDI i
 (JP1 bypass) and bipolar CV input at 3.3 V, three 50k knobs read by the ADC (knob 3 no
 longer the passive low-pass), the 8bit MODE switch + LED and two DC-coupled +/-5 V
 outputs (TL074). S2 (user, 2026-11-06): the S1 gate output is removed; its TL074 section is
-a grounded follower.
+a grounded follower. S3 (user, 2026-11-19, after the output buzz of the first board): the
+analog side (VREF+ through FB1, knobs, VOFF divider, CV level shift and buffer, MIDI pull-ups)
+runs on +3V0, a 3.0 V LM4040 shunt reference fed from +12V_F; the HT7533 +3V3 only supplies
+the MCU (and the SWD sense pin).
 
 Placement (LAYOUT) is by hand. Signal wires are found by route_wires() (as modules/hats):
 a small grid router (1.27 mm) that draws every signal net as axis-aligned wires, never
@@ -66,6 +69,8 @@ SYMBOLS = {
     '1N4148W': ('Diode', '1N4148W'),
     'BAT54SW': ('Diode', 'BAT54SW'),
     'GND': ('power', 'GND'), '+3V3': ('power', '+3V3'), '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
+    '+3V0': ('power', '+3V0'),
+    'LM4040DBZ-3': ('Reference_Voltage', 'LM4040DBZ-3'),
     'SolderJumper_3_Open': ('Jumper', 'SolderJumper_3_Open'),
 }
 
@@ -94,7 +99,7 @@ FP = {
 NOT_ASSEMBLED = {'JP1'}
 
 # Supply nets are drawn with power symbols (net name = symbol value).
-RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+12V': '+12V', '-12V': '-12V',
+RAIL_SYMBOL = {'GND': 'GND', '+3V3': '+3V3', '+3V0': '+3V0', '+12V': '+12V', '-12V': '-12V',
                '+12V_F': '+12V', '-12V_F': '-12V'}
 
 # Signal nets joined by name labels instead of wires (none planned; the router adds any it
@@ -108,7 +113,9 @@ LABEL_NETS = set()
 #  at reset. RX polarity is a USART setting (CR2.RXINV) for JP1 = protected.
 #  PB4 MODE button (internal pull-up), PB5 LED (TIM3_CH2 PWM)
 #  PA13 SWDIO / PA14 SWCLK (J6), PF2 NRST. VBAT tied to +3V3 (no battery). VREF+ from
-#  +3V3 through FB1 (DAC/ADC reference = VDDA rail, ratiometric with the knobs and VOFF).
+#  +3V0 (U5 LM4040 3.0 V shunt reference) through FB1: the DAC/ADC reference, ratiometric
+#  with the knobs, VOFF and the CV offset, and not the MCU supply (S3). DS12232: VREF+ must
+#  be 2 V..VDDA; +3V0 max 3.006 V, +3V3 min 3.2 V.
 #  No crystal: HSI16 (+/-1 %) clocks the 31.25 kbaud MIDI UART and the sample timer.
 MCU_PINS = {'4': '+3V3', '5': 'VREFP', '6': '+3V3', '7': 'GND', '10': 'NRST',
             '11': 'CV_ADC', '12': 'POT1', '15': 'DAC1', '16': 'DAC2', '17': 'POT2', '18': 'POT3',
@@ -163,7 +170,9 @@ LAYOUT = {
     'J5': (9, 117, 0), 'D2': (21, 114, 180), 'D3': (21, 122, 0), 'C1': (28, 116.5, 0), 'C2': (32, 116.5, 0),
     'U1': (40, 115, 0), 'C3': (47, 116.5, 0), 'C4': (51, 116.5, 0),
     '#FLG01': (6, 128, 0), '#FLG02': (12, 128, 0), '#FLG03': (18, 128, 0), '#FLG04': (24, 128, 0),
-    '#FLG05': (30, 128, 0),
+    '#FLG05': (30, 128, 0), '#FLG06': (36, 128, 0),
+    # +3V0 reference: R18 from +12V_F, U5 LM4040 shunt
+    'R18': (88, 116.5, 0), 'U5': (94, 116.5, 90),
     # Op-amp supply unit and decoupling
     'C6': (60, 116.5, 0), 'U4.5': (70, 115, 0), 'C18': (74, 115.5, 0), 'C19': (78, 115.5, 0),
 }
@@ -173,6 +182,8 @@ LAYOUT = {
 WIRES = {
     # VBAT (pin 4) joins the VDD (pin 6) supply stub: one +3V3 symbol for both top pins.
     '+3V3': [['U3/4', (74, 46), (75, 46)]],
+    # R18 feeds the reference from below: one +3V0 symbol, on the U5 cathode stub.
+    '+3V0': [['R18/2', (92, 123), (95, 123), (95, 118), (98, 118)]],
 }
 
 LABEL_AT = {}
@@ -196,8 +207,8 @@ def circuit():
                   {'1': 'GND', '2': '-12V_F'}, Voltage='25V', Note='-12V_F bulk'))
     c.append(part('U1', 'HT75xx-1-SOT89', 'HT7533-1', 'SOT89',
                   {'1': 'GND', '2': '+12V_F', '3': '+3V3'},
-                  Note='3.3 V LDO (as modules/hats), 100 mA. Load ~20 mA (MCU ~8 mA at 64 MHz, DAC, LED, '
-                       'MCP6001, knobs): ~0.17 W at 11.7 V in'))
+                  Note='3.3 V LDO (as modules/hats), 100 mA. S3: it only supplies the MCU (VDD/VDDA, VBAT) and '
+                       'the J6 sense pin, ~15 mA (MCU ~8 mA at 64 MHz, DAC, ADC, LED): ~0.13 W at 11.7 V in'))
     c.append(part('C3', 'C', '1u', 'C0805',
                   {'1': '+12V_F', '2': 'GND'}, Voltage='50V', Note='LDO input'))
     c.append(part('C4', 'C', '10u', 'C0805',
@@ -207,12 +218,22 @@ def circuit():
     c.append(part('#FLG03', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '-12V_F'}))
     c.append(part('#FLG04', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '-12V'}))
     c.append(part('#FLG05', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '+12V'}))
+    # ---- +3V0 reference rail (S3): LM4040 3.0 V shunt from +12V_F. It carries the DAC/ADC reference
+    # (through FB1), the knobs, the VOFF divider, the CV level shift + buffer and the MIDI pull-ups:
+    # <= 1.6 mA, so the shunt keeps >= 1.4 mA at +12 V -5 %. Nothing of the MCU supply current flows in it.
+    c.append(part('R18', 'R', '2.2k', 'R0603', {'1': '+12V_F', '2': '+3V0'},
+                  Note='Reference feed: (11.7 - 3.0) V / 2.2k = 4.0 mA, 34 mW. +12V_F ripple is divided by '
+                       'R18 / Zr(U5) = 2200 / 0.4: about -75 dB'))
+    c.append(part('U5', 'LM4040DBZ-3', 'LM4040B30', 'SOT23', {'1': '+3V0', '2': 'GND', '3': None},
+                  Note='3.000 V +/-0.2 % shunt reference (Diodes LM4040B30FTA: pin 1 cathode, 2 anode, 3 open), '
+                       '60 uA..15 mA, Zr 0.4 R typ, stable with any capacitive load'))
+    c.append(part('#FLG06', 'PWR_FLAG', 'PWR_FLAG', None, {'1': '+3V0'}))
 
     # ---- MIDI input (TS modular MIDI): the 8bit / MIDI V2 NPN front end with its JP1 bypass, at 3.3 V
     c.append(part('J1', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
                   {'T': 'MIDI_IN', 'S': 'GND', 'TN': None}, Note='MIDI in (TS: tip = logic-level MIDI)'))
     c.append(part('R1', 'R', '100k', 'R0603',
-                  {'1': 'MIDI_IN', '2': '+3V3'}, Note='Idle pull-up: no cable turns Q1 on = UART idle'))
+                  {'1': 'MIDI_IN', '2': '+3V0'}, Note='Idle pull-up: no cable turns Q1 on = UART idle'))
     c.append(part('R2', 'R', '10k', 'R0603',
                   {'1': 'MIDI_IN', '2': 'Q1_B'},
                   Note='Base resistor: ~1.1 mA at +/-12 V; 0.26 mA from a 3.3 V sender'))
@@ -223,33 +244,37 @@ def circuit():
                   {'1': 'Q1_B', '2': 'GND', '3': 'RX_Q'},
                   Note='Inverting input buffer: input high = RX low. Firmware: USART1 CR2.RXINV = 1 for JP1 = P'))
     c.append(part('R3', 'R', '22k', 'R0603',
-                  {'1': 'RX_Q', '2': '+3V3'},
-                  Note='Q1 collector pull-up, on RX_Q so the JP1 direct path leaves PB7 unloaded'))
+                  {'1': 'RX_Q', '2': '+3V0'},
+                  Note='Q1 collector pull-up, on RX_Q so the JP1 direct path leaves PB7 unloaded. PB7 high = 3.0 V '
+                       '(VIH 0.7 x VDD = 2.4 V max)'))
     c.append(part('JP1', 'SolderJumper_3_Open', 'RX_PROT/DIRECT', 'SJ3',
                   {'1': 'RX_Q', '2': 'MIDI_RX', '3': 'MIDI_IN'},
                   Note='Solder jumper, copper only, shipped open. Solder 1-2 = protected '
                        '(Q1 drives PB7, firmware RXINV = 1). Solder 2-3 = direct/unprotected '
                        '(MIDI_IN to PB7, RXINV = 0). Never both'))
 
-    # ---- CV input: 8bit S4 topology at 3.3 V (16bit D5 values): R4 100k in, R5 56k to +3V3,
-    # R6 120k to GND map -5.9..+6.0 V onto 0..3.3 V (Zin 138k), BAT54SW clamp, 1n, MCP6001 follower
+    # ---- CV input: 8bit S4 topology on the +3V0 reference rail: R4 100k in, R5 51k to +3V0,
+    # R6 100k to GND map -5.9..+6.0 V onto 0..3.0 V (Zin 134k; the S2 codes: 0 V = 2028, 345 codes / V),
+    # BAT54SW clamp, 1n, MCP6001 follower
     c.append(part('J2', 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M',
                   {'T': 'CV_IN', 'S': 'GND', 'TN': 'GND'},
                   Note='CV in, -5.9..+6.0 V. Tip normalled to GND: unpatched reads mid-scale (0 V)'))
     c.append(part('R4', 'R', '100k', 'R0603', {'1': 'CV_IN', '2': 'CV_BUF'},
-                  Note='Level-shift input R. Input impedance R4 + R5||R6 = 138k. Clamp current <= 0.1 mA at +/-12 V'))
-    c.append(part('R5', 'R', '56k', 'R0603', {'1': '+3V3', '2': 'CV_BUF'},
-                  Note='Level-shift offset: 0 V CV -> 1.63 V (mid-scale). +3V3 is also the ADC reference (VREF+)'))
-    c.append(part('R6', 'R', '120k', 'R0603', {'1': 'CV_BUF', '2': 'GND'},
-                  Note='Level-shift trim: gain 0.276, -5.9 V -> 0 V, +6.05 V -> 3.3 V'))
-    c.append(part('D5', 'BAT54SW', 'BAT54SW', 'SOT323', {'1': 'GND', '2': '+3V3', '3': 'CV_BUF'},
-                  Note='CV clamp: holds the U2 input within -0.3..+3.6 V'))
+                  Note='Level-shift input R. Input impedance R4 + R5||R6 = 134k. Clamp current <= 0.1 mA at +/-12 V'))
+    c.append(part('R5', 'R', '51k', 'R0603', {'1': '+3V0', '2': 'CV_BUF'},
+                  Note='Level-shift offset: 0 V CV -> 1.485 V (0.495 x +3V0, mid-scale). +3V0 is also the ADC '
+                       'reference (VREF+)'))
+    c.append(part('R6', 'R', '100k', 'R0603', {'1': 'CV_BUF', '2': 'GND'},
+                  Note='Level-shift trim: gain 0.2525, -5.9 V -> 0 V, +6.0 V -> 3.0 V'))
+    c.append(part('D5', 'BAT54SW', 'BAT54SW', 'SOT323', {'1': 'GND', '2': '+3V0', '3': 'CV_BUF'},
+                  Note='CV clamp: holds the U2 input within -0.3..+3.3 V; its current goes into the shunt'))
     c.append(part('C5', 'C', '1n', 'C0603', {'1': 'CV_BUF', '2': 'GND'}, Voltage='50V',
                   Note='With R4||R5||R6 (27.6k): 5.8 kHz CV low-pass'))
     c.append(part('U2', 'MCP6001-OT', 'MCP6001', 'SOT23-5',
-                  {'3': 'CV_BUF', '4': 'CV_ADC', '1': 'CV_ADC', '2': 'GND', '5': '+3V3'},
-                  Note='CV buffer: unity follower, rail-to-rail on +3V3, so PA0 only ever sees 0..3.3 V (as modules/8bit U4)'))
-    c.append(part('C6', 'C', '100n', 'C0603', {'1': '+3V3', '2': 'GND'}, Voltage='50V', Note='U2 decoupling'))
+                  {'3': 'CV_BUF', '4': 'CV_ADC', '1': 'CV_ADC', '2': 'GND', '5': '+3V0'},
+                  Note='CV buffer: unity follower, rail-to-rail on +3V0, so PA0 only ever sees 0..3.0 V = 0..VREF+ '
+                       '(as modules/8bit U4)'))
+    c.append(part('C6', 'C', '100n', 'C0603', {'1': '+3V0', '2': 'GND'}, Voltage='50V', Note='U2 decoupling'))
 
     # ---- MCU
     c.append(part('U3', 'STM32G071C8Tx', 'STM32G071C8T6', 'LQFP48', MCU,
@@ -259,8 +284,8 @@ def circuit():
                   Note='U3 VDD/VDDA decoupling (pin 6)'))
     c.append(part('C13', 'C', '4.7u', 'C0603', {'1': '+3V3', '2': 'GND'}, Voltage='16V',
                   Note='U3 VDD bulk (ST: 4.7 uF + 100 nF per VDD pin)'))
-    c.append(part('FB1', 'FerriteBead', '600R@100MHz', 'L0603', {'1': '+3V3', '2': 'VREFP'},
-                  Note='VREF+ filter from +3V3 (DCR ~0.45 R: <0.5 mV at the DAC reference current)'))
+    c.append(part('FB1', 'FerriteBead', '600R@100MHz', 'L0603', {'1': '+3V0', '2': 'VREFP'},
+                  Note='VREF+ filter from +3V0 (DCR ~0.45 R: <0.5 mV at the DAC reference current)'))
     c.append(part('C10', 'C', '1u', 'C0805', {'1': 'VREFP', '2': 'GND'}, Voltage='50V',
                   Note='VREF+ decoupling (ST: 1 uF + 100 nF)'))
     c.append(part('C11', 'C', '100n', 'C0603', {'1': 'VREFP', '2': 'GND'}, Voltage='50V',
@@ -269,22 +294,23 @@ def circuit():
                   Note='NRST filter (ST recommendation)'))
     c.append(part('J6', 'Conn_01x05', 'SWD', 'H1x5',
                   {'1': '+3V3', '2': 'SWDIO', '3': 'SWCLK', '4': 'GND', '5': 'NRST'},
-                  Note='SWD for an ST-Link: 1 +3V3 (VTref sense: program with the module on Eurorack power), '
+                  Note='SWD for an ST-Link: 1 +3V3 (VTref sense of the MCU supply: program with the module on Eurorack power), '
                        '2 SWDIO, 3 SWCLK, 4 GND (pins 1-4 as modules/usb-audio J8), 5 NRST. Hand-soldered, B side'))
 
-    # ---- Knobs 1-3: 50k linear +3V3..GND dividers into ADC pins, 10n at each wiper.
+    # ---- Knobs 1-3: 50k linear +3V0..GND dividers (the ADC reference) into ADC pins, 10n at each wiper.
     # Knob 3 is a plain ADC knob (modules/8bit used it as the passive low-pass).
     for i, (rv, cap) in enumerate((('RV1', 'C7'), ('RV2', 'C8'), ('RV3', 'C9')), 1):
         c.append(part(rv, 'R_Potentiometer', '50k', 'RV09',
-                      {'1': 'GND', '2': f'POT{i}', '3': '+3V3'},
-                      Note=f'Knob P{i}: RV09 9 mm vertical, linear (user stock). CW = +3V3. Hand-soldered'))
+                      {'1': 'GND', '2': f'POT{i}', '3': '+3V0'},
+                      Note=f'Knob P{i}: RV09 9 mm vertical, linear (user stock). CW = +3V0. Hand-soldered'))
         c.append(part(cap, 'C', '10n', 'C0603', {'1': f'POT{i}', '2': 'GND'}, Voltage='50V',
                       Note='ADC hold / noise filter'))
 
     # ---- Outputs: U4 TL074 on +/-12 V. A/B: OUT 1 / OUT 2 from DAC1_OUT1 / DAC1_OUT2, non-inverting
-    # x3.4 with -2.4 x VOFF: buffered DAC 0.2..3.1 V -> -4.9..+4.9 V (0..3.3 V unbuffered -> -5.6..+5.6 V),
+    # x3.7 with -2.7 x VOFF: buffered DAC 0.2..2.8 V -> -4.8..+4.8 V (0..3.0 V unbuffered -> -5.6..+5.5 V),
     # DC coupled (audio, CV, LFO). C: VOFF follower. D: spare (the S1 gate is removed), grounded follower.
-    uo = ('+/-12 V. A: OUT 1 (DAC1_OUT1) x3.4; B: OUT 2 (DAC1_OUT2) x3.4; C: VOFF follower (2.33 V); '
+    # S3: the DAC reference is 3.0 V, so the gain went from x3.4 to x3.7 to keep the S2 output level.
+    uo = ('+/-12 V. A: OUT 1 (DAC1_OUT1) x3.7; B: OUT 2 (DAC1_OUT2) x3.7; C: VOFF follower (2.06 V); '
           'D: spare, grounded follower')
     for n, (u, rs, cs, rf, rg, ro, j) in enumerate((('U4', 'R8', 'C15', 'R10', 'R11', 'R16', 'J3'),
                                                     ('U4', 'R9', 'C16', 'R12', 'R13', 'R17', 'J4')), 1):
@@ -296,19 +322,20 @@ def circuit():
                       Note='DAC step smoothing: 1k / 4.7n = 34 kHz'))
         c.append(part(u, 'TL074', 'TL074', 'SOIC14',
                       {pins[0]: f'DAC{n}_F', pins[1]: f'OUT{n}_FB', pins[2]: f'OUT{n}_AMP'}, unit=n, Note=uo))
-        c.append(part(rf, 'R', '24k', 'R0603', {'1': f'OUT{n}_FB', '2': f'OUT{n}_AMP'},
-                      Note='Rf: gain 1 + 24k / 10k = 3.4'))
+        c.append(part(rf, 'R', '27k', 'R0603', {'1': f'OUT{n}_FB', '2': f'OUT{n}_AMP'},
+                      Note='Rf: gain 1 + 27k / 10k = 3.7'))
         c.append(part(rg, 'R', '10k', 'R0603', {'1': f'OUT{n}_FB', '2': 'VOFF'}, Note='Rg to the offset reference'))
         c.append(part(ro, 'R', '1k', 'R1206', {'1': f'OUT{n}_AMP', '2': f'OUT{n}'}, Power='0.5W',
                       Note='Output series: short / +/-12 V mis-patch current limit; 0.5 W for a permanent '
                            'mis-patch (as modules/8bit R12)'))
         c.append(part(j, 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', {'T': f'OUT{n}', 'S': 'GND', 'TN': None},
                       Note=f'OUT {n}, Eurorack level (~10 Vpp), DC coupled'))
-    c.append(part('R14', 'R', '10k', 'R0603', {'1': '+3V3', '2': 'VOFF_DIV'}, Note='Offset divider top'))
-    c.append(part('R15', 'R', '24k', 'R0603', {'1': 'VOFF_DIV', '2': 'GND'},
-                  Note='Offset divider bottom: 2.33 V = DAC mid-scale 1.64 V x 3.4 / 2.4'))
+    c.append(part('R14', 'R', '10k', 'R0603', {'1': '+3V0', '2': 'VOFF_DIV'},
+                  Note='Offset divider top, from the DAC reference rail'))
+    c.append(part('R15', 'R', '22k', 'R0603', {'1': 'VOFF_DIV', '2': 'GND'},
+                  Note='Offset divider bottom: 2.0625 V; DAC mid-scale 1.5 V x 3.7 / 2.7 = 2.0556 V (-19 mV at the output)'))
     c.append(part('C17', 'C', '10u', 'C0805', {'1': 'VOFF_DIV', '2': 'GND'}, Voltage='25V',
-                  Note='Filters +3V3 noise off the offset (2.3 Hz)'))
+                  Note='Filters the offset (2.3 Hz)'))
     c.append(part('U4', 'TL074', 'TL074', 'SOIC14', {'10': 'VOFF_DIV', '9': 'VOFF', '8': 'VOFF'}, unit=3, Note=uo))
     c.append(part('U4', 'TL074', 'TL074', 'SOIC14', {'12': 'GND', '13': 'U4D_OUT', '14': 'U4D_OUT'},
                   unit=4, Note=uo))
@@ -330,17 +357,18 @@ def circuit():
 
 
 # JLCPCB parts. Codes reused from modules/8bit, modules/16bit and modules/hats; every code was
-# looked up live (strict) on 2026-11-06 (docs/sourcing-candidates.json). Stock is a dated
+# looked up live (strict) on 2026-11-06, the S3 ones (C4190, C22967, C23196, C460604) on 2026-11-19
+# (docs/sourcing-candidates.json). Stock is a dated
 # observation, not a guarantee. THT parts carry no LCSC field.
 SOURCING = {
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R1206'): dict(LCSC='C2074262', MPN='ESR18EZPF1001', Manufacturer='ROHM'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '2.2k', 'R0603'): dict(LCSC='C4190', MPN='0603WAF2201T5E', Manufacturer='UNI-ROYAL'),
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '24k', 'R0603'): dict(LCSC='C23352', MPN='0603WAF2402T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '56k', 'R0603'): dict(LCSC='C23206', MPN='0603WAF5602T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '27k', 'R0603'): dict(LCSC='C22967', MPN='0603WAF2702T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '51k', 'R0603'): dict(LCSC='C23196', MPN='0603WAF5102T5E', Manufacturer='UNI-ROYAL'),
     ('R', '100k', 'R0603'): dict(LCSC='C25803', MPN='0603WAF1003T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '120k', 'R0603'): dict(LCSC='C25808', MPN='0603WAF1203T5E', Manufacturer='UNI-ROYAL'),
     ('C', '1n', 'C0603'): dict(LCSC='C1588', MPN='CL10B102KB8NNNC', Manufacturer='Samsung'),
     ('C', '4.7n', 'C0603'): dict(LCSC='C53987', MPN='0603B472K500NT', Manufacturer='FH (Guangdong Fenghua)'),
     ('C', '10n', 'C0603'): dict(LCSC='C57112', MPN='0603B103K500NT', Manufacturer='FH (Guangdong Fenghua)'),
@@ -355,6 +383,7 @@ SOURCING = {
     ('MMBT3904', 'MMBT3904', 'SOT23'): dict(LCSC='C20526', MPN='MMBT3904(RANGE:100-300)',
                                             Manufacturer='CJ (Jiangsu Changjing)'),
     ('HT75xx-1-SOT89', 'HT7533-1', 'SOT89'): dict(LCSC='C14289', MPN='HT7533-1', Manufacturer='Holtek'),
+    ('LM4040DBZ-3', 'LM4040B30', 'SOT23'): dict(LCSC='C460604', MPN='LM4040B30FTA', Manufacturer='Diodes Incorporated'),
     ('MCP6001-OT', 'MCP6001', 'SOT23-5'): dict(LCSC='C29429', MPN='MCP6001T-E/OT', Manufacturer='Microchip'),
     ('TL074', 'TL074', 'SOIC14'): dict(LCSC='C12594', MPN='TL074CDR', Manufacturer='Texas Instruments'),
     ('STM32G071C8Tx', 'STM32G071C8T6', 'LQFP48'): dict(LCSC='C529341', MPN='STM32G071C8T6',
@@ -368,21 +397,23 @@ def T(x, y):
 
 # Block notes: (grid position, text, size). route_wires() keeps wires out of their boxes.
 TEXTS = [
-    (T(2, 2), 'BIG MODULAR 12BIT - S2 schematic: modules/8bit on an STM32G071C8T6 (two 12-bit DAC channels), 6HP. '
+    (T(2, 2), 'BIG MODULAR 12BIT - S3 schematic: modules/8bit on an STM32G071C8T6 (two 12-bit DAC channels), 6HP. '
               'Circuit intent: docs/research.md', 2.0),
     (T(2, 5), 'Signal nets are wired; supplies use power symbols.', 1.27),
-    (T(2, 9), 'CV IN: R4/R5/R6 level shift (-5.9..+6.0 V -> 0..3.3 V, Zin 138k), D5 clamp, C5 -> U2 MCP6001 follower -> PA0.', 1.27),
+    (T(2, 9), 'CV IN: R4/R5/R6 level shift (-5.9..+6.0 V -> 0..3.0 V, Zin 134k), D5 clamp, C5 -> U2 MCP6001 follower -> PA0.', 1.27),
     (T(44, 33), 'MCU U3 STM32G071C8T6 at 3.3 V, HSI16, no crystal.\n'
-                'VREF+ = +3V3 through FB1 (ADC/DAC reference).\n'
+                'VREF+ = +3V0 (U5 reference) through FB1: ADC/DAC reference.\n'
                 'J6 SWD: 1 +3V3 sense, 2 SWDIO, 3 SWCLK, 4 GND, 5 NRST.', 1.27),
-    (T(90, 11), 'KNOBS P1/P2/P3: 50k linear +3V3 dividers -> PA1 / PA6 / PA7 (knob 3 is no longer the low-pass).', 1.27),
-    (T(96, 31), 'OUT 1 / OUT 2: DAC1_OUT1 (PA4) / DAC1_OUT2 (PA5) -> 1k/4.7n (34 kHz step smoothing) -> TL074 x3.4 - 2.4 x VOFF\n'
-                '(buffered DAC 0.2..3.1 V -> +/-4.9 V), 1k 0.5 W to the jack. DC coupled: audio, CV or LFO.', 1.27),
+    (T(90, 11), 'KNOBS P1/P2/P3: 50k linear +3V0 dividers -> PA1 / PA6 / PA7 (knob 3 is no longer the low-pass).', 1.27),
+    (T(96, 31), 'OUT 1 / OUT 2: DAC1_OUT1 (PA4) / DAC1_OUT2 (PA5) -> 1k/4.7n (34 kHz step smoothing) -> TL074 x3.7 - 2.7 x VOFF\n'
+                '(buffered DAC 0.2..2.8 V -> +/-4.8 V), 1k 0.5 W to the jack. DC coupled: audio, CV or LFO.', 1.27),
     (T(104, 79.5), 'U4D spare: + to GND, output to - (grounded follower).', 1.27),
     (T(86, 103), 'MODE: SW1 to GND on PB4 (pull-up); LED on PB5 (PWM) via R7 1k.', 1.27),
-    (T(2, 82), 'MIDI IN (TS): 8bit NPN front end, pull-ups on +3V3. JP1 shipped OPEN:\n'
+    (T(2, 82), 'MIDI IN (TS): 8bit NPN front end, pull-ups on +3V0. JP1 shipped OPEN:\n'
                '1-2 = protected (USART1 RXINV = 1), 2-3 = direct.', 1.27),
-    (T(2, 108), 'POWER: +12V -> D2 -> +12V_F (U4, U1 HT7533-1 -> +3V3); -12V -> D3 -> -12V_F (U4).', 1.27),
+    (T(2, 108), 'POWER: +12V -> D2 -> +12V_F (U4, U1 HT7533-1 -> +3V3 for the MCU only); -12V -> D3 -> -12V_F (U4).', 1.27),
+    (T(84, 108), '+3V0 REFERENCE (S3): +12V_F -> R18 -> U5 LM4040 3.0 V shunt.\n'
+                 'Feeds VREF+ (FB1), knobs, VOFF, CV shift + U2, MIDI pull-ups.', 1.27),
     (T(58, 108), 'SUPPLY PINS + DECOUPLING', 1.27),
 ]
 
@@ -519,7 +550,7 @@ def text_at(p):
 
 
 # Per-part text placement overrides (reference offset, value offset, justify), mm.
-TEXT_SIDE = {}
+TEXT_SIDE = {'U5': ((2.54, -0.635), (2.54, 1.27), 'left')}
 
 
 def power_symbol(net, x, y, d, key, root):
@@ -913,8 +944,8 @@ def build():
     q = json.dumps
     sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - 12bit") (rev "S2") (company "Big Modular")
-        (comment 1 "SCHEMATIC S2 - modules/8bit on an STM32G071C8T6: MIDI + CV in, 3 knobs, MODE, 2 x 12-bit DAC outs")
+      (title_block (title "Big Modular - 12bit") (rev "S3") (company "Big Modular")
+        (comment 1 "SCHEMATIC S3 - modules/8bit on an STM32G071C8T6: MIDI + CV in, 3 knobs, MODE, 2 x 12-bit DAC outs; +3V0 reference rail")
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
       (lib_symbols))''')
     embedded = one(sch, 'lib_symbols')

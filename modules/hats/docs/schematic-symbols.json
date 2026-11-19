@@ -176,6 +176,20 @@
       "flattened_from": null,
       "edits": null
     },
+    "+3V0": {
+      "library": "power:+3V0",
+      "source": "/usr/share/kicad/symbols/power.kicad_sym",
+      "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
+      "flattened_from": null,
+      "edits": null
+    },
+    "LM4040DBZ-3": {
+      "library": "Reference_Voltage:LM4040DBZ-3",
+      "source": "/usr/share/kicad/symbols/Reference_Voltage.kicad_sym",
+      "source_sha256": "ce5bc81611adc471c71534ca00cf6807486795aeda596a62ea44d1820928cc36",
+      "flattened_from": "LM4040DBZ-2.0",
+      "edits": null
+    },
     "SolderJumper_3_Open": {
       "library": "Jumper:SolderJumper_3_Open",
       "source": "/usr/share/kicad/symbols/Jumper.kicad_sym",

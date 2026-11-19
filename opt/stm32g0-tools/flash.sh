@@ -5,7 +5,8 @@
 #
 # Wire the probe to the module's 1x5 SWD header (+3V3 = VTref sense, SWDIO,
 # SWCLK, GND, NRST) and power the module from its Eurorack header.
-# OPENOCD_INTERFACE overrides the probe config (default interface/stlink.cfg).
+# OPENOCD_INTERFACE overrides the probe config (default interface/stlink.cfg;
+# interface/cmsis-dap.cfg for a DAPLink).
 #
 set -euo pipefail
 
@@ -23,10 +24,18 @@ fi
 
 OPENOCD="$(find_openocd)" || die "openocd not found. Run ./setup.sh first."
 
+INTERFACE="${OPENOCD_INTERFACE:-interface/stlink.cfg}"
+case "$INTERFACE" in
+  *cmsis-dap*) USB_VID=0d28 ;;   # DAPLink / CMSIS-DAP (ARM mbed)
+  *) USB_VID=0483 ;;             # ST-Link
+esac
+
 SUDO=()
-if [[ "$(uname -s)" == Linux ]] && ! grep -qs 0483 /etc/udev/rules.d/*.rules /lib/udev/rules.d/*.rules; then
-  SUDO=(sudo)   # no udev rule for the ST-Link (see setup.sh)
+if [[ "$(uname -s)" == Linux ]] && ! grep -qs "$USB_VID" /etc/udev/rules.d/*.rules /lib/udev/rules.d/*.rules; then
+  SUDO=(sudo)   # no udev rule for the probe (see setup.sh)
 fi
 
-"${SUDO[@]}" "$OPENOCD" -f "${OPENOCD_INTERFACE:-interface/stlink.cfg}" -f target/stm32g0x.cfg \
-  -c "program {$IMAGE} verify reset exit"
+# A blank STM32G0 latches FLASH_ACR.EMPTY at power-on and keeps booting the
+# system bootloader after the first program + reset; clear it before the reset.
+"${SUDO[@]}" "$OPENOCD" -f "$INTERFACE" -f target/stm32g0x.cfg \
+  -c "program {$IMAGE} verify" -c "mmw 0x40022000 0 0x10000" -c "reset run" -c "exit"

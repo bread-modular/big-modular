@@ -1,4 +1,4 @@
-# HATS contract (S4 schematic, R6 routed carrier, P5 panel)
+# HATS contract (S5 schematic, R7 routed carrier, P5 panel)
 
 **S4 (2026-11-08, user direction):** one STM32G071C8T6 (modules/12bit part and support) replaces
 both ATtiny1616; CUTOFF becomes an ADC knob that drives a second vactrol (U11 LDR || R50 51k is
@@ -10,6 +10,22 @@ shared recorder (lanes CUTOFF and NOISE TONE).
 notes 1.0 mm / 0.15 mm clear of pot pads, `-12V` beside J10 pins 1/2, `HATS R5`; stale U7 exclusion re-keyed
 (same items). U11 stacking still unapproved; C6/C26 placement near U2 open (user decision).
 **R6 (2026-11-09, fab fixes, user-approved re-route around U2, no THT moved):** U2 support caps at their pins on B (routed length pin-pad centre to cap-pad centre): C6 (VDD 100n) GND 2.1 mm from pin 7 (pad edge gap 0.6 mm), +3V3 4.2 mm along the pin-6 track with a plane via, plus an under-chip GND via on pin 7 (was 100n reached only through the planes, ~7.3 mm away); C25 (VREF+ 100n) 2.3 mm from pin 5 (edge gap 0.6 mm), on to C24 and FB1 (now below C26) by B tracks; C26 (NRST 100n) on the pin-10 escape, 5.6 mm (was by J11, ~22.7 mm); NRST via to the F run to J11 kept. C19 (U8 decoupling) took C6's old spot and copper; C20 (U9 decoupling, plane vias as before) moved below U9 (native X103.5 Y114.2). U1 HT7533 tab: +12V_F patches U1_TAB_B (27.5 mm2 filled) and U1_TAB_F (78.8 mm2) tied by 8 tented free vias beside the tab (not in it); prototype temperature check stays. The 18 U11/RV1/RV2 stacking items are now user-approved exclusions (2026-11-09, `tools/vactrol_exclusions.py ... U11`): DRC 36 = 36 excluded, 0 active. ERC 0, unconnected 0, native schematic parity 0 (the shared literal ref/pin/net comparison still shows only the four pre-existing `{slash}` NC-name escapes, U2 29/32/33/34), 639 tracks / 131 vias, no vias in SMD pads, no inner tracks, In1/In2 one piece, SMD-to-pot/jack 2.05 mm. `HATS R6`. JLCPCB re-exported (BOM unchanged; CPL: only the 6 moved parts C6/C19/C20/C25/C26/FB1). R43/R46 stay Extended: Basic 1k is 0.25 W (1206) / 0.125 W (0805); 0.5 W would need 2 x 2k Basic in parallel per output, a schematic change with no room in the edge columns. Scripts/reports: `research/fab-fix2/`.
+**S5 / R7 (2026-11-19, user: "add same changes we did" on modules/12bit, the other STM32G071 board):** +3V0 reference rail.
+U12 LM4040B30FTA (C460604, Extended) + R52 2.2k (C4190, Basic) from +12V_F make +3V0 for VREF+ (through FB1) and the CW ends
+of the two ADC knobs RV1 / RV3, so the DAC/ADC reference is no longer the MCU supply. The MCP6002s, the V_MID dividers, U5,
+the MIDI pull-ups and R32 stay on +3V3 (tens of mA, not a shunt reference's job). DAC full scale is 3.0 V instead of 3.3 V:
+white noise -0.8 dB, top velocity about 3 % lower at ACCENT_SET; not compensated (the vactrol tolerance is far larger).
+Knob codes are unchanged (ratiometric). R7 = R6 copper + six hand batches (`research/route-s5/`): U12 in the free strip left
+of U4 (X117.3 Y84.2), R52 below RV3 / RV4 (X115.0 Y135.8) fed from the C3 via; +3V0 runs R52 -> via -> RV3.3 -> F (38 mm,
+no via) -> the old FB1 via (114.55, 106.75), now +3V0 and the meeting point -> RV1.3 (F + one via + B) and -> U12 (F + one via
++ B past the RV2 lug); U12.2 has its own GND via, one free GND stitching via (116.8, 95.4) ties the B pour piece at U11.1 (native DRC flagged its thermal spokes as starved without it). The FB1 via's link to
+C6 / U2.6 is removed; U2 got a second under-chip +3V3 plane via on the pin-4 track instead. ERC 0, DRC 36 = 36 excluded
+(the vactrol stacking), 0 active, unconnected 0, parity 0; 672 tracks / 137 vias, no vias in SMD pads, no inner tracks,
+In1 / In2 one piece each, closest SMD-to-pot/jack pad still 2.05 mm (U12 3.55 mm, R52 3.34 mm). `HATS R7`. JLCPCB
+re-exported (97 placements / 35 BOM rows; the panel export is unchanged). Firmware: the knob ADC scan is now started by TIM6
+(100 kHz) with DMA, as the 12bit fix, compiled + host-tested. Not built, not measured: on HATS the DAC sits behind the
+vactrol VCA and the output is AC coupled, so the 12bit buzz path is much weaker here by design; this is the same
+reference hygiene, not a measured cure.
 Tables below that still say S3/R3/P4 are history unless they name S4.
 
 | | |
@@ -30,7 +46,8 @@ Tables below that still say S3/R3/P4 are history unless they name S4.
 - Pot shaft rows Y41 / Y75 (34 mm pitch); all four pots upright (pins below the bodies).
   U7 lies on B under the CUTOFF pot RV3 (modules/low / modules/acid pattern), centre X9.5 Y79.4.
 - NOISE IN sense: R14 470k, R49 22k series, D7 BAV199 low-leakage dual rail clamp.
-- Leave firmware clock/DAC reference settings unchanged (user scope decision).
+- S5 (user 2026-11-19): VREF+ and the two ADC knobs are on +3V0 (U12 LM4040 + R52), as modules/12bit S3; everything else stays
+  on +3V3. (Before S5 the DAC reference was left alone by a user scope decision.)
 
 ## Rules
 
@@ -43,7 +60,7 @@ Tables below that still say S3/R3/P4 are history unless they name S4.
   0.815 mm (historical cached-yard documentation quoted 0.77 mm), user accepted.
 - Every SMD pad >=2 mm from hand-soldered jack/pot pads and lugs.
 - Manual divide-and-conquer routing; no autorouters or in-pad vias. Keep both inner
-  planes continuous. No ignored ERC/DRC rule severities. DRC exclusions: only the vactrol stacking
+  planes continuous (In2 is +3V3; +3V0 runs as F / B tracks). No ignored ERC/DRC rule severities. DRC exclusions: only the vactrol stacking
   items, 18 per vactrol (10 `pth_inside_courtyard` + 8 `silk_over_copper`): U7 under RV3/RV4
   (user-approved 2026-11-03) and U11 under RV1/RV2 (user-approved 2026-11-09), written by
   `tools/vactrol_exclusions.py <report> U7|U11` (re-run for the vactrol whose parts moved, with

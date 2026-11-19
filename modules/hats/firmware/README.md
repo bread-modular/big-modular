@@ -1,6 +1,7 @@
-# HATS firmware (S4, STM32G071C8T6)
+# HATS firmware (S4 / S5, STM32G071C8T6)
 
-One firmware for U2 on the S4/R4 carrier: the Bread Modular NOISE and HIHAT
+One firmware for U2 on the S4 and S5 carriers (same pins; S5 only moves VREF+
+and the knobs to the +3V0 reference): the Bread Modular NOISE and HIHAT
 firmwares (`~/data/projects/bread-modular/modules/{noise,hihat}/code`, BM
 VERSION 0.1.0, last code commit `3c8e81b`) ported from the two S3 ATtiny1616s
 to one STM32, plus the S4 additions: the CUTOFF knob driving the U11 vactrol
@@ -49,8 +50,17 @@ and `millis()` the recorder needs), `hats/stm32g071x8.ld`.
   loop the knobs offset the take; press again for live. Lane 1 CUTOFF,
   lane 2 NOISE TONE. MIDI Start rewinds. Needs MIDI clock.
 - DAC levels: BM writes 8-bit values with the ATtiny reference that its
-  author notes ends up as VDD (3.3 V); VREF+ here is +3V3, so 8-bit full
-  scale maps to 12-bit full scale and the levels match.
+  author notes ends up as VDD (3.3 V). On an S4 board VREF+ is +3V3, so
+  8-bit full scale maps to 12-bit full scale and the levels match. On an S5
+  board VREF+ is the +3V0 reference: full scale is 3.0 V, so the noise is
+  0.8 dB lower and the top velocity about 3 % lower (not compensated).
+- **Knob ADC** (2026-11-19, as modules/12bit `clapsnare`): TIM6 starts one
+  scan of PA1 + PA6 per 100 kHz noise tick and DMA writes it into a ring of
+  16 scans; the main loop takes the mean. The ADC load then repeats at
+  100 kHz, above hearing. Before, the main loop ran 16x oversampled scans
+  back to back at its own rate (a few kHz); on the first 12bit board a burst
+  load like that was an audible buzz at the outputs. A 20 ms wait at start
+  lets the S5 reference settle before the ADC calibration.
 
 ## Changes from Bread Modular
 
@@ -89,7 +99,7 @@ hats/test.sh        # host tests of hats_logic.h, no hardware
 Flash with the module powered from the ±12 V header (J11 pin 1 +3V3 is the
 probe's VTref sense).
 
-Built 2026-11-09 with ARM GCC 14.2.rel1, `p` / `d`: 7832 / 7828 B flash,
-5560 B RAM (incl. stack/heap reserve), no warnings. Host tests and the shared
+Built 2026-11-19 with ARM GCC 14.2.rel1, `p` / `d`: 8028 / 8020 B flash,
+5636 B RAM (incl. stack/heap reserve), no warnings. Host tests and the shared
 CvRecorder tests pass. **Not run on hardware**: clock, ADC, DAC, PWM, UART and
 the vactrol model are unverified until the bench.
