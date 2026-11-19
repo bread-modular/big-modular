@@ -7,6 +7,7 @@
 # Usage:
 #   ./flash.sh                    # pick firmware and JP1 interactively
 #   ./flash.sh clapsnare p|d
+#   ./flash.sh crash     p|d
 #   ./flash.sh osc3               # no MIDI, no JP1 setting
 #   ./flash.sh humtest            # output noise bench test, no JP1 setting
 #
