@@ -1,11 +1,11 @@
-# MULTI-MIX contract (carrier S5 / MCU S4 schematics, R3 routing)
+# MULTI-MIX contract (carrier S5 / MCU S4 schematics; carrier R4, MCU board R3 routing; panel P5)
 
 | | |
 |---|---|
 | KiCad projects | `hardware/multi-mix.kicad_{pro,sch,pcb}` (carrier), `hardware/multi-mix-mcu.kicad_{pro,sch,pcb}` (MCU board), `panels/front-pcb/multi-mix-panel.kicad_{pro,pcb}` (20HP panel); one shared `MULTIMIX` symbol/footprint library |
 | Generators, profiles, checks | `tools/` (`build_schematic.py`, `circuit_carrier.py`, `circuit_mcu.py`, `build_project.py`, `build_layout.py`, `import_footprints.py`, `sexp.py`, `kicad-project.json`, `kicad-project-mcu.json`; `check_usb.py` = modules/usb-audio's USB routing check) |
 | Geometry contract | `docs/geometry.json` (panel frame, 20HP; S5/R3, hand-edited since routing) |
-| Circuit intent and decisions | `docs/research.md` (MCU pins and strip maps: section 5; datasheet review: 6a; placement: 8; S2/S3 changes and R1 routing: 9; fab-review fixes S4/R2: 10; MIDI IN S5/R3: 11) |
+| Circuit intent and decisions | `docs/research.md` (MCU pins and strip maps: section 5; datasheet review: 6a; placement: 8; S2/S3 changes and R1 routing: 9; fab-review fixes S4/R2: 10; MIDI IN S5/R3: 11; R4 / P5 usb-audio-max carry-over: 12) |
 | Fabrication outputs | `jlcpcb/` (`main/` carrier + panel, `mcu/` MCU board; `jlcpcb/README.md`), one manifest per board set, declared as `source_manifest` in the two profiles |
 | Evidence | `docs/erc/` (native ERC JSON), `docs/*-schematic.pdf`, `docs/schematic-symbols.json`, `hardware/MULTIMIX.pretty/PROVENANCE.json` |
 
@@ -104,4 +104,8 @@
   manifests equal on both; `check_usb.py` pass; no vias in SMD pads, no In1 tracks, new SMD >= 2.20 mm from
   pot/jack pads, courtyards >= 1.025 mm from the edge apart from the two open items; panel DRC 0, jack holes
   coaxial. JLCPCB export + strict-live audit in `jlcpcb/` (audit exits 1 by design; gates in its README).
-  Open: J101 / MS3 courtyard decision, the 10 Extended R/C placements, C1562 lookup, firmware, bench.
+  J101 / MS3 courtyards user-accepted for the prototype (2026-11-19); C211-C216 = C107043 (C33353 was pre-order only, `docs/research.md` 12b). Open: the 10 Extended R/C placements, firmware, bench (C1562: user-checked on JLCPCB 2026-11-19, 1,770,712 in stock).
+- **Carrier R4 + panel P5 (2026-11-19, `docs/research.md` section 12):** lessons of the first modules/usb-audio-max
+  board: B.Cu GND pour `B_GND_SPREAD` (SMD pads solid, THT on spokes; two B-only no-pour areas at RV303.1 / J6.3)
+  to spread the PCM3168A heat behind the MCU board; USB-C slot 9.5 x 5.2 at X84.1 Y21.75 (1.5 mm longer downwards),
+  USB label Y27.1. No part, track or via moved; BOM/CPL identical. Shared `check` 0 / equal; `main/` re-exported.

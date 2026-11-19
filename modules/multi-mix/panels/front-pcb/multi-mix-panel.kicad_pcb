@@ -9,9 +9,9 @@
 	(paper "A4")
 	(title_block
 		(title "Big Modular - MULTI-MIX 20HP front panel")
-		(rev "S5/P4")
+		(rev "S5/P5")
 		(company "Big Modular")
-		(comment 1 "S5/P4 FIT STUDY: P3 + MIDI IN jack hole H35 above USB 1 (2026-11-11); passive panel, NPTH only (holes + USB-C slot), no copper")
+		(comment 1 "S5/P5: P4 + USB-C slot 1.5 mm longer downwards as on modules/usb-audio-max (2026-11-19); passive panel, NPTH only (holes + USB-C slot), no copper")
 		(comment 2 "Geometry contract: ../../docs/geometry.json")
 	)
 	(layers
@@ -2557,7 +2557,7 @@
 	(footprint ""
 		(layer "F.Cu")
 		(uuid "e9eb83c6-cafd-4732-baaa-a7d87d5bbf60")
-		(at 184.1 71)
+		(at 184.1 71.75)
 		(property "Reference" "H34"
 			(at 0 0 0)
 			(layer "F.SilkS")
@@ -2617,8 +2617,8 @@
 		(attr board_only exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -5 -2.1)
-			(end 5 2.1)
+			(start -5 -2.85)
+			(end 5 2.85)
 			(stroke
 				(width 0.05)
 				(type default)
@@ -2629,8 +2629,8 @@
 		)
 		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 9.5 3.7)
-			(drill oval 9.5 3.7)
+			(size 9.5 5.2)
+			(drill oval 9.5 5.2)
 			(layers "*.Cu" "*.Mask")
 			(thermal_bridge_angle 45)
 			(uuid "800e8bdd-e3ad-415a-9fd4-81018940f63a")
@@ -3109,7 +3109,7 @@
 		)
 	)
 	(gr_text "USB"
-		(at 184.1 75.6 0)
+		(at 184.1 77.1 0)
 		(layer "F.SilkS")
 		(uuid "9b3168e3-bf6d-4ead-9f48-8af4b811a7c3")
 		(effects

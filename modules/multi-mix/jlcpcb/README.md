@@ -1,18 +1,24 @@
-# multi-mix — manufacturing export (carrier S5/R3, MCU board S4/R3, 20HP panel P4)
+# multi-mix — manufacturing export (carrier S5/R4, MCU board S4/R3, 20HP panel P5)
 
-Exported on 2026-11-11 after the MIDI IN jack change (`docs/research.md` section 11), with the shared
+`main/` re-exported on 2026-11-19 (carrier R4: B.Cu GND pour for the codec heat; panel P5: USB-C slot
+1.5 mm longer downwards, both carried over from the first modules/usb-audio-max board, `docs/research.md`
+section 12; U8 OPA1678IDR -> NE5532DR C7426 (Basic) on 2026-11-19, section 12a, so the BOM U8 row
+changed, the CPL did not). `mcu/` is the 2026-11-11 export after the MIDI IN jack change
+(section 11), unchanged. Both made with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction ("make it fab ready").
 Never hand-edit these files: change the sources, then re-export with the commands below.
 
 > **Prototype order set, not order-approved.** Open gates before you order: (1) two courtyard items on
-> panel-fixed parts need your OK (MCU board J101 USB-C 0.53 mm from the MS3 notch edge, carrier MS3
+> panel-fixed parts: user OK for the prototype, 2026-11-19 ("fine for now") (MCU board J101 USB-C 0.53 mm from the MS3 notch edge, carrier MS3
 > 0.98 mm from the top edge; `docs/research.md` section 10); (2) the 10 Extended R/C placements below
-> need your OK (or Basic substitutes); (3) C1562 (C101/C102) failed today's exact lookup — confirm it in
-> the JLCPCB part preview; (4) the shared assembly audit's per-part rating/role reviews are unrecorded
+> need your OK (or Basic substitutes); (3) C1562 (C101/C102) failed the tool's exact lookup, but the user checked it on JLCPCB on
+> 2026-11-19: 1,770,712 in stock (closed); (4) the shared assembly audit's per-part rating/role reviews are unrecorded
 > (`unknown`, as on every module here), so the audit exits 1; (5) JLCPCB's own part/placement preview
 > (rotation, pin 1, bottom side) and the quote options below are manual. No firmware exists and nothing
-> is bench-tested: the U3 stencil, the Q1 temperature and the I2S clock rate (CH32V307 rated 8 MHz,
-> `docs/research.md` 6a F1) are prototype risks, not proven by these files.
+> is bench-tested here: the U3 stencil, the U3 / Q1 temperatures and the I2S clock rate (CH32V307 rated 8 MHz,
+> `docs/research.md` 6a F1; the same 12.288 MHz TDM link runs clean on the built modules/usb-audio-max)
+> are prototype risks, not proven by these files. (6) U8 is now NE5532DR C7426 (Basic, 250,172 in stock on
+> 2026-11-19); OPA1678IDR had dropped to 30.
 
 The module has two KiCad projects in one `hardware/` directory, so it keeps one manifest per
 board set (`main/`, `mcu/`), declared as `source_manifest` in `tools/kicad-project.json` and
@@ -25,7 +31,7 @@ board set (`main/`, `mcu/`), declared as `source_manifest` in `tools/kicad-proje
 | `main/multi-mix-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
 | `main/multi-mix-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
 | `main/assembly/bom.csv`, `main/assembly/positions.csv` | Carrier BOM and CPL (upload these) |
-| `main/carrier/` | Carrier export: ZIP unpacked (4 copper layers: F / In1 GND / In2 +3V3 + +5VA + 2 x +3V3_C / B, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
+| `main/carrier/` | Carrier export: ZIP unpacked (4 copper layers: F / In1 GND / In2 +3V3 + +5VA + 2 x +3V3_C / B with a GND pour, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
 | `main/panel/` | Panel export: ZIP unpacked, empty BOM/CPL, export report |
 | `main/source-sha256.json` | Carrier + panel sources and export SHA-256 |
 | `mcu/multi-mix-mcu-gerbers.zip` | MCU board Gerber/drill ZIP (upload this) |
@@ -44,7 +50,7 @@ in `main/carrier/`, `main/panel/` and `mcu/board/`.
 | Carrier assembly | `main/assembly/bom.csv`, `main/assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 203 parts in 46 BOM rows, all on the back |
 | MCU board PCB | `mcu/multi-mix-mcu-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 35.45 mm (notched outline), same base options as the carrier; **explicit JLC04161H-7628 stack and USB targets below**. Min hole 0.3 mm (59 vias 0.6/0.3). The USB-C shell legs are plated slots |
 | MCU board assembly | `mcu/assembly/bom.csv`, `mcu/assembly/positions.csv` | **Economic PCBA, assembly side: Top.** 25 parts in 13 BOM rows, all on the front, J101 USB-C included |
-| Front panel PCB | `main/multi-mix-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 101.3 x 128.5 mm (20HP), no copper, no assembly. 34 round NPTH (15 x 7.2 pots, 12 x 6.2 jacks incl. the new MIDI IN hole H35, 7 x 3.2) + the 9.5 x 3.7 mm USB-C slot |
+| Front panel PCB | `main/multi-mix-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 101.3 x 128.5 mm (20HP), no copper, no assembly. 34 round NPTH (15 x 7.2 pots, 12 x 6.2 jacks incl. the new MIDI IN hole H35, 7 x 3.2) + the 9.5 x 5.2 mm USB-C slot (P5: 1.5 mm longer downwards, as on the built modules/usb-audio-max) |
 
 ### USB fabrication constraints (MCU board)
 
@@ -59,7 +65,10 @@ figures, not a supplier measurement or a USB compliance test.
 
 Same footprint and rules as modules/usb-audio-max (its `jlcpcb/README.md`): mask opened to 7.4 x 7.4 mm,
 25 paste dots between the 36 thermal holes; Q1 BCP56 has F (188 mm2) and B (68 mm2) `/V5_IN` pours tied
-by 11 thermal vias beside the tab. Paste coverage and Q1 temperature are bench items.
+by 11 thermal vias beside the tab. R4 adds a B.Cu GND pour over the carrier (SMD pads solid, so U3's 8 x 8 mm
+B land ties into ~4100 mm2 of outer copper on the open back; THT pads on spokes): on the built
+modules/usb-audio-max the codec runs hot behind the MCU board. A stick-on heat sink on U3 is the fallback.
+Paste coverage and the U3 / Q1 temperatures are bench items.
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
 
@@ -80,6 +89,12 @@ The exporter excluded exactly these electrical refs: the 33 carrier THT refs as 
 
 ## Parts (strict-live audit, 2026-11-11 02:20 UTC, 5 boards)
 
+**Re-run 2026-11-19 15:01 UTC** (`research/fab-check-1119/audit-*.json`): same codes and results, stock
+now OPA1678IDR **30**, C33353 659, PCM3168APAPR 1495, OPA1679IDR 2533, SN74LVC2G125 2106, CH32V307RCT6
+1631, TYPE-C-31-D-15 426; C1562 ambiguous to the tool (user-checked on JLCPCB: 1,770,712 in stock). Since then U8 = NE5532DR C7426 (Basic, 250,172;
+`research/ne5532/audit-carrier.json`) and C211-C216 = C107043 (C33353 was pre-order only;
+`research/c0g/audit-carrier.json`, section 12b of `docs/research.md`). No pre-order part left in either BOM (2026-11-19). The 2026-11-11 notes below are kept for the record.
+
 `assembly.py audit --strict-live` on both BOM/CPL sets; raw reports and snapshots in
 `research/midi/audit/` (ignored). 57 codes: **34 Basic, 22 Extended, 1 unresolved by exact lookup**;
 every resolved code reported Economic-eligible (`componentProductType` 0). The audit exits 1 by design
@@ -94,10 +109,11 @@ every resolved code reported Economic-eligible (`componentProductType` 0). The a
   REF5050AIDR C27804, 24.576 MHz oscillator C5203547, 8 MHz crystal C2682774, MWSA0402S inductor C408337,
   GZ2012D121TF ferrite C5671, K2-1808SN switches C92589, USBLC6-2SC6 C7519.
 - **R/C that are not Basic (10 placements, as modules/usb-audio-max, user decision open):**
-  C211-C216 2.2n C0G 0603 C33353 (Extended, 2844; no Basic C0G at 2.2n in 0603), R1/R2 33R 2512 1 W
+  C211-C216 2.2n C0G 0603 C107043 YAGEO CC0603JRNPO9BN222 since 2026-11-19 (was C33353, pre-order only; `docs/research.md` 12b; Extended, 313,002; no Basic C0G at 2.2n in 0603), R1/R2 33R 2512 1 W
   C53728 (Extended), R3/R8 2.2R 1206 C144499 (Extended).
 - **C101/C102 33p C0G 0402 C1562** (MCU board): exact lookup came back ambiguous today (as on
-  modules/usb-audio and usb-audio-max, where an earlier lookup recorded it Basic and Economic-eligible).
+  modules/usb-audio and usb-audio-max, where an earlier lookup recorded it Basic and Economic-eligible). User-checked on JLCPCB on
+  2026-11-19: 1,770,712 in stock.
 - **Q2 C20526**: catalog MPN text `MMBT3904(RANGE:100-300)` vs native `MMBT3904` (same C-code, hFE
   bin qualifier).
 
@@ -107,16 +123,16 @@ order gate.
 
 ## Source identity
 
-Taken from the manifests; the shared `check` re-hashes them and fails on drift (equal on 2026-11-11,
-`research/midi/final-carrier`, `research/midi/final-mcu`).
+Taken from the manifests; the shared `check` re-hashes them and fails on drift (equal on 2026-11-19,
+`research/ne5532/native2` (carrier), `research/fab-check-1119/mcu-final`).
 
-- Carrier PCB `597fdfeb0abf45761ea1f366b7f013fb73281069db73c74bba759f6541a83f69`.
+- Carrier PCB `7dad5761d6b8f497b2e0d3c97bfcb1f5cda30aea136ab039f0fc44521f8c5de1` (R4, U8 NE5532 fields).
 - Carrier project `903c3d129b5a8f9a47deda99a8f9a41a5ff34f18354ddc63ae27415bc33467e1`.
-- Carrier schematic `c2daa88d55d8c97207057f5ff9b32fddf9ac6b21bf5f8edcc66e1ee6d088e23c`.
+- Carrier schematic `90cc2429890cd7202c5461d0bd1e9d41b6594825a356443e3a7d1210e395c844` (U8 NE5532).
 - MCU PCB `d407a6b9969528fc794cb0a215634d37a8480d32f5b752a6eaaf9418348a1c14`.
 - MCU project `17b65b01655365de590162d86507d6f15a3184fe5ea9ef486420e190bbb96057`.
 - MCU schematic `751af264da7fb73b279428f216ba2bff4968cba403355c29b9f719788cae5c23`.
-- Panel PCB `1a5c47dc6eaa243b98177544e120d7381ad03e46d300778ddb7ab2b95f6ae97b`.
+- Panel PCB `107de1a05752377b8a34ba11e0ac50f06bc14c348494ad203a16cadc3201b971` (P5).
 - Panel project `8520b46f31c39f02279f9b10ed2c98d7fb545e90468302ada3b8ddc26291883e`.
 
 ## Reproduce

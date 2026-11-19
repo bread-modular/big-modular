@@ -5123,7 +5123,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "MULTIMIX:OPA1678"
+		(symbol "MULTIMIX:NE5532"
 			(pin_names
 				(offset 0.127)
 			)
@@ -5143,7 +5143,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "OPA1678"
+			(property "Value" "NE5532"
 				(at 0 -5.08 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -5165,7 +5165,7 @@
 					)
 				)
 			)
-			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ne5532.pdf"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -5176,7 +5176,7 @@
 					)
 				)
 			)
-			(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+			(property "Description" "Dual Low-Noise Operational Amplifiers, DIP-8/SOIC-8"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -5219,7 +5219,7 @@
 					)
 				)
 			)
-			(symbol "OPA1678_1_1"
+			(symbol "NE5532_1_1"
 				(polyline
 					(pts
 						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
@@ -5287,7 +5287,7 @@
 					)
 				)
 			)
-			(symbol "OPA1678_2_1"
+			(symbol "NE5532_2_1"
 				(polyline
 					(pts
 						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
@@ -5355,7 +5355,7 @@
 					)
 				)
 			)
-			(symbol "OPA1678_3_1"
+			(symbol "NE5532_3_1"
 				(pin power_in line
 					(at -2.54 -7.62 90)
 					(length 3.81)
@@ -23183,7 +23183,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C33353"
+		(property "LCSC" "C107043"
 			(at 99.06 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -23194,7 +23194,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10C222JB8NNNC"
+		(property "MPN" "CC0603JRNPO9BN222"
 			(at 99.06 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -23205,7 +23205,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Samsung"
+		(property "Manufacturer" "YAGEO"
 			(at 99.06 275.59 0)
 			(hide yes)
 			(show_name no)
@@ -36383,7 +36383,7 @@
 		)
 	)
 	(symbol
-		(lib_id "MULTIMIX:OPA1678")
+		(lib_id "MULTIMIX:NE5532")
 		(at 302.26 525.78 0)
 		(unit 3)
 		(body_style 1)
@@ -36404,7 +36404,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "OPA1678"
+		(property "Value" "NE5532"
 			(at 297.18 527.05 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -36426,7 +36426,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ne5532.pdf"
 			(at 302.26 525.78 0)
 			(hide yes)
 			(show_name no)
@@ -36437,7 +36437,7 @@
 				)
 			)
 		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+		(property "Description" "Dual Low-Noise Operational Amplifiers, DIP-8/SOIC-8"
 			(at 302.26 525.78 0)
 			(hide yes)
 			(show_name no)
@@ -36448,7 +36448,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C192421"
+		(property "LCSC" "C7426"
 			(at 302.26 525.78 0)
 			(hide yes)
 			(show_name no)
@@ -36459,7 +36459,7 @@
 				)
 			)
 		)
-		(property "MPN" "OPA1678IDR"
+		(property "MPN" "NE5532DR"
 			(at 302.26 525.78 0)
 			(hide yes)
 			(show_name no)
@@ -36891,7 +36891,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C33353"
+		(property "LCSC" "C107043"
 			(at 99.06 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -36902,7 +36902,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10C222JB8NNNC"
+		(property "MPN" "CC0603JRNPO9BN222"
 			(at 99.06 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -36913,7 +36913,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Samsung"
+		(property "Manufacturer" "YAGEO"
 			(at 99.06 247.65 0)
 			(hide yes)
 			(show_name no)
@@ -46620,7 +46620,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C33353"
+		(property "LCSC" "C107043"
 			(at 99.06 303.53 0)
 			(hide yes)
 			(show_name no)
@@ -46631,7 +46631,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10C222JB8NNNC"
+		(property "MPN" "CC0603JRNPO9BN222"
 			(at 99.06 303.53 0)
 			(hide yes)
 			(show_name no)
@@ -46642,7 +46642,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Samsung"
+		(property "Manufacturer" "YAGEO"
 			(at 99.06 303.53 0)
 			(hide yes)
 			(show_name no)
@@ -46669,7 +46669,7 @@
 		)
 	)
 	(symbol
-		(lib_id "MULTIMIX:OPA1678")
+		(lib_id "MULTIMIX:NE5532")
 		(at 299.72 287.02 0)
 		(mirror x)
 		(unit 1)
@@ -46690,7 +46690,7 @@
 				)
 			)
 		)
-		(property "Value" "OPA1678"
+		(property "Value" "NE5532"
 			(at 299.72 297.18 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -46711,7 +46711,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ne5532.pdf"
 			(at 299.72 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -46722,7 +46722,7 @@
 				)
 			)
 		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+		(property "Description" "Dual Low-Noise Operational Amplifiers, DIP-8/SOIC-8"
 			(at 299.72 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -46744,7 +46744,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C192421"
+		(property "LCSC" "C7426"
 			(at 299.72 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -46755,7 +46755,7 @@
 				)
 			)
 		)
-		(property "MPN" "OPA1678IDR"
+		(property "MPN" "NE5532DR"
 			(at 299.72 287.02 0)
 			(hide yes)
 			(show_name no)
@@ -47758,7 +47758,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C33353"
+		(property "LCSC" "C107043"
 			(at 99.06 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -47769,7 +47769,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10C222JB8NNNC"
+		(property "MPN" "CC0603JRNPO9BN222"
 			(at 99.06 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -47780,7 +47780,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Samsung"
+		(property "Manufacturer" "YAGEO"
 			(at 99.06 191.77 0)
 			(hide yes)
 			(show_name no)
@@ -56019,7 +56019,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C33353"
+		(property "LCSC" "C107043"
 			(at 99.06 331.47 0)
 			(hide yes)
 			(show_name no)
@@ -56030,7 +56030,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10C222JB8NNNC"
+		(property "MPN" "CC0603JRNPO9BN222"
 			(at 99.06 331.47 0)
 			(hide yes)
 			(show_name no)
@@ -56041,7 +56041,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Samsung"
+		(property "Manufacturer" "YAGEO"
 			(at 99.06 331.47 0)
 			(hide yes)
 			(show_name no)
@@ -56500,7 +56500,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C33353"
+		(property "LCSC" "C107043"
 			(at 99.06 219.71 0)
 			(hide yes)
 			(show_name no)
@@ -56511,7 +56511,7 @@
 				)
 			)
 		)
-		(property "MPN" "CL10C222JB8NNNC"
+		(property "MPN" "CC0603JRNPO9BN222"
 			(at 99.06 219.71 0)
 			(hide yes)
 			(show_name no)
@@ -56522,7 +56522,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Samsung"
+		(property "Manufacturer" "YAGEO"
 			(at 99.06 219.71 0)
 			(hide yes)
 			(show_name no)
@@ -70004,7 +70004,7 @@
 		)
 	)
 	(symbol
-		(lib_id "MULTIMIX:OPA1678")
+		(lib_id "MULTIMIX:NE5532")
 		(at 299.72 325.12 0)
 		(mirror x)
 		(unit 2)
@@ -70025,7 +70025,7 @@
 				)
 			)
 		)
-		(property "Value" "OPA1678"
+		(property "Value" "NE5532"
 			(at 299.72 335.28 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -70046,7 +70046,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/opa1678.pdf"
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ne5532.pdf"
 			(at 299.72 325.12 0)
 			(hide yes)
 			(show_name no)
@@ -70057,7 +70057,7 @@
 				)
 			)
 		)
-		(property "Description" "Low-Distortion Audio Operational Amplifiers, SOIC-8/VSSOP-8"
+		(property "Description" "Dual Low-Noise Operational Amplifiers, DIP-8/SOIC-8"
 			(at 299.72 325.12 0)
 			(hide yes)
 			(show_name no)
@@ -70079,7 +70079,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C192421"
+		(property "LCSC" "C7426"
 			(at 299.72 325.12 0)
 			(hide yes)
 			(show_name no)
@@ -70090,7 +70090,7 @@
 				)
 			)
 		)
-		(property "MPN" "OPA1678IDR"
+		(property "MPN" "NE5532DR"
 			(at 299.72 325.12 0)
 			(hide yes)
 			(show_name no)
