@@ -5,6 +5,15 @@ Read root `AGENTS.md`, then `Code.md`, `README.md`, `docs/research.md` and
 
 ## Current state
 
+- **S5 schematic + R7 carrier (2026-11-19, user: the modules/12bit reference fix on this board too):** U12 LM4040B30FTA
+  (C460604) + R52 2.2k from +12V_F make **+3V0** for VREF+ (FB1) and the two ADC knobs (RV1.3, RV3.3); the rest stays on
+  +3V3. DAC full scale 3.0 V (noise -0.8 dB, top velocity ~3 % lower), not compensated. R7 = R6 copper + six hand batches
+  (`research/route-s5/`: `b1_sync.py` .. `b6_free_via.py`, `check.sh`, `verify.py`; `pathfind.py` is a one-connection helper,
+  every path reviewed): U12 left of U4, R52 below RV3 / RV4, +3V0 on F / B with 4 vias, the old FB1 +3V3 via re-used for
+  +3V0, a second under-chip +3V3 via for U2. ERC 0, DRC 36 = 36 excluded, 0 active, unconnected 0, parity 0, 672 tracks /
+  137 vias, no vias in SMD pads, In1 / In2 one piece, SMD-to-pot/jack 2.05 mm. `HATS R7`. JLCPCB re-exported 2026-11-19
+  (97 placements / 35 rows, shared `check` manifest equal; panel unchanged). Firmware: TIM6-triggered knob ADC scan with DMA
+  and a 20 ms reference settle wait, compiled (p / d) + host-tested, not run on hardware. Not built, not measured.
 - **S4 schematic (2026-11-08, user direction):** one STM32G071C8T6 U2 (modules/12bit support:
   C6/C7, FB1 + C24/C25 VREF+, C26 NRST, J11 1x5 SWD) replaces U2/U3 ATtiny1616 (R4/R5/J12 gone).
   DAC1 PA4 white noise, DAC2 PA5 velocity, PA2 gate, PA3 open hat, ADC PA1 NOISE TONE (C27) and

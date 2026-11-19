@@ -1,4 +1,45 @@
-# HATS manufacturing export — S4 / R6 / P5
+# HATS manufacturing export — S5 / R7 / P5
+
+Re-exported 2026-11-19 from the S5 schematic (+3V0 reference rail), the R7 carrier and the unchanged P5
+panel, using the unchanged shared `opt/kicad-tools/jlcpcb/export.py` (commands at the end). **Complete
+matched export, not supplier-accepted, not built, not measured; the firmware in `../firmware/` is
+compiled, not run on hardware.**
+
+**S5 / R7 = the modules/12bit reference fix on R6 (2026-11-19, user).** Two new parts: U12 LM4040B30FTA
+(C460604, SOT-23, Extended) and R52 2.2k (C4190, 0603, Basic) make +3V0 from +12V_F for VREF+ (FB1) and
+the two ADC knobs (RV1.3, RV3.3). No other part moved or changed value. New copper: the +3V0 tracks on
+F / B (4 vias), a GND via at U12, one GND stitching via, a second +3V3 via under U2; the old FB1 via is
+now +3V0. Board text `HATS R7`.
+
+| Order | Files | Configuration |
+|---|---|---|
+| Carrier PCB | `hats-gerbers.zip` | 4 layers, FR4, 1.6 mm, 29 x 110 mm; F/In1 GND/In2 +3V3/B; ordinary tented vias, no POFV |
+| Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | Bottom-side Economic target; **97 placements / 35 BOM rows** |
+| Front panel | `hats-panel-gerbers.zip` | unchanged from the R6 set (P5, 13 NPTH holes): no need to reorder it |
+
+Against the R6 export: BOM adds only C4190 and C460604; the CPL adds only R52 (X115.0 Y135.8, 180) and U12
+(X117.3 Y84.2, 90); every other row is identical. Outline, NPTH and the panel files are unchanged. Manual
+assembly is as in the R6 table below (15 THT refs + JP1).
+
+Verification (R7, 2026-11-19): shared check ERC 0, DRC unconnected 0, native schematic parity 0, source
+manifest equal, upload mirrors identical, ZIP members equal to the loose files. DRC lists the same 36
+vactrol stacking items, all excluded (user-approved); 0 active. 672 tracks / 137 vias (137 x 0.3 mm hits
+in the PTH drill), no vias in SMD pads, no inner tracks, In1 GND and In2 +3V3 one piece each, closest
+SMD-to-pot/jack pad 2.05 mm (U12 3.55 mm, R52 3.34 mm). BOM and CPL list the same 97 refs as the board's
+SMD footprints. Raw reports: `../research/check-s5/`, scripts `../research/route-s5/` (ignored).
+
+Sourcing: C460604 (stock 13,618, Extended, Economic-eligible) and C4190 were looked up live on 2026-11-19
+for modules/12bit S3; the other 33 codes were not re-checked here. STM32G071C8T6 C529341 listed 965 in
+stock on 2026-11-19 (4,969 on 2026-11-06) and modules/12bit uses the same part: recheck before ordering.
+
+Open before ordering: U12 rotation in JLCPCB's placement preview (new part; same footprint and code as
+modules/12bit U5); the R6 items below (supplier preview, R43/R46 Extended, U1 tab temperature).
+
+The S4 / R6 notes below are the previous export.
+
+---
+
+## Previous: S4 / R6 / P5 export
 
 Re-exported 2026-11-09 from the S4 schematic (one STM32G071C8T6, PWM cutoff vactrol U11, REC
 button + LED), the R6 carrier and the P5 panel, using the unchanged shared

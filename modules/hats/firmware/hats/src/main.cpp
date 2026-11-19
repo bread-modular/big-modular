@@ -16,6 +16,13 @@
 //
 // Clock: HSI16 -> PLL 64 MHz, no crystal. Timers: TIM6 100 kHz noise tick
 // (one BM delay unit), TIM3 PWM + dither, SysTick 1 ms.
+//
+// Knob ADC (as modules/12bit clapsnare): TIM6 starts one two-channel scan per
+// noise tick and DMA stores it, so the ADC supply current repeats at 100 kHz,
+// above hearing. The software scan in the main loop it replaces ran in bursts
+// at the loop rate, a few kHz: on the first modules/12bit board such a burst
+// load was an audible buzz at the outputs. S5 boards also take VREF+ and the
+// two knobs from the +3V0 reference (U12) instead of +3V3.
 // ============================================================================
 
 #include "stm32g0xx.h"
@@ -38,6 +45,9 @@
 #define ADC_CH_TONE    1   // PA1
 #define ADC_CH_CUTOFF  6   // PA6
 
+#define ADC_CHANNELS 2
+#define ADC_SCANS 16   // averaged per reading, as the 16x oversampling before
+
 static const uint32_t SYSCLK_HZ = 64000000;
 
 volatile uint32_t g_millis = 0;
@@ -46,6 +56,12 @@ volatile uint32_t g_millis = 0;
 static volatile uint32_t noiseHold = hats::noiseHoldTicks(0);  // ticks per sample
 static volatile uint8_t swingMix = 0;
 static volatile uint32_t cutoffDuty = 0;                       // PWM_FULL units
+
+// Scans in a ring, written by DMA: TONE, CUTOFF (ascending channel order).
+static volatile uint16_t adcBuf[ADC_SCANS * ADC_CHANNELS];
+
+// ADC overruns recovered by a restart of the scan (never expected).
+volatile uint16_t g_adcOverruns = 0;
 
 static volatile uint8_t rxBuf[64];
 static volatile uint8_t rxHead = 0;
@@ -159,44 +175,82 @@ static void delayUs(uint32_t us) {
     while (n--) {}
 }
 
+// Arms the stopped ADC: every TIM6 update then converts PA1 and PA6 once
+// (2 x 3.25 us of the 10 us tick) into adcBuf, from its start.
+static void adcStart() {
+    DMA1_Channel1->CCR = 0;
+    DMA1_Channel1->CPAR = (uint32_t)&ADC1->DR;
+    DMA1_Channel1->CMAR = (uint32_t)adcBuf;
+    DMA1_Channel1->CNDTR = ADC_SCANS * ADC_CHANNELS;
+    DMA1->IFCR = DMA_IFCR_CTCIF1;
+    DMA1_Channel1->CCR = DMA_CCR_MINC | DMA_CCR_CIRC | DMA_CCR_MSIZE_0 | DMA_CCR_PSIZE_0 | DMA_CCR_EN;
+    ADC1->ISR = ADC_ISR_OVR;
+    ADC1->CFGR1 |= ADC_CFGR1_DMAEN;
+    ADC1->CR |= ADC_CR_ADSTART;
+}
+
+// Stops the conversions; the ADC stays enabled and idle. DMAEN off and a read
+// of DR drop a pending DMA request, which would shift the next ring by one.
+static void adcStop() {
+    if (ADC1->CR & ADC_CR_ADSTART) {
+        ADC1->CR |= ADC_CR_ADSTP;
+        while (ADC1->CR & ADC_CR_ADSTP) {}
+    }
+    ADC1->CFGR1 &= ~ADC_CFGR1_DMAEN;
+    (void)ADC1->DR;
+    DMA1_Channel1->CCR = 0;
+}
+
 static void adcInit() {
     RCC->APBENR2 |= RCC_APBENR2_ADCEN;
-    ADC1->CFGR2 = (2u << ADC_CFGR2_CKMODE_Pos)       // PCLK / 4 = 16 MHz
-                | ADC_CFGR2_OVSE | (3u << ADC_CFGR2_OVSR_Pos) | (4u << ADC_CFGR2_OVSS_Pos);  // 16x, >> 4
+    RCC->AHBENR |= RCC_AHBENR_DMA1EN;
+    ADC1->CFGR2 = 2u << ADC_CFGR2_CKMODE_Pos;        // PCLK / 4 = 16 MHz, no oversampling
     ADC1->CR = ADC_CR_ADVREGEN;
     delayUs(30);
     ADC1->CR |= ADC_CR_ADCAL;
     while (ADC1->CR & ADC_CR_ADCAL) {}
     ADC1->SMPR = 5u << ADC_SMPR_SMP1_Pos;            // 39.5 cycles (10n on each wiper)
-    ADC1->CFGR1 = ADC_CFGR1_OVRMOD;                  // 12 bit, single, ascending scan
+    // 12 bit, one ascending scan per TIM6_TRGO (TRG5) rising edge, DMA ring
+    // (DMAEN in adcStart: a calibration with it set leaves a request pending)
+    ADC1->CFGR1 = ADC_CFGR1_OVRMOD | ADC_CFGR1_EXTEN_0 | (5u << ADC_CFGR1_EXTSEL_Pos) | ADC_CFGR1_DMACFG;
     ADC1->ISR = ADC_ISR_CCRDY;
     ADC1->CHSELR = (1u << ADC_CH_TONE) | (1u << ADC_CH_CUTOFF);
     for (uint32_t i = 0; i < 100000 && !(ADC1->ISR & ADC_ISR_CCRDY); i++) {}
+    DMAMUX1_Channel0->CCR = 5;                       // DMA1 channel 1 <- ADC
     ADC1->ISR = ADC_ISR_ADRDY;
     ADC1->CR |= ADC_CR_ADEN;
     while (!(ADC1->ISR & ADC_ISR_ADRDY)) {}
 }
 
-static uint16_t adcNext() {
-    while (!(ADC1->ISR & ADC_ISR_EOC)) {}
-    return (uint16_t)(ADC1->DR >> 2);                // 12 -> 10 bit, as BM analogRead
-}
-
-// One scan: PA1 (TONE) then PA6 (CUTOFF).
+// The mean of the last ADC_SCANS scans, 12 -> 10 bit as BM analogRead. An
+// overrun stops the DMA requests and would shift the channel order in the
+// ring: restart the scan from PA1.
 static void readKnobs() {
-    ADC1->CR |= ADC_CR_ADSTART;
-    liveTone = adcNext();
-    liveCutoff = adcNext();
-    while (!(ADC1->ISR & ADC_ISR_EOS)) {}
-    ADC1->ISR = ADC_ISR_EOS | ADC_ISR_EOC;
+    if (ADC1->ISR & ADC_ISR_OVR) {
+        adcStop();
+        adcStart();
+        g_adcOverruns++;
+    }
+    uint32_t tone = 0, cut = 0;
+    for (int i = 0; i < ADC_SCANS * ADC_CHANNELS; i += ADC_CHANNELS) {
+        tone += adcBuf[i];
+        cut += adcBuf[i + 1];
+    }
+    liveTone = (uint16_t)(tone / ADC_SCANS >> 2);
+    liveCutoff = (uint16_t)(cut / ADC_SCANS >> 2);
 }
 
 static void noiseTimerInit() {
     RCC->APBENR1 |= RCC_APBENR1_TIM6EN;
     TIM6->PSC = 0;
     TIM6->ARR = SYSCLK_HZ / hats::NOISE_TICK_HZ - 1;
-    TIM6->DIER = TIM_DIER_UIE;
+    TIM6->CR2 = TIM_CR2_MMS_1;       // TRGO on update: starts the ADC scan
     TIM6->CR1 = TIM_CR1_CEN;
+}
+
+static void noiseIrqInit() {
+    TIM6->SR = 0;
+    TIM6->DIER = TIM_DIER_UIE;
     NVIC_SetPriority(TIM6_DAC_LPTIM1_IRQn, 0);
     NVIC_EnableIRQ(TIM6_DAC_LPTIM1_IRQn);
 }
@@ -280,11 +334,17 @@ int main() {
     clockInit();
     gpioInit();
     dacInit();
+    noiseTimerInit();
+    // S5 boards: the +3V0 reference (VREF+) comes up a few ms after the MCU
+    // supply; let it settle before the ADC calibration and the first knob read.
+    delayUs(20000);
     adcInit();
+    adcStart();
+    for (uint32_t i = 0; i < 20000 && !(DMA1->ISR & DMA_ISR_TCIF1); i++) {}   // one full ring, 160 us
     cutoffPwmInit();
     recorder.begin();
     readKnobs();
-    noiseTimerInit();
+    noiseIrqInit();
     midiInit();
 
     for (;;) {

@@ -63,6 +63,30 @@ not run on hardware.
 Open for S4: bench check of the firmware (vactrol fit, noise timing); U1 tab temperature on the
 prototype; supplier preview; R43/R46 Extended.
 
+## S5 (2026-11-19, user): +3V0 reference rail, as modules/12bit S3
+
+The first modules/12bit board (same STM32G071C8T6, same VREF+ = +3V3 through a ferrite) buzzed at its outputs: the knob
+ADC scan loaded +3V3 in bursts, and the DAC reference is that rail. 12bit S3 gave the analog side an LM4040 reference;
+the user asked for the same change here.
+
+- **Circuit:** R52 2.2k from +12V_F -> U12 LM4040B30FTA 3.000 V +/-0.2 % shunt (SOT-23, pin 1 cathode, 2 anode, 3 open)
+  = +3V0. Loads: VREF+ through FB1 (C24 1u, C25 100n) and the CW ends of RV1 (NOISE TONE) and RV3 (CUTOFF), under 1 mm A,
+  so the shunt keeps about 3 mA of the 3.9 mA feed. +12V_F ripple is divided by 2200 / 0.4 (about -75 dB).
+- **What stays on +3V3:** the MCU, the four MCP6002, U5, both V_MID dividers (3.3 mA together), the MIDI pull-ups, R32
+  and Q4. They draw tens of mA and V_MID has to sit at half the op-amp supply, so they are not moved.
+- **Levels:** DAC full scale 3.0 V instead of 3.3 V: white noise -0.8 dB; ACCENT_SET at full velocity 2.39 V instead of
+  2.46 V (-3 %). Not compensated: the vactrol spread is far larger. Knob ADC codes are unchanged (ratiometric to VREF+).
+  DS12232: VREF+ 2 V..VDDA; +3V0 max 3.006 V, +3V3 min 3.2 V.
+- **How exposed HATS was (estimate, not measured):** much less than 12bit. The noise DAC goes through the vactrol VCA,
+  which is closed between hits, and the audio output is AC coupled; +3V3 ripple reaches the output mainly through VMID_H
+  (R24 / R25 / C15: 6.8 Hz corner) at about x0.01, against about x1.7 on 12bit. So S5 is reference hygiene shared with
+  12bit, not a measured cure; the firmware change below removes the burst load itself.
+- **Firmware:** the main-loop software scan (16x oversampled, back to back, a few kHz loop rate) is replaced by one
+  two-channel scan per TIM6 tick (100 kHz, hardware trigger) into a DMA ring of 16 scans, as 12bit `clapsnare`; a 20 ms
+  wait lets +3V0 settle before the ADC calibration. The 12bit hit-gated scan is not ported: CUTOFF drives the vactrol
+  continuously here.
+- **Board (R7):** see `../Code.md`. Start-up: +3V0 follows +12V_F with about 2.4 ms (2.2k x 1.1 uF).
+
 ## Current circuit (S3)
 
 | Block | Parts / behavior |

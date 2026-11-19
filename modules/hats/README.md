@@ -17,11 +17,16 @@ assembly notes clear of the pot pads, `-12V` beside the power header, `HATS R5` 
 their pins with a local re-route, heat-spreading copper on both sides of the 3.3 V regulator tab
 (U1), the U11 vactrol stacking findings approved and excluded like U7's, `HATS R6` board text.
 
+**S5 / R7** (2026-11-19) = the modules/12bit reference fix on this board: an LM4040 3.0 V reference (U12, fed by R52
+from +12 V) now supplies the DAC/ADC reference pin and the two MCU-read knobs, instead of the 3.3 V MCU supply. Two new
+parts, hand-routed, `HATS R7` board text, JLCPCB re-exported (97 parts / 35 BOM rows). The firmware reads the knobs on a
+fixed 100 kHz timer, as the 12bit fix. Not built or measured.
+
 **S3 schematic / R3 routed four-layer carrier / P4 panel.** Recording functionality,
 button, LED and associated circuitry have been removed. Pot row spacing is **34 mm**
 (previously 24 mm); all pots upright, with the vactrol on the back under CUTOFF (as on
 LOW). Copper setback is **1 mm**; all assembled SMD is on the back.
 
-JLCPCB files: `jlcpcb/` (re-exported from S4/R6/P5, 2026-11-09). See `jlcpcb/README.md`, `docs/research.md` and
+JLCPCB files: `jlcpcb/` (re-exported from S5/R7/P5, 2026-11-19). See `jlcpcb/README.md`, `docs/research.md` and
 `docs/noise-in-protection.md`. Exported, not supplier-accepted or bench-validated.
-Firmware clock/reference settings were left unchanged at the user's request.
+Until S5 the DAC reference was the +3V3 rail; S5 moves it to +3V0 (user, 2026-11-19).
