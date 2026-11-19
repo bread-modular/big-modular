@@ -1573,7 +1573,7 @@
 	(footprint ""
 		(layer "F.Cu")
 		(uuid "a9e31d2a-c9d5-4be8-bb0b-e0012bb7a4e5")
-		(at 125.25 66)
+		(at 125.25 66.75)
 		(property "Reference" "H19"
 			(at 0 0 0)
 			(layer "F.SilkS")
@@ -1633,8 +1633,8 @@
 		(attr board_only exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -5 -2.1)
-			(end 5 2.1)
+			(start -5 -2.85)
+			(end 5 2.85)
 			(stroke
 				(width 0.05)
 				(type default)
@@ -1645,8 +1645,8 @@
 		)
 		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 9.5 3.7)
-			(drill oval 9.5 3.7)
+			(size 9.5 5.2)
+			(drill oval 9.5 5.2)
 			(layers "*.Cu" "*.Mask")
 			(thermal_bridge_angle 45)
 			(uuid "88a7cc50-3397-47e0-9e33-fdc885a853d8")
