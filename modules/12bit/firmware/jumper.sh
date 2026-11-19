@@ -4,14 +4,14 @@
 # and the JP1 MIDI input setting from $2 (or $FIRMWARE / $JP1, or interactive
 # prompts) and exports the project for the shared opt/stm32g0-tools scripts.
 #
-#   clapsnare | osc3 | humtest
+#   clapsnare | crash | osc3 | humtest
 #   p   JP1 1-2 (protected NPN front end): RX inverted (USART1 RXINV on PB7)
 #   d   JP1 2-3 (direct, as Bread Modular): no inversion
 #   osc3 and humtest take no JP1 setting (a p|d argument is accepted and ignored).
 
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLS_DIR="$FW_DIR/../../../opt/stm32g0-tools"
-FIRMWARES=(clapsnare osc3 humtest)
+FIRMWARES=(clapsnare crash osc3 humtest)
 SETTINGS=(p d)
 
 FIRMWARE="${1:-${FIRMWARE:-}}"
@@ -23,7 +23,7 @@ if [[ -z "$FIRMWARE" ]]; then
   while true; do
     printf "Enter number (1-%d): " "${#FIRMWARES[@]}"
     read -r SEL
-    if [[ "$SEL" =~ ^[1-3]$ ]]; then
+    if [[ "$SEL" =~ ^[1-4]$ ]]; then
       FIRMWARE="${FIRMWARES[$((SEL - 1))]}"
       break
     fi

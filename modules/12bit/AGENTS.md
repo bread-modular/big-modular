@@ -25,7 +25,7 @@ Module paths are module-relative.
   shared `check` manifest equal; 6 Extended part types, STM32G071C8T6 listed stock 965). Not
   supplier-accepted, no JLCPCB preview, not built, not measured. The S2 / R2 export of the first board
   (46 parts / 24 rows) is in git history.
-- Firmware in `firmware/` (`clapsnare`, `osc3`, `humtest`); first board built. Open items: `docs/research.md` §5.
+- Firmware in `firmware/` (`clapsnare`, `crash`, `osc3`, `humtest`); first board built. Open items: `docs/research.md` §5.
 
 ## Boundaries
 

@@ -5,6 +5,7 @@
 # Usage:
 #   ./compile.sh                  # pick both interactively
 #   ./compile.sh clapsnare p|d
+#   ./compile.sh crash     p|d
 #   ./compile.sh osc3             # no MIDI, no JP1 setting
 #   ./compile.sh humtest          # output noise bench test, no JP1 setting
 #

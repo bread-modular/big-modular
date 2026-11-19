@@ -1,22 +1,22 @@
 # 12bit firmware (STM32G071C8T6)
 
 Bare metal (CMSIS headers only), built with the shared `opt/stm32g0-tools`
-(as `modules/hats/firmware/`). Two firmwares, `clapsnare` and `osc3`, and the
-`humtest` bench test.
+(as `modules/hats/firmware/`). Three firmwares, `clapsnare`, `crash` and
+`osc3`, and the `humtest` bench test.
 
-| Pin | clapsnare | osc3 |
-|---|---|---|
-| PB7 USART1_RX | MIDI in | not used |
-| PA1 ADC_IN1 | P1: MORPH | P1: oscillator 1 frequency |
-| PA6 ADC_IN6 | P2: TONE | P2: oscillator 2 frequency |
-| PA7 ADC_IN7 | P3: DECAY | P3: oscillator 3 frequency |
-| PA4 DAC1_OUT1 | OUT 1 | OUT 1: mix |
-| PA5 DAC1_OUT2 | OUT 2: same signal | OUT 2: same mix |
-| PB4 | MODE button: knob recorder | MODE button: next waveform |
-| PB5 | MODE LED | MODE LED |
-| PA0 ADC_IN0 | CV in: added to TONE | CV in: not used |
+| Pin | clapsnare | crash | osc3 |
+|---|---|---|---|
+| PB7 USART1_RX | MIDI in | MIDI in | not used |
+| PA1 ADC_IN1 | P1: MORPH | P1: MORPH | P1: oscillator 1 frequency |
+| PA6 ADC_IN6 | P2: TONE | P2: TONE | P2: oscillator 2 frequency |
+| PA7 ADC_IN7 | P3: DECAY | P3: FILTER | P3: oscillator 3 frequency |
+| PA4 DAC1_OUT1 | OUT 1 | OUT 1 | OUT 1: mix |
+| PA5 DAC1_OUT2 | OUT 2: same signal | OUT 2: same signal | OUT 2: same mix |
+| PB4 | MODE button: knob recorder | MODE button: knob recorder | MODE button: next waveform |
+| PB5 | MODE LED | MODE LED | MODE LED |
+| PA0 ADC_IN0 | CV in: added to TONE | CV in: added to FILTER | CV in: not used |
 
-Both: 48 kHz sample interrupt (TIM6), both DAC channels written together, DAC
+All: 48 kHz sample interrupt (TIM6), both DAC channels written together, DAC
 mid-scale = 0 V, full scale +-1700 codes = about +-4.7 V at the jacks (x3.4
 stage, from the design notes, not measured). Knobs: read at 1 kHz
 with a ~16 ms one-pole smoother.
@@ -43,7 +43,7 @@ ferrite on VREF+ does not filter audio frequencies; an RC (or a reference
 IC) for VREF+ and the VOFF divider would (ST AN2834: filter the reference
 separately; on the G071 VDDA is the VDD pin). Not measured.
 
-## JP1 setting (clapsnare)
+## JP1 setting (clapsnare, crash)
 
 JP1 picks the MIDI input path and the firmware must match it; pass it as the
 second argument of `compile.sh` / `flash.sh` (or interactively, or `JP1=`):
@@ -64,11 +64,14 @@ first board reads low (driven, 2026-11-18), so it is built as `p`.
 ./setup.sh                # once: ARM GCC from ~/.breadmodular, CMSIS + OpenOCD
 ./compile.sh clapsnare p  # -> clapsnare/.build/p/clapsnare-p.{elf,bin,hex}
 ./flash.sh clapsnare p    # build + program over SWD, CMSIS-DAP (DAPLink) probe
+./flash.sh crash p        # crash cymbal + cowbell
 ./flash.sh osc3           # no JP1 setting
 ./flash.sh humtest        # output noise bench test, no JP1 setting
 OPENOCD_INTERFACE=interface/stlink.cfg ./flash.sh clapsnare p   # ST-Link instead
 clapsnare/test.sh         # host tests
 clapsnare/test.sh wav     # + preview WAVs in clapsnare/.build/wav/
+crash/test.sh             # host tests (crash/test.sh wav: preview WAVs)
+crash/test.sh cal         # after a change to the crash sound or the clapsnare level: measure its level tables again
 osc3/test.sh              # host tests
 ```
 
@@ -153,6 +156,162 @@ flashes, worst sample interrupt 702 of 1333 counts (53 %). **Not heard and
 not measured by me**: the sound was tuned from the rendered waveforms and
 spectra only. Not tested with a real MIDI source, and the recorder only on
 the host.
+
+## crash: crash cymbal + cowbell
+
+A synthesized drum voice (no samples) for techno: a TR-808 / TR-909 style
+crash at one end of P1, the TR-808 cowbell at the other, a resonant FILTER on
+P3, and **every setting at the same level, the level of clapsnare**. **With
+TONE fully left both are the classic sounds**; turning TONE up colours them.
+Any MIDI note-on fires it (velocity = level on the clapsnare curve, 100 =
+-3 dB, 64 = -8 dB; note ignored, all channels); any note-off sends it
+into the fast release (23 ms), so the gate length is the length of the sound:
+the crash rings for 1.5 s with the note held and 0.12 s when tapped (0.35 s
+for an eighth note at 126 BPM), the cowbell 0.47 s / 0.12 s.
+
+| Knob | Does |
+|---|---|
+| **P1 MORPH** | Crash fully left, cowbell fully right, both layered in between. An equal-power fade, so the middle is as loud as the ends; a little dead travel at both ends, so the ends are the pure sounds |
+| **P2 TONE** | **Fully left = the classic crash and cowbell.** Turning it up tunes both higher: the crash by up to a fifth (x1.5: its oscillators and every filter together, a smaller and brighter cymbal, centre of its spectrum 6 kHz -> 9 kHz), the cowbell by up to an octave (540 + 800 Hz -> 1080 + 1600 Hz) |
+| **P3 FILTER** | Resonant low-pass (12 dB / octave) on the whole voice. **Fully left = no filtering**: the filter is bypassed (the bottom 40 of 4095 codes, so pot and ADC tolerances can't leave it in; host-tested to be sample for sample the voice without it). Above that its corner falls exponentially from 16 kHz (flat in the audio band, so it comes in without a step) to 400 Hz fully right, and the resonance comes in over the first 30 % of the travel (Q 0.7 -> 4, +12 dB at the corner, from 5.3 kHz down). A make-up gain keeps the level |
+
+- **Crash**: the TR-808 cymbal structure with the wash and the length of a
+  TR-909 crash. The six square oscillators of the 808 (205.3, 304.4, 369.6,
+  522.7, 540, 800 Hz) plus low-passed noise go through a 12 dB / octave
+  high-pass at 2 kHz (no fundamentals, only the shimmer) and two band-passes:
+  3.6 kHz (Q 1) with the long ring and 7.1 kHz (Q 1.5), which has a second,
+  shorter envelope on top: bright at the start, darker in the tail. A little
+  of the signal from before the second high-pass stays under it (the low end
+  of a real cymbal; it is also what a closed FILTER still finds: a dark
+  metallic cluster). Random oscillator phases: no two hits are alike.
+- **Cowbell**: two band-limited pulses 540 + 800 Hz (widths 0.36 / 0.44, so
+  they have the even harmonics of the 808's) through a band-pass at 900 Hz
+  (Q 2), a 9 ms strike (76 %) on a 110 ms tail. The 800 Hz tone leads, as on
+  the 808. Every hit is the same. The pulses are band-limited (polyBLEP;
+  host test: what folds back at 48 kHz is under 1 / 100 of a plain pulse's).
+- **Set against recordings, not by ear**: TR-808 cymbal, TR-909 crash and
+  TR-808 cowbell samples (public sample sets, not in the repository) were
+  measured and the constants set to them:
+
+  | | TR-808 cymbal | TR-909 crash | crash, TONE left |
+  |---|---|---|---|
+  | Centre of the spectrum, first 0.2 s | 7.0 .. 8.8 kHz | 2.6 .. 5.4 kHz | 6.2 kHz |
+  | ... 0.2 .. 0.6 s | 4.0 .. 5.6 kHz | 5.0 .. 5.6 kHz | 5.5 kHz |
+  | How tonal (spectral flatness 3 .. 9 kHz) | -5.2 dB | -3.4 .. -4.5 dB | -4.2 dB |
+  | -10 dB / -20 dB after | 0.17 / 0.57 s (decay at half) | 0.43 .. 0.52 / 0.8 .. 0.97 s | 0.36 / 0.79 s |
+  | 0.5 .. 1 kHz band after the attack | -34 .. -24 dB | -22 .. -17 dB | -24 .. -19 dB |
+
+  | | TR-808 cowbell (two recordings) | cowbell, TONE left |
+  |---|---|---|
+  | 540 Hz tone re the 800 Hz one | -14 / -12 dB | -11 dB |
+  | Its octave (1080 Hz) | -13 / -10 dB | -12 dB |
+  | 2.4 kHz | -25 / -19 dB | -23 dB |
+  | Level after 10 / 20 / 80 / 160 ms | -6 / -11 / -19 / -24 dB | -5 / -9 / -15 / -22 dB before the clipper |
+  | -40 dB after | 0.35 / 0.39 s | 0.36 s |
+
+  The second version had a crash centred at 2.7 kHz and a cowbell with all
+  its partials up to 4 kHz at the same level.
+- **Same level everywhere**: `crash/src/crash_levels.h` holds tables measured
+  on the voice itself (`crash/test.sh cal` -> `tools/calibrate.cpp`): the gain
+  that makes each engine as loud as the classic crash over TONE, and what the
+  FILTER lets through of each engine over TONE x FILTER, from which the
+  make-up gain behind the filter is computed (the crash needs up to +20 dB
+  with the filter closed; limit +36 dB). The level of a hit = the RMS below
+  12 kHz of the first 100 ms after the soft clipper (hiss above 12 kHz adds
+  to the RMS, not to what is heard). The cowbell is set 1.5 dB above the
+  crash (`BELL_LIFT_Q8`, see below). Measured on the host over MORPH x TONE x
+  FILTER (7 x 14 x 12 settings): crash within 0.7 dB, cowbell within 0.2 dB,
+  1.5 dB at the most at one MORPH setting, everything -6.9 .. -4.3 dBFS.
+- **As loud as clapsnare** (user, 2026-11-19: the third version sounded
+  quieter than clap / snare). Both firmwares peak at full scale and read
+  about the same on a meter (third version -10.2 dBFS, clap -9.1, snare
+  -11.1), so the meter does not show it. `crash/tools/loudness.h` is a
+  loudness model for the host (after Glasberg & Moore 2002, simplified:
+  ISO 226 ear weighting, excitation on the ERB scale, short-term loudness;
+  host-tested on tones and noise): the ear is 7 .. 12 dB less sensitive at
+  6 .. 10 kHz, where the crash sits, than at 1 kHz, and a tonal hit sounds
+  quieter than a noisy one at the same level. By it the third version's
+  crash was 3.6 phon and its cowbell 7.8 phon under the clap (TONE and DECAY
+  at noon, 102.2 phon; 10 phon = twice as loud).
+  The calibration now measures the clap and sets a **drive** into the soft
+  clipper (x2.97 in `crash_levels.h`, 5.9 dB more than before) so that the
+  classic crash is as loud as it:
+
+  | Full velocity, knobs as said | Loudness model | On a meter (RMS, first 100 ms) |
+  |---|---|---|
+  | clapsnare clap / layered / snare, TONE and DECAY at noon | 102.2 / 103.5 / 100.6 phon | -9.1 / -8.5 / -11.1 dBFS |
+  | crash, TONE left .. right | 102.2 .. 101.6 phon (was 98.6) | -5.9 dBFS (was -10.2) |
+  | crash + cowbell, MORPH at noon | 104.1 .. 102.8 phon | -4.9 dBFS |
+  | cowbell, TONE left .. right | 100.4 .. 98.8 phon (was 94.4) | -4.4 dBFS (was -10.2) |
+
+  At velocity 100 / 64 the crash is at 100.5 / 97.0 phon, the clap at 100.2 /
+  96.5 (same velocity curve). The cowbell stays 2 phon under the clap, as
+  loud as the snare: to match the clap by the model it would have to read
+  3.2 dB above the crash (another 3.6 dB of gain), which turns its strike
+  into a tone burst (full level for 80 ms), so it got 1.5 dB
+  (`BELL_LIFT_Q8` in `crash_logic.h`, then `crash/test.sh cal`). FILTER keeps
+  the meter level as before; by the model a closed filter is up to 3 phon
+  quieter on the crash (a dark sound), as in the third version.
+- **What the drive does to the sounds**: the crash has 3.4 % of its first
+  100 ms at the rail (clap: 0.1 %); its spectrum stays (73 % of the energy at
+  3 .. 9 kHz, centre 6.0 kHz), the ring looks longer after the clipper: -10 /
+  -20 dB after 0.43 / 0.88 s (before it 0.34 / 0.79 s; TR-909: 0.43 .. 0.52 /
+  0.8 .. 0.97 s). The cowbell is saturated: 9.5 % at the rail, its strike is
+  full level for the first 30 ms, then -3 dB after 80 ms and -7 dB after
+  160 ms (third version: -3 dB after 20 ms, -12 / -16 dB after 80 / 160 ms);
+  its partials stay within 2 dB (540 Hz -12 dB, 1080 Hz -13 dB re 800 Hz).
+  The tables above (set against recordings) are the sounds before the clipper.
+- **CV in modulates FILTER** (as TONE in clapsnare): 5 V = the whole knob
+  travel, bipolar, clamped, +-0.07 V dead band, after the recorder. Nothing
+  patched = 0 V = the knob alone, so FILTER fully left stays off. The make-up
+  gain follows the CV with the corner.
+- **MODE = 4-bar knob recorder on MIDI clock**, the clapsnare recorder (the
+  8bit crash's, here for all three knobs, overdub by holding MODE); LED as
+  clapsnare. Needs a running MIDI clock; MIDI Start rewinds.
+- Knob scan gated as clapsnare (runs only while the voice sounds, a take is
+  recorded or MODE is held), so no 1 kHz buzz between hits.
+- An engine that MORPH has faded out completely is not started, so a pure
+  cowbell ends after 0.47 s (the knob scan too).
+- No GATE output (the 12bit has none).
+
+Sources: `crash/src/main.cpp` (hardware, from clapsnare),
+`crash/src/crash_logic.h` (voice, filter, recorder, MIDI parser; integer
+maths, tuning constants at the top), `crash/src/crash_levels.h` (generated
+drive and level tables), `crash/tools/calibrate.cpp` (reads
+`clapsnare/src/clapsnare_logic.h` for the reference), `crash/tools/loudness.h`
+(the loudness model); host-tested by `crash/test.sh` (it also checks the
+crash against the clap by the model, so it fails after a level change in
+either firmware until `crash/test.sh cal` has run; `crash/test.sh wav` writes
+preview WAVs: the classic sounds, TONE and FILTER settings, a sweep of each
+knob, and `level-vs-clapsnare.wav`: clap, crash, snare, cowbell in turn).
+Built with `-O3` (the others `-Os`): the sample interrupt is the longest of
+the three firmwares.
+
+Status (2026-11-19, fourth version, user: "compared to the clap / snare the
+perceived volume is low"): the drive into the clipper and the clapsnare
+velocity curve as above; the sounds themselves (oscillators, filters,
+envelopes) are those of the third version. `p` and `d` compile without
+warnings (27.5 KB flash, 7.7 KB RAM), host tests pass. The code per sample
+is unchanged (the drive is part of the velocity gain; the note-on has two
+more multiplications), so the timing below still holds. **Not flashed, not
+heard, not measured**: "as loud" is the loudness model's verdict on rendered
+hits, not a listening test, and the model is a simplified one.
+
+Before that (2026-11-19, third version, user requests after the second one: TONE
+fully left = an 808 / 909 style crash and the techno cowbell, TONE = colour,
+FILTER kept): `p` and `d` compile without warnings (27.5 KB flash, 7.6 KB
+RAM), host tests pass. Sample interrupt not measured on the board: an
+instruction-level emulation of the Cortex-M0+ code with a cycle model (2
+flash wait states) gives 920 cycles for the worst sample (the trigger, both
+engines + filter), 835 for the worst one after it and 783 on average with
+both engines and the filter running (480 for the crash alone, 410 for the
+cowbell alone), of the 1333 per sample, plus ~32 for interrupt entry and
+exit; the same model gave 706 for clapsnare, which measured 670 .. 702 on the
+board. **Not flashed, not heard, not measured**: the sounds were set against
+measurements of recordings and the levels from rendered hits. The gate
+length still cuts the sound (as the 8bit crash): a full crash needs a note
+of 1.5 s. The first version (BRIGHT / HISS / 4-pole low-pass) was flashed and
+heard by the user (too quiet at P1 0 / P2 full).
 
 ## osc3: three-oscillator mixer
 
