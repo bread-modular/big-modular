@@ -75,7 +75,7 @@ SYMBOLS = {
     '74LVC2G34': ('74xGxx', '74LVC2G34'), '74LVC2G125': ('74xGxx', '74LVC2G125'),
     '74LVC1G97': ('74xGxx', '74LVC1G97'), '74HC4067': ('74xx', 'CD74HC4067SM'), 'BAT54S': ('Diode', 'BAT54S'),
     'CH32V30xRxTx': ('MCU_WCH_RiscV', 'CH32V30xRxTx'),
-    'OPA1679': ('Amplifier_Operational', 'OPA1679'), 'OPA1678': ('Amplifier_Operational', 'OPA1678'),
+    'OPA1679': ('Amplifier_Operational', 'OPA1679'), 'NE5532': ('Amplifier_Operational', 'NE5532'),
     'TPS562208': ('Regulator_Switching', 'TPS562200'), 'LM358': ('Amplifier_Operational', 'LM358'),
     'BCP56': ('Transistor_BJT', 'BCP56'), 'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
     'REF5050AD': ('Reference_Voltage', 'REF5050AD'),

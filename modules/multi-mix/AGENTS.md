@@ -8,7 +8,7 @@ are relative to the module.
 - **S3 schematics** (2026-11-10, `docs/research.md` sections 5 and 9), ERC 0 both: carrier
   `hardware/multi-mix.kicad_sch`, 232 parts (modules/usb-audio-max power and PCM3168A at 48 kHz; 4 channel +
   2 return inputs, AC-coupled; SEND A / SEND B / MAIN outputs on U7 and host-assigned USB 1 / USB 2 outputs
-  (DAC4/DAC5, J9/J10) on U8 OPA1678; 15 RV09 pots on a 74HC4067, RV1-RV3 on their own R65/C50 +3V3_POTB filter;
+  (DAC4/DAC5, J9/J10) on U8 (OPA1678, NE5532DR since 2026-11-19); 15 RV09 pots on a 74HC4067, RV1-RV3 on their own R65/C50 +3V3_POTB filter;
   NORM patch-detect probe; CLK OUT (J6) / CLK IN (J7) 2x5 IDC daisy-chain clock link, clock only; MCU strips
   J12/J13, 2 x 1x12) and MCU board `hardware/multi-mix-mcu.kicad_sch`, 27 parts (usb-audio-max MCU board with
   the mux, probe and LINK_N pins, I2C pull-ups and the DIN1 series resistor; strips J112/J113). Jack and pot
@@ -36,12 +36,16 @@ are relative to the module.
   4.42 mm higher on the same edge (pin 1 X95.82 Y48.5); J8 power did not move. Carrier 236 parts, MCU board 27.
   Both boards ERC 0 / DRC 0 / unconnected 0 / parity 0, shared `check` ref/pin/net and source manifests equal,
   `tools/check_usb.py` passes, new SMD >= 2.20 mm from pot/jack pads.
+- **Carrier R4 + panel P5** (2026-11-19, `docs/research.md` section 12): B.Cu GND pour for the codec heat and the
+  USB-C slot 1.5 mm longer downwards, both from the first modules/usb-audio-max board. MCU board unchanged (R3).
 - **JLCPCB export** (2026-11-11, `jlcpcb/README.md`): `jlcpcb/main/` (carrier bottom Economic, 203 parts / 46
   rows, + panel) and `jlcpcb/mcu/` (top Economic, 25 parts / 13 rows); strict-live audit 34 Basic / 22
-  Extended / C1562 unresolved. Not supplier-accepted, not built. Re-export after any source change (the shared
+  Extended / C1562 unresolved by the tool (user checked JLCPCB 2026-11-19: 1,770,712 in stock). Not supplier-accepted, not built. Re-export after any source change (the shared
   `check` fails on manifest drift).
-- Open: J101 courtyard 0.53 mm to the MS3 notch, MS3 courtyard 0.98 mm to the edge and the 10 Extended R/C
-  placements (user decisions); firmware (incl. USART1 MIDI -> USB-MIDI), bench. Do not rerun
+- C211-C216 = C107043 since 2026-11-19 (C33353 was pre-order only; `docs/research.md` 12b). No pre-order parts:
+  every code needs free stock (`canPresaleNumber`) >= need and minimum purchase 1.
+- J101 courtyard 0.53 mm to the MS3 notch and MS3 courtyard 0.98 mm to the edge: user OK for the prototype
+  (2026-11-19). Open: the 10 Extended R/C placements (user decision); firmware (incl. USART1 MIDI -> USB-MIDI), bench. Do not rerun
   `tools/build_layout.py` (it would park the SMD parts again).
 
 ## Boundaries

@@ -40,7 +40,7 @@ CLK OUT / CLK IN (2x5 IDC daisy chain): SCKI/BCK/LRCK from the chain master to e
 | D1 | Reuse modules/usb-audio-max: power (J8 = its J1, the +5VA LM358/BCP56/REF5050 regulator, FCCM TPS562208 +3V3 buck), PCM3168A with its land, input driver and output difference-amplifier topologies, the CH32V307 MCU board (USB-C, crystal, boot) | Proven schematics, live-sourced parts, one design to maintain. The +5VA precision reference is more than an AC-coupled mixer needs; it stays so both modules share one power design |
 | D2 | 48 kHz only (SCKI 24.576 MHz = 512 fS, single-rate TDM, BCK 12.288 MHz): DOUT1 = ADC 1-6, DIN1 = DAC 1-8 | Uses only I2S2 RX / I2S3 TX, the path modules/usb-audio's firmware already runs. usb-audio-max's 96 kHz SPI1 path is untested and SPI1 is not needed. DOUT2 open, DIN2-4 to GND |
 | D3 | Inputs AC-coupled (10u into 100k, as modules/4mix D3), driver gain -0.2 (100k / 20k), + input at VCOM_REF | Audio mixer. Full scale +/-7.07 V (14.1 Vpp): 10 Vpp Eurorack audio at -3 dBFS. AC coupling idles the driver at VCOM, so usb-audio-max's VB_IN divider and its buffer (U6D) are not needed (U6D spare) |
-| D4 | Outputs: DAC1 SEND A (J1), DAC2 SEND B (J2), DAC3 MAIN OUT (J5) on U7A-C; **DAC4 USB 1 (J9), DAC5 USB 2 (J10)** on a new U8 OPA1678 dual (2026-11-09, user: two outputs the host assigns, e.g. from Ableton); 15k / 27k difference amplifier (gain 1.8, +/-7.2 V), 2 x 2k 1206 = 1k | modules/4mix jacks. Mono MAIN, as modules/4mix (MAIN knob + OUT jack). USB 1/2 are plain host channels (firmware: UAC2 outputs 4/5 straight to DAC4/DAC5). U8 sits by its jacks (bottom right) instead of using the far-away U7D (stays spare). OPA1678IDR C192421 is the code modules/usb-audio and audio-out use; its JLCPCB page was read 2026-11-09 (part listed, stock not shown). DAC6-8 stay open. DC-coupled outputs, no VCOMDA excursion |
+| D4 | Outputs: DAC1 SEND A (J1), DAC2 SEND B (J2), DAC3 MAIN OUT (J5) on U7A-C; **DAC4 USB 1 (J9), DAC5 USB 2 (J10)** on a new U8 OPA1678 dual (NE5532DR C7426 since 2026-11-19, section 12a) (2026-11-09, user: two outputs the host assigns, e.g. from Ableton); 15k / 27k difference amplifier (gain 1.8, +/-7.2 V), 2 x 2k 1206 = 1k | modules/4mix jacks. Mono MAIN, as modules/4mix (MAIN knob + OUT jack). USB 1/2 are plain host channels (firmware: UAC2 outputs 4/5 straight to DAC4/DAC5). U8 sits by its jacks (bottom right) instead of using the far-away U7D (stays spare). OPA1678IDR C192421 is the code modules/usb-audio and audio-out use; its JLCPCB page was read 2026-11-09 (part listed, stock not shown). DAC6-8 stay open. DC-coupled outputs, no VCOMDA excursion |
 | D4a | **Codec channel behind each output (R1 routing, 2026-11-09, user OK):** SEND A = VOUT5 (pins 23/24), SEND B = VOUT3 (27/28), MAIN = VOUT4 (25/26), USB 1 = VOUT1 (31/32), USB 2 = VOUT2 (29/30). Net DACn stays output n (`CODEC_VOUT` in `tools/circuit_carrier.py`) | The U7 outputs leave the west half of the codec's DAC row and the U8 outputs the east half, so the two groups never cross: with VOUT1-3 -> U7 the five U7 tracks had to pass the MS3 standoff keep-out where only one lane fits. Polarity is kept (VOUTn+ -> DACnP). Firmware: write output n's samples into TDM DAC slot CODEC_VOUT[n] |
 | D5 | Knobs: 15 x RV09 50k B (modules/4mix references RV1-RV3, RVn01-RVn03) as DC dividers on +3V3_POT, 100n per wiper, 74HC4067 16:1 mux (I15 = GND), COM -> 1k -> MCU PC0 | User: mux. One ADC pin + 4 selects. 100n wipers give the ADC a low source impedance (charge sharing < 0.1 %) and ~1 ms smoothing. Linear pots (user preference); the firmware sets the volume law |
 | D6 | Patch detect: all six jack normals on one node NORM (1k to GND), NORM_PROBE (PB0) drives it through 100k with pseudo-random bits (33 mV) | No extra switch pins: the firmware correlates the probe in each ADC channel (~-50 dBFS) to tell patched from unpatched. RTN A/B unpatched -> take the return from USB automatically. A patched jack's normal is open, so the probe never reaches a real signal. Mutable Instruments' "normalization probe" idea, here read through the codec |
@@ -548,3 +548,90 @@ USB-C slot, every carrier jack coaxial with a 6.2 mm hole.
 
 **JLCPCB export** in `jlcpcb/` (`jlcpcb/README.md`: upload map, hand-soldered parts, strict-live audit of
 2026-11-11, open order gates). Not supplier-accepted, not built, no firmware.
+
+## 12. Fab check after the first modules/usb-audio-max board: carrier R4, panel P5 (2026-11-19)
+
+User: "The USB Audio Max project works. So, check our multi-mix module for fab readiness." The S5/R3 set still
+passed the shared `check` (both boards ERC 0 / DRC 0 / unconnected 0 / parity 0, manifests equal), so this
+round carries over what the first modules/usb-audio-max board taught. MCU board S4 / R3 is unchanged (same
+J101, strips and USB layout as modules/usb-audio-max's MCU board in function; its `jlcpcb/mcu/` set is not
+re-exported).
+
+| Bench lesson (modules/usb-audio-max, 2026-11-19) | multi-mix | Done here |
+|---|---|---|
+| PCM3168A runs hot; it sits right behind the MCU board (user: "move it to the side or add more copper" next time) | Same: U3 on B at panel X83.2 Y26.5, under the MCU board (X70.6-99.6, Y10.25-45.7); the R3 carrier had no B pour (PowerPAD vias reach only In1 GND and the 8 x 8 mm F pad, which the MCU board shades) | **R4: B.Cu GND pour** `B_GND_SPREAD` over the whole carrier (below) |
+| USB-C panel slot extended 1.5 mm downwards on the built panel (user) | Same J101 / strip stack, same 9.5 x 3.7 slot | **P5: slot 9.5 x 5.2 at X84.1 Y21.75** (top edge kept at Y19.15, bottom Y22.85 -> Y24.35); "USB" label 1.5 mm lower (Y27.1) so its gap to the slot stays as before |
+| 12.288 MHz TDM BCK into the CH32V307 I2S (datasheet 8 MHz, section 6a F1) works at 48 kHz: codec link clean, slots right, no slip / stall | Same codec, clock and I2S2/I2S3 use | Risk lowered to a bench check; the PB4-PB5 SPI fallback stays |
+| Host-side USB disconnects without an MCU reset, cause open | Same USB design | Nothing to change in hardware yet |
+
+**B pour.** One GND zone on B.Cu, priority 0 (the Q1 `/V5_IN` B pour raised to priority 1, unchanged fill),
+clearance 0.3 mm, min width 0.25 mm, islands removed, pad connection "thermal reliefs for PTH only": SMD pads
+solid (U3's 8 x 8 mm B land ties straight into it), THT pads 0.5 / 0.5 mm spokes so the hand-soldered jacks,
+pots and headers stay easy to solder. Fill 6577 mm² in 37 pieces, each tied to GND by a pad or via; the piece
+around U3 is 4093 mm² and spans almost the whole board, on the open back of the module. RV303.1 and J6.3
+would only have reached an isolated sliver (native `starved_thermal`), so two small B-only no-pour rule areas
+(R = pad + 0.8 mm) keep the pour off them; both pads stay connected through In1 as in R3. No track, via or
+part moved; the copper edge keep-out (1.0 mm) holds through the project rule. B silk `MULTI-MIX S5/R4`.
+
+The pour spreads heat; it does not move it out from behind the MCU board. On the built modules/usb-audio-max
+a stick-on heat sink on U3 (B side, faces the case back) is the interim fix and works here too. Moving U3
+aside would be a large re-place / re-route of the codec group (user call; not done).
+
+Checks (2026-11-19, `research/fab-check-1119/`):
+
+| Check | Carrier S5/R4 | Panel P5 |
+|---|---|---|
+| Shared `check` (ERC / DRC / unconnected / parity, `--severity-all`) | 0 / 0 / 0 / 0, no exclusions; ref/pin/net equal; manifest equal | native DRC 0 |
+| BOM / CPL | byte-identical to R3 (203 parts / 46 rows) | none |
+| Printed panel `front-cad/` | | rebuilt headless, checks pass |
+
+Strict-live audit 2026-11-19 15:01 UTC (`research/fab-check-1119/audit-*.json`), 5 boards: every code found
+except C1562 (C101/C102, exact lookup ambiguous as before; the user checked it on JLCPCB on 2026-11-19: 1,770,712 in stock, closed). Stock changes since 2026-11-11: **OPA1678IDR
+C192421 30** (was 847; U8, one per board, enough for 5 but tight), C33353 2.2n C0G 659 (30 needed; pre-order only, replaced in 12b),
+PCM3168APAPR 1495, OPA1679IDR 2533, SN74LVC2G125 2106, CH32V307RCT6 1631, TYPE-C-31-D-15 426. Same
+Extended R/C as the built modules/usb-audio-max (C211-C216, R1/R2, R3/R8).
+
+### 12a. U8 OPA1678IDR -> NE5532DR (2026-11-19, user: "Migrate it")
+
+OPA1678IDR C192421 was down to 30 in stock (Extended). U8 (USB 1 / USB 2 difference amplifiers, +/-12V_F,
+15k / 27k || 47p, gain 1.8, into 2k || 2k) is now **NE5532DR, TI, LCSC C7426** (Basic, 250,172 in stock on
+2026-11-19, strict-live audit `research/ne5532/audit-carrier.json`). Same SOIC-8 standard dual pinout
+(1 OUTA, 2/3 A-/A+, 4 V-, 5/6 B+/B-, 7 OUTB, 8 V+; KiCad's NE5532 and OPA1678 symbols both extend LM2904),
+so footprint, nets and copper are unchanged. Unity-gain stable, ~5 nV/rtHz; costs: ~8 mA quiescent
+(OPA1678 ~4 mA), and its ~200 nA bias current through the ~9.6k source impedance gives a few mV more output
+offset (harmless). One Extended part type less.
+
+Change: `tools/circuit_carrier.py` + `tools/build_schematic.py` symbol `NE5532` (stock
+`Amplifier_Operational:NE5532`), schematic regenerated (the unchanged generator reproduced the old schematic
+byte for byte first; the diff is U8's three units + the pinned symbol only), the U8 footprint fields on the
+PCB updated (Value / Datasheet / Description / LCSC / MPN, nothing else). Shared `check`
+(`research/ne5532/native2`): ERC 0 / DRC 0 / unconnected 0 / parity 0, no exclusions, manifest equal;
+`check_usb.py` passes. `main/carrier` re-exported: BOM row U8 = C7426, CPL unchanged, still 203 parts / 46 rows.
+Not bench-tested.
+
+### 12b. C211-C216 C33353 -> C107043, no pre-order parts (2026-11-19, user)
+
+The user found C33353 (Samsung CL10C222JB8NNNC, 2.2n C0G 0603) is **pre-order only** on JLCPCB: about
+$8 for the six caps. The catalog shows it: listed stock 659, but `canPresaleNumber` -1681 (nothing free
+to place) and `minPurchaseNum` 301 (you buy 301 pieces, ~301 x $0.027). Parts JLCPCB has on the shelf
+show `canPresaleNumber` >= the quantity needed and `minPurchaseNum` 1.
+
+C211-C216 (ADC input RC, 470R / 2.2n, must stay C0G/NP0) are now **YAGEO CC0603JRNPO9BN222, LCSC
+C107043** (2.2n 50V NP0 +/-5 % 0603, Extended, stock 313,002, free 309,178, min purchase 1, $0.013).
+Same value, dielectric, voltage, tolerance and footprint. Other in-stock options seen: FH 0603CG222J500NT
+C2991172 (63,007 free), Murata GRM1885C1H222JA01D C77033 (24,679), Walsin 0603N222J500CT C296055
+(49,143). No Basic 2.2n C0G 0603 exists. Still one Extended type, as before.
+
+Every other code of both BOMs (5 boards) checked the same way on 2026-11-19: free stock >= need and
+minimum purchase 1. C33353 was the only pre-order part (OPA1678IDR C192421 was one too: free -993,
+min 13; replaced by the NE5532DR in 12a). R1/R2 C53728 and R3/R8 C144499 are in stock at $0.03 / $0.02.
+
+Change: `tools/circuit_carrier.py` part table (the unchanged generator reproduced the schematic byte for
+byte first; the diff is the LCSC / MPN / Manufacturer fields of C211-C216 only), the same three fields on
+the six PCB footprints. Shared `check` (`research/c0g/native2`): ERC 0 / DRC 0 / unconnected 0 / parity 0,
+no exclusions, manifest equal; `check_usb.py` passes. `main/carrier` re-exported: BOM row C211-C216 =
+C107043, CPL byte-identical, Gerbers differ only in timestamps, 203 parts / 46 rows. Strict-live audit
+`research/c0g/audit-carrier.json`: C107043 Extended, stock 313,002; exits 1 only for the exporter-warning
+gate, as before.
+
+J101 / MS3 courtyards (section 10): user, 2026-11-19: "fine for now", accepted for the prototype.

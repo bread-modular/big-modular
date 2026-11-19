@@ -73,7 +73,7 @@ OUT_JACK = {1: ('J1', 'SEND_A', 'SEND A'), 2: ('J2', 'SEND_B', 'SEND B'), 3: ('J
             4: ('J9', 'USB_OUT1', 'USB 1'), 5: ('J10', 'USB_OUT2', 'USB 2')}
 # Input driver units: channel -> (ref, unit); U6C is the VCOM buffer, U6D spare.
 IN_AMP = {1: ('U5', 1), 2: ('U5', 2), 3: ('U5', 3), 4: ('U5', 4), 5: ('U6', 1), 6: ('U6', 2)}
-# Output stages: U7A-C (SEND A/B, MAIN; U7D spare), U8 OPA1678 dual by the USB 1/2 jacks (bottom right)
+# Output stages: U7A-C (SEND A/B, MAIN; U7D spare), U8 NE5532 dual by the USB 1/2 jacks (bottom right)
 # output n -> codec VOUT channel (TDM DAC slot): SEND A 5, SEND B 3, MAIN 4, USB 1 1, USB 2 2
 CODEC_VOUT = {1: 5, 2: 3, 3: 4, 4: 1, 5: 2}
 OUT_AMP = {1: ('U7', 1), 2: ('U7', 2), 3: ('U7', 3), 4: ('U8', 1), 5: ('U8', 2)}
@@ -114,7 +114,7 @@ POT_X, POT_Y = [462.28 + 55.88 * c for c in range(5)], [452.12, 497.84, 543.56]
 
 # OPA1679 unit pins: unit -> (+, -, out)
 OPA4 = {1: ('3', '2', '1'), 2: ('5', '6', '7'), 3: ('10', '9', '8'), 4: ('12', '13', '14')}
-# OPA1678 (dual) unit pins
+# NE5532 (dual) unit pins
 OPA2 = {1: ('3', '2', '1'), 2: ('5', '6', '7')}
 DUAL = {'U8'}
 
@@ -139,7 +139,7 @@ def two(ref, sym, value, fp, at, a, b, rot=90, **fields):
 def opamp(ref, unit, at, plus, minus, out, **fields):
     p, m, o = amp_pins(ref, unit)
     if ref in DUAL:
-        return part(ref, 'OPA1678', 'OPA1678', 'SOIC8', at, 0, {p: plus, m: minus, o: out}, unit=unit, **fields)
+        return part(ref, 'NE5532', 'NE5532', 'SOIC8', at, 0, {p: plus, m: minus, o: out}, unit=unit, **fields)
     return part(ref, 'OPA1679', 'OPA1679', 'SOIC14', at, 0, {p: plus, m: minus, o: out}, unit=unit, **fields)
 
 
@@ -509,7 +509,7 @@ def circuit():
     c.append(part('U5', 'OPA1679', 'OPA1679', 'SOIC14', (40.64, PU_Y), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
     c.append(part('U6', 'OPA1679', 'OPA1679', 'SOIC14', (76.2, PU_Y), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
     c.append(part('U7', 'OPA1679', 'OPA1679', 'SOIC14', (111.76, PU_Y), 0, {'4': '+12V_F', '11': '-12V_F'}, unit=5))
-    c.append(part('U8', 'OPA1678', 'OPA1678', 'SOIC8', (302.26, PU_Y), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
+    c.append(part('U8', 'NE5532', 'NE5532', 'SOIC8', (302.26, PU_Y), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
     c.append(part('U4', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (162.56, PU_Y), 0, {'5': '+3V3_C', '2': 'GND'}, unit=3))
     c.append(part('U12', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (187.96, PU_Y), 0, {'5': '+3V3_C', '2': 'GND'}, unit=3))
     c.append(part('U13', '74LVC2G125', 'SN74LVC2G125', 'SSOP8', (226.06, PU_Y), 0, {'8': '+3V3_C', '4': 'GND'}, unit=3))
@@ -718,7 +718,7 @@ SOURCING = {
     ('R', '2k', 'R1206'): dict(LCSC='C17944', MPN='1206W4F2001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '33', 'R2512'): dict(LCSC='C53728', MPN='25121WF330JT4E', Manufacturer='UNI-ROYAL'),
     ('C', '47p', 'C0603'): dict(LCSC='C1671', MPN='CL10C470JB8NNNC', Manufacturer='Samsung'),
-    ('C', '2.2n', 'C0603'): dict(LCSC='C33353', MPN='CL10C222JB8NNNC', Manufacturer='Samsung'),
+    ('C', '2.2n', 'C0603'): dict(LCSC='C107043', MPN='CC0603JRNPO9BN222', Manufacturer='YAGEO'),
     ('C', '22n', 'C0603'): dict(LCSC='C21122', MPN='CL10B223KB8NNNC', Manufacturer='Samsung'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0603'): dict(LCSC='C15849', MPN='CL10A105KB8NNNC', Manufacturer='Samsung'),
@@ -742,7 +742,7 @@ SOURCING = {
     ('74HC4067', '74HC4067PW', 'TSSOP24'): dict(LCSC='C179326', MPN='74HC4067PW,118', Manufacturer='Nexperia'),
     ('BAT54S', 'BAT54S', 'SOT23'): dict(LCSC='C47546', MPN='BAT54S,215', Manufacturer='Nexperia'),
     ('OPA1679', 'OPA1679', 'SOIC14'): dict(LCSC='C2878631', MPN='OPA1679IDR', Manufacturer='Texas Instruments'),
-    ('OPA1678', 'OPA1678', 'SOIC8'): dict(LCSC='C192421', MPN='OPA1678IDR', Manufacturer='Texas Instruments'),
+    ('NE5532', 'NE5532', 'SOIC8'): dict(LCSC='C7426', MPN='NE5532DR', Manufacturer='Texas Instruments'),
     ('ASE-xxxMHz', '24.576MHz', 'OSC3225'): dict(LCSC='C5203547', MPN='OT2EL4C4JI-111OLP-24.576M',
                                                  Manufacturer='YXC'),
     ('SW_Push', 'RESET', 'SWK2'): dict(LCSC='C92589', MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec'),
