@@ -3,7 +3,8 @@
 `main/` re-exported on 2026-11-19 (carrier R4: B.Cu GND pour for the codec heat; panel P5: USB-C slot
 1.5 mm longer downwards, both carried over from the first modules/usb-audio-max board, `docs/research.md`
 section 12; U8 OPA1678IDR -> NE5532DR C7426 (Basic) on 2026-11-19, section 12a, so the BOM U8 row
-changed, the CPL did not). `mcu/` is the 2026-11-11 export after the MIDI IN jack change
+changed, the CPL did not). Carrier re-exported again on 2026-11-20 for the pin 1 silk markers at the clock
+headers (section 12c): only the B silkscreen Gerber changed, BOM / CPL byte-identical. `mcu/` is the 2026-11-11 export after the MIDI IN jack change
 (section 11), unchanged. Both made with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction ("make it fab ready").
 Never hand-edit these files: change the sources, then re-export with the commands below.
@@ -77,8 +78,8 @@ Paste coverage and the U3 / Q1 temperatures are bench items.
 | J1-J5, J101, J201, J301, J401, J9, J10, **J11** | QingPu WQP-PJ301M-12 TS jack (12; J11 = MIDI IN) | Carrier F-side THT, panel-nut fixed; fit to the panel before soldering. Trim the J11 tip lead to <= 2 mm (CLK IN ribbon socket beside it) and the J10 TN/S leads to <= 1.5 mm (power socket) |
 | 15 x RV | RV09 50k B pot | Carrier F-side THT, panel-fixed |
 | J8 | 2x5 2.54 mm pin header | Eurorack power, carrier back (silk `-12V`) |
-| J7 | 2x5 2.54 mm pin header, **unshrouded** (S5) | CLK IN, carrier back, right edge. Not keyed: ribbon red wire on pin 1 (silk `CLK IN - NOT POWER`) |
-| J6 | 2x5 2.54 mm keyed IDC box header | CLK OUT, carrier back, left edge |
+| J7 | 2x5 2.54 mm pin header, **unshrouded** (S5) | CLK IN, carrier back, right edge. Not keyed: ribbon red wire on pin 1, marked on the silk by a filled triangle + `1` beside it, towards the board edge (silk `CLK IN - NOT POWER`) |
+| J6 | 2x5 2.54 mm keyed IDC box header | CLK OUT, carrier back, left edge; pin 1 = silk triangle + `1` |
 | J12, J13 (carrier) + J112, J113 (MCU board) | 1x12 2.54 mm male strips | One strip per side joins the two boards; buy one pair, not two. Solder the MCU board on with the panel fitted so the USB-C lines up with its slot |
 | J15 | 1x4 2.54 mm pin header (SWD) | Optional, carrier back; only for a WCH-LinkE |
 | MS1-MS3 | M3 x 10 mm F-F hex standoffs + 6 x M3 screws | Mechanical, carrier to panel |
@@ -123,10 +124,10 @@ order gate.
 
 ## Source identity
 
-Taken from the manifests; the shared `check` re-hashes them and fails on drift (equal on 2026-11-19,
-`research/ne5532/native2` (carrier), `research/fab-check-1119/mcu-final`).
+Taken from the manifests; the shared `check` re-hashes them and fails on drift (equal on 2026-11-20,
+`research/pin1/check-b1` (carrier); 2026-11-19 `research/fab-check-1119/mcu-final` (MCU board)).
 
-- Carrier PCB `7dad5761d6b8f497b2e0d3c97bfcb1f5cda30aea136ab039f0fc44521f8c5de1` (R4, U8 NE5532 fields).
+- Carrier PCB `4dd248d6f1825f5aa0640975d99bc761f85fd18737603e9eab395efa90bf640a` (R4, U8 NE5532 and C211-C216 C107043 fields, pin 1 silk).
 - Carrier project `903c3d129b5a8f9a47deda99a8f9a41a5ff34f18354ddc63ae27415bc33467e1`.
 - Carrier schematic `90cc2429890cd7202c5461d0bd1e9d41b6594825a356443e3a7d1210e395c844` (U8 NE5532).
 - MCU PCB `d407a6b9969528fc794cb0a215634d37a8480d32f5b752a6eaaf9418348a1c14`.

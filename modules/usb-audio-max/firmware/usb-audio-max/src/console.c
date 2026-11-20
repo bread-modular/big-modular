@@ -91,6 +91,12 @@ static void cmd_status(void) {
       tud_mounted() ? "configured" : "not configured", tud_speed_get() == TUSB_SPEED_HIGH ? "high" : "full",
       (unsigned long) board_vbus_dips, BOARD_VBUS_OFF_MS, (unsigned long) board_vbus_offs);
   out("Codec: %s", codec_state_name(codec_state()));
+  switch (codec_address()) {
+    case 0x47: out(", I2C 0x47 (S3 carrier, CLK IN open: clock master)"); break;
+    case 0x45: out(", I2C 0x45 (S3 carrier, CLK IN connected: clock slave)"); break;
+    case 0x44: out(", I2C 0x44 (S2 carrier, no clock link)"); break;
+    default: break;
+  }
   if (codec_state() == CODEC_BAD_REGS) {
     uint8_t r, g, w;
     codec_bad_reg(&r, &g, &w);

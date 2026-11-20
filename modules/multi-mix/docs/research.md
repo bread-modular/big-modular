@@ -635,3 +635,20 @@ C107043, CPL byte-identical, Gerbers differ only in timestamps, 203 parts / 46 r
 gate, as before.
 
 J101 / MS3 courtyards (section 10): user, 2026-11-19: "fine for now", accepted for the prototype.
+
+### 12c. Pin 1 silk at the clock headers (2026-11-20, user)
+
+The user asked for a start-pin mark on the modules/usb-audio-max clock headers, to align the ribbon, and
+then for the same on this board (J7 is unshrouded too, and its only pin 1 hint was the footprint's corner
+bracket). B silk only, no copper change, still R4:
+
+- **J7 CLK IN**: filled triangle pointing at pin 1 (apex X97.6, base X98.5, Y48.5 +/- 0.55) with a 1.0 mm
+  `1` at X99.3, in the strip between the header and the east edge. The 6.4 mm wide ribbon socket ends at
+  X97.75, so the mark stays visible with the ribbon plugged in. `CLK IN - NOT POWER` moved 4.85 mm down
+  (centre Y58.43, Y50.0..66.8) to free the pin 1 row.
+- **J6 CLK OUT** (keyed box header): the footprint already has an open triangle at pin 1; a `1` at X13.55
+  beside it, so all clock headers of both modules read the same.
+
+Native DRC with refill and on the saved fills: 0 / unconnected 0 / parity 0, no exclusions. Shared `check`
+(`research/pin1/check-b1`): no findings, manifest equal. `main/carrier` re-exported: only the B silkscreen
+Gerber body changed, BOM / CPL byte-identical, 203 parts / 46 rows. Batch: `research/pin1/b1_pin1_silk.py`.

@@ -1,4 +1,4 @@
-"""Generate the 3D-printable USB-AUDIO-MAX 10HP front panel with FreeCAD.
+"""Generate the 3D-printable USB-AUDIO-MAX 12HP front panel with FreeCAD.
 
 Run headless from modules/usb-audio-max:
   ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py

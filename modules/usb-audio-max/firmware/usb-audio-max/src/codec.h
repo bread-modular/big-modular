@@ -1,6 +1,11 @@
-// PCM3168A (carrier U3) over I2C2, address 0x44 (MODE, ADR0, ADR1 low).
-// ADC = TDM clock master from SCKI (Y1, 24.576 MHz); the DAC is a slave on the
-// same BCK / LRCK (BCKDA, LRCKDA tied to BCKAD, LRCKAD on the carrier).
+// PCM3168A (carrier U3) over I2C2. The I2C address tells which carrier this is
+// and whether the clock link is in use (S3 carrier: ADR0 high, ADR1 = LINK_N):
+//   0x47  S3, CLK IN open: this unit is the clock master
+//   0x45  S3, CLK IN connected: clock slave, SCKI / BCK / LRCK come from the link
+//   0x44  S2 carrier (no clock link): clock master
+// Master: ADC = TDM clock master from SCKI (Y1, 24.576 MHz); the DAC is a slave
+// on the same BCK / LRCK (BCKDA, LRCKDA tied to BCKAD, LRCKAD on the carrier).
+// Slave: the ADC must stay a slave (the link receiver U13 drives BCK / LRCK).
 #ifndef CODEC_H_
 #define CODEC_H_
 
@@ -30,7 +35,8 @@
 
 typedef enum {
   CODEC_OFF = 0,       // not started / held in reset
-  CODEC_NO_ACK,        // no I2C answer at 0x44 (codec missing, unpowered or not soldered)
+  CODEC_NO_ACK,        // no I2C answer at 0x47 / 0x45 / 0x44 (codec missing, unpowered, not soldered,
+                       // or a clock slave whose master sends no SCKI)
   CODEC_BAD_REGS,      // answered, but the reset defaults / written values do not read back
   CODEC_READY,         // configured, ADC still slave: BCK / LRCK not started yet
   CODEC_RUNNING,       // ADC master: BCK / LRCK running
@@ -45,6 +51,13 @@ bool codec_run(void);
 void codec_stop(void);
 
 codec_state_t codec_state(void);
+// 7-bit I2C address the codec answered at in the last codec_prepare(), 0 if none.
+uint8_t codec_address(void);
+// CLK IN connected (address 0x45): never call codec_run().
+bool codec_linked(void);
+// One register read at the current address: false when the codec no longer
+// answers there (reset, or the clock link was plugged / unplugged: ADR1 moved).
+bool codec_alive(void);
 bool codec_read(uint8_t reg, uint8_t *val);
 bool codec_write(uint8_t reg, uint8_t val);
 const char *codec_state_name(codec_state_t s);

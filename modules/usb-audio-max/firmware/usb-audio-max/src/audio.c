@@ -365,6 +365,15 @@ static void streams_start(void) {
     retry_at = board_millis() + 2000;
     return;
   }
+  if (codec_linked()) {
+    // Clock slave: BCK / LRCK from the link run already, so the two TDM slaves
+    // cannot be armed on a still BCK (tdm.h). Not started by this firmware: the
+    // codec goes back into reset and the address is probed again every 2 s.
+    codec_stop();
+    last_error = "clock slave (CLK IN connected): not supported by this firmware yet";
+    retry_at = board_millis() + 2000;
+    return;
+  }
   tdm_start();
   if (!codec_run() || !tdm_lrck_toggling(50000)) {
     tdm_stop();
@@ -414,6 +423,21 @@ void audio_task(void) {
     go_stopped();
     retry_at = now + 200;
     return;
+  }
+  // The codec address follows the clock link (ADR1 = LINK_N): once a second,
+  // see that it still answers where it was found. A ribbon plugged into CLK IN
+  // moves it, and the restart then finds the unit a clock slave.
+  static uint32_t alive_at;
+  if ((int32_t) (now - alive_at) >= 0) {
+    alive_at = now + 1000;
+    if (!codec_alive()) {
+      last_error = "codec address changed (clock link plugged / unplugged?), restarted";
+      tdm_stop();
+      codec_stop();
+      go_stopped();
+      retry_at = now + 200;
+      return;
+    }
   }
   tdm_align_task();
   tdm_align_info_t info;
