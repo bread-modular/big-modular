@@ -1,4 +1,4 @@
-# USB-AUDIO-MAX research and circuit intent (S2 schematics)
+# USB-AUDIO-MAX research and circuit intent (S3 carrier schematic, S2 MCU board)
 
 A Eurorack USB audio interface: 6 in / 8 out, DC-coupled (audio and CV), 24-bit, up to 96 kHz,
 USB Audio Class 2 over USB 2.0 High-Speed. Brief (user, 2026-11-05):
@@ -19,6 +19,11 @@ re-checked live, drawings tidied (no overlapping texts). The MCU board circuit i
 (S2 is a drawing tidy). **S1 placement** (2026-11-06, user brief: jack rows below the USB-C, no
 schematic changes, 10HP if 8HP is too tight): **10HP** panel, THT/mechanical parts placed, SMD parked
 (section 5); schematics unchanged.
+
+**S3 carrier (2026-11-19 / 20, user: take the audio clock from a modules/multi-mix or another
+usb-audio-max, same ribbon and sockets as Multi Mix, 48 kHz only is fine, 12HP if needed, every socket
+centred)**: the Multi Mix clock link added, carrier and panel widened to 12HP (section 8). The MCU board
+is unchanged (S2 / R1): built MCU boards fit the S3 carrier.
 
 ## 1. Architecture
 
@@ -245,3 +250,66 @@ the B5819W and the 8 MHz crystal are Basic. Not an order or a stock reservation.
   current-limit point), +3V3 switching frequency and ripple, an output noise spectrum while USB streams
   (the 8 kHz microframe tone and the ~580 kHz harmonics).
 - Current draw: +12 V ~0.28 A typ / ~0.34 A max, -12 V ~20 mA (estimate from datasheet maxima).
+
+## 8. Clock link (S3 carrier, 12HP)
+
+The modules/multi-mix clock link (its `docs/research.md` section 4: same circuit, part references,
+pinout, ribbon and LCSC codes), so a Multi Mix CLK OUT feeds a USB Audio Max CLK IN and the other way
+round, and two USB Audio Max units chain the same way. Clock only, **48 kHz only** (the link carries
+one rate; the firmware has no other).
+
+| Pin (2x5, pin 1 at the top) | CLK IN J7 (right edge) | CLK OUT J6 (left edge) |
+|---|---|---|
+| 1 DET | R83 10k -> LINK_N (R84 100k pull-up, D3 BAT54S clamp): low = linked | R82 4.7k to GND |
+| 2, 9, 10 | not connected | not connected |
+| 3, 5, 8 | GND | GND |
+| 4 SCKI 24.576 MHz | R76 100k pull-down -> U11 In1 | U14A -> R72 150R |
+| 6 BCK 12.288 MHz | R77 100k pull-down -> U13A | U12A -> R70 150R |
+| 7 LRCK 48 kHz | R78 100k pull-down -> U13B | U12B -> R71 150R |
+
+A straight 10-way ribbon runs from a unit's CLK OUT to the CLK IN of the unit on its left (red wire on
+pin 1 at both ends; B silk marks pin 1 with a filled triangle and a "1" beside each header). A Eurorack power cable in either header is harmless (Multi Mix D10): pins 1-2 see
+-12 V behind 4.7k / 10k + clamp, 3-8 ground, 9-10 nothing. Silk "CLK OUT - NOT POWER" / "CLK IN - NOT
+POWER". The headers are plain 2x5 pin headers (a box header does not fit the 5.05 mm strip).
+
+- **Switching is hardware (LINK_N)**: U11 74LVC1G97 passes Y1 (SCKI_LOC) or the link SCKI to the codec
+  (R60 33R) and to the CLK OUT repeater; U13 74LVC2G125 puts the link BCK / LRCK on the codec clock
+  nets through R74 / R75 100R when linked. U12 repeats BCK_B / LRCK_B (the U4 outputs) to CLK OUT, so
+  a chain passes the clocks on whether the unit is a master or a slave.
+- **Link detect without an MCU pin** (both strips are full): the codec address pins. ADR0 = +3V3_C,
+  ADR1 = LINK_N through the spare half of U14 (keeps the clamped DET level off the codec) and R15 10k.
+  I2C 0x47 = CLK IN open (master), 0x45 = linked (slave); 0x44 is an S2 carrier. Multi Mix has U14B
+  spare and its MCU reads LINK_N on a pin: the only circuit difference.
+- **Firmware rule**: while linked the codec ADC must stay a slave (MSAD = 000); as a master it would
+  drive BCK / LRCK against U13 (R74 / R75 limit that to ~16 mA, no damage). Firmware 1.1.0 finds the
+  address, runs as a master on 0x47 / 0x44, and does **not** start the audio on 0x45: the CH32V307 I2S
+  slaves begin their words on the first BCK edge after they are enabled, and a link slave's BCK never
+  stops, so the two TDM slaves cannot be armed on a still clock as they are today. Planned start (also
+  needed by the Multi Mix firmware): count BCK on TIM2 CH2 (PB3), reset by LRCK on CH1 (PA15), enable
+  each slave only in a BCK period where the count did not move, take the frame position from the
+  count. Needs two linked units on the bench (`firmware/README.md`).
+- **12HP**: the 10HP carrier had three free pockets on B (17 x 7, 10 x 6, 8 x 6 mm), not enough for two
+  headers and 21 parts. 5.05 mm added on each side; the KiCad origin moved instead of the copper, so
+  the jack grid, USB-C, standoffs and the MCU board stay where they were and are centred on the 60.6 mm
+  panel (`docs/geometry.json` `kicad_origin_note`). The headers stand in the new strips beside the
+  IN 1-3 jack row: CLK OUT left, CLK IN right, as Multi Mix.
+- **Placement** (B side): west strip = U11, U14, D3, R84, R60, R72, R76, R82 above J6 and U12, R70,
+  R71 below it; east = U13 with R74 / R75 / C46 in the block east of the VCOM lines, R83 above J7,
+  R77 / R78 below J7. U4 (BCK / LRCK buffer to the MCU board) moved 0.64 mm south and C30 below R11.
+- **Routing** (manual, batches `research/clk/b01..b16`): four lines cross from the right side to the
+  left through the one free B band between the codec and the IN jack row (north to south CLKI_SCKI,
+  LINK_N, LRCK_B, BCK_B at Y37.5 .. 38.7, 0.4 mm pitch); the ADC_IN1 and ADC_IN5 B bridges moved 0.8 /
+  0.1 mm to open the pinch beside the ADC lines. East of the codec the J7 clocks run on F, the codec
+  clock nets on B. A first try with U12 fed from the codec's west-side BCK / LRCK pins had no routable
+  path. Details and coordinates: `docs/geometry.json` `clock_link.routing`.
+- **In2**: the U4 +3V3_C island grew a strip and a tab to the receiver block (U13 / C46), so the link
+  lines east of the codec run over their own supply plane; +5VA and +12V_F stay one piece.
+- **Sourcing** (live 2026-11-20, free stock, minimum order 1): SN74LVC2G125DCTR C206035 (Extended,
+  2,040), 74LVC1G97DW-7 C460532 (Extended, 4,090), BAT54S C47546 (Extended, 429,439), 4.7k C23162
+  (Basic); the 74LVC2G34 (two more), 33R / 100R / 150R / 10k / 100k and 100n are already in the BOM.
+  Three more Extended part types. Same day: C211-C216 2.2n C0G changed from C33353 (pre-order only:
+  free stock -1705, minimum order 301) to YAGEO CC0603JRNPO9BN222 C107043 (308,955 free, same
+  2.2n / NP0 / 5 % / 50 V / 0603).
+- **Not checked**: nothing of S3 is built. Signal quality of the 24.576 MHz link SCKI over the ribbon
+  plus ~70 mm of carrier track (source-terminated 150R, Schmitt input at U11), clock jitter through
+  the U11 mux, and the slave-mode start are bench items.

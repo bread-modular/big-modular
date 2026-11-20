@@ -45,7 +45,8 @@
   `MIDI_RX` -> PA10 = USART1_RX, **not inverted** (the CH32V307 USART cannot invert RX; do not copy the NPN
   stage of the 8-bit modules here). Keep the 10k + clamp: the jack must survive a +/-12 V patch.
 - J7 CLK IN is an unshrouded 2x5 pin header since S5 (the box header does not fit above the MIDI IN jack); its
-  safety is the pinout, not keying. J6 CLK OUT stays a keyed box header.
+  safety is the pinout, not keying. J6 CLK OUT stays a keyed box header. Pin 1 is marked on B silk at both
+  (2026-11-20: filled triangle + `1` east of J7 pin 1, outside the ribbon socket; `1` beside the J6 triangle).
 - CLK OUT (J6) / CLK IN (J7) pinout (`docs/research.md` section 4) must stay Eurorack-power-cable safe:
   only the 4.7k/10k-protected DET on pins 1-2, GND or buffered + 150R clocks on 3-8, nothing on 9-10.
 - Root `AGENTS.md` placement/routing rules (1 mm edge keep-out, 2 mm hand-solder clearance, no vias in SMD

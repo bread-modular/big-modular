@@ -12,23 +12,29 @@ so CV works too. No level controls. Same two-board build as [USB-AUDIO](../usb-a
 | (DC reference) | +5 V analog = the codec's full-scale reference: REF5050 (8 ppm/C) -> LM358 + BCP56 discrete regulator (current-limited), so calibrated CV levels don't drift |
 | (+3.3 V digital) | TPS562208 buck in forced-continuous mode (~580 kHz at every load, never in the audio band) behind a 2.2R + ferrite input filter, molded inductor; only the digital rail switches (+12 V ~0.34 A max). ngspice: ~50 uV on +12 V, 0.1 uV on +5 V analog, -142 dBFS at the jacks for USB load bursts |
 
-**Status: S2 schematics + R1 routing on both boards, fab-review fixes done (2026-11-08), JLCPCB
-export in `jlcpcb/` (not supplier-accepted, not built).** 10HP panel: USB-C at the top, then IN 1-6 in
-two rows of three and OUT 1-8 in three rows (the ninth spot, bottom right, is empty; the power header sits
-behind it). Both boards: native ERC 0, DRC 0 (saved fills too), unconnected 0, parity 0. Ten R/C
-placements are JLCPCB Extended (user decision open, `jlcpcb/README.md`). First board built: bring-up
-firmware in `firmware/` (DFU flashing over the panel USB-C, codec + 48 kHz TDM link checked
-2026-11-19); no USB audio yet, 96 kHz SPI1 path untested. JLC stocks the PCM3168APAPR (C529289, Extended, 1517 on 2026-11-08).
+**Status: carrier S3 / R2 (2026-11-20) with the modules/multi-mix clock link, 12HP; MCU board S2 / R1
+unchanged; JLCPCB export in `jlcpcb/` (not supplier-accepted). The S3 carrier is not built.** CLK OUT
+(left edge) and CLK IN (right edge) are 2x5 headers on the back: a 10-way ribbon from one unit's CLK OUT
+to the next unit's CLK IN makes that unit run on the first one's audio clock (SCKI, BCK, LRCK; 48 kHz
+only). Works with a Multi Mix or another USB Audio Max at either end. The clocks switch in hardware; the
+firmware sees the link in the codec's I2C address. **Firmware 1.1.0 runs a unit as the clock master and
+does not start a linked (slave) unit yet** (`firmware/README.md`). 12HP panel: USB-C at the top, then
+IN 1-6 in two rows of three and OUT 1-8 in three rows (the ninth spot, bottom right, is empty; the power
+header sits behind it), all centred as on the 10HP panel. Both boards: native ERC 0, DRC 0 (saved fills
+too), unconnected 0, parity 0. The carrier BOM has 16 JLCPCB Extended part types (`jlcpcb/README.md`).
+First board (S2 carrier, 10HP): built, firmware 1.0.1 "Bread Modular 6x8" bench-tested
+(`firmware/README.md`); 96 kHz SPI1 path untested. JLC stocks the PCM3168APAPR (C529289, Extended,
+1,483 free on 2026-11-20).
 
-![S1 placement: panel, assembly, MCU board](docs/fit/overview.png)
+![S1 placement (10HP, before the clock link): panel, assembly, MCU board](docs/fit/overview.png)
 
 | Path | Contents |
 |---|---|
 | `hardware/` | `usb-audio-max.kicad_{pro,sch,pcb}` (carrier), `usb-audio-max-mcu.kicad_{pro,sch,pcb}` (MCU board), shared `USBAUDIOMAX.kicad_sym`, `USBAUDIOMAX.pretty` (+ `PROVENANCE.json`), `USBAUDIOMAX.3dshapes`, vendored 3D models `_kicad_models/` |
 | `jlcpcb/` | JLCPCB sets: `main/` (carrier Gerbers + bottom BOM/CPL, panel Gerbers), `mcu/` (MCU board Gerbers + top BOM/CPL); upload map and parts audit in `jlcpcb/README.md` |
-| `panels/front-pcb/` | 10HP FR4 panel `usb-audio-max-panel.kicad_{pro,pcb}` (NPTH holes, USB-C slot, labels) |
-| `firmware/` | CH32V307 firmware: DFU bootloader + PCM3168A bring-up console (`firmware/README.md`) |
-| `docs/research.md` | Brief, decisions, levels, buck-vs-audio simulation, circuit, TDM/firmware notes, panel and fit study, sourcing, open items |
+| `panels/front-pcb/`, `panels/front-cad/` | 12HP FR4 panel `usb-audio-max-panel.kicad_{pro,pcb}` (NPTH holes, USB-C slot, labels) and the printable 2.0 mm panel |
+| `firmware/` | CH32V307 firmware "Bread Modular 6x8": DFU bootloader, UAC2 8 out / 6 in, calibration, console (`firmware/README.md`) |
+| `docs/research.md` | Brief, decisions, levels, buck-vs-audio simulation, circuit, TDM/firmware notes, panel and fit study, sourcing, open items, clock link (section 8) |
 | `docs/geometry.json` | Placement and stack contract (panel frame) |
 | `docs/*-schematic.pdf`, `docs/erc/`, `docs/fit/` | Schematic PDFs, native ERC JSON, native DRC JSON and placement renders |
 | `tools/` | Generators (`circuit_carrier.py`, `circuit_mcu.py` hold the circuits; `build_layout.py` the S1 boards), checks, `kicad-project*.json` profiles |

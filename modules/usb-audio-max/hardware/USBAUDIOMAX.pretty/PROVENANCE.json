@@ -14,6 +14,13 @@
       "edits": "none (native load/save only)",
       "output_sha256": "83b3aab2b9430a49aae58f480ef6f97f23ce43aae32b5b0f17e9bbe6d2f1a923"
     },
+    "SSOP-8_2.95x2.8mm_P0.65mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/SSOP-8_2.95x2.8mm_P0.65mm.kicad_mod",
+      "source_sha256": "8b77f3d670a43e2ddda2c7ac3dc5b3cb8b4511e0ba48bd68220a59679cf2344c",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only; the file is modules/multi-mix's import, copied 2026-11-19 so the other footprints keep their UUIDs)",
+      "output_sha256": "8a61bd43e263293d6fc663bb72ed7bfb8b7e314de1b31d5be238e0d24bf2b83d"
+    },
     "LQFP-64_10x10mm_P0.5mm": {
       "source": "/usr/share/kicad/footprints/Package_QFP.pretty/LQFP-64_10x10mm_P0.5mm.kicad_mod",
       "source_sha256": "f5a3abeefd7fdfa39fb685c0d80538f6fed111d00da42bf82decb0b6d2293101",

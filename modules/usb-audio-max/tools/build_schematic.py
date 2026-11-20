@@ -50,9 +50,9 @@ MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and
 
 # Projects built by this script: circuit module -> (project name, title, revision, comment)
 PROJECTS = {
-    'circuit_carrier': ('usb-audio-max', 'Big Modular - USB-AUDIO-MAX carrier (jack board)', 'S2',
-                        'SCHEMATIC S2 - 6 in / 8 out DC-coupled USB audio, PCM3168A codec (TDM, up to 96 kHz), '
-                        '+/-5.9 V, no level controls; MCU board on 2.54 mm headers J2/J3'),
+    'circuit_carrier': ('usb-audio-max', 'Big Modular - USB-AUDIO-MAX carrier (jack board)', 'S3',
+                        'SCHEMATIC S3 - 6 in / 8 out DC-coupled USB audio, PCM3168A codec (TDM, up to 96 kHz), '
+                        '+/-5.9 V, no level controls, CLK IN/OUT clock link; MCU board on 2.54 mm headers J2/J3'),
     'circuit_mcu': ('usb-audio-max-mcu', 'Big Modular - USB-AUDIO-MAX MCU board', 'S2',
                     'SCHEMATIC S2 - CH32V307RCT6 USB 2.0 High-Speed (UAC2), vertical USB-C through the panel; '
                     'soldered to the carrier on 2.54 mm headers J102/J103'),
@@ -64,6 +64,7 @@ FILTER_EDITS = {
     'FerriteBead': 'Inductor_* L_* *Ferrite* C_0805*',
     # pinned library name is USBAUDIO, not Connector*: keep the pin-count part of the stock filter
     'Conn_02x05_Odd_Even': '*_2x??_*', 'Conn_01x10': '*_1x??_*', 'Conn_01x04': '*_1x??_*',
+    '74LVC2G125': 'SSOP*2.95x2.8mm*P0.65mm*',
 }
 
 # lib symbol -> (stock library, stock name)
@@ -71,7 +72,8 @@ SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'FerriteBead': ('Device', 'FerriteBead'),
     'R_Potentiometer': ('Device', 'R_Potentiometer'), 'D_Schottky': ('Device', 'D_Schottky'),
     'Crystal': ('Device', 'Crystal'), 'L': ('Device', 'L'),
-    '74LVC2G34': ('74xGxx', '74LVC2G34'),
+    '74LVC2G34': ('74xGxx', '74LVC2G34'), '74LVC2G125': ('74xGxx', '74LVC2G125'),
+    '74LVC1G97': ('74xGxx', '74LVC1G97'), 'BAT54S': ('Diode', 'BAT54S'),
     'CH32V30xRxTx': ('MCU_WCH_RiscV', 'CH32V30xRxTx'),
     'OPA1679': ('Amplifier_Operational', 'OPA1679'), 'OPA1678': ('Amplifier_Operational', 'OPA1678'),
     'TPS562208': ('Regulator_Switching', 'TPS562200'), 'LM358': ('Amplifier_Operational', 'LM358'),
@@ -104,7 +106,7 @@ FP = {
     'H2x5': 'PinHeader_2x05_P2.54mm_Vertical', 'H1x10': 'PinHeader_1x10_P2.54mm_Vertical',
     'H1x4': 'PinHeader_1x04_P2.54mm_Vertical',
     'TQFP64EP': 'PCM3168A_HTQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask7.4x7.4mm_ThermalVias',
-    'SC70-6': 'SOT-363_SC-70-6',
+    'SC70-6': 'SOT-363_SC-70-6', 'SSOP8': 'SSOP-8_2.95x2.8mm_P0.65mm',
 }
 
 # Stock symbol property edits: lib symbol -> {property: new value}

@@ -41,6 +41,7 @@ USBAUDIO = MODULE.parent / 'usb-audio'
 STOCK_FOOTPRINTS = [
     ('Package_SO', 'SOIC-14_3.9x8.7mm_P1.27mm'),
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
+    ('Package_SO', 'SSOP-8_2.95x2.8mm_P0.65mm'),
     ('Package_QFP', 'Texas_TQFP-64-1EP_10x10mm_P0.5mm_EP8x8mm_Mask5x5mm_ThermalVias'),
     ('Package_QFP', 'LQFP-64_10x10mm_P0.5mm'),
     ('Package_TO_SOT_SMD', 'SOT-223'),

@@ -1,4 +1,4 @@
-"""USB-AUDIO-MAX carrier (jack board) S2 circuit table, drawing and sourcing (tools/build_schematic.py).
+"""USB-AUDIO-MAX carrier (jack board) S3 circuit table, drawing and sourcing (tools/build_schematic.py).
 
 CIRCUIT is docs/research.md section 3. 6 in / 8 out, DC-coupled, no level controls, up to 96 kHz:
 
@@ -22,7 +22,10 @@ CIRCUIT is docs/research.md section 3. 6 in / 8 out, DC-coupled, no level contro
   (integrator for zero DC error, proportional gain 4.7 for a low output impedance). +5VA = V5_SET +
   the LM358 offset (calibrated out). Replaces the LT3045 (S1 D11) at ~$1.2 instead of ~$8.9; an
   AMS1117 drifts 0.5 % over temperature and 0.3 % per 1000 h (typ), which calibration cannot remove.
-- Codec: U3 PCM3168A, I2C control (MODE = DGND), address 0x44 (ADR1 = ADR0 = 0). Y1 24.576 MHz on
+- Codec: U3 PCM3168A, I2C control (MODE = DGND). S3: ADR0 = +3V3_C and ADR1 = the buffered LINK_N,
+  so the address tells the firmware what the board is: 0x47 = CLK IN open (clock master), 0x45 = CLK IN
+  connected (clock slave: never make the ADC a master); 0x44 is an S2 board (no clock link). Y1 24.576 MHz
+  through the U11 clock mux on
   SCKI: 256 fS at 96 kHz (dual rate), 512 fS at 48 kHz (single rate). The ADC is the clock master in
   24-bit I2S-mode TDM (BCK = 128 fS at 96 kHz / 256 fS at 48 kHz = 12.288 MHz both); BCKDA/LRCKDA are
   tied to BCKAD/LRCKAD, so the DAC is a slave on the same clocks. 96 kHz: DOUT1 = ADC1-4,
@@ -43,6 +46,17 @@ CIRCUIT is docs/research.md section 3. 6 in / 8 out, DC-coupled, no level contro
   (VINn-); VCOM_BUF -> 24k / 100k -> U6D -> VB_IN. VB_IN tracks the codec's own mid-rail.
 - MCU board link: J2/J3 1x10 2.54 mm pin headers. BOOT/RESET (SW2/SW1) and the SWD header J4 sit on
   the carrier, as modules/usb-audio.
+- Clock link (S3, user 2026-11-19: take the audio clock from a modules/multi-mix or another
+  usb-audio-max; modules/multi-mix docs/research.md section 4, same circuit, references, pinout and
+  ribbon): CLK OUT (J6, left edge) / CLK IN (J7, right edge), 2x5 2.54 mm pin headers on B, pin 1 at the
+  top, straight 10-way ribbon from a unit's CLK OUT to the next unit's CLK IN (slaves to the left of
+  the master). Clock only, 48 kHz only. Pinout, safe against a Eurorack power cable plugged in by mistake:
+  1 DET (CLK OUT: 4.7k to GND; CLK IN: 10k -> LINK_N, 100k pull-up, BAT54S clamp: low = linked)
+  2 NC; 3, 5, 8 GND; 4 SCKI; 6 BCK; 7 LRCK; 9, 10 NC.
+  LINK_N switches the clocks by hardware: U11 74LVC1G97 (2:1 mux) picks Y1 or the link SCKI, U13
+  74LVC2G125 drives the link BCK/LRCK onto the codec clock nets (codec in slave mode). U12/U14A
+  74LVC2G34 repeat SCKI/BCK/LRCK out of CLK OUT to the next unit. U14B (spare on modules/multi-mix)
+  buffers LINK_N for the codec ADR1 pin: the MCU board has no free strip pin for LINK_N.
 """
 
 PAPER = 'A1'
@@ -73,6 +87,8 @@ OUT_X0, OUT_Y = 299.72, [172.72 + 38.1 * k for k in range(8)]
 REF_Y = (393.7, 431.8)        # VCOM buffer / VB_IN buffer rows
 HDR = (622.3, 101.6)          # J2; J3 at +30.48
 PU_Y = 525.78                 # op-amp supply units row
+LX, LY = 480.06, 241.3        # J7 CLK IN; J6 CLK OUT at LY + 50.8 (as modules/multi-mix)
+DX = LX + 101.6               # link drivers / receivers column
 BUCK = (170.18, 127.0)        # U2 VIN/EN side x + 10.16, V3_IN rail y
 
 # OPA1679 unit pins: unit -> (+, -, out)
@@ -92,6 +108,12 @@ def two(ref, sym, value, fp, at, a, b, rot=90, **fields):
 def opamp(ref, unit, at, plus, minus, out, **fields):
     p, m, o = OPA4[unit]
     return part(ref, 'OPA1679', 'OPA1679', 'SOIC14', at, 0, {p: plus, m: minus, o: out}, unit=unit, **fields)
+
+
+def clamp(ref, at, net, why):
+    """BAT54S at rot 180: COM on top (on the signal wire), K left (+3V3), A right (GND)."""
+    return part(ref, 'BAT54S', 'BAT54S', 'SOT23', at, 180, {'1': 'GND', '2': '+3V3', '3': net},
+                Note=f'Clamp to +3V3/GND behind the 10k series resistor: {why}')
 
 
 def circuit():
@@ -153,10 +175,10 @@ def circuit():
     c.append(two('C16', 'C', '1u', 'C0603', (187.96, 67.31), '+12V_F', 'GND', rot=0, Voltage='50V',
                  Note='U9 input'))
     c.append(part('U9', 'REF5050AD', 'REF5050A', 'SOIC8', (205.74, 71.12), 0,
-                  {'1': None, '2': '+12V_F', '3': None, '4': 'GND', '5': '_REF_NR', '6': '_REF_OUT', '7': None,
+                  {'1': None, '2': '+12V_F', '3': None, '4': 'GND', '5': 'REF_NR', '6': '_REF_OUT', '7': None,
                    '8': None},
                   Note='+5VA DC reference: 5.000 V +/-0.1 %, 8 ppm/C max (standard grade); load = U1A input only'))
-    c.append(two('C17', 'C', '1u', 'C0603', (218.44, 82.55), '_REF_NR', 'GND', rot=0, Voltage='50V',
+    c.append(two('C17', 'C', '1u', 'C0603', (218.44, 82.55), 'REF_NR', 'GND', rot=0, Voltage='50V',
                  Note='U9 TRIM/NR noise reduction'))
     c.append(two('C18', 'C', '10u', 'C0805', (226.06, 72.39), '_REF_OUT', 'GND', rot=0, Voltage='25V',
                  Note='U9 output (datasheet 1-50 uF, ESR <= 1.5R)'))
@@ -221,13 +243,14 @@ def circuit():
                                   ('21', '22'), ('19', '20'), ('17', '18'))):
         a[p_], a[m_] = f'DAC{i + 1}P', f'DAC{i + 1}N'
     c.append(part('U3', 'PCM3168A', 'PCM3168A', 'TQFP64EP', COD_A, 0, a, unit=1,
-                  Note='24-bit 6-in / 8-out codec (ADC to 96 kHz, DAC to 192 kHz). I2C 0x44. ADC master, '
-                       'I2S-mode TDM; SE inputs, HPF bypassed. PowerPAD to GND with thermal vias (~1.2 W)'))
+                  Note='24-bit 6-in / 8-out codec (ADC to 96 kHz, DAC to 192 kHz). I2C 0x47 (CLK IN open) / 0x45 '
+                       '(clock slave). ADC master unless linked, I2S-mode TDM; SE inputs, HPF bypassed. PowerPAD to '
+                       'GND with thermal vias (~1.2 W)'))
     c.append(part('U3', 'PCM3168A', 'PCM3168A', 'TQFP64EP', COD_D, 0,
-                  {'7': '_BCK_C', '36': '_BCK_C', '6': '_LRCK_C', '35': '_LRCK_C',
+                  {'7': 'BCK_C', '36': 'BCK_C', '6': 'LRCK_C', '35': 'LRCK_C',
                    '8': '_DOUT1_C', '9': '_DOUT2_C', '10': None,
                    '37': 'I2S_DAC1', '38': 'I2S_DAC2', '39': 'GND', '40': 'GND',
-                   '41': '_SCKI', '48': 'GND', '45': 'GND', '44': '_ADR1',
+                   '41': '_SCKI', '48': 'GND', '45': '+3V3_C', '44': 'CODEC_ADR1',
                    '43': 'I2C_SDA', '42': 'I2C_SCL', '4': 'CODEC_RST', '5': None, '13': None,
                    '49': '+5VA', '3': '+5VA', '14': '+5VA', '34': '+5VA', '46': '+3V3_C', '12': '+3V3_C',
                    '50': 'GND', '2': 'GND', '16': 'GND', '33': 'GND', '47': 'GND', '11': 'GND', '65': 'GND'},
@@ -237,24 +260,28 @@ def circuit():
                   {'1': '+3V3_OSC', '2': 'GND', '3': '_OSC', '4': '+3V3_OSC'},
                   Note='24.576 MHz 3.3 V CMOS oscillator (YXC OT2EL, 3225): SCKI = 256 fS at 96 kHz, '
                        '512 fS at 48 kHz (48 kHz family only, as modules/usb-audio). Own filtered supply '
-                       '+3V3_OSC (R21/C43/C29)'))
-    c.append(two('R10', 'R', '33', 'R0603', (xd + 27.94, yd - 20.32), '_SCKI', '_OSC',
-                 Note='Series termination: SCKI'))
+                       '+3V3_OSC (R21/C43/C29). Runs on every unit; U11 passes it on unless CLK IN is connected'))
+    c.append(two('R10', 'R', '33', 'R0603', (xd + 38.1, yd - 43.18), '_OSC', 'SCKI_LOC',
+                 Note='Series termination: Y1 -> U11 In0'))
+    c.append(two('R60', 'R', '33', 'R0603', (xd + 27.94, yd - 20.32), '_SCKI', 'SCKI_SEL',
+                 Note='Series termination: U11 (selected SCKI) -> codec SCKI'))
     c.append(part('U4', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (xd - 45.72, yd - 20.32), 180,
-                  {'1': '_BCK_C', '6': '_BCK_B'}, unit=1,
-                  Note='BCK/LRCK buffer to the MCU board: the codec master outputs see two short loads only'))
+                  {'1': 'BCK_C', '6': 'BCK_B'}, unit=1,
+                  Note='BCK/LRCK buffer to the MCU board and the CLK OUT repeaters (U12): the codec clock pins '
+                       'see two short loads (U4, U13 output) only'))
     c.append(part('U4', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (xd - 45.72, yd - 5.08), 180,
-                  {'3': '_LRCK_C', '4': '_LRCK_B'}, unit=2))
-    for ref, row, a_, b_, note in (('R11', yd - 20.32, 'I2S_SCLK', '_BCK_B', 'BCK to the MCU (I2S2/I2S3/SPI1 SCK)'),
-                                   ('R12', yd - 5.08, 'I2S_LRCK', '_LRCK_B', 'LRCK to the MCU (WS/NSS)')):
+                  {'3': 'LRCK_C', '4': 'LRCK_B'}, unit=2))
+    for ref, row, a_, b_, note in (('R11', yd - 20.32, 'I2S_SCLK', 'BCK_B', 'BCK to the MCU (I2S2/I2S3/SPI1 SCK)'),
+                                   ('R12', yd - 5.08, 'I2S_LRCK', 'LRCK_B', 'LRCK to the MCU (WS/NSS)')):
         c.append(two(ref, 'R', '33', 'R0603', (xd - 66.04, row), a_, b_, Note=f'Series termination: {note}'))
     c.append(two('R13', 'R', '33', 'R0603', (xd - 27.94, yd + 10.16), 'I2S_ADC1', '_DOUT1_C',
                  Note='Series termination: DOUT1 (ADC 1-4 at 96 kHz, 1-6 at 48 kHz) to PB15'))
     c.append(two('R14', 'R', '33', 'R0603', (xd - 33.02, yd + 15.24), 'I2S_ADC2', '_DOUT2_C',
                  Note='Series termination: DOUT2 (ADC 5-6 at 96 kHz) to PA7'))
-    c.append(two('R15', 'R', '10k', 'R0603', (xd + 35.56, yd - 12.7), '_ADR1', 'GND',
-                 Note='ADR1 strap (I2C address bit 1 = 0) through a resistor: the pin is the MDO output in '
-                      'SPI mode and has no internal pull-down'))
+    c.append(two('R15', 'R', '10k', 'R0603', (xd + 50.8, yd - 12.7), 'CODEC_ADR1', 'LINK_ADR',
+                 Note='ADR1 (I2C address bit 1) = buffered LINK_N (U14B): high (0x47) with CLK IN open, low (0x45) '
+                      'when linked; ADR0 (pin 45) is tied to +3V3_C. Through a resistor: the pin is the MDO '
+                      'output in SPI mode and has no internal pull-down'))
     c.append(two('R17', 'R', '10k', 'R0603', (xd + 25.4, yd + 11.43), 'CODEC_RST', 'GND', rot=0,
                  Note='Holds the codec in reset until the MCU (PB14) releases it with SCKI running'))
     # supply decoupling row (datasheet: 1 uF at each supply pin + 10 uF per supply line)
@@ -342,15 +369,86 @@ def circuit():
                  Note='VB filter (0.8 Hz)'))
     c.append(opamp('U6', 4, (81.28, y1), '_VB_DIV', 'VB_IN', 'VB_IN', Note='VB_IN buffer for the six drivers'))
 
+    # ---- Clock link (modules/multi-mix, same references): J7 CLK IN (from the upstream unit), J6 CLK OUT
+    # (to the next unit). Clock only.
+    hdr_note = ('Daisy chain: straight 10-way ribbon from a unit\'s CLK OUT to the next unit\'s CLK IN (red wire '
+                'on pin 1, silk). Power-cable safe pinout (modules/multi-mix docs/research.md D10), silk '
+                '"CLK - NOT POWER". Unshrouded 2x5 pin header (as modules/multi-mix J7), pin 1 at the top: '
+                'a box header does not fit beside the jack columns')
+    c.append(part('J7', 'Conn_02x05_Odd_Even', 'CLK_IN', 'H2x5', (LX, LY), 0,
+                  {'1': '_CLKI_DET', '2': None, '3': 'GND', '4': 'CLKI_SCKI', '5': 'GND', '6': 'CLKI_BCK',
+                   '7': 'CLKI_LRCK', '8': 'GND', '9': None, '10': None},
+                  Note='CLK IN (right edge, B side): from the upstream unit (modules/multi-mix or usb-audio-max); '
+                       'connected = this unit is a clock slave. Reversed, the ribbon is harmless but the unit '
+                       'stays a clock master. ' + hdr_note))
+    c.append(part('J6', 'Conn_02x05_Odd_Even', 'CLK_OUT', 'H2x5', (LX, LY + 50.8), 0,
+                  {'1': '_CLKO_DET', '2': None, '3': 'GND', '4': 'CLKO_SCKI', '5': 'GND', '6': 'CLKO_BCK',
+                   '7': 'CLKO_LRCK', '8': 'GND', '9': None, '10': None},
+                  Note='CLK OUT (left edge, B side): the clocks this unit runs on, repeated to the '
+                       'next unit in the chain. ' + hdr_note))
+    # link detect / clock-slave select
+    c.append(two('R82', 'R', '4.7k', 'R0603', (LX - 15.24, LY + 45.72), 'GND', '_CLKO_DET',
+                 Note='Presents GND (4.7k) to the next unit\'s DET: that unit becomes a clock slave. '
+                      '-12 V from a power cable: 2.6 mA, 31 mW'))
+    c.append(two('R83', 'R', '10k', 'R0603', (LX - 15.24, LY - 5.08), 'LINK_N', '_CLKI_DET',
+                 Note='DET input protection (power cable on CLK IN: -12 V -> 1.5 mA into D3)'))
+    c.append(two('R84', 'R', '100k', 'R0603', (LX - 22.86, LY - 8.89), '+3V3', 'LINK_N', rot=0,
+                 Note='LINK_N pull-up: CLK IN open = high = clock master; linked = 3.3 V x 14.7k/114.7k = 0.42 V'))
+    c.append(clamp('D3', (LX - 35.56, LY), 'LINK_N', 'a Eurorack power cable plugged into the CLK header puts '
+                   '-12 V on pin 1 (1.5 mA into the clamp)'))
+    # pull-downs on the CLK IN clock inputs (open on the master)
+    for i, (ref, net) in enumerate((('R76', 'CLKI_SCKI'), ('R77', 'CLKI_BCK'), ('R78', 'CLKI_LRCK'))):
+        c.append(two(ref, 'R', '100k', 'R0603', (LX + 30.48 + 10.16 * i, LY + 25.4), net, 'GND', rot=0,
+                     Note='Keeps the unused link clock input low on the master'))
+    # clock receivers (slave): LINK_N low enables U13 and makes U11 pass the link SCKI
+    c.append(part('U13', '74LVC2G125', 'SN74LVC2G125', 'SSOP8', (DX, LY - 35.56), 0,
+                  {'1': 'LINK_N', '2': 'CLKI_BCK', '6': '_BCK_RX'}, unit=1,
+                  Note='Link BCK/LRCK onto the codec clock nets, only when linked (/OE = LINK_N). The firmware must '
+                       'keep the codec ADC in slave mode while linked (else R74/R75 limit the fight to 16 mA)'))
+    c.append(part('U13', '74LVC2G125', 'SN74LVC2G125', 'SSOP8', (DX, LY - 5.08), 0,
+                  {'7': 'LINK_N', '5': 'CLKI_LRCK', '3': '_LRCK_RX'}, unit=2))
+    c.append(two('R74', 'R', '100', 'R0603', (DX + 22.86, LY - 35.56), '_BCK_RX', 'BCK_C',
+                 Note='Series termination / contention limit: link BCK -> codec BCKAD/BCKDA'))
+    c.append(two('R75', 'R', '100', 'R0603', (DX + 22.86, LY - 5.08), '_LRCK_RX', 'LRCK_C',
+                 Note='Series termination / contention limit: link LRCK -> codec LRCKAD/LRCKDA'))
+    c.append(part('U11', '74LVC1G97', '74LVC1G97', 'SC70-6', (DX, LY + 121.92), 0,
+                  {'3': 'SCKI_LOC', '1': 'CLKI_SCKI', '6': 'LINK_N', '4': 'SCKI_SEL', '5': '+3V3_C', '2': 'GND'},
+                  Note='2:1 mux (In2 = select: H -> Y = In0 = local Y1, L -> Y = In1 = link SCKI; Diodes DS35127 '
+                       'function table). Schmitt inputs. LINK_N switches it: change only with the codec in reset'))
+    c.append(two('C44', 'C', '100n', 'C0603', (DX + 30.48, LY + 125.73), '+3V3_C', 'GND', rot=0, Voltage='50V',
+                 Note='U11 supply decoupling'))
+    # repeaters: every line leaving the board is buffered, behind 150R
+    for ref, unit, (pin_in, pin_out), y, src, rser, dst, note in (
+            ('U14', 1, ('1', '6'), LY + 30.48, 'SCKI_SEL', 'R72', 'CLKO_SCKI', 'SCKI out of CLK OUT'),
+            ('U12', 1, ('1', '6'), LY + 45.72, 'BCK_B', 'R70', 'CLKO_BCK', 'BCK out of CLK OUT'),
+            ('U12', 2, ('3', '4'), LY + 60.96, 'LRCK_B', 'R71', 'CLKO_LRCK', 'LRCK out of CLK OUT')):
+        c.append(part(ref, '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (DX, y), 0,
+                      {pin_in: src, pin_out: f'_{dst}_D'}, unit=unit,
+                      Note='Clock repeaters (U12 BCK/LRCK, U14A SCKI): a power cable on the header shorts only a '
+                           'buffer output through 150R (22 mA, within the 50 mA rating). U14B buffers LINK_N for '
+                           'the codec address pin ADR1'))
+        c.append(two(rser, 'R', '150', 'R0603', (DX + 22.86, y), f'_{dst}_D', dst,
+                     Note=f'Series termination ~ ribbon impedance, short-circuit limit: {note}'))
+    c.append(part('U14', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (DX, LY + 81.28), 0,
+                  {'3': 'LINK_N', '4': 'LINK_ADR'}, unit=2,
+                  Note='LINK_N buffer for the codec ADR1 pin (R15): keeps the clamped DET level (-0.35..+3.65 V '
+                       'with a power cable on CLK IN) off the codec pin'))
+
     # ---- Op-amp / buffer supplies and decoupling
     c.append(part('U5', 'OPA1679', 'OPA1679', 'SOIC14', (40.64, PU_Y), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
     c.append(part('U6', 'OPA1679', 'OPA1679', 'SOIC14', (76.2, PU_Y), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
     c.append(part('U7', 'OPA1679', 'OPA1679', 'SOIC14', (111.76, PU_Y), 0, {'4': '+12V_F', '11': '-12V_F'}, unit=5))
     c.append(part('U8', 'OPA1679', 'OPA1679', 'SOIC14', (162.56, PU_Y), 0, {'4': '+12V_F', '11': '-12V_F'}, unit=5))
     c.append(part('U4', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (228.6, PU_Y), 0, {'5': '+3V3_C', '2': 'GND'}, unit=3))
+    c.append(part('U12', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (264.16, PU_Y), 0, {'5': '+3V3_C', '2': 'GND'}, unit=3))
+    c.append(part('U13', '74LVC2G125', 'SN74LVC2G125', 'SSOP8', (309.88, PU_Y), 0, {'8': '+3V3_C', '4': 'GND'}, unit=3))
+    c.append(part('U14', '74LVC2G34', 'SN74LVC2G34', 'SC70-6', (350.52, PU_Y), 0, {'5': '+3V3_C', '2': 'GND'}, unit=3))
     for ref, xx, a_, b_, note in (('C31', 53.34, '+5VA', 'GND', 'U5 V+'), ('C32', 88.9, '+5VA', 'GND', 'U6 V+'),
                                   ('C33', 124.46, '+12V_F', 'GND', 'U7 V+'), ('C34', 137.16, 'GND', '-12V_F', 'U7 V-'),
-                                  ('C35', 175.26, '+12V_F', 'GND', 'U8 V+'), ('C36', 187.96, 'GND', '-12V_F', 'U8 V-')):
+                                  ('C35', 175.26, '+12V_F', 'GND', 'U8 V+'), ('C36', 187.96, 'GND', '-12V_F', 'U8 V-'),
+                                  ('C45', 276.86, '+3V3_C', 'GND', 'U12 supply'),
+                                  ('C46', 322.58, '+3V3_C', 'GND', 'U13 supply'),
+                                  ('C47', 363.22, '+3V3_C', 'GND', 'U14 supply')):
         c.append(two(ref, 'C', '100n', 'C0603', (xx, PU_Y), a_, b_, rot=0, Voltage='50V', Note=f'{note} decoupling'))
 
     # ---- MCU board headers, I2C pull-ups, BOOT/RESET, SWD
@@ -407,6 +505,7 @@ def drawing():
     P += [('+5VA', (175.26, 76.2), 0)]
     W += [['U9.6', 'R6.1'], ['U9.5', (218.44, 73.66), 'C17.1'], ['R6.2', (260.35, 68.58)]]
     L += [('V5_SET', (260.35, 68.58), 'R'), ('V5_SET', (88.9, 99.06), 'L'), ('V5_IN', (116.84, 76.2), 'U')]
+    L += [('REF_NR', 'C17.1', 'L')]  # named: no escaped '/' in the auto net name (as modules/multi-mix S4)
     # +3V3: +12V_F -> FB2 -> R3 -> V3_IN (C6-C8, R4 to EN) -> U2 TPS562208 -> SW (C4 to VBST) -> L1 -> +3V3
     # (C9/C10/C5, R5/R20 to VFB) -> FB1 -> +3V3_C -> R21 -> +3V3_OSC (C43)
     xu, yr = BUCK
@@ -438,13 +537,15 @@ def drawing():
           ['R12.1', (xd - 73.66, yd - 5.08)],
           ['U3.8', 'R13.2'], ['R13.1', (xd - 40.64, yd + 10.16)],
           ['U3.9', 'R14.2'], ['R14.1', (xd - 43.18, yd + 15.24)],
-          ['U3.41', 'R10.1'], ['R10.2', (xd + 34.29, yd - 20.32), (xd + 34.29, yd - 43.18), 'Y1.3'],
-          ['U3.44', 'R15.1'], ['R15.2', (xd + 41.91, yd - 12.7), (xd + 41.91, yd - 10.16)],
+          ['U3.41', 'R60.1'], ['Y1.3', 'R10.1'],
+          ['U3.44', 'R15.1'], ['R15.2', (xd + 58.42, yd - 12.7)],
           ['U3.4', (xd + 30.48, yd + 7.62)]]
     L += [('I2S_SCLK', (xd - 73.66, yd - 20.32), 'L'), ('I2S_LRCK', (xd - 73.66, yd - 5.08), 'L'),
+          ('BCK_C', (xd - 27.94, yd - 20.32), 'U'), ('LRCK_C', (xd - 27.94, yd - 5.08), 'U'),
+          ('BCK_B', (xd - 60.96, yd - 20.32), 'U'), ('LRCK_B', (xd - 60.96, yd - 5.08), 'U'),
           ('I2S_ADC1', (xd - 40.64, yd + 10.16), 'L'), ('I2S_ADC2', (xd - 43.18, yd + 15.24), 'L'),
-          ('CODEC_RST', (xd + 30.48, yd + 7.62), 'R')]
-    P += [('GND', (xd + 41.91, yd - 10.16), 0)]
+          ('CODEC_RST', (xd + 30.48, yd + 7.62), 'R'), ('LINK_ADR', (xd + 58.42, yd - 12.7), 'R'),
+          ('CODEC_ADR1', (xd + 40.64, yd - 12.7), 'D')]  # named: no escaped '/' in the auto net name
 
     # Inputs
     for n, y in zip(IN_CH, IN_Y):
@@ -490,11 +591,23 @@ def drawing():
           ['U6.14', (99.06, y1)], [(91.44, y1), (91.44, y1 + 7.62), (71.12, y1 + 7.62), (71.12, y1 + 2.54), 'U6.13']]
     L += [('VCOM_BUF', (76.2, y0 + 7.62), 'D'), ('VCOM_REF', (121.92, y0), 'R'), ('VCOM_BUF', (35.56, y1 - 2.54), 'L'),
           ('VB_IN', (99.06, y1), 'R')]
+
+    # Clock link
+    for hy_ in (LY, LY + 50.8):
+        j = 'J7' if hy_ == LY else 'J6'
+        W += [[f'{j}.3', (LX - 10.16, hy_ - 2.54)], [f'{j}.5', (LX - 7.62, hy_), (LX - 7.62, hy_ - 2.54)]]
+        P += [('GND', (LX - 10.16, hy_ - 2.54), 270)]
+    W += [['J7.1', 'R83.2'], ['R83.1', (LX - 38.1, LY - 5.08)], ['J6.1', 'R82.2']]
+    L += [('LINK_N', (LX - 38.1, LY - 5.08), 'L')]
+    W += [['U13.6', 'R74.1'], ['U13.3', 'R75.1']]
+    for ref, pin_out, rser, y in (('U14', '6', 'R72', LY + 30.48), ('U12', '6', 'R70', LY + 45.72),
+                                  ('U12', '4', 'R71', LY + 60.96)):
+        W += [[f'{ref}.{pin_out}', f'{rser}.1']]
     return W, P, L
 
 
 # JLCPCB parts (live lookups 2026-11-05, docs/research.md section 6; usb-audio parts re-used where the
-# value matches). Jacks, the power header and the J2/J3/J4 strips are hand-soldered: no LCSC field.
+# value matches; the S3 clock-link codes are modules/multi-mix's). Jacks, the power header and the J2/J3/J4 strips are hand-soldered: no LCSC field.
 SOURCING = {
     ('R', '33', 'R0603'): dict(LCSC='C23140', MPN='0603WAF330JT5E', Manufacturer='UNI-ROYAL'),
     ('R', '150', 'R0603'): dict(LCSC='C22808', MPN='0603WAF1500T5E', Manufacturer='UNI-ROYAL'),
@@ -502,6 +615,7 @@ SOURCING = {
     ('R', '470', 'R0603'): dict(LCSC='C23179', MPN='0603WAF4700T5E', Manufacturer='UNI-ROYAL'),
     ('R', '2.2k', 'R0603'): dict(LCSC='C4190', MPN='0603WAF2201T5E', Manufacturer='UNI-ROYAL'),
     ('R', '1k', 'R0603'): dict(LCSC='C21190', MPN='0603WAF1001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '4.7k', 'R0603'): dict(LCSC='C23162', MPN='0603WAF4701T5E', Manufacturer='UNI-ROYAL'),
     ('R', '10k', 'R0603'): dict(LCSC='C25804', MPN='0603WAF1002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '15k', 'R0603'): dict(LCSC='C22809', MPN='0603WAF1502T5E', Manufacturer='UNI-ROYAL'),
     ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
@@ -514,7 +628,7 @@ SOURCING = {
     ('R', '2k', 'R1206'): dict(LCSC='C17944', MPN='1206W4F2001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '33', 'R2512'): dict(LCSC='C53728', MPN='25121WF330JT4E', Manufacturer='UNI-ROYAL'),
     ('C', '47p', 'C0603'): dict(LCSC='C1671', MPN='CL10C470JB8NNNC', Manufacturer='Samsung'),
-    ('C', '2.2n', 'C0603'): dict(LCSC='C33353', MPN='CL10C222JB8NNNC', Manufacturer='Samsung'),
+    ('C', '2.2n', 'C0603'): dict(LCSC='C107043', MPN='CC0603JRNPO9BN222', Manufacturer='YAGEO'),
     ('C', '22n', 'C0603'): dict(LCSC='C21122', MPN='CL10B223KB8NNNC', Manufacturer='Samsung'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
     ('C', '1u', 'C0603'): dict(LCSC='C15849', MPN='CL10A105KB8NNNC', Manufacturer='Samsung'),
@@ -531,6 +645,10 @@ SOURCING = {
     ('REF5050AD', 'REF5050A', 'SOIC8'): dict(LCSC='C27804', MPN='REF5050AIDR', Manufacturer='Texas Instruments'),
     ('PCM3168A', 'PCM3168A', 'TQFP64EP'): dict(LCSC='C529289', MPN='PCM3168APAPR', Manufacturer='Texas Instruments'),
     ('74LVC2G34', 'SN74LVC2G34', 'SC70-6'): dict(LCSC='C14461', MPN='SN74LVC2G34DCKR', Manufacturer='Texas Instruments'),
+    ('74LVC2G125', 'SN74LVC2G125', 'SSOP8'): dict(LCSC='C206035', MPN='SN74LVC2G125DCTR',
+                                                  Manufacturer='Texas Instruments'),
+    ('74LVC1G97', '74LVC1G97', 'SC70-6'): dict(LCSC='C460532', MPN='74LVC1G97DW-7', Manufacturer='Diodes Incorporated'),
+    ('BAT54S', 'BAT54S', 'SOT23'): dict(LCSC='C47546', MPN='BAT54S,215', Manufacturer='Nexperia'),
     ('OPA1679', 'OPA1679', 'SOIC14'): dict(LCSC='C2878631', MPN='OPA1679IDR', Manufacturer='Texas Instruments'),
     ('ASE-xxxMHz', '24.576MHz', 'OSC3225'): dict(LCSC='C5203547', MPN='OT2EL4C4JI-111OLP-24.576M',
                                                  Manufacturer='YXC'),
@@ -539,8 +657,8 @@ SOURCING = {
 }
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR USB-AUDIO-MAX - carrier (jack board), S2. 6 in / 8 out, DC-coupled +/-5.9 V, '
-                     'no level controls, PCM3168A 24-bit, up to 96 kHz. Circuit intent: docs/research.md', 2.0),
+    ((20.32, 20.32), 'BIG MODULAR USB-AUDIO-MAX - carrier (jack board), S3. 6 in / 8 out, DC-coupled +/-5.9 V, '
+                     'no level controls, PCM3168A 24-bit, up to 96 kHz, clock link (48 kHz). Circuit intent: docs/research.md', 2.0),
     ((20.32, 33.02), 'POWER: +12V -> D2 -> +12V_F (output op-amps; R1||R2 16.5R -> Q1 BCP56 (U1A LM358 loop, ref U9 REF5050) -> +5VA; '
                      'FB2 + R3 -> U2 TPS562208 FCCM buck -> L1 -> +3V3 -> FB1 -> +3V3_C -> R21 -> +3V3_OSC); -12V -> D1 -> -12V_F. '
                      '+12 V ~0.34 A max, -12 V ~20 mA.', 1.4),
@@ -561,7 +679,7 @@ TEXTS = [
     ((20.32, 154.94), 'PWR_FLAG: GND/+12V/-12V at J1; +12V_F/-12V_F behind D2/D1; V5_IN behind R1||R2; V3_IN behind FB2 + R3; +3V3 behind L1 (buck); '
                       '+5VA at R8 (discrete regulator); +3V3_C behind FB1; +3V3_OSC behind R21.',
      1.1),
-    ((330.2, 38.1), 'PCM3168A INTERFACE: I2C 0x44 (MODE = DGND, ADR1/ADR0 = 0). ADC = clock master, 24-bit I2S-mode TDM;\n'
+    ((330.2, 38.1), 'PCM3168A INTERFACE: I2C 0x47 with CLK IN open, 0x45 as a clock slave (MODE = DGND, ADR0 = +3V3_C, ADR1 = LINK_N). ADC = clock master, 24-bit I2S-mode TDM;\n'
                     'DAC = slave on the same BCK/LRCK (pins tied). SCKI 24.576 MHz: 96 kHz = 256 fS (dual rate, BCK 128 fS),\n'
                     '48 kHz = 512 fS (single rate, BCK 256 fS): BCK = 12.288 MHz in both. 96 kHz: DOUT1 ADC1-4, DOUT2 ADC5-6,\n'
                     'DIN1 DAC1-4, DIN2 DAC5-8. 48 kHz: DOUT1 ADC1-6, DIN1 DAC1-8. Firmware: SEAD = 1 (single-ended),\n'
@@ -576,9 +694,14 @@ TEXTS = [
     ((579.12, 50.8), 'MCU BOARD LINK: J2/J3 1x10 2.54 mm male headers (plastic on the carrier F side);\n'
                      'the MCU board (usb-audio-max-mcu) solders on top. BOOT/RESET and SWD on the carrier (B side):\n'
                      'hold BOOT, press RESET = CH32V307 ROM bootloader on the USB-C.', 1.1),
+    ((459.74, 185.42), 'CLOCK LINK (S3; modules/multi-mix circuit, pinout and ribbon: 2x5 daisy chain, straight ribbon CLK OUT (J6) -> next unit CLK IN (J7), plain pin headers: red wire on pin 1;\n'
+                       'master = the unit with CLK IN open):  1 DET | 2 NC | 3 GND | 4 SCKI | 5 GND | 6 BCK | 7 LRCK | 8 GND | 9 NC | 10 NC  (Eurorack power cable safe)\n'
+                       'Clock only, 48 kHz only (sample-locked USB multitrack): each unit keeps its own USB and outputs. Up to 4 units until bench-tested.\n'
+                       'LINK_N low (CLK IN connected) = clock slave: U11 takes SCKI and U13 BCK/LRCK from the link, by hardware; U14A/U12 repeat them out of CLK OUT.\n'
+                       'The MCU reads LINK_N as the codec I2C address (U14B -> R15 -> ADR1): 0x47 master, 0x45 slave = leave the ADC and DAC in slave mode.', 1.1),
 ]
 
-TEXT_LEFT = {'C3', 'C17', 'C19', 'R20'}
+TEXT_LEFT = {'C3', 'C17', 'C19', 'R20', 'R84'}
 TEXT_POS = {'U1': ((3.81, -6.35), (3.81, -3.81), 'left'), 'U1/2': ((3.81, -6.35), (3.81, -3.81), 'left'),
             'U1/3': ((1.27, -1.27), (1.27, 1.27), 'left'),
             'Q1': ((-7.62, 12.7), (-7.62, 15.24)), 'Q2': ((2.54, 6.35), (2.54, 8.89), 'left'),
@@ -586,7 +709,14 @@ TEXT_POS = {'U1': ((3.81, -6.35), (3.81, -3.81), 'left'), 'U1/2': ((3.81, -6.35)
             'FB1': ((0, -3.81), (0, 3.81)), 'FB2': ((0, -3.81), (0, 3.81)), 'U9': ((2.54, -8.89), (2.54, -6.35), 'left'),
             'U5/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'), 'U6/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U7/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'), 'U8/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
-            'U4/3': ((-6.35, -1.27), (-6.35, 1.27), 'right'),
+            'U4/3': ((-6.35, -1.27), (-6.35, 1.27), 'right'), 'U12/3': ((-6.35, -1.27), (-6.35, 1.27), 'right'),
+            'U13/3': ((-6.35, -1.27), (-6.35, 1.27), 'right'), 'U14/3': ((-6.35, -1.27), (-6.35, 1.27), 'right'),
+            'J6': ((1.27, -8.89), (1.27, 8.89)), 'J7': ((1.27, -8.89), (1.27, 8.89)),
+            'U11': ((5.08, -13.97), (5.08, 13.97), 'left'),
+            'U13': ((3.81, -11.43), (3.81, 6.35), 'left'), 'U13/2': ((3.81, -11.43), (3.81, 6.35), 'left'),
+            'U12': ((-1.27, -6.35), (-1.27, 6.35)), 'U12/2': ((-1.27, -6.35), (-1.27, 6.35)),
+            'U14': ((-1.27, -6.35), (-1.27, 6.35)), 'U14/2': ((-1.27, -6.35), (-1.27, 6.35)),
+            'R82': ((0, -5.08), (0, -2.54)), 'R83': ((0, -5.08), (0, -2.54)), 'D3': ((0, 3.81), (0, 6.35)),
             'U4': ((-1.27, -10.16), (-1.27, -7.62)), 'U4/2': ((-1.27, 8.89), (-1.27, 11.43)),
             'U3': ((-12.7, -27.94), (12.7, -27.94)), 'U3/2': ((-22.86, -30.48), (-22.86, -27.94)),
             'Y1': ((-10.16, -6.35), (-10.16, -3.81), 'right'),
@@ -598,4 +728,4 @@ TEXT_POS.update({f'{u}/{k}' if k > 1 else u: ((3.81, -6.35), (3.81, -3.81), 'lef
 TEXT_POS.update({f'{u}/{k}' if k > 1 else u: ((0, 7.62), (0, 10.16)) for u, k in OUT_AMP.values()})
 
 MULTI_UNIT = {'U1': {1, 2, 3}, 'U3': {1, 2}, 'U4': {1, 2, 3}, 'U5': {1, 2, 3, 4, 5}, 'U6': {1, 2, 3, 4, 5}, 'U7': {1, 2, 3, 4, 5},
-              'U8': {1, 2, 3, 4, 5}}
+              'U8': {1, 2, 3, 4, 5}, 'U12': {1, 2, 3}, 'U13': {1, 2, 3}, 'U14': {1, 2, 3}}

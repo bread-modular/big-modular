@@ -60637,6 +60637,18 @@
 			)
 		)
 	)
+	(gr_poly
+		(pts
+			(xy 197.6 98.5) (xy 198.5 97.95) (xy 198.5 99.05)
+		)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill yes)
+		(layer "B.SilkS")
+		(uuid "41098dc6-8051-4e3a-9b3b-e657f63e4cbd")
+	)
 	(gr_rect
 		(start 100 50)
 		(end 201.3 58)
@@ -60851,6 +60863,18 @@
 			(justify mirror)
 		)
 	)
+	(gr_text "1"
+		(at 113.55 102.92 0)
+		(layer "B.SilkS")
+		(uuid "220f5e92-ed3c-4135-bdd6-e14380693e2e")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
 	(gr_text "MULTI-MIX S5/R4"
 		(at 150.65 167.6 0)
 		(layer "B.SilkS")
@@ -60923,8 +60947,20 @@
 			(justify mirror)
 		)
 	)
+	(gr_text "1"
+		(at 199.3 98.5 0)
+		(layer "B.SilkS")
+		(uuid "37b46503-e3a1-4b67-b4f9-6d5bf23100d8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
 	(gr_text "CLK IN - NOT POWER"
-		(at 198.95 103.58 90)
+		(at 198.95 108.43 90)
 		(layer "B.SilkS")
 		(uuid "8a84033c-ebff-4088-957d-6310fb0aa61c")
 		(effects

@@ -1,12 +1,17 @@
-# usb-audio-max — manufacturing export (carrier S2/R1, MCU board S2/R1, 10HP panel)
+# usb-audio-max — manufacturing export (carrier S3/R2 with the clock link, MCU board S2/R1, 12HP panel)
 
-Exported on 2026-11-08 after the fab-review fixes (F1 MCU fills saved, F2 Q1 collector copper,
-F3 PCM3168A land), with the shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction.
-Never hand-edit these files: change the sources, then re-export with the commands below.
+`main/` (carrier + panel) re-exported on 2026-11-20 for the S3 / R2 carrier: the modules/multi-mix clock
+link (CLK OUT J6 / CLK IN J7, 21 more SMD parts), carrier and panel widened from 10HP to 12HP. `mcu/` is
+the 2026-11-08 export, unchanged (same MCU board, same files). Shared `opt/kicad-tools/jlcpcb/export.py`
+exporter. Never hand-edit these files: change the sources, then re-export with the commands below.
+The fab-review fixes of 2026-11-08 (F1 MCU fills saved, F2 Q1 collector copper, F3 PCM3168A land) are
+unchanged in S3 / R2.
 
-> **Prototype order set, not order-approved.** Open gates before you order: (1) the 10 Extended
-> R/C placements below need your OK (or Basic substitutes); (2) C1562 (C101/C102) failed today's exact
-> lookup — confirm it in the JLCPCB part preview; (3) the shared assembly audit's per-part rating/role
+> **Prototype order set, not order-approved.** Open gates before you order: (0) the S3 clock link is
+> new copper that no built board has run, and firmware 1.1.0 does not start a linked (slave) unit yet
+> (`../firmware/README.md`); (1) the 10 Extended R/C placements below need your OK (or Basic
+> substitutes); (2) C1562 (C101/C102, MCU board) failed the 2026-11-08 exact lookup — confirm it in the
+> JLCPCB part preview; (3) the shared assembly audit's per-part rating/role
 > reviews are unrecorded (`unknown`, as on every module here), so the audit exits 1; (4) JLCPCB's own
 > part/placement preview (rotation, pin 1, bottom side) and the quote options below are manual. The
 > U3 stencil and the Q1 temperature are prototype risks for the bench, not proven by these files.
@@ -22,7 +27,7 @@ board set (`main/`, `mcu/`), declared as `source_manifest` in `tools/kicad-proje
 | `main/usb-audio-max-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
 | `main/usb-audio-max-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
 | `main/assembly/bom.csv`, `main/assembly/positions.csv` | Carrier BOM and CPL (upload these) |
-| `main/carrier/` | Carrier export: ZIP unpacked (4 copper layers: F / In1 GND / In2 +12V_F + +5VA + 2 x +3V3_C / B, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
+| `main/carrier/` | Carrier export: ZIP unpacked (4 copper layers: F / In1 GND / In2 +12V_F + +5VA + 2 x +3V3_C / B; the U4 +3V3_C island now reaches the CLK IN receiver, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
 | `main/panel/` | Panel export: ZIP unpacked, empty BOM/CPL, export report |
 | `main/source-sha256.json` | Carrier + panel sources and export SHA-256 |
 | `mcu/usb-audio-max-mcu-gerbers.zip` | MCU board Gerber/drill ZIP (upload this) |
@@ -37,11 +42,11 @@ in `main/carrier/`, `main/panel/` and `mcu/board/`.
 
 | Order | Files | Options |
 |---|---|---|
-| Carrier PCB | `main/usb-audio-max-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 49.5 x 110.0 mm, 1 oz outer, HASL, stackup JLC04161H-7628. Tented vias, no via-in-pad / POFV (no routing vias in SMD pads). Vias 0.6/0.3 mm (216) + one 0.5/0.3. **Min hole 0.2 mm**: the 36 PCM3168A PowerPAD thermal holes (footprint-owned, inside U3's exposed pad, tented on the far side) — check the 0.2 mm drill option/price in the quote. Jack legs are 1.6 x 0.6 mm plated slots. No `JLCJLCJLCJLC` marker: pick the order-number option deliberately |
-| Carrier assembly | `main/assembly/bom.csv`, `main/assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 179 parts in 38 BOM rows, all on the back |
+| Carrier PCB | `main/usb-audio-max-gerbers.zip` | **4 layers**, FR4, 1.6 mm, **59.6 x 110.0 mm**, 1 oz outer, HASL, stackup JLC04161H-7628. Tented vias, no via-in-pad / POFV (no routing vias in SMD pads). Vias 0.6/0.3 mm (252) + one 0.5/0.3. **Min hole 0.2 mm**: the 36 PCM3168A PowerPAD thermal holes (footprint-owned, inside U3's exposed pad, tented on the far side) — check the 0.2 mm drill option/price in the quote. Jack legs are 1.6 x 0.6 mm plated slots. No `JLCJLCJLCJLC` marker: pick the order-number option deliberately |
+| Carrier assembly | `main/assembly/bom.csv`, `main/assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 200 parts in 42 BOM rows, all on the back |
 | MCU board PCB | `mcu/usb-audio-max-mcu-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 29.55 mm, same base options as the carrier; **explicit JLC04161H-7628 stack and USB impedance targets below**. Min hole 0.3 mm (59 vias: 58 at 0.6 mm, one 0.5 mm). The USB-C shell legs are plated slots (0.5 / 0.95 mm tools) |
 | MCU board assembly | `mcu/assembly/bom.csv`, `mcu/assembly/positions.csv` | **Economic PCBA, assembly side: Top.** 24 parts in 12 BOM rows, all on the front, J101 USB-C included |
-| Front panel PCB | `main/usb-audio-max-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 50.5 x 128.5 mm (10HP), no assembly |
+| Front panel PCB | `main/usb-audio-max-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, **60.6 x 128.5 mm (12HP)**, no assembly. The printable panel is `../panels/front-cad/` |
 
 ### USB fabrication constraints (MCU board)
 
@@ -84,53 +89,74 @@ load; a sustained +5VA short is still not thermally protected (D11).
 |---|---|---|
 | J11-J16, J21-J28 | QingPu WQP-PJ301M-12 TS jack (IN 1-6, OUT 1-8) | Carrier F-side THT, panel-nut fixed; fit to the panel before soldering |
 | J1 | 2x5 2.54 mm pin header | Eurorack power, carrier back |
+| J6, J7 | 2x5 2.54 mm pin headers, unshrouded | CLK OUT (left edge) / CLK IN (right edge), carrier back, pin 1 at the top (square pad, silk triangle + "1" beside it). 10-way IDC ribbon between units, red wire on pin 1. Leave them off if the clock link is not used: the unit is then always the clock master |
 | J2, J3 (carrier) + J102, J103 (MCU board) | 1x10 2.54 mm male strips | One strip per side joins the two boards; buy one pair, not two. Solder the MCU board on with the panel fitted so the USB-C lines up with its slot |
 | J4 | 1x4 2.54 mm pin header (SWD) | Optional, carrier back; only for a WCH-LinkE |
 | MS1, MS2 | M3 x 10 mm F-F hex standoffs + 4 x M3 screws | Mechanical, carrier top corners to panel holes H20/H21 (USB-C push support) |
 
-The exporter excluded exactly these electrical refs: the 18 carrier THT refs as non-SMD
+The exporter excluded exactly these electrical refs: the 20 carrier THT refs as non-SMD
 (`main/carrier/export-report.json`) and J102/J103 as "Excluded from BOM"
 (`mcu/board/export-report.json`).
 
-## Parts (strict-live audit, 2026-11-08 03:42 UTC, 5 boards)
+## Parts
 
-`assembly.py audit --strict-live` on both BOM/CPL sets; raw reports and snapshots in
-`research/fab-fix/` (ignored). 49 codes: **32 Basic, 16 Extended, 1 unresolved by exact lookup**;
-every resolved code reported Economic-eligible (`componentProductType` 0). The audit exits 1 by design
-(no requirements file; per-part rating/role reviews are human gates, as on every module).
+### Carrier (strict-live audit, 2026-11-20 00:59 UTC, 5 boards)
 
-- **Extended semis / others (one setup fee each):** PCM3168APAPR C529289 (**1517** in stock, the
-  tightest), CH32V307RCT6 C2988083 (1875), TYPE-C-31-D-15 C22464480 (**452**), OPA1679IDR C2878631
-  (2850), BCP56-16 C92221, TPS562208 C91301, REF5050AIDR C27804, SN74LVC2G34 C14461, 24.576 MHz
-  oscillator C5203547, MWSA0402S inductor C408337, GZ2012D121TF ferrite C5671, K2-1808SN switches
-  C92589, USBLC6-2SC6 C7519.
-- **R/C that are not Basic (10 placements, unchanged, user decision open):**
-  - C211-C216 2.2n C0G 0603 C33353 (Extended, 3261): the ADC input filter caps. No Basic C0G at 2.2n
-    in 0603 (modules/usb-audio: same part, user deferred).
+`assembly.py audit --strict-live` on `main/carrier/`; raw report and snapshots in `research/clk/audit/`
+(ignored). 41 codes: **25 Basic, 16 Extended**, every code Economic-eligible (`componentProductType` 0).
+The audit exits 1 by design (no requirements file; per-part rating/role reviews are human gates, as on
+every module). Free stock (`canPresaleNumber`) and minimum order read from the same answers: every code
+has free stock above the 5-board need and a minimum order of 1 (no pre-order part).
+
+Re-checked 2026-11-20 after the root `AGENTS.md` pre-order rule landed, carrier and `mcu/` BOMs, 5
+boards + attrition (`research/preorder/check_preorder.py`, ignored): 54 rows, 0 failures; the tightest
+are J101 TYPE-C-31-D-15 (414 free), PCM3168APAPR (1,483), CH32V307RCT6 (1,465) and OPA1679IDR (2,465).
+The modules/multi-mix NE5532DR swap (its U8 OPA1678IDR dual) has no counterpart here: this board has
+no OPA1678. U5 / U6 (+5VA single supply) need the rail-to-rail OPA1679; U7 / U8 (+/-12 V outputs)
+could only go Basic as four NE5532DR duals in place of the two quads (no Basic quad audio op-amp at
+JLCPCB), a re-place and re-route of the output stage for about $1.5 per board, and the OPA1679
+Extended fee stays for U5 / U6. Not done; user decision.
+
+- **New in S3 (clock link, the modules/multi-mix codes):** SN74LVC2G125DCTR C206035 (Extended, 2,040
+  free), 74LVC1G97DW-7 C460532 (Extended, 4,090), BAT54S C47546 (Extended, 429,439), 4.7k C23162 (Basic);
+  two more SN74LVC2G34 C14461 (now 3 per board) and 33R / 100R / 150R / 10k / 100k / 100n from rows
+  that were already there. Three more Extended setup fees.
+- **Extended semis / others (one setup fee each):** PCM3168APAPR C529289 (**1,483** free, the tightest),
+  OPA1679IDR C2878631 (2,465), BCP56-16 C92221, TPS562208 C91301, REF5050AIDR C27804, SN74LVC2G34 C14461,
+  24.576 MHz oscillator C5203547, MWSA0402S inductor C408337, GZ2012D121TF ferrite C5671, K2-1808SN
+  switches C92589, and the three link parts above.
+- **R/C that are not Basic (10 placements, user decision open):**
+  - C211-C216 2.2n C0G 0603: **changed on 2026-11-20 from C33353 to YAGEO CC0603JRNPO9BN222 C107043**
+    (Extended, 308,955 free, minimum order 1; same 2.2n / NP0 / 5 % / 50 V / 0603). C33353 listed 639 in
+    stock but is pre-order only now (free stock -1705, minimum order 301). No Basic C0G at 2.2n in 0603.
   - R1/R2 33R 2512 1 W C53728 (Extended): the +5VA input drop resistors (power rating).
   - R3/R8 2.2R 1206 C144499 (Extended): the buck input filter resistor and the Q1 current-sense
     resistor.
-- **C101/C102 33p C0G 0402 C1562**: exact lookup came back ambiguous today (as on modules/usb-audio);
-  the fab review's lookup earlier on 2026-11-08 (`research/fab-review-2026-11-08/catalog-review.json`)
-  recorded it Basic, Economic-eligible, 1,308,517 in stock.
 - **Q2 C20526**: catalog MPN text `MMBT3904(RANGE:100-300)` vs native `MMBT3904` (same C-code, hFE
   bin qualifier).
 
+### MCU board (strict-live audit, 2026-11-08 03:42 UTC, not repeated)
+
+Unchanged board and BOM: CH32V307RCT6 C2988083 (1875 then), TYPE-C-31-D-15 C22464480 (**452** then),
+USBLC6-2SC6 C7519, all Extended; **C101/C102 33p C0G 0402 C1562**: the exact lookup came back ambiguous
+that day (as on modules/usb-audio); the fab review's lookup earlier on 2026-11-08 recorded it Basic,
+Economic-eligible, 1,308,517 in stock. Re-check these before ordering.
+
 Stock is a public web count at the recorded lookup time, not a reservation. The JLCPCB part and
-placement preview (rotation/pin 1, especially the bottom-side SOIC/SOT parts and U3) is a manual
-order gate.
+placement preview (rotation/pin 1, especially the bottom-side SOIC/SOT parts, U3 and the new SC-70 /
+SM8 link parts U11-U14) is a manual order gate.
 
 ## Source identity
 
 Taken from the manifests; the shared `check` re-hashes them and fails on drift.
 
-- Carrier PCB `4538e0b1b4649f96c434d498842432fb94430f2f93db0ba591875b57d74f3bd5`.
+- Carrier PCB `a4c3f10e0d828b154d7e1af648e37c5587153fea89cc2c3b8ea4b58bc9fcf128`.
 - Carrier project `039ab4888ad0436b37edbd5b15cbc0795c00942068be1f9fa2e6b9ed8d0be175`.
-- Carrier schematic `60bb328ce1726b16eba69fa9a2ec453bc43e84a83ee524abe2dd6aca30c5e4fb`.
+- Carrier schematic `eb25e7086fa1fa6b5af7925d90c0835580514554afae7f6fb2b1bd977740e374`.
 - MCU PCB `39ae92f71854281a70d053b2086155c5a0e12fdfd4d78d21b53fb239a9b95503`.
 - MCU project `4ef0e47ef1a29ea21a5cf080105c3aeec870b59cbe2f3328fda52dfd571db9be`.
 - MCU schematic `709e97d1852fd5b5e4364237aac0331792039be90fd46f37d0b2980506e2f365`.
-- Panel PCB `219521b6296812f41c4cd89ab4b180f1c3947340c2f68aef552defe036a3456a`.
+- Panel PCB `6b99550725a94eac8a1e64f3cd7a1aa1464010c41f8aef6c500201f53000ddd9`.
 - Panel project `5a6fd1595e5d801277a5d1d3dc2d0cbda4f82c685530cccda285ff7337d3e8ba`.
 
 ## Reproduce

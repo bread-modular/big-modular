@@ -2,7 +2,10 @@
 
 #include "board.h"
 
-#define CODEC_ADDR      (0x44 << 1)
+// 7-bit addresses, in probing order (codec.h)
+#define ADDR_S3_MASTER  0x47
+#define ADDR_S3_SLAVE   0x45
+#define ADDR_S2         0x44
 #define I2C_TIMEOUT_US  2000
 
 // DAC Control 1 (41h): DAC slave, 24-bit I2S-mode TDM.
@@ -18,13 +21,15 @@
 #define ADC_ALL6        0x3F
 
 static codec_state_t state = CODEC_OFF;
+static uint8_t addr = ADDR_S3_MASTER;   // address in use (probed in codec_prepare)
+static uint8_t found;                   // address that answered, 0 = none
 static uint32_t state_rate;
 static uint8_t bad_reg, bad_got, bad_want;
 
 const char *codec_state_name(codec_state_t s) {
   switch (s) {
     case CODEC_OFF: return "off";
-    case CODEC_NO_ACK: return "no I2C answer at 0x44";
+    case CODEC_NO_ACK: return "no I2C answer at 0x47 / 0x45 / 0x44";
     case CODEC_BAD_REGS: return "registers do not read back";
     case CODEC_READY: return "configured, clocks not started";
     case CODEC_RUNNING: return "running";
@@ -34,6 +39,14 @@ const char *codec_state_name(codec_state_t s) {
 
 codec_state_t codec_state(void) {
   return state;
+}
+
+uint8_t codec_address(void) {
+  return found;
+}
+
+bool codec_linked(void) {
+  return found == ADDR_S3_SLAVE;
 }
 
 void codec_bad_reg(uint8_t *reg, uint8_t *got, uint8_t *want) {
@@ -124,7 +137,7 @@ static bool i2c_start_write(void) {
   }
   I2C_GenerateSTART(I2C2, ENABLE);
   if (!wait_event(I2C_EVENT_MASTER_MODE_SELECT)) return false;
-  I2C_Send7bitAddress(I2C2, CODEC_ADDR, I2C_Direction_Transmitter);
+  I2C_Send7bitAddress(I2C2, (uint8_t) (addr << 1), I2C_Direction_Transmitter);
   return wait_event(I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED);
 }
 
@@ -153,7 +166,7 @@ bool codec_read(uint8_t reg, uint8_t *val) {
   // the byte (90 us) is in. No interrupt handler may run in between, or the
   // peripheral takes a second byte and the bus hangs.
   I2C_AcknowledgeConfig(I2C2, DISABLE);
-  I2C_Send7bitAddress(I2C2, CODEC_ADDR, I2C_Direction_Receiver);
+  I2C_Send7bitAddress(I2C2, (uint8_t) (addr << 1), I2C_Direction_Receiver);
   if (!wait_flag(I2C_FLAG_ADDR)) goto fail;
   uint32_t const irq = board_irq_mask();
   (void) I2C2->STAR1;
@@ -198,14 +211,21 @@ codec_state_t codec_prepare(uint32_t rate) {
   board_codec_reset(false);
   board_delay_ms(1);
 
-  // Identify the chip by a reset default: ADC attenuation 1 = 0 dB (0xD7).
+  // Find the address (codec.h) and identify the chip by a reset default: ADC
+  // attenuation 1 = 0 dB (0xD7). Second round after an I2C bus reset.
+  static const uint8_t addrs[] = {ADDR_S3_MASTER, ADDR_S3_SLAVE, ADDR_S2};
   uint8_t id = 0;
-  if (!codec_read(PCM_ADC_ATT0 + 1, &id)) {
-    i2c_init();   // retry once after an I2C bus reset
-    if (!codec_read(PCM_ADC_ATT0 + 1, &id)) {
-      board_codec_reset(true);
-      return state = CODEC_NO_ACK;
+  found = 0;
+  for (int round = 0; round < 2 && !found; round++) {
+    if (round) i2c_init();
+    for (unsigned i = 0; i < sizeof(addrs) && !found; i++) {
+      addr = addrs[i];
+      if (codec_read(PCM_ADC_ATT0 + 1, &id)) found = addr;
     }
+  }
+  if (!found) {
+    board_codec_reset(true);
+    return state = CODEC_NO_ACK;
   }
   state = CODEC_OFF;
   if (id != 0xD7) {
@@ -235,7 +255,15 @@ codec_state_t codec_prepare(uint32_t rate) {
   return state = CODEC_READY;
 }
 
+bool codec_alive(void) {
+  uint8_t v;
+  return found && codec_read(PCM_ADC_ATT0 + 1, &v);
+}
+
+// Clock master only: with CLK IN connected the link receiver drives BCK / LRCK
+// (100R in series), so the ADC stays a slave and nothing is started here.
 bool codec_run(void) {
+  if (codec_linked()) return false;
   uint8_t const ctl = (state_rate == 96000 ? ADC_MASTER_256 : ADC_MASTER_512) | ADC_TDM_I2S;
   if (state == CODEC_READY && codec_write(PCM_ADC_CTL1, ctl)) {
     state = CODEC_RUNNING;

@@ -66,13 +66,36 @@ voltage. Nominal (uncalibrated) scales are IN ±5.89 V, OUT ±5.87 V
 
 | | |
 |---|---|
-| Codec | PCM3168A at I2C 0x44 (I2C2, 100 kHz). After every reset: DAC slave, 24-bit I2S-mode TDM (41h = 06h); HPF bypassed (52h = 07h), ADC 1-6 single-ended (53h = 3Fh) and inverted against the inverting input drivers (54h = 3Fh); then ADC master 512 fS from the 24.576 MHz SCKI, I2S-mode TDM (51h = 26h): 48 kHz, BCK 12.288 MHz. Registers are read back after writing (`status` names a register that does not) |
+| Codec | PCM3168A on I2C2 (100 kHz), address found after every reset (1.1.0): 0x47 = S3 carrier, CLK IN open (clock master); 0x45 = S3 carrier, CLK IN connected (clock slave, see Clock link); 0x44 = S2 carrier. After every reset: DAC slave, 24-bit I2S-mode TDM (41h = 06h); HPF bypassed (52h = 07h), ADC 1-6 single-ended (53h = 3Fh) and inverted against the inverting input drivers (54h = 3Fh); then ADC master 512 fS from the 24.576 MHz SCKI, I2S-mode TDM (51h = 26h): 48 kHz, BCK 12.288 MHz. Registers are read back after writing (`status` names a register that does not) |
 | TDM | I2S2 slave RX <- DOUT1 (ADC 1-6 in slots 1-6), I2S3 slave TX -> DIN1 (DAC 1-8 in slots 1-8), 32-bit words, circular DMA, 48 frames per half (1 ms). PA6 (DIN2) is held low; SPI1 / 96 kHz is not used |
 | Start | The slaves start their words on the first BCK edge after they are enabled, not on a WS edge (modules/usb-audio). They are enabled while the codec, just reset, is still a slave (BCK / LRCK held low by its 50k pull-downs); writing 51h starts BCK, so both see the same first edge |
 | Frame position | Found from the data after 400 ms (the ADC sends zeros while it starts): over 4800 frames, the 8 bits after each slot's 24 data bits never set and every ADC's LSB toggles with its noise; slots 7/8 stay zero. TX uses the same position. Afterwards any set bit in those zero positions counts as a `slip` and restarts codec + TDM. The streams carry silence until the position is known |
 | Buffers | As modules/usb-audio: OUT = TinyUSB FIFO held at 2 ms by the feedback endpoint (+1 ms per underrun, up to 4 ms); IN = a 512-frame ring held at 2 ms + one TDM block by the IN packet size, one packet loaded per microframe. Both use the same slow proportional loop on the low-passed level (2 s time constant, at most ±1/128 of the rate). Fade in over the first block of a stream, fade to 0 V over one block when it ends or underruns |
 | CPU | The USBHS interrupt only captures transfer status (`src/dcd_ch32_usbhs.c`, modules/usb-audio's TinyUSB driver copy); a software interrupt (the audio worker) processes the USB transfers and the TDM halves, with the USB work between the quarters of each half. An iso endpoint has to be served within 125 us of its last packet. `tdm.c` / `audio.c` build at -O2 (at -Os the halves took ~90 % of the CPU and transfers waited up to 174 us); `status` shows the worst wait (`processing delay`) and the worker's halves |
 | Codec missing | USB still enumerates; `status` shows the reason and the firmware retries every 2 s |
+
+## Clock link (S3 carrier, firmware 1.1.0)
+
+The S3 carrier has the modules/multi-mix clock link: CLK OUT (J6) repeats SCKI / BCK / LRCK to the next
+unit, CLK IN (J7) takes them from the unit upstream. The switching is hardware (LINK_N): the firmware only
+reads the result from the codec's I2C address (ADR1 = buffered LINK_N; the MCU board has no free pin).
+
+| State | Address | Firmware 1.1.0 |
+|---|---|---|
+| CLK IN open | 0x47 | Clock master, as on the S2 carrier: the ADC makes BCK / LRCK from Y1. CLK OUT carries them with no firmware help |
+| CLK IN connected | 0x45 | **Not started.** The codec stays in reset, `status` says `clock slave (CLK IN connected): not supported by this firmware yet`; the address is probed again every 2 s, so pulling the ribbon brings the unit back as a master |
+| S2 carrier | 0x44 | Clock master (no link on that board) |
+
+While it runs, the codec is read once a second: a ribbon plugged into CLK IN moves the address, the audio
+restarts and the unit is found a slave (the ADC is never made a master against the link receiver).
+
+Open, needs a linked pair on the bench: starting the TDM slaves on a clock that is already running. The
+CH32V307 I2S slaves start their words on the first BCK edge after they are enabled (`tdm.h`); as a master
+both are armed while BCK is still, as a link slave BCK never stops. Planned: count BCK on TIM2 (CH2 = PB3,
+reset by LRCK on CH1 = PA15, both pins are on the I2S3 lines already), enable each slave only in a BCK
+period where the count did not move before / after the write, and take the frame position from the count;
+the data-based `align` then checks it. The same is needed for the modules/multi-mix firmware. 48 kHz only
+(the link carries one rate; this firmware has no other).
 
 ## Console
 
@@ -151,3 +174,9 @@ ALSA `hw` device (`card B6x8`: 8 ch playback, 6 ch capture, S32_LE, 48 kHz, asyn
 
 Not done: `cal in` and `cal ref` on the board, macOS / Windows hosts, 96 kHz (SPI1 for
 DOUT2 / DIN2), OUT 1 / OUT 2 calibration (unpatched in this run).
+
+### Firmware 1.1.0 (2026-11-20)
+
+Codec address probing (0x47 / 0x45 / 0x44) and the clock-link handling above. Compiled only: not
+flashed, not run on the S2 board (it should find 0x44 after two unanswered probes), and there is no S3
+carrier yet.

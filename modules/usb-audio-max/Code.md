@@ -1,9 +1,9 @@
-# USB-AUDIO-MAX contract (S2 schematics, final; S1 placement, 10HP)
+# USB-AUDIO-MAX contract (carrier S3 / R2, 12HP, clock link; MCU board S2 / R1)
 
 | | |
 |---|---|
 | KiCad projects | `hardware/usb-audio-max.kicad_{pro,sch,pcb}` (carrier), `hardware/usb-audio-max-mcu.kicad_{pro,sch,pcb}` (MCU board); one shared `USBAUDIOMAX` symbol/footprint library; 3D models vendored in `hardware/_kicad_models/` |
-| Panel | `panels/front-pcb/usb-audio-max-panel.kicad_{pro,pcb}` (10HP FR4, NPTH only) |
+| Panel | `panels/front-pcb/usb-audio-max-panel.kicad_{pro,pcb}` (12HP FR4, NPTH only; 10HP until S3) |
 | Generators, profiles | `tools/` (`build_schematic.py`, `circuit_carrier.py`, `circuit_mcu.py`, `build_project.py`, `build_layout.py`, `import_footprints.py`, `check_edges.py`, `fit_density.py`, `render_fit.py`, `sexp.py`, `kicad-project.json`, `kicad-project-mcu.json`) |
 | Placement / stack contract | `docs/geometry.json` |
 | Circuit intent and decisions | `docs/research.md` |
@@ -34,8 +34,18 @@
   PB14 codec RST, PA9 VBUS sense. Log any change in `docs/research.md`.
 - Codec: ADC = TDM clock master, DAC slave on the tied BCK/LRCK; SCKI 24.576 MHz. Firmware must set
   SEAD (single-ended), BYP (HPF off) and REVAD (inverting drivers) for the analog chain to be right.
+- Clock link (S3, user 2026-11-19: same sockets, pinout and ribbon as modules/multi-mix, 48 kHz only):
+  CLK OUT J6 (left edge) / CLK IN J7 (right edge), 2x5 pin headers on B, pin 1 at the top. Keep the
+  circuit, references and pinout equal to modules/multi-mix (`docs/research.md` section 8); the one
+  difference is the link detect: codec ADR0 = +3V3_C, ADR1 = buffered LINK_N, so the I2C address is
+  0x47 (CLK IN open, clock master), 0x45 (linked, clock slave) or 0x44 (S2 carrier). Firmware must
+  never make the ADC a master on 0x45. Silk "CLK OUT - NOT POWER" / "CLK IN - NOT POWER" and the pin 1 markers (triangle + "1") stay.
+- 12HP since S3: the KiCad origin moved 5.05 mm left instead of the copper (`docs/geometry.json`
+  `kicad_origin_note`); jacks, USB-C, standoffs and the MCU board are centred on the 60.6 mm panel.
+  The four link lines cross the board in the B band Y37.5..38.7 between the codec and the IN jack row:
+  it is full (4 lanes at 0.4 mm pitch between the ADC_IN5 and ADC_IN1 bridges).
 - Two M3x10 F-F hex standoffs MS1/MS2 (carrier F to panel rear = 10 mm) at the top corners beside the USB-C
-  (X5.0 / X45.5, Y13.75) hold the carrier against USB-C plug forces; carrier and panel holes coaxial (`mount_standoffs`), M3x6 screws.
+  (10HP frame X5.0 / X45.5, 12HP frame X10.05 / X50.55, Y13.75) hold the carrier against USB-C plug forces; carrier and panel holes coaxial (`mount_standoffs`), M3x6 screws.
   Keep F copper out of R3.3 and B copper / SMD out of R3.5 around them (B courtyard R3.4).
 - Courtyards >= 1.0 mm from `Edge.Cuts`, SMD pads >= 2.0 mm from jack pads, manual
   divide-and-conquer routing, no vias in SMD pads (the codec footprint's own PowerPAD thermal vias
@@ -97,6 +107,25 @@
   pad to a jack pad 2.03 mm (R8-J28).
 - JLCPCB export + strict-live audit: `jlcpcb/README.md`.
 - Not done: Q1 / U3 temperature and +5VA loop on the bench, 96 kHz SPI1 path.
+
+## Verification (S3 / R2 clock link, 2026-11-20)
+
+- Carrier schematic S3 regenerated from `tools/circuit_carrier.py`; native ERC `--severity-all` 0
+  (`docs/erc/carrier-erc.json`), netlist equal to the circuit table: 220 parts, 144 nets. `REF_NR` and
+  `CODEC_ADR1` are named nets now, so the old `{slash}` escape difference is gone.
+- Manual routing, batches `research/clk/b01..b16` (notes `research/clk/NOTES.md`). Native DRC
+  `--severity-all --schematic-parity`, refilled and on the saved fills: 0 violations, 0 unconnected,
+  parity 0, no exclusions. Shared `kicad_tools.py check`, both profiles: no findings, source manifests
+  equal.
+- `research/clk/check_all.py` + `tools/check_edges.py`: 253 vias, none in an SMD pad or its mask
+  opening; no tracks on In1 / In2; In2 +5VA, +12V_F and both +3V3_C islands one piece each; In1 GND one
+  piece + 10 spoke-tied fragments (the 8 of S2 + 2 inside J6 / J7 between the ground pins); courtyards
+  >= 1.0 mm from the edge (C29 1.00, J6 1.05); closest SMD pad to a jack pad 2.03 mm (R8-J28, as S2).
+- 12HP FR4 panel DRC 0, its 14 jack holes coaxial with the carrier jacks; printed panel regenerated.
+- JLCPCB `main/` set re-exported, strict-live audit and free-stock check: `jlcpcb/README.md`.
+- Firmware 1.1.0 (codec address probing, no start as a link slave) compiled, not flashed.
+- Not done: nothing of S3 is built; link signal quality, the slave-mode TDM start, JLCPCB part /
+  rotation preview. The MCU board files are unchanged.
 
 ## Firmware (first board, 2026-11-19)
 

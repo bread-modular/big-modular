@@ -5,6 +5,26 @@ Module paths are module-relative.
 
 ## Current state
 
+- **S3 / R2 carrier, 12HP, clock link** (2026-11-19 / 20; user: take the audio clock from a modules/multi-mix or
+  another usb-audio-max, same ribbon and sockets as Multi Mix, 48 kHz only is fine, 12HP if needed, every socket
+  centred; then: re-place and route as needed). The Multi Mix link circuit with its references: CLK OUT J6 (left
+  edge) / CLK IN J7 (right edge), 2x5 pin headers on B; U11 74LVC1G97 SCKI mux, U13 74LVC2G125 link receivers
+  (R74 / R75 100R onto the codec clock nets), U12 / U14A 74LVC2G34 repeaters behind 150R, D3 BAT54S + R83 / R84 on
+  DET, R76-R78 pull-downs, R82 4.7k. Link detect by the codec address (ADR0 = +3V3_C, ADR1 = LINK_N through U14B):
+  0x47 master, 0x45 slave, 0x44 = S2 carrier; MCU board unchanged (S2 / R1, built boards fit). Carrier and panel
+  5.05 mm wider on each side, KiCad origin moved instead of the copper (`docs/geometry.json`). Routed by hand,
+  batches `research/clk/b01..b16` (`research/clk/NOTES.md`): four lines (CLKI_SCKI, LINK_N, LRCK_B, BCK_B) cross
+  in the B band Y37.5..38.7 between the codec and the IN jack row, ADC_IN1 / ADC_IN5 B bridges moved 0.8 / 0.1 mm,
+  U4 0.64 mm south with its input vias beside the pads, C30 below R11, U13 block east of the VCOM lines with the J7
+  clocks on F, In2 +3V3_C island grown to it. ERC 0 / DRC 0 (saved fills too) / unconnected 0 / parity 0, no
+  exclusions; shared check no findings, manifests equal; 253 vias, none in SMD pads, no In1 / In2 tracks, planes
+  one piece (In1 + 10 spoke-tied fragments, 8 as S2), courtyards >= 1.0 mm from the edge, SMD >= 2.03 mm from jack
+  pads. B silk "CLK OUT - NOT POWER" / "CLK IN - NOT POWER" + a pin 1 triangle and "1" at each header. 12HP FR4 panel (DRC 0) + printed panel regenerated.
+  **JLCPCB `main/` re-exported 2026-11-20** (200 parts / 42 rows, 16 Extended types, 3 new: C206035, C460532,
+  C47546; C211-C216 moved from pre-order C33353 to C107043; every code free stock > need, minimum order 1), `mcu/`
+  unchanged. **Firmware 1.1.0** finds the codec address and runs as a master; a linked (slave) unit is detected but
+  **not started** (TDM slaves cannot be armed on a clock that already runs; planned BCK-counter start in
+  `firmware/README.md`), compiled, not flashed. Not built; link signal quality, slave start, JLC preview open.
 - **S2 schematics, final** (2026-11-05), ERC 0 both: carrier `hardware/usb-audio-max.kicad_sch` (±12 V power,
   2 x 33R + discrete LM358/BCP56 regulator (REF5050 reference, MMBT3904 current limit) -> +5VA (precision DC
   reference for every channel), FB2 + 2.2R input filter -> TPS562208 FCCM buck (~580 kHz at every load, molded
