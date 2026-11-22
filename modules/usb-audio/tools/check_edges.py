@@ -13,7 +13,8 @@ GEO = json.loads((MODULE / 'docs/geometry.json').read_text())
 OX, OY = GEO['kicad_origin_mm']
 
 
-def check(path, box):
+def check(path, box, origin=None):
+    OX, OY = origin or GEO['kicad_origin_mm']      # the MCU board file has its own origin since P2
     board = pcbnew.LoadBoard(str(path))
     x0, y0, x1, y1 = box
     rows = []
@@ -46,4 +47,4 @@ def check(path, box):
 
 
 check(MODULE / 'hardware/usb-audio.kicad_pcb', GEO['main_pcb']['outline_mm'])
-check(MODULE / 'hardware/usb-audio-mcu.kicad_pcb', GEO['mcu_pcb']['outline_mm'])
+check(MODULE / 'hardware/usb-audio-mcu.kicad_pcb', GEO['mcu_pcb']['outline_mm'], GEO['mcu_kicad_origin_mm'])

@@ -5,6 +5,46 @@ Module paths are module-relative.
 
 ## Current state
 
+- **Carrier S5 / P2 / R5, fab-ready export 2026-11-22** (user, after two built boards crackled: I2S
+  starting at random bit offsets). Supersedes everything below for the carrier; the MCU board is
+  unchanged (S1/R2).
+  - **S5 / R5 (user, same day, cheaper op-amps):** U4 / U5 / U7 are **NE5532DR C7426** (JLCPCB Basic,
+    as modules/multi-mix U8; field change, no copper). The VCOM buffer **U8 and C33 are gone**: the
+    NE5532 cannot run on +5VA and the reference only sets the common mode of the differential ADC
+    drive, so **R49 2.7k from +5VA over R40 + R41 makes VCOM_BUF = 0.482 x VA (2.41 V), C38 10u +
+    C39 100n to GND**; the codec's VCOM pin keeps only C17 / C18. R49 / C38 / C39 sit where U8 was
+    and use its +5VA and GND vias (`research/route-s4/r16.py`, no new via; C33's two vias removed).
+    101 refs / 65 nets, 818 tracks / 114 vias, ERC 0, DRC 0 / unconnected 0 / parity 0. B silk
+    `USB AUDIO S5 / R5`. The S4 / R4 lines below hold for everything else.
+  - **S4:** CS4272 (CS4270 discontinued; differential in / out, I2C 0x10), U5 difference amplifiers
+    (no power-up step), differential ADC drive, 10k pull-downs on I2S_SCLK / I2S_LRCK and 47k on
+    I2S_DAC, MCLK scope pad TP1. (S4 had four OPA1656IDR incl. the VCOM buffer U8, 100 refs /
+    66 nets; see S5 above.)
+  - **P2:** J1 upright at the left edge between the IN 2 jack and the OUT 1 pot, jack / pot rows
+    Y54 / 69 / 94.5 / 109.5, MCU board 8 mm lower (`mcu_kicad_origin_mm`), two M3x10 standoffs
+    MS1 / MS2 at Y13.75 above it (the printed USB brace is retired: `panels/front-cad/r3-brace/`
+    only fits the first boards).
+  - **R4, by hand** (`research/route-s4/`: `r01`..`r08` one connection at a time, `r09`..`r15`
+    explicit polylines; `NOTES.md`): SCLK / LRCK go on B from the codec pin into R11 / R12 (2 mm, no
+    via), R11 -> J7.3, R14 at J7.3; U5 block with DAC_AN / DAC_BN under its body; four F trunks
+    (A out, -12V_F, B out, +12V_F) between J6 and the ADC bundle; I2C crosses them on B below U8,
+    pull-ups R18 / R19 under J6; SWCLK / SWDIO on B and RESET on F left of J6. 826 tracks / 116 vias,
+    DRC 0 (warnings included) / unconnected 0 / parity 0, no exclusions, no vias in SMD pads, no
+    inner-layer tracks, planes one piece (In1 + two pad-tied 1 mm2 slivers at the IN jacks).
+    Courtyards >= 1.01 mm from the edge, SMD >= 2.01 mm from pot / jack pads.
+  - B silk: RESET, BOOT, J6, J7, MCLK, `-12V`, SWD pin order as seen from the back, J7 probe legend
+    (3 SCLK, 5 LRCK, 6 ADC, 7 DAC, 8 RST), `USB AUDIO S4 / R4`. J1's library footprint has two silk
+    lines cut back off the IN 2 jack's S pad (`tools/import_footprints.py` `SILK_TRIM`).
+  - Exports: `jlcpcb/main/` **88 parts / 32 rows** (S5 / R5; bottom Economic, 7 Extended types, no
+    pre-order part on 2026-11-22), panel 13 NPTH + slot and printed panel unchanged since the S4
+    export; `jlcpcb/mcu/` re-exported from unchanged sources. Shared `check` clean and manifests
+    equal on both profiles.
+  - **Open:** CS4272 firmware (1.1.0 does not run on this carrier; the edge-synced I2S start test
+    code is still uncommitted in `firmware/usb-audio/src/`), JLCPCB preview, build, bench (the I2S
+    fault's root cause was never scoped; NE5532 offsets with the pot position and the 2.41 V
+    reference are datasheet values), `docs/fit/` renders and `docs/research.md` sections 1-7 still
+    describe S3, commit.
+
 - **Latest scoped repair: carrier S3/R3, MCU S1/R2** (2026-10-24), superseding the
   S2/R2 and MCU R1 baselines below. R36/R38 and R37/R39 are Basic 2k/0.25 W 1206
   pairs in parallel (1k/0.5 W per output). USB active paths have two signal vias

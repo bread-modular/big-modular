@@ -1,6 +1,6 @@
 {
- "revision": "S1 placement (THT only + the vertical USB-C and the board-to-board headers). 6HP, two boards: carrier (jack/pot board, 4 layers) and MCU board (4 layers) stacked on the carrier F side on 2.54 mm pin headers. Every other SMD part parked off-board for group-by-group placement. Not routed.",
- "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY, for the carrier, the MCU board and the panel. The carrier F side faces the panel; the MCU board sits on the carrier F side with its own F side facing the panel, so both KiCad top views equal the front view (no mirroring).",
+ "revision": "P2 placement (2026-11-21, user: power header to the side in the middle, everything moved down, two M3x10 standoffs above the MCU board). 6HP, two boards: carrier (jack/pot board, 4 layers) and the unchanged MCU board (4 layers) stacked on the carrier F side on 2.54 mm pin headers. THT, standoffs and the fixed back-side parts placed here; the other SMD parts are placed by hand, group by group. R4 (2026-11-22): every SMD part placed and the carrier routed by hand; the routed board owns placement.",
+ "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY for the carrier and the panel; the MCU board file is unchanged since R2, so it uses mcu_kicad_origin_mm (8 mm less in Y: the board sits 8 mm lower on the panel since P2). The carrier F side faces the panel; the MCU board sits on the carrier F side with its own F side facing the panel, so both KiCad top views equal the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
   50.0
@@ -36,18 +36,18 @@
   ],
   "thickness_mm": 1.6,
   "copper_layers": 4,
-  "note": "29.0 x 110.0 mm carrier as modules/32bit. Held by the four jack nuts; the MCU board hangs on it."
+  "note": "29.0 x 110.0 mm carrier as modules/32bit. Held by the four jack nuts and the two M3x10 standoffs MS1/MS2; the MCU board hangs on it."
  },
  "mcu_pcb": {
   "outline_mm": [
    0.5,
-   10.0,
+   18.0,
    29.5,
-   39.55
+   47.55
   ],
   "thickness_mm": 1.6,
   "copper_layers": 4,
-  "note": "29.0 x 29.55 mm (R1: 2.55 mm longer than S1 so U101 fits below U102 and the USB-C). 4 layers for the USB 2.0 HS pair (90 ohm differential over In1 GND). All SMD on F (one assembly side), facing the panel."
+  "note": "29.0 x 29.55 mm (R1: 2.55 mm longer than S1 so U101 fits below U102 and the USB-C). 4 layers for the USB 2.0 HS pair (90 ohm differential over In1 GND). All SMD on F (one assembly side), facing the panel. P2: the same board (files and JLCPCB set unchanged) sits 8.0 mm lower on the panel, below the two standoffs."
  },
  "stack_Z_mm": {
   "datum": "Z0 = carrier F.Cu, +Z toward the panel",
@@ -70,7 +70,7 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     8.0,
-    46.0
+    54.0
    ]
   },
   {
@@ -79,7 +79,7 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     8.0,
-    62.0
+    69.0
    ]
   },
   {
@@ -88,7 +88,7 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     22.0,
-    79.0
+    94.5
    ]
   },
   {
@@ -97,7 +97,7 @@
    "part": "QingPu WQP-PJ301M-12",
    "XY": [
     22.0,
-    95.0
+    109.5
    ]
   }
  ],
@@ -107,7 +107,7 @@
    "role": "IN1 volume 0..1",
    "shaft_XY": [
     22.0,
-    46.0
+    54.0
    ],
    "value": "50k"
   },
@@ -116,7 +116,7 @@
    "role": "IN2 volume 0..1",
    "shaft_XY": [
     22.0,
-    62.0
+    69.0
    ],
    "value": "50k"
   },
@@ -125,7 +125,7 @@
    "role": "OUT1 volume 0..1",
    "shaft_XY": [
     8.0,
-    79.0
+    94.5
    ],
    "value": "50k"
   },
@@ -134,7 +134,7 @@
    "role": "OUT2 volume 0..1",
    "shaft_XY": [
     8.0,
-    95.0
+    109.5
    ],
    "value": "50k"
   }
@@ -144,7 +144,7 @@
   -0.127,
   -0.508
  ],
- "layout_note": "User brief 2026-10-23: inputs = socket then pot (left to right), outputs = pot then socket. Columns X8.0 / X22.0 keep the RV09 courtyards >= 1.0 mm from the carrier edge (1.55 / 1.05 mm). Rows IN1 Y46, IN2 Y62, OUT1 Y79, OUT2 Y95 (16-17 mm pitch, 1 mm between courtyards in a row pair). The MCU board takes the top band (Y10-37) with the USB-C at X15 Y16.",
+ "layout_note": "User brief 2026-10-23: inputs = socket then pot (left to right), outputs = pot then socket. Columns X8.0 / X22.0. P2 (user 2026-11-21): rows IN1 Y54.0, IN2 Y69.0, OUT1 Y94.5, OUT2 Y109.5 (15 mm inside a pair, 25.5 mm between the pairs); the gap between the pairs takes the power header J1 upright at the left edge on B (it needs 25.25 mm between the IN2 jack and the OUT1 pot body). The MCU board takes Y18-47.55 with the USB-C at X15 Y24; MS1/MS2 stand above it at Y13.75. The lowest row is as low as the 1 mm edge keep-out lets the RV4 courtyard go (1.03 mm).",
  "panel_hole_diameters_mm": {
   "jack": 6.2,
   "pot": 7.2
@@ -152,13 +152,13 @@
  "usb_slot": {
   "XY": [
    15.0,
-   16.0
+   24.75
   ],
   "size_mm": [
    9.5,
-   3.7
+   5.2
   ],
-  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm) with ~0.27 mm clearance a side; the shell passes through and stands 1.3 mm proud."
+  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm, centre X15 Y24): 0.27 mm above and ~1.77 mm below the shell, as on the built modules/usb-audio-max and modules/multi-mix panels (slot extended 1.5 mm downwards); the shell passes through and stands 1.3 mm proud."
  },
  "carrier_headers": [
   {
@@ -166,7 +166,7 @@
    "footprint": "PinHeader_1x10_P2.54mm_Vertical",
    "pin1_XY": [
     3.4,
-    13.0
+    21.0
    ],
    "side": "F"
   },
@@ -175,7 +175,7 @@
    "footprint": "PinHeader_1x10_P2.54mm_Vertical",
    "pin1_XY": [
     26.6,
-    13.0
+    21.0
    ],
    "side": "F"
   }
@@ -186,7 +186,7 @@
    "footprint": "PinHeader_1x10_P2.54mm_Vertical",
    "pin1_XY": [
     3.4,
-    13.0
+    21.0
    ],
    "side": "F",
    "note": "same holes as carrier J6"
@@ -196,7 +196,7 @@
    "footprint": "PinHeader_1x10_P2.54mm_Vertical",
    "pin1_XY": [
     26.6,
-    13.0
+    21.0
    ],
    "side": "F",
    "note": "same holes as carrier J7"
@@ -206,7 +206,7 @@
    "footprint": "USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical",
    "XY": [
     15.0,
-    16.0
+    24.0
    ],
    "rot": 90,
    "side": "F"
@@ -216,65 +216,66 @@
   {
    "ref": "J1",
    "footprint": "PinHeader_2x05_P2.54mm_Vertical",
-   "XY": [
-    15.0,
-    110.92
+   "pin1_XY": [
+    3.4,
+    88.06
    ],
    "rot": 180,
-   "band": "Eurorack power, bottom centre (as modules/32bit). THT, B side"
+   "band": "Eurorack power, upright at the left edge between the IN2 jack and the OUT1 pot. THT, B side; pin 1 / 2 (-12 V) at the bottom"
   },
   {
    "ref": "J8",
    "footprint": "PinHeader_1x04_P2.54mm_Vertical",
-   "XY": [
-    24.0,
-    106.5
+   "pin1_XY": [
+    11.19,
+    12.1
    ],
-   "rot": 0,
-   "band": "SWD (WCH-LinkE): pin 1 +3V3 at the top, B side, beside J1"
-  },
-  {
-   "ref": "SW1",
-   "footprint": "K2-1808SN-A4SW-01",
-   "XY": [
-    6.0,
-    108.5
-   ],
-   "rot": 0,
-   "band": "RESET, B side, bottom-left"
-  },
-  {
-   "ref": "SW2",
-   "footprint": "K2-1808SN-A4SW-01",
-   "XY": [
-    6.0,
-    113.5
-   ],
-   "rot": 0,
-   "band": "BOOT, B side, below RESET"
+   "rot": 270,
+   "band": "SWD (WCH-LinkE), B side, top centre between the standoffs: +3V3 SWDIO SWCLK GND"
   }
  ],
  "power_header": {
   "ref": "J1",
+  "footprint": "PinHeader_2x05_P2.54mm_Vertical",
+  "side": "B",
   "pin1_XY_mm": [
-   13.73,
-   116.0
+   3.4,
+   88.06
   ],
   "column_X_mm": [
-   13.73,
-   16.27
+   3.4,
+   5.94
   ],
-  "idc16_socket_envelope_mm": {
+  "pin_rows_Y_mm": [
+   88.06,
+   85.52,
+   82.98,
+   80.44,
+   77.9
+  ],
+  "orientation": "Upright at the left edge, pin 1 / 2 (-12 V) at the bottom row, +12 V at the top.",
+  "idc10_socket_envelope_mm": {
    "X": [
-    11.2,
-    18.8
+    0.87,
+    8.47
    ],
    "Y": [
-    94.41,
-    119.81
+    74.09,
+    91.87
+   ]
+  },
+  "idc16_socket_envelope_mm": {
+   "X": [
+    0.87,
+    8.47
+   ],
+   "Y": [
+    66.47,
+    91.87
    ],
    "bottom_above_B_mm": 2.5
-  }
+  },
+  "idc_note": "A 16-pin cable plugs on aligned at pin 1 (red stripe = -12 V, at the bottom); positions 11-16 overhang upward over the IN2 jack tails (TN, S at X8), 2.5 mm above B. SMD under it must stay below 2.5 mm. F side: the header tails sit between the IN2 jack S pad (0.52 mm) and the OUT1 pot body (0.5 mm). R4 check: only D1 / D2 (SOD-123, <= 1.35 mm) and the pin row of U2 (SOT-223, <= 1.8 mm) reach into the envelope (X7.8..8.47)."
  },
  "panel_labels": [
   {
@@ -289,7 +290,7 @@
    "text": "USB",
    "XY": [
     15.0,
-    20.8
+    30.3
    ],
    "size": 1.2
   },
@@ -297,7 +298,7 @@
    "text": "IN 1",
    "XY": [
     8.0,
-    39.9
+    47.9
    ],
    "size": 1.2
   },
@@ -305,7 +306,7 @@
    "text": "IN 2",
    "XY": [
     8.0,
-    55.9
+    62.9
    ],
    "size": 1.2
   },
@@ -313,7 +314,7 @@
    "text": "OUT 1",
    "XY": [
     22.0,
-    72.9
+    88.4
    ],
    "size": 1.2
   },
@@ -321,7 +322,7 @@
    "text": "OUT 2",
    "XY": [
     22.0,
-    88.9
+    103.4
    ],
    "size": 1.2
   },
@@ -329,7 +330,7 @@
    "text": "BIG MODULAR",
    "XY": [
     15.0,
-    113.5
+    118.4
    ],
    "size": 1.2
   }
@@ -341,5 +342,36 @@
   ],
   "gap_mm": 1.5,
   "column_height_mm": 110.0
- }
+ },
+ "mcu_kicad_origin_mm": [
+  100.0,
+  42.0
+ ],
+ "mount_standoffs": {
+  "refs": [
+   "MS1",
+   "MS2"
+  ],
+  "XY_mm": [
+   [
+    5.5,
+    13.75
+   ],
+   [
+    24.5,
+    13.75
+   ]
+  ],
+  "length_mm": 10.0,
+  "hex_af_mm": 5.5,
+  "thread": "M3 female both ends",
+  "carrier_hole_d_mm": 3.2,
+  "panel_hole_d_mm": 3.2,
+  "F_courtyard_R_mm": 3.3,
+  "carrier_B_keepout_R_mm": 3.4,
+  "panel_bolt_head_R_mm": 2.75,
+  "hardware": "per standoff: 1 x M3 F-F hex standoff 10 mm (user stock), 2 x M3x6 pan/button head (ISO 7380), as modules/4mix. Not M3x8.",
+  "note": "User 2026-11-21: two M3 10 mm hex standoffs above the MCU board, as modules/multi-mix and modules/usb-audio-max, so USB plug forces go into the panel and not into the J6/J7 solder joints (the printed brace of the first board is retired). Carrier F to panel rear is 10 mm (stack_Z_mm), so each standoff is coaxial: carrier hole = panel hole. Y13.75 is as high as the 1 mm edge keep-out allows (B keep-out R3.4 = M3 head R2.85 + margin, as modules/usb-audio-max); the hex corners (R3.18) end at Y16.93, 1.07 mm above the MCU board edge (Y18.0). X5.5 / X24.5 leave the top centre free for the SWD header."
+ },
+ "panel_print_thickness_mm": 2.0
 }

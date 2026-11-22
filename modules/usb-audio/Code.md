@@ -11,7 +11,7 @@
 
 ## Fixed by the brief (user, 2026-10-23)
 
-- 6HP. 2 in / 2 out (CH32V307RCT6 + one CS4270), 192 kHz target, DC coupled, ±5 V (CV too).
+- 6HP. 2 in / 2 out (CH32V307RCT6 + one codec: CS4270 until S3, CS4272 since S4), 192 kHz target, DC coupled, ±5 V (CV too).
 - One pot per jack, a plain 0..1 volume (no gain). Inputs: socket then pot; outputs: pot then socket.
 - USB-C on the front panel; BOOT/RESET on the PCB only.
 - MCU/USB on a second PCB soldered to the pot board with 2.54 mm pins.
@@ -73,3 +73,36 @@ placements or MCU pins changed. Carrier R36/R38 and R37/R39 are 2k/0.25 W pairs 
 parallel (1k/0.5 W effective); MCU has an explicit JLC04161H-7628 stack, In2 USB GND
 island and USB_HS class. Run `tools/check_usb.py` in addition to the shared gate.
 Regulator, mute, firmware and other deferred items remain unchanged/unqualified.
+
+## Carrier S4 / P2 / R4 (2026-11-21 / 22), S5 / R5 (2026-11-22)
+
+User direction after two built boards crackled (I2S inputs locking at random bit offsets): power
+header to the side, everything lower, two M3x10 standoffs above the MCU board, the codec's successor,
+and hardware changes against the fault. The circuit of record is the docstring of
+`tools/circuit_carrier.py`; `docs/research.md` section 9 has the decisions.
+
+- **Codec:** CS4272-CZZR (TSSOP-28), differential in / out, I2C control port at **0x10**, master,
+  external MCLK from Y1 24.576 MHz (XTI = GND). Firmware-visible change: new register map
+  and address; pins on J6 / J7 unchanged.
+- **Clock lines:** R14 / R16 10k pull-downs on I2S_SCLK / I2S_LRCK, R48 47k on I2S_DAC, TP1 on MCLK.
+  SCLK and LRCK must stay on B from the codec pin into R11 / R12 without a via; R14 sits at J7.3.
+- **Dual op-amp (S5):** `DUAL` in `tools/circuit_carrier.py` = NE5532 (NE5532DR C7426, JLCPCB Basic)
+  on U4 / U5 / U7, all on +/-12 V. Bipolar inputs: 200 nA typical / 800 nA maximum bias current, so
+  a 50k pot at mid travel adds 2.5 mV typical / 10 mV maximum at its follower (datasheet values).
+- **Reference (S5):** no buffer op-amp. R49 2.7k from +5VA over R40 510R + R41 2k: VCOM_BUF =
+  0.482 x VA (2.41 V), C38 10u + C39 100n to GND; VB_IN = VCOM_BUF x 2/2.51 with **no capacitor**
+  (the ratio must hold at every frequency so the reference stays common to AIN+ and AIN-). Nothing
+  may load the codec's VCOM pin (25k source, 1 uA).
+- **Mechanics:** `docs/geometry.json` (P2). The MCU board file is unchanged and uses
+  `mcu_kicad_origin_mm`; `tools/check_edges.py` applies it. MS1 / MS2: carrier hole = panel hole,
+  M3x6 screws only.
+- **Routing contract (R4):** four F trunks between J6 and the ADC bundle (X4.6 A out, X5.1 -12V_F,
+  X5.6 B out, X6.1 +12V_F): no via may sit between X4.3 and X6.5 from Y22 to Y49 except the -12V_F
+  one at the bottom. The SDA via at (10.2, 38.37) has 0.22 mm to U8.5, the SCL lane and the R28 via:
+  do not move one of them alone. Batches and how to replay them: `research/route-s4/NOTES.md`.
+  R5 (`r16.py`): R49 / C38 / C39 in U8's place on B, on U8's +5VA via (6.9, 35.2) and the GND vias
+  at (10.9, 30.9) / (11.4, 35.9); VCOM_BUF keeps its X11.5 lane to R40.
+- **Verification (S5 / R5):** ERC 0; DRC 0 (all severities) / unconnected 0 / parity 0, no
+  exclusions; shared `check` clean with equal manifests on both profiles; `tools/check_edges.py`
+  1.01 mm / 2.01 mm; 818 tracks / 114 vias, none in SMD pads, no inner-layer tracks, planes as R4.
+  Not built, not measured; no CS4272 firmware yet.
