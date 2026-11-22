@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "output_hashes_verified": 3,
+  "meshes": {
+    "usb-riser-32bit-8hp": {
+      "closed_oriented_connected": true,
+      "vertices": 2848,
+      "triangles": 5716,
+      "volume_mm3": 34440.672,
+      "mesh_bounds_mm": [
+        40.16,
+        132.5,
+        19.6
+      ],
+      "bed_z_min_mm": 0.0,
+      "STL_3MF_topology_identical": true,
+      "STL_3MF_max_vertex_difference_mm": 0.0004916
+    }
+  }
+}

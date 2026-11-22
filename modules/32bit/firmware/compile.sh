@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 #
-# compile.sh — build a 32bit firmware (polysynth or fxrack) for one JP1 setting.
+# compile.sh — build a 32bit firmware (polysynth, fxrack or master) for one JP1 setting.
 #
 # Usage:
 #   ./compile.sh                  # polysynth, pick JP1 interactively
 #   ./compile.sh p|d              # polysynth
 #   ./compile.sh fxrack p|d       # fxrack (also: p|d fxrack, polysynth p|d)
+#   ./compile.sh master           # master (no MIDI: no JP1 setting)
 #
 set -euo pipefail
 
