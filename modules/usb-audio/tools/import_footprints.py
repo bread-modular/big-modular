@@ -36,7 +36,8 @@ LIBNAME = 'USBAUDIO'
 STOCK_FOOTPRINTS = [
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Package_SO', 'SOIC-14_3.9x8.7mm_P1.27mm'),
-    ('Package_SO', 'TSSOP-24_4.4x7.8mm_P0.65mm'),
+    ('Package_SO', 'TSSOP-28_4.4x9.7mm_P0.65mm'),
+    ('TestPoint', 'TestPoint_Pad_D1.5mm'),
     ('Package_QFP', 'LQFP-64_10x10mm_P0.5mm'),
     ('Package_TO_SOT_SMD', 'SOT-223-3_TabPin2'),
     ('Package_TO_SOT_SMD', 'SOT-23-6'),
@@ -77,6 +78,14 @@ BM_MODEL = {
 
 # Stock footprints whose F.SilkS outline crosses their own pads (DRC silk_over_copper).
 SILK_OFF_PADS = set()
+
+# Stock footprints with F.SilkS outline lines cut back: name -> [(old start, old end, new end)].
+# J1 (2x5 power header, upright at the left edge on B) stands 0.52 mm below the IN 2 jack's S pad, so the
+# far corner of its outline would print on that pad: the two lines of that corner end 0.3 mm short of it.
+SILK_TRIM = {
+    'PinHeader_2x05_P2.54mm_Vertical': [((-1.38, 11.54), (3.92, 11.54), (2.65, 11.54)),
+                                        ((3.92, -1.38), (3.92, 11.54), (3.92, 11.11))],
+}
 
 # Footprints whose referenced model KiCad 10 does not ship: an explicitly recorded visual proxy
 # (fit is not judged from these models).
@@ -253,6 +262,13 @@ def main():
             for item in gone:
                 fp.Delete(item)
             edit = f'removed {len(gone)} F.SilkS outline item(s) crossing the pads'
+        for start, end, new_end in SILK_TRIM.get(name, ()):
+            hit = [i for i in fp.GraphicalItems() if i.GetLayer() == pcbnew.F_SilkS
+                   and (round(pcbnew.ToMM(i.GetStart().x), 2), round(pcbnew.ToMM(i.GetStart().y), 2)) == start
+                   and (round(pcbnew.ToMM(i.GetEnd().x), 2), round(pcbnew.ToMM(i.GetEnd().y), 2)) == end]
+            assert len(hit) == 1, (name, start, end, len(hit))
+            hit[0].SetEnd(pcbnew.VECTOR2I(mm(new_end[0]), mm(new_end[1])))
+            edit = '; '.join(filter(None, [edit, f'F.SilkS line {start} -> {end} now ends at {new_end}']))
         io.FootprintSave(str(LIB), fp)
         record['footprints'][name] = {'source': rel(src), 'source_sha256': sha(src),
                                       'license': 'KiCad library CC-BY-SA-4.0-with-exception',

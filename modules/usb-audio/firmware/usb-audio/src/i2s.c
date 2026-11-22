@@ -117,14 +117,30 @@ void i2s_start(void) {
   DMA_Cmd(DMA2_Channel2, ENABLE);
   SPI_I2S_DMACmd(SPI2, SPI_I2S_DMAReq_Rx, ENABLE);
   SPI_I2S_DMACmd(SPI3, SPI_I2S_DMAReq_Tx, ENABLE);
-  I2S_Cmd(SPI2, ENABLE);
-  I2S_Cmd(SPI3, ENABLE);
+  extern volatile uint32_t dbg_sync_mode;
+  if (!dbg_sync_mode) {
+    I2S_Cmd(SPI2, ENABLE);
+    I2S_Cmd(SPI3, ENABLE);
+  }
 
+  { extern volatile uint32_t dbg_start_blocks; dbg_start_blocks = i2s_rx_blocks; }
   last_rx_blocks = i2s_rx_blocks;
   last_check_ms = board_millis();
   running = true;
   NVIC_EnableIRQ(DMA1_Channel4_IRQn);
   NVIC_EnableIRQ(DMA2_Channel2_IRQn);
+}
+
+volatile uint32_t dbg_sync_mode = 1;
+// Experiment: enable both slaves right after an LRCK edge while the clocks run.
+void i2s_enable_synced(void) {
+  uint32_t const want = dbg_sync_mode == 1 ? GPIO_Pin_12 : 0;   // 1: after a rising edge, 2: after a falling edge
+  uint32_t const irq = board_irq_mask();
+  for (uint32_t i = 0; i < 1000000u && (GPIOB->INDR & GPIO_Pin_12) == want; i++) {}
+  for (uint32_t i = 0; i < 1000000u && (GPIOB->INDR & GPIO_Pin_12) != want; i++) {}
+  SPI2->I2SCFGR |= 0x0400;
+  SPI3->I2SCFGR |= 0x0400;
+  board_irq_restore(irq);
 }
 
 void i2s_report_slip(void) {

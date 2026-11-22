@@ -2,8 +2,11 @@
 
 | Directory | Contents |
 |---|---|
-| `front-pcb/` | Unchanged passive FR4 panel: 30 x 128.5 x 1.6 mm; native NPTH holes and silk labels |
-| `front-cad/` | Printable 2 mm panel plus **v5 bolted MCU-edge saddle (same v4 panel)**, STEP/STL/FreeCAD sources and verification scripts |
+| `front-pcb/` | Passive FR4 panel (P2, 2026-11-21): 30 x 128.5 x 1.6 mm; NPTH: 2 rail holes, 4 jacks, 4 pots, 2 x 3.2 mm standoff holes (X5.5 / X24.5, Y13.75), 9.5 x 5.2 mm USB-C slot; silk labels. DRC 0 |
+| `front-cad/` | Printable plain 2.0 mm panel for the P2 carrier (S4, S5): `build_front_panel.py` (reads the panel PCB, asserts it against `docs/geometry.json`: 13 holes + slot, one solid, drilled-blank volume, closed STL) and its `usb-audio-front-panel.{FCStd,step,stl}`. Regenerated 2026-11-22, not test-printed. Run from `modules/usb-audio`: `~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py`. Never hand-edit the exports |
+| `front-cad/r3-brace/` | **First boards (carrier S3/R3) only:** the two-hole v4 printed panel and the v5 bolted USB brace with their scripts, as described below. They do not fit the P2 carrier (everything sits 8 mm lower and two M3x10 standoffs replace the brace); the scripts read the panel PCB of that time (git history) and are kept as a record |
+
+The rest of this file describes the retired brace set in `front-cad/r3-brace/`.
 
 ## v5: accessible measured-size nuts and a deeper inter-board tongue
 
@@ -56,11 +59,11 @@ attachment into its board; this is not a separate panel-mounted USB connector.
   All original rail/jack/pot/USB holes are preserved; the FR4 panel is not changed.
 - Shallow central locating rib on the panel back; not a PCB-contact block.
 
-![Verified CAD section and exploded view](front-cad/usb-brace-v5-design.png)
+![Verified CAD section and exploded view](front-cad/r3-brace/usb-brace-v5-design.png)
 
 ## Files to print
 
-All paths below are in `front-cad/`. The v5 bracket fits the **v4 bolted panel**, not the old snap-clip panels.
+All paths below are in `front-cad/r3-brace/`. The v5 bracket fits the **v4 bolted panel**, not the old snap-clip panels.
 
 | File | Purpose |
 |---|---|
@@ -138,10 +141,10 @@ Run these from the repository root (no PCB generator or PCB save is involved):
 
 ```sh
 mkdir -p modules/usb-audio/research/usb-brace-v5
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd modules/usb-audio/panels/front-cad/build_front_panel.py
-/usr/bin/python3 -B modules/usb-audio/panels/front-cad/inspect_brace_pcb.py > modules/usb-audio/research/usb-brace-v5/pcb-mechanics.json
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd modules/usb-audio/panels/front-cad/check_usb_brace.py
-/usr/bin/python3 -B modules/usb-audio/panels/front-cad/render_usb_brace.py
+~/Applications/FreeCAD_1.1.3.AppImage freecadcmd modules/usb-audio/panels/front-cad/r3-brace/build_front_panel.py
+/usr/bin/python3 -B modules/usb-audio/panels/front-cad/r3-brace/inspect_brace_pcb.py > modules/usb-audio/research/usb-brace-v5/pcb-mechanics.json
+~/Applications/FreeCAD_1.1.3.AppImage freecadcmd modules/usb-audio/panels/front-cad/r3-brace/check_usb_brace.py
+/usr/bin/python3 -B modules/usb-audio/panels/front-cad/r3-brace/render_usb_brace.py
 ```
 
 FreeCADCmd can return exit code 0 after a Python exception: require fresh `build.json`

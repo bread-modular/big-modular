@@ -1,25 +1,28 @@
 # USB-AUDIO — 2 in / 2 out USB audio interface, 192 kHz, DC coupled (6HP)
 
 A Eurorack USB audio interface: a CH32V307 (USB 2.0 High-Speed, USB Audio Class 2, driverless on
-macOS / Windows 10+ / Linux) and a Cirrus CS4270 24-bit / 192 kHz codec. Inputs and outputs are DC
+macOS / Windows 10+ / Linux) and a Cirrus CS4272 24-bit / 192 kHz codec (CS4270 on the first boards). Inputs and outputs are DC
 coupled at ±5 V, so CV works too. Each jack has its own 0..1 volume pot.
 
 | Panel (top to bottom) | Circuit |
 |---|---|
 | **USB** (USB-C through the panel) | MCU board: CH32V307RCT6, USBLC6-2SC6, data only (powered from the rack) |
-| **IN 1**, **IN 2** (jack, pot) | 50k volume -> OPA1678 follower -> 5 V driver -> CS4270 AIN; ±5.49 V = full scale |
-| **OUT 1**, **OUT 2** (pot, jack) | CS4270 AOUT -> gain 3.2 -> 50k volume -> follower -> 1k; full scale ±5.2 V |
+| **IN 1**, **IN 2** (jack, pot) | 50k volume -> follower -> 5 V differential driver -> CS4272 AIN+/-; ±5.54 V = full scale |
+| **OUT 1**, **OUT 2** (pot, jack) | CS4272 AOUT+/- -> difference amplifier (gain 2.2) -> 50k volume -> follower -> 1k; full scale ±5.29 V |
 
 Two boards: the **carrier** (jacks, pots, codec, analog, power; SMD on the back) and the **MCU
 board** (CH32V307, USB-C; SMD on the front), soldered together on two 1x10 2.54 mm pin strips. The
 MCU board sits between the carrier and the panel; its vertical USB-C stands 1.3 mm proud of the
-panel. BOOT / RESET and an SWD header are on the carrier back: hold BOOT, press RESET, flash with
+panel; two M3 x 10 mm standoffs above it tie the carrier to the panel, so plugging USB does not load the pin strips. BOOT / RESET and an SWD header are on the carrier back: hold BOOT, press RESET, flash with
 `wchisp` over the front USB-C.
 
-**Status: carrier S3/R3 (codec-centred routing + 1k/0.5 W output networks), MCU
-board S1/R2 (USB reference/transition/impedance-geometry repair) (both 4-layer, 1x10 board-to-board strips), ERC 0.** Native DRC 0 violations / 0 unconnected / parity 0 on both boards,
-no vias in SMD pads; JLCPCB export in `jlcpcb/` (`main/` carrier + panel, `mcu/`; Economic PCBA, carrier bottom, MCU board top; 5 R/C
-still Extended and deferred by the user for now, see `jlcpcb/README.md`); not supplier-accepted. Firmware 1.1.0 in `firmware/` ([README](firmware/README.md)), loopback-tested on Linux.
+**Status: carrier S5 / P2 / R5 (2026-11-22: CS4272, side power header, standoffs, hand-routed;
+NE5532 op-amps and a resistor-divider reference instead of the VCOM buffer), MCU
+board S1/R2 unchanged (both 4-layer).** ERC 0, native DRC 0 violations / 0 unconnected / parity 0 on
+both boards, no vias in SMD pads; JLCPCB export in `jlcpcb/` (`main/` carrier 88 parts + panel, `mcu/`
+23 parts; Economic PCBA, carrier bottom, MCU board top; see `jlcpcb/README.md`); not
+supplier-accepted, S5 not built. Firmware 1.1.0 in `firmware/` ([README](firmware/README.md)) is for
+the first (CS4270) boards; the CS4272 driver is not written yet.
 
 Scoped repair details and test limits: [USB / output-resistor repair](docs/usb-output-fix.md).
 
@@ -29,7 +32,7 @@ Scoped repair details and test limits: [USB / output-resistor repair](docs/usb-o
 |---|---|
 | `hardware/` | `usb-audio.kicad_{pro,sch,pcb}` (carrier, 4 layers), `usb-audio-mcu.kicad_{pro,sch,pcb}` (MCU board, 4 layers), shared `USBAUDIO.kicad_sym`, `USBAUDIO.pretty` (+ `PROVENANCE.json`), `USBAUDIO.3dshapes`, vendored models |
 | `panels/front-pcb/usb-audio-panel.kicad_{pro,pcb}` | 6HP FR4 panel: NPTH holes, USB-C slot, labels |
-| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
+| `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB; `r3-brace/` = panel + USB brace of the first boards |
 | `docs/research.md` | Brief, decisions, levels, circuit, stack, sourcing, open items |
 | `docs/geometry.json` | Panel, placement and Z-stack contract |
 | `docs/*-schematic.pdf`, `docs/fit/` | Schematic PDFs; native ERC/DRC JSON; renders |

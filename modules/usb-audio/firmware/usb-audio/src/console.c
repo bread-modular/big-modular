@@ -210,6 +210,163 @@ static void cmd_help(void) {
 static void run(char *cmd) {
   if (cmd[0] == 0 || !strcmp(cmd, "status") || !strcmp(cmd, "s")) {
     cmd_status();
+  } else if (!strcmp(cmd, "noslip")) {
+    extern volatile uint32_t dbg_noslip;
+    dbg_noslip = !dbg_noslip;
+    out("noslip %lu\r\n", (unsigned long) dbg_noslip);
+  } else if (!strncmp(cmd, "runat ", 6)) {
+    // Codec started at a rate with the I2S slaves armed (original start), then LRCK polled.
+    uint32_t const r = (uint32_t) atoi(cmd + 6);
+    i2s_stop();
+    out("prepare %d\r\n", (int) codec_prepare(r));
+    i2s_start();
+    out("run %d\r\n", (int) codec_run());
+    board_delay_ms(30);
+    uint32_t edges = 0, cyc = 0, guard = 0, period = (uint32_t) SysTick->CMP + 1u;
+    uint32_t const irq = board_irq_mask();
+    uint32_t lt = SysTick->CNT;
+    bool ws = (GPIOB->INDR & GPIO_Pin_12) != 0;
+    uint16_t const c0 = DMA1_Channel4->CNTR, t0 = DMA2_Channel2->CNTR;
+    while (cyc < SystemCoreClock / 100u && guard < 100000000u) {   // 10 ms
+      guard++;
+      bool const w = (GPIOB->INDR & GPIO_Pin_12) != 0;
+      if (w && !ws) edges++;
+      ws = w;
+      uint32_t const now = SysTick->CNT;
+      cyc += now >= lt ? now - lt : now + period - lt;
+      lt = now;
+    }
+    uint16_t const c1 = DMA1_Channel4->CNTR, t1 = DMA2_Channel2->CNTR;
+    board_irq_restore(irq);
+    out("10 ms: LRCK rising %lu (%lu Hz); RX CNTR %u->%u TX %u->%u; SPI2 %04X SPI3 %04X\r\n", (unsigned long) edges,
+        (unsigned long) edges * 100u, c0, c1, t0, t1, SPI2->STATR, SPI3->STATR);
+  } else if (!strcmp(cmd, "clk")) {
+    // 1000 LRCK periods polled with interrupts off vs DMA half-words and SysTick cycles.
+    uint32_t const n_hw = 2u * AUDIO_BLOCK_FRAMES * 4u, period = (uint32_t) SysTick->CMP + 1u;
+    uint32_t edges = 0, hw = 0, cyc = 0, guard = 0;
+    uint32_t const irq = board_irq_mask();
+    uint16_t last = DMA1_Channel4->CNTR;
+    uint16_t const tx0 = DMA2_Channel2->CNTR;
+    uint32_t lt = SysTick->CNT;
+    bool ws = (GPIOB->INDR & GPIO_Pin_12) != 0;
+    while (edges < 10000 && guard < 400000000u) {
+      guard++;
+      bool const w = (GPIOB->INDR & GPIO_Pin_12) != 0;
+      if (w && !ws) edges++;
+      ws = w;
+      uint16_t const c = DMA1_Channel4->CNTR;
+      if (c != last) {
+        hw += ((uint32_t) last + n_hw - c) % n_hw;
+        last = c;
+      }
+      uint32_t const now = SysTick->CNT;
+      cyc += now >= lt ? now - lt : now + period - lt;
+      lt = now;
+    }
+    uint16_t const tx1 = DMA2_Channel2->CNTR;
+    board_irq_restore(irq);
+    out("TX DMA CNTR %u -> %u\r\n", tx0, tx1);
+    uint32_t const us = cyc / (SystemCoreClock / 1000000u);
+    out("LRCK %lu periods in %lu us (%lu Hz), DMA half-words %lu (x1000 per period %lu, expect 4000, 10000 periods)\r\n",
+        (unsigned long) edges, (unsigned long) us, us ? (unsigned long) ((uint64_t) edges * 1000000u / us) : 0UL,
+        (unsigned long) hw, edges ? (unsigned long) (hw * 1000 / edges) : 0UL);
+  } else if (!strcmp(cmd, "quiet")) {
+    // Clocks while the codec is held (reset, then configured with PDN): they must stay still.
+    for (int phase = 0; phase < 2; phase++) {
+      i2s_stop();
+      if (phase == 0) codec_stop();
+      else if (codec_prepare(48000) != CODEC_READY) out("prepare failed\r\n");
+      board_delay_ms(5);
+      i2s_start();
+      uint32_t sck = 0, ws = 0, sd = 0;
+      uint32_t p = GPIOB->INDR;
+      uint32_t const t0 = board_millis();
+      uint32_t const irq = board_irq_mask();
+      for (uint32_t i = 0; i < 2000000u; i++) {
+        uint32_t const v = GPIOB->INDR;
+        uint32_t const d = v ^ p;
+        p = v;
+        if (d & GPIO_Pin_13) sck++;
+        if (d & GPIO_Pin_12) ws++;
+        if (d & GPIO_Pin_15) sd++;
+      }
+      board_irq_restore(irq);
+      uint16_t const cnt = DMA1_Channel4->CNTR;
+      uint16_t const st = SPI2->STATR;
+      out("%s: SCLK toggles %lu, LRCK %lu, SDOUT %lu, pins now %s%s%s, DMA left %u of %u, SPI2 STATR %04X (%lu ms)\r\n",
+          phase ? "PDN held" : "RST low", (unsigned long) sck, (unsigned long) ws, (unsigned long) sd,
+          (p & GPIO_Pin_13) ? "SCLK=1 " : "SCLK=0 ", (p & GPIO_Pin_12) ? "LRCK=1 " : "LRCK=0 ",
+          (p & GPIO_Pin_15) ? "SD=1" : "SD=0", cnt, 2u * AUDIO_BLOCK_FRAMES * 4u, st,
+          (unsigned long) (board_millis() - t0));
+    }
+    i2s_stop();
+    codec_stop();
+  } else if (!strncmp(cmd, "sclktest", 8)) {
+    uint32_t const settle = (uint32_t) atoi(cmd + 8);
+    // SCLK rising edges before the first LRCK edge and between the next ones, right after PDN clears.
+    i2s_stop();
+    if (codec_prepare(48000) != CODEC_READY) out("prepare failed\r\n");
+    board_delay_ms(5);
+    uint32_t cnt[12] = {0};
+    int idx = 0;
+    uint32_t polls = 0;
+    bool ok = codec_run();
+    board_delay_ms(settle);
+    uint32_t const irq = board_irq_mask();
+    uint32_t p = GPIOB->INDR;
+    uint32_t const ws0 = p & GPIO_Pin_12, sck0 = p & GPIO_Pin_13;
+    while (ok && idx < 12 && polls < 50000000u) {
+      polls++;
+      uint32_t const v = GPIOB->INDR;
+      uint32_t const d = v ^ p;
+      p = v;
+      if ((d & GPIO_Pin_13) && (v & GPIO_Pin_13)) cnt[idx]++;
+      if (d & GPIO_Pin_12) idx++;
+    }
+    board_irq_restore(irq);
+    out("start levels LRCK %d SCLK %d; SCLK rising per LRCK half:", ws0 != 0, sck0 != 0);
+    for (int k = 0; k < 12; k++) out(" %lu", (unsigned long) cnt[k]);
+    out(" (polls %lu)\r\n", (unsigned long) polls);
+    i2s_stop();
+    codec_stop();
+  } else if (!strncmp(cmd, "sync ", 5)) {
+    extern volatile uint32_t dbg_sync_mode;
+    dbg_sync_mode = (uint32_t) atoi(cmd + 5);
+    out("sync mode %lu\r\n", (unsigned long) dbg_sync_mode);
+  } else if (!strcmp(cmd, "vdd")) {
+    // VDD from VREFINT (1.2 V typical) on ADC1 channel 17, 16 readings.
+    RCC->CFGR0 = (RCC->CFGR0 & ~RCC_ADCPRE_DIV8) | RCC_ADCPRE_DIV8;
+    RCC->APB2PCENR |= RCC_APB2Periph_ADC1;
+    ADC1->CTLR1 = 0;
+    ADC1->CTLR2 = ADC_ADON | ADC_TSVREFE | ADC_EXTSEL | ADC_EXTTRIG;
+    board_delay_ms(2);
+    ADC1->CTLR2 |= ADC_RSTCAL;
+    while (ADC1->CTLR2 & ADC_RSTCAL) {}
+    ADC1->CTLR2 |= ADC_CAL;
+    while (ADC1->CTLR2 & ADC_CAL) {}
+    ADC1->SAMPTR1 = 7u << 21;   // channel 17: 239.5 cycles
+    ADC1->RSQR1 = 0;
+    ADC1->RSQR3 = 17;
+    uint32_t mn = 4095, mx = 0, sum = 0;
+    for (int k = 0; k < 64; k++) {
+      ADC1->STATR = 0;
+      ADC1->CTLR2 |= ADC_SWSTART;
+      while (!(ADC1->STATR & ADC_EOC)) {}
+      uint32_t const v = ADC1->RDATAR & 0xFFF;
+      sum += v;
+      if (v < mn) mn = v;
+      if (v > mx) mx = v;
+      board_delay_us(200);
+    }
+    uint32_t const avg = sum / 64;
+    out("VREFINT raw avg %lu (min %lu max %lu): VDD = %lu mV (if VREFINT = 1200 mV)\r\n", (unsigned long) avg,
+        (unsigned long) mn, (unsigned long) mx, avg ? (unsigned long) (1200u * 4095u / avg) : 0UL);
+  } else if (!strcmp(cmd, "slipdump")) {
+    extern volatile uint32_t dbg_slip_words[96];
+    extern volatile uint32_t dbg_slip_n, dbg_slip_at;
+    out("block %lu after start\r\n", (unsigned long) dbg_slip_at);
+    for (int k = 0; k < 96; k++) out("%08lX%s", (unsigned long) dbg_slip_words[k], (k & 7) == 7 ? "\r\n" : " ");
+    dbg_slip_n = 0;
   } else if (!strcmp(cmd, "meter") || !strcmp(cmd, "m")) {
     meter_on = !meter_on;
     if (meter_on) {

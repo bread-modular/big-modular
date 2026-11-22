@@ -14,13 +14,6 @@
       "edits": "none (native load/save only)",
       "output_sha256": "19eefd37589460bf01545bd8f750e73c21c09d838103b844defc5ab371d49ab8"
     },
-    "TSSOP-24_4.4x7.8mm_P0.65mm": {
-      "source": "/usr/share/kicad/footprints/Package_SO.pretty/TSSOP-24_4.4x7.8mm_P0.65mm.kicad_mod",
-      "source_sha256": "951159bb3a87997ba4a4f14affd963324813db13d9426715b2a29388369d74ed",
-      "license": "KiCad library CC-BY-SA-4.0-with-exception",
-      "edits": "none (native load/save only)",
-      "output_sha256": "53081ee92c3de25af6b930b91a204c2c17f0ed02ae402a5faa753c71580090d9"
-    },
     "LQFP-64_10x10mm_P0.5mm": {
       "source": "/usr/share/kicad/footprints/Package_QFP.pretty/LQFP-64_10x10mm_P0.5mm.kicad_mod",
       "source_sha256": "f5a3abeefd7fdfa39fb685c0d80538f6fed111d00da42bf82decb0b6d2293101",
@@ -116,8 +109,8 @@
       "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_2x05_P2.54mm_Vertical.kicad_mod",
       "source_sha256": "e92fcd01a2df9c567dbd6e2c8c05c4e021cb1b96ca035b85d568d1710f9d48b1",
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
-      "edits": "none (native load/save only)",
-      "output_sha256": "f84724c1ee608a5bf983bea174e5208b06e0960eb0cfc82d8b132e23ebfe781c"
+      "edits": "F.SilkS line (-1.38, 11.54) -> (3.92, 11.54) now ends at (2.65, 11.54); F.SilkS line (3.92, -1.38) -> (3.92, 11.54) now ends at (3.92, 11.11)",
+      "output_sha256": "01dfb128372ae53d02fe67c25065603d3e263f73c62edab03c499e2f6d632402"
     },
     "PinHeader_1x10_P2.54mm_Vertical": {
       "source": "/usr/share/kicad/footprints/Connector_PinHeader_2.54mm.pretty/PinHeader_1x10_P2.54mm_Vertical.kicad_mod",
@@ -160,6 +153,20 @@
       "license": "module-local",
       "edits": "plated slot width 0.45 -> 0.50 (JLCPCB minimum); peg holes merged with the adjacent leg slots (0.95 x 2.24 plated)",
       "output_sha256": "9791b4c9924f4ad39013dda2a30b54c6e79e82659bcdd81db6cb7fee580259b3"
+    },
+    "TSSOP-28_4.4x9.7mm_P0.65mm": {
+      "source": "/usr/share/kicad/footprints/Package_SO.pretty/TSSOP-28_4.4x9.7mm_P0.65mm.kicad_mod",
+      "source_sha256": "1d6588c8d00a3d12661fdcce340d027e3efc94ad78b3c3c091e56c4e4467d637",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "230284e0217febf2924ba31e6fc624dfc857e0e9922c62d14b5a0867408bb6d7"
+    },
+    "TestPoint_Pad_D1.5mm": {
+      "source": "/usr/share/kicad/footprints/TestPoint.pretty/TestPoint_Pad_D1.5mm.kicad_mod",
+      "source_sha256": "d7ae230b69d8c3dad5082515a51aac9e4840360c8f4324a00673353676d43042",
+      "license": "KiCad library CC-BY-SA-4.0-with-exception",
+      "edits": "none (native load/save only)",
+      "output_sha256": "4fc5175df5194a54d2ac42073071cd46be4617a95744436dd85301ced0191b56"
     }
   },
   "models": {

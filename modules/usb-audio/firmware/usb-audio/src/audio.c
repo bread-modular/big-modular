@@ -197,6 +197,9 @@ static bool adc_muted(const uint16_t *src) {
 }
 
 // ADC -> USB: samples MSB-justified in 32 bits (UAC2 24-in-32), IN 1 first.
+volatile uint32_t dbg_slip_words[96];
+volatile uint32_t dbg_noslip;
+volatile uint32_t dbg_slip_n, dbg_start_blocks, dbg_slip_at;
 void audio_i2s_rx(const uint16_t *src) {
   uint32_t zero = 0;
   bool const muted = adc_muted(src);
@@ -224,7 +227,18 @@ void audio_i2s_rx(const uint16_t *src) {
     usb_service(i);   // may send from the ring: in_wr moves after the block
   }
   m_frames += AUDIO_BLOCK_FRAMES;
-  if (zero & I2S_RX_ZERO_BITS) i2s_report_slip();
+  if (!dbg_slip_n && (dbg_noslip || (zero & I2S_RX_ZERO_BITS))) {
+    for (int k = 0; k < 96; k++) dbg_slip_words[k] = rx_word(src, k);
+    dbg_slip_n = 1;
+    dbg_slip_at = i2s_rx_blocks - dbg_start_blocks;
+  }
+  if (zero & I2S_RX_ZERO_BITS) {
+    if (0) {
+      dbg_slip_n = 1;
+      dbg_slip_at = i2s_rx_blocks - dbg_start_blocks;
+    }
+    if (!dbg_noslip) i2s_report_slip();
+  }
   in_wr += AUDIO_BLOCK_FRAMES;
 
   // The packets of one block period leave before the next block arrives, so
@@ -392,6 +406,15 @@ static void streams_start(uint32_t rate) {
   in_adc_live = false;
   i2s_start();
   // The clocks have started within 1 ms of PDN on the board; allow 50 ms.
+  extern volatile uint32_t dbg_sync_mode;
+  extern void i2s_enable_synced(void);
+  if (dbg_sync_mode && codec_run() && i2s_lrck_toggling(50000)) {
+    board_delay_ms(5);
+    i2s_enable_synced();
+    rate_codec = rate;
+    restarts++;
+    return;
+  }
   if (!codec_run() || !i2s_lrck_toggling(50000)) {
     i2s_stop();
     codec_stop();

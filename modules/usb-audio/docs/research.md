@@ -151,3 +151,61 @@ on both F/B, with balanced per-orientation via counts; the two-layer connector e
 are intentional. R36/R38 and R37/R39 form 1k/0.5 W networks from two Basic 2k parts.
 See [the detailed repair and verification note](usb-output-fix.md). The other review
 issues were explicitly deferred by the user; no claim that they passed is made.
+
+## 9. Carrier S4 / P2 / R4 (2026-11-21 / 22) and S5 / R5 (2026-11-22)
+
+Why: two built S3 boards crackled. Measured on the first one with firmware 1.1.0 and no USB stream
+open: the CH32V307 I2S slaves locked to the codec clocks at a random bit position (9 bits early to
+5 bits late), about 30 codec / I2S restarts per second; at 96 kHz the MCU lost the bit clock, at
+192 kHz the codec gave no LRCK. A test build that enables the I2S inputs on an LRCK edge after the
+clocks run is clean at 48 kHz. Reflowing was not possible and a second board did the same. The root
+cause was **not** confirmed with a scope, so the hardware changes below are aimed at what was
+measured, not proven to cure it.
+
+Sections 1-7 still describe S3; where they differ, this section and the docstring of
+`tools/circuit_carrier.py` (the circuit of record) win.
+
+- **CS4272 for the CS4270** (Cirrus has discontinued the CS4270). Same family, 24-bit / 192 kHz,
+  114 dB, TSSOP-28, differential analog pins. Control port over I2C at 0x10 (AD0 = GND), master,
+  external 24.576 MHz MCLK. New register map: the firmware needs a new driver.
+- **Outputs:** AOUT+/- into a difference amplifier per channel (U5, 6.8k / 15k, 100p). The codec's
+  common mode cancels, so the S3 VREF_OUT reference and the power-up step on the outputs are gone.
+  Full scale ±5.29 V.
+- **Inputs:** each channel drives AIN- from the inverting 5 V stage and AIN+ from a unity inverter
+  about VCOM_BUF (U6), 100R per leg, 2.2n C0G across the pair. Full scale ±5.54 V at the jack.
+- **Against the I2S fault:** the codec leaves reset as a clock slave, so SCLK / LRCK float until
+  the M/S bit is written: R14 / R16 10k pull them down, R48 47k holds the DAC data line. TP1 is a
+  scope pad on MCLK; the other lines are probed on the J7 joints (legend on the B silk). In the
+  layout the bit clock no longer takes two vias and a 20 mm detour to its series resistor: SCLK and
+  LRCK run 2 mm on B from the codec pin into R11 / R12, and the SCLK pull-down sits at J7.3.
+- **Mechanics (P2):** power header upright at the left edge between the IN 2 jack and the OUT 1 pot,
+  rows 8 mm lower, two M3x10 hex standoffs above the MCU board as on modules/multi-mix and
+  modules/usb-audio-max: USB plug forces go into the panel, not into the J6 / J7 joints. The printed
+  brace is retired.
+- **Dual op-amp (S4, replaced in S5):** OPA1656IDR (C1849431) on U4 / U5 / U7 / U8 at the first
+  2026-11-22 export, because OPA1678IDR (C192421) was pre-order only at JLCPCB (free stock -955,
+  minimum purchase 13).
+- **S5 / R5 (user, 2026-11-22): NE5532 and no VCOM buffer.** The OPA1656 cost about $1.1 each
+  (four per board) plus an Extended feeder fee. The user asked for the NE5532 of modules/multi-mix.
+  - U4 / U5 / U7 = **NE5532DR C7426** (JLCPCB Basic, about $0.10; free stock 223,326 on 2026-11-22).
+    Same SOIC-8 pinout, all three on +/-12 V with +/-5.5 V signals, well inside its input and output
+    range. Unity-gain stable, 5 nV/rtHz. Bipolar inputs: 200 nA typical / 800 nA maximum bias
+    current, 4 mV maximum offset. Behind a 50k pot (12.5k at mid travel) that is 2.5 mV typical /
+    10 mV maximum of offset that changes with the pot position, on IN (U4) and OUT (U7). The
+    difference amplifier U5 sees equal resistances on both inputs. About 8 mA per package.
+  - The NE5532 cannot run on the single +5VA rail, so the VCOM buffer U8 (and C33) is gone instead
+    of becoming an MCP6002. What VCOM_BUF drives: two U6 + inputs and the R40 / R41 divider for
+    VB_IN, no signal current. The differential ADC drive gives AIN+ - AIN- = 2 x 0.255 x Vin for
+    any reference as long as VB_IN = VCOM_BUF x 2/2.51; the reference only sets the common mode.
+  - **R49 2.7k from +5VA over R40 + R41 (2.51k): VCOM_BUF = 0.482 x VA = 2.41 V**, as the codec's
+    own VCOM (about 0.48 x VA) and moving with the same rail. C38 10u + C39 100n on VCOM_BUF
+    (12 Hz with 1.3k); no capacitor on VB_IN, so ripple stays common to both ADC legs. U6's inputs
+    sit at 1.92 V and 2.41 V, inside the OPA1679's 0.5 .. 3.0 V range on 5 V. The codec's VCOM pin
+    keeps only C17 / C18.
+  - Costs: common mode off the codec's VCOM by resistor tolerance (tens of mV); the input DC offset
+    comes from R40 / R41 matching as before. Datasheet values, not measured.
+  - Layout: R49 / C38 / C39 where U8 was, on its +5VA and GND vias; no new via, C33's two vias
+    removed. BOM 88 parts / 32 rows, 7 Extended types (was 87 / 31 / 8).
+- **Open:** CS4272 firmware, bench (I2S start at 48 / 96 / 192 kHz, levels, VCOM_BUF = 2.41 V,
+  offsets against the pot position, thermal of U2 / R1), supplier preview. The CH32V307 datasheet limits I2S to 8 MHz and the 192 kHz bit clock
+  is 12.288 MHz: 192 kHz stays unproven.

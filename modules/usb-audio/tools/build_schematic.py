@@ -4,7 +4,7 @@ Run from modules/usb-audio:
   python3 -B tools/build_schematic.py
 
 Two KiCad projects share hardware/ (one symbol library, one footprint library):
-- hardware/usb-audio.kicad_sch      carrier (jack/pot board): power, CS4270 codec, analog in/out,
+- hardware/usb-audio.kicad_sch      carrier (jack/pot board): power, CS4272 codec, analog in/out,
                                     the MCU-board headers, BOOT/RESET, SWD (tools/circuit_carrier.py)
 - hardware/usb-audio-mcu.kicad_sch  MCU board: CH32V307RCT6, USB-C, crystal (tools/circuit_mcu.py)
 
@@ -46,8 +46,8 @@ MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and
 
 # Projects built by this script: circuit module -> (project name, title, revision, comment)
 PROJECTS = {
-    'circuit_carrier': ('usb-audio', 'Big Modular - USB-AUDIO carrier (jack/pot board)', 'S3',
-                        'SCHEMATIC S3 - 2 in / 2 out DC-coupled USB audio, CS4270 codec (192 kHz), +/-5 V, 6HP; '
+    'circuit_carrier': ('usb-audio', 'Big Modular - USB-AUDIO carrier (jack/pot board)', 'S5',
+                        'SCHEMATIC S5 - 2 in / 2 out DC-coupled USB audio, CS4272 codec (192 kHz), +/-5 V, 6HP; '
                         'MCU board on 2.54 mm headers J6/J7'),
     'circuit_mcu': ('usb-audio-mcu', 'Big Modular - USB-AUDIO MCU board', 'S1',
                     'SCHEMATIC S1 - CH32V307RCT6 USB 2.0 High-Speed (UAC2), vertical USB-C through the panel; '
@@ -67,9 +67,9 @@ SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'FerriteBead': ('Device', 'FerriteBead'),
     'R_Potentiometer': ('Device', 'R_Potentiometer'), 'D_Schottky': ('Device', 'D_Schottky'),
     'Crystal': ('Device', 'Crystal'),
-    'CS4270': ('Audio', 'CS4270'),
+    'CS4272': ('Audio', 'CS4272'), 'TestPoint': ('Connector', 'TestPoint'),
     'CH32V30xRxTx': ('MCU_WCH_RiscV', 'CH32V30xRxTx'),
-    'OPA1679': ('Amplifier_Operational', 'OPA1679'), 'OPA1678': ('Amplifier_Operational', 'OPA1678'),
+    'OPA1679': ('Amplifier_Operational', 'OPA1679'), 'NE5532': ('Amplifier_Operational', 'NE5532'),
     'AMS1117-3.3': ('Regulator_Linear', 'AMS1117-3.3'), 'AMS1117-5.0': ('Regulator_Linear', 'AMS1117-5.0'),
     'ASE-xxxMHz': ('Oscillator', 'ASE-xxxMHz'),
     'USBLC6-2SC6': ('Power_Protection', 'USBLC6-2SC6'),
@@ -90,7 +90,7 @@ FP = {
     'C1206': 'C_1206_3216Metric',
     'SOD123': 'D_SOD-123', 'SOT223': 'SOT-223-3_TabPin2', 'SOT23-6': 'SOT-23-6',
     'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm', 'SOIC14': 'SOIC-14_3.9x8.7mm_P1.27mm',
-    'TSSOP24': 'TSSOP-24_4.4x7.8mm_P0.65mm', 'LQFP64': 'LQFP-64_10x10mm_P0.5mm',
+    'TSSOP28': 'TSSOP-28_4.4x9.7mm_P0.65mm', 'TP15': 'TestPoint_Pad_D1.5mm', 'LQFP64': 'LQFP-64_10x10mm_P0.5mm',
     'OSC3225': 'Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm', 'XTAL5032': 'Crystal_SMD_5032-2Pin_5.0x3.2mm',
     'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09',
     'SWK2': 'K2-1808SN-A4SW-01', 'USBC_V': 'USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical',

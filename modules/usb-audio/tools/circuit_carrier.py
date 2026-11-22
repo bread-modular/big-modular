@@ -1,25 +1,37 @@
-"""USB-AUDIO carrier (jack/pot board) S3 circuit table, drawing and sourcing (tools/build_schematic.py).
+"""USB-AUDIO carrier (jack/pot board) S5 circuit table, drawing and sourcing (tools/build_schematic.py).
 
 CIRCUIT is docs/research.md section 3. 6HP, 2 in / 2 out, DC-coupled, +/-5 V (CV too), 192 kHz:
 
 - Power: Eurorack 10-pin +/-12 V -> B5819W series Schottkys -> +12V_F / -12V_F (op-amps);
-  +12V_F -> U1 AMS1117-5.0 -> +5VA (CS4270 VA, U6); +12V_F -> R1 33R 1 W -> U2 AMS1117-3.3 -> +3V3
-  (MCU board, oscillator, I2C pull-ups); +3V3 -> FB1 -> +3V3_C (CS4270 VD/VLC).
-- Codec: U3 CS4270 in I2C control-port mode, address 0x48 (AD2..AD0 = 0), master in quad speed
-  (MCLK/LRCK 128: Y1 24.576 MHz -> 192 kHz; 96/48 kHz via the MCLK divider). It drives SCLK/LRCK
-  to both CH32V307 I2S ports (slaves). RST held low by R17 until the MCU releases it.
+  +12V_F -> U1 AMS1117-5.0 -> +5VA (CS4272 VA, U6, the R49 reference divider); +12V_F -> R1 33R 1 W -> U2 AMS1117-3.3 -> +3V3
+  (MCU board, oscillator, I2C pull-ups); +3V3 -> FB1 -> +3V3_C (CS4272 VD/VL).
+- Codec (S4, 2026-11-21): U3 CS4272 (the CS4270 is discontinued), differential in and out, I2C
+  control-port mode, address 0x10 (AD0 = GND), master. External MCLK (XTI = GND, XTO open): Y1
+  24.576 MHz = 512 / 256 / 128 x 48 / 96 / 192 kHz (Ratio1:0 = 10, table 9). It drives SCLK (64 Fs)
+  and LRCK to both CH32V307 I2S ports (slaves). RST held low by R17 until the MCU releases it.
+  The codec leaves reset as a clock slave (SCLK / LRCK are inputs until the M/S bit is written), so
+  R14 / R16 10k hold I2S_SCLK / I2S_LRCK low and R48 47k holds I2S_DAC low: no floating clock line
+  while the MCU's I2S slaves wait (the first board's random bit offsets). TP1 = MCLK scope pad; the
+  other clock / data lines are probed on the J7 joints (B silk).
 - Inputs: jack (TN to GND: unpatched = 0 V) -> RV1/RV2 50k volume (0..1) -> R20/R21 1k -> U4A/U4B
-  follower (+/-12 V, by the IN pots) -> U6A/U6B inverting driver on +5VA (gain -5.1k/20k, + input at VB_IN =
-  VQ x 20/25.1 so 0 V in = VQ) -> 220R / 2.2n C0G -> AINA/AINB. +/-5.49 V = ADC full scale
-  (0.56 x VA = 2.8 Vpp); the 5 V driver cannot push AIN outside 0..5 V on a +/-12 V mis-patch.
-  The CS4270 ADC_INV bits restore the polarity; its HPF is frozen for DC (register 04h bits 7/6).
-- Outputs: AOUTA/AOUTB -> 470R / 1n C0G -> U5A/U5B non-inverting gain 3.2 (22k/10k) with Rg to
-  VREF_OUT = VQ x 32/22, so VQ out = 0 V; DAC full scale 0.65 x VA = 3.25 Vpp -> +/-5.2 V. AOUT
-  sees only an op-amp input (CS4270 AOUT DC load max 10 uA). -> RV3/RV4 50k volume -> U7A/U7B
-  follower (by the OUT pots) -> 2 x 2k 1206 in parallel (1k, 0.5 W) -> jack. U4 and U7 are separate
-  duals (R2, 2026-10-24), each at its pot wiper; the gain stages U5 sit at the codec AOUT pins.
-- References on +5VA: U6C buffers VQ (25k source, max 1 uA) for the VB_IN divider; U6D makes
-  VREF_OUT from VQ. Both track the codec's own mid-rail.
+  follower (+/-12 V, by the IN pots) -> U6 inverting stage on +5VA (gain -5.1k/20k, + input at
+  VB_IN = VCOM_BUF x 2/2.51 so 0 V in = VCOM_BUF) = AIN-; U6 unity inverter about VCOM_BUF = AIN+; each
+  leg 100R, 2.2n C0G across the pair. Differential full scale 1.13 x VA = 5.65 Vpp -> +/-5.54 V at
+  the jack. The 5 V stages cannot push AIN outside 0..5 V on a +/-12 V mis-patch. The ADC HPF is
+  frozen for DC (register 06h).
+- Outputs: AOUT+/- -> U5A/U5B difference amplifier (6.8k / 15k, 100p: gain 2.2, 106 kHz) on
+  +/-12 V: the common mode (VCOM) cancels, so no VREF_OUT and no power-up step; DAC full scale
+  0.96 x VA = 4.8 Vpp differential -> +/-5.29 V. AOUT sees 6.8k (minimum 3k). -> RV3/RV4 50k
+  volume -> U7A/U7B follower (by the OUT pots) -> 2 x 2k 1206 in parallel (1k, 0.5 W) -> jack.
+- Reference on +5VA (S5, 2026-11-22: no buffer op-amp): R49 2.7k from +5VA over R40 + R41 (2.51k) makes
+  VCOM_BUF = 0.482 x VA = 2.41 V (the codec's own VCOM is about 0.48 x VA and moves with the same rail),
+  C38 10u + C39 100n to GND (12 Hz). VCOM_BUF only sets the common mode of the differential ADC drive
+  and feeds op-amp + inputs (no signal current): AIN+ - AIN- = 2 x 0.255 x Vin whatever it is, as long
+  as VB_IN = VCOM_BUF x 2/2.51, which R40 / R41 hold (no capacitor on VB_IN). The codec's VCOM pin
+  only has its own filter capacitors now (25k source, 1 uA max: nothing may load it).
+- U4 / U5 / U7 are NE5532 (S5: JLCPCB Basic, as modules/multi-mix U8): bipolar inputs, 200 nA typical /
+  800 nA maximum bias current, so a pot at mid travel (12.5k at the wiper) adds 2.5 mV typical /
+  10 mV maximum of offset at that follower; the offset is 4 mV maximum. Datasheet values.
 - MCU board link: J6/J7 1x10 2.54 mm pin headers (the MCU board solders on top of them, F side).
   BOOT/RESET (SW2/SW1) and the SWD header J8 sit on the carrier so the MCU board needs none.
 """
@@ -33,25 +45,25 @@ MIRROR_X = {'RV1', 'RV2', 'RV3', 'RV4', 'J2', 'J3'}
 
 # Header strips J6/J7 are bought and soldered by hand with the MCU board (no LCSC field); listed in
 # the carrier BOM. The MCU board's J102/J103 are the same strips seen from the other board.
-NOT_ASSEMBLED = set()
+NOT_ASSEMBLED = {'TP1'}   # bare test pad
 
 PWR = (40.64, 66.04)          # J1 (as modules/32bit J6)
 COD = (279.4, 165.1)          # U3 CS4270
 IN_Y = (241.3, 274.32)        # input channel rows
-OUT_Y = (241.3, 274.32)       # output channel rows
+OUT_Y = (254.0, 294.64)       # output channel rows
 IN_X0 = 22.86                 # input jack column
 OUT_X0 = 335.28               # output R30 column
-REF_Y = (330.2, 360.68)       # VQ buffer / VREF_OUT amp rows
+REF_Y = 330.2                 # reference divider row
 HDR = (482.6, 76.2)           # J6; J7 at +30.48
 
-IN_PARTS = [dict(j='J2', rv='RV1', rs='R20', fu='U4', fun=1, rin='R22', rf='R24', du='U6', dun=1,
-                 ro='R26', c='C20', ch='1', adc='ADC_A'),
-            dict(j='J3', rv='RV2', rs='R21', fu='U4', fun=2, rin='R23', rf='R25', du='U6', dun=2,
-                 ro='R27', c='C21', ch='2', adc='ADC_B')]
-OUT_PARTS = [dict(rs='R30', c='C22', u='U5', un=1, rg='R32', rf='R34', rv='RV3', fu='U7', fun=1, ro='R36', rp='R38',
-                  j='J4', ch='1', dac='DAC_A'),
-             dict(rs='R31', c='C23', u='U5', un=2, rg='R33', rf='R35', rv='RV4', fu='U7', fun=2, ro='R37', rp='R39',
-                  j='J5', ch='2', dac='DAC_B')]
+IN_PARTS = [dict(j='J2', rv='RV1', rs='R20', fu='U4', fun=1, rin='R22', rf='R24', cf='C20', dun=1, iun=2,
+                 ri='R44', rif='R46', rn='R26', rp='R28', c='C22', ch='1', adc='ADC_A'),
+            dict(j='J3', rv='RV2', rs='R21', fu='U4', fun=2, rin='R23', rf='R25', cf='C21', dun=3, iun=4,
+                 ri='R45', rif='R47', rn='R27', rp='R29', c='C23', ch='2', adc='ADC_B')]
+OUT_PARTS = [dict(rn='R30', rp='R32', rf='R34', rg='R42', cf='C34', cg='C36', u='U5', un=1, rv='RV3', fu='U7',
+                  fun=1, ro='R36', rpar='R38', j='J4', ch='1', dac='DAC_A'),
+             dict(rn='R31', rp='R33', rf='R35', rg='R43', cf='C35', cg='C37', u='U5', un=2, rv='RV4', fu='U7',
+                  fun=2, ro='R37', rpar='R39', j='J5', ch='2', dac='DAC_B')]
 # Op-amp unit pins: unit -> (+, -, out)
 OPA4 = {1: ('3', '2', '1'), 2: ('5', '6', '7'), 3: ('10', '9', '8'), 4: ('12', '13', '14')}
 OPA2 = {1: ('3', '2', '1'), 2: ('5', '6', '7')}
@@ -67,9 +79,19 @@ def two(ref, sym, value, fp, at, a, b, rot=90, **fields):
     return part(ref, sym, value, fp, at, rot, {'1': a, '2': b}, **fields)
 
 
+# Dual op-amp on U4 / U5 / U7 (stock dual symbol, SOIC-8), all on +/-12 V. NE5532 since S5 (user, 2026-11-22): a
+# JLCPCB Basic part (C7426, no feeder fee), as modules/multi-mix U8. Before: OPA1678IDR C192421 (pre-order only at
+# JLCPCB on 2026-11-22), then OPA1656IDR C1849431 (Extended, about $1.1 each). Same SOIC-8 pinout. Unity-gain
+# stable, 5 nV/rtHz, supply +/-5 .. +/-15 V, inputs and output stay about 2 .. 3 V inside the rails (+/-5.5 V
+# signals on +/-11.7 V are well inside); bipolar inputs: 200 nA typical / 800 nA maximum bias current, anti-parallel
+# diodes between the inputs (the followers have 1k / the pot in series). It cannot run on +5VA, so the VCOM
+# buffer U8 is gone (reference divider R49).
+DUAL = 'NE5532'
+
+
 def opamp(ref, unit, at, plus, minus, out, quad=True, **fields):
     p, m, o = (OPA4 if quad else OPA2)[unit]
-    return part(ref, 'OPA1679' if quad else 'OPA1678', 'OPA1679' if quad else 'OPA1678',
+    return part(ref, 'OPA1679' if quad else DUAL, 'OPA1679' if quad else DUAL,
                 'SOIC14' if quad else 'SOIC8', at, 0, {p: plus, m: minus, o: out}, unit=unit, **fields)
 
 
@@ -91,7 +113,7 @@ def circuit():
                  Note='+12V_F bulk'))
     c.append(part('U1', 'AMS1117-5.0', 'AMS1117-5.0', 'SOT223', (124.46, 76.2), 0,
                   {'1': 'GND', '2': '+5VA', '3': '+12V_F'},
-                  Note='+5VA: CS4270 VA (37 mA) + U6 (~10 mA). ~50 mA x 7 V = 0.35 W'))
+                  Note='+5VA: CS4272 VA (37 mA) + U6 (~10 mA) + reference divider (1 mA). ~50 mA x 7 V = 0.35 W'))
     c.append(two('C3', 'C', '22u', 'C0805', (139.7, 80.01), '+5VA', 'GND', rot=0, Voltage='25V', Note='U1 output'))
     c.append(two('C4', 'C', '100n', 'C0603', (147.32, 80.01), '+5VA', 'GND', rot=0, Voltage='50V',
                  Note='U1 output HF'))
@@ -114,57 +136,67 @@ def circuit():
                               ('#FLG07', '+3V3_C', (185.42, 101.6), 0)):
         c.append(part(ref, 'PWR_FLAG', 'PWR_FLAG', None, at, rot, {'1': net}))
 
-    # ---- CS4270 codec (I2C control port), oscillator, clock/data series resistors
+    # ---- CS4272 codec (I2C control port), oscillator, clock/data series resistors, pull-downs
     x, y = COD
-    c.append(part('U3', 'CS4270', 'CS4270', 'TSSOP24', COD, 0,
-                  {'1': 'I2S_DAC', '2': '_LRCK_C', '3': '_MCLK_C', '4': '_SCLK_C', '5': '+3V3_C', '6': 'GND',
-                   '7': '_SDOUT_C', '8': '+3V3_C', '9': 'I2C_SDA', '10': 'I2C_SCL', '11': 'CODEC_AD0', '12': 'GND',
-                   '13': 'GND', '14': 'CODEC_RST', '15': 'ADC_A', '16': 'ADC_B', '17': 'VQ', '18': '_FILTP',
-                   '19': '+5VA', '20': 'GND', '21': None, '22': 'DAC_A', '23': 'DAC_B', '24': None},
-                  Note='24-bit 192 kHz stereo codec. I2C 0x48. Master, quad speed, MCLK/LRCK 128. '
-                       'Cirrus lists it as discontinued; JLC/LCSC stock checked 2026-10-23'))
-    c.append(part('Y1', 'ASE-xxxMHz', '24.576MHz', 'OSC3225', (210.82, 152.4), 0,
+    c.append(part('U3', 'CS4272', 'CS4272', 'TSSOP28', COD, 0,
+                  {'1': None, '2': 'GND', '3': '_MCLK_C', '4': 'CODEC_LRCK', '5': 'CODEC_SCLK', '6': 'CODEC_SDOUT',
+                   '7': 'I2S_DAC', '8': 'GND', '9': '+3V3_C', '10': '+3V3_C', '11': 'I2C_SCL', '12': 'I2C_SDA',
+                   '13': 'GND', '14': 'CODEC_RST', '15': 'VCOM', '16': 'ADC_AN', '17': 'ADC_AP', '18': 'ADC_BP',
+                   '19': 'ADC_BN', '20': '+5VA', '21': 'GND', '22': '_FILTP', '23': None, '24': 'DAC_AN',
+                   '25': 'DAC_AP', '26': 'DAC_BP', '27': 'DAC_BN', '28': None},
+                  Note='24-bit 192 kHz stereo codec, differential in/out, 114 dB. I2C 0x10 (AD0 = GND). Master, '
+                       'external MCLK (XTI = GND). Replaces the discontinued CS4270 (S4, 2026-11-21); '
+                       'JLC free stock checked 2026-11-21'))
+    c.append(part('Y1', 'ASE-xxxMHz', '24.576MHz', 'OSC3225', (210.82, 157.48), 0,
                   {'1': '+3V3_C', '2': 'GND', '3': '_OSC', '4': '+3V3_C'},
-                  Note='24.576 MHz 3.3 V CMOS oscillator (YXC OT2EL, 3225): MCLK = 128 x 192 kHz'))
-    for ref, row, a, b, note in (('R12', 149.86, 'I2S_LRCK', '_LRCK_C', 'LRCK out (codec master)'),
-                                 ('R10', 152.4, '_OSC', '_MCLK_C', 'MCLK from Y1'),
-                                 ('R11', 154.94, 'I2S_SCLK', '_SCLK_C', 'SCLK out (codec master)')):
-        c.append(two(ref, 'R', '33', 'R0603', (226.06 if ref == 'R10' else 256.54, row), a, b,
-                     Note=f'Series termination: {note}'))
-    c.append(two('R13', 'R', '33', 'R0603', (304.8, 147.32), '_SDOUT_C', 'I2S_ADC',
+                  Note='24.576 MHz 3.3 V CMOS oscillator (YXC OT2EL, 3225): MCLK = 512 / 256 / 128 x 48 / 96 / 192 kHz'))
+    c.append(two('R10', 'R', '33', 'R0603', (226.06, 157.48), '_OSC', '_MCLK_C',
+                 Note='Series termination: MCLK from Y1'))
+    c.append(two('R13', 'R', '33', 'R0603', (238.76, 165.1), 'I2S_ADC', 'CODEC_SDOUT',
                  Note='Series termination: SDOUT (ADC data) to the MCU'))
-    c.append(two('R15', 'R', '47k', 'R0603', (297.18, 143.51), '_SDOUT_C', 'GND', rot=180,
+    c.append(two('R15', 'R', '47k', 'R0603', (248.92, 171.45), 'CODEC_SDOUT', 'GND', rot=0,
                  Note='SDOUT (M/S) 47k pull-down: if the MCU never configures the codec, stand-alone mode '
                       'starts as slave (does not drive SCLK/LRCK)'))
-    c.append(two('R16', 'R', '47k', 'R0603', (254.0, 172.72), 'GND', 'CODEC_AD0',
-                 Note='AD0 strap through a resistor (datasheet 6.1): I2C address 1001000 = 0x48'))
-    c.append(two('R17', 'R', '10k', 'R0603', (248.92, 184.15), 'CODEC_RST', 'GND', rot=0,
-                 Note='Holds the codec in reset until the MCU (PB14) releases it with clocks running'))
-    c.append(two('C15', 'C', '47u', 'C0805', (302.26, 181.61), '_FILTP', 'GND', rot=0, Voltage='6.3V',
+    for ref, row, a, b, note in (('R12', 180.34, 'I2S_LRCK', 'CODEC_LRCK', 'LRCK out (codec master)'),
+                                 ('R11', 187.96, 'I2S_SCLK', 'CODEC_SCLK', 'SCLK out (codec master)')):
+        c.append(two(ref, 'R', '33', 'R0603', (195.58, row), a, b, Note=f'Series termination: {note}'))
+    for ref, xx, val, net, note in (
+            ('R16', 180.34, '10k', 'I2S_LRCK', 'LRCK'), ('R14', 190.5, '10k', 'I2S_SCLK', 'SCLK'),
+            ('R48', 200.66, '47k', 'I2S_DAC', 'SDIN (DAC data)')):
+        c.append(two(ref, 'R', val, 'R0603', (xx, 215.9), net, 'GND', rot=0,
+                     Note=f'{note} pull-down: the line never floats while the codec pins are inputs (reset, '
+                          'slave default before the M/S bit) or the MCU port is off'))
+    c.append(two('R17', 'R', '10k', 'R0603', (238.76, 190.5), 'CODEC_RST', 'GND', rot=0,
+                 Note='Holds the codec in reset until the MCU (PB14) releases it'))
+    c.append(two('C16', 'C', '100n', 'C0603', (312.42, 151.13), '_FILTP', 'GND', rot=0, Voltage='50V',
+                 Note='FILT+ HF, closest to pin 22'))
+    c.append(two('C15', 'C', '47u', 'C0805', (320.04, 151.13), '_FILTP', 'GND', rot=0, Voltage='6.3V',
                  Note='FILT+ reservoir (datasheet 47 uF)'))
-    c.append(two('C16', 'C', '100n', 'C0603', (309.88, 181.61), '_FILTP', 'GND', rot=0, Voltage='50V',
-                 Note='FILT+ HF, closest to pin 18'))
     # decoupling row (y 205.74)
     for ref, xx, val, fp, net, volt, note in (
             ('C10', 231.14, '1u', 'C0603', '+5VA', '50V', 'VA bulk'),
-            ('C11', 241.3, '100n', 'C0603', '+5VA', '50V', 'VA HF, closest to pin 19'),
-            ('C12', 256.54, '1u', 'C0603', '+3V3_C', '50V', 'VD bulk'),
-            ('C13', 266.7, '100n', 'C0603', '+3V3_C', '50V', 'VD HF, closest to pin 5'),
-            ('C14', 276.86, '100n', 'C0603', '+3V3_C', '50V', 'VLC'),
+            ('C11', 241.3, '100n', 'C0603', '+5VA', '50V', 'VA HF, closest to pin 20'),
+            ('C12', 256.54, '1u', 'C0603', '+3V3_C', '50V', 'VD / VL bulk'),
+            ('C13', 266.7, '100n', 'C0603', '+3V3_C', '50V', 'VD HF, closest to pin 9'),
+            ('C14', 276.86, '100n', 'C0603', '+3V3_C', '50V', 'VL'),
             ('C19', 287.02, '100n', 'C0603', '+3V3_C', '50V', 'Y1 supply')):
         c.append(two(ref, 'C', val, fp, (xx, 205.74), net, 'GND', rot=0, Voltage=volt, Note=note))
-    c.append(two('C17', 'C', '10u', 'C0805', (304.8, 205.74), 'VQ', 'GND', rot=0, Voltage='25V',
-                 Note='VQ filter (datasheet 10 uF)'))
-    c.append(two('C18', 'C', '100n', 'C0603', (314.96, 205.74), 'VQ', 'GND', rot=0, Voltage='50V',
-                 Note='VQ HF, closest to pin 17'))
-    c.append(two('R18', 'R', '2.2k', 'R0603', (226.06, 177.8), '+3V3', 'I2C_SCL', rot=0,
-                 Note='I2C pull-up (datasheet 2k), shared with the MCU board'))
-    c.append(two('R19', 'R', '2.2k', 'R0603', (218.44, 177.8), '+3V3', 'I2C_SDA', rot=0, Note='I2C pull-up'))
+    c.append(two('C17', 'C', '1u', 'C0603', (304.8, 205.74), 'VCOM', 'GND', rot=0, Voltage='50V',
+                 Note='VCOM filter (datasheet 1 uF, not more)'))
+    c.append(two('C18', 'C', '100n', 'C0603', (314.96, 205.74), 'VCOM', 'GND', rot=0, Voltage='50V',
+                 Note='VCOM HF, closest to pin 15'))
+    c.append(two('R18', 'R', '2.2k', 'R0603', (226.06, 185.42), '+3V3', 'I2C_SCL', rot=0,
+                 Note='I2C pull-up (100 kHz bus), shared with the MCU board'))
+    c.append(two('R19', 'R', '2.2k', 'R0603', (218.44, 185.42), '+3V3', 'I2C_SDA', rot=0, Note='I2C pull-up'))
+    c.append(part('TP1', 'TestPoint', 'MCLK', 'TP15', (246.38, 147.32), 0, {'1': '_MCLK_C'},
+                  Note='Scope pad, B side: 24.576 MHz at the codec pin. SCLK / LRCK / ADC / DAC / RST / GND are '
+                       'probed on the J7 solder joints (B silk labels)'))
 
     # ---- Inputs
     for o, y in zip(IN_PARTS, IN_Y):
         x0 = IN_X0
         n = o['ch']
+        xd, xi = x0 + 81.28, x0 + 116.84
         c.append(part(o['j'], 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (x0, y), 0,
                       {'T': f'IN{n}', 'S': 'GND', 'TN': 'GND'},
                       Note=f'IN {n}: +/-5 V audio or CV, DC-coupled. TN to GND: unpatched = 0 V'))
@@ -172,35 +204,50 @@ def circuit():
                       {'3': f'IN{n}', '2': f'_IN{n}_POT', '1': 'GND'},
                       Note=f'IN {n} volume 0..1 (RV09 9 mm, linear, user stock). Hand-soldered'))
         c.append(two(o['rs'], 'R', '1k', 'R0603', (x0 + 27.94, y + 3.81), f'_IN{n}_POT', f'_IN{n}_P',
-                     Note='Follower input protection (no effect on the pot: FET-input op-amp)'))
+                     Note='Follower input protection (limits the current in the NE5532 input diodes on a mis-patch)'))
         c.append(opamp(o['fu'], o['fun'], (x0 + 45.72, y + 6.35), f'_IN{n}_P', f'_IN{n}_BUF', f'_IN{n}_BUF',
                        quad=False, Note='+/-12 V input pot-wiper followers, placed by RV1/RV2'))
         c.append(two(o['rin'], 'R', '20k', 'R0603', (x0 + 63.5, y + 6.35), f'_IN{n}_BUF', f'_IN{n}_SUM',
-                     Note='Driver Rin: gain -5.1k/20k = -0.255 (+/-5.49 V -> 2.8 Vpp ADC full scale)'))
-        c.append(opamp(o['du'], o['dun'], (x0 + 81.28, y + 3.81), 'VB_IN', f'_IN{n}_SUM', f'_IN{n}_DRV',
-                       Note='+5VA single supply: ADC drivers (A/B), VQ buffer (C), VREF_OUT (D). '
-                            'Rail-to-rail out: AIN never leaves 0..5 V'))
-        c.append(two(o['rf'], 'R', '5.1k', 'R0603', (x0 + 81.28, y + 11.43), f'_IN{n}_SUM', f'_IN{n}_DRV',
-                     Note='Driver Rf'))
-        c.append(two(o['ro'], 'R', '220', 'R0603', (x0 + 99.06, y + 3.81), f'_IN{n}_DRV', o['adc'],
-                     Note='ADC input network: source impedance < 1k (datasheet 5.5.1)'))
-        c.append(two(o['c'], 'C', '2.2n', 'C0603', (x0 + 106.68, y + 7.62), o['adc'], 'GND', rot=0, Voltage='50V',
-                     Dielectric='C0G', Note='ADC charge reservoir / anti-alias (329 kHz), C0G for linearity'))
+                     Note='Driver Rin: gain -5.1k/20k = -0.255 per leg (+/-5.54 V -> 5.65 Vpp differential)'))
+        c.append(opamp('U6', o['dun'], (xd, y + 3.81), 'VB_IN', f'_IN{n}_SUM', f'_IN{n}_N',
+                       Note='+5VA single supply: inverting ADC driver (AIN-) and unity inverter (AIN+) per '
+                            'channel. Rail-to-rail out: AIN never leaves 0..5 V'))
+        c.append(two(o['rf'], 'R', '5.1k', 'R0603', (xd, y + 11.43), f'_IN{n}_SUM', f'_IN{n}_N', Note='Driver Rf'))
+        c.append(two(o['cf'], 'C', '100p', 'C0603', (xd, y + 19.05), f'_IN{n}_SUM', f'_IN{n}_N', rot=90,
+                     Voltage='50V', Dielectric='C0G', Note='Driver low-pass 312 kHz (anti-alias, stability)'))
+        c.append(two(o['ri'], 'R', '2k', 'R0603', (x0 + 101.6, y + 22.86), f'_IN{n}_N', f'_IN{n}_INV',
+                     Note='Unity inverter about VCOM_BUF: AIN+ = 2 x VCOM_BUF - AIN-'))
+        c.append(opamp('U6', o['iun'], (xi, y + 20.32), 'VCOM_BUF', f'_IN{n}_INV', f'_IN{n}_PP',
+                       Note='Unity inverter: the second leg of the differential ADC drive'))
+        c.append(two(o['rif'], 'R', '2k', 'R0603', (xi, y + 27.94), f'_IN{n}_INV', f'_IN{n}_PP',
+                     Note='Unity inverter Rf'))
+        c.append(two(o['rn'], 'R', '100', 'R0603', (x0 + 99.06, y + 3.81), f'_IN{n}_N', o['adc'] + 'N',
+                     Note='ADC input network (datasheet figure 12: 91R per leg)'))
+        c.append(two(o['rp'], 'R', '100', 'R0603', (xi + 17.78, y + 20.32), f'_IN{n}_PP', o['adc'] + 'P',
+                     Note='ADC input network (datasheet figure 12: 91R per leg)'))
+        c.append(two(o['c'], 'C', '2.2n', 'C0603', (xi + 24.13, y + 12.7), o['adc'] + 'N', o['adc'] + 'P', rot=0,
+                     Voltage='50V', Dielectric='C0G',
+                     Note='Across AIN+/AIN- (datasheet 2.7 nF C0G): charge reservoir / anti-alias 362 kHz'))
 
     # ---- Outputs
     for o, y in zip(OUT_PARTS, OUT_Y):
         x0 = OUT_X0
         n = o['ch']
-        c.append(two(o['rs'], 'R', '470', 'R0603', (x0, y), o['dac'], f'_OUT{n}_FLT',
-                     Note='DAC output filter R (datasheet 470R)'))
-        c.append(two(o['c'], 'C', '1n', 'C0603', (x0 + 7.62, y + 3.81), f'_OUT{n}_FLT', 'GND', rot=0, Voltage='50V',
-                     Dielectric='C0G', Note='DAC output filter C: 339 kHz with 470R (192 kHz first)'))
-        c.append(opamp(o['u'], o['un'], (x0 + 22.86, y + 2.54), f'_OUT{n}_FLT', f'_OUT{n}_FB', f'_OUT{n}_AMP',
-                       quad=False, Note='+/-12 V output gain stages. High-Z on AOUT (CS4270: 10 uA max DC load)'))
-        c.append(two(o['rf'], 'R', '22k', 'R0603', (x0 + 22.86, y + 12.7), f'_OUT{n}_FB', f'_OUT{n}_AMP',
-                     Note='Rf: gain 1 + 22k/10k = 3.2 (3.25 Vpp DAC full scale -> +/-5.2 V)'))
-        c.append(two(o['rg'], 'R', '10k', 'R0603', (x0 + 7.62, y + 17.78), 'VREF_OUT', f'_OUT{n}_FB',
-                     Note='Rg to VREF_OUT (= VQ x 32/22): VQ at AOUT -> 0 V out'))
+        xo = x0 + 22.86
+        c.append(two(o['rp'], 'R', '6.8k', 'R0603', (x0, y), o['dac'] + 'P', f'_OUT{n}_REF',
+                     Note='Difference amplifier, + leg (AOUT+): gain 15k/6.8k = 2.2'))
+        c.append(two(o['rg'], 'R', '15k', 'R0603', (x0 + 7.62, y - 6.35), 'GND', f'_OUT{n}_REF', rot=0,
+                     Note='Difference amplifier, + leg to GND: VCOM cancels, 0 V out at mid-scale'))
+        c.append(two(o['cg'], 'C', '100p', 'C0603', (x0 + 12.7, y - 6.35), 'GND', f'_OUT{n}_REF', rot=0,
+                     Voltage='50V', Dielectric='C0G', Note='Matches the feedback capacitor (106 kHz)'))
+        c.append(two(o['rn'], 'R', '6.8k', 'R0603', (x0 - 10.16, y + 5.08), o['dac'] + 'N', f'_OUT{n}_FB',
+                     Note='Difference amplifier, - leg (AOUT-). AOUT load 6.8k (CS4272 minimum 3k)'))
+        c.append(opamp(o['u'], o['un'], (xo, y + 2.54), f'_OUT{n}_REF', f'_OUT{n}_FB', f'_OUT{n}_AMP',
+                       quad=False, Note='+/-12 V difference amplifiers: differential DAC -> +/-5.29 V around 0 V'))
+        c.append(two(o['rf'], 'R', '15k', 'R0603', (xo, y + 12.7), f'_OUT{n}_FB', f'_OUT{n}_AMP',
+                     Note='Rf: 4.8 Vpp differential DAC full scale x 2.2 = +/-5.29 V'))
+        c.append(two(o['cf'], 'C', '100p', 'C0603', (xo, y + 20.32), f'_OUT{n}_FB', f'_OUT{n}_AMP', rot=90,
+                     Voltage='50V', Dielectric='C0G', Note='DAC output low-pass: 106 kHz with 15k'))
         c.append(part(o['rv'], 'R_Potentiometer', '50k', 'RV09', (x0 + 43.18, y + 6.35), 0,
                       {'3': f'_OUT{n}_AMP', '2': f'_OUT{n}_POT', '1': 'GND'},
                       Note=f'OUT {n} volume 0..1 (RV09 9 mm, linear, user stock). Hand-soldered'))
@@ -209,32 +256,33 @@ def circuit():
         # Preserve 1k output impedance using two Basic 2k/0.25 W parts per channel.
         # Each sees the full fault voltage: 18.1 V / 1.98k -> 0.166 W maximum per part
         # (output <=5.5 V, external patch <=12.6 V, 1% tolerance). No unlimited-rail guarantee.
-        for ref, yy in ((o['ro'], y + 8.89), (o['rp'], y + 1.27)):
+        for ref, yy in ((o['ro'], y + 8.89), (o['rpar'], y + 1.27)):
             c.append(two(ref, 'R', '2k', 'R1206', (x0 + 78.74, yy), f'_OUT{n}_BUF', f'OUT{n}',
                          Power='0.25W', Tolerance='1%',
-                         Note=f'Parallel with {o["rp"] if ref == o["ro"] else o["ro"]}: 1k / 0.5W effective. '
+                         Note=f'Parallel with {o["rpar"] if ref == o["ro"] else o["ro"]}: 1k / 0.5W effective. '
                               'Opposing 5.5V output / 12.6V patch: <=0.166W each incl 1% R. '
                               'Resistor sizing to 85C; U7 and simultaneous-fault thermal qualification still required.'))
         c.append(part(o['j'], 'AudioJack2_SwitchT', 'PJ301M-12', 'PJ301M', (x0 + 96.52, y + 8.89), 180,
                       {'T': f'OUT{n}', 'S': 'GND', 'TN': None}, Note=f'OUT {n}: +/-5 V, DC-coupled'))
 
-    # ---- References on +5VA (U6C, U6D)
-    c.append(opamp('U6', 3, (50.8, REF_Y[0]), 'VQ', '_VQ_BUF', '_VQ_BUF',
-                   Note='VQ buffer (VQ: 25k source, 1 uA max)'))
-    c.append(two('R40', 'R', '5.1k', 'R0603', (68.58, REF_Y[0]), '_VQ_BUF', 'VB_IN', Note='VB_IN = VQ x 20/25.1'))
-    c.append(two('R41', 'R', '20k', 'R0603', (78.74, REF_Y[0] + 3.81), 'VB_IN', 'GND', rot=0, Note='VB_IN divider'))
-    c.append(two('C24', 'C', '100n', 'C0603', (86.36, REF_Y[0] + 3.81), 'VB_IN', 'GND', rot=0, Voltage='50V',
-                 Note='VB_IN filter'))
-    c.append(opamp('U6', 4, (50.8, REF_Y[1]), 'VQ', '_VREF_FB', 'VREF_OUT', Note='VREF_OUT = VQ x (1 + 10k/22k)'))
-    c.append(two('R43', 'R', '10k', 'R0603', (50.8, REF_Y[1] + 7.62), '_VREF_FB', 'VREF_OUT',
-                 Note='Same ratio as the output stages (Rg/Rf): tracks them'))
-    c.append(two('R42', 'R', '22k', 'R0603', (40.64, REF_Y[1] + 13.97), '_VREF_FB', 'GND', rot=0))
+    # ---- Reference on +5VA: resistor divider (S5: no buffer op-amp)
+    c.append(two('R49', 'R', '2.7k', 'R0603', (40.64, REF_Y), '+5VA', 'VCOM_BUF',
+                 Note='Reference divider top: 2.7k over R40 + R41 (2.51k) = 0.482 x VA = 2.41 V, as the codec VCOM '
+                      '(about 0.48 x VA). It only sets the common mode of the differential ADC drive'))
+    c.append(two('C38', 'C', '10u', 'C0805', (46.99, REF_Y + 3.81), 'VCOM_BUF', 'GND', rot=0, Voltage='25V',
+                 Note='Reference filter: 12 Hz with 2.7k || 2.51k'))
+    c.append(two('C39', 'C', '100n', 'C0603', (55.88, REF_Y + 3.81), 'VCOM_BUF', 'GND', rot=0, Voltage='50V',
+                 Note='Reference filter HF'))
+    c.append(two('R40', 'R', '510', 'R0603', (68.58, REF_Y), 'VCOM_BUF', 'VB_IN',
+                 Note='VB_IN = VCOM_BUF x 2/2.51: 0 V in -> VCOM_BUF at the driver output. No capacitor here: '
+                      'reference noise then stays common to AIN+ and AIN-'))
+    c.append(two('R41', 'R', '2k', 'R0603', (78.74, REF_Y + 3.81), 'VB_IN', 'GND', rot=0, Note='VB_IN divider'))
 
     # ---- Op-amp supplies and decoupling
-    c.append(part('U4', 'OPA1678', 'OPA1678', 'SOIC8', (116.84, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
-    c.append(part('U5', 'OPA1678', 'OPA1678', 'SOIC8', (162.56, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
+    c.append(part('U4', DUAL, DUAL, 'SOIC8', (116.84, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
+    c.append(part('U5', DUAL, DUAL, 'SOIC8', (162.56, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
     c.append(part('U6', 'OPA1679', 'OPA1679', 'SOIC14', (208.28, 340.36), 0, {'4': '+5VA', '11': 'GND'}, unit=5))
-    c.append(part('U7', 'OPA1678', 'OPA1678', 'SOIC8', (254.0, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
+    c.append(part('U7', DUAL, DUAL, 'SOIC8', (254.0, 340.36), 0, {'8': '+12V_F', '4': '-12V_F'}, unit=3))
     for ref, xx, a, b, note in (('C26', 129.54, '+12V_F', 'GND', 'U4 V+'), ('C27', 142.24, 'GND', '-12V_F', 'U4 V-'),
                                 ('C28', 175.26, '+12V_F', 'GND', 'U5 V+'), ('C29', 187.96, 'GND', '-12V_F', 'U5 V-'),
                                 ('C30', 220.98, '+5VA', 'GND', 'U6 V+'),
@@ -283,40 +331,45 @@ def drawing():
           ('+5VA', (154.94, 76.2), 0), ('+3V3', (154.94, 101.6), 0), ('+3V3_C', (190.5, 101.6), 0)]
     # Codec
     x, y = COD
-    W += [['U3.1', (261.62, 147.32), (261.62, 144.78), (248.92, 144.78)],
-          ['Y1.3', 'R10.1'], ['R12.2', 'U3.2'], ['R10.2', 'U3.3'], ['R11.2', 'U3.4'],
-          ['U3.7', 'R13.1'], ['R16.2', 'U3.11'],
-          ['U3.12', (256.54, 175.26)], ['U3.13', (256.54, 177.8)], [(256.54, 175.26), (256.54, 177.8)],
-          [(256.54, 176.53), (254.0, 176.53)],
-          ['U3.14', (243.84, 180.34)],
-          ['U3.18', 'C16.1'],
-          ['U3.19', (x, y - 30.48)], ['U3.5', (x - 2.54, y - 27.94), (x - 7.62, y - 27.94)],
-          ['U3.8', (x + 2.54, y - 27.94), (x + 7.62, y - 27.94)]]
-    P += [('GND', (254.0, 176.53), 270), ('+5VA', (x, y - 30.48), 0), ('+3V3_C', (x - 7.62, y - 27.94), 0),
-          ('+3V3_C', (x + 7.62, y - 27.94), 0)]
-    L += [('CODEC_RST', (243.84, 180.34), 'L'), ('I2S_DAC', (248.92, 144.78), 'L'), ('CODEC_AD0', (259.08, 172.72), 'U')]
+    W += [['Y1.3', 'R10.1'], ['R10.2', 'U3.3'], ['R13.2', 'U3.6'], [(248.92, 165.1), 'R15.1'],
+          ['U3.22', 'C16.1', 'C15.1'],
+          ['U3.20', (x + 2.54, y - 27.94), (x + 7.62, y - 27.94)],
+          ['U3.10', (x - 2.54, y - 27.94)], ['U3.9', (x, y - 27.94), (x - 7.62, y - 27.94)]]
+    P += [('+5VA', (x + 7.62, y - 27.94), 0), ('+3V3_C', (x - 7.62, y - 27.94), 0)]
+    W += [[(246.38, 157.48), 'TP1.1']]
+    L += [('CODEC_SDOUT', (254.0, 165.1), 'U')]
     W += [['C17.1', 'C18.1'], ['C17.1', ('C17.1', 0, -2.54)]]
-    L += [('VQ', ('C17.1', 0, -2.54), 'U')]
+    L += [('VCOM', ('C17.1', 0, -2.54), 'U')]
     # Inputs
     for o, y in zip(IN_PARTS, IN_Y):
         x0 = IN_X0
         n = o['ch']
         fp, fm, fo = OPA2[o['fun']]
         dp, dm, do = OPA4[o['dun']]
-        fu, du = o['fu'], o['du']
-        xo, xd = x0 + 45.72, x0 + 81.28
+        ip, im, io = OPA4[o['iun']]
+        fu = o['fu']
+        xo, xd, xi = x0 + 45.72, x0 + 81.28, x0 + 116.84
         W += [[f"{o['j']}.T", f"{o['rv']}.3"], [f"{o['rv']}.2", f"{o['rs']}.1"], [f"{o['rs']}.2", f'{fu}.{fp}'],
               [f'{fu}.{fo}', f"{o['rin']}.1"],
               [(xo + 10.16, y + 6.35), (xo + 10.16, y + 11.43), (xo - 10.16, y + 11.43), (xo - 10.16, y + 8.89),
                f'{fu}.{fm}'],
-              [f"{o['rin']}.2", f'{du}.{dm}'],
+              [f"{o['rin']}.2", f'U6.{dm}'],
               [(xd - 10.16, y + 6.35), (xd - 10.16, y + 11.43), f"{o['rf']}.1"],
+              [(xd - 10.16, y + 11.43), (xd - 10.16, y + 19.05), f"{o['cf']}.1"],
               [f"{o['rf']}.2", (xd + 10.16, y + 11.43), (xd + 10.16, y + 3.81)],
-              [f'{du}.{do}', f"{o['ro']}.1"], [f"{o['ro']}.2", (x0 + 111.76, y + 3.81)],
+              [f"{o['cf']}.2", (xd + 10.16, y + 19.05)],
+              [(xd + 10.16, y + 11.43), (xd + 10.16, y + 22.86), f"{o['ri']}.1"],
+              [f'U6.{do}', f"{o['rn']}.1"], [f"{o['rn']}.2", (xi + 27.94, y + 3.81)],
+              [f"{o['ri']}.2", f'U6.{im}'],
+              [(xi - 10.16, y + 22.86), (xi - 10.16, y + 27.94), f"{o['rif']}.1"],
+              [f"{o['rif']}.2", (xi + 10.16, y + 27.94), (xi + 10.16, y + 20.32)],
+              [f'U6.{io}', f"{o['rp']}.1"], [f"{o['rp']}.2", (xi + 27.94, y + 20.32)],
+              [(xi + 24.13, y + 3.81), f"{o['c']}.1"], [f"{o['c']}.2", (xi + 24.13, y + 20.32)],
               [f"{o['j']}.TN", (x0 + 7.62, y - 2.54), (x0 + 7.62, y - 5.08)],
               [f"{o['j']}.S", (x0 + 7.62, y + 2.54), (x0 + 7.62, y + 5.08)]]
         P += [('GND', (x0 + 7.62, y - 5.08), 180), ('GND', (x0 + 7.62, y + 5.08), 0)]
-        L += [(f'IN{n}', (x0 + 10.16, y), 'R'), (o['adc'], (x0 + 111.76, y + 3.81), 'R')]
+        L += [(f'IN{n}', (x0 + 10.16, y), 'R'), (o['adc'] + 'N', (xi + 27.94, y + 3.81), 'R'),
+              (o['adc'] + 'P', (xi + 27.94, y + 20.32), 'R')]
     # Outputs
     for o, y in zip(OUT_PARTS, OUT_Y):
         x0 = OUT_X0
@@ -325,32 +378,31 @@ def drawing():
         fp, fm, fo = OPA2[o['fun']]
         u, fu = o['u'], o['fu']
         xo, xf = x0 + 22.86, x0 + 60.96
-        W += [[f"{o['rs']}.2", f'{u}.{up}'],
-              [f'{u}.{um}', (xo - 10.16, y + 5.08), (xo - 10.16, y + 17.78), f"{o['rg']}.2"],
-              [(xo - 10.16, y + 12.7), f"{o['rf']}.1"],
+        W += [[f"{o['rp']}.2", f'{u}.{up}'], [(x0 + 7.62, y), f"{o['rg']}.2"], [(x0 + 12.7, y), f"{o['cg']}.2"],
+              [f"{o['rn']}.2", f'{u}.{um}'],
+              [(xo - 10.16, y + 5.08), (xo - 10.16, y + 12.7), f"{o['rf']}.1"],
+              [(xo - 10.16, y + 12.7), (xo - 10.16, y + 20.32), f"{o['cf']}.1"],
               [f"{o['rf']}.2", (xo + 10.16, y + 12.7), (xo + 10.16, y + 2.54)],
+              [f"{o['cf']}.2", (xo + 10.16, y + 20.32), (xo + 10.16, y + 12.7)],
               [f'{u}.{uo}', f"{o['rv']}.3"], [f"{o['rv']}.2", f'{fu}.{fp}'],
               [f'{fu}.{fo}', f"{o['ro']}.1"],
               [(xf + 10.16, y + 8.89), (xf + 10.16, y + 13.97), (xf - 10.16, y + 13.97), (xf - 10.16, y + 11.43),
                f'{fu}.{fm}'],
               [f"{o['ro']}.2", f"{o['j']}.T"],
-              [(x0 + 73.66, y + 8.89), (x0 + 73.66, y + 1.27), f"{o['rp']}.1"],
-              [f"{o['rp']}.2", (x0 + 85.09, y + 1.27), (x0 + 85.09, y + 8.89)],
+              [(x0 + 73.66, y + 8.89), (x0 + 73.66, y + 1.27), f"{o['rpar']}.1"],
+              [f"{o['rpar']}.2", (x0 + 85.09, y + 1.27), (x0 + 85.09, y + 8.89)],
               [f"{o['j']}.S", (x0 + 88.9, y + 11.43), (x0 + 88.9, y + 13.97)]]
         P += [('GND', (x0 + 88.9, y + 13.97), 0)]
         L += [(f'OUT{n}', (x0 + 85.09, y + 8.89), 'R')]
-    # References
-    y0, y1 = REF_Y
-    W += [['U6.8', 'R40.1'], [(58.42 + 2.54, y0), (60.96, y0 + 5.08), (40.64, y0 + 5.08), (40.64, y0 + 2.54), 'U6.9'],
-          ['R40.2', (91.44, y0)],
-          ['U6.14', (71.12, y1)], ['U6.13', (40.64, y1 + 2.54), (40.64, y1 + 7.62), 'R43.1'],
-          [(40.64, y1 + 7.62), 'R42.1'], ['R43.2', (60.96, y1 + 7.62), (60.96, y1)]]
-    L += [('VB_IN', (91.44, y0), 'R'), ('VREF_OUT', (71.12, y1), 'R')]
+    # Reference
+    y0 = REF_Y
+    W += [['R49.2', 'R40.1'], ['R40.2', (91.44, y0)]]
+    L += [('VB_IN', (91.44, y0), 'R'), ('VCOM_BUF', (62.23, y0), 'U')]
     return W, P, L
 
 
-# JLCPCB parts. Basic R/C, B5819W, AMS1117 from the 2026-10-23 live lookups (and modules/32bit);
-# OPA1679/OPA1678, CS4270, YXC oscillator, C0G caps, 2512 R are Extended (live-checked 2026-10-23).
+# JLCPCB parts. Basic R/C (incl. the 100p C0G), B5819W, AMS1117, NE5532; OPA1679, CS4272, YXC oscillator,
+# the 2.2n C0G and the 2512 R are Extended. Free stock / pre-order checked live at each export (jlcpcb/README.md).
 # Jacks, pots, the power header and the J6/J7/J8 strips are hand-soldered: no LCSC field.
 SOURCING = {
     ('R', '33', 'R0603'): dict(LCSC='C23140', MPN='0603WAF330JT5E', Manufacturer='UNI-ROYAL'),
@@ -361,8 +413,12 @@ SOURCING = {
     ('R', '20k', 'R0603'): dict(LCSC='C4184', MPN='0603WAF2002T5E', Manufacturer='UNI-ROYAL'),
     ('R', '5.1k', 'R0603'): dict(LCSC='C23186', MPN='0603WAF5101T5E', Manufacturer='UNI-ROYAL'),
     ('R', '220', 'R0603'): dict(LCSC='C22962', MPN='0603WAF2200T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '470', 'R0603'): dict(LCSC='C23179', MPN='0603WAF4700T5E', Manufacturer='UNI-ROYAL'),
-    ('R', '22k', 'R0603'): dict(LCSC='C31850', MPN='0603WAF2202T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '100', 'R0603'): dict(LCSC='C22775', MPN='0603WAF1000T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '510', 'R0603'): dict(LCSC='C23193', MPN='0603WAF5100T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '2k', 'R0603'): dict(LCSC='C22975', MPN='0603WAF2001T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '2.7k', 'R0603'): dict(LCSC='C13167', MPN='0603WAF2701T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '6.8k', 'R0603'): dict(LCSC='C23212', MPN='0603WAF6801T5E', Manufacturer='UNI-ROYAL'),
+    ('R', '15k', 'R0603'): dict(LCSC='C22809', MPN='0603WAF1502T5E', Manufacturer='UNI-ROYAL'),
     ('R', '2k', 'R1206'): dict(LCSC='C17944', MPN='1206W4F2001T5E', Manufacturer='UNI-ROYAL'),
     ('R', '33', 'R2512'): dict(LCSC='C53728', MPN='25121WF330JT4E', Manufacturer='UNI-ROYAL'),
     ('C', '100n', 'C0603'): dict(LCSC='C14663', MPN='CC0603KRX7R9BB104', Manufacturer='YAGEO'),
@@ -370,15 +426,15 @@ SOURCING = {
     ('C', '10u', 'C0805'): dict(LCSC='C15850', MPN='CL21A106KAYNNNE', Manufacturer='Samsung'),
     ('C', '22u', 'C0805'): dict(LCSC='C45783', MPN='CL21A226MAQNNNE', Manufacturer='Samsung'),
     ('C', '47u', 'C0805'): dict(LCSC='C16780', MPN='CL21A476MQYNNNE', Manufacturer='Samsung'),
-    ('C', '2.2n', 'C0603'): dict(LCSC='C33353', MPN='CL10C222JB8NNNC', Manufacturer='Samsung'),
-    ('C', '1n', 'C0603'): dict(LCSC='C163508', MPN='CL10C102JB8NNNC', Manufacturer='Samsung'),
+    ('C', '2.2n', 'C0603'): dict(LCSC='C107043', MPN='CC0603JRNPO9BN222', Manufacturer='YAGEO'),
+    ('C', '100p', 'C0603'): dict(LCSC='C14858', MPN='CL10C101JB8NNNC', Manufacturer='Samsung'),
     ('FerriteBead', 'GZ2012D121TF', 'C0805'): dict(LCSC='C5671', MPN='GZ2012D121TF', Manufacturer='Sunlord'),
     ('D_Schottky', 'B5819W', 'SOD123'): dict(LCSC='C8598', MPN='B5819W SL', Manufacturer='CJ (Jiangsu Changjing)'),
     ('AMS1117-5.0', 'AMS1117-5.0', 'SOT223'): dict(LCSC='C6187', MPN='AMS1117-5.0', Manufacturer='AMS'),
     ('AMS1117-3.3', 'AMS1117-3.3', 'SOT223'): dict(LCSC='C6186', MPN='AMS1117-3.3', Manufacturer='AMS'),
-    ('CS4270', 'CS4270', 'TSSOP24'): dict(LCSC='C1323229', MPN='CS4270-CZZR', Manufacturer='Cirrus Logic'),
+    ('CS4272', 'CS4272', 'TSSOP28'): dict(LCSC='C2151111', MPN='CS4272-CZZR', Manufacturer='Cirrus Logic'),
     ('OPA1679', 'OPA1679', 'SOIC14'): dict(LCSC='C2878631', MPN='OPA1679IDR', Manufacturer='Texas Instruments'),
-    ('OPA1678', 'OPA1678', 'SOIC8'): dict(LCSC='C192421', MPN='OPA1678IDR', Manufacturer='Texas Instruments'),
+    (DUAL, DUAL, 'SOIC8'): dict(LCSC='C7426', MPN='NE5532DR', Manufacturer='Texas Instruments'),
     ('ASE-xxxMHz', '24.576MHz', 'OSC3225'): dict(LCSC='C5203547', MPN='OT2EL4C4JI-111OLP-24.576M',
                                                  Manufacturer='YXC'),
     ('SW_Push', 'RESET', 'SWK2'): dict(LCSC='C92589', MPN='K2-1808SN-A4SW-01', Manufacturer='Korean Hroparts Elec'),
@@ -386,36 +442,38 @@ SOURCING = {
 }
 
 TEXTS = [
-    ((20.32, 20.32), 'BIG MODULAR USB-AUDIO - carrier (jack/pot board), S3. 2 in / 2 out, DC-coupled +/-5 V, '
-                     'CS4270 24-bit 192 kHz. Circuit intent: docs/research.md; placement: docs/geometry.json', 2.0),
+    ((20.32, 20.32), 'BIG MODULAR USB-AUDIO - carrier (jack/pot board), S5. 2 in / 2 out, DC-coupled +/-5 V, '
+                     'CS4272 24-bit 192 kHz. Circuit intent: docs/research.md; placement: docs/geometry.json', 2.0),
     ((20.32, 33.02), 'POWER: +12V -> D2 -> +12V_F (op-amps; U1 AMS1117-5.0 -> +5VA; R1 33R -> U2 AMS1117-3.3 -> +3V3 '
                      '-> FB1 -> +3V3_C); -12V -> D1 -> -12V_F', 1.4),
     ((20.32, 121.92), 'PWR_FLAG: GND/+12V/-12V at J1; +12V_F/-12V_F behind D2/D1; V3_IN behind R1; +3V3_C behind FB1.',
      1.1),
-    ((203.2, 116.84), 'CS4270 CODEC: I2C control port, address 0x48. Master, quad speed: MCLK 24.576 MHz / 128 = 192 kHz;\n'
-                      'SCLK = 64 x Fs to both CH32V307 I2S slaves (I2S2 RX, I2S3 TX). HPF freeze (reg 04h b7/b6) for DC.\n'
-                      'Firmware: RST high after clocks, write PDN within 1045 LRCK periods, then FM = quad master.', 1.1),
-    ((20.32, 223.52), 'INPUTS: jack (TN = GND) -> 50k volume (0..1) -> 1k -> U4A/B follower (+/-12 V, at the pots)\n'
-                      '-> U6A/B inverting driver on +5VA (-0.255, + at VB_IN) -> 220R / 2.2n C0G -> AINA/AINB.\n'
-                      '+/-5.49 V = 2.8 Vpp ADC full scale. ADC_INV restores the polarity.', 1.1),
-    ((322.58, 223.52), 'OUTPUTS: AOUTA/B -> 470R / 1n C0G -> U5A/B gain 3.2 (Rg 10k to VREF_OUT, Rf 22k)\n'
-                       '-> 50k volume (0..1) -> U7A/B follower -> 2k || 2k (1k / 0.5W) -> jack. 3.25 Vpp DAC full scale -> +/-5.2 V.\n'
-                       'Power-up: AOUT starts at 0 V (Popguard) so the outputs sit near -8 V for ~0.4 s.', 1.1),
-    ((20.32, 309.88), 'REFERENCES (+5VA): U6C buffers VQ (VA/2) -> VB_IN = VQ x 20/25.1 (input drivers);\n'
-                      'U6D: VREF_OUT = VQ x 32/22 (output stages). Both track the codec mid-rail.', 1.1),
+    ((203.2, 106.68), 'CS4272 CODEC: I2C control port, address 0x10, 100 kHz. Master, external MCLK 24.576 MHz (XTI = GND):\n'
+                      '512 / 256 / 128 x Fs = 48 / 96 / 192 kHz (Ratio1:0 = 10); SCLK = 64 x Fs to both CH32V307 I2S slaves.\n'
+                      'Firmware: RST high, write 03h to 07h (CPEN + PDN) within 10 ms, set the registers, clear PDN.\n'
+                      'SCLK / LRCK are codec inputs until the M/S bit is set: R14 / R16 hold them low (no floating clocks).\n'
+                      'TP1: MCLK scope pad on the back; SCLK, LRCK, ADC, DAC, RST, GND: J7 solder joints (B silk).', 1.1),
+    ((154.94, 172.72), 'I2S series termination (at the codec)\nand pull-downs', 1.1),
+    ((20.32, 223.52), 'INPUTS: jack (TN = GND) -> 50k volume (0..1) -> 1k -> U4A/B NE5532 follower (+/-12 V, at the pots)\n'
+                      '-> U6 inverting driver on +5VA (-0.255, + at VB_IN) = AIN-; U6 unity inverter about VCOM_BUF = AIN+;\n'
+                      '100R per leg, 2.2n C0G across the pair. +/-5.54 V = 5.65 Vpp differential ADC full scale.', 1.1),
+    ((322.58, 223.52), 'OUTPUTS: AOUT+/- -> U5A/B difference amplifier (6.8k / 15k, 100p: x2.2, 106 kHz) -> 50k volume (0..1)\n'
+                       '-> U7A/B follower -> 2k || 2k (1k / 0.5W) -> jack. 4.8 Vpp differential DAC full scale -> +/-5.29 V.\n'
+                       'The codec common mode (VCOM) cancels: 0 V out at mid-scale and while the codec is in reset.', 1.1),
+    ((20.32, 309.88), 'REFERENCE (+5VA): R49 over R40 + R41 = 0.482 x VA = 2.41 V -> VCOM_BUF (unity inverters, C38 / C39) and\n'
+                      'VB_IN = VCOM_BUF x 2/2.51 (input drivers, no capacitor). It only sets the ADC common mode;\n'
+                      'the codec VCOM pin is not loaded. No buffer op-amp (S5).', 1.1),
     ((449.58, 50.8), 'MCU BOARD LINK: J6/J7 1x10 2.54 mm male headers (plastic on the carrier F side);\n'
                      'the MCU board (usb-audio-mcu) solders on top. BOOT/RESET and SWD on the carrier (B side):\n'
                      'hold BOOT, press RESET = CH32V307 ROM bootloader on the USB-C.', 1.1),
 ]
 
-TEXT_LEFT = {'R15', 'R17', 'R41', 'R42'}
+TEXT_LEFT = {'R15', 'R17', 'R41', 'R42', 'R43'}
 TEXT_POS = {'U1': ((0, -6.35), (0, -3.81)), 'U2': ((0, -6.35), (0, -3.81)),
             'U4/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'), 'U7/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U5/3': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U6/5': ((-5.08, -1.27), (-5.08, 1.27), 'right'),
             'U3': ((0, -26.67), (10.16, 26.67)), 'Y1': ((0, -10.16), (0, 10.16)),
-            'R11': ((-2.54, 2.54), (2.54, 2.54), 'right'),
-            'R12': ((-2.54, -2.54), (2.54, -2.54), 'right'),
             'SW1': ((0, -3.81), (0, 3.81)), 'SW2': ((0, -3.81), (0, 3.81)),
             'J6': ((0, -13.97), (0, 16.51)), 'J7': ((0, -13.97), (0, 16.51)), 'J8': ((0, -6.35), (0, 6.35))}
 

@@ -43,10 +43,17 @@
       "flattened_from": null,
       "edits": null
     },
-    "CS4270": {
-      "library": "Audio:CS4270",
+    "CS4272": {
+      "library": "Audio:CS4272",
       "source": "/usr/share/kicad/symbols/Audio.kicad_sym",
       "source_sha256": "08c708e7c7efe09d5151a2c7c69060c174cf8a6c0199ac23f5ab7f955ef9aac9",
+      "flattened_from": null,
+      "edits": null
+    },
+    "TestPoint": {
+      "library": "Connector:TestPoint",
+      "source": "/usr/share/kicad/symbols/Connector.kicad_sym",
+      "source_sha256": "50b42bf755009d3d459c310182dca1c37e1ff1a01fa6ae23846b416fafffc914",
       "flattened_from": null,
       "edits": null
     },
@@ -64,8 +71,8 @@
       "flattened_from": "LM2902",
       "edits": null
     },
-    "OPA1678": {
-      "library": "Amplifier_Operational:OPA1678",
+    "NE5532": {
+      "library": "Amplifier_Operational:NE5532",
       "source": "/usr/share/kicad/symbols/Amplifier_Operational.kicad_sym",
       "source_sha256": "70d51935f1e2563cf203a3d1b95657f166e140b357d3a8570f70f855a3dcd74e",
       "flattened_from": "LM2904",

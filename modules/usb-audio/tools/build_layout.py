@@ -1,7 +1,8 @@
 """Generate the USB-AUDIO boards from docs/geometry.json and the native schematic netlists.
 
-Run from modules/usb-audio with KiCad's Python (pcbnew 10), after tools/build_schematic.py:
-  python3 -B tools/build_layout.py
+Run from modules/usb-audio with KiCad's Python (pcbnew 10), after tools/build_schematic.py, naming
+the boards to (re)build: a board that is placed and routed by hand must not be rebuilt.
+  python3 -B tools/build_layout.py carrier panel     # P2 (2026-11-21): the MCU board is not rebuilt
 
 Writes (S1 placement, UNROUTED, not for fabrication):
 - hardware/usb-audio.kicad_pcb       carrier, 4 layers: jacks, pots, power header, the two MCU-board
@@ -20,9 +21,11 @@ this script over hand work.
 """
 import hashlib
 import json
+import math
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import uuid
 import xml.etree.ElementTree as ET
@@ -46,8 +49,20 @@ def pt(x, y):
     return pcbnew.VECTOR2I(pcbnew.FromMM(OX + x), pcbnew.FromMM(OY + y))
 
 
-def new_board(path, title, comments, rev='S1'):
-    board = pcbnew.NewBoard(str(path))
+def new_board(path, title, comments, rev='S1', reuse=False):
+    """reuse: keep the existing board file's setup (stackup, design settings) and empty it."""
+    if reuse:
+        # Empty the file as text (setup, stackup and layers stay), then load it.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from sexp import parse, dump
+        tree = parse(Path(path).read_text())
+        drop = {'footprint', 'segment', 'arc', 'via', 'zone', 'gr_line', 'gr_rect', 'gr_text', 'gr_circle', 'gr_poly',
+                'gr_arc', 'net', 'group', 'dimension', 'title_block', 'generated'}
+        tree = [n for n in tree if not (isinstance(n, list) and str(n[0]) in drop)]
+        Path(path).write_text(dump(tree) + '\n')
+        board = pcbnew.LoadBoard(str(path))
+    else:
+        board = pcbnew.NewBoard(str(path))
     tb = board.GetTitleBlock()
     tb.SetTitle(title)
     tb.SetRevision(rev)
@@ -226,6 +241,65 @@ def npth(board, mech_id, x, y, d, slot=None):
 
 
 
+def standoff(board, ref, x, y):
+    """Board-only M3 hex standoff footprint (geometry.json mount_standoffs, as modules/4mix): origin =
+    standoff axis, NPTH, F courtyard = hex circumcircle (stands on F between carrier and panel),
+    B courtyard = bolt head keep-out, F.Fab hex, 3D model = modules/4mix standoff-m3x10.step."""
+    ms = GEO['mount_standoffs']
+    fp = pcbnew.FOOTPRINT(board)
+    fp.SetReference('')  # mechanical: no reference (shared parity convention)
+    fp.SetValue(f'Standoff M3x{ms["length_mm"]:g} F-F')
+    fp.Reference().SetVisible(False)
+    fp.Value().SetVisible(False)
+    fp.SetField('MechanicalID', ref)
+    fp.GetField('MechanicalID').SetVisible(False)
+    fp.SetAttributes(pcbnew.FP_EXCLUDE_FROM_POS_FILES | pcbnew.FP_EXCLUDE_FROM_BOM | pcbnew.FP_BOARD_ONLY)
+    pad = pcbnew.PAD(fp)
+    pad.SetAttribute(pcbnew.PAD_ATTRIB_NPTH)
+    pad.SetShape(pcbnew.PADSTACK.ALL_LAYERS, pcbnew.PAD_SHAPE_CIRCLE)
+    size = pcbnew.VECTOR2I(pcbnew.FromMM(ms['carrier_hole_d_mm']), pcbnew.FromMM(ms['carrier_hole_d_mm']))
+    pad.SetSize(pcbnew.PADSTACK.ALL_LAYERS, size)
+    pad.SetDrillSize(size)
+    pad.SetLayerSet(pad.UnplatedHoleMask())
+    fp.Add(pad)
+    pad.thisown = 0
+    mm = pcbnew.FromMM
+
+    def add(g, layer, width):
+        g.SetLayer(layer)
+        g.SetWidth(mm(width))
+        fp.Add(g)
+        g.thisown = 0
+
+    for layer, r in ((pcbnew.F_CrtYd, ms['F_courtyard_R_mm']), (pcbnew.B_CrtYd, ms['carrier_B_keepout_R_mm'])):
+        g = pcbnew.PCB_SHAPE(fp, pcbnew.SHAPE_T_CIRCLE)
+        g.SetCenter(pcbnew.VECTOR2I(0, 0))
+        g.SetEnd(pcbnew.VECTOR2I(mm(r), 0))
+        add(g, layer, 0.05)
+    rc = ms['hex_af_mm'] / math.sqrt(3)  # circumradius, flats facing +/-X
+    corners = [(rc * math.cos(math.radians(30 + 60 * k)), rc * math.sin(math.radians(30 + 60 * k))) for k in range(7)]
+    for (ax, ay), (bx, by) in zip(corners, corners[1:]):
+        g = pcbnew.PCB_SHAPE(fp, pcbnew.SHAPE_T_SEGMENT)
+        g.SetStart(pcbnew.VECTOR2I(mm(ax), mm(ay)))
+        g.SetEnd(pcbnew.VECTOR2I(mm(bx), mm(by)))
+        add(g, pcbnew.F_Fab, 0.1)
+    label = pcbnew.PCB_TEXT(fp)
+    label.SetText(ref)
+    label.SetLayer(pcbnew.F_Fab)
+    label.SetTextSize(pcbnew.VECTOR2I(mm(0.8), mm(0.8)))
+    label.SetTextThickness(mm(0.12))
+    label.SetPosition(pcbnew.VECTOR2I(0, mm(-ms['F_courtyard_R_mm'] - 0.8)))
+    fp.Add(label)
+    label.thisown = 0
+    model = pcbnew.FP_3DMODEL()
+    model.m_Filename = vendor_model(str(MODULE.parent / '4mix/mechanical/standoff-m3x10.step'))
+    fp.Models().push_back(model)
+    board.Add(fp)
+    fp.thisown = 0
+    fp.SetPosition(pt(x, y))
+    return fp
+
+
 def outline(board, box):
     x0, y0, x1, y1 = box
     rect(board, pcbnew.Edge_Cuts, x0, y0, x1, y1)
@@ -275,7 +349,7 @@ def park(board, comps, placed, project, origin=None):
 
 
 def assign_nets(board, comps, nets, spare=()):
-    fps = {fp.GetReference(): fp for fp in board.GetFootprints()}
+    fps = {fp.GetReference(): fp for fp in board.GetFootprints() if fp.GetReference()}
     assert set(fps) == set(comps), f'geometry/schematic refs differ: {set(fps) ^ set(comps)}'
     for name, members in nets.items():
         net = pcbnew.NETINFO_ITEM(board, name)
@@ -306,10 +380,10 @@ def build_carrier():
     path = HW / 'usb-audio.kicad_pcb'
     comps, nets = schematic_netlist('usb-audio')
     board = new_board(path, 'Big Modular - USB-AUDIO carrier (jack/pot board)', [
-        'S1: THT placement only (SMD parked off-board), UNROUTED - not released, not for fabrication',
+        'S5 / P2: THT + standoffs placed, SMD parked for hand placement, UNROUTED until the routing record says otherwise',
         'Front (F) faces the panel; jacks/pots/headers hand-soldered; SMD on B; 4 layers',
-        'MCU board (usb-audio-mcu) sits on J6/J7 over the top band; geometry: docs/geometry.json',
-    ])
+        'MCU board (usb-audio-mcu) sits on J6/J7 below the two M3x10 standoffs; geometry: docs/geometry.json',
+    ], rev='S5', reuse=True)
     setup(board, GEO['main_pcb']['copper_layers'])
     outline(board, GEO['main_pcb']['outline_mm'])
     fit_refs(board)
@@ -322,12 +396,17 @@ def build_carrier():
         place(board, p['ref'], GEO['pot_footprint'], sx - sx_off, sy - sy_off, 0, comps[p['ref']], anchor='origin')
     for h in GEO['carrier_headers']:
         header(board, h['ref'], h, comps[h['ref']], 'usb-audio')
-    for p in GEO['back_side_parts']:
-        anchor = 'origin' if p['ref'] == 'J8' else 'centre'
-        place(board, p['ref'], p['footprint'], *p['XY'], p['rot'], comps[p['ref']], back=True, anchor=anchor)
+    for p in GEO['back_side_parts']:   # THT headers on B: the footprint origin is pin 1
+        fp = place(board, p['ref'], p['footprint'], *p['pin1_XY'], p['rot'], comps[p['ref']], back=True,
+                   anchor='origin')
+        px, py = pad_xy(fp, '1')
+        assert abs(px - p['pin1_XY'][0]) < 0.01 and abs(py - p['pin1_XY'][1]) < 0.01, p['ref']
+    ms = GEO['mount_standoffs']
+    for r, xy in zip(ms['refs'], ms['XY_mm']):
+        standoff(board, r, *xy)
     m = GEO['mcu_pcb']['outline_mm']
     rect(board, pcbnew.Dwgs_User, *m)
-    text(board, pcbnew.Dwgs_User, 'MCU BOARD (F side, Z 2.5-4.1)', 15.0, 36.0, 0.8)
+    text(board, pcbnew.Dwgs_User, 'MCU BOARD (F side, Z 2.5-4.1)', 15.0, m[3] - 1.5, 0.8)
     placed = {fp.GetReference() for fp in board.GetFootprints()}
     park(board, comps, placed, 'usb-audio')
     fps = assign_nets(board, comps, nets)
@@ -338,23 +417,22 @@ def build_carrier():
         assert abs(x1_ - (sx - 2.5)) < 0.01 and abs(x3_ - (sx + 2.5)) < 0.01, p['ref']
         assert abs(y1_ - (sy + 7.5)) < 0.01, p['ref']
     ph = GEO['power_header']
-    pin1 = next(pad for pad in fps['J1'].Pads() if pad.GetNumber() == '1').GetPosition()
-    assert abs(pcbnew.ToMM(pin1.x) - OX - ph['pin1_XY_mm'][0]) < 0.01, 'J1 pin 1 column'
-    assert abs(pcbnew.ToMM(pin1.y) - OY - ph['pin1_XY_mm'][1]) < 0.01, 'J1 pin 1 is not at the bottom row'
-    text(board, pcbnew.B_SilkS, '-12V', ph['column_X_mm'][1] + 3.8, ph['pin1_XY_mm'][1] - 1.1, 0.8, mirrored=True)
+    rows = sorted({round(pad_xy(fps['J1'], str(n))[1], 2) for n in range(1, 11)}, reverse=True)
+    cols = sorted({round(pad_xy(fps['J1'], str(n))[0], 2) for n in range(1, 11)})
+    assert rows == ph['pin_rows_Y_mm'] and cols == ph['column_X_mm'], (rows, cols)
+    assert pad_xy(fps['J1'], '2')[1] == pad_xy(fps['J1'], '1')[1], 'J1 pins 1/2 (-12 V) share the bottom row'
+    # below the header, clear of J1's outline and U2 (as on the routed board)
+    text(board, pcbnew.B_SilkS, '-12V', sum(ph['column_X_mm']) / 2, ph['pin1_XY_mm'][1] + 2.69, 1.0, mirrored=True)
     sx, sy = ph['idc16_socket_envelope_mm']['X'], ph['idc16_socket_envelope_mm']['Y']
     rect(board, pcbnew.Dwgs_User, sx[0], sy[0], sx[1], sy[1])
     text(board, pcbnew.Dwgs_User, 'IDC16', (sx[0] + sx[1]) / 2, sy[0] + 1.0, 0.8)
-    for ref, label in (('SW1', 'RESET'), ('SW2', 'BOOT')):
-        x, y = next(p['XY'] for p in GEO['back_side_parts'] if p['ref'] == ref)
-        text(board, pcbnew.B_SilkS, label, x, y + (-2.6 if ref == 'SW1' else 2.6), 0.8, mirrored=True)
-    x, y = next(p['XY'] for p in GEO['back_side_parts'] if p['ref'] == 'J8')
-    text(board, pcbnew.B_SilkS, 'SWD', x, y - 2.4, 0.8, mirrored=True)
     save_canonical(path, board)
     return path
 
 
 def build_mcu():
+    global OX, OY
+    OX, OY = GEO.get('mcu_kicad_origin_mm', GEO['kicad_origin_mm'])   # P2: the unchanged file sits 8 mm lower
     path = HW / 'usb-audio-mcu.kicad_pcb'
     comps, nets = schematic_netlist('usb-audio-mcu')
     board = new_board(path, 'Big Modular - USB-AUDIO MCU board', [
@@ -383,7 +461,7 @@ def build_mcu():
 def build_panel():
     path = MODULE / 'panels/front-pcb/usb-audio-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - USB-AUDIO 6HP front panel', [
-        'S1 FIT STUDY: passive panel, NPTH only (holes + USB-C slot), no copper',
+        'P2: passive panel, NPTH only (holes, USB-C slot, 2 standoff bolt holes), no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -392,6 +470,12 @@ def build_panel():
     spots = [(x, y, d) for x, y, d in GEO['rail_holes_mm']]
     spots += [(*j['XY'], holes['jack']) for j in GEO['jacks']]
     spots += [(*p['shaft_XY'], holes['pot']) for p in GEO['pots']]
+    ms = GEO['mount_standoffs']  # coaxial with the carrier MS1/MS2 holes (10 mm standoff = carrier F to panel rear)
+    assert ms['length_mm'] == GEO['stack_Z_mm']['panel_rear_seat']
+    ry0, ry1 = GEO['rail_clear_gap_Y_mm']
+    for x, y in ms['XY_mm']:  # bolt head inside the rail gap
+        assert ry0 < y - ms['panel_bolt_head_R_mm'] and y + ms['panel_bolt_head_R_mm'] < ry1, ('bolt in rail band', x, y)
+        spots.append((x, y, ms['panel_hole_d_mm']))
     n = 0
     for n, (x, y, d) in enumerate(spots, 1):
         npth(board, f'H{n}', x, y, d)
@@ -404,6 +488,8 @@ def build_panel():
 
 
 if __name__ == '__main__':
-    print(build_carrier())
-    print(build_mcu())
-    print(build_panel())
+    builders = {'carrier': build_carrier, 'mcu': build_mcu, 'panel': build_panel}
+    if not sys.argv[1:] or set(sys.argv[1:]) - set(builders):
+        sys.exit('usage: build_layout.py [carrier] [mcu] [panel]  (never a board that is placed / routed by hand)')
+    for name in sys.argv[1:]:
+        print(builders[name]())
