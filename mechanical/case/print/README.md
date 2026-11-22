@@ -37,6 +37,7 @@ generators in `mechanical/case/tools/`.
 | --- | --- | --- |
 | [accessories/top-brace](accessories/top-brace/README.md) | 6 HP brace across the top of a double case (or a quad-case row) | 1 |
 | [accessories/cable-holder](accessories/cable-holder/README.md) | Slide-in cover with a clip-on patch cable comb, for a tilted case | 1 cover + 1 comb |
+| [accessories/usb-riser](accessories/usb-riser/README.md) | 8 HP collar that lifts modules/32bit 18 mm off the rails, so a USB-C plug reaches its back socket over the back rail | 1 |
 
 Each README says what was checked and what is still untested.
 
@@ -56,4 +57,6 @@ python3 -B mechanical/case/tools/check_quad_case.py
 mechanical/case/tools/build_stand.sh               # stands/tiered-stand
 mechanical/case/tools/build_cable_holder.sh        # accessories/cable-holder
 python3 -B mechanical/case/tools/check_cable_holder.py
+mechanical/case/tools/build_usb_riser.sh           # accessories/usb-riser
+python3 -B mechanical/case/tools/check_usb_riser.py
 ```

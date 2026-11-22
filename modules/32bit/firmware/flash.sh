@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 #
-# flash.sh — build and flash a 32bit firmware (polysynth or fxrack) over the USB-C port.
+# flash.sh — build and flash a 32bit firmware (polysynth, fxrack or master) over the USB-C port.
 #
 # Usage:
 #   ./flash.sh                               # pick JP1, the firmware and the port from menus
 #   ./flash.sh p|d                           # pick the firmware (Enter = polysynth) and the port
 #   ./flash.sh p|d fxrack|polysynth [port]   # no firmware menu (also: fxrack p|d [port])
 #   ./flash.sh p fxrack /dev/ttyACM0         # explicit port (macOS: /dev/cu.usbmodemXXXX)
+#   ./flash.sh master [port]                 # master (no MIDI: no JP1 setting)
 #   MONITOR=1 ./flash.sh p fxrack            # open the serial monitor after flashing
 #
 set -euo pipefail

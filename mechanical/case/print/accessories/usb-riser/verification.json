@@ -1,0 +1,206 @@
+{
+  "status": "PASS",
+  "prototype": "CAD-checked against a stand-in of modules/32bit: not printed, fits not measured",
+  "for": "modules/32bit (6 HP) in the 42 HP / 60 mm case",
+  "dimensions": {
+    "riser_hp": 8,
+    "lift_mm": 18.0,
+    "size_mm": [
+      40.16,
+      132.5,
+      19.6
+    ],
+    "panel_pocket_mm": [
+      30.5,
+      129.0,
+      1.6
+    ],
+    "cavity_mm": [
+      29.6,
+      112.5
+    ],
+    "outer_corner_radius_mm": 2.0,
+    "top_chamfer_mm": 0.5,
+    "bed_chamfer_mm": 0.4
+  },
+  "checks": {
+    "collisions": {
+      "riser_against": [
+        "m32-panel",
+        "m32-pcb",
+        "m32-jacks",
+        "m32-back",
+        "m32-nuts",
+        "m32-screws",
+        "usb-plug",
+        "usb-cable",
+        "nb-panels",
+        "nb-nuts",
+        "nb-knobs",
+        "riser-screws",
+        "riser-spacers",
+        "case-rail_front",
+        "case-rail_back",
+        "case-side_panel_left",
+        "case-side_panel_right",
+        "case-cover_0",
+        "case-cover_1",
+        "case-bottom_plate"
+      ],
+      "shared_volume_mm3": 0
+    },
+    "seating": {
+      "footprint_on_the_rails_mm2": 579.0,
+      "panel_seat_on_the_end_blocks_mm2": 370.7,
+      "panel_seat": "both end blocks, as on the rails; the long sides are a close fit, not a ledge",
+      "panel_edge_over_the_side_walls_mm": 0.2,
+      "riser_top_flush_with_module_panel": true,
+      "riser_top_above_neighbour_panels_mm": 18.0
+    },
+    "clearances_mm": {
+      "panel_in_pocket_each_side": 0.25,
+      "carrier_in_cavity_each_side": 0.3,
+      "carrier_ends_to_end_blocks": 1.25,
+      "jacks_and_pots_to_riser": 0.8,
+      "usb_socket_and_power_header_to_riser": 1.18,
+      "riser_to_neighbour_panels": 0.48,
+      "plug_to_slot_walls": 0.575,
+      "plug_under_slot_roof": 1.15,
+      "plug_over_rail_top": 1.52,
+      "plug_to_carrier_edge": 0.15,
+      "carrier_underside_above_rail_top": 6.4
+    },
+    "walls_mm": {
+      "counterbore_to_module_spacer": 1.4,
+      "leg_right_of_usb_slot": 1.76,
+      "usb_slot_to_module_spacer": 1.97,
+      "module_spacer_to_end_block_faces": 1.71,
+      "counterbore_to_end_block_faces": 1.75,
+      "floor_under_riser_screw_heads": 4.0,
+      "beam_over_usb_slot": 8.83,
+      "side_wall_left": 7.7,
+      "side_wall_right": 2.86,
+      "rim_left": 7.25,
+      "rim_right": 2.41,
+      "rim_ends": 1.75
+    },
+    "hardware": {
+      "riser_to_rails": "3x M3x8 socket head into the rail spacers",
+      "riser_screw_thread_in_rail_spacer_mm": 3.8,
+      "module_to_riser": "2x M3x10 hex spacer (5.5 AF, superglued) + the module's 2x M3x6",
+      "module_screw_thread_in_spacer_mm": 4.2,
+      "spacer_socket": "5.7 AF x 10.2 deep, as the rails, M3 vent to the rail face",
+      "counterbore_mm": [
+        6.5,
+        14.0
+      ],
+      "riser_screws_x_from_riser_left_edge_y": [
+        [
+          12.58,
+          125.5
+        ],
+        [
+          12.58,
+          3.0
+        ],
+        [
+          32.9,
+          3.0
+        ]
+      ],
+      "module_screw_x_from_riser_left_edge": 20.08,
+      "riser_screws_hidden_under_the_module_panel": true
+    },
+    "assembly_motion": {
+      "module_lifts_straight_out_mm": 30,
+      "riser_screws_and_spacers_drop_in": true,
+      "plug_slides_straight_out_mm": 40,
+      "collisions": 0
+    },
+    "usb": {
+      "slot_mm": [
+        13.5,
+        9.17
+      ],
+      "plug_modelled_mm": [
+        12.35,
+        6.5,
+        22.0
+      ],
+      "plug_overmold_past_case_back_mm": 10.9,
+      "plug_and_relief_past_case_back_mm": 22.9,
+      "row": "the module's top edge must face the outside of the case (back row of a 2 x 2 set)"
+    },
+    "row_positions": {
+      "riser_slot_start_hp": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34
+      ],
+      "module_left_edge_in_riser_mm": 7.5,
+      "module_centred_in_riser": false
+    },
+    "print": {
+      "bed_contact_mm2": 1673.7,
+      "worst_overhang_from_vertical_deg": 45.94,
+      "bridges": [
+        {
+          "what": "USB slot roof",
+          "span_mm": 13.5,
+          "length_mm": 10.0,
+          "height_over_bed_mm": 9.17,
+          "supported_on": "both long sides (the end block and the leg)"
+        }
+      ],
+      "other_area_past_45_deg_mm2": 0,
+      "supports_required": false
+    }
+  },
+  "print": {
+    "usb-riser-32bit-8hp": {
+      "print_bounds_mm": [
+        40.16,
+        132.5,
+        19.6
+      ],
+      "solid_volume_cm3": 34.44,
+      "STEP_STL_3MF_readback": "PASS",
+      "stl_facets": 5716,
+      "mesh_closed_manifold": true,
+      "mesh_volume_cm3": 34.44
+    }
+  },
+  "source_sha256": {
+    "tools/build_usb_riser.py": "2b4925fb8c84e6f1b67999f59cfc132e79cbd895f926d1a3c4e633a421aece8b",
+    "tools/build_usb_riser.sh": "968ac59c0cde5ce2d3c386273c2c8c0645eccc516275e374dfeda0c9a71e96d0",
+    "tools/build_case.py": "38c97fae551a7443899f2ffd35401a6fb831b40ad24b019a68bd995df8e4c3fa",
+    "cad/assembly.FCStd": "ca79021018c3f81bf68a5f95c4d4a70948ae4dafad65b51cae8f84313e6ebadb",
+    "modules/32bit/docs/geometry.json": "3750e18b664d43fd582843b05468e47952efa1bf5d0284c8bd8db25e330101df"
+  },
+  "export_sha256": {
+    "print/accessories/usb-riser/usb-riser-32bit-8hp.step": "f37c33849bd2a70c4cd013e3b925c29aa82ddc0d8d1e0b0b8b77b09ceffe349d",
+    "print/accessories/usb-riser/usb-riser-32bit-8hp.stl": "0cf971fee0ff8e3e7361d73b577de906e9a58c7cc1043fde8f6331d00c1c36d7",
+    "print/accessories/usb-riser/usb-riser-32bit-8hp.3mf": "ebdfb7e603cde9985573dae78141566d140d7169158d152949dd2a9a69f605d2"
+  },
+  "limits": [
+    "not printed or fit-tested",
+    "module, plug and neighbours are stand-ins (boxes at the geometry.json positions)",
+    "plug: USB-IF maximum overmold section 12.35 x 6.5 mm; a thicker plug may not pass",
+    "the plug overmold ends 0.15 mm from the carrier's top edge in the model (board placement, not the riser): a tall overmold may stop just short of fully seated"
+  ]
+}

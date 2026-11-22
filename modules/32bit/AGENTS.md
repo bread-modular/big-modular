@@ -37,8 +37,29 @@ Module paths are module-relative.
   recorder on MIDI clock, as 8bit/16bit) on the
   32bit drivers; PSRAM on for the delay buffers; BM all-pass buffer overrun fixed. `./compile.sh p|d fxrack`; `./flash.sh [p|d] [fxrack|polysynth] [port]` asks for the firmware (Enter = polysynth) when none is given, as the 16bit `flash.sh`.
   Builds (p, d) and host tests (ASan) pass; not bench-tested. See `firmware/README.md` section fxrack.
+- **master firmware (2026-11-22)**: `firmware/master`, end-of-chain processor for a live set in place of
+  the user's DAW chain: IN L kick (sub cut, look-ahead limiter), IN R mix (low cut, 3-band dynamics keyed
+  by the kick's bands), parallel compressor fed from both, then glue compressor (2 / 4 / 10, stepped
+  attack / release, auto release, range, dry / wet, soft clip) -> low / high cut -> look-ahead limiter ->
+  mono on both outputs. 75 settings in one table (`main/include/ms_params.h`), set from
+  `firmware/master/web/index.html` over the USB-C port (Web Serial, text protocol `ms_proto.h`; demo mode
+  without the module) and saved in NVS on request. The page is a mixer of four channel strips (KICK, MIX,
+  PARALLEL, MASTER: trim knob, effect slots, parallel send, fader + meters); a click on a slot shows its
+  settings in the panel under the mixer (2026-11-22, user). Ranges and names come from `desc`, the page's
+  `STRIPS` table places them; `web/run.sh` serves it on port 3000 and stops whatever listens there first. New in the
+  drivers: 24-bit codec words, 16-frame I2S blocks, 240 MHz. No MIDI / JP1: `./compile.sh master`,
+  `./flash.sh master [port]`. Latency about 4.8 ms as shipped (buffers 1.1..1.45 ms + ~1 ms assumed for
+  the codec + 1.0 / 1.5 ms look-aheads), not measured. Builds (328 KB), host tests pass (585 checks),
+  page checked in headless Chromium (`firmware/master/tests/web_check.mjs`, not part of `make`), QEMU count 1120 / 1360 instructions per sample (factory / all on);
+  **not bench-tested, not heard**. `tools/ms_render` runs the chain over WAV files. See
+  `firmware/README.md` section master.
 - Open: JLCPCB preview (U1 QFN pin 1, U2, Y1 rotation), bench (first power-up of the bare-chip circuit:
-  40 MHz start-up, flash boot, PSRAM; U8 thermal, codec levels, firmware). Radio never used; firmware must
+  40 MHz start-up, flash boot, PSRAM; U8 thermal, codec levels, firmware). master on the module: 24-bit
+  codec words + 16-frame blocks, CPU load and U8 heat at 240 MHz, measured latency, port open / close
+  resets. The back USB-C is blocked by the case rail: the printed 8HP riser
+  `mechanical/case/print/accessories/usb-riser/` lifts the module 18 mm so a plug passes over the back rail
+  (2026-11-22, CAD + slicer checked against a stand-in of this module, not printed; the module sits 7.5 mm
+  from the riser's left edge, the plug overmold ends 0.15 mm from the carrier's top edge in the model). Radio never used; firmware must
   not start Wi-Fi / BT.
 
 ## Boundaries

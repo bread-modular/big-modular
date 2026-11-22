@@ -1,0 +1,25 @@
+# 32bit module: ESP32-S3R8 + W25Q128 (16 MB flash). The 8 MB PSRAM is not used
+# by this firmware and stays off.
+CONFIG_IDF_TARGET="esp32s3"
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+
+# 240 MHz (fxrack / polysynth: 160 MHz). The chain is ~1360 instructions per
+# sample with everything on (tools/cpu-bench, QEMU), 1500 in its worst block. The
+# cycles per instruction of the real chip are not known here: at 2 that would be
+# 83 % of a 160 MHz core before the I2S driver's share, at 240 MHz 55 %. It costs
+# supply current on the 5 V regulator U8 (bench item). Try 160 MHz if the page
+# shows a low CPU load on the module.
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+CONFIG_COMPILER_OPTIMIZATION_PERF=y
+CONFIG_FREERTOS_HZ=1000
+
+# The USB-C port (USB-Serial/JTAG) carries the settings protocol and the log.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+
+# The main task runs the protocol (float printf, coefficient maths).
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+
+# No radio: the 5 V linear regulator is sized for the module without Wi-Fi/BT.
+# MINIMAL_BUILD links neither (main/CMakeLists.txt REQUIRES no esp_wifi / bt).

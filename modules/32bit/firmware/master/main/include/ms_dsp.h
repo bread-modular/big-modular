@@ -1,0 +1,208 @@
+#pragma once
+
+// 32bit master: end-of-chain processor (kick + mix -> mono main). Plain C, no
+// ESP-IDF: the same file runs in the firmware, the host tests and the WAV render.
+//
+//   IN L kick -> trim -> sub cut -> limiter -----------------+--> kick level --+
+//                          |                                 |                 |
+//                          | key (before the limiter)        +-> send -+       |
+//                          v                                           v       v
+//   IN R mix  -> trim -> low cut -> 3-band dynamics --------+--> send -> parallel compressor -> return
+//                                                            |                                    |
+//                                                            +--> mix level ---------------------(+)
+//                                                                                                 |
+//   OUT L = OUT R <- output level <- limiter <- low / high cut <- glue compressor <---------------+
+//
+// Coefficients (ms_coefs_t) are a pure function of the parameter values and are
+// computed outside the audio thread (ms_params.c); the audio thread only copies
+// them in at a block boundary (ms_dsp_set_coefs).
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define MS_BLOCK_MAX 64  // most frames per ms_dsp_process call
+#define MS_LA_SIZE 256   // look-ahead / delay rings (power of two); the longest look-ahead is MS_LA_SIZE - 1 samples
+#define MS_BANDS 3       // multiband: 0 low, 1 mid, 2 high
+
+// Second-order state-variable filter (trapezoidal, Zavalishin / Simper): one
+// kernel gives the low pass, high pass and all pass, and its coefficients stay
+// well conditioned in single precision down to the 10 Hz sub cut.
+typedef struct {
+    float a1, a2, a3;
+    float k;  // 1 / Q
+} ms_svf_coef_t;
+
+typedef struct {
+    float ic1, ic2;
+} ms_svf_state_t;
+
+// Downward compressor: gain computer in dB, attack / release on the gain reduction.
+typedef struct {
+    float thr_db;
+    float slope;      // 1 - 1 / ratio
+    float half_knee;  // dB, 0 = hard knee
+    float inv_2knee;  // 1 / (2 x knee), 0 = hard knee
+    float range_db;   // most gain reduction
+    float att, rel;   // one-pole coefficients per sample
+    bool rms;         // detector: mean square over ~10 ms instead of the peak
+    float rms_coef;
+    bool auto_rel;    // second, slow release stage (glue "A")
+    float slow_att, slow_rel;
+} ms_comp_coef_t;
+
+typedef struct {
+    float gr;    // gain reduction, dB >= 0
+    float slow;  // auto release stage
+    float ms;    // mean square
+} ms_comp_state_t;
+
+// Look-ahead peak limiter: sliding minimum of the wanted gain over the look-ahead,
+// release, then a moving average as long as the look-ahead. Output = input delayed
+// by `la` samples and never above `ceil`.
+typedef struct {
+    bool on;
+    float drive;  // input gain
+    float ceil;   // linear
+    float rel;    // release coefficient per sample
+    int la;       // look-ahead in samples, 0 .. MS_LA_SIZE - 1
+} ms_lim_coef_t;
+
+typedef struct {
+    float x[MS_LA_SIZE];
+    int32_t g[MS_LA_SIZE];  // released gain, Q22 (integer: the running sum never drifts)
+    float dq_val[MS_LA_SIZE];
+    uint32_t dq_idx[MS_LA_SIZE];
+    uint32_t dq_head, dq_tail;  // sliding-minimum queue: [head, tail)
+    uint32_t pos;
+    int32_t g_sum;
+    float g_rel;
+    int la;  // look-ahead the state was set up for
+} ms_lim_state_t;
+
+// Gains that are smoothed (per block) when a setting moves.
+enum {
+    MS_G_TRIM_K,
+    MS_G_TRIM_M,
+    MS_G_LVL_K,
+    MS_G_LVL_M,
+    MS_G_SEND_K,
+    MS_G_SEND_M,
+    MS_G_PAR_RET,  // parallel make-up x return
+    MS_G_MB_LO,    // band gain x multiband output
+    MS_G_MB_MID,
+    MS_G_MB_HI,
+    MS_G_GLUE_MAKEUP,
+    MS_G_OUT,
+    MS_G_COUNT
+};
+
+typedef struct {
+    bool bypass;
+    float g[MS_G_COUNT];
+    float g_smooth;  // per-block smoothing coefficient
+
+    // Kick
+    int k_hp_n;  // 0 off, 1 = 12 dB/oct, 2 = 24 dB/oct
+    ms_svf_coef_t k_hp[2];
+    ms_lim_coef_t k_lim;
+
+    // Mix
+    int m_hp_n;
+    ms_svf_coef_t m_hp[2];
+
+    // Multiband dynamics (Linkwitz-Riley 24 dB/oct crossovers)
+    bool mb_on;
+    bool mb_sc_kick;  // key from the kick bands, else from the mix bands
+    float mb_sc_gain;
+    float mb_amount;  // 0..1 scales the gain reduction
+    int mb_solo;      // 0 off, 1..3 = only this band
+    ms_svf_coef_t x1, x2;  // Butterworth sections at the two crossover frequencies
+    bool mb_band_on[MS_BANDS];
+    ms_comp_coef_t mb[MS_BANDS];
+
+    // Parallel compressor
+    bool par_on;
+    ms_comp_coef_t par;
+
+    // Glue compressor
+    bool glue_on;
+    ms_comp_coef_t glue;
+    float glue_wet;  // 0..1
+    bool glue_clip;
+    bool glue_sc_hp_on;
+    ms_svf_coef_t glue_sc_hp;
+
+    // Main cuts and limiter
+    int eq_lo_n, eq_hi_n;
+    ms_svf_coef_t eq_lo[2], eq_hi[2];
+    ms_lim_coef_t lim;
+} ms_coefs_t;
+
+// Peaks are linear, gain reductions in dB (>= 0); all are the largest value since
+// the last ms_dsp_take_meters.
+typedef struct {
+    float raw_k, raw_m;  // converter level before the trims (1.0 = clipping)
+    float in_k, in_m;    // after the trims
+    float kick;          // after the kick limiter
+    float mix;           // after the multiband
+    float par;           // parallel return
+    float out;
+    float gr_klim;
+    float gr_mb[MS_BANDS];
+    float gr_par;
+    float gr_glue;
+    float gr_lim;
+} ms_meters_t;
+
+typedef struct {
+    ms_coefs_t c;
+    float g_cur[MS_G_COUNT];
+
+    ms_svf_state_t k_hp[2], m_hp[2];
+    ms_lim_state_t k_lim;
+    float m_delay[MS_LA_SIZE];
+    uint32_t m_delay_pos;
+
+    // Crossover: mix path and key path
+    ms_svf_state_t m_x1[3], m_x2[3], m_x2_ap;  // [0] split, [1] low pass, [2] high pass
+    ms_svf_state_t k_x1[3], k_x2[3];
+    ms_comp_state_t mb[MS_BANDS];
+
+    ms_comp_state_t par;
+    ms_comp_state_t glue;
+    ms_svf_state_t glue_sc_hp;
+    ms_svf_state_t eq_lo[2], eq_hi[2];
+    ms_lim_state_t lim;
+
+    ms_meters_t meters;
+    volatile bool meters_reset;
+} ms_dsp_t;
+
+void ms_dsp_init(ms_dsp_t *d, const ms_coefs_t *c);
+// Audio thread, between blocks.
+void ms_dsp_set_coefs(ms_dsp_t *d, const ms_coefs_t *c);
+// n <= MS_BLOCK_MAX frames; in_k / in_m / out are +-1.0 full scale. out may alias an input.
+void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *out, int n);
+// Other thread: copy the meters and restart them.
+void ms_dsp_take_meters(ms_dsp_t *d, ms_meters_t *out);
+// Delay of the chain in samples (the two look-aheads).
+int ms_coefs_latency(const ms_coefs_t *c);
+
+// Coefficient helpers (used by ms_params.c and the tests).
+void ms_svf_set(ms_svf_coef_t *c, float fs, float f, float q);
+// Butterworth sections for a 12 (n = 1) or 24 dB/oct (n = 2) cut: fills c[0 .. n-1].
+void ms_butter_set(ms_svf_coef_t c[2], int n, float fs, float f);
+float ms_time_coef(float fs, float seconds);
+float ms_db_to_lin(float db);
+
+// log2 / 2^x approximations (errors < 0.006 dB / 0.0015 dB), exposed for the tests.
+float ms_fast_log2(float x);
+float ms_fast_exp2(float x);
+
+#ifdef __cplusplus
+}
+#endif

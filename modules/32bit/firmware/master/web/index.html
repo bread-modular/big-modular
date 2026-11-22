@@ -1,0 +1,1106 @@
+<!doctype html>
+<!--
+  32bit master: settings page. Talks to the module over its USB-C port with Web
+  Serial (Chrome / Edge on a computer; not Firefox or Safari). Run ./run.sh and
+  open http://localhost:3000, or open this file directly.
+
+  A mixer of four channel strips (kick, mix, parallel bus, master). Each strip
+  has its effects as slots; a click on a slot (or on the strip's name) shows its
+  settings in the panel below the mixer.
+
+  The parameters, their ranges and names come from the firmware's `desc` answer
+  (protocol in ../main/include/ms_proto.h); STRIPS below only says where each one
+  sits. A parameter the table does not know lands in an "Other" slot on the
+  master strip. demo.js (generated, `make web` in ../tools) holds the same answer
+  for the demo mode.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>32bit master</title>
+<style>
+  :root {
+    --surface-0: #121211;
+    --surface-1: #1a1a19;
+    --surface-2: #242422;
+    --line: #34342f;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #8f8e85;
+    --accent: #4d9bf0;
+    --good: #0ca30c;
+    --warning: #fab219;
+    --critical: #d03b3b;
+    --track: #2e2e2b;
+    --c-kick: #f0883e;
+    --c-mix: #4d9bf0;
+    --c-par: #b392f0;
+    --c-master: #3fb68b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--surface-0); color: var(--text-primary);
+    font: 14px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  /* header, mixer and the panel under it fill the window; log and tips follow below */
+  #app { min-height: 100vh; display: flex; flex-direction: column; }
+  button, input, select { font: inherit; color: inherit; }
+  header {
+    position: sticky; top: 0; z-index: 5; background: var(--surface-1);
+    border-bottom: 1px solid var(--line); padding: 8px 16px;
+    display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; font-size: 13px;
+  }
+  h1 { font-size: 16px; margin: 0; letter-spacing: 0.04em; }
+  h1 small { color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+  .spacer { flex: 1; }
+  .btn {
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px;
+    padding: 5px 10px; cursor: pointer; white-space: nowrap;
+  }
+  .btn:hover:not(:disabled) { border-color: var(--text-muted); }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0b0b0b; font-weight: 600; }
+  .btn.active { background: var(--critical); border-color: var(--critical); color: #fff; font-weight: 600; }
+  .stat { color: var(--text-secondary); white-space: nowrap; }
+  .stat b { color: var(--text-primary); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .badge { border-radius: 10px; padding: 2px 10px; border: 1px solid var(--line); white-space: nowrap; }
+  .badge .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--text-muted); }
+  .badge.on .dot { background: var(--good); }
+  .badge.warn { border-color: var(--warning); }
+  .badge.warn .dot { background: var(--warning); }
+  .badge.hidden { display: none; }
+  #note { padding: 6px 16px; color: var(--text-secondary); border-bottom: 1px solid var(--line); }
+  #note.error { color: var(--text-primary); border-left: 4px solid var(--critical); }
+
+  /* ---- mixer: the channel strips */
+  #mixer { flex: 1 1 auto; display: flex; gap: 10px; padding: 12px 16px 10px; justify-content: safe center; align-items: stretch; overflow-x: auto; }
+  #mixer .empty { color: var(--text-muted); padding: 60px 0; }
+  .flow { align-self: center; color: var(--text-muted); font-size: 22px; flex: 0 0 auto; user-select: none; }
+  .strip {
+    flex: 0 0 208px; display: flex; flex-direction: column; background: var(--surface-1);
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden; --c: var(--accent);
+  }
+  .shead { border: 0; border-top: 3px solid var(--c); background: none; padding: 6px 10px 6px; cursor: pointer; display: flex; align-items: baseline; gap: 8px; text-align: left; }
+  .shead:hover, .shead.sel { background: var(--surface-2); }
+  .shead.sel { box-shadow: inset 0 0 0 1px var(--c); }
+  .sname { font-weight: 700; letter-spacing: 0.1em; font-size: 13px; color: var(--c); }
+  .ssub { color: var(--text-muted); font-size: 11px; }
+  .sec { border-top: 1px solid var(--line); padding: 6px 10px 7px; }
+  .cap { font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; gap: 6px; white-space: nowrap; }
+  .cap b { color: var(--text-primary); background: var(--critical); border-radius: 3px; padding: 0 4px; font-weight: 600; }
+  .cap .peak { font-variant-numeric: tabular-nums; color: var(--text-secondary); letter-spacing: 0; text-transform: none; }
+  .sec.input { min-height: 72px; }
+  .sec.send { min-height: 68px; }
+  .sec.devs { display: flex; flex-direction: column; gap: 4px; min-height: 165px; padding-top: 8px; }
+  .sec.fad { flex: 1; display: flex; flex-direction: column; }
+  .info { color: var(--text-muted); font-size: 11px; line-height: 1.45; }
+  .info b { color: var(--text-secondary); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .info span { display: inline-block; margin-right: 10px; white-space: nowrap; }
+  .strip.off .sec.devs, .strip.off .sec.fad, .strip.off .sec.input, body.bypassed .sec.devs { opacity: 0.45; }
+
+  .knobrow { display: flex; align-items: center; gap: 10px; }
+  .knob { width: 40px; height: 40px; flex: 0 0 40px; cursor: ns-resize; touch-action: none; outline: none; border-radius: 50%; }
+  .knob:focus-visible, .fader:focus-visible { box-shadow: 0 0 0 2px var(--c); }
+  .knob .ktrack { fill: none; stroke: var(--track); stroke-width: 4; stroke-linecap: round; }
+  .knob .kval { fill: none; stroke: var(--c); stroke-width: 4; stroke-linecap: round; }
+  .knob .kbody { fill: var(--surface-2); stroke: var(--line); }
+  .knob .kptr { stroke: var(--text-primary); stroke-width: 2; stroke-linecap: round; }
+  .kside { display: grid; gap: 4px; min-width: 0; flex: 1; }
+  .vbox { display: flex; align-items: center; gap: 4px; }
+  .vbox input, .num input {
+    width: 58px; background: var(--surface-0); border: 1px solid var(--line); border-radius: 4px;
+    padding: 2px 4px; text-align: right; font-variant-numeric: tabular-nums;
+  }
+  .vbox span, .num span { color: var(--text-muted); font-size: 12px; }
+  .hbar { height: 4px; background: var(--track); border-radius: 2px; position: relative; overflow: hidden; }
+  .hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--good); }
+
+  .slot {
+    display: grid; grid-template-columns: 18px 1fr; gap: 2px 8px; align-items: center; border: 1px solid var(--line);
+    border-radius: 7px; background: var(--surface-0); padding: 4px 8px; cursor: pointer; text-align: left;
+  }
+  .slot:hover { border-color: var(--text-muted); }
+  .slot.sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c); background: var(--surface-2); }
+  .slot.off .sbody { opacity: 0.45; }
+  .pwr { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--text-muted); background: transparent; padding: 0; cursor: pointer; }
+  .pwr.on { border-color: var(--c); background: var(--c); box-shadow: 0 0 6px color-mix(in srgb, var(--c) 60%, transparent); }
+  .pwr.fixed { cursor: default; }
+  .sbody { min-width: 0; }
+  .slotname { font-weight: 600; font-size: 13px; }
+  .slotsum { color: var(--text-muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+  .slotgr { grid-column: 1 / -1; display: grid; gap: 2px; margin-top: 3px; }
+  .slotgr .hbar { height: 3px; }
+  .slotgr .fill { background: var(--accent); }
+
+  .fadrow { flex: 1; display: flex; justify-content: center; align-items: stretch; gap: 10px; min-height: 112px; margin: 2px 0 6px; }
+  .grs { display: flex; gap: 3px; }
+  .vgr { width: 6px; background: var(--track); border-radius: 3px; position: relative; overflow: hidden; }
+  .vgr .fill { position: absolute; left: 0; right: 0; top: 0; height: 0; background: var(--accent); }
+  .fader { position: relative; width: 66px; cursor: ns-resize; touch-action: none; outline: none; border-radius: 6px; }
+  .fader::before { content: ""; position: absolute; left: 43px; top: 6px; bottom: 6px; width: 4px; background: var(--track); border-radius: 2px; }
+  .fthumb {
+    position: absolute; left: 28px; width: 34px; height: 26px; border-radius: 4px; border: 1px solid #6b6b64;
+    background: linear-gradient(#5a5a55, #3a3a36); box-shadow: 0 2px 4px #0008;
+  }
+  .fthumb::after { content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 2px; margin-top: -1px; background: var(--c); }
+  .ftick { position: absolute; left: 18px; width: 6px; height: 1px; background: var(--text-muted); }
+  .ftick.zero { width: 8px; left: 16px; background: var(--text-primary); }
+  .ftick span { position: absolute; right: 9px; top: -6px; font-size: 9px; line-height: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .vlevel { width: 10px; background: var(--track); border-radius: 3px; position: relative; overflow: hidden; }
+  .vlevel .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--good); }
+  .vlevel .hold { position: absolute; left: 0; right: 0; height: 2px; bottom: 0; background: var(--text-primary); opacity: 0.8; }
+  .fadfoot { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+  .grtext { color: var(--text-muted); font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---- the panel under the mixer: the selected slot's settings */
+  #detail {
+    margin: 0 16px 10px; background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px; --c: var(--accent);
+    flex: 0 0 auto; overflow-y: auto;
+    /* the window's height goes to this panel first (up to 400 px), then to the faders */
+    height: clamp(250px, calc(100vh - 640px), 400px);
+  }
+  #detail:empty { display: none; }
+  .dhead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 14px; border-bottom: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px 10px 0 0; position: sticky; top: 0; background: var(--surface-1); z-index: 1; }
+  .dpath { font-size: 13px; letter-spacing: 0.1em; color: var(--c); font-weight: 700; }
+  .dname { font-size: 15px; font-weight: 600; }
+  .dhint { color: var(--text-muted); font-size: 12px; flex: 1 1 320px; }
+  .dbody { padding: 10px 14px 12px; display: grid; gap: 10px; }
+  .dbody h3 { font-size: 11px; margin: 4px 0 0; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+  .bands { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .band { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; background: var(--surface-0); }
+  .bhead { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .band h2 { font-size: 13px; margin: 0; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); }
+  .bhead .meters { flex: 1; }
+  .band .row, .band .meter { grid-template-columns: 74px 1fr 84px; }
+  .row { display: grid; grid-template-columns: 132px 1fr 92px; gap: 8px; align-items: center; min-height: 30px; }
+  .row.off { opacity: 0.38; }
+  .row.long { grid-template-columns: 1fr; gap: 3px; margin: 4px 0; }
+  .row.long .wide { grid-column: 1; }
+  .rows { display: grid; column-gap: 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .band .rows { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 18px; }
+  .row label { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; }
+  .row label.reset { cursor: pointer; }
+  .row .wide { grid-column: 2 / 4; }
+  input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; }
+  .num { display: flex; align-items: center; gap: 4px; }
+  .seg { display: flex; flex-wrap: wrap; gap: 2px; }
+  .seg button {
+    background: var(--surface-0); border: 1px solid var(--line); padding: 3px 9px; cursor: pointer;
+    border-radius: 4px; color: var(--text-secondary);
+  }
+  .seg button.sel { background: var(--accent); border-color: var(--accent); color: #0b0b0b; font-weight: 600; }
+  .switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .switch input { appearance: none; width: 34px; height: 18px; border-radius: 9px; background: var(--track); position: relative; margin: 0; cursor: pointer; border: 1px solid var(--line); }
+  .switch input::after { content: ""; position: absolute; left: 2px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--text-muted); transition: left 0.1s; }
+  .switch input:checked { background: var(--accent); border-color: var(--accent); }
+  .switch input:checked::after { left: 18px; background: #0b0b0b; }
+  .switch span { color: var(--text-muted); font-size: 12px; min-width: 20px; }
+  .meters { display: grid; gap: 5px; max-width: 560px; }
+  .meter { display: grid; grid-template-columns: 132px 1fr 92px; gap: 8px; align-items: center; }
+  .meter .name { color: var(--text-muted); font-size: 12px; }
+  .meter .bar { height: 8px; background: var(--track); border-radius: 4px; position: relative; overflow: hidden; }
+  .meter .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: var(--good); }
+  .meter.gr .fill { background: var(--accent); }
+  .meter .hold { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--text-primary); left: 0; opacity: 0.8; }
+  .meter .val { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); text-align: right; white-space: nowrap; }
+  .meter .val b { color: var(--text-primary); background: var(--critical); border-radius: 3px; padding: 0 4px; margin-left: 4px; font-weight: 600; }
+  #log { margin: 6px 16px; color: var(--text-muted); font: 12px/1.4 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; max-height: 120px; overflow: auto; }
+  footer { padding: 0 16px 10px; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <h1>32bit MASTER <small id="version"></small></h1>
+  <button class="btn primary" id="connect">Connect</button>
+  <button class="btn" id="demo" hidden title="Try the page without the module: every control works, the meters are invented">Demo</button>
+  <span class="badge" id="link"><span class="dot"></span><span id="linkText">Not connected</span></span>
+  <span class="stat">CPU <b id="cpu">–</b></span>
+  <span class="stat">Latency <b id="lat">–</b></span>
+  <span class="badge warn hidden" id="unsaved" title="The module runs these settings now, but they are not stored: press Save to module"><span class="dot"></span>Unsaved</span>
+  <span class="spacer"></span>
+  <button class="btn" id="bypass" disabled title="Kick + mix straight to the output, to compare. Never saved.">Bypass</button>
+  <button class="btn primary" id="save" disabled title="Store the settings in the module (the audio drops for a moment)">Save to module</button>
+  <button class="btn" id="revert" disabled title="Back to the settings saved in the module">Revert</button>
+  <button class="btn" id="factory" disabled title="Factory settings (not saved until you press Save)">Factory</button>
+  <button class="btn" id="export" disabled title="Download the settings as a text file">Export</button>
+  <button class="btn" id="import" disabled title="Load a settings file">Import</button>
+  <input type="file" id="file" accept=".txt,text/plain" hidden>
+</header>
+<div id="note">Plug the module's USB-C port into this computer and press Connect. IN L = kick, IN R = everything else, OUT L = OUT R = the mono main.</div>
+<main id="mixer"><div class="empty">The mixer appears here once the module is connected.</div></main>
+<section id="detail"></section>
+</div>
+<div id="log"></div>
+<footer>Click an effect to see its settings below the mixer. Drag a knob or fader up / down (Shift = fine); double-click it, or click a setting's name, for the factory value. Settings only stay in the module after “Save to module”.</footer>
+
+<script src="demo.js"></script>
+<script>
+"use strict";
+
+// ---------------------------------------------------------------- the mixer layout
+//
+// Where each firmware parameter sits. A device (slot) takes every parameter whose
+// id matches `match`; `on` is its switch. Meters: ["level" | "gr", meter name,
+// label, raw meter name for the CLIP flag].
+const STRIPS = [
+  {
+    id: "kick", name: "KICK", sub: "IN L", color: "var(--c-kick)",
+    trim: "in_k_trim", inMeter: ["in_k", "raw_k"], send: "par_send_k", fader: "k_lvl", faderName: "Level",
+    meter: "kick", gr: ["gr_klim"],
+    hint: "Trim at the input, the send into the parallel bus (taken after the kick's effects, before the fader) and the kick's level in the main.",
+    meters: [["level", "in_k", "Kick in", "raw_k"], ["level", "kick", "After the effects"]],
+    devices: [
+      { id: "k_hp", name: "Sub cut", match: /^k_hp_/, on: "k_hp_on",
+        hint: "High pass on the kick: takes out what lies below the kick's fundamental.",
+        summary: (t) => `${t("k_hp_f")} · ${t("k_hp_slope")}`,
+        meters: [["level", "in_k", "Kick in", "raw_k"]] },
+      { id: "k_lim", name: "Limiter", match: /^k_lim_/, on: "k_lim_on", gr: ["gr_klim"],
+        hint: "Look-ahead peak limiter on the kick. Gain pushes the kick into the ceiling.",
+        summary: (t) => `ceiling ${t("k_lim_ceil")}`,
+        meters: [["gr", "gr_klim", "Reduction"], ["level", "kick", "Kick out"]] },
+    ],
+  },
+  {
+    id: "mix", name: "MIX", sub: "IN R", color: "var(--c-mix)",
+    trim: "in_m_trim", inMeter: ["in_m", "raw_m"], send: "par_send_m", fader: "m_lvl", faderName: "Level",
+    meter: "mix", gr: ["gr_lo", "gr_mid", "gr_hi"],
+    hint: "Trim at the input, the send into the parallel bus (taken after the mix's effects, before the fader) and the mix's level in the main.",
+    meters: [["level", "in_m", "Mix in", "raw_m"], ["level", "mix", "After the effects"]],
+    devices: [
+      { id: "m_hp", name: "Low cut", match: /^m_hp_/, on: "m_hp_on",
+        hint: "High pass on the mix: leaves the low end to the kick.",
+        summary: (t) => `${t("m_hp_f")} · ${t("m_hp_slope")}`,
+        meters: [["level", "in_m", "Mix in", "raw_m"]] },
+      { id: "mb", name: "Multiband", match: /^mb_/, on: "mb_on", gr: ["gr_lo", "gr_mid", "gr_hi"], bands: true,
+        hint: "Splits the mix into three bands. Each band is turned down while the same band of the kick is loud (sidechain Kick), or by its own level (Self).",
+        summary: (t) => `${t("mb_sc")} key · ${t("mb_f1").replace(" Hz", "")} / ${t("mb_f2")}`,
+        meters: [["level", "mix", "Mix after the bands"]],
+        bandMeters: { mb_lo: "gr_lo", mb_mid: "gr_mid", mb_hi: "gr_hi" } },
+    ],
+  },
+  {
+    id: "par", name: "PARALLEL", sub: "bus", color: "var(--c-par)", on: "par_on",
+    fader: "par_ret", faderName: "Return", meter: "par", gr: ["gr_par"],
+    feeds: [["Kick send", "par_send_k"], ["Mix send", "par_send_m"]], out: "returns into MASTER",
+    channel: ["par_send_k", "par_send_m", "par_ret"],
+    hint: "The parallel bus: what the two sends feed in, and how loud the compressed signal returns into the main.",
+    meters: [["gr", "gr_par", "Reduction"], ["level", "par", "Return level"]],
+    devices: [
+      { id: "par", name: "Compressor", match: /^par_/, on: "par_on", gr: ["gr_par"],
+        hint: "Kick send + mix send into one heavy compressor. The return fader mixes it under the main, for thickness.",
+        summary: (t) => `${t("par_thr")} · ${t("par_ratio")}`,
+        meters: [["gr", "gr_par", "Reduction"], ["level", "par", "Return level"]],
+        extra: ["Sends and return", ["par_send_k", "par_send_m", "par_ret"]] },
+    ],
+  },
+  {
+    id: "master", name: "MASTER", sub: "OUT L + R", color: "var(--c-master)",
+    fader: "out_lvl", faderName: "Output", meter: "out", gr: ["gr_glue", "gr_lim"],
+    feeds: [["Kick", "k_lvl"], ["Mix", "m_lvl"], ["Parallel", "par_ret"]], out: "mono on OUT L and OUT R",
+    hint: "The main sum of kick, mix and the parallel return, after the master effects.",
+    meters: [["level", "out", "Output"]],
+    devices: [
+      { id: "glue", name: "Glue compressor", match: /^glue_/, on: "glue_on", gr: ["gr_glue"],
+        hint: "Bus compressor on kick + mix + parallel return.",
+        summary: (t) => `${t("glue_thr")} · ${t("glue_ratio")}:1`,
+        meters: [["gr", "gr_glue", "Reduction"]] },
+      { id: "eq", name: "Cuts", match: /^eq_/, anyOn: ["eq_lo_on", "eq_hi_on"],
+        hint: "Low cut and high cut on the main, before the limiter.",
+        summary: (t, on) => `low ${on("eq_lo_on") ? t("eq_lo_f") : "off"} · high ${on("eq_hi_on") ? t("eq_hi_f") : "off"}` },
+      { id: "lim", name: "Limiter", match: /^lim_/, on: "lim_on", gr: ["gr_lim"],
+        hint: "Look-ahead peak limiter, last in the chain: the output never passes the ceiling.",
+        summary: (t) => `ceiling ${t("lim_ceil")}`,
+        meters: [["gr", "gr_lim", "Reduction"], ["level", "out", "Output"]] },
+    ],
+  },
+];
+const FLOW_AFTER = { mix: "›", par: "›" };       // kick + mix feed the parallel bus, all three the master
+const TOOLBAR = ["bypass"];                      // parameters with their own button in the header
+const LEVEL_MIN = -60, GR_MAX = 24, CLIP_DB = -0.2, FADER_TAPER = 2;
+
+const $ = (id) => document.getElementById(id);
+const state = {
+  link: null, demo: false, groups: [], params: new Map(), meterNames: [], devices: new Map(), strips: [],
+  stripMeters: [], detailMeters: [], detailViews: [], detailRows: [], sel: "k_hp",
+  pendingSets: new Map(), described: false, meterWaiting: 0, hello: null, cpuWorst: [], refreshQueued: false,
+};
+
+// ---------------------------------------------------------------- links
+
+// The module over Web Serial: lines in, lines out.
+class SerialLink {
+  constructor(port, onLine, onClose) { this.port = port; this.onLine = onLine; this.onClose = onClose; this.open = false; }
+  async start() {
+    await this.port.open({ baudRate: 115200 });
+    this.open = true;
+    this.writer = this.port.writable.getWriter();
+    this.readLoop();
+  }
+  async readLoop() {
+    const decoder = new TextDecoder();
+    let rest = "";
+    try {
+      this.reader = this.port.readable.getReader();
+      for (;;) {
+        const { value, done } = await this.reader.read();
+        if (done) break;
+        rest += decoder.decode(value, { stream: true });
+        const lines = rest.split("\n");
+        rest = lines.pop();
+        for (const line of lines) this.onLine(line.replace(/\r$/, ""));
+      }
+    } catch (e) { /* unplugged */ }
+    try { this.reader.releaseLock(); } catch (e) {}
+    if (this.open) { this.open = false; this.onClose(); }
+  }
+  send(line) {
+    if (!this.open) return;
+    this.writer.write(new TextEncoder().encode(line + "\n")).catch(() => {});
+  }
+  async close() {
+    this.open = false;
+    try { await this.reader.cancel(); } catch (e) {}
+    try { this.writer.releaseLock(); } catch (e) {}
+    try { await this.port.close(); } catch (e) {}
+  }
+}
+
+// No module: answers from demo.js, keeps the values, invents moving meters.
+class DemoLink {
+  constructor(onLine) {
+    this.onLine = onLine; this.open = true; this.values = new Map(); this.unsaved = 0; this.t0 = performance.now();
+    for (const line of MASTER_DEMO.desc) {
+      const f = line.split("|");
+      if (f[0] === "d") this.values.set(f[1], { v: +f[6], min: +f[4], max: +f[5], def: +f[6], whole: f[3] === "bool" || f[3] === "enum", saved: f[9] === "1" });
+    }
+    this.stored = this.snapshot();
+  }
+  async start() {}
+  async close() { this.open = false; }
+  snapshot() { return new Map([...this.values].map(([k, p]) => [k, p.v])); }
+  reply(lines) { setTimeout(() => { if (this.open) lines.forEach(this.onLine); }, 5); }
+  all(done) { return [...this.values].map(([k, p]) => `p|${k}|${p.v}`).concat(done); }
+  send(line) {
+    const w = line.trim().split(/\s+/);
+    if (w[0] === "hello") this.reply([MASTER_DEMO.hello]);
+    else if (w[0] === "desc") this.reply(MASTER_DEMO.desc);
+    else if (w[0] === "get") this.reply(this.all("ok|get"));
+    else if (w[0] === "set") {
+      const p = this.values.get(w[1]);
+      if (!p || isNaN(+w[2])) return this.reply(["err|set: unknown parameter or no value"]);
+      let v = Math.min(p.max, Math.max(p.min, +w[2]));
+      if (p.whole) v = Math.round(v);
+      if (v !== p.v && p.saved) this.unsaved = 1;
+      p.v = v;
+      this.reply([`p|${w[1]}|${v}`]);
+    } else if (w[0] === "save") { this.stored = this.snapshot(); this.unsaved = 0; this.reply(["ok|save"]); }
+    else if (w[0] === "load") {
+      for (const [k, p] of this.values) if (p.saved) p.v = this.stored.get(k);
+      this.unsaved = 0; this.reply(this.all("ok|load"));
+    } else if (w[0] === "defaults") {
+      for (const p of this.values.values()) p.v = p.def;
+      this.unsaved = 1; this.reply(this.all("ok|defaults"));
+    } else if (w[0] === "m") this.reply([this.meters()]);
+  }
+  meters() {
+    // A 128 BPM kick and a steady mix; only enough to see the meters move.
+    const v = (id) => this.values.get(id).v;
+    const t = (performance.now() - this.t0) / 1000, beat = 60 / 128, ph = t % beat;
+    const kick = -4 - 60 * Math.min(1, ph / 0.5) + v("in_k_trim"), mix = -9 + Math.sin(t * 3) + v("in_m_trim");
+    const hit = Math.exp(-ph / 0.09), bypass = v("bypass");
+    const gr = (on, depth) => (on && !bypass ? Math.max(0, depth) : 0);
+    const band = (b, share) => gr(v("mb_on") && v(`mb_${b}_on`), (kick + share - v(`mb_${b}_thr`)) * (1 - 1 / v(`mb_${b}_ratio`)) * hit * v("mb_amount") / 100);
+    const m = {
+      raw_k: kick - v("in_k_trim"), raw_m: mix - v("in_m_trim"), in_k: kick, in_m: mix,
+      kick: Math.min(kick, v("k_lim_on") ? v("k_lim_ceil") : 0), mix: mix - band("lo", 0) / 3,
+      par: v("par_on") ? -22 + v("par_ret") + v("par_makeup") - 14 : -120, out: Math.min(-3 + 3 * hit, v("lim_on") ? v("lim_ceil") : 0) + v("out_lvl"),
+      gr_klim: gr(v("k_lim_on"), (kick + v("k_lim_gain") - v("k_lim_ceil")) * hit),
+      gr_lo: band("lo", 0), gr_mid: band("mid", -10), gr_hi: band("hi", -22),
+      gr_par: gr(v("par_on"), (Math.max(kick, mix) - 6 - v("par_thr")) * (1 - 1 / v("par_ratio"))),
+      gr_glue: gr(v("glue_on"), (-6 + 6 * hit - v("glue_thr")) * 0.5), gr_lim: gr(v("lim_on"), (-2 + 3 * hit + v("lim_gain") - v("lim_ceil")) * hit),
+      cpu: bypass ? 4 : 47, cpu_max: bypass ? 6 : 58,
+      lat_ms: 2.3 + (bypass ? 0 : (v("k_lim_on") ? v("k_lim_la") : 0) + (v("lim_on") ? v("lim_la") : 0)), unsaved: this.unsaved,
+    };
+    return "m|" + MASTER_DEMO.meters.map((n) => (m[n] ?? 0).toFixed(2)).join(" ");
+  }
+}
+
+// ---------------------------------------------------------------- protocol in
+
+function onLine(line) {
+  const f = line.split("|");
+  switch (f[0]) {
+    case "hello":
+      state.hello = f;
+      $("version").textContent = (f[2] || "") + (state.demo ? " (demo)" : "");
+      break;
+    case "g": state.groups.push({ id: f[1], title: f[2] }); break;
+    case "d": {
+      const p = { id: f[1], group: f[2], kind: f[3], min: +f[4], max: +f[5], def: +f[6], step: +f[7], unit: f[8], saved: f[9] === "1", label: f[10], options: f[11] ? f[11].split(",") : [], value: +f[6], views: new Set() };
+      state.params.set(p.id, p);
+      break;
+    }
+    case "n": state.meterNames = f[1].split(" "); break;
+    case "ok":
+      if (f[1] === "desc") { state.described = true; buildMixer(); send("get"); setButtons(true); }
+      else if (f[1] === "save") note("Settings saved in the module.");
+      else if (f[1] === "load") note("Back to the settings saved in the module.");
+      else if (f[1] === "defaults") note("Factory settings loaded. Not saved yet.");
+      break;
+    case "p": showValue(f[1], +f[2]); break;
+    case "m": state.meterWaiting = 0; showMeters(f[1].split(" ").map(Number)); break;
+    case "err": note("Module: " + f.slice(1).join("|"), true); break;
+    default:
+      if (line.trim()) logLine(line);
+  }
+}
+
+function send(line) { if (state.link) state.link.send(line); }
+
+// ---------------------------------------------------------------- values and their text
+
+const minus = (s) => s.replace("-", "−");
+const fmt = (p, v) => {
+  if (p.kind === "log") return v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2);
+  const decimals = p.step >= 1 || p.step === 0 ? 0 : p.step >= 0.1 ? 1 : 2;
+  return v.toFixed(decimals);
+};
+// The strips' sends and faders are levels: off (silent) at their -60 dB minimum.
+const LEVELS = new Set(STRIPS.flatMap((s) => [s.send, s.fader]).filter(Boolean));
+const isOff = (p, v) => LEVELS.has(p.id) && v <= p.min;
+const fmtUnit = (p, v) => {
+  if (p.kind === "enum") return p.options[Math.round(v)] ?? "?";
+  if (p.kind === "bool") return v >= 0.5 ? "on" : "off";
+  if (isOff(p, v)) return "off";
+  return minus(fmt(p, v)) + (p.unit.startsWith(":") ? "" : " ") + p.unit;
+};
+const dbText = (v) => (v <= -100 ? "−∞" : minus(v.toFixed(1)));
+const clamp01 = (n) => Math.min(1, Math.max(0, n));
+// A value as 0..1 of its control's travel. `taper` > 1 gives the top of a level's range more room.
+const norm = (p, v, taper = 1) => p.kind === "log" ? Math.log(v / p.min) / Math.log(p.max / p.min) : Math.pow((v - p.min) / (p.max - p.min), taper);
+const denorm = (p, n, taper = 1) => {
+  n = clamp01(n);
+  if (p.kind === "log") return +(p.min * Math.pow(p.max / p.min, n)).toPrecision(3);
+  let v = p.min + (p.max - p.min) * Math.pow(n, 1 / taper);
+  if (p.step > 0) v = Math.round(v / p.step) * p.step;
+  return +Math.min(p.max, Math.max(p.min, v)).toFixed(4);
+};
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+// Every control that shows a parameter is a view: { show(value), busy }. A view
+// that is being dragged or typed in (`busy`) is not overwritten by the module's echo.
+function addView(p, view, detail) {
+  p.views.add(view);
+  if (detail) state.detailViews.push([p, view]);
+  view.show(p.value);
+  return view;
+}
+
+// From the module.
+function showValue(id, v) {
+  const p = state.params.get(id);
+  if (!p) return;
+  p.value = v;
+  for (const view of p.views) if (!view.busy) view.show(v);
+  queueRefresh();
+}
+
+// A change made on the page: shown at once (the control that made it shows itself),
+// sent at most every 30 ms per parameter.
+function userSet(p, v, from) {
+  v = Math.min(p.max, Math.max(p.min, v));
+  p.value = v;
+  for (const view of p.views) if (view !== from) view.show(v);
+  state.pendingSets.set(p.id, v);
+  queueRefresh();
+}
+
+function flushSets() {
+  for (const [id, v] of state.pendingSets) send(`set ${id} ${v}`);
+  state.pendingSets.clear();
+}
+setInterval(flushSets, 30);
+// A command that follows a change made a moment ago: the change goes out first.
+function command(line) { flushSets(); send(line); }
+
+// ---------------------------------------------------------------- controls
+
+const factoryTitle = (p) => `${p.label}: factory value ${fmtUnit(p, p.def)}`;
+
+// A value box: type a number (or "off" for a level at its minimum).
+function numberBox(p, cls, detail) {
+  const wrap = el("div", cls), box = el("input"), unit = el("span", "", p.unit);
+  box.type = "text"; box.inputMode = "decimal"; box.title = factoryTitle(p);
+  const view = { busy: false, show(v) { if (document.activeElement !== box) box.value = isOff(p, v) ? "off" : fmt(p, v); } };
+  box.onchange = () => {
+    const text = box.value.trim().replace(",", ".").replace("−", "-");
+    const v = /^(off|-?inf|-?∞)$/i.test(text) ? p.min : parseFloat(text);
+    if (!isNaN(v)) userSet(p, v);
+    box.value = isOff(p, p.value) ? "off" : fmt(p, p.value);
+  };
+  box.onkeydown = (e) => { if (e.key === "Enter") box.blur(); };
+  wrap.append(box, unit);
+  addView(p, view, detail);
+  return wrap;
+}
+
+// Drag up / down on a knob or fader, arrow keys, double-click = factory value.
+function dragValue(node, p, taper, view, pixels) {
+  node.tabIndex = 0;
+  node.setAttribute("role", "slider");
+  node.setAttribute("aria-label", p.label);
+  node.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    node.focus();
+    try { node.setPointerCapture(e.pointerId); } catch (err) { /* a scripted event has no real pointer */ }
+    view.busy = true;
+    let lastY = e.clientY, n = norm(p, p.value, taper);
+    const move = (ev) => {
+      n = clamp01(n + (lastY - ev.clientY) / pixels * (ev.shiftKey ? 0.2 : 1));
+      lastY = ev.clientY;
+      const v = denorm(p, n, taper);
+      view.show(v);
+      userSet(p, v, view);
+    };
+    const up = () => {
+      view.busy = false;
+      node.removeEventListener("pointermove", move);
+      node.removeEventListener("pointerup", up);
+      node.removeEventListener("pointercancel", up);
+    };
+    node.addEventListener("pointermove", move);
+    node.addEventListener("pointerup", up);
+    node.addEventListener("pointercancel", up);
+  });
+  node.addEventListener("dblclick", () => userSet(p, p.def));
+  node.addEventListener("keydown", (e) => {
+    const dir = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key];
+    if (!dir) return;
+    e.preventDefault();
+    if (p.kind !== "log" && p.step > 0) userSet(p, p.value + dir * p.step * (e.shiftKey ? 10 : 1));
+    else userSet(p, denorm(p, norm(p, p.value, taper) + dir * (e.shiftKey ? 0.05 : 0.01), taper));
+  });
+}
+
+function knobControl(p, taper) {
+  const NS = "http://www.w3.org/2000/svg", A0 = -135, SWEEP = 270, R = 20;
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", "0 0 48 48");
+  svg.classList.add("knob");
+  const mk = (tag, cls) => { const n = document.createElementNS(NS, tag); n.setAttribute("class", cls); svg.append(n); return n; };
+  const pt = (a, r) => [24 + r * Math.sin(a * Math.PI / 180), 24 - r * Math.cos(a * Math.PI / 180)];
+  const arc = (a, b) => {
+    const lo = Math.min(a, b), hi = Math.max(a, b);
+    if (hi - lo < 0.5) return "";
+    const [x0, y0] = pt(lo, R), [x1, y1] = pt(hi, R);
+    return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 ${hi - lo > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+  };
+  mk("path", "ktrack").setAttribute("d", arc(A0, A0 + SWEEP));
+  const val = mk("path", "kval"), body = mk("circle", "kbody"), ptr = mk("line", "kptr");
+  body.setAttribute("cx", 24); body.setAttribute("cy", 24); body.setAttribute("r", 14);
+  const origin = p.min < 0 && p.max > 0 ? norm(p, 0, taper) : 0;   // a trim: the arc starts at 0 dB
+  const view = { busy: false, show(v) {
+    const a = A0 + SWEEP * norm(p, v, taper);
+    val.setAttribute("d", arc(A0 + SWEEP * origin, a));
+    const [x0, y0] = pt(a, 6), [x1, y1] = pt(a, 13);
+    ptr.setAttribute("x1", x0); ptr.setAttribute("y1", y0); ptr.setAttribute("x2", x1); ptr.setAttribute("y2", y1);
+    svg.setAttribute("aria-valuetext", fmtUnit(p, v));
+  } };
+  const title = document.createElementNS(NS, "title");
+  title.textContent = `${p.label}: drag up / down, double-click = ${fmtUnit(p, p.def)}`;
+  svg.append(title);
+  dragValue(svg, p, taper, view, 180);
+  addView(p, view, false);
+  return svg;
+}
+
+function faderControl(p, taper) {
+  const THUMB = 26;
+  const fader = el("div", "fader"), thumb = el("div", "fthumb");
+  for (const db of [12, 6, 0, -6, -12, -24, -48]) {
+    if (db > p.max || db < p.min) continue;
+    const tick = el("div", "ftick" + (db === 0 ? " zero" : ""));
+    tick.style.bottom = `calc(${norm(p, db, taper)} * (100% - ${THUMB}px) + ${THUMB / 2}px)`;
+    tick.append(el("span", "", minus(String(db))));
+    fader.append(tick);
+  }
+  fader.append(thumb);
+  fader.title = `${p.label}: drag up / down, double-click = ${fmtUnit(p, p.def)}`;
+  const view = { busy: false, show(v) {
+    thumb.style.bottom = `calc(${norm(p, v, taper)} * (100% - ${THUMB}px))`;
+    fader.setAttribute("aria-valuetext", fmtUnit(p, v));
+  } };
+  dragValue(fader, p, taper, view, 150);
+  addView(p, view, false);
+  return fader;
+}
+
+// A parameter is greyed out while a switch it belongs to is off: `k_hp_f` under
+// `k_hp_on`, every `mb_...` under `mb_on` (the id prefix names the switch).
+function switchesOf(p) {
+  const parts = p.id.split("_"), found = [];
+  for (let n = parts.length - 1; n >= 1; n--) {
+    const id = parts.slice(0, n).join("_") + "_on";
+    if (id !== p.id && state.params.has(id)) found.push(id);
+  }
+  return found;
+}
+
+function switchControl(p, cls, detail) {
+  const wrap = el("label", cls), box = el("input"), text = el("span");
+  box.type = "checkbox";
+  box.onchange = () => userSet(p, box.checked ? 1 : 0);
+  wrap.append(box, text);
+  addView(p, { busy: false, show(v) { box.checked = v >= 0.5; text.textContent = v >= 0.5 ? "on" : "off"; } }, detail);
+  return wrap;
+}
+
+// One setting as a row of the panel under the mixer: name, control, value.
+function rowControl(p) {
+  const row = el("div", "row");
+  const label = el("label", "reset", p.label);
+  label.title = `${factoryTitle(p)} (click)`;
+  label.onclick = () => userSet(p, p.def);
+  row.append(label);
+  if (p.kind === "bool") row.append(switchControl(p, "switch wide", true));
+  else if (p.kind === "enum") {
+    const seg = el("div", "seg wide");
+    if (p.options.length > 4) row.classList.add("long");
+    p.options.forEach((name, i) => {
+      const b = el("button", "", name);
+      b.onclick = () => userSet(p, i);
+      seg.append(b);
+    });
+    row.append(seg);
+    addView(p, { busy: false, show(v) { [...seg.children].forEach((b, i) => b.classList.toggle("sel", i === Math.round(v))); } }, true);
+  } else {
+    const slider = el("input");
+    slider.type = "range"; slider.min = 0; slider.max = 1000; slider.step = 1;
+    const view = { busy: false, show(v) { slider.value = 1000 * norm(p, v); } };
+    slider.oninput = () => userSet(p, denorm(p, slider.value / 1000), view);
+    slider.onpointerdown = () => { view.busy = true; };
+    slider.onpointerup = slider.onpointercancel = slider.onchange = () => { view.busy = false; };
+    row.append(slider);
+    addView(p, view, true);
+    row.append(numberBox(p, "num", true));
+  }
+  state.detailRows.push({ p, row });
+  return row;
+}
+
+// ---------------------------------------------------------------- meters
+
+const pct = (db) => Math.max(0, Math.min(100, 100 * (db - LEVEL_MIN) / -LEVEL_MIN));
+const levelColor = (v) => (v > -1 ? "var(--critical)" : v > -6 ? "var(--warning)" : "var(--good)");
+const grText = (v) => (v >= 0.05 ? "−" + v.toFixed(1) + " dB" : "0 dB");
+
+// A meter of the panel under the mixer: name, bar, value.
+function rowMeter(kind, name, label, clipName, list) {
+  const m = el("div", "meter " + kind), bar = el("div", "bar"), fill = el("div", "fill"), hold = el("div", "hold"), val = el("div", "val");
+  bar.append(fill);
+  if (kind === "level") bar.append(hold);
+  m.append(el("div", "name", label), bar, val);
+  let holdDb = LEVEL_MIN, holdUntil = 0, clipUntil = 0;
+  list.push((mv, now) => {
+    if (kind === "gr") {
+      const v = mv[name] ?? 0;
+      fill.style.width = Math.min(100, 100 * v / GR_MAX) + "%";
+      val.textContent = grText(v);
+      return;
+    }
+    const v = mv[name] ?? -120;
+    if (v >= holdDb || now > holdUntil) { holdDb = v; holdUntil = now + 1500; }
+    fill.style.width = pct(v) + "%";
+    fill.style.background = levelColor(v);
+    hold.style.left = `calc(${pct(holdDb)}% - 1px)`;
+    val.textContent = dbText(holdDb) + " dB";
+    if (clipName && mv[clipName] >= CLIP_DB) clipUntil = now + 2000;
+    if (now < clipUntil) val.append(el("b", "", "▲ CLIP"));
+  });
+  return m;
+}
+
+// The level meter beside a strip's fader; `peak` shows the held peak.
+function stripLevel(name, peak) {
+  const box = el("div", "vlevel"), fill = el("div", "fill"), hold = el("div", "hold");
+  box.append(fill, hold);
+  box.title = "Peak level, −60 .. 0 dB";
+  let holdDb = LEVEL_MIN, holdUntil = 0;
+  state.stripMeters.push((mv, now) => {
+    const v = mv[name] ?? -120;
+    if (v >= holdDb || now > holdUntil) { holdDb = v; holdUntil = now + 1500; }
+    fill.style.height = pct(v) + "%";
+    fill.style.background = levelColor(v);
+    hold.style.bottom = `calc(${pct(holdDb)}% - 1px)`;
+    peak.textContent = dbText(holdDb) + " dB";
+  });
+  return box;
+}
+
+// Gain reduction bars beside a strip's fader (they grow downward) and their largest value as text.
+function stripReduction(names, text) {
+  const box = el("div", "grs");
+  const fills = names.map(() => { const bar = el("div", "vgr"), fill = el("div", "fill"); bar.append(fill); box.append(bar); return fill; });
+  box.title = `Gain reduction, 0 .. ${GR_MAX} dB`;
+  state.stripMeters.push((mv) => {
+    let worst = 0;
+    names.forEach((name, i) => { const v = mv[name] ?? 0; worst = Math.max(worst, v); fills[i].style.height = Math.min(100, 100 * v / GR_MAX) + "%"; });
+    text.textContent = "GR " + grText(worst);
+  });
+  return box;
+}
+
+function smallBar(update) {
+  const bar = el("div", "hbar"), fill = el("div", "fill");
+  bar.append(fill);
+  state.stripMeters.push((mv, now) => update(fill, mv, now));
+  return bar;
+}
+
+function showMeters(values) {
+  const m = {};
+  state.meterNames.forEach((n, i) => { m[n] = values[i]; });
+  const now = performance.now();
+  for (const update of state.stripMeters) update(m, now);
+  for (const update of state.detailMeters) update(m, now);
+  // The worst block of the last 5 s, so a single slow block is not missed.
+  state.cpuWorst = state.cpuWorst.filter((w) => now - w.t < 5000);
+  state.cpuWorst.push({ t: now, v: m.cpu_max });
+  $("cpu").textContent = `${m.cpu.toFixed(0)} % (worst ${Math.max(...state.cpuWorst.map((w) => w.v)).toFixed(0)} %)`;
+  $("lat").textContent = `≈ ${m.lat_ms.toFixed(1)} ms`;
+  $("unsaved").classList.toggle("hidden", !m.unsaved);
+}
+
+setInterval(() => {
+  if (!state.link || !state.described) return;
+  if (state.meterWaiting && performance.now() - state.meterWaiting < 500) return;
+  state.meterWaiting = performance.now();
+  send("m");
+}, 50);
+
+// ---------------------------------------------------------------- the mixer
+
+const P = (id) => state.params.get(id);
+const isOn = (id) => { const p = P(id); return !p || p.value >= 0.5; };
+const valueText = (id) => { const p = P(id); return p ? fmtUnit(p, p.value) : "–"; };
+
+function buildStrip(cfg) {
+  const strip = el("div", "strip"), head = el("button", "shead");
+  strip.style.setProperty("--c", cfg.color);
+  head.append(el("span", "sname", cfg.name), el("span", "ssub", cfg.sub));
+  head.title = `${cfg.name}: trim, send and level settings`;
+  strip.append(head);
+  const entry = { cfg, strip, infos: [] };
+
+  // the channel itself as a selectable device: the strip's own controls as rows
+  const own = [cfg.trim, ...(cfg.channel || [cfg.send, cfg.fader])].map(P).filter(Boolean);
+  const channel = { id: cfg.id + ":ch", name: "Channel", cfg: { hint: cfg.hint, meters: cfg.meters, on: cfg.on }, strip: entry, node: head, sections: [{ params: own }] };
+  state.devices.set(channel.id, channel);
+  head.onclick = () => select(channel.id);
+
+  // input: trim knob + input level, or what feeds the bus
+  const input = el("div", "sec input");
+  if (P(cfg.trim)) {
+    const cap = el("div", "cap"), clip = el("span");
+    cap.append(el("span", "", "Trim"), clip);
+    const row = el("div", "knobrow"), side = el("div", "kside");
+    let clipUntil = 0;
+    side.append(numberBox(P(cfg.trim), "vbox", false), smallBar((fill, mv, now) => {
+      const v = mv[cfg.inMeter[0]] ?? -120;
+      fill.style.width = pct(v) + "%";
+      fill.style.background = levelColor(v);
+      if (mv[cfg.inMeter[1]] >= CLIP_DB) clipUntil = now + 2000;
+      clip.textContent = "";
+      if (now < clipUntil) clip.append(el("b", "", "▲ CLIP"));
+    }));
+    row.append(knobControl(P(cfg.trim), 1), side);
+    input.append(cap, row);
+  } else {
+    input.append(el("div", "cap", "Fed by"));
+    const info = el("div", "info");
+    for (const [label, id] of cfg.feeds || []) {
+      const line = el("span"), value = el("b");
+      line.append(label + " ", value);
+      info.append(line);
+      entry.infos.push(() => { value.textContent = valueText(id); });
+    }
+    input.append(info);
+  }
+  strip.append(input);
+
+  // effects
+  const devs = el("div", "sec devs");
+  entry.devs = devs;
+  strip.append(devs);
+
+  // send into the parallel bus, or where the strip goes
+  const sendSec = el("div", "sec send");
+  if (P(cfg.send)) {
+    sendSec.append(el("div", "cap", "Send → parallel"));
+    const row = el("div", "knobrow");
+    row.append(knobControl(P(cfg.send), FADER_TAPER), numberBox(P(cfg.send), "vbox", false));
+    sendSec.append(row);
+  } else {
+    sendSec.append(el("div", "cap", "Output"), el("div", "info", cfg.out || ""));
+  }
+  strip.append(sendSec);
+
+  // fader, meters
+  const fad = el("div", "sec fad"), cap = el("div", "cap"), peak = el("span", "peak"), row = el("div", "fadrow"), foot = el("div", "fadfoot"), gr = el("span", "grtext");
+  cap.append(el("span", "", cfg.faderName), peak);
+  if (cfg.gr) row.append(stripReduction(cfg.gr, gr));
+  if (P(cfg.fader)) { row.append(faderControl(P(cfg.fader), FADER_TAPER)); foot.append(gr, numberBox(P(cfg.fader), "vbox", false)); }
+  row.append(stripLevel(cfg.meter, peak));
+  fad.append(cap, row, foot);
+  strip.append(fad);
+  return entry;
+}
+
+function buildSlot(dev) {
+  const cfg = dev.cfg, slot = el("div", "slot"), pwr = el("button", "pwr"), body = el("div", "sbody"), sum = el("div", "slotsum");
+  const sw = P(cfg.on);
+  if (sw) { pwr.title = `${sw.label} on / off`; pwr.onclick = (e) => { e.stopPropagation(); userSet(sw, sw.value >= 0.5 ? 0 : 1); }; }
+  else { pwr.classList.add("fixed"); pwr.tabIndex = -1; }
+  body.append(el("div", "slotname", dev.name), sum);
+  slot.append(pwr, body);
+  if (cfg.gr) {
+    const bars = el("div", "slotgr");
+    for (const name of cfg.gr) bars.append(smallBar((fill, mv) => { fill.style.width = Math.min(100, 100 * (mv[name] ?? 0) / GR_MAX) + "%"; }));
+    slot.append(bars);
+  }
+  slot.tabIndex = 0;
+  slot.onclick = () => select(dev.id);
+  slot.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(dev.id); } };
+  dev.node = slot;
+  dev.refresh = () => {
+    const on = cfg.anyOn ? cfg.anyOn.some(isOn) : isOn(cfg.on);
+    pwr.classList.toggle("on", on);
+    slot.classList.toggle("off", !on);
+    sum.textContent = cfg.summary ? cfg.summary(valueText, isOn) : `${dev.sections.reduce((n, s) => n + s.params.length, 0)} settings`;
+  };
+  return slot;
+}
+
+function buildMixer() {
+  const root = $("mixer");
+  root.textContent = "";
+  state.stripMeters = [];
+  state.devices = new Map();
+  state.strips = [];
+  for (const p of state.params.values()) p.views = new Set();
+  const title = new Map(state.groups.map((g) => [g.id, g.title]));
+  const placed = new Set(TOOLBAR);
+  for (const cfg of STRIPS) for (const id of [cfg.trim, cfg.send, cfg.fader, cfg.on, ...cfg.devices.map((d) => d.on)]) if (id) placed.add(id);
+
+  for (const cfg of STRIPS) {
+    const entry = buildStrip(cfg);
+    for (const dcfg of cfg.devices) {
+      const mine = [...state.params.values()].filter((p) => dcfg.match.test(p.id) && !placed.has(p.id));
+      mine.forEach((p) => placed.add(p.id));
+      const dev = { id: dcfg.id, name: dcfg.name, cfg: dcfg, strip: entry, sections: [] };
+      if (dcfg.bands) {
+        // the device's own group as rows, every further group (the bands) as a card
+        const groups = [...new Set(mine.map((p) => p.group))];
+        dev.sections = groups.map((g, i) => ({ params: mine.filter((p) => p.group === g), card: i > 0, title: i > 0 ? title.get(g) || g : "", on: g + "_on", gr: dcfg.bandMeters?.[g] }));
+      } else {
+        dev.sections = [{ params: mine }];
+        if (dcfg.extra) dev.sections.push({ title: dcfg.extra[0], params: dcfg.extra[1].map(P).filter(Boolean) });
+      }
+      state.devices.set(dev.id, dev);
+      entry.devs.append(buildSlot(dev));
+    }
+    state.strips.push(entry);
+    root.append(entry.strip);
+    if (FLOW_AFTER[cfg.id]) root.append(el("div", "flow", FLOW_AFTER[cfg.id]));
+  }
+  // anything the layout does not know: an extra slot on the last strip
+  const rest = [...state.params.values()].filter((p) => !placed.has(p.id));
+  if (rest.length) {
+    const entry = state.strips[state.strips.length - 1];
+    const dev = { id: "other", name: "Other", cfg: { hint: "Settings this page has no place for yet." }, strip: entry, sections: [{ params: rest }] };
+    state.devices.set(dev.id, dev);
+    entry.devs.append(buildSlot(dev));
+  }
+  select(state.devices.has(state.sel) ? state.sel : state.devices.keys().next().value);
+  refresh();
+}
+
+// ---------------------------------------------------------------- the panel under the mixer
+
+function select(id) {
+  state.sel = id;
+  for (const dev of state.devices.values()) dev.node.classList.toggle("sel", dev.id === id);
+  buildDetail();
+}
+
+function buildDetail() {
+  const root = $("detail"), dev = state.devices.get(state.sel);
+  for (const [p, view] of state.detailViews) p.views.delete(view);
+  state.detailViews = [];
+  state.detailMeters = [];
+  state.detailRows = [];
+  root.textContent = "";
+  if (!dev) return;
+  const cfg = dev.cfg;
+  root.style.setProperty("--c", dev.strip.cfg.color);
+
+  const head = el("div", "dhead");
+  head.append(el("span", "dpath", dev.strip.cfg.name), el("span", "dname", dev.name));
+  if (P(cfg.on)) head.append(switchControl(P(cfg.on), "switch", true));
+  head.append(el("span", "dhint", cfg.hint || ""));
+
+  const body = el("div", "dbody");
+  if (cfg.meters?.length) {
+    const meters = el("div", "meters");
+    for (const [kind, name, label, clip] of cfg.meters) meters.append(rowMeter(kind, name, label, clip, state.detailMeters));
+    body.append(meters);
+  }
+  let bands = null;
+  for (const section of dev.sections) {
+    if (!section.params.length) continue;
+    const rows = el("div", "rows");
+    if (section.card) {
+      // a band: its switch and its reduction meter in the card's head, the rest as rows
+      const card = el("div", "band"), bhead = el("div", "bhead"), sw = section.params.find((p) => p.id === section.on);
+      bhead.append(el("h2", "", section.title));
+      if (sw) bhead.append(switchControl(sw, "switch", true));
+      if (section.gr) { const meters = el("div", "meters"); meters.append(rowMeter("gr", section.gr, "Reduction", null, state.detailMeters)); bhead.append(meters); }
+      for (const p of section.params) if (p !== sw) rows.append(rowControl(p));
+      card.append(bhead, rows);
+      if (!bands) { bands = el("div", "bands"); body.append(bands); }
+      bands.append(card);
+    } else {
+      for (const p of section.params) rows.append(rowControl(p));
+      if (section.title) body.append(el("h3", "", section.title));
+      body.append(rows);
+    }
+  }
+  root.append(head, body);
+  refresh();
+}
+
+// Everything that depends on more than one value: greyed rows, slot lamps and summaries, bus info.
+function refresh() {
+  state.refreshQueued = false;
+  for (const { p, row } of state.detailRows) row.classList.toggle("off", switchesOf(p).some((id) => P(id).value < 0.5));
+  for (const dev of state.devices.values()) if (dev.refresh) dev.refresh();
+  for (const entry of state.strips) {
+    entry.strip.classList.toggle("off", !isOn(entry.cfg.on));
+    entry.infos.forEach((f) => f());
+  }
+  const bypass = P("bypass")?.value >= 0.5;
+  document.body.classList.toggle("bypassed", !!bypass);
+  $("bypass").classList.toggle("active", !!bypass);
+  $("bypass").textContent = bypass ? "BYPASSED" : "Bypass";
+}
+
+function queueRefresh() {
+  if (state.refreshQueued) return;
+  state.refreshQueued = true;
+  queueMicrotask(refresh);
+}
+
+// ---------------------------------------------------------------- connection
+
+function note(text, error) { $("note").textContent = text; $("note").classList.toggle("error", !!error); }
+function logLine(text) { const log = $("log"); log.textContent = (log.textContent + text + "\n").split("\n").slice(-40).join("\n"); log.scrollTop = log.scrollHeight; }
+
+function setButtons(on) {
+  for (const id of ["bypass", "save", "revert", "factory", "export", "import"]) $(id).disabled = !on;
+}
+
+function setLink(text, on) {
+  $("linkText").textContent = text;
+  $("link").classList.toggle("on", !!on);
+  $("connect").textContent = state.link ? "Disconnect" : "Connect";
+}
+
+async function disconnect(reason) {
+  const link = state.link;
+  state.link = null;
+  state.described = false;
+  if (link) await link.close();
+  setButtons(false);
+  setLink("Not connected", false);
+  $("unsaved").classList.add("hidden");
+  if (reason) note(reason, true);
+}
+
+async function connect(link, demo) {
+  await disconnect();
+  state.demo = demo;
+  state.groups = [];
+  state.params = new Map();
+  state.hello = null;
+  state.link = link;
+  try { await link.start(); } catch (e) { state.link = null; setLink("Not connected", false); note("Could not open the port: " + e.message, true); return; }
+  setLink(demo ? "Demo mode" : "Connecting…", demo);
+  // The module may still be starting (plugging in, or a reset when the port opens): ask until it answers.
+  for (let i = 0; i < 12 && state.link === link && !state.hello; i++) {
+    send("hello");
+    await new Promise((r) => setTimeout(r, 400));
+  }
+  if (state.link !== link) return;
+  if (!state.hello) return disconnect("No answer from the module. Is the master firmware flashed?");
+  if (state.hello[1] !== "master") return disconnect("This is not the master firmware.");
+  if (!demo) setLink("Connected", true);
+  note(demo ? "Demo mode: every control works on the page, nothing is processed and the meters are invented." : "Connected. Changes are heard at once; press “Save to module” to keep them after power-off.");
+  send("desc");
+}
+
+$("connect").onclick = async () => {
+  if (state.link) return disconnect();
+  if (!("serial" in navigator)) return note("This browser has no Web Serial. Use Chrome or Edge on a computer.", true);
+  let port;
+  try { port = await navigator.serial.requestPort({ filters: [{ usbVendorId: 0x303a }] }); } catch (e) { return; }
+  const link = new SerialLink(port, onLine, () => { if (state.link === link) disconnect("The module was unplugged."); });
+  connect(link, false);
+};
+if (typeof MASTER_DEMO !== "undefined") {
+  $("demo").hidden = false;
+  $("demo").onclick = () => connect(new DemoLink(onLine), true);
+  if (new URLSearchParams(location.search).has("demo")) $("demo").onclick();
+}
+
+$("bypass").onclick = () => { const p = P("bypass"); if (p) userSet(p, p.value >= 0.5 ? 0 : 1); };
+$("save").onclick = () => command("save");
+$("revert").onclick = () => command("load");
+$("factory").onclick = () => { if (confirm("Load the factory settings? Your saved settings stay in the module until you press Save.")) command("defaults"); };
+
+const settingsText = () => [...state.params.values()].filter((p) => p.saved).map((p) => `set ${p.id} ${p.value}`).join("\n") + "\n";
+$("export").onclick = () => {
+  const a = el("a");
+  a.href = URL.createObjectURL(new Blob(["# 32bit master settings\n" + settingsText()], { type: "text/plain" }));
+  a.download = "master-settings.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+$("import").onclick = () => $("file").click();
+$("file").onchange = async () => {
+  const file = $("file").files[0];
+  if (!file) return;
+  const lines = (await file.text()).split("\n").map((l) => l.trim().split(/\s+/)).filter((w) => w[0] === "set" && state.params.has(w[1]) && state.params.get(w[1]).saved && !isNaN(parseFloat(w[2])));
+  // A few per tick: the module answers each one.
+  for (let i = 0; i < lines.length; i += 8) {
+    lines.slice(i, i + 8).forEach((w) => send(`set ${w[1]} ${parseFloat(w[2])}`));
+    await new Promise((r) => setTimeout(r, 20));
+  }
+  $("file").value = "";
+  note(`${lines.length} settings loaded from ${file.name}. Not saved in the module yet.`);
+};
+
+window.addEventListener("beforeunload", (e) => {
+  if (state.link && !$("unsaved").classList.contains("hidden")) { e.preventDefault(); e.returnValue = ""; }
+});
+</script>
+</body>
+</html>

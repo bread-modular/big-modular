@@ -1,8 +1,9 @@
 # 32bit firmware (ESP32-S3)
 
-Two firmwares, one ESP-IDF project each: `polysynth` (default) and `fxrack`
-(the Bread Modular 32bit fxrack, see [fxrack](#fxrack)). Pick one with the
-first argument of `compile.sh` / `flash.sh`.
+Three firmwares, one ESP-IDF project each: `polysynth` (default), `fxrack`
+(the Bread Modular 32bit fxrack, see [fxrack](#fxrack)) and `master` (end-of-chain
+processor for a live set, set up from a web page over USB, see [master](#master)).
+Pick one with the first argument of `compile.sh` / `flash.sh`.
 
 ## polysynth
 
@@ -102,10 +103,12 @@ A build without the setting stops at CMake (and `bm_midi.c` has an `#error`).
 ./setup.sh                    # once: checks / reuses ESP-IDF v5.5.1 (~/esp/esp-idf, ~/.espressif)
 ./compile.sh p                # build only (polysynth = the default)
 ./compile.sh p fxrack         # build the fxrack firmware (also: fxrack p)
-./flash.sh                    # pick JP1, the firmware and the port from menus
+./compile.sh master           # build master (no MIDI in it: no JP1 setting)
+./flash.sh                    # pick the firmware, JP1 and the port from menus
 ./flash.sh p                  # pick the firmware (Enter = polysynth) and the port
 ./flash.sh p fxrack           # build + flash fxrack over the module's USB-C, no firmware menu
 ./flash.sh p fxrack /dev/ttyACM0   # explicit port (macOS: /dev/cu.usbmodemXXXX)
+./flash.sh master             # build + flash master
 MONITOR=1 ./flash.sh p fxrack # flash, then show the log (Ctrl-] quits)
 ```
 
@@ -128,6 +131,7 @@ worst audio block time against the 1451 us budget, and the CV1 / CV2 voltages.
 ```sh
 cd polysynth/tests && make
 cd fxrack/tests && make
+cd master/tests && make
 ```
 
 Builds `main/src/ps_dsp.c` on the host and checks the knob 2 map (bypass at 0, no
@@ -297,3 +301,176 @@ CPU: ~1530 instructions per sample (ESP-IDF QEMU esp32s3, `-icount`; BM classic
 reverb not measured), so roughly 0.55 of the 1451 us block budget at 160 MHz if
 the LX7 needs ~1.3 cycles per instruction. Check the `worst block` log line on
 the module; 240 MHz is the margin if it is short (more U8 current).
+
+## master
+
+End-of-chain processor for a live set, in place of the DAW chain it copies: the
+kick on IN L, everything else (the 4MIX main) on IN R, one mono main on both
+outputs. Every setting is made from a web page over the USB-C port and saved in
+the module, which then runs alone. `master/main/src/ms_dsp.c` is the chain,
+`ms_params.c` the settings table, `ms_proto.c` the USB protocol, `master/web/`
+the page. No MIDI, so no JP1 setting.
+
+```
+IN L kick -> trim -> sub cut -> limiter ---------------+--> kick level --+
+                       | key, before the limiter       +--> send --+     |
+                       v                                           v     v
+IN R mix  -> trim -> low cut -> 3-band dynamics -------+--> send -> parallel compressor -> return
+                                                       +--> mix level ------------------------(+)
+OUT L = OUT R <- output level <- limiter <- low / high cut <- glue compressor <----------------+
+```
+
+| Stage | What it does | Settings |
+|---|---|---|
+| Inputs | trim per input; the page shows both levels and a CLIP flag at the converter's full scale | kick / mix trim +-24 dB |
+| Kick sub cut | Butterworth high pass | on, 10..120 Hz (25), 12 / 24 dB/oct |
+| Kick limiter | look-ahead peak limiter | on, gain 0..24 dB, ceiling (-3 dB), release 1..1000 ms (60), look-ahead 0..5 ms (1.0) |
+| Mix low cut | Butterworth high pass | on, 20..500 Hz (40), 12 / 24 dB/oct |
+| Multiband dynamics | Linkwitz-Riley 24 dB/oct split into low / mid / high (120 Hz, 2.5 kHz); each band a downward compressor keyed by **the same band of the kick** (or of the mix itself: sidechain Self). The key is taken before the kick limiter, so it leads the audio by that look-ahead | on, sidechain Kick / Self, sidechain gain, the two split frequencies, peak / RMS detector, soft knee (6 dB), amount 0..100 %, output, solo band; per band: on, threshold, ratio 1..20, attack 0.1..200 ms, release 5..2000 ms, gain |
+| Parallel compression | kick send + mix send -> one heavy compressor (6 dB knee) -> make-up -> return into the main | on, the two sends, threshold (-35 dB), ratio 1.5..20 (10), attack (2 ms), release (150 ms), make-up (20 dB), return (-6 dB) |
+| Glue compressor | bus compressor on the main sum with the Glue's controls: ratio 2 / 4 / 10 (knee 12 / 8 / 4 dB, wider at low ratios), attack .01 .. 30 ms and release .1 .. 1.2 s in the same steps, release A (a 0.1 s release plus a slow stage that charges while the compressor works: a single hit recovers fast, a long loud passage over ~2 s), range (most reduction), dry / wet, sidechain high pass, soft clip (bends from -6 dB to a -0.5 dB top) | on, threshold (-10 dB), ratio (2), attack (10 ms), release (A), make-up, range, dry / wet, SC high pass, soft clip |
+| Main cuts | Butterworth low cut and high cut | low: on, 15..300 Hz (30); high: off, 2..20 kHz (16 kHz); 12 / 24 dB/oct |
+| Limiter | look-ahead peak limiter, last in the chain: the output never passes the ceiling | on, gain, ceiling (-1 dB), release (100 ms), look-ahead (1.5 ms) |
+| Output | level, and a bypass (kick + mix straight out) for comparing | output level -60..0 dB; bypass is never saved |
+
+Levels in dB with a -60 dB minimum are off at the minimum. The order of the last
+three differs from "glue, limiter, EQ": the cuts sit before the limiter, because a
+filter after a limiter lets peaks through above its ceiling.
+
+Not the DAW's sound: the Glue and the multiband are this firmware's own
+compressors behind the same controls (the multiband has the Above half only, no
+upward compression / expansion below a threshold). Peak limiting is on samples,
+not on the reconstructed wave (no true-peak detection): keep the ceiling a
+little under 0 dB.
+
+| Panel | |
+|---|---|
+| IN L / IN R | kick / mix. They clip a little above +-5 V: trim hot sources before the module |
+| OUT L / OUT R | the same mono main |
+| LED | dim = running, bright = an input is at the converter's full scale, slow blink = bypass |
+| MODE button, CV1 / CV2, MIDI in | not used |
+
+### Web page
+
+`master/web/index.html`, for Chrome or Edge on a computer (Web Serial; not
+Firefox or Safari). Serve it and open `http://localhost:3000` (or open the file
+itself):
+
+```sh
+master/web/run.sh             # port 3000; whatever listens there is stopped first
+PORT=3001 master/web/run.sh   # another port
+```
+
+Connect and pick the module's port (Espressif USB JTAG/serial). The page is a
+mixer of four channel strips, signal top to bottom:
+
+| Strip | Top to bottom |
+|---|---|
+| KICK (IN L) | trim knob + input level / CLIP, effects (Sub cut, Limiter), send into the parallel bus, level fader |
+| MIX (IN R) | trim, effects (Low cut, Multiband), send, level fader |
+| PARALLEL | the two sends that feed it, Compressor, return fader |
+| MASTER | what feeds it, effects (Glue compressor, Cuts, Limiter), output fader |
+
+Each effect is a slot with its on / off lamp, its main values and a small
+gain-reduction bar. **Click a slot and its settings show in the panel under the
+mixer** (the multiband as three band cards); a click on a strip's name shows the
+strip's own trim, send and level there. Beside each fader: gain reduction
+(growing downward) and the level after the strip's effects with peak hold; the
+sends are taken at that point too, before the fader. Knobs and faders: drag up /
+down (Shift = fine), arrow keys, or type the value ("off" for a send or fader at
+its minimum); a double-click, or a click on a setting's name in the panel, gives
+the factory value.
+
+A change is heard at once. **Save to module** writes all settings to flash (the
+audio drops for a moment while it writes); without it they are gone at
+power-off, and the header shows "Unsaved" until then. Revert goes back to the
+saved settings, Factory to the defaults, Export / Import keep a set as a text
+file, Bypass sends kick + mix straight out to compare. The header also shows the
+audio task's CPU load (mean and worst block) and the latency estimate.
+
+The ranges, names and choices come from the firmware's own settings table
+(`desc`); the page's `STRIPS` table only says which strip and slot each one
+belongs to, and a setting it does not know shows up in an "Other" slot on the
+master strip.
+
+**Demo** (or `http://localhost:3000/?demo`) runs the page without the board:
+every control works, the meters are invented and nothing is processed.
+`web/demo.js` holds the settings table for it and is generated (`make web` in
+`master/tools`; the host tests fail when it is stale).
+
+`master/tests/web_check.mjs` drives the page in headless Chromium (node >= 22):
+demo mode with real mouse drags on a knob and a fader, and the Web Serial path
+against a fake port. Not part of `make`:
+
+```sh
+master/web/run.sh &
+node master/tests/web_check.mjs http://localhost:3000/
+```
+
+The protocol is plain text lines (`master/main/include/ms_proto.h`): `hello`,
+`desc`, `get`, `set <id> <value>`, `m` (meters), `save`, `load`, `defaults`. It
+shares the USB port with the ESP-IDF log, whose lines the page shows at the
+bottom. `MONITOR=1 ./flash.sh master` gives a terminal on it.
+
+### Hearing it without the module
+
+```sh
+cd master/tools && make
+./ms_render [-s settings.txt] kick.wav mix.wav out.wav   # the firmware C over two WAV files
+make demo                                                # synthetic 128 BPM loop, WAVs + plot
+```
+
+`ms_render` takes 16 / 24 / 32-bit or float WAVs of one sample rate and the
+page's export file (add `set bypass 1` for the dry sum); it prints the peaks and
+the most gain reduction per stage. `make demo` writes its files to the ignored
+`../research/master/`. On that loop the factory settings duck the mix below
+120 Hz by 9.5 dB right after each kick (0.9 dB left before the next) and the mids
+by 4 dB; a model of a set, not a recording.
+
+### Latency
+
+| Part | Delay |
+|---|---|
+| I2S buffers: 16-frame blocks, 3 DMA buffers (fxrack / polysynth: 64 frames) | 1.1 .. 1.45 ms (3 to 4 blocks, by the start phase) |
+| ES8388 converter filters (ADC + DAC) | ~1 ms assumed, not from a data sheet |
+| Kick limiter look-ahead (the mix is delayed by the same amount) | 1.0 ms as shipped, 0..5 ms |
+| Main limiter look-ahead | 1.5 ms as shipped, 0..5 ms |
+| **Total as shipped** | **about 4.8 ms** (page: "Latency"), **not measured** |
+
+Look-ahead 0 is allowed: the limiter then acts at once (in effect a clipper with
+a release), and the total falls to about 2.3 ms.
+
+### Audio path details
+
+- 24-bit samples (codec word length 24, 32-bit I2S slots; fxrack / polysynth use
+  16): the chain adds gain, so 16-bit input steps would come up with it.
+- 44.1 kHz, single-precision float, state-variable filters (well conditioned at
+  the 10 Hz sub cut), log2 / 2^x approximations within 0.006 dB.
+- **240 MHz** (the others run at 160): QEMU counts 1120 instructions per sample
+  at the factory settings, 1360 with everything on (worst block 1500), 62 in
+  bypass (`master/tools/cpu-bench/run.sh`, needs Espressif's `qemu-xtensa`). The
+  cycles per instruction on the chip are not known here; at 2 the worst block
+  would take 55 % of a 240 MHz core (83 % at 160 MHz) before the I2S driver's
+  own share of each 363 us block. Read the page's CPU figure on the module; the
+  extra supply current is a U8 bench item.
+- PSRAM off (not used). Settings in NVS as text (`set <id> <value>` lines, the
+  export format): an unknown name is skipped, so a later firmware can read an
+  older set.
+
+### State
+
+Built with ESP-IDF v5.5.1 (2026-11-22): 328 KB app, no warnings. Host tests
+(`master/tests`, ASan + UBSan, 585 checks): cut frequencies and slopes, the three
+bands adding up flat (within 0.001 dB), compressor curve and timing, kick-keyed
+ducking and recovery, limiter ceiling at every look-ahead, chain delay, glue
+ratios / range / dry-wet / sidechain filter / soft clip / auto release, parallel
+lift, bypass, random settings over loud noise (always finite and under the
+ceiling), settings export / import, the whole protocol. The page was driven in
+headless Chromium (demo mode and a fake serial port).
+
+**Not bench-tested: the 32bit board is not built.** Open on the module: the
+24-bit codec setting and the 16-frame I2S blocks (first use), CPU load at
+240 MHz and U8 heat, measured in -> out latency, input / output levels, the audio
+drop on Save, and whether opening or closing the port resets the chip on the
+user's computer (the USB-Serial/JTAG reset lines; the page waits for a restart).
+The sound has not been heard: the factory settings are starting points.
