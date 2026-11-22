@@ -50,15 +50,50 @@ typedef struct {
     float att, rel;   // one-pole coefficients per sample
     bool rms;         // detector: mean square over ~10 ms instead of the peak
     float rms_coef;
-    bool auto_rel;    // second, slow release stage (glue "A")
-    float slow_att, slow_rel;
 } ms_comp_coef_t;
 
 typedef struct {
-    float gr;    // gain reduction, dB >= 0
-    float slow;  // auto release stage
-    float ms;    // mean square
+    float gr;  // gain reduction, dB >= 0
+    float ms;  // mean square
 } ms_comp_state_t;
+
+// Glue compressor: the sidechain of an analog VCA bus compressor (SSL G series),
+// as a circuit model and not a copy of one unit.
+//
+//   in --+------------------------------> audio gain cell --> out
+//        |                                      ^
+//        +--> sidechain gain cell --> rectifier, threshold, ratio --> diode --> attack R --+--> buffer
+//                    ^                                                                     |      |
+//                    |                                                       timing capacitor     |
+//                    +----------------------------------------------------- (gain reduction) <----+
+//
+// - Feedback: the detector reads the signal behind a second gain cell that follows
+//   the audio one, so it sees the compressed level. The gain behind the threshold
+//   is ratio - 1, which closes to the ratio on the switch; the loop makes the
+//   attack faster the harder it works.
+// - Timing: the capacitor voltage is the gain reduction in dB. The attack resistor
+//   charges it through a diode, the release resistor across it discharges it all
+//   the time, so a slow attack with a fast release compresses less. Release A is
+//   two capacitors in series, each with its own resistor: a small fast one that
+//   takes a short peak and a large slow one that fills while the compressor works.
+// - Each sample is one implicit step of that network, loop included: no delay in
+//   the feedback, stable at the fastest attack.
+typedef struct {
+    float thr_db;
+    float fb;            // gain behind the threshold: ratio - 1
+    float half_knee;     // dB at the detector
+    float inv_knee;      // 1 / knee
+    float range_db;      // most gain reduction
+    float keep1, keep2;  // what the release resistors leave on each capacitor per sample
+    float chg1, chg2;    // charge per sample and dB across the attack resistor
+    float chg;           // chg1 + chg2
+    float inv_chg;
+    float inv_lin;       // 1 / (1 + chg x ratio): the step above the knee
+} ms_glue_coef_t;
+
+typedef struct {
+    float v1, v2;  // capacitor voltages, dB of gain reduction; v2 only charges in release A
+} ms_glue_state_t;
 
 // Look-ahead peak limiter: sliding minimum of the wanted gain over the look-ahead,
 // release, then a moving average as long as the look-ahead. Output = input delayed
@@ -130,7 +165,7 @@ typedef struct {
 
     // Glue compressor
     bool glue_on;
-    ms_comp_coef_t glue;
+    ms_glue_coef_t glue;
     float glue_wet;  // 0..1
     bool glue_clip;
     bool glue_sc_hp_on;
@@ -173,7 +208,7 @@ typedef struct {
     ms_comp_state_t mb[MS_BANDS];
 
     ms_comp_state_t par;
-    ms_comp_state_t glue;
+    ms_glue_state_t glue;
     ms_svf_state_t glue_sc_hp;
     ms_svf_state_t eq_lo[2], eq_hi[2];
     ms_lim_state_t lim;

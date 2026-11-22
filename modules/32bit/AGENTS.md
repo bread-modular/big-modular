@@ -40,7 +40,9 @@ Module paths are module-relative.
 - **master firmware (2026-11-22)**: `firmware/master`, end-of-chain processor for a live set in place of
   the user's DAW chain: IN L kick (sub cut, look-ahead limiter), IN R mix (low cut, 3-band dynamics keyed
   by the kick's bands), parallel compressor fed from both, then glue compressor (2 / 4 / 10, stepped
-  attack / release, auto release, range, dry / wet, soft clip) -> low / high cut -> look-ahead limiter ->
+  attack / release, auto release, range, dry / wet, soft clip; since 0.2.0 a circuit model of the analog
+  VCA bus compressor: feedback detector, RC timing with the G series two-capacitor release A, gain cell
+  colour) -> low / high cut -> look-ahead limiter ->
   mono on both outputs. 75 settings in one table (`main/include/ms_params.h`), set from
   `firmware/master/web/index.html` over the USB-C port (Web Serial, text protocol `ms_proto.h`; demo mode
   without the module) and saved in NVS on request. The page is a mixer of four channel strips (KICK, MIX,
@@ -49,8 +51,9 @@ Module paths are module-relative.
   `STRIPS` table places them; `web/run.sh` serves it on port 3000 and stops whatever listens there first. New in the
   drivers: 24-bit codec words, 16-frame I2S blocks, 240 MHz. No MIDI / JP1: `./compile.sh master`,
   `./flash.sh master [port]`. Latency about 4.8 ms as shipped (buffers 1.1..1.45 ms + ~1 ms assumed for
-  the codec + 1.0 / 1.5 ms look-aheads), not measured. Builds (328 KB), host tests pass (585 checks),
-  page checked in headless Chromium (`firmware/master/tests/web_check.mjs`, not part of `make`), QEMU count 1120 / 1360 instructions per sample (factory / all on);
+  the codec + 1.0 / 1.5 ms look-aheads), not measured. Builds (0.2.0, 330 KB), host tests pass (632 checks),
+  page checked in headless Chromium (`firmware/master/tests/web_check.mjs`, not part of `make`), QEMU count 1148 / 1388 instructions per sample (factory / all on); the demo loop run through the chain in QEMU
+  (`firmware/master/tools/cpu-bench/audio.sh`) equals the host render within 8 steps of 24 bits;
   **not bench-tested, not heard**. `tools/ms_render` runs the chain over WAV files. See
   `firmware/README.md` section master.
 - Open: JLCPCB preview (U1 QFN pin 1, U2, Y1 rotation), bench (first power-up of the bare-chip circuit:

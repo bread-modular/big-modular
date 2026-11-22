@@ -4,6 +4,9 @@
 #                        parameter table
 #   make demo            a synthetic kick + mix loop through the factory settings,
 #                        WAVs and plots in ../../../research/master/ (ignored)
+#   make glue            the glue compressor alone on test signals: glue.md and
+#                        glue.png in ../../../research/master/glue/; OLD=<ms_render
+#                        of another firmware version> draws that one beside it
 CC ?= cc
 CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Wno-unused-parameter -Werror
 INC := -I../main/include
@@ -27,7 +30,10 @@ check-web: gen_web_demo
 demo: ms_render
 	python3 -B demo.py --render ./ms_render --out $(OUT)
 
+glue: ms_render
+	python3 -B glue_check.py --render ./ms_render --out $(OUT)/glue $(if $(OLD),--old $(OLD))
+
 clean:
 	rm -f ms_render gen_web_demo
 
-.PHONY: web check-web demo clean
+.PHONY: web check-web demo glue clean

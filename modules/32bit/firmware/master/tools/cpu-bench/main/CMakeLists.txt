@@ -8,3 +8,7 @@ idf_component_register(
     INCLUDE_DIRS
         "../../../main/include"
 )
+
+if(MS_BENCH_AUDIO)
+    target_compile_definitions(${COMPONENT_LIB} PRIVATE MS_BENCH_AUDIO=1)
+endif()

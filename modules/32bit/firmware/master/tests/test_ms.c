@@ -506,11 +506,14 @@ static void test_glue(void) {
     run(NULL, buf_m, buf_o, n);
     float pk = db(peak(buf_o, 0, n));
     CHECK(pk <= -0.5f && pk > -1.5f, "soft clip peak %.2f dB", pk);
-    start();
     sine(buf_m, n, 200, 0.4f);
+    start();
     run(NULL, buf_m, buf_o, n);
+    P[MS_P_GLUE_CLIP] = 0;
+    start();
+    run(NULL, buf_m, buf_k, n);
     float err = 0;
-    for (int i = 0; i < n; i++) err = fmaxf(err, fabsf(buf_o[i] - buf_m[i]));
+    for (int i = 0; i < n; i++) err = fmaxf(err, fabsf(buf_o[i] - buf_k[i]));
     CHECK(err < 1e-6f, "soft clip below the knee changes the signal by %g", err);
 
     // Auto release: after a short hit the gain is back much sooner than after a
@@ -537,6 +540,121 @@ static void test_glue(void) {
     CHECK(left[1] > 3.0f * left[0], "auto release after 3 s: %.2f dB left at 300 ms", left[1]);
     printf("glue auto release, reduction left 300 ms later: %.2f dB after a 50 ms hit, %.2f dB after 3 s\n", left[0],
            left[1]);
+}
+
+// Amplitude of the `freq` component of x[from .. to) (a whole number of periods).
+static float tone_amp(const float *x, int from, int to, float freq) {
+    double re = 0, im = 0;
+    for (int i = from; i < to; i++) {
+        double ph = 2.0 * M_PI * (double)freq * i / (double)FS;
+        re += x[i] * cos(ph);
+        im += x[i] * sin(ph);
+    }
+    return (float)(2.0 * sqrt(re * re + im * im) / (to - from));
+}
+
+// The glue as a circuit: feedback detector, timing capacitor, gain cell colour.
+static void test_glue_circuit(void) {
+    // A level step (DC, so the detector has no ripple) at every attack and ratio:
+    // the reduction rises without overshoot, also at the fastest attack where a
+    // loop with a sample of delay would oscillate, and settles on the ratio.
+    static const float ratios[] = {2, 4, 10};
+    const int quiet = 4410, n = 44100;
+    float t63[3] = {0};
+    for (int r = 0; r < 3; r++) {
+        for (int att = 0; att <= 6; att++) {
+            neutral();
+            P[MS_P_GLUE_ON] = 1;
+            P[MS_P_GLUE_THR] = -30;
+            P[MS_P_GLUE_RATIO] = (float)r;
+            P[MS_P_GLUE_ATT] = (float)att;
+            P[MS_P_GLUE_REL] = 5;  // 1.2 s
+            start();
+            for (int i = 0; i < n; i++) buf_m[i] = i < quiet ? 0.001f : 0.5f;
+            run(NULL, buf_m, buf_o, n);
+            float rise = 0;
+            for (int i = quiet + 1; i < n; i++) rise = fmaxf(rise, buf_o[i] - buf_o[i - 1]);
+            CHECK(rise < 1e-6f, "glue %g:1, attack %d: the gain comes back up by %g during the attack", ratios[r], att,
+                  rise);
+            // The attack resistor against the release resistor is a divider: 30 ms
+            // against 1.2 s leaves 2.4 % of the detector's wish unused.
+            static const float att_s[] = {0.00001f, 0.0001f, 0.0003f, 0.001f, 0.003f, 0.01f, 0.03f};
+            float fb = (ratios[r] - 1.0f) * 1.2f / (1.2f + att_s[att]);
+            float want = -(20.0f * log10f(0.5f) + 30.0f) * fb / (1.0f + fb);
+            float got = db(buf_o[n - 1] / 0.5f);
+            CHECK(NEAR(got, want, 0.15f), "glue %g:1, attack %d: settles at %.2f dB, want %.2f", ratios[r], att, got,
+                  want);
+            if (att == 5) {
+                for (int i = quiet; i < n; i++) {
+                    if (db(buf_o[i] / 0.5f) < 0.632f * want) {
+                        t63[r] = 1000.0f * (float)(i - quiet) / FS;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    // Feedback: the 10 ms attack acts in about 10 ms / ratio.
+    CHECK(NEAR(t63[0], 5.0f, 1.5f) && NEAR(t63[2], 1.0f, 0.4f), "glue feedback attack: %.2f / %.2f / %.2f ms",
+          t63[0], t63[1], t63[2]);
+    printf("glue, attack 10 ms on a 24 dB step: 63 %% of the reduction after %.1f / %.1f / %.1f ms at 2 / 4 / 10:1\n",
+           t63[0], t63[1], t63[2]);
+
+    // A slow attack with a fast release compresses a steady tone less.
+    float held[2];
+    for (int slow = 0; slow < 2; slow++) {
+        neutral();
+        P[MS_P_GLUE_ON] = 1;
+        P[MS_P_GLUE_THR] = -30;
+        P[MS_P_GLUE_RATIO] = 1;
+        P[MS_P_GLUE_ATT] = slow ? 6 : 1;  // 30 ms or 0.1 ms
+        P[MS_P_GLUE_REL] = 0;             // 0.1 s
+        start();
+        held[slow] = gain_at(1000, 0.316f, false);
+    }
+    CHECK(NEAR(held[0], -15.0f, 0.5f) && held[1] > held[0] + 2.0f && held[1] < -6.0f,
+          "glue, release 0.1 s: %.2f dB at attack 0.1 ms, %.2f dB at 30 ms", held[0], held[1]);
+    printf("glue 4:1 on a tone 20 dB over, release 0.1 s: %.1f dB at attack 0.1 ms, %.1f dB at 30 ms\n", held[0],
+           held[1]);
+
+    // Gain cell colour without any reduction: 1 kHz at -6 dB.
+    neutral();
+    P[MS_P_GLUE_ON] = 1;
+    P[MS_P_GLUE_THR] = 0;
+    start();
+    sine(buf_m, n, 1000, 0.5f);
+    run(NULL, buf_m, buf_o, n);
+    float h1 = tone_amp(buf_o, n / 2, n, 1000);
+    float h2 = 100.0f * tone_amp(buf_o, n / 2, n, 2000) / h1, h3 = 100.0f * tone_amp(buf_o, n / 2, n, 3000) / h1;
+    CHECK(NEAR(db(h1 / 0.5f), 0.0f, 0.02f), "glue colour: level %.3f dB", db(h1 / 0.5f));
+    CHECK(h2 > 0.03f && h2 < 0.08f && h3 > 0.02f && h3 < 0.05f, "glue colour: H2 %.3f %%, H3 %.3f %%", h2, h3);
+    printf("glue gain cell, 1 kHz at -6 dB, no reduction: second harmonic %.3f %%, third %.3f %%\n", h2, h3);
+
+    // Under reduction the ripple on the timing capacitor adds to it: more on bass
+    // and at a short release, as on the circuit.
+    float thd[2];
+    for (int bass = 0; bass < 2; bass++) {
+        neutral();
+        P[MS_P_GLUE_ON] = 1;
+        P[MS_P_GLUE_THR] = -26;
+        P[MS_P_GLUE_RATIO] = 1;
+        P[MS_P_GLUE_ATT] = 5;  // 10 ms
+        P[MS_P_GLUE_REL] = 0;  // 0.1 s
+        start();
+        float f = bass ? 100 : 1000;
+        sine(buf_m, n, f, 0.5f);
+        run(NULL, buf_m, buf_o, n);
+        double sum = 0;
+        for (int h = 2; h <= 9; h++) {
+            double a = tone_amp(buf_o, n / 2, n, f * (float)h);
+            sum += a * a;
+        }
+        thd[bass] = 100.0f * (float)sqrt(sum) / tone_amp(buf_o, n / 2, n, f);
+    }
+    CHECK(thd[1] > 3.0f * thd[0] && thd[1] < 5.0f, "glue ripple distortion: %.3f %% at 1 kHz, %.3f %% at 100 Hz",
+          thd[0], thd[1]);
+    printf("glue 4:1, attack 10 ms, release 0.1 s, tone 20 dB over: THD %.3f %% at 1 kHz, %.2f %% at 100 Hz\n",
+           thd[0], thd[1]);
 }
 
 static void test_parallel(void) {
@@ -870,6 +988,7 @@ int main(void) {
     test_limiter();
     test_latency();
     test_glue();
+    test_glue_circuit();
     test_parallel();
     test_chain();
     test_fuzz();

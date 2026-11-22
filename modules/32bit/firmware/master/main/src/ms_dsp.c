@@ -13,6 +13,17 @@
 #define CLIP_KNEE 0.5f
 #define CLIP_MAX 0.944f
 
+// Glue rectifier: its two halves are 2.8 % apart (resistor tolerance, as measured
+// on a G series unit), which leaves ripple at the signal frequency on the timing
+// capacitor: a little second harmonic under gain reduction.
+#define GLUE_RECT_SKEW_DB 0.25f
+// Glue gain cell: second and third harmonic that grow with the level into it,
+// about 0.05 % and 0.03 % at -6 dB. A choice within what such VCAs do, not a
+// measurement. Above +-COLOUR_MAX the curve goes on straight.
+#define GLUE_COLOUR_2 0.002f
+#define GLUE_COLOUR_3 0.005f
+#define GLUE_COLOUR_MAX 2.0f
+
 // ---------------------------------------------------------------- fast math
 
 // Cubic through the ends of each octave: continuous, no table.
@@ -156,7 +167,7 @@ static void cut_lp(const ms_svf_coef_t c[2], ms_svf_state_t s[2], int sections, 
 // largest gain reduction (dB) of the block. `amount` scales the reduction.
 static float comp_run(const ms_comp_coef_t *c, ms_comp_state_t *s, const float *det, float *gain, int n,
                       float amount) {
-    float gr = s->gr, slow = s->slow, ms = s->ms, gr_max = 0.0f;
+    float gr = s->gr, ms = s->ms, gr_max = 0.0f;
     const float scale = -amount * LOG2_PER_DB;
     for (int i = 0; i < n; i++) {
         float lvl;
@@ -179,21 +190,62 @@ static float comp_run(const ms_comp_coef_t *c, ms_comp_state_t *s, const float *
         if (want > c->range_db) want = c->range_db;
         gr += (want > gr ? c->att : c->rel) * (want - gr);
         if (gr < 1e-9f) gr = 0.0f;
-        float g = gr;
-        if (c->auto_rel) {
-            // The slow stage charges while the compressor works, so a long loud
-            // passage recovers slowly and a single hit quickly.
-            slow += (gr > slow ? c->slow_att : c->slow_rel) * (gr - slow);
-            if (slow < 1e-9f) slow = 0.0f;
-            if (slow > g) g = slow;
-        }
-        if (g > gr_max) gr_max = g;
-        gain[i] = ms_fast_exp2(g * scale);
+        if (gr > gr_max) gr_max = gr;
+        gain[i] = ms_fast_exp2(gr * scale);
     }
     s->gr = gr;
-    s->slow = slow;
     s->ms = ms;
     return gr_max * amount;
+}
+
+// The glue's sidechain (see ms_glue_coef_t). Writes the linear gain for each
+// sample of the detector input; returns the largest gain reduction (dB).
+static float glue_run(const ms_glue_coef_t *c, ms_glue_state_t *s, const float *det, float *gain, int n) {
+    float v1 = s->v1, v2 = s->v2, gr_max = 0.0f;
+    for (int i = 0; i < n; i++) {
+        float d = det[i];
+        float lvl = DB_PER_LOG2 * ms_fast_log2(fabsf(d) + 1e-10f);
+        if (d < 0.0f) lvl -= GLUE_RECT_SKEW_DB;
+        const float v = v1 + v2;
+        // Level behind the sidechain gain cell, over the threshold.
+        const float over = lvl - c->thr_db - v;
+        v1 *= c->keep1;
+        v2 *= c->keep2;
+        if (over > -c->half_knee) {
+            float want, slope, inv;
+            if (over >= c->half_knee) {
+                want = c->fb * over;
+                slope = c->fb;
+                inv = c->inv_lin;
+            } else {
+                float q = over + c->half_knee;
+                slope = c->fb * q * c->inv_knee;
+                want = 0.5f * q * slope;
+                inv = 1.0f / (1.0f + c->chg * (1.0f + slope));
+            }
+            if (want > v) {
+                // The diode conducts. The new capacitor voltage vn solves
+                //   vn = rest + chg x (want + slope x (v - vn) - vn)
+                // where the middle term is how the detector falls as vn rises.
+                const float rest = v1 + v2;
+                float vn = (rest + c->chg * (want + slope * v)) * inv;
+                if (vn > c->range_db) vn = c->range_db;
+                float across = (vn - rest) * c->inv_chg;
+                if (across > 0.0f) {
+                    v1 += c->chg1 * across;
+                    v2 += c->chg2 * across;
+                }
+            }
+        }
+        if (v1 < 1e-9f) v1 = 0.0f;
+        if (v2 < 1e-9f) v2 = 0.0f;
+        const float g = v1 + v2;
+        if (g > gr_max) gr_max = g;
+        gain[i] = ms_fast_exp2(-LOG2_PER_DB * g);
+    }
+    s->v1 = v1;
+    s->v2 = v2;
+    return gr_max;
 }
 
 static void lim_reset(ms_lim_state_t *s, int la) {
@@ -402,9 +454,14 @@ void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *ou
             svf_hp(&c->glue_sc_hp, &d->glue_sc_hp, x, sc, n);
             dsrc = sc;
         }
-        max_into(&mt->gr_glue, comp_run(&c->glue, &d->glue, dsrc, gain, n, 1.0f));
+        max_into(&mt->gr_glue, glue_run(&c->glue, &d->glue, dsrc, gain, n));
         const float makeup = g[MS_G_GLUE_MAKEUP], wet = c->glue_wet;
-        for (int i = 0; i < n; i++) x[i] += wet * (x[i] * gain[i] * makeup - x[i]);
+        for (int i = 0; i < n; i++) {
+            float a = x[i];
+            float lim = a > GLUE_COLOUR_MAX ? GLUE_COLOUR_MAX : (a < -GLUE_COLOUR_MAX ? -GLUE_COLOUR_MAX : a);
+            float vca = (a + lim * lim * (GLUE_COLOUR_2 - GLUE_COLOUR_3 * lim)) * gain[i];
+            x[i] = a + wet * (vca * makeup - a);
+        }
         if (c->glue_clip) {
             for (int i = 0; i < n; i++) x[i] = soft_clip(x[i]);
         }
