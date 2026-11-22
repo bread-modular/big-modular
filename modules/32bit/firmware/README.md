@@ -328,7 +328,7 @@ OUT L = OUT R <- output level <- limiter <- low / high cut <- glue compressor <-
 | Mix low cut | Butterworth high pass | on, 20..500 Hz (40), 12 / 24 dB/oct |
 | Multiband dynamics | Linkwitz-Riley 24 dB/oct split into low / mid / high (120 Hz, 2.5 kHz); each band a downward compressor keyed by **the same band of the kick** (or of the mix itself: sidechain Self). The key is taken before the kick limiter, so it leads the audio by that look-ahead | on, sidechain Kick / Self, sidechain gain, the two split frequencies, peak / RMS detector, soft knee (6 dB), amount 0..100 %, output, solo band; per band: on, threshold, ratio 1..20, attack 0.1..200 ms, release 5..2000 ms, gain |
 | Parallel compression | kick send + mix send -> one heavy compressor (6 dB knee) -> make-up -> return into the main | on, the two sends, threshold (-35 dB), ratio 1.5..20 (10), attack (2 ms), release (150 ms), make-up (20 dB), return (-6 dB) |
-| Glue compressor | bus compressor on the main sum with the Glue's controls: ratio 2 / 4 / 10 (knee 12 / 8 / 4 dB, wider at low ratios), attack .01 .. 30 ms and release .1 .. 1.2 s in the same steps, release A (a 0.1 s release plus a slow stage that charges while the compressor works: a single hit recovers fast, a long loud passage over ~2 s), range (most reduction), dry / wet, sidechain high pass, soft clip (bends from -6 dB to a -0.5 dB top) | on, threshold (-10 dB), ratio (2), attack (10 ms), release (A), make-up, range, dry / wet, SC high pass, soft clip |
+| Glue compressor | bus compressor on the main sum: a circuit model of the analog VCA bus compressor behind the Glue (feedback detector, RC timing, gain cell colour; section Glue compressor below) with the Glue's controls: ratio 2 / 4 / 10, attack .01 .. 30 ms and release .1 .. 1.2 s in the same steps, release A (two capacitors: a short peak recovers in ~0.1 s, a long loud passage over ~5 s), range (most reduction), dry / wet, sidechain high pass, soft clip (bends from -6 dB to a -0.5 dB top) | on, threshold (-10 dB), ratio (2), attack (10 ms), release (A), make-up, range, dry / wet, SC high pass, soft clip |
 | Main cuts | Butterworth low cut and high cut | low: on, 15..300 Hz (30); high: off, 2..20 kHz (16 kHz); 12 / 24 dB/oct |
 | Limiter | look-ahead peak limiter, last in the chain: the output never passes the ceiling | on, gain, ceiling (-1 dB), release (100 ms), look-ahead (1.5 ms) |
 | Output | level, and a bypass (kick + mix straight out) for comparing | output level -60..0 dB; bypass is never saved |
@@ -337,11 +337,53 @@ Levels in dB with a -60 dB minimum are off at the minimum. The order of the last
 three differs from "glue, limiter, EQ": the cuts sit before the limiter, because a
 filter after a limiter lets peaks through above its ceiling.
 
-Not the DAW's sound: the Glue and the multiband are this firmware's own
-compressors behind the same controls (the multiband has the Above half only, no
-upward compression / expansion below a threshold). Peak limiting is on samples,
-not on the reconstructed wave (no true-peak detection): keep the ceiling a
-little under 0 dB.
+Not the DAW's sound: the multiband is this firmware's own compressor behind the
+same controls (the Above half only, no upward compression / expansion below a
+threshold), and the glue is a model of the analog circuit, not of the DAW's
+device. Peak limiting is on samples, not on the reconstructed wave (no true-peak
+detection): keep the ceiling a little under 0 dB.
+
+### Glue compressor
+
+The sidechain of an analog VCA bus compressor (SSL G series), modelled as a
+circuit (`glue_run` in `ms_dsp.c`, the network in `ms_dsp.h`). A model of how the
+circuit works, not a copy of one unit, and not compared with one.
+
+- **Feedback detector.** The detector reads the signal behind a second gain cell
+  that follows the audio one, so it measures the compressed level. The gain
+  behind the threshold is ratio - 1, which closes to the ratio on the switch.
+  The loop makes the attack faster the harder it works: the 10 ms attack takes
+  63 % of a 20 dB overshoot in 7.5 / 3.9 / 1.6 ms at 2 / 4 / 10:1 (30 ms: 11 ms
+  at 4:1). The first version of this firmware took 15 ms for the same setting,
+  so a transient that passed then may need the next slower attack now.
+- **RC timing.** The gain reduction is the voltage of a timing capacitor. The
+  attack resistor charges it through a diode, the release resistor across it
+  discharges it all the time; attack and release are their RC products. A slow
+  attack with a fast release therefore compresses less (4:1 on a tone 20 dB
+  over, release 0.1 s: 14.9 dB at attack 0.1 ms, 12.3 dB at 30 ms), and a short
+  release leaves ripple on bass (100 Hz under 14 dB of reduction: THD 0.6 % at
+  release A, 1.5 % at 0.1 s; 1 kHz: 0.1 %).
+- **Release A** is the G series network: two capacitors in series, each with
+  its resistor (91k x 0.47 uF = 43 ms, 750k x 6.8 uF = 5.1 s). A short peak
+  goes to the small one and is gone in ~0.1 s; the large one fills while the
+  compressor works (over ~0.6 s) and lets go slowly. After 14 dB of reduction:
+  a 20 ms hit leaves 2.6 dB after 0.1 s and 1.2 dB after 0.5 s; 2 s of loud
+  signal leaves 12.7 dB after 0.1 s, 8.6 dB after 2 s and 4.7 dB after 5 s. On a
+  steady beat it holds a level and moves a little on each kick.
+- **Colour.** The rectifier's two halves are 2.8 % apart (as measured on a
+  unit: second harmonic under reduction), and the gain cell adds second and
+  third harmonic that grow with the level into it: 0.05 % and 0.03 % at -6 dB,
+  a choice within what such VCAs do. Dry / wet at 0 is the clean input.
+- **Each sample is one implicit step** of the network with the loop in it: no
+  sample of delay in the feedback, no overshoot at the 0.01 ms attack at 10:1.
+
+Not from the unit: the threshold is in dB and does not move with the ratio (the
+unit shifts it), the bend at the threshold is about 6 / 4 / 4 dB of input level
+wide (a measured unit: about 4 / 1 dB at 2 / 4:1), and the 0.01 ms attack, the
+0.2 / 0.4 / 0.8 s releases, range, dry / wet, the sidechain filter and the soft
+clip are the Glue's additions. Circuit facts from the Gyraf SSL clone notes
+(<https://www.gyraf.dk/gy_pd/ssl/ssl.htm>) and the circuit mapping of
+<https://github.com/chijenpeng/classic-bus-compressor> (no code from it).
 
 | Panel | |
 |---|---|
@@ -418,12 +460,21 @@ bottom. `MONITOR=1 ./flash.sh master` gives a terminal on it.
 cd master/tools && make
 ./ms_render [-s settings.txt] kick.wav mix.wav out.wav   # the firmware C over two WAV files
 make demo                                                # synthetic 128 BPM loop, WAVs + plot
+make glue                                                # the glue alone on test signals: glue.md + glue.png
+cpu-bench/audio.sh                                       # the loop through the chain on the emulated ESP32-S3
 ```
 
 `ms_render` takes 16 / 24 / 32-bit or float WAVs of one sample rate and the
 page's export file (add `set bypass 1` for the dry sum); it prints the peaks and
 the most gain reduction per stage. `make demo` writes its files to the ignored
-`../research/master/`. On that loop the factory settings duck the mix below
+`../research/master/`. `make glue` measures the glue's curve, attack / release,
+release A and harmonics there (`glue/`; `make glue OLD=<an ms_render of another
+version>` draws that one beside it). `cpu-bench/audio.sh` builds two bars of the
+loop into the bench, runs it in Espressif's QEMU (the chip's instruction set and
+single-precision FPU; not the codec, not cycle timing) and compares every output
+sample with `ms_render`: 2026-11-22 within 8 steps of 24 bits (-120 dB) through
+the whole chain and 2 steps (-132 dB) through the glue alone; the emulated
+output is kept as `qemu/qemu-*.wav`. On that loop the factory settings duck the mix below
 120 Hz by 9.5 dB right after each kick (0.9 dB left before the next) and the mids
 by 4 dB; a model of a set, not a recording.
 
@@ -446,11 +497,12 @@ a release), and the total falls to about 2.3 ms.
   16): the chain adds gain, so 16-bit input steps would come up with it.
 - 44.1 kHz, single-precision float, state-variable filters (well conditioned at
   the 10 Hz sub cut), log2 / 2^x approximations within 0.006 dB.
-- **240 MHz** (the others run at 160): QEMU counts 1120 instructions per sample
-  at the factory settings, 1360 with everything on (worst block 1500), 62 in
-  bypass (`master/tools/cpu-bench/run.sh`, needs Espressif's `qemu-xtensa`). The
+- **240 MHz** (the others run at 160): QEMU counts 1148 instructions per sample
+  at the factory settings, 1388 with everything on (worst block 1562), 62 in
+  bypass (`master/tools/cpu-bench/run.sh`, needs Espressif's `qemu-xtensa`; the
+  glue's circuit model added 28). The
   cycles per instruction on the chip are not known here; at 2 the worst block
-  would take 55 % of a 240 MHz core (83 % at 160 MHz) before the I2S driver's
+  would take 57 % of a 240 MHz core (86 % at 160 MHz) before the I2S driver's
   own share of each 363 us block. Read the page's CPU figure on the module; the
   extra supply current is a U8 bench item.
 - PSRAM off (not used). Settings in NVS as text (`set <id> <value>` lines, the
@@ -459,11 +511,13 @@ a release), and the total falls to about 2.3 ms.
 
 ### State
 
-Built with ESP-IDF v5.5.1 (2026-11-22): 328 KB app, no warnings. Host tests
-(`master/tests`, ASan + UBSan, 585 checks): cut frequencies and slopes, the three
+Built with ESP-IDF v5.5.1 (2026-11-22, 0.2.0): 330 KB app, no warnings. Host tests
+(`master/tests`, ASan + UBSan, 632 checks): cut frequencies and slopes, the three
 bands adding up flat (within 0.001 dB), compressor curve and timing, kick-keyed
 ducking and recovery, limiter ceiling at every look-ahead, chain delay, glue
-ratios / range / dry-wet / sidechain filter / soft clip / auto release, parallel
+ratios / range / dry-wet / sidechain filter / soft clip / auto release, the glue
+circuit (no overshoot and the right level at every attack and ratio, feedback
+attack times, attack against release, colour, ripple distortion), parallel
 lift, bypass, random settings over loud noise (always finite and under the
 ceiling), settings export / import, the whole protocol. The page was driven in
 headless Chromium (demo mode and a fake serial port).

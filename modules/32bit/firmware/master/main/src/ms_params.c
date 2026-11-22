@@ -29,14 +29,16 @@ const ms_group_def_t ms_group_defs[] = {
 const int ms_group_count = (int)(sizeof(ms_group_defs) / sizeof(ms_group_defs[0]));
 
 static const float glue_ratio[] = {2.0f, 4.0f, 10.0f};
-// The knee widens as the ratio falls, as on the bus compressors the Glue follows.
-static const float glue_knee_db[] = {12.0f, 8.0f, 4.0f};
+// Width of the bend in the curve, in dB of input level: softest at 2:1.
+static const float glue_knee_db[] = {6.0f, 4.0f, 4.0f};
 static const float glue_attack_ms[] = {0.01f, 0.1f, 0.3f, 1.0f, 3.0f, 10.0f, 30.0f};
 static const float glue_release_s[] = {0.1f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f};
 #define GLUE_REL_AUTO 6
-#define GLUE_AUTO_FAST_S 0.1f
-#define GLUE_AUTO_CHARGE_S 0.5f
-#define GLUE_AUTO_SLOW_S 2.0f
+// Release A: the two RC pairs of the G series network, 91k x 0.47 uF and
+// 750k x 6.8 uF in series.
+#define GLUE_AUTO_FAST_S 0.0428f
+#define GLUE_AUTO_SLOW_S 5.1f
+#define GLUE_AUTO_CAP_RATIO (0.47f / 6.8f)
 
 #define COMP_KNEE_DB 6.0f
 #define COMP_RANGE_DB 60.0f
@@ -119,6 +121,34 @@ static void comp_set(ms_comp_coef_t *c, float fs, float thr_db, float ratio, flo
     c->rms_coef = ms_time_coef(fs, RMS_WINDOW_S);
 }
 
+// Attack and release are the RC products of the timing network (ms_glue_coef_t);
+// release_s <= 0 is release A.
+static void glue_set(ms_glue_coef_t *c, float fs, float thr_db, float ratio, float knee_in_db, float att_s,
+                     float rel_s, float range_db) {
+    c->thr_db = thr_db;
+    c->fb = ratio - 1.0f;
+    // A bend `knee` wide at the detector is knee x (1 + ratio) / 2 wide at the input.
+    float knee = 2.0f * knee_in_db / (1.0f + ratio);
+    c->half_knee = 0.5f * knee;
+    c->inv_knee = 1.0f / knee;
+    c->range_db = range_db;
+    // expm1 makes a step of the open network the exact exponential.
+    float att = expm1f(1.0f / (fs * att_s));
+    if (rel_s > 0.0f) {
+        c->keep1 = c->keep2 = expf(-1.0f / (fs * rel_s));
+        c->chg1 = att * c->keep1;
+        c->chg2 = 0.0f;
+    } else {
+        c->keep1 = expf(-1.0f / (fs * GLUE_AUTO_FAST_S));
+        c->keep2 = expf(-1.0f / (fs * GLUE_AUTO_SLOW_S));
+        c->chg1 = att * c->keep1;
+        c->chg2 = att * GLUE_AUTO_CAP_RATIO * c->keep2;
+    }
+    c->chg = c->chg1 + c->chg2;
+    c->inv_chg = 1.0f / c->chg;
+    c->inv_lin = 1.0f / (1.0f + c->chg * ratio);
+}
+
 static void lim_set(ms_lim_coef_t *c, float fs, bool on, float gain_db, float ceil_db, float rel_ms,
                     float la_ms) {
     c->on = on;
@@ -182,13 +212,9 @@ void ms_coefs_from_params(const float v[MS_P_COUNT], float fs, int block, ms_coe
     // Glue
     c->glue_on = v[MS_P_GLUE_ON] >= 0.5f;
     int ratio = (int)v[MS_P_GLUE_RATIO], rel = (int)v[MS_P_GLUE_REL];
-    bool auto_rel = rel >= GLUE_REL_AUTO;
-    comp_set(&c->glue, fs, v[MS_P_GLUE_THR], glue_ratio[ratio], glue_knee_db[ratio],
-             glue_attack_ms[(int)v[MS_P_GLUE_ATT]] * 0.001f, auto_rel ? GLUE_AUTO_FAST_S : glue_release_s[rel],
+    glue_set(&c->glue, fs, v[MS_P_GLUE_THR], glue_ratio[ratio], glue_knee_db[ratio],
+             glue_attack_ms[(int)v[MS_P_GLUE_ATT]] * 0.001f, rel >= GLUE_REL_AUTO ? 0.0f : glue_release_s[rel],
              v[MS_P_GLUE_RANGE]);
-    c->glue.auto_rel = auto_rel;
-    c->glue.slow_att = ms_time_coef(fs, GLUE_AUTO_CHARGE_S);
-    c->glue.slow_rel = ms_time_coef(fs, GLUE_AUTO_SLOW_S);
     c->glue_wet = v[MS_P_GLUE_WET] * 0.01f;
     c->glue_clip = v[MS_P_GLUE_CLIP] >= 0.5f;
     c->glue_sc_hp_on = v[MS_P_GLUE_SC_HP] > 20.5f;
