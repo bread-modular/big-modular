@@ -13,9 +13,10 @@ Sources are read-only:
 - Bread Modular footprints, copper unedited (preferred: the user's builds prove them): the RV09
   pot (audio-out RV09 proxy model) and the K2-1808SN-A4SW-01 BOOT/RESET switches (courtyard
   added, pad-overlapping silk removed), as modules/32bit;
-- the installed KiCad stock library for everything else, unedited, including (as 32bit S3) the
-  ESP32-S3 QFN-56 land with its nine thermal vias, the SOIC-8 208 mil flash land, the 3.2 x 2.5 mm
-  crystal, the 6 x 6 mm MODE tact switch and the 3 mm LED;
+- the installed KiCad stock library for everything else, unedited, including the SOIC-8 208 mil
+  flash land, the 3.2 x 2.5 mm crystal, the 6 x 6 mm MODE tact switch and the 3 mm LED; one edit:
+  the ESP32-S3 QFN-56 land's nine thermal vias are drilled 0.3 mm instead of 0.2 mm (root AGENTS.md:
+  no hole under 0.3 mm), pads and positions as stock;
 - one footprint drawn here from the manufacturer drawing: the HRO TYPE-C-31-D-15 vertical USB-C
   (recommended PCB layout, docs/research.md section 5), with the proxy model from
   tools/make_usbc_model.py.
@@ -74,6 +75,10 @@ BM_COURTYARD = {'K2-1808SN-A4SW-01': (2.95, 1.9)}
 # Footprints whose plated thermal vias get the 'heatsink' fabrication property (metadata only):
 # KiCad then counts the SMD part as SMD (no footprint_type_mismatch); copper is unchanged.
 HEATSINK_VIAS = {'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias': 9}
+
+# Thermal-via drill of those footprints, mm: KiCad's 0.2 mm holes are below the 0.3 mm board minimum
+# (root AGENTS.md). The 0.5 mm via pads are kept: they sit inside the exposed pad's copper.
+THERMAL_VIA_DRILL = {'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias': (0.2, 0.3)}
 
 # BM footprint -> 3D model (in 32BIT.3dshapes) and its recorded source.
 BM_MODEL = {
@@ -154,7 +159,14 @@ def heatsink(fp, name):
     assert len(vias) == HEATSINK_VIAS[name], (name, len(vias))
     for p in vias:
         p.SetProperty(pcbnew.PAD_PROP_HEATSINK)
-    return f'fabrication property "heatsink" on the {len(vias)} plated thermal-via pads (metadata)'
+    edit = f'fabrication property "heatsink" on the {len(vias)} plated thermal-via pads (metadata)'
+    if name in THERMAL_VIA_DRILL:
+        old, new = THERMAL_VIA_DRILL[name]
+        for p in vias:
+            assert p.GetDrillSize() == pcbnew.VECTOR2I(mm(old), mm(old)), (name, p.GetDrillSize())
+            p.SetDrillSize(pcbnew.VECTOR2I(mm(new), mm(new)))
+        edit += f'; their drill {old} -> {new} mm (pads and positions unchanged)'
+    return edit
 
 
 # HRO TYPE-C-31-D-15 recommended PCB layout (drawing 2023-10-27; frame: pad columns along Y, A row at -X).

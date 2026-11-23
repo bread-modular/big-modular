@@ -461,7 +461,7 @@ def build_mcu():
 def build_panel():
     path = MODULE / 'panels/front-pcb/usb-audio-panel.kicad_pcb'
     board = new_board(path, 'Big Modular - USB-AUDIO 6HP front panel', [
-        'P2: passive panel, NPTH only (holes, USB-C slot, 2 standoff bolt holes), no copper',
+        'P3: passive panel, NPTH only (holes, 11.0 x 5.2 mm USB-C slot, 2 standoff bolt holes), no copper',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']

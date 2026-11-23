@@ -2,7 +2,8 @@
 
 `main/` (carrier + panel) re-exported on 2026-11-20 for the S3 / R2 carrier: the modules/multi-mix clock
 link (CLK OUT J6 / CLK IN J7, 21 more SMD parts), carrier and panel widened from 10HP to 12HP. `mcu/` is
-the 2026-11-08 export, unchanged (same MCU board, same files). Shared `opt/kicad-tools/jlcpcb/export.py`
+the 2026-11-08 export, unchanged (same MCU board, same files). **Panel set re-exported on 2026-11-23: USB-C
+slot 9.5 -> 11.0 x 5.2 mm (`../panels/README.md`); carrier set untouched.** Shared `opt/kicad-tools/jlcpcb/export.py`
 exporter. Never hand-edit these files: change the sources, then re-export with the commands below.
 The fab-review fixes of 2026-11-08 (F1 MCU fills saved, F2 Q1 collector copper, F3 PCM3168A land) are
 unchanged in S3 / R2.
@@ -46,7 +47,7 @@ in `main/carrier/`, `main/panel/` and `mcu/board/`.
 | Carrier assembly | `main/assembly/bom.csv`, `main/assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 200 parts in 42 BOM rows, all on the back |
 | MCU board PCB | `mcu/usb-audio-max-mcu-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 29.55 mm, same base options as the carrier; **explicit JLC04161H-7628 stack and USB impedance targets below**. Min hole 0.3 mm (59 vias: 58 at 0.6 mm, one 0.5 mm). The USB-C shell legs are plated slots (0.5 / 0.95 mm tools) |
 | MCU board assembly | `mcu/assembly/bom.csv`, `mcu/assembly/positions.csv` | **Economic PCBA, assembly side: Top.** 24 parts in 12 BOM rows, all on the front, J101 USB-C included |
-| Front panel PCB | `main/usb-audio-max-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, **60.6 x 128.5 mm (12HP)**, no assembly. The printable panel is `../panels/front-cad/` |
+| Front panel PCB | `main/usb-audio-max-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, **60.6 x 128.5 mm (12HP)**, no assembly; one routed NPTH slot 11.0 x 5.2 mm (USB-C). The printable panel is `../panels/front-cad/` |
 
 ### USB fabrication constraints (MCU board)
 
@@ -156,7 +157,7 @@ Taken from the manifests; the shared `check` re-hashes them and fails on drift.
 - MCU PCB `39ae92f71854281a70d053b2086155c5a0e12fdfd4d78d21b53fb239a9b95503`.
 - MCU project `4ef0e47ef1a29ea21a5cf080105c3aeec870b59cbe2f3328fda52dfd571db9be`.
 - MCU schematic `709e97d1852fd5b5e4364237aac0331792039be90fd46f37d0b2980506e2f365`.
-- Panel PCB `6b99550725a94eac8a1e64f3cd7a1aa1464010c41f8aef6c500201f53000ddd9`.
+- Panel PCB `5c33e370404c07d052f7380ab3d8292f085b861c2d16ad0aaa9ef711c7935688` (2026-11-23, 11.0 mm USB-C slot).
 - Panel project `5a6fd1595e5d801277a5d1d3dc2d0cbda4f82c685530cccda285ff7337d3e8ba`.
 
 ## Reproduce

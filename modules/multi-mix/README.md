@@ -9,14 +9,14 @@ through 2x5 CLK OUT -> CLK IN ribbons that share the codec clocks only, so stems
 over their own USB ports stay sample-locked; each unit keeps its own MAIN OUT and sends (up to 4 units until
 bench-tested).
 
-**Status: carrier S5 / MCU S4 schematics (ERC 0, netlists asserted) + manual routing of both boards at 20HP (carrier R4, MCU board R3: DRC 0 / unconnected 0 / parity 0; single-sided MCU board on two 1x12 strips, three standoffs, panel P5). Datasheet review done (`docs/research.md` 6a); fab-review fixes applied (section 10); TS MIDI IN jack J11 above USB 1 -> PA10 USART1_RX, CLK IN J7 an unshrouded 2x5 header moved up (section 11, 2026-11-11). R4 / P5 (section 12, 2026-11-19): carrier B.Cu GND pour for the codec heat and the USB-C slot 1.5 mm longer downwards, both from the first modules/usb-audio-max board. JLCPCB export in `jlcpcb/` (carrier bottom Economic 203 parts / 46 rows, MCU board top Economic 25 / 13, panel), not supplier-accepted. C211-C216 = C107043 (C33353 was pre-order only, section 12b). J101 / MS3 courtyards user-accepted for the prototype. Open: 10 Extended R/C placements (user decision). Not built, no firmware.**
+**Status: carrier S5 / MCU S4 schematics (ERC 0, netlists asserted) + manual routing of both boards at 20HP (carrier R4, MCU board R3: DRC 0 / unconnected 0 / parity 0; single-sided MCU board on two 1x12 strips, three standoffs, panel P6). Datasheet review done (`docs/research.md` 6a); fab-review fixes applied (section 10); TS MIDI IN jack J11 above USB 1 -> PA10 USART1_RX, CLK IN J7 an unshrouded 2x5 header moved up (section 11, 2026-11-11). R4 / P5 (section 12, 2026-11-19): carrier B.Cu GND pour for the codec heat and the USB-C slot 1.5 mm longer downwards, both from the first modules/usb-audio-max board. JLCPCB export in `jlcpcb/` (carrier bottom Economic 203 parts / 46 rows, MCU board top Economic 25 / 13, panel), not supplier-accepted. C211-C216 = C107043 (C33353 was pre-order only, section 12b). J101 / MS3 courtyards user-accepted for the prototype. Open: 10 Extended R/C placements (user decision). Not built, no firmware.**
 
 | Path | Contents |
 |---|---|
 | `hardware/multi-mix.kicad_sch` | Carrier: power, codec, inputs, outputs, knobs + mux, clock link, MIDI IN, MCU strips (PDF: `docs/multi-mix-schematic.pdf`) |
 | `hardware/multi-mix-mcu.kicad_sch` | MCU board: CH32V307RCT6, USB-C, strips J112/J113 (PDF: `docs/multi-mix-mcu-schematic.pdf`) |
 | `hardware/multi-mix.kicad_pcb`, `hardware/multi-mix-mcu.kicad_pcb` | Carrier R4 / MCU board R3, 4 layers, placed and routed by hand (carrier: all SMD on B; MCU board: every part on F) |
-| `panels/front-pcb/multi-mix-panel.kicad_pcb` | 20HP passive FR4 panel P5 (NPTH holes, USB-C slot, labels) |
+| `panels/front-pcb/multi-mix-panel.kicad_pcb` | 20HP passive FR4 panel P6 (NPTH holes, 11.0 x 5.2 mm USB-C slot, labels) |
 | `jlcpcb/` | JLCPCB export: `main/` carrier + panel, `mcu/` MCU board (`jlcpcb/README.md`: upload map, hand-soldered parts, audit, order gates) |
 | `docs/geometry.json` | Placement contract (panel frame) |
 | `docs/research.md` | Brief, architecture, decisions, clock-link pinout, MCU pins and strip maps, sourcing, datasheet review, placement, S2/S3 changes and R1 routing, fab-review fixes (S4/R2), MIDI IN (S5/R3), usb-audio-max carry-over (R4/P5), open items |

@@ -3,8 +3,8 @@
 Carrier re-exported on 2026-11-22 (03:31 UTC) for the **S5 / P2 / R5** carrier: S4 / R4 of the same
 day (CS4272 codec, power header at the left edge, everything 8 mm lower, two M3x10 standoffs above the
 MCU board; `../Code.md`) with NE5532 on U4 / U5 / U7 and the reference divider R49 / C38 / C39 in
-place of the VCOM buffer U8 and C33. The panel set is the S4 export of the same day (panel sources
-unchanged). Shared `opt/kicad-tools/jlcpcb/export.py` exporter. The MCU board is unchanged: its set was
+place of the VCOM buffer U8 and C33. **Panel set re-exported on 2026-11-23 (panel P3: USB-C slot 9.5 ->
+11.0 x 5.2 mm, `../panels/README.md`); the carrier and MCU sets are untouched.** Shared `opt/kicad-tools/jlcpcb/export.py` exporter. The MCU board is unchanged: its set was
 re-exported the same day from the same sources (only the Gerber dates and the project-file hash in the
 manifest differ; BOM and CPL are byte-identical). Never hand-edit these files: change the sources,
 then re-export with the commands below.
@@ -39,7 +39,7 @@ in `main/carrier/`, `main/panel/` and `mcu/board/`.
 | Carrier assembly | `main/assembly/bom.csv`, `main/assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 88 parts in 32 BOM rows, all on the back |
 | MCU board PCB | `mcu/usb-audio-mcu-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 29.55 mm, same base options as the carrier; **explicit JLC04161H-7628 stack and USB impedance targets below**. Min hole 0.3 mm (49 vias: 48 at 0.6 mm diameter, U102 VBUS at 0.5 mm). The USB-C shell legs are plated slots (0.5 / 0.95 mm tools) |
 | MCU board assembly | `mcu/assembly/bom.csv`, `mcu/assembly/positions.csv` | **Economic PCBA, assembly side: Top.** 23 parts in 12 BOM rows, all on the front, J101 USB-C included |
-| Front panel PCB | `main/usb-audio-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly |
+| Front panel PCB | `main/usb-audio-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly; one routed NPTH slot 11.0 x 5.2 mm (USB-C, P3) |
 
 ### USB fabrication constraints
 
@@ -106,7 +106,7 @@ Taken from the manifests; the shared `check` re-hashes them and fails on drift.
 - MCU project `461c2ade8cd98aa29194a3737d39c01bf8db58812024cf96e9721967928167fd` (the file as
   committed; the 2026-10-24 manifest carried an older hash).
 - MCU schematic `43e70f7855c31936ca631a70b1bd3d0c74125455bdd0d3efadcd9271dfb442f2` (unchanged).
-- Panel PCB `ee53d49b038c0f63b992448de711562f8187d9a64841c3e5a4d4a3420e560978`.
+- Panel PCB `a4d53807a0e953fc107ef9eb6f71818109a88a01dfc8acbe8c1250c86f23f7dc` (P3, 2026-11-23).
 - Panel project `9742319ffc9e26c7d1e061c14dd3f10fe0a9ccb5b08de1d4e744babafa57fb64`.
 
 ## Reproduce
@@ -172,7 +172,7 @@ python3 -B opt/kicad-tools/jlcpcb/assembly.py audit \
 - **Carrier drill files:** PTH 114 vias (0.3 mm) and 46 round THT holes (1.0 mm) plus the routed
   jack / pot slots (0.6 / 1.1 mm); NPTH 2 x 3.2 mm (MS1 / MS2).
 - **Panel drill file:** NPTH only: 2 x 3.2 mm rail holes, 2 x 3.2 mm standoff holes, 4 x 6.2 mm jacks,
-  4 x 7.2 mm pots and the 9.5 x 5.2 mm USB-C slot; panel DRC 0.
+  4 x 7.2 mm pots and the USB-C slot (11.0 x 5.2 mm since P3, 2026-11-23: 5.2 mm tool routed X12.1 to X17.9); panel DRC 0.
 - **BOM/CPL:** carrier 88 parts / 32 rows, all `bottom`; MCU 23 parts / 12 rows, all `top`;
   every row has LCSC, MPN and manufacturer.
 - **Printed panel:** `../panels/front-cad/` regenerated from the panel PCB at the S4 export (13 holes

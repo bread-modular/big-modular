@@ -1,98 +1,81 @@
-# 32bit contract (S3 schematic, R3 routing)
+# 32bit contract (S4: carrier S4 / R2, MCU board S1 / R2, panel P2)
 
 | | |
 |---|---|
-| KiCad project | `hardware/32bit.kicad_{pro,sch,pcb}` |
-| Panel | `panels/front-pcb/32bit-panel.kicad_{pro,pcb}` (FR4, NPTH only) |
-| Generators, profile | `tools/` (`build_schematic.py`, `circuit32.py`, `build_layout.py`, `import_footprints.py`, `sexp.py`, `kicad-project.json`) |
-| Placement contract | `docs/geometry.json` |
-| Circuit intent and decisions | `docs/research.md` |
-| Evidence | `docs/fit/` (native ERC/DRC JSON, render), `docs/32bit-schematic.pdf`, `docs/schematic-symbols.json` |
+| KiCad projects | `hardware/32bit.kicad_{pro,sch,pcb}` (carrier), `hardware/32bit-mcu.kicad_{pro,sch,pcb}` (MCU board) |
+| Panel | `panels/front-pcb/32bit-panel.kicad_{pro,pcb}` (FR4, NPTH only), `panels/front-cad/` (printed) |
+| Generators | `tools/build_schematic.py` + `circuit_carrier.py` / `circuit_mcu.py`, `build_project.py`, `import_footprints.py`, `build_layout.py panel`, `carrier_from_usb_audio.py` (one-time S4 start) |
+| Shared-tool profiles | `tools/kicad-project.json` (carrier + panel manifest), `tools/kicad-project-mcu.json` |
+| Placement and stack contract | `docs/geometry.json` |
+| Circuit intent and decisions | `docs/research.md` section 9 (9.1 result, 9.2 fab review); S1..S3 in sections 1-8 are history |
+| Firmware pin map | `docs/firmware-pins.md` |
+| Evidence | `docs/fit/` (native ERC / DRC JSON, renders), `docs/32bit-schematic.pdf`, `docs/32bit-mcu-schematic.pdf` |
 
-## Fixed by the brief (user, 2026-10-21)
+The S3 contract (one board, ES8388, MIDI, CV inputs) is in git history.
 
-- Bread Modular `32bit-5v` (ESP32-S3-WROOM-1U-N16R8 + ES8388) as a Eurorack module, **6HP**, 4-layer carrier.
-  **S3 (user, 2026-11-15):** the module is replaced by ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal, so the
-  whole carrier is JLCPCB Economic PCBA; same memory map (16 MB flash, 8 MB octal PSRAM), GPIOs and firmware.
-- Top: **MIDI in**, **two audio inputs**, **two CV inputs**. Bottom: **two outputs**. **Two pots**
-  (CV1/CV2 attenuators, unpatched = knob, as BM). **Mode button** and **LED**.
-- USB-C and BOOT/RESET as modules/16bit (B side, top edge).
-- S2 (user, 2026-10-21): the radio is never used; IN R is **not** normalled (firmware handles mono);
-  OUT L/OUT R sit at the side edges (X5.5/X24.5) like the top jacks.
-- Schematic nets connected for readability. R1 (user 2026-10-21): all parts placed and routed by hand
-  (manual divide and conquer, root `AGENTS.md`); batch scripts and DRC reports in `research/r1/`.
+## Fixed by the brief (user, 2026-11-23)
 
-## Design rules kept from the repo
+- 32bit runs `master` in front of PA systems, so it takes the audio path of modules/usb-audio S5: **CS4272**
+  with its own 24.576 MHz oscillator, NE5532 stages, AMS1117-5.0 +5VA. Two in, two out, DC-coupled.
+- **Two boards as modules/usb-audio**: the analog carrier and a separate **ESP32-S3 MCU board** (ESP32-S3R8 +
+  W25Q128JVSIQ + 40 MHz crystal) on two 1x10 strips over the carrier F side, vertical **USB-C through the
+  panel**. Not the CH32V307 board (CPU load, 8 MHz I2S limit).
+- **No CV inputs, no MIDI.** Two 50k pots, a MODE button and an LED are firmware controls on ESP32 GPIOs,
+  not in the audio path.
+- ESP32-S3 current decided from datasheets (about 130 mA typical, 180 mA design maximum): R1 22R 1 W.
+- Two M3x10 standoffs above the MCU board, as modules/usb-audio P2.
+- Two separate JLCPCB orders, no panelization (the boards share no part code).
 
-- BM 32bit-5v GPIO map (I2S IO11-14/IO21, button IO8, LED IO18, MIDI RXD0) except the R1 moves below.
-  User 2026-10-21: ESP32 pins and op-amp halves may change for routing, but every change that
-  touches firmware is logged in `docs/firmware-pins.md` (BM GPIO -> 32bit GPIO, change log,
-  behaviour differences). R1: CV1 = U7B/U6B, CV2 = U7A/U6A; CV1/CV2 ADC IO9/IO10 -> IO1/IO2;
-  I2C IO47/IO48 -> IO38/IO39; codec inputs LIN1/RIN1 -> LIN2/RIN2.
-  GPIO33-37 and SPICS1 (octal PSRAM inside the ESP32-S3R8) stay open; GPIO26-32 are the flash (U2).
-- S3 chip circuit after the Espressif hardware design guidelines: VDD3P3 / VDDA on +3V3_ESP32 (FB1, C6,
-  C5, C12, C13), VDD3P3_RTC / VDD3P3_CPU on +3V3 (C14, C15), VDD_SPI = 3.3 V out of the chip (C16, U2,
-  C17), 40 MHz crystal with 12p loads and a 0R on XTAL_P, 0R on the flash clock, 10k pull-ups on EN and
-  GPIO0. LNA_IN is left open (radio never started); strapping pins GPIO3 / 45 / 46 open (defaults).
-- modules/16bit parts for jacks (PJ301M-12), pots (BM RV09 50k), MODE switch, LED, power entry,
-  MIDI front end, CV chain. BM footprints preferred (ES8388, RV09, K2, FB1 on C_0805).
-- All SMD on B (one assembly side); jacks, pots, LED, header and SW1 hand-soldered.
-- PWR_FLAGs only where ERC can't see a source: J6 entry, ±12V_F, +3V3_ESP32 (FB1), +3V3_8388 (R5).
-- Routing: manual divide and conquer, no autorouters, no vias in SMD pads (root `AGENTS.md`). F carries
-  the long runs and every crossing of the pot row (RV1/RV2 tab gaps, not between pot pins); In1 solid GND,
-  no tracks; In2 +3V3 plane, one short +3V3_8388 hop joining the codec's two supply islands (plane stays
-  one piece). U8 has +5V tab patches on F and B tied by four thermal vias beside the tab.
+## Design rules
+
+- The carrier keeps the reference designators and the routed copper of the usb-audio S5 carrier. Changes
+  to that circuit are listed at the top of `tools/circuit_carrier.py`.
+- Link: J6 = 1 +3V3, 2 GND, 3 EN, 4 BOOT, 5 MODE, 6 LED, 7 I2C_SDA, 8 I2C_SCL, 9 POT1, 10 POT2; J7 as
+  usb-audio (+3V3, GND, SCLK, GND, LRCK, ADC, DAC, CODEC_RST, GND, GND). J6 differs from usb-audio: the two
+  MCU boards are not interchangeable (B silk on both boards).
+- The codec is the I2S clock master, the ESP32-S3 the slave. The codec leaves reset as a slave, so
+  R14 / R16 / R48 hold the I2S lines low until the firmware has set it up.
+- ESP32-S3 circuit after the Espressif hardware design guidelines: decoupling per supply pin, VDD_SPI =
+  3.3 V out of the chip for the flash, 10k + 1u on EN, 10k on GPIO0, strapping pins GPIO3 / 45 / 46 open,
+  GPIO33-37 and SPICS1 open (PSRAM inside the package), LNA_IN open: the radio is never started.
+- USB: data only, VBUS powers nothing. Full speed, so the pair is routed without the high-speed rules
+  (`tools/check_usb.py` reports them as failed; judged in `jlcpcb/README.md`).
+- Carrier: all SMD on B, jacks / pots / LED / MODE / strips on F, power header upright at the left edge on
+  B. MCU board: all SMD on F (faces the panel), nothing on B.
+- 4 layers each: F signal / In1 GND / In2 +3V3 (carrier: + a +5VA island) / B signal. No tracks on the
+  inner layers. No vias in SMD pads (the ESP32-S3 land's own nine thermal vias are the exception; they are
+  drilled 0.3 mm, not KiCad's 0.2 mm: no hole under 0.3 mm on either board, root `AGENTS.md`).
+- Heat: U2 AMS1117-3.3 drops 0.7 to 0.8 W. Its tab has a +3V3 patch on B and F and seven vias beside the
+  tab into the In2 plane (R2). Keep them when touching that corner.
+- Panel: USB-C slot 11.0 x 5.2 mm at X15 Y24.75 (P2). The slot ends must stay over the shell's rounded
+  ends; a narrower slot of this height pinches the shell corners.
+- Root `AGENTS.md` rules hold: 1 mm edge keep-out, 2 mm from pot / jack pads, manual routing, no
+  pre-order parts.
 
 ## Sources and generators
 
-- `tools/build_schematic.py` + `tools/circuit32.py` own `hardware/32bit.kicad_sch`, `32BIT.kicad_sym`
-  and `sym-lib-table` (modules/16bit drawing engine). The build asserts nothing dangles and that
-  the native netlist equals the circuit table.
-- `tools/build_layout.py` places from `docs/geometry.json`, parks unplaced SMD off the board and
-  takes nets/values/fields from the native netlist. Once SMD placement starts by hand on the board,
-  the board owns placement: do not rerun it over hand work.
-- `tools/import_footprints.py` rebuilds `hardware/32BIT.pretty` / `32BIT.3dshapes` (`PROVENANCE.json`).
+- `tools/build_schematic.py` writes both schematics, `32BIT.kicad_sym` and `sym-lib-table` from the two
+  circuit tables and asserts the native netlists against them.
+- Both boards are routed: the board files own placement and copper. `tools/build_layout.py` is only run
+  as `build_layout.py panel` (from `docs/geometry.json`); `build_layout.py mcu` and
+  `carrier_from_usb_audio.py --write` would discard the routing.
+- After a sourcing change, rebuild the schematic and copy the fields onto the board footprints
+  (`jlcpcb/README.md`, Reproduce).
+- `panels/front-cad/build_front_panel.py` (FreeCAD, headless) makes the printed panel from the panel PCB.
+- `tools/render_fit.py` renders the stack into `docs/fit/`; `tools/check_edges.py` measures courtyards to
+  the edge and SMD pads to pot / jack pads.
 
-## Verification (R1 routed, 2026-10-21)
+## Verification (fab review, 2026-11-23)
 
-- Native ERC `--severity-all`: 0. Native DRC `--severity-all --schematic-parity --refill-zones`:
-  0 violations, 0 unconnected, 0 parity, no exclusions. Panel DRC 0.
-- Shared `kicad_tools.py check`: ERC 0, DRC 0 violations, 0 unconnected, parity 0; `order_ready: false`.
-- Manual: no vias in/touching SMD pads, no tracks on In1, In1 GND and In2 +3V3 planes one piece each,
-  no zero-length/duplicate segments (off-grid ends only on 1.27 mm pad axes).
-- JLCPCB export: `jlcpcb/` re-exported from R2 (2026-10-22; bottom side, 90 parts / 38 rows, BOM
-  unchanged from R1, live catalog audit from R1). U1 (C3013946) is Standard-PCBA only, not Economic:
-  user chose Standard PCBA (2026-10-22). Shared `check` manifest equal.
-- Not done: 3D fit, supplier acceptance, bench.
-
-## Verification (R2 hand-solder clearance, 2026-10-22)
-
-- Every SMD pad >= 2.0 mm (copper to copper) from every jack and pot pad, lugs included (R1: 35 parts
-  under 2 mm), except four user-accepted parts (option A, 2026-10-22: the user moved them inward for
-  edge margin and kept them): R5 1.33 mm from RV2, C27 1.62 / R55 1.63 / C46 1.75 mm from J5. Next
-  closest: U6, R15, R18 2.02 mm; C6, C25, C26 2.03 mm; R54 2.06 mm. Moves and free-space map:
-  `docs/research.md` section 7.
-- Native ERC 0; native DRC `--severity-all --schematic-parity --refill-zones`: 0 violations,
-  0 unconnected, 0 parity, no exclusions. Shared `check`: ERC 0, DRC 0 / 0 / 0.
-- Manual: no vias in/touching SMD pads, no tracks on In1, In1 GND and In2 +3V3 one piece each, no
-  dangling ends, zero-length or duplicate segments; new off-grid points only on pad axes.
-- Courtyards under 0.5 mm from the edge (copper >= 0.5 mm): R4 0.49 mm, plus R1's J7, SW2/SW3, U1 and
-  the jacks. After the user's moves C6 is 0.53 mm, C27/R55 0.82 mm, R5 > 1 mm.
-- B silk MIDI JP1 labels as modules/16bit: P (pad 1 RX_Q, protected), D (pad 3 MIDI_IN, direct),
-  legend P=PROT / MIDI JP1 / D=DIRECT beside it. DRC 0 / 0 / 0 after adding them.
-
-## Verification (S3 schematic + R3 routing, 2026-11-15)
-
-- Native ERC `--severity-all`: 0. Native DRC `--severity-all --schematic-parity`, saved fills and
-  `--refill-zones`: 0 violations, 0 unconnected, 0 parity, no exclusions. Shared `check`: ERC 0,
-  DRC 0 / 0 / 0, manifest equal after the export.
-- Manual (`research/s3/checks.py`): no vias in or within 0.05 mm of an SMD pad (130 vias); only the R2
-  +3V3_8388 hop on In2, nothing on In1; In1 GND and In2 +3V3 one piece each; no zero-length or duplicate
-  segments.
-- Hand-solder clearance: FB1 2.005 mm and C6 2.006 mm from J4 T; next U6 2.02 mm (R2). The four
-  user-accepted R2 parts are unchanged. No new courtyard under 1 mm from the edge.
-- Crystal: both lines on B over the In1 GND plane, 1.7 mm (XTAL_P to R6) + 3.6 mm (R6 to Y1) and 7.3 mm
-  (XTAL_N); case pads tied under the crystal to one GND via. Flash lines 4-9 mm on B; only SPIHD and
-  VDD_SPI hop on F.
-- JLCPCB export: `jlcpcb/` (carrier re-exported, 103 parts / 43 rows, all Economic-eligible by the
-  2026-11-15 live check). Not done: JLCPCB preview, supplier acceptance, bench.
+- Shared `kicad_tools.py check`, both profiles: ERC 0, DRC 0 (all severities), 0 unconnected, parity 0,
+  no exclusions, manifests equal after the export; `order_ready: false` as always.
+- Native DRC with saved fills and `--refill-zones`: 0 / 0 / 0 on the carrier after R2; panel DRC 0.
+- Independent: native netlists equal the board pads (carrier 283 pins / 100 parts, MCU board 152 / 27),
+  LCSC fields equal; J6 / J7 equal J102 / J103 in net and position; panel holes on their parts.
+- Carrier 753 tracks / 124 vias, MCU board 239 / 41; no via in or touching an SMD pad; In1 one piece (+ two
+  pad-tied 1 mm2 slivers on the carrier), In2 +3V3 and +5VA one piece each.
+- Courtyards >= 1.02 mm (carrier) / 1.06 mm (MCU board) from the edge; SMD >= 2.03 mm from pot / jack pads.
+- All 46 LCSC codes live on 2026-11-23: MPN and package equal, free stock above the need, minimum
+  purchase 1.
+- Not done: JLCPCB preview (rotations, pin 1), supplier acceptance, build, any measurement. No CS4272
+  board has been built yet (modules/usb-audio S5 is the same codec circuit).

@@ -6,8 +6,8 @@
 | `front-cad/` | FreeCAD printable panel, 2.0 mm thick, plain (no labels): `build_front_panel.py`, `.FCStd`, `.step`, `.stl` |
 
 Holes (P3 fit study, 2026-11-09): top line jacks Ø6.2 at Y16.6 (SEND A X6.6, SEND B X18.1, RTN A X35.5,
-RTN B X49.5, OUT X63.5), level/MAIN pots Ø7.2 at Y30 below RTN A, RTN B and OUT; USB-C slot 9.5 x 5.2 at
-X84.1 Y21.75 (extended 1.5 mm downwards 2026-11-19 as on the built modules/usb-audio-max panel, top edge unchanged; the shell stands 1.3 mm proud); channel columns X17.9 / 39.7 / 61.5 / 83.3 with IN jacks Y47
+RTN B X49.5, OUT X63.5), level/MAIN pots Ø7.2 at Y30 below RTN A, RTN B and OUT; USB-C slot **11.0 x 5.2** at
+X84.1 Y21.75 (extended 1.5 mm downwards 2026-11-19 as on the built modules/usb-audio-max panel, top edge unchanged; P6, 2026-11-23: widened from 9.5 mm, the 9.5 mm slot's round ends cut 0.034 mm into the shell's rounded upper corners (nominal; found in the modules/32bit fab review); 11.0 mm leaves 0.27 mm round the upper half, same centre, top and bottom edge; the shell stands 1.3 mm proud); channel columns X17.9 / 39.7 / 61.5 / 83.3 with IN jacks Y47
 and SEND A / SEND B / VOL pots at Y65.5 / 84 / 106 (18 mm big-knob reserve on VOL); USB 1 / USB 2 jacks Ø6.2 at X94.85 Y82.1 / Y96.3; rail holes Ø3.2 at
 X12.58 / X93.86; standoff holes H31-H33 Ø3.2 at X28.8 / X72.4 Y114 and X84.1 Y13.75 (above the USB slot; coaxial with the
 carrier MS1-MS3 M3x10 hex standoffs). The printed panel has the same holes and slot; the USB-C shell stands 0.9 mm proud of it.

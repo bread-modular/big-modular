@@ -225,10 +225,10 @@
    16.75
   ],
   "size_mm": [
-   9.5,
+   11.0,
    5.2
   ],
-  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm) with ~0.27 mm clearance a side, as modules/usb-audio; the shell passes through and stands 1.3 mm proud. User 2026-11-19: extended 1.5 mm downwards (was 9.5 x 3.7 at Y16; top edge kept at Y14.15, bottom Y17.85 -> Y19.35), so it is now 0.27 mm above and ~1.77 mm below the shell."
+  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm) with ~0.27 mm clearance a side, as modules/usb-audio; the shell passes through and stands 1.3 mm proud. User 2026-11-19: extended 1.5 mm downwards (was 9.5 x 3.7 at Y16; top edge kept at Y14.15, bottom Y17.85 -> Y19.35), so it is now 0.27 mm above and ~1.77 mm below the shell. 2026-11-23 (fab review of modules/32bit, same slot): 9.5 -> 11.0 mm wide, same centre, top and bottom edge. At 9.5 the slot's R2.6 ends cut 0.034 mm into the shell's rounded upper corners (R1.58, nominal); at 11.0 the end circles sit over the shell's end circles, 0.27 mm clear round the upper half."
  },
  "carrier_headers": [
   {

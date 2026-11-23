@@ -6,8 +6,8 @@
 | `front-cad/` | FreeCAD printable panel, 2.0 mm thick, plain (no labels): `build_front_panel.py`, `.FCStd`, `.step`, `.stl` |
 
 Holes (panel frame, 12HP): 14 jacks Ø6.2 (three columns X12.05 / 30.3 / 48.55, rows Y46.3 / 62.25 / 78.2 / 94.15 / 110.1;
-IN 1-6 in the top two rows, OUT 1-8 below, the ninth spot empty), USB-C slot 9.5 x 5.2 mm at X30.3
-Y16.75 (extended 1.5 mm downwards 2026-11-19, top edge unchanged; the shell stands 1.3 mm proud), rail holes Ø3.2 at X12.58 / X53.22, standoff holes H20/H21 Ø3.2 at X10.05 / X50.55 Y13.75 (top corners, level with the USB-C) (coaxial with the
+IN 1-6 in the top two rows, OUT 1-8 below, the ninth spot empty), USB-C slot **11.0 x 5.2 mm** at X30.3
+Y16.75 (extended 1.5 mm downwards 2026-11-19, top edge unchanged; widened from 9.5 mm on 2026-11-23: the 9.5 mm slot's round ends cut 0.034 mm into the shell's rounded upper corners (nominal; found in the modules/32bit fab review); 11.0 mm leaves 0.27 mm round the upper half, same centre, top and bottom edge; the shell stands 1.3 mm proud), rail holes Ø3.2 at X12.58 / X53.22, standoff holes H20/H21 Ø3.2 at X10.05 / X50.55 Y13.75 (top corners, level with the USB-C) (coaxial with the
 carrier MS1/MS2 M3x10 hex standoffs, `mount_standoffs`). It mounts on the jack
 bushings with the PJ301M-12 nuts plus the rail screws; two M3x6 screws from the front into the standoffs. The printed panel has the same holes and slot; the USB-C shell stands 0.9 mm proud of it.
 
@@ -22,5 +22,5 @@ against `docs/geometry.json`; it checks a single valid solid, the drilled-blank 
 closed manifold STL. Print suggestion: PETG/ABS, front face down, 0.2 mm layers. Holes are
 nominal: ream after printing. The M3x6 screws still reach 4.0 mm into the standoffs. Not test-printed; no physical-fit claim.
 
-The clock-link headers (CLK OUT / CLK IN) are on the back of the carrier: nothing on the panel. FR4 panel DRC 0 (2026-11-20);
-the 12HP print was regenerated the same day (21 holes, one solid, closed STL).
+The clock-link headers (CLK OUT / CLK IN) are on the back of the carrier: nothing on the panel. FR4 panel DRC 0 (2026-11-23);
+the 12HP print was regenerated the same day for the wider slot (21 holes, one solid, closed STL).

@@ -11,7 +11,7 @@
 		(title "Big Modular - USB-AUDIO-MAX 10HP front panel")
 		(rev "S1")
 		(company "Big Modular")
-		(comment 1 "10HP FR4 front panel: NPTH only (holes + USB-C slot), silk labels, no copper")
+		(comment 1 "12HP FR4 front panel: NPTH only (holes + 11.0 x 5.2 mm USB-C slot), silk labels, no copper")
 		(comment 2 "Geometry contract: ../../docs/geometry.json")
 	)
 	(layers
@@ -1633,8 +1633,8 @@
 		(attr board_only exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -5 -2.85)
-			(end 5 2.85)
+			(start -5.75 -2.85)
+			(end 5.75 2.85)
 			(stroke
 				(width 0.05)
 				(type default)
@@ -1645,8 +1645,8 @@
 		)
 		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 9.5 5.2)
-			(drill oval 9.5 5.2)
+			(size 11 5.2)
+			(drill oval 11 5.2)
 			(layers "*.Cu" "*.Mask")
 			(thermal_bridge_angle 45)
 			(uuid "88a7cc50-3397-47e0-9e33-fdc885a853d8")

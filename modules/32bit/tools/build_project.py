@@ -22,8 +22,9 @@ def project(name, rails):
     d = json.loads(TEMPLATE.read_text())
     d['meta']['filename'] = f'{name}.kicad_pro'
     d['board']['design_settings']['rules']['min_copper_edge_clearance'] = 1.0
-    # ESP32-S3 QFN-56 land: nine 0.2 mm thermal vias in the exposed pad (as modules/32bit S3)
-    d['board']['design_settings']['rules']['min_through_hole_diameter'] = 0.2
+    # root AGENTS.md: no hole under 0.3 mm (the ESP32-S3 land's nine thermal vias are drilled 0.3 mm,
+    # tools/import_footprints.py)
+    d['board']['design_settings']['rules']['min_through_hole_diameter'] = 0.3
     # the usb-audio MCU board template already carries the Default / Power / USB_HS classes
     d['net_settings']['netclass_patterns'] = [p for p in d['net_settings']['netclass_patterns']
                                               if p['netclass'] == 'USB_HS']
