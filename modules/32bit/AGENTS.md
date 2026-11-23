@@ -5,6 +5,17 @@ Module paths are module-relative.
 
 ## Current state
 
+- **S4 (2026-11-23, uncommitted; docs/research.md section 9.1)**: the board pair below replaces S3 in
+  `hardware/`: **carrier S4 / R1** `hardware/32bit.kicad_{sch,pcb}` (modules/usb-audio S5 carrier with its routed
+  copper: CS4272 clock master, NE5532 stages, AMS1117-5.0 +5VA; volume pots out of the audio path; RV1 / RV2
+  control pots, MODE button + LED; R1 22R for the ESP32-S3 +3V3 budget; MS1 / MS2 M3x10 standoffs as usb-audio
+  P2) and the **ESP32-S3 MCU board S1 / R1** `hardware/32bit-mcu.kicad_{sch,pcb}` (ESP32-S3R8 + W25Q128 + 40 MHz,
+  USB-C on the panel, soldered on J6 / J7). Both hand-routed (`research/s4/`), ERC 0 / DRC 0 / unconnected 0 /
+  parity 0, no exclusions, no vias in SMD pads; shared `check` clean, manifests equal.
+  S4 GPIO map in `docs/firmware-pins.md`. **S4 JLCPCB export in `jlcpcb/` (2026-11-23, `jlcpcb/README.md`)**:
+  two orders, no panel (`main/` carrier 88 parts / 33 rows bottom Economic + FR4 panel, `mcu/` 25 / 14 top
+  Economic), every code live-checked, no pre-order part; not supplier-accepted. Open: CS4272 driver in
+  `master`, JLCPCB preview, bench. **Everything from here down describes S3 (ES8388) and is history once S4 is accepted.**
 - **S3 schematic** (2026-11-15, `hardware/32bit.kicad_sch`, ERC 0, netlist asserted, 116 parts / 118 nets):
   the ESP32-S3-WROOM-1U-N16R8 module (JLCPCB Standard PCBA only) is replaced by its contents, all
   Economic: **U1 ESP32-S3R8** (QFN-56, 8 MB octal PSRAM inside, C2913194), **U2 W25Q128JVSIQ** 16 MB
@@ -24,8 +35,8 @@ Module paths are module-relative.
   tracks / 130 vias, none in or touching SMD pads; In1 GND and In2 +3V3 one piece each (saved fills), no
   new inner-layer tracks. 2 mm hand-solder clearance kept: new parts FB1 2.005 mm, C6 2.006 mm from J4;
   the four user-accepted R2 parts (R5 1.33, C27 1.62, R55 1.63, C46 1.75 mm) are unchanged.
-- JLCPCB export in `jlcpcb/` re-exported from S3 / R3 (2026-11-15, carrier only; 103 parts / 43 rows,
-  bottom, **Economic PCBA**; not supplier-accepted); shared `check` manifest equal.
+- S3 / R3 JLCPCB export (2026-11-15, carrier only; 103 parts / 43 rows, bottom, **Economic PCBA**; not
+  supplier-accepted): replaced by the S4 set, in git history.
 - **Firmware (2026-10-31)**: `firmware/polysynth` (ESP-IDF v5.5.1), 9-voice MIDI polysynth after
   the BM 16bit polysynth on the BM 32bit-5v drivers with the R1 pins; CV1 = release, CV2 = one-knob
   filter (0 = bypass), MODE = saw + 7 build-time wavetables (saved in NVS, LED brightness shows it).

@@ -9,7 +9,8 @@ print cannot drift from the PCB panel. Plain panel: no labels (3D printed, the
 FR4 panel silk legend is not carried over).
 Thickness is panel_print_thickness_mm (2.0 mm, stiffer than the 1.6 mm FR4 panel);
 the PJ301M-12 threads still leave ~0.5 mm past a 2.0 mm nut (as modules/midi); the
-RV09 pots take no nut.
+RV09 pots take no nut. S4 (2026-11-23): the MCU board's USB-C passes through an obround slot and two
+M3 bolt holes hold the MS1 / MS2 standoffs (the USB-C shell stands 0.9 mm proud of this print, 1.3 mm on FR4).
 CAD frame: X across, Y = 128.5 - panel Y (origin lower left seen from +Z), Z0..t with
 the +Z face as the panel FRONT. Holes are nominal, without print compensation; ream
 to size after printing. Nominal geometry only, no physical-fit or strength claim.
@@ -77,9 +78,13 @@ def check_contract(g):
     want += [(*p['shaft_XY'], d['pot']) for p in c['pots']]
     want += [(*led['XY'], d['led']) for led in c['leds']]
     want.append((*c['button']['XY'], d['button']))
+    ms = c['mount_standoffs']                       # S4: M3 bolt holes coaxial with the carrier MS1 / MS2
+    want += [(*m, ms['panel_hole_d_mm']) for m in ms['XY_mm']]
     got = [(x, y, w) for _, x, y, w, h, _ in g['holes'] if w == h]
     assert sorted(got) == sorted(want), (sorted(got), sorted(want))
-    assert all(w == h for _, _, _, w, h, _ in g['holes']), 'no slots on this panel'
+    slot = c['usb_slot']                            # S4: the MCU board's USB-C passes through the panel
+    slots = [(x, y, w, h, a) for _, x, y, w, h, a in g['holes'] if w != h]
+    assert slots == [(*slot['XY'], *slot['size_mm'], 0.0)], slots
     return c.get('panel_print_thickness_mm', PRINT_THICKNESS)
 
 

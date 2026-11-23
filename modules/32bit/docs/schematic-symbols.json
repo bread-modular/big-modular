@@ -22,13 +22,6 @@
       "flattened_from": null,
       "edits": "ki_fp_filters 'Inductor_* L_* *Ferrite*' -> 'Inductor_* L_* *Ferrite* C_0805*'"
     },
-    "LED": {
-      "library": "Device:LED",
-      "source": "/usr/share/kicad/symbols/Device.kicad_sym",
-      "source_sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24",
-      "flattened_from": null,
-      "edits": null
-    },
     "R_Potentiometer": {
       "library": "Device:R_Potentiometer",
       "source": "/usr/share/kicad/symbols/Device.kicad_sym",
@@ -43,25 +36,32 @@
       "flattened_from": null,
       "edits": null
     },
-    "1N4148W": {
-      "library": "Diode:1N4148W",
-      "source": "/usr/share/kicad/symbols/Diode.kicad_sym",
-      "source_sha256": "e6a8ac06651527e2700b3e1a7ca8b077a2c28ac1ebdbf57aae163f5777d4c65c",
-      "flattened_from": "1N4001",
+    "Crystal_GND24": {
+      "library": "Device:Crystal_GND24",
+      "source": "/usr/share/kicad/symbols/Device.kicad_sym",
+      "source_sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24",
+      "flattened_from": null,
       "edits": null
     },
-    "BAT54SW": {
-      "library": "Diode:BAT54SW",
-      "source": "/usr/share/kicad/symbols/Diode.kicad_sym",
-      "source_sha256": "e6a8ac06651527e2700b3e1a7ca8b077a2c28ac1ebdbf57aae163f5777d4c65c",
-      "flattened_from": "BAT54S",
+    "LED": {
+      "library": "Device:LED",
+      "source": "/usr/share/kicad/symbols/Device.kicad_sym",
+      "source_sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24",
+      "flattened_from": null,
       "edits": null
     },
-    "MMBT3904": {
-      "library": "Transistor_BJT:MMBT3904",
-      "source": "/usr/share/kicad/symbols/Transistor_BJT.kicad_sym",
-      "source_sha256": "e88f0c9bd2bb124915b54783b25792db26896f913a1f5b3e7201c996bedf4390",
-      "flattened_from": "Q_NPN_BEC",
+    "CS4272": {
+      "library": "Audio:CS4272",
+      "source": "/usr/share/kicad/symbols/Audio.kicad_sym",
+      "source_sha256": "08c708e7c7efe09d5151a2c7c69060c174cf8a6c0199ac23f5ab7f955ef9aac9",
+      "flattened_from": null,
+      "edits": null
+    },
+    "TestPoint": {
+      "library": "Connector:TestPoint",
+      "source": "/usr/share/kicad/symbols/Connector.kicad_sym",
+      "source_sha256": "50b42bf755009d3d459c310182dca1c37e1ff1a01fa6ae23846b416fafffc914",
+      "flattened_from": null,
       "edits": null
     },
     "ESP32-S3": {
@@ -78,36 +78,15 @@
       "flattened_from": "W25Q32JVSS",
       "edits": null
     },
-    "Crystal_GND24": {
-      "library": "Device:Crystal_GND24",
-      "source": "/usr/share/kicad/symbols/Device.kicad_sym",
-      "source_sha256": "f65c9dd13ef986c482165e5c8237ccf4f691bc7321868cf05e01dafbc1326b24",
-      "flattened_from": null,
-      "edits": null
-    },
-    "ES8388": {
-      "library": "BM:Module32:ES8388",
-      "source": "~/data/projects/bread-modular/modules/32bit-5v/32bit-5v.kicad_sch",
-      "source_sha256": "846ab9cf4c14f7bfbc57d3a6f1e52595b5999ac3e6569f1ce0f43f11ab64e86b",
-      "flattened_from": null,
-      "edits": "embedded symbol of the Bread Modular 32bit-5v schematic (KiCad 10 stock has no ES8388); renamed"
-    },
-    "TL074": {
-      "library": "Amplifier_Operational:TL074",
+    "OPA1679": {
+      "library": "Amplifier_Operational:OPA1679",
       "source": "/usr/share/kicad/symbols/Amplifier_Operational.kicad_sym",
       "source_sha256": "70d51935f1e2563cf203a3d1b95657f166e140b357d3a8570f70f855a3dcd74e",
       "flattened_from": "LM2902",
       "edits": null
     },
-    "TL072": {
-      "library": "Amplifier_Operational:TL072",
-      "source": "/usr/share/kicad/symbols/Amplifier_Operational.kicad_sym",
-      "source_sha256": "70d51935f1e2563cf203a3d1b95657f166e140b357d3a8570f70f855a3dcd74e",
-      "flattened_from": "LM2904",
-      "edits": null
-    },
-    "MCP6002-xSN": {
-      "library": "Amplifier_Operational:MCP6002-xSN",
+    "NE5532": {
+      "library": "Amplifier_Operational:NE5532",
       "source": "/usr/share/kicad/symbols/Amplifier_Operational.kicad_sym",
       "source_sha256": "70d51935f1e2563cf203a3d1b95657f166e140b357d3a8570f70f855a3dcd74e",
       "flattened_from": "LM2904",
@@ -127,6 +106,20 @@
       "flattened_from": "AP1117-15",
       "edits": null
     },
+    "ASE-xxxMHz": {
+      "library": "Oscillator:ASE-xxxMHz",
+      "source": "/usr/share/kicad/symbols/Oscillator.kicad_sym",
+      "source_sha256": "0f588841de07c25f775008768b0360cc9f22eaa84922e9d30adfccbb3255b3c9",
+      "flattened_from": null,
+      "edits": null
+    },
+    "USBLC6-2SC6": {
+      "library": "Power_Protection:USBLC6-2SC6",
+      "source": "/usr/share/kicad/symbols/Power_Protection.kicad_sym",
+      "source_sha256": "9ac4f95a67353239c21a6be6ae36ada8a859e0d7b6471799240580a391b2b577",
+      "flattened_from": "USBLC6-2P6",
+      "edits": null
+    },
     "AudioJack2_SwitchT": {
       "library": "Connector_Audio:AudioJack2_SwitchT",
       "source": "/usr/share/kicad/symbols/Connector_Audio.kicad_sym",
@@ -134,8 +127,8 @@
       "flattened_from": null,
       "edits": null
     },
-    "USB_C_Receptacle_USB2.0_14P": {
-      "library": "Connector:USB_C_Receptacle_USB2.0_14P",
+    "USB_C_Receptacle_USB2.0_16P": {
+      "library": "Connector:USB_C_Receptacle_USB2.0_16P",
       "source": "/usr/share/kicad/symbols/Connector.kicad_sym",
       "source_sha256": "50b42bf755009d3d459c310182dca1c37e1ff1a01fa6ae23846b416fafffc914",
       "flattened_from": null,
@@ -148,17 +141,17 @@
       "flattened_from": null,
       "edits": "ki_fp_filters 'Connector*:*_2x??_*' -> '*_2x??_*'"
     },
+    "Conn_01x10": {
+      "library": "Connector_Generic:Conn_01x10",
+      "source": "/usr/share/kicad/symbols/Connector_Generic.kicad_sym",
+      "source_sha256": "b40057d620867e58e8c3d1be9ab822bba6955e76ccfc566fd0945eedcf527fd3",
+      "flattened_from": null,
+      "edits": "ki_fp_filters 'Connector*:*_1x??_*' -> '*_1x??_*'"
+    },
     "SW_Push": {
       "library": "Switch:SW_Push",
       "source": "/usr/share/kicad/symbols/Switch.kicad_sym",
       "source_sha256": "aa97588ceed2c3f1be89c98ec16b3e8ee491e4354e0416c12706fc868df68bc9",
-      "flattened_from": null,
-      "edits": null
-    },
-    "SolderJumper_3_Open": {
-      "library": "Jumper:SolderJumper_3_Open",
-      "source": "/usr/share/kicad/symbols/Jumper.kicad_sym",
-      "source_sha256": "6548a7155352ede1997c88e2fc104cb22078437a08bc7779552a8326ebc13e6b",
       "flattened_from": null,
       "edits": null
     },
@@ -183,8 +176,8 @@
       "flattened_from": null,
       "edits": null
     },
-    "+5V": {
-      "library": "power:+5V",
+    "+5VA": {
+      "library": "power:+5VA",
       "source": "/usr/share/kicad/symbols/power.kicad_sym",
       "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
       "flattened_from": null,
@@ -199,6 +192,13 @@
     },
     "-12V": {
       "library": "power:-12V",
+      "source": "/usr/share/kicad/symbols/power.kicad_sym",
+      "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
+      "flattened_from": null,
+      "edits": null
+    },
+    "VBUS": {
+      "library": "power:VBUS",
       "source": "/usr/share/kicad/symbols/power.kicad_sym",
       "source_sha256": "8113f8fe90853413603d619987cc744e33dc47ff27faac19a58d7caf8c334fd0",
       "flattened_from": null,

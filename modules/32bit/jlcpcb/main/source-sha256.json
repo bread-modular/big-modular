@@ -1,0 +1,17 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_cli": "10.0.6",
+  "sources": {
+    "hardware/32bit.kicad_pcb": "fd3f21daff750cfc1a3068cc6c89a120646e8cc77d63e383f1a99268470e67df",
+    "hardware/32bit.kicad_pro": "c1b52ac8635a3d187ea1e1b1af6883099efcdfd15bb386f330088047bf58d91d",
+    "hardware/32bit.kicad_sch": "6f17eea5b6436eb0a7749e03902da47cbfb437dd19a834576da0a9a8ac0471ab",
+    "panels/front-pcb/32bit-panel.kicad_pcb": "2a49f615078d521b29aee934b81e9efa7cc9d4b0ee5c875c6eb9e416cb1734ba",
+    "panels/front-pcb/32bit-panel.kicad_pro": "72a3c93bad51d8f3a4c9a36470036ccc7511879dc53289f3a1d303f67b535dc3"
+  },
+  "exports": {
+    "jlcpcb/main/carrier/32bit-gerbers.zip": "d48cf79495ec306814933a2d7fe81e5258e1a753b4467736da016adce36b7a9a",
+    "jlcpcb/main/carrier/bom.csv": "9b2e7ee9001e7cd8fd3c8ce83a0c5ab5b28bf39dc879c2b33f560e05d2a52f54",
+    "jlcpcb/main/carrier/positions.csv": "e3fe4d01ba30e5fbae52f71667aad1f7b3049d4344c47613a031b0a01bc3510b",
+    "jlcpcb/main/panel/32bit-panel-gerbers.zip": "7c2966977fc4e1b6579f64eb5f416bee6d35bf1c9b6925f878a673784e38e3eb"
+  }
+}

@@ -5,6 +5,30 @@ Use this page when porting the Bread Modular `code/32bit` firmware. It lists eve
 firmware. Source of truth for the nets: `tools/circuit32.py` (`MCU` table) and
 `hardware/32bit.kicad_sch`.
 
+## S4 (2026-11-23): ESP32-S3 MCU board on the CS4272 carrier
+
+S4 is a different board pair (docs/research.md section 9): the ES8388, MIDI, the CV inputs and the S3 GPIO map
+below are gone. Source of truth: `MCU_PINS` in `tools/circuit_mcu.py` and `hardware/32bit-mcu.kicad_sch`.
+
+| Function | GPIO (QFN-56 pin) | Note |
+|---|---|---|
+| I2S SCLK / BCK (codec drives it) | GPIO18 (24) | ESP32 I2S0 **slave**; CS4272 is the clock master (24.576 MHz oscillator, 48 kHz, 64 Fs) |
+| I2S LRCK / WS (codec drives it) | GPIO17 (23) | slave input |
+| I2S DIN (codec SDOUT, ADC data) | GPIO16 (22) | |
+| I2S DOUT (codec SDIN, DAC data) | GPIO13 (18) | through R105 33R |
+| Codec RST (CS4272 RST, low = reset) | GPIO12 (17) | R17 on the carrier holds it low until the firmware releases it |
+| I2C SDA (CS4272 control port, addr 0x10) | GPIO9 (14) | R107 2.2k pull-up on the MCU board |
+| I2C SCL | GPIO8 (13) | R106 2.2k pull-up |
+| POT1 | GPIO7 (12), ADC1 CH6 | 0..3.03 V (POT_TOP), use 12 dB attenuation; C112 100n |
+| POT2 | GPIO6 (11), ADC1 CH5 | as POT1; C113 100n |
+| MODE button (to GND) | GPIO38 (43) | internal pull-up |
+| MODE LED (1k, ~1.5 mA) | GPIO39 (44) | LEDC PWM |
+| USB D- / D+ | GPIO19 (25) / GPIO20 (26) | USB Serial/JTAG + OTG (full speed), Web Serial, download |
+| EN / GPIO0 | CHIP_PU (4) / GPIO0 (5) | RESET / BOOT buttons on the carrier B side |
+
+No MCLK pin: the codec has its own oscillator. Firmware: `master` needs a CS4272 driver (I2C control-port setup,
+I2S slave, 24-bit) in place of the ES8388 setup; not written yet. Radio never used.
+
 ## GPIO map (U1 ESP32-S3R8 since S3; the pin numbers in brackets are the S2 module pins)
 
 S3 (2026-11-15) replaced the ESP32-S3-WROOM-1U-N16R8 module with its contents (ESP32-S3R8 + W25Q128JVSIQ +
