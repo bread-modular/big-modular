@@ -7,7 +7,9 @@ Run from modules/8bit with KiCad's Python (pcbnew 10), after tools/build_schemat
 Writes hardware/8bit.kicad_pcb (carrier: THT placed, schematic nets, no routing, 2 copper
 layers), panels/front-pcb/8bit-panel.kicad_pcb (passive 6HP panel: outline, NPTH holes,
 silkscreen labels) and panels/front-pcb/8bit-lfo-panel.kicad_pcb (the same panel for the
-LFO firmware: no MIDI jack or RV3 hole, LFO labels). Placement comes from the geometry
+LFO firmware: no MIDI jack or RV3 hole, LFO labels), plus
+panels/front-pcb/8bit-lfo-4hp-panel.kicad_pcb (an LFO panel with the MIDI jack hole for the
+old 4HP S5/R4 carrier, geometry.json lfo_4hp_panel). Placement comes from the geometry
 contract; references, values, fields, symbol links and pad nets come from the netlist that
 kicad-cli exports from hardware/8bit.kicad_sch (what "Update PCB from Schematic" would do).
 
@@ -319,33 +321,35 @@ PANELS = {
     'lfo': ('8bit-lfo-panel', 'Big Modular - 8bit LFO 6HP front panel',
             GEO['lfo_panel']['omit_jacks'] + GEO['lfo_panel']['omit_pots'],
             GEO['lfo_panel']['labels']),
+    # The old 4HP S5/R4 carrier: a self-contained hole list (geometry.json lfo_4hp_panel).
+    'lfo4hp': ('8bit-lfo-4hp-panel', 'Big Modular - 8bit LFO 4HP front panel (S5/R4 carrier)',
+               None, GEO['lfo_4hp_panel']['labels']),
 }
 
 
 def build_panel(name='main'):
     stem, title, omit, labels = PANELS[name]
     path = MODULE / f'panels/front-pcb/{stem}.kicad_pcb'
-    board = new_board(path, title, [
-        'S6, 6HP: passive panel, NPTH only, no copper',
-        'Geometry contract: ../../docs/geometry.json',
-    ])
-    pw, ph = GEO['panel_mm']
+    if omit is None:
+        lfo4 = GEO['lfo_4hp_panel']
+        comment, (pw, ph) = 'S5/R4 4HP carrier: passive panel, NPTH only, no copper', lfo4['panel_mm']
+        spots = [(*h['XY'], h['d']) for h in lfo4['holes']]
+    else:
+        comment, (pw, ph) = 'S6, 6HP: passive panel, NPTH only, no copper', GEO['panel_mm']
+        holes = GEO['panel_hole_diameters_mm']
+        spots = [(x, y, d) for x, y, d in GEO['rail_holes_mm']]
+        spots += [(*j['XY'], holes['jack']) for j in GEO['jacks'] if j['ref'] not in omit]
+        spots += [(*p['shaft_XY'], holes['pot']) for p in GEO['pots'] if p['ref'] not in omit]
+        spots += [(*GEO['button']['XY'], holes['button'])]
+        spots += [(*d['XY'], holes['led']) for d in GEO['leds']]
+    board = new_board(path, title, [comment, 'Geometry contract: ../../docs/geometry.json'])
     rect(board, pcbnew.Edge_Cuts, 0, 0, pw, ph)
-    n = 0
-    holes = GEO['panel_hole_diameters_mm']
-    spots = [(x, y, d) for x, y, d in GEO['rail_holes_mm']]
-    spots += [(*j['XY'], holes['jack']) for j in GEO['jacks'] if j['ref'] not in omit]
-    spots += [(*p['shaft_XY'], holes['pot']) for p in GEO['pots'] if p['ref'] not in omit]
-    spots += [(*GEO['button']['XY'], holes['button'])]
-    spots += [(*d['XY'], holes['led']) for d in GEO['leds']]
-    for x, y, d in spots:
-        n += 1
+    for n, (x, y, d) in enumerate(spots, 1):
         npth(board, f'H{n}', x, y, d)
     for lab in labels:
         text(board, pcbnew.F_SilkS, lab['text'], *lab['XY'], lab['size'])
     save_canonical(path, board)
     return path
-
 
 if __name__ == '__main__':
     # `panels` rebuilds only the passive panels: the routed carrier owns its copper and

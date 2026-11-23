@@ -1,13 +1,16 @@
-"""Generate the 3D-printable 8BIT 6HP front panel with FreeCAD.
+"""Generate the 3D-printable 8BIT front panels (6HP, and the 4HP LFO panel) with FreeCAD.
 
 Run headless from modules/8bit:
   ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
   PANEL=lfo ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+  PANEL=lfo4hp ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
 
 Outline and NPTH holes are read from the native panel PCB
 (../front-pcb/8bit-panel.kicad_pcb) and asserted against docs/geometry.json, so the
 print cannot drift from the PCB panel. PANEL=lfo builds the LFO variant from
-../front-pcb/8bit-lfo-panel.kicad_pcb (geometry.json lfo_panel: no J1 MIDI or RV3 hole). Plain panel: no labels (3D printed, the
+../front-pcb/8bit-lfo-panel.kicad_pcb (geometry.json lfo_panel: no J1 MIDI or RV3 hole). PANEL=lfo4hp builds the 4HP LFO
+panel for the old S5/R4 carrier from ../front-pcb/8bit-lfo-4hp-panel.kicad_pcb
+(geometry.json lfo_4hp_panel: with the J1 MIDI hole, no RV3 hole). Plain panel: no labels (3D printed, the
 FR4 panel silk legend is not carried over).
 Thickness is panel_print_thickness_mm (2.0 mm, stiffer than the 1.6 mm FR4 panel);
 the PJ301M-12 threads still leave ~0.5 mm past a 2.0 mm nut (as modules/midi); the
@@ -33,8 +36,8 @@ sys.path.insert(0, str(MODULE / 'tools'))
 from sexp import nodes, one, parse  # noqa: E402
 
 VARIANT = os.environ.get('PANEL', 'main')
-assert VARIANT in ('main', 'lfo'), VARIANT
-STEM = {'main': '8bit', 'lfo': '8bit-lfo'}[VARIANT]
+assert VARIANT in ('main', 'lfo', 'lfo4hp'), VARIANT
+STEM = {'main': '8bit', 'lfo': '8bit-lfo', 'lfo4hp': '8bit-lfo-4hp'}[VARIANT]
 PCB = HERE.parent / f'front-pcb/{STEM}-panel.kicad_pcb'
 NAME = f'{STEM}-front-panel'
 PRINT_THICKNESS = 2.0  # as modules/midi panel_print_thickness_mm
@@ -77,15 +80,20 @@ def panel_geometry():
 
 def check_contract(g):
     c = json.loads((MODULE / 'docs/geometry.json').read_text())
-    assert list(g['size']) == c['panel_mm'], g['size']
-    d = c['panel_hole_diameters_mm']
-    want = [tuple(h) for h in c['rail_holes_mm']]
-    lfo = c['lfo_panel']
-    omit = lfo['omit_jacks'] + lfo['omit_pots'] if VARIANT == 'lfo' else []
-    want += [(*j['XY'], d['jack']) for j in c['jacks'] if j['ref'] not in omit]
-    want += [(*p['shaft_XY'], d['pot']) for p in c['pots'] if p['ref'] not in omit]
-    want += [(*led['XY'], d['led']) for led in c['leds']]
-    want.append((*c['button']['XY'], d['button']))
+    if VARIANT == 'lfo4hp':
+        lfo4 = c['lfo_4hp_panel']
+        assert list(g['size']) == lfo4['panel_mm'], g['size']
+        want = [(*h['XY'], h['d']) for h in lfo4['holes']]
+    else:
+        assert list(g['size']) == c['panel_mm'], g['size']
+        d = c['panel_hole_diameters_mm']
+        want = [tuple(h) for h in c['rail_holes_mm']]
+        lfo = c['lfo_panel']
+        omit = lfo['omit_jacks'] + lfo['omit_pots'] if VARIANT == 'lfo' else []
+        want += [(*j['XY'], d['jack']) for j in c['jacks'] if j['ref'] not in omit]
+        want += [(*p['shaft_XY'], d['pot']) for p in c['pots'] if p['ref'] not in omit]
+        want += [(*led['XY'], d['led']) for led in c['leds']]
+        want.append((*c['button']['XY'], d['button']))
     got = [(x, y, w) for _, x, y, w, h, _ in g['holes'] if w == h]
     assert sorted(got) == sorted(want), (sorted(got), sorted(want))
     assert all(w == h for _, _, _, w, h, _ in g['holes']), 'no slots on this panel'

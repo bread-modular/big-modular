@@ -4,7 +4,9 @@ Generated on 2026-11-14 from the S6 schematic and the R1 hand-routed 2-layer 6HP
 with the shared `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction. It replaces
 the S5/R4 4HP export. The carrier was re-exported the same day after the **U4 MCP6001 ->
 MCP6002 swap** (MCP6002T-I/SN C7377, SOIC-8, Preferred Extended: no feeder fee; U4 moved
-below the CV cluster with C15 beside its pin 8, local re-route only); the panels are unchanged. Never hand-edit these files: change the sources, then re-export with
+below the CV cluster with C15 beside its pin 8, local re-route only); the panels are unchanged.
+**2026-11-23**: `lfo-4hp-panel/` added (user direction): an LFO panel for the old 4HP S5/R4
+carrier with the J1 MIDI jack hole; the carrier and the 6HP panels were not re-exported. Never hand-edit these files: change the sources, then re-export with
 the commands below.
 
 ## Contents
@@ -14,13 +16,14 @@ the commands below.
 | `8bit-gerbers.zip` | Carrier Gerber/drill ZIP (upload this) |
 | `8bit-panel-gerbers.zip` | FR4 front panel Gerber/drill ZIP (upload this) |
 | `8bit-lfo-panel-gerbers.zip` | Optional LFO front panel ZIP (for a `firmware/lfo` build: no MIDI jack or P3 hole) |
+| `8bit-lfo-4hp-panel-gerbers.zip` | 4HP LFO front panel ZIP for the **old 4HP S5/R4 carrier** (MIDI jack hole kept, no P3 hole) |
 | `assembly/bom.csv`, `assembly/positions.csv` | Carrier BOM and CPL (upload these) |
 | `carrier/` | Carrier export: ZIP unpacked (F / B copper, masks, silk, paste, edge, PTH/NPTH drills), BOM, CPL, export report |
-| `panel/`, `lfo-panel/` | Panel exports: ZIP unpacked, empty BOM/CPL, export report |
+| `panel/`, `lfo-panel/`, `lfo-4hp-panel/` | Panel exports: ZIP unpacked, empty BOM/CPL, export report |
 | `source-sha256.json` | PCB/project/schematic inputs and export SHA-256 |
 
 The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files in
-`carrier/`, `panel/` and `lfo-panel/`.
+`carrier/`, `panel/`, `lfo-panel/` and `lfo-4hp-panel/`.
 
 ## Upload map
 
@@ -30,6 +33,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 | Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 38 parts in 24 BOM rows, all on the back |
 | Front panel PCB | `8bit-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly; black mask suits a panel |
 | LFO front panel PCB (optional) | `8bit-lfo-panel-gerbers.zip` | Same options. Only for a unit built as the LFO (`../docs/mechanics.md`, `../firmware/README.md`): J1 and RV3 are then not fitted |
+| 4HP LFO front panel PCB (old carrier) | `8bit-lfo-4hp-panel-gerbers.zip` | Same options, 20.0 x 128.5 mm (4HP). Only for an **old 4HP S5/R4 board** run as the LFO: J1 MIDI hole, no RV3 hole (`../docs/mechanics.md`). NPTH only (Ø3.2 / 4.2 / 6.2 / 7.2 mm), no PTH; smallest hole 3.2 mm |
 | Button cap | `../panels/button-actuator/8bit-button-cap.stl` | 3D print (one part, socket down); not a JLCPCB PCB order |
 
 ### Hand-soldered after delivery (not in the BOM/CPL)
@@ -75,6 +79,8 @@ drift (`tools/kicad-project.json` declares the manifest).
 - Panel project `e74649aa9ca6dd3fc3a813425112727c7141c578b934e17e081945270d071dc6`.
 - LFO panel PCB `c161d7f45de0a4f2fb67a47211c93fbf7063337b5605373dcf9d92aceb47bc40`.
 - LFO panel project `ca498367eec266399cf548d9ffa68c0071ffdc51700b3dc4130184ef6adc4e57`.
+- 4HP LFO panel PCB `25b88e12ed760ead579f33d6e33c447c5349a390859644e5f7835df07c92ccb4`.
+- 4HP LFO panel project `899bc89f7482b3de657ede29f395bee2fb339578530c81f0967742a5b6da5def`.
 
 ## Reproduce
 
@@ -85,7 +91,7 @@ python3 -B ../../opt/kicad-tools/kicad_tools.py check \
   --config tools/kicad-project.json --reports research/native-NEW
 
 rm -f jlcpcb/carrier/*.gbr jlcpcb/carrier/*.drl jlcpcb/panel/*.gbr jlcpcb/panel/*.drl \
-  jlcpcb/lfo-panel/*.gbr jlcpcb/lfo-panel/*.drl
+  jlcpcb/lfo-panel/*.gbr jlcpcb/lfo-panel/*.drl jlcpcb/lfo-4hp-panel/*.gbr jlcpcb/lfo-4hp-panel/*.drl
 
 python3 -B ../../opt/kicad-tools/jlcpcb/export.py hardware \
   --board 8bit --schematic 8bit.kicad_sch --side bottom --require-part-numbers \
@@ -102,9 +108,15 @@ python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
   --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/lfo-panel
 unzip -o jlcpcb/lfo-panel/8bit-lfo-panel-gerbers.zip -d jlcpcb/lfo-panel
 
+python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb \
+  --board 8bit-lfo-4hp-panel --pcb-only \
+  --manifest jlcpcb/source-sha256.json --overwrite -o jlcpcb/lfo-4hp-panel
+unzip -o jlcpcb/lfo-4hp-panel/8bit-lfo-4hp-panel-gerbers.zip -d jlcpcb/lfo-4hp-panel
+
 cp jlcpcb/carrier/bom.csv jlcpcb/carrier/positions.csv jlcpcb/assembly/
 cp jlcpcb/carrier/8bit-gerbers.zip jlcpcb/panel/8bit-panel-gerbers.zip \
-  jlcpcb/lfo-panel/8bit-lfo-panel-gerbers.zip jlcpcb/
+  jlcpcb/lfo-panel/8bit-lfo-panel-gerbers.zip \
+  jlcpcb/lfo-4hp-panel/8bit-lfo-4hp-panel-gerbers.zip jlcpcb/
 ```
 
 The exporter merges into an existing manifest and keeps rows it did not write, so

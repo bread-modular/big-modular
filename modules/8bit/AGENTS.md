@@ -34,6 +34,10 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   map, not bench-tested. All four already drive PA7 (`GATE_PIN`), so the GATE jack works unchanged;
   **none reads P3 (PB5) yet**. The LFO panel variant omits J1 and RV3 (not fitted; no wire bridge needed
   on S6).
+- **4HP LFO panel** (user, 2026-11-23, uncommitted): `panels/front-pcb/8bit-lfo-4hp-panel.*` +
+  `panels/front-cad/8bit-lfo-4hp-front-panel.*` + `jlcpcb/lfo-4hp-panel/` for the old 4HP S5/R4 carrier,
+  with the J1 MIDI hole (replaces the old 4HP LFO panel in git `ec1ebe8^`); `geometry.json` `lfo_4hp_panel`,
+  DRC 0. Not ordered, not test-printed.
 - Printed panels (`panels/front-cad/`) and the MODE cap (`panels/button-actuator/`) regenerated for
   6HP; not test-printed.
 - Open: JLCPCB preview + part reviews + live recheck before ordering, firmware use of P3, cap

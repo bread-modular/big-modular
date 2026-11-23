@@ -27,6 +27,7 @@ exclusions (`docs/fit/`). JLCPCB export of the S6/R1 carrier and panels in `jlcp
 | `hardware/` | KiCad project `8bit.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 2 layers, routed by hand), pinned symbols, footprints and models (`8BIT.pretty`, `8BIT.3dshapes`, `PROVENANCE.json`), vendored 3D models (`_kicad_models/<sha256>/`) |
 | `panels/front-pcb/8bit-panel.kicad_{pro,pcb}` | 6HP FR4 front panel: NPTH only, silkscreen labels |
 | `panels/front-pcb/8bit-lfo-panel.kicad_{pro,pcb}` | LFO variant of the panel: no MIDI jack or RV3 (P3) hole, RATE/WAVE/REC labels |
+| `panels/front-pcb/8bit-lfo-4hp-panel.kicad_{pro,pcb}` | 4HP LFO panel for the old 4HP S5/R4 carrier: MIDI jack hole kept, no RV3 hole (`docs/mechanics.md`) |
 | `panels/front-cad/` | FreeCAD printable panel (`.FCStd`, `.step`, `.stl`) generated from the panel PCB |
 | `panels/button-actuator/` | Printed MODE cap: STL (print orientation), STEP at SW1, FreeCAD generator |
 | `docs/jumpers.md` | The JP1 MIDI-input jumper and the firmware pin map |

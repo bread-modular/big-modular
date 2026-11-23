@@ -430,5 +430,168 @@
     "size": 1.2
    }
   ]
+ },
+ "lfo_4hp_panel": {
+  "note": "LFO panel for the old 4HP S5/R4 carrier (the board before the 6HP S6, git ec1ebe8^; its own 4HP panels were replaced by the 6HP set). User direction 2026-11-23: same as the old 4HP LFO panel (firmware/lfo) but with the J1 MIDI jack hole, so a board with J1 fitted takes this panel; it replaces the old 4HP LFO panel (no MIDI hole, git ec1ebe8^ panels/front-pcb/8bit-lfo-panel.kicad_pcb). Hole positions are the old 4HP contract (control column X10.0, git ec1ebe8^ docs/geometry.json); RV3 (P3, the 4HP passive low-pass knob) stays omitted with LFO at its spot: without RV3 a wire from RV3 pin 3 to the wiper pad (pin 2) keeps the DAC path (as the knob fully CW, docs/mechanics.md). firmware/lfo reads no MIDI; the hole only fits the jack.",
+  "hp": 4,
+  "panel_mm": [
+   20.0,
+   128.5
+  ],
+  "holes": [
+   {
+    "ref": "RAIL_TOP",
+    "XY": [
+     12.58,
+     3.0
+    ],
+    "d": 3.2
+   },
+   {
+    "ref": "RAIL_BOTTOM",
+    "XY": [
+     12.58,
+     125.5
+    ],
+    "d": 3.2
+   },
+   {
+    "ref": "J1",
+    "role": "MIDI_IN_TS",
+    "XY": [
+     10.0,
+     17.5
+    ],
+    "d": 6.2
+   },
+   {
+    "ref": "J2",
+    "role": "CV_IN",
+    "XY": [
+     10.0,
+     30.0
+    ],
+    "d": 6.2
+   },
+   {
+    "ref": "J3",
+    "role": "AUDIO_OUT",
+    "XY": [
+     10.0,
+     100.0
+    ],
+    "d": 6.2
+   },
+   {
+    "ref": "RV1",
+    "role": "RATE (PA1)",
+    "XY": [
+     10.0,
+     43.5
+    ],
+    "d": 7.2
+   },
+   {
+    "ref": "RV2",
+    "role": "WAVE (PA2)",
+    "XY": [
+     10.0,
+     58.5
+    ],
+    "d": 7.2
+   },
+   {
+    "ref": "SW1",
+    "role": "REC button",
+    "XY": [
+     7.0,
+     87.0
+    ],
+    "d": 4.2
+   },
+   {
+    "ref": "D1",
+    "role": "MODE LED",
+    "XY": [
+     15.5,
+     87.0
+    ],
+    "d": 3.2
+   }
+  ],
+  "labels": [
+   {
+    "text": "8BIT",
+    "XY": [
+     10.0,
+     8.0
+    ],
+    "size": 2.5
+   },
+   {
+    "text": "MIDI",
+    "XY": [
+     10.0,
+     11.6
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "CV",
+    "XY": [
+     10.0,
+     24.3
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "RATE",
+    "XY": [
+     10.0,
+     36.3
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "WAVE",
+    "XY": [
+     10.0,
+     51.3
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "LFO",
+    "XY": [
+     10.0,
+     72.0
+    ],
+    "size": 2.5
+   },
+   {
+    "text": "REC",
+    "XY": [
+     7.0,
+     81.6
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "OUT",
+    "XY": [
+     10.0,
+     93.6
+    ],
+    "size": 1.2
+   },
+   {
+    "text": "BIG MODULAR",
+    "XY": [
+     10.0,
+     114.0
+    ],
+    "size": 1.2
+   }
+  ]
  }
 }
