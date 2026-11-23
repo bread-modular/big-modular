@@ -80,6 +80,16 @@ never enables the UART, and PB5 is not read). S6 needs **no wire bridge**: RV3 i
 an ADC knob now, the DAC reaches the output amplifier directly. GATE stays (the LFO
 firmware drives PA7).
 
+**4HP LFO panel for the old S5/R4 carrier** (user direction 2026-11-23;
+`panels/front-pcb/8bit-lfo-4hp-panel.kicad_pcb`, `geometry.json` `lfo_4hp_panel`): 20.0 x
+128.5 mm, the old 4HP hole contract (git `ec1ebe8^`, one control column at X10.0): MIDI
+J1 Y17.5, CV J2 Y30.0, RATE RV1 Y43.5, WAVE RV2 Y58.5, REC SW1 (X7.0) + LED D1 (X15.5)
+at Y87.0, OUT J3 Y100.0, rail holes X12.58. It replaces the old 4HP LFO panel (git
+`ec1ebe8^`, no MIDI hole): the **J1 MIDI jack hole is kept**, so a board with J1 fitted
+takes it; `firmware/lfo` still reads no MIDI. RV3 stays out (`LFO` at its spot): on the
+4HP board the DAC runs through RV3's passive low-pass, so without RV3 **bridge RV3 pin 3
+to its wiper pad (pin 2)** (as the knob fully CW).
+
 ## Back (B): SMD for JLC assembly, plus headers
 
 Placed by hand, group by group with the routing (root `AGENTS.md`); the native PCB owns it.

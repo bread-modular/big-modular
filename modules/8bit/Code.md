@@ -5,6 +5,7 @@
 | KiCad project | `hardware/8bit.kicad_{pro,sch,pcb}` |
 | Panel | `panels/front-pcb/8bit-panel.kicad_{pro,pcb}` (FR4, NPTH only) |
 | LFO panel | `panels/front-pcb/8bit-lfo-panel.kicad_{pro,pcb}` (no J1 MIDI / RV3 holes; J1 and RV3 not fitted, no wire bridge on S6, `docs/mechanics.md`) |
+| 4HP LFO panel | `panels/front-pcb/8bit-lfo-4hp-panel.kicad_{pro,pcb}` for the old 4HP S5/R4 carrier (J1 MIDI hole kept, no RV3 hole, RV3 pin 3 -> wiper bridge; `docs/mechanics.md`, 2026-11-23) |
 | Button cap | `panels/button-actuator/` (FreeCAD generator, one-piece cap STL/STEP) |
 | Generators, profile | `tools/` (`build_schematic.py`, `build_layout.py`, `import_footprints.py`, `kicad-project.json`). Copper lives in the native PCB |
 | Placement contract | `docs/geometry.json` |
@@ -93,7 +94,7 @@
   asserts the exported netlist equals `CIRCUIT`.
 - Native DRC `--severity-all --schematic-parity --refill-zones`: carrier **0
   violations, 0 unconnected, 0 parity**, no exclusions (`docs/fit/carrier-drc.json`);
-  panel 0/0 (`docs/fit/panel-drc.json`); LFO panel 0/0 (`docs/fit/lfo-panel-drc.json`).
+  panel 0/0 (`docs/fit/panel-drc.json`); LFO panel 0/0 (`docs/fit/lfo-panel-drc.json`); 4HP LFO panel 0/0 (`docs/fit/lfo-4hp-panel-drc.json`).
 - `kicad_tools.py check --config tools/kicad-project.json`: ERC 0, DRC 0 / 0 / 0, no
   exclusions, no ignored rules; status `no_findings_in_requested_checks`, source manifest
   (`jlcpcb/source-sha256.json`, 7 sources) present and equal after the S6/R1 export.
