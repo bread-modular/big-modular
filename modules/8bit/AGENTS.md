@@ -31,7 +31,8 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   the CV cluster (B, 120.0 / 85.6), C15 beside its pin 8; local re-route only, the rest of R1 untouched;
   carrier re-exported (still 38 parts / 24 rows).
 - `firmware/`: BM `drums`, `supersaw`, `crash`, `lfo` (see `firmware/README.md`), compiled for the BM pin
-  map, not bench-tested. All four already drive PA7 (`GATE_PIN`), so the GATE jack works unchanged;
+  map, not bench-tested. `lfo` syncs to MIDI clock (2026-11-23: RATE = 8 bars .. 1/16 while clock runs,
+  phase locked to the clock count, MIDI Start = bar 1, CV in = whole length steps, 1 V per step; now built per JP1 like the others), host-tested. All four already drive PA7 (`GATE_PIN`), so the GATE jack works unchanged;
   **none reads P3 (PB5) yet**. The LFO panel variant omits J1 and RV3 (not fitted; no wire bridge needed
   on S6).
 - **4HP LFO panel** (user, 2026-11-23, uncommitted): `panels/front-pcb/8bit-lfo-4hp-panel.*` +
