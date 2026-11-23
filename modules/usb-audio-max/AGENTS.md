@@ -19,7 +19,7 @@ Module paths are module-relative.
   clocks on F, In2 +3V3_C island grown to it. ERC 0 / DRC 0 (saved fills too) / unconnected 0 / parity 0, no
   exclusions; shared check no findings, manifests equal; 253 vias, none in SMD pads, no In1 / In2 tracks, planes
   one piece (In1 + 10 spoke-tied fragments, 8 as S2), courtyards >= 1.0 mm from the edge, SMD >= 2.03 mm from jack
-  pads. B silk "CLK OUT - NOT POWER" / "CLK IN - NOT POWER" + a pin 1 triangle and "1" at each header. 12HP FR4 panel (DRC 0) + printed panel regenerated.
+  pads. B silk "CLK OUT - NOT POWER" / "CLK IN - NOT POWER" + a pin 1 triangle and "1" at each header. 12HP FR4 panel (DRC 0) + printed panel regenerated. **2026-11-23 (user, from the modules/32bit fab review; uncommitted): panel USB-C slot 9.5 -> 11.0 x 5.2 mm**, same centre, top and bottom edge (the 9.5 mm slot's round ends cut 0.034 mm into the shell's rounded upper corners; now 0.27 mm round the upper half); FR4 panel (DRC 0), `docs/geometry.json`, printed panel and the `jlcpcb/main/` panel set regenerated, carrier set untouched, manifests equal.
   **JLCPCB `main/` re-exported 2026-11-20** (200 parts / 42 rows, 16 Extended types, 3 new: C206035, C460532,
   C47546; C211-C216 moved from pre-order C33353 to C107043; every code free stock > need, minimum order 1), `mcu/`
   unchanged. **Firmware 1.1.0** finds the codec address and runs as a master; a linked (slave) unit is detected but

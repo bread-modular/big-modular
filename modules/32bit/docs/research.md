@@ -270,7 +270,7 @@ do the routing. Add the M3 screws for strength just like in the new USB Audio."
   the usb-audio copper removed (b14).
 - **J6 as built** (carrier and MCU board): 1 +3V3, 2 GND, 3 EN, 4 BOOT (GPIO0), 5 MODE, 6 LED, 7 I2C_SDA,
   8 I2C_SCL, 9 POT1, 10 POT2. J7 as usb-audio. The plan's J6 order above was changed while placing the carrier.
-- **MCU board S1 / R1** (`hardware/32bit-mcu.kicad_{sch,pcb}`, `tools/circuit_mcu.py`, batches `research/s4/m*.py`):
+- **MCU board S1 / R1** (R2 since the fab review, section 9.2; `hardware/32bit-mcu.kicad_{sch,pcb}`, `tools/circuit_mcu.py`, batches `research/s4/m*.py`):
   ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal, USBLC6-2SC6 + vertical HRO USB-C (J101 at the usb-audio MCU board
   position, its D+ / D- / VBUS joins copied), 4 layers (F signal + all SMD / In1 GND / In2 +3V3 / B signal).
   27 footprints / 32 nets, 239 tracks / 41 vias; ERC 0, DRC 0 / unconnected 0 / parity 0, no exclusions, no vias
@@ -293,3 +293,58 @@ do the routing. Add the M3 screws for strength just like in the new USB Audio."
 - Open: CS4272 driver in `master` (shared with usb-audio, no CS4272 board built yet); JLCPCB preview; stock
   recheck before ordering; bench (+3V3 current and U2 / R1 heat, 40 MHz start-up, flash boot, PSRAM, noise floor
   against the usb-audio board); commit.
+
+### 9.2 Fab review (2026-11-23): carrier R2, panel P2, MCU board R2
+
+User: "check all is well and this is FAB ready". Checked from the files (scripts and reports in
+`research/fab-review/`, ignored): shared `check` on both boards; the native netlists against the board pads
+(carrier 283 pins, MCU board 152; values, footprints, LCSC fields); J6 / J7 against J102 / J103 pin by pin
+(net and XY); panel holes against jacks, pot shafts, LED, MODE, standoffs and the USB-C; the pin tables of the
+ESP32-S3R8, W25Q128JVSIQ, USBLC6-2SC6 and CS4272 against their datasheets (CS4272: MCLK driven from Y1 with XTI
+grounded and XTO open, AD0 low = 0x10, SDOUT 47k down = slave until the firmware sets master); the MCU board's
+USB-C land, position, outline and strips against the built modules/usb-audio MCU board (identical); vias in
+SMD pads, edge and hand-solder distances, plane pieces; every LCSC code live (free stock, minimum purchase).
+
+Fixed:
+
+- **U2 AMS1117-3.3 heat, carrier R2.** +12V_F is about 11.65 V after D2. U2 drops (11.65 V - 22R x I - 3.3 V) x I
+  plus its ground current: 0.71 W at 130 mA, 0.79 W at 180 mA; R1 takes 0.37 / 0.71 W. The usb-audio copper
+  left the tab on its bare pad (7.6 mm2) with 0.5 mm tracks, which was enough for the CH32V307. The AMS1117
+  datasheet gives 46 to over 90 K/W for SOT-223 depending on the copper, 125 C junction. `research/fab-review/t01.py`
+  adds, all on +3V3: six vias under the U2 body (X11.7 / X13.1, Y83.6 / 85.0 / 86.4) and one below the tab
+  (X15.5 Y87.8), 0.6 / 0.3 mm, none in a pad; a B zone round the tab (35 mm2, solid on the tab pad); an F zone
+  above it in two pieces (16 mm2 over the body vias, 29 mm2 right of the -12V_F track with the C6 / C7 vias).
+  The vias land in the In2 +3V3 plane. B silk now `S4 / R2`. ERC 0, DRC 0 (saved fills and refilled) /
+  unconnected 0 / parity 0; 753 tracks / 124 vias; In1 one piece + the two slivers, In2 unchanged. Not
+  measured. Raising R1 instead only moves the heat: 33R puts 1.07 W into the 1 W resistor at 180 mA.
+- **Panel USB-C slot, P2.** Shell 8.94 x 3.16 mm with R1.58 ends at X15 Y24; slot 9.5 x 5.2 mm at Y24.75 with
+  R2.6 ends centred at X12.85 / X17.15. The shell's upper corners sit 0.034 mm outside those arcs: the 0.27 mm
+  above the shell exists only between the arcs. The 1.5 mm downward extension (usb-audio-max bench fix) made
+  the ends rounder and brought this in. 11.0 x 5.2 mm puts the arcs over the shell's own (X12.1 / X17.9):
+  0.27 mm round the upper half. `docs/geometry.json`, `tools/build_layout.py panel`, printed panel and panel
+  Gerbers redone; panel DRC 0. The regenerated panel file sits at the carrier's sheet origin (the first S4
+  panel was written 8 mm higher, with the MCU board's origin); hole positions on the panel are the same.
+  modules/usb-audio, usb-audio-max and multi-mix had the same 9.5 mm slot; widened the same way later that
+  day (user go-ahead; their `panels/README.md`).
+
+Docs brought to S4: `docs/fit/` (`tools/render_fit.py` was the usb-audio file and pointed at its boards; now it
+renders the 32bit stack: `overview.png`, assembly with and without the panel, MCU board, carrier back), ERC /
+DRC JSON for both boards and the panel, `docs/32bit-schematic.pdf` + `docs/32bit-mcu-schematic.pdf`, `Code.md`,
+`README.md`. The S3 renders are removed.
+
+- **MCU board R2: no hole under 0.3 mm** (user, after the review: "update it to 0.3 or so, I don't want to cost
+  extra"). The nine thermal vias in the U101 exposed pad were KiCad's 0.2 mm holes on 0.5 mm pads, the only
+  holes under 0.3 mm on the two boards. Drill 0.3 mm now, pads and positions kept (`research/fab-review/t02.py`;
+  library footprint and `tools/import_footprints.py` changed with it, `min_through_hole_diameter` 0.3 in the
+  project). 239 tracks / 41 vias as before, In1 / In2 one piece each, ERC 0 / DRC 0 / unconnected 0 / parity 0;
+  B silk S1 / R2; `mcu/` re-exported, BOM / CPL byte-identical. The review's cost note was too coarse:
+  JLCPCB's capability page (read 2026-11-23) charges for 0.2 / 0.25 mm holes only when the via diameter is
+  under 0.45 mm, so the 0.2 / 0.5 mm vias on this 4-layer board were inside the free range by that rule; 0.3 mm
+  does not depend on it. The paste squares of KiCad's land lie over the nine holes, as before; larger holes
+  can take more solder from the exposed pad (the chip's only ground): look at the U101 joint on the first
+  board.
+
+Judged, not changed: USB D+ / D- (9.1); SMD parts 0.43 mm
+from the J6 / J7 joints on the carrier B side and R105 1.2 mm from a J103 pin on the MCU board; C15 47u 6.3 V
+on FILT+; U1 AMS1117-5.0 about 0.4 W on the usb-audio copper; the laptop's USB ground joins the rack ground
+when the port is used (a possible hum loop on a PA, bench item).

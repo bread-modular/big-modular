@@ -5,17 +5,27 @@ Module paths are module-relative.
 
 ## Current state
 
-- **S4 (2026-11-23, uncommitted; docs/research.md section 9.1)**: the board pair below replaces S3 in
-  `hardware/`: **carrier S4 / R1** `hardware/32bit.kicad_{sch,pcb}` (modules/usb-audio S5 carrier with its routed
+- **S4 (2026-11-23; docs/research.md sections 9.1, 9.2)**: the board pair below replaces S3 in
+  `hardware/`: **carrier S4 / R2** `hardware/32bit.kicad_{sch,pcb}` (modules/usb-audio S5 carrier with its routed
   copper: CS4272 clock master, NE5532 stages, AMS1117-5.0 +5VA; volume pots out of the audio path; RV1 / RV2
   control pots, MODE button + LED; R1 22R for the ESP32-S3 +3V3 budget; MS1 / MS2 M3x10 standoffs as usb-audio
-  P2) and the **ESP32-S3 MCU board S1 / R1** `hardware/32bit-mcu.kicad_{sch,pcb}` (ESP32-S3R8 + W25Q128 + 40 MHz,
+  P2) and the **ESP32-S3 MCU board S1 / R2** `hardware/32bit-mcu.kicad_{sch,pcb}` (ESP32-S3R8 + W25Q128 + 40 MHz,
   USB-C on the panel, soldered on J6 / J7). Both hand-routed (`research/s4/`), ERC 0 / DRC 0 / unconnected 0 /
   parity 0, no exclusions, no vias in SMD pads; shared `check` clean, manifests equal.
   S4 GPIO map in `docs/firmware-pins.md`. **S4 JLCPCB export in `jlcpcb/` (2026-11-23, `jlcpcb/README.md`)**:
   two orders, no panel (`main/` carrier 88 parts / 33 rows bottom Economic + FR4 panel, `mcu/` 25 / 14 top
-  Economic), every code live-checked, no pre-order part; not supplier-accepted. Open: CS4272 driver in
-  `master`, JLCPCB preview, bench. **Everything from here down describes S3 (ES8388) and is history once S4 is accepted.**
+  Economic), every code live-checked, no pre-order part; not supplier-accepted.
+  **Fab review 2026-11-23 (uncommitted, research.md 9.2, `jlcpcb/README.md`):** two fixes, `main/` re-exported
+  (BOM / CPL unchanged). **Carrier R2**: U2 AMS1117-3.3 drops 0.71..0.79 W with the ESP32-S3
+  load and sat on a bare tab pad; seven +3V3 vias beside the tab into In2 + a 35 mm2 B patch and 45 mm2 on F
+  (`research/fab-review/t01.py`; 753 tracks / 124 vias, DRC 0 / unconnected 0 / parity 0). **Panel P2**: USB-C
+  slot 9.5 -> 11.0 x 5.2 mm (the 9.5 slot's round ends cut 0.034 mm into the shell's upper corners); FR4 +
+  printed panel regenerated. **MCU board R2 (user: no extra PCB cost)**: the nine thermal vias in the U101
+  exposed pad drilled 0.3 mm instead of KiCad's 0.2 mm (0.5 mm pads and positions kept; library footprint,
+  `tools/import_footprints.py` and the project's 0.3 mm minimum-hole rule updated, `research/fab-review/t02.py`),
+  so no hole on either board is under 0.3 mm; ERC 0 / DRC 0 / unconnected 0 / parity 0, `mcu/` re-exported
+  (BOM / CPL unchanged). `docs/fit/` (assembly renders, ERC / DRC JSON), the schematic PDFs, `Code.md` and
+  `README.md` now describe S4. Open: CS4272 driver in `master`, JLCPCB preview, bench (U2 heat first). **Everything from here down describes S3 (ES8388) and is history once S4 is accepted.**
 - **S3 schematic** (2026-11-15, `hardware/32bit.kicad_sch`, ERC 0, netlist asserted, 116 parts / 118 nets):
   the ESP32-S3-WROOM-1U-N16R8 module (JLCPCB Standard PCBA only) is replaced by its contents, all
   Economic: **U1 ESP32-S3R8** (QFN-56, 8 MB octal PSRAM inside, C2913194), **U2 W25Q128JVSIQ** 16 MB

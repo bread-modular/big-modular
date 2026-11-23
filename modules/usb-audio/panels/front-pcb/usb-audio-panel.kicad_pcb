@@ -11,7 +11,7 @@
 		(title "Big Modular - USB-AUDIO 6HP front panel")
 		(rev "S1")
 		(company "Big Modular")
-		(comment 1 "P2: passive panel, NPTH only (holes, USB-C slot, 2 standoff bolt holes), no copper")
+		(comment 1 "P3: passive panel, NPTH only (holes, 11.0 x 5.2 mm USB-C slot, 2 standoff bolt holes), no copper")
 		(comment 2 "Geometry contract: ../../docs/geometry.json")
 	)
 	(layers
@@ -321,8 +321,8 @@
 		(attr board_only exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -5 -2.85)
-			(end 5 2.85)
+			(start -5.75 -2.85)
+			(end 5.75 2.85)
 			(stroke
 				(width 0.05)
 				(type default)
@@ -333,8 +333,8 @@
 		)
 		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 9.5 5.2)
-			(drill oval 9.5 5.2)
+			(size 11 5.2)
+			(drill oval 11 5.2)
 			(layers "*.Cu" "*.Mask")
 			(thermal_bridge_angle 45)
 			(uuid "b81dcae7-9743-4f6d-a7a1-50d55fb28e52")

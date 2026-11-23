@@ -1,10 +1,10 @@
-# multi-mix — manufacturing export (carrier S5/R4, MCU board S4/R3, 20HP panel P5)
+# multi-mix — manufacturing export (carrier S5/R4, MCU board S4/R3, 20HP panel P6)
 
 `main/` re-exported on 2026-11-19 (carrier R4: B.Cu GND pour for the codec heat; panel P5: USB-C slot
 1.5 mm longer downwards, both carried over from the first modules/usb-audio-max board, `docs/research.md`
 section 12; U8 OPA1678IDR -> NE5532DR C7426 (Basic) on 2026-11-19, section 12a, so the BOM U8 row
 changed, the CPL did not). Carrier re-exported again on 2026-11-20 for the pin 1 silk markers at the clock
-headers (section 12c): only the B silkscreen Gerber changed, BOM / CPL byte-identical. `mcu/` is the 2026-11-11 export after the MIDI IN jack change
+headers (section 12c): only the B silkscreen Gerber changed, BOM / CPL byte-identical. **Panel set re-exported on 2026-11-23 (panel P6: USB-C slot 9.5 -> 11.0 x 5.2 mm, `../panels/README.md`); carrier set untouched.** `mcu/` is the 2026-11-11 export after the MIDI IN jack change
 (section 11), unchanged. Both made with the shared
 `opt/kicad-tools/jlcpcb/export.py` exporter, on user direction ("make it fab ready").
 Never hand-edit these files: change the sources, then re-export with the commands below.
@@ -51,7 +51,7 @@ in `main/carrier/`, `main/panel/` and `mcu/board/`.
 | Carrier assembly | `main/assembly/bom.csv`, `main/assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 203 parts in 46 BOM rows, all on the back |
 | MCU board PCB | `mcu/multi-mix-mcu-gerbers.zip` | **4 layers**, FR4, 1.6 mm, 29.0 x 35.45 mm (notched outline), same base options as the carrier; **explicit JLC04161H-7628 stack and USB targets below**. Min hole 0.3 mm (59 vias 0.6/0.3). The USB-C shell legs are plated slots |
 | MCU board assembly | `mcu/assembly/bom.csv`, `mcu/assembly/positions.csv` | **Economic PCBA, assembly side: Top.** 25 parts in 13 BOM rows, all on the front, J101 USB-C included |
-| Front panel PCB | `main/multi-mix-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 101.3 x 128.5 mm (20HP), no copper, no assembly. 34 round NPTH (15 x 7.2 pots, 12 x 6.2 jacks incl. the new MIDI IN hole H35, 7 x 3.2) + the 9.5 x 5.2 mm USB-C slot (P5: 1.5 mm longer downwards, as on the built modules/usb-audio-max) |
+| Front panel PCB | `main/multi-mix-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 101.3 x 128.5 mm (20HP), no copper, no assembly. 34 round NPTH (15 x 7.2 pots, 12 x 6.2 jacks incl. the new MIDI IN hole H35, 7 x 3.2) + the 11.0 x 5.2 mm USB-C slot (P5: 1.5 mm longer downwards, as on the built modules/usb-audio-max; P6: 9.5 -> 11.0 mm wide) |
 
 ### USB fabrication constraints (MCU board)
 
@@ -133,7 +133,7 @@ Taken from the manifests; the shared `check` re-hashes them and fails on drift (
 - MCU PCB `d407a6b9969528fc794cb0a215634d37a8480d32f5b752a6eaaf9418348a1c14`.
 - MCU project `17b65b01655365de590162d86507d6f15a3184fe5ea9ef486420e190bbb96057`.
 - MCU schematic `751af264da7fb73b279428f216ba2bff4968cba403355c29b9f719788cae5c23`.
-- Panel PCB `107de1a05752377b8a34ba11e0ac50f06bc14c348494ad203a16cadc3201b971` (P5).
+- Panel PCB `d8de23254b1c1f104b0546e4bb4b4664b031a71c8ec17f01667be746692db55d` (P6).
 - Panel project `8520b46f31c39f02279f9b10ed2c98d7fb545e90468302ada3b8ddc26291883e`.
 
 ## Reproduce

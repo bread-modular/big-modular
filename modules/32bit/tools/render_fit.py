@@ -1,6 +1,6 @@
-"""Render the S1 placement: carrier, MCU board, panel and the stacked assembly (nominal).
+"""Render the S4 boards: carrier, MCU board, panel and the stacked assembly (nominal).
 
-Run from modules/usb-audio with KiCad's Python (pcbnew 10):  python3 -B tools/render_fit.py
+Run from modules/32bit with KiCad's Python (pcbnew 10):  python3 -B tools/render_fit.py
 Writes research/fit/ (ignored: STEP exports, the assembly board copy) and docs/fit/*.png.
 
 The assembly is a research copy of the carrier with the parked SMD removed and two fit footprints
@@ -17,6 +17,7 @@ import pcbnew
 MODULE = Path(__file__).resolve().parents[1]
 GEO = json.loads((MODULE / 'docs/geometry.json').read_text())
 OX, OY = GEO['kicad_origin_mm']
+MOX, MOY = GEO['mcu_kicad_origin_mm']     # the MCU board file sits 8 mm higher on its sheet
 FIT = MODULE / 'research/fit'
 DOCS = MODULE / 'docs/fit'
 CLI = ['kicad-cli']
@@ -27,13 +28,13 @@ def run(*args):
     subprocess.run([*CLI, *args], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
-def placed_refs(path, box):
+def placed_refs(path, box, ox=OX, oy=OY):
     board = pcbnew.LoadBoard(str(path))
     x0, y0, x1, y1 = box
     out = []
     for fp in board.GetFootprints():
         p = fp.GetPosition()
-        if x0 <= pcbnew.ToMM(p.x) - OX <= x1 and y0 <= pcbnew.ToMM(p.y) - OY <= y1:
+        if x0 <= pcbnew.ToMM(p.x) - ox <= x1 and y0 <= pcbnew.ToMM(p.y) - oy <= y1:
             out.append(fp.GetReference())
     return out
 
@@ -41,7 +42,8 @@ def placed_refs(path, box):
 def fit_footprint(board, ref, step, z):
     fp = pcbnew.FOOTPRINT(board)
     fp.SetReference(ref)
-    fp.SetAttributes(pcbnew.FP_EXCLUDE_FROM_POS_FILES | pcbnew.FP_EXCLUDE_FROM_BOM | pcbnew.FP_BOARD_ONLY)
+    # through-hole type: kicad-cli render (10.0.6) leaves out the models of unspecified-type footprints
+    fp.SetAttributes(pcbnew.FP_THROUGH_HOLE | pcbnew.FP_EXCLUDE_FROM_POS_FILES | pcbnew.FP_EXCLUDE_FROM_BOM | pcbnew.FP_BOARD_ONLY)
     model = pcbnew.FP_3DMODEL()
     model.m_Filename = str(step)
     model.m_Offset = pcbnew.VECTOR3D(0, 0, z)
@@ -55,11 +57,11 @@ def main():
     FIT.mkdir(parents=True, exist_ok=True)
     DOCS.mkdir(parents=True, exist_ok=True)
     hw = MODULE / 'hardware'
-    carrier, mcu = hw / 'usb-audio.kicad_pcb', hw / 'usb-audio-mcu.kicad_pcb'
-    panel = MODULE / 'panels/front-pcb/usb-audio-panel.kicad_pcb'
+    carrier, mcu = hw / '32bit.kicad_pcb', hw / '32bit-mcu.kicad_pcb'
+    panel = MODULE / 'panels/front-pcb/32bit-panel.kicad_pcb'
     origin = f'{OX}x{OY}mm'
-    mcu_refs = placed_refs(mcu, GEO['mcu_pcb']['outline_mm'])  # J102/J103 = carrier J6/J7 strips (drawn there)
-    run('pcb', 'export', 'step', *VARS, '--force', '--user-origin', origin, '--include-silkscreen',
+    mcu_refs = placed_refs(mcu, GEO['mcu_pcb']['outline_mm'], MOX, MOY)  # J102/J103 = carrier J6/J7 strips (drawn there)
+    run('pcb', 'export', 'step', *VARS, '--force', '--user-origin', f'{MOX}x{MOY}mm', '--include-silkscreen',
         '--include-soldermask', '--component-filter', ','.join(r for r in mcu_refs if r not in ('J102', 'J103')), '-o', str(FIT / 'mcu.step'), str(mcu))
     run('pcb', 'export', 'step', *VARS, '--force', '--user-origin', origin, '--board-only', '--include-silkscreen',
         '-o', str(FIT / 'panel.step'), str(panel))
@@ -76,12 +78,12 @@ def main():
             models[i] = m
     stack = GEO['stack_Z_mm']
     fit_footprint(board, 'FIT_MCU', FIT / 'mcu.step', stack['mcu_board_bottom'])
-    asm = FIT / 'usb-audio-assembly.kicad_pcb'
+    asm = FIT / '32bit-assembly.kicad_pcb'
     pcbnew.SaveBoard(str(asm), board)
     fit_footprint(board, 'FIT_PANEL', FIT / 'panel.step', stack['panel_rear_seat'])
-    asm_panel = FIT / 'usb-audio-assembly-panel.kicad_pcb'
+    asm_panel = FIT / '32bit-assembly-panel.kicad_pcb'
     pcbnew.SaveBoard(str(asm_panel), board)
-    for src in (hw / 'usb-audio.kicad_pro',):
+    for src in (hw / '32bit.kicad_pro',):
         for dst in (asm, asm_panel):
             dst.with_suffix('.kicad_pro').write_text(src.read_text())
     shots = [

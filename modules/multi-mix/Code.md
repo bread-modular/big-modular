@@ -1,4 +1,4 @@
-# MULTI-MIX contract (carrier S5 / MCU S4 schematics; carrier R4, MCU board R3 routing; panel P5)
+# MULTI-MIX contract (carrier S5 / MCU S4 schematics; carrier R4, MCU board R3 routing; panel P6)
 
 | | |
 |---|---|
@@ -108,5 +108,5 @@
   J101 / MS3 courtyards user-accepted for the prototype (2026-11-19); C211-C216 = C107043 (C33353 was pre-order only, `docs/research.md` 12b). Open: the 10 Extended R/C placements, firmware, bench (C1562: user-checked on JLCPCB 2026-11-19, 1,770,712 in stock).
 - **Carrier R4 + panel P5 (2026-11-19, `docs/research.md` section 12):** lessons of the first modules/usb-audio-max
   board: B.Cu GND pour `B_GND_SPREAD` (SMD pads solid, THT on spokes; two B-only no-pour areas at RV303.1 / J6.3)
-  to spread the PCM3168A heat behind the MCU board; USB-C slot 9.5 x 5.2 at X84.1 Y21.75 (1.5 mm longer downwards),
+  to spread the PCM3168A heat behind the MCU board; USB-C slot 9.5 x 5.2 at X84.1 Y21.75 (1.5 mm longer downwards; **P6, 2026-11-23: 11.0 x 5.2**, the 9.5 mm slot's round ends cut 0.034 mm into the shell's upper corners),
   USB label Y27.1. No part, track or via moved; BOM/CPL identical. Shared `check` 0 / equal; `main/` re-exported.

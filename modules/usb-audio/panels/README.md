@@ -2,8 +2,8 @@
 
 | Directory | Contents |
 |---|---|
-| `front-pcb/` | Passive FR4 panel (P2, 2026-11-21): 30 x 128.5 x 1.6 mm; NPTH: 2 rail holes, 4 jacks, 4 pots, 2 x 3.2 mm standoff holes (X5.5 / X24.5, Y13.75), 9.5 x 5.2 mm USB-C slot; silk labels. DRC 0 |
-| `front-cad/` | Printable plain 2.0 mm panel for the P2 carrier (S4, S5): `build_front_panel.py` (reads the panel PCB, asserts it against `docs/geometry.json`: 13 holes + slot, one solid, drilled-blank volume, closed STL) and its `usb-audio-front-panel.{FCStd,step,stl}`. Regenerated 2026-11-22, not test-printed. Run from `modules/usb-audio`: `~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py`. Never hand-edit the exports |
+| `front-pcb/` | Passive FR4 panel (P3, 2026-11-23; P2 of 2026-11-21 with a wider USB-C slot): 30 x 128.5 x 1.6 mm; NPTH: 2 rail holes, 4 jacks, 4 pots, 2 x 3.2 mm standoff holes (X5.5 / X24.5, Y13.75), **11.0 x 5.2 mm USB-C slot** (was 9.5: the 9.5 mm slot's round ends cut 0.034 mm into the shell's rounded upper corners (nominal; found in the modules/32bit fab review); 11.0 mm leaves 0.27 mm round the upper half, same centre, top and bottom edge); silk labels. DRC 0 |
+| `front-cad/` | Printable plain 2.0 mm panel for the P2 carrier (S4, S5): `build_front_panel.py` (reads the panel PCB, asserts it against `docs/geometry.json`: 13 holes + slot, one solid, drilled-blank volume, closed STL) and its `usb-audio-front-panel.{FCStd,step,stl}`. Regenerated 2026-11-23 for the 11.0 mm slot, not test-printed. Run from `modules/usb-audio`: `~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py`. Never hand-edit the exports |
 | `front-cad/r3-brace/` | **First boards (carrier S3/R3) only:** the two-hole v4 printed panel and the v5 bolted USB brace with their scripts, as described below. They do not fit the P2 carrier (everything sits 8 mm lower and two M3x10 standoffs replace the brace); the scripts read the panel PCB of that time (git history) and are kept as a record |
 
 The rest of this file describes the retired brace set in `front-cad/r3-brace/`.

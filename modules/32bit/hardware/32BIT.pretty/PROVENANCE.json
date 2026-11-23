@@ -32,8 +32,8 @@
       "source": "/usr/share/kicad/footprints/Package_DFN_QFN.pretty/QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias.kicad_mod",
       "source_sha256": "25ae50d6aa197008150b055a3a01c9476e689681ce3a4c211af7b3d07ffd158f",
       "license": "KiCad library CC-BY-SA-4.0-with-exception",
-      "edits": "fabrication property \"heatsink\" on the 9 plated thermal-via pads (metadata)",
-      "output_sha256": "c83263b26b3941b19581ee787b851e9847d9809f5f597e9e589319e27dca6e8f"
+      "edits": "fabrication property \"heatsink\" on the 9 plated thermal-via pads (metadata); their drill 0.2 -> 0.3 mm (pads and positions unchanged)",
+      "output_sha256": "560e4c0439da982c097bdfbb4e99e6b14c6d556ec2baacfd27961dfe7e10993e"
     },
     "SOIC-8_5.3x5.3mm_P1.27mm": {
       "source": "/usr/share/kicad/footprints/Package_SO.pretty/SOIC-8_5.3x5.3mm_P1.27mm.kicad_mod",

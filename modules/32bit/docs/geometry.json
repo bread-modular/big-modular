@@ -1,5 +1,5 @@
 {
- "revision": "S4 / P1 placement (2026-11-23, user: 32bit on the modules/usb-audio S5 carrier with an ESP32-S3 MCU board, two in / two out, two firmware pots + MODE, M3 standoffs as usb-audio). 6HP, two boards: carrier (jack board, 4 layers, the routed usb-audio S5 / R5 carrier adapted by hand) and the 32bit-mcu board (4 layers, usb-audio MCU board outline and strips) stacked on the carrier F side on 2.54 mm pin headers. The routed boards own placement.",
+ "revision": "S4 / P1 placement, panel P2 (USB-C slot 11.0 x 5.2 mm, fab review 2026-11-23) (2026-11-23, user: 32bit on the modules/usb-audio S5 carrier with an ESP32-S3 MCU board, two in / two out, two firmware pots + MODE, M3 standoffs as usb-audio). 6HP, two boards: carrier (jack board, 4 layers, the routed usb-audio S5 / R5 carrier adapted by hand) and the 32bit-mcu board (4 layers, usb-audio MCU board outline and strips) stacked on the carrier F side on 2.54 mm pin headers. The routed boards own placement.",
  "frame": "Panel frame: origin at the panel upper-left corner seen from the front, X across (right), Y down, mm. KiCad sheet position = kicad_origin + panel XY for the carrier and the panel; the MCU board file uses mcu_kicad_origin_mm (8 mm less in Y, as the modules/usb-audio MCU board file it is drawn after). The carrier F side faces the panel; the MCU board sits on the carrier F side with its own F side facing the panel, so both KiCad top views equal the front view (no mirroring).",
  "kicad_origin_mm": [
   100.0,
@@ -139,10 +139,10 @@
    24.75
   ],
   "size_mm": [
-   9.5,
+   11.0,
    5.2
   ],
-  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm, centre X15 Y24): 0.27 mm above and ~1.77 mm below the shell, as on the built modules/usb-audio-max and modules/multi-mix panels (slot extended 1.5 mm downwards); the shell passes through and stands 1.3 mm proud."
+  "note": "Obround NPTH slot for the receptacle shell (8.94 x 3.16 mm with R1.58 ends, centre X15 Y24): 0.27 mm above, at the sides and round the upper corners, ~1.77 mm below the shell (top edge Y22.15, bottom Y27.35: the 1.5 mm downward extension of the built modules/usb-audio-max panel); the shell passes through and stands 1.3 mm proud. P2 (fab review 2026-11-23): 9.5 -> 11.0 mm wide. At 9.5 the slot's R2.6 ends cut 0.034 mm into the shell's upper corners (nominal); at 11.0 the end circles sit over the shell's end circles (X12.1 / X17.9)."
  },
  "carrier_headers": [
   {

@@ -39,6 +39,10 @@ Module paths are module-relative.
     pre-order part on 2026-11-22), panel 13 NPTH + slot and printed panel unchanged since the S4
     export; `jlcpcb/mcu/` re-exported from unchanged sources. Shared `check` clean and manifests
     equal on both profiles.
+  - **Panel P3 (2026-11-23, user, from the modules/32bit fab review; uncommitted):** USB-C slot 9.5 -> 11.0 x
+    5.2 mm, same centre, top and bottom edge (the 9.5 mm slot's round ends cut 0.034 mm into the shell's
+    rounded upper corners; now 0.27 mm round the upper half). FR4 panel (DRC 0), `docs/geometry.json`,
+    printed panel and the `jlcpcb/main/` panel set regenerated; carrier and MCU sets untouched, manifests equal.
   - **Open:** CS4272 firmware (1.1.0 does not run on this carrier; the edge-synced I2S start test
     code is still uncommitted in `firmware/usb-audio/src/`), JLCPCB preview, build, bench (the I2S
     fault's root cause was never scoped; NE5532 offsets with the pot position and the 2.41 V

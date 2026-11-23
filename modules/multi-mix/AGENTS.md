@@ -38,6 +38,11 @@ are relative to the module.
   `tools/check_usb.py` passes, new SMD >= 2.20 mm from pot/jack pads.
 - **Carrier R4 + panel P5** (2026-11-19, `docs/research.md` section 12): B.Cu GND pour for the codec heat and the
   USB-C slot 1.5 mm longer downwards, both from the first modules/usb-audio-max board. MCU board unchanged (R3).
+- **Panel P6** (2026-11-23, user, from the modules/32bit fab review; uncommitted): USB-C slot 9.5 -> 11.0 x 5.2 mm,
+  same centre, top and bottom edge (the 9.5 mm slot's round ends cut 0.034 mm into the shell's rounded upper
+  corners; now 0.27 mm round the upper half; MS3 hole 3.8 mm and the USB label 1.8 mm away, as before). FR4 panel
+  (DRC 0), `docs/geometry.json`, printed panel and the `jlcpcb/main/` panel set regenerated; carrier set untouched,
+  manifests equal.
 - **Pin 1 silk at the clock headers** (2026-11-20, user, `docs/research.md` 12c; as modules/usb-audio-max): B silk
   filled triangle + `1` east of J7 pin 1 (CLK IN, unshrouded), `1` beside the J6 footprint triangle (CLK OUT);
   `CLK IN - NOT POWER` 4.85 mm lower. Silk only, still R4: DRC 0 / unconnected 0 / parity 0, shared `check` equal,

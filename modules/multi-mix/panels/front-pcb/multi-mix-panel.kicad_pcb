@@ -9,9 +9,9 @@
 	(paper "A4")
 	(title_block
 		(title "Big Modular - MULTI-MIX 20HP front panel")
-		(rev "S5/P5")
+		(rev "S5/P6")
 		(company "Big Modular")
-		(comment 1 "S5/P5: P4 + USB-C slot 1.5 mm longer downwards as on modules/usb-audio-max (2026-11-19); passive panel, NPTH only (holes + USB-C slot), no copper")
+		(comment 1 "S5/P6: P5 + USB-C slot 9.5 -> 11.0 x 5.2 mm (2026-11-23); passive panel, NPTH only (holes + USB-C slot), no copper")
 		(comment 2 "Geometry contract: ../../docs/geometry.json")
 	)
 	(layers
@@ -2617,8 +2617,8 @@
 		(attr board_only exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_rect
-			(start -5 -2.85)
-			(end 5 2.85)
+			(start -5.75 -2.85)
+			(end 5.75 2.85)
 			(stroke
 				(width 0.05)
 				(type default)
@@ -2629,8 +2629,8 @@
 		)
 		(pad "" np_thru_hole oval
 			(at 0 0)
-			(size 9.5 5.2)
-			(drill oval 9.5 5.2)
+			(size 11 5.2)
+			(drill oval 11 5.2)
 			(layers "*.Cu" "*.Mask")
 			(thermal_bridge_angle 45)
 			(uuid "800e8bdd-e3ad-415a-9fd4-81018940f63a")

@@ -2,8 +2,8 @@
 
 Use this page when porting the Bread Modular `code/32bit` firmware. It lists every GPIO the BM
 32bit-5v board uses, what the 32bit module does with it, and every hardware change that matters to
-firmware. Source of truth for the nets: `tools/circuit32.py` (`MCU` table) and
-`hardware/32bit.kicad_sch`.
+firmware. Source of truth for the nets: S4 = `tools/circuit_mcu.py` (`MCU_PINS`) and
+`hardware/32bit-mcu.kicad_sch`; the S3 tables further down came from `tools/circuit32.py` (git history).
 
 ## S4 (2026-11-23): ESP32-S3 MCU board on the CS4272 carrier
 
