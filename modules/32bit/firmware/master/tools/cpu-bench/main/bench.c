@@ -119,17 +119,23 @@ void app_main(void) {
     ms_params_defaults(values);
     measure("factory settings");
 
-    // Everything on at its costliest: 24 dB/oct cuts, RMS detectors, glue
-    // sidechain filter + soft clip, longest look-aheads, limiters driven hard.
-    values[MS_P_K_HP_SLOPE] = 1;
-    values[MS_P_M_HP_SLOPE] = 1;
+    // Everything on at its costliest: 48 dB/oct low and high cuts, RMS detectors,
+    // glue sidechain filter + soft clip, longest look-aheads, limiters driven hard
+    // with auto release.
+    values[MS_P_K_FLT_LC_SLOPE] = 2;
+    values[MS_P_K_FLT_HC_ON] = 1;
+    values[MS_P_K_FLT_HC_SLOPE] = 2;
+    values[MS_P_M_FLT_LC_SLOPE] = 2;
+    values[MS_P_M_FLT_HC_ON] = 1;
+    values[MS_P_M_FLT_HC_SLOPE] = 2;
+    values[MS_P_K_LIM_AUTO] = 1;
     values[MS_P_MB_MODE] = 1;
     values[MS_P_MB_HI_RATIO] = 4;
     values[MS_P_GLUE_SC_HP] = 100;
     values[MS_P_GLUE_CLIP] = 1;
-    values[MS_P_EQ_LO_SLOPE] = 1;
-    values[MS_P_EQ_HI_ON] = 1;
-    values[MS_P_EQ_HI_SLOPE] = 1;
+    values[MS_P_O_FLT_LC_SLOPE] = 2;
+    values[MS_P_O_FLT_HC_ON] = 1;
+    values[MS_P_O_FLT_HC_SLOPE] = 2;
     values[MS_P_K_LIM_GAIN] = 12;
     values[MS_P_K_LIM_LA] = 5;
     values[MS_P_LIM_GAIN] = 12;

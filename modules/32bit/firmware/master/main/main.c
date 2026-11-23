@@ -1,9 +1,10 @@
 // 32bit master: end-of-chain processor for a live set, in place of a DAW.
 //
-//   IN L  kick   -> sub cut -> limiter
-//   IN R  mix    -> low cut -> 3-band dynamics keyed by the kick
+//   IN L  kick   -> filter -> limiter
+//   IN R  mix    -> filter -> 3-band dynamics keyed by the kick
 //   both         -> send -> parallel compressor -> return
-//   sum          -> glue compressor -> low / high cut -> limiter -> OUT L = OUT R (mono)
+//   sum          -> glue compressor -> filter -> limiter -> OUT L = OUT R (mono)
+//   (the effects of each strip in any order, set from the page)
 //
 // Every setting is made from web/index.html over the USB-C port (Web Serial,
 // text protocol in ms_proto.h) and saved in flash; at power-up the module runs
@@ -167,7 +168,7 @@ static void setup_storage(void) {
 
 static void setup_serial(void) {
     // Room for the whole `desc` answer; the log goes through the same driver.
-    usb_serial_jtag_driver_config_t config = {.tx_buffer_size = 8192, .rx_buffer_size = 1024};
+    usb_serial_jtag_driver_config_t config = {.tx_buffer_size = 12288, .rx_buffer_size = 1024};
     ESP_ERROR_CHECK(usb_serial_jtag_driver_install(&config));
     usb_serial_jtag_vfs_use_driver();
 }

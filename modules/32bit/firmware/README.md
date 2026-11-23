@@ -312,30 +312,52 @@ the module, which then runs alone. `master/main/src/ms_dsp.c` is the chain,
 the page. No MIDI, so no JP1 setting.
 
 ```
-IN L kick -> trim -> sub cut -> limiter ---------------+--> kick level --+
-                       | key, before the limiter       +--> send --+     |
+IN L kick -> trim -> filter -> limiter ----------------+--> kick level --+
+                       | key, at the limiter's input   +--> send --+     |
                        v                                           v     v
-IN R mix  -> trim -> low cut -> 3-band dynamics -------+--> send -> parallel compressor -> return
+IN R mix  -> trim -> filter -> 3-band dynamics --------+--> send -> parallel compressor -> return
                                                        +--> mix level ------------------------(+)
-OUT L = OUT R <- output level <- limiter <- low / high cut <- glue compressor <----------------+
+OUT L = OUT R <- output level <- limiter <- filter <- glue compressor <-----------------------+
 ```
+
+The drawing is the factory order. Since 0.3.0 the effects of each strip run in
+any order (settings `k_order`, `m_order`, `o_order`; on the page: drag a slot up /
+down): kick filter / limiter, mix filter / multiband, master glue / filter /
+limiter (all six orders). The multiband key is always the kick at the kick
+limiter's input, so it keeps its lead over the delayed mix.
 
 | Stage | What it does | Settings |
 |---|---|---|
 | Inputs | trim per input; the page shows both levels and a CLIP flag at the converter's full scale | kick / mix trim +-24 dB |
-| Kick sub cut | Butterworth high pass | on, 10..120 Hz (25), 12 / 24 dB/oct |
-| Kick limiter | look-ahead peak limiter | on, gain 0..24 dB, ceiling (-3 dB), release 1..1000 ms (60), look-ahead 0..5 ms (1.0) |
-| Mix low cut | Butterworth high pass | on, 20..500 Hz (40), 12 / 24 dB/oct |
+| Filter (kick, mix, master) | one device on each of the three strips: a low cut (high pass) and a high cut (low pass), each with its own switch; Butterworth at resonance 0.71, the resonance is the Q of a 12 dB/oct cut and on 24 / 48 dB/oct scales the sharpest section (Q 2 = +6 dB at the cut frequency on 12 dB/oct) | on; per cut: on, 10 Hz..20 kHz, resonance 0.5..6 (0.71), 12 / 24 / 48 dB/oct. Factory: kick low cut 25 Hz 24 dB/oct; mix low cut 40 Hz 12 dB/oct; master low cut 30 Hz 12 dB/oct, high cut off (16 kHz); the high cuts off |
+| Kick limiter | look-ahead peak limiter | on, gain 0..24 dB, ceiling (-3 dB), release 1..1000 ms (60), auto release (off), look-ahead 0..5 ms (1.0) |
 | Multiband dynamics | Linkwitz-Riley 24 dB/oct split into low / mid / high (120 Hz, 2.5 kHz); each band a downward compressor keyed by **the same band of the kick** (or of the mix itself: sidechain Self). The key is taken before the kick limiter, so it leads the audio by that look-ahead | on, sidechain Kick / Self, sidechain gain, the two split frequencies, peak / RMS detector, soft knee (6 dB), amount 0..100 %, output, solo band; per band: on, threshold, ratio 1..20, attack 0.1..200 ms, release 5..2000 ms, gain |
 | Parallel compression | kick send + mix send -> one heavy compressor (6 dB knee) -> make-up -> return into the main | on, the two sends, threshold (-35 dB), ratio 1.5..20 (10), attack (2 ms), release (150 ms), make-up (20 dB), return (-6 dB) |
 | Glue compressor | bus compressor on the main sum: a circuit model of the analog VCA bus compressor behind the Glue (feedback detector, RC timing, gain cell colour; section Glue compressor below) with the Glue's controls: ratio 2 / 4 / 10, attack .01 .. 30 ms and release .1 .. 1.2 s in the same steps, release A (two capacitors: a short peak recovers in ~0.1 s, a long loud passage over ~5 s), range (most reduction), dry / wet, sidechain high pass, soft clip (bends from -6 dB to a -0.5 dB top) | on, threshold (-10 dB), ratio (2), attack (10 ms), release (A), make-up, range, dry / wet, SC high pass, soft clip |
-| Main cuts | Butterworth low cut and high cut | low: on, 15..300 Hz (30); high: off, 2..20 kHz (16 kHz); 12 / 24 dB/oct |
-| Limiter | look-ahead peak limiter, last in the chain: the output never passes the ceiling | on, gain, ceiling (-1 dB), release (100 ms), look-ahead (1.5 ms) |
+| Limiter | look-ahead peak limiter, last in the chain (factory order): the output never passes the ceiling | on, gain, ceiling (-1 dB), release (100 ms), auto release (on), look-ahead (1.5 ms) |
 | Output | level, and a bypass (kick + mix straight out) for comparing | output level -60..0 dB; bypass is never saved |
 
-Levels in dB with a -60 dB minimum are off at the minimum. The order of the last
-three differs from "glue, limiter, EQ": the cuts sit before the limiter, because a
-filter after a limiter lets peaks through above its ceiling.
+Levels in dB with a -60 dB minimum are off at the minimum. The factory order of
+the last three differs from "glue, limiter, EQ": the filter sits before the
+limiter, because a filter after a limiter lets peaks through above its ceiling
+(any effect after the limiter can; only the output's hard clip at full scale
+stays).
+
+**Auto release** (both limiters; the release setting does nothing while it is
+on). Ableton's Limiter has the same switch, documented only as "analyzes incoming
+audio and continuously updates its release time"
+(<https://www.ableton.com/en/manual/live-audio-effect-reference/>); how it does it
+is not published, so this is the usual program-dependent two-stage release: the
+gain is the lower of a fast stage (takes every peak, lets go in 30 ms) and a slow
+stage that follows the wanted gain with a 100 ms attack and lets go in 1 s. A
+lone peak hardly moves the slow stage, so the gain is back quickly (10 ms peak 12
+dB over: 0.6 dB left after 150 ms); while the limiter works all the time the slow
+stage sits at the average reduction and the fast one returns only to it, so the
+gain does not pump on every hit (after 3 s of limiting: 8.9 dB left after 150 ms).
+
+Settings files and stored settings of 0.2.x still load: `k_hp_*`, `m_hp_*`,
+`eq_lo_*` and `eq_hi_*` are read as the filters' low and high cuts (also over
+`set`).
 
 Not the DAW's sound: the multiband is this firmware's own compressor behind the
 same controls (the Above half only, no upward compression / expansion below a
@@ -403,32 +425,45 @@ master/web/run.sh             # port 3000; whatever listens there is stopped fir
 PORT=3001 master/web/run.sh   # another port
 ```
 
-Connect and pick the module's port (Espressif USB JTAG/serial). The page is a
-mixer of four channel strips, signal top to bottom:
+Connect (side panel on the right) and pick the module's port (Espressif USB
+JTAG/serial). The page fills the window: the mixer of four channel strips on top,
+the selected effect in a panel of fixed height (400 px) under it, and the side
+panel on the right. Strips, signal top to bottom:
 
 | Strip | Top to bottom |
 |---|---|
-| KICK (IN L) | trim knob + input level / CLIP, effects (Sub cut, Limiter), send into the parallel bus, level fader |
-| MIX (IN R) | trim, effects (Low cut, Multiband), send, level fader |
+| KICK (IN L) | trim knob + input level / CLIP and the send into the parallel bus, effects (Filter, Limiter), level fader |
+| MIX (IN R) | trim and send, effects (Filter, Multiband), level fader |
 | PARALLEL | the two sends that feed it, Compressor, return fader |
-| MASTER | what feeds it, effects (Glue compressor, Cuts, Limiter), output fader |
+| MASTER | what feeds it, effects (Glue compressor, Filter, Limiter), output fader |
 
 Each effect is a slot with its on / off lamp, its main values and a small
-gain-reduction bar. **Click a slot and its settings show in the panel under the
-mixer** (the multiband as three band cards); a click on a strip's name shows the
-strip's own trim, send and level there. Beside each fader: gain reduction
-(growing downward) and the level after the strip's effects with peak hold; the
-sends are taken at that point too, before the fader. Knobs and faders: drag up /
-down (Shift = fine), arrow keys, or type the value ("off" for a send or fader at
-its minimum); a double-click, or a click on a setting's name in the panel, gives
-the factory value.
+gain-reduction bar. **Drag a slot up / down (or Alt + arrow keys) to move it in
+its strip's chain.** **Click a slot and it opens in the panel**: a graph drawn on
+the page from the settings and the meters it polls anyway, and its settings as
+knobs, switches and choice buttons:
+
+| Effect | Graph |
+|---|---|
+| Filter | the response (10 Hz..20 kHz, the firmware's own filter math) with a point per cut: drag left / right = frequency, up / down or the wheel = resonance, double-click = that cut on / off; a card per cut (on, slope, frequency, resonance) |
+| Limiter | reduction and level over the last 10 s against the ceiling, and the release as a shape (auto: the two stages) |
+| Compressor (parallel) | the static curve with a dot where it works now, reduction and return over 10 s, attack / release shape |
+| Glue compressor | the static curve, a reduction needle (0..20 dB, VU-like ballistics), attack / release shape (release A: two stages) |
+| Multiband | the three bands over frequency with their live reduction drawn in; drag a split line left / right, a band up / down for its gain; a row of knobs per band with its reduction |
+| Channel (click a strip's name) | the strip's levels over 10 s, its trim, send and level |
+
+Knobs and faders: drag up / down (Shift = fine), arrow keys, double-click = the
+factory value; click a knob's value to type one ("off" for a send or fader at its
+minimum, "1.2k" for 1200), click its name for the factory value. Colours: grey
+surfaces, one amber accent for what is set or acting (lamps, knobs, curves, gain
+reduction); level meters grey, amber above -6 dB and red above -1 dB.
 
 A change is heard at once. **Save to module** writes all settings to flash (the
 audio drops for a moment while it writes); without it they are gone at
-power-off, and the header shows "Unsaved" until then. Revert goes back to the
-saved settings, Factory to the defaults, Export / Import keep a set as a text
-file, Bypass sends kick + mix straight out to compare. The header also shows the
-audio task's CPU load (mean and worst block) and the latency estimate.
+power-off, and the side panel shows "Unsaved changes" until then. Revert goes
+back to the saved settings, Factory to the defaults, Export / Import keep a set as
+a text file, Bypass sends kick + mix straight out to compare. The side panel also
+shows the audio task's CPU load (mean and worst block) and the latency estimate.
 
 The ranges, names and choices come from the firmware's own settings table
 (`desc`); the page's `STRIPS` table only says which strip and slot each one
@@ -441,18 +476,20 @@ every control works, the meters are invented and nothing is processed.
 `master/tools`; the host tests fail when it is stale).
 
 `master/tests/web_check.mjs` drives the page in headless Chromium (node >= 22):
-demo mode with real mouse drags on a knob and a fader, and the Web Serial path
-against a fake port. Not part of `make`:
+demo mode with real mouse drags (knobs, faders, the filter's points, the
+multiband split, slots dragged to a new order), the layout (side panel, fixed
+panel height, no page scroll) and the Web Serial path against a fake port. Not
+part of `make`; a second argument saves screenshots of every view there:
 
 ```sh
 master/web/run.sh &
-node master/tests/web_check.mjs http://localhost:3000/
+node master/tests/web_check.mjs http://localhost:3000/ [folder]
 ```
 
 The protocol is plain text lines (`master/main/include/ms_proto.h`): `hello`,
 `desc`, `get`, `set <id> <value>`, `m` (meters), `save`, `load`, `defaults`. It
 shares the USB port with the ESP-IDF log, whose lines the page shows at the
-bottom. `MONITOR=1 ./flash.sh master` gives a terminal on it.
+bottom of the side panel. `MONITOR=1 ./flash.sh master` gives a terminal on it.
 
 ### Hearing it without the module
 
@@ -496,14 +533,14 @@ a release), and the total falls to about 2.3 ms.
 - 24-bit samples (codec word length 24, 32-bit I2S slots; fxrack / polysynth use
   16): the chain adds gain, so 16-bit input steps would come up with it.
 - 44.1 kHz, single-precision float, state-variable filters (well conditioned at
-  the 10 Hz sub cut), log2 / 2^x approximations within 0.006 dB.
-- **240 MHz** (the others run at 160): QEMU counts 1148 instructions per sample
-  at the factory settings, 1388 with everything on (worst block 1562), 62 in
-  bypass (`master/tools/cpu-bench/run.sh`, needs Espressif's `qemu-xtensa`; the
-  glue's circuit model added 28). The
-  cycles per instruction on the chip are not known here; at 2 the worst block
-  would take 57 % of a 240 MHz core (86 % at 160 MHz) before the I2S driver's
-  own share of each 363 us block. Read the page's CPU figure on the module; the
+  a 10 Hz cut), log2 / 2^x approximations within 0.006 dB.
+- **240 MHz** (the others run at 160): QEMU counts 1165 instructions per sample
+  at the factory settings (0.3.0; 0.2.0: 1148), 1735 with everything on (worst
+  block 1875; every filter's low and high cut at 48 dB/oct, auto release; 0.2.0:
+  1388 / 1562 with 24 dB/oct cuts), 62 in bypass (`master/tools/cpu-bench/run.sh`,
+  needs Espressif's `qemu-xtensa`). The cycles per instruction on the chip are
+  not known here; at 2 the worst block would take 69 % of a 240 MHz core before
+  the I2S driver's own share of each 363 us block. Read the page's CPU figure on the module; the
   extra supply current is a U8 bench item.
 - PSRAM off (not used). Settings in NVS as text (`set <id> <value>` lines, the
   export format): an unknown name is skipped, so a later firmware can read an
@@ -511,8 +548,17 @@ a release), and the total falls to about 2.3 ms.
 
 ### State
 
-Built with ESP-IDF v5.5.1 (2026-11-22, 0.2.0): 330 KB app, no warnings. Host tests
-(`master/tests`, ASan + UBSan, 632 checks): cut frequencies and slopes, the three
+0.3.0 (2026-11-23): the cuts became one filter device per strip (low + high cut,
+resonance, 12 / 24 / 48 dB/oct), the effects of each strip can change order, the
+limiters have auto release; the page was rebuilt (side panel, fixed-height effect
+panel with graphs and knobs, slots dragged into a new order, one accent colour).
+Built with ESP-IDF v5.5.1: 332 KB app, no warnings. The demo loop through the
+chain in QEMU equals the host render within 8 steps of 24 bits (2026-11-23).
+**Not flashed, not heard.** Host tests
+(`master/tests`, ASan + UBSan, 778 checks): filter frequencies, slopes,
+resonance, band pass and switch, the order settings (kick, mix, master), auto
+release (fast after a lone peak, held after long limiting), settings of 0.2.x
+read as the filters, the three
 bands adding up flat (within 0.001 dB), compressor curve and timing, kick-keyed
 ducking and recovery, limiter ceiling at every look-ahead, chain delay, glue
 ratios / range / dry-wet / sidechain filter / soft clip / auto release, the glue

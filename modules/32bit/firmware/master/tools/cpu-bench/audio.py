@@ -19,7 +19,7 @@ import numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from demo import FS, make_loop, read_wav, write_wav  # noqa: E402
 
-OFF = ["k_hp_on", "k_lim_on", "m_hp_on", "mb_on", "par_on", "eq_lo_on", "eq_hi_on", "lim_on"]
+OFF = ["k_flt_on", "k_lim_on", "m_flt_on", "mb_on", "par_on", "o_flt_on", "lim_on"]
 GLUE_ONLY = {k: 0 for k in OFF}
 # Name -> settings on top of the factory ones.
 SETS = {

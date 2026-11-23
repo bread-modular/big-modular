@@ -15,7 +15,7 @@ import numpy as np
 
 from demo import FS, db, make_loop, read_wav
 
-OFF = ["k_hp_on", "k_lim_on", "m_hp_on", "mb_on", "par_on", "eq_lo_on", "eq_hi_on", "lim_on"]
+OFF = ["k_flt_on", "k_lim_on", "m_flt_on", "mb_on", "par_on", "o_flt_on", "lim_on"]
 ATTACK = [0.01, 0.1, 0.3, 1, 3, 10, 30]  # ms, the glue_att choices
 RELEASE = [0.1, 0.2, 0.4, 0.6, 0.8, 1.2, "A"]  # s, the glue_rel choices
 RATIO = [2, 4, 10]

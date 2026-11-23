@@ -34,7 +34,6 @@ const drag = async (sel, dy) => {
   await sleep(200);
 };
 const value = (pid) => evaluate(`[state.params.get("${pid}").value, state.link.values ? state.link.values.get("${pid}").v : null]`);
-const row = (pid) => `state.detailRows.find((r) => r.p.id === "${pid}").row`;
 
 try {
   let target;
@@ -58,61 +57,124 @@ try {
   await cdp("Page.navigate", { url: url + "?demo" });
   await sleep(1500);
   check(await evaluate(`[...document.querySelectorAll(".strip .sname")].map((e) => e.textContent).join(" ")`) === "KICK MIX PARALLEL MASTER", "four strips: kick, mix, parallel, master");
-  check(await evaluate(`[...document.querySelectorAll(".slot .slotname")].map((e) => e.textContent).join("|")`) === "Sub cut|Limiter|Low cut|Multiband|Compressor|Glue compressor|Cuts|Limiter", "effect slots per strip, no Other slot");
-  check(await evaluate(`state.params.size`) === 75, "75 parameters");
-  // every parameter has a place: a strip control, a slot switch, a slot's rows or the toolbar
-  const placed = await evaluate(`(() => { const ids = new Set(TOOLBAR); for (const s of STRIPS) for (const i of [s.trim, s.send, s.fader, s.on, ...s.devices.map((d) => d.on)]) if (i) ids.add(i);
+  check(await evaluate(`[...document.querySelectorAll(".slot .slotname")].map((e) => e.textContent).join("|")`) === "Filter|Limiter|Filter|Multiband|Compressor|Glue compressor|Filter|Limiter", "effect slots per strip, no Other slot");
+  check(await evaluate(`state.params.size`) === 95, "95 parameters");
+  // every parameter has a place: a strip control, a slot switch, a slot's settings or the side panel
+  const placed = await evaluate(`(() => { const ids = new Set(TOOLBAR); for (const s of STRIPS) for (const i of [s.trim, s.send, s.fader, s.on, s.order, ...s.devices.map((d) => d.on)]) if (i) ids.add(i);
     for (const d of state.devices.values()) for (const sec of d.sections) for (const p of sec.params) ids.add(p.id); return [...state.params.keys()].filter((i) => !ids.has(i)); })()`);
   check(placed.length === 0, "every parameter is on a strip or in a slot" + (placed.length ? ": missing " + placed : ""));
-  check(await evaluate(`document.querySelectorAll(".strip .knob").length === 4 && document.querySelectorAll(".strip .fader").length === 4`), "2 trim + 2 send knobs, 4 faders");
+  // every setting of an effect has a control in its panel
+  const unshown = await evaluate(`(() => { const miss = []; for (const d of state.devices.values()) { select(d.id); const shown = new Set(state.detailViews.map(([p]) => p.id));
+    for (const sec of d.sections) for (const p of sec.params) if (!shown.has(p.id)) miss.push(d.id + ":" + p.id); } select("k_flt"); return miss; })()`);
+  check(unshown.length === 0, "every effect setting has a control in the panel" + (unshown.length ? ": missing " + unshown : ""));
+  check(await evaluate(`document.querySelectorAll(".strip svg.knob").length === 4 && document.querySelectorAll(".strip .fader").length === 4`), "2 trim + 2 send knobs, 4 faders");
   check(await evaluate(`$("lat").textContent`) === "≈ 4.8 ms", "latency shown: " + await evaluate(`$("lat").textContent`));
   check(await evaluate(`$("unsaved").classList.contains("hidden")`), "no unsaved badge at start");
-  check(await evaluate(`document.querySelector(".slot.sel .slotname").textContent + "|" + document.querySelector("#detail .dpath").textContent + "|" + document.querySelector("#detail .dname").textContent`) === "Sub cut|KICK|Sub cut", "first slot selected, its settings in the panel below");
-  check(await evaluate(`document.querySelector("#detail").getBoundingClientRect().top > document.querySelector("#mixer").getBoundingClientRect().bottom - 1`), "panel sits under the mixer");
-  await shot("web-strips");
+  check(await evaluate(`document.querySelector(".slot.sel .slotname").textContent + "|" + document.querySelector("#detail .dpath").textContent + "|" + document.querySelector("#detail .dname").textContent`) === "Filter|KICK|Filter", "first slot selected, its settings in the panel below");
+  const layout = await evaluate(`(() => { const d = $("detail").getBoundingClientRect(), m = $("mixer").getBoundingClientRect(), s = $("side").getBoundingClientRect(); return [d.top >= m.bottom - 1, s.left >= d.right, s.height, d.height, document.scrollingElement.scrollHeight <= innerHeight, innerHeight]; })()`);
+  check(layout[0] && layout[1] && layout[2] === layout[5] && layout[3] === 400 && layout[4], "panel under the mixer, side panel on the right, full height, no page scroll: " + layout);
+  await shot("web-filter");
 
-  // ---- the panel: a row slider -> value box -> device -> slot summary -> badge
-  await evaluate(`(() => { const s = ${row("k_hp_f")}.querySelector("input[type=range]"); s.value = 500; s.oninput(); })()`);
+  // ---- filter: drag the low cut point right and up, double-click the high cut point
+  const dot = (cut) => evaluate(`(() => { const ch = state.detailRedraws, svg = document.querySelector("#detail .chart svg"), r = svg.getBoundingClientRect();
+    const c = [...svg.querySelectorAll("circle")][${JSON.stringify(cut)} === "lc" ? 0 : 1]; return [r.x + +c.getAttribute("cx"), r.y + +c.getAttribute("cy")]; })()`);
+  let [dx, dy] = await dot("lc");
+  await mouse("mousePressed", dx, dy);
+  for (let k = 1; k <= 6; k++) await mouse("mouseMoved", dx + 60 * k / 6, dy - 30 * k / 6);
+  await mouse("mouseReleased", dx + 60, dy - 30);
   await sleep(300);
-  const hp = await value("k_hp_f");
-  const hpBox = await evaluate(`${row("k_hp_f")}.querySelector(".num input").value`);
-  check(Math.abs(hp[0] - 34.6) < 0.2 && hp[1] === hp[0] && hpBox === "34.6", "log slider at half way = 34.6 Hz on page and device: " + hp + " " + hpBox);
-  check(await evaluate(`document.querySelector(".slot.sel .slotsum").textContent`) === "34.6 Hz · 24 dB/oct", "slot summary follows: " + await evaluate(`document.querySelector(".slot.sel .slotsum").textContent`));
+  const lcf = await value("k_flt_lc_f"), lcq = await value("k_flt_lc_q");
+  check(lcf[0] > 40 && lcf[0] < 80 && lcf[1] === lcf[0] && lcq[0] > 1.2 && lcq[1] === lcq[0], "low cut point dragged: frequency and resonance up on page and device: " + lcf + " / " + lcq);
+  check(await evaluate(`document.querySelector(".slot.sel .slotsum").textContent`).then((t) => t.startsWith("LC " + (lcf[0] >= 100 ? lcf[0].toFixed(0) : lcf[0].toFixed(1)) + " Hz · HC off")), "slot summary follows: " + await evaluate(`document.querySelector(".slot.sel .slotsum").textContent`));
   check(!(await evaluate(`$("unsaved").classList.contains("hidden")`)), "unsaved badge after a change");
-  await evaluate(`${row("k_hp_f")}.querySelector("label").click()`);
+  [dx, dy] = await dot("hc");
+  await mouse("mousePressed", dx, dy); await mouse("mouseReleased", dx, dy);
+  await mouse("mousePressed", dx, dy, { clickCount: 2 }); await mouse("mouseReleased", dx, dy, { clickCount: 2 });
+  await sleep(300);
+  check((await value("k_flt_hc_on"))[1] === 1 && await evaluate(`!document.querySelector("#detail .card:nth-child(2) .kn").classList.contains("off")`), "double-click on the H point turns the high cut on");
+  await shot("web-filter-dragged");
+  // knob value typed, label click = factory value
+  const knobOf = (pid) => `state.detailCtls.find((c) => c.p.id === "${pid}").node`;
+  await evaluate(`${knobOf("k_flt_hc_f")}.querySelector(".kvalue").click()`);
+  await evaluate(`(() => { const i = ${knobOf("k_flt_hc_f")}.querySelector("input"); i.value = "1.2k"; i.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" })); })()`);
   await sleep(200);
-  check((await value("k_hp_f"))[1] === 25, "click on the name restores 25 Hz");
+  check((await value("k_flt_hc_f"))[1] === 1200 && await evaluate(`${knobOf("k_flt_hc_f")}.querySelector(".kvalue").textContent`) === "1.20k Hz", "typed 1.2k on the frequency knob: 1200 Hz");
+  await evaluate(`${knobOf("k_flt_lc_f")}.querySelector(".klabel").click()`);
+  await sleep(200);
+  check((await value("k_flt_lc_f"))[1] === 25, "click on the knob's name restores 25 Hz");
+  await drag(`#detail .card .kn:nth-child(2) svg`, -40);   // low cut resonance knob, up
+  check((await value("k_flt_lc_q"))[0] > 0.71, "resonance knob dragged up: " + (await value("k_flt_lc_q")));
 
-  // ---- slot switch, strip dimming, greyed rows
-  await evaluate(`state.devices.get("k_hp").node.querySelector(".pwr").click()`);
+  // ---- slot switch: slot dimmed, panel controls greyed
+  await evaluate(`state.devices.get("k_flt").node.querySelector(".pwr").click()`);
   await sleep(200);
-  check((await value("k_hp_on"))[1] === 0 && await evaluate(`state.devices.get("k_hp").node.classList.contains("off") && ${row("k_hp_f")}.classList.contains("off") && !document.querySelector("#detail .dhead input").checked`), "slot lamp switches Sub cut off: slot dimmed, rows greyed, panel switch off");
-  await evaluate(`document.querySelector("#detail .dhead input").click()`);
+  check((await value("k_flt_on"))[1] === 0 && await evaluate(`state.devices.get("k_flt").node.classList.contains("off") && ${knobOf("k_flt_lc_f")}.classList.contains("off") && !document.querySelector("#detail .dhead .tg").classList.contains("on")`), "slot lamp switches the filter off: slot dimmed, knobs greyed, panel switch off");
+  await evaluate(`document.querySelector("#detail .dhead .tg").click()`);
   await sleep(200);
-  check((await value("k_hp_on"))[1] === 1 && await evaluate(`state.devices.get("k_hp").node.querySelector(".pwr").classList.contains("on")`), "panel switch turns it back on, lamp lit");
+  check((await value("k_flt_on"))[1] === 1 && await evaluate(`state.devices.get("k_flt").node.querySelector(".pwr").classList.contains("on")`), "panel switch turns it back on, lamp lit");
 
-  // ---- typed value, clamped by the device (master limiter)
+  // ---- master limiter: auto release greys the release knob; typed ceiling clamps
   await evaluate(`state.devices.get("lim").node.click()`);
-  await evaluate(`(() => { const b = ${row("lim_ceil")}.querySelector(".num input"); b.value = "5"; b.onchange(); })()`);
+  await sleep(200);
+  check(await evaluate(`document.querySelector("#detail .dpath").textContent`) === "MASTER" && await evaluate(`${knobOf("lim_rel")}.classList.contains("off")`), "master limiter: release greyed under auto release");
+  check(await evaluate(`state.devices.get("lim").node.querySelector(".slotsum").textContent`) === "ceiling −1.0 dB · auto", "limiter summary says auto");
+  await shot("web-limiter");
+  await evaluate(`state.detailCtls.find((c) => c.p.id === "lim_auto").node.querySelector(".tg").click()`);
+  await sleep(200);
+  check((await value("lim_auto"))[1] === 0 && !(await evaluate(`${knobOf("lim_rel")}.classList.contains("off")`)) && await evaluate(`state.devices.get("lim").node.querySelector(".slotsum").textContent`) === "ceiling −1.0 dB · 100 ms", "auto off: release knob active, summary shows it");
+  await evaluate(`${knobOf("lim_ceil")}.querySelector(".kvalue").click()`);
+  await evaluate(`(() => { const i = ${knobOf("lim_ceil")}.querySelector("input"); i.value = "5"; i.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" })); })()`);
   await sleep(300);
-  check((await value("lim_ceil"))[0] === 0 && await evaluate(`${row("lim_ceil")}.querySelector(".num input").value`) === "0.0", "typed +5 dB ceiling clamps to 0");
-  check(await evaluate(`document.querySelector("#detail .dpath").textContent`) === "MASTER", "panel shows the master limiter");
+  check((await value("lim_ceil"))[0] === 0, "typed +5 dB ceiling clamps to 0");
 
-  // ---- glue: enum buttons
+  // ---- order: drag the master limiter to the top, kick filter below its limiter, keyboard
+  const slotDrag = async (id, dy) => {
+    const [x, y] = await evaluate(`(() => { const r = state.devices.get("${id}").node.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })()`);
+    await mouse("mousePressed", x, y);
+    for (let k = 1; k <= 8; k++) await mouse("mouseMoved", x, y + dy * k / 8);
+    await mouse("mouseReleased", x, y + dy);
+    await sleep(300);
+  };
+  const slotNames = (strip) => evaluate(`[...state.strips[${strip}].devs.querySelectorAll(".slotname")].map((e) => e.textContent).join(" > ")`);
+  await slotDrag("lim", -110);
+  check((await value("o_order"))[1] === 4 && await slotNames(3) === "Limiter > Glue compressor > Filter", "master limiter dragged to the top: order 4, " + await slotNames(3));
+  await slotDrag("k_flt", 50);
+  check((await value("k_order"))[1] === 1 && await slotNames(0) === "Limiter > Filter", "kick filter dragged below the limiter: " + await slotNames(0));
+  await evaluate(`state.devices.get("k_flt").node.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", altKey: true, bubbles: true }))`);
+  await sleep(200);
+  check((await value("k_order"))[1] === 0 && await slotNames(0) === "Filter > Limiter", "Alt + Up moves it back");
+  check(await evaluate(`document.querySelector("#detail .dname").textContent`) === "Limiter", "a drag does not open the dragged slot");
+  await evaluate(`state.devices.get("lim").node.click()`);
+  await sleep(100);
+  await shot("web-order");
+
+  // ---- glue: ratio buttons, needle meter
   await evaluate(`state.devices.get("glue").node.click()`);
-  await evaluate(`${row("glue_ratio")}.querySelectorAll("button")[2].click()`);
-  await sleep(300);
+  await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_ratio").node.querySelectorAll("button")[2].click()`);
+  await sleep(400);
   check((await value("glue_ratio"))[1] === 2 && await evaluate(`state.devices.get("glue").node.querySelector(".slotsum").textContent`) === "−10.0 dB · 10:1", "ratio button 10, summary: " + await evaluate(`state.devices.get("glue").node.querySelector(".slotsum").textContent`));
+  check(await evaluate(`document.querySelectorAll("#detail .chart").length`) === 3, "glue: curve, needle meter and timing graphs");
+  await shot("web-glue");
 
-  // ---- multiband: three band cards, greyed with the switch
+  // ---- multiband: three band rows, split drag, greyed with the switch
   await evaluate(`state.devices.get("mb").node.click()`);
-  check(await evaluate(`document.querySelectorAll("#detail .band").length`) === 3 && await evaluate(`[...document.querySelectorAll("#detail .band h2")].map((e) => e.textContent).join("|")`) === "Low band|Mid band|High band", "multiband: three band cards");
-  check(await evaluate(`state.detailRows.length`) === 24 && await evaluate(`document.querySelectorAll("#detail .band .bhead input[type=checkbox]").length`) === 3, "multiband: 9 common settings, 3 band switches + 15 band settings: " + await evaluate(`state.detailRows.length`));
-  check(await evaluate(`${row("mb_lo_thr")}.classList.contains("off")`) === false, "band control not greyed");
-  await shot("web-strips-multiband");
+  await sleep(300);
+  check(await evaluate(`document.querySelectorAll("#detail .bandrow").length`) === 3 && await evaluate(`[...document.querySelectorAll("#detail .bandrow .tg")].map((e) => e.textContent).join("|")`) === "LOW|MID|HIGH", "multiband: three band rows");
+  const [sx, sy] = await evaluate(`(() => { const svg = document.querySelector("#detail .chart svg"), r = svg.getBoundingClientRect(), rect = svg.querySelectorAll("rect")[0]; return [r.x + +rect.getAttribute("x") + 5, r.y + +rect.getAttribute("y") + 7]; })()`);
+  await mouse("mousePressed", sx, sy);
+  for (let k = 1; k <= 5; k++) await mouse("mouseMoved", sx + 40 * k / 5, sy);
+  await mouse("mouseReleased", sx + 40, sy);
+  await sleep(300);
+  const f1 = await value("mb_f1");
+  check(f1[0] > 150 && f1[1] === f1[0], "low / mid split dragged right: " + f1);
+  await shot("web-multiband");
+  // the band rows keep their width when GR goes from one to two digits
+  const rowW = (g) => evaluate(`(() => { state.detailMeters.forEach((u) => u({ gr_lo: ${g}, gr_mid: ${g}, gr_hi: ${g} }, performance.now())); return [...document.querySelectorAll("#detail .bandrow")].map((r) => r.getBoundingClientRect().width + "/" + r.lastChild.getBoundingClientRect().x).join(" "); })()`);
+  const w1 = await rowW(0), w2 = await rowW(3.4), w3 = await rowW(18.7);
+  check(w1 === w2 && w2 === w3, "multiband: band rows keep their layout at GR 0 / 3.4 / 18.7 dB: " + [w1, w3].join(" | "));
   await evaluate(`state.devices.get("mb").node.querySelector(".pwr").click()`);
   await sleep(200);
-  check(await evaluate(`${row("mb_lo_thr")}.classList.contains("off") && ${row("mb_f1")}.classList.contains("off")`), "multiband off greys the band controls too");
+  check(await evaluate(`${knobOf("mb_lo_thr")}.classList.contains("off") && ${knobOf("mb_f1")}.classList.contains("off")`), "multiband off greys the band controls too");
   await evaluate(`state.devices.get("mb").node.querySelector(".pwr").click()`);
 
   // ---- strips: real mouse drags
@@ -132,25 +194,38 @@ try {
   await evaluate(`(() => { const b = document.querySelector(".strip .sec.fad .vbox input"); b.value = "-3"; b.onchange(); })()`);
   await sleep(200);
   check((await value("k_lvl"))[1] === -3, "typed kick level -3 dB");
-  await evaluate(`(() => { const b = document.querySelector(".strip .sec.send .vbox input"); b.value = "off"; b.onchange(); })()`);
+  await evaluate(`(() => { const b = document.querySelector(".strip .col.send .vbox input"); b.value = "off"; b.onchange(); })()`);
   await sleep(200);
   check((await value("par_send_k"))[1] === -60 && await evaluate(`state.strips[2].strip.querySelector(".sec.input .info b").textContent`) === "off", "kick send typed off, the parallel strip shows it");
-  // the same parameter in the strip and in the panel (kick channel view)
+  // the same parameter on the strip and in the panel (kick channel view)
   await evaluate(`document.querySelector(".strip .shead").click()`);
-  check(await evaluate(`state.detailRows.map((r) => r.p.id).join(" ")`) === "in_k_trim par_send_k k_lvl", "click on the strip name: trim, send and level as rows");
-  await evaluate(`(() => { const s = ${row("par_send_k")}.querySelector("input[type=range]"); s.value = 900; s.oninput(); })()`);
+  check(await evaluate(`state.detailCtls.map((c) => c.p.id).join(" ")`) === "in_k_trim par_send_k k_lvl", "click on the strip name: trim, send and level as knobs");
+  await evaluate(`(() => { const p = state.params.get("par_send_k"); userSet(p, -6); })()`);
   await sleep(200);
-  check((await value("par_send_k"))[1] === -6 && await evaluate(`document.querySelector(".strip .sec.send .vbox input").value`) === "-6.0", "send row in the panel moves the strip's send too");
+  check((await value("par_send_k"))[1] === -6 && await evaluate(`document.querySelector(".strip .col.send .vbox input").value`) === "-6.0", "send in the panel moves the strip's send too");
+  await shot("web-channel");
 
   // ---- parallel bus off
   await evaluate(`state.devices.get("par").node.click()`);
-  check(await evaluate(`state.detailRows.map((r) => r.p.id).join(" ")`) === "par_thr par_ratio par_att par_rel par_makeup par_send_k par_send_m par_ret", "parallel bus: compressor settings, then sends and return");
+  check(await evaluate(`state.detailCtls.map((c) => c.p.id).join(" ")`) === "par_thr par_ratio par_makeup par_att par_rel par_send_k par_send_m par_ret", "parallel bus: compressor knobs, then sends and return");
+  await shot("web-parallel");
   await evaluate(`state.devices.get("par").node.querySelector(".pwr").click()`);
   await sleep(300);
-  check((await value("par_on"))[1] === 0 && await evaluate(`state.strips[2].strip.classList.contains("off") && ${row("par_thr")}.classList.contains("off")`), "parallel off: strip dimmed, its settings greyed");
+  check((await value("par_on"))[1] === 0 && await evaluate(`state.strips[2].strip.classList.contains("off") && ${knobOf("par_thr")}.classList.contains("off")`), "parallel off: strip dimmed, its settings greyed");
   await evaluate(`state.devices.get("par").node.querySelector(".pwr").click()`);
 
-  // ---- toolbar: save (right after a change: the change must go out before it), bypass, export, revert
+  // ---- the panel keeps its height in a smaller window
+  await cdp("Emulation.setDeviceMetricsOverride", { width: 1300, height: 800, deviceScaleFactor: 1, mobile: false });
+  await sleep(300);
+  check(await evaluate(`$("detail").getBoundingClientRect().height`) === 400 && await evaluate(`$("side").getBoundingClientRect().height`) === 800, "1300 x 800: panel still 400 px, side panel full height");
+  await shot("web-small");
+  // short faders: the shown scale labels never overlap
+  const overlap = await evaluate(`(() => { let worst = 99; for (const f of document.querySelectorAll(".fader")) { const ys = [...f.querySelectorAll(".ftick:not(.hide) span")].map((s) => s.getBoundingClientRect()).sort((a, b) => a.y - b.y); for (let i = 1; i < ys.length; i++) worst = Math.min(worst, ys[i].y - ys[i - 1].bottom); } return worst; })()`);
+  check(overlap >= 0, "1300 x 800: fader scale labels apart, closest gap " + overlap.toFixed(1) + " px");
+  await cdp("Emulation.clearDeviceMetricsOverride");
+  await sleep(200);
+
+  // ---- side panel: save (right after a change: the change must go out before it), bypass, export, revert
   check(!(await evaluate(`$("unsaved").classList.contains("hidden")`)), "unsaved badge before Save");
   await evaluate(`$("save").click()`);
   await sleep(300);
@@ -161,19 +236,19 @@ try {
   check(await evaluate(`$("lat").textContent`) === "≈ 2.3 ms", "bypass latency");
   await evaluate(`$("bypass").click()`);
   const text = await evaluate(`settingsText()`);
-  check(text.includes("set glue_ratio 2\n") && text.includes("set k_lvl -3\n") && !text.includes("bypass") && !text.includes("mb_solo") && text.trim().split("\n").length === 73, "export: 73 saved settings, no setup aids");
+  check(text.includes("set glue_ratio 2\n") && text.includes("set k_lvl -3\n") && !text.includes("bypass") && !text.includes("mb_solo") && text.trim().split("\n").length === 93, "export: 93 saved settings, no setup aids");
   await evaluate(`state.devices.get("glue").node.click()`);
-  await evaluate(`${row("glue_ratio")}.querySelectorAll("button")[0].click()`);
+  await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_ratio").node.querySelectorAll("button")[0].click()`);
   await sleep(200);
   await evaluate(`$("revert").click()`);
   await sleep(300);
-  check((await value("glue_ratio"))[0] === 2 && await evaluate(`${row("glue_ratio")}.querySelectorAll("button")[2].classList.contains("sel")`), "Revert restores the saved ratio");
-  await shot("web-strips-changed");
+  check((await value("glue_ratio"))[0] === 2 && await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_ratio").node.querySelectorAll("button")[2].classList.contains("sel")`), "Revert restores the saved ratio");
 
   // ---- Web Serial path with a fake port
   await cdp("Page.navigate", { url });
   await sleep(800);
   check(await evaluate(`document.querySelectorAll(".strip").length === 0 && $("detail").childElementCount === 0`), "no mixer before connecting");
+  await shot("web-start");
   await evaluate(`(() => {
     const fake = { opened: null, sent: [] };
     window.fake = fake;
@@ -205,13 +280,13 @@ try {
   await sleep(1500);
   check(await evaluate(`$("linkText").textContent`) === "Connected", "serial: connected");
   check(await evaluate(`JSON.stringify(fake.filters)`) === '{"filters":[{"usbVendorId":12346}]}', "serial: Espressif USB filter");
-  check(await evaluate(`state.params.size === 75 && document.querySelectorAll(".strip").length === 4 && document.querySelectorAll(".slot").length === 8`), "serial: mixer built from desc over the stream");
+  check(await evaluate(`state.params.size === 95 && document.querySelectorAll(".strip").length === 4 && document.querySelectorAll(".slot").length === 8`), "serial: mixer built from desc over the stream");
   check(await evaluate(`$("log").textContent.includes("Starting master_0.1.0")`), "serial: log line shown, not parsed");
-  await evaluate(`state.devices.get("m_hp").node.click()`);
-  await evaluate(`(() => { const s = ${row("m_hp_f")}.querySelector("input[type=range]"); for (const v of [100, 200, 300, 400]) { s.value = v; s.oninput(); } })()`);
+  await evaluate(`state.devices.get("m_flt").node.click()`);
+  await evaluate(`(() => { const p = state.params.get("m_flt_lc_f"); for (const v of [50, 60, 70, 80]) userSet(p, v); })()`);
   await sleep(300);
   const sets = await evaluate(`fake.sent.filter((l) => l.startsWith("set "))`);
-  check(sets.length === 1 && sets[0].startsWith("set m_hp_f "), "serial: four slider moves in one tick = one set: " + sets);
+  check(sets.length === 1 && sets[0] === "set m_flt_lc_f 80", "serial: four moves in one tick = one set: " + sets);
   await drag("#mixer > :nth-child(6) .fader", 15);                     // master strip (flow arrows sit between the strips)
   const out = await evaluate(`[state.params.get("out_lvl").value, fake.demo.values.get("out_lvl").v, fake.sent.filter((l) => l.startsWith("set out_lvl ")).length]`);
   check(out[0] < 0 && out[0] > -20 && out[1] === out[0] && out[2] >= 1 && out[2] <= 7, "serial: master fader drag reaches the module: " + out);
