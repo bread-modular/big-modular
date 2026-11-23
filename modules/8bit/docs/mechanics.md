@@ -72,11 +72,11 @@ Panel labels (1.2 mm, above each control): `MIDI`, `CV`, `P1`, `P2`, `P3`, `MODE
 LED Ø3.2, button Ø4.2.
 
 **LFO panel** (`panels/front-pcb/8bit-lfo-panel.kicad_pcb`, `geometry.json` `lfo_panel`,
-for `firmware/lfo`, no MIDI): the same holes without the J1 MIDI jack hole and the RV3
+for `firmware/lfo` without MIDI clock sync; with sync fit J1 and use the standard panel): the same holes without the J1 MIDI jack hole and the RV3
 shaft hole; labels `RATE` (P1) and `WAVE` (P2) instead of `P1`/`P2`, no `MIDI` / `P3`,
 `REC` instead of `MODE`, and `LFO` (2.5 mm) at the empty P3 spot. Build notes: **don't
-fit J1 or RV3** (no panel holes; the MIDI input parts behind J1 can stay, the firmware
-never enables the UART, and PB5 is not read). S6 needs **no wire bridge**: RV3 is only
+fit J1 or RV3** (no panel holes; the MIDI input parts behind J1 can stay; without J1 the
+firmware sees no clock and free-runs, and PB5 is not read). S6 needs **no wire bridge**: RV3 is only
 an ADC knob now, the DAC reaches the output amplifier directly. GATE stays (the LFO
 firmware drives PA7).
 

@@ -4,12 +4,17 @@
 #include "SoftwareSerial.h"
 #include "WaveTables.h"
 #include "LfoMath.h"
+#include "LfoSync.h"
+#include "SimpleMIDI.h"
 #include <avr/pgmspace.h>
 #include <util/atomic.h>
 
-// No MIDI: the LFO free-runs from P1/P2 and CV in (the LFO panel has no MIDI
-// jack). P1 = RATE (+ CV in, exponential FM), P2 = WAVE. MODE (PA4) toggles the
-// output range:
+// P1 = RATE (+ CV in, exponential FM), P2 = WAVE, P3 not read. MIDI clock on
+// the MIDI jack syncs it: while clock arrives, RATE picks a cycle length from
+// 8 bars (CCW) to a 1/16 note (CW) and the phase follows the clock count
+// (LfoSync.h); CV in then moves the length by whole steps, 1 V = one step,
+// + = shorter. No clock for 300 ms = free-running again.
+// MODE (PA4) toggles the output range:
 //
 //   * BIPOLAR (default, at power-up): full DAC 0..255 -> about -5..+5 V; LED dim.
 //   * UNIPOLAR: wave scaled into the upper half, DAC 128..255 -> about 0..+5 V;
@@ -20,6 +25,10 @@
 //
 // Rate and shape maths: LfoMath.h (0.01 Hz .. 40.6 Hz on the knob, ~1 V/oct CV
 // up to 2 kHz; sine, triangle, saw, square, complex 1, complex 2, random S&H).
+
+#ifndef MIDI_RX_INVERT
+#error "MIDI_RX_INVERT must be set: build with ../compile.sh lfo p|d"
+#endif
 
 #define GATE_PIN PIN_PA7
 #define LOGGER_PIN_TX PIN_PB4
@@ -44,9 +53,14 @@ constexpr uint16_t TCB_COMPARE_VALUE = TCB_CLOCK_HZ / LfoMath::kSampleRateHz - 1
 
 // TODO: Change this to real serial port. (We need to update the schematic for that)
 SoftwareSerial logger(-1, LOGGER_PIN_TX);
+SimpleMIDI MIDI;
 
-uint32_t phaseAccumulator = 0;          // ISR only
+uint32_t phaseAccumulator = 0;          // ISR; loop() sets it on synced clock ticks
+uint32_t lastPhase = 0;                 // ISR only: phase of the previous sample
 volatile uint32_t phaseIncrement = 0;
+volatile uint16_t sampleClock = 0;      // free-running sample counter (tick periods)
+volatile bool synced = false;           // MIDI clock locked: phase follows the clock
+uint32_t syncBudget = 0;                // ISR; phase left until the next clock tick's
 volatile uint8_t shapeA = LfoMath::Sine;
 volatile uint8_t shapeB = LfoMath::Sine;
 volatile uint8_t shapeBlend = 0;
@@ -55,13 +69,17 @@ volatile bool unipolar = false;          // MODE: false = -5..+5 V, true = 0..+5
 uint16_t randomState = 0xACE1;          // ISR only after setup()
 uint8_t randomHeld = 128;               // ISR only: the S&H value of this cycle
 uint16_t rateKnob = 0;                  // last P1 reading
+uint32_t freeIncrement = 0;             // last free-running increment, 0 = rewrite
+LfoSync::Clock midiClock;
+uint32_t lastClockMs = 0;
+uint8_t syncDivision = 0xFF;            // RATE zone while synced, 0 = 8 bars .. 7 = 1/16
+int8_t syncCvSteps = LfoSync::kNoCvSteps;  // CV in as length steps (+ = shorter)
 
 void updateLfoPhaseIncrement(uint32_t newIncrement) {
-  static uint32_t lastIncrement = 0;
-  if (newIncrement == lastIncrement) {
+  if (newIncrement == freeIncrement) {
     return;
   }
-  lastIncrement = newIncrement;
+  freeIncrement = newIncrement;
   ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
     phaseIncrement = newIncrement;
   }
@@ -101,6 +119,47 @@ static inline uint8_t readShape(uint8_t shape, uint32_t phase) {
   return LfoMath::lerp8(a, b, frac);
 }
 
+
+// MIDI clock (24 PPQN), from MIDI.update() in loop(): once two ticks have
+// measured the period, set the phase to this tick's place in the cycle and
+// let the ISR run towards the next tick's phase at the measured rate.
+void onMidiClock() {
+  uint16_t now;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    now = sampleClock;
+  }
+  uint32_t ms = millis();
+  bool fresh = (ms - lastClockMs) <= LfoSync::kClockTimeoutMs;
+  lastClockMs = ms;
+  if (!midiClock.tick(now, fresh)) {
+    return;
+  }
+  syncDivision = LfoSync::divisionFromKnob(rateKnob, syncDivision);
+  uint16_t ticks = LfoSync::divisionTicks(LfoSync::applyCvSteps(syncDivision, syncCvSteps));
+  uint32_t phase = LfoSync::tickPhase(midiClock.count, ticks);
+  uint32_t budget = LfoSync::tickBudget(midiClock.count, ticks);
+  uint32_t increment = LfoSync::syncIncrement(LfoSync::tickStep(ticks), midiClock.periodQ4);
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    phaseAccumulator = phase;
+    syncBudget = budget;
+    phaseIncrement = increment;
+    synced = true;
+  }
+}
+
+// MIDI Start: the next clock is the downbeat (bar 1).
+void onMidiStart() {
+  midiClock.start();
+}
+
+// No clock for the timeout: back to the free-running RATE (+ CV in).
+void updateClockTimeout(uint32_t now) {
+  if (midiClock.running && (now - lastClockMs) > LfoSync::kClockTimeoutMs) {
+    midiClock.stop();
+    synced = false;
+    freeIncrement = 0;   // forces updateRate() to rewrite the increment
+  }
+}
 
 // MODE press toggles the output range.
 void onModePress() {
@@ -148,14 +207,16 @@ void setupTimer() {
 
 // TCB0 Interrupt Service Routine
 ISR(TCB0_INT_vect) {
-  uint32_t previous = phaseAccumulator;
-  uint32_t phase = previous + phaseIncrement;
+  sampleClock++;
+  uint32_t phase = synced ? LfoSync::advance(phaseAccumulator, phaseIncrement, syncBudget)
+                          : phaseAccumulator + phaseIncrement;
   phaseAccumulator = phase;
-  if (phase < previous) {
-    // New cycle: next sample & hold value.
+  if (phase < lastPhase) {
+    // New cycle (a wrap, or a synced downbeat): next sample & hold value.
     randomState = LfoMath::nextRandom(randomState);
     randomHeld = randomState >> 8;
   }
+  lastPhase = phase;
   uint8_t wfA = shapeA;
   uint8_t wfB = shapeB;
   uint8_t blend = shapeBlend;
@@ -205,6 +266,16 @@ void setup() {
     randomState = 0xACE1;
   }
 
+  // MIDI clock in (no notes used).
+  MIDI.begin(31250);
+#if MIDI_RX_INVERT
+  // JP1 = P: the NPN input stage inverts the MIDI UART data, so invert
+  // PB3 (RX) in the port before the USART samples it.
+  PORTB.PIN3CTRL |= PORT_INVEN_bm;
+#endif
+  MIDI.setClockCallback(onMidiClock);
+  MIDI.setStartCallback(onMidiStart);
+
   // Timer related
   setupTimer();
   
@@ -216,7 +287,10 @@ void setup() {
 }
 
 void loop() {
-  updateButton(millis());
+  MIDI.update();
+  uint32_t now = millis();
+  updateClockTimeout(now);
+  updateButton(now);
 
   uint8_t sample = latestLfoSample;
 
@@ -227,7 +301,8 @@ void loop() {
   digitalWrite(GATE_PIN, sample > 127);
 
   // CV in every pass, so FM follows it at the loop rate (several kHz); the
-  // knobs take turns. RATE = P1 (+ CV in), WAVE = P2.
+  // knobs take turns. RATE = P1 (+ CV in), WAVE = P2. Synced, RATE and the
+  // CV in steps set the cycle length on the next clock tick.
   static bool readRateKnob = true;
   if (readRateKnob) {
     rateKnob = analogRead(PIN_CV1);
@@ -235,5 +310,9 @@ void loop() {
     updateWaveformMix(analogRead(PIN_CV2));
   }
   readRateKnob = !readRateKnob;
-  updateRate(analogRead(PIN_CV_IN));
+  uint16_t cvIn = analogRead(PIN_CV_IN);
+  syncCvSteps = LfoSync::cvSteps(cvIn, syncCvSteps);
+  if (!synced) {
+    updateRate(cvIn);
+  }
 }

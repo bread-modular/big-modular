@@ -7,7 +7,7 @@
 #   drums | supersaw | crash | lfo
 #   p   JP1 1-2 (protected NPN front end): RX inverted (PORT_INVEN on PB3)
 #   d   JP1 2-3 (direct, as Bread Modular): no inversion
-#   lfo has no MIDI: no JP1 setting (a p|d argument is accepted and ignored).
+#   lfo reads MIDI clock, so it takes a JP1 setting too.
 # JUMPER_ARGC = how many of the arguments were consumed (flash.sh passes the rest).
 
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -40,17 +40,6 @@ case " ${FIRMWARES[*]} " in
 esac
 
 JUMPER_ARGC=2
-if [[ "$FIRMWARE" == lfo ]]; then
-  case "${2:-}" in
-    p|d) ;;
-    *) JUMPER_ARGC=1 ;;
-  esac
-  echo "==> 8bit lfo firmware (no MIDI, JP1 not used)"
-  export ATTINY_SKETCH_ROOT="$FW_DIR/$FIRMWARE"
-  export ATTINY_DEFINES=""
-  return 0
-fi
-
 JP1="${2:-${JP1:-}}"
 if [[ -z "$JP1" ]]; then
   echo "==> Select the JP1 MIDI input setting on the board:"

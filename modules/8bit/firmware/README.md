@@ -7,24 +7,23 @@ Ports of four Bread Modular 8bit firmwares
 
 | Pin | Use |
 |---|---|
-| PB3 | MIDI RX (USART) |
+| PB3 | MIDI RX (USART); `lfo`: MIDI clock only |
 | PA1 / PA2 | Knob P1 (`PIN_CV1`) / P2 (`PIN_CV2`) |
 | PA4 / PA5 | MODE button / LED |
 | PA6 | DAC out |
 | PA7 | BM gate (`GATE_PIN`): drives the GATE jack through a follower (S6 hardware) |
 | PB4 | BM logger TX: still driven, not connected on this board |
 | PB5 | Knob P3 (S6 hardware): not read by any firmware here yet |
-| PB0 | CV in: `lfo` only (exponential rate FM); not used by the others |
+| PB0 | CV in: `lfo` only (exponential rate FM; length steps while MIDI-synced); not used by the others |
 
-`lfo` uses no MIDI; its MODE button toggles the output range (-5..+5 V /
-0..+5 V).
+`lfo` uses only MIDI clock / Start (RATE syncs to the clock); its MODE button
+toggles the output range (-5..+5 V / 0..+5 V).
 
 ## JP1 setting (required)
 
-JP1 picks the MIDI input path, and the MIDI firmwares (`drums`, `supersaw`,
-`crash`) must match it. Pass it as the second argument of `compile.sh` /
-`flash.sh` (or interactively, or `JP1=`). `lfo` has no MIDI and takes no JP1
-setting (`./compile.sh lfo`, `./flash.sh lfo [port]`):
+JP1 picks the MIDI input path, and every firmware (`drums`, `supersaw`,
+`crash`, `lfo` since its MIDI clock sync, 2026-11-23) must match it. Pass it as
+the second argument of `compile.sh` / `flash.sh` (or interactively, or `JP1=`):
 
 | Setting | JP1 | Define | RX (PB3) |
 |---|---|---|---|
@@ -43,7 +42,7 @@ other setting receives nothing usable.
 ./flash.sh crash d /dev/ttyUSB0   # explicit port (macOS: /dev/cu.usbserial-XXXX)
 crash/sim.sh                      # crash host self-tests (no hardware)
 ../../../opt/attiny1616-tools/lib/CvRecorder/sim.sh  # supersaw/crash recorder host self-tests
-lfo/sim.sh                        # lfo rate/FM/shape host self-tests
+lfo/sim.sh                        # lfo rate/FM/shape + MIDI clock sync host self-tests
 ```
 
 `compile.sh` / `flash.sh` call the shared `opt/attiny1616-tools` scripts
@@ -97,7 +96,25 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
     cycle. At audio rate the waves alias (no band-limiting, 8-bit DAC;
     S5 boards smooth the steps with the R7/C13 15.9 kHz
     corner, S6 boards have no output filter).
-  - **No MIDI** (BM's unused MIDI receiver is removed). **MODE = output
+  - **MIDI clock sync** (user request, 2026-11-23; `lfo/lfo/LfoSync.h`):
+    while MIDI clock arrives (24 PPQN), **P1 RATE picks a cycle length**
+    in eight zones of 128 counts, CCW to CW: 8 bars, 4 bars, 2 bars, 1 bar,
+    1/2, 1/4, 1/8, **1/16** (4/4; 12 counts of hysteresis at the zone
+    borders). The phase follows the clock count, not just the tempo: each
+    tick sets it to its place in the cycle, and between ticks it runs at
+    the smoothed tick period but never past the next tick's phase (a late
+    tick makes the wave wait, it doesn't overshoot). **MIDI Start** makes the
+    next clock the downbeat, so the cycles line up with bar 1; without a
+    Start the count begins at the first clock seen. A length change takes
+    effect on the next tick, at the place the new length has at that clock
+    count. Lock after two ticks; **no clock for 300 ms = free-running** RATE
+    + CV in again. While synced, **CV in moves the length by whole steps**:
+    1 V = one step, + = shorter (towards 1/16), borders at ±0.5, ±1.5, .. V
+    with ~0.1 V hysteresis, so 0 V always gives the knob's length; knob zone
+    + steps clamped to 8 bars .. 1/16 (the ADC ends are -5 / +6 steps). P2 WAVE, MODE, LED and
+    GATE work as without clock (random S&H: a new value at each synced
+    cycle start). MIDI notes are ignored. **P3 is not read.**
+  - **MODE = output
     range**, toggled per click, BIPOLAR at power-up (not stored): BIPOLAR uses
     the full DAC (about -4.8..+4.8 V); UNIPOLAR scales the wave into the upper
     half of the DAC (`128 + sample / 2`, about 0..+4.8 V, 7-bit steps). No
@@ -105,9 +122,11 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
     (1/8) in BIPOLAR, full brightness in UNIPOLAR (BM: half brightness, no
     range switch); at audio rate it just glows. Gate (PA7, the GATE jack on S6)
     stays on the wave sample > 127.
-  - Use the LFO panel (no MIDI jack, no P3 hole, MODE labelled REC), leave J1
-    and RV3 off (`../docs/mechanics.md`). S6 boards need no wire bridge; on an
-    S5 (4HP) board RV3 must be wire-bridged or the output is silent.
+  - Panel: for clock sync fit J1 and use the standard 6HP panel (the P3
+    knob does nothing yet). The LFO panel (no MIDI jack, no P3 hole, MODE
+    labelled REC; J1 and RV3 off, `../docs/mechanics.md`) still works, just
+    without sync. S6 boards need no wire bridge; on an S5 (4HP) board RV3
+    must be wire-bridged or the output is silent.
 - **crash**: synthesized TR-808-style crash (no samples) on MIDI note-on,
   velocity = level, note ignored. P1 = brightness, P2 = hiss/metal balance.
   MODE = 4-bar CV motion recorder on MIDI clock: click to record P1/P2 (LED
@@ -126,9 +145,10 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   ~1 V/oct exponential FM up to 2 kHz, integer 2^x (`LfoMath.h`, no 64-bit
   division in the loop), CV read every pass. Shapes: square added after saw,
   BM's looping `RANDOM_TABLE` replaced by a per-cycle sample & hold, hold zones
-  on the WAVE knob, interpolated table reads. MIDI removed (user decision 2026-11-01: no MIDI
-  on the LFO build): no `SimpleMIDI.h`, no `MIDI.begin()`/`update()`, no
-  (empty) callbacks, no `MIDI_RX_INVERT` guard; built without a JP1 setting.
+  on the WAVE knob, interpolated table reads. MIDI clock sync (user request
+  2026-11-23; BM's LFO has none, and the 2026-11-01 build had MIDI removed):
+  crash's `SimpleMIDI.h` (clock/Start callbacks only), `LfoSync.h`, the
+  `MIDI_RX_INVERT` guard and the JP1 setting, as the other firmwares.
   MODE/LED: own output-range toggle in `lfo.ino` (user request, 2026-11-01;
   replaces the earlier free-time recorder, removed), LED brightness by range.
   Its unused `ModeHandler.h` / `LEDToggler.h` are not copied; `WaveTables.*`
@@ -168,7 +188,7 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
 Built with arduino-cli 2026-10-27 (megaTinyCore 2.6.11), `p` / `d`:
 drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
 (recorder, 2026-10-29); crash 6821 / 6811 B, 1168 B (shared recorder,
-2026-10-29); lfo 5215 B, 176 B (exponential rate / FM, 40 kHz, 2026-11-08). `crash/sim.sh`: 66
-checks, 0 failures; `lfo/sim.sh`: 3114 checks, 0 failures; `lib/CvRecorder/sim.sh`: 68 checks, 0 failures (2026-11-19, with the
+2026-10-29); lfo 7303 / 7293 B, 366 B (MIDI clock sync, `p` / `d`, 2026-11-23). `crash/sim.sh`: 66
+checks, 0 failures; `lfo/sim.sh`: 3114 + 4849 checks, 0 failures (2026-11-23); `lib/CvRecorder/sim.sh`: 68 checks, 0 failures (2026-11-19, with the
 overdub; crash 7151 B / 1179 B RAM, supersaw 7984 B / 1155 B, `p`).
 Not bench-tested on the 8bit carrier yet.

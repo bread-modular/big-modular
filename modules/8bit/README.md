@@ -37,7 +37,7 @@ exclusions (`docs/fit/`). JLCPCB export of the S6/R1 carrier and panels in `jlcp
 | `docs/schematic-symbols.json`, `docs/sourcing-candidates.json` | Pinned-symbol provenance; dated live JLCPCB lookups |
 | `docs/jlcpcb-audit-requirements.json` | Circuit stress/manual-part policy for the assembly audit (reviews empty) |
 | `jlcpcb/` | S6/R1 manufacturing export: carrier Gerbers + bottom-side BOM/CPL (38 parts), 6HP panel and optional LFO panel Gerbers, source manifest (`jlcpcb/README.md`) |
-| `firmware/` | BM `drums`, `supersaw` (MIDI only), `crash` and `lfo` (no MIDI, CV in modulates the rate, MODE = output range -5..+5 V / 0..+5 V) firmwares, the MIDI ones built per JP1 setting (`firmware/README.md`) |
+| `firmware/` | BM `drums`, `supersaw` (MIDI only), `crash` and `lfo` (CV in modulates the rate, MIDI clock syncs it: RATE = 8 bars .. 1/16, CV in steps it 1 V per step; MODE = output range -5..+5 V / 0..+5 V) firmwares, the MIDI ones built per JP1 setting (`firmware/README.md`) |
 | `tools/` | Generators and the shared-tool profile `kicad-project.json` (the native PCB owns the copper) |
 
 Generators (from `modules/8bit`). The routed `hardware/8bit.kicad_pcb` owns SMD placement
