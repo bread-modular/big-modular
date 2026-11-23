@@ -39,6 +39,7 @@ add_custom_target(ps_wavetables DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ps_wavetabl
 add_dependencies(${COMPONENT_LIB} ps_wavetables)
 
 target_compile_definitions(${COMPONENT_LIB} PRIVATE
+    CODEC_CLOCK_MASTER=${CODEC_CLOCK_MASTER}
     MIDI_RX_INVERT=${MIDI_RX_INVERT}
     FIRMWARE_NAME="polysynth"
     FIRMWARE_VERSION="${FIRMWARE_VERSION}"

@@ -5,6 +5,17 @@ Module paths are module-relative.
 
 ## Current state
 
+- **ES1 variant (2026-11-23, uncommitted; docs/research.md section 10, `jlcpcb/es/README.md`)**: user: keep the
+  CS4272 S4 and add the ES8388 board "with the PLL and the separate power supply" to order both and compare.
+  `hardware/es/32bit-es.*` = S3 / R3 + U10 LP5907MFX-3.3 (+5V -> +3V3_A -> R5 10R -> +3V3_8388; the codec no
+  longer shares the ESP32-S3 +3V3) + Y2 11.2896 MHz oscillator -> R23 -> MCLK (ES8388 = I2S master, ESP32-S3
+  = slave, GPIO21 open; firmware `BOARD=es1`, all three firmwares compile, not bench-tested). 121 parts /
+  83 nets, ERC 0; hand-placed + routed in three batches (`research/es/`), 779 tracks / 136 vias, DRC 0 /
+  unconnected 0 / parity 0, no exclusions, no vias in SMD pads, U1 / U4 thermal vias now 0.3 mm (no hole
+  under 0.3 mm); +3V3_A is a 43 mm 0.3 mm run from U10 (between the CV jacks) to R5. JLCPCB export
+  `jlcpcb/es/` (108 parts / 45 rows bottom Economic + the S3 panel as `panels/es/`, printed panel
+  regenerated); every code live 2026-11-23, no pre-order part, U10 C80670 and Y2 C2831381 Extended. Open:
+  JLC preview, build, bench comparison against S4.
 - **S4 (2026-11-23; docs/research.md sections 9.1, 9.2)**: the board pair below replaces S3 in
   `hardware/`: **carrier S4 / R2** `hardware/32bit.kicad_{sch,pcb}` (modules/usb-audio S5 carrier with its routed
   copper: CS4272 clock master, NE5532 stages, AMS1117-5.0 +5VA; volume pots out of the audio path; RV1 / RV2

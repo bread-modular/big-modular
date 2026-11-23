@@ -97,6 +97,25 @@ interactively, or `JP1=`):
 
 A build without the setting stops at CMake (and `bm_midi.c` has an `#error`).
 
+## Board: S3 or ES1
+
+Two ES8388 boards differ in who makes the I2S clocks. Pick the board with `BOARD=` (all three firmwares):
+
+| `BOARD=` | Board | Define | Clocks |
+|---|---|---|---|
+| `s3` (default) | S3 carrier (`hardware/` before S4, the built boards) | `CODEC_CLOCK_MASTER=0` | ESP32-S3 = I2S master, MCLK 256 fs on GPIO21 from its PLL |
+| `es1` | ES1 carrier (`hardware/es/`, docs/research.md section 10) | `CODEC_CLOCK_MASTER=1` | Y2 11.2896 MHz -> ES8388 MCLK; ES8388 = I2S master (register 8 = 0x84: BCLK = MCLK / 4 = 64 fs), ESP32-S3 = slave, GPIO21 unused |
+
+Both keep 44.1 kHz, 24-bit (master) or 16-bit (fxrack, polysynth) words. Use the matching build: an ES1 build on an S3
+board gets no MCLK (silence), an S3 build on an ES1 board runs the codec on Y2 against the ESP32-S3's own BCLK /
+LRCK (two unrelated clocks: clicks and drift). The ES1 builds compile; no ES1 board exists yet, so they are not
+bench-tested.
+
+```sh
+BOARD=es1 ./compile.sh master
+BOARD=es1 ./flash.sh p fxrack
+```
+
 ## Use
 
 ```sh

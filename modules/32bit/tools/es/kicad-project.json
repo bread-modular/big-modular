@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project_dir": "../../hardware/es",
+  "board": "../../hardware/es/32bit-es.kicad_pcb",
+  "root_schematic": "../../hardware/es/32bit-es.kicad_sch",
+  "dependencies": [
+    "../../hardware/es/32BIT.pretty"
+  ],
+  "variables": {
+    "KICAD10_3DMODEL_DIR": "/usr/share/kicad/3dmodels"
+  },
+  "source_manifest": "../../jlcpcb/es/source-sha256.json"
+}

@@ -29,6 +29,12 @@ below are gone. Source of truth: `MCU_PINS` in `tools/circuit_mcu.py` and `hardw
 No MCLK pin: the codec has its own oscillator. Firmware: `master` needs a CS4272 driver (I2C control-port setup,
 I2S slave, 24-bit) in place of the ES8388 setup; not written yet. Radio never used.
 
+## ES1 variant (2026-11-23, `hardware/es/`)
+
+The S3 GPIO map below, with one change: **GPIO21 is open** (no MCLK out). Y2 (11.2896 MHz) clocks the ES8388,
+which is the I2S master and drives SCLK (IO14) and LRCK (IO12); the ESP32-S3 is an I2S slave (`BOARD=es1`,
+`CODEC_CLOCK_MASTER=1`, ES8388 register 8 = 0x84). Data pins and I2C are unchanged.
+
 ## GPIO map (U1 ESP32-S3R8 since S3; the pin numbers in brackets are the S2 module pins)
 
 S3 (2026-11-15) replaced the ESP32-S3-WROOM-1U-N16R8 module with its contents (ESP32-S3R8 + W25Q128JVSIQ +

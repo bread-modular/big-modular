@@ -12,6 +12,8 @@
 #   p   JP1 1-2 (protected NPN front end): RX inverted (UART_SIGNAL_RXD_INV)
 #   d   JP1 2-3 (direct, as Bread Modular): no inversion
 #
+# BOARD=es1 builds for the 32bit ES1 board (codec clock master); default BOARD=s3.
+#
 # master has no MIDI: it needs no JP1 setting (`./compile.sh master`), and one
 # given anyway is ignored.
 
@@ -109,5 +111,16 @@ if [[ -n "$JP1" ]]; then
 else
   echo "==> 32bit $FIRMWARE firmware (no MIDI, no JP1 setting)"
 fi
+# Board: BOARD=s3 (default; the S3 board, ESP32-S3 makes the codec MCLK) or BOARD=es1 (the ES1 board:
+# Y2 clocks the ES8388, which is the I2S master; docs/research.md section 10).
+case "${BOARD:-s3}" in
+  s3) CODEC_DEFINES="CODEC_CLOCK_MASTER=0" ;;
+  es1) CODEC_DEFINES="CODEC_CLOCK_MASTER=1" ;;
+  *)
+    echo "Unknown BOARD '${BOARD}' (expected: s3, es1)" >&2
+    exit 1
+    ;;
+esac
+echo "==> Board ${BOARD:-s3} ($CODEC_DEFINES)"
 export ESP32_PROJECT_ROOT="$FW_DIR/$FIRMWARE"
-export ESP32_DEFINES="$MIDI_DEFINES"
+export ESP32_DEFINES="${MIDI_DEFINES:+$MIDI_DEFINES }$CODEC_DEFINES"

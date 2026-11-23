@@ -26,6 +26,7 @@ idf_component_register(
 )
 
 target_compile_definitions(${COMPONENT_LIB} PRIVATE
+    CODEC_CLOCK_MASTER=${CODEC_CLOCK_MASTER}
     FIRMWARE_NAME="master"
     FIRMWARE_VERSION="${FIRMWARE_VERSION}"
 )

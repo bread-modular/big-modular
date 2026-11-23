@@ -71,9 +71,16 @@ void bm_setup_audio(bm_audio_config_t config) {
     bm_es8388_set_alc_mode(&es, DISABLE);
     bm_es8388_mixer_source_select(&es, MIXADC, MIXADC);
     bm_es8388_mixer_source_control_combined(&es, DACOUT);
+#if CODEC_CLOCK_MASTER
+    // 32bit ES1 board: Y2 (11.2896 MHz = 256 x 44.1 kHz) clocks the codec, so the ES8388 is the I2S
+    // master and the ESP32-S3 a slave (docs/research.md section 10). Register 8: MSC = 1, BCLK = MCLK / 4
+    // (64 fs, datasheet table 2); ADCFsRatio / DACFsRatio stay 256 fs from the init sequence.
+    ESP_ERROR_CHECK(bm_es8388_write_reg(&es, ES8388_MASTERMODE, 0x84));
+#endif
 
     // 2) Allocate a full-duplex pair on I2S0 as master
-    i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_0, I2S_ROLE_MASTER);
+    i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_0,
+        CODEC_CLOCK_MASTER ? I2S_ROLE_SLAVE : I2S_ROLE_MASTER);
     // Latency: a block is read when its last frame has arrived and is played
     // dma_desc_num - 1 buffers after it is written: 3 x 16 frames = 1.1 ms at
     // 44.1 kHz (fxrack / polysynth: 3 x 64 = 4.4 ms).
@@ -89,7 +96,7 @@ void bm_setup_audio(bm_audio_config_t config) {
         .clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(bm_SAMPLE_RATE),
         .slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_STEREO),
         .gpio_cfg = {
-            .mclk = GPIO_NUM_21,
+            .mclk = CODEC_CLOCK_MASTER ? I2S_GPIO_UNUSED : GPIO_NUM_21,  // ES1: GPIO21 open
             .bclk = GPIO_NUM_14,
             .ws = GPIO_NUM_12,
             .dout = GPIO_NUM_13,

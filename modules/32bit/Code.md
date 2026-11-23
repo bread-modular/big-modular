@@ -13,6 +13,14 @@
 
 The S3 contract (one board, ES8388, MIDI, CV inputs) is in git history.
 
+**ES1 variant** (user, 2026-11-23: keep the CS4272 S4, add an ES8388 board with its own clock and supply to
+order both): `hardware/es/32bit-es.kicad_{pro,sch,pcb}`, generator `tools/es/build_schematic.py` +
+`circuit_es.py` (the S3 generator + U10 / C49 / C50 / Y2 / C51), `tools/es/import_footprints.py`,
+`tools/es/kicad-project.json` (manifest `jlcpcb/es/source-sha256.json`), `docs/es/`, `panels/es/`,
+`jlcpcb/es/`; decisions and result in `docs/research.md` section 10. Its contract is the S3 one plus: the codec
+supply comes only from U10 (never from +3V3), the ES8388 is the I2S master on Y2's 11.2896 MHz (firmware
+`BOARD=es1`), GPIO21 stays open, no hole under 0.3 mm. Change it in `hardware/es/` only; S4 files are separate.
+
 ## Fixed by the brief (user, 2026-11-23)
 
 - 32bit runs `master` in front of PA systems, so it takes the audio path of modules/usb-audio S5: **CS4272**

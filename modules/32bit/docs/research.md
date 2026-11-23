@@ -348,3 +348,67 @@ Judged, not changed: USB D+ / D- (9.1); SMD parts 0.43 mm
 from the J6 / J7 joints on the carrier B side and R105 1.2 mm from a J103 pin on the MCU board; C15 47u 6.3 V
 on FILT+; U1 AMS1117-5.0 about 0.4 W on the usb-audio copper; the laptop's USB ground joins the rack ground
 when the port is used (a possible hum loop on a PA, bench item).
+
+## 10. ES1: the S3 board with its own codec supply and codec clock (2026-11-23)
+
+User, 2026-11-23, after S4: "Keep [the CS chip]. Now, create another version with the same ES chip but with the
+PLL and the separate power supply. So, I can order both and see which is good." ES1 is the "small S4" of the
+noise discussion the same day: the S3 / R3 board (ES8388, MIDI, CV inputs, two pots, MODE, back USB-C; the
+board that is built) with the two fixes that remove the ESP32-S3 from the codec's supply and clock. It keeps
+the ES8388's own floor (about 96 dB dynamic range on the datasheet, against 114 dB for the CS4272); building
+both shows how much of the noise was supply / clock and how much the converter.
+
+Its own tree, so S4 stays untouched: `hardware/es/32bit-es.kicad_{pro,sch,pcb}` (own library copy with the
+two new lands), `tools/es/` (`build_schematic.py` + `circuit_es.py` = the S3 generator plus the changes below,
+`import_footprints.py`, `kicad-project.json`), `docs/es/` (S3 `geometry.json`, schematic PDF),
+`panels/es/` (the S3 panel, renamed), `jlcpcb/es/`. Batch scripts and reports in `research/es/` (ignored).
+
+### 10.1 Circuit (ES1 schematic, ERC 0, netlist asserted, 121 parts / 83 nets)
+
+- **Codec supply (U10, C49, C50):** +5V (U8 AMS1117-5.0 output) -> U10 **LP5907MFX-3.3/NOPB** (TI, C80670;
+  10 uVrms, 82 dB PSRR at 1 kHz, EN tied to IN, 1u in and out) -> **+3V3_A** -> R5 10R -> +3V3_8388 and the
+  S3 codec caps (100u + 3 x 10u + 4 x 100n). R5 stays: it is the S3 RC filter, and it keeps the ~130 uF codec
+  bank off the LDO output (LP5907: 1 uF ceramic output cap). S3 fed R5 from the ESP32-S3's +3V3. Codec
+  current 59 mW / 3.3 V = 18 mA (datasheet, playback + record): 0.18 V across R5 as on S3, 0.03 W in U10.
+- **Codec clock (Y2, C51, R23):** Y2 **11.2896 MHz** CMOS oscillator (YXC OT322511.2896MJBA4SL, C2831381,
+  YSO110TR series: 0.7 ps phase jitter, <= 5 mA, pin 1 tri-state tied high) on +3V3 with C51 100n -> R23 33R
+  -> ES8388 MCLK. 11.2896 MHz = 256 x 44.1 kHz, so every firmware keeps 44.1 kHz. The ES8388 runs as the
+  I2S master (datasheet table 2: MCLK 11.2896 MHz, ADCFsRatio / DACFsRatio 00010 = 256, SCLK = MCLK / 4) and
+  drives BCLK / LRCK; the ESP32-S3 is a slave. GPIO21 (S3 MCLK out) is open. The "PLL" of the request: the
+  codec clock no longer comes from the ESP32-S3's PLL divider.
+- Everything else is S3, same refs and values.
+
+### 10.2 Layout (ES1 / R4 = S3 / R3 + three batches)
+
+- `b01`: board synced to the schematic: I2S_MCLK copper removed (8 items), R5's +3V3 feed (2 tracks + via)
+  removed, new parts parked; **thermal vias of U1 (ESP32-S3) and U4 (ES8388) drilled 0.3 mm** (0.2 mm before;
+  pads and positions kept, library + `tools/es/import_footprints.py`), `min_through_hole_diameter` 0.3.
+- `b02`: clock group in the B pocket left of C30 that the old MCLK run left free: Y2 at (119.1, 123.9), R23
+  moved from the I2S resistor stack to (121.85, 124.5) on the MCLK tail into U4.1, C51 at (116.4, 123.9);
+  C30 0.2 mm right so R23's courtyard clears it. Y2 VDD / EN tie into the +3V3 track at R4.1; Y2 GND has a via
+  at (121.3, 122.75). C51's GND pad reaches the B GND pour only (the F.Cu bundle above the pocket leaves no
+  room for a via there).
+- `b03` / `b04`: U10 + C49 + C50 in the only free B pocket that holds a SOT-23-5 with the 2 mm hand-solder
+  clearance: between the CV jack rows at (113.0, 90.6). +5V from C3 by an F hop; GND vias under U10 and at
+  C49. **+3V3_A** (0.3 mm, 43 mm, two vias) from C50 to R5.1: F under the MIDI_RX / BOOT / EN / USB bundle,
+  B along y 96.85 under the USB pair, down the right edge beside J3 and RV2. Path from a one-connection
+  helper (`research/es/pf.py`), checked by hand. A long run is fine for this net: U10 drives it at low
+  impedance and R5 + the codec caps filter it at the codec (RC corner ~12 Hz).
+- `b05`: title block, B silk "32bit ES1" under the LED (so the two boards can't be mixed up).
+- Result: ERC 0 / DRC 0 (all severities) / unconnected 0 / parity 0, no exclusions; 779 tracks / 136 vias,
+  none in or touching an SMD pad; no In1 tracks (the five S3 In2 hop segments unchanged); In1 GND and In2
+  +3V3 one piece each. The +3V3_A run splits the B GND pour's largest piece in three (875 / 92 / 82 mm2,
+  each via-tied; F pour unchanged). New SMD >= 2.15 mm from pot / jack pads (Y2 to RV2); the four
+  user-accepted S3 parts (R5 1.33, C27 1.62, R55 1.63, C46 1.75 mm) unchanged. Smallest drilled hole 0.3 mm.
+
+### 10.3 Firmware
+
+All three firmwares take `BOARD=es1` (`firmware/jumper.sh` -> `CODEC_CLOCK_MASTER=1`): ES8388 register 8 =
+0x84 (master, BCLK = MCLK / 4) after the init sequence, I2S0 as slave, no MCLK pin. Default `BOARD=s3` builds
+exactly as before. Both builds compile for master, fxrack and polysynth (2026-11-23); not bench-tested.
+
+### 10.4 Open
+
+JLCPCB preview (Y2 and U10 pin 1 / rotation), bench: U10 output, MCLK at the codec pin, I2S lock with the
+codec as master, then the comparison the variant exists for (bypassed output floor against the S4 CS4272
+board and the usb-audio + Ableton path). If ES1 is quiet enough, the CV / MIDI board stays one board.
