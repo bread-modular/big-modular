@@ -117,7 +117,7 @@ def main():
     write_wav(kp, kick)
     write_wav(mp, mix)
 
-    off = ["k_hp_on", "k_lim_on", "m_hp_on", "mb_on", "par_on", "glue_on", "eq_lo_on", "eq_hi_on", "lim_on"]
+    off = ["k_flt_on", "k_lim_on", "m_flt_on", "mb_on", "par_on", "glue_on", "o_flt_on", "lim_on"]
 
     def render(name, settings):
         sp = os.path.join(args.out, name + ".txt")
@@ -135,7 +135,7 @@ def main():
     runs = {
         "bypass": {"bypass": 1},
         "master": {},
-        "only-cuts": only("k_hp_on", "m_hp_on", "eq_lo_on"),
+        "only-filters": only("k_flt_on", "m_flt_on", "o_flt_on"),
         "only-multiband": only("mb_on"),
         "mix-alone": only(k_lvl=-60),
         "mix-alone-multiband": only("mb_on", k_lvl=-60),

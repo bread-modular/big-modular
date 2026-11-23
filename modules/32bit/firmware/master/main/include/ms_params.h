@@ -14,25 +14,47 @@ extern "C" {
 
 typedef enum { MS_KIND_LIN, MS_KIND_LOG, MS_KIND_BOOL, MS_KIND_ENUM } ms_kind_t;
 
+// A filter device (low cut + high cut, each with its own switch), the same on the
+// kick, the mix and the master: P = enum prefix, p = id prefix, g = group. The
+// resonance is the Q of a 12 dB/oct cut; on the steeper slopes it scales the
+// sharpest Butterworth section, so 0.71 is a plain Butterworth at every slope.
+#define MS_SLOPES "12 dB/oct,24 dB/oct,48 dB/oct"
+#define MS_FILTER(X, P, p, g, lc_on, lc_f, lc_slope, hc_on, hc_f, hc_slope)                                     \
+    X(P##_FLT_ON, p "_flt_on", g, "Filter", BOOL, 0, 1, 1, 1, "", "", 0)                                         \
+    X(P##_FLT_LC_ON, p "_flt_lc_on", g, "Low cut", BOOL, 0, 1, lc_on, 1, "", "", 0)                             \
+    X(P##_FLT_LC_F, p "_flt_lc_f", g, "Low cut frequency", LOG, 10, 20000, lc_f, 0, "Hz", "", 0)                \
+    X(P##_FLT_LC_Q, p "_flt_lc_q", g, "Low cut resonance", LOG, 0.5f, 6, 0.7071f, 0, "Q", "", 0)                  \
+    X(P##_FLT_LC_SLOPE, p "_flt_lc_slope", g, "Low cut slope", ENUM, 0, 2, lc_slope, 1, "", MS_SLOPES, 0)       \
+    X(P##_FLT_HC_ON, p "_flt_hc_on", g, "High cut", BOOL, 0, 1, hc_on, 1, "", "", 0)                            \
+    X(P##_FLT_HC_F, p "_flt_hc_f", g, "High cut frequency", LOG, 10, 20000, hc_f, 0, "Hz", "", 0)               \
+    X(P##_FLT_HC_Q, p "_flt_hc_q", g, "High cut resonance", LOG, 0.5f, 6, 0.7071f, 0, "Q", "", 0)                 \
+    X(P##_FLT_HC_SLOPE, p "_flt_hc_slope", g, "High cut slope", ENUM, 0, 2, hc_slope, 1, "", MS_SLOPES, 0)
+
+// Order of the effects on a strip (ms_dsp.h MS_DEV_*, the table in ms_params.c).
+#define MS_ORDER_K "Filter > Limiter,Limiter > Filter"
+#define MS_ORDER_M "Filter > Multiband,Multiband > Filter"
+#define MS_ORDER_O                                                                                               \
+    "Glue > Filter > Limiter,Glue > Limiter > Filter,Filter > Glue > Limiter,Filter > Limiter > Glue,"          \
+    "Limiter > Glue > Filter,Limiter > Filter > Glue"
+
 //   X(NAME, id, group, label, kind, min, max, default, step, unit, options, not_saved)
 // Levels in dB with a -60 minimum are off (silent) at the minimum.
 #define MS_PARAMS(X)                                                                                              \
     X(IN_K_TRIM, "in_k_trim", "in", "Kick trim", LIN, -24, 24, 0, 0.5f, "dB", "", 0)                              \
     X(IN_M_TRIM, "in_m_trim", "in", "Mix trim", LIN, -24, 24, 0, 0.5f, "dB", "", 0)                               \
     /* Kick */                                                                                                    \
-    X(K_HP_ON, "k_hp_on", "kick", "Sub cut", BOOL, 0, 1, 1, 1, "", "", 0)                                         \
-    X(K_HP_F, "k_hp_f", "kick", "Sub cut frequency", LOG, 10, 120, 25, 0, "Hz", "", 0)                            \
-    X(K_HP_SLOPE, "k_hp_slope", "kick", "Sub cut slope", ENUM, 0, 1, 1, 1, "", "12 dB/oct,24 dB/oct", 0)          \
+    X(K_ORDER, "k_order", "kick", "Kick order", ENUM, 0, 1, 0, 1, "", MS_ORDER_K, 0)                              \
+    MS_FILTER(X, K, "k", "k_flt", 1, 25, 1, 0, 20000, 1)                                                          \
     X(K_LIM_ON, "k_lim_on", "kick", "Limiter", BOOL, 0, 1, 1, 1, "", "", 0)                                       \
     X(K_LIM_GAIN, "k_lim_gain", "kick", "Limiter gain", LIN, 0, 24, 0, 0.1f, "dB", "", 0)                         \
     X(K_LIM_CEIL, "k_lim_ceil", "kick", "Limiter ceiling", LIN, -24, 0, -3, 0.1f, "dB", "", 0)                    \
     X(K_LIM_REL, "k_lim_rel", "kick", "Limiter release", LOG, 1, 1000, 60, 0, "ms", "", 0)                        \
+    X(K_LIM_AUTO, "k_lim_auto", "kick", "Limiter auto release", BOOL, 0, 1, 0, 1, "", "", 0)                      \
     X(K_LIM_LA, "k_lim_la", "kick", "Limiter look-ahead", LIN, 0, 5, 1, 0.1f, "ms", "", 0)                        \
     X(K_LVL, "k_lvl", "kick", "Kick level", LIN, -60, 12, 0, 0.1f, "dB", "", 0)                                   \
     /* Mix */                                                                                                     \
-    X(M_HP_ON, "m_hp_on", "mix", "Low cut", BOOL, 0, 1, 1, 1, "", "", 0)                                          \
-    X(M_HP_F, "m_hp_f", "mix", "Low cut frequency", LOG, 20, 500, 40, 0, "Hz", "", 0)                             \
-    X(M_HP_SLOPE, "m_hp_slope", "mix", "Low cut slope", ENUM, 0, 1, 0, 1, "", "12 dB/oct,24 dB/oct", 0)           \
+    X(M_ORDER, "m_order", "mix", "Mix order", ENUM, 0, 1, 0, 1, "", MS_ORDER_M, 0)                                \
+    MS_FILTER(X, M, "m", "m_flt", 1, 40, 0, 0, 20000, 0)                                                          \
     X(M_LVL, "m_lvl", "mix", "Mix level", LIN, -60, 12, 0, 0.1f, "dB", "", 0)                                     \
     /* Multiband dynamics */                                                                                      \
     X(MB_ON, "mb_on", "mb", "Multiband", BOOL, 0, 1, 1, 1, "", "", 0)                                             \
@@ -84,20 +106,17 @@ typedef enum { MS_KIND_LIN, MS_KIND_LOG, MS_KIND_BOOL, MS_KIND_ENUM } ms_kind_t;
     X(GLUE_WET, "glue_wet", "glue", "Dry / wet", LIN, 0, 100, 100, 1, "%", "", 0)                                 \
     X(GLUE_SC_HP, "glue_sc_hp", "glue", "SC high pass (20 = off)", LOG, 20, 500, 20, 0, "Hz", "", 0)              \
     X(GLUE_CLIP, "glue_clip", "glue", "Soft clip", BOOL, 0, 1, 0, 1, "", "", 0)                                   \
-    /* Main cuts */                                                                                               \
-    X(EQ_LO_ON, "eq_lo_on", "eq", "Low cut", BOOL, 0, 1, 1, 1, "", "", 0)                                         \
-    X(EQ_LO_F, "eq_lo_f", "eq", "Low cut frequency", LOG, 15, 300, 30, 0, "Hz", "", 0)                            \
-    X(EQ_LO_SLOPE, "eq_lo_slope", "eq", "Low cut slope", ENUM, 0, 1, 0, 1, "", "12 dB/oct,24 dB/oct", 0)          \
-    X(EQ_HI_ON, "eq_hi_on", "eq", "High cut", BOOL, 0, 1, 0, 1, "", "", 0)                                        \
-    X(EQ_HI_F, "eq_hi_f", "eq", "High cut frequency", LOG, 2000, 20000, 16000, 0, "Hz", "", 0)                    \
-    X(EQ_HI_SLOPE, "eq_hi_slope", "eq", "High cut slope", ENUM, 0, 1, 0, 1, "", "12 dB/oct,24 dB/oct", 0)         \
+    /* Master filter */                                                                                           \
+    MS_FILTER(X, O, "o", "o_flt", 1, 30, 0, 0, 16000, 0)                                                          \
     /* Limiter */                                                                                                 \
     X(LIM_ON, "lim_on", "lim", "Limiter", BOOL, 0, 1, 1, 1, "", "", 0)                                            \
     X(LIM_GAIN, "lim_gain", "lim", "Gain", LIN, 0, 24, 0, 0.1f, "dB", "", 0)                                      \
     X(LIM_CEIL, "lim_ceil", "lim", "Ceiling", LIN, -24, 0, -1, 0.1f, "dB", "", 0)                                 \
     X(LIM_REL, "lim_rel", "lim", "Release", LOG, 1, 1000, 100, 0, "ms", "", 0)                                    \
+    X(LIM_AUTO, "lim_auto", "lim", "Auto release", BOOL, 0, 1, 1, 1, "", "", 0)                                    \
     X(LIM_LA, "lim_la", "lim", "Look-ahead", LIN, 0, 5, 1.5f, 0.1f, "ms", "", 0)                                  \
     /* Output */                                                                                                  \
+    X(O_ORDER, "o_order", "out", "Master order", ENUM, 0, 5, 0, 1, "", MS_ORDER_O, 0)                             \
     X(OUT_LVL, "out_lvl", "out", "Output level", LIN, -60, 0, 0, 0.1f, "dB", "", 0)                               \
     X(BYPASS, "bypass", "out", "Bypass", BOOL, 0, 1, 0, 1, "", "", 1)
 
@@ -131,6 +150,9 @@ extern const int ms_group_count;
 
 void ms_params_defaults(float values[MS_P_COUNT]);
 int ms_param_find(const char *id);  // -1 = unknown
+// As ms_param_find, and the names of firmware 0.2 (sub cut, low cut, main cuts)
+// give the filter setting that replaced them.
+int ms_param_lookup(const char *id);
 // Into the range; switches and lists snap to a whole number.
 float ms_param_clamp(int index, float value);
 
@@ -138,7 +160,8 @@ float ms_param_clamp(int index, float value);
 // of the USB `set` command, the stored blob and the page's export file).
 // Returns the length, 0 if `cap` is too small.
 size_t ms_params_export(const float values[MS_P_COUNT], char *text, size_t cap);
-// Applies every `set` line of a text; unknown names and other lines are skipped.
+// Applies every `set` line of a text; unknown names and other lines are skipped,
+// the names of firmware 0.2 (sub cut, low cut, main cuts) are read as the filters.
 // Returns how many parameters were set.
 int ms_params_import(float values[MS_P_COUNT], const char *text);
 

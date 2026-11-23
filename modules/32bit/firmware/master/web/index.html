@@ -4,15 +4,18 @@
   Serial (Chrome / Edge on a computer; not Firefox or Safari). Run ./run.sh and
   open http://localhost:3000, or open this file directly.
 
-  A mixer of four channel strips (kick, mix, parallel bus, master). Each strip
-  has its effects as slots; a click on a slot (or on the strip's name) shows its
-  settings in the panel below the mixer.
+  Left: a mixer of four channel strips (kick, mix, parallel bus, master), each
+  with its effects as slots (drag a slot up / down to change the order), and
+  under it a panel of fixed height with the selected effect: its graph and its
+  knobs. Right: the connection, the module's state and the settings buttons.
 
   The parameters, their ranges and names come from the firmware's `desc` answer
   (protocol in ../main/include/ms_proto.h); STRIPS below only says where each one
-  sits. A parameter the table does not know lands in an "Other" slot on the
-  master strip. demo.js (generated, `make web` in ../tools) holds the same answer
-  for the demo mode.
+  sits and which view draws it. A parameter the table does not know lands in an
+  "Other" slot on the master strip. The graphs are drawn on the page from the
+  settings and the meters the page polls anyway; nothing more is read from the
+  module. demo.js (generated, `make web` in ../tools) holds the same answer for
+  the demo mode.
 -->
 <html lang="en">
 <head>
@@ -21,219 +24,261 @@
 <title>32bit master</title>
 <style>
   :root {
+    color-scheme: dark;
     --surface-0: #121211;
     --surface-1: #1a1a19;
-    --surface-2: #242422;
+    --surface-2: #232321;
+    --surface-3: #2c2c29;
     --line: #34342f;
+    --grid: #262624;
     --text-primary: #f0efec;
     --text-secondary: #c3c2b7;
     --text-muted: #8f8e85;
-    --accent: #4d9bf0;
-    --good: #0ca30c;
+    --track: #2e2e2b;
+    /* one accent for everything that is set or acts; meters stay neutral */
+    --accent: #e3a443;
+    --accent-dim: #8a6a35;
+    --accent-ink: #1a1408;
+    --level: #b9b8ae;
     --warning: #fab219;
     --critical: #d03b3b;
-    --track: #2e2e2b;
-    --c-kick: #f0883e;
-    --c-mix: #4d9bf0;
-    --c-par: #b392f0;
-    --c-master: #3fb68b;
+    --panel-h: 400px;
+    --side-w: 252px;
   }
   * { box-sizing: border-box; }
+  html, body { height: 100%; }
   body {
-    margin: 0; background: var(--surface-0); color: var(--text-primary);
-    font: 14px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    margin: 0; background: var(--surface-0); color: var(--text-primary); overflow: hidden;
+    font: 13px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
-  /* header, mixer and the panel under it fill the window; log and tips follow below */
-  #app { min-height: 100vh; display: flex; flex-direction: column; }
   button, input, select { font: inherit; color: inherit; }
-  header {
-    position: sticky; top: 0; z-index: 5; background: var(--surface-1);
-    border-bottom: 1px solid var(--line); padding: 8px 16px;
-    display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; font-size: 13px;
+  #app { height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) var(--side-w); }
+  #main { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+
+  /* ---- side panel: connection, state, settings */
+  #side {
+    background: var(--surface-1); border-left: 1px solid var(--line); display: flex; flex-direction: column;
+    gap: 12px; padding: 14px 14px 10px; min-height: 0; overflow: hidden;
   }
-  h1 { font-size: 16px; margin: 0; letter-spacing: 0.04em; }
-  h1 small { color: var(--text-muted); font-weight: 400; margin-left: 6px; }
-  .spacer { flex: 1; }
+  .brand { font-size: 15px; font-weight: 700; letter-spacing: 0.08em; }
+  .brand small { display: block; color: var(--text-muted); font-weight: 400; letter-spacing: 0; font-size: 12px; margin-top: 2px; }
+  .sgroup { display: grid; gap: 6px; }
+  .sgroup h4 { margin: 0; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .btn {
-    background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px;
-    padding: 5px 10px; cursor: pointer; white-space: nowrap;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px;
+    padding: 6px 10px; cursor: pointer; white-space: nowrap; text-align: center;
   }
   .btn:hover:not(:disabled) { border-color: var(--text-muted); }
   .btn:disabled { opacity: 0.4; cursor: default; }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0b0b0b; font-weight: 600; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
   .btn.active { background: var(--critical); border-color: var(--critical); color: #fff; font-weight: 600; }
-  .stat { color: var(--text-secondary); white-space: nowrap; }
-  .stat b { color: var(--text-primary); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .badge { border-radius: 10px; padding: 2px 10px; border: 1px solid var(--line); white-space: nowrap; }
-  .badge .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--text-muted); }
-  .badge.on .dot { background: var(--good); }
-  .badge.warn { border-color: var(--warning); }
+  .status { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 12px; color: var(--text-muted); }
+  .status b { color: var(--text-primary); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+  .badge { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-secondary); }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); flex: 0 0 8px; }
+  .badge.on .dot { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .badge.warn { color: var(--warning); }
   .badge.warn .dot { background: var(--warning); }
   .badge.hidden { display: none; }
-  #note { padding: 6px 16px; color: var(--text-secondary); border-bottom: 1px solid var(--line); }
-  #note.error { color: var(--text-primary); border-left: 4px solid var(--critical); }
+  #note { font-size: 12px; color: var(--text-secondary); line-height: 1.45; border-left: 2px solid var(--line); padding-left: 8px; }
+  #note.error { color: var(--text-primary); border-left-color: var(--critical); }
+  .tips { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  #log { flex: 1 1 auto; min-height: 40px; overflow: auto; color: var(--text-muted); font: 11px/1.4 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; border-top: 1px solid var(--line); padding-top: 6px; }
 
   /* ---- mixer: the channel strips */
-  #mixer { flex: 1 1 auto; display: flex; gap: 10px; padding: 12px 16px 10px; justify-content: safe center; align-items: stretch; overflow-x: auto; }
-  #mixer .empty { color: var(--text-muted); padding: 60px 0; }
-  .flow { align-self: center; color: var(--text-muted); font-size: 22px; flex: 0 0 auto; user-select: none; }
+  #mixer { flex: 1 1 auto; min-height: 0; display: flex; gap: 10px; padding: 12px 14px 10px; justify-content: safe center; align-items: stretch; overflow: auto; }
+  #mixer .empty { color: var(--text-muted); align-self: center; }
+  .flow { align-self: center; color: var(--text-muted); font-size: 20px; flex: 0 0 auto; user-select: none; }
   .strip {
-    flex: 0 0 208px; display: flex; flex-direction: column; background: var(--surface-1);
-    border: 1px solid var(--line); border-radius: 10px; overflow: hidden; --c: var(--accent);
+    flex: 0 0 206px; display: flex; flex-direction: column; background: var(--surface-1);
+    border: 1px solid var(--line); border-radius: 8px; overflow: hidden; min-height: 330px;
   }
-  .shead { border: 0; border-top: 3px solid var(--c); background: none; padding: 6px 10px 6px; cursor: pointer; display: flex; align-items: baseline; gap: 8px; text-align: left; }
-  .shead:hover, .shead.sel { background: var(--surface-2); }
-  .shead.sel { box-shadow: inset 0 0 0 1px var(--c); }
-  .sname { font-weight: 700; letter-spacing: 0.1em; font-size: 13px; color: var(--c); }
+  .shead { border: 0; background: none; padding: 8px 10px 6px; cursor: pointer; display: flex; align-items: baseline; gap: 8px; text-align: left; border-bottom: 1px solid var(--line); }
+  .shead:hover { background: var(--surface-2); }
+  .shead.sel { background: var(--surface-2); box-shadow: inset 0 -2px 0 var(--accent); }
+  .sname { font-weight: 700; letter-spacing: 0.12em; font-size: 12px; }
   .ssub { color: var(--text-muted); font-size: 11px; }
   .sec { border-top: 1px solid var(--line); padding: 6px 10px 7px; }
+  .shead + .sec { border-top: 0; }
   .cap { font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; display: flex; justify-content: space-between; gap: 6px; white-space: nowrap; }
-  .cap b { color: var(--text-primary); background: var(--critical); border-radius: 3px; padding: 0 4px; font-weight: 600; }
+  .cap b { color: #fff; background: var(--critical); border-radius: 3px; padding: 0 4px; font-weight: 600; }
   .cap .peak { font-variant-numeric: tabular-nums; color: var(--text-secondary); letter-spacing: 0; text-transform: none; }
-  .sec.input { min-height: 72px; }
-  .sec.send { min-height: 68px; }
-  .sec.devs { display: flex; flex-direction: column; gap: 4px; min-height: 165px; padding-top: 8px; }
-  .sec.fad { flex: 1; display: flex; flex-direction: column; }
+  .sec.input { min-height: 0; }
+  .io { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .io .col { display: grid; gap: 4px; align-content: start; min-width: 0; }
+  .io .knobrow { gap: 4px; }
+  .io .vbox input { width: 46px; }
+  .io .vbox span { display: none; }
+  .sec.devs { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; flex: 0 0 auto; min-height: 174px; }  /* room for three effects: the faders line up */
+  .strip > .sec:not(.fad), .strip > .shead { flex-shrink: 0; }
+  @media (max-height: 860px) { .sec.devs { min-height: 0; } }  /* short window: the faders get the room */
+  .sec.fad { flex: 1; display: flex; flex-direction: column; min-height: 100px; }
   .info { color: var(--text-muted); font-size: 11px; line-height: 1.45; }
   .info b { color: var(--text-secondary); font-weight: 600; font-variant-numeric: tabular-nums; }
   .info span { display: inline-block; margin-right: 10px; white-space: nowrap; }
   .strip.off .sec.devs, .strip.off .sec.fad, .strip.off .sec.input, body.bypassed .sec.devs { opacity: 0.45; }
 
   .knobrow { display: flex; align-items: center; gap: 10px; }
-  .knob { width: 40px; height: 40px; flex: 0 0 40px; cursor: ns-resize; touch-action: none; outline: none; border-radius: 50%; }
-  .knob:focus-visible, .fader:focus-visible { box-shadow: 0 0 0 2px var(--c); }
-  .knob .ktrack { fill: none; stroke: var(--track); stroke-width: 4; stroke-linecap: round; }
-  .knob .kval { fill: none; stroke: var(--c); stroke-width: 4; stroke-linecap: round; }
-  .knob .kbody { fill: var(--surface-2); stroke: var(--line); }
-  .knob .kptr { stroke: var(--text-primary); stroke-width: 2; stroke-linecap: round; }
-  .kside { display: grid; gap: 4px; min-width: 0; flex: 1; }
   .vbox { display: flex; align-items: center; gap: 4px; }
-  .vbox input, .num input {
+  .vbox input {
     width: 58px; background: var(--surface-0); border: 1px solid var(--line); border-radius: 4px;
     padding: 2px 4px; text-align: right; font-variant-numeric: tabular-nums;
   }
-  .vbox span, .num span { color: var(--text-muted); font-size: 12px; }
+  .vbox span { color: var(--text-muted); font-size: 12px; }
   .hbar { height: 4px; background: var(--track); border-radius: 2px; position: relative; overflow: hidden; }
-  .hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--good); }
+  .hbar .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--level); }
 
   .slot {
-    display: grid; grid-template-columns: 18px 1fr; gap: 2px 8px; align-items: center; border: 1px solid var(--line);
-    border-radius: 7px; background: var(--surface-0); padding: 4px 8px; cursor: pointer; text-align: left;
+    display: grid; grid-template-columns: 16px 1fr 10px; gap: 2px 8px; align-items: center; border: 1px solid var(--line);
+    border-radius: 6px; background: var(--surface-0); padding: 4px 6px 4px 8px; cursor: pointer; text-align: left;
+    touch-action: none; user-select: none; position: relative;
   }
   .slot:hover { border-color: var(--text-muted); }
-  .slot.sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c); background: var(--surface-2); }
+  .slot.sel { border-color: var(--accent); background: var(--surface-2); }
   .slot.off .sbody { opacity: 0.45; }
-  .pwr { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--text-muted); background: transparent; padding: 0; cursor: pointer; }
-  .pwr.on { border-color: var(--c); background: var(--c); box-shadow: 0 0 6px color-mix(in srgb, var(--c) 60%, transparent); }
+  .slot.dragging { z-index: 3; box-shadow: 0 6px 16px #000a; border-color: var(--accent); cursor: grabbing; transition: none; }
+  .slot.shift { transition: transform 0.12s; }
+  .grip { width: 10px; height: 18px; opacity: 0.35; cursor: grab; background-image: radial-gradient(var(--text-secondary) 1px, transparent 1.3px); background-size: 5px 5px; }
+  .slot:hover .grip { opacity: 0.8; }
+  .pwr { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--text-muted); background: transparent; padding: 0; cursor: pointer; }
+  .pwr.on { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 5px color-mix(in srgb, var(--accent) 60%, transparent); }
   .pwr.fixed { cursor: default; }
   .sbody { min-width: 0; }
-  .slotname { font-weight: 600; font-size: 13px; }
+  .slotname { font-weight: 600; font-size: 12px; }
   .slotsum { color: var(--text-muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
   .slotgr { grid-column: 1 / -1; display: grid; gap: 2px; margin-top: 3px; }
   .slotgr .hbar { height: 3px; }
   .slotgr .fill { background: var(--accent); }
 
-  .fadrow { flex: 1; display: flex; justify-content: center; align-items: stretch; gap: 10px; min-height: 112px; margin: 2px 0 6px; }
+  .fadrow { flex: 1; display: flex; justify-content: center; align-items: stretch; gap: 10px; min-height: 50px; margin: 2px 0 6px; }
   .grs { display: flex; gap: 3px; }
   .vgr { width: 6px; background: var(--track); border-radius: 3px; position: relative; overflow: hidden; }
   .vgr .fill { position: absolute; left: 0; right: 0; top: 0; height: 0; background: var(--accent); }
   .fader { position: relative; width: 66px; cursor: ns-resize; touch-action: none; outline: none; border-radius: 6px; }
   .fader::before { content: ""; position: absolute; left: 43px; top: 6px; bottom: 6px; width: 4px; background: var(--track); border-radius: 2px; }
   .fthumb {
-    position: absolute; left: 28px; width: 34px; height: 26px; border-radius: 4px; border: 1px solid #6b6b64;
-    background: linear-gradient(#5a5a55, #3a3a36); box-shadow: 0 2px 4px #0008;
+    position: absolute; left: 28px; width: 34px; height: 24px; border-radius: 3px; border: 1px solid #66655e;
+    background: linear-gradient(#55554f, #393935); box-shadow: 0 2px 4px #0008;
   }
-  .fthumb::after { content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 2px; margin-top: -1px; background: var(--c); }
+  .fthumb::after { content: ""; position: absolute; left: 3px; right: 3px; top: 50%; height: 2px; margin-top: -1px; background: var(--text-primary); }
+  .fader:focus-visible .fthumb::after { background: var(--accent); }
   .ftick { position: absolute; left: 18px; width: 6px; height: 1px; background: var(--text-muted); }
   .ftick.zero { width: 8px; left: 16px; background: var(--text-primary); }
+  .ftick.hide { display: none; }
   .ftick span { position: absolute; right: 9px; top: -6px; font-size: 9px; line-height: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
   .vlevel { width: 10px; background: var(--track); border-radius: 3px; position: relative; overflow: hidden; }
-  .vlevel .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--good); }
+  .vlevel .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--level); }
   .vlevel .hold { position: absolute; left: 0; right: 0; height: 2px; bottom: 0; background: var(--text-primary); opacity: 0.8; }
   .fadfoot { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
   .grtext { color: var(--text-muted); font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-  /* ---- the panel under the mixer: the selected slot's settings */
+  /* ---- knobs (Ableton style: label, arc, value) */
+  .kn { display: flex; flex-direction: column; align-items: center; width: 64px; gap: 1px; outline: none; }
+  .kn .klabel { font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 64px; cursor: pointer; }
+  .kn .klabel:hover { color: var(--text-secondary); }
+  .kn svg { width: 40px; height: 40px; cursor: ns-resize; touch-action: none; outline: none; border-radius: 50%; display: block; }
+  .kn svg:focus-visible, .strip svg.knob:focus-visible, .fader:focus-visible { box-shadow: 0 0 0 2px var(--accent-dim); }
+  .ktrack { fill: none; stroke: var(--track); stroke-width: 3.5; stroke-linecap: round; }
+  .kval { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; }
+  .kbody { fill: var(--surface-3); stroke: #3b3b37; }
+  .kptr { stroke: var(--text-primary); stroke-width: 2; stroke-linecap: round; }
+  .kn .kvalue {
+    font-size: 11px; font-variant-numeric: tabular-nums; color: var(--text-secondary); white-space: nowrap; cursor: text;
+    min-width: 54px; text-align: center; border-radius: 3px; padding: 0 2px;
+  }
+  .kn .kvalue:hover { background: var(--surface-2); }
+  .kn input { width: 58px; font-size: 11px; text-align: center; background: var(--surface-0); border: 1px solid var(--accent); border-radius: 3px; padding: 0 2px; }
+  .kn.off, .ctl.off { opacity: 0.35; }
+  .strip svg.knob { width: 34px; height: 34px; flex: 0 0 34px; cursor: ns-resize; touch-action: none; outline: none; border-radius: 50%; }
+
+  /* switches and choices */
+  .tg {
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; cursor: pointer;
+    color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap;
+  }
+  .tg.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .seg button { background: var(--surface-2); border: 0; border-left: 1px solid var(--line); padding: 3px 8px; cursor: pointer; color: var(--text-secondary); font-size: 11px; white-space: nowrap; }
+  .seg button:first-child { border-left: 0; }
+  .seg button.sel { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .ctl { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
+  .ctl .klabel { font-size: 10px; color: var(--text-muted); cursor: pointer; }
+
+  /* ---- the panel under the mixer: the selected effect */
   #detail {
-    margin: 0 16px 10px; background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px; --c: var(--accent);
-    flex: 0 0 auto; overflow-y: auto;
-    /* the window's height goes to this panel first (up to 400 px), then to the faders */
-    height: clamp(250px, calc(100vh - 640px), 400px);
+    flex: 0 0 var(--panel-h); height: var(--panel-h); margin: 0 14px 12px; background: var(--surface-1);
+    border: 1px solid var(--line); border-radius: 8px; display: flex; flex-direction: column; overflow: hidden;
   }
-  #detail:empty { display: none; }
-  .dhead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 14px; border-bottom: 1px solid var(--line); border-top: 3px solid var(--c); border-radius: 10px 10px 0 0; position: sticky; top: 0; background: var(--surface-1); z-index: 1; }
-  .dpath { font-size: 13px; letter-spacing: 0.1em; color: var(--c); font-weight: 700; }
-  .dname { font-size: 15px; font-weight: 600; }
-  .dhint { color: var(--text-muted); font-size: 12px; flex: 1 1 320px; }
-  .dbody { padding: 10px 14px 12px; display: grid; gap: 10px; }
-  .dbody h3 { font-size: 11px; margin: 4px 0 0; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
-  .bands { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-  .band { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; background: var(--surface-0); }
-  .bhead { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
-  .band h2 { font-size: 13px; margin: 0; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); }
-  .bhead .meters { flex: 1; }
-  .band .row, .band .meter { grid-template-columns: 74px 1fr 84px; }
-  .row { display: grid; grid-template-columns: 132px 1fr 92px; gap: 8px; align-items: center; min-height: 30px; }
-  .row.off { opacity: 0.38; }
-  .row.long { grid-template-columns: 1fr; gap: 3px; margin: 4px 0; }
-  .row.long .wide { grid-column: 1; }
-  .rows { display: grid; column-gap: 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-  .band .rows { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 18px; }
-  .row label { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; }
-  .row label.reset { cursor: pointer; }
-  .row .wide { grid-column: 2 / 4; }
-  input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; }
-  .num { display: flex; align-items: center; gap: 4px; }
-  .seg { display: flex; flex-wrap: wrap; gap: 2px; }
-  .seg button {
-    background: var(--surface-0); border: 1px solid var(--line); padding: 3px 9px; cursor: pointer;
-    border-radius: 4px; color: var(--text-secondary);
-  }
-  .seg button.sel { background: var(--accent); border-color: var(--accent); color: #0b0b0b; font-weight: 600; }
-  .switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-  .switch input { appearance: none; width: 34px; height: 18px; border-radius: 9px; background: var(--track); position: relative; margin: 0; cursor: pointer; border: 1px solid var(--line); }
-  .switch input::after { content: ""; position: absolute; left: 2px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--text-muted); transition: left 0.1s; }
-  .switch input:checked { background: var(--accent); border-color: var(--accent); }
-  .switch input:checked::after { left: 18px; background: #0b0b0b; }
-  .switch span { color: var(--text-muted); font-size: 12px; min-width: 20px; }
-  .meters { display: grid; gap: 5px; max-width: 560px; }
-  .meter { display: grid; grid-template-columns: 132px 1fr 92px; gap: 8px; align-items: center; }
-  .meter .name { color: var(--text-muted); font-size: 12px; }
-  .meter .bar { height: 8px; background: var(--track); border-radius: 4px; position: relative; overflow: hidden; }
-  .meter .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: var(--good); }
-  .meter.gr .fill { background: var(--accent); }
-  .meter .hold { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--text-primary); left: 0; opacity: 0.8; }
-  .meter .val { font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-secondary); text-align: right; white-space: nowrap; }
-  .meter .val b { color: var(--text-primary); background: var(--critical); border-radius: 3px; padding: 0 4px; margin-left: 4px; font-weight: 600; }
-  #log { margin: 6px 16px; color: var(--text-muted); font: 12px/1.4 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; max-height: 120px; overflow: auto; }
-  footer { padding: 0 16px 10px; color: var(--text-muted); font-size: 12px; }
+  #detail:empty { visibility: hidden; }
+  .dhead { display: flex; align-items: center; gap: 10px 14px; padding: 7px 12px; border-bottom: 1px solid var(--line); flex: 0 0 auto; }
+  .dpath { font-size: 11px; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; }
+  .dname { font-size: 14px; font-weight: 600; }
+  .dhint { color: var(--text-muted); font-size: 11px; flex: 1 1 200px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dbody { flex: 1 1 auto; min-height: 0; display: flex; gap: 12px; padding: 10px 12px; }
+  .dcol { display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 0; }
+  .dcol.grow { flex: 1 1 0; }
+  .dcol.fixed { flex: 0 0 auto; }
+  .card { background: var(--surface-0); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .card.sel { border-color: var(--accent-dim); }
+  .card h5 { margin: 0; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+  .card h5 .sp { flex: 1; }
+  .knobs { display: flex; flex-wrap: wrap; gap: 6px 4px; align-items: flex-start; }
+  .chart { position: relative; min-height: 0; min-width: 0; background: var(--surface-0); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .chart.grow { flex: 1 1 0; }
+  .chart svg { position: absolute; inset: 0; display: block; }
+  .chart svg * { pointer-events: none; }  /* the graph is redrawn while dragging: events stay on the svg */
+  .chart .ctitle { position: absolute; left: 8px; top: 5px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); pointer-events: none; }
+  .chart .readout { position: absolute; right: 8px; top: 5px; font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; pointer-events: none; }
+  .legend { display: flex; gap: 12px; font-size: 10px; color: var(--text-muted); }
+  .legend i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+  svg text { font-family: inherit; }
+  .ax { fill: var(--text-muted); font-size: 9px; font-variant-numeric: tabular-nums; }
+  .gl { stroke: var(--grid); stroke-width: 1; }
+  .gl0 { stroke: #3a3a36; stroke-width: 1; }
+  .bandrow { display: grid; grid-template-columns: 74px repeat(5, 64px) 82px; align-items: center; gap: 2px; padding: 3px 6px; border-radius: 6px; border: 1px solid transparent; }
+  .bandrow.sel { border-color: var(--accent-dim); background: var(--surface-2); }
+  .bandrow .bname { display: grid; gap: 4px; justify-items: start; }
+  .bandrow .grcell { display: grid; gap: 3px; font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; padding-left: 6px; white-space: nowrap; min-width: 0; }
+  .bandrow .hbar { height: 6px; }
+  .bandrow .hbar .fill { background: var(--accent); }
 </style>
 </head>
 <body>
 <div id="app">
-<header>
-  <h1>32bit MASTER <small id="version"></small></h1>
-  <button class="btn primary" id="connect">Connect</button>
-  <button class="btn" id="demo" hidden title="Try the page without the module: every control works, the meters are invented">Demo</button>
-  <span class="badge" id="link"><span class="dot"></span><span id="linkText">Not connected</span></span>
-  <span class="stat">CPU <b id="cpu">–</b></span>
-  <span class="stat">Latency <b id="lat">–</b></span>
-  <span class="badge warn hidden" id="unsaved" title="The module runs these settings now, but they are not stored: press Save to module"><span class="dot"></span>Unsaved</span>
-  <span class="spacer"></span>
-  <button class="btn" id="bypass" disabled title="Kick + mix straight to the output, to compare. Never saved.">Bypass</button>
-  <button class="btn primary" id="save" disabled title="Store the settings in the module (the audio drops for a moment)">Save to module</button>
-  <button class="btn" id="revert" disabled title="Back to the settings saved in the module">Revert</button>
-  <button class="btn" id="factory" disabled title="Factory settings (not saved until you press Save)">Factory</button>
-  <button class="btn" id="export" disabled title="Download the settings as a text file">Export</button>
-  <button class="btn" id="import" disabled title="Load a settings file">Import</button>
-  <input type="file" id="file" accept=".txt,text/plain" hidden>
-</header>
-<div id="note">Plug the module's USB-C port into this computer and press Connect. IN L = kick, IN R = everything else, OUT L = OUT R = the mono main.</div>
-<main id="mixer"><div class="empty">The mixer appears here once the module is connected.</div></main>
-<section id="detail"></section>
+<div id="main">
+  <main id="mixer"><div class="empty">Connect the module (right) and the mixer appears here.</div></main>
+  <section id="detail"></section>
 </div>
-<div id="log"></div>
-<footer>Click an effect to see its settings below the mixer. Drag a knob or fader up / down (Shift = fine); double-click it, or click a setting's name, for the factory value. Settings only stay in the module after “Save to module”.</footer>
+<aside id="side">
+  <div class="brand">32bit MASTER <small id="version">end-of-chain processor</small></div>
+  <div class="sgroup">
+    <button class="btn primary" id="connect">Connect</button>
+    <button class="btn" id="demo" hidden title="Try the page without the module: every control works, the meters are invented">Demo</button>
+    <span class="badge" id="link"><span class="dot"></span><span id="linkText">Not connected</span></span>
+    <span class="badge warn hidden" id="unsaved" title="The module runs these settings now, but they are not stored: press Save to module"><span class="dot"></span>Unsaved changes</span>
+  </div>
+  <div class="sgroup">
+    <h4>Module</h4>
+    <div class="status"><span>CPU</span><b id="cpu">–</b><span>Latency</span><b id="lat">–</b></div>
+  </div>
+  <div class="sgroup">
+    <h4>Settings</h4>
+    <button class="btn" id="bypass" disabled title="Kick + mix straight to the output, to compare. Never saved.">Bypass</button>
+    <button class="btn primary" id="save" disabled title="Store the settings in the module (the audio drops for a moment)">Save to module</button>
+    <div class="two">
+      <button class="btn" id="revert" disabled title="Back to the settings saved in the module">Revert</button>
+      <button class="btn" id="factory" disabled title="Factory settings (not saved until you press Save)">Factory</button>
+      <button class="btn" id="export" disabled title="Download the settings as a text file">Export</button>
+      <button class="btn" id="import" disabled title="Load a settings file">Import</button>
+    </div>
+    <input type="file" id="file" accept=".txt,text/plain" hidden>
+  </div>
+  <div id="note">Plug the module's USB-C port into this computer and press Connect. IN L = kick, IN R = everything else, OUT L = OUT R = the mono main.</div>
+  <div class="tips">Click an effect to open it below. Drag an effect up / down to change the order. Drag knobs and faders up / down (Shift = fine), double-click for the factory value, click a value to type it.</div>
+  <div id="log"></div>
+</aside>
+</div>
 
 <script src="demo.js"></script>
 <script>
@@ -242,89 +287,73 @@
 // ---------------------------------------------------------------- the mixer layout
 //
 // Where each firmware parameter sits. A device (slot) takes every parameter whose
-// id matches `match`; `on` is its switch. Meters: ["level" | "gr", meter name,
-// label, raw meter name for the CLIP flag].
+// id matches `match`; `on` is its switch, `view` the panel that draws it, `orderName`
+// its name in the strip's order setting (`order`). Meters: names from the firmware.
 const STRIPS = [
   {
-    id: "kick", name: "KICK", sub: "IN L", color: "var(--c-kick)",
+    id: "kick", name: "KICK", sub: "IN L",
     trim: "in_k_trim", inMeter: ["in_k", "raw_k"], send: "par_send_k", fader: "k_lvl", faderName: "Level",
-    meter: "kick", gr: ["gr_klim"],
-    hint: "Trim at the input, the send into the parallel bus (taken after the kick's effects, before the fader) and the kick's level in the main.",
-    meters: [["level", "in_k", "Kick in", "raw_k"], ["level", "kick", "After the effects"]],
+    meter: "kick", gr: ["gr_klim"], order: "k_order", history: [["in_k", "Kick in"], ["kick", "After the effects"]],
+    hint: "Trim at the input, the send into the parallel bus (after the kick's effects, before the fader) and the kick's level in the main.",
     devices: [
-      { id: "k_hp", name: "Sub cut", match: /^k_hp_/, on: "k_hp_on",
-        hint: "High pass on the kick: takes out what lies below the kick's fundamental.",
-        summary: (t) => `${t("k_hp_f")} · ${t("k_hp_slope")}`,
-        meters: [["level", "in_k", "Kick in", "raw_k"]] },
-      { id: "k_lim", name: "Limiter", match: /^k_lim_/, on: "k_lim_on", gr: ["gr_klim"],
-        hint: "Look-ahead peak limiter on the kick. Gain pushes the kick into the ceiling.",
-        summary: (t) => `ceiling ${t("k_lim_ceil")}`,
-        meters: [["gr", "gr_klim", "Reduction"], ["level", "kick", "Kick out"]] },
+      { id: "k_flt", name: "Filter", orderName: "Filter", match: /^k_flt_/, on: "k_flt_on", view: "filter", pre: "k_flt",
+        hint: "Low cut and high cut on the kick: the low cut takes out what lies below the kick's fundamental." },
+      { id: "k_lim", name: "Limiter", orderName: "Limiter", match: /^k_lim_/, on: "k_lim_on", gr: ["gr_klim"], view: "limiter", pre: "k_lim",
+        level: "kick", grMeter: "gr_klim", inMeter: "in_k",
+        hint: "Look-ahead peak limiter on the kick. Gain pushes the kick into the ceiling." },
     ],
   },
   {
-    id: "mix", name: "MIX", sub: "IN R", color: "var(--c-mix)",
+    id: "mix", name: "MIX", sub: "IN R",
     trim: "in_m_trim", inMeter: ["in_m", "raw_m"], send: "par_send_m", fader: "m_lvl", faderName: "Level",
-    meter: "mix", gr: ["gr_lo", "gr_mid", "gr_hi"],
-    hint: "Trim at the input, the send into the parallel bus (taken after the mix's effects, before the fader) and the mix's level in the main.",
-    meters: [["level", "in_m", "Mix in", "raw_m"], ["level", "mix", "After the effects"]],
+    meter: "mix", gr: ["gr_lo", "gr_mid", "gr_hi"], order: "m_order", history: [["in_m", "Mix in"], ["mix", "After the effects"]],
+    hint: "Trim at the input, the send into the parallel bus (after the mix's effects, before the fader) and the mix's level in the main.",
     devices: [
-      { id: "m_hp", name: "Low cut", match: /^m_hp_/, on: "m_hp_on",
-        hint: "High pass on the mix: leaves the low end to the kick.",
-        summary: (t) => `${t("m_hp_f")} · ${t("m_hp_slope")}`,
-        meters: [["level", "in_m", "Mix in", "raw_m"]] },
-      { id: "mb", name: "Multiband", match: /^mb_/, on: "mb_on", gr: ["gr_lo", "gr_mid", "gr_hi"], bands: true,
-        hint: "Splits the mix into three bands. Each band is turned down while the same band of the kick is loud (sidechain Kick), or by its own level (Self).",
-        summary: (t) => `${t("mb_sc")} key · ${t("mb_f1").replace(" Hz", "")} / ${t("mb_f2")}`,
-        meters: [["level", "mix", "Mix after the bands"]],
-        bandMeters: { mb_lo: "gr_lo", mb_mid: "gr_mid", mb_hi: "gr_hi" } },
+      { id: "m_flt", name: "Filter", orderName: "Filter", match: /^m_flt_/, on: "m_flt_on", view: "filter", pre: "m_flt",
+        hint: "Low cut and high cut on the mix: the low cut leaves the low end to the kick." },
+      { id: "mb", name: "Multiband", orderName: "Multiband", match: /^mb_/, on: "mb_on", gr: ["gr_lo", "gr_mid", "gr_hi"], view: "multiband",
+        hint: "Three bands, each turned down while the same band of the kick is loud (sidechain Kick) or by its own level (Self)." },
     ],
   },
   {
-    id: "par", name: "PARALLEL", sub: "bus", color: "var(--c-par)", on: "par_on",
-    fader: "par_ret", faderName: "Return", meter: "par", gr: ["gr_par"],
+    id: "par", name: "PARALLEL", sub: "bus", on: "par_on",
+    fader: "par_ret", faderName: "Return", meter: "par", gr: ["gr_par"], history: [["par", "Return"]],
     feeds: [["Kick send", "par_send_k"], ["Mix send", "par_send_m"]], out: "returns into MASTER",
     channel: ["par_send_k", "par_send_m", "par_ret"],
     hint: "The parallel bus: what the two sends feed in, and how loud the compressed signal returns into the main.",
-    meters: [["gr", "gr_par", "Reduction"], ["level", "par", "Return level"]],
     devices: [
-      { id: "par", name: "Compressor", match: /^par_/, on: "par_on", gr: ["gr_par"],
-        hint: "Kick send + mix send into one heavy compressor. The return fader mixes it under the main, for thickness.",
-        summary: (t) => `${t("par_thr")} · ${t("par_ratio")}`,
-        meters: [["gr", "gr_par", "Reduction"], ["level", "par", "Return level"]],
-        extra: ["Sends and return", ["par_send_k", "par_send_m", "par_ret"]] },
+      { id: "par", name: "Compressor", match: /^par_/, on: "par_on", gr: ["gr_par"], view: "compressor",
+        hint: "Kick send + mix send into one heavy compressor. The return fader mixes it under the main, for thickness." },
     ],
   },
   {
-    id: "master", name: "MASTER", sub: "OUT L + R", color: "var(--c-master)",
-    fader: "out_lvl", faderName: "Output", meter: "out", gr: ["gr_glue", "gr_lim"],
+    id: "master", name: "MASTER", sub: "OUT L + R",
+    fader: "out_lvl", faderName: "Output", meter: "out", gr: ["gr_glue", "gr_lim"], order: "o_order", history: [["out", "Output"]],
     feeds: [["Kick", "k_lvl"], ["Mix", "m_lvl"], ["Parallel", "par_ret"]], out: "mono on OUT L and OUT R",
     hint: "The main sum of kick, mix and the parallel return, after the master effects.",
-    meters: [["level", "out", "Output"]],
     devices: [
-      { id: "glue", name: "Glue compressor", match: /^glue_/, on: "glue_on", gr: ["gr_glue"],
-        hint: "Bus compressor on kick + mix + parallel return.",
-        summary: (t) => `${t("glue_thr")} · ${t("glue_ratio")}:1`,
-        meters: [["gr", "gr_glue", "Reduction"]] },
-      { id: "eq", name: "Cuts", match: /^eq_/, anyOn: ["eq_lo_on", "eq_hi_on"],
-        hint: "Low cut and high cut on the main, before the limiter.",
-        summary: (t, on) => `low ${on("eq_lo_on") ? t("eq_lo_f") : "off"} · high ${on("eq_hi_on") ? t("eq_hi_f") : "off"}` },
-      { id: "lim", name: "Limiter", match: /^lim_/, on: "lim_on", gr: ["gr_lim"],
-        hint: "Look-ahead peak limiter, last in the chain: the output never passes the ceiling.",
-        summary: (t) => `ceiling ${t("lim_ceil")}`,
-        meters: [["gr", "gr_lim", "Reduction"], ["level", "out", "Output"]] },
+      { id: "glue", name: "Glue compressor", orderName: "Glue", match: /^glue_/, on: "glue_on", gr: ["gr_glue"], view: "glue",
+        hint: "Bus compressor on kick + mix + parallel return, modelled on an analog VCA bus compressor." },
+      { id: "o_flt", name: "Filter", orderName: "Filter", match: /^o_flt_/, on: "o_flt_on", view: "filter", pre: "o_flt",
+        hint: "Low cut and high cut on the main." },
+      { id: "lim", name: "Limiter", orderName: "Limiter", match: /^lim_/, on: "lim_on", gr: ["gr_lim"], view: "limiter", pre: "lim",
+        level: "out", grMeter: "gr_lim",
+        hint: "Look-ahead peak limiter. Last in the chain, the output never passes the ceiling." },
     ],
   },
 ];
 const FLOW_AFTER = { mix: "›", par: "›" };       // kick + mix feed the parallel bus, all three the master
-const TOOLBAR = ["bypass"];                      // parameters with their own button in the header
-const LEVEL_MIN = -60, GR_MAX = 24, CLIP_DB = -0.2, FADER_TAPER = 2;
+const TOOLBAR = ["bypass"];                      // parameters with their own button in the side panel
+// A setting that does nothing while another is on: the release under auto release.
+const DISABLED_BY = { k_lim_rel: "k_lim_auto", lim_rel: "lim_auto" };
+const LEVEL_MIN = -60, GR_MAX = 24, CLIP_DB = -0.2, FADER_TAPER = 2, HISTORY = 200;
 
 const $ = (id) => document.getElementById(id);
 const state = {
   link: null, demo: false, groups: [], params: new Map(), meterNames: [], devices: new Map(), strips: [],
-  stripMeters: [], detailMeters: [], detailViews: [], detailRows: [], sel: "k_hp",
-  pendingSets: new Map(), described: false, meterWaiting: 0, hello: null, cpuWorst: [], refreshQueued: false,
+  stripMeters: [], detailMeters: [], detailViews: [], detailCtls: [], detailRedraws: [], observers: [], sel: "k_flt",
+  pendingSets: new Map(), described: false, meterWaiting: 0, hello: null, fs: 44100, cpuWorst: [], refreshQueued: false,
+  hist: [], meters: {},
 };
 
 // ---------------------------------------------------------------- links
@@ -405,21 +434,23 @@ class DemoLink {
     } else if (w[0] === "m") this.reply([this.meters()]);
   }
   meters() {
-    // A 128 BPM kick and a steady mix; only enough to see the meters move.
+    // A 128 BPM kick and a mix that moves; only enough to see the meters and graphs work.
     const v = (id) => this.values.get(id).v;
     const t = (performance.now() - this.t0) / 1000, beat = 60 / 128, ph = t % beat;
-    const kick = -4 - 60 * Math.min(1, ph / 0.5) + v("in_k_trim"), mix = -9 + Math.sin(t * 3) + v("in_m_trim");
+    const kick = -4 - 60 * Math.min(1, ph / 0.5) + v("in_k_trim"), mix = -9 + 2 * Math.sin(t * 1.3) + Math.sin(t * 7) + v("in_m_trim");
     const hit = Math.exp(-ph / 0.09), bypass = v("bypass");
     const gr = (on, depth) => (on && !bypass ? Math.max(0, depth) : 0);
     const band = (b, share) => gr(v("mb_on") && v(`mb_${b}_on`), (kick + share - v(`mb_${b}_thr`)) * (1 - 1 / v(`mb_${b}_ratio`)) * hit * v("mb_amount") / 100);
+    const out = Math.min(-3 + 3 * hit + 0.8 * Math.sin(t * 1.3), v("lim_on") ? v("lim_ceil") : 0) + v("out_lvl");
     const m = {
       raw_k: kick - v("in_k_trim"), raw_m: mix - v("in_m_trim"), in_k: kick, in_m: mix,
-      kick: Math.min(kick, v("k_lim_on") ? v("k_lim_ceil") : 0), mix: mix - band("lo", 0) / 3,
-      par: v("par_on") ? -22 + v("par_ret") + v("par_makeup") - 14 : -120, out: Math.min(-3 + 3 * hit, v("lim_on") ? v("lim_ceil") : 0) + v("out_lvl"),
+      kick: Math.min(kick + v("k_lim_gain"), v("k_lim_on") ? v("k_lim_ceil") : 0), mix: mix - band("lo", 0) / 3,
+      par: v("par_on") ? -22 + v("par_ret") + v("par_makeup") - 14 + 2 * hit : -120, out,
       gr_klim: gr(v("k_lim_on"), (kick + v("k_lim_gain") - v("k_lim_ceil")) * hit),
       gr_lo: band("lo", 0), gr_mid: band("mid", -10), gr_hi: band("hi", -22),
-      gr_par: gr(v("par_on"), (Math.max(kick, mix) - 6 - v("par_thr")) * (1 - 1 / v("par_ratio"))),
-      gr_glue: gr(v("glue_on"), (-6 + 6 * hit - v("glue_thr")) * 0.5), gr_lim: gr(v("lim_on"), (-2 + 3 * hit + v("lim_gain") - v("lim_ceil")) * hit),
+      gr_par: gr(v("par_on"), (Math.max(kick, mix) - 6 - v("par_thr")) * (1 - 1 / v("par_ratio")) * (0.8 + 0.2 * hit)),
+      gr_glue: gr(v("glue_on"), (-6 + 6 * hit + Math.sin(t * 1.3) - v("glue_thr")) * 0.5),
+      gr_lim: gr(v("lim_on"), (-2 + 3 * hit + v("lim_gain") - v("lim_ceil")) * hit),
       cpu: bypass ? 4 : 47, cpu_max: bypass ? 6 : 58,
       lat_ms: 2.3 + (bypass ? 0 : (v("k_lim_on") ? v("k_lim_la") : 0) + (v("lim_on") ? v("lim_la") : 0)), unsaved: this.unsaved,
     };
@@ -432,10 +463,13 @@ class DemoLink {
 function onLine(line) {
   const f = line.split("|");
   switch (f[0]) {
-    case "hello":
+    case "hello": {
       state.hello = f;
-      $("version").textContent = (f[2] || "") + (state.demo ? " (demo)" : "");
+      const fs = /fs=(\d+)/.exec(line);
+      if (fs) state.fs = +fs[1];
+      $("version").textContent = "firmware " + (f[2] || "") + (state.demo ? " (demo)" : "");
       break;
+    }
     case "g": state.groups.push({ id: f[1], title: f[2] }); break;
     case "d": {
       const p = { id: f[1], group: f[2], kind: f[3], min: +f[4], max: +f[5], def: +f[6], step: +f[7], unit: f[8], saved: f[9] === "1", label: f[10], options: f[11] ? f[11].split(",") : [], value: +f[6], views: new Set() };
@@ -463,7 +497,7 @@ function send(line) { if (state.link) state.link.send(line); }
 
 const minus = (s) => s.replace("-", "−");
 const fmt = (p, v) => {
-  if (p.kind === "log") return v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2);
+  if (p.kind === "log") return v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 1 : 2) + "k" : v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2);
   const decimals = p.step >= 1 || p.step === 0 ? 0 : p.step >= 0.1 ? 1 : 2;
   return v.toFixed(decimals);
 };
@@ -474,17 +508,27 @@ const fmtUnit = (p, v) => {
   if (p.kind === "enum") return p.options[Math.round(v)] ?? "?";
   if (p.kind === "bool") return v >= 0.5 ? "on" : "off";
   if (isOff(p, v)) return "off";
+  if (p.unit === "Q") return "Q " + fmt(p, v);
   return minus(fmt(p, v)) + (p.unit.startsWith(":") ? "" : " ") + p.unit;
+};
+// Typed text as a value: "off", "1.2k", "−3", "12,5".
+const parseValue = (p, text) => {
+  text = text.trim().replace(",", ".").replace("−", "-").replace(/^q\s*/i, "");
+  if (/^(off|-?inf|-?∞)$/i.test(text)) return p.min;
+  const m = /^(-?[\d.]+)\s*(k)?/i.exec(text);
+  return m ? parseFloat(m[1]) * (m[2] ? 1000 : 1) : NaN;
 };
 const dbText = (v) => (v <= -100 ? "−∞" : minus(v.toFixed(1)));
 const clamp01 = (n) => Math.min(1, Math.max(0, n));
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 // A value as 0..1 of its control's travel. `taper` > 1 gives the top of a level's range more room.
 const norm = (p, v, taper = 1) => p.kind === "log" ? Math.log(v / p.min) / Math.log(p.max / p.min) : Math.pow((v - p.min) / (p.max - p.min), taper);
 const denorm = (p, n, taper = 1) => {
   n = clamp01(n);
   if (p.kind === "log") return +(p.min * Math.pow(p.max / p.min, n)).toPrecision(3);
   let v = p.min + (p.max - p.min) * Math.pow(n, 1 / taper);
-  if (p.step > 0) v = Math.round(v / p.step) * p.step;
+  if (p.kind === "enum" || p.kind === "bool") v = Math.round(v);
+  else if (p.step > 0) v = Math.round(v / p.step) * p.step;
   return +Math.min(p.max, Math.max(p.min, v)).toFixed(4);
 };
 
@@ -493,6 +537,13 @@ function el(tag, cls, text) {
   if (cls) e.className = cls;
   if (text !== undefined) e.textContent = text;
   return e;
+}
+const NS = "http://www.w3.org/2000/svg";
+function svgEl(tag, attrs, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs || {}) n.setAttribute(k, attrs[k]);
+  if (parent) parent.append(n);
+  return n;
 }
 
 // Every control that shows a parameter is a view: { show(value), busy }. A view
@@ -517,6 +568,7 @@ function showValue(id, v) {
 // sent at most every 30 ms per parameter.
 function userSet(p, v, from) {
   v = Math.min(p.max, Math.max(p.min, v));
+  if (p.kind === "bool" || p.kind === "enum") v = Math.round(v);
   p.value = v;
   for (const view of p.views) if (view !== from) view.show(v);
   state.pendingSets.set(p.id, v);
@@ -535,14 +587,13 @@ function command(line) { flushSets(); send(line); }
 
 const factoryTitle = (p) => `${p.label}: factory value ${fmtUnit(p, p.def)}`;
 
-// A value box: type a number (or "off" for a level at its minimum).
+// A value box on a strip: type a number (or "off" for a level at its minimum).
 function numberBox(p, cls, detail) {
   const wrap = el("div", cls), box = el("input"), unit = el("span", "", p.unit);
   box.type = "text"; box.inputMode = "decimal"; box.title = factoryTitle(p);
   const view = { busy: false, show(v) { if (document.activeElement !== box) box.value = isOff(p, v) ? "off" : fmt(p, v); } };
   box.onchange = () => {
-    const text = box.value.trim().replace(",", ".").replace("−", "-");
-    const v = /^(off|-?inf|-?∞)$/i.test(text) ? p.min : parseFloat(text);
+    const v = parseValue(p, box.value);
     if (!isNaN(v)) userSet(p, v);
     box.value = isOff(p, p.value) ? "off" : fmt(p, p.value);
   };
@@ -586,17 +637,16 @@ function dragValue(node, p, taper, view, pixels) {
     const dir = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key];
     if (!dir) return;
     e.preventDefault();
-    if (p.kind !== "log" && p.step > 0) userSet(p, p.value + dir * p.step * (e.shiftKey ? 10 : 1));
+    if (p.kind === "enum") userSet(p, Math.round(p.value) + dir);
+    else if (p.kind !== "log" && p.step > 0) userSet(p, p.value + dir * p.step * (e.shiftKey ? 10 : 1));
     else userSet(p, denorm(p, norm(p, p.value, taper) + dir * (e.shiftKey ? 0.05 : 0.01), taper));
   });
 }
 
-function knobControl(p, taper) {
-  const NS = "http://www.w3.org/2000/svg", A0 = -135, SWEEP = 270, R = 20;
-  const svg = document.createElementNS(NS, "svg");
-  svg.setAttribute("viewBox", "0 0 48 48");
-  svg.classList.add("knob");
-  const mk = (tag, cls) => { const n = document.createElementNS(NS, tag); n.setAttribute("class", cls); svg.append(n); return n; };
+// The arc knob itself (an SVG); `size` in px.
+function knobSvg(p, taper) {
+  const A0 = -135, SWEEP = 270, R = 19;
+  const svg = svgEl("svg", { viewBox: "0 0 48 48" });
   const pt = (a, r) => [24 + r * Math.sin(a * Math.PI / 180), 24 - r * Math.cos(a * Math.PI / 180)];
   const arc = (a, b) => {
     const lo = Math.min(a, b), hi = Math.max(a, b);
@@ -604,48 +654,104 @@ function knobControl(p, taper) {
     const [x0, y0] = pt(lo, R), [x1, y1] = pt(hi, R);
     return `M${x0.toFixed(2)} ${y0.toFixed(2)}A${R} ${R} 0 ${hi - lo > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
   };
-  mk("path", "ktrack").setAttribute("d", arc(A0, A0 + SWEEP));
-  const val = mk("path", "kval"), body = mk("circle", "kbody"), ptr = mk("line", "kptr");
-  body.setAttribute("cx", 24); body.setAttribute("cy", 24); body.setAttribute("r", 14);
-  const origin = p.min < 0 && p.max > 0 ? norm(p, 0, taper) : 0;   // a trim: the arc starts at 0 dB
-  const view = { busy: false, show(v) {
-    const a = A0 + SWEEP * norm(p, v, taper);
+  svgEl("path", { class: "ktrack", d: arc(A0, A0 + SWEEP) }, svg);
+  const val = svgEl("path", { class: "kval" }, svg);
+  svgEl("circle", { class: "kbody", cx: 24, cy: 24, r: 13 }, svg);
+  const ptr = svgEl("line", { class: "kptr" }, svg);
+  // a trim or gain: the arc starts at 0
+  const origin = p.kind !== "log" && p.min < 0 && p.max > 0 ? norm(p, 0, taper) : 0;
+  const show = (v) => {
+    const a = A0 + SWEEP * clamp01(norm(p, v, taper));
     val.setAttribute("d", arc(A0 + SWEEP * origin, a));
-    const [x0, y0] = pt(a, 6), [x1, y1] = pt(a, 13);
+    const [x0, y0] = pt(a, 4), [x1, y1] = pt(a, 12);
     ptr.setAttribute("x1", x0); ptr.setAttribute("y1", y0); ptr.setAttribute("x2", x1); ptr.setAttribute("y2", y1);
     svg.setAttribute("aria-valuetext", fmtUnit(p, v));
-  } };
-  const title = document.createElementNS(NS, "title");
+  };
+  const title = svgEl("title", {}, svg);
   title.textContent = `${p.label}: drag up / down, double-click = ${fmtUnit(p, p.def)}`;
-  svg.append(title);
-  dragValue(svg, p, taper, view, 180);
-  addView(p, view, false);
-  return svg;
+  return { svg, show };
 }
 
-function faderControl(p, taper) {
-  const THUMB = 26;
-  const fader = el("div", "fader"), thumb = el("div", "fthumb");
-  for (const db of [12, 6, 0, -6, -12, -24, -48]) {
-    if (db > p.max || db < p.min) continue;
-    const tick = el("div", "ftick" + (db === 0 ? " zero" : ""));
-    tick.style.bottom = `calc(${norm(p, db, taper)} * (100% - ${THUMB}px) + ${THUMB / 2}px)`;
-    tick.append(el("span", "", minus(String(db))));
-    fader.append(tick);
-  }
-  fader.append(thumb);
-  fader.title = `${p.label}: drag up / down, double-click = ${fmtUnit(p, p.def)}`;
-  const view = { busy: false, show(v) {
-    thumb.style.bottom = `calc(${norm(p, v, taper)} * (100% - ${THUMB}px))`;
-    fader.setAttribute("aria-valuetext", fmtUnit(p, v));
-  } };
-  dragValue(fader, p, taper, view, 150);
+// A strip knob (trim, send): the arc alone, the value box sits beside it.
+function knobControl(p, taper) {
+  const k = knobSvg(p, taper);
+  k.svg.classList.add("knob");
+  const view = { busy: false, show: k.show };
+  dragValue(k.svg, p, taper, view, 180);
   addView(p, view, false);
-  return fader;
+  return k.svg;
 }
 
-// A parameter is greyed out while a switch it belongs to is off: `k_hp_f` under
-// `k_hp_on`, every `mb_...` under `mb_on` (the id prefix names the switch).
+// A panel knob: label (click = factory value), arc, value (click to type).
+// opts: { label, taper, text(v) }
+function knob(p, opts = {}) {
+  const taper = opts.taper || 1;
+  const box = el("div", "kn"), label = el("div", "klabel", opts.label || p.label), k = knobSvg(p, taper), value = el("div", "kvalue");
+  label.title = `${factoryTitle(p)} (click)`;
+  label.onclick = () => userSet(p, p.def);
+  const text = (v) => (opts.text ? opts.text(v) : fmtUnit(p, v));
+  const view = { busy: false, show(v) { k.show(v); if (!value.querySelector("input")) value.textContent = text(v); } };
+  dragValue(k.svg, p, taper, view, 160);
+  value.title = "Click to type a value";
+  value.onclick = () => {
+    if (p.kind === "enum" || value.querySelector("input")) return;
+    const input = el("input");
+    input.value = isOff(p, p.value) ? "off" : p.kind === "log" ? String(+p.value.toPrecision(4)) : fmt(p, p.value);
+    value.textContent = "";
+    value.append(input);
+    input.focus();
+    input.select();
+    let done = false;
+    const finish = (apply) => {
+      if (done) return;
+      done = true;
+      if (apply) { const v = parseValue(p, input.value); if (!isNaN(v)) userSet(p, v); }
+      value.textContent = text(p.value);
+    };
+    input.onkeydown = (e) => { if (e.key === "Enter") finish(true); else if (e.key === "Escape") finish(false); };
+    input.onblur = () => finish(true);
+  };
+  box.append(label, k.svg, value);
+  addView(p, view, true);
+  state.detailCtls.push({ p, node: box });
+  return box;
+}
+
+// An on / off button.
+function toggle(p, text, detail = true) {
+  const b = el("button", "tg", text || p.label);
+  b.title = `${p.label} on / off`;
+  b.setAttribute("aria-pressed", "false");
+  b.onclick = (e) => { e.stopPropagation(); userSet(p, p.value >= 0.5 ? 0 : 1); };
+  addView(p, { busy: false, show(v) { b.classList.toggle("on", v >= 0.5); b.setAttribute("aria-pressed", v >= 0.5); } }, detail);
+  return b;
+}
+
+// A choice as buttons side by side; `names` replaces the option texts.
+function segmented(p, names) {
+  const seg = el("div", "seg");
+  (names || p.options).forEach((name, i) => {
+    const b = el("button", "", name);
+    b.onclick = () => userSet(p, i);
+    seg.append(b);
+  });
+  addView(p, { busy: false, show(v) { [...seg.children].forEach((b, i) => b.classList.toggle("sel", i === Math.round(v))); } }, true);
+  return seg;
+}
+
+// A labelled control that is not a knob (switch or choice).
+function labelled(p, label, control) {
+  const box = el("div", "ctl"), name = el("div", "klabel", label);
+  name.title = `${factoryTitle(p)} (click)`;
+  name.onclick = () => userSet(p, p.def);
+  box.append(name, control);
+  state.detailCtls.push({ p, node: box });
+  return box;
+}
+
+// A parameter is greyed out while a switch it belongs to is off: `k_flt_lc_f` under
+// `k_flt_lc_on` and `k_flt_on` (the id prefix names the switch), and the release
+// while auto release is on.
 function switchesOf(p) {
   const parts = p.id.split("_"), found = [];
   for (let n = parts.length - 1; n >= 1; n--) {
@@ -654,80 +760,13 @@ function switchesOf(p) {
   }
   return found;
 }
-
-function switchControl(p, cls, detail) {
-  const wrap = el("label", cls), box = el("input"), text = el("span");
-  box.type = "checkbox";
-  box.onchange = () => userSet(p, box.checked ? 1 : 0);
-  wrap.append(box, text);
-  addView(p, { busy: false, show(v) { box.checked = v >= 0.5; text.textContent = v >= 0.5 ? "on" : "off"; } }, detail);
-  return wrap;
-}
-
-// One setting as a row of the panel under the mixer: name, control, value.
-function rowControl(p) {
-  const row = el("div", "row");
-  const label = el("label", "reset", p.label);
-  label.title = `${factoryTitle(p)} (click)`;
-  label.onclick = () => userSet(p, p.def);
-  row.append(label);
-  if (p.kind === "bool") row.append(switchControl(p, "switch wide", true));
-  else if (p.kind === "enum") {
-    const seg = el("div", "seg wide");
-    if (p.options.length > 4) row.classList.add("long");
-    p.options.forEach((name, i) => {
-      const b = el("button", "", name);
-      b.onclick = () => userSet(p, i);
-      seg.append(b);
-    });
-    row.append(seg);
-    addView(p, { busy: false, show(v) { [...seg.children].forEach((b, i) => b.classList.toggle("sel", i === Math.round(v))); } }, true);
-  } else {
-    const slider = el("input");
-    slider.type = "range"; slider.min = 0; slider.max = 1000; slider.step = 1;
-    const view = { busy: false, show(v) { slider.value = 1000 * norm(p, v); } };
-    slider.oninput = () => userSet(p, denorm(p, slider.value / 1000), view);
-    slider.onpointerdown = () => { view.busy = true; };
-    slider.onpointerup = slider.onpointercancel = slider.onchange = () => { view.busy = false; };
-    row.append(slider);
-    addView(p, view, true);
-    row.append(numberBox(p, "num", true));
-  }
-  state.detailRows.push({ p, row });
-  return row;
-}
+const isDisabled = (p) => switchesOf(p).some((id) => P(id).value < 0.5) || (DISABLED_BY[p.id] && P(DISABLED_BY[p.id])?.value >= 0.5);
 
 // ---------------------------------------------------------------- meters
 
 const pct = (db) => Math.max(0, Math.min(100, 100 * (db - LEVEL_MIN) / -LEVEL_MIN));
-const levelColor = (v) => (v > -1 ? "var(--critical)" : v > -6 ? "var(--warning)" : "var(--good)");
+const levelColor = (v) => (v > -1 ? "var(--critical)" : v > -6 ? "var(--warning)" : "var(--level)");
 const grText = (v) => (v >= 0.05 ? "−" + v.toFixed(1) + " dB" : "0 dB");
-
-// A meter of the panel under the mixer: name, bar, value.
-function rowMeter(kind, name, label, clipName, list) {
-  const m = el("div", "meter " + kind), bar = el("div", "bar"), fill = el("div", "fill"), hold = el("div", "hold"), val = el("div", "val");
-  bar.append(fill);
-  if (kind === "level") bar.append(hold);
-  m.append(el("div", "name", label), bar, val);
-  let holdDb = LEVEL_MIN, holdUntil = 0, clipUntil = 0;
-  list.push((mv, now) => {
-    if (kind === "gr") {
-      const v = mv[name] ?? 0;
-      fill.style.width = Math.min(100, 100 * v / GR_MAX) + "%";
-      val.textContent = grText(v);
-      return;
-    }
-    const v = mv[name] ?? -120;
-    if (v >= holdDb || now > holdUntil) { holdDb = v; holdUntil = now + 1500; }
-    fill.style.width = pct(v) + "%";
-    fill.style.background = levelColor(v);
-    hold.style.left = `calc(${pct(holdDb)}% - 1px)`;
-    val.textContent = dbText(holdDb) + " dB";
-    if (clipName && mv[clipName] >= CLIP_DB) clipUntil = now + 2000;
-    if (now < clipUntil) val.append(el("b", "", "▲ CLIP"));
-  });
-  return m;
-}
 
 // The level meter beside a strip's fader; `peak` shows the held peak.
 function stripLevel(name, peak) {
@@ -759,10 +798,10 @@ function stripReduction(names, text) {
   return box;
 }
 
-function smallBar(update) {
+function smallBar(update, list = state.stripMeters) {
   const bar = el("div", "hbar"), fill = el("div", "fill");
   bar.append(fill);
-  state.stripMeters.push((mv, now) => update(fill, mv, now));
+  list.push((mv, now) => update(fill, mv, now));
   return bar;
 }
 
@@ -770,6 +809,9 @@ function showMeters(values) {
   const m = {};
   state.meterNames.forEach((n, i) => { m[n] = values[i]; });
   const now = performance.now();
+  state.meters = m;
+  state.hist.push(m);
+  if (state.hist.length > HISTORY) state.hist.shift();
   for (const update of state.stripMeters) update(m, now);
   for (const update of state.detailMeters) update(m, now);
   // The worst block of the last 5 s, so a single slow block is not missed.
@@ -787,34 +829,549 @@ setInterval(() => {
   send("m");
 }, 50);
 
-// ---------------------------------------------------------------- the mixer
+// ---------------------------------------------------------------- graphs
+
+// A graph that fills its box and is drawn again when the box or a value changes.
+// draw(ch) gets ch.svg (emptied), ch.w, ch.h.
+function chart(cls, title, draw) {
+  const box = el("div", "chart " + (cls || "")), svg = svgEl("svg", {}, box);
+  if (title) box.append(el("div", "ctitle", title));
+  const readout = el("div", "readout");
+  box.append(readout);
+  const ch = { box, svg, readout, w: 0, h: 0 };
+  ch.render = () => {
+    if (!ch.w) return;
+    svg.textContent = "";
+    draw(ch);
+  };
+  const ro = new ResizeObserver(() => {
+    const r = box.getBoundingClientRect();
+    ch.w = Math.round(r.width); ch.h = Math.round(r.height);
+    svg.setAttribute("width", ch.w); svg.setAttribute("height", ch.h); svg.setAttribute("viewBox", `0 0 ${ch.w} ${ch.h}`);
+    ch.render();
+  });
+  ro.observe(box);
+  state.observers.push(ro);
+  state.detailRedraws.push(ch.render);
+  return ch;
+}
+
+const path = (pts) => pts.map(([x, y], i) => (i ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1)).join("");
+const LOG_F0 = Math.log10(10), LOG_F1 = Math.log10(20000);
+const fX = (ch, f, l, r) => l + (Math.log10(f) - LOG_F0) / (LOG_F1 - LOG_F0) * (ch.w - l - r);
+const xF = (ch, x, l, r) => Math.pow(10, LOG_F0 + (x - l) / (ch.w - l - r) * (LOG_F1 - LOG_F0));
+const fText = (f) => (f >= 1000 ? +(f / 1000).toFixed(f >= 10000 ? 1 : 2) + " kHz" : +f.toFixed(f >= 100 ? 0 : 1) + " Hz");
+
+// Frequency grid (10 Hz .. 20 kHz) and dB grid.
+function freqGrid(ch, L, R, T, B, dbs, y) {
+  for (const f of [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]) {
+    const x = fX(ch, f, L, R);
+    svgEl("line", { class: "gl", x1: x, x2: x, y1: T, y2: ch.h - B }, ch.svg);
+    svgEl("text", { class: "ax", x, y: ch.h - 5, "text-anchor": "middle" }, ch.svg).textContent = f >= 1000 ? f / 1000 + "k" : f;
+  }
+  for (const db of dbs) {
+    svgEl("line", { class: db === 0 ? "gl0" : "gl", x1: L, x2: ch.w - R, y1: y(db), y2: y(db) }, ch.svg);
+    svgEl("text", { class: "ax", x: L - 4, y: y(db) + 3, "text-anchor": "end" }, ch.svg).textContent = minus(String(db));
+  }
+}
+
+// Second-order sections of a cut (as ms_cut_set in the firmware): slope 0 / 1 / 2 =
+// 12 / 24 / 48 dB/oct, Butterworth, the sharpest section scaled by q / 0.707.
+const BUTTER = [[0.70710678], [0.5411961, 1.30656296], [0.50979558, 0.60134489, 0.89997622, 2.56291545]];
+const cutQs = (slope, q) => BUTTER[slope].map((b, i, all) => (i === all.length - 1 ? b * q * Math.SQRT2 : b));
+// Gain in dB of a cut at f: the firmware's filters are trapezoidal (bilinear), so
+// the analog response at the pre-warped frequency is exact.
+function cutDb(type, f0, slope, q, f) {
+  const fs = state.fs;
+  const w = Math.tan(Math.PI * Math.min(f, 0.499 * fs) / fs) / Math.tan(Math.PI * Math.min(f0, 0.45 * fs) / fs);
+  let db = 0;
+  for (const qi of cutQs(slope, q)) {
+    const re = 1 - w * w, im = w / qi, den = re * re + im * im;
+    db += 10 * Math.log10((type === "lc" ? w ** 4 : 1) / den);
+  }
+  return db;
+}
+// Linkwitz-Riley 24 dB/oct crossover halves.
+const lr4 = (type, f0, f) => 2 * cutDb(type, f0, 0, 0.70710678, f);
+
+// Level / reduction over the last ten seconds, from the polled meters.
+// lines: [[meter, label, style]], gr: reduction meter (drawn from the top), ceiling: dB or null.
+function historyDraw(ch, lines, grName, ceiling) {
+  const L = 30, R = 8, T = 22, B = 8, lo = -48, hi = 3;
+  const y = (db) => T + (hi - clamp(db, lo, hi)) / (hi - lo) * (ch.h - T - B);
+  for (const db of [0, -12, -24, -36]) {
+    svgEl("line", { class: db === 0 ? "gl0" : "gl", x1: L, x2: ch.w - R, y1: y(db), y2: y(db) }, ch.svg);
+    svgEl("text", { class: "ax", x: L - 4, y: y(db) + 3, "text-anchor": "end" }, ch.svg).textContent = minus(String(db));
+  }
+  const h = state.hist, n = HISTORY, x = (i) => L + (i + n - h.length) / (n - 1) * (ch.w - L - R);
+  if (h.length > 1) {
+    lines.forEach(([name, , style], li) => {
+      const pts = h.map((m, i) => [x(i), y(m[name] ?? -120)]);
+      if (li === 0) svgEl("path", { d: path(pts) + `L${x(h.length - 1)} ${ch.h - B}L${x(0)} ${ch.h - B}Z`, fill: "#b9b8ae", "fill-opacity": 0.16 }, ch.svg);
+      svgEl("path", { d: path(pts), fill: "none", stroke: style || "#b9b8ae", "stroke-width": li === lines.length - 1 ? 1.5 : 1, "stroke-opacity": li === lines.length - 1 ? 0.95 : 0.5 }, ch.svg);
+    });
+    if (grName) {
+      const pts = h.map((m, i) => [x(i), y(-(m[grName] ?? 0))]);
+      svgEl("path", { d: path(pts) + `L${x(h.length - 1)} ${y(0)}L${x(0)} ${y(0)}Z`, fill: "var(--accent)", "fill-opacity": 0.35 }, ch.svg);
+      svgEl("path", { d: path(pts), fill: "none", stroke: "var(--accent)", "stroke-width": 1.5 }, ch.svg);
+    }
+  }
+  if (ceiling !== null && ceiling !== undefined) {
+    svgEl("line", { x1: L, x2: ch.w - R, y1: y(ceiling), y2: y(ceiling), stroke: "var(--critical)", "stroke-dasharray": "4 3", "stroke-width": 1 }, ch.svg);
+  }
+  const last = h[h.length - 1] || {};
+  ch.readout.textContent = (grName ? `GR ${grText(last[grName] ?? 0)}   ` : "") + `${lines[lines.length - 1][1]} ${dbText(last[lines[lines.length - 1][0]] ?? -120)} dB`;
+}
+
+function legend(items) {
+  const box = el("div", "legend");
+  for (const [color, text, dash] of items) {
+    const it = el("span"), sw = el("i");
+    sw.style.background = dash ? `repeating-linear-gradient(90deg, ${color} 0 4px, transparent 4px 7px)` : color;
+    it.append(sw, text);
+    box.append(it);
+  }
+  return box;
+}
+
+// Static curve of a downward compressor: gain reduction (dB) at an input level.
+const compGr = (x, thr, ratio, knee, range) => {
+  const over = x - thr, slope = 1 - 1 / ratio;
+  let gr = over <= -knee / 2 ? 0 : over >= knee / 2 ? slope * over : slope * (over + knee / 2) ** 2 / (2 * knee);
+  return Math.min(gr, range);
+};
+// Input level at which the curve reduces by `gr` (for the moving dot).
+function levelFor(gr, f) {
+  let lo = -80, hi = 40;
+  if (f(hi) < gr) return null;
+  for (let i = 0; i < 40; i++) { const mid = (lo + hi) / 2; if (f(mid) < gr) lo = mid; else hi = mid; }
+  return (lo + hi) / 2;
+}
+
+// Transfer curve: input level -> output level, the 1:1 line dashed, the threshold
+// marked and a dot where the compressor works now.
+function transferDraw(ch, grAt, thr, grName, makeup) {
+  const L = 30, R = 10, T = 22, B = 18, lo = -60, hi = 6;
+  const side = Math.min(ch.w - L - R, ch.h - T - B);
+  const x = (db) => L + (db - lo) / (hi - lo) * side, y = (db) => T + (hi - db) / (hi - lo) * side;
+  for (const db of [0, -12, -24, -36, -48]) {
+    svgEl("line", { class: db === 0 ? "gl0" : "gl", x1: x(lo), x2: x(hi), y1: y(db), y2: y(db) }, ch.svg);
+    svgEl("line", { class: db === 0 ? "gl0" : "gl", x1: x(db), x2: x(db), y1: y(lo), y2: y(hi) }, ch.svg);
+    svgEl("text", { class: "ax", x: L - 4, y: y(db) + 3, "text-anchor": "end" }, ch.svg).textContent = minus(String(db));
+    svgEl("text", { class: "ax", x: x(db), y: y(lo) + 12, "text-anchor": "middle" }, ch.svg).textContent = minus(String(db));
+  }
+  svgEl("line", { x1: x(lo), y1: y(lo), x2: x(hi), y2: y(hi), stroke: "#5a5a54", "stroke-dasharray": "3 3" }, ch.svg);
+  svgEl("line", { x1: x(thr), x2: x(thr), y1: y(lo), y2: y(hi), stroke: "var(--accent-dim)", "stroke-dasharray": "2 3" }, ch.svg);
+  const pts = [];
+  for (let db = lo; db <= hi; db += 0.5) pts.push([x(db), y(clamp(db - grAt(db) + makeup, lo, hi))]);
+  svgEl("path", { d: path(pts), fill: "none", stroke: "var(--accent)", "stroke-width": 2 }, ch.svg);
+  const gr = state.meters[grName] ?? 0;
+  const at = gr > 0.05 ? levelFor(gr, grAt) : null;
+  if (at !== null && at <= hi) svgEl("circle", { cx: x(at), cy: y(clamp(at - gr + makeup, lo, hi)), r: 5, fill: "var(--text-primary)", stroke: "var(--surface-0)", "stroke-width": 2 }, ch.svg);
+  ch.readout.textContent = `GR ${grText(gr)}`;
+  // the area right of the square: nothing
+}
+
+// Gain reduction of a burst over time, from attack / release time constants (s).
+// slow: { att, rel } of a second, slow stage (limiter auto release, glue release A).
+function envelopeDraw(ch, att, rel, label, slow) {
+  const L = 8, R = 8, T = 24, B = 16, total = 1.6, burst = 0.4, depth = 10;
+  const x = (t) => L + t / total * (ch.w - L - R), y = (gr) => T + gr / (depth * 1.1) * (ch.h - T - B);
+  svgEl("line", { class: "gl0", x1: L, x2: ch.w - R, y1: y(0), y2: y(0) }, ch.svg);
+  svgEl("rect", { x: x(0.05), y: ch.h - 10, width: x(0.05 + burst) - x(0.05), height: 3, rx: 1.5, fill: "#6a6a63" }, ch.svg);
+  svgEl("text", { class: "ax", x: x(0.05 + burst) + 6, y: ch.h - 5 }, ch.svg).textContent = "signal over the threshold";
+  svgEl("text", { class: "ax", x: ch.w - R, y: ch.h - 4, "text-anchor": "end" }, ch.svg).textContent = total + " s";
+  const dt = 0.002, pts = [], k = (tau) => 1 - Math.exp(-dt / tau);
+  let g = 0, s = 0;
+  for (let t = 0; t <= total; t += dt) {
+    const want = t >= 0.05 && t < 0.05 + burst ? depth : 0;
+    g += k(want > g ? att : rel) * (want - g);
+    if (slow) s += k(want > s ? slow.att : slow.rel) * (want - s);
+    // with a slow stage the reduction is the larger of the two (the gain the lower)
+    pts.push([x(t), y(slow ? Math.max(g, s) : g)]);
+  }
+  svgEl("path", { d: path(pts) + `L${x(total)} ${y(0)}L${x(0)} ${y(0)}Z`, fill: "var(--accent)", "fill-opacity": 0.22 }, ch.svg);
+  svgEl("path", { d: path(pts), fill: "none", stroke: "var(--accent)", "stroke-width": 1.5 }, ch.svg);
+  ch.readout.textContent = label;
+}
+
+// ---------------------------------------------------------------- effect views
 
 const P = (id) => state.params.get(id);
 const isOn = (id) => { const p = P(id); return !p || p.value >= 0.5; };
 const valueText = (id) => { const p = P(id); return p ? fmtUnit(p, p.value) : "–"; };
+const has = (...ids) => ids.every((id) => state.params.has(id));
+
+function card(title, ...children) {
+  const c = el("div", "card");
+  if (title !== null) {
+    const h = el("h5");
+    if (typeof title === "string") h.append(title); else h.append(...title);
+    c.append(h);
+  }
+  c.append(...children);
+  return c;
+}
+function knobs(...nodes) { const k = el("div", "knobs"); k.append(...nodes.filter(Boolean)); return k; }
+
+// Filter: the response with a draggable point per cut (left / right = frequency,
+// up / down or the wheel = resonance, double-click = cut on / off), and the two cuts' settings.
+function viewFilter(dev, body) {
+  const pre = dev.cfg.pre, cuts = ["lc", "hc"], names = { lc: "Low cut", hc: "High cut" };
+  const q = (cut, k) => P(`${pre}_${cut}_${k}`);
+  if (!has(...cuts.flatMap((c) => ["on", "f", "q", "slope"].map((k) => `${pre}_${c}_${k}`)))) return viewGeneric(dev, body);
+  let selCut = "lc", drag = null, hover = null;
+  const L = 32, R = 10, T = 22, B = 18, LO = -36, HI = 24;
+  const cards = {};
+  const graph = chart("grow", "Response", (ch) => {
+    const y = (db) => T + (HI - clamp(db, LO, HI)) / (HI - LO) * (ch.h - T - B);
+    freqGrid(ch, L, R, T, B, [18, 12, 6, 0, -12, -24], y);
+    const on = isOn(`${pre}_on`);
+    const resp = (f, only) => cuts.reduce((db, c) => (on && (only ? c === only : isOn(`${pre}_${c}_on`)) ? db + cutDb(c, q(c, "f").value, Math.round(q(c, "slope").value), q(c, "q").value, f) : db), 0);
+    const pts = [];
+    for (let x = L; x <= ch.w - R; x += 2) pts.push([x, y(resp(xF(ch, x, L, R)))]);
+    svgEl("path", { d: path(pts) + `L${ch.w - R} ${ch.h - B}L${L} ${ch.h - B}Z`, fill: "var(--accent)", "fill-opacity": on ? 0.14 : 0.05 }, ch.svg);
+    svgEl("path", { d: path(pts), fill: "none", stroke: on ? "var(--accent)" : "#6a6a63", "stroke-width": 2 }, ch.svg);
+    ch.dots = {};
+    for (const c of cuts) {
+      const f = q(c, "f").value, x = fX(ch, f, L, R), active = on && isOn(`${pre}_${c}_on`);
+      // the point sits on the cut's own curve at its frequency
+      const yy = y(clamp(cutDb(c, f, Math.round(q(c, "slope").value), q(c, "q").value, f), LO, HI));
+      ch.dots[c] = [x, yy];
+      if (c === selCut) svgEl("line", { x1: x, x2: x, y1: T, y2: ch.h - B, stroke: "var(--accent-dim)", "stroke-dasharray": "2 3" }, ch.svg);
+      svgEl("circle", { cx: x, cy: yy, r: c === selCut ? 8 : 7, fill: active ? "var(--accent)" : "var(--surface-0)", stroke: active ? "var(--surface-0)" : "var(--accent)", "stroke-width": 2 }, ch.svg);
+      svgEl("text", { x, y: yy + 3.5, "text-anchor": "middle", "font-size": 10, "font-weight": 700, fill: active ? "var(--accent-ink)" : "var(--accent)", "pointer-events": "none" }, ch.svg).textContent = c === "lc" ? "L" : "H";
+    }
+    if (drag) ch.readout.textContent = `${names[drag.cut]}: ${fText(q(drag.cut, "f").value)} · Q ${q(drag.cut, "q").value.toFixed(2)}`;
+    else if (hover) ch.readout.textContent = `${fText(hover[0])}  ${minus(hover[1].toFixed(1))} dB`;
+    else ch.readout.textContent = "";
+    ch.yOf = y;
+  });
+  const svg = graph.svg;
+  const nearest = (e) => {
+    const r = svg.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+    let best = null, bd = 16;
+    for (const c of cuts) { const [x, y] = graph.dots[c]; const d = Math.hypot(mx - x, my - y); if (d < bd) { bd = d; best = c; } }
+    return { cut: best, mx, my };
+  };
+  const qFromDb = (c, db) => {
+    // dB at the cut frequency = sum of 20 log10(section Q): solve for the scale.
+    const slope = Math.round(q(c, "slope").value), base = cutQs(slope, 0.70710678).reduce((s, qi) => s + 20 * Math.log10(qi), 0);
+    return clamp(0.70710678 * Math.pow(10, (db - base) / 20), q(c, "q").min, q(c, "q").max);
+  };
+  svg.style.touchAction = "none";
+  svg.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    const { cut } = nearest(e);
+    if (!cut) return;
+    e.preventDefault();
+    selCut = cut;
+    for (const c of cuts) cards[c].classList.toggle("sel", c === selCut);
+    try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+    drag = { cut, x0: e.clientX, y0: e.clientY, f0: q(cut, "f").value, d0: graph.dots[cut][1] };
+    graph.render();
+  });
+  svg.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+    if (!drag) {
+      hover = mx > L && mx < graph.w - R && my > T && my < graph.h - B ? [xF(graph, mx, L, R), HI - (my - T) / (graph.h - T - B) * (HI - LO)] : null;
+      svg.style.cursor = nearest(e).cut ? "grab" : "crosshair";
+      graph.readout.textContent = hover ? `${fText(hover[0])}  ${minus(hover[1].toFixed(1))} dB` : "";
+      return;
+    }
+    const fine = e.shiftKey ? 0.2 : 1;
+    const x = fX(graph, drag.f0, L, R) + (e.clientX - drag.x0) * fine;
+    userSet(q(drag.cut, "f"), +clamp(xF(graph, x, L, R), 10, 20000).toPrecision(3));
+    const yy = drag.d0 + (e.clientY - drag.y0) * fine;
+    const db = HI - (yy - T) / (graph.h - T - B) * (HI - LO);
+    userSet(q(drag.cut, "q"), +qFromDb(drag.cut, db).toPrecision(3));
+  });
+  const end = () => { if (drag) { drag = null; graph.render(); } };
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+  svg.addEventListener("pointerleave", () => { hover = null; if (!drag) graph.readout.textContent = ""; });
+  svg.addEventListener("dblclick", (e) => { const { cut } = nearest(e); if (cut) { const sw = q(cut, "on"); userSet(sw, sw.value >= 0.5 ? 0 : 1); } });
+  svg.addEventListener("wheel", (e) => {
+    const { cut } = nearest(e);
+    if (!cut) return;
+    e.preventDefault();
+    const p = q(cut, "q");
+    userSet(p, +clamp(p.value * Math.pow(1.1, e.deltaY < 0 ? 1 : -1), p.min, p.max).toPrecision(3));
+  }, { passive: false });
+
+  const left = el("div", "dcol grow");
+  left.append(graph.box, el("div", "legend", "Drag a point: left / right = frequency, up / down or the wheel = resonance (Shift = fine). Double-click a point: that cut on / off."));
+  for (const c of cuts) {
+    const k = card([toggle(q(c, "on"), names[c].toUpperCase())]);
+    k.append(labelled(q(c, "slope"), "Slope", segmented(q(c, "slope"), ["12", "24", "48 dB/oct"])),
+      knobs(knob(q(c, "f"), { label: "Frequency" }), knob(q(c, "q"), { label: "Resonance", text: (v) => "Q " + v.toFixed(2) })));
+    k.onclick = () => { selCut = c; for (const d of cuts) cards[d].classList.toggle("sel", d === c); graph.render(); };
+    cards[c] = k;
+  }
+  cards.lc.classList.add("sel");
+  const row = el("div", "dcol fixed");
+  row.style.flexDirection = "row";
+  row.style.gap = "8px";
+  row.append(cards.lc, cards.hc);
+  body.append(left, row);
+}
+
+// Limiter: reduction and level over time against the ceiling, the release as a
+// shape (auto: the two stages), and the settings.
+function viewLimiter(dev, body) {
+  const pre = dev.cfg.pre, p = (k) => P(`${pre}_${k}`);
+  if (!has(...["gain", "ceil", "rel", "la"].map((k) => `${pre}_${k}`))) return viewGeneric(dev, body);
+  const lines = dev.cfg.inMeter ? [[dev.cfg.inMeter, "In", "#8f8e85"], [dev.cfg.level, "Out"]] : [[dev.cfg.level, "Out"]];
+  const hist = chart("grow", "Reduction and level, last 10 s", (ch) => historyDraw(ch, lines, dev.cfg.grMeter, isOn(`${pre}_on`) ? p("ceil").value : null));
+  state.detailMeters.push(() => hist.render());
+  const auto = p("auto");
+  const env = chart("", "Release", (ch) => {
+    const autoOn = auto && auto.value >= 0.5;
+    if (autoOn) envelopeDraw(ch, 0.0005, 0.03, "auto: 30 ms to the slow stage, 1 s to 0", { att: 0.1, rel: 1.0 });
+    else envelopeDraw(ch, 0.0005, p("rel").value / 1000, `${fmtUnit(p("rel"), p("rel").value)} release`);
+  });
+  env.box.style.flex = "0 0 92px";
+  const left = el("div", "dcol grow");
+  left.append(hist.box, env.box, legend([["#b9b8ae", "Level"], ["var(--accent)", "Gain reduction"], ["var(--critical)", "Ceiling", true]]));
+  const right = el("div", "dcol fixed");
+  right.style.width = "280px";
+  right.append(card("Limiter", knobs(knob(p("gain"), { label: "Gain" }), knob(p("ceil"), { label: "Ceiling" }), knob(p("la"), { label: "Look-ahead" }))),
+    card("Release", knobs(knob(p("rel"), { label: "Release" }), auto ? labelled(auto, "Auto release", toggle(auto, "AUTO")) : null),
+      el("div", "info", "Auto: the release follows the music: fast after a lone peak, held at the average reduction while the limiter works all the time.")));
+  body.append(left, right);
+}
+
+// Compressor (parallel bus): the static curve with the working point, the reduction
+// over time, the attack / release shape, then the settings and the bus levels.
+function viewCompressor(dev, body) {
+  const p = (k) => P(`par_${k}`);
+  if (!has("par_thr", "par_ratio", "par_att", "par_rel", "par_makeup")) return viewGeneric(dev, body);
+  const curve = chart("", "Curve (in → out)", (ch) => transferDraw(ch, (x) => compGr(x, p("thr").value, p("ratio").value, 6, 60), p("thr").value, "gr_par", 0));
+  curve.box.style.flex = "0 0 230px";
+  const hist = chart("grow", "Reduction and return, last 10 s", (ch) => historyDraw(ch, [["par", "Return"]], "gr_par", null));
+  const env = chart("", "Attack / release", (ch) => envelopeDraw(ch, p("att").value / 1000, p("rel").value / 1000, `${fmtUnit(p("att"), p("att").value)} / ${fmtUnit(p("rel"), p("rel").value)}`));
+  env.box.style.flex = "0 0 86px";
+  state.detailMeters.push(() => { hist.render(); curve.render(); });
+  const mid = el("div", "dcol grow");
+  mid.append(hist.box, env.box);
+  const right = el("div", "dcol fixed");
+  right.style.width = "300px";
+  right.append(card("Compressor", knobs(knob(p("thr"), { label: "Threshold" }), knob(p("ratio"), { label: "Ratio" }), knob(p("makeup"), { label: "Make-up" }),
+    knob(p("att"), { label: "Attack" }), knob(p("rel"), { label: "Release" }))),
+  card("Bus", knobs(...["par_send_k", "par_send_m", "par_ret"].filter((id) => P(id)).map((id) => knob(P(id), { taper: FADER_TAPER, label: { par_send_k: "Kick send", par_send_m: "Mix send", par_ret: "Return" }[id] })))));
+  body.append(curve.box, mid, right);
+}
+
+// Glue: static curve, an analog reduction needle, the timing, the settings.
+const GLUE_KNEE = [6, 4, 4];
+function viewGlue(dev, body) {
+  const p = (k) => P(`glue_${k}`);
+  if (!has("glue_thr", "glue_ratio", "glue_att", "glue_rel", "glue_makeup", "glue_range")) return viewGeneric(dev, body);
+  const ratioOf = () => +p("ratio").options[Math.round(p("ratio").value)] || 2;
+  const curve = chart("", "Curve (in → out)", (ch) => transferDraw(ch, (x) => compGr(x, p("thr").value, ratioOf(), GLUE_KNEE[Math.round(p("ratio").value)] ?? 4, p("range").value), p("thr").value, "gr_glue", p("makeup").value));
+  curve.box.style.flex = "0 0 230px";
+  // The needle: 0 .. 20 dB like the meter of such a compressor, with VU-like ballistics.
+  let needle = 0, lastT = performance.now();
+  const meter = chart("", "Gain reduction", (ch) => {
+    const cx = ch.w / 2, cy = ch.h - 22, r = Math.min(ch.w / 2 - 20, ch.h - 50);
+    const ang = (db) => (-50 + 100 * clamp(db, 0, 20) / 20) * Math.PI / 180;
+    const pt = (db, rr) => [cx + rr * Math.sin(ang(db)), cy - rr * Math.cos(ang(db))];
+    const [a0x, a0y] = pt(0, r), [a1x, a1y] = pt(20, r);
+    svgEl("path", { d: `M${a0x} ${a0y}A${r} ${r} 0 0 1 ${a1x} ${a1y}`, fill: "none", stroke: "#5a5a54", "stroke-width": 1.5 }, ch.svg);
+    for (let db = 0; db <= 20; db += 2) {
+      const [x0, y0] = pt(db, r), [x1, y1] = pt(db, r - (db % 4 ? 5 : 9));
+      svgEl("line", { x1: x0, y1: y0, x2: x1, y2: y1, stroke: "#8f8e85", "stroke-width": db % 4 ? 1 : 1.5 }, ch.svg);
+      if (db % 4 === 0) { const [tx, ty] = pt(db, r + 10); svgEl("text", { class: "ax", x: tx, y: ty + 3, "text-anchor": "middle" }, ch.svg).textContent = db; }
+    }
+    const [nx, ny] = pt(needle, r - 4);
+    svgEl("line", { x1: cx, y1: cy, x2: nx, y2: ny, stroke: "var(--accent)", "stroke-width": 2, "stroke-linecap": "round" }, ch.svg);
+    svgEl("circle", { cx, cy, r: 5, fill: "var(--surface-3)", stroke: "#5a5a54" }, ch.svg);
+    svgEl("text", { class: "ax", x: cx, y: ch.h - 5, "text-anchor": "middle" }, ch.svg).textContent = "dB";
+    ch.readout.textContent = grText(state.meters.gr_glue ?? 0);
+  });
+  state.detailMeters.push((mv, now) => {
+    const dt = Math.min(0.3, (now - lastT) / 1000);
+    lastT = now;
+    needle += (1 - Math.exp(-dt / 0.12)) * ((mv.gr_glue ?? 0) - needle);
+    meter.render();
+    curve.render();
+  });
+  const attS = () => [0.01, 0.1, 0.3, 1, 3, 10, 30][Math.round(p("att").value)] / 1000;
+  const env = chart("", "Attack / release", (ch) => {
+    const rel = Math.round(p("rel").value), rs = [0.1, 0.2, 0.4, 0.6, 0.8, 1.2][rel];
+    if (rs) envelopeDraw(ch, attS(), rs, `${p("att").options[Math.round(p("att").value)]} ms / ${rs} s`);
+    else envelopeDraw(ch, attS(), 0.0428, `${p("att").options[Math.round(p("att").value)]} ms / auto (43 ms + 5.1 s)`, { att: 0.15, rel: 5.1 });
+  });
+  env.box.style.flex = "0 0 86px";
+  meter.box.style.flex = "1 1 0";
+  const mid = el("div", "dcol grow");
+  mid.append(meter.box, env.box);
+  const right = el("div", "dcol fixed");
+  right.style.width = "330px";
+  const ms = (v) => p("att").options[Math.round(v)] + " ms", sec = (v) => { const o = p("rel").options[Math.round(v)]; return o === "A" ? "Auto" : o + " s"; };
+  right.append(card("Compressor",
+    labelled(p("ratio"), "Ratio", segmented(p("ratio"), p("ratio").options.map((o) => o + ":1"))),
+    knobs(knob(p("thr"), { label: "Threshold" }), knob(p("att"), { label: "Attack", text: ms }), knob(p("rel"), { label: "Release", text: sec }), knob(p("makeup"), { label: "Make-up" }))),
+  card("Character", knobs(knob(p("range"), { label: "Range" }), P("glue_wet") && knob(p("wet"), { label: "Dry / wet" }), P("glue_sc_hp") && knob(p("sc_hp"), { label: "SC high pass", text: (v) => (v <= 20.5 ? "off" : fText(v)) }),
+    P("glue_clip") && labelled(p("clip"), "Soft clip", toggle(p("clip"), "CLIP")))));
+  body.append(curve.box, mid, right);
+}
+
+// Multiband: the three bands over frequency (split points drag left / right, a
+// band drags up / down for its gain), live reduction drawn into them; the bands' rows.
+function viewMultiband(dev, body) {
+  const ids = ["mb_f1", "mb_f2", "mb_out", "mb_sc", "mb_amount"];
+  const bands = [["lo", "Low", "gr_lo"], ["mid", "Mid", "gr_mid"], ["hi", "High", "gr_hi"]];
+  if (!has(...ids, ...bands.flatMap(([b]) => ["on", "thr", "ratio", "att", "rel", "gain"].map((k) => `mb_${b}_${k}`)))) return viewGeneric(dev, body);
+  const L = 30, R = 10, T = 22, B = 18, LO = -30, HI = 18;
+  const fills = ["#e3a443", "#b07c30", "#7d5a26"];
+  let drag = null, selBand = 0;
+  const graph = chart("grow", "Bands", (ch) => {
+    const y = (db) => T + (HI - clamp(db, LO, HI)) / (HI - LO) * (ch.h - T - B);
+    freqGrid(ch, L, R, T, B, [12, 0, -12, -24], y);
+    const f1 = P("mb_f1").value, f2 = P("mb_f2").value, out = P("mb_out").value, on = isOn("mb_on"), solo = Math.round(P("mb_solo")?.value || 0);
+    bands.forEach(([b, name, gm], i) => {
+      const gr = on && isOn(`mb_${b}_on`) ? state.meters[gm] ?? 0 : 0;
+      const gain = (on ? P(`mb_${b}_gain`).value + out : 0) - gr;
+      const muted = solo && solo !== i + 1;
+      const resp = (f) => (i === 0 ? lr4("hc", f1, f) : i === 1 ? lr4("lc", f1, f) + lr4("hc", f2, f) : lr4("lc", f1, f) + lr4("lc", f2, f)) + gain;
+      const pts = [];
+      for (let x = L; x <= ch.w - R; x += 2) pts.push([x, y(resp(xF(ch, x, L, R)))]);
+      svgEl("path", { d: path(pts) + `L${ch.w - R} ${ch.h - B}L${L} ${ch.h - B}Z`, fill: fills[i], "fill-opacity": muted ? 0.04 : i === selBand ? 0.32 : 0.18 }, ch.svg);
+      svgEl("path", { d: path(pts), fill: "none", stroke: fills[i], "stroke-width": i === selBand ? 2 : 1.2, "stroke-opacity": muted ? 0.3 : 1 }, ch.svg);
+      const fc = i === 0 ? Math.sqrt(10 * f1) : i === 1 ? Math.sqrt(f1 * f2) : Math.sqrt(f2 * 20000);
+      const lx = fX(ch, fc, L, R), ly = y(gain) - 8;
+      svgEl("text", { x: lx, y: Math.max(T + 10, ly), "text-anchor": "middle", "font-size": 10, "font-weight": 700, fill: "var(--text-secondary)" }, ch.svg).textContent = name.toUpperCase() + (gr > 0.05 ? "  −" + gr.toFixed(1) : "");
+    });
+    ch.splits = [f1, f2].map((f) => fX(ch, f, L, R));
+    ch.splits.forEach((x, i) => {
+      svgEl("line", { x1: x, x2: x, y1: T, y2: ch.h - B, stroke: "var(--text-secondary)", "stroke-width": drag?.split === i ? 2 : 1, "stroke-dasharray": "3 3" }, ch.svg);
+      svgEl("rect", { x: x - 5, y: T - 2, width: 10, height: 14, rx: 2, fill: "var(--surface-3)", stroke: "var(--text-secondary)" }, ch.svg);
+    });
+    ch.readout.textContent = `${fText(f1)} · ${fText(f2)}`;
+    ch.yOf = y;
+  });
+  state.detailMeters.push(() => graph.render());
+  const svg = graph.svg;
+  svg.style.touchAction = "none";
+  const bandAt = (mx) => { const f = xF(graph, mx, L, R); return f < P("mb_f1").value ? 0 : f < P("mb_f2").value ? 1 : 2; };
+  svg.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    const r = svg.getBoundingClientRect(), mx = e.clientX - r.left;
+    e.preventDefault();
+    try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+    const s = graph.splits.findIndex((x) => Math.abs(x - mx) < 7);
+    if (s >= 0) drag = { split: s, x0: e.clientX, f0: P(s ? "mb_f2" : "mb_f1").value };
+    else { selBand = bandAt(mx); selectBand(); drag = { band: selBand, y0: e.clientY, g0: P(`mb_${bands[selBand][0]}_gain`).value }; }
+    graph.render();
+  });
+  svg.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect(), mx = e.clientX - r.left;
+    if (!drag) { svg.style.cursor = graph.splits && graph.splits.some((x) => Math.abs(x - mx) < 7) ? "ew-resize" : "ns-resize"; return; }
+    const fine = e.shiftKey ? 0.2 : 1;
+    if (drag.split !== undefined) {
+      const p = P(drag.split ? "mb_f2" : "mb_f1");
+      userSet(p, +clamp(xF(graph, fX(graph, drag.f0, L, R) + (e.clientX - drag.x0) * fine, L, R), p.min, p.max).toPrecision(3));
+    } else {
+      const p = P(`mb_${bands[drag.band][0]}_gain`), perDb = (graph.h - T - B) / (HI - LO);
+      userSet(p, Math.round((drag.g0 - (e.clientY - drag.y0) * fine / perDb) / p.step) * p.step);
+    }
+  });
+  const end = () => { if (drag) { drag = null; graph.render(); } };
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+
+  const rows = [];
+  const selectBand = () => rows.forEach((r, i) => r.classList.toggle("sel", i === selBand));
+  const left = el("div", "dcol grow");
+  const common = card(null, knobs(
+    labelled(P("mb_sc"), "Sidechain", segmented(P("mb_sc"))), knob(P("mb_sc_gain"), { label: "SC gain" }),
+    P("mb_mode") && labelled(P("mb_mode"), "Detector", segmented(P("mb_mode"))), P("mb_knee") && labelled(P("mb_knee"), "Knee", toggle(P("mb_knee"), "SOFT")),
+    knob(P("mb_f1"), { label: "Low / mid" }), knob(P("mb_f2"), { label: "Mid / high" }), knob(P("mb_amount"), { label: "Amount" }), knob(P("mb_out"), { label: "Output" }),
+    P("mb_solo") && labelled(P("mb_solo"), "Solo (not saved)", segmented(P("mb_solo")))));
+  left.append(graph.box, common);
+  const right = el("div", "dcol fixed");
+  bands.forEach(([b, name, gm], i) => {
+    const row = el("div", "bandrow"), nm = el("div", "bname"), gr = el("div", "grcell"), grText1 = el("span", "", "0 dB");
+    nm.append(toggle(P(`mb_${b}_on`), name.toUpperCase()));
+    gr.append(grText1, smallBar((fill, mv) => { const v = mv[gm] ?? 0; fill.style.width = Math.min(100, 100 * v / GR_MAX) + "%"; grText1.textContent = "GR " + grText(v); }, state.detailMeters));
+    row.append(nm, knob(P(`mb_${b}_thr`), { label: "Threshold" }), knob(P(`mb_${b}_ratio`), { label: "Ratio" }), knob(P(`mb_${b}_att`), { label: "Attack" }),
+      knob(P(`mb_${b}_rel`), { label: "Release" }), knob(P(`mb_${b}_gain`), { label: "Gain" }), gr);
+    row.onclick = () => { selBand = i; selectBand(); graph.render(); };
+    rows.push(row);
+    right.append(row);
+  });
+  selectBand();
+  body.append(left, right);
+}
+
+// A strip's own settings (trim, send, level) and its levels over time.
+function viewChannel(dev, body) {
+  const cfg = dev.strip.cfg;
+  const lines = (cfg.history || []).map(([m, label], i, all) => [m, label, i < all.length - 1 ? "#8f8e85" : undefined]);
+  const gr = cfg.gr && cfg.gr.length === 1 ? cfg.gr[0] : null;
+  const hist = chart("grow", "Level, last 10 s", (ch) => historyDraw(ch, lines.length ? lines : [[cfg.meter, "Level"]], gr, null));
+  state.detailMeters.push(() => hist.render());
+  const left = el("div", "dcol grow");
+  left.append(hist.box, legend([["#b9b8ae", lines.map((l) => l[1]).join(" / ") || "Level"]].concat(gr ? [["var(--accent)", "Gain reduction"]] : [])));
+  const right = el("div", "dcol fixed");
+  right.style.width = "300px";
+  const names = { in_k_trim: "Trim", in_m_trim: "Trim", par_send_k: "Kick send", par_send_m: "Mix send", k_lvl: "Level", m_lvl: "Level", par_ret: "Return", out_lvl: "Output" };
+  right.append(card("Channel", knobs(...dev.sections[0].params.map((p) => knob(p, { label: names[p.id] || p.label, taper: LEVELS.has(p.id) ? FADER_TAPER : 1 })))));
+  if (P(cfg.on)) right.append(card(null, labelled(P(cfg.on), "Bus", toggle(P(cfg.on), "ON"))));
+  body.append(left, right);
+}
+
+// Anything else: its settings as knobs, switches and choices, in their groups.
+function viewGeneric(dev, body) {
+  const col = el("div", "dcol grow");
+  col.style.overflow = "auto";
+  for (const section of dev.sections) {
+    if (!section.params.length) continue;
+    const k = knobs();
+    for (const p of section.params) {
+      if (p.kind === "bool") k.append(labelled(p, p.label, toggle(p, "ON")));
+      else if (p.kind === "enum") k.append(p.options.length > 4 ? knob(p) : labelled(p, p.label, segmented(p)));
+      else k.append(knob(p, { taper: LEVELS.has(p.id) ? FADER_TAPER : 1 }));
+    }
+    col.append(card(section.title || null, k));
+  }
+  body.append(col);
+}
+
+const VIEWS = { filter: viewFilter, limiter: viewLimiter, compressor: viewCompressor, glue: viewGlue, multiband: viewMultiband, channel: viewChannel };
+
+// ---------------------------------------------------------------- the mixer
+
+// The strip's effects in the order its order setting gives (option text "A > B").
+function orderOf(entry) {
+  const p = P(entry.cfg.order);
+  return p ? (p.options[Math.round(p.value)] || "").split(" > ") : null;
+}
 
 function buildStrip(cfg) {
   const strip = el("div", "strip"), head = el("button", "shead");
-  strip.style.setProperty("--c", cfg.color);
   head.append(el("span", "sname", cfg.name), el("span", "ssub", cfg.sub));
-  head.title = `${cfg.name}: trim, send and level settings`;
+  head.title = `${cfg.name}: trim, send and level`;
   strip.append(head);
-  const entry = { cfg, strip, infos: [] };
+  const entry = { cfg, strip, infos: [], slots: [] };
 
-  // the channel itself as a selectable device: the strip's own controls as rows
+  // the channel itself as a selectable device: the strip's own controls
   const own = [cfg.trim, ...(cfg.channel || [cfg.send, cfg.fader])].map(P).filter(Boolean);
-  const channel = { id: cfg.id + ":ch", name: "Channel", cfg: { hint: cfg.hint, meters: cfg.meters, on: cfg.on }, strip: entry, node: head, sections: [{ params: own }] };
+  const channel = { id: cfg.id + ":ch", name: "Channel", cfg: { hint: cfg.hint, on: cfg.on, view: "channel" }, strip: entry, node: head, sections: [{ params: own }] };
   state.devices.set(channel.id, channel);
   head.onclick = () => select(channel.id);
 
-  // input: trim knob + input level, or what feeds the bus
+  // input: trim (with the input level) and the send into the parallel bus side by
+  // side, or what feeds the bus and where it goes
   const input = el("div", "sec input");
   if (P(cfg.trim)) {
-    const cap = el("div", "cap"), clip = el("span");
+    const io = el("div", "io"), trim = el("div", "col trim"), cap = el("div", "cap"), clip = el("span");
     cap.append(el("span", "", "Trim"), clip);
-    const row = el("div", "knobrow"), side = el("div", "kside");
+    const row = el("div", "knobrow");
     let clipUntil = 0;
-    side.append(numberBox(P(cfg.trim), "vbox", false), smallBar((fill, mv, now) => {
+    row.append(knobControl(P(cfg.trim), 1), numberBox(P(cfg.trim), "vbox", false));
+    trim.append(cap, row, smallBar((fill, mv, now) => {
       const v = mv[cfg.inMeter[0]] ?? -120;
       fill.style.width = pct(v) + "%";
       fill.style.background = levelColor(v);
@@ -822,8 +1379,15 @@ function buildStrip(cfg) {
       clip.textContent = "";
       if (now < clipUntil) clip.append(el("b", "", "▲ CLIP"));
     }));
-    row.append(knobControl(P(cfg.trim), 1), side);
-    input.append(cap, row);
+    io.append(trim);
+    if (P(cfg.send)) {
+      const send = el("div", "col send"), srow = el("div", "knobrow");
+      srow.append(knobControl(P(cfg.send), FADER_TAPER), numberBox(P(cfg.send), "vbox", false));
+      send.append(el("div", "cap", "Send → par"), srow);
+      send.title = "Into the parallel bus, after this strip's effects, before its fader";
+      io.append(send);
+    }
+    input.append(io);
   } else {
     input.append(el("div", "cap", "Fed by"));
     const info = el("div", "info");
@@ -833,6 +1397,7 @@ function buildStrip(cfg) {
       info.append(line);
       entry.infos.push(() => { value.textContent = valueText(id); });
     }
+    if (cfg.out) info.append(el("div", "", "→ " + cfg.out));
     input.append(info);
   }
   strip.append(input);
@@ -841,18 +1406,6 @@ function buildStrip(cfg) {
   const devs = el("div", "sec devs");
   entry.devs = devs;
   strip.append(devs);
-
-  // send into the parallel bus, or where the strip goes
-  const sendSec = el("div", "sec send");
-  if (P(cfg.send)) {
-    sendSec.append(el("div", "cap", "Send → parallel"));
-    const row = el("div", "knobrow");
-    row.append(knobControl(P(cfg.send), FADER_TAPER), numberBox(P(cfg.send), "vbox", false));
-    sendSec.append(row);
-  } else {
-    sendSec.append(el("div", "cap", "Output"), el("div", "info", cfg.out || ""));
-  }
-  strip.append(sendSec);
 
   // fader, meters
   const fad = el("div", "sec fad"), cap = el("div", "cap"), peak = el("span", "peak"), row = el("div", "fadrow"), foot = el("div", "fadfoot"), gr = el("span", "grtext");
@@ -865,29 +1418,143 @@ function buildStrip(cfg) {
   return entry;
 }
 
+function faderControl(p, taper) {
+  const THUMB = 24;
+  const fader = el("div", "fader"), thumb = el("div", "fthumb");
+  // Scale marks, most important first: on a short fader the ones that would
+  // land on an already shown label are hidden.
+  const ticks = [];
+  for (const db of [0, -48, 12, -12, -24, 6, -6]) {
+    if (db > p.max || db < p.min) continue;
+    const tick = el("div", "ftick" + (db === 0 ? " zero" : ""));
+    tick.style.bottom = `calc(${norm(p, db, taper)} * (100% - ${THUMB}px) + ${THUMB / 2}px)`;
+    tick.append(el("span", "", minus(String(db))));
+    fader.append(tick);
+    ticks.push([norm(p, db, taper), tick]);
+  }
+  new ResizeObserver(() => {
+    const span = fader.clientHeight - THUMB, shown = [];
+    for (const [n, tick] of ticks) {
+      const y = n * span, clash = shown.some((s) => Math.abs(s - y) < 14);
+      tick.classList.toggle("hide", clash);
+      if (!clash) shown.push(y);
+    }
+  }).observe(fader);
+  fader.append(thumb);
+  fader.title = `${p.label}: drag up / down, double-click = ${fmtUnit(p, p.def)}`;
+  const view = { busy: false, show(v) {
+    thumb.style.bottom = `calc(${norm(p, v, taper)} * (100% - ${THUMB}px))`;
+    fader.setAttribute("aria-valuetext", fmtUnit(p, v));
+  } };
+  dragValue(fader, p, taper, view, 150);
+  addView(p, view, false);
+  return fader;
+}
+
+// Dragging a slot up / down changes the strip's order setting; a click opens it.
+function slotDrag(slot, dev) {
+  slot.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 || e.target.closest(".pwr")) return;
+    const entry = dev.strip, from = entry.slots.indexOf(slot), y0 = e.clientY;
+    const others = entry.slots.filter((s) => s !== slot);
+    const centre = (r) => (r.top + r.bottom) / 2;
+    let dragging = false, target = from, centres = null, h = 0, mid0 = 0;
+    const move = (ev) => {
+      const dy = ev.clientY - y0;
+      if (!dragging && P(entry.cfg.order) && Math.abs(dy) > 5) {
+        dragging = true;
+        const r = slot.getBoundingClientRect();
+        mid0 = centre(r);
+        h = r.height + 4;
+        centres = others.map((s) => centre(s.getBoundingClientRect()));
+        slot.classList.add("dragging");
+        try { slot.setPointerCapture(ev.pointerId); } catch (err) {}
+      }
+      if (!dragging) return;
+      slot.style.transform = `translateY(${dy}px)`;
+      target = centres.filter((c) => c < mid0 + dy).length;
+      // make room: the others move by one slot
+      others.forEach((s, i) => {
+        s.classList.add("shift");
+        const was = entry.slots.indexOf(s), now = i < target ? i : i + 1;
+        s.style.transform = now !== was ? `translateY(${(now - was) * h}px)` : "";
+      });
+    };
+    const up = () => {
+      slot.removeEventListener("pointermove", move);
+      slot.removeEventListener("pointerup", up);
+      slot.removeEventListener("pointercancel", up);
+      for (const s of entry.slots) { s.style.transform = ""; s.classList.remove("shift", "dragging"); }
+      if (!dragging) return;
+      slot.dataset.dragged = "1";
+      setTimeout(() => { delete slot.dataset.dragged; }, 0);
+      const names = others.map((s) => s.dev.cfg.orderName);
+      names.splice(target, 0, dev.cfg.orderName);
+      setOrder(entry, names);
+    };
+    slot.addEventListener("pointermove", move);
+    slot.addEventListener("pointerup", up);
+    slot.addEventListener("pointercancel", up);
+  });
+  slot.addEventListener("keydown", (e) => {
+    if (!e.altKey || (e.key !== "ArrowUp" && e.key !== "ArrowDown")) return;
+    e.preventDefault();
+    const entry = dev.strip, names = entry.slots.map((s) => s.dev.cfg.orderName), i = names.indexOf(dev.cfg.orderName), j = i + (e.key === "ArrowUp" ? -1 : 1);
+    if (j < 0 || j >= names.length) return;
+    [names[i], names[j]] = [names[j], names[i]];
+    setOrder(entry, names);
+  });
+}
+
+function setOrder(entry, names) {
+  const p = P(entry.cfg.order);
+  if (!p) return;
+  const i = p.options.findIndex((o) => o === names.join(" > "));
+  if (i >= 0 && i !== Math.round(p.value)) userSet(p, i);
+}
+
 function buildSlot(dev) {
   const cfg = dev.cfg, slot = el("div", "slot"), pwr = el("button", "pwr"), body = el("div", "sbody"), sum = el("div", "slotsum");
   const sw = P(cfg.on);
   if (sw) { pwr.title = `${sw.label} on / off`; pwr.onclick = (e) => { e.stopPropagation(); userSet(sw, sw.value >= 0.5 ? 0 : 1); }; }
   else { pwr.classList.add("fixed"); pwr.tabIndex = -1; }
   body.append(el("div", "slotname", dev.name), sum);
-  slot.append(pwr, body);
+  slot.append(pwr, body, el("div", "grip"));
   if (cfg.gr) {
     const bars = el("div", "slotgr");
     for (const name of cfg.gr) bars.append(smallBar((fill, mv) => { fill.style.width = Math.min(100, 100 * (mv[name] ?? 0) / GR_MAX) + "%"; }));
     slot.append(bars);
   }
   slot.tabIndex = 0;
-  slot.onclick = () => select(dev.id);
+  slot.title = cfg.orderName ? "Click to open; drag up / down (or Alt + arrow keys) to move it in the chain" : "Click to open";
+  slot.onclick = () => { if (!slot.dataset.dragged) select(dev.id); };
   slot.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(dev.id); } };
+  slot.dev = dev;
+  if (cfg.orderName) slotDrag(slot, dev);
   dev.node = slot;
   dev.refresh = () => {
-    const on = cfg.anyOn ? cfg.anyOn.some(isOn) : isOn(cfg.on);
+    const on = isOn(cfg.on);
     pwr.classList.toggle("on", on);
     slot.classList.toggle("off", !on);
-    sum.textContent = cfg.summary ? cfg.summary(valueText, isOn) : `${dev.sections.reduce((n, s) => n + s.params.length, 0)} settings`;
+    sum.textContent = summaryOf(dev);
   };
   return slot;
+}
+
+// One line under the effect's name.
+function summaryOf(dev) {
+  const pre = dev.cfg.pre, t = valueText;
+  switch (dev.cfg.view) {
+    case "filter": {
+      const cut = (c, n) => `${n} ${isOn(`${pre}_${c}_on`) ? t(`${pre}_${c}_f`) : "off"}`;
+      return `${cut("lc", "LC")} · ${cut("hc", "HC")}`;
+    }
+    case "limiter": return `ceiling ${t(pre + "_ceil")} · ${isOn(pre + "_auto") && P(pre + "_auto") ? "auto" : t(pre + "_rel")}`;
+    case "multiband": return `${t("mb_sc")} key · ${t("mb_f1").replace(" Hz", "")} / ${t("mb_f2")}`;
+    case "compressor": return `${t("par_thr")} · ${t("par_ratio")}`;
+    case "glue": return `${t("glue_thr")} · ${t("glue_ratio")}:1`;
+    default: return `${dev.sections.reduce((n, s) => n + s.params.length, 0)} settings`;
+  }
 }
 
 function buildMixer() {
@@ -897,26 +1564,20 @@ function buildMixer() {
   state.devices = new Map();
   state.strips = [];
   for (const p of state.params.values()) p.views = new Set();
-  const title = new Map(state.groups.map((g) => [g.id, g.title]));
   const placed = new Set(TOOLBAR);
-  for (const cfg of STRIPS) for (const id of [cfg.trim, cfg.send, cfg.fader, cfg.on, ...cfg.devices.map((d) => d.on)]) if (id) placed.add(id);
+  for (const cfg of STRIPS) for (const id of [cfg.trim, cfg.send, cfg.fader, cfg.on, cfg.order, ...cfg.devices.map((d) => d.on)]) if (id) placed.add(id);
 
   for (const cfg of STRIPS) {
     const entry = buildStrip(cfg);
     for (const dcfg of cfg.devices) {
       const mine = [...state.params.values()].filter((p) => dcfg.match.test(p.id) && !placed.has(p.id));
       mine.forEach((p) => placed.add(p.id));
-      const dev = { id: dcfg.id, name: dcfg.name, cfg: dcfg, strip: entry, sections: [] };
-      if (dcfg.bands) {
-        // the device's own group as rows, every further group (the bands) as a card
-        const groups = [...new Set(mine.map((p) => p.group))];
-        dev.sections = groups.map((g, i) => ({ params: mine.filter((p) => p.group === g), card: i > 0, title: i > 0 ? title.get(g) || g : "", on: g + "_on", gr: dcfg.bandMeters?.[g] }));
-      } else {
-        dev.sections = [{ params: mine }];
-        if (dcfg.extra) dev.sections.push({ title: dcfg.extra[0], params: dcfg.extra[1].map(P).filter(Boolean) });
-      }
+      const dev = { id: dcfg.id, name: dcfg.name, cfg: dcfg, strip: entry, sections: [{ params: mine }] };
+      if (dcfg.view === "compressor") dev.sections.push({ title: "Sends and return", params: (cfg.channel || []).map(P).filter(Boolean) });
       state.devices.set(dev.id, dev);
-      entry.devs.append(buildSlot(dev));
+      const slot = buildSlot(dev);
+      entry.slots.push(slot);
+      entry.devs.append(slot);
     }
     state.strips.push(entry);
     root.append(entry.strip);
@@ -945,58 +1606,45 @@ function select(id) {
 function buildDetail() {
   const root = $("detail"), dev = state.devices.get(state.sel);
   for (const [p, view] of state.detailViews) p.views.delete(view);
-  state.detailViews = [];
-  state.detailMeters = [];
-  state.detailRows = [];
+  for (const ro of state.observers) ro.disconnect();
+  Object.assign(state, { detailViews: [], detailMeters: [], detailCtls: [], detailRedraws: [], observers: [] });
   root.textContent = "";
   if (!dev) return;
   const cfg = dev.cfg;
-  root.style.setProperty("--c", dev.strip.cfg.color);
 
   const head = el("div", "dhead");
   head.append(el("span", "dpath", dev.strip.cfg.name), el("span", "dname", dev.name));
-  if (P(cfg.on)) head.append(switchControl(P(cfg.on), "switch", true));
+  if (P(cfg.on)) head.append(toggle(P(cfg.on), "ON"));
   head.append(el("span", "dhint", cfg.hint || ""));
+  head.lastChild.title = cfg.hint || "";
 
   const body = el("div", "dbody");
-  if (cfg.meters?.length) {
-    const meters = el("div", "meters");
-    for (const [kind, name, label, clip] of cfg.meters) meters.append(rowMeter(kind, name, label, clip, state.detailMeters));
-    body.append(meters);
-  }
-  let bands = null;
-  for (const section of dev.sections) {
-    if (!section.params.length) continue;
-    const rows = el("div", "rows");
-    if (section.card) {
-      // a band: its switch and its reduction meter in the card's head, the rest as rows
-      const card = el("div", "band"), bhead = el("div", "bhead"), sw = section.params.find((p) => p.id === section.on);
-      bhead.append(el("h2", "", section.title));
-      if (sw) bhead.append(switchControl(sw, "switch", true));
-      if (section.gr) { const meters = el("div", "meters"); meters.append(rowMeter("gr", section.gr, "Reduction", null, state.detailMeters)); bhead.append(meters); }
-      for (const p of section.params) if (p !== sw) rows.append(rowControl(p));
-      card.append(bhead, rows);
-      if (!bands) { bands = el("div", "bands"); body.append(bands); }
-      bands.append(card);
-    } else {
-      for (const p of section.params) rows.append(rowControl(p));
-      if (section.title) body.append(el("h3", "", section.title));
-      body.append(rows);
-    }
-  }
+  (VIEWS[cfg.view] || viewGeneric)(dev, body);
   root.append(head, body);
   refresh();
 }
 
-// Everything that depends on more than one value: greyed rows, slot lamps and summaries, bus info.
+// Everything that depends on more than one value: greyed controls, slot lamps,
+// summaries and order, bus info, graphs.
 function refresh() {
   state.refreshQueued = false;
-  for (const { p, row } of state.detailRows) row.classList.toggle("off", switchesOf(p).some((id) => P(id).value < 0.5));
+  for (const { p, node } of state.detailCtls) node.classList.toggle("off", !!isDisabled(p));
   for (const dev of state.devices.values()) if (dev.refresh) dev.refresh();
   for (const entry of state.strips) {
     entry.strip.classList.toggle("off", !isOn(entry.cfg.on));
     entry.infos.forEach((f) => f());
+    const names = orderOf(entry);
+    if (names) {
+      const sorted = [...entry.slots].sort((a, b) => names.indexOf(a.dev.cfg.orderName) - names.indexOf(b.dev.cfg.orderName));
+      if (sorted.some((s, i) => s !== entry.slots[i])) {
+        entry.slots = sorted;
+        const focused = document.activeElement;
+        entry.devs.append(...sorted);
+        if (focused && sorted.includes(focused)) focused.focus();
+      }
+    }
   }
+  for (const redraw of state.detailRedraws) redraw();
   const bypass = P("bypass")?.value >= 0.5;
   document.body.classList.toggle("bypassed", !!bypass);
   $("bypass").classList.toggle("active", !!bypass);
@@ -1022,6 +1670,7 @@ function setLink(text, on) {
   $("linkText").textContent = text;
   $("link").classList.toggle("on", !!on);
   $("connect").textContent = state.link ? "Disconnect" : "Connect";
+  $("connect").classList.toggle("primary", !state.link);
 }
 
 async function disconnect(reason) {
@@ -1041,6 +1690,7 @@ async function connect(link, demo) {
   state.groups = [];
   state.params = new Map();
   state.hello = null;
+  state.hist = [];
   state.link = link;
   try { await link.start(); } catch (e) { state.link = null; setLink("Not connected", false); note("Could not open the port: " + e.message, true); return; }
   setLink(demo ? "Demo mode" : "Connecting…", demo);
@@ -1088,8 +1738,8 @@ $("import").onclick = () => $("file").click();
 $("file").onchange = async () => {
   const file = $("file").files[0];
   if (!file) return;
-  const lines = (await file.text()).split("\n").map((l) => l.trim().split(/\s+/)).filter((w) => w[0] === "set" && state.params.has(w[1]) && state.params.get(w[1]).saved && !isNaN(parseFloat(w[2])));
-  // A few per tick: the module answers each one.
+  // The module reads the names of firmware 0.2 too; send every `set` of a known or old name.
+  const lines = (await file.text()).split("\n").map((l) => l.trim().split(/\s+/)).filter((w) => w[0] === "set" && w[1] && !(state.params.has(w[1]) && !state.params.get(w[1]).saved) && !isNaN(parseFloat(w[2])));
   for (let i = 0; i < lines.length; i += 8) {
     lines.slice(i, i + 8).forEach((w) => send(`set ${w[1]} ${parseFloat(w[2])}`));
     await new Promise((r) => setTimeout(r, 20));

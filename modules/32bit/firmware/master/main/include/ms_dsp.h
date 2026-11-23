@@ -3,15 +3,18 @@
 // 32bit master: end-of-chain processor (kick + mix -> mono main). Plain C, no
 // ESP-IDF: the same file runs in the firmware, the host tests and the WAV render.
 //
-//   IN L kick -> trim -> sub cut -> limiter -----------------+--> kick level --+
+//   IN L kick -> trim -> filter -> limiter ------------------+--> kick level --+
 //                          |                                 |                 |
-//                          | key (before the limiter)        +-> send -+       |
+//                          | key (at the limiter's input)    +-> send -+       |
 //                          v                                           v       v
-//   IN R mix  -> trim -> low cut -> 3-band dynamics --------+--> send -> parallel compressor -> return
+//   IN R mix  -> trim -> filter -> 3-band dynamics ---------+--> send -> parallel compressor -> return
 //                                                            |                                    |
 //                                                            +--> mix level ---------------------(+)
 //                                                                                                 |
-//   OUT L = OUT R <- output level <- limiter <- low / high cut <- glue compressor <---------------+
+//   OUT L = OUT R <- output level <- limiter <- filter <- glue compressor <-----------------------+
+//
+// The effects of each strip run in the order the settings give (k_order, m_order,
+// o_order); the drawing is the factory order. A filter is a low cut and a high cut.
 //
 // Coefficients (ms_coefs_t) are a pure function of the parameter values and are
 // computed outside the audio thread (ms_params.c); the audio thread only copies
@@ -27,6 +30,10 @@ extern "C" {
 #define MS_BLOCK_MAX 64  // most frames per ms_dsp_process call
 #define MS_LA_SIZE 256   // look-ahead / delay rings (power of two); the longest look-ahead is MS_LA_SIZE - 1 samples
 #define MS_BANDS 3       // multiband: 0 low, 1 mid, 2 high
+#define MS_CUT_MAX 4     // second-order sections of the steepest cut (48 dB/oct)
+
+// The effects that can change places on a strip.
+enum { MS_DEV_FLT, MS_DEV_LIM, MS_DEV_MB, MS_DEV_GLUE };
 
 // Second-order state-variable filter (trapezoidal, Zavalishin / Simper): one
 // kernel gives the low pass, high pass and all pass, and its coefficients stay
@@ -39,6 +46,17 @@ typedef struct {
 typedef struct {
     float ic1, ic2;
 } ms_svf_state_t;
+
+// Filter device: low cut (high pass) and high cut (low pass), each 0 (off), 1, 2
+// or 4 second-order sections.
+typedef struct {
+    int lc_n, hc_n;
+    ms_svf_coef_t lc[MS_CUT_MAX], hc[MS_CUT_MAX];
+} ms_flt_coef_t;
+
+typedef struct {
+    ms_svf_state_t lc[MS_CUT_MAX], hc[MS_CUT_MAX];
+} ms_flt_state_t;
 
 // Downward compressor: gain computer in dB, attack / release on the gain reduction.
 typedef struct {
@@ -98,11 +116,21 @@ typedef struct {
 // Look-ahead peak limiter: sliding minimum of the wanted gain over the look-ahead,
 // release, then a moving average as long as the look-ahead. Output = input delayed
 // by `la` samples and never above `ceil`.
+//
+// Auto release (program dependent, two stages): the gain is the lower of a fast
+// stage (takes every peak, lets go in ~30 ms) and a slow stage that follows the
+// wanted gain with a ~100 ms attack and lets go in ~1 s. A lone peak hardly moves
+// the slow stage, so the gain comes back quickly (punch, little pumping); while
+// the limiter works all the time, the slow stage sits at the average reduction
+// and the fast one only returns to it (less distortion than a fast release, less
+// pumping than a slow one).
 typedef struct {
     bool on;
     float drive;  // input gain
     float ceil;   // linear
-    float rel;    // release coefficient per sample
+    float rel;    // release coefficient per sample (the fast stage in auto)
+    bool auto_rel;
+    float slow_att, slow_rel;  // auto: the slow stage's coefficients per sample
     int la;       // look-ahead in samples, 0 .. MS_LA_SIZE - 1
 } ms_lim_coef_t;
 
@@ -115,6 +143,7 @@ typedef struct {
     uint32_t pos;
     int32_t g_sum;
     float g_rel;
+    float g_slow;  // auto release: the slow stage
     int la;  // look-ahead the state was set up for
 } ms_lim_state_t;
 
@@ -140,14 +169,17 @@ typedef struct {
     float g[MS_G_COUNT];
     float g_smooth;  // per-block smoothing coefficient
 
+    // Order of the effects per strip: MS_DEV_* in signal order
+    uint8_t k_order[2];  // filter, limiter
+    uint8_t m_order[2];  // filter, multiband
+    uint8_t o_order[3];  // glue, filter, limiter
+
     // Kick
-    int k_hp_n;  // 0 off, 1 = 12 dB/oct, 2 = 24 dB/oct
-    ms_svf_coef_t k_hp[2];
+    ms_flt_coef_t k_flt;
     ms_lim_coef_t k_lim;
 
     // Mix
-    int m_hp_n;
-    ms_svf_coef_t m_hp[2];
+    ms_flt_coef_t m_flt;
 
     // Multiband dynamics (Linkwitz-Riley 24 dB/oct crossovers)
     bool mb_on;
@@ -171,9 +203,8 @@ typedef struct {
     bool glue_sc_hp_on;
     ms_svf_coef_t glue_sc_hp;
 
-    // Main cuts and limiter
-    int eq_lo_n, eq_hi_n;
-    ms_svf_coef_t eq_lo[2], eq_hi[2];
+    // Master filter and limiter
+    ms_flt_coef_t o_flt;
     ms_lim_coef_t lim;
 } ms_coefs_t;
 
@@ -197,7 +228,7 @@ typedef struct {
     ms_coefs_t c;
     float g_cur[MS_G_COUNT];
 
-    ms_svf_state_t k_hp[2], m_hp[2];
+    ms_flt_state_t k_flt, m_flt, o_flt;
     ms_lim_state_t k_lim;
     float m_delay[MS_LA_SIZE];
     uint32_t m_delay_pos;
@@ -210,7 +241,6 @@ typedef struct {
     ms_comp_state_t par;
     ms_glue_state_t glue;
     ms_svf_state_t glue_sc_hp;
-    ms_svf_state_t eq_lo[2], eq_hi[2];
     ms_lim_state_t lim;
 
     ms_meters_t meters;
@@ -229,8 +259,9 @@ int ms_coefs_latency(const ms_coefs_t *c);
 
 // Coefficient helpers (used by ms_params.c and the tests).
 void ms_svf_set(ms_svf_coef_t *c, float fs, float f, float q);
-// Butterworth sections for a 12 (n = 1) or 24 dB/oct (n = 2) cut: fills c[0 .. n-1].
-void ms_butter_set(ms_svf_coef_t c[2], int n, float fs, float f);
+// Sections of a cut: slope 0 / 1 / 2 = 12 / 24 / 48 dB/oct (1 / 2 / 4 sections,
+// Butterworth at q = 1 / sqrt(2); q scales the sharpest one). Returns the count.
+int ms_cut_set(ms_svf_coef_t c[MS_CUT_MAX], int slope, float fs, float f, float q);
 float ms_time_coef(float fs, float seconds);
 float ms_db_to_lin(float db);
 

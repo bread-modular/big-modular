@@ -46,15 +46,15 @@ static float P[MS_P_COUNT];
 // Everything off / neutral: the chain is then kick + mix.
 static void neutral(void) {
     ms_params_defaults(P);
-    P[MS_P_K_HP_ON] = 0;
+    P[MS_P_K_FLT_ON] = 0;
     P[MS_P_K_LIM_ON] = 0;
-    P[MS_P_M_HP_ON] = 0;
+    P[MS_P_M_FLT_ON] = 0;
     P[MS_P_MB_ON] = 0;
     P[MS_P_PAR_ON] = 0;
     P[MS_P_GLUE_ON] = 0;
-    P[MS_P_EQ_LO_ON] = 0;
-    P[MS_P_EQ_HI_ON] = 0;
+    P[MS_P_O_FLT_ON] = 0;
     P[MS_P_LIM_ON] = 0;
+    P[MS_P_LIM_AUTO] = 0;  // the tests set the release they want
 }
 
 static void start(void) {
@@ -125,58 +125,87 @@ static void test_fast_math(void) {
     printf("fast math: log2 within %.4f dB, exp2 within %.5f dB\n", worst_log, worst_exp);
 }
 
-static void test_cuts(void) {
-    // Kick sub cut: -3 dB at the set frequency, 12 / 24 dB per octave below it.
-    for (int slope = 0; slope < 2; slope++) {
-        neutral();
-        P[MS_P_K_HP_ON] = 1;
-        P[MS_P_K_HP_F] = 25;
-        P[MS_P_K_HP_SLOPE] = (float)slope;
+// One cut of a filter on: the device's switch on, every other cut off.
+static void one_cut(int flt_on, int cut_on, float f, int slope, float q) {
+    neutral();
+    P[MS_P_K_FLT_LC_ON] = P[MS_P_K_FLT_HC_ON] = 0;
+    P[MS_P_M_FLT_LC_ON] = P[MS_P_M_FLT_HC_ON] = 0;
+    P[MS_P_O_FLT_LC_ON] = P[MS_P_O_FLT_HC_ON] = 0;
+    P[flt_on] = 1;
+    P[cut_on] = 1;
+    P[cut_on + 1] = f;
+    P[cut_on + 2] = q;
+    P[cut_on + 3] = (float)slope;
+}
+
+static void test_filters(void) {
+    // Kick low cut: -3 dB at the set frequency, 12 / 24 / 48 dB per octave below it.
+    static const float want_below[] = {-12.3f, -24.1f, -48.2f};
+    for (int slope = 0; slope < 3; slope++) {
+        one_cut(MS_P_K_FLT_ON, MS_P_K_FLT_LC_ON, 25, slope, 0.7071f);
         start();
         float at = gain_at(25, 0.5f, true);
         start();
         float below = gain_at(12.5f, 0.5f, true);
         start();
         float pass = gain_at(200, 0.5f, true);
-        float want = slope ? -24.1f : -12.3f;
-        CHECK(NEAR(at, -3.01f, 0.15f), "sub cut %d: %.2f dB at 25 Hz", slope, at);
-        CHECK(NEAR(below, want, 0.4f), "sub cut %d: %.2f dB an octave below", slope, below);
-        CHECK(NEAR(pass, 0.0f, 0.05f), "sub cut %d: %.3f dB at 200 Hz", slope, pass);
-        printf("kick sub cut 25 Hz, %d dB/oct: %.2f dB at 25 Hz, %.2f dB at 12.5 Hz, %.3f dB at 200 Hz\n",
-               slope ? 24 : 12, at, below, pass);
+        CHECK(NEAR(at, -3.01f, 0.15f), "low cut %d: %.2f dB at 25 Hz", slope, at);
+        CHECK(NEAR(below, want_below[slope], 0.5f), "low cut %d: %.2f dB an octave below", slope, below);
+        CHECK(NEAR(pass, 0.0f, 0.05f), "low cut %d: %.3f dB at 200 Hz", slope, pass);
+        printf("kick low cut 25 Hz, %d dB/oct: %.2f dB at 25 Hz, %.2f dB at 12.5 Hz, %.3f dB at 200 Hz\n",
+               12 << slope, at, below, pass);
     }
     // The lowest setting still works in single precision.
-    neutral();
-    P[MS_P_K_HP_ON] = 1;
-    P[MS_P_K_HP_F] = 10;
+    one_cut(MS_P_K_FLT_ON, MS_P_K_FLT_LC_ON, 10, 0, 0.7071f);
     start();
     float at10 = gain_at(10, 0.5f, true);
-    CHECK(NEAR(at10, -3.01f, 0.2f), "10 Hz sub cut: %.2f dB at 10 Hz", at10);
+    CHECK(NEAR(at10, -3.01f, 0.2f), "10 Hz low cut: %.2f dB at 10 Hz", at10);
 
-    // Mix low cut and the main cuts.
-    neutral();
-    P[MS_P_M_HP_ON] = 1;
-    P[MS_P_M_HP_F] = 80;
+    // Resonance: a 12 dB/oct cut peaks by Q at its frequency; on 24 dB/oct it lifts
+    // the sharpest section (Butterworth x Q / 0.707).
+    one_cut(MS_P_M_FLT_ON, MS_P_M_FLT_LC_ON, 1000, 0, 2.0f);
+    start();
+    float q2 = gain_at(1000, 0.1f, false);
+    CHECK(NEAR(q2, 6.02f, 0.1f), "low cut Q 2: %.2f dB at 1 kHz", q2);
+    one_cut(MS_P_M_FLT_ON, MS_P_M_FLT_HC_ON, 1000, 1, 2.0f);
+    start();
+    float q24 = gain_at(1000, 0.1f, false);
+    float want24 = 20.0f * log10f(0.54119610f * 1.30656296f * 2.0f * 1.41421356f);
+    CHECK(NEAR(q24, want24, 0.15f), "high cut 24 dB/oct, Q 2: %.2f dB at 1 kHz, want %.2f", q24, want24);
+
+    // Mix and master cuts.
+    one_cut(MS_P_M_FLT_ON, MS_P_M_FLT_LC_ON, 80, 0, 0.7071f);
     start();
     float m80 = gain_at(80, 0.5f, false);
     CHECK(NEAR(m80, -3.01f, 0.1f), "mix low cut: %.2f dB at 80 Hz", m80);
 
-    neutral();
-    P[MS_P_EQ_HI_ON] = 1;
-    P[MS_P_EQ_HI_F] = 8000;
-    P[MS_P_EQ_HI_SLOPE] = 1;
+    one_cut(MS_P_O_FLT_ON, MS_P_O_FLT_HC_ON, 8000, 1, 0.7071f);
     start();
     float h8 = gain_at(8000, 0.5f, false);
     start();
     float h16 = gain_at(16000, 0.5f, false);
     CHECK(NEAR(h8, -3.01f, 0.1f), "high cut: %.2f dB at 8 kHz", h8);
     CHECK(h16 < -24.0f, "high cut 24 dB/oct: %.1f dB at 16 kHz", h16);
-    neutral();
-    P[MS_P_EQ_LO_ON] = 1;
-    P[MS_P_EQ_LO_F] = 30;
+    one_cut(MS_P_O_FLT_ON, MS_P_O_FLT_LC_ON, 30, 0, 0.7071f);
     start();
     float l30 = gain_at(30, 0.5f, false);
     CHECK(NEAR(l30, -3.01f, 0.1f), "main low cut: %.2f dB at 30 Hz", l30);
+
+    // Both cuts at once (a band pass), and the device switch.
+    one_cut(MS_P_O_FLT_ON, MS_P_O_FLT_LC_ON, 100, 1, 0.7071f);
+    P[MS_P_O_FLT_HC_ON] = 1;
+    P[MS_P_O_FLT_HC_F] = 5000;
+    start();
+    float mid = gain_at(700, 0.5f, false);
+    start();
+    float lo = gain_at(50, 0.5f, false);
+    start();
+    float hi = gain_at(10000, 0.5f, false);
+    CHECK(NEAR(mid, 0.0f, 0.05f) && lo < -20.0f && hi < -10.0f, "band pass: %.2f / %.1f / %.1f dB", mid, lo, hi);
+    P[MS_P_O_FLT_ON] = 0;
+    start();
+    float off = gain_at(50, 0.5f, false);
+    CHECK(NEAR(off, 0.0f, 0.01f), "filter switched off: %.3f dB", off);
 }
 
 static void test_crossover_flat(void) {
@@ -349,9 +378,10 @@ static void test_multiband_duck(void) {
 
 static void test_limiter(void) {
     // Hot noise and bursts: never above the ceiling, at every look-ahead.
-    static const float las[] = {0, 0.5f, 1.5f, 5.0f};
+    static const float las[] = {0, 0.5f, 1.5f, 5.0f, 0, 1.5f};
     for (size_t l = 0; l < sizeof(las) / sizeof(las[0]); l++) {
         neutral();
+        P[MS_P_LIM_AUTO] = l >= 4;
         P[MS_P_LIM_ON] = 1;
         P[MS_P_LIM_CEIL] = -1;
         P[MS_P_LIM_LA] = las[l];
@@ -420,6 +450,77 @@ static void test_limiter(void) {
     make_kick(buf_k, n, 22050, 0.5f);
     run(buf_k, NULL, buf_o, n);
     CHECK(NEAR(db(peak(buf_o, 0, n)), -3.0f, 0.05f), "kick limiter peak %.2f dB", db(peak(buf_o, 0, n)));
+}
+
+// The order settings move the effects. A resonant cut (Q 6, +15.6 dB at 1 kHz)
+// before a limiter is caught by it; after the limiter it lifts the output over
+// the ceiling.
+static void test_order(void) {
+    float pk[2][2];
+    for (int strip = 0; strip < 2; strip++) {
+        for (int order = 0; order < 2; order++) {
+            if (strip == 0) {
+                one_cut(MS_P_K_FLT_ON, MS_P_K_FLT_LC_ON, 1000, 0, 6.0f);
+                P[MS_P_K_LIM_ON] = 1;
+                P[MS_P_K_LIM_CEIL] = -12;
+                P[MS_P_K_ORDER] = (float)order;  // 0 filter > limiter, 1 limiter > filter
+            } else {
+                one_cut(MS_P_O_FLT_ON, MS_P_O_FLT_LC_ON, 1000, 0, 6.0f);
+                P[MS_P_LIM_ON] = 1;
+                P[MS_P_LIM_CEIL] = -12;
+                P[MS_P_O_ORDER] = order ? 5.0f : 0.0f;  // glue > filter > limiter / limiter > filter > glue
+            }
+            start();
+            int n = 22050;
+            sine(buf_k, n, 1000, 0.5f);
+            run(strip ? NULL : buf_k, strip ? buf_k : NULL, buf_o, n);
+            pk[strip][order] = db(peak(buf_o, n / 2, n));
+        }
+        CHECK(NEAR(pk[strip][0], -12.0f, 0.1f) && pk[strip][1] > -1.0f, "%s order: filter first %.2f dB, limiter first %.2f dB",
+              strip ? "master" : "kick", pk[strip][0], pk[strip][1]);
+    }
+    // Mix: a resonant cut before or after self-keyed dynamics.
+    float mix[2];
+    for (int order = 0; order < 2; order++) {
+        one_cut(MS_P_M_FLT_ON, MS_P_M_FLT_LC_ON, 1000, 0, 6.0f);
+        P[MS_P_MB_ON] = 1;
+        P[MS_P_MB_SC] = 1;
+        P[MS_P_MB_MID_RATIO] = 10;
+        P[MS_P_MB_MID_THR] = -30;
+        P[MS_P_M_ORDER] = (float)order;
+        start();
+        mix[order] = gain_at(1000, 0.05f, false);
+    }
+    CHECK(mix[1] > mix[0] + 6.0f, "mix order: filter first %.2f dB, multiband first %.2f dB", mix[0], mix[1]);
+    printf("order: kick %.1f / %.1f dB, master %.1f / %.1f dB, mix %.1f / %.1f dB\n", pk[0][0], pk[0][1], pk[1][0],
+           pk[1][1], mix[0], mix[1]);
+}
+
+// Auto release: a lone short peak lets go fast; after seconds of limiting the
+// gain comes back slower (the slow stage sits at the average reduction).
+static void test_auto_release(void) {
+    float left[2];
+    for (int dense = 0; dense < 2; dense++) {
+        neutral();
+        P[MS_P_LIM_ON] = 1;
+        P[MS_P_LIM_CEIL] = -12;
+        P[MS_P_LIM_LA] = 1.5f;
+        P[MS_P_LIM_AUTO] = 1;
+        P[MS_P_LIM_REL] = 1000;  // not used in auto
+        start();
+        int burst = dense ? 3 * 44100 : 441;  // 3 s or 10 ms, 12 dB over
+        int n = burst + 44100;
+        for (int i = 0; i < n; i++) buf_m[i] = i < burst ? 1.0f * (i % 2 ? 1.0f : -1.0f) : 0.0f;
+        // a quiet probe tone after the burst shows the gain
+        for (int i = burst; i < n; i++) buf_m[i] = 0.01f * sinf(2.0f * (float)M_PI * 1000.0f * (float)i / FS);
+        run(NULL, buf_m, buf_o, n);
+        int at = burst + (int)(0.15f * FS);
+        left[dense] = -db(peak(buf_o, at, at + 441) / 0.01f);
+    }
+    CHECK(left[0] < 2.0f, "auto release after a 10 ms peak: %.2f dB left at 150 ms", left[0]);
+    CHECK(left[1] > 4.0f && left[1] > 3.0f * left[0], "auto release after 3 s: %.2f dB left at 150 ms", left[1]);
+    printf("limiter auto release: %.2f dB left 150 ms after a 10 ms peak, %.2f dB after 3 s of limiting\n", left[0],
+           left[1]);
 }
 
 static void test_latency(void) {
@@ -775,7 +876,9 @@ static void test_fuzz(void) {
         float ceil = powf(10.0f, P[MS_P_LIM_CEIL] / 20.0f) * 1.000001f;
         for (int i = 0; i < n; i++) {
             if (!isfinite(buf_o[i])) bad++;
-            if (P[MS_P_LIM_ON] >= 0.5f && i >= 512 && fabsf(buf_o[i]) > ceil) over++;
+            // orders 0 and 2 have the limiter last
+            bool lim_last = P[MS_P_O_ORDER] == 0 || P[MS_P_O_ORDER] == 2;
+            if (P[MS_P_LIM_ON] >= 0.5f && lim_last && i >= 512 && fabsf(buf_o[i]) > ceil) over++;
             if (fabsf(buf_o[i]) > 1.0f) over++;
         }
     }
@@ -807,9 +910,13 @@ static void test_params(void) {
     CHECK(MS_P_MB_MID_ON - MS_P_MB_LO_ON == 6 && MS_P_MB_HI_ON - MS_P_MB_MID_ON == 6 &&
               MS_P_MB_HI_GAIN - MS_P_MB_HI_ON == 5,
           "band parameter layout");
-    CHECK(ms_param_clamp(MS_P_K_HP_F, 5) == 10 && ms_param_clamp(MS_P_K_HP_F, 1e9f) == 120, "clamp");
+    // The three filters are laid out alike (flt_set relies on it).
+    CHECK(MS_P_K_FLT_HC_SLOPE - MS_P_K_FLT_ON == 8 && MS_P_M_FLT_HC_SLOPE - MS_P_M_FLT_ON == 8 &&
+              MS_P_O_FLT_HC_SLOPE - MS_P_O_FLT_ON == 8 && MS_P_O_FLT_LC_Q - MS_P_O_FLT_ON == 3,
+          "filter parameter layout");
+    CHECK(ms_param_clamp(MS_P_K_FLT_LC_F, 5) == 10 && ms_param_clamp(MS_P_K_FLT_LC_F, 1e9f) == 20000, "clamp");
     CHECK(ms_param_clamp(MS_P_GLUE_ATT, 2.6f) == 3 && ms_param_clamp(MS_P_GLUE_ON, 0.4f) == 0, "snap");
-    CHECK(ms_param_clamp(MS_P_K_HP_F, NAN) == 25, "NaN -> default");
+    CHECK(ms_param_clamp(MS_P_K_FLT_LC_F, NAN) == 25, "NaN -> default");
 
     // Export / import round trip; setup aids are not stored; unknown lines are skipped.
     for (int i = 0; i < MS_P_COUNT; i++) {
@@ -836,8 +943,17 @@ static void test_params(void) {
     }
     CHECK(count == saved && worst == 0.0f, "round trip: %d of %d, worst %g", count, saved, worst);
     ms_params_defaults(w);
-    count = ms_params_import(w, "# old file\nset nothing 3\nset k_hp_f 999\n\nset bypass 1\nfoo\nset m_hp_f 40");
-    CHECK(count == 2 && w[MS_P_K_HP_F] == 120 && w[MS_P_M_HP_F] == 40 && w[MS_P_BYPASS] == 0, "import skips junk");
+    count = ms_params_import(w, "# old file\nset nothing 3\nset k_flt_lc_f 99999\n\nset bypass 1\nfoo\nset m_flt_lc_f 40");
+    CHECK(count == 2 && w[MS_P_K_FLT_LC_F] == 20000 && w[MS_P_M_FLT_LC_F] == 40 && w[MS_P_BYPASS] == 0,
+          "import skips junk");
+    // Settings of firmware 0.2: the cuts land in the filters.
+    ms_params_defaults(w);
+    count = ms_params_import(w, "set k_hp_on 0\nset k_hp_f 31\nset m_hp_slope 1\nset eq_lo_f 45\nset eq_hi_on 1\n"
+                                "set eq_hi_f 12000\nset eq_hi_slope 1\nset glue_thr -12\n");
+    CHECK(count == 8 && w[MS_P_K_FLT_LC_ON] == 0 && w[MS_P_K_FLT_LC_F] == 31 && w[MS_P_M_FLT_LC_SLOPE] == 1 &&
+              w[MS_P_O_FLT_LC_F] == 45 && w[MS_P_O_FLT_HC_ON] == 1 && w[MS_P_O_FLT_HC_F] == 12000 &&
+              w[MS_P_O_FLT_HC_SLOPE] == 1 && w[MS_P_GLUE_THR] == -12,
+          "firmware 0.2 settings: %d read", count);
     char small[64];
     CHECK(ms_params_export(v, small, sizeof(small)) == 0, "export into a small buffer");
 
@@ -902,7 +1018,7 @@ static void test_protocol(void) {
     ms_proto_t pr;
     have_stored = false;
     ms_proto_init(&pr, &host);
-    CHECK(applied == 1 && pr.values[MS_P_K_HP_F] == 25 && !pr.unsaved, "init with nothing stored");
+    CHECK(applied == 1 && pr.values[MS_P_K_FLT_LC_F] == 25 && !pr.unsaved, "init with nothing stored");
 
     send(&pr, "hello");
     CHECK(n_lines == 1 && strncmp(lines[0], "hello|master|", 13) == 0 && strstr(lines[0], "|proto=1|fs=44100|block=16|io_ms=2.50"),
@@ -912,8 +1028,8 @@ static void test_protocol(void) {
     CHECK(n_lines == ms_group_count + MS_P_COUNT + 2 && strcmp(lines[n_lines - 1], "ok|desc") == 0, "desc: %d lines",
           n_lines);
     CHECK(strcmp(lines[0], "g|in|Inputs") == 0, "desc group: %s", lines[0]);
-    CHECK(strcmp(lines[ms_group_count + MS_P_K_HP_F], "d|k_hp_f|kick|log|10|120|25|0|Hz|1|Sub cut frequency|") == 0,
-          "desc line: %s", lines[ms_group_count + MS_P_K_HP_F]);
+    CHECK(strcmp(lines[ms_group_count + MS_P_K_FLT_LC_F], "d|k_flt_lc_f|k_flt|log|10|20000|25|0|Hz|1|Low cut frequency|") == 0,
+          "desc line: %s", lines[ms_group_count + MS_P_K_FLT_LC_F]);
     CHECK(strcmp(lines[ms_group_count + MS_P_MB_SOLO], "d|mb_solo|mb|enum|0|3|0|1||0|Solo band|Off,Low,Mid,High") == 0,
           "desc enum: %s", lines[ms_group_count + MS_P_MB_SOLO]);
     for (int i = 0; i < n_lines; i++) CHECK(strlen(lines[i]) < 200, "desc line too long: %s", lines[i]);
@@ -930,20 +1046,24 @@ static void test_protocol(void) {
           "meter line: %s", lines[0]);
 
     send(&pr, "get");
-    CHECK(n_lines == MS_P_COUNT + 1 && strcmp(lines[MS_P_K_HP_F], "p|k_hp_f|25") == 0, "get: %s", lines[MS_P_K_HP_F]);
+    CHECK(n_lines == MS_P_COUNT + 1 && strcmp(lines[MS_P_K_FLT_LC_F], "p|k_flt_lc_f|25") == 0, "get: %s",
+          lines[MS_P_K_FLT_LC_F]);
 
     // set: clamps, answers with the value, marks unsaved, applies.
     int before = applied;
-    send(&pr, "set k_hp_f 31.5");
-    CHECK(n_lines == 1 && strcmp(lines[0], "p|k_hp_f|31.5") == 0 && pr.unsaved && applied == before + 1 &&
-              P[MS_P_K_HP_F] == 31.5f,
+    send(&pr, "set k_flt_lc_f 31.5");
+    CHECK(n_lines == 1 && strcmp(lines[0], "p|k_flt_lc_f|31.5") == 0 && pr.unsaved && applied == before + 1 &&
+              P[MS_P_K_FLT_LC_F] == 31.5f,
           "set: %s", lines[0]);
-    send(&pr, "set  k_hp_f   500\r");
-    CHECK(strcmp(lines[0], "p|k_hp_f|120") == 0, "set clamps: %s", lines[0]);
+    send(&pr, "set  k_flt_lc_f   50000\r");
+    CHECK(strcmp(lines[0], "p|k_flt_lc_f|20000") == 0, "set clamps: %s", lines[0]);
+    send(&pr, "set k_hp_f 33");  // a firmware 0.2 name: the kick filter's low cut
+    CHECK(strcmp(lines[0], "p|k_flt_lc_f|33") == 0, "old name: %s", lines[0]);
+    send(&pr, "set k_flt_lc_f 50000");
     send(&pr, "set nope 1");
     CHECK(strncmp(lines[0], "err|", 4) == 0, "unknown parameter: %s", lines[0]);
-    send(&pr, "set k_hp_f abc");
-    CHECK(strncmp(lines[0], "err|", 4) == 0 && pr.values[MS_P_K_HP_F] == 120, "bad number: %s", lines[0]);
+    send(&pr, "set k_flt_lc_f abc");
+    CHECK(strncmp(lines[0], "err|", 4) == 0 && pr.values[MS_P_K_FLT_LC_F] == 20000, "bad number: %s", lines[0]);
     send(&pr, "frobnicate");
     CHECK(strncmp(lines[0], "err|", 4) == 0, "unknown command: %s", lines[0]);
     send(&pr, "");
@@ -951,21 +1071,21 @@ static void test_protocol(void) {
 
     // Bypass is a setup aid: it does not make the settings unsaved and is not stored.
     send(&pr, "save");
-    CHECK(strcmp(lines[0], "ok|save") == 0 && !pr.unsaved && strstr(stored, "set k_hp_f 120\n"), "save: %s", lines[0]);
+    CHECK(strcmp(lines[0], "ok|save") == 0 && !pr.unsaved && strstr(stored, "set k_flt_lc_f 20000\n"), "save: %s", lines[0]);
     send(&pr, "set bypass 1");
     CHECK(!pr.unsaved && P[MS_P_BYPASS] == 1, "bypass marks unsaved");
 
     // defaults, then load brings the saved value back and keeps bypass.
     send(&pr, "defaults");
-    CHECK(strcmp(lines[n_lines - 1], "ok|defaults") == 0 && pr.values[MS_P_K_HP_F] == 25 && pr.unsaved, "defaults");
+    CHECK(strcmp(lines[n_lines - 1], "ok|defaults") == 0 && pr.values[MS_P_K_FLT_LC_F] == 25 && pr.unsaved, "defaults");
     send(&pr, "set bypass 1");
     send(&pr, "load");
-    CHECK(strcmp(lines[n_lines - 1], "ok|load") == 0 && n_lines == MS_P_COUNT + 1 && pr.values[MS_P_K_HP_F] == 120 &&
+    CHECK(strcmp(lines[n_lines - 1], "ok|load") == 0 && n_lines == MS_P_COUNT + 1 && pr.values[MS_P_K_FLT_LC_F] == 20000 &&
               !pr.unsaved && pr.values[MS_P_BYPASS] == 1,
           "load");
 
     // A failing store is reported and the settings stay unsaved.
-    send(&pr, "set m_hp_f 55");
+    send(&pr, "set m_flt_lc_f 55");
     fail_save = true;
     send(&pr, "save");
     CHECK(strncmp(lines[0], "err|", 4) == 0 && pr.unsaved, "failed save: %s", lines[0]);
@@ -974,18 +1094,21 @@ static void test_protocol(void) {
     // Power-up with stored settings: they are applied, bypass is off again.
     ms_proto_t pr2;
     ms_proto_init(&pr2, &host);
-    CHECK(pr2.values[MS_P_K_HP_F] == 120 && pr2.values[MS_P_M_HP_F] == ms_param_defs[MS_P_M_HP_F].def && pr2.values[MS_P_BYPASS] == 0 &&
+    CHECK(pr2.values[MS_P_K_FLT_LC_F] == 20000 &&
+              pr2.values[MS_P_M_FLT_LC_F] == ms_param_defs[MS_P_M_FLT_LC_F].def && pr2.values[MS_P_BYPASS] == 0 &&
               !pr2.unsaved,
           "power-up from stored settings");
 }
 
 int main(void) {
     test_fast_math();
-    test_cuts();
+    test_filters();
+    test_order();
     test_crossover_flat();
     test_compressor_curve();
     test_multiband_duck();
     test_limiter();
+    test_auto_release();
     test_latency();
     test_glue();
     test_glue_circuit();

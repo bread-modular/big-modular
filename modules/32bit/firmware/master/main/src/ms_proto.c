@@ -76,7 +76,7 @@ static void cmd_meters(ms_proto_t *pr) {
 }
 
 static void cmd_desc(ms_proto_t *pr) {
-    char line[224];
+    char line[320];
     for (int i = 0; i < ms_group_count; i++) {
         snprintf(line, sizeof(line), "g|%s|%s", ms_group_defs[i].id, ms_group_defs[i].title);
         out(pr, line);
@@ -96,7 +96,7 @@ static void cmd_desc(ms_proto_t *pr) {
 static void cmd_set(ms_proto_t *pr, char *args) {
     char *id = strtok(args, " \t");
     char *text = strtok(NULL, " \t");
-    int index = id ? ms_param_find(id) : -1;
+    int index = id ? ms_param_lookup(id) : -1;
     if (index < 0 || !text) {
         out(pr, "err|set: unknown parameter or no value");
         return;

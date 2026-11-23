@@ -37,25 +37,33 @@ Module paths are module-relative.
   recorder on MIDI clock, as 8bit/16bit) on the
   32bit drivers; PSRAM on for the delay buffers; BM all-pass buffer overrun fixed. `./compile.sh p|d fxrack`; `./flash.sh [p|d] [fxrack|polysynth] [port]` asks for the firmware (Enter = polysynth) when none is given, as the 16bit `flash.sh`.
   Builds (p, d) and host tests (ASan) pass; not bench-tested. See `firmware/README.md` section fxrack.
-- **master firmware (2026-11-22)**: `firmware/master`, end-of-chain processor for a live set in place of
-  the user's DAW chain: IN L kick (sub cut, look-ahead limiter), IN R mix (low cut, 3-band dynamics keyed
-  by the kick's bands), parallel compressor fed from both, then glue compressor (2 / 4 / 10, stepped
-  attack / release, auto release, range, dry / wet, soft clip; since 0.2.0 a circuit model of the analog
-  VCA bus compressor: feedback detector, RC timing with the G series two-capacitor release A, gain cell
-  colour) -> low / high cut -> look-ahead limiter ->
-  mono on both outputs. 75 settings in one table (`main/include/ms_params.h`), set from
-  `firmware/master/web/index.html` over the USB-C port (Web Serial, text protocol `ms_proto.h`; demo mode
-  without the module) and saved in NVS on request. The page is a mixer of four channel strips (KICK, MIX,
-  PARALLEL, MASTER: trim knob, effect slots, parallel send, fader + meters); a click on a slot shows its
-  settings in the panel under the mixer (2026-11-22, user). Ranges and names come from `desc`, the page's
-  `STRIPS` table places them; `web/run.sh` serves it on port 3000 and stops whatever listens there first. New in the
+- **master firmware (2026-11-22, 0.3.0 2026-11-23)**: `firmware/master`, end-of-chain processor for a live
+  set in place of the user's DAW chain: IN L kick (filter, look-ahead limiter), IN R mix (filter, 3-band
+  dynamics keyed by the kick's bands), parallel compressor fed from both, then glue compressor (circuit
+  model of the analog VCA bus compressor since 0.2.0: feedback detector, RC timing with the G series
+  two-capacitor release A, gain cell colour) -> filter -> look-ahead limiter -> mono on both outputs.
+  **0.3.0 (user, 2026-11-23)**: the sub cut / low cut / main cuts are one filter device per strip (low cut +
+  high cut, each on / off, 10 Hz..20 kHz, resonance 0.5..6, 12 / 24 / 48 dB/oct; 0.2.x names `k_hp_*`,
+  `m_hp_*`, `eq_*` still load, also over `set`); the effects of each strip run in any order (`k_order`,
+  `m_order`, `o_order`, all six master orders; the multiband key stays at the kick limiter's input);
+  both limiters have auto release (two-stage program-dependent: fast 30 ms to a slow stage with 100 ms
+  attack / 1 s release; Ableton does not publish theirs). 95 settings in one table
+  (`main/include/ms_params.h`), set from `firmware/master/web/index.html` over the USB-C port (Web Serial,
+  text protocol `ms_proto.h`; demo mode without the module) and saved in NVS on request. **Page (0.3.0)**:
+  mixer of four strips on top, the selected effect in a fixed 400 px panel under it (graph + Ableton-style
+  knobs: filter response with draggable L / H points, limiter / compressor reduction history, static
+  curves with the working point, glue reduction needle, multiband bands with draggable splits and live
+  reduction), connection and settings buttons in a side panel on the right, slots dragged up / down to
+  reorder, grey surfaces + one amber accent. Ranges and names come from `desc`, the page's `STRIPS` table
+  places them; `web/run.sh` serves it on port 3000 and stops whatever listens there first. New in the
   drivers: 24-bit codec words, 16-frame I2S blocks, 240 MHz. No MIDI / JP1: `./compile.sh master`,
   `./flash.sh master [port]`. Latency about 4.8 ms as shipped (buffers 1.1..1.45 ms + ~1 ms assumed for
-  the codec + 1.0 / 1.5 ms look-aheads), not measured. Builds (0.2.0, 330 KB), host tests pass (632 checks),
-  page checked in headless Chromium (`firmware/master/tests/web_check.mjs`, not part of `make`), QEMU count 1148 / 1388 instructions per sample (factory / all on); the demo loop run through the chain in QEMU
-  (`firmware/master/tools/cpu-bench/audio.sh`) equals the host render within 8 steps of 24 bits;
-  **not bench-tested, not heard**. `tools/ms_render` runs the chain over WAV files. See
-  `firmware/README.md` section master.
+  the codec + 1.0 / 1.5 ms look-aheads), not measured. Builds (0.3.0, 332 KB), host tests pass (778
+  checks), page checked in headless Chromium (`firmware/master/tests/web_check.mjs`, not part of `make`),
+  QEMU count 1165 / 1735 instructions per sample (factory / all on); the demo loop run through the chain
+  in QEMU (`firmware/master/tools/cpu-bench/audio.sh`) equals the host render within 8 steps of 24 bits;
+  0.2.0 was heard on the built board (noise at high volume, see the bench notes), **0.3.0 not flashed,
+  not heard**. `tools/ms_render` runs the chain over WAV files. See `firmware/README.md` section master.
 - Open: JLCPCB preview (U1 QFN pin 1, U2, Y1 rotation), bench (first power-up of the bare-chip circuit:
   40 MHz start-up, flash boot, PSRAM; U8 thermal, codec levels, firmware). master on the module: 24-bit
   codec words + 16-frame blocks, CPU load and U8 heat at 240 MHz, measured latency, port open / close

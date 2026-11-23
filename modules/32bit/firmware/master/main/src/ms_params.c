@@ -15,14 +15,16 @@ const ms_param_def_t ms_param_defs[MS_P_COUNT] = {
 const ms_group_def_t ms_group_defs[] = {
     {"in", "Inputs"},
     {"kick", "Kick (IN L)"},
+    {"k_flt", "Kick filter"},
     {"mix", "Mix (IN R)"},
+    {"m_flt", "Mix filter"},
     {"mb", "Multiband dynamics on the mix"},
     {"mb_lo", "Low band"},
     {"mb_mid", "Mid band"},
     {"mb_hi", "High band"},
     {"par", "Parallel compression"},
     {"glue", "Glue compressor"},
-    {"eq", "Main cuts"},
+    {"o_flt", "Master filter"},
     {"lim", "Limiter"},
     {"out", "Output"},
 };
@@ -40,6 +42,28 @@ static const float glue_release_s[] = {0.1f, 0.2f, 0.4f, 0.6f, 0.8f, 1.2f};
 #define GLUE_AUTO_SLOW_S 5.1f
 #define GLUE_AUTO_CAP_RATIO (0.47f / 6.8f)
 
+// Limiter auto release (ms_lim_coef_t): fast stage, slow stage attack / release.
+#define LIM_AUTO_FAST_S 0.030f
+#define LIM_AUTO_SLOW_ATT_S 0.100f
+#define LIM_AUTO_SLOW_REL_S 1.0f
+
+// Order settings: MS_DEV_* in signal order for each option of k_order, m_order, o_order.
+static const uint8_t order_k[][2] = {{MS_DEV_FLT, MS_DEV_LIM}, {MS_DEV_LIM, MS_DEV_FLT}};
+static const uint8_t order_m[][2] = {{MS_DEV_FLT, MS_DEV_MB}, {MS_DEV_MB, MS_DEV_FLT}};
+static const uint8_t order_o[][3] = {
+    {MS_DEV_GLUE, MS_DEV_FLT, MS_DEV_LIM}, {MS_DEV_GLUE, MS_DEV_LIM, MS_DEV_FLT}, {MS_DEV_FLT, MS_DEV_GLUE, MS_DEV_LIM},
+    {MS_DEV_FLT, MS_DEV_LIM, MS_DEV_GLUE}, {MS_DEV_LIM, MS_DEV_GLUE, MS_DEV_FLT}, {MS_DEV_LIM, MS_DEV_FLT, MS_DEV_GLUE},
+};
+
+// Names of firmware 0.2 in stored settings and exported files: the cuts that are
+// now the filters (same values, the slopes keep their numbers).
+static const char *const old_ids[][2] = {
+    {"k_hp_on", "k_flt_lc_on"}, {"k_hp_f", "k_flt_lc_f"}, {"k_hp_slope", "k_flt_lc_slope"},
+    {"m_hp_on", "m_flt_lc_on"}, {"m_hp_f", "m_flt_lc_f"}, {"m_hp_slope", "m_flt_lc_slope"},
+    {"eq_lo_on", "o_flt_lc_on"}, {"eq_lo_f", "o_flt_lc_f"}, {"eq_lo_slope", "o_flt_lc_slope"},
+    {"eq_hi_on", "o_flt_hc_on"}, {"eq_hi_f", "o_flt_hc_f"}, {"eq_hi_slope", "o_flt_hc_slope"},
+};
+
 #define COMP_KNEE_DB 6.0f
 #define COMP_RANGE_DB 60.0f
 #define RMS_WINDOW_S 0.010f
@@ -55,6 +79,14 @@ int ms_param_find(const char *id) {
         if (strcmp(ms_param_defs[i].id, id) == 0) return i;
     }
     return -1;
+}
+
+int ms_param_lookup(const char *id) {
+    int index = ms_param_find(id);
+    for (size_t a = 0; index < 0 && a < sizeof(old_ids) / sizeof(old_ids[0]); a++) {
+        if (strcmp(old_ids[a][0], id) == 0) index = ms_param_find(old_ids[a][1]);
+    }
+    return index;
 }
 
 float ms_param_clamp(int index, float value) {
@@ -89,7 +121,7 @@ int ms_params_import(float values[MS_P_COUNT], const char *text) {
             char id[40];
             float v;
             if (sscanf(line, " set %39s %f", id, &v) == 2) {
-                int index = ms_param_find(id);
+                int index = ms_param_lookup(id);
                 if (index >= 0 && !ms_param_defs[index].not_saved) {
                     values[index] = ms_param_clamp(index, v);
                     count++;
@@ -149,16 +181,27 @@ static void glue_set(ms_glue_coef_t *c, float fs, float thr_db, float ratio, flo
     c->inv_lin = 1.0f / (1.0f + c->chg * ratio);
 }
 
-static void lim_set(ms_lim_coef_t *c, float fs, bool on, float gain_db, float ceil_db, float rel_ms,
+static void lim_set(ms_lim_coef_t *c, float fs, bool on, float gain_db, float ceil_db, float rel_ms, bool auto_rel,
                     float la_ms) {
     c->on = on;
     c->drive = ms_db_to_lin(gain_db);
     c->ceil = ms_db_to_lin(ceil_db);
-    c->rel = ms_time_coef(fs, rel_ms * 0.001f);
+    c->auto_rel = auto_rel;
+    c->rel = ms_time_coef(fs, auto_rel ? LIM_AUTO_FAST_S : rel_ms * 0.001f);
+    c->slow_att = ms_time_coef(fs, LIM_AUTO_SLOW_ATT_S);
+    c->slow_rel = ms_time_coef(fs, LIM_AUTO_SLOW_REL_S);
     int la = (int)(la_ms * 0.001f * fs + 0.5f);
     if (la < 0) la = 0;
     if (la > MS_LA_SIZE - 2) la = MS_LA_SIZE - 2;
     c->la = la;
+}
+
+// The filter whose first parameter (its switch) is at `p`, laid out as MS_FILTER.
+static void flt_set(ms_flt_coef_t *c, const float *p, float fs) {
+    memset(c, 0, sizeof(*c));
+    if (p[0] < 0.5f) return;
+    if (p[1] >= 0.5f) c->lc_n = ms_cut_set(c->lc, (int)p[4], fs, p[2], p[3]);
+    if (p[5] >= 0.5f) c->hc_n = ms_cut_set(c->hc, (int)p[8], fs, p[6], p[7]);
 }
 
 void ms_coefs_from_params(const float v[MS_P_COUNT], float fs, int block, ms_coefs_t *c) {
@@ -176,15 +219,17 @@ void ms_coefs_from_params(const float v[MS_P_COUNT], float fs, int block, ms_coe
     c->g[MS_G_GLUE_MAKEUP] = ms_db_to_lin(v[MS_P_GLUE_MAKEUP]);
     c->g[MS_G_OUT] = level_gain(v[MS_P_OUT_LVL]);
 
+    memcpy(c->k_order, order_k[(int)v[MS_P_K_ORDER]], sizeof(c->k_order));
+    memcpy(c->m_order, order_m[(int)v[MS_P_M_ORDER]], sizeof(c->m_order));
+    memcpy(c->o_order, order_o[(int)v[MS_P_O_ORDER]], sizeof(c->o_order));
+
     // Kick
-    c->k_hp_n = v[MS_P_K_HP_ON] >= 0.5f ? 1 + (int)v[MS_P_K_HP_SLOPE] : 0;
-    ms_butter_set(c->k_hp, c->k_hp_n, fs, v[MS_P_K_HP_F]);
+    flt_set(&c->k_flt, &v[MS_P_K_FLT_ON], fs);
     lim_set(&c->k_lim, fs, v[MS_P_K_LIM_ON] >= 0.5f, v[MS_P_K_LIM_GAIN], v[MS_P_K_LIM_CEIL], v[MS_P_K_LIM_REL],
-            v[MS_P_K_LIM_LA]);
+            v[MS_P_K_LIM_AUTO] >= 0.5f, v[MS_P_K_LIM_LA]);
 
     // Mix
-    c->m_hp_n = v[MS_P_M_HP_ON] >= 0.5f ? 1 + (int)v[MS_P_M_HP_SLOPE] : 0;
-    ms_butter_set(c->m_hp, c->m_hp_n, fs, v[MS_P_M_HP_F]);
+    flt_set(&c->m_flt, &v[MS_P_M_FLT_ON], fs);
 
     // Multiband
     c->mb_on = v[MS_P_MB_ON] >= 0.5f;
@@ -220,11 +265,8 @@ void ms_coefs_from_params(const float v[MS_P_COUNT], float fs, int block, ms_coe
     c->glue_sc_hp_on = v[MS_P_GLUE_SC_HP] > 20.5f;
     ms_svf_set(&c->glue_sc_hp, fs, v[MS_P_GLUE_SC_HP], 0.70710678f);
 
-    // Main cuts and limiter
-    c->eq_lo_n = v[MS_P_EQ_LO_ON] >= 0.5f ? 1 + (int)v[MS_P_EQ_LO_SLOPE] : 0;
-    ms_butter_set(c->eq_lo, c->eq_lo_n, fs, v[MS_P_EQ_LO_F]);
-    c->eq_hi_n = v[MS_P_EQ_HI_ON] >= 0.5f ? 1 + (int)v[MS_P_EQ_HI_SLOPE] : 0;
-    ms_butter_set(c->eq_hi, c->eq_hi_n, fs, v[MS_P_EQ_HI_F]);
+    // Master filter and limiter
+    flt_set(&c->o_flt, &v[MS_P_O_FLT_ON], fs);
     lim_set(&c->lim, fs, v[MS_P_LIM_ON] >= 0.5f, v[MS_P_LIM_GAIN], v[MS_P_LIM_CEIL], v[MS_P_LIM_REL],
-            v[MS_P_LIM_LA]);
+            v[MS_P_LIM_AUTO] >= 0.5f, v[MS_P_LIM_LA]);
 }

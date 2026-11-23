@@ -71,14 +71,20 @@ void ms_svf_set(ms_svf_coef_t *c, float fs, float f, float q) {
     c->a3 = g * c->a2;
 }
 
-void ms_butter_set(ms_svf_coef_t c[2], int n, float fs, float f) {
-    if (n >= 2) {
-        ms_svf_set(&c[0], fs, f, 0.54119610f);
-        ms_svf_set(&c[1], fs, f, 1.30656296f);
-    } else {
-        ms_svf_set(&c[0], fs, f, 0.70710678f);
-        c[1] = c[0];
+int ms_cut_set(ms_svf_coef_t c[MS_CUT_MAX], int slope, float fs, float f, float q) {
+    // Butterworth section Qs, the sharpest last.
+    static const float q2[] = {0.70710678f};
+    static const float q4[] = {0.54119610f, 1.30656296f};
+    static const float q8[] = {0.50979558f, 0.60134489f, 0.89997622f, 2.56291545f};
+    const float *bq = slope >= 2 ? q8 : slope == 1 ? q4 : q2;
+    const int n = slope >= 2 ? 4 : slope == 1 ? 2 : 1;
+    for (int i = 0; i < n; i++) {
+        float qi = bq[i];
+        if (i == n - 1) qi *= q * 1.41421356f;
+        ms_svf_set(&c[i], fs, f, qi);
     }
+    for (int i = n; i < MS_CUT_MAX; i++) c[i] = c[0];
+    return n;
 }
 
 #define SVF_TICK(x)                                    \
@@ -153,12 +159,9 @@ static void three_bands(const ms_coefs_t *c, ms_svf_state_t x1[3], ms_svf_state_
     lr4_split(&c->x2, x2, rest, mid, hi, n);
 }
 
-static void cut_hp(const ms_svf_coef_t c[2], ms_svf_state_t s[2], int sections, float *x, int n) {
-    for (int i = 0; i < sections; i++) svf_hp(&c[i], &s[i], x, x, n);
-}
-
-static void cut_lp(const ms_svf_coef_t c[2], ms_svf_state_t s[2], int sections, float *x, int n) {
-    for (int i = 0; i < sections; i++) svf_lp(&c[i], &s[i], x, x, n);
+static void flt_run(const ms_flt_coef_t *c, ms_flt_state_t *s, float *x, int n) {
+    for (int i = 0; i < c->lc_n; i++) svf_hp(&c->lc[i], &s->lc[i], x, x, n);
+    for (int i = 0; i < c->hc_n; i++) svf_lp(&c->hc[i], &s->hc[i], x, x, n);
 }
 
 // ---------------------------------------------------------------- dynamics
@@ -253,6 +256,7 @@ static void lim_reset(ms_lim_state_t *s, int la) {
     for (int i = 0; i < MS_LA_SIZE; i++) s->g[i] = GQ_ONE;
     s->g_sum = la * GQ_ONE;
     s->g_rel = 1.0f;
+    s->g_slow = 1.0f;
     s->la = la;
 }
 
@@ -263,7 +267,7 @@ static float lim_run(const ms_lim_coef_t *c, ms_lim_state_t *s, const float *in,
     const float ceil = c->ceil;
     uint32_t pos = s->pos, head = s->dq_head, tail = s->dq_tail;
     int32_t g_sum = s->g_sum;
-    float g_rel = s->g_rel, g_min = 1.0f;
+    float g_rel = s->g_rel, g_slow = s->g_slow, g_min = 1.0f;
     for (int i = 0; i < n; i++) {
         float x = in[i] * c->drive;
         float a = fabsf(x);
@@ -279,6 +283,12 @@ static float lim_run(const ms_lim_coef_t *c, ms_lim_state_t *s, const float *in,
 
         g_rel += c->rel * (1.0f - g_rel);
         if (g_rel > hold) g_rel = hold;
+        if (c->auto_rel) {
+            // The slow stage never goes below the wanted gain: it only holds back
+            // the fast stage's release.
+            g_slow += (hold < g_slow ? c->slow_att : c->slow_rel) * (hold - g_slow);
+            if (g_rel > g_slow) g_rel = g_slow;
+        }
 
         float g, y;
         if (la) {
@@ -305,6 +315,7 @@ static float lim_run(const ms_lim_coef_t *c, ms_lim_state_t *s, const float *in,
     s->dq_tail = tail;
     s->g_sum = g_sum;
     s->g_rel = g_rel;
+    s->g_slow = g_slow;
     return g_min;
 }
 
@@ -365,6 +376,49 @@ void ms_dsp_set_coefs(ms_dsp_t *d, const ms_coefs_t *c) {
     if (d->lim.la != c->lim.la) lim_reset(&d->lim, c->lim.la);
 }
 
+// Three-band dynamics on the mix (in place), keyed by the kick or by itself.
+static void multiband(ms_dsp_t *d, const float *key, float *m, int n) {
+    const ms_coefs_t *c = &d->c;
+    float band[MS_BANDS][MS_BLOCK_MAX], det[MS_BANDS][MS_BLOCK_MAX], gain[MS_BLOCK_MAX];
+    three_bands(c, d->m_x1, d->m_x2, &d->m_x2_ap, m, band[0], band[1], band[2], n);
+    if (c->mb_sc_kick) three_bands(c, d->k_x1, d->k_x2, NULL, key, det[0], det[1], det[2], n);
+    for (int i = 0; i < n; i++) m[i] = 0.0f;
+    for (int b = 0; b < MS_BANDS; b++) {
+        float bg = d->g_cur[MS_G_MB_LO + b];
+        if (c->mb_solo && c->mb_solo != b + 1) bg = 0.0f;
+        if (c->mb_band_on[b]) {
+            const float *dsrc = c->mb_sc_kick ? det[b] : band[b];
+            max_into(&d->meters.gr_mb[b], comp_run(&c->mb[b], &d->mb[b], dsrc, gain, n, c->mb_amount));
+            for (int i = 0; i < n; i++) m[i] += band[b][i] * gain[i] * bg;
+        } else {
+            for (int i = 0; i < n; i++) m[i] += band[b][i] * bg;
+        }
+    }
+}
+
+// Glue compressor on the main sum (in place).
+static void glue(ms_dsp_t *d, float *x, int n) {
+    const ms_coefs_t *c = &d->c;
+    float gain[MS_BLOCK_MAX];
+    const float *dsrc = x;
+    float sc[MS_BLOCK_MAX];
+    if (c->glue_sc_hp_on) {
+        svf_hp(&c->glue_sc_hp, &d->glue_sc_hp, x, sc, n);
+        dsrc = sc;
+    }
+    max_into(&d->meters.gr_glue, glue_run(&c->glue, &d->glue, dsrc, gain, n));
+    const float makeup = d->g_cur[MS_G_GLUE_MAKEUP], wet = c->glue_wet;
+    for (int i = 0; i < n; i++) {
+        float a = x[i];
+        float lim = a > GLUE_COLOUR_MAX ? GLUE_COLOUR_MAX : (a < -GLUE_COLOUR_MAX ? -GLUE_COLOUR_MAX : a);
+        float vca = (a + lim * lim * (GLUE_COLOUR_2 - GLUE_COLOUR_3 * lim)) * gain[i];
+        x[i] = a + wet * (vca * makeup - a);
+    }
+    if (c->glue_clip) {
+        for (int i = 0; i < n; i++) x[i] = soft_clip(x[i]);
+    }
+}
+
 void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *out, int n) {
     const ms_coefs_t *c = &d->c;
     ms_meters_t *mt = &d->meters;
@@ -396,15 +450,20 @@ void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *ou
         return;
     }
 
-    // Kick: sub cut, then the limiter. The multiband key is taken before the
-    // limiter, so it leads the delayed audio by the kick look-ahead.
-    cut_hp(c->k_hp, d->k_hp, c->k_hp_n, k, n);
-    for (int i = 0; i < n; i++) key[i] = k[i] * c->mb_sc_gain;
-    if (c->k_lim.on) max_into(&mt->gr_klim, gain_to_gr_db(lim_run(&c->k_lim, &d->k_lim, k, k, n)));
+    // Kick: filter and limiter in either order. The multiband key is the kick at
+    // the limiter's input, so it leads the delayed audio by the kick look-ahead.
+    for (int j = 0; j < 2; j++) {
+        if (c->k_order[j] == MS_DEV_FLT) {
+            flt_run(&c->k_flt, &d->k_flt, k, n);
+        } else {
+            for (int i = 0; i < n; i++) key[i] = k[i] * c->mb_sc_gain;
+            if (c->k_lim.on) max_into(&mt->gr_klim, gain_to_gr_db(lim_run(&c->k_lim, &d->k_lim, k, k, n)));
+        }
+    }
     peak_into(&mt->kick, k, n);
 
-    // Mix: low cut, the same delay as the kick limiter, multiband dynamics.
-    cut_hp(c->m_hp, d->m_hp, c->m_hp_n, m, n);
+    // Mix: the same delay as the kick limiter, then filter and multiband dynamics
+    // in either order.
     uint32_t delay = (uint32_t)lim_delay(&c->k_lim);
     if (delay) {
         uint32_t pos = d->m_delay_pos;
@@ -415,22 +474,9 @@ void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *ou
         }
         d->m_delay_pos = pos;
     }
-    if (c->mb_on) {
-        float band[MS_BANDS][MS_BLOCK_MAX], det[MS_BANDS][MS_BLOCK_MAX];
-        three_bands(c, d->m_x1, d->m_x2, &d->m_x2_ap, m, band[0], band[1], band[2], n);
-        if (c->mb_sc_kick) three_bands(c, d->k_x1, d->k_x2, NULL, key, det[0], det[1], det[2], n);
-        for (int i = 0; i < n; i++) m[i] = 0.0f;
-        for (int b = 0; b < MS_BANDS; b++) {
-            float bg = g[MS_G_MB_LO + b];
-            if (c->mb_solo && c->mb_solo != b + 1) bg = 0.0f;
-            if (c->mb_band_on[b]) {
-                const float *dsrc = c->mb_sc_kick ? det[b] : band[b];
-                max_into(&mt->gr_mb[b], comp_run(&c->mb[b], &d->mb[b], dsrc, gain, n, c->mb_amount));
-                for (int i = 0; i < n; i++) m[i] += band[b][i] * gain[i] * bg;
-            } else {
-                for (int i = 0; i < n; i++) m[i] += band[b][i] * bg;
-            }
-        }
+    for (int j = 0; j < 2; j++) {
+        if (c->m_order[j] == MS_DEV_FLT) flt_run(&c->m_flt, &d->m_flt, m, n);
+        else if (c->mb_on) multiband(d, key, m, n);
     }
     peak_into(&mt->mix, m, n);
 
@@ -447,29 +493,19 @@ void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *ou
         peak_into(&mt->par, p, n);
     }
 
-    if (c->glue_on) {
-        const float *dsrc = x;
-        float sc[MS_BLOCK_MAX];
-        if (c->glue_sc_hp_on) {
-            svf_hp(&c->glue_sc_hp, &d->glue_sc_hp, x, sc, n);
-            dsrc = sc;
-        }
-        max_into(&mt->gr_glue, glue_run(&c->glue, &d->glue, dsrc, gain, n));
-        const float makeup = g[MS_G_GLUE_MAKEUP], wet = c->glue_wet;
-        for (int i = 0; i < n; i++) {
-            float a = x[i];
-            float lim = a > GLUE_COLOUR_MAX ? GLUE_COLOUR_MAX : (a < -GLUE_COLOUR_MAX ? -GLUE_COLOUR_MAX : a);
-            float vca = (a + lim * lim * (GLUE_COLOUR_2 - GLUE_COLOUR_3 * lim)) * gain[i];
-            x[i] = a + wet * (vca * makeup - a);
-        }
-        if (c->glue_clip) {
-            for (int i = 0; i < n; i++) x[i] = soft_clip(x[i]);
+    for (int j = 0; j < 3; j++) {
+        switch (c->o_order[j]) {
+            case MS_DEV_GLUE:
+                if (c->glue_on) glue(d, x, n);
+                break;
+            case MS_DEV_FLT:
+                flt_run(&c->o_flt, &d->o_flt, x, n);
+                break;
+            default:
+                if (c->lim.on) max_into(&mt->gr_lim, gain_to_gr_db(lim_run(&c->lim, &d->lim, x, x, n)));
+                break;
         }
     }
-
-    cut_hp(c->eq_lo, d->eq_lo, c->eq_lo_n, x, n);
-    cut_lp(c->eq_hi, d->eq_hi, c->eq_hi_n, x, n);
-    if (c->lim.on) max_into(&mt->gr_lim, gain_to_gr_db(lim_run(&c->lim, &d->lim, x, x, n)));
 
     for (int i = 0; i < n; i++) {
         float y = x[i] * g[MS_G_OUT];
