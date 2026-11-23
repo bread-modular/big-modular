@@ -9,6 +9,11 @@ above the MCU board take the plug forces. It runs the `master` end-of-chain proc
 systems; the reason for the codec change is in `docs/research.md` section 9. The S3 design (one board,
 ES8388, MIDI and CV inputs, USB-C on the back) is in git history.
 
+**ES1 variant (2026-11-23, `hardware/es/`, `docs/research.md` section 10):** the S3 board (ES8388, MIDI in,
+2 audio + 2 CV in, back USB-C) with its own codec supply (LP5907 from +5V) and its own codec clock (11.2896 MHz
+oscillator, ES8388 = I2S master), to build next to S4 and compare. Firmware: `BOARD=es1 ./compile.sh ...`.
+Hand-routed, ERC 0 / DRC 0, JLCPCB export in [`jlcpcb/es/`](jlcpcb/es/README.md); not built.
+
 | Panel (top to bottom) | Circuit |
 |---|---|
 | **USB** (USB-C) | MCU board J101 -> USBLC6-2SC6 -> ESP32-S3 GPIO19 / 20 (USB Serial/JTAG: Web Serial, console, firmware download). Data only, VBUS powers nothing |
