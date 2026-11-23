@@ -1,25 +1,24 @@
-"""Import the pinned 32bit footprints into hardware/32BIT.pretty (one-time, reviewable).
+"""Import the pinned 32bit S4 footprints into hardware/32BIT.pretty (one-time, reviewable).
 
-The library is rebuilt from scratch: footprints no longer listed are removed. KiCad writes new
-UUIDs on every save, so a footprint whose content is otherwise unchanged keeps its old file.
+Forked from modules/usb-audio (S4 = its carrier + an ESP32-S3 MCU board). The library is rebuilt from
+scratch: footprints no longer listed are removed (the S3 ES8388 / module parts are in git history).
+Both projects (carrier 32bit and 32bit-mcu) use it.
 
 Run from modules/32bit with KiCad's Python (pcbnew 10):
   python3 -B tools/import_footprints.py [--bread-modular ~/data/projects/bread-modular]
 
 Sources are read-only:
-- the Bread Modular AudioJacks library (MIT, Barwise) for the PJ301M-12 jack, with the
-  same two edits as modules/8bit (decorative F.SilkS arcs removed, F.CrtYd = model
-  envelope + 0.25 mm, 3D model -> ${KIPRJMOD}/32BIT.3dshapes/PJ301M-12.step);
-- Bread Modular footprints, copper unedited (Bread Modular footprints are preferred:
-  the user's builds prove them): the 32bit-5v ES8388 QFN-28 with thermal vias, and (as
-  modules/16bit) the RV09 pot (audio-out RV09 proxy model) and the K2-1808SN-A4SW-01
-  RESET/BOOT switches (courtyard added, pad-overlapping silk removed);
-- the installed KiCad stock library for everything else, unedited, including (as modules/8bit)
-  the MODE tact switch `SW_PUSH_6mm_H7.3mm`, the 3 mm mode LED `LED_D3.0mm` and, since S3, the
-  ESP32-S3 QFN-56 land with its nine thermal vias, the SOIC-8 208 mil flash land and the
-  3.2 x 2.5 mm crystal (the last two as modules/16bit). The USB-C receptacle is
-  the stock HRO TYPE-C-31-M-12 (the Bread Modular part): Bread Modular's copy merges the
-  VBUS/GND pads under A-numbers, which the stock 14P symbol can't map.
+- the Bread Modular AudioJacks library (MIT, Barwise) for the PJ301M-12 jack, with the same two
+  edits as modules/8bit and modules/32bit;
+- Bread Modular footprints, copper unedited (preferred: the user's builds prove them): the RV09
+  pot (audio-out RV09 proxy model) and the K2-1808SN-A4SW-01 BOOT/RESET switches (courtyard
+  added, pad-overlapping silk removed), as modules/32bit;
+- the installed KiCad stock library for everything else, unedited, including (as 32bit S3) the
+  ESP32-S3 QFN-56 land with its nine thermal vias, the SOIC-8 208 mil flash land, the 3.2 x 2.5 mm
+  crystal, the 6 x 6 mm MODE tact switch and the 3 mm LED;
+- one footprint drawn here from the manufacturer drawing: the HRO TYPE-C-31-D-15 vertical USB-C
+  (recommended PCB layout, docs/research.md section 5), with the proxy model from
+  tools/make_usbc_model.py.
 
 hardware/32BIT.pretty/PROVENANCE.json records source paths and SHA-256 of every input
 and output.
@@ -27,7 +26,6 @@ and output.
 import argparse
 import hashlib
 import json
-import re
 import shutil
 from pathlib import Path
 
@@ -39,32 +37,32 @@ STOCK = Path('/usr/share/kicad/footprints')
 LIBNAME = '32BIT'
 
 STOCK_FOOTPRINTS = [
-    ('LED_THT', 'LED_D3.0mm'),
-    ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'),
-    ('Package_DFN_QFN', 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias'),
-    ('Package_SO', 'SOIC-8_5.3x5.3mm_P1.27mm'),
-    ('Crystal', 'Crystal_SMD_3225-4Pin_3.2x2.5mm'),
     ('Package_SO', 'SOIC-8_3.9x4.9mm_P1.27mm'),
     ('Package_SO', 'SOIC-14_3.9x8.7mm_P1.27mm'),
+    ('Package_SO', 'TSSOP-28_4.4x9.7mm_P0.65mm'),
+    ('TestPoint', 'TestPoint_Pad_D1.5mm'),
+    ('Package_DFN_QFN', 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias'),
+    ('Package_SO', 'SOIC-8_5.3x5.3mm_P1.27mm'),
+    ('LED_THT', 'LED_D3.0mm'),
+    ('Button_Switch_THT', 'SW_PUSH_6mm_H7.3mm'),
     ('Package_TO_SOT_SMD', 'SOT-223-3_TabPin2'),
-    ('Package_TO_SOT_SMD', 'SOT-23'),
-    ('Package_TO_SOT_SMD', 'SOT-323_SC-70'),
+    ('Package_TO_SOT_SMD', 'SOT-23-6'),
     ('Diode_SMD', 'D_SOD-123'),
-    ('Connector_USB', 'USB_C_Receptacle_HRO_TYPE-C-31-M-12'),
+    ('Oscillator', 'Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm'),
+    ('Crystal', 'Crystal_SMD_3225-4Pin_3.2x2.5mm'),
     ('Resistor_SMD', 'R_0402_1005Metric'),
     ('Resistor_SMD', 'R_0603_1608Metric'),
     ('Resistor_SMD', 'R_1206_3216Metric'),
+    ('Resistor_SMD', 'R_2512_6332Metric'),
     ('Capacitor_SMD', 'C_0402_1005Metric'),
     ('Capacitor_SMD', 'C_0603_1608Metric'),
     ('Capacitor_SMD', 'C_0805_2012Metric'),
-    ('Capacitor_SMD', 'C_1206_3216Metric'),
     ('Connector_PinHeader_2.54mm', 'PinHeader_2x05_P2.54mm_Vertical'),
-    ('Jumper', 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm'),
+    ('Connector_PinHeader_2.54mm', 'PinHeader_1x10_P2.54mm_Vertical'),
 ]
 
 # Bread Modular footprints copied with unedited copper: (library dir relative to the BM repo, name)
 BM_FOOTPRINTS = [
-    ('modules/32bit-5v/Module32.pretty', 'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias'),
     ('modules/16bit/footprints/BreadModular_Pots.pretty', 'Potentiometer_RV09'),
     ('modules/16bit/footprints/BreadModular_MISC.pretty', 'K2-1808SN-A4SW-01'),
 ]
@@ -75,30 +73,32 @@ BM_COURTYARD = {'K2-1808SN-A4SW-01': (2.95, 1.9)}
 
 # Footprints whose plated thermal vias get the 'heatsink' fabrication property (metadata only):
 # KiCad then counts the SMD part as SMD (no footprint_type_mismatch); copper is unchanged.
-HEATSINK_VIAS = {'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias': 9, 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias': 9}
+HEATSINK_VIAS = {'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias': 9}
 
 # BM footprint -> 3D model (in 32BIT.3dshapes) and its recorded source.
 BM_MODEL = {
     'Potentiometer_RV09': ('RV09_proxy.step', REPO / 'modules/8bit/hardware/8BIT.3dshapes/RV09_proxy.step',
-                           'modules/8bit/hardware/8BIT.3dshapes/RV09_proxy.step (copy of the audio-out user-sample proxy)'),
+                           'modules/8bit/hardware/8BIT.3dshapes/RV09_proxy.step (copy of the audio-out user-sample proxy, as modules/32bit)'),
 }
 
 # Stock footprints whose F.SilkS outline crosses their own pads (DRC silk_over_copper).
 SILK_OFF_PADS = set()
 
+# Stock footprints with F.SilkS outline lines cut back: name -> [(old start, old end, new end)].
+# J1 (2x5 power header, upright at the left edge on B) stands 0.52 mm below the IN 2 jack's S pad, so the
+# far corner of its outline would print on that pad: the two lines of that corner end 0.3 mm short of it.
+SILK_TRIM = {
+    'PinHeader_2x05_P2.54mm_Vertical': [((-1.38, 11.54), (3.92, 11.54), (2.65, 11.54)),
+                                        ((3.92, -1.38), (3.92, 11.54), (3.92, 11.11))],
+}
+
 # Footprints whose referenced model KiCad 10 does not ship: an explicitly recorded visual proxy
 # (fit is not judged from these models).
 MODEL_PROXY = {
-    # Bread Modular's ES8388 land names a KiCad 9 0.45 mm-pitch model; KiCad 10 ships the same 4 x 4 mm
-    # QFN-28 body at 0.4 mm pitch.
-    'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias':
-        '${KICAD10_3DMODEL_DIR}/Package_DFN_QFN.3dshapes/QFN-28-1EP_4x4mm_P0.4mm_EP2.4x2.4mm.step',
-    'USB_C_Receptacle_HRO_TYPE-C-31-M-12':
-        '${KICAD10_3DMODEL_DIR}/Connector_USB.3dshapes/USB_C_Receptacle_GCT_USB4105-xx-A_16P_TopMnt_Horizontal.step',
+    # KiCad 10 ships no ASE 3225 oscillator model; the same 3.2 x 2.5 mm 4-pad body as a visual proxy.
+    'Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm':
+        '${KICAD10_3DMODEL_DIR}/Crystal.3dshapes/Crystal_SMD_3225-4Pin_3.2x2.5mm.step',
 }
-
-# Footprints whose referenced model KiCad 10 does not ship and that get no proxy: the model
-# reference is removed and recorded (none since S3 dropped the ESP32-S3-WROOM-1U module).
 MODEL_NONE = set()
 
 # name -> (step file, courtyard half-width X, courtyard Y top, courtyard Y bottom)
@@ -157,6 +157,83 @@ def heatsink(fp, name):
     return f'fabrication property "heatsink" on the {len(vias)} plated thermal-via pads (metadata)'
 
 
+# HRO TYPE-C-31-D-15 recommended PCB layout (drawing 2023-10-27; frame: pad columns along Y, A row at -X).
+USBC = 'USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical'
+USBC_STEP = 'USB_C_HRO_TYPE-C-31-D-15_proxy.step'
+USBC_A = ['A12', 'A9', 'A8', 'A7', 'A6', 'A5', 'A4', 'A1']     # top to bottom at X -1.365
+USBC_B = ['B1', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B12']     # top to bottom at X +1.365
+
+
+def add_pad(fp, number, kind, shape, xy, size, drill=None, layers=None):
+    pad = pcbnew.PAD(fp)
+    pad.SetNumber(number)
+    pad.SetAttribute(kind)
+    pad.SetShape(pcbnew.PADSTACK.ALL_LAYERS, shape)
+    pad.SetSize(pcbnew.PADSTACK.ALL_LAYERS, pcbnew.VECTOR2I(mm(size[0]), mm(size[1])))
+    if drill:
+        pad.SetDrillShape(pcbnew.PAD_DRILL_SHAPE_OBLONG if drill[0] != drill[1] else pcbnew.PAD_DRILL_SHAPE_CIRCLE)
+        pad.SetDrillSize(pcbnew.VECTOR2I(mm(drill[0]), mm(drill[1])))
+    pad.SetLayerSet(layers)
+    pad.SetPosition(pcbnew.VECTOR2I(mm(xy[0]), mm(xy[1])))
+    fp.Add(pad)
+    pad.thisown = 0
+    return pad
+
+
+def line(fp, layer, a, b, width):
+    seg = pcbnew.PCB_SHAPE(fp, pcbnew.SHAPE_T_SEGMENT)
+    seg.SetLayer(layer)
+    seg.SetWidth(mm(width))
+    seg.SetStart(pcbnew.VECTOR2I(mm(a[0]), mm(a[1])))
+    seg.SetEnd(pcbnew.VECTOR2I(mm(b[0]), mm(b[1])))
+    fp.Add(seg)
+    seg.thisown = 0
+
+
+def hro_usbc():
+    """Signal pads 1.59 x 0.50 at 1.00 pitch, columns 1.14 apart (outer 4.32); shell legs in plated
+    slots (drawing 0.45 x 1.20, here a 0.50 x 1.20 slot: the JLCPCB minimum plated slot width) at
+    X +/-1.43, Y +/-4.225, overlapping the corner GND pads as drawn; the two plastic pegs (0.90
+    holes at (-1.50, +5.41) and (+1.50, -5.41)) share one longer plated slot with their neighbour
+    leg. Body 5.00 x 12.00. Shell pads carry the 'mechanical' fabrication property."""
+    fp = pcbnew.FOOTPRINT(None)
+    fp.SetFPID(pcbnew.LIB_ID(LIBNAME, USBC))
+    fp.SetLibDescription('HRO TYPE-C-31-D-15 USB 2.0 Type-C receptacle, vertical, 16P SMD, H = 8.8 mm '
+                         '(D-15A/B/C/D: 9.3/10/10.5/12.4 mm, same land); HRO drawing 2023-10-27')
+    fp.SetKeywords('USB C Type-C receptacle vertical HRO TYPE-C-31-D-15')
+    fp.SetAttributes(pcbnew.FP_SMD)
+    smd = pcbnew.LSET()
+    for layer in (pcbnew.F_Cu, pcbnew.F_Paste, pcbnew.F_Mask):
+        smd.AddLayer(layer)
+    for col, x in ((USBC_A, -1.365), (USBC_B, 1.365)):
+        for i, num in enumerate(col):
+            add_pad(fp, num, pcbnew.PAD_ATTRIB_SMD, pcbnew.PAD_SHAPE_ROUNDRECT, (x, -3.5 + i), (1.59, 0.50), layers=smd)
+    # Legs without a peg beside them: plain plated slots.
+    for xy in ((-1.43, -4.225), (1.43, 4.225)):
+        pad = add_pad(fp, 'SH', pcbnew.PAD_ATTRIB_PTH, pcbnew.PAD_SHAPE_OVAL, xy, (0.80, 1.50), (0.50, 1.20),
+                      pcbnew.PAD.PTHMask())
+        pad.SetProperty(pcbnew.PAD_PROP_MECHANICAL)
+    # Leg + peg pairs: the drawing puts the 0.90 peg hole 0.14 mm past the leg slot end, closer than any
+    # fab hole-to-hole rule, so each pair is one plated slot 0.95 x 2.24 mm (leg slot end -3.62 to peg
+    # hole end -5.86), centred between the leg (X 1.43) and peg (X 1.50) columns.
+    for xy in ((1.465, -4.74), (-1.465, 4.74)):
+        pad = add_pad(fp, 'SH', pcbnew.PAD_ATTRIB_PTH, pcbnew.PAD_SHAPE_OVAL, xy, (1.25, 2.54), (0.95, 2.24),
+                      pcbnew.PAD.PTHMask())
+        pad.SetProperty(pcbnew.PAD_PROP_MECHANICAL)
+    for a, b in (((-2.5, -6.0), (2.5, -6.0)), ((2.5, -6.0), (2.5, 6.0)), ((2.5, 6.0), (-2.5, 6.0)),
+                 ((-2.5, 6.0), (-2.5, -6.0))):
+        line(fp, pcbnew.F_Fab, a, b, 0.1)
+    for a, b in (((-2.61, -6.11), (-2.61, 6.11)), ((2.61, -6.11), (2.61, 6.11))):
+        line(fp, pcbnew.F_SilkS, a, b, 0.12)
+    courtyard(fp, -2.75, -6.25, 2.75, 6.25)
+    fp.Reference().SetPosition(pcbnew.VECTOR2I(0, mm(-7.2)))
+    fp.Reference().SetLayer(pcbnew.F_SilkS)
+    fp.Value().SetPosition(pcbnew.VECTOR2I(0, mm(7.2)))
+    fp.Value().SetLayer(pcbnew.F_Fab)
+    set_model(fp, USBC_STEP)
+    return fp
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--bread-modular', default=str(Path.home() / 'data/projects/bread-modular'))
@@ -166,9 +243,7 @@ def main():
     LIB, MODELS = hw / f'{LIBNAME}.pretty', hw / f'{LIBNAME}.3dshapes'
     jacks = bm / 'opt/AudioJacks'
     LIB.mkdir(exist_ok=True)
-    previous = {}
     for old in LIB.glob('*.kicad_mod'):
-        previous[old.name] = old.read_text()
         old.unlink()
     MODELS.mkdir(exist_ok=True)
     record = {'footprints': {}, 'models': {}}
@@ -192,6 +267,13 @@ def main():
             for item in gone:
                 fp.Delete(item)
             edit = f'removed {len(gone)} F.SilkS outline item(s) crossing the pads'
+        for start, end, new_end in SILK_TRIM.get(name, ()):
+            hit = [i for i in fp.GraphicalItems() if i.GetLayer() == pcbnew.F_SilkS
+                   and (round(pcbnew.ToMM(i.GetStart().x), 2), round(pcbnew.ToMM(i.GetStart().y), 2)) == start
+                   and (round(pcbnew.ToMM(i.GetEnd().x), 2), round(pcbnew.ToMM(i.GetEnd().y), 2)) == end]
+            assert len(hit) == 1, (name, start, end, len(hit))
+            hit[0].SetEnd(pcbnew.VECTOR2I(mm(new_end[0]), mm(new_end[1])))
+            edit = '; '.join(filter(None, [edit, f'F.SilkS line {start} -> {end} now ends at {new_end}']))
         io.FootprintSave(str(LIB), fp)
         record['footprints'][name] = {'source': rel(src), 'source_sha256': sha(src),
                                       'license': 'KiCad library CC-BY-SA-4.0-with-exception',
@@ -248,17 +330,18 @@ def main():
         shutil.copyfile(model_src, MODELS / step)
         record['models'][step] = {'source': rel(model_src), 'sha256': sha(model_src),
                                   'license': 'MIT (c) 2021 Barwise'}
+    io.FootprintSave(str(LIB), hro_usbc())
+    record['footprints'][USBC] = {'source': 'drawn by tools/import_footprints.py from the HRO TYPE-C-31-D-15 '
+                                            'drawing (recommended PCB layout)', 'source_sha256': None,
+                                  'license': 'module-local', 'edits': 'plated slot width 0.45 -> 0.50 (JLCPCB minimum); peg holes merged with the adjacent leg slots (0.95 x 2.24 plated)'}
+    record['models'][USBC_STEP] = {'source': 'tools/make_usbc_model.py (envelope proxy)', 'sha256': sha(MODELS / USBC_STEP)}
     shutil.copyfile(jacks / 'LICENSE', MODELS / 'LICENSE-AudioJacks-MIT.txt')
-    no_uuid = lambda text: re.sub(r'\(uuid "[^"]*"\)', '', text)  # noqa: E731
-    for new in LIB.glob('*.kicad_mod'):
-        if new.name in previous and no_uuid(previous[new.name]) == no_uuid(new.read_text()):
-            new.write_text(previous[new.name])
     for name in record['footprints']:
         record['footprints'][name]['output_sha256'] = sha(LIB / f'{name}.kicad_mod')
     (LIB / 'PROVENANCE.json').write_text(json.dumps(record, indent=2) + '\n')
     (hw / 'fp-lib-table').write_text(
         f'(fp_lib_table (version 7) (lib (name "{LIBNAME}") (type "KiCad") (uri "${{KIPRJMOD}}/{LIBNAME}.pretty") '
-        f'(options "") (descr "32bit module pinned footprints; see {LIBNAME}.pretty/PROVENANCE.json")))\n')
+        f'(options "") (descr "32bit pinned footprints (carrier and MCU board); see {LIBNAME}.pretty/PROVENANCE.json")))\n')
     print(json.dumps({k: sorted(v) for k, v in record.items()}, indent=2))
 
 

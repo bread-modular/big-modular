@@ -1,27 +1,32 @@
-"""Generate the 32bit S3 schematic (hardware/32bit.kicad_sch) and its pinned symbols.
+"""Generate the 32bit S4 schematics and their pinned symbols (generator forked from modules/usb-audio).
 
 Run from modules/32bit:
   python3 -B tools/build_schematic.py
 
-Writes hardware/32BIT.kicad_sym (stock KiCad 10 symbols, derived symbols flattened, plus
-Bread Modular's ES8388 symbol from the 32bit-5v schematic), hardware/sym-lib-table and the flat
-root schematic, then lets `kicad-cli sch upgrade --force` re-save it natively.
+Two KiCad projects share hardware/ (one symbol library, one footprint library):
+- hardware/32bit.kicad_sch      carrier (jack board): power, CS4272 codec, analog in/out, control pots,
+                                MODE button + LED, the MCU-board headers, RESET/BOOT (tools/circuit_carrier.py)
+- hardware/32bit-mcu.kicad_sch  MCU board: ESP32-S3R8, flash, crystal, USB-C (tools/circuit_mcu.py)
 
-The circuit table, drawing and sourcing live in tools/circuit32.py (docs/research.md section 3).
-The drawing engine is modules/16bit's: each block is wired (drawing(): polylines whose points are
-(x, y), 'REF.PIN' or ('REF.PIN', dx, dy)), with power symbols and net labels naming every net.
-Pins not reached by a drawn wire get a short stub closed by a power symbol (rails; neighbouring
-stubs of one rail are joined into a bar with one symbol) or a net label: those are the
-block-to-block connections (MCU pins, codec). Wires are split at every connection point and
-junction dots are added; the build asserts nothing dangles and that the exported native netlist
-equals the circuit table. Nets named with a leading '_' are short local links drawn without a
-label (compared by pins only).
+Writes hardware/32BIT.kicad_sym (stock KiCad 10 symbols, derived symbols flattened),
+hardware/sym-lib-table and both flat root schematics, then lets `kicad-cli sch upgrade --force`
+re-save them natively.
 
-The PCB never reads this table: tools/build_layout.py takes nets, values and footprints from
-the native netlist.
+The drawing engine is modules/32bit's (modules/16bit's): each block is wired (drawing(): polylines
+whose points are (x, y), 'REF.PIN' or ('REF.PIN', dx, dy)), with power symbols and net labels
+naming every net. Pins not reached by a drawn wire get a short stub closed by a power symbol
+(rails; neighbouring stubs of one rail are joined into a bar with one symbol) or a net label:
+those are the block-to-block connections. Wires are split at every connection point and junction
+dots are added; the build asserts nothing dangles and that the exported native netlist equals the
+circuit table. Nets named with a leading '_' are short local links drawn without a label
+(compared by pins only).
+
+The PCBs never read these tables: tools/build_layout.py takes nets, values and footprints from
+the native netlists.
 """
 import copy
 import hashlib
+import importlib
 import json
 import math
 import subprocess
@@ -29,80 +34,78 @@ import sys
 import uuid
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))  # tools/sexp.py, tools/circuit32.py
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # tools/sexp.py, tools/circuit_*.py
 from sexp import parse, dump, nodes, one, walk, atom
-from circuit32 import (RAIL_SYMBOL, MIRROR_X, TEXT_LEFT, TEXT_POS, TEXTS, MULTI_UNIT,  # noqa: F401
-                       circuit, drawing)
 
 MODULE = Path(__file__).resolve().parents[1]
 HW = MODULE / 'hardware'
 STOCK = Path('/usr/share/kicad/symbols')
-BM_SCH = Path.home() / 'data/projects/bread-modular/modules/32bit-5v/32bit-5v.kicad_sch'
-PROJECT = '32bit'
 LIB = '32BIT'
 STUB = 2.54
 MERGE_GAP = 15.24   # neighbouring rail stubs closer than this share one bar and one symbol
 
-FILTER_EDITS = {
-    'Conn_02x05_Odd_Even': '*_2x??_*',
-    # Bread Modular places FB1 on its C_0805 land (preferred: the user's builds prove it).
-    'FerriteBead': 'Inductor_* L_* *Ferrite* C_0805*',
+# Projects built by this script: circuit module -> (project name, title, revision, comment)
+PROJECTS = {
+    'circuit_carrier': ('32bit', 'Big Modular - 32BIT carrier (jack board)', 'S4',
+                        'SCHEMATIC S4 - 2 in / 2 out DC-coupled, CS4272 codec (modules/usb-audio S5 audio path), +/-5 V, '
+                        '2 control pots, MODE + LED, 6HP; ESP32-S3 MCU board on 2.54 mm headers J6/J7'),
+    'circuit_mcu': ('32bit-mcu', 'Big Modular - 32BIT MCU board', 'S1',
+                    'SCHEMATIC S1 - ESP32-S3R8 + W25Q128JVSIQ + 40 MHz, native USB on a vertical USB-C through the panel; '
+                    'soldered to the carrier on 2.54 mm headers J102/J103'),
 }
 
-# lib symbol -> (stock library, stock name); 'BM' = embedded symbol of the Bread Modular 32bit-5v schematic
+C = None  # the circuit module being built (RAIL_SYMBOL, MIRROR_X, TEXT_*, MULTI_UNIT, circuit, drawing)
+
+FILTER_EDITS = {
+    'FerriteBead': 'Inductor_* L_* *Ferrite* C_0805*',
+    # pinned library name is USBAUDIO, not Connector*: keep the pin-count part of the stock filter
+    'Conn_02x05_Odd_Even': '*_2x??_*', 'Conn_01x10': '*_1x??_*',
+}
+
+# lib symbol -> (stock library, stock name)
 SYMBOLS = {
     'R': ('Device', 'R'), 'C': ('Device', 'C'), 'FerriteBead': ('Device', 'FerriteBead'),
-    'LED': ('Device', 'LED'), 'R_Potentiometer': ('Device', 'R_Potentiometer'),
-    'D_Schottky': ('Device', 'D_Schottky'), '1N4148W': ('Diode', '1N4148W'), 'BAT54SW': ('Diode', 'BAT54SW'),
-    'MMBT3904': ('Transistor_BJT', 'MMBT3904'),
+    'R_Potentiometer': ('Device', 'R_Potentiometer'), 'D_Schottky': ('Device', 'D_Schottky'),
+    'Crystal_GND24': ('Device', 'Crystal_GND24'), 'LED': ('Device', 'LED'),
+    'CS4272': ('Audio', 'CS4272'), 'TestPoint': ('Connector', 'TestPoint'),
     'ESP32-S3': ('MCU_Espressif', 'ESP32-S3'), 'W25Q128JVS': ('Memory_Flash', 'W25Q128JVS'),
-    'Crystal_GND24': ('Device', 'Crystal_GND24'),
-    'ES8388': ('BM', 'Module32:ES8388'),
-    'TL074': ('Amplifier_Operational', 'TL074'), 'TL072': ('Amplifier_Operational', 'TL072'),
-    'MCP6002-xSN': ('Amplifier_Operational', 'MCP6002-xSN'),
+    'OPA1679': ('Amplifier_Operational', 'OPA1679'), 'NE5532': ('Amplifier_Operational', 'NE5532'),
     'AMS1117-3.3': ('Regulator_Linear', 'AMS1117-3.3'), 'AMS1117-5.0': ('Regulator_Linear', 'AMS1117-5.0'),
+    'ASE-xxxMHz': ('Oscillator', 'ASE-xxxMHz'),
+    'USBLC6-2SC6': ('Power_Protection', 'USBLC6-2SC6'),
     'AudioJack2_SwitchT': ('Connector_Audio', 'AudioJack2_SwitchT'),
-    'USB_C_Receptacle_USB2.0_14P': ('Connector', 'USB_C_Receptacle_USB2.0_14P'),
+    'USB_C_Receptacle_USB2.0_16P': ('Connector', 'USB_C_Receptacle_USB2.0_16P'),
     'Conn_02x05_Odd_Even': ('Connector_Generic', 'Conn_02x05_Odd_Even'),
+    'Conn_01x10': ('Connector_Generic', 'Conn_01x10'),
     'SW_Push': ('Switch', 'SW_Push'),
-    'SolderJumper_3_Open': ('Jumper', 'SolderJumper_3_Open'),
     'PWR_FLAG': ('power', 'PWR_FLAG'),
-    'GND': ('power', 'GND'), '+3V3': ('power', '+3V3'), '+5V': ('power', '+5V'),
-    '+12V': ('power', '+12V'), '-12V': ('power', '-12V'),
+    'GND': ('power', 'GND'), '+3V3': ('power', '+3V3'), '+5VA': ('power', '+5VA'),
+    '+12V': ('power', '+12V'), '-12V': ('power', '-12V'), 'VBUS': ('power', 'VBUS'),
 }
 
 FP = {
     'R0402': 'R_0402_1005Metric', 'R0603': 'R_0603_1608Metric', 'R1206': 'R_1206_3216Metric',
+    'R2512': 'R_2512_6332Metric',
     'C0402': 'C_0402_1005Metric', 'C0603': 'C_0603_1608Metric', 'C0805': 'C_0805_2012Metric',
     'C1206': 'C_1206_3216Metric',
-    'SOD123': 'D_SOD-123', 'SOT23': 'SOT-23', 'SOT323': 'SOT-323_SC-70', 'SOT223': 'SOT-223-3_TabPin2',
-    'QFN56': 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias', 'SOIC8W': 'SOIC-8_5.3x5.3mm_P1.27mm',
-    'XTAL3225': 'Crystal_SMD_3225-4Pin_3.2x2.5mm', 'QFN28': 'ES8388_QFN28_4x4_P0.45_EP2.6_ThermalVias',
+    'SOD123': 'D_SOD-123', 'SOT223': 'SOT-223-3_TabPin2', 'SOT23-6': 'SOT-23-6',
     'SOIC8': 'SOIC-8_3.9x4.9mm_P1.27mm', 'SOIC14': 'SOIC-14_3.9x8.7mm_P1.27mm',
+    'TSSOP28': 'TSSOP-28_4.4x9.7mm_P0.65mm', 'TP15': 'TestPoint_Pad_D1.5mm',
+    'QFN56': 'QFN-56-1EP_7x7mm_P0.4mm_EP4x4mm_ThermalVias', 'SOIC8W': 'SOIC-8_5.3x5.3mm_P1.27mm',
+    'OSC3225': 'Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm', 'XTAL3225': 'Crystal_SMD_3225-4Pin_3.2x2.5mm',
+    'LED3': 'LED_D3.0mm', 'SW6': 'SW_PUSH_6mm_H7.3mm',
     'PJ301M': 'Jack_3.5mm_QingPu_WQP-PJ301M-12_Vertical', 'RV09': 'Potentiometer_RV09',
-    'SWK2': 'K2-1808SN-A4SW-01', 'SW6': 'SW_PUSH_6mm_H7.3mm', 'LED3': 'LED_D3.0mm',
-    'USBC': 'USB_C_Receptacle_HRO_TYPE-C-31-M-12', 'H2x5': 'PinHeader_2x05_P2.54mm_Vertical',
-    'SJ3': 'SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm',
+    'SWK2': 'K2-1808SN-A4SW-01', 'USBC_V': 'USB_C_Receptacle_HRO_TYPE-C-31-D-15_Vertical',
+    'H2x5': 'PinHeader_2x05_P2.54mm_Vertical', 'H1x10': 'PinHeader_1x10_P2.54mm_Vertical',
 }
-
-# Copper-only parts: no BOM row, no CPL row (solder jumpers are bridged by hand).
-NOT_ASSEMBLED = {'JP1'}
 
 
 def uid(key):
-    return str(uuid.uuid5(uuid.NAMESPACE_URL, 'big-modular/32bit/schematic/' + key))
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f'big-modular/32bit/{C.PROJECT}/schematic/' + key))
 
 
 def stock_symbol(lib, name):
     """Stock symbol flattened through every `extends` level (parent body/pins, child properties)."""
-    if lib == 'BM':
-        tree = parse(BM_SCH.read_text())
-        sym = copy.deepcopy({s[1]: s for s in nodes(one(tree, 'lib_symbols'), 'symbol')}[name])
-        short = name.split(':')[1]
-        sym[1] = short
-        for u in nodes(sym, 'symbol'):
-            assert u[1].startswith(short)
-        return sym, BM_SCH, None
     tree = parse((STOCK / f'{lib}.kicad_sym').read_text())
     syms = {s[1]: s for s in nodes(tree, 'symbol')}
     sym = copy.deepcopy(syms[name])
@@ -156,11 +159,11 @@ def r(v):
 
 def net_name(net):
     """Exported name: power-symbol nets keep their value, labelled nets are sheet-local."""
-    return net if net in RAIL_SYMBOL else '/' + net
+    return net if net in C.RAIL_SYMBOL else '/' + net
 
 
 def power_symbol(i, net, x, y, rot, root):
-    sym = RAIL_SYMBOL[net]
+    sym = C.RAIL_SYMBOL[net]
     body = (0, -1) if sym == 'GND' else (0, 1)          # library direction pin -> body
     dx, dy = xform(*body, rot)
     just = [atom('justify'), atom('left' if (dx > 0) != (rot == 90) else 'right')] if dx else None
@@ -179,7 +182,7 @@ def power_symbol(i, net, x, y, rot, root):
             [atom('exclude_from_sim'), atom('no')], [atom('in_bom'), atom('no')], [atom('on_board'), atom('no')],
             [atom('in_pos_files'), atom('no')], [atom('dnp'), atom('no')], [atom('uuid'), uid(f'pwr/{i}')],
             *props, [atom('pin'), '1', [atom('uuid'), uid(f'pwr/{i}/pin')]],
-            [atom('instances'), [atom('project'), PROJECT,
+            [atom('instances'), [atom('project'), C.PROJECT,
              [atom('path'), '/' + root, [atom('reference'), ref], [atom('unit'), 1]]]]]
 
 
@@ -194,7 +197,7 @@ def draw(ends, root):
 
     ends: {pin end (x, y): (net, outward (dx, dy), [pin keys])} of every connected pin (stacked
     pins share one end). Pins on a drawn wire are left alone; every other pin gets a stub."""
-    wires_in, power_in, labels_in = drawing()
+    wires_in, power_in, labels_in = C.drawing()
 
     def at(pt):
         if isinstance(pt, str):
@@ -248,7 +251,7 @@ def draw(ends, root):
     anchors = set(ends) | {s for s, *_ in stubs.values()} | {p for s_ in segs for p in s_}
     groups = {}
     for e, (s, net, d, keys) in stubs.items():
-        if net in RAIL_SYMBOL:
+        if net in C.RAIL_SYMBOL:
             line = s[1] if d[0] == 0 else s[0]
             groups.setdefault((net, d, line), []).append(s)
     symbol_at = {}
@@ -268,16 +271,16 @@ def draw(ends, root):
         for bar in bars:
             for a_, b_ in zip(bar, bar[1:]):
                 segs.append((a_, b_))
-            gnd = RAIL_SYMBOL[net] == 'GND'
+            gnd = C.RAIL_SYMBOL[net] == 'GND'
             if along == 0 or len(bar) == 1:      # horizontal bar or single stub: symbol continues the stub
                 symbol_at[bar[0]] = (net, d)
             else:                                # vertical bar: + rails at the top, GND at the bottom
                 symbol_at[bar[-1] if gnd else bar[0]] = (net, (0, 1) if gnd else (0, -1))
     for e, (s, net, d, keys) in stubs.items():
-        if net in RAIL_SYMBOL:
+        if net in C.RAIL_SYMBOL:
             if s in symbol_at:
                 n_, dd = symbol_at[s]
-                if RAIL_SYMBOL[net] == 'GND':
+                if C.RAIL_SYMBOL[net] == 'GND':
                     rot = {(0, 1): 0, (0, -1): 180, (1, 0): 90, (-1, 0): 270}[dd]
                 else:
                     rot = {(0, -1): 0, (0, 1): 180, (-1, 0): 90, (1, 0): 270}[dd]
@@ -367,9 +370,9 @@ def text_at(p, sym):
     angle == symbol rotation (mod 180) reads horizontally."""
     x, y = p['at']
     flat = p['rot'] % 180
-    key = next((k for k in (f"{p['ref']}/{p['unit']}", p['ref']) if k in TEXT_POS), None)
+    key = next((k for k in (f"{p['ref']}/{p['unit']}", p['ref']) if k in C.TEXT_POS), None)
     if key:
-        (rx, ry), (vx, vy), *just = TEXT_POS[key]
+        (rx, ry), (vx, vy), *just = C.TEXT_POS[key]
         just = just[0] if just else None
         return [('Reference', (x + rx, y + ry), flat, just), ('Value', (x + vx, y + vy), flat, just)]
     two_pin = p['sym'] in ('R', 'C', 'L', 'FerriteBead', 'D_Schottky', '1N4148W')
@@ -377,7 +380,7 @@ def text_at(p, sym):
     if two_pin and not vertical:                       # horizontal: above / below, centred
         return [('Reference', (x, y - 2.54), flat, None), ('Value', (x, y + 2.54), flat, None)]
     if two_pin:
-        dx, just = (-2.54, 'right') if p['ref'] in TEXT_LEFT else (2.54, 'left')
+        dx, just = (-2.54, 'right') if p['ref'] in C.TEXT_LEFT else (2.54, 'left')
         if p['rot'] == 180:                            # KiCad mirrors the justification at 180 degrees
             just = {'left': 'right', 'right': 'left'}[just]
         return [('Reference', (x + dx, y - 1.27), flat, just), ('Value', (x + dx, y + 1.27), flat, just)]
@@ -391,7 +394,7 @@ def text_at(p, sym):
     return out
 
 
-def build():
+def symbol_library():
     lib_syms, sources = {}, {}
     for key, (lib, name) in SYMBOLS.items():
         sym, src, parent = stock_symbol(lib, name)
@@ -400,8 +403,6 @@ def build():
             prop = next(pp for pp in nodes(sym, 'property') if pp[1] == 'ki_fp_filters')
             edit = f'ki_fp_filters {prop[2]!r} -> {FILTER_EDITS[key]!r}'
             prop[2] = FILTER_EDITS[key]
-        if lib == 'BM':
-            edit = 'embedded symbol of the Bread Modular 32bit-5v schematic (KiCad 10 stock has no ES8388); renamed'
         sym[1] = key
         for u in nodes(sym, 'symbol'):
             u[1] = key + '_' + '_'.join(u[1].rsplit('_', 2)[-2:])
@@ -416,25 +417,36 @@ def build():
     (HW / f'{LIB}.kicad_sym').write_text(dump(lib) + '\n')
     (HW / 'sym-lib-table').write_text(
         f'(sym_lib_table (version 7) (lib (name "{LIB}") (type "KiCad") (uri "${{KIPRJMOD}}/{LIB}.kicad_sym") '
-        '(options "") (descr "32bit pinned symbols; see tools/build_schematic.py")))\n')
+        '(options "") (descr "32bit pinned symbols (carrier and MCU board); see tools/build_schematic.py")))\n')
+    (MODULE / 'docs/schematic-symbols.json').write_text(json.dumps(
+        {'note': f'Pinned symbols in hardware/{LIB}.kicad_sym (generated by tools/build_schematic.py)',
+         'symbols': sources}, indent=2) + '\n')
+    return lib_syms
 
+
+def build(module, lib_syms):
+    global C
+    C = importlib.import_module(module)
+    project, title, rev, comment = PROJECTS[module]
+    C.PROJECT = project
     root = uid('root')
     q = json.dumps
-    sch = parse(f'''(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
+    sch = parse(f"""(kicad_sch (version 20260306) (generator "eeschema") (generator_version "10.0")
       (uuid {q(root)}) (paper "A2")
-      (title_block (title "Big Modular - 32bit") (rev "S3") (company "Big Modular")
-        (comment 1 "SCHEMATIC S3 - Bread Modular 32bit-5v (ESP32-S3R8 + W25Q128 + ES8388) for Eurorack 6HP: MIDI in, 2 audio in, 2 CV in, 2 pots, mode button + LED, 2 outs")
+      (title_block (title {q(title)}) (rev {q(rev)}) (company "Big Modular")
+        (comment 1 {q(comment)})
         (comment 2 "Circuit intent: docs/research.md; placement: docs/geometry.json"))
-      (lib_symbols))''')
+      (lib_symbols))""")
+    parts = C.circuit()
+    used = {p['sym'] for p in parts} | {C.RAIL_SYMBOL[n] for n in C.RAIL_SYMBOL}
     embedded = one(sch, 'lib_symbols')
-    for k in sorted(lib_syms):
+    for k in sorted(used):
         s = copy.deepcopy(lib_syms[k])
         s[1] = f'{LIB}:' + k
         embedded.append(s)
 
     items, nets, ends = [], {}, {}
     units = {}
-    parts = circuit()
     for p in parts:
         sym = lib_syms[p['sym']]
         pins = pin_table(sym, p['unit'])
@@ -442,7 +454,7 @@ def build():
         units.setdefault(p['ref'], set()).add(p['unit'])
         x, y = p['at']
         is_flag = p['ref'].startswith('#')
-        assembled = not is_flag and p['ref'] not in NOT_ASSEMBLED
+        assembled = not is_flag and p['ref'] not in C.NOT_ASSEMBLED
         (rn, rxy, ra, rj), (vn, vxy, va, vj) = text_at(p, sym)
         props = [('Reference', p['ref'], rxy, is_flag, ra, rj), ('Value', p['value'], vxy, is_flag, va, vj),
                  ('Footprint', f"{LIB}:{FP[p['fp']]}" if p['fp'] else '', (x, y), True, 0, None),
@@ -452,7 +464,7 @@ def build():
                   (x, y), True, 0, None)]
         props += [(k, v, (x, y), True, 0, None) for k, v in p['fields'].items()]
         ukey = p['ref'] if p['unit'] == 1 else f"{p['ref']}/{p['unit']}"
-        mirror = p['ref'] in MIRROR_X
+        mirror = p['ref'] in C.MIRROR_X
         node = [atom('symbol'), [atom('lib_id'), f'{LIB}:' + p['sym']], [atom('at'), x, y, p['rot']],
                 *([[atom('mirror'), atom('x')]] if mirror else []),
                 [atom('unit'), p['unit']], [atom('exclude_from_sim'), atom('no')],
@@ -470,7 +482,7 @@ def build():
             node.append(prop)
         all_pins = set().union(*(pin_table(sym, u) for u in range(1, 10)))
         node += [[atom('pin'), n, [atom('uuid'), uid(f"pin/{ukey}/{n}")]] for n in sorted(all_pins)]
-        node.append([atom('instances'), [atom('project'), PROJECT,
+        node.append([atom('instances'), [atom('project'), C.PROJECT,
                      [atom('path'), '/' + root, [atom('reference'), p['ref']], [atom('unit'), p['unit']]]]])
         items.append(node)
         for n, net in sorted(p['pins'].items()):
@@ -490,27 +502,26 @@ def build():
             else:
                 ends[(ex, ey)] = (net, d, [key])
     multi = {ref: u for ref, u in units.items() if len(u) > 1}
-    assert multi == MULTI_UNIT, multi
+    assert multi == C.MULTI_UNIT, multi
     single = {n: k for n, k in nets.items() if len(k) < 2}
     assert not single, f'single-pin nets: {single}'
     items += draw(ends, root)
-    for i, ((x, y), s, size) in enumerate(TEXTS):
+    for i, ((x, y), s, size) in enumerate(C.TEXTS):
         items.append([atom('text'), s, [atom('exclude_from_sim'), atom('no')], [atom('at'), x, y, 0],
                       [atom('effects'), [atom('font'), [atom('size'), size, size]], [atom('justify'), atom('left')]],
                       [atom('uuid'), uid(f'text/{i}')]])
     sch += items
     sch.append([atom('sheet_instances'), [atom('path'), '/', [atom('page'), '1']]])
     sch.append([atom('embedded_fonts'), atom('no')])
-    out = HW / f'{PROJECT}.kicad_sch'
+    out = HW / f'{project}.kicad_sch'
     out.write_text(dump(sch) + '\n')
     subprocess.run(['kicad-cli', 'sch', 'upgrade', '--force', str(out)], check=True,
                    stdout=subprocess.DEVNULL)
     check_netlist(out, nets, {f"{p['ref']}/{n}" for p in parts for n, net in p['pins'].items() if net is None})
-    (MODULE / 'docs/schematic-symbols.json').write_text(json.dumps(
-        {'note': f'Pinned symbols in hardware/{LIB}.kicad_sym (generated by tools/build_schematic.py)',
-         'symbols': sources}, indent=2) + '\n')
     print(out, f'{len(nets)} nets, {len({p["ref"] for p in parts if not p["ref"].startswith("#")})} parts')
 
 
 if __name__ == '__main__':
-    build()
+    syms = symbol_library()
+    for name in (sys.argv[1:] or PROJECTS):
+        build(name, syms)

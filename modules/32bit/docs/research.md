@@ -192,3 +192,104 @@ R3 routing (manual, batches `research/s3/s01..s06`, DRC after each):
 
 Result: DRC 0 / unconnected 0 / parity 0, no exclusions; checks in `Code.md`. Open: JLCPCB preview, bench
 (crystal start-up, flash boot, PSRAM test, USB download with BOOT / RESET).
+
+## 9. S4: usb-audio S5 carrier + ESP32-S3 MCU board (2026-11-23; drawn and routed, section 9.1)
+
+Why (user, 2026-11-23): 32bit runs `master` in front of loud PA systems. With the same processing in
+Ableton, the modules/usb-audio input is silent and the 32bit is audibly noisier, so the difference is
+the 32bit audio hardware: ES8388 (about 95 dB) fed from the ESP32's +3V3 through R5 10R, MCLK divided
+from the ESP32 PLL. The bypassed-chain floor was not measured; this is a plan, nothing is drawn yet.
+
+User decisions (2026-11-23):
+
+- **Two boards as modules/usb-audio:** the analog carrier of usb-audio S5 and a separate MCU board
+  on two 1x10 2.54 mm strips over the carrier F side, vertical USB-C through the panel.
+- **MCU board = ESP32-S3** (ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal, the section 8 circuit), not
+  the CH32V307 board: `master` uses 41-57 % of the ESP32-S3 at 240 MHz, and the CH32V307 has the
+  8 MHz I2S limit.
+- **No CV inputs, no MIDI in.** Two pots and the audio IO only.
+- AMS1117-5.0 for +5VA as on usb-audio (proven quiet there); no TPS7A4700.
+- **Two in, two out** (IN L / IN R, OUT L / OUT R, stereo as on usb-audio). What goes where is up
+  to the firmware (`master` today: kick + mix in, its mono out on both OUTs).
+- **Pots and MODE are firmware controls:** two 50k RV09 pots read by the ESP32 ADC (not in the audio
+  path, so the usb-audio per-jack volume pots are dropped), the MODE button and LED on GPIOs. Their
+  meaning is set by the firmware; `master` reads none of them yet.
+
+Carrier (copy of usb-audio S5, `modules/usb-audio/tools/circuit_carrier.py`):
+
+- CS4272 (I2C 0x10, clock master from a 24.576 MHz oscillator, 48 kHz), the ESP32 as I2S slave.
+  R14 / R16 10k pull-downs on SCLK / LRCK, R48 47k on the DAC data line, MCLK scope pad.
+- Inputs: inverting stage + differential ADC drive (NE5532), R49 2.7k VCOM divider. Outputs:
+  difference amplifier per channel (NE5532) + 1k 1206 output resistor. The usb-audio IN / OUT volume
+  pots come out: unity gain jack to codec and codec to jack (fixed resistors for the 10 Vpp scaling,
+  checked when the circuit is drawn).
+- POT1 / POT2: 50k RV09 from +3V3 to GND, wiper -> 1k + 100n -> ESP32 ADC1. MODE button to GND
+  (internal pull-up) and the MODE LED + series resistor on GPIOs, on the panel side of the carrier.
+- +12V_F -> AMS1117-5.0 -> +5VA (codec VA and analog stages only); +12V_F -> 33R 1 W -> AMS1117-3.3
+  -> +3V3 (MCU board); +3V3 -> FB1 -> +3V3_C (codec VD / VLC).
+- RESET (EN) / BOOT (GPIO0) buttons on the carrier B side; the ESP32-S3 also enters download mode
+  over its own USB, so they are for recovery.
+- Side power header, M3x10 standoffs MS1 / MS2 above the MCU board, 6HP panel.
+
+MCU board (new, usb-audio MCU board outline 29 x 29.55 mm and strip positions):
+
+- ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal + decoupling as section 8; native USB on GPIO19 / 20
+  via USBLC6-2SC6 to the vertical HRO USB-C; no radio (LNA_IN open, no antenna keep-out).
+- Link: J7 unchanged (+3V3 GND SCLK GND LRCK ADC DAC CODEC_RST GND GND). J6 = 1 +3V3, 2 GND,
+  3 POT1, 4 POT2, 5 EN, 6 GPIO0, 7 I2C_SCL, 8 I2C_SDA, 9 MODE, 10 LED (usb-audio: SWDIO / SWCLK /
+  NRST / BOOT0 on 3-6, GND on 9 / 10). J6 keeps one GND, J7 has four. POT1 / POT2 on ADC1 GPIOs
+  (GPIO1 / GPIO2 as 32bit CV1 / CV2). The pinout differs from the CH32V307 board: the two MCU boards
+  are not interchangeable (silk it).
+
+Firmware: `master` keeps the chain and the Web Serial page; the ES8388 setup becomes a CS4272 driver
+(I2S slave, 24-bit), shared with modules/usb-audio, which has no CS4272 driver yet either.
+
+Risk: no CS4272 board is built yet. Build usb-audio S5 first (or in the same order) so the codec,
+its clocking and the driver are proven on the bench before 32bit depends on them.
+
+Open (plan stage; answered in 9.1): ESP32-S3 current from the carrier +3V3, panel and jack / pot rows.
+
+### 9.1 Result (2026-11-23)
+
+User: "decide it [the ESP32-S3 current] based on the current 32bit and spec sheets. Do the schematics and
+do the routing. Add the M3 screws for strength just like in the new USB Audio."
+
+- **+3V3 budget (datasheet, not measured):** ESP32-S3R8 at 240 MHz with the radio off 66..108 mA (datasheet
+  v2.2 table 5-9) + flash / in-package PSRAM (~20 mA allowed) + codec VD / VL + oscillator (~20 mA) + LED,
+  pots, pull-ups (~5 mA): ~130 mA typical, 180 mA design maximum. The usb-audio pre-drop R1 33R becomes
+  **22R 1 W** (0.37 W at 130 mA, 0.71 W at 180 mA); U2 AMS1117-3.3 still sees >= 6.9 V at 180 mA from an
+  11.4 V rail. Details in `tools/circuit_carrier.py`.
+- **Carrier S4 / R1** (`hardware/32bit.kicad_{sch,pcb}`, `tools/circuit_carrier.py`, copied with its copper from
+  the routed usb-audio S5 carrier by `tools/carrier_from_usb_audio.py`, batches `research/s4/b*.py`): volume pots
+  out of the audio path, RV1 / RV2 control pots from POT_TOP (R52 2.2k + C42 1u, 3.03 V), MODE SW3, LED
+  R53 + D3, RESET / BOOT on B, MS1 / MS2 M3x10 standoffs as usb-audio P2 (coaxial carrier / panel holes,
+  `docs/geometry.json` `mount_standoffs`). 102 footprints / 63 nets, 753 tracks / 117 vias; ERC 0, DRC 0
+  (all severities) / unconnected 0 / parity 0, no exclusions, no vias in SMD pads, no inner-layer tracks; In2
+  +3V3 and +5VA one piece each, In1 one piece + the two pad-tied 1 mm2 slivers usb-audio has. Courtyards >= 1.02 mm
+  from the edge, SMD >= 2.03 mm from pot / jack pads (C42 to RV1). Four duplicate stub segments inherited from
+  the usb-audio copper removed (b14).
+- **J6 as built** (carrier and MCU board): 1 +3V3, 2 GND, 3 EN, 4 BOOT (GPIO0), 5 MODE, 6 LED, 7 I2C_SDA,
+  8 I2C_SCL, 9 POT1, 10 POT2. J7 as usb-audio. The plan's J6 order above was changed while placing the carrier.
+- **MCU board S1 / R1** (`hardware/32bit-mcu.kicad_{sch,pcb}`, `tools/circuit_mcu.py`, batches `research/s4/m*.py`):
+  ESP32-S3R8 + W25Q128JVSIQ + 40 MHz crystal, USBLC6-2SC6 + vertical HRO USB-C (J101 at the usb-audio MCU board
+  position, its D+ / D- / VBUS joins copied), 4 layers (F signal + all SMD / In1 GND / In2 +3V3 / B signal).
+  27 footprints / 32 nets, 239 tracks / 41 vias; ERC 0, DRC 0 / unconnected 0 / parity 0, no exclusions, no vias
+  in SMD pads (two 0.5 mm vias under the U102 body between its pad rows), no inner-layer tracks, In1 / In2 one
+  piece each; courtyards >= 1.06 mm from the edge. EN / GPIO0 run as F lanes along the bottom and up the left
+  edge; MODE / LED, the I2C pair and the pots go on B to J6; the I2S lines fan out on F to J7; USB D+ / D- on
+  F / B to U102 and on B to GPIO20 / GPIO19 (USB full speed). B silk: name, revision and "J6: 32BIT ONLY".
+- **GPIOs chosen for the layout** (MCU board; `docs/firmware-pins.md` section S4): I2S slave SCLK GPIO18,
+  LRCK GPIO17, DIN (codec SDOUT) GPIO16, DOUT GPIO13 (R105 33R), codec RST GPIO12; I2C SDA GPIO9 / SCL GPIO8
+  (R107 / R106 2.2k here); POT1 GPIO7 (ADC1 CH6), POT2 GPIO6 (ADC1 CH5), C112 / C113 100n beside the pins;
+  MODE GPIO38, LED GPIO39; USB GPIO19 / 20.
+- Shared `check` (both configs, `tools/kicad-project.json`, `tools/kicad-project-mcu.json`): ERC / DRC / parity 0,
+  no findings, manifests equal after the S4 export.
+- **S4 JLCPCB export (2026-11-23, `../jlcpcb/README.md`):** two separate orders, no panelization (user: the boards
+  share no LCSC code, so a panel saves no feeder fees). `main/` carrier 88 parts / 33 rows (bottom Economic, 7
+  Extended types) + FR4 panel, `mcu/` 25 parts / 14 rows (top Economic, 4 Extended types). Every code live-checked:
+  free stock above the need, minimum purchase 1, no pre-order part; low: USB-C C22464480 414 free, CS4272 1,147.
+  `tools/check_usb.py` (usb-audio HS check, re-mapped) flags D+ / D- mismatch (1.1 / 3.5 mm) and ~10 mm of B-side
+  USB track over the In2 +3V3 plane: judged fine for ESP32-S3 full-speed USB, not waived, not re-routed.
+- Open: CS4272 driver in `master` (shared with usb-audio, no CS4272 board built yet); JLCPCB preview; stock
+  recheck before ordering; bench (+3V3 current and U2 / R1 heat, 40 MHz start-up, flash boot, PSRAM, noise floor
+  against the usb-audio board); commit.

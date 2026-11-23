@@ -1,0 +1,43 @@
+{
+  "generator": "bread-modular/kicad-jlcpcb",
+  "kicad_version": "10.0.6",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/324/modules/32bit/hardware/32bit-mcu.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/324/modules/32bit/hardware/32bit-mcu.kicad_sch",
+  "source_sha256": {
+    "/home/azero/.okbrain/workspaces/big-modular/324/modules/32bit/hardware/32bit-mcu.kicad_pcb": "277a77d54f1d7a108d38878efc5ad800db1ed3e96179a10e314e91cc3efce78d",
+    "/home/azero/.okbrain/workspaces/big-modular/324/modules/32bit/hardware/32bit-mcu.kicad_sch": "672c098fced40a25ff3e7be9f6fb4c7c20b1a6f69304d7b46dfd9f2977753162"
+  },
+  "layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "B.Cu",
+    "F.Mask",
+    "B.Mask",
+    "F.SilkS",
+    "B.SilkS",
+    "F.Paste",
+    "B.Paste",
+    "Edge.Cuts"
+  ],
+  "copper_layer_count": 4,
+  "origin": "KiCad drill/place origin",
+  "units": "mm",
+  "side": "top",
+  "include_through_hole": false,
+  "component_count": 25,
+  "bom_row_count": 14,
+  "excluded": {
+    "J102": "Excluded from BOM",
+    "J103": "Excluded from BOM"
+  },
+  "missing_part_numbers": [],
+  "warnings": [
+    "Export is not a DRC or assembly approval: refill zones and save before export; review Gerbers, holes, part matches, centroids and rotations in JLCPCB's preview."
+  ],
+  "files": [
+    "32bit-mcu-gerbers.zip",
+    "bom.csv",
+    "positions.csv"
+  ]
+}
