@@ -326,9 +326,11 @@ the module; 240 MHz is the margin if it is short (more U8 current).
 End-of-chain processor for a live set, in place of the DAW chain it copies: the
 kick on IN L, everything else (the 4MIX main) on IN R, one mono main on both
 outputs. Every setting is made from a web page over the USB-C port and saved in
-the module, which then runs alone. `master/main/src/ms_dsp.c` is the chain,
-`ms_params.c` the settings table, `ms_proto.c` the USB protocol, `master/web/`
-the page. No MIDI, so no JP1 setting.
+the module, which then runs alone; on stage the two CV knobs, the MODE button and
+the LED do what the page set them up for (section The panel below).
+`master/main/src/ms_dsp.c` is the chain, `ms_params.c` the settings table,
+`ms_proto.c` the USB protocol, `ms_ctl.c` the panel, `master/web/` the page. No
+MIDI, so no JP1 setting.
 
 ```
 IN L kick -> trim -> filter -> limiter ----------------+--> kick level --+
@@ -354,6 +356,7 @@ limiter's input, so it keeps its lead over the delayed mix.
 | Parallel compression | kick send + mix send -> one heavy compressor (6 dB knee) -> make-up -> return into the main | on, the two sends, threshold (-35 dB), ratio 1.5..20 (10), attack (2 ms), release (150 ms), make-up (20 dB), return (-6 dB) |
 | Glue compressor | bus compressor on the main sum: a circuit model of the analog VCA bus compressor behind the Glue (feedback detector, RC timing, gain cell colour; section Glue compressor below) with the Glue's controls: ratio 2 / 4 / 10, attack .01 .. 30 ms and release .1 .. 1.2 s in the same steps, release A (two capacitors: a short peak recovers in ~0.1 s, a long loud passage over ~5 s), range (most reduction), dry / wet, sidechain high pass, soft clip (bends from -6 dB to a -0.5 dB top) | on, threshold (-10 dB), ratio (2), attack (10 ms), release (A), make-up, range, dry / wet, SC high pass, soft clip |
 | Limiter | look-ahead peak limiter, last in the chain (factory order): the output never passes the ceiling | on, gain, ceiling (-1 dB), release (100 ms), auto release (on), look-ahead (1.5 ms) |
+| Channels | off and solo on the kick, the mix and the parallel bus, off on the master (0.4.0). Off takes the channel's level and its send; solo leaves only the soloed channels in the main and keeps every send, so a soloed parallel bus is still fed; the multiband key stays (a kick that is off still ducks the mix). They are gains, so they fade in 10 ms like a fader, and they act in bypass too | off, solo; never saved |
 | Output | level, and a bypass (kick + mix straight out) for comparing | output level -60..0 dB; bypass is never saved |
 
 Levels in dB with a -60 dB minimum are off at the minimum. The factory order of
@@ -433,6 +436,35 @@ clip are the Glue's additions. Circuit facts from the Gyraf SSL clone notes
 | LED | dim = running, bright = an input is at the converter's full scale, slow blink = bypass |
 | MODE button, CV1 / CV2, MIDI in | not used |
 
+### The panel: CV knobs, MODE button, LED
+
+Since 0.4.0 (`main/src/ms_ctl.c`, `ms_io.c`). Set up on the page's **Panel** tab,
+saved with the settings (`map` lines after the `set` lines; a file of 0.3.x has
+none):
+
+| Control | What it does |
+|---|---|
+| CV 1, CV 2 | each moves up to 8 settings, each between its own two values (knob down -> up; the two may be the other way round). Frequencies and times move on a log scale, lists step. The knob reads knob x CV (normalled to +5 V), smoothed (~30 ms) and with a 0.4 % step so the ADC's noise moves nothing. A setting follows its knob when the knob moves, at power-up, after Revert and when it is mapped; a value set on the page stays until the knob moves. Not the look-aheads (each change restarts that limiter) |
+| MODE | switches up to 8 on / off settings (bypass, channel off / solo, an effect's switch, ...) to their values and back, in **one** way picked on the page (0.4.1; setting `mode_act`, saved): **click** (a press switches them over, the next press back, on the press), **hold** (holding the button 0.5 s switches them over, the next hold back; a short press does nothing), or **push** (over only while the button is down; back on the release even if the way was changed meanwhile). MODE is "over" while all its settings are at their values, also when they got there from the page. 0.4.0 had three lists (click, hold and push at once); their `map click` / `map hold` / `map push` lines now load into the one MODE list |
+| LED | shows the status (dim = running, slow blink = bypass; the 0.3.x LED), the output level (-48..0 dB), the kick level, the gain reduction of the glue / limiter (0..12 dB), whether MODE is over (dim if not), or nothing; brightness; full on while an input clips the converter (switchable) |
+
+**No cost to the audio.** The knobs and the button only change settings, as a
+`set` from the page does: core 0 reads them every 10 ms in the main task (ADC
+one-shot reads and a GPIO, no task or interrupt of its own), works out new
+coefficients when something moved and hands them to the audio task, which takes
+them at a block boundary (a copy, as for every page change). Nothing new runs per
+sample: the channel switches are two more smoothed gains per block, QEMU counts
+1166 / 1736 instructions per sample at the factory settings / all on (0.3.0:
+1165 / 1735), and the chain renders as before (QEMU against the host, within 8
+steps of 24 bits). What remains to hear on the module: a filter frequency on a
+knob steps every 10 ms (as when it is dragged on the page; the gains are
+smoothed, the filters are not), and the LED is PWM at 5 kHz as before, whose
+duty now moves in the level modes (if it is heard in the audio, pick Status or
+Off).
+
+Pins: CV1 GPIO1, CV2 GPIO2, MODE GPIO8, LED GPIO18 (S3 and ES1 boards). The S4
+board has them elsewhere and the master firmware has no CS4272 driver yet.
+
 ### Web page
 
 `master/web/index.html`, for Chrome or Edge on a computer (Web Serial; not
@@ -451,10 +483,10 @@ panel on the right. Strips, signal top to bottom:
 
 | Strip | Top to bottom |
 |---|---|
-| KICK (IN L) | trim knob + input level / CLIP and the send into the parallel bus, effects (Filter, Limiter), level fader |
-| MIX (IN R) | trim and send, effects (Filter, Multiband), level fader |
-| PARALLEL | the two sends that feed it, Compressor, return fader |
-| MASTER | what feeds it, effects (Glue compressor, Filter, Limiter), output fader |
+| KICK (IN L) | OFF / S(olo), trim knob + input level / CLIP and the send into the parallel bus, effects (Filter, Limiter), level fader |
+| MIX (IN R) | OFF / S, trim and send, effects (Filter, Multiband), level fader |
+| PARALLEL | OFF / S, the two sends that feed it, Compressor, return fader |
+| MASTER | OFF, what feeds it, effects (Glue compressor, Filter, Limiter), output fader |
 
 Each effect is a slot with its on / off lamp, its main values and a small
 gain-reduction bar. **Drag a slot up / down (or Alt + arrow keys) to move it in
@@ -481,8 +513,25 @@ A change is heard at once. **Save to module** writes all settings to flash (the
 audio drops for a moment while it writes); without it they are gone at
 power-off, and the side panel shows "Unsaved changes" until then. Revert goes
 back to the saved settings, Factory to the defaults, Export / Import keep a set as
-a text file, Bypass sends kick + mix straight out to compare. The side panel also
+a text file. Bypass (at the top of the side panel, above the tabs, so it stays on
+screen while it is dragged onto MODE) sends kick + mix straight out to compare. The side panel also
 shows the audio task's CPU load (mean and worst block) and the latency estimate.
+
+The side panel's second tab, **Panel**, is the module's CV 1, CV 2 (with where
+each knob is now), MODE (Click / Hold / Push picked with one segmented switch,
+one list, a lamp lit while it is switched over and a Press button that does the
+same as the button, held down for Push) and LED
+(what it shows, brightness, clip flash, and the LED as it is now). **Drag a
+control's name onto CV 1, CV 2 or MODE** (a knob's name, a strip's
+Trim / Send / Level caption, a slot's lamp, OFF / S, Bypass, any switch): CV
+starts over the setting's whole range, a switch goes to the other state (the
+drag is a copy: a link-only drop is refused on Wayland). Each
+mapping is a row with the value now, the two values (typed as on a knob, a
+choice for lists), turn round and remove. Mapped controls carry a CV1 / CV2 / M
+badge. **Right-click a control** (mouse) or, **on a touch screen, hold it** (0.55 s,
+still) and pick CV 1, CV 2 or MODE in the sheet that opens; a tap still works the control, a
+mapped one is taken off from there too. Below 900 px the page is one column
+that scrolls (side panel on top).
 
 The ranges, names and choices come from the firmware's own settings table
 (`desc`); the page's `STRIPS` table only says which strip and slot each one
@@ -497,7 +546,11 @@ every control works, the meters are invented and nothing is processed.
 `master/tests/web_check.mjs` drives the page in headless Chromium (node >= 22):
 demo mode with real mouse drags (knobs, faders, the filter's points, the
 multiband split, slots dragged to a new order), the layout (side panel, fixed
-panel height, no page scroll) and the Web Serial path against a fake port. Not
+panel height, no page scroll), the Panel tab (drag and drop onto CV / MODE,
+typed ranges, Press, LED, saved / reverted / exported with the settings), strip
+off / solo, a touch screen (hold -> sheet, a tap still switches, a 412 px
+window), a native browser drag (copy, onto CV 2) and right-click -> sheet, and
+the Web Serial path against a fake port. Not
 part of `make`; a second argument saves screenshots of every view there:
 
 ```sh
@@ -506,7 +559,8 @@ node master/tests/web_check.mjs http://localhost:3000/ [folder]
 ```
 
 The protocol is plain text lines (`master/main/include/ms_proto.h`): `hello`,
-`desc`, `get`, `set <id> <value>`, `m` (meters), `save`, `load`, `defaults`. It
+`desc`, `get`, `set <id> <value>`, `m` (meters), `save`, `load`, `defaults`, and
+for the panel `ctl`, `map <src> <id> <a> [<b>]`, `unmap`, `fire [on|off]` (protocol 3 since 0.4.1; 2 in 0.4.0, whose panel the page no longer drives). It
 shares the USB port with the ESP-IDF log, whose lines the page shows at the
 bottom of the side panel. `MONITOR=1 ./flash.sh master` gives a terminal on it.
 
@@ -553,10 +607,10 @@ a release), and the total falls to about 2.3 ms.
   16): the chain adds gain, so 16-bit input steps would come up with it.
 - 44.1 kHz, single-precision float, state-variable filters (well conditioned at
   a 10 Hz cut), log2 / 2^x approximations within 0.006 dB.
-- **240 MHz** (the others run at 160): QEMU counts 1165 instructions per sample
-  at the factory settings (0.3.0; 0.2.0: 1148), 1735 with everything on (worst
-  block 1875; every filter's low and high cut at 48 dB/oct, auto release; 0.2.0:
-  1388 / 1562 with 24 dB/oct cuts), 62 in bypass (`master/tools/cpu-bench/run.sh`,
+- **240 MHz** (the others run at 160): QEMU counts 1166 instructions per sample
+  at the factory settings (0.4.0; 0.3.0: 1165; 0.2.0: 1148), 1736 with everything
+  on (worst block 1938 in the 0.4.0 run; every filter's low and high cut at 48 dB/oct, auto release; 0.2.0:
+  1388 / 1562 with 24 dB/oct cuts), 66 in bypass (`master/tools/cpu-bench/run.sh`,
   needs Espressif's `qemu-xtensa`). The cycles per instruction on the chip are
   not known here; at 2 the worst block would take 69 % of a 240 MHz core before
   the I2S driver's own share of each 363 us block. Read the page's CPU figure on the module; the
@@ -566,6 +620,25 @@ a release), and the total falls to about 2.3 ms.
   older set.
 
 ### State
+
+0.4.1 (2026-11-24, user: "In the MODE, allow us to select either Click, Hold or
+Push. Not all."): one MODE list instead of three, worked one way, picked on the
+Panel tab (`mode_act`: Click / Hold / Push, saved with the settings); `fire on` /
+`fire off` for the page's Push button; 0.4.0's click / hold / push mappings load
+into the one list; protocol 3. Built with ESP-IDF v5.5.1 (S3 and ES1), no
+warnings. Host tests 963 checks (each way: click on the press, a long press only
+once; hold not before 0.5 s; push back on the release, also after a change of
+way while down), page checks 97, all pass. **Not flashed.**
+
+0.4.0 (2026-11-24): the panel (CV 1 / CV 2 mappings with ranges, MODE click /
+hold / push actions, LED modes; saved with the settings), channel off / solo on
+every strip and master off, the page's Panel tab with drag and drop and, on touch
+screens, hold to attach; protocol 2. Built with ESP-IDF v5.5.1 (S3 and ES1):
+353 KB app, no warnings. Host tests 945 checks (+ off / solo on the chain and in
+bypass, the fade, mapping rules, knob smoothing / noise / end stops / log
+ranges, button debounce / click / hold / push, LED modes, protocol, save and
+power-up), page checks all pass. **Not flashed, not heard; the knobs, button
+and LED have not been read on the module.**
 
 0.3.0 (2026-11-23): the cuts became one filter device per strip (low + high cut,
 resonance, 12 / 24 / 48 dB/oct), the effects of each strip can change order, the

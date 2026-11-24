@@ -27,6 +27,7 @@ const ms_group_def_t ms_group_defs[] = {
     {"o_flt", "Master filter"},
     {"lim", "Limiter"},
     {"out", "Output"},
+    {"led", "MODE button and LED"},
 };
 const int ms_group_count = (int)(sizeof(ms_group_defs) / sizeof(ms_group_defs[0]));
 
@@ -218,6 +219,23 @@ void ms_coefs_from_params(const float v[MS_P_COUNT], float fs, int block, ms_coe
     c->g[MS_G_PAR_RET] = level_gain(v[MS_P_PAR_RET]) * ms_db_to_lin(v[MS_P_PAR_MAKEUP]);
     c->g[MS_G_GLUE_MAKEUP] = ms_db_to_lin(v[MS_P_GLUE_MAKEUP]);
     c->g[MS_G_OUT] = level_gain(v[MS_P_OUT_LVL]);
+
+    // Channel off / solo: only gains, so they fade in 10 ms like a fader. Off takes
+    // the channel's send too; solo leaves the others' sends, so a soloed parallel
+    // bus is still fed. The multiband key stays (a kick that is off still ducks).
+    const bool k_off = v[MS_P_K_OFF] >= 0.5f, m_off = v[MS_P_M_OFF] >= 0.5f, p_off = v[MS_P_PAR_OFF] >= 0.5f;
+    const bool k_solo = v[MS_P_K_SOLO] >= 0.5f, m_solo = v[MS_P_M_SOLO] >= 0.5f, p_solo = v[MS_P_PAR_SOLO] >= 0.5f;
+    const bool solo = k_solo || m_solo || p_solo, master = v[MS_P_OUT_OFF] < 0.5f;
+    const float k_hear = !k_off && (!solo || k_solo), m_hear = !m_off && (!solo || m_solo);
+    c->g[MS_G_LVL_K] *= k_hear;
+    c->g[MS_G_LVL_M] *= m_hear;
+    c->g[MS_G_SEND_K] *= !k_off;
+    c->g[MS_G_SEND_M] *= !m_off;
+    c->g[MS_G_PAR_RET] *= !p_off && (!solo || p_solo);
+    c->g[MS_G_OUT] *= master;
+    // Bypass: kick + mix straight out, still with off / solo and the master switch.
+    c->g[MS_G_BYP_K] = k_hear * master;
+    c->g[MS_G_BYP_M] = m_hear * master;
 
     memcpy(c->k_order, order_k[(int)v[MS_P_K_ORDER]], sizeof(c->k_order));
     memcpy(c->m_order, order_m[(int)v[MS_P_M_ORDER]], sizeof(c->m_order));

@@ -9,10 +9,13 @@ idf_component_register(
         "src/bm_audio.c"
         "src/bm_es8388.c"
         "src/bm_led.c"
+        "src/ms_ctl.c"
         "src/ms_dsp.c"
+        "src/ms_io.c"
         "src/ms_params.c"
         "src/ms_proto.c"
     REQUIRES
+        esp_adc
         esp_driver_gpio
         esp_driver_i2c
         esp_driver_i2s

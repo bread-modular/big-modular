@@ -37,8 +37,13 @@ typedef enum { MS_KIND_LIN, MS_KIND_LOG, MS_KIND_BOOL, MS_KIND_ENUM } ms_kind_t;
     "Glue > Filter > Limiter,Glue > Limiter > Filter,Filter > Glue > Limiter,Filter > Limiter > Glue,"          \
     "Limiter > Glue > Filter,Limiter > Filter > Glue"
 
+// What the MODE LED shows (ms_ctl.h MS_LED_*).
+#define MS_MODE_ACTS "Click,Hold,Push"
+#define MS_LED_MODES "Status,Output level,Kick level,Gain reduction,MODE,Off"
+
 //   X(NAME, id, group, label, kind, min, max, default, step, unit, options, not_saved)
-// Levels in dB with a -60 minimum are off (silent) at the minimum.
+// Levels in dB with a -60 minimum are off (silent) at the minimum. The channel
+// off / solo switches and the bypass are setup and performance aids: never saved.
 #define MS_PARAMS(X)                                                                                              \
     X(IN_K_TRIM, "in_k_trim", "in", "Kick trim", LIN, -24, 24, 0, 0.5f, "dB", "", 0)                              \
     X(IN_M_TRIM, "in_m_trim", "in", "Mix trim", LIN, -24, 24, 0, 0.5f, "dB", "", 0)                               \
@@ -52,10 +57,14 @@ typedef enum { MS_KIND_LIN, MS_KIND_LOG, MS_KIND_BOOL, MS_KIND_ENUM } ms_kind_t;
     X(K_LIM_AUTO, "k_lim_auto", "kick", "Limiter auto release", BOOL, 0, 1, 0, 1, "", "", 0)                      \
     X(K_LIM_LA, "k_lim_la", "kick", "Limiter look-ahead", LIN, 0, 5, 1, 0.1f, "ms", "", 0)                        \
     X(K_LVL, "k_lvl", "kick", "Kick level", LIN, -60, 12, 0, 0.1f, "dB", "", 0)                                   \
+    X(K_OFF, "k_off", "kick", "Kick off", BOOL, 0, 1, 0, 1, "", "", 1)                                            \
+    X(K_SOLO, "k_solo", "kick", "Kick solo", BOOL, 0, 1, 0, 1, "", "", 1)                                         \
     /* Mix */                                                                                                     \
     X(M_ORDER, "m_order", "mix", "Mix order", ENUM, 0, 1, 0, 1, "", MS_ORDER_M, 0)                                \
     MS_FILTER(X, M, "m", "m_flt", 1, 40, 0, 0, 20000, 0)                                                          \
     X(M_LVL, "m_lvl", "mix", "Mix level", LIN, -60, 12, 0, 0.1f, "dB", "", 0)                                     \
+    X(M_OFF, "m_off", "mix", "Mix off", BOOL, 0, 1, 0, 1, "", "", 1)                                              \
+    X(M_SOLO, "m_solo", "mix", "Mix solo", BOOL, 0, 1, 0, 1, "", "", 1)                                           \
     /* Multiband dynamics */                                                                                      \
     X(MB_ON, "mb_on", "mb", "Multiband", BOOL, 0, 1, 1, 1, "", "", 0)                                             \
     X(MB_SC, "mb_sc", "mb", "Sidechain", ENUM, 0, 1, 0, 1, "", "Kick,Self", 0)                                    \
@@ -95,6 +104,8 @@ typedef enum { MS_KIND_LIN, MS_KIND_LOG, MS_KIND_BOOL, MS_KIND_ENUM } ms_kind_t;
     X(PAR_REL, "par_rel", "par", "Release", LOG, 10, 2000, 150, 0, "ms", "", 0)                                   \
     X(PAR_MAKEUP, "par_makeup", "par", "Make-up", LIN, 0, 36, 20, 0.1f, "dB", "", 0)                              \
     X(PAR_RET, "par_ret", "par", "Return", LIN, -60, 12, -6, 0.1f, "dB", "", 0)                                   \
+    X(PAR_OFF, "par_off", "par", "Parallel off", BOOL, 0, 1, 0, 1, "", "", 1)                                     \
+    X(PAR_SOLO, "par_solo", "par", "Parallel solo", BOOL, 0, 1, 0, 1, "", "", 1)                                  \
     /* Glue compressor */                                                                                         \
     X(GLUE_ON, "glue_on", "glue", "Glue compressor", BOOL, 0, 1, 1, 1, "", "", 0)                                 \
     X(GLUE_THR, "glue_thr", "glue", "Threshold", LIN, -40, 0, -10, 0.1f, "dB", "", 0)                             \
@@ -118,7 +129,13 @@ typedef enum { MS_KIND_LIN, MS_KIND_LOG, MS_KIND_BOOL, MS_KIND_ENUM } ms_kind_t;
     /* Output */                                                                                                  \
     X(O_ORDER, "o_order", "out", "Master order", ENUM, 0, 5, 0, 1, "", MS_ORDER_O, 0)                             \
     X(OUT_LVL, "out_lvl", "out", "Output level", LIN, -60, 0, 0, 0.1f, "dB", "", 0)                               \
-    X(BYPASS, "bypass", "out", "Bypass", BOOL, 0, 1, 0, 1, "", "", 1)
+    X(OUT_OFF, "out_off", "out", "Master off", BOOL, 0, 1, 0, 1, "", "", 1)                                       \
+    X(BYPASS, "bypass", "out", "Bypass", BOOL, 0, 1, 0, 1, "", "", 1)                                             \
+    /* The MODE button and LED (ms_ctl.h) */                                                                      \
+    X(MODE_ACT, "mode_act", "led", "MODE button", ENUM, 0, 2, 0, 1, "", MS_MODE_ACTS, 0)                          \
+    X(LED_MODE, "led_mode", "led", "LED shows", ENUM, 0, 5, 0, 1, "", MS_LED_MODES, 0)                            \
+    X(LED_BRIGHT, "led_bright", "led", "LED brightness", LIN, 5, 100, 100, 1, "%", "", 0)                         \
+    X(LED_CLIP, "led_clip", "led", "LED flashes on input clip", BOOL, 0, 1, 1, 1, "", "", 0)
 
 typedef enum {
 #define X(name, ...) MS_P_##name,

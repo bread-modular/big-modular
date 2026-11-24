@@ -17,8 +17,8 @@ SRCS := ms_render.c ../main/src/ms_dsp.c ../main/src/ms_params.c
 ms_render: $(SRCS) $(wildcard ../main/include/*.h)
 	$(CC) $(CFLAGS) $(INC) -o $@ $(SRCS) -lm
 
-gen_web_demo: gen_web_demo.c ../main/src/ms_proto.c ../main/src/ms_params.c ../main/src/ms_dsp.c $(wildcard ../main/include/*.h) ../VERSION
-	$(CC) $(CFLAGS) $(INC) -DFIRMWARE_VERSION='"$(shell cat ../VERSION)"' -o $@ gen_web_demo.c ../main/src/ms_proto.c ../main/src/ms_params.c ../main/src/ms_dsp.c -lm
+gen_web_demo: gen_web_demo.c ../main/src/ms_ctl.c ../main/src/ms_proto.c ../main/src/ms_params.c ../main/src/ms_dsp.c $(wildcard ../main/include/*.h) ../VERSION
+	$(CC) $(CFLAGS) $(INC) -DFIRMWARE_VERSION='"$(shell cat ../VERSION)"' -o $@ gen_web_demo.c ../main/src/ms_ctl.c ../main/src/ms_proto.c ../main/src/ms_params.c ../main/src/ms_dsp.c -lm
 
 web: gen_web_demo
 	./gen_web_demo > ../web/demo.js

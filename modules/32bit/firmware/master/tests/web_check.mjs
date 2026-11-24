@@ -20,7 +20,7 @@ const evaluate = async (expr) => {
   if (r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails).slice(0, 600));
   return r.result.value;
 };
-let fails = 0;
+let fails = 0, dragData = null;
 const check = (ok, text) => { console.log((ok ? "ok   " : "FAIL ") + text); if (!ok) fails++; };
 const shot = async (name) => { if (shots) writeFileSync(`${shots}/${name}.png`, Buffer.from((await cdp("Page.captureScreenshot")).data, "base64")); };
 const mouse = (type, x, y, extra = {}) => cdp("Input.dispatchMouseEvent", { type, x, y, button: "left", buttons: type === "mouseReleased" ? 0 : 1, clickCount: 1, ...extra });
@@ -49,18 +49,22 @@ try {
     if (m.id && waiting.has(m.id)) { const w = waiting.get(m.id); waiting.delete(m.id); m.error ? w.rej(new Error(m.error.message)) : w.res(m.result); }
     if (m.method === "Runtime.exceptionThrown") errors.push(m.params.exceptionDetails.text + " " + (m.params.exceptionDetails.exception?.description || ""));
     if (m.method === "Runtime.consoleAPICalled" && m.params.type === "error") errors.push(m.params.args.map((a) => a.value).join(" "));
+    if (m.method === "Input.dragIntercepted") dragData = m.params.data;
   };
   await cdp("Runtime.enable");
   await cdp("Page.enable");
+  // a headless page counts as hidden: without this its timers get throttled after a few minutes
+  await cdp("Emulation.setFocusEmulationEnabled", { enabled: true });
+  await cdp("Page.bringToFront");
 
   // ---- demo mode: the mixer
   await cdp("Page.navigate", { url: url + "?demo" });
   await sleep(1500);
   check(await evaluate(`[...document.querySelectorAll(".strip .sname")].map((e) => e.textContent).join(" ")`) === "KICK MIX PARALLEL MASTER", "four strips: kick, mix, parallel, master");
   check(await evaluate(`[...document.querySelectorAll(".slot .slotname")].map((e) => e.textContent).join("|")`) === "Filter|Limiter|Filter|Multiband|Compressor|Glue compressor|Filter|Limiter", "effect slots per strip, no Other slot");
-  check(await evaluate(`state.params.size`) === 95, "95 parameters");
+  check(await evaluate(`state.params.size`) === 106, "106 parameters");
   // every parameter has a place: a strip control, a slot switch, a slot's settings or the side panel
-  const placed = await evaluate(`(() => { const ids = new Set(TOOLBAR); for (const s of STRIPS) for (const i of [s.trim, s.send, s.fader, s.on, s.order, ...s.devices.map((d) => d.on)]) if (i) ids.add(i);
+  const placed = await evaluate(`(() => { const ids = new Set(TOOLBAR); for (const s of STRIPS) for (const i of [s.trim, s.send, s.fader, s.on, s.order, s.mute, s.solo, ...s.devices.map((d) => d.on)]) if (i) ids.add(i);
     for (const d of state.devices.values()) for (const sec of d.sections) for (const p of sec.params) ids.add(p.id); return [...state.params.keys()].filter((i) => !ids.has(i)); })()`);
   check(placed.length === 0, "every parameter is on a strip or in a slot" + (placed.length ? ": missing " + placed : ""));
   // every setting of an effect has a control in its panel
@@ -236,13 +240,106 @@ try {
   check(await evaluate(`$("lat").textContent`) === "≈ 2.3 ms", "bypass latency");
   await evaluate(`$("bypass").click()`);
   const text = await evaluate(`settingsText()`);
-  check(text.includes("set glue_ratio 2\n") && text.includes("set k_lvl -3\n") && !text.includes("bypass") && !text.includes("mb_solo") && text.trim().split("\n").length === 93, "export: 93 saved settings, no setup aids");
+  check(text.includes("set glue_ratio 2\n") && text.includes("set k_lvl -3\n") && !text.includes("bypass") && !text.includes("mb_solo") && !text.includes("k_off") && !text.includes("map ") && text.trim().split("\n").length === 97, "export: 97 saved settings, no setup aids, no mappings yet");
   await evaluate(`state.devices.get("glue").node.click()`);
   await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_ratio").node.querySelectorAll("button")[0].click()`);
   await sleep(200);
   await evaluate(`$("revert").click()`);
   await sleep(300);
   check((await value("glue_ratio"))[0] === 2 && await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_ratio").node.querySelectorAll("button")[2].classList.contains("sel")`), "Revert restores the saved ratio");
+
+
+  // ---- the module's panel: drag to CV / MODE, ranges, off / solo, LED, saved with the settings
+  const dnd = (fromExpr, zoneSrc) => evaluate(`(() => { const from = ${fromExpr}, zone = document.querySelector('.drop[data-src="${zoneSrc}"]'), dt = new DataTransfer();
+    const ev = (n, t) => n.dispatchEvent(new DragEvent(t, { bubbles: true, cancelable: true, dataTransfer: dt }));
+    ev(from, "dragstart"); const over = !ev(zone, "dragover"); const cls = zone.className; ev(zone, "drop"); ev(from, "dragend"); return [over, cls]; })()`);
+  const maps = () => evaluate(`[state.maps.map((m) => [m.src, m.id, m.a, m.b].join(" ")).join(" | "), state.link.maps.map((m) => [m.src, m.id, m.a, m.b].join(" ")).join(" | ")]`);
+  check(await evaluate(`document.querySelectorAll("#tab-panel .pcard").length === 4 && $("tab-panel").hidden`), "Panel tab: CV 1, CV 2, MODE, LED cards, hidden at first");
+  await evaluate(`state.devices.get("glue").node.click()`);
+  await sleep(100);
+  const [accepted, zoneCls] = await dnd(`state.detailCtls.find((c) => c.p.id === "glue_thr").node.querySelector(".klabel")`, "cv1");
+  await sleep(300);
+  let mp = await maps();
+  check(accepted && zoneCls.includes("can") && mp[0] === "cv1 glue_thr -40 0" && mp[1] === mp[0], "glue threshold dragged onto CV 1: the whole range, " + mp);
+  check(!(await evaluate(`$("tab-panel").hidden`)) && (await value("glue_thr"))[0] === -20, "the Panel tab opens; the knob (demo: half way) sets −20 dB: " + (await value("glue_thr")));
+  check(await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_thr").node.querySelector(".klabel").dataset.maps`) === "CV1" && await evaluate(`$("mapCount").textContent`) === "1", "CV1 badge on the knob's name, count on the tab");
+  await evaluate(`(() => { const i = document.querySelector('.drop[data-src="cv1"] .prow input'); i.value = "-30"; i.onchange(); })()`);
+  await sleep(300);
+  mp = await maps();
+  check(mp[0] === "cv1 glue_thr -30 0" && mp[1] === mp[0] && (await value("glue_thr"))[0] === -15, "range typed: −30 → 0 dB, value −15: " + mp);
+  check(await evaluate(`document.querySelector('.drop[data-src="cv1"] .prow .now').textContent`) === "−15.0 dB", "the row shows the value now");
+  const [refused] = await dnd(`state.detailCtls.find((c) => c.p.id === "glue_ratio").node.querySelector(".klabel")`, "mode");
+  await sleep(300);
+  check(!refused && (await maps())[0] === "cv1 glue_thr -30 0", "a choice is not taken by MODE");
+  await evaluate(`state.devices.get("lim").node.click()`);
+  await sleep(100);
+  const [laOk] = await dnd(`state.detailCtls.find((c) => c.p.id === "lim_la").node.querySelector(".klabel")`, "cv2");
+  check(!laOk, "look-ahead is not taken by a knob");
+  // strip off / solo
+  await evaluate(`state.strips[0].strip.querySelector(".mb.off").click()`);
+  await sleep(300);
+  check((await value("k_off"))[1] === 1 && await evaluate(`state.strips[0].strip.classList.contains("silent") && !state.strips[1].strip.classList.contains("silent")`), "kick OFF: on the module, kick strip silent");
+  await evaluate(`state.strips[0].strip.querySelector(".mb.off").click()`);
+  await evaluate(`state.strips[1].strip.querySelector(".mb.solo").click()`);
+  await sleep(300);
+  check((await value("m_solo"))[1] === 1 && await evaluate(`[0, 1, 2, 3].map((i) => state.strips[i].strip.classList.contains("silent")).join()`) === "true,false,true,false", "mix solo: kick and parallel silent, master not");
+  await evaluate(`state.strips[1].strip.querySelector(".mb.solo").click()`);
+  // MODE: the kick's OFF button and Bypass onto MODE; click (default) / push / hold, one at a time
+  await dnd(`state.strips[0].strip.querySelector(".mb.off")`, "mode");
+  // the drag opens the Panel tab: Bypass must stay on screen then, or the browser drops the drag
+  check(await evaluate(`showTab("panel"), !$("bypass").closest(".tabbody") && $("bypass").offsetParent !== null`), "Bypass stays visible with the Panel tab open");
+  await dnd(`$("bypass")`, "mode");
+  await sleep(300);
+  mp = await maps();
+  check(mp[0] === "cv1 glue_thr -30 0 | mode k_off 1 0 | mode bypass 1 0" && mp[1] === mp[0], "kick OFF and bypass onto MODE: " + mp);
+  const modeCard = `document.querySelectorAll("#tab-panel .pcard")[2]`;
+  const actSel = () => evaluate(`[...${modeCard}.querySelectorAll(".psub .seg button")].map((b) => b.textContent + (b.classList.contains("sel") ? "*" : "")).join(",")`);
+  const modeLamp = () => evaluate(`${modeCard}.querySelector(".phead .lamp").classList.contains("on")`);
+  check(await actSel() === "Click*,Hold,Push" && await evaluate(`document.querySelectorAll("#tab-panel .psub").length`) === 1, "MODE: one way to press at a time, Click selected: " + await actSel());
+  await evaluate(`${modeCard}.querySelector(".psub .mini").click()`);
+  await sleep(400);
+  check((await value("k_off"))[0] === 1 && (await value("bypass"))[0] === 1 && await modeLamp(), "Press: kick off + bypass, MODE lamp lit");
+  await evaluate(`${modeCard}.querySelector(".psub .mini").click()`);
+  await sleep(400);
+  check((await value("k_off"))[0] === 0 && (await value("bypass"))[0] === 0 && !(await modeLamp()), "Press again: back");
+  await evaluate(`${modeCard}.querySelectorAll(".psub .seg button")[2].click()`);
+  await sleep(300);
+  check((await value("mode_act"))[1] === 2 && await actSel() === "Click,Hold,Push*" && await evaluate(`${modeCard}.querySelector(".psub .mini").textContent`) === "Hold", "Push selected on the module, the page button becomes Hold");
+  await evaluate(`${modeCard}.querySelector(".psub .mini").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }))`);
+  await sleep(400);
+  check((await value("k_off"))[0] === 1 && await modeLamp(), "push: over while the page button is down");
+  await evaluate(`(() => { const b = ${modeCard}.querySelector(".psub .mini"); b.dispatchEvent(new PointerEvent("pointerup", { bubbles: true })); b.click(); })()`);
+  await sleep(400);
+  check((await value("k_off"))[0] === 0 && !(await modeLamp()), "push: back on the release, the click after it does nothing");
+  await evaluate(`${modeCard}.querySelectorAll(".psub .seg button")[1].click()`);
+  await sleep(300);
+  check((await value("mode_act"))[1] === 1 && await actSel() === "Click,Hold*,Push", "Hold selected");
+  await evaluate(`[...document.querySelectorAll('.drop[data-src="mode"] .prow')[0].querySelectorAll('.seg button')][1].click()`);
+  await sleep(300);
+  check((await maps())[0].includes("mode k_off 0 0"), "MODE value switched to OFF");
+  // LED
+  await evaluate(`(() => { const s = document.querySelector("#tab-panel .ledrow select"); s.value = 4; s.onchange(); })()`);
+  await sleep(300);
+  check((await value("led_mode"))[1] === 4, "LED shows MODE");
+  await shot("web-panel");
+  // saved with the settings, back after Revert, in the exported file
+  await evaluate(`$("save").click()`);
+  await sleep(300);
+  await evaluate(`document.querySelector('.drop[data-src="cv1"] .prow .mini:last-child').click()`);
+  await sleep(300);
+  check((await maps())[0] === "mode k_off 0 0 | mode bypass 1 0" && !(await evaluate(`$("unsaved").classList.contains("hidden")`)), "× takes it off (unsaved)");
+  await evaluate(`$("revert").click()`);
+  await sleep(400);
+  mp = await maps();
+  check(mp[0] === "cv1 glue_thr -30 0 | mode k_off 0 0 | mode bypass 1 0" && (await value("mode_act"))[1] === 1, "Revert brings the saved mappings back: " + mp);
+  const ptext = await evaluate(`settingsText()`);
+  check(ptext.includes("set led_mode 4\n") && ptext.includes("set mode_act 1\n") && ptext.includes("map cv1 glue_thr -30 0\nmap mode k_off 0\nmap mode bypass 1\n"), "export: LED, MODE hold and mappings in the file");
+  await evaluate(`(() => { window.confirm = () => true; $("factory").click(); })()`);
+  await sleep(400);
+  check((await maps())[0] === "" && await evaluate(`document.querySelectorAll("#tab-panel .prow").length`) === 0, "Factory: no mappings");
+  await evaluate(`$("revert").click()`);
+  await sleep(300);
+  await evaluate(`showTab("setup")`);
 
   // ---- Web Serial path with a fake port
   await cdp("Page.navigate", { url });
@@ -280,7 +377,7 @@ try {
   await sleep(1500);
   check(await evaluate(`$("linkText").textContent`) === "Connected", "serial: connected");
   check(await evaluate(`JSON.stringify(fake.filters)`) === '{"filters":[{"usbVendorId":12346}]}', "serial: Espressif USB filter");
-  check(await evaluate(`state.params.size === 95 && document.querySelectorAll(".strip").length === 4 && document.querySelectorAll(".slot").length === 8`), "serial: mixer built from desc over the stream");
+  check(await evaluate(`state.params.size === 106 && document.querySelectorAll(".strip").length === 4 && document.querySelectorAll(".slot").length === 8`), "serial: mixer built from desc over the stream");
   check(await evaluate(`$("log").textContent.includes("Starting master_0.1.0")`), "serial: log line shown, not parsed");
   await evaluate(`state.devices.get("m_flt").node.click()`);
   await evaluate(`(() => { const p = state.params.get("m_flt_lc_f"); for (const v of [50, 60, 70, 80]) userSet(p, v); })()`);
@@ -296,6 +393,68 @@ try {
   await evaluate(`fake.end()`);
   await sleep(300);
   check(await evaluate(`$("linkText").textContent === "Not connected" && $("save").disabled && $("note").textContent.includes("unplugged")`), "serial: unplug detected");
+
+  // ---- touch screen: hold a control, the sheet attaches it
+  await cdp("Emulation.setDeviceMetricsOverride", { width: 412, height: 900, deviceScaleFactor: 2, mobile: true });
+  await cdp("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 2 });
+  await cdp("Page.navigate", { url: url + "?demo" });
+  await sleep(1500);
+  await evaluate(`state.devices.get("glue").node.scrollIntoView(); state.devices.get("glue").node.click()`);
+  await sleep(200);
+  await evaluate(`state.detailCtls.find((c) => c.p.id === "glue_makeup").node.scrollIntoView({ block: "center" })`);
+  await sleep(200);
+  const [tx, ty] = await evaluate(`(() => { const r = state.detailCtls.find((c) => c.p.id === "glue_makeup").node.querySelector("svg").getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })()`);
+  const before = (await value("glue_makeup"))[0];
+  await cdp("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: tx, y: ty }] });
+  await cdp("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: tx, y: ty - 3 }] });
+  await sleep(1000);
+  await cdp("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await sleep(200);
+  check(!(await evaluate(`$("sheet").hidden`)) && (await value("glue_makeup"))[0] === before, "touch: holding the make-up knob opens the sheet (it stays open after the finger lifts), the value stays");
+  check(await evaluate(`[...$("sheetBtns").children].map((b) => b.textContent + (b.disabled ? "-" : "+")).join(",")`) === "CV 1+,CV 2+,MODE-", "sheet: two knobs, no MODE for a level");
+  await shot("web-touch-sheet");
+  await sleep(400);  // the finger's own click is over
+  await evaluate(`$("sheetBtns").children[1].click()`);
+  await sleep(300);
+  check(await evaluate(`$("sheet").hidden && state.maps.map((m) => m.src + " " + m.id).join()`) === "cv2 glue_makeup" && !(await evaluate(`$("tab-panel").hidden`)), "touch: CV 2 tapped, attached, Panel tab shown");
+  // a quick tap on a switch still switches it
+  const [bx, by] = await evaluate(`(() => { const b = state.strips[1].strip.querySelector(".mb.off"); b.scrollIntoView({ block: "center" }); const r = b.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })()`);
+  await cdp("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: bx, y: by }] });
+  await cdp("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await sleep(300);
+  check((await value("m_off"))[1] === 1, "touch: a tap on the mix OFF switches it");
+  check(await evaluate(`document.scrollingElement.scrollWidth <= innerWidth + 1`), "412 px wide: no sideways page scroll (" + await evaluate(`document.scrollingElement.scrollWidth`) + ")");
+  await shot("web-touch");
+  await cdp("Emulation.setTouchEmulationEnabled", { enabled: false });
+  await cdp("Emulation.clearDeviceMetricsOverride");
+  // ---- a real mouse drag through the browser's drag and drop: copy, not link (Wayland has no link
+  // action and refused the drop), onto CV 2. Last: Page.navigate hangs after an intercepted drag.
+  await evaluate(`state.devices.get("glue").node.click()`);
+  await sleep(100);
+  await cdp("Input.setInterceptDrags", { enabled: true });
+  const [lx, ly] = await centre(`#detail .card .kn:nth-child(2) .klabel`);
+  const knobPid = await evaluate(`document.querySelector("#detail .card .kn:nth-child(2) .klabel").dataset.pid`);
+  await mouse("mousePressed", lx, ly);
+  for (let k = 1; k <= 6; k++) await mouse("mouseMoved", lx + 6 * k, ly + 3 * k);
+  await sleep(200);
+  const [zx, zy] = await centre(`.drop[data-src="cv2"]`);
+  check(dragData && dragData.dragOperationsMask === 1 && dragData.items[0].data === knobPid, "native drag: copy only, carries the setting: " + JSON.stringify(dragData));
+  if (dragData) {
+    for (const type of ["dragEnter", "dragOver", "dragOver", "drop"]) { await cdp("Input.dispatchDragEvent", { type, x: zx, y: zy, data: dragData }); await sleep(30); }
+  }
+  await mouse("mouseReleased", zx, zy);
+  await cdp("Input.setInterceptDrags", { enabled: false });
+  await sleep(300);
+  check((await maps())[0].includes("cv2 " + knobPid + " "), "native drag onto CV 2 stays: " + (await maps())[0]);
+  // right-click a control: the attach sheet, as a hold on a touch screen
+  const [rx, ry] = await centre(`#detail .card .kn:nth-child(2) .klabel`);
+  await mouse("mousePressed", rx, ry, { button: "right", buttons: 2 });
+  await mouse("mouseReleased", rx, ry, { button: "right", buttons: 0 });
+  await sleep(200);
+  check(await evaluate(`!$("sheet").hidden && state.sheet && state.sheet.id === "${knobPid}" && [...$("sheetBtns").children][1].textContent.includes("✓")`), "right-click opens the attach sheet, CV 2 ticked");
+  await evaluate(`[...$("sheetBtns").children][1].click()`);
+  await sleep(300);
+  check(!(await maps())[0].includes("cv2 " + knobPid) && await evaluate(`$("sheet").hidden`), "sheet: CV 2 taken off again");
   check(errors.length === 0, "no page errors" + (errors.length ? ": " + errors.join(" | ") : ""));
 } catch (e) {
   console.log("FAIL exception: " + e.message);

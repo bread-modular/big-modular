@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "ms_ctl.h"
 #include "ms_dsp.h"
 #include "ms_params.h"
 #include "ms_proto.h"
@@ -1021,7 +1022,7 @@ static void test_protocol(void) {
     CHECK(applied == 1 && pr.values[MS_P_K_FLT_LC_F] == 25 && !pr.unsaved, "init with nothing stored");
 
     send(&pr, "hello");
-    CHECK(n_lines == 1 && strncmp(lines[0], "hello|master|", 13) == 0 && strstr(lines[0], "|proto=1|fs=44100|block=16|io_ms=2.50"),
+    CHECK(n_lines == 1 && strncmp(lines[0], "hello|master|", 13) == 0 && strstr(lines[0], "|proto=3|fs=44100|block=16|io_ms=2.50"),
           "hello: %s", lines[0]);
 
     send(&pr, "desc");
@@ -1042,7 +1043,7 @@ static void test_protocol(void) {
     CHECK(n_lines == 1 && values == names, "meters: %d values for %d names: %s", values, names, lines[0]);
     // io 2.5 ms + factory look-aheads 1.0 + 1.5 ms (44 + 66 samples)
     CHECK(strcmp(lines[0], "m|0.0 -120.0 -120.0 -20.0 -120.0 -120.0 -120.0 -120.0 0.00 0.00 3.25 0.00 0.00 0.00 0.00 "
-                           "41 57 4.99 0") == 0,
+                           "41 57 4.99 0 0.000 0.000 0 0 0.00") == 0,
           "meter line: %s", lines[0]);
 
     send(&pr, "get");
@@ -1077,10 +1078,12 @@ static void test_protocol(void) {
 
     // defaults, then load brings the saved value back and keeps bypass.
     send(&pr, "defaults");
-    CHECK(strcmp(lines[n_lines - 1], "ok|defaults") == 0 && pr.values[MS_P_K_FLT_LC_F] == 25 && pr.unsaved, "defaults");
+    CHECK(strcmp(lines[n_lines - 2], "ok|defaults") == 0 && strcmp(lines[n_lines - 1], "ok|ctl") == 0 &&
+              pr.values[MS_P_K_FLT_LC_F] == 25 && pr.unsaved,
+          "defaults");
     send(&pr, "set bypass 1");
     send(&pr, "load");
-    CHECK(strcmp(lines[n_lines - 1], "ok|load") == 0 && n_lines == MS_P_COUNT + 1 && pr.values[MS_P_K_FLT_LC_F] == 20000 &&
+    CHECK(strcmp(lines[n_lines - 2], "ok|load") == 0 && n_lines == MS_P_COUNT + 2 && pr.values[MS_P_K_FLT_LC_F] == 20000 &&
               !pr.unsaved && pr.values[MS_P_BYPASS] == 1,
           "load");
 
@@ -1100,6 +1103,375 @@ static void test_protocol(void) {
           "power-up from stored settings");
 }
 
+// ------------------------------------------------------------ channel off / solo, the panel controls
+
+// Steady level (dB) of the chain's output with a 1 kHz tone on the kick and a 3 kHz
+// tone on the mix: [0] the kick's tone, [1] the mix's, by correlation.
+static void tones_out(float out_db[2]) {
+    int n = 8820;
+    for (int i = 0; i < n; i++) {
+        buf_k[i] = 0.2f * sinf(2.0f * (float)M_PI * 1000.0f * (float)i / FS);
+        buf_m[i] = 0.2f * sinf(2.0f * (float)M_PI * 3000.0f * (float)i / FS);
+    }
+    run(buf_k, buf_m, buf_o, n);
+    double ck = 0, cm = 0, kk = 0, mm = 0;
+    for (int i = n / 2; i < n; i++) {
+        ck += (double)buf_o[i] * buf_k[i];
+        cm += (double)buf_o[i] * buf_m[i];
+        kk += (double)buf_k[i] * buf_k[i];
+        mm += (double)buf_m[i] * buf_m[i];
+    }
+    out_db[0] = db((float)fabs(ck / kk));
+    out_db[1] = db((float)fabs(cm / mm));
+}
+
+static void test_mute_solo(void) {
+    struct {
+        int param;
+        bool bypass;
+        float kick, mix;  // expected: 0 = heard (0 dB), 1 = silent
+    } cases[] = {
+        {-1, false, 0, 0},           {MS_P_K_OFF, false, 1, 0},  {MS_P_M_OFF, false, 0, 1},
+        {MS_P_K_SOLO, false, 0, 1},  {MS_P_M_SOLO, false, 1, 0}, {MS_P_OUT_OFF, false, 1, 1},
+        {MS_P_PAR_SOLO, false, 1, 1}, {MS_P_K_SOLO, true, 0, 1},  {MS_P_M_OFF, true, 0, 1},
+        {MS_P_OUT_OFF, true, 1, 1},
+    };
+    for (size_t c = 0; c < sizeof(cases) / sizeof(cases[0]); c++) {
+        neutral();
+        P[MS_P_BYPASS] = cases[c].bypass;
+        start();
+        if (cases[c].param >= 0) P[cases[c].param] = 1;
+        update();
+        float o[2];
+        tones_out(o);
+        for (int ch = 0; ch < 2; ch++) {
+            float want = ch ? cases[c].mix : cases[c].kick;
+            bool ok = want ? o[ch] < -100.0f : NEAR(o[ch], 0.0f, 0.001f);
+            CHECK(ok, "off / solo case %zu (%s%s): %s at %.2f dB", c,
+                  cases[c].param >= 0 ? ms_param_defs[cases[c].param].id : "none", cases[c].bypass ? ", bypass" : "",
+                  ch ? "mix" : "kick", o[ch]);
+        }
+    }
+
+    // A parallel bus that is soloed is still fed by both sends; a kick that is off feeds it no more.
+    neutral();
+    P[MS_P_PAR_ON] = 1;
+    P[MS_P_PAR_SEND_K] = P[MS_P_PAR_SEND_M] = 0;
+    P[MS_P_PAR_RATIO] = 1.5f;
+    P[MS_P_PAR_THR] = 0;
+    P[MS_P_PAR_MAKEUP] = 0;
+    P[MS_P_PAR_RET] = 0;
+    P[MS_P_PAR_SOLO] = 1;
+    start();
+    float o[2];
+    tones_out(o);
+    CHECK(NEAR(o[0], 0.0f, 0.05f) && NEAR(o[1], 0.0f, 0.05f), "parallel solo: kick %.2f, mix %.2f dB", o[0], o[1]);
+    P[MS_P_K_OFF] = 1;
+    update();
+    tones_out(o);
+    CHECK(o[0] < -100.0f && NEAR(o[1], 0.0f, 0.05f), "parallel solo, kick off: kick %.2f, mix %.2f dB", o[0], o[1]);
+
+    // Off fades like a fader (the 10 ms gain smoothing, stepped per block): no
+    // step near the 0.5 a hard cut would make; -60 dB within 100 ms.
+    neutral();
+    start();
+    int n = 8820;
+    sine(buf_k, n, 100, 0.5f);
+    run(buf_k, NULL, buf_o, 512);
+    P[MS_P_K_OFF] = 1;
+    update();
+    run(buf_k + 512, NULL, buf_o + 512, n - 512);
+    float step = 0;
+    for (int i = 1; i < n; i++) step = fmaxf(step, fabsf(buf_o[i] - buf_o[i - 1]));
+    CHECK(step < 0.025f && peak(buf_o, 512 + 4410, n) < 5e-4f, "kick off: largest step %.4f, end %.6f", step,
+          peak(buf_o, 512 + 4410, n));
+
+    // The factory bypass is still kick + mix, bit for bit.
+    neutral();
+    P[MS_P_BYPASS] = 1;
+    start();
+    for (int i = 0; i < 1024; i++) {
+        buf_k[i] = 0.4f * rnd();
+        buf_m[i] = 0.4f * rnd();
+    }
+    run(buf_k, buf_m, buf_o, 1024);
+    int diff = 0;
+    for (int i = 0; i < 1024; i++) diff += buf_o[i] != buf_k[i] + buf_m[i];
+    CHECK(diff == 0, "bypass: %d samples differ from kick + mix", diff);
+}
+
+static float V[MS_P_COUNT];
+
+// Runs the CV for `ms` of 10 ms ticks at a fixed position.
+static bool cv_hold(ms_ctl_t *c, int cv, float norm, int ms) {
+    bool changed = false;
+    for (int t = 0; t < ms; t += 10) changed |= ms_ctl_cv(c, cv, norm, V);
+    return changed;
+}
+
+static uint32_t now_ms;
+static bool button(ms_ctl_t *c, bool down, int ms) {
+    bool changed = false;
+    for (int t = 0; t < ms; t += 10, now_ms += 10) changed |= ms_ctl_button(c, down, now_ms, V);
+    return changed;
+}
+
+static void test_ctl(void) {
+    ms_ctl_t c;
+    ms_ctl_init(&c);
+    ms_params_defaults(V);
+
+    // What may be mapped where.
+    CHECK(ms_ctl_refuse(MS_SRC_CV1, MS_P_GLUE_THR) == NULL && ms_ctl_refuse(MS_SRC_CV2, MS_P_BYPASS) == NULL,
+          "CV takes any setting");
+    CHECK(ms_ctl_refuse(MS_SRC_CV1, MS_P_LIM_LA) && ms_ctl_refuse(MS_SRC_CV2, MS_P_K_LIM_LA), "CV refuses look-aheads");
+    CHECK(ms_ctl_refuse(MS_SRC_MODE, MS_P_GLUE_THR) && ms_ctl_refuse(MS_SRC_MODE, MS_P_MB_SOLO) &&
+              !ms_ctl_refuse(MS_SRC_MODE, MS_P_K_SOLO) && ms_ctl_refuse(MS_SRC_MODE, MS_P_MODE_ACT),
+          "MODE takes switches only");
+    CHECK(ms_ctl_refuse(MS_SRC_CV1, MS_P_MODE_ACT) && ms_ctl_refuse(MS_SRC_CV2, MS_P_LED_MODE), "not on a knob");
+    CHECK(ms_src_find("mode") == MS_SRC_MODE && ms_src_find("click") == MS_SRC_MODE && ms_src_find("hold") == MS_SRC_MODE &&
+              ms_src_find("push") == MS_SRC_MODE && ms_src_find("cv3") == -1,
+          "0.4.0 source names read as mode");
+    CHECK(ms_ctl_refuse(MS_SRC_COUNT, 0) && ms_ctl_refuse(MS_SRC_CV1, -1), "unknown source / setting");
+    for (int i = 0; i < MS_CTL_MAPS; i++) CHECK(!ms_ctl_map(&c, MS_SRC_CV2, i, 0, 1), "map %d", i);
+    CHECK(ms_ctl_map(&c, MS_SRC_CV2, MS_P_GLUE_THR, 0, 1) != NULL && !ms_ctl_map(&c, MS_SRC_CV2, 3, 0, 1) &&
+              c.count[MS_SRC_CV2] == MS_CTL_MAPS,
+          "full; an existing mapping is updated");
+    ms_ctl_clear(&c);
+
+    // A linear setting over part of its range, a log one turned round, a list.
+    CHECK(!ms_ctl_map(&c, MS_SRC_CV1, MS_P_GLUE_THR, -30, 0), "map glue threshold");
+    CHECK(!ms_ctl_map(&c, MS_SRC_CV1, MS_P_O_FLT_HC_F, 20000, 200), "map high cut");
+    CHECK(!ms_ctl_map(&c, MS_SRC_CV1, MS_P_GLUE_RATIO, 0, 7), "map ratio (clamped)");
+    CHECK(c.map[MS_SRC_CV1][2].b == 2, "range clamped: %g", (double)c.map[MS_SRC_CV1][2].b);
+    CHECK(cv_hold(&c, 0, 0.5f, 10) && c.dirty[MS_P_GLUE_THR], "first position applied at once");
+    CHECK(NEAR(V[MS_P_GLUE_THR], -15, 1e-4) && NEAR(V[MS_P_O_FLT_HC_F], 2000, 0.5) && V[MS_P_GLUE_RATIO] == 1,
+          "half way: %g dB, %g Hz, ratio %g", (double)V[MS_P_GLUE_THR], (double)V[MS_P_O_FLT_HC_F],
+          (double)V[MS_P_GLUE_RATIO]);
+    // Noise under the step does not move the settings; the end stops are exact.
+    memset(c.dirty, 0, sizeof(c.dirty));
+    bool moved = false;
+    for (int t = 0; t < 200; t++) moved |= ms_ctl_cv(&c, 0, 0.5f + 0.003f * rnd(), V);
+    CHECK(!moved && !c.dirty[MS_P_GLUE_THR], "ADC noise moves nothing");
+    cv_hold(&c, 0, 1.0f, 300);
+    CHECK(V[MS_P_GLUE_THR] == 0 && V[MS_P_O_FLT_HC_F] == 200 && V[MS_P_GLUE_RATIO] == 2, "top: %g dB, %g Hz",
+          (double)V[MS_P_GLUE_THR], (double)V[MS_P_O_FLT_HC_F]);
+    cv_hold(&c, 0, 0.0f, 300);
+    CHECK(V[MS_P_GLUE_THR] == -30 && V[MS_P_O_FLT_HC_F] == 20000 && V[MS_P_GLUE_RATIO] == 0, "bottom: %g dB, %g Hz",
+          (double)V[MS_P_GLUE_THR], (double)V[MS_P_O_FLT_HC_F]);
+    // A jump is smoothed: the first tick goes ~30 % of the way.
+    ms_ctl_cv(&c, 0, 1.0f, V);
+    CHECK(V[MS_P_GLUE_THR] > -22 && V[MS_P_GLUE_THR] < -20, "smoothing: %g dB after one tick", (double)V[MS_P_GLUE_THR]);
+    // A value set from the page stays until the knob moves; a resync sets it again.
+    cv_hold(&c, 0, 1.0f, 300);
+    V[MS_P_GLUE_THR] = -7;
+    CHECK(!cv_hold(&c, 0, 1.0f, 100) && V[MS_P_GLUE_THR] == -7, "page value kept while the knob rests");
+    ms_ctl_resync(&c);
+    CHECK(cv_hold(&c, 0, 1.0f, 10) && V[MS_P_GLUE_THR] == 0, "resync");
+    CHECK(ms_ctl_unmap(&c, MS_SRC_CV1, MS_P_O_FLT_HC_F) && c.count[MS_SRC_CV1] == 2 &&
+              c.map[MS_SRC_CV1][1].param == MS_P_GLUE_RATIO && !ms_ctl_unmap(&c, MS_SRC_CV1, MS_P_O_FLT_HC_F),
+          "unmap");
+
+    // MODE, click (the default): over on a press, back on the next.
+    ms_params_defaults(V);
+    ms_ctl_clear(&c);
+    now_ms = 1000;
+    ms_ctl_map(&c, MS_SRC_MODE, MS_P_BYPASS, 1, 0);
+    ms_ctl_map(&c, MS_SRC_MODE, MS_P_GLUE_ON, 0, 0);
+    CHECK(V[MS_P_MODE_ACT] == MS_ACT_CLICK && !ms_ctl_engaged(&c, V), "click, nothing engaged");
+    button(&c, true, 10);
+    CHECK(V[MS_P_BYPASS] == 0, "a 10 ms bounce does nothing");
+    button(&c, false, 50);
+    button(&c, true, 30);
+    CHECK(V[MS_P_BYPASS] == 1 && V[MS_P_GLUE_ON] == 0 && ms_ctl_engaged(&c, V), "click on the press");
+    button(&c, false, 50);
+    CHECK(V[MS_P_BYPASS] == 1, "the release keeps it");
+    button(&c, true, 800);
+    CHECK(V[MS_P_BYPASS] == 0 && V[MS_P_GLUE_ON] == 1 && !ms_ctl_engaged(&c, V), "second press back, a long one too");
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 0, "long press: once");
+    // A setting that went elsewhere from the page: the press switches all over.
+    V[MS_P_BYPASS] = 1;
+    button(&c, true, 30);
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 1 && V[MS_P_GLUE_ON] == 0, "a half-switched MODE switches all over");
+    ms_params_defaults(V);
+
+    // Hold: a short press does nothing, a long one switches while still down.
+    V[MS_P_MODE_ACT] = MS_ACT_HOLD;
+    button(&c, true, 300);
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 0, "hold: short press does nothing");
+    button(&c, true, 600);
+    CHECK(V[MS_P_BYPASS] == 1 && ms_ctl_engaged(&c, V), "hold: over after 0.5 s, still down");
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 1, "hold: the release keeps it");
+    button(&c, true, 600);
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 0 && !ms_ctl_engaged(&c, V), "hold: the next hold back");
+
+    // Push: over only while down, back even if the way changed meanwhile.
+    V[MS_P_MODE_ACT] = MS_ACT_PUSH;
+    button(&c, true, 200);
+    CHECK(V[MS_P_BYPASS] == 1 && V[MS_P_GLUE_ON] == 0, "push: over while down");
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 0 && V[MS_P_GLUE_ON] == 1, "push: back on the release");
+    button(&c, true, 30);
+    V[MS_P_MODE_ACT] = MS_ACT_CLICK;
+    button(&c, false, 30);
+    CHECK(V[MS_P_BYPASS] == 0, "push: back after a change to click while down");
+
+    // From the page.
+    CHECK(ms_ctl_fire(&c, -1, V) && V[MS_P_BYPASS] == 1 && !ms_ctl_fire(&c, 1, V) && ms_ctl_fire(&c, 0, V) &&
+              V[MS_P_BYPASS] == 0,
+          "fire from the page");
+
+    // Export / import.
+    ms_ctl_clear(&c);
+    ms_ctl_map(&c, MS_SRC_CV1, MS_P_GLUE_THR, -30, 0);
+    ms_ctl_map(&c, MS_SRC_CV2, MS_P_O_FLT_HC_F, 20000, 200.5f);
+    ms_ctl_map(&c, MS_SRC_MODE, MS_P_K_OFF, 1, 0);
+    char text[512];
+    size_t len = ms_ctl_export(&c, text, sizeof(text));
+    CHECK(len && strcmp(text, "map cv1 glue_thr -30 0\nmap cv2 o_flt_hc_f 20000 200.5\nmap mode k_off 1\n") == 0,
+          "export: %s", text);
+    ms_ctl_t d;
+    ms_ctl_init(&d);
+    int count = ms_ctl_import(&d, "set glue_thr 3\nmap cv9 glue_thr 1 2\nmap cv1 nope 1 2\nmap click glue_thr 1\n"
+                                  "map cv1 k_hp_f 30 60\n");
+    count += ms_ctl_import(&d, text);
+    CHECK(count == 4 && d.count[MS_SRC_CV1] == 2 && d.count[MS_SRC_MODE] == 1 && d.map[MS_SRC_CV1][0].param == MS_P_K_FLT_LC_F,
+          "import: %d", count);
+    char small[16];
+    CHECK(ms_ctl_export(&c, small, sizeof(small)) == 0, "export into a small buffer");
+
+    // LED.
+    ms_led_t led = {0};
+    ms_meters_t m = {0};
+    ms_params_defaults(V);
+    CHECK(ms_led_run(&led, V, &m, 0, 100, 0.01f) == 0.3f, "status: running");
+    V[MS_P_BYPASS] = 1;
+    CHECK(ms_led_run(&led, V, &m, 0, 100, 0.01f) == 0.6f && ms_led_run(&led, V, &m, 0, 600, 0.01f) == 0.0f, "status: bypass");
+    V[MS_P_BYPASS] = 0;
+    m.raw_m = 1.0f;
+    CHECK(ms_led_run(&led, V, &m, 0, 700, 0.01f) == 1.0f, "clip");
+    m.raw_m = 0;
+    CHECK(ms_led_run(&led, V, &m, 0, 900, 0.01f) == 1.0f && ms_led_run(&led, V, &m, 0, 1001, 0.01f) == 0.3f, "clip held 300 ms");
+    V[MS_P_LED_MODE] = MS_LED_OUT;
+    m.out = 0.5f;  // -6 dB
+    float x = ms_led_run(&led, V, &m, 0, 2000, 0.01f);
+    CHECK(NEAR(x, 1.0f - 6.02f / 48.0f, 0.001f), "output VU at -6 dB: %g", (double)x);
+    m.out = 0;
+    x = ms_led_run(&led, V, &m, 0, 2100, 0.1f);
+    CHECK(NEAR(x, 1.0f - 6.02f / 48.0f - 0.15f, 0.001f), "VU falls 1.5 / s: %g", (double)x);
+    V[MS_P_LED_MODE] = MS_LED_GR;
+    led.level = 0;
+    m.gr_lim = 6;
+    m.gr_glue = 3;
+    CHECK(ms_led_run(&led, V, &m, 0, 2200, 0.01f) == 0.5f, "gain reduction 6 dB = half");
+    V[MS_P_LED_MODE] = MS_LED_MODE;
+    V[MS_P_LED_BRIGHT] = 50;
+    CHECK(ms_led_run(&led, V, &m, 0, 2300, 0.01f) == 0.04f && ms_led_run(&led, V, &m, true, 2300, 0.01f) == 0.5f,
+          "MODE, half brightness");
+    V[MS_P_LED_MODE] = MS_LED_OFF;
+    m.raw_k = 1;
+    CHECK(ms_led_run(&led, V, &m, 1, 2400, 0.01f) == 0.0f, "off, even on clip");
+    V[MS_P_LED_MODE] = MS_LED_STATUS;
+    V[MS_P_LED_CLIP] = 0;
+    CHECK(ms_led_run(&led, V, &m, 0, 2500, 0.01f) == 0.15f, "no clip flash when off");
+}
+
+static void test_protocol_ctl(void) {
+    ms_host_t host = {NULL, host_out, host_save, host_load, host_apply, host_meters, host_status};
+    ms_proto_t pr;
+    have_stored = false;
+    ms_proto_init(&pr, &host);
+
+    send(&pr, "ctl");
+    CHECK(n_lines == 1 && strcmp(lines[0], "ok|ctl") == 0, "no mappings at first");
+    send(&pr, "map cv1 glue_thr -30 0");
+    CHECK(n_lines == 2 && strcmp(lines[0], "c|cv1|glue_thr|-30|0") == 0 && strcmp(lines[1], "ok|ctl") == 0 && pr.unsaved,
+          "map: %s", lines[0]);
+    send(&pr, "map mode bypass 1");
+    send(&pr, "map hold k_solo 1");
+    CHECK(n_lines == 4 && strcmp(lines[1], "c|mode|bypass|1|0") == 0 && strcmp(lines[2], "c|mode|k_solo|1|0") == 0,
+          "mode map (0.4.0's hold too): %s", lines[2]);
+    const char *bad[] = {"map cv1 glue_thr", "map cv1 glue_thr -30", "map cv3 glue_thr 1 2", "map cv1 nope 1 2",
+                         "map mode glue_thr 1", "map cv1 lim_la 0 5", "map cv1 glue_thr x 1"};
+    for (size_t i = 0; i < sizeof(bad) / sizeof(bad[0]); i++) {
+        send(&pr, bad[i]);
+        CHECK(n_lines == 1 && strncmp(lines[0], "err|map: ", 9) == 0, "%s: %s", bad[i], lines[0]);
+    }
+
+    // The knob moves the setting; it reaches the page as a p| line, once.
+    float cv[2] = {0.5f, 0.0f};
+    int before = applied;
+    ms_proto_controls(&pr, cv, false, 0);
+    CHECK(applied == before + 1 && P[MS_P_GLUE_THR] == -15, "knob applied: %g", (double)P[MS_P_GLUE_THR]);
+    n_lines = 0;
+    ms_proto_push(&pr);
+    CHECK(n_lines == 1 && strcmp(lines[0], "p|glue_thr|-15") == 0, "push: %s", lines[0]);
+    n_lines = 0;
+    ms_proto_controls(&pr, cv, false, 10);
+    ms_proto_push(&pr);
+    CHECK(applied == before + 1 && n_lines == 0, "a knob at rest sends nothing");
+    // MODE from the page
+    send(&pr, "fire");
+    CHECK(n_lines == 3 && strcmp(lines[0], "p|k_solo|1") == 0 && strcmp(lines[1], "p|bypass|1") == 0 &&
+              strcmp(lines[2], "ok|fire") == 0,
+          "fire: %s", lines[0]);
+    send(&pr, "m");
+    CHECK(strstr(lines[0], " 0.500 0.000 0 1 0.00") != NULL, "meters show the knobs and MODE engaged: %s", lines[0]);
+    send(&pr, "fire off");
+    CHECK(n_lines == 3 && strcmp(lines[1], "p|bypass|0") == 0, "fire off: %s", lines[0]);
+    send(&pr, "fire click");
+    CHECK(n_lines == 3 && strcmp(lines[1], "p|bypass|1") == 0, "0.4.0's fire click: %s", lines[0]);
+    send(&pr, "fire on");
+    CHECK(n_lines == 1 && strcmp(lines[0], "ok|fire") == 0, "fire on, already on: %s", lines[0]);
+    send(&pr, "fire off");
+    // The button, set to hold from the page.
+    send(&pr, "set mode_act 1");
+    CHECK(strcmp(lines[0], "p|mode_act|1") == 0, "mode_act: %s", lines[0]);
+    for (uint32_t t = 100; t < 400; t += 10) ms_proto_controls(&pr, cv, true, t);
+    CHECK(P[MS_P_K_SOLO] == 0, "hold: not yet at 0.3 s");
+    for (uint32_t t = 400; t < 800; t += 10) ms_proto_controls(&pr, cv, true, t);
+    CHECK(P[MS_P_K_SOLO] == 1 && P[MS_P_BYPASS] == 1, "hold from the button");
+
+    // Saved with the settings, read back at power-up; the knob sets its setting again.
+    send(&pr, "save");
+    CHECK(strcmp(lines[0], "ok|save") == 0 && strstr(stored, "set glue_thr -15\n") && strstr(stored, "set mode_act 1\n") &&
+              strstr(stored, "map cv1 glue_thr -30 0\nmap mode bypass 1\nmap mode k_solo 1\n"),
+          "saved: %s", lines[0]);
+    send(&pr, "unmap cv1 glue_thr");
+    CHECK(n_lines == 3 && pr.unsaved, "unmap");
+    send(&pr, "load");
+    CHECK(strcmp(lines[n_lines - 1], "ok|ctl") == 0 && pr.ctl.count[MS_SRC_CV1] == 1 && !pr.unsaved, "load brings it back");
+    ms_proto_t pr2;
+    ms_proto_init(&pr2, &host);
+    CHECK(pr2.ctl.count[MS_SRC_CV1] == 1 && pr2.ctl.count[MS_SRC_MODE] == 2 && pr2.values[MS_P_BYPASS] == 0 &&
+              pr2.values[MS_P_K_SOLO] == 0,
+          "power-up: mappings back, the switches they moved are not saved");
+    cv[0] = 1.0f;
+    ms_proto_controls(&pr2, cv, false, 0);
+    CHECK(pr2.values[MS_P_GLUE_THR] == 0, "power-up: the knob sets its setting");
+    send(&pr, "unmap all");
+    CHECK(n_lines == 1 && pr.ctl.count[MS_SRC_MODE] == 0 && pr.unsaved, "unmap all");
+    send(&pr, "map cv2 o_flt_hc_f 200 2000");
+    send(&pr, "defaults");
+    CHECK(pr.ctl.count[MS_SRC_CV2] == 0, "defaults: no mappings");
+
+    // Everything mapped still fits the stored text.
+    for (int s = 0; s < MS_SRC_COUNT; s++) {
+        for (int i = 0, p = 0; i < MS_CTL_MAPS && p < MS_P_COUNT; p++) {
+            if (!ms_ctl_map(&pr.ctl, s, p, 0, 1)) i++;
+        }
+    }
+    send(&pr, "save");
+    CHECK(strcmp(lines[0], "ok|save") == 0 && strlen(stored) < MS_SETTINGS_TEXT_MAX * 3 / 4, "all mapped: %zu bytes",
+          strlen(stored));
+    printf("stored settings, every control mapped full: %zu of %d bytes\n", strlen(stored), MS_SETTINGS_TEXT_MAX);
+}
+
 int main(void) {
     test_fast_math();
     test_filters();
@@ -1117,6 +1489,9 @@ int main(void) {
     test_fuzz();
     test_params();
     test_protocol();
+    test_mute_solo();
+    test_ctl();
+    test_protocol_ctl();
     printf("%d checks, %d failed\n", checks, failures);
     return failures ? 1 : 0;
 }

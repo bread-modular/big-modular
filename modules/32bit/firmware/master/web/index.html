@@ -7,7 +7,12 @@
   Left: a mixer of four channel strips (kick, mix, parallel bus, master), each
   with its effects as slots (drag a slot up / down to change the order), and
   under it a panel of fixed height with the selected effect: its graph and its
-  knobs. Right: the connection, the module's state and the settings buttons.
+  knobs. Right: the connection, the module's state and the settings buttons,
+  and a second tab "Panel" for the module's own controls: what CV1 / CV2 move
+  (each mapped setting between its own two values), what the MODE button
+  switches and how (click, hold or push) and what the LED shows. Drag a
+  control's name onto CV 1, CV 2 or MODE to attach it; on a touch screen hold
+  a control instead.
 
   The parameters, their ranges and names come from the firmware's `desc` answer
   (protocol in ../main/include/ms_proto.h); STRIPS below only says where each one
@@ -83,7 +88,6 @@
   .badge.hidden { display: none; }
   #note { font-size: 12px; color: var(--text-secondary); line-height: 1.45; border-left: 2px solid var(--line); padding-left: 8px; }
   #note.error { color: var(--text-primary); border-left-color: var(--critical); }
-  .tips { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
   #log { flex: 1 1 auto; min-height: 40px; overflow: auto; color: var(--text-muted); font: 11px/1.4 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; border-top: 1px solid var(--line); padding-top: 6px; }
 
   /* ---- mixer: the channel strips */
@@ -242,6 +246,93 @@
   .bandrow .grcell { display: grid; gap: 3px; font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; padding-left: 6px; white-space: nowrap; min-width: 0; }
   .bandrow .hbar { height: 6px; }
   .bandrow .hbar .fill { background: var(--accent); }
+
+  /* ---- side panel tabs; the Panel tab: CV1 / CV2 / MODE / LED */
+  .tabs { display: flex; border-bottom: 1px solid var(--line); gap: 2px; }
+  .tab { flex: 1; background: none; border: 0; border-bottom: 2px solid transparent; padding: 5px 4px 6px; cursor: pointer; color: var(--text-muted); font-weight: 600; font-size: 12px; }
+  .tab.sel { color: var(--text-primary); border-bottom-color: var(--accent); }
+  .tab .count { color: var(--accent); font-weight: 600; margin-left: 4px; }
+  .tabbody { display: flex; flex-direction: column; gap: 12px; flex: 1 1 auto; min-height: 0; }
+  .tabbody[hidden] { display: none; }
+  #tab-panel { overflow: hidden auto; gap: 10px; padding-right: 2px; }
+  .pcard { background: var(--surface-0); border: 1px solid var(--line); border-radius: 6px; padding: 7px 8px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .phead { display: flex; align-items: center; gap: 8px; }
+  .phead .pname { font-weight: 700; font-size: 12px; letter-spacing: 0.08em; }
+  .phead .hbar { flex: 1; height: 5px; }
+  .phead .hbar .fill { background: var(--accent); }
+  .pnote { color: var(--text-muted); font-size: 11px; }
+  .psub { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 2px; }
+  .psub .pnote { font-weight: 400; flex: 1; }
+  .lamp { width: 9px; height: 9px; border-radius: 50%; background: var(--track); flex: 0 0 9px; }
+  .lamp.on { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .mini { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; cursor: pointer; color: var(--text-secondary); font-size: 11px; }
+  .mini:hover { border-color: var(--text-muted); }
+  .plist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; border: 1px dashed transparent; border-radius: 5px; padding: 2px; min-height: 26px; }
+  .pempty { color: var(--text-muted); font-size: 11px; padding: 4px 4px; }
+  body.attaching .drop.can { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  body.attaching .drop.cannot { opacity: 0.35; }
+  .drop.over { background: color-mix(in srgb, var(--accent) 22%, transparent) !important; }
+  .prow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; background: var(--surface-1); border: 1px solid var(--line); border-radius: 4px; padding: 4px 5px; }
+  .prow .pn { display: flex; justify-content: space-between; gap: 6px; font-size: 11px; color: var(--text-primary); min-width: 0; }
+  .prow .pn span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prow .pn .now { color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .prange { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-muted); }
+  .prange input, .prange select, .pcard select {
+    width: 62px; min-width: 0; background: var(--surface-0); border: 1px solid var(--line); border-radius: 3px; padding: 1px 3px;
+    font-size: 11px; text-align: right; font-variant-numeric: tabular-nums;
+  }
+  .prange select { text-align: left; }
+  .prange .sp { flex: 1; }
+  .ledrow { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); }
+  .ledrow select { width: 100%; text-align: left; }
+  .ledrow input[type=range] { width: 100%; accent-color: var(--accent); }
+  .leddot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #55554f; background: #2a2a27; position: relative; overflow: hidden; }
+  .leddot i { position: absolute; inset: 0; background: #ffd27a; opacity: 0; }
+  .attach[draggable=true] { cursor: grab; }
+  .attach[data-maps]::after {
+    content: attr(data-maps); margin-left: 4px; font-size: 8px; font-weight: 700; letter-spacing: 0.04em; vertical-align: 1px;
+    color: var(--accent-ink); background: var(--accent); border-radius: 3px; padding: 0 3px;
+  }
+  .tg.attach[data-maps]::after { background: var(--accent-ink); color: var(--accent); }
+  .kn { position: relative; }
+  .kn .klabel[data-maps]::after { position: absolute; top: 15px; right: 0; margin: 0; }  /* on the knob, not cut off with a long name */
+  .tg.attach:not(.on)[data-maps]::after { background: var(--accent-dim); color: var(--accent-ink); }
+
+  /* strip: off / solo */
+  .stop { display: flex; align-items: stretch; border-bottom: 1px solid var(--line); }
+  .stop .shead { flex: 1; border-bottom: 0; }
+  .stop + .sec { border-top: 0; }
+  .mbtns { display: flex; align-items: center; gap: 3px; padding: 0 7px 0 2px; }
+  .mb { background: var(--surface-2); border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; height: 19px; cursor: pointer; color: var(--text-muted); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; }
+  .mb:hover { border-color: var(--text-muted); }
+  .mb.off.on { background: var(--critical); border-color: var(--critical); color: #fff; }
+  .mb.solo.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .strip.silent .sec.fad, .strip.silent .sname { opacity: 0.4; }
+
+  /* hold-to-attach sheet (touch screens) */
+  #sheet { position: fixed; inset: 0; background: #000a; display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
+  #sheet[hidden] { display: none; }
+  .sheetbox { background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px 10px 0 0; padding: 14px; width: min(440px, 100%); display: grid; gap: 10px; }
+  .sheetbox .stitle { font-size: 13px; color: var(--text-secondary); }
+  .sheetbox .stitle b { color: var(--text-primary); }
+  .sheetbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .sheetbtns .btn { padding: 11px 8px; }
+  .sheetbtns .btn.mapped { border-color: var(--accent); color: var(--accent); }
+  @media (pointer: coarse) { body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; } }
+
+  /* narrow screens (phones, small tablets): one column that scrolls */
+  @media (max-width: 900px) {
+    html, body { height: auto; }
+    body { overflow: auto; }
+    #app { display: flex; flex-direction: column; height: auto; min-height: 100vh; }
+    #side { order: -1; border-left: 0; border-bottom: 1px solid var(--line); overflow: visible; }
+    #tab-panel { overflow: visible; }
+    #log { max-height: 120px; }
+    #mixer { justify-content: flex-start; overflow-x: auto; min-height: 420px; }
+    #detail { margin: 0 8px 12px; }
+    .dbody { overflow-x: auto; }
+    .dcol.fixed { flex-shrink: 0; }
+  }
 </style>
 </head>
 <body>
@@ -255,16 +346,22 @@
   <div class="sgroup">
     <button class="btn primary" id="connect">Connect</button>
     <button class="btn" id="demo" hidden title="Try the page without the module: every control works, the meters are invented">Demo</button>
+    <button class="btn attach" id="bypass" disabled data-pid="bypass" title="Kick + mix straight to the output, to compare. Never saved. Drag it onto MODE (or right-click it) to switch it from the module.">Bypass</button>
     <span class="badge" id="link"><span class="dot"></span><span id="linkText">Not connected</span></span>
     <span class="badge warn hidden" id="unsaved" title="The module runs these settings now, but they are not stored: press Save to module"><span class="dot"></span>Unsaved changes</span>
   </div>
+  <div class="tabs" role="tablist">
+    <button class="tab sel" id="tabSetup" role="tab" data-tab="setup">Settings</button>
+    <button class="tab" id="tabPanel" role="tab" data-tab="panel" title="CV 1, CV 2, the MODE button and the LED of the module">Panel<span class="count" id="mapCount"></span></button>
+  </div>
+  <div id="note">Plug the module's USB-C port into this computer and press Connect. IN L = kick, IN R = everything else, OUT L = OUT R = the mono main.</div>
+  <div class="tabbody" id="tab-setup">
   <div class="sgroup">
     <h4>Module</h4>
     <div class="status"><span>CPU</span><b id="cpu">–</b><span>Latency</span><b id="lat">–</b></div>
   </div>
   <div class="sgroup">
     <h4>Settings</h4>
-    <button class="btn" id="bypass" disabled title="Kick + mix straight to the output, to compare. Never saved.">Bypass</button>
     <button class="btn primary" id="save" disabled title="Store the settings in the module (the audio drops for a moment)">Save to module</button>
     <div class="two">
       <button class="btn" id="revert" disabled title="Back to the settings saved in the module">Revert</button>
@@ -274,11 +371,12 @@
     </div>
     <input type="file" id="file" accept=".txt,text/plain" hidden>
   </div>
-  <div id="note">Plug the module's USB-C port into this computer and press Connect. IN L = kick, IN R = everything else, OUT L = OUT R = the mono main.</div>
-  <div class="tips">Click an effect to open it below. Drag an effect up / down to change the order. Drag knobs and faders up / down (Shift = fine), double-click for the factory value, click a value to type it.</div>
   <div id="log"></div>
+  </div>
+  <div class="tabbody" id="tab-panel" hidden><div class="pempty">Connect the module and its CV knobs, MODE button and LED appear here.</div></div>
 </aside>
 </div>
+<div id="sheet" hidden><div class="sheetbox"><div class="stitle" id="sheetTitle"></div><div class="sheetbtns" id="sheetBtns"></div><button class="btn" id="sheetClose">Close</button></div></div>
 
 <script src="demo.js"></script>
 <script>
@@ -292,7 +390,7 @@
 const STRIPS = [
   {
     id: "kick", name: "KICK", sub: "IN L",
-    trim: "in_k_trim", inMeter: ["in_k", "raw_k"], send: "par_send_k", fader: "k_lvl", faderName: "Level",
+    trim: "in_k_trim", inMeter: ["in_k", "raw_k"], send: "par_send_k", fader: "k_lvl", faderName: "Level", mute: "k_off", solo: "k_solo",
     meter: "kick", gr: ["gr_klim"], order: "k_order", history: [["in_k", "Kick in"], ["kick", "After the effects"]],
     hint: "Trim at the input, the send into the parallel bus (after the kick's effects, before the fader) and the kick's level in the main.",
     devices: [
@@ -305,7 +403,7 @@ const STRIPS = [
   },
   {
     id: "mix", name: "MIX", sub: "IN R",
-    trim: "in_m_trim", inMeter: ["in_m", "raw_m"], send: "par_send_m", fader: "m_lvl", faderName: "Level",
+    trim: "in_m_trim", inMeter: ["in_m", "raw_m"], send: "par_send_m", fader: "m_lvl", faderName: "Level", mute: "m_off", solo: "m_solo",
     meter: "mix", gr: ["gr_lo", "gr_mid", "gr_hi"], order: "m_order", history: [["in_m", "Mix in"], ["mix", "After the effects"]],
     hint: "Trim at the input, the send into the parallel bus (after the mix's effects, before the fader) and the mix's level in the main.",
     devices: [
@@ -316,7 +414,7 @@ const STRIPS = [
     ],
   },
   {
-    id: "par", name: "PARALLEL", sub: "bus", on: "par_on",
+    id: "par", name: "PARALLEL", sub: "bus", on: "par_on", mute: "par_off", solo: "par_solo",
     fader: "par_ret", faderName: "Return", meter: "par", gr: ["gr_par"], history: [["par", "Return"]],
     feeds: [["Kick send", "par_send_k"], ["Mix send", "par_send_m"]], out: "returns into MASTER",
     channel: ["par_send_k", "par_send_m", "par_ret"],
@@ -328,7 +426,7 @@ const STRIPS = [
   },
   {
     id: "master", name: "MASTER", sub: "OUT L + R",
-    fader: "out_lvl", faderName: "Output", meter: "out", gr: ["gr_glue", "gr_lim"], order: "o_order", history: [["out", "Output"]],
+    fader: "out_lvl", faderName: "Output", meter: "out", mute: "out_off", gr: ["gr_glue", "gr_lim"], order: "o_order", history: [["out", "Output"]],
     feeds: [["Kick", "k_lvl"], ["Mix", "m_lvl"], ["Parallel", "par_ret"]], out: "mono on OUT L and OUT R",
     hint: "The main sum of kick, mix and the parallel return, after the master effects.",
     devices: [
@@ -343,17 +441,33 @@ const STRIPS = [
   },
 ];
 const FLOW_AFTER = { mix: "›", par: "›" };       // kick + mix feed the parallel bus, all three the master
-const TOOLBAR = ["bypass"];                      // parameters with their own button in the side panel
+const TOOLBAR = ["bypass", "mode_act", "led_mode", "led_bright", "led_clip"];  // parameters with their own control in the side panel
 // A setting that does nothing while another is on: the release under auto release.
 const DISABLED_BY = { k_lim_rel: "k_lim_auto", lim_rel: "lim_auto" };
 const LEVEL_MIN = -60, GR_MAX = 24, CLIP_DB = -0.2, FADER_TAPER = 2, HISTORY = 200;
+// The module's panel (firmware ms_ctl.h): where a setting can be attached.
+const SOURCES = [
+  { id: "cv1", name: "CV 1", cv: true, note: "knob × CV" },
+  { id: "cv2", name: "CV 2", cv: true, note: "knob × CV" },
+  { id: "mode", name: "MODE" },
+];
+// mode_act: how the MODE button works its settings (firmware MS_ACT_*).
+const MODE_ACTS = [
+  { name: "Click", note: "A press switches them over, the next press back." },
+  { name: "Hold", note: "Holding the button ½ s switches them over, the next hold back." },
+  { name: "Push", note: "Over only while the button is held down." },
+];
+const OLD_SOURCES = { click: "mode", hold: "mode", push: "mode" };  // firmware 0.4.0's MODE lists
+const PANEL_PROTO = 3;  // firmware 0.4.1: one MODE list and mode_act
+const MAPS_MAX = 8, LONG_PRESS_MS = 550;
+const SOLOS = STRIPS.map((s) => s.solo).filter(Boolean);
 
 const $ = (id) => document.getElementById(id);
 const state = {
   link: null, demo: false, groups: [], params: new Map(), meterNames: [], devices: new Map(), strips: [],
   stripMeters: [], detailMeters: [], detailViews: [], detailCtls: [], detailRedraws: [], observers: [], sel: "k_flt",
   pendingSets: new Map(), described: false, meterWaiting: 0, hello: null, fs: 44100, cpuWorst: [], refreshQueued: false,
-  hist: [], meters: {},
+  hist: [], meters: {}, proto: 1, maps: [], mapsIn: [], rowViews: [], dragPid: null, sheet: null, lpUntil: 0, holding: null,
 };
 
 // ---------------------------------------------------------------- links
@@ -402,9 +516,10 @@ class DemoLink {
     this.onLine = onLine; this.open = true; this.values = new Map(); this.unsaved = 0; this.t0 = performance.now();
     for (const line of MASTER_DEMO.desc) {
       const f = line.split("|");
-      if (f[0] === "d") this.values.set(f[1], { v: +f[6], min: +f[4], max: +f[5], def: +f[6], whole: f[3] === "bool" || f[3] === "enum", saved: f[9] === "1" });
+      if (f[0] === "d") this.values.set(f[1], { v: +f[6], min: +f[4], max: +f[5], def: +f[6], kind: f[3], whole: f[3] === "bool" || f[3] === "enum", saved: f[9] === "1" });
     }
     this.stored = this.snapshot();
+    this.maps = []; this.storedMaps = []; this.cv = [0.5, 0.25];
   }
   async start() {}
   async close() { this.open = false; }
@@ -424,15 +539,50 @@ class DemoLink {
       if (v !== p.v && p.saved) this.unsaved = 1;
       p.v = v;
       this.reply([`p|${w[1]}|${v}`]);
-    } else if (w[0] === "save") { this.stored = this.snapshot(); this.unsaved = 0; this.reply(["ok|save"]); }
+    } else if (w[0] === "save") { this.stored = this.snapshot(); this.storedMaps = this.maps.map((m) => ({ ...m })); this.unsaved = 0; this.reply(["ok|save"]); }
     else if (w[0] === "load") {
       for (const [k, p] of this.values) if (p.saved) p.v = this.stored.get(k);
-      this.unsaved = 0; this.reply(this.all("ok|load"));
+      this.maps = this.storedMaps.map((m) => ({ ...m }));
+      this.unsaved = 0; this.reply(this.all("ok|load").concat(this.cvLines(), this.ctl()));
     } else if (w[0] === "defaults") {
       for (const p of this.values.values()) p.v = p.def;
-      this.unsaved = 1; this.reply(this.all("ok|defaults"));
+      this.maps = [];
+      this.unsaved = 1; this.reply(this.all("ok|defaults").concat(this.ctl()));
     } else if (w[0] === "m") this.reply([this.meters()]);
+    else if (w[0] === "ctl") this.reply(this.ctl());
+    else if (w[0] === "map") {
+      w[1] = OLD_SOURCES[w[1]] || w[1];
+      const src = SOURCES.find((x) => x.id === w[1]), p = this.values.get(w[2]), d = MASTER_DEMO.desc.find((l) => l.startsWith(`d|${w[2]}|`));
+      const why = !src ? "unknown control" : !p ? "unknown setting" : isNaN(+w[3]) || (src.cv && isNaN(+w[4])) ? "values missing" : refuseMap(src, { id: w[2], kind: d.split("|")[3] });
+      if (why) return this.reply([`err|map: ${why}`]);
+      const fit = (v) => (p.whole ? Math.round(Math.min(p.max, Math.max(p.min, v))) : Math.min(p.max, Math.max(p.min, v)));
+      const m = { src: w[1], id: w[2], a: fit(+w[3]), b: src.cv ? fit(+w[4]) : 0 };
+      const i = this.maps.findIndex((x) => x.src === m.src && x.id === m.id);
+      if (i < 0 && this.maps.filter((x) => x.src === m.src).length >= MAPS_MAX) return this.reply(["err|map: full"]);
+      if (i < 0) this.maps.push(m); else this.maps[i] = m;
+      this.unsaved = 1;
+      this.reply(this.cvLines(m.src).concat(this.ctl()));
+    } else if (w[0] === "unmap") {
+      const before = this.maps.length;
+      this.maps = w[1] === "all" ? [] : this.maps.filter((x) => !(x.src === w[1] && x.id === w[2]));
+      if (this.maps.length !== before) this.unsaved = 1;
+      this.reply(this.ctl());
+    } else if (w[0] === "fire") {
+      const on = w[1] === "on" ? true : w[1] === "off" ? false : !this.engaged("mode");
+      const moved = this.maps.filter((m) => m.src === "mode" && this.values.get(m.id).v !== (on ? m.a : 1 - m.a));
+      this.reply(moved.map((m) => { this.values.get(m.id).v = on ? m.a : 1 - m.a; return `p|${m.id}|${this.values.get(m.id).v}`; }).concat("ok|fire"));
+    }
   }
+  ctl() { return SOURCES.flatMap((src) => this.maps.filter((m) => m.src === src.id).map((m) => `c|${m.src}|${m.id}|${m.a}|${m.b}`)).concat("ok|ctl"); }
+  // the knobs stand still in the demo: a new mapping takes the knob's position at once
+  cvLines(only) {
+    return this.maps.filter((m) => (only ? m.src === only : m.src.startsWith("cv")) && m.src.startsWith("cv")).map((m) => {
+      const p = this.values.get(m.id);
+      p.v = cvValue(p, m, this.cv[m.src === "cv1" ? 0 : 1]);
+      return `p|${m.id}|${p.v}`;
+    });
+  }
+  engaged(src) { const mine = this.maps.filter((m) => m.src === src); return mine.length > 0 && mine.every((m) => this.values.get(m.id).v === m.a); }
   meters() {
     // A 128 BPM kick and a mix that moves; only enough to see the meters and graphs work.
     const v = (id) => this.values.get(id).v;
@@ -453,7 +603,10 @@ class DemoLink {
       gr_lim: gr(v("lim_on"), (-2 + 3 * hit + v("lim_gain") - v("lim_ceil")) * hit),
       cpu: bypass ? 4 : 47, cpu_max: bypass ? 6 : 58,
       lat_ms: 2.3 + (bypass ? 0 : (v("k_lim_on") ? v("k_lim_la") : 0) + (v("lim_on") ? v("lim_la") : 0)), unsaved: this.unsaved,
+      cv1: this.cv[0], cv2: this.cv[1], btn: 0, eng: this.engaged("mode") ? 1 : 0,
     };
+    const vu = (db) => clamp01(1 + db / 48), mode = v("led_mode");
+    m.led = (mode === 0 ? (bypass ? (t % 1 < 0.5 ? 0.6 : 0) : 0.3) : mode === 1 ? vu(out) : mode === 2 ? vu(m.kick) : mode === 3 ? clamp01(Math.max(m.gr_glue, m.gr_lim) / 12) : mode === 4 ? (m.eng ? 1 : 0.08) : 0) * v("led_bright") / 100;
     return "m|" + MASTER_DEMO.meters.map((n) => (m[n] ?? 0).toFixed(2)).join(" ");
   }
 }
@@ -465,8 +618,9 @@ function onLine(line) {
   switch (f[0]) {
     case "hello": {
       state.hello = f;
-      const fs = /fs=(\d+)/.exec(line);
+      const fs = /fs=(\d+)/.exec(line), proto = /proto=(\d+)/.exec(line);
       if (fs) state.fs = +fs[1];
+      state.proto = proto ? +proto[1] : 1;
       $("version").textContent = "firmware " + (f[2] || "") + (state.demo ? " (demo)" : "");
       break;
     }
@@ -478,12 +632,14 @@ function onLine(line) {
     }
     case "n": state.meterNames = f[1].split(" "); break;
     case "ok":
-      if (f[1] === "desc") { state.described = true; buildMixer(); send("get"); setButtons(true); }
+      if (f[1] === "desc") { state.described = true; buildMixer(); buildPanel(); if (!$("bypass").draggable) attachable($("bypass"), P("bypass")); send("get"); if (state.proto >= PANEL_PROTO) send("ctl"); setButtons(true); }
+      else if (f[1] === "ctl") { state.maps = state.mapsIn; state.mapsIn = []; buildMapLists(); }
       else if (f[1] === "save") note("Settings saved in the module.");
       else if (f[1] === "load") note("Back to the settings saved in the module.");
       else if (f[1] === "defaults") note("Factory settings loaded. Not saved yet.");
       break;
     case "p": showValue(f[1], +f[2]); break;
+    case "c": state.mapsIn.push({ src: f[1], id: f[2], a: +f[3], b: +f[4] }); break;
     case "m": state.meterWaiting = 0; showMeters(f[1].split(" ").map(Number)); break;
     case "err": note("Module: " + f.slice(1).join("|"), true); break;
     default:
@@ -531,6 +687,18 @@ const denorm = (p, n, taper = 1) => {
   else if (p.step > 0) v = Math.round(v / p.step) * p.step;
   return +Math.min(p.max, Math.max(p.min, v)).toFixed(4);
 };
+
+// The panel (firmware ms_ctl.c): why a setting cannot go on a source, or "".
+function refuseMap(src, p) {
+  if (src.cv) return p.id === "k_lim_la" || p.id === "lim_la" ? "a look-ahead change restarts the limiter" : p.id === "led_mode" || p.id === "mode_act" ? "not on a knob" : "";
+  return p.kind === "bool" ? "" : "MODE switches on / off settings only";
+}
+// A knob position (0..1) as the mapped setting's value, as ms_ctl_cv.
+function cvValue(p, m, q) {
+  let v = p.kind === "log" && m.a > 0 && m.b > 0 ? m.a * Math.pow(m.b / m.a, q) : m.a + (m.b - m.a) * q;
+  v = Math.min(p.max, Math.max(p.min, v));
+  return p.kind === "bool" || p.kind === "enum" ? Math.round(v) : +v.toPrecision(6);
+}
 
 function el(tag, cls, text) {
   const e = document.createElement(tag);
@@ -614,8 +782,11 @@ function dragValue(node, p, taper, view, pixels) {
     node.focus();
     try { node.setPointerCapture(e.pointerId); } catch (err) { /* a scripted event has no real pointer */ }
     view.busy = true;
-    let lastY = e.clientY, n = norm(p, p.value, taper);
+    // touch: the finger moves 10 px before the value does (holding still attaches it, see the sheet)
+    let lastY = e.clientY, n = norm(p, p.value, taper), still = e.pointerType === "touch";
     const move = (ev) => {
+      if (state.sheet) return;
+      if (still) { if (Math.abs(ev.clientY - e.clientY) < 10) return; still = false; lastY = ev.clientY; }
       n = clamp01(n + (lastY - ev.clientY) / pixels * (ev.shiftKey ? 0.2 : 1));
       lastY = ev.clientY;
       const v = denorm(p, n, taper);
@@ -678,6 +849,7 @@ function knobControl(p, taper) {
   k.svg.classList.add("knob");
   const view = { busy: false, show: k.show };
   dragValue(k.svg, p, taper, view, 180);
+  k.svg.dataset.pid = p.id;
   addView(p, view, false);
   return k.svg;
 }
@@ -687,8 +859,10 @@ function knobControl(p, taper) {
 function knob(p, opts = {}) {
   const taper = opts.taper || 1;
   const box = el("div", "kn"), label = el("div", "klabel", opts.label || p.label), k = knobSvg(p, taper), value = el("div", "kvalue");
-  label.title = `${factoryTitle(p)} (click)`;
+  label.title = `${factoryTitle(p)} (click). Drag the name onto CV 1 / CV 2 in the Panel tab to work it from the module.`;
   label.onclick = () => userSet(p, p.def);
+  attachable(label, p);
+  k.svg.dataset.pid = p.id;
   const text = (v) => (opts.text ? opts.text(v) : fmtUnit(p, v));
   const view = { busy: false, show(v) { k.show(v); if (!value.querySelector("input")) value.textContent = text(v); } };
   dragValue(k.svg, p, taper, view, 160);
@@ -724,6 +898,7 @@ function toggle(p, text, detail = true) {
   b.setAttribute("aria-pressed", "false");
   b.onclick = (e) => { e.stopPropagation(); userSet(p, p.value >= 0.5 ? 0 : 1); };
   addView(p, { busy: false, show(v) { b.classList.toggle("on", v >= 0.5); b.setAttribute("aria-pressed", v >= 0.5); } }, detail);
+  attachable(b, p);
   return b;
 }
 
@@ -744,6 +919,7 @@ function labelled(p, label, control) {
   const box = el("div", "ctl"), name = el("div", "klabel", label);
   name.title = `${factoryTitle(p)} (click)`;
   name.onclick = () => userSet(p, p.def);
+  attachable(name, p);
   box.append(name, control);
   state.detailCtls.push({ p, node: box });
   return box;
@@ -1350,10 +1526,23 @@ function orderOf(entry) {
 }
 
 function buildStrip(cfg) {
-  const strip = el("div", "strip"), head = el("button", "shead");
+  const strip = el("div", "strip"), top = el("div", "stop"), head = el("button", "shead");
   head.append(el("span", "sname", cfg.name), el("span", "ssub", cfg.sub));
   head.title = `${cfg.name}: trim, send and level`;
-  strip.append(head);
+  top.append(head);
+  const mb = el("div", "mbtns");
+  for (const [id, text, cls, title] of [[cfg.mute, "OFF", "off", "channel off: its level and its send"], [cfg.solo, "S", "solo", "solo: only the soloed channels into the main"]]) {
+    const p = P(id);
+    if (!p) continue;
+    const b = el("button", "mb " + cls, text);
+    b.title = `${cfg.name} ${title} (not saved). Drag onto MODE in the Panel tab to switch it from the module.`;
+    b.onclick = (e) => { e.stopPropagation(); userSet(p, p.value >= 0.5 ? 0 : 1); };
+    addView(p, { busy: false, show(v) { b.classList.toggle("on", v >= 0.5); b.setAttribute("aria-pressed", v >= 0.5); } }, false);
+    attachable(b, p);
+    mb.append(b);
+  }
+  if (mb.childElementCount) top.append(mb);
+  strip.append(top);
   const entry = { cfg, strip, infos: [], slots: [] };
 
   // the channel itself as a selectable device: the strip's own controls
@@ -1367,7 +1556,7 @@ function buildStrip(cfg) {
   const input = el("div", "sec input");
   if (P(cfg.trim)) {
     const io = el("div", "io"), trim = el("div", "col trim"), cap = el("div", "cap"), clip = el("span");
-    cap.append(el("span", "", "Trim"), clip);
+    cap.append(attachable(el("span", "", "Trim"), P(cfg.trim)), clip);
     const row = el("div", "knobrow");
     let clipUntil = 0;
     row.append(knobControl(P(cfg.trim), 1), numberBox(P(cfg.trim), "vbox", false));
@@ -1383,7 +1572,9 @@ function buildStrip(cfg) {
     if (P(cfg.send)) {
       const send = el("div", "col send"), srow = el("div", "knobrow");
       srow.append(knobControl(P(cfg.send), FADER_TAPER), numberBox(P(cfg.send), "vbox", false));
-      send.append(el("div", "cap", "Send → par"), srow);
+      const scap = el("div", "cap");
+      scap.append(attachable(el("span", "", "Send → par"), P(cfg.send)));
+      send.append(scap, srow);
       send.title = "Into the parallel bus, after this strip's effects, before its fader";
       io.append(send);
     }
@@ -1409,7 +1600,7 @@ function buildStrip(cfg) {
 
   // fader, meters
   const fad = el("div", "sec fad"), cap = el("div", "cap"), peak = el("span", "peak"), row = el("div", "fadrow"), foot = el("div", "fadfoot"), gr = el("span", "grtext");
-  cap.append(el("span", "", cfg.faderName), peak);
+  cap.append(P(cfg.fader) ? attachable(el("span", "", cfg.faderName), P(cfg.fader)) : el("span", "", cfg.faderName), peak);
   if (cfg.gr) row.append(stripReduction(cfg.gr, gr));
   if (P(cfg.fader)) { row.append(faderControl(P(cfg.fader), FADER_TAPER)); foot.append(gr, numberBox(P(cfg.fader), "vbox", false)); }
   row.append(stripLevel(cfg.meter, peak));
@@ -1447,6 +1638,7 @@ function faderControl(p, taper) {
     fader.setAttribute("aria-valuetext", fmtUnit(p, v));
   } };
   dragValue(fader, p, taper, view, 150);
+  fader.dataset.pid = p.id;
   addView(p, view, false);
   return fader;
 }
@@ -1516,7 +1708,7 @@ function setOrder(entry, names) {
 function buildSlot(dev) {
   const cfg = dev.cfg, slot = el("div", "slot"), pwr = el("button", "pwr"), body = el("div", "sbody"), sum = el("div", "slotsum");
   const sw = P(cfg.on);
-  if (sw) { pwr.title = `${sw.label} on / off`; pwr.onclick = (e) => { e.stopPropagation(); userSet(sw, sw.value >= 0.5 ? 0 : 1); }; }
+  if (sw) { pwr.title = `${sw.label} on / off`; pwr.onclick = (e) => { e.stopPropagation(); userSet(sw, sw.value >= 0.5 ? 0 : 1); }; attachable(pwr, sw); }
   else { pwr.classList.add("fixed"); pwr.tabIndex = -1; }
   body.append(el("div", "slotname", dev.name), sum);
   slot.append(pwr, body, el("div", "grip"));
@@ -1565,7 +1757,7 @@ function buildMixer() {
   state.strips = [];
   for (const p of state.params.values()) p.views = new Set();
   const placed = new Set(TOOLBAR);
-  for (const cfg of STRIPS) for (const id of [cfg.trim, cfg.send, cfg.fader, cfg.on, cfg.order, ...cfg.devices.map((d) => d.on)]) if (id) placed.add(id);
+  for (const cfg of STRIPS) for (const id of [cfg.trim, cfg.send, cfg.fader, cfg.on, cfg.order, cfg.mute, cfg.solo, ...cfg.devices.map((d) => d.on)]) if (id) placed.add(id);
 
   for (const cfg of STRIPS) {
     const entry = buildStrip(cfg);
@@ -1595,6 +1787,12 @@ function buildMixer() {
   refresh();
 }
 
+// A channel is silent when it is off, or when another one is soloed (the master only when off).
+function silent(cfg) {
+  if (cfg.mute && isOn(cfg.mute) && P(cfg.mute)) return true;
+  return !!cfg.solo && SOLOS.some((id) => P(id)?.value >= 0.5) && !(P(cfg.solo)?.value >= 0.5);
+}
+
 // ---------------------------------------------------------------- the panel under the mixer
 
 function select(id) {
@@ -1621,6 +1819,7 @@ function buildDetail() {
   const body = el("div", "dbody");
   (VIEWS[cfg.view] || viewGeneric)(dev, body);
   root.append(head, body);
+  markMaps();
   refresh();
 }
 
@@ -1632,6 +1831,7 @@ function refresh() {
   for (const dev of state.devices.values()) if (dev.refresh) dev.refresh();
   for (const entry of state.strips) {
     entry.strip.classList.toggle("off", !isOn(entry.cfg.on));
+    entry.strip.classList.toggle("silent", silent(entry.cfg));
     entry.infos.forEach((f) => f());
     const names = orderOf(entry);
     if (names) {
@@ -1657,6 +1857,309 @@ function queueRefresh() {
   queueMicrotask(refresh);
 }
 
+// ---------------------------------------------------------------- the module's panel: CV 1, CV 2, MODE, LED
+
+const srcOf = (id) => SOURCES.find((x) => x.id === id);
+const mapsOf = (src) => state.maps.filter((m) => m.src === src);
+
+// Where a setting sits, for the lists: "MASTER Glue compressor · Threshold".
+function paramName(p) {
+  for (const dev of state.devices.values()) {
+    if (!dev.sections.some((sec) => sec.params.includes(p))) continue;
+    const band = /^mb_(lo|mid|hi)_/.test(p.id) && p.kind !== "bool" ? state.groups.find((g) => g.id === p.group)?.title + " " : "";
+    return `${dev.strip.cfg.name}${dev.id.endsWith(":ch") ? "" : " " + dev.name} · ${band}${p.label}`;
+  }
+  const strip = STRIPS.find((c) => [c.mute, c.solo, c.on, c.order].includes(p.id));
+  if (strip) return `${strip.name} · ${p.id === strip.on ? "On" : p.label}`;
+  return p.label;
+}
+
+// A control's name (or switch) that can be dragged onto CV 1 / CV 2 / a MODE
+// action (mouse), or held (touch: the sheet). Returns the node.
+function attachable(node, p) {
+  if (!p) return node;
+  node.classList.add("attach");
+  node.dataset.pid = p.id;
+  node.draggable = true;
+  node.addEventListener("dragstart", (e) => {
+    state.dragPid = p.id;
+    e.dataTransfer.setData("text/plain", p.id);
+    // "copy", not "link": Wayland's drag and drop has no link action, so Chrome
+    // there refuses a link-only drop and the control snaps back.
+    e.dataTransfer.effectAllowed = "copy";
+    showTab("panel");
+    document.body.classList.add("attaching");
+    for (const zone of document.querySelectorAll(".drop")) {
+      const ok = canAttach(srcOf(zone.dataset.src), p);
+      zone.classList.toggle("can", ok);
+      zone.classList.toggle("cannot", !ok);
+    }
+  });
+  node.addEventListener("dragend", () => {
+    state.dragPid = null;
+    document.body.classList.remove("attaching");
+    for (const zone of document.querySelectorAll(".drop")) zone.classList.remove("can", "cannot", "over");
+  });
+  return node;
+}
+
+const canAttach = (src, p) => !!src && !!p && !refuseMap(src, p) && (mapsOf(src.id).length < MAPS_MAX || mapsOf(src.id).some((m) => m.id === p.id));
+
+// CV: the whole range to start with; MODE: switch it to the other state.
+function attach(srcId, p) {
+  const src = srcOf(srcId);
+  if (!canAttach(src, p)) return note(`${paramName(p)} cannot go on ${src ? src.name : srcId}: ${refuseMap(src, p) || "8 settings at most"}.`, true);
+  if (src.cv) command(`map ${src.id} ${p.id} ${p.min} ${p.max}`);
+  else command(`map ${src.id} ${p.id} ${p.value >= 0.5 ? 0 : 1}`);
+  note(`${paramName(p)} on ${src.name}. Not saved yet.`);
+}
+
+// The badges on every attachable control: CV1, CV2, M.
+function markMaps() {
+  const tags = new Map();
+  for (const m of state.maps) {
+    const t = srcOf(m.src)?.cv ? m.src.toUpperCase() : "M";
+    const list = tags.get(m.id) || [];
+    if (!list.includes(t)) list.push(t);
+    tags.set(m.id, list);
+  }
+  for (const node of document.querySelectorAll(".attach[data-pid]")) {
+    const t = tags.get(node.dataset.pid);
+    if (t) node.dataset.maps = t.join(" "); else delete node.dataset.maps;
+  }
+  $("mapCount").textContent = state.maps.length ? state.maps.length : "";
+}
+
+function showTab(name) {
+  for (const t of document.querySelectorAll(".tab")) t.classList.toggle("sel", t.dataset.tab === name);
+  $("tab-setup").hidden = name !== "setup";
+  $("tab-panel").hidden = name !== "panel";
+}
+for (const t of document.querySelectorAll(".tab")) t.onclick = () => showTab(t.dataset.tab);
+
+function dropZone(src) {
+  const zone = el("div", "plist drop");
+  zone.dataset.src = src.id;
+  zone.addEventListener("dragover", (e) => {
+    if (!state.dragPid || !canAttach(src, P(state.dragPid))) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+    zone.classList.add("over");
+  });
+  zone.addEventListener("dragleave", () => zone.classList.remove("over"));
+  zone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    zone.classList.remove("over");
+    const p = P(state.dragPid || e.dataTransfer.getData("text/plain"));
+    if (p) attach(src.id, p);
+  });
+  return zone;
+}
+
+// A value box of a CV range: a number (typed as on a knob) or, for a list, a choice.
+function rangeBox(p, m, key) {
+  const send1 = (v) => command(`map ${m.src} ${m.id} ${key === "a" ? v : m.a} ${key === "b" ? v : m.b}`);
+  if (p.kind === "enum" || p.kind === "bool") {
+    const box = el("select");
+    (p.kind === "bool" ? ["off", "on"] : p.options).forEach((o, i) => { const opt = el("option", "", o); opt.value = i; box.append(opt); });
+    box.value = Math.round(m[key]);
+    box.onchange = () => send1(+box.value);
+    return box;
+  }
+  const box = el("input");
+  box.type = "text"; box.inputMode = "decimal";
+  box.value = isOff(p, m[key]) ? "off" : fmt(p, m[key]);
+  box.title = `${key === "a" ? "Knob down" : "Knob up"}: ${fmtUnit(p, m[key])}`;
+  box.onchange = () => { const v = parseValue(p, box.value); if (!isNaN(v)) send1(clamp(v, p.min, p.max)); else box.value = fmt(p, m[key]); };
+  box.onkeydown = (e) => { if (e.key === "Enter") box.blur(); };
+  return box;
+}
+
+function mapRow(m) {
+  const p = P(m.id), src = srcOf(m.src);
+  const row = el("div", "prow"), name = el("div", "pn"), now = el("span", "now"), range = el("div", "prange");
+  name.append(el("span", "", paramName(p)), now);
+  name.title = paramName(p);
+  const view = { busy: false, show(v) { now.textContent = fmtUnit(p, v); } };
+  addView(p, view, false);
+  state.rowViews.push([p, view]);
+  const x = el("button", "mini", "×");
+  x.title = "Take it off";
+  x.onclick = () => command(`unmap ${m.src} ${m.id}`);
+  if (src.cv) {
+    const flip = el("button", "mini", "⇅");
+    flip.title = "Turn round (knob up = the first value)";
+    flip.onclick = () => command(`map ${m.src} ${m.id} ${m.b} ${m.a}`);
+    range.append(rangeBox(p, m, "a"), el("span", "", "→"), rangeBox(p, m, "b"), el("span", "sp"), flip, x);
+  } else {
+    const seg = el("div", "seg");
+    for (const [text, a] of [["ON", 1], ["OFF", 0]]) {
+      const b = el("button", a === m.a ? "sel" : "", text);
+      b.onclick = () => command(`map ${m.src} ${m.id} ${a}`);
+      seg.append(b);
+    }
+    range.append(el("span", "", "switches"), seg, el("span", "sp"), x);
+  }
+  row.append(name, range);
+  return row;
+}
+
+// The tab itself, once per connection; the lists again on every `ok|ctl`.
+function buildPanel() {
+  const root = $("tab-panel");
+  root.textContent = "";
+  state.lists = {};
+  if (state.proto < PANEL_PROTO) {
+    root.append(el("div", "pempty", "This page needs master 0.4.1 or later for the panel controls: flash the firmware again."));
+    return;
+  }
+  const lists = state.lists;
+  for (const src of SOURCES.filter((x) => x.cv)) {
+    const card = el("div", "pcard"), head = el("div", "phead");
+    head.append(el("span", "pname", src.name), smallBar((fill, mv) => { fill.style.width = 100 * clamp01(mv[src.id] ?? 0) + "%"; }));
+    head.title = `${src.name}: where the knob (× the CV at its jack) is now`;
+    lists[src.id] = dropZone(src);
+    card.append(head, lists[src.id]);
+    root.append(card);
+  }
+  const mode = el("div", "pcard"), mhead = el("div", "phead"), btnLamp = el("span", "lamp"), lamp = el("span", "lamp");
+  btnLamp.title = "The MODE button, lit while pressed";
+  lamp.title = "Lit while its settings are switched over";
+  mhead.append(el("span", "pname", "MODE"), lamp, el("span", "pnote", "on / off settings"), el("span", "sp"), btnLamp);
+  mhead.querySelector(".sp").style.flex = "1";
+  mode.append(mhead);
+  // How the button works them: one of click / hold / push.
+  const act = P("mode_act"), sub = el("div", "psub"), seg = el("div", "seg"), how = el("div", "pnote"), fire = el("button", "mini", "Press");
+  fire.title = "Do what the MODE button does";
+  let firing = false;  // push: the page's button held down
+  const fireUp = () => { if (firing) { firing = false; command("fire off"); } };
+  fire.onpointerdown = () => { if (act && Math.round(act.value) === 2) { firing = true; command("fire on"); } };
+  fire.onpointerup = fire.onpointerleave = fire.onpointercancel = fireUp;
+  fire.onclick = () => { if (!act || Math.round(act.value) !== 2) command("fire"); };
+  if (act) {
+    MODE_ACTS.forEach((x, i) => {
+      const b = el("button", "", x.name);
+      b.title = x.note;
+      b.onclick = () => userSet(act, i);
+      seg.append(b);
+    });
+    addView(act, { busy: false, show(v) {
+      const i = Math.round(v);
+      [...seg.children].forEach((b, j) => b.classList.toggle("sel", i === j));
+      how.textContent = MODE_ACTS[i] ? MODE_ACTS[i].note : "";
+      fire.textContent = i === 2 ? "Hold" : "Press";
+    } }, false);
+  }
+  sub.append(seg, el("span", "sp"), fire);
+  sub.querySelector(".sp").style.flex = "1";
+  lists.mode = dropZone(srcOf("mode"));
+  mode.append(sub, how, lists.mode);
+  state.stripMeters.push((mv) => {
+    btnLamp.classList.toggle("on", mv.btn >= 1);
+    lamp.classList.toggle("on", (mv.eng || 0) & 1);
+  });
+  root.append(mode);
+
+  // LED
+  const led = el("div", "pcard"), lhead = el("div", "phead"), dot = el("span", "leddot"), glow = el("i");
+  dot.append(glow);
+  dot.title = "The LED now";
+  lhead.append(el("span", "pname", "LED"), el("span", "sp"), dot);
+  lhead.querySelector(".sp").style.flex = "1";
+  state.stripMeters.push((mv) => { glow.style.opacity = clamp01(mv.led ?? 0); });
+  led.append(lhead);
+  const lm = P("led_mode"), lb = P("led_bright"), lc = P("led_clip");
+  if (lm) {
+    const row = el("div", "ledrow"), sel = el("select");
+    lm.options.forEach((o, i) => { const opt = el("option", "", o); opt.value = i; sel.append(opt); });
+    sel.onchange = () => userSet(lm, +sel.value);
+    addView(lm, { busy: false, show(v) { sel.value = Math.round(v); } }, false);
+    row.append(el("span", "", "Shows"), sel);
+    led.append(row);
+  }
+  if (lb) {
+    const row = el("div", "ledrow"), r = el("input");
+    r.type = "range"; r.min = lb.min; r.max = lb.max; r.step = 1;
+    r.oninput = () => userSet(lb, +r.value);
+    addView(lb, { busy: false, show(v) { r.value = v; r.title = fmtUnit(lb, v); } }, false);
+    row.append(el("span", "", "Brightness"), r);
+    led.append(row);
+  }
+  if (lc) {
+    const row = el("div", "ledrow");
+    row.append(el("span", "", "Input clip"), toggle(lc, "FLASH", false));
+    led.append(row);
+  }
+  led.append(el("div", "pnote", "Status: dim = running, blinks in bypass. MODE: lit while the MODE settings are switched over."));
+  root.append(led);
+  buildMapLists();
+}
+
+function buildMapLists() {
+  for (const [p, view] of state.rowViews) p.views.delete(view);
+  state.rowViews = [];
+  for (const [id, zone] of Object.entries(state.lists || {})) {
+    zone.textContent = "";
+    const mine = mapsOf(id).filter((m) => P(m.id));
+    const touch = matchMedia("(pointer: coarse)").matches;
+    if (!mine.length) zone.append(el("div", "pempty", touch ? `Hold a ${srcOf(id).cv ? "knob" : "switch"} in the mixer` : srcOf(id).cv ? "Drag a knob's name here" : "Drag a switch here"));
+    for (const m of mine) zone.append(mapRow(m));
+  }
+  markMaps();
+}
+
+// ---- touch: hold a control to attach it (no drag and drop on touch screens)
+
+let press = null;
+document.addEventListener("pointerdown", (e) => {
+  if (e.pointerType !== "touch" || !state.described || state.proto < PANEL_PROTO) return;
+  const node = e.target.closest && e.target.closest("[data-pid]");
+  const p = node && P(node.dataset.pid);
+  if (!p) return;
+  press = { x: e.clientX, y: e.clientY, id: e.pointerId, timer: setTimeout(() => { state.holding = press.id; press = null; openSheet(p); }, LONG_PRESS_MS) };
+}, true);
+const endPress = () => { if (press) { clearTimeout(press.timer); press = null; } };
+document.addEventListener("pointermove", (e) => { if (press && e.pointerId === press.id && Math.hypot(e.clientX - press.x, e.clientY - press.y) > 10) endPress(); }, true);
+for (const type of ["pointerup", "pointercancel"]) {
+  document.addEventListener(type, (e) => {
+    if (press && e.pointerId === press.id) endPress();
+    if (state.holding === e.pointerId) { state.holding = null; state.lpUntil = performance.now() + 400; }
+  }, true);
+}
+// The click that ends a hold presses nothing: not the control, not the sheet that opened under the finger.
+document.addEventListener("click", (e) => {
+  if (state.holding !== null && state.holding !== undefined || performance.now() < state.lpUntil) { e.preventDefault(); e.stopPropagation(); return; }
+  if (state.sheet && !e.target.closest("#sheet")) { e.preventDefault(); e.stopPropagation(); }
+}, true);
+// Right-click (mouse) opens the same sheet: attaching without drag and drop.
+document.addEventListener("contextmenu", (e) => {
+  const node = e.target.closest && e.target.closest("[data-pid]");
+  if (!node) return;
+  e.preventDefault();
+  const p = P(node.dataset.pid);
+  if (p && state.described && state.proto >= PANEL_PROTO && !press && state.holding === null) openSheet(p);
+});
+
+function openSheet(p) {
+  state.sheet = p;
+  $("sheetTitle").textContent = "";
+  $("sheetTitle").append("Attach ", el("b", "", paramName(p)), " to");
+  const btns = $("sheetBtns");
+  btns.textContent = "";
+  for (const src of SOURCES) {
+    const on = mapsOf(src.id).some((m) => m.id === p.id);
+    const b = el("button", "btn" + (on ? " mapped" : ""), src.name + (on ? " ✓" : ""));
+    b.disabled = !on && !canAttach(src, p);
+    b.title = on ? "Attached: tap to take it off" : refuseMap(src, p);
+    b.onclick = () => { if (on) command(`unmap ${src.id} ${p.id}`); else attach(src.id, p); closeSheet(); if (!on) showTab("panel"); };
+    btns.append(b);
+  }
+  $("sheet").hidden = false;
+}
+function closeSheet() { state.sheet = null; $("sheet").hidden = true; }
+$("sheetClose").onclick = closeSheet;
+$("sheet").onclick = (e) => { if (e.target === $("sheet")) closeSheet(); };
+
 // ---------------------------------------------------------------- connection
 
 function note(text, error) { $("note").textContent = text; $("note").classList.toggle("error", !!error); }
@@ -1679,6 +2182,7 @@ async function disconnect(reason) {
   state.described = false;
   if (link) await link.close();
   setButtons(false);
+  closeSheet();
   setLink("Not connected", false);
   $("unsaved").classList.add("hidden");
   if (reason) note(reason, true);
@@ -1691,6 +2195,8 @@ async function connect(link, demo) {
   state.params = new Map();
   state.hello = null;
   state.hist = [];
+  state.maps = [];
+  state.mapsIn = [];
   state.link = link;
   try { await link.start(); } catch (e) { state.link = null; setLink("Not connected", false); note("Could not open the port: " + e.message, true); return; }
   setLink(demo ? "Demo mode" : "Connecting…", demo);
@@ -1726,7 +2232,8 @@ $("save").onclick = () => command("save");
 $("revert").onclick = () => command("load");
 $("factory").onclick = () => { if (confirm("Load the factory settings? Your saved settings stay in the module until you press Save.")) command("defaults"); };
 
-const settingsText = () => [...state.params.values()].filter((p) => p.saved).map((p) => `set ${p.id} ${p.value}`).join("\n") + "\n";
+const mapLine = (m) => `map ${m.src} ${m.id} ${m.a}` + (srcOf(m.src)?.cv ? ` ${m.b}` : "");
+const settingsText = () => [...state.params.values()].filter((p) => p.saved).map((p) => `set ${p.id} ${p.value}`).concat(state.maps.map(mapLine)).join("\n") + "\n";
 $("export").onclick = () => {
   const a = el("a");
   a.href = URL.createObjectURL(new Blob(["# 32bit master settings\n" + settingsText()], { type: "text/plain" }));
@@ -1739,13 +2246,19 @@ $("file").onchange = async () => {
   const file = $("file").files[0];
   if (!file) return;
   // The module reads the names of firmware 0.2 too; send every `set` of a known or old name.
-  const lines = (await file.text()).split("\n").map((l) => l.trim().split(/\s+/)).filter((w) => w[0] === "set" && w[1] && !(state.params.has(w[1]) && !state.params.get(w[1]).saved) && !isNaN(parseFloat(w[2])));
+  // A file is the whole setup: its panel mappings replace the module's (none in an older file).
+  const words = (await file.text()).split("\n").map((l) => l.trim().split(/\s+/));
+  const sets = words.filter((w) => w[0] === "set" && w[1] && !(state.params.has(w[1]) && !state.params.get(w[1]).saved) && !isNaN(parseFloat(w[2])));
+  const maps = state.proto >= PANEL_PROTO ? words.map((w) => (w[0] === "map" && OLD_SOURCES[w[1]] ? [w[0], OLD_SOURCES[w[1]], ...w.slice(2)] : w))
+    .filter((w) => w[0] === "map" && srcOf(w[1]) && w[2] && !isNaN(parseFloat(w[3]))) : [];
+  const lines = sets.map((w) => `set ${w[1]} ${parseFloat(w[2])}`);
+  if (state.proto >= PANEL_PROTO) lines.push("unmap all", ...maps.map((w) => w.slice(0, 5).join(" ")));
   for (let i = 0; i < lines.length; i += 8) {
-    lines.slice(i, i + 8).forEach((w) => send(`set ${w[1]} ${parseFloat(w[2])}`));
+    lines.slice(i, i + 8).forEach((l) => send(l));
     await new Promise((r) => setTimeout(r, 20));
   }
   $("file").value = "";
-  note(`${lines.length} settings loaded from ${file.name}. Not saved in the module yet.`);
+  note(`${sets.length} settings${maps.length ? ` and ${maps.length} panel mappings` : ""} loaded from ${file.name}. Not saved in the module yet.`);
 };
 
 window.addEventListener("beforeunload", (e) => {

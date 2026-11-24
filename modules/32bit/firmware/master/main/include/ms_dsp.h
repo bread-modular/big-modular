@@ -161,6 +161,8 @@ enum {
     MS_G_MB_HI,
     MS_G_GLUE_MAKEUP,
     MS_G_OUT,
+    MS_G_BYP_K,  // bypass: kick and mix straight out (channel off / solo, master off)
+    MS_G_BYP_M,
     MS_G_COUNT
 };
 
