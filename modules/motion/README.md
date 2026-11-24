@@ -17,7 +17,7 @@ four outputs between 0..+5 V and -5..+5 V.
   ±12 V through series Schottkys, +5 V from an HT7550-1. UPDI on a 2-pin header.
 
 **Status: S1 schematic + R1 hand-routed 2-layer carrier, JLCPCB export in `jlcpcb/`;
-no firmware, not built.** ERC 0; DRC 0 / unconnected 0 / parity 0 (`docs/fit/`).
+firmware written (compiled + host-tested, not flashed), not built.** ERC 0; DRC 0 / unconnected 0 / parity 0 (`docs/fit/`).
 Panel P2 (2026-11-24) adds the M3 hole for the printed top clip (`panels/top-clip/`).
 
 | Path | Contents |
@@ -30,3 +30,4 @@ Panel P2 (2026-11-24) adds the M3 hole for the printed top clip (`panels/top-cli
 | `docs/motion-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON and renders (`overview.png`) |
 | `tools/` | Generators and the shared-tool profile `kicad-project.json` |
 | `jlcpcb/` | Upload-ready carrier + panel Gerbers, BOM and CPL (`jlcpcb/README.md`) |
+| `firmware/` | ATtiny1616 firmware (shared `opt/attiny1616-tools`), host test; `firmware/README.md` |

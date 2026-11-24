@@ -12,7 +12,8 @@ that knob's motion; release and it loops. The brief (user, 2026-11-15):
   no save step); **hold REC for 5 s without moving a knob = erase every take**.
 - Third message: schematic, THT placement and a 3D view with the panel. No routing yet.
 
-Nothing here is built or bench-tested, and there is no firmware. Sourcing is a dated
+Nothing here is built or bench-tested. The firmware (2026-11-24, `firmware/`) is compiled and
+host-tested only. Sourcing is a dated
 catalog observation, not an order.
 
 ## 1. Why these chips
@@ -98,7 +99,7 @@ and can still change during routing (ask first: it is a schematic change).
 - SW1 REC, SW2 RANGE: 6 x 6 x 7 mm THT tact switches (the `modules/8bit` part and printed cap).
 - D1-D4 motion, D5 REC, D6 RANGE: 3 mm THT, 10k each from the MCU pin.
 
-## 4. Firmware intent (not written)
+## 4. Firmware intent (written 2026-11-24: `firmware/README.md`)
 
 - Idle: each output plays its take in a loop; the knob shifts the take up or down.
   No take: the output follows the knob.
@@ -134,7 +135,7 @@ leave 0.15 mm gaps, under the 0.2 mm clearance. Compare it with the Microchip MS
 
 - User confirmation of D1 (RANGE as a button + LED) and of the panel layout.
 - Routing (manual, divide and conquer), then fab review and JLCPCB export.
-- Firmware; MCP4728 EEPROM default (section 3).
+- Firmware bench test (written: `firmware/`; it sets the MCP4728 EEPROM default itself).
 - The printed panel is in `panels/front-cad/` (not test-printed); no own button caps (the
   `modules/8bit` cap fits the same switch and stack).
 - 3D interference check; measured jack / LED / switch heights (the stack is the nominal

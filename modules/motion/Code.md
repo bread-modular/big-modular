@@ -84,4 +84,11 @@
   parity equal, no exclusions (`docs/fit/carrier-drc.json`). Panel DRC 0 / 0.
 - Measured: SMD pads >= 2.025 mm from pot / jack pads; courtyards >= 1.015 mm, track and
   via copper >= 1.1 mm from the edge; one GND net (`gndnet.py`).
-- Not done: JLCPCB preview, requirements audit, firmware, bench, second review of the route.
+- Not done: JLCPCB preview, requirements audit, bench, second review of the route.
+
+## Firmware (2026-11-24)
+
+`firmware/` (`firmware/README.md`): ATtiny1616 sketch on the S1 pin map, built with the shared
+`opt/attiny1616-tools`. `motion/MotionRecorder.h` is the modules/16bit cpx4 free-motion recorder
+behaviour on a frame store (the FRAM), plus the 5 s erase; `test.sh` runs it on the host. Compiled
+(8810 B flash, 331 B RAM) and host-tested, not flashed, not bench-tested.
