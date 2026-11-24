@@ -3,7 +3,8 @@
 | | |
 |---|---|
 | KiCad project | `hardware/motion.kicad_{pro,sch,pcb}` |
-| Panel | `panels/front-pcb/motion-panel.kicad_{pro,pcb}` (FR4, NPTH only) |
+| Panel | `panels/front-pcb/motion-panel.kicad_{pro,pcb}` (FR4, NPTH only; P2 adds the top-clip M3 hole) |
+| Top clip | `panels/top-clip/` (printed, holds the carrier top edge to the panel; `docs/geometry.json` `top_clip`) |
 | Generators, profile | `tools/` (`build_schematic.py`, `build_layout.py`, `import_footprints.py`, `render_fit.py`, `kicad-project.json`) |
 | Placement contract | `docs/geometry.json` |
 | Circuit intent and decisions | `docs/research.md` |

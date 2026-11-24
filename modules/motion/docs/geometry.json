@@ -38,7 +38,7 @@
   ],
   "thickness_mm": 1.6,
   "copper_layers": 2,
-  "note": "29.0 x 110.0 mm (as modules/8bit and modules/12bit), 2 layers, 1.25 mm inside the skiff rail gap at each end; held by the four jack bushings/nuts. The pots have no bushing or nut (user stock): soldered only. All assembled SMD on B. 1 mm copper-edge keep-out (min_copper_edge_clearance 1.0)."
+  "note": "29.0 x 110.0 mm (as modules/8bit and modules/12bit), 2 layers, 1.25 mm inside the skiff rail gap at each end; held by the four jack bushings/nuts at the bottom; the top edge, with no jack, is held by the printed top clip (`top_clip`, panels/top-clip/) screwed to the panel. The pots have no bushing or nut (user stock): soldered only. All assembled SMD on B. 1 mm copper-edge keep-out (min_copper_edge_clearance 1.0)."
  },
  "columns_X_mm": [
   7.95,
@@ -221,7 +221,8 @@
   "jack": 6.2,
   "pot": 7.2,
   "led": 3.2,
-  "button": 4.2
+  "button": 4.2,
+  "clip_screw": 3.2
  },
  "stack_Z_mm": {
   "datum": "Z0 = main PCB F.Cu surface, +Z toward the panel",
@@ -413,5 +414,49 @@
    ],
    "size": 1.2
   }
- ]
+ ],
+ "top_clip": {
+  "revision": "C1, 2026-11-24",
+  "why": "Every jack sits in the bottom 25 mm and the RV09 pots have no bushing or nut, so nothing held the upper 85 mm of the carrier to the panel: the top end flexed away when a knob was pressed and the shafts wandered in their panel holes. The carrier is routed and unchanged; the panel gets one M3 hole.",
+  "part": "panels/top-clip/build_top_clip.py -> motion-top-clip.stl (print orientation) + motion-top-clip.step (assembly frame)",
+  "X_mm": [
+   5.0,
+   29.0
+  ],
+  "back_Y": 8.2,
+  "spine_face_Y": 9.1,
+  "shoulder_inner_Y": 10.0,
+  "nose_inner_Y": 10.1,
+  "top_Z": 10.0,
+  "slot_Z": [
+   -1.8,
+   0.0
+  ],
+  "nose_Z": [
+   -2.9,
+   -1.8
+  ],
+  "boss": {
+   "X": [
+    22.0,
+    29.0
+   ],
+   "Y": [
+    8.2,
+    15.0
+   ],
+   "Z_bottom": 0.8
+  },
+  "screw_XY": [
+   25.0,
+   12.0
+  ],
+  "screw_hole_D": 2.6,
+  "screw_hole_bottom_Z": 1.4,
+  "screw": "M3 machine screw from the panel front, M3x6 or M3x8 (M3x10 at most), cutting its own thread in the 2.6 mm hole; button head Ø5.7",
+  "screw_head_D": 5.7,
+  "profile_note": "A C channel along the carrier top edge (Y9.25), extruded X5..29: the shoulder rests on the F face inside the 1 mm keep-out strip (Y9.25..10.0), the nose hooks the B face (Y9.25..10.1, 1.8 mm slot for the 1.6 mm board), and the back face (Y8.2) stays 0.2 mm off the skiff rail (Y8.0) over the full depth. The boss (X22..29, Y8.2..15.0) reaches the panel rear (Z10) and takes the screw. The jacks set the carrier height; the clip only stops the top edge moving toward or away from the panel.",
+  "assembly": "Slide the clip onto the carrier top edge from the right end (slot over the board), fit the panel over jacks / pots / LEDs, tighten the jack nuts, then drive the M3 screw through the panel hole into the boss.",
+  "print": "Stand it on its right end (X29 face on the bed): constant profile up to the boss end, no overhang, no support; layers across X, so the slot and screw loads run along the layers."
+ }
 }
