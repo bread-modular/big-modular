@@ -10,9 +10,16 @@
 // text protocol in ms_proto.h) and saved in flash; at power-up the module runs
 // alone with the saved settings. The chain is src/ms_dsp.c (host-tested).
 //
-//   LED    dim = running, bright = an input is clipping the converter,
-//          slow blink = bypass (set from the page, never saved)
-//   MODE button, CV1 / CV2, MIDI in: not used
+// The panel (ms_ctl.h, set up from the page and saved with the settings):
+//   CV1 / CV2  each moves the settings mapped to it, each between its own two values
+//   MODE       click / hold / push actions switch on / off settings (bypass,
+//              channel off / solo, an effect's switch)
+//   LED        led_mode: status (dim = running, slow blink = bypass), output or
+//              kick level, gain reduction, MODE actions, or off; bright while an
+//              input clips the converter
+// They only change settings, like the page does: the audio task gets new
+// coefficients at a block boundary and runs nothing more. The knobs and the
+// button are polled here on core 0 every 10 ms; MIDI in is not used.
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -27,6 +34,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "ms_dsp.h"
+#include "ms_io.h"
 #include "ms_params.h"
 #include "ms_proto.h"
 #include "nvs.h"
@@ -44,8 +52,9 @@
 #define NVS_NAMESPACE "master"
 #define NVS_KEY "settings"
 
-#define CLIP_LEVEL 0.99f
-#define CLIP_HOLD_US 300000
+#define TICK_US 10000
+#define PUSH_US 50000      // settings moved by the panel go to the page at most this often,
+#define PAGE_IDLE_US 1000000  // and only while it polls (it asks for the meters every 50 ms)
 
 static ms_dsp_t dsp;
 static ms_proto_t proto;
@@ -59,6 +68,8 @@ static volatile uint32_t block_us_sum, block_us_max, block_count;
 
 // Largest meter values since the page last asked.
 static ms_meters_t page_meters;
+static float led_level;
+static ms_led_t led;
 
 // ---------------------------------------------------------------- audio (core 1)
 
@@ -153,6 +164,7 @@ static void host_status(void *ctx, ms_status_t *st) {
     block_us_max = 0;
     st->cpu = count ? 100.0f * (float)sum / ((float)count * BLOCK_US) : 0.0f;
     st->cpu_max = 100.0f * (float)max / BLOCK_US;
+    st->led = led_level;
 }
 
 // ---------------------------------------------------------------- main task
@@ -173,18 +185,18 @@ static void setup_serial(void) {
     usb_serial_jtag_vfs_use_driver();
 }
 
-static void update_led(int64_t now_us, const ms_meters_t *m) {
-    static int64_t clip_until_us;
-    if (m->raw_k >= CLIP_LEVEL || m->raw_m >= CLIP_LEVEL) clip_until_us = now_us + CLIP_HOLD_US;
-    float level = 0.3f;
-    if (proto.values[MS_P_BYPASS] >= 0.5f) level = (now_us / 500000) % 2 ? 0.0f : 0.6f;
-    if (now_us < clip_until_us) level = 1.0f;
-    bm_set_led_brightness(level);
+static void update_led(int64_t now_us, float dt_s, const ms_meters_t *m) {
+    float level = ms_led_run(&led, proto.values, m, ms_ctl_engaged(&proto.ctl, proto.values),
+                             (uint32_t)(now_us / 1000), dt_s);
+    if (level != led_level) bm_set_led_brightness(level);
+    led_level = level;
 }
 
 void app_main(void) {
     ESP_LOGI(TAG, "Starting %s_%s", FIRMWARE_NAME, FIRMWARE_VERSION);
     bm_setup_led();
+    led_level = -1.0f;
+    ms_io_setup();
     setup_storage();
     setup_serial();
 
@@ -206,10 +218,11 @@ void app_main(void) {
     static char line[160];
     size_t line_len = 0;
     bool line_overflow = false;
-    int64_t next_tick_us = 0;
+    int64_t next_tick_us = 0, next_push_us = 0, last_tick_us = esp_timer_get_time(), last_rx_us = -PAGE_IDLE_US;
     while (1) {
         uint8_t rx[64];
         int n = usb_serial_jtag_read_bytes(rx, sizeof(rx), pdMS_TO_TICKS(10));
+        if (n > 0) last_rx_us = esp_timer_get_time();
         for (int i = 0; i < n; i++) {
             if (rx[i] != '\n' && rx[i] != '\r') {
                 if (line_len < sizeof(line) - 1) line[line_len++] = (char)rx[i];
@@ -225,10 +238,22 @@ void app_main(void) {
 
         int64_t now_us = esp_timer_get_time();
         if (now_us < next_tick_us) continue;
-        next_tick_us = now_us + 10000;
+        next_tick_us = now_us + TICK_US;
+        float dt_s = (float)(now_us - last_tick_us) * 1e-6f;
+        last_tick_us = now_us;
+
+        // The panel: knobs and button into the settings (applied like a `set`).
+        float cv[2];
+        ms_io_read_cv(cv);
+        ms_proto_controls(&proto, cv, ms_io_button(), (uint32_t)(now_us / 1000));
+        if (now_us >= next_push_us && now_us - last_rx_us < PAGE_IDLE_US) {
+            next_push_us = now_us + PUSH_US;
+            ms_proto_push(&proto);
+        }
+
         ms_meters_t fresh;
         ms_dsp_take_meters(&dsp, &fresh);
         merge_meters(&page_meters, &fresh);
-        update_led(now_us, &fresh);
+        update_led(now_us, dt_s, &fresh);
     }
 }

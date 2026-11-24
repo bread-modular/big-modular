@@ -95,7 +95,13 @@ Module paths are module-relative.
   QEMU count 1165 / 1735 instructions per sample (factory / all on); the demo loop run through the chain
   in QEMU (`firmware/master/tools/cpu-bench/audio.sh`) equals the host render within 8 steps of 24 bits;
   0.2.0 was heard on the built board (noise at high volume, see the bench notes), **0.3.0 not flashed,
-  not heard**. `tools/ms_render` runs the chain over WAV files. See `firmware/README.md` section master.
+  not heard**. **0.4.0 (2026-11-24, user: use the CV knobs, MODE and LED)**: CV1 / CV2 each move up
+  to 8 settings between their own two values, MODE switches up to 8 on / off
+  settings (0.4.1: one list, worked one way picked on the page: click, hold or push; `mode_act`), LED modes (status, output / kick level, gain reduction, MODE, off); channel off / solo on
+  kick / mix / parallel and master off (gains only, never saved); set up on the page's Panel tab (drag a
+  control's name onto CV / MODE; touch: hold it), saved as `map` lines with the settings; protocol 2.
+  Settings only: polled on core 0 every 10 ms (`ms_io.c`), nothing new per sample (QEMU 1166 / 1736, was
+  1165 / 1735). S3 / ES1 pins (GPIO1 / 2 / 8 / 18). 0.4.1: 963 host checks, 97 page checks pass, protocol 3; not flashed. `tools/ms_render` runs the chain over WAV files. See `firmware/README.md` section master.
 - Open: JLCPCB preview (U1 QFN pin 1, U2, Y1 rotation), bench (first power-up of the bare-chip circuit:
   40 MHz start-up, flash boot, PSRAM; U8 thermal, codec levels, firmware). master on the module: 24-bit
   codec words + 16-frame blocks, CPU load and U8 heat at 240 MHz, measured latency, port open / close

@@ -4,7 +4,7 @@ CC ?= cc
 CFLAGS ?= -O1 -g -std=c11 -Wall -Wextra -Wno-unused-parameter -Werror -fsanitize=address,undefined
 INC := -I../main/include
 
-SRCS := test_ms.c ../main/src/ms_dsp.c ../main/src/ms_params.c ../main/src/ms_proto.c
+SRCS := test_ms.c ../main/src/ms_dsp.c ../main/src/ms_params.c ../main/src/ms_proto.c ../main/src/ms_ctl.c
 
 run: test_ms
 	./test_ms

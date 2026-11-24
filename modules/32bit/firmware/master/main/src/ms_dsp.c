@@ -443,7 +443,7 @@ void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *ou
 
     if (c->bypass) {
         for (int i = 0; i < n; i++) {
-            float y = k[i] + m[i];
+            float y = k[i] * g[MS_G_BYP_K] + m[i] * g[MS_G_BYP_M];
             out[i] = y > 1.0f ? 1.0f : (y < -1.0f ? -1.0f : y);
         }
         peak_into(&mt->out, out, n);
