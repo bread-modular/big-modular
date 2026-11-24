@@ -42,8 +42,12 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   (shared `check` no findings, manifest equal); `check_top_clip.py` passes (closest
   courtyard D1 0.535 mm from the boss, no copper under the contact strips). Sliced
   (OrcaSlicer CLI, no support), not printed; the panel-to-carrier stack is nominal.
+- **Firmware** (2026-11-24, `firmware/README.md`): hold REC + move a knob records it into the
+  FRAM (81.7 s per knob, header follows each frame), loops with a glide back, knob shifts the
+  take (reference saved), 5 s still hold erases, RANGE saved; MCP4728 EEPROM set to mid-scale
+  once. Compiled (megaTinyCore 2.6.11, 8810 B) + host test (`test.sh`, 55 checks); not flashed.
 - Open: JLCPCB preview / DFM; `docs/jlcpcb-audit-requirements.json` (requirements audit
-  not written); firmware; printed button caps; bench. The route came from a
+  not written); printed button caps; bench (firmware flash + bring-up). The route came from a
   one-connection path helper and has had no second review.
 
 ## Boundaries
