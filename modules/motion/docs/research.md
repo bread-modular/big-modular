@@ -148,3 +148,20 @@ exported to `jlcpcb/`. MCP4728 pin 5 was renamed `RDY_~{BSY}` (shared parity, se
 `AGENTS.md`). Still open: JLCPCB preview, the requirements audit file, firmware, caps,
 bench. Things to look at on the first board: DAC / TL074 ground noise (the ground pours
 are in via-tied pieces, not one plane) and the 0 V offset (section 3).
+
+## 8. Top clip (C1, panel P2, 2026-11-24)
+
+User: the carrier top is not held to the panel. All four jacks sit in the bottom 25 mm and
+the user-stock RV09 pots have no bushing or nut, so the upper 85 mm of the carrier hung
+free. Options weighed: M3 standoffs on the carrier (needs holes in a routed, exported
+carrier: rejected), a hook fused onto the printed panel (snap arm only 0.9 mm thick between
+the rail and the board edge, and no help for the FR4 panel: rejected), a separate printed
+clip screwed to the panel (chosen: carrier unchanged, works with both panels).
+
+The clip grips only the 1 mm edge keep-out strip, which by the routing rules carries no
+copper and no courtyard, and the rail gap leaves 1.25 mm above the board edge for the
+0.9 mm spine. The jacks still set the carrier height; the clip stops the top edge moving
+toward or away from the panel. The screw sits right of `MOTION`, 2.2 mm from the D1 LED
+hole and 7.2 mm outside the widest (Ø16) knob skirt. Contract in `geometry.json`
+`top_clip`; checks in `panels/top-clip/`.
+

@@ -79,6 +79,7 @@ def check_contract(g):
     want += [(*p['shaft_XY'], d['pot']) for p in c['pots']]
     want += [(*led['XY'], d['led']) for led in c['leds']]
     want += [(*b['XY'], d['button']) for b in c['buttons']]
+    want += [(*c['top_clip']['screw_XY'], d['clip_screw'])]
     got = [(x, y, w) for _, x, y, w, h, _ in g['holes'] if w == h]
     assert sorted(got) == sorted(want), (sorted(got), sorted(want))
     assert all(w == h for _, _, _, w, h, _ in g['holes']), 'no slots on this panel'

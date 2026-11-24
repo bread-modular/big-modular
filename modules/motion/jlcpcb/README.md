@@ -25,7 +25,7 @@ The top-level ZIPs and `assembly/` CSVs are byte-identical copies of the files i
 |---|---|---|
 | Carrier PCB | `motion-gerbers.zip` | **2 layers**, FR4, 1.6 mm, 29.0 x 110.0 mm, 1 oz copper, HASL, **tented vias**, no via-in-pad / POFV / resin fill. Every via is 0.3 / 0.6 mm; tracks >= 0.2 mm, clearance >= 0.2 mm. Leave the other options at JLCPCB's defaults. No `JLCJLCJLCJLC` marker, so pick the order-number option deliberately. The 110 mm length is over JLCPCB's 102 x 102 mm special price (as every 110 mm carrier) |
 | Carrier assembly | `assembly/bom.csv`, `assembly/positions.csv` | **Economic PCBA, assembly side: Bottom.** 52 parts in 15 BOM rows, all on the back |
-| Front panel PCB | `motion-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly; black mask suits a panel |
+| Front panel PCB | `motion-panel-gerbers.zip` | 2 layers, FR4, 1.6 mm, 30.0 x 128.5 mm (6HP), no assembly; black mask suits a panel. **P2** (re-exported 2026-11-24): 19 NPTH incl. the Ø3.2 top-clip screw hole at X25 / Y12; smallest tool 3.2 mm, no PTH |
 
 One via sits in the ATtiny1616 exposed ground pad (U2, centre). It is that pad's ground
 via, the one exception to the no-via-in-SMD-pad rule, and needs no POFV: it is 0.3 mm,

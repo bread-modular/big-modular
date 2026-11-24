@@ -325,7 +325,7 @@ def build_panel(name='main'):
     stem, title, omit, labels = PANELS[name]
     path = MODULE / f'panels/front-pcb/{stem}.kicad_pcb'
     board = new_board(path, title, [
-        'P1, 6HP: passive panel, NPTH only, no copper',
+        'P2, 6HP: passive panel, NPTH only, no copper; P2 adds the top-clip M3 hole',
         'Geometry contract: ../../docs/geometry.json',
     ])
     pw, ph = GEO['panel_mm']
@@ -337,6 +337,8 @@ def build_panel(name='main'):
     spots += [(*p['shaft_XY'], holes['pot']) for p in GEO['pots'] if p['ref'] not in omit]
     spots += [(*sw['XY'], holes['button']) for sw in GEO['buttons']]
     spots += [(*d['XY'], holes['led']) for d in GEO['leds']]
+    # M3 screw into the printed top clip (no jack holds the carrier top edge)
+    spots += [(*GEO['top_clip']['screw_XY'], holes['clip_screw'])]
     for x, y, d in spots:
         n += 1
         npth(board, f'H{n}', x, y, d)

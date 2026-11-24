@@ -33,6 +33,15 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
 - **JLCPCB export** in `jlcpcb/` (carrier bottom Economic, 52 parts / 15 rows, 5 Extended
   part types + HT7550 Preferred Extended; 6HP panel), not supplier-accepted, not built.
 - Renders in `docs/fit/` (`overview.png`, `carrier-back.png`).
+- **Top clip C1 + panel P2** (2026-11-24, user: the top of the carrier is not held, no jack
+  up there and the pots have no nut): printed C channel on the carrier top edge (shoulder on
+  F, nose on B, both inside the 1 mm keep-out strip, 0.2 mm off the skiff rail) with a boss
+  for one M3x6 / M3x8 screw from the front through a new Ø3.2 panel hole at X25 / Y12
+  (`docs/geometry.json` `top_clip`, `panels/top-clip/`, `docs/fit/top-clip-section.png`).
+  Carrier unchanged. FR4 panel DRC 0, printed panel regenerated, panel Gerbers re-exported
+  (shared `check` no findings, manifest equal); `check_top_clip.py` passes (closest
+  courtyard D1 0.535 mm from the boss, no copper under the contact strips). Sliced
+  (OrcaSlicer CLI, no support), not printed; the panel-to-carrier stack is nominal.
 - Open: JLCPCB preview / DFM; `docs/jlcpcb-audit-requirements.json` (requirements audit
   not written); firmware; printed button caps; bench. The route came from a
   one-connection path helper and has had no second review.

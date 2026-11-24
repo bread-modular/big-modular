@@ -18,11 +18,13 @@ four outputs between 0..+5 V and -5..+5 V.
 
 **Status: S1 schematic + R1 hand-routed 2-layer carrier, JLCPCB export in `jlcpcb/`;
 no firmware, not built.** ERC 0; DRC 0 / unconnected 0 / parity 0 (`docs/fit/`).
+Panel P2 (2026-11-24) adds the M3 hole for the printed top clip (`panels/top-clip/`).
 
 | Path | Contents |
 |---|---|
 | `hardware/` | KiCad project `motion.kicad_{pro,sch,pcb}` (29 x 110 mm carrier, 2 layers, routed, SMD on the back), pinned symbols, footprints and models |
 | `panels/front-pcb/motion-panel.kicad_{pro,pcb}` | 6HP FR4 front panel: NPTH only, silkscreen labels |
+| `panels/top-clip/` | Printed clip that holds the carrier top edge to the panel (one M3 screw; no jack sits up there), `panels/README.md` |
 | `docs/research.md` | Brief, chip choice, decisions, circuit, sourcing, open items |
 | `docs/geometry.json` | Placement and panel contract |
 | `docs/motion-schematic.pdf`, `docs/fit/` | Schematic PDF; native ERC/DRC JSON and renders (`overview.png`) |
