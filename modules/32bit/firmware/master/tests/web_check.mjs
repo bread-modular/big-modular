@@ -417,6 +417,10 @@ try {
   await evaluate(`$("sheetBtns").children[1].click()`);
   await sleep(300);
   check(await evaluate(`$("sheet").hidden && state.maps.map((m) => m.src + " " + m.id).join()`) === "cv2 glue_makeup" && !(await evaluate(`$("tab-panel").hidden`)), "touch: CV 2 tapped, attached, Panel tab shown");
+  check(await evaluate(`document.body.classList.contains("detail-open") && $("detail").getBoundingClientRect().height === innerHeight`), "phone: the effect opened full screen");
+  await evaluate(`$("detail").querySelector(".dback").click()`);
+  await sleep(300);
+  check(await evaluate(`!document.body.classList.contains("detail-open")`), "phone: Back returns to the strips");
   // a quick tap on a switch still switches it
   const [bx, by] = await evaluate(`(() => { const b = state.strips[1].strip.querySelector(".mb.off"); b.scrollIntoView({ block: "center" }); const r = b.getBoundingClientRect(); return [r.x + r.width / 2, r.y + r.height / 2]; })()`);
   await cdp("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: bx, y: by }] });
@@ -425,6 +429,41 @@ try {
   check((await value("m_off"))[1] === 1, "touch: a tap on the mix OFF switches it");
   check(await evaluate(`document.scrollingElement.scrollWidth <= innerWidth + 1`), "412 px wide: no sideways page scroll (" + await evaluate(`document.scrollingElement.scrollWidth`) + ")");
   await shot("web-touch");
+  // the phone layout: strips only, every effect full screen without scrolling, upright and on its side
+  check(await evaluate(`(() => { const m = $("mixer").getBoundingClientRect(), s = [...document.querySelectorAll(".strip")].map((x) => x.getBoundingClientRect());
+    return s.length === 4 && s.every((r) => r.left >= m.left && r.right <= m.right + 1 && r.bottom <= innerHeight + 1) && $("bar").getBoundingClientRect().height <= 40; })()`), "phone: four strips side by side under a thin bar");
+  check(await evaluate(`!$("barSave").hidden`), "phone: SAVE in the bar while there are unsaved changes");
+  for (const [w, h] of [[390, 760], [360, 640], [800, 370], [740, 360]]) {
+    await cdp("Emulation.setDeviceMetricsOverride", { width: w, height: h, deviceScaleFactor: 2, mobile: true });
+    await sleep(300);
+    const bad = await evaluate(`(() => { const bad = []; for (const id of state.devices.keys()) { openDev(id);
+      const b = $("detail").querySelector(".dbody"), cut = [b, ...b.querySelectorAll(".dcol, .card")].some((c) => c.scrollHeight > c.clientHeight + 1 || c.scrollWidth > c.clientWidth + 1);
+      if (cut || document.scrollingElement.scrollHeight > innerHeight + 1) bad.push(id + ($("detail").className ? "(" + $("detail").className + ")" : "")); closeLayer("detail-open"); } return bad; })()`);
+    check(bad.length === 0, `phone ${w} x ${h}: every effect fits without scrolling` + (bad.length ? ": " + bad : ""));
+  }
+  // every button label on the middle of its capitals (text-box), in the bar, the strips and an effect
+  const capOff = `(e) => { const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); let t; while ((t = w.nextNode()) && !t.textContent.trim());
+    if (!t) return 0; const rg = document.createRange(); rg.selectNodeContents(t); const r = rg.getClientRects()[0], cs = getComputedStyle(t.parentElement);
+    const c = document.createElement("canvas").getContext("2d"); c.font = cs.fontWeight + " " + cs.fontSize + " " + cs.fontFamily; const m = c.measureText("H");
+    const mid = r.top + m.fontBoundingBoxAscent - m.actualBoundingBoxAscent / 2, b = e.getBoundingClientRect(), es = getComputedStyle(e);
+    const bt = parseFloat(es.borderTopWidth), bb = parseFloat(es.borderBottomWidth); return mid - (b.top + bt + (b.height - bt - bb) / 2); }`;
+  const offCentre = () => evaluate(`(() => { const f = ${capOff}; return [...document.querySelectorAll("button:not(.btab)")].filter((e) => e.checkVisibility() && e.getBoundingClientRect().height > 2)
+    .map((e) => [e.textContent.trim(), f(e)]).filter(([, o]) => Math.abs(o) > 0.6).map(([t, o]) => t + " " + o.toFixed(1)); })()`);
+  await cdp("Emulation.setDeviceMetricsOverride", { width: 390, height: 760, deviceScaleFactor: 2, mobile: true });
+  await sleep(300);
+  const offStrips = await offCentre();
+  await evaluate(`openDev("mb")`);
+  await sleep(300);
+  const offMb = await offCentre();
+  await evaluate(`closeLayer("detail-open")`);
+  check(offStrips.length === 0 && offMb.length === 0, "phone: button labels centred on their capitals" + (offStrips.length + offMb.length ? ": " + offStrips.concat(offMb) : ""));
+  await cdp("Emulation.setDeviceMetricsOverride", { width: 412, height: 900, deviceScaleFactor: 2, mobile: true });
+  await sleep(200);
+  await evaluate(`disconnect()`);
+  await sleep(200);
+  check(await evaluate(`getComputedStyle($("gate")).display === "flex" && $("gateConnect").getBoundingClientRect().width > 0`), "phone: not connected, the Connect box in the middle");
+  await evaluate(`$("gateDemo").click()`);
+  await sleep(1500);
   await cdp("Emulation.setTouchEmulationEnabled", { enabled: false });
   await cdp("Emulation.clearDeviceMetricsOverride");
   // ---- a real mouse drag through the browser's drag and drop: copy, not link (Wayland has no link

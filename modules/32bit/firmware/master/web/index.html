@@ -14,6 +14,10 @@
   control's name onto CV 1, CV 2 or MODE to attach it; on a touch screen hold
   a control instead.
 
+  Phones (body.mobile): the strips alone under a thin status bar, an effect full
+  screen without scrolling (fitDetail steps the knobs down when it does not fit),
+  the side panel as a drawer behind ☰.
+
   The parameters, their ranges and names come from the firmware's `desc` answer
   (protocol in ../main/include/ms_proto.h); STRIPS below only says where each one
   sits and which view draws it. A parameter the table does not know lands in an
@@ -72,12 +76,17 @@
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .btn {
     background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px;
-    padding: 6px 10px; cursor: pointer; white-space: nowrap; text-align: center;
+    height: 30px; padding: 0 10px; cursor: pointer; white-space: nowrap; text-align: center;
   }
   .btn:hover:not(:disabled) { border-color: var(--text-muted); }
   .btn:disabled { opacity: 0.4; cursor: default; }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
   .btn.active { background: var(--critical); border-color: var(--critical); color: #fff; font-weight: 600; }
+  /* button labels sit on the middle of their capital letters in every font (text-box: Chrome 133,
+     Safari 18.2; older browsers line-height 1), so the buttons have fixed heights, not padding */
+  .btn, .bbtn, .tg, .seg button, .mb, .mini, .tab { line-height: 1; text-box: trim-both cap alphabetic; }
+  .ico { display: inline-flex; align-items: center; justify-content: center; padding: 0; color: var(--text-secondary); }
+  .ico svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .status { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; font-size: 12px; color: var(--text-muted); }
   .status b { color: var(--text-primary); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
   .badge { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-secondary); }
@@ -198,12 +207,12 @@
 
   /* switches and choices */
   .tg {
-    background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; cursor: pointer;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; height: 22px; padding: 0 10px; cursor: pointer;
     color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap;
   }
   .tg.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
   .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
-  .seg button { background: var(--surface-2); border: 0; border-left: 1px solid var(--line); padding: 3px 8px; cursor: pointer; color: var(--text-secondary); font-size: 11px; white-space: nowrap; }
+  .seg button { background: var(--surface-2); border: 0; border-left: 1px solid var(--line); height: 20px; padding: 0 8px; cursor: pointer; color: var(--text-secondary); font-size: 11px; white-space: nowrap; }
   .seg button:first-child { border-left: 0; }
   .seg button.sel { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
   .ctl { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
@@ -216,7 +225,8 @@
   }
   #detail:empty { visibility: hidden; }
   .dhead { display: flex; align-items: center; gap: 10px 14px; padding: 7px 12px; border-bottom: 1px solid var(--line); flex: 0 0 auto; }
-  .dpath { font-size: 11px; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; }
+  .dtitle { font-size: 14px; line-height: 1; white-space: nowrap; text-box: trim-both cap alphabetic; }
+  .dpath { margin-right: 10px; font-size: 11px; letter-spacing: 0.12em; color: var(--text-muted); font-weight: 700; }
   .dname { font-size: 14px; font-weight: 600; }
   .dhint { color: var(--text-muted); font-size: 11px; flex: 1 1 200px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dbody { flex: 1 1 auto; min-height: 0; display: flex; gap: 12px; padding: 10px 12px; }
@@ -249,7 +259,7 @@
 
   /* ---- side panel tabs; the Panel tab: CV1 / CV2 / MODE / LED */
   .tabs { display: flex; border-bottom: 1px solid var(--line); gap: 2px; }
-  .tab { flex: 1; background: none; border: 0; border-bottom: 2px solid transparent; padding: 5px 4px 6px; cursor: pointer; color: var(--text-muted); font-weight: 600; font-size: 12px; }
+  .tab { flex: 1; background: none; border: 0; border-bottom: 2px solid transparent; height: 30px; padding: 0 4px; cursor: pointer; color: var(--text-muted); font-weight: 600; font-size: 12px; }
   .tab.sel { color: var(--text-primary); border-bottom-color: var(--accent); }
   .tab .count { color: var(--accent); font-weight: 600; margin-left: 4px; }
   .tabbody { display: flex; flex-direction: column; gap: 12px; flex: 1 1 auto; min-height: 0; }
@@ -265,7 +275,7 @@
   .psub .pnote { font-weight: 400; flex: 1; }
   .lamp { width: 9px; height: 9px; border-radius: 50%; background: var(--track); flex: 0 0 9px; }
   .lamp.on { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-  .mini { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; cursor: pointer; color: var(--text-secondary); font-size: 11px; }
+  .mini { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; height: 20px; padding: 0 6px; cursor: pointer; color: var(--text-secondary); font-size: 11px; }
   .mini:hover { border-color: var(--text-muted); }
   .plist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; border: 1px dashed transparent; border-radius: 5px; padding: 2px; min-height: 26px; }
   .pempty { color: var(--text-muted); font-size: 11px; padding: 4px 4px; }
@@ -315,34 +325,191 @@
   .sheetbox { background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px 10px 0 0; padding: 14px; width: min(440px, 100%); display: grid; gap: 10px; }
   .sheetbox .stitle { font-size: 13px; color: var(--text-secondary); }
   .sheetbox .stitle b { color: var(--text-primary); }
-  .sheetbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .sheetbtns .btn { padding: 11px 8px; }
+  .sheetbtns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sheetbtns .btn { height: 44px; padding: 0 8px; }
+  .sheetbox > .btn { height: 40px; }
   .sheetbtns .btn.mapped { border-color: var(--accent); color: var(--accent); }
   @media (pointer: coarse) { body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; } }
 
-  /* narrow screens (phones, small tablets): one column that scrolls */
-  @media (max-width: 900px) {
-    html, body { height: auto; }
-    body { overflow: auto; }
-    #app { display: flex; flex-direction: column; height: auto; min-height: 100vh; }
-    #side { order: -1; border-left: 0; border-bottom: 1px solid var(--line); overflow: visible; }
-    #tab-panel { overflow: visible; }
-    #log { max-height: 120px; }
-    #mixer { justify-content: flex-start; overflow-x: auto; min-height: 420px; }
-    #detail { margin: 0 8px 12px; }
-    .dbody { overflow-x: auto; }
-    .dcol.fixed { flex-shrink: 0; }
+  /* ---- phones and small tablets (body.mobile, set from MOBILE_MQ): the four strips fill the
+     screen under a thin status bar, an effect opens full screen, the side panel is a drawer.
+     body.portrait: the effect's graphs above its controls; body.landscape: the strips' faders
+     in a column of their own; body.narrow: strips under 160 px (and on a phone on its side). */
+  .monly, #bar, #gate, #scrim, #toast { display: none; }
+  body.mobile .monly { display: revert; }
+  body.mobile #app { display: block; height: 100vh; height: 100dvh; }
+  body.mobile #main { height: 100%; position: relative; }
+  #bar { align-items: center; gap: 6px; flex: 0 0 auto; height: 36px; padding: 0 4px 0 10px; background: var(--surface-1); border-bottom: 1px solid var(--line); }
+  body.mobile #bar { display: flex; }
+  .bbrand { font-weight: 700; font-size: 12px; letter-spacing: 0.08em; margin-right: 4px; white-space: nowrap; }
+  /* the bar's texts and its lamp centred on the capitals, like the buttons; the badge clips
+     (long notes) a little past them (padding) without moving its centre (margin) */
+  .bbrand, #barLinkText { line-height: 1; text-box: trim-both cap alphabetic; }
+  #bar .badge { font-size: 11px; white-space: nowrap; min-width: 0; overflow: hidden; padding: 4px 0; margin: -4px 0; }
+  #bar .bsp { flex: 1; }
+  .bbtn { height: 28px; padding: 0 9px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface-2); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; white-space: nowrap; }
+  .bbtn.warn { border-color: var(--warning); color: var(--warning); }
+  .bbtn.active { background: var(--critical); border-color: var(--critical); color: #fff; }
+  .bbtn[hidden] { display: none; }
+  #menu { width: 38px; }
+  body.mobile:not(.live) #gate {
+    display: flex; position: absolute; inset: 36px 0 0 0; z-index: 5; align-items: center; justify-content: center; padding: 20px;
+    background: color-mix(in srgb, var(--surface-0) 82%, transparent);
   }
+  .gatebox { width: min(340px, 100%); display: grid; gap: 12px; background: var(--surface-1); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+  .gatebox .btn { height: 42px; }
+  #gateNote { font-size: 12px; color: var(--text-secondary); line-height: 1.45; }
+  #gateNote.error { color: var(--text-primary); border-left: 2px solid var(--critical); padding-left: 8px; }
+  body.mobile #mixer .empty { display: none; }
+  body.mobile #mixer {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: auto auto auto minmax(0, 1fr);
+    gap: 0 4px; padding: 6px 4px; overflow: hidden;
+  }
+  body.mobile .flow { display: none; }
+  /* the strips share the rows, so their effects and faders line up */
+  body.mobile .strip { grid-row: span 4; display: grid; grid-template-rows: subgrid; min-height: 0; min-width: 0; border-radius: 6px; }
+  body.mobile .sec.devs { min-height: 0; }
+  body.mobile .sec.fad { min-height: 0; }
+  body.mobile .slot { grid-template-columns: 14px minmax(0, 1fr); padding: 5px 6px; }
+  body.mobile .grip, body.mobile .slotsum, body.mobile .dhint { display: none; }
+  body.mobile .slotname { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  body.mobile .fadrow { min-height: 0; }
+  body.narrow .stop { flex-direction: column; align-items: stretch; }
+  body.narrow .shead { padding: 6px 6px 3px; }
+  body.narrow .ssub { display: none; }
+  body.narrow .sname { font-size: 11px; letter-spacing: 0.06em; }
+  body.narrow .mbtns { padding: 0 5px 5px; gap: 4px; }
+  body.narrow .mb { flex: 1; height: 26px; }
+  body.narrow .sec { padding: 5px 5px 6px; }
+  body.narrow .io { grid-template-columns: minmax(0, 1fr); gap: 7px; }
+  body.narrow .io .knobrow { gap: 3px; }
+  body.narrow .io .vbox { flex: 1; min-width: 0; }
+  body.narrow .io .vbox input { width: 100%; min-width: 0; }
+  body.narrow .strip svg.knob { width: 30px; height: 30px; flex-basis: 30px; }
+  body.narrow .cap { font-size: 9px; letter-spacing: 0.04em; gap: 2px; }
+  body.narrow .info span { display: block; white-space: normal; margin: 0; }
+  body.narrow .slot { gap: 2px 5px; padding: 6px 4px; }
+  body.narrow .slotname { font-size: 11px; }
+  body.narrow .fadrow { gap: 4px; }
+  body.narrow .fader { width: 48px; }
+  body.narrow .fader::before { left: 35px; }
+  body.narrow .fthumb { left: 24px; width: 24px; }
+  body.narrow .ftick { left: 16px; width: 5px; }
+  body.narrow .ftick.zero { left: 14px; width: 7px; }
+  body.narrow .ftick span { right: 7px; font-size: 8px; }
+  body.narrow .vlevel { width: 8px; }
+  body.narrow .vgr { width: 5px; }
+  body.narrow .grtext { display: none; }
+  body.narrow .fadfoot { justify-content: center; }
+  body.narrow .fadfoot .vbox { flex: 1; min-width: 0; }
+  body.narrow .fadfoot .vbox input { width: 100%; min-width: 0; }
+  body.narrow .fadfoot .vbox span { display: none; }
+
+  /* an effect: full screen, no scrolling; Back (or the browser's back) returns to the strips */
+  body.mobile #detail { display: none; position: fixed; inset: 0; height: auto; margin: 0; border: 0; border-radius: 0; z-index: 10; }
+  body.mobile.detail-open #detail { display: flex; }
+  body.mobile .dhead { padding: 4px 10px 4px 4px; gap: 8px; min-height: 42px; }
+  .dback { width: 38px; height: 34px; border: 0; background: none; cursor: pointer; }
+  /* ellipsis: the clip box reaches past the capitals (padding) without moving the centre (margin) */
+  body.mobile .dhead .dtitle { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; padding: 3px 0 4px; margin: -3px 0 -4px; }
+  body.mobile .dbody { padding: 8px; gap: 8px; overflow: hidden; }
+  body.mobile .dcol { gap: 8px; }
+  body.mobile.portrait .dbody { flex-direction: column; }
+  body.mobile.portrait .dcol.fixed { flex-direction: row; flex-wrap: wrap; }
+  body.mobile.portrait .dcol.fixed > .card { flex: 1 1 auto; }
+  .dgraphs { display: flex; gap: 8px; flex: 1 1 0; min-height: 0; min-width: 0; }
+  body.mobile .chart.grow, body.mobile .dgraphs { min-height: 70px; }
+  body.mobile .kn { width: 58px; }
+  body.mobile .kn .klabel { max-width: 58px; }
+  body.mobile .kn .kvalue { min-width: 50px; }
+  body.mobile #detail .card > .info { display: none; }
+  body.mobile .knobs { gap: 6px 4px; }
+  body.mobile .tg { height: 26px; padding: 0 11px; }
+  body.mobile .seg button { height: 24px; padding: 0 10px; }
+  .btabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; flex: 0 0 auto; }
+  .btab { display: grid; gap: 6px; justify-items: start; padding: 8px 8px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-0); cursor: pointer; font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; min-width: 0; }
+  .btab.sel { border-color: var(--accent); background: var(--surface-2); }
+  .btab .hbar { width: 100%; height: 5px; }
+  .btab .hbar .fill { background: var(--accent); }
+
+  /* the side panel as a drawer */
+  body.mobile #side {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 88vw); z-index: 15; transform: translateX(100%);
+    transition: transform 0.18s; visibility: hidden; box-shadow: -8px 0 24px #0008;
+  }
+  body.mobile.side-open #side { transform: none; visibility: visible; }
+  body.mobile.side-open #scrim { display: block; position: fixed; inset: 0; z-index: 14; background: #0009; }
+  .brandrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  #sideClose { width: 34px; height: 30px; }
+  body.mobile #sideClose { display: inline-flex; }
+  body.mobile #toast {
+    display: block; position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 25; width: max-content; max-width: calc(100vw - 24px);
+    background: var(--surface-3); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; font-size: 12px; box-shadow: 0 6px 20px #000a;
+    transition: opacity 0.2s; pointer-events: none;
+  }
+  body.mobile #toast.error { border-color: var(--critical); }
+  body.mobile #toast[hidden] { display: block; opacity: 0; }
+  /* phone on its side: each strip's fader beside its input and effects, the full height */
+  body.landscape #mixer { grid-template-rows: minmax(0, 1fr); }
+  body.landscape .strip { grid-row: auto; grid-template-rows: auto auto minmax(0, 1fr); grid-template-columns: minmax(0, 1fr) auto; }
+  body.landscape .strip > .stop { grid-column: 1 / -1; }
+  body.landscape .strip > .sec.input { grid-column: 1; grid-row: 2; }
+  body.landscape .strip > .sec.devs { grid-column: 1; grid-row: 3; overflow: hidden; }
+  body.landscape .strip > .sec.fad { grid-column: 2; grid-row: 2 / 4; border-left: 1px solid var(--line); width: 92px; }
+  body.landscape .stop { flex-direction: row; align-items: center; }
+  body.landscape .mbtns { padding: 0 5px; }
+  body.landscape .mb { flex: 0 0 auto; height: 24px; padding: 0 7px; }
+  body.landscape .fadfoot .vbox span { display: none; }
+  body.landscape .dcol.grow { min-width: 40%; }
+  body.landscape .dcol.fixed { flex: 0 1 auto; max-width: 60%; }
+  body.portrait .dgraphs { flex-direction: column; }
+  body.mobile .chart .ctitle { max-width: 48%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  body.mobile .chart .readout { max-width: 50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btab span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; line-height: 1; text-box: trim-both cap alphabetic; padding: 2px 0 3px; margin: -2px 0 -3px; }
+  body.mobile #side { overflow: hidden auto; }
+  .card[hidden] { display: none; }
+  body.mobile .card h5 .sp { flex: 1; }
+  /* fitDetail: the steps down when an effect does not fit the screen */
+  #detail.fit1 .kn { width: 50px; }
+  #detail.fit1 .kn .klabel { max-width: 50px; font-size: 9px; }
+  #detail.fit1 .kn svg { width: 32px; height: 32px; }
+  #detail.fit1 .kn .kvalue { min-width: 44px; font-size: 10px; }
+  #detail.fit1 .card { padding: 6px 7px; gap: 4px; }
+  #detail.fit1 .dbody, #detail.fit1 .dcol { gap: 6px; }
+  #detail.fit2 .extra, #detail.fit2 .legend { display: none; }
+  #detail.fit2 .dbody { padding: 6px; }
+  #detail.fit3 .kn { width: 44px; }
+  #detail.fit3 .kn .klabel { max-width: 44px; }
+  #detail.fit3 .kn svg { width: 26px; height: 26px; }
+  #detail.fit3 .kn .kvalue { min-width: 40px; }
+  #detail.fit3 .card h5 { font-size: 9px; }
+  #detail.fit3 .knobs { gap: 3px 2px; }
 </style>
 </head>
 <body>
 <div id="app">
 <div id="main">
+  <header id="bar">
+    <span class="bbrand">32bit MASTER</span>
+    <span class="badge" id="barLink"><span class="dot"></span><span id="barLinkText">Not connected</span></span>
+    <span class="bsp"></span>
+    <button class="bbtn active" id="barBypass" hidden title="Bypassed: tap to switch it back on">BYPASSED</button>
+    <button class="bbtn warn" id="barSave" hidden title="The module runs these settings now, but they are not stored: tap to save them">SAVE</button>
+    <button class="bbtn ico" id="menu" aria-label="Settings and panel" title="Settings, CV / MODE panel, connection"><svg width="16" height="12" viewBox="0 0 16 12"><path d="M1 1h14M1 6h14M1 11h14"/></svg></button>
+  </header>
   <main id="mixer"><div class="empty">Connect the module (right) and the mixer appears here.</div></main>
   <section id="detail"></section>
+  <div id="gate"><div class="gatebox">
+    <div class="brand">32bit MASTER <small>end-of-chain processor</small></div>
+    <span class="badge" id="gateLink"><span class="dot"></span><span id="gateLinkText">Not connected</span></span>
+    <div id="gateNote">Plug the module's USB-C port into this device and press Connect.</div>
+    <button class="btn primary" id="gateConnect">Connect</button>
+    <button class="btn" id="gateDemo" hidden>Demo</button>
+  </div></div>
 </div>
+<div id="scrim"></div>
 <aside id="side">
-  <div class="brand">32bit MASTER <small id="version">end-of-chain processor</small></div>
+  <div class="brandrow"><div class="brand">32bit MASTER <small id="version">end-of-chain processor</small></div><button class="btn monly ico" id="sideClose" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11"/></svg></button></div>
   <div class="sgroup">
     <button class="btn primary" id="connect">Connect</button>
     <button class="btn" id="demo" hidden title="Try the page without the module: every control works, the meters are invented">Demo</button>
@@ -376,6 +543,7 @@
   <div class="tabbody" id="tab-panel" hidden><div class="pempty">Connect the module and its CV knobs, MODE button and LED appear here.</div></div>
 </aside>
 </div>
+<div id="toast" hidden></div>
 <div id="sheet" hidden><div class="sheetbox"><div class="stitle" id="sheetTitle"></div><div class="sheetbtns" id="sheetBtns"></div><button class="btn" id="sheetClose">Close</button></div></div>
 
 <script src="demo.js"></script>
@@ -468,7 +636,54 @@ const state = {
   stripMeters: [], detailMeters: [], detailViews: [], detailCtls: [], detailRedraws: [], observers: [], sel: "k_flt",
   pendingSets: new Map(), described: false, meterWaiting: 0, hello: null, fs: 44100, cpuWorst: [], refreshQueued: false,
   hist: [], meters: {}, proto: 1, maps: [], mapsIn: [], rowViews: [], dragPid: null, sheet: null, lpUntil: 0, holding: null,
+  layout: "",
 };
+
+// ---------------------------------------------------------------- phone layout
+//
+// Phones and small tablets: the strips alone under a thin status bar, an effect
+// opens full screen (Back or the browser's back closes it), the side panel is a
+// drawer behind the ☰ button. state.layout: "d" desktop, "p" phone upright, "l" phone on its side.
+const MOBILE_MQ = matchMedia("(max-width: 900px), (pointer: coarse) and (max-height: 520px)");
+const isMobile = () => state.layout !== "d";
+function layout() {
+  const m = MOBILE_MQ.matches, b = document.body.classList;
+  const mode = !m ? "d" : innerHeight >= innerWidth ? "p" : "l";
+  b.toggle("mobile", m);
+  b.toggle("portrait", mode === "p");
+  b.toggle("landscape", mode === "l");
+  b.toggle("narrow", m && (innerWidth < 640 || mode === "l"));
+  if (!m) b.remove("detail-open", "side-open");
+  if (mode === state.layout) return;
+  const first = !state.layout;
+  state.layout = mode;
+  if (!first && state.described) buildDetail();  // the views lay themselves out for the screen
+}
+layout();
+addEventListener("resize", layout);
+MOBILE_MQ.addEventListener("change", layout);
+
+// The browser's back closes what the phone layout opened (the effect, the drawer).
+function openLayer(cls) {
+  if (!isMobile() || document.body.classList.contains(cls)) return;
+  document.body.classList.add(cls);
+  history.pushState({ layer: cls }, "");
+}
+// Closed at once; the history entry it pushed is taken back after (its popstate ignored).
+let backs = 0;
+function closeLayer(cls) {
+  if (!document.body.classList.contains(cls)) return;
+  document.body.classList.remove(cls);
+  if (history.state && history.state.layer === cls) { backs++; history.back(); }
+}
+addEventListener("popstate", () => {
+  if (backs) { backs--; return; }
+  // the browser's back: the drawer first, an effect under it after
+  const b = document.body.classList;
+  if (b.contains("side-open")) b.remove("side-open"); else b.remove("detail-open");
+});
+// A slot or a strip's name: its settings in the panel (desktop) or full screen (phone).
+function openDev(id) { select(id); openLayer("detail-open"); fitDetail(); }
 
 // ---------------------------------------------------------------- links
 
@@ -632,7 +847,7 @@ function onLine(line) {
     }
     case "n": state.meterNames = f[1].split(" "); break;
     case "ok":
-      if (f[1] === "desc") { state.described = true; buildMixer(); buildPanel(); if (!$("bypass").draggable) attachable($("bypass"), P("bypass")); send("get"); if (state.proto >= PANEL_PROTO) send("ctl"); setButtons(true); }
+      if (f[1] === "desc") { state.described = true; setLive(true); buildMixer(); buildPanel(); if (!$("bypass").draggable) attachable($("bypass"), P("bypass")); send("get"); if (state.proto >= PANEL_PROTO) send("ctl"); setButtons(true); }
       else if (f[1] === "ctl") { state.maps = state.mapsIn; state.mapsIn = []; buildMapLists(); }
       else if (f[1] === "save") note("Settings saved in the module.");
       else if (f[1] === "load") note("Back to the settings saved in the module.");
@@ -905,6 +1120,7 @@ function toggle(p, text, detail = true) {
 // A choice as buttons side by side; `names` replaces the option texts.
 function segmented(p, names) {
   const seg = el("div", "seg");
+  seg.dataset.pid = p.id;
   (names || p.options).forEach((name, i) => {
     const b = el("button", "", name);
     b.onclick = () => userSet(p, i);
@@ -996,6 +1212,7 @@ function showMeters(values) {
   $("cpu").textContent = `${m.cpu.toFixed(0)} % (worst ${Math.max(...state.cpuWorst.map((w) => w.v)).toFixed(0)} %)`;
   $("lat").textContent = `≈ ${m.lat_ms.toFixed(1)} ms`;
   $("unsaved").classList.toggle("hidden", !m.unsaved);
+  $("barSave").hidden = !m.unsaved;
 }
 
 setInterval(() => {
@@ -1188,6 +1405,10 @@ function card(title, ...children) {
   c.append(...children);
   return c;
 }
+// A column of controls of fixed width beside the graphs (desktop and a phone on its side).
+function fixedWidth(node, px) { if (!isMobile()) node.style.width = px + "px"; }
+// Graphs side by side (phone: one row instead of a curve column beside the history).
+function graphs(...nodes) { const g = el("div", "dgraphs"); g.append(...nodes); return g; }
 function knobs(...nodes) { const k = el("div", "knobs"); k.append(...nodes.filter(Boolean)); return k; }
 
 // Filter: the response with a draggable point per cut (left / right = frequency,
@@ -1276,7 +1497,8 @@ function viewFilter(dev, body) {
   }, { passive: false });
 
   const left = el("div", "dcol grow");
-  left.append(graph.box, el("div", "legend", "Drag a point: left / right = frequency, up / down or the wheel = resonance (Shift = fine). Double-click a point: that cut on / off."));
+  left.append(graph.box, el("div", "legend", isMobile() ? "Drag a point: ↔ frequency, ↕ resonance. Double-tap a point: that cut on / off."
+    : "Drag a point: left / right = frequency, up / down or the wheel = resonance (Shift = fine). Double-click a point: that cut on / off."));
   for (const c of cuts) {
     const k = card([toggle(q(c, "on"), names[c].toUpperCase())]);
     k.append(labelled(q(c, "slope"), "Slope", segmented(q(c, "slope"), ["12", "24", "48 dB/oct"])),
@@ -1306,11 +1528,12 @@ function viewLimiter(dev, body) {
     if (autoOn) envelopeDraw(ch, 0.0005, 0.03, "auto: 30 ms to the slow stage, 1 s to 0", { att: 0.1, rel: 1.0 });
     else envelopeDraw(ch, 0.0005, p("rel").value / 1000, `${fmtUnit(p("rel"), p("rel").value)} release`);
   });
-  env.box.style.flex = "0 0 92px";
+  env.box.style.flex = isMobile() ? "0 0 64px" : "0 0 92px";
+  env.box.classList.add("extra");
   const left = el("div", "dcol grow");
   left.append(hist.box, env.box, legend([["#b9b8ae", "Level"], ["var(--accent)", "Gain reduction"], ["var(--critical)", "Ceiling", true]]));
   const right = el("div", "dcol fixed");
-  right.style.width = "280px";
+  fixedWidth(right, 280);
   right.append(card("Limiter", knobs(knob(p("gain"), { label: "Gain" }), knob(p("ceil"), { label: "Ceiling" }), knob(p("la"), { label: "Look-ahead" }))),
     card("Release", knobs(knob(p("rel"), { label: "Release" }), auto ? labelled(auto, "Auto release", toggle(auto, "AUTO")) : null),
       el("div", "info", "Auto: the release follows the music: fast after a lone peak, held at the average reduction while the limiter works all the time.")));
@@ -1326,16 +1549,22 @@ function viewCompressor(dev, body) {
   curve.box.style.flex = "0 0 230px";
   const hist = chart("grow", "Reduction and return, last 10 s", (ch) => historyDraw(ch, [["par", "Return"]], "gr_par", null));
   const env = chart("", "Attack / release", (ch) => envelopeDraw(ch, p("att").value / 1000, p("rel").value / 1000, `${fmtUnit(p("att"), p("att").value)} / ${fmtUnit(p("rel"), p("rel").value)}`));
-  env.box.style.flex = "0 0 86px";
+  env.box.style.flex = isMobile() ? "0 0 64px" : "0 0 86px";
+  env.box.classList.add("extra");
   state.detailMeters.push(() => { hist.render(); curve.render(); });
   const mid = el("div", "dcol grow");
-  mid.append(hist.box, env.box);
+  if (isMobile()) {
+    // phone: the curve beside the history, the timing under both
+    curve.box.style.flex = "1 1 0";
+    hist.box.style.flex = "1.5 1 0";
+    mid.append(graphs(curve.box, hist.box), env.box);
+  } else mid.append(hist.box, env.box);
   const right = el("div", "dcol fixed");
-  right.style.width = "300px";
+  fixedWidth(right, 300);
   right.append(card("Compressor", knobs(knob(p("thr"), { label: "Threshold" }), knob(p("ratio"), { label: "Ratio" }), knob(p("makeup"), { label: "Make-up" }),
     knob(p("att"), { label: "Attack" }), knob(p("rel"), { label: "Release" }))),
   card("Bus", knobs(...["par_send_k", "par_send_m", "par_ret"].filter((id) => P(id)).map((id) => knob(P(id), { taper: FADER_TAPER, label: { par_send_k: "Kick send", par_send_m: "Mix send", par_ret: "Return" }[id] })))));
-  body.append(curve.box, mid, right);
+  if (isMobile()) body.append(mid, right); else body.append(curve.box, mid, right);
 }
 
 // Glue: static curve, an analog reduction needle, the timing, the settings.
@@ -1378,19 +1607,23 @@ function viewGlue(dev, body) {
     if (rs) envelopeDraw(ch, attS(), rs, `${p("att").options[Math.round(p("att").value)]} ms / ${rs} s`);
     else envelopeDraw(ch, attS(), 0.0428, `${p("att").options[Math.round(p("att").value)]} ms / auto (43 ms + 5.1 s)`, { att: 0.15, rel: 5.1 });
   });
-  env.box.style.flex = "0 0 86px";
+  env.box.style.flex = isMobile() ? "0 0 64px" : "0 0 86px";
+  env.box.classList.add("extra");
   meter.box.style.flex = "1 1 0";
   const mid = el("div", "dcol grow");
-  mid.append(meter.box, env.box);
+  if (isMobile()) {
+    curve.box.style.flex = "1 1 0";
+    mid.append(graphs(curve.box, meter.box), env.box);
+  } else mid.append(meter.box, env.box);
   const right = el("div", "dcol fixed");
-  right.style.width = "330px";
+  fixedWidth(right, 330);
   const ms = (v) => p("att").options[Math.round(v)] + " ms", sec = (v) => { const o = p("rel").options[Math.round(v)]; return o === "A" ? "Auto" : o + " s"; };
   right.append(card("Compressor",
     labelled(p("ratio"), "Ratio", segmented(p("ratio"), p("ratio").options.map((o) => o + ":1"))),
     knobs(knob(p("thr"), { label: "Threshold" }), knob(p("att"), { label: "Attack", text: ms }), knob(p("rel"), { label: "Release", text: sec }), knob(p("makeup"), { label: "Make-up" }))),
   card("Character", knobs(knob(p("range"), { label: "Range" }), P("glue_wet") && knob(p("wet"), { label: "Dry / wet" }), P("glue_sc_hp") && knob(p("sc_hp"), { label: "SC high pass", text: (v) => (v <= 20.5 ? "off" : fText(v)) }),
     P("glue_clip") && labelled(p("clip"), "Soft clip", toggle(p("clip"), "CLIP")))));
-  body.append(curve.box, mid, right);
+  if (isMobile()) body.append(mid, right); else body.append(curve.box, mid, right);
 }
 
 // Multiband: the three bands over frequency (split points drag left / right, a
@@ -1465,8 +1698,27 @@ function viewMultiband(dev, body) {
     P("mb_mode") && labelled(P("mb_mode"), "Detector", segmented(P("mb_mode"))), P("mb_knee") && labelled(P("mb_knee"), "Knee", toggle(P("mb_knee"), "SOFT")),
     knob(P("mb_f1"), { label: "Low / mid" }), knob(P("mb_f2"), { label: "Mid / high" }), knob(P("mb_amount"), { label: "Amount" }), knob(P("mb_out"), { label: "Output" }),
     P("mb_solo") && labelled(P("mb_solo"), "Solo (not saved)", segmented(P("mb_solo")))));
-  left.append(graph.box, common);
   const right = el("div", "dcol fixed");
+  if (isMobile()) {
+    // phone: the bands as tabs under the graph (with their reduction), one band's knobs at a time
+    const tabs = el("div", "btabs");
+    bands.forEach(([b, name, gm], i) => {
+      const tab = el("button", "btab"), grLine = el("span", "", name.toUpperCase());
+      tab.append(grLine, smallBar((fill, mv) => { const v = mv[gm] ?? 0; fill.style.width = Math.min(100, 100 * v / GR_MAX) + "%"; grLine.textContent = `${name.toUpperCase()}  ${grText(v)}`; }, state.detailMeters));
+      tab.onclick = () => { selBand = i; selectBand(); graph.render(); };
+      tabs.append(tab);
+      const c = card([toggle(P(`mb_${b}_on`), name.toUpperCase()), el("span", "sp")], knobs(knob(P(`mb_${b}_thr`), { label: "Threshold" }), knob(P(`mb_${b}_ratio`), { label: "Ratio" }),
+        knob(P(`mb_${b}_att`), { label: "Attack" }), knob(P(`mb_${b}_rel`), { label: "Release" }), knob(P(`mb_${b}_gain`), { label: "Gain" })));
+      rows.push({ classList: { toggle(cls, on) { tab.classList.toggle(cls, on); c.hidden = !on; } } });
+      right.append(c);
+    });
+    left.append(graph.box, tabs);
+    right.append(common);
+    selectBand();
+    body.append(left, right);
+    return;
+  }
+  left.append(graph.box, common);
   bands.forEach(([b, name, gm], i) => {
     const row = el("div", "bandrow"), nm = el("div", "bname"), gr = el("div", "grcell"), grText1 = el("span", "", "0 dB");
     nm.append(toggle(P(`mb_${b}_on`), name.toUpperCase()));
@@ -1491,7 +1743,7 @@ function viewChannel(dev, body) {
   const left = el("div", "dcol grow");
   left.append(hist.box, legend([["#b9b8ae", lines.map((l) => l[1]).join(" / ") || "Level"]].concat(gr ? [["var(--accent)", "Gain reduction"]] : [])));
   const right = el("div", "dcol fixed");
-  right.style.width = "300px";
+  fixedWidth(right, 300);
   const names = { in_k_trim: "Trim", in_m_trim: "Trim", par_send_k: "Kick send", par_send_m: "Mix send", k_lvl: "Level", m_lvl: "Level", par_ret: "Return", out_lvl: "Output" };
   right.append(card("Channel", knobs(...dev.sections[0].params.map((p) => knob(p, { label: names[p.id] || p.label, taper: LEVELS.has(p.id) ? FADER_TAPER : 1 })))));
   if (P(cfg.on)) right.append(card(null, labelled(P(cfg.on), "Bus", toggle(P(cfg.on), "ON"))));
@@ -1549,7 +1801,7 @@ function buildStrip(cfg) {
   const own = [cfg.trim, ...(cfg.channel || [cfg.send, cfg.fader])].map(P).filter(Boolean);
   const channel = { id: cfg.id + ":ch", name: "Channel", cfg: { hint: cfg.hint, on: cfg.on, view: "channel" }, strip: entry, node: head, sections: [{ params: own }] };
   state.devices.set(channel.id, channel);
-  head.onclick = () => select(channel.id);
+  head.onclick = () => openDev(channel.id);
 
   // input: trim (with the input level) and the send into the parallel bus side by
   // side, or what feeds the bus and where it goes
@@ -1719,8 +1971,9 @@ function buildSlot(dev) {
   }
   slot.tabIndex = 0;
   slot.title = cfg.orderName ? "Click to open; drag up / down (or Alt + arrow keys) to move it in the chain" : "Click to open";
-  slot.onclick = () => { if (!slot.dataset.dragged) select(dev.id); };
-  slot.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(dev.id); } };
+  slot.onclick = () => { if (!slot.dataset.dragged) openDev(dev.id); };
+  slot.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDev(dev.id); } };
+  if (sw) slot.dataset.pid = sw.id;  // touch: hold the slot to put its switch on MODE
   slot.dev = dev;
   if (cfg.orderName) slotDrag(slot, dev);
   dev.node = slot;
@@ -1811,7 +2064,16 @@ function buildDetail() {
   const cfg = dev.cfg;
 
   const head = el("div", "dhead");
-  head.append(el("span", "dpath", dev.strip.cfg.name), el("span", "dname", dev.name));
+  if (isMobile()) {
+    const back = el("button", "dback ico");
+    back.innerHTML = `<svg width="10" height="16" viewBox="0 0 10 16"><path d="M8 1L2 8l6 7"/></svg>`;
+    back.setAttribute("aria-label", "Back to the strips");
+    back.onclick = () => closeLayer("detail-open");
+    head.append(back);
+  }
+  const title = el("span", "dtitle");
+  title.append(el("span", "dpath", dev.strip.cfg.name), el("span", "dname", dev.name));
+  head.append(title);
   if (P(cfg.on)) head.append(toggle(P(cfg.on), "ON"));
   head.append(el("span", "dhint", cfg.hint || ""));
   head.lastChild.title = cfg.hint || "";
@@ -1821,7 +2083,25 @@ function buildDetail() {
   root.append(head, body);
   markMaps();
   refresh();
+  fitDetail();
 }
+
+// Phone: an effect never scrolls. When its controls do not fit, step down: smaller
+// knobs, then without the extra graphs (.extra) and hints, then the smallest knobs.
+const FITS = ["fit1", "fit2", "fit3"];
+function fitDetail() {
+  const root = $("detail"), body = root.querySelector(".dbody");
+  root.classList.remove(...FITS);
+  if (!body || !isMobile() || !document.body.classList.contains("detail-open")) return;
+  const over = () => body.scrollHeight > body.clientHeight + 1 || body.scrollWidth > body.clientWidth + 1
+    || [...body.querySelectorAll(".dcol, .card")].some((c) => c.scrollHeight > c.clientHeight + 1 || c.scrollWidth > c.clientWidth + 1)
+    || [...body.querySelectorAll(".chart.grow, .dgraphs")].some((c) => c.getBoundingClientRect().height < 69);
+  for (const step of FITS) {
+    if (!over()) return;
+    root.classList.add(step);
+  }
+}
+addEventListener("resize", () => requestAnimationFrame(fitDetail));
 
 // Everything that depends on more than one value: greyed controls, slot lamps,
 // summaries and order, bus info, graphs.
@@ -1849,6 +2129,7 @@ function refresh() {
   document.body.classList.toggle("bypassed", !!bypass);
   $("bypass").classList.toggle("active", !!bypass);
   $("bypass").textContent = bypass ? "BYPASSED" : "Bypass";
+  $("barBypass").hidden = !bypass;
 }
 
 function queueRefresh() {
@@ -1911,7 +2192,7 @@ function attach(srcId, p) {
   if (!canAttach(src, p)) return note(`${paramName(p)} cannot go on ${src ? src.name : srcId}: ${refuseMap(src, p) || "8 settings at most"}.`, true);
   if (src.cv) command(`map ${src.id} ${p.id} ${p.min} ${p.max}`);
   else command(`map ${src.id} ${p.id} ${p.value >= 0.5 ? 0 : 1}`);
-  note(`${paramName(p)} on ${src.name}. Not saved yet.`);
+  note(`${paramName(p)} on ${src.name}. ${isMobile() && src.cv ? "Its range: ☰ › Panel. " : ""}Not saved yet.`);
 }
 
 // The badges on every attachable control: CV1, CV2, M.
@@ -2102,7 +2383,7 @@ function buildMapLists() {
     zone.textContent = "";
     const mine = mapsOf(id).filter((m) => P(m.id));
     const touch = matchMedia("(pointer: coarse)").matches;
-    if (!mine.length) zone.append(el("div", "pempty", touch ? `Hold a ${srcOf(id).cv ? "knob" : "switch"} in the mixer` : srcOf(id).cv ? "Drag a knob's name here" : "Drag a switch here"));
+    if (!mine.length) zone.append(el("div", "pempty", touch ? `Hold a ${srcOf(id).cv ? "knob" : "switch"} in the mixer or an effect` : srcOf(id).cv ? "Drag a knob's name here" : "Drag a switch here"));
     for (const m of mine) zone.append(mapRow(m));
   }
   markMaps();
@@ -2116,7 +2397,7 @@ document.addEventListener("pointerdown", (e) => {
   const node = e.target.closest && e.target.closest("[data-pid]");
   const p = node && P(node.dataset.pid);
   if (!p) return;
-  press = { x: e.clientX, y: e.clientY, id: e.pointerId, timer: setTimeout(() => { state.holding = press.id; press = null; openSheet(p); }, LONG_PRESS_MS) };
+  press = { x: e.clientX, y: e.clientY, id: e.pointerId, timer: setTimeout(() => { state.holding = press.id; press = null; if (navigator.vibrate) navigator.vibrate(12); openSheet(p); }, LONG_PRESS_MS) };
 }, true);
 const endPress = () => { if (press) { clearTimeout(press.timer); press = null; } };
 document.addEventListener("pointermove", (e) => { if (press && e.pointerId === press.id && Math.hypot(e.clientX - press.x, e.clientY - press.y) > 10) endPress(); }, true);
@@ -2151,7 +2432,11 @@ function openSheet(p) {
     const b = el("button", "btn" + (on ? " mapped" : ""), src.name + (on ? " ✓" : ""));
     b.disabled = !on && !canAttach(src, p);
     b.title = on ? "Attached: tap to take it off" : refuseMap(src, p);
-    b.onclick = () => { if (on) command(`unmap ${src.id} ${p.id}`); else attach(src.id, p); closeSheet(); if (!on) showTab("panel"); };
+    b.onclick = () => {
+      if (on) { command(`unmap ${src.id} ${p.id}`); note(`${paramName(p)} taken off ${src.name}.`); } else attach(src.id, p);
+      closeSheet();
+      if (!on) showTab("panel");
+    };
     btns.append(b);
   }
   $("sheet").hidden = false;
@@ -2162,7 +2447,24 @@ $("sheet").onclick = (e) => { if (e.target === $("sheet")) closeSheet(); };
 
 // ---------------------------------------------------------------- connection
 
-function note(text, error) { $("note").textContent = text; $("note").classList.toggle("error", !!error); }
+function note(text, error) {
+  $("note").textContent = text;
+  $("note").classList.toggle("error", !!error);
+  $("gateNote").textContent = text;
+  $("gateNote").classList.toggle("error", !!error);
+  const b = document.body.classList;
+  if (isMobile() && b.contains("live") && !b.contains("side-open")) toast(text, error);
+}
+// Phone: a note shows for a moment at the bottom (the side panel is out of sight).
+let toastTimer = 0;
+function toast(text, error) {
+  const t = $("toast");
+  t.textContent = text;
+  t.classList.toggle("error", !!error);
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, error ? 5000 : 2800);
+}
 function logLine(text) { const log = $("log"); log.textContent = (log.textContent + text + "\n").split("\n").slice(-40).join("\n"); log.scrollTop = log.scrollHeight; }
 
 function setButtons(on) {
@@ -2170,10 +2472,18 @@ function setButtons(on) {
 }
 
 function setLink(text, on) {
-  $("linkText").textContent = text;
-  $("link").classList.toggle("on", !!on);
+  for (const [badge, label] of [["link", "linkText"], ["barLink", "barLinkText"], ["gateLink", "gateLinkText"]]) {
+    $(label).textContent = text;
+    $(badge).classList.toggle("on", !!on);
+  }
   $("connect").textContent = state.link ? "Disconnect" : "Connect";
   $("connect").classList.toggle("primary", !state.link);
+  $("gateConnect").disabled = !!state.link;
+}
+// Phone: the strips (and the bar's buttons) only once the module has described itself.
+function setLive(on) {
+  document.body.classList.toggle("live", on);
+  if (!on) { closeLayer("detail-open"); closeLayer("side-open"); $("barSave").hidden = true; $("barBypass").hidden = true; }
 }
 
 async function disconnect(reason) {
@@ -2183,6 +2493,7 @@ async function disconnect(reason) {
   if (link) await link.close();
   setButtons(false);
   closeSheet();
+  setLive(false);
   setLink("Not connected", false);
   $("unsaved").classList.add("hidden");
   if (reason) note(reason, true);
@@ -2213,9 +2524,16 @@ async function connect(link, demo) {
   send("desc");
 }
 
+$("gateConnect").onclick = () => $("connect").onclick();
+$("gateDemo").onclick = () => $("demo").onclick();
+$("menu").onclick = () => openLayer("side-open");
+$("sideClose").onclick = $("scrim").onclick = () => closeLayer("side-open");
+$("barSave").onclick = () => command("save");
+$("barBypass").onclick = () => $("bypass").onclick();
+
 $("connect").onclick = async () => {
   if (state.link) return disconnect();
-  if (!("serial" in navigator)) return note("This browser has no Web Serial. Use Chrome or Edge on a computer.", true);
+  if (!("serial" in navigator)) return note("This browser has no Web Serial. Use Chrome or Edge on a computer" + (isMobile() ? ", or try the demo." : "."), true);
   let port;
   try { port = await navigator.serial.requestPort({ filters: [{ usbVendorId: 0x303a }] }); } catch (e) { return; }
   const link = new SerialLink(port, onLine, () => { if (state.link === link) disconnect("The module was unplugged."); });
@@ -2223,6 +2541,7 @@ $("connect").onclick = async () => {
 };
 if (typeof MASTER_DEMO !== "undefined") {
   $("demo").hidden = false;
+  $("gateDemo").hidden = false;
   $("demo").onclick = () => connect(new DemoLink(onLine), true);
   if (new URLSearchParams(location.search).has("demo")) $("demo").onclick();
 }
