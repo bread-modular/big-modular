@@ -530,8 +530,18 @@ mapping is a row with the value now, the two values (typed as on a knob, a
 choice for lists), turn round and remove. Mapped controls carry a CV1 / CV2 / M
 badge. **Right-click a control** (mouse) or, **on a touch screen, hold it** (0.55 s,
 still) and pick CV 1, CV 2 or MODE in the sheet that opens; a tap still works the control, a
-mapped one is taken off from there too. Below 900 px the page is one column
-that scrolls (side panel on top).
+mapped one is taken off from there too.
+
+**On a phone** (below 900 px wide, or a touch screen under 520 px high) the page
+shows the four strips alone under a thin bar (link state, SAVE while there are
+unsaved changes, BYPASSED while bypassed, ☰). Not connected, a Connect / Demo
+box sits in the middle. A slot or a strip's name opens that effect full screen
+(‹ or the browser's back returns); its graphs and knobs are laid out for the
+screen (upright: graphs above the controls; on its side: beside them; the
+multiband's bands as tabs, one band's knobs at a time) and it never scrolls:
+when it does not fit, the knobs get smaller, then the extra graphs go. ☰ opens
+the side panel as a drawer (settings buttons, Panel tab). Hold any control to
+put it on CV 1, CV 2 or MODE; a note at the bottom says where its range is set.
 
 The ranges, names and choices come from the firmware's own settings table
 (`desc`); the page's `STRIPS` table only says which strip and slot each one
@@ -549,7 +559,9 @@ multiband split, slots dragged to a new order), the layout (side panel, fixed
 panel height, no page scroll), the Panel tab (drag and drop onto CV / MODE,
 typed ranges, Press, LED, saved / reverted / exported with the settings), strip
 off / solo, a touch screen (hold -> sheet, a tap still switches, a 412 px
-window), a native browser drag (copy, onto CV 2) and right-click -> sheet, and
+window), the phone layout (full-screen effect and back, the bar's SAVE, every
+effect without scrolling at 390 x 760, 360 x 640, 800 x 370 and 740 x 360, the
+Connect box), a native browser drag (copy, onto CV 2) and right-click -> sheet, and
 the Web Serial path against a fake port. Not
 part of `make`; a second argument saves screenshots of every view there:
 
