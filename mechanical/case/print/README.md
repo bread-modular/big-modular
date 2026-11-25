@@ -14,6 +14,7 @@ generators in `mechanical/case/tools/`.
 | [rails](rails/) | Front/back rail (one part, either way round) | 2 |
 | [bottom-plate](bottom-plate/) | Floor plate the side panels stand in | 1 |
 | [covers](covers/) | Slide-in front/back covers, six patterns, any mix | 2 |
+| [covers/case-dock](covers/case-dock/README.md) | Groove-mounted covers to slide two complete cases together front-to-back | 1 receiver + 1 slider per pair |
 
 `assembly-preview.step` is the assembled single case (reference only).
 
@@ -47,6 +48,7 @@ In this order (each set reads the saved CAD of the ones before it):
 
 ```sh
 mechanical/case/tools/build.sh                     # case: side-panels, rails, bottom-plate, covers
+mechanical/case/tools/build_case_dock.sh           # covers/case-dock
 mechanical/case/tools/build_middle_frame.sh        # double-case
 mechanical/case/tools/build_middle_brace.sh        # accessories/top-brace
 python3 -B mechanical/case/tools/check_middle_brace.py
