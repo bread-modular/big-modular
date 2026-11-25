@@ -1,0 +1,170 @@
+{
+  "nominal_desk_mm": 18,
+  "status": "CAD_PASS",
+  "physical_test": false,
+  "fit": {
+    "centres_mm": 159.0,
+    "hook_bearing_each_mm2": 195.0,
+    "hanger_drop_mm": 19.0,
+    "plug_envelope_mm": [
+      9.5,
+      50
+    ],
+    "seats_checked": 64,
+    "lift_to_install_mm": 5,
+    "nominal_keeper_to_flange_mm": 0.8
+  },
+  "parts": {
+    "saddle": {
+      "print_bounds_mm": [
+        82.0,
+        107.0,
+        39.0
+      ],
+      "volume_cm3": 72.23,
+      "stl_facets": 176,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 1836.0,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0
+    },
+    "wedge": {
+      "print_bounds_mm": [
+        24.3,
+        48.0,
+        9.0
+      ],
+      "volume_cm3": 4.91,
+      "stl_facets": 20,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 1166.4,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0
+    },
+    "keeper": {
+      "print_bounds_mm": [
+        30.0,
+        8.2,
+        8.0
+      ],
+      "volume_cm3": 1.13,
+      "stl_facets": 40,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 140.9,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0
+    },
+    "fit-gauge": {
+      "print_bounds_mm": [
+        32.0,
+        24.2,
+        6.0
+      ],
+      "volume_cm3": 1.72,
+      "stl_facets": 44,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 286.8,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0
+    }
+  },
+  "plate": {
+    "pieces": 6,
+    "footprint_mm": [
+      172.0,
+      163.0
+    ],
+    "height_mm": 39.0,
+    "items": [
+      {
+        "part": "saddle",
+        "bed_xy_mm": [
+          42.0,
+          46.5
+        ],
+        "size_mm": [
+          82.0,
+          107.0,
+          39.0
+        ]
+      },
+      {
+        "part": "saddle",
+        "bed_xy_mm": [
+          132.0,
+          46.5
+        ],
+        "size_mm": [
+          82.0,
+          107.0,
+          39.0
+        ]
+      },
+      {
+        "part": "wedge",
+        "bed_xy_mm": [
+          61.7,
+          161.5
+        ],
+        "size_mm": [
+          24.3,
+          48.0,
+          9.0
+        ]
+      },
+      {
+        "part": "keeper",
+        "bed_xy_mm": [
+          94.0,
+          181.4
+        ],
+        "size_mm": [
+          30.0,
+          8.2,
+          8.0
+        ]
+      },
+      {
+        "part": "wedge",
+        "bed_xy_mm": [
+          132.0,
+          161.5
+        ],
+        "size_mm": [
+          24.3,
+          48.0,
+          9.0
+        ]
+      },
+      {
+        "part": "keeper",
+        "bed_xy_mm": [
+          164.3,
+          181.4
+        ],
+        "size_mm": [
+          30.0,
+          8.2,
+          8.0
+        ]
+      }
+    ],
+    "sha256": "dce47ac26ca78539ab862ce2483fa5320a28ef0492cbf451ff6c6616adbac610"
+  }
+}
