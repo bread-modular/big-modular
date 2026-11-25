@@ -30,10 +30,11 @@ Read root `AGENTS.md`, then this module's `Code.md`, `README.md` and
   feeder fee; live audit 2026-11-14T15:36Z, stock 67,081), as Bread Modular 8bit. U4 is now SOIC-8 below
   the CV cluster (B, 120.0 / 85.6), C15 beside its pin 8; local re-route only, the rest of R1 untouched;
   carrier re-exported (still 38 parts / 24 rows).
-- `firmware/`: BM `drums`, `supersaw`, `crash`, `lfo` (see `firmware/README.md`), compiled for the BM pin
+- `firmware/`: BM `drums`, `supersaw`, `crash`, `lfo` + our `superwave` (2026-11-25, first named `morph`: `supersaw` + P3 wave selector:
+  saw / square / PWM growing to the end of P3, no morph, after every morph version crashed on the board; see `firmware/README.md`), compiled for the BM pin
   map, not bench-tested. `lfo` syncs to MIDI clock (2026-11-23: RATE = 8 bars .. 1/16 while clock runs,
   phase locked to the clock count, MIDI Start = bar 1, CV in = whole length steps, 1 V per step; now built per JP1 like the others), host-tested. All four already drive PA7 (`GATE_PIN`), so the GATE jack works unchanged;
-  **none reads P3 (PB5) yet**. The LFO panel variant omits J1 and RV3 (not fitted; no wire bridge needed
+  **only `superwave` reads P3 (PB5)**, with its pull-up (S5 boards: PB5 unconnected). The LFO panel variant omits J1 and RV3 (not fitted; no wire bridge needed
   on S6).
 - **4HP LFO panel** (user, 2026-11-23, uncommitted): `panels/front-pcb/8bit-lfo-4hp-panel.*` +
   `panels/front-cad/8bit-lfo-4hp-front-panel.*` + `jlcpcb/lfo-4hp-panel/` for the old 4HP S5/R4 carrier,
