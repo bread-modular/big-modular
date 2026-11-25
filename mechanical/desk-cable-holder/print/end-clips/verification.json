@@ -1,0 +1,154 @@
+{
+  "status": "CAD_PASS",
+  "physical_test": false,
+  "desk_range_mm": [
+    8,
+    50
+  ],
+  "samples": {
+    "8mm": {
+      "thread_normal_gap_mm": 0.282,
+      "contact_per_screw_mm2": 103.9
+    },
+    "18mm": {
+      "thread_normal_gap_mm": 0.282,
+      "contact_per_screw_mm2": 103.9
+    },
+    "25.5mm": {
+      "thread_normal_gap_mm": 0.282,
+      "contact_per_screw_mm2": 103.9
+    },
+    "36.25mm": {
+      "thread_normal_gap_mm": 0.282,
+      "contact_per_screw_mm2": 103.9
+    },
+    "50mm": {
+      "thread_normal_gap_mm": 0.282,
+      "contact_per_screw_mm2": 103.9
+    }
+  },
+  "shelf_contact_each_mm2": [
+    208.7,
+    208.7
+  ],
+  "slots_clear": 16,
+  "seats_clear": 64,
+  "plug_envelope_mm": [
+    9.5,
+    50.0,
+    5
+  ],
+  "nose_down_stop_checked_deg": 2,
+  "parts": {
+    "left-clip": {
+      "print_bounds_mm": [
+        76.3,
+        77.55,
+        40.0
+      ],
+      "volume_cm3": 53.89,
+      "stl_facets": 4060,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 1531.2,
+      "bridged_ceiling_mm2": 26.1,
+      "area_past_50_deg_mm2": 3.5,
+      "worst_of_it_deg": 59.9
+    },
+    "right-clip": {
+      "print_bounds_mm": [
+        76.3,
+        77.55,
+        40.0
+      ],
+      "volume_cm3": 53.89,
+      "stl_facets": 3942,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 1531.2,
+      "bridged_ceiling_mm2": 26.1,
+      "area_past_50_deg_mm2": 3.6,
+      "worst_of_it_deg": 59.6
+    },
+    "hand-screw": {
+      "print_bounds_mm": [
+        22.87,
+        23.6,
+        68.0
+      ],
+      "volume_cm3": 11.63,
+      "stl_facets": 20314,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 366.0,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.1,
+      "worst_of_it_deg": 50.2
+    }
+  },
+  "plate": {
+    "pieces": 4,
+    "footprint_mm": [
+      160.6,
+      109.15
+    ],
+    "height_mm": 68.0,
+    "items": [
+      {
+        "part": "left-clip",
+        "bed_xy_mm": [
+          47.7,
+          73.425
+        ],
+        "size_mm": [
+          76.3,
+          77.55,
+          40.0
+        ]
+      },
+      {
+        "part": "right-clip",
+        "bed_xy_mm": [
+          132.0,
+          73.425
+        ],
+        "size_mm": [
+          76.3,
+          77.55,
+          40.0
+        ]
+      },
+      {
+        "part": "hand-screw",
+        "bed_xy_mm": [
+          101.125,
+          158.975
+        ],
+        "size_mm": [
+          22.87,
+          23.6,
+          68.0
+        ]
+      },
+      {
+        "part": "hand-screw",
+        "bed_xy_mm": [
+          132.0,
+          158.975
+        ],
+        "size_mm": [
+          22.87,
+          23.6,
+          68.0
+        ]
+      }
+    ],
+    "sha256": "40021ec770a91177949d808b308610b42e2c987aa8ac5520dd0ebc5879e71442"
+  }
+}

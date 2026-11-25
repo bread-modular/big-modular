@@ -36,7 +36,7 @@ tooling.
   `mechanical/desk-cable-holder/` (under-desk patch cable comb, every part printed: 240 mm C-shaped hanger behind the desk edge,
   flange against the desk's underside, comb with 16 slots x 4 plug seats 64 mm below it, held by one C clamp with the solder arm's
   printed screw / nut / pad, the only part outside the desk; desks 8 .. 50 mm; second design, the first lay on the desk and stuck
-  out; CAD + slicer checked 2026-11-25, not printed).
+  out; original centre clamp tilts even with the replacement shoe. Current simple retrofit: `print/end-clips/print-this.3mf` — two threaded end clips and two printed screws, one size for flat 8–50 mm desks. The existing hanger slides into the clips unchanged; the screws press on the desktop underside. CAD and PLA slicer checked, not physically load-tested).
 - `modules/<name>/AGENTS.md` and `modules/<name>/Code.md` — module-specific
   circuit/release contract. Read them before touching that module.
 
