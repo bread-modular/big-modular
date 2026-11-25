@@ -32,7 +32,11 @@ tooling.
   (desk-clamp soldering arm for the module PCBs, every part printed incl. threads: one 190 mm arm link, three toothed joints (yaw, raise,
   tilt / flip), two sliding jaws for 16 .. 157 mm boards; CAD-checked 2026-11-17, not printed) and `mechanical/button-cap/`
   (two-piece cap for the modules' tact-switch push buttons: modules/8bit plunger with a longer tip + press-on Ø8 / Ø6.5 head in front of
-  the panel; first print 2026-11-18: head too loose, crush ribs tightened Ø3.5 -> Ø3.3, that fit not printed).
+  the panel; first print 2026-11-18: head too loose, crush ribs tightened Ø3.5 -> Ø3.3, that fit not printed) and
+  `mechanical/desk-cable-holder/` (under-desk patch cable comb, every part printed: 240 mm C-shaped hanger behind the desk edge,
+  flange against the desk's underside, comb with 16 slots x 4 plug seats 64 mm below it, held by one C clamp with the solder arm's
+  printed screw / nut / pad, the only part outside the desk; desks 8 .. 50 mm; second design, the first lay on the desk and stuck
+  out; CAD + slicer checked 2026-11-25, not printed).
 - `modules/<name>/AGENTS.md` and `modules/<name>/Code.md` — module-specific
   circuit/release contract. Read them before touching that module.
 
