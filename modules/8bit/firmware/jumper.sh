@@ -4,7 +4,7 @@
 # and the JP1 MIDI input setting from $2 (or $FIRMWARE / $JP1, or interactive
 # prompts) and exports them for the shared opt/attiny1616-tools scripts.
 #
-#   drums | supersaw | crash | lfo
+#   drums | supersaw | crash | lfo | superwave
 #   p   JP1 1-2 (protected NPN front end): RX inverted (PORT_INVEN on PB3)
 #   d   JP1 2-3 (direct, as Bread Modular): no inversion
 #   lfo reads MIDI clock, so it takes a JP1 setting too.
@@ -12,7 +12,7 @@
 
 FW_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TOOLS_DIR="$FW_DIR/../../../opt/attiny1616-tools"
-FIRMWARES=(drums supersaw crash lfo)
+FIRMWARES=(drums supersaw crash lfo superwave)
 SETTINGS=(p d)
 
 FIRMWARE="${1:-${FIRMWARE:-}}"
@@ -24,7 +24,7 @@ if [[ -z "$FIRMWARE" ]]; then
   while true; do
     printf "Enter number (1-%d): " "${#FIRMWARES[@]}"
     read -r SEL
-    if [[ "$SEL" =~ ^[1-4]$ ]]; then
+    if [[ "$SEL" =~ ^[0-9]+$ && "$SEL" -ge 1 && "$SEL" -le ${#FIRMWARES[@]} ]]; then
       FIRMWARE="${FIRMWARES[$((SEL - 1))]}"
       break
     fi

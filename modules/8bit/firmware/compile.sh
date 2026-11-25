@@ -4,7 +4,7 @@
 #
 # Usage:
 #   ./compile.sh                          # pick both interactively
-#   ./compile.sh drums|supersaw|crash|lfo p|d
+#   ./compile.sh drums|supersaw|crash|lfo|superwave p|d
 #
 set -euo pipefail
 

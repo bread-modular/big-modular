@@ -4,6 +4,8 @@ Ports of four Bread Modular 8bit firmwares
 (`~/data/projects/bread-modular/modules/8bit/code`, VERSION 1.2.1, commit `eeaf6dd`;
 `lfo` from commit `b47ff0a`): `drums`, `supersaw`, `crash` and `lfo`. The 8bit carrier keeps the BM pin map
 (`../docs/jumpers.md`), so the sources are BM's apart from the changes below.
+`superwave` is ours: `supersaw` with P3 (PB5) as a wave selector (saw, square,
+then pulse width modulation).
 
 | Pin | Use |
 |---|---|
@@ -135,6 +137,24 @@ USB-serial names (Linux `/dev/ttyUSB*`, `/dev/ttyACM*`; macOS
   knob shifts its whole recorded curve (as supersaw). Hold MODE while it
   loops and turn a knob to overdub it (as supersaw). MIDI Start rewinds.
   Tuning constants are in `crash/crash/CrashSynth.h`.
+- **superwave** (2026-11-25; named `morph` until then): `supersaw` plus a P3 (PB5) wave selector, no
+  morphing (every morph version sounded bad / crashed on the board, user
+  direction). P3 CCW -> CW: saw (the supersaw ramp), square around the middle,
+  then pulse width modulation growing to the end of the travel; both
+  oscillators switch together. The pulse is the ramp compared with a start
+  step (128 = square), at two levels from a table that keep the saw's mean
+  and RMS (square 54 / 201; from 25 % down the high level stays at 255 and
+  the narrowest pulse is 5.7 dB quieter). PWM: a triangle LFO in `loop()`,
+  updated once per ms, moves the start step from 128 to 128 + 107 x depth
+  (down to 8.2 % at full depth) and back; 0.5 Hz at the PWM start, 1.5 Hz at
+  full depth; the start step and its two levels change together with
+  interrupts off. P3 is read every 10 ms: saw / square edge 445 with
+  hysteresis 30, PWM depth 0 at 690, full at 990 (about 28 / 56 / 97 % of the
+  travel with a 35k pull-up), not recorded. PB5 has its pull-up on: on the
+  4HP S5 carrier (no P3 on PB5) it reads 1023, which is now full PWM, not
+  saw. Each oscillator interrupt gains a flag test and one compare (a few
+  cycles). `diff supersaw/supersaw/supersaw.ino superwave/superwave/superwave.ino` shows
+  every change.
 
 ## Changes from Bread Modular
 
@@ -191,4 +211,5 @@ drums 15350 / 15340 B flash, 396 B RAM; supersaw 7652 / 7642 B, 1144 B
 2026-10-29); lfo 7303 / 7293 B, 366 B (MIDI clock sync, `p` / `d`, 2026-11-23). `crash/sim.sh`: 66
 checks, 0 failures; `lfo/sim.sh`: 3114 + 4849 checks, 0 failures (2026-11-23); `lib/CvRecorder/sim.sh`: 68 checks, 0 failures (2026-11-19, with the
 overdub; crash 7151 B / 1179 B RAM, supersaw 7984 B / 1155 B, `p`).
+superwave (2026-11-25, P3 saw / square / PWM): 8848 / 8836 B flash, 1172 B RAM (`p` / `d`).
 Not bench-tested on the 8bit carrier yet.
