@@ -1,6 +1,6 @@
 # Two-screw desk base
 
-**Measure the flat desk edge first.** For a **5–28 mm** desk, [print the shorter, lighter mount](compact-28/README.md); it keeps the full jaw thickness and the same upper arm. For a **desk over 28 mm up to 52 mm**, or to move between unknown desk sizes, use the full-height version below.
+**Measure the flat desk edge first.** For a **5–28 mm** desk, [print the shorter, lighter mount](compact-28/README.md); it keeps the full jaw thickness and the same upper arm. For a **desk over 28 mm up to 52 mm**, or to move between unknown desk sizes, use the full-height version below. If **112 mm along the desk edge is too long**, [print the narrow one](narrow-56/README.md): half the width (56 mm, screws 32 mm apart), same 5–52 mm desks and upper arm.
 
 **[Full-height plate](print-this.3mf): one wide base and two matching hand screws.** No separate nuts, pressure pads or metal hardware. This is the arm's only desk mount; everything above it (swivel bracket, link, rail, both jaws, the joint bolts, knobs and jaw screws) is on the [arm's print plates](../plates/).
 

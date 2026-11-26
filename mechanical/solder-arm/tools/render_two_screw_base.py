@@ -1,6 +1,8 @@
 """blender -b --python mechanical/solder-arm/tools/render_two_screw_base.py
 Render the build's assembled CAD meshes, not the print-oriented files.
+VARIANT=narrow-56 renders the 56 mm wide base (tools/narrow_base.py) into its own folder.
 """
+import os
 from pathlib import Path
 
 import bpy
@@ -8,8 +10,10 @@ from mathutils import Vector
 from PIL import Image, ImageDraw, ImageFont
 
 ARM = Path(__file__).resolve().parents[1]
-SRC = ARM/'research'/'two-screw-base'/'render'
-OUT = ARM/'print'/'two-screw-base'
+VARIANT = os.environ.get('VARIANT', '')
+SRC = ARM/'research'/'two-screw-base'/VARIANT/'render'
+OUT = ARM/'print'/'two-screw-base'/VARIANT
+WIDTH, SPACING = {'': ('112', '80'), 'narrow-56': ('56', '32')}[VARIANT]
 BLUE, AMBER = (.055, .32, .40), (.94, .33, .045)
 GRAY, DARK, BOARD, DESK = (.44, .49, .50), (.16, .19, .20), (.10, .43, .27), (.68, .52, .35)
 
@@ -97,7 +101,7 @@ canvas.alpha_composite(left, (14, 163))
 canvas.alpha_composite(right, (751, 163))
 draw.line((740, 88, 740, 601), fill='#d0d9d6', width=2)
 draw.rounded_rectangle((34, 618, 1446, 677), 10, fill='#e4ede9')
-text(55, 632, '112 mm wide', 23, True)
-text(502, 632, '80 mm between screws', 23, True)
+text(55, 632, f'{WIDTH} mm wide', 23, True)
+text(502, 632, f'{SPACING} mm between screws', 23, True)
 text(1040, 632, 'Flat desk: 5–52 mm', 23, True)
 canvas.convert('RGB').save(OUT/'fit.png', optimize=True)
