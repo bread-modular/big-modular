@@ -63,7 +63,8 @@ def layout(parts):
 
 
 NOTES = {
- 1: 'S9.4: U1 CH224A VHV/VBUS straight on VPD (WCH reference circuit; VHV abs max 32 V, D1 is the clamp).\n'
+ 1: 'S9.5: D10 removed (2.25 W at 3 A); U5 IN on VPD. U5 does not block reverse current: never parallel a supply.\n'
+    'S9.4: U1 CH224A VHV/VBUS straight on VPD (WCH reference circuit; VHV abs max 32 V, D1 is the clamp).\n'
     'S9.2: 15 V / 3 A PD, R1 56k. U5 UVLO: R2 100k 0.1% / (R3 10k 0.1% + R114 510R 1%), worst start <13.0 V.\n'
     'U5 OVP R28+R4 130k / R24 9.1k: rises 17.30-19.44 V, recovers 16.03-18.27 V (S9.1: 6.8k, 24.1 V).\n'
     'D24 SMBJ20A: VR 20 V > OVP max, VBR 22.2 V (21.7 V at 0 C), 32.4 V at 18.6 A < U2 42 V: OVP acts first.\n'
@@ -72,7 +73,7 @@ NOTES = {
     'U2 ISP/ISN on their own sense nets P12_ISP/P12_ISN (R109 pads 2/3 only). C82 ground terminal on PGND.\n'
     'AGND_U2: U2.5/.17, R9, R110, C83, TP28. ONLY join to PGND through R113 at C82.2 (3-4 PGND vias there).\n'
     'COMP R111 6.8k / C83 100n (zero 234 Hz). Rack <=0.44 mF. Acceptance pads TP20/22/23/24/28/29.',
- 3: 'S9.1/S9.2: U4 enable is powered from own VPD upstream of D10, NEVER from +12V or pumped VIN.\n'
+ 3: 'S9.1/S9.2: U4 enable is powered from own VPD upstream of U5, NEVER from +12V or pumped VIN.\n'
     'Q14 RUN and Q15 MAIN_LED_OK form an AND sink for Q1 base; R112 returns base to emitter when either is off.\n'
     'S9.2: R115 100k defines N_EN_RETURN (Q15 then only a source follower: Q1 VEB <= 0.18 V). TP30 probes it.\n'
     'Unpowered or latched-off live +/-12V bus cannot self-enable U4 (truth table derived from this netlist).\n'

@@ -154,7 +154,8 @@ def startup_demand(design=None):
     """Netlist-derived 3 A plant (tools/s92_netlist.PhysicalStartup): the five source/capacitance cases with a STRICT
     3.00 A source and an unconstrained one, at the fast corner (shortest soft starts, earliest U4 enable: largest input
     current) with resistive loads; plus the slow corner (latest rails) and a constant-current-load sensitivity. Worst
-    source corner: 14.25 V + 0.25 ohm, D10 0.75 V, 0.5 W logic on the same source, R109 icc max."""
+    source corner: 14.25 V + 0.25 ohm, D10 0.75 V (S9.5: D10 removed, kept as margin), 0.5 W logic on the same source,
+    R109 icc max."""
     import circuit_s8
     import s92_netlist
     d = design or s92_netlist.Design.from_table(circuit_s8.circuit())

@@ -370,12 +370,6 @@
    0.0,
    "F.Cu"
   ],
-  "D10": [
-   69.25,
-   88.05,
-   0.0,
-   "F.Cu"
-  ],
   "D15": [
    71.3,
    73.15,
@@ -976,12 +970,6 @@
    0.0,
    "F.Cu"
   ],
-  "TP3": [
-   62.8,
-   86.5,
-   180.0,
-   "B.Cu"
-  ],
   "TP30": [
    120.25,
    97.6,
@@ -1170,7 +1158,6 @@
   "TP27",
   "TP28",
   "TP29",
-  "TP3",
   "TP30",
   "TP4",
   "TP5",
@@ -1509,12 +1496,6 @@
   "D1": [
    78.0,
    85.55,
-   0.0,
-   "F.Cu"
-  ],
-  "D10": [
-   69.25,
-   88.05,
    0.0,
    "F.Cu"
   ],
@@ -2118,12 +2099,6 @@
    0.0,
    "F.Cu"
   ],
-  "TP3": [
-   62.8,
-   86.5,
-   0.0,
-   "F.Cu"
-  ],
   "TP30": [
    120.25,
    97.6,
@@ -2407,7 +2382,6 @@
    "TP15": "V20_OK",
    "TP16": "V3V3",
    "TP17": "REF_OV",
-   "TP3": "MAIN_IN",
    "TP4": "VIN",
    "TP7": "MAIN_IMON",
    "TP8": "GND"
@@ -2417,7 +2391,7 @@
    "AGND_U2 island, FB/COMP, EN_N, N_EN_*": 0.25,
    "P12_ISP / P12_ISN (Kelvin sense pair)": 0.2,
    "P12_VOUT / +12V (2.95 A CC limit)": 1.5,
-   "VBUS / VPD / MAIN_IN / VIN (3 A, U5 limit 4.7 A)": 2.5,
+   "VBUS / VPD / VIN (3 A, U5 limit 4.7 A)": 2.5,
    "logic / status (QUIET class)": 0.25,
    "switch nodes SW1/SW2 (U2), SW (U4)": "short pours, no thin tracks"
   },
@@ -2533,10 +2507,9 @@
     "patterns": [
      "*/VBUS",
      "*/VPD",
-     "*/MAIN_IN",
      "VIN"
     ],
-    "what": "3 A input power path VBUS -> F1 -> VPD -> D10 -> MAIN_IN -> U5 -> VIN (U5 limit 4.7 A)",
+    "what": "3 A input power path VBUS -> F1 -> VPD -> U5 -> VIN (U5 limit 4.7 A; S9.5: no D10)",
     "width": 2.5
    },
    "clearance_mm": 0.2
@@ -2545,7 +2518,6 @@
    "ground.agnd_link": "AGND_U2 has <= 1 track run on B.Cu (the link) and its copper joins only the 7 member pads (via count and width: DRC)",
    "kelvin.sense_routing": "each sense track leaves R109 pads 2/3 on the +y edge within 0.6 mm of the inner end; the pair is coupled (<= 0.3 mm gap) except <= 2 mm at U2 and the TP22/TP23 branches",
    "min_widths": "current-path tracks meet the class minimum (VIN 2.5, PWR_12V 1.5, PWR_N12V 0.8 mm); a track whose chain reaches only tap pads (dividers, test pads, monitors, clamps) needs only the 0.25 mm floor",
-   "thermal.D10.copper": "VPD and MAIN_IN F.Cu islands at D10 >= 400 mm2 each with >= 8 vias to a same-net B.Cu island >= 300 mm2",
    "thermal.R109.force_copper": "P12_VOUT and +12V F.Cu copper >= 150 mm2 each within 10 mm of R109 pads 1/4, each with >= 3 same-net vias",
    "thermal.U2.B_Cu_GND": "the B.Cu GND island under U2 is >= 600 mm2 with >= 20 GND vias",
    "thermal.U2.In1": "In1 is one GND piece; within 15 mm of the U2 centre its only holes are via antipads",
@@ -2555,7 +2527,7 @@
    "thermal.U4.copper": "the 10 U4 field vias land in one -12V island >= 300 mm2 on In2 or B.Cu (the TV_U4_B landing pour may be grown into it)",
    "thermal.U5.copper": "every U5 field via lands in the In1 GND fill",
    "thermal.U9.copper": "every U9 field via lands in the In1 GND fill",
-   "tvs.D1": "D1.1 in the F.Cu VPD pour island with D10.2; >= 3 GND vias within 1.5 mm of D1.2",
+   "tvs.D1": "D1.1 in the F.Cu VPD pour island with F1.2 and U5 IN (S9.5); >= 3 GND vias within 1.5 mm of D1.2",
    "tvs.D24": "D24.1 sits in the F.Cu VIN pour island that holds C8.1 and the C6/C7/C77/C78 bank; >= 3 GND vias within 1.5 mm of the D24.2 pad edge",
    "tvs.D25": "one GND via within 1.5 mm of D25.1 (pins 2/3 join VIN: native unconnected check)",
    "tvs.D26": "D26.1 in an F.Cu P12_VOUT pour island with the C14/C79/C80 bank, or >= 2 vias from it to the B.Cu P12_VOUT area; >= 3 GND vias within 1.5 mm of D26.2"
@@ -3523,13 +3495,6 @@
    }
   ],
   "thermal": {
-   "D10": {
-    "acceptance": "TH-2",
-    "model": "SS1060 at 0.75 V x 3 A = 2.25 W; needs effective RthetaJA <= 33 C/W for Tj <= 125 C at 50 C ambient",
-    "requirements": {
-     "copper": "VPD (anode) and MAIN_IN (cathode) F.Cu pours >= 400 mm2 each, each with >= 8 vias to a same-net B.Cu area >= 300 mm2"
-    }
-   },
    "R109": {
     "acceptance": "TH-1 (R109 body), KS-1, CC-1",
     "model": "TA-I RLM12: 1 W at 70 C with 300 mm2 of pad + trace copper; derates to 0 at 155 C",
@@ -3557,7 +3522,7 @@
     }
    },
    "U5": {
-    "acceptance": "TH-2 (with D10)",
+    "acceptance": "TH-2",
     "model": "TPS16630 PWP exposed pad = GND; <= 0.48 W at 3 A (53 mOhm max)",
     "requirements": {
      "copper": "S9.2b beside-pad field (10 vias, spokes, TV_U5_B landing pour) to the In1 GND plane; no via in the pad"
@@ -4278,5 +4243,9 @@
   "R23",
   "R27",
   "TP2"
+ ],
+ "s95_removed_refs": [
+  "D10",
+  "TP3"
  ]
 }

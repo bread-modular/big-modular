@@ -417,8 +417,8 @@ SS_IC = {
 # not a manufacturer minimum), X7R +-15 % over temperature, 7 % ageing. Injection-diode drop: BAV199 at 10-200 uA.
 CSS_SCREEN = dict(tol=0.10, bias=(0.45, 1.0), temp=(0.85, 1.15), aging=(0.93, 1.0))
 VD_INJ_V = (0.45, 0.6, 0.9)
-D10_DROP_V = 0.75                 # SS1060 screen at 3-5 A (s8_calcs INPUT_PATH; the S9.2 plant used 0.6 V)
-AUX_W = 0.5                       # always-on logic, LDO, monitors from VPD (before D10/U5)
+D10_DROP_V = 0.75                 # S9.5: D10 removed; its SS1060 0.75 V screen stays as input-path margin (s8_calcs INPUT_PATH)
+AUX_W = 0.5                       # always-on logic, LDO, monitors from VPD (before U5)
 
 
 def css_corners(c):

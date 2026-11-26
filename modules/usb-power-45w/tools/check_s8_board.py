@@ -50,7 +50,7 @@ LOCAL_LOOPS = [
     ('U18', ('3',), 'VPD', ('C57',), None, 4.5, 'U18 VCC (VPD) bypass'),
     ('U9', ('8',), 'VPD', ('C46',), None, 4.5, 'LDO input'),
     ('U9', ('1',), 'V3V3', ('C47',), None, 4.5, 'LDO output'),
-    ('U5', ('1', '2', '3', '6'), 'MAIN_IN', ('C2',), None, 4.5, 'main eFuse IN'),
+    ('U5', ('1', '2', '3', '6'), 'VPD', ('C2',), None, 4.5, 'main eFuse IN (S9.5: on VPD, no D10)'),
     ('U1', ('1', '8'), 'VPD', ('C1',), None, 4.5, 'CH224A VHV (S9.4: straight on VPD)'),
     ('U2', ('7',), 'VIN', ('C8',), None, 4.5, '+12V converter HF input cap'),          # S9.0: TPS552892 VIN land
     ('U2', ('11',), 'P12_VOUT', ('C81',), None, 4.5, '+12V converter HF output cap'),  # S9.0: VOUT land (TI 0.1 uF)
@@ -807,7 +807,7 @@ def post_routing_screen(b, fps):
     r = {}
     r['tvs.D24'] = _tvs(cu, 'D24', ['C8.1', 'C6.1', 'C7.1', 'C77.1', 'C78.1'], 3)
     r['tvs.D26'] = _tvs(cu, 'D26', ['C14.1', 'C79.1', 'C80.1'], 3, alt_bcu=True)
-    r['tvs.D1'] = _tvs(cu, 'D1', ['D10.2'], 3)
+    r['tvs.D1'] = _tvs(cu, 'D1', ['F1.2', 'U5.1'], 3)     # S9.5: D10 gone, one VPD pour F1 -> U5
     d25 = cu.vias_near('D25', '1', 'GND', 1.5)
     r['tvs.D25'] = {'gnd_vias': len(d25), 'ok': len(d25) >= 1}
     agnd = P12 + 'AGND_U2'
@@ -881,14 +881,6 @@ def post_routing_screen(b, fps):
         force[f'pad{num}'] = {'F_Cu_within_10mm_mm2': round(overlap(copper, circ), 1), 'vias_landed': landed}
     r['thermal.R109.force_copper'] = {**force, 'ok': all(v['F_Cu_within_10mm_mm2'] >= 150 and v['vias_landed'] >= 3
                                                           for v in force.values())}
-    d10 = {}
-    for p in fps['D10'].Pads():
-        net, isl = p.GetNetname(), cu.island_of('D10', p.GetNumber())
-        vv = cu.vias_in(isl, net)
-        lbd = cu.landing(vv, net, ['B.Cu'])
-        d10[net.split('/')[-1]] = {'F_Cu_mm2': area(isl) if isl else 0.0, 'vias': len(vv), 'B_Cu_mm2': lbd[1]}
-    r['thermal.D10.copper'] = {**d10, 'ok': all(v['F_Cu_mm2'] >= 400 and v['vias'] >= 8 and v['B_Cu_mm2'] >= 300
-                                                for v in d10.values())}
     u4v = field_vias['U4']
     u4a = max([area(i) for layer in ('In2.Cu', 'B.Cu') for i in islands(b, '-12V', layer)
                if u4v and all(i.Contains(v.GetPosition()) for v in u4v)] or [0.0])

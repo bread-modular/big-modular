@@ -1,11 +1,11 @@
 {
   "generator": "bread-modular/kicad-jlcpcb",
-  "kicad_version": "10.0.6",
-  "board": "/home/azero/.okbrain/workspaces/big-modular/298/modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb",
-  "schematic": "/home/azero/.okbrain/workspaces/big-modular/298/modules/usb-power-45w/hardware/usb-power-45w.kicad_sch",
+  "kicad_version": "10.0.8",
+  "board": "/home/azero/.okbrain/workspaces/big-modular/344/modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb",
+  "schematic": "/home/azero/.okbrain/workspaces/big-modular/344/modules/usb-power-45w/hardware/usb-power-45w.kicad_sch",
   "source_sha256": {
-    "/home/azero/.okbrain/workspaces/big-modular/298/modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb": "378dbec87cb895c4ecec38764eb04d0fe5f77b596b3edb274fcf064a9c12dc97",
-    "/home/azero/.okbrain/workspaces/big-modular/298/modules/usb-power-45w/hardware/usb-power-45w.kicad_sch": "675de8f983ffbe1a7cf59d5eeb407d5fd90ccf3418074b8abc4ed1baa39b3f4e"
+    "/home/azero/.okbrain/workspaces/big-modular/344/modules/usb-power-45w/hardware/usb-power-45w.kicad_pcb": "ad220172ef138775864c1eff32493d8413ee84a593f3f74090e5b09e161befae",
+    "/home/azero/.okbrain/workspaces/big-modular/344/modules/usb-power-45w/hardware/usb-power-45w.kicad_sch": "2935b62a0c9f1ef4a41a0639339b993bcaaca55397d2b17c8f36261dce4a261a"
   },
   "layers": [
     "F.Cu",
@@ -25,14 +25,13 @@
   "units": "mm",
   "side": "both",
   "include_through_hole": true,
-  "component_count": 149,
-  "bom_row_count": 60,
+  "component_count": 148,
+  "bom_row_count": 59,
   "excluded": {
     "D8": "Excluded from position files",
     "J2": "Excluded from position files",
     "J3": "Excluded from position files",
     "TP1": "Excluded from BOM",
-    "TP3": "Excluded from BOM",
     "TP4": "Excluded from BOM",
     "TP5": "Excluded from BOM",
     "TP6": "Excluded from BOM",

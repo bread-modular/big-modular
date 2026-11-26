@@ -1,12 +1,13 @@
 {
-  "revision": "S9.4",
+  "revision": "S9.5",
   "project": "hardware/usb-power-45w.kicad_pro",
-  "components": 178,
-  "nets": 81,
+  "components": 176,
+  "nets": 80,
   "no_connect_pins": 29,
   "removed_from_S7": [
     "#FLG05",
     "#FLG06",
+    "#FLG07",
     "#FLG08",
     "#FLG09",
     "C15",
@@ -29,6 +30,7 @@
     "C44",
     "C45",
     "C58",
+    "D10",
     "D11",
     "D12",
     "D13",
@@ -99,6 +101,7 @@
     "R90",
     "TP13",
     "TP2",
+    "TP3",
     "U16",
     "U17",
     "U19",
@@ -116,6 +119,11 @@
     "R23",
     "R27",
     "TP2"
+  ],
+  "removed_in_S95": [
+    "#FLG07",
+    "D10",
+    "TP3"
   ],
   "removed_in_S9_plus5": [
     "#FLG05",

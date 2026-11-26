@@ -1,12 +1,57 @@
-# usb-power-45w — S9.4 / R2 routed
+# usb-power-45w — S9.5 / R4 routed
 
-> **Current:** S9.4 schematic + R2 board (2026-11-16): the CH224A supply limiter is removed after the first-board bench
-> (section below); everything else is the S9.3-10P / R1 design. ERC 0, DRC 0 violations / warnings / parity errors,
-> **0 unconnected**; 178 references / 81 functional nets. **The export in [`jlcpcb/`](../jlcpcb/README.md) is still the
-> S9.3-10P / R1 board with the Q2 fault: do not order it; re-export first.**
-> `tools/check_s8_board.py` lists the same copper/thermal contract items as R1 (reviewed and accepted for the first
-> prototype). Not a supplier-accepted release. [Fab review, R2 record and native views](routing/README.md).
+> **Current:** S9.5 schematic + R4 board (2026-11-26). R4 adds U2 thermal copper only (24 vias, B.Cu GND pour grown;
+> `thermal.U2.PGND_vias` and `thermal.U2.B_Cu_GND` now pass; [R4 record](routing/README.md)). R3: D10, the SS1060 input reverse blocker, is removed after the
+> first-board load test (section below); everything else is the S9.4 / R2 design. ERC 0 errors (4 KiCad 10.0.8
+> `same_local_global_label` warnings, present on S9.4 too), DRC 0 violations / warnings / parity errors, **0 unconnected**;
+> 176 references / 80 functional nets. **JLCPCB export S9.5 / R4 (2026-11-26) in [`jlcpcb/`](../jlcpcb/README.md)**
+> (148 parts / 59 rows; three pre-order codes swapped, fields only: R93/R99 C860071, U10/U11 C702161 TPS3808G01DBVT,
+> U15 C151394 Diodes 74LVC1G17W5-7; zones refilled; project minimum hole 0.3 mm). `tools/check_s8_board.py` lists the same copper/thermal contract items as R2 minus the
+> D10 item. Not a supplier-accepted release. [R3 record and native views](routing/README.md).
 > All S9.3/P2.3 analyses and review claims below are historical; no new startup/thermal qualification is implied.
+
+## S9.5 / R3: D10 removed (2026-11-26)
+
+**Bench, first board (S9.4 wiring), load test.** D10 (SS1060, SMC) ran hot. On the board it had its two pads, one via
+per side and 43 / 58 mm² of F.Cu, nothing on B.Cu, far from the S9.2 contract (≥ 400 mm² per terminal on F + B,
+`thermal.D10.copper`, failing since R1 and accepted for the prototype). At 0.75 V × 3 A it can dissipate 2.25 W.
+
+**Why it can go.** D10 blocked reverse current through the TPS16630, whose single FET has a body diode from OUT to IN,
+so it only mattered when the converter input sits above the USB source: the module's own input capacitors after an
+unplug (tiny energy) or a second supply on the ±12 V bus driving the synchronous TPS552892 backward. The second case is
+already forbidden (T1: never parallel running supplies; `modules/usb-power` relies on the same rule). User decision
+2026-11-26: "Let's remove that D10."
+
+| Item | S9.5 / R3 change | Evidence |
+| --- | --- | --- |
+| Removed parts | D10 SS1060, TP3 (`MAIN_IN` pad; TP1 probes the same net now) and the `MAIN_IN` power flag #FLG07: **178 → 176 references** | `tools/circuit_s8.py` `S95_REMOVED`; `build.json` → `removed_in_S95` |
+| Removed net | `MAIN_IN`: **81 → 80 functional nets**. U5 IN (pins 1, 2, 3, 6) and C2.1 are on `VPD` | `tools/verify_s8.py` (U5/C2 pin rows, `MAIN_IN` absent); `validation.json` |
+| Schematic | Page 01 regenerated: the F1 output wire runs straight into U5 IN where D10 sat; the `MAIN_IN` label goes. Notes on U5, C2, R2 and the page 01/03 notes updated. No other component, field or connection changed | native XML; `hierarchy-parity.json` |
+| Board R3 | D10 and TP3 deleted with TP3's B.Cu stub and its via (63.9, 85.9). The old `R1_MAIN_IN_F` pour, the D10 site and `R1_VPD_F` are one F.Cu VPD pour `R1_VPD_F` (115 mm² filled, one piece) from F1.2 past D1.1 to U5 IN. No part moved, no other copper touched | [routing/README.md](routing/README.md); native DRC |
+| Contract | `MAIN_IN` leaves the VIN class; the D10 thermal item (`THERMAL['D10']`, `thermal.D10.copper`) is gone; `tvs.D1` now asks for D1.1 on the pour with F1.2 and U5 IN; TP3 leaves the kept diagnostic pads (25 test pads) | `tools/s92_contract.py`; [routing-notes.md](design/routing-notes.md) |
+
+**Kept on purpose.** Every input-path calculation keeps the 0.75 V D10 screen as unassigned margin
+(`s8_calcs.INPUT_PATH`, `s92_netlist.D10_DROP_V`, `verify_s8` `u5_status_valid_V`), so the published rating
+(33 W), the UVLO/duty screens and the strict 3 A start record (peak 2.955 A) are the S9.4 numbers,
+now conservative: the converters really see about 0.75 V more input. Recomputing without it gives 2.78 A peak start
+current and a higher rating; that is not published here (no guarantee changes without a bench).
+
+**What is lost.** Backfeed into the USB source is no longer blocked. The usage rule stands: never parallel another
+running supply on the ±12 V bus; power the bus down before plugging. With no second supply nothing drives VIN above
+VPD, so nothing changes in normal use.
+
+**Checks (2026-11-26).** Shared native `check` (`research/s95/check-02/`): ERC 4 warnings, all `same_local_global_label`
+on power symbols that the HEAD S9.4 tree also shows with KiCad 10.0.8 (not from this change); DRC 0 violations,
+0 warnings, 0 exclusions, 0 unconnected, parity 0. Board: 1105 segments, 313 vias (all 0.3/0.6 mm, none in an SMD pad),
+27 copper zones, 15 rule areas; In1 GND, In2 VIN and +3V3 one piece each. `check_s8_board.py`: the R2 failing items
+minus `thermal.D10.copper` (`min_widths` unchanged at 57); `tvs.D1` passes on a 115 mm² VPD island. `verify_s8.py`
+passes (only the reference / net / footprint counts change in `validation.json`). Tests: see the
+[R3 record](routing/README.md).
+
+**Not redone in R3.** The JLCPCB export and printed panel (both redone with the R4 export, see `jlcpcb/README.md`), `sourcing.json` (re-run live at the R4 export), `calcs.json` (`s8_calcs.py`
+still stops at the 10-pin header footprint, as on S9.4), `board-p1.json` (P1 placement record; still lists D10), the
+assembly renders/STEP. The load test continues: U2 is the next hot spot (TH-1), see the routing record for its open
+copper items.
 
 ## S9.4 / R2: CH224A straight on VPD (2026-11-16)
 

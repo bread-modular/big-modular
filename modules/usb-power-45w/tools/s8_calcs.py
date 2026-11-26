@@ -560,12 +560,16 @@ PRECISION_REFS = ['R93', 'R94', 'R98', 'R99']     # S9.0: the 0.1 % / 25 ppm gua
 TYPICAL_RACK_MF = 0.44          # 20 modules x 22 uF per rail (soft_start rack_reference)
 
 
+# S9.5 (2026-11-26): D10 is removed, but its 0.75 V screen stays in every input-path calculation as unassigned margin,
+# so the published rating, the UVLO/duty screens and the strict 3 A start record keep their S9.4 values (conservative:
+# the real converter input is ~0.75 V higher). No rating or guarantee is changed by S9.5.
 INPUT_PATH = {'D10_V': 0.75, 'U5_RON_max_ohm': 0.053, 'I_A': 4.698,
               'basis': 'R2 senses VPD before D10; converter VIN = VPD - D10 (0.75 V S5 screen at 5 A) - U5 RON max '
                        '(53 mOhm, S5) x its 4.698 A high-corner current limit (input_budget U5_limit_screen_A): no steady '
                        'input current can exceed the actual U5 limit, so this is a conservative drop, not a typical one. S9.0: '
-                       'unchanged (12.5 V converter input at the 13.5 V rated minimum)'}
-INPUT_DROP_V = INPUT_PATH['D10_V'] + INPUT_PATH['U5_RON_max_ohm'] * INPUT_PATH['I_A']      # ~1.0 V
+                       'unchanged (12.5 V converter input at the 13.5 V rated minimum). S9.5: D10 removed, the 0.75 V '
+                       'is kept as margin'}
+INPUT_DROP_V = INPUT_PATH['D10_V'] + INPUT_PATH['U5_RON_max_ohm'] * INPUT_PATH['I_A']      # ~1.0 V (S9.5: 0.75 V of it margin)
 VPD_RATED_MIN = 13.5            # S9.0: minimum loaded 15 V PD input at the module (15 V -5 % = 14.25 V less 0.75 V cable)
 VPD_UNLOADED_MIN = 14.25         # 15 V PDO at -5 % (vSrcNew), before any load current flows
 VPD_RANGE = (13.5, 16.5)         # S9.0 stated input range at the module (loaded minimum .. +10 % ceiling)
@@ -579,7 +583,7 @@ def u5_window(val):
 
 
 def converter_vin(vpd):
-    """Converter input (VIN) for a given VPD after the D10 + U5 drop screen."""
+    """Converter input (VIN) for a given VPD after the D10 + U5 drop screen (S9.5: the D10 part is kept as margin)."""
     return round(vpd - INPUT_DROP_V, 2)
 
 
@@ -918,7 +922,7 @@ def input_budget():
                                                                        PUBLISHED_A['-12V'], 1),
                 at_13V5={'input_W': round(p_all, 1), 'input_A': round(i_all, 2)},
                 at_14V25={'input_W': round(p_nom, 1), 'input_A': round(i_nom, 2)},
-                losses_at_3A_W={'D10_0.75V': round(0.75 * 3.0, 2), 'U5_53mohm_max': round(0.053 * 9, 2),
+                losses_at_3A_W={'U5_53mohm_max': round(0.053 * 9, 2),     # S9.5: D10 (2.25 W) removed
                                 'aux_logic_LDO': 0.5},
                 U5_limit_screen_A=[3.693, 4.186, 4.698],
                 margin_U5_min_to_contract_A=round(3.693 - PD_CONTRACT['A'], 3),
@@ -1166,7 +1170,7 @@ TPS1663_RTH_JA_PWP = 32.2      # C/W, SOURCES TPS1663_thermal (JEDEC 2s2p with e
 
 
 def thermal_contract(val, eff):
-    """S9.2 item 6: the U2 / R109 / D10 screens with the board they assume (tools/s92_contract.THERMAL). The JEDEC
+    """S9.2 item 6: the U2 / R109 screens (S9.5: D10 removed) with the board they assume (tools/s92_contract.THERMAL). The JEDEC
     RthetaJA is not assumed for the unrouted board: the rating is conditional on the routing contract and TH-1..TH-3.
     S9.2b: via-in-pad is prohibited; via_change bounds the cost of the beside-pad thermal fields (U5 Tj at the rated
     input, U2 unchanged, U4/U9 DeltaR) and asserts that the published rating still holds."""
@@ -1176,7 +1180,6 @@ def thermal_contract(val, eff):
     rated = b['losses'][f"I{PUBLISHED_A['+12V']:.2f}A"]
     op = p12(val)
     p_r109 = op['icc_A'][2] ** 2 * val('R109') * R109_TOL[1]
-    d10_w = INPUT_PATH['D10_V'] * PD_CONTRACT['A']
     # S9.2b: no via-in-pad. DeltaR of the beside-pad fields against the drilled pads they replace (s92_contract model,
     # an upper bound on the RthetaJA change); U5 Tj at the rated 3 A input with and without it, U2 unchanged.
     model = s92_contract.thermal_via_model()
@@ -1221,11 +1224,10 @@ def thermal_contract(val, eff):
                      'rise_C_at_limit': round(p_r109 * (155 - 70) / 1.0, 1),
                      'basis': 'TA-I RLM12 derating: 1 W at 70 C to 0 at 155 C (85 C/W) with the 300 mm2 copper of the contract',
                      'contract': s92_contract.THERMAL['R109']['requirements']},
-            'D10': {'P_W_at_3A': round(d10_w, 2), 'required_RthetaJA_C_W': round((125 - 50) / d10_w, 1),
-                    'contract': s92_contract.THERMAL['D10']['requirements']},
+            'D10': 'removed in S9.5 (2.25 W at 3 A on 43 mm2 of copper ran hot on the first board)',
             'U5': u5,
             'via_change': via_change,
-            'acceptance': 'TH-1 U2/R109 case temperature at 2.95 A, TH-2 D10/U5 at 3 A input, TH-3 U4 at 0.8 A; '
+            'acceptance': 'TH-1 U2/R109 case temperature at 2.95 A, TH-2 U5 at 3 A input, TH-3 U4 at 0.8 A; '
                           'docs/design/routing-notes.md'}
 
 

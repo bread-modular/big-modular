@@ -111,10 +111,10 @@ GROUPS = [
       'D4': (130.0, 74.4, 0), 'C33': (122.3, 91.5, 90),
       'C29': (137.2, 70.0, 270), 'C30': (139.6, 70.0, 270), 'C61': (142.0, 70.0, 90), 'C31': (144.4, 70.0, 270),
       'C32': (146.8, 70.0, 270)}),
-    ('USB-C PD input, fuse, TVS, D10, U5 main eFuse',
-     'Input group by J1: F1 right behind J1, D10/D1 behind it, '
+    ('USB-C PD input, fuse, TVS, U5 main eFuse',
+     'Input group by J1: F1 right behind J1, D1 behind it (S9.5: D10 removed, one VPD pour F1 -> U5), '
      'CH224A with its 1u C1 beside it (S9.4: the Q2/Q3/D9/D11 limiter is gone), U5 and its UV/OV/ILIM/IMON/dVdT parts on the left',
-     {'F1': (69.25, 92.7, 0), 'D10': (69.25, 88.05, 0), 'D1': (78.0, 85.55, 0),
+     {'F1': (69.25, 92.7, 0), 'D1': (78.0, 85.55, 0),
       'U1': (84.95, 83.35, 270), 'R2': (75.05, 89.45, 90), 'R3': (65.35, 92.3, 0),
       # S9.2b: C2 0.45 mm west and R24/C3 0.45 mm east, clear of the U5 beside-pad thermal-via rows (s92_contract)
       'C1': (83.45, 77.95, 90), 'C3': (64.9, 83.05, 90), 'R24': (64.9, 79.9, 90), 'U5': (60.05, 80.3, 90),
@@ -152,7 +152,7 @@ GROUPS = [
     ('Bad-status filter (U14 NAND, R72/C51, U15 Schmitt)',
      'Next to the monitors whose outputs it combines: U14 inputs face U18, ANY_BAD -> R72/C51 -> U15',
      {'U14': (56.5, 66.4, 180), 'U15': (55.9, 73.5, 0), 'R72': (59.3, 72.75, 90), 'C51': (60.9, 72.75, 90),
-      'C54': (51.9, 72.9, 90), 'C55': (51.9, 69.4, 90), 'TP7': (64.75, 74.8, 90), 'TP3': (62.8, 86.5, 0)}),
+      'C54': (51.9, 72.9, 90), 'C55': (51.9, 69.4, 90), 'TP7': (64.75, 74.8, 90)}),
     ('Latch / reset / timer logic (U10-U13)',
      'Front strip around SW1: U10 (POR + RESET) right behind SW1, U13 AND gates and U12 latch either side, U11 '
      'start timer on the right (P1.2: moved right, above the crowbar SCR: R71/C50 in one row under C24, '
@@ -584,10 +584,13 @@ def refresh_r1_record():
     rec = json.loads(RECORD.read_text())
     # S9.4 / R2: the CH224A supply limiter left the board (circuit_s8.S94_REMOVED); those refs leave the baseline too
     gone = {r for r in circuit_s8.S94_REMOVED if not r.startswith('#')}
-    base = {r: v for r, v in rec.get('r1_start_parts', rec['parts']).items() if r not in gone}
+    # S9.5 / R3: D10 and TP3 left the board (circuit_s8.S95_REMOVED)
+    gone95 = {r for r in circuit_s8.S95_REMOVED if not r.startswith('#')}
+    base = {r: v for r, v in rec.get('r1_start_parts', rec['parts']).items() if r not in gone | gone95}
     now = snapshot(b)
     assert set(now) == set(base), ('ref set changed', sorted(set(now) ^ set(base)))
     rec['s94_removed_refs'] = sorted(gone)
+    rec['s95_removed_refs'] = sorted(gone95)
     rec['r1_start_parts'] = base
     rec['parts'] = now
     rec['r1_moved_refs'] = sorted(r for r in now if now[r] != base[r])
