@@ -1,0 +1,365 @@
+{
+  "scope": "Linear frame-load comparison only. Ratios <= 1 are favourable. Not an ultimate strength, creep, or holding-force test.",
+  "plate_sha256": "efc5a2e704402b7e1625166776d5fe55a886be03ed43e1356786a88054ab1d49",
+  "original_plate_sha256": "88b1c8e262a15ef75bebd49a834d10c70ec943060f30baae77f8848454db9564",
+  "compact_vs_original": [
+    {
+      "grid_mm": 3,
+      "layer_modulus_ratio": 1,
+      "core_exponent": 1,
+      "bricks": [
+        8006,
+        6790
+      ],
+      "worst": {
+        "work_Nmm": 0.8461,
+        "max_motion_mm": 0.71813,
+        "tensile_hot_MPa": 0.88929,
+        "mises_hot_MPa": 0.96868,
+        "layer_tensile_hot_MPa": 0.89156,
+        "tensile_peak_MPa": 0.93269,
+        "mises_peak_MPa": 0.96561
+      },
+      "ratios_to_full_base_by_case": {
+        "even_clamp": {
+          "work_Nmm": 0.66212,
+          "max_motion_mm": 0.57979,
+          "tensile_hot_MPa": 0.81852,
+          "mises_hot_MPa": 0.83689,
+          "layer_tensile_hot_MPa": 0.79402,
+          "tensile_peak_MPa": 0.81674,
+          "mises_peak_MPa": 0.84028
+        },
+        "one_screw": {
+          "work_Nmm": 0.71027,
+          "max_motion_mm": 0.64749,
+          "tensile_hot_MPa": 0.83205,
+          "mises_hot_MPa": 0.84229,
+          "layer_tensile_hot_MPa": 0.81097,
+          "tensile_peak_MPa": 0.83739,
+          "mises_peak_MPa": 0.86094
+        },
+        "clamp_and_pitch": {
+          "work_Nmm": 0.71278,
+          "max_motion_mm": 0.58408,
+          "tensile_hot_MPa": 0.81601,
+          "mises_hot_MPa": 0.96868,
+          "layer_tensile_hot_MPa": 0.79482,
+          "tensile_peak_MPa": 0.81504,
+          "mises_peak_MPa": 0.96561
+        },
+        "clamp_and_roll": {
+          "work_Nmm": 0.67686,
+          "max_motion_mm": 0.57948,
+          "tensile_hot_MPa": 0.81942,
+          "mises_hot_MPa": 0.83772,
+          "layer_tensile_hot_MPa": 0.79512,
+          "tensile_peak_MPa": 0.82172,
+          "mises_peak_MPa": 0.84535
+        },
+        "clamp_and_yaw": {
+          "work_Nmm": 0.66393,
+          "max_motion_mm": 0.57928,
+          "tensile_hot_MPa": 0.81843,
+          "mises_hot_MPa": 0.83683,
+          "layer_tensile_hot_MPa": 0.79388,
+          "tensile_peak_MPa": 0.81507,
+          "mises_peak_MPa": 0.83854
+        },
+        "pitch": {
+          "work_Nmm": 0.74064,
+          "max_motion_mm": 0.68868,
+          "tensile_hot_MPa": 0.88207,
+          "mises_hot_MPa": 0.95806,
+          "layer_tensile_hot_MPa": 0.88441,
+          "tensile_peak_MPa": 0.93269,
+          "mises_peak_MPa": 0.94702
+        },
+        "roll": {
+          "work_Nmm": 0.8461,
+          "max_motion_mm": 0.71813,
+          "tensile_hot_MPa": 0.88929,
+          "mises_hot_MPa": 0.91886,
+          "layer_tensile_hot_MPa": 0.89156,
+          "tensile_peak_MPa": 0.89909,
+          "mises_peak_MPa": 0.89971
+        },
+        "yaw": {
+          "work_Nmm": 0.43363,
+          "max_motion_mm": 0.4281,
+          "tensile_hot_MPa": 0.70632,
+          "mises_hot_MPa": 0.77352,
+          "layer_tensile_hot_MPa": 0.69274,
+          "tensile_peak_MPa": 0.73877,
+          "mises_peak_MPa": 0.74533
+        }
+      }
+    },
+    {
+      "grid_mm": 2,
+      "layer_modulus_ratio": 1,
+      "core_exponent": 1,
+      "bricks": [
+        28805,
+        24101
+      ],
+      "worst": {
+        "work_Nmm": 0.88985,
+        "max_motion_mm": 0.80159,
+        "tensile_hot_MPa": 0.95116,
+        "mises_hot_MPa": 0.92517,
+        "layer_tensile_hot_MPa": 0.96403,
+        "tensile_peak_MPa": 0.98249,
+        "mises_peak_MPa": 0.96675
+      },
+      "ratios_to_full_base_by_case": {
+        "even_clamp": {
+          "work_Nmm": 0.71052,
+          "max_motion_mm": 0.60957,
+          "tensile_hot_MPa": 0.84257,
+          "mises_hot_MPa": 0.884,
+          "layer_tensile_hot_MPa": 0.80911,
+          "tensile_peak_MPa": 0.84243,
+          "mises_peak_MPa": 0.89305
+        },
+        "one_screw": {
+          "work_Nmm": 0.75246,
+          "max_motion_mm": 0.68343,
+          "tensile_hot_MPa": 0.88221,
+          "mises_hot_MPa": 0.88762,
+          "layer_tensile_hot_MPa": 0.85677,
+          "tensile_peak_MPa": 0.88665,
+          "mises_peak_MPa": 0.81243
+        },
+        "clamp_and_pitch": {
+          "work_Nmm": 0.75933,
+          "max_motion_mm": 0.60069,
+          "tensile_hot_MPa": 0.84212,
+          "mises_hot_MPa": 0.84041,
+          "layer_tensile_hot_MPa": 0.81589,
+          "tensile_peak_MPa": 0.86557,
+          "mises_peak_MPa": 0.95637
+        },
+        "clamp_and_roll": {
+          "work_Nmm": 0.72685,
+          "max_motion_mm": 0.60705,
+          "tensile_hot_MPa": 0.84271,
+          "mises_hot_MPa": 0.87499,
+          "layer_tensile_hot_MPa": 0.80859,
+          "tensile_peak_MPa": 0.83943,
+          "mises_peak_MPa": 0.80573
+        },
+        "clamp_and_yaw": {
+          "work_Nmm": 0.71261,
+          "max_motion_mm": 0.60873,
+          "tensile_hot_MPa": 0.84285,
+          "mises_hot_MPa": 0.88403,
+          "layer_tensile_hot_MPa": 0.80915,
+          "tensile_peak_MPa": 0.84064,
+          "mises_peak_MPa": 0.89463
+        },
+        "pitch": {
+          "work_Nmm": 0.81795,
+          "max_motion_mm": 0.7693,
+          "tensile_hot_MPa": 0.93478,
+          "mises_hot_MPa": 0.92517,
+          "layer_tensile_hot_MPa": 0.96403,
+          "tensile_peak_MPa": 0.98249,
+          "mises_peak_MPa": 0.96675
+        },
+        "roll": {
+          "work_Nmm": 0.88985,
+          "max_motion_mm": 0.80159,
+          "tensile_hot_MPa": 0.95116,
+          "mises_hot_MPa": 0.8962,
+          "layer_tensile_hot_MPa": 0.95753,
+          "tensile_peak_MPa": 0.93642,
+          "mises_peak_MPa": 0.88052
+        },
+        "yaw": {
+          "work_Nmm": 0.51234,
+          "max_motion_mm": 0.50065,
+          "tensile_hot_MPa": 0.82462,
+          "mises_hot_MPa": 0.81732,
+          "layer_tensile_hot_MPa": 0.87844,
+          "tensile_peak_MPa": 0.9048,
+          "mises_peak_MPa": 0.87715
+        }
+      }
+    },
+    {
+      "grid_mm": 2,
+      "layer_modulus_ratio": 0.5,
+      "core_exponent": 2,
+      "bricks": [
+        28805,
+        24101
+      ],
+      "worst": {
+        "work_Nmm": 0.84266,
+        "max_motion_mm": 0.79268,
+        "tensile_hot_MPa": 0.92393,
+        "mises_hot_MPa": 0.94313,
+        "layer_tensile_hot_MPa": 0.94614,
+        "tensile_peak_MPa": 0.92178,
+        "mises_peak_MPa": 0.95421
+      },
+      "ratios_to_full_base_by_case": {
+        "even_clamp": {
+          "work_Nmm": 0.70027,
+          "max_motion_mm": 0.60169,
+          "tensile_hot_MPa": 0.8985,
+          "mises_hot_MPa": 0.93883,
+          "layer_tensile_hot_MPa": 0.82631,
+          "tensile_peak_MPa": 0.90941,
+          "mises_peak_MPa": 0.91847
+        },
+        "one_screw": {
+          "work_Nmm": 0.72884,
+          "max_motion_mm": 0.67049,
+          "tensile_hot_MPa": 0.92393,
+          "mises_hot_MPa": 0.87943,
+          "layer_tensile_hot_MPa": 0.85579,
+          "tensile_peak_MPa": 0.92178,
+          "mises_peak_MPa": 0.83745
+        },
+        "clamp_and_pitch": {
+          "work_Nmm": 0.7294,
+          "max_motion_mm": 0.56933,
+          "tensile_hot_MPa": 0.89335,
+          "mises_hot_MPa": 0.82697,
+          "layer_tensile_hot_MPa": 0.92417,
+          "tensile_peak_MPa": 0.86131,
+          "mises_peak_MPa": 0.74543
+        },
+        "clamp_and_roll": {
+          "work_Nmm": 0.71479,
+          "max_motion_mm": 0.59362,
+          "tensile_hot_MPa": 0.8892,
+          "mises_hot_MPa": 0.86325,
+          "layer_tensile_hot_MPa": 0.87747,
+          "tensile_peak_MPa": 0.90223,
+          "mises_peak_MPa": 0.77849
+        },
+        "clamp_and_yaw": {
+          "work_Nmm": 0.7023,
+          "max_motion_mm": 0.60101,
+          "tensile_hot_MPa": 0.89828,
+          "mises_hot_MPa": 0.93852,
+          "layer_tensile_hot_MPa": 0.82532,
+          "tensile_peak_MPa": 0.90661,
+          "mises_peak_MPa": 0.93356
+        },
+        "pitch": {
+          "work_Nmm": 0.79213,
+          "max_motion_mm": 0.74691,
+          "tensile_hot_MPa": 0.87786,
+          "mises_hot_MPa": 0.85645,
+          "layer_tensile_hot_MPa": 0.93664,
+          "tensile_peak_MPa": 0.91379,
+          "mises_peak_MPa": 0.88307
+        },
+        "roll": {
+          "work_Nmm": 0.84266,
+          "max_motion_mm": 0.79268,
+          "tensile_hot_MPa": 0.76698,
+          "mises_hot_MPa": 0.94313,
+          "layer_tensile_hot_MPa": 0.94614,
+          "tensile_peak_MPa": 0.74229,
+          "mises_peak_MPa": 0.95421
+        },
+        "yaw": {
+          "work_Nmm": 0.47515,
+          "max_motion_mm": 0.46545,
+          "tensile_hot_MPa": 0.75148,
+          "mises_hot_MPa": 0.74063,
+          "layer_tensile_hot_MPa": 0.84533,
+          "tensile_peak_MPa": 0.65159,
+          "mises_peak_MPa": 0.66707
+        }
+      }
+    }
+  ],
+  "rejected_worst_case_ratios": {
+    "lean8-w5": {
+      "3mm": {
+        "work_Nmm": 1.11715,
+        "max_motion_mm": 1.12256,
+        "tensile_hot_MPa": 1.20552,
+        "mises_hot_MPa": 1.12424,
+        "layer_tensile_hot_MPa": 1.09772,
+        "tensile_peak_MPa": 1.2818,
+        "mises_peak_MPa": 1.13603
+      },
+      "2mm": {
+        "work_Nmm": 1.30962,
+        "max_motion_mm": 1.28962,
+        "tensile_hot_MPa": 1.30387,
+        "mises_hot_MPa": 1.3006,
+        "layer_tensile_hot_MPa": 1.46084,
+        "tensile_peak_MPa": 1.21286,
+        "mises_peak_MPa": 1.33304
+      }
+    },
+    "short28-w5": {
+      "3mm": {
+        "work_Nmm": 0.94422,
+        "max_motion_mm": 0.80826,
+        "tensile_hot_MPa": 1.02557,
+        "mises_hot_MPa": 1.01581,
+        "layer_tensile_hot_MPa": 1.03069,
+        "tensile_peak_MPa": 1.03488,
+        "mises_peak_MPa": 1.02545
+      },
+      "2mm": {
+        "work_Nmm": 0.95745,
+        "max_motion_mm": 0.86134,
+        "tensile_hot_MPa": 1.03695,
+        "mises_hot_MPa": 1.01651,
+        "layer_tensile_hot_MPa": 1.04851,
+        "tensile_peak_MPa": 1.06556,
+        "mises_peak_MPa": 1.01895
+      }
+    },
+    "short36-w6": {
+      "3mm": {
+        "work_Nmm": 0.86809,
+        "max_motion_mm": 0.78344,
+        "tensile_hot_MPa": 0.90544,
+        "mises_hot_MPa": 0.96798,
+        "layer_tensile_hot_MPa": 0.92895,
+        "tensile_peak_MPa": 1.01585,
+        "mises_peak_MPa": 0.96431
+      },
+      "2mm": {
+        "work_Nmm": 0.90409,
+        "max_motion_mm": 0.84339,
+        "tensile_hot_MPa": 0.9519,
+        "mises_hot_MPa": 0.9244,
+        "layer_tensile_hot_MPa": 0.9638,
+        "tensile_peak_MPa": 0.9795,
+        "mises_peak_MPa": 0.96479
+      }
+    },
+    "waist8-28-w7": {
+      "3mm": {
+        "work_Nmm": 0.79366,
+        "max_motion_mm": 0.70659,
+        "tensile_hot_MPa": 0.93423,
+        "mises_hot_MPa": 0.94458,
+        "layer_tensile_hot_MPa": 0.81114,
+        "tensile_peak_MPa": 0.99055,
+        "mises_peak_MPa": 0.94235
+      },
+      "2mm": {
+        "work_Nmm": 0.89676,
+        "max_motion_mm": 0.86722,
+        "tensile_hot_MPa": 1.02473,
+        "mises_hot_MPa": 1.02871,
+        "layer_tensile_hot_MPa": 1.08232,
+        "tensile_peak_MPa": 1.05427,
+        "mises_peak_MPa": 1.04103
+      }
+    }
+  }
+}

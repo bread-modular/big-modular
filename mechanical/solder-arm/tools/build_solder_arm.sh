@@ -25,6 +25,6 @@ python3 -c "
 import json,sys
 r=json.load(open(sys.argv[1]))
 print('solder arm', r['status'], '| jaw opening', r['dimensions']['jaw_opening_mm'], '| boards', r['boards']['scanned'],
-      '| poses', {k:v['collisions'] for k,v in r['poses'].items()}, '| head sweep gap', r['head_sweep']['smallest_gap_to_desk_clamp_bracket_mm'],
+      '| poses', {k:v['collisions'] for k,v in r['poses'].items()}, '| head sweep gap', r['head_sweep']['smallest_gap_to_desk_base_bracket_mm'],
       '| build', r['build_s'], 's')
 " "$research/build-report.json"

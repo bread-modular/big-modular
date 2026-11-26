@@ -13,6 +13,8 @@ research, out = (Path(p) for p in sys.argv[sys.argv.index('--') + 1:])
 src = research/'render'
 out.mkdir(parents=True, exist_ok=True)
 report = json.loads((research/'build-report.json').read_text())
+base_dir = Path(__file__).resolve().parents[1]/'print'/'two-screw-base'
+base_report = json.loads((base_dir/'verification.json').read_text())
 BODY = (0.25, 0.44, 0.60)
 HARDWARE = (0.93, 0.34, 0.09)
 JAW = (0.16, 0.18, 0.20)
@@ -51,7 +53,7 @@ def color(stem):
         return DESK
     if stem == 'board':
         return BOARD
-    if stem.startswith(('bolt', 'knob', 'thumbscrew', 'clamp-screw', 'clamp-nut', 'clamp-pad', 'joint', 'jaw-thumbscrew')):
+    if stem.startswith(('bolt', 'knob', 'thumbscrew', 'screw-', 'hand-screw', 'joint', 'jaw-thumbscrew')):
         return HARDWARE
     if stem.startswith('jaw'):
         return JAW
@@ -104,15 +106,20 @@ def exploded(name, parts, target, direction, scale):
 def plate(name):
     """Every print file once, in its print pose, laid out in rows (not a slicer plate)."""
     scene = setup((1700, 1100))
-    rows = [['clamp-body', 'swivel-bracket', 'clamp-screw', 'clamp-nut', 'clamp-pad'],
+    rows = [['wide-base', 'hand-screw', 'swivel-bracket'],
             ['arm-link'], ['head-rail'],
             ['jaw-left', 'jaw-right', 'joint-bolt', 'joint-knob', 'jaw-thumbscrew']]
+    # the desk base and its screws are the released print files of build_two_screw_base.py
+    files = {n: src/f'print-{n}.stl' for n in report['print']}
+    bounds = {n: i['print_bounds_mm'] for n, i in report['print'].items()}
+    for n, i in base_report['parts'].items():
+        files[n], bounds[n] = base_dir/f'{n}.stl', i['print_bounds_mm']
     y, wide = 0.0, 0.0
     for row in rows:
         x, deep = 0.0, 0.0
         for part in row:
-            w, d, _ = report['print'][part]['print_bounds_mm']
-            load(src/f'print-{part}.stl', color(part), (x, y - d, 0))
+            w, d, _ = bounds[part]
+            load(files[part], color('desk-base' if part == 'wide-base' else part), (x, y - d, 0))
             x += w + 14
             deep = max(deep, d)
         wide = max(wide, x - 14)
@@ -128,18 +135,18 @@ pose('head-flipped', 'flipped', (c[0], c[1], c[2] + 10), (0.9, 0.5, 0.9), 300, s
 pose('low', 'low', (120, 0, 40), (0.7, 1, 0.7), 560)
 pose('tilted', 'tilted', (130, 0, 90), (1, 0.3, 0.6), 560)
 pose('easel', 'easel', (60, -60, 100), (1, -0.75, 0.6), 560)
-pose('clamp', 'work', (30, 20, -30), (-0.5, -1, 0.25), 300)
+pose('desk-base', 'work', (30, 0, -30), (-0.5, -1, 0.25), 360)
 plate('print-parts')
 # assembly views: A = J2 / J3 bolt axis (bolt head side), R = along the head rail
 A = Vector((0.5, 0.866, 0))
 R = Vector((0.866, -0.5, 0))
 UP = Vector((0, 0, 1))
-exploded('assembly-1-clamp', {
-    'clamp-body': (0, 0, 0), 'clamp-nut': (0, 55, 0), 'clamp-pad': -30*UP, 'clamp-screw': -80*UP,
+exploded('assembly-1-base', {
+    'desk-base': (0, 0, 0), 'screw-left': -60*UP, 'screw-right': -60*UP,
     'bolt-1': -42*UP, 'turret': 35*UP, 'knob-1': 75*UP,
-}, (35, 10, -30), (0.75, 1, 0.45), 440)
+}, (35, 0, -40), (0.75, 1, 0.45), 480)
 exploded('assembly-2-arm', {
-    'clamp-body': (0, 0, 0), 'bolt-1': (0, 0, 0), 'turret': (0, 0, 0), 'knob-1': (0, 0, 0),
+    'desk-base': (0, 0, 0), 'bolt-1': (0, 0, 0), 'turret': (0, 0, 0), 'knob-1': (0, 0, 0),
     'bolt-2': 85*A, 'link': -45*A, 'knob-2': -85*A,
 }, (80, -50, 75), (1, 0.27, 0.7), 400)
 exploded('assembly-3-head', {

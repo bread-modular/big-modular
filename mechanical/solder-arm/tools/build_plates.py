@@ -25,9 +25,9 @@ GAP = 8.0             # between parts
 PLATES = {
     'plate-1-thread-test': [['joint-bolt', 'joint-knob']],
     'plate-2-screws-and-knobs': [['joint-bolt', 'joint-bolt', 'joint-knob', 'joint-knob'],
-                                 ['clamp-screw', 'clamp-nut', 'clamp-pad', 'jaw-thumbscrew', 'jaw-thumbscrew']],
+                                 ['jaw-thumbscrew', 'jaw-thumbscrew']],
     'plate-3-jaws': [['jaw-left', 'jaw-right']],
-    'plate-4-clamp-and-bracket': [['clamp-body', 'swivel-bracket']],
+    'plate-4-swivel-bracket': [['swivel-bracket']],
     'plate-5-link-and-rail': [['arm-link'], ['head-rail']],
 }
 

@@ -3,7 +3,7 @@
 Build: mechanical/solder-arm/tools/build_solder_arm.sh
 
 Chain, desk to board:
-  desk clamp (C frame, printed screw + captive nut + snap-on pad)
+  desk base (two-screw C frame, build_two_screw_base.py; two printed hand screws)
     J1 yaw    -> swivel bracket
     J2 pitch  -> arm link (one)
     J3 turn   -> head rail with two sliding jaws; the board edges sit in the jaws' V grooves
@@ -21,15 +21,15 @@ one flat T-bolt and one knob. The bolt is keyed in one part (flat-sided hole + h
 the knob is tightened with one hand; half a turn back lets the teeth skip.
 
 Threads are a 45 degree stub profile, cut with THREAD_CLR radial clearance. The joint bolts print
-lying on their flat (layers along the bolt, the strong way); the clamp screw and the jaw
+lying on their flat (layers along the bolt, the strong way); the desk screws and the jaw
 thumbscrews only push, and print standing.
 
 Frames. Joint ports: origin on the tooth ring's mid plane, z out of the part, x the ring's zero
 direction. A keyed part has a tooth tip at zero, the other part a valley, so angle 0 meshes.
 Head frame: X along the rail, +Y from the rail to the board, Z across the board; the roll axis
-(J3) is the Y axis. Clamp frame: desk top at z = 0, desk edge at x = 0, +X into the desk.
+(J3) is the Y axis. Base frame: desk top at z = 0, desk edge at x = 0, +X into the desk.
 
-CAD-checked prototype: no part is printed, no fit is measured.
+Printed and in use with the two-screw base (user, 2026-11-26); no measured load rating.
 """
 import hashlib
 import json
@@ -66,7 +66,6 @@ MID = TOOTH_H/2       # ring mid plane above the plate face; two mated plates ar
 RING_END = 1.5        # 45 degree cone at both ends of the teeth
 JOINT = dict(r=7.0, depth=1.25, pitch=3.5, crest=0.5)
 THUMB = dict(r=5.0, depth=1.0, pitch=3.0, crest=0.5)
-CLAMP = dict(r=9.0, depth=1.8, pitch=5.0, crest=0.7)
 THREAD_CLR = 0.35     # radial, on the internal thread
 HOLE_CLR = 0.35       # bolt in a plain hole, radial
 FLAT = 4.9            # bolt flats from the axis: the bolt is 9.8 mm thick
@@ -85,24 +84,9 @@ LINK_L = 190.0        # joint to joint: the head (swing radius ~123 mm) turns cl
 LEG = T + KNOB_R + 5 + HALF_W                      # bracket leg: 59 mm
 LEG_HOLE = T + KNOB_R + 5                          # hole centre from the outer corner: 36 mm
 
-# clamp
-SPINE = 16.0
-GAP = 68.0            # between the jaws
-BOTTOM_JAW = 32.0
-BOTTOM_JAW_L = 50.0
-TOP_JAW_L = 74.0
-J1_X = 48.0
-SCREW_X = 30.0
-NUT, NUT_H, NUT_CLR = 30.0, 16.0, 0.25
-NUT_ROOF = 6.0        # jaw material above the nut slot
-SCREW_THREAD = 95.0
-SCREW_KNOB_R, SCREW_KNOB_H = 22.0, 12.0
-NECK_R, NECK_H = 5.0, 6.0
-BALL_R, BALL_TOP_R = 7.0, 4.5
-BALL_UNDER, BALL_CYL, BALL_CONE = 2.0, 1.5, 2.5    # mushroom tip: 45 degree underside, straight, top cone
-PAD_R, PAD_T, PAD_H = 20.0, 3.0, 13.5
-PAD_BORE, PAD_LIP, PAD_WALL = 7.4, 6.7, 1.8
-PAD_LIP_Z = 10.0
+# desk base (the frame and its two screws are in build_two_screw_base.py)
+TOP_JAW_L = 74.0      # top jaw reach onto the desk
+J1_X = 48.0           # yaw axis from the desk edge
 
 # head
 RAIL_L = 240.0
@@ -189,8 +173,8 @@ def thread_rod(spec, z0, z1, clr=0.0):
         return cyl(rm if clr else rM, z0, z1)
     turns = (z1 - z0)/p
     if turns > 12:
-        # one sweep this long meshes badly (190k facets with false overhangs on the 95 mm clamp
-        # screw): build it in pieces of at most 8 turns, they continue each other
+        # one sweep this long meshes badly (190k facets with false overhangs on a 95 mm screw
+        # thread): build it in pieces of at most 8 turns, they continue each other
         n = math.ceil(turns/8)
         cuts = [z0 + (z1 - z0)*i/n for i in range(n + 1)]
         rod = thread_rod(spec, cuts[0], cuts[1], clr)
@@ -374,57 +358,35 @@ def bracket():
     return one(body, 'bracket'), ports, {'A': bolt_a}
 
 
-def clamp_body():
-    g, bj = GAP, BOTTOM_JAW
-    prof = [(-SPINE + 4, T), (TOP_JAW_L - 3, T), (TOP_JAW_L, T - 3), (TOP_JAW_L, 1), (TOP_JAW_L - 1, 0), (6, 0), (0, -6),
-            (0, -g + 10), (10, -g), (BOTTOM_JAW_L, -g), (BOTTOM_JAW_L, -g - bj + 3), (BOTTOM_JAW_L - 3, -g - bj),
-            (-SPINE + 4, -g - bj), (-SPINE, -g - bj + 4), (-SPINE, T - 4)]
-    body = prism_xz(prof, -HALF_W, HALF_W)
+def pivot():
+    """J1 on the base: the top plate around the yaw axis with its tooth ring and the keyed bolt
+    pocket. build_two_screw_base.py grafts it into the two-screw frame unchanged."""
+    body = box(J1_X - 30, J1_X + 30, -HALF_W, HALF_W, 0, T)
     body = body.fuse(move(tooth_ring('tip'), J1_X, 0, T))
     bolt = frame((J1_X, 0, 0), (0, 1, 0), (0, 0, 1))
     body = body.cut(place(keyed_cut(T + 3, up=True), bolt))
-    # clamp screw: clearance hole through the bottom jaw, nut slot open on the +Y side
-    hole = cyl(CLAMP['r'] + 0.5, -g - bj - 1, -g + 1)
-    s = (CLAMP['r'] + 0.5)/math.sqrt(2)
-    hole = hole.fuse(prism([(-s, s), (0, (CLAMP['r'] + 0.5)*math.sqrt(2)), (s, s)], -g - bj - 1, -g + 1))
-    body = body.cut(move(hole, SCREW_X))
-    half = NUT/2 + NUT_CLR
-    slot_z = -g - NUT_ROOF - NUT_H - 2*NUT_CLR
-    body = body.cut(box(SCREW_X - half, SCREW_X + half, -half, HALF_W + 1, slot_z, -g - NUT_ROOF))
     port = frame((J1_X, 0, T + MID), (1, 0, 0), (0, 0, 1))
-    return one(body, 'clamp'), {'top': port}, {'top': bolt}, slot_z
+    return one(body, 'pivot'), {'top': port}, {'top': bolt}
 
 
-def clamp_nut():
-    body = box(-NUT/2, NUT/2, -NUT/2, NUT/2, 0, NUT_H)
-    return one(tapped(body, CLAMP, THREAD_CLR + 0.05, 0, NUT_H), 'clamp nut')
+_BASE = {}
 
 
-def clamp_screw():
-    """Knob at z = 0, thread up, mushroom tip for the pad."""
-    r, d = CLAMP['r'], CLAMP['depth']
-    z0 = SCREW_KNOB_H
-    z1 = z0 + SCREW_THREAD
-    rod = thread_rod(CLAMP, z0 - 1, z1)
-    rod = rod.common(rev([(0, z0 - 1), (r + 1, z0 - 1), (r + 1, z1 - d - 0.5), (r - d - 0.3, z1), (0, z1)]), FZ)
-    za = z1 + NECK_H
-    tip = rev([(0, z1 - 1), (NECK_R, z1 - 1), (NECK_R, za), (BALL_R, za + BALL_UNDER), (BALL_R, za + BALL_UNDER + BALL_CYL),
-               (BALL_TOP_R, za + BALL_UNDER + BALL_CYL + BALL_CONE), (0, za + BALL_UNDER + BALL_CYL + BALL_CONE)])
-    body = lobed(SCREW_KNOB_R, SCREW_KNOB_H, 6, 8.0).fuse(rod, FZ).fuse(tip, FZ)
-    return one(body, 'clamp screw'), za + BALL_UNDER + BALL_CYL + BALL_CONE
-
-
-def clamp_pad():
-    """Pad in its print pose: disc on the bed, slit collar up. The collar snaps over the mushroom."""
-    ro = PAD_BORE + PAD_WALL
-    body = rev([(0, 0), (PAD_R - 0.6, 0), (PAD_R, 0.6), (PAD_R, PAD_T), (ro, PAD_T), (ro, PAD_H - 0.6), (ro - 0.6, PAD_H),
-                (PAD_LIP + 0.5, PAD_H), (PAD_LIP, PAD_H - 0.5), (PAD_LIP, PAD_LIP_Z + PAD_BORE - PAD_LIP), (PAD_BORE, PAD_LIP_Z),
-                (PAD_BORE, PAD_T), (0, PAD_T)])
-    for i in range(3):
-        slit = box(-ro - 1, ro + 1, -0.6, 0.6, PAD_T + 1.0, PAD_H + 1)
-        slit.rotate(V(0, 0, 0), V(0, 0, 1), 60*i)
-        body = body.cut(slit)
-    return one(body, 'clamp pad')
+def desk_base():
+    """(two-screw module, base, hand screw), built once and shared by the full and proxy arms."""
+    if not _BASE:
+        # Either file may be the running script (as __main__ or under its stem): import the loaded
+        # modules, never a second copy, whose main guard would see its path in argv and run again
+        here = Path(__file__).resolve().parent
+        for m in list(sys.modules.values()):
+            f = getattr(m, '__file__', None)
+            for stem in ('build_solder_arm', 'build_two_screw_base'):
+                if f and Path(f).resolve() == here/f'{stem}.py':
+                    sys.modules.setdefault(stem, m)
+        sys.path.insert(0, str(here))
+        import build_two_screw_base as two
+        _BASE.update(two=two, base=two.wide_base(pivot()[0]), screw=two.screwfit.screw(two.HEIGHT))
+    return _BASE['two'], _BASE['base'], _BASE['screw']
 
 
 def rail():
@@ -599,8 +561,9 @@ class Arm:
     helical faces (a nut in its slot, a knob on a plate) came back empty or failed here, so the
     pose collision checks run on these proxies. Thread pairs are checked by their gap instead."""
 
-    def __init__(self, plain=False):
+    def __init__(self, plain=False, base=True):
         global PLAIN
+        self.with_base = base     # False: no desk base or screws (the base build checks its own variants)
         t0 = time.time()
         PLAIN = plain
         try:
@@ -614,10 +577,8 @@ class Arm:
         self.knob = joint_knob()
         self.link, self.ln_ports = link()
         self.bracket, self.br_ports, self.br_bolts = bracket()
-        self.clamp, self.cl_ports, self.cl_bolts, self.slot_z = clamp_body()
-        self.nut = clamp_nut()
-        self.screw, self.screw_len = clamp_screw()
-        self.pad = clamp_pad()
+        _, self.cl_ports, self.cl_bolts = pivot()
+        self.two, self.base, self.screw = desk_base() if self.with_base else (None, None, None)
         self.rail, self.rl_ports, self.rl_bolts = rail()
         self.jaw_r, self.thumb_r, self.jaw_h = jaw(1)
         self.jaw_l, self.thumb_l, _ = jaw(-1)
@@ -630,10 +591,6 @@ class Arm:
         """Print poses: name -> (shape, copies, orientation note)."""
         side = (V(1, 0, 0), 90)
         return {
-            'clamp-body': (print_pose(self.clamp, side), 1, 'on its side, nut slot open upwards'),
-            'clamp-screw': (print_pose(self.screw), 1, 'standing on its knob'),
-            'clamp-nut': (print_pose(self.nut), 1, 'flat'),
-            'clamp-pad': (print_pose(self.pad), 1, 'disc on the bed, collar up'),
             'swivel-bracket': (print_pose(self.bracket), 1, 'on its side (the L on the bed)'),
             'arm-link': (print_pose(self.link), 1, 'flat, teeth up'),
             'head-rail': (print_pose(self.rail, (V(1, 0, 0), -90)), 1, 'front face on the bed, teeth up'),
@@ -659,8 +616,9 @@ class Arm:
             add(f'bolt-{n}', self.bolt, b)
             add(f'knob-{n}', self.knob, k)
 
-        add('clamp-body', self.clamp, I)
-        joint(1, self.clamp, I, self.cl_bolts['top'])
+        if self.base is not None:
+            add('desk-base', self.base, I)
+        joint(1, self.base, I, self.cl_bolts['top'])
         turret = mate(self.cl_ports['top'], q[0], self.br_ports['B'])
         add('turret', self.bracket, turret)
         joint(2, self.bracket, turret, self.br_bolts['A'])
@@ -685,13 +643,11 @@ class Arm:
         pcb = box(-grip/2, grip/2, y0, y0 + other, GROOVE_Z - thick/2, GROOVE_Z + thick/2)
         add('board', pcb, head.multiply(App.Placement(V(0, 0, -self.rail_z), App.Rotation())))
 
-        # clamp screw, nut and pad for this desk
-        add('clamp-nut', self.nut, App.Placement(V(SCREW_X, 0, self.slot_z), App.Rotation()))
-        zs = -desk - PAD_T - self.screw_len
-        dz = zs - self.slot_z
-        add('clamp-screw', self.screw, App.Placement(V(SCREW_X, 0, zs), App.Rotation(V(0, 0, 1), -360*dz/CLAMP['pitch'])))
-        add('clamp-pad', self.pad, App.Placement(V(SCREW_X, 0, -desk), App.Rotation(V(1, 0, 0), 180)))
-        add('desk', box(6, 330, -260, 260, -desk, 0), I)
+        # the two desk screws, tightened on this desk
+        if self.base is not None:
+            for side, y in (('left', -self.two.OFF), ('right', self.two.OFF)):
+                parts[f'screw-{side}'] = self.two.screw_at(self.screw, self.two.HEIGHT, y, desk)
+        parts['desk'] = box(0, 340, -260, 260, -desk, 0)
         self.head = head
         # board: its normal against the desk normal (0 = level, thumbscrews down; 180 = flipped)
         self.board_deg = math.degrees(math.acos(max(-1.0, min(1.0, head.Rotation.multVec(V(0, 0, 1)).z))))
@@ -699,17 +655,16 @@ class Arm:
         return parts
 
 
-MATED = [('bolt-1', 'clamp-body'), ('bolt-1', 'turret'), ('bolt-1', 'knob-1'), ('knob-1', 'turret'), ('clamp-body', 'turret'),
+MATED = [('bolt-1', 'desk-base'), ('bolt-1', 'turret'), ('bolt-1', 'knob-1'), ('knob-1', 'turret'), ('desk-base', 'turret'),
          ('bolt-2', 'turret'), ('bolt-2', 'link'), ('bolt-2', 'knob-2'), ('knob-2', 'link'), ('turret', 'link'),
          ('bolt-3', 'head-rail'), ('bolt-3', 'link'), ('bolt-3', 'knob-3'), ('knob-3', 'link'), ('link', 'head-rail'),
          ('jaw-right', 'head-rail'), ('jaw-left', 'head-rail'), ('thumbscrew-right', 'jaw-right'), ('thumbscrew-left', 'jaw-left'),
          ('thumbscrew-right', 'head-rail'), ('thumbscrew-left', 'head-rail'), ('board', 'jaw-right'), ('board', 'jaw-left'),
-         ('clamp-nut', 'clamp-body'), ('clamp-screw', 'clamp-nut'), ('clamp-screw', 'clamp-body'), ('clamp-screw', 'clamp-pad'),
-         ('clamp-pad', 'desk'), ('clamp-body', 'desk'), ('bolt-1', 'desk')]
+         ('screw-left', 'desk'), ('screw-right', 'desk'), ('desk-base', 'desk'), ('bolt-1', 'desk')]
 THREADED = [('bolt-1', 'knob-1'), ('bolt-2', 'knob-2'), ('bolt-3', 'knob-3'),
-            ('clamp-screw', 'clamp-nut'), ('thumbscrew-right', 'jaw-right'), ('thumbscrew-left', 'jaw-left')]
+            ('screw-left', 'desk-base'), ('screw-right', 'desk-base'), ('thumbscrew-right', 'jaw-right'), ('thumbscrew-left', 'jaw-left')]
 HEAD = ('head-rail', 'jaw-left', 'jaw-right', 'thumbscrew-left', 'thumbscrew-right', 'board')
-FIXED = ('desk', 'clamp-body', 'turret', 'bolt-1', 'knob-1', 'bolt-2', 'knob-2')
+FIXED = ('desk', 'desk-base', 'screw-left', 'screw-right', 'turret', 'bolt-1', 'knob-1', 'bolt-2', 'knob-2')
 
 
 def interference(parts):
@@ -754,7 +709,7 @@ SWEEP = 'work'        # J3 is turned through every tooth step in this pose
 
 def head_sweep(proxy):
     """Turn the head through all TEETH steps of J3 in the SWEEP pose: smallest gap from the head
-    (rail, jaws, thumbscrews, board) to the desk, clamp, bracket and their hardware, and from
+    (rail, jaws, thumbscrews, board) to the desk, base, bracket and their hardware, and from
     the jaws and the board to the arm link they turn beside."""
     q, board = POSES[SWEEP]
     fixed_gap = link_gap = 1e9
@@ -764,7 +719,7 @@ def head_sweep(proxy):
         fixed_gap = min(fixed_gap, head.distToShape(Part.makeCompound([parts[n] for n in FIXED]))[0])
         link_gap = min(link_gap, Part.makeCompound([parts[n] for n in HEAD[1:]]).distToShape(parts['link'])[0])
     assert fixed_gap > 5.0 and link_gap > 2.0, ('head sweep', fixed_gap, link_gap)
-    return {'pose': SWEEP, 'steps': TEETH, 'smallest_gap_to_desk_clamp_bracket_mm': round(fixed_gap, 2),
+    return {'pose': SWEEP, 'steps': TEETH, 'smallest_gap_to_desk_base_bracket_mm': round(fixed_gap, 2),
             'smallest_gap_jaws_to_link_mm': round(link_gap, 2)}
 
 
@@ -784,10 +739,10 @@ def main():
     report['threads'] = {
         'profile': '45 degree flanks, flat crest and root',
         'joint': {**JOINT, 'gap_mm': gap(arm.bolt, place(arm.knob, turn(20.0, JOINT['pitch'])))},
-        'clamp': {**CLAMP, 'gap_mm': gap(arm.screw, place(arm.nut, turn(40.0, CLAMP['pitch'])))},
+        'desk_screw': {**arm.two.screwfit.R, 'gap_mm': gap(arm.two.screw_at(arm.screw, arm.two.HEIGHT, arm.two.OFF, 25).Shells[0], arm.base.Shells[0])},
         'thumbscrew': {**THUMB, 'gap_mm': gap(place(arm.thumb, App.Placement(arm.thumb_r, App.Rotation()).multiply(turn(-9.0, THUMB['pitch']))), arm.jaw_r)},
     }
-    for k in ('joint', 'clamp', 'thumbscrew'):
+    for k in ('joint', 'desk_screw', 'thumbscrew'):
         assert 0.2 <= report['threads'][k]['gap_mm'] <= 0.4, (k, report['threads'][k])
 
     # teeth: flanks touch at angle 0, tips do not reach the valleys, half a step collides
@@ -877,8 +832,8 @@ def main():
         'link_pivot_above_desk_mm': T + 2*MID + LEG_HOLE,
         'jaw_opening_mm': [round(arm.open_min, 2), round(arm.open_max, 2)], 'finger_length_mm': FINGER_L,
         'rail_mm': [RAIL_L, T, T], 'joint_bolt_length_mm': BOLT_L,
-        'desk_thickness_mm': [5, GAP - PAD_T - (arm.screw_len - SCREW_KNOB_H - SCREW_THREAD) - 0.5],
-        'clamp_reach_onto_desk_mm': TOP_JAW_L, 'thread_clearance_radial_mm': THREAD_CLR}
+        'desk_thickness_mm': [5, 52], 'desk_screw_spacing_mm': 2*arm.two.OFF,
+        'base_reach_onto_desk_mm': TOP_JAW_L, 'thread_clearance_radial_mm': THREAD_CLR}
     report['source_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     report['export_sha256'] = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(OUT.glob('*.st*'))}
     report['status'] = 'PASS'

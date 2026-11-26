@@ -1,0 +1,197 @@
+{
+  "status": "CAD_PASS",
+  "physical_load_test": false,
+  "desk_range_mm": [
+    5,
+    28
+  ],
+  "screw_spacing_mm": 80,
+  "screw_height_mm": 48.0,
+  "removed_web_height_mm": 24.0,
+  "removed_volume_cm3": 34.944,
+  "upper_jaw_difference_mm3": 0.0,
+  "translated_lower_jaw_difference_mm3": 0.0,
+  "parts": {
+    "base": {
+      "print_bounds_mm": [
+        87.0,
+        56.44,
+        112.0
+      ],
+      "volume_cm3": 187.01,
+      "stl_facets": 10712,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 1474.8,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 5.9,
+      "worst_of_it_deg": 59.6,
+      "highest_of_it_above_bed_mm": 101.69
+    },
+    "hand-screw": {
+      "print_bounds_mm": [
+        22.87,
+        23.6,
+        48.0
+      ],
+      "volume_cm3": 8.69,
+      "stl_facets": 14348,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 366.0,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    }
+  },
+  "plate": {
+    "pieces": 3,
+    "footprint_mm": [
+      148.75,
+      56.44
+    ],
+    "height_mm": 112.0,
+    "items": [
+      {
+        "part": "base",
+        "bed_xy_mm": [
+          53.625,
+          99.779
+        ],
+        "size_mm": [
+          87.0,
+          56.44,
+          112.0
+        ]
+      },
+      {
+        "part": "hand-screw",
+        "bed_xy_mm": [
+          148.625,
+          116.2
+        ],
+        "size_mm": [
+          22.87,
+          23.6,
+          48.0
+        ]
+      },
+      {
+        "part": "hand-screw",
+        "bed_xy_mm": [
+          179.5,
+          116.2
+        ],
+        "size_mm": [
+          22.87,
+          23.6,
+          48.0
+        ]
+      }
+    ],
+    "sha256": "efc5a2e704402b7e1625166776d5fe55a886be03ed43e1356786a88054ab1d49"
+  },
+  "supplied_screw_fit": {
+    "5": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 3.0,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "8": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 6.0,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "16": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 14.0,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "21.5": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 19.5,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "25": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 23.0,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "28": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 26.0,
+      "full_profile_overlap_mm": 8.3,
+      "contact_each_mm2": 103.9
+    }
+  },
+  "cable_screw_fit": {
+    "5": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 23.0,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "21.5": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 39.5,
+      "full_profile_overlap_mm": 10.0,
+      "contact_each_mm2": 103.9
+    },
+    "28": {
+      "flank_gaps_mm": [
+        0.282,
+        0.282
+      ],
+      "knob_clearance_mm": 46.0,
+      "full_profile_overlap_mm": 8.3,
+      "contact_each_mm2": 103.9
+    }
+  },
+  "interface": {
+    "joint_symmetric_difference_mm3": 0.0,
+    "yaw_teeth": 36,
+    "bolt_head_above_desk_mm": 0.45,
+    "original_upper_poses": {
+      "work": "clear",
+      "flipped": "clear",
+      "low": "clear",
+      "mirrored": "clear",
+      "tilted": "clear",
+      "easel": "clear"
+    }
+  }
+}
