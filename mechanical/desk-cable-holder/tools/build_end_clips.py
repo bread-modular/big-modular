@@ -14,7 +14,8 @@ TOOLS = Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS))
 import build_desk_cable_holder as h
 import build_plates as plates
-from build_desk_cable_holder import V, box, cyl, move, one, prism, prism_xz, print_pose, rev
+from build_desk_cable_holder import V, box, cyl, move, one, prism_xz, print_pose
+from end_clip_hardware import R, KH, KR, TIP, FACE, screw, tap
 
 OUT = TOOLS.parent/'print'/'end-clips'
 BITS = OUT/'parts'
@@ -22,8 +23,6 @@ AX, CY = 13., 128.                       # 13 mm reach, screws outside the plug 
 INNER, END, OUTER = 103., 120.35, 143.  # positive-Y clip before mirroring
 HZ = -60.                                # existing flange top; desk independent
 BOT, TOP = -66., -53.                    # female thread in the jaw itself
-R = dict(r=7.5, depth=1.4, pitch=4., crest=0.65)
-CLR, KH, KR, TIP, FACE = .4, 7., 11.8, 68., 5.75
 Z, X = V(0,0,1), V(1,0,0)
 NAMES = ('left-clip','right-clip','hand-screw')
 
@@ -63,22 +62,7 @@ def clip(blank,side):
     # Mirror ONLY the blank, never the thread. Both end clips print with
     # their open channel mouth down and their C-shaped walls in the bed plane.
     s = blank if side==1 else blank.mirror(V(0,0,0),V(0,1,0))
-    y = side*CY
-    s = h.tapped(s,R,CLR,BOT,TOP,AX,y,ends=(True,False))
-    # 45-degree roof over the side-printed bore instead of support inside a
-    # thread. Cut only the upper sector; the remaining arc takes the screw.
-    rad = R['r']+CLR+.15; q = rad/math.sqrt(2)
-    roof = prism([(AX-q,y+side*q),(AX,y+side*2*q),(AX+q,y+side*q)],BOT-1,TOP+1)
-    return one(s.cut(roof),'hand-threaded clip')
-
-
-def screw():
-    root = R['r']-R['depth']
-    rod = h.thread_rod(R,KH-.7,TIP-1.5)
-    taper = rev([(0,KH-1),(R['r']+.5,KH-1),(R['r']+.5,TIP-3.7),
-                 (root-.12,TIP-1.5),(0,TIP-1.5)])
-    tip = rev([(0,TIP-2.5),(root-.2,TIP-2.5),(root-.2,TIP-.35),(FACE,TIP),(0,TIP)])
-    return one(h.lobed(KR,KH,6,3.8,.75).fuse(rod.common(taper,h.FZ),h.FZ).fuse(tip,h.FZ),'hand screw')
+    return tap(s, AX, side*CY, BOT, TOP, side)
 
 
 def placed(s,t,side):
