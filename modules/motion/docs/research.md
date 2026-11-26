@@ -5,11 +5,14 @@ that knob's motion; release and it loops. The brief (user, 2026-11-15):
 
 - 6HP, **four knobs and four CV outs**. Each output is recorded by holding the one REC
   button and moving its knob by hand. An LED shows the motion.
-- A **range selector**, one for the whole module: off = 0..+5 V, on = -5..+5 V.
-- Once recorded, a take can be **moved up and down with its knob**.
+- A **range selector**, one for the whole module: off = 0..+5 V, on = -5..+5 V (removed
+  2026-11-26: always -5..+5 V, the RANGE button is DEL; section 4).
+- Once recorded, a take can be **moved up and down with its knob** (replaced 2026-11-26:
+  1 s after the take the knob attenuates it; DEL + knob deletes that take; section 4).
 - ATtiny1616 if it is good enough; extra memory and DACs as needed.
 - Second message: the FRAM version, **recorded straight into the FRAM** (always saved,
-  no save step); **hold REC for 5 s without moving a knob = erase every take**.
+  no save step); **hold REC for 5 s without moving a knob = erase every take** (DEL since
+  2026-11-26).
 - Third message: schematic, THT placement and a 3D view with the panel. No routing yet.
 
 Nothing here is built or bench-tested. The firmware (2026-11-24, `firmware/`) is compiled and
@@ -37,7 +40,7 @@ a 1 kHz update of all four DAC channels is 20-30 %.
 
 | # | Decision | Why |
 |---|---|---|
-| D1 | **RANGE is a second tact button with its own LED** (LED on = -5..+5 V), state kept in the FRAM | The same 6 x 6 mm switch and printed cap the user already uses; "off / on" maps onto the LED. A toggle switch would be a new, unmeasured panel part. Not confirmed by the user |
+| D1 | **RANGE is a second tact button with its own LED** (LED lit = 0..+5 V, off = -5..+5 V, user 2026-11-26), state kept in the FRAM | The same 6 x 6 mm switch and printed cap the user already uses; "off / on" maps onto the LED. A toggle switch would be a new, unmeasured panel part. Not confirmed by the user |
 | D2 | **RANGE is firmware only**: the output stage is always -5..+5 V; 0..+5 V uses DAC codes 2048..4095 | No analog switches; 12 bits leave 2.4 mV steps in the 0..+5 V range |
 | D3 | **The four motion LEDs are driven by the MCU (hardware PWM)**, not by the output op-amps | Brightness can show the position in the selected range in both ranges, and the firmware can dim and blink them. The pins are spare |
 | D4 | **All six LEDs through 10k** (0.33 mA at full duty) | `modules/mcc`: red LEDs at 3 mA had to be dimmed to 1 % in firmware. Dim by the circuit, fine-tune by PWM |
@@ -101,14 +104,27 @@ and can still change during routing (ask first: it is a schematic change).
 
 ## 4. Firmware intent (written 2026-11-24: `firmware/README.md`)
 
-- Idle: each output plays its take in a loop; the knob shifts the take up or down.
-  No take: the output follows the knob.
+- Idle: each output plays its take in a loop; the knob does nothing to it (2026-11-26; was:
+  shifts the take). No take: the output follows the knob.
 - REC held + a knob moved: that knob is recorded (frames written straight to the FRAM);
   REC released: the take loops. The `modules/16bit` CPX4 recorder has this behaviour
   (one track per control, own length, glide from the last value back to the first).
 - REC held 5 s with no knob moved: every take is erased (REC LED counts down).
-- RANGE click: toggles 0..+5 V / -5..+5 V for all four outputs, stored in the FRAM.
-- Motion LED brightness = output position within the selected range.
+- 2026-11-26 (user): REC + RANGE + a knob deletes that take; RANGE held + a knob attenuates
+  its take; the range is set before recording by a RANGE click on its own (REC up, no knob
+  turned; RANGE LED lit = 0..+5 V, off = -5..+5 V), never by RANGE used with REC or a knob,
+  for the live knobs and new takes (a take keeps its voltages), stored in the FRAM.
+- 2026-11-26 (user, after flashing that build): a RANGE click changes only the selection (RANGE
+  LED), no output; each knob keeps its own range live and takes the selected one when a take
+  of it starts (per-knob ranges in the FRAM range byte, bits 4..7). Re-recording replaces the
+  take, no overdub: the knob alone is recorded, the join fade is heard only.
+- 2026-11-26 (user, the range was confusing): **range removed**, every output -5..+5 V; the
+  RANGE button / LED is **DEL** (DEL + knob = delete that take, DEL held 5 s still = erase
+  all, DEL LED counts down); REC only records (REC held still never erases); the knob is the
+  attenuator, ignored for 1 s after its take closes, then relative from where it starts (fully
+  down = 0 V, fully up = gain 1; gain saved once the knob rests 1 s). The first-pressed of REC /
+  DEL owns the hold. The FRAM range byte (0x0004) is ignored; takes stay loadable.
+- Motion LED brightness = output voltage (0 V off, 5 V full); below 0 V it blinks.
 
 ## 5. Sourcing (live lookups 2026-11-15, `docs/sourcing-candidates.json`)
 

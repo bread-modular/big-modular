@@ -14,15 +14,27 @@
 
 - 6HP. Four knobs, four CV outputs. One REC button: hold it and move a knob to record
   that knob. An LED shows the motion.
-- One range selector for the module: off = 0..+5 V, on = -5..+5 V.
-- A recorded take is moved up and down with its knob.
+- ~~One range selector for the module: off = 0..+5 V, on = -5..+5 V.~~ Removed 2026-11-26 (below).
+- ~~A recorded take is moved up and down with its knob.~~ Replaced 2026-11-26 (below).
 - ATtiny1616 + MCP4728 + MB85RC256V FRAM; takes are recorded straight into the FRAM
-  (always saved). Hold REC 5 s without moving a knob = erase every take.
+  (always saved). ~~Hold REC 5 s without moving a knob = erase every take.~~ DEL 5 s since 2026-11-26.
+
+## Controls changed by the user (2026-11-26, firmware only)
+
+- **No range** (replaces the 2026-11-26 RANGE selector): every output is -5..+5 V, knob centre
+  = 0 V. Motion LED blinks below 0 V (dimmer towards 0), off at 0 V, steady and brighter to +5 V.
+- The second button (SW2, `RANGE` on the S1 schematic and carrier) is **DEL**: DEL held + a
+  knob turned = delete that knob's take; DEL held 5 s without a knob turned = erase every take.
+- REC only records: hold REC + turn a knob = record it; REC held still never erases.
+- Re-recording a knob replaces its take, no overdub: only the knob is recorded; the 300 ms
+  fade from the old output is heard, not recorded.
+- The knob is the attenuator: ignored for 1 s after its take closes, then it scales the take
+  (fully down = 0 V, fully up = the take as recorded, relative from where it starts, no jump).
 
 ## Decisions made in S1 (see `docs/research.md` section 2; D1 is not user-confirmed)
 
-- RANGE = a second tact button + LED (on = -5..+5 V); the range is firmware only, the
-  output stage is always -5..+5 V.
+- Second tact button + LED (SW2 / D6, named RANGE in S1) = DEL since 2026-11-26; the output
+  stage is always -5..+5 V.
 - Motion LEDs on MCU PWM pins; all LEDs through 10k.
 - DAC reference = +5VA = output offset (ratiometric); 160 Hz low-pass per output.
 - Knob zigzag with the motion LED beside each knob; power header on B between the
@@ -92,3 +104,5 @@
 `opt/attiny1616-tools`. `motion/MotionRecorder.h` is the modules/16bit cpx4 free-motion recorder
 behaviour on a frame store (the FRAM), plus the 5 s erase; `test.sh` runs it on the host. Compiled
 (8810 B flash, 331 B RAM) and host-tested, not flashed, not bench-tested.
+2026-11-26: the controls above (takes in output codes, per-take gain in the FRAM header, FRAM
+layout version 2); compiled (9716 B flash, 339 B RAM, no warnings), 84 host checks, not flashed.
