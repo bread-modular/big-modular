@@ -1,4 +1,72 @@
-# R1 / R2 routing — 10-pin outputs and manual routing
+# R1 / R2 / R3 / R4 routing — 10-pin outputs and manual routing
+
+## R4 JLCPCB export (2026-11-26)
+
+User: "Export for JLC". `jlcpcb/` is now the S9.5 / R4 set ([README](../../jlcpcb/README.md)): 148 top parts / 59 rows,
+337 vias, smallest hole 0.3 mm. Done before the export, no copper geometry change:
+
+- **Zones refilled and saved.** The saved R4 fills were one refill short of converged: a native refill added 4.75 mm²
+  (`R1_P12_RAIL_F` 11.1 -> 11.3, `R1_P12_VOUT_F` 78.1 -> 79.3, `R1_PGND_U2_B` 646.7 -> 649.8, `R1_PGND_In1` +0.4 mm²);
+  a second refill is byte-identical. Planes as before (In1 one piece, In2 VIN + finger and +3V3 one piece each).
+- **Pre-order parts swapped** (fields only, schematic regenerated, same fields on the footprints): R93/R99 C860071,
+  U10/U11 C702161 TPS3808G01DBVT, U15 C151394 Diodes 74LVC1G17W5-7.
+- **`min_through_hole_diameter` 0.2 -> 0.3 mm** in the `.kicad_pro` (root `AGENTS.md` holes rule).
+- Shared `check` (`research/export-r4/native-final/`): ERC 0 errors (the 4 R3 label warnings), DRC 0 / 0 warnings /
+  0 unconnected / parity 0, manifest equal. `check_s8_board.py`: the same five failing items as R4. No via in or
+  touching an SMD pad, no track on In1.
+
+## R4: U2 thermal copper (2026-11-26)
+
+First-board load test, after D10: U2 (TPS552892, no exposed pad) sheds its heat through its pins into the copper, so
+more GND vias and B.Cu GND copper at U2 (user: "Update the copper and vias now. I will do the load test."). Two batches,
+straight on the board, no part moved; backups `/tmp/r4bak/`, scripts (`add_vias.py`, `grow_bgnd.py`, candidate finder
+`cands.py`, map renderer `map.py`) and native reports in the ignored `research/r4/`.
+
+| Batch | Change | Check |
+| --- | --- | --- |
+| R4-1 | 24 plain 0.3/0.6 mm vias, each spot screened against every other-net item on all four layers, every pad and the rule areas, then native DRC. **19 GND** in the F.Cu PGND pour: (109.0, 78.0) and (109.5, 79.4) inside the U2 box; a row of ten at y 77.3 (x 110.3–117.85) between the P12_VOUT strip and the C11–C14 GND pads; (111.6 / 114.0 / 116.4, 79.1); (110.65 / 113.8, 82.45), (116.75, 82.35); (119.05, 78.0). **5 P12_VOUT** F → B in the `R1_P12_VOUT_F` right block: (117.25, 74.3), (118.75, 74.3), (119.6, 75.55), (121.05, 73.05), (120.4, 70.45), ≥ 1.5 mm from every other non-GND via so their In1 antipads stay separate. Zones refilled natively | ERC 0 errors (the 4 R3 label warnings), DRC 0 / 0 unconnected / parity 0 |
+| R4-2 | `R1_PGND_U2_B` grown north over free B.Cu: x 88.5–100.7 / y 56.0–68.8 and x 100.7–103.1 / y 66.2–68.8 (the −12V B track at y 66.45 only slots it). Refilled natively | ERC 0 errors, DRC 0 / 0 unconnected / parity 0 |
+
+- Board after R4: **1105 segments, 337 vias** (all 0.3/0.6 mm, none touching an SMD pad), 27 copper zones, 15 rule
+  areas; In1 GND (4024.7 mm²), In2 VIN (674.0 mm²) and +3V3 one piece each, no track on In1.
+- `tools/check_s8_board.py`: **`thermal.U2.PGND_vias` PASS (9 → 11)** and **`thermal.U2.B_Cu_GND` PASS (493 →
+  646 mm², 50 vias)**. The new GND vias outside the 4 mm counting box (17 of 19) tie the C11–C14 / C6–C78 GND pads
+  and the F.Cu PGND pour to In1 and B.Cu; P12_VOUT F → B vias 6 → 11.
+- Still failing, not reachable without moving parts: `thermal.U2.VIN_area` (45.7 mm², the strip is full: pads and
+  `RA_TVS_D24`, no free via spot), `thermal.U2.VOUT_area` (78 mm²; C79/C80 join on B.Cu), `thermal.R109.force_copper`
+  (+12V side 11 mm²; `RA_AGND_ISLAND` blocks pours to the west; R109 drops ~0.1 W at 2.4 A), `thermal.U2.In1`
+  (2.986 mm hole, unchanged from R3) and `min_widths` (unchanged). Module tests: 79 run, the same 2 failures as R3.
+- No thermal number is measured; the load test (TH-1 / TH-3) decides. The `jlcpcb/` export is redone from R4 (above).
+
+![U2 area F.Cu: R3 left, R4 right (new GND vias between the cap rows, P12_VOUT vias at the right)](r4-u2-vias-F.png)
+
+![B.Cu GND pour after R4, north extension](r4-gnd-B.png)
+
+## R3: D10 removed (2026-11-26)
+
+First-board load test: D10 (SS1060 input blocker) ran hot, 2.25 W at 3 A on two small F.Cu islands with one via each
+(`thermal.D10.copper` was failing since R1). S9.5 removes it; U5 IN sits on VPD
+([design.md](../design.md#s95--r3-d10-removed-2026-11-26)). One batch, straight on the board; backups `/tmp/s95bak/`,
+scripts (`edit_r3.py` text edit, `fill.py` native refill) and native reports in the ignored `research/s95/`.
+
+| Batch | Change | Check |
+| --- | --- | --- |
+| R3-1 | Footprints D10 and TP3 deleted; TP3's B.Cu stub (62.8, 86.5) → (63.9, 85.9) and the via (63.9, 85.9) deleted (the via would have dangled: there is no B.Cu VPD copper there). U5.1/2/3/6 and C2.1 re-netted `MAIN_IN` → `VPD`. The `R1_MAIN_IN_F` pour is merged with the D10 site (x 67.5–71.5, y 85.2–89.5) and `R1_VPD_F` into one outline `R1_VPD_F`; zones refilled natively. Footprint `Note` fields of U5, C2 and R2 synced to the schematic | ERC 0 errors (4 pre-existing KiCad 10.0.8 label warnings), DRC 0 / 0 unconnected / parity 0 |
+
+- No part moved; no rule, exclusion or test weakened. Copper only changed in the D10 / TP3 area.
+- Board after R3: **1105 segments, 313 vias** (all 0.3/0.6 mm, none in an SMD pad), 27 copper zones, 15 rule areas;
+  In1 GND, In2 VIN and +3V3 one piece each, no track on In1.
+- `R1_VPD_F` is one 115 mm² piece holding F1.2, D1.1, U5 IN and C2.1 (`tvs.D1` passes, 3 GND vias at D1.2). The input
+  path F1 → U5 is ≥ 4.3 mm wide on F.Cu (about 1 mΩ, ~10 mW at 3 A).
+- `tools/check_s8_board.py`: the R2 failing items minus `thermal.D10.copper`; `min_widths` unchanged at 57.
+- Still open for heat, measured by TH-1 / TH-3 and listed by the checker: `thermal.U2.PGND_vias` (9 of ≥ 10),
+  `thermal.U2.B_Cu_GND` (493 of ≥ 600 mm²), `thermal.U2.VIN_area` (46 of ≥ 120 mm² F.Cu), `thermal.U2.VOUT_area`
+  (78 of ≥ 150 mm², C79/C80 not on the island), `thermal.R109.force_copper` (+12V side 11 of ≥ 150 mm²).
+- The `jlcpcb/` export stayed R2 at R3; it is redone from R4 (above).
+
+![Input area F.Cu: R2 left (D10 between the MAIN_IN and VPD pours), R3 right (one VPD pour)](r3-input-area-F.png)
+
+The R2 and R1 records below are unchanged.
 
 ## R2: CH224A supply limiter removed (2026-11-16)
 
@@ -18,7 +86,7 @@ fixed the board. S9.4 removes the limiter and puts U1 straight on VPD
   piece (4028.5 mm²), In2 VIN and +3V3 one piece each, no track on In1.
 - `tools/check_s8_board.py`: the same eight failing items as after the fab review below; `min_widths` 59 → 57 (the two
   VPD → R23 segments are gone). The VPD → C1/U1 feed (0.3–0.4 mm, ≤ 12 mA) counts as a tap, like the C46/C57/C65 feeds.
-- **The `jlcpcb/` export is R2** (re-exported 2026-11-16: 149 placements / 60 BOM rows, 314 vias; shared `check` manifest equal).
+- The R2 export (2026-11-16: 149 placements / 60 BOM rows, 314 vias) is replaced by the R4 export (above).
 
 ![PD area: R1 left, R2 right; F red, B blue](r2-pd-area-FB.png)
 

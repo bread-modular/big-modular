@@ -2,10 +2,22 @@
 
 USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel.
 
+> **JLCPCB export S9.5 / R4 (2026-11-26) in [`jlcpcb/`](jlcpcb/README.md):** 148 top parts / 59 rows, no D10, the R4
+> U2 thermal vias, smallest hole 0.3 mm. Three pre-order parts were swapped for in-stock ones (fields only: R93/R99
+> C860071, U10/U11 C702161 TPS3808G01DBVT, U15 C151394 Diodes 74LVC1G17W5-7). Not supplier-accepted, not built.
+>
+> **S9.5 / R4 (2026-11-26): U2 thermal copper** (24 vias, bigger B.Cu GND pour; [R4 record](docs/routing/README.md)).
+>
+> **S9.5 / R3 (2026-11-26): D10 removed after the first-board load test.** The SS1060 input reverse blocker ran hot
+> (2.25 W at 3 A on very little copper). U5 IN now sits on VPD and one F.Cu VPD pour runs from F1 to U5
+> ([design](docs/design.md#s95--r3-d10-removed-2026-11-26)). Backfeed into the USB source is no longer blocked: never
+> parallel another running supply on the ±12 V bus. On a built board, bridge the D10 pads (anode to cathode) to do the
+> same.
+>
 > **S9.4 / R2 (2026-11-16): schematic and routed board fixed after the first-board bench.** The first board
 > (S9.3-10P / R1) stayed at 5 V: Q2 in the CH224A supply limiter had emitter and base swapped (SOT89 numbering). S9.4
 > removes the limiter; U1 sits straight on VPD ([design](docs/design.md#s94--r2-ch224a-straight-on-vpd-2026-11-16)).
-> **The export in [`jlcpcb/`](jlcpcb/README.md) is S9.4 / R2** (re-exported 2026-11-16, 149 top parts / 60 rows).
+> The S9.4 / R2 export (2026-11-16, 149 top parts / 60 rows) is replaced by the S9.5 / R4 set (git history).
 > Not a supplier-accepted release and not bench-qualified. The copper/thermal screen (`tools/check_s8_board.py`) still
 > lists contract items; each was reviewed and accepted for the first prototype ([fab review](docs/routing/README.md)).
 > **A built R1 board works with a wire from TP1 to TP2** (both on the back), then a re-plug.
@@ -22,7 +34,7 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
 ## Circuit
 
 - **Input:** USB-C PD **15 V / 3 A** (CH224A, R1 56k; VHV/VBUS straight on VPD with 1 µF, the WCH reference circuit).
-  U5 TPS16630 main eFuse; precision UVLO (on 12.263–12.976 V,
+  U5 TPS16630 main eFuse straight on VPD (S9.5: no D10, no reverse blocking); precision UVLO (on 12.263–12.976 V,
   off 11.365–12.193 V) and OVP (R24 9.1k: 17.30–19.44 V) coordinated with the D24 SMBJ20A clamp.
 - **+12 V:** TPS552892-Q1 buck-boost (U2), R109 18 mΩ RLM12 current sense on a 4-terminal Kelvin land.
 - **−12 V:** LMR38020 inverting converter (U4) on its own input enable (Q1 on VPD, RUN and MAIN_LED_OK via Q14/Q15),
@@ -38,7 +50,7 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
 ## Status
 
 - Native ERC 0; DRC **0 violations, 0 warnings, 0 exclusions, 0 unconnected**; exact ref/pin/net parity
-  (178 refs / 81 nets). Manual divide-and-conquer routing, In1 one-piece GND plane, two approved In2 hops.
+  (176 refs / 80 nets, S9.5). Manual divide-and-conquer routing, In1 one-piece GND plane, two approved In2 hops.
 - Routing contract enforced by native DRC: 8 net classes, 22 `S92_*` rules, 15 rule areas. **No via-in-pad**:
   U4/U5/U9 sit on hole-free lands with thermal-via fields beside the pads (standard 0.3/0.6 mm tented vias).
 - All parts on F; test points on B with silkscreen labels. JLCPCB places 149 parts on the top (J1 included;
@@ -50,7 +62,7 @@ USB-C PD Eurorack supply, ±12 V only, on one 4-layer carrier behind a 4HP panel
   J2/J3/D8 out of the CPL so J1 is machine-placed. D1 SMBJ22A was re-sourced to Littelfuse C224015 (1,947 in stock;
   RUILON C10214 had 59). Export: [`jlcpcb/`](jlcpcb/README.md).
 - **Accepted for the first prototype, still listed by `check_s8_board.py`:** minimum widths (taps and short stubs
-  only), U2/R109/D10 thermal copper (TH-1/TH-2 measure it), U12.14→C52.1 7.63 mm, D25↔D24 9.04 mm, TP22/TP23 pair
+  only), U2/R109 thermal copper (TH-1 measures it; the D10 item left with D10 in S9.5; R4 added 19 GND + 5 P12_VOUT vias and grew the B.Cu GND pour, so the U2 PGND-via and B.Cu GND items pass, VIN / VOUT F area and R109 +12V remain), U12.14→C52.1 7.63 mm, D25↔D24 9.04 mm, TP22/TP23 pair
   8.25 mm, R116.1 pad edge inside RA_AGND_ISLAND; see the [fab review](docs/routing/README.md). The items in
   [routing-notes.md](docs/design/routing-notes.md) (test points, uncertainty register, routing constraints) are
   post-prototype acceptance tests, not design blockers.

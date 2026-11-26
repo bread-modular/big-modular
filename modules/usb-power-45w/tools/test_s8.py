@@ -41,7 +41,7 @@ import verify_s8  # noqa: E402
 
 MODULE = HERE.parent
 DESIGN = Path(os.environ.get('S8_DESIGN_ROOT', str(MODULE)))
-COMPONENTS = 178                       # S9.4: 185 - 7 (CH224A limiter Q2/Q3/R23/R27/D9/D11 + TP2); S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads;
+COMPONENTS = 176                       # S9.5: 178 - D10 - TP3; S9.4: 185 - 7 (CH224A limiter Q2/Q3/R23/R27/D9/D11 + TP2); S9.0: 191 - 45 (+5V) + 10 (TPS552892-Q1); S9.1 +8; S9.2 + R115 + 10 test pads;
                                        # S9.3 + 10 (soft starts C84/D27/R116, C85/D28/R117; sequencing Q16/R118/C86/R119)
 ROOT = DESIGN / 'hardware/usb-power-45w.kicad_sch'
 
@@ -113,7 +113,8 @@ class TableDerivation(unittest.TestCase):
     def test_removed_and_added(self):
         s7 = {p['ref'] for p in circuit45.circuit()}
         s8 = {p['ref'] for p in circuit_s8.circuit()}
-        removed = set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) | set(circuit_s8.S94_REMOVED)
+        removed = (set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) | set(circuit_s8.S94_REMOVED)
+                   | set(circuit_s8.S95_REMOVED))
         self.assertFalse(removed & s8)
         self.assertEqual(s7 - s8, removed)
         self.assertTrue({'U6', 'U7', 'U8', 'Q4', 'U16', 'U17'} <= set(circuit_s8.S8_REMOVED))
@@ -143,6 +144,30 @@ class TableDerivation(unittest.TestCase):
         pads = {(f.GetReference(), p.GetNumber()): str(p.GetNetname()) for f in board.GetFootprints() for p in f.Pads()}
         self.assertEqual({pads[k] for k in (('U1', '1'), ('U1', '8'), ('C1', '1'))}, {'/VPD'})
         self.assertFalse([f.GetReference() for f in board.GetFootprints() if 'SOT-89' in f.GetFPIDAsString()])
+
+    def test_s95_no_d10(self):
+        """S9.5 (first-board load test): D10 SS1060 ran hot (2.25 W at 3 A); it and TP3 are gone, U5 IN and C2 sit on VPD,
+        and one F.Cu VPD pour joins F1.2, D1.1 and U5 IN on the routed board."""
+        by = {p['ref']: p for p in circuit_s8.circuit()}
+        self.assertEqual({r for r in circuit_s8.S95_REMOVED if not r.startswith('#')}, {'D10', 'TP3'})
+        self.assertFalse(set(circuit_s8.S95_REMOVED) & set(by))
+        self.assertFalse({n for p in by.values() for n in p['pins'].values()} & set(circuit_s8.S95_NETS))
+        self.assertEqual({by['U5']['pins'][n] for n in ('1', '2', '3', '6')} | {by['C2']['pins']['1']}, {'VPD'})
+        import pcbnew
+        board = pcbnew.LoadBoard(str(BOARD))
+        refs = {f.GetReference() for f in board.GetFootprints()}
+        self.assertFalse(set(circuit_s8.S95_REMOVED) & refs)
+        self.assertFalse({str(n).split('/')[-1] for n in board.GetNetsByName().keys()} & set(circuit_s8.S95_NETS))
+        pads = {(f.GetReference(), p.GetNumber()): p for f in board.GetFootprints() for p in f.Pads()}
+        zone = [z for z in board.Zones() if z.GetZoneName() == 'R1_VPD_F']
+        self.assertEqual(len(zone), 1)
+        fill = zone[0].GetFilledPolysList(pcbnew.F_Cu)
+        for k in (('F1', '2'), ('D1', '1'), ('U5', '1'), ('U5', '6'), ('C2', '1')):
+            self.assertEqual(str(pads[k].GetNetname()), '/VPD', k)
+        pieces = {i for k in (('F1', '2'), ('D1', '1'), ('U5', '1')) for i in range(fill.OutlineCount())
+                  if fill.Outline(i).PointInside(pads[k].GetPosition()) or
+                  fill.Outline(i).Collide(pads[k].GetPosition(), pcbnew.FromMM(0.6))}
+        self.assertEqual(len(pieces), 1, 'F1.2, D1.1 and U5 IN on one VPD pour piece')
 
     def test_no_raw_or_plus5_nets_no_cans(self):
         parts = circuit_s8.circuit()
@@ -354,7 +379,7 @@ class FinalSchematic(unittest.TestCase):
             self.assertEqual(set(parts[j]['pins']), set(map(str, range(1, 11))))
             self.assertEqual(parts[j]['fields']['MPN'], '61201021621')
         self.assertEqual({v for k, v in parts['U5']['pins'].items() if k in ('1', '7', '8', '10', '11', '14')},
-                         {'MAIN_IN', 'MAIN_UV', 'MAIN_OV', 'MAIN_DVDT', 'MAIN_ILM', 'MAIN_IMON'})
+                         {'VPD', 'MAIN_UV', 'MAIN_OV', 'MAIN_DVDT', 'MAIN_ILM', 'MAIN_IMON'})   # S9.5: IN on VPD
         for r in ('U18', 'U20'):
             self.assertEqual(parts[r]['pins']['3'], 'VPD')
         for r in ('C57', 'C65'):
@@ -493,7 +518,7 @@ class ReviewRecord(unittest.TestCase):
         if DESIGN.resolve() != MODULE.resolve() or not rec_path.exists():
             self.skipTest('review record applies to the module tree once generated (tools/review_s8.py)')
         rec = json.loads(rec_path.read_text())
-        self.assertEqual(rec['revision'], 'S9.4 / R2')
+        self.assertEqual(rec['revision'], 'S9.5 / R4')
         self.assertEqual(rec['status'], 'PARTIAL_ROUTING_NOT_RELEASED')
         self.assertFalse(rec['routing_complete'])
         hashed = [rel for group in ('sources_sha256', 'artifacts_sha256')
@@ -514,7 +539,7 @@ class ReviewRecord(unittest.TestCase):
                     'hardware/USBPOWER45.pretty/TestPoint_Pad_D1.5mm.kicad_mod', 'docs/design/routing-notes.md',
                     'docs/design.md'):
             self.assertIn(rel, hashed, rel)
-        self.assertEqual(rec['routing_notes']['test_pad_rows'], 26)
+        self.assertEqual(rec['routing_notes']['test_pad_rows'], 25)      # S9.5: TP3 removed
         self.assertEqual(rec['accepted_residuals']['reverse_current']['decision'][:8], 'ACCEPTED')
         self.assertEqual(rec['accepted_residuals']['rail_overvoltage']['decision'][:8], 'ACCEPTED')
         for group in ('sources_sha256', 'artifacts_sha256'):
@@ -1024,8 +1049,9 @@ def routing_notes_problems(notes, doc):
     out += [f'duplicate pad row {r}' for r in idx['duplicate_pads']]
     used = s92_contract.contract_ids() | s92_contract.referenced_ids(*review_s8.OPEN_GATES)
     out += [f'undefined acceptance-test ID {i}' for i in sorted(used - idx['ids'])]
-    screen = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['routing_contract_screen']
-    out += [f'PENDING item {x} not listed' for x in screen['pending_after_routing'] if f'`{x}`' not in notes]
+    # S9.5: the items come from the live contract (board-p1.json is the historical P1 placement record, which still
+    # lists the removed D10's item); every current POST_ROUTING item must be named in the notes
+    out += [f'PENDING item {x} not listed' for x in sorted(s92_contract.POST_ROUTING) if f'`{x}`' not in notes]
     out += [f'rule missing: {x}' for x in ('C82.2 is PGND', 'R_Shunt_1206_KelvinSplit_RLM12', 'TestPoint_Pad_D1.5mm',
                                            'at most one AGND_U2 via pair', 'No via-in-pad', '0.3 mm drill / 0.6 mm pad',
                                            'Pre-routing checklist', 'S92_no_via_in_pad', 'RA_NOVIA_U5_EP')
@@ -1268,10 +1294,10 @@ class S92RoutingReady(unittest.TestCase):
         self.assertEqual(place['revision'], 'S9.3-10P / R1-start')
         self.assertEqual(rc, json.loads(json.dumps(s92_contract.contract())),
                          'R1 inherits the complete S9.3 copper/thermal contract without waivers')
-        self.assertEqual(set(rc['thermal']), {'U2', 'R109', 'D10', 'U4', 'U5'})
+        self.assertEqual(set(rc['thermal']), {'U2', 'R109', 'U4', 'U5'})     # S9.5: D10 removed
         self.assertIn('PGND_vias', rc['thermal']['U2']['requirements'])
         screen = json.loads((DESIGN / 'docs/design/board-p1.json').read_text())['routing_contract_screen']
-        self.assertTrue({'thermal.U2.PGND_vias', 'thermal.R109.force_copper', 'thermal.D10.copper'}
+        self.assertTrue({'thermal.U2.PGND_vias', 'thermal.R109.force_copper'}
                         <= set(screen['pending_after_routing']), 'copper/via items stay PENDING on the unrouted board')
 
     # ---- S9.2b: no via-in-pad, standard JLCPCB vias only, beside-pad thermal fields, thermal consequence ---------------

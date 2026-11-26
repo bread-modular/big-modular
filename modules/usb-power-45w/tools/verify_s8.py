@@ -106,7 +106,7 @@ RAILS_S90 = {   # exact rail memberships (S9.0 step 2): a series element on a ra
 
 # Independently specified function pin -> net expectations of the critical parts (S8).
 CRIT = {
-    'U5': {1: 'MAIN_IN', 2: 'MAIN_IN', 3: 'MAIN_IN', 6: 'MAIN_IN', 7: 'MAIN_UV', 8: 'MAIN_OV', 9: 'GND', 10: 'MAIN_DVDT',
+    'U5': {1: 'VPD', 2: 'VPD', 3: 'VPD', 6: 'VPD', 7: 'MAIN_UV', 8: 'MAIN_OV', 9: 'GND', 10: 'MAIN_DVDT',
            11: 'MAIN_ILM', 12: 'GND', 13: 'RUN', 14: 'MAIN_IMON', 15: 'MAIN_OK', 16: 'MAIN_OK', 18: 'VIN', 19: 'VIN', 20: 'VIN',
            21: 'GND'},
     # S9.0 step 2: TPS552892-Q1 (pin numbers per TI SLVSGT7 Table 5-1; local nets checked by membership below)
@@ -141,7 +141,7 @@ CRIT = {
     'R35': {1: 'V3V3', 2: 'P12_OK'}, 'R62': {1: 'V3V3', 2: 'N12_OK'},
     'R97': {1: 'V3V3', 2: 'OV_N'},
     'C57': {1: 'VPD', 2: 'GND'}, 'C65': {1: 'VPD', 2: 'GND'},
-    'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'D10': {1: 'MAIN_IN', 2: 'VPD'},
+    'SW1': {1: 'RESET_BTN_N', 3: 'RESET_BTN_N', 2: 'GND'}, 'C2': {1: 'VPD', 2: 'GND'},   # S9.5: no D10, U5 IN on VPD
     # S9.4: CH224A VHV/VBUS and its 1 uF straight on VPD (WCH reference circuit); the Q2/Q3 limiter is gone
     'U1': {1: 'VPD', 8: 'VPD', 11: 'GND'}, 'C1': {1: 'VPD', 2: 'GND'},
     'Q1': {1: 'N_EN_BASE', 2: 'VPD'}, 'Q10': {1: 'RUN', 2: 'GND', 3: 'LED_RETURN'},
@@ -180,7 +180,7 @@ def check_tps3808_s85(root, comps, pins):
     assert lib.get('TPS3808G01') == TPS3808_DBV, ('TPS3808G01 symbol pin identity differs from TI DBV', lib.get('TPS3808G01'))
     role = {name: num for num, name in TPS3808_DBV.items()}
     for ref, roles in TPS3808_ROLES_S85.items():
-        assert comps[ref].findtext('fields/field[@name="MPN"]') == 'TPS3808G01DBVR', (ref, 'TPS3808 MPN')
+        assert comps[ref].findtext('fields/field[@name="MPN"]') in ('TPS3808G01DBVR', 'TPS3808G01DBVT'), (ref, 'TPS3808 MPN (DBVT = same device, 250 reel, S9.5 export sourcing)')
         for node in root.iter('node'):
             if node.get('ref') == ref:
                 num = node.get('pin'); func = node.get('pinfunction').removesuffix('_' + num)
@@ -206,7 +206,7 @@ PLANT = dict(dt_ms=0.1, t_por_ms=12.0,                 # TPS3808 open-CT RESET d
              t_rail_decay_ms=1.0,                      # rails fall below their U18 thresholds after VIN is lost
              t_filter_ms=0.75,                         # R72/C51 10k/100n to the U15 Schmitt VT+ (0.6-0.9 ms)
              u5_on_V=12.977, u5_off_V=12.193,            # S9.0 U5 UVLO corners at their HIGH end (worst for starting/running)
-             u5_status_valid_V=4.95,                   # VPD below 4.5 V + D10 0.45 V: U5 FLT/PGOOD unspecified -> MAIN_OK
+             u5_status_valid_V=4.95,                   # VPD below 4.5 V + D10 0.45 V: U5 FLT/PGOOD unspecified -> MAIN_OK (S9.5: no D10, kept)
                                                        # floats high through R63 (S8.4 Opus review, major 1)
              vpd_5v_phase=4.75,                        # vSafe5V minimum: the PD 5 V phase at its lowest
              vpd_unloaded=14.25, vpd_loaded=13.5)        # S9.0: 15 V PDO -5 %, less the 0.75 V cable allowance
@@ -792,7 +792,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     # ---- What S8/S9 removes and keeps
     s7 = {p['ref'] for p in circuit45.circuit() if not p['ref'].startswith('#')}
     removed = {r for r in set(circuit_s8.S8_REMOVED) | set(circuit_s8.S9_REMOVED) | set(circuit_s8.S94_REMOVED)
-               if not r.startswith('#')}
+               | set(circuit_s8.S95_REMOVED) if not r.startswith('#')}
     added = set(comps) - s7
     assert removed <= s7 and not removed & set(comps), 'S8/S9_REMOVED refs must be S7 refs and absent'
     assert s7 - set(comps) == removed, ('Only the listed S7 refs may disappear', sorted(s7 - set(comps) - removed))
@@ -803,6 +803,7 @@ def verify(netlist, hardware=MODULE / 'hardware', root=None):
     netnames = {k.split('/')[-1] for k in nets}
     assert not set(circuit_s8.S94_NETS) & netnames, ('S9.4: the CH224A limiter nets must be gone',
                                                      sorted(set(circuit_s8.S94_NETS) & netnames))
+    assert not set(circuit_s8.S95_NETS) & netnames, ('S9.5: MAIN_IN must be gone', sorted(set(circuit_s8.S95_NETS) & netnames))
     assert not set(circuit_s8.PLUS5_NETS) & netnames, ('S9.0: +5V nets must be gone', sorted(set(circuit_s8.PLUS5_NETS) & netnames))
     assert not {k for k in netnames if k.startswith(('P5_', 'EF_')) or k == '+5V'}, 'S9.0: no P5_*/EF_*/+5V net'
     assert not (set(circuit_s8.S8_PLUS5_DROPPED) | set(circuit_s8.S9_REMOVED)) & set(comps), 'S9.0: +5V refs must be gone'

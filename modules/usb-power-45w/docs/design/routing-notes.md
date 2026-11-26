@@ -1,6 +1,8 @@
 # usb-power-45w: R2 routing and inherited routing contract
 
-> **Manual routing closed (0 unconnected), not released.** J2/J3 are 10-pin; 178 refs / 81 functional nets, all parts on F.Cu.
+> **Manual routing closed (0 unconnected), not released.** J2/J3 are 10-pin; 176 refs / 80 functional nets, all parts on F.Cu.
+> **S9.5 / R3 (2026-11-26):** D10 (SS1060 input blocker) and TP3 are gone; U5 IN and C2 sit on VPD, and one F.Cu VPD pour
+> runs F1.2 -> D1 -> U5 IN ([design.md](../design.md#s95--r3-d10-removed-2026-11-26)). The D10 rows below are history.
 > **S9.4 / R2 (2026-11-16):** the CH224A supply limiter (Q2, Q3, R23, R27, D9, D11) and TP2 are gone; U1 VHV/VBUS and
 > C1 sit straight on VPD ([design.md](../design.md#s94--r2-ch224a-straight-on-vpd-2026-11-16)). TP1 probes the U1 supply now.
 > Current board: [`usb-power-45w.kicad_pcb`](../../hardware/usb-power-45w.kicad_pcb).
@@ -44,10 +46,10 @@ What must be true before routing starts. Each line is machine-checked by `tools/
 | Via-in-pad decision (`via_in_pad`) | **Prohibited** (owner, 2026-11-02): no plated hole in any footprint pad, no via touching a pad or its mask opening, every via the standard 0.3/0.6 mm tented, unfilled through via ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | decided, holds |
 | Thermal-via fields (`thermal_vias`) | U5 10, U4 10 and U9 6 standard vias beside the exposed pads, one spoke each into the pad copper, one B.Cu landing pour per part, at the parts' actual positions ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | placed |
 | Stack-up and copper weight (`stackup`) | 4 layers, 1.6 mm, JLC04161H-7628: 35 / 15.2 / 15.2 / 35 µm copper (1 oz outer, 0.5 oz inner), 0.2104 / 1.065 / 0.2104 mm dielectric ([3.1](#31-process-layers-and-planes)) | chosen |
-| Test pads (`test_pads`) | All 26 test pads are bare F.Cu with a mask opening and no paste ([section 1](#1-test-point-table)) | exposed |
+| Test pads (`test_pads`) | All 25 test pads are bare F.Cu with a mask opening and no paste ([section 1](#1-test-point-table)) | exposed |
 | Placement (`placement`) | Placement, local-loop, ground-split and routing-contract screens pass | pass |
 
-**Checked after routing**, never before: the 17 PENDING copper/via items of
+**Checked after routing**, never before: the 16 PENDING copper/via items of
 [3.11](#311-post-routing-gate-before-any-cam-or-export) (thermal areas and via counts, TVS proximity, Kelvin routing, the
 AGND link, current-path widths), plus native DRC 0 / unconnected 0 / parity 0, which keeps enforcing everything above.
 
@@ -57,7 +59,7 @@ AGND link, current-path widths), plus native DRC 0 / unconnected 0 / parity 0, w
 is the stock KiCad pad copied unchanged: 1.5 mm round SMD copper on F.Cu, F.Mask opening, no paste, 2.5 mm courtyard
 circle. The 16 pads kept from S7/S8 stay **`USBPOWER45:TestPoint_Pad_D1.0mm`** (1.0 mm round, same construction, 2.0 mm
 courtyard circle). They are DC-meter and logic-analyser clip points only, and no test needs a ground spring on them.
-All 26 pads are bare copper: no assembly part and no BOM line, and JLCPCB leaves them exposed. A 2.54 mm pair takes a
+All 25 pads are bare copper: no assembly part and no BOM line, and JLCPCB leaves them exposed. A 2.54 mm pair takes a
 probe tip plus ground spring, or a differential probe.
 
 Rules for every row:
@@ -94,7 +96,6 @@ Rules for every row:
 
 | TP | Net | Location (F.Cu; x, y; next to) | Pad | Measured there | Limit / expected |
 | --- | --- | --- | --- | --- | --- |
-| TP3 | `MAIN_IN` | 62.80, 86.50; D10.1 3.4 mm, U5 IN | 1.0 mm round | D10 forward drop V(TP1−TP3) at 3 A (TH-2) | ≤ 0.75 V (screen value) |
 | TP4 | `VIN` | 59.70, 56.60; R92.1 4.1 mm (VIN damper) | 1.0 mm round | VIN at the damper end, DC | as TP26 DC |
 | TP7 | `MAIN_IMON` | 64.75, 74.80; R26.1 3.9 mm, U5 pin 14 | 1.0 mm round | U5 input-current monitor (R26 20k, 0.558 V/A typical): S1/S2, TH-2 | informational (typical scale), not a pass limit |
 | TP8 | `GND` | 68.20, 74.10; D15.1 2.9 mm | 1.0 mm round | DC and logic ground for the 1.0 mm pads | – |
@@ -115,7 +116,7 @@ Rules for every row:
   spring on a ≥ 500 MHz probe. The switch nodes deliberately have no pad.
 - **D1 pads** (SMB, 4.3 mm apart): VPD attach transient, tip on D1.1 (VPD) and spring on D1.2 (GND) (IN-3).
 - **U4 pin 2** (EN_N, SO-8 lead) against TP25 (−12V): EN relative to the U4 ground (T1, EN-1).
-- **Thermocouples** (36 AWG, Kapton tape or thermal epoxy) on U2 top, the R109 body, the D10 cathode tab, U5 top and
+- **Thermocouples** (36 AWG, Kapton tape or thermal epoxy) on U2 top, the R109 body, U5 top (S9.5: D10 removed) and
   U4 top (TH-1…TH-3).
 - **Fixture**: bench-supply tests go through a USB-C power-only breakout (VBUS/GND); loads through a 10-pin IDC
   breakout on J2 (and J3); the CL-1 injection leads are soldered to TP26/TP27.
@@ -143,10 +144,10 @@ summary with the test pads.
 | **CL-1** (T1-D) | D24 SMBJ20A clamp voltage and energy under the real surge, i.e. a finite bus-injection pulse into VIN | The rated clamp (VC 32.4 V at 18.6 A, 10/1000 µs) bounds the 1 A clamp: 24.92 V at 25 °C, 27.71 V at Tj 150 °C. The 600 W rating, mapped to a 20 ms rectangle (√t), gives 69.8 W at 50 °C against the 32.4 W budget (margin 2.15). A source overvoltage never reaches D24: U5 OVP (≤ 19.44 V) opens first | VIN above D25 (30 V) or U2 (42 V abs); D24 degraded (leakage) or shorted | TP26 tip + TP27 spring; current probe on the injection lead | No USB input (repeat with USB present and RUN low). Inject 1 A for ≤ 20 ms into TP26/TP27 from a current-limited pulse source, 33 V compliance with automatic disconnect. Start at 25 °C and at 50 °C, ≥ 200 s between pulses. Log V(TP26) and I, integrate V·I. Afterwards check VIN leakage at 16.5 V and a normal restart | VIN ≤ 30.0 V including ringing; ∫V·I dt ≤ 0.648 J; clamp current ends by 20 ms; leakage up by ≤ 10 µA after cooling; normal start after RESET; any abort = FAIL | **BOM**: D24 alternate (C364296 / C151922, same SMB land) if the clamp level is out. **Respin** only if layout ringing dominates (D24-to-bank loop) |
 | **T1** (A–C) | Backfeed current in the field: module unpowered or latched off on a live ±12 V bus | The existing `modules/usb-power` works in the rack and survives being plugged into a live bus, so backfeed is not occurring in practice. The S9.1 mitigations stay exactly as they are (own-VPD Q1 emitter, Q14/Q15 AND sink, R112, R115 default, D24/D25/D26), and no further backfeed hardware is added. Analysis: U4 cannot enable without own VPD AND RUN AND MAIN_LED_OK (netlist-derived 16-row truth table); 0.389 mA DC bus load; 2.98–7.68 mJ capacitor charge | U4 enabled from the bus or VIN pumped; U2 VIN below −0.3 V on a fast or cold hot-plug | TP30, TP25, TP26, TP24; U4 pin 2 against TP25; fixture bus currents | T1-A: no USB, ±12.0/±12.6 V bus, 1 A limit, 0.44 mF per rail, ramp ≤ 1 V/s at 25 °C, hold 10 s. T1-B: same with USB present and FAULT latched (RUN low). T1-C: negative rail only, both rail orders | EN_N − V(−12V) ≤ 0.11 V settled (≤ 0.5 V transient); zero U4 switching; VIN −0.3…1 V after 100 ms (T1-B: −0.3…30 V, not climbing); each bus current < 10 mA after 100 ms | **Respin** only if U4 switches or EN rises while own input is absent (logic defect). Otherwise this is an accepted residual with a usage rule: power the bus down before plugging, never parallel running supplies. Hard hot-plug stays unqualified, and no backfeed hardware is added (owner). A D25 forward-drop miss is **BOM** (lower-VF SOT-23 pair) |
 | **TH-1** | U2 junction and R109 temperature on the real copper | U2: TI JEDEC 2s2p RθJA 43.4 °C/W gives 108.4 °C at 50 °C ambient and the CC limit (1.345 W). That holds only if the [3.8](#38-thermal-copper-and-vias-the-board-behind-the-thermal-screens) copper is built; the effective RθJA allowed for 125 °C is 55.8 °C/W at the CC limit and 73.7 °C/W at 2.4 A. The loss model assumes the switching times and 1.5× hot RDS(on). R109: 0.159 W with the 300 mm² copper gives +13.5 °C | Thermal fold-back or Tj > 125 °C at 50 °C ambient; R109 drift | thermocouples on U2 top and the R109 body; TP24, TP20 | Bench supply with TP1 at 13.5 V and at 16.5 V. +12 V at the CC limit (raise the load until CC engages) and at 2.4 A; −12 V at 0.35 A. Still air, ambient recorded, 30 min to steady state | U2 case rise ≤ 70 °C over ambient at the CC limit (Tj ≤ 125 °C at 50 °C with a 5 °C case-to-junction allowance); R109 rise ≤ 30 °C | **Respin** (copper) if 3.8 was not met. If it was met: a rating change (+12 V current or ambient, documented) or **BOM** (R110 to a lower fSW, with the ripple and loop rechecked) |
-| **TH-2** | D10 and U5 temperature at 3 A input | D10 SS1060: 0.75 V × 3 A = 2.25 W needs an effective RθJA ≤ 33.3 °C/W (Tj ≤ 125 °C at 50 °C) with the 3.8 D10 copper. U5 dissipates ≤ 0.48 W (53 mΩ max); with the S9.2b beside-pad field its RθJA bound is 43.3 °C/W, Tj ≤ 70.7 °C at 50 °C ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | D10 overheating; U5 thermal shutdown | thermocouples on the D10 cathode tab and U5 top; TP1/TP3; TP7 | TP1 at 13.5 V; raise the loads until the input is 3.0 A; 30 min | D10 tab rise ≤ 70 °C; V(TP1−TP3) ≤ 0.75 V; U5 rise ≤ 50 °C (screen) | **BOM** (lower-VF Schottky on the same SMC land) or a documented input-rating change; **respin** if the copper was not met |
+| **TH-2** | U5 temperature at 3 A input (S9.5: D10 removed) | U5 dissipates ≤ 0.48 W (53 mΩ max); with the S9.2b beside-pad field its RθJA bound is 43.3 °C/W, Tj ≤ 70.7 °C at 50 °C ([3.13](#313-no-via-in-pad-standard-jlcpcb-vias-only-s92b)) | U5 thermal shutdown | thermocouple on U5 top; TP1; TP7 | TP1 at 13.5 V; raise the loads until the input is 3.0 A; 30 min | U5 rise ≤ 50 °C (screen) | documented input-rating change; **respin** if the copper was not met |
 | **TH-3** | U4 LMR38020 temperature | EP on the −12 V copper (≥ 300 mm² on In2/B.Cu) through the S9.2b beside-pad field: 10 vias, no via in the pad, ΔR +0.4 °C/W against the old in-pad holes. S9.2 has no separate U4 loss model | U4 thermal shutdown at −12 V 0.8 A | thermocouple on U4 top; TP25 | VIN 13.5 V and 16.5 V, −12 V at 0.8 A, 30 min | U4 case rise ≤ 60 °C (screen) | rating change (−12 V current, documented) or **respin** (copper) |
 | **LS-1** | +12 V loop stability with the real rack capacitance | Sampled complex-loop model: 13,824 corners, PM ≥ 59.73°, GM ≥ 12.37 dB, crossover 387–13,566 Hz. Covers passive rack C 0–440 µF, cable 0.08–0.25 Ω / 0–0.5 µH and loads 0.05–2.4 A. GEA ±30 % and the one-period delay are assumptions; active rack loads are not modelled | Oscillation or ringing on +12 V; audible artefacts; nuisance guard trips | TP24; J2 pin 9 / pin 7 (B side); Bode injection point by rework | (a) Load step 0.5↔2.0 A at ≥ 1 A/µs at J2, with 0 / 220 / 440 µF electrolytic at J2, VIN 13.5 V and 16.5 V. (b) Bode with an FRA: lift R8 pin 2 (+12V end) and fit a 10–20 Ω injection resistor (rework on one unit). (c) The owner's rack, at no load and at full load | Bode PM > 45°, GM > 10 dB. Load step: second excursion ≤ 25 % of the first (≈ PM ≥ 45°), settled ≤ 1 ms. No sustained oscillation at any corner, including no-load FPWM. Ripple ≤ 60 mV p-p | **BOM** (R111/C83 compensation, 0603) or a narrower published rack-capacitance envelope (documented). No respin |
-| **IN-1** | Input range at the module with the real cable and connector drop | 13.5 V at VPD = 14.25 V source minimum − 0.75 V at 3 A (≤ 0.25 Ω loop). Converter VIN ≥ 12.5 V after D10 (0.75 V) and U5 (53 mΩ × 4.7 A) | Rails out of regulation at low line | TP1, TP26, TP24, TP25 | Bench supply set so TP1 reads 13.5 V, then 16.5 V, under 33 W (+12 V 2.4 A, −12 V 0.35 A), 10 min each. Repeat with the owner's 15 V / 3 A PD adapter and cable | TP24 11.54–12.65 V; TP25 −11.38…−12.62 V; no FAULT; input ≤ 3.0 A at 13.5 V | documented adapter/cable list; no BOM or respin expected |
+| **IN-1** | Input range at the module with the real cable and connector drop | 13.5 V at VPD = 14.25 V source minimum − 0.75 V at 3 A (≤ 0.25 Ω loop). Converter VIN ≥ 12.5 V after the 0.75 V D10 screen (kept as margin in S9.5, D10 removed) and U5 (53 mΩ × 4.7 A) | Rails out of regulation at low line | TP1, TP26, TP24, TP25 | Bench supply set so TP1 reads 13.5 V, then 16.5 V, under 33 W (+12 V 2.4 A, −12 V 0.35 A), 10 min each. Repeat with the owner's 15 V / 3 A PD adapter and cable | TP24 11.54–12.65 V; TP25 −11.38…−12.62 V; no FAULT; input ≤ 3.0 A at 13.5 V | documented adapter/cable list; no BOM or respin expected |
 | **IN-2** | UVLO and OVP threshold spread over temperature | TI full-temperature threshold limits, plus R2/R3 0.1 %/25 ppm and R114/R24/R28/R4 1 %/100 ppm stacked over a 100 °C TCR span with 150 nA pin leakage. Bands: on 12.26–12.98 V, off 11.37–12.19 V, OVP rise 17.30–19.44 V, OVP fall 16.03–18.27 V | No start at 13.5 V with cable drop (loaded start margin 0.52 V); nuisance OVP at 16.5 V (0.80 V margin) | TP1, TP5, TP26 | Bench supply through the USB-C power breakout, 0.5 A limit, no rail load. Ramp ≤ 0.1 V/s from 10 to 20 V and back, recording VPD at each MAIN_OK edge. Test at 25 °C and, where available, at 0 °C and 50 °C | inside all four bands at every temperature tested | **BOM/divider**: R3/R114 (UVLO), R24 (OVP). No respin |
 | **IN-3** | VPD transient at USB-C attach (cable inductance against the ceramic input) | D1 SMBJ22A (VBR ≥ 24.4 V, VC 35.5 V at 16.9 A) and the small attach capacitance keep VPD below the CH224A VHV 32 V absolute maximum at U1 (S9.4: U1 sits straight on VPD) and the LM2901B 36 V recommended maximum at U18/U20 (38 V abs) | U1, U18/U20 or the U9/U5 inputs overstressed at hot-plug | D1.1 tip / D1.2 spring; TP1 | 20 hot-plugs each with the PD adapter and with a 15 V bench supply over 1 m and 2 m cables, unloaded and at 33 W; single-shot scope ≥ 100 MHz | VPD peak ≤ 32 V (U1 VHV absolute maximum) | **BOM**: D1 to SMBJ20A on the same SMB land (VR 20 V ≥ 18.98 V; VBR at 0 °C 21.7 V > OVP maximum). **Respin** only for added input damping |
 | **EMI-1** | Switch-node ringing and conducted noise at 966 kHz (U2) and ~790 kHz (U4) | The HotRod package with C8/C81 at the pins keeps both hot loops small, so no RC snubber is needed (none is fitted or footprinted). The two converters are only nominally separated; their tolerance bands can touch, which can produce a beat | Switch-node overshoot near the U2 ratings; HF noise or audio-band beat tones on the rails | L1 pad 1/2 with grounds on D25.1/TP29; TP26/TP27; J2 rail pins | ≥ 500 MHz tip-and-barrel at the L1 pads, full bandwidth, VIN 16.5 V, +12 V at 2.4 A and at 0.05 A. VIN ripple at TP26/TP27 (20 MHz BW). Rail ripple at J2, FFT over 20 Hz–20 kHz and 100 kHz–30 MHz | SW1 peak ≤ 30 V and SW2 peak ≤ 20 V (screens under 36 V VIN operating / 25 V VOUT abs); ringing decays within 3 cycles; VIN ≤ 1.5 V p-p (20 MHz); rail ripple ≤ 60 mV p-p (20 MHz); no discrete spur > 100 µV rms in 20 Hz–20 kHz | Ringing or VIN ripple: **respin** (loop layout, snubber footprints). Beat tones: **BOM** (R110 or the U4 RT resistor, to separate the frequencies) |
@@ -179,7 +180,6 @@ summary with the test pads.
 - **B.Cu**:
   - a GND pour ≥ 600 mm² under U2/L1/the banks, stitched to In1 with ≥ 20 vias;
   - a P12_VOUT area ≥ 200 mm²;
-  - D10 VPD and MAIN_IN areas ≥ 300 mm² each;
   - inside the U2 GND pour, the only other copper allowed is the single AGND_U2 link trace (3.3);
   - the S9.2b landing pours `TV_U5_B` (GND), `TV_U4_B` (−12V) and `TV_U9_B` (GND) under U5/U4/U9 stay: grow or merge
     them with same-net copper, never cut them.
@@ -201,7 +201,7 @@ DRC floor is an `S92_*` rule; the current-path minimums are measured after routi
 
 | Class | Nets (project patterns) | Default width | DRC floor / max | Contract minimum (1 oz outer, ≤ 10 °C rise) | Notes |
 | --- | --- | --- | --- | --- | --- |
-| VIN | `VBUS`, `VPD`, `MAIN_IN`, `VIN` | 2.5 mm | 0.25 mm | 2.5 mm on the 3 A path (U5 limit 4.7 A); pours preferred | ≤ 1 A per 0.3 mm via at layer changes: ≥ 4 vias on the input path |
+| VIN | `VBUS`, `VPD`, `VIN` | 2.5 mm | 0.25 mm | 2.5 mm on the 3 A path (U5 limit 4.7 A); pours preferred | ≤ 1 A per 0.3 mm via at layer changes: ≥ 4 vias on the input path |
 | PWR_12V | `P12_VOUT`, `+12V` | 1.5 mm | 0.25 mm | 1.5 mm (2.95 A CC limit); pours preferred | ≥ 4 vias at layer changes |
 | PWR_N12V | `-12V` | 0.8 mm | 0.25 mm | 0.8 mm (~1.5 A LMR38020 limit) | ≥ 2 vias at layer changes |
 | GND | `GND` (PGND) | 0.5 mm | 0.25 mm | – | In1 plane, star at C82.2 |
@@ -302,19 +302,18 @@ on TH-1…TH-3 (`calcs.json` → `thermal_contract`, status CONDITIONAL).
 | --- | --- | --- |
 | U2 | TI SLVSGT7 RθJA 43.4 °C/W (JEDEC 2s2p; EVM 27.5 °C/W); allowed effective 55.8 °C/W at the CC limit | In1 solid PGND (no slot within 15 mm). **≥ 10 PGND vias** 0.3/0.6 mm, centres ≤ 4 mm outside the package outline on the cell's PGND copper: at both PGND land ends where the fan-out leaves room, at C8.2 and C81.2 and on the PGND copper joining them; to In1 and the B.Cu GND pour; never in a pad. **VIN**: F.Cu pour ≥ 120 mm² joining U2.7, C8, C6, C7, C77, C78 and D24 K, with ≥ 6 vias to an In2 VIN area ≥ 300 mm². **VOUT**: F.Cu P12_VOUT pour ≥ 150 mm² joining U2.11, C81, C11–C14, C79, C80 and R109 pad 1, with ≥ 6 vias to a B.Cu P12_VOUT area ≥ 200 mm²; D26 K and TP20 join as in 3.6. **B.Cu GND** ≥ 600 mm² under U2/L1/banks, ≥ 20 stitching vias |
 | R109 | TA-I RLM12: 1 W at 70 °C with 300 mm² of copper, derated to 0 at 155 °C | 3.7 copper/via budget |
-| D10 | 2.25 W at 3 A needs RθJA ≤ 33.3 °C/W | VPD (anode) and MAIN_IN (cathode) F.Cu pours ≥ 400 mm² each, each with ≥ 8 vias to a same-net B.Cu area ≥ 300 mm² |
 | U4 | LMR38020 EP = −12V; beside-pad field ΔR +0.4 °C/W (3.13) | the 10 field vias (no via in the pad) land in one −12V area ≥ 300 mm² on In2 or B.Cu, grown from `TV_U4_B`; no GND on the EP |
 | U5 | TPS16630 EP = GND, 0.477 W at 3 A; RθJA 32.2 → 43.3 °C/W with the beside-pad field, Tj 70.7 °C at 50 °C (3.13) | the 10 field vias (no via in the pad) land in the In1 GND plane and the `TV_U5_B` B.Cu pour |
 | U9 | TPS7A16 EP = GND (always-on logic LDO, small load); ΔR +6.9 °C/W (3.13) | the 6 field vias land in the In1 GND plane and the `TV_U9_B` B.Cu pour |
 
 ### 3.9 Test pads
 
-Keep all 26 pads and follow the rules under [section 1](#1-test-point-table). Never route a power or switch net through
+Keep all 25 pads (S9.5: TP3 removed with D10) and follow the rules under [section 1](#1-test-point-table). Never route a power or switch net through
 a pad's courtyard circle. Make the 2.54 mm pairs reachable from the top side without removing the panel bracket.
 
 ### 3.10 Order of work (divide and conquer)
 
-1. Input group: J1, F1, D1, U1/C1, D10, U5, VIN damper, U9.
+1. Input group: J1, F1, D1, U1/C1, U5, VIN damper, U9 (S9.5: no D10).
 2. U2 cell: fan-out, hot loops, switch nodes, AGND island and link, sense pair, R109 force pours, D24/D25/D26, TP20–TP29.
 3. U4 cell.
 4. Header strip: J2/J3, D2/D4 and the header capacitors.
@@ -327,13 +326,12 @@ in any pad, no track on In1, plane and area pieces, and a render of the area.
 
 ### 3.11 Post-routing gate (before any CAM or export)
 
-Measure and report the 17 PENDING items from `board-p1.json` (`tools/check_s8_board.py` measures each one once
+Measure and report the 16 PENDING items from `board-p1.json` (`tools/check_s8_board.py` measures each one once
 the board carries copper beyond the thermal fields):
 
 - `ground.agnd_link`
 - `kelvin.sense_routing`
 - `min_widths`
-- `thermal.D10.copper`
 - `thermal.R109.force_copper`
 - `thermal.U2.B_Cu_GND`
 - `thermal.U2.In1`

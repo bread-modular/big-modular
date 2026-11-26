@@ -4,7 +4,7 @@ checks every item that can be checked on the unrouted board (pad nets, test-pad 
 proximity) and lists the copper/via items that can only be checked after routing as PENDING (never as passed).
 
 The thermal items put a board behind the screens in calcs.json: the U2 Tj screen uses TI's JEDEC 2s2p RthetaJA, the
-R109 rating TA-I's 300 mm2 copper condition and the D10 screen an effective RthetaJA target. The published rating is
+R109 rating TA-I's 300 mm2 copper condition (S9.5: the D10 screen left with D10). The published rating is
 conditional on these items being met by the routed board and on the post-prototype thermal tests (TH-1..TH-3).
 notes_index() reads the human half back (its test-pad table and the IDs of its uncertainty register) so that the tests
 and tools/review_s8.py can check that every pad and every acceptance-test ID used here is documented there.
@@ -62,10 +62,10 @@ TEST_POINTS = [
     dict(ref='TP6', net='OV_N', size='1.0 mm round (S8 logic pad)', near=('U20', '2'), max=10.0,
          measure='rail overvoltage guard T2', limit='low <= 20 us at >= 0.5 V overdrive'),
 ]
-# Every other existing pad is kept unchanged (S7/S8 diagnostic pads, 1.0 mm round): TP3 MAIN_IN, TP4 VIN
+# Every other existing pad is kept unchanged (S7/S8 diagnostic pads, 1.0 mm round; S9.5: TP3 MAIN_IN removed with D10): TP4 VIN
 # (damper), TP7 MAIN_IMON, TP8 GND, TP11 FAULT_LATCH, TP12 P12_OK, TP14 N12_OK, TP15 V20_OK, TP16 V3V3, TP17 REF_OV.
 # S9.4: TP2 (VPD_U1) left with the CH224A supply limiter; TP1 probes the same net now.
-KEPT_DIAGNOSTIC = {'TP3': 'MAIN_IN', 'TP4': 'VIN', 'TP7': 'MAIN_IMON', 'TP8': 'GND', 'TP11': 'FAULT_LATCH',
+KEPT_DIAGNOSTIC = {'TP4': 'VIN', 'TP7': 'MAIN_IMON', 'TP8': 'GND', 'TP11': 'FAULT_LATCH',
                    'TP12': 'P12_OK', 'TP14': 'N12_OK', 'TP15': 'V20_OK', 'TP16': 'V3V3', 'TP17': 'REF_OV'}
 
 # Pre-routing proximity screens (pad-centre straight line, same net unless stated): (from, to-candidates, limit mm, why).
@@ -125,11 +125,6 @@ THERMAL = {
                                          '(>= 300 mm2 together), each with >= 3 vias to a same-net B.Cu or In2 area',
                          'sense_copper': 'pads 2/3: 0.2 mm traces only (no pour)'},
         'acceptance': 'TH-1 (R109 body), KS-1, CC-1'},
-    'D10': {
-        'model': 'SS1060 at 0.75 V x 3 A = 2.25 W; needs effective RthetaJA <= 33 C/W for Tj <= 125 C at 50 C ambient',
-        'requirements': {'copper': 'VPD (anode) and MAIN_IN (cathode) F.Cu pours >= 400 mm2 each, each with >= 8 vias to a '
-                                   'same-net B.Cu area >= 300 mm2'},
-        'acceptance': 'TH-2'},
     'U4': {
         'model': 'LMR38020 DDA exposed pad = -12V (IC ground), not GND',
         'requirements': {'copper': 'S9.2b beside-pad field (10 vias, spokes, TV_U4_B landing pour) to a -12V area >= '
@@ -139,11 +134,11 @@ THERMAL = {
         'model': 'TPS16630 PWP exposed pad = GND; <= 0.48 W at 3 A (53 mOhm max)',
         'requirements': {'copper': 'S9.2b beside-pad field (10 vias, spokes, TV_U5_B landing pour) to the In1 GND plane; '
                                    'no via in the pad'},
-        'acceptance': 'TH-2 (with D10)'},
+        'acceptance': 'TH-2'},          # S9.5: D10 removed, TH-2 is U5 alone
 }
 
 NETCLASS_WIDTHS_MM = {   # minimum routed widths on 1 oz outer copper (IPC-2152 screen, <= 10 C rise), pours preferred
-    'VBUS / VPD / MAIN_IN / VIN (3 A, U5 limit 4.7 A)': 2.5,
+    'VBUS / VPD / VIN (3 A, U5 limit 4.7 A)': 2.5,
     'P12_VOUT / +12V (2.95 A CC limit)': 1.5,
     '-12V (LMR38020 limit ~1.5 A)': 0.8,
     'switch nodes SW1/SW2 (U2), SW (U4)': 'short pours, no thin tracks',
@@ -164,8 +159,8 @@ NETCLASS_WIDTHS_MM = {   # minimum routed widths on 1 oz outer copper (IPC-2152 
 # netclass track width); floor = DRC minimum (custom rule); max = DRC maximum. The contract's current-path minimums for
 # the power classes are POST_ROUTING `min_widths`: DRC cannot tell a 3 A path from a divider tap on the same net.
 NETCLASSES = {
-    'VIN': dict(width=2.5, floor=0.25, patterns=['*/VBUS', '*/VPD', '*/MAIN_IN', 'VIN'],
-                what='3 A input power path VBUS -> F1 -> VPD -> D10 -> MAIN_IN -> U5 -> VIN (U5 limit 4.7 A)'),
+    'VIN': dict(width=2.5, floor=0.25, patterns=['*/VBUS', '*/VPD', 'VIN'],
+                what='3 A input power path VBUS -> F1 -> VPD -> U5 -> VIN (U5 limit 4.7 A; S9.5: no D10)'),
     'PWR_12V': dict(width=1.5, floor=0.25, patterns=['*/P12_VOUT', '+12V'],
                     what='+12 V force path U2 VOUT -> P12_VOUT bank -> R109 -> +12V headers (2.95 A CC limit)'),
     'PWR_N12V': dict(width=0.8, floor=0.25, patterns=['-12V'], what='-12 V rail and the U4 IC ground (LMR38020 ~1.5 A limit)'),
@@ -616,7 +611,7 @@ POST_ROUTING = {
                'within 1.5 mm of the D24.2 pad edge',
     'tvs.D26': 'D26.1 in an F.Cu P12_VOUT pour island with the C14/C79/C80 bank, or >= 2 vias from it to the B.Cu '
                'P12_VOUT area; >= 3 GND vias within 1.5 mm of D26.2',
-    'tvs.D1': 'D1.1 in the F.Cu VPD pour island with D10.2; >= 3 GND vias within 1.5 mm of D1.2',
+    'tvs.D1': 'D1.1 in the F.Cu VPD pour island with F1.2 and U5 IN (S9.5); >= 3 GND vias within 1.5 mm of D1.2',
     'tvs.D25': 'one GND via within 1.5 mm of D25.1 (pins 2/3 join VIN: native unconnected check)',
     'ground.agnd_link': 'AGND_U2 has <= 1 track run on B.Cu (the link) and its copper joins only the 7 member pads '
                         '(via count and width: DRC)',
@@ -631,8 +626,6 @@ POST_ROUTING = {
     'thermal.U2.B_Cu_GND': 'the B.Cu GND island under U2 is >= 600 mm2 with >= 20 GND vias',
     'thermal.R109.force_copper': 'P12_VOUT and +12V F.Cu copper >= 150 mm2 each within 10 mm of R109 pads 1/4, '
                                  'each with >= 3 same-net vias',
-    'thermal.D10.copper': 'VPD and MAIN_IN F.Cu islands at D10 >= 400 mm2 each with >= 8 vias to a same-net B.Cu '
-                          'island >= 300 mm2',
     'thermal.U4.copper': 'the 10 U4 field vias land in one -12V island >= 300 mm2 on In2 or B.Cu (the TV_U4_B landing '
                          'pour may be grown into it)',
     'thermal.U5.copper': 'every U5 field via lands in the In1 GND fill',

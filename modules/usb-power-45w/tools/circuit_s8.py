@@ -62,6 +62,17 @@ S94_REMOVED = {
     '#FLG06': 'power flag of the removed VPD_U1 net',
 }
 S94_NETS = ('VPD_U1', 'PD_SENSE', 'PD_BASE')
+# S9.5 (first-board load test, 2026-11-26; user: "Let's remove that D10"): D10 SS1060 ran hot (~0.75 V x 3 A = 2.25 W on
+# 43 mm2 of copper, far from the 400 mm2 per terminal the S9.2 contract asked for). Its only job was to block reverse
+# current through the TPS16630 body diode (a single-FET eFuse), i.e. converter backfeed into the USB source. That needs a
+# second supply on the +/-12 V bus, which the module rule already forbids (design.md T1). U5 IN sits straight on VPD.
+S95_REMOVED = {
+    'D10': 'SS1060 input reverse blocker: 2.25 W at 3 A; backfeed only with a paralleled supply (not allowed); '
+           'U5 IN goes straight to VPD',
+    'TP3': 'MAIN_IN test pad; the net is VPD now, TP1 already probes it',
+    '#FLG07': 'power flag of the removed MAIN_IN net (VPD keeps #FLG02)',
+}
+S95_NETS = ('MAIN_IN',)
 PLUS5_NETS = ('+5V', 'P5_RAW', 'P5_OK', 'P5_FLT_N', 'P5_OVLO', 'P5_OV_TOP', 'P5_DVDT', 'P5_ILM', 'P5_ILM_SER',
               'MON_P5', 'MON_P5_SER', 'MON_OV5')
 # S9.0: the main eFuse U5 nets are not +5V nets; on the board they are renamed EF_* -> MAIN_* (S7 untouched).
@@ -78,9 +89,21 @@ U3_BLOCK = ((320.0, 435.0), (178.0, 225.0))   # flat-sheet box of the removed S7
 
 # S8.1 overvoltage guard parts, live-checked 2026-11-01 (tools/s8_sourcing.py; all Extended except R100/C67).
 LM2901B = dict(LCSC='C22427890', MPN='LM2901BIDR', Manufacturer='Texas Instruments')
-R0603_01 = {  # 0.1 %, 25 ppm/C thin film: (LCSC, MPN, manufacturer)
-    '10k': ('C95204', 'RT0603BRD0710KL', 'YAGEO'),
-    '110k': ('C326736', 'RT0603BRD07110KL', 'YAGEO'),
+R0603_01 = {  # 0.1 % thin film: (LCSC, MPN, manufacturer, TCR)
+    '10k': ('C95204', 'RT0603BRD0710KL', 'YAGEO', '25ppm'),
+    # S9.5 export sourcing (JLCPCB export 2026-11-26, fields only): C326736 RT0603BRD07110KL is pre-order only (free stock -137, minimum purchase 293).
+    # Same YAGEO RT series, 0.1 %, 10 ppm/C instead of 25 ppm/C (tighter), in stock (free 4,491, minimum 1).
+    '110k': ('C860071', 'RT0603BRB07110KL', 'YAGEO', '10ppm'),
+}
+# S9.5 export sourcing (JLCPCB export 2026-11-26, fields only): no pre-order parts (root AGENTS.md). Live catalog 2026-11-26 12:45 UTC:
+# C19653 TPS3808G01DBVR listed 1, free -291, minimum 26; C7836 SN74LVC1G17DBVR listed 30, free -2296, minimum 67.
+#   U10/U11 -> C702161 TPS3808G01DBVT: the same TI device on a 250-piece reel (SBVS050N), free 30, minimum 1.
+#   U15 -> C151394 Diodes 74LVC1G17W5-7: SOT25 (SOT-23-5) single Schmitt buffer, 1.65-5.5 V, free 464, minimum 1;
+#          pins 1 NC, 2 A, 3 GND, 4 Y, 5 VCC (Diodes DS35124 Rev. 7-2 page 1) = the TI DBV pinout on the same land.
+S95_SOURCING = {
+    'U10': ('TPS3808G01DBVT', dict(LCSC='C702161', MPN='TPS3808G01DBVT', Manufacturer='Texas Instruments')),
+    'U11': ('TPS3808G01DBVT', dict(LCSC='C702161', MPN='TPS3808G01DBVT', Manufacturer='Texas Instruments')),
+    'U15': ('74LVC1G17W5-7', dict(LCSC='C151394', MPN='74LVC1G17W5-7', Manufacturer='Diodes Incorporated')),
 }
 # Symbol of U21: KiCad stock Reference_Voltage:TL431DBZ drawing, pins renumbered to the TI TLV431 DBZ
 # package (SLVS139Z Table 4-1: REF 1, CATHODE 2, ANODE 3; the TL431 DBZ order differs). See build_s8.py.
@@ -144,9 +167,9 @@ MIRROR_S8 = set()
 
 
 def res01(ref, value, at, a, b, rot=0, **kw):
-    code, mpn, maker = R0603_01[value]
+    code, mpn, maker, tcr = R0603_01[value]
     return two(ref, 'R', value, 'R0603', at, a, b, rot, LCSC=code, MPN=mpn, Manufacturer=maker, Tolerance='0.1%',
-               TCR='25ppm', **kw)
+               TCR=tcr, **kw)
 
 
 def m(x, y):
@@ -281,7 +304,7 @@ def _soft_start_and_sequencing(c):
 
 
 def circuit():
-    gone = set(S8_REMOVED) | set(S9_REMOVED) | set(S94_REMOVED)
+    gone = set(S8_REMOVED) | set(S9_REMOVED) | set(S94_REMOVED) | set(S95_REMOVED)
     c = [p for p in circuit45.circuit() if p['ref'] not in gone]
     by = {p['ref']: p for p in c}
     for p in c:
@@ -309,11 +332,18 @@ def circuit():
                                   'a 15 V / 3 A fixed PDO (>= 45 W PD class). No current-contract tracking; PG is not a '
                                   'current guarantee')
     assert not {n for p in c for n in p['pins'].values() if n in S94_NETS}, 'S9.4: limiter nets must be gone'
+    # S9.5: no D10; U5 IN (1, 2, 3, 6) and its 1 uF C2 sit straight on VPD (S95_REMOVED)
+    for ref, pins in (('U5', ('1', '2', '3', '6')), ('C2', ('1',))):
+        for n in pins:
+            assert by[ref]['pins'][n] == 'MAIN_IN', (ref, n, by[ref]['pins'][n])
+            by[ref]['pins'][n] = 'VPD'
+    by['C2']['fields']['Note'] = 'U5 IN local cap, on VPD (S9.5: D10 removed). With C1, approximately 2 uF at attach; bulk is behind U5'
+    assert not {n for p in c for n in p['pins'].values() if n in S95_NETS}, 'S9.5: MAIN_IN must be gone'
     # S9.1: precision upper / principal lower, Basic 510R trim in series with R3.
     # Wider TPS16630 internal threshold tolerances prevent simultaneously guaranteeing <=13.0 V rising
     # and >=11.8 V falling with ANY passive divider (see calcs input_qualification).
     by['R2']['fields'].update(LCSC='C122538', MPN='RT0603BRD07100KL', Manufacturer='YAGEO',
-                              Tolerance='0.1%', TCR='25ppm', Note='S9.1 UVLO top, precision 100k; senses own VPD before D10')
+                              Tolerance='0.1%', TCR='25ppm', Note='S9.1 UVLO top, precision 100k; senses VPD (= U5 IN since S9.5)')
     by['R3'].update(value='10k')
     by['R3']['pins']['2'] = 'UV_TRIM'
     by['R3']['fields'].update(LCSC='C95204', MPN='RT0603BRD0710KL', Manufacturer='YAGEO',
@@ -325,7 +355,9 @@ def circuit():
     by['U5']['fields']['Note'] = ('S9.2 common input switch, SHDN = RUN. UVLO R2 100k precision / '
         '(R3 10k precision + R114 510R): <13.0 V worst-case start. OVP (R28+R4 130k / R24 9.1k) rises at 17.30-19.44 V, '
         'recovers at 16.03-18.27 V: opens before D24 (VR 20 V, VBR >= 22.2 V) can conduct. '
-        'FLT/PGOOD = MAIN_OK. U4 independently requires RUN AND MAIN_LED_OK and derives EN drive from own VPD.')
+        'FLT/PGOOD = MAIN_OK. U4 independently requires RUN AND MAIN_LED_OK and derives EN drive from own VPD. '
+        'S9.5: IN straight on VPD (D10 removed); the single-FET body diode does not block reverse current, so never '
+        'parallel another supply on the +/-12 V bus.')
     # S9.2 item 1: OVP retuned from the 20 V-input setting (24.14 V nominal, 22.76-25.60 V) to the 15 V input, so that the
     # whole OVP band lies below the D24 stand-off: a sustained source overvoltage is removed by U5, never absorbed by D24.
     by['R24'].update(value='9.1k')
@@ -341,7 +373,7 @@ def circuit():
     by['U4']['fields']['Note'] = by['U4']['fields']['Note'].replace(
         'Pins 1 and pad are the -12V node, not GND.', 'Pins 1 and pad are the delivered -12V node (S8: no '
         'series switch), not GND; 18 ms OCP blanking at start-up charges the rack capacitance.')
-    # S9.1 C1: NO output-derived enable supply. VPD is upstream of reverse-blocking D10.
+    # S9.1 C1: NO output-derived enable supply. VPD is the own input (upstream of U5; S9.5: no D10 any more).
     # Q14/Q15 form a series AND sink: RUN AND MAIN_LED_OK. R112 holds Q1 off if either is off.
     by['Q1']['pins']['2'] = 'VPD'
     by['Q1']['pins']['1'] = 'N_EN_BASE'
@@ -538,6 +570,9 @@ def circuit():
                  Note='OV_N pull-up (wired-AND of the U20 guard outputs)'))
     c.append(cap('C65', '100n', 'C0603', m(241.3, 99.06), 'VPD', 'GND',
                  Note='U20 always-on VPD decoupling, 50 V, at U20 pin 3 (S8.4 placement contract <=4.5 mm); not V3V3'))
+    for ref, (value, fields) in S95_SOURCING.items():      # S9.5 export: in-stock sourcing, same function / pins / land
+        by[ref]['value'] = value
+        by[ref]['fields'].update(fields)
     return c
 
 
@@ -546,7 +581,7 @@ def drawing():
     J3, the VIN damper and the OV guard. S9.0: the +5V converter block, the J2/J3 +5V pins and the U23 cell are gone."""
     W, P, L = circuit45.drawing()
     redrawn = {'U2', 'L1', 'R8', 'R9', *(f'C{i}' for i in range(6, 15))}      # S9.0 step 2: +12V cell redrawn below
-    gone = set(S8_REMOVED) | set(S9_REMOVED) | set(S94_REMOVED) | {'R35', 'R62'} | redrawn   # moved refs: S7 lines at their old spots
+    gone = set(S8_REMOVED) | set(S9_REMOVED) | set(S94_REMOVED) | set(S95_REMOVED) | {'R35', 'R62'} | redrawn   # moved refs: S7 lines at their old spots
 
     def ref_of(pt):
         if isinstance(pt, str):
@@ -571,6 +606,10 @@ def drawing():
     L.remove(('VPD', (83.82, 50.8), 'U'))                       # the U1 VHV/VBUS wire rises to the VPD rail wire instead
     W += [[(83.82, 50.8), (83.82, 45.72)]]
     assert not any(n in S94_NETS for n, _, _ in L), 'S9.4: limiter labels must be gone'
+    # S9.5: the fuse output wire runs straight into U5 IN where D10 sat; its MAIN_IN label goes with D10
+    L.remove(('MAIN_IN', (182.88, 45.72), 'U'))
+    W += [['F1.2', 'U5.1']]
+    assert not any(n in S95_NETS for n, _, _ in L), 'S9.5: MAIN_IN labels must be gone'
 
     # J3: same wiring as J2 in circuit45.drawing() (S9.0: pins 11/12 open, no +5V symbols)
     hx, hy = J3_AT

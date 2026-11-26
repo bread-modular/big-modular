@@ -1,10 +1,10 @@
 {
   "status": "S9_schematic_checks_not_bench_qualification",
-  "components": 178,
-  "nets_including_NC": 110,
+  "components": 176,
+  "nets_including_NC": 109,
   "sheets": 6,
   "exact_field_pin_NC_pad_parity": true,
-  "removed_S7_refs": 97,
+  "removed_S7_refs": 99,
   "added_refs": [
     "C59",
     "C61",
@@ -1001,7 +1001,7 @@
   },
   "no_via_in_pad": {
     "decision": "PROHIBITED: no via in any pad and no plated hole in any footprint pad, anywhere on the board (owner decision 2026-11-02). Standard JLCPCB vias only (VIA_SPEC): 0.3 mm drill / 0.6 mm pad through vias, tented, unfilled; no POFV, no resin fill, no copper cap, no 0.2 mm or laser microvia, no blind/buried via",
-    "footprints_checked": 25,
+    "footprints_checked": 24,
     "plated_holes_in_pads": 0,
     "thermal_pad_footprints": {
       "U5": "HTSSOP-20-1EP_4.4x6.5mm_P0.65mm_EP3.4x6.5mm_Mask2.96x2.96mm_NoViaInPad",
