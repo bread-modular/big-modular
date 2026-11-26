@@ -1,17 +1,20 @@
 // MOTION firmware (ATtiny1616 at 5 V, 20 MHz internal)
 //
-// Four knobs, four CV outputs. Hold REC and move a knob: its motion is
-// recorded straight into the MB85RC256V FRAM and loops on that knob's output
-// (MotionRecorder.h); the knob then moves the take up and down. Hold REC 5 s
-// without moving a knob = erase every take. RANGE toggles all four outputs
-// between 0..+5 V (LED off) and -5..+5 V (LED on), kept in the FRAM.
+// Four knobs, four CV outputs, each -5..+5 V. Hold REC and move a knob: its
+// motion is recorded straight into the MB85RC256V FRAM and loops on that
+// knob's output (MotionRecorder.h). 1 s after the take the knob attenuates
+// it. Hold DEL (the second button, labelled RANGE on the S1 schematic) and
+// move a knob = delete that take; hold DEL 5 s without moving a knob = erase
+// every take. Takes and gains are kept in the FRAM.
 //
 // Pin map (modules/motion/tools/build_schematic.py, S1):
 //   PA1 / PA2 / PA6 / PA7  knobs 1-4 (ADC0, VDD reference)
 //   PB0 / PB1              SCL / SDA (TWI0, 400 kHz): FRAM 0x50, DAC 0x60
 //   PB2 / PA3 / PA4 / PA5  motion LEDs 1-4 (TCA0 split WO2..WO5)
-//   PB3 / PB4              REC / RANGE LEDs (TCA0 WO0 / WO1 on PORTMUX alternates)
-//   PC0 / PC1              REC / RANGE buttons to GND (internal pull-ups)
+//   PB3 / PB4              REC / DEL LEDs (TCA0 WO0 / WO1 on PORTMUX alternates;
+//                          schematic LED_REC / LED_RANGE)
+//   PC0 / PC1              REC / DEL buttons to GND (internal pull-ups;
+//                          schematic REC_BTN / RANGE_BTN)
 //   PB5, PC2, PC3          spare (pull-ups)
 // millis() runs on TCD0 (megaTinyCore default on the 1-series); TCA0 is ours.
 
@@ -24,12 +27,11 @@ using namespace motion;
 
 static const uint8_t KNOB_PIN[4] = {PIN_PA1, PIN_PA2, PIN_PA6, PIN_PA7};
 static const uint8_t REC_PIN = PIN_PC0;
-static const uint8_t RANGE_PIN = PIN_PC1;
-static const uint32_t RANGE_DEBOUNCE_MS = 30;
+static const uint8_t DEL_PIN = PIN_PC1;
 static const uint32_t ERASE_FLASH_MS = 600;  // three flashes of every LED
 
-// LEDs: 0..3 motion 1-4, 4 REC, 5 RANGE.
-enum { LED_REC = 4, LED_RANGE = 5 };
+// LEDs: 0..3 motion 1-4, 4 REC, 5 DEL.
+enum { LED_REC = 4, LED_DEL = 5 };
 
 // ---- FRAM ------------------------------------------------------------------
 static bool framOk = false;
@@ -73,19 +75,20 @@ struct FramStore {
         const uint8_t b[2] = {(uint8_t)value, (uint8_t)(value >> 8)};
         framWrite(frameAddr(track, frame), b, 2);
     }
-    void writeHeader(uint8_t track, uint16_t frames, uint16_t ref) {
+    void writeHeader(uint8_t track, uint16_t frames, uint16_t gain) {
         if (!framOk) return;
         const uint8_t b[4] = {(uint8_t)frames, (uint8_t)(frames >> 8),
-                              (uint8_t)ref, (uint8_t)(ref >> 8)};
+                              (uint8_t)gain, (uint8_t)(gain >> 8)};
         framWrite(headerAddr(track), b, 4);
     }
 };
 
 static FramStore store;
-static MotionRecorder<FramStore> recorder(store);
+typedef MotionRecorder<FramStore> Rec;
+static Rec recorder(store);
 
-// Present: check the magic; a blank (or other) FRAM gets empty takes and
-// RANGE off, magic last.
+// Present: check the magic; a blank (or other) FRAM gets empty takes, magic
+// last.
 static bool framInit() {
     Wire.beginTransmission(FRAM_I2C);
     if (Wire.endTransmission() != 0) {
@@ -100,8 +103,7 @@ static bool framInit() {
         return true;
     }
     uint8_t zero[16] = {0};
-    if (!framWrite(FRAM_HEADERS, zero, sizeof(zero)) ||
-        !framWrite(FRAM_RANGE, zero, 1)) {
+    if (!framWrite(FRAM_HEADERS, zero, sizeof(zero))) {
         return false;
     }
     const uint8_t m[4] = {'M', 'O', 'T', FRAM_VERSION};
@@ -124,7 +126,7 @@ static void dacWrite(const uint16_t code[4]) {
 }
 
 // The MCP4728 starts each output from its EEPROM before the MCU runs: make
-// that VREF = VDD, gain 1, mid-scale (0 V out in both ranges), once per chip.
+// that VREF = VDD, gain 1, mid-scale (0 V out), once per chip.
 // Then select VREF = VDD for the running registers and write 0 V.
 static void dacInit() {
     uint8_t reg[24];
@@ -199,9 +201,6 @@ static void ledSet(uint8_t led, uint8_t duty) {
 static KnobFilter knobFilter[4];
 static uint16_t knobs[4];
 static uint8_t knobNext = 0;
-static bool bipolar = false;
-static bool rangeDown = false;
-static uint32_t rangeEdgeMs = 0;
 static bool eraseFlash = false;
 static uint32_t eraseMs = 0;
 static uint32_t lastMs = 0;
@@ -213,33 +212,21 @@ static void readKnob(uint8_t i) {
     }
 }
 
-// RANGE: a debounced press toggles the range, saved in the FRAM.
-static void rangeButton(uint32_t now) {
-    const bool down = digitalRead(RANGE_PIN) == LOW;
-    if (down == rangeDown || (uint32_t)(now - rangeEdgeMs) < RANGE_DEBOUNCE_MS) {
-        return;
-    }
-    rangeDown = down;
-    rangeEdgeMs = now;
-    if (down) {
-        bipolar = !bipolar;
-        if (framOk) {
-            const uint8_t b = bipolar ? 1 : 0;
-            framWrite(FRAM_RANGE, &b, 1);
-        }
-    }
-}
-
-// REC LED: blinks while recording; REC held with no knob moved: on for 1 s,
-// then a countdown that blinks faster each second until the erase at 5 s.
+// REC LED: on while REC is held, blinking while a knob records.
 static uint8_t recLed(uint32_t now) {
     if (recorder.recording()) {
         return ((now / 150) & 1) ? 0 : LED_FULL;
     }
-    const uint32_t idle = recorder.idleHoldMs(now);
-    if (idle == 0) {
+    return recorder.hold() == Rec::HOLD_REC ? LED_FULL : 0;
+}
+
+// DEL LED: on while DEL is held; held with no knob moved: on for 1 s, then a
+// countdown that blinks faster each second until the erase at 5 s.
+static uint8_t delLed(uint32_t now) {
+    if (recorder.hold() != Rec::HOLD_DEL) {
         return 0;
     }
+    const uint32_t idle = recorder.eraseHoldMs(now);
     if (idle < 1000) {
         return LED_FULL;
     }
@@ -265,16 +252,17 @@ static void updateLeds(uint32_t now) {
         }
         eraseFlash = false;
     }
+    const bool blinkOn = ((now / LED_BLINK_MS) & 1) == 0;
     for (uint8_t i = 0; i < 4; ++i) {
-        ledSet(i, motionLed(recorder.out(i)));
+        ledSet(i, motionLed(recorder.out(i), blinkOn));
     }
     ledSet(LED_REC, recLed(now));
-    ledSet(LED_RANGE, bipolar ? LED_FULL : 0);
+    ledSet(LED_DEL, delLed(now));
 }
 
 void setup() {
     pinMode(REC_PIN, INPUT_PULLUP);
-    pinMode(RANGE_PIN, INPUT_PULLUP);
+    pinMode(DEL_PIN, INPUT_PULLUP);
     pinMode(PIN_PB5, INPUT_PULLUP);
     pinMode(PIN_PC2, INPUT_PULLUP);
     pinMode(PIN_PC3, INPUT_PULLUP);
@@ -286,10 +274,7 @@ void setup() {
     dacInit();
     framOk = framInit();
 
-    if (framOk) {
-        uint8_t b = 0;
-        bipolar = framRead(FRAM_RANGE, &b, 1) && b == 1;
-    } else {
+    if (!framOk) {
         // No FRAM: knobs live only. Flash the REC LED five times.
         for (uint8_t i = 0; i < 10; ++i) {
             ledSet(LED_REC, (i & 1) ? 0 : LED_FULL);
@@ -313,13 +298,11 @@ void setup() {
                           (uint16_t)(h[2] | (h[3] << 8)), now);
         }
     }
-    rangeDown = digitalRead(RANGE_PIN) == LOW;  // held at power-up: no toggle
-    rangeEdgeMs = now;
     lastMs = now;
 }
 
-// One pass per millisecond: one knob (each read every 4 ms), the buttons,
-// the recorder, the DAC (only when a code changed) and the LEDs.
+// One pass per millisecond: one knob (each read every 4 ms), the recorder
+// with both buttons, the DAC (only when a code changed) and the LEDs.
 void loop() {
     const uint32_t now = millis();
     if (now == lastMs) {
@@ -329,13 +312,13 @@ void loop() {
 
     readKnob(knobNext);
     knobNext = (uint8_t)((knobNext + 1) & 3);
-    rangeButton(now);
-    recorder.update(now, knobs, digitalRead(REC_PIN) == LOW);
+    recorder.update(now, knobs, digitalRead(REC_PIN) == LOW,
+                    digitalRead(DEL_PIN) == LOW);
 
     uint16_t code[4];
     bool changed = false;
     for (uint8_t i = 0; i < 4; ++i) {
-        code[i] = dacCode(recorder.out(i), bipolar);
+        code[i] = recorder.out(i);
         changed |= code[i] != dacLast[i];
     }
     if (changed) {
