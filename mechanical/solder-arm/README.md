@@ -37,7 +37,9 @@ Desk to board, one arm link and three joints:
   thin fingers are beside the board.
 - **Desk base**: pick the size in the [base guide](print/two-screw-base/README.md): the full-height
   base for 5 .. 52 mm desks, or the [compact one](print/two-screw-base/compact-28/README.md), 24 mm
-  shorter and 20 g lighter, for 5 .. 28 mm. Both have the same top jaw, J1 pivot and screws.
+  shorter and 20 g lighter, for 5 .. 28 mm, or the [narrow one](print/two-screw-base/narrow-56/README.md),
+  56 mm along the edge instead of 112 (screws 32 mm apart), for 5 .. 52 mm. All have the same top
+  jaw section, J1 pivot and screws.
 - The build scans every `.kicad_pcb` in `modules/` (56 boards today: carriers, MCU boards, FR4
   panels, busboard) and fails if one of them has no side in the jaw range. The 205 x 32 mm
   busboard is held across its 32 mm side; the 18HP / 20HP boards across either side.
@@ -94,6 +96,7 @@ only, no printer or process settings; `plates.json` lists what is where.
 | `plate-5-link-and-rail` | `arm-link`, `head-rail` | PLA or PETG | 4 / 35 % | 3 h 26 | 114 g |
 | base: `two-screw-base/print-this` | base, 2 `hand-screw` | PLA or PETG | 5 / 35 % | 5 h 43 | 184 g |
 | or `compact-28/print-this` | compact base, 2 `hand-screw` | PLA or PETG | 6 / 35 % | 5 h 04 | 164 g |
+| or `narrow-56/print-this` | 56 mm narrow base, 2 `hand-screw` | PLA or PETG | 5 / 35 % | 3 h 40 | 108 g |
 
 Times and weights are OrcaSlicer 2.4.2 estimates (headless slice, 2026-11-26 for plates 1-5,
 2026-11-26 in the base folders for the base: P2S 0.4 nozzle, `0.20mm Standard @BBL P2S` with

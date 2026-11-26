@@ -25,6 +25,8 @@ CAD = ARM / 'cad' / 'two-screw-base'
 PREVIEW = ARM / 'research' / 'two-screw-base' / 'render'
 HALF = 56.0                      # along the edge (original body: +/-23)
 AX, OFF = 13.0, 40.0             # short lower jaw; one screw under each top wing
+FAN = 36.0                       # 45 degree corner cut where the top jaw fans into the pivot
+NOTCH = 19.0                     # relieved lower-lip centre between the screws (0 = none)
 BOTTOM, TOP = -67., -54.         # 13 mm integral tapped land
 PITCH = screwfit.R['pitch']
 HEIGHT = screwfit.TIP + PITCH    # one extra turn to retain the arm's 5 mm minimum
@@ -57,10 +59,12 @@ def frame_blank():
     # lip, NOT the cross-edge spine. Both transitions grow <=1 mm per mm of Y
     # when printed on the -Y end. No suspended crossbar to bridge.
     reach = arm.TOP_JAW_L
-    outline = [(-14, -HALF), (reach-36, -HALF), (reach, -HALF+36),
-               (reach, HALF-36), (reach-36, HALF), (-14, HALF)]
+    outline = [(-14, -HALF), (reach-FAN, -HALF), (reach, -HALF+FAN),
+               (reach, HALF-FAN), (reach-FAN, HALF), (-14, HALF)]
     body = body.common(arm.prism(outline, BOTTOM-1, arm.T+1))
-    notch = arm.prism([(27, -19), (30, -19), (30, 19), (27, 19), (8, 0)], BOTTOM-1, TOP+1)
+    if not NOTCH:
+        return body
+    notch = arm.prism([(27, -NOTCH), (30, -NOTCH), (30, NOTCH), (27, NOTCH), (27-NOTCH, 0)], BOTTOM-1, TOP+1)
     return body.cut(notch)
 
 

@@ -1,0 +1,433 @@
+{
+  "status": "CAD_PASS",
+  "link_joint_to_joint_mm": 95.0,
+  "full_link_mm": 190.0,
+  "poses": {
+    "level-40": {
+      "pairs_with_overlapping_boxes": 28,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        50,
+        320
+      ],
+      "board_mm": [
+        110.0,
+        29.0,
+        1.6
+      ],
+      "link_above_level_deg": 40.0,
+      "board_tilt_deg": 0.0,
+      "board_centre_mm": [
+        110.4,
+        -37.4,
+        101.4
+      ],
+      "head_to_desk_base_bracket_mm": 14.1
+    },
+    "level-60": {
+      "pairs_with_overlapping_boxes": 26,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        30,
+        300
+      ],
+      "board_mm": [
+        110.0,
+        29.0,
+        1.6
+      ],
+      "link_above_level_deg": 60.0,
+      "board_tilt_deg": 0.0,
+      "board_centre_mm": [
+        88.5,
+        -24.8,
+        122.6
+      ],
+      "head_to_desk_base_bracket_mm": 35.4
+    },
+    "tilted": {
+      "pairs_with_overlapping_boxes": 31,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        50,
+        290
+      ],
+      "board_mm": [
+        91.3,
+        110.0,
+        1.6
+      ],
+      "link_above_level_deg": 40.0,
+      "board_tilt_deg": 30.0,
+      "board_centre_mm": [
+        126.6,
+        -0.0,
+        102.6
+      ],
+      "head_to_desk_base_bracket_mm": 39.7
+    },
+    "steep": {
+      "pairs_with_overlapping_boxes": 37,
+      "collisions": 0,
+      "largest_touch_volume_mm3": 0.0,
+      "angles_deg": [
+        300,
+        30,
+        240
+      ],
+      "board_mm": [
+        29.0,
+        110.0,
+        1.6
+      ],
+      "link_above_level_deg": 60.0,
+      "board_tilt_deg": 60.0,
+      "board_centre_mm": [
+        101.8,
+        14.3,
+        127.2
+      ],
+      "head_to_desk_base_bracket_mm": 24.9
+    }
+  },
+  "head_range": {
+    "link_60_deg_up": {
+      "clear_board_tilts_deg": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160,
+        170,
+        180
+      ],
+      "steps": [
+        {
+          "j3_deg": 30,
+          "board_tilt_deg": 90,
+          "gap_mm": 11.9
+        },
+        {
+          "j3_deg": 40,
+          "board_tilt_deg": 100,
+          "gap_mm": 12.7
+        },
+        {
+          "j3_deg": 50,
+          "board_tilt_deg": 110,
+          "gap_mm": 17.1
+        },
+        {
+          "j3_deg": 60,
+          "board_tilt_deg": 120,
+          "gap_mm": 24.9
+        },
+        {
+          "j3_deg": 70,
+          "board_tilt_deg": 130,
+          "gap_mm": 36.1
+        },
+        {
+          "j3_deg": 80,
+          "board_tilt_deg": 140,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 90,
+          "board_tilt_deg": 150,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 100,
+          "board_tilt_deg": 160,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 110,
+          "board_tilt_deg": 170,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 120,
+          "board_tilt_deg": 180,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 130,
+          "board_tilt_deg": 170,
+          "gap_mm": 36.8
+        },
+        {
+          "j3_deg": 140,
+          "board_tilt_deg": 160,
+          "gap_mm": 22.3
+        },
+        {
+          "j3_deg": 150,
+          "board_tilt_deg": 150,
+          "gap_mm": 6.8
+        },
+        {
+          "j3_deg": 220,
+          "board_tilt_deg": 80,
+          "gap_mm": 12.7
+        },
+        {
+          "j3_deg": 230,
+          "board_tilt_deg": 70,
+          "gap_mm": 17.1
+        },
+        {
+          "j3_deg": 240,
+          "board_tilt_deg": 60,
+          "gap_mm": 24.9
+        },
+        {
+          "j3_deg": 250,
+          "board_tilt_deg": 50,
+          "gap_mm": 36.1
+        },
+        {
+          "j3_deg": 260,
+          "board_tilt_deg": 40,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 270,
+          "board_tilt_deg": 30,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 280,
+          "board_tilt_deg": 20,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 290,
+          "board_tilt_deg": 10,
+          "gap_mm": 41.1
+        },
+        {
+          "j3_deg": 300,
+          "board_tilt_deg": 0,
+          "gap_mm": 35.4
+        },
+        {
+          "j3_deg": 310,
+          "board_tilt_deg": 10,
+          "gap_mm": 22.1
+        },
+        {
+          "j3_deg": 320,
+          "board_tilt_deg": 20,
+          "gap_mm": 7.6
+        }
+      ]
+    },
+    "link_40_deg_up": {
+      "clear_board_tilts_deg": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        130,
+        140,
+        150,
+        160,
+        170,
+        180
+      ],
+      "steps": [
+        {
+          "j3_deg": 90,
+          "board_tilt_deg": 130,
+          "gap_mm": 14.9
+        },
+        {
+          "j3_deg": 100,
+          "board_tilt_deg": 140,
+          "gap_mm": 28.9
+        },
+        {
+          "j3_deg": 110,
+          "board_tilt_deg": 150,
+          "gap_mm": 39.7
+        },
+        {
+          "j3_deg": 120,
+          "board_tilt_deg": 160,
+          "gap_mm": 39.7
+        },
+        {
+          "j3_deg": 130,
+          "board_tilt_deg": 170,
+          "gap_mm": 38.8
+        },
+        {
+          "j3_deg": 140,
+          "board_tilt_deg": 180,
+          "gap_mm": 28.8
+        },
+        {
+          "j3_deg": 150,
+          "board_tilt_deg": 170,
+          "gap_mm": 12.2
+        },
+        {
+          "j3_deg": 270,
+          "board_tilt_deg": 50,
+          "gap_mm": 14.9
+        },
+        {
+          "j3_deg": 280,
+          "board_tilt_deg": 40,
+          "gap_mm": 28.9
+        },
+        {
+          "j3_deg": 290,
+          "board_tilt_deg": 30,
+          "gap_mm": 39.7
+        },
+        {
+          "j3_deg": 300,
+          "board_tilt_deg": 20,
+          "gap_mm": 39.7
+        },
+        {
+          "j3_deg": 310,
+          "board_tilt_deg": 10,
+          "gap_mm": 27.3
+        },
+        {
+          "j3_deg": 320,
+          "board_tilt_deg": 0,
+          "gap_mm": 14.1
+        }
+      ]
+    },
+    "link_30_deg_up": {
+      "clear_board_tilts_deg": [
+        10,
+        20,
+        30,
+        40,
+        140,
+        150,
+        160,
+        170,
+        180
+      ],
+      "steps": [
+        {
+          "j3_deg": 110,
+          "board_tilt_deg": 140,
+          "gap_mm": 15.4
+        },
+        {
+          "j3_deg": 120,
+          "board_tilt_deg": 150,
+          "gap_mm": 31.9
+        },
+        {
+          "j3_deg": 130,
+          "board_tilt_deg": 160,
+          "gap_mm": 35.3
+        },
+        {
+          "j3_deg": 140,
+          "board_tilt_deg": 170,
+          "gap_mm": 25.9
+        },
+        {
+          "j3_deg": 150,
+          "board_tilt_deg": 180,
+          "gap_mm": 15.2
+        },
+        {
+          "j3_deg": 290,
+          "board_tilt_deg": 40,
+          "gap_mm": 15.4
+        },
+        {
+          "j3_deg": 300,
+          "board_tilt_deg": 30,
+          "gap_mm": 30.1
+        },
+        {
+          "j3_deg": 310,
+          "board_tilt_deg": 20,
+          "gap_mm": 27.3
+        },
+        {
+          "j3_deg": 320,
+          "board_tilt_deg": 10,
+          "gap_mm": 13.7
+        }
+      ]
+    }
+  },
+  "print": {
+    "arm-link": {
+      "print_bounds_mm": [
+        141.0,
+        46.0,
+        13.44
+      ],
+      "volume_cm3": 69.95,
+      "stl_facets": 6508,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 5691.8,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0,
+      "highest_of_it_above_bed_mm": 0.0
+    }
+  },
+  "plate": {
+    "pieces": 1,
+    "footprint_mm": [
+      141.0,
+      46.0
+    ],
+    "height_mm": 13.44,
+    "items": [
+      {
+        "part": "arm-link",
+        "bed_xy_mm": [
+          57.5,
+          105.0
+        ],
+        "size_mm": [
+          141.0,
+          46.0,
+          13.44
+        ]
+      }
+    ],
+    "sha256": "3f0f54e8fd148f823a6fa248445e7f8f08e98472bcf80d59021862a57d8264cf"
+  },
+  "physical_load_test": false
+}
