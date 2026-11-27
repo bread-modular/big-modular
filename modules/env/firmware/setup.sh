@@ -12,6 +12,25 @@ ARDUINO_CLI="$BIN_DIR/arduino-cli"
 INDEX_URL="http://drazzy.com/package_drazzy.com_index.json"
 CORE_ID="megaTinyCore:megaavr"
 
+# --- 0. OS packages (azero): nothing to install --------------------------------
+# /usr/bin/arduino-cli with megaTinyCore 2.6.11 in the read-only data dir
+# /opt/big-modular/arduino15 (the compile / flash scripts use it, see
+# opt/attiny1616-tools/common.sh). `core install` into it fails on purpose, so
+# only check. BIG_MODULAR_TOOLCHAINS=home runs the home setup below instead.
+OS_ARDUINO_DATA=/opt/big-modular/arduino15
+if [[ "${BIG_MODULAR_TOOLCHAINS:-}" != home && -d "$OS_ARDUINO_DATA" ]]; then
+  if [[ -x /usr/bin/arduino-cli && \
+        -f "$OS_ARDUINO_DATA/packages/megaTinyCore/hardware/megaavr/2.6.11/boards.txt" ]]; then
+    echo "==> OS packages: $(ARDUINO_UPDATER_ENABLE_NOTIFICATION=false /usr/bin/arduino-cli version | head -1)"
+    echo "==> OS packages: megaTinyCore:megaavr 2.6.11 in $OS_ARDUINO_DATA"
+    echo "✅ Nothing to do (nothing downloaded or changed)."
+    exit 0
+  fi
+  echo "arduino-cli or megaTinyCore 2.6.11 missing from the OS packages: install the azero" >&2
+  echo "firmware-toolchains packages, or run BIG_MODULAR_TOOLCHAINS=home $0" >&2
+  exit 1
+fi
+
 echo "==> Ensuring ~/bin is on PATH"
 if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
   export PATH="$BIN_DIR:$PATH"

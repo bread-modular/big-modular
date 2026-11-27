@@ -22,7 +22,8 @@ else
   IMAGE="$STM32_BUILD_DIR/$STM32_TARGET.elf"
 fi
 
-OPENOCD="$(find_openocd)" || die "openocd not found. Run ./setup.sh first."
+OPENOCD="$(find_openocd)" || die "openocd not found. Run ./setup.sh first.$(os_hint)"
+echo "==> openocd: $OPENOCD"
 
 INTERFACE="${OPENOCD_INTERFACE:-interface/stlink.cfg}"
 case "$INTERFACE" in

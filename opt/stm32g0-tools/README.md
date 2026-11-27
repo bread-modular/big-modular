@@ -7,12 +7,24 @@ modules/12bit MCU is the same part.
 
 | Script | Use |
 |---|---|
-| `setup.sh` | reuse installed tools; download only the missing pinned pieces into `$STM32_HOME` (default `~/.big-modular/stm32g0`) |
+| `setup.sh` | reuse installed tools; download only the missing pinned pieces into `$STM32_HOME` (default `~/.big-modular/stm32g0`; OS packages: check only) |
 | `compile.sh` | `make` in `$STM32_PROJECT_ROOT` with the pinned toolchain / CMSIS -> `<build>/<target>.{elf,bin,hex}` |
 | `flash.sh [fw.elf]` | build (unless an image is given), then OpenOCD over SWD with an ST-Link: program, verify, reset |
 | `common.sh` | sourced helpers |
 
-Pinned dependencies (first hit wins; `compile.sh` / `flash.sh` never download):
+## OS toolchains (azero) and the home fallback
+
+Where `/opt/big-modular/stm32g0` exists (azero's OS packages) the scripts default
+to `BIG_MODULAR_TOOLCHAINS=os`: Arch's `arm-none-eabi-gcc` **16.2** (`/usr/bin`, 6-20 % smaller binaries than 14.2) and `openocd` 0.12.0 (`/usr/bin`; its `stlink.cfg` lacks the STLINK-V3PWR IDs), the same CMSIS commits in `$STM32_HOME` = `/opt/big-modular/stm32g0`. They are resolved by explicit path, so
+a home copy earlier on the PATH (`~/.local/bin`, `~/bin`, `~/.cargo/bin`) is
+never picked, in any shell, login or not (the `/etc/profile.d/big-modular-*.sh`
+variables are not needed). `setup.sh` then only checks: nothing is downloaded
+or written. `BIG_MODULAR_TOOLCHAINS=home` restores the home lookup below
+(`/opt/big-modular` values exported by `/etc/profile.d` are ignored). Without
+`/opt/big-modular/stm32g0` (macOS, Ubuntu) the default is `home`, as before.
+Explicit tool variables win in both modes.
+
+Home lookup, pinned dependencies (first hit wins; `compile.sh` / `flash.sh` never download):
 
 | Tool | Version | Looked up in |
 |---|---|---|

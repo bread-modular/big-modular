@@ -12,6 +12,9 @@
 #   picotool 2.2.0-a4                picotool/2.2.0-a4/picotool
 #   cmake, ninja (only if not on the PATH)   cmake/, bin/
 #
+# With the OS packages (azero, see common.sh: BIG_MODULAR_TOOLCHAINS) it only
+# checks them: nothing is downloaded or written.
+#
 # Safe to re-run; downloads are cached in $BREADMODULAR_HOME/downloads.
 set -euo pipefail
 
@@ -57,15 +60,24 @@ unquarantine() {
   [[ "$OS" == Darwin ]] && xattr -dr com.apple.quarantine "$1" 2>/dev/null || true
 }
 
-need git
-need curl
-need tar
-mkdir -p "$BREADMODULAR_HOME/bin"
+# os: report a missing piece instead of downloading it.
+os_missing() {
+  [[ "$RP2350_TOOLCHAINS" != os ]] || die "$1 not found in the OS packages.$(os_hint)"
+}
+
+if [[ "$RP2350_TOOLCHAINS" == os ]]; then
+  echo "==> OS toolchains ($BREADMODULAR_HOME, /usr/bin): checking only, nothing to download"
+else
+  need git
+  need curl
+  need tar
+fi
 
 # --- 1. Pico SDK -------------------------------------------------------------------
 if SDK="$(find_sdk)"; then
   echo "==> Reusing Pico SDK at $SDK"
 else
+  os_missing "Pico SDK $PICO_SDK_VERSION"
   SDK="$BREADMODULAR_HOME/pico-sdk/sdk/$PICO_SDK_VERSION"
   if [[ ! -d "$SDK/.git" ]]; then
     [[ -e "$SDK" ]] && die "$SDK exists but is not a git checkout; move it aside"
@@ -77,7 +89,7 @@ else
   echo "==> Fetching SDK submodule lib/tinyusb"
   git -C "$SDK" submodule update --init --depth 1 -- lib/tinyusb
 fi
-FOUND_VERSION="$(git -C "$SDK" describe --tags 2>/dev/null || echo unknown)"
+FOUND_VERSION="$(sdk_version "$SDK")"
 [[ "$FOUND_VERSION" == "$PICO_SDK_VERSION" ]] || \
   echo "Warning: Pico SDK is $FOUND_VERSION, the firmware is tested with $PICO_SDK_VERSION." >&2
 
@@ -85,6 +97,7 @@ FOUND_VERSION="$(git -C "$SDK" describe --tags 2>/dev/null || echo unknown)"
 if TC="$(find_toolchain)"; then
   echo "==> Reusing ARM toolchain at $TC"
 else
+  os_missing arm-none-eabi-gcc
   TC="$BREADMODULAR_HOME/toolchain/$TOOLCHAIN_VERSION"
   PKG="arm-gnu-toolchain-$TOOLCHAIN_GNU_VERSION-$TC_HOST-arm-none-eabi"
   ARCHIVE="$(fetch "https://developer.arm.com/-/media/Files/downloads/gnu/$TOOLCHAIN_GNU_VERSION/binrel/$PKG.tar.xz")"
@@ -101,6 +114,7 @@ fi
 if PT="$(find_picotool)"; then
   echo "==> Reusing picotool at $PT"
 else
+  os_missing "picotool $PICOTOOL_VERSION"
   PT_DIR="$BREADMODULAR_HOME/picotool/$PICOTOOL_VERSION"
   URL="https://github.com/raspberrypi/pico-sdk-tools/releases/download/$PICOTOOL_RELEASE/picotool-$PICOTOOL_VERSION-$PT_HOST"
   mkdir -p "$PT_DIR"
@@ -119,6 +133,8 @@ fi
 if CM="$(find_cmake)"; then
   echo "==> Reusing $CM"
 else
+  os_missing cmake
+  mkdir -p "$BREADMODULAR_HOME/bin"
   PKG="cmake-$CMAKE_VERSION-$CM_HOST"
   ARCHIVE="$(fetch "https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/$PKG.tar.gz")"
   mkdir -p "$BREADMODULAR_HOME/cmake"
@@ -133,7 +149,9 @@ fi
 if NJ="$(find_ninja)"; then
   echo "==> Reusing $NJ"
 else
+  os_missing ninja
   need unzip
+  mkdir -p "$BREADMODULAR_HOME/bin"
   unzip -qo "$(fetch "https://github.com/ninja-build/ninja/releases/download/v$NINJA_VERSION/$NJ_ZIP")" \
     -d "$BREADMODULAR_HOME/bin"
   NJ="$BREADMODULAR_HOME/bin/ninja"

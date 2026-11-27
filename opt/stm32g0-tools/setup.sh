@@ -8,12 +8,23 @@
 # The ARM GNU toolchain is not downloaded: install Bread Modular's
 # (~/.breadmodular, e.g. opt/rp2350-tools/setup.sh) or put arm-none-eabi-gcc
 # on PATH.
+# With the OS packages (azero, see common.sh: BIG_MODULAR_TOOLCHAINS) it only
+# checks them: nothing is downloaded or written.
 #
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-mkdir -p "$STM32_HOME"
+# os: report a missing piece instead of downloading it.
+os_missing() {
+  [[ "$STM32_TOOLCHAINS" != os ]] || die "$1 not found in the OS packages.$(os_hint)"
+}
+
+if [[ "$STM32_TOOLCHAINS" == os ]]; then
+  echo "==> OS toolchains ($STM32_OS_HOME, /usr/bin): checking only, nothing to download"
+else
+  mkdir -p "$STM32_HOME"
+fi
 
 fetch() { # url dest
   echo "Downloading $1"
@@ -21,8 +32,9 @@ fetch() { # url dest
 }
 
 if toolchain="$(find_toolchain)"; then
-  echo "arm-none-eabi-gcc: $toolchain"
+  echo "arm-none-eabi-gcc: $toolchain/bin/arm-none-eabi-gcc ($("$toolchain/bin/arm-none-eabi-gcc" -dumpversion))"
 else
+  os_missing arm-none-eabi-gcc
   die "arm-none-eabi-gcc not found: run opt/rp2350-tools/setup.sh (ARM GNU $TOOLCHAIN_VERSION) or set ARM_TOOLCHAIN."
 fi
 
@@ -44,6 +56,7 @@ clone_pinned() { # url commit dest [sparse dir]
 if path="$(find_cmsis_g0)"; then
   echo "cmsis-device-g0: $path"
 else
+  os_missing "cmsis-device-g0 ${CMSIS_G0_COMMIT:0:8}"
   clone_pinned https://github.com/STMicroelectronics/cmsis-device-g0.git "$CMSIS_G0_COMMIT" \
     "$STM32_HOME/cmsis-device-g0-${CMSIS_G0_COMMIT:0:8}"
   echo "cmsis-device-g0: $(find_cmsis_g0)"
@@ -52,6 +65,7 @@ fi
 if path="$(find_cmsis_core)"; then
   echo "CMSIS core: $path"
 else
+  os_missing "CMSIS core ${CMSIS_CORE_COMMIT:0:8}"
   clone_pinned https://github.com/ARM-software/CMSIS_5.git "$CMSIS_CORE_COMMIT" \
     "$STM32_HOME/cmsis-core-${CMSIS_CORE_COMMIT:0:8}" CMSIS/Core/Include
   echo "CMSIS core: $(find_cmsis_core)"
@@ -60,6 +74,7 @@ fi
 if path="$(find_openocd)"; then
   echo "openocd: $path"
 else
+  os_missing openocd
   tag="$(host_tag)" || die "no xPack OpenOCD for $(uname -sm); install openocd and set OPENOCD_BIN."
   name="xpack-openocd-$XPACK_OPENOCD_VERSION-$tag.tar.gz"
   url="https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v$XPACK_OPENOCD_VERSION/$name"

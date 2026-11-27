@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# setup.sh — one-time Pico SDK setup (reuses an installed ~/.breadmodular
-# Pico SDK 2.1.1 / ARM GCC 14.2 / picotool; downloads only what is missing).
+# setup.sh — one-time Pico SDK setup (azero: checks the OS packages; elsewhere
+# reuses an installed ~/.breadmodular Pico SDK 2.1.1 / ARM GCC 14.2 / picotool
+# and downloads only what is missing).
 #
 set -euo pipefail
 

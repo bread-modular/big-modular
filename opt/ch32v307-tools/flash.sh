@@ -77,7 +77,8 @@ console_tty() {
 }
 
 if [[ "$MODE" == rom ]]; then
-  WCHISP="$(find_wchisp)" || die "wchisp not found. Run ./setup.sh first."
+  WCHISP="$(find_wchisp)" || die "wchisp not found. Run ./setup.sh first.$(os_hint)"
+  echo "==> wchisp: $WCHISP"
   SUDO=()
   if [[ "$(uname -s)" == Linux ]] && ! grep -qs 4348 /etc/udev/rules.d/*.rules; then
     SUDO=(sudo)   # no udev rule for the bootloader (see setup.sh)
@@ -108,7 +109,9 @@ if [[ "$MODE" == blwrite ]]; then
 fi
 
 [[ -n "${CH32_DFU_ID:-}" ]] || die "CH32_DFU_ID (vid:pid of the DFU bootloader) not set"
-command -v dfu-util >/dev/null || die "dfu-util not found (Debian/Ubuntu: sudo apt install dfu-util)"
+DFU_UTIL="$(find_dfu_util)" || \
+  die "dfu-util not found (Arch: sudo pacman -S dfu-util; Debian/Ubuntu: sudo apt install dfu-util)"
+echo "==> dfu-util: $DFU_UTIL"
 
 if ! on_usb "$CH32_DFU_ID"; then
   if [[ -n "${CH32_APP_ID:-}" ]] && on_usb "$CH32_APP_ID"; then
@@ -123,7 +126,7 @@ if ! on_usb "$CH32_DFU_ID"; then
   sleep 1
 fi
 
-$(sudo_for "$CH32_DFU_ID") dfu-util -d "$CH32_DFU_ID" -a 0 -D "$BIN"
+$(sudo_for "$CH32_DFU_ID") "$DFU_UTIL" -d "$CH32_DFU_ID" -a 0 -D "$BIN"
 
 if [[ -n "${CH32_APP_ID:-}" ]]; then
   echo "Waiting for the new firmware ($CH32_APP_ID)..."

@@ -29,7 +29,8 @@ CONFIGURE_ARGS+=("${CMAKE_DEFINE_ARGS[@]+"${CMAKE_DEFINE_ARGS[@]}"}")
 JOBS="${JOBS:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)}"
 
 echo "==> Pico SDK $PICO_SDK_PATH"
-echo "==> Toolchain $PICO_TOOLCHAIN_PATH ($(arm-none-eabi-gcc -dumpversion))"
+echo "==> Toolchain $PICO_TOOLCHAIN_PATH/bin/arm-none-eabi-gcc ($("$PICO_TOOLCHAIN_PATH/bin/arm-none-eabi-gcc" -dumpversion), $RP2350_TOOLCHAINS toolchains)"
+echo "==> $CMAKE_BIN${NINJA_BIN:+, $NINJA_BIN}${PICOTOOL_BIN:+, $PICOTOOL_BIN}"
 echo "==> Building $PROJECT_DIR (target: $BUILD_TARGET${RP2350_DEFINES:+, $RP2350_DEFINES})"
 # The UF2 is written by the ELF's post-link step, so an up-to-date build
 # ("no work to do") keeps the existing UF2. Only a missing UF2 forces a relink.

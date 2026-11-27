@@ -7,6 +7,9 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 activate_stm32
 
+echo "==> arm-none-eabi-gcc: $ARM_TOOLCHAIN/bin/arm-none-eabi-gcc ($("$ARM_TOOLCHAIN/bin/arm-none-eabi-gcc" -dumpversion), $STM32_TOOLCHAINS toolchains)"
+echo "==> CMSIS: $CMSIS_G0_PATH, $CMSIS_CORE_PATH"
+
 make -C "$STM32_PROJECT_ROOT" -j"$(nproc 2>/dev/null || echo 4)" \
   CROSS_COMPILE="$ARM_TOOLCHAIN/bin/arm-none-eabi-" \
   CMSIS_G0_PATH="$CMSIS_G0_PATH" CMSIS_CORE_PATH="$CMSIS_CORE_PATH" \

@@ -5,12 +5,23 @@
 # (default ~/.big-modular/ch32v307):
 #   xPack riscv-none-elf-gcc, TinyUSB (pinned commit), openwch/ch32v307 SDK
 #   (pinned commit), wchisp (release binary).
+# With the OS packages (azero, see common.sh: BIG_MODULAR_TOOLCHAINS) it only
+# checks them: nothing is downloaded or written.
 #
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-mkdir -p "$CH32_HOME"
+# os: report a missing piece instead of downloading it.
+os_missing() {
+  [[ "$CH32_TOOLCHAINS" != os ]] || die "$1 not found in the OS packages.$(os_hint)"
+}
+
+if [[ "$CH32_TOOLCHAINS" == os ]]; then
+  echo "==> OS toolchains ($CH32_HOME): checking only, nothing to download"
+else
+  mkdir -p "$CH32_HOME"
+fi
 
 fetch() { # url dest
   echo "Downloading $1"
@@ -20,6 +31,7 @@ fetch() { # url dest
 if toolchain="$(find_toolchain)"; then
   echo "riscv-none-elf-gcc: $toolchain"
 else
+  os_missing "riscv-none-elf-gcc $XPACK_GCC_VERSION"
   tag="$(host_tag)" || die "no xPack toolchain for $(uname -sm); install riscv-none-elf-gcc and set CH32_TOOLCHAIN."
   name="xpack-riscv-none-elf-gcc-$XPACK_GCC_VERSION-$tag.tar.gz"
   url="https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v$XPACK_GCC_VERSION/$name"
@@ -45,6 +57,7 @@ clone_pinned() { # url commit dest
 if path="$(find_tinyusb)"; then
   echo "TinyUSB: $path"
 else
+  os_missing "TinyUSB ${TINYUSB_COMMIT:0:8}"
   clone_pinned https://github.com/hathach/tinyusb.git "$TINYUSB_COMMIT" "$CH32_HOME/tinyusb-${TINYUSB_COMMIT:0:8}"
   echo "TinyUSB: $(find_tinyusb)"
 fi
@@ -52,6 +65,7 @@ fi
 if path="$(find_wch_sdk)"; then
   echo "WCH SDK: $path"
 else
+  os_missing "WCH SDK ${WCH_SDK_COMMIT:0:8}"
   clone_pinned https://github.com/openwch/ch32v307.git "$WCH_SDK_COMMIT" "$CH32_HOME/ch32v307-${WCH_SDK_COMMIT:0:8}"
   echo "WCH SDK: $(find_wch_sdk)"
 fi
@@ -59,6 +73,7 @@ fi
 if path="$(find_wchisp)"; then
   echo "wchisp: $path"
 else
+  os_missing "wchisp $WCHISP_VERSION"
   case "$(host_tag)" in
     linux-x64) asset=linux-x64 ;;
     linux-arm64) asset=linux-aarch64 ;;

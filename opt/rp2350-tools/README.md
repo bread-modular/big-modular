@@ -7,13 +7,25 @@ and reuses installed tools without downloading.
 
 | Script | Use |
 |---|---|
-| `setup.sh` | reuse the Pico SDK / ARM toolchain / picotool / cmake / ninja if found; otherwise install the Bread Modular versions under `~/.breadmodular` (Linux x86_64/aarch64, macOS) |
+| `setup.sh` | reuse the Pico SDK / ARM toolchain / picotool / cmake / ninja if found; otherwise install the Bread Modular versions under `~/.breadmodular` (Linux x86_64/aarch64, macOS); OS packages: check only |
 | `compile.sh` | cmake configure + build `$RP2350_TARGET` in `$RP2350_PROJECT_ROOT` -> `<build>/<target>.uf2` |
 | `flash.sh [fw.uf2]` | build (unless a UF2 is given), print the UF2 program name / version / description, then `picotool load -f`; if that fails, reboots the running board into BOOTSEL with a 1200 baud open of its USB serial port (`RP2350_SERIAL_PORT` to pick one) and copies onto the RP2350 drive (`udisksctl` mount on Linux) |
 | `flash.sh info` | show the program name / version / description of the firmware on the board (`picotool info -f`) |
 | `common.sh` | sourced helpers |
 
-Tool lookup (first hit wins, nothing is downloaded by `compile.sh` / `flash.sh`):
+## OS toolchains (azero) and the home fallback
+
+Where `/opt/big-modular/rp2350` exists (azero's OS packages) the scripts default
+to `BIG_MODULAR_TOOLCHAINS=os`: the Pico SDK 2.1.1 (pioasm patched for g++ 16) and picotool 2.2.0-a4 from `$BREADMODULAR_HOME` = `/opt/big-modular/rp2350`, Arch's `arm-none-eabi-gcc` **16.2**, `cmake` and `ninja` from `/usr/bin`. The home SDK checkout does not build on azero (pioasm misses `<cstdint>` with Arch's g++ 16), so `home` there needs a patched SDK. They are resolved by explicit path, so
+a home copy earlier on the PATH (`~/.local/bin`, `~/bin`, `~/.cargo/bin`) is
+never picked, in any shell, login or not (the `/etc/profile.d/big-modular-*.sh`
+variables are not needed). `setup.sh` then only checks: nothing is downloaded
+or written. `BIG_MODULAR_TOOLCHAINS=home` restores the home lookup below
+(`/opt/big-modular` values exported by `/etc/profile.d` are ignored). Without
+`/opt/big-modular/rp2350` (macOS, Ubuntu) the default is `home`, as before.
+Explicit tool variables win in both modes.
+
+Home tool lookup (first hit wins, nothing is downloaded by `compile.sh` / `flash.sh`):
 
 | Tool | Version | Looked up in |
 |---|---|---|

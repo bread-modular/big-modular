@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# setup.sh — one-time ESP-IDF setup (reuses an installed ~/esp/esp-idf v5.5.1
-# and ~/.espressif toolchain; downloads only on a machine without them).
+# setup.sh — one-time ESP-IDF setup (azero: checks the OS packages; elsewhere
+# reuses an installed ~/esp/esp-idf v5.5.1 and ~/.espressif toolchain and
+# downloads only on a machine without them).
 #
 set -euo pipefail
 

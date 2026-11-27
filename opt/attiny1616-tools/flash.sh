@@ -15,17 +15,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # A module wrapper may point at its firmware dir and add defines (KEY=VALUE,
 # space-separated), e.g. ATTINY_DEFINES="MIDI_HW_VERSION=2".
+TOOLS_DIR="$SCRIPT_DIR"
 SCRIPT_DIR="${ATTINY_SKETCH_ROOT:-$SCRIPT_DIR}"
-export PATH="$HOME/bin:$PATH"
+# arduino-cli: the OS package or the home install (common.sh: BIG_MODULAR_TOOLCHAINS).
+# shellcheck source=common.sh
+source "$TOOLS_DIR/common.sh"
 
 FQBN="megaTinyCore:megaavr:atxy6:chip=1616,clock=20internal"
 # Override with e.g. PROGRAMMER=serialupdi (plain USB-serial + 4.7k resistor).
 PROGRAMMER="${PROGRAMMER:-jtag2updi}"
 
-if ! command -v arduino-cli >/dev/null 2>&1; then
-  echo "arduino-cli not found. Run ./setup.sh first." >&2
-  exit 1
-fi
 
 # Resolve the upload port: explicit arg > $PORT env > interactive selection.
 # Candidates come from the OS's USB-serial device names (the CH340/CP210x/FTDI
@@ -71,7 +70,7 @@ collect_ports() {
   # macOS tty.* twins of cu.* devices).
   while IFS= read -r p; do
     add_port "$p"
-  done < <(arduino-cli board list --format json 2>/dev/null | \
+  done < <("$ARDUINO_CLI" board list --format json 2>/dev/null | \
     python3 -c 'import sys,json
 try:
     d=json.load(sys.stdin)
@@ -180,10 +179,10 @@ if [[ -n "$EXTRA_FLAGS" ]]; then
   COMPILE_ARGS+=(--build-property "build.extra_flags=$EXTRA_FLAGS")
 fi
 COMPILE_ARGS+=("$SKETCH_DIR")
-arduino-cli "${COMPILE_ARGS[@]}"
+"$ARDUINO_CLI" "${COMPILE_ARGS[@]}"
 
 echo "==> Uploading to $PORT (programmer: $PROGRAMMER)"
-arduino-cli upload --fqbn "$FQBN" --port "$PORT" --programmer "$PROGRAMMER" \
+"$ARDUINO_CLI" upload --fqbn "$FQBN" --port "$PORT" --programmer "$PROGRAMMER" \
   --input-dir "$BUILD_DIR"
 
 echo "✅ Flash complete."
