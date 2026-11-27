@@ -10,7 +10,7 @@ hangs on the four jack nuts; the RV09 pots take no nut. Regenerate the print fro
 `modules/line-in`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from the panel PCB and asserts them against

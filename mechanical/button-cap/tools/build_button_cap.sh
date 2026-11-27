@@ -1,10 +1,10 @@
 #!/bin/sh
 # Build the two-piece push-button cap with FreeCAD's headless interpreter, then its section drawing.
-# Env: FREECAD (path to a FreeCAD AppImage or freecadcmd).
+# Env: FREECAD (headless FreeCAD to run; default the OS freecadcmd, a FreeCAD AppImage also works).
 set -eu
 here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 cap_dir=$(dirname "$here")
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 mkdir -p "$cap_dir/research"
 log="$cap_dir/research/build.log"

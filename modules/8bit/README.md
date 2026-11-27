@@ -47,9 +47,9 @@ and copper: `build_layout.py` without `panels` refuses to overwrite it.
 python3 -B tools/import_footprints.py   # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py     # schematic + pinned symbols
 python3 -B tools/build_layout.py panels # FR4 panels only; the routed carrier is left alone
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/button-actuator/build_button_actuator.py
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-PANEL=lfo ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/button-actuator/build_button_actuator.py
+freecadcmd panels/front-cad/build_front_panel.py
+PANEL=lfo freecadcmd panels/front-cad/build_front_panel.py
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/8bit/tools/kicad-project.json \
    --reports modules/8bit/research/check-NEW)
 ```

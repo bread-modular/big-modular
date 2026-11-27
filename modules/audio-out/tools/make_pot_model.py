@@ -1,7 +1,7 @@
 """Generate the RV09 volume-pot proxy model (hardware/AudioOut.3dshapes/RV09_proxy.step).
 
 Run headless from modules/audio-out:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd tools/make_pot_model.py
+  freecadcmd tools/make_pot_model.py
 
 The Bread Modular RV09 footprint has no 3D model and there is no pot drawing, so this
 is an envelope for the panel fit check and renders, not a manufacturer model. It

@@ -10,7 +10,7 @@ The two panels are alternatives with the same 11 holes (4 jacks Ø6.2, 3 pots Ø
 screws; the RV09 pots take no nut. Regenerate the printed panel headless from `modules/ladder`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from `front-pcb/ladder-panel.kicad_pcb` and

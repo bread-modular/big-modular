@@ -276,8 +276,8 @@ blender -b --python mechanical/case/tools/render_angle_joiner.py -- \
   mechanical/case/research/angle-joiner mechanical/case/renders/stands/angle-joiner
 ```
 
-`FREECAD` can override the executable; the wrapper defaults to the existing
-project AppImage. The generator reuses the original case geometry and checks
+`FREECAD` can override the executable; the wrapper defaults to the OS
+`freecadcmd`. The generator reuses the original case geometry and checks
 against its saved native assembly before export. A failed build removes its PASS
 metadata; do not print a partly regenerated set. Only use a set whose current
 hashes pass `check_angle_joiner.py`.

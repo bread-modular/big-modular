@@ -76,7 +76,7 @@ sequence only to start a new board from the unrouted base.
 python3 -B tools/import_footprints.py          # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py            # schematic + pinned symbols
 python3 -B tools/build_layout.py --panel-only  # 8HP panel (without the flag: unrouted P6 base, refused on a routed board)
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 tools/fit_assembly.sh                          # nominal panel/carrier 3D fit
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py check --config modules/vca-mix/tools/kicad-project.json \
    --reports modules/vca-mix/research/check-NEW)

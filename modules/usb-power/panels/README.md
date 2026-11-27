@@ -10,8 +10,8 @@ The PCB panel and the printed panel are alternatives; both mount with the same
 two printed brackets. Regenerate the CAD headless from `modules/usb-power`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/bracket/build_bracket.py
+freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/bracket/build_bracket.py
 ```
 
 The front panel reads its outline, NPTH holes and USB aperture from

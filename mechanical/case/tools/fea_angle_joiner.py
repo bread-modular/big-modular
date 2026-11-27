@@ -1,4 +1,4 @@
-"""Linear static screening of one angle-joiner cheek (gmsh + CalculiX in the FreeCAD AppImage).
+"""Linear static screening of one angle-joiner cheek (gmsh + CalculiX ccx: $APPDIR/usr/bin of a FreeCAD AppImage, else PATH).
 
   mechanical/case/tools/fea_angle_joiner.sh                      # the cheek from build_angle_joiner.py
   JOINER_FEA="old=/tmp/old.brep;current" mechanical/case/tools/fea_angle_joiner.sh
@@ -19,6 +19,7 @@ import json
 import math
 import os
 import resource
+import shutil
 import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -50,6 +51,16 @@ def run(cmd, cwd, log):
         subprocess.run(cmd, cwd=cwd, stdout=f, stderr=subprocess.STDOUT, check=True)
 
 
+def tool(name):
+    """gmsh / ccx: the copy inside a FreeCAD AppImage ($APPDIR), else the one on PATH."""
+    if os.environ.get('APPDIR'):
+        return str(Path(os.environ['APPDIR'])/'usr'/'bin'/name)
+    found = shutil.which(name)
+    if not found:
+        raise SystemExit(f'{name} not found: install it (OS FreeCAD does not bundle it) or run from a FreeCAD AppImage')
+    return found
+
+
 def mesh(shape, work):
     shape.exportBrep(str(work/'plate.brep'))
     (work/'plate.geo').write_text(
@@ -57,8 +68,7 @@ def mesh(shape, work):
         f'Mesh.MeshSizeMax = {MESH_MAX};\nMesh.MeshSizeMin = {MESH_MIN};\n'
         'Mesh.MeshSizeFromCurvature = 10;\nMesh.ElementOrder = 2;\n'
         'Mesh.HighOrderOptimize = 2;\nMesh.Algorithm3D = 1;\nMesh.SaveAll = 1;\n')
-    gmsh = Path(os.environ['APPDIR'])/'usr'/'bin'/'gmsh'
-    run([str(gmsh), 'plate.geo', '-3', '-format', 'inp', '-o', 'mesh.inp', '-nt', '8'],
+    run([tool('gmsh'), 'plate.geo', '-3', '-format', 'inp', '-o', 'mesh.inp', '-nt', '8'],
         work, work/'gmsh.log')
     nodes, elems, mode = {}, [], None
     pending = []
@@ -222,12 +232,11 @@ def solve(m, layout, work, name, loads, state):
     job = name.replace('+', '-')+'-'+state
     text, down = deck(m, layout, loads, state)
     (work/f'{job}.inp').write_text(text)
-    ccx = Path(os.environ['APPDIR'])/'usr'/'bin'/'ccx'
     for old in (work/f'{job}.dat', work/f'{job}.frd'):
         old.unlink(missing_ok=True)
     env = dict(os.environ, OMP_NUM_THREADS='3')
     with open(work/f'{job}.log', 'w') as f:
-        subprocess.run([str(ccx), job], cwd=work, stdout=f, stderr=subprocess.STDOUT,
+        subprocess.run([tool('ccx'), job], cwd=work, stdout=f, stderr=subprocess.STDOUT,
                        check=True, env=env)
     u, r, reaction = read_dat(work/f'{job}.dat', m)
     mises, total = read_frd(work/f'{job}.frd', m)

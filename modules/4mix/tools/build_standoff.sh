@@ -1,9 +1,9 @@
 #!/bin/sh
 # Build the 4MIX standoff 3D model with FreeCAD's headless interpreter (as mechanical/case/tools/build.sh).
-# Env: FREECAD (path to FreeCAD AppImage or freecadcmd).
+# Env: FREECAD (headless FreeCAD to run; default the OS freecadcmd, a FreeCAD AppImage also works).
 set -e
 here=$(cd "$(dirname "$0")" && pwd)
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 log=$(dirname "$here")/research/standoff-build.log
 mkdir -p "$(dirname "$log")"

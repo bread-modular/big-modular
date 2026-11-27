@@ -1,7 +1,7 @@
 """Generate the HRO TYPE-C-31-D-15 vertical USB-C proxy model (hardware/USBAUDIO.3dshapes/).
 
 Run headless from modules/usb-audio:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd tools/make_usbc_model.py
+  freecadcmd tools/make_usbc_model.py
 
 Envelope from the HRO drawing (TYPE-C-31-D-15, 2023-10-27, docs/research.md section 5): plastic
 base 12.00 x 5.00 mm, 2.10 mm tall; metal shell 8.94 x 3.16 mm (stadium) to H = 8.8 mm above the

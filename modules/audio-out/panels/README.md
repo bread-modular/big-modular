@@ -9,5 +9,5 @@ The two panels are alternatives with the same holes. Regenerate the printed pane
 `modules/audio-out`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```

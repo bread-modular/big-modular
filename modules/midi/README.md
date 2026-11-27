@@ -64,7 +64,7 @@ python3 -B tools/$V/route_plan.py > research/$V/route/plan.json   # copper as sh
    --ops modules/midi/research/$V/route/plan.json --output modules/midi/research/$V/route-cand-NEW)
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb promote --candidate modules/midi/research/$V/route-cand-NEW \
    --plan modules/midi/research/$V/route/edit-plan.json)
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py   # only if the panel changed
+freecadcmd panels/front-cad/build_front_panel.py   # only if the panel changed
 tools/fit_assembly.sh $V                       # nominal panel/carrier 3D fit
 ```
 

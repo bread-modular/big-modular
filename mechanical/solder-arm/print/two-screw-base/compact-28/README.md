@@ -28,11 +28,11 @@
 ### Reproduction (from repository root)
 
 ```sh
-fc="$HOME/Applications/FreeCAD_1.1.3.AppImage"
+fc=${FREECAD:-freecadcmd}
 t=mechanical/solder-arm/tools
-"$fc" freecadcmd "$t/compact_base.py"  # require COMPACT_BASE_PASS in output
+"$fc" "$t/compact_base.py"  # require COMPACT_BASE_PASS in output
 python3 -B "$t/slice_two_screw_base.py" --compact
-STUDY_PROXIES=1 "$fc" freecadcmd "$t/compact_base.py"
+STUDY_PROXIES=1 "$fc" "$t/compact_base.py"
 export OPENBLAS_NUM_THREADS=1
 for h in 3 2; do
   python3 -B "$t/compare_frames.py" --grid "$h" --walls 5 stock lean8 short28

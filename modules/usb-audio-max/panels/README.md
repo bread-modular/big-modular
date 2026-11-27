@@ -14,7 +14,7 @@ bushings with the PJ301M-12 nuts plus the rail screws; two M3x6 screws from the 
 Regenerate the printed panel headless from `modules/usb-audio-max`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from `front-pcb/usb-audio-max-panel.kicad_pcb` and asserts them

@@ -11,7 +11,7 @@ knurled shaft, no thread), so either panel mounts with the 10 jack nuts plus the
 rail screws; the pots take no nut. Regenerate the printed panel headless from `modules/vca-mix`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from `front-pcb/vca-mix-panel.kicad_pcb`

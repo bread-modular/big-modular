@@ -10,7 +10,7 @@ one mounts on the jack bushings with the PJ301M-12 nuts plus the rail screws; th
 pots take no nut. Regenerate the printed panel headless from `modules/low`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from `front-pcb/low-panel.kicad_pcb` and

@@ -17,7 +17,7 @@ the FR4 panel and mounts with the same two printed brackets (`../bracket/`).
 Regenerate headless from `modules/usb-power-45w`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline, NPTH holes and USB aperture from the FR4 panel PCB and

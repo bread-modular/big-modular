@@ -1,9 +1,9 @@
 """Generate the 3D-printable 8BIT front panels (6HP, and the 4HP LFO panel) with FreeCAD.
 
 Run headless from modules/8bit:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-  PANEL=lfo ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-  PANEL=lfo4hp ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+  freecadcmd panels/front-cad/build_front_panel.py
+  PANEL=lfo freecadcmd panels/front-cad/build_front_panel.py
+  PANEL=lfo4hp freecadcmd panels/front-cad/build_front_panel.py
 
 Outline and NPTH holes are read from the native panel PCB
 (../front-pcb/8bit-panel.kicad_pcb) and asserted against docs/geometry.json, so the

@@ -1,11 +1,11 @@
 #!/bin/sh
 # Build only the shared middle frame. Existing case geometry is read, never overwritten.
-# FREECAD may name freecadcmd or the project's FreeCAD AppImage.
+# FREECAD may name another freecadcmd or a FreeCAD AppImage (default: the OS freecadcmd).
 # JOINER_RAIL_CLEARANCE changes the prototype socket allowance (mm per face).
 set -eu
 here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 case_dir=$(dirname "$here")
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 research="$case_dir/research/middle-frame"
 mkdir -p "$research"

@@ -3,7 +3,7 @@
 set -eu
 here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 case_dir=$(dirname "$here")
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 # Cap the memory, so a runaway solve stops instead of taking the machine down.
 if command -v systemd-run >/dev/null 2>&1 && systemd-run --user --scope -q true 2>/dev/null; then

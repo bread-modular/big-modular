@@ -1,7 +1,7 @@
 """Generate the 3D-printable MOTION top clip with FreeCAD.
 
 Run headless from modules/motion:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/top-clip/build_top_clip.py
+  freecadcmd panels/top-clip/build_top_clip.py
 
 Why: all four jacks sit in the bottom 25 mm of the carrier and the RV09 pots have no
 bushing or nut, so nothing held the upper 85 mm of the carrier to the panel. The clip

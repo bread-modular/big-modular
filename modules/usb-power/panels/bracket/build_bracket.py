@@ -1,7 +1,7 @@
 """Generate the 3D-printable usb-power panel-to-carrier L bracket with FreeCAD.
 
 Run headless from modules/usb-power:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/bracket/build_bracket.py
+  freecadcmd panels/bracket/build_bracket.py
 
 Same plain L as hardware/mechanics/corner_braces.scad; every dimension comes
 from the `brackets` contract in docs/assembly-geometry.json. Print two. Local

@@ -1,6 +1,6 @@
 """S8 board: 3D assembly, collision screen and review images (system Python + FreeCAD + OpenSCAD).
 
-  python3 -B tools/s8_mechanical.py [--freecad ~/Applications/FreeCAD_1.1.3.AppImage]
+  python3 -B tools/s8_mechanical.py [--freecad freecadcmd]
 
 1. footprint courtyard centres from the native board (pcbnew) -> research/s8f/assembly/footprints.json
 2. FreeCAD (tools/build_s8_assembly.py): native board + S8 panel STEP, brackets, M3 proxies, J1/SW1/L1-L3
@@ -144,7 +144,8 @@ def placement_pdf():
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument('--freecad', type=Path, default=Path.home() / 'Applications/FreeCAD_1.1.3.AppImage')
+    ap.add_argument('--freecad', default=os.environ.get('FREECAD', 'freecadcmd'),
+                    help='headless FreeCAD (default: $FREECAD or the OS freecadcmd; a FreeCAD AppImage also works)')
     ap.add_argument('--skip-freecad', action='store_true', help='reuse the last FreeCAD output in research/')
     a = ap.parse_args()
     WORK.mkdir(parents=True, exist_ok=True)
@@ -152,7 +153,8 @@ def main():
     (WORK / 'footprints.json').write_text(json.dumps(footprints(), indent=1) + '\n')
     if not a.skip_freecad:
         env = dict(os.environ, S8_ASM_WORK=str(WORK))
-        r = subprocess.run([str(a.freecad), 'freecadcmd', str(MODULE / 'tools/build_s8_assembly.py')], env=env,
+        fc = [a.freecad, 'freecadcmd'] if a.freecad.endswith('.AppImage') else [a.freecad]   # an AppImage takes the tool name first
+        r = subprocess.run(fc + [str(MODULE / 'tools/build_s8_assembly.py')], env=env,
                            capture_output=True, text=True)
         (WORK / 'freecad.log').write_text(r.stdout + '\n' + r.stderr)
         if r.returncode != 0 or not (WORK / 'report.json').exists():

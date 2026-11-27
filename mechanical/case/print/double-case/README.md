@@ -140,7 +140,7 @@ blender -b --python mechanical/case/tools/render_middle_frame.py -- \
   mechanical/case/research/middle-frame mechanical/case/renders/double-case
 ```
 
-`FREECAD` may override the headless FreeCAD executable/AppImage. The generator
+`FREECAD` may override the headless FreeCAD executable (default: the OS `freecadcmd`). The generator
 imports shared dimensions, socket helpers and exporters from `build_case.py`
 without running its original-case build. It reads the saved case and rejects
 any mismatch with the selected case dimensions; it never rewrites the original

@@ -27,7 +27,7 @@ From `modules/blank`:
 
 ```sh
 python3 -B tools/build_panels.py
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panels.py
+freecadcmd panels/front-cad/build_front_panels.py
 for n in 2 4 6 8; do
   kicad-cli pcb drc --severity-all --format json -o research/drc-${n}hp.json panels/front-pcb/blank-${n}hp.kicad_pcb
   python3 -B ../../opt/kicad-tools/jlcpcb/export.py panels/front-pcb --board blank-${n}hp --pcb-only \

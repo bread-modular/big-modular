@@ -1,7 +1,7 @@
 """Generate the usb-power-45w panel-to-carrier L bracket with FreeCAD (print two).
 
 Run headless from the repository root:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd modules/usb-power-45w/panels/bracket/build_bracket.py
+  freecadcmd modules/usb-power-45w/panels/bracket/build_bracket.py
 
 Same plain L as modules/usb-power/panels/bracket (dimensions unchanged; shape in
 tools/bracket45.py). Writes .FCStd (editable), .step (assembly orientation) and .stl

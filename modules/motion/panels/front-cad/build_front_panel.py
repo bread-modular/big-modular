@@ -1,7 +1,7 @@
 """Generate the 3D-printable MOTION 6HP front panel with FreeCAD.
 
 Run headless from modules/motion:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+  freecadcmd panels/front-cad/build_front_panel.py
 
 Outline and NPTH holes are read from the native panel PCB
 (../front-pcb/motion-panel.kicad_pcb) and asserted against docs/geometry.json, so the

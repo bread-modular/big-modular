@@ -1,7 +1,7 @@
 """Generate the 3D-printable one-piece MODE button cap with FreeCAD.
 
 Run headless from modules/8bit:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/button-actuator/build_button_actuator.py
+  freecadcmd panels/button-actuator/build_button_actuator.py
 
 SW1 is a generic 6 x 6 mm THT tact switch, 7 mm tall (body to Z3.1, tapered stem Ø3.4..3.2
 to Z7.0), on the carrier F side; the panel rear is 3.0 mm above the stem top. The cap is one
