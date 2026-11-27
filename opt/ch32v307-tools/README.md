@@ -6,19 +6,32 @@ the WCH peripheral library, bare metal, Make), the counterpart of
 
 | Script | Use |
 |---|---|
-| `setup.sh` | reuse installed tools; download only the missing pinned pieces into `$CH32_HOME` (default `~/.big-modular/ch32v307`) |
+| `setup.sh` | reuse installed tools; download only the missing pinned pieces into `$CH32_HOME` (default `~/.big-modular/ch32v307`; OS packages: check only) |
 | `compile.sh` | `make` in `$CH32_PROJECT_ROOT` with the pinned toolchain / TinyUSB / SDK -> `<build>/<target>.{elf,bin,hex}` |
 | `flash.sh [fw.bin]` | build (unless a binary is given), wait for the ROM USB bootloader (`4348:55e0`, `CH32_BOOT_WAIT` s, default 60), `wchisp flash` (writes, verifies, resets) |
 | `common.sh` | sourced helpers |
 
-Pinned dependencies (first hit wins; `compile.sh` / `flash.sh` never download):
+## OS toolchains (azero) and the home fallback
+
+Where `/opt/big-modular/ch32v307` exists (azero's OS packages) the scripts default
+to `BIG_MODULAR_TOOLCHAINS=os`: `$CH32_HOME` = `/opt/big-modular/ch32v307` with the same xPack GCC 15.2.0-1 (byte-identical binaries), TinyUSB, WCH SDK and wchisp 0.3.0, and `/usr/bin/dfu-util`. They are resolved by explicit path, so
+a home copy earlier on the PATH (`~/.local/bin`, `~/bin`, `~/.cargo/bin`) is
+never picked, in any shell, login or not (the `/etc/profile.d/big-modular-*.sh`
+variables are not needed). `setup.sh` then only checks: nothing is downloaded
+or written. `BIG_MODULAR_TOOLCHAINS=home` restores the home lookup below
+(`/opt/big-modular` values exported by `/etc/profile.d` are ignored). Without
+`/opt/big-modular/ch32v307` (macOS, Ubuntu) the default is `home`, as before.
+Explicit tool variables win in both modes.
+
+Home lookup, pinned dependencies (first hit wins; `compile.sh` / `flash.sh` never download):
 
 | Tool | Version | Looked up in |
 |---|---|---|
 | xPack `riscv-none-elf-gcc` | 15.2.0-1 | `$CH32_TOOLCHAIN`, `$CH32_HOME/xpack-riscv-none-elf-gcc-<v>`, PATH |
 | TinyUSB | master `8d265ad1` (2026-11-04; 0.21.0 lacks the WCH USBHS ISO / connect fixes) | `$TINYUSB_PATH`, `$CH32_HOME/tinyusb-8d265ad1` |
 | openwch/ch32v307 EVT | `184f21b8` (the commit TinyUSB pins) | `$WCH_SDK_PATH`, `$CH32_HOME/ch32v307-184f21b8` |
-| wchisp | 0.3.0 | `$WCHISP_BIN`, PATH, `~/.cargo/bin`, `$CH32_HOME/wchisp-<v>` |
+| wchisp | 0.3.0 | `$WCHISP_BIN`, PATH, `~/.cargo/bin`, `$CH32_HOME/wchisp-<v>` (os: `$WCHISP_BIN`, `$CH32_HOME/wchisp-<v>`, `/usr/bin`) |
+| dfu-util | any | `$DFU_UTIL_BIN`, PATH (os: `/usr/bin/dfu-util`) |
 
 Module wrappers set `CH32_PROJECT_ROOT` (dir with the Makefile),
 `CH32_TARGET` (output name) and optionally `CH32_BUILD_DIR` (default

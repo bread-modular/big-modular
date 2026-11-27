@@ -16,15 +16,25 @@ tooling.
   the modules' UPDI chips: generated KiCad project, firmware and README.
   `opt/attiny1616-tools/` holds the shared ATtiny1616 compile/flash scripts and
   shared sketch libraries in `lib/` (e.g. `lib/CvRecorder/`), symlinked into
-  each sketch folder.
-- `opt/esp32-tools/` — shared ESP32-S3 ESP-IDF setup/compile/flash scripts (reuse an
-  installed `~/esp/esp-idf`), wrapped by `modules/32bit/firmware/`.
-- `opt/stm32g0-tools/` — shared STM32G0 bare-metal (CMSIS) compile/flash scripts (reuse the
-  `~/.breadmodular` ARM GCC; pinned CMSIS headers + xPack OpenOCD for ST-Link SWD), wrapped by
-  `modules/hats/firmware/`.
-- `opt/rp2350-tools/` — shared RP2350 Pico SDK setup/compile/flash scripts (reuse an
-  installed `~/.breadmodular` Pico SDK 2.1.1 / ARM GCC 14.2 / picotool), wrapped by
+  each sketch folder. arduino-cli + megaTinyCore 2.6.11: azero `/usr/bin/arduino-cli` with
+  the read-only `/opt/big-modular/arduino15` (through a writable view in
+  `~/.cache/big-modular/arduino15`), elsewhere `~/bin/arduino-cli` + `~/.arduino15`.
+- `opt/esp32-tools/` — shared ESP32-S3 ESP-IDF setup/compile/flash scripts (ESP-IDF v5.5.1:
+  azero `/opt/big-modular/esp32/esp-idf` + `espressif`, elsewhere an installed `~/esp/esp-idf`
+  + `~/.espressif`), wrapped by `modules/32bit/firmware/`.
+- `opt/stm32g0-tools/` — shared STM32G0 bare-metal (CMSIS) compile/flash scripts (ARM GCC:
+  azero Arch's `/usr/bin` GCC 16.2 + `openocd`, CMSIS in `/opt/big-modular/stm32g0`; elsewhere
+  the `~/.breadmodular` GCC 14.2, pinned CMSIS headers + xPack OpenOCD in `~/.big-modular`), wrapped by
+  `modules/hats/firmware/` and `modules/12bit/firmware/`.
+- `opt/rp2350-tools/` — shared RP2350 Pico SDK setup/compile/flash scripts (Pico SDK 2.1.1 +
+  picotool: azero `/opt/big-modular/rp2350` with Arch's GCC 16.2 / cmake / ninja in `/usr/bin`;
+  elsewhere an installed `~/.breadmodular` SDK / ARM GCC 14.2 / picotool), wrapped by
   `modules/16bit/firmware/`.
+- Firmware toolchains on azero (2026-11-27): where `/opt/big-modular/<family>` exists, every
+  `opt/*-tools` script uses the OS packages by explicit path (`/usr/bin`, `/opt/big-modular`),
+  never a home copy earlier on the PATH, in any shell; `setup.sh` only checks.
+  `BIG_MODULAR_TOOLCHAINS=home` is the fallback to the home installs (as before); machines
+  without `/opt/big-modular` (macOS, Ubuntu) are unchanged. See the `opt/*-tools` READMEs.
 - `mechanical/` — 3D-printed mechanics outside the KiCad modules, each folder with its
   own FreeCAD-headless `tools/`, ignored `research/` and print outputs: `mechanical/case/`
   (skiff case; `print/` is grouped as `side-panels/` (standard, four spacer sockets for bolt-on stand plates), `rails/`, `bottom-plate/`, `covers/`, `double-case/` (middle frame), `quad-case/` (flat 2 x 2 set with fused panels, also the angle joiner's upper element), `stands/angle-joiner/` + `stands/tiered-stand/`, and `accessories/top-brace/` + `accessories/cable-holder/` (clip-on patch cable comb) + `accessories/usb-riser/` (8HP collar that lifts modules/32bit 18 mm so its back USB-C plug passes over the back rail; CAD + slicer checked 2026-11-22, not printed); index in `print/README.md`, renders mirror it) and `mechanical/knobs/` (push-on

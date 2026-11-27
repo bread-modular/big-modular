@@ -9,15 +9,38 @@
 #   STM32_BUILD_DIR     build dir (default: $STM32_PROJECT_ROOT/.build)
 #   STM32_DEFINES       space-separated KEY=VALUE, passed to make as DEFINES
 #
-# Tools are looked up, never downloaded, here (setup.sh downloads). The ARM GNU
-# toolchain is Bread Modular's ~/.breadmodular one (as opt/rp2350-tools); the
-# CMSIS headers and OpenOCD are pinned and live in versioned dirs under
+# Tools are looked up, never downloaded, here (setup.sh downloads). The CMSIS
+# headers (and the home OpenOCD) are pinned and live in versioned dirs under
 # $STM32_HOME.
+#
+# Where the tools come from (BIG_MODULAR_TOOLCHAINS):
+#   os    the OS packages (azero): arm-none-eabi-gcc and openocd from /usr/bin,
+#         CMSIS from /opt/big-modular/stm32g0, by explicit path (a home copy
+#         earlier on the PATH is never picked). Default where
+#         /opt/big-modular/stm32g0 exists.
+#   home  the home installs as before: ~/.big-modular/stm32g0, the ARM GNU
+#         14.2.rel1 of ~/.breadmodular (as opt/rp2350-tools), then the PATH.
+#         Values under /opt/big-modular (from /etc/profile.d) are ignored.
+#         Default where /opt/big-modular/stm32g0 does not exist.
+# Explicit tool variables (ARM_TOOLCHAIN, CMSIS_*_PATH, OPENOCD_BIN) win in both.
 
-STM32_HOME="${STM32_HOME:-$HOME/.big-modular/stm32g0}"
+STM32_OS_HOME=/opt/big-modular/stm32g0
+case "${BIG_MODULAR_TOOLCHAINS:-}" in
+  home) STM32_TOOLCHAINS=home ;;
+  os) STM32_TOOLCHAINS=os ;;
+  "") if [[ -d "$STM32_OS_HOME" ]]; then STM32_TOOLCHAINS=os; else STM32_TOOLCHAINS=home; fi ;;
+  *) echo "Error: BIG_MODULAR_TOOLCHAINS must be 'os' or 'home', not '$BIG_MODULAR_TOOLCHAINS'" >&2; exit 1 ;;
+esac
+if [[ "$STM32_TOOLCHAINS" == os ]]; then
+  STM32_HOME="${STM32_HOME:-$STM32_OS_HOME}"
+else
+  [[ "${STM32_HOME:-}" != /opt/big-modular/* ]] || unset STM32_HOME
+  [[ "${BREADMODULAR_HOME:-}" != /opt/big-modular/* ]] || unset BREADMODULAR_HOME
+  STM32_HOME="${STM32_HOME:-$HOME/.big-modular/stm32g0}"
+fi
 BREADMODULAR_HOME="${BREADMODULAR_HOME:-$HOME/.breadmodular}"
 
-# ARM GNU toolchain (as opt/rp2350-tools)
+# ARM GNU toolchain of the home lookup (as opt/rp2350-tools; os: Arch's, any version)
 TOOLCHAIN_VERSION="${TOOLCHAIN_VERSION:-14_2_Rel1}"
 # STMicroelectronics/cmsis-device-g0 v1.4.5 (device header, startup, system)
 CMSIS_G0_COMMIT="${CMSIS_G0_COMMIT:-f576c24e123edf3332988ecd49512c0f35f85186}"
@@ -41,10 +64,19 @@ host_tag() {
   esac
 }
 
-# ARM GNU toolchain root (has bin/arm-none-eabi-gcc): $ARM_TOOLCHAIN ->
-# ~/.breadmodular/toolchain/<v> -> ~/.pico-sdk/toolchain/<v> -> PATH.
+# ARM GNU toolchain root (has bin/arm-none-eabi-gcc): $ARM_TOOLCHAIN -> os: /usr;
+# home: ~/.breadmodular/toolchain/<v> -> ~/.pico-sdk/toolchain/<v> -> PATH.
 find_toolchain() {
   local candidate gcc
+  if [[ "$STM32_TOOLCHAINS" == os ]]; then
+    for candidate in "${ARM_TOOLCHAIN:-}" /usr; do
+      if [[ -n "$candidate" && -x "$candidate/bin/arm-none-eabi-gcc" ]]; then
+        echo "$candidate"
+        return 0
+      fi
+    done
+    return 1
+  fi
   for candidate in "${ARM_TOOLCHAIN:-}" "$BREADMODULAR_HOME/toolchain/$TOOLCHAIN_VERSION" \
                    "$HOME/.pico-sdk/toolchain/$TOOLCHAIN_VERSION"; do
     if [[ -n "$candidate" && -x "$candidate/bin/arm-none-eabi-gcc" ]]; then
@@ -79,9 +111,19 @@ find_cmsis_core() {
   return 1
 }
 
-# OpenOCD with the STM32G0 target: $OPENOCD_BIN -> $STM32_HOME xPack -> PATH.
+# OpenOCD with the STM32G0 target: $OPENOCD_BIN -> os: /usr/bin/openocd;
+# home: $STM32_HOME xPack -> PATH.
 find_openocd() {
   local candidate
+  if [[ "$STM32_TOOLCHAINS" == os ]]; then
+    for candidate in "${OPENOCD_BIN:-}" /usr/bin/openocd; do
+      if [[ -n "$candidate" && -x "$candidate" ]]; then
+        echo "$candidate"
+        return 0
+      fi
+    done
+    return 1
+  fi
   for candidate in "${OPENOCD_BIN:-}" "$STM32_HOME/xpack-openocd-$XPACK_OPENOCD_VERSION/bin/openocd" \
                    "$(command -v openocd 2>/dev/null)"; do
     if [[ -n "$candidate" && -x "$candidate" ]]; then
@@ -92,11 +134,17 @@ find_openocd() {
   return 1
 }
 
+# Extra hint for a "not found" in os mode.
+os_hint() {
+  [[ "$STM32_TOOLCHAINS" == os ]] || return 0
+  printf '%s' " (OS toolchains: install the azero firmware-toolchains packages, or BIG_MODULAR_TOOLCHAINS=home)"
+}
+
 # Resolve everything a build needs (no downloads).
 activate_stm32() {
-  ARM_TOOLCHAIN="$(find_toolchain)" || die "arm-none-eabi-gcc not found. Run ./setup.sh first."
-  CMSIS_G0_PATH="$(find_cmsis_g0)" || die "cmsis-device-g0 ${CMSIS_G0_COMMIT:0:8} not found. Run ./setup.sh first."
-  CMSIS_CORE_PATH="$(find_cmsis_core)" || die "CMSIS core ${CMSIS_CORE_COMMIT:0:8} not found. Run ./setup.sh first."
+  ARM_TOOLCHAIN="$(find_toolchain)" || die "arm-none-eabi-gcc not found. Run ./setup.sh first.$(os_hint)"
+  CMSIS_G0_PATH="$(find_cmsis_g0)" || die "cmsis-device-g0 ${CMSIS_G0_COMMIT:0:8} not found. Run ./setup.sh first.$(os_hint)"
+  CMSIS_CORE_PATH="$(find_cmsis_core)" || die "CMSIS core ${CMSIS_CORE_COMMIT:0:8} not found. Run ./setup.sh first.$(os_hint)"
   [[ -n "${STM32_PROJECT_ROOT:-}" && -f "$STM32_PROJECT_ROOT/Makefile" ]] || \
     die "STM32_PROJECT_ROOT must point at a firmware dir with a Makefile."
   STM32_TARGET="${STM32_TARGET:-$(basename "$STM32_PROJECT_ROOT")}"

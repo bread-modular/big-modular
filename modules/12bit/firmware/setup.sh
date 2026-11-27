@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# setup.sh — one-time setup: the shared opt/stm32g0-tools (reuses the
-# ~/.breadmodular ARM GCC; downloads the pinned CMSIS headers and OpenOCD).
+# setup.sh — one-time setup: the shared opt/stm32g0-tools (azero: checks the OS
+# packages; elsewhere reuses the ~/.breadmodular ARM GCC and downloads the
+# pinned CMSIS headers and OpenOCD).
 #
 set -euo pipefail
 

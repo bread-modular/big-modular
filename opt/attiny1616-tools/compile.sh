@@ -7,17 +7,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # A module wrapper may point at its firmware dir and add defines (KEY=VALUE,
 # space-separated), e.g. ATTINY_DEFINES="MIDI_HW_VERSION=2".
+TOOLS_DIR="$SCRIPT_DIR"
 SCRIPT_DIR="${ATTINY_SKETCH_ROOT:-$SCRIPT_DIR}"
-export PATH="$HOME/bin:$PATH"
+# arduino-cli: the OS package or the home install (common.sh: BIG_MODULAR_TOOLCHAINS).
+# shellcheck source=common.sh
+source "$TOOLS_DIR/common.sh"
 
 # megaTinyCore board = grouped "atxy6" (16 KB flash family), chip = ATtiny1616,
 # 20 MHz internal oscillator (matches the original PlatformIO build).
 FQBN="megaTinyCore:megaavr:atxy6:chip=1616,clock=20internal"
 
-if ! command -v arduino-cli >/dev/null 2>&1; then
-  echo "arduino-cli not found. Run ./setup.sh first." >&2
-  exit 1
-fi
 
 # Auto-detect the sketch directory: find the single .ino file under $SCRIPT_DIR
 # and use its parent directory as the sketch dir. Hidden dirs (e.g. .pio, .git)
@@ -59,4 +58,4 @@ if [[ -n "$EXTRA_FLAGS" ]]; then
 fi
 COMPILE_ARGS+=("$SKETCH_DIR")
 
-arduino-cli "${COMPILE_ARGS[@]}"
+"$ARDUINO_CLI" "${COMPILE_ARGS[@]}"

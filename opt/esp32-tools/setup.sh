@@ -5,6 +5,8 @@
 # ($IDF_PATH, $IDF_DIR or ~/esp/esp-idf, with ~/.espressif tools): it only
 # checks it, nothing is downloaded. Only a machine without ESP-IDF gets the
 # Bread Modular install (clone $IDF_VERSION, install.sh esp32s3, cmake + ninja).
+# With the OS packages (azero, see common.sh: BIG_MODULAR_TOOLCHAINS) it only
+# checks them: nothing is downloaded or written.
 #
 # Safe to re-run.
 set -euo pipefail
@@ -23,12 +25,14 @@ done
 if IDF_FOUND="$(find_idf)"; then
   echo "==> Reusing ESP-IDF at $IDF_FOUND"
 else
+  [[ "$ESP32_TOOLCHAINS" != os ]] || die "ESP-IDF not found in the OS packages.$(os_hint)"
   IDF_FOUND="${IDF_DIR:-$HOME/esp/esp-idf}"
   echo "==> No ESP-IDF found. Cloning $IDF_VERSION into $IDF_FOUND (~1.5 GB) ..."
   git clone --recursive --branch "$IDF_VERSION" --depth 1 "$IDF_REPO" "$IDF_FOUND"
 fi
 
-FOUND_VERSION="$(git -C "$IDF_FOUND" describe --tags 2>/dev/null || echo unknown)"
+FOUND_VERSION="$(idf_version "$IDF_FOUND")"
+idf_tools_env "$IDF_FOUND"
 if [[ "$FOUND_VERSION" != "$IDF_VERSION" ]]; then
   echo "Warning: ESP-IDF is $FOUND_VERSION, the firmware is tested with $IDF_VERSION." >&2
 fi
@@ -37,8 +41,9 @@ fi
 if (set --; source "$IDF_FOUND/export.sh" >/dev/null 2>&1 && \
     command -v xtensa-esp32s3-elf-gcc >/dev/null && command -v cmake >/dev/null && \
     command -v ninja >/dev/null); then
-  echo "==> ESP-IDF tools already installed (~/.espressif), nothing to download"
+  echo "==> ESP-IDF tools already installed (${IDF_TOOLS_PATH:-~/.espressif}), nothing to download"
 else
+  [[ "$ESP32_TOOLCHAINS" != os ]] || die "ESP-IDF tools in ${IDF_TOOLS_PATH:-~/.espressif} do not activate.$(os_hint)"
   echo "==> Installing ESP-IDF tools for $IDF_TARGET ..."
   "$IDF_FOUND/install.sh" "$IDF_TARGET"
   # cmake/ninja are on_request tools on macOS/Linux.
@@ -49,7 +54,7 @@ fi
 (
   set --
   source "$IDF_FOUND/export.sh" >/dev/null 2>&1
-  echo "==> $(idf.py --version)"
+  echo "==> $(idf.py --version 2>/dev/null)"
   echo "==> $(xtensa-esp32s3-elf-gcc --version | head -1)"
   echo "==> $(cmake --version | head -1), ninja $(ninja --version)"
 )
