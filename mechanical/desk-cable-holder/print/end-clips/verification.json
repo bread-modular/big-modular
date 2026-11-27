@@ -40,6 +40,23 @@
   ],
   "nose_down_stop_checked_deg": 2,
   "parts": {
+    "hanger": {
+      "print_bounds_mm": [
+        240.0,
+        74.0,
+        59.0
+      ],
+      "volume_cm3": 121.74,
+      "stl_facets": 37548,
+      "mesh_deflection_mm_rad": [
+        0.02,
+        0.1
+      ],
+      "bed_contact_mm2": 8036.0,
+      "bridged_ceiling_mm2": 0.0,
+      "area_past_50_deg_mm2": 0.0,
+      "worst_of_it_deg": 0.0
+    },
     "left-clip": {
       "print_bounds_mm": [
         76.3,

@@ -11,7 +11,7 @@ ARM = Path(__file__).resolve().parents[1]
 OUT = ARM / 'print' / 'two-screw-base'
 WORK = ARM / 'research' / 'two-screw-base' / 'slice'
 sys.path.insert(0, str(ARM.parent / 'desk-cable-holder' / 'tools'))
-from slice_twin_screw_bridge import profile
+from orca_profile import profile
 
 
 def main(compact=False, narrow=False):
