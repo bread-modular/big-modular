@@ -8,5 +8,5 @@
 Regenerate the printed panels headless from `modules/blank`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panels.py
+freecadcmd panels/front-cad/build_front_panels.py
 ```

@@ -1,9 +1,9 @@
 #!/bin/sh
 # Nominal panel-over-carrier fit check. Run from anywhere; writes research/fit/ (ignored)
-# and docs/fit/fit-report.json. Env: FREECAD (AppImage or freecadcmd path).
+# and docs/fit/fit-report.json. Env: FREECAD (default the OS freecadcmd; a FreeCAD AppImage also works).
 set -e
 module=$(cd "$(dirname "$0")/.." && pwd)
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 fit=$module/research/fit
 mkdir -p "$fit"

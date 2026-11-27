@@ -31,9 +31,9 @@
 ### Reproduction (from repository root)
 
 ```sh
-fc="$HOME/Applications/FreeCAD_1.1.3.AppImage"
+fc=${FREECAD:-freecadcmd}
 t=mechanical/solder-arm/tools
-"$fc" freecadcmd "$t/narrow_base.py"  # require NARROW_BASE_PASS in output
+"$fc" "$t/narrow_base.py"  # require NARROW_BASE_PASS in output
 python3 -B "$t/slice_two_screw_base.py" --narrow
 VARIANT=narrow-56 blender -b --python "$t/render_two_screw_base.py"
 ```

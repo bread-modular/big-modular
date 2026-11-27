@@ -1,7 +1,7 @@
 """Generate the 3D-printable 32BIT ES 6HP front panel with FreeCAD (the S3 panel: same holes as the ES1 carrier).
 
 Run headless from modules/32bit:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/es/front-cad/build_front_panel.py
+  freecadcmd panels/es/front-cad/build_front_panel.py
 
 Outline and NPTH holes are read from the native panel PCB
 (../front-pcb/32bit-es-panel.kicad_pcb) and asserted against docs/es/geometry.json, so the

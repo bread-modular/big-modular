@@ -42,7 +42,7 @@ don't run it once routing has started):
 python3 -B tools/import_footprints.py      # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py        # schematic + pinned symbols, netlist self-check
 python3 -B tools/build_layout.py           # THT placement + parked SMD + panel PCB
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 Read-only protection regression check (KiCad Python, from repository root):

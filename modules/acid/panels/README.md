@@ -10,7 +10,7 @@ one mounts on the jack bushings with the PJ301M-12 nuts plus the rail screws; th
 pots take no nut. The buttons need a printed cap or actuator through their hole (only 8bit has one so far). Regenerate the printed panel headless from `modules/acid`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from `front-pcb/acid-panel.kicad_pcb` and

@@ -284,6 +284,6 @@ panel next to the FR4 one.
   `docs/geometry.json`; it checks one valid solid, the drilled-blank volume and a closed
   manifold STL. Copy the closest existing one (`modules/hats`, `modules/multi-mix` for a
   USB slot + standoffs) and run it headless:
-  `~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py`.
+  `freecadcmd panels/front-cad/build_front_panel.py`.
 - Regenerate it whenever the FR4 panel holes change, list it in `panels/README.md`, and
   never hand-edit its exports. Not test-printed unless the user says so.

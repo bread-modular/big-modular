@@ -1,10 +1,10 @@
 #!/bin/sh
 # Build the soldering arm with FreeCAD's headless interpreter (as mechanical/case/tools/build.sh).
-# Env: FREECAD (path to a FreeCAD AppImage or freecadcmd).
+# Env: FREECAD (headless FreeCAD to run; default the OS freecadcmd, a FreeCAD AppImage also works).
 set -eu
 here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 arm_dir=$(dirname "$here")
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 research="$arm_dir/research"
 mkdir -p "$research"

@@ -4,7 +4,7 @@ set -eu
 here=$(dirname "$(realpath "$0")")
 work="$here/../research/two-screw-base"
 mkdir -p "$work"
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 # FreeCADCmd can return zero after a Python exception; require this run's pass marker.
 if ! "$@" "$here/build_two_screw_base.py" >"$work/build.log" 2>&1 ||

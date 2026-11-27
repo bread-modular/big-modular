@@ -1,7 +1,7 @@
 """Generate the 3D-printable usb-power front panel with FreeCAD (no labels).
 
 Run headless from modules/usb-power:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+  freecadcmd panels/front-cad/build_front_panel.py
 
 Outline, NPTH holes and the USB aperture are read from the native panel PCB
 (../front-pcb/usb-power-panel.kicad_pcb) and asserted against

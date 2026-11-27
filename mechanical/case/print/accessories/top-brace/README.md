@@ -156,7 +156,7 @@ blender -b --python mechanical/case/tools/render_middle_brace.py -- \
   mechanical/case/research/middle-brace mechanical/case/renders/accessories/top-brace
 ```
 
-`FREECAD` overrides the headless executable/AppImage. The builder reads the
+`FREECAD` overrides the headless executable (default: the OS `freecadcmd`). The builder reads the
 current module panels (thickness, width, rail holes) and rejects saved
 case/frame geometry that differs from the generators. It writes only this
 brace's CAD, print outputs and research evidence.

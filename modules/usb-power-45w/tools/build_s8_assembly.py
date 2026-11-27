@@ -1,6 +1,6 @@
 """FreeCAD half of the S8 3D assembly (run by tools/s8_mechanical.py, not by hand).
 
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd tools/build_s8_assembly.py   (env S8_ASM_WORK=<dir>)
+  freecadcmd tools/build_s8_assembly.py   (env S8_ASM_WORK=<dir>)
 
 Same frame and method as tools/build_assembly.py (M1): X across the 4HP panel, Y down, Z into the case,
 origin at the panel's upper-left front corner.
@@ -63,7 +63,7 @@ def step_export(pcb, out, extra):
     cmd = ['kicad-cli', 'pcb', 'export', 'step', '--force', '--user-origin', '0x0mm',
            '-D', 'KICAD10_3DMODEL_DIR=/usr/share/kicad/3dmodels', '-o', str(out)] + extra + [str(pcb)]
     env = {k: v for k, v in os.environ.items() if k in ('HOME', 'USER', 'LANG', 'TMPDIR')}
-    env['PATH'] = '/usr/bin:/bin'          # FreeCAD's AppImage environment breaks the system kicad-cli
+    env['PATH'] = '/usr/bin:/bin'          # keep FreeCAD's library environment away from the system kicad-cli
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, env=env)
     return Part.read(str(out))
 

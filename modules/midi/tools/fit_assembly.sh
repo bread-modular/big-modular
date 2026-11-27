@@ -1,14 +1,14 @@
 #!/bin/sh
 # Nominal panel-over-carrier fit check: tools/fit_assembly.sh v1|v2. Run from anywhere; writes
 # research/<version>/fit/ (ignored) and the version's fit-report.json (docs/fit/ for V1,
-# docs/v2/fit/ for V2). Env: FREECAD (AppImage or freecadcmd path).
+# docs/v2/fit/ for V2). Env: FREECAD (default the OS freecadcmd; a FreeCAD AppImage also works).
 set -e
 module=$(cd "$(dirname "$0")/.." && pwd)
 case "$1" in v1|v2) MIDI_VERSION=$1 ;; *) echo "usage: $0 v1|v2" >&2; exit 2 ;; esac
 export MIDI_VERSION
 report=$module/docs/fit/fit-report.json
 [ "$MIDI_VERSION" = v1 ] || report=$module/docs/$MIDI_VERSION/fit/fit-report.json
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 fit=$module/research/$MIDI_VERSION/fit
 mkdir -p "$fit"

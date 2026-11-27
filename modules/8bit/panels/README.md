@@ -13,9 +13,9 @@ one mounts on the jack bushings with the PJ301M-12 nuts plus the rail screws; th
 pots take no nut. The MODE cap (`button-actuator/`) tip stands 1.5 mm proud of the 2.0 mm print (1.9 mm on FR4). Regenerate the printed panel headless from `modules/8bit`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-PANEL=lfo ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
-PANEL=lfo4hp ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
+PANEL=lfo freecadcmd panels/front-cad/build_front_panel.py
+PANEL=lfo4hp freecadcmd panels/front-cad/build_front_panel.py
 python3 -B tools/build_layout.py panels   # FR4 panels only (KiCad Python)
 ```
 

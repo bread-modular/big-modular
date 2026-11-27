@@ -45,7 +45,7 @@ Rebuild (from `modules/audio-out`). The routed PCB is the source of truth, so on
 run the layout steps as this whole sequence, then the checks in `Code.md`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd tools/make_pot_model.py   # RV09 model from the user's sample
+freecadcmd tools/make_pot_model.py   # RV09 model from the user's sample
 python3 -B tools/import_footprints.py          # one-time library import (pcbnew)
 python3 -B tools/build_schematic.py            # schematic + pinned symbols
 python3 -B tools/build_layout.py               # placement + netlist nets + vendored models + panel, UNROUTED
@@ -57,7 +57,7 @@ python3 -B tools/route_plan.py > research/route/plan.json   # R3 copper as share
    --ops modules/audio-out/research/route/plan.json --output modules/audio-out/research/route-cand-NEW)
 (cd ../.. && python3 -B opt/kicad-tools/kicad_tools.py pcb promote --candidate modules/audio-out/research/route-cand-NEW \
    --plan modules/audio-out/research/route/edit-plan.json)
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 tools/fit_assembly.sh                          # nominal panel/carrier 3D fit
 ```
 

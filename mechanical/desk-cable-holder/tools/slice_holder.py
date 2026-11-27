@@ -23,7 +23,7 @@ def slice_plate(plate):
                         wall_loops=str(walls), sparse_infill_density='25%')
         (work / f'{kind}.json').write_text(json.dumps(data))
     with (work / 'slice.log').open('w') as log:
-        subprocess.run([os.environ.get('ORCASLICER', 'orcaslicer'), '--load-settings',
+        subprocess.run([os.environ.get('ORCASLICER', 'orca-slicer'), '--load-settings',
                         f'{work}/machine.json;{work}/process.json', '--load-filaments', str(work/'filament.json'),
                         '--slice', '0', '--outputdir', str(work), str(plate)],
                        stdout=log, stderr=log, check=True, cwd=work)

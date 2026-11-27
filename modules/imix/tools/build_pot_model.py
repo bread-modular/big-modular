@@ -1,7 +1,7 @@
 """Generate the nominal tall-trimmer pot 3D proxy (FreeCAD, headless).
 
 Run from modules/imix:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd tools/build_pot_model.py
+  freecadcmd tools/build_pot_model.py
 
 Writes hardware/IMIX.3dshapes/RV09_vertical_proxy.step in the footprint frame of
 Potentiometer_RV09 (STEP X = footprint X, STEP Y = -footprint Y, Z0 = PCB F side).

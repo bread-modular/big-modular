@@ -30,7 +30,7 @@ the skiff rail. A boss at the right end reaches the panel rear and takes the scr
 Regenerate from `modules/motion`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/top-clip/build_top_clip.py
+freecadcmd panels/top-clip/build_top_clip.py
 python3 -B panels/top-clip/check_top_clip.py
 python3 -B panels/top-clip/render_section.py
 ```
@@ -38,7 +38,7 @@ python3 -B panels/top-clip/render_section.py
 Regenerate the printed panel headless from `modules/motion`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and holes from `front-pcb/motion-panel.kicad_pcb` and asserts them

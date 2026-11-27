@@ -13,7 +13,7 @@ jack bushings with the PJ301M-12/PJ366ST nuts, plus the two rail screws. No
 brackets are used. Regenerate the printed panel headless from `modules/midi`:
 
 ```sh
-~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panel.py
+freecadcmd panels/front-cad/build_front_panel.py
 ```
 
 The script reads the outline and NPTH holes from

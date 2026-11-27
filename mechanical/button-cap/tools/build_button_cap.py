@@ -1,7 +1,7 @@
 """Generate the two-piece 3D-printable push-button cap (plunger + press-on head) with FreeCAD.
 
 Run headless from the repository root (or use tools/build_button_cap.sh):
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd mechanical/button-cap/tools/build_button_cap.py
+  freecadcmd mechanical/button-cap/tools/build_button_cap.py
 
 Every module with a push button uses the modules/8bit stack: a 6 x 6 x 7 mm THT tact switch on
 the carrier F side, its stem top 3.0 mm below the panel rear, a Ø4.2 panel hole. The one-piece

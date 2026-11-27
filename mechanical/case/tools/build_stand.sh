@@ -1,9 +1,9 @@
 #!/bin/sh
 # Build the stand. Env: STAND_TILTS (deg, e.g. 0,40,70; the first must be 0, row 1 lies flat on the tier 1 ledges), STAND_TIERS (2 or 3),
-# FREECAD (path to FreeCAD AppImage or freecadcmd).
+# FREECAD (headless FreeCAD to run; default the OS freecadcmd, a FreeCAD AppImage also works).
 set -e
 here=$(cd "$(dirname "$0")" && pwd)
-fc=${FREECAD:-$HOME/Applications/FreeCAD_1.1.3.AppImage}
+fc=${FREECAD:-freecadcmd}
 case "$fc" in *.AppImage) set -- "$fc" freecadcmd ;; *) set -- "$fc" ;; esac
 log=$(dirname "$here")/research/stand.log
 mkdir -p "$(dirname "$log")"

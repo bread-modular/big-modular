@@ -1,7 +1,7 @@
 """Generate the 3D-printable blank 2/4/6/8 HP front panels with FreeCAD.
 
 Run headless from modules/blank:
-  ~/Applications/FreeCAD_1.1.3.AppImage freecadcmd panels/front-cad/build_front_panels.py
+  freecadcmd panels/front-cad/build_front_panels.py
 
 Outline and NPTH rail holes are read from each native panel PCB
 (../front-pcb/blank-<n>hp.kicad_pcb) and asserted against docs/geometry.json, so the
