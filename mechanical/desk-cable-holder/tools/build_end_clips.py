@@ -1,6 +1,6 @@
-"""Four-piece screw mount for the original (unmodified) cable hanger. FreeCADCmd this file.
+"""Two-screw mount and matching one-piece cable carrier. FreeCADCmd this file.
 Desk top Z=0, front edge X=0, +X into desk; the two clips slide onto opposite ends along Y.
-No original output is written. Both bores take the SAME right-hand screw.
+Both bores take the SAME right-hand screw.
 """
 import json
 import math
@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 import FreeCAD as App
+import MeshPart
 import Part
 
 TOOLS = Path(__file__).resolve().parent
@@ -82,8 +83,8 @@ def hit(a,b,label):
     return v
 
 
-def check(jaws,s):
-    holder = move(h.hanger(),z=HZ); fixed = Part.makeCompound(list(jaws.values()))
+def check(jaws,s,carrier):
+    holder = move(carrier,z=HZ); fixed = Part.makeCompound(list(jaws.values()))
     area = {}; contacts = {}
     # Start off each end of the hanger and slide inward: no bending or snap.
     for side,jaw in jaws.items():
@@ -118,6 +119,7 @@ def check(jaws,s):
     z=HZ+h.COMB_TOP; r=h.SEAT_D/2
     lanes=Part.makeCompound([box(-35,max(h.SEAT_X)+r,y-r,y+r,z,z+h.PLUG_L+5) for y in h.slot_centres()])
     cables=Part.makeCompound([move(cyl(h.CABLE_D/2,-600,0),x,y,z) for x in h.SEAT_X for y in h.slot_centres()])
+    clear(lanes,holder,'plug access above comb'); clear(cables,holder,'cables through comb')
     clear(lanes,hardware,'all plug paths including lift'); clear(cables,hardware,'all hanging cables')
     return {'desk_range_mm':[8,50],'samples':contacts,'shelf_contact_each_mm2':list(area.values()),
             'slots_clear':len(h.slot_centres()),'seats_clear':len(h.SEAT_X)*len(h.slot_centres()),
@@ -127,11 +129,26 @@ def check(jaws,s):
 def main():
     BITS.mkdir(exist_ok=True,parents=True); blank=clip_blank(); s=screw()
     jaws={side:clip(blank,side) for side in (-1,1)}
-    report=check(jaws,s); h.OUT=BITS
+    carrier=h.hanger()
+    pose=print_pose(carrier,[(V(0,1,0),90),(Z,90)])
+    carrier_info=h.export_part(pose,'hanger') | h.overhangs(pose)
+    assert carrier_info['bridged_ceiling_mm2']==0 and carrier_info['area_past_50_deg_mm2']==0
+    report=check(jaws,s,carrier)
+    assembled={'Carrier':move(carrier,z=HZ),'LeftClip':jaws[1],'RightClip':jaws[-1],
+               'LeftScrew':placed(s,28,1),'RightScrew':placed(s,28,-1)}
+    doc=App.newDocument('CableHolder'); h.CAD.mkdir(exist_ok=True)
+    preview=h.HOLDER/'research'; preview.mkdir(exist_ok=True)
+    for name,shape in assembled.items():
+        MeshPart.meshFromShape(Shape=shape,LinearDeflection=.04,AngularDeflection=.2).write(str(preview/(name+'.stl')))
+        doc.addObject('Part::Feature',name).Shape=shape
+    doc.recompute(); doc.saveAs(str(h.CAD/'desk-cable-holder-assembly.FCStd'))
+    Part.makeCompound(list(assembled.values())).exportStep(str(h.OUT/'assembly-preview.step'))
+    App.closeDocument(doc.Name)
+    h.OUT=BITS
     # Left/right as seen by the person facing the slot mouths (+X is away).
     poses={name:print_pose(jaws[side],[(X,side*90)]) for name,side in zip(NAMES,(1,-1))}
     poses[NAMES[2]]=print_pose(s)
-    report['parts']={n:h.export_part(p,n)|h.overhangs(p) for n,p in poses.items()}
+    report['parts']={'hanger':carrier_info} | {n:h.export_part(p,n)|h.overhangs(p) for n,p in poses.items()}
     plates.PRINT=BITS; plates.OUT=OUT
     report['plate']=plates.build_plate('print-this',[[*NAMES[:2]],[NAMES[2],NAMES[2]]],{n:plates.part_mesh(n) for n in NAMES})
     (OUT/'verification.json').write_text(json.dumps({'status':'CAD_PASS','physical_test':False,**report},indent=2)+'\n')

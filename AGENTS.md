@@ -33,10 +33,7 @@ tooling.
   tilt / flip), two sliding jaws for 16 .. 157 mm boards; two-screw desk base only (the single-screw clamp was removed 2026-11-26): `print/two-screw-base/` wide 5–52 mm, `compact-28/` lighter 5–28 mm, `narrow-56/` half width (56 mm along the edge, screws 32 mm apart, 5–52 mm; 2026-11-26, CAD + slicer checked, not printed), same upper arm; the arm build checks every pose on the base; user: printed, "works really well" (2026-11-26), not load-tested) and `mechanical/button-cap/`
   (two-piece cap for the modules' tact-switch push buttons: modules/8bit plunger with a longer tip + press-on Ø8 / Ø6.5 head in front of
   the panel; first print 2026-11-18: head too loose, crush ribs tightened Ø3.5 -> Ø3.3, that fit not printed) and
-  `mechanical/desk-cable-holder/` (under-desk patch cable comb, every part printed: 240 mm C-shaped hanger behind the desk edge,
-  flange against the desk's underside, comb with 16 slots x 4 plug seats 64 mm below it, held by one C clamp with the solder arm's
-  printed screw / nut / pad, the only part outside the desk; desks 8 .. 50 mm; second design, the first lay on the desk and stuck
-  out; original centre clamp tilts even with the replacement shoe. Current simple retrofit: `print/end-clips/print-this.3mf` — two threaded end clips and two printed screws, one size for flat 8–50 mm desks. The existing hanger slides into the clips unchanged; the screws press on the desktop underside. CAD and PLA slicer checked, not physically load-tested).
+  `mechanical/desk-cable-holder/` (under-desk patch cable comb; only the two-screw version: `print/hanger.3mf` is the one-piece, open-back 240 mm carrier, 16 grooves × 4 plug seats; the two end tabs slide into the unchanged clips on `print/end-clips/print-this.3mf`. Screws press directly on the underside of flat 8–50 mm desks. CAD and PLA slicer checked, revised carrier not load-tested).
 - `modules/<name>/AGENTS.md` and `modules/<name>/Code.md` — module-specific
   circuit/release contract. Read them before touching that module.
 

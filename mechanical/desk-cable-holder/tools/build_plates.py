@@ -1,15 +1,5 @@
-"""Print plates for the desk cable holder: one 3MF per plate with its parts laid out on the bed,
-made from the per-part 3MF files of build_desk_cable_holder.py (plain Python, no FreeCAD; as
-mechanical/solder-arm/tools/build_plates.py).
-
-Run by tools/build_desk_cable_holder.sh after the CAD build:
-  python3 -B mechanical/desk-cable-holder/tools/build_plates.py
-
-The plates are geometry only (no printer, process or filament settings). Each part is one
-object in the file and each copy a build item of it, in the part's print pose.
-"""
+"""Lay out geometry-only 3MF plates from print-oriented part meshes."""
 import hashlib
-import json
 import re
 import zipfile
 from pathlib import Path
@@ -21,12 +11,6 @@ OUT = PRINT/'plates'
 BED = 256.0           # Bambu Lab P2S
 MARGIN = 6.0          # bed edge to the nearest part
 GAP = 8.0             # between parts
-
-# plate -> rows (front to back) of parts (left to right); the order is the print order
-PLATES = {
-    'plate-1-clamp-hardware': [['clamp-screw', 'clamp-nut', 'clamp-pad']],
-    'plate-2-hanger-and-clamp': [['hanger'], ['clamp-body']],
-}
 
 TYPES = """<?xml version="1.0" encoding="UTF-8"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
@@ -102,27 +86,3 @@ def build_plate(plate, rows, parts):
     return {'pieces': len(placed), 'footprint_mm': [round(v, 2) for v in span],
             'height_mm': max(p['size_mm'][2] for p in placed), 'items': placed,
             'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
-
-
-def main():
-    report = json.loads((PRINT/'verification.json').read_text())
-    assert report['status'] == 'PASS'
-    OUT.mkdir(exist_ok=True)
-    for old in OUT.glob('*'):
-        old.unlink()
-    parts = {n: part_mesh(n) for n in report['print']}
-    plates = {plate: build_plate(plate, rows, parts) for plate, rows in PLATES.items()}
-    # the plates hold exactly the copies the build asks for
-    for n, info in report['print'].items():
-        got = sum(1 for p in plates.values() for item in p['items'] if item['part'] == n)
-        assert got == info['copies'], (n, got, info['copies'])
-        size = next(item['size_mm'] for p in plates.values() for item in p['items'] if item['part'] == n)
-        assert all(abs(a - b) < 0.02 for a, b in zip(size, info['print_bounds_mm'])), (n, size, info['print_bounds_mm'])
-    out = {'bed_mm': BED, 'edge_margin_mm': MARGIN, 'part_gap_mm': GAP,
-           'pieces': sum(p['pieces'] for p in plates.values()), 'plates': plates}
-    (OUT/'plates.json').write_text(json.dumps(out, indent=2) + '\n')
-    print('DESK_CABLE_HOLDER_PLATES_PASS', {k: v['pieces'] for k, v in plates.items()})
-
-
-if __name__ == '__main__':
-    main()
