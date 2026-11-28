@@ -204,7 +204,7 @@ static float comp_run(const ms_comp_coef_t *c, ms_comp_state_t *s, const float *
 // The glue's sidechain (see ms_glue_coef_t). Writes the linear gain for each
 // sample of the detector input; returns the largest gain reduction (dB).
 static float glue_run(const ms_glue_coef_t *c, ms_glue_state_t *s, const float *det, float *gain, int n) {
-    float v1 = s->v1, v2 = s->v2, gr_max = 0.0f;
+    float v1 = s->v1, v2 = s->v2, cv = s->cv, gr_max = 0.0f;
     for (int i = 0; i < n; i++) {
         float d = det[i];
         float lvl = DB_PER_LOG2 * ms_fast_log2(fabsf(d) + 1e-10f);
@@ -242,12 +242,15 @@ static float glue_run(const ms_glue_coef_t *c, ms_glue_state_t *s, const float *
         }
         if (v1 < 1e-9f) v1 = 0.0f;
         if (v2 < 1e-9f) v2 = 0.0f;
-        const float g = v1 + v2;
-        if (g > gr_max) gr_max = g;
-        gain[i] = ms_fast_exp2(-LOG2_PER_DB * g);
+        // The audio gain cell follows the capacitor through its control low pass.
+        cv += c->cv_coef * (v1 + v2 - cv);
+        if (cv < 1e-9f) cv = 0.0f;
+        if (cv > gr_max) gr_max = cv;
+        gain[i] = ms_fast_exp2(-LOG2_PER_DB * cv);
     }
     s->v1 = v1;
     s->v2 = v2;
+    s->cv = cv;
     return gr_max;
 }
 
@@ -358,7 +361,7 @@ static int lim_delay(const ms_lim_coef_t *c) {
 }
 
 int ms_coefs_latency(const ms_coefs_t *c) {
-    return c->bypass ? 0 : lim_delay(&c->k_lim) + lim_delay(&c->lim);
+    return c->bypass ? 0 : lim_delay(&c->k_lim) + lim_delay(&c->lim) + (c->glue_on ? (int)c->glue.dly : 0);
 }
 
 void ms_dsp_init(ms_dsp_t *d, const ms_coefs_t *c) {
@@ -396,9 +399,21 @@ static void multiband(ms_dsp_t *d, const float *key, float *m, int n) {
     }
 }
 
-// Glue compressor on the main sum (in place).
+// Glue compressor on the main sum (in place). The audio waits for the gain
+// cell's control (ms_glue_coef_t); the wait is filled also with the glue off, so
+// switching it on does not play old samples.
 static void glue(ms_dsp_t *d, float *x, int n) {
     const ms_coefs_t *c = &d->c;
+    ms_glue_state_t *s = &d->glue;
+    float a_dly[MS_BLOCK_MAX];
+    uint32_t pos = s->dly_pos;
+    for (int i = 0; i < n; i++) {
+        s->dly[pos & (MS_GLUE_DLY_SIZE - 1)] = x[i];
+        a_dly[i] = s->dly[(pos - c->glue.dly) & (MS_GLUE_DLY_SIZE - 1)];
+        pos++;
+    }
+    s->dly_pos = pos;
+    if (!c->glue_on) return;
     float gain[MS_BLOCK_MAX];
     const float *dsrc = x;
     float sc[MS_BLOCK_MAX];
@@ -406,10 +421,10 @@ static void glue(ms_dsp_t *d, float *x, int n) {
         svf_hp(&c->glue_sc_hp, &d->glue_sc_hp, x, sc, n);
         dsrc = sc;
     }
-    max_into(&d->meters.gr_glue, glue_run(&c->glue, &d->glue, dsrc, gain, n));
+    max_into(&d->meters.gr_glue, glue_run(&c->glue, s, dsrc, gain, n));
     const float makeup = d->g_cur[MS_G_GLUE_MAKEUP], wet = c->glue_wet;
     for (int i = 0; i < n; i++) {
-        float a = x[i];
+        float a = a_dly[i];
         float lim = a > GLUE_COLOUR_MAX ? GLUE_COLOUR_MAX : (a < -GLUE_COLOUR_MAX ? -GLUE_COLOUR_MAX : a);
         float vca = (a + lim * lim * (GLUE_COLOUR_2 - GLUE_COLOUR_3 * lim)) * gain[i];
         x[i] = a + wet * (vca * makeup - a);
@@ -496,7 +511,7 @@ void ms_dsp_process(ms_dsp_t *d, const float *in_k, const float *in_m, float *ou
     for (int j = 0; j < 3; j++) {
         switch (c->o_order[j]) {
             case MS_DEV_GLUE:
-                if (c->glue_on) glue(d, x, n);
+                glue(d, x, n);
                 break;
             case MS_DEV_FLT:
                 flt_run(&c->o_flt, &d->o_flt, x, n);

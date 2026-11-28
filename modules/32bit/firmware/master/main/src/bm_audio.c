@@ -4,6 +4,7 @@
 
 #include "bm_es8388.h"
 #include "driver/i2s_std.h"
+#include "esp_attr.h"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/projdefs.h"
@@ -23,11 +24,42 @@ static int32_t txbuf[BUFF_LEN];
 
 static bm_audio_loop_t audio_loop = NULL;
 
+static volatile uint32_t rx_ovf_count, tx_ovf_count, tx_late_count;
+
+// A sent TX buffer is cleared and marked in the low byte of its first word (below
+// the codec's 24 bits). If it is sent again with the mark still there, the audio
+// task did not refill it in time: that block played as silence.
+#define TX_STALE_MARK 0x5A
+
+static bool IRAM_ATTR on_tx_sent(i2s_chan_handle_t handle, i2s_event_data_t *event, void *ctx) {
+    int32_t *buf = (int32_t *)event->dma_buf;
+    if ((buf[0] & 0xFF) == TX_STALE_MARK) tx_late_count++;
+    memset(buf, 0, event->size);
+    buf[0] = TX_STALE_MARK;
+    return false;
+}
+
+static bool IRAM_ATTR on_rx_ovf(i2s_chan_handle_t handle, i2s_event_data_t *event, void *ctx) {
+    rx_ovf_count++;
+    return false;
+}
+
+static bool IRAM_ATTR on_tx_ovf(i2s_chan_handle_t handle, i2s_event_data_t *event, void *ctx) {
+    tx_ovf_count++;
+    return false;
+}
+
+void bm_audio_get_stats(bm_audio_stats_t *st) {
+    st->rx_ovf = rx_ovf_count;
+    st->tx_ovf = tx_ovf_count;
+    st->tx_late = tx_late_count;
+}
+
 static void default_audio_loop(size_t n_frames, const int32_t *input, int32_t *output) {
     memcpy(output, input, 2 * n_frames * sizeof(int32_t));
 }
 
-static void audio_task(void *arg) {
+static void IRAM_ATTR audio_task(void *arg) {
     size_t n = 0;
 
     // Small delay so clocks settle after enable
@@ -86,8 +118,9 @@ void bm_setup_audio(bm_audio_config_t config) {
     // 44.1 kHz (fxrack / polysynth: 3 x 64 = 4.4 ms).
     chan_cfg.dma_desc_num = BM_AUDIO_DMA_DESC_NUM;
     chan_cfg.dma_frame_num = BM_AUDIO_FRAMES;
-    // A late block plays as silence, not as the old buffer again.
-    chan_cfg.auto_clear = true;
+    // A late block plays as silence, not as the old buffer again: on_tx_sent
+    // clears each sent buffer (and counts the late ones).
+    chan_cfg.auto_clear = false;
     ESP_ERROR_CHECK(i2s_new_channel(&chan_cfg, &tx_chan, &rx_chan));
 
     // 3) Configure std (Philips) mode for BOTH channels: 32-bit slots, the codec
@@ -111,6 +144,10 @@ void bm_setup_audio(bm_audio_config_t config) {
 
     ESP_ERROR_CHECK(i2s_channel_init_std_mode(tx_chan, &std_cfg));
     ESP_ERROR_CHECK(i2s_channel_init_std_mode(rx_chan, &std_cfg));
+    const i2s_event_callbacks_t rx_cbs = {.on_recv_q_ovf = on_rx_ovf};
+    const i2s_event_callbacks_t tx_cbs = {.on_sent = on_tx_sent, .on_send_q_ovf = on_tx_ovf};
+    ESP_ERROR_CHECK(i2s_channel_register_event_callback(rx_chan, &rx_cbs, NULL));
+    ESP_ERROR_CHECK(i2s_channel_register_event_callback(tx_chan, &tx_cbs, NULL));
 
     // 4) Enable both channels (starts the clocks)
     ESP_ERROR_CHECK(i2s_channel_enable(tx_chan));

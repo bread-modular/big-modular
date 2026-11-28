@@ -674,8 +674,10 @@ static void test_glue_circuit(void) {
             start();
             for (int i = 0; i < n; i++) buf_m[i] = i < quiet ? 0.001f : 0.5f;
             run(NULL, buf_m, buf_o, n);
+            // The audio waits for the gain cell's control: the step comes out that much later.
+            const int step = quiet + (int)dsp.c.glue.dly;
             float rise = 0;
-            for (int i = quiet + 1; i < n; i++) rise = fmaxf(rise, buf_o[i] - buf_o[i - 1]);
+            for (int i = step + 1; i < n; i++) rise = fmaxf(rise, buf_o[i] - buf_o[i - 1]);
             CHECK(rise < 1e-6f, "glue %g:1, attack %d: the gain comes back up by %g during the attack", ratios[r], att,
                   rise);
             // The attack resistor against the release resistor is a divider: 30 ms
@@ -687,9 +689,9 @@ static void test_glue_circuit(void) {
             CHECK(NEAR(got, want, 0.15f), "glue %g:1, attack %d: settles at %.2f dB, want %.2f", ratios[r], att, got,
                   want);
             if (att == 5) {
-                for (int i = quiet; i < n; i++) {
+                for (int i = step; i < n; i++) {
                     if (db(buf_o[i] / 0.5f) < 0.632f * want) {
-                        t63[r] = 1000.0f * (float)(i - quiet) / FS;
+                        t63[r] = 1000.0f * (float)(i - step) / FS;
                         break;
                     }
                 }
@@ -757,6 +759,40 @@ static void test_glue_circuit(void) {
           thd[0], thd[1]);
     printf("glue 4:1, attack 10 ms, release 0.1 s, tone 20 dB over: THD %.3f %% at 1 kHz, %.2f %% at 100 Hz\n",
            thd[0], thd[1]);
+
+    // A sustained sound with beats at the fastest attack (a four-voice drone, 2026-11-28):
+    // without the gain cell's control low pass the capacitor snapped down inside the
+    // waveform peaks and the output crackled: 36.6 dB more high-frequency weight (the
+    // fourth difference) than the input, 17.7 dB with it (the 1 ms attack had ~17).
+    neutral();
+    P[MS_P_GLUE_ON] = 1;
+    P[MS_P_GLUE_THR] = -20;
+    P[MS_P_GLUE_RATIO] = 1;  // 4:1
+    P[MS_P_GLUE_ATT] = 0;    // 0.01 ms
+    P[MS_P_GLUE_REL] = 6;    // A
+    P[MS_P_GLUE_CLIP] = 0;
+    start();
+    static const float drone[4] = {312.2f, 338.2f, 620.5f, 676.4f};
+    const int nd = 2 * 44100;  // the second second: release A has filled
+    for (int i = 0; i < nd; i++) {
+        float v = 0;
+        for (int k = 0; k < 4; k++) v += 0.12f * (float)sin(2.0 * M_PI * drone[k] * i / FS + k);  // double: a clean phase
+        buf_m[i] = v;
+    }
+    run(NULL, buf_m, buf_o, nd);
+    double hf[2] = {0}, all[2] = {0};
+    for (int i = nd / 2; i < nd; i++) {
+        for (int w = 0; w < 2; w++) {
+            const float *b = w ? buf_o : buf_m;
+            double d4 = b[i] - 4.0 * b[i - 1] + 6.0 * b[i - 2] - 4.0 * b[i - 3] + b[i - 4];
+            hf[w] += d4 * d4;
+            all[w] += (double)b[i] * b[i];
+        }
+    }
+    float lift = (float)(10.0 * log10((hf[1] / all[1]) / (hf[0] / all[0])));
+    float gr = db((float)sqrt(all[1] / all[0]));
+    CHECK(lift < 24.0f && gr < -6.0f, "glue drone, attack 0.01 ms: high-frequency lift %.1f dB at %.1f dB", lift, gr);
+    printf("glue 4:1, attack 0.01 ms, release A, a beating drone at %.1f dB: high-frequency lift %.1f dB\n", gr, lift);
 }
 
 static void test_parallel(void) {
@@ -1041,9 +1077,9 @@ static void test_protocol(void) {
     int values = 1;
     for (const char *p = lines[0] + 2; *p; p++) values += *p == ' ';
     CHECK(n_lines == 1 && values == names, "meters: %d values for %d names: %s", values, names, lines[0]);
-    // io 2.5 ms + factory look-aheads 1.0 + 1.5 ms (44 + 66 samples)
+    // io 2.5 ms + factory look-aheads 1.0 + 1.5 ms + the glue's 0.1 ms (44 + 66 + 4 samples)
     CHECK(strcmp(lines[0], "m|0.0 -120.0 -120.0 -20.0 -120.0 -120.0 -120.0 -120.0 0.00 0.00 3.25 0.00 0.00 0.00 0.00 "
-                           "41 57 4.99 0 0.000 0.000 0 0 0.00") == 0,
+                           "41 57 5.09 0 0.000 0.000 0 0 0.00") == 0,
           "meter line: %s", lines[0]);
 
     send(&pr, "get");

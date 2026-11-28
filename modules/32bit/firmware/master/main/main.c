@@ -23,12 +23,14 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "bm_audio.h"
 #include "bm_led.h"
 #include "driver/usb_serial_jtag.h"
 #include "driver/usb_serial_jtag_vfs.h"
+#include "esp_attr.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
@@ -65,6 +67,10 @@ static volatile bool coefs_new;
 static portMUX_TYPE coefs_mux = portMUX_INITIALIZER_UNLOCKED;
 
 static volatile uint32_t block_us_sum, block_us_max, block_count;
+// `diag` (bench): since the last `diag`, blocks over their period and the
+// longest block / gap between block starts.
+static volatile uint32_t diag_blocks, diag_over, diag_max_us, diag_max_gap_us;
+static int64_t diag_last_start_us;
 
 // Largest meter values since the page last asked.
 static ms_meters_t page_meters;
@@ -73,8 +79,13 @@ static ms_led_t led;
 
 // ---------------------------------------------------------------- audio (core 1)
 
-static void audio_loop(size_t frames, const int32_t *in, int32_t *out) {
+static void IRAM_ATTR audio_loop(size_t frames, const int32_t *in, int32_t *out) {
     int64_t start_us = esp_timer_get_time();
+    if (diag_last_start_us) {
+        uint32_t gap = (uint32_t)(start_us - diag_last_start_us);
+        if (gap > diag_max_gap_us) diag_max_gap_us = gap;
+    }
+    diag_last_start_us = start_us;
     if (coefs_new) {
         static ms_coefs_t c;
         portENTER_CRITICAL(&coefs_mux);
@@ -101,6 +112,26 @@ static void audio_loop(size_t frames, const int32_t *in, int32_t *out) {
     block_us_sum += used_us;
     block_count++;
     if (used_us > block_us_max) block_us_max = used_us;
+    diag_blocks++;
+    if (used_us > (uint32_t)BLOCK_US) diag_over++;
+    if (used_us > diag_max_us) diag_max_us = used_us;
+}
+
+static void host_out(void *ctx, const char *line);
+
+// diag|blocks=<n>|over=<n>|max_us=<us>|max_gap_us=<us>|period_us=<us>|rx_ovf=<n>|tx_ovf=<n>|tx_late=<n>
+// The first four since the last `diag`, the I2S counts since power-up.
+static void diag_line(void) {
+    bm_audio_stats_t st;
+    bm_audio_get_stats(&st);
+    char line[200];
+    snprintf(line, sizeof(line),
+             "diag|blocks=%lu|over=%lu|max_us=%lu|max_gap_us=%lu|period_us=%.1f|rx_ovf=%lu|tx_ovf=%lu|tx_late=%lu",
+             (unsigned long)diag_blocks, (unsigned long)diag_over, (unsigned long)diag_max_us,
+             (unsigned long)diag_max_gap_us, (double)BLOCK_US, (unsigned long)st.rx_ovf, (unsigned long)st.tx_ovf,
+             (unsigned long)st.tx_late);
+    diag_blocks = diag_over = diag_max_us = diag_max_gap_us = 0;
+    host_out(NULL, line);
 }
 
 // ---------------------------------------------------------------- protocol host
@@ -231,6 +262,7 @@ void app_main(void) {
             }
             line[line_len] = 0;
             if (line_overflow) host_out(NULL, "err|line too long");
+            else if (strcmp(line, "diag") == 0) diag_line();
             else if (line_len) ms_proto_line(&proto, line);
             line_len = 0;
             line_overflow = false;

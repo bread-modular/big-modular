@@ -210,8 +210,15 @@ TOTAL FB: the post-drive mix back into the FM
   off**: below 3 % of the travel the voice is silent (and out of the FM), above
   5 % it plays from the bottom of its range (hysteresis, no flicker); on / off
   is a 15 ms fade, so it never pops. Read at 12 bits from the main loop
-  every 2 ms (4 conversions averaged, smoothed), not through IO's 50-count CV
-  callbacks: P1 / P2 use their unpatched 0..+5 V range (ADC 2020..3735),
+  every 2 ms, not through IO's 50-count CV callbacks: a settling
+  conversion, then the trimmed mean of 8 (the 2 lowest and 2 highest
+  dropped), smoothed (~12 ms), with 1.5 counts of backlash
+  (`cpx4/cpx4_knob.h`): a resting knob never re-tunes its voice and a turned
+  one moves it continuously. The first filter (4 conversions averaged,
+  re-centred after every 0.75-count change) let the ADC noise (+-3 counts
+  per conversion on the board) re-tune each resting voice 3..8 times a
+  second, up to 15 cents a step: the frequency jumps heard with all four
+  voices on (2026-11-28). P1 / P2 use their unpatched 0..+5 V range (ADC 2020..3735),
   P3 / P4 the whole range. Cents per ADC step, fine end / fast end of the
   curve: TUNE 1 1.7 / 15.4, TUNE 2 3.4 / 7.7, TUNE 3 1.5 / 3.3, TUNE 4
   0.7 / 6.5. Patched CV1 / CV2
@@ -253,11 +260,16 @@ The delay lines are 2 x 88 KB of static RAM, and the app runs from RAM
 (`copy_to_ram`, as the polysynth): 106 KB code + 183 KB bss. Power-on values
 (until the MCCs send theirs, within a second): SHARP 24, MOD 0, DRIVE 0,
 DELAY TIME 64 (31 ms), FEEDBACK 40, MIX 32, CUTOFF 0 (open), PAIRS, Off.
-`get-cpx4-params` prints the live DSP state over serial.
+`get-cpx4-params` prints the live DSP state over serial, `get-cpx4-knobs`
+per knob the position (ADC counts), the range of its readings and its TUNE
+updates since the last query (a resting knob: 0).
 
-`tools/sim_cpx4.cpp` (host, 250 checks) drives every control as the app does
+`tools/sim_cpx4.cpp` (host, 267 checks) drives every control as the app does
 (knob ADC value or CC) and checks it on the rendered output, and that it moves
-nothing else: TUNE n moves only voice n's line (heard within 1 cent) over its
+nothing else: the TUNE knob filter (at rest with the board's noise: no TUNE
+update in 60 s, the first filter ~1270; a read with two stray full-scale
+conversions moves nothing; a slow turn steps under 0.5 count; a fast turn
+arrives within the play), TUNE n moves only voice n's line (heard within 1 cent) over its
 own octave-staggered range, TUNE at 0 silences only that voice (and takes it
 out of the FM) with a fade that steps no more than the waveform itself, SHARP
 crest factor 1.71 -> 1.01 (triangle -> square, only its pair), MOD
@@ -268,9 +280,13 @@ poles), Peak +12 dB, Sing at the cutoff within 1 cent at 136 Hz..10 kHz,
 transpose, All Sound Off, a minute with every control up (finite, peak 0.90);
 and that `mcc/cpx4_mcc/cpx4_mcc.ino` sends the CCs and step values the map
 reads. `./.build/host/sim_cpx4 --wav <dir>` writes listening WAVs (control
-sweeps). Built 2026-11-14, `p`: UF2 206336 B, no warnings. Not
-bench-tested: the audio core load (`audio-load`) is still to be measured on
-the board.
+sweeps). Built 2026-11-14, `p`: UF2 206336 B, no warnings. On the board
+(2026-11-28, `p`, the knob filter above): audio core ~68 % average, single
+callbacks up to ~2.6 sample periods (the control update every 16 samples,
+absorbed by the 8-word DAC FIFO), no DAC underruns after boot (the 3 counted
+are at start-up), also with four voices on and every MCC knob at 0; the
+output there has no step above the waveform's own (second difference 0.025,
+as on the host); the resting knobs P1..P4 gave 0 TUNE updates in 15 s.
 
 **MODE = 4-bar motion recorder** in the sampler (new; BM's sampler MODE
 stopped/restarted the audio), fxrack (new; BM left MODE unused), polysynth and

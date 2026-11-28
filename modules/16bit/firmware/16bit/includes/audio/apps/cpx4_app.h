@@ -8,13 +8,15 @@
 #include "audio/apps/free_motion_recorder.h"
 #include "audio/apps/cpx4/cpx4_dsp.h"
 #include "audio/apps/cpx4/cpx4_controls.h"
+#include "audio/apps/cpx4/cpx4_knob.h"
 
 // CPX4 (this module, not BM): a four-voice drone inspired by the SOMA
 // Lyra-8, played from the 16bit knobs and two MCCs running the cpx4 MCC
 // firmware (../mcc/). DSP: audio/apps/cpx4/cpx4_dsp.h, control map:
 // audio/apps/cpx4/cpx4_controls.h.
 //
-//   P1..P4      TUNE 1..4 (read here at 12 bits, smoothed; not through IO's
+//   P1..P4      TUNE 1..4 (read here at 12 bits: trimmed mean, smoothing,
+//               backlash, audio/apps/cpx4/cpx4_knob.h; not through IO's
 //               50-count CV callbacks, too coarse for beating)
 //   MCC-1       CC20 SHARP A, CC21 SHARP B, CC22 DRIVE, CC23 MOD,
 //               button CC102 FM routing
@@ -26,10 +28,7 @@
 //               release it loops on its own track (own length), gliding
 //               from its last value back to its first. A click removes
 //               every track. P1..P4 + the eight MCC knobs
-#define CPX4_KNOB_READ_INTERVAL_MS 2
-#define CPX4_KNOB_OVERSAMPLE 4
-#define CPX4_KNOB_SMOOTH 0.3f        // one-pole per read (~6 ms)
-#define CPX4_KNOB_APPLY_STEP 0.75f   // ADC counts before a new TUNE is set
+#define CPX4_KNOB_READ_INTERVAL_MS 2   // filter: audio/apps/cpx4/cpx4_knob.h
 #define CPX4_DELAY_LINE_SAMPLES (44100 + 64)  // 1 s at 44.1 kHz + margin
 
 class Cpx4App : public AudioApp {
@@ -41,13 +40,20 @@ private:
     Cpx4Dsp dsp;
     FreeMotionRecorder recorder;
 
-    float knobSmooth[MotionRecorder::KNOB_COUNT] = {};
+    cpx4_knob::KnobFilter knobFilter[MotionRecorder::KNOB_COUNT];
     float knobApplied[MotionRecorder::KNOB_COUNT] = {};
     uint16_t knobCounts[MotionRecorder::KNOB_COUNT] = {};  // recorder's view
     bool knobsFirstRead = true;
     uint32_t lastKnobReadMs = 0;
+    // get-cpx4-knobs (bench): reading range and TUNE updates since the
+    // last query.
+    float knobStatMin[MotionRecorder::KNOB_COUNT] = {};
+    float knobStatMax[MotionRecorder::KNOB_COUNT] = {};
+    uint32_t knobStatUpdates[MotionRecorder::KNOB_COUNT] = {};
+    bool knobStatReset = true;
 
     void readKnobs();
+    void printKnobStats();
     void applyKnob(uint8_t knob, float adc);
     static void setRecorderLed(bool on);
     static uint32_t nowMs();

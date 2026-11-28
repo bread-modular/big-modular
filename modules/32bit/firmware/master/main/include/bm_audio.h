@@ -32,6 +32,15 @@ typedef struct {
 
 void bm_setup_audio(bm_audio_config_t config);
 
+// Since power-up: I2S queue overflows (the audio task fell a whole ring of DMA
+// buffers behind: input lost (rx), output buffers not taken (tx)), and output
+// blocks that played as silence because the task had not refilled them in time.
+typedef struct {
+    uint32_t rx_ovf, tx_ovf, tx_late;
+} bm_audio_stats_t;
+
+void bm_audio_get_stats(bm_audio_stats_t *st);
+
 #ifdef __cplusplus
 }
 #endif

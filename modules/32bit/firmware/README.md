@@ -420,6 +420,16 @@ circuit works, not a copy of one unit, and not compared with one.
   a choice within what such VCAs do. Dry / wet at 0 is the clean input.
 - **Each sample is one implicit step** of the network with the loop in it: no
   sample of delay in the feedback, no overshoot at the 0.01 ms attack at 10:1.
+- **Control low pass (0.4.2).** The audio gain cell follows the capacitor through a
+  0.1 ms low pass, and the audio waits 0.1 ms (4 samples) to line up with it; the
+  detector still reads the capacitor. Before it, the 0.01 ms attack snapped the gain
+  down within a few samples each time a waveform peak rose above the held level. On
+  a sustained sound with beats that crackled (2026-11-28, user: a four-voice 16bit
+  cpx4 drone, crackles gone with the multiband and the parallel bus off: their
+  make-up drove the glue to ~6 dB of reduction). On a recording of that drone with
+  the user's settings: 0 crackle bursts on the module where 0.4.1 had ~17 a second;
+  the gain reduction and the levels did not change, and on the demo loop kick peaks
+  pass the glue at most 0.4 dB higher (the soft clip and limiter after it unchanged).
 
 Not from the unit: the threshold is in dB and does not move with the ratio (the
 unit shifts it), the bend at the threshold is about 6 / 4 / 4 dB of input level
@@ -608,10 +618,11 @@ by 4 dB; a model of a set, not a recording.
 | ES8388 converter filters (ADC + DAC) | ~1 ms assumed, not from a data sheet |
 | Kick limiter look-ahead (the mix is delayed by the same amount) | 1.0 ms as shipped, 0..5 ms |
 | Main limiter look-ahead | 1.5 ms as shipped, 0..5 ms |
-| **Total as shipped** | **about 4.8 ms** (page: "Latency"), **not measured** |
+| Glue: the audio waits for its gain cell's control (0.4.2; only with the glue on) | 0.09 ms (4 samples) |
+| **Total as shipped** | **about 4.9 ms** (page: "Latency"), **not measured** |
 
 Look-ahead 0 is allowed: the limiter then acts at once (in effect a clipper with
-a release), and the total falls to about 2.3 ms.
+a release), and the total falls to about 2.4 ms.
 
 ### Audio path details
 
@@ -625,13 +636,34 @@ a release), and the total falls to about 2.3 ms.
   1388 / 1562 with 24 dB/oct cuts), 66 in bypass (`master/tools/cpu-bench/run.sh`,
   needs Espressif's `qemu-xtensa`). The cycles per instruction on the chip are
   not known here; at 2 the worst block would take 69 % of a 240 MHz core before
-  the I2S driver's own share of each 363 us block. Read the page's CPU figure on the module; the
-  extra supply current is a U8 bench item.
+  the I2S driver's own share of each 363 us block. On the module (2026-11-28, the
+  user's settings: multiband, parallel bus, glue and limiter on): 28 % mean.
+  The worst block was 66 .. 101 % in 0.4.1, with the code run from flash: the two cores share the
+  instruction cache, and the protocol on core 0 pushed the chain out of it. Since
+  0.4.2 the chain, the audio loop and the I2S read / write run from internal RAM
+  (`main/linker.lf`): worst block 121 us (33 %), also with the meters read 20 times a
+  second. The extra supply current is a U8 bench item.
+- `diag` (bench, not used by the page) answers
+  `diag|blocks=|over=|max_us=|max_gap_us=|period_us=|rx_ovf=|tx_ovf=|tx_late=`:
+  blocks over their period, the slowest block and the longest gap between block
+  starts since the last `diag`, and since power-up the I2S queue overflows and the
+  output blocks that played as silence (late). 0.4.2 counts 25 of each at start-up
+  (before the audio task runs) and none after.
 - PSRAM off (not used). Settings in NVS as text (`set <id> <value>` lines, the
   export format): an unknown name is skipped, so a later firmware can read an
   older set.
 
 ### State
+
+0.4.2 (2026-11-28, user: "crackles and pops" on a 16bit cpx4 drone, gone with the
+multiband and the parallel bus off): the glue's control low pass (section Glue
+compressor; the crackles came from the glue's 0.01 ms attack, which the two drove
+harder), the audio path in internal RAM and the `diag` command (section Audio path
+details). Host tests 964 checks (+ the beating drone through the glue at 0.01 ms),
+all pass; built with ESP-IDF v5.5.1 (S3), no warnings. **Flashed on the user's
+board 2026-11-28** (settings kept); its output recorded through a USB interface
+before and after (`../research/master/crackle-2026-11-28/`, ignored): no crackle
+bursts after, the same level. Not yet heard by the user.
 
 0.4.1 (2026-11-24, user: "In the MODE, allow us to select either Click, Hold or
 Push. Not all."): one MODE list instead of three, worked one way, picked on the

@@ -26,6 +26,8 @@ idf_component_register(
         vfs
     INCLUDE_DIRS
         "include"
+    LDFRAGMENTS
+        "linker.lf"
 )
 
 target_compile_definitions(${COMPONENT_LIB} PRIVATE
